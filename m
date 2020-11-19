@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B90E189BF3
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2020 11:04:40 +0000 (UTC)
-Date: Thu, 19 Nov 2020 13:04:36 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20201119110436.GJ7444@platvala-desk.ger.corp.intel.com>
-References: <20201119094318.2213919-2-chris@chris-wilson.co.uk>
- <20201119105440.2214381-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201119105440.2214381-1-chris@chris-wilson.co.uk>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_pipe_crc_basic: Handle
- absent pipes for disable-crc-after-crtc
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 19 Nov 2020 11:20:08 -0000
+Message-ID: <160578480826.18186.11708179827449404339@emeril.freedesktop.org>
+References: <20201119104630.71385-1-lionel.g.landwerlin@intel.com>
+In-Reply-To: <20201119104630.71385-1-lionel.g.landwerlin@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/perf=3A_verify_reason_field_in_OA_reports_is_never_0?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,105 +14,294 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1886517402=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Nov 19, 2020 at 10:54:40AM +0000, Chris Wilson wrote:
-> Check that the output exists prior to use, and in doing so prevent the
-> test from exploding (without leaving an intelligible trace) when the
-> connector is randomly lost.
-> 
-> v2: Convert test_compare_crc to follow the same output requirements
-> 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> ---
->  tests/kms_pipe_crc_basic.c | 23 +++++++++++++++--------
->  1 file changed, 15 insertions(+), 8 deletions(-)
-> 
-> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-> index e584dca9b..db047c4cd 100644
-> --- a/tests/kms_pipe_crc_basic.c
-> +++ b/tests/kms_pipe_crc_basic.c
-> @@ -71,6 +71,7 @@ static void test_read_crc(data_t *data, enum pipe pipe, unsigned flags)
->  	igt_crc_t *crcs = NULL;
->  	int c, j;
->  
-> +	igt_require_pipe(display, pipe);
->  	igt_display_require_output_on_pipe(display, pipe);
->  	output = igt_get_single_output_for_pipe(display, pipe);
->  
-> @@ -171,10 +172,11 @@ static void test_compare_crc(data_t *data, enum pipe pipe)
->  	igt_crc_t ref_crc, crc;
->  	igt_pipe_crc_t *pipe_crc = NULL;
->  	struct igt_fb fb0, fb1;
-> -	igt_output_t *output = igt_get_single_output_for_pipe(display, pipe);
-> +	igt_output_t *output;
->  
-> -	igt_require_f(output, "No connector found for pipe %s\n",
-> -			kmstest_pipe_name(pipe));
-> +	igt_require_pipe(display, pipe);
-> +	igt_display_require_output_on_pipe(display, pipe);
-> +	output = igt_get_single_output_for_pipe(display, pipe);
+--===============1886517402==
+Content-Type: multipart/alternative;
+ boundary="===============2634693076986458928=="
 
-Turns out igt_display_require_output_on_pipe also calls
-igt_require_pipe. As does igt_get_single_output_for_pipe.
+--===============2634693076986458928==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Either way, checking for non-null output is needed so with or without
-the redundant extra igt_require_pipe
+== Series Details ==
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+Series: tests/i915/perf: verify reason field in OA reports is never 0
+URL   : https://patchwork.freedesktop.org/series/84059/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9359 -> IGTPW_5195
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5195 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-skl-6600u:       [PASS][1] -> [INCOMPLETE][2] ([i915#146] / [i915#198])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@i915_module_load@reload:
+    - fi-byt-j1900:       [PASS][3] -> [DMESG-WARN][4] ([i915#1982])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-byt-j1900/igt@i915_module_load@reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-byt-j1900/igt@i915_module_load@reload.html
+
+  * igt@prime_self_import@basic-with_two_bos:
+    - fi-tgl-y:           [PASS][5] -> [DMESG-WARN][6] ([i915#402]) +1 similar issue
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html
+
+  
+#### Possible fixes ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-skl-lmem:        [DMESG-WARN][7] ([i915#2605]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-skl-lmem/igt@core_hotunplug@unbind-rebind.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-skl-lmem/igt@core_hotunplug@unbind-rebind.html
+    - fi-tgl-u2:          [DMESG-WARN][9] ([i915#1982]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@gem_sync@basic-each:
+    - fi-tgl-y:           [DMESG-WARN][11] ([i915#402]) -> [PASS][12] +2 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-tgl-y/igt@gem_sync@basic-each.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-tgl-y/igt@gem_sync@basic-each.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - {fi-kbl-7560u}:     [DMESG-FAIL][13] ([i915#2524]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-kbl-7560u/igt@i915_selftest@live@gt_pm.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-kbl-7560u/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_busy@basic@flip:
+    - fi-kbl-soraka:      [DMESG-WARN][15] ([i915#1982]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-kbl-soraka/igt@kms_busy@basic@flip.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-kbl-soraka/igt@kms_busy@basic@flip.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:
+    - fi-icl-u2:          [DMESG-WARN][17] ([i915#1982]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
+
+  
+#### Warnings ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-tgl-y:           [DMESG-WARN][19] ([i915#2411]) -> [DMESG-WARN][20] ([i915#2411] / [i915#402])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-tgl-y:           [DMESG-WARN][21] ([i915#2411]) -> [DMESG-WARN][22] ([i915#1982] / [i915#2411]) +1 similar issue
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-tgl-y/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-tgl-y/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+  [i915#198]: https://gitlab.freedesktop.org/drm/intel/issues/198
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2411]: https://gitlab.freedesktop.org/drm/intel/issues/2411
+  [i915#2524]: https://gitlab.freedesktop.org/drm/intel/issues/2524
+  [i915#2605]: https://gitlab.freedesktop.org/drm/intel/issues/2605
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
 
 
->  
->  	igt_display_reset(display);
->  	igt_output_set_pipe(output, pipe);
-> @@ -224,14 +226,21 @@ static void test_compare_crc(data_t *data, enum pipe pipe)
->  static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe)
->  {
->  	igt_display_t *display = &data->display;
-> -	igt_output_t *output = igt_get_single_output_for_pipe(&data->display, pipe);
-> -	igt_pipe_crc_t *pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, "auto");
-> -	drmModeModeInfo *mode = igt_output_get_mode(output);
-> +	igt_pipe_crc_t *pipe_crc;
-> +	drmModeModeInfo *mode;
-> +	igt_output_t *output;
->  	igt_crc_t crc[2];
->  
-> +	igt_require_pipe(display, pipe);
-> +	igt_display_require_output_on_pipe(display, pipe);
-> +	output = igt_get_single_output_for_pipe(display, pipe);
-> +
-> +	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, "auto");
-> +
->  	igt_display_reset(display);
->  	igt_output_set_pipe(output, pipe);
->  
-> +	mode = igt_output_get_mode(output);
->  	igt_create_color_fb(data->drm_fd,
->  			    mode->hdisplay, mode->vdisplay,
->  			    DRM_FORMAT_XRGB8888,
-> @@ -290,8 +299,6 @@ igt_main
->  			test_read_crc(&data, pipe, TEST_SEQUENCE | TEST_NONBLOCK);
->  
->  		igt_subtest_f("suspend-read-crc-pipe-%s", kmstest_pipe_name(pipe)) {
-> -			igt_require_pipe(&data.display, pipe);
-> -
->  			test_read_crc(&data, pipe, 0);
->  
->  			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-> -- 
-> 2.29.2
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Participating hosts (40 -> 36)
+------------------------------
+
+  Additional (1): fi-bxt-dsi 
+  Missing    (5): fi-ilk-m540 fi-tgl-dsi fi-hsw-4200u fi-bsw-cyan fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5858 -> IGTPW_5195
+
+  CI-20190529: 20190529
+  CI_DRM_9359: 5529f30897761dc08c5cfcefc6d1659f9250d622 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5195: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/index.html
+  IGT_5858: 300ee395f5c0ed53ab0757d9c5b311f9c1f641c8 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@perf@non-zero-reason
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/index.html
+
+--===============2634693076986458928==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/perf: verify reason field in OA reports is never 0</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/84059/">https://patchwork.freedesktop.org/series/84059/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9359 -&gt; IGTPW_5195</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5195 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/198">i915#198</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>fi-byt-j1900:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-byt-j1900/igt@i915_module_load@reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-byt-j1900/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_self_import@basic-with_two_bos:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>
+<p>fi-skl-lmem:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-skl-lmem/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2605">i915#2605</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-skl-lmem/igt@core_hotunplug@unbind-rebind.html">PASS</a></p>
+</li>
+<li>
+<p>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html">PASS</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_sync@basic-each:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-tgl-y/igt@gem_sync@basic-each.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-tgl-y/igt@gem_sync@basic-each.html">PASS</a> +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>{fi-kbl-7560u}:     <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-kbl-7560u/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2524">i915#2524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-kbl-7560u/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-kbl-soraka/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-kbl-soraka/igt@kms_busy@basic@flip.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2411">i915#2411</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2411">i915#2411</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9359/fi-tgl-y/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2411">i915#2411</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/fi-tgl-y/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2411">i915#2411</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (40 -&gt; 36)</h2>
+<p>Additional (1): fi-bxt-dsi <br />
+  Missing    (5): fi-ilk-m540 fi-tgl-dsi fi-hsw-4200u fi-bsw-cyan fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5858 -&gt; IGTPW_5195</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9359: 5529f30897761dc08c5cfcefc6d1659f9250d622 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5195: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5195/index.html<br />
+  IGT_5858: 300ee395f5c0ed53ab0757d9c5b311f9c1f641c8 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@perf@non-zero-reason</p>
+
+</body>
+</html>
+
+--===============2634693076986458928==--
+
+--===============1886517402==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1886517402==--
