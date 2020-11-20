@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E56C6E87B
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Nov 2020 09:12:43 +0000 (UTC)
-From: "Ram Moon, AnandX" <anandx.ram.moon@intel.com>
-Date: Fri, 20 Nov 2020 09:12:40 +0000
-Message-ID: <SA2PR11MB50683A258C3ABE41B8B80EC8AEFF0@SA2PR11MB5068.namprd11.prod.outlook.com>
-References: <20201102090836.19803-1-anandx.ram.moon@intel.com>
- <160440054042.21466.14289928033719881030@build.alporthouse.com>
- <SA2PR11MB5068EB30ABBA4162F3D9A00BAE110@SA2PR11MB5068.namprd11.prod.outlook.com>
-In-Reply-To: <SA2PR11MB5068EB30ABBA4162F3D9A00BAE110@SA2PR11MB5068.namprd11.prod.outlook.com>
-Content-Language: en-US
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 670906E893
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Nov 2020 09:36:52 +0000 (UTC)
+From: Mika Kahola <mika.kahola@intel.com>
+Date: Fri, 20 Nov 2020 11:36:42 +0200
+Message-Id: <20201120093646.1340401-1-mika.kahola@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t] tests/kms_setmode: basic Improve accuracy
- with using of confidence interval
+Subject: [igt-dev] [PATCH i-g-t v10 0/4] tests/kms_ccs: CCS Clear Color test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,95 +14,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgQ2hyaXMsDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBSYW0gTW9vbiwg
-QW5hbmRYIA0KU2VudDogVHVlc2RheSwgTm92ZW1iZXIgMywgMjAyMCAxMToyOCBQTQ0KVG86IENo
-cmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPjsgaWd0LWRldkBsaXN0cy5mcmVl
-ZGVza3RvcC5vcmcNClN1YmplY3Q6IFJFOiBbaWd0LWRldl0gW2ktZy10XSB0ZXN0cy9rbXNfc2V0
-bW9kZTogYmFzaWMgSW1wcm92ZSBhY2N1cmFjeSB3aXRoIHVzaW5nIG9mIGNvbmZpZGVuY2UgaW50
-ZXJ2YWwNCg0KSGkgQ2hyaXMsDQoNClRoYW5rcyBmb3IgeW91ciByZXZpZXcgY29tbWVudC4NCg0K
-LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hy
-aXMtd2lsc29uLmNvLnVrPg0KU2VudDogVHVlc2RheSwgTm92ZW1iZXIgMywgMjAyMCA0OjE5IFBN
-DQpUbzogUmFtIE1vb24sIEFuYW5kWCA8YW5hbmR4LnJhbS5tb29uQGludGVsLmNvbT47IGlndC1k
-ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQpDYzogUmFtIE1vb24sIEFuYW5kWCA8YW5hbmR4LnJh
-bS5tb29uQGludGVsLmNvbT4NClN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW2ktZy10XSB0ZXN0cy9r
-bXNfc2V0bW9kZTogYmFzaWMgSW1wcm92ZSBhY2N1cmFjeSB3aXRoIHVzaW5nIG9mIGNvbmZpZGVu
-Y2UgaW50ZXJ2YWwNCg0KUXVvdGluZyBBbmFuZCBNb29uICgyMDIwLTExLTAyIDA5OjA4OjM2KQ0K
-PiBVc2luZyBjb25maWRlbmNlIGludGVydmFsIGZvcm11bGEgYWNjdXJhY3kgaXMgZXN0aW1hdGVz
-IGFwcHJveGltYXRlbHkgDQo+IGF0IDk1JSB3aGVuIHtYfSBpcyB0aGUgYXZlcmFnZSBvZiBhIHNh
-bXBsZSBvZiBzaXplIG4uDQo+IFVzZSB0aGlzIGNvbmZpZGVuY2UgaW50ZXJ2YWwgZm9ybXVsYSBh
-cyB1c2VkIGluIHN0YXRpc3RpY3MgdG8gZXN0aW1hdGUgDQo+IHRoZSBhY2N1cmFjeS4NCj4gDQo+
-IFNpZ25lZC1vZmYtYnk6IEFuYW5kIE1vb24gPGFuYW5keC5yYW0ubW9vbkBpbnRlbC5jb20+DQo+
-IC0tLQ0KPiBTZWUgYmVsb3cgbGluay4NCj4gaHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kv
-NjglRTIlODAlOTM5NSVFMiU4MCU5Mzk5LjdfcnVsZSNDdW11bGF0aQ0KPiB2ZV9kaXN0cmlidXRp
-b25fZnVuY3Rpb24NCj4gLS0tDQo+ICB0ZXN0cy9rbXNfc2V0bW9kZS5jIHwgMiArLQ0KPiAgMSBm
-aWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0t
-Z2l0IGEvdGVzdHMva21zX3NldG1vZGUuYyBiL3Rlc3RzL2ttc19zZXRtb2RlLmMgaW5kZXgNCj4g
-OTJmM2VhZDIuLjU4ODE0YTEzIDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9rbXNfc2V0bW9kZS5jDQo+
-ICsrKyBiL3Rlc3RzL2ttc19zZXRtb2RlLmMNCj4gQEAgLTQ5NCw3ICs0OTQsNyBAQCBzdGF0aWMg
-dm9pZCBjaGVja190aW1pbmdzKGludCBjcnRjX2lkeCwgY29uc3QgZHJtTW9kZU1vZGVJbmZvICpr
-bW9kZSkNCj4gICAgICAgICAgKiB3aGljaCBkZXBlbmQgb24gdGltaW5nLCBnaXZpbmcgdGhlIGxv
-d2VzdCBhY2NlcHRhYmxlIE1UQkYgb2YgNS42cw0KPiAgICAgICAgICAqIGZvciA2MEh6IHNhbXBs
-aW5nIHJhdGUuDQo+ICAgICAgICAgICovDQo+IC0gICAgICAgYWNjdXJhY3kgPSAzLiAqIHN0ZGRl
-djsNCj4gKyAgICAgICBhY2N1cmFjeSA9IDMuICogc3RkZGV2IC8gc3FydChDQUxJQlJBVEVfVFNf
-U1RFUFMpOw0KDQpPb3BzLCB5ZXMsIHRoaXMgc2hvdWxkIGJlIHN0YW5kYXJkIGVycm9yIHJhdGhl
-ciB0aGFuIGRldmlhdGlvbi4gQ291bGQgeW91IGFkZCBpZ3Rfc3RhdHNfZ2V0X3N0ZF9lcnJvcigp
-IHNvIHdlIGRvbid0IGhhcmRjb2RlIE4/DQotQ2hyaXMNCg0KRG8geW91IHdhbnQgbWUgdG8gcmVu
-YW1lIGFjY3VyYWN5IHRvIHN0ZF9lcnJvciBhbmQgdXNlIHN0YXRzLm5fdmFsdWVzIGluc3RlYWQg
-b2YgQ0FMSUJSQVRFX1RTX1NURVBTIEkgY291bGQgbm90IGZpbmQgdGhlIGRlZmluaXRpb24gb2Yg
-aWd0X3N0YXRzX2dldF9zdGRfZXJyb3IgZnVuY3Rpb24uIA0KDQotQW5hbmQNCg0KVGhhbmtzIGZv
-ciBmaXhpbmcgdGhlIGNvZGUgY2hhbmdlcy4NCg0KQWN0dWFsbHkgYWJvdmUgY2hhbmdlcyBmaXgg
-dGhlIGlzc3VlIHRvIGltcHJvdmUgdGhlIGFjY3VyYWN5IGNhbGN1bGF0aW9ucy4NCkJ1dCBub3cg
-SSBhbSBhYmxlIHRvIHJlcHJvZHVjZSB0aGUgb3JpZ2luYWwgYnVnIHVzaW5nIDRLIG1vbml0b3Jz
-IG9uIDUuOC54IGtlcm5lbCwgU2VlIGJlbG93IGxvZ3MuDQoNCiAgICBDUlRDWzk4XSBbUGlwZSBB
-XSBNb2RlOiAzODQweDIxNjBANjBIeiBDb25uZWN0b3JzOiBEUC0yWzMzMF0gRXhwZWN0ZWQgZnJh
-bWV0aW1lOiAxNjY2OHVzOyBtZWFzdXJlZCAxNjY3Mi4zdXMgKy0gMS44MDV1cyBhY2N1cmFjeSAw
-LjAwJSBbMC4wNyBzY2FubGluZXNdDQooa21zX3NldG1vZGU6MTQzMTUpIENSSVRJQ0FMOiBUZXN0
-IGFzc2VydGlvbiBmYWlsdXJlIGZ1bmN0aW9uIGNoZWNrX3RpbWluZ3MsIGZpbGUgLi4vdGVzdHMv
-a21zX3NldG1vZGUuYzo1NDQ6DQooa21zX3NldG1vZGU6MTQzMTUpIENSSVRJQ0FMOiBGYWlsZWQg
-YXNzZXJ0aW9uOiBmYWJzKG1lYW4gLSBleHBlY3RlZCkgPCAxLjcxOCAqIHN0ZGRldg0KKGttc19z
-ZXRtb2RlOjE0MzE1KSBDUklUSUNBTDogdmJsYW5rIGludGVydmFsIGRpZmZlcnMgZnJvbSBtb2Rl
-bGluZSEgZXhwZWN0ZWQgMTY2NjcuNnVzLCBtZWFzdXJlZCAxNjY3MnVzICstIDEuODA1dXMsIGRp
-ZmZlcmVuY2UgNC43dXMgKDIuNiBzaWdtYSkgU3RhY2sgdHJhY2U6DQogICMwIC4uL2xpYi9pZ3Rf
-Y29yZS5jOjE3MzQgX19pZ3RfZmFpbF9hc3NlcnQoKQ0KICAjMSAuLi90ZXN0cy9rbXNfc2V0bW9k
-ZS5jOjU0NCB0ZXN0X29uZV9jb21iaW5hdGlvbigpDQogICMyIC4uL3Rlc3RzL2ttc19zZXRtb2Rl
-LmM6ODM0IF9fcmVhbF9tYWluODgzKCkNCiAgIzMgLi4vdGVzdHMva21zX3NldG1vZGUuYzo4ODMg
-bWFpbigpDQogICM0IC4uL2NzdS9saWJjLXN0YXJ0LmM6MzQyIF9fbGliY19zdGFydF9tYWluKCkN
-CiAgIzUgW19zdGFydCsweDJlXQ0KU3VidGVzdCBiYXNpYyBmYWlsZWQuDQoqKioqIERFQlVHICoq
-KioNCiANClNvIGFmdGVyIGluIGRpZ2dpbmcgaW50byB0aGUgYmVsb3cgY29tbWVudHMgaXQgdHVy
-bnMgb3V0IHRoYXQgKmNvbmZpZGVuY2UgaW50ZXJ2YWwqIHdpdGggcmVzcGVjdCB0byBzdGFuZGFy
-ZCBkZXZpYXRpb24gaXMgY2FsY3VsYXRlZCB3aXRoICpDdW11bGF0aXZlIGRpc3RyaWJ1dGlvbiBm
-dW5jdGlvbiogKGZvcm11bGEpDQoNCkFzIHBlciB0aGUgV2lraXBlZGlhIHRhYmxlDQpGb3IgdmFy
-aW91cyB2YWx1ZXMgb2YgeiwgdGhlIHBlcmNlbnRhZ2Ugb2YgdmFsdWVzIGV4cGVjdGVkIHRvIGxp
-ZSBpbiBhbmQgb3V0c2lkZSB0aGUgc3ltbWV0cmljIGludGVydmFsLCBDSSA9ICjiiJJ6z4MsIHrP
-gyksIGFyZSBhcyBmb2xsb3dzOg0KWzBdIGh0dHBzOi8vZW4ud2lraXBlZGlhLm9yZy93aWtpL1N0
-YW5kYXJkX2RldmlhdGlvbiNSdWxlc19mb3Jfbm9ybWFsbHlfZGlzdHJpYnV0ZWRfZGF0YQ0KDQpJ
-dCB0dXJucyBvdXQgdGhhdCAgKjMgz4MqIGdpdmVzIGFyb3VuZCBwcm9wb3J0aW9uIHBlcmNlbnRh
-Z2UgOTkuNzMwMDIwNCUgd2hpY2ggaXMgYWNjb3JkaW5nIHRvIHRoZSBDSSA9ICjiiJJ6z4MsIHrP
-gykgdGFibGUuDQoNCkkgd291bGQgbGlrZSB0byBzdWJtaXQgYSBiZWxvdyBwYXRjaCBhcyB0aGlz
-IGNoYW5nZXMgZml4IHRoZSBvdmVyYWxsIGJ1Zy4NClBsZWFzZSBzaGFyZSB5b3VyIHRob3VnaHQg
-YW5kIHN1Z2dlc3Rpb24gb24gYW55IGFsdGVybmF0aXZlIGFwcHJvYWNoIEkgc2hvdWxkIHRyeS4N
-Cg0KVGhhbmtzDQpBbmFuZA0KDQpuYXZlZW5AbmF2ZWVuLUdCLVozOTAtR2FydWRhOn4vYW5hbmQv
-aWd0LWdwdS10b29scy5pbnRlcm5hbC1yZWJhc2luZyQgZ2l0IGRpZmYgZGlmZiAtLWdpdCBhL3Rl
-c3RzL2ttc19zZXRtb2RlLmMgYi90ZXN0cy9rbXNfc2V0bW9kZS5jIGluZGV4IDkyOGE1YThjZi4u
-NThkYTM2OTg1IDEwMDY0NA0KLS0tIGEvdGVzdHMva21zX3NldG1vZGUuYw0KKysrIGIvdGVzdHMv
-a21zX3NldG1vZGUuYw0KQEAgLTUyNiw3ICs1MjYsNyBAQCBzdGF0aWMgdm9pZCBjaGVja190aW1p
-bmdzKGludCBjcnRjX2lkeCwgY29uc3QgZHJtTW9kZU1vZGVJbmZvICprbW9kZSkNCiAgICAgICAg
-ICogU2VlOg0KICAgICAgICAgKiBodHRwczovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9TdGFuZGFy
-ZF9kZXZpYXRpb24jUnVsZXNfZm9yX25vcm1hbGx5X2Rpc3RyaWJ1dGVkX2RhdGENCiAgICAgICAg
-ICovDQotICAgICAgIGlndF9hc3NlcnRfZihmYWJzKG1lYW4gLSBleHBlY3RlZCkgPCAxLjcxOCAq
-IHN0ZGRldiwNCisgICAgICAgaWd0X2Fzc2VydF9mKGZhYnMobWVhbiAtIGV4cGVjdGVkKSA8IDMu
-ICogc3RkZGV2LA0KICAgICAgICAgICAgICAgICAgICAgInZibGFuayBpbnRlcnZhbCBkaWZmZXJz
-IGZyb20gbW9kZWxpbmUhIGV4cGVjdGVkICUuMWZ1cywgbWVhc3VyZWQgJTEuZnVzICstICUuM2Z1
-cywgZGlmZmVyZW5jZSAlLjFmdXMgKCUuMWYgc2lnbWEpXG4iLA0KICAgICAgICAgICAgICAgICAg
-ICAgZXhwZWN0ZWQsIG1lYW4sIHN0ZGRldiwNCiAgICAgICAgICAgICAgICAgICAgIGZhYnMobWVh
-biAtIGV4cGVjdGVkKSwgZmFicyhtZWFuIC0gZXhwZWN0ZWQpIC8gc3RkZGV2KTsNCg0KX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5n
-IGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
-a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+The patch proposes a method to test CCS with clear color
+capability.
+
+The test paints a solid color on primary fb and a small sprite fb.
+These are cleared with fast clear feature. A crc is captured and
+compared against the reference.
+
+v2: Modify _gen9_render_copyfunc to support fast clear (Matt)
+    Enable fast clear bit on 3D sequence (Matt)
+    Add helper function to figure out clear color modifier (Matt)
+v3: Remove unrelated line additions/removes
+v4: Fast clear with color (Imre)
+v5: Write raw 32-bit color values to register (Imre)
+    Require 32-bit color format
+v6: Rebase to use batchbuffer without libdrm dependency
+v7: Enable clear color (Nanley)
+v8: Various cleanups (Imre)
+v9: Splitting patch series into three patches (Imre)
+v10: Remove switch from CCS CC modifier check (Imre)
+     Color map conversion (Imre)
+     Separate function to check CCS CC plane (Imre)
+     Removed left-over comment (Imre)
+     Replace inte_bb_reset() with intel_bb_sync() and
+     intel_bb_destroy() when cleaning up (Imre)
+     Fix logic to test CCS clear color only with
+     XRGB8888 format (Imre)
+     Move fast clear to it's own function (Imre)
+
+Mika Kahola (4):
+  tests/kms_ccs: Add debug information on format modifier
+  lib/rendercopy: Enable fast clear
+  lib/intel_aux_pgtable: Initialize aux pagetable for fast clear
+  tests/kms_ccs: CCS Clear Color test
+
+ lib/gen8_render.h       |   1 +
+ lib/gen9_render.h       |   6 +-
+ lib/igt_fb.c            |  20 +++--
+ lib/igt_fb.h            |   3 +
+ lib/intel_aux_pgtable.c |  39 +++++++---
+ lib/intel_batchbuffer.c |   5 ++
+ lib/intel_batchbuffer.h |   6 ++
+ lib/rendercopy.h        |   4 +
+ lib/rendercopy_gen9.c   | 167 ++++++++++++++++++++++++++++------------
+ tests/kms_ccs.c         |  93 ++++++++++++++++++----
+ 10 files changed, 263 insertions(+), 81 deletions(-)
+
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
