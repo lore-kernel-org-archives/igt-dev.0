@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 078AC6E894
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Nov 2020 09:36:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AC7EF6E895
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Nov 2020 09:36:54 +0000 (UTC)
 From: Mika Kahola <mika.kahola@intel.com>
-Date: Fri, 20 Nov 2020 11:36:46 +0200
-Message-Id: <20201120093646.1340401-5-mika.kahola@intel.com>
+Date: Fri, 20 Nov 2020 11:36:45 +0200
+Message-Id: <20201120093646.1340401-4-mika.kahola@intel.com>
 In-Reply-To: <20201120093646.1340401-1-mika.kahola@intel.com>
 References: <20201120093646.1340401-1-mika.kahola@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v10 4/4] tests/kms_ccs: CCS Clear Color test
+Subject: [igt-dev] [PATCH i-g-t v10 3/4] lib/intel_aux_pgtable: Initialize
+ aux pagetable for fast clear
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,174 +24,84 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The patch proposes a method to test CCS with clear color
-capability.
+For fast clear we haven't defined source buffer. Therefore, we only
+need to initialize only destination aux pagetable.
 
-The test paints a solid color on primary fb and a small sprite fb.
-These are cleared with fast clear feature. A crc is captured and
-compared against the reference.
-
-v2: Modify _gen9_render_copyfunc to support fast clear (Matt)
-    Enable fast clear bit on 3D sequence (Matt)
-    Add helper function to figure out clear color modifier (Matt)
-v3: Remove unrelated line additions/removes
-v4: Fast clear with color (Imre)
-v5: Write raw 32-bit color values to register (Imre)
-    Require 32-bit color format
-v6: Rebase to use batchbuffer without libdrm dependency
-v7: Enable clear color (Nanley)
-v8: Various cleanups (Imre)
-v9: Splitting patch for smaller hunks (Imre)
-v10: Remove switch from CCS CC modifier check (Imre)
-     Color map conversion (Imre)
-     Separate function to check CCS CC plane (Imre)
-     Removed left-over comment (Imre)
-     Replace inte_bb_reset() with intel_bb_sync() and
-     intel_bb_destroy() when cleaning up (Imre)
-     Fix logic to test CCS clear color only with
-     XRGB8888 format (Imre)
-     Move fast clear to it's own function (Imre)
+v2: Cleaner solution proposed by Imre (Imre)
 
 Signed-off-by: Mika Kahola <mika.kahola@intel.com>
 ---
- tests/kms_ccs.c | 75 +++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 69 insertions(+), 6 deletions(-)
+ lib/intel_aux_pgtable.c | 39 +++++++++++++++++++++++++++------------
+ 1 file changed, 27 insertions(+), 12 deletions(-)
 
-diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
-index 53abecce..8c2d7b3d 100644
---- a/tests/kms_ccs.c
-+++ b/tests/kms_ccs.c
-@@ -120,6 +120,11 @@ static void addfb_init(struct igt_fb *fb, struct drm_mode_fb_cmd2 *f)
- 	}
- }
- 
-+static bool is_ccs_cc_modifier(uint64_t modifier)
-+{
-+	return modifier == LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC;
-+}
-+
- /*
-  * The CCS planes of compressed framebuffers contain non-zero bytes if the
-  * engine compressed effectively the framebuffer. The actual encoding of these
-@@ -155,7 +160,36 @@ static void check_ccs_plane(int drm_fd, igt_fb_t *fb, int plane)
- 		     plane, igt_fb_ccs_to_main_plane(fb, plane));
- }
- 
--static void check_all_ccs_planes(int drm_fd, igt_fb_t *fb)
-+static void check_ccs_cc_plane(int drm_fd, igt_fb_t *fb, int plane, const float *cc_color)
-+{
-+	union cc {
-+		float f;
-+		uint32_t d;
-+	} *cc_p;
-+	void *map;
-+	uint32_t native_color;
-+
-+	gem_set_domain(drm_fd, fb->gem_handle, I915_GEM_DOMAIN_CPU, 0);
-+
-+	map = gem_mmap__cpu(drm_fd, fb->gem_handle, 0, fb->size, PROT_READ);
-+	cc_p = map + fb->offsets[plane];
-+
-+	igt_assert(cc_color[0] == cc_p[0].f &&
-+		   cc_color[1] == cc_p[1].f &&
-+		   cc_color[2] == cc_p[2].f &&
-+		   cc_color[3] == cc_p[3].f);
-+
-+	native_color = (uint8_t)(cc_color[3] * 0xff) << 24 |
-+		       (uint8_t)(cc_color[0] * 0xff) << 16 |
-+		       (uint8_t)(cc_color[1] * 0xff) << 8 |
-+		       (uint8_t)(cc_color[2] * 0xff);
-+
-+	igt_assert(native_color == cc_p[4].d);
-+
-+	munmap(map, fb->size);
-+};
-+
-+static void check_all_ccs_planes(int drm_fd, igt_fb_t *fb, const float *cc_color)
+diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
+index ef6a9fef..c05d4511 100644
+--- a/lib/intel_aux_pgtable.c
++++ b/lib/intel_aux_pgtable.c
+@@ -514,18 +514,35 @@ gen12_aux_pgtable_init(struct aux_pgtable_info *info,
+ 		       struct intel_buf *dst_buf)
  {
+ 	struct intel_buf *bufs[2];
++	int buf_count = 0;
+ 	struct intel_buf *reserved_bufs[2];
+ 	int reserved_buf_count;
++	bool has_compressed_buf = false;
++	bool write_buf[2];
  	int i;
  
-@@ -163,6 +197,8 @@ static void check_all_ccs_planes(int drm_fd, igt_fb_t *fb)
- 		if (igt_fb_is_ccs_plane(fb, i) &&
- 		    !igt_fb_is_gen12_ccs_cc_plane(fb, i))
- 			check_ccs_plane(drm_fd, fb, i);
-+		else if (igt_fb_is_gen12_ccs_cc_plane(fb, i))
-+			check_ccs_cc_plane(drm_fd, fb, i, cc_color);
- 	}
- }
+ 	igt_assert_f(ibb->enforce_relocs == false,
+ 		     "We support aux pgtables for non-forced relocs yet!");
  
-@@ -176,6 +212,24 @@ static int get_ccs_plane_index(uint32_t format)
- 	return index;
- }
- 
-+static void fast_clear_fb(int drm_fd, struct igt_fb *fb, const float *cc_color)
-+{
-+	igt_render_clearfunc_t fast_clear = igt_get_render_clearfunc(intel_get_drm_devid(drm_fd));
-+	struct intel_bb *ibb = intel_bb_create(drm_fd, 4096);
-+	struct buf_ops *bops = buf_ops_create(drm_fd);
-+	struct intel_buf *dst = igt_fb_create_intel_buf(drm_fd, bops, fb, "fast clear dst");
+-	if (!intel_buf_compressed(src_buf) && !intel_buf_compressed(dst_buf))
+-		return;
++	if (src_buf) {
++		bufs[buf_count] = src_buf;
++		write_buf[buf_count] = false;
++		buf_count++;
 +
-+	gem_set_domain(drm_fd, fb->gem_handle,
-+		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
++		if (intel_buf_compressed(src_buf))
++			has_compressed_buf = true;
++	}
++	if (dst_buf) {
++		bufs[buf_count] = dst_buf;
++		write_buf[buf_count] = true;
++		buf_count++;
 +
-+	fast_clear(ibb, dst, 0, 0, fb->width, fb->height, cc_color);
-+
-+	intel_bb_sync(ibb);
-+	intel_bb_destroy(ibb);
-+	intel_buf_destroy(dst);
-+	buf_ops_destroy(bops);
-+}
-+
- static void generate_fb(data_t *data, struct igt_fb *fb,
- 			int width, int height,
- 			enum test_fb_flags fb_flags)
-@@ -186,6 +240,7 @@ static void generate_fb(data_t *data, struct igt_fb *fb,
- 	cairo_t *cr;
- 	int index;
- 	int ret;
-+	const float cc_color[4] = {colors[0].r, colors[0].g, colors[0].b, 1.0};
++		if (intel_buf_compressed(dst_buf))
++			has_compressed_buf = true;
++	}
  
- 	/* Use either compressed or Y-tiled to test. However, given the lack of
- 	 * available bandwidth, we use linear for the primary plane when
-@@ -246,10 +301,14 @@ static void generate_fb(data_t *data, struct igt_fb *fb,
- 	if (!(data->flags & TEST_BAD_PIXEL_FORMAT)) {
- 		int c = !!data->plane;
+-	bufs[0] = src_buf;
+-	bufs[1] = dst_buf;
++	if (!has_compressed_buf)
++		return;
  
--		cr = igt_get_cairo_ctx(data->drm_fd, fb);
--		igt_paint_color(cr, 0, 0, width, height,
--				colors[c].r, colors[c].g, colors[c].b);
--		igt_put_cairo_ctx(cr);
-+		if (is_ccs_cc_modifier(modifier)) {
-+			fast_clear_fb(data->drm_fd, fb, cc_color);
-+		} else {
-+			cr = igt_get_cairo_ctx(data->drm_fd, fb);
-+			igt_paint_color(cr, 0, 0, width, height,
-+					colors[c].r, colors[c].g, colors[c].b);
-+					igt_put_cairo_ctx(cr);
-+		}
- 	}
+ 	/*
+ 	 * Surface index in pgt table depend on its address so:
+@@ -541,17 +558,15 @@ gen12_aux_pgtable_init(struct aux_pgtable_info *info,
+ 	 * surfaces.
+ 	 */
  
- 	ret = drmIoctl(data->drm_fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f);
-@@ -261,7 +320,7 @@ static void generate_fb(data_t *data, struct igt_fb *fb,
- 		igt_assert_eq(ret, 0);
+-	intel_bb_add_intel_buf(ibb, src_buf, false);
+-	if (intel_buf_compressed(src_buf))
+-		intel_bb_object_set_flag(ibb, src_buf->handle, EXEC_OBJECT_PINNED);
+-
+-	intel_bb_add_intel_buf(ibb, dst_buf, true);
+-	if (intel_buf_compressed(dst_buf))
+-		intel_bb_object_set_flag(ibb, dst_buf->handle, EXEC_OBJECT_PINNED);
++	for (i = 0; i < buf_count; i++) {
++		intel_bb_add_intel_buf(ibb, bufs[i], write_buf[i]);
++		if (intel_buf_compressed(bufs[i]))
++			intel_bb_object_set_flag(ibb, bufs[i]->handle, EXEC_OBJECT_PINNED);
++	}
  
- 	if (check_ccs_planes)
--		check_all_ccs_planes(data->drm_fd, fb);
-+		check_all_ccs_planes(data->drm_fd, fb, cc_color);
- 
- 	fb->fb_id = f.fb_id;
- }
-@@ -349,6 +408,10 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
- 	if (data->flags & TEST_BAD_ROTATION_90)
- 		igt_plane_set_rotation(primary, IGT_ROTATION_90);
- 
-+	if (is_ccs_cc_modifier(data->ccs_modifier)
-+	   && data->format != DRM_FORMAT_XRGB8888)
-+		return false;
-+
- 	ret = igt_display_try_commit2(display, commit);
- 	if (data->flags & TEST_BAD_ROTATION_90) {
- 		igt_assert_eq(ret, -EINVAL);
+ 	reserved_buf_count = 0;
+ 	/* First reserve space for any bufs that are bound already. */
+-	for (i = 0; i < ARRAY_SIZE(bufs); i++) {
++	for (i = 0; i < buf_count; i++) {
+ 		igt_assert(bufs[i]->addr.offset != INTEL_BUF_INVALID_ADDRESS);
+ 		aux_pgtable_reserve_buf_slot(reserved_bufs,
+ 					     reserved_buf_count++,
 -- 
 2.25.1
 
