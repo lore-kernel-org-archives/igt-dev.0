@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D1A0B6E8BB
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Nov 2020 14:22:23 +0000 (UTC)
-Date: Fri, 20 Nov 2020 15:22:13 +0100
-From: Katarzyna Dec <katarzyna.dec@intel.com>
-Message-ID: <20201120142213.GE6508@kdec5-desk.ger.corp.intel.com>
-References: <20201119044800.12686-1-priyanka.dandamudi@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C1C96E8C2
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Nov 2020 14:29:53 +0000 (UTC)
+From: apoorva1.singh@intel.com
+Date: Fri, 20 Nov 2020 20:02:42 +0530
+Message-Id: <20201120143242.204009-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201119044800.12686-1-priyanka.dandamudi@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t,
- v2] tests/core_auth: Added test description for test case
+Subject: [igt-dev] [PATCH i-g-t,
+ v2] i915/gem_ctx_param: Add subtests description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,67 +19,179 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: priyanka.dandamudi@intel.com
-Cc: igt-dev@lists.freedesktop.org
+To: katarzyna.dec@intel.com, igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Nov 19, 2020 at 10:18:00AM +0530, priyanka.dandamudi@intel.com wrote:
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> 
-> Added test description to all the available subtests.
-> 
-> v2:Modified detailed test descriptions to brief one.
-> 
-> Cc: Katarzyna Dec <katarzyna.dec@intel.com>
-> Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> ---
->  tests/core_auth.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/core_auth.c b/tests/core_auth.c
-> index 9c240fdb..c9ad3fb9 100644
-> --- a/tests/core_auth.c
-> +++ b/tests/core_auth.c
-> @@ -195,6 +195,7 @@ igt_main
->  	int master;
->  
->  	/* root (which we run igt as) should always be authenticated */
-> +	igt_describe("Check drm client is always authenticated.");
->  	igt_subtest("getclient-simple") {
->  		int fd = drm_open_driver(DRIVER_ANY);
->  
-> @@ -203,6 +204,7 @@ igt_main
->  		close(fd);
->  	}
->  
-> +	igt_describe("Use 2 clients, check second is authenticated even when first dropped.");
->  	igt_subtest("getclient-master-drop") {
->  		int fd = drm_open_driver(DRIVER_ANY);
->  		int fd2 = drm_open_driver(DRIVER_ANY);
-> @@ -220,11 +222,13 @@ igt_main
->  	igt_subtest_group {
->  		igt_fixture
->  			master = drm_open_driver_master(DRIVER_ANY);
-> -
-> +	
-I am not sure about that new line ^ here.
-> +		igt_describe("Test magic numbers for master and slave.");
->  		igt_subtest("basic-auth")
->  			test_basic_auth(master);
->  
->  		/* this must be last, we adjust the rlimit */
-> +		igt_describe("Test authentication and magic numbers uniqness for rlimit slaves.");
->  		igt_subtest("many-magics")
->  			test_many_magics(master);
->  	}
-At the end - it looks ok.
-Reviewed-by: Katarzyna Dec <katarzyna.dec@intel.com>
+From: Apoorva Singh <apoorva1.singh@intel.com>
 
-Kasia :)
-> -- 
-> 2.28.0
-> 
+Add description for all subtests of this test
+
+v2: Modified few descriptions to be more specific
+
+Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+Cc: Dec, Katarzyna <katarzyna.dec@intel.com>
+---
+ tests/i915/gem_ctx_param.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/tests/i915/gem_ctx_param.c b/tests/i915/gem_ctx_param.c
+index 72dcb973..ab0e3007 100644
+--- a/tests/i915/gem_ctx_param.c
++++ b/tests/i915/gem_ctx_param.c
+@@ -265,23 +265,29 @@ igt_main
+ 			arg.param = I915_CONTEXT_PARAM_BANNABLE;
+ 	}
+ 
++	igt_describe("Basic test for context get/set param ioctls using valid context");
+ 	igt_subtest("basic") {
+ 		arg.ctx_id = ctx;
+ 		gem_context_get_param(fd, &arg);
+ 		gem_context_set_param(fd, &arg);
+ 	}
+ 
++	igt_describe("Basic test for context get/set param ioctls using default context");
+ 	igt_subtest("basic-default") {
+ 		arg.ctx_id = 0;
+ 		gem_context_get_param(fd, &arg);
+ 		gem_context_set_param(fd, &arg);
+ 	}
+ 
++	igt_describe("Verify that context get param ioctl using invalid context "
++	       "returns relevant error");
+ 	igt_subtest("invalid-ctx-get") {
+ 		arg.ctx_id = 2;
+ 		igt_assert_eq(__gem_context_get_param(fd, &arg), -ENOENT);
+ 	}
+ 
++	igt_describe("Verify that context set param ioctl using invalid context "
++	       "returns relevant error");
+ 	igt_subtest("invalid-ctx-set") {
+ 		arg.ctx_id = ctx;
+ 		gem_context_get_param(fd, &arg);
+@@ -289,6 +295,7 @@ igt_main
+ 		igt_assert_eq(__gem_context_set_param(fd, &arg), -ENOENT);
+ 	}
+ 
++	igt_describe("Verify that context get param ioctl returns valid size for valid context");
+ 	igt_subtest("invalid-size-get") {
+ 		arg.ctx_id = ctx;
+ 		arg.size = 8;
+@@ -296,6 +303,8 @@ igt_main
+ 		igt_assert(arg.size == 0);
+ 	}
+ 
++	igt_describe("Verify that context set param ioctl using invalid size "
++	       "returns relevant error");
+ 	igt_subtest("invalid-size-set") {
+ 		arg.ctx_id = ctx;
+ 		gem_context_get_param(fd, &arg);
+@@ -304,6 +313,7 @@ igt_main
+ 		arg.size = 0;
+ 	}
+ 
++	igt_describe("Verify that context set param ioctl returns relevant error in non root mode");
+ 	igt_subtest("non-root-set") {
+ 		igt_fork(child, 1) {
+ 			igt_drop_root();
+@@ -317,6 +327,7 @@ igt_main
+ 		igt_waitchildren();
+ 	}
+ 
++	igt_describe("Verify that context set param ioctl works fine in root mode");
+ 	igt_subtest("root-set") {
+ 		arg.ctx_id = ctx;
+ 		gem_context_get_param(fd, &arg);
+@@ -326,6 +337,8 @@ igt_main
+ 
+ 	arg.param = I915_CONTEXT_PARAM_NO_ZEROMAP;
+ 
++	igt_describe("Validates context set param ioctl in non root mode with param "
++	       "set to no zeromap");
+ 	igt_subtest("non-root-set-no-zeromap") {
+ 		igt_fork(child, 1) {
+ 			igt_drop_root();
+@@ -339,6 +352,7 @@ igt_main
+ 		igt_waitchildren();
+ 	}
+ 
++	igt_describe("Tests the context set param ioctl with no zeromap enabled in root mode");
+ 	igt_subtest("root-set-no-zeromap-enabled") {
+ 		arg.ctx_id = ctx;
+ 		gem_context_get_param(fd, &arg);
+@@ -346,6 +360,7 @@ igt_main
+ 		gem_context_set_param(fd, &arg);
+ 	}
+ 
++	igt_describe("Tests the context set param ioctl with no zeromap disabled in root mode");
+ 	igt_subtest("root-set-no-zeromap-disabled") {
+ 		arg.ctx_id = ctx;
+ 		gem_context_get_param(fd, &arg);
+@@ -353,11 +368,14 @@ igt_main
+ 		gem_context_set_param(fd, &arg);
+ 	}
+ 
++	igt_describe("Tests that multiple contexts can share the same VMA");
+ 	igt_subtest("vm")
+ 		test_vm(fd);
+ 
+ 	arg.param = I915_CONTEXT_PARAM_PRIORITY;
+ 
++	igt_describe("Verify that context set param ioctl returns relevant error if driver "
++	       "doesn't supports assigning custom priorities from userspace");
+ 	igt_subtest("set-priority-not-supported") {
+ 		igt_require(!gem_scheduler_has_ctx_priority(fd));
+ 
+@@ -367,11 +385,13 @@ igt_main
+ 		igt_assert_eq(__gem_context_set_param(fd, &arg), -ENODEV);
+ 	}
+ 
++	igt_describe("Test performed with context param set to priority");
+ 	igt_subtest_group {
+ 		igt_fixture {
+ 			igt_require(gem_scheduler_has_ctx_priority(fd));
+ 		}
+ 
++		igt_describe("Verify that priority is default for newly created context");
+ 		igt_subtest("get-priority-new-ctx") {
+ 			struct drm_i915_gem_context_param local_arg = arg;
+ 			uint32_t local_ctx = gem_context_create(fd);
+@@ -384,6 +404,8 @@ igt_main
+ 			gem_context_destroy(fd, local_ctx);
+ 		}
+ 
++		igt_describe("Verify that relevant error is returned on setting invalid ctx size "
++		       "with default priority");
+ 		igt_subtest("set-priority-invalid-size") {
+ 			struct drm_i915_gem_context_param local_arg = arg;
+ 			local_arg.ctx_id = ctx;
+@@ -393,6 +415,7 @@ igt_main
+ 			igt_assert_eq(__gem_context_set_param(fd, &local_arg), -EINVAL);
+ 		}
+ 
++		igt_describe("Change priority range to test value overflow");
+ 		igt_subtest("set-priority-range")
+ 			set_priority(fd);
+ 	}
+@@ -401,11 +424,15 @@ igt_main
+ 
+ 	arg.param = -1; /* Should be safely unused for a while */
+ 
++	igt_describe("Checks that fetching context parameters using an unused param value "
++	       "is erroneous");
+ 	igt_subtest("invalid-param-get") {
+ 		arg.ctx_id = ctx;
+ 		igt_assert_eq(__gem_context_get_param(fd, &arg), -EINVAL);
+ 	}
+ 
++	igt_describe("Checks that setting context parameters using an unused param value "
++	       "is erroneous");
+ 	igt_subtest("invalid-param-set") {
+ 		arg.ctx_id = ctx;
+ 		igt_assert_eq(__gem_context_set_param(fd, &arg), -EINVAL);
+-- 
+2.25.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
