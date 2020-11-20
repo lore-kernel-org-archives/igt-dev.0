@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B0CE6E8B0
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Nov 2020 12:01:12 +0000 (UTC)
-Date: Fri, 20 Nov 2020 13:01:07 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20201120120107.GA68077@zkempczy-mobl2>
-References: <20201119105032.43893-1-zbigniew.kempczynski@intel.com>
- <160578668114.18185.14742444569499339247@emeril.freedesktop.org>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0739D6E8B7
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Nov 2020 12:06:42 +0000 (UTC)
+References: <20201120113131.67971-1-zbigniew.kempczynski@intel.com>
+ <20201120113131.67971-23-zbigniew.kempczynski@intel.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Message-ID: <eedb9c5b-0bb2-9161-1ddd-9c65bf62b089@intel.com>
+Date: Fri, 20 Nov 2020 14:06:10 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <160578668114.18185.14742444569499339247@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2Cv6=2C1/3=5D__lib/igt=5Fdevice=5Fscan?=
- =?utf-8?q?=3A_Remember_vendor/device_for_pci_devices?=
+In-Reply-To: <20201120113131.67971-23-zbigniew.kempczynski@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t v10 22/31] tests/perf.c: Remove buffer
+ from batch
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,127 +19,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Nov 19, 2020 at 11:51:21AM +0000, Patchwork wrote:
->    Patch Details
-> 
->    Series:  series starting with [i-g-t,v6,1/3] lib/igt_device_scan: Remember 
->             vendor/device for pci devices                                     
->    URL:     https://patchwork.freedesktop.org/series/84060/                   
->    State:   failure                                                           
->    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5196/index.html    
-> 
->               CI Bug Log - changes from CI_DRM_9359 -> IGTPW_5196
-> 
-> Summary
-> 
->    FAILURE
-> 
->    Serious unknown changes coming with IGTPW_5196 absolutely need to be
->    verified manually.
-> 
->    If you think the reported changes have nothing to do with the changes
->    introduced in IGTPW_5196, please notify your bug team to allow them
->    to document this new failure mode, which will reduce false positives in
->    CI.
-> 
->    External URL:
->    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5196/index.html
-> 
-> Possible new issues
-> 
->    Here are the unknown changes that may have been introduced in IGTPW_5196:
-> 
->   IGT changes
-> 
->     Possible regressions
-> 
->      * igt@gem_exec_parallel@engines@contexts:
->           * fi-icl-y: PASS -> FAIL
-
-Changes are not related to fail above.
-
---
-Zbigniew
-
-> 
-> Known issues
-> 
->    Here are the changes found in IGTPW_5196 that come from known issues:
-> 
->   IGT changes
-> 
->     Issues hit
-> 
->      * igt@core_hotunplug@unbind-rebind:
-> 
->           * fi-icl-u2: PASS -> DMESG-WARN (i915#1982)
->      * igt@gem_exec_parallel@engines@fds:
-> 
->           * fi-icl-y: PASS -> INCOMPLETE (i915#2295 / i915#2398)
->      * igt@gem_linear_blits@basic:
-> 
->           * fi-tgl-y: PASS -> DMESG-WARN (i915#402) +1 similar issue
->      * igt@i915_pm_rpm@basic-pci-d3-state:
-> 
->           * fi-byt-j1900: PASS -> DMESG-WARN (i915#1982)
->      * igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:
-> 
->           * fi-tgl-y: PASS -> DMESG-WARN (i915#1982) +1 similar issue
-> 
->     Possible fixes
-> 
->      * igt@core_hotunplug@unbind-rebind:
-> 
->           * fi-skl-lmem: DMESG-WARN (i915#2605) -> PASS
-> 
->           * fi-tgl-u2: DMESG-WARN (i915#1982) -> PASS
-> 
->      * igt@gem_sync@basic-each:
-> 
->           * fi-tgl-y: DMESG-WARN (i915#402) -> PASS +2 similar issues
->      * igt@i915_selftest@live@gt_pm:
-> 
->           * {fi-kbl-7560u}: DMESG-FAIL (i915#2524) -> PASS
->      * igt@kms_busy@basic@flip:
-> 
->           * fi-kbl-soraka: DMESG-WARN (i915#1982) -> PASS
->      * igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:
-> 
->           * fi-icl-u2: DMESG-WARN (i915#1982) -> PASS
-> 
->     Warnings
-> 
->      * igt@i915_pm_rpm@module-reload:
->           * fi-tgl-y: DMESG-WARN (i915#2411) -> DMESG-WARN (i915#1982 /
->             i915#2411) +1 similar issue
-> 
->    {name}: This element is suppressed. This means it is ignored when
->    computing
->    the status of the difference (SUCCESS, WARNING, or FAILURE).
-> 
-> Participating hosts (40 -> 35)
-> 
->    Missing (5): fi-ilk-m540 fi-tgl-dsi fi-hsw-4200u fi-bsw-cyan fi-bdw-samus
-> 
-> Build changes
-> 
->      * CI: CI-20190529 -> None
->      * IGT: IGT_5858 -> IGTPW_5196
-> 
->    CI-20190529: 20190529
->    CI_DRM_9359: 5529f30897761dc08c5cfcefc6d1659f9250d622 @
->    git://anongit.freedesktop.org/gfx-ci/linux
->    IGTPW_5196: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5196/index.html
->    IGT_5858: 300ee395f5c0ed53ab0757d9c5b311f9c1f641c8 @
->    git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gMjAvMTEvMjAyMCAxMzozMSwgWmJpZ25pZXcgS2VtcGN6ecWEc2tpIHdyb3RlOgo+IEN1cnJl
+bnRseSB3ZSBuZWVkIHRvIGVuc3VyZSBpbnRlbF9idWYgaXMgYSBwYXJ0IG9mIHNpbmdsZSBpYmIg
+ZHVlCj4gdG8gZmFjdCBpdCBpcyBhY3F1aXJpbmcgYWRkcmVzcyBmcm9tIGFsbG9jYXRvciBzbyB3
+ZSBjYW5ub3Qga2VlcAo+IGl0IGluIHR3byBzZXBhcmF0ZSBpYmJzICh0aGVvcmV0aWNhbGx5IGl0
+IGlzIHBvc3NpYmxlIHdoZW4gZGlmZmVyZW50Cj4gaWJicyB3b3VsZCBiZSBpbiBzYW1lIGNvbnRl
+eHQgYnV0IGl0IGlzIG5vdCBjdXJyZW50bHkgaW1wbGVtZW50ZWQpLgo+Cj4gU2lnbmVkLW9mZi1i
+eTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+
+Cj4gQ2M6IERvbWluaWsgR3J6ZWdvcnplayA8ZG9taW5pay5ncnplZ29yemVrQGludGVsLmNvbT4K
+PiBDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+CgoKSSBkaWQgUmIg
+dGhhdCBjb21taXQgaW4gY2FzZSB5b3UgbWlzc2VkIGl0IDspCgoKLUxpb25lbAoKCj4gLS0tCj4g
+ICB0ZXN0cy9pOTE1L3BlcmYuYyB8IDkgKysrKysrKysrCj4gICAxIGZpbGUgY2hhbmdlZCwgOSBp
+bnNlcnRpb25zKCspCj4KPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9wZXJmLmMgYi90ZXN0cy9p
+OTE1L3BlcmYuYwo+IGluZGV4IGNhZWFiZDYyLi4xMDYxYTUwZiAxMDA2NDQKPiAtLS0gYS90ZXN0
+cy9pOTE1L3BlcmYuYwo+ICsrKyBiL3Rlc3RzL2k5MTUvcGVyZi5jCj4gQEAgLTM0MzAsNiArMzQz
+MCw5IEBAIGdlbjhfdGVzdF9zaW5nbGVfY3R4X3JlbmRlcl90YXJnZXRfd3JpdGVzX2FfY291bnRl
+cih2b2lkKQo+ICAgCQkJLyogQW5vdGhlciByZWR1bmRhbnQgZmx1c2ggdG8gY2xhcmlmeSBiYXRj
+aCBibyBpcyBmcmVlIHRvIHJldXNlICovCj4gICAJCQlpbnRlbF9iYl9mbHVzaF9yZW5kZXIoaWJi
+MCk7Cj4gICAKPiArCQkJLyogUmVtb3ZlIGludGVsX2J1ZiBmcm9tIGliYjAgYWRkZWQgaW1wbGlj
+aXRseSBpbiByZW5kZXJjb3B5ICovCj4gKwkJCWludGVsX2JiX3JlbW92ZV9pbnRlbF9idWYoaWJi
+MCwgZHN0X2J1Zik7Cj4gKwo+ICAgCQkJLyogc3VibWl0IHR3byBjb3BpZXMgb24gdGhlIG90aGVy
+IGNvbnRleHQgdG8gYXZvaWQgYSBmYWxzZQo+ICAgCQkJICogcG9zaXRpdmUgaW4gY2FzZSB0aGUg
+ZHJpdmVyIHNvbWVob3cgZW5kZWQgdXAgZmlsdGVyaW5nIGZvcgo+ICAgCQkJICogY29udGV4dDEK
+PiBAQCAtMzgyMyw2ICszODI2LDkgQEAgc3RhdGljIHZvaWQgZ2VuMTJfc2luZ2xlX2N0eF9oZWxw
+ZXIodm9pZCkKPiAgIAkJCQkgICAgIEJPX1JFUE9SVF9JRDApOwo+ICAgCWludGVsX2JiX2ZsdXNo
+X3JlbmRlcihpYmIwKTsKPiAgIAo+ICsJLyogUmVtb3ZlIGludGVsX2J1ZiBmcm9tIGliYjAgYWRk
+ZWQgaW1wbGljaXRseSBpbiByZW5kZXJjb3B5ICovCj4gKwlpbnRlbF9iYl9yZW1vdmVfaW50ZWxf
+YnVmKGliYjAsIGRzdF9idWYpOwo+ICsKPiAgIAkvKiBUaGlzIGlzIHRoZSB3b3JrL2NvbnRleHQg
+dGhhdCBpcyBtZWFzdXJlZCBmb3IgY291bnRlciBpbmNyZW1lbnRzICovCj4gICAJcmVuZGVyX2Nv
+cHkoaWJiMCwKPiAgIAkJICAgICZzcmNbMF0sIDAsIDAsIHdpZHRoLCBoZWlnaHQsCj4gQEAgLTM4
+NjksNiArMzg3NSw5IEBAIHN0YXRpYyB2b2lkIGdlbjEyX3NpbmdsZV9jdHhfaGVscGVyKHZvaWQp
+Cj4gICAJCQkJICAgICBCT19SRVBPUlRfSUQzKTsKPiAgIAlpbnRlbF9iYl9mbHVzaF9yZW5kZXIo
+aWJiMSk7Cj4gICAKPiArCS8qIFJlbW92ZSBpbnRlbF9idWYgZnJvbSBpYmIxIGFkZGVkIGltcGxp
+Y2l0bHkgaW4gcmVuZGVyY29weSAqLwo+ICsJaW50ZWxfYmJfcmVtb3ZlX2ludGVsX2J1ZihpYmIx
+LCBkc3RfYnVmKTsKPiArCj4gICAJLyogU3VibWl0IGFuIG1pLXJwYyB0byBjb250ZXh0MCBhZnRl
+ciBhbGwgbWVhc3VyYWJsZSB3b3JrICovCj4gICAjZGVmaW5lIEJPX1RJTUVTVEFNUF9PRkZTRVQx
+IDEwMzIKPiAgICNkZWZpbmUgQk9fUkVQT1JUX09GRlNFVDEgMjU2CgoKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0
+LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
