@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Sat, 21 Nov 2020 14:46:06 -0000
-Message-ID: <160596996657.8553.4279013593003362628@emeril.freedesktop.org>
-References: <20201121143233.3511576-1-chris@chris-wilson.co.uk>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C8BF08984C
+ for <igt-dev@lists.freedesktop.org>; Sat, 21 Nov 2020 14:50:40 +0000 (UTC)
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Sat, 21 Nov 2020 14:50:32 +0000
+Message-Id: <20201121145032.3568328-1-chris@chris-wilson.co.uk>
 In-Reply-To: <20201121143233.3511576-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBsaWI6?=
- =?utf-8?q?_Assert_potential_malloc_failures_in_intel=5Fbatchbuffer?=
+References: <20201121143233.3511576-1-chris@chris-wilson.co.uk>
+MIME-Version: 1.0
+Subject: [igt-dev] [PATCH i-g-t] lib: Assert potential malloc failures in
+ intel_batchbuffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,69 +17,103 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogbGliOiBBc3NlcnQgcG90ZW50aWFsIG1hbGxv
-YyBmYWlsdXJlcyBpbiBpbnRlbF9iYXRjaGJ1ZmZlcgpVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3Jr
-LmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvODQxNDYvClN0YXRlIDogZmFpbHVyZQoKPT0gU3VtbWFy
-eSA9PQoKSUdUIHBhdGNoc2V0IGJ1aWxkIGZhaWxlZCBvbiBsYXRlc3Qgc3VjY2Vzc2Z1bCBidWls
-ZAo3NmI3ZDFlY2Y2YTNjMGE1YTUzODE0NmJiMDU1ZDBlYjVmZTIzMmQwIGk5MTUvZ2VtX3NldF90
-aWxpbmdfdnNfYmx0OiBVbmRvIGFjY2lkZW50YWwgY29udGV4dCBpbnNlcnRpb24KCm5pbmphOiBF
-bnRlcmluZyBkaXJlY3RvcnkgYGJ1aWxkJwpbMS80MjJdIEdlbmVyYXRpbmcgdmVyc2lvbi5oIHdp
-dGggYSBjdXN0b20gY29tbWFuZC4KWzIvNDE4XSBDb21waWxpbmcgQyBvYmplY3QgJ2xpYi9saWJA
-QGlndC1pbnRlbF9iYXRjaGJ1ZmZlcl9jQHN0YS9pbnRlbF9iYXRjaGJ1ZmZlci5jLm8nLgpGQUlM
-RUQ6IGxpYi9saWJAQGlndC1pbnRlbF9iYXRjaGJ1ZmZlcl9jQHN0YS9pbnRlbF9iYXRjaGJ1ZmZl
-ci5jLm8gCmNjYWNoZSBjYyAtSWxpYi9saWJAQGlndC1pbnRlbF9iYXRjaGJ1ZmZlcl9jQHN0YSAt
-SWxpYiAtSS4uL2xpYiAtSS4uL2luY2x1ZGUvZHJtLXVhcGkgLUkuLi9saWIvc3R1YnMvc3lzY2Fs
-bHMgLUkuIC1JLi4vIC1JL3Vzci9pbmNsdWRlL2NhaXJvIC1JL3Vzci9pbmNsdWRlL2dsaWItMi4w
-IC1JL3Vzci9saWIveDg2XzY0LWxpbnV4LWdudS9nbGliLTIuMC9pbmNsdWRlIC1JL3Vzci9pbmNs
-dWRlL3BpeG1hbi0xIC1JL3Vzci9pbmNsdWRlL2xpYnBuZzE2IC1JL3Vzci9pbmNsdWRlL2ZyZWV0
-eXBlMiAtSS91c3IvaW5jbHVkZS9saWJwbmcxMiAtSS91c3IvaW5jbHVkZS9saWJkcm0gLUkvdXNy
-L2luY2x1ZGUveDg2XzY0LWxpbnV4LWdudSAtSS91c3IvaW5jbHVkZS9hbHNhIC1JL3Vzci9pbmNs
-dWRlIC1JL2hvbWUvY2lkcm0va2VybmVsX2hlYWRlcnMvaW5jbHVkZSAtZmRpYWdub3N0aWNzLWNv
-bG9yPWFsd2F5cyAtcGlwZSAtRF9GSUxFX09GRlNFVF9CSVRTPTY0IC1XYWxsIC1XaW52YWxpZC1w
-Y2ggLVdleHRyYSAtc3RkPWdudTExIC1PMiAtZyAtRF9HTlVfU09VUkNFIC1pbmNsdWRlIGNvbmZp
-Zy5oIC1EX0ZPUlRJRllfU09VUkNFPTIgLVdiYWQtZnVuY3Rpb24tY2FzdCAtV2RlY2xhcmF0aW9u
-LWFmdGVyLXN0YXRlbWVudCAtV2Zvcm1hdD0yIC1XaW1wbGljaXQtZmFsbHRocm91Z2g9MCAtV2xv
-Z2ljYWwtb3AgLVdtaXNzaW5nLWRlY2xhcmF0aW9ucyAtV21pc3NpbmctZm9ybWF0LWF0dHJpYnV0
-ZSAtV21pc3Npbmctbm9yZXR1cm4gLVdtaXNzaW5nLXByb3RvdHlwZXMgLVduZXN0ZWQtZXh0ZXJu
-cyAtV29sZC1zdHlsZS1kZWZpbml0aW9uIC1XcG9pbnRlci1hcml0aCAtV3JlZHVuZGFudC1kZWNs
-cyAtV3NoYWRvdyAtV3N0cmljdC1wcm90b3R5cGVzIC1XdW5pbml0aWFsaXplZCAtV3VudXNlZCAt
-V25vLWNsb2JiZXJlZCAtV25vLW1heWJlLXVuaW5pdGlhbGl6ZWQgLVduby1taXNzaW5nLWZpZWxk
-LWluaXRpYWxpemVycyAtV25vLXBvaW50ZXItYXJpdGggLVduby1zaWduLWNvbXBhcmUgLVduby10
-eXBlLWxpbWl0cyAtV25vLXVudXNlZC1wYXJhbWV0ZXIgLVduby11bnVzZWQtcmVzdWx0IC1XZXJy
-b3I9YWRkcmVzcyAtV2Vycm9yPWFycmF5LWJvdW5kcyAtV2Vycm9yPWltcGxpY2l0IC1XZXJyb3I9
-aW5pdC1zZWxmIC1XZXJyb3I9aW50LXRvLXBvaW50ZXItY2FzdCAtV2Vycm9yPW1haW4gLVdlcnJv
-cj1taXNzaW5nLWJyYWNlcyAtV2Vycm9yPW5vbm51bGwgLVdlcnJvcj1wb2ludGVyLXRvLWludC1j
-YXN0IC1XZXJyb3I9cmV0dXJuLXR5cGUgLVdlcnJvcj1zZXF1ZW5jZS1wb2ludCAtV2Vycm9yPXRy
-aWdyYXBocyAtV2Vycm9yPXdyaXRlLXN0cmluZ3MgLWZuby1idWlsdGluLW1hbGxvYyAtZm5vLWJ1
-aWx0aW4tY2FsbG9jIC1mY29tbW9uIC1mUElDIC1wdGhyZWFkICctRElHVF9EQVRBRElSPSIvb3B0
-L2lndC9zaGFyZS9pZ3QtZ3B1LXRvb2xzIicgJy1ESUdUX1NSQ0RJUj0iL2hvbWUvY2lkcm0vaWd0
-LWdwdS10b29scy90ZXN0cyInICctRElHVF9MT0dfRE9NQUlOPSJpbnRlbF9iYXRjaGJ1ZmZlciIn
-ICAtTUQgLU1RICdsaWIvbGliQEBpZ3QtaW50ZWxfYmF0Y2hidWZmZXJfY0BzdGEvaW50ZWxfYmF0
-Y2hidWZmZXIuYy5vJyAtTUYgJ2xpYi9saWJAQGlndC1pbnRlbF9iYXRjaGJ1ZmZlcl9jQHN0YS9p
-bnRlbF9iYXRjaGJ1ZmZlci5jLm8uZCcgLW8gJ2xpYi9saWJAQGlndC1pbnRlbF9iYXRjaGJ1ZmZl
-cl9jQHN0YS9pbnRlbF9iYXRjaGJ1ZmZlci5jLm8nIC1jIC4uL2xpYi9pbnRlbF9iYXRjaGJ1ZmZl
-ci5jCkluIGZpbGUgaW5jbHVkZWQgZnJvbSAuLi9saWIvZHJtdGVzdC5oOjM5LAogICAgICAgICAg
-ICAgICAgIGZyb20gLi4vbGliL2ludGVsX2JhdGNoYnVmZmVyLmM6Mzc6Ci4uL2xpYi9pbnRlbF9i
-YXRjaGJ1ZmZlci5jOiBJbiBmdW5jdGlvbiDigJhfX2FkZF90b19jYWNoZeKAmToKLi4vbGliL2lu
-dGVsX2JhdGNoYnVmZmVyLmM6MTU5NDoxMzogZXJyb3I6IOKAmG9iauKAmSB1bmRlY2xhcmVkIChm
-aXJzdCB1c2UgaW4gdGhpcyBmdW5jdGlvbikKICBpZ3RfYXNzZXJ0KG9iaik7CiAgICAgICAgICAg
-ICBefn4KLi4vbGliL2lndF9jb3JlLmg6NjU2OjEzOiBub3RlOiBpbiBkZWZpbml0aW9uIG9mIG1h
-Y3JvIOKAmGlndF9hc3NlcnTigJkKICBkbyB7IGlmICghKGV4cHIpKSBcCiAgICAgICAgICAgICBe
-fn5+Ci4uL2xpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jOjE1OTQ6MTM6IG5vdGU6IGVhY2ggdW5kZWNs
-YXJlZCBpZGVudGlmaWVyIGlzIHJlcG9ydGVkIG9ubHkgb25jZSBmb3IgZWFjaCBmdW5jdGlvbiBp
-dCBhcHBlYXJzIGluCiAgaWd0X2Fzc2VydChvYmopOwogICAgICAgICAgICAgXn5+Ci4uL2xpYi9p
-Z3RfY29yZS5oOjY1NjoxMzogbm90ZTogaW4gZGVmaW5pdGlvbiBvZiBtYWNybyDigJhpZ3RfYXNz
-ZXJ04oCZCiAgZG8geyBpZiAoIShleHByKSkgXAogICAgICAgICAgICAgXn5+fgpuaW5qYTogYnVp
-bGQgc3RvcHBlZDogc3ViY29tbWFuZCBmYWlsZWQuCgoKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0
-cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9pZ3QtZGV2Cg==
+Hunting:
+
+	Received signal SIGSEGV.
+	Stack trace:
+	 #0 [fatal_sig_handler+0xd6]
+	 #1 [killpg+0x40]
+	 #2 [intel_bb_add_object+0x105]
+	 #3 [__real_main666+0xe83]
+	 #4 [main+0x27]
+	 #5 [__libc_start_main+0xe7]
+	 #6 [_start+0x2a]
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ lib/intel_batchbuffer.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
+
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index 8dd8a5027..48cca852f 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -1190,19 +1190,18 @@ static bool intel_bb_debug_tree = false;
+  */
+ static void __reallocate_objects(struct intel_bb *ibb)
+ {
+-	uint32_t num;
++	const uint32_t inc = 4096 / sizeof(*ibb->objects);
+ 
+ 	if (ibb->num_objects == ibb->allocated_objects) {
+-		num = 4096 / sizeof(*ibb->objects);
+ 		ibb->objects = realloc(ibb->objects,
+ 				       sizeof(*ibb->objects) *
+-				       (num + ibb->allocated_objects));
++				       (inc + ibb->allocated_objects));
+ 
+ 		igt_assert(ibb->objects);
+-		ibb->allocated_objects += num;
++		ibb->allocated_objects += inc;
+ 
+ 		memset(&ibb->objects[ibb->num_objects],	0,
+-		       num * sizeof(*ibb->objects));
++		       inc * sizeof(*ibb->objects));
+ 	}
+ }
+ 
+@@ -1592,6 +1591,8 @@ __add_to_cache(struct intel_bb *ibb, uint32_t handle)
+ 	struct drm_i915_gem_exec_object2 **found, *object;
+ 
+ 	object = malloc(sizeof(*object));
++	igt_assert(object);
++
+ 	object->handle = handle;
+ 	found = tsearch((void *) object, &ibb->root, __compare_objects);
+ 
+@@ -1615,16 +1616,18 @@ static int __compare_handles(const void *p1, const void *p2)
+ static void __add_to_objects(struct intel_bb *ibb,
+ 			     struct drm_i915_gem_exec_object2 *object)
+ {
+-	uint32_t i, **found, *handle;
++	uint32_t **found, *handle;
+ 
+ 	handle = malloc(sizeof(*handle));
++	igt_assert(handle);
++
+ 	*handle = object->handle;
+ 	found = tsearch((void *) handle, &ibb->current, __compare_handles);
+ 
+ 	if (*found == handle) {
+ 		__reallocate_objects(ibb);
+-		i = ibb->num_objects++;
+-		ibb->objects[i] = object;
++		igt_assert(ibb->num_objects < ibb->allocated_objects);
++		ibb->objects[ibb->num_objects++] = object;
+ 	} else {
+ 		free(handle);
+ 	}
+@@ -2118,7 +2121,7 @@ static int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
+ 
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	objects = create_objects_array(ibb);
+-	execbuf.buffers_ptr = (uintptr_t) objects;
++	execbuf.buffers_ptr = to_user_pointer(objects);
+ 	execbuf.buffer_count = ibb->num_objects;
+ 	execbuf.batch_len = end_offset;
+ 	execbuf.rsvd1 = ibb->ctx;
+-- 
+2.29.2
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
