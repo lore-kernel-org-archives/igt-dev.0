@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 711396E037
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2020 14:20:57 +0000 (UTC)
-From: Mika Kahola <mika.kahola@intel.com>
-Date: Mon, 23 Nov 2020 16:20:35 +0200
-Message-Id: <20201123142035.1426734-1-mika.kahola@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C3986E029
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2020 15:03:03 +0000 (UTC)
+From: Anand Moon <anandx.ram.moon@intel.com>
+Date: Mon, 23 Nov 2020 20:33:12 +0530
+Message-Id: <20201123150312.55544-1-anandx.ram.moon@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib/rendercopy_gen9: Ensure to cover all
- destination area
+Subject: [igt-dev] [i g t] tests/kms_setmode: basic Fix the testcase failure
+ on 4K monitors
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,33 +19,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-To ensure to cover all destination area during fast clear,
-we need to round up the destination coordinates at the lower
-right corner.
+From: Chris Wilson <chris@chris-wilson.co.uk>
 
-Signed-off-by: Mika Kahola <mika.kahola@intel.com>
+On 4k monitors kms_setmode basic test case would like to fail with below
+assertion, by checking the expected frame time should be less than max
+scanline interval, we improve the test case so that 90% of frame times
+fall within the one scanline on each side of expected mean.
+
+CRTC[98] [Pipe A] Mode: 3840x2160@60Hz Connectors: DP-2[330] Expected frametime: 16668us; measured 16672.3us +- 1.805us accuracy 0.00% [0.07 scanlines]
+(kms_setmode:14315) CRITICAL: Test assertion failure function check_timings, file ../tests/kms_setmode.c:544:
+(kms_setmode:14315) CRITICAL: Failed assertion: fabs(mean - expected) < 1.718 * stddev
+(kms_setmode:14315) CRITICAL: vblank interval differs from modeline! expected 16667.6us, measured 16672us +- 1.805us, difference 4.7us (2.6 sigma) Stack trace:
+  #0 ../lib/igt_core.c:1734 __igt_fail_assert()
+  #1 ../tests/kms_setmode.c:544 test_one_combination()
+  #2 ../tests/kms_setmode.c:834 __real_main883()
+  #3 ../tests/kms_setmode.c:883 main()
+  #4 ../csu/libc-start.c:342 __libc_start_main()
+  #5 [_start+0x2e]
+Subtest basic failed.
+**** DEBUG ****
+
+Cc: Dorota Czaplejewicz <dorota.czaplejewicz@collabora.co.uk>
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Signed-off-by: Anand Moon <anandx.ram.moon@intel.com>
 ---
- lib/rendercopy_gen9.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-index dd8c8c7c..eecf73d3 100644
---- a/lib/rendercopy_gen9.c
-+++ b/lib/rendercopy_gen9.c
-@@ -293,7 +293,7 @@ gen7_fill_vertex_buffer_data(struct intel_bb *ibb,
- 		emit_vertex_normalized(ibb, src_x, intel_buf_width(src));
- 		emit_vertex_normalized(ibb, src_y, intel_buf_height(src));
- 	} else {
--		emit_vertex_2s(ibb, (dst_x + width)/64, DIV_ROUND_UP(dst_y + height, 16));
-+		emit_vertex_2s(ibb, DIV_ROUND_UP(dst_x + width, 64), DIV_ROUND_UP(dst_y + height, 16));
+And all the testcase regarding kms_setmode seems to passing on
+5.8.x and 5.10-0-rcx kernel with following mode
+
+Mode: 1920x1080 at 60Hz Connectors: HDMI-A-2
+Mode: 1920x1080 at 60Hz Connectors: DP-1
+Mode: 1920x1080 at 60Hz Connectors: DP-2
+Mode: 2560x1440 at 60Hz Connectors: eDP-1
+Mode: 3840x2160 at 60Hz Connectors: DP-2
+---
+ tests/kms_setmode.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+index a01010a1..d55326f2 100644
+--- a/tests/kms_setmode.c
++++ b/tests/kms_setmode.c
+@@ -525,10 +525,13 @@ static void check_timings(int crtc_idx, const drmModeModeInfo *kmode)
+ 	 * See:
+ 	 * https://en.wikipedia.org/wiki/Standard_deviation#Rules_for_normally_distributed_data
+ 	 */
+-	igt_assert_f(fabs(mean - expected) < 1.718 * stddev,
+-		     "vblank interval differs from modeline! expected %.1fus, measured %1.fus +- %.3fus, difference %.1fus (%.1f sigma)\n",
+-		     expected, mean, stddev,
+-		     fabs(mean - expected), fabs(mean - expected) / stddev);
++	igt_assert_f(fabs(mean - expected) < max(line_time(kmode), 1.718 * stddev),
++			"vblank interval differs from modeline! expected %.1fus, measured"
++			" %1.fus +- %.3fus, difference %.1fus (%.1f sigma, %.1f scanlines)\n",
++			expected, mean, stddev,
++			fabs(mean - expected),
++			fabs(mean - expected) / stddev,
++			fabs(mean - expected) / line_time(kmode));
+ }
  
- 		emit_vertex_normalized(ibb, 0, 0);
- 		emit_vertex_normalized(ibb, 0, 0);
+ static void test_crtc_config(const struct test_config *tconf,
 -- 
-2.25.1
+2.29.2
 
 _______________________________________________
 igt-dev mailing list
