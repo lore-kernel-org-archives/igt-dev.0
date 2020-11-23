@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 72FCF89F41
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2020 13:18:58 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C8EBF892B2
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2020 13:19:26 +0000 (UTC)
+Date: Mon, 23 Nov 2020 14:19:20 +0100
+From: Katarzyna Dec <katarzyna.dec@intel.com>
+Message-ID: <20201123131920.GJ6508@kdec5-desk.ger.corp.intel.com>
+References: <20200904114324.1604117-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20201120105217.5058-7-tzimmermann@suse.de>
-References: <20201120105217.5058-1-tzimmermann@suse.de>
- <20201120105217.5058-7-tzimmermann@suse.de>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon, 23 Nov 2020 13:18:44 +0000
-Message-ID: <160613752483.21426.10039134175512906849@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH v6 6/8] tests/fbdev: Add tests for unaligned
- writes on framebuffer memory
+Content-Disposition: inline
+In-Reply-To: <20200904114324.1604117-1-apoorva1.singh@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_mmap: Added test description
+ for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,75 +22,120 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Thomas Zimmermann <tzimmermann@suse.de>, daniel.vetter@ffwll.ch, petri.latvala@intel.com
-Cc: igt-dev@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>
+To: apoorva1.singh@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Thomas Zimmermann (2020-11-20 10:52:15)
-> The tests for unaligned writes start and stop writing within pages.
+On Fri, Sep 04, 2020 at 05:13:24PM +0530, apoorva1.singh@intel.com wrote:
+> From: Apoorva Singh <apoorva1.singh@intel.com>
 > 
-> v6:
->         * remove test from fast-feedback.testlist
-> v4:
->         * replace igt_require() by igt_assert() in "unaligned-write" (Petri)
->         * clarify error message about framebuffer size (Petri)
->         * add unaligned-write test to CI
-> v3:
->         * put igt_describe() before igt_subtest() (Petri)
+> Added test description to all the available subtests.
 > 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+> Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+> Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > ---
->  tests/fbdev.c | 29 +++++++++++++++++++++++++++++
->  1 file changed, 29 insertions(+)
+>  tests/i915/gem_mmap.c | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
 > 
-> diff --git a/tests/fbdev.c b/tests/fbdev.c
-> index 23ff146c..c4cb357f 100644
-> --- a/tests/fbdev.c
-> +++ b/tests/fbdev.c
-> @@ -155,6 +155,35 @@ static void framebuffer_tests(int fd)
->                 igt_assert_f(!cmp, "write buffer differs from mapped framebuffer for 0\n");
->         }
+> diff --git a/tests/i915/gem_mmap.c b/tests/i915/gem_mmap.c
+> index f8cf052e..4ad62ad9 100644
+> --- a/tests/i915/gem_mmap.c
+> +++ b/tests/i915/gem_mmap.c
+> @@ -37,6 +37,8 @@
+>  #include <sys/ioctl.h>
+>  #include "drm.h"
 >  
-> +       igt_describe("Check write operations on unaligned locations in framebuffer memory");
-> +       igt_subtest("unaligned-write") {
-> +               off_t off;
-> +               size_t len;
-> +               ssize_t ret;
-> +               const unsigned char *pos;
+> +IGT_TEST_DESCRIPTION("Basic MMAP IOCTL tests for memory regions\n");
 > +
-> +               off = pagesize + (pagesize >> 2); // 1.25 * pagesize
-> +               len = (pagesize << 2) + (pagesize >> 1); // 4.5 * pagesize
-> +               igt_require_f((off + len) < fix_info.smem_len, "framebuffer too small to test\n");
+>  #define OBJECT_SIZE 16384
+>  #define PAGE_SIZE 4096
+>  int fd;
+> @@ -155,6 +157,7 @@ igt_main
+>  	igt_fixture
+>  		fd = drm_open_driver(DRIVER_INTEL);
+>  
+> +	igt_describe("Verify mapping to invalid gem objects won't be created");
+>  	igt_subtest("bad-object") {
+>  		uint32_t real_handle = gem_create(fd, 4096);
+>  		uint32_t handles[20];
+> @@ -179,6 +182,7 @@ igt_main
+>  		gem_close(fd, real_handle);
+>  	}
+>  
+> +	igt_describe("Verify mapping to gem object with invalid offset won't be created");
+>  	igt_subtest("bad-offset") {
+>  		struct bad_offset {
+>  			uint64_t size;
+> @@ -206,6 +210,7 @@ igt_main
+>  		}
+>  	}
+>  
+> +	igt_describe("Verify mapping to gem object with invalid size won't be created");
+>  	igt_subtest("bad-size") {
+>  		uint64_t bad_size[] = {
+>  			0,
+> @@ -229,6 +234,8 @@ igt_main
+>  		}
+>  	}
+>  
+> +	igt_describe("Test basics of newly mapped gem object like default content, write and read "
+> +	       "coherency, mapping existence after gem_close and unmapping");
+>  	igt_subtest("basic") {
+>  		struct drm_i915_gem_mmap arg = {
+>  			.handle = gem_create(fd, OBJECT_SIZE),
+> @@ -256,6 +263,7 @@ igt_main
+>  		munmap(addr, OBJECT_SIZE);
+>  	}
+>  
+> +	igt_describe("Verify mapping to gem object is successful using IGT library function");
+these are all IGT functions :)
+igt_describe("Map small object though direct CPU access, bypassing GPU.");
+>  	igt_subtest("short-mmap") {
+>  		uint32_t handle = gem_create(fd, OBJECT_SIZE);
+>  
+> @@ -268,15 +276,27 @@ igt_main
+>  		gem_close(fd, handle);
+>  	}
+>  
+> +	igt_describe("Verify initial page faulting completes within a specified time");
+igt_describe("Verify that GTT faults are asynchronous to GPU rendering, page
+faults completes within specific time.");
+>  	igt_subtest("pf-nonblock")
+>  		test_pf_nonblock(fd);
+>  
+> +	igt_describe("Test the write read coherency and simultaneous access of different pages "
+> +	       "in a newly mapped basic small buffer object");
+I would change second part of sentence to:
+" small bo");
+
+Similar change I suggest to make with others. General descriptions look good.
+Kasia
+>  	igt_subtest("basic-small-bo")
+>  		test_huge_bo(-1);
 > +
-> +               /* read at unaligned location and compare */
-> +               memset(map, 0xff, fix_info.smem_len);
-> +               memset(buf, 0, fix_info.smem_len);
-> +               memset(&buf[off], 0x55, len);
-> +               ret = pwrite(fd, &buf[off], len, off);
-> +               igt_assert_f(ret == (ssize_t)len, "pwrite failed, ret=%zd\n", ret);
-> +               pos = memchr(map, 0x55, fix_info.smem_len);
-> +               igt_assert_f(pos, "0x55 not found within framebuffer\n");
-> +               igt_assert_f(pos == &map[off], "0x55 found at pos %zu, expected %lld\n",
-> +                            pos - map, (long long)off);
-> +               pos = memchr(&map[off], 0xff, fix_info.smem_len - off);
-> +               igt_assert_f(pos, "0xff not found within framebuffer\n");
-> +               igt_assert_f(pos == &map[off + len], "0xff found at pos %zu, expected %lld\n",
-> +                            pos - map, (long long)(off + len));
-
-> +               pos = memchr(&map[off + len], 0x55, fix_info.smem_len - off + len);
-
-Spotted this typo in the unaligned read/write, should be
-	smem_len - (off + len)
-
-Applied some minor whitespace changes, the goal is to follow the kernel
-coding style (so that we don't have to keep on switching styles :), and
-that also allows us to use the same gcc-isms as we expect to find in the
-kernel.
-
-Series is
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
-and pushed.
--Chris
+> +	igt_describe("Test the write read coherency and simultaneous access of different pages "
+> +	       "in a newly mapped big buffer object");
+>  	igt_subtest("big-bo")
+>  		test_huge_bo(0);
+> +
+> +	igt_describe("Test the write read coherency and simultaneous access of different pages "
+> +	       "in a newly mapped huge buffer object");
+>  	igt_subtest("huge-bo")
+>  		test_huge_bo(1);
+> +
+> +	igt_describe("Test the write read coherency and simultaneous access of different pages "
+> +	       "in a newly mapped swap buffer object");
+>  	igt_subtest("swap-bo")
+>  		test_huge_bo(2);
+>  
+> -- 
+> 2.28.0
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
