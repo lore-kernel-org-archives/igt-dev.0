@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C8EBF892B2
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2020 13:19:26 +0000 (UTC)
-Date: Mon, 23 Nov 2020 14:19:20 +0100
-From: Katarzyna Dec <katarzyna.dec@intel.com>
-Message-ID: <20201123131920.GJ6508@kdec5-desk.ger.corp.intel.com>
-References: <20200904114324.1604117-1-apoorva1.singh@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E1E189E0D
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2020 13:57:13 +0000 (UTC)
+From: "Ram Moon, AnandX" <anandx.ram.moon@intel.com>
+Date: Mon, 23 Nov 2020 13:57:04 +0000
+Message-ID: <SA2PR11MB50682898491E5500BDA6F93DAEFC0@SA2PR11MB5068.namprd11.prod.outlook.com>
+References: <20201102090836.19803-1-anandx.ram.moon@intel.com>
+ <160440054042.21466.14289928033719881030@build.alporthouse.com>
+ <SA2PR11MB5068EB30ABBA4162F3D9A00BAE110@SA2PR11MB5068.namprd11.prod.outlook.com>
+ <SA2PR11MB50683A258C3ABE41B8B80EC8AEFF0@SA2PR11MB5068.namprd11.prod.outlook.com>
+ <160588475629.28535.11300939629531976191@build.alporthouse.com>
+In-Reply-To: <160588475629.28535.11300939629531976191@build.alporthouse.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200904114324.1604117-1-apoorva1.singh@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_mmap: Added test description
- for test case
+Subject: Re: [igt-dev] [i-g-t] tests/kms_setmode: basic Improve accuracy
+ with using of confidence interval
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,125 +22,116 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: apoorva1.singh@intel.com
-Cc: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Sep 04, 2020 at 05:13:24PM +0530, apoorva1.singh@intel.com wrote:
-> From: Apoorva Singh <apoorva1.singh@intel.com>
-> 
-> Added test description to all the available subtests.
-> 
-> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
-> Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
-> Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> ---
->  tests/i915/gem_mmap.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
-> 
-> diff --git a/tests/i915/gem_mmap.c b/tests/i915/gem_mmap.c
-> index f8cf052e..4ad62ad9 100644
-> --- a/tests/i915/gem_mmap.c
-> +++ b/tests/i915/gem_mmap.c
-> @@ -37,6 +37,8 @@
->  #include <sys/ioctl.h>
->  #include "drm.h"
->  
-> +IGT_TEST_DESCRIPTION("Basic MMAP IOCTL tests for memory regions\n");
-> +
->  #define OBJECT_SIZE 16384
->  #define PAGE_SIZE 4096
->  int fd;
-> @@ -155,6 +157,7 @@ igt_main
->  	igt_fixture
->  		fd = drm_open_driver(DRIVER_INTEL);
->  
-> +	igt_describe("Verify mapping to invalid gem objects won't be created");
->  	igt_subtest("bad-object") {
->  		uint32_t real_handle = gem_create(fd, 4096);
->  		uint32_t handles[20];
-> @@ -179,6 +182,7 @@ igt_main
->  		gem_close(fd, real_handle);
->  	}
->  
-> +	igt_describe("Verify mapping to gem object with invalid offset won't be created");
->  	igt_subtest("bad-offset") {
->  		struct bad_offset {
->  			uint64_t size;
-> @@ -206,6 +210,7 @@ igt_main
->  		}
->  	}
->  
-> +	igt_describe("Verify mapping to gem object with invalid size won't be created");
->  	igt_subtest("bad-size") {
->  		uint64_t bad_size[] = {
->  			0,
-> @@ -229,6 +234,8 @@ igt_main
->  		}
->  	}
->  
-> +	igt_describe("Test basics of newly mapped gem object like default content, write and read "
-> +	       "coherency, mapping existence after gem_close and unmapping");
->  	igt_subtest("basic") {
->  		struct drm_i915_gem_mmap arg = {
->  			.handle = gem_create(fd, OBJECT_SIZE),
-> @@ -256,6 +263,7 @@ igt_main
->  		munmap(addr, OBJECT_SIZE);
->  	}
->  
-> +	igt_describe("Verify mapping to gem object is successful using IGT library function");
-these are all IGT functions :)
-igt_describe("Map small object though direct CPU access, bypassing GPU.");
->  	igt_subtest("short-mmap") {
->  		uint32_t handle = gem_create(fd, OBJECT_SIZE);
->  
-> @@ -268,15 +276,27 @@ igt_main
->  		gem_close(fd, handle);
->  	}
->  
-> +	igt_describe("Verify initial page faulting completes within a specified time");
-igt_describe("Verify that GTT faults are asynchronous to GPU rendering, page
-faults completes within specific time.");
->  	igt_subtest("pf-nonblock")
->  		test_pf_nonblock(fd);
->  
-> +	igt_describe("Test the write read coherency and simultaneous access of different pages "
-> +	       "in a newly mapped basic small buffer object");
-I would change second part of sentence to:
-" small bo");
-
-Similar change I suggest to make with others. General descriptions look good.
-Kasia
->  	igt_subtest("basic-small-bo")
->  		test_huge_bo(-1);
-> +
-> +	igt_describe("Test the write read coherency and simultaneous access of different pages "
-> +	       "in a newly mapped big buffer object");
->  	igt_subtest("big-bo")
->  		test_huge_bo(0);
-> +
-> +	igt_describe("Test the write read coherency and simultaneous access of different pages "
-> +	       "in a newly mapped huge buffer object");
->  	igt_subtest("huge-bo")
->  		test_huge_bo(1);
-> +
-> +	igt_describe("Test the write read coherency and simultaneous access of different pages "
-> +	       "in a newly mapped swap buffer object");
->  	igt_subtest("swap-bo")
->  		test_huge_bo(2);
->  
-> -- 
-> 2.28.0
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SGkgQ2hyaXMsDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBDaHJpcyBXaWxz
+b24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4gDQpTZW50OiBGcmlkYXksIE5vdmVtYmVyIDIw
+LCAyMDIwIDg6MzYgUE0NClRvOiBSYW0gTW9vbiwgQW5hbmRYIDxhbmFuZHgucmFtLm1vb25AaW50
+ZWwuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNClN1YmplY3Q6IFJlOiBbaWd0
+LWRldl0gW2ktZy10XSB0ZXN0cy9rbXNfc2V0bW9kZTogYmFzaWMgSW1wcm92ZSBhY2N1cmFjeSB3
+aXRoIHVzaW5nIG9mIGNvbmZpZGVuY2UgaW50ZXJ2YWwNCg0KUXVvdGluZyBSYW0gTW9vbiwgQW5h
+bmRYICgyMDIwLTExLTIwIDA5OjEyOjQwKQ0KPiBIaSBDaHJpcywNCj4gDQo+IC0tLS0tT3JpZ2lu
+YWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IFJhbSBNb29uLCBBbmFuZFgNCj4gU2VudDogVHVlc2Rh
+eSwgTm92ZW1iZXIgMywgMjAyMCAxMToyOCBQTQ0KPiBUbzogQ2hyaXMgV2lsc29uIDxjaHJpc0Bj
+aHJpcy13aWxzb24uY28udWs+OyANCj4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4g
+U3ViamVjdDogUkU6IFtpZ3QtZGV2XSBbaS1nLXRdIHRlc3RzL2ttc19zZXRtb2RlOiBiYXNpYyBJ
+bXByb3ZlIA0KPiBhY2N1cmFjeSB3aXRoIHVzaW5nIG9mIGNvbmZpZGVuY2UgaW50ZXJ2YWwNCj4g
+DQo+IEhpIENocmlzLA0KPiANCj4gVGhhbmtzIGZvciB5b3VyIHJldmlldyBjb21tZW50Lg0KPiAN
+Cj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQ2hyaXMgV2lsc29uIDxjaHJp
+c0BjaHJpcy13aWxzb24uY28udWs+DQo+IFNlbnQ6IFR1ZXNkYXksIE5vdmVtYmVyIDMsIDIwMjAg
+NDoxOSBQTQ0KPiBUbzogUmFtIE1vb24sIEFuYW5kWCA8YW5hbmR4LnJhbS5tb29uQGludGVsLmNv
+bT47IA0KPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogUmFtIE1vb24sIEFu
+YW5kWCA8YW5hbmR4LnJhbS5tb29uQGludGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtpZ3QtZGV2
+XSBbaS1nLXRdIHRlc3RzL2ttc19zZXRtb2RlOiBiYXNpYyBJbXByb3ZlIA0KPiBhY2N1cmFjeSB3
+aXRoIHVzaW5nIG9mIGNvbmZpZGVuY2UgaW50ZXJ2YWwNCj4gDQo+IFF1b3RpbmcgQW5hbmQgTW9v
+biAoMjAyMC0xMS0wMiAwOTowODozNikNCj4gPiBVc2luZyBjb25maWRlbmNlIGludGVydmFsIGZv
+cm11bGEgYWNjdXJhY3kgaXMgZXN0aW1hdGVzIA0KPiA+IGFwcHJveGltYXRlbHkgYXQgOTUlIHdo
+ZW4ge1h9IGlzIHRoZSBhdmVyYWdlIG9mIGEgc2FtcGxlIG9mIHNpemUgbi4NCj4gPiBVc2UgdGhp
+cyBjb25maWRlbmNlIGludGVydmFsIGZvcm11bGEgYXMgdXNlZCBpbiBzdGF0aXN0aWNzIHRvIA0K
+PiA+IGVzdGltYXRlIHRoZSBhY2N1cmFjeS4NCj4gPiANCj4gPiBTaWduZWQtb2ZmLWJ5OiBBbmFu
+ZCBNb29uIDxhbmFuZHgucmFtLm1vb25AaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+IFNlZSBiZWxv
+dyBsaW5rLg0KPiA+IGh0dHBzOi8vZW4ud2lraXBlZGlhLm9yZy93aWtpLzY4JUUyJTgwJTkzOTUl
+RTIlODAlOTM5OS43X3J1bGUjQ3VtdWxhDQo+ID4gdGkNCj4gPiB2ZV9kaXN0cmlidXRpb25fZnVu
+Y3Rpb24NCj4gPiAtLS0NCj4gPiAgdGVzdHMva21zX3NldG1vZGUuYyB8IDIgKy0NCj4gPiAgMSBm
+aWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+ID4gDQo+ID4gZGlm
+ZiAtLWdpdCBhL3Rlc3RzL2ttc19zZXRtb2RlLmMgYi90ZXN0cy9rbXNfc2V0bW9kZS5jIGluZGV4
+DQo+ID4gOTJmM2VhZDIuLjU4ODE0YTEzIDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL2ttc19zZXRt
+b2RlLmMNCj4gPiArKysgYi90ZXN0cy9rbXNfc2V0bW9kZS5jDQo+ID4gQEAgLTQ5NCw3ICs0OTQs
+NyBAQCBzdGF0aWMgdm9pZCBjaGVja190aW1pbmdzKGludCBjcnRjX2lkeCwgY29uc3QgZHJtTW9k
+ZU1vZGVJbmZvICprbW9kZSkNCj4gPiAgICAgICAgICAqIHdoaWNoIGRlcGVuZCBvbiB0aW1pbmcs
+IGdpdmluZyB0aGUgbG93ZXN0IGFjY2VwdGFibGUgTVRCRiBvZiA1LjZzDQo+ID4gICAgICAgICAg
+KiBmb3IgNjBIeiBzYW1wbGluZyByYXRlLg0KPiA+ICAgICAgICAgICovDQo+ID4gLSAgICAgICBh
+Y2N1cmFjeSA9IDMuICogc3RkZGV2Ow0KPiA+ICsgICAgICAgYWNjdXJhY3kgPSAzLiAqIHN0ZGRl
+diAvIHNxcnQoQ0FMSUJSQVRFX1RTX1NURVBTKTsNCj4gDQo+IE9vcHMsIHllcywgdGhpcyBzaG91
+bGQgYmUgc3RhbmRhcmQgZXJyb3IgcmF0aGVyIHRoYW4gZGV2aWF0aW9uLiBDb3VsZCB5b3UgYWRk
+IGlndF9zdGF0c19nZXRfc3RkX2Vycm9yKCkgc28gd2UgZG9uJ3QgaGFyZGNvZGUgTj8NCj4gLUNo
+cmlzDQo+IA0KPiBEbyB5b3Ugd2FudCBtZSB0byByZW5hbWUgYWNjdXJhY3kgdG8gc3RkX2Vycm9y
+IGFuZCB1c2Ugc3RhdHMubl92YWx1ZXMgaW5zdGVhZCBvZiBDQUxJQlJBVEVfVFNfU1RFUFMgSSBj
+b3VsZCBub3QgZmluZCB0aGUgZGVmaW5pdGlvbiBvZiBpZ3Rfc3RhdHNfZ2V0X3N0ZF9lcnJvciBm
+dW5jdGlvbi4gDQo+IA0KPiAtQW5hbmQNCj4gDQo+IFRoYW5rcyBmb3IgZml4aW5nIHRoZSBjb2Rl
+IGNoYW5nZXMuDQo+IA0KPiBBY3R1YWxseSBhYm92ZSBjaGFuZ2VzIGZpeCB0aGUgaXNzdWUgdG8g
+aW1wcm92ZSB0aGUgYWNjdXJhY3kgY2FsY3VsYXRpb25zLg0KPiBCdXQgbm93IEkgYW0gYWJsZSB0
+byByZXByb2R1Y2UgdGhlIG9yaWdpbmFsIGJ1ZyB1c2luZyA0SyBtb25pdG9ycyBvbiA1LjgueCBr
+ZXJuZWwsIFNlZSBiZWxvdyBsb2dzLg0KPiANCj4gICAgIENSVENbOThdIFtQaXBlIEFdIE1vZGU6
+IDM4NDB4MjE2MEA2MEh6IENvbm5lY3RvcnM6IERQLTJbMzMwXSANCj4gRXhwZWN0ZWQgZnJhbWV0
+aW1lOiAxNjY2OHVzOyBtZWFzdXJlZCAxNjY3Mi4zdXMgKy0gMS44MDV1cyBhY2N1cmFjeSANCj4g
+MC4wMCUgWzAuMDcgc2NhbmxpbmVzXQ0KPiAoa21zX3NldG1vZGU6MTQzMTUpIENSSVRJQ0FMOiBU
+ZXN0IGFzc2VydGlvbiBmYWlsdXJlIGZ1bmN0aW9uIGNoZWNrX3RpbWluZ3MsIGZpbGUgLi4vdGVz
+dHMva21zX3NldG1vZGUuYzo1NDQ6DQo+IChrbXNfc2V0bW9kZToxNDMxNSkgQ1JJVElDQUw6IEZh
+aWxlZCBhc3NlcnRpb246IGZhYnMobWVhbiAtIGV4cGVjdGVkKSANCj4gPCAxLjcxOCAqIHN0ZGRl
+dg0KPiAoa21zX3NldG1vZGU6MTQzMTUpIENSSVRJQ0FMOiB2YmxhbmsgaW50ZXJ2YWwgZGlmZmVy
+cyBmcm9tIG1vZGVsaW5lISBleHBlY3RlZCAxNjY2Ny42dXMsIG1lYXN1cmVkIDE2NjcydXMgKy0g
+MS44MDV1cywgZGlmZmVyZW5jZSA0Ljd1cyAoMi42IHNpZ21hKSBTdGFjayB0cmFjZToNCj4gICAj
+MCAuLi9saWIvaWd0X2NvcmUuYzoxNzM0IF9faWd0X2ZhaWxfYXNzZXJ0KCkNCj4gICAjMSAuLi90
+ZXN0cy9rbXNfc2V0bW9kZS5jOjU0NCB0ZXN0X29uZV9jb21iaW5hdGlvbigpDQo+ICAgIzIgLi4v
+dGVzdHMva21zX3NldG1vZGUuYzo4MzQgX19yZWFsX21haW44ODMoKQ0KPiAgICMzIC4uL3Rlc3Rz
+L2ttc19zZXRtb2RlLmM6ODgzIG1haW4oKQ0KPiAgICM0IC4uL2NzdS9saWJjLXN0YXJ0LmM6MzQy
+IF9fbGliY19zdGFydF9tYWluKCkNCj4gICAjNSBbX3N0YXJ0KzB4MmVdDQo+IFN1YnRlc3QgYmFz
+aWMgZmFpbGVkLg0KPiAqKioqIERFQlVHICoqKioNCj4gIA0KPiBTbyBhZnRlciBpbiBkaWdnaW5n
+IGludG8gdGhlIGJlbG93IGNvbW1lbnRzIGl0IHR1cm5zIG91dCB0aGF0IA0KPiAqY29uZmlkZW5j
+ZSBpbnRlcnZhbCogd2l0aCByZXNwZWN0IHRvIHN0YW5kYXJkIGRldmlhdGlvbiBpcyBjYWxjdWxh
+dGVkIA0KPiB3aXRoICpDdW11bGF0aXZlIGRpc3RyaWJ1dGlvbiBmdW5jdGlvbiogKGZvcm11bGEp
+DQo+IA0KPiBBcyBwZXIgdGhlIFdpa2lwZWRpYSB0YWJsZQ0KPiBGb3IgdmFyaW91cyB2YWx1ZXMg
+b2YgeiwgdGhlIHBlcmNlbnRhZ2Ugb2YgdmFsdWVzIGV4cGVjdGVkIHRvIGxpZSBpbiBhbmQgb3V0
+c2lkZSB0aGUgc3ltbWV0cmljIGludGVydmFsLCBDSSA9ICjiiJJ6z4MsIHrPgyksIGFyZSBhcyBm
+b2xsb3dzOg0KPiBbMF0gDQo+IGh0dHBzOi8vZW4ud2lraXBlZGlhLm9yZy93aWtpL1N0YW5kYXJk
+X2RldmlhdGlvbiNSdWxlc19mb3Jfbm9ybWFsbHlfZGkNCj4gc3RyaWJ1dGVkX2RhdGENCj4gDQo+
+IEl0IHR1cm5zIG91dCB0aGF0ICAqMyDPgyogZ2l2ZXMgYXJvdW5kIHByb3BvcnRpb24gcGVyY2Vu
+dGFnZSA5OS43MzAwMjA0JSB3aGljaCBpcyBhY2NvcmRpbmcgdG8gdGhlIENJID0gKOKIknrPgywg
+es+DKSB0YWJsZS4NCj4gDQo+IEkgd291bGQgbGlrZSB0byBzdWJtaXQgYSBiZWxvdyBwYXRjaCBh
+cyB0aGlzIGNoYW5nZXMgZml4IHRoZSBvdmVyYWxsIGJ1Zy4NCj4gUGxlYXNlIHNoYXJlIHlvdXIg
+dGhvdWdodCBhbmQgc3VnZ2VzdGlvbiBvbiBhbnkgYWx0ZXJuYXRpdmUgYXBwcm9hY2ggSSBzaG91
+bGQgdHJ5Lg0KDQpZb3Ugd291bGQgYWxzbyBoYXZlIHRvIHVwZGF0ZSB0aGUgY29tbWVudHMgYXMg
+aXQgbm8gbG9uZ2VyIG1hdGNoZXMgdGhlIGJyb2FkZW4gOTAlIGNyaXRpY2FsIHZhbHVlLg0KDQpT
+dGlsbCBkZWJhdGluZyB3aGF0IGlzIGEgc2Vuc2libGUgZXJyb3IgcmF0ZSwgYnV0IGluIHRoZSBt
+ZWFudGltZSBJIHdvdWxkIHN1Z2dlc3QgYSBkaWZmZXJlbnQgYXBwcm9hY2g6IGlnbm9yZSB0aGUg
+ZGV2aWF0aW9uIGlmIGl0IGlzIHdpdGhpbiBhIHNpbmdsZSBzY2FubGluZS4NCg0KU29tZXRoaW5n
+IGxpa2U6DQoNCi0gICAgICAgaWd0X2Fzc2VydF9mKGZhYnMobWVhbiAtIGV4cGVjdGVkKSA8IDEu
+NzE4ICogc3RkZGV2LA0KLSAgICAgICAgICAgICAgICAgICAgInZibGFuayBpbnRlcnZhbCBkaWZm
+ZXJzIGZyb20gbW9kZWxpbmUhIGV4cGVjdGVkICUuMWZ1cywgbWVhc3VyZWQgJTEuZnVzICstICUu
+M2Z1cywgZGlmZmVyZW5jZSAlLjFmdXMgKCUuMWYgc2lnbWEpXG4iLA0KKyAgICAgICBpZ3RfYXNz
+ZXJ0X2YoZmFicyhtZWFuIC0gZXhwZWN0ZWQpIDwgbWF4KGxpbmVfdGltZShrbW9kZSksIDEuNzE4
+ICogc3RkZGV2KSwNCisgICAgICAgICAgICAgICAgICAgICJ2YmxhbmsgaW50ZXJ2YWwgZGlmZmVy
+cyBmcm9tIG1vZGVsaW5lISBleHBlY3RlZCANCisgJS4xZnVzLCBtZWFzdXJlZCAlMS5mdXMgKy0g
+JS4zZnVzLCBkaWZmZXJlbmNlICUuMWZ1cyAoJS4xZiBzaWdtYSwgJS4xZiANCisgc2NhbmxpbmVz
+KVxuIiwNCiAgICAgICAgICAgICAgICAgICAgIGV4cGVjdGVkLCBtZWFuLCBzdGRkZXYsDQotICAg
+ICAgICAgICAgICAgICAgICBmYWJzKG1lYW4gLSBleHBlY3RlZCksIGZhYnMobWVhbiAtIGV4cGVj
+dGVkKSAvIHN0ZGRldik7DQorICAgICAgICAgICAgICAgICAgICBmYWJzKG1lYW4gLSBleHBlY3Rl
+ZCksDQorICAgICAgICAgICAgICAgICAgICBmYWJzKG1lYW4gLSBleHBlY3RlZCkgLyBzdGRkZXYs
+DQorICAgICAgICAgICAgICAgICAgICBmYWJzKG1lYW4gLSBleHBlY3RlZCkgLyBsaW5lX3RpbWUo
+a21vZGUpKTsNCg0KVGhhbmtzIGZvciB0aGlzIG5ldyBhcHByb2FjaCwgSSBoYXZlIHRlc3RlZCB0
+aGlzIHBhdGNoIG9uIGRpZmZlcmVudCBtYWNoaW5lcw0Kd2l0aCBkaWZmZXJlbnQgbW9kZXMgYXMg
+YmVsb3cuDQoNCk1vZGU6IDE5MjB4MTA4MEA2MEh6IENvbm5lY3RvcnM6IEhETUktQS0yDQpNb2Rl
+OiAxOTIweDEwODBANjBIeiBDb25uZWN0b3JzOiBEUC0xDQpNb2RlOiAxOTIweDEwODBANjBIeiBD
+b25uZWN0b3JzOiBEUC0yDQpNb2RlOiAyNTYweDE0NDBANjBIeiBDb25uZWN0b3JzOiBlRFAtMQ0K
+TW9kZTogMzg0MHgyMTYwQDYwSHogQ29ubmVjdG9yczogRFAtMg0KDQpBbmQgYWxsIHRoZSB0ZXN0
+Y2FzZSByZWdhcmRpbmcga21zX3NldG1vZGUgc2VlbXMgdG8gcGFzc2luZyBvbiA1LjgueCBhbmQg
+NS4xMC0wLXJjeCBrZXJuZWwuDQoNClRoYW5rcw0KLUFuYW5kDQpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2lndC1kZXYK
