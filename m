@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81DE789D86
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2020 11:32:07 +0000 (UTC)
-Date: Mon, 23 Nov 2020 13:32:02 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20201123113202.GQ7444@platvala-desk.ger.corp.intel.com>
-References: <20201120105217.5058-1-tzimmermann@suse.de>
- <20201120105217.5058-3-tzimmermann@suse.de>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 449B189950
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2020 11:44:21 +0000 (UTC)
+Date: Mon, 23 Nov 2020 12:44:14 +0100
+From: Katarzyna Dec <katarzyna.dec@intel.com>
+Message-ID: <20201123114414.GI6508@kdec5-desk.ger.corp.intel.com>
+References: <20201120143242.204009-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201120105217.5058-3-tzimmermann@suse.de>
-Subject: Re: [igt-dev] [PATCH v6 2/8] tests/fbdev: Map framebuffer in
- igt_fixture
+In-Reply-To: <20201120143242.204009-1-apoorva1.singh@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t,
+ v2] i915/gem_ctx_param: Add subtests description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,79 +22,185 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: igt-dev@lists.freedesktop.org, chris@chris-wilson.co.uk
+To: apoorva1.singh@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Nov 20, 2020 at 11:52:11AM +0100, Thomas Zimmermann wrote:
-> The mapping of the framebuffer memory will be useful for read/write
-> tests. Move it into an igt_fixture block.
+On Fri, Nov 20, 2020 at 08:02:42PM +0530, apoorva1.singh@intel.com wrote:
+> From: Apoorva Singh <apoorva1.singh@intel.com>
 > 
-> v4:
-> 	* declare map as volatile (Petri)
-> 	* test struct fb_fix_screeninfo.smem_len with igt_assert()
-> 	* remove mmap test from CI
+> Add description for all subtests of this test
 > 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-This commit is not as standalone as one would hope, but it's
-standalone enough to not break too much without the rest of the
-series...
-
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-
-
+> v2: Modified few descriptions to be more specific
+> 
+> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+> Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+> Cc: Dec, Katarzyna <katarzyna.dec@intel.com>
 > ---
->  tests/fbdev.c                         | 12 +++++-------
->  tests/intel-ci/fast-feedback.testlist |  1 -
->  2 files changed, 5 insertions(+), 8 deletions(-)
+>  tests/i915/gem_ctx_param.c | 27 +++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
 > 
-> diff --git a/tests/fbdev.c b/tests/fbdev.c
-> index a803f445..eebd2a83 100644
-> --- a/tests/fbdev.c
-> +++ b/tests/fbdev.c
-> @@ -63,22 +63,20 @@ static void mode_tests(int fd)
->  static void framebuffer_tests(int fd)
->  {
->  	struct fb_fix_screeninfo fix_info;
-> +	void * volatile map;
->  
->  	igt_fixture {
->  		igt_require(ioctl(fd, FBIOGET_FSCREENINFO, &fix_info) == 0);
-> -	}
-> -
-> -	igt_describe("Check mmap operations on framebuffer memory");
-> -	igt_subtest("mmap") {
-> -		void *map;
-> -
-> -		igt_require(fix_info.smem_len);
-> +		igt_assert(fix_info.smem_len);
->  
->  		map = mmap(NULL, fix_info.smem_len,
->  			   PROT_WRITE, MAP_SHARED, fd, 0);
->  		igt_assert(map != MAP_FAILED);
->  
->  		memset(map, 0, fix_info.smem_len);
-> +	}
-> +
-> +	igt_fixture {
->  		munmap(map, fix_info.smem_len);
+> diff --git a/tests/i915/gem_ctx_param.c b/tests/i915/gem_ctx_param.c
+> index 72dcb973..ab0e3007 100644
+> --- a/tests/i915/gem_ctx_param.c
+> +++ b/tests/i915/gem_ctx_param.c
+> @@ -265,23 +265,29 @@ igt_main
+>  			arg.param = I915_CONTEXT_PARAM_BANNABLE;
 >  	}
->  }
-> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-> index a40410a8..cf66b4da 100644
-> --- a/tests/intel-ci/fast-feedback.testlist
-> +++ b/tests/intel-ci/fast-feedback.testlist
-> @@ -3,7 +3,6 @@
->  igt@core_auth@basic-auth
->  igt@debugfs_test@read_all_entries
->  igt@fbdev@info
-> -igt@fbdev@mmap
->  igt@gem_basic@bad-close
->  igt@gem_basic@create-close
->  igt@gem_basic@create-fd-close
+>  
+> +	igt_describe("Basic test for context get/set param ioctls using valid context");
+>  	igt_subtest("basic") {
+>  		arg.ctx_id = ctx;
+>  		gem_context_get_param(fd, &arg);
+>  		gem_context_set_param(fd, &arg);
+>  	}
+>  
+> +	igt_describe("Basic test for context get/set param ioctls using default context");
+>  	igt_subtest("basic-default") {
+>  		arg.ctx_id = 0;
+>  		gem_context_get_param(fd, &arg);
+>  		gem_context_set_param(fd, &arg);
+>  	}
+>  
+> +	igt_describe("Verify that context get param ioctl using invalid context "
+> +	       "returns relevant error");
+>  	igt_subtest("invalid-ctx-get") {
+>  		arg.ctx_id = 2;
+>  		igt_assert_eq(__gem_context_get_param(fd, &arg), -ENOENT);
+>  	}
+>  
+> +	igt_describe("Verify that context set param ioctl using invalid context "
+> +	       "returns relevant error");
+>  	igt_subtest("invalid-ctx-set") {
+>  		arg.ctx_id = ctx;
+>  		gem_context_get_param(fd, &arg);
+> @@ -289,6 +295,7 @@ igt_main
+>  		igt_assert_eq(__gem_context_set_param(fd, &arg), -ENOENT);
+>  	}
+>  
+> +	igt_describe("Verify that context get param ioctl returns valid size for valid context");
+>  	igt_subtest("invalid-size-get") {
+>  		arg.ctx_id = ctx;
+>  		arg.size = 8;
+> @@ -296,6 +303,8 @@ igt_main
+>  		igt_assert(arg.size == 0);
+>  	}
+>  
+> +	igt_describe("Verify that context set param ioctl using invalid size "
+> +	       "returns relevant error");
+>  	igt_subtest("invalid-size-set") {
+>  		arg.ctx_id = ctx;
+>  		gem_context_get_param(fd, &arg);
+> @@ -304,6 +313,7 @@ igt_main
+>  		arg.size = 0;
+>  	}
+>  
+> +	igt_describe("Verify that context set param ioctl returns relevant error in non root mode");
+>  	igt_subtest("non-root-set") {
+>  		igt_fork(child, 1) {
+>  			igt_drop_root();
+> @@ -317,6 +327,7 @@ igt_main
+>  		igt_waitchildren();
+>  	}
+>  
+> +	igt_describe("Verify that context set param ioctl works fine in root mode");
+>  	igt_subtest("root-set") {
+>  		arg.ctx_id = ctx;
+>  		gem_context_get_param(fd, &arg);
+> @@ -326,6 +337,8 @@ igt_main
+>  
+>  	arg.param = I915_CONTEXT_PARAM_NO_ZEROMAP;
+>  
+> +	igt_describe("Validates context set param ioctl in non root mode with param "
+> +	       "set to no zeromap");
+>  	igt_subtest("non-root-set-no-zeromap") {
+>  		igt_fork(child, 1) {
+>  			igt_drop_root();
+> @@ -339,6 +352,7 @@ igt_main
+>  		igt_waitchildren();
+>  	}
+>  
+> +	igt_describe("Tests the context set param ioctl with no zeromap enabled in root mode");
+>  	igt_subtest("root-set-no-zeromap-enabled") {
+>  		arg.ctx_id = ctx;
+>  		gem_context_get_param(fd, &arg);
+> @@ -346,6 +360,7 @@ igt_main
+>  		gem_context_set_param(fd, &arg);
+>  	}
+>  
+> +	igt_describe("Tests the context set param ioctl with no zeromap disabled in root mode");
+>  	igt_subtest("root-set-no-zeromap-disabled") {
+>  		arg.ctx_id = ctx;
+>  		gem_context_get_param(fd, &arg);
+> @@ -353,11 +368,14 @@ igt_main
+>  		gem_context_set_param(fd, &arg);
+>  	}
+>  
+> +	igt_describe("Tests that multiple contexts can share the same VMA");
+>  	igt_subtest("vm")
+>  		test_vm(fd);
+>  
+>  	arg.param = I915_CONTEXT_PARAM_PRIORITY;
+>  
+> +	igt_describe("Verify that context set param ioctl returns relevant error if driver "
+> +	       "doesn't supports assigning custom priorities from userspace");
+>  	igt_subtest("set-priority-not-supported") {
+>  		igt_require(!gem_scheduler_has_ctx_priority(fd));
+>  
+> @@ -367,11 +385,13 @@ igt_main
+>  		igt_assert_eq(__gem_context_set_param(fd, &arg), -ENODEV);
+>  	}
+>  
+> +	igt_describe("Test performed with context param set to priority");
+>  	igt_subtest_group {
+>  		igt_fixture {
+>  			igt_require(gem_scheduler_has_ctx_priority(fd));
+>  		}
+>  
+> +		igt_describe("Verify that priority is default for newly created context");
+>  		igt_subtest("get-priority-new-ctx") {
+>  			struct drm_i915_gem_context_param local_arg = arg;
+>  			uint32_t local_ctx = gem_context_create(fd);
+> @@ -384,6 +404,8 @@ igt_main
+>  			gem_context_destroy(fd, local_ctx);
+>  		}
+>  
+> +		igt_describe("Verify that relevant error is returned on setting invalid ctx size "
+> +		       "with default priority");
+>  		igt_subtest("set-priority-invalid-size") {
+>  			struct drm_i915_gem_context_param local_arg = arg;
+>  			local_arg.ctx_id = ctx;
+> @@ -393,6 +415,7 @@ igt_main
+>  			igt_assert_eq(__gem_context_set_param(fd, &local_arg), -EINVAL);
+>  		}
+>  
+> +		igt_describe("Change priority range to test value overflow");
+>  		igt_subtest("set-priority-range")
+>  			set_priority(fd);
+>  	}
+> @@ -401,11 +424,15 @@ igt_main
+>  
+>  	arg.param = -1; /* Should be safely unused for a while */
+>  
+> +	igt_describe("Checks that fetching context parameters using an unused param value "
+> +	       "is erroneous");
+>  	igt_subtest("invalid-param-get") {
+>  		arg.ctx_id = ctx;
+>  		igt_assert_eq(__gem_context_get_param(fd, &arg), -EINVAL);
+>  	}
+>  
+> +	igt_describe("Checks that setting context parameters using an unused param value "
+> +	       "is erroneous");
+>  	igt_subtest("invalid-param-set") {
+>  		arg.ctx_id = ctx;
+>  		igt_assert_eq(__gem_context_set_param(fd, &arg), -EINVAL);
+LGTM :)
+Reviewed-by: Katarzyna Dec <katarzyna.dec@intel.com>
+
+Kasia :)
+
 > -- 
-> 2.29.2
+> 2.25.1
 > 
 _______________________________________________
 igt-dev mailing list
