@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A65666E072
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2020 18:57:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D5F826E072
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2020 18:58:15 +0000 (UTC)
 References: <20201120105217.5058-1-tzimmermann@suse.de>
- <20201120105217.5058-7-tzimmermann@suse.de>
- <160613752483.21426.10039134175512906849@build.alporthouse.com>
+ <20201120105217.5058-2-tzimmermann@suse.de>
+ <20201123112724.GP7444@platvala-desk.ger.corp.intel.com>
 From: Thomas Zimmermann <tzimmermann@suse.de>
-Message-ID: <cac2c6f9-5d0e-4297-600d-b2862a0f0a40@suse.de>
-Date: Mon, 23 Nov 2020 19:57:49 +0100
+Message-ID: <46d49d87-9745-d43a-0391-fcec2d702b02@suse.de>
+Date: Mon, 23 Nov 2020 19:58:13 +0100
 MIME-Version: 1.0
-In-Reply-To: <160613752483.21426.10039134175512906849@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH v6 6/8] tests/fbdev: Add tests for unaligned
- writes on framebuffer memory
+In-Reply-To: <20201123112724.GP7444@platvala-desk.ger.corp.intel.com>
+Subject: Re: [igt-dev] [PATCH v6 1/8] tests/fbdev: Move existing tests into
+ separate subgroups
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,133 +19,181 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1565196369=="
+Content-Type: multipart/mixed; boundary="===============1048957425=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, daniel.vetter@ffwll.ch, petri.latvala@intel.com
-Cc: igt-dev@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, chris@chris-wilson.co.uk
 List-ID: <igt-dev@lists.freedesktop.org>
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============1565196369==
+--===============1048957425==
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="R0L5UjHdr6ySArNzxEf4jO32igmzOZiJh"
+ boundary="XERsx2IYI7o94J10le21DZuNRVrB1DzXO"
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---R0L5UjHdr6ySArNzxEf4jO32igmzOZiJh
-Content-Type: multipart/mixed; boundary="3ENsbnP9JHfDvVz1h7kVAfoGv2THnsB1w";
+--XERsx2IYI7o94J10le21DZuNRVrB1DzXO
+Content-Type: multipart/mixed; boundary="e6Ox7D036JLsYni2NBEuo8dAbvN7ASNDw";
  protected-headers="v1"
 From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Chris Wilson <chris@chris-wilson.co.uk>, daniel.vetter@ffwll.ch,
- petri.latvala@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Message-ID: <cac2c6f9-5d0e-4297-600d-b2862a0f0a40@suse.de>
-Subject: Re: [PATCH v6 6/8] tests/fbdev: Add tests for unaligned writes on
- framebuffer memory
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: chris@chris-wilson.co.uk, daniel.vetter@ffwll.ch,
+ igt-dev@lists.freedesktop.org
+Message-ID: <46d49d87-9745-d43a-0391-fcec2d702b02@suse.de>
+Subject: Re: [PATCH v6 1/8] tests/fbdev: Move existing tests into separate
+ subgroups
 References: <20201120105217.5058-1-tzimmermann@suse.de>
- <20201120105217.5058-7-tzimmermann@suse.de>
- <160613752483.21426.10039134175512906849@build.alporthouse.com>
-In-Reply-To: <160613752483.21426.10039134175512906849@build.alporthouse.com>
+ <20201120105217.5058-2-tzimmermann@suse.de>
+ <20201123112724.GP7444@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <20201123112724.GP7444@platvala-desk.ger.corp.intel.com>
 
---3ENsbnP9JHfDvVz1h7kVAfoGv2THnsB1w
+--e6Ox7D036JLsYni2NBEuo8dAbvN7ASNDw
 Content-Type: multipart/mixed;
- boundary="------------4FAEF125D10F85116ABB64D9"
+ boundary="------------A5D1341F58D0CC531CACF50F"
 Content-Language: en-US
 
 This is a multi-part message in MIME format.
---------------4FAEF125D10F85116ABB64D9
+--------------A5D1341F58D0CC531CACF50F
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
 
-Hi
 
-Am 23.11.20 um 14:18 schrieb Chris Wilson:
-> Quoting Thomas Zimmermann (2020-11-20 10:52:15)
->> The tests for unaligned writes start and stop writing within pages.
+
+Am 23.11.20 um 12:27 schrieb Petri Latvala:
+> On Fri, Nov 20, 2020 at 11:52:10AM +0100, Thomas Zimmermann wrote:
+>> Move the existing tests into subgroups for testing modesetting and
+>> accessing the framebuffer.
 >>
->> v6:
->>          * remove test from fast-feedback.testlist
+>> v5:
+>> 	* test mmap() with igt_assert() (Daniel, Chris)
 >> v4:
->>          * replace igt_require() by igt_assert() in "unaligned-write" =
-(Petri)
->>          * clarify error message about framebuffer size (Petri)
->>          * add unaligned-write test to CI
+>> 	* declare fd as volatile (Petri)
+>> 	* add info test to CI
 >> v3:
->>          * put igt_describe() before igt_subtest() (Petri)
+>> 	* put igt_describe() before igt_subtest() and igt_subtest_group()
+>> 	  (Petri)
 >>
 >> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>=20
+> Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+
+Thanks for your reviews.
+
+>=20
+>=20
 >> ---
->>   tests/fbdev.c | 29 +++++++++++++++++++++++++++++
->>   1 file changed, 29 insertions(+)
+>>   tests/fbdev.c                         | 53 ++++++++++++++++++++-----=
+--
+>>   tests/intel-ci/fast-feedback.testlist |  1 +
+>>   2 files changed, 41 insertions(+), 13 deletions(-)
 >>
 >> diff --git a/tests/fbdev.c b/tests/fbdev.c
->> index 23ff146c..c4cb357f 100644
+>> index e5efeb93..a803f445 100644
 >> --- a/tests/fbdev.c
 >> +++ b/tests/fbdev.c
->> @@ -155,6 +155,35 @@ static void framebuffer_tests(int fd)
->>                  igt_assert_f(!cmp, "write buffer differs from mapped =
-framebuffer for 0\n");
->>          }
+>> @@ -37,28 +37,17 @@
 >>  =20
->> +       igt_describe("Check write operations on unaligned locations in=
- framebuffer memory");
->> +       igt_subtest("unaligned-write") {
->> +               off_t off;
->> +               size_t len;
->> +               ssize_t ret;
->> +               const unsigned char *pos;
+>>   #include "igt.h"
+>>  =20
+>> -igt_main
+>> +static void mode_tests(int fd)
+>>   {
+>>   	struct fb_var_screeninfo var_info;
+>>   	struct fb_fix_screeninfo fix_info;
+>> -	int fd =3D -1;
+>>  =20
+>> -	/*
+>> -	 * Should this test focus on the fbdev independent of any drm driver=
+,
+>> -	 * or should it look for fbdev of a particular device?
+>> -	 */
+>>   	igt_fixture {
+>> -		fd =3D open("/dev/fb0", O_RDWR);
+>> -		if (fd < 0) {
+>> -			drm_load_module(DRIVER_ANY);
+>> -			fd =3D open("/dev/fb0", O_RDWR);
+>> -		}
+>> -		igt_require_f(fd !=3D -1, "/dev/fb0\n");
+>> -
+>>   		igt_require(ioctl(fd, FBIOGET_VSCREENINFO, &var_info) =3D=3D 0);
+>>   		igt_require(ioctl(fd, FBIOGET_FSCREENINFO, &fix_info) =3D=3D 0);
+>>   	}
+>>  =20
+>> +	igt_describe("Check if screeninfo is valid");
+>>   	igt_subtest("info") {
+>>   		unsigned long size;
+>>  =20
+>> @@ -69,7 +58,17 @@ igt_main
+>>   			     fix_info.line_length,
+>>   			     fix_info.smem_len);
+>>   	}
+>> +}
 >> +
->> +               off =3D pagesize + (pagesize >> 2); // 1.25 * pagesize=
-
->> +               len =3D (pagesize << 2) + (pagesize >> 1); // 4.5 * pa=
-gesize
->> +               igt_require_f((off + len) < fix_info.smem_len, "frameb=
-uffer too small to test\n");
+>> +static void framebuffer_tests(int fd)
+>> +{
+>> +	struct fb_fix_screeninfo fix_info;
 >> +
->> +               /* read at unaligned location and compare */
->> +               memset(map, 0xff, fix_info.smem_len);
->> +               memset(buf, 0, fix_info.smem_len);
->> +               memset(&buf[off], 0x55, len);
->> +               ret =3D pwrite(fd, &buf[off], len, off);
->> +               igt_assert_f(ret =3D=3D (ssize_t)len, "pwrite failed, =
-ret=3D%zd\n", ret);
->> +               pos =3D memchr(map, 0x55, fix_info.smem_len);
->> +               igt_assert_f(pos, "0x55 not found within framebuffer\n=
-");
->> +               igt_assert_f(pos =3D=3D &map[off], "0x55 found at pos =
-%zu, expected %lld\n",
->> +                            pos - map, (long long)off);
->> +               pos =3D memchr(&map[off], 0xff, fix_info.smem_len - of=
-f);
->> +               igt_assert_f(pos, "0xff not found within framebuffer\n=
-");
->> +               igt_assert_f(pos =3D=3D &map[off + len], "0xff found a=
-t pos %zu, expected %lld\n",
->> +                            pos - map, (long long)(off + len));
->=20
->> +               pos =3D memchr(&map[off + len], 0x55, fix_info.smem_le=
-n - off + len);
->=20
-> Spotted this typo in the unaligned read/write, should be
-> 	smem_len - (off + len)
->=20
-> Applied some minor whitespace changes, the goal is to follow the kernel=
-
-> coding style (so that we don't have to keep on switching styles :), and=
-
-> that also allows us to use the same gcc-isms as we expect to find in th=
-e
-> kernel.
->=20
-> Series is
-> Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
-> and pushed.
-
-Thanks a lot!
-
-> -Chris
->=20
+>> +	igt_fixture {
+>> +		igt_require(ioctl(fd, FBIOGET_FSCREENINFO, &fix_info) =3D=3D 0);
+>> +	}
+>>  =20
+>> +	igt_describe("Check mmap operations on framebuffer memory");
+>>   	igt_subtest("mmap") {
+>>   		void *map;
+>>  =20
+>> @@ -82,6 +81,34 @@ igt_main
+>>   		memset(map, 0, fix_info.smem_len);
+>>   		munmap(map, fix_info.smem_len);
+>>   	}
+>> +}
+>> +
+>> +igt_main
+>> +{
+>> +	volatile int fd =3D -1;
+>> +
+>> +	/*
+>> +	 * Should this test focus on the fbdev independent of any drm driver=
+,
+>> +	 * or should it look for fbdev of a particular device?
+>> +	 */
+>> +	igt_fixture {
+>> +		fd =3D open("/dev/fb0", O_RDWR);
+>> +		if (fd < 0) {
+>> +			drm_load_module(DRIVER_ANY);
+>> +			fd =3D open("/dev/fb0", O_RDWR);
+>> +		}
+>> +		igt_require_f(fd !=3D -1, "/dev/fb0\n");
+>> +	}
+>> +
+>> +	igt_describe("Check modesetting");
+>> +	igt_subtest_group {
+>> +		mode_tests(fd);
+>> +	}
+>> +
+>> +	igt_describe("Check framebuffer access");
+>> +	igt_subtest_group {
+>> +		framebuffer_tests(fd);
+>> +	}
+>>  =20
+>>   	igt_fixture {
+>>   		close(fd);
+>> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fa=
+st-feedback.testlist
+>> index 83722f83..a40410a8 100644
+>> --- a/tests/intel-ci/fast-feedback.testlist
+>> +++ b/tests/intel-ci/fast-feedback.testlist
+>> @@ -2,6 +2,7 @@
+>>  =20
+>>   igt@core_auth@basic-auth
+>>   igt@debugfs_test@read_all_entries
+>> +igt@fbdev@info
+>>   igt@fbdev@mmap
+>>   igt@gem_basic@bad-close
+>>   igt@gem_basic@create-close
+>> --=20
+>> 2.29.2
+>>
 
 --=20
 Thomas Zimmermann
@@ -155,7 +203,7 @@ Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
 (HRB 36809, AG N=C3=BCrnberg)
 Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
 
---------------4FAEF125D10F85116ABB64D9
+--------------A5D1341F58D0CC531CACF50F
 Content-Type: application/pgp-keys;
  name="OpenPGP_0x680DC11D530B7A23.asc"
 Content-Transfer-Encoding: quoted-printable
@@ -358,34 +406,34 @@ WSR
 =3DfoRs
 -----END PGP PUBLIC KEY BLOCK-----
 
---------------4FAEF125D10F85116ABB64D9--
+--------------A5D1341F58D0CC531CACF50F--
 
---3ENsbnP9JHfDvVz1h7kVAfoGv2THnsB1w--
+--e6Ox7D036JLsYni2NBEuo8dAbvN7ASNDw--
 
---R0L5UjHdr6ySArNzxEf4jO32igmzOZiJh
+--XERsx2IYI7o94J10le21DZuNRVrB1DzXO
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature"
 
 -----BEGIN PGP SIGNATURE-----
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAl+8Bi0FAwAAAAAACgkQlh/E3EQov+AP
-cg//ciLl8UIVBCtoJ2s/ZczSq7h8Pv2OJO+l129dps+RyMh2lGbgzS3Vg+8/mbV1hxzFjE2HqFWg
-rkKEVOGL26O+WnT8ZwoYvKR8OhFWtCbiUGBKy+OYRnpKsboDUez1mDIkah67vKpd1fO5s2LmNc8p
-PBeaDUQPBXtFtFC7XWgJhwbFxiITjklzMO5AHx7N/vPBZ6wjR3Fk+o+X0dB52kFAWx4cRMuS0pHl
-J4pkmRZZ/vHwOHGzbCrF7jWw2TnNQ4ytJlhErLKGnf8300OjDXdxzIbmEscY4YuOj2kJhJNQy0eH
-1wcpoNudCGnvO+aitfiwGVAhhtq48Qi0UsbwYLKaJ23jBQtS0Im1hMLuO/7tHNKY9Z4NahYoGDKz
-doQDD5M0Y0EdhpfrQXJVaAxs5fyeV4H5SRsMUfx8PqOZY02OpUAXdx4Aedud+YSLsoHg1+EHLQvU
-sK4DVwo7mdPNVJOGtXyJBJs7Yo1mTT9EqJLPBUt8h3woP/JeLrH2btkTYY2bl/nmEFYTPdpAfUeK
-9qKtqJtONMdkcNej3KkeU07/Us1ZZGvLFlQArTyWJqEthoEUDiKzhSr8Q/YwSFhO/53cEN9olIEN
-Agh8NAFHI0/HDW0Gi1mP28vAp96LmbHyO62gzJoI54NOup6b3qPrbzvQx+rb6b5EuQT8y0IvQdck
-g8M=
-=TNH4
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAl+8BkUFAwAAAAAACgkQlh/E3EQov+BK
+hRAAlBOF1ScRGkdHGndjDXSxJUqjlJVZmPeSQwFJKDLNhLd87OAX5rvT+/M+u9hAHrkLv8Uu5dtt
+fh0QYvHpQZ8Oj5y450hh1u7wt/eQwjlNGYwLXEb6z0QnR/95/b+Fm0KQS9E25cBoqykAIlBi21TB
+s65/INDcGcgvMGCykXVN+S5Fj/xT55+yvUcAFAY2Og3vfwmprmjoAk2gZhjqanZRKIU01hw2NJ49
+cHmuuQdJbA3dWQc1se2qwNyBsUcCERW23fKewpQo+9OlygxhD7PyFCF4GHjScjgU4Yuvy9VHRvpi
+Vet2qI1ArOvix9qkSCGpgdtzmu1dvMa+q08Bs9Qff3A7iy7p2KVfMhlRtS8E/g3lwDlNqAR392LD
+971QpwY8/spCUtAK+lnipjKw4FwKYZI+d3asVxjoUo1PsNj9cCuxfxLp25z0eCvVUBVd9JNL8+QC
+4GedpiCeTTN1a41XxA4qyrhOq9xigQ6YTlz3Rn7XmmZYGOsmj54PshLFbFFeruQoCjWei6V0yYg9
+qQCb+oOzxfu+P3agDBM5cTw0A5ysFCiPeou2eY/EaG4HSxawGKNCPx6ngBeRAhIEdt/7sMPHVYjM
+dDsydngi7QSMSQeiaHhXRPxiZFzN+ItLWsVT06TUONsMvoummg+BxULww9dR//8JG6MWJxPKRHh4
+yYI=
+=zudU
 -----END PGP SIGNATURE-----
 
---R0L5UjHdr6ySArNzxEf4jO32igmzOZiJh--
+--XERsx2IYI7o94J10le21DZuNRVrB1DzXO--
 
---===============1565196369==
+--===============1048957425==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -396,4 +444,4 @@ igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
---===============1565196369==--
+--===============1048957425==--
