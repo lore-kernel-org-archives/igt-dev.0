@@ -1,7 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 24 Nov 2020 12:32:51 +0000
-Message-Id: <20201124123251.4147819-1-chris@chris-wilson.co.uk>
+Date: Tue, 24 Nov 2020 12:34:50 +0000
+Message-Id: <20201124123450.4188664-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20201124123251.4147819-1-chris@chris-wilson.co.uk>
+References: <20201124123251.4147819-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH i-g-t] Cast negative debugfs values to u64
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -39,9 +41,9 @@ Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
  tests/i915/gem_eio.c                  | 4 ++--
  tests/i915/gem_mmap_gtt.c             | 2 +-
  tests/i915/sysfs_heartbeat_interval.c | 4 ++--
- tests/i915/sysfs_preempt_timeout.c    | 6 +++---
- tests/i915/sysfs_timeslice_duration.c | 6 +++---
- 7 files changed, 13 insertions(+), 13 deletions(-)
+ tests/i915/sysfs_preempt_timeout.c    | 4 ++--
+ tests/i915/sysfs_timeslice_duration.c | 4 ++--
+ 7 files changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/lib/i915/gem.c b/lib/i915/gem.c
 index 45db8a0fd..93ef4073b 100644
@@ -123,10 +125,10 @@ index fe0cc046c..8270ee7ea 100644
  	igt_assert_eq(delay, saved);
  }
 diff --git a/tests/i915/sysfs_preempt_timeout.c b/tests/i915/sysfs_preempt_timeout.c
-index 3f4939eed..1642caa44 100644
+index 3f4939eed..74afed831 100644
 --- a/tests/i915/sysfs_preempt_timeout.c
 +++ b/tests/i915/sysfs_preempt_timeout.c
-@@ -103,15 +103,15 @@ static void test_invalid(int i915, int engine)
+@@ -103,7 +103,7 @@ static void test_invalid(int i915, int engine)
  	igt_assert(igt_sysfs_scanf(engine, ATTR, "%u", &saved) == 1);
  	igt_debug("Initial %s:%u\n", ATTR, saved);
  
@@ -135,8 +137,7 @@ index 3f4939eed..1642caa44 100644
  	igt_sysfs_scanf(engine, ATTR, "%u", &delay);
  	igt_assert_eq(delay, saved);
  
--	igt_sysfs_printf(engine, ATTR, "%d", -1);
-+	igt_sysfs_printf(engine, ATTR, "%llu", -1ull);
+@@ -111,7 +111,7 @@ static void test_invalid(int i915, int engine)
  	igt_sysfs_scanf(engine, ATTR, "%u", &delay);
  	igt_assert_eq(delay, saved);
  
@@ -146,10 +147,10 @@ index 3f4939eed..1642caa44 100644
  	igt_assert_eq(delay, saved);
  }
 diff --git a/tests/i915/sysfs_timeslice_duration.c b/tests/i915/sysfs_timeslice_duration.c
-index b5b6ded78..fadb07de9 100644
+index b5b6ded78..99e3f907e 100644
 --- a/tests/i915/sysfs_timeslice_duration.c
 +++ b/tests/i915/sysfs_timeslice_duration.c
-@@ -114,15 +114,15 @@ static void test_invalid(int i915, int engine)
+@@ -114,7 +114,7 @@ static void test_invalid(int i915, int engine)
  	igt_assert(igt_sysfs_scanf(engine, ATTR, "%u", &saved) == 1);
  	igt_debug("Initial %s:%u\n", ATTR, saved);
  
@@ -158,8 +159,7 @@ index b5b6ded78..fadb07de9 100644
  	igt_sysfs_scanf(engine, ATTR, "%u", &delay);
  	igt_assert_eq(delay, saved);
  
--	igt_sysfs_printf(engine, ATTR, "%d", -1);
-+	igt_sysfs_printf(engine, ATTR, "%llu", -1ull);
+@@ -122,7 +122,7 @@ static void test_invalid(int i915, int engine)
  	igt_sysfs_scanf(engine, ATTR, "%u", &delay);
  	igt_assert_eq(delay, saved);
  
