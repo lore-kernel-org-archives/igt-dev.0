@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
- [IPv6:2607:f8b0:4864:20::532])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D27B66E43C
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Nov 2020 13:38:48 +0000 (UTC)
-Received: by mail-pg1-x532.google.com with SMTP id f17so8965893pge.6
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Nov 2020 05:38:48 -0800 (PST)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Tue, 24 Nov 2020 15:38:36 +0200
-Message-Id: <20201124133836.30669-2-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20201124133836.30669-1-juhapekka.heikkila@gmail.com>
-References: <20201124133836.30669-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] HAX remove pixel-format tests from
- blacklist
+In-Reply-To: <4ab1f514-83cb-c9e2-1feb-a1c054023e4a@linux.intel.com>
+References: <20201124123251.4147819-1-chris@chris-wilson.co.uk>
+ <20201124123450.4188664-1-chris@chris-wilson.co.uk>
+ <4ab1f514-83cb-c9e2-1feb-a1c054023e4a@linux.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue, 24 Nov 2020 13:41:39 +0000
+Message-ID: <160622529926.28476.13471148278568889360@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] Cast negative debugfs values to u64
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,29 +19,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
----
- tests/intel-ci/blacklist-pre-merge.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Quoting Tvrtko Ursulin (2020-11-24 13:28:15)
+> 
+> On 24/11/2020 12:34, Chris Wilson wrote:
+> > -             igt_sysfs_set(dir, "i915_wedged", "-1");
+> > +             igt_sysfs_printf(dir, "i915_wedged", "%llu", -1ull);
+> 
+> Set to printf conversion is okay. Maybe we could later add 
+> igt_sysfs_setu32 for simplicity but maybe it would also be too much api.
 
-diff --git a/tests/intel-ci/blacklist-pre-merge.txt b/tests/intel-ci/blacklist-pre-merge.txt
-index cddb77c1f..f61cefb03 100644
---- a/tests/intel-ci/blacklist-pre-merge.txt
-+++ b/tests/intel-ci/blacklist-pre-merge.txt
-@@ -170,7 +170,7 @@ igt@gem_tiled_wc
- #
- # Data acquired on 2020-02-20 by Martin Peres
- ###############################################################################
--igt@kms_plane@pixel-format-pipe-[a-d]-planes(-source-clamping)?
-+#igt@kms_plane@pixel-format-pipe-[a-d]-planes(-source-clamping)?
- 
- 
- ###############################################################################
--- 
-2.28.0
-
+Yup, I thought printf would be generic enough to cover all users, and
+was not convinced that wrapping the common integers added enough
+convenience as printf is a ubiquitous API.
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
