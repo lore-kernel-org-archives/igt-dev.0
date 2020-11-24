@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 841A66E409
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Nov 2020 14:19:39 +0000 (UTC)
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue, 24 Nov 2020 14:19:24 +0000
+Message-Id: <20201124141924.108689-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 24 Nov 2020 14:10:47 -0000
-Message-ID: <160622704783.10859.16589384314994445519@emeril.freedesktop.org>
-References: <20201124133836.30669-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20201124133836.30669-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Fplane=3A_optimize_?=
- =?utf-8?q?pixel_format_tests?=
+Subject: [igt-dev] [PATCH i-g-t] tools/intel_gpu_top: Include total package
+ power
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,208 +15,305 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============2087857669=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2087857669==
-Content-Type: multipart/alternative;
- boundary="===============8058710533498370091=="
+With integrated graphics the TDP is shared between the gpu and the cpu,
+knowing the total energy consumed by the package is relevant to
+understanding throttling.
 
---===============8058710533498370091==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+---
+ tools/intel_gpu_top.c | 209 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 141 insertions(+), 68 deletions(-)
 
-== Series Details ==
-
-Series: series starting with [i-g-t,1/2] tests/kms_plane: optimize pixel format tests
-URL   : https://patchwork.freedesktop.org/series/84218/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9382 -> IGTPW_5218
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5218 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - fi-byt-j1900:       [PASS][1] -> [DMESG-WARN][2] ([i915#1982])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9382/fi-byt-j1900/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/fi-byt-j1900/igt@i915_pm_rpm@basic-pci-d3-state.html
-    - fi-bsw-kefka:       [PASS][3] -> [DMESG-WARN][4] ([i915#1982])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9382/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_create@basic:
-    - fi-icl-u2:          [INCOMPLETE][5] -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9382/fi-icl-u2/igt@gem_exec_create@basic.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/fi-icl-u2/igt@gem_exec_create@basic.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-byt-j1900:       [DMESG-WARN][7] ([i915#1982]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9382/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html
-
-  * igt@kms_busy@basic@flip:
-    - fi-kbl-soraka:      [DMESG-WARN][9] ([i915#1982]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9382/fi-kbl-soraka/igt@kms_busy@basic@flip.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/fi-kbl-soraka/igt@kms_busy@basic@flip.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-
-
-Participating hosts (42 -> 37)
-------------------------------
-
-  Additional (1): fi-blb-e6850 
-  Missing    (6): fi-ilk-m540 fi-bdw-5557u fi-hsw-4200u fi-bsw-cyan fi-tgl-y fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5869 -> IGTPW_5218
-
-  CI-20190529: 20190529
-  CI_DRM_9382: ac60f3f3090115d21f028bffa2dcfb67f695c4f2 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5218: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/index.html
-  IGT_5869: 5236e5d4be3ab5e2fedacc32152120b7fb77bf9f @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/index.html
-
---===============8058710533498370091==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/kms_plane: optimize pixel format tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/84218/">https://patchwork.freedesktop.org/series/84218/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9382 -&gt; IGTPW_5218</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5218 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>
-<p>fi-byt-j1900:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9382/fi-byt-j1900/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/fi-byt-j1900/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</p>
-</li>
-<li>
-<p>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9382/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_create@basic:</p>
-<ul>
-<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9382/fi-icl-u2/igt@gem_exec_create@basic.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/fi-icl-u2/igt@gem_exec_create@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-byt-j1900:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9382/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9382/fi-kbl-soraka/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/fi-kbl-soraka/igt@kms_busy@basic@flip.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (42 -&gt; 37)</h2>
-<p>Additional (1): fi-blb-e6850 <br />
-  Missing    (6): fi-ilk-m540 fi-bdw-5557u fi-hsw-4200u fi-bsw-cyan fi-tgl-y fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_5869 -&gt; IGTPW_5218</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9382: ac60f3f3090115d21f028bffa2dcfb67f695c4f2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5218: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5218/index.html<br />
-  IGT_5869: 5236e5d4be3ab5e2fedacc32152120b7fb77bf9f @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============8058710533498370091==--
-
---===============2087857669==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 86de09aa9..f3613eb72 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -71,6 +71,12 @@ struct engine {
+ 	struct pmu_counter sema;
+ };
+ 
++struct rapl {
++	uint64_t power, type;
++	double scale;
++	int fd;
++};
++
+ struct engines {
+ 	unsigned int num_engines;
+ 	unsigned int num_counters;
+@@ -78,9 +84,7 @@ struct engines {
+ 	int fd;
+ 	struct pmu_pair ts;
+ 
+-	int rapl_fd;
+-	double rapl_scale;
+-	const char *rapl_unit;
++	struct rapl r_gpu, r_pkg;
+ 
+ 	int imc_fd;
+ 	double imc_reads_scale;
+@@ -92,7 +96,7 @@ struct engines {
+ 	struct pmu_counter freq_act;
+ 	struct pmu_counter irq;
+ 	struct pmu_counter rc6;
+-	struct pmu_counter rapl;
++	struct pmu_counter s_gpu, s_pkg;
+ 	struct pmu_counter imc_reads;
+ 	struct pmu_counter imc_writes;
+ 
+@@ -108,6 +112,117 @@ struct engines {
+ 
+ };
+ 
++__attribute__((format(scanf,3,4)))
++static int igt_sysfs_scanf(int dir, const char *attr, const char *fmt, ...)
++{
++	FILE *file;
++	int fd;
++	int ret = -1;
++
++	fd = openat(dir, attr, O_RDONLY);
++	if (fd < 0)
++		return -1;
++
++	file = fdopen(fd, "r");
++	if (file) {
++		va_list ap;
++
++		va_start(ap, fmt);
++		ret = vfscanf(file, fmt, ap);
++		va_end(ap);
++
++		fclose(file);
++	} else {
++		close(fd);
++	}
++
++	return ret;
++}
++
++static int rapl_parse(struct rapl *r, const char *str)
++{
++	locale_t locale, oldlocale;
++	bool result = true;
++	char buf[128];
++	int dir;
++
++	memset(r, 0, sizeof(*r));
++
++	dir = open("/sys/devices/power", O_RDONLY);
++	if (dir < 0)
++		return -errno;
++
++	/* Replace user environment with plain C to match kernel format */
++	locale = newlocale(LC_ALL, "C", 0);
++	oldlocale = uselocale(locale);
++
++	result &= igt_sysfs_scanf(dir, "type", "%"PRIu64, &r->type) == 1;
++
++	snprintf(buf, sizeof(buf), "events/energy-%s", str);
++	result &= igt_sysfs_scanf(dir, buf, "event=%"PRIx64, &r->power) == 1;
++
++	snprintf(buf, sizeof(buf), "events/energy-%s.scale", str);
++	result &= igt_sysfs_scanf(dir, buf, "%lf", &r->scale) == 1;
++
++	uselocale(oldlocale);
++	freelocale(locale);
++
++	close(dir);
++
++	if (!result)
++		return -EINVAL;
++
++	if (isnan(r->scale) || !r->scale)
++		return -ERANGE;
++
++	return 0;
++}
++
++static int rapl_open(struct rapl *r, const char *domain)
++{
++	r->fd = rapl_parse(r, domain);
++	if (r->fd < 0)
++		goto err;
++
++	r->fd = igt_perf_open(r->type, r->power);
++	if (r->fd < 0) {
++		r->fd = -errno;
++		goto err;
++	}
++
++	return 0;
++
++err:
++	errno = 0;
++	return r->fd;
++}
++
++static int gpu_power_open(struct rapl *r)
++{
++	return rapl_open(r, "gpu");
++}
++
++static int pkg_power_open(struct rapl *r)
++{
++	return rapl_open(r, "pkg");
++}
++
++static inline bool rapl_valid(struct rapl *r)
++{
++	return r->fd >= 0;
++}
++
++static inline int ram_power_open(struct rapl *r)
++{
++	return rapl_open(r, "ram");
++}
++
++static inline void rapl_close(struct rapl *r)
++{
++	close(r->fd);
++	r->fd = -1;
++}
++
+ static uint64_t
+ get_pmu_config(int dirfd, const char *name, const char *counter)
+ {
+@@ -357,38 +472,6 @@ static double filename_to_double(const char *filename)
+ 	return v;
+ }
+ 
+-#define RAPL_ROOT "/sys/devices/power/"
+-#define RAPL_EVENT "/sys/devices/power/events/"
+-
+-static uint64_t rapl_type_id(void)
+-{
+-	return filename_to_u64(RAPL_ROOT "type", 10);
+-}
+-
+-static uint64_t rapl_gpu_power(void)
+-{
+-	return filename_to_u64(RAPL_EVENT "energy-gpu", 0);
+-}
+-
+-static double rapl_gpu_power_scale(void)
+-{
+-	return filename_to_double(RAPL_EVENT "energy-gpu.scale");
+-}
+-
+-static const char *rapl_gpu_power_unit(void)
+-{
+-	char buf[32];
+-
+-	if (filename_to_buf(RAPL_EVENT "energy-gpu.unit",
+-			    buf, sizeof(buf)) == 0)
+-		if (!strcmp(buf, "Joules"))
+-			return strdup("Watts");
+-		else
+-			return strdup(buf);
+-	else
+-		return NULL;
+-}
+-
+ #define IMC_ROOT "/sys/devices/uncore_imc/"
+ #define IMC_EVENT "/sys/devices/uncore_imc/events/"
+ 
+@@ -516,23 +599,9 @@ static int pmu_init(struct engines *engines)
+ 		}
+ 	}
+ 
+-	engines->rapl_fd = -1;
+-	if (!engines->discrete && rapl_type_id()) {
+-		engines->rapl_scale = rapl_gpu_power_scale();
+-		engines->rapl_unit = rapl_gpu_power_unit();
+-		if (!engines->rapl_unit)
+-			return -1;
+-
+-		engines->rapl.config = rapl_gpu_power();
+-		if (!engines->rapl.config)
+-			return -1;
+-
+-		engines->rapl_fd = igt_perf_open(rapl_type_id(),
+-						 engines->rapl.config);
+-		if (engines->rapl_fd < 0)
+-			return -1;
+-
+-		engines->rapl.present = true;
++	if (!engines->discrete) {
++		engines->s_gpu.present = gpu_power_open(&engines->r_gpu) >= 0;
++		engines->s_pkg.present = pkg_power_open(&engines->r_pkg) >= 0;
+ 	}
+ 
+ 	engines->imc_fd = -1;
+@@ -653,9 +722,13 @@ static void pmu_sample(struct engines *engines)
+ 
+ 	engines->ts.prev = engines->ts.cur;
+ 
+-	if (engines->rapl_fd >= 0)
+-		__update_sample(&engines->rapl,
+-				pmu_read_single(engines->rapl_fd));
++	if (engines->s_gpu.present)
++		__update_sample(&engines->s_gpu,
++				pmu_read_single(engines->r_gpu.fd));
++
++	if (engines->s_pkg.present)
++		__update_sample(&engines->s_pkg,
++				pmu_read_single(engines->r_pkg.fd));
+ 
+ 	if (engines->imc_fd >= 0) {
+ 		pmu_read_multi(engines->imc_fd, 2, val);
+@@ -1076,8 +1149,8 @@ print_header(const struct igt_device_card *card,
+ 		.items = rc6_items,
+ 	};
+ 	struct cnt_item power_items[] = {
+-		{ &engines->rapl, 4, 2, 1.0, t, engines->rapl_scale, "value",
+-		  "W" },
++		{ &engines->s_gpu, 4, 2, 1.0, t, engines->r_gpu.scale, "gpu", "W" },
++		{ &engines->s_pkg, 4, 2, 1.0, t, engines->r_pkg.scale, "pkg", "W" },
+ 		{ NULL, 0, 0, 0.0, 0.0, 0.0, "unit", "W" },
+ 		{ },
+ 	};
+@@ -1108,17 +1181,17 @@ print_header(const struct igt_device_card *card,
+ 
+ 		if (lines++ < con_h) {
+ 			printf("intel-gpu-top: %s - ", card->card);
+-			if (!engines->discrete)
+-				printf("%s/%s MHz;  %s%% RC6; %s %s; %s irqs/s\n",
+-					freq_items[1].buf, freq_items[0].buf,
+-					rc6_items[0].buf, power_items[0].buf,
+-					engines->rapl_unit,
+-					irq_items[0].buf);
+-			else
+-				printf("%s/%s MHz;  %s%% RC6; %s irqs/s\n",
+-					freq_items[1].buf, freq_items[0].buf,
+-					rc6_items[0].buf, irq_items[0].buf);
++			printf("%s/%s MHz;  %s%% RC6; ",
++			       freq_items[1].buf, freq_items[0].buf,
++			       rc6_items[0].buf);
++			if (engines->s_gpu.present) {
++				printf("%s/%s W; ",
++				       power_items[0].buf,
++				       power_items[1].buf);
++			}
++			printf("%s irqs/s\n", irq_items[0].buf);
+ 		}
++
+ 		if (lines++ < con_h)
+ 			printf("\n");
+ 	}
+-- 
+2.29.2
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============2087857669==--
