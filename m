@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 25 Nov 2020 10:04:40 +0000
-Message-Id: <20201125100440.507431-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20201124232751.445582-2-chris@chris-wilson.co.uk>
-References: <20201124232751.445582-2-chris@chris-wilson.co.uk>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A1816E88F
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Nov 2020 10:12:52 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+Date: Wed, 25 Nov 2020 10:12:50 +0000
+Message-ID: <878cfa7af6774e0b9b44f57a2f9e74c7@intel.com>
+References: <20201123150312.55544-1-anandx.ram.moon@intel.com>
+In-Reply-To: <20201123150312.55544-1-anandx.ram.moon@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tools/intel_gpu_top: Consolidate imc to use
- pmu_counter
+Subject: Re: [igt-dev] [i g t] tests/kms_setmode: basic Fix the testcase
+ failure on 4K monitors
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,189 +18,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
+To: "Ram Moon, AnandX" <anandx.ram.moon@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Rm9sbG93IHRoZSBzYW1lIHBhdHRlcm4gYXMgcmFwbCBmb3IgaW1jLCBhbmQgY29uc29saWRhdGUg
-ZXZlcnl0aGluZyB0bwp3b3JrIG9uIHN0cnVjdCBwbXVfY291bnRlci4KCnYyOiBDb21iaW5lIHJh
-cGxfcGFyc2UvaW1jX3BhcnNlIGludG8gcG11X3BhcnNlCgpTaWduZWQtb2ZmLWJ5OiBDaHJpcyBX
-aWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KQ2M6IFR2cnRrbyBVcnN1bGluIDx0dnJ0
-a28udXJzdWxpbkBpbnRlbC5jb20+Ci0tLQogdG9vbHMvaW50ZWxfZ3B1X3RvcC5jIHwgMjQ4ICsr
-KysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQs
-IDY1IGluc2VydGlvbnMoKyksIDE4MyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS90b29scy9p
-bnRlbF9ncHVfdG9wLmMgYi90b29scy9pbnRlbF9ncHVfdG9wLmMKaW5kZXggMGE0OWNmZWNjLi5m
-ZmRhYzI4MGMgMTAwNjQ0Ci0tLSBhL3Rvb2xzL2ludGVsX2dwdV90b3AuYworKysgYi90b29scy9p
-bnRlbF9ncHVfdG9wLmMKQEAgLTU1LDYgKzU1LDcgQEAgc3RydWN0IHBtdV9jb3VudGVyIHsKIAl1
-bnNpZ25lZCBpbnQgaWR4OwogCXN0cnVjdCBwbXVfcGFpciB2YWw7CiAJZG91YmxlIHNjYWxlOwor
-CWNvbnN0IGNoYXIgKnVuaXRzOwogCWJvb2wgcHJlc2VudDsKIH07CiAKQEAgLTg1LDE3ICs4Niwx
-NCBAQCBzdHJ1Y3QgZW5naW5lcyB7CiAJdW5zaWduZWQgaW50IG51bV9yYXBsOwogCiAJaW50IGlt
-Y19mZDsKLQlkb3VibGUgaW1jX3JlYWRzX3NjYWxlOwotCWNvbnN0IGNoYXIgKmltY19yZWFkc191
-bml0OwotCWRvdWJsZSBpbWNfd3JpdGVzX3NjYWxlOwotCWNvbnN0IGNoYXIgKmltY193cml0ZXNf
-dW5pdDsKKwlzdHJ1Y3QgcG11X2NvdW50ZXIgaW1jX3JlYWRzOworCXN0cnVjdCBwbXVfY291bnRl
-ciBpbWNfd3JpdGVzOworCXVuc2lnbmVkIGludCBudW1faW1jOwogCiAJc3RydWN0IHBtdV9jb3Vu
-dGVyIGZyZXFfcmVxOwogCXN0cnVjdCBwbXVfY291bnRlciBmcmVxX2FjdDsKIAlzdHJ1Y3QgcG11
-X2NvdW50ZXIgaXJxOwogCXN0cnVjdCBwbXVfY291bnRlciByYzY7Ci0Jc3RydWN0IHBtdV9jb3Vu
-dGVyIGltY19yZWFkczsKLQlzdHJ1Y3QgcG11X2NvdW50ZXIgaW1jX3dyaXRlczsKIAogCWJvb2wg
-ZGlzY3JldGU7CiAJY2hhciAqZGV2aWNlOwpAQCAtMTM2LDE0ICsxMzQsMTQgQEAgc3RhdGljIGlu
-dCBpZ3Rfc3lzZnNfc2NhbmYoaW50IGRpciwgY29uc3QgY2hhciAqYXR0ciwgY29uc3QgY2hhciAq
-Zm10LCAuLi4pCiAJcmV0dXJuIHJldDsKIH0KIAotc3RhdGljIGludCByYXBsX3BhcnNlKHN0cnVj
-dCBwbXVfY291bnRlciAqcG11LCBjb25zdCBjaGFyICpzdHIpCitzdGF0aWMgaW50IHBtdV9wYXJz
-ZShzdHJ1Y3QgcG11X2NvdW50ZXIgKnBtdSwgY29uc3QgY2hhciAqcGF0aCwgY29uc3QgY2hhciAq
-c3RyKQogewogCWxvY2FsZV90IGxvY2FsZSwgb2xkbG9jYWxlOwogCWJvb2wgcmVzdWx0ID0gdHJ1
-ZTsKIAljaGFyIGJ1ZlsxMjhdID0ge307CiAJaW50IGRpcjsKIAotCWRpciA9IG9wZW4oIi9zeXMv
-ZGV2aWNlcy9wb3dlciIsIE9fUkRPTkxZKTsKKwlkaXIgPSBvcGVuKHBhdGgsIE9fUkRPTkxZKTsK
-IAlpZiAoZGlyIDwgMCkKIAkJcmV0dXJuIC1lcnJubzsKIApAQCAtMTYwLDEwICsxNTgsOCBAQCBz
-dGF0aWMgaW50IHJhcGxfcGFyc2Uoc3RydWN0IHBtdV9jb3VudGVyICpwbXUsIGNvbnN0IGNoYXIg
-KnN0cikKIAlyZXN1bHQgJj0gaWd0X3N5c2ZzX3NjYW5mKGRpciwgYnVmLCAiJWxmIiwgJnBtdS0+
-c2NhbGUpID09IDE7CiAKIAlzbnByaW50ZihidWYsIHNpemVvZihidWYpIC0gMSwgImV2ZW50cy9l
-bmVyZ3ktJXMudW5pdCIsIHN0cik7Ci0JaWYgKGlndF9zeXNmc19zY2FuZihkaXIsIGJ1ZiwgIiUx
-MjdzIiwgYnVmKSA9PSAxICYmCi0JICAgIHN0cmNtcChidWYsICJKb3VsZXMiKSkKLQkJZnByaW50
-ZihzdGRlcnIsICJVbmV4cGVjdGVkIHVuaXRzIGZvciBSQVBMICVzOiBmb3VuZCAlc1xuIiwKLQkJ
-CXN0ciwgYnVmKTsKKwlyZXN1bHQgJj0gaWd0X3N5c2ZzX3NjYW5mKGRpciwgYnVmLCAiJTEyN3Mi
-LCBidWYpID09IDE7CisJcG11LT51bml0cyA9IHN0cmR1cChidWYpOwogCiAJdXNlbG9jYWxlKG9s
-ZGxvY2FsZSk7CiAJZnJlZWxvY2FsZShsb2NhbGUpOwpAQCAtMTc5LDYgKzE3NSwxMSBAQCBzdGF0
-aWMgaW50IHJhcGxfcGFyc2Uoc3RydWN0IHBtdV9jb3VudGVyICpwbXUsIGNvbnN0IGNoYXIgKnN0
-cikKIAlyZXR1cm4gMDsKIH0KIAorc3RhdGljIGludCByYXBsX3BhcnNlKHN0cnVjdCBwbXVfY291
-bnRlciAqcG11LCBjb25zdCBjaGFyICpzdHIpCit7CisJcmV0dXJuIHBtdV9wYXJzZShwbXUsICIv
-c3lzL2RldmljZXMvcG93ZXIiLCBzdHIpOworfQorCiBzdGF0aWMgdm9pZAogcmFwbF9vcGVuKHN0
-cnVjdCBwbXVfY291bnRlciAqcG11LAogCSAgY29uc3QgY2hhciAqZG9tYWluLApAQCAtNDAwLDE0
-NiArNDAxLDU3IEBAIHN0YXRpYyBzdHJ1Y3QgZW5naW5lcyAqZGlzY292ZXJfZW5naW5lcyhjaGFy
-ICpkZXZpY2UpCiAJcmV0dXJuIGVuZ2luZXM7CiB9CiAKLXN0YXRpYyBpbnQKLWZpbGVuYW1lX3Rv
-X2J1Zihjb25zdCBjaGFyICpmaWxlbmFtZSwgY2hhciAqYnVmLCB1bnNpZ25lZCBpbnQgYnVmc2l6
-ZSkKLXsKLQlpbnQgZmQsIGVycjsKLQlzc2l6ZV90IHJldDsKLQotCWZkID0gb3BlbihmaWxlbmFt
-ZSwgT19SRE9OTFkpOwotCWlmIChmZCA8IDApCi0JCXJldHVybiAtMTsKLQotCXJldCA9IHJlYWQo
-ZmQsIGJ1ZiwgYnVmc2l6ZSAtIDEpOwotCWVyciA9IGVycm5vOwotCWNsb3NlKGZkKTsKLQlpZiAo
-cmV0IDwgMSkgewotCQllcnJubyA9IHJldCA8IDAgPyBlcnIgOiBFTk9NU0c7Ci0KLQkJcmV0dXJu
-IC0xOwotCX0KLQotCWlmIChyZXQgPiAxICYmIGJ1ZltyZXQgLSAxXSA9PSAnXG4nKQotCQlidWZb
-cmV0IC0gMV0gPSAnXDAnOwotCWVsc2UKLQkJYnVmW3JldF0gPSAnXDAnOwotCi0JcmV0dXJuIDA7
-Ci19Ci0KLXN0YXRpYyB1aW50NjRfdCBmaWxlbmFtZV90b191NjQoY29uc3QgY2hhciAqZmlsZW5h
-bWUsIGludCBiYXNlKQotewotCWNoYXIgYnVmWzY0XSwgKmI7Ci0KLQlpZiAoZmlsZW5hbWVfdG9f
-YnVmKGZpbGVuYW1lLCBidWYsIHNpemVvZihidWYpKSkKLQkJcmV0dXJuIDA7Ci0KLQkvKgotCSAq
-IEhhbmRsZSBib3RoIHNpbmdsZSBpbnRlZ2VyIGFuZCBrZXk9dmFsdWUgZm9ybWF0cyBieSBza2lw
-cGluZwotCSAqIGxlYWRpbmcgbm9uLWRpZ2l0cy4KLQkgKi8KLQliID0gYnVmOwotCXdoaWxlICgq
-YiAmJiAhaXNkaWdpdCgqYikpCi0JCWIrKzsKLQotCXJldHVybiBzdHJ0b3VsbChiLCBOVUxMLCBi
-YXNlKTsKLX0KLQotc3RhdGljIGRvdWJsZSBmaWxlbmFtZV90b19kb3VibGUoY29uc3QgY2hhciAq
-ZmlsZW5hbWUpCi17Ci0JY2hhciAqb2xkbG9jYWxlOwotCWNoYXIgYnVmWzgwXTsKLQlkb3VibGUg
-djsKLQotCWlmIChmaWxlbmFtZV90b19idWYoZmlsZW5hbWUsIGJ1Ziwgc2l6ZW9mKGJ1ZikpKQot
-CQlyZXR1cm4gMDsKLQotCW9sZGxvY2FsZSA9IHNldGxvY2FsZShMQ19BTEwsICJDIik7Ci0JdiA9
-IHN0cnRvZChidWYsIE5VTEwpOwotCXNldGxvY2FsZShMQ19BTEwsIG9sZGxvY2FsZSk7Ci0KLQly
-ZXR1cm4gdjsKLX0KLQotI2RlZmluZSBJTUNfUk9PVCAiL3N5cy9kZXZpY2VzL3VuY29yZV9pbWMv
-IgotI2RlZmluZSBJTUNfRVZFTlQgIi9zeXMvZGV2aWNlcy91bmNvcmVfaW1jL2V2ZW50cy8iCisj
-ZGVmaW5lIF9vcGVuX3BtdSh0eXBlLCBjbnQsIHBtdSwgZmQpIFwKKyh7IFwKKwlpbnQgZmRfXzsg
-XAorXAorCWZkX18gPSBpZ3RfcGVyZl9vcGVuX2dyb3VwKCh0eXBlKSwgKHBtdSktPmNvbmZpZywg
-KGZkKSk7IFwKKwlpZiAoZmRfXyA+PSAwKSB7IFwKKwkJaWYgKChmZCkgPT0gLTEpIFwKKwkJCShm
-ZCkgPSBmZF9fOyBcCisJCShwbXUpLT5wcmVzZW50ID0gdHJ1ZTsgXAorCQkocG11KS0+aWR4ID0g
-KGNudCkrKzsgXAorCX0gXAorXAorCWZkX187IFwKK30pCiAKLXN0YXRpYyB1aW50NjRfdCBpbWNf
-dHlwZV9pZCh2b2lkKQorc3RhdGljIGludCBpbWNfcGFyc2Uoc3RydWN0IHBtdV9jb3VudGVyICpw
-bXUsIGNvbnN0IGNoYXIgKnN0cikKIHsKLQlyZXR1cm4gZmlsZW5hbWVfdG9fdTY0KElNQ19ST09U
-ICJ0eXBlIiwgMTApOworCXJldHVybiBwbXVfcGFyc2UocG11LCAiL3N5cy9kZXZpY2VzL3VuY29y
-ZV9pbWMiLCBzdHIpOwogfQogCi1zdGF0aWMgdWludDY0X3QgaW1jX2RhdGFfcmVhZHModm9pZCkK
-K3N0YXRpYyB2b2lkCitpbWNfb3BlbihzdHJ1Y3QgcG11X2NvdW50ZXIgKnBtdSwKKwkgY29uc3Qg
-Y2hhciAqZG9tYWluLAorCSBzdHJ1Y3QgZW5naW5lcyAqZW5naW5lcykKIHsKLQlyZXR1cm4gZmls
-ZW5hbWVfdG9fdTY0KElNQ19FVkVOVCAiZGF0YV9yZWFkcyIsIDApOwotfQorCWludCBmZDsKIAot
-c3RhdGljIGRvdWJsZSBpbWNfZGF0YV9yZWFkc19zY2FsZSh2b2lkKQotewotCXJldHVybiBmaWxl
-bmFtZV90b19kb3VibGUoSU1DX0VWRU5UICJkYXRhX3JlYWRzLnNjYWxlIik7Ci19CisJaWYgKGlt
-Y19wYXJzZShwbXUsIGRvbWFpbikgPCAwKQorCQlyZXR1cm47CiAKLXN0YXRpYyBjb25zdCBjaGFy
-ICppbWNfZGF0YV9yZWFkc191bml0KHZvaWQpCi17Ci0JY2hhciBidWZbMzJdOworCWZkID0gaWd0
-X3BlcmZfb3Blbl9ncm91cChwbXUtPnR5cGUsIHBtdS0+Y29uZmlnLCBlbmdpbmVzLT5pbWNfZmQp
-OworCWlmIChmZCA8IDApCisJCXJldHVybjsKIAotCWlmIChmaWxlbmFtZV90b19idWYoSU1DX0VW
-RU5UICJkYXRhX3JlYWRzLnVuaXQiLCBidWYsIHNpemVvZihidWYpKSA9PSAwKQotCQlyZXR1cm4g
-c3RyZHVwKGJ1Zik7Ci0JZWxzZQotCQlyZXR1cm4gTlVMTDsKLX0KKwlpZiAoZW5naW5lcy0+aW1j
-X2ZkID09IC0xKQorCQllbmdpbmVzLT5pbWNfZmQgPSBmZDsKIAotc3RhdGljIHVpbnQ2NF90IGlt
-Y19kYXRhX3dyaXRlcyh2b2lkKQotewotCXJldHVybiBmaWxlbmFtZV90b191NjQoSU1DX0VWRU5U
-ICJkYXRhX3dyaXRlcyIsIDApOworCXBtdS0+aWR4ID0gZW5naW5lcy0+bnVtX2ltYysrOworCXBt
-dS0+cHJlc2VudCA9IHRydWU7CiB9CiAKLXN0YXRpYyBkb3VibGUgaW1jX2RhdGFfd3JpdGVzX3Nj
-YWxlKHZvaWQpCitzdGF0aWMgdm9pZCBpbWNfd3JpdGVzX29wZW4oc3RydWN0IHBtdV9jb3VudGVy
-ICpwbXUsIHN0cnVjdCBlbmdpbmVzICplbmdpbmVzKQogewotCXJldHVybiBmaWxlbmFtZV90b19k
-b3VibGUoSU1DX0VWRU5UICJkYXRhX3dyaXRlcy5zY2FsZSIpOworCWltY19vcGVuKHBtdSwgImRh
-dGFfd3JpdGVzIiwgZW5naW5lcyk7CiB9CiAKLXN0YXRpYyBjb25zdCBjaGFyICppbWNfZGF0YV93
-cml0ZXNfdW5pdCh2b2lkKQorc3RhdGljIHZvaWQgaW1jX3JlYWRzX29wZW4oc3RydWN0IHBtdV9j
-b3VudGVyICpwbXUsIHN0cnVjdCBlbmdpbmVzICplbmdpbmVzKQogewotCWNoYXIgYnVmWzMyXTsK
-LQotCWlmIChmaWxlbmFtZV90b19idWYoSU1DX0VWRU5UICJkYXRhX3dyaXRlcy51bml0IiwKLQkJ
-CSAgICBidWYsIHNpemVvZihidWYpKSA9PSAwKQotCQlyZXR1cm4gc3RyZHVwKGJ1Zik7Ci0JZWxz
-ZQotCQlyZXR1cm4gTlVMTDsKKwlpbWNfb3BlbihwbXUsICJkYXRhX3JlYWRzIiwgZW5naW5lcyk7
-CiB9CiAKLSNkZWZpbmUgX29wZW5fcG11KHR5cGUsIGNudCwgcG11LCBmZCkgXAotKHsgXAotCWlu
-dCBmZF9fOyBcCi1cCi0JZmRfXyA9IGlndF9wZXJmX29wZW5fZ3JvdXAoKHR5cGUpLCAocG11KS0+
-Y29uZmlnLCAoZmQpKTsgXAotCWlmIChmZF9fID49IDApIHsgXAotCQlpZiAoKGZkKSA9PSAtMSkg
-XAotCQkJKGZkKSA9IGZkX187IFwKLQkJKHBtdSktPnByZXNlbnQgPSB0cnVlOyBcCi0JCShwbXUp
-LT5pZHggPSAoY250KSsrOyBcCi0JfSBcCi1cCi0JZmRfXzsgXAotfSkKLQotI2RlZmluZSBfb3Bl
-bl9pbWMoY250LCBwbXUsIGZkKSBcCi0oeyBcCi0JaW50IGZkX187IFwKLVwKLQlmZF9fID0gaWd0
-X3BlcmZfb3Blbl9ncm91cChpbWNfdHlwZV9pZCgpLCAocG11KS0+Y29uZmlnLCAoZmQpKTsgXAot
-CWlmIChmZF9fID49IDApIHsgXAotCQlpZiAoKGZkKSA9PSAtMSkgXAotCQkJKGZkKSA9IGZkX187
-IFwKLQkJKHBtdSktPnByZXNlbnQgPSB0cnVlOyBcCi0JCShwbXUpLT5pZHggPSAoY250KSsrOyBc
-Ci0JfSBcCi1cCi0JZmRfXzsgXAotfSkKLQogc3RhdGljIGludCBwbXVfaW5pdChzdHJ1Y3QgZW5n
-aW5lcyAqZW5naW5lcykKIHsKIAl1bnNpZ25lZCBpbnQgaTsKQEAgLTU5NSwzOCArNTA3LDggQEAg
-c3RhdGljIGludCBwbXVfaW5pdChzdHJ1Y3QgZW5naW5lcyAqZW5naW5lcykKIAl9CiAKIAllbmdp
-bmVzLT5pbWNfZmQgPSAtMTsKLQlpZiAoaW1jX3R5cGVfaWQoKSkgewotCQl1bnNpZ25lZCBpbnQg
-bnVtID0gMDsKLQotCQllbmdpbmVzLT5pbWNfcmVhZHNfc2NhbGUgPSBpbWNfZGF0YV9yZWFkc19z
-Y2FsZSgpOwotCQllbmdpbmVzLT5pbWNfd3JpdGVzX3NjYWxlID0gaW1jX2RhdGFfd3JpdGVzX3Nj
-YWxlKCk7Ci0KLQkJZW5naW5lcy0+aW1jX3JlYWRzX3VuaXQgPSBpbWNfZGF0YV9yZWFkc191bml0
-KCk7Ci0JCWlmICghZW5naW5lcy0+aW1jX3JlYWRzX3VuaXQpCi0JCQlyZXR1cm4gLTE7Ci0KLQkJ
-ZW5naW5lcy0+aW1jX3dyaXRlc191bml0ID0gaW1jX2RhdGFfd3JpdGVzX3VuaXQoKTsKLQkJaWYg
-KCFlbmdpbmVzLT5pbWNfd3JpdGVzX3VuaXQpCi0JCQlyZXR1cm4gLTE7Ci0KLQkJZW5naW5lcy0+
-aW1jX3JlYWRzLmNvbmZpZyA9IGltY19kYXRhX3JlYWRzKCk7Ci0JCWlmICghZW5naW5lcy0+aW1j
-X3JlYWRzLmNvbmZpZykKLQkJCXJldHVybiAtMTsKLQotCQllbmdpbmVzLT5pbWNfd3JpdGVzLmNv
-bmZpZyA9IGltY19kYXRhX3dyaXRlcygpOwotCQlpZiAoIWVuZ2luZXMtPmltY193cml0ZXMuY29u
-ZmlnKQotCQkJcmV0dXJuIC0xOwotCi0JCWZkID0gX29wZW5faW1jKG51bSwgJmVuZ2luZXMtPmlt
-Y19yZWFkcywgZW5naW5lcy0+aW1jX2ZkKTsKLQkJaWYgKGZkIDwgMCkKLQkJCXJldHVybiAtMTsK
-LQkJZmQgPSBfb3Blbl9pbWMobnVtLCAmZW5naW5lcy0+aW1jX3dyaXRlcywgZW5naW5lcy0+aW1j
-X2ZkKTsKLQkJaWYgKGZkIDwgMCkKLQkJCXJldHVybiAtMTsKLQotCQllbmdpbmVzLT5pbWNfcmVh
-ZHMucHJlc2VudCA9IHRydWU7Ci0JCWVuZ2luZXMtPmltY193cml0ZXMucHJlc2VudCA9IHRydWU7
-Ci0JfQorCWltY19yZWFkc19vcGVuKCZlbmdpbmVzLT5pbWNfcmVhZHMsIGVuZ2luZXMpOworCWlt
-Y193cml0ZXNfb3BlbigmZW5naW5lcy0+aW1jX3dyaXRlcywgZW5naW5lcyk7CiAKIAlyZXR1cm4g
-MDsKIH0KQEAgLTY5MiwxMyArNTc0LDYgQEAgc3RhdGljIHZvaWQgcG11X3NhbXBsZShzdHJ1Y3Qg
-ZW5naW5lcyAqZW5naW5lcykKIAl1bnNpZ25lZCBpbnQgaTsKIAogCWVuZ2luZXMtPnRzLnByZXYg
-PSBlbmdpbmVzLT50cy5jdXI7Ci0KLQlpZiAoZW5naW5lcy0+aW1jX2ZkID49IDApIHsKLQkJcG11
-X3JlYWRfbXVsdGkoZW5naW5lcy0+aW1jX2ZkLCAyLCB2YWwpOwotCQl1cGRhdGVfc2FtcGxlKCZl
-bmdpbmVzLT5pbWNfcmVhZHMsIHZhbCk7Ci0JCXVwZGF0ZV9zYW1wbGUoJmVuZ2luZXMtPmltY193
-cml0ZXMsIHZhbCk7Ci0JfQotCiAJZW5naW5lcy0+dHMuY3VyID0gcG11X3JlYWRfbXVsdGkoZW5n
-aW5lcy0+ZmQsIG51bV92YWwsIHZhbCk7CiAKIAl1cGRhdGVfc2FtcGxlKCZlbmdpbmVzLT5mcmVx
-X3JlcSwgdmFsKTsKQEAgLTcxOSw2ICs1OTQsMTIgQEAgc3RhdGljIHZvaWQgcG11X3NhbXBsZShz
-dHJ1Y3QgZW5naW5lcyAqZW5naW5lcykKIAkJdXBkYXRlX3NhbXBsZSgmZW5naW5lcy0+cl9ncHUs
-IHZhbCk7CiAJCXVwZGF0ZV9zYW1wbGUoJmVuZ2luZXMtPnJfcGtnLCB2YWwpOwogCX0KKworCWlm
-IChlbmdpbmVzLT5udW1faW1jKSB7CisJCXBtdV9yZWFkX211bHRpKGVuZ2luZXMtPmltY19mZCwg
-ZW5naW5lcy0+bnVtX2ltYywgdmFsKTsKKwkJdXBkYXRlX3NhbXBsZSgmZW5naW5lcy0+aW1jX3Jl
-YWRzLCB2YWwpOworCQl1cGRhdGVfc2FtcGxlKCZlbmdpbmVzLT5pbWNfd3JpdGVzLCB2YWwpOwor
-CX0KIH0KIAogc3RhdGljIGNvbnN0IGNoYXIgKmJhcnNbXSA9IHsgIiAiLCAi4paPIiwgIuKWjiIs
-ICLilo0iLCAi4paMIiwgIuKWiyIsICLilooiLCAi4paJIiwgIuKWiCIgfTsKQEAgLTExNzIsOSAr
-MTA1Myw5IEBAIHN0YXRpYyBpbnQKIHByaW50X2ltYyhzdHJ1Y3QgZW5naW5lcyAqZW5naW5lcywg
-ZG91YmxlIHQsIGludCBsaW5lcywgaW50IGNvbl93LCBpbnQgY29uX2gpCiB7CiAJc3RydWN0IGNu
-dF9pdGVtIGltY19pdGVtc1tdID0gewotCQl7ICZlbmdpbmVzLT5pbWNfcmVhZHMsIDYsIDAsIDEu
-MCwgdCwgZW5naW5lcy0+aW1jX3JlYWRzX3NjYWxlLAorCQl7ICZlbmdpbmVzLT5pbWNfcmVhZHMs
-IDYsIDAsIDEuMCwgdCwgZW5naW5lcy0+aW1jX3JlYWRzLnNjYWxlLAogCQkgICJyZWFkcyIsICJy
-ZCIgfSwKLQkJeyAmZW5naW5lcy0+aW1jX3dyaXRlcywgNiwgMCwgMS4wLCB0LCBlbmdpbmVzLT5p
-bWNfd3JpdGVzX3NjYWxlLAorCQl7ICZlbmdpbmVzLT5pbWNfd3JpdGVzLCA2LCAwLCAxLjAsIHQs
-IGVuZ2luZXMtPmltY193cml0ZXMuc2NhbGUsCiAJCSAgIndyaXRlcyIsICJ3ciIgfSwKIAkJeyBO
-VUxMLCAwLCAwLCAwLjAsIDAuMCwgMC4wLCAidW5pdCIgfSwKIAkJeyB9LApAQCAtMTE4OSwxMiAr
-MTA3MCwxNSBAQCBwcmludF9pbWMoc3RydWN0IGVuZ2luZXMgKmVuZ2luZXMsIGRvdWJsZSB0LCBp
-bnQgbGluZXMsIGludCBjb25fdywgaW50IGNvbl9oKQogCX07CiAJaW50IHJldDsKIAorCWlmICgh
-ZW5naW5lcy0+bnVtX2ltYykKKwkJcmV0dXJuIGxpbmVzOworCiAJcmV0ID0gYXNwcmludGYoKGNo
-YXIgKiopJmltY19ncm91cC5kaXNwbGF5X25hbWUsICJJTUMgJXMvcyIsCi0JCQllbmdpbmVzLT5p
-bWNfcmVhZHNfdW5pdCk7CisJCQllbmdpbmVzLT5pbWNfcmVhZHMudW5pdHMpOwogCWFzc2VydChy
-ZXQgPj0gMCk7CiAKIAlyZXQgPSBhc3ByaW50ZigoY2hhciAqKikmaW1jX2l0ZW1zWzJdLnVuaXQs
-ICIlcy9zIiwKLQkJCWVuZ2luZXMtPmltY19yZWFkc191bml0KTsKKwkJCWVuZ2luZXMtPmltY19y
-ZWFkcy51bml0cyk7CiAJYXNzZXJ0KHJldCA+PSAwKTsKIAogCXByaW50X2dyb3Vwcyhncm91cHMp
-OwpAQCAtMTIwNSwxMSArMTA4OSwxMSBAQCBwcmludF9pbWMoc3RydWN0IGVuZ2luZXMgKmVuZ2lu
-ZXMsIGRvdWJsZSB0LCBpbnQgbGluZXMsIGludCBjb25fdywgaW50IGNvbl9oKQogCWlmIChvdXRw
-dXRfbW9kZSA9PSBJTlRFUkFDVElWRSkgewogCQlpZiAobGluZXMrKyA8IGNvbl9oKQogCQkJcHJp
-bnRmKCIgICAgICBJTUMgcmVhZHM6ICAgJXMgJXMvc1xuIiwKLQkJCSAgICAgICBpbWNfaXRlbXNb
-MF0uYnVmLCBlbmdpbmVzLT5pbWNfcmVhZHNfdW5pdCk7CisJCQkgICAgICAgaW1jX2l0ZW1zWzBd
-LmJ1ZiwgZW5naW5lcy0+aW1jX3JlYWRzLnVuaXRzKTsKIAogCQlpZiAobGluZXMrKyA8IGNvbl9o
-KQogCQkJcHJpbnRmKCIgICAgIElNQyB3cml0ZXM6ICAgJXMgJXMvc1xuIiwKLQkJCSAgICAgICBp
-bWNfaXRlbXNbMV0uYnVmLCBlbmdpbmVzLT5pbWNfd3JpdGVzX3VuaXQpOworCQkJICAgICAgIGlt
-Y19pdGVtc1sxXS5idWYsIGVuZ2luZXMtPmltY193cml0ZXMudW5pdHMpOwogCiAJCWlmIChsaW5l
-cysrIDwgY29uX2gpCiAJCQlwcmludGYoIlxuIik7CkBAIC0xNTA5LDkgKzEzOTMsNyBAQCBpbnQg
-bWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpCiAJCQkJCSAgICAgdCwgbGluZXMsIGNvbl93LCBj
-b25faCwKIAkJCQkJICAgICAmY29uc3VtZWQpOwogCi0JCQlpZiAoZW5naW5lcy0+aW1jX2ZkKQot
-CQkJCWxpbmVzID0gcHJpbnRfaW1jKGVuZ2luZXMsIHQsIGxpbmVzLCBjb25fdywKLQkJCQkJCSAg
-Y29uX2gpOworCQkJbGluZXMgPSBwcmludF9pbWMoZW5naW5lcywgdCwgbGluZXMsIGNvbl93LCBj
-b25faCk7CiAKIAkJCWxpbmVzID0gcHJpbnRfZW5naW5lc19oZWFkZXIoZW5naW5lcywgdCwgbGlu
-ZXMsIGNvbl93LAogCQkJCQkJICAgICBjb25faCk7Ci0tIAoyLjI5LjIKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
-dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Anand
+> Moon
+> Sent: Monday, November 23, 2020 5:03 PM
+> To: igt-dev@lists.freedesktop.org; Chris Wilson <chris@chris-wilson.co.uk>
+> Subject: [igt-dev] [i g t] tests/kms_setmode: basic Fix the testcase failure on
+> 4K monitors
+> 
+> From: Chris Wilson <chris@chris-wilson.co.uk>
+> 
+> On 4k monitors kms_setmode basic test case would like to fail with below
+> assertion, by checking the expected frame time should be less than max
+> scanline interval, we improve the test case so that 90% of frame times fall
+> within the one scanline on each side of expected mean.
+> 
+> CRTC[98] [Pipe A] Mode: 3840x2160@60Hz Connectors: DP-2[330] Expected
+> frametime: 16668us; measured 16672.3us +- 1.805us accuracy 0.00% [0.07
+> scanlines]
+> (kms_setmode:14315) CRITICAL: Test assertion failure function
+> check_timings, file ../tests/kms_setmode.c:544:
+> (kms_setmode:14315) CRITICAL: Failed assertion: fabs(mean - expected) <
+> 1.718 * stddev
+> (kms_setmode:14315) CRITICAL: vblank interval differs from modeline!
+> expected 16667.6us, measured 16672us +- 1.805us, difference 4.7us (2.6
+> sigma) Stack trace:
+>   #0 ../lib/igt_core.c:1734 __igt_fail_assert()
+>   #1 ../tests/kms_setmode.c:544 test_one_combination()
+>   #2 ../tests/kms_setmode.c:834 __real_main883()
+>   #3 ../tests/kms_setmode.c:883 main()
+>   #4 ../csu/libc-start.c:342 __libc_start_main()
+>   #5 [_start+0x2e]
+> Subtest basic failed.
+> **** DEBUG ****
+> 
+> Cc: Dorota Czaplejewicz <dorota.czaplejewicz@collabora.co.uk>
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> Signed-off-by: Anand Moon <anandx.ram.moon@intel.com>
+
+Seems reasonable change.
+
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+
+> ---
+> 
+> And all the testcase regarding kms_setmode seems to passing on 5.8.x and
+> 5.10-0-rcx kernel with following mode
+> 
+> Mode: 1920x1080 at 60Hz Connectors: HDMI-A-2
+> Mode: 1920x1080 at 60Hz Connectors: DP-1
+> Mode: 1920x1080 at 60Hz Connectors: DP-2
+> Mode: 2560x1440 at 60Hz Connectors: eDP-1
+> Mode: 3840x2160 at 60Hz Connectors: DP-2
+> ---
+>  tests/kms_setmode.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c index
+> a01010a1..d55326f2 100644
+> --- a/tests/kms_setmode.c
+> +++ b/tests/kms_setmode.c
+> @@ -525,10 +525,13 @@ static void check_timings(int crtc_idx, const
+> drmModeModeInfo *kmode)
+>  	 * See:
+>  	 *
+> https://en.wikipedia.org/wiki/Standard_deviation#Rules_for_normally_distri
+> buted_data
+>  	 */
+> -	igt_assert_f(fabs(mean - expected) < 1.718 * stddev,
+> -		     "vblank interval differs from modeline! expected %.1fus,
+> measured %1.fus +- %.3fus, difference %.1fus (%.1f sigma)\n",
+> -		     expected, mean, stddev,
+> -		     fabs(mean - expected), fabs(mean - expected) / stddev);
+> +	igt_assert_f(fabs(mean - expected) < max(line_time(kmode), 1.718 *
+> stddev),
+> +			"vblank interval differs from modeline! expected
+> %.1fus, measured"
+> +			" %1.fus +- %.3fus, difference %.1fus (%.1f sigma,
+> %.1f scanlines)\n",
+> +			expected, mean, stddev,
+> +			fabs(mean - expected),
+> +			fabs(mean - expected) / stddev,
+> +			fabs(mean - expected) / line_time(kmode));
+>  }
+> 
+>  static void test_crtc_config(const struct test_config *tconf,
+> --
+> 2.29.2
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
