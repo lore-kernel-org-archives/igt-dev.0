@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D6B616E99E
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Nov 2020 11:25:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 928296E916
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Nov 2020 11:25:49 +0000 (UTC)
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Date: Wed, 25 Nov 2020 13:25:38 +0200
-Message-Id: <20201125112540.426554-2-lionel.g.landwerlin@intel.com>
+Date: Wed, 25 Nov 2020 13:25:40 +0200
+Message-Id: <20201125112540.426554-4-lionel.g.landwerlin@intel.com>
 In-Reply-To: <20201125112540.426554-1-lionel.g.landwerlin@intel.com>
 References: <20201125112540.426554-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 1/3] tests/i915/perf: constify report
- checks functions
+Subject: [igt-dev] [PATCH i-g-t v2 3/3] tests/i915/perf: verify reason field
+ in OA reports is never 0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,85 +24,131 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Those don't need to modify the reports they inspect.
+We're about to remove the filtering in i915 on 0 reason fields because
+we assume this was a possibility, but it turned out to be a corruption
+in the tail pointer register that made us read cleared data.
+
+This test is here to verify that our assumption hold that the HW never
+produces such reports.
+
+v2: Fix len checking (Umesh)
+    Count report lost events (Umesh)
+    Check report sanity (Umesh)
+    Limit test to 3 times the OA buffer (Umesh)
 
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tests/i915/perf.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ tests/i915/perf.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 90 insertions(+)
 
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index caeabd623..2fbea0f0c 100644
+index 811067aad..2d442df96 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -206,9 +206,10 @@ static bool *undefined_a_counters;
- static uint64_t oa_exp_1_millisec;
- 
- static igt_render_copyfunc_t render_copy = NULL;
--static uint32_t (*read_report_ticks)(uint32_t *report,
-+static uint32_t (*read_report_ticks)(const uint32_t *report,
- 				     enum drm_i915_oa_format format);
--static void (*sanity_check_reports)(uint32_t *oa_report0, uint32_t *oa_report1,
-+static void (*sanity_check_reports)(const uint32_t *oa_report0,
-+				    const uint32_t *oa_report1,
- 				    enum drm_i915_oa_format format);
- 
- static void
-@@ -354,7 +355,7 @@ sysfs_read(const char *path)
-  * but it's not included in all of the formats.
-  */
- static uint32_t
--hsw_read_report_ticks(uint32_t *report, enum drm_i915_oa_format format)
-+hsw_read_report_ticks(const uint32_t *report, enum drm_i915_oa_format format)
- {
- 	uint32_t *c = (uint32_t *)(((uint8_t *)report) + get_oa_format(format).c_off);
- 
-@@ -364,13 +365,13 @@ hsw_read_report_ticks(uint32_t *report, enum drm_i915_oa_format format)
+@@ -2550,6 +2550,89 @@ test_buffer_fill(void)
+ 	__perf_close(stream_fd);
  }
  
- static uint32_t
--gen8_read_report_ticks(uint32_t *report, enum drm_i915_oa_format format)
-+gen8_read_report_ticks(const uint32_t *report, enum drm_i915_oa_format format)
- {
- 	return report[3];
- }
- 
++static void
++test_non_zero_reason(void)
++{
++	/* ~10 micro second period */
++	int oa_exponent = max_oa_exponent_for_period_lte(10000);
++	uint64_t properties[] = {
++		/* Include OA reports in samples */
++		DRM_I915_PERF_PROP_SAMPLE_OA, true,
++
++		/* OA unit configuration */
++		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
++		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
++		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
++	};
++	struct drm_i915_perf_open_param param = {
++		.flags = I915_PERF_FLAG_FD_CLOEXEC,
++		.num_properties = sizeof(properties) / 16,
++		.properties_ptr = to_user_pointer(properties),
++	};
++	struct drm_i915_perf_record_header *header;
++	uint32_t buf_size = 3 * 65536 * (256 + sizeof(struct drm_i915_perf_record_header));
++	uint8_t *buf = malloc(buf_size);
++	uint32_t total_len = 0, reports_lost;
++	const uint32_t *last_report;
++	int len;
++
++	igt_assert(buf);
++
++	igt_debug("Ready to read about %u bytes\n", buf_size);
++
++	load_helper_init();
++	load_helper_run(HIGH);
++
++	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
++
++	while (total_len < (buf_size - sizeof(struct drm_i915_perf_record_header)) &&
++	       ((len = read(stream_fd, &buf[total_len], buf_size - total_len)) > 0 ||
++		(len == -1 && errno == EINTR))) {
++		if (len > 0)
++			total_len += len;
++	}
++
++	__perf_close(stream_fd);
++
++	load_helper_stop();
++	load_helper_fini();
++
++	igt_debug("Got %u bytes\n", total_len);
++
++	last_report = NULL;
++	reports_lost = 0;
++	for (uint32_t offset = 0; offset < total_len; offset += header->size) {
++		header = (void *) (buf + offset);
++
++		switch (header->type) {
++		case DRM_I915_PERF_RECORD_OA_REPORT_LOST:
++			reports_lost++;
++			break;
++		case DRM_I915_PERF_RECORD_SAMPLE: {
++			const uint32_t *report = (void *) (header + 1);
++			uint32_t reason = (report[0] >> OAREPORT_REASON_SHIFT) &
++				OAREPORT_REASON_MASK;
++
++			igt_assert_neq(reason, 0);
++
++			if (last_report) {
++				sanity_check_reports(last_report, report,
++						     test_set->perf_oa_format);
++			}
++			last_report = report;
++			break;
++		}
++		case DRM_I915_PERF_RECORD_OA_BUFFER_LOST:
++			igt_assert(!"unexpected overflow");
++			break;
++		}
++	}
++
++	igt_debug("Got %u report lost events\n", reports_lost);
++
++	free(buf);
++}
++
  static void
--gen8_read_report_clock_ratios(uint32_t *report,
-+gen8_read_report_clock_ratios(const uint32_t *report,
- 			      uint32_t *slice_freq_mhz,
- 			      uint32_t *unslice_freq_mhz)
+ test_enable_disable(void)
  {
-@@ -554,7 +555,8 @@ emit_report_perf_count(struct intel_bb *ibb,
- }
+@@ -4893,6 +4976,13 @@ igt_main
+ 	igt_subtest("buffer-fill")
+ 		test_buffer_fill();
  
- static void
--hsw_sanity_check_render_basic_reports(uint32_t *oa_report0, uint32_t *oa_report1,
-+hsw_sanity_check_render_basic_reports(const uint32_t *oa_report0,
-+				      const uint32_t *oa_report1,
- 				      enum drm_i915_oa_format fmt)
- {
- 	uint32_t time_delta = timebase_scale(oa_report1[1] - oa_report0[1]);
-@@ -639,7 +641,8 @@ hsw_sanity_check_render_basic_reports(uint32_t *oa_report0, uint32_t *oa_report1
- }
- 
- static uint64_t
--gen8_read_40bit_a_counter(uint32_t *report, enum drm_i915_oa_format fmt, int a_id)
-+gen8_read_40bit_a_counter(const uint32_t *report,
-+			  enum drm_i915_oa_format fmt, int a_id)
- {
- 	struct oa_format format = get_oa_format(fmt);
- 	uint8_t *a40_high = (((uint8_t *)report) + format.a40_high_off);
-@@ -757,7 +760,8 @@ accumulator_print(struct accumulator *accumulator, const char *title)
- 
- /* The TestOa metric set is designed so */
- static void
--gen8_sanity_check_test_oa_reports(uint32_t *oa_report0, uint32_t *oa_report1,
-+gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
-+				  const uint32_t *oa_report1,
- 				  enum drm_i915_oa_format fmt)
- {
- 	struct oa_format format = get_oa_format(fmt);
++	igt_describe("Test that reason field in OA reports is never 0 on Gen8+");
++	igt_subtest("non-zero-reason") {
++		/* Reason field is only available on Gen8+ */
++		igt_require(intel_gen(devid) >= 8);
++		test_non_zero_reason();
++	}
++
+ 	igt_subtest("disabled-read-error")
+ 		test_disabled_read_error();
+ 	igt_subtest("non-sampling-read-error")
 -- 
 2.29.2
 
