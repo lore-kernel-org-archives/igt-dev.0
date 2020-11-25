@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7580C6E7D5
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Nov 2020 00:41:18 +0000 (UTC)
+Date: Tue, 24 Nov 2020 16:41:16 -0800
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Message-ID: <20201125004116.GC4371@orsosgc001.ra.intel.com>
+References: <20201119104630.71385-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 25 Nov 2020 00:33:03 -0000
-Message-ID: <160626438352.8877.11526819773481473797@emeril.freedesktop.org>
-References: <20201124233913.502412-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20201124233913.502412-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fexec=5Fschedule=3A_Try_to_spot_unfairness_=28rev10=29?=
+Content-Disposition: inline
+In-Reply-To: <20201119104630.71385-1-lionel.g.landwerlin@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/perf: verify reason field in
+ OA reports is never 0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,307 +18,161 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1551669213=="
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1551669213==
-Content-Type: multipart/alternative;
- boundary="===============7081676669727175805=="
+On Thu, Nov 19, 2020 at 12:46:30PM +0200, Lionel Landwerlin wrote:
+>We're about to remove the filtering in i915 on 0 reason fields because
+>we assume this was a possibility, but it turned out to be a corruption
+>in the tail pointer register that made us read cleared data.
+>
+>This test is here to verify that our assumption hold that the HW never
+>produces such reports.
+>
+>Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+>---
+> tests/i915/perf.c | 77 +++++++++++++++++++++++++++++++++++++++++++++++
+> 1 file changed, 77 insertions(+)
+>
+>diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+>index caeabd623..08c81c5c2 100644
+>--- a/tests/i915/perf.c
+>+++ b/tests/i915/perf.c
+>@@ -2539,6 +2539,76 @@ test_buffer_fill(void)
+> 	__perf_close(stream_fd);
+> }
 
---===============7081676669727175805==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+I think this logic of reading all the reports and doing a sanity check 
+could be reused for some other tests. That could help us refactor the 
+perf OA test code. I queues something similar to trybot.
+https://patchwork.freedesktop.org/series/84231/
 
-== Series Details ==
+If you feel we can go ahead with that ^, I will post it here. If not, 
+here are the comments.
 
-Series: i915/gem_exec_schedule: Try to spot unfairness (rev10)
-URL   : https://patchwork.freedesktop.org/series/77887/
-State : success
+>
+>+static void
+>+test_non_zero_reason(void)
+>+{
+>+	/* ~10 micro second period */
+>+	int oa_exponent = max_oa_exponent_for_period_lte(10000);
+>+	uint64_t properties[] = {
+>+		/* Include OA reports in samples */
+>+		DRM_I915_PERF_PROP_SAMPLE_OA, true,
+>+
+>+		/* OA unit configuration */
+>+		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+>+		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
+>+		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
+>+	};
+>+	struct drm_i915_perf_open_param param = {
+>+		.flags = I915_PERF_FLAG_FD_CLOEXEC,
+>+		.num_properties = sizeof(properties) / 16,
+>+		.properties_ptr = to_user_pointer(properties),
+>+	};
+>+	struct drm_i915_perf_record_header *header;
+>+	uint32_t buf_size = 5 * 65536 * (256 + sizeof(struct drm_i915_perf_record_header));
 
-== Summary ==
+3 times instead of 5 could be good enough. Thoughts?
 
-CI Bug Log - changes from CI_DRM_9385 -> IGTPW_5222
-====================================================
+>+	uint8_t *buf = malloc(buf_size);
+>+	uint32_t total_len = 0;
+>+	int len;
 
-Summary
--------
+igt_assert(buf);
 
-  **SUCCESS**
+just in case we didn't get the required memory.
 
-  No regressions found.
+>+
+>+	igt_debug("Ready to read about %u bytes\n", buf_size);
+>+
+>+	load_helper_init();
+>+	load_helper_run(HIGH);
+>+
+>+	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
+>+
+>+	while (total_len < (buf_size - sizeof(struct drm_i915_perf_record_header)) &&
+>+	       ((len = read(stream_fd, &buf[total_len], buf_size - total_len)) > 0 ||
+>+		(len -1 && errno == EINTR))) {
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/index.html
+Did you mean?
 
-Known issues
-------------
+(len == -1 && errno == EINTR)
 
-  Here are the changes found in IGTPW_5222 that come from known issues:
+>+		if (len > 0)
+>+			total_len += len;
+>+	}
+>+
+>+	__perf_close(stream_fd);
+>+
+>+	load_helper_stop();
+>+	load_helper_fini();
+>+
+>+	igt_debug("Got %u bytes\n", total_len);
+>+
+>+	for (uint32_t offset = 0; offset < total_len; offset += header->size) {
+>+		header = (void *) (buf + offset);
+>+
+>+		switch (header->type) {
+>+		case DRM_I915_PERF_RECORD_OA_REPORT_LOST:
+Based on some trial runs from my test, I see 40 us or 100 us oa_exponent 
+would likely result in no reports lost. On the other hand, setting the 
+HEAD/TAIL wrap bits in OASTATUS likely happens only when REPORT LOST 
+occurs. Should we check that at least one report was lost here?
 
-### IGT changes ###
+			reports_lost++;
 
-#### Issues hit ####
+>+			break;
+>+		case DRM_I915_PERF_RECORD_SAMPLE: {
+>+			const uint32_t *report = (void *) (header + 1);
+>+			uint32_t reason = (report[0] >> OAREPORT_REASON_SHIFT) &
+>+				OAREPORT_REASON_MASK;
+>+
+>+			igt_assert_neq(reason, 0);
 
-  * igt@kms_busy@basic@flip:
-    - fi-kbl-soraka:      [PASS][1] -> [DMESG-WARN][2] ([i915#1982])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9385/fi-kbl-soraka/igt@kms_busy@basic@flip.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/fi-kbl-soraka/igt@kms_busy@basic@flip.html
-    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([i915#1982])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9385/fi-tgl-y/igt@kms_busy@basic@flip.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/fi-tgl-y/igt@kms_busy@basic@flip.html
+why not sanity_check_reports?
 
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-    - fi-icl-u2:          [PASS][5] -> [DMESG-WARN][6] ([i915#1982]) +1 similar issue
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9385/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+Thanks,
+Umesh
 
-  * igt@prime_self_import@basic-with_one_bo:
-    - fi-tgl-y:           [PASS][7] -> [DMESG-WARN][8] ([i915#402])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9385/fi-tgl-y/igt@prime_self_import@basic-with_one_bo.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/fi-tgl-y/igt@prime_self_import@basic-with_one_bo.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s0:
-    - fi-cfl-8109u:       [DMESG-WARN][9] ([i915#262]) -> [PASS][10] +1 similar issue
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9385/fi-cfl-8109u/igt@gem_exec_suspend@basic-s0.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/fi-cfl-8109u/igt@gem_exec_suspend@basic-s0.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-byt-j1900:       [DMESG-WARN][11] ([i915#1982]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9385/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-bsw-kefka:       [DMESG-WARN][13] ([i915#1982]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9385/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  * igt@prime_vgem@basic-read:
-    - fi-tgl-y:           [DMESG-WARN][15] ([i915#402]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9385/fi-tgl-y/igt@prime_vgem@basic-read.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/fi-tgl-y/igt@prime_vgem@basic-read.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#262]: https://gitlab.freedesktop.org/drm/intel/issues/262
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-
-
-Participating hosts (43 -> 39)
-------------------------------
-
-  Missing    (4): fi-ilk-m540 fi-bsw-cyan fi-bdw-samus fi-hsw-4200u 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5870 -> IGTPW_5222
-
-  CI-20190529: 20190529
-  CI_DRM_9385: 3d37e624f60f40cea80e784617686ae2917e9b01 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5222: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/index.html
-  IGT_5870: 08b13995b85df26a77212e4fb21fd772976ef33c @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@gem_exec_schedule@fairslice
-+igt@gem_exec_schedule@fairslice-all
-+igt@gem_exec_schedule@fair-flow
-+igt@gem_exec_schedule@fair-flow-ping
-+igt@gem_exec_schedule@fair-flow-share
-+igt@gem_exec_schedule@fair-half
-+igt@gem_exec_schedule@fair-next
-+igt@gem_exec_schedule@fair-next-ping
-+igt@gem_exec_schedule@fair-next-share
-+igt@gem_exec_schedule@fair-none
-+igt@gem_exec_schedule@fair-none-ping
-+igt@gem_exec_schedule@fair-none-rrul
-+igt@gem_exec_schedule@fair-none-share
-+igt@gem_exec_schedule@fair-none-solo
-+igt@gem_exec_schedule@fair-none-vip
-+igt@gem_exec_schedule@fair-pace
-+igt@gem_exec_schedule@fair-pace-ping
-+igt@gem_exec_schedule@fair-pace-share
-+igt@gem_exec_schedule@fair-pace-solo
-+igt@gem_exec_schedule@fair-spare
-+igt@gem_exec_schedule@fair-sync
-+igt@gem_exec_schedule@fair-sync-solo
-+igt@gem_exec_schedule@fair-sync-vip
-+igt@gem_exec_schedule@fair-throttle
-+igt@gem_exec_schedule@fair-throttle-rrul
-+igt@gem_exec_schedule@fair-throttle-share
-+igt@gem_exec_schedule@fair-throttle-solo
-+igt@gem_exec_schedule@fair-throttle-vip
-+igt@gem_exec_schedule@u-fairslice
-+igt@gem_exec_schedule@u-fairslice-all
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/index.html
-
---===============7081676669727175805==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>i915/gem_exec_schedule: Try to spot unfairness (rev10)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/77887/">https://patchwork.freedesktop.org/series/77887/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9385 -&gt; IGTPW_5222</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5222 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>
-<p>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9385/fi-kbl-soraka/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/fi-kbl-soraka/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</p>
-</li>
-<li>
-<p>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9385/fi-tgl-y/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/fi-tgl-y/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
-<ul>
-<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9385/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_self_import@basic-with_one_bo:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9385/fi-tgl-y/igt@prime_self_import@basic-with_one_bo.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/fi-tgl-y/igt@prime_self_import@basic-with_one_bo.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9385/fi-cfl-8109u/igt@gem_exec_suspend@basic-s0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/262">i915#262</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/fi-cfl-8109u/igt@gem_exec_suspend@basic-s0.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-byt-j1900:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9385/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9385/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-read:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9385/fi-tgl-y/igt@prime_vgem@basic-read.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/fi-tgl-y/igt@prime_vgem@basic-read.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (43 -&gt; 39)</h2>
-<p>Missing    (4): fi-ilk-m540 fi-bsw-cyan fi-bdw-samus fi-hsw-4200u </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_5870 -&gt; IGTPW_5222</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9385: 3d37e624f60f40cea80e784617686ae2917e9b01 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5222: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5222/index.html<br />
-  IGT_5870: 08b13995b85df26a77212e4fb21fd772976ef33c @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-<p>== Testlist changes ==</p>
-<p>+igt@gem_exec_schedule@fairslice<br />
-+igt@gem_exec_schedule@fairslice-all<br />
-+igt@gem_exec_schedule@fair-flow<br />
-+igt@gem_exec_schedule@fair-flow-ping<br />
-+igt@gem_exec_schedule@fair-flow-share<br />
-+igt@gem_exec_schedule@fair-half<br />
-+igt@gem_exec_schedule@fair-next<br />
-+igt@gem_exec_schedule@fair-next-ping<br />
-+igt@gem_exec_schedule@fair-next-share<br />
-+igt@gem_exec_schedule@fair-none<br />
-+igt@gem_exec_schedule@fair-none-ping<br />
-+igt@gem_exec_schedule@fair-none-rrul<br />
-+igt@gem_exec_schedule@fair-none-share<br />
-+igt@gem_exec_schedule@fair-none-solo<br />
-+igt@gem_exec_schedule@fair-none-vip<br />
-+igt@gem_exec_schedule@fair-pace<br />
-+igt@gem_exec_schedule@fair-pace-ping<br />
-+igt@gem_exec_schedule@fair-pace-share<br />
-+igt@gem_exec_schedule@fair-pace-solo<br />
-+igt@gem_exec_schedule@fair-spare<br />
-+igt@gem_exec_schedule@fair-sync<br />
-+igt@gem_exec_schedule@fair-sync-solo<br />
-+igt@gem_exec_schedule@fair-sync-vip<br />
-+igt@gem_exec_schedule@fair-throttle<br />
-+igt@gem_exec_schedule@fair-throttle-rrul<br />
-+igt@gem_exec_schedule@fair-throttle-share<br />
-+igt@gem_exec_schedule@fair-throttle-solo<br />
-+igt@gem_exec_schedule@fair-throttle-vip<br />
-+igt@gem_exec_schedule@u-fairslice<br />
-+igt@gem_exec_schedule@u-fairslice-all</p>
-
-</body>
-</html>
-
---===============7081676669727175805==--
-
---===============1551669213==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+>+			break;
+>+		}
+>+		case DRM_I915_PERF_RECORD_OA_BUFFER_LOST:
+>+			igt_assert(!"unexpected overflow");
+>+			break;
+>+		}
+>+	}
+>+
+>+
+>+	free(buf);
+>+}
+>+
+> static void
+> test_enable_disable(void)
+> {
+>@@ -4882,6 +4952,13 @@ igt_main
+> 	igt_subtest("buffer-fill")
+> 		test_buffer_fill();
+>
+>+	igt_describe("Test that reason field in OA reports is never 0 on Gen8+");
+>+	igt_subtest("non-zero-reason") {
+>+		/* Reason field is only available on Gen8+ */
+>+		igt_require(intel_gen(devid) >= 8);
+>+		test_non_zero_reason();
+>+	}
+>+
+> 	igt_subtest("disabled-read-error")
+> 		test_disabled_read_error();
+> 	igt_subtest("non-sampling-read-error")
+>-- 
+>2.29.2
+>
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============1551669213==--
