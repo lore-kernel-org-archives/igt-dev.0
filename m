@@ -1,10 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C3DE6F39E
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Nov 2020 21:26:15 +0000 (UTC)
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Fri, 27 Nov 2020 21:26:05 +0000
-Message-Id: <20201127212605.860635-1-chris@chris-wilson.co.uk>
+Date: Fri, 27 Nov 2020 21:29:22 +0000
+Message-Id: <20201127212922.865538-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20201127212605.860635-1-chris@chris-wilson.co.uk>
+References: <20201127212605.860635-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_capture: Trim the blocking
  workload
@@ -19,7 +18,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@ilsts.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
@@ -30,11 +29,11 @@ proceed with the testing.
 Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/2559
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/i915/gem_exec_capture.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ tests/i915/gem_exec_capture.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-index cb0d3151b..8801d62c1 100644
+index cb0d3151b..3da78d632 100644
 --- a/tests/i915/gem_exec_capture.c
 +++ b/tests/i915/gem_exec_capture.c
 @@ -21,6 +21,7 @@
@@ -53,7 +52,7 @@ index cb0d3151b..8801d62c1 100644
  	igt_require(count > 1);
  
  	intel_require_memory(count, size, CHECK_RAM);
-@@ -535,18 +537,23 @@ static void prioinv(int fd, int dir, unsigned ring, const char *name)
+@@ -535,18 +537,26 @@ static void prioinv(int fd, int dir, unsigned ring, const char *name)
  	igt_assert(pipe(link) == 0);
  	igt_fork(child, 1) {
  		fd = gem_reopen_driver(fd);
@@ -66,7 +65,7 @@ index cb0d3151b..8801d62c1 100644
 +		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
  	}
  	read(link[0], &dummy, sizeof(dummy));
-+	igt_require_f(poll(&(struct pollfd){link[0], POLLIN}, 1, 1000) == 0,
++	igt_require_f(poll(&(struct pollfd){link[0], POLLIN}, 1, 500) == 0,
 +		      "Capture completed too quickly! Will not block\n");
  
  	igt_debug("Submitting nop\n");
@@ -74,6 +73,9 @@ index cb0d3151b..8801d62c1 100644
  	igt_assert_eq(gem_wait(fd, obj.handle, &timeout), 0);
  	gem_close(fd, obj.handle);
  
++	igt_assert_f(poll(&(struct pollfd){link[0], POLLIN}, 1, 0) == 0,
++		     "Capture completed before nop!\n");
++
 +	igt_debug("Waiting for capture/reset to complete\n");
  	igt_waitchildren();
  	close(link[0]);
