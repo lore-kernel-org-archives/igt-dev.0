@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C1136EB5B
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Nov 2020 08:28:49 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri, 27 Nov 2020 09:28:34 +0100
-Message-Id: <20201127082834.26930-4-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20201127082834.26930-1-zbigniew.kempczynski@intel.com>
-References: <20201127082834.26930-1-zbigniew.kempczynski@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E8FF36EB65
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Nov 2020 09:38:34 +0000 (UTC)
+Date: Fri, 27 Nov 2020 11:38:31 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20201127093831.GZ7444@platvala-desk.ger.corp.intel.com>
+References: <20201127073949.18730-1-mohammed.khajapasha@intel.com>
+ <20201127073949.18730-2-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/3] tools/lsgpu: Add -n switch to list
- devices using vendor:device hex id
+Content-Disposition: inline
+In-Reply-To: <20201127073949.18730-2-mohammed.khajapasha@intel.com>
+Subject: Re: [igt-dev] [PATCH 1/1] tests/kms_plane_scaling: Correcting typo
+ error for plane scaler test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,49 +19,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RGVmYXVsdCBkZXZpY2UgbGlzdCBwcmVmZXJzIHZlbmRvciBhbmQgZGV2aWNlIG5hbWVzLiBBZGQg
-LW4gc3dpdGNoCnRvIGRpc3BsYXkgdmVuZG9yL2RldmljZSBhcyBoZXggc3RyaW5ncy4KClNpZ25l
-ZC1vZmYtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50
-ZWwuY29tPgpDYzogVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KQ2M6
-IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgpSZXZpZXdlZC1ieTogVHZy
-dGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KLS0tCiB0b29scy9sc2dwdS5j
-IHwgOCArKysrKysrLQogMSBmaWxlIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlv
-bigtKQoKZGlmZiAtLWdpdCBhL3Rvb2xzL2xzZ3B1LmMgYi90b29scy9sc2dwdS5jCmluZGV4IDE2
-OWFiMGMyLi4yNTM1OGJiZSAxMDA2NDQKLS0tIGEvdG9vbHMvbHNncHUuYworKysgYi90b29scy9s
-c2dwdS5jCkBAIC03Miw2ICs3Miw3IEBACiBlbnVtIHsKIAlPUFRfUFJJTlRfU0lNUExFICAgPSAn
-cycsCiAJT1BUX1BSSU5UX0RFVEFJTCAgID0gJ3AnLAorCU9QVF9OVU1FUklDICAgICAgICA9ICdu
-JywKIAlPUFRfTElTVF9WRU5ET1JTICAgPSAndicsCiAJT1BUX0xJU1RfRklMVEVSUyAgID0gJ2wn
-LAogCU9QVF9ERVZJQ0UgICAgICAgICA9ICdkJywKQEAgLTg2LDYgKzg3LDcgQEAgc3RhdGljIGNo
-YXIgKmlndF9kZXZpY2U7CiBzdGF0aWMgY29uc3QgY2hhciAqdXNhZ2Vfc3RyID0KIAkidXNhZ2U6
-IGxzZ3B1IFtvcHRpb25zXVxuXG4iCiAJIk9wdGlvbnM6XG4iCisJIiAgLW4sIC0tbnVtZXJpYyAg
-ICAgICAgICAgICAgIFByaW50IHZlbmRvci9kZXZpY2UgYXMgaGV4XG4iCiAJIiAgLXMsIC0tcHJp
-bnQtc2ltcGxlICAgICAgICAgIFByaW50IHNpbXBsZSAobGVnYWN5KSBkZXZpY2UgZGV0YWlsc1xu
-IgogCSIgIC1wLCAtLXByaW50LWRldGFpbHMgICAgICAgICBQcmludCBkZXZpY2VzIHdpdGggZGV0
-YWlsc1xuIgogCSIgIC12LCAtLWxpc3QtdmVuZG9ycyAgICAgICAgICBMaXN0IHJlY29nbml6ZWQg
-dmVuZG9yc1xuIgpAQCAtMTYwLDYgKzE2Miw3IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICph
-cmd2W10pCiAJCXsiZHJtIiwgICAgICAgICAgICAgICBub19hcmd1bWVudCwgICAgICAgTlVMTCwg
-MH0sCiAJCXsic3lzZnMiLCAgICAgICAgICAgICBub19hcmd1bWVudCwgICAgICAgTlVMTCwgMX0s
-CiAJCXsicGNpIiwgICAgICAgICAgICAgICBub19hcmd1bWVudCwgICAgICAgTlVMTCwgMn0sCisJ
-CXsibnVtZXJpYyIsICAgICAgICAgICBub19hcmd1bWVudCwgICAgICAgTlVMTCwgT1BUX05VTUVS
-SUN9LAogCQl7InByaW50LXNpbXBsZSIsICAgICAgbm9fYXJndW1lbnQsICAgICAgIE5VTEwsIE9Q
-VF9QUklOVF9TSU1QTEV9LAogCQl7InByaW50LWRldGFpbCIsICAgICAgbm9fYXJndW1lbnQsICAg
-ICAgIE5VTEwsIE9QVF9QUklOVF9ERVRBSUx9LAogCQl7Imxpc3QtdmVuZG9ycyIsICAgICAgbm9f
-YXJndW1lbnQsICAgICAgIE5VTEwsIE9QVF9MSVNUX1ZFTkRPUlN9LApAQCAtMTc0LDEwICsxNzcs
-MTMgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKIAkJCS50eXBlID0gSUdUX1BS
-SU5UX1VTRVIsCiAJfTsKIAotCXdoaWxlICgoYyA9IGdldG9wdF9sb25nKGFyZ2MsIGFyZ3YsICJz
-cHZsZDpoIiwKKwl3aGlsZSAoKGMgPSBnZXRvcHRfbG9uZyhhcmdjLCBhcmd2LCAibnNwdmxkOmgi
-LAogCQkJCWxvbmdfb3B0aW9ucywgJmluZGV4KSkgIT0gLTEpIHsKIAkJc3dpdGNoKGMpIHsKIAor
-CQljYXNlIE9QVF9OVU1FUklDOgorCQkJZm10Lm51bWVyaWMgPSB0cnVlOworCQkJYnJlYWs7CiAJ
-CWNhc2UgT1BUX1BSSU5UX1NJTVBMRToKIAkJCWZtdC50eXBlID0gSUdUX1BSSU5UX1NJTVBMRTsK
-IAkJCWJyZWFrOwotLSAKMi4yNi4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
-dG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2ln
-dC1kZXYK
+On Fri, Nov 27, 2020 at 01:09:49PM +0530, Mohammed Khajapasha wrote:
+> Correcting typo error for plane scaler with clipping and clamping
+> test case.
+> 
+> Cc: petri.latvala@intel.com
+> Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+
+
+> ---
+>  tests/kms_plane_scaling.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+> index 39acad6c..89b82416 100644
+> --- a/tests/kms_plane_scaling.c
+> +++ b/tests/kms_plane_scaling.c
+> @@ -714,7 +714,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>  
+>  		igt_subtest_with_dynamic("scaler-with-clipping-clamping") {
+>  			for_each_pipe_with_single_output(&data.display, pipe, output)
+> -				igt_dynamic_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
+> +				igt_dynamic_f("pipe-%s-scaler-with-clipping-clamping", kmstest_pipe_name(pipe))
+>  					test_scaler_with_clipping_clamping_scenario(&data, pipe, output);
+>  		}
+>  	}
+> -- 
+> 2.29.2.154.g7f7ebe054a
+> 
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
