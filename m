@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2ABDE6EE9A
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Nov 2020 22:40:52 +0000 (UTC)
+Received: by mail-pl1-x643.google.com with SMTP id f5so3293866plj.13
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Nov 2020 14:40:52 -0800 (PST)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Sat, 28 Nov 2020 00:40:29 +0200
+Message-Id: <20201127224030.8912-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 27 Nov 2020 22:10:38 -0000
-Message-ID: <160651503867.26781.16272048896515189826@emeril.freedesktop.org>
-References: <20201127212605.860635-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20201127212605.860635-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fexec=5Fcapture=3A_Trim_the_blocking_workload_=28rev2=29?=
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_plane: optimize pixel format
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,281 +18,289 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1073195722=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1073195722==
-Content-Type: multipart/alternative;
- boundary="===============5278486796525716973=="
+On packed formats there's no need to show separate colors on separate fbs.
+Here augmented path with packed color handling which check colors just on
+one fb.
 
---===============5278486796525716973==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This cannot be directly applied to planar yuv formats because of scaler
+use with those formats.
 
-== Series Details ==
+On my ICL this drop test execution time from 44.91s to 21.98s
 
-Series: i915/gem_exec_capture: Trim the blocking workload (rev2)
-URL   : https://patchwork.freedesktop.org/series/84369/
-State : success
+v2 (vsyrjala): paint entire screen instead of lines. small refinement.
 
-== Summary ==
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ tests/kms_plane.c | 159 ++++++++++++++++++++++++++++++----------------
+ 1 file changed, 106 insertions(+), 53 deletions(-)
 
-CI Bug Log - changes from CI_DRM_9401 -> IGTPW_5234
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5234 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-tgl-u2:          [PASS][1] -> [DMESG-WARN][2] ([i915#1982])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-tgl-u2:          [PASS][3] -> [FAIL][4] ([i915#1888])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@i915_module_load@reload:
-    - fi-icl-y:           [PASS][5] -> [DMESG-WARN][6] ([i915#1982])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-icl-y/igt@i915_module_load@reload.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-icl-y/igt@i915_module_load@reload.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-7500u:       [PASS][7] -> [DMESG-WARN][8] ([i915#203])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-kbl-7500u/igt@i915_pm_rpm@module-reload.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-kbl-7500u/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@coherency:
-    - fi-gdg-551:         [PASS][9] -> [DMESG-FAIL][10] ([i915#1748])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-gdg-551/igt@i915_selftest@live@coherency.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-gdg-551/igt@i915_selftest@live@coherency.html
-
-  * igt@kms_busy@basic@flip:
-    - fi-kbl-soraka:      [PASS][11] -> [DMESG-WARN][12] ([i915#1982])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-kbl-soraka/igt@kms_busy@basic@flip.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-kbl-soraka/igt@kms_busy@basic@flip.html
-
-  * igt@prime_vgem@basic-gtt:
-    - fi-tgl-y:           [PASS][13] -> [DMESG-WARN][14] ([i915#402])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-tgl-y/igt@prime_vgem@basic-gtt.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-tgl-y/igt@prime_vgem@basic-gtt.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_module_load@reload:
-    - fi-icl-u2:          [DMESG-WARN][15] ([i915#1982]) -> [PASS][16] +3 similar issues
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-icl-u2/igt@i915_module_load@reload.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-icl-u2/igt@i915_module_load@reload.html
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - fi-bsw-kefka:       [DMESG-WARN][17] ([i915#1982]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-kbl-7500u:       [FAIL][19] ([i915#1161] / [i915#262]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - fi-tgl-y:           [DMESG-WARN][21] ([i915#402]) -> [PASS][22] +1 similar issue
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#1161]: https://gitlab.freedesktop.org/drm/intel/issues/1161
-  [i915#1748]: https://gitlab.freedesktop.org/drm/intel/issues/1748
-  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#203]: https://gitlab.freedesktop.org/drm/intel/issues/203
-  [i915#262]: https://gitlab.freedesktop.org/drm/intel/issues/262
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-
-
-Participating hosts (46 -> 41)
-------------------------------
-
-  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5873 -> IGTPW_5234
-
-  CI-20190529: 20190529
-  CI_DRM_9401: a88f54b9c003dd8ee5442caa8212cf507e0172c1 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5234: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/index.html
-  IGT_5873: b6321b58dcaa41ba1d28aced42d6b15dc3d49ca2 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/index.html
-
---===============5278486796525716973==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>i915/gem_exec_capture: Trim the blocking workload (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/84369/">https://patchwork.freedesktop.org/series/84369/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9401 -&gt; IGTPW_5234</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5234 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>fi-icl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-icl-y/igt@i915_module_load@reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-icl-y/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-kbl-7500u/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-kbl-7500u/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/203">i915#203</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@coherency:</p>
-<ul>
-<li>fi-gdg-551:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-gdg-551/igt@i915_selftest@live@coherency.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-gdg-551/igt@i915_selftest@live@coherency.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1748">i915#1748</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-kbl-soraka/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-kbl-soraka/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-gtt:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-tgl-y/igt@prime_vgem@basic-gtt.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-tgl-y/igt@prime_vgem@basic-gtt.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-icl-u2/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-icl-u2/igt@i915_module_load@reload.html">PASS</a> +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1161">i915#1161</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/262">i915#262</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9401/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (46 -&gt; 41)</h2>
-<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_5873 -&gt; IGTPW_5234</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9401: a88f54b9c003dd8ee5442caa8212cf507e0172c1 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5234: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5234/index.html<br />
-  IGT_5873: b6321b58dcaa41ba1d28aced42d6b15dc3d49ca2 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============5278486796525716973==--
-
---===============1073195722==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 4ce859fba..e61a9b9f5 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -460,61 +460,72 @@ static bool set_c8_legacy_lut(data_t *data, enum pipe pipe,
+ 	return true;
+ }
+ 
++static void draw_entire_color_array(data_t *data, cairo_t *cr, uint32_t format,
++				    struct igt_fb *fb)
++{
++	const int color_amount = ARRAY_SIZE(colors_extended);
++	const int x = format == DRM_FORMAT_XRGB8888 ? 0 : data->crop;
++
++	for (int n = 0; n < color_amount; n++) {
++		int y = (fb->height - x * 2) * n / color_amount + x;
++
++		igt_paint_color(cr, x, y,
++				fb->width - x * 2,
++				(fb->height - x * 2) / color_amount,
++				colors_extended[n].red,
++				colors_extended[n].green,
++				colors_extended[n].blue);
++	}
++}
++
+ static void prepare_format_color(data_t *data, enum pipe pipe,
+ 				 igt_plane_t *plane,
+ 				 uint32_t format, uint64_t modifier,
+ 				 int width, int height,
+ 				 enum igt_color_encoding color_encoding,
+ 				 enum igt_color_range color_range,
+-				 const color_t *c, struct igt_fb *fb)
++				 const color_t *c, struct igt_fb *fb,
++				 bool packed)
+ {
+ 	cairo_t *cr;
++	const int localcrop = format == DRM_FORMAT_XRGB8888 ? 0 : data->crop;
+ 
+-	if (data->crop == 0 || format == DRM_FORMAT_XRGB8888) {
+-		igt_create_fb_with_bo_size(data->drm_fd, width, height,
+-					   format, modifier, color_encoding,
+-					   color_range, fb, 0, 0);
+-
+-		cr = igt_get_cairo_ctx(data->drm_fd, fb);
+-
+-		igt_paint_color(cr, 0, 0, width, height,
+-				c->red, c->green, c->blue);
+-
+-		igt_put_cairo_ctx(cr);
+-	} else {
+-		igt_create_fb_with_bo_size(data->drm_fd,
+-					   width + data->crop * 2,
+-					   height + data->crop * 2,
+-					   format, modifier, color_encoding,
+-					   color_range, fb, 0, 0);
++	igt_create_fb_with_bo_size(data->drm_fd,
++					width + localcrop * 2,
++					height + localcrop * 2,
++					format, modifier, color_encoding,
++					color_range, fb, 0, 0);
+ 
+-		/*
+-		 * paint border in inverted color, then visible area in middle
+-		 * with correct color for clamping test
+-		 */
+-		cr = igt_get_cairo_ctx(data->drm_fd, fb);
++	cr = igt_get_cairo_ctx(data->drm_fd, fb);
+ 
++	/*
++	 * paint border in inverted color, then visible area in middle
++	 * with correct color for clamping test
++	 */
++	if (localcrop)
+ 		igt_paint_color(cr, 0, 0,
+-				width + data->crop * 2,
+-				height + data->crop * 2,
++				width + localcrop * 2,
++				height + localcrop * 2,
+ 				1.0f - c->red,
+ 				1.0f - c->green,
+ 				1.0f - c->blue);
+ 
+-		igt_paint_color(cr, data->crop, data->crop,
++
++	if (packed)
++		draw_entire_color_array(data, cr, format, fb);
++	else
++		igt_paint_color(cr, localcrop, localcrop,
+ 				width, height,
+ 				c->red, c->green, c->blue);
+ 
+-		igt_put_cairo_ctx(cr);
+-	}
+-
++	igt_put_cairo_ctx(cr);
+ 	igt_plane_set_fb(plane, fb);
+ 
+ 	/*
+-	 * if clamping test. DRM_FORMAT_XRGB8888 is used for reference color.
++	 * if clamping test.
+ 	 */
+-	if (data->crop != 0 && format != DRM_FORMAT_XRGB8888) {
+-		igt_fb_set_position(fb, plane, data->crop, data->crop);
++	if (localcrop) {
++		igt_fb_set_position(fb, plane, localcrop, localcrop);
+ 		igt_fb_set_size(fb, plane, width, height);
+ 		igt_plane_set_size(plane, width, height);
+ 	}
+@@ -548,13 +559,35 @@ static void capture_crc(data_t *data, unsigned int vblank, igt_crc_t *crc)
+ 		      crc->frame, vblank);
+ }
+ 
+-static void capture_format_crcs(data_t *data, enum pipe pipe,
+-				igt_plane_t *plane,
+-				uint32_t format, uint64_t modifier,
+-				int width, int height,
+-				enum igt_color_encoding encoding,
+-				enum igt_color_range range,
+-				igt_crc_t crc[], struct igt_fb *fb)
++static void capture_format_crcs_packed(data_t *data, enum pipe pipe,
++				       igt_plane_t *plane,
++				       uint32_t format, uint64_t modifier,
++				       int width, int height,
++				       enum igt_color_encoding encoding,
++				       enum igt_color_range range,
++				       igt_crc_t crc[], struct igt_fb *fb)
++{
++	struct igt_fb old_fb = *fb;
++	const color_t black = { 0.0f, 0.0f, 0.0f };
++
++	prepare_format_color(data, pipe, plane, format, modifier,
++			     width, height, encoding, range, &black, fb, true);
++
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
++				  NULL);
++
++	igt_remove_fb(data->drm_fd, &old_fb);
++
++	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc[0]);
++}
++
++static void capture_format_crcs_planar(data_t *data, enum pipe pipe,
++				       igt_plane_t *plane,
++				       uint32_t format, uint64_t modifier,
++				       int width, int height,
++				       enum igt_color_encoding encoding,
++				       enum igt_color_range range,
++				       igt_crc_t crc[], struct igt_fb *fb)
+ {
+ 	unsigned int vblank[ARRAY_SIZE(colors_extended)];
+ 	struct drm_event_vblank ev;
+@@ -567,7 +600,8 @@ restart_round:
+ 		int ret;
+ 
+ 		prepare_format_color(data, pipe, plane, format, modifier,
+-				     width, height, encoding, range, c, fb);
++				     width, height, encoding, range, c, fb,
++				     false);
+ 
+ 		if (data->display.is_atomic && i >= 1) {
+ 			igt_assert(read(data->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
+@@ -683,12 +717,20 @@ static bool test_format_plane_colors(data_t *data, enum pipe pipe,
+ 	unsigned int crc_mismatch_mask = 0;
+ 	int crc_mismatch_count = 0;
+ 	bool result = true;
+-	int i;
+-
+-	capture_format_crcs(data, pipe, plane, format, modifier,
+-			    width, height, encoding, range, crc, fb);
+-
+-	for (i = 0; i < data->num_colors; i++) {
++	int i, total_crcs = 1;
++	bool planar = igt_format_is_yuv_semiplanar(format);
++
++	if (planar) {
++		capture_format_crcs_planar(data, pipe, plane, format, modifier,
++					   width, height, encoding, range, crc,
++					   fb);
++		total_crcs = data->num_colors;
++	} else
++		capture_format_crcs_packed(data, pipe, plane, format, modifier,
++					   width, height, encoding, range, crc,
++					   fb);
++
++	for (i = 0; i < total_crcs; i++) {
+ 		if (!igt_check_crc_equal(&crc[i], &ref_crc[i])) {
+ 			crc_mismatch_count++;
+ 			crc_mismatch_mask |= (1 << i);
+@@ -776,6 +818,7 @@ static bool test_format_plane_yuv(data_t *data, enum pipe pipe,
+ 	return result;
+ }
+ 
++enum crc_set {PACKED_CRC_SET = 0, PLANAR_CRC_SET = 1, MAX_CRC_SET = 2};
+ static bool test_format_plane(data_t *data, enum pipe pipe,
+ 			      igt_output_t *output, igt_plane_t *plane)
+ {
+@@ -784,7 +827,8 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+ 	uint32_t format, ref_format;
+ 	uint64_t modifier, ref_modifier;
+ 	uint64_t width, height;
+-	igt_crc_t ref_crc[ARRAY_SIZE(colors_extended)];
++	igt_crc_t ref_crc[MAX_CRC_SET][ARRAY_SIZE(colors_extended)];
++	igt_crc_t* crcset;
+ 	bool result = true;
+ 
+ 	/*
+@@ -843,16 +887,22 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+ 		igt_remove_fb(data->drm_fd, &test_fb);
+ 	}
+ 
+-	capture_format_crcs(data, pipe, plane, format, modifier,
+-			    width, height, IGT_COLOR_YCBCR_BT709,
+-			    IGT_COLOR_YCBCR_LIMITED_RANGE, ref_crc, &fb);
++	capture_format_crcs_packed(data, pipe, plane, format, modifier,
++				   width, height, IGT_COLOR_YCBCR_BT709,
++				   IGT_COLOR_YCBCR_LIMITED_RANGE,
++				   ref_crc[PACKED_CRC_SET], &fb);
++
++	capture_format_crcs_planar(data, pipe, plane, format, modifier,
++				   width, height, IGT_COLOR_YCBCR_BT709,
++				   IGT_COLOR_YCBCR_LIMITED_RANGE,
++				   ref_crc[PLANAR_CRC_SET], &fb);
+ 
+ 	/*
+ 	 * Make sure we have some difference between the colors. This
+ 	 * at least avoids claiming success when everything is just
+ 	 * black all the time (eg. if the plane is never even on).
+ 	 */
+-	igt_require(num_unique_crcs(ref_crc, data->num_colors) > 1);
++	igt_require(num_unique_crcs(ref_crc[PLANAR_CRC_SET], data->num_colors) > 1);
+ 
+ 	for (int i = 0; i < plane->format_mod_count; i++) {
+ 		format = plane->formats[i];
+@@ -870,16 +920,19 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+ 				continue;
+ 		}
+ 
++		crcset = ref_crc[(igt_format_is_yuv_semiplanar(format)
++				 ? PLANAR_CRC_SET : PACKED_CRC_SET)];
++
+ 		if (igt_format_is_yuv(format))
+ 			result &= test_format_plane_yuv(data, pipe, plane,
+ 							format, modifier,
+ 							width, height,
+-							ref_crc, &fb);
++							crcset, &fb);
+ 		else
+ 			result &= test_format_plane_rgb(data, pipe, plane,
+ 							format, modifier,
+ 							width, height,
+-							ref_crc, &fb);
++							crcset, &fb);
+ 
+ 		if (format == DRM_FORMAT_C8)
+ 			set_legacy_lut(data, pipe, LUT_MASK);
+-- 
+2.28.0
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============1073195722==--
