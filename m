@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 882016E965
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Nov 2020 07:39:56 +0000 (UTC)
-From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Fri, 27 Nov 2020 13:09:49 +0530
-Message-Id: <20201127073949.18730-2-mohammed.khajapasha@intel.com>
-In-Reply-To: <20201127073949.18730-1-mohammed.khajapasha@intel.com>
-References: <20201127073949.18730-1-mohammed.khajapasha@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8744B6E9C7
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Nov 2020 08:28:44 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Fri, 27 Nov 2020 09:28:31 +0100
+Message-Id: <20201127082834.26930-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 1/1] tests/kms_plane_scaling: Correcting typo
- error for plane scaler test
+Subject: [igt-dev] [PATCH i-g-t 0/3] Add pretty-name for lsgpu and
+ intel-gpu-top
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,40 +15,26 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: petri.latvala@intel.com
+Cc: Petri Latvala <petri.latvala@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Correcting typo error for plane scaler with clipping and clamping
-test case.
-
-Cc: petri.latvala@intel.com
-Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
----
- tests/kms_plane_scaling.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 39acad6c..89b82416 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -714,7 +714,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 
- 		igt_subtest_with_dynamic("scaler-with-clipping-clamping") {
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
--				igt_dynamic_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
-+				igt_dynamic_f("pipe-%s-scaler-with-clipping-clamping", kmstest_pipe_name(pipe))
- 					test_scaler_with_clipping_clamping_scenario(&data, pipe, output);
- 		}
- 	}
--- 
-2.29.2.154.g7f7ebe054a
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+U2VyaWVzIHdhcyBhbHJlYWR5IHJldmlld2VkIGJ1dCBJIG5lZWRlZCB0byByZWJhc2UgaXQgZHVl
+IHRvIGNoYW5nZQppbiBtYXN0ZXIgYnJhbmNoLgoKQ2M6IFR2cnRrbyBVcnN1bGluIDx0dnJ0a28u
+dXJzdWxpbkBpbnRlbC5jb20+CkNjOiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVs
+LmNvbT4KClpiaWduaWV3IEtlbXBjennFhHNraSAoMyk6CiAgbGliL2lndF9kZXZpY2Vfc2Nhbjog
+UmVtZW1iZXIgdmVuZG9yL2RldmljZSBmb3IgcGNpIGRldmljZXMKICB0b29scy9pbnRlbF9ncHVf
+dG9wOiBBZGQgZ2VuZXJhdGlvbiBpbmZvIGluIGhlYWRlcgogIHRvb2xzL2xzZ3B1OiBBZGQgLW4g
+c3dpdGNoIHRvIGxpc3QgZGV2aWNlcyB1c2luZyB2ZW5kb3I6ZGV2aWNlIGhleCBpZAoKIGxpYi9N
+YWtlZmlsZS5hbSAgICAgICB8ICAgNCArLQogbGliL2lndF9kZXZpY2Vfc2Nhbi5jIHwgMTUyICsr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLQogbGliL2lndF9kZXZpY2Vf
+c2Nhbi5oIHwgICAzICsKIGxpYi9tZXNvbi5idWlsZCAgICAgICB8ICAgMSArCiB0b29scy9pbnRl
+bF9ncHVfdG9wLmMgfCAgIDggKystCiB0b29scy9sc2dwdS5jICAgICAgICAgfCAgIDggKystCiA2
+IGZpbGVzIGNoYW5nZWQsIDE1OSBpbnNlcnRpb25zKCspLCAxNyBkZWxldGlvbnMoLSkKCi0tIAoy
+LjI2LjAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
+dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
