@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D0A796E415
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Nov 2020 01:49:02 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E8626E41A
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Nov 2020 02:07:18 +0000 (UTC)
 From: Arjun Melkaveri <arjun.melkaveri@intel.com>
-Date: Mon, 30 Nov 2020 07:14:46 +0530
-Message-Id: <20201130014446.19709-1-arjun.melkaveri@intel.com>
+Date: Mon, 30 Nov 2020 07:33:02 +0530
+Message-Id: <20201130020302.24843-1-arjun.melkaveri@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_reloc: Added
+Subject: [igt-dev] [PATCH i-g-t] gem_exec_reloc & gem_shrink: Added
  gem_require_mappable_ggtt to check mappable aperture
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -31,7 +31,8 @@ Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
 ---
  tests/i915/gem_exec_reloc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tests/i915/gem_shrink.c     | 2 ++
+ 2 files changed, 5 insertions(+)
 
 diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
 index 8dcb24a6..596b1157 100644
@@ -61,6 +62,19 @@ index 8dcb24a6..596b1157 100644
  		__for_each_physical_engine(fd, e) {
  			igt_dynamic_f("%s", e->name)
  				many_active(fd, e->flags);
+diff --git a/tests/i915/gem_shrink.c b/tests/i915/gem_shrink.c
+index dba62c8f..094975af 100644
+--- a/tests/i915/gem_shrink.c
++++ b/tests/i915/gem_shrink.c
+@@ -432,6 +432,8 @@ igt_main
+ 		fd = drm_open_driver(DRIVER_INTEL);
+ 		igt_require_gem(fd);
+ 
++		gem_require_mappable_ggtt(fd);
++
+ 		/*
+ 		 * Spawn enough processes to use all memory, but each only
+ 		 * uses half the available mappable aperture ~128MiB.
 -- 
 2.25.1
 
