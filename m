@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 30 Nov 2020 14:10:19 -0000
-Message-ID: <160674541969.10643.17711255773073883846@emeril.freedesktop.org>
-References: <20201130020302.24843-1-arjun.melkaveri@intel.com>
-In-Reply-To: <20201130020302.24843-1-arjun.melkaveri@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgZ2VtX2V4?=
- =?utf-8?q?ec=5Freloc_=26_gem=5Fshrink=3A_Added_gem=5Frequire=5Fmappable?=
- =?utf-8?q?=5Fggtt_to_check_mappable_aperture?=
+In-Reply-To: <35bd53ab-7722-dfe4-8d00-a07ee5c0dd6f@linux.intel.com>
+References: <20201123201525.3991343-1-chris@chris-wilson.co.uk>
+ <20201130103656.1049951-1-chris@chris-wilson.co.uk>
+ <35bd53ab-7722-dfe4-8d00-a07ee5c0dd6f@linux.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Mon, 30 Nov 2020 16:24:44 +0000
+Message-ID: <160675348477.11819.13850531563168076703@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_request_retire: Switch from
+ random blitter loads to dummy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,275 +16,283 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0623102720=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arjun Melkaveri <arjun.melkaveri@intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0623102720==
-Content-Type: multipart/alternative;
- boundary="===============8751167844235783864=="
+Quoting Tvrtko Ursulin (2020-11-30 16:20:18)
+> 
+> On 30/11/2020 10:36, Chris Wilson wrote:
+> > Use the spinners to provide exactly the right amount of background
+> > busyness.
+> > 
+> > Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> > Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+> > ---
+> >   lib/igt_dummyload.c             |  23 ++---
+> >   lib/igt_dummyload.h             |   1 +
+> >   tests/i915/gem_request_retire.c | 170 ++++----------------------------
+> >   3 files changed, 34 insertions(+), 160 deletions(-)
+> > 
+> > diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+> > index d58f73108..891e4eaab 100644
+> > --- a/lib/igt_dummyload.c
+> > +++ b/lib/igt_dummyload.c
+> > @@ -161,19 +161,20 @@ emit_recursive_batch(igt_spin_t *spin,
+> >       if (opts->dependency) {
+> >               igt_assert(!(opts->flags & IGT_SPIN_POLL_RUN));
+> >   
+> > -             r = &relocs[obj[BATCH].relocation_count++];
+> > -
+> > -             /* dummy write to dependency */
+> >               obj[SCRATCH].handle = opts->dependency;
+> >               obj[SCRATCH].offset = addr;
+> > -             obj[SCRATCH].flags = EXEC_OBJECT_WRITE;
+> > -
+> > -             r->presumed_offset = obj[SCRATCH].offset;
+> > -             r->target_handle = obj[SCRATCH].handle;
+> > -             r->offset = sizeof(uint32_t) * 1020;
+> > -             r->delta = 0;
+> > -             r->read_domains = I915_GEM_DOMAIN_RENDER;
+> > -             r->write_domain = I915_GEM_DOMAIN_RENDER;
+> > +             if (!(opts->flags & IGT_SPIN_SOFTDEP)) {
+> > +                     obj[SCRATCH].flags = EXEC_OBJECT_WRITE;
+> > +
+> > +                     /* dummy write to dependency */
+> > +                     r = &relocs[obj[BATCH].relocation_count++];
+> > +                     r->presumed_offset = obj[SCRATCH].offset;
+> > +                     r->target_handle = obj[SCRATCH].handle;
+> > +                     r->offset = sizeof(uint32_t) * 1020;
+> > +                     r->delta = 0;
+> > +                     r->read_domains = I915_GEM_DOMAIN_RENDER;
+> > +                     r->write_domain = I915_GEM_DOMAIN_RENDER;
+> > +             }
+> >   
+> >               execbuf->buffer_count++;
+> >       } else if (opts->flags & IGT_SPIN_POLL_RUN) {
+> > diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
+> > index 6d3e65ce2..b8baaa6b4 100644
+> > --- a/lib/igt_dummyload.h
+> > +++ b/lib/igt_dummyload.h
+> > @@ -71,6 +71,7 @@ struct igt_spin_factory {
+> >   #define IGT_SPIN_NO_PREEMPTION (1 << 4)
+> >   #define IGT_SPIN_INVALID_CS    (1 << 5)
+> >   #define IGT_SPIN_USERPTR       (1 << 6)
+> > +#define IGT_SPIN_SOFTDEP       (1 << 7)
+> >   
+> >   igt_spin_t *
+> >   __igt_spin_factory(int fd, const struct igt_spin_factory *opts);
+> > diff --git a/tests/i915/gem_request_retire.c b/tests/i915/gem_request_retire.c
+> > index 31fb41987..c23ddfb7b 100644
+> > --- a/tests/i915/gem_request_retire.c
+> > +++ b/tests/i915/gem_request_retire.c
+> > @@ -52,130 +52,6 @@
+> >   IGT_TEST_DESCRIPTION("Collection of tests targeting request retirement code"
+> >                    " paths.");
+> >   
+> > -#define WIDTH 4096
+> > -#define HEIGHT 4096
+> > -#define BO_SIZE (WIDTH * HEIGHT * sizeof(uint32_t))
+> > -
+> > -static uint32_t
+> > -blit(int fd, uint32_t dst, uint32_t src, uint32_t ctx_id)
+> > -{
+> > -     const unsigned int copies = 1000;
+> > -     uint32_t batch[12 * copies + 5];
+> > -     struct drm_i915_gem_relocation_entry reloc[2 * copies];
+> > -     struct drm_i915_gem_exec_object2 obj[3];
+> > -     struct drm_i915_gem_execbuffer2 exec;
+> > -     uint32_t handle;
+> > -     unsigned int i = 0, j, r = 0;
+> > -
+> > -     for (j = 0; j < copies; j++) {
+> > -             reloc[r].target_handle = dst;
+> > -             reloc[r].delta = 0;
+> > -             reloc[r].offset = (i + 4) * sizeof(uint32_t);
+> > -             reloc[r].presumed_offset = 0;
+> > -             reloc[r].read_domains = I915_GEM_DOMAIN_RENDER;
+> > -             reloc[r].write_domain = I915_GEM_DOMAIN_RENDER;
+> > -
+> > -             r++;
+> > -
+> > -             reloc[r].target_handle = src;
+> > -             reloc[r].delta = 0;
+> > -             reloc[r].offset = (i + 7) * sizeof(uint32_t);
+> > -             if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+> > -                     reloc[r].offset += sizeof(uint32_t);
+> > -             reloc[r].presumed_offset = 0;
+> > -             reloc[r].read_domains = I915_GEM_DOMAIN_RENDER;
+> > -             reloc[r].write_domain = 0;
+> > -
+> > -             r++;
+> > -
+> > -             batch[i++] = XY_SRC_COPY_BLT_CMD |
+> > -                     XY_SRC_COPY_BLT_WRITE_ALPHA |
+> > -                     XY_SRC_COPY_BLT_WRITE_RGB;
+> > -             if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+> > -                     batch[i - 1] |= 8;
+> > -             else
+> > -                     batch[i - 1] |= 6;
+> > -
+> > -             batch[i++] = (3 << 24) | /* 32 bits */
+> > -                     (0xcc << 16) | /* copy ROP */
+> > -                     WIDTH*4;
+> > -             batch[i++] = 0; /* dst x1,y1 */
+> > -             batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
+> > -             batch[i++] = 0; /* dst reloc */
+> > -             if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+> > -                     batch[i++] = 0;
+> > -             batch[i++] = 0; /* src x1,y1 */
+> > -             batch[i++] = WIDTH*4;
+> > -             batch[i++] = 0; /* src reloc */
+> > -             if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+> > -                     batch[i++] = 0;
+> > -     }
+> > -
+> > -     batch[i++] = MI_BATCH_BUFFER_END;
+> > -
+> > -     while (i % 4)
+> > -             batch[i++] = MI_NOOP;
+> > -
+> > -     handle = gem_create(fd, sizeof(batch));
+> > -     gem_write(fd, handle, 0, batch, sizeof(batch));
+> > -
+> > -     memset(obj, 0, sizeof(obj));
+> > -     memset(&exec, 0, sizeof(exec));
+> > -
+> > -     obj[exec.buffer_count++].handle = dst;
+> > -     if (src != dst)
+> > -             obj[exec.buffer_count++].handle = src;
+> > -     obj[exec.buffer_count].handle = handle;
+> > -     obj[exec.buffer_count].relocation_count = 2 * copies;
+> > -     obj[exec.buffer_count].relocs_ptr = to_user_pointer(reloc);
+> > -     exec.buffer_count++;
+> > -     exec.buffers_ptr = to_user_pointer(obj);
+> > -
+> > -     exec.batch_len = i * sizeof(uint32_t);
+> > -     exec.flags = I915_EXEC_BLT;
+> > -     i915_execbuffer2_set_context_id(exec, ctx_id);
+> > -
+> > -     gem_execbuf(fd, &exec);
+> > -
+> > -     return handle;
+> > -}
+> > -
+> > -static uint32_t
+> > -noop(int fd, uint32_t src, uint32_t ctx_id)
+> > -{
+> > -     uint32_t batch[4];
+> > -     struct drm_i915_gem_exec_object2 obj[2];
+> > -     struct drm_i915_gem_execbuffer2 exec;
+> > -     uint32_t handle;
+> > -     unsigned int i = 0;
+> > -
+> > -     batch[i++] = MI_NOOP;
+> > -     batch[i++] = MI_BATCH_BUFFER_END;
+> > -     batch[i++] = MI_NOOP;
+> > -     batch[i++] = MI_NOOP;
+> > -
+> > -     handle = gem_create(fd, 4096);
+> > -     gem_write(fd, handle, 0, batch, sizeof(batch));
+> > -
+> > -     memset(obj, 0, sizeof(obj));
+> > -     memset(&exec, 0, sizeof(exec));
+> > -
+> > -     obj[exec.buffer_count++].handle = src;
+> > -     obj[exec.buffer_count].handle = handle;
+> > -     obj[exec.buffer_count].relocation_count = 0;
+> > -     obj[exec.buffer_count].relocs_ptr = to_user_pointer(0);
+> > -     exec.buffer_count++;
+> > -     exec.buffers_ptr = to_user_pointer(obj);
+> > -
+> > -     exec.batch_len = i * sizeof(uint32_t);
+> > -     exec.flags = I915_EXEC_RENDER;
+> > -     i915_execbuffer2_set_context_id(exec, ctx_id);
+> > -
+> > -     gem_execbuf(fd, &exec);
+> > -
+> > -     return handle;
+> > -}
+> > -
+> >   /*
+> >    * A single bo is operated from batchbuffers submitted from two contexts and on
+> >    * different rings.
+> > @@ -185,37 +61,33 @@ noop(int fd, uint32_t src, uint32_t ctx_id)
+> >   static void
+> >   test_retire_vma_not_inactive(int fd)
+> >   {
+> > -     uint32_t ctx_id;
+> > -     uint32_t src, dst;
+> > -     uint32_t blit_bb, noop_bb;
+> > -
+> > -     igt_require(HAS_BLT_RING(intel_get_drm_devid(fd)));
+> > +     struct intel_execution_engine2 *e;
+> >   
+> > -     ctx_id = gem_context_create(fd);
+> > +     igt_spin_t *bg = NULL;
+> >   
+> > -     /* Create some bos batch buffers will operate on. */
+> > -     src = gem_create(fd, BO_SIZE);
+> > -     dst = gem_create(fd, BO_SIZE);
+> > +     __for_each_physical_engine(fd, e) {
+> > +             igt_spin_t *spin;
+> > +             uint32_t ctx;
+> >   
+> > -     /* Submit a long running batch. */
+> > -     blit_bb = blit(fd, dst, src, 0);
+> > +             if (!bg) {
+> > +                     bg = igt_spin_new(fd, .engine = e->flags);
+> > +                     continue;
+> > +             }
+> >   
+> > -     /* Submit a quick batch referencing the same object. */
+> > -     noop_bb = noop(fd, src, ctx_id);
+> > +             ctx = gem_context_clone_with_engines(fd, 0);
+> > +             spin = igt_spin_new(fd, ctx,
+> > +                                 .engine = e->flags,
+> > +                                 .dependency = bg->handle,
+> > +                                 .flags = IGT_SPIN_SOFTDEP);
+> > +             gem_context_destroy(fd, ctx);
+> > +             igt_spin_end(spin);
+> >   
+> > -     /* Wait for the quick batch to complete. */
+> > -     gem_sync(fd, noop_bb);
+> > -     gem_close(fd, noop_bb);
+> > -
+> > -     /* Now destroy the context in which the quick batch was submitted. */
+> > -     gem_context_destroy(fd, ctx_id);
+> > -
+> > -     /* Wait for the slow batch to finish and clean up. */
+> > -     gem_sync(fd, blit_bb);
+> > -     gem_close(fd, blit_bb);
+> > +             gem_sync(fd, spin->handle);
+> > +             igt_spin_free(fd, spin);
+> > +     }
+> >   
+> > -     gem_close(fd, src);
+> > -     gem_close(fd, dst);
+> > +     igt_drop_caches_set(fd, DROP_RETIRE);
+> > +     igt_spin_free(fd, bg);
+> >   }
+> >   
+> >   int fd;
+> > 
+> 
+> I wonder how relevant this test is today but anyway doesn't harm. It is 
+> not exactly like-for-like replacement but I *think* the key was context 
+> close before involved object is idled so I think is is fine.
 
---===============8751167844235783864==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Who can say which test will find the next unexpected bug :)
+[kcov, kcov, kcov!]
 
-== Series Details ==
-
-Series: gem_exec_reloc & gem_shrink: Added gem_require_mappable_ggtt to check mappable aperture
-URL   : https://patchwork.freedesktop.org/series/84387/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9404 -> IGTPW_5238
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5238 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-bsw-kefka:       [PASS][1] -> [DMESG-WARN][2] ([i915#1982])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-bsw-kefka/igt@gem_close_race@basic-threads.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-bsw-kefka/igt@gem_close_race@basic-threads.html
-
-  * igt@gem_mmap_gtt@basic:
-    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([i915#402]) +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-tgl-y/igt@gem_mmap_gtt@basic.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-tgl-y/igt@gem_mmap_gtt@basic.html
-
-  * igt@i915_module_load@reload:
-    - fi-icl-u2:          [PASS][5] -> [DMESG-WARN][6] ([i915#1982]) +1 similar issue
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-icl-u2/igt@i915_module_load@reload.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-icl-u2/igt@i915_module_load@reload.html
-    - fi-kbl-soraka:      [PASS][7] -> [DMESG-WARN][8] ([i915#1982])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-kbl-soraka/igt@i915_module_load@reload.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-kbl-soraka/igt@i915_module_load@reload.html
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - fi-bsw-n3050:       [PASS][9] -> [DMESG-WARN][10] ([i915#1982])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-bsw-n3050/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-bsw-n3050/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  
-#### Possible fixes ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-kbl-7500u:       [DMESG-WARN][11] -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@debugfs_test@read_all_entries:
-    - fi-tgl-y:           [DMESG-WARN][13] ([i915#402]) -> [PASS][14] +2 similar issues
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-tgl-y/igt@debugfs_test@read_all_entries.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-tgl-y/igt@debugfs_test@read_all_entries.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-soraka:      [DMESG-WARN][15] ([i915#1982]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-kbl-soraka/igt@i915_pm_rpm@module-reload.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-kbl-soraka/igt@i915_pm_rpm@module-reload.html
-
-  * igt@kms_busy@basic@flip:
-    - fi-tgl-y:           [DMESG-WARN][17] ([i915#1982]) -> [PASS][18] +1 similar issue
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-tgl-y/igt@kms_busy@basic@flip.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-tgl-y/igt@kms_busy@basic@flip.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-cml-u2:          [FAIL][19] ([i915#1161] / [i915#262]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-cml-u2/igt@kms_chamelium@dp-crc-fast.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-cml-u2/igt@kms_chamelium@dp-crc-fast.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-icl-u2:          [DMESG-WARN][21] ([i915#1982]) -> [PASS][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#1161]: https://gitlab.freedesktop.org/drm/intel/issues/1161
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#262]: https://gitlab.freedesktop.org/drm/intel/issues/262
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-
-
-Participating hosts (45 -> 39)
-------------------------------
-
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-blb-e6850 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5876 -> IGTPW_5238
-
-  CI-20190529: 20190529
-  CI_DRM_9404: f515fa81d87ef367735d3a57a002fc72c8e55909 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5238: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/index.html
-  IGT_5876: cf2f41b3d3dfabaf3a4837062f996f3491a350b1 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/index.html
-
---===============8751167844235783864==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>gem_exec_reloc &amp; gem_shrink: Added gem_require_mappable_ggtt to check mappable aperture</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/84387/">https://patchwork.freedesktop.org/series/84387/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9404 -&gt; IGTPW_5238</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5238 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_close_race@basic-threads:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-bsw-kefka/igt@gem_close_race@basic-threads.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-bsw-kefka/igt@gem_close_race@basic-threads.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_mmap_gtt@basic:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-tgl-y/igt@gem_mmap_gtt@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-tgl-y/igt@gem_mmap_gtt@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>
-<p>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-icl-u2/igt@i915_module_load@reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-icl-u2/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-kbl-soraka/igt@i915_module_load@reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-kbl-soraka/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-bsw-n3050/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-bsw-n3050/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@debugfs_test@read_all_entries:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-tgl-y/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-tgl-y/igt@debugfs_test@read_all_entries.html">PASS</a> +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-kbl-soraka/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-kbl-soraka/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-tgl-y/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-tgl-y/igt@kms_busy@basic@flip.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-cml-u2/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1161">i915#1161</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/262">i915#262</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-cml-u2/igt@kms_chamelium@dp-crc-fast.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
-<ul>
-<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9404/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (45 -&gt; 39)</h2>
-<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-blb-e6850 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_5876 -&gt; IGTPW_5238</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9404: f515fa81d87ef367735d3a57a002fc72c8e55909 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5238: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5238/index.html<br />
-  IGT_5876: cf2f41b3d3dfabaf3a4837062f996f3491a350b1 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============8751167844235783864==--
-
---===============0623102720==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+It's mostly like for like; close before vma idle looked to be the goal
+of the test, certainly worth poking at.
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0623102720==--
