@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 07 Dec 2020 12:22:01 -0000
-Message-ID: <160734372190.8722.11305937036619254810@emeril.freedesktop.org>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 819496E83F
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Dec 2020 12:33:22 +0000 (UTC)
+Date: Mon, 7 Dec 2020 13:33:14 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20201207123314.GA16410@zkempczy-mobl2>
 References: <20201207114446.268638-1-apoorva1.singh@intel.com>
+MIME-Version: 1.0
+Content-Disposition: inline
 In-Reply-To: <20201207114446.268638-1-apoorva1.singh@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fgpgpu=5Ffill=3A_Add_test_description_=28rev2=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t,
+ v2] i915/gem_gpgpu_fill: Add test description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,167 +18,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1487412570=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: apoorva1.singh@intel.com
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1487412570==
-Content-Type: multipart/alternative;
- boundary="===============8224901438005226889=="
-
---===============8224901438005226889==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: i915/gem_gpgpu_fill: Add test description (rev2)
-URL   : https://patchwork.freedesktop.org/series/84615/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9453 -> IGTPW_5254
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5254/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5254 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@prime_self_import@basic-with_two_bos:
-    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9453/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5254/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_hangman@error-state-basic:
-    - fi-tgl-y:           [DMESG-WARN][3] ([i915#402]) -> [PASS][4] +2 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9453/fi-tgl-y/igt@i915_hangman@error-state-basic.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5254/fi-tgl-y/igt@i915_hangman@error-state-basic.html
-
-  
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-
-
-Participating hosts (44 -> 39)
-------------------------------
-
-  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5883 -> IGTPW_5254
-
-  CI-20190529: 20190529
-  CI_DRM_9453: 52e2ca46b7e2aa62c0509bce0be189d2f5a7325f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5254: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5254/index.html
-  IGT_5883: 02244f60c98b4e4106b1099ade3439b159ac848e @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5254/index.html
-
---===============8224901438005226889==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>i915/gem_gpgpu_fill: Add test description (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/84615/">https://patchwork.freedesktop.org/series/84615/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5254/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5254/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9453 -&gt; IGTPW_5254</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5254/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5254 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@prime_self_import@basic-with_two_bos:<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9453/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5254/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_hangman@error-state-basic:<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9453/fi-tgl-y/igt@i915_hangman@error-state-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5254/fi-tgl-y/igt@i915_hangman@error-state-basic.html">PASS</a> +2 similar issues</li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (44 -&gt; 39)</h2>
-<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_5883 -&gt; IGTPW_5254</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9453: 52e2ca46b7e2aa62c0509bce0be189d2f5a7325f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5254: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5254/index.html<br />
-  IGT_5883: 02244f60c98b4e4106b1099ade3439b159ac848e @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============8224901438005226889==--
-
---===============1487412570==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============1487412570==--
+T24gTW9uLCBEZWMgMDcsIDIwMjAgYXQgMDU6MTQ6NDZQTSArMDUzMCwgYXBvb3J2YTEuc2luZ2hA
+aW50ZWwuY29tIHdyb3RlOgo+IEZyb206IEFwb29ydmEgU2luZ2ggPGFwb29ydmExLnNpbmdoQGlu
+dGVsLmNvbT4KPiAKPiBBZGQgZGVzY3JpcHRpb24gZm9yIHRoZSB0ZXN0Cj4gCj4gdjI6IE1vZGlm
+aWVkIGRlc2NyaXB0aW9uIHRvIGJlIG1vcmUgcHJlY2lzZQo+IAo+IFNpZ25lZC1vZmYtYnk6IEFw
+b29ydmEgU2luZ2ggPGFwb29ydmExLnNpbmdoQGludGVsLmNvbT4KPiBDYzogTWVsa2F2ZXJpLCBB
+cmp1biA8YXJqdW4ubWVsa2F2ZXJpQGludGVsLmNvbT4KPiBDYzogS2VtcGN6eW5za2ksIFpiaWdu
+aWV3IDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Cj4gLS0tCj4gIHRlc3RzL2k5MTUv
+Z2VtX2dwZ3B1X2ZpbGwuYyB8IDIgKysKPiAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygr
+KQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9ncGdwdV9maWxsLmMgYi90ZXN0cy9p
+OTE1L2dlbV9ncGdwdV9maWxsLmMKPiBpbmRleCBjNjA1NjI5Zi4uZmRkMWU5M2IgMTAwNjQ0Cj4g
+LS0tIGEvdGVzdHMvaTkxNS9nZW1fZ3BncHVfZmlsbC5jCj4gKysrIGIvdGVzdHMvaTkxNS9nZW1f
+Z3BncHVfZmlsbC5jCj4gQEAgLTQ3LDYgKzQ3LDggQEAKPiAgI2luY2x1ZGUgImlndC5oIgo+ICAj
+aW5jbHVkZSAiaW50ZWxfYnVmb3BzLmgiCj4gIAo+ICtJR1RfVEVTVF9ERVNDUklQVElPTigiVmVy
+aWZ5IHN1cmZhY2UgaXMgZmlsbGVkIGNvcnJlY3RseSB1c2luZyBHUEdQVSBwaXBlbGluZSIpOwo+
+ICsKPiAgI2RlZmluZSBXSURUSCA2NAo+ICAjZGVmaW5lIEhFSUdIVCA2NAo+ICAjZGVmaW5lIFNU
+UklERSAoV0lEVEgpCj4gLS0gCj4gMi4yNS4xCj4KClJldmlld2VkLWJ5OiBaYmlnbmlldyBLZW1w
+Y3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KCi0tClpiaWduaWV3IApf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1h
+aWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZy
+ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
