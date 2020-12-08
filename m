@@ -1,13 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5AF438999A
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Dec 2020 11:01:39 +0000 (UTC)
+Date: Tue, 8 Dec 2020 13:01:31 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20201208110131.GN7444@platvala-desk.ger.corp.intel.com>
+References: <20201207161150.1841453-1-chris@chris-wilson.co.uk>
+ <160737046343.8717.16132823486927493004@emeril.freedesktop.org>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 08 Dec 2020 10:43:16 -0000
-Message-ID: <160742419687.9600.10861551499902860579@emeril.freedesktop.org>
-References: <20201208050325.27791-1-arjun.melkaveri@intel.com>
-In-Reply-To: <20201208050325.27791-1-arjun.melkaveri@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgZ2VtX3No?=
- =?utf-8?q?rink=3ARemoved_gem=5Fmappable=5Faperture=5Fsize_and_initialize_?=
- =?utf-8?q?alloc_size_to_128_MiB_=28rev2=29?=
+Content-Disposition: inline
+In-Reply-To: <160737046343.8717.16132823486927493004@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_i915/query=3A_Cross-check_engi?=
+ =?utf-8?q?ne_list_against_execbuf_interface?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,167 +21,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0688758557=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0688758557==
-Content-Type: multipart/alternative;
- boundary="===============5591498391022221239=="
-
---===============5591498391022221239==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: gem_shrink:Removed gem_mappable_aperture_size and initialize alloc size to 128 MiB (rev2)
-URL   : https://patchwork.freedesktop.org/series/84659/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9457 -> IGTPW_5258
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5258/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5258 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@prime_vgem@basic-write:
-    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9457/fi-tgl-y/igt@prime_vgem@basic-write.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5258/fi-tgl-y/igt@prime_vgem@basic-write.html
-
-  
-#### Possible fixes ####
-
-  * igt@debugfs_test@read_all_entries:
-    - fi-tgl-y:           [DMESG-WARN][3] ([i915#402]) -> [PASS][4] +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9457/fi-tgl-y/igt@debugfs_test@read_all_entries.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5258/fi-tgl-y/igt@debugfs_test@read_all_entries.html
-
-  
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+On Mon, Dec 07, 2020 at 07:47:43PM +0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: series starting with [i-g-t,1/2] i915/query: Cross-check engine list against execbuf interface
+> URL   : https://patchwork.freedesktop.org/series/84646/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_9455_full -> IGTPW_5256_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_5256_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_5256_full, please notify your bug team to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5256/index.html
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_5256_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_pm_lpsp@screens-disabled:
+>     - shard-hsw:          [PASS][1] -> [FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9455/shard-hsw6/igt@i915_pm_lpsp@screens-disabled.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5256/shard-hsw5/igt@i915_pm_lpsp@screens-disabled.html
+> 
+>   * igt@kms_flip@2x-flip-vs-absolute-wf_vblank-interruptible@ab-vga1-hdmi-a1:
+>     - shard-hsw:          [PASS][3] -> [INCOMPLETE][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9455/shard-hsw2/igt@kms_flip@2x-flip-vs-absolute-wf_vblank-interruptible@ab-vga1-hdmi-a1.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5256/shard-hsw2/igt@kms_flip@2x-flip-vs-absolute-wf_vblank-interruptible@ab-vga1-hdmi-a1.html
 
 
-Participating hosts (44 -> 38)
-------------------------------
-
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus fi-skl-6600u 
+False positives for you, Lakshmi.
 
 
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5884 -> IGTPW_5258
-
-  CI-20190529: 20190529
-  CI_DRM_9457: 2faca88cd21a5c168974051516a9c1685f47ce6d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5258: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5258/index.html
-  IGT_5884: b1015a3267bbccb985b2fa7e3accb778c7bff0ed @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5258/index.html
-
---===============5591498391022221239==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>gem_shrink:Removed gem_mappable_aperture_size and initialize alloc size to 128 MiB (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/84659/">https://patchwork.freedesktop.org/series/84659/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5258/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5258/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9457 -&gt; IGTPW_5258</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5258/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5258 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@prime_vgem@basic-write:<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9457/fi-tgl-y/igt@prime_vgem@basic-write.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5258/fi-tgl-y/igt@prime_vgem@basic-write.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@debugfs_test@read_all_entries:<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9457/fi-tgl-y/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5258/fi-tgl-y/igt@debugfs_test@read_all_entries.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (44 -&gt; 38)</h2>
-<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus fi-skl-6600u </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_5884 -&gt; IGTPW_5258</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9457: 2faca88cd21a5c168974051516a9c1685f47ce6d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5258: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5258/index.html<br />
-  IGT_5884: b1015a3267bbccb985b2fa7e3accb778c7bff0ed @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============5591498391022221239==--
-
---===============0688758557==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0688758557==--
