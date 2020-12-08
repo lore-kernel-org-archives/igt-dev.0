@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C1AAF6E94D
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Dec 2020 05:07:44 +0000 (UTC)
-From: Arjun Melkaveri <arjun.melkaveri@intel.com>
-Date: Tue,  8 Dec 2020 10:33:25 +0530
-Message-Id: <20201208050325.27791-1-arjun.melkaveri@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 622A16E94A
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Dec 2020 05:20:56 +0000 (UTC)
+From: "Laxminarayan Bharadiya, Pankaj"
+ <pankaj.laxminarayan.bharadiya@intel.com>
+Date: Tue, 8 Dec 2020 05:20:50 +0000
+Message-ID: <bb5e50432af4423b8e0bdd99af3f2f22@intel.com>
+References: <20201208044900.19480-1-pankaj.laxminarayan.bharadiya@intel.com>
+In-Reply-To: <20201208044900.19480-1-pankaj.laxminarayan.bharadiya@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] gem_shrink:Removed
- gem_mappable_aperture_size and initialize alloc size to 128 MiB
+Subject: Re: [igt-dev] [PATCH i-g-t v2 0/3] Add FB_DAMAGE_CLIPS prop and new
+ test for Selective fetch
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,36 +23,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: "Mun, Gwan-gyeong" <gwan-gyeong.mun@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Souza,
+ Jose" <jose.souza@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Initialized alloc_size to 128 MiB by replacing
-gem_mappable_aperture_size. As half of
-available mappable aperture may return different
-size than targeted 128 MiB per process.
 
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
----
- tests/i915/gem_shrink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_shrink.c b/tests/i915/gem_shrink.c
-index dba62c8f..273234d5 100644
---- a/tests/i915/gem_shrink.c
-+++ b/tests/i915/gem_shrink.c
-@@ -439,7 +439,7 @@ igt_main
- 		 * we expect the shrinker to start purging objects,
- 		 * and possibly fail.
- 		 */
--		alloc_size = gem_mappable_aperture_size() / 2;
-+		alloc_size = 128 * 1024 * 1024;
- 		num_processes = 1 + (mem_size / (alloc_size >> 20));
- 
- 		igt_info("Using %d processes and %'lluMiB per process\n",
--- 
-2.25.1
+> -----Original Message-----
+> From: Laxminarayan Bharadiya, Pankaj
+> <pankaj.laxminarayan.bharadiya@intel.com>
+> Sent: 08 December 2020 10:19
+> To: Mun, Gwan-gyeong <gwan-gyeong.mun@intel.com>; igt-
+> dev@lists.freedesktop.org; Souza, Jose <jose.souza@intel.com>
+> Cc: Laxminarayan Bharadiya, Pankaj
+> <pankaj.laxminarayan.bharadiya@intel.com>
+> Subject: [PATCH i-g-t v2 0/3] Add FB_DAMAGE_CLIPS prop and new test for
+> Selective fetch
+> 
+> Add new test for PSR2 selective fetch
+> 
+> Pankaj Bharadiya (3):
+>   INTEL_DII: lib/igt_psr: Add function to check PSR2 selective fetch
+>   INTEL_DII: tests/kms_psr2_su: Add new selective update test
+
+I accidentally sent wrong patchset.
+please ignore this series, will resend v2.
+
+Thanks,
+Pankaj
+
+>   INTEL_DII: tests: Add new PSR2 selective fetch test
+> 
+>  lib/igt_psr.c          |  10 +
+>  lib/igt_psr.h          |   1 +
+>  tests/Makefile.sources |   1 +
+>  tests/kms_psr2_sf.c    | 649 +++++++++++++++++++++++++++++++++++++++++
+>  tests/kms_psr2_su.c    |  29 +-
+>  tests/meson.build      |   1 +
+>  6 files changed, 688 insertions(+), 3 deletions(-)  create mode 100644
+> tests/kms_psr2_sf.c
+> 
+> --
+> 2.29.2
 
 _______________________________________________
 igt-dev mailing list
