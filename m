@@ -1,74 +1,75 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue,  8 Dec 2020 12:13:53 +0000
-Message-Id: <20201208121353.1914932-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20201208100951.1900238-1-chris@chris-wilson.co.uk>
-References: <20201208100951.1900238-1-chris@chris-wilson.co.uk>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Date: Tue, 8 Dec 2020 13:56:33 +0200
+From: Andi Shyti <andi.shyti@intel.com>
+Message-ID: <X89p8cxixzgFd8tn@intel.intel>
+References: <20201207161150.1841453-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_shrink: Refactor allocation sizing
- based on available memory
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Disposition: inline
+In-Reply-To: <20201207161150.1841453-1-chris@chris-wilson.co.uk>
+Subject: Re: [Intel-gfx] [PATCH i-g-t 1/2] i915/query: Cross-check engine
+ list against execbuf interface
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Refactor the allocation such that we utilise just enough memory pressure
-to invoke the shrinker, and just enough processes to spread across the
-CPUs and contend on the shrinker.
+Hi Chris,
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
----
- tests/i915/gem_shrink.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+> -	/* Check results match the legacy GET_PARAM (where we can). */
+> +	/* Confirm the individual engines exist with EXECBUFFER2 */
+>  	for (i = 0; i < engines->num_engines; i++) {
+>  		struct drm_i915_engine_info *engine =
+>  			(struct drm_i915_engine_info *)&engines->engines[i];
+> +		I915_DEFINE_CONTEXT_PARAM_ENGINES(p_engines, 1) = {
+> +			.engines = { engine->engine }
+> +		};
+> +		struct drm_i915_gem_context_param param = {
+> +			.param = I915_CONTEXT_PARAM_ENGINES,
+> +			.value = to_user_pointer(&p_engines),
+> +			.size = sizeof(p_engines),
+> +		};
+> +
+> +		struct drm_i915_gem_exec_object2 obj = {};
+> +		struct drm_i915_gem_execbuffer2 execbuf = {
+> +			.buffers_ptr = to_user_pointer(&obj),
+> +			.buffer_count = 1,
+> +		};
+>  
+>  		igt_debug("%u: class=%u instance=%u flags=%llx capabilities=%llx\n",
+>  			  i,
+> @@ -689,6 +713,15 @@ static void engines(int fd)
+>  			  engine->engine.engine_instance,
+>  			  engine->flags,
+>  			  engine->capabilities);
+> +		gem_context_set_param(fd, &param);
+> +		igt_assert_eq(__gem_execbuf(fd, &execbuf), -ENOENT);
+> +	}
+> +	gem_context_reset_engines(fd, 0);
+> +
+> +	/* Check results match the legacy GET_PARAM (where we can). */
+> +	for (i = 0; i < engines->num_engines; i++) {
+> +		struct drm_i915_engine_info *engine =
+> +			(struct drm_i915_engine_info *)&engines->engines[i];
 
-diff --git a/tests/i915/gem_shrink.c b/tests/i915/gem_shrink.c
-index dba62c8fa..e8a814fe6 100644
---- a/tests/i915/gem_shrink.c
-+++ b/tests/i915/gem_shrink.c
-@@ -426,6 +426,7 @@ igt_main
- 	int num_processes = 0;
- 
- 	igt_fixture {
-+		const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
- 		uint64_t mem_size = intel_get_total_ram_mb();
- 		int fd;
- 
-@@ -434,16 +435,16 @@ igt_main
- 
- 		/*
- 		 * Spawn enough processes to use all memory, but each only
--		 * uses half the available mappable aperture ~128MiB.
-+		 * uses half of the available per-cpu memory.
- 		 * Individually the processes would be ok, but en masse
- 		 * we expect the shrinker to start purging objects,
- 		 * and possibly fail.
- 		 */
--		alloc_size = gem_mappable_aperture_size() / 2;
--		num_processes = 1 + (mem_size / (alloc_size >> 20));
-+		alloc_size = (mem_size + ncpus - 1) / ncpus / 2;
-+		num_processes = ncpus + (mem_size / alloc_size);
- 
--		igt_info("Using %d processes and %'lluMiB per process\n",
--			 num_processes, (long long)(alloc_size >> 20));
-+		igt_info("Using %d processes and %'"PRIu64"MiB per process\n",
-+			 num_processes, alloc_size);
- 
- 		intel_require_memory(num_processes, alloc_size,
- 				     CHECK_SWAP | CHECK_RAM);
--- 
-2.29.2
+I would have liked it with one single for loop, perhaps resetting
+engines individually.
 
+But this works, as well and I'm not strong with this:
+
+Reviewed-by: Andi Shyti <andi.shyti@intel.com>
+
+Andi
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
