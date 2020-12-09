@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 83DDD6EACA
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Dec 2020 16:22:06 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Wed,  9 Dec 2020 21:36:42 +0530
-Message-Id: <20201209160642.6317-7-anshuman.gupta@intel.com>
-In-Reply-To: <20201209160642.6317-1-anshuman.gupta@intel.com>
-References: <20201209160642.6317-1-anshuman.gupta@intel.com>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3CA816EAB4
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Dec 2020 16:25:59 +0000 (UTC)
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 6/6] i915/i915_pm_rpm: Add PC10 idle display
- on test
+In-Reply-To: <20201209160642.6317-3-anshuman.gupta@intel.com>
+References: <20201209160642.6317-1-anshuman.gupta@intel.com>
+ <20201209160642.6317-3-anshuman.gupta@intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Wed, 09 Dec 2020 16:25:55 +0000
+Message-ID: <160753115527.595.15173510320238280650@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/6] i915/i915_pm_rpm.c: create PC state
+ subtest group
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,105 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Anshuman Gupta <anshuman.gupta@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a test which validates PC10 residencies with
-psr idle display on.
+Quoting Anshuman Gupta (2020-12-09 16:06:38)
+> Create a separate igt test group and move package C
+> state in to this subgroup.
+> Run powertop --auto-tune to tune SOC power configuration
+> for package C state tests.
+> 
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> ---
+>  tests/i915/i915_pm_rpm.c | 35 +++++++++++++++++++++++++++++++----
+>  1 file changed, 31 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+> index af55b569..42bc44d9 100644
+> --- a/tests/i915/i915_pm_rpm.c
+> +++ b/tests/i915/i915_pm_rpm.c
+> @@ -832,6 +832,25 @@ static void basic_subtest(void)
+>         /* XXX Also we can test wake up via exec nop */
+>  }
+>  
+> +static bool setup_powertop(void)
+> +{
+> +       FILE *fp;
+> +       char tmp[512];
+> +
+> +       fp = popen("powertop --auto-tune", "r");
 
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
----
- tests/i915/i915_pm_rpm.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index d771d733..d2ea8d1b 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -79,6 +79,7 @@ enum pc8_status {
- enum screen_type {
- 	SCREEN_TYPE_LPSP,
- 	SCREEN_TYPE_NON_LPSP,
-+	SCREEN_TYPE_PSR,
- 	SCREEN_TYPE_ANY,
- };
- 
-@@ -128,6 +129,7 @@ struct modeset_params {
- 
- struct modeset_params lpsp_mode_params;
- struct modeset_params non_lpsp_mode_params;
-+struct modeset_params psr_mode_params;
- struct modeset_params *default_mode_params;
- 
- static int modprobe(const char *driver)
-@@ -293,6 +295,10 @@ static bool init_modeset_params_for_type(struct mode_set_data *data,
- 		    i915_output_is_lpsp_capable(drm_fd, output))
- 			continue;
- 
-+		if (type == SCREEN_TYPE_PSR &&
-+		    !psr_sink_support(drm_fd, debugfs, PSR_MODE_1))
-+			continue;
-+
- 		connector = c;
- 		mode = igt_output_get_mode(output);
- 		break;
-@@ -327,6 +333,8 @@ static void init_modeset_cached_params(struct mode_set_data *data)
- 		default_mode_params = &non_lpsp_mode_params;
- 	else
- 		default_mode_params = NULL;
-+
-+	init_modeset_params_for_type(data, &psr_mode_params, SCREEN_TYPE_PSR);
- }
- 
- static bool set_mode_for_params(struct modeset_params *params)
-@@ -358,6 +366,9 @@ static bool enable_one_screen_with_type(struct mode_set_data *data,
- 	case SCREEN_TYPE_NON_LPSP:
- 		params = &non_lpsp_mode_params;
- 		break;
-+	case SCREEN_TYPE_PSR:
-+		params = &psr_mode_params;
-+		break;
- 	default:
- 		igt_assert(0);
- 	}
-@@ -368,6 +379,12 @@ static bool enable_one_screen_with_type(struct mode_set_data *data,
- 	return set_mode_for_params(params);
- }
- 
-+static void enable_psr_screen(struct mode_set_data *data)
-+{
-+	psr_enable(drm_fd, debugfs, PSR_MODE_1);
-+	igt_require(enable_one_screen_with_type(data, SCREEN_TYPE_PSR));
-+}
-+
- static void enable_one_screen(struct mode_set_data *data)
- {
- 	/* SKIP if there are no connected screens. */
-@@ -894,6 +911,12 @@ static void pc10_residency_subtest(bool display_on)
- 		disable_all_screens_and_wait(&ms_data);
- 		igt_assert_f(pc10_residency_changed(30),
- 			     "Machine is not reaching PC10 state with all screens disabled.\n");
-+	} else {
-+		/* check pc10 with psr screen */
-+		enable_psr_screen(&ms_data);
-+		igt_assert(psr_wait_entry(debugfs, PSR_MODE_1));
-+		igt_assert_f(pc10_residency_changed(30),
-+			     "Machine is not reaching PC10 state with idle display on\n");
- 	}
- }
- 
-@@ -2136,6 +2159,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 			pc8_residency_subtest(true);
- 		igt_subtest("pc8-residency-display-off")
- 			pc8_residency_subtest(false);
-+		igt_subtest("pc10-residency-display-on")
-+			pc10_residency_subtest(true);
- 		igt_subtest("pc10-residency-display-off")
- 			pc10_residency_subtest(false);
- 	}
--- 
-2.26.2
-
+Doesn't this defeat the point of having it work out of the box?
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
