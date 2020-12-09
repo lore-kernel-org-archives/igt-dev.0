@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0C026EACC
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Dec 2020 16:22:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 899BB6EAD2
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Dec 2020 16:22:03 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Wed,  9 Dec 2020 21:36:39 +0530
-Message-Id: <20201209160642.6317-4-anshuman.gupta@intel.com>
+Date: Wed,  9 Dec 2020 21:36:40 +0530
+Message-Id: <20201209160642.6317-5-anshuman.gupta@intel.com>
 In-Reply-To: <20201209160642.6317-1-anshuman.gupta@intel.com>
 References: <20201209160642.6317-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/6] i915/i915_pm_rpm: enable
- modeset-pc8-residency-stress test
+Subject: [igt-dev] [PATCH i-g-t 4/6] i915/i915_pm_rpm:
+ gem-execbuf-stress-pc8 use powetop
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,24 +24,22 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Enable modeset-pc8-residency-stress to check PC8 residency
-after modeset.
-Negative testing of PC8 residency on HASWELL/BROADWELL while
-display being "on" is removed as it saves CI time and there is
-no ROI of such testing.
+We require to auto-tune powertop before checking Package
+C state. Invoke "powertop --auto-tune" before checking
+PC8 residencies.
 
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- tests/i915/i915_pm_rpm.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tests/i915/i915_pm_rpm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 42bc44d9..34ec9a6d 100644
+index 34ec9a6d..d284fa54 100644
 --- a/tests/i915/i915_pm_rpm.c
 +++ b/tests/i915/i915_pm_rpm.c
-@@ -878,8 +878,10 @@ static void modeset_subtest(enum screen_type type, int rounds, int wait_flags)
- {
- 	int i;
+@@ -1391,8 +1391,10 @@ static void gem_execbuf_stress_subtest(int rounds, int wait_flags)
+ 
+ 	igt_require_gem(drm_fd);
  
 -	if (wait_flags & WAIT_PC8_RES)
 +	if (wait_flags & WAIT_PC8_RES) {
@@ -49,17 +47,8 @@ index 42bc44d9..34ec9a6d 100644
 +		igt_require(setup_powertop());
 +	}
  
- 	if (wait_flags & WAIT_EXTRA)
- 		rounds /= 2;
-@@ -902,8 +904,6 @@ static void modeset_subtest(enum screen_type type, int rounds, int wait_flags)
- 		igt_require(enable_one_screen_with_type(&ms_data, type));
- 		if (wait_flags & WAIT_STATUS)
- 			igt_assert(wait_for_active());
--		if (wait_flags & WAIT_PC8_RES)
--			igt_assert(!pc8_plus_residency_changed(5));
- 		if (wait_flags & WAIT_EXTRA)
- 			sleep(5);
- 	}
+ 	i = 0;
+ 	batch_buf[i++] = MI_NOOP;
 -- 
 2.26.2
 
