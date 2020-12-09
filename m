@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 899BB6EAD2
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Dec 2020 16:22:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 31B146EAD2
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Dec 2020 16:22:05 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Wed,  9 Dec 2020 21:36:40 +0530
-Message-Id: <20201209160642.6317-5-anshuman.gupta@intel.com>
+Date: Wed,  9 Dec 2020 21:36:41 +0530
+Message-Id: <20201209160642.6317-6-anshuman.gupta@intel.com>
 In-Reply-To: <20201209160642.6317-1-anshuman.gupta@intel.com>
 References: <20201209160642.6317-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 4/6] i915/i915_pm_rpm:
- gem-execbuf-stress-pc8 use powetop
+Subject: [igt-dev] [PATCH i-g-t 5/6] i915/i915_pm_rpm: Add PC10 display off
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,31 +24,64 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We require to auto-tune powertop before checking Package
-C state. Invoke "powertop --auto-tune" before checking
-PC8 residencies.
+Add a test to validate PC10 residencies while all output's
+display is off.
 
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- tests/i915/i915_pm_rpm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/i915/i915_pm_rpm.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
 diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 34ec9a6d..d284fa54 100644
+index d284fa54..d771d733 100644
 --- a/tests/i915/i915_pm_rpm.c
 +++ b/tests/i915/i915_pm_rpm.c
-@@ -1391,8 +1391,10 @@ static void gem_execbuf_stress_subtest(int rounds, int wait_flags)
+@@ -179,6 +179,16 @@ static bool pc8_plus_residency_changed(unsigned int timeout_sec)
+ 			timeout_sec * 1000, 100);
+ }
  
- 	igt_require_gem(drm_fd);
++static bool pc10_residency_changed(unsigned int timeout_sec)
++{
++	uint64_t res_pc10;
++
++	res_pc10 = get_residency(MSR_PC10_RES);
++
++	return igt_wait(res_pc10 != get_residency(MSR_PC10_RES),
++			timeout_sec * 1000, 100);
++}
++
+ static enum pc8_status get_pc8_status(void)
+ {
+ 	ssize_t n_read;
+@@ -874,6 +884,19 @@ static void pc8_residency_subtest(bool display_on)
+ 	}
+ }
  
--	if (wait_flags & WAIT_PC8_RES)
-+	if (wait_flags & WAIT_PC8_RES) {
- 		igt_require(has_pc8);
-+		igt_require(setup_powertop());
++static void pc10_residency_subtest(bool display_on)
++{
++	igt_require(has_pc8);
++	igt_require(AT_LEAST_GEN(ms_data.devid, 9));
++
++	if (!display_on) {
++		/* Make sure PC10 residencies move! */
++		disable_all_screens_and_wait(&ms_data);
++		igt_assert_f(pc10_residency_changed(30),
++			     "Machine is not reaching PC10 state with all screens disabled.\n");
 +	}
++}
++
+ static void modeset_subtest(enum screen_type type, int rounds, int wait_flags)
+ {
+ 	int i;
+@@ -2113,6 +2136,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 			pc8_residency_subtest(true);
+ 		igt_subtest("pc8-residency-display-off")
+ 			pc8_residency_subtest(false);
++		igt_subtest("pc10-residency-display-off")
++			pc10_residency_subtest(false);
+ 	}
  
- 	i = 0;
- 	batch_buf[i++] = MI_NOOP;
+ 	/* Misc */
 -- 
 2.26.2
 
