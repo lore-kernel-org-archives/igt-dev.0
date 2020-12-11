@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0DF576ED11
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Dec 2020 09:48:06 +0000 (UTC)
-References: <20201124094149.1004-1-nidhi1.gupta@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-Message-ID: <755a68ba-74a5-5b7c-fbbb-b15be243b172@intel.com>
-Date: Fri, 11 Dec 2020 15:18:00 +0530
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE57D6EE1D
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Dec 2020 14:07:45 +0000 (UTC)
+From: Petri Latvala <petri.latvala@intel.com>
+Date: Fri, 11 Dec 2020 16:07:35 +0200
+Message-Id: <20201211140735.23262-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20201124094149.1004-1-nidhi1.gupta@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v5] Added dynamic Subtest
+Subject: [igt-dev] [PATCH i-g-t] runner: Introduce a way to stop testing
+ without marking tests incomplete
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,94 +15,108 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: nidhi1.gupta@intel.com, igt-dev@lists.freedesktop.org
-Cc: petri.latvala@intel.com
+To: igt-dev@lists.freedesktop.org
+Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>, Petri Latvala <petri.latvala@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 11/24/2020 3:11 PM, nidhi1.gupta@intel.com wrote:
-> From: Nidhi Gupta <nidhi1.gupta@intel.com>
->
-> In kms_atomic_transition subtest will test all the
-> pipes defined in IGT which is 6 weather the output
+Killing igt_runner with SIGHUP will now still kill the currently
+running test, but it will mark that test as being "notrun" instead of
+"incomplete". This allows for external tools to interrupt the testing
+without messing the results.
 
-Typo. 'weather'.
+Incidentally, Intel CI's testing procedures occasionally falsely
+determine that the machine being tested is unreachable and as its next
+step, will ssh in and issue a reboot in preparation for the next round
+of testing, causing igt_runner to be killed with a SIGHUP...
 
-Also, please quote IGT_MAX_PIPES instead of quoting it as '6'.
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>
+Cc: Arkadiusz Hiler <arek@hiler.eu>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ runner/executor.c  | 17 +++++++++++++++++
+ runner/resultgen.c |  9 ++++++---
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
-> is available or not.Later it has to be analysed and
-> discard it as valid skip.To save this time updated
-> in test to first check the available outputs and
-> then execute the test.
->
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> ---
->   tests/kms_atomic_transition.c | 25 +++++++++++++++----------
->   1 file changed, 15 insertions(+), 10 deletions(-)
->
-> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-> index a71bbe10..8d5739df 100644
-> --- a/tests/kms_atomic_transition.c
-> +++ b/tests/kms_atomic_transition.c
-> @@ -918,7 +918,7 @@ igt_main
->   	igt_display_t display;
->   	igt_output_t *output;
->   	enum pipe pipe;
-> -	int i;
-> +	int i, count = 0;
->   
->   	igt_fixture {
->   		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> @@ -1024,18 +1024,23 @@ igt_main
->   		for_each_pipe_with_valid_output(&display, pipe, output)
->   			run_transition_test(&display, pipe, output, TRANSITION_MODESET_DISABLE, false, false);
->   
-> -	for (i = 1; i <= IGT_MAX_PIPES; i++) {
-> -		igt_subtest_f("%ix-modeset-transitions", i)
-> -			run_modeset_transition(&display, i, false, false);
-> +	igt_subtest_with_dynamic("modeset-transitions") {
-> +		for_each_pipe_with_single_output(&display, pipe, output) {
-
-This will still list subtests until 4x- even if only one output is 
-connected, and not serve the required purpose.
-
-Please use 'for_each_connected_output' instead.
-
-> +			count++;
-> +		}
-
-You can remove these braces as we've just one line.
-
-Thanks,
-
-Karthik.B.S
-
-> +		for (i = 1; i <= count; i++) {
-> +			igt_dynamic_f("%ix-modeset-transitions", i)
-> +				run_modeset_transition(&display, i, false, false);
->   
-> -		igt_subtest_f("%ix-modeset-transitions-nonblocking", i)
-> -			run_modeset_transition(&display, i, true, false);
-> +			igt_dynamic_f("%ix-modeset-transitions-nonblocking", i)
-> +				run_modeset_transition(&display, i, true, false);
->   
-> -		igt_subtest_f("%ix-modeset-transitions-fencing", i)
-> -			run_modeset_transition(&display, i, false, true);
-> +			igt_dynamic_f("%ix-modeset-transitions-fencing", i)
-> +				run_modeset_transition(&display, i, false, true);
->   
-> -		igt_subtest_f("%ix-modeset-transitions-nonblocking-fencing", i)
-> -			run_modeset_transition(&display, i, true, true);
-> +			igt_dynamic_f("%ix-modeset-transitions-nonblocking-fencing", i)
-> +				run_modeset_transition(&display, i, true, true);
-> +		}
->   	}
->   
->   	igt_fixture {
-
+diff --git a/runner/executor.c b/runner/executor.c
+index faf272d8..d0eca938 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -1054,6 +1054,23 @@ static int monitor_output(pid_t child,
+ 					     get_cmdline(siginfo.ssi_pid, comm, sizeof(comm)),
+ 					     siginfo.ssi_pid,
+ 					     strsignal(siginfo.ssi_signo));
++
++					if (siginfo.ssi_signo == SIGHUP) {
++						/*
++						 * If taken down with
++						 * SIGUP, arrange the
++						 * current test to be
++						 * marked as notrun
++						 * instead of
++						 * incomplete
++						 */
++
++						dprintf(outputs[_F_JOURNAL], "%s%d (%.3fs)\n",
++							EXECUTOR_EXIT,
++							-SIGHUP, 0.0);
++						if (settings->sync)
++							fdatasync(outputs[_F_JOURNAL]);
++					}
+ 				}
+ 
+ 				aborting = true;
+diff --git a/runner/resultgen.c b/runner/resultgen.c
+index 3fe83b43..d291cc37 100644
+--- a/runner/resultgen.c
++++ b/runner/resultgen.c
+@@ -17,11 +17,12 @@
+ #include "executor.h"
+ #include "output_strings.h"
+ 
+-#define INCOMPLETE_EXITCODE -1
++#define INCOMPLETE_EXITCODE -1234
+ 
+ _Static_assert(INCOMPLETE_EXITCODE != IGT_EXIT_SKIP, "exit code clash");
+ _Static_assert(INCOMPLETE_EXITCODE != IGT_EXIT_SUCCESS, "exit code clash");
+ _Static_assert(INCOMPLETE_EXITCODE != IGT_EXIT_INVALID, "exit code clash");
++_Static_assert(INCOMPLETE_EXITCODE != -SIGHUP, "exit code clash");
+ 
+ struct subtest
+ {
+@@ -1099,6 +1100,8 @@ static const char *result_from_exitcode(int exitcode)
+ 		return "abort";
+ 	case INCOMPLETE_EXITCODE:
+ 		return "incomplete";
++	case -SIGHUP:
++		return "notrun";
+ 	default:
+ 		return "fail";
+ 	}
+@@ -1173,7 +1176,7 @@ static void fill_from_journal(int fd,
+ 		}
+ 	}
+ 
+-	if (subtests->size && exitcode == IGT_EXIT_ABORT) {
++	if (subtests->size && (exitcode == IGT_EXIT_ABORT || exitcode == -SIGHUP)) {
+ 		char *last_subtest = subtests->subs[subtests->size - 1].name;
+ 		char subtest_piglit_name[256];
+ 		struct json_object *subtest_obj;
+@@ -1181,7 +1184,7 @@ static void fill_from_journal(int fd,
+ 		generate_piglit_name(entry->binary, last_subtest, subtest_piglit_name, sizeof(subtest_piglit_name));
+ 		subtest_obj = get_or_create_json_object(tests, subtest_piglit_name);
+ 
+-		set_result(subtest_obj, "abort");
++		set_result(subtest_obj, exitcode == IGT_EXIT_ABORT ? "abort" : "notrun");
+ 	}
+ 
+ 	if (subtests->size == 0) {
+-- 
+2.20.1
 
 _______________________________________________
 igt-dev mailing list
