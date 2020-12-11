@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A118F6EC4A
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Dec 2020 05:58:38 +0000 (UTC)
-From: nidhi1.gupta@intel.com
-Date: Fri, 11 Dec 2020 11:37:06 +0530
-Message-Id: <20201211060706.14347-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_atomic_transition:reduce
- execution time
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 11 Dec 2020 06:34:14 -0000
+Message-ID: <160766845432.16102.15520759454393608614@emeril.freedesktop.org>
+References: <20201211060706.14347-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20201211060706.14347-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fatomic=5Ftransition=3Areduce_execution_time_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,190 +14,167 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1911049618=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>, juha-pekka.heikkila@intel.com, uma.shanker@intel.com
+To: nidhi1.gupta@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
+--===============1911049618==
+Content-Type: multipart/alternative;
+ boundary="===============8486373030827381690=="
 
-v1: All the subtests are using for_each_pipe_with_valid_output
-function which will execute on all the possible
-combination of pipe and output to reduce the execution
-time replaced the function with
-for_each_pipe_with_single_output this will loop over all
-the pipes but at most once.
+--===============8486373030827381690==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: kms_atomic_transition test is taking minimum of
-69.5s time to execute on CI. To reduce the execution
-time this patch will add the change which will run
-the test on 1 HDR plane, 1 SDR UV plane, 1 SDR Y plane
-and skip the rest of the planes.
+== Series Details ==
 
-v3: combined v1 and v2 in one patch.
+Series: tests/kms_atomic_transition:reduce execution time (rev4)
+URL   : https://patchwork.freedesktop.org/series/84516/
+State : success
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_atomic_transition.c | 55 +++++++++++++++++++++++++++--------
- 1 file changed, 43 insertions(+), 12 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index a71bbe10..9e7c8e8a 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -205,6 +205,33 @@ static void set_sprite_wh(igt_display_t *display, enum pipe pipe,
- #define is_atomic_check_plane_size_errno(errno) \
- 		(errno == -EINVAL)
- 
-+static bool skip_plane(igt_display_t *display, igt_plane_t *plane)
-+{
-+	int index = plane->index;
-+
-+	if (!is_i915_device(display->drm_fd))
-+		return false;
-+
-+	if (plane->type == DRM_PLANE_TYPE_CURSOR)
-+		return false;
-+
-+	if (plane->type == DRM_PLANE_TYPE_PRIMARY)
-+		return false;
-+
-+	if (intel_gen(intel_get_drm_devid(display->drm_fd)) < 11)
-+		return false;
-+
-+	/*
-+	 * Test 1 HDR plane, 1 SDR UV plane, 1 SDR Y plane.
-+	 *
-+	 * Kernel registers planes in the hardware Z order:
-+	 * 0,1,2 HDR planes
-+	 * 3,4 SDR UV planes
-+	 * 5,6 SDR Y planes
-+	 */
-+	return index != 0 && index != 3 && index != 5;
-+}
-+
- static void setup_parms(igt_display_t *display, enum pipe pipe,
- 			const drmModeModeInfo *mode,
- 			struct igt_fb *primary_fb,
-@@ -230,8 +257,12 @@ static void setup_parms(igt_display_t *display, enum pipe pipe,
- 		cursor_height = mode->vdisplay;
- 
- 	for_each_plane_on_pipe(display, pipe, plane) {
-+
- 		int i = plane->index;
- 
-+		if (skip_plane(display, plane))
-+			continue;
-+
- 		if (plane->type == DRM_PLANE_TYPE_PRIMARY) {
- 			parms[i].fb = primary_fb;
- 			parms[i].width = mode->hdisplay;
-@@ -932,46 +963,46 @@ igt_main
- 	}
- 
- 	igt_subtest("plane-primary-toggle-with-vblank-wait")
--		for_each_pipe_with_valid_output(&display, pipe, output)
-+		for_each_pipe_with_single_output(&display, pipe, output)
- 			run_primary_test(&display, pipe, output);
- 
- 	igt_subtest_with_dynamic("plane-all-transition") {
--		for_each_pipe_with_valid_output(&display, pipe, output) {
-+		for_each_pipe_with_single_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_transition_test(&display, pipe, output, TRANSITION_PLANES, false, false);
- 		}
- 	}
- 
- 	igt_subtest_with_dynamic("plane-all-transition-fencing") {
--		for_each_pipe_with_valid_output(&display, pipe, output) {
-+		for_each_pipe_with_single_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_transition_test(&display, pipe, output, TRANSITION_PLANES, false, true);
- 		}
- 	}
- 
- 	igt_subtest_with_dynamic("plane-all-transition-nonblocking") {
--		for_each_pipe_with_valid_output(&display, pipe, output) {
-+		for_each_pipe_with_single_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_transition_test(&display, pipe, output, TRANSITION_PLANES, true, false);
- 		}
- 	}
- 
- 	igt_subtest_with_dynamic("plane-all-transition-nonblocking-fencing") {
--		for_each_pipe_with_valid_output(&display, pipe, output) {
-+		for_each_pipe_with_single_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_transition_test(&display, pipe, output, TRANSITION_PLANES, true, true);
- 		}
- 	}
- 
- 	igt_subtest_with_dynamic("plane-use-after-nonblocking-unbind") {
--		for_each_pipe_with_valid_output(&display, pipe, output) {
-+		for_each_pipe_with_single_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_transition_test(&display, pipe, output, TRANSITION_AFTER_FREE, true, false);
- 		}
- 	}
- 
- 	igt_subtest_with_dynamic("plane-use-after-nonblocking-unbind-fencing") {
--		for_each_pipe_with_valid_output(&display, pipe, output) {
-+		for_each_pipe_with_single_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_transition_test(&display, pipe, output, TRANSITION_AFTER_FREE, true, true);
- 		}
-@@ -983,7 +1014,7 @@ igt_main
- 	 * panels with long power cycle delays.
- 	 */
- 	igt_subtest_with_dynamic("plane-all-modeset-transition")
--		for_each_pipe_with_valid_output(&display, pipe, output) {
-+		for_each_pipe_with_single_output(&display, pipe, output) {
- 			if (output_is_internal_panel(output))
- 				continue;
- 
-@@ -992,7 +1023,7 @@ igt_main
- 		}
- 
- 	igt_subtest_with_dynamic("plane-all-modeset-transition-fencing")
--		for_each_pipe_with_valid_output(&display, pipe, output) {
-+		for_each_pipe_with_single_output(&display, pipe, output) {
- 			if (output_is_internal_panel(output))
- 				continue;
- 
-@@ -1001,7 +1032,7 @@ igt_main
- 		}
- 
- 	igt_subtest_with_dynamic("plane-all-modeset-transition-internal-panels") {
--		for_each_pipe_with_valid_output(&display, pipe, output) {
-+		for_each_pipe_with_single_output(&display, pipe, output) {
- 			if (!output_is_internal_panel(output))
- 				continue;
- 
-@@ -1011,7 +1042,7 @@ igt_main
- 	}
- 
- 	igt_subtest_with_dynamic("plane-all-modeset-transition-fencing-internal-panels") {
--		for_each_pipe_with_valid_output(&display, pipe, output) {
-+		for_each_pipe_with_single_output(&display, pipe, output) {
- 			if (!output_is_internal_panel(output))
- 				continue;
- 
-@@ -1021,7 +1052,7 @@ igt_main
- 	}
- 
- 	igt_subtest("plane-toggle-modeset-transition")
--		for_each_pipe_with_valid_output(&display, pipe, output)
-+		for_each_pipe_with_single_output(&display, pipe, output)
- 			run_transition_test(&display, pipe, output, TRANSITION_MODESET_DISABLE, false, false);
- 
- 	for (i = 1; i <= IGT_MAX_PIPES; i++) {
--- 
-2.26.2
+CI Bug Log - changes from CI_DRM_9474 -> IGTPW_5271
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5271/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5271 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_basic@create-fd-close:
+    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9474/fi-tgl-y/igt@gem_basic@create-fd-close.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5271/fi-tgl-y/igt@gem_basic@create-fd-close.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_mmap_gtt@basic:
+    - fi-tgl-y:           [DMESG-WARN][3] ([i915#402]) -> [PASS][4] +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9474/fi-tgl-y/igt@gem_mmap_gtt@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5271/fi-tgl-y/igt@gem_mmap_gtt@basic.html
+
+  
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (43 -> 38)
+------------------------------
+
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-dg1-1 fi-gdg-551 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5888 -> IGTPW_5271
+
+  CI-20190529: 20190529
+  CI_DRM_9474: f982ee792667f5f2d70901f49a70021415241c07 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5271: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5271/index.html
+  IGT_5888: c79d4e88f4162905da400360b6fa4940122f3a2c @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5271/index.html
+
+--===============8486373030827381690==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_atomic_transition:reduce execution time (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/84516/">https://patchwork.freedesktop.org/series/84516/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5271/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5271/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9474 -&gt; IGTPW_5271</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5271/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5271 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@gem_basic@create-fd-close:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9474/fi-tgl-y/igt@gem_basic@create-fd-close.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5271/fi-tgl-y/igt@gem_basic@create-fd-close.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_mmap_gtt@basic:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9474/fi-tgl-y/igt@gem_mmap_gtt@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5271/fi-tgl-y/igt@gem_mmap_gtt@basic.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (43 -&gt; 38)</h2>
+<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-dg1-1 fi-gdg-551 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5888 -&gt; IGTPW_5271</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9474: f982ee792667f5f2d70901f49a70021415241c07 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5271: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5271/index.html<br />
+  IGT_5888: c79d4e88f4162905da400360b6fa4940122f3a2c @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============8486373030827381690==--
+
+--===============1911049618==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1911049618==--
