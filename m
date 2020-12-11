@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6BBE6E598
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Dec 2020 23:22:03 +0000 (UTC)
-MIME-Version: 1.0
-In-Reply-To: <87wnxoou0j.wl-ashutosh.dixit@intel.com>
-References: <20201211222152.2952035-1-chris@chris-wilson.co.uk>
- <87wnxoou0j.wl-ashutosh.dixit@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99F876E48B
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Dec 2020 23:33:05 +0000 (UTC)
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Fri, 11 Dec 2020 23:21:56 +0000
-Message-ID: <160772891653.1732.9892518923664415606@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci: Include the small concurrent
- tests
+Date: Fri, 11 Dec 2020 23:32:58 +0000
+Message-Id: <20201211233258.2952266-1-chris@chris-wilson.co.uk>
+MIME-Version: 1.0
+Subject: [igt-dev] [PATCH i-g-t] intel-ci: Include the small concurrent tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,23 +18,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Dixit, Ashutosh (2020-12-11 22:30:36)
-> On Fri, 11 Dec 2020 14:21:52 -0800, Chris Wilson wrote:
-> >
-> > The tiny tests run quick, but sometimes just enough to trip over the
-> > system.
-> 
-> Acked-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+The tiny tests run quick, but sometimes just enough to trip over the
+system.
 
-It's still going to work out as far too many, and the overhead of
-running each subtest individually will greatly magnify the runtime.
+v2: Only 4K, and only the bigger bombs.
 
-Drat. Still will be interesting to see how Jenkins handles it.
--Chris
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/intel-ci/blacklist.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+index c6af22b30..db8480c93 100644
+--- a/tests/intel-ci/blacklist.txt
++++ b/tests/intel-ci/blacklist.txt
+@@ -15,7 +15,7 @@ igt@i915_pm_rpm@gem-execbuf-stress-extra-wait
+ ###############################################
+ igt@gem_busy@hang.*
+ igt@gem_close_race@(?!.*basic).*
+-igt@gem_concurrent_blit(@.*)?
++igt@gem_concurrent_blit@(?!4KiB-tiny.*bomb)
+ igt@gem_cs_prefetch(@.*)?
+ igt@gem_ctx_create@(?!.*basic).*
+ igt@gem_ctx_exec@(?!.*basic).*
+-- 
+2.29.2
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
