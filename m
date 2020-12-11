@@ -1,9 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Fri, 11 Dec 2020 00:32:27 +0000
-Message-Id: <20201211003227.2658253-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_fence: Check a submit chain
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 11 Dec 2020 01:09:21 -0000
+Message-ID: <160764896179.16100.5029582795741953045@emeril.freedesktop.org>
+References: <20201211003227.2658253-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20201211003227.2658253-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
+ =?utf-8?q?em=5Fexec=5Ffence=3A_Check_a_submit_chain?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -11,140 +14,175 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0886928765=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Submit a chain of spinners across all the engines, using the submit
-fence to launch them in parallel.
+--===============0886928765==
+Content-Type: multipart/alternative;
+ boundary="===============2396143604789181575=="
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
----
- lib/igt_dummyload.c         |  7 +++++-
- lib/igt_dummyload.h         | 15 ++++++------
- tests/i915/gem_exec_fence.c | 46 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 60 insertions(+), 8 deletions(-)
+--===============2396143604789181575==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
-index 891e4eaab..4ef79cc4a 100644
---- a/lib/igt_dummyload.c
-+++ b/lib/igt_dummyload.c
-@@ -326,11 +326,16 @@ emit_recursive_batch(igt_spin_t *spin,
- 	if (opts->flags & IGT_SPIN_FENCE_OUT)
- 		execbuf->flags |= I915_EXEC_FENCE_OUT;
- 
--	if (opts->flags & IGT_SPIN_FENCE_IN) {
-+	if (opts->flags & IGT_SPIN_FENCE_IN && opts->fence != -1) {
- 		execbuf->flags |= I915_EXEC_FENCE_IN;
- 		execbuf->rsvd2 = opts->fence;
- 	}
- 
-+	if (opts->flags & IGT_SPIN_FENCE_SUBMIT && opts->fence != -1) {
-+		execbuf->flags |= I915_EXEC_FENCE_SUBMIT;
-+		execbuf->rsvd2 = opts->fence;
-+	}
-+
- 	for (i = 0; i < nengine; i++) {
- 		execbuf->flags &= ~ENGINE_MASK;
- 		execbuf->flags |= flags[i];
-diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
-index b8baaa6b4..3ece70a50 100644
---- a/lib/igt_dummyload.h
-+++ b/lib/igt_dummyload.h
-@@ -65,13 +65,14 @@ struct igt_spin_factory {
- };
- 
- #define IGT_SPIN_FENCE_IN      (1 << 0)
--#define IGT_SPIN_FENCE_OUT     (1 << 1)
--#define IGT_SPIN_POLL_RUN      (1 << 2)
--#define IGT_SPIN_FAST          (1 << 3)
--#define IGT_SPIN_NO_PREEMPTION (1 << 4)
--#define IGT_SPIN_INVALID_CS    (1 << 5)
--#define IGT_SPIN_USERPTR       (1 << 6)
--#define IGT_SPIN_SOFTDEP       (1 << 7)
-+#define IGT_SPIN_FENCE_SUBMIT  (1 << 1)
-+#define IGT_SPIN_FENCE_OUT     (1 << 2)
-+#define IGT_SPIN_POLL_RUN      (1 << 3)
-+#define IGT_SPIN_FAST          (1 << 4)
-+#define IGT_SPIN_NO_PREEMPTION (1 << 5)
-+#define IGT_SPIN_INVALID_CS    (1 << 6)
-+#define IGT_SPIN_USERPTR       (1 << 7)
-+#define IGT_SPIN_SOFTDEP       (1 << 8)
- 
- igt_spin_t *
- __igt_spin_factory(int fd, const struct igt_spin_factory *opts);
-diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-index 6eea050d8..ba454fcdb 100644
---- a/tests/i915/gem_exec_fence.c
-+++ b/tests/i915/gem_exec_fence.c
-@@ -796,6 +796,47 @@ static void test_concurrent(int i915, const struct intel_execution_engine2 *e)
- 	igt_spin_free(i915, spin);
- }
- 
-+static void test_submit_chain(int i915)
-+{
-+	const struct intel_execution_engine2 *e;
-+	igt_spin_t *spin, *sn;
-+	IGT_LIST_HEAD(list);
-+	IGT_CORK_FENCE(cork);
-+	int fence;
-+
-+	/* Check that we can simultaneously launch spinners on each engine */
-+
-+	fence = igt_cork_plug(&cork, i915);
-+	__for_each_physical_engine(i915, e) {
-+		spin = igt_spin_new(i915,
-+				    .engine = e->flags,
-+				    .fence = fence,
-+				    .flags = (IGT_SPIN_POLL_RUN |
-+					      IGT_SPIN_FENCE_OUT |
-+					      IGT_SPIN_FENCE_SUBMIT));
-+
-+		fence = spin->out_fence;
-+		igt_list_move(&spin->link, &list);
-+	}
-+
-+	/* Nothing shall run until we pop the cork */
-+	igt_list_for_each_entry(spin, &list, link) {
-+		igt_assert(gem_bo_busy(i915, spin->handle));
-+		igt_assert(!igt_spin_has_started(spin));
-+	}
-+
-+	igt_cork_unplug(&cork);
-+
-+	/* Then everything shall run in parallel */
-+	igt_list_for_each_entry_safe(spin, sn, &list, link) {
-+		igt_spin_busywait_until_started(spin);
-+		igt_spin_end(spin);
-+		igt_assert_eq(sync_fence_wait(spin->out_fence, 50), 0);
-+		igt_assert_eq(sync_fence_status(spin->out_fence), 1);
-+		igt_spin_free(i915, spin);
-+	}
-+}
-+
- static uint32_t batch_create(int fd)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
-@@ -3032,6 +3073,11 @@ igt_main
- 				}
- 			}
- 
-+			igt_subtest("submit-chain") {
-+				igt_require(has_submit_fence(i915));
-+				test_submit_chain(i915);
-+			}
-+
- 			igt_fixture {
- 				igt_stop_hang_detector();
- 			}
--- 
-2.29.2
+== Series Details ==
+
+Series: i915/gem_exec_fence: Check a submit chain
+URL   : https://patchwork.freedesktop.org/series/84809/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9474 -> IGTPW_5270
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5270/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5270 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@prime_self_import@basic-with_two_bos:
+    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9474/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5270/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_mmap_gtt@basic:
+    - fi-tgl-y:           [DMESG-WARN][3] ([i915#402]) -> [PASS][4] +2 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9474/fi-tgl-y/igt@gem_mmap_gtt@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5270/fi-tgl-y/igt@gem_mmap_gtt@basic.html
+
+  
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (43 -> 39)
+------------------------------
+
+  Missing    (4): fi-ilk-m540 fi-dg1-1 fi-bdw-samus fi-hsw-4200u 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5888 -> IGTPW_5270
+
+  CI-20190529: 20190529
+  CI_DRM_9474: f982ee792667f5f2d70901f49a70021415241c07 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5270: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5270/index.html
+  IGT_5888: c79d4e88f4162905da400360b6fa4940122f3a2c @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@gem_exec_fence@submit-chain
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5270/index.html
+
+--===============2396143604789181575==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915/gem_exec_fence: Check a submit chain</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/84809/">https://patchwork.freedesktop.org/series/84809/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5270/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5270/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9474 -&gt; IGTPW_5270</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5270/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5270 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@prime_self_import@basic-with_two_bos:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9474/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5270/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_mmap_gtt@basic:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9474/fi-tgl-y/igt@gem_mmap_gtt@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5270/fi-tgl-y/igt@gem_mmap_gtt@basic.html">PASS</a> +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (43 -&gt; 39)</h2>
+<p>Missing    (4): fi-ilk-m540 fi-dg1-1 fi-bdw-samus fi-hsw-4200u </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5888 -&gt; IGTPW_5270</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9474: f982ee792667f5f2d70901f49a70021415241c07 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5270: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5270/index.html<br />
+  IGT_5888: c79d4e88f4162905da400360b6fa4940122f3a2c @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@gem_exec_fence@submit-chain</p>
+
+</body>
+</html>
+
+--===============2396143604789181575==--
+
+--===============0886928765==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0886928765==--
