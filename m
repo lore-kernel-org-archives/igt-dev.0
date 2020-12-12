@@ -1,570 +1,253 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Sat, 12 Dec 2020 09:43:54 +0000
-Message-Id: <20201212094354.3023502-1-chris@chris-wilson.co.uk>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t] lib: Pass device fd to
- gem_mmappable_aperture_size()
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Sat, 12 Dec 2020 10:20:46 -0000
+Message-ID: <160776844617.10725.7679728714242783398@emeril.freedesktop.org>
+References: <20201212094354.3023502-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20201212094354.3023502-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliOiBQ?=
+ =?utf-8?q?ass_device_fd_to_gem=5Fmmappable=5Faperture=5Fsize=28=29?=
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1484244545=="
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In order to find the correct aperture size for the test, we want to pass
-the test's device into the query.
+--===============1484244545==
+Content-Type: multipart/alternative;
+ boundary="===============7720013908621040072=="
 
-Reported-by: Bruce Chang <yu.bruce.chang@intel.com>
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Bruce Chang <yu.bruce.chang@intel.com>
----
- lib/i915/gem_mman.c                | 108 +++++++++++++++++++++++++++
- lib/i915/gem_mman.h                |   6 ++
- lib/ioctl_wrappers.c               | 116 -----------------------------
- lib/ioctl_wrappers.h               |   5 --
- tests/i915/gem_concurrent_all.c    |  12 +--
- tests/i915/gem_mmap.c              |   4 +-
- tests/i915/gem_mmap_gtt.c          |  10 +--
- tests/i915/gem_pwrite.c            |   6 +-
- tests/i915/gem_shrink.c            |   2 +-
- tests/i915/gem_tiled_fence_blits.c |   2 +-
- tests/i915/i915_pm_rpm.c           |   4 +-
- tests/kms_big_fb.c                 |   2 +-
- tests/kms_flip.c                   |   2 +-
- tests/prime_mmap.c                 |   4 +-
- 14 files changed, 138 insertions(+), 145 deletions(-)
+--===============7720013908621040072==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
-index 93bef2bfc..703c6a5c1 100644
---- a/lib/i915/gem_mman.c
-+++ b/lib/i915/gem_mman.c
-@@ -27,7 +27,9 @@
- #include <errno.h>
- 
- #include "igt_core.h"
-+#include "igt_device.h"
- #include "ioctl_wrappers.h"
-+#include "intel_chipset.h"
- 
- #include "gem_mman.h"
- 
-@@ -551,3 +553,109 @@ const struct mmap_offset mmap_offset_types[] = {
- 	{ "uc", I915_MMAP_OFFSET_UC, I915_GEM_DOMAIN_WC },
- 	{},
- };
-+
-+/**
-+ * gem_available_aperture_size:
-+ * @fd: open i915 drm file descriptor
-+ *
-+ * Feature test macro to query the kernel for the available gpu aperture size
-+ * usable in a batchbuffer.
-+ *
-+ * Returns: The available gtt address space size.
-+ */
-+uint64_t gem_available_aperture_size(int fd)
-+{
-+	struct drm_i915_gem_get_aperture aperture = {
-+		aperture.aper_available_size = 256*1024*1024,
-+	};
-+
-+	ioctl(fd, DRM_IOCTL_I915_GEM_GET_APERTURE, &aperture);
-+	errno = 0;
-+
-+	return aperture.aper_available_size;
-+}
-+
-+/**
-+ * gem_aperture_size:
-+ * @fd: open i915 drm file descriptor
-+ *
-+ * Feature test macro to query the kernel for the total gpu aperture size.
-+ *
-+ * Returns: The total gtt address space size.
-+ */
-+uint64_t gem_aperture_size(int fd)
-+{
-+	struct drm_i915_gem_context_param p = {
-+		.param = 0x3
-+	};
-+
-+	if (__gem_context_get_param(fd, &p))
-+		p.value = gem_global_aperture_size(fd);
-+
-+	return p.value;
-+}
-+
-+/**
-+ * gem_mappable_aperture_size:
-+ *
-+ * Feature test macro to query the kernel for the mappable gpu aperture size.
-+ * This is the area available for GTT memory mappings.
-+ *
-+ * Returns: The mappable gtt address space size.
-+ */
-+uint64_t gem_mappable_aperture_size(int fd)
-+{
-+	struct pci_device *pci_dev = igt_device_get_pci_device(fd);
-+	int bar;
-+
-+	if (intel_gen(pci_dev->device_id) < 3)
-+		bar = 0;
-+	else
-+		bar = 2;
-+
-+	return pci_dev->regions[bar].size;
-+}
-+
-+/**
-+ * gem_global_aperture_size:
-+ * @fd: open i915 drm file descriptor
-+ *
-+ * Feature test macro to query the kernel for the global gpu aperture size.
-+ * This is the area available for the kernel to perform address translations.
-+ *
-+ * Returns: The gtt address space size.
-+ */
-+uint64_t gem_global_aperture_size(int fd)
-+{
-+	struct drm_i915_gem_get_aperture aperture = {
-+		aperture.aper_size = 256*1024*1024
-+	};
-+
-+	ioctl(fd, DRM_IOCTL_I915_GEM_GET_APERTURE, &aperture);
-+	errno = 0;
-+
-+	return aperture.aper_size;
-+}
-+
-+/**
-+ * gem_available_fences:
-+ * @fd: open i915 drm file descriptor
-+ *
-+ * Feature test macro to query the kernel for the number of available fences
-+ * usable in a batchbuffer. Only relevant for pre-gen4.
-+ *
-+ * Returns: The number of available fences.
-+ */
-+int gem_available_fences(int fd)
-+{
-+	int num_fences = 0;
-+	struct drm_i915_getparam gp = {
-+		gp.param = I915_PARAM_NUM_FENCES_AVAIL,
-+		gp.value = &num_fences,
-+	};
-+
-+	ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
-+	errno = 0;
-+
-+	return num_fences;
-+}
-diff --git a/lib/i915/gem_mman.h b/lib/i915/gem_mman.h
-index 2c4a7a00b..ec2899ffe 100644
---- a/lib/i915/gem_mman.h
-+++ b/lib/i915/gem_mman.h
-@@ -109,5 +109,11 @@ bool gem_has_mmap_offset_type(int fd, const struct mmap_offset *t);
- 	     (__t)++) \
- 		for_each_if(gem_has_mmap_offset_type((fd), (__t)))
- 
-+uint64_t gem_available_aperture_size(int fd);
-+uint64_t gem_aperture_size(int fd);
-+uint64_t gem_global_aperture_size(int fd);
-+uint64_t gem_mappable_aperture_size(int fd);
-+int gem_available_fences(int fd);
-+
- #endif /* GEM_MMAN_H */
- 
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index 06431ce6c..a928f894f 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -782,31 +782,6 @@ bool gem_engine_reset_enabled(int fd)
- 	return gem_gpu_reset_type(fd) > 1;
- }
- 
--/**
-- * gem_available_fences:
-- * @fd: open i915 drm file descriptor
-- *
-- * Feature test macro to query the kernel for the number of available fences
-- * usable in a batchbuffer. Only relevant for pre-gen4.
-- *
-- * Returns: The number of available fences.
-- */
--int gem_available_fences(int fd)
--{
--	int num_fences;
--	struct drm_i915_getparam gp;
--
--	memset(&gp, 0, sizeof(gp));
--	gp.param = I915_PARAM_NUM_FENCES_AVAIL;
--	gp.value = &num_fences;
--
--	num_fences = 0;
--	ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
--	errno = 0;
--
--	return num_fences;
--}
--
- bool gem_has_llc(int fd)
- {
- 	int has_llc;
-@@ -929,97 +904,6 @@ uint64_t gem_total_stolen_size(int fd)
- 	return aperture.stolen_total_size;
- }
- 
--/**
-- * gem_available_aperture_size:
-- * @fd: open i915 drm file descriptor
-- *
-- * Feature test macro to query the kernel for the available gpu aperture size
-- * usable in a batchbuffer.
-- *
-- * Returns: The available gtt address space size.
-- */
--uint64_t gem_available_aperture_size(int fd)
--{
--	struct drm_i915_gem_get_aperture aperture;
--
--	memset(&aperture, 0, sizeof(aperture));
--	aperture.aper_size = 256*1024*1024;
--	do_ioctl(fd, DRM_IOCTL_I915_GEM_GET_APERTURE, &aperture);
--
--	return aperture.aper_available_size;
--}
--
--/**
-- * gem_aperture_size:
-- * @fd: open i915 drm file descriptor
-- *
-- * Feature test macro to query the kernel for the total gpu aperture size.
-- *
-- * Returns: The total gtt address space size.
-- */
--uint64_t gem_aperture_size(int fd)
--{
--	uint64_t aperture_size = 0;
--	struct drm_i915_gem_context_param p;
--
--	memset(&p, 0, sizeof(p));
--	p.param = 0x3;
--	if (__gem_context_get_param(fd, &p) == 0) {
--		aperture_size = p.value;
--	} else {
--		struct drm_i915_gem_get_aperture aperture;
--
--		memset(&aperture, 0, sizeof(aperture));
--		aperture.aper_size = 256*1024*1024;
--
--		do_ioctl(fd, DRM_IOCTL_I915_GEM_GET_APERTURE, &aperture);
--		aperture_size =  aperture.aper_size;
--	}
--
--	return aperture_size;
--}
--
--/**
-- * gem_mappable_aperture_size:
-- *
-- * Feature test macro to query the kernel for the mappable gpu aperture size.
-- * This is the area available for GTT memory mappings.
-- *
-- * Returns: The mappable gtt address space size.
-- */
--uint64_t gem_mappable_aperture_size(void)
--{
--	struct pci_device *pci_dev = intel_get_pci_device();
--	int bar;
--
--	if (intel_gen(pci_dev->device_id) < 3)
--		bar = 0;
--	else
--		bar = 2;
--
--	return pci_dev->regions[bar].size;
--}
--
--/**
-- * gem_global_aperture_size:
-- * @fd: open i915 drm file descriptor
-- *
-- * Feature test macro to query the kernel for the global gpu aperture size.
-- * This is the area available for the kernel to perform address translations.
-- *
-- * Returns: The gtt address space size.
-- */
--uint64_t gem_global_aperture_size(int fd)
--{
--	struct drm_i915_gem_get_aperture aperture;
--
--	memset(&aperture, 0, sizeof(aperture));
--	aperture.aper_size = 256*1024*1024;
--	do_ioctl(fd, DRM_IOCTL_I915_GEM_GET_APERTURE, &aperture);
--
--	return aperture.aper_size;
--}
--
- /**
-  * gem_has_softpin:
-  * @fd: open i915 drm file descriptor
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-index b76bea564..07879ae96 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -117,12 +117,7 @@ bool gem_uses_full_ppgtt(int fd);
- int gem_gpu_reset_type(int fd);
- bool gem_gpu_reset_enabled(int fd);
- bool gem_engine_reset_enabled(int fd);
--int gem_available_fences(int fd);
- uint64_t gem_total_stolen_size(int fd);
--uint64_t gem_available_aperture_size(int fd);
--uint64_t gem_aperture_size(int fd);
--uint64_t gem_global_aperture_size(int fd);
--uint64_t gem_mappable_aperture_size(void);
- bool gem_has_softpin(int fd);
- bool gem_has_exec_fence(int fd);
- 
-diff --git a/tests/i915/gem_concurrent_all.c b/tests/i915/gem_concurrent_all.c
-index 9ea94125e..da850a104 100644
---- a/tests/i915/gem_concurrent_all.c
-+++ b/tests/i915/gem_concurrent_all.c
-@@ -1828,7 +1828,7 @@ igt_main
- 				 c->name, s->name, "small");
- 			igt_subtest_group {
- 				igt_fixture {
--					count = num_buffers(gem_mappable_aperture_size()/4,
-+					count = num_buffers(gem_mappable_aperture_size(fd)/4,
- 							    s, c, CHECK_RAM);
- 				}
- 				run_modes(name, c, modes, s, count);
-@@ -1839,7 +1839,7 @@ igt_main
- 				 c->name, s->name, "thrash");
- 			igt_subtest_group {
- 				igt_fixture {
--					count = num_buffers(gem_mappable_aperture_size(),
-+					count = num_buffers(gem_mappable_aperture_size(fd),
- 							    s, c, CHECK_RAM);
- 				}
- 				run_modes(name, c, modes, s, count);
-@@ -1871,7 +1871,7 @@ igt_main
- 				 c->name, s->name, "shrink");
- 			igt_subtest_group {
- 				igt_fixture {
--					count = num_buffers(gem_mappable_aperture_size(),
-+					count = num_buffers(gem_mappable_aperture_size(fd),
- 							    s, c, CHECK_RAM);
- 
- 					igt_fork_shrink_helper(fd);
-@@ -1887,8 +1887,8 @@ igt_main
- 				 c->name, s->name, "swap");
- 			igt_subtest_group {
- 				igt_fixture {
--					if (intel_get_avail_ram_mb() > gem_mappable_aperture_size()/(1024*1024)) {
--						pin_sz = intel_get_avail_ram_mb() - gem_mappable_aperture_size()/(1024*1024);
-+					if (intel_get_avail_ram_mb() > gem_mappable_aperture_size(fd)/(1024*1024)) {
-+						pin_sz = intel_get_avail_ram_mb() - gem_mappable_aperture_size(fd)/(1024*1024);
- 
- 						igt_debug("Pinning %lld MiB\n", (long long)pin_sz);
- 						pin_sz *= 1024 * 1024;
-@@ -1902,7 +1902,7 @@ igt_main
- 						igt_require(pinned);
- 					}
- 
--					count = num_buffers(gem_mappable_aperture_size(),
-+					count = num_buffers(gem_mappable_aperture_size(fd),
- 							    s, c, CHECK_RAM | CHECK_SWAP);
- 				}
- 				run_modes(name, c, modes, s, count);
-diff --git a/tests/i915/gem_mmap.c b/tests/i915/gem_mmap.c
-index 8bad9b14e..60a64c134 100644
---- a/tests/i915/gem_mmap.c
-+++ b/tests/i915/gem_mmap.c
-@@ -53,10 +53,10 @@ test_huge_bo(int huge)
- 
- 	switch (huge) {
- 	case -1:
--		huge_object_size = gem_mappable_aperture_size() / 2;
-+		huge_object_size = gem_mappable_aperture_size(fd) / 2;
- 		break;
- 	case 0:
--		huge_object_size = gem_mappable_aperture_size() + PAGE_SIZE;
-+		huge_object_size = gem_mappable_aperture_size(fd) + PAGE_SIZE;
- 		break;
- 	case 1:
- 		huge_object_size = gem_aperture_size(fd) + PAGE_SIZE;
-diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
-index 61fbc5bc7..528a7c726 100644
---- a/tests/i915/gem_mmap_gtt.c
-+++ b/tests/i915/gem_mmap_gtt.c
-@@ -905,7 +905,7 @@ test_huge_bo(int fd, int huge, int tiling)
- 
- 	switch (huge) {
- 	case -1:
--		size = gem_mappable_aperture_size() / 2;
-+		size = gem_mappable_aperture_size(fd) / 2;
- 
- 		/* Power of two fence size, natural fence
- 		 * alignment, and the guard page at the end
-@@ -920,7 +920,7 @@ test_huge_bo(int fd, int huge, int tiling)
- 			size /= 2;
- 		break;
- 	case 0:
--		size = gem_mappable_aperture_size() + PAGE_SIZE;
-+		size = gem_mappable_aperture_size(fd) + PAGE_SIZE;
- 		break;
- 	default:
- 		size = gem_global_aperture_size(fd) + PAGE_SIZE;
-@@ -1001,13 +1001,13 @@ test_huge_copy(int fd, int huge, int tiling_a, int tiling_b, int ncpus)
- 
- 	switch (huge) {
- 	case -2:
--		huge_object_size = gem_mappable_aperture_size() / 4;
-+		huge_object_size = gem_mappable_aperture_size(fd) / 4;
- 		break;
- 	case -1:
--		huge_object_size = gem_mappable_aperture_size() / 2;
-+		huge_object_size = gem_mappable_aperture_size(fd) / 2;
- 		break;
- 	case 0:
--		huge_object_size = gem_mappable_aperture_size() + PAGE_SIZE;
-+		huge_object_size = gem_mappable_aperture_size(fd) + PAGE_SIZE;
- 		break;
- 	case 1:
- 		huge_object_size = gem_global_aperture_size(fd) + PAGE_SIZE;
-diff --git a/tests/i915/gem_pwrite.c b/tests/i915/gem_pwrite.c
-index d2dcc95e8..f76d2bc70 100644
---- a/tests/i915/gem_pwrite.c
-+++ b/tests/i915/gem_pwrite.c
-@@ -130,7 +130,7 @@ static void test_big_cpu(int fd, int scale, unsigned flags)
- 
- 	switch (scale) {
- 	case 0:
--		size = gem_mappable_aperture_size() + 4096;
-+		size = gem_mappable_aperture_size(fd) + 4096;
- 		break;
- 	case 1:
- 		size = gem_global_aperture_size(fd) + 4096;
-@@ -192,7 +192,7 @@ static void test_big_gtt(int fd, int scale, unsigned flags)
- 	igt_require(gem_mmap__has_wc(fd));
- 	switch (scale) {
- 	case 0:
--		size = gem_mappable_aperture_size() + 4096;
-+		size = gem_mappable_aperture_size(fd) + 4096;
- 		break;
- 	case 1:
- 		size = gem_global_aperture_size(fd) + 4096;
-@@ -257,7 +257,7 @@ static void test_random(int fd)
- 	gem_require_mmap_wc(fd);
- 
- 	size = min(intel_get_total_ram_mb() / 2,
--		    gem_mappable_aperture_size() + 4096);
-+		    gem_mappable_aperture_size(fd) + 4096);
- 	intel_require_memory(1, size, CHECK_RAM);
- 
- 	handle = gem_create(fd, size);
-diff --git a/tests/i915/gem_shrink.c b/tests/i915/gem_shrink.c
-index dba62c8fa..023db8c56 100644
---- a/tests/i915/gem_shrink.c
-+++ b/tests/i915/gem_shrink.c
-@@ -439,7 +439,7 @@ igt_main
- 		 * we expect the shrinker to start purging objects,
- 		 * and possibly fail.
- 		 */
--		alloc_size = gem_mappable_aperture_size() / 2;
-+		alloc_size = gem_mappable_aperture_size(fd) / 2;
- 		num_processes = 1 + (mem_size / (alloc_size >> 20));
- 
- 		igt_info("Using %d processes and %'lluMiB per process\n",
-diff --git a/tests/i915/gem_tiled_fence_blits.c b/tests/i915/gem_tiled_fence_blits.c
-index 0a633d91b..28beea898 100644
---- a/tests/i915/gem_tiled_fence_blits.c
-+++ b/tests/i915/gem_tiled_fence_blits.c
-@@ -225,7 +225,7 @@ igt_main
- 		gem_require_blitter(fd);
- 		gem_require_mappable_ggtt(fd);
- 
--		count = gem_mappable_aperture_size(); /* thrash fences! */
-+		count = gem_mappable_aperture_size(fd); /* thrash fences! */
- 		if (count >> 32)
- 			count = MAX_32b;
- 		count = 3 + count / (1024 * 1024);
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 6d46c320c..6321dd403 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -1419,7 +1419,7 @@ static void gem_evict_pwrite_subtest(void)
- 	unsigned int num_trash_bos, n;
- 	uint32_t buf;
- 
--	num_trash_bos = gem_mappable_aperture_size() / (1024*1024) + 1;
-+	num_trash_bos = gem_mappable_aperture_size(drm_fd) / (1024*1024) + 1;
- 	trash_bos = malloc(num_trash_bos * sizeof(*trash_bos));
- 	igt_assert(trash_bos);
- 
-@@ -1463,7 +1463,7 @@ static bool device_in_pci_d3(void)
- 	uint16_t val;
- 	int rc;
- 
--	rc = pci_device_cfg_read_u16(intel_get_pci_device(), &val, 0xd4);
-+	rc = pci_device_cfg_read_u16(igt_device_get_pci_device(drm_fd), &val, 0xd4);
- 	igt_assert_eq(rc, 0);
- 
- 	igt_debug("%s: PCI D3 state=%d\n", __func__, val & 0x3);
-diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
-index 02e9915ba..8794ace08 100644
---- a/tests/kms_big_fb.c
-+++ b/tests/kms_big_fb.c
-@@ -645,7 +645,7 @@ igt_main
- 
- 		data.ram_size = intel_get_total_ram_mb() << 20;
- 		data.aper_size = gem_aperture_size(data.drm_fd);
--		data.mappable_size = gem_mappable_aperture_size();
-+		data.mappable_size = gem_mappable_aperture_size(data.drm_fd);
- 
- 		igt_info("RAM: %"PRIu64" MiB, GPU address space: %"PRId64" MiB, GGTT mappable size: %"PRId64" MiB\n",
- 			 data.ram_size >> 20, data.aper_size >> 20,
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index 51b9ac950..0f0565cf6 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -1282,7 +1282,7 @@ static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
- 	/* 256 MB is usually the maximum mappable aperture,
- 	 * (make it 4x times that to ensure failure) */
- 	if (o->flags & TEST_BO_TOOBIG) {
--		bo_size = 4*gem_mappable_aperture_size();
-+		bo_size = 4*gem_mappable_aperture_size(drm_fd);
- 		igt_require(bo_size < gem_global_aperture_size(drm_fd));
- 	}
- 
-diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
-index 143342410..7c43ced85 100644
---- a/tests/prime_mmap.c
-+++ b/tests/prime_mmap.c
-@@ -447,8 +447,8 @@ test_aperture_limit(void)
- 	char *ptr1, *ptr2;
- 	uint32_t handle1, handle2;
- 	/* Two buffers the sum of which > mappable aperture */
--	uint64_t size1 = (gem_mappable_aperture_size() * 7) / 8;
--	uint64_t size2 = (gem_mappable_aperture_size() * 3) / 8;
-+	uint64_t size1 = (gem_mappable_aperture_size(fd) * 7) / 8;
-+	uint64_t size2 = (gem_mappable_aperture_size(fd) * 3) / 8;
- 
- 	handle1 = gem_create(fd, size1);
- 	fill_bo(handle1, BO_SIZE);
--- 
-2.29.2
+== Series Details ==
+
+Series: lib: Pass device fd to gem_mmappable_aperture_size()
+URL   : https://patchwork.freedesktop.org/series/84858/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_5891 -> IGTPW_5276
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5276 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_cs_nop@nop-gfx0:
+    - fi-apl-guc:         NOTRUN -> [SKIP][1] ([fdo#109271]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/fi-apl-guc/igt@amdgpu/amd_cs_nop@nop-gfx0.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-byt-j1900:       [PASS][2] -> [INCOMPLETE][3] ([i915#142] / [i915#2405])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5891/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-kbl-7500u:       [PASS][4] -> [DMESG-WARN][5] ([i915#165] / [i915#262])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5891/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+
+  * igt@prime_vgem@basic-write:
+    - fi-tgl-y:           [PASS][6] -> [DMESG-WARN][7] ([i915#402]) +2 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5891/fi-tgl-y/igt@prime_vgem@basic-write.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/fi-tgl-y/igt@prime_vgem@basic-write.html
+
+  * igt@runner@aborted:
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][8] ([i915#2029] / [i915#2722])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/fi-bdw-5557u/igt@runner@aborted.html
+    - fi-byt-j1900:       NOTRUN -> [FAIL][9] ([i915#1814])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/fi-byt-j1900/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_mmap_gtt@basic:
+    - fi-tgl-y:           [DMESG-WARN][10] ([i915#402]) -> [PASS][11] +2 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5891/fi-tgl-y/igt@gem_mmap_gtt@basic.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/fi-tgl-y/igt@gem_mmap_gtt@basic.html
+
+  * igt@i915_selftest@live@gt_timelines:
+    - fi-apl-guc:         [INCOMPLETE][12] ([i915#2750]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5891/fi-apl-guc/igt@i915_selftest@live@gt_timelines.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/fi-apl-guc/igt@i915_selftest@live@gt_timelines.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#142]: https://gitlab.freedesktop.org/drm/intel/issues/142
+  [i915#165]: https://gitlab.freedesktop.org/drm/intel/issues/165
+  [i915#1814]: https://gitlab.freedesktop.org/drm/intel/issues/1814
+  [i915#2029]: https://gitlab.freedesktop.org/drm/intel/issues/2029
+  [i915#2405]: https://gitlab.freedesktop.org/drm/intel/issues/2405
+  [i915#262]: https://gitlab.freedesktop.org/drm/intel/issues/262
+  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
+  [i915#2750]: https://gitlab.freedesktop.org/drm/intel/issues/2750
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (42 -> 38)
+------------------------------
+
+  Missing    (4): fi-dg1-1 fi-icl-u2 fi-bdw-samus fi-hsw-4200u 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5891 -> IGTPW_5276
+
+  CI-20190529: 20190529
+  CI_DRM_9478: 94cf3a4cc350324f21728c70954c46e535405c87 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5276: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/index.html
+  IGT_5891: d14fcf9235c223c29449ef907579e97086b2d4e5 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/index.html
+
+--===============7720013908621040072==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib: Pass device fd to gem_mmappable_aperture_size()</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/84858/">https://patchwork.freedesktop.org/series/84858/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_5891 -&gt; IGTPW_5276</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5276 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_cs_nop@nop-gfx0:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/fi-apl-guc/igt@amdgpu/amd_cs_nop@nop-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-byt-j1900:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5891/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/142">i915#142</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2405">i915#2405</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5891/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/165">i915#165</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/262">i915#262</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5891/fi-tgl-y/igt@prime_vgem@basic-write.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/fi-tgl-y/igt@prime_vgem@basic-write.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2029">i915#2029</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a>)</p>
+</li>
+<li>
+<p>fi-byt-j1900:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/fi-byt-j1900/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1814">i915#1814</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_mmap_gtt@basic:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5891/fi-tgl-y/igt@gem_mmap_gtt@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/fi-tgl-y/igt@gem_mmap_gtt@basic.html">PASS</a> +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_timelines:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5891/fi-apl-guc/igt@i915_selftest@live@gt_timelines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2750">i915#2750</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/fi-apl-guc/igt@i915_selftest@live@gt_timelines.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (42 -&gt; 38)</h2>
+<p>Missing    (4): fi-dg1-1 fi-icl-u2 fi-bdw-samus fi-hsw-4200u </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5891 -&gt; IGTPW_5276</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9478: 94cf3a4cc350324f21728c70954c46e535405c87 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5276: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5276/index.html<br />
+  IGT_5891: d14fcf9235c223c29449ef907579e97086b2d4e5 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============7720013908621040072==--
+
+--===============1484244545==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1484244545==--
