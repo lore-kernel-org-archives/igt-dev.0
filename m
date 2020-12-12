@@ -1,2612 +1,570 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Sat, 12 Dec 2020 09:43:54 +0000
+Message-Id: <20201212094354.3023502-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Sat, 12 Dec 2020 02:48:34 -0000
-Message-ID: <160774131490.10728.13857693288709748700@emeril.freedesktop.org>
-References: <20201211222152.2952035-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20201211222152.2952035-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgaW50ZWwt?=
- =?utf-8?q?ci=3A_Include_the_small_concurrent_tests?=
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1997120830=="
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+Subject: [Intel-gfx] [PATCH i-g-t] lib: Pass device fd to
+ gem_mmappable_aperture_size()
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1997120830==
-Content-Type: multipart/alternative;
- boundary="===============6189445872303039362=="
-
---===============6189445872303039362==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: intel-ci: Include the small concurrent tests
-URL   : https://patchwork.freedesktop.org/series/84856/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_5891_full -> IGTPW_5274_full
-====================================================
-
-Summary
--------
-
-  **WARNING**
-
-  Minor unknown changes coming with IGTPW_5274_full need to be verified
-  manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_5274_full, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_5274_full:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * {igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-early-read-forked} (NEW):
-    - shard-apl:          NOTRUN -> [WARN][1] +291 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-apl8/igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-early-read-forked.html
-
-  * {igt@gem_concurrent_blit@16mib-tiny-gpu-render-write-read-bcs-bomb} (NEW):
-    - shard-snb:          NOTRUN -> [TIMEOUT][2] +1 similar issue
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-snb5/igt@gem_concurrent_blit@16mib-tiny-gpu-render-write-read-bcs-bomb.html
-
-  * {igt@gem_concurrent_blit@16mib-tiny-gpux-blt-intermix-bcs-bomb} (NEW):
-    - shard-hsw:          NOTRUN -> [INCOMPLETE][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-hsw2/igt@gem_concurrent_blit@16mib-tiny-gpux-blt-intermix-bcs-bomb.html
-
-  * {igt@gem_concurrent_blit@16mib-tiny-gpux-blt-read-read-bcs-bomb} (NEW):
-    - shard-tglb:         NOTRUN -> [TIMEOUT][4]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-tglb5/igt@gem_concurrent_blit@16mib-tiny-gpux-blt-read-read-bcs-bomb.html
-
-  * {igt@gem_concurrent_blit@16mib-tiny-gtt-blt-sanitycheck1-bomb} (NEW):
-    - shard-hsw:          NOTRUN -> [TIMEOUT][5] +1 similar issue
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-hsw6/igt@gem_concurrent_blit@16mib-tiny-gtt-blt-sanitycheck1-bomb.html
-
-  * {igt@gem_concurrent_blit@16mib-tiny-gtt-render-gpu-read-after-write-bomb} (NEW):
-    - shard-snb:          NOTRUN -> [DMESG-WARN][6] +3 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-snb6/igt@gem_concurrent_blit@16mib-tiny-gtt-render-gpu-read-after-write-bomb.html
-
-  * {igt@gem_concurrent_blit@16mib-tiny-gtt-render-intermix-bcs-bomb} (NEW):
-    - shard-iclb:         NOTRUN -> [INCOMPLETE][7]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-iclb4/igt@gem_concurrent_blit@16mib-tiny-gtt-render-intermix-bcs-bomb.html
-
-  * {igt@gem_concurrent_blit@16mib-tiny-gttx-render-overwrite-source-bomb} (NEW):
-    - shard-hsw:          NOTRUN -> [DMESG-WARN][8] +3 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-hsw8/igt@gem_concurrent_blit@16mib-tiny-gttx-render-overwrite-source-bomb.html
-    - shard-snb:          NOTRUN -> [CRASH][9]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-snb5/igt@gem_concurrent_blit@16mib-tiny-gttx-render-overwrite-source-bomb.html
-
-  * {igt@gem_concurrent_blit@16mib-tiny-prw-render-read-read-rcs-forked} (NEW):
-    - shard-tglb:         NOTRUN -> [WARN][10] +256 similar issues
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-tglb8/igt@gem_concurrent_blit@16mib-tiny-prw-render-read-read-rcs-forked.html
-
-  * {igt@gem_concurrent_blit@16mib-tiny-userptr-blt-read-read-bcs-bomb} (NEW):
-    - shard-snb:          NOTRUN -> [INCOMPLETE][11]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-snb6/igt@gem_concurrent_blit@16mib-tiny-userptr-blt-read-read-bcs-bomb.html
-
-  * {igt@gem_concurrent_blit@16mib-tiny-wc-blt-intermix-rcs-forked} (NEW):
-    - shard-iclb:         NOTRUN -> [WARN][12] +238 similar issues
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-iclb4/igt@gem_concurrent_blit@16mib-tiny-wc-blt-intermix-rcs-forked.html
-
-  * {igt@gem_concurrent_blit@256kib-tiny-cpu-blt-gpu-read-after-write-child} (NEW):
-    - shard-kbl:          NOTRUN -> [WARN][13] +868 similar issues
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-kbl1/igt@gem_concurrent_blit@256kib-tiny-cpu-blt-gpu-read-after-write-child.html
-
-  * {igt@gem_concurrent_blit@256kib-tiny-snoop-blt-intermix-both} (NEW):
-    - shard-glk:          NOTRUN -> [WARN][14] +451 similar issues
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-glk5/igt@gem_concurrent_blit@256kib-tiny-snoop-blt-intermix-both.html
-    - shard-iclb:         NOTRUN -> [SKIP][15] +78 similar issues
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-iclb1/igt@gem_concurrent_blit@256kib-tiny-snoop-blt-intermix-both.html
-
-  * {igt@gem_concurrent_blit@256kib-tiny-userptr-render-gpu-read-after-write-bomb} (NEW):
-    - shard-hsw:          NOTRUN -> [DMESG-FAIL][16] +2 similar issues
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-hsw6/igt@gem_concurrent_blit@256kib-tiny-userptr-render-gpu-read-after-write-bomb.html
-
-  * {igt@gem_concurrent_blit@4kib-tiny-snoop-render-overwrite-source-read-bcs-bomb} (NEW):
-    - shard-tglb:         NOTRUN -> [SKIP][17] +86 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-tglb6/igt@gem_concurrent_blit@4kib-tiny-snoop-render-overwrite-source-read-bcs-bomb.html
-
-  
-#### Warnings ####
-
-  * igt@runner@aborted:
-    - shard-hsw:          [FAIL][18] ([i915#2295]) -> ([FAIL][19], [FAIL][20], [FAIL][21], [FAIL][22], [FAIL][23], [FAIL][24], [FAIL][25], [FAIL][26]) ([i915#2505])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5891/shard-hsw4/igt@runner@aborted.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-hsw4/igt@runner@aborted.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-hsw2/igt@runner@aborted.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-hsw4/igt@runner@aborted.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-hsw6/igt@runner@aborted.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-hsw8/igt@runner@aborted.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-hsw8/igt@runner@aborted.html
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-hsw6/igt@runner@aborted.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-hsw8/igt@runner@aborted.html
-
-  
-New tests
----------
-
-  New tests have been introduced between IGT_5891_full and IGTPW_5274_full:
-
-### New IGT tests (8160) ###
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-early-read:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-early-read-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-early-read-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-early-read-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-early-read-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-gpu-read-after-write:
-    - Statuses : 2 pass(s) 4 warn(s)
-    - Exec time: [0.12, 0.33] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-gpu-read-after-write-bomb:
-    - Statuses : 3 warn(s)
-    - Exec time: [7.75, 68.03] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-gpu-read-after-write-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-gpu-read-after-write-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-gpu-read-after-write-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-bcs:
-    - Statuses : 1 warn(s)
-    - Exec time: [0.13] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-bcs-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-bcs-child:
-    - Statuses : 2 warn(s)
-    - Exec time: [0.15, 0.18] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-bcs-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-bcs-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-both:
-    - Statuses : 3 warn(s)
-    - Exec time: [0.11, 0.13] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-both-bomb:
-    - Statuses : 1 pass(s) 3 warn(s)
-    - Exec time: [9.35, 46.07] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-both-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-both-forked:
-    - Statuses : 1 pass(s) 3 warn(s)
-    - Exec time: [0.49, 1.47] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-both-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-rcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-rcs-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-rcs-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-rcs-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-rcs-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-one:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-one-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-one-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-one-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-one-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-bcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-bcs-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-bcs-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-bcs-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-bcs-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-rcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-rcs-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-rcs-child:
-    - Statuses : 2 pass(s) 5 warn(s)
-    - Exec time: [0.10, 0.27] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-rcs-forked:
-    - Statuses : 3 warn(s)
-    - Exec time: [0.29, 0.55] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-rcs-interruptible:
-    - Statuses : 2 pass(s) 4 warn(s)
-    - Exec time: [0.33, 0.62] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-rev:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-rev-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-rev-child:
-    - Statuses : 2 pass(s) 4 warn(s)
-    - Exec time: [0.13, 0.34] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-rev-forked:
-    - Statuses : 2 pass(s) 5 warn(s)
-    - Exec time: [0.55, 1.43] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-rev-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-bcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-bcs-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-bcs-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-bcs-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-bcs-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-rcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-rcs-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-rcs-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-rcs-forked:
-    - Statuses : 1 pass(s) 4 warn(s)
-    - Exec time: [0.61, 1.79] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-rcs-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.11, 0.14] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck0-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck0-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck0-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck0-interruptible:
-    - Statuses : 2 pass(s) 5 warn(s)
-    - Exec time: [0.37, 1.03] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck1:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck1-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck1-child:
-    - Statuses : 3 warn(s)
-    - Exec time: [0.13, 0.21] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck1-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck1-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheckn:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheckn-bomb:
-    - Statuses : 3 warn(s)
-    - Exec time: [3.36, 28.64] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheckn-child:
-    - Statuses : 2 pass(s) 5 warn(s)
-    - Exec time: [0.13, 0.43] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheckn-forked:
-    - Statuses : 1 warn(s)
-    - Exec time: [0.51] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheckn-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-bcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-bcs-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-bcs-child:
-    - Statuses : 1 warn(s)
-    - Exec time: [0.18] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-bcs-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-bcs-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-rcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-rcs-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-rcs-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-rcs-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-rcs-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-early-read:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-early-read-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-early-read-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-early-read-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-early-read-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-gpu-read-after-write:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-gpu-read-after-write-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-gpu-read-after-write-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-gpu-read-after-write-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-gpu-read-after-write-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-bcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-bcs-bomb:
-    - Statuses : 2 pass(s) 5 warn(s)
-    - Exec time: [6.13, 44.93] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-bcs-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-bcs-forked:
-    - Statuses : 2 pass(s) 5 warn(s)
-    - Exec time: [0.53, 1.52] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-bcs-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-both:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-both-bomb:
-    - Statuses : 1 warn(s)
-    - Exec time: [5.22] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-both-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-both-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-both-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-rcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-rcs-bomb:
-    - Statuses : 2 warn(s)
-    - Exec time: [6.00, 26.47] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-rcs-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-rcs-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-rcs-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-bomb:
-    - Statuses : 1 warn(s)
-    - Exec time: [8.00] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-one:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-one-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-one-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-one-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-one-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-bcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-bcs-bomb:
-    - Statuses : 1 warn(s)
-    - Exec time: [5.86] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-bcs-child:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.12, 0.14] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-bcs-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-bcs-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-rcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-rcs-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-rcs-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-rcs-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-rcs-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-rev:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-rev-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-rev-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-rev-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-rev-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-bcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-bcs-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-bcs-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-bcs-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-bcs-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-rcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-rcs-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-rcs-child:
-    - Statuses : 2 pass(s) 5 warn(s)
-    - Exec time: [0.14, 0.52] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-rcs-forked:
-    - Statuses : 2 pass(s) 5 warn(s)
-    - Exec time: [0.61, 2.77] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-rcs-interruptible:
-    - Statuses : 1 warn(s)
-    - Exec time: [0.58] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck0:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck0-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck0-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck0-forked:
-    - Statuses : 2 pass(s) 4 warn(s)
-    - Exec time: [0.34, 1.84] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck0-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck1:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck1-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck1-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck1-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck1-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheckn:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheckn-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheckn-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheckn-forked:
-    - Statuses : 2 pass(s) 5 warn(s)
-    - Exec time: [0.50, 1.60] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheckn-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-bcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-bcs-bomb:
-    - Statuses : 1 pass(s) 3 warn(s)
-    - Exec time: [17.36, 61.54] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-bcs-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-bcs-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-bcs-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-rcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-rcs-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-rcs-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-rcs-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-rcs-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-early-read:
-    - Statuses : 3 warn(s)
-    - Exec time: [0.11, 0.16] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-early-read-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-early-read-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-early-read-forked:
-    - Statuses : 2 pass(s) 5 warn(s)
-    - Exec time: [0.54, 1.12] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-early-read-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-gpu-read-after-write:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-gpu-read-after-write-bomb:
-    - Statuses : 1 pass(s) 3 warn(s)
-    - Exec time: [9.70, 68.69] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-gpu-read-after-write-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-gpu-read-after-write-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-gpu-read-after-write-interruptible:
-    - Statuses : 2 pass(s) 4 warn(s)
-    - Exec time: [0.14, 0.39] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-bcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-bcs-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-bcs-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-bcs-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-bcs-interruptible:
-    - Statuses : 2 pass(s) 5 warn(s)
-    - Exec time: [0.30, 0.90] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-both:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-both-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-both-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-both-forked:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-both-interruptible:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-rcs:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-rcs-bomb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-rcs-child:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-rcs-forked:
-    - Statuses : 2 pass(s) 5 warn(s)
-    - Exec time: [0.58, 1.28] s
-
-  *
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/index.html
-
---===============6189445872303039362==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-
-
-<!DOCTYPE html>
-<html xmlns=3D"http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id=3D"css-table-select" type=3D"text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>intel-ci: Include the small concurrent tests=
-</td></tr>
-<tr><td><b>URL:</b></td><td><a href=3D"https://patchwork.freedesktop.org/se=
-ries/84856/">https://patchwork.freedesktop.org/series/84856/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href=3D"https://intel-gfx-ci.01.org/=
-tree/drm-tip/IGTPW_5274/index.html">https://intel-gfx-ci.01.org/tree/drm-ti=
-p/IGTPW_5274/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_5891_full -&gt; IGTPW_5274_full</h1>
-<h2>Summary</h2>
-<p><strong>WARNING</strong></p>
-<p>Minor unknown changes coming with IGTPW_5274_full need to be verified<br=
- />
-  manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br=
- />
-  introduced in IGTPW_5274_full, please notify your bug team to allow them<=
-br />
-  to document this new failure mode, which will reduce false positives in C=
-I.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/index.=
-html</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_5274=
-_full:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>{igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-early-read-forked} (NEW):=
-</p>
-<ul>
-<li>shard-apl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
-/tree/drm-tip/IGTPW_5274/shard-apl8/igt@gem_concurrent_blit@16mib-tiny-dmab=
-uf-blt-early-read-forked.html">WARN</a> +291 similar issues</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_concurrent_blit@16mib-tiny-gpu-render-write-read-bcs-bomb} (NEW=
-):</p>
-<ul>
-<li>shard-snb:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
-/tree/drm-tip/IGTPW_5274/shard-snb5/igt@gem_concurrent_blit@16mib-tiny-gpu-=
-render-write-read-bcs-bomb.html">TIMEOUT</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_concurrent_blit@16mib-tiny-gpux-blt-intermix-bcs-bomb} (NEW):</=
-p>
-<ul>
-<li>shard-hsw:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
-/tree/drm-tip/IGTPW_5274/shard-hsw2/igt@gem_concurrent_blit@16mib-tiny-gpux=
--blt-intermix-bcs-bomb.html">INCOMPLETE</a></li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_concurrent_blit@16mib-tiny-gpux-blt-read-read-bcs-bomb} (NEW):<=
-/p>
-<ul>
-<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
-/tree/drm-tip/IGTPW_5274/shard-tglb5/igt@gem_concurrent_blit@16mib-tiny-gpu=
-x-blt-read-read-bcs-bomb.html">TIMEOUT</a></li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_concurrent_blit@16mib-tiny-gtt-blt-sanitycheck1-bomb} (NEW):</p>
-<ul>
-<li>shard-hsw:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
-/tree/drm-tip/IGTPW_5274/shard-hsw6/igt@gem_concurrent_blit@16mib-tiny-gtt-=
-blt-sanitycheck1-bomb.html">TIMEOUT</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_concurrent_blit@16mib-tiny-gtt-render-gpu-read-after-write-bomb=
-} (NEW):</p>
-<ul>
-<li>shard-snb:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
-/tree/drm-tip/IGTPW_5274/shard-snb6/igt@gem_concurrent_blit@16mib-tiny-gtt-=
-render-gpu-read-after-write-bomb.html">DMESG-WARN</a> +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_concurrent_blit@16mib-tiny-gtt-render-intermix-bcs-bomb} (NEW):=
-</p>
-<ul>
-<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
-/tree/drm-tip/IGTPW_5274/shard-iclb4/igt@gem_concurrent_blit@16mib-tiny-gtt=
--render-intermix-bcs-bomb.html">INCOMPLETE</a></li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_concurrent_blit@16mib-tiny-gttx-render-overwrite-source-bomb} (=
-NEW):</p>
-<ul>
-<li>
-<p>shard-hsw:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
-tree/drm-tip/IGTPW_5274/shard-hsw8/igt@gem_concurrent_blit@16mib-tiny-gttx-=
-render-overwrite-source-bomb.html">DMESG-WARN</a> +3 similar issues</p>
-</li>
-<li>
-<p>shard-snb:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
-tree/drm-tip/IGTPW_5274/shard-snb5/igt@gem_concurrent_blit@16mib-tiny-gttx-=
-render-overwrite-source-bomb.html">CRASH</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_concurrent_blit@16mib-tiny-prw-render-read-read-rcs-forked} (NE=
-W):</p>
-<ul>
-<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
-/tree/drm-tip/IGTPW_5274/shard-tglb8/igt@gem_concurrent_blit@16mib-tiny-prw=
--render-read-read-rcs-forked.html">WARN</a> +256 similar issues</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_concurrent_blit@16mib-tiny-userptr-blt-read-read-bcs-bomb} (NEW=
-):</p>
-<ul>
-<li>shard-snb:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
-/tree/drm-tip/IGTPW_5274/shard-snb6/igt@gem_concurrent_blit@16mib-tiny-user=
-ptr-blt-read-read-bcs-bomb.html">INCOMPLETE</a></li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_concurrent_blit@16mib-tiny-wc-blt-intermix-rcs-forked} (NEW):</=
-p>
-<ul>
-<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
-/tree/drm-tip/IGTPW_5274/shard-iclb4/igt@gem_concurrent_blit@16mib-tiny-wc-=
-blt-intermix-rcs-forked.html">WARN</a> +238 similar issues</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_concurrent_blit@256kib-tiny-cpu-blt-gpu-read-after-write-child}=
- (NEW):</p>
-<ul>
-<li>shard-kbl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
-/tree/drm-tip/IGTPW_5274/shard-kbl1/igt@gem_concurrent_blit@256kib-tiny-cpu=
--blt-gpu-read-after-write-child.html">WARN</a> +868 similar issues</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_concurrent_blit@256kib-tiny-snoop-blt-intermix-both} (NEW):</p>
-<ul>
-<li>
-<p>shard-glk:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
-tree/drm-tip/IGTPW_5274/shard-glk5/igt@gem_concurrent_blit@256kib-tiny-snoo=
-p-blt-intermix-both.html">WARN</a> +451 similar issues</p>
-</li>
-<li>
-<p>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
-tree/drm-tip/IGTPW_5274/shard-iclb1/igt@gem_concurrent_blit@256kib-tiny-sno=
-op-blt-intermix-both.html">SKIP</a> +78 similar issues</p>
-</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_concurrent_blit@256kib-tiny-userptr-render-gpu-read-after-write=
--bomb} (NEW):</p>
-<ul>
-<li>shard-hsw:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
-/tree/drm-tip/IGTPW_5274/shard-hsw6/igt@gem_concurrent_blit@256kib-tiny-use=
-rptr-render-gpu-read-after-write-bomb.html">DMESG-FAIL</a> +2 similar issue=
-s</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_concurrent_blit@4kib-tiny-snoop-render-overwrite-source-read-bc=
-s-bomb} (NEW):</p>
-<ul>
-<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
-/tree/drm-tip/IGTPW_5274/shard-tglb6/igt@gem_concurrent_blit@4kib-tiny-snoo=
-p-render-overwrite-source-read-bcs-bomb.html">SKIP</a> +86 similar issues</=
-li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@runner@aborted:<ul>
-<li>shard-hsw:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
-/IGT_5891/shard-hsw4/igt@runner@aborted.html">FAIL</a> ([i915#2295]) -&gt; =
-(<a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-hsw4/=
-igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/t=
-ree/drm-tip/IGTPW_5274/shard-hsw2/igt@runner@aborted.html">FAIL</a>, <a hre=
-f=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-hsw4/igt@run=
-ner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm=
--tip/IGTPW_5274/shard-hsw6/igt@runner@aborted.html">FAIL</a>, <a href=3D"ht=
-tps://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-hsw8/igt@runner@abo=
-rted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IG=
-TPW_5274/shard-hsw8/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://i=
-ntel-gfx-ci.01.org/tree/drm-tip/IGTPW_5274/shard-hsw6/igt@runner@aborted.ht=
-ml">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_527=
-4/shard-hsw8/igt@runner@aborted.html">FAIL</a>) ([i915#2505])</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between IGT_5891_full and IGTPW_5274_full=
-:</p>
-<h3>New IGT tests (8160)</h3>
-<ul>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-early-read:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-early-read-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-early-read-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-early-read-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-early-read-interruptible:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-gpu-read-after-write:</p>
-<ul>
-<li>Statuses : 2 pass(s) 4 warn(s)</li>
-<li>Exec time: [0.12, 0.33] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-gpu-read-after-write-bomb:</p>
-<ul>
-<li>Statuses : 3 warn(s)</li>
-<li>Exec time: [7.75, 68.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-gpu-read-after-write-child:</=
-p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-gpu-read-after-write-forked:<=
-/p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-gpu-read-after-write-interrup=
-tible:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-bcs:</p>
-<ul>
-<li>Statuses : 1 warn(s)</li>
-<li>Exec time: [0.13] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-bcs-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-bcs-child:</p>
-<ul>
-<li>Statuses : 2 warn(s)</li>
-<li>Exec time: [0.15, 0.18] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-bcs-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-bcs-interruptible:</=
-p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-both:</p>
-<ul>
-<li>Statuses : 3 warn(s)</li>
-<li>Exec time: [0.11, 0.13] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-both-bomb:</p>
-<ul>
-<li>Statuses : 1 pass(s) 3 warn(s)</li>
-<li>Exec time: [9.35, 46.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-both-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-both-forked:</p>
-<ul>
-<li>Statuses : 1 pass(s) 3 warn(s)</li>
-<li>Exec time: [0.49, 1.47] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-both-interruptible:<=
-/p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-rcs:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-rcs-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-rcs-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-rcs-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-intermix-rcs-interruptible:</=
-p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-interruptibl=
-e:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-one:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-one-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-one-child:</=
-p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-one-forked:<=
-/p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-one-interrup=
-tible:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-bcs:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-bcs-bom=
-b:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-bcs-chi=
-ld:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-bcs-for=
-ked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-bcs-int=
-erruptible:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-rcs:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-rcs-bom=
-b:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-rcs-chi=
-ld:</p>
-<ul>
-<li>Statuses : 2 pass(s) 5 warn(s)</li>
-<li>Exec time: [0.10, 0.27] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-rcs-for=
-ked:</p>
-<ul>
-<li>Statuses : 3 warn(s)</li>
-<li>Exec time: [0.29, 0.55] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-read-rcs-int=
-erruptible:</p>
-<ul>
-<li>Statuses : 2 pass(s) 4 warn(s)</li>
-<li>Exec time: [0.33, 0.62] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-rev:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-rev-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-rev-child:</=
-p>
-<ul>
-<li>Statuses : 2 pass(s) 4 warn(s)</li>
-<li>Exec time: [0.13, 0.34] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-rev-forked:<=
-/p>
-<ul>
-<li>Statuses : 2 pass(s) 5 warn(s)</li>
-<li>Exec time: [0.55, 1.43] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-overwrite-source-rev-interrup=
-tible:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-bcs:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-bcs-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-bcs-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-bcs-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-bcs-interruptible:<=
-/p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-rcs:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-rcs-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-rcs-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-rcs-forked:</p>
-<ul>
-<li>Statuses : 1 pass(s) 4 warn(s)</li>
-<li>Exec time: [0.61, 1.79] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-read-read-rcs-interruptible:<=
-/p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.11, 0.14] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck0-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck0-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck0-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck0-interruptible:</=
-p>
-<ul>
-<li>Statuses : 2 pass(s) 5 warn(s)</li>
-<li>Exec time: [0.37, 1.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck1:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck1-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck1-child:</p>
-<ul>
-<li>Statuses : 3 warn(s)</li>
-<li>Exec time: [0.13, 0.21] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck1-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheck1-interruptible:</=
-p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheckn:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheckn-bomb:</p>
-<ul>
-<li>Statuses : 3 warn(s)</li>
-<li>Exec time: [3.36, 28.64] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheckn-child:</p>
-<ul>
-<li>Statuses : 2 pass(s) 5 warn(s)</li>
-<li>Exec time: [0.13, 0.43] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheckn-forked:</p>
-<ul>
-<li>Statuses : 1 warn(s)</li>
-<li>Exec time: [0.51] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-sanitycheckn-interruptible:</=
-p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-bcs:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-bcs-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-bcs-child:</p>
-<ul>
-<li>Statuses : 1 warn(s)</li>
-<li>Exec time: [0.18] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-bcs-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-bcs-interruptible:=
-</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-rcs:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-rcs-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-rcs-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-rcs-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-blt-write-read-rcs-interruptible:=
-</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-early-read:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-early-read-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-early-read-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-early-read-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-early-read-interruptible:<=
-/p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-gpu-read-after-write:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-gpu-read-after-write-bomb:=
-</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-gpu-read-after-write-child=
-:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-gpu-read-after-write-forke=
-d:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-gpu-read-after-write-inter=
-ruptible:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-bcs:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-bcs-bomb:</p>
-<ul>
-<li>Statuses : 2 pass(s) 5 warn(s)</li>
-<li>Exec time: [6.13, 44.93] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-bcs-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-bcs-forked:</p>
-<ul>
-<li>Statuses : 2 pass(s) 5 warn(s)</li>
-<li>Exec time: [0.53, 1.52] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-bcs-interruptible=
-:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-both:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-both-bomb:</p>
-<ul>
-<li>Statuses : 1 warn(s)</li>
-<li>Exec time: [5.22] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-both-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-both-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-both-interruptibl=
-e:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-rcs:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-rcs-bomb:</p>
-<ul>
-<li>Statuses : 2 warn(s)</li>
-<li>Exec time: [6.00, 26.47] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-rcs-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-rcs-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-intermix-rcs-interruptible=
-:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-bomb:</p>
-<ul>
-<li>Statuses : 1 warn(s)</li>
-<li>Exec time: [8.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-forked:</=
-p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-interrupt=
-ible:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-one:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-one-bomb:=
-</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-one-child=
-:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-one-forke=
-d:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-one-inter=
-ruptible:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-bcs:=
-</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-bcs-=
-bomb:</p>
-<ul>
-<li>Statuses : 1 warn(s)</li>
-<li>Exec time: [5.86] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-bcs-=
-child:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.12, 0.14] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-bcs-=
-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-bcs-=
-interruptible:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-rcs:=
-</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-rcs-=
-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-rcs-=
-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-rcs-=
-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-read-rcs-=
-interruptible:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-rev:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-rev-bomb:=
-</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-rev-child=
-:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-rev-forke=
-d:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-overwrite-source-rev-inter=
-ruptible:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-bcs:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-bcs-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-bcs-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-bcs-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-bcs-interruptibl=
-e:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-rcs:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-rcs-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-rcs-child:</p>
-<ul>
-<li>Statuses : 2 pass(s) 5 warn(s)</li>
-<li>Exec time: [0.14, 0.52] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-rcs-forked:</p>
-<ul>
-<li>Statuses : 2 pass(s) 5 warn(s)</li>
-<li>Exec time: [0.61, 2.77] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-read-read-rcs-interruptibl=
-e:</p>
-<ul>
-<li>Statuses : 1 warn(s)</li>
-<li>Exec time: [0.58] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck0:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck0-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck0-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck0-forked:</p>
-<ul>
-<li>Statuses : 2 pass(s) 4 warn(s)</li>
-<li>Exec time: [0.34, 1.84] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck0-interruptible=
-:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck1:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck1-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck1-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck1-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheck1-interruptible=
-:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheckn:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheckn-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheckn-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheckn-forked:</p>
-<ul>
-<li>Statuses : 2 pass(s) 5 warn(s)</li>
-<li>Exec time: [0.50, 1.60] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-sanitycheckn-interruptible=
-:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-bcs:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-bcs-bomb:</p>
-<ul>
-<li>Statuses : 1 pass(s) 3 warn(s)</li>
-<li>Exec time: [17.36, 61.54] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-bcs-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-bcs-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-bcs-interruptib=
-le:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-rcs:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-rcs-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-rcs-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-rcs-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-cpu-render-write-read-rcs-interruptib=
-le:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-early-read:</p>
-<ul>
-<li>Statuses : 3 warn(s)</li>
-<li>Exec time: [0.11, 0.16] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-early-read-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-early-read-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-early-read-forked:</p>
-<ul>
-<li>Statuses : 2 pass(s) 5 warn(s)</li>
-<li>Exec time: [0.54, 1.12] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-early-read-interruptible:<=
-/p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-gpu-read-after-write:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-gpu-read-after-write-bomb:=
-</p>
-<ul>
-<li>Statuses : 1 pass(s) 3 warn(s)</li>
-<li>Exec time: [9.70, 68.69] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-gpu-read-after-write-child=
-:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-gpu-read-after-write-forke=
-d:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-gpu-read-after-write-inter=
-ruptible:</p>
-<ul>
-<li>Statuses : 2 pass(s) 4 warn(s)</li>
-<li>Exec time: [0.14, 0.39] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-bcs:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-bcs-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-bcs-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-bcs-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-bcs-interruptible=
-:</p>
-<ul>
-<li>Statuses : 2 pass(s) 5 warn(s)</li>
-<li>Exec time: [0.30, 0.90] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-both:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-both-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-both-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-both-forked:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-both-interruptibl=
-e:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-rcs:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-rcs-bomb:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-rcs-child:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_concurrent_blit@16mib-tiny-dmabuf-blt-intermix-rcs-forked:</p>
-<ul>
-<li>Statuses : 2 pass(s) 5 warn(s)</li>
-<li>Exec time: [0.58, 1.28] s</li>
-</ul>
-</li>
-</ul>
-<p>*</p>
-
-</body>
-</html>
-
---===============6189445872303039362==--
-
---===============1997120830==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+In order to find the correct aperture size for the test, we want to pass
+the test's device into the query.
+
+Reported-by: Bruce Chang <yu.bruce.chang@intel.com>
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Bruce Chang <yu.bruce.chang@intel.com>
+---
+ lib/i915/gem_mman.c                | 108 +++++++++++++++++++++++++++
+ lib/i915/gem_mman.h                |   6 ++
+ lib/ioctl_wrappers.c               | 116 -----------------------------
+ lib/ioctl_wrappers.h               |   5 --
+ tests/i915/gem_concurrent_all.c    |  12 +--
+ tests/i915/gem_mmap.c              |   4 +-
+ tests/i915/gem_mmap_gtt.c          |  10 +--
+ tests/i915/gem_pwrite.c            |   6 +-
+ tests/i915/gem_shrink.c            |   2 +-
+ tests/i915/gem_tiled_fence_blits.c |   2 +-
+ tests/i915/i915_pm_rpm.c           |   4 +-
+ tests/kms_big_fb.c                 |   2 +-
+ tests/kms_flip.c                   |   2 +-
+ tests/prime_mmap.c                 |   4 +-
+ 14 files changed, 138 insertions(+), 145 deletions(-)
+
+diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
+index 93bef2bfc..703c6a5c1 100644
+--- a/lib/i915/gem_mman.c
++++ b/lib/i915/gem_mman.c
+@@ -27,7 +27,9 @@
+ #include <errno.h>
+ 
+ #include "igt_core.h"
++#include "igt_device.h"
+ #include "ioctl_wrappers.h"
++#include "intel_chipset.h"
+ 
+ #include "gem_mman.h"
+ 
+@@ -551,3 +553,109 @@ const struct mmap_offset mmap_offset_types[] = {
+ 	{ "uc", I915_MMAP_OFFSET_UC, I915_GEM_DOMAIN_WC },
+ 	{},
+ };
++
++/**
++ * gem_available_aperture_size:
++ * @fd: open i915 drm file descriptor
++ *
++ * Feature test macro to query the kernel for the available gpu aperture size
++ * usable in a batchbuffer.
++ *
++ * Returns: The available gtt address space size.
++ */
++uint64_t gem_available_aperture_size(int fd)
++{
++	struct drm_i915_gem_get_aperture aperture = {
++		aperture.aper_available_size = 256*1024*1024,
++	};
++
++	ioctl(fd, DRM_IOCTL_I915_GEM_GET_APERTURE, &aperture);
++	errno = 0;
++
++	return aperture.aper_available_size;
++}
++
++/**
++ * gem_aperture_size:
++ * @fd: open i915 drm file descriptor
++ *
++ * Feature test macro to query the kernel for the total gpu aperture size.
++ *
++ * Returns: The total gtt address space size.
++ */
++uint64_t gem_aperture_size(int fd)
++{
++	struct drm_i915_gem_context_param p = {
++		.param = 0x3
++	};
++
++	if (__gem_context_get_param(fd, &p))
++		p.value = gem_global_aperture_size(fd);
++
++	return p.value;
++}
++
++/**
++ * gem_mappable_aperture_size:
++ *
++ * Feature test macro to query the kernel for the mappable gpu aperture size.
++ * This is the area available for GTT memory mappings.
++ *
++ * Returns: The mappable gtt address space size.
++ */
++uint64_t gem_mappable_aperture_size(int fd)
++{
++	struct pci_device *pci_dev = igt_device_get_pci_device(fd);
++	int bar;
++
++	if (intel_gen(pci_dev->device_id) < 3)
++		bar = 0;
++	else
++		bar = 2;
++
++	return pci_dev->regions[bar].size;
++}
++
++/**
++ * gem_global_aperture_size:
++ * @fd: open i915 drm file descriptor
++ *
++ * Feature test macro to query the kernel for the global gpu aperture size.
++ * This is the area available for the kernel to perform address translations.
++ *
++ * Returns: The gtt address space size.
++ */
++uint64_t gem_global_aperture_size(int fd)
++{
++	struct drm_i915_gem_get_aperture aperture = {
++		aperture.aper_size = 256*1024*1024
++	};
++
++	ioctl(fd, DRM_IOCTL_I915_GEM_GET_APERTURE, &aperture);
++	errno = 0;
++
++	return aperture.aper_size;
++}
++
++/**
++ * gem_available_fences:
++ * @fd: open i915 drm file descriptor
++ *
++ * Feature test macro to query the kernel for the number of available fences
++ * usable in a batchbuffer. Only relevant for pre-gen4.
++ *
++ * Returns: The number of available fences.
++ */
++int gem_available_fences(int fd)
++{
++	int num_fences = 0;
++	struct drm_i915_getparam gp = {
++		gp.param = I915_PARAM_NUM_FENCES_AVAIL,
++		gp.value = &num_fences,
++	};
++
++	ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
++	errno = 0;
++
++	return num_fences;
++}
+diff --git a/lib/i915/gem_mman.h b/lib/i915/gem_mman.h
+index 2c4a7a00b..ec2899ffe 100644
+--- a/lib/i915/gem_mman.h
++++ b/lib/i915/gem_mman.h
+@@ -109,5 +109,11 @@ bool gem_has_mmap_offset_type(int fd, const struct mmap_offset *t);
+ 	     (__t)++) \
+ 		for_each_if(gem_has_mmap_offset_type((fd), (__t)))
+ 
++uint64_t gem_available_aperture_size(int fd);
++uint64_t gem_aperture_size(int fd);
++uint64_t gem_global_aperture_size(int fd);
++uint64_t gem_mappable_aperture_size(int fd);
++int gem_available_fences(int fd);
++
+ #endif /* GEM_MMAN_H */
+ 
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index 06431ce6c..a928f894f 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -782,31 +782,6 @@ bool gem_engine_reset_enabled(int fd)
+ 	return gem_gpu_reset_type(fd) > 1;
+ }
+ 
+-/**
+- * gem_available_fences:
+- * @fd: open i915 drm file descriptor
+- *
+- * Feature test macro to query the kernel for the number of available fences
+- * usable in a batchbuffer. Only relevant for pre-gen4.
+- *
+- * Returns: The number of available fences.
+- */
+-int gem_available_fences(int fd)
+-{
+-	int num_fences;
+-	struct drm_i915_getparam gp;
+-
+-	memset(&gp, 0, sizeof(gp));
+-	gp.param = I915_PARAM_NUM_FENCES_AVAIL;
+-	gp.value = &num_fences;
+-
+-	num_fences = 0;
+-	ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
+-	errno = 0;
+-
+-	return num_fences;
+-}
+-
+ bool gem_has_llc(int fd)
+ {
+ 	int has_llc;
+@@ -929,97 +904,6 @@ uint64_t gem_total_stolen_size(int fd)
+ 	return aperture.stolen_total_size;
+ }
+ 
+-/**
+- * gem_available_aperture_size:
+- * @fd: open i915 drm file descriptor
+- *
+- * Feature test macro to query the kernel for the available gpu aperture size
+- * usable in a batchbuffer.
+- *
+- * Returns: The available gtt address space size.
+- */
+-uint64_t gem_available_aperture_size(int fd)
+-{
+-	struct drm_i915_gem_get_aperture aperture;
+-
+-	memset(&aperture, 0, sizeof(aperture));
+-	aperture.aper_size = 256*1024*1024;
+-	do_ioctl(fd, DRM_IOCTL_I915_GEM_GET_APERTURE, &aperture);
+-
+-	return aperture.aper_available_size;
+-}
+-
+-/**
+- * gem_aperture_size:
+- * @fd: open i915 drm file descriptor
+- *
+- * Feature test macro to query the kernel for the total gpu aperture size.
+- *
+- * Returns: The total gtt address space size.
+- */
+-uint64_t gem_aperture_size(int fd)
+-{
+-	uint64_t aperture_size = 0;
+-	struct drm_i915_gem_context_param p;
+-
+-	memset(&p, 0, sizeof(p));
+-	p.param = 0x3;
+-	if (__gem_context_get_param(fd, &p) == 0) {
+-		aperture_size = p.value;
+-	} else {
+-		struct drm_i915_gem_get_aperture aperture;
+-
+-		memset(&aperture, 0, sizeof(aperture));
+-		aperture.aper_size = 256*1024*1024;
+-
+-		do_ioctl(fd, DRM_IOCTL_I915_GEM_GET_APERTURE, &aperture);
+-		aperture_size =  aperture.aper_size;
+-	}
+-
+-	return aperture_size;
+-}
+-
+-/**
+- * gem_mappable_aperture_size:
+- *
+- * Feature test macro to query the kernel for the mappable gpu aperture size.
+- * This is the area available for GTT memory mappings.
+- *
+- * Returns: The mappable gtt address space size.
+- */
+-uint64_t gem_mappable_aperture_size(void)
+-{
+-	struct pci_device *pci_dev = intel_get_pci_device();
+-	int bar;
+-
+-	if (intel_gen(pci_dev->device_id) < 3)
+-		bar = 0;
+-	else
+-		bar = 2;
+-
+-	return pci_dev->regions[bar].size;
+-}
+-
+-/**
+- * gem_global_aperture_size:
+- * @fd: open i915 drm file descriptor
+- *
+- * Feature test macro to query the kernel for the global gpu aperture size.
+- * This is the area available for the kernel to perform address translations.
+- *
+- * Returns: The gtt address space size.
+- */
+-uint64_t gem_global_aperture_size(int fd)
+-{
+-	struct drm_i915_gem_get_aperture aperture;
+-
+-	memset(&aperture, 0, sizeof(aperture));
+-	aperture.aper_size = 256*1024*1024;
+-	do_ioctl(fd, DRM_IOCTL_I915_GEM_GET_APERTURE, &aperture);
+-
+-	return aperture.aper_size;
+-}
+-
+ /**
+  * gem_has_softpin:
+  * @fd: open i915 drm file descriptor
+diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+index b76bea564..07879ae96 100644
+--- a/lib/ioctl_wrappers.h
++++ b/lib/ioctl_wrappers.h
+@@ -117,12 +117,7 @@ bool gem_uses_full_ppgtt(int fd);
+ int gem_gpu_reset_type(int fd);
+ bool gem_gpu_reset_enabled(int fd);
+ bool gem_engine_reset_enabled(int fd);
+-int gem_available_fences(int fd);
+ uint64_t gem_total_stolen_size(int fd);
+-uint64_t gem_available_aperture_size(int fd);
+-uint64_t gem_aperture_size(int fd);
+-uint64_t gem_global_aperture_size(int fd);
+-uint64_t gem_mappable_aperture_size(void);
+ bool gem_has_softpin(int fd);
+ bool gem_has_exec_fence(int fd);
+ 
+diff --git a/tests/i915/gem_concurrent_all.c b/tests/i915/gem_concurrent_all.c
+index 9ea94125e..da850a104 100644
+--- a/tests/i915/gem_concurrent_all.c
++++ b/tests/i915/gem_concurrent_all.c
+@@ -1828,7 +1828,7 @@ igt_main
+ 				 c->name, s->name, "small");
+ 			igt_subtest_group {
+ 				igt_fixture {
+-					count = num_buffers(gem_mappable_aperture_size()/4,
++					count = num_buffers(gem_mappable_aperture_size(fd)/4,
+ 							    s, c, CHECK_RAM);
+ 				}
+ 				run_modes(name, c, modes, s, count);
+@@ -1839,7 +1839,7 @@ igt_main
+ 				 c->name, s->name, "thrash");
+ 			igt_subtest_group {
+ 				igt_fixture {
+-					count = num_buffers(gem_mappable_aperture_size(),
++					count = num_buffers(gem_mappable_aperture_size(fd),
+ 							    s, c, CHECK_RAM);
+ 				}
+ 				run_modes(name, c, modes, s, count);
+@@ -1871,7 +1871,7 @@ igt_main
+ 				 c->name, s->name, "shrink");
+ 			igt_subtest_group {
+ 				igt_fixture {
+-					count = num_buffers(gem_mappable_aperture_size(),
++					count = num_buffers(gem_mappable_aperture_size(fd),
+ 							    s, c, CHECK_RAM);
+ 
+ 					igt_fork_shrink_helper(fd);
+@@ -1887,8 +1887,8 @@ igt_main
+ 				 c->name, s->name, "swap");
+ 			igt_subtest_group {
+ 				igt_fixture {
+-					if (intel_get_avail_ram_mb() > gem_mappable_aperture_size()/(1024*1024)) {
+-						pin_sz = intel_get_avail_ram_mb() - gem_mappable_aperture_size()/(1024*1024);
++					if (intel_get_avail_ram_mb() > gem_mappable_aperture_size(fd)/(1024*1024)) {
++						pin_sz = intel_get_avail_ram_mb() - gem_mappable_aperture_size(fd)/(1024*1024);
+ 
+ 						igt_debug("Pinning %lld MiB\n", (long long)pin_sz);
+ 						pin_sz *= 1024 * 1024;
+@@ -1902,7 +1902,7 @@ igt_main
+ 						igt_require(pinned);
+ 					}
+ 
+-					count = num_buffers(gem_mappable_aperture_size(),
++					count = num_buffers(gem_mappable_aperture_size(fd),
+ 							    s, c, CHECK_RAM | CHECK_SWAP);
+ 				}
+ 				run_modes(name, c, modes, s, count);
+diff --git a/tests/i915/gem_mmap.c b/tests/i915/gem_mmap.c
+index 8bad9b14e..60a64c134 100644
+--- a/tests/i915/gem_mmap.c
++++ b/tests/i915/gem_mmap.c
+@@ -53,10 +53,10 @@ test_huge_bo(int huge)
+ 
+ 	switch (huge) {
+ 	case -1:
+-		huge_object_size = gem_mappable_aperture_size() / 2;
++		huge_object_size = gem_mappable_aperture_size(fd) / 2;
+ 		break;
+ 	case 0:
+-		huge_object_size = gem_mappable_aperture_size() + PAGE_SIZE;
++		huge_object_size = gem_mappable_aperture_size(fd) + PAGE_SIZE;
+ 		break;
+ 	case 1:
+ 		huge_object_size = gem_aperture_size(fd) + PAGE_SIZE;
+diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
+index 61fbc5bc7..528a7c726 100644
+--- a/tests/i915/gem_mmap_gtt.c
++++ b/tests/i915/gem_mmap_gtt.c
+@@ -905,7 +905,7 @@ test_huge_bo(int fd, int huge, int tiling)
+ 
+ 	switch (huge) {
+ 	case -1:
+-		size = gem_mappable_aperture_size() / 2;
++		size = gem_mappable_aperture_size(fd) / 2;
+ 
+ 		/* Power of two fence size, natural fence
+ 		 * alignment, and the guard page at the end
+@@ -920,7 +920,7 @@ test_huge_bo(int fd, int huge, int tiling)
+ 			size /= 2;
+ 		break;
+ 	case 0:
+-		size = gem_mappable_aperture_size() + PAGE_SIZE;
++		size = gem_mappable_aperture_size(fd) + PAGE_SIZE;
+ 		break;
+ 	default:
+ 		size = gem_global_aperture_size(fd) + PAGE_SIZE;
+@@ -1001,13 +1001,13 @@ test_huge_copy(int fd, int huge, int tiling_a, int tiling_b, int ncpus)
+ 
+ 	switch (huge) {
+ 	case -2:
+-		huge_object_size = gem_mappable_aperture_size() / 4;
++		huge_object_size = gem_mappable_aperture_size(fd) / 4;
+ 		break;
+ 	case -1:
+-		huge_object_size = gem_mappable_aperture_size() / 2;
++		huge_object_size = gem_mappable_aperture_size(fd) / 2;
+ 		break;
+ 	case 0:
+-		huge_object_size = gem_mappable_aperture_size() + PAGE_SIZE;
++		huge_object_size = gem_mappable_aperture_size(fd) + PAGE_SIZE;
+ 		break;
+ 	case 1:
+ 		huge_object_size = gem_global_aperture_size(fd) + PAGE_SIZE;
+diff --git a/tests/i915/gem_pwrite.c b/tests/i915/gem_pwrite.c
+index d2dcc95e8..f76d2bc70 100644
+--- a/tests/i915/gem_pwrite.c
++++ b/tests/i915/gem_pwrite.c
+@@ -130,7 +130,7 @@ static void test_big_cpu(int fd, int scale, unsigned flags)
+ 
+ 	switch (scale) {
+ 	case 0:
+-		size = gem_mappable_aperture_size() + 4096;
++		size = gem_mappable_aperture_size(fd) + 4096;
+ 		break;
+ 	case 1:
+ 		size = gem_global_aperture_size(fd) + 4096;
+@@ -192,7 +192,7 @@ static void test_big_gtt(int fd, int scale, unsigned flags)
+ 	igt_require(gem_mmap__has_wc(fd));
+ 	switch (scale) {
+ 	case 0:
+-		size = gem_mappable_aperture_size() + 4096;
++		size = gem_mappable_aperture_size(fd) + 4096;
+ 		break;
+ 	case 1:
+ 		size = gem_global_aperture_size(fd) + 4096;
+@@ -257,7 +257,7 @@ static void test_random(int fd)
+ 	gem_require_mmap_wc(fd);
+ 
+ 	size = min(intel_get_total_ram_mb() / 2,
+-		    gem_mappable_aperture_size() + 4096);
++		    gem_mappable_aperture_size(fd) + 4096);
+ 	intel_require_memory(1, size, CHECK_RAM);
+ 
+ 	handle = gem_create(fd, size);
+diff --git a/tests/i915/gem_shrink.c b/tests/i915/gem_shrink.c
+index dba62c8fa..023db8c56 100644
+--- a/tests/i915/gem_shrink.c
++++ b/tests/i915/gem_shrink.c
+@@ -439,7 +439,7 @@ igt_main
+ 		 * we expect the shrinker to start purging objects,
+ 		 * and possibly fail.
+ 		 */
+-		alloc_size = gem_mappable_aperture_size() / 2;
++		alloc_size = gem_mappable_aperture_size(fd) / 2;
+ 		num_processes = 1 + (mem_size / (alloc_size >> 20));
+ 
+ 		igt_info("Using %d processes and %'lluMiB per process\n",
+diff --git a/tests/i915/gem_tiled_fence_blits.c b/tests/i915/gem_tiled_fence_blits.c
+index 0a633d91b..28beea898 100644
+--- a/tests/i915/gem_tiled_fence_blits.c
++++ b/tests/i915/gem_tiled_fence_blits.c
+@@ -225,7 +225,7 @@ igt_main
+ 		gem_require_blitter(fd);
+ 		gem_require_mappable_ggtt(fd);
+ 
+-		count = gem_mappable_aperture_size(); /* thrash fences! */
++		count = gem_mappable_aperture_size(fd); /* thrash fences! */
+ 		if (count >> 32)
+ 			count = MAX_32b;
+ 		count = 3 + count / (1024 * 1024);
+diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+index 6d46c320c..6321dd403 100644
+--- a/tests/i915/i915_pm_rpm.c
++++ b/tests/i915/i915_pm_rpm.c
+@@ -1419,7 +1419,7 @@ static void gem_evict_pwrite_subtest(void)
+ 	unsigned int num_trash_bos, n;
+ 	uint32_t buf;
+ 
+-	num_trash_bos = gem_mappable_aperture_size() / (1024*1024) + 1;
++	num_trash_bos = gem_mappable_aperture_size(drm_fd) / (1024*1024) + 1;
+ 	trash_bos = malloc(num_trash_bos * sizeof(*trash_bos));
+ 	igt_assert(trash_bos);
+ 
+@@ -1463,7 +1463,7 @@ static bool device_in_pci_d3(void)
+ 	uint16_t val;
+ 	int rc;
+ 
+-	rc = pci_device_cfg_read_u16(intel_get_pci_device(), &val, 0xd4);
++	rc = pci_device_cfg_read_u16(igt_device_get_pci_device(drm_fd), &val, 0xd4);
+ 	igt_assert_eq(rc, 0);
+ 
+ 	igt_debug("%s: PCI D3 state=%d\n", __func__, val & 0x3);
+diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
+index 02e9915ba..8794ace08 100644
+--- a/tests/kms_big_fb.c
++++ b/tests/kms_big_fb.c
+@@ -645,7 +645,7 @@ igt_main
+ 
+ 		data.ram_size = intel_get_total_ram_mb() << 20;
+ 		data.aper_size = gem_aperture_size(data.drm_fd);
+-		data.mappable_size = gem_mappable_aperture_size();
++		data.mappable_size = gem_mappable_aperture_size(data.drm_fd);
+ 
+ 		igt_info("RAM: %"PRIu64" MiB, GPU address space: %"PRId64" MiB, GGTT mappable size: %"PRId64" MiB\n",
+ 			 data.ram_size >> 20, data.aper_size >> 20,
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index 51b9ac950..0f0565cf6 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -1282,7 +1282,7 @@ static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ 	/* 256 MB is usually the maximum mappable aperture,
+ 	 * (make it 4x times that to ensure failure) */
+ 	if (o->flags & TEST_BO_TOOBIG) {
+-		bo_size = 4*gem_mappable_aperture_size();
++		bo_size = 4*gem_mappable_aperture_size(drm_fd);
+ 		igt_require(bo_size < gem_global_aperture_size(drm_fd));
+ 	}
+ 
+diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
+index 143342410..7c43ced85 100644
+--- a/tests/prime_mmap.c
++++ b/tests/prime_mmap.c
+@@ -447,8 +447,8 @@ test_aperture_limit(void)
+ 	char *ptr1, *ptr2;
+ 	uint32_t handle1, handle2;
+ 	/* Two buffers the sum of which > mappable aperture */
+-	uint64_t size1 = (gem_mappable_aperture_size() * 7) / 8;
+-	uint64_t size2 = (gem_mappable_aperture_size() * 3) / 8;
++	uint64_t size1 = (gem_mappable_aperture_size(fd) * 7) / 8;
++	uint64_t size2 = (gem_mappable_aperture_size(fd) * 3) / 8;
+ 
+ 	handle1 = gem_create(fd, size1);
+ 	fill_bo(handle1, BO_SIZE);
+-- 
+2.29.2
 
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============1997120830==--
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
