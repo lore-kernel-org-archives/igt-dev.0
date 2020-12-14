@@ -1,12 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon, 14 Dec 2020 10:51:22 +0000
-Message-Id: <20201214105123.542518-3-chris@chris-wilson.co.uk>
-In-Reply-To: <20201214105123.542518-1-chris@chris-wilson.co.uk>
-References: <20201214105123.542518-1-chris@chris-wilson.co.uk>
+Date: Mon, 14 Dec 2020 10:51:20 +0000
+Message-Id: <20201214105123.542518-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/4] i915/gem_shrink: Refactor allocation
- sizing based on available memory
+Subject: [igt-dev] [PATCH i-g-t 1/4] i915/perf_pmu: Verify RC6 measurements
+ before/after suspend
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,52 +17,95 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Refactor the allocation such that we utilise just enough memory pressure
-to invoke the shrinker, and just enough processes to spread across the
-CPUs and contend on the shrinker.
+RC6 should work before suspend, and continue to increment while idle
+after suspend. Should.
+
+v2: Include a longer sleep after suspend; it appears we are reticent to
+idle so soon after waking up.
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- tests/i915/gem_shrink.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ tests/i915/perf_pmu.c | 28 +++++++++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
 
-diff --git a/tests/i915/gem_shrink.c b/tests/i915/gem_shrink.c
-index 023db8c56..e8a814fe6 100644
---- a/tests/i915/gem_shrink.c
-+++ b/tests/i915/gem_shrink.c
-@@ -426,6 +426,7 @@ igt_main
- 	int num_processes = 0;
+diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+index cb7273142..0b470c1bc 100644
+--- a/tests/i915/perf_pmu.c
++++ b/tests/i915/perf_pmu.c
+@@ -170,6 +170,7 @@ static unsigned int measured_usleep(unsigned int usec)
+ #define TEST_RUNTIME_PM (8)
+ #define FLAG_LONG (16)
+ #define FLAG_HANG (32)
++#define TEST_S3 (64)
  
- 	igt_fixture {
-+		const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
- 		uint64_t mem_size = intel_get_total_ram_mb();
- 		int fd;
+ static igt_spin_t * __spin_poll(int fd, uint32_t ctx,
+ 				const struct intel_execution_engine2 *e)
+@@ -1578,7 +1579,7 @@ test_frequency_idle(int gem_fd)
+ 		     "Actual frequency should be 0 while parked!\n");
+ }
  
-@@ -434,16 +435,16 @@ igt_main
+-static bool wait_for_rc6(int fd)
++static bool wait_for_rc6(int fd, int timeout)
+ {
+ 	struct timespec tv = {};
+ 	uint64_t start, now;
+@@ -1594,7 +1595,7 @@ static bool wait_for_rc6(int fd)
+ 		now = pmu_read_single(fd);
+ 		if (now - start > 1e6)
+ 			return true;
+-	} while (!igt_seconds_elapsed(&tv));
++	} while (igt_seconds_elapsed(&tv) <= timeout);
  
- 		/*
- 		 * Spawn enough processes to use all memory, but each only
--		 * uses half the available mappable aperture ~128MiB.
-+		 * uses half of the available per-cpu memory.
- 		 * Individually the processes would be ok, but en masse
- 		 * we expect the shrinker to start purging objects,
- 		 * and possibly fail.
- 		 */
--		alloc_size = gem_mappable_aperture_size(fd) / 2;
--		num_processes = 1 + (mem_size / (alloc_size >> 20));
-+		alloc_size = (mem_size + ncpus - 1) / ncpus / 2;
-+		num_processes = ncpus + (mem_size / alloc_size);
+ 	return false;
+ }
+@@ -1636,14 +1637,32 @@ test_rc6(int gem_fd, unsigned int flags)
+ 		}
+ 	}
  
--		igt_info("Using %d processes and %'lluMiB per process\n",
--			 num_processes, (long long)(alloc_size >> 20));
-+		igt_info("Using %d processes and %'"PRIu64"MiB per process\n",
-+			 num_processes, alloc_size);
+-	igt_require(wait_for_rc6(fd));
++	igt_require(wait_for_rc6(fd, 1));
  
- 		intel_require_memory(num_processes, alloc_size,
- 				     CHECK_SWAP | CHECK_RAM);
+ 	/* While idle check full RC6. */
+ 	prev = __pmu_read_single(fd, &ts[0]);
+ 	slept = measured_usleep(duration_ns / 1000);
+ 	idle = __pmu_read_single(fd, &ts[1]);
++
+ 	igt_debug("slept=%lu perf=%"PRIu64"\n", slept, ts[1] - ts[0]);
++	assert_within_epsilon(idle - prev, ts[1] - ts[0], tolerance);
++
++	if (flags & TEST_S3) {
++		prev = __pmu_read_single(fd, &ts[0]);
++		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
++					      SUSPEND_TEST_NONE);
++		idle = __pmu_read_single(fd, &ts[1]);
++		igt_debug("suspend=%"PRIu64"\n", ts[1] - ts[0]);
++		//assert_within_epsilon(idle - prev, ts[1] - ts[0], tolerance);
++	}
++
++	igt_assert(wait_for_rc6(fd, 5));
+ 
++	prev = __pmu_read_single(fd, &ts[0]);
++	slept = measured_usleep(duration_ns / 1000);
++	idle = __pmu_read_single(fd, &ts[1]);
++
++	igt_debug("slept=%lu perf=%"PRIu64"\n", slept, ts[1] - ts[0]);
+ 	assert_within_epsilon(idle - prev, ts[1] - ts[0], tolerance);
+ 
+ 	/* Wake up device and check no RC6. */
+@@ -2245,6 +2264,9 @@ igt_main
+ 	igt_subtest("rc6-runtime-pm-long")
+ 		test_rc6(fd, TEST_RUNTIME_PM | FLAG_LONG);
+ 
++	igt_subtest("rc6-suspend")
++		test_rc6(fd, TEST_S3);
++
+ 	/**
+ 	 * Check render nodes are counted.
+ 	 */
 -- 
 2.29.2
 
