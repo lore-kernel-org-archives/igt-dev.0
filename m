@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E8C346E04E
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Dec 2020 07:16:22 +0000 (UTC)
-From: Petri Latvala <petri.latvala@intel.com>
-Date: Mon, 14 Dec 2020 09:16:12 +0200
-Message-Id: <20201214071612.5953-1-petri.latvala@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 82ED189C28
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Dec 2020 07:19:59 +0000 (UTC)
+From: Karthik B S <karthik.b.s@intel.com>
+Date: Mon, 14 Dec 2020 12:27:09 +0530
+Message-Id: <20201214065711.9787-1-karthik.b.s@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] core_setmaster: Load modules before
- accessing device files
+Subject: [igt-dev] [PATCH i-g-t v5 0/2] Add subtests for HDCP over MST
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,42 +19,20 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-core_setmaster does special trickery to the dri device files before it
-calls drm_open_device. Now that drm_load_module() exists for just
-loading the modules without the other things that drm_open_device()
-does, use it to ensure the files exist.
+Add subtests to verify content protection on MST set up.
 
-Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/91
----
- tests/core_setmaster.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Karthik B S (2):
+  tests/kms_content_protection: Add MST subtests
+  CI HAX: Add MST tests to fast feedback testlist
 
-diff --git a/tests/core_setmaster.c b/tests/core_setmaster.c
-index 20e4defb..470f9441 100644
---- a/tests/core_setmaster.c
-+++ b/tests/core_setmaster.c
-@@ -125,6 +125,15 @@ static unsigned tweak_perm(uint8_t *saved_perm, unsigned max_perm, bool save)
- 
- igt_main
- {
-+	igt_fixture {
-+		/*
-+		 * We're operating on the device files themselves
-+		 * before opening them, make sure the drivers are
-+		 * loaded.
-+		 */
-+		drm_load_module(DRIVER_ANY);
-+	}
-+
- 	igt_describe("Ensure that root can Set/DropMaster");
- 	igt_subtest("master-drop-set-root") {
- 		check_drop_set();
+ tests/intel-ci/fast-feedback.testlist |   6 +
+ tests/kms_content_protection.c        | 277 ++++++++++++++++++++++++--
+ 2 files changed, 261 insertions(+), 22 deletions(-)
+
 -- 
-2.20.1
+2.22.0
 
 _______________________________________________
 igt-dev mailing list
