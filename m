@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mblankhorst.nl (mblankhorst.nl [141.105.120.124])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 33A9889FE6
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Dec 2020 08:58:01 +0000 (UTC)
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Date: Tue, 15 Dec 2020 09:48:24 +0100
+Message-Id: <20201215084825.101358-1-maarten.lankhorst@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 15 Dec 2020 08:14:49 -0000
-Message-ID: <160802008977.24781.1770090605445499212@emeril.freedesktop.org>
-References: <20201215151924.15143-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20201215151924.15143-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fvrr=3A_Update_condition_checks_for_flipline_test?=
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/gem_userptr_blits: Rework userptr
+ tests to copy with changes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,229 +15,196 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1956500179=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1956500179==
-Content-Type: multipart/alternative;
- boundary="===============8704706034609695433=="
+Userptr semantics are changed to no longer allow forked processes
+to obtain pages, it will fail with -EFAULT. We also no longer
+allow unsynchronized access, so has_userptr needs to check with the
+notifier installed.
 
---===============8704706034609695433==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The only way to make forked tests work would be to do use a fork
+without clone_vm set, which we have no igt infrastructure for,
+and can't work like the current igt_fork().
 
-== Series Details ==
+Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+---
+ tests/i915/gem_userptr_blits.c | 88 ++++++++++++++++++++--------------
+ 1 file changed, 52 insertions(+), 36 deletions(-)
 
-Series: tests/kms_vrr: Update condition checks for flipline test
-URL   : https://patchwork.freedesktop.org/series/84932/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_5897 -> IGTPW_5291
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5291 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@semaphore:
-    - fi-bdw-5557u:       NOTRUN -> [SKIP][1] ([fdo#109271]) +26 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-kbl-7500u:       [PASS][2] -> [DMESG-WARN][3] ([i915#2605])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5897/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html
-    - fi-bdw-5557u:       NOTRUN -> [WARN][4] ([i915#2283])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@debugfs_test@read_all_entries:
-    - fi-tgl-y:           [PASS][5] -> [DMESG-WARN][6] ([i915#402]) +2 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5897/fi-tgl-y/igt@debugfs_test@read_all_entries.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-tgl-y/igt@debugfs_test@read_all_entries.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-bdw-5557u:       NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html
-
-  
-#### Possible fixes ####
-
-  * igt@prime_vgem@basic-fence-flip:
-    - fi-tgl-y:           [DMESG-WARN][8] ([i915#402]) -> [PASS][9] +1 similar issue
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5897/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
-
-  
-#### Warnings ####
-
-  * igt@i915_pm_rpm@basic-rte:
-    - fi-kbl-guc:         [FAIL][10] ([i915#579]) -> [SKIP][11] ([fdo#109271])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5897/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#2283]: https://gitlab.freedesktop.org/drm/intel/issues/2283
-  [i915#2605]: https://gitlab.freedesktop.org/drm/intel/issues/2605
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#579]: https://gitlab.freedesktop.org/drm/intel/issues/579
-
-
-Participating hosts (42 -> 38)
-------------------------------
-
-  Additional (1): fi-bdw-5557u 
-  Missing    (5): fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5897 -> IGTPW_5291
-
-  CI-20190529: 20190529
-  CI_DRM_9482: 279e4ca8a7117e617c498833deaa287b797e7d09 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5291: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/index.html
-  IGT_5897: c88c4cc74620285079b7f0ae74a85076aeede760 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/index.html
-
---===============8704706034609695433==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_vrr: Update condition checks for flipline test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/84932/">https://patchwork.freedesktop.org/series/84932/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_5897 -&gt; IGTPW_5291</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5291 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@semaphore:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +26 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>
-<p>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5897/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2605">i915#2605</a>)</p>
-</li>
-<li>
-<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2283">i915#2283</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@debugfs_test@read_all_entries:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5897/fi-tgl-y/igt@debugfs_test@read_all_entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-tgl-y/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@prime_vgem@basic-fence-flip:<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5897/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_pm_rpm@basic-rte:<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5897/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/579">i915#579</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (42 -&gt; 38)</h2>
-<p>Additional (1): fi-bdw-5557u <br />
-  Missing    (5): fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_5897 -&gt; IGTPW_5291</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9482: 279e4ca8a7117e617c498833deaa287b797e7d09 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5291: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/index.html<br />
-  IGT_5897: c88c4cc74620285079b7f0ae74a85076aeede760 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============8704706034609695433==--
-
---===============1956500179==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
+index 5e6973beafc9..f24fdfbf0699 100644
+--- a/tests/i915/gem_userptr_blits.c
++++ b/tests/i915/gem_userptr_blits.c
+@@ -950,10 +950,9 @@ static void test_forked_access(int fd)
+ 	void *ptr1 = NULL, *ptr2 = NULL;
+ 	int ret;
+ 
+-	ret = posix_memalign(&ptr1, PAGE_SIZE, sizeof(linear));
+-#ifdef MADV_DONTFORK
+-	ret |= madvise(ptr1, sizeof(linear), MADV_DONTFORK);
+-#endif
++	ptr1 = mmap(NULL, sizeof(linear), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
++	igt_assert(ptr1 != MAP_FAILED);
++
+ 	gem_userptr(fd, ptr1, sizeof(linear), 0, userptr_flags, &handle1);
+ 	igt_assert(ptr1);
+ 	igt_assert(handle1);
+@@ -969,8 +968,17 @@ static void test_forked_access(int fd)
+ 	memset(ptr1, 0x1, sizeof(linear));
+ 	memset(ptr2, 0x2, sizeof(linear));
+ 
+-	igt_fork(child, 1)
+-		igt_assert_eq(copy(fd, handle1, handle2), 0);
++	igt_fork(child, 1) {
++		ret = copy(fd, handle1, handle2);
++		if (ret) {
++			/*
++			 * userptr being exportable is a misfeature,
++			 * and has now been disallowed
++			 */
++			igt_assert_eq(ret, -EFAULT);
++			memset(ptr1, 0x2, sizeof(linear));
++		}
++	}
+ 	igt_waitchildren();
+ 
+ 	gem_userptr_sync(fd, handle1);
+@@ -981,11 +989,7 @@ static void test_forked_access(int fd)
+ 
+ 	igt_assert(memcmp(ptr1, ptr2, sizeof(linear)) == 0);
+ 
+-#ifdef MADV_DOFORK
+-	ret = madvise(ptr1, sizeof(linear), MADV_DOFORK);
+-	igt_assert_eq(ret, 0);
+-#endif
+-	free(ptr1);
++	munmap(ptr1, sizeof(linear));
+ 
+ #ifdef MADV_DOFORK
+ 	ret = madvise(ptr2, sizeof(linear), MADV_DOFORK);
+@@ -996,10 +1000,8 @@ static void test_forked_access(int fd)
+ 
+ #define MAP_FIXED_INVALIDATE_OVERLAP	(1<<0)
+ #define MAP_FIXED_INVALIDATE_BUSY	(1<<1)
+-#define MAP_FIXED_INVALIDATE_GET_PAGES	(1<<2)
+ #define ALL_MAP_FIXED_INVALIDATE (MAP_FIXED_INVALIDATE_OVERLAP | \
+-				  MAP_FIXED_INVALIDATE_BUSY | \
+-				  MAP_FIXED_INVALIDATE_GET_PAGES)
++				  MAP_FIXED_INVALIDATE_BUSY)
+ 
+ static int test_map_fixed_invalidate(int fd, uint32_t flags,
+ 				     const struct mmap_offset *t)
+@@ -1038,12 +1040,6 @@ static int test_map_fixed_invalidate(int fd, uint32_t flags,
+ 			      "HW & kernel support for mmap_offset(%s)\n",
+ 			      t->name);
+ 
+-		if (flags & MAP_FIXED_INVALIDATE_GET_PAGES)
+-			igt_assert_eq(__gem_set_domain(fd, handle[0],
+-						       I915_GEM_DOMAIN_GTT,
+-						       I915_GEM_DOMAIN_GTT),
+-				      0);
+-
+ 		if (flags & MAP_FIXED_INVALIDATE_BUSY)
+ 			igt_assert_eq(copy(fd, handle[0], handle[num_handles-1]), 0);
+ 
+@@ -1057,17 +1053,6 @@ static int test_map_fixed_invalidate(int fd, uint32_t flags,
+ 		gem_set_tiling(fd, mmap_offset.handle, I915_TILING_NONE, 0);
+ 		*map = 0xdead;
+ 
+-		if (flags & MAP_FIXED_INVALIDATE_GET_PAGES) {
+-			igt_assert_eq(__gem_set_domain(fd, handle[0],
+-						       I915_GEM_DOMAIN_GTT,
+-						       I915_GEM_DOMAIN_GTT),
+-				      -EFAULT);
+-
+-			/* Errors are permanent, so we have to recreate */
+-			gem_close(fd, handle[0]);
+-			handle[0] = create_userptr(fd, 0, ptr + PAGE_SIZE/sizeof(*ptr));
+-		}
+-
+ 		gem_set_tiling(fd, mmap_offset.handle, I915_TILING_Y, 512 * 4);
+ 		*(uint32_t*)map = 0xbeef;
+ 
+@@ -1327,7 +1312,7 @@ static int test_dmabuf(void)
+ 		close(fd1);
+ 		return 0;
+ 	} else {
+-		igt_assert_eq(ret, 0);
++		igt_require(ret == 0);
+ 		igt_assert_lte(0, dma_buf_fd);
+ 	}
+ 
+@@ -1862,12 +1847,45 @@ static int can_swap(void)
+ 	return 1;
+ }
+ 
++static bool forked_userptr(int fd)
++{
++	uint32_t handle = 0;
++	int *ptr = NULL;
++	uint32_t ofs = sizeof(linear) / sizeof(*ptr);
++	int ret;
++
++	ptr = mmap(NULL, 2 * sizeof(linear), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
++	igt_assert(ptr != MAP_FAILED);
++
++	ptr[ofs] = -1;
++
++	gem_userptr(fd, ptr, sizeof(linear), 0, userptr_flags, &handle);
++	igt_assert(handle);
++
++	igt_fork(child, 1)
++		ptr[ofs] = copy(fd, handle, handle);
++
++	igt_waitchildren();
++	ret = ptr[ofs];
++
++	gem_close(fd, handle);
++
++	munmap(ptr, 2 * sizeof(linear));
++
++	if (ret)
++		igt_assert_eq(ret, -EFAULT);
++
++	return !ret;
++}
++
+ static void test_forking_evictions(int fd, int size, int count,
+ 			     unsigned flags)
+ {
+ 	int trash_count;
+ 	int num_threads;
+ 
++	igt_require(forked_userptr(fd));
++
+ 	trash_count = intel_get_total_ram_mb() * 11 / 10;
+ 	/* Use the fact test will spawn a number of child
+ 	 * processes meaning swapping will be triggered system
+@@ -2542,13 +2560,11 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
+ 
+ 		for (unsigned flags = 0; flags < ALL_MAP_FIXED_INVALIDATE + 1; flags++) {
+ 			igt_describe("Try to anger lockdep with MMU notifier still active after MAP_FIXED remap");
+-			igt_subtest_with_dynamic_f("map-fixed-invalidate%s%s%s",
++			igt_subtest_with_dynamic_f("map-fixed-invalidate%s%s",
+ 					flags & MAP_FIXED_INVALIDATE_OVERLAP ?
+ 							"-overlap" : "",
+ 					flags & MAP_FIXED_INVALIDATE_BUSY ?
+-							"-busy" : "",
+-					flags & MAP_FIXED_INVALIDATE_GET_PAGES ?
+-							"-gup" : "") {
++							"-busy" : "") {
+ 				igt_require_f(gem_available_fences(fd),
+ 					      "HW & kernel support for tiling\n");
+ 
+-- 
+2.29.2.222.g5d2a92d10f8
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============1956500179==--
