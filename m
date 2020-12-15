@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 737B289D4D
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Dec 2020 07:25:41 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Tue, 15 Dec 2020 20:49:24 +0530
-Message-Id: <20201215151924.15143-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] tests/kms_vrr: Update condition checks for
- flipline test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 15 Dec 2020 08:14:49 -0000
+Message-ID: <160802008977.24781.1770090605445499212@emeril.freedesktop.org>
+References: <20201215151924.15143-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20201215151924.15143-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fvrr=3A_Update_condition_checks_for_flipline_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,150 +14,229 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1956500179=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch includes below updates
-* For Flipline test: if refresh_rate <= Vrr_min then
-	- Expected returned refresh rate would be vrr_max
-	- At least 35% of the flips should be in threshold
-* Update "igt_display_commit_atomic" with "igt_display_commit2"
-* Add few debug prints
+--===============1956500179==
+Content-Type: multipart/alternative;
+ boundary="===============8704706034609695433=="
 
-Cc: Manasi Navare <manasi.d.navare@intel.com>
-Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_vrr.c | 49 +++++++++++++++++++++----------------------------
- 1 file changed, 21 insertions(+), 28 deletions(-)
+--===============8704706034609695433==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index ac42165b..4d6ec097 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -170,7 +170,7 @@ static void set_vrr_on_pipe(data_t *data, enum pipe pipe, bool enabled)
- {
- 	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED,
- 				enabled);
--	igt_display_commit_atomic(&data->display, 0, NULL);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- }
- 
- /* Prepare the display for testing on the given pipe. */
-@@ -208,8 +208,7 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
- 	 */
- 	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, 0);
- 
--	igt_display_commit_atomic(&data->display,
--				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- }
- 
- /* Waits for the vblank interval. Returns the vblank timestamp in ns. */
-@@ -291,11 +290,9 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
- 		 * difference between 144Hz and 143Hz which should give this
- 		 * enough accuracy for most use cases.
- 		 */
--		if ((rate_ns <= vtest_ns.min) && (rate_ns >= vtest_ns.max))
-+		if ((rate_ns < vtest_ns.min) && (rate_ns >= vtest_ns.max))
- 			diff_ns = rate_ns - (event_ns - last_event_ns);
--		else if (rate_ns > vtest_ns.min)
--			diff_ns = vtest_ns.min - (event_ns - last_event_ns);
--		else if (rate_ns < vtest_ns.max)
-+		else
- 			diff_ns = vtest_ns.max - (event_ns - last_event_ns);
- 
- 		if (llabs(diff_ns) < 50000ll)
-@@ -320,8 +317,8 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
- 		while (get_time_ns() < target_ns);
- 	}
- 
--	igt_info("Completed %u flips, %u were in threshold for %"PRIu64"ns.\n",
--		 total_flip, total_pass, rate_ns);
-+	igt_info("Completed %u flips, %u were in threshold for (%llu) %"PRIu64"ns.\n",
-+		 total_flip, total_pass, (NSECS_PER_SEC/rate_ns), rate_ns);
- 
- 	return total_flip ? ((total_pass * 100) / total_flip) : 0;
- }
-@@ -335,8 +332,8 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	range_t range = get_vrr_range(data, output);
- 	uint64_t rate = vtest_ns.mid;
- 
--	igt_info("VRR Test execution on %s, PIPE_%s\n",
--		 output->name, kmstest_pipe_name(pipe));
-+	igt_info("VRR Test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\n",
-+		 output->name, kmstest_pipe_name(pipe), range.min, range.max);
- 
- 	prepare_test(data, output, pipe);
- 
-@@ -367,46 +364,42 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	 * decision boundary.
- 	 *
- 	 * Example: if range is 40 - 60Hz and
--	 * if refresh_rate > 60Hz:
-+	 * if refresh_rate > 60Hz or <= 40Hz:
- 	 *      Flip should happen at the flipline boundary & returned refresh rate
- 	 *      would be 60Hz.
- 	 * if refresh_rate is 50Hz:
- 	 *      Flip will happen right away so returned refresh rate is 50Hz.
--	 * if refresh_rate < 40Hz:
--	 *      Flip should happen at the vmax so the returned refresh rate
--	 *      would be 40Hz.
- 	 */
- 	if (flags & TEST_FLIPLINE) {
--		rate = rate_from_refresh(range.min - 5);
-+		rate = rate_from_refresh(range.max + 5);
- 		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
- 		igt_assert_f(result > 75,
--			     "Refresh rate %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
--			     rate, result);
-+			     "Refresh rate (%u) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
-+			     (range.max + 5), rate, result);
- 
--		rate = rate_from_refresh(range.max + 5);
-+		rate = rate_from_refresh(range.min - 5);
- 		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
--		igt_assert_f(result > 75,
--			     "Refresh rate %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
--			     rate, result);
-+		igt_assert_f(result > 35,
-+			     "Refresh rate (%u) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
-+			     (range.min - 5), rate, result);
- 	}
- 
- 	rate = vtest_ns.mid;
- 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
- 	igt_assert_f(result > 75,
--		     "Refresh rate %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
--		     rate, result);
-+		     "Refresh rate (%u) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
-+		     ((range.max + range.min) / 2), rate, result);
- 
- 	set_vrr_on_pipe(data, pipe, 0);
- 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
- 	igt_assert_f(result < 10,
--		     "Refresh rate %"PRIu64"ns: Target VRR off threshold exceeded, result was %u%%\n",
--		     rate, result);
-+		     "Refresh rate (%u) %"PRIu64"ns: Target VRR off threshold exceeded, result was %u%%\n",
-+		     ((range.max + range.min) / 2), rate, result);
- 
- 	/* Clean-up */
- 	igt_plane_set_fb(data->primary, NULL);
- 	igt_output_set_pipe(output, PIPE_NONE);
--	igt_display_commit_atomic(&data->display,
--				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
- 	igt_remove_fb(data->drm_fd, &data->fb1);
- 	igt_remove_fb(data->drm_fd, &data->fb0);
--- 
-2.20.1
+== Series Details ==
+
+Series: tests/kms_vrr: Update condition checks for flipline test
+URL   : https://patchwork.freedesktop.org/series/84932/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_5897 -> IGTPW_5291
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5291 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@semaphore:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][1] ([fdo#109271]) +26 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html
+
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-kbl-7500u:       [PASS][2] -> [DMESG-WARN][3] ([i915#2605])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5897/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html
+    - fi-bdw-5557u:       NOTRUN -> [WARN][4] ([i915#2283])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@debugfs_test@read_all_entries:
+    - fi-tgl-y:           [PASS][5] -> [DMESG-WARN][6] ([i915#402]) +2 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5897/fi-tgl-y/igt@debugfs_test@read_all_entries.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-tgl-y/igt@debugfs_test@read_all_entries.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html
+
+  
+#### Possible fixes ####
+
+  * igt@prime_vgem@basic-fence-flip:
+    - fi-tgl-y:           [DMESG-WARN][8] ([i915#402]) -> [PASS][9] +1 similar issue
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5897/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-kbl-guc:         [FAIL][10] ([i915#579]) -> [SKIP][11] ([fdo#109271])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5897/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#2283]: https://gitlab.freedesktop.org/drm/intel/issues/2283
+  [i915#2605]: https://gitlab.freedesktop.org/drm/intel/issues/2605
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#579]: https://gitlab.freedesktop.org/drm/intel/issues/579
+
+
+Participating hosts (42 -> 38)
+------------------------------
+
+  Additional (1): fi-bdw-5557u 
+  Missing    (5): fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5897 -> IGTPW_5291
+
+  CI-20190529: 20190529
+  CI_DRM_9482: 279e4ca8a7117e617c498833deaa287b797e7d09 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5291: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/index.html
+  IGT_5897: c88c4cc74620285079b7f0ae74a85076aeede760 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/index.html
+
+--===============8704706034609695433==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_vrr: Update condition checks for flipline test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/84932/">https://patchwork.freedesktop.org/series/84932/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_5897 -&gt; IGTPW_5291</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5291 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@semaphore:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +26 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>
+<p>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5897/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2605">i915#2605</a>)</p>
+</li>
+<li>
+<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2283">i915#2283</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@debugfs_test@read_all_entries:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5897/fi-tgl-y/igt@debugfs_test@read_all_entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-tgl-y/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@prime_vgem@basic-fence-flip:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5897/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_pm_rpm@basic-rte:<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5897/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/579">i915#579</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (42 -&gt; 38)</h2>
+<p>Additional (1): fi-bdw-5557u <br />
+  Missing    (5): fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5897 -&gt; IGTPW_5291</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9482: 279e4ca8a7117e617c498833deaa287b797e7d09 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5291: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5291/index.html<br />
+  IGT_5897: c88c4cc74620285079b7f0ae74a85076aeede760 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============8704706034609695433==--
+
+--===============1956500179==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1956500179==--
