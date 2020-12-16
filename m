@@ -1,14 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Date: Wed, 16 Dec 2020 15:54:20 +0000
+Message-Id: <20201216155420.716009-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <160813344178.9127.8687502283562592577@build.alporthouse.com>
+References: <160813344178.9127.8687502283562592577@build.alporthouse.com>
 MIME-Version: 1.0
-In-Reply-To: <160813391912.9127.16376546917210365956@build.alporthouse.com>
-References: <20201216152809.706094-1-tvrtko.ursulin@linux.intel.com>
- <20201216152809.706094-2-tvrtko.ursulin@linux.intel.com>
- <160813391912.9127.16376546917210365956@build.alporthouse.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 16 Dec 2020 15:52:58 +0000
-Message-ID: <160813397817.9127.12175358127476553962@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] intel_gpu_top: Aggregate engine
- busyness per class
+Subject: [igt-dev] [PATCH v2 i-g-t 1/2] intel_gpu_top: Support exiting the
+ tool by pressing 'q'
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,26 +18,162 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Chris Wilson (2020-12-16 15:51:59)
-> Quoting Tvrtko Ursulin (2020-12-16 15:28:09)
-> > From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> > 
-> > Similarly to how top(1) handles SMP, we can default to showing engines of
-> > a same class as a single bar graph entry.
-> > 
-> > To achieve this a little bit of hackery is employed. PMU sampling is left
-> > as is and only at the presentation layer we create a fake set of engines,
-> > one for each class, summing and normalizing the load respectively.
-> > 
-> > Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Where were my manners?
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
--Chris
+Analoguous to top(1) we can enable the user to exit from the tool by
+pressing 'q' on the console.
+
+v2:
+ * Fix sleep period with closed stdin. (Chris)
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+---
+ man/intel_gpu_top.rst |  6 ++++
+ tools/intel_gpu_top.c | 80 ++++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 73 insertions(+), 13 deletions(-)
+
+diff --git a/man/intel_gpu_top.rst b/man/intel_gpu_top.rst
+index 5552e9699d26..2e0c3a05acc1 100644
+--- a/man/intel_gpu_top.rst
++++ b/man/intel_gpu_top.rst
+@@ -48,6 +48,12 @@ OPTIONS
+ -d
+     Select a specific GPU using supported filter.
+ 
++RUNTIME CONTROL
++===============
++
++Supported keys:
++
++    'q'    Exit from the tool.
+ 
+ DEVICE SELECTION
+ ================
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index dbd353673e55..46221c9543eb 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -23,24 +23,26 @@
+ 
+ #include "igt_device_scan.h"
+ 
+-#include <stdio.h>
+-#include <sys/types.h>
+-#include <dirent.h>
+-#include <stdint.h>
+ #include <assert.h>
+-#include <string.h>
+ #include <ctype.h>
+-#include <stdlib.h>
+-#include <unistd.h>
+-#include <sys/stat.h>
++#include <dirent.h>
++#include <errno.h>
+ #include <fcntl.h>
+ #include <inttypes.h>
+-#include <sys/ioctl.h>
+-#include <errno.h>
+-#include <math.h>
+-#include <locale.h>
+ #include <limits.h>
++#include <locale.h>
++#include <math.h>
++#include <poll.h>
+ #include <signal.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/stat.h>
++#include <sys/types.h>
++#include <unistd.h>
++#include <termios.h>
+ 
+ #include "igt_perf.h"
+ 
+@@ -1246,6 +1248,54 @@ static char *tr_pmu_name(struct igt_device_card *card)
+ 	return device;
+ }
+ 
++static void interactive_stdin(void)
++{
++	struct termios termios = { };
++	int ret;
++
++	ret = fcntl(0, F_GETFL, NULL);
++	ret |= O_NONBLOCK;
++	ret = fcntl(0, F_SETFL, ret);
++	assert(ret == 0);
++
++	ret = tcgetattr(0, &termios);
++	assert(ret == 0);
++
++	termios.c_lflag &= ~ICANON;
++	termios.c_cc[VMIN] = 1;
++	termios.c_cc[VTIME] = 0; /* Deciseconds only - we'll use poll. */
++
++	ret = tcsetattr(0, TCSAFLUSH, &termios);
++	assert(ret == 0);
++}
++
++static void process_stdin(unsigned int timeout_us)
++{
++	struct pollfd p = { .fd = 0, .events = POLLIN };
++	int ret;
++
++	ret = poll(&p, 1, timeout_us / 1000);
++	if (ret <= 0) {
++		if (ret < 0)
++			stop_top = true;
++		return;
++	}
++
++	for (;;) {
++		char c;
++
++		ret = read(0, &c, 1);
++		if (ret <= 0)
++			break;
++
++		switch (c) {
++		case 'q':
++			stop_top = true;
++			break;
++		};
++	}
++}
++
+ int main(int argc, char **argv)
+ {
+ 	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
+@@ -1315,6 +1365,7 @@ int main(int argc, char **argv)
+ 	switch (output_mode) {
+ 	case INTERACTIVE:
+ 		pops = &term_pops;
++		interactive_stdin();
+ 		break;
+ 	case STDOUT:
+ 		pops = &stdout_pops;
+@@ -1427,7 +1478,10 @@ int main(int argc, char **argv)
+ 		if (stop_top)
+ 			break;
+ 
+-		usleep(period_us);
++		if (output_mode == INTERACTIVE)
++			process_stdin(period_us);
++		else
++			usleep(period_us);
+ 	}
+ 
+ 	free(codename);
+-- 
+2.25.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
