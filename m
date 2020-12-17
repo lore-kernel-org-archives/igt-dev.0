@@ -1,8 +1,8 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 17 Dec 2020 08:54:40 -0000
-Message-ID: <160819528036.2012.4955676205168045194@emeril.freedesktop.org>
+Date: Thu, 17 Dec 2020 09:32:55 -0000
+Message-ID: <160819757506.2012.9400829133740184085@emeril.freedesktop.org>
 References: <20201214071612.5953-1-petri.latvala@intel.com>
 In-Reply-To: <20201214071612.5953-1-petri.latvala@intel.com>
 Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgY29yZV9z?=
@@ -15,18 +15,18 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1512441549=="
+Content-Type: multipart/mixed; boundary="===============0508738211=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1512441549==
+--===============0508738211==
 Content-Type: multipart/alternative;
- boundary="===============4987010933425796059=="
+ boundary="===============1131598796011118846=="
 
---===============4987010933425796059==
+--===============1131598796011118846==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -65,26 +65,21 @@ Possible new issues
 
 #### Possible regressions ####
 
-  * igt@api_intel_bb@blit-noreloc-purge-cache:
-    - shard-hsw:          [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5892/shard-hsw4/igt@api_intel_bb@blit-noreloc-purge-cache.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-hsw8/igt@api_intel_bb@blit-noreloc-purge-cache.html
-
   * igt@gem_exec_whisper@basic-forked:
-    - shard-kbl:          [PASS][3] -> [DMESG-WARN][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5892/shard-kbl6/igt@gem_exec_whisper@basic-forked.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-kbl3/igt@gem_exec_whisper@basic-forked.html
+    - shard-kbl:          [PASS][1] -> [DMESG-WARN][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5892/shard-kbl6/igt@gem_exec_whisper@basic-forked.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-kbl3/igt@gem_exec_whisper@basic-forked.html
 
   * igt@sysfs_timeslice_duration@timeout@vecs0:
-    - shard-iclb:         [PASS][5] -> [FAIL][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5892/shard-iclb8/igt@sysfs_timeslice_duration@timeout@vecs0.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-iclb8/igt@sysfs_timeslice_duration@timeout@vecs0.html
-    - shard-glk:          [PASS][7] -> [FAIL][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5892/shard-glk3/igt@sysfs_timeslice_duration@timeout@vecs0.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-glk2/igt@sysfs_timeslice_duration@timeout@vecs0.html
-    - shard-apl:          [PASS][9] -> [FAIL][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5892/shard-apl7/igt@sysfs_timeslice_duration@timeout@vecs0.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-apl6/igt@sysfs_timeslice_duration@timeout@vecs0.html
+    - shard-iclb:         [PASS][3] -> [FAIL][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5892/shard-iclb8/igt@sysfs_timeslice_duration@timeout@vecs0.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-iclb8/igt@sysfs_timeslice_duration@timeout@vecs0.html
+    - shard-glk:          [PASS][5] -> [FAIL][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5892/shard-glk3/igt@sysfs_timeslice_duration@timeout@vecs0.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-glk2/igt@sysfs_timeslice_duration@timeout@vecs0.html
+    - shard-apl:          [PASS][7] -> [FAIL][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5892/shard-apl7/igt@sysfs_timeslice_duration@timeout@vecs0.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-apl6/igt@sysfs_timeslice_duration@timeout@vecs0.html
 
   
 Known issues
@@ -95,6 +90,11 @@ Known issues
 ### IGT changes ###
 
 #### Issues hit ####
+
+  * igt@api_intel_bb@blit-noreloc-purge-cache:
+    - shard-hsw:          [PASS][9] -> [FAIL][10] ([i915#2810])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5892/shard-hsw4/igt@api_intel_bb@blit-noreloc-purge-cache.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-hsw8/igt@api_intel_bb@blit-noreloc-purge-cache.html
 
   * igt@feature_discovery@psr2:
     - shard-iclb:         [PASS][11] -> [SKIP][12] ([i915#658])
@@ -319,8 +319,8 @@ Known issues
    [87]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5892/shard-kbl3/igt@runner@aborted.html
    [88]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5892/shard-kbl7/igt@runner@aborted.html
    [89]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-kbl1/igt@runner@aborted.html
-   [90]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-kbl3/igt@runner@aborted.html
-   [91]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-kbl4/igt@runner@aborted.html
+   [90]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-kbl4/igt@runner@aborted.html
+   [91]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-kbl3/igt@runner@aborted.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
@@ -364,6 +364,7 @@ Known issues
   [i915#2728]: https://gitlab.freedesktop.org/drm/intel/issues/2728
   [i915#2733]: https://gitlab.freedesktop.org/drm/intel/issues/2733
   [i915#2795]: https://gitlab.freedesktop.org/drm/intel/issues/2795
+  [i915#2810]: https://gitlab.freedesktop.org/drm/intel/issues/2810
   [i915#315]: https://gitlab.freedesktop.org/drm/intel/issues/315
   [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
   [i915#483]: https://gitlab.freedesktop.org/drm/intel/issues/483
@@ -394,7 +395,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/index.html
 
---===============4987010933425796059==
+--===============1131598796011118846==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -448,15 +449,6 @@ _full:</p>
 <h4>Possible regressions</h4>
 <ul>
 <li>
-<p>igt@api_intel_bb@blit-noreloc-purge-cache:</p>
-<ul>
-<li>shard-hsw:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
-/IGT_5892/shard-hsw4/igt@api_intel_bb@blit-noreloc-purge-cache.html">PASS</=
-a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/sha=
-rd-hsw8/igt@api_intel_bb@blit-noreloc-purge-cache.html">FAIL</a></li>
-</ul>
-</li>
-<li>
 <p>igt@gem_exec_whisper@basic-forked:</p>
 <ul>
 <li>shard-kbl:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
@@ -495,6 +487,17 @@ s:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
+<li>
+<p>igt@api_intel_bb@blit-noreloc-purge-cache:</p>
+<ul>
+<li>shard-hsw:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/IGT_5892/shard-hsw4/igt@api_intel_bb@blit-noreloc-purge-cache.html">PASS</=
+a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/sha=
+rd-hsw8/igt@api_intel_bb@blit-noreloc-purge-cache.html">FAIL</a> (<a href=
+=3D"https://gitlab.freedesktop.org/drm/intel/issues/2810">i915#2810</a>)</l=
+i>
+</ul>
+</li>
 <li>
 <p>igt@feature_discovery@psr2:</p>
 <ul>
@@ -1022,9 +1025,9 @@ ci.01.org/tree/drm-tip/IGT_5892/shard-kbl7/igt@runner@aborted.html">FAIL</a=
 i915#2722</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/=
 483">i915#483</a>) -&gt; (<a href=3D"https://intel-gfx-ci.01.org/tree/drm-t=
 ip/IGTPW_5283/shard-kbl1/igt@runner@aborted.html">FAIL</a>, <a href=3D"http=
-s://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-kbl3/igt@runner@abort=
+s://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5283/shard-kbl4/igt@runner@abort=
 ed.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTP=
-W_5283/shard-kbl4/igt@runner@aborted.html">FAIL</a>) (<a href=3D"https://gi=
+W_5283/shard-kbl3/igt@runner@aborted.html">FAIL</a>) (<a href=3D"https://gi=
 tlab.freedesktop.org/drm/intel/issues/1814">i915#1814</a> / <a href=3D"http=
 s://gitlab.freedesktop.org/drm/intel/issues/2263">i915#2263</a> / <a href=
 =3D"https://gitlab.freedesktop.org/drm/intel/issues/2295">i915#2295</a> / <=
@@ -1055,9 +1058,9 @@ sktop.org/xorg/app/intel-gpu-tools</p>
 </body>
 </html>
 
---===============4987010933425796059==--
+--===============1131598796011118846==--
 
---===============1512441549==
+--===============0508738211==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -1068,4 +1071,4 @@ igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
---===============1512441549==--
+--===============0508738211==--
