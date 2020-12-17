@@ -1,15 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 721186E427
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Dec 2020 16:27:48 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Thu, 17 Dec 2020 18:27:03 +0200
-Message-Id: <20201217162703.20779-15-ville.syrjala@linux.intel.com>
-In-Reply-To: <20201217162703.20779-1-ville.syrjala@linux.intel.com>
-References: <20201217162703.20779-1-ville.syrjala@linux.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Thu, 17 Dec 2020 17:26:18 +0000
+Message-Id: <20201217172618.1637044-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 14/14] tools/intel_display_poller: Add
- vrr-push test
+Subject: [igt-dev] [PATCH i-g-t] i915/perf_pmu: Exercise
+ I915_PMU_SOFTWARE_GT_AWAKE_TIME
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,78 +12,104 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KCkFk
-ZCBhbm90aGVyIFZSUiB0ZXN0LCB0aGlzIHRpbWUgdG8gZGVybWluZSBvbiB3aGljaCBzY2FubGlu
-ZQp0aGUgaGFyZHdhcmUgd2lsbCBjbGVhciB0aGUgcHVzaCBiaXQuCgpTaWduZWQtb2ZmLWJ5OiBW
-aWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPgotLS0KIHRvb2xz
-L2ludGVsX2Rpc3BsYXlfcG9sbGVyLmMgfCA1OSArKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKy0KIDEgZmlsZSBjaGFuZ2VkLCA1OCBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0p
-CgpkaWZmIC0tZ2l0IGEvdG9vbHMvaW50ZWxfZGlzcGxheV9wb2xsZXIuYyBiL3Rvb2xzL2ludGVs
-X2Rpc3BsYXlfcG9sbGVyLmMKaW5kZXggNmM0MTcwNTA1NjUwLi5mYTc3ZjllYWIwYTYgMTAwNjQ0
-Ci0tLSBhL3Rvb2xzL2ludGVsX2Rpc3BsYXlfcG9sbGVyLmMKKysrIGIvdG9vbHMvaW50ZWxfZGlz
-cGxheV9wb2xsZXIuYwpAQCAtNjEsNiArNjEsNyBAQCBlbnVtIHRlc3QgewogCVRFU1RfV1JBUCwK
-IAlURVNUX1ZSUl9XUkFQLAogCVRFU1RfRklFTEQsCisJVEVTVF9WUlJfUFVTSCwKIH07CiAKIHN0
-YXRpYyB1aW50MzJfdCB2bHZfb2Zmc2V0OwpAQCAtMTIzMCw2ICsxMjMxLDUwIEBAIHN0YXRpYyB2
-b2lkIHBvbGxfZHNsX2ZpZWxkKGludCBwaXBlLCB1aW50MzJfdCAqbWluLCB1aW50MzJfdCAqbWF4
-LCBjb25zdCBpbnQgY291CiAJfQogfQogCitzdGF0aWMgdm9pZCBwb2xsX2RzbF92cnJfcHVzaCh1
-aW50MzJfdCBkZXZpZCwgaW50IHBpcGUsCisJCQkgICAgICB1aW50MzJfdCAqbWluLCB1aW50MzJf
-dCAqbWF4LCBjb25zdCBpbnQgY291bnQsCisJCQkgICAgICBpbnQgdnJyX3B1c2hfc2NhbmxpbmUp
-Cit7CisJdWludDMyX3QgZHNsLCBkc2wxLCBkc2wyOworCXVpbnQzMl90IHZyciwgdnJyMSwgdnJy
-MjsKKwlib29sIGZpZWxkMSwgZmllbGQyOworCWludCBpWzJdID0ge307CisKKwlkc2wgPSBQSVBF
-X1JFRyhwaXBlLCBQSVBFQV9EU0wpOworCXZyciA9IHRyYW5zX3JlZyhkZXZpZCwgcGlwZSwgVFJB
-TlNfUFVTSF9BKTsKKworCXdoaWxlICghcXVpdCkgeworCQlwdXNoX3ZycihkZXZpZCwgcGlwZSwg
-dnJyX3B1c2hfc2NhbmxpbmUpOworCisJCXdoaWxlICghcXVpdCkgeworCQkJZHNsMSA9IHJlYWRf
-cmVnKGRzbCk7CisJCQl2cnIxID0gcmVhZF9yZWcodnJyKTsKKwkJCXZycjIgPSByZWFkX3JlZyh2
-cnIpOworCQkJZHNsMiA9IHJlYWRfcmVnKGRzbCk7CisKKwkJCWZpZWxkMSA9IGRzbDEgJiAweDgw
-MDAwMDAwOworCQkJZmllbGQyID0gZHNsMiAmIDB4ODAwMDAwMDA7CisJCQlkc2wxICY9IH4weDgw
-MDAwMDAwOworCQkJZHNsMiAmPSB+MHg4MDAwMDAwMDsKKworCQkJaWYgKCEodnJyMiAmIDB4NDAw
-MDAwMDApKQorCQkJCWJyZWFrOworCQl9CisKKwkJaWYgKCEodnJyMSAmIDB4NDAwMDAwMDApKQor
-CQkJY29udGludWU7CisKKwkJaWYgKGZpZWxkMSAhPSBmaWVsZDIpCisJCQlwcmludGYoImZpZWxk
-cyBhcmUgZGlmZmVyZW50ICgldToldSAtPiAldToldSlcbiIsCisJCQkgICAgICAgZmllbGQxLCBk
-c2wxLCBmaWVsZDIsIGRzbDIpOworCisJCW1pbltmaWVsZDEqY291bnQraVtmaWVsZDFdXSA9IGRz
-bDE7CisJCW1heFtmaWVsZDEqY291bnQraVtmaWVsZDFdXSA9IGRzbDI7CisJCWlmICgrK2lbZmll
-bGQxXSA+PSBjb3VudCkKKwkJCWJyZWFrOworCX0KK30KKwogc3RhdGljIGNvbnN0IGNoYXIgKnRl
-c3RfbmFtZShlbnVtIHRlc3QgdGVzdCwgaW50IHBpcGUsIGludCBiaXQsIGJvb2wgdGVzdF9waXhl
-bF9jb3VudCkKIHsKIAlzdGF0aWMgY2hhciBzdHJbNjRdOwpAQCAtMTI4Nyw2ICsxMzMyLDkgQEAg
-c3RhdGljIGNvbnN0IGNoYXIgKnRlc3RfbmFtZShlbnVtIHRlc3QgdGVzdCwgaW50IHBpcGUsIGlu
-dCBiaXQsIGJvb2wgdGVzdF9waXhlbF8KIAljYXNlIFRFU1RfVlJSX1dSQVA6CiAJCXNucHJpbnRm
-KHN0ciwgc2l6ZW9mIHN0ciwgIiVzIC8gcGlwZSAlYyAvIFZSUiB3cmFwIiwgdHlwZSwgcGlwZV9u
-YW1lKHBpcGUpKTsKIAkJcmV0dXJuIHN0cjsKKwljYXNlIFRFU1RfVlJSX1BVU0g6CisJCXNucHJp
-bnRmKHN0ciwgc2l6ZW9mIHN0ciwgIiVzIC8gcGlwZSAlYyAvIFZSUiBwdXNoIiwgdHlwZSwgcGlw
-ZV9uYW1lKHBpcGUpKTsKKwkJcmV0dXJuIHN0cjsKIAlkZWZhdWx0OgogCQlyZXR1cm4gIiI7CiAJ
-fQpAQCAtMTI5NSw3ICsxMzQzLDcgQEAgc3RhdGljIGNvbnN0IGNoYXIgKnRlc3RfbmFtZShlbnVt
-IHRlc3QgdGVzdCwgaW50IHBpcGUsIGludCBiaXQsIGJvb2wgdGVzdF9waXhlbF8KIHN0YXRpYyB2
-b2lkIF9fYXR0cmlidXRlX18oKG5vcmV0dXJuKSkgdXNhZ2UoY29uc3QgY2hhciAqbmFtZSkKIHsK
-IAlmcHJpbnRmKHN0ZGVyciwgIlVzYWdlOiAlcyBbb3B0aW9uc11cbiIKLQkJIiAtdCwtLXRlc3Qg
-PHBpcGVzdGF0fGlpcnxmcmFtZWNvdW50fGZsaXBjb3VudHxmcmFtZXRpbWVzdGFtcHx0aW1lc3Rh
-bXB8cGFufGZsaXB8ZmxpcGRvbmV8c3VyZmxpdmV8d3JhcHxmaWVsZHx2cnItd3JhcD5cbiIKKwkJ
-IiAtdCwtLXRlc3QgPHBpcGVzdGF0fGlpcnxmcmFtZWNvdW50fGZsaXBjb3VudHxmcmFtZXRpbWVz
-dGFtcHx0aW1lc3RhbXB8cGFufGZsaXB8ZmxpcGRvbmV8c3VyZmxpdmV8d3JhcHxmaWVsZHx2cnIt
-d3JhcHx2cnItcHVzaD5cbiIKIAkJIiAtcCwtLXBpcGUgPHBpcGU+XG4iCiAJCSIgLWIsLS1iaXQg
-PGJpdD5cbiIKIAkJIiAtbCwtLWxpbmUgPHRhcmdldCBzY2FubGluZS9waXhlbD5cbiIKQEAgLTEz
-NjUsNiArMTQxMyw4IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICphcmd2W10pCiAJCQkJdGVz
-dCA9IFRFU1RfV1JBUDsKIAkJCWVsc2UgaWYgKCFzdHJjbXAob3B0YXJnLCAiZmllbGQiKSkKIAkJ
-CQl0ZXN0ID0gVEVTVF9GSUVMRDsKKwkJCWVsc2UgaWYgKCFzdHJjbXAob3B0YXJnLCAidnJyLXB1
-c2giKSkKKwkJCQl0ZXN0ID0gVEVTVF9WUlJfUFVTSDsKIAkJCWVsc2UgaWYgKCFzdHJjbXAob3B0
-YXJnLCAidnJyLXdyYXAiKSkKIAkJCQl0ZXN0ID0gVEVTVF9WUlJfV1JBUDsKIAkJCWVsc2UKQEAg
-LTE1NDksNiArMTU5OSwxMCBAQCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqYXJndltdKQogCQlj
-YXNlIFRFU1RfRkxJUERPTkU6CiAJCQl0ZXN0ID0gVEVTVF9GTElQRE9ORV9ERUlJUjsKIAkJCWJy
-ZWFrOworCQljYXNlIFRFU1RfVlJSX1BVU0g6CisJCQlpZiAodnJyX3B1c2hfc2NhbmxpbmUgPCAw
-KQorCQkJCXVzYWdlKGFyZ3ZbMF0pOworCQkJLyogZmFsbHRocm91Z2ggKi8KIAkJY2FzZSBURVNU
-X1ZSUl9XUkFQOgogCQkJaWYgKGludGVsX2dlbihkZXZpZCkgPCAxMSkKIAkJCQl1c2FnZShhcmd2
-WzBdKTsKQEAgLTE2NjQsNiArMTcxOCw5IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICphcmd2
-W10pCiAJY2FzZSBURVNUX0ZJRUxEOgogCQlwb2xsX2RzbF9maWVsZChwaXBlLCBtaW4sIG1heCwg
-Y291bnQpOwogCQlicmVhazsKKwljYXNlIFRFU1RfVlJSX1BVU0g6CisJCXBvbGxfZHNsX3Zycl9w
-dXNoKGRldmlkLCBwaXBlLCBtaW4sIG1heCwgY291bnQsIHZycl9wdXNoX3NjYW5saW5lKTsKKwkJ
-YnJlYWs7CiAJY2FzZSBURVNUX1ZSUl9XUkFQOgogCQlwb2xsX3Zycl93cmFwKGRldmlkLCBwaXBl
-LCBtaW4sIG1heCwgY291bnQsIHZycl9wdXNoX3NjYW5saW5lKTsKIAkJYnJlYWs7Ci0tIAoyLjI2
-LjIKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
-ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+Measure the sample gt-awake time while each engine and every engine is
+busy. They should all report the same duration, the elapsed runtime of
+the batch.
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+---
+ include/drm-uapi/i915_drm.h |  3 ++-
+ tests/i915/perf_pmu.c       | 42 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 44 insertions(+), 1 deletion(-)
+
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index ef696d1a5..bf9ea471c 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -177,8 +177,9 @@ enum drm_i915_pmu_engine_sample {
+ #define I915_PMU_REQUESTED_FREQUENCY	__I915_PMU_OTHER(1)
+ #define I915_PMU_INTERRUPTS		__I915_PMU_OTHER(2)
+ #define I915_PMU_RC6_RESIDENCY		__I915_PMU_OTHER(3)
++#define I915_PMU_SOFTWARE_GT_AWAKE_TIME	__I915_PMU_OTHER(4)
+ 
+-#define I915_PMU_LAST I915_PMU_RC6_RESIDENCY
++#define I915_PMU_LAST /* Deprecated - do not use */ I915_PMU_RC6_RESIDENCY
+ 
+ /* Each region is a minimum of 16k, and there are at most 255 of them.
+  */
+diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+index c2b186d39..90182074b 100644
+--- a/tests/i915/perf_pmu.c
++++ b/tests/i915/perf_pmu.c
+@@ -883,6 +883,42 @@ sema_busy(int gem_fd,
+ 	close(fd[1]);
+ }
+ 
++static void test_awake(int i915)
++{
++	const struct intel_execution_engine2 *e;
++	unsigned long slept;
++	uint64_t val;
++	int fd;
++
++	fd = perf_i915_open(i915, I915_PMU_SOFTWARE_GT_AWAKE_TIME);
++	igt_skip_on(fd < 0);
++
++	/* Check that each engine is captured by the GT wakeref */
++	__for_each_physical_engine(i915, e) {
++		igt_spin_new(i915, .engine = e->flags);
++
++		val = pmu_read_single(fd);
++		slept = measured_usleep(batch_duration_ns / 1000);
++		val = pmu_read_single(fd) - val;
++
++		gem_quiescent_gpu(i915);
++		assert_within_epsilon(val, slept, tolerance);
++	}
++
++	/* And that the total GT wakeref matches walltime not summation */
++	__for_each_physical_engine(i915, e)
++		igt_spin_new(i915, .engine = e->flags);
++
++	val = pmu_read_single(fd);
++	slept = measured_usleep(batch_duration_ns / 1000);
++	val = pmu_read_single(fd) - val;
++
++	gem_quiescent_gpu(i915);
++	assert_within_epsilon(val, slept, tolerance);
++
++	close(fd);
++}
++
+ #define   MI_WAIT_FOR_PIPE_C_VBLANK (1<<21)
+ #define   MI_WAIT_FOR_PIPE_B_VBLANK (1<<11)
+ #define   MI_WAIT_FOR_PIPE_A_VBLANK (1<<3)
+@@ -2250,6 +2286,12 @@ igt_main
+ 	igt_subtest("rc6-suspend")
+ 		test_rc6(fd, TEST_S3);
+ 
++	/**
++	 * Test GT wakeref tracking (similar to RC0, opposite of RC6)
++	 */
++	igt_subtest("gt-awake")
++		test_awake(fd);
++
+ 	/**
+ 	 * Check render nodes are counted.
+ 	 */
+-- 
+2.29.2
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
