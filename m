@@ -1,9 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Matthew Auld <matthew.auld@intel.com>
-Date: Wed, 23 Dec 2020 16:11:52 +0000
-Message-Id: <20201223161152.289279-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] i915/tests: shadow peek
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 23 Dec 2020 17:13:55 -0000
+Message-ID: <160874363549.26584.6058668253250806056@emeril.freedesktop.org>
+References: <20201223161152.289279-1-matthew.auld@intel.com>
+In-Reply-To: <20201223161152.289279-1-matthew.auld@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS90?=
+ =?utf-8?q?ests=3A_shadow_peek?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -11,131 +14,202 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0654939826=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+To: Matthew Auld <matthew.auld@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The shadow batch needs to be in the user visible ppGTT, so make sure we
-are not leaking anything, if we can guess where the shadow will be
-placed.
+--===============0654939826==
+Content-Type: multipart/alternative;
+ boundary="===============5610100557772083124=="
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
----
- tests/i915/gen9_exec_parse.c | 86 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 86 insertions(+)
+--===============5610100557772083124==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tests/i915/gen9_exec_parse.c b/tests/i915/gen9_exec_parse.c
-index 087d6f35..985ae6c0 100644
---- a/tests/i915/gen9_exec_parse.c
-+++ b/tests/i915/gen9_exec_parse.c
-@@ -1051,6 +1051,89 @@ static void test_rejected(int i915, uint32_t handle, bool ctx_param)
- 	}
- }
- 
-+#define PAGE_SHIFT 12
-+#define PAGE_SIZE (1ULL << 12)
-+
-+static inline uint32_t copy_shadow(uint32_t *batch, uint32_t len,
-+				   uint32_t src, uint32_t dst)
-+{
-+        unsigned int i = 0;
-+
-+#define COPY_BLT_CMD            (2<<29|0x53<<22)
-+#define BLT_WRITE_ALPHA         (1<<21)
-+#define BLT_WRITE_RGB           (1<<20)
-+	batch[i++] = COPY_BLT_CMD | BLT_WRITE_ALPHA | BLT_WRITE_RGB | 8;
-+	batch[i++] = 0xcc << 16 | 1 << 25 | 1 << 24 | PAGE_SIZE;
-+	batch[i++] = 0;
-+	batch[i++] = len >> PAGE_SHIFT << 16 | PAGE_SIZE / 4;
-+	batch[i++] = dst;
-+	batch[i++] = 0;
-+	batch[i++] = 0;
-+	batch[i++] = PAGE_SIZE;
-+	batch[i++] = src;
-+	batch[i++] = 0;
-+	batch[i++] = MI_BATCH_BUFFER_END;
-+	batch[i++] = 0;
-+
-+	return i * sizeof(uint32_t);
-+}
-+
-+static void test_shadow_peek(int fd)
-+{
-+	uint64_t size = PAGE_SIZE;
-+	struct drm_i915_gem_exec_object2 exec[2] = {};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(exec),
-+		.buffer_count = 2,
-+	};
-+	uint32_t *vaddr;
-+	uint32_t len;
-+	int i;
-+
-+	exec[0].handle = gem_create(fd, size); /* scratch for shadow */
-+	exec[0].flags = EXEC_OBJECT_PINNED;
-+	exec[0].offset = 0;
-+
-+	exec[1].handle = gem_create(fd, size); /* batch */
-+	exec[1].flags = EXEC_OBJECT_PINNED;
-+	exec[1].offset = size;
-+
-+	vaddr = gem_mmap__wc(fd, exec[1].handle, 0, size, PROT_WRITE);
-+
-+	len = copy_shadow(vaddr,
-+			  size,
-+			  exec[1].offset + size, /* expected shadow location */
-+			  exec[0].offset);
-+
-+	munmap(vaddr, size);
-+
-+	execbuf.flags = I915_EXEC_BLT;
-+	execbuf.batch_start_offset = 0;
-+	execbuf.batch_len = len;
-+
-+	igt_assert_eq(__gem_execbuf(fd, &execbuf), 0);
-+	gem_sync(fd, exec[1].handle);
-+
-+	gem_set_domain(fd, exec[0].handle,
-+		       I915_GEM_DOMAIN_CPU,
-+		       I915_GEM_DOMAIN_CPU);
-+
-+	vaddr = gem_mmap__cpu(fd, exec[0].handle, 0, size, PROT_READ);
-+
-+	/*
-+	 * Since batch_len is smaller than PAGE_SIZE, we should expect the extra
-+	 * dwords to be zeroed. Even though this doesn't affect execution, we
-+	 * don't want to be leaking stuff by accident.
-+	 */
-+	for (i = len / sizeof(uint32_t); i < size / sizeof(uint32_t); i++)
-+		igt_assert_eq(vaddr[i], 0);
-+
-+	munmap(vaddr, size);
-+
-+	for (i = 0; i < ARRAY_SIZE(exec); i++)
-+		gem_close(fd, exec[i].handle);
-+}
-+
- igt_main
- {
- 	uint32_t handle;
-@@ -1138,6 +1221,9 @@ igt_main
- 	igt_subtest("bb-oversize")
- 		test_bb_oversize(i915);
- 
-+	igt_subtest("shadow-peek")
-+		test_shadow_peek(i915);
-+
- 	igt_fixture {
- 		igt_stop_hang_detector();
- 		gem_close(i915, handle);
--- 
-2.26.2
+== Series Details ==
+
+Series: i915/tests: shadow peek
+URL   : https://patchwork.freedesktop.org/series/85190/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9517 -> IGTPW_5325
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5325/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5325 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@prime_vgem@basic-write:
+    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +2 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9517/fi-tgl-y/igt@prime_vgem@basic-write.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5325/fi-tgl-y/igt@prime_vgem@basic-write.html
+
+  * igt@runner@aborted:
+    - fi-tgl-u2:          NOTRUN -> [FAIL][3] ([i915#2029])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5325/fi-tgl-u2/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_mmap_gtt@basic:
+    - fi-tgl-y:           [DMESG-WARN][4] ([i915#402]) -> [PASS][5] +1 similar issue
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9517/fi-tgl-y/igt@gem_mmap_gtt@basic.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5325/fi-tgl-y/igt@gem_mmap_gtt@basic.html
+
+  * igt@i915_selftest@live@active:
+    - fi-icl-y:           [DMESG-FAIL][6] ([i915#2291]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9517/fi-icl-y/igt@i915_selftest@live@active.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5325/fi-icl-y/igt@i915_selftest@live@active.html
+
+  
+  [i915#2029]: https://gitlab.freedesktop.org/drm/intel/issues/2029
+  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (43 -> 37)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5920 -> IGTPW_5325
+
+  CI-20190529: 20190529
+  CI_DRM_9517: 325ec6b5e94e6b2b5c9be9a8234fdf698c2ee18d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5325: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5325/index.html
+  IGT_5920: 05dbccbbc2e57403730134580c4110bde85576f4 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@gen9_exec_parse@shadow-peek
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5325/index.html
+
+--===============5610100557772083124==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915/tests: shadow peek</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/85190/">https://patchwork.freedesktop.org/series/85190/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5325/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5325/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9517 -&gt; IGTPW_5325</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5325/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5325 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9517/fi-tgl-y/igt@prime_vgem@basic-write.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5325/fi-tgl-y/igt@prime_vgem@basic-write.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5325/fi-tgl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2029">i915#2029</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_mmap_gtt@basic:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9517/fi-tgl-y/igt@gem_mmap_gtt@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5325/fi-tgl-y/igt@gem_mmap_gtt@basic.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@active:</p>
+<ul>
+<li>fi-icl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9517/fi-icl-y/igt@i915_selftest@live@active.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5325/fi-icl-y/igt@i915_selftest@live@active.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (43 -&gt; 37)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5920 -&gt; IGTPW_5325</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9517: 325ec6b5e94e6b2b5c9be9a8234fdf698c2ee18d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5325: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5325/index.html<br />
+  IGT_5920: 05dbccbbc2e57403730134580c4110bde85576f4 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@gen9_exec_parse@shadow-peek</p>
+
+</body>
+</html>
+
+--===============5610100557772083124==--
+
+--===============0654939826==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0654939826==--
