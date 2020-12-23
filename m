@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB1E889DCF
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Dec 2020 12:34:59 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-Date: Wed, 23 Dec 2020 18:13:17 +0530
-Message-Id: <20201223124317.20676-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling:added test
- description
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 23 Dec 2020 13:10:18 -0000
+Message-ID: <160872901812.26586.17708133266255288097@emeril.freedesktop.org>
+References: <20201223124317.20676-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20201223124317.20676-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Fscaling=3Aadded_test_description?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,71 +14,180 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============2126070055=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_plane_scaling.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+--===============2126070055==
+Content-Type: multipart/alternative;
+ boundary="===============1562786111610528474=="
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 89b82416..38abb5f5 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -695,32 +695,42 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		igt_output_t *output;
- 
- 		igt_subtest_with_dynamic("plane-scaling") {
-+			igt_describe("The test intend to test plane scaling with overlay planes");
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
- 				igt_dynamic_f("pipe-%s-plane-scaling", kmstest_pipe_name(pipe))
- 					test_plane_scaling_on_pipe(&data, pipe, output);
- 		}
- 
- 		igt_subtest_with_dynamic("scaler-with-pixel-format") {
-+			igt_describe("The test intend to check plane scaling in combination with pixel"
-+				     "formats");
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
- 				igt_dynamic_f("pipe-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe))
- 					test_scaler_with_pixel_format_pipe(&data, pipe, output);
- 		}
- 
- 		igt_subtest_with_dynamic("scaler-with-rotation") {
-+			igt_describe("The test intend to check plane scaling in combination with"
-+				     "rotation");
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
- 				igt_dynamic_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
- 					test_scaler_with_rotation_pipe(&data, pipe, output);
- 		}
- 
- 		igt_subtest_with_dynamic("scaler-with-clipping-clamping") {
-+			igt_describe("The test intend to check plane scale in combination with"
-+				     "clipping-clamping");
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
- 				igt_dynamic_f("pipe-%s-scaler-with-clipping-clamping", kmstest_pipe_name(pipe))
- 					test_scaler_with_clipping_clamping_scenario(&data, pipe, output);
- 		}
- 	}
- 
--	igt_subtest_f("2x-scaler-multi-pipe")
-+	igt_subtest_f("2x-scaler-multi-pipe") {
-+		igt_describe("Test intend to display primary and overlay planes on two connected pipes"
-+			     "and runs the plane scaling tests on both the pipes");
- 		test_scaler_with_multi_pipe_plane(&data);
-+	}
- 
- 	igt_fixture
- 		igt_display_fini(&data.display);
--- 
-2.26.2
+--===============1562786111610528474==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/kms_plane_scaling:added test description
+URL   : https://patchwork.freedesktop.org/series/85188/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_5919 -> IGTPW_5324
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5324/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5324 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_mmap_gtt@basic:
+    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +2 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5919/fi-tgl-y/igt@gem_mmap_gtt@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5324/fi-tgl-y/igt@gem_mmap_gtt@basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_chamelium@hdmi-crc-fast:
+    - fi-kbl-7500u:       [DMESG-WARN][3] -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5919/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5324/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html
+
+  * igt@prime_vgem@basic-read:
+    - fi-tgl-y:           [DMESG-WARN][5] ([i915#402]) -> [PASS][6] +1 similar issue
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5919/fi-tgl-y/igt@prime_vgem@basic-read.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5324/fi-tgl-y/igt@prime_vgem@basic-read.html
+
+  
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (43 -> 37)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5919 -> IGTPW_5324
+
+  CI-20190529: 20190529
+  CI_DRM_9515: fc7c8ab3de81a7382017db8cdb35baae97c150f0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5324: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5324/index.html
+  IGT_5919: 277fcf91081233596f849a8237026827e94f851a @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5324/index.html
+
+--===============1562786111610528474==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_scaling:added test description</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/85188/">https://patchwork.freedesktop.org/series/85188/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5324/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5324/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_5919 -&gt; IGTPW_5324</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5324/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5324 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@gem_mmap_gtt@basic:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5919/fi-tgl-y/igt@gem_mmap_gtt@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5324/fi-tgl-y/igt@gem_mmap_gtt@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_chamelium@hdmi-crc-fast:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5919/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5324/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-read:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5919/fi-tgl-y/igt@prime_vgem@basic-read.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5324/fi-tgl-y/igt@prime_vgem@basic-read.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (43 -&gt; 37)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5919 -&gt; IGTPW_5324</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9515: fc7c8ab3de81a7382017db8cdb35baae97c150f0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5324: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5324/index.html<br />
+  IGT_5919: 277fcf91081233596f849a8237026827e94f851a @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============1562786111610528474==--
+
+--===============2126070055==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============2126070055==--
