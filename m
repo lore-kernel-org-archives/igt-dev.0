@@ -1,12 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 24 Dec 2020 12:11:40 -0000
-Message-ID: <160881190060.23491.11319537464962471380@emeril.freedesktop.org>
-References: <20201224110158.3560769-1-chris@chris-wilson.co.uk>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Thu, 24 Dec 2020 12:27:11 +0000
+Message-Id: <20201224122711.3778798-1-chris@chris-wilson.co.uk>
 In-Reply-To: <20201224110158.3560769-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fsoftpin=3A_Test_total_occupancy_=28rev2=29?=
+References: <20201224110158.3560769-1-chris@chris-wilson.co.uk>
+MIME-Version: 1.0
+Subject: [igt-dev] [PATCH i-g-t v3] i915/gem_softpin: Test total occupancy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,258 +13,177 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0343244065=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Matthew Auld <matthew.auld@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0343244065==
-Content-Type: multipart/alternative;
- boundary="===============6337489912756011584=="
+Use pad-to-size to fill the entire GTT. Make sure we own it all!
 
---===============6337489912756011584==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Suggested-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Matthew Auld <matthew.auld@intel.com>
+---
+ tests/i915/gem_softpin.c | 96 +++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 84 insertions(+), 12 deletions(-)
 
-== Series Details ==
-
-Series: i915/gem_softpin: Test total occupancy (rev2)
-URL   : https://patchwork.freedesktop.org/series/85201/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_5921 -> IGTPW_5327
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5327 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@semaphore:
-    - fi-icl-y:           NOTRUN -> [SKIP][1] ([fdo#109315]) +17 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/fi-icl-y/igt@amdgpu/amd_basic@semaphore.html
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-bwr-2160:        NOTRUN -> [SKIP][2] ([fdo#109271]) +58 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/fi-bwr-2160/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@gem_linear_blits@basic:
-    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([i915#402]) +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5921/fi-tgl-y/igt@gem_linear_blits@basic.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/fi-tgl-y/igt@gem_linear_blits@basic.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@active:
-    - fi-kbl-7500u:       [DMESG-FAIL][5] ([i915#2291] / [i915#666]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5921/fi-kbl-7500u/igt@i915_selftest@live@active.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/fi-kbl-7500u/igt@i915_selftest@live@active.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-icl-y:           [INCOMPLETE][7] ([i915#1037] / [i915#2276]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5921/fi-icl-y/igt@i915_selftest@live@execlists.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/fi-icl-y/igt@i915_selftest@live@execlists.html
-
-  * igt@vgem_basic@dmabuf-fence:
-    - fi-tgl-y:           [DMESG-WARN][9] ([i915#402]) -> [PASS][10] +1 similar issue
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5921/fi-tgl-y/igt@vgem_basic@dmabuf-fence.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/fi-tgl-y/igt@vgem_basic@dmabuf-fence.html
-
-  
-#### Warnings ####
-
-  * igt@i915_pm_rpm@basic-rte:
-    - fi-kbl-guc:         [SKIP][11] ([fdo#109271]) -> [FAIL][12] ([i915#579])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5921/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109284]: https://bugs.freedesktop.org/show_bug.cgi?id=109284
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1037]: https://gitlab.freedesktop.org/drm/intel/issues/1037
-  [i915#1759]: https://gitlab.freedesktop.org/drm/intel/issues/1759
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2276]: https://gitlab.freedesktop.org/drm/intel/issues/2276
-  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
-  [i915#2373]: https://gitlab.freedesktop.org/drm/intel/issues/2373
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#579]: https://gitlab.freedesktop.org/drm/intel/issues/579
-  [i915#666]: https://gitlab.freedesktop.org/drm/intel/issues/666
-
-
-Participating hosts (41 -> 37)
-------------------------------
-
-  Additional (2): fi-bwr-2160 fi-tgl-dsi 
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5921 -> IGTPW_5327
-
-  CI-20190529: 20190529
-  CI_DRM_9520: 05faf2ea2c198f592c56bd3bedd1e5a241a2c75d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5327: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/index.html
-  IGT_5921: ef2a495b5ac8eaef946a75c04e1eaa66f6e595b3 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@gem_softpin@full
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/index.html
-
---===============6337489912756011584==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>i915/gem_softpin: Test total occupancy (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/85201/">https://patchwork.freedesktop.org/series/85201/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_5921 -&gt; IGTPW_5327</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5327 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@semaphore:</p>
-<ul>
-<li>fi-icl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/fi-icl-y/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>fi-bwr-2160:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/fi-bwr-2160/igt@gem_exec_suspend@basic-s3.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +58 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_linear_blits@basic:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5921/fi-tgl-y/igt@gem_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/fi-tgl-y/igt@gem_linear_blits@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@active:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5921/fi-kbl-7500u/igt@i915_selftest@live@active.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/666">i915#666</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/fi-kbl-7500u/igt@i915_selftest@live@active.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-icl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5921/fi-icl-y/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1037">i915#1037</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2276">i915#2276</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/fi-icl-y/igt@i915_selftest@live@execlists.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@vgem_basic@dmabuf-fence:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5921/fi-tgl-y/igt@vgem_basic@dmabuf-fence.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/fi-tgl-y/igt@vgem_basic@dmabuf-fence.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_pm_rpm@basic-rte:<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5921/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/579">i915#579</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (41 -&gt; 37)</h2>
-<p>Additional (2): fi-bwr-2160 fi-tgl-dsi <br />
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_5921 -&gt; IGTPW_5327</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9520: 05faf2ea2c198f592c56bd3bedd1e5a241a2c75d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5327: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5327/index.html<br />
-  IGT_5921: ef2a495b5ac8eaef946a75c04e1eaa66f6e595b3 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-<p>== Testlist changes ==</p>
-<p>+igt@gem_softpin@full</p>
-
-</body>
-</html>
-
---===============6337489912756011584==--
-
---===============0343244065==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
+index f761a6839..3850ecc34 100644
+--- a/tests/i915/gem_softpin.c
++++ b/tests/i915/gem_softpin.c
+@@ -32,6 +32,8 @@
+ #define EXEC_OBJECT_PINNED	(1<<4)
+ #define EXEC_OBJECT_SUPPORTS_48B_ADDRESS (1<<3)
+ 
++#define LIMIT_32b ((1ull << 32) - (1ull << 12))
++
+ /* gen8_canonical_addr
+  * Used to convert any address into canonical form, i.e. [63:48] == [47].
+  * Based on kernel's sign_extend64 implementation.
+@@ -127,32 +129,31 @@ static void test_zero(int i915)
+ 		.buffer_count = 1,
+ 	};
+ 
+-	/* Under full-ppgtt, we have complete control of the GTT */
+ 	igt_info("Object size:%"PRIx64", GTT size:%"PRIx64"\n", sz, gtt);
+ 
+ 	object.offset = 0;
+ 	igt_assert_f(__gem_execbuf(i915, &execbuf) == 0,
+-		     "execbuff failed with object.offset=%llx\n",
++		     "execbuf failed with object.offset=%llx\n",
+ 		     object.offset);
+ 
+ 	if (gtt >> 32) {
+ 		object.offset = (1ull << 32) - sz;
+ 		igt_assert_f(__gem_execbuf(i915, &execbuf) == 0,
+-			     "execbuff failed with object.offset=%llx\n",
++			     "execbuf failed with object.offset=%llx\n",
+ 			     object.offset);
+ 	}
+ 
+ 	if ((gtt - sz) >> 32) {
+ 		object.offset = 1ull << 32;
+ 		igt_assert_f(__gem_execbuf(i915, &execbuf) == 0,
+-			     "execbuff failed with object.offset=%llx\n",
++			     "execbuf failed with object.offset=%llx\n",
+ 			     object.offset);
+ 	}
+ 
+ 	object.offset = gtt - sz;
+ 	object.offset = gen8_canonical_addr(object.offset);
+ 	igt_assert_f(__gem_execbuf(i915, &execbuf) == 0,
+-		     "execbuff failed with object.offset=%llx\n",
++		     "execbuf failed with object.offset=%llx\n",
+ 		     object.offset);
+ 
+ 	gem_close(i915, object.handle);
+@@ -191,6 +192,67 @@ static void test_32b_last_page(int i915)
+ 	gem_close(i915, object.handle);
+ }
+ 
++static void test_full(int i915)
++{
++	uint64_t sz, gtt = gem_aperture_size(i915);
++	struct drm_i915_gem_exec_object2 obj[2] = {
++		/* Use two objects so we can test .pad_to_size works */
++		{
++			.handle = batch_create(i915, &sz),
++			.flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_PAD_TO_SIZE,
++		},
++		{
++			.handle = batch_create(i915, &sz),
++			.flags = EXEC_OBJECT_PINNED,
++		},
++	};
++	struct drm_i915_gem_execbuffer2 execbuf = {
++		.buffers_ptr = to_user_pointer(obj),
++		.buffer_count = ARRAY_SIZE(obj),
++	};
++	int err;
++
++	obj[0].pad_to_size = gtt - sz;
++	if (obj[0].pad_to_size > LIMIT_32b - sz)
++		obj[0].pad_to_size = LIMIT_32b - sz;
++
++	obj[1].offset = sz;
++	igt_assert_f((err = __gem_execbuf(i915, &execbuf)) == -ENOSPC,
++		     "[32b] execbuf succeeded with obj[1].offset=%llx and obj[0].pad_to_size=%llx: err=%d\n",
++		     obj[1].offset, obj[0].pad_to_size, err);
++
++	obj[1].offset = obj[0].pad_to_size;
++	igt_assert_f((err = __gem_execbuf(i915, &execbuf)) == 0,
++		     "[32b] execbuf failed with obj[1].offset=%llx and obj[0].pad_to_size=%llx: err=%d\n",
++		     obj[1].offset, obj[0].pad_to_size, err);
++
++	igt_assert_eq_u64(obj[0].offset, 0);
++	igt_assert_eq_u64(obj[1].offset, obj[0].pad_to_size);
++
++	if (obj[1].offset + sz < gtt) {
++		obj[0].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++		obj[1].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++
++		obj[0].pad_to_size = gtt - sz;
++
++		obj[1].offset = obj[0].pad_to_size - sz;
++		igt_assert_f((err = __gem_execbuf(i915, &execbuf)) == -ENOSPC,
++			     "[48b] execbuf succeeded with obj[1].offset=%llx and obj[0].pad_to_size=%llx: err=%d\n",
++			     obj[1].offset, obj[0].pad_to_size, err);
++
++		obj[1].offset = obj[0].pad_to_size;
++		igt_assert_f((err = __gem_execbuf(i915, &execbuf)) == 0,
++			     "[48b] execbuf failed with obj[1].offset=%llx and obj[0].pad_to_size=%llx: err=%d\n",
++		     obj[1].offset, obj[0].pad_to_size, err);
++
++		igt_assert_eq_u64(obj[0].offset, 0);
++		igt_assert_eq_u64(obj[1].offset, obj[0].pad_to_size);
++	}
++
++	gem_close(i915, obj[1].handle);
++	gem_close(i915, obj[0].handle);
++}
++
+ static void test_softpin(int fd)
+ {
+ 	const uint32_t size = 1024 * 1024;
+@@ -653,14 +715,24 @@ igt_main
+ 
+ 	igt_subtest("invalid")
+ 		test_invalid(fd);
+-	igt_subtest("zero") {
+-		igt_require(gem_uses_full_ppgtt(fd));
+-		test_zero(fd);
+-	}
+-	igt_subtest("32b-excludes-last-page") {
+-		igt_require(gem_uses_full_ppgtt(fd));
+-		test_32b_last_page(fd);
++
++	igt_subtest_group {
++		/* Under full-ppgtt, we have complete control of the GTT */
++
++		igt_fixture {
++			igt_require(gem_uses_full_ppgtt(fd));
++		}
++
++		igt_subtest("zero")
++			test_zero(fd);
++
++		igt_subtest("32b-excludes-last-page")
++			test_32b_last_page(fd);
++
++		igt_subtest("full")
++			test_full(fd);
+ 	}
++
+ 	igt_subtest("softpin")
+ 		test_softpin(fd);
+ 	igt_subtest("overlap")
+-- 
+2.30.0.rc1
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0343244065==--
