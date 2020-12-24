@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 24 Dec 2020 12:27:11 +0000
-Message-Id: <20201224122711.3778798-1-chris@chris-wilson.co.uk>
+Date: Thu, 24 Dec 2020 12:47:00 +0000
+Message-Id: <20201224124700.3778923-1-chris@chris-wilson.co.uk>
 In-Reply-To: <20201224110158.3560769-1-chris@chris-wilson.co.uk>
 References: <20201224110158.3560769-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v3] i915/gem_softpin: Test total occupancy
+Subject: [igt-dev] [PATCH i-g-t v4] i915/gem_softpin: Test total occupancy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,11 +27,11 @@ Suggested-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: Matthew Auld <matthew.auld@intel.com>
 ---
- tests/i915/gem_softpin.c | 96 +++++++++++++++++++++++++++++++++++-----
- 1 file changed, 84 insertions(+), 12 deletions(-)
+ tests/i915/gem_softpin.c | 97 +++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 85 insertions(+), 12 deletions(-)
 
 diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
-index f761a6839..3850ecc34 100644
+index f761a6839..516accc8f 100644
 --- a/tests/i915/gem_softpin.c
 +++ b/tests/i915/gem_softpin.c
 @@ -32,6 +32,8 @@
@@ -80,7 +80,7 @@ index f761a6839..3850ecc34 100644
  		     object.offset);
  
  	gem_close(i915, object.handle);
-@@ -191,6 +192,67 @@ static void test_32b_last_page(int i915)
+@@ -191,6 +192,68 @@ static void test_32b_last_page(int i915)
  	gem_close(i915, object.handle);
  }
  
@@ -127,18 +127,19 @@ index f761a6839..3850ecc34 100644
 +
 +		obj[0].pad_to_size = gtt - sz;
 +
-+		obj[1].offset = obj[0].pad_to_size - sz;
++		obj[1].offset = gen8_canonical_addr(obj[0].pad_to_size - sz);
 +		igt_assert_f((err = __gem_execbuf(i915, &execbuf)) == -ENOSPC,
 +			     "[48b] execbuf succeeded with obj[1].offset=%llx and obj[0].pad_to_size=%llx: err=%d\n",
 +			     obj[1].offset, obj[0].pad_to_size, err);
 +
-+		obj[1].offset = obj[0].pad_to_size;
++		obj[1].offset = gen8_canonical_addr(obj[0].pad_to_size);
 +		igt_assert_f((err = __gem_execbuf(i915, &execbuf)) == 0,
 +			     "[48b] execbuf failed with obj[1].offset=%llx and obj[0].pad_to_size=%llx: err=%d\n",
 +		     obj[1].offset, obj[0].pad_to_size, err);
 +
 +		igt_assert_eq_u64(obj[0].offset, 0);
-+		igt_assert_eq_u64(obj[1].offset, obj[0].pad_to_size);
++		igt_assert_eq_u64(obj[1].offset,
++				  gen8_canonical_addr(obj[0].pad_to_size));
 +	}
 +
 +	gem_close(i915, obj[1].handle);
@@ -148,7 +149,7 @@ index f761a6839..3850ecc34 100644
  static void test_softpin(int fd)
  {
  	const uint32_t size = 1024 * 1024;
-@@ -653,14 +715,24 @@ igt_main
+@@ -653,14 +716,24 @@ igt_main
  
  	igt_subtest("invalid")
  		test_invalid(fd);
