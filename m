@@ -1,12 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Mon,  4 Jan 2021 10:43:24 +0000
+Message-Id: <20210104104324.3125175-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 04 Jan 2021 10:21:06 -0000
-Message-ID: <160975566697.24928.9890459315564337353@emeril.freedesktop.org>
-References: <20210104093441.24750-1-lukasz.laguna@intel.com>
-In-Reply-To: <20210104093441.24750-1-lukasz.laguna@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
- =?utf-8?q?t=5Fdevice=5Fscan=3A_Add_slot_selector?=
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_spin_batch: Convert to dynamic
+ engine discovery
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,292 +12,188 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1011496742=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?b?xYF1a2FzeiDFgWFndW5h?= <lukasz.laguna@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1011496742==
-Content-Type: multipart/alternative;
- boundary="===============7935022766601807872=="
+Only run the tests on the available engines using igt_dynamic. This
+prevents flip-flops with SKIP on shards that have a mixture of machine
+types (e.g. shard-icl that has some machines with vcs1 and some
+without).
 
---===============7935022766601807872==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/i915/gem_spin_batch.c | 82 ++++++++++++++++++-------------------
+ 1 file changed, 39 insertions(+), 43 deletions(-)
 
-== Series Details ==
-
-Series: lib/igt_device_scan: Add slot selector
-URL   : https://patchwork.freedesktop.org/series/85435/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_5941 -> IGTPW_5346
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5346 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@cs-gfx:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][1] ([fdo#109271]) +25 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-hsw-4770/igt@amdgpu/amd_basic@cs-gfx.html
-
-  * igt@amdgpu/amd_basic@query-info:
-    - fi-tgl-y:           NOTRUN -> [SKIP][2] ([fdo#109315] / [i915#2575])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-tgl-y/igt@amdgpu/amd_basic@query-info.html
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-hsw-4770:        NOTRUN -> [WARN][3] ([i915#2283])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-hsw-4770/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@debugfs_test@read_all_entries:
-    - fi-tgl-y:           [PASS][4] -> [DMESG-WARN][5] ([i915#402]) +2 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5941/fi-tgl-y/igt@debugfs_test@read_all_entries.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-tgl-y/igt@debugfs_test@read_all_entries.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-bxt-dsi:         NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#2190])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-bxt-dsi/igt@gem_huc_copy@huc-copy.html
-
-  * igt@i915_module_load@reload:
-    - fi-bxt-dsi:         NOTRUN -> [DMESG-WARN][7] ([i915#1982])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-bxt-dsi/igt@i915_module_load@reload.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-bxt-dsi:         NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-bxt-dsi/igt@kms_chamelium@common-hpd-after-suspend.html
-    - fi-hsw-4770:        NOTRUN -> [SKIP][9] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-bxt-dsi:         NOTRUN -> [SKIP][10] ([fdo#109271]) +27 similar issues
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-bxt-dsi/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-bxt-dsi:         NOTRUN -> [SKIP][11] ([fdo#109271] / [i915#533])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-bxt-dsi/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-
-  * igt@runner@aborted:
-    - fi-bdw-5557u:       NOTRUN -> [FAIL][12] ([i915#2029])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-bdw-5557u/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-kbl-7500u:       [FAIL][13] ([i915#1161] / [i915#262]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5941/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - fi-tgl-y:           [DMESG-WARN][15] ([i915#402]) -> [PASS][16] +2 similar issues
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5941/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1161]: https://gitlab.freedesktop.org/drm/intel/issues/1161
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#2029]: https://gitlab.freedesktop.org/drm/intel/issues/2029
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2283]: https://gitlab.freedesktop.org/drm/intel/issues/2283
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#262]: https://gitlab.freedesktop.org/drm/intel/issues/262
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-
-
-Participating hosts (38 -> 36)
-------------------------------
-
-  Additional (2): fi-hsw-4770 fi-bxt-dsi 
-  Missing    (4): fi-ilk-m540 fi-dg1-1 fi-bsw-cyan fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5941 -> IGTPW_5346
-
-  CI-20190529: 20190529
-  CI_DRM_9540: 031143817afd9bb0877e723f741fb711d4d0c55b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5346: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/index.html
-  IGT_5941: 58b135e66be4fa4db8f668fa5d125b31537cb9a6 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/index.html
-
---===============7935022766601807872==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_device_scan: Add slot selector</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/85435/">https://patchwork.freedesktop.org/series/85435/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_5941 -&gt; IGTPW_5346</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5346 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@cs-gfx:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-hsw-4770/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +25 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_basic@query-info:</p>
-<ul>
-<li>fi-tgl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-tgl-y/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-hsw-4770/igt@core_hotunplug@unbind-rebind.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2283">i915#2283</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@debugfs_test@read_all_entries:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5941/fi-tgl-y/igt@debugfs_test@read_all_entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-tgl-y/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-bxt-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-bxt-dsi/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>fi-bxt-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-bxt-dsi/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>
-<p>fi-bxt-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-bxt-dsi/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</p>
-</li>
-<li>
-<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-bxt-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-bxt-dsi/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +27 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
-<ul>
-<li>fi-bxt-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-bxt-dsi/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2029">i915#2029</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5941/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1161">i915#1161</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/262">i915#262</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5941/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">PASS</a> +2 similar issues</li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (38 -&gt; 36)</h2>
-<p>Additional (2): fi-hsw-4770 fi-bxt-dsi <br />
-  Missing    (4): fi-ilk-m540 fi-dg1-1 fi-bsw-cyan fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_5941 -&gt; IGTPW_5346</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9540: 031143817afd9bb0877e723f741fb711d4d0c55b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5346: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5346/index.html<br />
-  IGT_5941: 58b135e66be4fa4db8f668fa5d125b31537cb9a6 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============7935022766601807872==--
-
---===============1011496742==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/tests/i915/gem_spin_batch.c b/tests/i915/gem_spin_batch.c
+index 0a5cfdf36..c2ce2373b 100644
+--- a/tests/i915/gem_spin_batch.c
++++ b/tests/i915/gem_spin_batch.c
+@@ -35,7 +35,7 @@
+ 		     #x, #ref, (long long)x, tolerance, (long long)ref)
+ 
+ static void spin(int fd,
+-		 const struct intel_execution_engine2 *e2,
++		 unsigned int engine,
+ 		 unsigned int flags,
+ 		 unsigned int timeout_sec)
+ {
+@@ -46,10 +46,10 @@ static void spin(int fd,
+ 	struct timespec itv = { };
+ 	uint64_t elapsed;
+ 
+-	spin = __igt_spin_new(fd, .engine = e2->flags, .flags = flags);
++	spin = __igt_spin_new(fd, .engine = engine, .flags = flags);
+ 	while ((elapsed = igt_nsec_elapsed(&tv)) >> 30 < timeout_sec) {
+ 		igt_spin_t *next =
+-			__igt_spin_new(fd, .engine = e2->flags, .flags = flags);
++			__igt_spin_new(fd, .engine = engine, .flags = flags);
+ 
+ 		igt_spin_set_timeout(spin,
+ 				     timeout_100ms - igt_nsec_elapsed(&itv));
+@@ -75,14 +75,13 @@ static void spin(int fd,
+ #define RESUBMIT_NEW_CTX     (1 << 0)
+ #define RESUBMIT_ALL_ENGINES (1 << 1)
+ 
+-static void spin_resubmit(int fd, const struct intel_execution_engine2 *e2,
+-			  unsigned int flags)
++static void spin_resubmit(int fd, unsigned int engine, unsigned int flags)
+ {
+ 	const uint32_t ctx0 = gem_context_clone_with_engines(fd, 0);
+ 	const uint32_t ctx1 =
+ 		(flags & RESUBMIT_NEW_CTX) ?
+ 		gem_context_clone_with_engines(fd, 0) : ctx0;
+-	igt_spin_t *spin = __igt_spin_new(fd, .ctx = ctx0, .engine = e2->flags);
++	igt_spin_t *spin = __igt_spin_new(fd, .ctx = ctx0, .engine = engine);
+ 	const struct intel_execution_engine2 *other;
+ 
+ 	struct drm_i915_gem_execbuffer2 eb = {
+@@ -96,14 +95,14 @@ static void spin_resubmit(int fd, const struct intel_execution_engine2 *e2,
+ 
+ 	if (flags & RESUBMIT_ALL_ENGINES) {
+ 		for_each_context_engine(fd, ctx1, other) {
+-			if (gem_engine_is_equal(other, e2))
++			if (other->flags == engine)
+ 				continue;
+ 
+ 			eb.flags = other->flags;
+ 			gem_execbuf(fd, &eb);
+ 		}
+ 	} else {
+-		eb.flags = e2->flags;
++		eb.flags = engine;
+ 		gem_execbuf(fd, &eb);
+ 	}
+ 
+@@ -132,7 +131,7 @@ spin_on_all_engines(int fd, unsigned long flags, unsigned int timeout_sec)
+ 	__for_each_physical_engine(fd, e2) {
+ 		igt_fork(child, 1) {
+ 			igt_install_exit_handler(spin_exit_handler);
+-			spin(fd, e2, flags, timeout_sec);
++			spin(fd, e2->flags, flags, timeout_sec);
+ 		}
+ 	}
+ 
+@@ -181,7 +180,6 @@ igt_main
+ {
+ 	const struct intel_execution_engine2 *e2;
+ 	const struct intel_execution_ring *e;
+-	struct intel_execution_engine2 e2__;
+ 	int fd = -1;
+ 
+ 	igt_fixture {
+@@ -190,51 +188,49 @@ igt_main
+ 		igt_fork_hang_detector(fd);
+ 	}
+ 
+-	for (e = intel_execution_rings; e->name; e++) {
+-		e2__ = gem_eb_flags_to_engine(eb_ring(e));
+-		if (e2__.flags == -1)
+-			continue;
+-		e2 = &e2__;
++#define test_each_legacy_ring(test) \
++	igt_subtest_with_dynamic(test) \
++		for (e = intel_execution_rings; e->name; e++) \
++			if (gem_has_ring(fd, eb_ring(e))) \
++				igt_dynamic_f("%s", e->name)
+ 
+-		igt_subtest_f("legacy-%s", e->name) {
+-			igt_require(gem_has_ring(fd, eb_ring(e)));
+-			spin(fd, e2, 0, 3);
+-		}
++	test_each_legacy_ring("legacy")
++		spin(fd, eb_ring(e), 0, 3);
++	test_each_legacy_ring("legacy-resubmit")
++		spin_resubmit(fd, eb_ring(e), 0);
++	test_each_legacy_ring("legacy-resubmit-new")
++		spin_resubmit(fd, eb_ring(e), RESUBMIT_NEW_CTX);
+ 
+-		igt_subtest_f("legacy-resubmit-%s", e->name) {
+-			igt_require(gem_has_ring(fd, eb_ring(e)));
+-			spin_resubmit(fd, e2, 0);
+-		}
+-
+-		igt_subtest_f("legacy-resubmit-new-%s", e->name) {
+-			igt_require(gem_has_ring(fd, eb_ring(e)));
+-			spin_resubmit(fd, e2, RESUBMIT_NEW_CTX);
+-		}
+-	}
++#undef test_each_legcy_ring
+ 
+ 	igt_subtest("spin-all")
+ 		spin_all(fd, 0);
+ 	igt_subtest("spin-all-new")
+ 		spin_all(fd, PARALLEL_SPIN_NEW_CTX);
+ 
+-	__for_each_physical_engine(fd, e2) {
+-		igt_subtest_f("%s", e2->name)
+-			spin(fd, e2, 0, 3);
++#define test_each_engine(test) \
++	igt_subtest_with_dynamic(test) \
++		__for_each_physical_engine(fd, e2) \
++			igt_dynamic_f("%s", e2->name)
+ 
+-		igt_subtest_f("resubmit-%s", e2->name)
+-			spin_resubmit(fd, e2, 0);
++	test_each_engine("engines")
++		spin(fd, e2->flags, 0, 3);
+ 
+-		igt_subtest_f("resubmit-new-%s", e2->name)
+-			spin_resubmit(fd, e2, RESUBMIT_NEW_CTX);
++	test_each_engine("resubmit")
++		spin_resubmit(fd, e2->flags, 0);
+ 
+-		igt_subtest_f("resubmit-all-%s", e2->name)
+-			spin_resubmit(fd, e2, RESUBMIT_ALL_ENGINES);
++	test_each_engine("resubmit-new")
++		spin_resubmit(fd, e2->flags, RESUBMIT_NEW_CTX);
+ 
+-		igt_subtest_f("resubmit-new-all-%s", e2->name)
+-			spin_resubmit(fd, e2,
+-				      RESUBMIT_NEW_CTX |
+-				      RESUBMIT_ALL_ENGINES);
+-	}
++	test_each_engine("resubmit-all")
++		spin_resubmit(fd, e2->flags, RESUBMIT_ALL_ENGINES);
++
++	test_each_engine("resubmit-new-all")
++		spin_resubmit(fd, e2->flags,
++			      RESUBMIT_NEW_CTX |
++			      RESUBMIT_ALL_ENGINES);
++
++#undef test_each_engine
+ 
+ 	igt_subtest("spin-each")
+ 		spin_on_all_engines(fd, 0, 3);
+-- 
+2.30.0
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============1011496742==--
