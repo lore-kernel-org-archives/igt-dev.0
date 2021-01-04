@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D23608923C
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Jan 2021 09:35:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5ABA789DBA
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Jan 2021 10:15:53 +0000 (UTC)
 From: =?UTF-8?q?=C5=81ukasz=20=C5=81aguna?= <lukasz.laguna@intel.com>
-Date: Mon,  4 Jan 2021 10:34:41 +0100
-Message-Id: <20210104093441.24750-1-lukasz.laguna@intel.com>
+Date: Mon,  4 Jan 2021 11:15:42 +0100
+Message-Id: <20210104101542.24902-1-lukasz.laguna@intel.com>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH i-g-t] lib/igt_device_scan: Add slot selector
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
