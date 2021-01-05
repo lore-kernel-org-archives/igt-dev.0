@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DFFBF6E063
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Jan 2021 08:11:56 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue,  5 Jan 2021 09:10:48 +0100
-Message-Id: <20210105081048.14389-32-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20210105081048.14389-1-zbigniew.kempczynski@intel.com>
-References: <20210105081048.14389-1-zbigniew.kempczynski@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 74ADE6E054
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Jan 2021 08:12:08 +0000 (UTC)
+From: Kunal Joshi <kunal1.joshi@intel.com>
+Date: Tue,  5 Jan 2021 13:43:49 +0530
+Message-Id: <20210105081352.82045-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v12 31/31] tests/api_intel_allocator:
- Prepare to run with sanitizer
+Subject: [igt-dev] [PATCH i-g-t v6 0/3] Test tiled display with aid of
+ chamelium.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,55 +15,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>, petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QWxsb2NhdG9yIGNvZGUgaXMgZnJhZ2lsZSBhcyBpdCBydW5zIGluIG11bHRpcHJvY2VzcyBlbnZp
-cm9ubWVudCBzbwp3ZSB3YW50IHRvIHZhbGlkYXRlIGl0cyBtZW1vcnkgY29uc2lzdGVuY3kgdXNp
-bmcgYWRkcmVzcyBzYW5pdGl6ZXIuCkFzIGFsbG9jYXRvciB0aHJlYWQgaXMgc3Bhd25lZCBpbiB0
-aGUgbWFpbiBwcm9jZXNzIHdlIG5lZWQgdG8KY3JlYXRlIGNoaWxkcmVuIGZpcnN0IGJlZm9yZSBp
-dCB3aWxsIHN0YXJ0IGFsbG9jYXRpbmcuIE90aGVyd2lzZQp3ZSBjYW4gaW5jaWRlbnRhbGx5IHBh
-c3Mgc2hhZG93IG1hcCBzbmFwc2hvdCB0byBjaGlsZC9jaGlsZHJlbgpnaXZpbmcgZmFsc2UtcG9z
-aXRpdmUgaW4gc2FuaXRpemVyIGFuZCBmYWlsIHRoZSB0ZXN0LgoKUGxheWluZyB3aXRoIHNhbml0
-aXplciByZXZlYWxzIGl0IGhhcyBhIGJ1ZyB3aGVuIG11bHRpcGxlIGNoaWxkcmVuCmV4aXN0cyBh
-bmQgc2lnbmFscyBhcmUgZGVsaXZlcmVkIHRvIHRoZW0uIFNvIHdlIG11c3QgYmUgY2FyZWZ1bAp3
-aGVuIHNhbml0aXplciBhbmQgaWd0X2Zvcmtfc2lnbmFsX2hhbmRsZXIoKSBhcmUgdXNlZCB0b2dl
-dGhlci4KQnVnIGlzIHJldmVhbGVkIHdpdGggY29kZToKaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRl
-c2t0b3Aub3JnL3BhdGNoLzQwMTk3OS8/c2VyaWVzPTg0MTAyJnJldj0xCgpTaWduZWQtb2ZmLWJ5
-OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4K
-UmVwb3J0ZWQtYnk6IEFuZHJ6ZWogVHVya28gPGFuZHJ6ZWoudHVya29AbGludXguaW50ZWwuY29t
-PgpDYzogQW5kcnplaiBUdXJrbyA8YW5kcnplai50dXJrb0BsaW51eC5pbnRlbC5jb20+CkNjOiBE
-b21pbmlrIEdyemVnb3J6ZWsgPGRvbWluaWsuZ3J6ZWdvcnpla0BpbnRlbC5jb20+CkNjOiBDaHJp
-cyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KLS0tCiB0ZXN0cy9pOTE1L2FwaV9p
-bnRlbF9hbGxvY2F0b3IuYyB8IDE3ICsrKysrKysrKystLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwg
-MTAgaW5zZXJ0aW9ucygrKSwgNyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS90ZXN0cy9pOTE1
-L2FwaV9pbnRlbF9hbGxvY2F0b3IuYyBiL3Rlc3RzL2k5MTUvYXBpX2ludGVsX2FsbG9jYXRvci5j
-CmluZGV4IDE2ZjgzYzQzYS4uNDA4NTM1M2NiIDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2FwaV9p
-bnRlbF9hbGxvY2F0b3IuYworKysgYi90ZXN0cy9pOTE1L2FwaV9pbnRlbF9hbGxvY2F0b3IuYwpA
-QCAtMzgxLDEzICszODEsNyBAQCBzdGF0aWMgdm9pZCBmb3JrX3NpbXBsZV9zdHJlc3MoaW50IGZk
-LCBib29sIHR3b19sZXZlbF9pbmNlcHRpb24pCiAJdWludDY0X3QgYWhuZDAsIGFobmQxOwogCWJv
-b2wgYXJlX2VtcHR5OwogCi0JaW50ZWxfYWxsb2NhdG9yX211bHRpcHJvY2Vzc19zdGFydCgpOwot
-Ci0JYWhuZDAgPSBpbnRlbF9hbGxvY2F0b3Jfb3BlbihmZCwgMCwgSU5URUxfQUxMT0NBVE9SX1NJ
-TVBMRSk7Ci0JYWhuZDEgPSBpbnRlbF9hbGxvY2F0b3Jfb3BlbihmZCwgMSwgSU5URUxfQUxMT0NB
-VE9SX1NJTVBMRSk7Ci0KLQlwdGhyZWFkX2NyZWF0ZSgmdGhyZWFkMCwgTlVMTCwgX19mb3JrX3Np
-bXBsZV90aHJlYWQsICh2b2lkICopIChsb25nKSBmZCk7Ci0JcHRocmVhZF9jcmVhdGUoJnRocmVh
-ZDEsIE5VTEwsIF9fZm9ya19zaW1wbGVfdGhyZWFkLCAodm9pZCAqKSAobG9uZykgZmQpOworCV9f
-aW50ZWxfYWxsb2NhdG9yX211bHRpcHJvY2Vzc19wcmVwYXJlKCk7CiAKIAlpZ3RfZm9yayhjaGls
-ZCwgOCkgewogCQlpZiAodHdvX2xldmVsX2luY2VwdGlvbikgewpAQCAtNDA2LDYgKzQwMCwxNSBA
-QCBzdGF0aWMgdm9pZCBmb3JrX3NpbXBsZV9zdHJlc3MoaW50IGZkLCBib29sIHR3b19sZXZlbF9p
-bmNlcHRpb24pCiAJCQlwdGhyZWFkX2pvaW4odGhyZWFkMSwgTlVMTCk7CiAJCX0KIAl9CisKKwlw
-dGhyZWFkX2NyZWF0ZSgmdGhyZWFkMCwgTlVMTCwgX19mb3JrX3NpbXBsZV90aHJlYWQsICh2b2lk
-ICopIChsb25nKSBmZCk7CisJcHRocmVhZF9jcmVhdGUoJnRocmVhZDEsIE5VTEwsIF9fZm9ya19z
-aW1wbGVfdGhyZWFkLCAodm9pZCAqKSAobG9uZykgZmQpOworCisJYWhuZDAgPSBpbnRlbF9hbGxv
-Y2F0b3Jfb3BlbihmZCwgMCwgSU5URUxfQUxMT0NBVE9SX1NJTVBMRSk7CisJYWhuZDEgPSBpbnRl
-bF9hbGxvY2F0b3Jfb3BlbihmZCwgMSwgSU5URUxfQUxMT0NBVE9SX1NJTVBMRSk7CisKKwlfX2lu
-dGVsX2FsbG9jYXRvcl9tdWx0aXByb2Nlc3Nfc3RhcnQoKTsKKwogCWlndF93YWl0Y2hpbGRyZW4o
-KTsKIAogCXB0aHJlYWRfam9pbih0aHJlYWQwLCBOVUxMKTsKLS0gCjIuMjYuMAoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxp
-c3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
-cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+As of now we have kms_dp_tiled_display test which needs a physical
+panel. Added changes to have chamelium act as a tiled panel and then
+execute the test.
+
+Kunal Joshi (3):
+  Make basic chamelium function accessible to other tests
+  Added structures and functions to generate tiled edids
+  Added a subtest where chamelium acts as a tiled panel
+
+ lib/igt_chamelium.c          | 198 ++++++++++++++++++
+ lib/igt_chamelium.h          |  33 +++
+ lib/igt_edid.c               |  27 +++
+ lib/igt_edid.h               |  20 ++
+ lib/igt_kms.c                | 202 +++++++++++++++++++
+ lib/igt_kms.h                |  25 ++-
+ tests/kms_chamelium.c        | 378 ++++++++++++-----------------------
+ tests/kms_dp_tiled_display.c | 119 ++++++++---
+ 8 files changed, 729 insertions(+), 273 deletions(-)
+
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
