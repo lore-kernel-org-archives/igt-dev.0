@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 91ABF6E0DB
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Jan 2021 11:18:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 200056E0DF
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Jan 2021 11:18:07 +0000 (UTC)
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Date: Tue,  5 Jan 2021 13:17:47 +0200
-Message-Id: <20210105111749.463432-5-lionel.g.landwerlin@intel.com>
+Date: Tue,  5 Jan 2021 13:17:48 +0200
+Message-Id: <20210105111749.463432-6-lionel.g.landwerlin@intel.com>
 In-Reply-To: <20210105111749.463432-1-lionel.g.landwerlin@intel.com>
 References: <20210105111749.463432-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 4/6] lib/i915/perf: add EHL availability
- condition to HDCAndSF counters
+Subject: [igt-dev] [PATCH i-g-t 5/6] lib/i915/perf: reorder CNL counter
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,56 +23,64 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The availability of those counters depends on the topology.
+Simply moving the counter around.
 
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- lib/i915/perf-configs/oa-ehl.xml | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ lib/i915/perf-configs/oa-cnl.xml | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/lib/i915/perf-configs/oa-ehl.xml b/lib/i915/perf-configs/oa-ehl.xml
-index d32e04492..4a6af977c 100644
---- a/lib/i915/perf-configs/oa-ehl.xml
-+++ b/lib/i915/perf-configs/oa-ehl.xml
+diff --git a/lib/i915/perf-configs/oa-cnl.xml b/lib/i915/perf-configs/oa-cnl.xml
+index 0bf5fa180..cb7eb8c69 100644
+--- a/lib/i915/perf-configs/oa-cnl.xml
++++ b/lib/i915/perf-configs/oa-cnl.xml
 @@ -1,5 +1,5 @@
  <?xml version="1.0"?>
--<metrics version="1609843424" merge_md5="">
+-<metrics version="1609843423" merge_md5="">
 +<metrics version="1609843831" merge_md5="">
-   <set name="Render Metrics Basic Gen11"
-        chipset="EHL"
+   <set name="Render Metrics Basic Gen10"
+        chipset="CNL"
         symbol_name="RenderBasic"
-@@ -3825,6 +3825,7 @@
-              units="percent"
-              semantic_type="duration"
-              equation="C 0 READ B 7 READ FSUB 100 UMUL $GpuCoreClocks FDIV"
-+             availability="$SubsliceMask 3 AND"
-              mdapi_group="GPU/Data Port"
-              mdapi_usage_flags="Tier3 Frame Batch Draw"
+@@ -4722,6 +4722,19 @@
               mdapi_supported_apis=""
-@@ -3839,6 +3840,7 @@
-              units="percent"
-              semantic_type="duration"
-              equation="C 2 READ C 1 READ FSUB 100 UMUL $GpuCoreClocks FDIV"
-+             availability="$SubsliceMask 12 AND"
-              mdapi_group="GPU/Data Port"
-              mdapi_usage_flags="Tier3 Frame Batch Draw"
+              mdapi_hw_unit_type="gpu"
+              />
++    <counter name="Shader Barrier Messages"
++             symbol_name="ShaderBarriers"
++             underscore_name="shader_barriers"
++             description="The total number of shader barrier messages."
++             data_type="uint64"
++             units="messages"
++             semantic_type="event"
++             equation="A 35 READ"
++             mdapi_group="EU Array/Barrier"
++             mdapi_usage_flags="Tier3 Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
+     <counter name="Slice0 L3 Bank0 Accesses"
+              symbol_name="L3Bank00Accesses"
+              underscore_name="l3_bank00_accesses"
+@@ -4833,19 +4846,6 @@
               mdapi_supported_apis=""
-@@ -3853,6 +3855,7 @@
-              units="percent"
-              semantic_type="duration"
-              equation="C 4 READ C 3 READ FSUB 100 UMUL $GpuCoreClocks FDIV"
-+             availability="$SubsliceMask 48 AND"
-              mdapi_group="GPU/Data Port"
-              mdapi_usage_flags="Tier3 Frame Batch Draw"
-              mdapi_supported_apis=""
-@@ -3867,6 +3870,7 @@
-              units="percent"
-              semantic_type="duration"
-              equation="C 6 READ C 5 READ FSUB 100 UMUL $GpuCoreClocks FDIV"
-+             availability="$SubsliceMask 192 AND"
-              mdapi_group="GPU/Data Port"
-              mdapi_usage_flags="Tier3 Frame Batch Draw"
-              mdapi_supported_apis=""
+              mdapi_hw_unit_type="gpu"
+              />
+-    <counter name="Shader Barrier Messages"
+-             symbol_name="ShaderBarriers"
+-             underscore_name="shader_barriers"
+-             description="The total number of shader barrier messages."
+-             data_type="uint64"
+-             units="messages"
+-             semantic_type="event"
+-             equation="A 35 READ"
+-             mdapi_group="EU Array/Barrier"
+-             mdapi_usage_flags="Tier3 Frame Batch Draw"
+-             mdapi_supported_apis=""
+-             mdapi_hw_unit_type="gpu"
+-             />
+     <counter name="GTI L3 Throughput"
+              symbol_name="GtiL3Throughput"
+              underscore_name="gti_l3_throughput"
 -- 
 2.30.0
 
