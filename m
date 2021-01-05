@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C97589DD3
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Jan 2021 20:39:10 +0000 (UTC)
-Date: Tue, 5 Jan 2021 12:39:01 -0800
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65C91892E0
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Jan 2021 21:05:52 +0000 (UTC)
+Date: Tue, 5 Jan 2021 13:05:46 -0800
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Message-ID: <20210105203901.GA71203@orsosgc001.ra.intel.com>
-References: <20201216083820.41756-1-lionel.g.landwerlin@intel.com>
+Message-ID: <20210105210546.GA71919@orsosgc001.ra.intel.com>
+References: <20210105111749.463432-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201216083820.41756-1-lionel.g.landwerlin@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/perf: drop check on report
- reason
+In-Reply-To: <20210105111749.463432-1-lionel.g.landwerlin@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 0/6] lib/i915/perf: Synchronize perf
+ metrics
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,53 +26,42 @@ To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Dec 16, 2020 at 10:38:20AM +0200, Lionel Landwerlin wrote:
->Learning the experimental way that ICL can generate 2 back to back
->timer reports with the same timestamp...
+On Tue, Jan 05, 2021 at 01:17:43PM +0200, Lionel Landwerlin wrote:
+>Hi all,
 >
->Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+>A small update on the perf files. Nothing ground breaking.
 
-Hmm, it's tough to generalize this check then, agree to drop it.
-
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Acked-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
 Thanks,
 Umesh
 
->---
-> tests/i915/perf.c | 9 ---------
-> 1 file changed, 9 deletions(-)
 >
->diff --git a/tests/i915/perf.c b/tests/i915/perf.c
->index f09431472..664fd0a94 100644
->--- a/tests/i915/perf.c
->+++ b/tests/i915/perf.c
->@@ -780,7 +780,6 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
-> 					format.b_off);
-> 	uint32_t *rpt1_b = (uint32_t *)(((uint8_t *)oa_report1) +
-> 					format.b_off);
->-	uint32_t report_reason0, report_reason1;
-> 	uint32_t b;
-> 	uint32_t ref;
+>Cheers,
 >
->@@ -791,14 +790,6 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
-> 	freq = time_delta ? ((uint64_t)clock_delta * 1000) / time_delta : 0;
-> 	igt_debug("freq = %"PRIu64"\n", freq);
+>Lionel Landwerlin (6):
+>  lib/i915/perf: update gen9/10/11 TestOa configs
+>  lib/i915/perf: update Gen11 RenderBasic programming
+>  lib/i915/perf: update gen10/11 ComputeBasic programming
+>  lib/i915/perf: add EHL availability condition to HDCAndSF counters
+>  lib/i915/perf: reorder CNL counter
+>  lib/i915/perf: update Gen9/11 programming for AsyncCompute
 >
->-	/* Either we have 2 reports back to back with the same
->-	 * timestamp and those should have different reason, or we
->-	 * were able to compute a frequency because the timestamps are
->-	 * different.
->-	 */
->-	igt_assert(freq || (gen8_report_reason(oa_report0) !=
->-			    gen8_report_reason(oa_report1)));
->-
-> 	igt_debug("clock delta = %"PRIu32"\n", clock_delta);
+> lib/i915/perf-configs/guids.xml     | 46 ++++++++++++++---------------
+> lib/i915/perf-configs/oa-cflgt2.xml | 10 +++++--
+> lib/i915/perf-configs/oa-cflgt3.xml | 10 +++++--
+> lib/i915/perf-configs/oa-cnl.xml    | 36 ++++++++++++----------
+> lib/i915/perf-configs/oa-ehl.xml    | 18 +++++++----
+> lib/i915/perf-configs/oa-icl.xml    | 18 ++++++-----
+> lib/i915/perf-configs/oa-kblgt2.xml | 10 +++++--
+> lib/i915/perf-configs/oa-kblgt3.xml | 10 +++++--
+> lib/i915/perf-configs/oa-sklgt2.xml | 10 +++++--
+> lib/i915/perf-configs/oa-sklgt3.xml | 10 +++++--
+> lib/i915/perf-configs/oa-sklgt4.xml | 10 +++++--
+> 11 files changed, 116 insertions(+), 72 deletions(-)
 >
-> 	max_delta = clock_delta * intel_perf->devinfo.n_eus;
->-- 
->2.29.2
->
+>--
+>2.30.0
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
