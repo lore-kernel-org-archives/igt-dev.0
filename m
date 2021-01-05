@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A60F6E05C
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Jan 2021 08:12:11 +0000 (UTC)
-From: Kunal Joshi <kunal1.joshi@intel.com>
-Date: Tue,  5 Jan 2021 13:43:52 +0530
-Message-Id: <20210105081352.82045-4-kunal1.joshi@intel.com>
-In-Reply-To: <20210105081352.82045-1-kunal1.joshi@intel.com>
-References: <20210105081352.82045-1-kunal1.joshi@intel.com>
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
+ [IPv6:2607:f8b0:4864:20::533])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C5DB6E0A0
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Jan 2021 08:26:22 +0000 (UTC)
+Received: by mail-pg1-x533.google.com with SMTP id i7so20815181pgc.8
+ for <igt-dev@lists.freedesktop.org>; Tue, 05 Jan 2021 00:26:22 -0800 (PST)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Tue,  5 Jan 2021 10:25:44 +0200
+Message-Id: <20210105082545.6417-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v6 3/3] Added a subtest where chamelium acts
- as a tiled panel
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_rotation_crc: avoid
+ recalculating refecence crcs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,210 +23,170 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>, petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Split kms_dp_tiled_display into to two subtest.First to execute the
-basic test with physical tiled panel and second with chamelium.
+Get those reference crcs only once since they stay the same.
 
-v2: Revised to just have basic test if chamelium dependencies are not
-    present. Reset ports after the test executes.Changed subtest name
-    from with-chamelium to basic-test-pattern-with-chamelium
+This reduces generic rotation tests execution time on my ICL from 26s to 14s
 
-v3: Changes required to adapt to changes done in first patch.
-
-v4: Changes required to adapt to changes done in first patch.
-
-v5: Changes required to adapt to changes done in first patch.
-
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-Reviewed-by: Navare Manasi D <manasi.d.navare@intel.com>
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- tests/kms_dp_tiled_display.c | 119 ++++++++++++++++++++++++++++-------
- 1 file changed, 95 insertions(+), 24 deletions(-)
+ tests/kms_rotation_crc.c | 88 +++++++++++++++++++++++-----------------
+ 1 file changed, 50 insertions(+), 38 deletions(-)
 
-diff --git a/tests/kms_dp_tiled_display.c b/tests/kms_dp_tiled_display.c
-index 9e738a4f..3681100d 100644
---- a/tests/kms_dp_tiled_display.c
-+++ b/tests/kms_dp_tiled_display.c
-@@ -40,6 +40,7 @@
- #include "poll.h"
- #include "drm_mode.h"
- #include "drm_fourcc.h"
-+#include "igt_edid.h"
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index ffcc2cc2e..e160bd901 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -49,6 +49,14 @@ struct p_point{
+ 	float_t y;
+ };
  
- IGT_TEST_DESCRIPTION("Test for Transcoder Port Sync for Display Port Tiled Displays");
++enum rectangle_type {
++	rectangle,
++	square,
++	portrait,
++	landscape,
++	num_rectangle_types /* must be last */
++};
++
+ typedef struct {
+ 	int gfx_fd;
+ 	igt_display_t display;
+@@ -70,6 +78,12 @@ typedef struct {
  
-@@ -59,8 +60,22 @@ typedef struct {
- 	data_connector_t *conns;
- 	enum igt_commit_style commit;
- 	struct timeval first_ts;
+ 	bool use_native_resolution;
+ 	bool extended;
 +
-+	#ifdef HAVE_CHAMELIUM
-+	struct chamelium *chamelium;
-+	struct chamelium_port **ports;
-+	int port_count;
-+	struct chamelium_edid *edids[IGT_CUSTOM_EDID_COUNT];
-+	#endif
-+
++	struct crc_rect_tag {
++		bool valid;
++		igt_crc_t ref_crc;
++		igt_crc_t flip_crc;
++	} crc_rect[num_rectangle_types];
  } data_t;
  
-+void basic_test(data_t *data, drmEventContext *drm_event, struct pollfd *pfd);
-+
-+#ifdef HAVE_CHAMELIUM
-+static void test_with_chamelium(data_t *data);
-+#endif
-+
- static int drm_property_is_tile(drmModePropertyPtr prop)
- {
- 	return (strcmp(prop->name, "TILE") ? 0 : 1) &&
-@@ -199,7 +214,6 @@ static void test_cleanup(data_t *data)
- 	igt_display_commit2(data->display, data->commit);
- 	memset(conns, 0, sizeof(data_connector_t) * data->num_h_tiles);
- }
--
- static void setup_mode(data_t *data)
- {
- 	int count = 0, prev = 0, i = 0;
-@@ -373,21 +387,83 @@ static bool got_all_page_flips(data_t *data)
- 	return true;
+ typedef struct {
+@@ -190,14 +204,6 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
+ 		igt_pipe_crc_start(data->pipe_crc);
  }
  
-+#ifdef HAVE_CHAMELIUM
-+static void test_with_chamelium(data_t *data)
-+{
-+	int i, count = 0;
-+	uint8_t htile = 2, vtile = 1;
-+	struct edid **edid;
-+
-+	data->chamelium = chamelium_init(data->drm_fd);
-+	igt_assert(data->chamelium);
-+	data->ports = chamelium_get_ports
-+		(data->chamelium, &data->port_count);
-+	chamelium_require_connector_present(data->ports,
-+					    DRM_MODE_CONNECTOR_DisplayPort,
-+					    data->port_count, 2);
-+	edid = igt_kms_get_tiled_edid(htile-1, vtile-1);
-+
-+	for (i = 0; i < 2; i++)
-+		data->edids[i] =
-+			chamelium_new_edid(data->chamelium, edid[i]);
-+
-+	for (i = 0; i < data->port_count; i++) {
-+		if (chamelium_port_get_type(data->ports[i]) ==
-+				DRM_MODE_CONNECTOR_DisplayPort) {
-+
-+			chamelium_port_set_tiled_edid(data->chamelium,
-+				data->ports[i], data->edids[i]);
-+			chamelium_plug(data->chamelium,
-+				       data->ports[i]);
-+			chamelium_wait_for_conn_status_change(data->display,
-+							      data->chamelium,
-+							      data->ports[i],
-+							      DRM_MODE_CONNECTED);
-+			count++;
-+		}
-+		if (count == 2)
-+			break;
-+	}
-+}
-+#endif
-+
-+void basic_test(data_t *data, drmEventContext *drm_event, struct pollfd *pfd)
-+{
-+		int ret;
-+
-+		get_number_of_h_tiles(data);
-+		igt_debug("Number of Horizontal Tiles: %d\n",
-+			  data->num_h_tiles);
-+		igt_require(data->num_h_tiles > 0);
-+		data->conns = calloc(data->num_h_tiles,
-+				     sizeof(data_connector_t));
-+		igt_assert(data->conns);
-+
-+		get_connectors(data);
-+		setup_mode(data);
-+		setup_framebuffer(data);
-+		timerclear(&data->first_ts);
-+		igt_display_commit_atomic(data->display,
-+			DRM_MODE_ATOMIC_NONBLOCK |
-+			DRM_MODE_PAGE_FLIP_EVENT, data);
-+		while (!got_all_page_flips(data)) {
-+			ret = poll(pfd, 1, 1000);
-+			igt_assert(ret == 1);
-+			drmHandleEvent(data->drm_fd, drm_event);
-+		}
-+}
-+
- igt_main
+-enum rectangle_type {
+-	rectangle,
+-	square,
+-	portrait,
+-	landscape,
+-	num_rectangle_types /* must be last */
+-};
+-
+ static void prepare_fbs(data_t *data, igt_output_t *output,
+ 			igt_plane_t *plane, enum rectangle_type rect, uint32_t format)
  {
- 	igt_display_t display;
- 	data_t data = {0};
- 	struct pollfd pfd = {0};
- 	drmEventContext drm_event = {0};
--	int ret;
--
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
--
- 		kmstest_set_vt_graphics_mode();
- 		igt_display_require(&display, data.drm_fd);
- 		igt_display_reset(&display);
--
- 		data.display = &display;
- 		pfd.fd = data.drm_fd;
- 		pfd.events = POLLIN;
-@@ -395,33 +471,28 @@ igt_main
- 		drm_event.page_flip_handler2 = page_flip_handler;
- 		data.commit = data.display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY;
- 		igt_require(data.commit == COMMIT_ATOMIC);
--
--		get_number_of_h_tiles(&data);
--		igt_debug("Number of Horizontal Tiles: %d\n", data.num_h_tiles);
--		igt_require(data.num_h_tiles > 0);
--		data.conns = calloc(data.num_h_tiles, sizeof(data_connector_t));
- 	}
+@@ -266,43 +272,46 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
+ 	 */
+ 	igt_require(igt_display_has_format_mod(display, pixel_format, tiling));
  
- 	igt_describe("Make sure the Tiled CRTCs are synchronized and we get "
- 		     "page flips for all tiled CRTCs in one vblank.");
- 	igt_subtest("basic-test-pattern") {
--		igt_assert(data.conns);
--
--		get_connectors(&data);
--		setup_mode(&data);
--		setup_framebuffer(&data);
--		timerclear(&data.first_ts);
--		igt_display_commit_atomic(data.display, DRM_MODE_ATOMIC_NONBLOCK |
--					  DRM_MODE_PAGE_FLIP_EVENT, &data);
--		while (!got_all_page_flips(&data)) {
--			ret = poll(&pfd, 1, 1000);
--			igt_assert(ret == 1);
--			drmHandleEvent(data.drm_fd, &drm_event);
--		}
--
-+		basic_test(&data, &drm_event, &pfd);
- 		test_cleanup(&data);
- 	}
+-	/*
+-	 * Create a reference software rotated flip framebuffer.
+-	 */
+-	igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format, tiling,
+-		      &data->fb_flip);
+-	paint_squares(data, data->rotation, &data->fb_flip,
+-		      flip_opacity);
+-	igt_plane_set_fb(plane, &data->fb_flip);
+-	if (plane->type != DRM_PLANE_TYPE_CURSOR)
+-		igt_plane_set_position(plane, data->pos_x, data->pos_y);
+-	igt_display_commit2(display, COMMIT_ATOMIC);
++	if (!data->crc_rect[rect].valid) {
++		/*
++		* Create a reference software rotated flip framebuffer.
++		*/
++		igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format, tiling,
++			&data->fb_flip);
++		paint_squares(data, data->rotation, &data->fb_flip,
++			flip_opacity);
++		igt_plane_set_fb(plane, &data->fb_flip);
++		if (plane->type != DRM_PLANE_TYPE_CURSOR)
++			igt_plane_set_position(plane, data->pos_x, data->pos_y);
++		igt_display_commit2(display, COMMIT_ATOMIC);
  
-+	#ifdef HAVE_CHAMELIUM
-+	igt_subtest_f("basic-test-pattern-with-chamelium") {
-+		int i;
+-	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->flip_crc);
++		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].flip_crc);
++		igt_remove_fb(data->gfx_fd, &data->fb_flip);
 +
-+		test_with_chamelium(&data);
-+		basic_test(&data, &drm_event, &pfd);
-+		test_cleanup(&data);
-+		for (i = 0; i < data.port_count; i++)
-+			chamelium_reset_state(data.display, data.chamelium,
-+					      data.ports[i], data.ports,
-+					      data.port_count);
++		/*
++		* Create a reference CRC for a software-rotated fb.
++		*/
++		igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format,
++			data->override_tiling ?: LOCAL_DRM_FORMAT_MOD_NONE, &data->fb_reference);
++		paint_squares(data, data->rotation, &data->fb_reference, 1.0);
++
++		igt_plane_set_fb(plane, &data->fb_reference);
++		if (plane->type != DRM_PLANE_TYPE_CURSOR)
++			igt_plane_set_position(plane, data->pos_x, data->pos_y);
++		igt_display_commit2(display, COMMIT_ATOMIC);
++
++		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].ref_crc);
++		data->crc_rect[rect].valid = true;
 +	}
-+	#endif
- 	igt_fixture {
- 		free(data.conns);
- 		close(data.drm_fd);
+ 
+ 	/*
+ 	  * Prepare the non-rotated flip fb.
+ 	  */
+-	igt_remove_fb(data->gfx_fd, &data->fb_flip);
+ 	igt_create_fb(data->gfx_fd, w, h, pixel_format, tiling,
+ 		      &data->fb_flip);
+ 	paint_squares(data, IGT_ROTATION_0, &data->fb_flip,
+ 		      flip_opacity);
+ 
+-	/*
+-	 * Create a reference CRC for a software-rotated fb.
+-	 */
+-	igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format,
+-		      data->override_tiling ?: LOCAL_DRM_FORMAT_MOD_NONE, &data->fb_reference);
+-	paint_squares(data, data->rotation, &data->fb_reference, 1.0);
+-
+-	igt_plane_set_fb(plane, &data->fb_reference);
+-	if (plane->type != DRM_PLANE_TYPE_CURSOR)
+-		igt_plane_set_position(plane, data->pos_x, data->pos_y);
+-	igt_display_commit2(display, COMMIT_ATOMIC);
+-
+-	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->ref_crc);
+-
+ 	/*
+ 	 * Prepare the plane with an non-rotated fb let the hw rotate it.
+ 	 */
+@@ -341,7 +350,7 @@ static void test_single_case(data_t *data, enum pipe pipe,
+ 
+ 	/* Check CRC */
+ 	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
+-	igt_assert_crc_equal(&data->ref_crc, &crc_output);
++	igt_assert_crc_equal(&data->crc_rect[rect].ref_crc, &crc_output);
+ 
+ 	/*
+ 	 * If flips are requested flip to a different fb and
+@@ -364,8 +373,7 @@ static void test_single_case(data_t *data, enum pipe pipe,
+ 		}
+ 		kmstest_wait_for_pageflip(data->gfx_fd);
+ 		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
+-		igt_assert_crc_equal(&data->flip_crc,
+-				     &crc_output);
++		igt_assert_crc_equal(&data->crc_rect[rect].flip_crc, &crc_output);
+ 	}
+ }
+ 
+@@ -396,6 +404,10 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 	igt_display_t *display = &data->display;
+ 	igt_output_t *output;
+ 	enum pipe pipe;
++	int c;
++
++	for (c = 0; c < num_rectangle_types; c++)
++		data->crc_rect[c].valid = false;
+ 
+ 	if (plane_type == DRM_PLANE_TYPE_CURSOR)
+ 		igt_require(display->has_cursor_plane);
 -- 
-2.25.1
+2.28.0
 
 _______________________________________________
 igt-dev mailing list
