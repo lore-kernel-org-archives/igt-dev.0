@@ -1,74 +1,78 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4698D89BF5
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Jan 2021 05:56:49 +0000 (UTC)
-From: "Shankar, Uma" <uma.shankar@intel.com>
-Date: Wed, 6 Jan 2021 05:56:44 +0000
-Message-ID: <18a8fa5830ea40a9a24707f57d8348e7@intel.com>
-References: <20201229074604.24064-1-jeevan.b@intel.com>
-In-Reply-To: <20201229074604.24064-1-jeevan.b@intel.com>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: "Nayana, Venkata Ramana" <venkata.ramana.nayana@intel.com>
+Date: Wed, 6 Jan 2021 06:22:41 +0000
+Message-ID: <e23a47877414426ca157eb3c5f36d4e7@intel.com>
+References: <20210105112536.3284632-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20210105112536.3284632-1-chris@chris-wilson.co.uk>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_rotation_crc: reduce
- execution time
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Subject: Re: [Intel-gfx] [PATCH i-g-t 1/2] i915/gem_ctx_isolation: Protect
+ inject_reset_context() from banning
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "B, Jeevan" <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
 
 > -----Original Message-----
-> From: B, Jeevan <jeevan.b@intel.com>
-> Sent: Tuesday, December 29, 2020 1:16 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Shankar, Uma <uma.shankar@intel.com>; B S, Karthik
-> <karthik.b.s@intel.com>; B, Jeevan <jeevan.b@intel.com>
-> Subject: [PATCH i-g-t v2] tests/kms_rotation_crc: reduce execution time
+> From: Chris Wilson <chris@chris-wilson.co.uk>
+> Sent: Tuesday, January 5, 2021 4:56 PM
+> To: intel-gfx@lists.freedesktop.org
+> Cc: igt-dev@lists.freedesktop.org; Chris Wilson <chris@chris-wilson.co.uk>;
+> Nayana, Venkata Ramana <venkata.ramana.nayana@intel.com>
+> Subject: [PATCH i-g-t 1/2] i915/gem_ctx_isolation: Protect
+> inject_reset_context() from banning
 > 
-> Restricting the execution to 2 pipes.
-
-Please add some more details here. Would be good to add the actual execution time
-improvement.
-
-With that added, this is
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> Disable banning as we deliberately inject GPU resets to test isolation.
+> 
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
 > ---
->  tests/kms_rotation_crc.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  tests/i915/gem_ctx_isolation.c | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c index
-> ffcc2cc2..07639236 100644
-> --- a/tests/kms_rotation_crc.c
-> +++ b/tests/kms_rotation_crc.c
-> @@ -409,6 +409,10 @@ static void test_plane_rotation(data_t *data, int
-> plane_type, bool test_bad_form
->  		if (IS_CHERRYVIEW(data->devid) && pipe != PIPE_B)
->  			continue;
+> diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
+> index 58a35b487..4f1742685 100644
+> --- a/tests/i915/gem_ctx_isolation.c
+> +++ b/tests/i915/gem_ctx_isolation.c
+> @@ -762,10 +762,21 @@ static void isolation(int fd,  #define S4 (4 << 8)
+> #define SLEEP_MASK (0xf << 8)
 > 
-> +		/* restricting the execution to 2 pipes to reduce execution time*/
-> +		if (pipe > PIPE_B && !data->extended)
-> +			break;
+> +static uint32_t create_reset_context(int i915) {
+> +	struct drm_i915_gem_context_param param = {
+> +		.ctx_id = gem_context_clone_with_engines(i915, 0),
+> +		.param = I915_CONTEXT_PARAM_BANNABLE,
+> +	};
 > +
->  		igt_output_set_pipe(output, pipe);
-> 
->  		plane = igt_output_get_plane_type(output, plane_type);
+> +	gem_context_set_param(i915, &param);
+> +	return param.ctx_id;
+> +}
+> +
+>  static void inject_reset_context(int fd, const struct intel_execution_engine2
+> *e)  {
+>  	struct igt_spin_factory opts = {
+> -		.ctx = gem_context_clone_with_engines(fd, 0),
+> +		.ctx = create_reset_context(fd),
+>  		.engine = e->flags,
+>  		.flags = IGT_SPIN_FAST,
+>  	};
 > --
-> 2.19.1
+> 2.30.0
+
+Reviewed-by:  Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
 
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
