@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5619589C54
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Jan 2021 04:40:40 +0000 (UTC)
-References: <20210105082545.6417-1-juhapekka.heikkila@gmail.com>
-From: Karthik B S <karthik.b.s@intel.com>
-Message-ID: <43c96c9d-e665-640e-d827-ffe772c317f2@intel.com>
-Date: Wed, 6 Jan 2021 10:10:34 +0530
-MIME-Version: 1.0
-In-Reply-To: <20210105082545.6417-1-juhapekka.heikkila@gmail.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4698D89BF5
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Jan 2021 05:56:49 +0000 (UTC)
+From: "Shankar, Uma" <uma.shankar@intel.com>
+Date: Wed, 6 Jan 2021 05:56:44 +0000
+Message-ID: <18a8fa5830ea40a9a24707f57d8348e7@intel.com>
+References: <20201229074604.24064-1-jeevan.b@intel.com>
+In-Reply-To: <20201229074604.24064-1-jeevan.b@intel.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_rotation_crc: avoid
- recalculating refecence crcs
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_rotation_crc: reduce
+ execution time
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,180 +18,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, igt-dev@lists.freedesktop.org
+To: "B, Jeevan" <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 1/5/2021 1:55 PM, Juha-Pekka Heikkila wrote:
-> Get those reference crcs only once since they stay the same.
->
-> This reduces generic rotation tests execution time on my ICL from 26s to 14s
->
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-LGTM.
 
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+> -----Original Message-----
+> From: B, Jeevan <jeevan.b@intel.com>
+> Sent: Tuesday, December 29, 2020 1:16 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Shankar, Uma <uma.shankar@intel.com>; B S, Karthik
+> <karthik.b.s@intel.com>; B, Jeevan <jeevan.b@intel.com>
+> Subject: [PATCH i-g-t v2] tests/kms_rotation_crc: reduce execution time
+> 
+> Restricting the execution to 2 pipes.
 
+Please add some more details here. Would be good to add the actual execution time
+improvement.
+
+With that added, this is
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
 > ---
->   tests/kms_rotation_crc.c | 88 +++++++++++++++++++++++-----------------
->   1 file changed, 50 insertions(+), 38 deletions(-)
->
-> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-> index ffcc2cc2e..e160bd901 100644
+>  tests/kms_rotation_crc.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c index
+> ffcc2cc2..07639236 100644
 > --- a/tests/kms_rotation_crc.c
 > +++ b/tests/kms_rotation_crc.c
-> @@ -49,6 +49,14 @@ struct p_point{
->   	float_t y;
->   };
->   
-> +enum rectangle_type {
-> +	rectangle,
-> +	square,
-> +	portrait,
-> +	landscape,
-> +	num_rectangle_types /* must be last */
-> +};
+> @@ -409,6 +409,10 @@ static void test_plane_rotation(data_t *data, int
+> plane_type, bool test_bad_form
+>  		if (IS_CHERRYVIEW(data->devid) && pipe != PIPE_B)
+>  			continue;
+> 
+> +		/* restricting the execution to 2 pipes to reduce execution time*/
+> +		if (pipe > PIPE_B && !data->extended)
+> +			break;
 > +
->   typedef struct {
->   	int gfx_fd;
->   	igt_display_t display;
-> @@ -70,6 +78,12 @@ typedef struct {
->   
->   	bool use_native_resolution;
->   	bool extended;
-> +
-> +	struct crc_rect_tag {
-> +		bool valid;
-> +		igt_crc_t ref_crc;
-> +		igt_crc_t flip_crc;
-> +	} crc_rect[num_rectangle_types];
->   } data_t;
->   
->   typedef struct {
-> @@ -190,14 +204,6 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
->   		igt_pipe_crc_start(data->pipe_crc);
->   }
->   
-> -enum rectangle_type {
-> -	rectangle,
-> -	square,
-> -	portrait,
-> -	landscape,
-> -	num_rectangle_types /* must be last */
-> -};
-> -
->   static void prepare_fbs(data_t *data, igt_output_t *output,
->   			igt_plane_t *plane, enum rectangle_type rect, uint32_t format)
->   {
-> @@ -266,43 +272,46 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
->   	 */
->   	igt_require(igt_display_has_format_mod(display, pixel_format, tiling));
->   
-> -	/*
-> -	 * Create a reference software rotated flip framebuffer.
-> -	 */
-> -	igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format, tiling,
-> -		      &data->fb_flip);
-> -	paint_squares(data, data->rotation, &data->fb_flip,
-> -		      flip_opacity);
-> -	igt_plane_set_fb(plane, &data->fb_flip);
-> -	if (plane->type != DRM_PLANE_TYPE_CURSOR)
-> -		igt_plane_set_position(plane, data->pos_x, data->pos_y);
-> -	igt_display_commit2(display, COMMIT_ATOMIC);
-> +	if (!data->crc_rect[rect].valid) {
-> +		/*
-> +		* Create a reference software rotated flip framebuffer.
-> +		*/
-> +		igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format, tiling,
-> +			&data->fb_flip);
-> +		paint_squares(data, data->rotation, &data->fb_flip,
-> +			flip_opacity);
-> +		igt_plane_set_fb(plane, &data->fb_flip);
-> +		if (plane->type != DRM_PLANE_TYPE_CURSOR)
-> +			igt_plane_set_position(plane, data->pos_x, data->pos_y);
-> +		igt_display_commit2(display, COMMIT_ATOMIC);
->   
-> -	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->flip_crc);
-> +		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].flip_crc);
-> +		igt_remove_fb(data->gfx_fd, &data->fb_flip);
-> +
-> +		/*
-> +		* Create a reference CRC for a software-rotated fb.
-> +		*/
-> +		igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format,
-> +			data->override_tiling ?: LOCAL_DRM_FORMAT_MOD_NONE, &data->fb_reference);
-> +		paint_squares(data, data->rotation, &data->fb_reference, 1.0);
-> +
-> +		igt_plane_set_fb(plane, &data->fb_reference);
-> +		if (plane->type != DRM_PLANE_TYPE_CURSOR)
-> +			igt_plane_set_position(plane, data->pos_x, data->pos_y);
-> +		igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].ref_crc);
-> +		data->crc_rect[rect].valid = true;
-> +	}
->   
->   	/*
->   	  * Prepare the non-rotated flip fb.
->   	  */
-> -	igt_remove_fb(data->gfx_fd, &data->fb_flip);
->   	igt_create_fb(data->gfx_fd, w, h, pixel_format, tiling,
->   		      &data->fb_flip);
->   	paint_squares(data, IGT_ROTATION_0, &data->fb_flip,
->   		      flip_opacity);
->   
-> -	/*
-> -	 * Create a reference CRC for a software-rotated fb.
-> -	 */
-> -	igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format,
-> -		      data->override_tiling ?: LOCAL_DRM_FORMAT_MOD_NONE, &data->fb_reference);
-> -	paint_squares(data, data->rotation, &data->fb_reference, 1.0);
-> -
-> -	igt_plane_set_fb(plane, &data->fb_reference);
-> -	if (plane->type != DRM_PLANE_TYPE_CURSOR)
-> -		igt_plane_set_position(plane, data->pos_x, data->pos_y);
-> -	igt_display_commit2(display, COMMIT_ATOMIC);
-> -
-> -	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->ref_crc);
-> -
->   	/*
->   	 * Prepare the plane with an non-rotated fb let the hw rotate it.
->   	 */
-> @@ -341,7 +350,7 @@ static void test_single_case(data_t *data, enum pipe pipe,
->   
->   	/* Check CRC */
->   	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
-> -	igt_assert_crc_equal(&data->ref_crc, &crc_output);
-> +	igt_assert_crc_equal(&data->crc_rect[rect].ref_crc, &crc_output);
->   
->   	/*
->   	 * If flips are requested flip to a different fb and
-> @@ -364,8 +373,7 @@ static void test_single_case(data_t *data, enum pipe pipe,
->   		}
->   		kmstest_wait_for_pageflip(data->gfx_fd);
->   		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
-> -		igt_assert_crc_equal(&data->flip_crc,
-> -				     &crc_output);
-> +		igt_assert_crc_equal(&data->crc_rect[rect].flip_crc, &crc_output);
->   	}
->   }
->   
-> @@ -396,6 +404,10 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
->   	igt_display_t *display = &data->display;
->   	igt_output_t *output;
->   	enum pipe pipe;
-> +	int c;
-> +
-> +	for (c = 0; c < num_rectangle_types; c++)
-> +		data->crc_rect[c].valid = false;
->   
->   	if (plane_type == DRM_PLANE_TYPE_CURSOR)
->   		igt_require(display->has_cursor_plane);
-
+>  		igt_output_set_pipe(output, pipe);
+> 
+>  		plane = igt_output_get_plane_type(output, plane_type);
+> --
+> 2.19.1
 
 _______________________________________________
 igt-dev mailing list
