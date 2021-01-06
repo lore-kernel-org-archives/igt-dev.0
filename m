@@ -1,78 +1,44 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: "Nayana, Venkata Ramana" <venkata.ramana.nayana@intel.com>
-Date: Wed, 6 Jan 2021 06:22:41 +0000
-Message-ID: <e23a47877414426ca157eb3c5f36d4e7@intel.com>
-References: <20210105112536.3284632-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20210105112536.3284632-1-chris@chris-wilson.co.uk>
-Content-Language: en-US
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-Subject: Re: [Intel-gfx] [PATCH i-g-t 1/2] i915/gem_ctx_isolation: Protect
- inject_reset_context() from banning
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+In-Reply-To: <20201204195007.10215-1-janusz.krzysztofik@linux.intel.com>
+References: <20201204195007.10215-1-janusz.krzysztofik@linux.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Wed, 06 Jan 2021 09:41:37 +0000
+Message-ID: <160992609788.26089.16341465923272154441@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] runner: Don't kill a test on taint
+ if watching timeouts
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-> -----Original Message-----
-> From: Chris Wilson <chris@chris-wilson.co.uk>
-> Sent: Tuesday, January 5, 2021 4:56 PM
-> To: intel-gfx@lists.freedesktop.org
-> Cc: igt-dev@lists.freedesktop.org; Chris Wilson <chris@chris-wilson.co.uk>;
-> Nayana, Venkata Ramana <venkata.ramana.nayana@intel.com>
-> Subject: [PATCH i-g-t 1/2] i915/gem_ctx_isolation: Protect
-> inject_reset_context() from banning
+Quoting Janusz Krzysztofik (2020-12-04 19:50:07)
+> We may still be interested in results of a test even if it has tainted
+> the kernel.  On the other hand, we need to kill the test on taint if no
+> other means of killing it on a jam is active.
 > 
-> Disable banning as we deliberately inject GPU resets to test isolation.
-> 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
-> ---
->  tests/i915/gem_ctx_isolation.c | 13 ++++++++++++-
->  1 file changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
-> index 58a35b487..4f1742685 100644
-> --- a/tests/i915/gem_ctx_isolation.c
-> +++ b/tests/i915/gem_ctx_isolation.c
-> @@ -762,10 +762,21 @@ static void isolation(int fd,  #define S4 (4 << 8)
-> #define SLEEP_MASK (0xf << 8)
-> 
-> +static uint32_t create_reset_context(int i915) {
-> +	struct drm_i915_gem_context_param param = {
-> +		.ctx_id = gem_context_clone_with_engines(i915, 0),
-> +		.param = I915_CONTEXT_PARAM_BANNABLE,
-> +	};
-> +
-> +	gem_context_set_param(i915, &param);
-> +	return param.ctx_id;
-> +}
-> +
->  static void inject_reset_context(int fd, const struct intel_execution_engine2
-> *e)  {
->  	struct igt_spin_factory opts = {
-> -		.ctx = gem_context_clone_with_engines(fd, 0),
-> +		.ctx = create_reset_context(fd),
->  		.engine = e->flags,
->  		.flags = IGT_SPIN_FAST,
->  	};
-> --
-> 2.30.0
+> If abort on both kernel taint or a timeout is requested, decrease all
+> potential timeouts significantly while the taint is detected instead of
+> aborting immediately.  However, report the taint as the reason of the
+> abort if a timeout decreased by the taint expires.
 
-Reviewed-by:  Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
+This has the nasty side effect of not stopping the test run after a
+kernel taint. Instead the next test inherits the tainted condition from
+the previous test and usually ends up being declared incomplete.
 
+False positives are frustrating.
+-Chris
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
