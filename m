@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0BF866E3D3
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 01:07:26 +0000 (UTC)
-Date: Wed, 6 Jan 2021 17:07:16 -0800
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Message-ID: <20210107010716.GF71919@orsosgc001.ra.intel.com>
-References: <20201228031940.178954-1-lionel.g.landwerlin@intel.com>
- <20201228031940.178954-4-lionel.g.landwerlin@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 76F6C6E409
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 08:30:51 +0000 (UTC)
+From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Date: Thu,  7 Jan 2021 02:48:14 +0530
+Message-Id: <20210106211814.3889647-1-arundhati.hagaragi@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201228031940.178954-4-lionel.g.landwerlin@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] lib/i915/perf: don't forget last
- timeline element
+Subject: [igt-dev] [PATCH i-g-t v3] tests/kms_plane: Added test description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,88 +14,82 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: B@freedesktop.org, Gupta@freedesktop.org, S@freedesktop.org, Nidhi1 <nidhi1.gupta@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Dec 28, 2020 at 05:19:40AM +0200, Lionel Landwerlin wrote:
->We're currently dropping the last element of the timeline.
+Added test description for test case
 
-Inside the for-loop we append timeline events on context switches 
-indicating what context ran and for how long, but that's not the case 
-for the append_timeline_event outside the for-loop.
+Cc: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
+Cc: B S, Karthik <Karthik.B.S@intel.com>
+Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
 
-Does the one outside indicate how long last_ctx_id ran before capture 
-ended (or we ran out of records)? Is it possible for the user to 
-distinguish the two? Just thinking out loud.
+v2: modified subtests description to be more specific. (Karthik)
+v3: added and modified description for subtests to be more specific. (Karthik)
+---
+ tests/kms_plane.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Otherwise:
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 2f0c9d9d..fd454289 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -1034,10 +1034,12 @@ run_tests_for_pipe_plane(data_t *data, enum pipe pipe)
+ 		igt_require(data->display.pipes[pipe].n_planes > 0);
+ 	}
+ 
++	igt_describe("verify the pixel formats for given plane and pipe");
+ 	igt_subtest_f("pixel-format-pipe-%s-planes",
+ 		      kmstest_pipe_name(pipe))
+ 		test_pixel_formats(data, pipe);
+ 
++	igt_describe("verify the pixel formats for given plane and pipe with clamping test");
+ 	igt_subtest_f("pixel-format-pipe-%s-planes-source-clamping",
+ 		      kmstest_pipe_name(pipe)) {
+ 		data->crop = 4;
+@@ -1045,29 +1047,35 @@ run_tests_for_pipe_plane(data_t *data, enum pipe pipe)
+ 	}
+ 
+ 	data->crop = 0;
++	igt_describe("verify plane position using two planes to create a partially covered screen");
+ 	igt_subtest_f("plane-position-covered-pipe-%s-planes",
+ 		      kmstest_pipe_name(pipe))
+ 		test_plane_position(data, pipe, 0);
+ 
++	igt_describe("verify plane position using two planes to create a fully covered screen");
+ 	igt_subtest_f("plane-position-hole-pipe-%s-planes",
+ 		      kmstest_pipe_name(pipe))
+ 		test_plane_position(data, pipe,
+ 				    TEST_POSITION_PARTIALLY_COVERED);
+ 
++	igt_describe("verify plane position using two planes to create a fully covered screen and check for DPMS");
+ 	igt_subtest_f("plane-position-hole-dpms-pipe-%s-planes",
+ 		      kmstest_pipe_name(pipe))
+ 		test_plane_position(data, pipe,
+ 				    TEST_POSITION_PARTIALLY_COVERED |
+ 				    TEST_DPMS);
+ 
++	igt_describe("verify the panning at top-left position using a plane");
+ 	igt_subtest_f("plane-panning-top-left-pipe-%s-planes",
+ 		      kmstest_pipe_name(pipe))
+ 		test_plane_panning(data, pipe, TEST_PANNING_TOP_LEFT);
+ 
++	igt_describe("verify the panning at bottom-right position using a plane");
+ 	igt_subtest_f("plane-panning-bottom-right-pipe-%s-planes",
+ 		      kmstest_pipe_name(pipe))
+ 		test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT);
+ 
++	igt_describe("verify panning at bottom-right position using a plane and executes system suspend cycles");
+ 	igt_subtest_f("plane-panning-bottom-right-suspend-pipe-%s-planes",
+ 		      kmstest_pipe_name(pipe))
+ 		test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT |
+-- 
+2.25.1
 
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-
-Thanks,
-Umesh
->
->Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
->Fixes: 43116ee368585d ("lib/i915-perf: add i915 perf data reader")
->---
-> lib/i915/perf_data_reader.c | 27 ++++++++++++++++++---------
-> 1 file changed, 18 insertions(+), 9 deletions(-)
->
->diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
->index 4b68fb502..065fe6066 100644
->--- a/lib/i915/perf_data_reader.c
->+++ b/lib/i915/perf_data_reader.c
->@@ -298,17 +298,23 @@ static void
-> generate_cpu_events(struct intel_perf_data_reader *reader)
-> {
-> 	uint32_t last_header_idx = 0;
->-	const struct drm_i915_perf_record_header *last_header = reader->records[0];
->+	const struct drm_i915_perf_record_header *last_header = reader->records[0],
->+		*current_header = reader->records[0];
->+	const uint8_t *start_report, *end_report;
->+	uint32_t last_ctx_id, current_ctx_id;
->+	uint64_t gpu_ts_start, gpu_ts_end;
->
-> 	for (uint32_t i = 1; i < reader->n_records; i++) {
->-		const struct drm_i915_perf_record_header *current_header =
->-			reader->records[i];
->-		const uint8_t *start_report = (const uint8_t *) (last_header + 1),
->-			*end_report = (const uint8_t *) (current_header + 1);
->-		uint32_t last_ctx_id = oa_report_ctx_id(&reader->devinfo, start_report),
->-			current_ctx_id = oa_report_ctx_id(&reader->devinfo, end_report);
->-		uint64_t gpu_ts_start = oa_report_timestamp(start_report),
->-			gpu_ts_end = oa_report_timestamp(end_report);
->+		current_header = reader->records[i];
->+
->+		start_report = (const uint8_t *) (last_header + 1);
->+		end_report = (const uint8_t *) (current_header + 1);
->+
->+		last_ctx_id = oa_report_ctx_id(&reader->devinfo, start_report);
->+		current_ctx_id = oa_report_ctx_id(&reader->devinfo, end_report);
->+
->+		gpu_ts_start = oa_report_timestamp(start_report);
->+		gpu_ts_end = oa_report_timestamp(end_report);
->
-> 		if (last_ctx_id == current_ctx_id)
-> 			continue;
->@@ -318,6 +324,9 @@ generate_cpu_events(struct intel_perf_data_reader *reader)
-> 		last_header = current_header;
-> 		last_header_idx = i;
-> 	}
->+
->+	if (last_header != current_header)
->+		append_timeline_event(reader, gpu_ts_start, gpu_ts_end, last_header_idx, reader->n_records - 1, last_ctx_id);
-> }
->
-> static void
->-- 
->2.30.0.rc2
->
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
