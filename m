@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 237986E415
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 09:23:40 +0000 (UTC)
+From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Date: Thu,  7 Jan 2021 03:41:06 +0530
+Message-Id: <20210106221106.3907099-1-arundhati.hagaragi@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 07 Jan 2021 09:05:30 -0000
-Message-ID: <161001033083.21183.16702322993574437959@emeril.freedesktop.org>
-References: <20210106211814.3889647-1-arundhati.hagaragi@intel.com>
-In-Reply-To: <20210106211814.3889647-1-arundhati.hagaragi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fplane=3A_Added_test_description_=28rev3=29?=
+Subject: [igt-dev] [PATCH i-g-t v4] tests/kms_plane: Added test description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,239 +14,84 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0979917379=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: B@freedesktop.org, Gupta@freedesktop.org, S@freedesktop.org, Nidhi1 <nidhi1.gupta@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0979917379==
-Content-Type: multipart/alternative;
- boundary="===============5901627014456670743=="
+Added test description for test case
 
---===============5901627014456670743==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Cc: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
+Cc: B S, Karthik <Karthik.B.S@intel.com>
+Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
 
-== Series Details ==
+v2: modified subtests description to be more specific. (Karthik)
+v3: added and modified description for subtests to be more specific. (Karthik)
+v4: modified description for subtests
+---
+ tests/kms_plane.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Series: tests/kms_plane: Added test description (rev3)
-URL   : https://patchwork.freedesktop.org/series/84776/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9555 -> IGTPW_5363
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5363 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@debugfs_test@read_all_entries:
-    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9555/fi-tgl-y/igt@debugfs_test@read_all_entries.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/fi-tgl-y/igt@debugfs_test@read_all_entries.html
-
-  * igt@gem_exec_fence@basic-busy@bcs0:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271]) +23 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#2190])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@i915_selftest@live@active:
-    - fi-kbl-r:           [PASS][5] -> [DMESG-FAIL][6] ([i915#2291] / [i915#666])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9555/fi-kbl-r/igt@i915_selftest@live@active.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/fi-kbl-r/igt@i915_selftest@live@active.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][7] ([i915#1886] / [i915#2291])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][9] ([fdo#109271] / [i915#533])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_basic@create-close:
-    - fi-tgl-y:           [DMESG-WARN][10] ([i915#402]) -> [PASS][11] +1 similar issue
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9555/fi-tgl-y/igt@gem_basic@create-close.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/fi-tgl-y/igt@gem_basic@create-close.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-  [i915#666]: https://gitlab.freedesktop.org/drm/intel/issues/666
-
-
-Participating hosts (41 -> 36)
-------------------------------
-
-  Additional (1): fi-kbl-soraka 
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5945 -> IGTPW_5363
-
-  CI-20190529: 20190529
-  CI_DRM_9555: b1c345a2ab4228064349ef589af63af37e1febd9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5363: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/index.html
-  IGT_5945: f0ad1a564956d6796d9ff09182c48d78fb00eefe @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/index.html
-
---===============5901627014456670743==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane: Added test description (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/84776/">https://patchwork.freedesktop.org/series/84776/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9555 -&gt; IGTPW_5363</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5363 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@read_all_entries:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9555/fi-tgl-y/igt@debugfs_test@read_all_entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/fi-tgl-y/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +23 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@active:</p>
-<ul>
-<li>fi-kbl-r:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9555/fi-kbl-r/igt@i915_selftest@live@active.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/fi-kbl-r/igt@i915_selftest@live@active.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/666">i915#666</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@gem_basic@create-close:<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9555/fi-tgl-y/igt@gem_basic@create-close.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/fi-tgl-y/igt@gem_basic@create-close.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (41 -&gt; 36)</h2>
-<p>Additional (1): fi-kbl-soraka <br />
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_5945 -&gt; IGTPW_5363</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9555: b1c345a2ab4228064349ef589af63af37e1febd9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5363: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5363/index.html<br />
-  IGT_5945: f0ad1a564956d6796d9ff09182c48d78fb00eefe @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============5901627014456670743==--
-
---===============0979917379==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 2f0c9d9d..8bd4bdb6 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -1034,10 +1034,12 @@ run_tests_for_pipe_plane(data_t *data, enum pipe pipe)
+ 		igt_require(data->display.pipes[pipe].n_planes > 0);
+ 	}
+ 
++	igt_describe("verify the pixel formats for given plane and pipe");
+ 	igt_subtest_f("pixel-format-pipe-%s-planes",
+ 		      kmstest_pipe_name(pipe))
+ 		test_pixel_formats(data, pipe);
+ 
++	igt_describe("verify the pixel formats for given plane and pipe with clamping test");
+ 	igt_subtest_f("pixel-format-pipe-%s-planes-source-clamping",
+ 		      kmstest_pipe_name(pipe)) {
+ 		data->crop = 4;
+@@ -1045,29 +1047,35 @@ run_tests_for_pipe_plane(data_t *data, enum pipe pipe)
+ 	}
+ 
+ 	data->crop = 0;
++	igt_describe("verify plane position using two planes to create a fully covered screen");
+ 	igt_subtest_f("plane-position-covered-pipe-%s-planes",
+ 		      kmstest_pipe_name(pipe))
+ 		test_plane_position(data, pipe, 0);
+ 
++	igt_describe("verify plane position using two planes to create a partially covered screen");
+ 	igt_subtest_f("plane-position-hole-pipe-%s-planes",
+ 		      kmstest_pipe_name(pipe))
+ 		test_plane_position(data, pipe,
+ 				    TEST_POSITION_PARTIALLY_COVERED);
+ 
++	igt_describe("verify plane position using two planes to create a partially covered screen and check for DPMS");
+ 	igt_subtest_f("plane-position-hole-dpms-pipe-%s-planes",
+ 		      kmstest_pipe_name(pipe))
+ 		test_plane_position(data, pipe,
+ 				    TEST_POSITION_PARTIALLY_COVERED |
+ 				    TEST_DPMS);
+ 
++	igt_describe("verify the panning at top-left position using a plane");
+ 	igt_subtest_f("plane-panning-top-left-pipe-%s-planes",
+ 		      kmstest_pipe_name(pipe))
+ 		test_plane_panning(data, pipe, TEST_PANNING_TOP_LEFT);
+ 
++	igt_describe("verify the panning at bottom-right position using a plane");
+ 	igt_subtest_f("plane-panning-bottom-right-pipe-%s-planes",
+ 		      kmstest_pipe_name(pipe))
+ 		test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT);
+ 
++	igt_describe("verify panning at bottom-right position using a plane and executes system suspend cycles");
+ 	igt_subtest_f("plane-panning-bottom-right-suspend-pipe-%s-planes",
+ 		      kmstest_pipe_name(pipe))
+ 		test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT |
+-- 
+2.25.1
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0979917379==--
