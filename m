@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5647389EF7
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Jan 2021 10:43:09 +0000 (UTC)
+From: "B, Jeevan" <jeevan.b@intel.com>
+Date: Wed, 6 Jan 2021 10:43:01 +0000
+Message-ID: <72424e6bffd949ac8933c0dcc73045d4@intel.com>
+References: <20201208231617.1346190-1-arundhati.hagaragi@intel.com>
+In-Reply-To: <20201208231617.1346190-1-arundhati.hagaragi@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-In-Reply-To: <20201204195007.10215-1-janusz.krzysztofik@linux.intel.com>
-References: <20201204195007.10215-1-janusz.krzysztofik@linux.intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 06 Jan 2021 09:41:37 +0000
-Message-ID: <160992609788.26089.16341465923272154441@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] runner: Don't kill a test on taint
- if watching timeouts
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_atomic_interruptible:add test
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,26 +22,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+To: "Hagaragi, Arundhati" <arundhati.hagaragi@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Hagaragi,
+ Arundhati" <arundhati.hagaragi@intel.com>, "Sharma, Swati2" <swati2.sharma@intel.com>, "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
+Cc: "Sharma@freedesktop.org" <Sharma@freedesktop.org>, "Gupta@freedesktop.org" <Gupta@freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Janusz Krzysztofik (2020-12-04 19:50:07)
-> We may still be interested in results of a test even if it has tainted
-> the kernel.  On the other hand, we need to kill the test on taint if no
-> other means of killing it on a jam is active.
-> 
-> If abort on both kernel taint or a timeout is requested, decrease all
-> potential timeouts significantly while the taint is detected instead of
-> aborting immediately.  However, report the taint as the reason of the
-> abort if a timeout decreased by the taint expires.
-
-This has the nasty side effect of not stopping the test run after a
-kernel taint. Instead the next test inherits the tainted condition from
-the previous test and usually ends up being declared incomplete.
-
-False positives are frustrating.
--Chris
+>-----Original Message-----
+>From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
+>arundhati.hagaragi@intel.com
+>Sent: Wednesday, December 9, 2020 4:46 AM
+>To: igt-dev@lists.freedesktop.org; Hagaragi, Arundhati
+><arundhati.hagaragi@intel.com>; Sharma, Swati2
+><swati2.sharma@intel.com>; Gupta, Nidhi1 <nidhi1.gupta@intel.com>
+>Cc: Gupta@freedesktop.org; Sharma@freedesktop.org
+>Subject: [igt-dev] [PATCH i-g-t] tests/kms_atomic_interruptible:add test
+>description
+>
+>From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+>
+>Added Test description for test case
+>
+>Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+>Cc: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
+>Cc: Sharma, Swati2 <swati2.sharma@intel.com>
+>---
+> tests/kms_atomic_interruptible.c | 7 +++++++
+> 1 file changed, 7 insertions(+)
+>
+>diff --git a/tests/kms_atomic_interruptible.c
+>b/tests/kms_atomic_interruptible.c
+>index 3ba75089..8410a6d0 100644
+>--- a/tests/kms_atomic_interruptible.c
+>+++ b/tests/kms_atomic_interruptible.c
+>@@ -284,6 +284,7 @@ igt_main
+> 		igt_require_sw_sync();
+> 	}
+>
+Change the statement like "Tests the interrupt properties" as the below statement is more generic
+>+	igt_describe("Tests the properties of default modeset");
+Also change default as legacy
+> 	igt_subtest_with_dynamic("legacy-setmode") {
+> 		for_each_pipe_with_valid_output(&display, pipe, output) {
+> 			igt_dynamic_f("%s-pipe-%s",
+>igt_output_name(output), kmstest_pipe_name(pipe)) @@ -292,6 +293,7
+>@@ igt_main
+> 		}
+> 	}
+>
+>+	igt_describe("Tests the properties of specified modeset");
+Same goes here
+> 	igt_subtest_with_dynamic("atomic-setmode") {
+> 		for_each_pipe_with_valid_output(&display, pipe, output) {
+> 			igt_dynamic_f("%s-pipe-%s",
+>igt_output_name(output), kmstest_pipe_name(pipe)) @@ -300,6 +302,7
+>@@ igt_main
+> 		}
+> 	}
+>
+>+	igt_describe("Tests the DPMS properties for CRTC");
+> 	igt_subtest_with_dynamic("legacy-dpms") {
+> 		for_each_pipe_with_valid_output(&display, pipe, output) {
+> 			igt_dynamic_f("%s-pipe-%s",
+>igt_output_name(output), kmstest_pipe_name(pipe)) @@ -308,6 +311,7
+>@@ igt_main
+> 		}
+> 	}
+>
+>+	igt_describe("Tests the flipping from user framebuffer to display
+>+port");
+> 	igt_subtest_with_dynamic("legacy-pageflip") {
+> 		for_each_pipe_with_valid_output(&display, pipe, output) {
+> 			igt_dynamic_f("%s-pipe-%s",
+>igt_output_name(output), kmstest_pipe_name(pipe)) @@ -316,6 +320,7
+>@@ igt_main
+> 		}
+> 	}
+>
+>+	igt_describe("Tests the cursor properties");
+> 	igt_subtest_with_dynamic("legacy-cursor") {
+> 		for_each_pipe_with_valid_output(&display, pipe, output) {
+> 			igt_dynamic_f("%s-pipe-%s",
+>igt_output_name(output), kmstest_pipe_name(pipe)) @@ -324,6 +329,7
+>@@ igt_main
+> 		}
+> 	}
+>
+>+	igt_describe("Tests plane properties with DRM mode
+>+hdisplay,vdisplay");
+> 	igt_subtest_with_dynamic("universal-setplane-primary") {
+> 		for_each_pipe_with_valid_output(&display, pipe, output) {
+> 			igt_dynamic_f("%s-pipe-%s",
+>igt_output_name(output), kmstest_pipe_name(pipe)) @@ -332,6 +338,7
+>@@ igt_main
+> 		}
+> 	}
+>
+>+	igt_describe("Tests plane properties with DRM mode 64, 64");
+> 	igt_subtest_with_dynamic("universal-setplane-cursor") {
+> 		for_each_pipe_with_valid_output(&display, pipe, output) {
+> 			igt_dynamic_f("%s-pipe-%s",
+>igt_output_name(output), kmstest_pipe_name(pipe))
+>--
+>2.25.1
+>
+>_______________________________________________
+>igt-dev mailing list
+>igt-dev@lists.freedesktop.org
+>https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
