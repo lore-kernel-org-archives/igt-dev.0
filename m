@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com
+ [IPv6:2a00:1450:4864:20::12a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 013936E497
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 15:51:59 +0000 (UTC)
+Received: by mail-lf1-x12a.google.com with SMTP id x20so15549814lfe.12
+ for <igt-dev@lists.freedesktop.org>; Thu, 07 Jan 2021 07:51:59 -0800 (PST)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Thu,  7 Jan 2021 17:51:53 +0200
+Message-Id: <20210107155154.6111-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 07 Jan 2021 15:34:54 -0000
-Message-ID: <161003369420.21182.2576925822799340793@emeril.freedesktop.org>
-References: <20210107104328.4020431-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20210107104328.4020431-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_lib=3A_Process_kernel_taints?=
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_rotation_crc: avoid
+ recalculating refecence crcs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,219 +18,181 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0366239111=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0366239111==
-Content-Type: multipart/alternative;
- boundary="===============8223414962547198297=="
+Get those reference crcs only once since they stay the same.
 
---===============8223414962547198297==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+v2: Need to make exception for HSW, there crcs seem to vary across
+rendering pipes.
 
-== Series Details ==
+This reduces generic rotation tests execution time on my ICL from 26s to 14s
 
-Series: series starting with [i-g-t,1/2] lib: Process kernel taints
-URL   : https://patchwork.freedesktop.org/series/85579/
-State : success
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ tests/kms_rotation_crc.c | 88 ++++++++++++++++++++++++----------------
+ 1 file changed, 52 insertions(+), 36 deletions(-)
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9562 -> IGTPW_5366
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5366 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_cs_nop@fork-gfx0:
-    - fi-tgl-y:           NOTRUN -> [SKIP][1] ([fdo#109315] / [i915#2575]) +16 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/fi-tgl-y/igt@amdgpu/amd_cs_nop@fork-gfx0.html
-
-  * igt@gem_exec_parallel@engines@contexts:
-    - fi-tgl-y:           [PASS][2] -> [FAIL][3] ([i915#2780])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9562/fi-tgl-y/igt@gem_exec_parallel@engines@contexts.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/fi-tgl-y/igt@gem_exec_parallel@engines@contexts.html
-
-  * igt@gem_flink_basic@flink-lifetime:
-    - fi-tgl-y:           [PASS][4] -> [DMESG-WARN][5] ([i915#402]) +1 similar issue
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9562/fi-tgl-y/igt@gem_flink_basic@flink-lifetime.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/fi-tgl-y/igt@gem_flink_basic@flink-lifetime.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-tgl-y:           [DMESG-WARN][6] ([i915#2411] / [i915#402]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9562/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@i915_selftest@live@sanitycheck:
-    - fi-kbl-7500u:       [DMESG-WARN][8] ([i915#2605]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9562/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - fi-tgl-y:           [DMESG-WARN][10] ([i915#402]) -> [PASS][11] +1 similar issue
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9562/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
-
-  
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [i915#2411]: https://gitlab.freedesktop.org/drm/intel/issues/2411
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#2605]: https://gitlab.freedesktop.org/drm/intel/issues/2605
-  [i915#2780]: https://gitlab.freedesktop.org/drm/intel/issues/2780
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-
-
-Participating hosts (43 -> 37)
-------------------------------
-
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5946 -> IGTPW_5366
-
-  CI-20190529: 20190529
-  CI_DRM_9562: fc8d32007355b4babc37b621b3c9a4e0fe998d27 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5366: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/index.html
-  IGT_5946: 641e5545213dd9a82d80a4e065013a138afb58ff @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/index.html
-
---===============8223414962547198297==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] lib: Process kernel taints</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/85579/">https://patchwork.freedesktop.org/series/85579/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9562 -&gt; IGTPW_5366</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5366 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_cs_nop@fork-gfx0:</p>
-<ul>
-<li>fi-tgl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/fi-tgl-y/igt@amdgpu/amd_cs_nop@fork-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +16 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_parallel@engines@contexts:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9562/fi-tgl-y/igt@gem_exec_parallel@engines@contexts.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/fi-tgl-y/igt@gem_exec_parallel@engines@contexts.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2780">i915#2780</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_flink_basic@flink-lifetime:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9562/fi-tgl-y/igt@gem_flink_basic@flink-lifetime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/fi-tgl-y/igt@gem_flink_basic@flink-lifetime.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9562/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2411">i915#2411</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@sanitycheck:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9562/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2605">i915#2605</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9562/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (43 -&gt; 37)</h2>
-<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_5946 -&gt; IGTPW_5366</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9562: fc8d32007355b4babc37b621b3c9a4e0fe998d27 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5366: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5366/index.html<br />
-  IGT_5946: 641e5545213dd9a82d80a4e065013a138afb58ff @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============8223414962547198297==--
-
---===============0366239111==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index ffcc2cc2e..be27103fa 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -49,6 +49,14 @@ struct p_point{
+ 	float_t y;
+ };
+ 
++enum rectangle_type {
++	rectangle,
++	square,
++	portrait,
++	landscape,
++	num_rectangle_types /* must be last */
++};
++
+ typedef struct {
+ 	int gfx_fd;
+ 	igt_display_t display;
+@@ -70,6 +78,12 @@ typedef struct {
+ 
+ 	bool use_native_resolution;
+ 	bool extended;
++
++	struct crc_rect_tag {
++		bool valid;
++		igt_crc_t ref_crc;
++		igt_crc_t flip_crc;
++	} crc_rect[num_rectangle_types];
+ } data_t;
+ 
+ typedef struct {
+@@ -190,14 +204,6 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
+ 		igt_pipe_crc_start(data->pipe_crc);
+ }
+ 
+-enum rectangle_type {
+-	rectangle,
+-	square,
+-	portrait,
+-	landscape,
+-	num_rectangle_types /* must be last */
+-};
+-
+ static void prepare_fbs(data_t *data, igt_output_t *output,
+ 			igt_plane_t *plane, enum rectangle_type rect, uint32_t format)
+ {
+@@ -267,42 +273,49 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
+ 	igt_require(igt_display_has_format_mod(display, pixel_format, tiling));
+ 
+ 	/*
+-	 * Create a reference software rotated flip framebuffer.
++	 * HSW will need to have those CRCs calculated each time, it
++	 * seems to behave different from other platforms.
+ 	 */
+-	igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format, tiling,
+-		      &data->fb_flip);
+-	paint_squares(data, data->rotation, &data->fb_flip,
+-		      flip_opacity);
+-	igt_plane_set_fb(plane, &data->fb_flip);
+-	if (plane->type != DRM_PLANE_TYPE_CURSOR)
+-		igt_plane_set_position(plane, data->pos_x, data->pos_y);
+-	igt_display_commit2(display, COMMIT_ATOMIC);
++	if (!data->crc_rect[rect].valid || IS_HASWELL(data->devid)) {
++		/*
++		* Create a reference software rotated flip framebuffer.
++		*/
++		igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format, tiling,
++			&data->fb_flip);
++		paint_squares(data, data->rotation, &data->fb_flip,
++			flip_opacity);
++		igt_plane_set_fb(plane, &data->fb_flip);
++		if (plane->type != DRM_PLANE_TYPE_CURSOR)
++			igt_plane_set_position(plane, data->pos_x, data->pos_y);
++		igt_display_commit2(display, COMMIT_ATOMIC);
+ 
+-	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->flip_crc);
++		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].flip_crc);
++		igt_remove_fb(data->gfx_fd, &data->fb_flip);
++
++		/*
++		* Create a reference CRC for a software-rotated fb.
++		*/
++		igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format,
++			data->override_tiling ?: LOCAL_DRM_FORMAT_MOD_NONE, &data->fb_reference);
++		paint_squares(data, data->rotation, &data->fb_reference, 1.0);
++
++		igt_plane_set_fb(plane, &data->fb_reference);
++		if (plane->type != DRM_PLANE_TYPE_CURSOR)
++			igt_plane_set_position(plane, data->pos_x, data->pos_y);
++		igt_display_commit2(display, COMMIT_ATOMIC);
++
++		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].ref_crc);
++		data->crc_rect[rect].valid = true;
++	}
+ 
+ 	/*
+ 	  * Prepare the non-rotated flip fb.
+ 	  */
+-	igt_remove_fb(data->gfx_fd, &data->fb_flip);
+ 	igt_create_fb(data->gfx_fd, w, h, pixel_format, tiling,
+ 		      &data->fb_flip);
+ 	paint_squares(data, IGT_ROTATION_0, &data->fb_flip,
+ 		      flip_opacity);
+ 
+-	/*
+-	 * Create a reference CRC for a software-rotated fb.
+-	 */
+-	igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format,
+-		      data->override_tiling ?: LOCAL_DRM_FORMAT_MOD_NONE, &data->fb_reference);
+-	paint_squares(data, data->rotation, &data->fb_reference, 1.0);
+-
+-	igt_plane_set_fb(plane, &data->fb_reference);
+-	if (plane->type != DRM_PLANE_TYPE_CURSOR)
+-		igt_plane_set_position(plane, data->pos_x, data->pos_y);
+-	igt_display_commit2(display, COMMIT_ATOMIC);
+-
+-	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->ref_crc);
+-
+ 	/*
+ 	 * Prepare the plane with an non-rotated fb let the hw rotate it.
+ 	 */
+@@ -341,7 +354,7 @@ static void test_single_case(data_t *data, enum pipe pipe,
+ 
+ 	/* Check CRC */
+ 	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
+-	igt_assert_crc_equal(&data->ref_crc, &crc_output);
++	igt_assert_crc_equal(&data->crc_rect[rect].ref_crc, &crc_output);
+ 
+ 	/*
+ 	 * If flips are requested flip to a different fb and
+@@ -364,8 +377,7 @@ static void test_single_case(data_t *data, enum pipe pipe,
+ 		}
+ 		kmstest_wait_for_pageflip(data->gfx_fd);
+ 		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
+-		igt_assert_crc_equal(&data->flip_crc,
+-				     &crc_output);
++		igt_assert_crc_equal(&data->crc_rect[rect].flip_crc, &crc_output);
+ 	}
+ }
+ 
+@@ -396,6 +408,10 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 	igt_display_t *display = &data->display;
+ 	igt_output_t *output;
+ 	enum pipe pipe;
++	int c;
++
++	for (c = 0; c < num_rectangle_types; c++)
++		data->crc_rect[c].valid = false;
+ 
+ 	if (plane_type == DRM_PLANE_TYPE_CURSOR)
+ 		igt_require(display->has_cursor_plane);
+-- 
+2.28.0
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0366239111==--
