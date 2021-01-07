@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E38889C8D
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 09:55:22 +0000 (UTC)
-Date: Thu, 7 Jan 2021 11:55:17 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20210107095517.GM7444@platvala-desk.ger.corp.intel.com>
-References: <20210106140035.3802594-1-chris@chris-wilson.co.uk>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F01DE6E40B
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 10:04:00 +0000 (UTC)
+References: <20201228031940.178954-1-lionel.g.landwerlin@intel.com>
+ <20201228031940.178954-3-lionel.g.landwerlin@intel.com>
+ <20210107002344.GE71919@orsosgc001.ra.intel.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Message-ID: <40ea28ac-d3b8-42b8-8cb5-fe143affea43@intel.com>
+Date: Thu, 7 Jan 2021 12:03:56 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210106140035.3802594-1-chris@chris-wilson.co.uk>
-Subject: Re: [igt-dev] [PATCH i-g-t] runner: Abort the run after a kernel
- taint is discovered
+In-Reply-To: <20210107002344.GE71919@orsosgc001.ra.intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 3/4] lib/i915/perf: fill up reader
+ devinfo default field
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,58 +20,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jan 06, 2021 at 02:00:35PM +0000, Chris Wilson wrote:
-> Since we no longer immediately abort a test upon a taint, that taint may
-> persist into the next test causing unrelated incompletes. Avoid the
-> tainted inheritance by aborting between tests if the kernel is tainted.
-> 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> ---
->  runner/executor.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/runner/executor.c b/runner/executor.c
-> index faf272d85..8cddcf1ce 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -1801,6 +1801,7 @@ bool execute(struct execute_state *state,
->  
->  	for (; state->next < job_list->size;
->  	     state->next++) {
-> +		unsigned long taints;
->  		char *reason = NULL;
->  		int result;
->  
-> @@ -1836,6 +1837,13 @@ bool execute(struct execute_state *state,
->  			break;
->  		}
->  
-> +		if (settings->abort_mask & ABORT_TAINT && tainted(&taints)) {
-> +			outf("Stopping the rung because the kernel is tainted: %#x.\n",
-> +			     taintss);
-> +			status = false;
-> +			break;
-> +		}
-> +
-
-We already call need_to_abort() a couple of lines above this:
-
-if (reason != NULL || (reason = need_to_abort(settings)) != NULL) {
-
-
--- 
-Petri Latvala
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gMDcvMDEvMjAyMSAwMjoyMywgVW1lc2ggTmVybGlnZSBSYW1hcHBhIHdyb3RlOgo+IE9uIE1v
+biwgRGVjIDI4LCAyMDIwIGF0IDA1OjE5OjM5QU0gKzAyMDAsIExpb25lbCBMYW5kd2VybGluIHdy
+b3RlOgo+PiBBIGJ1bmNoIG9mIGZpZWxkcyB3ZXJlIGxlZnQgdG8gMC4uLgo+Pgo+PiBTaWduZWQt
+b2ZmLWJ5OiBMaW9uZWwgTGFuZHdlcmxpbiA8bGlvbmVsLmcubGFuZHdlcmxpbkBpbnRlbC5jb20+
+Cj4KPgo+IFdoYXQgaXMgZGlmZmVyZW50IGJldHdlZW4gdGhlIGRldmluZm8gaW4gaW50ZWxfcGVy
+ZiB2cyB0aGUgZGV2aW5mbyBpbiAKPiBpbnRlbF9wZXJmX2RhdGFfcmVhZGVyLiBTaW5jZSB5b3Ug
+YWxyZWFkeSBoYXZlIGEgaW50ZWxfcGVyZiBvYmplY3QgCj4gaW5zaWRlIGludGVsX3BlcmZfZGF0
+YV9yZWFkZXIsIHdvbmRlcmluZyB3aHkgeW91IG5lZWQgdG8gY29weSBpdCBvdmVyIAo+IGFuZCB0
+aGVuIHNldCB0aGUgZGV2aWQgYW5kIHRpbWVzdGFtcF9mcmVxdWVuY3kuIFdoeSBub3QganVzdCBz
+ZXQgaXQgaW4gCj4gcmVhZGVyLT5wZXJmLT5kZXZpbmZvLgo+Cj4gSXJyZXNwZWN0aXZlLAo+Cj4g
+UmV2aWV3ZWQtYnk6IFVtZXNoIE5lcmxpZ2UgUmFtYXBwYSA8dW1lc2gubmVybGlnZS5yYW1hcHBh
+QGludGVsLmNvbT4KPgo+IFRoYW5rcywKPiBVbWVzaAoKCkkgZG9uJ3QgcmVtZW1iZXIgbXkgZXhh
+Y3QgcmVhc29uaW5nIGZvciBoYXZpbmcgdGhpcyB0d2ljZS4uLi4KCkFzIGZhciBhcyBJIGNhbiB0
+ZWxsIHRoZXkncmUgZXhhY3RseSB0aGUgc2FtZSwgSSBjb3VsZCBqdXN0IGNvcHkgaXQgCnN0cmFp
+Z2h0LgoKCldvdWxkIHRoYXQgYmUgb2theSBhcyBhIHJlcGxhY2VtZW50IGZvciB0aGlzIGNvbW1p
+dD8KCgotTGlvbmVsCgoKPgo+PiBGaXhlczogNDMxMTZlZTM2ODU4NWQgKCJsaWIvaTkxNS1wZXJm
+OiBhZGQgaTkxNSBwZXJmIGRhdGEgcmVhZGVyIikKPj4gLS0tCj4+IGxpYi9pOTE1L3BlcmZfZGF0
+YV9yZWFkZXIuYyB8IDkgKysrKystLS0tCj4+IDEgZmlsZSBjaGFuZ2VkLCA1IGluc2VydGlvbnMo
+KyksIDQgZGVsZXRpb25zKC0pCj4+Cj4+IGRpZmYgLS1naXQgYS9saWIvaTkxNS9wZXJmX2RhdGFf
+cmVhZGVyLmMgYi9saWIvaTkxNS9wZXJmX2RhdGFfcmVhZGVyLmMKPj4gaW5kZXggM2IwNWEyZTU0
+Li40YjY4ZmI1MDIgMTAwNjQ0Cj4+IC0tLSBhL2xpYi9pOTE1L3BlcmZfZGF0YV9yZWFkZXIuYwo+
+PiArKysgYi9saWIvaTkxNS9wZXJmX2RhdGFfcmVhZGVyLmMKPj4gQEAgLTExOSwxMiArMTE5LDEz
+IEBAIGZpbmRfbWV0cmljX3NldChzdHJ1Y3QgaW50ZWxfcGVyZiAqcGVyZiwgY29uc3QgCj4+IGNo
+YXIgKnN5bWJvbF9uYW1lKQo+Pgo+PiBzdGF0aWMgdm9pZAo+PiBpbml0X2RldmluZm8oc3RydWN0
+IGludGVsX3BlcmZfZGV2aW5mbyAqcGVyZl9kZXZpbmZvLAo+PiArwqDCoMKgwqDCoMKgwqDCoCBz
+dHJ1Y3QgaW50ZWxfcGVyZiAqcGVyZiwKPj4gwqDCoMKgwqDCoMKgwqDCoCBjb25zdCBzdHJ1Y3Qg
+aW50ZWxfZGV2aWNlX2luZm8gKmRldmluZm8sCj4+IMKgwqDCoMKgwqDCoMKgwqAgdWludDMyX3Qg
+ZGV2aWQsCj4+IMKgwqDCoMKgwqDCoMKgwqAgdWludDY0X3QgdGltZXN0YW1wX2ZyZXF1ZW5jeSkK
+Pj4gewo+PiArwqDCoMKgICpwZXJmX2RldmluZm8gPSBwZXJmLT5kZXZpbmZvOwo+PiDCoMKgwqDC
+oHBlcmZfZGV2aW5mby0+ZGV2aWQgPSBkZXZpZDsKPj4gLcKgwqDCoCBwZXJmX2RldmluZm8tPmdl
+biA9IGRldmluZm8tPmdlbjsKPj4gwqDCoMKgwqBwZXJmX2RldmluZm8tPnRpbWVzdGFtcF9mcmVx
+dWVuY3kgPSB0aW1lc3RhbXBfZnJlcXVlbmN5Owo+PiB9Cj4+Cj4+IEBAIC0yMDMsMTUgKzIwNCwx
+NSBAQCBwYXJzZV9kYXRhKHN0cnVjdCBpbnRlbF9wZXJmX2RhdGFfcmVhZGVyICpyZWFkZXIpCj4+
+IMKgwqDCoMKgwqDCoMKgIHJldHVybiBmYWxzZTsKPj4gwqDCoMKgwqB9Cj4+Cj4+IC3CoMKgwqAg
+aW5pdF9kZXZpbmZvKCZyZWFkZXItPmRldmluZm8sIGRldmluZm8sCj4+IC3CoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqAgcmVjb3JkX2luZm8tPmRldmljZV9pZCwKPj4gLcKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCByZWNvcmRfaW5mby0+dGltZXN0YW1wX2ZyZXF1ZW5jeSk7Cj4+IMKgwqDCoMKgcmVh
+ZGVyLT5wZXJmID0gaW50ZWxfcGVyZl9mb3JfZGV2aW5mbyhyZWNvcmRfaW5mby0+ZGV2aWNlX2lk
+LAo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBy
+ZWNvcmRfaW5mby0+ZGV2aWNlX3JldmlzaW9uLAo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZWNvcmRfaW5mby0+dGltZXN0YW1wX2ZyZXF1ZW5j
+eSwKPj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+cmVjb3JkX2luZm8tPmd0X21pbl9mcmVxdWVuY3ksCj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJlY29yZF9pbmZvLT5ndF9tYXhfZnJlcXVlbmN5
+LAo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAm
+cmVjb3JkX3RvcG9sb2d5LT50b3BvbG9neSk7Cj4+ICvCoMKgwqAgaW5pdF9kZXZpbmZvKCZyZWFk
+ZXItPmRldmluZm8sIHJlYWRlci0+cGVyZiwgZGV2aW5mbywKPj4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCByZWNvcmRfaW5mby0+ZGV2aWNlX2lkLAo+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgIHJlY29yZF9pbmZvLT50aW1lc3RhbXBfZnJlcXVlbmN5KTsKPj4KPj4gwqDCoMKgwqByZWFk
+ZXItPm1ldHJpY19zZXRfbmFtZSA9IHJlY29yZF9pbmZvLT5tZXRyaWNfc2V0X25hbWU7Cj4+IMKg
+wqDCoMKgcmVhZGVyLT5tZXRyaWNfc2V0X3V1aWQgPSByZWNvcmRfaW5mby0+bWV0cmljX3NldF91
+dWlkOwo+PiAtLSAKPj4gMi4zMC4wLnJjMgo+PgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5m
+cmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9pZ3QtZGV2Cg==
