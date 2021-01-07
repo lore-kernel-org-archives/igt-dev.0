@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A3E0D6E43D
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 11:58:58 +0000 (UTC)
-Date: Thu, 7 Jan 2021 12:58:54 +0100
-From: Katarzyna Dec <katarzyna.dec@intel.com>
-Message-ID: <20210107115854.GN6508@kdec5-desk.ger.corp.intel.com>
-References: <20201028154639.41616-1-apoorva1.singh@intel.com>
- <20201120145548.GH6508@kdec5-desk.ger.corp.intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE9416E441
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 12:06:37 +0000 (UTC)
+From: "Shankar, Uma" <uma.shankar@intel.com>
+Date: Thu, 7 Jan 2021 12:06:32 +0000
+Message-ID: <bd83cee092fa4a809721844be9e6cf21@intel.com>
+References: <20210105110843.29189-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20210105110843.29189-1-nidhi1.gupta@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201120145548.GH6508@kdec5-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/i915_hangman: Added test
- description for test case
+Subject: Re: [igt-dev] [PATCH i-g-t v6] tests/kms_atomic_transition:reduce
+ execution time
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,75 +22,455 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: apoorva1.singh@intel.com, igt-dev@lists.freedesktop.org
+To: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Nov 20, 2020 at 03:55:48PM +0100, Katarzyna Dec wrote:
-> On Wed, Oct 28, 2020 at 09:16:39PM +0530, apoorva1.singh@intel.com wrote:
-> > From: Apoorva Singh <apoorva1.singh@intel.com>
-> > 
-> > Added test and subtests description
-> > 
-> > Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
-> > Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
-> > ---
-> >  tests/i915/i915_hangman.c | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> > 
-> > diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-> > index 2b341c4b..4340d680 100644
-> > --- a/tests/i915/i915_hangman.c
-> > +++ b/tests/i915/i915_hangman.c
-> > @@ -36,6 +36,8 @@
-> >  #include "igt_sysfs.h"
-> >  #include "igt_debugfs.h"
-> >  
-> > +IGT_TEST_DESCRIPTION("Tests the handling of hang scenarios");
-> > +
-> >  #ifndef I915_PARAM_CMD_PARSER_VERSION
-> >  #define I915_PARAM_CMD_PARSER_VERSION       28
-> >  #endif
-> > @@ -274,9 +276,11 @@ igt_main
-> >  		igt_require(has_error_state(sysfs));
-> >  	}
-> >  
-> > +	igt_describe("Validates the error state after manually triggering a hang");
-> >  	igt_subtest("error-state-basic")
-> >  		test_error_state_basic();
-> >  
-> > +	igt_describe("For each engine, validates the error state after injecting a hanging batch");
-> >  	igt_subtest_with_dynamic("error-state-capture") {
-> >  		__for_each_physical_engine(device, e) {
-> >  			igt_dynamic_f("%s", e->name)
-> > @@ -284,6 +288,7 @@ igt_main
-> >  		}
-> >  	}
-> >  
-> > +	igt_describe("Verify that execution of unterminated batch buffer triggers a hang");
-> >  	igt_subtest("hangcheck-unterminated")
-> >  		hangcheck_unterminated();
-> Maybe too verbose, but LGTM.
-> Reviewed-by: Katarzyna Dec <katarzyna.dec@intel.com>
-> 
-> Kasia :)
-Hello,
-I wanted to merge this patch, but there is a conflict. Could you resend it
-rebased?
 
-Kasia
+
+> -----Original Message-----
+> From: Nidhi Gupta <nidhi1.gupta@intel.com>
+> Sent: Tuesday, January 5, 2021 4:39 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: B S, Karthik <karthik.b.s@intel.com>; Shankar, Uma
+> <uma.shankar@intel.com>; Gupta, Nidhi1 <nidhi1.gupta@intel.com>
+> Subject: [PATCH i-g-t v6] tests/kms_atomic_transition:reduce execution time
 > 
-> >  
-> > -- 
-> > 2.25.1
-> > 
-> > _______________________________________________
-> > igt-dev mailing list
-> > igt-dev@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+> v1: All the subtests are using for_each_pipe_with_valid_output function which
+
+No need to say v1, instead describe what this change is for. Add any timing benefits
+wrt execution time.
+
+> will execute on all the possible combination of pipe and output to reduce the
+> execution time replaced the function with for_each_pipe_with_single_output
+> this will loop over all the pipes but at most once.
+> 
+> v2: kms_atomic_transition test is taking minimum of 69.5s time to execute on CI.
+> To reduce the execution time this patch will add the change which will run the
+> test on 1 HDR plane, 1 SDR UV plane, 1 SDR Y plane and skip the rest of the
+> planes.
+> 
+> v3: combined v1 and v2 in one patch.
+> 
+> v4: -restricted execution of all the subtests to
+>     2 pipes. (Uma)
+>     -Modified skip_plane() function. (Uma)
+> 
+> v5: -added a extended flag, if it is set but the user
+
+s/but/by
+
+>     test will be executed on all the pipes otherwise will be
+>     executed only on 2 pipes. (Karthik)
+> 
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>  tests/kms_atomic_transition.c | 136 +++++++++++++++++++++++++++-------
+>  1 file changed, 110 insertions(+), 26 deletions(-)
+> 
+> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c index
+> 02206f0a..1d0faa67 100644
+> --- a/tests/kms_atomic_transition.c
+> +++ b/tests/kms_atomic_transition.c
+> @@ -50,6 +50,10 @@ int *timeline;
+>  pthread_t *thread;
+>  int *seqno;
+> 
+> +typedef struct {
+> +	bool extended;
+> +} data_t;
+
+I think its good to add igt_display_t *display in this structure itself.
+
+>  static void
+>  run_primary_test(igt_display_t *display, enum pipe pipe, igt_output_t *output)
+> { @@ -120,8 +124,35 @@ static void configure_fencing(igt_plane_t *plane)
+>  	igt_assert_eq(ret, 0);
+>  }
+> 
+> +static bool skip_plane(igt_display_t *display, data_t *data,
+> +igt_plane_t *plane) 
+
+If you do the above, then pass just the data_t and display will come along with it.
+Do it universally in the patch at all places.
+
+{
+> +	int index = plane->index;
+> +
+> +	if (data->extended)
+> +		return false;
+> +
+> +	if (!is_i915_device(display->drm_fd))
+> +		return false;
+> +
+> +	if (plane->type == DRM_PLANE_TYPE_CURSOR)
+> +		return false;
+> +
+> +	if (intel_gen(intel_get_drm_devid(display->drm_fd)) < 11)
+> +		return false;
+> +
+> +	/*
+> +	 * Test 1 HDR plane, 1 SDR UV plane, 1 SDR Y plane.
+> +	 *
+> +	 * Kernel registers planes in the hardware Z order:
+> +	 * 0,1,2 HDR planes
+> +	 * 3,4 SDR UV planes
+> +	 * 5,6 SDR Y planes
+> +	 */
+> +	return index != 0 && index != 3 && index != 5; }
+> +
+>  static int
+> -wm_setup_plane(igt_display_t *display, enum pipe pipe,
+> +wm_setup_plane(igt_display_t *display, data_t *data, enum pipe pipe,
+>  	       uint32_t mask, struct plane_parms *parms, bool fencing)  {
+>  	igt_plane_t *plane;
+> @@ -135,6 +166,9 @@ wm_setup_plane(igt_display_t *display, enum pipe pipe,
+>  	for_each_plane_on_pipe(display, pipe, plane) {
+>  		int i = plane->index;
+> 
+> +		if (skip_plane(display, data, plane))
+> +			continue;
+> +
+>  		if (!mask || !(parms[i].mask & mask)) {
+>  			if (plane->values[IGT_PLANE_FB_ID]) {
+>  				igt_plane_set_fb(plane, NULL);
+> @@ -205,7 +239,8 @@ static void set_sprite_wh(igt_display_t *display, enum
+> pipe pipe,  #define is_atomic_check_plane_size_errno(errno) \
+>  		(errno == -EINVAL)
+> 
+> -static void setup_parms(igt_display_t *display, enum pipe pipe,
+> +static void setup_parms(igt_display_t *display, data_t *data,
+> +			enum pipe pipe,
+>  			const drmModeModeInfo *mode,
+>  			struct igt_fb *primary_fb,
+>  			struct igt_fb *argb_fb,
+> @@ -298,7 +333,7 @@ static void setup_parms(igt_display_t *display, enum
+> pipe pipe,
+>  		set_sprite_wh(display, pipe, parms, sprite_fb,
+>  			      alpha, sprite_width, sprite_height);
+> 
+> -		wm_setup_plane(display, pipe, (1 << n_planes) - 1, parms, false);
+> +		wm_setup_plane(display, data, pipe, (1 << n_planes) - 1, parms,
+> +false);
+>  		ret = igt_display_try_commit_atomic(display,
+> DRM_MODE_ATOMIC_TEST_ONLY | DRM_MODE_ATOMIC_ALLOW_MODESET,
+> NULL);
+>  		igt_assert(!is_atomic_check_failure_errno(ret));
+> 
+> @@ -437,7 +472,7 @@ static void wait_for_transition(igt_display_t *display,
+> enum pipe pipe, bool non
+>   * so test this and make sure it works.
+>   */
+>  static void
+> -run_transition_test(igt_display_t *display, enum pipe pipe, igt_output_t
+> *output,
+> +run_transition_test(igt_display_t *display, data_t *data, enum pipe
+> +pipe, igt_output_t *output,
+>  		enum transition_type type, bool nonblocking, bool fencing)  {
+>  	struct igt_fb fb, argb_fb, sprite_fb;
+> @@ -470,7 +505,7 @@ run_transition_test(igt_display_t *display, enum pipe
+> pipe, igt_output_t *output
+> 
+>  	igt_output_set_pipe(output, pipe);
+> 
+> -	wm_setup_plane(display, pipe, 0, NULL, false);
+> +	wm_setup_plane(display, data, pipe, 0, NULL, false);
+> 
+>  	if (flags & DRM_MODE_ATOMIC_ALLOW_MODESET) {
+>  		igt_output_set_pipe(output, PIPE_NONE); @@ -482,7 +517,7 @@
+> run_transition_test(igt_display_t *display, enum pipe pipe, igt_output_t *output
+> 
+>  	igt_display_commit2(display, COMMIT_ATOMIC);
+> 
+> -	setup_parms(display, pipe, mode, &fb, &argb_fb, &sprite_fb, parms,
+> &iter_max);
+> +	setup_parms(display, data, pipe, mode, &fb, &argb_fb, &sprite_fb,
+> +parms, &iter_max);
+> 
+>  	/*
+>  	 * In some configurations the tests may not run to completion with all
+> @@ -490,7 +525,7 @@ run_transition_test(igt_display_t *display, enum pipe
+> pipe, igt_output_t *output
+>  	 * planes to fix this
+>  	 */
+>  	while (1) {
+> -		wm_setup_plane(display, pipe, iter_max - 1, parms, false);
+> +		wm_setup_plane(display, data, pipe, iter_max - 1, parms, false);
+> 
+>  		if (fencing)
+>  			igt_pipe_request_out_fence(pipe_obj);
+> @@ -524,7 +559,7 @@ run_transition_test(igt_display_t *display, enum pipe
+> pipe, igt_output_t *output
+>  	if (type == TRANSITION_AFTER_FREE) {
+>  		int fence_fd = -1;
+> 
+> -		wm_setup_plane(display, pipe, 0, parms, fencing);
+> +		wm_setup_plane(display, data, pipe, 0, parms, fencing);
+> 
+>  		atomic_commit(display, pipe, flags, (void *)(unsigned long)0,
+> fencing);
+>  		if (fencing) {
+> @@ -560,7 +595,7 @@ run_transition_test(igt_display_t *display, enum pipe
+> pipe, igt_output_t *output
+> 
+>  		igt_output_set_pipe(output, pipe);
+> 
+> -		if (!wm_setup_plane(display, pipe, i, parms, fencing))
+> +		if (!wm_setup_plane(display, data, pipe, i, parms, fencing))
+>  			continue;
+> 
+>  		atomic_commit(display, pipe, flags, (void *)(unsigned long)i,
+> fencing); @@ -569,7 +604,7 @@ run_transition_test(igt_display_t *display,
+> enum pipe pipe, igt_output_t *output
+>  		if (type == TRANSITION_MODESET_DISABLE) {
+>  			igt_output_set_pipe(output, PIPE_NONE);
+> 
+> -			if (!wm_setup_plane(display, pipe, 0, parms, fencing))
+> +			if (!wm_setup_plane(display, data, pipe, 0, parms,
+> fencing))
+>  				continue;
+> 
+>  			atomic_commit(display, pipe, flags, (void *) 0UL, fencing);
+> @@ -586,7 +621,7 @@ run_transition_test(igt_display_t *display, enum pipe
+> pipe, igt_output_t *output
+>  				    n_enable_planes < pipe_obj->n_planes)
+>  					continue;
+> 
+> -				if (!wm_setup_plane(display, pipe, j, parms,
+> fencing))
+> +				if (!wm_setup_plane(display, data, pipe, j, parms,
+> fencing))
+>  					continue;
+> 
+>  				if (type >= TRANSITION_MODESET)
+> @@ -595,7 +630,7 @@ run_transition_test(igt_display_t *display, enum pipe
+> pipe, igt_output_t *output
+>  				atomic_commit(display, pipe, flags, (void
+> *)(unsigned long) j, fencing);
+>  				wait_for_transition(display, pipe, nonblocking,
+> fencing);
+> 
+> -				if (!wm_setup_plane(display, pipe, i, parms,
+> fencing))
+> +				if (!wm_setup_plane(display, data, pipe, i, parms,
+> fencing))
+>  					continue;
+> 
+>  				if (type >= TRANSITION_MODESET)
+> @@ -913,7 +948,30 @@ static bool output_is_internal_panel(igt_output_t
+> *output)
+>  	}
+>  }
+> 
+> -igt_main
+> +static int opt_handler(int opt, int opt_index, void *_data) {
+> +	data_t *data = _data;
+> +
+> +	switch (opt) {
+> +	case 'e':
+> +		data->extended = true;
+> +		break;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +static const struct option long_opts[] = {
+> +	{ .name = "extended", .has_arg = false, .val = 'e', },
+> +	{}
+> +};
+> +
+> +static const char help_str[] =
+> +	"  --extended\t\tRun the extended tests\n";
+> +
+> +static data_t data;
+> +
+> +igt_main_args("", long_opts, help_str, opt_handler, &data)
+>  {
+>  	igt_display_t display;
+>  	igt_output_t *output;
+> @@ -935,48 +993,63 @@ igt_main
+>  	}
+> 
+>  	igt_subtest("plane-primary-toggle-with-vblank-wait")
+> -		for_each_pipe_with_valid_output(&display, pipe, output)
+> +		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			if (pipe >= 2 && !data.extended)
+> +				break;
+>  			run_primary_test(&display, pipe, output);
+> +		}
+> 
+>  	igt_subtest_with_dynamic("plane-all-transition") {
+>  		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			if (pipe >= 2 && !data.extended)
+> +				break;
+>  			igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
+> kmstest_pipe_name(pipe))
+> -				run_transition_test(&display, pipe, output,
+> TRANSITION_PLANES, false, false);
+> +				run_transition_test(&display, &data, pipe,
+> output,
+> +TRANSITION_PLANES, false, false);
+>  		}
+>  	}
+> 
+>  	igt_subtest_with_dynamic("plane-all-transition-fencing") {
+>  		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			if (pipe >= 2 && !data.extended)
+> +				break;
+>  			igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
+> kmstest_pipe_name(pipe))
+> -				run_transition_test(&display, pipe, output,
+> TRANSITION_PLANES, false, true);
+> +				run_transition_test(&display, &data, pipe,
+> output,
+> +TRANSITION_PLANES, false, true);
+>  		}
+>  	}
+> 
+>  	igt_subtest_with_dynamic("plane-all-transition-nonblocking") {
+>  		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			if (pipe >= 2 && !data.extended)
+> +				break;
+>  			igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
+> kmstest_pipe_name(pipe))
+> -				run_transition_test(&display, pipe, output,
+> TRANSITION_PLANES, true, false);
+> +				run_transition_test(&display, &data, pipe,
+> output,
+> +TRANSITION_PLANES, true, false);
+>  		}
+>  	}
+> 
+>  	igt_subtest_with_dynamic("plane-all-transition-nonblocking-fencing") {
+>  		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			if (pipe >= 2 && data.extended)
+> +				break;
+>  			igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
+> kmstest_pipe_name(pipe))
+> -				run_transition_test(&display, pipe, output,
+> TRANSITION_PLANES, true, true);
+> +				run_transition_test(&display, &data, pipe,
+> output,
+> +TRANSITION_PLANES, true, true);
+>  		}
+>  	}
+> 
+>  	igt_subtest_with_dynamic("plane-use-after-nonblocking-unbind") {
+>  		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			if (pipe >= 2 && !data.extended)
+> +				break;
+>  			igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
+> kmstest_pipe_name(pipe))
+> -				run_transition_test(&display, pipe, output,
+> TRANSITION_AFTER_FREE, true, false);
+> +				run_transition_test(&display, &data, pipe,
+> output,
+> +TRANSITION_AFTER_FREE, true, false);
+>  		}
+>  	}
+> 
+>  	igt_subtest_with_dynamic("plane-use-after-nonblocking-unbind-
+> fencing") {
+>  		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			if (pipe >= 2 && !data.extended)
+> +				break;
+>  			igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
+> kmstest_pipe_name(pipe))
+> -				run_transition_test(&display, pipe, output,
+> TRANSITION_AFTER_FREE, true, true);
+> +				run_transition_test(&display, &data, pipe,
+> output,
+> +TRANSITION_AFTER_FREE, true, true);
+>  		}
+>  	}
+> 
+> @@ -987,45 +1060,56 @@ igt_main
+>  	 */
+>  	igt_subtest_with_dynamic("plane-all-modeset-transition")
+>  		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			if (pipe >= 2 && !data.extended)
+> +				break;
+>  			if (output_is_internal_panel(output))
+>  				continue;
+> 
+>  			igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
+> kmstest_pipe_name(pipe))
+> -				run_transition_test(&display, pipe, output,
+> TRANSITION_MODESET, false, false);
+> +				run_transition_test(&display, &data, pipe,
+> output,
+> +TRANSITION_MODESET, false, false);
+>  		}
+> 
+>  	igt_subtest_with_dynamic("plane-all-modeset-transition-fencing")
+>  		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			if (pipe >= 2 && !data.extended)
+> +				break;
+>  			if (output_is_internal_panel(output))
+>  				continue;
+> 
+>  			igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
+> kmstest_pipe_name(pipe))
+> -				run_transition_test(&display, pipe, output,
+> TRANSITION_MODESET, false, true);
+> +				run_transition_test(&display, &data, pipe,
+> output,
+> +TRANSITION_MODESET, false, true);
+>  		}
+> 
+>  	igt_subtest_with_dynamic("plane-all-modeset-transition-internal-
+> panels") {
+>  		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			if (pipe >= 2 && !data.extended)
+> +				break;
+>  			if (!output_is_internal_panel(output))
+>  				continue;
+> 
+>  			igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
+> kmstest_pipe_name(pipe))
+> -				run_transition_test(&display, pipe, output,
+> TRANSITION_MODESET_FAST, false, false);
+> +				run_transition_test(&display, &data, pipe,
+> output,
+> +TRANSITION_MODESET_FAST, false, false);
+>  		}
+>  	}
+> 
+>  	igt_subtest_with_dynamic("plane-all-modeset-transition-fencing-
+> internal-panels") {
+>  		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			if (pipe >= 2 && !data.extended)
+> +				break;
+>  			if (!output_is_internal_panel(output))
+>  				continue;
+> 
+>  			igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
+> kmstest_pipe_name(pipe))
+> -				run_transition_test(&display, pipe, output,
+> TRANSITION_MODESET_FAST, false, true);
+> +				run_transition_test(&display, &data, pipe,
+> output,
+> +TRANSITION_MODESET_FAST, false, true);
+>  		}
+>  	}
+> 
+>  	igt_subtest("plane-toggle-modeset-transition")
+> -		for_each_pipe_with_valid_output(&display, pipe, output)
+> -			run_transition_test(&display, pipe, output,
+> TRANSITION_MODESET_DISABLE, false, false);
+> +		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			if (pipe >= 2 && !data.extended)
+> +				break;
+> +			run_transition_test(&display, &data, pipe, output,
+> TRANSITION_MODESET_DISABLE, false, false);
+> +		}
+> 
+>  	igt_subtest_with_dynamic("modeset-transition") {
+>  		for (i = 1; i <= count; i++) {
+> --
+> 2.26.2
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
