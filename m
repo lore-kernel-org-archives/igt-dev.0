@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2EA566E372
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 00:07:27 +0000 (UTC)
+Date: Wed, 6 Jan 2021 16:07:26 -0800
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Message-ID: <20210107000726.GC71919@orsosgc001.ra.intel.com>
+References: <20201228031940.178954-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 06 Jan 2021 14:31:37 -0000
-Message-ID: <160994349763.18708.5105526958615184748@emeril.freedesktop.org>
-References: <20210106140035.3802594-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20210106140035.3802594-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBydW5u?=
- =?utf-8?q?er=3A_Abort_the_run_after_a_kernel_taint_is_discovered?=
+Content-Disposition: inline
+In-Reply-To: <20201228031940.178954-1-lionel.g.landwerlin@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/4] lib/i915/perf: fix
+ intel_perf_devinfo gen field
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,90 +18,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogcnVubmVyOiBBYm9ydCB0aGUgcnVuIGFmdGVy
-IGEga2VybmVsIHRhaW50IGlzIGRpc2NvdmVyZWQKVVJMICAgOiBodHRwczovL3BhdGNod29yay5m
-cmVlZGVza3RvcC5vcmcvc2VyaWVzLzg1NTUwLwpTdGF0ZSA6IGZhaWx1cmUKCj09IFN1bW1hcnkg
-PT0KCklHVCBwYXRjaHNldCBidWlsZCBmYWlsZWQgb24gbGF0ZXN0IHN1Y2Nlc3NmdWwgYnVpbGQK
-ZjBhZDFhNTY0OTU2ZDY3OTZkOWZmMDkxODJjNDhkNzhmYjAwZWVmZSBpOTE1L2dlbV9jdHhfZW5n
-aW5lczogU2tpcCBzdG9yZS1kd29yZCB0ZXN0aW5nIG9uIHVudXNhYmxlIGVuZ2luZXMKClszNzEv
-NDE1XSBMaW5raW5nIHRhcmdldCB0b29scy9pbnRlbF9ncHVfdGltZS4KWzM3Mi80MTVdIExpbmtp
-bmcgdGFyZ2V0IHRvb2xzL2ludGVsX2d0dC4KWzM3My80MTVdIExpbmtpbmcgdGFyZ2V0IHRvb2xz
-L2ludGVsX2d1Y19sb2dnZXIuClszNzQvNDE1XSBMaW5raW5nIHRhcmdldCB0b29scy9pbnRlbF9s
-aWQuClszNzUvNDE1XSBMaW5raW5nIHRhcmdldCB0b29scy9pbnRlbF9pbmZvZnJhbWVzLgpbMzc2
-LzQxNV0gTGlua2luZyB0YXJnZXQgdG9vbHMvaW50ZWxfcGFuZWxfZml0dGVyLgpbMzc3LzQxNV0g
-TGlua2luZyB0YXJnZXQgdG9vbHMvaW50ZWxfb3ByZWdpb25fZGVjb2RlLgpbMzc4LzQxNV0gTGlu
-a2luZyB0YXJnZXQgdG9vbHMvaW50ZWxfcmVnX2NoZWNrZXIuClszNzkvNDE1XSBMaW5raW5nIHRh
-cmdldCB0b29scy9pbnRlbF9zdGVwcGluZy4KWzM4MC80MTVdIExpbmtpbmcgdGFyZ2V0IHRvb2xz
-L2ludGVsX3Jlc2lkZW5jeS4KWzM4MS80MTVdIExpbmtpbmcgdGFyZ2V0IHRvb2xzL2ludGVsX3Zi
-dF9kZWNvZGUuClszODIvNDE1XSBMaW5raW5nIHRhcmdldCB0b29scy9pbnRlbF93YXRlcm1hcmsu
-ClszODMvNDE1XSBMaW5raW5nIHRhcmdldCB0b29scy9pbnRlbF9nZW1faW5mby4KWzM4NC80MTVd
-IExpbmtpbmcgdGFyZ2V0IHRvb2xzL2ludGVsX2d2dGdfdGVzdC4KWzM4NS80MTVdIExpbmtpbmcg
-dGFyZ2V0IHRvb2xzL2RwY2RfcmVnLgpbMzg2LzQxNV0gTGlua2luZyB0YXJnZXQgdG9vbHMvbHNn
-cHUuClszODcvNDE1XSBMaW5raW5nIHRhcmdldCB0b29scy9pbnRlbF9mcmFtZWJ1ZmZlcl9kdW1w
-LgpbMzg4LzQxNV0gTGlua2luZyB0YXJnZXQgdG9vbHMvaW50ZWxfZHVtcF9kZWNvZGUuClszODkv
-NDE1XSBMaW5raW5nIHRhcmdldCB0b29scy9pbnRlbF9lcnJvcl9kZWNvZGUuClszOTAvNDE1XSBM
-aW5raW5nIHRhcmdldCB0b29scy9pbnRlbF9wZXJmX2NvdW50ZXJzLgpbMzkxLzQxNV0gTGlua2lu
-ZyB0YXJnZXQgdG9vbHMvaW50ZWxfZHBfY29tcGxpYW5jZS4KWzM5Mi80MTVdIExpbmtpbmcgdGFy
-Z2V0IHRvb2xzL2ludGVsX2wzX3Bhcml0eS4KWzM5My80MTVdIExpbmtpbmcgdGFyZ2V0IHRvb2xz
-L2ludGVsX3JlZy4KWzM5NC80MTVdIExpbmtpbmcgdGFyZ2V0IHRvb2xzL2FtZF9oZG1pX2NvbXBs
-aWFuY2UuClszOTUvNDE1XSBMaW5raW5nIHRhcmdldCB0b29scy9pOTE1LXBlcmYvaTkxNS1wZXJm
-LXJlYWRlci4KWzM5Ni80MTVdIExpbmtpbmcgdGFyZ2V0IHRvb2xzL21zbV9kcF9jb21wbGlhbmNl
-LgpbMzk3LzQxNV0gTGlua2luZyB0YXJnZXQgdG9vbHMvaTkxNS1wZXJmL2k5MTUtcGVyZi1jb25m
-aWdzLgpbMzk4LzQxNV0gTGlua2luZyB0YXJnZXQgcnVubmVyL3Rlc3RkYXRhL3N1Y2Nlc3N0ZXN0
-LgpbMzk5LzQxNV0gTGlua2luZyB0YXJnZXQgdG9vbHMvbnVsbF9zdGF0ZV9nZW4vaW50ZWxfbnVs
-bF9zdGF0ZV9nZW4uCls0MDAvNDE1XSBMaW5raW5nIHRhcmdldCBydW5uZXIvdGVzdGRhdGEvbm8t
-c3VidGVzdHMuCls0MDEvNDE1XSBMaW5raW5nIHRhcmdldCBydW5uZXIvdGVzdGRhdGEvc2tpcHBl
-cnMuCls0MDIvNDE1XSBMaW5raW5nIHRhcmdldCBydW5uZXIvdGVzdGRhdGEvYWJvcnQtZHluYW1p
-Yy4KWzQwMy80MTVdIExpbmtpbmcgdGFyZ2V0IHJ1bm5lci90ZXN0ZGF0YS9keW5hbWljLgpbNDA0
-LzQxNV0gQ29tcGlsaW5nIEMgb2JqZWN0ICdydW5uZXIvcnVubmVyQEBpZ3RfcnVubmVyQHN0YS9l
-eGVjdXRvci5jLm8nLgpGQUlMRUQ6IHJ1bm5lci9ydW5uZXJAQGlndF9ydW5uZXJAc3RhL2V4ZWN1
-dG9yLmMubyAKY2NhY2hlIGNjIC1JcnVubmVyL3J1bm5lckBAaWd0X3J1bm5lckBzdGEgLUlydW5u
-ZXIgLUkuLi9ydW5uZXIgLUkuLi9pbmNsdWRlL2RybS11YXBpIC1JbGliIC1JLi4vbGliIC1JLi4v
-bGliL3N0dWJzL3N5c2NhbGxzIC1JLiAtSS4uLyAtSS91c3IvaW5jbHVkZS9qc29uLWMgLUkvdXNy
-L2luY2x1ZGUvZ2xpYi0yLjAgLUkvdXNyL2xpYi94ODZfNjQtbGludXgtZ251L2dsaWItMi4wL2lu
-Y2x1ZGUgLUkvaG9tZS9jaWRybS9rZXJuZWxfaGVhZGVycy9pbmNsdWRlIC1mZGlhZ25vc3RpY3Mt
-Y29sb3I9YWx3YXlzIC1waXBlIC1EX0ZJTEVfT0ZGU0VUX0JJVFM9NjQgLVdhbGwgLVdpbnZhbGlk
-LXBjaCAtV2V4dHJhIC1zdGQ9Z251MTEgLU8yIC1nIC1EX0dOVV9TT1VSQ0UgLWluY2x1ZGUgY29u
-ZmlnLmggLURfRk9SVElGWV9TT1VSQ0U9MiAtV2JhZC1mdW5jdGlvbi1jYXN0IC1XZGVjbGFyYXRp
-b24tYWZ0ZXItc3RhdGVtZW50IC1XZm9ybWF0PTIgLVdpbXBsaWNpdC1mYWxsdGhyb3VnaD0wIC1X
-bG9naWNhbC1vcCAtV21pc3NpbmctZGVjbGFyYXRpb25zIC1XbWlzc2luZy1mb3JtYXQtYXR0cmli
-dXRlIC1XbWlzc2luZy1ub3JldHVybiAtV21pc3NpbmctcHJvdG90eXBlcyAtV25lc3RlZC1leHRl
-cm5zIC1Xb2xkLXN0eWxlLWRlZmluaXRpb24gLVdwb2ludGVyLWFyaXRoIC1XcmVkdW5kYW50LWRl
-Y2xzIC1Xc2hhZG93IC1Xc3RyaWN0LXByb3RvdHlwZXMgLVd1bmluaXRpYWxpemVkIC1XdW51c2Vk
-IC1Xbm8tY2xvYmJlcmVkIC1Xbm8tbWF5YmUtdW5pbml0aWFsaXplZCAtV25vLW1pc3NpbmctZmll
-bGQtaW5pdGlhbGl6ZXJzIC1Xbm8tcG9pbnRlci1hcml0aCAtV25vLXNpZ24tY29tcGFyZSAtV25v
-LXR5cGUtbGltaXRzIC1Xbm8tdW51c2VkLXBhcmFtZXRlciAtV25vLXVudXNlZC1yZXN1bHQgLVdl
-cnJvcj1hZGRyZXNzIC1XZXJyb3I9YXJyYXktYm91bmRzIC1XZXJyb3I9aW1wbGljaXQgLVdlcnJv
-cj1pbml0LXNlbGYgLVdlcnJvcj1pbnQtdG8tcG9pbnRlci1jYXN0IC1XZXJyb3I9bWFpbiAtV2Vy
-cm9yPW1pc3NpbmctYnJhY2VzIC1XZXJyb3I9bm9ubnVsbCAtV2Vycm9yPXBvaW50ZXItdG8taW50
-LWNhc3QgLVdlcnJvcj1yZXR1cm4tdHlwZSAtV2Vycm9yPXNlcXVlbmNlLXBvaW50IC1XZXJyb3I9
-dHJpZ3JhcGhzIC1XZXJyb3I9d3JpdGUtc3RyaW5ncyAtZm5vLWJ1aWx0aW4tbWFsbG9jIC1mbm8t
-YnVpbHRpbi1jYWxsb2MgLWZjb21tb24gLWZQSUMgLURIQVZFX09QSU5HPTEgIC1NRCAtTVEgJ3J1
-bm5lci9ydW5uZXJAQGlndF9ydW5uZXJAc3RhL2V4ZWN1dG9yLmMubycgLU1GICdydW5uZXIvcnVu
-bmVyQEBpZ3RfcnVubmVyQHN0YS9leGVjdXRvci5jLm8uZCcgLW8gJ3J1bm5lci9ydW5uZXJAQGln
-dF9ydW5uZXJAc3RhL2V4ZWN1dG9yLmMubycgLWMgLi4vcnVubmVyL2V4ZWN1dG9yLmMKLi4vcnVu
-bmVyL2V4ZWN1dG9yLmM6IEluIGZ1bmN0aW9uIOKAmGV4ZWN1dGXigJk6Ci4uL3J1bm5lci9leGVj
-dXRvci5jOjE4NDI6OTogZXJyb3I6IOKAmHRhaW50c3PigJkgdW5kZWNsYXJlZCAoZmlyc3QgdXNl
-IGluIHRoaXMgZnVuY3Rpb24pOyBkaWQgeW91IG1lYW4g4oCYdGFpbnRz4oCZPwogICAgICAgICB0
-YWludHNzKTsKICAgICAgICAgXn5+fn5+fgouLi9ydW5uZXIvZXhlY3V0b3IuYzo1NDozOTogbm90
-ZTogaW4gZGVmaW5pdGlvbiBvZiBtYWNybyDigJhvdXRm4oCZCiAjZGVmaW5lIG91dGYoZm10Li4u
-KSBfX2xvZ2ZfXyhzdGRvdXQsIGZtdCkKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgXn5+Ci4uL3J1bm5lci9leGVjdXRvci5jOjE4NDI6OTogbm90ZTogZWFjaCB1bmRlY2xh
-cmVkIGlkZW50aWZpZXIgaXMgcmVwb3J0ZWQgb25seSBvbmNlIGZvciBlYWNoIGZ1bmN0aW9uIGl0
-IGFwcGVhcnMgaW4KICAgICAgICAgdGFpbnRzcyk7CiAgICAgICAgIF5+fn5+fn4KLi4vcnVubmVy
-L2V4ZWN1dG9yLmM6NTQ6Mzk6IG5vdGU6IGluIGRlZmluaXRpb24gb2YgbWFjcm8g4oCYb3V0ZuKA
-mQogI2RlZmluZSBvdXRmKGZtdC4uLikgX19sb2dmX18oc3Rkb3V0LCBmbXQpCiAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5+fgpuaW5qYTogYnVpbGQgc3RvcHBlZDogc3Vi
-Y29tbWFuZCBmYWlsZWQuCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
-cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-Cg==
+On Mon, Dec 28, 2020 at 05:19:37AM +0200, Lionel Landwerlin wrote:
+>Inadvertently left this field uninitialized (or rather at the wrong 0
+>value).
+>
+>Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+
+Thanks,
+Umesh
+>Fixes: 53f8f541caae20 ("lib: Add i915_perf library")
+>---
+> lib/i915/perf.c | 1 +
+> 1 file changed, 1 insertion(+)
+>
+>diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+>index 53c0a9dcc..ef0f0b437 100644
+>--- a/lib/i915/perf.c
+>+++ b/lib/i915/perf.c
+>@@ -168,6 +168,7 @@ intel_perf_for_devinfo(uint32_t device_id,
+> 	 * 2x6 does not have 2 samplers).
+> 	 */
+> 	perf->devinfo.devid = device_id;
+>+	perf->devinfo.gen = devinfo->gen;
+> 	perf->devinfo.revision = revision;
+> 	perf->devinfo.timestamp_frequency = timestamp_frequency;
+> 	perf->devinfo.gt_min_freq = gt_min_freq;
+>-- 
+>2.30.0.rc2
+>
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
