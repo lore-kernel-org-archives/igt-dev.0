@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E3628915F
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 09:44:39 +0000 (UTC)
-Date: Thu, 7 Jan 2021 10:44:34 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210107094434.GA13666@zkempczy-mobl2>
-References: <20210105133538.27804-1-lukasz.laguna@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210105133538.27804-1-lukasz.laguna@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_device_scan: Add slot selector
+In-Reply-To: <20210107094002.GL7444@platvala-desk.ger.corp.intel.com>
+References: <20201204195007.10215-1-janusz.krzysztofik@linux.intel.com>
+ <160992609788.26089.16341465923272154441@build.alporthouse.com>
+ <20210107094002.GL7444@platvala-desk.ger.corp.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Thu, 07 Jan 2021 09:49:23 +0000
+Message-ID: <161001296371.839.15704890818022752458@build.alporthouse.com>
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v2] runner: Don't kill a
+ test on taint if watching timeouts
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,74 +16,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?B?xYF1a2FzeiDFgWFndW5h?= <lukasz.laguna@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBKYW4gMDUsIDIwMjEgYXQgMDI6MzU6MzhQTSArMDEwMCwgxYF1a2FzeiDFgWFndW5h
-IHdyb3RlOgo+IEFkZCBzZWxlY3RvciBmb3IgZGlyZWN0IGRldmljZSBzZWxlY3Rpb24sIGJhc2Vk
-IG9uIGhhcmR3YXJlIChQQ0llKSBwYXRoLgo+IEl0IGFsbG93cyB0byBjaG9vc2UgZGV2aWNlIGlu
-IHNwZWNpZmllZCBkb21haW4sIGJ1cywgc2xvdCBhbmQgZnVuY3Rpb24uCj4gCj4gRXhhbXBsZToK
-PiBnZW1fZXhlY19iYXNpYyAtLWRldmljZSAicGNpOnNsb3Q9MDAwMDowMTowMC4wIgo+IAo+IFNp
-Z25lZC1vZmYtYnk6IMWBdWthc3ogxYFhZ3VuYSA8bHVrYXN6LmxhZ3VuYUBpbnRlbC5jb20+Cj4g
-LS0tCj4gIGxpYi9pZ3RfZGV2aWNlX3NjYW4uYyB8IDIzICsrKysrKysrKysrKysrKysrKysrLS0t
-Cj4gIDEgZmlsZSBjaGFuZ2VkLCAyMCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQo+IAo+
-IGRpZmYgLS1naXQgYS9saWIvaWd0X2RldmljZV9zY2FuLmMgYi9saWIvaWd0X2RldmljZV9zY2Fu
-LmMKPiBpbmRleCBiM2IyYmY0ZC4uMmI3ZDlhM2EgMTAwNjQ0Cj4gLS0tIGEvbGliL2lndF9kZXZp
-Y2Vfc2Nhbi5jCj4gKysrIGIvbGliL2lndF9kZXZpY2Vfc2Nhbi5jCj4gQEAgLTgzLDkgKzgzLDkg
-QEAKPiAgICogICBkZXZpY2Ugc2VsZWN0aW9uLCBlLmcuIGluIGF1dG9tYXRlZCBleGVjdXRpb24g
-c2V0dGluZy4gSW4gc3VjaCBzY2VuYXJpb3MKPiAgICogICBwbGVhc2UgY29uc2lkZXIgdXNpbmcg
-c3lzLCBwY2kgb3IgcGxhdGZvcm0gZmlsdGVycyBpbnN0ZWFkLgo+ICAgKgo+IC0gKiAtIHBjaTog
-c2VsZWN0IGRldmljZSB1c2luZyBQQ0kgdmVuZG9yIGFuZCBkZXZpY2UgcHJvcGVydGllcwo+ICsg
-KiAtIHBjaTogc2VsZWN0IGRldmljZSB1c2luZyBQQ0kgc2xvdCBvciB2ZW5kb3IgYW5kIGRldmlj
-ZSBwcm9wZXJ0aWVzCj4gICAqICAgfFs8IS0tIGxhbmd1YWdlPSJwbGFpbiIgLS0+Cj4gLSAqICAg
-cGNpOlt2ZW5kb3I9JTA0eC9uYW1lXVssZGV2aWNlPSUwNHhdWyxjYXJkPSVkXQo+ICsgKiAgIHBj
-aTpbdmVuZG9yPSUwNHgvbmFtZV1bLGRldmljZT0lMDR4XVssY2FyZD0lZF0gfCBbc2xvdD0lMDR4
-OiUwMng6JTAyeC4leF0KPiAgICogICBdfAo+ICAgKgo+ICAgKiAgIEZpbHRlciBhbGxvd3MgZGV2
-aWNlIHNlbGVjdGlvbiB1c2luZyB2ZW5kb3IgKGhleCBvciBuYW1lKSwgZGV2aWNlIGlkCj4gQEAg
-LTExNyw2ICsxMTcsMTIgQEAKPiAgICoKPiAgICogICBJdCBzZWxlY3RzIHRoZSBzZWNvbmQgb25l
-Lgo+ICAgKgo+ICsgKiAgIEFub3RoZXIgcG9zc2liaWxpdHkgaXMgdG8gc2VsZWN0IGRldmljZSB1
-c2luZyBhIFBDSSBzbG90Ogo+ICsgKgo+ICsgKiAgIHxbPCEtLSBsYW5ndWFnZT0icGxhaW4iIC0t
-Pgo+ICsgKiAgIHBjaTpzbG90PTAwMDA6MDE6MDAuMAo+ICsgKiAgIF18Cj4gKyAqCj4gICAqICAg
-QXMgb3JkZXIgdGhlIG9uIFBDSSBidXMgZG9lc24ndCBjaGFuZ2UgKHVubGVzcyB5b3UnbGwgYWRk
-IG5ldyBkZXZpY2Ugb3IKPiAgICogICByZW9yZGVyIGV4aXN0aW5nIG9uZSkgZGV2aWNlIHNlbGVj
-dGlvbiB1c2luZyB0aGlzIGZpbHRlciB3aWxsIGFsd2F5cwo+ICAgKiAgIHJldHVybiB5b3Ugc2Ft
-ZSBkZXZpY2UgcmVnYXJkbGVzcyB0aGUgb3JkZXIgb2YgZW51bWVyYXRpb24uCj4gQEAgLTExMzgs
-NiArMTE0NCw3IEBAIHN0cnVjdCBmaWx0ZXIgewo+ICAJCWNoYXIgKnZlbmRvcjsKPiAgCQljaGFy
-ICpkZXZpY2U7Cj4gIAkJY2hhciAqY2FyZDsKPiArCQljaGFyICpzbG90Owo+ICAJCWNoYXIgKmRy
-bTsKPiAgCQljaGFyICpkcml2ZXI7Cj4gIAl9IGRhdGE7Cj4gQEAgLTExNTQsNiArMTE2MSw3IEBA
-IHN0YXRpYyB2b2lkIGZpbGxfZmlsdGVyX2RhdGEoc3RydWN0IGZpbHRlciAqZmlsdGVyLCBjb25z
-dCBjaGFyICprZXksIGNvbnN0IGNoYXIKPiAgCV9fZmlsbF9rZXkodmVuZG9yKTsKPiAgCV9fZmls
-bF9rZXkoZGV2aWNlKTsKPiAgCV9fZmlsbF9rZXkoY2FyZCk7Cj4gKwlfX2ZpbGxfa2V5KHNsb3Qp
-Owo+ICAJX19maWxsX2tleShkcm0pOwo+ICAJX19maWxsX2tleShkcml2ZXIpOwo+ICAjdW5kZWYg
-X19maWxsX2tleQo+IEBAIC0xMjU4LDYgKzEyNjYsMTEgQEAgc3RhdGljIHN0cnVjdCBpZ3RfbGlz
-dF9oZWFkICpmaWx0ZXJfcGNpKGNvbnN0IHN0cnVjdCBmaWx0ZXJfY2xhc3MgKmZjbHMsCj4gIAo+
-ICAJREJHKCJmaWx0ZXIgcGNpXG4iKTsKPiAgCj4gKwlpZiAoZmlsdGVyLT5kYXRhLnNsb3QgJiYg
-KGZpbHRlci0+ZGF0YS52ZW5kb3IgfHwgZmlsdGVyLT5kYXRhLmRldmljZSB8fCBmaWx0ZXItPmRh
-dGEuY2FyZCkpIHsKPiArCQlmcHJpbnRmKHN0ZGVyciwgIlNsb3QgcGFyYW1ldGVyIGNhbiBub3Qg
-YmUgdXNlZCB3aXRoIG90aGVyIHBhcmFtZXRlcnNcbiIpOwo+ICsJCWV4aXQoRVhJVF9GQUlMVVJF
-KTsKPiArCX0KPiArCj4gIAlpZiAoZmlsdGVyLT5kYXRhLmNhcmQpIHsKPiAgCQlzc2NhbmYoZmls
-dGVyLT5kYXRhLmNhcmQsICIlZCIsICZjYXJkKTsKPiAgCQlpZiAoY2FyZCA8IDApIHsKPiBAQCAt
-MTI3MSw2ICsxMjg0LDEwIEBAIHN0YXRpYyBzdHJ1Y3QgaWd0X2xpc3RfaGVhZCAqZmlsdGVyX3Bj
-aShjb25zdCBzdHJ1Y3QgZmlsdGVyX2NsYXNzICpmY2xzLAo+ICAJCWlmICghaXNfcGNpX3N1YnN5
-c3RlbShkZXYpKQo+ICAJCQljb250aW51ZTsKPiAgCj4gKwkJLyogU2tpcCBpZiAnc2xvdCcgZG9l
-c24ndCBtYXRjaCAqLwo+ICsJCWlmIChmaWx0ZXItPmRhdGEuc2xvdCAmJiAhc3RyZXF1YWwoZmls
-dGVyLT5kYXRhLnNsb3QsIGRldi0+cGNpX3Nsb3RfbmFtZSkpCj4gKwkJCWNvbnRpbnVlOwo+ICsK
-PiAgCQkvKiBTa2lwIGlmICd2ZW5kb3InIGRvZXNuJ3QgbWF0Y2ggKGhleCBvciBuYW1lKSAqLwo+
-ICAJCWlmIChmaWx0ZXItPmRhdGEudmVuZG9yICYmICFpc192ZW5kb3JfbWF0Y2hlZChkZXYsIGZp
-bHRlci0+ZGF0YS52ZW5kb3IpKQo+ICAJCQljb250aW51ZTsKPiBAQCAtMTMyNSw3ICsxMzQyLDcg
-QEAgc3RhdGljIHN0cnVjdCBmaWx0ZXJfY2xhc3MgZmlsdGVyX2RlZmluaXRpb25fbGlzdFtdID0g
-ewo+ICAJewo+ICAJCS5uYW1lID0gInBjaSIsCj4gIAkJLmZpbHRlcl9mdW5jdGlvbiA9IGZpbHRl
-cl9wY2ksCj4gLQkJLmhlbHAgPSAicGNpOlt2ZW5kb3I9JTA0eC9uYW1lXVssZGV2aWNlPSUwNHhd
-WyxjYXJkPSVkXSIsCj4gKwkJLmhlbHAgPSAicGNpOlt2ZW5kb3I9JTA0eC9uYW1lXVssZGV2aWNl
-PSUwNHhdWyxjYXJkPSVkXSB8IFtzbG90PSUwNHg6JTAyeDolMDJ4LiV4XSIsCj4gIAkJLmRldGFp
-bCA9ICJ2ZW5kb3IgaXMgaGV4IG51bWJlciBvciB2ZW5kb3IgbmFtZVxuIiwKPiAgCX0sCj4gIAl7
-Cj4gLS0gCj4gMi4yOC4wCj4gCgpHcmVhdCwgbG9va3MgZ29vZC4gCgpSZXZpZXdlZC1ieTogWmJp
-Z25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Cl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGlu
-ZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+Quoting Petri Latvala (2021-01-07 09:40:02)
+> On Wed, Jan 06, 2021 at 09:41:37AM +0000, Chris Wilson wrote:
+> > Quoting Janusz Krzysztofik (2020-12-04 19:50:07)
+> > > We may still be interested in results of a test even if it has tainted
+> > > the kernel.  On the other hand, we need to kill the test on taint if no
+> > > other means of killing it on a jam is active.
+> > > 
+> > > If abort on both kernel taint or a timeout is requested, decrease all
+> > > potential timeouts significantly while the taint is detected instead of
+> > > aborting immediately.  However, report the taint as the reason of the
+> > > abort if a timeout decreased by the taint expires.
+> > 
+> > This has the nasty side effect of not stopping the test run after a
+> > kernel taint. Instead the next test inherits the tainted condition from
+> > the previous test and usually ends up being declared incomplete.
+> > 
+> > False positives are frustrating.
+> > -Chris
+> 
+> 
+> Do you have a link to a test run where this happened? This patch
+> didn't change the between-tests abort checks.
+
+The taint is from the warnings in the penultimate test:
+https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9550/shard-skl7/igt_runner20.txt
+-Chris
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
