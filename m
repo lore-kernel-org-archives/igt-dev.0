@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 282576E3D0
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 00:23:46 +0000 (UTC)
-Date: Wed, 6 Jan 2021 16:23:44 -0800
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BF866E3D3
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 01:07:26 +0000 (UTC)
+Date: Wed, 6 Jan 2021 17:07:16 -0800
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Message-ID: <20210107002344.GE71919@orsosgc001.ra.intel.com>
+Message-ID: <20210107010716.GF71919@orsosgc001.ra.intel.com>
 References: <20201228031940.178954-1-lionel.g.landwerlin@intel.com>
- <20201228031940.178954-3-lionel.g.landwerlin@intel.com>
+ <20201228031940.178954-4-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201228031940.178954-3-lionel.g.landwerlin@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] lib/i915/perf: fill up reader
- devinfo default field
+In-Reply-To: <20201228031940.178954-4-lionel.g.landwerlin@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 4/4] lib/i915/perf: don't forget last
+ timeline element
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,68 +27,77 @@ To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Dec 28, 2020 at 05:19:39AM +0200, Lionel Landwerlin wrote:
->A bunch of fields were left to 0...
->
->Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+On Mon, Dec 28, 2020 at 05:19:40AM +0200, Lionel Landwerlin wrote:
+>We're currently dropping the last element of the timeline.
 
+Inside the for-loop we append timeline events on context switches 
+indicating what context ran and for how long, but that's not the case 
+for the append_timeline_event outside the for-loop.
 
-What is different between the devinfo in intel_perf vs the devinfo in 
-intel_perf_data_reader. Since you already have a intel_perf object 
-inside intel_perf_data_reader, wondering why you need to copy it over 
-and then set the devid and timestamp_frequency. Why not just set it in 
-reader->perf->devinfo.
+Does the one outside indicate how long last_ctx_id ran before capture 
+ended (or we ran out of records)? Is it possible for the user to 
+distinguish the two? Just thinking out loud.
 
-Irrespective,
+Otherwise:
 
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
 Thanks,
 Umesh
-
+>
+>Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 >Fixes: 43116ee368585d ("lib/i915-perf: add i915 perf data reader")
 >---
-> lib/i915/perf_data_reader.c | 9 +++++----
-> 1 file changed, 5 insertions(+), 4 deletions(-)
+> lib/i915/perf_data_reader.c | 27 ++++++++++++++++++---------
+> 1 file changed, 18 insertions(+), 9 deletions(-)
 >
 >diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
->index 3b05a2e54..4b68fb502 100644
+>index 4b68fb502..065fe6066 100644
 >--- a/lib/i915/perf_data_reader.c
 >+++ b/lib/i915/perf_data_reader.c
->@@ -119,12 +119,13 @@ find_metric_set(struct intel_perf *perf, const char *symbol_name)
->
-> static void
-> init_devinfo(struct intel_perf_devinfo *perf_devinfo,
->+	     struct intel_perf *perf,
-> 	     const struct intel_device_info *devinfo,
-> 	     uint32_t devid,
-> 	     uint64_t timestamp_frequency)
+>@@ -298,17 +298,23 @@ static void
+> generate_cpu_events(struct intel_perf_data_reader *reader)
 > {
->+	*perf_devinfo = perf->devinfo;
-> 	perf_devinfo->devid = devid;
->-	perf_devinfo->gen = devinfo->gen;
-> 	perf_devinfo->timestamp_frequency = timestamp_frequency;
+> 	uint32_t last_header_idx = 0;
+>-	const struct drm_i915_perf_record_header *last_header = reader->records[0];
+>+	const struct drm_i915_perf_record_header *last_header = reader->records[0],
+>+		*current_header = reader->records[0];
+>+	const uint8_t *start_report, *end_report;
+>+	uint32_t last_ctx_id, current_ctx_id;
+>+	uint64_t gpu_ts_start, gpu_ts_end;
+>
+> 	for (uint32_t i = 1; i < reader->n_records; i++) {
+>-		const struct drm_i915_perf_record_header *current_header =
+>-			reader->records[i];
+>-		const uint8_t *start_report = (const uint8_t *) (last_header + 1),
+>-			*end_report = (const uint8_t *) (current_header + 1);
+>-		uint32_t last_ctx_id = oa_report_ctx_id(&reader->devinfo, start_report),
+>-			current_ctx_id = oa_report_ctx_id(&reader->devinfo, end_report);
+>-		uint64_t gpu_ts_start = oa_report_timestamp(start_report),
+>-			gpu_ts_end = oa_report_timestamp(end_report);
+>+		current_header = reader->records[i];
+>+
+>+		start_report = (const uint8_t *) (last_header + 1);
+>+		end_report = (const uint8_t *) (current_header + 1);
+>+
+>+		last_ctx_id = oa_report_ctx_id(&reader->devinfo, start_report);
+>+		current_ctx_id = oa_report_ctx_id(&reader->devinfo, end_report);
+>+
+>+		gpu_ts_start = oa_report_timestamp(start_report);
+>+		gpu_ts_end = oa_report_timestamp(end_report);
+>
+> 		if (last_ctx_id == current_ctx_id)
+> 			continue;
+>@@ -318,6 +324,9 @@ generate_cpu_events(struct intel_perf_data_reader *reader)
+> 		last_header = current_header;
+> 		last_header_idx = i;
+> 	}
+>+
+>+	if (last_header != current_header)
+>+		append_timeline_event(reader, gpu_ts_start, gpu_ts_end, last_header_idx, reader->n_records - 1, last_ctx_id);
 > }
 >
->@@ -203,15 +204,15 @@ parse_data(struct intel_perf_data_reader *reader)
-> 		return false;
-> 	}
->
->-	init_devinfo(&reader->devinfo, devinfo,
->-		     record_info->device_id,
->-		     record_info->timestamp_frequency);
-> 	reader->perf = intel_perf_for_devinfo(record_info->device_id,
-> 					      record_info->device_revision,
-> 					      record_info->timestamp_frequency,
-> 					      record_info->gt_min_frequency,
-> 					      record_info->gt_max_frequency,
-> 					      &record_topology->topology);
->+	init_devinfo(&reader->devinfo, reader->perf, devinfo,
->+		     record_info->device_id,
->+		     record_info->timestamp_frequency);
->
-> 	reader->metric_set_name = record_info->metric_set_name;
-> 	reader->metric_set_uuid = record_info->metric_set_uuid;
+> static void
 >-- 
 >2.30.0.rc2
 >
