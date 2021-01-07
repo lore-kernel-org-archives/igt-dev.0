@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A3E0D6E43D
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 11:58:58 +0000 (UTC)
+Date: Thu, 7 Jan 2021 12:58:54 +0100
+From: Katarzyna Dec <katarzyna.dec@intel.com>
+Message-ID: <20210107115854.GN6508@kdec5-desk.ger.corp.intel.com>
+References: <20201028154639.41616-1-apoorva1.singh@intel.com>
+ <20201120145548.GH6508@kdec5-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 07 Jan 2021 11:28:16 -0000
-Message-ID: <161001889657.21183.15416896917703273615@emeril.freedesktop.org>
-References: <20201215084825.101358-1-maarten.lankhorst@linux.intel.com>
-In-Reply-To: <20201215084825.101358-1-maarten.lankhorst@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/gem=5Fuserptr=5Fblits=3A?=
- =?utf-8?q?_Rework_userptr_tests_to_copy_with_changes_=28rev2=29?=
+Content-Disposition: inline
+In-Reply-To: <20201120145548.GH6508@kdec5-desk.ger.corp.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/i915_hangman: Added test
+ description for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,210 +19,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0462195528=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: apoorva1.singh@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0462195528==
-Content-Type: multipart/alternative;
- boundary="===============1547578191583807207=="
+On Fri, Nov 20, 2020 at 03:55:48PM +0100, Katarzyna Dec wrote:
+> On Wed, Oct 28, 2020 at 09:16:39PM +0530, apoorva1.singh@intel.com wrote:
+> > From: Apoorva Singh <apoorva1.singh@intel.com>
+> > 
+> > Added test and subtests description
+> > 
+> > Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+> > Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+> > ---
+> >  tests/i915/i915_hangman.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> > 
+> > diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
+> > index 2b341c4b..4340d680 100644
+> > --- a/tests/i915/i915_hangman.c
+> > +++ b/tests/i915/i915_hangman.c
+> > @@ -36,6 +36,8 @@
+> >  #include "igt_sysfs.h"
+> >  #include "igt_debugfs.h"
+> >  
+> > +IGT_TEST_DESCRIPTION("Tests the handling of hang scenarios");
+> > +
+> >  #ifndef I915_PARAM_CMD_PARSER_VERSION
+> >  #define I915_PARAM_CMD_PARSER_VERSION       28
+> >  #endif
+> > @@ -274,9 +276,11 @@ igt_main
+> >  		igt_require(has_error_state(sysfs));
+> >  	}
+> >  
+> > +	igt_describe("Validates the error state after manually triggering a hang");
+> >  	igt_subtest("error-state-basic")
+> >  		test_error_state_basic();
+> >  
+> > +	igt_describe("For each engine, validates the error state after injecting a hanging batch");
+> >  	igt_subtest_with_dynamic("error-state-capture") {
+> >  		__for_each_physical_engine(device, e) {
+> >  			igt_dynamic_f("%s", e->name)
+> > @@ -284,6 +288,7 @@ igt_main
+> >  		}
+> >  	}
+> >  
+> > +	igt_describe("Verify that execution of unterminated batch buffer triggers a hang");
+> >  	igt_subtest("hangcheck-unterminated")
+> >  		hangcheck_unterminated();
+> Maybe too verbose, but LGTM.
+> Reviewed-by: Katarzyna Dec <katarzyna.dec@intel.com>
+> 
+> Kasia :)
+Hello,
+I wanted to merge this patch, but there is a conflict. Could you resend it
+rebased?
 
---===============1547578191583807207==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: series starting with [i-g-t,1/2] tests/gem_userptr_blits: Rework userptr tests to copy with changes (rev2)
-URL   : https://patchwork.freedesktop.org/series/84948/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9558 -> IGTPW_5364
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5364/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5364 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@debugfs_test@read_all_entries:
-    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +2 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9558/fi-tgl-y/igt@debugfs_test@read_all_entries.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5364/fi-tgl-y/igt@debugfs_test@read_all_entries.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-kbl-x1275:       [PASS][3] -> [DMESG-FAIL][4] ([i915#2291] / [i915#541])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9558/fi-kbl-x1275/igt@i915_selftest@live@gt_heartbeat.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5364/fi-kbl-x1275/igt@i915_selftest@live@gt_heartbeat.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-tgl-y:           [DMESG-WARN][5] ([i915#2411] / [i915#402]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9558/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5364/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@gem_mmap_gtt@basic:
-    - fi-tgl-y:           [DMESG-WARN][7] ([i915#402]) -> [PASS][8] +2 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9558/fi-tgl-y/igt@gem_mmap_gtt@basic.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5364/fi-tgl-y/igt@gem_mmap_gtt@basic.html
-
-  
-  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
-  [i915#2411]: https://gitlab.freedesktop.org/drm/intel/issues/2411
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#541]: https://gitlab.freedesktop.org/drm/intel/issues/541
-
-
-Participating hosts (41 -> 35)
-------------------------------
-
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-j1900 fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5945 -> IGTPW_5364
-
-  CI-20190529: 20190529
-  CI_DRM_9558: 12e9d6b143879601e3705ea538054c3a14371611 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5364: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5364/index.html
-  IGT_5945: f0ad1a564956d6796d9ff09182c48d78fb00eefe @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
--igt@gem_userptr_blits@map-fixed-invalidate-busy-gup
--igt@gem_userptr_blits@map-fixed-invalidate-gup
--igt@gem_userptr_blits@map-fixed-invalidate-overlap-busy-gup
--igt@gem_userptr_blits@map-fixed-invalidate-overlap-gup
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5364/index.html
-
---===============1547578191583807207==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/gem_userptr_blits: Rework userptr tests to copy with changes (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/84948/">https://patchwork.freedesktop.org/series/84948/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5364/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5364/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9558 -&gt; IGTPW_5364</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5364/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5364 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@read_all_entries:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9558/fi-tgl-y/igt@debugfs_test@read_all_entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5364/fi-tgl-y/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9558/fi-kbl-x1275/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5364/fi-kbl-x1275/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/541">i915#541</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9558/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2411">i915#2411</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5364/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_mmap_gtt@basic:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9558/fi-tgl-y/igt@gem_mmap_gtt@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5364/fi-tgl-y/igt@gem_mmap_gtt@basic.html">PASS</a> +2 similar issues</li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (41 -&gt; 35)</h2>
-<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-j1900 fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_5945 -&gt; IGTPW_5364</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9558: 12e9d6b143879601e3705ea538054c3a14371611 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5364: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5364/index.html<br />
-  IGT_5945: f0ad1a564956d6796d9ff09182c48d78fb00eefe @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-<p>== Testlist changes ==</p>
-<p>-igt@gem_userptr_blits@map-fixed-invalidate-busy-gup<br />
--igt@gem_userptr_blits@map-fixed-invalidate-gup<br />
--igt@gem_userptr_blits@map-fixed-invalidate-overlap-busy-gup<br />
--igt@gem_userptr_blits@map-fixed-invalidate-overlap-gup</p>
-
-</body>
-</html>
-
---===============1547578191583807207==--
-
---===============0462195528==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+Kasia
+> 
+> >  
+> > -- 
+> > 2.25.1
+> > 
+> > _______________________________________________
+> > igt-dev mailing list
+> > igt-dev@lists.freedesktop.org
+> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0462195528==--
