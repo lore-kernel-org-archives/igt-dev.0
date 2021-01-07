@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 09F3789812
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 10:12:30 +0000 (UTC)
-References: <20201228031940.178954-1-lionel.g.landwerlin@intel.com>
- <20201228031940.178954-4-lionel.g.landwerlin@intel.com>
- <20210107010716.GF71919@orsosgc001.ra.intel.com>
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <6d42c04c-28e3-c139-e438-398c0a7133d6@intel.com>
-Date: Thu, 7 Jan 2021 12:12:27 +0200
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0B4776E28B
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 10:43:38 +0000 (UTC)
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Thu,  7 Jan 2021 10:43:28 +0000
+Message-Id: <20210107104328.4020431-2-chris@chris-wilson.co.uk>
+In-Reply-To: <20210107104328.4020431-1-chris@chris-wilson.co.uk>
+References: <20210107104328.4020431-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-In-Reply-To: <20210107010716.GF71919@orsosgc001.ra.intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] lib/i915/perf: don't forget last
- timeline element
+Subject: [igt-dev] [PATCH i-g-t 2/2] lib/kmod: Check for kernel taints
+ before/after selftests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,89 +17,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMDcvMDEvMjAyMSAwMzowNywgVW1lc2ggTmVybGlnZSBSYW1hcHBhIHdyb3RlOgo+IE9uIE1v
-biwgRGVjIDI4LCAyMDIwIGF0IDA1OjE5OjQwQU0gKzAyMDAsIExpb25lbCBMYW5kd2VybGluIHdy
-b3RlOgo+PiBXZSdyZSBjdXJyZW50bHkgZHJvcHBpbmcgdGhlIGxhc3QgZWxlbWVudCBvZiB0aGUg
-dGltZWxpbmUuCj4KPiBJbnNpZGUgdGhlIGZvci1sb29wIHdlIGFwcGVuZCB0aW1lbGluZSBldmVu
-dHMgb24gY29udGV4dCBzd2l0Y2hlcyAKPiBpbmRpY2F0aW5nIHdoYXQgY29udGV4dCByYW4gYW5k
-IGZvciBob3cgbG9uZywgYnV0IHRoYXQncyBub3QgdGhlIGNhc2UgCj4gZm9yIHRoZSBhcHBlbmRf
-dGltZWxpbmVfZXZlbnQgb3V0c2lkZSB0aGUgZm9yLWxvb3AuCj4KPiBEb2VzIHRoZSBvbmUgb3V0
-c2lkZSBpbmRpY2F0ZSBob3cgbG9uZyBsYXN0X2N0eF9pZCByYW4gYmVmb3JlIGNhcHR1cmUgCj4g
-ZW5kZWQgKG9yIHdlIHJhbiBvdXQgb2YgcmVjb3Jkcyk/IElzIGl0IHBvc3NpYmxlIGZvciB0aGUg
-dXNlciB0byAKPiBkaXN0aW5ndWlzaCB0aGUgdHdvPyBKdXN0IHRoaW5raW5nIG91dCBsb3VkLgoK
-CkxldCdzIHNheSB5b3UgaGF2ZSB0aGUgZm9sbG93aW5nIHJlcG9ydHMKCgpyZXBvcnQwIGN0eD0x
-CgpyZXBvcnQxIGN0eD0yCgpyZXBvcnQyIGN0eD0xCgoKVGhhdCBnZW5lcmF0ZXMgMiB0aW1lbGlu
-ZSBldmVudHMgKHJlcG9ydDEgLSByZXBvcnQwIGZvciBjdHgxKSwgKHJlcG9ydDIgCi0gcmVwb3J0
-MSBmb3IgY3R4MikuCgpUaG9zZSAyIGFyZSBnZW5lcmF0ZWQgd2l0aGluIHRoZSBmb3IgbG9vcCBi
-ZWNhdXNlIGl0IG5vdGljZXMgYSBjaGFuZ2UgaW4gCmN0eCB2YWx1ZSB0d2ljZS4KCgpOb3cgdGhp
-cyA6CgoKcmVwb3J0MCBjdHg9MQoKcmVwb3J0MSBjdHg9MgoKcmVwb3J0MiBjdHg9MQoKcmVwb3J0
-MyBjdHg9MQoKClRoaXMgYWxzbyBnZW5lcmF0ZXMgMiB0aW1lbGluZSBldmVudHMgd2l0aGluIHRo
-ZSBmb3IgbG9vcC4KCkJ1dCBiZWNhdXNlIHRoZSBsYXN0IHJlcG9ydDMgaGFzIHRoZSBzYW1lIGN0
-eCBhcyByZXBvcnQyLCB0aGVyZSBpcyBubyAKYWRkaXRpb25hbCB0aW1lbGluZSBldmVudCBnZW5l
-cmF0ZWQgZm9yIGN0eDEgd2l0aGluIHRoZSBmb3IgbG9vcC4KCkFuZCB3ZSBqdXN0IHF1aXQgdGhl
-IGxvb3AgYmVjYXVzZSB3ZSByYW4gb3V0IG9mIHJlcG9ydHMuCgpTbyB3ZSBuZWVkIHRvIGFkZCBv
-bmUgbW9yZSBpdGVtLgoKClRoZSBncHVfdHNfc3RhcnQgJiBncHVfdHNfZW5kIGJlaW5nIGdlbmVy
-YXRlZCBiZWZvcmUgdGhlIGNvbnRpbnVlOyBpbiAKdGhlIGZvciBsb29wLCBtYWtlIHRoZSBsYXN0
-IGFwcGVuZF90aW1lbGluZV9ldmVudCgpIGFkZCB0aGUgcmlnaHQgCnRpbWVzdGFtcHMgYWZ0ZXIg
-dGhlIGZvciBsb29wIGZvciB0aGF0IGxhc3QgdGltZWxpbmUuCgoKLUxpb25lbAoKCj4KPiBPdGhl
-cndpc2U6Cj4KPiBSZXZpZXdlZC1ieTogVW1lc2ggTmVybGlnZSBSYW1hcHBhIDx1bWVzaC5uZXJs
-aWdlLnJhbWFwcGFAaW50ZWwuY29tPgo+Cj4gVGhhbmtzLAo+IFVtZXNoCj4+Cj4+IFNpZ25lZC1v
-ZmYtYnk6IExpb25lbCBMYW5kd2VybGluIDxsaW9uZWwuZy5sYW5kd2VybGluQGludGVsLmNvbT4K
-Pj4gRml4ZXM6IDQzMTE2ZWUzNjg1ODVkICgibGliL2k5MTUtcGVyZjogYWRkIGk5MTUgcGVyZiBk
-YXRhIHJlYWRlciIpCj4+IC0tLQo+PiBsaWIvaTkxNS9wZXJmX2RhdGFfcmVhZGVyLmMgfCAyNyAr
-KysrKysrKysrKysrKysrKystLS0tLS0tLS0KPj4gMSBmaWxlIGNoYW5nZWQsIDE4IGluc2VydGlv
-bnMoKyksIDkgZGVsZXRpb25zKC0pCj4+Cj4+IGRpZmYgLS1naXQgYS9saWIvaTkxNS9wZXJmX2Rh
-dGFfcmVhZGVyLmMgYi9saWIvaTkxNS9wZXJmX2RhdGFfcmVhZGVyLmMKPj4gaW5kZXggNGI2OGZi
-NTAyLi4wNjVmZTYwNjYgMTAwNjQ0Cj4+IC0tLSBhL2xpYi9pOTE1L3BlcmZfZGF0YV9yZWFkZXIu
-Ywo+PiArKysgYi9saWIvaTkxNS9wZXJmX2RhdGFfcmVhZGVyLmMKPj4gQEAgLTI5OCwxNyArMjk4
-LDIzIEBAIHN0YXRpYyB2b2lkCj4+IGdlbmVyYXRlX2NwdV9ldmVudHMoc3RydWN0IGludGVsX3Bl
-cmZfZGF0YV9yZWFkZXIgKnJlYWRlcikKPj4gewo+PiDCoMKgwqDCoHVpbnQzMl90IGxhc3RfaGVh
-ZGVyX2lkeCA9IDA7Cj4+IC3CoMKgwqAgY29uc3Qgc3RydWN0IGRybV9pOTE1X3BlcmZfcmVjb3Jk
-X2hlYWRlciAqbGFzdF9oZWFkZXIgPSAKPj4gcmVhZGVyLT5yZWNvcmRzWzBdOwo+PiArwqDCoMKg
-IGNvbnN0IHN0cnVjdCBkcm1faTkxNV9wZXJmX3JlY29yZF9oZWFkZXIgKmxhc3RfaGVhZGVyID0g
-Cj4+IHJlYWRlci0+cmVjb3Jkc1swXSwKPj4gK8KgwqDCoMKgwqDCoMKgICpjdXJyZW50X2hlYWRl
-ciA9IHJlYWRlci0+cmVjb3Jkc1swXTsKPj4gK8KgwqDCoCBjb25zdCB1aW50OF90ICpzdGFydF9y
-ZXBvcnQsICplbmRfcmVwb3J0Owo+PiArwqDCoMKgIHVpbnQzMl90IGxhc3RfY3R4X2lkLCBjdXJy
-ZW50X2N0eF9pZDsKPj4gK8KgwqDCoCB1aW50NjRfdCBncHVfdHNfc3RhcnQsIGdwdV90c19lbmQ7
-Cj4+Cj4+IMKgwqDCoMKgZm9yICh1aW50MzJfdCBpID0gMTsgaSA8IHJlYWRlci0+bl9yZWNvcmRz
-OyBpKyspIHsKPj4gLcKgwqDCoMKgwqDCoMKgIGNvbnN0IHN0cnVjdCBkcm1faTkxNV9wZXJmX3Jl
-Y29yZF9oZWFkZXIgKmN1cnJlbnRfaGVhZGVyID0KPj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-cmVhZGVyLT5yZWNvcmRzW2ldOwo+PiAtwqDCoMKgwqDCoMKgwqAgY29uc3QgdWludDhfdCAqc3Rh
-cnRfcmVwb3J0ID0gKGNvbnN0IHVpbnQ4X3QgKikgKGxhc3RfaGVhZGVyIAo+PiArIDEpLAo+PiAt
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqZW5kX3JlcG9ydCA9IChjb25zdCB1aW50OF90ICopIChj
-dXJyZW50X2hlYWRlciArIDEpOwo+PiAtwqDCoMKgwqDCoMKgwqAgdWludDMyX3QgbGFzdF9jdHhf
-aWQgPSBvYV9yZXBvcnRfY3R4X2lkKCZyZWFkZXItPmRldmluZm8sIAo+PiBzdGFydF9yZXBvcnQp
-LAo+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjdXJyZW50X2N0eF9pZCA9IG9hX3JlcG9ydF9j
-dHhfaWQoJnJlYWRlci0+ZGV2aW5mbywgCj4+IGVuZF9yZXBvcnQpOwo+PiAtwqDCoMKgwqDCoMKg
-wqAgdWludDY0X3QgZ3B1X3RzX3N0YXJ0ID0gb2FfcmVwb3J0X3RpbWVzdGFtcChzdGFydF9yZXBv
-cnQpLAo+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBncHVfdHNfZW5kID0gb2FfcmVwb3J0X3Rp
-bWVzdGFtcChlbmRfcmVwb3J0KTsKPj4gK8KgwqDCoMKgwqDCoMKgIGN1cnJlbnRfaGVhZGVyID0g
-cmVhZGVyLT5yZWNvcmRzW2ldOwo+PiArCj4+ICvCoMKgwqDCoMKgwqDCoCBzdGFydF9yZXBvcnQg
-PSAoY29uc3QgdWludDhfdCAqKSAobGFzdF9oZWFkZXIgKyAxKTsKPj4gK8KgwqDCoMKgwqDCoMKg
-IGVuZF9yZXBvcnQgPSAoY29uc3QgdWludDhfdCAqKSAoY3VycmVudF9oZWFkZXIgKyAxKTsKPj4g
-Kwo+PiArwqDCoMKgwqDCoMKgwqAgbGFzdF9jdHhfaWQgPSBvYV9yZXBvcnRfY3R4X2lkKCZyZWFk
-ZXItPmRldmluZm8sIHN0YXJ0X3JlcG9ydCk7Cj4+ICvCoMKgwqDCoMKgwqDCoCBjdXJyZW50X2N0
-eF9pZCA9IG9hX3JlcG9ydF9jdHhfaWQoJnJlYWRlci0+ZGV2aW5mbywgCj4+IGVuZF9yZXBvcnQp
-Owo+PiArCj4+ICvCoMKgwqDCoMKgwqDCoCBncHVfdHNfc3RhcnQgPSBvYV9yZXBvcnRfdGltZXN0
-YW1wKHN0YXJ0X3JlcG9ydCk7Cj4+ICvCoMKgwqDCoMKgwqDCoCBncHVfdHNfZW5kID0gb2FfcmVw
-b3J0X3RpbWVzdGFtcChlbmRfcmVwb3J0KTsKPj4KPj4gwqDCoMKgwqDCoMKgwqAgaWYgKGxhc3Rf
-Y3R4X2lkID09IGN1cnJlbnRfY3R4X2lkKQo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNvbnRp
-bnVlOwo+PiBAQCAtMzE4LDYgKzMyNCw5IEBAIGdlbmVyYXRlX2NwdV9ldmVudHMoc3RydWN0IGlu
-dGVsX3BlcmZfZGF0YV9yZWFkZXIgCj4+ICpyZWFkZXIpCj4+IMKgwqDCoMKgwqDCoMKgIGxhc3Rf
-aGVhZGVyID0gY3VycmVudF9oZWFkZXI7Cj4+IMKgwqDCoMKgwqDCoMKgIGxhc3RfaGVhZGVyX2lk
-eCA9IGk7Cj4+IMKgwqDCoMKgfQo+PiArCj4+ICvCoMKgwqAgaWYgKGxhc3RfaGVhZGVyICE9IGN1
-cnJlbnRfaGVhZGVyKQo+PiArwqDCoMKgwqDCoMKgwqAgYXBwZW5kX3RpbWVsaW5lX2V2ZW50KHJl
-YWRlciwgZ3B1X3RzX3N0YXJ0LCBncHVfdHNfZW5kLCAKPj4gbGFzdF9oZWFkZXJfaWR4LCByZWFk
-ZXItPm5fcmVjb3JkcyAtIDEsIGxhc3RfY3R4X2lkKTsKPj4gfQo+Pgo+PiBzdGF0aWMgdm9pZAo+
-PiAtLSAKPj4gMi4zMC4wLnJjMgo+PgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVz
-a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9p
-Z3QtZGV2Cg==
+If the kernel generates a bad taint during the selftest (e.g. a
+warning), declare the selftest to be a failure.
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ lib/igt_kmod.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index ebeacd6fc..2ae45a1a1 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -29,6 +29,7 @@
+ #include "igt_core.h"
+ #include "igt_kmod.h"
+ #include "igt_sysfs.h"
++#include "igt_taints.h"
+ 
+ /**
+  * SECTION:igt_kmod
+@@ -582,9 +583,12 @@ int igt_kselftest_execute(struct igt_kselftest *tst,
+ 			  const char *options,
+ 			  const char *result)
+ {
++	unsigned long taints;
+ 	char buf[1024];
+ 	int err;
+ 
++	igt_skip_on(igt_kernel_tainted(&taints));
++
+ 	lseek(tst->kmsg, 0, SEEK_END);
+ 
+ 	snprintf(buf, sizeof(buf), "%s=1 %s", tl->param, options ?: "");
+@@ -607,6 +611,8 @@ int igt_kselftest_execute(struct igt_kselftest *tst,
+ 		     "kselftest \"%s %s\" failed: %s [%d]\n",
+ 		     tst->module_name, buf, strerror(-err), -err);
+ 
++	igt_assert_eq(igt_kernel_tainted(&taints), 0);
++
+ 	return err;
+ }
+ 
+-- 
+2.30.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
