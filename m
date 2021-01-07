@@ -1,97 +1,55 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 237986E415
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 09:23:40 +0000 (UTC)
-From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
-Date: Thu,  7 Jan 2021 03:41:06 +0530
-Message-Id: <20210106221106.3907099-1-arundhati.hagaragi@intel.com>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Date: Thu, 7 Jan 2021 11:40:02 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20210107094002.GL7444@platvala-desk.ger.corp.intel.com>
+References: <20201204195007.10215-1-janusz.krzysztofik@linux.intel.com>
+ <160992609788.26089.16341465923272154441@build.alporthouse.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v4] tests/kms_plane: Added test description
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Disposition: inline
+In-Reply-To: <160992609788.26089.16341465923272154441@build.alporthouse.com>
+Subject: Re: [Intel-gfx] [PATCH i-g-t v2] runner: Don't kill a test on taint
+ if watching timeouts
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: B@freedesktop.org, Gupta@freedesktop.org, S@freedesktop.org, Nidhi1 <nidhi1.gupta@intel.com>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added test description for test case
+On Wed, Jan 06, 2021 at 09:41:37AM +0000, Chris Wilson wrote:
+> Quoting Janusz Krzysztofik (2020-12-04 19:50:07)
+> > We may still be interested in results of a test even if it has tainted
+> > the kernel.  On the other hand, we need to kill the test on taint if no
+> > other means of killing it on a jam is active.
+> > 
+> > If abort on both kernel taint or a timeout is requested, decrease all
+> > potential timeouts significantly while the taint is detected instead of
+> > aborting immediately.  However, report the taint as the reason of the
+> > abort if a timeout decreased by the taint expires.
+> 
+> This has the nasty side effect of not stopping the test run after a
+> kernel taint. Instead the next test inherits the tainted condition from
+> the previous test and usually ends up being declared incomplete.
+> 
+> False positives are frustrating.
+> -Chris
 
-Cc: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
-Cc: B S, Karthik <Karthik.B.S@intel.com>
-Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
 
-v2: modified subtests description to be more specific. (Karthik)
-v3: added and modified description for subtests to be more specific. (Karthik)
-v4: modified description for subtests
----
- tests/kms_plane.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Do you have a link to a test run where this happened? This patch
+didn't change the between-tests abort checks.
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 2f0c9d9d..8bd4bdb6 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -1034,10 +1034,12 @@ run_tests_for_pipe_plane(data_t *data, enum pipe pipe)
- 		igt_require(data->display.pipes[pipe].n_planes > 0);
- 	}
- 
-+	igt_describe("verify the pixel formats for given plane and pipe");
- 	igt_subtest_f("pixel-format-pipe-%s-planes",
- 		      kmstest_pipe_name(pipe))
- 		test_pixel_formats(data, pipe);
- 
-+	igt_describe("verify the pixel formats for given plane and pipe with clamping test");
- 	igt_subtest_f("pixel-format-pipe-%s-planes-source-clamping",
- 		      kmstest_pipe_name(pipe)) {
- 		data->crop = 4;
-@@ -1045,29 +1047,35 @@ run_tests_for_pipe_plane(data_t *data, enum pipe pipe)
- 	}
- 
- 	data->crop = 0;
-+	igt_describe("verify plane position using two planes to create a fully covered screen");
- 	igt_subtest_f("plane-position-covered-pipe-%s-planes",
- 		      kmstest_pipe_name(pipe))
- 		test_plane_position(data, pipe, 0);
- 
-+	igt_describe("verify plane position using two planes to create a partially covered screen");
- 	igt_subtest_f("plane-position-hole-pipe-%s-planes",
- 		      kmstest_pipe_name(pipe))
- 		test_plane_position(data, pipe,
- 				    TEST_POSITION_PARTIALLY_COVERED);
- 
-+	igt_describe("verify plane position using two planes to create a partially covered screen and check for DPMS");
- 	igt_subtest_f("plane-position-hole-dpms-pipe-%s-planes",
- 		      kmstest_pipe_name(pipe))
- 		test_plane_position(data, pipe,
- 				    TEST_POSITION_PARTIALLY_COVERED |
- 				    TEST_DPMS);
- 
-+	igt_describe("verify the panning at top-left position using a plane");
- 	igt_subtest_f("plane-panning-top-left-pipe-%s-planes",
- 		      kmstest_pipe_name(pipe))
- 		test_plane_panning(data, pipe, TEST_PANNING_TOP_LEFT);
- 
-+	igt_describe("verify the panning at bottom-right position using a plane");
- 	igt_subtest_f("plane-panning-bottom-right-pipe-%s-planes",
- 		      kmstest_pipe_name(pipe))
- 		test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT);
- 
-+	igt_describe("verify panning at bottom-right position using a plane and executes system suspend cycles");
- 	igt_subtest_f("plane-panning-bottom-right-suspend-pipe-%s-planes",
- 		      kmstest_pipe_name(pipe))
- 		test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT |
+
 -- 
-2.25.1
-
+Petri Latvala
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
