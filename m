@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D11EB6E5C1
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Jan 2021 04:23:36 +0000 (UTC)
-References: <20210107155154.6111-1-juhapekka.heikkila@gmail.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F36CC89B67
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Jan 2021 05:25:14 +0000 (UTC)
+References: <20210106221106.3907099-1-arundhati.hagaragi@intel.com>
 From: Karthik B S <karthik.b.s@intel.com>
-Message-ID: <78ecef46-df05-cf03-5d02-81b401f05d6e@intel.com>
-Date: Fri, 8 Jan 2021 09:53:32 +0530
+Message-ID: <d6884651-26a1-fa7b-b41a-6de997f758eb@intel.com>
+Date: Fri, 8 Jan 2021 10:55:09 +0530
 MIME-Version: 1.0
-In-Reply-To: <20210107155154.6111-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20210106221106.3907099-1-arundhati.hagaragi@intel.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_rotation_crc: avoid
- recalculating refecence crcs
+Subject: Re: [igt-dev] [PATCH i-g-t v4] tests/kms_plane: Added test
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,179 +22,89 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, igt-dev@lists.freedesktop.org
+To: Arundhati Hagaragi <arundhati.hagaragi@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Nidhi1 <nidhi1.gupta@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 1/7/2021 9:21 PM, Juha-Pekka Heikkila wrote:
-> Get those reference crcs only once since they stay the same.
+On 1/7/2021 3:41 AM, Arundhati Hagaragi wrote:
+> Added test description for test case
 >
-> v2: Need to make exception for HSW, there crcs seem to vary across
-> rendering pipes.
+> Cc: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
+> Cc: B S, Karthik <Karthik.B.S@intel.com>
+> Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+>
+> v2: modified subtests description to be more specific. (Karthik)
+> v3: added and modified description for subtests to be more specific. (Karthik)
+> v4: modified description for subtests
+> ---
+>   tests/kms_plane.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
+>
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index 2f0c9d9d..8bd4bdb6 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -1034,10 +1034,12 @@ run_tests_for_pipe_plane(data_t *data, enum pipe pipe)
+>   		igt_require(data->display.pipes[pipe].n_planes > 0);
+>   	}
+>   
+> +	igt_describe("verify the pixel formats for given plane and pipe");
+>   	igt_subtest_f("pixel-format-pipe-%s-planes",
+>   		      kmstest_pipe_name(pipe))
+>   		test_pixel_formats(data, pipe);
+>   
+> +	igt_describe("verify the pixel formats for given plane and pipe with clamping test");
+s/clamping test/source clamping
+>   	igt_subtest_f("pixel-format-pipe-%s-planes-source-clamping",
+>   		      kmstest_pipe_name(pipe)) {
+>   		data->crop = 4;
+> @@ -1045,29 +1047,35 @@ run_tests_for_pipe_plane(data_t *data, enum pipe pipe)
+>   	}
+>   
+>   	data->crop = 0;
+> +	igt_describe("verify plane position using two planes to create a fully covered screen");
+>   	igt_subtest_f("plane-position-covered-pipe-%s-planes",
+>   		      kmstest_pipe_name(pipe))
+>   		test_plane_position(data, pipe, 0);
+>   
+> +	igt_describe("verify plane position using two planes to create a partially covered screen");
+>   	igt_subtest_f("plane-position-hole-pipe-%s-planes",
+>   		      kmstest_pipe_name(pipe))
+>   		test_plane_position(data, pipe,
+>   				    TEST_POSITION_PARTIALLY_COVERED);
+>   
+> +	igt_describe("verify plane position using two planes to create a partially covered screen and check for DPMS");
+>   	igt_subtest_f("plane-position-hole-dpms-pipe-%s-planes",
+>   		      kmstest_pipe_name(pipe))
+>   		test_plane_position(data, pipe,
+>   				    TEST_POSITION_PARTIALLY_COVERED |
+>   				    TEST_DPMS);
+>   
+> +	igt_describe("verify the panning at top-left position using a plane");
 
-Since it is an optimization, this exception should be fine.
+s/the panning/plane panning
+
+s/a plane/primary plane
+
+Same as above for all panning subtests.
+
+With these minor changes, the patch LGTM.
 
 Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 
->
-> This reduces generic rotation tests execution time on my ICL from 26s to 14s
->
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->   tests/kms_rotation_crc.c | 88 ++++++++++++++++++++++++----------------
->   1 file changed, 52 insertions(+), 36 deletions(-)
->
-> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-> index ffcc2cc2e..be27103fa 100644
-> --- a/tests/kms_rotation_crc.c
-> +++ b/tests/kms_rotation_crc.c
-> @@ -49,6 +49,14 @@ struct p_point{
->   	float_t y;
->   };
+>   	igt_subtest_f("plane-panning-top-left-pipe-%s-planes",
+>   		      kmstest_pipe_name(pipe))
+>   		test_plane_panning(data, pipe, TEST_PANNING_TOP_LEFT);
 >   
-> +enum rectangle_type {
-> +	rectangle,
-> +	square,
-> +	portrait,
-> +	landscape,
-> +	num_rectangle_types /* must be last */
-> +};
-> +
->   typedef struct {
->   	int gfx_fd;
->   	igt_display_t display;
-> @@ -70,6 +78,12 @@ typedef struct {
+> +	igt_describe("verify the panning at bottom-right position using a plane");
+>   	igt_subtest_f("plane-panning-bottom-right-pipe-%s-planes",
+>   		      kmstest_pipe_name(pipe))
+>   		test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT);
 >   
->   	bool use_native_resolution;
->   	bool extended;
-> +
-> +	struct crc_rect_tag {
-> +		bool valid;
-> +		igt_crc_t ref_crc;
-> +		igt_crc_t flip_crc;
-> +	} crc_rect[num_rectangle_types];
->   } data_t;
->   
->   typedef struct {
-> @@ -190,14 +204,6 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
->   		igt_pipe_crc_start(data->pipe_crc);
->   }
->   
-> -enum rectangle_type {
-> -	rectangle,
-> -	square,
-> -	portrait,
-> -	landscape,
-> -	num_rectangle_types /* must be last */
-> -};
-> -
->   static void prepare_fbs(data_t *data, igt_output_t *output,
->   			igt_plane_t *plane, enum rectangle_type rect, uint32_t format)
->   {
-> @@ -267,42 +273,49 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
->   	igt_require(igt_display_has_format_mod(display, pixel_format, tiling));
->   
->   	/*
-> -	 * Create a reference software rotated flip framebuffer.
-> +	 * HSW will need to have those CRCs calculated each time, it
-> +	 * seems to behave different from other platforms.
->   	 */
-> -	igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format, tiling,
-> -		      &data->fb_flip);
-> -	paint_squares(data, data->rotation, &data->fb_flip,
-> -		      flip_opacity);
-> -	igt_plane_set_fb(plane, &data->fb_flip);
-> -	if (plane->type != DRM_PLANE_TYPE_CURSOR)
-> -		igt_plane_set_position(plane, data->pos_x, data->pos_y);
-> -	igt_display_commit2(display, COMMIT_ATOMIC);
-> +	if (!data->crc_rect[rect].valid || IS_HASWELL(data->devid)) {
-> +		/*
-> +		* Create a reference software rotated flip framebuffer.
-> +		*/
-> +		igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format, tiling,
-> +			&data->fb_flip);
-> +		paint_squares(data, data->rotation, &data->fb_flip,
-> +			flip_opacity);
-> +		igt_plane_set_fb(plane, &data->fb_flip);
-> +		if (plane->type != DRM_PLANE_TYPE_CURSOR)
-> +			igt_plane_set_position(plane, data->pos_x, data->pos_y);
-> +		igt_display_commit2(display, COMMIT_ATOMIC);
->   
-> -	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->flip_crc);
-> +		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].flip_crc);
-> +		igt_remove_fb(data->gfx_fd, &data->fb_flip);
-> +
-> +		/*
-> +		* Create a reference CRC for a software-rotated fb.
-> +		*/
-> +		igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format,
-> +			data->override_tiling ?: LOCAL_DRM_FORMAT_MOD_NONE, &data->fb_reference);
-> +		paint_squares(data, data->rotation, &data->fb_reference, 1.0);
-> +
-> +		igt_plane_set_fb(plane, &data->fb_reference);
-> +		if (plane->type != DRM_PLANE_TYPE_CURSOR)
-> +			igt_plane_set_position(plane, data->pos_x, data->pos_y);
-> +		igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].ref_crc);
-> +		data->crc_rect[rect].valid = true;
-> +	}
->   
->   	/*
->   	  * Prepare the non-rotated flip fb.
->   	  */
-> -	igt_remove_fb(data->gfx_fd, &data->fb_flip);
->   	igt_create_fb(data->gfx_fd, w, h, pixel_format, tiling,
->   		      &data->fb_flip);
->   	paint_squares(data, IGT_ROTATION_0, &data->fb_flip,
->   		      flip_opacity);
->   
-> -	/*
-> -	 * Create a reference CRC for a software-rotated fb.
-> -	 */
-> -	igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format,
-> -		      data->override_tiling ?: LOCAL_DRM_FORMAT_MOD_NONE, &data->fb_reference);
-> -	paint_squares(data, data->rotation, &data->fb_reference, 1.0);
-> -
-> -	igt_plane_set_fb(plane, &data->fb_reference);
-> -	if (plane->type != DRM_PLANE_TYPE_CURSOR)
-> -		igt_plane_set_position(plane, data->pos_x, data->pos_y);
-> -	igt_display_commit2(display, COMMIT_ATOMIC);
-> -
-> -	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->ref_crc);
-> -
->   	/*
->   	 * Prepare the plane with an non-rotated fb let the hw rotate it.
->   	 */
-> @@ -341,7 +354,7 @@ static void test_single_case(data_t *data, enum pipe pipe,
->   
->   	/* Check CRC */
->   	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
-> -	igt_assert_crc_equal(&data->ref_crc, &crc_output);
-> +	igt_assert_crc_equal(&data->crc_rect[rect].ref_crc, &crc_output);
->   
->   	/*
->   	 * If flips are requested flip to a different fb and
-> @@ -364,8 +377,7 @@ static void test_single_case(data_t *data, enum pipe pipe,
->   		}
->   		kmstest_wait_for_pageflip(data->gfx_fd);
->   		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
-> -		igt_assert_crc_equal(&data->flip_crc,
-> -				     &crc_output);
-> +		igt_assert_crc_equal(&data->crc_rect[rect].flip_crc, &crc_output);
->   	}
->   }
->   
-> @@ -396,6 +408,10 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
->   	igt_display_t *display = &data->display;
->   	igt_output_t *output;
->   	enum pipe pipe;
-> +	int c;
-> +
-> +	for (c = 0; c < num_rectangle_types; c++)
-> +		data->crc_rect[c].valid = false;
->   
->   	if (plane_type == DRM_PLANE_TYPE_CURSOR)
->   		igt_require(display->has_cursor_plane);
+> +	igt_describe("verify panning at bottom-right position using a plane and executes system suspend cycles");
+>   	igt_subtest_f("plane-panning-bottom-right-suspend-pipe-%s-planes",
+>   		      kmstest_pipe_name(pipe))
+>   		test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT |
 
 
 _______________________________________________
