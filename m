@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E4C489DA4
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Jan 2021 13:30:17 +0000 (UTC)
-Date: Fri, 8 Jan 2021 15:30:13 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20210108133013.GU7444@platvala-desk.ger.corp.intel.com>
-References: <20210107104328.4020431-1-chris@chris-wilson.co.uk>
- <20210108130157.4037735-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210108130157.4037735-1-chris@chris-wilson.co.uk>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib: Process kernel taints
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 08 Jan 2021 13:45:34 -0000
+Message-ID: <161011353459.333.9870544147136898747@emeril.freedesktop.org>
+References: <20210107104328.4020431-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20210107104328.4020431-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=5D_lib=3A_Process_kernel_taints_=28rev2?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,331 +15,239 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1806076872=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jan 08, 2021 at 01:01:57PM +0000, Chris Wilson wrote:
-> A small library routine to read '/proc/sys/kernel/taints' and check for
-> a fatal condition. This is currently used by the runner, but is also
-> useful for some tests.
-> =
+--===============1806076872==
+Content-Type: multipart/alternative;
+ boundary="===============4425345769938314936=="
 
-> v2: function docs
-> =
+--===============4425345769938314936==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> ---
->  lib/Makefile.sources |  2 +
->  lib/igt_taints.c     | 98 ++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_taints.h     | 19 +++++++++
->  lib/meson.build      |  1 +
->  runner/executor.c    | 73 +++++++--------------------------
->  5 files changed, 134 insertions(+), 59 deletions(-)
->  create mode 100644 lib/igt_taints.c
->  create mode 100644 lib/igt_taints.h
-> =
+== Series Details ==
 
-> diff --git a/lib/Makefile.sources b/lib/Makefile.sources
-> index 67b386457..7102f95e7 100644
-> --- a/lib/Makefile.sources
-> +++ b/lib/Makefile.sources
-> @@ -64,6 +64,8 @@ lib_source_list =3D	 	\
->  	igt_sysfs.h		\
->  	igt_sysrq.c		\
->  	igt_sysrq.h		\
-> +	igt_taints.c		\
-> +	igt_taints.h		\
->  	igt_thread.c		\
->  	igt_thread.h		\
->  	igt_x86.h		\
-> diff --git a/lib/igt_taints.c b/lib/igt_taints.c
-> new file mode 100644
-> index 000000000..a5a7e6cae
-> --- /dev/null
-> +++ b/lib/igt_taints.c
-> @@ -0,0 +1,98 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright =A9 2021 Intel Corporation
-> + */
-> +
-> +#include <stdio.h>
-> +
-> +#include "igt_taints.h"
-> +
-> +/* see Linux's include/linux/kernel.h */
-> +static const struct {
-> +	int bit;
-> +	int bad;
-> +	const char *explanation;
-> +} abort_taints[] =3D {
-> +  { 5, 1, "TAINT_BAD_PAGE: Bad page reference or an unexpected page flag=
-s." },
-> +  { 7, 1, "TAINT_DIE: Kernel has died - BUG/OOPS." },
-> +  { 9, 1, "TAINT_WARN: WARN_ON has happened." },
-> +  { -1 }
-> +};
-> +
-> +/**
-> + * igt_explain_taints:
-> + * @taints: mask of taints requiring an explanation [inout]
-> + *
-> + * Inspects the mask and looks up the first reason correspoding to a set
-> + * bit in the mast. It returns the reason as a string constant, and remo=
-ves
-> + * the bit from the mask. If the mask is empty, or we have no known reas=
-on
-> + * matching the match, NULL is returned.
-> + *
-> + * This may be used in a loop to extract all known reasons for why the
-> + * kernel tained:
+Series: series starting with [i-g-t] lib: Process kernel taints (rev2)
+URL   : https://patchwork.freedesktop.org/series/85579/
+State : failure
 
-s/correspoding/corresponding/
-s/mast/mask/
-s/matching the match/matching the mask/
+== Summary ==
 
-> + *
-> + * while (reason =3D igt_explain_taints(&taints))
-> + * 	igt_info("%s", reason);
-> + *
-> + * Returns the first reason corresponding to a taint bit.
-> + */
-> +const char *igt_explain_taints(unsigned long *taints)
-> +{
-> +	for (typeof(*abort_taints) *taint =3D abort_taints;
-> +	     taint->bit >=3D 0;
-> +	     taint++) {
-> +		if (*taints & (1ul << taint->bit)) {
-> +			*taints &=3D ~(1ul << taint->bit);
-> +			return taint->explanation;
-> +		}
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +/**
-> + * igt_bad_taints:
-> + *
-> + * Returns the mask of kernel taints that IGT considers fatal.
-> + * Such as TAINT_WARN set when the kernel oopses.
-> + */
-> +unsigned long igt_bad_taints(void)
-> +{
-> +	static unsigned long bad_taints;
-> +
-> +	if (!bad_taints) {
-> +		for (typeof(*abort_taints) *taint =3D abort_taints;
-> +		     taint->bit >=3D 0;
-> +		     taint++) {
-> +			if (taint->bad)
-> +				bad_taints |=3D 1ul << taint->bit;
-> +		}
-> +	}
-> +
-> +	return bad_taints;
-> +}
-> +
-> +/**
-> + * igt_kernel_tainted:
-> + * @taints: bitmask of kernel taints [out]
-> + *
-> + * Reads "/prco/sys/kernel/tainted" and returns both the set of all
-> + * taints reported via @taints, and the set of fatal taints as the
-> + * return parameters.
-> + *
-> + * Returns a mask of fatal taints; 0 if untainted.
-> + */
+CI Bug Log - changes from IGT_5949 -> IGTPW_5370
+====================================================
 
-s/prco/proc/
+Summary
+-------
 
-Move the "both" word later so it's clear it's returning the same thing
-with two means, instead of returning two things.
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_5370 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_5370, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_5370:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@runner@aborted:
+    - fi-tgl-y:           NOTRUN -> [FAIL][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/fi-tgl-y/igt@runner@aborted.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5370 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gem_contexts:
+    - fi-tgl-y:           [PASS][2] -> [INCOMPLETE][3] ([i915#402])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5949/fi-tgl-y/igt@i915_selftest@live@gem_contexts.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/fi-tgl-y/igt@i915_selftest@live@gem_contexts.html
+
+  * igt@kms_chamelium@hdmi-crc-fast:
+    - fi-kbl-7500u:       [PASS][4] -> [DMESG-WARN][5] ([i915#2868])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5949/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html
+
+  * igt@prime_self_import@basic-with_one_bo_two_files:
+    - fi-tgl-y:           [PASS][6] -> [DMESG-WARN][7] ([i915#402]) +1 similar issue
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5949/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
+
+  
+#### Possible fixes ####
+
+  * igt@debugfs_test@read_all_entries:
+    - fi-tgl-y:           [DMESG-WARN][8] ([i915#402]) -> [PASS][9] +2 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5949/fi-tgl-y/igt@debugfs_test@read_all_entries.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/fi-tgl-y/igt@debugfs_test@read_all_entries.html
+
+  * igt@i915_selftest@live@sanitycheck:
+    - fi-kbl-7500u:       [DMESG-WARN][10] ([i915#2605]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5949/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html
+
+  
+  [i915#2605]: https://gitlab.freedesktop.org/drm/intel/issues/2605
+  [i915#2868]: https://gitlab.freedesktop.org/drm/intel/issues/2868
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
 
 
-With those
+Participating hosts (43 -> 37)
+------------------------------
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
 
 
-> +unsigned long igt_kernel_tainted(unsigned long *taints)
-> +{
-> +	FILE *f;
-> +
-> +	*taints =3D 0;
-> +
-> +	f =3D fopen("/proc/sys/kernel/tainted", "r");
-> +	if (f) {
-> +		fscanf(f, "%lu", taints);
-> +		fclose(f);
-> +	}
-> +
-> +	return is_tainted(*taints);
-> +}
-> diff --git a/lib/igt_taints.h b/lib/igt_taints.h
-> new file mode 100644
-> index 000000000..be4195c5a
-> --- /dev/null
-> +++ b/lib/igt_taints.h
-> @@ -0,0 +1,19 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright =A9 2021 Intel Corporation
-> + */
-> +
-> +#ifndef __IGT_TAINTS_H__
-> +#define __IGT_TAINTS_H__
-> +
-> +unsigned long igt_kernel_tainted(unsigned long *taints);
-> +const char *igt_explain_taints(unsigned long *taints);
-> +
-> +unsigned long igt_bad_taints(void);
-> +
-> +static inline unsigned long is_tainted(unsigned long taints)
-> +{
-> +	return taints & igt_bad_taints();
-> +}
-> +
-> +#endif /* __IGT_TAINTS_H__ */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 540facb24..3abc42cb3 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -27,6 +27,7 @@ lib_sources =3D [
->  	'igt_syncobj.c',
->  	'igt_sysfs.c',
->  	'igt_sysrq.c',
-> +	'igt_taints.c',
->  	'igt_thread.c',
->  	'igt_vec.c',
->  	'igt_vgem.c',
-> diff --git a/runner/executor.c b/runner/executor.c
-> index faf272d85..93db8bb36 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -24,6 +24,7 @@
->  =
+Build changes
+-------------
 
->  #include "igt_aux.h"
->  #include "igt_core.h"
-> +#include "igt_taints.h"
->  #include "executor.h"
->  #include "output_strings.h"
->  =
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5949 -> IGTPW_5370
 
-> @@ -307,70 +308,23 @@ static char *handle_lockdep(void)
->  	return NULL;
->  }
->  =
+  CI-20190529: 20190529
+  CI_DRM_9565: 683dfd284ebe3924e36ae9d3b7edc9ec47080266 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5370: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/index.html
+  IGT_5949: b7b071eaf501d27ee4c1940b2e825da269f8b43b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
-> -/* see Linux's include/linux/kernel.h */
-> -static const struct {
-> -	unsigned long bit;
-> -	const char *explanation;
-> -} abort_taints[] =3D {
-> -  {(1 << 5), "TAINT_BAD_PAGE: Bad page reference or an unexpected page f=
-lags."},
-> -  {(1 << 7), "TAINT_DIE: Kernel has died - BUG/OOPS."},
-> -  {(1 << 9), "TAINT_WARN: WARN_ON has happened."},
-> -  {0, 0}};
-> -
-> -static unsigned long bad_taints(void)
-> -{
-> -	static unsigned long __bad_taints;
-> -
-> -	if (!__bad_taints) {
-> -		for (typeof(*abort_taints) *taint =3D abort_taints;
-> -		     taint->bit;
-> -		     taint++)
-> -			__bad_taints |=3D taint->bit;
-> -	}
-> -
-> -	return __bad_taints;
-> -}
-> -
-> -static unsigned long is_tainted(unsigned long taints)
-> -{
-> -	return taints & bad_taints();
-> -}
-> -
-> -static unsigned long tainted(unsigned long *taints)
-> -{
-> -	FILE *f;
-> -
-> -	*taints =3D 0;
-> -
-> -	f =3D fopen("/proc/sys/kernel/tainted", "r");
-> -	if (f) {
-> -		fscanf(f, "%lu", taints);
-> -		fclose(f);
-> -	}
-> -
-> -	return is_tainted(*taints);
-> -}
-> -
->  static char *handle_taint(void)
->  {
-> -	unsigned long taints;
-> +	unsigned long taints, bad;
-> +	char *explain;
->  	char *reason;
->  =
+== Logs ==
 
-> -	if (!tainted(&taints))
-> +	bad =3D igt_kernel_tainted(&taints);
-> +	if (!bad)
->  		return NULL;
->  =
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/index.html
 
-> -	asprintf(&reason, "Kernel badly tainted (%#lx) (check dmesg for details=
-):\n",
-> -		 taints);
-> -
-> -	for (typeof(*abort_taints) *taint =3D abort_taints; taint->bit; taint++=
-) {
-> -		if (taint->bit & taints) {
-> -			char *old_reason =3D reason;
-> -			asprintf(&reason, "%s\t(%#lx) %s\n",
-> -					old_reason,
-> -					taint->bit,
-> -					taint->explanation);
-> -			free(old_reason);
-> -		}
-> +	asprintf(&reason, "Kernel badly tainted (%#lx, %#lx) (check dmesg for d=
-etails):\n",
-> +		 taints, bad);
-> +
-> +	while ((explain =3D igt_explain_taints(&bad))) {
-> +		char *old_reason =3D reason;
-> +		asprintf(&reason, "%s\t%s\n", old_reason, explain);
-> +		free(old_reason);
->  	}
->  =
+--===============4425345769938314936==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
->  	return reason;
-> @@ -1142,7 +1096,8 @@ static int monitor_output(pid_t child,
->  			sigfd =3D -1; /* we are dying, no signal handling for now */
->  		}
->  =
 
-> -		timeout_reason =3D need_to_timeout(settings, killed, tainted(&taints),
-> +		timeout_reason =3D need_to_timeout(settings, killed,
-> +						 igt_kernel_tainted(&taints),
->  						 igt_time_elapsed(&time_last_activity, &time_now),
->  						 igt_time_elapsed(&time_last_subtest, &time_now),
->  						 igt_time_elapsed(&time_killed, &time_now),
-> -- =
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
-> 2.30.0
-> =
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t] lib: Process kernel taints (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/85579/">https://patchwork.freedesktop.org/series/85579/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_5949 -&gt; IGTPW_5370</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_5370 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_5370, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_5370:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@runner@aborted:<ul>
+<li>fi-tgl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/fi-tgl-y/igt@runner@aborted.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5370 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gem_contexts:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5949/fi-tgl-y/igt@i915_selftest@live@gem_contexts.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/fi-tgl-y/igt@i915_selftest@live@gem_contexts.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-crc-fast:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5949/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2868">i915#2868</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_self_import@basic-with_one_bo_two_files:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5949/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@read_all_entries:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5949/fi-tgl-y/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/fi-tgl-y/igt@debugfs_test@read_all_entries.html">PASS</a> +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@sanitycheck:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5949/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2605">i915#2605</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (43 -&gt; 37)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5949 -&gt; IGTPW_5370</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9565: 683dfd284ebe3924e36ae9d3b7edc9ec47080266 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5370: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5370/index.html<br />
+  IGT_5949: b7b071eaf501d27ee4c1940b2e825da269f8b43b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============4425345769938314936==--
+
+--===============1806076872==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1806076872==--
