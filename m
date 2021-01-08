@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C1F9A6E53E
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Jan 2021 21:49:14 +0000 (UTC)
-Date: Thu, 7 Jan 2021 13:49:13 -0800
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Message-ID: <20210107214913.GI71919@orsosgc001.ra.intel.com>
-References: <20201228031940.178954-1-lionel.g.landwerlin@intel.com>
- <20201228031940.178954-3-lionel.g.landwerlin@intel.com>
- <20210107002344.GE71919@orsosgc001.ra.intel.com>
- <40ea28ac-d3b8-42b8-8cb5-fe143affea43@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D11EB6E5C1
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Jan 2021 04:23:36 +0000 (UTC)
+References: <20210107155154.6111-1-juhapekka.heikkila@gmail.com>
+From: Karthik B S <karthik.b.s@intel.com>
+Message-ID: <78ecef46-df05-cf03-5d02-81b401f05d6e@intel.com>
+Date: Fri, 8 Jan 2021 09:53:32 +0530
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <40ea28ac-d3b8-42b8-8cb5-fe143affea43@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] lib/i915/perf: fill up reader
- devinfo default field
+In-Reply-To: <20210107155154.6111-1-juhapekka.heikkila@gmail.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_rotation_crc: avoid
+ recalculating refecence crcs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,69 +18,186 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBKYW4gMDcsIDIwMjEgYXQgMTI6MDM6NTZQTSArMDIwMCwgTGlvbmVsIExhbmR3ZXJs
-aW4gd3JvdGU6Cj5PbiAwNy8wMS8yMDIxIDAyOjIzLCBVbWVzaCBOZXJsaWdlIFJhbWFwcGEgd3Jv
-dGU6Cj4+T24gTW9uLCBEZWMgMjgsIDIwMjAgYXQgMDU6MTk6MzlBTSArMDIwMCwgTGlvbmVsIExh
-bmR3ZXJsaW4gd3JvdGU6Cj4+PkEgYnVuY2ggb2YgZmllbGRzIHdlcmUgbGVmdCB0byAwLi4uCj4+
-Pgo+Pj5TaWduZWQtb2ZmLWJ5OiBMaW9uZWwgTGFuZHdlcmxpbiA8bGlvbmVsLmcubGFuZHdlcmxp
-bkBpbnRlbC5jb20+Cj4+Cj4+Cj4+V2hhdCBpcyBkaWZmZXJlbnQgYmV0d2VlbiB0aGUgZGV2aW5m
-byBpbiBpbnRlbF9wZXJmIHZzIHRoZSBkZXZpbmZvIAo+PmluIGludGVsX3BlcmZfZGF0YV9yZWFk
-ZXIuIFNpbmNlIHlvdSBhbHJlYWR5IGhhdmUgYSBpbnRlbF9wZXJmIAo+Pm9iamVjdCBpbnNpZGUg
-aW50ZWxfcGVyZl9kYXRhX3JlYWRlciwgd29uZGVyaW5nIHdoeSB5b3UgbmVlZCB0byBjb3B5IAo+
-Pml0IG92ZXIgYW5kIHRoZW4gc2V0IHRoZSBkZXZpZCBhbmQgdGltZXN0YW1wX2ZyZXF1ZW5jeS4g
-V2h5IG5vdCBqdXN0IAo+PnNldCBpdCBpbiByZWFkZXItPnBlcmYtPmRldmluZm8uCj4+Cj4+SXJy
-ZXNwZWN0aXZlLAo+Pgo+PlJldmlld2VkLWJ5OiBVbWVzaCBOZXJsaWdlIFJhbWFwcGEgPHVtZXNo
-Lm5lcmxpZ2UucmFtYXBwYUBpbnRlbC5jb20+Cj4+Cj4+VGhhbmtzLAo+PlVtZXNoCj4KPgo+SSBk
-b24ndCByZW1lbWJlciBteSBleGFjdCByZWFzb25pbmcgZm9yIGhhdmluZyB0aGlzIHR3aWNlLi4u
-Lgo+Cj5BcyBmYXIgYXMgSSBjYW4gdGVsbCB0aGV5J3JlIGV4YWN0bHkgdGhlIHNhbWUsIEkgY291
-bGQganVzdCBjb3B5IGl0IAo+c3RyYWlnaHQuCj4KPgo+V291bGQgdGhhdCBiZSBva2F5IGFzIGEg
-cmVwbGFjZW1lbnQgZm9yIHRoaXMgY29tbWl0Pwo+CgpZZXMsIHRoYXQgaGVscHMgc2luY2UgY29w
-eWluZyBpdCBqdXN0IGltcGxpZXMgdGhlcmUgaXMgbm90IGRpZmZlcmVuY2UgCmJldHdlZW4gdGhl
-IHR3by4KClRoYW5rcywKVW1lc2gKPgo+LUxpb25lbAo+Cj4KPj4KPj4+Rml4ZXM6IDQzMTE2ZWUz
-Njg1ODVkICgibGliL2k5MTUtcGVyZjogYWRkIGk5MTUgcGVyZiBkYXRhIHJlYWRlciIpCj4+Pi0t
-LQo+Pj5saWIvaTkxNS9wZXJmX2RhdGFfcmVhZGVyLmMgfCA5ICsrKysrLS0tLQo+Pj4xIGZpbGUg
-Y2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQo+Pj4KPj4+ZGlmZiAtLWdp
-dCBhL2xpYi9pOTE1L3BlcmZfZGF0YV9yZWFkZXIuYyBiL2xpYi9pOTE1L3BlcmZfZGF0YV9yZWFk
-ZXIuYwo+Pj5pbmRleCAzYjA1YTJlNTQuLjRiNjhmYjUwMiAxMDA2NDQKPj4+LS0tIGEvbGliL2k5
-MTUvcGVyZl9kYXRhX3JlYWRlci5jCj4+PisrKyBiL2xpYi9pOTE1L3BlcmZfZGF0YV9yZWFkZXIu
-Ywo+Pj5AQCAtMTE5LDEyICsxMTksMTMgQEAgZmluZF9tZXRyaWNfc2V0KHN0cnVjdCBpbnRlbF9w
-ZXJmICpwZXJmLCAKPj4+Y29uc3QgY2hhciAqc3ltYm9sX25hbWUpCj4+Pgo+Pj5zdGF0aWMgdm9p
-ZAo+Pj5pbml0X2RldmluZm8oc3RydWN0IGludGVsX3BlcmZfZGV2aW5mbyAqcGVyZl9kZXZpbmZv
-LAo+Pj4rwqDCoMKgwqDCoMKgwqDCoCBzdHJ1Y3QgaW50ZWxfcGVyZiAqcGVyZiwKPj4+wqDCoMKg
-wqDCoMKgwqDCoCBjb25zdCBzdHJ1Y3QgaW50ZWxfZGV2aWNlX2luZm8gKmRldmluZm8sCj4+PsKg
-wqDCoMKgwqDCoMKgwqAgdWludDMyX3QgZGV2aWQsCj4+PsKgwqDCoMKgwqDCoMKgwqAgdWludDY0
-X3QgdGltZXN0YW1wX2ZyZXF1ZW5jeSkKPj4+ewo+Pj4rwqDCoMKgICpwZXJmX2RldmluZm8gPSBw
-ZXJmLT5kZXZpbmZvOwo+Pj7CoMKgwqDCoHBlcmZfZGV2aW5mby0+ZGV2aWQgPSBkZXZpZDsKPj4+
-LcKgwqDCoCBwZXJmX2RldmluZm8tPmdlbiA9IGRldmluZm8tPmdlbjsKPj4+wqDCoMKgwqBwZXJm
-X2RldmluZm8tPnRpbWVzdGFtcF9mcmVxdWVuY3kgPSB0aW1lc3RhbXBfZnJlcXVlbmN5Owo+Pj59
-Cj4+Pgo+Pj5AQCAtMjAzLDE1ICsyMDQsMTUgQEAgcGFyc2VfZGF0YShzdHJ1Y3QgaW50ZWxfcGVy
-Zl9kYXRhX3JlYWRlciAqcmVhZGVyKQo+Pj7CoMKgwqDCoMKgwqDCoCByZXR1cm4gZmFsc2U7Cj4+
-PsKgwqDCoMKgfQo+Pj4KPj4+LcKgwqDCoCBpbml0X2RldmluZm8oJnJlYWRlci0+ZGV2aW5mbywg
-ZGV2aW5mbywKPj4+LcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZWNvcmRfaW5mby0+ZGV2aWNl
-X2lkLAo+Pj4twqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJlY29yZF9pbmZvLT50aW1lc3RhbXBf
-ZnJlcXVlbmN5KTsKPj4+wqDCoMKgwqByZWFkZXItPnBlcmYgPSBpbnRlbF9wZXJmX2Zvcl9kZXZp
-bmZvKHJlY29yZF9pbmZvLT5kZXZpY2VfaWQsCj4+PsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJlY29yZF9pbmZvLT5kZXZpY2VfcmV2aXNpb24sCj4+
-PsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJlY29y
-ZF9pbmZvLT50aW1lc3RhbXBfZnJlcXVlbmN5LAo+Pj7CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZWNvcmRfaW5mby0+Z3RfbWluX2ZyZXF1ZW5jeSwK
-Pj4+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmVj
-b3JkX2luZm8tPmd0X21heF9mcmVxdWVuY3ksCj4+PsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICZyZWNvcmRfdG9wb2xvZ3ktPnRvcG9sb2d5KTsKPj4+
-K8KgwqDCoCBpbml0X2RldmluZm8oJnJlYWRlci0+ZGV2aW5mbywgcmVhZGVyLT5wZXJmLCBkZXZp
-bmZvLAo+Pj4rwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJlY29yZF9pbmZvLT5kZXZpY2VfaWQs
-Cj4+PivCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmVjb3JkX2luZm8tPnRpbWVzdGFtcF9mcmVx
-dWVuY3kpOwo+Pj4KPj4+wqDCoMKgwqByZWFkZXItPm1ldHJpY19zZXRfbmFtZSA9IHJlY29yZF9p
-bmZvLT5tZXRyaWNfc2V0X25hbWU7Cj4+PsKgwqDCoMKgcmVhZGVyLT5tZXRyaWNfc2V0X3V1aWQg
-PSByZWNvcmRfaW5mby0+bWV0cmljX3NldF91dWlkOwo+Pj4tLSAKPj4+Mi4zMC4wLnJjMgo+Pj4K
-PgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
-IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
-LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+On 1/7/2021 9:21 PM, Juha-Pekka Heikkila wrote:
+> Get those reference crcs only once since they stay the same.
+>
+> v2: Need to make exception for HSW, there crcs seem to vary across
+> rendering pipes.
+
+Since it is an optimization, this exception should be fine.
+
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+
+>
+> This reduces generic rotation tests execution time on my ICL from 26s to 14s
+>
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>   tests/kms_rotation_crc.c | 88 ++++++++++++++++++++++++----------------
+>   1 file changed, 52 insertions(+), 36 deletions(-)
+>
+> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+> index ffcc2cc2e..be27103fa 100644
+> --- a/tests/kms_rotation_crc.c
+> +++ b/tests/kms_rotation_crc.c
+> @@ -49,6 +49,14 @@ struct p_point{
+>   	float_t y;
+>   };
+>   
+> +enum rectangle_type {
+> +	rectangle,
+> +	square,
+> +	portrait,
+> +	landscape,
+> +	num_rectangle_types /* must be last */
+> +};
+> +
+>   typedef struct {
+>   	int gfx_fd;
+>   	igt_display_t display;
+> @@ -70,6 +78,12 @@ typedef struct {
+>   
+>   	bool use_native_resolution;
+>   	bool extended;
+> +
+> +	struct crc_rect_tag {
+> +		bool valid;
+> +		igt_crc_t ref_crc;
+> +		igt_crc_t flip_crc;
+> +	} crc_rect[num_rectangle_types];
+>   } data_t;
+>   
+>   typedef struct {
+> @@ -190,14 +204,6 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
+>   		igt_pipe_crc_start(data->pipe_crc);
+>   }
+>   
+> -enum rectangle_type {
+> -	rectangle,
+> -	square,
+> -	portrait,
+> -	landscape,
+> -	num_rectangle_types /* must be last */
+> -};
+> -
+>   static void prepare_fbs(data_t *data, igt_output_t *output,
+>   			igt_plane_t *plane, enum rectangle_type rect, uint32_t format)
+>   {
+> @@ -267,42 +273,49 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
+>   	igt_require(igt_display_has_format_mod(display, pixel_format, tiling));
+>   
+>   	/*
+> -	 * Create a reference software rotated flip framebuffer.
+> +	 * HSW will need to have those CRCs calculated each time, it
+> +	 * seems to behave different from other platforms.
+>   	 */
+> -	igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format, tiling,
+> -		      &data->fb_flip);
+> -	paint_squares(data, data->rotation, &data->fb_flip,
+> -		      flip_opacity);
+> -	igt_plane_set_fb(plane, &data->fb_flip);
+> -	if (plane->type != DRM_PLANE_TYPE_CURSOR)
+> -		igt_plane_set_position(plane, data->pos_x, data->pos_y);
+> -	igt_display_commit2(display, COMMIT_ATOMIC);
+> +	if (!data->crc_rect[rect].valid || IS_HASWELL(data->devid)) {
+> +		/*
+> +		* Create a reference software rotated flip framebuffer.
+> +		*/
+> +		igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format, tiling,
+> +			&data->fb_flip);
+> +		paint_squares(data, data->rotation, &data->fb_flip,
+> +			flip_opacity);
+> +		igt_plane_set_fb(plane, &data->fb_flip);
+> +		if (plane->type != DRM_PLANE_TYPE_CURSOR)
+> +			igt_plane_set_position(plane, data->pos_x, data->pos_y);
+> +		igt_display_commit2(display, COMMIT_ATOMIC);
+>   
+> -	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->flip_crc);
+> +		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].flip_crc);
+> +		igt_remove_fb(data->gfx_fd, &data->fb_flip);
+> +
+> +		/*
+> +		* Create a reference CRC for a software-rotated fb.
+> +		*/
+> +		igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format,
+> +			data->override_tiling ?: LOCAL_DRM_FORMAT_MOD_NONE, &data->fb_reference);
+> +		paint_squares(data, data->rotation, &data->fb_reference, 1.0);
+> +
+> +		igt_plane_set_fb(plane, &data->fb_reference);
+> +		if (plane->type != DRM_PLANE_TYPE_CURSOR)
+> +			igt_plane_set_position(plane, data->pos_x, data->pos_y);
+> +		igt_display_commit2(display, COMMIT_ATOMIC);
+> +
+> +		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].ref_crc);
+> +		data->crc_rect[rect].valid = true;
+> +	}
+>   
+>   	/*
+>   	  * Prepare the non-rotated flip fb.
+>   	  */
+> -	igt_remove_fb(data->gfx_fd, &data->fb_flip);
+>   	igt_create_fb(data->gfx_fd, w, h, pixel_format, tiling,
+>   		      &data->fb_flip);
+>   	paint_squares(data, IGT_ROTATION_0, &data->fb_flip,
+>   		      flip_opacity);
+>   
+> -	/*
+> -	 * Create a reference CRC for a software-rotated fb.
+> -	 */
+> -	igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format,
+> -		      data->override_tiling ?: LOCAL_DRM_FORMAT_MOD_NONE, &data->fb_reference);
+> -	paint_squares(data, data->rotation, &data->fb_reference, 1.0);
+> -
+> -	igt_plane_set_fb(plane, &data->fb_reference);
+> -	if (plane->type != DRM_PLANE_TYPE_CURSOR)
+> -		igt_plane_set_position(plane, data->pos_x, data->pos_y);
+> -	igt_display_commit2(display, COMMIT_ATOMIC);
+> -
+> -	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->ref_crc);
+> -
+>   	/*
+>   	 * Prepare the plane with an non-rotated fb let the hw rotate it.
+>   	 */
+> @@ -341,7 +354,7 @@ static void test_single_case(data_t *data, enum pipe pipe,
+>   
+>   	/* Check CRC */
+>   	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
+> -	igt_assert_crc_equal(&data->ref_crc, &crc_output);
+> +	igt_assert_crc_equal(&data->crc_rect[rect].ref_crc, &crc_output);
+>   
+>   	/*
+>   	 * If flips are requested flip to a different fb and
+> @@ -364,8 +377,7 @@ static void test_single_case(data_t *data, enum pipe pipe,
+>   		}
+>   		kmstest_wait_for_pageflip(data->gfx_fd);
+>   		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
+> -		igt_assert_crc_equal(&data->flip_crc,
+> -				     &crc_output);
+> +		igt_assert_crc_equal(&data->crc_rect[rect].flip_crc, &crc_output);
+>   	}
+>   }
+>   
+> @@ -396,6 +408,10 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+>   	igt_display_t *display = &data->display;
+>   	igt_output_t *output;
+>   	enum pipe pipe;
+> +	int c;
+> +
+> +	for (c = 0; c < num_rectangle_types; c++)
+> +		data->crc_rect[c].valid = false;
+>   
+>   	if (plane_type == DRM_PLANE_TYPE_CURSOR)
+>   		igt_require(display->has_cursor_plane);
+
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
