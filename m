@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33B6C6E454
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Jan 2021 13:02:26 +0000 (UTC)
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Fri,  8 Jan 2021 13:01:57 +0000
-Message-Id: <20210108130157.4037735-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20210107104328.4020431-1-chris@chris-wilson.co.uk>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E4C489DA4
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Jan 2021 13:30:17 +0000 (UTC)
+Date: Fri, 8 Jan 2021 15:30:13 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20210108133013.GU7444@platvala-desk.ger.corp.intel.com>
 References: <20210107104328.4020431-1-chris@chris-wilson.co.uk>
+ <20210108130157.4037735-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib: Process kernel taints
+Content-Disposition: inline
+In-Reply-To: <20210108130157.4037735-1-chris@chris-wilson.co.uk>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib: Process kernel taints
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,136 +18,331 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QSBzbWFsbCBsaWJyYXJ5IHJvdXRpbmUgdG8gcmVhZCAnL3Byb2Mvc3lzL2tlcm5lbC90YWludHMn
-IGFuZCBjaGVjayBmb3IKYSBmYXRhbCBjb25kaXRpb24uIFRoaXMgaXMgY3VycmVudGx5IHVzZWQg
-YnkgdGhlIHJ1bm5lciwgYnV0IGlzIGFsc28KdXNlZnVsIGZvciBzb21lIHRlc3RzLgoKdjI6IGZ1
-bmN0aW9uIGRvY3MKClNpZ25lZC1vZmYtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2ls
-c29uLmNvLnVrPgpDYzogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+Ci0t
-LQogbGliL01ha2VmaWxlLnNvdXJjZXMgfCAgMiArCiBsaWIvaWd0X3RhaW50cy5jICAgICB8IDk4
-ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCiBsaWIvaWd0X3Rh
-aW50cy5oICAgICB8IDE5ICsrKysrKysrKwogbGliL21lc29uLmJ1aWxkICAgICAgfCAgMSArCiBy
-dW5uZXIvZXhlY3V0b3IuYyAgICB8IDczICsrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LQogNSBmaWxlcyBjaGFuZ2VkLCAxMzQgaW5zZXJ0aW9ucygrKSwgNTkgZGVsZXRpb25zKC0pCiBj
-cmVhdGUgbW9kZSAxMDA2NDQgbGliL2lndF90YWludHMuYwogY3JlYXRlIG1vZGUgMTAwNjQ0IGxp
-Yi9pZ3RfdGFpbnRzLmgKCmRpZmYgLS1naXQgYS9saWIvTWFrZWZpbGUuc291cmNlcyBiL2xpYi9N
-YWtlZmlsZS5zb3VyY2VzCmluZGV4IDY3YjM4NjQ1Ny4uNzEwMmY5NWU3IDEwMDY0NAotLS0gYS9s
-aWIvTWFrZWZpbGUuc291cmNlcworKysgYi9saWIvTWFrZWZpbGUuc291cmNlcwpAQCAtNjQsNiAr
-NjQsOCBAQCBsaWJfc291cmNlX2xpc3QgPQkgCVwKIAlpZ3Rfc3lzZnMuaAkJXAogCWlndF9zeXNy
-cS5jCQlcCiAJaWd0X3N5c3JxLmgJCVwKKwlpZ3RfdGFpbnRzLmMJCVwKKwlpZ3RfdGFpbnRzLmgJ
-CVwKIAlpZ3RfdGhyZWFkLmMJCVwKIAlpZ3RfdGhyZWFkLmgJCVwKIAlpZ3RfeDg2LmgJCVwKZGlm
-ZiAtLWdpdCBhL2xpYi9pZ3RfdGFpbnRzLmMgYi9saWIvaWd0X3RhaW50cy5jCm5ldyBmaWxlIG1v
-ZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAwMC4uYTVhN2U2Y2FlCi0tLSAvZGV2L251bGwKKysrIGIv
-bGliL2lndF90YWludHMuYwpAQCAtMCwwICsxLDk4IEBACisvLyBTUERYLUxpY2Vuc2UtSWRlbnRp
-ZmllcjogTUlUCisvKgorICogQ29weXJpZ2h0IMKpIDIwMjEgSW50ZWwgQ29ycG9yYXRpb24KKyAq
-LworCisjaW5jbHVkZSA8c3RkaW8uaD4KKworI2luY2x1ZGUgImlndF90YWludHMuaCIKKworLyog
-c2VlIExpbnV4J3MgaW5jbHVkZS9saW51eC9rZXJuZWwuaCAqLworc3RhdGljIGNvbnN0IHN0cnVj
-dCB7CisJaW50IGJpdDsKKwlpbnQgYmFkOworCWNvbnN0IGNoYXIgKmV4cGxhbmF0aW9uOworfSBh
-Ym9ydF90YWludHNbXSA9IHsKKyAgeyA1LCAxLCAiVEFJTlRfQkFEX1BBR0U6IEJhZCBwYWdlIHJl
-ZmVyZW5jZSBvciBhbiB1bmV4cGVjdGVkIHBhZ2UgZmxhZ3MuIiB9LAorICB7IDcsIDEsICJUQUlO
-VF9ESUU6IEtlcm5lbCBoYXMgZGllZCAtIEJVRy9PT1BTLiIgfSwKKyAgeyA5LCAxLCAiVEFJTlRf
-V0FSTjogV0FSTl9PTiBoYXMgaGFwcGVuZWQuIiB9LAorICB7IC0xIH0KK307CisKKy8qKgorICog
-aWd0X2V4cGxhaW5fdGFpbnRzOgorICogQHRhaW50czogbWFzayBvZiB0YWludHMgcmVxdWlyaW5n
-IGFuIGV4cGxhbmF0aW9uIFtpbm91dF0KKyAqCisgKiBJbnNwZWN0cyB0aGUgbWFzayBhbmQgbG9v
-a3MgdXAgdGhlIGZpcnN0IHJlYXNvbiBjb3JyZXNwb2RpbmcgdG8gYSBzZXQKKyAqIGJpdCBpbiB0
-aGUgbWFzdC4gSXQgcmV0dXJucyB0aGUgcmVhc29uIGFzIGEgc3RyaW5nIGNvbnN0YW50LCBhbmQg
-cmVtb3ZlcworICogdGhlIGJpdCBmcm9tIHRoZSBtYXNrLiBJZiB0aGUgbWFzayBpcyBlbXB0eSwg
-b3Igd2UgaGF2ZSBubyBrbm93biByZWFzb24KKyAqIG1hdGNoaW5nIHRoZSBtYXRjaCwgTlVMTCBp
-cyByZXR1cm5lZC4KKyAqCisgKiBUaGlzIG1heSBiZSB1c2VkIGluIGEgbG9vcCB0byBleHRyYWN0
-IGFsbCBrbm93biByZWFzb25zIGZvciB3aHkgdGhlCisgKiBrZXJuZWwgdGFpbmVkOgorICoKKyAq
-IHdoaWxlIChyZWFzb24gPSBpZ3RfZXhwbGFpbl90YWludHMoJnRhaW50cykpCisgKiAJaWd0X2lu
-Zm8oIiVzIiwgcmVhc29uKTsKKyAqCisgKiBSZXR1cm5zIHRoZSBmaXJzdCByZWFzb24gY29ycmVz
-cG9uZGluZyB0byBhIHRhaW50IGJpdC4KKyAqLworY29uc3QgY2hhciAqaWd0X2V4cGxhaW5fdGFp
-bnRzKHVuc2lnbmVkIGxvbmcgKnRhaW50cykKK3sKKwlmb3IgKHR5cGVvZigqYWJvcnRfdGFpbnRz
-KSAqdGFpbnQgPSBhYm9ydF90YWludHM7CisJICAgICB0YWludC0+Yml0ID49IDA7CisJICAgICB0
-YWludCsrKSB7CisJCWlmICgqdGFpbnRzICYgKDF1bCA8PCB0YWludC0+Yml0KSkgeworCQkJKnRh
-aW50cyAmPSB+KDF1bCA8PCB0YWludC0+Yml0KTsKKwkJCXJldHVybiB0YWludC0+ZXhwbGFuYXRp
-b247CisJCX0KKwl9CisKKwlyZXR1cm4gTlVMTDsKK30KKworLyoqCisgKiBpZ3RfYmFkX3RhaW50
-czoKKyAqCisgKiBSZXR1cm5zIHRoZSBtYXNrIG9mIGtlcm5lbCB0YWludHMgdGhhdCBJR1QgY29u
-c2lkZXJzIGZhdGFsLgorICogU3VjaCBhcyBUQUlOVF9XQVJOIHNldCB3aGVuIHRoZSBrZXJuZWwg
-b29wc2VzLgorICovCit1bnNpZ25lZCBsb25nIGlndF9iYWRfdGFpbnRzKHZvaWQpCit7CisJc3Rh
-dGljIHVuc2lnbmVkIGxvbmcgYmFkX3RhaW50czsKKworCWlmICghYmFkX3RhaW50cykgeworCQlm
-b3IgKHR5cGVvZigqYWJvcnRfdGFpbnRzKSAqdGFpbnQgPSBhYm9ydF90YWludHM7CisJCSAgICAg
-dGFpbnQtPmJpdCA+PSAwOworCQkgICAgIHRhaW50KyspIHsKKwkJCWlmICh0YWludC0+YmFkKQor
-CQkJCWJhZF90YWludHMgfD0gMXVsIDw8IHRhaW50LT5iaXQ7CisJCX0KKwl9CisKKwlyZXR1cm4g
-YmFkX3RhaW50czsKK30KKworLyoqCisgKiBpZ3Rfa2VybmVsX3RhaW50ZWQ6CisgKiBAdGFpbnRz
-OiBiaXRtYXNrIG9mIGtlcm5lbCB0YWludHMgW291dF0KKyAqCisgKiBSZWFkcyAiL3ByY28vc3lz
-L2tlcm5lbC90YWludGVkIiBhbmQgcmV0dXJucyBib3RoIHRoZSBzZXQgb2YgYWxsCisgKiB0YWlu
-dHMgcmVwb3J0ZWQgdmlhIEB0YWludHMsIGFuZCB0aGUgc2V0IG9mIGZhdGFsIHRhaW50cyBhcyB0
-aGUKKyAqIHJldHVybiBwYXJhbWV0ZXJzLgorICoKKyAqIFJldHVybnMgYSBtYXNrIG9mIGZhdGFs
-IHRhaW50czsgMCBpZiB1bnRhaW50ZWQuCisgKi8KK3Vuc2lnbmVkIGxvbmcgaWd0X2tlcm5lbF90
-YWludGVkKHVuc2lnbmVkIGxvbmcgKnRhaW50cykKK3sKKwlGSUxFICpmOworCisJKnRhaW50cyA9
-IDA7CisKKwlmID0gZm9wZW4oIi9wcm9jL3N5cy9rZXJuZWwvdGFpbnRlZCIsICJyIik7CisJaWYg
-KGYpIHsKKwkJZnNjYW5mKGYsICIlbHUiLCB0YWludHMpOworCQlmY2xvc2UoZik7CisJfQorCisJ
-cmV0dXJuIGlzX3RhaW50ZWQoKnRhaW50cyk7Cit9CmRpZmYgLS1naXQgYS9saWIvaWd0X3RhaW50
-cy5oIGIvbGliL2lndF90YWludHMuaApuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAw
-MDAuLmJlNDE5NWM1YQotLS0gL2Rldi9udWxsCisrKyBiL2xpYi9pZ3RfdGFpbnRzLmgKQEAgLTAs
-MCArMSwxOSBAQAorLyogU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IE1JVCAqLworLyoKKyAqIENv
-cHlyaWdodCDCqSAyMDIxIEludGVsIENvcnBvcmF0aW9uCisgKi8KKworI2lmbmRlZiBfX0lHVF9U
-QUlOVFNfSF9fCisjZGVmaW5lIF9fSUdUX1RBSU5UU19IX18KKwordW5zaWduZWQgbG9uZyBpZ3Rf
-a2VybmVsX3RhaW50ZWQodW5zaWduZWQgbG9uZyAqdGFpbnRzKTsKK2NvbnN0IGNoYXIgKmlndF9l
-eHBsYWluX3RhaW50cyh1bnNpZ25lZCBsb25nICp0YWludHMpOworCit1bnNpZ25lZCBsb25nIGln
-dF9iYWRfdGFpbnRzKHZvaWQpOworCitzdGF0aWMgaW5saW5lIHVuc2lnbmVkIGxvbmcgaXNfdGFp
-bnRlZCh1bnNpZ25lZCBsb25nIHRhaW50cykKK3sKKwlyZXR1cm4gdGFpbnRzICYgaWd0X2JhZF90
-YWludHMoKTsKK30KKworI2VuZGlmIC8qIF9fSUdUX1RBSU5UU19IX18gKi8KZGlmZiAtLWdpdCBh
-L2xpYi9tZXNvbi5idWlsZCBiL2xpYi9tZXNvbi5idWlsZAppbmRleCA1NDBmYWNiMjQuLjNhYmM0
-MmNiMyAxMDA2NDQKLS0tIGEvbGliL21lc29uLmJ1aWxkCisrKyBiL2xpYi9tZXNvbi5idWlsZApA
-QCAtMjcsNiArMjcsNyBAQCBsaWJfc291cmNlcyA9IFsKIAknaWd0X3N5bmNvYmouYycsCiAJJ2ln
-dF9zeXNmcy5jJywKIAknaWd0X3N5c3JxLmMnLAorCSdpZ3RfdGFpbnRzLmMnLAogCSdpZ3RfdGhy
-ZWFkLmMnLAogCSdpZ3RfdmVjLmMnLAogCSdpZ3RfdmdlbS5jJywKZGlmZiAtLWdpdCBhL3J1bm5l
-ci9leGVjdXRvci5jIGIvcnVubmVyL2V4ZWN1dG9yLmMKaW5kZXggZmFmMjcyZDg1Li45M2RiOGJi
-MzYgMTAwNjQ0Ci0tLSBhL3J1bm5lci9leGVjdXRvci5jCisrKyBiL3J1bm5lci9leGVjdXRvci5j
-CkBAIC0yNCw2ICsyNCw3IEBACiAKICNpbmNsdWRlICJpZ3RfYXV4LmgiCiAjaW5jbHVkZSAiaWd0
-X2NvcmUuaCIKKyNpbmNsdWRlICJpZ3RfdGFpbnRzLmgiCiAjaW5jbHVkZSAiZXhlY3V0b3IuaCIK
-ICNpbmNsdWRlICJvdXRwdXRfc3RyaW5ncy5oIgogCkBAIC0zMDcsNzAgKzMwOCwyMyBAQCBzdGF0
-aWMgY2hhciAqaGFuZGxlX2xvY2tkZXAodm9pZCkKIAlyZXR1cm4gTlVMTDsKIH0KIAotLyogc2Vl
-IExpbnV4J3MgaW5jbHVkZS9saW51eC9rZXJuZWwuaCAqLwotc3RhdGljIGNvbnN0IHN0cnVjdCB7
-Ci0JdW5zaWduZWQgbG9uZyBiaXQ7Ci0JY29uc3QgY2hhciAqZXhwbGFuYXRpb247Ci19IGFib3J0
-X3RhaW50c1tdID0gewotICB7KDEgPDwgNSksICJUQUlOVF9CQURfUEFHRTogQmFkIHBhZ2UgcmVm
-ZXJlbmNlIG9yIGFuIHVuZXhwZWN0ZWQgcGFnZSBmbGFncy4ifSwKLSAgeygxIDw8IDcpLCAiVEFJ
-TlRfRElFOiBLZXJuZWwgaGFzIGRpZWQgLSBCVUcvT09QUy4ifSwKLSAgeygxIDw8IDkpLCAiVEFJ
-TlRfV0FSTjogV0FSTl9PTiBoYXMgaGFwcGVuZWQuIn0sCi0gIHswLCAwfX07Ci0KLXN0YXRpYyB1
-bnNpZ25lZCBsb25nIGJhZF90YWludHModm9pZCkKLXsKLQlzdGF0aWMgdW5zaWduZWQgbG9uZyBf
-X2JhZF90YWludHM7Ci0KLQlpZiAoIV9fYmFkX3RhaW50cykgewotCQlmb3IgKHR5cGVvZigqYWJv
-cnRfdGFpbnRzKSAqdGFpbnQgPSBhYm9ydF90YWludHM7Ci0JCSAgICAgdGFpbnQtPmJpdDsKLQkJ
-ICAgICB0YWludCsrKQotCQkJX19iYWRfdGFpbnRzIHw9IHRhaW50LT5iaXQ7Ci0JfQotCi0JcmV0
-dXJuIF9fYmFkX3RhaW50czsKLX0KLQotc3RhdGljIHVuc2lnbmVkIGxvbmcgaXNfdGFpbnRlZCh1
-bnNpZ25lZCBsb25nIHRhaW50cykKLXsKLQlyZXR1cm4gdGFpbnRzICYgYmFkX3RhaW50cygpOwot
-fQotCi1zdGF0aWMgdW5zaWduZWQgbG9uZyB0YWludGVkKHVuc2lnbmVkIGxvbmcgKnRhaW50cykK
-LXsKLQlGSUxFICpmOwotCi0JKnRhaW50cyA9IDA7Ci0KLQlmID0gZm9wZW4oIi9wcm9jL3N5cy9r
-ZXJuZWwvdGFpbnRlZCIsICJyIik7Ci0JaWYgKGYpIHsKLQkJZnNjYW5mKGYsICIlbHUiLCB0YWlu
-dHMpOwotCQlmY2xvc2UoZik7Ci0JfQotCi0JcmV0dXJuIGlzX3RhaW50ZWQoKnRhaW50cyk7Ci19
-Ci0KIHN0YXRpYyBjaGFyICpoYW5kbGVfdGFpbnQodm9pZCkKIHsKLQl1bnNpZ25lZCBsb25nIHRh
-aW50czsKKwl1bnNpZ25lZCBsb25nIHRhaW50cywgYmFkOworCWNoYXIgKmV4cGxhaW47CiAJY2hh
-ciAqcmVhc29uOwogCi0JaWYgKCF0YWludGVkKCZ0YWludHMpKQorCWJhZCA9IGlndF9rZXJuZWxf
-dGFpbnRlZCgmdGFpbnRzKTsKKwlpZiAoIWJhZCkKIAkJcmV0dXJuIE5VTEw7CiAKLQlhc3ByaW50
-ZigmcmVhc29uLCAiS2VybmVsIGJhZGx5IHRhaW50ZWQgKCUjbHgpIChjaGVjayBkbWVzZyBmb3Ig
-ZGV0YWlscyk6XG4iLAotCQkgdGFpbnRzKTsKLQotCWZvciAodHlwZW9mKCphYm9ydF90YWludHMp
-ICp0YWludCA9IGFib3J0X3RhaW50czsgdGFpbnQtPmJpdDsgdGFpbnQrKykgewotCQlpZiAodGFp
-bnQtPmJpdCAmIHRhaW50cykgewotCQkJY2hhciAqb2xkX3JlYXNvbiA9IHJlYXNvbjsKLQkJCWFz
-cHJpbnRmKCZyZWFzb24sICIlc1x0KCUjbHgpICVzXG4iLAotCQkJCQlvbGRfcmVhc29uLAotCQkJ
-CQl0YWludC0+Yml0LAotCQkJCQl0YWludC0+ZXhwbGFuYXRpb24pOwotCQkJZnJlZShvbGRfcmVh
-c29uKTsKLQkJfQorCWFzcHJpbnRmKCZyZWFzb24sICJLZXJuZWwgYmFkbHkgdGFpbnRlZCAoJSNs
-eCwgJSNseCkgKGNoZWNrIGRtZXNnIGZvciBkZXRhaWxzKTpcbiIsCisJCSB0YWludHMsIGJhZCk7
-CisKKwl3aGlsZSAoKGV4cGxhaW4gPSBpZ3RfZXhwbGFpbl90YWludHMoJmJhZCkpKSB7CisJCWNo
-YXIgKm9sZF9yZWFzb24gPSByZWFzb247CisJCWFzcHJpbnRmKCZyZWFzb24sICIlc1x0JXNcbiIs
-IG9sZF9yZWFzb24sIGV4cGxhaW4pOworCQlmcmVlKG9sZF9yZWFzb24pOwogCX0KIAogCXJldHVy
-biByZWFzb247CkBAIC0xMTQyLDcgKzEwOTYsOCBAQCBzdGF0aWMgaW50IG1vbml0b3Jfb3V0cHV0
-KHBpZF90IGNoaWxkLAogCQkJc2lnZmQgPSAtMTsgLyogd2UgYXJlIGR5aW5nLCBubyBzaWduYWwg
-aGFuZGxpbmcgZm9yIG5vdyAqLwogCQl9CiAKLQkJdGltZW91dF9yZWFzb24gPSBuZWVkX3RvX3Rp
-bWVvdXQoc2V0dGluZ3MsIGtpbGxlZCwgdGFpbnRlZCgmdGFpbnRzKSwKKwkJdGltZW91dF9yZWFz
-b24gPSBuZWVkX3RvX3RpbWVvdXQoc2V0dGluZ3MsIGtpbGxlZCwKKwkJCQkJCSBpZ3Rfa2VybmVs
-X3RhaW50ZWQoJnRhaW50cyksCiAJCQkJCQkgaWd0X3RpbWVfZWxhcHNlZCgmdGltZV9sYXN0X2Fj
-dGl2aXR5LCAmdGltZV9ub3cpLAogCQkJCQkJIGlndF90aW1lX2VsYXBzZWQoJnRpbWVfbGFzdF9z
-dWJ0ZXN0LCAmdGltZV9ub3cpLAogCQkJCQkJIGlndF90aW1lX2VsYXBzZWQoJnRpbWVfa2lsbGVk
-LCAmdGltZV9ub3cpLAotLSAKMi4zMC4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVk
-ZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2lndC1kZXYK
+On Fri, Jan 08, 2021 at 01:01:57PM +0000, Chris Wilson wrote:
+> A small library routine to read '/proc/sys/kernel/taints' and check for
+> a fatal condition. This is currently used by the runner, but is also
+> useful for some tests.
+> =
+
+> v2: function docs
+> =
+
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> ---
+>  lib/Makefile.sources |  2 +
+>  lib/igt_taints.c     | 98 ++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_taints.h     | 19 +++++++++
+>  lib/meson.build      |  1 +
+>  runner/executor.c    | 73 +++++++--------------------------
+>  5 files changed, 134 insertions(+), 59 deletions(-)
+>  create mode 100644 lib/igt_taints.c
+>  create mode 100644 lib/igt_taints.h
+> =
+
+> diff --git a/lib/Makefile.sources b/lib/Makefile.sources
+> index 67b386457..7102f95e7 100644
+> --- a/lib/Makefile.sources
+> +++ b/lib/Makefile.sources
+> @@ -64,6 +64,8 @@ lib_source_list =3D	 	\
+>  	igt_sysfs.h		\
+>  	igt_sysrq.c		\
+>  	igt_sysrq.h		\
+> +	igt_taints.c		\
+> +	igt_taints.h		\
+>  	igt_thread.c		\
+>  	igt_thread.h		\
+>  	igt_x86.h		\
+> diff --git a/lib/igt_taints.c b/lib/igt_taints.c
+> new file mode 100644
+> index 000000000..a5a7e6cae
+> --- /dev/null
+> +++ b/lib/igt_taints.c
+> @@ -0,0 +1,98 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright =A9 2021 Intel Corporation
+> + */
+> +
+> +#include <stdio.h>
+> +
+> +#include "igt_taints.h"
+> +
+> +/* see Linux's include/linux/kernel.h */
+> +static const struct {
+> +	int bit;
+> +	int bad;
+> +	const char *explanation;
+> +} abort_taints[] =3D {
+> +  { 5, 1, "TAINT_BAD_PAGE: Bad page reference or an unexpected page flag=
+s." },
+> +  { 7, 1, "TAINT_DIE: Kernel has died - BUG/OOPS." },
+> +  { 9, 1, "TAINT_WARN: WARN_ON has happened." },
+> +  { -1 }
+> +};
+> +
+> +/**
+> + * igt_explain_taints:
+> + * @taints: mask of taints requiring an explanation [inout]
+> + *
+> + * Inspects the mask and looks up the first reason correspoding to a set
+> + * bit in the mast. It returns the reason as a string constant, and remo=
+ves
+> + * the bit from the mask. If the mask is empty, or we have no known reas=
+on
+> + * matching the match, NULL is returned.
+> + *
+> + * This may be used in a loop to extract all known reasons for why the
+> + * kernel tained:
+
+s/correspoding/corresponding/
+s/mast/mask/
+s/matching the match/matching the mask/
+
+> + *
+> + * while (reason =3D igt_explain_taints(&taints))
+> + * 	igt_info("%s", reason);
+> + *
+> + * Returns the first reason corresponding to a taint bit.
+> + */
+> +const char *igt_explain_taints(unsigned long *taints)
+> +{
+> +	for (typeof(*abort_taints) *taint =3D abort_taints;
+> +	     taint->bit >=3D 0;
+> +	     taint++) {
+> +		if (*taints & (1ul << taint->bit)) {
+> +			*taints &=3D ~(1ul << taint->bit);
+> +			return taint->explanation;
+> +		}
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+> +/**
+> + * igt_bad_taints:
+> + *
+> + * Returns the mask of kernel taints that IGT considers fatal.
+> + * Such as TAINT_WARN set when the kernel oopses.
+> + */
+> +unsigned long igt_bad_taints(void)
+> +{
+> +	static unsigned long bad_taints;
+> +
+> +	if (!bad_taints) {
+> +		for (typeof(*abort_taints) *taint =3D abort_taints;
+> +		     taint->bit >=3D 0;
+> +		     taint++) {
+> +			if (taint->bad)
+> +				bad_taints |=3D 1ul << taint->bit;
+> +		}
+> +	}
+> +
+> +	return bad_taints;
+> +}
+> +
+> +/**
+> + * igt_kernel_tainted:
+> + * @taints: bitmask of kernel taints [out]
+> + *
+> + * Reads "/prco/sys/kernel/tainted" and returns both the set of all
+> + * taints reported via @taints, and the set of fatal taints as the
+> + * return parameters.
+> + *
+> + * Returns a mask of fatal taints; 0 if untainted.
+> + */
+
+s/prco/proc/
+
+Move the "both" word later so it's clear it's returning the same thing
+with two means, instead of returning two things.
+
+
+With those
+
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+
+
+> +unsigned long igt_kernel_tainted(unsigned long *taints)
+> +{
+> +	FILE *f;
+> +
+> +	*taints =3D 0;
+> +
+> +	f =3D fopen("/proc/sys/kernel/tainted", "r");
+> +	if (f) {
+> +		fscanf(f, "%lu", taints);
+> +		fclose(f);
+> +	}
+> +
+> +	return is_tainted(*taints);
+> +}
+> diff --git a/lib/igt_taints.h b/lib/igt_taints.h
+> new file mode 100644
+> index 000000000..be4195c5a
+> --- /dev/null
+> +++ b/lib/igt_taints.h
+> @@ -0,0 +1,19 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright =A9 2021 Intel Corporation
+> + */
+> +
+> +#ifndef __IGT_TAINTS_H__
+> +#define __IGT_TAINTS_H__
+> +
+> +unsigned long igt_kernel_tainted(unsigned long *taints);
+> +const char *igt_explain_taints(unsigned long *taints);
+> +
+> +unsigned long igt_bad_taints(void);
+> +
+> +static inline unsigned long is_tainted(unsigned long taints)
+> +{
+> +	return taints & igt_bad_taints();
+> +}
+> +
+> +#endif /* __IGT_TAINTS_H__ */
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 540facb24..3abc42cb3 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -27,6 +27,7 @@ lib_sources =3D [
+>  	'igt_syncobj.c',
+>  	'igt_sysfs.c',
+>  	'igt_sysrq.c',
+> +	'igt_taints.c',
+>  	'igt_thread.c',
+>  	'igt_vec.c',
+>  	'igt_vgem.c',
+> diff --git a/runner/executor.c b/runner/executor.c
+> index faf272d85..93db8bb36 100644
+> --- a/runner/executor.c
+> +++ b/runner/executor.c
+> @@ -24,6 +24,7 @@
+>  =
+
+>  #include "igt_aux.h"
+>  #include "igt_core.h"
+> +#include "igt_taints.h"
+>  #include "executor.h"
+>  #include "output_strings.h"
+>  =
+
+> @@ -307,70 +308,23 @@ static char *handle_lockdep(void)
+>  	return NULL;
+>  }
+>  =
+
+> -/* see Linux's include/linux/kernel.h */
+> -static const struct {
+> -	unsigned long bit;
+> -	const char *explanation;
+> -} abort_taints[] =3D {
+> -  {(1 << 5), "TAINT_BAD_PAGE: Bad page reference or an unexpected page f=
+lags."},
+> -  {(1 << 7), "TAINT_DIE: Kernel has died - BUG/OOPS."},
+> -  {(1 << 9), "TAINT_WARN: WARN_ON has happened."},
+> -  {0, 0}};
+> -
+> -static unsigned long bad_taints(void)
+> -{
+> -	static unsigned long __bad_taints;
+> -
+> -	if (!__bad_taints) {
+> -		for (typeof(*abort_taints) *taint =3D abort_taints;
+> -		     taint->bit;
+> -		     taint++)
+> -			__bad_taints |=3D taint->bit;
+> -	}
+> -
+> -	return __bad_taints;
+> -}
+> -
+> -static unsigned long is_tainted(unsigned long taints)
+> -{
+> -	return taints & bad_taints();
+> -}
+> -
+> -static unsigned long tainted(unsigned long *taints)
+> -{
+> -	FILE *f;
+> -
+> -	*taints =3D 0;
+> -
+> -	f =3D fopen("/proc/sys/kernel/tainted", "r");
+> -	if (f) {
+> -		fscanf(f, "%lu", taints);
+> -		fclose(f);
+> -	}
+> -
+> -	return is_tainted(*taints);
+> -}
+> -
+>  static char *handle_taint(void)
+>  {
+> -	unsigned long taints;
+> +	unsigned long taints, bad;
+> +	char *explain;
+>  	char *reason;
+>  =
+
+> -	if (!tainted(&taints))
+> +	bad =3D igt_kernel_tainted(&taints);
+> +	if (!bad)
+>  		return NULL;
+>  =
+
+> -	asprintf(&reason, "Kernel badly tainted (%#lx) (check dmesg for details=
+):\n",
+> -		 taints);
+> -
+> -	for (typeof(*abort_taints) *taint =3D abort_taints; taint->bit; taint++=
+) {
+> -		if (taint->bit & taints) {
+> -			char *old_reason =3D reason;
+> -			asprintf(&reason, "%s\t(%#lx) %s\n",
+> -					old_reason,
+> -					taint->bit,
+> -					taint->explanation);
+> -			free(old_reason);
+> -		}
+> +	asprintf(&reason, "Kernel badly tainted (%#lx, %#lx) (check dmesg for d=
+etails):\n",
+> +		 taints, bad);
+> +
+> +	while ((explain =3D igt_explain_taints(&bad))) {
+> +		char *old_reason =3D reason;
+> +		asprintf(&reason, "%s\t%s\n", old_reason, explain);
+> +		free(old_reason);
+>  	}
+>  =
+
+>  	return reason;
+> @@ -1142,7 +1096,8 @@ static int monitor_output(pid_t child,
+>  			sigfd =3D -1; /* we are dying, no signal handling for now */
+>  		}
+>  =
+
+> -		timeout_reason =3D need_to_timeout(settings, killed, tainted(&taints),
+> +		timeout_reason =3D need_to_timeout(settings, killed,
+> +						 igt_kernel_tainted(&taints),
+>  						 igt_time_elapsed(&time_last_activity, &time_now),
+>  						 igt_time_elapsed(&time_last_subtest, &time_now),
+>  						 igt_time_elapsed(&time_killed, &time_now),
+> -- =
+
+> 2.30.0
+> =
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
