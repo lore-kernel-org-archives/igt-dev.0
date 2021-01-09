@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com
- [IPv6:2a00:1450:4864:20::430])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0CA646E91C
- for <igt-dev@lists.freedesktop.org>; Sat,  9 Jan 2021 12:07:05 +0000 (UTC)
-Received: by mail-wr1-x430.google.com with SMTP id t16so11542097wra.3
- for <igt-dev@lists.freedesktop.org>; Sat, 09 Jan 2021 04:07:04 -0800 (PST)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Sat,  9 Jan 2021 14:06:59 +0200
-Message-Id: <20210109120659.5737-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_rotation_crc: fix crc buffer
- overflow for slow platforms
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Sat, 09 Jan 2021 12:46:22 -0000
+Message-ID: <161019638245.8889.7047297636716149539@emeril.freedesktop.org>
+References: <20210109120659.5737-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20210109120659.5737-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Frotation=5Fcrc=3A_fix_crc_buffer_overflow_for_slow_platfo?=
+ =?utf-8?q?rms?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,75 +15,219 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0602105762=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-on bad tiling tests there was nothing reading running crcs
-which could fill up crc ringbuffer. Fix this by draining
-crc buffer per round. Also unify all platforms execution
-path by taking reference crcs per pipe.
+--===============0602105762==
+Content-Type: multipart/alternative;
+ boundary="===============5998387529630840394=="
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/kms_rotation_crc.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+--===============5998387529630840394==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index be27103fa..33a97ccaa 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -272,11 +272,7 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
- 	 */
- 	igt_require(igt_display_has_format_mod(display, pixel_format, tiling));
- 
--	/*
--	 * HSW will need to have those CRCs calculated each time, it
--	 * seems to behave different from other platforms.
--	 */
--	if (!data->crc_rect[rect].valid || IS_HASWELL(data->devid)) {
-+	if (!data->crc_rect[rect].valid) {
- 		/*
- 		* Create a reference software rotated flip framebuffer.
- 		*/
-@@ -345,6 +341,7 @@ static void test_single_case(data_t *data, enum pipe pipe,
- 
- 	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
- 	if (test_bad_format) {
-+		igt_pipe_crc_drain(data->pipe_crc);
- 		igt_assert_eq(ret, -EINVAL);
- 		return;
- 	}
-@@ -408,10 +405,6 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 	igt_display_t *display = &data->display;
- 	igt_output_t *output;
- 	enum pipe pipe;
--	int c;
--
--	for (c = 0; c < num_rectangle_types; c++)
--		data->crc_rect[c].valid = false;
- 
- 	if (plane_type == DRM_PLANE_TYPE_CURSOR)
- 		igt_require(display->has_cursor_plane);
-@@ -420,7 +413,10 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 
- 	for_each_pipe_with_valid_output(display, pipe, output) {
- 		igt_plane_t *plane;
--		int i, j;
-+		int i, j, c;
-+
-+		for (c = 0; c < num_rectangle_types; c++)
-+			data->crc_rect[c].valid = false;
- 
- 		if (IS_CHERRYVIEW(data->devid) && pipe != PIPE_B)
- 			continue;
--- 
-2.28.0
+== Series Details ==
+
+Series: tests/kms_rotation_crc: fix crc buffer overflow for slow platforms
+URL   : https://patchwork.freedesktop.org/series/85648/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9571 -> IGTPW_5372
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5372 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@read_all_entries:
+    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9571/fi-tgl-y/igt@debugfs_test@read_all_entries.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/fi-tgl-y/igt@debugfs_test@read_all_entries.html
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-tgl-u2:          [PASS][3] -> [FAIL][4] ([i915#1888])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9571/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@i915_module_load@reload:
+    - fi-kbl-7500u:       [PASS][5] -> [DMESG-WARN][6] ([i915#2605])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9571/fi-kbl-7500u/igt@i915_module_load@reload.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/fi-kbl-7500u/igt@i915_module_load@reload.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_parallel@engines@contexts:
+    - fi-tgl-y:           [FAIL][7] ([i915#2780]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9571/fi-tgl-y/igt@gem_exec_parallel@engines@contexts.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/fi-tgl-y/igt@gem_exec_parallel@engines@contexts.html
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-tgl-y:           [DMESG-WARN][9] ([i915#2411] / [i915#402]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9571/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@gem_tiled_pread_basic:
+    - fi-tgl-y:           [DMESG-WARN][11] ([i915#402]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9571/fi-tgl-y/igt@gem_tiled_pread_basic.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/fi-tgl-y/igt@gem_tiled_pread_basic.html
+
+  
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#2411]: https://gitlab.freedesktop.org/drm/intel/issues/2411
+  [i915#2605]: https://gitlab.freedesktop.org/drm/intel/issues/2605
+  [i915#2780]: https://gitlab.freedesktop.org/drm/intel/issues/2780
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (43 -> 37)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5953 -> IGTPW_5372
+
+  CI-20190529: 20190529
+  CI_DRM_9571: 707b4c70cf8fda42dedf74612233208661f287d8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5372: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/index.html
+  IGT_5953: 65c5eea699141e6f942ce0a8fc85db76ce53cd19 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/index.html
+
+--===============5998387529630840394==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_rotation_crc: fix crc buffer overflow for slow platforms</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/85648/">https://patchwork.freedesktop.org/series/85648/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9571 -&gt; IGTPW_5372</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5372 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@read_all_entries:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9571/fi-tgl-y/igt@debugfs_test@read_all_entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/fi-tgl-y/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9571/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9571/fi-kbl-7500u/igt@i915_module_load@reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/fi-kbl-7500u/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2605">i915#2605</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_parallel@engines@contexts:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9571/fi-tgl-y/igt@gem_exec_parallel@engines@contexts.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2780">i915#2780</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/fi-tgl-y/igt@gem_exec_parallel@engines@contexts.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9571/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2411">i915#2411</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9571/fi-tgl-y/igt@gem_tiled_pread_basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/fi-tgl-y/igt@gem_tiled_pread_basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (43 -&gt; 37)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5953 -&gt; IGTPW_5372</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9571: 707b4c70cf8fda42dedf74612233208661f287d8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5372: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5372/index.html<br />
+  IGT_5953: 65c5eea699141e6f942ce0a8fc85db76ce53cd19 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============5998387529630840394==--
+
+--===============0602105762==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0602105762==--
