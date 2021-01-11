@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0903489FF6
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Jan 2021 11:55:27 +0000 (UTC)
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon, 11 Jan 2021 11:55:12 +0000
-Message-Id: <20210111115512.982312-2-chris@chris-wilson.co.uk>
-In-Reply-To: <20210111115512.982312-1-chris@chris-wilson.co.uk>
-References: <20210111115512.982312-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] lib/i915: Replace size to pointer to
- size in __gem_create()
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 11 Jan 2021 11:55:52 -0000
+Message-ID: <161036615275.25135.8214688746831056407@emeril.freedesktop.org>
+References: <20210111102512.51185-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20210111102512.51185-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW50cm9k?=
+ =?utf-8?q?uce_IGT_allocator_=28rev14=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,74 +14,253 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0198529009=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5j
-b20+CgpTb21ldGltZXMgd2UncmUgaW50ZXJlc3RlZCBob3cgbXVjaCBtZW1vcnkgd2VyZSBhbGxv
-Y2F0ZWQgd2l0aGluCmk5MTUgZHJpdmVyIHNvIHdlIGhhdmUgdG8gY2hhbmdlIGZ1bmN0aW9uIHBy
-b3RvdHlwZS9pbXBsZW1lbnRhdGlvbgp0byB0aGUgcG9pbnRlciB0byB0aGUgc2l6ZS4KCkFzIF9f
-Z2VtX2NyZWF0ZSgpIGhhcyBmZXcgdXNlcnMgY2hhbmdlIGlzIHNpbXBsZSBhbmQgbm9uLWludHJ1
-c2l2ZS4KClNpZ25lZC1vZmYtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2Vt
-cGN6eW5za2lAaW50ZWwuY29tPgpDYzogQW5kcnplaiBUdXJrbyA8YW5kcnplai50dXJrb0BsaW51
-eC5pbnRlbC5jb20+ClJldmlld2VkLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNv
-bi5jby51az4KU2lnbmVkLW9mZi1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24u
-Y28udWs+Ci0tLQogbGliL2k5MTUvZ2VtLmggICAgICAgICAgICAgICAgIHwgIDIgKy0KIGxpYi9p
-OTE1L2dlbV9jcmVhdGUuYyAgICAgICAgICB8ICA3ICsrKystLS0KIHRlc3RzL2k5MTUvZ2VtX2Zk
-X2V4aGF1c3Rpb24uYyB8ICA1ICsrKy0tCiB0ZXN0cy9pOTE1L2dlbV9zb2Z0cGluLmMgICAgICAg
-fCAxNSArKysrLS0tLS0tLS0tLS0KIDQgZmlsZXMgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKSwg
-MTcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2k5MTUvZ2VtLmggYi9saWIvaTkxNS9n
-ZW0uaAppbmRleCA5MTc4Yjc3M2MuLmJkMjNhMjc3NiAxMDA2NDQKLS0tIGEvbGliL2k5MTUvZ2Vt
-LmgKKysrIGIvbGliL2k5MTUvZ2VtLmgKQEAgLTMyLDcgKzMyLDcgQEAgdm9pZCBnZW1fcXVpZXNj
-ZW50X2dwdShpbnQgaTkxNSk7CiAKIGludCBnZW1fcmVvcGVuX2RyaXZlcihpbnQgaTkxNSk7CiAK
-LWludCBfX2dlbV9jcmVhdGUoaW50IGZkLCB1aW50NjRfdCBzaXplLCB1aW50MzJfdCAqaGFuZGxl
-KTsKK2ludCBfX2dlbV9jcmVhdGUoaW50IGZkLCB1aW50NjRfdCAqc2l6ZSwgdWludDMyX3QgKmhh
-bmRsZSk7CiB1aW50MzJfdCBnZW1fY3JlYXRlKGludCBmZCwgdWludDY0X3Qgc2l6ZSk7CiAKICNl
-bmRpZiAvKiBJOTE1X0dFTV9IICovCmRpZmYgLS1naXQgYS9saWIvaTkxNS9nZW1fY3JlYXRlLmMg
-Yi9saWIvaTkxNS9nZW1fY3JlYXRlLmMKaW5kZXggZmEyY2ExZTM3Li5hOGMxYTU4MTMgMTAwNjQ0
-Ci0tLSBhL2xpYi9pOTE1L2dlbV9jcmVhdGUuYworKysgYi9saWIvaTkxNS9nZW1fY3JlYXRlLmMK
-QEAgLTEwLDE1ICsxMCwxNiBAQAogI2luY2x1ZGUgImlndF9jb3JlLmgiCiAjaW5jbHVkZSAiaW9j
-dGxfd3JhcHBlcnMuaCIKIAotaW50IF9fZ2VtX2NyZWF0ZShpbnQgZmQsIHVpbnQ2NF90IHNpemUs
-IHVpbnQzMl90ICpoYW5kbGUpCitpbnQgX19nZW1fY3JlYXRlKGludCBmZCwgdWludDY0X3QgKnNp
-emUsIHVpbnQzMl90ICpoYW5kbGUpCiB7CiAJc3RydWN0IGRybV9pOTE1X2dlbV9jcmVhdGUgY3Jl
-YXRlID0gewotCQkuc2l6ZSA9IHNpemUsCisJCS5zaXplID0gKnNpemUsCiAJfTsKIAlpbnQgZXJy
-ID0gMDsKIAogCWlmIChpZ3RfaW9jdGwoZmQsIERSTV9JT0NUTF9JOTE1X0dFTV9DUkVBVEUsICZj
-cmVhdGUpID09IDApIHsKIAkJKmhhbmRsZSA9IGNyZWF0ZS5oYW5kbGU7CisJCSpzaXplID0gY3Jl
-YXRlLnNpemU7CiAJfSBlbHNlIHsKIAkJZXJyID0gLWVycm5vOwogCQlpZ3RfYXNzdW1lKGVyciAh
-PSAwKTsKQEAgLTQyLDcgKzQzLDcgQEAgdWludDMyX3QgZ2VtX2NyZWF0ZShpbnQgZmQsIHVpbnQ2
-NF90IHNpemUpCiB7CiAJdWludDMyX3QgaGFuZGxlOwogCi0JaWd0X2Fzc2VydF9lcShfX2dlbV9j
-cmVhdGUoZmQsIHNpemUsICZoYW5kbGUpLCAwKTsKKwlpZ3RfYXNzZXJ0X2VxKF9fZ2VtX2NyZWF0
-ZShmZCwgJnNpemUsICZoYW5kbGUpLCAwKTsKIAogCXJldHVybiBoYW5kbGU7CiB9CmRpZmYgLS1n
-aXQgYS90ZXN0cy9pOTE1L2dlbV9mZF9leGhhdXN0aW9uLmMgYi90ZXN0cy9pOTE1L2dlbV9mZF9l
-eGhhdXN0aW9uLmMKaW5kZXggMzdjODRlNmMwLi4xM2U4YTIzYTAgMTAwNjQ0Ci0tLSBhL3Rlc3Rz
-L2k5MTUvZ2VtX2ZkX2V4aGF1c3Rpb24uYworKysgYi90ZXN0cy9pOTE1L2dlbV9mZF9leGhhdXN0
-aW9uLmMKQEAgLTQ4LDE0ICs0OCwxNSBAQCBpZ3Rfc2ltcGxlX21haW4KIAogCQlmb3IgKGludCBp
-ID0gMDsgOyBpKyspIHsKIAkJCWludCBsZWFrID0gb3BlbigiL2Rldi9udWxsIiwgT19SRE9OTFkp
-OworCQkJdWludDY0X3Qgc2l6ZSA9IDQwOTY7CiAJCQl1aW50MzJfdCBoYW5kbGU7CiAKLQkJCWlm
-IChfX2dlbV9jcmVhdGUoZmQsIDQwOTYsICZoYW5kbGUpID09IDApCisJCQlpZiAoX19nZW1fY3Jl
-YXRlKGZkLCAmc2l6ZSwgJmhhbmRsZSkgPT0gMCkKIAkJCQlnZW1fY2xvc2UoZmQsIGhhbmRsZSk7
-CiAKIAkJCWlmIChsZWFrIDwgMCkgewogCQkJCWlndF9pbmZvKCJmZCBleGhhdXN0aW9uIGFmdGVy
-ICVpIHJvdW5kcy5cbiIsIGkpOwotCQkJCWlndF9hc3NlcnQoX19nZW1fY3JlYXRlKGZkLCA0MDk2
-LAorCQkJCWlndF9hc3NlcnQoX19nZW1fY3JlYXRlKGZkLCAmc2l6ZSwKIAkJCQkJCQkmaGFuZGxl
-KSA8IDApOwogCQkJCWJyZWFrOwogCQkJfQpkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fc29m
-dHBpbi5jIGIvdGVzdHMvaTkxNS9nZW1fc29mdHBpbi5jCmluZGV4IDUxNmFjY2M4Zi4uYjI1MTRj
-OTliIDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2dlbV9zb2Z0cGluLmMKKysrIGIvdGVzdHMvaTkx
-NS9nZW1fc29mdHBpbi5jCkBAIC0xMDIsMTkgKzEwMiwxMiBAQCBzdGF0aWMgdm9pZCB0ZXN0X2lu
-dmFsaWQoaW50IGZkKQogc3RhdGljIHVpbnQzMl90IGJhdGNoX2NyZWF0ZShpbnQgaTkxNSwgdWlu
-dDY0X3QgKnN6KQogewogCWNvbnN0IHVpbnQzMl90IGJiZSA9IE1JX0JBVENIX0JVRkZFUl9FTkQ7
-Ci0Jc3RydWN0IGRybV9pOTE1X2dlbV9jcmVhdGUgY3JlYXRlID0gewotCQkuc2l6ZSA9IHNpemVv
-ZihiYmUpLAotCX07Ci0KLQlpZiAoaWd0X2lvY3RsKGk5MTUsIERSTV9JT0NUTF9JOTE1X0dFTV9D
-UkVBVEUsICZjcmVhdGUpKSB7Ci0JCWlndF9hc3NlcnRfZXEoZXJybm8sIDApOwotCQlyZXR1cm4g
-MDsKLQl9CisJdWludDMyX3QgaGFuZGxlOwogCi0JZ2VtX3dyaXRlKGk5MTUsIGNyZWF0ZS5oYW5k
-bGUsIDAsICZiYmUsIHNpemVvZihiYmUpKTsKKwlpZ3RfYXNzZXJ0X2VxKF9fZ2VtX2NyZWF0ZShp
-OTE1LCBzeiwgJmhhbmRsZSksIDApOworCWdlbV93cml0ZShpOTE1LCBoYW5kbGUsIDAsICZiYmUs
-IHNpemVvZihiYmUpKTsKIAotCSpzeiA9IGNyZWF0ZS5zaXplOwotCXJldHVybiBjcmVhdGUuaGFu
-ZGxlOworCXJldHVybiBoYW5kbGU7CiB9CiAKIHN0YXRpYyB2b2lkIHRlc3RfemVybyhpbnQgaTkx
-NSkKLS0gCjIuMzAuMAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
-aHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+--===============0198529009==
+Content-Type: multipart/alternative;
+ boundary="===============5734174123913434858=="
+
+--===============5734174123913434858==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: Introduce IGT allocator (rev14)
+URL   : https://patchwork.freedesktop.org/series/82954/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9577 -> IGTPW_5377
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5377/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5377 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@semaphore:
+    - fi-bsw-nick:        NOTRUN -> [SKIP][1] ([fdo#109271]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5377/fi-bsw-nick/igt@amdgpu/amd_basic@semaphore.html
+
+  * igt@prime_self_import@basic-with_one_bo_two_files:
+    - fi-tgl-y:           [PASS][2] -> [DMESG-WARN][3] ([i915#402]) +1 similar issue
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9577/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5377/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-nick:        [INCOMPLETE][4] -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9577/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5377/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+
+  * igt@prime_self_import@basic-with_one_bo:
+    - fi-tgl-y:           [DMESG-WARN][6] ([i915#402]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9577/fi-tgl-y/igt@prime_self_import@basic-with_one_bo.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5377/fi-tgl-y/igt@prime_self_import@basic-with_one_bo.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (43 -> 37)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5953 -> IGTPW_5377
+
+  CI-20190529: 20190529
+  CI_DRM_9577: 27f91f8b83589837494f100212ad62a124633ff7 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5377: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5377/index.html
+  IGT_5953: 65c5eea699141e6f942ce0a8fc85db76ce53cd19 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@api_intel_allocator@alloc-simple
++igt@api_intel_allocator@fork-simple-once
++igt@api_intel_allocator@fork-simple-stress
++igt@api_intel_allocator@fork-simple-stress-signal
++igt@api_intel_allocator@print
++igt@api_intel_allocator@random-allocator
++igt@api_intel_allocator@reopen
++igt@api_intel_allocator@reopen-fork
++igt@api_intel_allocator@reserve
++igt@api_intel_allocator@reserve-simple
++igt@api_intel_allocator@reuse
++igt@api_intel_allocator@simple-allocator
++igt@api_intel_allocator@two-level-inception
++igt@api_intel_allocator@two-level-inception-interruptible
++igt@api_intel_bb@add-remove-objects
++igt@api_intel_bb@blit-noreloc-keep-cache-random
++igt@api_intel_bb@blit-noreloc-purge-cache-random
++igt@api_intel_bb@destroy-bb
++igt@api_intel_bb@object-noreloc-keep-cache-random
++igt@api_intel_bb@object-noreloc-keep-cache-simple
++igt@api_intel_bb@object-noreloc-purge-cache-random
++igt@api_intel_bb@object-noreloc-purge-cache-simple
++igt@api_intel_bb@object-reloc-keep-cache
++igt@api_intel_bb@object-reloc-purge-cache
++igt@api_intel_bb@purge-bb
++igt@api_intel_bb@reset-bb
+-igt@api_intel_bb@check-canonical
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5377/index.html
+
+--===============5734174123913434858==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Introduce IGT allocator (rev14)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/82954/">https://patchwork.freedesktop.org/series/82954/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5377/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5377/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9577 -&gt; IGTPW_5377</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5377/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5377 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@semaphore:</p>
+<ul>
+<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5377/fi-bsw-nick/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_self_import@basic-with_one_bo_two_files:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9577/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5377/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9577/fi-bsw-nick/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5377/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@prime_self_import@basic-with_one_bo:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9577/fi-tgl-y/igt@prime_self_import@basic-with_one_bo.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5377/fi-tgl-y/igt@prime_self_import@basic-with_one_bo.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (43 -&gt; 37)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5953 -&gt; IGTPW_5377</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9577: 27f91f8b83589837494f100212ad62a124633ff7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5377: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5377/index.html<br />
+  IGT_5953: 65c5eea699141e6f942ce0a8fc85db76ce53cd19 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@api_intel_allocator@alloc-simple<br />
++igt@api_intel_allocator@fork-simple-once<br />
++igt@api_intel_allocator@fork-simple-stress<br />
++igt@api_intel_allocator@fork-simple-stress-signal<br />
++igt@api_intel_allocator@print<br />
++igt@api_intel_allocator@random-allocator<br />
++igt@api_intel_allocator@reopen<br />
++igt@api_intel_allocator@reopen-fork<br />
++igt@api_intel_allocator@reserve<br />
++igt@api_intel_allocator@reserve-simple<br />
++igt@api_intel_allocator@reuse<br />
++igt@api_intel_allocator@simple-allocator<br />
++igt@api_intel_allocator@two-level-inception<br />
++igt@api_intel_allocator@two-level-inception-interruptible<br />
++igt@api_intel_bb@add-remove-objects<br />
++igt@api_intel_bb@blit-noreloc-keep-cache-random<br />
++igt@api_intel_bb@blit-noreloc-purge-cache-random<br />
++igt@api_intel_bb@destroy-bb<br />
++igt@api_intel_bb@object-noreloc-keep-cache-random<br />
++igt@api_intel_bb@object-noreloc-keep-cache-simple<br />
++igt@api_intel_bb@object-noreloc-purge-cache-random<br />
++igt@api_intel_bb@object-noreloc-purge-cache-simple<br />
++igt@api_intel_bb@object-reloc-keep-cache<br />
++igt@api_intel_bb@object-reloc-purge-cache<br />
++igt@api_intel_bb@purge-bb<br />
++igt@api_intel_bb@reset-bb<br />
+-igt@api_intel_bb@check-canonical</p>
+
+</body>
+</html>
+
+--===============5734174123913434858==--
+
+--===============0198529009==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0198529009==--
