@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 148C289E32
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Jan 2021 01:55:55 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Date: Mon, 11 Jan 2021 20:57:26 -0500
+Message-Id: <20210112015726.2785-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 11 Jan 2021 22:28:17 -0000
-Message-ID: <161040409755.25133.7664249362746006587@emeril.freedesktop.org>
-References: <20210111221658.15875-1-sungkim@amd.com>
-In-Reply-To: <20210111221658.15875-1-sungkim@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBzZXJp?=
- =?utf-8?q?es_starting_with_=5B1/3=5D_lib=3A_Add_stride_and_size_calculati?=
- =?utf-8?q?on_for_amdgpu_+_tiling?=
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_suspend: Fix cached/uncached
+ test names
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,35 +15,64 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Sung Joon Kim <sungkim@amd.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+9e7c581519 ("i915/gem_exec_suspend: Remove legacy ring abi") botched up
+cached/uncached test names. Fix these:
 
-Series: series starting with [1/3] lib: Add stride and size calculation for amdgpu + tiling
-URL   : https://patchwork.freedesktop.org/series/85724/
-State : failure
+Before:
 
-== Summary ==
+uncached-
+cached-
+uncached--S3
+cached--S3
+uncached--S4
+cached--S4
 
-Applying: lib: Add stride and size calculation for amdgpu + tiling
-Applying: kms_rotation_crc:Add HW rotation test case for amdgpu
-Using index info to reconstruct a base tree...
-M	tests/kms_rotation_crc.c
-Falling back to patching base and 3-way merge...
-Auto-merging tests/kms_rotation_crc.c
-CONFLICT (content): Merge conflict in tests/kms_rotation_crc.c
-Patch failed at 0002 kms_rotation_crc:Add HW rotation test case for amdgpu
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+After:
 
+uncached
+cached
+uncached-S3
+cached-S3
+uncached-S4
+cached-S4
+
+Fixes: 9e7c581519 ("i915/gem_exec_suspend: Remove legacy ring abi")
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/gem_exec_suspend.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
+index a31dd6625..b6558a144 100644
+--- a/tests/i915/gem_exec_suspend.c
++++ b/tests/i915/gem_exec_suspend.c
+@@ -297,7 +297,7 @@ igt_main
+ 		run_test(fd, ALL_ENGINES, HIBERNATE);
+ 
+ 	for (m = modes; m->suffix; m++) {
+-		igt_subtest_with_dynamic_f("uncached-%s", m->suffix) {
++		igt_subtest_with_dynamic_f("uncached%s", m->suffix) {
+ 			__for_each_physical_engine(fd, e) {
+ 				if (!gem_class_can_store_dword(fd, e->class))
+ 					continue;
+@@ -306,7 +306,7 @@ igt_main
+ 			}
+ 		}
+ 
+-		igt_subtest_with_dynamic_f("cached-%s", m->suffix) {
++		igt_subtest_with_dynamic_f("cached%s", m->suffix) {
+ 			__for_each_physical_engine(fd, e) {
+ 				if (!gem_class_can_store_dword(fd, e->class))
+ 					continue;
+-- 
+2.29.2
 
 _______________________________________________
 igt-dev mailing list
