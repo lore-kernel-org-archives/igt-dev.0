@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2065.outbound.protection.outlook.com [40.107.220.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D28489B3C
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Jan 2021 22:54:21 +0000 (UTC)
-From: Sung Joon Kim <sungkim@amd.com>
-Date: Tue, 12 Jan 2021 17:54:00 -0500
-Message-Id: <20210112225400.115515-3-sungkim@amd.com>
-In-Reply-To: <20210112225400.115515-1-sungkim@amd.com>
-References: <20210112225400.115515-1-sungkim@amd.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 3/3] lib: Implement tiling/swizzle addressing for
- amdgpu
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 12 Jan 2021 23:34:34 -0000
+Message-ID: <161049447432.1918.3217164002359957984@emeril.freedesktop.org>
+References: <20210112225400.115515-1-sungkim@amd.com>
+In-Reply-To: <20210112225400.115515-1-sungkim@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5B1/3=5D_lib=3A_Add_stride_and_size_calculation?=
+ =?utf-8?q?_for_amdgpu_+_tiling?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,209 +15,205 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1456010790=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Sung Joon Kim <sungkim@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The swizzle mode is 64kb withe standard pattern.
+--===============1456010790==
+Content-Type: multipart/alternative;
+ boundary="===============3334010503631682835=="
 
-Signed-off-by: Sung Joon Kim <sungkim@amd.com>
----
- lib/igt_amd.c | 132 ++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_amd.h |  31 ++++++++++++
- 2 files changed, 163 insertions(+)
+--===============3334010503631682835==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index abd3ad96..737e5670 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -54,3 +54,135 @@ void *igt_amd_mmap_bo(int fd, uint32_t handle, uint64_t size, int prot)
- 	ptr = mmap(0, size, prot, MAP_SHARED, fd, map.out.addr_ptr);
- 	return ptr == MAP_FAILED ? NULL : ptr;
- }
-+
-+unsigned int igt_amd_compute_offset(unsigned int* swizzle_pattern, unsigned int x, unsigned int y)
-+{
-+    unsigned int offset = 0, index = 0, blk_size_table_index = 0, interleave = 0;
-+    unsigned int channel[16] = {0, 0, 1, 1, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1};
-+    unsigned int i, v;
-+
-+    for (i = 0; i < 16; i++)
-+    {
-+        v = 0;
-+        if (channel[i] == 1)
-+        {
-+            blk_size_table_index = 0;
-+            interleave = swizzle_pattern[i];
-+
-+            while (interleave > 1) {
-+				blk_size_table_index++;
-+				interleave = (interleave + 1) >> 1;
-+			}
-+
-+            index = blk_size_table_index + 2;
-+            v ^= (x >> index) & 1;
-+        }
-+        else if (channel[i] == 2)
-+        {
-+            blk_size_table_index = 0;
-+            interleave = swizzle_pattern[i];
-+
-+            while (interleave > 1) {
-+				blk_size_table_index++;
-+				interleave = (interleave + 1) >> 1;
-+			}
-+
-+            index = blk_size_table_index;
-+            v ^= (y >> index) & 1;
-+        }
-+
-+        offset |= (v << i);
-+    }
-+
-+	return offset;
-+}
-+
-+uint32_t igt_amd_fb_tiled_offset(unsigned int bpp, unsigned int x_input, unsigned int y_input,
-+				       unsigned int width_input)
-+{
-+	unsigned int blk_size_table_index, blk_size_log2, blk_size_log2_256B;
-+	unsigned int element_bytes, width_amp, height_amp, width, height, pitch;
-+	unsigned int pb, yb, xb, blk_idx, blk_offset, addr;
-+	unsigned int* swizzle_pattern;
-+	unsigned int block256_2d[][2] = {{16, 16}, {16, 8}, {8, 8}, {8, 4}, {4, 4}};
-+	unsigned int sw_64k_s[][16]=
-+	{
-+	    {X0, X1, X2, X3, Y0, Y1, Y2, Y3, Y4, X4, Y5, X5, Y6, X6, Y7, X7},
-+	    {0,  X0, X1, X2, Y0, Y1, Y2, X3, Y3, X4, Y4, X5, Y5, X6, Y6, X7},
-+	    {0,  0,  X0, X1, Y0, Y1, Y2, X2, Y3, X3, Y4, X4, Y5, X5, Y6, X6},
-+	    {0,  0,  0,  X0, Y0, Y1, X1, X2, Y2, X3, Y3, X4, Y4, X5, Y5, X6},
-+	    {0,  0,  0,  0,  Y0, Y1, X0, X1, Y2, X2, Y3, X3, Y4, X4, Y5, X5},
-+	};
-+
-+	element_bytes = bpp >> 3;
-+	blk_size_table_index = 0;
-+
-+	while (element_bytes > 1) {
-+		blk_size_table_index++;
-+		element_bytes = (element_bytes + 1) >> 1;
-+	}
-+
-+	blk_size_log2 = 16;
-+	blk_size_log2_256B = blk_size_log2 - 8;
-+
-+	width_amp = blk_size_log2_256B / 2;
-+	height_amp = blk_size_log2_256B - width_amp;
-+
-+	width  = (block256_2d[blk_size_table_index][0] << width_amp);
-+	height = (block256_2d[blk_size_table_index][1] << height_amp);
-+
-+	pitch = (width_input + (width - 1)) & (~(width - 1));
-+
-+	swizzle_pattern = sw_64k_s[blk_size_table_index];
-+
-+	pb = pitch / width;
-+	yb = y_input / height;
-+	xb = x_input / width;
-+	blk_idx = yb * pb + xb;
-+	blk_offset = igt_amd_compute_offset(swizzle_pattern,
-+					x_input << blk_size_table_index, y_input);
-+	addr = (blk_idx << blk_size_log2) + blk_offset;
-+
-+    return (uint32_t)addr;
-+}
-+
-+void igt_amd_fb_to_tiled(struct igt_fb *dst, void *dst_buf, struct igt_fb *src,
-+				       void *src_buf, unsigned int plane)
-+{
-+	uint32_t src_offset, dst_offset;
-+	unsigned int bpp = src->plane_bpp[plane];
-+	unsigned int width = dst->plane_width[plane];
-+	unsigned int height = dst->plane_height[plane];
-+	unsigned int x, y;
-+
-+	for (y = 0; y < height; y++) {
-+		for (x = 0; x < width; x++) {
-+			src_offset = src->offsets[plane];
-+			dst_offset = dst->offsets[plane];
-+
-+			src_offset += src->strides[plane] * y + x * bpp / 8;
-+			dst_offset += igt_amd_fb_tiled_offset(bpp, x, y, width);
-+
-+			switch (bpp) {
-+			case 16:
-+				*(uint16_t *)(dst_buf + dst_offset) =
-+					*(uint16_t *)(src_buf + src_offset);
-+				break;
-+			case 32:
-+				*(uint32_t *)(dst_buf + dst_offset) =
-+					*(uint32_t *)(src_buf + src_offset);
-+				break;
-+			}
-+		}
-+	}
-+}
-+
-+void igt_amd_fb_convert_plane_to_tiled(struct igt_fb *dst, void *dst_buf,
-+				       struct igt_fb *src, void *src_buf)
-+{
-+	unsigned int plane;
-+
-+	for (plane = 0; plane < src->num_planes; plane++) {
-+		igt_amd_fb_to_tiled(dst, dst_buf, src, src_buf, plane);
-+	}
-+}
-diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-index f63d26f4..d5b421b4 100644
---- a/lib/igt_amd.h
-+++ b/lib/igt_amd.h
-@@ -24,8 +24,39 @@
- #define IGT_AMD_H
- 
- #include <stdint.h>
-+#include "igt_fb.h"
- 
- uint32_t igt_amd_create_bo(int fd, uint64_t size);
- void *igt_amd_mmap_bo(int fd, uint32_t handle, uint64_t size, int prot);
-+unsigned int igt_amd_compute_offset(unsigned int* SwizzlePattern, unsigned int x, unsigned int y);
-+uint32_t igt_amd_fb_tiled_offset(unsigned int bpp, unsigned int x_input, unsigned int y_input,
-+				       unsigned int width_input);
-+void igt_amd_fb_to_tiled(struct igt_fb *dst, void *dst_buf, struct igt_fb *src,
-+				       void *src_buf, unsigned int plane);
-+void igt_amd_fb_convert_plane_to_tiled(struct igt_fb *dst, void *dst_buf,
-+				       struct igt_fb *src, void *src_buf);
-+
-+#define X0 1
-+#define X1 2
-+#define X2 4
-+#define X3 8
-+#define X4 16
-+#define X5 32
-+#define X6 64
-+#define X7 128
-+#define Y0 1
-+#define Y1 2
-+#define Y2 4
-+#define Y3 8
-+#define Y4 16
-+#define Y5 32
-+#define Y6 64
-+#define Y7 128
-+
-+struct Dim2d
-+{
-+    int w;
-+    int h;
-+};
- 
- #endif /* IGT_AMD_H */
--- 
-2.25.1
+== Series Details ==
+
+Series: series starting with [1/3] lib: Add stride and size calculation for amdgpu + tiling
+URL   : https://patchwork.freedesktop.org/series/85772/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9596 -> IGTPW_5388
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5388 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - fi-snb-2600:        NOTRUN -> [SKIP][1] ([fdo#109271]) +30 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/fi-snb-2600/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_chamelium@hdmi-crc-fast:
+    - fi-snb-2600:        NOTRUN -> [SKIP][2] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/fi-snb-2600/igt@kms_chamelium@hdmi-crc-fast.html
+
+  * igt@prime_vgem@basic-write:
+    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([i915#402]) +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9596/fi-tgl-y/igt@prime_vgem@basic-write.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/fi-tgl-y/igt@prime_vgem@basic-write.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-snb-2600:        [DMESG-WARN][5] ([i915#2772]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9596/fi-snb-2600/igt@gem_exec_suspend@basic-s3.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/fi-snb-2600/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@prime_self_import@basic-with_one_bo_two_files:
+    - fi-tgl-y:           [DMESG-WARN][7] ([i915#402]) -> [PASS][8] +1 similar issue
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9596/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#2772]: https://gitlab.freedesktop.org/drm/intel/issues/2772
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (44 -> 38)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5957 -> IGTPW_5388
+
+  CI-20190529: 20190529
+  CI_DRM_9596: 6acb53490b1d09467acf0862c33880a92a3e596e @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5388: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/index.html
+  IGT_5957: 2a2b3418f7458dfa1fac255cc5c71603f617690a @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/index.html
+
+--===============3334010503631682835==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/3] lib: Add stride and size calculation for amdgpu + tiling</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/85772/">https://patchwork.freedesktop.org/series/85772/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9596 -&gt; IGTPW_5388</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5388 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/fi-snb-2600/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +30 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-crc-fast:</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/fi-snb-2600/igt@kms_chamelium@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9596/fi-tgl-y/igt@prime_vgem@basic-write.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/fi-tgl-y/igt@prime_vgem@basic-write.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9596/fi-snb-2600/igt@gem_exec_suspend@basic-s3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2772">i915#2772</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/fi-snb-2600/igt@gem_exec_suspend@basic-s3.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@prime_self_import@basic-with_one_bo_two_files:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9596/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (44 -&gt; 38)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5957 -&gt; IGTPW_5388</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9596: 6acb53490b1d09467acf0862c33880a92a3e596e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5388: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5388/index.html<br />
+  IGT_5957: 2a2b3418f7458dfa1fac255cc5c71603f617690a @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============3334010503631682835==--
+
+--===============1456010790==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1456010790==--
