@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 17DCC6E43F
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Jan 2021 16:09:44 +0000 (UTC)
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2076.outbound.protection.outlook.com [40.107.237.76])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4DABC6E44B
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Jan 2021 16:13:02 +0000 (UTC)
+From: "Cornij, Nikola" <Nikola.Cornij@amd.com>
+Date: Thu, 14 Jan 2021 16:13:00 +0000
+Message-ID: <DM5PR12MB467985B33930C8B0B291A3D1EEA80@DM5PR12MB4679.namprd12.prod.outlook.com>
+References: <20210112225400.115515-1-sungkim@amd.com>
+ <20210112225400.115515-2-sungkim@amd.com>
+In-Reply-To: <20210112225400.115515-2-sungkim@amd.com>
+Content-Language: en-US
 MIME-Version: 1.0
-In-Reply-To: <20210114122233.32906-7-zbigniew.kempczynski@intel.com>
-References: <20210114122233.32906-1-zbigniew.kempczynski@intel.com>
- <20210114122233.32906-7-zbigniew.kempczynski@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 14 Jan 2021 16:09:40 +0000
-Message-ID: <161064058038.19482.7735968818401567764@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v14 06/33] lib/intel_allocator_random:
- Add random allocator
+Subject: Re: [igt-dev] [PATCH 2/3] kms_rotation_crc:Add HW rotation test
+ case for amdgpu
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,25 +20,402 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: zbigniew.kempczynski@intel.com, igt-dev@lists.freedesktop.org
+To: "Kim, Sung joon" <Sungjoon.Kim@amd.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjEtMDEtMTQgMTI6MjI6MDYpCj4gU29t
-ZXRpbWVzIHdlIHdhbnQgdG8gZXhwZXJpbWVudCB3aXRoIGFkZHJlc3NlcyBzbyByYW5kb21pemlu
-ZyBjYW4gaGVscAo+IHVzIGEgbGl0dGxlLgoKV2UgaGFkIHNvbWUgZGlzY3Vzc2lvbiBvbiB0aGUg
-dXRpbGl0eSBvZiBhIHJhbmRvbSBhbGxvY2F0b3Igd2l0aG91dCBhbnkKb3ZlcmxhcCBkZXRlY3Rp
-b24uIFVzZWZ1bCBmb3Igc29tZSBkZWJ1Z2dpbmcsIGJ1dCBicmluZ3MgaXRzIG93biBib29ieQp0
-cmFwcy4KCldlIGRvIG5lZWQgdG8gYWRkIGNvbW1lbnRzIHRoYXQgZGlzY3VzcyB0aGUgcHJvL2Nv
-bnMgb2YgZWFjaCBhbGxvY2F0b3IsCmluIHBhcnRpY3VsYXIgbWVudGlvbmluZyB0aGF0IHdpdGhv
-dXQgb3ZlcmxhcCBkZXRlY3Rpb24gdGhpcyBhbGxvY2F0b3IKd2lsbCBldmVudHVhbGx5IHJldHVy
-biBjb25mbGljdGluZyBhZGRyZXNzZXMuIFRoZXJlJ3MgYWxzbyBhbm90aGVyCnN1YnRsZSBwcm9i
-bGVtIGluIHRoYXQgYW4gZXZlbiBzcHJlYWQgb2Ygb2JqZWN0cyBvdmVyIHRoZSBhZGRyZXNzIHJh
-bmdlCmluY3JlYXNlcyBtZW1wcmVzc3VyZSBmcm9tIHRoZSBwYWdlIHRhYmxlcywgbGVhZGluZyB0
-byBteXN0ZXJ5IEVOT01FTQpmcm9tIGV4ZWNidWYuCi1DaHJpcwpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
-QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2lndC1kZXYK
+
+
+-----Original Message-----
+From: Kim, Sung joon <Sungjoon.Kim@amd.com> 
+Sent: Tuesday, January 12, 2021 5:54 PM
+To: igt-dev@lists.freedesktop.org
+Cc: Kazlauskas, Nicholas <Nicholas.Kazlauskas@amd.com>; Wentland, Harry <Harry.Wentland@amd.com>; Cornij, Nikola <Nikola.Cornij@amd.com>; Kim, Sung joon <Sungjoon.Kim@amd.com>
+Subject: [PATCH 2/3] kms_rotation_crc:Add HW rotation test case for amdgpu
+
+Added Hw rotation case specifically for amdgpu. Currently, kms_rotation_crc tests intel gpus. Added conditions to bypass all the requirements needed for intel when testing amdgpu.
+
+v2: add crc equal assert since tiling/swizzle is implemented
+Signed-off-by: Sung Joon Kim <sungkim@amd.com>
+Reviewed by: Nikola Cornij <nikola.cornij@amd.com>
+---
+ tests/kms_rotation_crc.c | 270 ++++++++++++++++++++++++---------------
+ 1 file changed, 168 insertions(+), 102 deletions(-)
+
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c index 33a97cca..31c7499c 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -197,6 +197,18 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
+ 	/* create the pipe_crc object for this pipe */
+ 	igt_pipe_crc_free(data->pipe_crc);
+ 
++	if (is_amdgpu_device(data->gfx_fd)) {
++		igt_fb_t fb_temp;
++		drmModeModeInfo *mode = igt_output_get_mode(output);
++
++		igt_create_fb(data->gfx_fd, mode->hdisplay, mode->vdisplay,
++				  DRM_FORMAT_XRGB8888, 0, &fb_temp);
++		igt_plane_set_fb(plane, &fb_temp);
++		paint_squares(data, IGT_ROTATION_0, &fb_temp, 1.0);
++
++		if (plane->type != DRM_PLANE_TYPE_CURSOR)
++			igt_plane_set_position(plane, data->pos_x, data->pos_y);
++	}
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ 	data->pipe_crc = igt_pipe_crc_new(data->gfx_fd, pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
+ 
+@@ -213,6 +225,8 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
+ 	uint64_t tiling = data->override_tiling ?: LOCAL_DRM_FORMAT_MOD_NONE;
+ 	uint32_t pixel_format = data->override_fmt ?: DRM_FORMAT_XRGB8888;
+ 	const float flip_opacity = 0.75;
++	bool amd_gpu = is_amdgpu_device(data->gfx_fd);
++	bool intel_gpu = is_i915_device(data->gfx_fd);
+ 
+ 	remove_fbs(data);
+ 
+@@ -220,16 +234,21 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
+ 
+ 	mode = igt_output_get_mode(output);
+ 	if (plane->type != DRM_PLANE_TYPE_CURSOR) {
+-		if (data->use_native_resolution) {
++		if (amd_gpu) {
+ 			w = mode->hdisplay;
+ 			h = mode->vdisplay;
+-		} else {
+-			w = min(TEST_MAX_WIDTH, mode->hdisplay);
+-			h = min(TEST_MAX_HEIGHT, mode->vdisplay);
+-		}
++		} else if (intel_gpu) {
++			if (data->use_native_resolution) {
++				w = mode->hdisplay;
++				h = mode->vdisplay;
++			} else {
++				w = min(TEST_MAX_WIDTH, mode->hdisplay);
++				h = min(TEST_MAX_HEIGHT, mode->vdisplay);
++			}
+ 
+-		min_w = 256;
+-		min_h = 256;
++			min_w = 256;
++			min_h = 256;
++		}
+ 	} else {
+ 		pixel_format = data->override_fmt ?: DRM_FORMAT_ARGB8888;
+ 
+@@ -261,7 +280,8 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
+ 	 * frame can fit in
+ 	 */
+ 	if (data->rotation & (IGT_ROTATION_90 | IGT_ROTATION_270)) {
+-		tiling = data->override_tiling ?: LOCAL_I915_FORMAT_MOD_Y_TILED;
++		if (intel_gpu)
++			tiling = data->override_tiling ?: LOCAL_I915_FORMAT_MOD_Y_TILED;
+ 
+ 		igt_swap(w, h);
+ 	}
+@@ -272,45 +292,62 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
+ 	 */
+ 	igt_require(igt_display_has_format_mod(display, pixel_format, tiling));
+ 
+-	if (!data->crc_rect[rect].valid) {
+-		/*
+-		* Create a reference software rotated flip framebuffer.
+-		*/
+-		igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format, tiling,
+-			&data->fb_flip);
+-		paint_squares(data, data->rotation, &data->fb_flip,
+-			flip_opacity);
+-		igt_plane_set_fb(plane, &data->fb_flip);
+-		if (plane->type != DRM_PLANE_TYPE_CURSOR)
+-			igt_plane_set_position(plane, data->pos_x, data->pos_y);
+-		igt_display_commit2(display, COMMIT_ATOMIC);
+-
+-		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].flip_crc);
+-		igt_remove_fb(data->gfx_fd, &data->fb_flip);
++	if (intel_gpu) {
++		if (!data->crc_rect[rect].valid) {
++			/*
++			* Create a reference software rotated flip framebuffer.
++			*/
++			igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format, tiling,
++				&data->fb_flip);
++			paint_squares(data, data->rotation, &data->fb_flip,
++				flip_opacity);
++			igt_plane_set_fb(plane, &data->fb_flip);
++			if (plane->type != DRM_PLANE_TYPE_CURSOR)
++				igt_plane_set_position(plane, data->pos_x, data->pos_y);
++			igt_display_commit2(display, COMMIT_ATOMIC);
++
++			igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].flip_crc);
++			igt_remove_fb(data->gfx_fd, &data->fb_flip);
++
++			/*
++			* Create a reference CRC for a software-rotated fb.
++			*/
++			igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format,
++				data->override_tiling ?: LOCAL_DRM_FORMAT_MOD_NONE, &data->fb_reference);
++			paint_squares(data, data->rotation, &data->fb_reference, 1.0);
++
++			igt_plane_set_fb(plane, &data->fb_reference);
++			if (plane->type != DRM_PLANE_TYPE_CURSOR)
++				igt_plane_set_position(plane, data->pos_x, data->pos_y);
++			igt_display_commit2(display, COMMIT_ATOMIC);
++
++			igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].ref_crc);
++			data->crc_rect[rect].valid = true;
++		}
+ 
+ 		/*
+-		* Create a reference CRC for a software-rotated fb.
+-		*/
++		  * Prepare the non-rotated flip fb.
++		  */
++		igt_create_fb(data->gfx_fd, w, h, pixel_format, tiling,
++			      &data->fb_flip);
++		paint_squares(data, IGT_ROTATION_0, &data->fb_flip,
++			      flip_opacity);
++	} else if (amd_gpu) {
++		tiling = 0x900;
+ 		igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format,
+-			data->override_tiling ?: LOCAL_DRM_FORMAT_MOD_NONE, &data->fb_reference);
++				  LOCAL_DRM_FORMAT_MOD_NONE, &data->fb_reference);
+ 		paint_squares(data, data->rotation, &data->fb_reference, 1.0);
+ 
+ 		igt_plane_set_fb(plane, &data->fb_reference);
+ 		if (plane->type != DRM_PLANE_TYPE_CURSOR)
+ 			igt_plane_set_position(plane, data->pos_x, data->pos_y);
+-		igt_display_commit2(display, COMMIT_ATOMIC);
+ 
+-		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].ref_crc);
+-		data->crc_rect[rect].valid = true;
+-	}
++		if (data->rotation & (IGT_ROTATION_90 | IGT_ROTATION_270))
++			igt_plane_set_size(plane, ref_w, ref_h);
+ 
+-	/*
+-	  * Prepare the non-rotated flip fb.
+-	  */
+-	igt_create_fb(data->gfx_fd, w, h, pixel_format, tiling,
+-		      &data->fb_flip);
+-	paint_squares(data, IGT_ROTATION_0, &data->fb_flip,
+-		      flip_opacity);
++		igt_display_commit2(display, COMMIT_ATOMIC);
++		igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
++	}
+ 
+ 	/*
+ 	 * Prepare the plane with an non-rotated fb let the hw rotate it.
+@@ -349,32 +386,37 @@ static void test_single_case(data_t *data, enum pipe pipe,
+ 	/* Verify commit was ok. */
+ 	igt_assert_eq(ret, 0);
+ 
+-	/* Check CRC */
+-	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
+-	igt_assert_crc_equal(&data->crc_rect[rect].ref_crc, &crc_output);
++	if (is_i915_device(data->gfx_fd)) {
++		/* Check CRC */
++		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
++		igt_assert_crc_equal(&data->crc_rect[rect].ref_crc, &crc_output);
+ 
+-	/*
+-	 * If flips are requested flip to a different fb and
+-	 * check CRC against that one as well.
+-	 */
+-	if (data->fb_flip.fb_id) {
+-		igt_plane_set_fb(plane, &data->fb_flip);
+-		if (data->rotation == IGT_ROTATION_90 || data->rotation == IGT_ROTATION_270)
+-			igt_plane_set_size(plane, data->fb.height, data->fb.width);
+-
+-		if (plane->type != DRM_PLANE_TYPE_PRIMARY) {
+-			igt_display_commit_atomic(display, DRM_MODE_PAGE_FLIP_EVENT | DRM_MODE_ATOMIC_NONBLOCK, NULL);
+-		} else {
+-			ret = drmModePageFlip(data->gfx_fd,
+-					output->config.crtc->crtc_id,
+-					data->fb_flip.fb_id,
+-					DRM_MODE_PAGE_FLIP_EVENT,
+-					NULL);
+-			igt_assert_eq(ret, 0);
++		/*
++		 * If flips are requested flip to a different fb and
++		 * check CRC against that one as well.
++		 */
++		if (data->fb_flip.fb_id) {
++			igt_plane_set_fb(plane, &data->fb_flip);
++			if (data->rotation == IGT_ROTATION_90 || data->rotation == IGT_ROTATION_270)
++				igt_plane_set_size(plane, data->fb.height, data->fb.width);
++
++			if (plane->type != DRM_PLANE_TYPE_PRIMARY) {
++				igt_display_commit_atomic(display, DRM_MODE_PAGE_FLIP_EVENT | DRM_MODE_ATOMIC_NONBLOCK, NULL);
++			} else {
++				ret = drmModePageFlip(data->gfx_fd,
++						output->config.crtc->crtc_id,
++						data->fb_flip.fb_id,
++						DRM_MODE_PAGE_FLIP_EVENT,
++						NULL);
++				igt_assert_eq(ret, 0);
++			}
++			kmstest_wait_for_pageflip(data->gfx_fd);
++			igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
++			igt_assert_crc_equal(&data->crc_rect[rect].flip_crc, &crc_output);
+ 		}
+-		kmstest_wait_for_pageflip(data->gfx_fd);
+-		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
+-		igt_assert_crc_equal(&data->crc_rect[rect].flip_crc, &crc_output);
++	} else if (is_amdgpu_device(data->gfx_fd)) {
++		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_output);
++		igt_assert_crc_equal(&data->ref_crc, &crc_output);
+ 	}
+ }
+ 
+@@ -415,57 +457,77 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 		igt_plane_t *plane;
+ 		int i, j, c;
+ 
+-		for (c = 0; c < num_rectangle_types; c++)
+-			data->crc_rect[c].valid = false;
+-
+-		if (IS_CHERRYVIEW(data->devid) && pipe != PIPE_B)
+-			continue;
++		if (is_i915_device(data->gfx_fd)) {
++			for (c = 0; c < num_rectangle_types; c++)
++				data->crc_rect[c].valid = false;
+ 
+-		igt_output_set_pipe(output, pipe);
++			if (IS_CHERRYVIEW(data->devid) && pipe != PIPE_B)
++				continue;
+ 
+-		plane = igt_output_get_plane_type(output, plane_type);
+-		igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
++			igt_output_set_pipe(output, pipe);
+ 
+-		prepare_crtc(data, output, pipe, plane, true);
++			plane = igt_output_get_plane_type(output, plane_type);
++			igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
+ 
+-		for (i = 0; i < num_rectangle_types; i++) {
+-			/* Unsupported on i915 */
+-			if (plane_type == DRM_PLANE_TYPE_CURSOR &&
+-			    i != square)
+-				continue;
++			prepare_crtc(data, output, pipe, plane, true);
+ 
+-			/* Only support partial covering primary plane on gen9+ */
+-			if (plane_type == DRM_PLANE_TYPE_PRIMARY &&
+-			    intel_gen(intel_get_drm_devid(data->gfx_fd)) < 9) {
+-				if (i != rectangle)
++			for (i = 0; i < num_rectangle_types; i++) {
++				/* Unsupported on i915 */
++				if (plane_type == DRM_PLANE_TYPE_CURSOR &&
++				    i != square)
+ 					continue;
+-				else
+-					data->use_native_resolution = true;
+-			} else {
+-				data->use_native_resolution = false;
+-			}
+ 
+-			if (!data->override_fmt) {
+-				struct igt_vec tested_formats;
++				/* Only support partial covering primary plane on gen9+ */
++				if (plane_type == DRM_PLANE_TYPE_PRIMARY &&
++				    intel_gen(intel_get_drm_devid(data->gfx_fd)) < 9) {
++					if (i != rectangle)
++						continue;
++					else
++						data->use_native_resolution = true;
++				} else {
++					data->use_native_resolution = false;
++				}
+ 
+-				igt_vec_init(&tested_formats, sizeof(uint32_t));
++				if (!data->override_fmt) {
++					struct igt_vec tested_formats;
+ 
+-				for (j = 0; j < plane->drm_plane->count_formats; j++) {
+-					uint32_t format = plane->drm_plane->formats[j];
++					igt_vec_init(&tested_formats, sizeof(uint32_t));
+ 
+-					if (!test_format(data, &tested_formats, format))
+-						continue;
++					for (j = 0; j < plane->drm_plane->count_formats; j++) {
++						uint32_t format = plane->drm_plane->formats[j];
+ 
++						if (!test_format(data, &tested_formats, format))
++							continue;
++
++						test_single_case(data, pipe, output, plane, i,
++								 format, test_bad_format);
++					}
++
++					igt_vec_fini(&tested_formats);
++				} else {
+ 					test_single_case(data, pipe, output, plane, i,
+-							 format, test_bad_format);
++							 data->override_fmt, test_bad_format);
+ 				}
++			}
++		} else if (is_amdgpu_device(data->gfx_fd)) {
++			uint32_t format = DRM_FORMAT_XRGB8888;
+ 
+-				igt_vec_fini(&tested_formats);
+-			} else {
+-				test_single_case(data, pipe, output, plane, i,
+-						 data->override_fmt, test_bad_format);
++			igt_output_set_pipe(output, pipe);
++
++			plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++			igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
++
++			prepare_crtc(data, output, pipe, plane, false);
++
++			if (plane_type != DRM_PLANE_TYPE_PRIMARY) {
++				plane = igt_output_get_plane_type(output, plane_type);
++				igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
+ 			}
++
++			test_single_case(data, pipe, output, plane,
++					 rectangle, format, test_bad_format);
+ 		}
++
+ 		igt_pipe_crc_stop(data->pipe_crc);
+ 	}
+ }
+@@ -844,9 +906,11 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	int gen = 0;
+ 
+ 	igt_fixture {
+-		data.gfx_fd = drm_open_driver_master(DRIVER_INTEL);
+-		data.devid = intel_get_drm_devid(data.gfx_fd);
+-		gen = intel_gen(data.devid);
++		data.gfx_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_AMDGPU);
++		if (is_i915_device(data.gfx_fd)) {
++			data.devid = intel_get_drm_devid(data.gfx_fd);
++			gen = intel_gen(data.devid);
++		}
+ 
+ 		kmstest_set_vt_graphics_mode();
+ 
+@@ -860,9 +924,11 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		igt_subtest_f("%s-rotation-%s",
+ 			      plane_test_str(subtest->plane),
+ 			      rot_test_str(subtest->rot)) {
+-			igt_require(!(subtest->rot &
+-				    (IGT_ROTATION_90 | IGT_ROTATION_270)) ||
+-				    gen >= 9);
++			if (is_i915_device(data.gfx_fd)) {
++				igt_require(!(subtest->rot &
++					    (IGT_ROTATION_90 | IGT_ROTATION_270)) ||
++					    gen >= 9);
++			}
+ 			data.rotation = subtest->rot;
+ 			test_plane_rotation(&data, subtest->plane, false);
+ 		}
+--
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
