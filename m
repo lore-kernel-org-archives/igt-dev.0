@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 150A26E15C
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Jan 2021 16:15:42 +0000 (UTC)
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2049.outbound.protection.outlook.com [40.107.236.49])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 263D26E027
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Jan 2021 16:41:15 +0000 (UTC)
+References: <20210112225400.115515-1-sungkim@amd.com>
+From: "Kazlauskas, Nicholas" <nicholas.kazlauskas@amd.com>
+Message-ID: <4bd36d90-e3fe-0d52-be42-23ebcb320c37@amd.com>
+Date: Thu, 14 Jan 2021 11:41:08 -0500
+In-Reply-To: <20210112225400.115515-1-sungkim@amd.com>
+Content-Language: en-US
 MIME-Version: 1.0
-In-Reply-To: <20210114122233.32906-8-zbigniew.kempczynski@intel.com>
-References: <20210114122233.32906-1-zbigniew.kempczynski@intel.com>
- <20210114122233.32906-8-zbigniew.kempczynski@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 14 Jan 2021 16:15:39 +0000
-Message-ID: <161064093919.19482.17630109543453840612@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v14 07/33] lib/intel_allocator: Add
- intel_allocator core
+Subject: Re: [igt-dev] [PATCH 1/3] lib: Add stride and size calculation for
+ amdgpu + tiling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,37 +19,96 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: zbigniew.kempczynski@intel.com, igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: Sung Joon Kim <sungkim@amd.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjEtMDEtMTQgMTI6MjI6MDcpCj4gK3N0
-YXRpYyBzdHJ1Y3QgaW50ZWxfYWxsb2NhdG9yICphbGxvY2F0b3Jfb3BlbihpbnQgZmQsIHVpbnQz
-Ml90IGN0eCwKPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-dWludDhfdCBhbGxvY2F0b3JfdHlwZSkKPiArewo+ICsgICAgICAgc3RydWN0IGludGVsX2FsbG9j
-YXRvciAqaWFsOwo+ICsKPiArICAgICAgIHB0aHJlYWRfbXV0ZXhfbG9jaygmbWFwX211dGV4KTsK
-PiArCj4gKyAgICAgICBpYWwgPSBfX2FsbG9jYXRvcl9nZXQoZmQsIGN0eCk7Cj4gKyAgICAgICBp
-ZiAoaWFsKSB7Cj4gKyAgICAgICAgICAgICAgIGlmIChpYWwtPnR5cGUgIT0gYWxsb2NhdG9yX3R5
-cGUpCj4gKyAgICAgICAgICAgICAgICAgICAgICAgcHRocmVhZF9tdXRleF91bmxvY2soJm1hcF9t
-dXRleCk7Cj4gKyAgICAgICAgICAgICAgIGlndF9hc3NlcnRfZihpYWwtPnR5cGUgPT0gYWxsb2Nh
-dG9yX3R5cGUsCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAiQWxsb2NhdG9yIG11c3Qg
-YmUgc2FtZSB0eXBlIGZvciBmZC9jdHhcbiIpOwo+ICsgICAgICAgfSBlbHNlIHsKPiArICAgICAg
-ICAgICAgICAgYWxsb2NfZGVidWcoIkFsbG9jYXRvciBmZDogJWQsIGN0eDogJXUgbm90IGZvdW5k
-LCBjcmVhdGluZyBvbmVcbiIsCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgIGZkLCBjdHgp
-Owo+ICsgICAgICAgICAgICAgICBpYWwgPSBpbnRlbF9hbGxvY2F0b3JfY3JlYXRlKGZkLCBjdHgs
-IGFsbG9jYXRvcl90eXBlKTsKPiArICAgICAgIH0KPiArCj4gKyAgICAgICBwdGhyZWFkX211dGV4
-X3VubG9jaygmbWFwX211dGV4KTsKCiAgICAgICBwdGhyZWFkX211dGV4X2xvY2soJm1hcF9tdXRl
-eCk7CiAgICAgICBpYWwgPSBfX2FsbG9jYXRvcl9nZXQoZmQsIGN0eCk7CiAgICAgICBpZiAoIWlh
-bCkgewogICAgICAgICAgICAgICBhbGxvY19kZWJ1ZygiQWxsb2NhdG9yIGZkOiAlZCwgY3R4OiAl
-dSBub3QgZm91bmQsIGNyZWF0aW5nIG9uZVxuIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ZmQsIGN0eCk7CiAgICAgICAgICAgICAgIGlhbCA9IGludGVsX2FsbG9jYXRvcl9jcmVhdGUoZmQs
-IGN0eCwgYWxsb2NhdG9yX3R5cGUpOwogICAgICAgfQogICAgICAgcHRocmVhZF9tdXRleF91bmxv
-Y2soJm1hcF9tdXRleCk7CiAgICAgICBpZ3RfYXNzZXJ0X2YoaWFsLT50eXBlID09IGFsbG9jYXRv
-cl90eXBlLAoJCSAgICAiQWxsb2NhdG9yIG11c3QgYmUgc2FtZSB0eXBlIGZvciBmZC9jdHhcbiIp
-OwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
-IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
-LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+On 2021-01-12 5:53 p.m., Sung Joon Kim wrote:
+> For amdgpu, we need to calculate the stride and size of framebuffer correctly during non-linear tiling mode
+> 
+> v2: add call to amdgpu tiling/swizzle addressing
+> Signed-off-by: Sung Joon Kim <sungkim@amd.com>
+> ---
+>   lib/igt_fb.c | 24 +++++++++++++++++++++++-
+>   1 file changed, 23 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 4b9be47e..6eebe048 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -671,6 +671,11 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
+>   		 * so the easiest way is to align the luma stride to 256.
+>   		 */
+>   		return ALIGN(min_stride, 256);
+> +	}else if (fb->modifier != LOCAL_DRM_FORMAT_MOD_NONE && is_amdgpu_device(fb->fd)) {
+> +		/*
+> +		 * For amdgpu device with tiling mode
+> +		 */
+> +		return ALIGN(min_stride, 512);
+>   	} else if (is_gen12_ccs_cc_plane(fb, plane)) {
+>   		/* clear color always fixed to 64 bytes */
+>   		return 64;
+> @@ -711,6 +716,12 @@ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
+>   		size = roundup_power_of_two(size);
+>   
+>   		return size;
+> +	} else if (fb->modifier != LOCAL_DRM_FORMAT_MOD_NONE && is_amdgpu_device(fb->fd)) {
+> +		/*
+> +		 * For amdgpu device with tiling mode
+> +		 */
+> +		return (uint64_t) fb->strides[plane] *
+> +			ALIGN(fb->plane_height[plane], 512);
+>   	} else if (is_gen12_ccs_plane(fb, plane)) {
+>   		/* The AUX CCS surface must be page aligned */
+>   		return (uint64_t)fb->strides[plane] *
+> @@ -2352,6 +2363,13 @@ static void free_linear_mapping(struct fb_blit_upload *blit)
+>   
+>   		vc4_fb_convert_plane_to_tiled(fb, map, &linear->fb, &linear->map);
+>   
+> +		munmap(map, fb->size);
+> +	} else if (is_amdgpu_device(fd) && fb->modifier != 0) {
+> +		void *map = igt_amd_mmap_bo(fd, fb->gem_handle, fb->size, PROT_WRITE);
+> +
+> +		igt_amd_fb_convert_plane_to_tiled(fb, map, &linear->fb, linear->map);
+
+Are you missing a patch in the series?
+
+I don't see the definition for igt_amd_fb_convert_plane_to_tiled() anywhere.
+
+Regards,
+Nicholas Kazlauskas
+
+> +
+> +		munmap(linear->map, fb->size);
+>   		munmap(map, fb->size);
+>   	} else {
+>   		gem_munmap(linear->map, linear->fb.size);
+> @@ -2419,6 +2437,10 @@ static void setup_linear_mapping(struct fb_blit_upload *blit)
+>   		vc4_fb_convert_plane_from_tiled(&linear->fb, &linear->map, fb, map);
+>   
+>   		munmap(map, fb->size);
+> +	} else if (is_amdgpu_device(fd) && fb->modifier != 0) {
+> +		linear->map = igt_amd_mmap_bo(fd, linear->fb.gem_handle,
+> +					      linear->fb.size,
+> +					      PROT_READ | PROT_WRITE);
+>   	} else {
+>   		/* Copy fb content to linear BO */
+>   		gem_set_domain(fd, linear->fb.gem_handle,
+> @@ -3625,7 +3647,7 @@ cairo_surface_t *igt_get_cairo_surface(int fd, struct igt_fb *fb)
+>   		if (use_convert(fb))
+>   			create_cairo_surface__convert(fd, fb);
+>   		else if (use_blitter(fb) || use_enginecopy(fb) ||
+> -			 igt_vc4_is_tiled(fb->modifier))
+> +			 igt_vc4_is_tiled(fb->modifier) || (is_amdgpu_device(fd) && fb->modifier != 0))
+>   			create_cairo_surface__gpu(fd, fb);
+>   		else
+>   			create_cairo_surface__gtt(fd, fb);
+> 
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
