@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F0CBC6E0F0
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Jan 2021 19:58:46 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu, 14 Jan 2021 20:57:35 +0100
-Message-Id: <20210114195736.62948-33-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20210114195736.62948-1-zbigniew.kempczynski@intel.com>
-References: <20210114195736.62948-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v15 32/33] lib/intel_allocator: Separate
- allocator multiprocess start
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 14 Jan 2021 20:23:52 -0000
+Message-ID: <161065583258.19646.10138005179682705288@emeril.freedesktop.org>
+References: <20210114195736.62948-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20210114195736.62948-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBJbnRy?=
+ =?utf-8?q?oduce_IGT_allocator_=28rev16=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,65 +14,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VmFsaWRhdGluZyBhbGxvY2F0b3IgY29kZSAobGVha3MgYW5kIG1lbW9yeSBvdmVyd3JpdGluZykg
-Y2FuIGJlIGRvbmUKd2l0aCBhZGRyZXNzIHNhbml0aXplci4gV2hlbiBhbGxvY2F0b3IgaXMgbm90
-IHdvcmtpbmcgaW4gbXVsdGlwcm9jZXNzCm1vZGUgaXQgaXMgZWFzeSwgcHJvYmxlbXMgc3RhcnQg
-d2hlbiBmb3JrIGlzIGluIHRoZSBnYW1lLiBJbiB0aGlzCnNpdHVhdGlvbiB3ZSBuZWVkIHRvIHNl
-cGFyYXRlIHByZXBhcmF0aW9uIGFuZCBzdGFydGluZyBhbGxvY2F0b3IgdGhyZWFkLgoKU2lnbmVk
-LW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRl
-bC5jb20+ClJlcG9ydGVkLWJ5OiBBbmRyemVqIFR1cmtvIDxhbmRyemVqLnR1cmtvQGxpbnV4Lmlu
-dGVsLmNvbT4KQ2M6IEFuZHJ6ZWogVHVya28gPGFuZHJ6ZWoudHVya29AbGludXguaW50ZWwuY29t
-PgpDYzogRG9taW5payBHcnplZ29yemVrIDxkb21pbmlrLmdyemVnb3J6ZWtAaW50ZWwuY29tPgpD
-YzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Ci0tLQogbGliL2ludGVs
-X2FsbG9jYXRvci5jIHwgNDEgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0t
-LS0KIGxpYi9pbnRlbF9hbGxvY2F0b3IuaCB8ICAyICsrCiAyIGZpbGVzIGNoYW5nZWQsIDM2IGlu
-c2VydGlvbnMoKyksIDcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2FsbG9j
-YXRvci5jIGIvbGliL2ludGVsX2FsbG9jYXRvci5jCmluZGV4IGRkN2ZhNWUxOS4uNmI1NjQ1ZGJi
-IDEwMDY0NAotLS0gYS9saWIvaW50ZWxfYWxsb2NhdG9yLmMKKysrIGIvbGliL2ludGVsX2FsbG9j
-YXRvci5jCkBAIC01MDMsNiArNTAzLDM4IEBAIHN0YXRpYyB2b2lkICphbGxvY2F0b3JfdGhyZWFk
-X2xvb3Aodm9pZCAqZGF0YSkKIAlyZXR1cm4gTlVMTDsKIH0KIAorCisvKioKKyAqIF9faW50ZWxf
-YWxsb2NhdG9yX211bHRpcHJvY2Vzc19wcmVwYXJlOgorICoKKyAqIFByZXBhcmVzIGFsbG9jYXRv
-ciBpbmZyYXN0cnVjdHVyZSB0byB3b3JrIGluIG11bHRpcHJvY2VzcyBtb2RlLgorICoKKyAqIFNv
-bWUgZGVzY3JpcHRpb24gaXMgcmVxdWlyZWQgd2h5IHByZXBhcmUvc3RhcnQgc3RlcHMgYXJlIHNl
-cGFyYXRlZC4KKyAqIFdoZW4gd2Ugd3JpdGUgdGhlIGNvZGUgYW5kIHdlIGRvbid0IHVzZSBhZGRy
-ZXNzIHNhbml0aXplciBzaW1wbGUKKyAqIGludGVsX2FsbG9jYXRvcl9tdWx0aXByb2Nlc3Nfc3Rh
-cnQoKSBjYWxsIGlzIGVub3VnaC4gV2l0aCBhZGRyZXNzCisgKiBzYW5pdGl6ZXIgYW5kIHVzaW5n
-IGZvcmtpbmcgd2UgY2FuIGVuY291bnRlciBzaXR1YXRpb24gd2hlcmUgb25lCisgKiBmb3JrZWQg
-Y2hpbGQgY2FsbGVkIGFsbG9jYXRvciBhbGxvYygpIChzbyBwYXJlbnQgaGFzIHNvbWUgcG9pc29u
-ZWQKKyAqIG1lbW9yeSBpbiBzaGFkb3cgbWFwKSwgdGhlbiBzZWNvbmQgZm9yayBvY2N1cnMuIFNl
-Y29uZCBjaGlsZCB3aWxsCisgKiBnZXQgcG9pc29uZWQgc2hhZG93IG1hcCBmcm9tIHBhcmVudCAo
-dGhlcmUgYWxsb2NhdG9yIHRocmVhZCByZXNpZGUpLgorICogQ2hlY2tpbmcgc2hhZG93IG1hcCBp
-biB0aGlzIGNoaWxkIHdpbGwgcmVwb3J0IG1lbW9yeSBsZWFrLgorICoKKyAqIEhvdyB0byBzZXBh
-cmF0ZSBpbml0aWFsaXphdGlvbiBzdGVwcyB0YWtlIGEgbG9vayBpbnRvIGFwaV9pbnRlbF9hbGxv
-Y2F0b3IuYworICogZm9ya19zaW1wbGVfc3RyZXNzKCkgZnVuY3Rpb24uCisgKi8KK3ZvaWQgX19p
-bnRlbF9hbGxvY2F0b3JfbXVsdGlwcm9jZXNzX3ByZXBhcmUodm9pZCkKK3sKKwlpbnRlbF9hbGxv
-Y2F0b3JfaW5pdCgpOworCisJbXVsdGlwcm9jZXNzID0gdHJ1ZTsKKwljaGFubmVsLT5pbml0KGNo
-YW5uZWwpOworfQorCit2b2lkIF9faW50ZWxfYWxsb2NhdG9yX211bHRpcHJvY2Vzc19zdGFydCh2
-b2lkKQoreworCXB0aHJlYWRfY3JlYXRlKCZhbGxvY2F0b3JfdGhyZWFkLCBOVUxMLAorCQkgICAg
-ICAgYWxsb2NhdG9yX3RocmVhZF9sb29wLCBOVUxMKTsKK30KKwogLyoqCiAgKiBpbnRlbF9hbGxv
-Y2F0b3JfbXVsdGlwcm9jZXNzX3N0YXJ0OgogICoKQEAgLTUyMiwxMyArNTU0LDggQEAgdm9pZCBp
-bnRlbF9hbGxvY2F0b3JfbXVsdGlwcm9jZXNzX3N0YXJ0KHZvaWQpCiB7CiAJYWxsb2NfaW5mbygi
-YWxsb2NhdG9yIG11bHRpcHJvY2VzcyBzdGFydFxuIik7CiAKLQlpbnRlbF9hbGxvY2F0b3JfaW5p
-dCgpOwotCi0JbXVsdGlwcm9jZXNzID0gdHJ1ZTsKLQljaGFubmVsLT5pbml0KGNoYW5uZWwpOwot
-Ci0JcHRocmVhZF9jcmVhdGUoJmFsbG9jYXRvcl90aHJlYWQsIE5VTEwsCi0JCSAgICAgICBhbGxv
-Y2F0b3JfdGhyZWFkX2xvb3AsIE5VTEwpOworCV9faW50ZWxfYWxsb2NhdG9yX211bHRpcHJvY2Vz
-c19wcmVwYXJlKCk7CisJX19pbnRlbF9hbGxvY2F0b3JfbXVsdGlwcm9jZXNzX3N0YXJ0KCk7CiB9
-CiAKIC8qKgpkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2FsbG9jYXRvci5oIGIvbGliL2ludGVsX2Fs
-bG9jYXRvci5oCmluZGV4IDA2NTRiM2I4NC4uNzg2MzU2NmVjIDEwMDY0NAotLS0gYS9saWIvaW50
-ZWxfYWxsb2NhdG9yLmgKKysrIGIvbGliL2ludGVsX2FsbG9jYXRvci5oCkBAIC05Nyw2ICs5Nyw4
-IEBAIHN0cnVjdCBpbnRlbF9hbGxvY2F0b3IgewogfTsKIAogdm9pZCBpbnRlbF9hbGxvY2F0b3Jf
-aW5pdCh2b2lkKTsKK3ZvaWQgX19pbnRlbF9hbGxvY2F0b3JfbXVsdGlwcm9jZXNzX3ByZXBhcmUo
-dm9pZCk7Cit2b2lkIF9faW50ZWxfYWxsb2NhdG9yX211bHRpcHJvY2Vzc19zdGFydCh2b2lkKTsK
-IHZvaWQgaW50ZWxfYWxsb2NhdG9yX211bHRpcHJvY2Vzc19zdGFydCh2b2lkKTsKIHZvaWQgaW50
-ZWxfYWxsb2NhdG9yX211bHRpcHJvY2Vzc19zdG9wKHZvaWQpOwogCi0tIAoyLjI2LjAKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGlu
-ZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+== Series Details ==
+
+Series: Introduce IGT allocator (rev16)
+URL   : https://patchwork.freedesktop.org/series/82954/
+State : failure
+
+== Summary ==
+
+Applying: tests/gem_softpin: Fix object leak in softpin test
+Using index info to reconstruct a base tree...
+M	tests/i915/gem_softpin.c
+Falling back to patching base and 3-way merge...
+No changes -- Patch already applied.
+Applying: lib/igt_list: igt_hlist implementation.
+Applying: lib/igt_map: Introduce igt_map
+Applying: lib/igt_core: Track child process pid and tid
+Applying: lib/intel_allocator_simple: Add simple allocator
+Applying: lib/intel_allocator_random: Add random allocator
+Applying: lib/intel_allocator: Add intel_allocator core
+Applying: lib/intel_allocator: Try to stop smoothly instead of deinit
+Applying: lib/intel_allocator_msgchannel: Scale to 4k of parallel clients
+Applying: lib/intel_bufops: Removes handle from allocator, change size
+Applying: lib/intel_bufops: Add init with handle and size function
+Applying: lib/intel_batchbuffer: Integrate intel_bb with allocator
+Applying: lib/intel_batchbuffer: Add tracking intel_buf to intel_bb
+Applying: lib/intel_aux_pgtable: Get addresses for aux table from an allocator
+Applying: lib/igt_fb: Initialize intel_buf with same size as fb
+Applying: tests/api_intel_bb: Modify test to verify intel_bb with allocator
+Applying: tests/api_intel_bb: Add compressed->compressed copy
+Applying: tests/api_intel_allocator: Simple allocator test suite
+Applying: tests/gem_softpin: Verify allocator and execbuf pair work together
+Applying: tests/gem|kms: Remove intel_bb from fixture
+Applying: tests/gem_mmap_offset: Use intel_buf wrapper code instead direct
+Applying: tests/gem_ppgtt: Adopt test to use intel_bb with allocator
+Using index info to reconstruct a base tree...
+M	tests/i915/gem_ppgtt.c
+Falling back to patching base and 3-way merge...
+Auto-merging tests/i915/gem_ppgtt.c
+CONFLICT (content): Merge conflict in tests/i915/gem_ppgtt.c
+Patch failed at 0022 tests/gem_ppgtt: Adopt test to use intel_bb with allocator
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
