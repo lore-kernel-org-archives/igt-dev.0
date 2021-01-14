@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F7576E44E
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Jan 2021 16:13:43 +0000 (UTC)
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2089.outbound.protection.outlook.com [40.107.237.89])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E97E96E44B
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Jan 2021 16:13:30 +0000 (UTC)
+From: "Cornij, Nikola" <Nikola.Cornij@amd.com>
+Date: Thu, 14 Jan 2021 16:13:29 +0000
+Message-ID: <DM5PR12MB46799D0D5F3EB135D8D3A3F8EEA80@DM5PR12MB4679.namprd12.prod.outlook.com>
+References: <20210112225400.115515-1-sungkim@amd.com>
+ <20210112225400.115515-3-sungkim@amd.com>
+In-Reply-To: <20210112225400.115515-3-sungkim@amd.com>
+Content-Language: en-US
 MIME-Version: 1.0
-In-Reply-To: <20210114122233.32906-8-zbigniew.kempczynski@intel.com>
-References: <20210114122233.32906-1-zbigniew.kempczynski@intel.com>
- <20210114122233.32906-8-zbigniew.kempczynski@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 14 Jan 2021 16:13:39 +0000
-Message-ID: <161064081957.19482.11259714781625139307@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v14 07/33] lib/intel_allocator: Add
- intel_allocator core
+Subject: Re: [igt-dev] [PATCH 3/3] lib: Implement tiling/swizzle addressing
+ for amdgpu
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,23 +20,213 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: zbigniew.kempczynski@intel.com, igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: "Kim, Sung joon" <Sungjoon.Kim@amd.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjEtMDEtMTQgMTI6MjI6MDcpCj4gK3N0
-YXRpYyBzdHJ1Y3QgaW50ZWxfYWxsb2NhdG9yICppbnRlbF9hbGxvY2F0b3JfY3JlYXRlKGludCBm
-ZCwgdWludDMyX3QgY3R4LAo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHVpbnQ4X3QgYWxsb2NhdG9yX3R5cGUpCj4gK3sKPiArICAgICAgIHN0
-cnVjdCBpbnRlbF9hbGxvY2F0b3IgKmlhbDsKPiArCj4gKyAgICAgICBzd2l0Y2ggKGFsbG9jYXRv
-cl90eXBlKSB7Cj4gKyAgICAgICBjYXNlIElOVEVMX0FMTE9DQVRPUl9OT05FOgo+ICsgICAgICAg
-ICAgICAgICBpZ3RfYXNzZXJ0X2YoYWxsb2NhdG9yX3R5cGUgIT0gSU5URUxfQUxMT0NBVE9SX05P
-TkUsCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAiQnVnLCB0cnlpbmcgdG8gdXNlIGFs
-bG9jYXRvciB3aXRoIHJlbG9jYXRpb25zIik7CgpQYXJkb24/IGlmIChhID09IDEpIGFzc2VydChh
-ICE9IDEpOwotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
-aHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+
+-----Original Message-----
+From: Kim, Sung joon <Sungjoon.Kim@amd.com> 
+Sent: Tuesday, January 12, 2021 5:54 PM
+To: igt-dev@lists.freedesktop.org
+Cc: Kazlauskas, Nicholas <Nicholas.Kazlauskas@amd.com>; Wentland, Harry <Harry.Wentland@amd.com>; Cornij, Nikola <Nikola.Cornij@amd.com>; Kim, Sung joon <Sungjoon.Kim@amd.com>
+Subject: [PATCH 3/3] lib: Implement tiling/swizzle addressing for amdgpu
+
+The swizzle mode is 64kb withe standard pattern.
+
+Signed-off-by: Sung Joon Kim <sungkim@amd.com>
+Reviewed by: Nikola Cornij <nikola.cornij@amd.com>
+---
+ lib/igt_amd.c | 132 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_amd.h |  31 ++++++++++++
+ 2 files changed, 163 insertions(+)
+
+diff --git a/lib/igt_amd.c b/lib/igt_amd.c index abd3ad96..737e5670 100644
+--- a/lib/igt_amd.c
++++ b/lib/igt_amd.c
+@@ -54,3 +54,135 @@ void *igt_amd_mmap_bo(int fd, uint32_t handle, uint64_t size, int prot)
+ 	ptr = mmap(0, size, prot, MAP_SHARED, fd, map.out.addr_ptr);
+ 	return ptr == MAP_FAILED ? NULL : ptr;  }
++
++unsigned int igt_amd_compute_offset(unsigned int* swizzle_pattern, 
++unsigned int x, unsigned int y) {
++    unsigned int offset = 0, index = 0, blk_size_table_index = 0, interleave = 0;
++    unsigned int channel[16] = {0, 0, 1, 1, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1};
++    unsigned int i, v;
++
++    for (i = 0; i < 16; i++)
++    {
++        v = 0;
++        if (channel[i] == 1)
++        {
++            blk_size_table_index = 0;
++            interleave = swizzle_pattern[i];
++
++            while (interleave > 1) {
++				blk_size_table_index++;
++				interleave = (interleave + 1) >> 1;
++			}
++
++            index = blk_size_table_index + 2;
++            v ^= (x >> index) & 1;
++        }
++        else if (channel[i] == 2)
++        {
++            blk_size_table_index = 0;
++            interleave = swizzle_pattern[i];
++
++            while (interleave > 1) {
++				blk_size_table_index++;
++				interleave = (interleave + 1) >> 1;
++			}
++
++            index = blk_size_table_index;
++            v ^= (y >> index) & 1;
++        }
++
++        offset |= (v << i);
++    }
++
++	return offset;
++}
++
++uint32_t igt_amd_fb_tiled_offset(unsigned int bpp, unsigned int x_input, unsigned int y_input,
++				       unsigned int width_input)
++{
++	unsigned int blk_size_table_index, blk_size_log2, blk_size_log2_256B;
++	unsigned int element_bytes, width_amp, height_amp, width, height, pitch;
++	unsigned int pb, yb, xb, blk_idx, blk_offset, addr;
++	unsigned int* swizzle_pattern;
++	unsigned int block256_2d[][2] = {{16, 16}, {16, 8}, {8, 8}, {8, 4}, {4, 4}};
++	unsigned int sw_64k_s[][16]=
++	{
++	    {X0, X1, X2, X3, Y0, Y1, Y2, Y3, Y4, X4, Y5, X5, Y6, X6, Y7, X7},
++	    {0,  X0, X1, X2, Y0, Y1, Y2, X3, Y3, X4, Y4, X5, Y5, X6, Y6, X7},
++	    {0,  0,  X0, X1, Y0, Y1, Y2, X2, Y3, X3, Y4, X4, Y5, X5, Y6, X6},
++	    {0,  0,  0,  X0, Y0, Y1, X1, X2, Y2, X3, Y3, X4, Y4, X5, Y5, X6},
++	    {0,  0,  0,  0,  Y0, Y1, X0, X1, Y2, X2, Y3, X3, Y4, X4, Y5, X5},
++	};
++
++	element_bytes = bpp >> 3;
++	blk_size_table_index = 0;
++
++	while (element_bytes > 1) {
++		blk_size_table_index++;
++		element_bytes = (element_bytes + 1) >> 1;
++	}
++
++	blk_size_log2 = 16;
++	blk_size_log2_256B = blk_size_log2 - 8;
++
++	width_amp = blk_size_log2_256B / 2;
++	height_amp = blk_size_log2_256B - width_amp;
++
++	width  = (block256_2d[blk_size_table_index][0] << width_amp);
++	height = (block256_2d[blk_size_table_index][1] << height_amp);
++
++	pitch = (width_input + (width - 1)) & (~(width - 1));
++
++	swizzle_pattern = sw_64k_s[blk_size_table_index];
++
++	pb = pitch / width;
++	yb = y_input / height;
++	xb = x_input / width;
++	blk_idx = yb * pb + xb;
++	blk_offset = igt_amd_compute_offset(swizzle_pattern,
++					x_input << blk_size_table_index, y_input);
++	addr = (blk_idx << blk_size_log2) + blk_offset;
++
++    return (uint32_t)addr;
++}
++
++void igt_amd_fb_to_tiled(struct igt_fb *dst, void *dst_buf, struct igt_fb *src,
++				       void *src_buf, unsigned int plane) {
++	uint32_t src_offset, dst_offset;
++	unsigned int bpp = src->plane_bpp[plane];
++	unsigned int width = dst->plane_width[plane];
++	unsigned int height = dst->plane_height[plane];
++	unsigned int x, y;
++
++	for (y = 0; y < height; y++) {
++		for (x = 0; x < width; x++) {
++			src_offset = src->offsets[plane];
++			dst_offset = dst->offsets[plane];
++
++			src_offset += src->strides[plane] * y + x * bpp / 8;
++			dst_offset += igt_amd_fb_tiled_offset(bpp, x, y, width);
++
++			switch (bpp) {
++			case 16:
++				*(uint16_t *)(dst_buf + dst_offset) =
++					*(uint16_t *)(src_buf + src_offset);
++				break;
++			case 32:
++				*(uint32_t *)(dst_buf + dst_offset) =
++					*(uint32_t *)(src_buf + src_offset);
++				break;
++			}
++		}
++	}
++}
++
++void igt_amd_fb_convert_plane_to_tiled(struct igt_fb *dst, void *dst_buf,
++				       struct igt_fb *src, void *src_buf) {
++	unsigned int plane;
++
++	for (plane = 0; plane < src->num_planes; plane++) {
++		igt_amd_fb_to_tiled(dst, dst_buf, src, src_buf, plane);
++	}
++}
+diff --git a/lib/igt_amd.h b/lib/igt_amd.h index f63d26f4..d5b421b4 100644
+--- a/lib/igt_amd.h
++++ b/lib/igt_amd.h
+@@ -24,8 +24,39 @@
+ #define IGT_AMD_H
+ 
+ #include <stdint.h>
++#include "igt_fb.h"
+ 
+ uint32_t igt_amd_create_bo(int fd, uint64_t size);  void *igt_amd_mmap_bo(int fd, uint32_t handle, uint64_t size, int prot);
++unsigned int igt_amd_compute_offset(unsigned int* SwizzlePattern, 
++unsigned int x, unsigned int y); uint32_t igt_amd_fb_tiled_offset(unsigned int bpp, unsigned int x_input, unsigned int y_input,
++				       unsigned int width_input);
++void igt_amd_fb_to_tiled(struct igt_fb *dst, void *dst_buf, struct igt_fb *src,
++				       void *src_buf, unsigned int plane); void 
++igt_amd_fb_convert_plane_to_tiled(struct igt_fb *dst, void *dst_buf,
++				       struct igt_fb *src, void *src_buf);
++
++#define X0 1
++#define X1 2
++#define X2 4
++#define X3 8
++#define X4 16
++#define X5 32
++#define X6 64
++#define X7 128
++#define Y0 1
++#define Y1 2
++#define Y2 4
++#define Y3 8
++#define Y4 16
++#define Y5 32
++#define Y6 64
++#define Y7 128
++
++struct Dim2d
++{
++    int w;
++    int h;
++};
+ 
+ #endif /* IGT_AMD_H */
+--
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
