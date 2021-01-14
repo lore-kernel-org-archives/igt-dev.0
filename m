@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C0446E43F
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Jan 2021 16:06:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 17DCC6E43F
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Jan 2021 16:09:44 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20210114122233.32906-6-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20210114122233.32906-7-zbigniew.kempczynski@intel.com>
 References: <20210114122233.32906-1-zbigniew.kempczynski@intel.com>
- <20210114122233.32906-6-zbigniew.kempczynski@intel.com>
+ <20210114122233.32906-7-zbigniew.kempczynski@intel.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 14 Jan 2021 16:06:31 +0000
-Message-ID: <161064039161.19482.2078942793315500815@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v14 05/33] lib/intel_allocator_simple:
- Add simple allocator
+Date: Thu, 14 Jan 2021 16:09:40 +0000
+Message-ID: <161064058038.19482.7735968818401567764@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v14 06/33] lib/intel_allocator_random:
+ Add random allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,19 +25,18 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: zbigniew.kempczynski@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjEtMDEtMTQgMTI6MjI6MDUpCj4gK3N0
-YXRpYyB1aW50NjRfdCBnZXRfYmlhcyhpbnQgZmQpCj4gK3sKPiArICAgICAgICh2b2lkKSBmZDsK
-PiArCj4gKyAgICAgICByZXR1cm4gMjU2IDw8IDEwOwo+ICt9CgpTbyBJIGltbWVkaWF0ZWx5IHJh
-biBpbnRvIHRyb3VibGUgd2l0aCBiaWFzICsgUkVTRVJWRUQgYWZmZWN0aW5nIG15CmFiaWxpdHkg
-dG8gbGF5b3V0IG15IGZ1bGwtcHBndHQgZXhhY3RseSBhcyBJIHdhbnRlZC4KClRoZSBrZXJuZWwg
-QkFUQ0hfQklBUyBvbmx5IGV4aXN0cyB0byBwcmV2ZW50IG5lZ2F0aXZlIGRlbHRhcyBmcm9tCmNh
-dXNpbmcgaW52YWxpZCB3cmFwYXJvdW5kcyBbZm9yIHJlbG9jYXRpb25zXSBhbmQgaXMgbm90IGFw
-cGxpZWQgdG8Kc29mdHBpbiwgc2luY2UgdGhlIHVzZXIgaXMgZXhwZWN0ZWQgbm90IHRvIGJlIHVz
-aW5nIHJlbG9jYXRpb25zIGFuZCBzbwppbiBmdWxsIGNvbnRyb2wuIFJFU0VSVkVEIGlzIGFuIGlu
-dGVyZXN0aW5nIGRlYmF0ZSBhcyB3ZSBuZWVkIHRvIGF2b2lkCmNvbW1vbiB0ZXN0IGNhc2VzIGZy
-b20gdHJpcHBpbmcgb3ZlciBwcmVmZXRjaGluZyBwYXN0IHRoZSBsYXN0IHBhZ2UsCndoaWxlIGF0
-IHRoZSBzYW1lIHRpbWUgd2Ugd2FudCB0byBhbGxvdyBmdWxsIGNvbnRyb2wgdG8gdGhlIHRlc3Rz
-IHRoYXQKZGVtYW5kIGl0LgotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVz
-a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9p
-Z3QtZGV2Cg==
+UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjEtMDEtMTQgMTI6MjI6MDYpCj4gU29t
+ZXRpbWVzIHdlIHdhbnQgdG8gZXhwZXJpbWVudCB3aXRoIGFkZHJlc3NlcyBzbyByYW5kb21pemlu
+ZyBjYW4gaGVscAo+IHVzIGEgbGl0dGxlLgoKV2UgaGFkIHNvbWUgZGlzY3Vzc2lvbiBvbiB0aGUg
+dXRpbGl0eSBvZiBhIHJhbmRvbSBhbGxvY2F0b3Igd2l0aG91dCBhbnkKb3ZlcmxhcCBkZXRlY3Rp
+b24uIFVzZWZ1bCBmb3Igc29tZSBkZWJ1Z2dpbmcsIGJ1dCBicmluZ3MgaXRzIG93biBib29ieQp0
+cmFwcy4KCldlIGRvIG5lZWQgdG8gYWRkIGNvbW1lbnRzIHRoYXQgZGlzY3VzcyB0aGUgcHJvL2Nv
+bnMgb2YgZWFjaCBhbGxvY2F0b3IsCmluIHBhcnRpY3VsYXIgbWVudGlvbmluZyB0aGF0IHdpdGhv
+dXQgb3ZlcmxhcCBkZXRlY3Rpb24gdGhpcyBhbGxvY2F0b3IKd2lsbCBldmVudHVhbGx5IHJldHVy
+biBjb25mbGljdGluZyBhZGRyZXNzZXMuIFRoZXJlJ3MgYWxzbyBhbm90aGVyCnN1YnRsZSBwcm9i
+bGVtIGluIHRoYXQgYW4gZXZlbiBzcHJlYWQgb2Ygb2JqZWN0cyBvdmVyIHRoZSBhZGRyZXNzIHJh
+bmdlCmluY3JlYXNlcyBtZW1wcmVzc3VyZSBmcm9tIHRoZSBwYWdlIHRhYmxlcywgbGVhZGluZyB0
+byBteXN0ZXJ5IEVOT01FTQpmcm9tIGV4ZWNidWYuCi1DaHJpcwpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2lndC1kZXYK
