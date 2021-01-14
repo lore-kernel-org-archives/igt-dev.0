@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E15889932
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Jan 2021 06:26:18 +0000 (UTC)
-Date: Thu, 14 Jan 2021 08:26:14 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20210114062614.GB7444@platvala-desk.ger.corp.intel.com>
-References: <20210112225400.115515-1-sungkim@amd.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 576646E303
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Jan 2021 12:22:45 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Thu, 14 Jan 2021 13:22:00 +0100
+Message-Id: <20210114122233.32906-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210112225400.115515-1-sungkim@amd.com>
-Subject: Re: [igt-dev] [PATCH 1/3] lib: Add stride and size calculation for
- amdgpu + tiling
+Subject: [igt-dev] [PATCH i-g-t v14 00/33] Introduce IGT allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,91 +14,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Sung Joon Kim <sungkim@amd.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jan 12, 2021 at 05:53:58PM -0500, Sung Joon Kim wrote:
-> For amdgpu, we need to calculate the stride and size of framebuffer correctly during non-linear tiling mode
-> 
-> v2: add call to amdgpu tiling/swizzle addressing
-> Signed-off-by: Sung Joon Kim <sungkim@amd.com>
-> ---
->  lib/igt_fb.c | 24 +++++++++++++++++++++++-
->  1 file changed, 23 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 4b9be47e..6eebe048 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -671,6 +671,11 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
->  		 * so the easiest way is to align the luma stride to 256.
->  		 */
->  		return ALIGN(min_stride, 256);
-> +	}else if (fb->modifier != LOCAL_DRM_FORMAT_MOD_NONE && is_amdgpu_device(fb->fd)) {
-> +		/*
-> +		 * For amdgpu device with tiling mode
-> +		 */
-> +		return ALIGN(min_stride, 512);
->  	} else if (is_gen12_ccs_cc_plane(fb, plane)) {
->  		/* clear color always fixed to 64 bytes */
->  		return 64;
-> @@ -711,6 +716,12 @@ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
->  		size = roundup_power_of_two(size);
->  
->  		return size;
-> +	} else if (fb->modifier != LOCAL_DRM_FORMAT_MOD_NONE && is_amdgpu_device(fb->fd)) {
-> +		/*
-> +		 * For amdgpu device with tiling mode
-> +		 */
-> +		return (uint64_t) fb->strides[plane] *
-> +			ALIGN(fb->plane_height[plane], 512);
->  	} else if (is_gen12_ccs_plane(fb, plane)) {
->  		/* The AUX CCS surface must be page aligned */
->  		return (uint64_t)fb->strides[plane] *
-> @@ -2352,6 +2363,13 @@ static void free_linear_mapping(struct fb_blit_upload *blit)
->  
->  		vc4_fb_convert_plane_to_tiled(fb, map, &linear->fb, &linear->map);
->  
-> +		munmap(map, fb->size);
-> +	} else if (is_amdgpu_device(fd) && fb->modifier != 0) {
-> +		void *map = igt_amd_mmap_bo(fd, fb->gem_handle, fb->size, PROT_WRITE);
-> +
-> +		igt_amd_fb_convert_plane_to_tiled(fb, map, &linear->fb, linear->map);
-> +
-> +		munmap(linear->map, fb->size);
->  		munmap(map, fb->size);
->  	} else {
->  		gem_munmap(linear->map, linear->fb.size);
-> @@ -2419,6 +2437,10 @@ static void setup_linear_mapping(struct fb_blit_upload *blit)
->  		vc4_fb_convert_plane_from_tiled(&linear->fb, &linear->map, fb, map);
->  
->  		munmap(map, fb->size);
-> +	} else if (is_amdgpu_device(fd) && fb->modifier != 0) {
-> +		linear->map = igt_amd_mmap_bo(fd, linear->fb.gem_handle,
-> +					      linear->fb.size,
-> +					      PROT_READ | PROT_WRITE);
->  	} else {
->  		/* Copy fb content to linear BO */
->  		gem_set_domain(fd, linear->fb.gem_handle,
-> @@ -3625,7 +3647,7 @@ cairo_surface_t *igt_get_cairo_surface(int fd, struct igt_fb *fb)
->  		if (use_convert(fb))
->  			create_cairo_surface__convert(fd, fb);
->  		else if (use_blitter(fb) || use_enginecopy(fb) ||
-> -			 igt_vc4_is_tiled(fb->modifier))
-> +			 igt_vc4_is_tiled(fb->modifier) || (is_amdgpu_device(fd) && fb->modifier != 0))
-
-This line grows a bit long, add newline after the ||
-
-
-
--- 
-Petri Latvala
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+VGhpcyBzZXJpZXMgaW50cm9kdWNlIGludGVsLWFsbG9jYXRvciBpbnNpZGUgSUdULgoKdjI6IGFk
+ZCBjb21tZW50L2NvbW1pdCBtc2cgZm9yIGFsbG9jYXRvciBjb3JlCnYzOiBlbmZvcmNlIHJlbG9j
+cyBpbiBnZW1fbGluZWFyX2JsaXRzIGZvciBwcGd0dCBzaXplcyA8PSAzMmIKdjQ6IHVzZSBhZGRy
+ZXNzZXMgb25seSBmcm9tIHBwZ3R0IHJhbmdlIGluIGNoZWNrLWNhbm9uaWNhbAp2NTogdXNlIHJl
+bG9jYXRpb25zIGFzIGRlZmF1bHQgdXAgdG8gZ2VuMTIgdG8gYXZvaWQgbG9vc2luZwogICAgY292
+ZXJhZ2UuCnY2OiBtaWdyYXRlIG1lbW9yeSBjaGVjayBpbiBnZW1fcHBndHQgdG8gYXZvaWQgZXhl
+YyBzZXJpYWxpemF0aW9uCnY3OiBrZWVwIGRlY2Fub25pY2FsIGFkZHJlc3Mgd2l0aGluIGludGVs
+LWJiLCByZW1vdmUgY2hlY2stY2Fub25pY2FsCiAgICB0ZXN0CnY4OiBhZG9wdCBkZWx0YS1jaGVj
+ayB0byB1c2UgaW50ZWwtYmIgd2l0aCBhbGxvY2F0b3IgdG8gZnVsbHkgY29udHJvbAogICAgYWRk
+cmVzc2VzCnY5OiBmaXggaW50ZWxfYWxsb2NhdG9yX2lzX3Jlc2VydmVkKCkgcHJvdG90eXBlIChB
+bmRyemVqKQp2MTA6IHNlcGFyYXRlIGFsbG9jYXRvciBpbml0aWFsaXphdGlvbiBmb3IgbXVsdGlw
+cm9jZXNzIGV4ZWN1dGlvbgogICAgdG8gY29tcGlsZSBhbmQgcnVuIGFnYWluc3QgYWRkcmVzcyBz
+YW5pdGl6ZXIKdjExOiByZWJhc2Ugb24gdG9wIGludGVsLWJiIGFuZCBhdXggcGd0YWJsZSBjaGFu
+Z2VzCnYxMjogcmViYXNlLCBmaXhpbmcgYXBpLWludGVsLWJiCnYxMzogcmViYXNlCnYxNDogZ2Vt
+X3NvZnRwaW46IGZpeCBoYW5kbGUgbGVhaywgYWRkIGFsbG9jYXRvciB0ZXN0cwoKQ2M6IERvbWlu
+aWsgR3J6ZWdvcnplayA8ZG9taW5pay5ncnplZ29yemVrQGludGVsLmNvbT4KQ2M6IENocmlzIFdp
+bHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgpDYzogUGV0cmkgTGF0dmFsYSA8cGV0cmku
+bGF0dmFsYUBpbnRlbC5jb20+CkNjOiBBbmRyemVqIFR1cmtvIDxhbmRyemVqLnR1cmtvQGxpbnV4
+LmludGVsLmNvbT4KCkRvbWluaWsgR3J6ZWdvcnplayAoNSk6CiAgbGliL2lndF9saXN0OiBpZ3Rf
+aGxpc3QgaW1wbGVtZW50YXRpb24uCiAgbGliL2lndF9tYXA6IEludHJvZHVjZSBpZ3RfbWFwCiAg
+bGliL2ludGVsX2FsbG9jYXRvcl9zaW1wbGU6IEFkZCBzaW1wbGUgYWxsb2NhdG9yCiAgdGVzdHMv
+YXBpX2ludGVsX2FsbG9jYXRvcjogU2ltcGxlIGFsbG9jYXRvciB0ZXN0IHN1aXRlCiAgdGVzdHMv
+Z2VtX2xpbmVhcl9ibGl0czogVXNlIGludGVsIGFsbG9jYXRvcgoKWmJpZ25pZXcgS2VtcGN6ecWE
+c2tpICgyOCk6CiAgdGVzdHMvZ2VtX3NvZnRwaW46IEZpeCBvYmplY3QgbGVhayBpbiBzb2Z0cGlu
+IHRlc3QKICBsaWIvaWd0X2NvcmU6IFRyYWNrIGNoaWxkIHByb2Nlc3MgcGlkIGFuZCB0aWQKICBs
+aWIvaW50ZWxfYWxsb2NhdG9yX3JhbmRvbTogQWRkIHJhbmRvbSBhbGxvY2F0b3IKICBsaWIvaW50
+ZWxfYWxsb2NhdG9yOiBBZGQgaW50ZWxfYWxsb2NhdG9yIGNvcmUKICBsaWIvaW50ZWxfYWxsb2Nh
+dG9yOiBUcnkgdG8gc3RvcCBzbW9vdGhseSBpbnN0ZWFkIG9mIGRlaW5pdAogIGxpYi9pbnRlbF9h
+bGxvY2F0b3JfbXNnY2hhbm5lbDogU2NhbGUgdG8gNGsgb2YgcGFyYWxsZWwgY2xpZW50cwogIGxp
+Yi9pbnRlbF9idWZvcHM6IFJlbW92ZXMgaGFuZGxlIGZyb20gYWxsb2NhdG9yLCBjaGFuZ2Ugc2l6
+ZQogIGxpYi9pbnRlbF9idWZvcHM6IEFkZCBpbml0IHdpdGggaGFuZGxlIGFuZCBzaXplIGZ1bmN0
+aW9uCiAgbGliL2ludGVsX2JhdGNoYnVmZmVyOiBJbnRlZ3JhdGUgaW50ZWxfYmIgd2l0aCBhbGxv
+Y2F0b3IKICBsaWIvaW50ZWxfYmF0Y2hidWZmZXI6IEFkZCB0cmFja2luZyBpbnRlbF9idWYgdG8g
+aW50ZWxfYmIKICBsaWIvaW50ZWxfYXV4X3BndGFibGU6IEdldCBhZGRyZXNzZXMgZm9yIGF1eCB0
+YWJsZSBmcm9tIGFuIGFsbG9jYXRvcgogIGxpYi9pZ3RfZmI6IEluaXRpYWxpemUgaW50ZWxfYnVm
+IHdpdGggc2FtZSBzaXplIGFzIGZiCiAgdGVzdHMvYXBpX2ludGVsX2JiOiBNb2RpZnkgdGVzdCB0
+byB2ZXJpZnkgaW50ZWxfYmIgd2l0aCBhbGxvY2F0b3IKICB0ZXN0cy9hcGlfaW50ZWxfYmI6IEFk
+ZCBjb21wcmVzc2VkLT5jb21wcmVzc2VkIGNvcHkKICB0ZXN0cy9nZW1fc29mdHBpbjogVmVyaWZ5
+IGFsbG9jYXRvciBhbmQgZXhlY2J1ZiBwYWlyIHdvcmsgdG9nZXRoZXIKICB0ZXN0cy9nZW18a21z
+OiBSZW1vdmUgaW50ZWxfYmIgZnJvbSBmaXh0dXJlCiAgdGVzdHMvZ2VtX21tYXBfb2Zmc2V0OiBV
+c2UgaW50ZWxfYnVmIHdyYXBwZXIgY29kZSBpbnN0ZWFkIGRpcmVjdAogIHRlc3RzL2dlbV9wcGd0
+dDogQWRvcHQgdGVzdCB0byB1c2UgaW50ZWxfYmIgd2l0aCBhbGxvY2F0b3IKICB0ZXN0cy9nZW1f
+cmVuZGVyX2NvcHlfcmVkdXg6IEFkb3B0IHRvIHVzZSB3aXRoIGludGVsX2JiIGFuZCBhbGxvY2F0
+b3IKICB0ZXN0cy9wZXJmLmM6IFJlbW92ZSBidWZmZXIgZnJvbSBiYXRjaAogIGxpYi9pb2N0bF93
+cmFwcGVyczogQWRkIGdlbV9oYXNfcmVsb2NhdGlvbnMoKSBjaGVjawogIGxpYi9pbnRlbF9iYXRj
+aGJ1ZmZlcjogVXNlIHJlbG9jYXRpb25zIGluIGludGVsLWJiIHVwIHRvIGdlbjEyCiAgdGVzdHMv
+YXBpX2ludGVsXyo6IEFkb3B0IHRvIHVzZSByZWxvY2F0aW9ucyBhcyBkZWZhdWx0IHVwIHRvIGdl
+bjEyCiAgdGVzdHMvZ2VtX3BwZ3R0OiBNaWdyYXRlIG1lbW9yeSBjaGVjayBvdXQgb2YgcmVuZGVy
+IGJsaXRzCiAgdGVzdHMvYXBpX2ludGVsX2JiOiBSZW1vdmUgY2hlY2stY2Fub25pY2FsIHRlc3QK
+ICB0ZXN0cy9hcGlfaW50ZWxfYmI6IFVzZSBhbGxvY2F0b3IgaW4gZGVsdGEtY2hlY2sgdGVzdAog
+IGxpYi9pbnRlbF9hbGxvY2F0b3I6IFNlcGFyYXRlIGFsbG9jYXRvciBtdWx0aXByb2Nlc3Mgc3Rh
+cnQKICB0ZXN0cy9hcGlfaW50ZWxfYWxsb2NhdG9yOiBQcmVwYXJlIHRvIHJ1biB3aXRoIHNhbml0
+aXplcgoKIC4uLi9pZ3QtZ3B1LXRvb2xzL2lndC1ncHUtdG9vbHMtZG9jcy54bWwgICAgICB8ICAg
+MiArCiBsaWIvTWFrZWZpbGUuc291cmNlcyAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDIg
+KwogbGliL2lndF9jb3JlLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDIwICsK
+IGxpYi9pZ3RfZmIuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAxMCArLQog
+bGliL2lndF9saXN0LmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDcxICsrCiBs
+aWIvaWd0X2xpc3QuaCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgNTAgKy0KIGxp
+Yi9pZ3RfbWFwLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8IDE1MCArKysKIGxp
+Yi9pZ3RfbWFwLmggICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8IDEyMSArKysKIGxp
+Yi9pbnRlbF9hbGxvY2F0b3IuYyAgICAgICAgICAgICAgICAgICAgICAgICB8IDk4NiArKysrKysr
+KysrKysrKysrKysKIGxpYi9pbnRlbF9hbGxvY2F0b3IuaCAgICAgICAgICAgICAgICAgICAgICAg
+ICB8IDEzOCArKysKIGxpYi9pbnRlbF9hbGxvY2F0b3JfbXNnY2hhbm5lbC5jICAgICAgICAgICAg
+ICB8IDE5MCArKysrCiBsaWIvaW50ZWxfYWxsb2NhdG9yX21zZ2NoYW5uZWwuaCAgICAgICAgICAg
+ICAgfCAxNDAgKysrCiBsaWIvaW50ZWxfYWxsb2NhdG9yX3JhbmRvbS5jICAgICAgICAgICAgICAg
+ICAgfCAyMjMgKysrKwogbGliL2ludGVsX2FsbG9jYXRvcl9zaW1wbGUuYyAgICAgICAgICAgICAg
+ICAgIHwgNzI4ICsrKysrKysrKysrKysKIGxpYi9pbnRlbF9hdXhfcGd0YWJsZS5jICAgICAgICAg
+ICAgICAgICAgICAgICB8ICAyNiArLQogbGliL2ludGVsX2JhdGNoYnVmZmVyLmMgICAgICAgICAg
+ICAgICAgICAgICAgIHwgNTY5ICsrKysrKystLS0KIGxpYi9pbnRlbF9iYXRjaGJ1ZmZlci5oICAg
+ICAgICAgICAgICAgICAgICAgICB8ICAyOCArLQogbGliL2ludGVsX2J1Zm9wcy5jICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHwgIDYxICstCiBsaWIvaW50ZWxfYnVmb3BzLmggICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgfCAgMjAgKy0KIGxpYi9pb2N0bF93cmFwcGVycy5jICAgICAgICAg
+ICAgICAgICAgICAgICAgICB8ICA0MyArCiBsaWIvaW9jdGxfd3JhcHBlcnMuaCAgICAgICAgICAg
+ICAgICAgICAgICAgICAgfCAgIDEgKwogbGliL21lc29uLmJ1aWxkICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIHwgICA1ICsKIHRlc3RzL2k5MTUvYXBpX2ludGVsX2FsbG9jYXRvci5jICAg
+ICAgICAgICAgICB8IDU2MCArKysrKysrKysrCiB0ZXN0cy9pOTE1L2FwaV9pbnRlbF9iYi5jICAg
+ICAgICAgICAgICAgICAgICAgfCA1ODcgKysrKysrKystLS0KIHRlc3RzL2k5MTUvZ2VtX2NhY2hp
+bmcuYyAgICAgICAgICAgICAgICAgICAgICB8ICAxNCArLQogdGVzdHMvaTkxNS9nZW1fbGluZWFy
+X2JsaXRzLmMgICAgICAgICAgICAgICAgIHwgMTAzICstCiB0ZXN0cy9pOTE1L2dlbV9tbWFwX29m
+ZnNldC5jICAgICAgICAgICAgICAgICAgfCAgIDQgKy0KIHRlc3RzL2k5MTUvZ2VtX3BhcnRpYWxf
+cHdyaXRlX3ByZWFkLmMgICAgICAgICB8ICA0MCArLQogdGVzdHMvaTkxNS9nZW1fcHBndHQuYyAg
+ICAgICAgICAgICAgICAgICAgICAgIHwgIDU3ICstCiB0ZXN0cy9pOTE1L2dlbV9yZW5kZXJfY29w
+eS5jICAgICAgICAgICAgICAgICAgfCAgMzEgKy0KIHRlc3RzL2k5MTUvZ2VtX3JlbmRlcl9jb3B5
+X3JlZHV4LmMgICAgICAgICAgICB8ICAyNCArLQogdGVzdHMvaTkxNS9nZW1fc29mdHBpbi5jICAg
+ICAgICAgICAgICAgICAgICAgIHwgIDk3ICsrCiB0ZXN0cy9pOTE1L3BlcmYuYyAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgfCAgIDkgKwogdGVzdHMva21zX2JpZ19mYi5jICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIHwgIDEyICstCiB0ZXN0cy9tZXNvbi5idWlsZCAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgfCAgIDEgKwogMzUgZmlsZXMgY2hhbmdlZCwgNDY2OCBpbnNlcnRpb25z
+KCspLCA0NTUgZGVsZXRpb25zKC0pCiBjcmVhdGUgbW9kZSAxMDA2NDQgbGliL2lndF9tYXAuYwog
+Y3JlYXRlIG1vZGUgMTAwNjQ0IGxpYi9pZ3RfbWFwLmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBsaWIv
+aW50ZWxfYWxsb2NhdG9yLmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBsaWIvaW50ZWxfYWxsb2NhdG9y
+LmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBsaWIvaW50ZWxfYWxsb2NhdG9yX21zZ2NoYW5uZWwuYwog
+Y3JlYXRlIG1vZGUgMTAwNjQ0IGxpYi9pbnRlbF9hbGxvY2F0b3JfbXNnY2hhbm5lbC5oCiBjcmVh
+dGUgbW9kZSAxMDA2NDQgbGliL2ludGVsX2FsbG9jYXRvcl9yYW5kb20uYwogY3JlYXRlIG1vZGUg
+MTAwNjQ0IGxpYi9pbnRlbF9hbGxvY2F0b3Jfc2ltcGxlLmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCB0
+ZXN0cy9pOTE1L2FwaV9pbnRlbF9hbGxvY2F0b3IuYwoKLS0gCjIuMjYuMAoKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QK
+aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
