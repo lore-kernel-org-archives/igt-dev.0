@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-CY1-obe.outbound.protection.outlook.com
- (mail-eopbgr760078.outbound.protection.outlook.com [40.107.76.78])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 70D0F6E123
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Jan 2021 16:43:43 +0000 (UTC)
-From: "Kim, Sung joon" <Sungjoon.Kim@amd.com>
-Date: Thu, 14 Jan 2021 16:43:40 +0000
-Message-ID: <MN2PR12MB3054AEFE0CA1D96BABAF28E797A80@MN2PR12MB3054.namprd12.prod.outlook.com>
-References: <20210112225400.115515-1-sungkim@amd.com>
- <4bd36d90-e3fe-0d52-be42-23ebcb320c37@amd.com>
-In-Reply-To: <4bd36d90-e3fe-0d52-be42-23ebcb320c37@amd.com>
-Content-Language: en-US
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0516F6E041
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Jan 2021 09:53:08 +0000 (UTC)
+Date: Fri, 15 Jan 2021 10:53:03 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210115095303.GA15527@zkempczy-mobl2>
+References: <20210114122233.32906-1-zbigniew.kempczynski@intel.com>
+ <20210114122233.32906-5-zbigniew.kempczynski@intel.com>
+ <161063977384.19482.3479422818997716324@build.alporthouse.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 1/3] lib: Add stride and size calculation for
- amdgpu + tiling
+Content-Disposition: inline
+In-Reply-To: <161063977384.19482.3479422818997716324@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v14 04/33] lib/igt_core: Track child
+ process pid and tid
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,109 +20,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Kazlauskas, Nicholas" <Nicholas.Kazlauskas@amd.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[AMD Official Use Only - Internal Distribution Only]
-
-On 2021-01-12 5:53 p.m., Sung Joon Kim wrote:
-> For amdgpu, we need to calculate the stride and size of framebuffer 
-> correctly during non-linear tiling mode
-> 
-> v2: add call to amdgpu tiling/swizzle addressing
-> Signed-off-by: Sung Joon Kim <sungkim@amd.com>
-> ---
->   lib/igt_fb.c | 24 +++++++++++++++++++++++-
->   1 file changed, 23 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c index 4b9be47e..6eebe048 
-> 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -671,6 +671,11 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
->   		 * so the easiest way is to align the luma stride to 256.
->   		 */
->   		return ALIGN(min_stride, 256);
-> +	}else if (fb->modifier != LOCAL_DRM_FORMAT_MOD_NONE && is_amdgpu_device(fb->fd)) {
-> +		/*
-> +		 * For amdgpu device with tiling mode
-> +		 */
-> +		return ALIGN(min_stride, 512);
->   	} else if (is_gen12_ccs_cc_plane(fb, plane)) {
->   		/* clear color always fixed to 64 bytes */
->   		return 64;
-> @@ -711,6 +716,12 @@ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
->   		size = roundup_power_of_two(size);
->   
->   		return size;
-> +	} else if (fb->modifier != LOCAL_DRM_FORMAT_MOD_NONE && is_amdgpu_device(fb->fd)) {
-> +		/*
-> +		 * For amdgpu device with tiling mode
-> +		 */
-> +		return (uint64_t) fb->strides[plane] *
-> +			ALIGN(fb->plane_height[plane], 512);
->   	} else if (is_gen12_ccs_plane(fb, plane)) {
->   		/* The AUX CCS surface must be page aligned */
->   		return (uint64_t)fb->strides[plane] * @@ -2352,6 +2363,13 @@ 
-> static void free_linear_mapping(struct fb_blit_upload *blit)
->   
->   		vc4_fb_convert_plane_to_tiled(fb, map, &linear->fb, &linear->map);
->   
-> +		munmap(map, fb->size);
-> +	} else if (is_amdgpu_device(fd) && fb->modifier != 0) {
-> +		void *map = igt_amd_mmap_bo(fd, fb->gem_handle, fb->size, 
-> +PROT_WRITE);
-> +
-> +		igt_amd_fb_convert_plane_to_tiled(fb, map, &linear->fb, 
-> +linear->map);
-
-Hi Nicholas,
-
-The definition of that function should be in igt_amd.c which is shown in [PATCH 3/3].
-
-Thanks,
-Joon
-
-Are you missing a patch in the series?
-
-I don't see the definition for igt_amd_fb_convert_plane_to_tiled() anywhere.
-
-Regards,
-Nicholas Kazlauskas
-
-> +
-> +		munmap(linear->map, fb->size);
->   		munmap(map, fb->size);
->   	} else {
->   		gem_munmap(linear->map, linear->fb.size); @@ -2419,6 +2437,10 @@ 
-> static void setup_linear_mapping(struct fb_blit_upload *blit)
->   		vc4_fb_convert_plane_from_tiled(&linear->fb, &linear->map, fb, 
-> map);
->   
->   		munmap(map, fb->size);
-> +	} else if (is_amdgpu_device(fd) && fb->modifier != 0) {
-> +		linear->map = igt_amd_mmap_bo(fd, linear->fb.gem_handle,
-> +					      linear->fb.size,
-> +					      PROT_READ | PROT_WRITE);
->   	} else {
->   		/* Copy fb content to linear BO */
->   		gem_set_domain(fd, linear->fb.gem_handle, @@ -3625,7 +3647,7 @@ 
-> cairo_surface_t *igt_get_cairo_surface(int fd, struct igt_fb *fb)
->   		if (use_convert(fb))
->   			create_cairo_surface__convert(fd, fb);
->   		else if (use_blitter(fb) || use_enginecopy(fb) ||
-> -			 igt_vc4_is_tiled(fb->modifier))
-> +			 igt_vc4_is_tiled(fb->modifier) || (is_amdgpu_device(fd) && 
-> +fb->modifier != 0))
->   			create_cairo_surface__gpu(fd, fb);
->   		else
->   			create_cairo_surface__gtt(fd, fb);
-> 
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gVGh1LCBKYW4gMTQsIDIwMjEgYXQgMDM6NTY6MTNQTSArMDAwMCwgQ2hyaXMgV2lsc29uIHdy
+b3RlOgo+IFF1b3RpbmcgWmJpZ25pZXcgS2VtcGN6ecWEc2tpICgyMDIxLTAxLTE0IDEyOjIyOjA0
+KQo+ID4gSW50cm9kdWNlIHZhcmlhYmxlcyB3aGljaCBjYW4gZGVjcmVhc2UgbnVtYmVyIG9mIGdl
+dHBpZCgpL2dldHRpZCgpCj4gPiBjYWxscywgZXNwZWNpYWxseSBmb3IgYWxsb2NhdG9yIHdoaWNo
+IG11c3QgYmUgYXdhcmUgb2YgbWV0aG9kCj4gPiBhY3F1aXJpbmcgYWRkcmVzc2VzLgo+ID4gCj4g
+PiBXaGVuIGNoaWxkIGlzIHNwYXduZWQgdXNpbmcgaWd0X2ZvcmsoKSB3ZSBjYW4gY29udHJvbCBp
+dHMgaW5pdGlhbGl6YXRpb24KPiA+IGFuZCBwcmVwYXJlIGNoaWxkX3BpZCBpbXBsaWNpdGx5LiBU
+cmFja2luZyBjaGlsZF90aWQgcmVxdWlyZXMgb3VyCj4gPiBpbnRlcnZlbnRpb24gaW4gdGhlIGNv
+ZGUgYW5kIGRvIHNvbWV0aGluZyBsaWtlIHRoaXM6Cj4gPiAKPiA+IGlmIChjaGlsZF90aWQgPT0g
+LTEpCj4gPiAgICAgICAgIGNoaWxkX3RpZCA9IGdldHRpZCgpCj4gPiAKPiA+IFZhcmlhYmxlIHdh
+cyBjcmVhdGVkIGZvciB1c2luZyBpbiBUTFMgc28gZWFjaCB0aHJlYWQgaXMgY3JlYXRlZAo+ID4g
+d2l0aCB2YXJpYWJsZSBzZXQgdG8gLTEuIFRoaXMgd2lsbCBnaXZlIGVhY2ggdGhyZWFkIGl0J3Mg
+b3duICJjb3B5Igo+ID4gYW5kIHRoZXJlJ3Mgbm8gcmlzayB0byB1c2Ugb3RoZXIgdGhyZWFkIHRp
+ZC4gRm9yIGVhY2ggZm9ya2VkIGNoaWxkCj4gPiB3ZSByZWFzc2lnbiAtMSB0byBjaGlsZF90aWQg
+dG8gYXZvaWQgdXNpbmcgYWxyZWFkeSBzZXQgdmFyaWFibGUuCj4gPiAKPiA+IFNpZ25lZC1vZmYt
+Ynk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29t
+Pgo+ID4gQ2M6IERvbWluaWsgR3J6ZWdvcnplayA8ZG9taW5pay5ncnplZ29yemVrQGludGVsLmNv
+bT4KPiA+IENjOiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KPiA+IENj
+OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4KPiA+IEFja2VkLWJ5OiBB
+cmp1biBNZWxrYXZlcmkgPGFyanVuLm1lbGthdmVyaUBpbnRlbC5jb20+Cj4gPiAtLS0KPiA+ICBs
+aWIvaWd0X2NvcmUuYyB8IDcgKysrKysrKwo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA3IGluc2VydGlv
+bnMoKykKPiA+IAo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfY29yZS5jIGIvbGliL2lndF9jb3Jl
+LmMKPiA+IGluZGV4IDczOWUzZWZhYi4uY2U3ZTI3YjYyIDEwMDY0NAo+ID4gLS0tIGEvbGliL2ln
+dF9jb3JlLmMKPiA+ICsrKyBiL2xpYi9pZ3RfY29yZS5jCj4gPiBAQCAtNTgsNiArNTgsNyBAQAo+
+ID4gICNpbmNsdWRlIDxnbGliLmg+Cj4gPiAgCj4gPiAgI2luY2x1ZGUgImRybXRlc3QuaCIKPiA+
+ICsjaW5jbHVkZSAiaW50ZWxfYWxsb2NhdG9yLmgiCj4gPiAgI2luY2x1ZGUgImludGVsX2NoaXBz
+ZXQuaCIKPiA+ICAjaW5jbHVkZSAiaW50ZWxfaW8uaCIKPiA+ICAjaW5jbHVkZSAiaWd0X2RlYnVn
+ZnMuaCIKPiA+IEBAIC0zMDYsNiArMzA3LDEwIEBAIGludCBudW1fdGVzdF9jaGlsZHJlbjsKPiA+
+ICBpbnQgdGVzdF9jaGlsZHJlbl9zejsKPiA+ICBib29sIHRlc3RfY2hpbGQ7Cj4gPiAgCj4gPiAr
+LyogRm9yIGFsbG9jYXRvciBwdXJwb3NlcyAqLwo+ID4gK3BpZF90IGNoaWxkX3BpZCAgPSAtMTsK
+PiA+ICtfX3RocmVhZCBwaWRfdCBjaGlsZF90aWQgID0gLTE7Cj4gPiArCj4gPiAgZW51bSB7Cj4g
+PiAgICAgICAgIC8qCj4gPiAgICAgICAgICAqIExldCB0aGUgZmlyc3QgdmFsdWVzIGJlIHVzZWQg
+YnkgaW5kaXZpZHVhbCB0ZXN0cyBzbyBvcHRpb25zIGRvbid0Cj4gPiBAQCAtMjMwMyw2ICsyMzA4
+LDggQEAgYm9vbCBfX2lndF9mb3JrKHZvaWQpCj4gPiAgICAgICAgIGNhc2UgMDoKPiA+ICAgICAg
+ICAgICAgICAgICB0ZXN0X2NoaWxkID0gdHJ1ZTsKPiA+ICAgICAgICAgICAgICAgICBwdGhyZWFk
+X211dGV4X2luaXQoJnByaW50X211dGV4LCBOVUxMKTsKPiA+ICsgICAgICAgICAgICAgICBjaGls
+ZF9waWQgPSBnZXRwaWQoKTsKPiA+ICsgICAgICAgICAgICAgICBjaGlsZF90aWQgPSAtMTsKPiA+
+ICAgICAgICAgICAgICAgICBleGl0X2hhbmRsZXJfY291bnQgPSAwOwo+ID4gICAgICAgICAgICAg
+ICAgIHJlc2V0X2hlbHBlcl9wcm9jZXNzX2xpc3QoKTsKPiA+ICAgICAgICAgICAgICAgICBvb21f
+YWRqdXN0X2Zvcl9kb29tKCk7Cj4gCj4gV2hlcmUncyB0aGUgdXNlcj8gV2h5IGlzIGl0IG9ubHkg
+cGFydGlhbGx5IGV4cG9ydGVkPyBXaGF0J3MgdGhlIGluY2x1ZGUKPiBmb3I/CgpBZ3JlZSwgaW5j
+bHVkZSBpcyBub3QgdmFsaWQgaGVyZS4gCgo+IAo+IFNob3VsZCB3ZSBhbHNvIGJlIHB1bGxpbmcg
+aW4gZ2V0dGlkIGZyb20gZ2xpYmMtMi4zMD8KCklHVCdzIGFscmVhZHkgaGF2ZSB0aGlzIG1pc3Np
+bmcgc3lzY2FsbCBkZWZpbmVkIGluIGlndF9hdXguaC4gV2hhdCB5b3UKbWVhbiB3ZSBoYXZlIHB1
+bGwgaW4gZ2V0dGlkIGZyb20gZ2xpYmM/Cgo+IAo+IEkgcHJlc3VtZSB5b3UgaGF2ZSBzb21lIG1p
+Y3JvYmVuY2htYXJrcyB0aGF0IHJlZmxlY3QgdGhlIGltcG9ydGFuY2Ugb2YKPiBzdWNoIGNhY2hp
+bmc/IEFsdGhvdWdoIEkgY2FuIGJlIGNvbnZpbmNlZCBieSBhbiBhcmd1bWVudCB0aGF0IGl0IG1h
+a2VzCj4gc3RyYWNlIHNhbmUuCj4gLUNocmlzCgpJIGhhdmVuJ3QgZG9uZSBiZW5jaG1hcmtzIGhl
+cmUuIEkgZG9uJ3R0IHdhbnQgdG8gYXNrIGtlcm5lbCBlYWNoIHRpbWUgCmFib3V0IHByb2Nlc3Mg
+aWQgYmVjYXVzZSBhcyB5b3UndmUgbWVudGlvbmVkIHN0cmFjZSBsb29rcyBzbGljZWQgd2l0aCAK
+Z2V0cGlkKCkgY2FsbHMuIFdlJ3JlIHVzaW5nIElHVCBmcmFtZXdvcmsgZm9yIGRvaW5nIGZvcmsg
+KGlndF9mb3JrKCkpCnNvIHRoZXJlJ3MgZ29vZCBwbGFjZSB0byBnZXQgdGhhdCBnbG9iYWwgaW5m
+b3JtYXRpb24gb25jZS4gQWxsb2NhdG9yCmNvZGUgd2FzIGRlc2lnbmVkIHRvIHN1cHBvcnQgdGhy
+ZWFkcyAvIHByb2Nlc3NlcyBzbyB0aGVzZSB2YXJpYWJsZXMKcGxheXMgbWFpbiByb2xlIGluIHRo
+ZSBkZXNpZ24uIAoKLS0KWmJpZ25pZXcKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVz
+a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9p
+Z3QtZGV2Cg==
