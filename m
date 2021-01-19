@@ -1,16 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEDA36E03A
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Jan 2021 19:15:41 +0000 (UTC)
-Date: Tue, 19 Jan 2021 21:15:37 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <YAcv2boUKmPbVCFl@intel.com>
-References: <20210119141712.24980-1-bhanuprakash.modem@intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue, 19 Jan 2021 23:17:29 +0000
+Message-Id: <20210119231729.751316-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210119141712.24980-1-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_vrr: Update condition checks
- for flipline test
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_parallel: Launch 1s worth of
+ threads
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,223 +12,202 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jan 19, 2021 at 07:47:12PM +0530, Bhanuprakash Modem wrote:
-> This patch includes below updates
-> * For Flipline test: if refresh_rate <=3D Vrr_min then
-> 	- Expected returned refresh rate would be vrr_max
-> 	- At least 35% of the flips should be in threshold
-> * Update "igt_display_commit_atomic" with "igt_display_commit2"
-> * Add few debug prints
+Let's not assume that the thread execution is instantaneous, but apply a
+time limit as well as a maximum number so that the test should always run
+in bounded time.
 
-Some ideas I had for a vrr test:
-- test flipping at a few different rates
-- make sure the interval between flip timestamps
-  matches the expected rate
-- otherwise confirm the timestamps are sensible. Not quite sure what the
-  best way would be. One idea was to just make sure the timestamp points
-  to more or less the correct point in time. Another idea was to drive
-  the whole loop baed on the timestamps + target refresh rate (ie. wait
-  for event, schedule next flip for event timestamps + whatever time we
-  have left to reach the exected refresh rate). This latter idea I think
-  would catch bugs where the interval between timestamps is correct but
-  the absolute times are not correct (eg. if the timestamps are
-  miscorrected to point fr into the future based on the max vblank
-  length, or too close into the future based on min vblank length).
-- the busy loop thing I don't think should be needed. Sure, there is
-  some wakeup latency due to C-states and whatnot, but it should be
-  possible to compensate to make sure we reach the target refresh rate
-  w/o spinning.
+Also limit each thread to submitting only two pieces of outstanding work,
+to minimise over-saturation. We use two alternating batches as a generic
+way of tracking their fences.
 
-> =
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/i915/gem_exec_parallel.c | 60 +++++++++++++++++++++++-----------
+ 1 file changed, 41 insertions(+), 19 deletions(-)
 
-> V2:
-> * Rebase
-> =
+diff --git a/tests/i915/gem_exec_parallel.c b/tests/i915/gem_exec_parallel.c
+index d3dd06a65..9cb299733 100644
+--- a/tests/i915/gem_exec_parallel.c
++++ b/tests/i915/gem_exec_parallel.c
+@@ -48,6 +48,7 @@ static inline uint32_t hash32(uint32_t val)
+ #define USERPTR 0x4
+ 
+ #define NUMOBJ 16
++#define MAXTHREADS 4096
+ 
+ struct thread {
+ 	pthread_t thread;
+@@ -64,15 +65,15 @@ struct thread {
+ static void *thread(void *data)
+ {
+ 	struct thread *t = data;
+-	struct drm_i915_gem_exec_object2 obj[2];
+-	struct drm_i915_gem_relocation_entry reloc;
++	struct drm_i915_gem_exec_object2 obj[2], tmp;
++	struct drm_i915_gem_relocation_entry reloc[2];
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	uint32_t batch[16];
+ 	uint16_t used;
+ 	int fd, i;
+ 
+ 	pthread_mutex_lock(t->mutex);
+-	while (*t->go == 0)
++	while (READ_ONCE(*t->go) == 0)
+ 		pthread_cond_wait(t->cond, t->mutex);
+ 	pthread_mutex_unlock(t->mutex);
+ 
+@@ -101,18 +102,25 @@ static void *thread(void *data)
+ 	memset(obj, 0, sizeof(obj));
+ 	obj[0].flags = EXEC_OBJECT_WRITE;
+ 
+-	memset(&reloc, 0, sizeof(reloc));
+-	reloc.offset = sizeof(uint32_t);
++	memset(reloc, 0, sizeof(reloc));
++	reloc[0].offset = sizeof(uint32_t);
+ 	if (t->gen < 8 && t->gen >= 4)
+-		reloc.offset += sizeof(uint32_t);
+-	reloc.read_domains = I915_GEM_DOMAIN_INSTRUCTION;
+-	reloc.write_domain = I915_GEM_DOMAIN_INSTRUCTION;
+-	reloc.delta = 4*t->id;
++		reloc[0].offset += sizeof(uint32_t);
++	reloc[0].read_domains = I915_GEM_DOMAIN_INSTRUCTION;
++	reloc[0].write_domain = I915_GEM_DOMAIN_INSTRUCTION;
++	reloc[0].delta = 4*t->id;
++	reloc[1] = reloc[0];
++
+ 	obj[1].handle = gem_create(fd, 4096);
+-	obj[1].relocs_ptr = to_user_pointer(&reloc);
++	obj[1].relocs_ptr = to_user_pointer(&reloc[0]);
+ 	obj[1].relocation_count = 1;
+ 	gem_write(fd, obj[1].handle, 0, batch, sizeof(batch));
+ 
++	tmp.handle = gem_create(fd, 4096);
++	tmp.relocs_ptr = to_user_pointer(&reloc[1]);
++	tmp.relocation_count = 1;
++	gem_write(fd, tmp.handle, 0, batch, sizeof(batch));
++
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(obj);
+ 	execbuf.buffer_count = 2;
+@@ -129,6 +137,8 @@ static void *thread(void *data)
+ 	igt_until_timeout(1) {
+ 		unsigned int x = rand() % NUMOBJ;
+ 
++		igt_swap(obj[1], tmp);
++
+ 		used |= 1u << x;
+ 		obj[0].handle = t->scratch[x];
+ 
+@@ -139,10 +149,13 @@ static void *thread(void *data)
+ 
+ 		if (t->flags & FDS)
+ 			gem_close(fd, obj[0].handle);
++
++		gem_sync(fd, tmp.handle);
+ 	}
+ 
+ 	if (t->flags & CONTEXTS)
+ 		gem_context_destroy(fd, execbuf.rsvd1);
++	gem_close(fd, tmp.handle);
+ 	gem_close(fd, obj[1].handle);
+ 	if (t->flags & FDS)
+ 		close(fd);
+@@ -153,7 +166,7 @@ static void *thread(void *data)
+ 
+ static void check_bo(int fd, uint32_t handle, int pass, struct thread *threads)
+ {
+-	uint32_t x = hash32(handle * pass) % 1024;
++	uint32_t x = hash32(handle * pass) % MAXTHREADS;
+ 	uint32_t result;
+ 
+ 	if (!(threads[x].used & (1 << pass)))
+@@ -167,18 +180,20 @@ static void check_bo(int fd, uint32_t handle, int pass, struct thread *threads)
+ 
+ static uint32_t handle_create(int fd, unsigned int flags, void **data)
+ {
++	unsigned int size = MAXTHREADS * sizeof(uint32_t);
++
+ 	if (flags & USERPTR) {
+ 		uint32_t handle;
+ 		void *ptr;
+ 
+-		posix_memalign(&ptr, 4096, 4096);
+-		gem_userptr(fd, ptr, 4096, 0, 0, &handle);
++		posix_memalign(&ptr, 4096, size);
++		gem_userptr(fd, ptr, size, 0, 0, &handle);
+ 		*data = ptr;
+ 
+ 		return handle;
+ 	}
+ 
+-	return gem_create(fd, 4096);
++	return gem_create(fd, size);
+ }
+ 
+ static void handle_close(int fd, unsigned int flags, uint32_t handle, void *data)
+@@ -197,7 +212,9 @@ static void all(int fd, struct intel_execution_engine2 *engine, unsigned flags)
+ 	struct thread *threads;
+ 	pthread_mutex_t mutex;
+ 	pthread_cond_t cond;
++	struct timespec tv;
+ 	void *arg[NUMOBJ];
++	int count;
+ 	int go;
+ 	int i;
+ 
+@@ -227,7 +244,7 @@ static void all(int fd, struct intel_execution_engine2 *engine, unsigned flags)
+ 			scratch[i] = gem_flink(fd, handle[i]);
+ 	}
+ 
+-	threads = calloc(1024, sizeof(struct thread));
++	threads = calloc(MAXTHREADS, sizeof(struct thread));
+ 	igt_assert(threads);
+ 
+ 	intel_detect_and_clear_missed_interrupts(fd);
+@@ -235,7 +252,8 @@ static void all(int fd, struct intel_execution_engine2 *engine, unsigned flags)
+ 	pthread_cond_init(&cond, 0);
+ 	go = 0;
+ 
+-	for (i = 0; i < 1024; i++) {
++	memset(&tv, 0, sizeof(tv));
++	for (i = 0; i < MAXTHREADS && !igt_seconds_elapsed(&tv); i++) {
+ 		threads[i].id = i;
+ 		threads[i].fd = fd;
+ 		threads[i].gen = gen;
+@@ -246,15 +264,19 @@ static void all(int fd, struct intel_execution_engine2 *engine, unsigned flags)
+ 		threads[i].cond = &cond;
+ 		threads[i].go = &go;
+ 
+-		pthread_create(&threads[i].thread, 0, thread, &threads[i]);
++		if (pthread_create(&threads[i].thread, 0, thread, &threads[i]))
++			break;
+ 	}
++	count = i;
++	igt_info("Launched %d threads\n", count);
++	igt_require(count);
+ 
+ 	pthread_mutex_lock(&mutex);
+-	go = 1024;
++	WRITE_ONCE(go, count);
+ 	pthread_cond_broadcast(&cond);
+ 	pthread_mutex_unlock(&mutex);
+ 
+-	for (i = 0; i < 1024; i++)
++	for (i = 0; i < count; i++)
+ 		pthread_join(threads[i].thread, NULL);
+ 
+ 	for (i = 0; i < NUMOBJ; i++) {
+-- 
+2.30.0
 
-> Cc: Manasi Navare <manasi.d.navare@intel.com>
-> Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  tests/kms_vrr.c | 51 ++++++++++++++++++++-----------------------------
->  1 file changed, 21 insertions(+), 30 deletions(-)
-> =
-
-> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-> index beb06854f..e6edd131f 100644
-> --- a/tests/kms_vrr.c
-> +++ b/tests/kms_vrr.c
-> @@ -170,7 +170,7 @@ static void set_vrr_on_pipe(data_t *data, enum pipe p=
-ipe, bool enabled)
->  {
->  	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED,
->  				enabled);
-> -	igt_display_commit_atomic(&data->display, 0, NULL);
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
->  }
-> =
-
->  /* Prepare the display for testing on the given pipe. */
-> @@ -208,8 +208,7 @@ static void prepare_test(data_t *data, igt_output_t *=
-output, enum pipe pipe)
->  	 */
->  	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, 0);
-> =
-
-> -	igt_display_commit_atomic(&data->display,
-> -				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
->  }
-> =
-
->  /* Waits for the vblank interval. Returns the vblank timestamp in ns. */
-> @@ -291,14 +290,10 @@ flip_and_measure(data_t *data, igt_output_t *output=
-, enum pipe pipe,
->  		 * difference between 144Hz and 143Hz which should give this
->  		 * enough accuracy for most use cases.
->  		 */
-> -		if (rate_ns <=3D vtest_ns.min && rate_ns >=3D vtest_ns.max)
-> +		if ((rate_ns < vtest_ns.min) && (rate_ns >=3D vtest_ns.max))
->  			diff_ns =3D rate_ns;
-> -		else if (rate_ns > vtest_ns.min)
-> -			diff_ns =3D vtest_ns.min;
-> -		else if (rate_ns < vtest_ns.max)
-> -			diff_ns =3D vtest_ns.max;
->  		else
-> -			diff_ns =3D rate_ns;
-> +			diff_ns =3D vtest_ns.max;
->  		diff_ns -=3D event_ns - last_event_ns;
-> =
-
->  		if (llabs(diff_ns) < 50000ll)
-> @@ -323,8 +318,8 @@ flip_and_measure(data_t *data, igt_output_t *output, =
-enum pipe pipe,
->  		while (get_time_ns() < target_ns);
->  	}
-> =
-
-> -	igt_info("Completed %u flips, %u were in threshold for %"PRIu64"ns.\n",
-> -		 total_flip, total_pass, rate_ns);
-> +	igt_info("Completed %u flips, %u were in threshold for (%llu Hz) %"PRIu=
-64"ns.\n",
-> +		 total_flip, total_pass, (NSECS_PER_SEC/rate_ns), rate_ns);
-> =
-
->  	return total_flip ? ((total_pass * 100) / total_flip) : 0;
->  }
-> @@ -338,8 +333,8 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t=
- *output, uint32_t flags)
->  	range_t range =3D get_vrr_range(data, output);
->  	uint64_t rate =3D vtest_ns.mid;
-> =
-
-> -	igt_info("VRR Test execution on %s, PIPE_%s\n",
-> -		 output->name, kmstest_pipe_name(pipe));
-> +	igt_info("VRR Test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\=
-n",
-> +		 output->name, kmstest_pipe_name(pipe), range.min, range.max);
-> =
-
->  	prepare_test(data, output, pipe);
-> =
-
-> @@ -370,46 +365,42 @@ test_basic(data_t *data, enum pipe pipe, igt_output=
-_t *output, uint32_t flags)
->  	 * decision boundary.
->  	 *
->  	 * Example: if range is 40 - 60Hz and
-> -	 * if refresh_rate > 60Hz:
-> +	 * if refresh_rate > 60Hz or <=3D 40Hz:
->  	 *      Flip should happen at the flipline boundary & returned refresh =
-rate
->  	 *      would be 60Hz.
->  	 * if refresh_rate is 50Hz:
->  	 *      Flip will happen right away so returned refresh rate is 50Hz.
-> -	 * if refresh_rate < 40Hz:
-> -	 *      Flip should happen at the vmax so the returned refresh rate
-> -	 *      would be 40Hz.
->  	 */
->  	if (flags & TEST_FLIPLINE) {
-> -		rate =3D rate_from_refresh(range.min - 5);
-> +		rate =3D rate_from_refresh(range.max + 5);
->  		result =3D flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS=
-);
->  		igt_assert_f(result > 75,
-> -			     "Refresh rate %"PRIu64"ns: Target VRR on threshold not reached, =
-result was %u%%\n",
-> -			     rate, result);
-> +			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not r=
-eached, result was %u%%\n",
-> +			     (range.max + 5), rate, result);
-> =
-
-> -		rate =3D rate_from_refresh(range.max + 5);
-> +		rate =3D rate_from_refresh(range.min - 5);
->  		result =3D flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS=
-);
-> -		igt_assert_f(result > 75,
-> -			     "Refresh rate %"PRIu64"ns: Target VRR on threshold not reached, =
-result was %u%%\n",
-> -			     rate, result);
-> +		igt_assert_f(result > 35,
-> +			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not r=
-eached, result was %u%%\n",
-> +			     (range.min - 5), rate, result);
->  	}
-> =
-
->  	rate =3D vtest_ns.mid;
->  	result =3D flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
->  	igt_assert_f(result > 75,
-> -		     "Refresh rate %"PRIu64"ns: Target VRR on threshold not reached, r=
-esult was %u%%\n",
-> -		     rate, result);
-> +		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not re=
-ached, result was %u%%\n",
-> +		     ((range.max + range.min) / 2), rate, result);
-> =
-
->  	set_vrr_on_pipe(data, pipe, 0);
->  	result =3D flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
->  	igt_assert_f(result < 10,
-> -		     "Refresh rate %"PRIu64"ns: Target VRR off threshold exceeded, res=
-ult was %u%%\n",
-> -		     rate, result);
-> +		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR off threshold excee=
-ded, result was %u%%\n",
-> +		     ((range.max + range.min) / 2), rate, result);
-> =
-
->  	/* Clean-up */
->  	igt_plane_set_fb(data->primary, NULL);
->  	igt_output_set_pipe(output, PIPE_NONE);
-> -	igt_display_commit_atomic(&data->display,
-> -				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> =
-
->  	igt_remove_fb(data->drm_fd, &data->fb1);
->  	igt_remove_fb(data->drm_fd, &data->fb0);
-> --
-> 2.20.1
-> =
-
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
--- =
-
-Ville Syrj=E4l=E4
-Intel
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
