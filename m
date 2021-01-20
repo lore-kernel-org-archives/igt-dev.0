@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E0BF6E141
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Jan 2021 09:52:15 +0000 (UTC)
-From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
-Date: Wed, 20 Jan 2021 15:22:37 +0530
-Message-Id: <20210120095237.1104339-1-arundhati.hagaragi@intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Wed, 20 Jan 2021 10:38:36 +0000
+Message-Id: <20210120103836.777132-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20210119231729.751316-1-chris@chris-wilson.co.uk>
+References: <20210119231729.751316-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_universal_plane:Added subtest
- description
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_parallel: Launch 1s worth of
+ threads
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,58 +18,201 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: B@freedesktop.org, Gupta@freedesktop.org, S@freedesktop.org, Nidhi1 <nidhi1.gupta@intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added description for all subtests
+Let's not assume that the thread execution is instantaneous, but apply a
+time limit as well as a maximum number so that the test should always run
+in bounded time.
 
-Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
-Cc: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
-Cc: B S, Karthik <Karthik.B.S@intel.com>
+Also limit each thread to submitting only two pieces of outstanding work,
+to minimise over-saturation. We use two alternating batches as a generic
+way of tracking their fences.
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/kms_universal_plane.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/i915/gem_exec_parallel.c | 62 +++++++++++++++++++++++-----------
+ 1 file changed, 42 insertions(+), 20 deletions(-)
 
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 46d6d180..f277c13c 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -758,26 +758,32 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 		igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
+diff --git a/tests/i915/gem_exec_parallel.c b/tests/i915/gem_exec_parallel.c
+index d3dd06a65..4f0fbdd02 100644
+--- a/tests/i915/gem_exec_parallel.c
++++ b/tests/i915/gem_exec_parallel.c
+@@ -48,6 +48,7 @@ static inline uint32_t hash32(uint32_t val)
+ #define USERPTR 0x4
+ 
+ #define NUMOBJ 16
++#define MAXTHREADS 4096
+ 
+ struct thread {
+ 	pthread_t thread;
+@@ -64,15 +65,15 @@ struct thread {
+ static void *thread(void *data)
+ {
+ 	struct thread *t = data;
+-	struct drm_i915_gem_exec_object2 obj[2];
+-	struct drm_i915_gem_relocation_entry reloc;
++	struct drm_i915_gem_exec_object2 obj[3];
++	struct drm_i915_gem_relocation_entry reloc[2];
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	uint32_t batch[16];
+ 	uint16_t used;
+ 	int fd, i;
+ 
+ 	pthread_mutex_lock(t->mutex);
+-	while (*t->go == 0)
++	while (READ_ONCE(*t->go) == 0)
+ 		pthread_cond_wait(t->cond, t->mutex);
+ 	pthread_mutex_unlock(t->mutex);
+ 
+@@ -101,21 +102,28 @@ static void *thread(void *data)
+ 	memset(obj, 0, sizeof(obj));
+ 	obj[0].flags = EXEC_OBJECT_WRITE;
+ 
+-	memset(&reloc, 0, sizeof(reloc));
+-	reloc.offset = sizeof(uint32_t);
++	memset(reloc, 0, sizeof(reloc));
++	reloc[0].offset = sizeof(uint32_t);
+ 	if (t->gen < 8 && t->gen >= 4)
+-		reloc.offset += sizeof(uint32_t);
+-	reloc.read_domains = I915_GEM_DOMAIN_INSTRUCTION;
+-	reloc.write_domain = I915_GEM_DOMAIN_INSTRUCTION;
+-	reloc.delta = 4*t->id;
++		reloc[0].offset += sizeof(uint32_t);
++	reloc[0].read_domains = I915_GEM_DOMAIN_INSTRUCTION;
++	reloc[0].write_domain = I915_GEM_DOMAIN_INSTRUCTION;
++	reloc[0].delta = 4*t->id;
++	reloc[1] = reloc[0];
++
+ 	obj[1].handle = gem_create(fd, 4096);
+-	obj[1].relocs_ptr = to_user_pointer(&reloc);
++	obj[1].relocs_ptr = to_user_pointer(&reloc[0]);
+ 	obj[1].relocation_count = 1;
+ 	gem_write(fd, obj[1].handle, 0, batch, sizeof(batch));
+ 
++	obj[2].handle = gem_create(fd, 4096);
++	obj[2].relocs_ptr = to_user_pointer(&reloc[1]);
++	obj[2].relocation_count = 1;
++	gem_write(fd, obj[2].handle, 0, batch, sizeof(batch));
++
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(obj);
+-	execbuf.buffer_count = 2;
++	execbuf.buffer_count = 2; /* NB !ARRAY_SIZE(obj), keep one in reserve */
+ 	execbuf.flags = t->engine;
+ 	execbuf.flags |= I915_EXEC_HANDLE_LUT;
+ 	execbuf.flags |= I915_EXEC_NO_RELOC;
+@@ -129,6 +137,8 @@ static void *thread(void *data)
+ 	igt_until_timeout(1) {
+ 		unsigned int x = rand() % NUMOBJ;
+ 
++		igt_swap(obj[1], obj[2]);
++
+ 		used |= 1u << x;
+ 		obj[0].handle = t->scratch[x];
+ 
+@@ -139,10 +149,13 @@ static void *thread(void *data)
+ 
+ 		if (t->flags & FDS)
+ 			gem_close(fd, obj[0].handle);
++
++		gem_sync(fd, obj[2].handle);
  	}
  
-+	igt_describe("Check the switching between different primary plane fbs with CRTC off");
- 	igt_subtest_f("universal-plane-pipe-%s-functional",
- 		      kmstest_pipe_name(pipe))
- 		for_each_valid_output_on_pipe(&data->display, pipe, output)
- 			functional_test_pipe(data, pipe, output);
+ 	if (t->flags & CONTEXTS)
+ 		gem_context_destroy(fd, execbuf.rsvd1);
++	gem_close(fd, obj[2].handle);
+ 	gem_close(fd, obj[1].handle);
+ 	if (t->flags & FDS)
+ 		close(fd);
+@@ -153,7 +166,7 @@ static void *thread(void *data)
  
-+	igt_describe("Test for scale-up or scale-down using universal plane API without covering CRTC");
- 	igt_subtest_f("universal-plane-pipe-%s-sanity",
- 		      kmstest_pipe_name(pipe))
- 		for_each_valid_output_on_pipe(&data->display, pipe, output)
- 			sanity_test_pipe(data, pipe, output);
+ static void check_bo(int fd, uint32_t handle, int pass, struct thread *threads)
+ {
+-	uint32_t x = hash32(handle * pass) % 1024;
++	uint32_t x = hash32(handle * pass) % MAXTHREADS;
+ 	uint32_t result;
  
-+	igt_describe("Check pageflips while primary plane is disabled before IOCTL or between IOCTL");
-+			" and pageflip execution");
- 	igt_subtest_f("disable-primary-vs-flip-pipe-%s",
- 		      kmstest_pipe_name(pipe))
- 		for_each_valid_output_on_pipe(&data->display, pipe, output)
- 			pageflip_test_pipe(data, pipe, output);
+ 	if (!(threads[x].used & (1 << pass)))
+@@ -167,18 +180,20 @@ static void check_bo(int fd, uint32_t handle, int pass, struct thread *threads)
  
-+	igt_describe("Check for cursor leaks after performing cursor operations");
- 	igt_subtest_f("cursor-fb-leak-pipe-%s",
- 		      kmstest_pipe_name(pipe))
- 		for_each_valid_output_on_pipe(&data->display, pipe, output)
- 			cursor_leak_test_pipe(data, pipe, output);
+ static uint32_t handle_create(int fd, unsigned int flags, void **data)
+ {
++	unsigned int size = MAXTHREADS * sizeof(uint32_t);
++
+ 	if (flags & USERPTR) {
+ 		uint32_t handle;
+ 		void *ptr;
  
-+	igt_describe("Check if pageflip succeeds in windowed setting");
- 	igt_subtest_f("universal-plane-gen9-features-pipe-%s",
- 		      kmstest_pipe_name(pipe))
- 		for_each_valid_output_on_pipe(&data->display, pipe, output)
+-		posix_memalign(&ptr, 4096, 4096);
+-		gem_userptr(fd, ptr, 4096, 0, 0, &handle);
++		posix_memalign(&ptr, 4096, size);
++		gem_userptr(fd, ptr, size, 0, 0, &handle);
+ 		*data = ptr;
+ 
+ 		return handle;
+ 	}
+ 
+-	return gem_create(fd, 4096);
++	return gem_create(fd, size);
+ }
+ 
+ static void handle_close(int fd, unsigned int flags, uint32_t handle, void *data)
+@@ -197,7 +212,9 @@ static void all(int fd, struct intel_execution_engine2 *engine, unsigned flags)
+ 	struct thread *threads;
+ 	pthread_mutex_t mutex;
+ 	pthread_cond_t cond;
++	struct timespec tv;
+ 	void *arg[NUMOBJ];
++	int count;
+ 	int go;
+ 	int i;
+ 
+@@ -227,7 +244,7 @@ static void all(int fd, struct intel_execution_engine2 *engine, unsigned flags)
+ 			scratch[i] = gem_flink(fd, handle[i]);
+ 	}
+ 
+-	threads = calloc(1024, sizeof(struct thread));
++	threads = calloc(MAXTHREADS, sizeof(struct thread));
+ 	igt_assert(threads);
+ 
+ 	intel_detect_and_clear_missed_interrupts(fd);
+@@ -235,7 +252,8 @@ static void all(int fd, struct intel_execution_engine2 *engine, unsigned flags)
+ 	pthread_cond_init(&cond, 0);
+ 	go = 0;
+ 
+-	for (i = 0; i < 1024; i++) {
++	memset(&tv, 0, sizeof(tv));
++	for (i = 0; i < MAXTHREADS && !igt_seconds_elapsed(&tv); i++) {
+ 		threads[i].id = i;
+ 		threads[i].fd = fd;
+ 		threads[i].gen = gen;
+@@ -246,15 +264,19 @@ static void all(int fd, struct intel_execution_engine2 *engine, unsigned flags)
+ 		threads[i].cond = &cond;
+ 		threads[i].go = &go;
+ 
+-		pthread_create(&threads[i].thread, 0, thread, &threads[i]);
++		if (pthread_create(&threads[i].thread, 0, thread, &threads[i]))
++			break;
+ 	}
++	count = i;
++	igt_info("Launched %d threads\n", count);
++	igt_require(count);
+ 
+ 	pthread_mutex_lock(&mutex);
+-	go = 1024;
++	WRITE_ONCE(go, count);
+ 	pthread_cond_broadcast(&cond);
+ 	pthread_mutex_unlock(&mutex);
+ 
+-	for (i = 0; i < 1024; i++)
++	for (i = 0; i < count; i++)
+ 		pthread_join(threads[i].thread, NULL);
+ 
+ 	for (i = 0; i < NUMOBJ; i++) {
 -- 
-2.25.1
+2.30.0
 
 _______________________________________________
 igt-dev mailing list
