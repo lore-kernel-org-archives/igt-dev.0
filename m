@@ -1,60 +1,51 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 20 Jan 2021 11:11:14 +0000
-Message-Id: <20210120111115.846341-1-chris@chris-wilson.co.uk>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 752EB6E16D
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Jan 2021 11:40:40 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
+Date: Wed, 20 Jan 2021 17:11:44 +0530
+Message-Id: <20210120114144.25368-2-jeevan.b@intel.com>
+In-Reply-To: <20210120114144.25368-1-jeevan.b@intel.com>
+References: <20210120114144.25368-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t 1/2] i915/gem_create: Check wrap condition
- for -1
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Subject: [igt-dev] [PATCH i-g-t v4 2/2] HAX remove rotation tests from
+ blacklist
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, matthew.auld@intel.com, Chris Wilson <chris@chris-wilson.co.uk>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Check that we correctly reject an object size that will intentionally
-wrap upon aligning to a page.
-
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/i915/gem_create.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tests/intel-ci/blacklist-pre-merge.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-index bf6531844..432ccdefa 100644
---- a/tests/i915/gem_create.c
-+++ b/tests/i915/gem_create.c
-@@ -79,11 +79,15 @@ static int create_ioctl(int fd, struct drm_i915_gem_create *create)
+diff --git a/tests/intel-ci/blacklist-pre-merge.txt b/tests/intel-ci/blacklist-pre-merge.txt
+index cddb77c1..b46c7d05 100644
+--- a/tests/intel-ci/blacklist-pre-merge.txt
++++ b/tests/intel-ci/blacklist-pre-merge.txt
+@@ -17,7 +17,7 @@
+ #
+ # Data acquired on 2020-02-19 by Martin Peres
+ ###############################################################################
+-igt@kms_rotation_crc@.*
++#igt@kms_rotation_crc@.*
  
- static void invalid_size_test(int fd)
- {
--	struct drm_i915_gem_create create = {
--		.size = 0,
--	};
-+	struct drm_i915_gem_create create = { };
  
-+	create.size = 0; /* zero-sized objects are not allowed */
- 	igt_assert_eq(create_ioctl(fd, &create), -EINVAL);
-+
-+	create.size = -1ull; /* will wrap to 0 on aligning to page */
-+	igt_assert_eq(create_ioctl(fd, &create), -EINVAL);
-+
-+	igt_assert_eq(create.handle, 0);
- }
- 
- /*
+ ###############################################################################
 -- 
-2.30.0
+2.19.1
 
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
