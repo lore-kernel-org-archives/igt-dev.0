@@ -1,19 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E809F6E079
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Jan 2021 10:38:33 +0000 (UTC)
-Date: Thu, 21 Jan 2021 12:38:27 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20210121103827.GP7444@platvala-desk.ger.corp.intel.com>
-References: <20210121095015.12102-1-petri.latvala@intel.com>
- <161122512409.14013.9489989316075729865@emeril.freedesktop.org>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Thu, 21 Jan 2021 10:50:05 +0000
+Message-Id: <20210121105005.963616-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <161122512409.14013.9489989316075729865@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_runner=3A_Introduce_a_way_to_s?=
- =?utf-8?q?top_testing_without_marking_tests_incomplete?=
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_ctx_persistence: Check for
+ accidental banning
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,54 +16,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jan 21, 2021 at 10:32:04AM +0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: series starting with [i-g-t,1/2] runner: Introduce a way to stop testing without marking tests incomplete
-> URL   : https://patchwork.freedesktop.org/series/86131/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from IGT_5962 -> IGTPW_5413
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_5413 absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_5413, please notify your bug team to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5413/index.html
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_5413:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_selftest@live@hangcheck:
->     - fi-snb-2520m:       [PASS][1] -> [INCOMPLETE][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5962/fi-snb-2520m/igt@i915_selftest@live@hangcheck.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5413/fi-snb-2520m/igt@i915_selftest@live@hangcheck.html
+Check that closing many contexts does not cause a ban.
 
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/i915/gem_ctx_persistence.c | 48 ++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-Lakshmi, false positive here.
-
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index 1b7d18525..b51a9fcc7 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -1065,6 +1065,51 @@ static void smoketest(int i915)
+ 	gem_quiescent_gpu(i915);
+ }
+ 
++static void many_contexts(int i915)
++{
++	const struct intel_execution_engine2 *e;
++	igt_spin_t *spin;
++
++	cleanup(i915);
++
++	/*
++	 * Perform many peristent kills from the same client. These should not
++	 * cause the client to be banned, which in turn prevents us from
++	 * creating new contexts, and submitting new execbuf.
++	 */
++
++	spin = igt_spin_new(i915, .flags = IGT_SPIN_NO_PREEMPTION);
++	igt_spin_end(spin);
++
++	igt_until_timeout(30) {
++		__for_each_physical_engine(i915, e) {
++			int64_t timeout = NSEC_PER_SEC;
++			uint32_t ctx;
++
++			ctx = gem_context_clone_with_engines(i915, 0);
++			gem_context_set_persistence(i915, ctx, false);
++
++			igt_spin_reset(spin);
++			spin->execbuf.rsvd1 = ctx;
++			spin->execbuf.flags &= ~63;
++			spin->execbuf.flags |= e->flags;
++			gem_execbuf(i915, &spin->execbuf);
++			gem_context_destroy(i915, ctx);
++
++			igt_assert_eq(gem_wait(i915, spin->handle, &timeout), 0);
++		}
++	}
++
++	/* And check we can still submit to the default context -- no bans! */
++	igt_spin_reset(spin);
++	spin->execbuf.rsvd1 = 0;
++	spin->execbuf.flags &= ~63;
++	gem_execbuf(i915, &spin->execbuf);
++
++	igt_spin_free(i915, spin);
++	gem_quiescent_gpu(i915);
++}
++
+ static void replace_engines(int i915, const struct intel_execution_engine2 *e)
+ {
+ 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 1) = {
+@@ -1398,6 +1443,9 @@ igt_main
+ 			}
+ 		}
+ 
++		igt_subtest("many-contexts")
++			many_contexts(i915);
++
+ 		igt_subtest("smoketest")
+ 			smoketest(i915);
+ 	}
 -- 
-Petri Latvala
+2.30.0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
