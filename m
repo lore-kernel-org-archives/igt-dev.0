@@ -1,180 +1,320 @@
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-Date: Thu, 21 Jan 2021 14:55:56 -0500
-References: <20201209160642.6317-1-anshuman.gupta@intel.com>
-	<20201209160642.6317-3-anshuman.gupta@intel.com>
-	<160753115527.595.15173510320238280650@build.alporthouse.com>
-	<20201209162502.GA6486@intel.com>
-	<160753242185.595.5436148780497590017@build.alporthouse.com>
-	<20201210050247.GA9309@intel.com>
-	<160758613245.595.6370833186215737580@build.alporthouse.com>
-In-Reply-To: <160758613245.595.6370833186215737580@build.alporthouse.com>
-Message-ID: <CABVU7+uTHuEeG2k9dO3fFFc_Fea8OdbMTntF+E4AX+E6X=oTSg@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/6] i915/i915_pm_rpm.c: create PC state
- subtest group
-From: Rodrigo Vivi <rodrigo.vivi@gmail.com>
-Content-Type: multipart/alternative; boundary="000000000000c78c3f05b96e75cc"
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Anshuman Gupta <anshuman.gupta@intel.com>, igt-dev@lists.freedesktop.org
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 21 Jan 2021 20:22:55 -0000
+Message-ID: <161126057568.14013.11310530905422256690@emeril.freedesktop.org>
+References: <20210121183522.26799-1-jeevan.b@intel.com>
+In-Reply-To: <20210121183522.26799-1-jeevan.b@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Frotation=5Fcrc=3A_?=
+ =?utf-8?q?reduce_execution_time?=
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1932126262=="
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Jeevan B <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---000000000000c78c3f05b96e75cc
-Content-Type: text/plain; charset="UTF-8"
+--===============1932126262==
+Content-Type: multipart/alternative;
+ boundary="===============5846498867371978949=="
 
-On Thu, Dec 10, 2020 at 2:42 AM Chris Wilson <chris@chris-wilson.co.uk>
-wrote:
+--===============5846498867371978949==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> Quoting Anshuman Gupta (2020-12-10 05:02:48)
-> > On 2020-12-09 at 16:47:01 +0000, Chris Wilson wrote:
-> > > Quoting Anshuman Gupta (2020-12-09 16:25:02)
-> > > > On 2020-12-09 at 16:25:55 +0000, Chris Wilson wrote:
-> > > > > Quoting Anshuman Gupta (2020-12-09 16:06:38)
-> > > > > > Create a separate igt test group and move package C
-> > > > > > state in to this subgroup.
-> > > > > > Run powertop --auto-tune to tune SOC power configuration
-> > > > > > for package C state tests.
-> > > > > >
-> > > > > > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> > > > > > ---
-> > > > > >  tests/i915/i915_pm_rpm.c | 35
-> +++++++++++++++++++++++++++++++----
-> > > > > >  1 file changed, 31 insertions(+), 4 deletions(-)
-> > > > > >
-> > > > > > diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-> > > > > > index af55b569..42bc44d9 100644
-> > > > > > --- a/tests/i915/i915_pm_rpm.c
-> > > > > > +++ b/tests/i915/i915_pm_rpm.c
-> > > > > > @@ -832,6 +832,25 @@ static void basic_subtest(void)
-> > > > > >         /* XXX Also we can test wake up via exec nop */
-> > > > > >  }
-> > > > > >
-> > > > > > +static bool setup_powertop(void)
-> > > > > > +{
-> > > > > > +       FILE *fp;
-> > > > > > +       char tmp[512];
-> > > > > > +
-> > > > > > +       fp = popen("powertop --auto-tune", "r");
-> > > > >
-> > > > > Doesn't this defeat the point of having it work out of the box?
-> > May be misunderstood your comment, is it PC state or powertop should work
-> > out of box ?
->
-> Powermanagement should not require the user to configure it before it
-> can work.
->
-> powertop in particular may tweak the gfx, which is verboten.
->
-> Manually perform any configuration you think is required, and warn if the
-> initial configuration does not support reaching the lowest pc state the
-> system can. File bugs.
->
+== Series Details ==
 
-I understand why Anshuman did this. There are many many components
-out there that are blocking the PC10 and this powertop --auto-tune
-is trying to take care of all the corner cases to get the "best" of all the
-components so we can try to garantee that we are not getting blocked by
-other components.
+Series: series starting with [i-g-t,1/2] tests/kms_rotation_crc: reduce execution time
+URL   : https://patchwork.freedesktop.org/series/86150/
+State : failure
 
-However this is very very dangerous. It toggles a lot of unsafe and
-untested cases.
+== Summary ==
 
-I have lost a laptop right after a powertop --auto-tune and have never used
-that
-in my life again. Coincidence? Maybe... but I don't want to take the risk
-in my
-machine and I definitely cannot recommend its use.
+CI Bug Log - changes from CI_DRM_9663 -> IGTPW_5416
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_5416 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_5416, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_5416:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-byt-j1900:       [PASS][1] -> [DMESG-WARN][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9663/fi-byt-j1900/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-byt-j1900/igt@i915_selftest@live@hangcheck.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5416 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_tiled_blits@basic:
+    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([i915#402]) +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9663/fi-tgl-y/igt@gem_tiled_blits@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-tgl-y/igt@gem_tiled_blits@basic.html
+
+  * igt@i915_selftest@live@active:
+    - fi-kbl-7500u:       [PASS][5] -> [DMESG-FAIL][6] ([i915#2291] / [i915#666])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9663/fi-kbl-7500u/igt@i915_selftest@live@active.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-kbl-7500u/igt@i915_selftest@live@active.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-tgl-y:           [PASS][7] -> [INCOMPLETE][8] ([i915#2601])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9663/fi-tgl-y/igt@i915_selftest@live@gt_heartbeat.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-tgl-y/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - fi-snb-2600:        NOTRUN -> [SKIP][9] ([fdo#109271]) +30 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-snb-2600/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_chamelium@hdmi-crc-fast:
+    - fi-snb-2600:        NOTRUN -> [SKIP][10] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-snb-2600/igt@kms_chamelium@hdmi-crc-fast.html
+
+  * igt@runner@aborted:
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][11] ([i915#1602] / [i915#2029] / [i915#2369])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-bdw-5557u/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-snb-2600:        [DMESG-WARN][12] ([i915#2772]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9663/fi-snb-2600/igt@gem_exec_suspend@basic-s3.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-snb-2600/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - {fi-tgl-dsi}:       [DMESG-FAIL][14] ([i915#2601]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9663/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-kbl-7500u:       [FAIL][16] ([i915#1161] / [i915#262]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9663/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+
+  * igt@prime_self_import@basic-with_two_bos:
+    - fi-tgl-y:           [DMESG-WARN][18] ([i915#402]) -> [PASS][19] +1 similar issue
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9663/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1161]: https://gitlab.freedesktop.org/drm/intel/issues/1161
+  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
+  [i915#2029]: https://gitlab.freedesktop.org/drm/intel/issues/2029
+  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
+  [i915#2369]: https://gitlab.freedesktop.org/drm/intel/issues/2369
+  [i915#2601]: https://gitlab.freedesktop.org/drm/intel/issues/2601
+  [i915#262]: https://gitlab.freedesktop.org/drm/intel/issues/262
+  [i915#2772]: https://gitlab.freedesktop.org/drm/intel/issues/2772
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#666]: https://gitlab.freedesktop.org/drm/intel/issues/666
 
 
-> -Chris
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
->
+Participating hosts (41 -> 36)
+------------------------------
 
---000000000000c78c3f05b96e75cc
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br><br></div><br><div class=3D"gmail_quo=
-te"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Dec 10, 2020 at 2:42 AM C=
-hris Wilson &lt;<a href=3D"mailto:chris@chris-wilson.co.uk">chris@chris-wil=
-son.co.uk</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">Quoting Anshuman Gupta (2020-12-10 05:02:48)<br>
-&gt; On 2020-12-09 at 16:47:01 +0000, Chris Wilson wrote:<br>
-&gt; &gt; Quoting Anshuman Gupta (2020-12-09 16:25:02)<br>
-&gt; &gt; &gt; On 2020-12-09 at 16:25:55 +0000, Chris Wilson wrote:<br>
-&gt; &gt; &gt; &gt; Quoting Anshuman Gupta (2020-12-09 16:06:38)<br>
-&gt; &gt; &gt; &gt; &gt; Create a separate igt test group and move package =
-C<br>
-&gt; &gt; &gt; &gt; &gt; state in to this subgroup.<br>
-&gt; &gt; &gt; &gt; &gt; Run powertop --auto-tune to tune SOC power configu=
-ration<br>
-&gt; &gt; &gt; &gt; &gt; for package C state tests.<br>
-&gt; &gt; &gt; &gt; &gt; <br>
-&gt; &gt; &gt; &gt; &gt; Signed-off-by: Anshuman Gupta &lt;<a href=3D"mailt=
-o:anshuman.gupta@intel.com" target=3D"_blank">anshuman.gupta@intel.com</a>&=
-gt;<br>
-&gt; &gt; &gt; &gt; &gt; ---<br>
-&gt; &gt; &gt; &gt; &gt;=C2=A0 tests/i915/i915_pm_rpm.c | 35 ++++++++++++++=
-+++++++++++++++++----<br>
-&gt; &gt; &gt; &gt; &gt;=C2=A0 1 file changed, 31 insertions(+), 4 deletion=
-s(-)<br>
-&gt; &gt; &gt; &gt; &gt; <br>
-&gt; &gt; &gt; &gt; &gt; diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915=
-/i915_pm_rpm.c<br>
-&gt; &gt; &gt; &gt; &gt; index af55b569..42bc44d9 100644<br>
-&gt; &gt; &gt; &gt; &gt; --- a/tests/i915/i915_pm_rpm.c<br>
-&gt; &gt; &gt; &gt; &gt; +++ b/tests/i915/i915_pm_rpm.c<br>
-&gt; &gt; &gt; &gt; &gt; @@ -832,6 +832,25 @@ static void basic_subtest(voi=
-d)<br>
-&gt; &gt; &gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* XXX Also we ca=
-n test wake up via exec nop */<br>
-&gt; &gt; &gt; &gt; &gt;=C2=A0 }<br>
-&gt; &gt; &gt; &gt; &gt;=C2=A0 <br>
-&gt; &gt; &gt; &gt; &gt; +static bool setup_powertop(void)<br>
-&gt; &gt; &gt; &gt; &gt; +{<br>
-&gt; &gt; &gt; &gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0FILE *fp;<br>
-&gt; &gt; &gt; &gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0char tmp[512];<br>
-&gt; &gt; &gt; &gt; &gt; +<br>
-&gt; &gt; &gt; &gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0fp =3D popen(&quot;pow=
-ertop --auto-tune&quot;, &quot;r&quot;);<br>
-&gt; &gt; &gt; &gt; <br>
-&gt; &gt; &gt; &gt; Doesn&#39;t this defeat the point of having it work out=
- of the box?<br>
-&gt; May be misunderstood your comment, is it PC state or powertop should w=
-ork<br>
-&gt; out of box ?<br>
-<br>
-Powermanagement should not require the user to configure it before it<br>
-can work.<br>
-<br>
-powertop in particular may tweak the gfx, which is verboten.<br>
-<br>
-Manually perform any configuration you think is required, and warn if the<b=
-r>
-initial configuration does not support reaching the lowest pc state the<br>
-system can. File bugs.<br></blockquote><div><br></div><div>I understand why=
- Anshuman did this. There are many many components</div><div>out there that=
- are blocking the PC10 and this powertop --auto-tune</div><div>is trying to=
- take care of all the corner cases to get the &quot;best&quot; of all the</=
-div><div>components so we can try to garantee that we are not getting block=
-ed by other components.</div><div><br></div><div>However this is very very =
-dangerous. It toggles a lot of unsafe and untested cases.</div><div><br></d=
-iv><div>I have lost a laptop right after a powertop --auto-tune and have ne=
-ver used that</div><div>in my life again. Coincidence? Maybe... but I don&#=
-39;t want to take the risk in my</div><div>machine and I definitely cannot =
-recommend its use.</div><div>=C2=A0<br></div><blockquote class=3D"gmail_quo=
-te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
-);padding-left:1ex">
--Chris<br>
-_______________________________________________<br>
-igt-dev mailing list<br>
-<a href=3D"mailto:igt-dev@lists.freedesktop.org" target=3D"_blank">igt-dev@=
-lists.freedesktop.org</a><br>
-<a href=3D"https://lists.freedesktop.org/mailman/listinfo/igt-dev" rel=3D"n=
-oreferrer" target=3D"_blank">https://lists.freedesktop.org/mailman/listinfo=
-/igt-dev</a><br>
-</blockquote></div></div>
 
---000000000000c78c3f05b96e75cc--
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5962 -> IGTPW_5416
+
+  CI-20190529: 20190529
+  CI_DRM_9663: 36cc146429e2863ce99c4bb32d69d8c644859a39 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5416: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/index.html
+  IGT_5962: 22e3daaed82ab7890018a2f2aabf5082cd536023 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/index.html
+
+--===============5846498867371978949==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/kms_rotation_crc: reduce execution time</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/86150/">https://patchwork.freedesktop.org/series/86150/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9663 -&gt; IGTPW_5416</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_5416 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_5416, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_5416:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>fi-byt-j1900:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9663/fi-byt-j1900/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-byt-j1900/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5416 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_tiled_blits@basic:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9663/fi-tgl-y/igt@gem_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-tgl-y/igt@gem_tiled_blits@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@active:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9663/fi-kbl-7500u/igt@i915_selftest@live@active.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-kbl-7500u/igt@i915_selftest@live@active.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/666">i915#666</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9663/fi-tgl-y/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-tgl-y/igt@i915_selftest@live@gt_heartbeat.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2601">i915#2601</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-snb-2600/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +30 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-crc-fast:</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-snb-2600/igt@kms_chamelium@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2029">i915#2029</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2369">i915#2369</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9663/fi-snb-2600/igt@gem_exec_suspend@basic-s3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2772">i915#2772</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-snb-2600/igt@gem_exec_suspend@basic-s3.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9663/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2601">i915#2601</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9663/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1161">i915#1161</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/262">i915#262</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@prime_self_import@basic-with_two_bos:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9663/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (41 -&gt; 36)</h2>
+<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5962 -&gt; IGTPW_5416</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9663: 36cc146429e2863ce99c4bb32d69d8c644859a39 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5416: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5416/index.html<br />
+  IGT_5962: 22e3daaed82ab7890018a2f2aabf5082cd536023 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============5846498867371978949==--
+
+--===============1932126262==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1932126262==--
