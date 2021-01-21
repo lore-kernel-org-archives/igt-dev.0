@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CC986E06E
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Jan 2021 10:02:06 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C6BA6E526
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Jan 2021 10:04:26 +0000 (UTC)
+Date: Thu, 21 Jan 2021 12:04:20 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20210121100420.GN7444@platvala-desk.ger.corp.intel.com>
+References: <20210120114144.25368-1-jeevan.b@intel.com>
+ <20210120122036.GJ7444@platvala-desk.ger.corp.intel.com>
+ <a36d290326d04bcea0907f9b71c79cae@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20210121095015.12102-1-petri.latvala@intel.com>
-References: <20210121095015.12102-1-petri.latvala@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 21 Jan 2021 10:02:02 +0000
-Message-ID: <161122332222.32666.18149561892085481408@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] runner: Introduce a way to stop
- testing without marking tests incomplete
+Content-Disposition: inline
+In-Reply-To: <a36d290326d04bcea0907f9b71c79cae@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 1/2] tests/kms_rotation_crc: reduce
+ execution time
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,79 +24,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>, Petri Latvala <petri.latvala@intel.com>
+To: "B, Jeevan" <jeevan.b@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Petri Latvala (2021-01-21 09:50:14)
-> Killing igt_runner with SIGHUP will now still kill the currently
-> running test, but it will mark that test as being "notrun" instead of
-> "incomplete". This allows for external tools to interrupt the testing
-> without messing the results.
-> 
-> Incidentally, Intel CI's testing procedures occasionally falsely
-> determine that the machine being tested is unreachable and as its next
-> step, will ssh in and issue a reboot in preparation for the next round
-> of testing, causing igt_runner to be killed with a SIGHUP...
-> 
-> v2:
->  - Fix typo SIGUP -> SIGHUP
->  - Make runner print that a graceful exit will be done
->  - Explain the code flow regarding handling of signals to the runner process
->  - Use GRACEFUL_EXITCODE instead of -SIGHUP directly
-> 
-> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>
-> Cc: Arkadiusz Hiler <arek@hiler.eu>
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> ---
->  runner/executor.c  | 31 +++++++++++++++++++++++++++++++
->  runner/resultgen.c | 10 +++++++---
->  2 files changed, 38 insertions(+), 3 deletions(-)
-> 
-> diff --git a/runner/executor.c b/runner/executor.c
-> index c1a0545a..3ca2d20a 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -1008,6 +1008,37 @@ static int monitor_output(pid_t child,
->                                              get_cmdline(siginfo.ssi_pid, comm, sizeof(comm)),
->                                              siginfo.ssi_pid,
->                                              strsignal(siginfo.ssi_signo));
-> +
-> +                                       if (siginfo.ssi_signo == SIGHUP) {
+On Thu, Jan 21, 2021 at 11:59:48AM +0200, B, Jeevan wrote:
+> >-----Original Message-----
+> >From: Petri Latvala <petri.latvala@intel.com>
+> >Sent: Wednesday, January 20, 2021 5:51 PM
+> >To: B, Jeevan <jeevan.b@intel.com>
+> >Cc: igt-dev@lists.freedesktop.org
+> >Subject: Re: [igt-dev] [PATCH i-g-t v4 1/2] tests/kms_rotation_crc: reduce
+> >execution time
+> >
+> >On Wed, Jan 20, 2021 at 05:11:43PM +0530, Jeevan B wrote:
+> >> Restricting the execution to 2 pipes
+> >> with this change we see 50% improvement in time efficiency.
+> >>
+> >> v2: Updated commit message.
+> >>
+> >> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> >> Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+> >> ---
+> >>  tests/kms_rotation_crc.c | 4 ++++
+> >>  1 file changed, 4 insertions(+)
+> >>
+> >> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c index
+> >> 33a97cca..cc404a61 100644
+> >> --- a/tests/kms_rotation_crc.c
+> >> +++ b/tests/kms_rotation_crc.c
+> >> @@ -421,6 +421,10 @@ static void test_plane_rotation(data_t *data, int
+> >plane_type, bool test_bad_form
+> >>  		if (IS_CHERRYVIEW(data->devid) && pipe != PIPE_B)
+> >>  			continue;
+> >>
+> >> +		/* restricting the execution to 2 pipes to reduce execution
+> >time*/
+> >> +		if (pipe > PIPE_B && !data->extended)
+> >> +			break;
+> >> +
+> >
+> >What's the plan for platforms that might have two pipes as A+C?
+> Hmm, Can we add a flag check here ?? 
+> So that I can exit when tests gets executed on 2 pipes. 
 
-Detecting SIGHUP should do the job of catching the external shutdown.
+Yeah a separate counter is what you need to do here.
 
-> @@ -1106,6 +1108,8 @@ static const char *result_from_exitcode(int exitcode)
->                 return "abort";
->         case INCOMPLETE_EXITCODE:
->                 return "incomplete";
-> +       case GRACEFUL_EXITCODE:
-> +               return "notrun";
->         default:
->                 return "fail";
->         }
-> @@ -1180,7 +1184,7 @@ static void fill_from_journal(int fd,
->                 }
->         }
->  
-> -       if (subtests->size && exitcode == IGT_EXIT_ABORT) {
-> +       if (subtests->size && (exitcode == IGT_EXIT_ABORT || exitcode == GRACEFUL_EXITCODE)) {
->                 char *last_subtest = subtests->subs[subtests->size - 1].name;
->                 char subtest_piglit_name[256];
->                 struct json_object *subtest_obj;
-> @@ -1188,7 +1192,7 @@ static void fill_from_journal(int fd,
->                 generate_piglit_name(entry->binary, last_subtest, subtest_piglit_name, sizeof(subtest_piglit_name));
->                 subtest_obj = get_or_create_json_object(tests, subtest_piglit_name);
->  
-> -               set_result(subtest_obj, "abort");
-> +               set_result(subtest_obj, exitcode == IGT_EXIT_ABORT ? "abort" : "notrun");
 
-And after a look through the resultgen, this looks to be the cases where
-exitcode is used (and exitcode is derived from the atoi(journal)).
-
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
--Chris
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
