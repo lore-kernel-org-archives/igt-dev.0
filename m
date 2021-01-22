@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7C8989D4F
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Jan 2021 11:43:22 +0000 (UTC)
-Date: Fri, 22 Jan 2021 13:44:57 +0200
-From: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
-Message-ID: <20210122114457.GA11744@intel.com>
-References: <20210122084139.24042-1-juhapekka.heikkila@gmail.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 36BFB6E848
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Jan 2021 11:52:38 +0000 (UTC)
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Date: Fri, 22 Jan 2021 11:52:34 +0000
+Message-ID: <SN6PR11MB33274F3BCCE40E92630737C28DA09@SN6PR11MB3327.namprd11.prod.outlook.com>
+References: <20210119141712.24980-1-bhanuprakash.modem@intel.com>
+ <YAcv2boUKmPbVCFl@intel.com>
+ <BYAPR11MB3319AA64995102C7526E39438DA20@BYAPR11MB3319.namprd11.prod.outlook.com>
+ <YAgLwZmDe2NKCJa1@intel.com>
+In-Reply-To: <YAgLwZmDe2NKCJa1@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210122084139.24042-1-juhapekka.heikkila@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_flip_scaled_crc: try to set
- mode to 1080p during test
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_vrr: Update condition checks
+ for flipline test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,187 +21,302 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
+To: =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jan 22, 2021 at 10:41:39AM +0200, Juha-Pekka Heikkila wrote:
-> Different default resolutions will affect test execution, try
-> to normalize situation by always going to 1080p resolution.
-> If this test will run on connector which doesn't have 1080p
-> resolution, default resolution will be used. On gen<11
-> will be used 480p
-> 
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> -----Original Message-----
+> From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> Sent: Wednesday, January 20, 2021 4:24 PM
+> To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> Cc: igt-dev@lists.freedesktop.org; Navare, Manasi D
+> <manasi.d.navare@intel.com>
+> Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_vrr: Update condition
+> checks for flipline test
+> =
+
+> On Wed, Jan 20, 2021 at 05:36:59AM +0000, Modem, Bhanuprakash wrote:
+> > > -----Original Message-----
+> > > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> > > Sent: Wednesday, January 20, 2021 12:46 AM
+> > > To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> > > Cc: igt-dev@lists.freedesktop.org
+> > > Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_vrr: Update condition
+> > > checks for flipline test
+> > >
+> > > On Tue, Jan 19, 2021 at 07:47:12PM +0530, Bhanuprakash Modem wrote:
+> > > > This patch includes below updates
+> > > > * For Flipline test: if refresh_rate <=3D Vrr_min then
+> > > > 	- Expected returned refresh rate would be vrr_max
+> > > > 	- At least 35% of the flips should be in threshold
+> > > > * Update "igt_display_commit_atomic" with "igt_display_commit2"
+> > > > * Add few debug prints
+> > >
+> > > Some ideas I had for a vrr test:
+> > > - test flipping at a few different rates
+> > > - make sure the interval between flip timestamps
+> > >   matches the expected rate
+> > Actually, we are doing the same in our flipline[*] test.
+> >
+> > Example: if we have a monitor with vrr range of 40 - 60Hz
+> > We'll try to flip with 35, 50 and 65 Hz, and the difference between the
+> > two flip timestamps should be within the required threshold from the
+> > expected rate. A ~50us threshold is an arbitrary.
+> >
+> > [*] https://patchwork.freedesktop.org/patch/392037
+> >
+> > > - otherwise confirm the timestamps are sensible. Not quite sure what
+> the
+> > >   best way would be. One idea was to just make sure the timestamp
+> points
+> > >   to more or less the correct point in time. Another idea was to drive
+> > >   the whole loop baed on the timestamps + target refresh rate (ie.
+> wait
+> > >   for event, schedule next flip for event timestamps + whatever time
+> we
+> > >   have left to reach the exected refresh rate). This latter idea I
+> think
+> > >   would catch bugs where the interval between timestamps is correct
+> but
+> > >   the absolute times are not correct (eg. if the timestamps are
+> > >   miscorrected to point fr into the future based on the max vblank
+> > >   length, or too close into the future based on min vblank length).
+> > > - the busy loop thing I don't think should be needed. Sure, there is
+> > >   some wakeup latency due to C-states and whatnot, but it should be
+> > >   possible to compensate to make sure we reach the target refresh rate
+> > >   w/o spinning.
+> > This part is not clear to me.
+> >
+> > Ex. To generate the flips with refresh rate 50Hz (ie. 20000000ns), below
+> > is the expected sequence:
+> >
+> > * Request a flip & wait for flip completion event
+> > * Capture the event timestamp to compare
+> > * Wait 20000000ns for next flip
+> =
+
+> That would anyway need a bit of correction to account for event
+> delivery latency + whatever overhead we have in submitting the
+> flip.
+> =
+
+> But in addition I was suggesting that we calculate how long to
+> wait based on the flip event timestamp + whatever extra is needed
+> on top to reach the target frame rate. Thus if the timestamp is
+> garbage the test should fail since we'll end up flipping at the
+> wrong rate.
+Does this make sense?
+
+-       diff_ns =3D now_ns - start_ns;
++       diff_ns =3D last_event_ns - start_ns;
+        wait_ns =3D ((diff_ns + rate_ns - 1) / rate_ns) * rate_ns;
++       wait_ns +=3D rate_ns - (last_event_ns - event_ns);
+
+> =
+
+> > * Repeat
+> >
+> > Am I missing something here?
+> >
+> > >
+> > > >
+> > > > V2:
+> > > > * Rebase
+> > > >
+> > > > Cc: Manasi Navare <manasi.d.navare@intel.com>
+> > > > Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+> > > > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> > > > ---
+> > > >  tests/kms_vrr.c | 51 ++++++++++++++++++++--------------------------
 > ---
->  tests/kms_flip_scaled_crc.c | 96 +++++++++++++++++++++----------------
->  1 file changed, 54 insertions(+), 42 deletions(-)
-> 
-> diff --git a/tests/kms_flip_scaled_crc.c b/tests/kms_flip_scaled_crc.c
-> index 93d8031f7..8d9c1d7d7 100644
-> --- a/tests/kms_flip_scaled_crc.c
-> +++ b/tests/kms_flip_scaled_crc.c
-> @@ -35,6 +35,8 @@ typedef struct {
->  	struct igt_fb small_fb;
->  	struct igt_fb big_fb;
->  	igt_pipe_crc_t *pipe_crc;
-> +	uint32_t attemptmodewidth;
-> +	uint32_t attemptmodeheight;
+> > > >  1 file changed, 21 insertions(+), 30 deletions(-)
+> > > >
+> > > > diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+> > > > index beb06854f..e6edd131f 100644
+> > > > --- a/tests/kms_vrr.c
+> > > > +++ b/tests/kms_vrr.c
+> > > > @@ -170,7 +170,7 @@ static void set_vrr_on_pipe(data_t *data, enum
+> pipe
+> > > pipe, bool enabled)
+> > > >  {
+> > > >  	igt_pipe_set_prop_value(&data->display, pipe,
+> IGT_CRTC_VRR_ENABLED,
+> > > >  				enabled);
+> > > > -	igt_display_commit_atomic(&data->display, 0, NULL);
+> > > > +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> > > >  }
+> > > >
+> > > >  /* Prepare the display for testing on the given pipe. */
+> > > > @@ -208,8 +208,7 @@ static void prepare_test(data_t *data,
+> igt_output_t
+> > > *output, enum pipe pipe)
+> > > >  	 */
+> > > >  	igt_pipe_set_prop_value(&data->display, pipe,
+> IGT_CRTC_VRR_ENABLED,
+> > > 0);
+> > > >
+> > > > -	igt_display_commit_atomic(&data->display,
+> > > > -				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> > > > +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> > > >  }
+> > > >
+> > > >  /* Waits for the vblank interval. Returns the vblank timestamp in
+> ns.
+> > > */
+> > > > @@ -291,14 +290,10 @@ flip_and_measure(data_t *data, igt_output_t
+> > > *output, enum pipe pipe,
+> > > >  		 * difference between 144Hz and 143Hz which should give
+> this
+> > > >  		 * enough accuracy for most use cases.
+> > > >  		 */
+> > > > -		if (rate_ns <=3D vtest_ns.min && rate_ns >=3D vtest_ns.max)
+> > > > +		if ((rate_ns < vtest_ns.min) && (rate_ns >=3D
+> vtest_ns.max))
+> > > >  			diff_ns =3D rate_ns;
+> > > > -		else if (rate_ns > vtest_ns.min)
+> > > > -			diff_ns =3D vtest_ns.min;
+> > > > -		else if (rate_ns < vtest_ns.max)
+> > > > -			diff_ns =3D vtest_ns.max;
+> > > >  		else
+> > > > -			diff_ns =3D rate_ns;
+> > > > +			diff_ns =3D vtest_ns.max;
+> > > >  		diff_ns -=3D event_ns - last_event_ns;
+> > > >
+> > > >  		if (llabs(diff_ns) < 50000ll)
+> > > > @@ -323,8 +318,8 @@ flip_and_measure(data_t *data, igt_output_t
+> *output,
+> > > enum pipe pipe,
+> > > >  		while (get_time_ns() < target_ns);
+> > > >  	}
+> > > >
+> > > > -	igt_info("Completed %u flips, %u were in threshold for
+> > > %"PRIu64"ns.\n",
+> > > > -		 total_flip, total_pass, rate_ns);
+> > > > +	igt_info("Completed %u flips, %u were in threshold for (%llu
+> Hz)
+> > > %"PRIu64"ns.\n",
+> > > > +		 total_flip, total_pass, (NSECS_PER_SEC/rate_ns),
+> rate_ns);
+> > > >
+> > > >  	return total_flip ? ((total_pass * 100) / total_flip) : 0;
+> > > >  }
+> > > > @@ -338,8 +333,8 @@ test_basic(data_t *data, enum pipe pipe,
+> > > igt_output_t *output, uint32_t flags)
+> > > >  	range_t range =3D get_vrr_range(data, output);
+> > > >  	uint64_t rate =3D vtest_ns.mid;
+> > > >
+> > > > -	igt_info("VRR Test execution on %s, PIPE_%s\n",
+> > > > -		 output->name, kmstest_pipe_name(pipe));
+> > > > +	igt_info("VRR Test execution on %s, PIPE_%s with VRR range:
+> (%u-%u)
+> > > Hz\n",
+> > > > +		 output->name, kmstest_pipe_name(pipe), range.min,
+> range.max);
+> > > >
+> > > >  	prepare_test(data, output, pipe);
+> > > >
+> > > > @@ -370,46 +365,42 @@ test_basic(data_t *data, enum pipe pipe,
+> > > igt_output_t *output, uint32_t flags)
+> > > >  	 * decision boundary.
+> > > >  	 *
+> > > >  	 * Example: if range is 40 - 60Hz and
+> > > > -	 * if refresh_rate > 60Hz:
+> > > > +	 * if refresh_rate > 60Hz or <=3D 40Hz:
+> > > >  	 *      Flip should happen at the flipline boundary & returned
+> > > refresh rate
+> > > >  	 *      would be 60Hz.
+> > > >  	 * if refresh_rate is 50Hz:
+> > > >  	 *      Flip will happen right away so returned refresh rate is
+> > > 50Hz.
+> > > > -	 * if refresh_rate < 40Hz:
+> > > > -	 *      Flip should happen at the vmax so the returned refresh
+> rate
+> > > > -	 *      would be 40Hz.
+> > > >  	 */
+> > > >  	if (flags & TEST_FLIPLINE) {
+> > > > -		rate =3D rate_from_refresh(range.min - 5);
+> > > > +		rate =3D rate_from_refresh(range.max + 5);
+> > > >  		result =3D flip_and_measure(data, output, pipe, rate,
+> > > TEST_DURATION_NS);
+> > > >  		igt_assert_f(result > 75,
+> > > > -			     "Refresh rate %"PRIu64"ns: Target VRR on
+> threshold
+> > > not reached, result was %u%%\n",
+> > > > -			     rate, result);
+> > > > +			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR
+> on
+> > > threshold not reached, result was %u%%\n",
+> > > > +			     (range.max + 5), rate, result);
+> > > >
+> > > > -		rate =3D rate_from_refresh(range.max + 5);
+> > > > +		rate =3D rate_from_refresh(range.min - 5);
+> > > >  		result =3D flip_and_measure(data, output, pipe, rate,
+> > > TEST_DURATION_NS);
+> > > > -		igt_assert_f(result > 75,
+> > > > -			     "Refresh rate %"PRIu64"ns: Target VRR on
+> threshold
+> > > not reached, result was %u%%\n",
+> > > > -			     rate, result);
+> > > > +		igt_assert_f(result > 35,
+> > > > +			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR
+> on
+> > > threshold not reached, result was %u%%\n",
+> > > > +			     (range.min - 5), rate, result);
+> > > >  	}
+> > > >
+> > > >  	rate =3D vtest_ns.mid;
+> > > >  	result =3D flip_and_measure(data, output, pipe, rate,
+> > > TEST_DURATION_NS);
+> > > >  	igt_assert_f(result > 75,
+> > > > -		     "Refresh rate %"PRIu64"ns: Target VRR on threshold
+> not
+> > > reached, result was %u%%\n",
+> > > > -		     rate, result);
+> > > > +		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on
+> threshold
+> > > not reached, result was %u%%\n",
+> > > > +		     ((range.max + range.min) / 2), rate, result);
+> > > >
+> > > >  	set_vrr_on_pipe(data, pipe, 0);
+> > > >  	result =3D flip_and_measure(data, output, pipe, rate,
+> > > TEST_DURATION_NS);
+> > > >  	igt_assert_f(result < 10,
+> > > > -		     "Refresh rate %"PRIu64"ns: Target VRR off threshold
+> > > exceeded, result was %u%%\n",
+> > > > -		     rate, result);
+> > > > +		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR off
+> > > threshold exceeded, result was %u%%\n",
+> > > > +		     ((range.max + range.min) / 2), rate, result);
+> > > >
+> > > >  	/* Clean-up */
+> > > >  	igt_plane_set_fb(data->primary, NULL);
+> > > >  	igt_output_set_pipe(output, PIPE_NONE);
+> > > > -	igt_display_commit_atomic(&data->display,
+> > > > -				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> > > > +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> > > >
+> > > >  	igt_remove_fb(data->drm_fd, &data->fb1);
+> > > >  	igt_remove_fb(data->drm_fd, &data->fb0);
+> > > > --
+> > > > 2.20.1
+> > > >
+> > > > _______________________________________________
+> > > > igt-dev mailing list
+> > > > igt-dev@lists.freedesktop.org
+> > > > https://lists.freedesktop.org/mailman/listinfo/igt-dev
+> > >
+> > > --
+> > > Ville Syrj=E4l=E4
+> > > Intel
+> =
 
-Good idea to parametrize this.
-
->  } data_t;
->  
->  const struct {
-> @@ -133,8 +135,7 @@ static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
->  {
->  	igt_plane_t *primary;
->  	igt_crc_t small_crc, big_crc;
-> -
-> -	drmModeModeInfo *mode;
-> +	drmModeModeInfoPtr modetoset = NULL;
->  	struct drm_event_vblank ev;
->  	int ret;
->  
-> @@ -142,41 +143,24 @@ static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
->  
->  	igt_debug("running on output %s pipe %s\n", output->name,
->  		  kmstest_pipe_name(pipe));
-> +
->  	if (data->big_fb.fb_id == 0) {
-> -		mode = igt_output_get_mode(output);
-> -
-> -		// big fb will be 4k unless running on older than ICL
-> -		if (data->gen < 11) {
-> -			setup_fb(data, &data->small_fb,
-> -				 min(mode->hdisplay, 640),
-> -				 min(mode->vdisplay, 480),
-> -				 flip_scenario_test[index].firstformat,
-> -				 flip_scenario_test[index].firstmodifier);
-> -
-> -			setup_fb(data, &data->big_fb,
-> -				 1280, 960,
-> -				 flip_scenario_test[index].secondformat,
-> -				 flip_scenario_test[index].secondmodifier);
-> -			igt_debug("small fb %dx%d\n", data->small_fb.width,
-> -			          data->small_fb.height);
-> -			igt_debug("big fb %dx%d\n", data->big_fb.width,
-> -			          data->big_fb.height);
-> -		} else {
-> -			setup_fb(data, &data->small_fb,
-> -				 min(mode->hdisplay, 1920),
-> -				 min(mode->vdisplay, 1080),
-> -				 flip_scenario_test[index].firstformat,
-> -				 flip_scenario_test[index].firstmodifier);
-> -
-> -			setup_fb(data, &data->big_fb,
-> -				 3840, 2160,
-> -				 flip_scenario_test[index].secondformat,
-> -				 flip_scenario_test[index].secondmodifier);
-> -			igt_debug("small fb %dx%d\n", data->small_fb.width,
-> -			          data->small_fb.height);
-> -			igt_debug("big fb %dx%d\n", data->big_fb.width,
-> -			          data->big_fb.height);
-> -		}
-> +		setup_fb(data, &data->small_fb,
-> +				data->attemptmodewidth,
-> +				data->attemptmodeheight,
-> +				flip_scenario_test[index].firstformat,
-> +				flip_scenario_test[index].firstmodifier);
-> +
-> +		setup_fb(data, &data->big_fb,
-> +				data->attemptmodewidth * 2,
-> +				data->attemptmodeheight * 2,
-> +				flip_scenario_test[index].secondformat,
-> +				flip_scenario_test[index].secondmodifier);
-> +
-> +		igt_debug("small fb %dx%d\n", data->small_fb.width,
-> +				data->small_fb.height);
-> +		igt_debug("big fb %dx%d\n", data->big_fb.width,
-> +				data->big_fb.height);
->  	}
->  
->  	igt_output_set_pipe(output, pipe);
-> @@ -186,13 +170,33 @@ static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
->  				  NULL);
->  	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
->  					  INTEL_PIPE_CRC_SOURCE_AUTO);
-> -	igt_pipe_crc_start(data->pipe_crc);
->  
-> -	igt_plane_set_position(primary, 0, 0);
-> -	igt_plane_set_fb(primary, &data->small_fb);
-> +	for (int i = 0; i < output->config.connector->count_modes; i++) {
-> +		if (output->config.connector->modes[i].hdisplay == data->attemptmodewidth &&
-> +		   output->config.connector->modes[i].vdisplay == data->attemptmodeheight) {
-> +			modetoset = &output->config.connector->modes[i];
-> +			break;
-> +		   }
-> +	}
-> +
-> +	if (!modetoset) {
-> +		igt_warn("%dp mode was not found from connector, will continue with default\n",
-> +			 data->attemptmodeheight);
-> +
-> +		igt_plane_set_position(primary, 0, 0);
-> +		igt_plane_set_fb(primary, &data->small_fb);
-> +		igt_display_commit_atomic(&data->display,
-> +					DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +	} else {
-> +		ret = drmModeSetCrtc(data->drm_fd, output->config.crtc->crtc_id,
-> +				data->small_fb.fb_id, 0, 0,
-> +				&output->config.connector->connector_id, 1,
-> +				modetoset);
-> +		igt_assert_f(ret == 0, "Couldn't set %dp mode\n",
-> +			     data->attemptmodeheight);
-
-This is not critical, but could use igt_output_override_mode here, so that
-we kinda call igt api always. Anyway a minor thing.
-
-Reviewed-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-
-> +	}
->  
-> -	igt_display_commit_atomic(&data->display,
-> -				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +	igt_pipe_crc_start(data->pipe_crc);
->  	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &small_crc);
->  
->  	igt_plane_set_fb(primary, &data->big_fb);
-> @@ -203,7 +207,7 @@ static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
->  					    DRM_MODE_PAGE_FLIP_EVENT, NULL);
->  
->  	igt_require_f(ret != -ERANGE,
-> -		      "Platform scaling limits exceeded, skipping.");
-> +		      "Platform scaling limits exceeded, skipping.\n");
->  	igt_assert_eq(ret, 0);
->  
->  	igt_assert(read(data->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
-> @@ -230,6 +234,14 @@ igt_main
->  		igt_require(data.display.is_atomic);
->  		igt_require_pipe_crc(data.drm_fd);
->  		kmstest_set_vt_graphics_mode();
-> +
-> +		if (data.gen < 11) {
-> +			data.attemptmodewidth = 640;
-> +			data.attemptmodeheight = 480;
-> +		} else {
-> +			data.attemptmodewidth = 1920;
-> +			data.attemptmodeheight = 1080;
-> +		}
->  	}
->  
->  	for (int index = 0; index < ARRAY_SIZE(flip_scenario_test); index++) {
-> -- 
-> 2.28.0
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+> --
+> Ville Syrj=E4l=E4
+> Intel
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
