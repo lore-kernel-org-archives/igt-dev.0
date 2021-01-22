@@ -1,20 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81B466E987
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Jan 2021 03:14:48 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Date: Fri, 22 Jan 2021 03:14:42 +0000
-Message-ID: <9c63a44099fd43c384ffff66eb2a7b47@intel.com>
-References: <20210121055221.29341-1-ashutosh.dixit@intel.com>
- <161121438323.14015.10231318935036818450@emeril.freedesktop.org>
- <871ree3d3v.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <871ree3d3v.wl-ashutosh.dixit@intel.com>
-Content-Language: en-US
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 44E816E99A
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Jan 2021 05:27:07 +0000 (UTC)
+From: apoorva1.singh@intel.com
+Date: Fri, 22 Jan 2021 10:58:56 +0530
+Message-Id: <20210122052856.770946-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbGliL2lv?=
- =?utf-8?q?ctl=5Fwrappers=3A_Handle_PREAD/PWRITE_ioctls_not_supported_in_g?=
- =?utf-8?q?em=5Fread/write_=28rev15=29?=
+Subject: [igt-dev] [PATCH i-g-t,
+ v2] i915/gem_ctx_create: Added test description for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,42 +15,120 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: katarzyna.dec@intel.com, petri.latvala@intel.com, igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UmUtcmVwb3J0ZWQuDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBEaXhpdCwg
-QXNodXRvc2ggPGFzaHV0b3NoLmRpeGl0QGludGVsLmNvbT4gDQpTZW50OiBUaHVyc2RheSwgSmFu
-dWFyeSAyMSwgMjAyMSAxMjozMiBBTQ0KVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-DQpDYzogVnVkdW0sIExha3NobWluYXJheWFuYSA8bGFrc2htaW5hcmF5YW5hLnZ1ZHVtQGludGVs
-LmNvbT4NClN1YmplY3Q6IFJlOiDinJcgRmkuQ0kuSUdUOiBmYWlsdXJlIGZvciBsaWIvaW9jdGxf
-d3JhcHBlcnM6IEhhbmRsZSBQUkVBRC9QV1JJVEUgaW9jdGxzIG5vdCBzdXBwb3J0ZWQgaW4gZ2Vt
-X3JlYWQvd3JpdGUgKHJldjE1KQ0KDQpPbiBXZWQsIDIwIEphbiAyMDIxIDIzOjMzOjAzIC0wODAw
-LCBQYXRjaHdvcmsgd3JvdGU6DQo+DQo+IFBhdGNoIERldGFpbHMNCj4NCj4gIFNlcmllczogIGxp
-Yi9pb2N0bF93cmFwcGVyczogSGFuZGxlIFBSRUFEL1BXUklURSBpb2N0bHMgbm90IHN1cHBvcnRl
-ZCANCj4gaW4gZ2VtX3JlYWQvd3JpdGUgKHJldjE1KQ0KPiAgVVJMOiAgaHR0cHM6Ly9wYXRjaHdv
-cmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy84MTE1Mi8NCj4gIFN0YXRlOiAgZmFpbHVyZQ0KPiAg
-RGV0YWlsczogIA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lH
-VFBXXzU0MTEvaW5kZXguaHRtbA0KPg0KPiBDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIElHVF81
-OTYxX2Z1bGwgLT4gSUdUUFdfNTQxMV9mdWxsDQo+DQo+IFN1bW1hcnkNCj4NCj4gRkFJTFVSRQ0K
-Pg0KPiBTZXJpb3VzIHVua25vd24gY2hhbmdlcyBjb21pbmcgd2l0aCBJR1RQV181NDExX2Z1bGwg
-YWJzb2x1dGVseSBuZWVkIHRvIA0KPiBiZSB2ZXJpZmllZCBtYW51YWxseS4NCj4NCj4gSWYgeW91
-IHRoaW5rIHRoZSByZXBvcnRlZCBjaGFuZ2VzIGhhdmUgbm90aGluZyB0byBkbyB3aXRoIHRoZSBj
-aGFuZ2VzIA0KPiBpbnRyb2R1Y2VkIGluIElHVFBXXzU0MTFfZnVsbCwgcGxlYXNlIG5vdGlmeSB5
-b3VyIGJ1ZyB0ZWFtIHRvIGFsbG93IA0KPiB0aGVtIHRvIGRvY3VtZW50IHRoaXMgbmV3IGZhaWx1
-cmUgbW9kZSwgd2hpY2ggd2lsbCByZWR1Y2UgZmFsc2UgcG9zaXRpdmVzIGluIENJLg0KPg0KPiBF
-eHRlcm5hbCBVUkw6IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlw
-L0lHVFBXXzU0MTEvaW5kZXguaHRtbA0KPg0KPiBQb3NzaWJsZSBuZXcgaXNzdWVzDQo+DQo+IEhl
-cmUgYXJlIHRoZSB1bmtub3duIGNoYW5nZXMgdGhhdCBtYXkgaGF2ZSBiZWVuIGludHJvZHVjZWQg
-aW4gSUdUUFdfNTQxMV9mdWxsOg0KPg0KPiBJR1QgY2hhbmdlcw0KPg0KPiBQb3NzaWJsZSByZWdy
-ZXNzaW9ucw0KPg0KPiAqIGlndEBnZW43X2V4ZWNfcGFyc2VAYmFzaWMtYWxsb2NhdGlvbjoNCj4N
-Cj4gICogc2hhcmQtaHN3OiBQQVNTIC0+IFRJTUVPVVQNCg0KU2luY2UgdGhpcyBpcyBhbiBJR1Qg
-cGF0Y2ggaXQgc2hvdWxkIG5vdCBjYXVzZSB0aGlzIGZhaWx1cmUgd2hpY2ggaXMgYWxzbyBhY2Nv
-bXBhbmllZCBieSBhIGtlcm5lbCB0cmFjZS4gVGhlcmVmb3JlIHRoaXMgYWxzbyBsb29rcyBsaWtl
-IGEgZmFsc2UgcG9zaXRpdmUuIFRoYW5rcy4NCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
-Zm8vaWd0LWRldgo=
+From: Apoorva Singh <apoorva1.singh@intel.com>
+
+Added test and subtests description
+
+v2: Modified description to be more precise
+
+Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+Cc: Dec, Katarzyna <katarzyna.dec@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+---
+ tests/i915/gem_ctx_create.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
+index 9a512a03..b8f2fb00 100644
+--- a/tests/i915/gem_ctx_create.c
++++ b/tests/i915/gem_ctx_create.c
+@@ -35,6 +35,8 @@
+ #include "igt_rand.h"
+ #include "sw_sync.h"
+ 
++IGT_TEST_DESCRIPTION("Test the context create ioctls");
++
+ #define ENGINE_FLAGS  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
+ 
+ static unsigned all_engines[I915_EXEC_RING_MASK + 1];
+@@ -582,6 +584,7 @@ igt_main
+ 		igt_fork_hang_detector(fd);
+ 	}
+ 
++	igt_describe("Test random context creation");
+ 	igt_subtest("basic") {
+ 		memset(&create, 0, sizeof(create));
+ 		create.ctx_id = rand();
+@@ -591,41 +594,67 @@ igt_main
+ 		gem_context_destroy(fd, create.ctx_id);
+ 	}
+ 
++	igt_describe("Verify valid and invalid context extensions");
+ 	igt_subtest("ext-param")
+ 		basic_ext_param(fd);
++
++	igt_describe("Set, validate and execute particular context params");
+ 	igt_subtest("iris-pipeline")
+ 		iris_pipeline(fd);
+ 
++	igt_describe("Create contexts upto available RAM size, check the average "
++	       "performance of their execution on multiple parallel threads");
+ 	igt_subtest("maximum-mem")
+ 		maximum(fd, ncpus, CHECK_RAM);
++
++	igt_describe("Create contexts upto available RAM+SWAP size, check the average "
++	       "performance of their execution on multiple parallel threads");
+ 	igt_subtest("maximum-swap")
+ 		maximum(fd, ncpus, CHECK_RAM | CHECK_SWAP);
+ 
++	igt_describe("Exercise implicit per-fd context creation");
+ 	igt_subtest("basic-files")
+ 		files(fd, 2, 1);
++
++	igt_describe("Exercise implicit per-fd context creation on 1 CPU for long duration");
+ 	igt_subtest("files")
+ 		files(fd, 20, 1);
++
++	igt_describe("Exercise implicit per-fd context creation on all CPUs for long duration");
+ 	igt_subtest("forked-files")
+ 		files(fd, 20, ncpus);
+ 
++	igt_describe("Check the average performance of context creation and "
++	       "it's execution using all engines");
+ 	/* NULL value means all engines */
+ 	igt_subtest("active-all")
+ 		active(fd, NULL, 20, 1);
++
++	igt_describe("Check the average performance of context creation and it's execution "
++	       "using all engines on multiple parallel threads");
+ 	igt_subtest("forked-active-all")
+ 		active(fd, NULL, 20, ncpus);
+ 
++	igt_describe("For each engine check the average performance of context creation "
++	       "and execution");
+ 	igt_subtest_with_dynamic("active") {
+ 		__for_each_physical_engine(fd, e) {
+ 			igt_dynamic_f("%s", e->name)
+ 				active(fd, e, 20, 1);
+ 		}
+ 	}
++
++	igt_describe("For each engine check the average performance of context creation "
++	       "and execution on multiple parallel threads");
+ 	igt_subtest_with_dynamic("forked-active") {
+ 		__for_each_physical_engine(fd, e) {
+ 			igt_dynamic_f("%s", e->name)
+ 				active(fd, e, 20, ncpus);
+ 		}
+ 	}
++
++	igt_describe("For each engine check the average performance of context creation "
++	       "and execution while all other engines are hogging the resources");
+ 	igt_subtest_with_dynamic("hog") {
+ 		__for_each_physical_engine(fd, e) {
+ 			igt_dynamic_f("%s", e->name)
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
