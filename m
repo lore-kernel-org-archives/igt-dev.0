@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 25 Jan 2021 15:59:47 -0000
-Message-ID: <161159038728.3417.1854769545390919645@emeril.freedesktop.org>
-References: <20210125135514.23925-1-petri.latvala@intel.com>
-In-Reply-To: <20210125135514.23925-1-petri.latvala@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgcnVubmVy?=
- =?utf-8?q?=3A_Fix_graceful_exit_result_parsing_for_dynamic_subtests?=
+Date: Mon, 25 Jan 2021 16:31:05 -0000
+Message-ID: <161159226541.3416.1597989819320525585@emeril.freedesktop.org>
+References: <20210125152801.2515999-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20210125152801.2515999-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9z?=
+ =?utf-8?q?ysfs=5Fclients=3A_Check_that_client_ids_are_cyclic?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,31 +15,31 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1099578917=="
+Content-Type: multipart/mixed; boundary="===============2133543608=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1099578917==
+--===============2133543608==
 Content-Type: multipart/alternative;
- boundary="===============8430168059571379506=="
+ boundary="===============1949393187673230581=="
 
---===============8430168059571379506==
+--===============1949393187673230581==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: runner: Fix graceful exit result parsing for dynamic subtests
-URL   : https://patchwork.freedesktop.org/series/86258/
+Series: i915/sysfs_clients: Check that client ids are cyclic
+URL   : https://patchwork.freedesktop.org/series/86263/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_9680 -> IGTPW_5429
+CI Bug Log - changes from CI_DRM_9680 -> IGTPW_5430
 ====================================================
 
 Summary
@@ -49,43 +49,31 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5429/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5430/index.html
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_5429 that come from known issues:
+  Here are the changes found in IGTPW_5430 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@debugfs_test@read_all_entries:
+  * igt@gem_exec_gttfill@basic:
     - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +2 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9680/fi-tgl-y/igt@debugfs_test@read_all_entries.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5429/fi-tgl-y/igt@debugfs_test@read_all_entries.html
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([i915#2411] / [i915#402])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9680/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5429/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-7500u:       [PASS][5] -> [DMESG-WARN][6] ([i915#2605])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9680/fi-kbl-7500u/igt@i915_pm_rpm@module-reload.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5429/fi-kbl-7500u/igt@i915_pm_rpm@module-reload.html
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9680/fi-tgl-y/igt@gem_exec_gttfill@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5430/fi-tgl-y/igt@gem_exec_gttfill@basic.html
 
   
 #### Possible fixes ####
 
   * igt@prime_vgem@basic-fence-flip:
-    - fi-tgl-y:           [DMESG-WARN][7] ([i915#402]) -> [PASS][8] +1 similar issue
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9680/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5429/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
+    - fi-tgl-y:           [DMESG-WARN][3] ([i915#402]) -> [PASS][4] +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9680/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5430/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
 
   
-  [i915#2411]: https://gitlab.freedesktop.org/drm/intel/issues/2411
-  [i915#2605]: https://gitlab.freedesktop.org/drm/intel/issues/2605
   [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
 
 
@@ -99,18 +87,24 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_5971 -> IGTPW_5429
+  * IGT: IGT_5971 -> IGTPW_5430
 
   CI-20190529: 20190529
   CI_DRM_9680: 9e03236ed9687144929d42404341384cc1e501b7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5429: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5429/index.html
+  IGTPW_5430: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5430/index.html
   IGT_5971: abef2b7d6ff30f3b948b3e5d39653debb73083f3 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@sysfs_clients@recycle
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5429/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5430/index.html
 
---===============8430168059571379506==
+--===============1949393187673230581==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -130,48 +124,34 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>runner: Fix graceful exit result parsing for dynamic subtests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/86258/">https://patchwork.freedesktop.org/series/86258/</a></td></tr>
+<tr><td><b>Series:</b></td><td>i915/sysfs_clients: Check that client ids are cyclic</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/86263/">https://patchwork.freedesktop.org/series/86263/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5429/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5429/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5430/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5430/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_9680 -&gt; IGTPW_5429</h1>
+    <h1>CI Bug Log - changes from CI_DRM_9680 -&gt; IGTPW_5430</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5429/index.html</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5430/index.html</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5429 that come from known issues:</p>
+<p>Here are the changes found in IGTPW_5430 that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
-<li>
-<p>igt@debugfs_test@read_all_entries:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9680/fi-tgl-y/igt@debugfs_test@read_all_entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5429/fi-tgl-y/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9680/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5429/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2411">i915#2411</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9680/fi-kbl-7500u/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5429/fi-kbl-7500u/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2605">i915#2605</a>)</li>
+<li>igt@gem_exec_gttfill@basic:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9680/fi-tgl-y/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5430/fi-tgl-y/igt@gem_exec_gttfill@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
 </ul>
 </li>
 </ul>
 <h4>Possible fixes</h4>
 <ul>
 <li>igt@prime_vgem@basic-fence-flip:<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9680/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5429/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">PASS</a> +1 similar issue</li>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9680/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5430/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">PASS</a> +1 similar issue</li>
 </ul>
 </li>
 </ul>
@@ -180,19 +160,21 @@ Content-Transfer-Encoding: 7bit
 <h2>Build changes</h2>
 <ul>
 <li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_5971 -&gt; IGTPW_5429</li>
+<li>IGT: IGT_5971 -&gt; IGTPW_5430</li>
 </ul>
 <p>CI-20190529: 20190529<br />
   CI_DRM_9680: 9e03236ed9687144929d42404341384cc1e501b7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5429: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5429/index.html<br />
+  IGTPW_5430: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5430/index.html<br />
   IGT_5971: abef2b7d6ff30f3b948b3e5d39653debb73083f3 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@sysfs_clients@recycle</p>
 
 </body>
 </html>
 
---===============8430168059571379506==--
+--===============1949393187673230581==--
 
---===============1099578917==
+--===============2133543608==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -203,4 +185,4 @@ igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
---===============1099578917==--
+--===============2133543608==--
