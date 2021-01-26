@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 26 Jan 2021 15:10:49 -0000
-Message-ID: <161167384901.9810.2365246412732115330@emeril.freedesktop.org>
-References: <20210125152801.2515999-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20210125152801.2515999-1-chris@chris-wilson.co.uk>
+Date: Tue, 26 Jan 2021 15:10:04 -0000
+Message-ID: <161167380432.9811.504799342841712506@emeril.freedesktop.org>
+References: <20210122213404.1146945-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20210122213404.1146945-1-chris@chris-wilson.co.uk>
 Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_i?=
- =?utf-8?q?915/sysfs=5Fclients=3A_Check_that_client_ids_are_cyclic?=
+ =?utf-8?q?915=3A_Exercise_sysfs_client_properties?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,15 +25,18 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: i915/sysfs_clients: Check that client ids are cyclic
-URL   : https://patchwork.freedesktop.org/series/86263/
+Series: i915: Exercise sysfs client properties
+URL   : https://patchwork.freedesktop.org/series/86198/
 State : failure
 
 == Summary ==
 
 ERROR! This series introduces new undocumented tests:
 
-sysfs_clients@recycle
+sysfs_clients
+sysfs_clients@busy
+sysfs_clients@create
+sysfs_clients@pidname
 
 Can you document them as per the requirement in the [CONTRIBUTING.md]?
 
@@ -50,11 +53,11 @@ Thanks in advance!
 
 Other than that, pipeline status: SUCCESS.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/261245 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/260412 for the overview.
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/261245
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/260412
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
