@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 26 Jan 2021 10:30:59 +0000
-Message-Id: <20210126103059.2881327-2-chris@chris-wilson.co.uk>
-In-Reply-To: <20210126103059.2881327-1-chris@chris-wilson.co.uk>
-References: <20210126103059.2881327-1-chris@chris-wilson.co.uk>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8DF2A6E067
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Jan 2021 11:07:55 +0000 (UTC)
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] i915/sysfs_clients: Check that client
- ids are cyclic
+In-Reply-To: <20210125135514.23925-1-petri.latvala@intel.com>
+References: <20210125135514.23925-1-petri.latvala@intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue, 26 Jan 2021 11:07:51 +0000
+Message-ID: <161165927121.29150.17254709134670676366@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] runner: Fix graceful exit result
+ parsing for dynamic subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,207 +21,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The client id used is a cyclic allocator as that reduces the likelihood
-of userspace seeing the same id used again (and so confusing the new
-client as the old). Verify that each new client has an id greater than
-the last.
+Quoting Petri Latvala (2021-01-25 13:55:14)
+> Commit 10c83dfa5ad2 ("runner: Introduce a way to stop testing without
+> marking tests incomplete") added graceful exiting by signaling the
+> runner with SIGHUP, marking the currently running test as 'notrun'
+> instead of 'incomplete'. The result handling didn't handle dynamic
+> subtests though, so the currently executing dynamic subtest was still
+> marked as 'incomplete'. Handle that now similarly as handling the
+> 'abort' result.
+> 
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> Cc: Arkadiusz Hiler <arek@hiler.eu>
+> ---
+>  runner/resultgen.c | 21 +++++++++++++--------
+>  1 file changed, 13 insertions(+), 8 deletions(-)
+> 
+> diff --git a/runner/resultgen.c b/runner/resultgen.c
+> index 8d0c6249..b74970a6 100644
+> --- a/runner/resultgen.c
+> +++ b/runner/resultgen.c
+> @@ -656,19 +656,24 @@ static void process_dynamic_subtest_output(const char *piglit_name,
+>                                              dynend);
+>  
+>                         /*
+> -                        * If a dynamic subsubtest is considered incomplete we
+> -                        * need to check parent's status first, to be sure that
+> -                        * the binary hasn't aborted (exit code). If it has
+> -                        * aborted then we have to attribute this status to our
+> -                        * subsubtest.
+> +                        * If a dynamic subsubtest is considered
+> +                        * incomplete we need to check parent's status
+> +                        * first, to be sure that the binary hasn't
+> +                        * aborted or stopped gracefully (exit
+> +                        * code). If it has aborted then we have to
+> +                        * attribute this status to our subsubtest.
+>                          */
+>                         if (!strcmp(dynresulttext, "incomplete")) {
+>                                 struct json_object *parent_subtest;
+>  
+>                                 if (json_object_object_get_ex(tests, piglit_name, &parent_subtest) &&
+> -                                   json_object_object_get_ex(parent_subtest, "result", &parent_subtest) &&
+> -                                   !strcmp(json_object_get_string(parent_subtest), "abort"))
+> -                                       dynresulttext = "abort";
+> +                                   json_object_object_get_ex(parent_subtest, "result", &parent_subtest)) {
+> +                                       const char *resulttext = json_object_get_string(parent_subtest);
+> +
+> +                                       if (!strcmp(resulttext, "abort") ||
+> +                                           !strcmp(resulttext, "notrun"))
+> +                                               dynresulttext = resulttext;
+> +                               }
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
----
- tests/i915/sysfs_clients.c | 126 +++++++++++++++++++++++++++++++------
- 1 file changed, 108 insertions(+), 18 deletions(-)
+Afaict, this matches the comment and that matches my basic understanding
+of the problem, so
 
-diff --git a/tests/i915/sysfs_clients.c b/tests/i915/sysfs_clients.c
-index a3a1f81e1..b7048938e 100644
---- a/tests/i915/sysfs_clients.c
-+++ b/tests/i915/sysfs_clients.c
-@@ -47,6 +47,8 @@
- #define assert_within_epsilon(x, ref, tolerance) \
- 	__assert_within_epsilon(x, ref, tolerance / 100., tolerance / 100.)
- 
-+#define BUFSZ 280
-+
- #define MI_BATCH_BUFFER_START (0x31 << 23)
- #define MI_BATCH_BUFFER_END (0xa << 23)
- #define MI_ARB_CHECK (0x5 << 23)
-@@ -75,7 +77,7 @@ static void pidname(int i915, int clients)
- {
- 	struct dirent *de;
- 	int sv[2], rv[2];
--	char buf[280];
-+	char buf[BUFSZ];
- 	int me = -1;
- 	long count;
- 	pid_t pid;
-@@ -180,7 +182,7 @@ static long count_clients(int clients)
- {
- 	struct dirent *de;
- 	long count = 0;
--	char buf[280];
-+	char buf[BUFSZ];
- 	DIR *dir;
- 
- 	dir = fdopendir(dup(clients));
-@@ -229,32 +231,117 @@ static void create(int i915, int clients)
- 	igt_assert_eq(count_clients(clients), 1);
- }
- 
--static int find_me(int clients, pid_t pid)
-+static const char *find_client(int clients, pid_t pid, char *buf)
- {
- 	struct dirent *de;
--	char buf[280];
--	int me = -1;
- 	DIR *dir;
- 
- 	dir = fdopendir(dup(clients));
- 	igt_assert(dir);
--	rewinddir(dir);
- 
--	while ((de = readdir(dir))) {
--		if (!isdigit(de->d_name[0]))
--			continue;
-+	for (int pass = 0; pass < 2; pass++) { /* What if the dir changes? */
-+		rewinddir(dir);
-+		while ((de = readdir(dir))) {
-+			if (!isdigit(de->d_name[0]))
-+				continue;
- 
--		snprintf(buf, sizeof(buf), "%s/pid", de->d_name);
--		igt_sysfs_read(clients, buf, buf, sizeof(buf));
--		if (atoi(buf) != pid)
--			continue;
-+			snprintf(buf, BUFSZ, "%s/pid", de->d_name);
-+			igt_sysfs_read(clients, buf, buf, sizeof(buf));
-+			if (atoi(buf) != pid)
-+				continue;
- 
--		me = openat(clients, de->d_name, O_DIRECTORY | O_RDONLY);
--		break;
-+			strncpy(buf, de->d_name, BUFSZ);
-+			goto out;
-+		}
- 	}
--
-+	*buf = '\0';
-+out:
- 	closedir(dir);
--	return me;
-+	return buf;
-+}
-+
-+static int find_me(int clients, pid_t pid)
-+{
-+	char buf[BUFSZ];
-+
-+	return openat(clients,
-+		      find_client(clients, pid, buf),
-+		      O_DIRECTORY | O_RDONLY);
-+}
-+
-+static int reopen_directory(int fd)
-+{
-+	char buf[BUFSZ];
-+	int dir;
-+
-+	snprintf(buf, sizeof(buf), "/proc/self/fd/%d", fd);
-+	dir = open(buf, O_RDONLY);
-+	igt_assert_fd(dir);
-+
-+	return dir;
-+}
-+
-+static unsigned int my_id(int clients, pid_t pid)
-+{
-+	char buf[BUFSZ];
-+
-+	return atoi(find_client(clients, pid, buf));
-+}
-+
-+static unsigned int recycle_client(int i915, int clients)
-+{
-+	int device, client;
-+
-+	device = gem_reopen_driver(i915);
-+	client = my_id(clients, getpid());
-+	close(device);
-+
-+	/* Client is now closed so no longer reported */
-+	igt_assert_eq(my_id(clients, getpid()), 0);
-+
-+	return client;
-+}
-+
-+static void recycle(int i915, int clients)
-+{
-+	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-+
-+	/*
-+	 * As we open and close clients, we do not expect to reuse old ids,
-+	 * i.e. we use a cyclic ida. This reduces the likelihood of userspace
-+	 * watchers becoming confused and mistaking the new client as a
-+	 * continuation of the old.
-+	 */
-+	igt_require(my_id(clients, getpid()) < 10000000);
-+	igt_assert(my_id(clients, getpid()));
-+
-+	igt_fork(child, 2 * ncpus) {
-+		unsigned int client, last;
-+
-+		/* Reopen the directory fd for each client */
-+		clients = reopen_directory(clients);
-+
-+		last = recycle_client(i915, clients);
-+		igt_info("Child[%d] first client:%d\n", getpid(), last);
-+		igt_until_timeout(5) {
-+			client = recycle_client(i915, clients);
-+
-+			/* In 5 seconds we are not going to exhaust the ids */
-+			igt_assert(client > last);
-+			last = client;
-+		}
-+		igt_info("Child[%d] last client:%d\n", getpid(), last);
-+	}
-+	igt_waitchildren();
-+
-+	/* Cleanup delayed behind rcu */
-+	igt_until_timeout(30) {
-+		sched_yield();
-+		if (count_clients(clients) == 1)
-+			break;
-+		usleep(10000);
-+	}
-+	igt_assert_eq(count_clients(clients), 1);
- }
- 
- static int64_t read_runtime(int client, int class)
-@@ -719,7 +806,7 @@ sema(int i915, int clients, const struct intel_execution_engine2 *e, int f)
- static int read_all(int clients, pid_t pid, int class, uint64_t *runtime)
- {
- 	struct dirent *de;
--	char buf[280];
-+	char buf[BUFSZ];
- 	int count = 0;
- 	DIR *dir;
- 
-@@ -958,6 +1045,9 @@ igt_main
- 	igt_subtest("create")
- 		create(i915, clients);
- 
-+	igt_subtest("recycle")
-+		recycle(i915, clients);
-+
- 	igt_subtest_group
- 		test_busy(i915, clients);
- 
--- 
-2.30.0
-
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
