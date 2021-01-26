@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 26 Jan 2021 15:10:10 -0000
-Message-ID: <161167381054.9810.2732215160707920082@emeril.freedesktop.org>
-References: <20210122213404.1146945-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20210122213404.1146945-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_i?=
- =?utf-8?q?915=3A_Exercise_sysfs_client_properties_=28rev2=29?=
+Date: Tue, 26 Jan 2021 15:10:55 -0000
+Message-ID: <161167385513.9812.14474434455167752638@emeril.freedesktop.org>
+References: <20210126103059.2881327-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20210126103059.2881327-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_s?=
+ =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/2=5D_i915/sysfs=5Fclient=3A_Ig?=
+ =?utf-8?q?nore_clients_being_closed_as_we_read_their_sysfs?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,19 +26,15 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: i915: Exercise sysfs client properties (rev2)
-URL   : https://patchwork.freedesktop.org/series/86198/
+Series: series starting with [i-g-t,1/2] i915/sysfs_client: Ignore clients being closed as we read their sysfs
+URL   : https://patchwork.freedesktop.org/series/86297/
 State : failure
 
 == Summary ==
 
 ERROR! This series introduces new undocumented tests:
 
-sysfs_clients
-sysfs_clients@busy
-sysfs_clients@busy-all
-sysfs_clients@create
-sysfs_clients@pidname
+sysfs_clients@recycle
 
 Can you document them as per the requirement in the [CONTRIBUTING.md]?
 
@@ -54,11 +51,11 @@ Thanks in advance!
 
 Other than that, pipeline status: SUCCESS.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/260442 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/261715 for the overview.
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/260442
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/261715
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
