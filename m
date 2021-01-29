@@ -1,13 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DD4A46EAD1
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Jan 2021 11:04:12 +0000 (UTC)
+References: <20201215084825.101358-1-maarten.lankhorst@linux.intel.com>
+ <20201215084825.101358-2-maarten.lankhorst@linux.intel.com>
+ <160802282111.8745.912787390753427568@build.alporthouse.com>
+ <161185595434.2943.13713875110960676997@build.alporthouse.com>
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Message-ID: <5a2ad95b-7cb1-6d9f-e991-48982548a88a@linux.intel.com>
+Date: Fri, 29 Jan 2021 12:04:08 +0100
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 29 Jan 2021 10:53:17 -0000
-Message-ID: <161191759717.15523.11535114832037916228@emeril.freedesktop.org>
-References: <20210129100934.3115085-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20210129100934.3115085-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_i?=
- =?utf-8?q?915/sysfs=5Fclients=3A_Check_that_client_ids_are_cyclic_=28rev2?=
- =?utf-8?q?=29?=
+In-Reply-To: <161185595434.2943.13713875110960676997@build.alporthouse.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests: Do not use pread on userptr
+ in gem_exec_parallel.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,47 +21,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Op 28-01-2021 om 18:45 schreef Chris Wilson:
+> Quoting Chris Wilson (2020-12-15 09:00:21)
+>> Quoting Maarten Lankhorst (2020-12-15 08:48:25)
+>>> It's even silly to use pread, directly read from the pointer instead by
+>>> executing gem_wait first.
+>> Major GEM violation.
+> And you pushed this without recording the nack.
+>
+> In what way does breaking the ABI and pretending it never happened help?
+> -Chris
 
-Series: i915/sysfs_clients: Check that client ids are cyclic (rev2)
-URL   : https://patchwork.freedesktop.org/series/86263/
-State : failure
+Hey,
 
-== Summary ==
+I don't see any explanation for the nack, just a generic statement that this breaks abi. If it was more specific, I could have added a full discussion to the commits.
 
-ERROR! This series introduces new undocumented tests:
+I have manually verified that the code bases using the userptr abi didn't break, both by running the automated tests, and inspecting the code base. On top of that,
 
-sysfs_clients@recycle
+both Dave Airlie and Jason Ekstrand acked the changes to the kernel.
 
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
+~Maarten
 
-[Documentation] has more details on how to do this.
-
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
-
-Thanks in advance!
-
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
-
-Other than that, pipeline status: SUCCESS.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/263554 for the overview.
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/263554
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
