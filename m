@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9C1C66E02F
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Jan 2021 04:21:40 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-Date: Fri, 29 Jan 2021 10:00:37 +0530
-Message-Id: <20210129043037.14665-1-nidhi1.gupta@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6890C6E425
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Jan 2021 04:40:21 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
+Date: Fri, 29 Jan 2021 10:11:52 +0530
+Message-Id: <20210129044152.30238-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_cursor_legacy: added test
- description
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_rotation_crc: reduce execution
+ time
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,67 +19,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org, karthik.b.s@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_cursor_legacy.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+Restricting the execution to 2 pipes
+with this change we see 50% improvement in time efficiency.
 
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 6034ad04..95491229 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -1365,6 +1365,8 @@ igt_main
- 		igt_display_require(&display, display.drm_fd);
- 	}
+v2: Updated commit message
+v3: Updated check condition
+
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+---
+ tests/kms_rotation_crc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index 33a97cca..e7072e20 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -405,6 +405,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 	igt_display_t *display = &data->display;
+ 	igt_output_t *output;
+ 	enum pipe pipe;
++	int pipe_count = 0;
  
-+	igt_describe("Test checks how many cursor updates we can fit between vblanks"
-+		     "on single pipe with different modes, priority and number of processes");
- 	igt_subtest_group {
- 		enum pipe n;
- 		for_each_pipe_static(n) {
-@@ -1391,6 +1393,10 @@ igt_main
- 		}
- 	}
+ 	if (plane_type == DRM_PLANE_TYPE_CURSOR)
+ 		igt_require(display->has_cursor_plane);
+@@ -421,6 +422,11 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 		if (IS_CHERRYVIEW(data->devid) && pipe != PIPE_B)
+ 			continue;
  
-+	/*Test description for all-pipes-* tests*/
-+	igt_describe("Test checks how many cursor updates we can fit between vblanks"
-+		     "on all pipes with different modes, priority and number of processes");
++		/* restricting the execution to 2 pipes to reduce execution time*/
++		if (pipe_count == 2 && !data->extended)
++			break;
++		pipe_count++;
 +
- 	igt_subtest("all-pipes-single-bo")
- 		stress(&display, -1, 1, DRM_MODE_CURSOR_BO, 20);
- 	igt_subtest("all-pipes-single-move")
-@@ -1412,6 +1418,10 @@ igt_main
- 	igt_subtest("long-nonblocking-modeset-vs-cursor-atomic")
- 		nonblocking_modeset_vs_cursor(&display, 16);
+ 		igt_output_set_pipe(output, pipe);
  
-+	/*Test Description for 2x-* tests*/
-+	igt_describe("This test executes flips on both CRTCs"
-+		     "while running cursor updates in parallel");
-+
- 	igt_subtest("2x-flip-vs-cursor-legacy")
- 		two_screens_flip_vs_cursor(&display, 8, false, false);
- 
-@@ -1485,11 +1495,14 @@ igt_main
- 			}
- 		}
- 
-+		igt_describe("Each iteration tries to squeeze target number of cursor"
-+                             "updates in half a second worth of flips");
- 		igt_subtest_f("%sflip-after-cursor-%s", prefix, modes[i])
- 			basic_flip_cursor(&display, i, FLIP_AFTER_CURSOR, 0);
- 
- 		igt_subtest_f("flip-vs-cursor-%s", modes[i])
- 			flip_vs_cursor(&display, i, 150);
-+
- 		igt_subtest_f("cursor-vs-flip-%s", modes[i])
- 			cursor_vs_flip(&display, i, 50);
- 
+ 		plane = igt_output_get_plane_type(output, plane_type);
 -- 
-2.26.2
+2.19.1
 
 _______________________________________________
 igt-dev mailing list
