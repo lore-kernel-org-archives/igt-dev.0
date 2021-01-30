@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Sat, 30 Jan 2021 04:31:55 -0000
-Message-ID: <161198111581.13907.13518361156911738587@emeril.freedesktop.org>
+Date: Sat, 30 Jan 2021 04:42:50 -0000
+Message-ID: <161198177093.13908.10227066086048041672@emeril.freedesktop.org>
 References: <20210130041704.19527-1-ashutosh.dixit@intel.com>
 In-Reply-To: <20210130041704.19527-1-ashutosh.dixit@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBtZXNv?=
- =?utf-8?q?n=3A_Turn_on_-Werror?=
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_m?=
+ =?utf-8?q?eson=3A_Turn_on_-Werror?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,66 +27,41 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Series: meson: Turn on -Werror
 URL   : https://patchwork.freedesktop.org/series/86465/
-State : failure
+State : warning
 
 == Summary ==
 
-IGT patchset build failed on latest successful build
-fdc23507d022b68443121ec2c1a951af27c87240 i915/sysfs_clients: Check that client ids are cyclic
+Did not get list of undocumented tests for this run, something is wrong!
 
-[245/370] Linking target tests/gem_tiled_fence_blits.
-[246/370] Linking target tests/gem_tiled_pread_basic.
-[247/370] Linking target tests/gem_tiled_partial_pwrite_pread.
-[248/370] Linking target tests/gem_tiled_pread_pwrite.
-[249/370] Linking target tests/gem_tiled_swapping.
-[250/370] Linking target tests/gem_tiled_wc.
-[251/370] Linking target tests/gem_tiled_wb.
-[252/370] Linking target tests/gem_tiling_max_stride.
-[253/370] Linking target tests/gem_unfence_active_buffers.
-[254/370] Compiling C object 'tests/tests@@gem_userptr_blits@exe/i915_gem_userptr_blits.c.o'.
-FAILED: tests/tests@@gem_userptr_blits@exe/i915_gem_userptr_blits.c.o 
-ccache cc -Itests/tests@@gem_userptr_blits@exe -Itests -I../tests -I../include/drm-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng12 -I/usr/include/libdrm -I/usr/include/x86_64-linux-gnu -I/usr/include/alsa -I/usr/include -I/usr/include/libdrm/nouveau -I/home/cidrm/kernel_headers/include -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wextra -std=gnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=2 -Wimplicit-fallthrough=0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-mi
- ssing-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Waddress -Warray-bounds -Wimplicit -Winit-self -Wint-to-pointer-cast -Wmain -Wmissing-braces -Wnonnull -Wpointer-to-int-cast -Wreturn-type -Wsequence-point -Wtrigraphs -Wwrite-strings -Werror -fno-builtin-malloc -fno-builtin-calloc -fcommon -pthread  -MD -MQ 'tests/tests@@gem_userptr_blits@exe/i915_gem_userptr_blits.c.o' -MF 'tests/tests@@gem_userptr_blits@exe/i915_gem_userptr_blits.c.o.d' -o 'tests/tests@@gem_userptr_blits@exe/i915_gem_userptr_blits.c.o' -c ../tests/i915/gem_userptr_blits.c
-In file included from ../tests/i915/gem_userptr_blits.c:58:
-/home/cidrm/kernel_headers/include/linux/memfd.h:8: error: "MFD_CLOEXEC" redefined [-Werror]
- #define MFD_CLOEXEC  0x0001U
- 
-In file included from /usr/include/x86_64-linux-gnu/bits/mman-linux.h:115,
-                 from /usr/include/x86_64-linux-gnu/bits/mman.h:45,
-                 from /usr/include/x86_64-linux-gnu/sys/mman.h:41,
-                 from ../lib/stubs/syscalls/sys/mman.h:5,
-                 from ../tests/i915/gem_userptr_blits.c:49:
-/usr/include/x86_64-linux-gnu/bits/mman-shared.h:26: note: this is the location of the previous definition
- #  define MFD_CLOEXEC 1U
- 
-In file included from ../tests/i915/gem_userptr_blits.c:58:
-/home/cidrm/kernel_headers/include/linux/memfd.h:9: error: "MFD_ALLOW_SEALING" redefined [-Werror]
- #define MFD_ALLOW_SEALING 0x0002U
- 
-In file included from /usr/include/x86_64-linux-gnu/bits/mman-linux.h:115,
-                 from /usr/include/x86_64-linux-gnu/bits/mman.h:45,
-                 from /usr/include/x86_64-linux-gnu/sys/mman.h:41,
-                 from ../lib/stubs/syscalls/sys/mman.h:5,
-                 from ../tests/i915/gem_userptr_blits.c:49:
-/usr/include/x86_64-linux-gnu/bits/mman-shared.h:27: note: this is the location of the previous definition
- #  define MFD_ALLOW_SEALING 2U
- 
-In file included from ../tests/i915/gem_userptr_blits.c:58:
-/home/cidrm/kernel_headers/include/linux/memfd.h:10: error: "MFD_HUGETLB" redefined [-Werror]
- #define MFD_HUGETLB  0x0004U
- 
-In file included from /usr/include/x86_64-linux-gnu/bits/mman-linux.h:115,
-                 from /usr/include/x86_64-linux-gnu/bits/mman.h:45,
-                 from /usr/include/x86_64-linux-gnu/sys/mman.h:41,
-                 from ../lib/stubs/syscalls/sys/mman.h:5,
-                 from ../tests/i915/gem_userptr_blits.c:49:
-/usr/include/x86_64-linux-gnu/bits/mman-shared.h:28: note: this is the location of the previous definition
- #  define MFD_HUGETLB 4U
- 
-cc1: all warnings being treated as errors
-ninja: build stopped: subcommand failed.
+Other than that, pipeline status: FAILED.
 
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/263927 for the overview.
 
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/6994602):
+  [11/983] Compiling C object 'lib/76b5a35@@igt-i915_gem_vm_c@sta/i915_gem_vm.c.o'.
+  [12/983] Linking static target lib/libigt-i915_gem_vm_c.a.
+  [13/983] Compiling C object 'lib/76b5a35@@igt-i915_gem_mman_c@sta/i915_gem_mman.c.o'.
+  [14/983] Linking static target lib/libigt-i915_gem_mman_c.a.
+  [15/983] Linking static target lib/libigt-igt_collection_c.a.
+  [16/983] Compiling C object 'lib/76b5a35@@igt-igt_color_encoding_c@sta/igt_color_encoding.c.o'.
+  [17/983] Compiling C object 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o'.
+  FAILED: lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o 
+  clang -Ilib/76b5a35@@igt-igt_aux_c@sta -Ilib -I../lib -I../include/drm-uapi -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/valgrind -Xclang -fcolor-diagnostics -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wextra -std=gnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=2 -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Waddress -Warray-bounds -Wimplicit -Winit-self -Wint-to-pointer-cast -Wmain -Wmissing-braces -Wnonnu
+ ll -Wpointer-to-int-cast -Wreturn-type -Wsequence-point -Wtrigraphs -Wwrite-strings -Werror -fno-builtin-malloc -fno-builtin-calloc -fcommon -fPIC -pthread '-DIGT_DATADIR="/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR="/builds/gfx-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN="igt_aux"' -MD -MQ 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o' -MF 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o.d' -o 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o' -c ../lib/igt_aux.c
+  ../lib/igt_aux.c:500:1: error: function 'sig_abort' could be declared with attribute 'noreturn' [-Werror,-Wmissing-noreturn]
+  {
+  ^
+  1 error generated.
+  ninja: build stopped: subcommand failed.
+  section_end:1611981119:step_script
+  section_start:1611981119:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1611981124:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/263927
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
