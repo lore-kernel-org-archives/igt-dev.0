@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D16376EC87
- for <igt-dev@lists.freedesktop.org>; Sat, 30 Jan 2021 06:44:25 +0000 (UTC)
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Fri, 29 Jan 2021 22:44:21 -0800
-Message-Id: <20210130064421.30389-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] meson: Turn on -Werror
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Sat, 30 Jan 2021 07:23:36 -0000
+Message-ID: <161199141699.13912.12949771333709993492@emeril.freedesktop.org>
+References: <20210130064421.30389-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20210130064421.30389-1-ashutosh.dixit@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_m?=
+ =?utf-8?q?eson=3A_Turn_on_-Werror_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,80 +14,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We can choose which compile warnings to enable, but once they are enabled
-treat all warnings as error. This enforces stricter checks against compile
-warnings creeping in.
+== Series Details ==
 
-v2: Fix redefinition warning errors from i915/gem_userptr_blits
+Series: meson: Turn on -Werror (rev2)
+URL   : https://patchwork.freedesktop.org/series/86465/
+State : warning
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- meson.build                    | 28 +++++++++++++++-------------
- tests/i915/gem_userptr_blits.c |  2 --
- 2 files changed, 15 insertions(+), 15 deletions(-)
+== Summary ==
 
-diff --git a/meson.build b/meson.build
-index f4ee14f14a..3f3693f99d 100644
---- a/meson.build
-+++ b/meson.build
-@@ -51,19 +51,21 @@ cc_args = [
- 	'-Wno-unused-parameter',
- 	'-Wno-unused-result',
- 
--	'-Werror=address',
--	'-Werror=array-bounds',
--	'-Werror=implicit',
--	'-Werror=init-self',
--	'-Werror=int-to-pointer-cast',
--	'-Werror=main',
--	'-Werror=missing-braces',
--	'-Werror=nonnull',
--	'-Werror=pointer-to-int-cast',
--	'-Werror=return-type',
--	'-Werror=sequence-point',
--	'-Werror=trigraphs',
--	'-Werror=write-strings',
-+	'-Waddress',
-+	'-Warray-bounds',
-+	'-Wimplicit',
-+	'-Winit-self',
-+	'-Wint-to-pointer-cast',
-+	'-Wmain',
-+	'-Wmissing-braces',
-+	'-Wnonnull',
-+	'-Wpointer-to-int-cast',
-+	'-Wreturn-type',
-+	'-Wsequence-point',
-+	'-Wtrigraphs',
-+	'-Wwrite-strings',
-+
-+	'-Werror',
- # Disable the memory allocating builtins as they may cause unexpected behavior
- # with our framework. They *may* get optimized out in favor of a register or
- # stack variable, making them effectively local. Local variables do not play
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index 2f3954c5d6..31bca3b78f 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -55,8 +55,6 @@
- #include <pthread.h>
- #include <time.h>
- 
--#include <linux/memfd.h>
--
- #include "drm.h"
- #include "i915_drm.h"
- 
--- 
-2.29.2
+Did not get list of undocumented tests for this run, something is wrong!
 
+Other than that, pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/263939 for the overview.
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/6995301):
+  [7/975] Linking static target lib/libigt-i915_gem_submission_c.a.
+  [8/975] Linking static target lib/libigt-i915_gem_ring_c.a.
+  [9/975] Linking static target lib/libigt-i915_gem_vm_c.a.
+  [10/975] Linking static target lib/libigt-i915_gem_mman_c.a.
+  [11/975] Linking static target lib/libigt-igt_collection_c.a.
+  [12/975] Linking static target lib/libigt-igt_device_scan_c.a.
+  [13/975] Compiling C object 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o'.
+  FAILED: lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o 
+  clang -Ilib/76b5a35@@igt-igt_aux_c@sta -Ilib -I../lib -I../include/drm-uapi -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/valgrind -Xclang -fcolor-diagnostics -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wextra -std=gnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=2 -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Waddress -Warray-bounds -Wimplicit -Winit-self -Wint-to-pointer-cast -Wmain -Wmissing-braces -Wnonnu
+ ll -Wpointer-to-int-cast -Wreturn-type -Wsequence-point -Wtrigraphs -Wwrite-strings -Werror -fno-builtin-malloc -fno-builtin-calloc -fcommon -fPIC -pthread '-DIGT_DATADIR="/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR="/builds/gfx-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN="igt_aux"' -MD -MQ 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o' -MF 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o.d' -o 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o' -c ../lib/igt_aux.c
+  ../lib/igt_aux.c:500:1: error: function 'sig_abort' could be declared with attribute 'noreturn' [-Werror,-Wmissing-noreturn]
+  {
+  ^
+  1 error generated.
+  ninja: build stopped: subcommand failed.
+  section_end:1611990903:step_script
+  section_start:1611990904:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1611990909:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/263939
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
