@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 50E7B6EC83
- for <igt-dev@lists.freedesktop.org>; Sat, 30 Jan 2021 04:17:10 +0000 (UTC)
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Fri, 29 Jan 2021 20:17:04 -0800
-Message-Id: <20210130041704.19527-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] meson: Turn on -Werror
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Sat, 30 Jan 2021 04:31:55 -0000
+Message-ID: <161198111581.13907.13518361156911738587@emeril.freedesktop.org>
+References: <20210130041704.19527-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20210130041704.19527-1-ashutosh.dixit@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBtZXNv?=
+ =?utf-8?q?n=3A_Turn_on_-Werror?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,64 +14,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: petri.latvala@intel.com
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We can choose which compile warnings to enable, but once they are enabled
-treat all warnings as error. This enforces stricter checks against compile
-warnings creeping in.
+== Series Details ==
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- meson.build | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+Series: meson: Turn on -Werror
+URL   : https://patchwork.freedesktop.org/series/86465/
+State : failure
 
-diff --git a/meson.build b/meson.build
-index f4ee14f14a..3f3693f99d 100644
---- a/meson.build
-+++ b/meson.build
-@@ -51,19 +51,21 @@ cc_args = [
- 	'-Wno-unused-parameter',
- 	'-Wno-unused-result',
+== Summary ==
+
+IGT patchset build failed on latest successful build
+fdc23507d022b68443121ec2c1a951af27c87240 i915/sysfs_clients: Check that client ids are cyclic
+
+[245/370] Linking target tests/gem_tiled_fence_blits.
+[246/370] Linking target tests/gem_tiled_pread_basic.
+[247/370] Linking target tests/gem_tiled_partial_pwrite_pread.
+[248/370] Linking target tests/gem_tiled_pread_pwrite.
+[249/370] Linking target tests/gem_tiled_swapping.
+[250/370] Linking target tests/gem_tiled_wc.
+[251/370] Linking target tests/gem_tiled_wb.
+[252/370] Linking target tests/gem_tiling_max_stride.
+[253/370] Linking target tests/gem_unfence_active_buffers.
+[254/370] Compiling C object 'tests/tests@@gem_userptr_blits@exe/i915_gem_userptr_blits.c.o'.
+FAILED: tests/tests@@gem_userptr_blits@exe/i915_gem_userptr_blits.c.o 
+ccache cc -Itests/tests@@gem_userptr_blits@exe -Itests -I../tests -I../include/drm-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng12 -I/usr/include/libdrm -I/usr/include/x86_64-linux-gnu -I/usr/include/alsa -I/usr/include -I/usr/include/libdrm/nouveau -I/home/cidrm/kernel_headers/include -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wextra -std=gnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=2 -Wimplicit-fallthrough=0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-mi
+ ssing-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Waddress -Warray-bounds -Wimplicit -Winit-self -Wint-to-pointer-cast -Wmain -Wmissing-braces -Wnonnull -Wpointer-to-int-cast -Wreturn-type -Wsequence-point -Wtrigraphs -Wwrite-strings -Werror -fno-builtin-malloc -fno-builtin-calloc -fcommon -pthread  -MD -MQ 'tests/tests@@gem_userptr_blits@exe/i915_gem_userptr_blits.c.o' -MF 'tests/tests@@gem_userptr_blits@exe/i915_gem_userptr_blits.c.o.d' -o 'tests/tests@@gem_userptr_blits@exe/i915_gem_userptr_blits.c.o' -c ../tests/i915/gem_userptr_blits.c
+In file included from ../tests/i915/gem_userptr_blits.c:58:
+/home/cidrm/kernel_headers/include/linux/memfd.h:8: error: "MFD_CLOEXEC" redefined [-Werror]
+ #define MFD_CLOEXEC  0x0001U
  
--	'-Werror=address',
--	'-Werror=array-bounds',
--	'-Werror=implicit',
--	'-Werror=init-self',
--	'-Werror=int-to-pointer-cast',
--	'-Werror=main',
--	'-Werror=missing-braces',
--	'-Werror=nonnull',
--	'-Werror=pointer-to-int-cast',
--	'-Werror=return-type',
--	'-Werror=sequence-point',
--	'-Werror=trigraphs',
--	'-Werror=write-strings',
-+	'-Waddress',
-+	'-Warray-bounds',
-+	'-Wimplicit',
-+	'-Winit-self',
-+	'-Wint-to-pointer-cast',
-+	'-Wmain',
-+	'-Wmissing-braces',
-+	'-Wnonnull',
-+	'-Wpointer-to-int-cast',
-+	'-Wreturn-type',
-+	'-Wsequence-point',
-+	'-Wtrigraphs',
-+	'-Wwrite-strings',
-+
-+	'-Werror',
- # Disable the memory allocating builtins as they may cause unexpected behavior
- # with our framework. They *may* get optimized out in favor of a register or
- # stack variable, making them effectively local. Local variables do not play
--- 
-2.29.2
+In file included from /usr/include/x86_64-linux-gnu/bits/mman-linux.h:115,
+                 from /usr/include/x86_64-linux-gnu/bits/mman.h:45,
+                 from /usr/include/x86_64-linux-gnu/sys/mman.h:41,
+                 from ../lib/stubs/syscalls/sys/mman.h:5,
+                 from ../tests/i915/gem_userptr_blits.c:49:
+/usr/include/x86_64-linux-gnu/bits/mman-shared.h:26: note: this is the location of the previous definition
+ #  define MFD_CLOEXEC 1U
+ 
+In file included from ../tests/i915/gem_userptr_blits.c:58:
+/home/cidrm/kernel_headers/include/linux/memfd.h:9: error: "MFD_ALLOW_SEALING" redefined [-Werror]
+ #define MFD_ALLOW_SEALING 0x0002U
+ 
+In file included from /usr/include/x86_64-linux-gnu/bits/mman-linux.h:115,
+                 from /usr/include/x86_64-linux-gnu/bits/mman.h:45,
+                 from /usr/include/x86_64-linux-gnu/sys/mman.h:41,
+                 from ../lib/stubs/syscalls/sys/mman.h:5,
+                 from ../tests/i915/gem_userptr_blits.c:49:
+/usr/include/x86_64-linux-gnu/bits/mman-shared.h:27: note: this is the location of the previous definition
+ #  define MFD_ALLOW_SEALING 2U
+ 
+In file included from ../tests/i915/gem_userptr_blits.c:58:
+/home/cidrm/kernel_headers/include/linux/memfd.h:10: error: "MFD_HUGETLB" redefined [-Werror]
+ #define MFD_HUGETLB  0x0004U
+ 
+In file included from /usr/include/x86_64-linux-gnu/bits/mman-linux.h:115,
+                 from /usr/include/x86_64-linux-gnu/bits/mman.h:45,
+                 from /usr/include/x86_64-linux-gnu/sys/mman.h:41,
+                 from ../lib/stubs/syscalls/sys/mman.h:5,
+                 from ../tests/i915/gem_userptr_blits.c:49:
+/usr/include/x86_64-linux-gnu/bits/mman-shared.h:28: note: this is the location of the previous definition
+ #  define MFD_HUGETLB 4U
+ 
+cc1: all warnings being treated as errors
+ninja: build stopped: subcommand failed.
+
 
 _______________________________________________
 igt-dev mailing list
