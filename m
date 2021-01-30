@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Sat, 30 Jan 2021 07:23:36 -0000
-Message-ID: <161199141699.13912.12949771333709993492@emeril.freedesktop.org>
+Date: Sat, 30 Jan 2021 07:45:19 -0000
+Message-ID: <161199271933.13907.10482573424599643523@emeril.freedesktop.org>
 References: <20210130064421.30389-1-ashutosh.dixit@intel.com>
 In-Reply-To: <20210130064421.30389-1-ashutosh.dixit@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_m?=
- =?utf-8?q?eson=3A_Turn_on_-Werror_=28rev2=29?=
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbWVzb246?=
+ =?utf-8?q?_Turn_on_-Werror_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,54 +15,205 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============1362982635=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============1362982635==
+Content-Type: multipart/alternative;
+ boundary="===============1968912843375184322=="
+
+--===============1968912843375184322==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: meson: Turn on -Werror (rev2)
 URL   : https://patchwork.freedesktop.org/series/86465/
-State : warning
+State : success
 
 == Summary ==
 
-Did not get list of undocumented tests for this run, something is wrong!
+CI Bug Log - changes from CI_DRM_9705 -> IGTPW_5448
+====================================================
 
-Other than that, pipeline status: FAILED.
+Summary
+-------
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/263939 for the overview.
+  **SUCCESS**
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/6995301):
-  [7/975] Linking static target lib/libigt-i915_gem_submission_c.a.
-  [8/975] Linking static target lib/libigt-i915_gem_ring_c.a.
-  [9/975] Linking static target lib/libigt-i915_gem_vm_c.a.
-  [10/975] Linking static target lib/libigt-i915_gem_mman_c.a.
-  [11/975] Linking static target lib/libigt-igt_collection_c.a.
-  [12/975] Linking static target lib/libigt-igt_device_scan_c.a.
-  [13/975] Compiling C object 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o'.
-  FAILED: lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o 
-  clang -Ilib/76b5a35@@igt-igt_aux_c@sta -Ilib -I../lib -I../include/drm-uapi -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/valgrind -Xclang -fcolor-diagnostics -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wextra -std=gnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=2 -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Waddress -Warray-bounds -Wimplicit -Winit-self -Wint-to-pointer-cast -Wmain -Wmissing-braces -Wnonnu
- ll -Wpointer-to-int-cast -Wreturn-type -Wsequence-point -Wtrigraphs -Wwrite-strings -Werror -fno-builtin-malloc -fno-builtin-calloc -fcommon -fPIC -pthread '-DIGT_DATADIR="/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR="/builds/gfx-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN="igt_aux"' -MD -MQ 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o' -MF 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o.d' -o 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o' -c ../lib/igt_aux.c
-  ../lib/igt_aux.c:500:1: error: function 'sig_abort' could be declared with attribute 'noreturn' [-Werror,-Wmissing-noreturn]
-  {
-  ^
-  1 error generated.
-  ninja: build stopped: subcommand failed.
-  section_end:1611990903:step_script
-  section_start:1611990904:cleanup_file_variables
-  Cleaning up file based variables
-  section_end:1611990909:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5448 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@read_all_entries:
+    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +2 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9705/fi-tgl-y/igt@debugfs_test@read_all_entries.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/fi-tgl-y/igt@debugfs_test@read_all_entries.html
+
+  * igt@i915_selftest@live@sanitycheck:
+    - fi-kbl-7500u:       [PASS][3] -> [DMESG-WARN][4] ([i915#2605])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9705/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_linear_blits@basic:
+    - fi-tgl-y:           [DMESG-WARN][5] ([i915#402]) -> [PASS][6] +1 similar issue
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9705/fi-tgl-y/igt@gem_linear_blits@basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/fi-tgl-y/igt@gem_linear_blits@basic.html
+
+  * igt@i915_selftest@live@gem_contexts:
+    - fi-tgl-y:           [SKIP][7] ([i915#2966]) -> [PASS][8] +13 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9705/fi-tgl-y/igt@i915_selftest@live@gem_contexts.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/fi-tgl-y/igt@i915_selftest@live@gem_contexts.html
+
+  * igt@i915_selftest@live@gtt:
+    - fi-tgl-y:           [FAIL][9] -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9705/fi-tgl-y/igt@i915_selftest@live@gtt.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/fi-tgl-y/igt@i915_selftest@live@gtt.html
+
+  
+  [i915#2605]: https://gitlab.freedesktop.org/drm/intel/issues/2605
+  [i915#2966]: https://gitlab.freedesktop.org/drm/intel/issues/2966
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (44 -> 38)
+------------------------------
+
+  Missing    (6): fi-jsl-1 fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5979 -> IGTPW_5448
+
+  CI-20190529: 20190529
+  CI_DRM_9705: 7b1b769c42017c6e6d603dbea0182e74090451f1 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5448: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/index.html
+  IGT_5979: fdc23507d022b68443121ec2c1a951af27c87240 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/263939
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/index.html
+
+--===============1968912843375184322==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>meson: Turn on -Werror (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/86465/">https://patchwork.freedesktop.org/series/86465/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9705 -&gt; IGTPW_5448</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5448 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@read_all_entries:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9705/fi-tgl-y/igt@debugfs_test@read_all_entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/fi-tgl-y/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@sanitycheck:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9705/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2605">i915#2605</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_linear_blits@basic:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9705/fi-tgl-y/igt@gem_linear_blits@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/fi-tgl-y/igt@gem_linear_blits@basic.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gem_contexts:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9705/fi-tgl-y/igt@i915_selftest@live@gem_contexts.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2966">i915#2966</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/fi-tgl-y/igt@i915_selftest@live@gem_contexts.html">PASS</a> +13 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gtt:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9705/fi-tgl-y/igt@i915_selftest@live@gtt.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/fi-tgl-y/igt@i915_selftest@live@gtt.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (44 -&gt; 38)</h2>
+<p>Missing    (6): fi-jsl-1 fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5979 -&gt; IGTPW_5448</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9705: 7b1b769c42017c6e6d603dbea0182e74090451f1 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5448: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5448/index.html<br />
+  IGT_5979: fdc23507d022b68443121ec2c1a951af27c87240 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============1968912843375184322==--
+
+--===============1362982635==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1362982635==--
