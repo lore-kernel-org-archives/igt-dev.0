@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A11896E3F0
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Feb 2021 05:11:32 +0000 (UTC)
-Date: Mon, 1 Feb 2021 10:43:16 +0530
-From: Kunal Joshi <kunal1.joshi@intel.com>
-Message-ID: <20210201051316.GA593586@intel.com>
-References: <20210129074917.2480118-1-arundhati.hagaragi@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210129074917.2480118-1-arundhati.hagaragi@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_universal_plane:Added
- subtest description
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 01 Feb 2021 06:29:50 -0000
+Message-ID: <161216099078.18681.12740518505390291746@emeril.freedesktop.org>
+References: <20210201050519.2559533-1-arundhati.hagaragi@intel.com>
+In-Reply-To: <20210201050519.2559533-1-arundhati.hagaragi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Fscaling=3Aadded_test_description_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,68 +14,242 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1473285855=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arundhati Hagaragi <arundhati.hagaragi@intel.com>, igt-dev@lists.freedesktop.org
+To: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2021-01-29 at 13:19:17 +0530, Arundhati Hagaragi wrote:
-> Added description for all subtests
-> 
-> Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
-> Cc: Joshi, Kunal1 <kunal1.joshi@intel.com>
-> 
-> v2: removed extra bracket and semicolon.
-> ---
->  tests/kms_universal_plane.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-> index 46d6d180..aae3fc52 100644
-> --- a/tests/kms_universal_plane.c
-> +++ b/tests/kms_universal_plane.c
-> @@ -758,26 +758,32 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
->  		igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
->  	}
->  
-> +	igt_describe("Check the switching between different primary plane fbs with CRTC off");
->  	igt_subtest_f("universal-plane-pipe-%s-functional",
->  		      kmstest_pipe_name(pipe))
->  		for_each_valid_output_on_pipe(&data->display, pipe, output)
->  			functional_test_pipe(data, pipe, output);
->  
-> +	igt_describe("Test for scale-up or scale-down using universal plane API without covering CRTC");
->  	igt_subtest_f("universal-plane-pipe-%s-sanity",
->  		      kmstest_pipe_name(pipe))
->  		for_each_valid_output_on_pipe(&data->display, pipe, output)
->  			sanity_test_pipe(data, pipe, output);
->  
-> +	igt_describe("Check pageflips while primary plane is disabled before IOCTL or between IOCTL"
-> +			" and pageflip execution");
->  	igt_subtest_f("disable-primary-vs-flip-pipe-%s",
->  		      kmstest_pipe_name(pipe))
->  		for_each_valid_output_on_pipe(&data->display, pipe, output)
->  			pageflip_test_pipe(data, pipe, output);
->  
-> +	igt_describe("Check for cursor leaks after performing cursor operations");
->  	igt_subtest_f("cursor-fb-leak-pipe-%s",
->  		      kmstest_pipe_name(pipe))
->  		for_each_valid_output_on_pipe(&data->display, pipe, output)
->  			cursor_leak_test_pipe(data, pipe, output);
->  
-> +	igt_describe("Check if pageflip succeeds in windowed setting");
->  	igt_subtest_f("universal-plane-gen9-features-pipe-%s",
->  		      kmstest_pipe_name(pipe))
->  		for_each_valid_output_on_pipe(&data->display, pipe, output)
-> -- 
-> 2.25.1
-> 
+--===============1473285855==
+Content-Type: multipart/alternative;
+ boundary="===============5532935052085932283=="
 
-LGTM
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+--===============5532935052085932283==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/kms_plane_scaling:added test description (rev3)
+URL   : https://patchwork.freedesktop.org/series/85188/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_5981 -> IGTPW_5455
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5455 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@semaphore:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][1] ([fdo#109271]) +26 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html
+
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-bdw-5557u:       NOTRUN -> [WARN][2] ([i915#2283])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-tgl-y:           NOTRUN -> [DMESG-WARN][3] ([i915#2411] / [i915#402])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@gem_linear_blits@basic:
+    - fi-tgl-y:           NOTRUN -> [DMESG-WARN][4] ([i915#402]) +1 similar issue
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-tgl-y/igt@gem_linear_blits@basic.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - fi-tgl-y:           NOTRUN -> [DMESG-FAIL][5] ([i915#2373])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-tgl-y/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-tgl-y:           NOTRUN -> [DMESG-FAIL][6] ([i915#1759])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-tgl-y/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html
+
+  * igt@kms_chamelium@vga-edid-read:
+    - fi-tgl-y:           NOTRUN -> [SKIP][8] ([fdo#111827]) +8 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-tgl-y/igt@kms_chamelium@vga-edid-read.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-tgl-y:           NOTRUN -> [SKIP][9] ([fdo#109285])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-tgl-y/igt@kms_force_connector_basic@force-load-detect.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1759]: https://gitlab.freedesktop.org/drm/intel/issues/1759
+  [i915#2283]: https://gitlab.freedesktop.org/drm/intel/issues/2283
+  [i915#2373]: https://gitlab.freedesktop.org/drm/intel/issues/2373
+  [i915#2411]: https://gitlab.freedesktop.org/drm/intel/issues/2411
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (43 -> 38)
+------------------------------
+
+  Additional (1): fi-tgl-y 
+  Missing    (6): fi-jsl-1 fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5981 -> IGTPW_5455
+
+  CI-20190529: 20190529
+  CI_DRM_9709: 56a8ec3a493d37af36b98e35a5d7831f58e59cf1 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5455: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/index.html
+  IGT_5981: 743c8e5cd78b583e6b98dbc22c5cef9aa7130d6a @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/index.html
+
+--===============5532935052085932283==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_scaling:added test description (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/85188/">https://patchwork.freedesktop.org/series/85188/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_5981 -&gt; IGTPW_5455</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5455 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@semaphore:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +26 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2283">i915#2283</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-tgl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2411">i915#2411</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_linear_blits@basic:</p>
+<ul>
+<li>fi-tgl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-tgl-y/igt@gem_linear_blits@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>fi-tgl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-tgl-y/igt@i915_selftest@live@gt_lrc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2373">i915#2373</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-tgl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-tgl-y/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1759">i915#1759</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@vga-edid-read:</p>
+<ul>
+<li>fi-tgl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-tgl-y/igt@kms_chamelium@vga-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-tgl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/fi-tgl-y/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (43 -&gt; 38)</h2>
+<p>Additional (1): fi-tgl-y <br />
+  Missing    (6): fi-jsl-1 fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5981 -&gt; IGTPW_5455</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9709: 56a8ec3a493d37af36b98e35a5d7831f58e59cf1 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5455: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5455/index.html<br />
+  IGT_5981: 743c8e5cd78b583e6b98dbc22c5cef9aa7130d6a @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============5532935052085932283==--
+
+--===============1473285855==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1473285855==--
