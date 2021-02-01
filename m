@@ -1,9 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Date: Mon,  1 Feb 2021 11:57:56 +0000
-Message-Id: <20210201115756.876351-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] intel_gpu_top: Wrap interactive header
+In-Reply-To: <20210201115756.876351-1-tvrtko.ursulin@linux.intel.com>
+References: <20210201115756.876351-1-tvrtko.ursulin@linux.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Mon, 01 Feb 2021 12:07:10 +0000
+Message-ID: <161218123064.27906.1183308463378840226@build.alporthouse.com>
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] intel_gpu_top: Wrap
+ interactive header
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,129 +18,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
+Cc: Intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Quoting Tvrtko Ursulin (2021-02-01 11:57:56)
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> 
+> Slight improvement with regards to wrapping header components to fit
+> console width. If a single element is wider than max it can still
+> overflow but it should now work better for practical console widths.
 
-Slight improvement with regards to wrapping header components to fit
-console width. If a single element is wider than max it can still
-overflow but it should now work better for practical console widths.
+<----
+intel-gpu-top: Intel Kabylake (Gen9) @ /dev/dri/card0
+ 900/ 949 MHz;   0% RC6;  6.97/18.42 W;        2 irqs/s
+      IMC reads:        6 MiB/s
+     IMC writes:        0 MiB/s
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
----
- tools/intel_gpu_top.c | 84 ++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 71 insertions(+), 13 deletions(-)
+---->
+intel-gpu-top: Intel Kabylake (Gen9) @ /dev/dri/card0 -  903/ 954 MHz;   0% RC6
+    7.16/18.40 W;       14 irqs/s
 
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index dffc6ebecc57..c43054c3fee8 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -1443,6 +1443,41 @@ static bool print_groups(struct cnt_group **groups)
- 	return print_data;
- }
- 
-+static int __attribute__ ((format(__printf__, 6, 7)))
-+print_header_token(const char *cont, int lines, int con_w, int con_h, int *rem,
-+		   const char *fmt, ...)
-+{
-+	const char *indent = "\n   ";
-+	char buf[256];
-+	va_list args;
-+	int ret;
-+
-+	if (lines >= con_h)
-+		return lines;
-+
-+	va_start(args, fmt);
-+	ret = vsnprintf(buf, sizeof(buf), fmt, args);
-+	assert(ret < sizeof(buf));
-+	va_end(args);
-+
-+	ret = (cont ? strlen(cont) : 0) + strlen(buf);
-+	*rem -= ret;
-+	if (*rem < 0) {
-+		if (++lines >= con_h)
-+			return lines;
-+
-+		*rem = con_w - ret - strlen(indent);
-+		cont = indent;
-+	}
-+
-+	if (cont)
-+		ret = printf("%s%s", cont, buf);
-+	else
-+		ret = printf("%s", buf);
-+
-+	return lines;
-+}
-+
- static int
- print_header(const struct igt_device_card *card,
- 	     const char *codename,
-@@ -1520,22 +1555,45 @@ print_header(const struct igt_device_card *card,
- 	*consumed = print_groups(groups);
- 
- 	if (output_mode == INTERACTIVE) {
-+		int rem = con_w;
-+
- 		printf("\033[H\033[J");
- 
--		if (lines++ < con_h)
--			printf("intel-gpu-top: %s @ %s\n",
--			       codename, card->card);
--		if (lines++ < con_h) {
--			printf("%s/%s MHz; %s%% RC6; ",
--			       freq_items[1].buf, freq_items[0].buf,
--			       rc6_items[0].buf);
--			if (engines->r_gpu.present) {
--				printf("%s/%s W; ",
--				       power_items[0].buf,
--				       power_items[1].buf);
--			}
--			printf("%s irqs/s\n", irq_items[0].buf);
-+		lines = print_header_token(NULL, lines, con_w, con_h, &rem,
-+					   "intel-gpu-top:");
-+
-+		lines = print_header_token(" ", lines, con_w, con_h, &rem,
-+					   "%s", codename);
-+
-+		lines = print_header_token(" @ ", lines, con_w, con_h, &rem,
-+					   "%s", card->card);
-+
-+		lines = print_header_token(" - ", lines, con_w, con_h, &rem,
-+					   "%s/%s MHz",
-+					   freq_items[1].buf,
-+					   freq_items[0].buf);
-+
-+		lines = print_header_token("; ", lines, con_w, con_h, &rem,
-+					   "%s%% RC6",
-+					   rc6_items[0].buf);
-+
-+		if (engines->r_gpu.present) {
-+			lines = print_header_token("; ", lines, con_w, con_h,
-+						   &rem,
-+						   "%s/%s W",
-+						   power_items[0].buf,
-+						   power_items[1].buf);
- 		}
-+
-+		lines = print_header_token("; ", lines, con_w, con_h, &rem,
-+					   "%s irqs/s",
-+					   irq_items[0].buf);
-+
-+		if (lines++ < con_h)
-+			printf("\n");
-+
-+		if (lines++ < con_h)
-+			printf("\n");
- 	}
- 
- 	return lines;
--- 
-2.27.0
+      IMC reads:       80 MiB/s
+     IMC writes:        0 MiB/s
 
+I thought it looked reasonably tidy, without adding any lines to the
+header.
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
