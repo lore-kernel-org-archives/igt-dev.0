@@ -1,14 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20210131031153.3399123-1-chris@chris-wilson.co.uk>
- <577e01ed-a463-301f-8fc8-c553c0b46ba7@linux.intel.com>
- <161216767124.30865.12019098192632057390@build.alporthouse.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <abe2678a-f798-d625-0f59-f6ebf1ef5e4f@linux.intel.com>
-Date: Mon, 1 Feb 2021 08:36:04 +0000
 MIME-Version: 1.0
-In-Reply-To: <161216767124.30865.12019098192632057390@build.alporthouse.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] intel_gpu_top: Hide unused clients
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 01 Feb 2021 08:40:36 -0000
+Message-ID: <161216883676.18682.8595082473184558977@emeril.freedesktop.org>
+References: <20210201063339.19874-1-petri.latvala@intel.com>
+In-Reply-To: <20210201063339.19874-1-petri.latvala@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbWVzb246?=
+ =?utf-8?q?_Turn_off_-Werror?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,96 +14,194 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0481097181=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============0481097181==
+Content-Type: multipart/alternative;
+ boundary="===============8017684996106590763=="
 
-On 01/02/2021 08:21, Chris Wilson wrote:
-> Quoting Tvrtko Ursulin (2021-02-01 08:14:45)
->>
->> On 31/01/2021 03:11, Chris Wilson wrote:
->>> Keep new clients hidden until they utilise the GPU.
->>>
->>> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
->>> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
->>> ---
->>>    tools/intel_gpu_top.c | 5 ++++-
->>>    1 file changed, 4 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
->>> index 60ff62d28..66a8effa6 100644
->>> --- a/tools/intel_gpu_top.c
->>> +++ b/tools/intel_gpu_top.c
->>> @@ -828,8 +828,11 @@ static void update_client(struct client *c, unsigned int pid, char *name)
->>>                c->last[i] = val[i];
->>>        }
->>>    
->>> -     c->samples++;
->>> +     if (!c->total_runtime)
->>> +             return;
->>> +
->>>        c->status = ALIVE;
->>> +     c->samples++;
->>>    }
->>>    
->>>    static void
->>>
->>
->> Not sure we need to do it at this level and not instead at presentation
->> time.
-> 
-> My goal was just presentation :(
+--===============8017684996106590763==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Something like this would be presentation time:
+== Series Details ==
 
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 60ff62d28e5d..f7c5cc3bf19f 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -1942,6 +1942,9 @@ print_client(struct client *c, struct engines 
-*engines, double t, int lines,
-         unsigned int i;
+Series: meson: Turn off -Werror
+URL   : https://patchwork.freedesktop.org/series/86513/
+State : success
 
-         if (output_mode == INTERACTIVE) {
-+               if (!c->total_runtime) /* make a key toggle? */
-+                       return;
-+
-                 lines++;
+== Summary ==
 
-                 printf("%6u %17s ", c->pid, c->print_name);
+CI Bug Log - changes from CI_DRM_9710 -> IGTPW_5456
+====================================================
 
-But it worries me a bit to do it by default.
+Summary
+-------
 
-> 
->> Plus, in default sort mode they would be at the end of the list,
->> so behind the more active clients. Or you go into sort by id and they
->> annoy you there?
-> 
-> No. I had a bunch of "Xorg" when launching steam which never became
-> anything. So I guess just a bunch of dlopen("libgl") spawing a bunch of
-> clients that we never used for anything more than gl[X]GetString, but
-> leaked the fd.
+  **SUCCESS**
 
-But they were at the end, so potentially even cut of if enough 
-interesting clients? Or you actually sorted by id? Or something else is 
-broken?
+  No regressions found.
 
-> 
-> [Why does steam need 10% of the gpu to update an icon on the toolbar
-> which is hidden while minimised? Why do games sit in static menus at
-> 100% gpu? Why?]
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5456/index.html
 
-Yep, I have this issue with animated KDE tray icons. :I
+Known issues
+------------
 
-Regards,
+  Here are the changes found in IGTPW_5456 that come from known issues:
 
-Tvrtko
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-byt-j1900:       [PASS][1] -> [INCOMPLETE][2] ([i915#142] / [i915#2405])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9710/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5456/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html
+
+  * igt@prime_vgem@basic-gtt:
+    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([i915#402]) +2 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9710/fi-tgl-y/igt@prime_vgem@basic-gtt.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5456/fi-tgl-y/igt@prime_vgem@basic-gtt.html
+
+  * igt@runner@aborted:
+    - fi-byt-j1900:       NOTRUN -> [FAIL][5] ([i915#1814] / [i915#2505])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5456/fi-byt-j1900/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@prime_self_import@basic-with_two_bos:
+    - fi-tgl-y:           [DMESG-WARN][6] ([i915#402]) -> [PASS][7] +2 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9710/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5456/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html
+
+  
+  [i915#142]: https://gitlab.freedesktop.org/drm/intel/issues/142
+  [i915#1814]: https://gitlab.freedesktop.org/drm/intel/issues/1814
+  [i915#2405]: https://gitlab.freedesktop.org/drm/intel/issues/2405
+  [i915#2505]: https://gitlab.freedesktop.org/drm/intel/issues/2505
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (44 -> 38)
+------------------------------
+
+  Missing    (6): fi-jsl-1 fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5981 -> IGTPW_5456
+
+  CI-20190529: 20190529
+  CI_DRM_9710: 4ec32b6f232b6144ad5b7ce482c537a853028490 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5456: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5456/index.html
+  IGT_5981: 743c8e5cd78b583e6b98dbc22c5cef9aa7130d6a @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5456/index.html
+
+--===============8017684996106590763==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>meson: Turn off -Werror</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/86513/">https://patchwork.freedesktop.org/series/86513/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5456/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5456/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9710 -&gt; IGTPW_5456</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5456/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5456 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-byt-j1900:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9710/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5456/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/142">i915#142</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2405">i915#2405</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-gtt:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9710/fi-tgl-y/igt@prime_vgem@basic-gtt.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5456/fi-tgl-y/igt@prime_vgem@basic-gtt.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-byt-j1900:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5456/fi-byt-j1900/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1814">i915#1814</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2505">i915#2505</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@prime_self_import@basic-with_two_bos:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9710/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5456/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html">PASS</a> +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (44 -&gt; 38)</h2>
+<p>Missing    (6): fi-jsl-1 fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5981 -&gt; IGTPW_5456</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9710: 4ec32b6f232b6144ad5b7ce482c537a853028490 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5456: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5456/index.html<br />
+  IGT_5981: 743c8e5cd78b583e6b98dbc22c5cef9aa7130d6a @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============8017684996106590763==--
+
+--===============0481097181==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0481097181==--
