@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67FCC6E479
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Feb 2021 08:31:10 +0000 (UTC)
-Date: Mon, 1 Feb 2021 09:31:04 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210201083104.GB57585@zkempczy-mobl2>
-References: <20210129144454.121178-1-zbigniew.kempczynski@intel.com>
- <20210129144454.121178-25-zbigniew.kempczynski@intel.com>
- <161193537822.17568.9240258879108551707@build.alporthouse.com>
+References: <20210131031153.3399123-1-chris@chris-wilson.co.uk>
+ <577e01ed-a463-301f-8fc8-c553c0b46ba7@linux.intel.com>
+ <161216767124.30865.12019098192632057390@build.alporthouse.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <abe2678a-f798-d625-0f59-f6ebf1ef5e4f@linux.intel.com>
+Date: Mon, 1 Feb 2021 08:36:04 +0000
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <161193537822.17568.9240258879108551707@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v18 24/31] tests/gem_linear_blits: Use
- intel allocator
+In-Reply-To: <161216767124.30865.12019098192632057390@build.alporthouse.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] intel_gpu_top: Hide unused clients
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,97 +16,96 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBKYW4gMjksIDIwMjEgYXQgMDM6NDk6MzhQTSArMDAwMCwgQ2hyaXMgV2lsc29uIHdy
-b3RlOgo+IFF1b3RpbmcgWmJpZ25pZXcgS2VtcGN6ecWEc2tpICgyMDIxLTAxLTI5IDE0OjQ0OjQ3
-KQo+ID4gRnJvbTogRG9taW5payBHcnplZ29yemVrIDxkb21pbmlrLmdyemVnb3J6ZWtAaW50ZWwu
-Y29tPgo+ID4gCj4gPiBVc2UgaW50ZWwgYWxsb2NhdG9yIGRpcmVjdGx5LCB3aXRob3V0IGludGVs
-LWJiIGluZnJhc3RydWN0dXJlLgo+ID4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBEb21pbmlrIEdyemVn
-b3J6ZWsgPGRvbWluaWsuZ3J6ZWdvcnpla0BpbnRlbC5jb20+Cj4gPiBDYzogWmJpZ25pZXcgS2Vt
-cGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Cj4gPiBDYzogQ2hyaXMg
-V2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Cj4gCj4gU28gSSBkaWQgbm90IHNwb3Qg
-YW55dGhpbmcgaW4gdGhlc2UgdGVzdCBjaGFuZ2VzIHRoYXQgbWFrZSBtZSB0aGluZyB0aGUKPiB1
-bmRlcmx5aW5nIGNvdmVyYWdlIHdhcyBjaGFuZ2VkLgo+IAo+ID4gLS0tCj4gPiAgdGVzdHMvaTkx
-NS9nZW1fbGluZWFyX2JsaXRzLmMgfCAxMDMgKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0t
-LS0tLQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA3MyBpbnNlcnRpb25zKCspLCAzMCBkZWxldGlvbnMo
-LSkKPiA+IAo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvZ2VtX2xpbmVhcl9ibGl0cy5jIGIv
-dGVzdHMvaTkxNS9nZW1fbGluZWFyX2JsaXRzLmMKPiA+IGluZGV4IGNhZTQyZDUyYS4uMzcyZDZh
-ZDgxIDEwMDY0NAo+ID4gLS0tIGEvdGVzdHMvaTkxNS9nZW1fbGluZWFyX2JsaXRzLmMKPiA+ICsr
-KyBiL3Rlc3RzL2k5MTUvZ2VtX2xpbmVhcl9ibGl0cy5jCj4gPiBAQCAtNTYsMTIgKzU2LDE0IEBA
-IElHVF9URVNUX0RFU0NSSVBUSU9OKCJUZXN0IGRvaW5nIG1hbnkgYmxpdHMgd2l0aCBhIHdvcmtp
-bmcgc2V0IGxhcmdlciB0aGFuIHRoZSIKPiA+ICBzdGF0aWMgdWludDMyX3QgbGluZWFyW1dJRFRI
-KkhFSUdIVF07Cj4gPiAgCj4gPiAgc3RhdGljIHZvaWQKPiA+IC1jb3B5KGludCBmZCwgdWludDMy
-X3QgZHN0LCB1aW50MzJfdCBzcmMpCj4gPiArY29weShpbnQgZmQsIHVpbnQ2NF90IGFobmQsIHVp
-bnQzMl90IGRzdCwgdWludDMyX3Qgc3JjLAo+ID4gKyAgICAgdWludDY0X3QgZHN0X29mZnNldCwg
-dWludDY0X3Qgc3JjX29mZnNldCkKPiA+ICB7Cj4gPiAgICAgICAgIHVpbnQzMl90IGJhdGNoWzEy
-XTsKPiA+ICAgICAgICAgc3RydWN0IGRybV9pOTE1X2dlbV9yZWxvY2F0aW9uX2VudHJ5IHJlbG9j
-WzJdOwo+ID4gICAgICAgICBzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2JqZWN0MiBvYmpbM107
-Cj4gPiAgICAgICAgIHN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY2J1ZmZlcjIgZXhlYzsKPiA+ICsg
-ICAgICAgYm9vbCBkb19yZWxvY3MgPSBmYWxzZTsKPiA+ICAgICAgICAgaW50IGkgPSAwOwo+ID4g
-IAo+ID4gICAgICAgICBiYXRjaFtpKytdID0gWFlfU1JDX0NPUFlfQkxUX0NNRCB8Cj4gPiBAQCAt
-NzcsNDEgKzc5LDU5IEBAIGNvcHkoaW50IGZkLCB1aW50MzJfdCBkc3QsIHVpbnQzMl90IHNyYykK
-PiA+ICAgICAgICAgICAgICAgICAgIFdJRFRIKjQ7Cj4gPiAgICAgICAgIGJhdGNoW2krK10gPSAw
-OyAvKiBkc3QgeDEseTEgKi8KPiA+ICAgICAgICAgYmF0Y2hbaSsrXSA9IChIRUlHSFQgPDwgMTYp
-IHwgV0lEVEg7IC8qIGRzdCB4Mix5MiAqLwo+ID4gLSAgICAgICBiYXRjaFtpKytdID0gMDsgLyog
-ZHN0IHJlbG9jICovCj4gPiArICAgICAgIGJhdGNoW2krK10gPSBkc3Rfb2Zmc2V0Owo+ID4gICAg
-ICAgICBpZiAoaW50ZWxfZ2VuKGludGVsX2dldF9kcm1fZGV2aWQoZmQpKSA+PSA4KQo+ID4gLSAg
-ICAgICAgICAgICAgIGJhdGNoW2krK10gPSAwOwo+ID4gKyAgICAgICAgICAgICAgIGJhdGNoW2kr
-K10gPSBkc3Rfb2Zmc2V0ID4+IDMyOwo+ID4gICAgICAgICBiYXRjaFtpKytdID0gMDsgLyogc3Jj
-IHgxLHkxICovCj4gPiAgICAgICAgIGJhdGNoW2krK10gPSBXSURUSCo0Owo+ID4gLSAgICAgICBi
-YXRjaFtpKytdID0gMDsgLyogc3JjIHJlbG9jICovCj4gPiArICAgICAgIGJhdGNoW2krK10gPSBz
-cmNfb2Zmc2V0Owo+ID4gICAgICAgICBpZiAoaW50ZWxfZ2VuKGludGVsX2dldF9kcm1fZGV2aWQo
-ZmQpKSA+PSA4KQo+ID4gLSAgICAgICAgICAgICAgIGJhdGNoW2krK10gPSAwOwo+ID4gKyAgICAg
-ICAgICAgICAgIGJhdGNoW2krK10gPSBzcmNfb2Zmc2V0ID4+IDMyOwo+ID4gICAgICAgICBiYXRj
-aFtpKytdID0gTUlfQkFUQ0hfQlVGRkVSX0VORDsKPiA+ICAgICAgICAgYmF0Y2hbaSsrXSA9IE1J
-X05PT1A7Cj4gPiAgCj4gPiAtICAgICAgIG1lbXNldChyZWxvYywgMCwgc2l6ZW9mKHJlbG9jKSk7
-Cj4gPiAtICAgICAgIHJlbG9jWzBdLnRhcmdldF9oYW5kbGUgPSBkc3Q7Cj4gPiAtICAgICAgIHJl
-bG9jWzBdLmRlbHRhID0gMDsKPiA+IC0gICAgICAgcmVsb2NbMF0ub2Zmc2V0ID0gNCAqIHNpemVv
-ZihiYXRjaFswXSk7Cj4gPiAtICAgICAgIHJlbG9jWzBdLnByZXN1bWVkX29mZnNldCA9IDA7Cj4g
-PiAtICAgICAgIHJlbG9jWzBdLnJlYWRfZG9tYWlucyA9IEk5MTVfR0VNX0RPTUFJTl9SRU5ERVI7
-Cj4gPiAtICAgICAgIHJlbG9jWzBdLndyaXRlX2RvbWFpbiA9IEk5MTVfR0VNX0RPTUFJTl9SRU5E
-RVI7Cj4gPiAtCj4gPiAtICAgICAgIHJlbG9jWzFdLnRhcmdldF9oYW5kbGUgPSBzcmM7Cj4gPiAt
-ICAgICAgIHJlbG9jWzFdLmRlbHRhID0gMDsKPiA+IC0gICAgICAgcmVsb2NbMV0ub2Zmc2V0ID0g
-NyAqIHNpemVvZihiYXRjaFswXSk7Cj4gPiAtICAgICAgIGlmIChpbnRlbF9nZW4oaW50ZWxfZ2V0
-X2RybV9kZXZpZChmZCkpID49IDgpCj4gPiAtICAgICAgICAgICAgICAgcmVsb2NbMV0ub2Zmc2V0
-ICs9IHNpemVvZihiYXRjaFswXSk7Cj4gPiAtICAgICAgIHJlbG9jWzFdLnByZXN1bWVkX29mZnNl
-dCA9IDA7Cj4gPiAtICAgICAgIHJlbG9jWzFdLnJlYWRfZG9tYWlucyA9IEk5MTVfR0VNX0RPTUFJ
-Tl9SRU5ERVI7Cj4gPiAtICAgICAgIHJlbG9jWzFdLndyaXRlX2RvbWFpbiA9IDA7Cj4gPiAtCj4g
-PiAgICAgICAgIG1lbXNldChvYmosIDAsIHNpemVvZihvYmopKTsKPiA+ICAgICAgICAgb2JqWzBd
-LmhhbmRsZSA9IGRzdDsKPiA+ICAgICAgICAgb2JqWzFdLmhhbmRsZSA9IHNyYzsKPiA+ICAgICAg
-ICAgb2JqWzJdLmhhbmRsZSA9IGdlbV9jcmVhdGUoZmQsIDQwOTYpOwo+ID4gICAgICAgICBnZW1f
-d3JpdGUoZmQsIG9ialsyXS5oYW5kbGUsIDAsIGJhdGNoLCBpICogc2l6ZW9mKGJhdGNoWzBdKSk7
-Cj4gPiAtICAgICAgIG9ialsyXS5yZWxvY2F0aW9uX2NvdW50ID0gMjsKPiA+IC0gICAgICAgb2Jq
-WzJdLnJlbG9jc19wdHIgPSB0b191c2VyX3BvaW50ZXIocmVsb2MpOwo+ID4gKwo+ID4gKyAgICAg
-ICBpZiAoc3JjX29mZnNldCA9PSAwICYmIGRzdF9vZmZzZXQgPT0gMCkgewo+ID4gKyAgICAgICAg
-ICAgICAgIGRvX3JlbG9jcyA9IHRydWU7Cj4gPiArICAgICAgICAgICAgICAgbWVtc2V0KHJlbG9j
-LCAwLCBzaXplb2YocmVsb2MpKTsKPiA+ICsgICAgICAgICAgICAgICByZWxvY1swXS50YXJnZXRf
-aGFuZGxlID0gZHN0Owo+ID4gKyAgICAgICAgICAgICAgIHJlbG9jWzBdLmRlbHRhID0gMDsKPiA+
-ICsgICAgICAgICAgICAgICByZWxvY1swXS5vZmZzZXQgPSA0ICogc2l6ZW9mKGJhdGNoWzBdKTsK
-PiA+ICsgICAgICAgICAgICAgICByZWxvY1swXS5wcmVzdW1lZF9vZmZzZXQgPSAwOwo+IAo+IElz
-IG5vdyBkc3Rfb2Zmc2V0Cj4gCj4gPiArICAgICAgICAgICAgICAgcmVsb2NbMF0ucmVhZF9kb21h
-aW5zID0gSTkxNV9HRU1fRE9NQUlOX1JFTkRFUjsKPiA+ICsgICAgICAgICAgICAgICByZWxvY1sw
-XS53cml0ZV9kb21haW4gPSBJOTE1X0dFTV9ET01BSU5fUkVOREVSOwo+ID4gKwo+ID4gKyAgICAg
-ICAgICAgICAgIHJlbG9jWzFdLnRhcmdldF9oYW5kbGUgPSBzcmM7Cj4gPiArICAgICAgICAgICAg
-ICAgcmVsb2NbMV0uZGVsdGEgPSAwOwo+ID4gKyAgICAgICAgICAgICAgIHJlbG9jWzFdLm9mZnNl
-dCA9IDcgKiBzaXplb2YoYmF0Y2hbMF0pOwo+ID4gKyAgICAgICAgICAgICAgIGlmIChpbnRlbF9n
-ZW4oaW50ZWxfZ2V0X2RybV9kZXZpZChmZCkpID49IDgpCj4gPiArICAgICAgICAgICAgICAgICAg
-ICAgICByZWxvY1sxXS5vZmZzZXQgKz0gc2l6ZW9mKGJhdGNoWzBdKTsKPiA+ICsgICAgICAgICAg
-ICAgICByZWxvY1sxXS5wcmVzdW1lZF9vZmZzZXQgPSAwOwo+IAo+IHNyY19vZmZzZXQuIFllcyB0
-aGV5IG1heSBiZSB6ZXJvLCBidXQgc2VtYW50aWNzIG1hdHRlci4KCkFjay4gIAoKPiAKPiBXaHkg
-bGVhdmUgdGhlbSBhcyB6ZXJvIHRob3VnaD8gWW91IGNhbiBzZWVkIHRoZW0gd2l0aCBzZW5zaWJs
-ZQo+IHBsYWNlbWVudHMuIFNlbGwgbWUgb24gc29tZSBiZW5lZml0cyBvZiB0aGlzIGFsbG9jYXRv
-ci4KPiAtQ2hyaXMKCkZvciByZWxvY3MgdXNpbmcgYWxsb2NhdG9yIGRvZXNuJ3QgbWFrZXMgc2Vu
-c2UgKGJ1ZmZlcnMgb2Zmc2V0cyBjYW4gYmUKbWlncmF0ZWQgd2l0aGluIHRoZSBrZXJuZWwpLiBB
-bmQgd2UgaGF2ZSBubyBtZXRob2QgdG8gc3luY2hyb25pemUgaXQuCkkgc2VlIG5vIGFkZGl0aW9u
-YWwgdmFsdWUgb2YgdXNpbmcgb2Zmc2V0cyBwYXNzZWQgYnkgYWxsb2NhdG9yIHdoaWNoCmNvdWxk
-IGxlYWQgdG8gY29uZnVzaW9uIG9uIHRoZSByZWFkZXIgc2lkZS4KCi0tClpiaWduaWV3Cl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGlu
-ZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+
+On 01/02/2021 08:21, Chris Wilson wrote:
+> Quoting Tvrtko Ursulin (2021-02-01 08:14:45)
+>>
+>> On 31/01/2021 03:11, Chris Wilson wrote:
+>>> Keep new clients hidden until they utilise the GPU.
+>>>
+>>> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+>>> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+>>> ---
+>>>    tools/intel_gpu_top.c | 5 ++++-
+>>>    1 file changed, 4 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+>>> index 60ff62d28..66a8effa6 100644
+>>> --- a/tools/intel_gpu_top.c
+>>> +++ b/tools/intel_gpu_top.c
+>>> @@ -828,8 +828,11 @@ static void update_client(struct client *c, unsigned int pid, char *name)
+>>>                c->last[i] = val[i];
+>>>        }
+>>>    
+>>> -     c->samples++;
+>>> +     if (!c->total_runtime)
+>>> +             return;
+>>> +
+>>>        c->status = ALIVE;
+>>> +     c->samples++;
+>>>    }
+>>>    
+>>>    static void
+>>>
+>>
+>> Not sure we need to do it at this level and not instead at presentation
+>> time.
+> 
+> My goal was just presentation :(
+
+Something like this would be presentation time:
+
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 60ff62d28e5d..f7c5cc3bf19f 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -1942,6 +1942,9 @@ print_client(struct client *c, struct engines 
+*engines, double t, int lines,
+         unsigned int i;
+
+         if (output_mode == INTERACTIVE) {
++               if (!c->total_runtime) /* make a key toggle? */
++                       return;
++
+                 lines++;
+
+                 printf("%6u %17s ", c->pid, c->print_name);
+
+But it worries me a bit to do it by default.
+
+> 
+>> Plus, in default sort mode they would be at the end of the list,
+>> so behind the more active clients. Or you go into sort by id and they
+>> annoy you there?
+> 
+> No. I had a bunch of "Xorg" when launching steam which never became
+> anything. So I guess just a bunch of dlopen("libgl") spawing a bunch of
+> clients that we never used for anything more than gl[X]GetString, but
+> leaked the fd.
+
+But they were at the end, so potentially even cut of if enough 
+interesting clients? Or you actually sorted by id? Or something else is 
+broken?
+
+> 
+> [Why does steam need 10% of the gpu to update an icon on the toolbar
+> which is hidden while minimised? Why do games sit in static menus at
+> 100% gpu? Why?]
+
+Yep, I have this issue with animated KDE tray icons. :I
+
+Regards,
+
+Tvrtko
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
