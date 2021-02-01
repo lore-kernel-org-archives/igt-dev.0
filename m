@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-In-Reply-To: <20210201104524.875560-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20210201104524.875560-2-tvrtko.ursulin@linux.intel.com>
 References: <20210201104524.875560-1-tvrtko.ursulin@linux.intel.com>
+ <20210201104524.875560-2-tvrtko.ursulin@linux.intel.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon, 01 Feb 2021 10:55:51 +0000
-Message-ID: <161217695165.27906.9873362301651106162@build.alporthouse.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 1/3] intel_gpu_top: Update
- manual page for recent additions
+Date: Mon, 01 Feb 2021 10:56:41 +0000
+Message-ID: <161217700151.27906.12158674654057122931@build.alporthouse.com>
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 2/3] intel_gpu_top: Add
+ option to hide inactive clients
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,12 +23,15 @@ To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.o
 Cc: Intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Tvrtko Ursulin (2021-02-01 10:45:22)
+Quoting Tvrtko Ursulin (2021-02-01 10:45:23)
 > From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 > 
-> Document numeric busyness overlay and sort selection.
+> Allow hiding inactive clients (used no GPU time ever) in interactive mode
+> by pressing 'i'.
+> 
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-I looked for a 'h' or '?' screen.
+Ok, that's where you meant. Coffee not winning the battle today.
 
 Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
 -Chris
