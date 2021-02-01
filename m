@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 37D726E42A
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Feb 2021 08:07:43 +0000 (UTC)
-Date: Mon, 1 Feb 2021 10:07:34 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YBe2xlzoqepycMNu@platvala-desk.ger.corp.intel.com>
-References: <20210201063339.19874-1-petri.latvala@intel.com>
- <161216649171.30865.13362995240619604363@build.alporthouse.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 74C8A89A1F
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Feb 2021 07:36:55 +0000 (UTC)
+From: Jigar Bhatt <jigar.bhatt@intel.com>
+Date: Mon,  1 Feb 2021 13:08:27 +0530
+Message-Id: <20210201073827.616287-2-jigar.bhatt@intel.com>
+In-Reply-To: <20210201073827.616287-1-jigar.bhatt@intel.com>
+References: <20210121083432.526247-1-jigar.bhatt@intel.com>
+ <20210201073827.616287-1-jigar.bhatt@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <161216649171.30865.13362995240619604363@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] meson: Turn off -Werror
+Subject: [igt-dev] [PATCH i-g-t v2 1/1] tests/i915/i915_pm_dc: Add DC9 igt
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,32 +22,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: jigar.bhatt@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Feb 01, 2021 at 08:01:31AM +0000, Chris Wilson wrote:
-> Quoting Petri Latvala (2021-02-01 06:33:39)
-> > No, we don't want all warnings ever to be errors. While being rid of
-> > compile warnings (especially the more obscure ones from future
-> > compilers) is great, having it on always is not acceptable. It's not
-> > even on "by default", it was non-overrideably set on.
-> > 
-> > Not to mention adding -Werror to compiler flags is the incorrect way
-> > of turning it on. Use the meson command line flag --werror instead on
-> > whatever local checkout or company-internal fork you're using, where
-> > you have control over which compilers are used. Turning it on
-> > unconditionally in an upstream repository for all current and future
-> > compilers is never ok.
-> 
-> Do you have a plan to enable --werror for CI?
+DC9 igt test validation depends on DC9 Ready and DC{5,6} counters reset.
+When Display Engine enters to DC9, it resets DMC f/w and DC5/DC6 counter.
+We don't have a DC9 counter unlike DC{5,6}  therefore this tests uses "DC9 Ready"
+from  i915_pm_req_res_info debugfs and DC{5,6} counter reset method to validate DC9.
 
+Signed-off-by: Jigar Bhatt <jigar.bhatt@intel.com>
+---
+ tests/i915/i915_pm_dc.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-For select distros, possibly.
-
-
+diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+index 30c60243d..3651be837 100644
+--- a/tests/i915/i915_pm_dc.c
++++ b/tests/i915/i915_pm_dc.c
+@@ -384,6 +384,27 @@ static void test_dc_state_dpms(data_t *data, int dc_flag)
+ 	cleanup_dc_dpms(data);
+ }
+ 
++static bool check_dc9(uint32_t debugfs_fd, int prev_dc5, int prev_dc6)
++{
++        char buf[4096];
++        igt_skip_on_f(igt_debugfs_simple_read(debugfs_fd, "i915_pm_req_res_info", buf, sizeof(buf)),"skipping DC9 test");
++        igt_assert_f(strstr(buf, "DC9 Ready = yes"),"DC9 is not ready");
++        /*
++         * since we do not have DC9 Counter,
++         * so we rely on dc5/dc6 counter reset to check if Display Engine was in DC9.
++         */
++        return igt_wait((read_dc_counter(debugfs_fd, CHECK_DC5)>prev_dc5 || read_dc_counter(debugfs_fd, CHECK_DC6)>prev_dc6),3000,100);
++}
++static void test_dc9_dpms(data_t *data)
++{
++        require_dc_counter(data->debugfs_fd, CHECK_DC5);
++        require_dc_counter(data->debugfs_fd, CHECK_DC6);
++        int dc5_prev=read_dc_counter(data->debugfs_fd, CHECK_DC5);
++        int dc6_prev=read_dc_counter(data->debugfs_fd, CHECK_DC6);
++        dpms_off(data);
++        igt_assert_f(check_dc9(data->debugfs_fd,dc5_prev,dc6_prev),"\n Not in DC9");
++        dpms_on(data);
++}
+ IGT_TEST_DESCRIPTION("These tests validate Display Power DC states");
+ int main(int argc, char *argv[])
+ {
+@@ -449,6 +470,10 @@ int main(int argc, char *argv[])
+ 		test_dc_state_dpms(&data, CHECK_DC6);
+ 	}
+ 
++	igt_describe("This test validates display engine entry to DC9 state");
++        igt_subtest("dc9-dpms"){
++                test_dc9_dpms(&data);
++        }
+ 	igt_fixture {
+ 		free(data.pwr_dmn_info);
+ 		close(data.debugfs_fd);
 -- 
-Petri Latvala
+2.25.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
