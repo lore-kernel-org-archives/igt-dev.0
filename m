@@ -1,21 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com
- [IPv6:2607:f8b0:4864:20::82a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1EBD06E16D
- for <igt-dev@lists.freedesktop.org>; Sun, 31 Jan 2021 03:28:45 +0000 (UTC)
-Received: by mail-qt1-x82a.google.com with SMTP id t17so9827337qtq.2
- for <igt-dev@lists.freedesktop.org>; Sat, 30 Jan 2021 19:28:45 -0800 (PST)
-Received: from elite-desk-aura.lan (135-23-249-167.cpe.pppoe.ca.
- [135.23.249.167])
- by smtp.gmail.com with ESMTPSA id b21sm7611501qtt.56.2021.01.30.19.28.44
- for <igt-dev@lists.freedesktop.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 30 Jan 2021 19:28:44 -0800 (PST)
-From: Aurabindo Pillai <mail@aurabindo.in>
-Date: Sat, 30 Jan 2021 22:28:41 -0500
-Message-Id: <20210131032842.29033-1-mail@aurabindo.in>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E3FE66E301
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Feb 2021 05:05:21 +0000 (UTC)
+From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Date: Mon,  1 Feb 2021 10:35:19 +0530
+Message-Id: <20210201050519.2559533-1-arundhati.hagaragi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 1/2] tests/kms_setmode: Add test description
+Subject: [igt-dev] [PATCH i-g-t v3] tests/kms_plane_scaling:added test
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,33 +20,69 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Mohammed <Mohammed.Khajapasha@intel.com>, Nidhi Gupta <nidhi1.gupta@intel.com>, Khajapasha@freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add top level test description
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
 
-Signed-off-by: Aurabindo Pillai <mail@aurabindo.in>
+Added description for all subtests
+
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: Khajapasha, Mohammed <Mohammed.Khajapasha@intel.com>
+
+v2: Modified description for subtests. (Khajapasha)
+v3: Removed "the" from each subtest description (Khajapasha)
 ---
- tests/kms_setmode.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/kms_plane_scaling.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 878e149a..448ea6a6 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -37,6 +37,11 @@
- /* max combinations with repetitions */
- #define MAX_COMBINATION_ELEMS   MAX_CRTCS
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index c63eb428..0620e5a8 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -695,32 +695,39 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		igt_output_t *output;
  
-+IGT_TEST_DESCRIPTION(
-+    "Sets a mode and verifies whether the applied mode timings"
-+    " are congruent with the requested mode, by deriving the timing"
-+    " information from vblank timestamp");
-+
- static int drm_fd;
- static drmModeRes *drm_resources;
- static int filter_test_id;
+ 		igt_subtest_with_dynamic("plane-scaling") {
++			igt_describe("Test plane scaling with overlay planes");
+ 			for_each_pipe_with_single_output(&data.display, pipe, output)
+ 				igt_dynamic_f("pipe-%s-plane-scaling", kmstest_pipe_name(pipe))
+ 					test_plane_scaling_on_pipe(&data, pipe, output);
+ 		}
+ 
+ 		igt_subtest_with_dynamic("scaler-with-pixel-format") {
++			igt_describe("Test plane scaling with pixel formats");
+ 			for_each_pipe_with_single_output(&data.display, pipe, output)
+ 				igt_dynamic_f("pipe-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe))
+ 					test_scaler_with_pixel_format_pipe(&data, pipe, output);
+ 		}
+ 
+ 		igt_subtest_with_dynamic("scaler-with-rotation") {
++			igt_describe("Test plane scaling with rotation");
+ 			for_each_pipe_with_single_output(&data.display, pipe, output)
+ 				igt_dynamic_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
+ 					test_scaler_with_rotation_pipe(&data, pipe, output);
+ 		}
+ 
+ 		igt_subtest_with_dynamic("scaler-with-clipping-clamping") {
++			igt_describe("Test plane scaling with clipping-clamping");
+ 			for_each_pipe_with_single_output(&data.display, pipe, output)
+ 				igt_dynamic_f("pipe-%s-scaler-with-clipping-clamping", kmstest_pipe_name(pipe))
+ 					test_scaler_with_clipping_clamping_scenario(&data, pipe, output);
+ 		}
+ 	}
+ 
+-	igt_subtest_f("2x-scaler-multi-pipe")
++	igt_subtest_f("2x-scaler-multi-pipe") {
++		igt_describe("Test display primary and overlay planes on two connected pipes"
++			     "and runs the plane scaling tests on both the pipes");
+ 		test_scaler_with_multi_pipe_plane(&data);
++	}
+ 
+ 	igt_fixture
+ 		igt_display_fini(&data.display);
 -- 
-2.30.0
+2.25.1
 
 _______________________________________________
 igt-dev mailing list
