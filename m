@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB56689C28
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Feb 2021 08:12:28 +0000 (UTC)
+References: <20210131031153.3399123-1-chris@chris-wilson.co.uk>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <577e01ed-a463-301f-8fc8-c553c0b46ba7@linux.intel.com>
+Date: Mon, 1 Feb 2021 08:14:45 +0000
 MIME-Version: 1.0
-In-Reply-To: <YBe2xlzoqepycMNu@platvala-desk.ger.corp.intel.com>
-References: <20210201063339.19874-1-petri.latvala@intel.com>
- <161216649171.30865.13362995240619604363@build.alporthouse.com>
- <YBe2xlzoqepycMNu@platvala-desk.ger.corp.intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon, 01 Feb 2021 08:12:20 +0000
-Message-ID: <161216714086.30865.8565106652807413691@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] meson: Turn off -Werror
+In-Reply-To: <20210131031153.3399123-1-chris@chris-wilson.co.uk>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] intel_gpu_top: Hide unused clients
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,40 +14,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Petri Latvala (2021-02-01 08:07:34)
-> On Mon, Feb 01, 2021 at 08:01:31AM +0000, Chris Wilson wrote:
-> > Quoting Petri Latvala (2021-02-01 06:33:39)
-> > > No, we don't want all warnings ever to be errors. While being rid of
-> > > compile warnings (especially the more obscure ones from future
-> > > compilers) is great, having it on always is not acceptable. It's not
-> > > even on "by default", it was non-overrideably set on.
-> > > 
-> > > Not to mention adding -Werror to compiler flags is the incorrect way
-> > > of turning it on. Use the meson command line flag --werror instead on
-> > > whatever local checkout or company-internal fork you're using, where
-> > > you have control over which compilers are used. Turning it on
-> > > unconditionally in an upstream repository for all current and future
-> > > compilers is never ok.
-> > 
-> > Do you have a plan to enable --werror for CI?
-> 
-> 
-> For select distros, possibly.
 
-If you are confident we can enable Werror and keep [more] warnings from
-entering, I accept that I acted out of annoyance that we were not doing
-a good enough job in keeping the code clean.
+On 31/01/2021 03:11, Chris Wilson wrote:
+> Keep new clients hidden until they utilise the GPU.
+> 
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+> ---
+>   tools/intel_gpu_top.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+> index 60ff62d28..66a8effa6 100644
+> --- a/tools/intel_gpu_top.c
+> +++ b/tools/intel_gpu_top.c
+> @@ -828,8 +828,11 @@ static void update_client(struct client *c, unsigned int pid, char *name)
+>   		c->last[i] = val[i];
+>   	}
+>   
+> -	c->samples++;
+> +	if (!c->total_runtime)
+> +		return;
+> +
+>   	c->status = ALIVE;
+> +	c->samples++;
+>   }
+>   
+>   static void
+> 
 
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
--Chris
+Not sure we need to do it at this level and not instead at presentation 
+time. Plus, in default sort mode they would be at the end of the list, 
+so behind the more active clients. Or you go into sort by id and they 
+annoy you there?
+
+Regards,
+
+Tvrtko
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
