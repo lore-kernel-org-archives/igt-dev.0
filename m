@@ -1,52 +1,37 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Date: Mon,  1 Feb 2021 10:45:24 +0000
-Message-Id: <20210201104524.875560-3-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20210201104524.875560-1-tvrtko.ursulin@linux.intel.com>
-References: <20210201104524.875560-1-tvrtko.ursulin@linux.intel.com>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/3] intel_gpu_top: Fix interactive header
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+In-Reply-To: <20210201104524.875560-3-tvrtko.ursulin@linux.intel.com>
+References: <20210201104524.875560-1-tvrtko.ursulin@linux.intel.com>
+ <20210201104524.875560-3-tvrtko.ursulin@linux.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Mon, 01 Feb 2021 10:47:39 +0000
+Message-ID: <161217645910.27906.13192145479606717134@build.alporthouse.com>
+Subject: Re: [Intel-gfx] [igt-dev] [PATCH i-g-t 3/3] intel_gpu_top: Fix
+ interactive header
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
+Cc: Intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Quoting Tvrtko Ursulin (2021-02-01 10:45:24)
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> 
+> Client stats refactoring broke the header layout with an extra newline.
 
-Client stats refactoring broke the header layout with an extra newline.
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
----
- tools/intel_gpu_top.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index dffc6ebecc57..9b8302de54da 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -1523,7 +1523,7 @@ print_header(const struct igt_device_card *card,
- 		printf("\033[H\033[J");
- 
- 		if (lines++ < con_h)
--			printf("intel-gpu-top: %s @ %s\n",
-+			printf("intel-gpu-top: %s @ %s - ",
- 			       codename, card->card);
- 		if (lines++ < con_h) {
- 			printf("%s/%s MHz; %s%% RC6; ",
--- 
-2.27.0
-
+Argh; keep the newline, or at least check the terminal width and make
+the newline conditional.
+-Chris
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
