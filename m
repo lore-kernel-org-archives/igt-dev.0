@@ -1,15 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 38E616EA4B
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Feb 2021 10:18:52 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Wed,  3 Feb 2021 15:33:07 +0530
-Message-Id: <20210203100310.19441-2-anshuman.gupta@intel.com>
-In-Reply-To: <20210203100310.19441-1-anshuman.gupta@intel.com>
-References: <20210203100310.19441-1-anshuman.gupta@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Date: Wed,  3 Feb 2021 10:26:01 +0000
+Message-Id: <20210203102601.895197-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 1/4] i915/i915_pm_rpm: Enable PC8+
- residency test
+Subject: [igt-dev] [PATCH i-g-t] intel_gpu_top: Always sort the clients
+ array after update
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,121 +12,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: rodrigo.vivi@intel.com, chris@chris-wilson.co.uk
+Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Enabled pc8-residency test for each platform that supports pc8.
-Bifurcate pc8-residency is display-on and display-off test case.
-
-Negative testing of PC8 residency on HASWELL/BROADWELL while
-display being "on" is removed as it saves CI time and there is
-no ROI of such testing.
-
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
----
- tests/i915/i915_pm_rpm.c | 48 ++++++++++++++++++++++++++--------------
- 1 file changed, 31 insertions(+), 17 deletions(-)
-
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index d9ec0388..8914f976 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -52,6 +52,16 @@
- #include "igt_debugfs.h"
- #include "igt_device.h"
- #include "igt_edid.h"
-+#include "igt_psr.h"
-+
-+#define MSR_PKG_CST_CONFIG_CONTROL	0xE2
-+/*
-+ * Below PKG CST limit mask and PC8 bits are meant for
-+ * HSW,BDW SKL,ICL and Goldmont Microarch.
-+ * Refer IA S/W developers manual vol3c part3 chapter:35
-+ */
-+#define  PKG_CST_LIMIT_MASK		0xF
-+#define  PKG_CST_LIMIT_C8		0x6
- 
- #define MSR_PC8_RES	0x630
- #define MSR_PC9_RES	0x631
-@@ -301,7 +311,6 @@ static void init_modeset_cached_params(struct mode_set_data *data)
- 					    SCREEN_TYPE_LPSP);
- 	non_lpsp = init_modeset_params_for_type(data, &non_lpsp_mode_params,
- 						SCREEN_TYPE_NON_LPSP);
--
- 	if (lpsp)
- 		default_mode_params = &lpsp_mode_params;
- 	else if (non_lpsp)
-@@ -728,10 +737,6 @@ static void setup_pc8(void)
- {
- 	has_pc8 = false;
- 
--	/* Only Haswell supports the PC8 feature. */
--	if (!IS_HASWELL(ms_data.devid) && !IS_BROADWELL(ms_data.devid))
--		return;
--
- 	/* Make sure our Kernel supports MSR and the module is loaded. */
- 	igt_require(modprobe("msr") == 0);
- 
-@@ -827,20 +832,27 @@ static void basic_subtest(void)
- 	/* XXX Also we can test wake up via exec nop */
- }
- 
--static void pc8_residency_subtest(void)
-+static void pc8_residency_subtest(bool display_on)
- {
- 	igt_require(has_pc8);
- 
--	/* Make sure PC8+ residencies move! */
--	disable_all_screens(&ms_data);
--	igt_assert_f(pc8_plus_residency_changed(30),
--		     "Machine is not reaching PC8+ states, please check its "
--		     "configuration.\n");
-+	if (IS_HASWELL(ms_data.devid) || IS_BROADWELL(ms_data.devid))
-+		igt_require_f(!display_on, "pc8 with display on not supported\n");
- 
--	/* Make sure PC8+ residencies stop! */
--	enable_one_screen(&ms_data);
--	igt_assert_f(!pc8_plus_residency_changed(10),
--		     "PC8+ residency didn't stop with screen enabled.\n");
-+	if (!display_on) {
-+		/* Make sure PC8+ residencies move! */
-+		disable_all_screens(&ms_data);
-+		igt_assert_f(pc8_plus_residency_changed(30),
-+			     "Machine is not reaching PC8+ states with all screens disabled.\n");
-+	} else {
-+		/* check pc8 with psr disabled on any output */
-+		psr_disable(drm_fd, debugfs);
-+		enable_one_screen(&ms_data);
-+		igt_assert_f(pc8_plus_residency_changed(30),
-+			     "Machine is not reaching PC8+ states with a screen enabled.\n");
-+		/* Restore PSR with PSR_MODE_1 for rest of IGT */
-+		psr_enable(drm_fd, debugfs, PSR_MODE_1);
-+	}
- }
- 
- static void modeset_subtest(enum screen_type type, int rounds, int wait_flags)
-@@ -2075,8 +2087,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		reg_read_ioctl_subtest();
- 	igt_subtest("i2c")
- 		i2c_subtest();
--	igt_subtest("pc8-residency")
--		pc8_residency_subtest();
-+	igt_subtest("pc8-residency-display-on")
-+		pc8_residency_subtest(true);
-+	igt_subtest("pc8-residency-display-off")
-+		pc8_residency_subtest(false);
- 	igt_subtest("debugfs-read")
- 		debugfs_read_subtest();
- 	igt_subtest("debugfs-forcewake-user")
--- 
-2.26.2
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RnJvbTogVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KCldhbGtpbmcg
+dGhlIGNsaWVudCAibGlzdCIgbWFrZXMgYXNzdW1wdGlvbnMgYWJvdXQgdGhlIG9yZGVyIG9mIGFj
+dGl2ZSBhbmQKZnJlZSBzbG90cyB3aGljaCBtZWFucyB3ZSBuZWVkIHRvIHNvcnQgdGhlIGFycmF5
+IGFmdGVyIGV2ZXJ5IHVwZGF0ZS4KClBhdGNoIGlzIG1vc3RseSBqdXN0IGNvZGUgbW92ZW1lbnQg
+d2l0aCB0aGUgb25seSBmdW5jdGlvbmFsIGRpZmZlcmVuY2Ugb2YKZWxpbWluYXRpbmcgdHdvIHN1
+YnNlcXVlbnQgc2NhbnMgd2l0aCBubyBzb3J0IGluIGJldHdlZW4gVGhpcyBjbG9zZXMgYQp2ZXJ5
+IHNob3J0IHdpbmRvdyB0aGVyZSBsaXN0IGl0ZXJhdGlvbiBjb3VsZCBnZXQgY29uZnVzZWQgaWYg
+c3lzZnMgY2xpZW50cwp3b3VsZCBjaGFuZ2UgcmFwaWRseSBhbmQgdW5mYXZvdXJhYmx5IGR1cmlu
+ZyB0b29sIHN0YXJ0dXAuCgpTaWduZWQtb2ZmLWJ5OiBUdnJ0a28gVXJzdWxpbiA8dHZydGtvLnVy
+c3VsaW5AaW50ZWwuY29tPgotLS0KIHRvb2xzL2ludGVsX2dwdV90b3AuYyB8IDEzMiArKysrKysr
+KysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA2NiBp
+bnNlcnRpb25zKCspLCA2NiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS90b29scy9pbnRlbF9n
+cHVfdG9wLmMgYi90b29scy9pbnRlbF9ncHVfdG9wLmMKaW5kZXggZGZmYzZlYmVjYzU3Li4xZmZk
+ZjVlZTY0YjQgMTAwNjQ0Ci0tLSBhL3Rvb2xzL2ludGVsX2dwdV90b3AuYworKysgYi90b29scy9p
+bnRlbF9ncHVfdG9wLmMKQEAgLTg5OSw3MSArODk5LDYgQEAgcmVhZF9jbGllbnRfc3lzZnMoY2hh
+ciAqYnVmLCBpbnQgYnVmc2l6ZSwgY29uc3QgY2hhciAqc3lzZnNfcm9vdCwKIAlyZXR1cm4gX19y
+ZWFkX2NsaWVudF9maWVsZCgqY2xpZW50X3Jvb3QsIGZpZWxkLCBidWYsIGJ1ZnNpemUpOwogfQog
+Ci1zdGF0aWMgdm9pZCBzY2FuX2NsaWVudHMoc3RydWN0IGNsaWVudHMgKmNsaWVudHMpCi17Ci0J
+c3RydWN0IGRpcmVudCAqZGVudDsKLQlzdHJ1Y3QgY2xpZW50ICpjOwotCXVuc2lnbmVkIGludCBp
+ZDsKLQlpbnQgdG1wOwotCURJUiAqZDsKLQotCWlmICghY2xpZW50cykKLQkJcmV0dXJuOwotCi0J
+Zm9yX2VhY2hfY2xpZW50KGNsaWVudHMsIGMsIHRtcCkgewotCQlhc3NlcnQoYy0+c3RhdHVzICE9
+IFBST0JFKTsKLQkJaWYgKGMtPnN0YXR1cyA9PSBBTElWRSkKLQkJCWMtPnN0YXR1cyA9IFBST0JF
+OwotCQllbHNlCi0JCQlicmVhazsgLyogRnJlZSBibG9jayBhdCB0aGUgZW5kIG9mIGFycmF5LiAq
+LwotCX0KLQotCWQgPSBvcGVuZGlyKGNsaWVudHMtPnN5c2ZzX3Jvb3QpOwotCWlmICghZCkKLQkJ
+cmV0dXJuOwotCi0Jd2hpbGUgKChkZW50ID0gcmVhZGRpcihkKSkgIT0gTlVMTCkgewotCQljaGFy
+IG5hbWVbMjRdLCBwaWRbMjRdOwotCQlpbnQgcmV0LCByb290ID0gLTEsICpwcjsKLQotCQlpZiAo
+ZGVudC0+ZF90eXBlICE9IERUX0RJUikKLQkJCWNvbnRpbnVlOwotCQlpZiAoIWlzZGlnaXQoZGVu
+dC0+ZF9uYW1lWzBdKSkKLQkJCWNvbnRpbnVlOwotCi0JCWlkID0gYXRvaShkZW50LT5kX25hbWUp
+OwotCi0JCWMgPSBmaW5kX2NsaWVudChjbGllbnRzLCBQUk9CRSwgaWQpOwotCi0JCWlmIChjKQot
+CQkJcHIgPSAmYy0+c3lzZnNfcm9vdDsKLQkJZWxzZQotCQkJcHIgPSAmcm9vdDsKLQotCQlyZXQg
+PSByZWFkX2NsaWVudF9zeXNmcyhuYW1lLCBzaXplb2YobmFtZSksIGNsaWVudHMtPnN5c2ZzX3Jv
+b3QsCi0JCQkJCWlkLCAibmFtZSIsIHByKTsKLQkJcmV0IHw9IHJlYWRfY2xpZW50X3N5c2ZzKHBp
+ZCwgc2l6ZW9mKHBpZCksIGNsaWVudHMtPnN5c2ZzX3Jvb3QsCi0JCQkJCWlkLCAicGlkIiwgcHIp
+OwotCQlpZiAoIXJldCkgewotCQkJaWYgKCFjKQotCQkJCWFkZF9jbGllbnQoY2xpZW50cywgaWQs
+IGF0b2kocGlkKSwgbmFtZSwgcm9vdCk7Ci0JCQllbHNlCi0JCQkJdXBkYXRlX2NsaWVudChjLCBh
+dG9pKHBpZCksIG5hbWUpOwotCQl9IGVsc2UgaWYgKGMpIHsKLQkJCWMtPnN0YXR1cyA9IFBST0JF
+OyAvKiBXaWxsIGJlIGRlbGV0ZWQgYmVsb3cuICovCi0JCX0KLQl9Ci0KLQljbG9zZWRpcihkKTsK
+LQotCWZvcl9lYWNoX2NsaWVudChjbGllbnRzLCBjLCB0bXApIHsKLQkJaWYgKGMtPnN0YXR1cyA9
+PSBQUk9CRSkKLQkJCWZyZWVfY2xpZW50KGMpOwotCQllbHNlIGlmIChjLT5zdGF0dXMgPT0gRlJF
+RSkKLQkJCWJyZWFrOwotCX0KLX0KLQogc3RhdGljIGludCBjbGllbnRfbGFzdF9jbXAoY29uc3Qg
+dm9pZCAqX2EsIGNvbnN0IHZvaWQgKl9iKQogewogCWNvbnN0IHN0cnVjdCBjbGllbnQgKmEgPSBf
+YTsKQEAgLTEwNjAsNiArOTk1LDcyIEBAIHN0YXRpYyB2b2lkIHNvcnRfY2xpZW50cyhzdHJ1Y3Qg
+Y2xpZW50cyAqY2xpZW50cykKIAl9CiB9CiAKK3N0YXRpYyB2b2lkIHNjYW5fY2xpZW50cyhzdHJ1
+Y3QgY2xpZW50cyAqY2xpZW50cykKK3sKKwlzdHJ1Y3QgZGlyZW50ICpkZW50OworCXN0cnVjdCBj
+bGllbnQgKmM7CisJdW5zaWduZWQgaW50IGlkOworCWludCB0bXA7CisJRElSICpkOworCisJaWYg
+KCFjbGllbnRzKQorCQlyZXR1cm47CisKKwlmb3JfZWFjaF9jbGllbnQoY2xpZW50cywgYywgdG1w
+KSB7CisJCWFzc2VydChjLT5zdGF0dXMgIT0gUFJPQkUpOworCQlpZiAoYy0+c3RhdHVzID09IEFM
+SVZFKQorCQkJYy0+c3RhdHVzID0gUFJPQkU7CisJCWVsc2UKKwkJCWJyZWFrOyAvKiBGcmVlIGJs
+b2NrIGF0IHRoZSBlbmQgb2YgYXJyYXkuICovCisJfQorCisJZCA9IG9wZW5kaXIoY2xpZW50cy0+
+c3lzZnNfcm9vdCk7CisJaWYgKCFkKQorCQlyZXR1cm47CisKKwl3aGlsZSAoKGRlbnQgPSByZWFk
+ZGlyKGQpKSAhPSBOVUxMKSB7CisJCWNoYXIgbmFtZVsyNF0sIHBpZFsyNF07CisJCWludCByZXQs
+IHJvb3QgPSAtMSwgKnByOworCisJCWlmIChkZW50LT5kX3R5cGUgIT0gRFRfRElSKQorCQkJY29u
+dGludWU7CisJCWlmICghaXNkaWdpdChkZW50LT5kX25hbWVbMF0pKQorCQkJY29udGludWU7CisK
+KwkJaWQgPSBhdG9pKGRlbnQtPmRfbmFtZSk7CisKKwkJYyA9IGZpbmRfY2xpZW50KGNsaWVudHMs
+IFBST0JFLCBpZCk7CisKKwkJaWYgKGMpCisJCQlwciA9ICZjLT5zeXNmc19yb290OworCQllbHNl
+CisJCQlwciA9ICZyb290OworCisJCXJldCA9IHJlYWRfY2xpZW50X3N5c2ZzKG5hbWUsIHNpemVv
+ZihuYW1lKSwgY2xpZW50cy0+c3lzZnNfcm9vdCwKKwkJCQkJaWQsICJuYW1lIiwgcHIpOworCQly
+ZXQgfD0gcmVhZF9jbGllbnRfc3lzZnMocGlkLCBzaXplb2YocGlkKSwgY2xpZW50cy0+c3lzZnNf
+cm9vdCwKKwkJCQkJaWQsICJwaWQiLCBwcik7CisJCWlmICghcmV0KSB7CisJCQlpZiAoIWMpCisJ
+CQkJYWRkX2NsaWVudChjbGllbnRzLCBpZCwgYXRvaShwaWQpLCBuYW1lLCByb290KTsKKwkJCWVs
+c2UKKwkJCQl1cGRhdGVfY2xpZW50KGMsIGF0b2kocGlkKSwgbmFtZSk7CisJCX0gZWxzZSBpZiAo
+YykgeworCQkJYy0+c3RhdHVzID0gUFJPQkU7IC8qIFdpbGwgYmUgZGVsZXRlZCBiZWxvdy4gKi8K
+KwkJfQorCX0KKworCWNsb3NlZGlyKGQpOworCisJZm9yX2VhY2hfY2xpZW50KGNsaWVudHMsIGMs
+IHRtcCkgeworCQlpZiAoYy0+c3RhdHVzID09IFBST0JFKQorCQkJZnJlZV9jbGllbnQoYyk7CisJ
+CWVsc2UgaWYgKGMtPnN0YXR1cyA9PSBGUkVFKQorCQkJYnJlYWs7CisJfQorCisJc29ydF9jbGll
+bnRzKGNsaWVudHMpOworfQogCiBzdGF0aWMgY29uc3QgY2hhciAqYmFyc1tdID0geyAiICIsICLi
+lo8iLCAi4paOIiwgIuKWjSIsICLilowiLCAi4paLIiwgIuKWiiIsICLilokiLCAi4paIIiB9Owog
+CkBAIC0yMzA1LDcgKzIzMDYsNiBAQCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpCiAJ
+CXQgPSAoZG91YmxlKShlbmdpbmVzLT50cy5jdXIgLSBlbmdpbmVzLT50cy5wcmV2KSAvIDFlOTsK
+IAogCQlzY2FuX2NsaWVudHMoY2xpZW50cyk7Ci0JCXNvcnRfY2xpZW50cyhjbGllbnRzKTsKIAog
+CQlpZiAoc3RvcF90b3ApCiAJCQlicmVhazsKLS0gCjIuMjcuMAoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
