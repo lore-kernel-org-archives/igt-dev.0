@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20210201115756.876351-1-tvrtko.ursulin@linux.intel.com>
- <161218123064.27906.1183308463378840226@build.alporthouse.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <c947cfbc-bb9d-02c4-5b97-ca76d252e778@linux.intel.com>
-Date: Wed, 3 Feb 2021 10:31:04 +0000
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9EC406E2F2
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Feb 2021 10:41:59 +0000 (UTC)
+Date: Wed, 3 Feb 2021 12:41:55 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YBp9872j/kgvn04f@platvala-desk.ger.corp.intel.com>
+References: <20210202112717.16481-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <161218123064.27906.1183308463378840226@build.alporthouse.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] intel_gpu_top: Wrap
- interactive header
+Content-Disposition: inline
+In-Reply-To: <20210202112717.16481-1-juhapekka.heikkila@gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_rotation_crc: different
+ display modes can have different crc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,57 +18,191 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 01/02/2021 12:07, Chris Wilson wrote:
-> Quoting Tvrtko Ursulin (2021-02-01 11:57:56)
->> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>
->> Slight improvement with regards to wrapping header components to fit
->> console width. If a single element is wider than max it can still
->> overflow but it should now work better for practical console widths.
+On Tue, Feb 02, 2021 at 01:27:16PM +0200, Juha-Pekka Heikkila wrote:
+> Different resolutions with same content may have different crc hence generate
+> buffer verification crcs for different modes if needed.
 > 
-> <----
-> intel-gpu-top: Intel Kabylake (Gen9) @ /dev/dri/card0
->   900/ 949 MHz;   0% RC6;  6.97/18.42 W;        2 irqs/s
->        IMC reads:        6 MiB/s
->       IMC writes:        0 MiB/s
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>  tests/kms_rotation_crc.c | 54 +++++++++++++++++++++++++++++++++-------
+>  1 file changed, 45 insertions(+), 9 deletions(-)
 > 
-> ---->
-> intel-gpu-top: Intel Kabylake (Gen9) @ /dev/dri/card0 -  903/ 954 MHz;   0% RC6
->      7.16/18.40 W;       14 irqs/s
+> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+> index e7072e208..ab17dd388 100644
+> --- a/tests/kms_rotation_crc.c
+> +++ b/tests/kms_rotation_crc.c
+> @@ -30,6 +30,7 @@
+>  #define MAXMULTIPLANESAMOUNT 2
+>  #define TEST_MAX_WIDTH 640
+>  #define TEST_MAX_HEIGHT 480
+> +#define MAX_TESTED_MODES 8
+>  
+>  struct p_struct {
+>  	igt_plane_t *plane;
+> @@ -79,11 +80,15 @@ typedef struct {
+>  	bool use_native_resolution;
+>  	bool extended;
+>  
+> +	int output_crc_in_use, max_crc_in_use;
+>  	struct crc_rect_tag {
+> +		int mode;
+>  		bool valid;
+>  		igt_crc_t ref_crc;
+>  		igt_crc_t flip_crc;
+> -	} crc_rect[num_rectangle_types];
+> +	} crc_rect[MAX_TESTED_MODES][num_rectangle_types];
+> +
+> +	igt_fb_t last_on_screen;
+>  } data_t;
+>  
+>  typedef struct {
+> @@ -169,7 +174,6 @@ static void remove_fbs(data_t *data)
+>  {
+>  	igt_remove_fb(data->gfx_fd, &data->fb);
+>  	igt_remove_fb(data->gfx_fd, &data->fb_reference);
+> -	igt_remove_fb(data->gfx_fd, &data->fb_flip);
+>  }
+>  
+>  static void cleanup_crtc(data_t *data)
+> @@ -272,7 +276,7 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
+>  	 */
+>  	igt_require(igt_display_has_format_mod(display, pixel_format, tiling));
+>  
+> -	if (!data->crc_rect[rect].valid) {
+> +	if (!data->crc_rect[data->output_crc_in_use][rect].valid) {
+>  		/*
+>  		* Create a reference software rotated flip framebuffer.
+>  		*/
+> @@ -285,7 +289,9 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
+>  			igt_plane_set_position(plane, data->pos_x, data->pos_y);
+>  		igt_display_commit2(display, COMMIT_ATOMIC);
+>  
+> -		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].flip_crc);
+> +		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc,
+> +					 &data->crc_rect[data->output_crc_in_use][rect].flip_crc);
+> +
+>  		igt_remove_fb(data->gfx_fd, &data->fb_flip);
+>  
+>  		/*
+> @@ -300,10 +306,13 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
+>  			igt_plane_set_position(plane, data->pos_x, data->pos_y);
+>  		igt_display_commit2(display, COMMIT_ATOMIC);
+>  
+> -		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].ref_crc);
+> -		data->crc_rect[rect].valid = true;
+> +		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc,
+> +					 &data->crc_rect[data->output_crc_in_use][rect].ref_crc);
+> +
+> +		data->crc_rect[data->output_crc_in_use][rect].valid = true;
+>  	}
+>  
+> +	data->last_on_screen = data->fb_flip;
+>  	/*
+>  	  * Prepare the non-rotated flip fb.
+>  	  */
+> @@ -340,6 +349,13 @@ static void test_single_case(data_t *data, enum pipe pipe,
+>  		igt_plane_set_size(plane, data->fb.height, data->fb.width);
+>  
+>  	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
+> +
+> +	/*
+> +	 * Remove this last fb after it was taken out from screen
+> +	 * to avoid unnecessary delays.
+> +	 */
+> +	igt_remove_fb(data->gfx_fd, &data->last_on_screen);
+> +
+>  	if (test_bad_format) {
+>  		igt_pipe_crc_drain(data->pipe_crc);
+>  		igt_assert_eq(ret, -EINVAL);
+> @@ -351,7 +367,8 @@ static void test_single_case(data_t *data, enum pipe pipe,
+>  
+>  	/* Check CRC */
+>  	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
+> -	igt_assert_crc_equal(&data->crc_rect[rect].ref_crc, &crc_output);
+> +	igt_assert_crc_equal(&data->crc_rect[data->output_crc_in_use][rect].ref_crc,
+> +			     &crc_output);
+>  
+>  	/*
+>  	 * If flips are requested flip to a different fb and
+> @@ -374,7 +391,8 @@ static void test_single_case(data_t *data, enum pipe pipe,
+>  		}
+>  		kmstest_wait_for_pageflip(data->gfx_fd);
+>  		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
+> -		igt_assert_crc_equal(&data->crc_rect[rect].flip_crc, &crc_output);
+> +		igt_assert_crc_equal(&data->crc_rect[data->output_crc_in_use][rect].flip_crc,
+> +				     &crc_output);
+>  	}
+>  }
+>  
+> @@ -403,6 +421,7 @@ static bool test_format(data_t *data,
+>  static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_format)
+>  {
+>  	igt_display_t *display = &data->display;
+> +	drmModeModeInfo *mode;
+>  	igt_output_t *output;
+>  	enum pipe pipe;
+>  	int pipe_count = 0;
+> @@ -416,8 +435,25 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+>  		igt_plane_t *plane;
+>  		int i, j, c;
+>  
+> +		mode = igt_output_get_mode(output);
+> +
+> +		for (data->output_crc_in_use = 0;
+> +		     data->output_crc_in_use < data->max_crc_in_use &&
+> +		     data->crc_rect[data->output_crc_in_use][0].mode != mode->vdisplay;
+> +		     data->output_crc_in_use++)
+> +			;
+> +
+> +		/*
+> +		 * This is if there was different mode on different connector.
+> +		 */
+> +		if (data->crc_rect[data->output_crc_in_use][0].mode != mode->vdisplay) {
+> +			data->crc_rect[data->output_crc_in_use][0].mode = mode->vdisplay;
+> +			if (++data->max_crc_in_use >= MAX_TESTED_MODES)
+> +				data->max_crc_in_use = MAX_TESTED_MODES - 1;
+> +		}
+> +
+
+
+I don't know if it's ENOCOFFEE speaking or what but it took me a good
+while to understand the logic here. Please add a comment here to
+explain that
+
+1) yet-unused crc_rect index will have a .mode that won't ever match mode->vdisplay
+2) max_crc_in_use will get changed within that latter if statement
+
+In fact, while it's really elegant code, please separate the increment
+of max_crc_in_use from the clamping to make it real clear that it will
+be incremented, right here.
+
+
+-- 
+Petri Latvala
+
+
+
+>  		for (c = 0; c < num_rectangle_types; c++)
+> -			data->crc_rect[c].valid = false;
+> +			data->crc_rect[data->output_crc_in_use][c].valid = false;
+>  
+>  		if (IS_CHERRYVIEW(data->devid) && pipe != PIPE_B)
+>  			continue;
+> -- 
+> 2.28.0
 > 
->        IMC reads:       80 MiB/s
->       IMC writes:        0 MiB/s
-> 
-> I thought it looked reasonably tidy, without adding any lines to the
-> header.
-
-Or on a wider terminal:
-<----
-intel-gpu-top: Intel Skylake (Gen9) @ /dev/dri/card0
-    0/   0 MHz; 100% RC6;  0.00/ 1.29 W;        0 irqs/s
-       IMC reads:      138 MiB/s
-      IMC writes:        6 MiB/s
---->
-intel-gpu-top: Intel Skylake (Gen9) @ /dev/dri/card0 -    0/   0 MHz; 100% RC6;  0.00/ 0.00 W;        0 irqs/s
-
-       IMC reads:       77 MiB/s
-      IMC writes:        4 MiB/s
-
-
-So a "fight" between 80 chars vs 120 (or so). :) It may be a bit of an over-engineered solution but I don't like the wrap on a wide terminal, plus I like an extra blank line.
-
-Regards,
-
-Tvrtko
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
