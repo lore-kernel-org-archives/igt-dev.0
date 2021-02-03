@@ -1,16 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04DB36EA59
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Feb 2021 11:37:42 +0000 (UTC)
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Date: Wed,  3 Feb 2021 11:44:55 +0000
+Message-Id: <20210203114456.895974-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20210203100310.19441-2-anshuman.gupta@intel.com>
-References: <20210203100310.19441-1-anshuman.gupta@intel.com>
- <20210203100310.19441-2-anshuman.gupta@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 03 Feb 2021 11:37:38 +0000
-Message-ID: <161235225893.6538.16121999594045383145@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/4] i915/i915_pm_rpm: Enable PC8+
- residency test
+Subject: [igt-dev] [PATCH i-g-t 1/2] intel_gpu_top: Show banner messages
+ when cycling sort modes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,25 +16,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Anshuman Gupta <anshuman.gupta@intel.com>, igt-dev@lists.freedesktop.org
-Cc: rodrigo.vivi@intel.com
+To: igt-dev@lists.freedesktop.org
+Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Anshuman Gupta (2021-02-03 10:03:07)
-> Enabled pc8-residency test for each platform that supports pc8.
-> Bifurcate pc8-residency is display-on and display-off test case.
-> 
-> Negative testing of PC8 residency on HASWELL/BROADWELL while
-> display being "on" is removed as it saves CI time and there is
-> no ROI of such testing.
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Is checking for !pc8 in the atomic state checker? That would be a good,
-very precise, runtime debug check.
+It is useful to let the user know what is the currently active sort mode.
 
-Still a 30s timeout? Is that overly conservative? Is there some way to
-kick it into pc8 for fast tests with one or two slow
-let-it-enter-pc8-naturally tests?
--Chris
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+---
+ tools/intel_gpu_top.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 584aa21b198a..b409106f3718 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -1479,6 +1479,8 @@ print_header_token(const char *cont, int lines, int con_w, int con_h, int *rem,
+ 	return lines;
+ }
+ 
++static const char *header_msg;
++
+ static int
+ print_header(const struct igt_device_card *card,
+ 	     const char *codename,
+@@ -1593,8 +1595,14 @@ print_header(const struct igt_device_card *card,
+ 		if (lines++ < con_h)
+ 			printf("\n");
+ 
+-		if (lines++ < con_h)
+-			printf("\n");
++		if (lines++ < con_h) {
++			if (header_msg) {
++				printf(" >>> %s\n", header_msg);
++				header_msg = NULL;
++			} else {
++				printf("\n");
++			}
++		}
+ 	}
+ 
+ 	return lines;
+@@ -2146,12 +2154,15 @@ static void select_client_sort(void)
+ 	switch (++client_sort % 3) {
+ 	case 0:
+ 		client_cmp = client_last_cmp;
++		header_msg = "Sorting clients by current GPU usage.";
+ 		break;
+ 	case 1:
+ 		client_cmp = client_total_cmp;
++		header_msg = "Sorting clients by accummulated GPU usage.";
+ 		break;
+ 	case 2:
+ 		client_cmp = client_id_cmp;
++		header_msg = "Sorting clients by sysfs id.";
+ 	}
+ }
+ 
+-- 
+2.27.0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
