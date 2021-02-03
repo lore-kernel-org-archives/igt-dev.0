@@ -1,120 +1,83 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+References: <20210201115756.876351-1-tvrtko.ursulin@linux.intel.com>
+ <161218123064.27906.1183308463378840226@build.alporthouse.com>
+ <c947cfbc-bb9d-02c4-5b97-ca76d252e778@linux.intel.com>
+ <161235004418.6538.3517367090743505584@build.alporthouse.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <c3f9a058-307b-3fee-526b-a17a871f8fb3@linux.intel.com>
+Date: Wed, 3 Feb 2021 13:12:05 +0000
 MIME-Version: 1.0
-In-Reply-To: <20210203114456.895974-2-tvrtko.ursulin@linux.intel.com>
-References: <20210203114456.895974-1-tvrtko.ursulin@linux.intel.com>
- <20210203114456.895974-2-tvrtko.ursulin@linux.intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 03 Feb 2021 11:50:28 +0000
-Message-ID: <161235302859.6538.4103964959763076071@build.alporthouse.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 2/2] intel_gpu_top: Add
- option to sort by PID
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
+In-Reply-To: <161235004418.6538.3517367090743505584@build.alporthouse.com>
+Content-Language: en-US
+Subject: Re: [Intel-gfx] [igt-dev] [PATCH i-g-t] intel_gpu_top: Wrap
+ interactive header
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
 Cc: Intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Tvrtko Ursulin (2021-02-03 11:44:56)
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> 
-> Useful to mimick top view.
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> ---
->  man/intel_gpu_top.rst |  2 +-
->  tools/intel_gpu_top.c | 46 +++++++++++++++++++++++++++++++------------
->  2 files changed, 34 insertions(+), 14 deletions(-)
-> 
-> diff --git a/man/intel_gpu_top.rst b/man/intel_gpu_top.rst
-> index 118d8b953a70..b145d85c0440 100644
-> --- a/man/intel_gpu_top.rst
-> +++ b/man/intel_gpu_top.rst
-> @@ -56,7 +56,7 @@ Supported keys:
->      'q'    Exit from the tool.
->      '1'    Toggle between aggregated engine class and physical engine mode.
->      'n'    Toggle display of numeric client busyness overlay.
-> -    's'    Toggle between sort modes (runtime, total runtime, client id).
-> +    's'    Toggle between sort modes (runtime, total runtime, pid, client id).
->      'i'    Toggle display of clients which used no GPU time.
->  
->  DEVICE SELECTION
-> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-> index b409106f3718..24a87d2f4f3f 100644
-> --- a/tools/intel_gpu_top.c
-> +++ b/tools/intel_gpu_top.c
-> @@ -959,6 +959,24 @@ static int client_id_cmp(const void *_a, const void *_b)
->         return (int)b->id - a->id;
->  }
->  
-> +static int client_pid_cmp(const void *_a, const void *_b)
-> +{
-> +       const struct client *a = _a;
-> +       const struct client *b = _b;
-> +       int pid_a, pid_b;
-> +
-> +       pid_a = a->status == ALIVE ? a->pid : INT_MAX;
-> +       pid_b = b->status == ALIVE ? b->pid : INT_MAX;
-> +
-> +       pid_b -= pid_a;
-> +       if (pid_b > 0)
-> +               return -1;
-> +       if (pid_b < 0)
-> +               return 1;
-> +
-> +       return (int)a->id - b->id;
-> +}
-> +
->  static int (*client_cmp)(const void *, const void *) = client_last_cmp;
->  
->  static void sort_clients(struct clients *clients)
-> @@ -2149,21 +2167,23 @@ static void interactive_stdin(void)
->  
->  static void select_client_sort(void)
->  {
-> +       struct {
-> +               int (*cmp)(const void *, const void *);
-> +               const char *msg;
-> +       } cmp[] = {
-> +               { client_last_cmp, "Sorting clients by current GPU usage." },
-> +               { client_total_cmp, "Sorting clients by accummulated GPU usage." },
-> +               { client_pid_cmp, "Sorting clients by pid." },
-> +               { client_id_cmp, "Sorting clients by sysfs id." },
-> +       };
->         static unsigned int client_sort;
->  
-> -       switch (++client_sort % 3) {
-> -       case 0:
-> -               client_cmp = client_last_cmp;
-> -               header_msg = "Sorting clients by current GPU usage.";
-> -               break;
-> -       case 1:
-> -               client_cmp = client_total_cmp;
-> -               header_msg = "Sorting clients by accummulated GPU usage.";
-> -               break;
-> -       case 2:
-> -               client_cmp = client_id_cmp;
-> -               header_msg = "Sorting clients by sysfs id.";
-> -       }
-> +       ++client_sort;
-> +       if (client_sort >= ARRAY_SIZE(cmp))
-> +               client_sort = 0;
-> +
-> +       client_cmp = cmp[client_sort].cmp;
-> +       header_msg = cmp[client_sort].msg;
->  }
 
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
--Chris
+On 03/02/2021 11:00, Chris Wilson wrote:
+> Quoting Tvrtko Ursulin (2021-02-03 10:31:04)
+>>
+>> On 01/02/2021 12:07, Chris Wilson wrote:
+>>> Quoting Tvrtko Ursulin (2021-02-01 11:57:56)
+>>>> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>>>>
+>>>> Slight improvement with regards to wrapping header components to fit
+>>>> console width. If a single element is wider than max it can still
+>>>> overflow but it should now work better for practical console widths.
+>>>
+>>> <----
+>>> intel-gpu-top: Intel Kabylake (Gen9) @ /dev/dri/card0
+>>>    900/ 949 MHz;   0% RC6;  6.97/18.42 W;        2 irqs/s
+>>>         IMC reads:        6 MiB/s
+>>>        IMC writes:        0 MiB/s
+>>>
+>>> ---->
+>>> intel-gpu-top: Intel Kabylake (Gen9) @ /dev/dri/card0 -  903/ 954 MHz;   0% RC6
+>>>       7.16/18.40 W;       14 irqs/s
+>>>
+>>>         IMC reads:       80 MiB/s
+>>>        IMC writes:        0 MiB/s
+>>>
+>>> I thought it looked reasonably tidy, without adding any lines to the
+>>> header.
+>>
+>> Or on a wider terminal:
+>> <----
+>> intel-gpu-top: Intel Skylake (Gen9) @ /dev/dri/card0
+>>      0/   0 MHz; 100% RC6;  0.00/ 1.29 W;        0 irqs/s
+>>         IMC reads:      138 MiB/s
+>>        IMC writes:        6 MiB/s
+>> --->
+>> intel-gpu-top: Intel Skylake (Gen9) @ /dev/dri/card0 -    0/   0 MHz; 100% RC6;  0.00/ 0.00 W;        0 irqs/s
+>>
+>>         IMC reads:       77 MiB/s
+>>        IMC writes:        4 MiB/s
+>>
+>>
+>> So a "fight" between 80 chars vs 120 (or so). :) It may be a bit of an over-engineered solution but I don't like the wrap on a wide terminal, plus I like an extra blank line.
+> 
+> But the memory counters are visually similar to the
+> frequency/rc6/power/interrupts...
+
+But I broke my layout by accident when rebasing client stats... ;D
+
+Regards,
+
+Tvrtko
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
