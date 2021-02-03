@@ -1,10 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Date: Wed,  3 Feb 2021 10:26:01 +0000
-Message-Id: <20210203102601.895197-1-tvrtko.ursulin@linux.intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D2A3C6EA4F
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Feb 2021 10:29:34 +0000 (UTC)
+References: <20210202112717.16481-1-juhapekka.heikkila@gmail.com>
+From: Karthik B S <karthik.b.s@intel.com>
+Message-ID: <22011c5b-731d-e8c3-bcd6-3750f58e957c@intel.com>
+Date: Wed, 3 Feb 2021 15:59:29 +0530
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] intel_gpu_top: Always sort the clients
- array after update
+In-Reply-To: <20210202112717.16481-1-juhapekka.heikkila@gmail.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_rotation_crc: different
+ display modes can have different crc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -12,85 +18,172 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KCldhbGtpbmcg
-dGhlIGNsaWVudCAibGlzdCIgbWFrZXMgYXNzdW1wdGlvbnMgYWJvdXQgdGhlIG9yZGVyIG9mIGFj
-dGl2ZSBhbmQKZnJlZSBzbG90cyB3aGljaCBtZWFucyB3ZSBuZWVkIHRvIHNvcnQgdGhlIGFycmF5
-IGFmdGVyIGV2ZXJ5IHVwZGF0ZS4KClBhdGNoIGlzIG1vc3RseSBqdXN0IGNvZGUgbW92ZW1lbnQg
-d2l0aCB0aGUgb25seSBmdW5jdGlvbmFsIGRpZmZlcmVuY2Ugb2YKZWxpbWluYXRpbmcgdHdvIHN1
-YnNlcXVlbnQgc2NhbnMgd2l0aCBubyBzb3J0IGluIGJldHdlZW4gVGhpcyBjbG9zZXMgYQp2ZXJ5
-IHNob3J0IHdpbmRvdyB0aGVyZSBsaXN0IGl0ZXJhdGlvbiBjb3VsZCBnZXQgY29uZnVzZWQgaWYg
-c3lzZnMgY2xpZW50cwp3b3VsZCBjaGFuZ2UgcmFwaWRseSBhbmQgdW5mYXZvdXJhYmx5IGR1cmlu
-ZyB0b29sIHN0YXJ0dXAuCgpTaWduZWQtb2ZmLWJ5OiBUdnJ0a28gVXJzdWxpbiA8dHZydGtvLnVy
-c3VsaW5AaW50ZWwuY29tPgotLS0KIHRvb2xzL2ludGVsX2dwdV90b3AuYyB8IDEzMiArKysrKysr
-KysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA2NiBp
-bnNlcnRpb25zKCspLCA2NiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS90b29scy9pbnRlbF9n
-cHVfdG9wLmMgYi90b29scy9pbnRlbF9ncHVfdG9wLmMKaW5kZXggZGZmYzZlYmVjYzU3Li4xZmZk
-ZjVlZTY0YjQgMTAwNjQ0Ci0tLSBhL3Rvb2xzL2ludGVsX2dwdV90b3AuYworKysgYi90b29scy9p
-bnRlbF9ncHVfdG9wLmMKQEAgLTg5OSw3MSArODk5LDYgQEAgcmVhZF9jbGllbnRfc3lzZnMoY2hh
-ciAqYnVmLCBpbnQgYnVmc2l6ZSwgY29uc3QgY2hhciAqc3lzZnNfcm9vdCwKIAlyZXR1cm4gX19y
-ZWFkX2NsaWVudF9maWVsZCgqY2xpZW50X3Jvb3QsIGZpZWxkLCBidWYsIGJ1ZnNpemUpOwogfQog
-Ci1zdGF0aWMgdm9pZCBzY2FuX2NsaWVudHMoc3RydWN0IGNsaWVudHMgKmNsaWVudHMpCi17Ci0J
-c3RydWN0IGRpcmVudCAqZGVudDsKLQlzdHJ1Y3QgY2xpZW50ICpjOwotCXVuc2lnbmVkIGludCBp
-ZDsKLQlpbnQgdG1wOwotCURJUiAqZDsKLQotCWlmICghY2xpZW50cykKLQkJcmV0dXJuOwotCi0J
-Zm9yX2VhY2hfY2xpZW50KGNsaWVudHMsIGMsIHRtcCkgewotCQlhc3NlcnQoYy0+c3RhdHVzICE9
-IFBST0JFKTsKLQkJaWYgKGMtPnN0YXR1cyA9PSBBTElWRSkKLQkJCWMtPnN0YXR1cyA9IFBST0JF
-OwotCQllbHNlCi0JCQlicmVhazsgLyogRnJlZSBibG9jayBhdCB0aGUgZW5kIG9mIGFycmF5LiAq
-LwotCX0KLQotCWQgPSBvcGVuZGlyKGNsaWVudHMtPnN5c2ZzX3Jvb3QpOwotCWlmICghZCkKLQkJ
-cmV0dXJuOwotCi0Jd2hpbGUgKChkZW50ID0gcmVhZGRpcihkKSkgIT0gTlVMTCkgewotCQljaGFy
-IG5hbWVbMjRdLCBwaWRbMjRdOwotCQlpbnQgcmV0LCByb290ID0gLTEsICpwcjsKLQotCQlpZiAo
-ZGVudC0+ZF90eXBlICE9IERUX0RJUikKLQkJCWNvbnRpbnVlOwotCQlpZiAoIWlzZGlnaXQoZGVu
-dC0+ZF9uYW1lWzBdKSkKLQkJCWNvbnRpbnVlOwotCi0JCWlkID0gYXRvaShkZW50LT5kX25hbWUp
-OwotCi0JCWMgPSBmaW5kX2NsaWVudChjbGllbnRzLCBQUk9CRSwgaWQpOwotCi0JCWlmIChjKQot
-CQkJcHIgPSAmYy0+c3lzZnNfcm9vdDsKLQkJZWxzZQotCQkJcHIgPSAmcm9vdDsKLQotCQlyZXQg
-PSByZWFkX2NsaWVudF9zeXNmcyhuYW1lLCBzaXplb2YobmFtZSksIGNsaWVudHMtPnN5c2ZzX3Jv
-b3QsCi0JCQkJCWlkLCAibmFtZSIsIHByKTsKLQkJcmV0IHw9IHJlYWRfY2xpZW50X3N5c2ZzKHBp
-ZCwgc2l6ZW9mKHBpZCksIGNsaWVudHMtPnN5c2ZzX3Jvb3QsCi0JCQkJCWlkLCAicGlkIiwgcHIp
-OwotCQlpZiAoIXJldCkgewotCQkJaWYgKCFjKQotCQkJCWFkZF9jbGllbnQoY2xpZW50cywgaWQs
-IGF0b2kocGlkKSwgbmFtZSwgcm9vdCk7Ci0JCQllbHNlCi0JCQkJdXBkYXRlX2NsaWVudChjLCBh
-dG9pKHBpZCksIG5hbWUpOwotCQl9IGVsc2UgaWYgKGMpIHsKLQkJCWMtPnN0YXR1cyA9IFBST0JF
-OyAvKiBXaWxsIGJlIGRlbGV0ZWQgYmVsb3cuICovCi0JCX0KLQl9Ci0KLQljbG9zZWRpcihkKTsK
-LQotCWZvcl9lYWNoX2NsaWVudChjbGllbnRzLCBjLCB0bXApIHsKLQkJaWYgKGMtPnN0YXR1cyA9
-PSBQUk9CRSkKLQkJCWZyZWVfY2xpZW50KGMpOwotCQllbHNlIGlmIChjLT5zdGF0dXMgPT0gRlJF
-RSkKLQkJCWJyZWFrOwotCX0KLX0KLQogc3RhdGljIGludCBjbGllbnRfbGFzdF9jbXAoY29uc3Qg
-dm9pZCAqX2EsIGNvbnN0IHZvaWQgKl9iKQogewogCWNvbnN0IHN0cnVjdCBjbGllbnQgKmEgPSBf
-YTsKQEAgLTEwNjAsNiArOTk1LDcyIEBAIHN0YXRpYyB2b2lkIHNvcnRfY2xpZW50cyhzdHJ1Y3Qg
-Y2xpZW50cyAqY2xpZW50cykKIAl9CiB9CiAKK3N0YXRpYyB2b2lkIHNjYW5fY2xpZW50cyhzdHJ1
-Y3QgY2xpZW50cyAqY2xpZW50cykKK3sKKwlzdHJ1Y3QgZGlyZW50ICpkZW50OworCXN0cnVjdCBj
-bGllbnQgKmM7CisJdW5zaWduZWQgaW50IGlkOworCWludCB0bXA7CisJRElSICpkOworCisJaWYg
-KCFjbGllbnRzKQorCQlyZXR1cm47CisKKwlmb3JfZWFjaF9jbGllbnQoY2xpZW50cywgYywgdG1w
-KSB7CisJCWFzc2VydChjLT5zdGF0dXMgIT0gUFJPQkUpOworCQlpZiAoYy0+c3RhdHVzID09IEFM
-SVZFKQorCQkJYy0+c3RhdHVzID0gUFJPQkU7CisJCWVsc2UKKwkJCWJyZWFrOyAvKiBGcmVlIGJs
-b2NrIGF0IHRoZSBlbmQgb2YgYXJyYXkuICovCisJfQorCisJZCA9IG9wZW5kaXIoY2xpZW50cy0+
-c3lzZnNfcm9vdCk7CisJaWYgKCFkKQorCQlyZXR1cm47CisKKwl3aGlsZSAoKGRlbnQgPSByZWFk
-ZGlyKGQpKSAhPSBOVUxMKSB7CisJCWNoYXIgbmFtZVsyNF0sIHBpZFsyNF07CisJCWludCByZXQs
-IHJvb3QgPSAtMSwgKnByOworCisJCWlmIChkZW50LT5kX3R5cGUgIT0gRFRfRElSKQorCQkJY29u
-dGludWU7CisJCWlmICghaXNkaWdpdChkZW50LT5kX25hbWVbMF0pKQorCQkJY29udGludWU7CisK
-KwkJaWQgPSBhdG9pKGRlbnQtPmRfbmFtZSk7CisKKwkJYyA9IGZpbmRfY2xpZW50KGNsaWVudHMs
-IFBST0JFLCBpZCk7CisKKwkJaWYgKGMpCisJCQlwciA9ICZjLT5zeXNmc19yb290OworCQllbHNl
-CisJCQlwciA9ICZyb290OworCisJCXJldCA9IHJlYWRfY2xpZW50X3N5c2ZzKG5hbWUsIHNpemVv
-ZihuYW1lKSwgY2xpZW50cy0+c3lzZnNfcm9vdCwKKwkJCQkJaWQsICJuYW1lIiwgcHIpOworCQly
-ZXQgfD0gcmVhZF9jbGllbnRfc3lzZnMocGlkLCBzaXplb2YocGlkKSwgY2xpZW50cy0+c3lzZnNf
-cm9vdCwKKwkJCQkJaWQsICJwaWQiLCBwcik7CisJCWlmICghcmV0KSB7CisJCQlpZiAoIWMpCisJ
-CQkJYWRkX2NsaWVudChjbGllbnRzLCBpZCwgYXRvaShwaWQpLCBuYW1lLCByb290KTsKKwkJCWVs
-c2UKKwkJCQl1cGRhdGVfY2xpZW50KGMsIGF0b2kocGlkKSwgbmFtZSk7CisJCX0gZWxzZSBpZiAo
-YykgeworCQkJYy0+c3RhdHVzID0gUFJPQkU7IC8qIFdpbGwgYmUgZGVsZXRlZCBiZWxvdy4gKi8K
-KwkJfQorCX0KKworCWNsb3NlZGlyKGQpOworCisJZm9yX2VhY2hfY2xpZW50KGNsaWVudHMsIGMs
-IHRtcCkgeworCQlpZiAoYy0+c3RhdHVzID09IFBST0JFKQorCQkJZnJlZV9jbGllbnQoYyk7CisJ
-CWVsc2UgaWYgKGMtPnN0YXR1cyA9PSBGUkVFKQorCQkJYnJlYWs7CisJfQorCisJc29ydF9jbGll
-bnRzKGNsaWVudHMpOworfQogCiBzdGF0aWMgY29uc3QgY2hhciAqYmFyc1tdID0geyAiICIsICLi
-lo8iLCAi4paOIiwgIuKWjSIsICLilowiLCAi4paLIiwgIuKWiiIsICLilokiLCAi4paIIiB9Owog
-CkBAIC0yMzA1LDcgKzIzMDYsNiBAQCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpCiAJ
-CXQgPSAoZG91YmxlKShlbmdpbmVzLT50cy5jdXIgLSBlbmdpbmVzLT50cy5wcmV2KSAvIDFlOTsK
-IAogCQlzY2FuX2NsaWVudHMoY2xpZW50cyk7Ci0JCXNvcnRfY2xpZW50cyhjbGllbnRzKTsKIAog
-CQlpZiAoc3RvcF90b3ApCiAJCQlicmVhazsKLS0gCjIuMjcuMAoKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRl
-dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On 2/2/2021 4:57 PM, Juha-Pekka Heikkila wrote:
+> Different resolutions with same content may have different crc hence generate
+> buffer verification crcs for different modes if needed.
+>
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+
+Looks good to me.
+
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+
+> ---
+>   tests/kms_rotation_crc.c | 54 +++++++++++++++++++++++++++++++++-------
+>   1 file changed, 45 insertions(+), 9 deletions(-)
+>
+> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+> index e7072e208..ab17dd388 100644
+> --- a/tests/kms_rotation_crc.c
+> +++ b/tests/kms_rotation_crc.c
+> @@ -30,6 +30,7 @@
+>   #define MAXMULTIPLANESAMOUNT 2
+>   #define TEST_MAX_WIDTH 640
+>   #define TEST_MAX_HEIGHT 480
+> +#define MAX_TESTED_MODES 8
+>   
+>   struct p_struct {
+>   	igt_plane_t *plane;
+> @@ -79,11 +80,15 @@ typedef struct {
+>   	bool use_native_resolution;
+>   	bool extended;
+>   
+> +	int output_crc_in_use, max_crc_in_use;
+>   	struct crc_rect_tag {
+> +		int mode;
+>   		bool valid;
+>   		igt_crc_t ref_crc;
+>   		igt_crc_t flip_crc;
+> -	} crc_rect[num_rectangle_types];
+> +	} crc_rect[MAX_TESTED_MODES][num_rectangle_types];
+> +
+> +	igt_fb_t last_on_screen;
+>   } data_t;
+>   
+>   typedef struct {
+> @@ -169,7 +174,6 @@ static void remove_fbs(data_t *data)
+>   {
+>   	igt_remove_fb(data->gfx_fd, &data->fb);
+>   	igt_remove_fb(data->gfx_fd, &data->fb_reference);
+> -	igt_remove_fb(data->gfx_fd, &data->fb_flip);
+>   }
+>   
+>   static void cleanup_crtc(data_t *data)
+> @@ -272,7 +276,7 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
+>   	 */
+>   	igt_require(igt_display_has_format_mod(display, pixel_format, tiling));
+>   
+> -	if (!data->crc_rect[rect].valid) {
+> +	if (!data->crc_rect[data->output_crc_in_use][rect].valid) {
+>   		/*
+>   		* Create a reference software rotated flip framebuffer.
+>   		*/
+> @@ -285,7 +289,9 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
+>   			igt_plane_set_position(plane, data->pos_x, data->pos_y);
+>   		igt_display_commit2(display, COMMIT_ATOMIC);
+>   
+> -		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].flip_crc);
+> +		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc,
+> +					 &data->crc_rect[data->output_crc_in_use][rect].flip_crc);
+> +
+>   		igt_remove_fb(data->gfx_fd, &data->fb_flip);
+>   
+>   		/*
+> @@ -300,10 +306,13 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
+>   			igt_plane_set_position(plane, data->pos_x, data->pos_y);
+>   		igt_display_commit2(display, COMMIT_ATOMIC);
+>   
+> -		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->crc_rect[rect].ref_crc);
+> -		data->crc_rect[rect].valid = true;
+> +		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc,
+> +					 &data->crc_rect[data->output_crc_in_use][rect].ref_crc);
+> +
+> +		data->crc_rect[data->output_crc_in_use][rect].valid = true;
+>   	}
+>   
+> +	data->last_on_screen = data->fb_flip;
+>   	/*
+>   	  * Prepare the non-rotated flip fb.
+>   	  */
+> @@ -340,6 +349,13 @@ static void test_single_case(data_t *data, enum pipe pipe,
+>   		igt_plane_set_size(plane, data->fb.height, data->fb.width);
+>   
+>   	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
+> +
+> +	/*
+> +	 * Remove this last fb after it was taken out from screen
+> +	 * to avoid unnecessary delays.
+> +	 */
+> +	igt_remove_fb(data->gfx_fd, &data->last_on_screen);
+> +
+>   	if (test_bad_format) {
+>   		igt_pipe_crc_drain(data->pipe_crc);
+>   		igt_assert_eq(ret, -EINVAL);
+> @@ -351,7 +367,8 @@ static void test_single_case(data_t *data, enum pipe pipe,
+>   
+>   	/* Check CRC */
+>   	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
+> -	igt_assert_crc_equal(&data->crc_rect[rect].ref_crc, &crc_output);
+> +	igt_assert_crc_equal(&data->crc_rect[data->output_crc_in_use][rect].ref_crc,
+> +			     &crc_output);
+>   
+>   	/*
+>   	 * If flips are requested flip to a different fb and
+> @@ -374,7 +391,8 @@ static void test_single_case(data_t *data, enum pipe pipe,
+>   		}
+>   		kmstest_wait_for_pageflip(data->gfx_fd);
+>   		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc_output);
+> -		igt_assert_crc_equal(&data->crc_rect[rect].flip_crc, &crc_output);
+> +		igt_assert_crc_equal(&data->crc_rect[data->output_crc_in_use][rect].flip_crc,
+> +				     &crc_output);
+>   	}
+>   }
+>   
+> @@ -403,6 +421,7 @@ static bool test_format(data_t *data,
+>   static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_format)
+>   {
+>   	igt_display_t *display = &data->display;
+> +	drmModeModeInfo *mode;
+>   	igt_output_t *output;
+>   	enum pipe pipe;
+>   	int pipe_count = 0;
+> @@ -416,8 +435,25 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+>   		igt_plane_t *plane;
+>   		int i, j, c;
+>   
+> +		mode = igt_output_get_mode(output);
+> +
+> +		for (data->output_crc_in_use = 0;
+> +		     data->output_crc_in_use < data->max_crc_in_use &&
+> +		     data->crc_rect[data->output_crc_in_use][0].mode != mode->vdisplay;
+> +		     data->output_crc_in_use++)
+> +			;
+> +
+> +		/*
+> +		 * This is if there was different mode on different connector.
+> +		 */
+> +		if (data->crc_rect[data->output_crc_in_use][0].mode != mode->vdisplay) {
+> +			data->crc_rect[data->output_crc_in_use][0].mode = mode->vdisplay;
+> +			if (++data->max_crc_in_use >= MAX_TESTED_MODES)
+> +				data->max_crc_in_use = MAX_TESTED_MODES - 1;
+> +		}
+> +
+>   		for (c = 0; c < num_rectangle_types; c++)
+> -			data->crc_rect[c].valid = false;
+> +			data->crc_rect[data->output_crc_in_use][c].valid = false;
+>   
+>   		if (IS_CHERRYVIEW(data->devid) && pipe != PIPE_B)
+>   			continue;
+
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
