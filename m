@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 35AEA6ED8F
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Feb 2021 15:11:32 +0000 (UTC)
-Date: Thu, 4 Feb 2021 17:11:28 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YBwOoJ1ptEeFIyY1@platvala-desk.ger.corp.intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5DA386EDC8
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Feb 2021 15:17:37 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Thu, 4 Feb 2021 15:17:30 +0000
+Message-ID: <39506df03e52b7b83d7a51cd277dd91cf73353cc.camel@intel.com>
 References: <20210204140841.15972-1-jose.souza@intel.com>
+ <YBwOoJ1ptEeFIyY1@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <YBwOoJ1ptEeFIyY1@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
+Content-ID: <93B334D8E90C634BBE1ECDE116F613F1@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210204140841.15972-1-jose.souza@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Enable selective
  fetch
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -18,98 +20,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?iso-8859-1?Q?Jos=E9?= Roberto de Souza <jose.souza@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Latvala, Petri" <petri.latvala@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 04, 2021 at 06:08:41AM -0800, Jos=E9 Roberto de Souza wrote:
-> Reload driver enabling PSR2 selective fetch to start to have
-> some tests coverage of this feature by CI.
-> =
-
-> Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-> Cc: Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>
-> Signed-off-by: Jos=E9 Roberto de Souza <jose.souza@intel.com>
-> ---
->  tests/kms_psr2_sf.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> =
-
-> diff --git a/tests/kms_psr2_sf.c b/tests/kms_psr2_sf.c
-> index 296ed8476..751d6ff03 100644
-> --- a/tests/kms_psr2_sf.c
-> +++ b/tests/kms_psr2_sf.c
-> @@ -24,6 +24,7 @@
->  =
-
->  #include "igt.h"
->  #include "igt_sysfs.h"
-> +#include "igt_kmod.h"
->  #include "igt_psr.h"
->  #include <errno.h>
->  #include <stdbool.h>
-> @@ -544,6 +545,14 @@ static void cleanup(data_t *data)
->  	igt_remove_fb(data->drm_fd, &data->fb_test);
->  }
->  =
-
-> +static void reload_driver(bool enable_sel_fetch)
-> +{
-> +	const char *params =3D enable_sel_fetch ? "enable_psr2_sel_fetch=3D1" :=
- "";
-> +
-> +	igt_i915_driver_unload();
-> +	igt_assert_eq(igt_i915_driver_load(params), 0);
-> +}
-
-
-Does this parameter need to be set at load time or would igt_params_set() s=
-uffice?
-
-
--- =
-
-Petri Latvala
-
-
-
-> +
->  igt_main
->  {
->  	data_t data =3D {};
-> @@ -552,6 +561,9 @@ igt_main
->  	igt_fixture {
->  		int r;
->  =
-
-> +		/* TODO: drop this as soon driver enables it by default */
-> +		reload_driver(true);
-> +
->  		data.drm_fd =3D drm_open_driver_master(DRIVER_INTEL);
->  		data.debugfs_fd =3D igt_debugfs_dir(data.drm_fd);
->  		kmstest_set_vt_graphics_mode();
-> @@ -645,5 +657,7 @@ igt_main
->  		close(data.debugfs_fd);
->  		drm_intel_bufmgr_destroy(data.bufmgr);
->  		display_fini(&data);
-> +
-> +		reload_driver(false);
->  	}
->  }
-> -- =
-
-> 2.30.0
-> =
-
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gVGh1LCAyMDIxLTAyLTA0IGF0IDE3OjExICswMjAwLCBQZXRyaSBMYXR2YWxhIHdyb3RlOg0K
+PiBPbiBUaHUsIEZlYiAwNCwgMjAyMSBhdCAwNjowODo0MUFNIC0wODAwLCBKb3PDqSBSb2JlcnRv
+IGRlIFNvdXphIHdyb3RlOg0KPiA+IFJlbG9hZCBkcml2ZXIgZW5hYmxpbmcgUFNSMiBzZWxlY3Rp
+dmUgZmV0Y2ggdG8gc3RhcnQgdG8gaGF2ZQ0KPiA+IHNvbWUgdGVzdHMgY292ZXJhZ2Ugb2YgdGhp
+cyBmZWF0dXJlIGJ5IENJLg0KPiA+IA0KPiA+IENjOiBHd2FuLWd5ZW9uZyBNdW4gPGd3YW4tZ3ll
+b25nLm11bkBpbnRlbC5jb20+DQo+ID4gQ2M6IFBhbmthaiBCaGFyYWRpeWEgPHBhbmthai5sYXht
+aW5hcmF5YW4uYmhhcmFkaXlhQGludGVsLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBKb3PDqSBS
+b2JlcnRvIGRlIFNvdXphIDxqb3NlLnNvdXphQGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiDCoHRl
+c3RzL2ttc19wc3IyX3NmLmMgfCAxNCArKysrKysrKysrKysrKw0KPiA+IMKgMSBmaWxlIGNoYW5n
+ZWQsIDE0IGluc2VydGlvbnMoKykNCj4gPiANCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX3Bz
+cjJfc2YuYyBiL3Rlc3RzL2ttc19wc3IyX3NmLmMNCj4gPiBpbmRleCAyOTZlZDg0NzYuLjc1MWQ2
+ZmYwMyAxMDA2NDQNCj4gPiAtLS0gYS90ZXN0cy9rbXNfcHNyMl9zZi5jDQo+ID4gKysrIGIvdGVz
+dHMva21zX3BzcjJfc2YuYw0KPiA+IEBAIC0yNCw2ICsyNCw3IEBADQo+ID4gwqANCj4gPiANCj4g
+PiANCj4gPiANCj4gPiDCoCNpbmNsdWRlICJpZ3QuaCINCj4gPiDCoCNpbmNsdWRlICJpZ3Rfc3lz
+ZnMuaCINCj4gPiArI2luY2x1ZGUgImlndF9rbW9kLmgiDQo+ID4gwqAjaW5jbHVkZSAiaWd0X3Bz
+ci5oIg0KPiA+IMKgI2luY2x1ZGUgPGVycm5vLmg+DQo+ID4gwqAjaW5jbHVkZSA8c3RkYm9vbC5o
+Pg0KPiA+IEBAIC01NDQsNiArNTQ1LDE0IEBAIHN0YXRpYyB2b2lkIGNsZWFudXAoZGF0YV90ICpk
+YXRhKQ0KPiA+IMKgCWlndF9yZW1vdmVfZmIoZGF0YS0+ZHJtX2ZkLCAmZGF0YS0+ZmJfdGVzdCk7
+DQo+ID4gwqB9DQo+ID4gwqANCj4gPiANCj4gPiANCj4gPiANCj4gPiArc3RhdGljIHZvaWQgcmVs
+b2FkX2RyaXZlcihib29sIGVuYWJsZV9zZWxfZmV0Y2gpDQo+ID4gK3sNCj4gPiArCWNvbnN0IGNo
+YXIgKnBhcmFtcyA9IGVuYWJsZV9zZWxfZmV0Y2ggPyAiZW5hYmxlX3BzcjJfc2VsX2ZldGNoPTEi
+IDogIiI7DQo+ID4gKw0KPiA+ICsJaWd0X2k5MTVfZHJpdmVyX3VubG9hZCgpOw0KPiA+ICsJaWd0
+X2Fzc2VydF9lcShpZ3RfaTkxNV9kcml2ZXJfbG9hZChwYXJhbXMpLCAwKTsNCj4gPiArfQ0KPiAN
+Cj4gDQo+IERvZXMgdGhpcyBwYXJhbWV0ZXIgbmVlZCB0byBiZSBzZXQgYXQgbG9hZCB0aW1lIG9y
+IHdvdWxkIGlndF9wYXJhbXNfc2V0KCkgc3VmZmljZT8NCg0KQXQgZHJpdmVyIGxvYWQgdGltZSwg
+b3RoZXJ3aXNlIG1vcmUgaGFuZGxpbmcgd291bGQgYmUgbmVlZGVkIGluIGtlcm5lbCBhbmQgSUdU
+Lg0KQnV0IHllYWggdGhlIGtlcm5lbCBwYXJhbWV0ZXIgcmlnaHQgbm93IGhhdmUgdGhlIHdyb25n
+IHBlcm1pc3Npb24sIHNlbmRpbmcgYSBrZXJuZWwgcGF0Y2ggZml4aW5nIGl0Lg0KDQo+IA0KPiAN
+Cg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRl
+diBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0
+cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
