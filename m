@@ -1,19 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
- [IPv6:2607:f8b0:4864:20::52b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5267E6E062
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Feb 2021 12:45:38 +0000 (UTC)
-Received: by mail-pg1-x52b.google.com with SMTP id j2so2035866pgl.0
- for <igt-dev@lists.freedesktop.org>; Thu, 04 Feb 2021 04:45:38 -0800 (PST)
-Date: Thu, 4 Feb 2021 18:15:33 +0530
-From: Sumera Priyadarsini <sylphrenadin@gmail.com>
-Message-ID: <a25a229fb5807e4634227664aa9fb0d59490d351.1612441942.git.sylphrenadin@gmail.com>
-References: <cover.1612441942.git.sylphrenadin@gmail.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D3DE6ECAA
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Feb 2021 12:50:39 +0000 (UTC)
+From: Mika Kahola <mika.kahola@intel.com>
+Date: Thu,  4 Feb 2021 14:50:34 +0200
+Message-Id: <20210204125034.265021-1-mika.kahola@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <cover.1612441942.git.sylphrenadin@gmail.com>
-Subject: [igt-dev] [PATCH i-g-t 2/2] lib/igt_kms: Update documentation for
- __igt_vblank_wait()
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_lowres: Use highest and
+ lowest resolution for testing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,79 +20,128 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: daniel@ffwll.ch
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add documentation for the __igt_vblank_wait() helper function.
-Update documentation for igt_wait_for_vblank_count() and
-igt_wait_for_vblank() to reflect the refactor accordingly.
+Sometimes the delta between the highest (the selected default mode) and
+lowest resolution is not big enough to carry out tests succesfully. Hence,
+let's change the test procedure so that we select the highest available mode
+for high resolution case and the lowest possible mode for low resolution case.
 
-Signed-off-by: Sumera Priyadarsini <sylphrenadin@gmail.com>
+Signed-off-by: Mika Kahola <mika.kahola@intel.com>
 ---
- lib/igt_kms.c | 34 +++++++++++++++++++++++-----------
- 1 file changed, 23 insertions(+), 11 deletions(-)
+ tests/kms_plane_lowres.c | 52 +++++++++++++++++++---------------------
+ 1 file changed, 24 insertions(+), 28 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 08d429a8..e6854472 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -4190,6 +4190,23 @@ void igt_output_set_writeback_fb(igt_output_t *output, struct igt_fb *fb)
- 					  (ptrdiff_t)&output->writeback_out_fence_fd);
+diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+index a5af1f8a..87be3f55 100644
+--- a/tests/kms_plane_lowres.c
++++ b/tests/kms_plane_lowres.c
+@@ -54,31 +54,25 @@ typedef struct {
+ 	int x, y;
+ } data_t;
+ 
+-static drmModeModeInfo
+-get_lowres_mode(int drmfd, igt_output_t *output,
+-		const drmModeModeInfo *mode_default)
++static drmModeModeInfo *
++get_mode(int drmfd, igt_output_t *output, bool lowres)
+ {
+-	const drmModeModeInfo *mode;
+-	bool found = false;
+-	int limit = mode_default->vdisplay - SIZE;
++	drmModeModeInfo *mode, *tmp;
+ 	int j;
+ 
+-	for (j = 0; j < output->config.connector->count_modes; j++) {
+-		mode = &output->config.connector->modes[j];
+-		if (mode->vdisplay < limit) {
+-			found = true;
+-			break;
++	mode = &output->config.connector->modes[0];
++	for (j = 1; j < output->config.connector->count_modes; j++) {
++		tmp = &output->config.connector->modes[j];
++		if (lowres) {
++			if (tmp->vdisplay < mode->vdisplay)
++				mode = tmp;
++		} else {
++			if (tmp->vdisplay > mode->vdisplay)
++				mode = tmp;
+ 		}
+ 	}
+ 
+-	if (!found) {
+-		igt_require_f(mode_default->vdisplay - SIZE > 768,
+-			      "Current mode not tall enough; plane would still be onscreen after switch to 10x7.\n");
+-
+-		return *igt_std_1024_mode_get();
+-	}
+-
+-	return *mode;
++	return mode;
  }
  
-+/**
-+ * __igt_vblank_wait:
-+ * @drm_fd: A drm file descriptor
-+ * @crtc_offset: offset of the crtc in drmModeRes.crtcs
-+ * @count: Number of vblanks to wait on
-+ *
-+ * Waits for a given number of vertical blank intervals
-+ *
-+ * In DRM, 'Pipe', as understood by DRM_IOCTL_WAIT_VBLANK,
-+ * is actually an offset of crtc in drmModeRes.crtcs
-+ * and it has nothing to do with a hardware concept of a pipe.
-+ * They can match but don't have to in case of DRM lease or
-+ * non-contiguous pipes.
-+ *
-+ * To make thing clear we are calling DRM_IOCTL_WAIT_VBLANK's 'pipe'
-+ * a crtc_offset.
-+ */
- static int __igt_vblank_wait(int drm_fd, int crtc_offset, int count)
+ static igt_plane_t *first_sdr_plane(igt_output_t *output, uint32_t devid)
+@@ -164,8 +158,7 @@ static void create_ref_fb(data_t *data, uint64_t modifier,
+ static unsigned
+ test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane, uint64_t modifier)
  {
- 	drmVBlank wait_vbl;
-@@ -4210,16 +4227,10 @@ static int __igt_vblank_wait(int drm_fd, int crtc_offset, int count)
-  * @crtc_offset: offset of the crtc in drmModeRes.crtcs
-  * @count: Number of vblanks to wait on
-  *
-- * Waits for a given number of vertical blank intervals
-- *
-- * In DRM, 'Pipe', as understood by DRM_IOCTL_WAIT_VBLANK,
-- * is actually an offset of crtc in drmModeRes.crtcs
-- * and it has nothing to do with a hardware concept of a pipe.
-- * They can match but don't have to in case of DRM lease or
-- * non-contiguous pipes.
-+ * See the #__igt_vblank_wait helper for more details
-  *
-- * To make thing clear we are calling DRM_IOCTL_WAIT_VBLANK's 'pipe'
-- * a crtc_offset.
-+ * Wrapper function for __igt_vblank_wait() to wait for a
-+ * given number of vertical blank intervals.
-  */
- void igt_wait_for_vblank_count(int drm_fd, int crtc_offset, int count)
- {
-@@ -4231,9 +4242,10 @@ void igt_wait_for_vblank_count(int drm_fd, int crtc_offset, int count)
-  * @drm_fd: A drm file descriptor
-  * @crtc_offset: offset of a crtc in drmModeRes.crtcs
-  *
-- * See #igt_wait_for_vblank_count for more details
-+ * See the #__igt_vblank_wait helper for more details
-  *
-- * Waits for 1 vertical blank intervals
-+ * Wrapper function for __igt_vblank_wait() to wait for a
-+ * single vertical blank interval.
-  */
- void igt_wait_for_vblank(int drm_fd, int crtc_offset)
- {
+-	const drmModeModeInfo *mode;
+-	drmModeModeInfo mode_lowres;
++	drmModeModeInfo *mode, *mode_lowres;
+ 	igt_pipe_crc_t *pipe_crc;
+ 	unsigned tested = 0;
+ 	igt_plane_t *primary;
+@@ -174,8 +167,11 @@ test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane, uint64_t modif
+ 	igt_output_set_pipe(data->output, data->pipe);
+ 
+ 	primary = compatible_main_plane(plane, data->output, data->devid);
+-	mode = igt_output_get_mode(data->output);
+-	mode_lowres = get_lowres_mode(data->drm_fd, data->output, mode);
++	mode = get_mode(data->drm_fd, data->output, false);
++	mode_lowres = get_mode(data->drm_fd, data->output, true);
++
++	igt_require_f(mode->vdisplay - mode_lowres->vdisplay > SIZE,
++		      "Current mode not tall enough; plane would still be onscreen after switch to the lowest resolution.\n");
+ 
+ 	igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 				    DRM_FORMAT_XRGB8888, modifier, 0.0, 0.0, 1.0,
+@@ -194,17 +190,17 @@ test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane, uint64_t modif
+ 				    1.0, 1.0, 0.0, &data->fb_plane[1]);
+ 
+ 	create_ref_fb(data, modifier, mode, &data->ref_hires.fb);
+-	create_ref_fb(data, modifier, &mode_lowres, &data->ref_lowres.fb);
++	create_ref_fb(data, modifier, mode_lowres, &data->ref_lowres.fb);
+ 
+ 	pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
+ 				    INTEL_PIPE_CRC_SOURCE_AUTO);
+ 
+-	igt_output_override_mode(data->output, &mode_lowres);
++	igt_output_override_mode(data->output, mode_lowres);
+ 	igt_plane_set_fb(primary, &data->ref_lowres.fb);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 	igt_pipe_crc_collect_crc(pipe_crc, &data->ref_lowres.crc);
+ 
+-	igt_output_override_mode(data->output, NULL);
++	igt_output_override_mode(data->output, mode);
+ 	igt_plane_set_fb(primary, &data->ref_hires.fb);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 	igt_pipe_crc_collect_crc(pipe_crc, &data->ref_hires.crc);
+@@ -221,13 +217,13 @@ test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane, uint64_t modif
+ 	igt_pipe_crc_collect_crc(pipe_crc, &crc_hires1);
+ 
+ 	/* switch to lower resolution */
+-	igt_output_override_mode(data->output, &mode_lowres);
++	igt_output_override_mode(data->output, mode_lowres);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+ 	igt_pipe_crc_collect_crc(pipe_crc, &crc_lowres);
+ 
+ 	/* switch back to higher resolution */
+-	igt_output_override_mode(data->output, NULL);
++	igt_output_override_mode(data->output, mode);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+ 	igt_pipe_crc_collect_crc(pipe_crc, &crc_hires2);
 -- 
 2.25.1
 
