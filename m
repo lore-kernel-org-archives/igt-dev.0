@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 666EF6F44C
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Feb 2021 14:02:01 +0000 (UTC)
-References: <20210205134546.3917382-1-chris@chris-wilson.co.uk>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E2D646E091
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Feb 2021 14:08:44 +0000 (UTC)
+References: <20210205140119.3973877-1-chris@chris-wilson.co.uk>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <07d0c643-39d5-1292-b902-30c1cf3ddc71@linux.intel.com>
-Date: Fri, 5 Feb 2021 14:01:46 +0000
+Message-ID: <f9eb45bb-7098-b312-b013-fb30a4edd16e@linux.intel.com>
+Date: Fri, 5 Feb 2021 14:08:39 +0000
 MIME-Version: 1.0
-In-Reply-To: <20210205134546.3917382-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20210205140119.3973877-1-chris@chris-wilson.co.uk>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] intel_gpu_top: The return of the
- fractional bar
+Subject: Re: [igt-dev] [PATCH i-g-t] intel_gpu_top: Include fresh clients in
+ the hide inactive filter
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,36 +27,31 @@ Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 05/02/2021 13:45, Chris Wilson wrote:
-> Scale the bar_len into the fractional bar before truncating!
+On 05/02/2021 14:01, Chris Wilson wrote:
+> As a new client does not have a delta for its first sample, treat as
+> still as idle and hide it if the user requests not to be shown clients
+> with no activity.
 > 
 > Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 > Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 > ---
->   tools/intel_gpu_top.c | 7 +++----
->   1 file changed, 3 insertions(+), 4 deletions(-)
+>   tools/intel_gpu_top.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-> index 5e832eb9a..453f39541 100644
+> index 453f39541..21084185d 100644
 > --- a/tools/intel_gpu_top.c
 > +++ b/tools/intel_gpu_top.c
-> @@ -1098,10 +1098,9 @@ print_percentage_bar(double percent, int max_len, bool numeric)
+> @@ -1972,7 +1972,7 @@ print_client(struct client *c, struct engines *engines, double t, int lines,
+>   	unsigned int i;
 >   
->   	assert(max_len > 0);
+>   	if (output_mode == INTERACTIVE) {
+> -		if (filter_idle && !c->total_runtime)
+> +		if (filter_idle && (!c->total_runtime || c->samples < 2))
+>   			return lines;
 >   
-> -	bar_len = ceil(percent * len / 100.0);
-> -	if (bar_len > len)
-> -		bar_len = len;
-> -	bar_len *= w;
-> +	bar_len = ceil(w * percent * len / 100.0);
-> +	if (bar_len > w * len)
-> +		bar_len = w * len;
->   
->   	putchar('|');
->   
+>   		lines++;
 > 
-
-Ah I broke this somehow, yet again. Thanks!
 
 Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
