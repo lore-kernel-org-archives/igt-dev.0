@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F5586E1CE
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Feb 2021 07:34:40 +0000 (UTC)
-Date: Fri, 5 Feb 2021 09:34:36 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YBz1DKRTq3MWcNpY@platvala-desk.ger.corp.intel.com>
-References: <20210204140841.15972-1-jose.souza@intel.com>
- <YBwOoJ1ptEeFIyY1@platvala-desk.ger.corp.intel.com>
- <39506df03e52b7b83d7a51cd277dd91cf73353cc.camel@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF2336F3F3
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Feb 2021 07:45:20 +0000 (UTC)
+From: Mika Kahola <mika.kahola@intel.com>
+Date: Fri,  5 Feb 2021 09:45:15 +0200
+Message-Id: <20210205074515.286343-1-mika.kahola@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <39506df03e52b7b83d7a51cd277dd91cf73353cc.camel@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Enable selective
- fetch
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_plane_lowres: Use highest and
+ lowest resolution for testing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,89 +15,141 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Souza, Jose" <jose.souza@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 04, 2021 at 05:17:30PM +0200, Souza, Jose wrote:
-> On Thu, 2021-02-04 at 17:11 +0200, Petri Latvala wrote:
-> > On Thu, Feb 04, 2021 at 06:08:41AM -0800, Jos=E9 Roberto de Souza wrote:
-> > > Reload driver enabling PSR2 selective fetch to start to have
-> > > some tests coverage of this feature by CI.
-> > > =
+Sometimes the delta between the highest (the selected default mode) and
+lowest resolution is not big enough to carry out tests succesfully. Hence,
+let's change the test procedure so that we select the highest available mode
+for high resolution case and the lowest possible mode for low resolution case.
 
-> > > Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-> > > Cc: Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>
-> > > Signed-off-by: Jos=E9 Roberto de Souza <jose.souza@intel.com>
-> > > ---
-> > > =A0tests/kms_psr2_sf.c | 14 ++++++++++++++
-> > > =A01 file changed, 14 insertions(+)
-> > > =
+v2: Try default 1024x768 mode if we can't find suitable low resolution mode (CI)
 
-> > > diff --git a/tests/kms_psr2_sf.c b/tests/kms_psr2_sf.c
-> > > index 296ed8476..751d6ff03 100644
-> > > --- a/tests/kms_psr2_sf.c
-> > > +++ b/tests/kms_psr2_sf.c
-> > > @@ -24,6 +24,7 @@
-> > > =A0
-> > > =
+Signed-off-by: Mika Kahola <mika.kahola@intel.com>
+---
+ tests/kms_plane_lowres.c | 55 ++++++++++++++++++++--------------------
+ 1 file changed, 27 insertions(+), 28 deletions(-)
 
-> > > =
+diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+index a5af1f8a..12c90abb 100644
+--- a/tests/kms_plane_lowres.c
++++ b/tests/kms_plane_lowres.c
+@@ -54,31 +54,25 @@ typedef struct {
+ 	int x, y;
+ } data_t;
+ 
+-static drmModeModeInfo
+-get_lowres_mode(int drmfd, igt_output_t *output,
+-		const drmModeModeInfo *mode_default)
++static drmModeModeInfo *
++get_mode(int drmfd, igt_output_t *output, bool lowres)
+ {
+-	const drmModeModeInfo *mode;
+-	bool found = false;
+-	int limit = mode_default->vdisplay - SIZE;
++	drmModeModeInfo *mode, *tmp;
+ 	int j;
+ 
+-	for (j = 0; j < output->config.connector->count_modes; j++) {
+-		mode = &output->config.connector->modes[j];
+-		if (mode->vdisplay < limit) {
+-			found = true;
+-			break;
++	mode = &output->config.connector->modes[0];
++	for (j = 1; j < output->config.connector->count_modes; j++) {
++		tmp = &output->config.connector->modes[j];
++		if (lowres) {
++			if (tmp->vdisplay < mode->vdisplay)
++				mode = tmp;
++		} else {
++			if (tmp->vdisplay > mode->vdisplay)
++				mode = tmp;
+ 		}
+ 	}
+ 
+-	if (!found) {
+-		igt_require_f(mode_default->vdisplay - SIZE > 768,
+-			      "Current mode not tall enough; plane would still be onscreen after switch to 10x7.\n");
+-
+-		return *igt_std_1024_mode_get();
+-	}
+-
+-	return *mode;
++	return mode;
+ }
+ 
+ static igt_plane_t *first_sdr_plane(igt_output_t *output, uint32_t devid)
+@@ -164,8 +158,7 @@ static void create_ref_fb(data_t *data, uint64_t modifier,
+ static unsigned
+ test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane, uint64_t modifier)
+ {
+-	const drmModeModeInfo *mode;
+-	drmModeModeInfo mode_lowres;
++	drmModeModeInfo *mode, *mode_lowres;
+ 	igt_pipe_crc_t *pipe_crc;
+ 	unsigned tested = 0;
+ 	igt_plane_t *primary;
+@@ -174,8 +167,14 @@ test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane, uint64_t modif
+ 	igt_output_set_pipe(data->output, data->pipe);
+ 
+ 	primary = compatible_main_plane(plane, data->output, data->devid);
+-	mode = igt_output_get_mode(data->output);
+-	mode_lowres = get_lowres_mode(data->drm_fd, data->output, mode);
++	mode = get_mode(data->drm_fd, data->output, false);
++	mode_lowres = get_mode(data->drm_fd, data->output, true);
++
++        if (mode->vdisplay - mode_lowres->vdisplay < SIZE)
++                mode_lowres = (drmModeModeInfo*)igt_std_1024_mode_get();
++
++	igt_require_f(mode->vdisplay - mode_lowres->vdisplay > SIZE,
++		      "Current mode not tall enough; plane would still be onscreen after switch to the lowest resolution.\n");
+ 
+ 	igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 				    DRM_FORMAT_XRGB8888, modifier, 0.0, 0.0, 1.0,
+@@ -194,17 +193,17 @@ test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane, uint64_t modif
+ 				    1.0, 1.0, 0.0, &data->fb_plane[1]);
+ 
+ 	create_ref_fb(data, modifier, mode, &data->ref_hires.fb);
+-	create_ref_fb(data, modifier, &mode_lowres, &data->ref_lowres.fb);
++	create_ref_fb(data, modifier, mode_lowres, &data->ref_lowres.fb);
+ 
+ 	pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
+ 				    INTEL_PIPE_CRC_SOURCE_AUTO);
+ 
+-	igt_output_override_mode(data->output, &mode_lowres);
++	igt_output_override_mode(data->output, mode_lowres);
+ 	igt_plane_set_fb(primary, &data->ref_lowres.fb);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 	igt_pipe_crc_collect_crc(pipe_crc, &data->ref_lowres.crc);
+ 
+-	igt_output_override_mode(data->output, NULL);
++	igt_output_override_mode(data->output, mode);
+ 	igt_plane_set_fb(primary, &data->ref_hires.fb);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 	igt_pipe_crc_collect_crc(pipe_crc, &data->ref_hires.crc);
+@@ -221,13 +220,13 @@ test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane, uint64_t modif
+ 	igt_pipe_crc_collect_crc(pipe_crc, &crc_hires1);
+ 
+ 	/* switch to lower resolution */
+-	igt_output_override_mode(data->output, &mode_lowres);
++	igt_output_override_mode(data->output, mode_lowres);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+ 	igt_pipe_crc_collect_crc(pipe_crc, &crc_lowres);
+ 
+ 	/* switch back to higher resolution */
+-	igt_output_override_mode(data->output, NULL);
++	igt_output_override_mode(data->output, mode);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+ 	igt_pipe_crc_collect_crc(pipe_crc, &crc_hires2);
+-- 
+2.25.1
 
-> > > =
-
-> > > =A0#include "igt.h"
-> > > =A0#include "igt_sysfs.h"
-> > > +#include "igt_kmod.h"
-> > > =A0#include "igt_psr.h"
-> > > =A0#include <errno.h>
-> > > =A0#include <stdbool.h>
-> > > @@ -544,6 +545,14 @@ static void cleanup(data_t *data)
-> > > =A0	igt_remove_fb(data->drm_fd, &data->fb_test);
-> > > =A0}
-> > > =A0
-> > > =
-
-> > > =
-
-> > > =
-
-> > > +static void reload_driver(bool enable_sel_fetch)
-> > > +{
-> > > +	const char *params =3D enable_sel_fetch ? "enable_psr2_sel_fetch=3D=
-1" : "";
-> > > +
-> > > +	igt_i915_driver_unload();
-> > > +	igt_assert_eq(igt_i915_driver_load(params), 0);
-> > > +}
-> > =
-
-> > =
-
-> > Does this parameter need to be set at load time or would igt_params_set=
-() suffice?
-> =
-
-> At driver load time, otherwise more handling would be needed in kernel an=
-d IGT.
-> But yeah the kernel parameter right now have the wrong permission, sendin=
-g a kernel patch fixing it.
-
-We're blacklisting module reloads anyway (see top of
-tests/intel-ci/blacklist.txt), and this test will need to be as well
-for the same reasons.
-
-What's the test runtime? Are we able to add it to
-fast-feedback.testlist until the reload is no longer needed?
-
-
--- =
-
-Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
