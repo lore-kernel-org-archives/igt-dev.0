@@ -1,137 +1,99 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Date: Wed, 10 Feb 2021 09:44:45 +0000
-Message-Id: <20210210094445.61660-1-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20210210093756.61424-2-tvrtko.ursulin@linux.intel.com>
-References: <20210210093756.61424-2-tvrtko.ursulin@linux.intel.com>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t 2/3] intel_gpu_top: Aggregate clients by
+In-Reply-To: <20210210093756.61424-2-tvrtko.ursulin@linux.intel.com>
+References: <20210210093756.61424-1-tvrtko.ursulin@linux.intel.com>
+ <20210210093756.61424-2-tvrtko.ursulin@linux.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Wed, 10 Feb 2021 10:35:59 +0000
+Message-ID: <161295335978.6673.9313077497176923458@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] intel_gpu_top: Aggregate clients by
  PID by default
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
+Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KCkltcGxlbWVu
-dCBhIGRlZmF1bHQgdmlldyB3aGVyZSBjbGllbnRzIGFyZSBhZ2dyZWdhdGVkIGJ5IHRoZWlyIFBJ
-RC4KClRvZ2dsZWQgYnkgcHJlc3NpbmcgJ0gnIHNpbWlsYXIgdG8gdG9wKDEpLgoKdjI6CiAqIEZp
-eCBtZW1vcnkgbGVhay4KClNpZ25lZC1vZmYtYnk6IFR2cnRrbyBVcnN1bGluIDx0dnJ0a28udXJz
-dWxpbkBpbnRlbC5jb20+Ci0tLQogbWFuL2ludGVsX2dwdV90b3AucnN0IHwgICAxICsKIHRvb2xz
-L2ludGVsX2dwdV90b3AuYyB8IDEyMSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrLS0tLS0KIDIgZmlsZXMgY2hhbmdlZCwgMTA5IGluc2VydGlvbnMoKyksIDEzIGRlbGV0aW9u
-cygtKQoKZGlmZiAtLWdpdCBhL21hbi9pbnRlbF9ncHVfdG9wLnJzdCBiL21hbi9pbnRlbF9ncHVf
-dG9wLnJzdAppbmRleCBiMTQ1ZDg1YzA0NDAuLjIwNjU4ZTI5MWRiMCAxMDA2NDQKLS0tIGEvbWFu
-L2ludGVsX2dwdV90b3AucnN0CisrKyBiL21hbi9pbnRlbF9ncHVfdG9wLnJzdApAQCAtNTgsNiAr
-NTgsNyBAQCBTdXBwb3J0ZWQga2V5czoKICAgICAnbicgICAgVG9nZ2xlIGRpc3BsYXkgb2YgbnVt
-ZXJpYyBjbGllbnQgYnVzeW5lc3Mgb3ZlcmxheS4KICAgICAncycgICAgVG9nZ2xlIGJldHdlZW4g
-c29ydCBtb2RlcyAocnVudGltZSwgdG90YWwgcnVudGltZSwgcGlkLCBjbGllbnQgaWQpLgogICAg
-ICdpJyAgICBUb2dnbGUgZGlzcGxheSBvZiBjbGllbnRzIHdoaWNoIHVzZWQgbm8gR1BVIHRpbWUu
-CisgICAgJ0gnICAgIFRvZ2dsZSBiZXR3ZWVuIHBlciBQSUQgYWdncmVnYXRpb24gYW5kIGluZGl2
-aWR1YWwgY2xpZW50cy4KIAogREVWSUNFIFNFTEVDVElPTgogPT09PT09PT09PT09PT09PQpkaWZm
-IC0tZ2l0IGEvdG9vbHMvaW50ZWxfZ3B1X3RvcC5jIGIvdG9vbHMvaW50ZWxfZ3B1X3RvcC5jCmlu
-ZGV4IDYzZWY3NzA1NjM0MS4uNTI1ZmIyY2Q1MzliIDEwMDY0NAotLS0gYS90b29scy9pbnRlbF9n
-cHVfdG9wLmMKKysrIGIvdG9vbHMvaW50ZWxfZ3B1X3RvcC5jCkBAIC05NzksMTcgKzk3OSwxOCBA
-QCBzdGF0aWMgaW50IGNsaWVudF9waWRfY21wKGNvbnN0IHZvaWQgKl9hLCBjb25zdCB2b2lkICpf
-YikKIAogc3RhdGljIGludCAoKmNsaWVudF9jbXApKGNvbnN0IHZvaWQgKiwgY29uc3Qgdm9pZCAq
-KSA9IGNsaWVudF9sYXN0X2NtcDsKIAotc3RhdGljIHZvaWQgc29ydF9jbGllbnRzKHN0cnVjdCBj
-bGllbnRzICpjbGllbnRzKQorc3RhdGljIHN0cnVjdCBjbGllbnRzICpzb3J0X2NsaWVudHMoc3Ry
-dWN0IGNsaWVudHMgKmNsaWVudHMsCisJCQkJICAgIGludCAoKmNtcCkoY29uc3Qgdm9pZCAqLCBj
-b25zdCB2b2lkICopKQogewogCXVuc2lnbmVkIGludCBhY3RpdmUsIGZyZWU7CiAJc3RydWN0IGNs
-aWVudCAqYzsKIAlpbnQgdG1wOwogCiAJaWYgKCFjbGllbnRzKQotCQlyZXR1cm47CisJCXJldHVy
-biBjbGllbnRzOwogCiAJcXNvcnQoY2xpZW50cy0+Y2xpZW50LCBjbGllbnRzLT5udW1fY2xpZW50
-cywgc2l6ZW9mKCpjbGllbnRzLT5jbGllbnQpLAotCSAgICAgIGNsaWVudF9jbXApOworCSAgICAg
-IGNtcCk7CiAKIAkvKiBUcmltIGV4Y2Vzc2l2ZSBhcnJheSBzcGFjZS4gKi8KIAlhY3RpdmUgPSAw
-OwpAQCAtMTAxMSw5ICsxMDEyLDg4IEBAIHN0YXRpYyB2b2lkIHNvcnRfY2xpZW50cyhzdHJ1Y3Qg
-Y2xpZW50cyAqY2xpZW50cykKIAkJCQkJCSAgc2l6ZW9mKCpjKSk7CiAJCX0KIAl9CisKKwlyZXR1
-cm4gY2xpZW50czsKK30KKworc3RhdGljIHN0cnVjdCBjbGllbnRzICphZ2dyZWdhdGVkX2NsaWVu
-dHMoc3RydWN0IGNsaWVudHMgKmNsaWVudHMpCit7CisJc3RydWN0IGNsaWVudCAqYWMsICpjLCAq
-Y3AgPSBOVUxMOworCXN0cnVjdCBjbGllbnRzICphZ2dyZWdhdGVkOworCWludCB0bXAsIG51bSA9
-IDA7CisKKwkvKiBTb3J0IGJ5IHBpZCBmaXJzdCB0byBtYWtlIGl0IGVhc3kgdG8gYWdncmVnYXRl
-IHdoaWxlIHdhbGtpbmcuICovCisJc29ydF9jbGllbnRzKGNsaWVudHMsIGNsaWVudF9waWRfY21w
-KTsKKworCWFnZ3JlZ2F0ZWQgPSBjYWxsb2MoMSwgc2l6ZW9mKCpjbGllbnRzKSk7CisJYXNzZXJ0
-KGFnZ3JlZ2F0ZWQpOworCisJYWMgPSBjYWxsb2MoY2xpZW50cy0+bnVtX2NsaWVudHMsIHNpemVv
-ZigqYykpOworCWFzc2VydChhYyk7CisKKwlhZ2dyZWdhdGVkLT5udW1fY2xhc3NlcyA9IGNsaWVu
-dHMtPm51bV9jbGFzc2VzOworCWFnZ3JlZ2F0ZWQtPmNsYXNzID0gY2xpZW50cy0+Y2xhc3M7CisJ
-YWdncmVnYXRlZC0+Y2xpZW50ID0gYWM7CisKKwlmb3JfZWFjaF9jbGllbnQoY2xpZW50cywgYywg
-dG1wKSB7CisJCXVuc2lnbmVkIGludCBpOworCisJCWlmIChjLT5zdGF0dXMgPT0gRlJFRSkKKwkJ
-CWJyZWFrOworCisJCWFzc2VydChjLT5zdGF0dXMgPT0gQUxJVkUpOworCisJCWlmICgoY3AgJiYg
-Yy0+cGlkICE9IGNwLT5waWQpIHx8ICFjcCkgeworCQkJYWMgPSAmYWdncmVnYXRlZC0+Y2xpZW50
-W251bV07CisKKwkJCS8qIE5ldyBwaWQuICovCisJCQlhYy0+Y2xpZW50cyA9IGFnZ3JlZ2F0ZWQ7
-CisJCQlhYy0+c3RhdHVzID0gQUxJVkU7CisJCQlhYy0+aWQgPSArK251bTsKKwkJCWFjLT5waWQg
-PSBjLT5waWQ7CisJCQlzdHJjcHkoYWMtPm5hbWUsIGMtPm5hbWUpOworCQkJc3RyY3B5KGFjLT5w
-cmludF9uYW1lLCBjLT5wcmludF9uYW1lKTsKKwkJCWFjLT5lbmdpbmVzID0gYy0+ZW5naW5lczsK
-KwkJCWFjLT52YWwgPSBjYWxsb2MoY2xpZW50cy0+bnVtX2NsYXNzZXMsCisJCQkJCSBzaXplb2Yo
-YWMtPnZhbFswXSkpOworCQkJYXNzZXJ0KGFjLT52YWwpOworCQkJYWMtPnNhbXBsZXMgPSAxOwor
-CQl9CisKKwkJY3AgPSBjOworCisJCWlmIChjLT5zYW1wbGVzIDwgMikKKwkJCWNvbnRpbnVlOwor
-CisJCWFjLT5zYW1wbGVzID0gMjsgLyogQWxsIHdoYXQgbWF0dGVycyBmb3IgZGlzcGxheS4gKi8K
-KwkJYWMtPnRvdGFsX3J1bnRpbWUgKz0gYy0+dG90YWxfcnVudGltZTsKKwkJYWMtPmxhc3RfcnVu
-dGltZSArPSBjLT5sYXN0X3J1bnRpbWU7CisKKwkJZm9yIChpID0gMDsgaSA8IGNsaWVudHMtPm51
-bV9jbGFzc2VzOyBpKyspCisJCQlhYy0+dmFsW2ldICs9IGMtPnZhbFtpXTsKKwl9CisKKwlhZ2dy
-ZWdhdGVkLT5udW1fY2xpZW50cyA9IG51bTsKKwlhZ2dyZWdhdGVkLT5hY3RpdmVfY2xpZW50cyA9
-IG51bTsKKworCXJldHVybiBzb3J0X2NsaWVudHMoYWdncmVnYXRlZCwgY2xpZW50X2NtcCk7CiB9
-CiAKLXN0YXRpYyB2b2lkIHNjYW5fY2xpZW50cyhzdHJ1Y3QgY2xpZW50cyAqY2xpZW50cykKK3N0
-YXRpYyB2b2lkIGZyZWVfY2xpZW50cyhzdHJ1Y3QgY2xpZW50cyAqY2xpZW50cykKK3sKKwlzdHJ1
-Y3QgY2xpZW50ICpjOworCXVuc2lnbmVkIGludCB0bXA7CisKKwlmb3JfZWFjaF9jbGllbnQoY2xp
-ZW50cywgYywgdG1wKQorCQlmcmVlKGMtPnZhbCk7CisKKwlmcmVlKGNsaWVudHMtPmNsaWVudCk7
-CisJZnJlZShjbGllbnRzKTsKK30KKworc3RhdGljIGJvb2wgYWdncmVnYXRlX3BpZHMgPSB0cnVl
-OworCitzdGF0aWMgc3RydWN0IGNsaWVudHMgKnNjYW5fY2xpZW50cyhzdHJ1Y3QgY2xpZW50cyAq
-Y2xpZW50cykKIHsKIAlzdHJ1Y3QgZGlyZW50ICpkZW50OwogCXN0cnVjdCBjbGllbnQgKmM7CkBA
-IC0xMDIyLDcgKzExMDIsNyBAQCBzdGF0aWMgdm9pZCBzY2FuX2NsaWVudHMoc3RydWN0IGNsaWVu
-dHMgKmNsaWVudHMpCiAJRElSICpkOwogCiAJaWYgKCFjbGllbnRzKQotCQlyZXR1cm47CisJCXJl
-dHVybiBjbGllbnRzOwogCiAJZm9yX2VhY2hfY2xpZW50KGNsaWVudHMsIGMsIHRtcCkgewogCQlh
-c3NlcnQoYy0+c3RhdHVzICE9IFBST0JFKTsKQEAgLTEwMzQsNyArMTExNCw3IEBAIHN0YXRpYyB2
-b2lkIHNjYW5fY2xpZW50cyhzdHJ1Y3QgY2xpZW50cyAqY2xpZW50cykKIAogCWQgPSBvcGVuZGly
-KGNsaWVudHMtPnN5c2ZzX3Jvb3QpOwogCWlmICghZCkKLQkJcmV0dXJuOworCQlyZXR1cm4gY2xp
-ZW50czsKIAogCXdoaWxlICgoZGVudCA9IHJlYWRkaXIoZCkpICE9IE5VTEwpIHsKIAkJY2hhciBu
-YW1lWzI0XSwgcGlkWzI0XTsKQEAgLTEwNzcsNyArMTE1NywxMCBAQCBzdGF0aWMgdm9pZCBzY2Fu
-X2NsaWVudHMoc3RydWN0IGNsaWVudHMgKmNsaWVudHMpCiAJCQlicmVhazsKIAl9CiAKLQlzb3J0
-X2NsaWVudHMoY2xpZW50cyk7CisJaWYgKGFnZ3JlZ2F0ZV9waWRzKQorCQlyZXR1cm4gYWdncmVn
-YXRlZF9jbGllbnRzKGNsaWVudHMpOworCWVsc2UKKwkJcmV0dXJuIHNvcnRfY2xpZW50cyhjbGll
-bnRzLCBjbGllbnRfY21wKTsKIH0KIAogc3RhdGljIGNvbnN0IGNoYXIgKmJhcnNbXSA9IHsgIiAi
-LCAi4paPIiwgIuKWjiIsICLilo0iLCAi4paMIiwgIuKWiyIsICLilooiLCAi4paJIiwgIuKWiCIg
-fTsKQEAgLTIyMjcsNiArMjMxMCwxMyBAQCBzdGF0aWMgdm9pZCBwcm9jZXNzX3N0ZGluKHVuc2ln
-bmVkIGludCB0aW1lb3V0X3VzKQogCQljYXNlICdzJzoKIAkJCXNlbGVjdF9jbGllbnRfc29ydCgp
-OwogCQkJYnJlYWs7CisJCWNhc2UgJ0gnOgorCQkJYWdncmVnYXRlX3BpZHMgXj0gdHJ1ZTsKKwkJ
-CWlmIChhZ2dyZWdhdGVfcGlkcykKKwkJCQloZWFkZXJfbXNnID0gIkFnZ3JlZ2F0aW5nIGNsaWVu
-dHMuIjsKKwkJCWVsc2UKKwkJCQloZWFkZXJfbXNnID0gIlNob3dpbmcgaW5kaXZpZHVhbCBjbGll
-bnRzLiI7CisJCQlicmVhazsKIAkJfTsKIAl9CiB9CkBAIC0yMzc4LDYgKzI0NjgsNyBAQCBpbnQg
-bWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpCiAJY29kZW5hbWUgPSBpZ3RfZGV2aWNlX2dldF9w
-cmV0dHlfbmFtZSgmY2FyZCwgZmFsc2UpOwogCiAJd2hpbGUgKCFzdG9wX3RvcCkgeworCQlzdHJ1
-Y3QgY2xpZW50cyAqZGlzcF9jbGllbnRzOwogCQlib29sIGNvbnN1bWVkID0gZmFsc2U7CiAJCWlu
-dCBqLCBsaW5lcyA9IDA7CiAJCXN0cnVjdCB3aW5zaXplIHdzOwpAQCAtMjQwMCw3ICsyNDkxLDcg
-QEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKiphcmd2KQogCQlwbXVfc2FtcGxlKGVuZ2luZXMp
-OwogCQl0ID0gKGRvdWJsZSkoZW5naW5lcy0+dHMuY3VyIC0gZW5naW5lcy0+dHMucHJldikgLyAx
-ZTk7CiAKLQkJc2Nhbl9jbGllbnRzKGNsaWVudHMpOworCQlkaXNwX2NsaWVudHMgPSBzY2FuX2Ns
-aWVudHMoY2xpZW50cyk7CiAKIAkJaWYgKHN0b3BfdG9wKQogCQkJYnJlYWs7CkBAIC0yNDE2LDE0
-ICsyNTA3LDE0IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICoqYXJndikKIAogCQkJbGluZXMg
-PSBwcmludF9lbmdpbmVzKGVuZ2luZXMsIHQsIGxpbmVzLCBjb25fdywgY29uX2gpOwogCi0JCQlp
-ZiAoY2xpZW50cykgeworCQkJaWYgKGRpc3BfY2xpZW50cykgewogCQkJCWludCBjbGFzc193Owog
-Ci0JCQkJbGluZXMgPSBwcmludF9jbGllbnRzX2hlYWRlcihjbGllbnRzLCBsaW5lcywKKwkJCQls
-aW5lcyA9IHByaW50X2NsaWVudHNfaGVhZGVyKGRpc3BfY2xpZW50cywgbGluZXMsCiAJCQkJCQkJ
-ICAgICBjb25fdywgY29uX2gsCiAJCQkJCQkJICAgICAmY2xhc3Nfdyk7CiAKLQkJCQlmb3JfZWFj
-aF9jbGllbnQoY2xpZW50cywgYywgaikgeworCQkJCWZvcl9lYWNoX2NsaWVudChkaXNwX2NsaWVu
-dHMsIGMsIGopIHsKIAkJCQkJYXNzZXJ0KGMtPnN0YXR1cyAhPSBQUk9CRSk7CiAJCQkJCWlmIChj
-LT5zdGF0dXMgIT0gQUxJVkUpCiAJCQkJCQlicmVhazsgLyogQWN0aXZlIGNsaWVudHMgYXJlIGZp
-cnN0IGluIHRoZSBhcnJheS4gKi8KQEAgLTI0MzcsOCArMjUyOCw5IEBAIGludCBtYWluKGludCBh
-cmdjLCBjaGFyICoqYXJndikKIAkJCQkJCQkgICAgICZjbGFzc193KTsKIAkJCQl9CiAKLQkJCQls
-aW5lcyA9IHByaW50X2NsaWVudHNfZm9vdGVyKGNsaWVudHMsIHQsIGxpbmVzLAotCQkJCQkJCSAg
-ICAgY29uX3csIGNvbl9oKTsKKwkJCQlsaW5lcyA9IHByaW50X2NsaWVudHNfZm9vdGVyKGRpc3Bf
-Y2xpZW50cywgdCwKKwkJCQkJCQkgICAgIGxpbmVzLCBjb25fdywKKwkJCQkJCQkgICAgIGNvbl9o
-KTsKIAkJCX0KIAogCQkJcG9wcy0+Y2xvc2Vfc3RydWN0KCk7CkBAIC0yNDQ3LDYgKzI1MzksOSBA
-QCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpCiAJCWlmIChzdG9wX3RvcCkKIAkJCWJy
-ZWFrOwogCisJCWlmIChkaXNwX2NsaWVudHMgIT0gY2xpZW50cykKKwkJCWZyZWVfY2xpZW50cyhk
-aXNwX2NsaWVudHMpOworCiAJCWlmIChvdXRwdXRfbW9kZSA9PSBJTlRFUkFDVElWRSkKIAkJCXBy
-b2Nlc3Nfc3RkaW4ocGVyaW9kX3VzKTsKIAkJZWxzZQotLSAKMi4yNy4wCgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpJbnRlbC1nZnggbWFpbGluZyBsaXN0
-CkludGVsLWdmeEBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
-cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pbnRlbC1nZngK
+Quoting Tvrtko Ursulin (2021-02-10 09:37:55)
+> +static struct clients *aggregated_clients(struct clients *clients)
+> +{
+> +       struct client *ac, *c, *cp = NULL;
+> +       struct clients *aggregated;
+> +       int tmp, num = 0;
+> +
+> +       /* Sort by pid first to make it easy to aggregate while walking. */
+> +       sort_clients(clients, client_pid_cmp);
+
+You could eliminate this tiny bit of duplication by always calling
+aggregated_clients() and returning here for !aggregate_pids.
+
+> +       aggregated = calloc(1, sizeof(*clients));
+> +       assert(aggregated);
+> +
+> +       ac = calloc(clients->num_clients, sizeof(*c));
+> +       assert(ac);
+> +
+> +       aggregated->num_classes = clients->num_classes;
+> +       aggregated->class = clients->class;
+> +       aggregated->client = ac;
+> +
+> +       for_each_client(clients, c, tmp) {
+> +               unsigned int i;
+> +
+> +               if (c->status == FREE)
+> +                       break;
+> +
+> +               assert(c->status == ALIVE);
+> +
+> +               if ((cp && c->pid != cp->pid) || !cp) {
+> +                       ac = &aggregated->client[num];
+> +
+> +                       /* New pid. */
+> +                       ac->clients = aggregated;
+> +                       ac->status = ALIVE;
+> +                       ac->id = ++num;
+> +                       ac->pid = c->pid;
+> +                       strcpy(ac->name, c->name);
+> +                       strcpy(ac->print_name, c->print_name);
+> +                       ac->engines = c->engines;
+> +                       ac->val = calloc(clients->num_classes,
+> +                                        sizeof(ac->val[0]));
+> +                       assert(ac->val);
+> +                       ac->samples = 1;
+> +               }
+> +
+> +               cp = c;
+> +
+> +               if (c->samples < 2)
+> +                       continue;
+> +
+> +               ac->samples = 2; /* All what matters for display. */
+> +               ac->total_runtime += c->total_runtime;
+> +               ac->last_runtime += c->last_runtime;
+> +
+> +               for (i = 0; i < clients->num_classes; i++)
+> +                       ac->val[i] += c->val[i];
+> +       }
+> +
+> +       aggregated->num_clients = num;
+> +       aggregated->active_clients = num;
+> +
+> +       return sort_clients(aggregated, client_cmp);
+>  }
+
+Ok, that works very well. Hmm. The sort order does seem a little jumpy
+though. May I suggest ac->id = -c->pid; instead of num;
+-Chris
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
