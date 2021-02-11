@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DC4F46EE46
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Feb 2021 14:54:00 +0000 (UTC)
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Thu, 11 Feb 2021 14:53:56 +0000
-Message-ID: <SN6PR11MB3327BB1AB03BFA04201D54F48D8C9@SN6PR11MB3327.namprd11.prod.outlook.com>
-References: <20210129043037.14665-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20210129043037.14665-1-nidhi1.gupta@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B1AE6E48B
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Feb 2021 18:12:38 +0000 (UTC)
+From: "B, Jeevan" <jeevan.b@intel.com>
+Date: Thu, 11 Feb 2021 18:12:34 +0000
+Message-ID: <3253b7de73ae49bdaf2ab72149f14bd1@intel.com>
+References: <20210119094223.899965-1-arundhati.hagaragi@intel.com>
+In-Reply-To: <20210119094223.899965-1-arundhati.hagaragi@intel.com>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_legacy: added test
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_rotation_crc:Added subtest
  description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -22,90 +22,133 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
+To: "Hagaragi, Arundhati" <arundhati.hagaragi@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "B@freedesktop.org" <B@freedesktop.org>, "S@freedesktop.org" <S@freedesktop.org>, "Gupta@freedesktop.org" <Gupta@freedesktop.org>, "Gupta,
+ Nidhi1" <nidhi1.gupta@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> -----Original Message-----
-> From: Nidhi Gupta <nidhi1.gupta@intel.com>
-> Sent: Friday, January 29, 2021 10:01 AM
-> To: igt-dev@lists.freedesktop.org
-> Cc: B S, Karthik <karthik.b.s@intel.com>; Modem, Bhanuprakash
-> <bhanuprakash.modem@intel.com>; Gupta, Nidhi1 <nidhi1.gupta@intel.com>
-> Subject: [PATCH i-g-t] tests/kms_cursor_legacy: added test description
-> 
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> ---
->  tests/kms_cursor_legacy.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> index 6034ad04..95491229 100644
-> --- a/tests/kms_cursor_legacy.c
-> +++ b/tests/kms_cursor_legacy.c
-> @@ -1365,6 +1365,8 @@ igt_main
->  		igt_display_require(&display, display.drm_fd);
->  	}
-> 
-> +	igt_describe("Test checks how many cursor updates we can fit between
-> vblanks"
-> +		     "on single pipe with different modes, priority and number
-> of processes");
->  	igt_subtest_group {
->  		enum pipe n;
->  		for_each_pipe_static(n) {
-> @@ -1391,6 +1393,10 @@ igt_main
->  		}
->  	}
-> 
-> +	/*Test description for all-pipes-* tests*/
-> +	igt_describe("Test checks how many cursor updates we can fit between
-> vblanks"
-> +		     "on all pipes with different modes, priority and number of
-> processes");
-> +
-Shall we group all-pipe tests? so that same describe will apply to every
-all-pipe test.
+>-----Original Message-----
+>From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Arundhati
+>Hagaragi
+>Sent: Tuesday, January 19, 2021 3:12 PM
+>To: igt-dev@lists.freedesktop.org
+>Cc: B@freedesktop.org; Gupta@freedesktop.org; S@freedesktop.org; Gupta,
+>Nidhi1 <nidhi1.gupta@intel.com>
+>Subject: [igt-dev] [PATCH i-g-t] tests/kms_rotation_crc:Added subtest description
+>
+>Added description for all subtests
+>
+>Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+>Cc: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
+>Cc: B S, Karthik <Karthik.B.S@intel.com>
+Looks ok to me. 
 
->  	igt_subtest("all-pipes-single-bo")
->  		stress(&display, -1, 1, DRM_MODE_CURSOR_BO, 20);
->  	igt_subtest("all-pipes-single-move")
-> @@ -1412,6 +1418,10 @@ igt_main
->  	igt_subtest("long-nonblocking-modeset-vs-cursor-atomic")
->  		nonblocking_modeset_vs_cursor(&display, 16);
-> 
-> +	/*Test Description for 2x-* tests*/
-> +	igt_describe("This test executes flips on both CRTCs"
-> +		     "while running cursor updates in parallel");
-> +
-Please check above comment
-
->  	igt_subtest("2x-flip-vs-cursor-legacy")
->  		two_screens_flip_vs_cursor(&display, 8, false, false);
-> 
-> @@ -1485,11 +1495,14 @@ igt_main
->  			}
->  		}
-> 
-> +		igt_describe("Each iteration tries to squeeze target number of
-> cursor"
-> +                             "updates in half a second worth of flips");
-Please check above comment
-
-Also, describe is missing for few subtests. Please ignore this comment if
-not applicable.
->  		igt_subtest_f("%sflip-after-cursor-%s", prefix, modes[i])
->  			basic_flip_cursor(&display, i, FLIP_AFTER_CURSOR, 0);
-> 
->  		igt_subtest_f("flip-vs-cursor-%s", modes[i])
->  			flip_vs_cursor(&display, i, 150);
-> +
->  		igt_subtest_f("cursor-vs-flip-%s", modes[i])
->  			cursor_vs_flip(&display, i, 50);
-> 
-> --
-> 2.26.2
-
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
+>---
+> tests/kms_rotation_crc.c | 11 +++++++++++
+> 1 file changed, 11 insertions(+)
+>
+>diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c index
+>33a97cca..136e97fc 100644
+>--- a/tests/kms_rotation_crc.c
+>+++ b/tests/kms_rotation_crc.c
+>@@ -856,6 +856,7 @@ igt_main_args("", long_opts, help_str, opt_handler,
+>&data)
+> 		igt_require(data.display.is_atomic);
+> 	}
+>
+>+	igt_describe("Rotation test with 90/270 degree for primary and sprite
+>+planes of gen9+");
+> 	for (subtest = subtests; subtest->rot; subtest++) {
+> 		igt_subtest_f("%s-rotation-%s",
+> 			      plane_test_str(subtest->plane), @@ -868,6 +869,7
+>@@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+> 		}
+> 	}
+>
+>+	igt_describe("Rotation test with 90 degree for a plane of gen9+ with
+>+given position");
+> 	igt_subtest_f("sprite-rotation-90-pos-100-0") {
+> 		igt_require(gen >= 9);
+> 		data.rotation = IGT_ROTATION_90;
+>@@ -878,6 +880,7 @@ igt_main_args("", long_opts, help_str, opt_handler,
+>&data)
+> 	data.pos_x = 0,
+> 	data.pos_y = 0;
+>
+>+	igt_describe("Checking unsupported pixel format for gen9+ with 90
+>+degree of rotation");
+> 	igt_subtest_f("bad-pixel-format") {
+> 		 /* gen11 enables RGB565 rotation for 90/270 degrees.
+> 		  * so apart from this, any other gen11+ pixel format @@ -890,6
+>+893,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+> 	}
+> 	data.override_fmt = 0;
+>
+>+	igt_describe("Checking unsupported tiling for gen9+ with 90 degree of
+>+rotation");
+> 	igt_subtest_f("bad-tiling") {
+> 		igt_require(gen >= 9);
+> 		data.rotation = IGT_ROTATION_90;
+>@@ -898,6 +902,7 @@ igt_main_args("", long_opts, help_str, opt_handler,
+>&data)
+> 	}
+> 	data.override_tiling = 0;
+>
+>+	igt_describe("Tiling and Rotation test for gen 10+ for primary
+>+plane");
+> 	for (reflect_x = reflect_x_subtests; reflect_x->tiling; reflect_x++) {
+> 		igt_subtest_f("primary-%s-reflect-x-%s",
+> 			      tiling_test_str(reflect_x->tiling),
+>@@ -911,6 +916,7 @@ igt_main_args("", long_opts, help_str, opt_handler,
+>&data)
+> 		}
+> 	}
+>
+>+	igt_describe("Rotation test on both planes by making them fully
+>+visible");
+> 	igt_subtest_f("multiplane-rotation") {
+> 		igt_require(gen >= 9);
+> 		cleanup_crtc(&data);
+>@@ -923,6 +929,8 @@ igt_main_args("", long_opts, help_str, opt_handler,
+>&data)
+> 		test_multi_plane_rotation(&data, 0);
+> 	}
+>
+>+	igt_describe("Rotation test on both planes by cropping left/top corner of
+>primary plane and"
+>+			"right/top corner of sprite plane");
+> 	igt_subtest_f("multiplane-rotation-cropping-top") {
+> 		igt_require(gen >= 9);
+> 		cleanup_crtc(&data);
+>@@ -935,6 +943,8 @@ igt_main_args("", long_opts, help_str, opt_handler,
+>&data)
+> 		test_multi_plane_rotation(&data, 0);
+> 	}
+>
+>+	igt_describe("Rotation test on both planes by cropping left/bottom
+>corner of primary plane"
+>+			"and right/bottom corner of sprite plane");
+> 	igt_subtest_f("multiplane-rotation-cropping-bottom") {
+> 		igt_require(gen >= 9);
+> 		cleanup_crtc(&data);
+>@@ -951,6 +961,7 @@ igt_main_args("", long_opts, help_str, opt_handler,
+>&data)
+> 	 * exhaust-fences should be last test, if it fails we may OOM in
+> 	 * the following subtests otherwise.
+> 	 */
+>+	igt_describe("This test intends to check for fence leaks
+>+exhaustively");
+> 	igt_subtest_f("exhaust-fences") {
+> 		enum pipe pipe;
+> 		igt_output_t *output;
+>--
+>2.25.1
+>
+>_______________________________________________
+>igt-dev mailing list
+>igt-dev@lists.freedesktop.org
+>https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
