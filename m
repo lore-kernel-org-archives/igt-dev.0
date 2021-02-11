@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 719936E5AE
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Feb 2021 10:44:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 680FC6E5B2
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Feb 2021 10:44:56 +0000 (UTC)
 From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Date: Thu, 11 Feb 2021 16:06:05 +0530
-Message-Id: <20210211103607.241813-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Thu, 11 Feb 2021 16:06:07 +0530
+Message-Id: <20210211103607.241813-3-tejaskumarx.surendrakumar.upadhyay@intel.com>
+In-Reply-To: <20210211103607.241813-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+References: <20210211103607.241813-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [i-g-t 0/2] lib: sync pciids with kernel and add adl_s
- dev info
+Subject: [igt-dev] [i-g-t 2/2] lib/adl_s: Add Alder Lake S platform
+ definition
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,19 +25,63 @@ To: igt-dev@lists.freedesktop.org
 Cc: anusha.srivatsa@intel.com, lucas.demarchi@intel.com, hariom.pandey@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This series:
-1. sync i915_pciids.h with kernel
-2. adds adl_s platform device info
+Adding Alder lake platform definitions
 
-Tejas Upadhyay (2):
-  lib: sync i915_pciids.h with kernel
-  lib/adl_s: Add Alder Lake S platform definition
+Cc: Anusha Srivatsa <anusha.srivatsa@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Caz Yokoyama <caz.yokoyama@intel.com>
+Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+---
+ lib/intel_chipset.h     | 2 ++
+ lib/intel_device_info.c | 8 ++++++++
+ 2 files changed, 10 insertions(+)
 
- lib/i915_pciids.h       | 26 ++++++++++++++++++--------
- lib/intel_chipset.h     |  2 ++
- lib/intel_device_info.c |  8 ++++++++
- 3 files changed, 28 insertions(+), 8 deletions(-)
-
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index 63c98025..f766021e 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -76,6 +76,7 @@ struct intel_device_info {
+ 	bool is_tigerlake : 1;
+ 	bool is_rocketlake : 1;
+ 	bool is_dg1 : 1;
++	bool is_alderlake_s : 1;
+ 	const char *codename;
+ };
+ 
+@@ -176,6 +177,7 @@ void intel_check_pch(void);
+ #define IS_TIGERLAKE(devid)	(intel_get_device_info(devid)->is_tigerlake)
+ #define IS_ROCKETLAKE(devid)	(intel_get_device_info(devid)->is_rocketlake)
+ #define IS_DG1(devid)		(intel_get_device_info(devid)->is_dg1)
++#define IS_ALDERLAKE_S(devid)	(intel_get_device_info(devid)->is_alderlake_s)
+ 
+ #define IS_GEN(devid, x)	(intel_get_device_info(devid)->gen & (1u << ((x)-1)))
+ #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->gen & -(1u << ((x)-1)))
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 5c3816fe..e07fdf6f 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -347,6 +347,12 @@ static const struct intel_device_info intel_dg1_info = {
+ 	.codename = "dg1"
+ };
+ 
++static const struct intel_device_info intel_alderlake_s_info = {
++	.gen = BIT(11),
++	.is_alderlake_s = true,
++	.codename = "alderlake_s"
++};
++
+ static const struct pci_id_match intel_device_match[] = {
+ 	INTEL_I810_IDS(&intel_i810_info),
+ 	INTEL_I815_IDS(&intel_i815_info),
+@@ -437,6 +443,8 @@ static const struct pci_id_match intel_device_match[] = {
+ 
+ 	INTEL_DG1_IDS(&intel_dg1_info),
+ 
++	INTEL_ADLS_IDS(&intel_alderlake_s_info),
++
+ 	INTEL_VGA_DEVICE(PCI_MATCH_ANY, &intel_generic_info),
+ };
+ 
 -- 
 2.30.0
 
