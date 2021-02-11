@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 680FC6E5B2
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Feb 2021 10:44:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA47F6E5AE
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Feb 2021 10:44:53 +0000 (UTC)
 From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Date: Thu, 11 Feb 2021 16:06:07 +0530
-Message-Id: <20210211103607.241813-3-tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Thu, 11 Feb 2021 16:06:06 +0530
+Message-Id: <20210211103607.241813-2-tejaskumarx.surendrakumar.upadhyay@intel.com>
 In-Reply-To: <20210211103607.241813-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
 References: <20210211103607.241813-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [i-g-t 2/2] lib/adl_s: Add Alder Lake S platform
- definition
+Subject: [igt-dev] [i-g-t 1/2] lib: sync i915_pciids.h with kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,63 +24,64 @@ To: igt-dev@lists.freedesktop.org
 Cc: anusha.srivatsa@intel.com, lucas.demarchi@intel.com, hariom.pandey@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adding Alder lake platform definitions
+Taken from kernel commit:
+commit 0883d63b19bb ("drm/i915/adl_s: Add ADL-S platform info and PCI ids")
+commit 04057a1afc75 ("drm/i915: Sort EHL/JSL PCI IDs")
+commit 0e8e272f1368 ("drm/i915/ehl: Remove invalid PCI ID")
 
-Cc: Anusha Srivatsa <anusha.srivatsa@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Caz Yokoyama <caz.yokoyama@intel.com>
 Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
 ---
- lib/intel_chipset.h     | 2 ++
- lib/intel_device_info.c | 8 ++++++++
- 2 files changed, 10 insertions(+)
+ lib/i915_pciids.h | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-index 63c98025..f766021e 100644
---- a/lib/intel_chipset.h
-+++ b/lib/intel_chipset.h
-@@ -76,6 +76,7 @@ struct intel_device_info {
- 	bool is_tigerlake : 1;
- 	bool is_rocketlake : 1;
- 	bool is_dg1 : 1;
-+	bool is_alderlake_s : 1;
- 	const char *codename;
- };
+diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
+index 3b5ed1e4..ebd0dd1c 100644
+--- a/lib/i915_pciids.h
++++ b/lib/i915_pciids.h
+@@ -584,20 +584,19 @@
  
-@@ -176,6 +177,7 @@ void intel_check_pch(void);
- #define IS_TIGERLAKE(devid)	(intel_get_device_info(devid)->is_tigerlake)
- #define IS_ROCKETLAKE(devid)	(intel_get_device_info(devid)->is_rocketlake)
- #define IS_DG1(devid)		(intel_get_device_info(devid)->is_dg1)
-+#define IS_ALDERLAKE_S(devid)	(intel_get_device_info(devid)->is_alderlake_s)
+ /* EHL */
+ #define INTEL_EHL_IDS(info) \
+-	INTEL_VGA_DEVICE(0x4500, info),	\
+-	INTEL_VGA_DEVICE(0x4571, info), \
+-	INTEL_VGA_DEVICE(0x4551, info), \
+ 	INTEL_VGA_DEVICE(0x4541, info), \
++	INTEL_VGA_DEVICE(0x4551, info), \
++	INTEL_VGA_DEVICE(0x4555, info), \
+ 	INTEL_VGA_DEVICE(0x4557, info), \
+-	INTEL_VGA_DEVICE(0x4555, info)
++	INTEL_VGA_DEVICE(0x4571, info)
  
- #define IS_GEN(devid, x)	(intel_get_device_info(devid)->gen & (1u << ((x)-1)))
- #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->gen & -(1u << ((x)-1)))
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index 5c3816fe..e07fdf6f 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -347,6 +347,12 @@ static const struct intel_device_info intel_dg1_info = {
- 	.codename = "dg1"
- };
+ /* JSL */
+ #define INTEL_JSL_IDS(info) \
+-	INTEL_VGA_DEVICE(0x4E71, info), \
+-	INTEL_VGA_DEVICE(0x4E61, info), \
+-	INTEL_VGA_DEVICE(0x4E57, info), \
++	INTEL_VGA_DEVICE(0x4E51, info), \
+ 	INTEL_VGA_DEVICE(0x4E55, info), \
+-	INTEL_VGA_DEVICE(0x4E51, info)
++	INTEL_VGA_DEVICE(0x4E57, info), \
++	INTEL_VGA_DEVICE(0x4E61, info), \
++	INTEL_VGA_DEVICE(0x4E71, info)
  
-+static const struct intel_device_info intel_alderlake_s_info = {
-+	.gen = BIT(11),
-+	.is_alderlake_s = true,
-+	.codename = "alderlake_s"
-+};
+ /* TGL */
+ #define INTEL_TGL_12_GT1_IDS(info) \
+@@ -635,4 +634,15 @@
+ 	INTEL_VGA_DEVICE(0x4907, info), \
+ 	INTEL_VGA_DEVICE(0x4908, info)
+ 
++/* ADL-S */
++#define INTEL_ADLS_IDS(info) \
++	INTEL_VGA_DEVICE(0x4680, info), \
++	INTEL_VGA_DEVICE(0x4681, info), \
++	INTEL_VGA_DEVICE(0x4682, info), \
++	INTEL_VGA_DEVICE(0x4683, info), \
++	INTEL_VGA_DEVICE(0x4690, info), \
++	INTEL_VGA_DEVICE(0x4691, info), \
++	INTEL_VGA_DEVICE(0x4692, info), \
++	INTEL_VGA_DEVICE(0x4693, info)
 +
- static const struct pci_id_match intel_device_match[] = {
- 	INTEL_I810_IDS(&intel_i810_info),
- 	INTEL_I815_IDS(&intel_i815_info),
-@@ -437,6 +443,8 @@ static const struct pci_id_match intel_device_match[] = {
- 
- 	INTEL_DG1_IDS(&intel_dg1_info),
- 
-+	INTEL_ADLS_IDS(&intel_alderlake_s_info),
-+
- 	INTEL_VGA_DEVICE(PCI_MATCH_ANY, &intel_generic_info),
- };
- 
+ #endif /* _I915_PCIIDS_H */
 -- 
 2.30.0
 
