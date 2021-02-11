@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F3EF89306
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Feb 2021 10:16:54 +0000 (UTC)
+From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Date: Thu, 11 Feb 2021 15:46:24 +0530
+Message-Id: <20210211101624.3363929-1-arundhati.hagaragi@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 11 Feb 2021 10:10:42 -0000
-Message-ID: <161303824222.27071.17458555760524415832@emeril.freedesktop.org>
-References: <20210211085956.241188-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
-In-Reply-To: <20210211085956.241188-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2Fk?=
- =?utf-8?q?l=5Fs=3A_Add_Alder_Lake_S_platform_definition_and_PCIids_=28rev?=
- =?utf-8?q?2=29?=
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_addfb_basic:Added subtest
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,244 +15,288 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1162577641=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Surendrakumar Upadhyay,
- TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Bharadiya@freedesktop.org, Laxminarayan@freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1162577641==
-Content-Type: multipart/alternative;
- boundary="===============1952001347753828993=="
+Added description for all subtests
 
---===============1952001347753828993==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Cc: Laxminarayan Bharadiya, Pankaj<Pankaj.Laxminarayan.Bharadiya@intel.com>
 
-== Series Details ==
+v2: Modified description to be more specific. (Pankaj)
+---
+ tests/kms_addfb_basic.c | 36 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
-Series: lib/adl_s: Add Alder Lake S platform definition and PCIids (rev2)
-URL   : https://patchwork.freedesktop.org/series/86973/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9761 -> IGTPW_5498
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5498 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#2411] / [i915#402])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9761/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-guc:         [PASS][3] -> [SKIP][4] ([fdo#109271])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9761/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-nick:        [PASS][5] -> [INCOMPLETE][6] ([i915#2940])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9761/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-    - fi-bsw-n3050:       [PASS][7] -> [INCOMPLETE][8] ([i915#2940])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9761/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-kbl-7500u:       [PASS][9] -> [FAIL][10] ([i915#1372])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9761/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-
-  * igt@prime_self_import@basic-with_one_bo_two_files:
-    - fi-tgl-y:           [PASS][11] -> [DMESG-WARN][12] ([i915#402]) +2 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9761/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
-
-  * igt@runner@aborted:
-    - fi-bsw-nick:        NOTRUN -> [FAIL][13] ([i915#1436])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-bsw-nick/igt@runner@aborted.html
-    - fi-bsw-n3050:       NOTRUN -> [FAIL][14] ([i915#1436])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-bsw-n3050/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@prime_self_import@basic-with_two_bos:
-    - fi-tgl-y:           [DMESG-WARN][15] ([i915#402]) -> [PASS][16] +1 similar issue
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9761/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1372]: https://gitlab.freedesktop.org/drm/intel/issues/1372
-  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
-  [i915#2411]: https://gitlab.freedesktop.org/drm/intel/issues/2411
-  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-
-
-Participating hosts (44 -> 38)
-------------------------------
-
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-skl-guc fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6001 -> IGTPW_5498
-
-  CI-20190529: 20190529
-  CI_DRM_9761: fc52fc2a7332bd301f802ca3a0444a8fb9fe4f7f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5498: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/index.html
-  IGT_6001: d0d6f5e14ef181c93e4b503b05d9c18fa480e09d @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/index.html
-
---===============1952001347753828993==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/adl_s: Add Alder Lake S platform definition and PCIids (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/86973/">https://patchwork.freedesktop.org/series/86973/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9761 -&gt; IGTPW_5498</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5498 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9761/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2411">i915#2411</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9761/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>
-<p>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9761/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-bsw-nick/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>)</p>
-</li>
-<li>
-<p>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9761/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9761/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1372">i915#1372</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_self_import@basic-with_one_bo_two_files:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9761/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-bsw-nick/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a>)</p>
-</li>
-<li>
-<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-bsw-n3050/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@prime_self_import@basic-with_two_bos:<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9761/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (44 -&gt; 38)</h2>
-<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-skl-guc fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6001 -&gt; IGTPW_5498</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9761: fc52fc2a7332bd301f802ca3a0444a8fb9fe4f7f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5498: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5498/index.html<br />
-  IGT_6001: d0d6f5e14ef181c93e4b503b05d9c18fa480e09d @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============1952001347753828993==--
-
---===============1162577641==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+index 090abe7f..86b85e04 100644
+--- a/tests/kms_addfb_basic.c
++++ b/tests/kms_addfb_basic.c
+@@ -94,6 +94,7 @@ static void invalid_tests(int fd)
+ 
+ 	f.flags = LOCAL_DRM_MODE_FB_MODIFIERS;
+ 
++	igt_describe("Test that addfb2 call fails correctly for unused handle");
+ 	igt_subtest("unused-handle") {
+ 		igt_require_fb_modifiers(fd);
+ 
+@@ -103,6 +104,7 @@ static void invalid_tests(int fd)
+ 		f.handles[1] = 0;
+ 	}
+ 
++	igt_describe("Test that addfb2 call fails correctly for unused pitches");
+ 	igt_subtest("unused-pitches") {
+ 		igt_require_fb_modifiers(fd);
+ 
+@@ -112,6 +114,7 @@ static void invalid_tests(int fd)
+ 		f.pitches[1] = 0;
+ 	}
+ 
++	igt_describe("Test that addfb2 call fails correctly for unused offset");
+ 	igt_subtest("unused-offsets") {
+ 		igt_require_fb_modifiers(fd);
+ 
+@@ -121,6 +124,7 @@ static void invalid_tests(int fd)
+ 		f.offsets[1] = 0;
+ 	}
+ 
++	igt_describe("Test that addfb2 call fails correctly for unused modifier");
+ 	igt_subtest("unused-modifier") {
+ 		igt_require_fb_modifiers(fd);
+ 
+@@ -130,6 +134,7 @@ static void invalid_tests(int fd)
+ 		f.modifier[1] = 0;
+ 	}
+ 
++	igt_describe("Test that addfb2 call fails correctly for clobbered modifier");
+ 	igt_subtest("clobberred-modifier") {
+ 		igt_require_intel(fd);
+ 		f.flags = 0;
+@@ -141,6 +146,7 @@ static void invalid_tests(int fd)
+ 		igt_assert(f.modifier[0] == 0);
+ 	}
+ 
++	igt_describe("Test that addfb2 call fails correctly for legacy formats");
+ 	igt_subtest("legacy-format") {
+ 		struct {
+ 			/* drm_mode_legacy_fb_format() */
+@@ -266,11 +272,13 @@ static void pitch_tests(int fd)
+ 		igt_assert(gem_bo);
+ 	}
+ 
++	igt_describe("Test that addfb2 call fails correctly without handle");
+ 	igt_subtest("no-handle") {
+ 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+ 			   errno == EINVAL);
+ 	}
+ 
++	igt_describe("Test that addfb2 call fails correctly with given handle");
+ 	f.handles[0] = gem_bo;
+ 	igt_subtest("basic") {
+ 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+@@ -278,6 +286,7 @@ static void pitch_tests(int fd)
+ 		f.fb_id = 0;
+ 	}
+ 
++	igt_describe("Test that addfb2 call fails correctly for bad-pitches");
+ 	for (i = 0; i < ARRAY_SIZE(bad_pitches); i++) {
+ 		igt_subtest_f("bad-pitch-%i", bad_pitches[i]) {
+ 			f.pitches[0] = bad_pitches[i];
+@@ -331,6 +340,7 @@ static void tiling_tests(int fd)
+ 		}
+ 
+ 		f.pitches[0] = 1024*4;
++		igt_describe("Test that addfb2 call fails correctly for basic x-tiling test");
+ 		igt_subtest("basic-x-tiled-legacy") {
+ 			f.handles[0] = tiled_x_bo;
+ 
+@@ -339,6 +349,7 @@ static void tiling_tests(int fd)
+ 			f.fb_id = 0;
+ 		}
+ 
++		igt_describe("Test that addfb2 call fails correctly for x and y tiling");
+ 		igt_subtest("framebuffer-vs-set-tiling") {
+ 			f.handles[0] = gem_bo;
+ 
+@@ -350,7 +361,8 @@ static void tiling_tests(int fd)
+ 			f.fb_id = 0;
+ 		}
+ 
+-		f.pitches[0] = 512*4;
++		igt_describe("Test that addfb2 call fails correctly with given pitch and handle");
++			f.pitches[0] = 512*4;
+ 		igt_subtest("tile-pitch-mismatch") {
+ 			f.handles[0] = tiled_x_bo;
+ 
+@@ -358,6 +370,7 @@ static void tiling_tests(int fd)
+ 				   errno == EINVAL);
+ 		}
+ 
++		igt_describe("Test that addfb2 call fails correctly for basic y-tiling test");
+ 		f.pitches[0] = 1024*4;
+ 		igt_subtest("basic-y-tiled-legacy") {
+ 			f.handles[0] = tiled_y_bo;
+@@ -409,6 +422,7 @@ static void size_tests(int fd)
+ 	f_16.handles[0] = gem_bo;
+ 	f_8.handles[0] = gem_bo;
+ 
++	igt_describe("Test that addfb2 call fails correctly with max size of  buffer object");
+ 	igt_subtest("size-max") {
+ 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+ 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
+@@ -424,6 +438,7 @@ static void size_tests(int fd)
+ 	f.width++;
+ 	f_16.width++;
+ 	f_8.width++;
++	igt_describe("Test that addfb2 call fails correctly with increased width of fb");
+ 	igt_subtest("too-wide") {
+ 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+ 			   errno == EINVAL);
+@@ -438,6 +453,7 @@ static void size_tests(int fd)
+ 	f.height++;
+ 	f_16.height++;
+ 	f_8.height++;
++	igt_describe("Test that addfb2 call fails correctly with increased height of fb");
+ 	igt_subtest("too-high") {
+ 		for (i = 0; i < ARRAY_SIZE(framebuffers); i++) {
+ 			igt_debug("Checking framebuffer %i\n", i);
+@@ -453,6 +469,7 @@ static void size_tests(int fd)
+ 		}
+ 	}
+ 
++	igt_describe("Test that addfb2 call fails correctly with small size of buffer object");
+ 	f.handles[0] = gem_bo_small;
+ 	igt_subtest("bo-too-small") {
+ 		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f), -1);
+@@ -467,6 +484,7 @@ static void size_tests(int fd)
+ 	}
+ 
+ 	/* Just to check that the parameters would work. */
++	igt_describe("Test that addfb2 call fails correctly for given height");
+ 	f.height = 1020;
+ 	igt_subtest("small-bo") {
+ 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+@@ -474,6 +492,7 @@ static void size_tests(int fd)
+ 		f.fb_id = 0;
+ 	}
+ 
++	igt_describe("Test that addfb2 call fails correctly with small buffer object after changing tile");
+ 	igt_subtest("bo-too-small-due-to-tiling") {
+ 		igt_require_intel(fd);
+ 		gem_set_tiling(fd, gem_bo_small, I915_TILING_X, 1024*4);
+@@ -508,6 +527,7 @@ static void addfb25_tests(int fd)
+ 		f.handles[0] = gem_bo;
+ 	}
+ 
++	igt_describe("Test that addfb2 call fails correctly for x-tiling with given modifier");
+ 	igt_subtest("addfb25-modifier-no-flag") {
+ 		igt_require_fb_modifiers(fd);
+ 
+@@ -518,6 +538,7 @@ static void addfb25_tests(int fd)
+ 	igt_fixture
+ 		f.flags = LOCAL_DRM_MODE_FB_MODIFIERS;
+ 
++	igt_describe("Test that addfb2 call fails correctly for irrelevant modifier");
+ 	igt_subtest("addfb25-bad-modifier") {
+ 		igt_require_fb_modifiers(fd);
+ 
+@@ -532,11 +553,13 @@ static void addfb25_tests(int fd)
+ 			igt_require_fb_modifiers(fd);
+ 		}
+ 
++		igt_describe("Test that addfb2 call fails correctly for irrelevant x-tiling");
+ 		igt_subtest("addfb25-x-tiled-mismatch-legacy") {
+ 			f.modifier[0] = LOCAL_DRM_FORMAT_MOD_NONE;
+ 			igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
+ 		}
+ 
++		igt_describe("Test that addfb2 call fails correctly for x-tiling");
+ 		igt_subtest("addfb25-x-tiled-legacy") {
+ 			f.modifier[0] = LOCAL_I915_FORMAT_MOD_X_TILED;
+ 			igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+@@ -544,6 +567,7 @@ static void addfb25_tests(int fd)
+ 			f.fb_id = 0;
+ 		}
+ 
++		igt_describe("Test that addfb2 call fails correctly for relevant combination of tiling and fbs");
+ 		igt_subtest("addfb25-framebuffer-vs-set-tiling") {
+ 			f.modifier[0] = LOCAL_I915_FORMAT_MOD_X_TILED;
+ 			igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+@@ -596,6 +620,7 @@ static void addfb25_ytile(int fd)
+ 		f.handles[0] = gem_bo;
+ 	}
+ 
++	igt_describe("Test that addfb2 call fails correctly for y-tiling");
+ 	igt_subtest("addfb25-y-tiled-legacy") {
+ 		igt_require_fb_modifiers(fd);
+ 		igt_require_intel(fd);
+@@ -608,6 +633,7 @@ static void addfb25_ytile(int fd)
+ 		f.fb_id = 0;
+ 	}
+ 
++	igt_describe("Test that addfb2 call fails correctly for yf-tiling");
+ 	igt_subtest("addfb25-yf-tiled-legacy") {
+ 		igt_require_fb_modifiers(fd);
+ 		igt_require_intel(fd);
+@@ -620,6 +646,7 @@ static void addfb25_ytile(int fd)
+ 		f.fb_id = 0;
+ 	}
+ 
++	igt_describe("Test that addfb2 call fails correctly for y-tiling with given height and modifier");
+ 	igt_subtest("addfb25-y-tiled-small-legacy") {
+ 		igt_require_fb_modifiers(fd);
+ 		igt_require_intel(fd);
+@@ -667,6 +694,8 @@ static void prop_tests(int fd)
+ 	get_props.count_props = 1;
+ 	get_props.obj_id = f.fb_id;
+ 
++	igt_describe("Test that addfb2 call fails correctly to get the properties with combination"
++		       " of any mode object");
+ 	igt_subtest("invalid-get-prop-any") {
+ 		get_props.obj_type = 0; /* DRM_MODE_OBJECT_ANY */
+ 
+@@ -674,6 +703,7 @@ static void prop_tests(int fd)
+ 				    &get_props) == -1 && errno == EINVAL);
+ 	}
+ 
++	igt_describe("Test that addfb2 call fails correctly to get the properties with given mode object");
+ 	igt_subtest("invalid-get-prop") {
+ 		get_props.obj_type = DRM_MODE_OBJECT_FB;
+ 
+@@ -685,6 +715,8 @@ static void prop_tests(int fd)
+ 	set_prop.prop_id = 1;
+ 	set_prop.obj_id = f.fb_id;
+ 
++	igt_describe("Test that addfb2 call fails correctly to set the properties with combination of "
++		       "any mode object");
+ 	igt_subtest("invalid-set-prop-any") {
+ 		set_prop.obj_type = 0; /* DRM_MODE_OBJECT_ANY */
+ 
+@@ -692,6 +724,7 @@ static void prop_tests(int fd)
+ 				    &set_prop) == -1 && errno == EINVAL);
+ 	}
+ 
++	igt_describe("Test that addfb2 call fails correctly to set the properties with given mode object");
+ 	igt_subtest("invalid-set-prop") {
+ 		set_prop.obj_type = DRM_MODE_OBJECT_FB;
+ 
+@@ -723,6 +756,7 @@ static void master_tests(int fd)
+ 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+ 	}
+ 
++	igt_describe("Check that only master can rmfb");
+ 	igt_subtest("master-rmfb") {
+ 		int master2_fd;
+ 
+-- 
+2.25.1
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============1162577641==--
