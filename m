@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B1AE6E48B
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Feb 2021 18:12:38 +0000 (UTC)
-From: "B, Jeevan" <jeevan.b@intel.com>
-Date: Thu, 11 Feb 2021 18:12:34 +0000
-Message-ID: <3253b7de73ae49bdaf2ab72149f14bd1@intel.com>
-References: <20210119094223.899965-1-arundhati.hagaragi@intel.com>
-In-Reply-To: <20210119094223.899965-1-arundhati.hagaragi@intel.com>
-Content-Language: en-US
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com
+ [IPv6:2a00:1450:4864:20::52a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BCD8F6E516
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Feb 2021 05:45:06 +0000 (UTC)
+Received: by mail-ed1-x52a.google.com with SMTP id s5so9404871edw.8
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Feb 2021 21:45:06 -0800 (PST)
+From: Mario Kleiner <mario.kleiner.de@gmail.com>
+Date: Fri, 12 Feb 2021 06:44:47 +0100
+Message-Id: <20210212054447.31713-1-mario.kleiner.de@gmail.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_rotation_crc:Added subtest
- description
+Subject: [igt-dev] [PATCH i-g-t] tests/kms-hdr: Fix
+ HDMI_STATIC_METADATA_TYPE1.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,138 +18,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Hagaragi, Arundhati" <arundhati.hagaragi@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "B@freedesktop.org" <B@freedesktop.org>, "S@freedesktop.org" <S@freedesktop.org>, "Gupta@freedesktop.org" <Gupta@freedesktop.org>, "Gupta,
- Nidhi1" <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Simon Ser <contact@emersion.fr>, mario.kleiner.de@gmail.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
->-----Original Message-----
->From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Arundhati
->Hagaragi
->Sent: Tuesday, January 19, 2021 3:12 PM
->To: igt-dev@lists.freedesktop.org
->Cc: B@freedesktop.org; Gupta@freedesktop.org; S@freedesktop.org; Gupta,
->Nidhi1 <nidhi1.gupta@intel.com>
->Subject: [igt-dev] [PATCH i-g-t] tests/kms_rotation_crc:Added subtest description
->
->Added description for all subtests
->
->Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
->Cc: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
->Cc: B S, Karthik <Karthik.B.S@intel.com>
-Looks ok to me. 
-
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
->---
-> tests/kms_rotation_crc.c | 11 +++++++++++
-> 1 file changed, 11 insertions(+)
->
->diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c index
->33a97cca..136e97fc 100644
->--- a/tests/kms_rotation_crc.c
->+++ b/tests/kms_rotation_crc.c
->@@ -856,6 +856,7 @@ igt_main_args("", long_opts, help_str, opt_handler,
->&data)
-> 		igt_require(data.display.is_atomic);
-> 	}
->
->+	igt_describe("Rotation test with 90/270 degree for primary and sprite
->+planes of gen9+");
-> 	for (subtest = subtests; subtest->rot; subtest++) {
-> 		igt_subtest_f("%s-rotation-%s",
-> 			      plane_test_str(subtest->plane), @@ -868,6 +869,7
->@@ igt_main_args("", long_opts, help_str, opt_handler, &data)
-> 		}
-> 	}
->
->+	igt_describe("Rotation test with 90 degree for a plane of gen9+ with
->+given position");
-> 	igt_subtest_f("sprite-rotation-90-pos-100-0") {
-> 		igt_require(gen >= 9);
-> 		data.rotation = IGT_ROTATION_90;
->@@ -878,6 +880,7 @@ igt_main_args("", long_opts, help_str, opt_handler,
->&data)
-> 	data.pos_x = 0,
-> 	data.pos_y = 0;
->
->+	igt_describe("Checking unsupported pixel format for gen9+ with 90
->+degree of rotation");
-> 	igt_subtest_f("bad-pixel-format") {
-> 		 /* gen11 enables RGB565 rotation for 90/270 degrees.
-> 		  * so apart from this, any other gen11+ pixel format @@ -890,6
->+893,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
-> 	}
-> 	data.override_fmt = 0;
->
->+	igt_describe("Checking unsupported tiling for gen9+ with 90 degree of
->+rotation");
-> 	igt_subtest_f("bad-tiling") {
-> 		igt_require(gen >= 9);
-> 		data.rotation = IGT_ROTATION_90;
->@@ -898,6 +902,7 @@ igt_main_args("", long_opts, help_str, opt_handler,
->&data)
-> 	}
-> 	data.override_tiling = 0;
->
->+	igt_describe("Tiling and Rotation test for gen 10+ for primary
->+plane");
-> 	for (reflect_x = reflect_x_subtests; reflect_x->tiling; reflect_x++) {
-> 		igt_subtest_f("primary-%s-reflect-x-%s",
-> 			      tiling_test_str(reflect_x->tiling),
->@@ -911,6 +916,7 @@ igt_main_args("", long_opts, help_str, opt_handler,
->&data)
-> 		}
-> 	}
->
->+	igt_describe("Rotation test on both planes by making them fully
->+visible");
-> 	igt_subtest_f("multiplane-rotation") {
-> 		igt_require(gen >= 9);
-> 		cleanup_crtc(&data);
->@@ -923,6 +929,8 @@ igt_main_args("", long_opts, help_str, opt_handler,
->&data)
-> 		test_multi_plane_rotation(&data, 0);
-> 	}
->
->+	igt_describe("Rotation test on both planes by cropping left/top corner of
->primary plane and"
->+			"right/top corner of sprite plane");
-> 	igt_subtest_f("multiplane-rotation-cropping-top") {
-> 		igt_require(gen >= 9);
-> 		cleanup_crtc(&data);
->@@ -935,6 +943,8 @@ igt_main_args("", long_opts, help_str, opt_handler,
->&data)
-> 		test_multi_plane_rotation(&data, 0);
-> 	}
->
->+	igt_describe("Rotation test on both planes by cropping left/bottom
->corner of primary plane"
->+			"and right/bottom corner of sprite plane");
-> 	igt_subtest_f("multiplane-rotation-cropping-bottom") {
-> 		igt_require(gen >= 9);
-> 		cleanup_crtc(&data);
->@@ -951,6 +961,7 @@ igt_main_args("", long_opts, help_str, opt_handler,
->&data)
-> 	 * exhaust-fences should be last test, if it fails we may OOM in
-> 	 * the following subtests otherwise.
-> 	 */
->+	igt_describe("This test intends to check for fence leaks
->+exhaustively");
-> 	igt_subtest_f("exhaust-fences") {
-> 		enum pipe pipe;
-> 		igt_output_t *output;
->--
->2.25.1
->
->_______________________________________________
->igt-dev mailing list
->igt-dev@lists.freedesktop.org
->https://lists.freedesktop.org/mailman/listinfo/igt-dev
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+QWNjb3JkaW5nIHRvIHRoZSBDVEEgODYxLkcgc3BlY2lmaWNhdGlvbiwgdGFibGUgNDQKaW4gc2Vj
+dGlvbiA2LjkgYW5kIGFsc28gc3BlY2lmaWNhbGx5IHNlY3Rpb24gNi45LjEsCnRoZSB2YWx1ZSBv
+ZiB0aGUgY29uc3RhbnQgbXVzdCBiZSAwLCBub3QgMSwgc28gZml4CnRoaXMuCgpBbiBpZGVudGlj
+YWwgZml4IGhhcyBiZWVuIHN1Ym1pdHRlZCBmb3IgaW5jbHVzaW9uIGludG8KdGhlIGtlcm5lbCBo
+ZWFkZXJzICh0aGlzIGlzIG5vdCBleHBvc2VkIHVhcGkpLiBTZWU6CgpodHRwczovL2xpc3RzLmZy
+ZWVkZXNrdG9wLm9yZy9hcmNoaXZlcy9kcmktZGV2ZWwvMjAyMS1GZWJydWFyeS8yOTcyMzMuaHRt
+bAoKRml4aW5nIHRoaXMgY29uc3RhbnQgZm9yIEtvZGkgYWxzbyBmaXhlZCBzb21lIEhEUiBUVnMs
+CnNvIHRoZSB3cm9uZyBjb25zdGFudCBoYXMgcmVhbCB3b3JsZCBjb25zZXF1ZW5jZXMgb24Kc29t
+ZSBkaXNwbGF5IGhhcmR3YXJlLiBTZWU6CgpodHRwczovL2dpdGh1Yi5jb20veGJtYy94Ym1jL3B1
+bGwvMTkxMjkKClNpZ25lZC1vZmYtYnk6IE1hcmlvIEtsZWluZXIgPG1hcmlvLmtsZWluZXIuZGVA
+Z21haWwuY29tPgpDYzogU2ltb24gU2VyIDxjb250YWN0QGVtZXJzaW9uLmZyPgpDYzogVmlsbGUg
+U3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KLS0tCiB0ZXN0cy9rbXNf
+aGRyLmMgfCAyICstCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24o
+LSkKCmRpZmYgLS1naXQgYS90ZXN0cy9rbXNfaGRyLmMgYi90ZXN0cy9rbXNfaGRyLmMKaW5kZXgg
+YWE3ZTY4NWIuLmU5ZGQ3ZjI3IDEwMDY0NAotLS0gYS90ZXN0cy9rbXNfaGRyLmMKKysrIGIvdGVz
+dHMva21zX2hkci5jCkBAIC0zNSw3ICszNSw3IEBAIElHVF9URVNUX0RFU0NSSVBUSU9OKCJUZXN0
+IEhEUiBtZXRhZGF0YSBpbnRlcmZhY2VzIGFuZCBicGMgc3dpdGNoIik7CiAKIC8qIERSTSBIRFIg
+ZGVmaW5pdGlvbnMuIE5vdCBpbiB0aGUgVUFQSSBoZWFkZXIsIHVuZm9ydHVuYXRlbHkuICovCiBl
+bnVtIGhkbWlfbWV0YWRhdGFfdHlwZSB7Ci0JSERNSV9TVEFUSUNfTUVUQURBVEFfVFlQRTEgPSAx
+LAorCUhETUlfU1RBVElDX01FVEFEQVRBX1RZUEUxID0gMCwKIH07CiAKIGVudW0gaGRtaV9lb3Rm
+IHsKLS0gCjIuMjUuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
+aHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
