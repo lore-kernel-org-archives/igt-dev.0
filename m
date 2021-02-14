@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com
- [IPv6:2a00:1450:4864:20::22b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E6A8E6E03F
- for <igt-dev@lists.freedesktop.org>; Sun, 14 Feb 2021 12:26:05 +0000 (UTC)
-Received: by mail-lj1-x22b.google.com with SMTP id u4so4500981ljh.6
- for <igt-dev@lists.freedesktop.org>; Sun, 14 Feb 2021 04:26:05 -0800 (PST)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Sun, 14 Feb 2021 14:25:58 +0200
-Message-Id: <20210214122559.1980-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_rotation_crc: reduce
- executions time on multiplane tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Sun, 14 Feb 2021 13:19:08 -0000
+Message-ID: <161330874875.29804.8086187346585668366@emeril.freedesktop.org>
+References: <20210214122559.1980-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20210214122559.1980-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Frotation=5Fcrc=3A_?=
+ =?utf-8?q?reduce_executions_time_on_multiplane_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,246 +15,232 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1687215051=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-reduce repetitive work and wait less
+--===============1687215051==
+Content-Type: multipart/alternative;
+ boundary="===============7320834202053505306=="
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/kms_rotation_crc.c | 141 ++++++++++++++++++++-------------------
- 1 file changed, 74 insertions(+), 67 deletions(-)
+--===============7320834202053505306==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index 6d4e87ed9..5bff6ea64 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -31,6 +31,8 @@
- #define TEST_MAX_WIDTH 640
- #define TEST_MAX_HEIGHT 480
- #define MAX_TESTED_MODES 8
-+#define MULTIPLANE_REFERENCE 0
-+#define MULTIPLANE_ROTATED 1
- 
- struct p_struct {
- 	igt_plane_t *plane;
-@@ -527,20 +529,18 @@ typedef struct {
- } planeinfos;
- 
- static bool get_multiplane_crc(data_t *data, igt_output_t *output,
--			       igt_crc_t *crc_output, planeinfos *planeinfo,
--			       int numplanes)
-+			       planeinfos *planeinfo,
-+			       struct igt_fb *fbleft, struct igt_fb *fbright)
- {
- 	uint32_t w, h;
--	igt_display_t *display = &data->display;
--	struct p_struct *planes, *oldplanes;
--	int c, ret;
-+	struct igt_fb *planes[2] = {fbleft, fbright};
- 
--	oldplanes = data->multiplaneoldview;
--	planes = calloc(sizeof(*planes), numplanes);
-+	int c;
- 
--	for (c = 0; c < numplanes; c++) {
--		planes[c].plane = igt_output_get_plane_type(output,
--							    planeinfo[c].planetype);
-+	for (c = 0; c < MAXMULTIPLANESAMOUNT; c++) {
-+		igt_plane_t *lplane;
-+		lplane = igt_output_get_plane_type(output,
-+						   planeinfo[c].planetype);
- 
- 		/*
- 		 * make plane and fb width and height always divisible by 4
-@@ -552,34 +552,25 @@ static bool get_multiplane_crc(data_t *data, igt_output_t *output,
- 		if (planeinfo[c].rotation_sw & (IGT_ROTATION_90 | IGT_ROTATION_270))
- 			igt_swap(w, h);
- 
--		if (!igt_plane_has_format_mod(planes[c].plane,
-+		if (!igt_plane_has_format_mod(lplane,
- 					      planeinfo[c].format,
- 					      planeinfo[c].tiling))
- 			return false;
- 
--		igt_create_fb(data->gfx_fd, w, h, planeinfo[c].format,
--			      planeinfo[c].tiling, &planes[c].fb);
-+		if (planes[c]->fb_id == 0) {
-+			igt_create_fb(data->gfx_fd, w, h, planeinfo[c].format,
-+				planeinfo[c].tiling, planes[c]);
- 
--		paint_squares(data, planeinfo[c].rotation_sw, &planes[c].fb, 1.0f);
--		igt_plane_set_fb(planes[c].plane, &planes[c].fb);
-+			paint_squares(data, planeinfo[c].rotation_sw, planes[c], 1.0f);
-+		}
-+		igt_plane_set_fb(lplane, planes[c]);
- 
- 		if (planeinfo[c].rotation_hw & (IGT_ROTATION_90 | IGT_ROTATION_270))
--			igt_plane_set_size(planes[c].plane, h, w);
-+			igt_plane_set_size(lplane, h, w);
- 
--		igt_plane_set_position(planes[c].plane, planeinfo[c].x1, planeinfo[c].y1);
--		igt_plane_set_rotation(planes[c].plane, planeinfo[c].rotation_hw);
-+		igt_plane_set_position(lplane, planeinfo[c].x1, planeinfo[c].y1);
-+		igt_plane_set_rotation(lplane, planeinfo[c].rotation_hw);
- 	}
--
--	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
--	igt_assert_eq(ret, 0);
--
--	igt_pipe_crc_get_current(data->gfx_fd, data->pipe_crc, crc_output);
--
--	for (c = 0; c < numplanes && oldplanes; c++)
--		igt_remove_fb(data->gfx_fd, &oldplanes[c].fb);
--
--	free(oldplanes);
--	data->multiplaneoldview = (void*)planes;
- 	return true;
- }
- 
-@@ -624,30 +615,9 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 	igt_output_t *output;
- 	igt_crc_t retcrc_sw, retcrc_hw;
- 	planeinfos p[2];
--	int c, used_w, used_h;
--	struct p_struct *oldplanes;
-+	int used_w, used_h;
- 	drmModeModeInfo *mode;
- 
--	static const struct {
--		igt_rotation_t rotation;
--		float_t width;
--		float_t height;
--		uint64_t tiling;
--	} planeconfigs[] = {
--	{IGT_ROTATION_0, .2f, .4f, LOCAL_DRM_FORMAT_MOD_NONE },
--	{IGT_ROTATION_0, .2f, .4f, LOCAL_I915_FORMAT_MOD_X_TILED },
--	{IGT_ROTATION_0, .2f, .4f, LOCAL_I915_FORMAT_MOD_Y_TILED },
--	{IGT_ROTATION_0, .2f, .4f, LOCAL_I915_FORMAT_MOD_Yf_TILED },
--	{IGT_ROTATION_90, .2f, .4f, LOCAL_I915_FORMAT_MOD_Y_TILED },
--	{IGT_ROTATION_90, .2f, .4f, LOCAL_I915_FORMAT_MOD_Yf_TILED },
--	{IGT_ROTATION_180, .2f, .4f, LOCAL_DRM_FORMAT_MOD_NONE },
--	{IGT_ROTATION_180, .2f, .4f, LOCAL_I915_FORMAT_MOD_X_TILED },
--	{IGT_ROTATION_180, .2f, .4f, LOCAL_I915_FORMAT_MOD_Y_TILED },
--	{IGT_ROTATION_180, .2f, .4f, LOCAL_I915_FORMAT_MOD_Yf_TILED },
--	{IGT_ROTATION_270, .2f, .4f, LOCAL_I915_FORMAT_MOD_Y_TILED },
--	{IGT_ROTATION_270, .2f, .4f, LOCAL_I915_FORMAT_MOD_Yf_TILED },
--	};
--
- 	/*
- 	* These are those modes which are tested. For testing feel interesting
- 	* case with tiling are 2 bpp, 4 bpp and NV12.
-@@ -655,8 +625,30 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 	static const uint32_t formatlist[] = {DRM_FORMAT_RGB565,
- 		DRM_FORMAT_XRGB8888, DRM_FORMAT_NV12};
- 
-+	static struct {
-+		const char* txt;
-+		igt_rotation_t rotation;
-+		float_t width;
-+		float_t height;
-+		uint64_t tiling;
-+		struct igt_fb fbs[ARRAY_SIZE(formatlist)][2];
-+	} planeconfigs[] = {
-+	{"rotation 0 modifier none", IGT_ROTATION_0, .2f, .4f, LOCAL_DRM_FORMAT_MOD_NONE},
-+	{"rotation 0 modifier x-tile", IGT_ROTATION_0, .2f, .4f, LOCAL_I915_FORMAT_MOD_X_TILED},
-+	{"rotation 0 modifier y-tile", IGT_ROTATION_0, .2f, .4f, LOCAL_I915_FORMAT_MOD_Y_TILED},
-+	{"rotation 0 modifier yf-tile", IGT_ROTATION_0, .2f, .4f, LOCAL_I915_FORMAT_MOD_Yf_TILED},
-+	{"rotation 90 modifier y-tile", IGT_ROTATION_90, .2f, .4f, LOCAL_I915_FORMAT_MOD_Y_TILED},
-+	{"rotation 90 modifier yf-tile", IGT_ROTATION_90, .2f, .4f, LOCAL_I915_FORMAT_MOD_Yf_TILED},
-+	{"rotation 180 modifier none", IGT_ROTATION_180, .2f, .4f, LOCAL_DRM_FORMAT_MOD_NONE},
-+	{"rotation 180 modifier x-tile", IGT_ROTATION_180, .2f, .4f, LOCAL_I915_FORMAT_MOD_X_TILED},
-+	{"rotation 180 modifier y-tile", IGT_ROTATION_180, .2f, .4f, LOCAL_I915_FORMAT_MOD_Y_TILED},
-+	{"rotation 180 modifier yf-tile", IGT_ROTATION_180, .2f, .4f, LOCAL_I915_FORMAT_MOD_Yf_TILED},
-+	{"rotation 270 modifier y-tile", IGT_ROTATION_270, .2f, .4f, LOCAL_I915_FORMAT_MOD_Y_TILED},
-+	{"rotation 270 modifier yf-tile", IGT_ROTATION_270, .2f, .4f, LOCAL_I915_FORMAT_MOD_Yf_TILED},
-+	};
-+
- 	for_each_valid_output_on_pipe(display, pipe, output) {
--		int i, j, k, l;
-+		int i, j, k, l, flipsw, fliphw;
- 		igt_output_set_pipe(output, pipe);
- 		mode = igt_output_get_mode(output);
- 		igt_display_require_output(display);
-@@ -704,20 +696,39 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 						     && intel_gen(data->devid) < 11)
- 							continue;
- 
-+						igt_debug("plane1 %s %.4s plane2 %s %.4s\n",
-+							  planeconfigs[i].txt,
-+							  (char*) &p[0].format,
-+							  planeconfigs[j].txt,
-+							  (char*) &p[1].format);
-+
- 						p[0].rotation_sw = planeconfigs[i].rotation;
- 						p[0].rotation_hw = IGT_ROTATION_0;
- 						p[1].rotation_sw = planeconfigs[j].rotation;
- 						p[1].rotation_hw = IGT_ROTATION_0;
--						if (!get_multiplane_crc(data, output, &retcrc_sw,
--								   (planeinfos *)&p, MAXMULTIPLANESAMOUNT))
-+						if (!get_multiplane_crc(data, output,
-+								   (planeinfos *)&p,
-+								   &planeconfigs[i].fbs[k][MULTIPLANE_REFERENCE],
-+								   &planeconfigs[j].fbs[l][MULTIPLANE_REFERENCE]))
- 							continue;
-+						igt_display_commit_atomic(display, 0, NULL);
-+						flipsw = kmstest_get_vblank(data->gfx_fd, pipe, 0) + 1;
-+
- 
- 						igt_swap(p[0].rotation_sw, p[0].rotation_hw);
- 						igt_swap(p[1].rotation_sw, p[1].rotation_hw);
--						if (!get_multiplane_crc(data, output, &retcrc_hw,
--								   (planeinfos *)&p, MAXMULTIPLANESAMOUNT))
-+
-+						if (!get_multiplane_crc(data, output,
-+								   (planeinfos *)&p,
-+								   &planeconfigs[i].fbs[k][MULTIPLANE_ROTATED],
-+								   &planeconfigs[j].fbs[l][MULTIPLANE_ROTATED]))
- 							continue;
- 
-+						igt_display_commit_atomic(display, 0, NULL);
-+						fliphw = kmstest_get_vblank(data->gfx_fd, pipe, 0) + 1;
-+
-+						igt_pipe_crc_get_for_frame(data->gfx_fd, data->pipe_crc, flipsw, &retcrc_sw);
-+						igt_pipe_crc_get_for_frame(data->gfx_fd, data->pipe_crc, fliphw, &retcrc_hw);
- 						igt_assert_crc_equal(&retcrc_sw, &retcrc_hw);
- 					}
- 				}
-@@ -725,19 +736,15 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 		}
- 		igt_pipe_crc_stop(data->pipe_crc);
- 		igt_pipe_crc_free(data->pipe_crc);
-+
-+		for (i = 0; i < ARRAY_SIZE(planeconfigs); i++) {
-+			for  (j = 0; j < ARRAY_SIZE(formatlist); j++) {
-+				igt_remove_fb(data->gfx_fd, &planeconfigs[i].fbs[j][0]);
-+				igt_remove_fb(data->gfx_fd, &planeconfigs[i].fbs[j][1]);
-+			}
-+		}
- 		igt_output_set_pipe(output, PIPE_ANY);
- 	}
--
--	/*
--	* Old fbs are deleted only after new ones are set on planes.
--	* This is done to speed up the test
--	*/
--	oldplanes = data->multiplaneoldview;
--	for (c = 0; c < MAXMULTIPLANESAMOUNT && oldplanes; c++)
--		igt_remove_fb(data->gfx_fd, &oldplanes[c].fb);
--
--	free(oldplanes);
--	data->multiplaneoldview = NULL;
- 	data->pipe_crc = NULL;
- }
- 
--- 
-2.28.0
+== Series Details ==
+
+Series: series starting with [i-g-t,1/2] tests/kms_rotation_crc: reduce executions time on multiplane tests
+URL   : https://patchwork.freedesktop.org/series/87073/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9774 -> IGTPW_5504
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5504 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_basic@create-fd-close:
+    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +2 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9774/fi-tgl-y/igt@gem_basic@create-fd-close.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/fi-tgl-y/igt@gem_basic@create-fd-close.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-byt-j1900:       NOTRUN -> [SKIP][3] ([fdo#109271]) +27 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/fi-byt-j1900/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-7500u:       [PASS][4] -> [DMESG-WARN][5] ([i915#2605])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9774/fi-kbl-7500u/igt@i915_pm_rpm@module-reload.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/fi-kbl-7500u/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_chamelium@hdmi-crc-fast:
+    - fi-byt-j1900:       NOTRUN -> [SKIP][6] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/fi-byt-j1900/igt@kms_chamelium@hdmi-crc-fast.html
+
+  * igt@runner@aborted:
+    - fi-kbl-guc:         NOTRUN -> [FAIL][7] ([i915#2292] / [i915#2426] / [k.org#204565])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/fi-kbl-guc/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-tgl-y:           [DMESG-WARN][8] ([i915#2411] / [i915#402]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9774/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@gem_flink_basic@bad-flink:
+    - fi-tgl-y:           [DMESG-WARN][10] ([i915#402]) -> [PASS][11] +1 similar issue
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9774/fi-tgl-y/igt@gem_flink_basic@bad-flink.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/fi-tgl-y/igt@gem_flink_basic@bad-flink.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#2292]: https://gitlab.freedesktop.org/drm/intel/issues/2292
+  [i915#2411]: https://gitlab.freedesktop.org/drm/intel/issues/2411
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#2605]: https://gitlab.freedesktop.org/drm/intel/issues/2605
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [k.org#204565]: https://bugzilla.kernel.org/show_bug.cgi?id=204565
+
+
+Participating hosts (44 -> 39)
+------------------------------
+
+  Additional (1): fi-byt-j1900 
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6003 -> IGTPW_5504
+
+  CI-20190529: 20190529
+  CI_DRM_9774: 75084ba7750368d8a2bf6ccc543b729e1b3394a6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5504: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/index.html
+  IGT_6003: 627cc5353535d61fa33c5f7ff7e64f154c84f10a @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/index.html
+
+--===============7320834202053505306==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/kms_rotation_crc: reduce executions time on multiplane tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87073/">https://patchwork.freedesktop.org/series/87073/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9774 -&gt; IGTPW_5504</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5504 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_basic@create-fd-close:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9774/fi-tgl-y/igt@gem_basic@create-fd-close.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/fi-tgl-y/igt@gem_basic@create-fd-close.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-byt-j1900:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/fi-byt-j1900/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +27 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9774/fi-kbl-7500u/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/fi-kbl-7500u/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2605">i915#2605</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-crc-fast:</p>
+<ul>
+<li>fi-byt-j1900:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/fi-byt-j1900/igt@kms_chamelium@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/fi-kbl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2292">i915#2292</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://bugzilla.kernel.org/show_bug.cgi?id=204565">k.org#204565</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9774/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2411">i915#2411</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/fi-tgl-y/igt@gem_exec_suspend@basic-s3.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_flink_basic@bad-flink:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9774/fi-tgl-y/igt@gem_flink_basic@bad-flink.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/fi-tgl-y/igt@gem_flink_basic@bad-flink.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (44 -&gt; 39)</h2>
+<p>Additional (1): fi-byt-j1900 <br />
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6003 -&gt; IGTPW_5504</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9774: 75084ba7750368d8a2bf6ccc543b729e1b3394a6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5504: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5504/index.html<br />
+  IGT_6003: 627cc5353535d61fa33c5f7ff7e64f154c84f10a @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============7320834202053505306==--
+
+--===============1687215051==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1687215051==--
