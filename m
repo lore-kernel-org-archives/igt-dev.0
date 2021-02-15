@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com
  [IPv6:2a00:1450:4864:20::129])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 335A96E29D
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Feb 2021 14:30:45 +0000 (UTC)
-Received: by mail-lf1-x129.google.com with SMTP id u4so3485485lfs.0
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Feb 2021 06:30:45 -0800 (PST)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6643A6E241
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Feb 2021 15:13:56 +0000 (UTC)
+Received: by mail-lf1-x129.google.com with SMTP id u25so10767278lfc.2
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Feb 2021 07:13:56 -0800 (PST)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Mon, 15 Feb 2021 16:30:38 +0200
-Message-Id: <20210215143039.7062-1-juhapekka.heikkila@gmail.com>
+Date: Mon, 15 Feb 2021 17:13:48 +0200
+Message-Id: <20210215151349.10142-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_rotation_crc: reduce
  executions time on multiplane tests
@@ -29,11 +29,11 @@ reduce repetitive work and wait less
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- tests/kms_rotation_crc.c | 152 ++++++++++++++++++++-------------------
- 1 file changed, 80 insertions(+), 72 deletions(-)
+ tests/kms_rotation_crc.c | 153 +++++++++++++++++++++------------------
+ 1 file changed, 81 insertions(+), 72 deletions(-)
 
 diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index 6d4e87ed9..ff24afe14 100644
+index 6d4e87ed9..107d7e0ee 100644
 --- a/tests/kms_rotation_crc.c
 +++ b/tests/kms_rotation_crc.c
 @@ -31,6 +31,8 @@
@@ -257,7 +257,7 @@ index 6d4e87ed9..ff24afe14 100644
  						igt_assert_crc_equal(&retcrc_sw, &retcrc_hw);
  					}
  				}
-@@ -725,19 +734,18 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+@@ -725,19 +734,19 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
  		}
  		igt_pipe_crc_stop(data->pipe_crc);
  		igt_pipe_crc_free(data->pipe_crc);
@@ -273,6 +273,7 @@ index 6d4e87ed9..ff24afe14 100644
 -		igt_remove_fb(data->gfx_fd, &oldplanes[c].fb);
 +		igt_plane_set_fb(p[0].plane, NULL);
 +		igt_plane_set_fb(p[1].plane, NULL);
++		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
  
 -	free(oldplanes);
 -	data->multiplaneoldview = NULL;
