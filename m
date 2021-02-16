@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2FEBD6E985
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F07E6E984
  for <igt-dev@lists.freedesktop.org>; Tue, 16 Feb 2021 20:26:13 +0000 (UTC)
 From: Martin Peres <martin.peres@mupuf.org>
-Date: Tue, 16 Feb 2021 22:25:57 +0200
-Message-Id: <20210216202557.878778-2-martin.peres@mupuf.org>
-In-Reply-To: <20210216202557.878778-1-martin.peres@mupuf.org>
-References: <20210216202557.878778-1-martin.peres@mupuf.org>
+Date: Tue, 16 Feb 2021 22:25:56 +0200
+Message-Id: <20210216202557.878778-1-martin.peres@mupuf.org>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v3 2/2] amdgpu/info: add timestamp-related
- tests
+Subject: [igt-dev] [PATCH i-g-t v3 1/2] amdgpu/basic: move
+ amdgpu_query_info_test to its own file
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,125 +23,162 @@ To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
 Cc: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This test makes sure:
-
- * the clock is running at the expected rate
- * (potential) power gating has no effect on the clock
+This will soon be followed by more amd_query_info tests, and the basic
+file is already big-enough.
 
 v2:
- - use signed integer for the gpu timestamp diff (Bas)
-
-v3:
  - add test and subtest descriptions (Arek)
- - split the fast and long tests in different subtests (Martin)
- - use igt_stats to compute actual statistics (Chris)
-
-v4:
- - call igt_stats_fini() after finishing with the stats (Petri)
+ - add the new file to autotools (Petri)
 
 Cc: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
 Signed-off-by: Martin Peres <martin.peres@mupuf.org>
 ---
- tests/amdgpu/amd_info.c | 79 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 79 insertions(+)
+ tests/Makefile.sources   |  1 +
+ tests/amdgpu/amd_basic.c | 17 ---------
+ tests/amdgpu/amd_info.c  | 74 ++++++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build |  1 +
+ 4 files changed, 76 insertions(+), 17 deletions(-)
+ create mode 100644 tests/amdgpu/amd_info.c
 
-diff --git a/tests/amdgpu/amd_info.c b/tests/amdgpu/amd_info.c
-index 6764e640..e3b1eac1 100644
---- a/tests/amdgpu/amd_info.c
-+++ b/tests/amdgpu/amd_info.c
-@@ -44,6 +44,75 @@ static void query_firmware_version_test(void)
- 	igt_assert_eq(r, 0);
- }
+diff --git a/tests/Makefile.sources b/tests/Makefile.sources
+index 3f663fe7..4f24fb3a 100644
+--- a/tests/Makefile.sources
++++ b/tests/Makefile.sources
+@@ -9,6 +9,7 @@ AMDGPU_TESTS = \
+ 	amdgpu/amd_bypass \
+ 	amdgpu/amd_color \
+ 	amdgpu/amd_cs_nop \
++	amdgpu/amd_info \
+ 	amdgpu/amd_prime \
+ 	amdgpu/amd_abm \
+ 	$(NULL)
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index bf626ece..6c9609b9 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -176,20 +176,6 @@ static void amdgpu_command_submission_copy_linear_helper(unsigned ip_type);
+ #              define PACKET3_DMA_DATA_CMD_DAIC    (1 << 29)
+ #              define PACKET3_DMA_DATA_CMD_RAW_WAIT  (1 << 30)
  
-+static void query_timestamp_test(uint32_t sleep_time, int sample_count)
+-static void amdgpu_query_info_test(void)
+-{
+-	struct amdgpu_gpu_info gpu_info = {};
+-	uint32_t version, feature;
+-	int r;
+-
+-	r = amdgpu_query_gpu_info(device, &gpu_info);
+-	igt_assert_eq(r, 0);
+-
+-	r = amdgpu_query_firmware_version(device, AMDGPU_INFO_FW_VCE, 0,
+-					  0, &version, &feature);
+-	igt_assert_eq(r, 0);
+-}
+-
+ static amdgpu_bo_handle gpu_mem_alloc(amdgpu_device_handle device_handle,
+ 				      uint64_t size,
+ 				      uint64_t alignment,
+@@ -1397,9 +1383,6 @@ igt_main
+ 			 major, minor);
+ 	}
+ 
+-	igt_subtest("query-info")
+-		amdgpu_query_info_test();
+-
+ 	igt_subtest("memory-alloc")
+ 		amdgpu_memory_alloc();
+ 
+diff --git a/tests/amdgpu/amd_info.c b/tests/amdgpu/amd_info.c
+new file mode 100644
+index 00000000..6764e640
+--- /dev/null
++++ b/tests/amdgpu/amd_info.c
+@@ -0,0 +1,74 @@
++/*
++ * Copyright 2014 Advanced Micro Devices, Inc.
++ * Copyright 2021 Valve Corporation
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ */
++
++#include "config.h"
++
++#include "igt.h"
++
++#include <amdgpu.h>
++#include <amdgpu_drm.h>
++
++static amdgpu_device_handle dev;
++
++static void query_firmware_version_test(void)
 +{
 +	struct amdgpu_gpu_info gpu_info = {};
-+	double median, std_err, err_95_conf;
-+	igt_stats_t stats;
-+	float ns_per_tick;
-+	int i;
++	uint32_t version, feature;
++	int r;
 +
-+	igt_stats_init_with_size(&stats, sample_count);
++	r = amdgpu_query_gpu_info(dev, &gpu_info);
++	igt_assert_eq(r, 0);
 +
-+	/* figure out how many nanoseconds each gpu timestamp tick represents */
-+	igt_assert_eq(amdgpu_query_gpu_info(dev, &gpu_info), 0);
-+	igt_assert_lt(0, gpu_info.gpu_counter_freq);
-+	ns_per_tick = 1e9 / (gpu_info.gpu_counter_freq * 1000.0);
-+
-+	/* acquire the data needed for the analysis */
-+	for (i = 0; i < sample_count; i++) {
-+		uint64_t ts_start, ts_end, cpu_delta;
-+		int64_t gpu_delta;
-+		float corrected_gpu_delta;
-+		struct timespec ts_cpu;
-+		int r;
-+
-+		igt_assert_eq(igt_gettime(&ts_cpu), 0);
-+
-+		r = amdgpu_query_info(dev, AMDGPU_INFO_TIMESTAMP, 8, &ts_start);
-+		igt_assert_eq(r, 0);
-+
-+		usleep(sleep_time);
-+
-+		r = amdgpu_query_info(dev, AMDGPU_INFO_TIMESTAMP, 8, &ts_end);
-+		igt_assert_eq(r, 0);
-+
-+		/* get the GPU and CPU deltas */
-+		cpu_delta = igt_nsec_elapsed(&ts_cpu);
-+		gpu_delta = ts_end - ts_start;
-+		corrected_gpu_delta = gpu_delta * ns_per_tick;
-+
-+		/* make sure the GPU timestamps are ordered */
-+		igt_assert_lt_s64(0, gpu_delta);
-+
-+		igt_stats_push_float(&stats, corrected_gpu_delta / cpu_delta);
-+	}
-+
-+	/* generate the statistics */
-+	median = igt_stats_get_median(&stats);
-+	std_err = igt_stats_get_std_error(&stats);
-+	err_95_conf = std_err * 1.96;
-+
-+	/* check that the median ticking rate is ~1.0, meaning that the
-+	 * the GPU and CPU timestamps grow at the same rate
-+	 */
-+	igt_assert_f(median > 0.99 && median < 1.01,
-+		     "The GPU time elapses at %.2f%% (+/- %.2f%% at 95%% "
-+		     "confidence) of the CPU's speed\ngpu_counter_freq=%u kHz, "
-+		     "should be %.0f kHz (+/- %.1f kHz at 95%% confidence)\n",
-+		     median * 100.0, err_95_conf * 100.0,
-+		     gpu_info.gpu_counter_freq,
-+		     gpu_info.gpu_counter_freq * median,
-+		     gpu_info.gpu_counter_freq * err_95_conf);
-+
-+	/* check the jitter in the ticking rate */
-+	igt_assert_f(err_95_conf < 0.01,
-+		     "The GPU time ticks with a jitter greater than 1%%, at "
-+		     "95%% confidence (+/- %.3f%%)\n", err_95_conf * 100.0);
-+
-+	igt_stats_fini(&stats);
++	r = amdgpu_query_firmware_version(dev, AMDGPU_INFO_FW_VCE, 0, 0,
++					  &version, &feature);
++	igt_assert_eq(r, 0);
 +}
 +
- IGT_TEST_DESCRIPTION("Test the consistency of the data provided through the "
- 		     "DRM_AMDGPU_INFO IOCTL");
- igt_main
-@@ -67,6 +136,16 @@ igt_main
- 	igt_subtest("query-firmware-version")
- 		query_firmware_version_test();
- 
-+	igt_describe("Check that the GPU time ticks constantly, and at the "
-+		     "same rate as the CPU");
-+	igt_subtest("query-timestamp")
-+		query_timestamp_test(10000, 100);
++IGT_TEST_DESCRIPTION("Test the consistency of the data provided through the "
++		     "DRM_AMDGPU_INFO IOCTL");
++igt_main
++{
++	int fd = -1;
 +
-+	igt_describe("Check that the GPU time keeps on ticking, even during "
-+		     "long idle times which could lead to clock/power gating");
-+	igt_subtest("query-timestamp-while-idle")
-+		query_timestamp_test(7000000, 1);
++	igt_fixture {
++		uint32_t major, minor;
++		int err;
 +
- 	igt_fixture {
- 		amdgpu_device_deinitialize(dev);
- 		close(fd);
++		fd = drm_open_driver(DRIVER_AMDGPU);
++
++		err = amdgpu_device_initialize(fd, &major, &minor, &dev);
++		igt_require(err == 0);
++
++		igt_info("Initialized amdgpu, driver version %d.%d\n",
++			 major, minor);
++	}
++
++	igt_describe("Make sure we can retrieve the firmware version");
++	igt_subtest("query-firmware-version")
++		query_firmware_version_test();
++
++	igt_fixture {
++		amdgpu_device_deinitialize(dev);
++		close(fd);
++	}
++}
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index b7982291..b92aa22b 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -7,6 +7,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_bypass',
+ 			  'amd_color',
+ 			  'amd_cs_nop',
++			  'amd_info',
+ 			  'amd_prime',
+ 			]
+ 	amdgpu_deps += libdrm_amdgpu
 -- 
 2.30.1
 
