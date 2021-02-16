@@ -1,16 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2E3189F77
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Feb 2021 13:34:48 +0000 (UTC)
-Date: Tue, 16 Feb 2021 15:34:56 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YCvKAPRRj1jx8yxA@platvala-desk.ger.corp.intel.com>
-References: <20210216123236.693768-1-martin.peres@mupuf.org>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue, 16 Feb 2021 14:32:20 +0000
+Message-Id: <20210216143220.98382-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210216123236.693768-1-martin.peres@mupuf.org>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] amdgpu/basic: move
- amdgpu_query_info_test to its own file
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_reloc: Verify relocations
+ with pinned scanout framebuffers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,164 +16,151 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Martin Peres <martin.peres@mupuf.org>
-Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Matthew Auld <matthew.auld@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Feb 16, 2021 at 02:32:35PM +0200, Martin Peres wrote:
-> This will soon be followed by more amd_query_info tests, and the basic
-> file is already big-enough.
-> 
-> Cc: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
-> Signed-off-by: Martin Peres <martin.peres@mupuf.org>
-> ---
->  tests/amdgpu/amd_basic.c | 17 ----------
->  tests/amdgpu/amd_info.c  | 71 ++++++++++++++++++++++++++++++++++++++++
->  tests/amdgpu/meson.build |  1 +
+In light of the VT-d workarounds, we may introduce padding around the
+scanout vma. This should not affect relocations referencing the scanout
+on !full-ppgtt where we leak the GGTT address of scanout to users.
 
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Matthew Auld <matthew.auld@intel.com>
+---
+ tests/i915/gem_exec_reloc.c | 102 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 102 insertions(+)
 
-Autotools changes missing. Those are in tests/Makefile.* instead of tests/amdgpu/.
-
-
+diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
+index cc9b8cd6d..98960bb84 100644
+--- a/tests/i915/gem_exec_reloc.c
++++ b/tests/i915/gem_exec_reloc.c
+@@ -26,7 +26,9 @@
+ 
+ #include "i915/gem.h"
+ #include "igt.h"
++#include "igt_device.h"
+ #include "igt_dummyload.h"
++#include "igt_kms.h"
+ #include "sw_sync.h"
+ 
+ IGT_TEST_DESCRIPTION("Basic sanity check of execbuf-ioctl relocations.");
+@@ -1286,6 +1288,83 @@ static void concurrent(int i915, int num_common)
+ 	igt_assert_eq(result, 0);
+ }
+ 
++static uint32_t
++pin_scanout(igt_display_t *dpy, igt_output_t *output, struct igt_fb *fb)
++{
++	drmModeModeInfoPtr mode;
++	igt_plane_t *primary;
++
++	mode = igt_output_get_mode(output);
++
++	igt_create_pattern_fb(dpy->drm_fd, mode->hdisplay, mode->vdisplay,
++			      DRM_FORMAT_XRGB8888,
++			      LOCAL_I915_FORMAT_MOD_X_TILED, fb);
++
++	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++	igt_plane_set_fb(primary, fb);
++
++	igt_display_commit2(dpy, COMMIT_LEGACY);
++
++	return fb->gem_handle;
++}
++
++static void scanout(int i915,
++		    igt_display_t *dpy,
++		    const struct intel_execution_engine2 *e)
++{
++	struct drm_i915_gem_relocation_entry reloc;
++	struct drm_i915_gem_exec_object2 obj[2] = {
++		[1] = { .handle = batch_create(i915) },
++	};
++	struct drm_i915_gem_execbuffer2 execbuf = {
++		.buffers_ptr = to_user_pointer(obj),
++		.buffer_count = 2,
++	};
++	igt_output_t *output;
++	struct igt_fb fb;
++	uint64_t *map;
++
++	igt_display_reset(dpy);
++
++	output = igt_get_single_output_for_pipe(dpy, PIPE_A);
++	igt_require(output);
++	igt_output_set_pipe(output, PIPE_A);
++
++	/*
++	 * Find where the scanout is in our GTT; on !full-ppgtt this will be
++	 * the actual GGTT address of the scanout.
++	 */
++	obj[0].handle = pin_scanout(dpy, output, &fb);
++	gem_execbuf(i915, &execbuf);
++	igt_info("Scanout GTT address: %#llx\n", obj[0].offset);
++
++	/* Relocations should match the scanout address */
++	reloc.target_handle = obj[0].handle;
++	reloc.delta = 0;
++	reloc.presumed_offset = -1;
++	reloc.offset = 4000;
++	obj[1].relocation_count = 1;
++	obj[1].relocs_ptr = to_user_pointer(&reloc);
++	gem_execbuf(i915, &execbuf);
++	igt_info("Reloc address: %#llx\n", reloc.presumed_offset);
++	igt_assert_eq_u64(reloc.presumed_offset, obj[0].offset);
++
++	gem_sync(i915, obj[1].handle);
++	map = gem_mmap__device_coherent(i915, obj[1].handle,
++					0, 4096, PROT_WRITE);
++	igt_assert_eq_u64(map[500], obj[0].offset);
++	munmap(map, 4096);
++
++	/* And finally softpinning with the scanout address should work */
++	obj[0].flags |= EXEC_OBJECT_PINNED;
++	obj[1].relocation_count = 0;
++	gem_execbuf(i915, &execbuf);
++	igt_assert_eq_u64(obj[0].offset, reloc.presumed_offset);
++
++	gem_close(i915, obj[1].handle);
++	igt_remove_fb(dpy->drm_fd, &fb);
++}
++
+ #define I915_GEM_GPU_DOMAINS \
+ 	(I915_GEM_DOMAIN_RENDER | \
+ 	 I915_GEM_DOMAIN_SAMPLER | \
+@@ -1511,6 +1590,29 @@ igt_main
+ 	igt_subtest("invalid-domains")
+ 		invalid_domains(fd);
+ 
++	igt_subtest_group {
++		igt_display_t display = {
++			.drm_fd = fd,
++			.n_pipes = IGT_MAX_PIPES
++		};
++
++		igt_fixture {
++			igt_device_set_master(fd);
++			kmstest_set_vt_graphics_mode();
++			igt_display_require(&display, fd);
++		}
++
++		igt_subtest_with_dynamic("basic-scanout") {
++			__for_each_physical_engine(fd, e) {
++				igt_dynamic_f("%s", e->name)
++					scanout(fd, &display, e);
++			}
++		}
++
++		igt_fixture
++			igt_display_fini(&display);
++	}
++
+ 	igt_fixture
+ 		close(fd);
+ }
 -- 
-Petri Latvala
+2.30.0
 
-
-
->  3 files changed, 72 insertions(+), 17 deletions(-)
->  create mode 100644 tests/amdgpu/amd_info.c
-> 
-> diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-> index bf626ece..6c9609b9 100644
-> --- a/tests/amdgpu/amd_basic.c
-> +++ b/tests/amdgpu/amd_basic.c
-> @@ -176,20 +176,6 @@ static void amdgpu_command_submission_copy_linear_helper(unsigned ip_type);
->  #              define PACKET3_DMA_DATA_CMD_DAIC    (1 << 29)
->  #              define PACKET3_DMA_DATA_CMD_RAW_WAIT  (1 << 30)
->  
-> -static void amdgpu_query_info_test(void)
-> -{
-> -	struct amdgpu_gpu_info gpu_info = {};
-> -	uint32_t version, feature;
-> -	int r;
-> -
-> -	r = amdgpu_query_gpu_info(device, &gpu_info);
-> -	igt_assert_eq(r, 0);
-> -
-> -	r = amdgpu_query_firmware_version(device, AMDGPU_INFO_FW_VCE, 0,
-> -					  0, &version, &feature);
-> -	igt_assert_eq(r, 0);
-> -}
-> -
->  static amdgpu_bo_handle gpu_mem_alloc(amdgpu_device_handle device_handle,
->  				      uint64_t size,
->  				      uint64_t alignment,
-> @@ -1397,9 +1383,6 @@ igt_main
->  			 major, minor);
->  	}
->  
-> -	igt_subtest("query-info")
-> -		amdgpu_query_info_test();
-> -
->  	igt_subtest("memory-alloc")
->  		amdgpu_memory_alloc();
->  
-> diff --git a/tests/amdgpu/amd_info.c b/tests/amdgpu/amd_info.c
-> new file mode 100644
-> index 00000000..fe113e14
-> --- /dev/null
-> +++ b/tests/amdgpu/amd_info.c
-> @@ -0,0 +1,71 @@
-> +/*
-> + * Copyright 2014 Advanced Micro Devices, Inc.
-> + * Copyright 2021 Valve Corporation
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-> + * OTHER DEALINGS IN THE SOFTWARE.
-> + */
-> +
-> +#include "config.h"
-> +
-> +#include "igt.h"
-> +
-> +#include <amdgpu.h>
-> +#include <amdgpu_drm.h>
-> +
-> +static amdgpu_device_handle dev;
-> +
-> +static void query_firmware_version_test(void)
-> +{
-> +	struct amdgpu_gpu_info gpu_info = {};
-> +	uint32_t version, feature;
-> +	int r;
-> +
-> +	r = amdgpu_query_gpu_info(dev, &gpu_info);
-> +	igt_assert_eq(r, 0);
-> +
-> +	r = amdgpu_query_firmware_version(dev, AMDGPU_INFO_FW_VCE, 0, 0,
-> +					  &version, &feature);
-> +	igt_assert_eq(r, 0);
-> +}
-> +
-> +igt_main
-> +{
-> +	int fd = -1;
-> +
-> +	igt_fixture {
-> +		uint32_t major, minor;
-> +		int err;
-> +
-> +		fd = drm_open_driver(DRIVER_AMDGPU);
-> +
-> +		err = amdgpu_device_initialize(fd, &major, &minor, &dev);
-> +		igt_require(err == 0);
-> +
-> +		igt_info("Initialized amdgpu, driver version %d.%d\n",
-> +			 major, minor);
-> +	}
-> +
-> +	igt_subtest("query-firmware-version")
-> +		query_firmware_version_test();
-> +
-> +	igt_fixture {
-> +		amdgpu_device_deinitialize(dev);
-> +		close(fd);
-> +	}
-> +}
-> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-> index b7982291..b92aa22b 100644
-> --- a/tests/amdgpu/meson.build
-> +++ b/tests/amdgpu/meson.build
-> @@ -7,6 +7,7 @@ if libdrm_amdgpu.found()
->  			  'amd_bypass',
->  			  'amd_color',
->  			  'amd_cs_nop',
-> +			  'amd_info',
->  			  'amd_prime',
->  			]
->  	amdgpu_deps += libdrm_amdgpu
-> -- 
-> 2.30.1
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
