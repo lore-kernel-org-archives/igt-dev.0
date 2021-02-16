@@ -3,8 +3,8 @@ MIME-Version: 1.0
 In-Reply-To: <20210216105050.309803-1-tvrtko.ursulin@linux.intel.com>
 References: <20210216105050.309803-1-tvrtko.ursulin@linux.intel.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 16 Feb 2021 12:47:00 +0000
-Message-ID: <161347962042.8311.4583278071537199442@build.alporthouse.com>
+Date: Tue, 16 Feb 2021 12:49:33 +0000
+Message-ID: <161347977326.8311.2289376711332554853@build.alporthouse.com>
 Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] tests/i915/perf_pmu:
  Subtest to measure sampling error for 100% busy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -65,11 +65,23 @@ Quoting Tvrtko Ursulin (2021-02-16 10:50:50)
 > +       igt_stats_t s;
 >         uint64_t val;
 >         int fd;
+>  
+> @@ -290,11 +295,40 @@ single(int gem_fd, const struct intel_execution_engine2 *e, unsigned int flags)
+>         else
+>                 spin = NULL;
+>  
+> -       val = pmu_read_single(fd);
+> -       slept = measured_usleep(batch_duration_ns / 1000);
+> -       if (flags & TEST_TRAILING_IDLE)
+> -               end_spin(gem_fd, spin, flags);
+> -       val = pmu_read_single(fd) - val;
+> +       igt_stats_init_with_size(&s, loops);
+> +
+> +       while (--loops) {
 
-Something to record is that TEST_TRAILING_IDLE and TEST_LONG are mutually
-exclusive.
+while (loops--)
 
-So assert(igt_hweight(flags & (TEST_TRAILING_IDLE | TEST_LONG)) <= 1); ?
+/o\
 -Chris
 _______________________________________________
 igt-dev mailing list
