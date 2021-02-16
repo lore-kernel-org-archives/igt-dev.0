@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB14789D2F
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Feb 2021 15:48:07 +0000 (UTC)
-From: Martin Peres <martin.peres@mupuf.org>
-Date: Tue, 16 Feb 2021 17:47:22 +0200
-Message-Id: <20210216154722.775071-2-martin.peres@mupuf.org>
-In-Reply-To: <20210216154722.775071-1-martin.peres@mupuf.org>
-References: <20210216123236.693768-1-martin.peres@mupuf.org>
- <20210216154722.775071-1-martin.peres@mupuf.org>
+References: <20210216105050.309803-1-tvrtko.ursulin@linux.intel.com>
+ <161347977326.8311.2289376711332554853@build.alporthouse.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <5a07f0c2-48c1-1605-e1f5-91d61a213f67@linux.intel.com>
+Date: Tue, 16 Feb 2021 15:59:33 +0000
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 2/2] amdgpu/info: add timestamp-related
- tests
+In-Reply-To: <161347977326.8311.2289376711332554853@build.alporthouse.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] tests/i915/perf_pmu:
+ Subtest to measure sampling error for 100% busy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,131 +16,105 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Cc: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
+Cc: Intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This test makes sure:
 
- * the clock is running at the expected rate
- * (potential) power gating has no effect on the clock
+On 16/02/2021 12:49, Chris Wilson wrote:
+> Quoting Tvrtko Ursulin (2021-02-16 10:50:50)
+>> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>>
+>> Test that periodic reads of engine busyness against a constant 100% load
+>> are within the 5000ppm tolerance when comparing perf timestamp versus
+>> counter values.
+>>
+>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>> ---
+>>   tests/i915/perf_pmu.c | 46 ++++++++++++++++++++++++++++++++++++++-----
+>>   1 file changed, 41 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+>> index 50b5c82bc472..728312be5293 100644
+>> --- a/tests/i915/perf_pmu.c
+>> +++ b/tests/i915/perf_pmu.c
+>> @@ -26,6 +26,7 @@
+>>   #include <stdio.h>
+>>   #include <string.h>
+>>   #include <fcntl.h>
+>> +#include <float.h>
+>>   #include <inttypes.h>
+>>   #include <errno.h>
+>>   #include <signal.h>
+>> @@ -46,6 +47,7 @@
+>>   #include "igt_perf.h"
+>>   #include "igt_sysfs.h"
+>>   #include "igt_pm.h"
+>> +#include "igt_stats.h"
+>>   #include "sw_sync.h"
+>>   
+>>   IGT_TEST_DESCRIPTION("Test the i915 pmu perf interface");
+>> @@ -278,8 +280,11 @@ static void end_spin(int fd, igt_spin_t *spin, unsigned int flags)
+>>   static void
+>>   single(int gem_fd, const struct intel_execution_engine2 *e, unsigned int flags)
+>>   {
+>> +       unsigned int loops = flags & FLAG_LONG ? 20 : 1;
+>> +       double err_min = DBL_MAX, err_max = -DBL_MAX;
+>>          unsigned long slept;
+>>          igt_spin_t *spin;
+>> +       igt_stats_t s;
+>>          uint64_t val;
+>>          int fd;
+>>   
+>> @@ -290,11 +295,40 @@ single(int gem_fd, const struct intel_execution_engine2 *e, unsigned int flags)
+>>          else
+>>                  spin = NULL;
+>>   
+>> -       val = pmu_read_single(fd);
+>> -       slept = measured_usleep(batch_duration_ns / 1000);
+>> -       if (flags & TEST_TRAILING_IDLE)
+>> -               end_spin(gem_fd, spin, flags);
+>> -       val = pmu_read_single(fd) - val;
+>> +       igt_stats_init_with_size(&s, loops);
+>> +
+>> +       while (--loops) {
+> 
+> while (loops--)
+> 
+> /o\
 
-v2:
- - use signed integer for the gpu timestamp diff (Bas)
+Yeah.. At least I know the oddity is related to sampling. Since even on 
+Haswell:
 
-v3:
- - add test and subtest descriptions (Arek)
- - split the fast and long tests in different subtests (Martin)
- - use igt_stats to compute actual statistics (Chris)
+(perf_pmu:1591) DEBUG: time=500207720 busy=500037022 error=-341.25ppm
+(perf_pmu:1591) DEBUG: time=500252520 busy=500033517 error=-437.78ppm
+(perf_pmu:1591) DEBUG: time=500187490 busy=499999817 error=-375.21ppm
+(perf_pmu:1591) DEBUG: time=500244871 busy=499999837 error=-489.83ppm
+(perf_pmu:1591) DEBUG: time=500268670 busy=499999477 error=-538.10ppm
+(perf_pmu:1591) DEBUG: time=500245246 busy=500000432 error=-489.39ppm
+(perf_pmu:1591) DEBUG: time=500245735 busy=499999306 error=-492.62ppm
+(perf_pmu:1591) DEBUG: time=500270045 busy=500001747 error=-536.31ppm
+(perf_pmu:1591) DEBUG: time=500254286 busy=499998162 error=-511.99ppm
+(perf_pmu:1591) DEBUG: time=500247790 busy=500000347 error=-494.64ppm
+(perf_pmu:1591) DEBUG: time=500250261 busy=500000257 error=-499.76ppm
+(perf_pmu:1591) DEBUG: time=500250005 busy=500008177 error=-483.41ppm
+(perf_pmu:1591) DEBUG: time=500249065 busy=499991867 error=-514.14ppm
+(perf_pmu:1591) DEBUG: time=500249725 busy=500000371 error=-498.46ppm
+(perf_pmu:1591) DEBUG: time=500250335 busy=499999772 error=-500.88ppm
+(perf_pmu:1591) DEBUG: time=500258691 busy=499999937 error=-517.24ppm
+(perf_pmu:1591) DEBUG: time=500239980 busy=500001037 error=-477.66ppm
+(perf_pmu:1591) DEBUG: time=500240791 busy=504999361 error=9512.56ppm
 
-Cc: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
-Signed-off-by: Martin Peres <martin.peres@mupuf.org>
----
- tests/amdgpu/amd_info.c | 77 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 77 insertions(+)
+And this last one is way more than one sampling period. I'll be thinking 
+about this in the background.
 
-diff --git a/tests/amdgpu/amd_info.c b/tests/amdgpu/amd_info.c
-index 6764e640..d099356f 100644
---- a/tests/amdgpu/amd_info.c
-+++ b/tests/amdgpu/amd_info.c
-@@ -44,6 +44,73 @@ static void query_firmware_version_test(void)
- 	igt_assert_eq(r, 0);
- }
- 
-+static void query_timestamp_test(uint32_t sleep_time, int sample_count)
-+{
-+	struct amdgpu_gpu_info gpu_info = {};
-+	double median, std_err, err_95_conf;
-+	igt_stats_t stats;
-+	float ns_per_tick;
-+	int i;
-+
-+	igt_stats_init_with_size(&stats, sample_count);
-+
-+	/* figure out how many nanoseconds each gpu timestamp tick represents */
-+	igt_assert_eq(amdgpu_query_gpu_info(dev, &gpu_info), 0);
-+	igt_assert_lt(0, gpu_info.gpu_counter_freq);
-+	ns_per_tick = 1e9 / (gpu_info.gpu_counter_freq * 1000.0);
-+
-+	/* acquire the data needed for the analysis */
-+	for (i = 0; i < sample_count; i++) {
-+		uint64_t ts_start, ts_end, cpu_delta;
-+		int64_t gpu_delta;
-+		float corrected_gpu_delta;
-+		struct timespec ts_cpu;
-+		int r;
-+
-+		igt_assert_eq(igt_gettime(&ts_cpu), 0);
-+
-+		r = amdgpu_query_info(dev, AMDGPU_INFO_TIMESTAMP, 8, &ts_start);
-+		igt_assert_eq(r, 0);
-+
-+		usleep(sleep_time);
-+
-+		r = amdgpu_query_info(dev, AMDGPU_INFO_TIMESTAMP, 8, &ts_end);
-+		igt_assert_eq(r, 0);
-+
-+		/* get the GPU and CPU deltas */
-+		cpu_delta = igt_nsec_elapsed(&ts_cpu);
-+		gpu_delta = ts_end - ts_start;
-+		corrected_gpu_delta = gpu_delta * ns_per_tick;
-+
-+		/* make sure the GPU timestamps are ordered */
-+		igt_assert_lt_s64(0, gpu_delta);
-+
-+		igt_stats_push_float(&stats, corrected_gpu_delta / cpu_delta);
-+	}
-+
-+	/* generate the statistics */
-+	median = igt_stats_get_median(&stats);
-+	std_err = igt_stats_get_std_error(&stats);
-+	err_95_conf = std_err * 1.96;
-+
-+	/* check that the median ticking rate is ~1.0, meaning that the
-+	 * the GPU and CPU timestamps grow at the same rate
-+	 */
-+	igt_assert_f(median > 0.99 && median < 1.01,
-+		     "The GPU time elapses at %.2f%% (+/- %.2f%% at 95%% "
-+		     "confidence) of the CPU's speed\ngpu_counter_freq=%u kHz, "
-+		     "should be %.0f kHz (+/- %.1f kHz at 95%% confidence)\n",
-+		     median * 100.0, err_95_conf * 100.0,
-+		     gpu_info.gpu_counter_freq,
-+		     gpu_info.gpu_counter_freq * median,
-+		     gpu_info.gpu_counter_freq * err_95_conf);
-+
-+	/* check the jitter in the ticking rate */
-+	igt_assert_f(err_95_conf < 0.01,
-+		     "The GPU time ticks with a jitter greater than 1%%, at "
-+		     "95%% confidence (+/- %.3f%%)\n", err_95_conf * 100.0);
-+}
-+
- IGT_TEST_DESCRIPTION("Test the consistency of the data provided through the "
- 		     "DRM_AMDGPU_INFO IOCTL");
- igt_main
-@@ -67,6 +134,16 @@ igt_main
- 	igt_subtest("query-firmware-version")
- 		query_firmware_version_test();
- 
-+	igt_describe("Check that the GPU time ticks constantly, and at the "
-+		     "same rate as the CPU");
-+	igt_subtest("query-timestamp")
-+		query_timestamp_test(10000, 100);
-+
-+	igt_describe("Check that the GPU time keeps on ticking, even during "
-+		     "long idle times which could lead to clock/power gating");
-+	igt_subtest("query-timestamp-while-idle")
-+		query_timestamp_test(7000000, 1);
-+
- 	igt_fixture {
- 		amdgpu_device_deinitialize(dev);
- 		close(fd);
--- 
-2.30.1
+Regards,
 
+Tvrtko
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
