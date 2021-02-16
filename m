@@ -1,10 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 16 Feb 2021 14:32:20 +0000
-Message-Id: <20210216143220.98382-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_reloc: Verify relocations
- with pinned scanout framebuffers
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 16 Feb 2021 14:57:26 -0000
+Message-ID: <161348744689.32287.6828224769808357174@emeril.freedesktop.org>
+References: <20210216123236.693768-1-martin.peres@mupuf.org>
+In-Reply-To: <20210216123236.693768-1-martin.peres@mupuf.org>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_amdgpu/basic=3A_move_amdgpu=5F?=
+ =?utf-8?q?query=5Finfo=5Ftest_to_its_own_file?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -12,156 +15,226 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0459067350=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Matthew Auld <matthew.auld@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
+To: Martin Peres <martin.peres@mupuf.org>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In light of the VT-d workarounds, we may introduce padding around the
-scanout vma. This should not affect relocations referencing the scanout
-on !full-ppgtt where we leak the GGTT address of scanout to users.
+--===============0459067350==
+Content-Type: multipart/alternative;
+ boundary="===============5359029704218848321=="
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Matthew Auld <matthew.auld@intel.com>
----
- tests/i915/gem_exec_reloc.c | 102 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 102 insertions(+)
+--===============5359029704218848321==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
-index cc9b8cd6d..98960bb84 100644
---- a/tests/i915/gem_exec_reloc.c
-+++ b/tests/i915/gem_exec_reloc.c
-@@ -26,7 +26,9 @@
- 
- #include "i915/gem.h"
- #include "igt.h"
-+#include "igt_device.h"
- #include "igt_dummyload.h"
-+#include "igt_kms.h"
- #include "sw_sync.h"
- 
- IGT_TEST_DESCRIPTION("Basic sanity check of execbuf-ioctl relocations.");
-@@ -1286,6 +1288,83 @@ static void concurrent(int i915, int num_common)
- 	igt_assert_eq(result, 0);
- }
- 
-+static uint32_t
-+pin_scanout(igt_display_t *dpy, igt_output_t *output, struct igt_fb *fb)
-+{
-+	drmModeModeInfoPtr mode;
-+	igt_plane_t *primary;
-+
-+	mode = igt_output_get_mode(output);
-+
-+	igt_create_pattern_fb(dpy->drm_fd, mode->hdisplay, mode->vdisplay,
-+			      DRM_FORMAT_XRGB8888,
-+			      LOCAL_I915_FORMAT_MOD_X_TILED, fb);
-+
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, fb);
-+
-+	igt_display_commit2(dpy, COMMIT_LEGACY);
-+
-+	return fb->gem_handle;
-+}
-+
-+static void scanout(int i915,
-+		    igt_display_t *dpy,
-+		    const struct intel_execution_engine2 *e)
-+{
-+	struct drm_i915_gem_relocation_entry reloc;
-+	struct drm_i915_gem_exec_object2 obj[2] = {
-+		[1] = { .handle = batch_create(i915) },
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(obj),
-+		.buffer_count = 2,
-+	};
-+	igt_output_t *output;
-+	struct igt_fb fb;
-+	uint64_t *map;
-+
-+	igt_display_reset(dpy);
-+
-+	output = igt_get_single_output_for_pipe(dpy, PIPE_A);
-+	igt_require(output);
-+	igt_output_set_pipe(output, PIPE_A);
-+
-+	/*
-+	 * Find where the scanout is in our GTT; on !full-ppgtt this will be
-+	 * the actual GGTT address of the scanout.
-+	 */
-+	obj[0].handle = pin_scanout(dpy, output, &fb);
-+	gem_execbuf(i915, &execbuf);
-+	igt_info("Scanout GTT address: %#llx\n", obj[0].offset);
-+
-+	/* Relocations should match the scanout address */
-+	reloc.target_handle = obj[0].handle;
-+	reloc.delta = 0;
-+	reloc.presumed_offset = -1;
-+	reloc.offset = 4000;
-+	obj[1].relocation_count = 1;
-+	obj[1].relocs_ptr = to_user_pointer(&reloc);
-+	gem_execbuf(i915, &execbuf);
-+	igt_info("Reloc address: %#llx\n", reloc.presumed_offset);
-+	igt_assert_eq_u64(reloc.presumed_offset, obj[0].offset);
-+
-+	gem_sync(i915, obj[1].handle);
-+	map = gem_mmap__device_coherent(i915, obj[1].handle,
-+					0, 4096, PROT_WRITE);
-+	igt_assert_eq_u64(map[500], obj[0].offset);
-+	munmap(map, 4096);
-+
-+	/* And finally softpinning with the scanout address should work */
-+	obj[0].flags |= EXEC_OBJECT_PINNED;
-+	obj[1].relocation_count = 0;
-+	gem_execbuf(i915, &execbuf);
-+	igt_assert_eq_u64(obj[0].offset, reloc.presumed_offset);
-+
-+	gem_close(i915, obj[1].handle);
-+	igt_remove_fb(dpy->drm_fd, &fb);
-+}
-+
- #define I915_GEM_GPU_DOMAINS \
- 	(I915_GEM_DOMAIN_RENDER | \
- 	 I915_GEM_DOMAIN_SAMPLER | \
-@@ -1511,6 +1590,29 @@ igt_main
- 	igt_subtest("invalid-domains")
- 		invalid_domains(fd);
- 
-+	igt_subtest_group {
-+		igt_display_t display = {
-+			.drm_fd = fd,
-+			.n_pipes = IGT_MAX_PIPES
-+		};
-+
-+		igt_fixture {
-+			igt_device_set_master(fd);
-+			kmstest_set_vt_graphics_mode();
-+			igt_display_require(&display, fd);
-+		}
-+
-+		igt_subtest_with_dynamic("basic-scanout") {
-+			__for_each_physical_engine(fd, e) {
-+				igt_dynamic_f("%s", e->name)
-+					scanout(fd, &display, e);
-+			}
-+		}
-+
-+		igt_fixture
-+			igt_display_fini(&display);
-+	}
-+
- 	igt_fixture
- 		close(fd);
- }
--- 
-2.30.0
+== Series Details ==
+
+Series: series starting with [i-g-t,1/2] amdgpu/basic: move amdgpu_query_info_test to its own file
+URL   : https://patchwork.freedesktop.org/series/87125/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9779 -> IGTPW_5514
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5514 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@query-info:
+    - fi-tgl-y:           NOTRUN -> [SKIP][1] ([fdo#109315])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/fi-tgl-y/igt@amdgpu/amd_basic@query-info.html
+
+  * igt@i915_selftest@live@sanitycheck:
+    - fi-kbl-7500u:       [PASS][2] -> [DMESG-WARN][3] ([i915#2605]) +1 similar issue
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html
+
+  * igt@prime_self_import@basic-with_one_bo_two_files:
+    - fi-tgl-y:           [PASS][4] -> [DMESG-WARN][5] ([i915#402]) +1 similar issue
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
+
+  
+#### Possible fixes ####
+
+  * igt@prime_vgem@basic-fence-flip:
+    - fi-tgl-y:           [DMESG-WARN][6] ([i915#402]) -> [PASS][7] +2 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
+
+  
+#### Warnings ####
+
+  * igt@amdgpu/amd_basic@query-info:
+    - fi-tgl-u2:          [SKIP][8] ([fdo#109315] / [i915#2575]) -> [SKIP][9] ([fdo#109315])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-u2/igt@amdgpu/amd_basic@query-info.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/fi-tgl-u2/igt@amdgpu/amd_basic@query-info.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#112080]: https://bugs.freedesktop.org/show_bug.cgi?id=112080
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#2605]: https://gitlab.freedesktop.org/drm/intel/issues/2605
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (45 -> 39)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6004 -> IGTPW_5514
+
+  CI-20190529: 20190529
+  CI_DRM_9779: 775dbe8d5e041442fcadf63894468a63582a87a2 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5514: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/index.html
+  IGT_6004: fe9ac2aeffc1828c6d61763a611a44fbd450aa96 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@amdgpu/amd_info@query-firmware-version
++igt@amdgpu/amd_info@query-timestamp
+-igt@amdgpu/amd_basic@query-info
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/index.html
+
+--===============5359029704218848321==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] amdgpu/basic: move amdgpu_query_info_test to its own file</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87125/">https://patchwork.freedesktop.org/series/87125/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9779 -&gt; IGTPW_5514</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5514 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@query-info:</p>
+<ul>
+<li>fi-tgl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/fi-tgl-y/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@sanitycheck:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2605">i915#2605</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_self_import@basic-with_one_bo_two_files:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@prime_vgem@basic-fence-flip:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">PASS</a> +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@amdgpu/amd_basic@query-info:<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-u2/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/fi-tgl-u2/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (45 -&gt; 39)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6004 -&gt; IGTPW_5514</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9779: 775dbe8d5e041442fcadf63894468a63582a87a2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5514: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5514/index.html<br />
+  IGT_6004: fe9ac2aeffc1828c6d61763a611a44fbd450aa96 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@amdgpu/amd_info@query-firmware-version<br />
++igt@amdgpu/amd_info@query-timestamp<br />
+-igt@amdgpu/amd_basic@query-info</p>
+
+</body>
+</html>
+
+--===============5359029704218848321==--
+
+--===============0459067350==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0459067350==--
