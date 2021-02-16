@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D9BD36E952
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Feb 2021 13:16:13 +0000 (UTC)
+From: Martin Peres <martin.peres@mupuf.org>
+Date: Tue, 16 Feb 2021 14:32:35 +0200
+Message-Id: <20210216123236.693768-1-martin.peres@mupuf.org>
 MIME-Version: 1.0
-In-Reply-To: <20210216105050.309803-1-tvrtko.ursulin@linux.intel.com>
-References: <20210216105050.309803-1-tvrtko.ursulin@linux.intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 16 Feb 2021 12:49:33 +0000
-Message-ID: <161347977326.8311.2289376711332554853@build.alporthouse.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] tests/i915/perf_pmu:
- Subtest to measure sampling error for 100% busy
+Subject: [igt-dev] [PATCH i-g-t 1/2] amdgpu/basic: move
+ amdgpu_query_info_test to its own file
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,71 +19,149 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org
+To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
+Cc: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Tvrtko Ursulin (2021-02-16 10:50:50)
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> 
-> Test that periodic reads of engine busyness against a constant 100% load
-> are within the 5000ppm tolerance when comparing perf timestamp versus
-> counter values.
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> ---
->  tests/i915/perf_pmu.c | 46 ++++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 41 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-> index 50b5c82bc472..728312be5293 100644
-> --- a/tests/i915/perf_pmu.c
-> +++ b/tests/i915/perf_pmu.c
-> @@ -26,6 +26,7 @@
->  #include <stdio.h>
->  #include <string.h>
->  #include <fcntl.h>
-> +#include <float.h>
->  #include <inttypes.h>
->  #include <errno.h>
->  #include <signal.h>
-> @@ -46,6 +47,7 @@
->  #include "igt_perf.h"
->  #include "igt_sysfs.h"
->  #include "igt_pm.h"
-> +#include "igt_stats.h"
->  #include "sw_sync.h"
->  
->  IGT_TEST_DESCRIPTION("Test the i915 pmu perf interface");
-> @@ -278,8 +280,11 @@ static void end_spin(int fd, igt_spin_t *spin, unsigned int flags)
->  static void
->  single(int gem_fd, const struct intel_execution_engine2 *e, unsigned int flags)
->  {
-> +       unsigned int loops = flags & FLAG_LONG ? 20 : 1;
-> +       double err_min = DBL_MAX, err_max = -DBL_MAX;
->         unsigned long slept;
->         igt_spin_t *spin;
-> +       igt_stats_t s;
->         uint64_t val;
->         int fd;
->  
-> @@ -290,11 +295,40 @@ single(int gem_fd, const struct intel_execution_engine2 *e, unsigned int flags)
->         else
->                 spin = NULL;
->  
-> -       val = pmu_read_single(fd);
-> -       slept = measured_usleep(batch_duration_ns / 1000);
-> -       if (flags & TEST_TRAILING_IDLE)
-> -               end_spin(gem_fd, spin, flags);
-> -       val = pmu_read_single(fd) - val;
-> +       igt_stats_init_with_size(&s, loops);
-> +
-> +       while (--loops) {
+This will soon be followed by more amd_query_info tests, and the basic
+file is already big-enough.
 
-while (loops--)
+Cc: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+Signed-off-by: Martin Peres <martin.peres@mupuf.org>
+---
+ tests/amdgpu/amd_basic.c | 17 ----------
+ tests/amdgpu/amd_info.c  | 71 ++++++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build |  1 +
+ 3 files changed, 72 insertions(+), 17 deletions(-)
+ create mode 100644 tests/amdgpu/amd_info.c
 
-/o\
--Chris
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index bf626ece..6c9609b9 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -176,20 +176,6 @@ static void amdgpu_command_submission_copy_linear_helper(unsigned ip_type);
+ #              define PACKET3_DMA_DATA_CMD_DAIC    (1 << 29)
+ #              define PACKET3_DMA_DATA_CMD_RAW_WAIT  (1 << 30)
+ 
+-static void amdgpu_query_info_test(void)
+-{
+-	struct amdgpu_gpu_info gpu_info = {};
+-	uint32_t version, feature;
+-	int r;
+-
+-	r = amdgpu_query_gpu_info(device, &gpu_info);
+-	igt_assert_eq(r, 0);
+-
+-	r = amdgpu_query_firmware_version(device, AMDGPU_INFO_FW_VCE, 0,
+-					  0, &version, &feature);
+-	igt_assert_eq(r, 0);
+-}
+-
+ static amdgpu_bo_handle gpu_mem_alloc(amdgpu_device_handle device_handle,
+ 				      uint64_t size,
+ 				      uint64_t alignment,
+@@ -1397,9 +1383,6 @@ igt_main
+ 			 major, minor);
+ 	}
+ 
+-	igt_subtest("query-info")
+-		amdgpu_query_info_test();
+-
+ 	igt_subtest("memory-alloc")
+ 		amdgpu_memory_alloc();
+ 
+diff --git a/tests/amdgpu/amd_info.c b/tests/amdgpu/amd_info.c
+new file mode 100644
+index 00000000..fe113e14
+--- /dev/null
++++ b/tests/amdgpu/amd_info.c
+@@ -0,0 +1,71 @@
++/*
++ * Copyright 2014 Advanced Micro Devices, Inc.
++ * Copyright 2021 Valve Corporation
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ */
++
++#include "config.h"
++
++#include "igt.h"
++
++#include <amdgpu.h>
++#include <amdgpu_drm.h>
++
++static amdgpu_device_handle dev;
++
++static void query_firmware_version_test(void)
++{
++	struct amdgpu_gpu_info gpu_info = {};
++	uint32_t version, feature;
++	int r;
++
++	r = amdgpu_query_gpu_info(dev, &gpu_info);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_query_firmware_version(dev, AMDGPU_INFO_FW_VCE, 0, 0,
++					  &version, &feature);
++	igt_assert_eq(r, 0);
++}
++
++igt_main
++{
++	int fd = -1;
++
++	igt_fixture {
++		uint32_t major, minor;
++		int err;
++
++		fd = drm_open_driver(DRIVER_AMDGPU);
++
++		err = amdgpu_device_initialize(fd, &major, &minor, &dev);
++		igt_require(err == 0);
++
++		igt_info("Initialized amdgpu, driver version %d.%d\n",
++			 major, minor);
++	}
++
++	igt_subtest("query-firmware-version")
++		query_firmware_version_test();
++
++	igt_fixture {
++		amdgpu_device_deinitialize(dev);
++		close(fd);
++	}
++}
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index b7982291..b92aa22b 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -7,6 +7,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_bypass',
+ 			  'amd_color',
+ 			  'amd_cs_nop',
++			  'amd_info',
+ 			  'amd_prime',
+ 			]
+ 	amdgpu_deps += libdrm_amdgpu
+-- 
+2.30.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
