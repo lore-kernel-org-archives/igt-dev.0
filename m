@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 16 Feb 2021 21:17:41 -0000
-Message-ID: <161351026142.32284.4852683421620021181@emeril.freedesktop.org>
-References: <20210216202557.878778-1-martin.peres@mupuf.org>
-In-Reply-To: <20210216202557.878778-1-martin.peres@mupuf.org>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2Cv3=2C1/2=5D_amdgpu/basic=3A_move_amdg?=
- =?utf-8?q?pu=5Fquery=5Finfo=5Ftest_to_its_own_file?=
+Date: Tue, 16 Feb 2021 22:17:58 -0000
+Message-ID: <161351387840.32283.1658581594577977672@emeril.freedesktop.org>
+References: <20210216153457.3147-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20210216153457.3147-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Frotation=5Fcrc=3A_?=
+ =?utf-8?q?reduce_executions_time_on_multiplane_tests_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,79 +16,96 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1106520956=="
+Content-Type: multipart/mixed; boundary="===============1496953791=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Martin Peres <martin.peres@mupuf.org>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1106520956==
+--===============1496953791==
 Content-Type: multipart/alternative;
- boundary="===============0269044479570158709=="
+ boundary="===============1816243500182186547=="
 
---===============0269044479570158709==
+--===============1816243500182186547==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: series starting with [i-g-t,v3,1/2] amdgpu/basic: move amdgpu_query_info_test to its own file
-URL   : https://patchwork.freedesktop.org/series/87145/
-State : success
+Series: series starting with [i-g-t,1/2] tests/kms_rotation_crc: reduce executions time on multiplane tests (rev3)
+URL   : https://patchwork.freedesktop.org/series/87130/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_9779 -> IGTPW_5520
+CI Bug Log - changes from CI_DRM_9779 -> IGTPW_5521
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
+  Serious unknown changes coming with IGTPW_5521 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_5521, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5520/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/index.html
 
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_5521:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@blt:
+    - fi-snb-2600:        [PASS][1] -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-snb-2600/igt@i915_selftest@live@blt.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/fi-snb-2600/igt@i915_selftest@live@blt.html
+
+  
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_5520 that come from known issues:
+  Here are the changes found in IGTPW_5521 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@prime_self_import@basic-with_two_bos:
-    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +2 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5520/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html
+  * igt@i915_getparams_basic@basic-subslice-total:
+    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([i915#402]) +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-y/igt@i915_getparams_basic@basic-subslice-total.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/fi-tgl-y/igt@i915_getparams_basic@basic-subslice-total.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-kefka:       [PASS][5] -> [INCOMPLETE][6] ([i915#2940])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
+
+  * igt@runner@aborted:
+    - fi-bsw-kefka:       NOTRUN -> [FAIL][7] ([i915#1436])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/fi-bsw-kefka/igt@runner@aborted.html
 
   
 #### Possible fixes ####
 
   * igt@prime_vgem@basic-fence-flip:
-    - fi-tgl-y:           [DMESG-WARN][3] ([i915#402]) -> [PASS][4] +2 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5520/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
+    - fi-tgl-y:           [DMESG-WARN][8] ([i915#402]) -> [PASS][9] +1 similar issue
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
 
   
-#### Warnings ####
-
-  * igt@amdgpu/amd_basic@query-info:
-    - fi-tgl-u2:          [SKIP][5] ([fdo#109315] / [i915#2575]) -> [SKIP][6] ([fdo#109315])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-u2/igt@amdgpu/amd_basic@query-info.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5520/fi-tgl-u2/igt@amdgpu/amd_basic@query-info.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#112080]: https://bugs.freedesktop.org/show_bug.cgi?id=112080
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
+  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
   [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
 
 
@@ -102,27 +119,18 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_6004 -> IGTPW_5520
+  * IGT: IGT_6004 -> IGTPW_5521
 
   CI-20190529: 20190529
   CI_DRM_9779: 775dbe8d5e041442fcadf63894468a63582a87a2 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5520: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5520/index.html
+  IGTPW_5521: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/index.html
   IGT_6004: fe9ac2aeffc1828c6d61763a611a44fbd450aa96 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@amdgpu/amd_info@query-firmware-version
-+igt@amdgpu/amd_info@query-timestamp
-+igt@amdgpu/amd_info@query-timestamp-while-idle
--igt@amdgpu/amd_basic@query-info
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5520/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/index.html
 
---===============0269044479570158709==
+--===============1816243500182186547==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -142,69 +150,83 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v3,1/2] amdgpu/basic: move amdgpu_query_info_test to its own file</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87145/">https://patchwork.freedesktop.org/series/87145/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/kms_rotation_crc: reduce executions time on multiplane tests (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87130/">https://patchwork.freedesktop.org/series/87130/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5520/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5520/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_9779 -&gt; IGTPW_5520</h1>
+    <h1>CI Bug Log - changes from CI_DRM_9779 -&gt; IGTPW_5521</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5520/index.html</p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_5521 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_5521, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_5521:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@blt:<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-snb-2600/igt@i915_selftest@live@blt.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/fi-snb-2600/igt@i915_selftest@live@blt.html">DMESG-FAIL</a></li>
+</ul>
+</li>
+</ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5520 that come from known issues:</p>
+<p>Here are the changes found in IGTPW_5521 that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
-<li>igt@prime_self_import@basic-with_two_bos:<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5520/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
+<li>
+<p>igt@i915_getparams_basic@basic-subslice-total:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-y/igt@i915_getparams_basic@basic-subslice-total.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/fi-tgl-y/igt@i915_getparams_basic@basic-subslice-total.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/fi-bsw-kefka/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a>)</li>
 </ul>
 </li>
 </ul>
 <h4>Possible fixes</h4>
 <ul>
 <li>igt@prime_vgem@basic-fence-flip:<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5520/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">PASS</a> +2 similar issues</li>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">PASS</a> +1 similar issue</li>
 </ul>
 </li>
 </ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@amdgpu/amd_basic@query-info:<ul>
-<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-u2/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5520/fi-tgl-u2/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Participating hosts (45 -&gt; 39)</h2>
 <p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
 <h2>Build changes</h2>
 <ul>
 <li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6004 -&gt; IGTPW_5520</li>
+<li>IGT: IGT_6004 -&gt; IGTPW_5521</li>
 </ul>
 <p>CI-20190529: 20190529<br />
   CI_DRM_9779: 775dbe8d5e041442fcadf63894468a63582a87a2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5520: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5520/index.html<br />
+  IGTPW_5521: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5521/index.html<br />
   IGT_6004: fe9ac2aeffc1828c6d61763a611a44fbd450aa96 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-<p>== Testlist changes ==</p>
-<p>+igt@amdgpu/amd_info@query-firmware-version<br />
-+igt@amdgpu/amd_info@query-timestamp<br />
-+igt@amdgpu/amd_info@query-timestamp-while-idle<br />
--igt@amdgpu/amd_basic@query-info</p>
 
 </body>
 </html>
 
---===============0269044479570158709==--
+--===============1816243500182186547==--
 
---===============1106520956==
+--===============1496953791==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -215,4 +237,4 @@ igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
---===============1106520956==--
+--===============1496953791==--
