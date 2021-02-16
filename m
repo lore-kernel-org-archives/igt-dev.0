@@ -1,122 +1,223 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-In-Reply-To: <5a07f0c2-48c1-1605-e1f5-91d61a213f67@linux.intel.com>
-References: <20210216105050.309803-1-tvrtko.ursulin@linux.intel.com>
- <161347977326.8311.2289376711332554853@build.alporthouse.com>
- <5a07f0c2-48c1-1605-e1f5-91d61a213f67@linux.intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 16 Feb 2021 17:53:04 +0000
-Message-ID: <161349798460.8311.9805097556312646496@build.alporthouse.com>
-Subject: Re: [Intel-gfx] [PATCH i-g-t] tests/i915/perf_pmu: Subtest to
- measure sampling error for 100% busy
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 16 Feb 2021 18:13:20 -0000
+Message-ID: <161349920059.32285.3480808632149695016@emeril.freedesktop.org>
+References: <20210216143220.98382-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20210216143220.98382-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaTkxNS9n?=
+ =?utf-8?q?em=5Fexec=5Freloc=3A_Verify_relocations_with_pinned_scanout_fra?=
+ =?utf-8?q?mebuffers_=28rev2=29?=
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1673341614=="
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Tvrtko Ursulin (2021-02-16 15:59:33)
-> 
-> On 16/02/2021 12:49, Chris Wilson wrote:
-> > Quoting Tvrtko Ursulin (2021-02-16 10:50:50)
-> >> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> >>
-> >> Test that periodic reads of engine busyness against a constant 100% load
-> >> are within the 5000ppm tolerance when comparing perf timestamp versus
-> >> counter values.
-> >>
-> >> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> >> ---
-> >>   tests/i915/perf_pmu.c | 46 ++++++++++++++++++++++++++++++++++++++-----
-> >>   1 file changed, 41 insertions(+), 5 deletions(-)
-> >>
-> >> diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-> >> index 50b5c82bc472..728312be5293 100644
-> >> --- a/tests/i915/perf_pmu.c
-> >> +++ b/tests/i915/perf_pmu.c
-> >> @@ -26,6 +26,7 @@
-> >>   #include <stdio.h>
-> >>   #include <string.h>
-> >>   #include <fcntl.h>
-> >> +#include <float.h>
-> >>   #include <inttypes.h>
-> >>   #include <errno.h>
-> >>   #include <signal.h>
-> >> @@ -46,6 +47,7 @@
-> >>   #include "igt_perf.h"
-> >>   #include "igt_sysfs.h"
-> >>   #include "igt_pm.h"
-> >> +#include "igt_stats.h"
-> >>   #include "sw_sync.h"
-> >>   
-> >>   IGT_TEST_DESCRIPTION("Test the i915 pmu perf interface");
-> >> @@ -278,8 +280,11 @@ static void end_spin(int fd, igt_spin_t *spin, unsigned int flags)
-> >>   static void
-> >>   single(int gem_fd, const struct intel_execution_engine2 *e, unsigned int flags)
-> >>   {
-> >> +       unsigned int loops = flags & FLAG_LONG ? 20 : 1;
-> >> +       double err_min = DBL_MAX, err_max = -DBL_MAX;
-> >>          unsigned long slept;
-> >>          igt_spin_t *spin;
-> >> +       igt_stats_t s;
-> >>          uint64_t val;
-> >>          int fd;
-> >>   
-> >> @@ -290,11 +295,40 @@ single(int gem_fd, const struct intel_execution_engine2 *e, unsigned int flags)
-> >>          else
-> >>                  spin = NULL;
-> >>   
-> >> -       val = pmu_read_single(fd);
-> >> -       slept = measured_usleep(batch_duration_ns / 1000);
-> >> -       if (flags & TEST_TRAILING_IDLE)
-> >> -               end_spin(gem_fd, spin, flags);
-> >> -       val = pmu_read_single(fd) - val;
-> >> +       igt_stats_init_with_size(&s, loops);
-> >> +
-> >> +       while (--loops) {
-> > 
-> > while (loops--)
-> > 
-> > /o\
-> 
-> Yeah.. At least I know the oddity is related to sampling. Since even on 
-> Haswell:
-> 
-> (perf_pmu:1591) DEBUG: time=500207720 busy=500037022 error=-341.25ppm
-> (perf_pmu:1591) DEBUG: time=500252520 busy=500033517 error=-437.78ppm
-> (perf_pmu:1591) DEBUG: time=500187490 busy=499999817 error=-375.21ppm
-> (perf_pmu:1591) DEBUG: time=500244871 busy=499999837 error=-489.83ppm
-> (perf_pmu:1591) DEBUG: time=500268670 busy=499999477 error=-538.10ppm
-> (perf_pmu:1591) DEBUG: time=500245246 busy=500000432 error=-489.39ppm
-> (perf_pmu:1591) DEBUG: time=500245735 busy=499999306 error=-492.62ppm
-> (perf_pmu:1591) DEBUG: time=500270045 busy=500001747 error=-536.31ppm
-> (perf_pmu:1591) DEBUG: time=500254286 busy=499998162 error=-511.99ppm
-> (perf_pmu:1591) DEBUG: time=500247790 busy=500000347 error=-494.64ppm
-> (perf_pmu:1591) DEBUG: time=500250261 busy=500000257 error=-499.76ppm
-> (perf_pmu:1591) DEBUG: time=500250005 busy=500008177 error=-483.41ppm
-> (perf_pmu:1591) DEBUG: time=500249065 busy=499991867 error=-514.14ppm
-> (perf_pmu:1591) DEBUG: time=500249725 busy=500000371 error=-498.46ppm
-> (perf_pmu:1591) DEBUG: time=500250335 busy=499999772 error=-500.88ppm
-> (perf_pmu:1591) DEBUG: time=500258691 busy=499999937 error=-517.24ppm
-> (perf_pmu:1591) DEBUG: time=500239980 busy=500001037 error=-477.66ppm
-> (perf_pmu:1591) DEBUG: time=500240791 busy=504999361 error=9512.56ppm
-> 
-> And this last one is way more than one sampling period. I'll be thinking 
-> about this in the background.
+--===============1673341614==
+Content-Type: multipart/alternative;
+ boundary="===============1325511628141389985=="
 
-One thing to add would be the cumulative error. It does feel like a
-corrective factor is applied to the sampling period.
--Chris
+--===============1325511628141389985==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: i915/gem_exec_reloc: Verify relocations with pinned scanout framebuffers (rev2)
+URL   : https://patchwork.freedesktop.org/series/87127/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9779 -> IGTPW_5518
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_5518 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_5518, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5518/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_5518:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@blt:
+    - fi-snb-2600:        [PASS][1] -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-snb-2600/igt@i915_selftest@live@blt.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5518/fi-snb-2600/igt@i915_selftest@live@blt.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5518 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@read_all_entries:
+    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([i915#402]) +2 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-y/igt@debugfs_test@read_all_entries.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5518/fi-tgl-y/igt@debugfs_test@read_all_entries.html
+
+  
+#### Possible fixes ####
+
+  * igt@prime_vgem@basic-fence-flip:
+    - fi-tgl-y:           [DMESG-WARN][5] ([i915#402]) -> [PASS][6] +2 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5518/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
+
+  
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (45 -> 39)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6004 -> IGTPW_5518
+
+  CI-20190529: 20190529
+  CI_DRM_9779: 775dbe8d5e041442fcadf63894468a63582a87a2 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5518: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5518/index.html
+  IGT_6004: fe9ac2aeffc1828c6d61763a611a44fbd450aa96 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@gem_exec_reloc@basic-scanout
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5518/index.html
+
+--===============1325511628141389985==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915/gem_exec_reloc: Verify relocations with pinned scanout framebuffers (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87127/">https://patchwork.freedesktop.org/series/87127/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5518/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5518/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9779 -&gt; IGTPW_5518</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_5518 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_5518, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5518/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_5518:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@blt:<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-snb-2600/igt@i915_selftest@live@blt.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5518/fi-snb-2600/igt@i915_selftest@live@blt.html">DMESG-FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5518 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@debugfs_test@read_all_entries:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-y/igt@debugfs_test@read_all_entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5518/fi-tgl-y/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@prime_vgem@basic-fence-flip:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9779/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5518/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">PASS</a> +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (45 -&gt; 39)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6004 -&gt; IGTPW_5518</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9779: 775dbe8d5e041442fcadf63894468a63582a87a2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5518: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5518/index.html<br />
+  IGT_6004: fe9ac2aeffc1828c6d61763a611a44fbd450aa96 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@gem_exec_reloc@basic-scanout</p>
+
+</body>
+</html>
+
+--===============1325511628141389985==--
+
+--===============1673341614==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1673341614==--
