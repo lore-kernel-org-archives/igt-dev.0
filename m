@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 635566E429
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Feb 2021 11:43:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFF5A6E429
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Feb 2021 11:41:32 +0000 (UTC)
 References: <20210216202557.878778-1-martin.peres@mupuf.org>
- <YCzH1S+9epMh4bKr@platvala-desk.ger.corp.intel.com>
+ <20210216202557.878778-2-martin.peres@mupuf.org>
+ <YCzEmUwlgeQ1HPsE@platvala-desk.ger.corp.intel.com>
 From: Martin Peres <martin.peres@mupuf.org>
-Message-ID: <a5f1752e-e75a-b0ed-e876-48da7a15d9a9@mupuf.org>
-Date: Wed, 17 Feb 2021 13:43:31 +0200
+Message-ID: <0f06b37b-e105-5a32-22ff-d3a190a73c1e@mupuf.org>
+Date: Wed, 17 Feb 2021 13:41:10 +0200
 MIME-Version: 1.0
-In-Reply-To: <YCzH1S+9epMh4bKr@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <YCzEmUwlgeQ1HPsE@platvala-desk.ger.corp.intel.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v3 1/2] amdgpu/basic: move
- amdgpu_query_info_test to its own file
+Subject: Re: [igt-dev] [PATCH i-g-t v3 2/2] amdgpu/info: add
+ timestamp-related tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,59 +28,95 @@ To: Petri Latvala <petri.latvala@intel.com>
 Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 17/02/2021 09:37, Petri Latvala wrote:
-> On Tue, Feb 16, 2021 at 10:25:56PM +0200, Martin Peres wrote:
->> This will soon be followed by more amd_query_info tests, and the basic
->> file is already big-enough.
+On 17/02/2021 09:24, Petri Latvala wrote:
+> On Tue, Feb 16, 2021 at 10:25:57PM +0200, Martin Peres wrote:
+>> This test makes sure:
+>>
+>>   * the clock is running at the expected rate
+>>   * (potential) power gating has no effect on the clock
 >>
 >> v2:
+>>   - use signed integer for the gpu timestamp diff (Bas)
+>>
+>> v3:
 >>   - add test and subtest descriptions (Arek)
->>   - add the new file to autotools (Petri)
+>>   - split the fast and long tests in different subtests (Martin)
+>>   - use igt_stats to compute actual statistics (Chris)
+>>
+>> v4:
+>>   - call igt_stats_fini() after finishing with the stats (Petri)
 >>
 >> Cc: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
 >> Signed-off-by: Martin Peres <martin.peres@mupuf.org>
+> 
+> I have no way of assessing the coverage of the test etc so I'll just
+> provide drive-by cosmetic suggestions below.
+
+Sounds good :)
+
+> 
+> 
 >> ---
->>   tests/Makefile.sources   |  1 +
->>   tests/amdgpu/amd_basic.c | 17 ---------
->>   tests/amdgpu/amd_info.c  | 74 ++++++++++++++++++++++++++++++++++++++++
->>   tests/amdgpu/meson.build |  1 +
->>   4 files changed, 76 insertions(+), 17 deletions(-)
->>   create mode 100644 tests/amdgpu/amd_info.c
+>>   tests/amdgpu/amd_info.c | 79 +++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 79 insertions(+)
+>>
+>> diff --git a/tests/amdgpu/amd_info.c b/tests/amdgpu/amd_info.c
+>> index 6764e640..e3b1eac1 100644
+>> --- a/tests/amdgpu/amd_info.c
+>> +++ b/tests/amdgpu/amd_info.c
+>> @@ -44,6 +44,75 @@ static void query_firmware_version_test(void)
+>>   	igt_assert_eq(r, 0);
+>>   }
+>>   
+>> +static void query_timestamp_test(uint32_t sleep_time, int sample_count)
+>> +{
+>> +	struct amdgpu_gpu_info gpu_info = {};
+>> +	double median, std_err, err_95_conf;
+>> +	igt_stats_t stats;
+>> +	float ns_per_tick;
+>> +	int i;
+>> +
+>> +	igt_stats_init_with_size(&stats, sample_count);
+>> +
+>> +	/* figure out how many nanoseconds each gpu timestamp tick represents */
+>> +	igt_assert_eq(amdgpu_query_gpu_info(dev, &gpu_info), 0);
+>> +	igt_assert_lt(0, gpu_info.gpu_counter_freq);
 > 
-> Fails to link with autotools:
-> 
-> https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/7354371
-> 
-> /usr/bin/ld: amdgpu/amd_info.o: in function `query_firmware_version_test':
-> /builds/gfx-ci/igt-ci-tags/tests/amdgpu/amd_info.c:39: undefined reference to `amdgpu_query_gpu_info'
-> /usr/bin/ld: /builds/gfx-ci/igt-ci-tags/tests/amdgpu/amd_info.c:42: undefined reference to `amdgpu_query_firmware_version'
-> /usr/bin/ld: amdgpu/amd_info.o: in function `query_timestamp_test':
-> /builds/gfx-ci/igt-ci-tags/tests/amdgpu/amd_info.c:58: undefined reference to `amdgpu_query_gpu_info'
-> /usr/bin/ld: /builds/gfx-ci/igt-ci-tags/tests/amdgpu/amd_info.c:72: undefined reference to `amdgpu_query_info'
-> /usr/bin/ld: /builds/gfx-ci/igt-ci-tags/tests/amdgpu/amd_info.c:77: undefined reference to `amdgpu_query_info'
-> /usr/bin/ld: amdgpu/amd_info.o: in function `__real_main118':
-> /builds/gfx-ci/igt-ci-tags/tests/amdgpu/amd_info.c:150: undefined reference to `amdgpu_device_deinitialize'
-> /usr/bin/ld: /builds/gfx-ci/igt-ci-tags/tests/amdgpu/amd_info.c:128: undefined reference to `amdgpu_device_initialize'
-> collect2: error: ld returned 1 exit status
-> make[3]: *** [Makefile:3204: amdgpu/amd_info] Error 1
-> make[3]: Leaving directory '/builds/gfx-ci/igt-ci-tags/tests'
-> make[2]: *** [Makefile:5190: all-recursive] Error 1
-> make[2]: Leaving directory '/builds/gfx-ci/igt-ci-tags/tests'
-> make[1]: *** [Makefile:515: all-recursive] Error 1
-> make[1]: Leaving directory '/builds/gfx-ci/igt-ci-tags'
-> make: *** [Makefile:447: all] Error 2
-> 
-> 
+> Consider whether you want to say "timestamp querying is broken" or
+> "cannot test timestamp querying" with these, aka igt_assert vs
+> igt_require.
 
-RRRrrr, I tried to make this work without being to compile it, as 
-autoconf 2.71 broke backwards compatibility, and simple fixes would not 
-make it work.
+Good ideas! I ended up going with asserts for both above, as these are 
+mandatory for all platforms, and not exactly a feature that can be 
+disabled. Let's just say it is part of the core of amdgpu.
 
-However, Petri suggested I fork the project in gitlab, and let the 
-pipelines to prove it works at least on Debian. I am glad to report this 
-is now done, and we are ready for v4...
+> 
+> 
+>> +	ns_per_tick = 1e9 / (gpu_info.gpu_counter_freq * 1000.0);
+>> +
+>> +	/* acquire the data needed for the analysis */
+>> +	for (i = 0; i < sample_count; i++) {
+>> +		uint64_t ts_start, ts_end, cpu_delta;
+>> +		int64_t gpu_delta;
+>> +		float corrected_gpu_delta;
+>> +		struct timespec ts_cpu;
+>> +		int r;
+>> +
+>> +		igt_assert_eq(igt_gettime(&ts_cpu), 0);
+>> +
+>> +		r = amdgpu_query_info(dev, AMDGPU_INFO_TIMESTAMP, 8, &ts_start);
+>> +		igt_assert_eq(r, 0);
+>> +
+>> +		usleep(sleep_time);
+>> +
+>> +		r = amdgpu_query_info(dev, AMDGPU_INFO_TIMESTAMP, 8, &ts_end);
+>> +		igt_assert_eq(r, 0);
+> 
+> Both of these query_info return value checks, when failing, will just
+> say "test failed, r is not 0". Consider igt_assert_f with a message
+> that states what is broken.
 
-Let's hope it will work. Thanks for the feedback!
+Good idea, thanks!
 
 Martin
 _______________________________________________
