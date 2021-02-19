@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
- [IPv6:2607:f8b0:4864:20::62a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 598476E8AE
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Feb 2021 09:41:24 +0000 (UTC)
-Received: by mail-pl1-x62a.google.com with SMTP id a24so3049243plm.11
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Feb 2021 01:41:24 -0800 (PST)
-Date: Fri, 19 Feb 2021 15:11:20 +0530
-From: Sumera Priyadarsini <sylphrenadin@gmail.com>
-Message-ID: <20210219094120.xfhmp3njssigqkh2@adolin>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B38AF6E8B2
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Feb 2021 09:48:37 +0000 (UTC)
+From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Date: Fri, 19 Feb 2021 15:19:16 +0530
+Message-Id: <20210219094916.673519-1-arundhati.hagaragi@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_vblank.c: Skip vblank tests for
- virtual_hw mode
+Subject: [igt-dev] [PATCH i-g-t v3] tests/kms_properties: Add subtest
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,46 +20,76 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: daniel@ffwll.ch
+Cc: B@freedesktop.org, Sharma@freedesktop.org, S@freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Currently, while running the VKMS module in virtual harware
-(vblank-less) mode, majority of tests fail due to vblank tests
-failing, making it difficult to test other parts like crc and
-writeback for the VKMS module.
+Added description for all subtests
 
-Skip all vblank tests in kms_vblank.c when vblank does not exist
-as a feature.
+Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Cc: Sharma, Swati2 <swati2.sharma@intel.com>
+Cc: B S, Karthik <Karthik.B.S@intel.com>
 
-Signed-off-by: Sumera Priyadarsini <sylphrenadin@gmail.com>
+v2, v3: modified subtests description to be more specific. (swati)
 ---
- tests/kms_vblank.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tests/kms_properties.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index e561e41d..636f13b7 100644
---- a/tests/kms_vblank.c
-+++ b/tests/kms_vblank.c
-@@ -515,12 +515,19 @@ igt_main
- {
- 	int fd;
- 	data_t data;
-+	drmVBlank dummy_vbl;
-+	int ret;
- 
- 	igt_fixture {
- 		fd = drm_open_driver_master(DRIVER_ANY);
- 		kmstest_set_vt_graphics_mode();
- 		igt_display_require(&data.display, fd);
- 		igt_display_require_output(&data.display);
-+
-+		memset(&dummy_vbl, 0, sizeof(drmVBlank));
-+		dummy_vbl.request.type = DRM_VBLANK_RELATIVE;
-+		ret = drmWaitVBlank(fd, &dummy_vbl);
-+		igt_skip_on(ret != 0 && errno == EOPNOTSUPP);
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index b743f9d6..c7d7fe73 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -735,35 +735,51 @@ igt_main
+ 		igt_display_require(&display, display.drm_fd);
  	}
  
- 	igt_describe("Negative test for vblank request");
++	igt_describe("Tests plane properties with legacy commit");
+ 	igt_subtest("plane-properties-legacy")
+ 		plane_properties(&display, false);
+ 
++	igt_describe("Tests plane properties with atomic commit");
+ 	igt_subtest("plane-properties-atomic")
+ 		plane_properties(&display, true);
+ 
++	igt_describe("Tests crtc properties with legacy commit");
+ 	igt_subtest("crtc-properties-legacy")
+ 		crtc_properties(&display, false);
+ 
++	igt_describe("Tests crtc properties with atomic commit");
+ 	igt_subtest("crtc-properties-atomic")
+ 		crtc_properties(&display, true);
+ 
++	igt_describe("Tests connector properties with legacy commit");
+ 	igt_subtest("connector-properties-legacy")
+ 		connector_properties(&display, false);
+ 
++	igt_describe("Tests connector properties with atomic commit");
+ 	igt_subtest("connector-properties-atomic")
+ 		connector_properties(&display, true);
+ 
++	igt_describe("Checks each property of any type with combination of mode object with legacy "
++			"commit and make sure only valid properties are set to mode object else "
++			"return with relevant error");
++
+ 	igt_subtest("invalid-properties-legacy")
+ 		invalid_properties(&display, false);
+ 
++	igt_describe("Checks each property of any type with combination of mode object with atomic "
++		       "commit and make sure only valid properties are set to mode object else "
++		       "return with relevant error");
++
+ 	igt_subtest("invalid-properties-atomic")
+ 		invalid_properties(&display, true);
+ 
++	igt_describe("Test validates the properties of all planes, crtc and connectors with atomic commit");
+ 	igt_subtest("get_properties-sanity-atomic") {
+ 		igt_skip_on(!display.is_atomic);
+ 		get_prop_sanity(&display, true);
+ 	}
+ 
++	igt_describe("Test validates the properties of all planes, crtc and connectors with legacy commit");
+ 	igt_subtest("get_properties-sanity-non-atomic") {
+ 		if (display.is_atomic)
+ 			igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 0), 0);
 -- 
 2.25.1
 
