@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D67656E50D
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Feb 2021 13:46:14 +0000 (UTC)
-Date: Mon, 22 Feb 2021 14:46:03 +0100
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E85BA6E0F6
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Feb 2021 13:54:14 +0000 (UTC)
+Date: Mon, 22 Feb 2021 14:54:09 +0100
 From: Katarzyna Dec <katarzyna.dec@intel.com>
-Message-ID: <20210222134603.GA29585@kdec5-desk.ger.corp.intel.com>
-References: <20200905113203.2021641-1-apoorva1.singh@intel.com>
+Message-ID: <20210222135409.GB29585@kdec5-desk.ger.corp.intel.com>
+References: <20200914192455.2107119-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200905113203.2021641-1-apoorva1.singh@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_pread: Added test description
- for test case
+In-Reply-To: <20200914192455.2107119-1-apoorva1.singh@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_mmap_wc: Added test
+ description for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,58 +26,144 @@ To: apoorva1.singh@intel.com
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Sat, Sep 05, 2020 at 05:02:03PM +0530, apoorva1.singh@intel.com wrote:
+On Tue, Sep 15, 2020 at 12:54:55AM +0530, apoorva1.singh@intel.com wrote:
 > From: Apoorva Singh <apoorva1.singh@intel.com>
 > 
 > Added test description to all the available subtests.
 > 
-> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
 > Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
-> Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
 > ---
->  tests/i915/gem_pread.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  tests/i915/gem_mmap_wc.c | 45 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 45 insertions(+)
 > 
-> diff --git a/tests/i915/gem_pread.c b/tests/i915/gem_pread.c
-> index 6d12b8e9..19376aac 100644
-> --- a/tests/i915/gem_pread.c
-> +++ b/tests/i915/gem_pread.c
-> @@ -39,6 +39,8 @@
->  #include <sys/time.h>
+> diff --git a/tests/i915/gem_mmap_wc.c b/tests/i915/gem_mmap_wc.c
+> index f44b406d..aa98d408 100644
+> --- a/tests/i915/gem_mmap_wc.c
+> +++ b/tests/i915/gem_mmap_wc.c
+> @@ -38,6 +38,8 @@
+>  #include <sys/ioctl.h>
 >  #include "drm.h"
 >  
-> +IGT_TEST_DESCRIPTION("Basic sanity and perfromance testing of PREAD IOCTL.");
+> +IGT_TEST_DESCRIPTION("Tests the extended version of MMAP IOCTL (Write Combine)");
 > +
->  #define MiB(x) ((x) * 1024 * 1024)
->  
->  typedef void *(*mmap_fn_t)(int, uint32_t, uint64_t, uint64_t, unsigned int);
-> @@ -154,6 +156,7 @@ igt_main_args("s:", NULL, help_str, opt_handler, NULL)
->  		src = malloc(object_size);
+>  struct local_i915_gem_mmap_v2 {
+>  	uint32_t handle;
+>  	uint32_t pad;
+> @@ -505,6 +507,7 @@ igt_main
+>  		gem_require_mmap_wc(fd);
 >  	}
 >  
-> +	igt_describe("Test the performance of reading from gem object");
->  	igt_subtest("bench") {
->  		for (count = 1; count <= 1<<17; count <<= 1) {
->  			struct timeval start, end;
-> @@ -169,10 +172,14 @@ igt_main_args("s:", NULL, help_str, opt_handler, NULL)
+> +	igt_describe("Verify mapping to invalid gem object won't be created");
+>  	igt_subtest("bad-object") {
+>  		uint32_t real_handle = gem_create(fd, 4096);
+>  		uint32_t handles[20];
+> @@ -528,6 +531,7 @@ igt_main
+>  		gem_close(fd, real_handle);
+>  	}
+>  
+> +	igt_describe("Verify mapping to gem object with invalid offset won't be created");
+>  	igt_subtest("bad-offset") {
+>  		struct bad_offset {
+>  			uint64_t size;
+> @@ -555,6 +559,7 @@ igt_main
 >  		}
 >  	}
 >  
-> +	igt_describe("Verify reading from gem object into address space mapped "
-> +	       "(using different mapping methods) to itself works fine");
->  	igt_subtest("self")
->  		pread_self(fd);
+> +	igt_describe("Verify mapping to gem object with invalid size won't be created");
+>  	igt_subtest("bad-size") {
+>  		uint64_t bad_size[] = {
+>  			0,
+> @@ -577,45 +582,85 @@ igt_main
+>  		}
+>  	}
 >  
->  	for (c = cache; c->level != -1; c++) {
-> +		igt_describe_f("Test the performance of reading from gem object with "
-> +		       "%s caching mode", c->name);
->  		igt_subtest(c->name) {
->  			gem_set_caching(fd, dst, c->level);
+> +	igt_describe("Verify mapping to gem object with invalid flag won't be created");
+>  	igt_subtest("invalid-flags")
+>  		test_invalid_flags(fd);
+> +
+> +	igt_describe("Verify memory mapping to gem object persists after gem_close");
+>  	igt_subtest("close")
+>  		test_close(fd);
+> +
+> +	igt_describe("Verify copying between two memory mapped gem objects works fine");
+>  	igt_subtest("copy")
+>  		test_copy(fd);
+> +
+> +	igt_describe("Verify reading from newly created gem obejct works fine");
+>  	igt_subtest("read")
+>  		test_read(fd);
+> +
+> +	igt_describe("Verify writing into newly created gem object works fine");
+>  	igt_subtest("write")
+>  		test_write(fd);
+> +
+> +	igt_describe("Tests that mmap and mmap(wc) mappings to a gem object are "
+> +	       "coherent after cache flush");
+>  	igt_subtest("coherency")
+>  		test_coherency(fd);
+> +
+> +	igt_describe("Verify writing into prefaulted gem object works fine");
+>  	igt_subtest("write-prefaulted")
+>  		test_write_prefaulted(fd);
+> +
+> +	igt_describe("Tests read and subsequent write on buffer object");
+>  	igt_subtest("read-write")
+>  		test_read_write(fd, READ_BEFORE_WRITE);
+> +
+> +	igt_describe("Tests write and subsequent read on buffer object");
+>  	igt_subtest("write-read")
+>  		test_read_write(fd, READ_AFTER_WRITE);
+> +
+> +	igt_describe("Tests read before write using distinct mmap(wc) mappings to "
+> +	       "same buffer object");
+>  	igt_subtest("read-write-distinct")
+>  		test_read_write2(fd, READ_BEFORE_WRITE);
+> +
+> +	igt_describe("Tests write before read using distinct mmap(wc) mappings to "
+> +	       "same buffer object");
+>  	igt_subtest("write-read-distinct")
+>  		test_read_write2(fd, READ_AFTER_WRITE);
+> +
+> +	igt_describe("Verify concurrent access of a gem object by multiple threads work fine");
+>  	igt_subtest("fault-concurrent")
+>  		test_fault_concurrent(fd);
+> +
+> +	igt_describe("Checks the coherency of data written into gem object using cpu mmap and "
+> +	       "read from it using write combine mmap, having WC domain set");
+>  	igt_subtest("write-cpu-read-wc")
+>  		test_write_cpu_read_wc(fd, 1);
+> +
+> +        igt_describe("Checks the coherency of data written into gem object using cpu mmap and "
+> +               "read from it using write combine mmap, not having WC domain set");
+>  	igt_subtest("write-cpu-read-wc-unflushed")
+>  		test_write_cpu_read_wc(fd, 0);
 >  
+>  	igt_subtest_group {
+>  		igt_fixture gem_require_mappable_ggtt(fd);
+> +
+> +	        igt_describe("Checks the coherency of data written into gem object using write "
+> +		       "combine mmap and read from it using gtt mmap");
+>  		igt_subtest("write-wc-read-gtt")
+>  			test_write_wc_read_gtt(fd);
+> +
+> +		igt_describe("Checks the coherency of data written into gem object using gtt "
+> +		       "mmap and read from it using write combine mmap");
+>  		igt_subtest("write-gtt-read-gtt")
+>  			test_write_gtt_read_wc(fd);
+>  	}
+>  
+> +	igt_describe("Verify initial page faulting completes within a specified time");
+>  	igt_subtest("pf-nonblock")
+>  		test_pf_nonblock(fd);
+> +
+>  	igt_subtest("set-cache-level")
+>  		test_set_cache_level(fd);
 LGTM :)
-Reviewed-by: Katarzyna Dec <katarzyna.dec@intel.com>
+Acked-by: Katarzyna Dec <katarzyna.dec@intel.com>
 
 Kasia :)
+>  
 > -- 
 > 2.28.0
 > 
