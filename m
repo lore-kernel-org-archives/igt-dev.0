@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E7F96E3BB
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Feb 2021 17:08:14 +0000 (UTC)
+From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
+Date: Mon, 22 Feb 2021 09:09:50 -0800
+Message-Id: <20210222170950.179310-1-jose.souza@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 22 Feb 2021 16:06:02 -0000
-Message-ID: <161400996220.19118.4492146085809235643@emeril.freedesktop.org>
-References: <20210203205604.24494-1-sungkim@amd.com>
-In-Reply-To: <20210203205604.24494-1-sungkim@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBzZXJp?=
- =?utf-8?q?es_starting_with_=5Bv3=2C1/3=5D_drm-uapi=3A_Add_AMD_DRM_Modifie?=
- =?utf-8?q?r_update_to_IGT_=28rev3=29?=
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Enable selective fetch
+ feature in kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,32 +15,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: series starting with [v3,1/3] drm-uapi: Add AMD DRM Modifier update to IGT (rev3)
-URL   : https://patchwork.freedesktop.org/series/86664/
-State : failure
-
-== Summary ==
-
-Applying: drm-uapi: Add AMD DRM Modifier update to IGT
-Applying: tests/kms_rotation_crc: Add HW Rotation test case for amdgpu with tiling
-Patch failed at 0002 tests/kms_rotation_crc: Add HW Rotation test case for amdgpu with tiling
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RW5hYmxlIFBTUjIgc2VsZWN0aXZlIGZldGNoIHVzaW5nIGRlYnVnZnMgZHVyaW5nIHRlc3Qgc2V0
+dXAsIHRoaXMgd2lsbAphbGxvdyB1cyB0byBoYXZlIHNvbWUgdGVzdCBjb3ZlcmFnZSBvZiB0aGlz
+IGZlYXR1cmUgYnkgQ0kuCgpDYzogR3dhbi1neWVvbmcgTXVuIDxnd2FuLWd5ZW9uZy5tdW5AaW50
+ZWwuY29tPgpDYzogUGFua2FqIEJoYXJhZGl5YSA8cGFua2FqLmxheG1pbmFyYXlhbi5iaGFyYWRp
+eWFAaW50ZWwuY29tPgpTaWduZWQtb2ZmLWJ5OiBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIDxqb3Nl
+LnNvdXphQGludGVsLmNvbT4KLS0tCiBsaWIvaWd0X3Bzci5jICAgICAgIHwgIDMgKysrCiBsaWIv
+aWd0X3Bzci5oICAgICAgIHwgIDMgKystCiB0ZXN0cy9rbXNfcHNyMl9zZi5jIHwgMTAgKysrKysr
+LS0tLQogMyBmaWxlcyBjaGFuZ2VkLCAxMSBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQoK
+ZGlmZiAtLWdpdCBhL2xpYi9pZ3RfcHNyLmMgYi9saWIvaWd0X3Bzci5jCmluZGV4IGQ1MTY3ZmJh
+ZC4uNjgyNDBmOWEzIDEwMDY0NAotLS0gYS9saWIvaWd0X3Bzci5jCisrKyBiL2xpYi9pZ3RfcHNy
+LmMKQEAgLTE1OCw2ICsxNTgsOSBAQCBzdGF0aWMgYm9vbCBwc3Jfc2V0KGludCBkZXZpY2UsIGlu
+dCBkZWJ1Z2ZzX2ZkLCBpbnQgbW9kZSkKIAkJY2FzZSBQU1JfTU9ERV8yOgogCQkJZGVidWdfdmFs
+ID0gIjB4MiI7CiAJCQlicmVhazsKKwkJY2FzZSBQU1JfTU9ERV8yX1NFTF9GRVRDSDoKKwkJCWRl
+YnVnX3ZhbCA9ICIweDQiOworCQkJYnJlYWs7CiAJCWRlZmF1bHQ6CiAJCQkvKiBEaXNhYmxlcyBQ
+U1IgKi8KIAkJCWRlYnVnX3ZhbCA9ICIweDEiOwpkaWZmIC0tZ2l0IGEvbGliL2lndF9wc3IuaCBi
+L2xpYi9pZ3RfcHNyLmgKaW5kZXggMjUxMTFjYzJiLi5jNDdiMTk3YjEgMTAwNjQ0Ci0tLSBhL2xp
+Yi9pZ3RfcHNyLmgKKysrIGIvbGliL2lndF9wc3IuaApAQCAtMzIsNyArMzIsOCBAQAogCiBlbnVt
+IHBzcl9tb2RlIHsKIAlQU1JfTU9ERV8xLAotCVBTUl9NT0RFXzIKKwlQU1JfTU9ERV8yLAorCVBT
+Ul9NT0RFXzJfU0VMX0ZFVENILAogfTsKIAogYm9vbCBwc3JfZGlzYWJsZWRfY2hlY2soaW50IGRl
+YnVnZnNfZmQpOwpkaWZmIC0tZ2l0IGEvdGVzdHMva21zX3BzcjJfc2YuYyBiL3Rlc3RzL2ttc19w
+c3IyX3NmLmMKaW5kZXggMjk2ZWQ4NDc2Li44ZDNlMTMwMTkgMTAwNjQ0Ci0tLSBhL3Rlc3RzL2tt
+c19wc3IyX3NmLmMKKysrIGIvdGVzdHMva21zX3BzcjJfc2YuYwpAQCAtNTYwLDkgKzU2MCw2IEBA
+IGlndF9tYWluCiAJCQkJCSAgICAgICBkYXRhLmRlYnVnZnNfZmQsIFBTUl9NT0RFXzIpLAogCQkJ
+ICAgICAgIlNpbmsgZG9lcyBub3Qgc3VwcG9ydCBQU1IyXG4iKTsKIAotCQlpZ3RfcmVxdWlyZV9m
+KHBzcjJfc2VsZWN0aXZlX2ZldGNoX2NoZWNrKGRhdGEuZGVidWdmc19mZCksCi0JCQkgICAgICAi
+UFNSMiBzZWxlY3RpdmUgZmV0Y2ggbm90IGVuYWJsZWRcbiIpOwotCiAJCWRhdGEuYnVmbWdyID0g
+ZHJtX2ludGVsX2J1Zm1ncl9nZW1faW5pdChkYXRhLmRybV9mZCwgNDA5Nik7CiAJCWlndF9hc3Nl
+cnQoZGF0YS5idWZtZ3IpOwogCQlkcm1faW50ZWxfYnVmbWdyX2dlbV9lbmFibGVfcmV1c2UoZGF0
+YS5idWZtZ3IpOwpAQCAtNTcxLDcgKzU2OCw3IEBAIGlndF9tYWluCiAKIAkJLyogVGVzdCBpZiBQ
+U1IyIGNhbiBiZSBlbmFibGVkICovCiAJCWlndF9yZXF1aXJlX2YocHNyX2VuYWJsZShkYXRhLmRy
+bV9mZCwKLQkJCQkJIGRhdGEuZGVidWdmc19mZCwgUFNSX01PREVfMiksCisJCQkJCSBkYXRhLmRl
+YnVnZnNfZmQsIFBTUl9NT0RFXzJfU0VMX0ZFVENIKSwKIAkJCSAgICAgICJFcnJvciBlbmFibGlu
+ZyBQU1IyXG4iKTsKIAogCQlkYXRhLmRhbWFnZV9hcmVhX2NvdW50ID0gTUFYX0RBTUFHRV9BUkVB
+UzsKQEAgLTU3OSw2ICs1NzYsMTEgQEAgaWd0X21haW4KIAkJZGF0YS50ZXN0X3BsYW5lX2lkID0g
+RFJNX1BMQU5FX1RZUEVfUFJJTUFSWTsKIAkJcHJlcGFyZSgmZGF0YSk7CiAJCXIgPSBwc3Jfd2Fp
+dF9lbnRyeShkYXRhLmRlYnVnZnNfZmQsIFBTUl9NT0RFXzIpOworCQlpZiAoIXIpCisJCQlwc3Jf
+cHJpbnRfZGVidWdmcyhkYXRhLmRlYnVnZnNfZmQpOworCisJCWlndF9yZXF1aXJlX2YocHNyMl9z
+ZWxlY3RpdmVfZmV0Y2hfY2hlY2soZGF0YS5kZWJ1Z2ZzX2ZkKSwKKwkJCSAgICAgICJQU1IyIHNl
+bGVjdGl2ZSBmZXRjaCBub3QgZW5hYmxlZFxuIik7CiAJCWNsZWFudXAoJmRhdGEpOwogCQlpZiAo
+IXIpCiAJCQlwc3JfcHJpbnRfZGVidWdmcyhkYXRhLmRlYnVnZnNfZmQpOwotLSAKMi4zMC4xCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1h
+aWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZy
+ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
