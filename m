@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8177D6E1E0
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Feb 2021 05:13:21 +0000 (UTC)
-References: <20210217062631.9314-1-karthik.b.s@intel.com>
- <20210217062631.9314-2-karthik.b.s@intel.com>
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-Message-ID: <de33699b-9073-341f-0c90-7c7e95dff649@intel.com>
-Date: Mon, 22 Feb 2021 10:42:42 +0530
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB2E96E4B7
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Feb 2021 05:43:33 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Mon, 22 Feb 2021 19:06:29 +0530
+Message-Id: <20210222133629.6218-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20210217062631.9314-2-karthik.b.s@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v8 1/2] tests/kms_content_protection:
- Add MST subtests
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_vrr: Extend to cover full VRR
+ range
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,401 +15,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Karthik B S <karthik.b.s@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, manasi.d.navare@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
-
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com 
-<mailto:ankit.k.nautiyal@intel.com>>
-
-On 2/17/2021 11:56 AM, Karthik B S wrote:
-> Add subtests to verify content protection simultaneously on
-> multiple outputs on the same MST topology.
->
-> v3: -Remove the logging which are no longer required. (Anshuman)
->      -Add logic to verify that CP is still enabled on other connectors
->       while disabling it on one of the connectors. (Anshuman)
->
-> v4: -Rename is_output_support_cp_capable(). (Anshuman, Ram)
->      -Rephrase the comment in is_dp_mst_output. (Anshuman)
->      -Remove the redundant HDCP check hunk before HDCP disable. (Anshuman)
->      -Check the link on the HDCP enabled outputs when one of the outputs
->       in the same DP MST topology is disabled. (Anshuman)
->      -Revert the change in test_content_protection_cleanup(). (Anshuman)
->      -Create fb's in a common function for both MST and SST. (Ram)
->      -Rename is_dp_mst_output() to output_is_dp_mst(). (Ram)
->      -Remove the redundant igt_debug() before HDCP enable. (Ram)
->      -Rephrase the igt_assert statement during HDCP enable. (Ram)
->      -Optimize the execution time by checking the link for all MST
->       connectors together. (Ram)
->      -No need of loop where we disable CP on one of the MST outputs. (Ram)
->      -During verification by disabling one of the MST outputs,
->       check for the negative case until the required timeout. (Ram)
->
-> v5: -Modify skip message when HDCP support is not present. (Anshuman)
->      -Remove the definition of color_t structure as it is no longer used.
->
-> v6: -Optimize execution time in LIC test. (Anshuman)
->
-> v7: -Check HDCP capability after modeset on MST. (Anshuman)
->
-> v8: -Use try_commit for MST modeset and skip the test on failure. (Ankit)
->
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->   tests/kms_content_protection.c | 278 ++++++++++++++++++++++++++++++---
->   1 file changed, 256 insertions(+), 22 deletions(-)
->
-> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-> index 303ed418..edd39ca2 100644
-> --- a/tests/kms_content_protection.c
-> +++ b/tests/kms_content_protection.c
-> @@ -179,16 +179,10 @@ static void modeset_with_fb(const enum pipe pipe, igt_output_t *output,
->   	igt_output_override_mode(output, &mode);
->   	igt_output_set_pipe(output, pipe);
->   
-> -	igt_create_color_fb(display->drm_fd, mode.hdisplay, mode.vdisplay,
-> -			    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
-> -			    1.f, 0.f, 0.f, &data.red);
-> -	igt_create_color_fb(display->drm_fd, mode.hdisplay, mode.vdisplay,
-> -			    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
-> -			    0.f, 1.f, 0.f, &data.green);
-> -
->   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->   	igt_display_commit2(display, s);
->   	igt_plane_set_fb(primary, &data.red);
-> +	igt_fb_set_size(&data.red, primary, mode.hdisplay, mode.vdisplay);
->   
->   	/* Wait for Flip completion before starting the HDCP authentication */
->   	commit_display_and_wait_for_flip(s);
-> @@ -458,37 +452,83 @@ static bool sink_hdcp2_capable(igt_output_t *output)
->   	return strstr(buf, "HDCP2.2");
->   }
->   
-> -static void
-> -test_content_protection(enum igt_commit_style s, int content_type)
-> +static void prepare_modeset_on_mst_output(igt_output_t *output, enum pipe pipe)
->   {
-> -	igt_display_t *display = &data.display;
-> -	igt_output_t *output;
-> -	int valid_tests = 0;
-> +	drmModeConnectorPtr c = output->config.connector;
-> +	drmModeModeInfo *mode;
-> +	igt_plane_t *primary;
-> +	int i, width, height;
->   
-> -	if (data.cp_tests & CP_MEI_RELOAD)
-> -		igt_require_f(igt_kmod_is_loaded("mei_hdcp"),
-> -			      "mei_hdcp module is not loaded\n");
-> +	mode = igt_output_get_mode(output);
->   
-> -	for_each_connected_output(display, output) {
-> +	/*
-> +	 * TODO: Add logic to use the highest possible modes on each output.
-> +	 * Currently using 2k modes by default on all the outputs.
-> +	 */
-> +	igt_debug("Before mode override: Output %s Mode hdisplay %d Mode vdisplay %d\n",
-> +		   output->name, mode->hdisplay, mode->vdisplay);
-> +
-> +	if (mode->hdisplay > 1920 && mode->vdisplay > 1080) {
-> +		for (i = 0; i < c->count_modes; i++) {
-> +			if (c->modes[i].hdisplay <= 1920 && c->modes[i].vdisplay <= 1080) {
-> +				mode = &c->modes[i];
-> +				igt_output_override_mode(output, mode);
-> +				break;
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_debug("After mode overide: Output %s Mode hdisplay %d Mode vdisplay %d\n",
-> +		   output->name, mode->hdisplay, mode->vdisplay);
-> +
-> +	width = mode->hdisplay;
-> +	height = mode->vdisplay;
-> +
-> +	igt_output_set_pipe(output, pipe);
-> +	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +	igt_plane_set_fb(primary, NULL);
-> +	igt_plane_set_fb(primary, pipe % 2 ? &data.red : &data.green);
-> +	igt_fb_set_size(pipe % 2 ? &data.red : &data.green, primary, width, height);
-> +	igt_plane_set_size(primary, width, height);
-> +}
-> +
-> +static bool output_hdcp_capable(igt_output_t *output, int content_type)
-> +{
->   		if (!output->props[IGT_CONNECTOR_CONTENT_PROTECTION])
-> -			continue;
-> +			return false;
->   
->   		if (!output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE] &&
->   		    content_type)
-> -			continue;
-> -
-> -		igt_info("CP Test execution on %s\n", output->name);
-> +			return false;
->   
->   		if (content_type && !sink_hdcp2_capable(output)) {
->   			igt_info("\tSkip %s (Sink has no HDCP2.2 support)\n",
->   				 output->name);
-> -			continue;
-> +			return false;
->   		} else if (!sink_hdcp_capable(output)) {
->   			igt_info("\tSkip %s (Sink has no HDCP support)\n",
->   				 output->name);
-> -			continue;
-> +			return false;
->   		}
->   
-> +		return true;
-> +}
-> +
-> +static void
-> +test_content_protection(enum igt_commit_style s, int content_type)
-> +{
-> +	igt_display_t *display = &data.display;
-> +	igt_output_t *output;
-> +	int valid_tests = 0;
-> +
-> +	if (data.cp_tests & CP_MEI_RELOAD)
-> +		igt_require_f(igt_kmod_is_loaded("mei_hdcp"),
-> +			      "mei_hdcp module is not loaded\n");
-> +
-> +	for_each_connected_output(display, output) {
-> +		if (!output_hdcp_capable(output, content_type))
-> +			continue;
-> +
->   		test_content_protection_on_output(output, s, content_type);
->   		valid_tests++;
->   	}
-> @@ -496,6 +536,151 @@ test_content_protection(enum igt_commit_style s, int content_type)
->   	igt_require_f(valid_tests, "No connector found with HDCP capability\n");
->   }
->   
-> +static int parse_path_blob(char *blob_data)
-> +{
-> +	int connector_id;
-> +	char *encoder;
-> +
-> +	encoder = strtok(blob_data, ":");
-> +	igt_assert_f(!strcmp(encoder, "mst"), "PATH connector property expected to have 'mst'\n");
-> +
-> +	connector_id = atoi(strtok(NULL, "-"));
-> +
-> +	return connector_id;
-> +}
-> +
-> +static bool output_is_dp_mst(igt_output_t *output, int i)
-> +{
-> +	drmModePropertyBlobPtr path_blob = NULL;
-> +	uint64_t path_blob_id;
-> +	drmModeConnector *connector = output->config.connector;
-> +	struct kmstest_connector_config config;
-> +	const char *encoder;
-> +	int connector_id;
-> +	static int prev_connector_id;
-> +
-> +	kmstest_get_connector_config(data.drm_fd, output->config.connector->connector_id, -1, &config);
-> +	encoder = kmstest_encoder_type_str(config.encoder->encoder_type);
-> +
-> +	if (strcmp(encoder, "DP MST"))
-> +		return false;
-> +
-> +	igt_assert(kmstest_get_property(data.drm_fd, connector->connector_id,
-> +		   DRM_MODE_OBJECT_CONNECTOR, "PATH", NULL,
-> +		   &path_blob_id, NULL));
-> +
-> +	igt_assert(path_blob = drmModeGetPropertyBlob(data.drm_fd, path_blob_id));
-> +
-> +	connector_id = parse_path_blob((char *) path_blob->data);
-> +
-> +	/*
-> +	 * Discarding outputs of other DP MST topology.
-> +	 * Testing only on outputs on the topology we got previously
-> +	 */
-> +	if (i == 0) {
-> +		prev_connector_id = connector_id;
-> +	} else {
-> +		if (connector_id != prev_connector_id)
-> +			return false;
-> +	}
-> +
-> +	drmModeFreePropertyBlob(path_blob);
-> +
-> +	return true;
-> +}
-> +
-> +static void test_cp_lic_on_mst(igt_output_t *mst_outputs[], int valid_outputs, bool first_output)
-> +{
-> +	int ret, count;
-> +	uint64_t val;
-> +
-> +	/* Only wait for the first output, this optimizes the test execution time */
-> +	ret = wait_for_prop_value(mst_outputs[first_output], CP_DESIRED, LIC_PERIOD_MSEC);
-> +	igt_assert_f(!ret, "Content Protection LIC Failed on %s\n", mst_outputs[0]->name);
-> +
-> +	for (count = first_output + 1; count < valid_outputs; count++) {
-> +		val = igt_output_get_prop(mst_outputs[count], IGT_CONNECTOR_CONTENT_PROTECTION);
-> +		igt_assert_f(val != CP_DESIRED, "Content Protection LIC Failed on %s\n", mst_outputs[count]->name);
-> +	}
-> +}
-> +
-> +static void
-> +test_content_protection_mst(int content_type)
-> +{
-> +	igt_display_t *display = &data.display;
-> +	igt_output_t *output;
-> +	int valid_outputs = 0, dp_mst_outputs = 0, ret, count, max_pipe = 0, i;
-> +	enum pipe pipe;
-> +	igt_output_t *mst_output[IGT_MAX_PIPES], *hdcp_mst_output[IGT_MAX_PIPES];
-> +
-> +	for_each_pipe(display, pipe)
-> +		max_pipe++;
-> +
-> +	pipe = PIPE_A;
-> +
-> +	for_each_connected_output(display, output) {
-> +		if (!output_is_dp_mst(output, dp_mst_outputs))
-> +			continue;
-> +
-> +		igt_assert_f(igt_pipe_connector_valid(pipe, output), "Output-pipe combination invalid\n");
-> +
-> +		prepare_modeset_on_mst_output(output, pipe);
-> +		mst_output[dp_mst_outputs++] = output;
-> +
-> +		pipe++;
-> +
-> +		if (pipe > max_pipe)
-> +			break;
-> +	}
-> +
-> +	igt_require_f(dp_mst_outputs > 1, "No DP MST set up with >= 2 outputs found in a single topology\n");
-> +
-> +	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
-> +	igt_require_f(ret == 0, "Commit failure during MST modeset\n");
-> +
-> +	for (count = 0; count < dp_mst_outputs; count++) {
-> +		if (!output_hdcp_capable(mst_output[count], content_type))
-> +			continue;
-> +
-> +		hdcp_mst_output[valid_outputs++] = mst_output[count];
-> +	}
-> +
-> +	igt_require_f(valid_outputs > 1, "DP MST outputs do not have the required HDCP support\n");
-> +
-> +	for (count = 0; count < valid_outputs; count++) {
-> +		igt_output_set_prop_value(hdcp_mst_output[count], IGT_CONNECTOR_CONTENT_PROTECTION, CP_DESIRED);
-> +
-> +		if (output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE])
-> +			igt_output_set_prop_value(hdcp_mst_output[count], IGT_CONNECTOR_HDCP_CONTENT_TYPE, content_type);
-> +	}
-> +
-> +	igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +	for (count = 0; count < valid_outputs; count++) {
-> +		ret = wait_for_prop_value(hdcp_mst_output[count], CP_ENABLED, KERNEL_AUTH_TIME_ALLOWED_MSEC);
-> +		igt_assert_f(ret, "Content Protection not enabled on %s\n", hdcp_mst_output[count]->name);
-> +	}
-> +
-> +	if (data.cp_tests & CP_LIC)
-> +		test_cp_lic_on_mst(hdcp_mst_output, valid_outputs, 0);
-> +
-> +	/*
-> +	 * Verify if CP is still enabled on other outputs by disabling CP on the first output.
-> +	 */
-> +	igt_debug("CP Prop being UNDESIRED on %s\n", hdcp_mst_output[0]->name);
-> +	test_cp_disable(hdcp_mst_output[0], COMMIT_ATOMIC);
-> +
-> +	/* CP is expected to be still enabled on other outputs*/
-> +	for (i = 1; i < valid_outputs; i++) {
-> +		/* Wait for the timeout to verify CP is not disabled */
-> +		ret = wait_for_prop_value(hdcp_mst_output[i], CP_UNDESIRED, KERNEL_DISABLE_TIME_ALLOWED_MSEC);
-> +		igt_assert_f(!ret, "Content Protection not enabled on %s\n", hdcp_mst_output[i]->name);
-> +	}
-> +
-> +	if (data.cp_tests & CP_LIC)
-> +		test_cp_lic_on_mst(hdcp_mst_output, valid_outputs, 1);
-> +}
-> +
->   static void test_content_protection_cleanup(void)
->   {
->   	igt_display_t *display = &data.display;
-> @@ -514,6 +699,31 @@ static void test_content_protection_cleanup(void)
->   		igt_info("CP Prop being UNDESIRED on %s\n", output->name);
->   		test_cp_disable(output, COMMIT_ATOMIC);
->   	}
-> +
-> +	igt_remove_fb(data.drm_fd, &data.red);
-> +	igt_remove_fb(data.drm_fd, &data.green);
-> +}
-> +
-> +static void create_fbs(void)
-> +{
-> +	igt_output_t *output;
-> +	int width, height;
-> +	drmModeModeInfo *mode;
-> +
-> +	for_each_connected_output(&data.display, output) {
-> +		mode = igt_output_get_mode(output);
-> +		igt_assert(mode);
-> +
-> +		width = max(width, mode->hdisplay);
-> +		height = max(height, mode->vdisplay);
-> +	}
-> +
-> +	igt_create_color_fb(data.drm_fd, width, height,
-> +			    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
-> +			    1.f, 0.f, 0.f, &data.red);
-> +	igt_create_color_fb(data.drm_fd, width, height,
-> +			    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
-> +			    0.f, 1.f, 0.f, &data.green);
->   }
->   
->   igt_main
-> @@ -522,6 +732,8 @@ igt_main
->   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
->   
->   		igt_display_require(&data.display, data.drm_fd);
-> +
-> +		create_fbs();
->   	}
->   
->   	igt_subtest("legacy") {
-> @@ -592,6 +804,28 @@ igt_main
->   		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
->   	}
->   
-> +	igt_describe("Test Content protection over DP MST");
-> +	igt_subtest("dp-mst-type-0") {
-> +		test_content_protection_mst(HDCP_CONTENT_TYPE_0);
-> +	}
-> +
-> +	igt_describe("Test Content protection over DP MST with LIC");
-> +	igt_subtest("dp-mst-lic-type-0") {
-> +		data.cp_tests = CP_LIC;
-> +		test_content_protection_mst(HDCP_CONTENT_TYPE_0);
-> +	}
-> +
-> +	igt_describe("Test Content protection over DP MST");
-> +	igt_subtest("dp-mst-type-1") {
-> +		test_content_protection_mst(HDCP_CONTENT_TYPE_1);
-> +	}
-> +
-> +	igt_describe("Test Content protection over DP MST with LIC");
-> +	igt_subtest("dp-mst-lic-type-1") {
-> +		data.cp_tests = CP_LIC;
-> +		test_content_protection_mst(HDCP_CONTENT_TYPE_1);
-> +	}
-> +
->   	igt_fixture {
->   		test_content_protection_cleanup();
->   		igt_display_fini(&data.display);
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+QXMgd2UgYXJlIHJlc3RyaWN0aW5nIHRoZSB2cnIgbWF4IHRvIGN1cnJlbnQgbW9kZSB2cmVmcmVz
+aCwKd2UgYXJlIG5vdCBjb3ZlcmluZyB0aGUgZnVsbCB2cnIgcmFuZ2Ugd2l0aCBkZWZhdWx0IG1v
+ZGUuCgpTbywgaW5zdGVhZCBvZiBydW5uaW5nIHRlc3RzIG9uIGRlZmF1bHQgbW9kZSwgbG9vcCB0
+aHJvdWdoIHRoZQphbGwgY29ubmVjdG9yIG1vZGVzIGFuZCBmaW5kIHRoZSBtb2RlIHdpdGggbWF4
+IHJlZnJlc2ggcmF0ZSB0bwpleGVyY2lzZSBmdWxsIHZyciByYW5nZS4KCkNjOiBWaWxsZSBTeXJq
+w6Rsw6QgPHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPgpDYzogTmljaG9sYXMgS2F6bGF1
+c2thcyA8bmljaG9sYXMua2F6bGF1c2thc0BhbWQuY29tPgpTdWdnZXN0ZWQtYnk6IE1hbmFzaSBO
+YXZhcmUgPG1hbmFzaS5kLm5hdmFyZUBpbnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IEJoYW51cHJh
+a2FzaCBNb2RlbSA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNvbT4KLS0tCiB0ZXN0cy9rbXNf
+dnJyLmMgfCA0OCArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0t
+LS0KIDEgZmlsZSBjaGFuZ2VkLCA0MiBpbnNlcnRpb25zKCspLCA2IGRlbGV0aW9ucygtKQoKZGlm
+ZiAtLWdpdCBhL3Rlc3RzL2ttc192cnIuYyBiL3Rlc3RzL2ttc192cnIuYwppbmRleCBlNGVhNzRj
+MTcuLmU5MDcxYzIyMCAxMDA2NDQKLS0tIGEvdGVzdHMva21zX3Zyci5jCisrKyBiL3Rlc3RzL2tt
+c192cnIuYwpAQCAtMzMsNiArMzMsMTMgQEAKICAqLwogI2RlZmluZSBURVNUX0RVUkFUSU9OX05T
+ICg1MDAwMDAwMDAwdWxsKQogCisjZGVmaW5lIERSTV9NT0RFX0ZNVCAgICAiXCIlc1wiOiAlZCAl
+ZCAlZCAlZCAlZCAlZCAlZCAlZCAlZCAlZCAweCV4IDB4JXgiCisjZGVmaW5lIERSTV9NT0RFX0FS
+RyhtKSBcCisJKG0pLT5uYW1lLCAobSktPnZyZWZyZXNoLCAobSktPmNsb2NrLCBcCisJKG0pLT5o
+ZGlzcGxheSwgKG0pLT5oc3luY19zdGFydCwgKG0pLT5oc3luY19lbmQsIChtKS0+aHRvdGFsLCBc
+CisJKG0pLT52ZGlzcGxheSwgKG0pLT52c3luY19zdGFydCwgKG0pLT52c3luY19lbmQsIChtKS0+
+dnRvdGFsLCBcCisJKG0pLT50eXBlLCAobSktPmZsYWdzCisKIGVudW0gewogCVRFU1RfTk9ORSA9
+IDAsCiAJVEVTVF9EUE1TID0gMSA8PCAwLApAQCAtMTExLDYgKzExOCwyNiBAQCBzdGF0aWMgdWlu
+dDY0X3QgcmF0ZV9mcm9tX3JlZnJlc2godWludDY0X3QgcmVmcmVzaCkKIAlyZXR1cm4gTlNFQ1Nf
+UEVSX1NFQyAvIHJlZnJlc2g7CiB9CiAKKy8qIEluc3RlYWQgb2YgcnVubmluZyBvbiBkZWZhdWx0
+IG1vZGUsIGxvb3AgdGhyb3VnaCB0aGUgY29ubmVjdG9yIG1vZGVzCisgKiBhbmQgZmluZCB0aGUg
+bW9kZSB3aXRoIG1heCByZWZyZXNoIHJhdGUgdG8gZXhlcmNpc2UgZnVsbCB2cnIgcmFuZ2UuCisg
+Ki8KK3N0YXRpYyBkcm1Nb2RlTW9kZUluZm8gb3V0cHV0X21vZGVfd2l0aF9tYXhyYXRlKGlndF9v
+dXRwdXRfdCAqb3V0cHV0KQoreworCWludCBpOworCWRybU1vZGVDb25uZWN0b3JQdHIgY29ubmVj
+dG9yID0gb3V0cHV0LT5jb25maWcuY29ubmVjdG9yOworCWRybU1vZGVNb2RlSW5mbyBtb2RlID0g
+KmlndF9vdXRwdXRfZ2V0X21vZGUob3V0cHV0KTsKKworCWlndF9kZWJ1ZygiRGVmYXVsdCBNb2Rl
+ICIgRFJNX01PREVfRk1UICJcbiIsIERSTV9NT0RFX0FSRygmbW9kZSkpOworCisJZm9yIChpID0g
+MDsgaSA8IGNvbm5lY3Rvci0+Y291bnRfbW9kZXM7IGkrKykKKwkJaWYgKGNvbm5lY3Rvci0+bW9k
+ZXNbaV0udnJlZnJlc2ggPiBtb2RlLnZyZWZyZXNoKQorCQkJbW9kZSA9IGNvbm5lY3Rvci0+bW9k
+ZXNbaV07CisKKwlpZ3RfZGVidWcoIk92ZXJyaWRlIE1vZGUgIiBEUk1fTU9ERV9GTVQgIlxuIiwg
+RFJNX01PREVfQVJHKCZtb2RlKSk7CisKKwlyZXR1cm4gbW9kZTsKK30KKwogLyogUmVhZCBtaW4g
+YW5kIG1heCB2cnIgcmFuZ2UgZnJvbSB0aGUgY29ubmVjdG9yIGRlYnVnZnMuCiAgKiAgLSBtaW4g
+cmFuZ2Ugc2hvdWxkIGJlIGxlc3MgdGhhbiB0aGUgY3VycmVudCBtb2RlIHZmcmVxCiAgKiAgLSBp
+ZiBtYXggcmFuZ2UgaXMgZ3JhdGVyIHRoYW4gdGhlIGN1cnJlbnQgbW9kZSB2ZnJlcSwgY29uc2lk
+ZXIKQEAgLTE3Niw3ICsyMDMsNyBAQCBzdGF0aWMgdm9pZCBzZXRfdnJyX29uX3BpcGUoZGF0YV90
+ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSwgYm9vbCBlbmFibGVkKQogLyogUHJlcGFyZSB0aGUgZGlz
+cGxheSBmb3IgdGVzdGluZyBvbiB0aGUgZ2l2ZW4gcGlwZS4gKi8KIHN0YXRpYyB2b2lkIHByZXBh
+cmVfdGVzdChkYXRhX3QgKmRhdGEsIGlndF9vdXRwdXRfdCAqb3V0cHV0LCBlbnVtIHBpcGUgcGlw
+ZSkKIHsKLQlkcm1Nb2RlTW9kZUluZm8gbW9kZSA9ICppZ3Rfb3V0cHV0X2dldF9tb2RlKG91dHB1
+dCk7CisJZHJtTW9kZU1vZGVJbmZvIG1vZGUgPSBvdXRwdXRfbW9kZV93aXRoX21heHJhdGUob3V0
+cHV0KTsKIAljYWlyb190ICpjcjsKIAogCS8qIFJlc2V0IG91dHB1dCAqLwpAQCAtMjAyLDYgKzIy
+OSw3IEBAIHN0YXRpYyB2b2lkIHByZXBhcmVfdGVzdChkYXRhX3QgKmRhdGEsIGlndF9vdXRwdXRf
+dCAqb3V0cHV0LCBlbnVtIHBpcGUgcGlwZSkKIAkvKiBUYWtlIGNhcmUgb2YgYW55IHJlcXVpcmVk
+IG1vZGVzZXR0aW5nIGJlZm9yZSB0aGUgdGVzdCBiZWdpbnMuICovCiAJZGF0YS0+cHJpbWFyeSA9
+IGlndF9vdXRwdXRfZ2V0X3BsYW5lX3R5cGUob3V0cHV0LCBEUk1fUExBTkVfVFlQRV9QUklNQVJZ
+KTsKIAlpZ3RfcGxhbmVfc2V0X2ZiKGRhdGEtPnByaW1hcnksICZkYXRhLT5mYjApOworCWlndF9v
+dXRwdXRfb3ZlcnJpZGVfbW9kZShvdXRwdXQsICZtb2RlKTsKIAogCS8qIENsZWFyIHZycl9lbmFi
+bGVkIHN0YXRlIGJlZm9yZSBlbmFibGluZyBpdCwgYmVjYXVzZQogCSAqIGl0IG1pZ2h0IGJlIGxl
+ZnQgZW5hYmxlZCBpZiB0aGUgcHJldmlvdXMgdGVzdCBmYWlscy4KQEAgLTI2OSw2ICsyOTcsOSBA
+QCBmbGlwX2FuZF9tZWFzdXJlKGRhdGFfdCAqZGF0YSwgaWd0X291dHB1dF90ICpvdXRwdXQsIGVu
+dW0gcGlwZSBwaXBlLAogCQkgKi8KIAkJZXZlbnRfbnMgPSBnZXRfa2VybmVsX2V2ZW50X25zKGRh
+dGEsIERSTV9FVkVOVF9GTElQX0NPTVBMRVRFKTsKIAorCQlpZ3RfZGVidWcoImV2ZW50X25zIC0g
+bGFzdF9ldmVudF9uczogJSJQUkl1NjQiXG4iLAorCQkJCQkJKGV2ZW50X25zIC0gbGFzdF9ldmVu
+dF9ucykpOworCiAJCS8qCiAJCSAqIENoZWNrIGlmIHRoZSBkaWZmZXJlbmNlIGJldHdlZW4gdGhl
+IHR3byBmbGlwIHRpbWVzdGFtcHMKIAkJICogd2FzIHdpdGhpbiB0aGUgcmVxdWlyZWQgdGhyZXNo
+b2xkIGZyb20gdGhlIGV4cGVjdGVkIHJhdGUuCkBAIC0zMTYsMTUgKzM0NywxOSBAQCBzdGF0aWMg
+dm9pZAogdGVzdF9iYXNpYyhkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlLCBpZ3Rfb3V0cHV0
+X3QgKm91dHB1dCwgdWludDMyX3QgZmxhZ3MpCiB7CiAJdWludDMyX3QgcmVzdWx0OwotCXZ0ZXN0
+X25zX3QgdnRlc3RfbnMgPSBnZXRfdGVzdF9yYXRlX25zKGRhdGEsIG91dHB1dCk7Ci0JcmFuZ2Vf
+dCByYW5nZSA9IGdldF92cnJfcmFuZ2UoZGF0YSwgb3V0cHV0KTsKLQl1aW50NjRfdCByYXRlID0g
+dnRlc3RfbnMubWlkOworCXZ0ZXN0X25zX3QgdnRlc3RfbnM7CisJcmFuZ2VfdCByYW5nZTsKKwl1
+aW50NjRfdCByYXRlOworCisJcHJlcGFyZV90ZXN0KGRhdGEsIG91dHB1dCwgcGlwZSk7CisKKwl2
+dGVzdF9ucyA9IGdldF90ZXN0X3JhdGVfbnMoZGF0YSwgb3V0cHV0KTsKKwlyYW5nZSA9IGdldF92
+cnJfcmFuZ2UoZGF0YSwgb3V0cHV0KTsKKwlyYXRlID0gdnRlc3RfbnMubWlkOwogCiAJaWd0X2lu
+Zm8oIlZSUiBUZXN0IGV4ZWN1dGlvbiBvbiAlcywgUElQRV8lcyB3aXRoIFZSUiByYW5nZTogKCV1
+LSV1KSBIelxuIiwKIAkJIG91dHB1dC0+bmFtZSwga21zdGVzdF9waXBlX25hbWUocGlwZSksIHJh
+bmdlLm1pbiwgcmFuZ2UubWF4KTsKIAotCXByZXBhcmVfdGVzdChkYXRhLCBvdXRwdXQsIHBpcGUp
+OwotCiAJc2V0X3Zycl9vbl9waXBlKGRhdGEsIHBpcGUsIDEpOwogCiAJLyoKQEAgLTM5NCw2ICs0
+MjksNyBAQCB0ZXN0X2Jhc2ljKGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUsIGlndF9vdXRw
+dXRfdCAqb3V0cHV0LCB1aW50MzJfdCBmbGFncykKIAkvKiBDbGVhbi11cCAqLwogCWlndF9wbGFu
+ZV9zZXRfZmIoZGF0YS0+cHJpbWFyeSwgTlVMTCk7CiAJaWd0X291dHB1dF9zZXRfcGlwZShvdXRw
+dXQsIFBJUEVfTk9ORSk7CisJaWd0X291dHB1dF9vdmVycmlkZV9tb2RlKG91dHB1dCwgTlVMTCk7
+CiAJaWd0X2Rpc3BsYXlfY29tbWl0MigmZGF0YS0+ZGlzcGxheSwgQ09NTUlUX0FUT01JQyk7CiAK
+IAlpZ3RfcmVtb3ZlX2ZiKGRhdGEtPmRybV9mZCwgJmRhdGEtPmZiMSk7Ci0tIAoyLjIwLjEKCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFp
+bGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
