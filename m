@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0BAE06E50D
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 724216E50D
  for <igt-dev@lists.freedesktop.org>; Mon, 22 Feb 2021 14:09:41 +0000 (UTC)
-Date: Mon, 22 Feb 2021 15:07:16 +0100
+Date: Mon, 22 Feb 2021 15:09:22 +0100
 From: Katarzyna Dec <katarzyna.dec@intel.com>
-Message-ID: <20210222140716.GD29585@kdec5-desk.ger.corp.intel.com>
-References: <20210110112153.476908-1-apoorva1.singh@intel.com>
+Message-ID: <20210222140922.GE29585@kdec5-desk.ger.corp.intel.com>
+References: <20210122052856.770946-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210110112153.476908-1-apoorva1.singh@intel.com>
+In-Reply-To: <20210122052856.770946-1-apoorva1.singh@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t,
- v2] i915/i915_hangman: Added test description for test case
+ v2] i915/gem_ctx_create: Added test description for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,74 +26,114 @@ To: apoorva1.singh@intel.com
 Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Sun, Jan 10, 2021 at 04:51:53PM +0530, apoorva1.singh@intel.com wrote:
+On Fri, Jan 22, 2021 at 10:58:56AM +0530, apoorva1.singh@intel.com wrote:
 > From: Apoorva Singh <apoorva1.singh@intel.com>
 > 
 > Added test and subtests description
 > 
-> v2: Added descriptions for newly added subtests
+> v2: Modified description to be more precise
 > 
 > Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
 > Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
 > Cc: Dec, Katarzyna <katarzyna.dec@intel.com>
 > Cc: Petri Latvala <petri.latvala@intel.com>
 > ---
->  tests/i915/i915_hangman.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+>  tests/i915/gem_ctx_create.c | 29 +++++++++++++++++++++++++++++
+>  1 file changed, 29 insertions(+)
 > 
-> diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-> index 72e4d8b8..d8004c55 100644
-> --- a/tests/i915/i915_hangman.c
-> +++ b/tests/i915/i915_hangman.c
-> @@ -38,6 +38,8 @@
->  #include "igt_debugfs.h"
+> diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
+> index 9a512a03..b8f2fb00 100644
+> --- a/tests/i915/gem_ctx_create.c
+> +++ b/tests/i915/gem_ctx_create.c
+> @@ -35,6 +35,8 @@
+>  #include "igt_rand.h"
 >  #include "sw_sync.h"
 >  
-> +IGT_TEST_DESCRIPTION("Tests the handling of hang scenarios");
+> +IGT_TEST_DESCRIPTION("Test the context create ioctls");
 > +
->  #ifndef I915_PARAM_CMD_PARSER_VERSION
->  #define I915_PARAM_CMD_PARSER_VERSION       28
->  #endif
-> @@ -324,9 +326,11 @@ igt_main
->  		igt_require(has_error_state(sysfs));
+>  #define ENGINE_FLAGS  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
+>  
+>  static unsigned all_engines[I915_EXEC_RING_MASK + 1];
+> @@ -582,6 +584,7 @@ igt_main
+>  		igt_fork_hang_detector(fd);
 >  	}
 >  
-> +	igt_describe("Validates the error state after manually triggering a hang");
->  	igt_subtest("error-state-basic")
->  		test_error_state_basic();
+> +	igt_describe("Test random context creation");
+>  	igt_subtest("basic") {
+>  		memset(&create, 0, sizeof(create));
+>  		create.ctx_id = rand();
+> @@ -591,41 +594,67 @@ igt_main
+>  		gem_context_destroy(fd, create.ctx_id);
+>  	}
 >  
-> +	igt_describe("For each engine, validates the error state after injecting a hanging batch");
->  	igt_subtest_with_dynamic("error-state-capture") {
->  		__for_each_physical_engine(device, e) {
+> +	igt_describe("Verify valid and invalid context extensions");
+>  	igt_subtest("ext-param")
+>  		basic_ext_param(fd);
+> +
+> +	igt_describe("Set, validate and execute particular context params");
+>  	igt_subtest("iris-pipeline")
+>  		iris_pipeline(fd);
+>  
+> +	igt_describe("Create contexts upto available RAM size, check the average "
+> +	       "performance of their execution on multiple parallel threads");
+>  	igt_subtest("maximum-mem")
+>  		maximum(fd, ncpus, CHECK_RAM);
+> +
+> +	igt_describe("Create contexts upto available RAM+SWAP size, check the average "
+> +	       "performance of their execution on multiple parallel threads");
+>  	igt_subtest("maximum-swap")
+>  		maximum(fd, ncpus, CHECK_RAM | CHECK_SWAP);
+>  
+> +	igt_describe("Exercise implicit per-fd context creation");
+>  	igt_subtest("basic-files")
+>  		files(fd, 2, 1);
+> +
+> +	igt_describe("Exercise implicit per-fd context creation on 1 CPU for long duration");
+>  	igt_subtest("files")
+>  		files(fd, 20, 1);
+> +
+> +	igt_describe("Exercise implicit per-fd context creation on all CPUs for long duration");
+>  	igt_subtest("forked-files")
+>  		files(fd, 20, ncpus);
+>  
+> +	igt_describe("Check the average performance of context creation and "
+> +	       "it's execution using all engines");
+>  	/* NULL value means all engines */
+>  	igt_subtest("active-all")
+>  		active(fd, NULL, 20, 1);
+> +
+> +	igt_describe("Check the average performance of context creation and it's execution "
+> +	       "using all engines on multiple parallel threads");
+>  	igt_subtest("forked-active-all")
+>  		active(fd, NULL, 20, ncpus);
+>  
+> +	igt_describe("For each engine check the average performance of context creation "
+> +	       "and execution");
+>  	igt_subtest_with_dynamic("active") {
+>  		__for_each_physical_engine(fd, e) {
 >  			igt_dynamic_f("%s", e->name)
-> @@ -334,6 +338,7 @@ igt_main
+>  				active(fd, e, 20, 1);
 >  		}
 >  	}
->  
-> +	igt_describe("Verify that other engines remain unaffected after an engine is hanged");
->  	igt_subtest_with_dynamic("engine-hang") {
->                  int has_gpu_reset = 0;
->  		struct drm_i915_getparam gp = {
-> @@ -352,6 +357,8 @@ igt_main
+> +
+> +	igt_describe("For each engine check the average performance of context creation "
+> +	       "and execution on multiple parallel threads");
+>  	igt_subtest_with_dynamic("forked-active") {
+>  		__for_each_physical_engine(fd, e) {
+>  			igt_dynamic_f("%s", e->name)
+>  				active(fd, e, 20, ncpus);
 >  		}
 >  	}
->  
-> +	igt_describe("Verify that other engines remain unaffected after a hang with invalid cs"
-> +	       "is injected on an engine");
->  	igt_subtest_with_dynamic("engine-error") {
->  		int has_gpu_reset = 0;
->  		struct drm_i915_getparam gp = {
-> @@ -369,6 +376,7 @@ igt_main
->  		}
->  	}
->  
-> +	igt_describe("Verify that execution of unterminated batch buffer triggers a hang");
->  	igt_subtest("hangcheck-unterminated")
->  		hangcheck_unterminated();
+> +
+> +	igt_describe("For each engine check the average performance of context creation "
+> +	       "and execution while all other engines are hogging the resources");
+>  	igt_subtest_with_dynamic("hog") {
+>  		__for_each_physical_engine(fd, e) {
+>  			igt_dynamic_f("%s", e->name)
+Thanks for update!
 LGTM :)
 Acked-by: Katarzyna Dec <katarzyna.dec@intel.com>
 Kasia :)
->  
 > -- 
 > 2.25.1
 > 
