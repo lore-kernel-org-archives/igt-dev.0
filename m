@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 48B186E862
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Feb 2021 21:10:02 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Tue, 23 Feb 2021 23:09:50 +0200
-Message-Id: <20210223210950.13515-4-ville.syrjala@linux.intel.com>
-In-Reply-To: <20210223210950.13515-1-ville.syrjala@linux.intel.com>
-References: <20210223210950.13515-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 4/4] tests/kms_ccs: Test random CCS data
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 24 Feb 2021 07:50:05 -0000
+Message-ID: <161415300538.17225.9593276346604880885@emeril.freedesktop.org>
+References: <20210223134924.10045-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20210223134924.10045-1-ville.syrjala@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Frmfb=3A_Use_COMMIT?=
+ =?utf-8?q?=5FUNIVERSAL_for_overlay/cursor_planes?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,82 +15,167 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1047509082=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Ville Syrjala <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KCkZp
-bGwgdGhlIGZiIHdpdGggcmFuZG9tIGRhdGEgdG8gbWFrZSBzdXJlIHRoZSBodyBkb2Vzbid0CmZh
-bGwgb3ZlciB3aGVuIGZlZCB3aXRoIGdhcmJhZ2UuCgpTaWduZWQtb2ZmLWJ5OiBWaWxsZSBTeXJq
-w6Rsw6QgPHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPgotLS0KIHRlc3RzL2ttc19jY3Mu
-YyB8IDUzICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0K
-IDEgZmlsZSBjaGFuZ2VkLCA0OCBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQoKZGlmZiAt
-LWdpdCBhL3Rlc3RzL2ttc19jY3MuYyBiL3Rlc3RzL2ttc19jY3MuYwppbmRleCBjMGIwMjQ3NDRh
-ZDEuLjMwZTBmZGI1NGY5ZSAxMDA2NDQKLS0tIGEvdGVzdHMva21zX2Njcy5jCisrKyBiL3Rlc3Rz
-L2ttc19jY3MuYwpAQCAtNDAsNiArNDAsNyBAQCBlbnVtIHRlc3RfZmxhZ3MgewogCVRFU1RfTk9f
-QVVYX0JVRkZFUgkJPSAxIDw8IDUsCiAJVEVTVF9CQURfQ0NTX0hBTkRMRQkJPSAxIDw8IDYsCiAJ
-VEVTVF9CQURfQVVYX1NUUklERQkJPSAxIDw8IDcsCisJVEVTVF9SQU5ET00JCQk9IDEgPDwgOCwK
-IH07CiAKICNkZWZpbmUgVEVTVF9GQUlMX09OX0FEREZCMiBcCkBAIC01Miw2ICs1Myw3IEBAIGVu
-dW0gdGVzdF9mYl9mbGFncyB7CiAJRkJfTUlTQUxJR05fQVVYX1NUUklERQkJPSAxIDw8IDIsCiAJ
-RkJfU01BTExfQVVYX1NUUklERQkJPSAxIDw8IDMsCiAJRkJfWkVST19BVVhfU1RSSURFCQk9IDEg
-PDwgNCwKKwlGQl9SQU5ET00JCQk9IDEgPDwgNSwKIH07CiAKIHR5cGVkZWYgc3RydWN0IHsKQEAg
-LTY0LDYgKzY2LDggQEAgdHlwZWRlZiBzdHJ1Y3QgewogCWlndF9waXBlX2NyY190ICpwaXBlX2Ny
-YzsKIAl1aW50MzJfdCBmb3JtYXQ7CiAJdWludDY0X3QgY2NzX21vZGlmaWVyOworCXVuc2lnbmVk
-IGludCBzZWVkOworCWJvb2wgdXNlcl9zZWVkOwogfSBkYXRhX3Q7CiAKIHN0YXRpYyBjb25zdCBz
-dHJ1Y3QgewpAQCAtMjA0LDYgKzIwOCwyMiBAQCBzdGF0aWMgdm9pZCBjaGVja19hbGxfY2NzX3Bs
-YW5lcyhpbnQgZHJtX2ZkLCBpZ3RfZmJfdCAqZmIsIGNvbnN0IGZsb2F0ICpjY19jb2xvcgogCX0K
-IH0KIAorc3RhdGljIHZvaWQgZmlsbF9mYl9yYW5kb20oaW50IGRybV9mZCwgaWd0X2ZiX3QgKmZi
-KQoreworCXZvaWQgKm1hcDsKKwl1aW50OF90ICpwOworCWludCBpOworCisJZ2VtX3NldF9kb21h
-aW4oZHJtX2ZkLCBmYi0+Z2VtX2hhbmRsZSwgSTkxNV9HRU1fRE9NQUlOX0NQVSwgSTkxNV9HRU1f
-RE9NQUlOX0NQVSk7CisKKwlwID0gbWFwID0gZ2VtX21tYXBfX2NwdShkcm1fZmQsIGZiLT5nZW1f
-aGFuZGxlLCAwLCBmYi0+c2l6ZSwgUFJPVF9XUklURSk7CisKKwlmb3IgKGkgPSAwOyBpIDwgZmIt
-PnNpemU7IGkrKykKKwkJcFtpXSA9IHJhbmQoKTsKKworCW11bm1hcChtYXAsIGZiLT5zaXplKTsK
-K30KKwogc3RhdGljIGludCBnZXRfY2NzX3BsYW5lX2luZGV4KHVpbnQzMl90IGZvcm1hdCkKIHsK
-IAlpbnQgaW5kZXggPSAxOwpAQCAtMzAzLDcgKzMyMywxMCBAQCBzdGF0aWMgdm9pZCBnZW5lcmF0
-ZV9mYihkYXRhX3QgKmRhdGEsIHN0cnVjdCBpZ3RfZmIgKmZiLAogCQl9CiAJfQogCi0JaWYgKCEo
-ZGF0YS0+ZmxhZ3MgJiBURVNUX0JBRF9QSVhFTF9GT1JNQVQpKSB7CisJaWYgKGRhdGEtPmZsYWdz
-ICYgVEVTVF9SQU5ET00pIHsKKwkJc3JhbmQoZGF0YS0+c2VlZCk7CisJCWZpbGxfZmJfcmFuZG9t
-KGRhdGEtPmRybV9mZCwgZmIpOworCX0gZWxzZSBpZiAoIShkYXRhLT5mbGFncyAmIFRFU1RfQkFE
-X1BJWEVMX0ZPUk1BVCkpIHsKIAkJaW50IGMgPSAhIWRhdGEtPnBsYW5lOwogCiAJCWlmIChpc19j
-Y3NfY2NfbW9kaWZpZXIobW9kaWZpZXIpKSB7CkBAIC00NjQsNiArNDg3LDkgQEAgc3RhdGljIGlu
-dCB0ZXN0X2NjcyhkYXRhX3QgKmRhdGEpCiAJCWRhdGEtPnBpcGVfY3JjID0gTlVMTDsKIAl9CiAK
-KwlpZiAoZGF0YS0+ZmxhZ3MgJiBURVNUX1JBTkRPTSkKKwkJdmFsaWRfdGVzdHMgKz0gdHJ5X2Nv
-bmZpZyhkYXRhLCBmYl9mbGFncyB8IEZCX0NPTVBSRVNTRUQgfCBGQl9SQU5ET00sIE5VTEwpOwor
-CiAJaWYgKGRhdGEtPmZsYWdzICYgVEVTVF9CQURfUElYRUxfRk9STUFUIHx8CiAJICAgIGRhdGEt
-PmZsYWdzICYgVEVTVF9CQURfUk9UQVRJT05fOTAgfHwKIAkgICAgZGF0YS0+ZmxhZ3MgJiBURVNU
-X05PX0FVWF9CVUZGRVIgfHwKQEAgLTUxMywxNCArNTM5LDE4IEBAIHN0YXRpYyB2b2lkIHRlc3Rf
-b3V0cHV0KGRhdGFfdCAqZGF0YSkKIAlpZ3RfcmVxdWlyZV9mKHZhbGlkX3Rlc3RzID4gMCwgIkND
-UyBub3Qgc3VwcG9ydGVkLCBza2lwcGluZ1xuIik7CiB9CiAKLXN0YXRpYyBkYXRhX3QgZGF0YTsK
-LQogc3RhdGljIGludCBvcHRfaGFuZGxlcihpbnQgb3B0LCBpbnQgb3B0X2luZGV4LCB2b2lkICpv
-cHRfZGF0YSkKIHsKKwlkYXRhX3QgKmRhdGEgPSBvcHRfZGF0YTsKKwogCXN3aXRjaCAob3B0KSB7
-CiAJY2FzZSAnYyc6CiAJCWNoZWNrX2Njc19wbGFuZXMgPSB0cnVlOwogCQlicmVhazsKKwljYXNl
-ICdzJzoKKwkJZGF0YS0+dXNlcl9zZWVkID0gdHJ1ZTsKKwkJZGF0YS0+c2VlZCA9IHN0cnRvdWwo
-b3B0YXJnLCBOVUxMLCAwKTsKKwkJYnJlYWs7CiAJZGVmYXVsdDoKIAkJcmV0dXJuIElHVF9PUFRf
-SEFORExFUl9FUlJPUjsKIAl9CkBAIC01MjgsMTEgKzU1OCwxNCBAQCBzdGF0aWMgaW50IG9wdF9o
-YW5kbGVyKGludCBvcHQsIGludCBvcHRfaW5kZXgsIHZvaWQgKm9wdF9kYXRhKQogCXJldHVybiBJ
-R1RfT1BUX0hBTkRMRVJfU1VDQ0VTUzsKIH0KIAorc3RhdGljIGRhdGFfdCBkYXRhOworCiBzdGF0
-aWMgY29uc3QgY2hhciAqaGVscF9zdHIgPQotIiAgLWNcdENoZWNrIHRoZSBwcmVzZW5jZSBvZiBj
-b21wcmVzc2lvbiBtZXRhLWRhdGFcbiIKKyIgIC1jXHRcdENoZWNrIHRoZSBwcmVzZW5jZSBvZiBj
-b21wcmVzc2lvbiBtZXRhLWRhdGFcbiIKKyIgIC1zIDxzZWVkPlx0U2VlZCBmb3IgcmFuZG9tIG51
-bWJlciBnZW5lcmF0b3JcbiIKIDsKIAotaWd0X21haW5fYXJncygiYyIsIE5VTEwsIGhlbHBfc3Ry
-LCBvcHRfaGFuZGxlciwgTlVMTCkKK2lndF9tYWluX2FyZ3MoImNzOiIsIE5VTEwsIGhlbHBfc3Ry
-LCBvcHRfaGFuZGxlciwgJmRhdGEpCiB7CiAJZW51bSBwaXBlIHBpcGU7CiAKQEAgLTU0NCw2ICs1
-NzcsOSBAQCBpZ3RfbWFpbl9hcmdzKCJjIiwgTlVMTCwgaGVscF9zdHIsIG9wdF9oYW5kbGVyLCBO
-VUxMKQogCQlpZ3RfcmVxdWlyZV9waXBlX2NyYyhkYXRhLmRybV9mZCk7CiAKIAkJaWd0X2Rpc3Bs
-YXlfcmVxdWlyZSgmZGF0YS5kaXNwbGF5LCBkYXRhLmRybV9mZCk7CisKKwkJaWYgKCFkYXRhLnVz
-ZXJfc2VlZCkKKwkJCWRhdGEuc2VlZCA9IHRpbWUoTlVMTCk7CiAJfQogCiAJZm9yX2VhY2hfcGlw
-ZV9zdGF0aWMocGlwZSkgewpAQCAtNTg4LDYgKzYyNCwxMyBAQCBpZ3RfbWFpbl9hcmdzKCJjIiwg
-TlVMTCwgaGVscF9zdHIsIG9wdF9oYW5kbGVyLCBOVUxMKQogCiAJCWRhdGEucGxhbmUgPSBOVUxM
-OwogCisJCWRhdGEuZmxhZ3MgPSBURVNUX1JBTkRPTTsKKwkJaWd0X2Rlc2NyaWJlKCJUZXN0IHJh
-bmRvbSBDQ1MgZGF0YSIpOworCQlpZ3Rfc3VidGVzdF9mKCJwaXBlLSVzLXJhbmRvbS1jY3MtZGF0
-YSIsIHBpcGVfbmFtZSkgeworCQkJaWd0X2luZm8oIlRlc3Rpbmcgd2l0aCBzZWVkICVkXG4iLCBk
-YXRhLnNlZWQpOworCQkJdGVzdF9vdXRwdXQoJmRhdGEpOworCQl9CisKIAkJZGF0YS5mbGFncyA9
-IFRFU1RfTk9fQVVYX0JVRkZFUjsKIAkJaWd0X2Rlc2NyaWJlKCJUZXN0IG1pc3NpbmcgQ0NTIGJ1
-ZmZlciB3aXRoIGdpdmVuIENDUyBtb2RpZmllciIpOwogCQlpZ3Rfc3VidGVzdF9mKCJwaXBlLSVz
-LW1pc3NpbmctY2NzLWJ1ZmZlciIsIHBpcGVfbmFtZSkKLS0gCjIuMjYuMgoKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QK
-aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5v
-cmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+--===============1047509082==
+Content-Type: multipart/alternative;
+ boundary="===============3310244754150277757=="
+
+--===============3310244754150277757==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: series starting with [i-g-t,1/2] tests/kms_rmfb: Use COMMIT_UNIVERSAL for overlay/cursor planes
+URL   : https://patchwork.freedesktop.org/series/87318/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9798 -> IGTPW_5548
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5548 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_tiled_blits@basic:
+    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +2 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9798/fi-tgl-y/igt@gem_tiled_blits@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/fi-tgl-y/igt@gem_tiled_blits@basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_hangman@error-state-basic:
+    - fi-tgl-y:           [DMESG-WARN][3] ([i915#402]) -> [PASS][4] +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9798/fi-tgl-y/igt@i915_hangman@error-state-basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/fi-tgl-y/igt@i915_hangman@error-state-basic.html
+
+  
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (45 -> 36)
+------------------------------
+
+  Missing    (9): fi-jsl-1 fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-cfl-guc fi-kbl-7500u fi-dg1-1 fi-bdw-samus fi-kbl-r 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6013 -> IGTPW_5548
+
+  CI-20190529: 20190529
+  CI_DRM_9798: 70e2e79cd772b97799f4cecd823539f452063562 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5548: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/index.html
+  IGT_6013: a6c7181747850161377dae5161d33c0675ab273e @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/index.html
+
+--===============3310244754150277757==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/kms_rmfb: Use COMMIT_UNIVERSAL for overlay/cursor planes</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87318/">https://patchwork.freedesktop.org/series/87318/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9798 -&gt; IGTPW_5548</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5548 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@gem_tiled_blits@basic:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9798/fi-tgl-y/igt@gem_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/fi-tgl-y/igt@gem_tiled_blits@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_hangman@error-state-basic:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9798/fi-tgl-y/igt@i915_hangman@error-state-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/fi-tgl-y/igt@i915_hangman@error-state-basic.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (45 -&gt; 36)</h2>
+<p>Missing    (9): fi-jsl-1 fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-cfl-guc fi-kbl-7500u fi-dg1-1 fi-bdw-samus fi-kbl-r </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6013 -&gt; IGTPW_5548</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9798: 70e2e79cd772b97799f4cecd823539f452063562 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5548: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/index.html<br />
+  IGT_6013: a6c7181747850161377dae5161d33c0675ab273e @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============3310244754150277757==--
+
+--===============1047509082==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1047509082==--
