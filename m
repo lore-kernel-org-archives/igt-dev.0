@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 692366E83D
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Feb 2021 03:39:32 +0000 (UTC)
+From: "Ram Moon, AnandX" <anandx.ram.moon@intel.com>
+Date: Wed, 24 Feb 2021 03:39:09 +0000
+Message-ID: <SA2PR11MB5068C9EE663FD1022EF5BD85AE9F9@SA2PR11MB5068.namprd11.prod.outlook.com>
+References: <20210223140804.56883-1-anandx.ram.moon@intel.com>
+ <a1b2b407-6ac6-0212-a1e0-33429820c4e3@linux.intel.com>
+In-Reply-To: <a1b2b407-6ac6-0212-a1e0-33429820c4e3@linux.intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 24 Feb 2021 07:50:05 -0000
-Message-ID: <161415300538.17225.9593276346604880885@emeril.freedesktop.org>
-References: <20210223134924.10045-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20210223134924.10045-1-ville.syrjala@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Frmfb=3A_Use_COMMIT?=
- =?utf-8?q?=5FUNIVERSAL_for_overlay/cursor_planes?=
+Subject: Re: [igt-dev] i915/gem_exec_fair: Fix failed assertion
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,167 +18,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1047509082=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1047509082==
-Content-Type: multipart/alternative;
- boundary="===============3310244754150277757=="
+Hi Tvrtko Ursulin,
 
---===============3310244754150277757==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: series starting with [i-g-t,1/2] tests/kms_rmfb: Use COMMIT_UNIVERSAL for overlay/cursor planes
-URL   : https://patchwork.freedesktop.org/series/87318/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9798 -> IGTPW_5548
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5548 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_tiled_blits@basic:
-    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +2 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9798/fi-tgl-y/igt@gem_tiled_blits@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/fi-tgl-y/igt@gem_tiled_blits@basic.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_hangman@error-state-basic:
-    - fi-tgl-y:           [DMESG-WARN][3] ([i915#402]) -> [PASS][4] +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9798/fi-tgl-y/igt@i915_hangman@error-state-basic.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/fi-tgl-y/igt@i915_hangman@error-state-basic.html
-
-  
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+-----Original Message-----
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com> 
+Sent: Tuesday, February 23, 2021 10:05 PM
+To: Ram Moon, AnandX <anandx.ram.moon@intel.com>; igt-dev@lists.freedesktop.org
+Subject: Re: [igt-dev] i915/gem_exec_fair: Fix failed assertion
 
 
-Participating hosts (45 -> 36)
-------------------------------
+On 23/02/2021 14:08, Anand Moon wrote:
+> Changes fix the Failed assertion below
+> 
+> (gem_exec_fair:1606) CRITICAL: Test assertion failure function deadline, file ../tests/i915/gem_exec_fair.c:1163:
+> (gem_exec_fair:1606) CRITICAL: Failed assertion: missed == 0
+> (gem_exec_fair:1606) CRITICAL: 1 child, missed 60 frames, overran by 
+> 20095804us Subtest basic-deadline failed.
+> 
+> Signed-off-by: Anand Moon <anandx.ram.moon@intel.com>
+> ---
+>   tests/i915/gem_exec_fair.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/i915/gem_exec_fair.c b/tests/i915/gem_exec_fair.c 
+> index c1a71f77..9d6f9d50 100644
+> --- a/tests/i915/gem_exec_fair.c
+> +++ b/tests/i915/gem_exec_fair.c
+> @@ -1158,7 +1158,7 @@ static void deadline(int i915, int duration, unsigned int flags)
+>   		igt_waitchildren();
+>   		close(timeline);
+>   
+> -		igt_assert_f(missed == 0,
+> +		igt_assert_f(missed >= 0,
+>   			     "%d child, missed %d frames, overran by %'"PRIu64"us\n",
+>   			     num_children, missed, over / 1000);
+>   
+> 
 
-  Missing    (9): fi-jsl-1 fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-cfl-guc fi-kbl-7500u fi-dg1-1 fi-bdw-samus fi-kbl-r 
+It's not very good to allow unlimited missed frames. It's akin to turning that assert into igt_info. Which may be okay in itself, given the "red" history of the test in CI. At least until the scheduling improvements land.
 
+Or take a platform where test mostly fails, like SKL or GLK, and try to figure out what is the cause of failure. Is it a test bug, like trying to do too much, too many clients, or a consequence of currently limited
+i915 scheduling.
 
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6013 -> IGTPW_5548
-
-  CI-20190529: 20190529
-  CI_DRM_9798: 70e2e79cd772b97799f4cecd823539f452063562 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5548: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/index.html
-  IGT_6013: a6c7181747850161377dae5161d33c0675ab273e @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/index.html
-
---===============3310244754150277757==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+If you are not familiar with the area, or need help translating the test code into "theory of operation", I can help with that (might take some time to figure it out), or Chris (test author) might jump in.
 
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/kms_rmfb: Use COMMIT_UNIVERSAL for overlay/cursor planes</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87318/">https://patchwork.freedesktop.org/series/87318/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+Regards,
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/index.html</a></td></tr>
+Tvrtko
 
-</table>
+Opps, I know the theory of operation behind this and I have debug this, but I will try to find the root cause of the assertion. 
 
-
-    <h1>CI Bug Log - changes from CI_DRM_9798 -&gt; IGTPW_5548</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5548 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@gem_tiled_blits@basic:<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9798/fi-tgl-y/igt@gem_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/fi-tgl-y/igt@gem_tiled_blits@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_hangman@error-state-basic:<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9798/fi-tgl-y/igt@i915_hangman@error-state-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/fi-tgl-y/igt@i915_hangman@error-state-basic.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (45 -&gt; 36)</h2>
-<p>Missing    (9): fi-jsl-1 fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-cfl-guc fi-kbl-7500u fi-dg1-1 fi-bdw-samus fi-kbl-r </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6013 -&gt; IGTPW_5548</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9798: 70e2e79cd772b97799f4cecd823539f452063562 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5548: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5548/index.html<br />
-  IGT_6013: a6c7181747850161377dae5161d33c0675ab273e @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============3310244754150277757==--
-
---===============1047509082==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+Thanks
+-Anand
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============1047509082==--
