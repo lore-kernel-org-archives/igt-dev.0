@@ -1,24 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com
- [IPv6:2a00:1450:4864:20::42f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE4C86E07F
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Feb 2021 19:53:35 +0000 (UTC)
-Received: by mail-wr1-x42f.google.com with SMTP id w11so3030087wrr.10
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Feb 2021 11:53:35 -0800 (PST)
-Received: from [0.0.0.0] ([134.134.137.77])
- by smtp.googlemail.com with ESMTPSA id g18sm5239635wrw.40.2021.02.24.11.53.32
- for <igt-dev@lists.freedesktop.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 Feb 2021 11:53:33 -0800 (PST)
-References: <20210223210950.13515-1-ville.syrjala@linux.intel.com>
- <20210223210950.13515-4-ville.syrjala@linux.intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <cacf33f1-e46c-1db4-32be-2ae2b4f0153d@gmail.com>
-Date: Wed, 24 Feb 2021 21:53:29 +0200
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 425326E0CA
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Feb 2021 08:35:39 +0000 (UTC)
+From: Petri Latvala <petri.latvala@intel.com>
+Date: Thu, 25 Feb 2021 10:35:53 +0200
+Message-Id: <20210225083553.7540-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20210223210950.13515-4-ville.syrjala@linux.intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/kms_ccs: Test random CCS data
+Subject: [igt-dev] [PATCH i-g-t] lib/kmod: Stop producing results at all for
+ kernel selftests on taint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,92 +15,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-U2V0IGxvb2sgb2sgdG8gbWUsIGFsbCA0IHBhdGNoZXMKClJldmlld2VkLWJ5OiBKdWhhLVBla2th
-IEhlaWtraWxhIDxqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29tPgoKCk9uIDIzLjIuMjAyMSAy
-My4wOSwgVmlsbGUgU3lyamFsYSB3cm90ZToKPiBGcm9tOiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxl
-LnN5cmphbGFAbGludXguaW50ZWwuY29tPgo+IAo+IEZpbGwgdGhlIGZiIHdpdGggcmFuZG9tIGRh
-dGEgdG8gbWFrZSBzdXJlIHRoZSBodyBkb2Vzbid0Cj4gZmFsbCBvdmVyIHdoZW4gZmVkIHdpdGgg
-Z2FyYmFnZS4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmph
-bGFAbGludXguaW50ZWwuY29tPgo+IC0tLQo+ICAgdGVzdHMva21zX2Njcy5jIHwgNTMgKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLQo+ICAgMSBmaWxlIGNo
-YW5nZWQsIDQ4IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBh
-L3Rlc3RzL2ttc19jY3MuYyBiL3Rlc3RzL2ttc19jY3MuYwo+IGluZGV4IGMwYjAyNDc0NGFkMS4u
-MzBlMGZkYjU0ZjllIDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2ttc19jY3MuYwo+ICsrKyBiL3Rlc3Rz
-L2ttc19jY3MuYwo+IEBAIC00MCw2ICs0MCw3IEBAIGVudW0gdGVzdF9mbGFncyB7Cj4gICAJVEVT
-VF9OT19BVVhfQlVGRkVSCQk9IDEgPDwgNSwKPiAgIAlURVNUX0JBRF9DQ1NfSEFORExFCQk9IDEg
-PDwgNiwKPiAgIAlURVNUX0JBRF9BVVhfU1RSSURFCQk9IDEgPDwgNywKPiArCVRFU1RfUkFORE9N
-CQkJPSAxIDw8IDgsCj4gICB9Owo+ICAgCj4gICAjZGVmaW5lIFRFU1RfRkFJTF9PTl9BRERGQjIg
-XAo+IEBAIC01Miw2ICs1Myw3IEBAIGVudW0gdGVzdF9mYl9mbGFncyB7Cj4gICAJRkJfTUlTQUxJ
-R05fQVVYX1NUUklERQkJPSAxIDw8IDIsCj4gICAJRkJfU01BTExfQVVYX1NUUklERQkJPSAxIDw8
-IDMsCj4gICAJRkJfWkVST19BVVhfU1RSSURFCQk9IDEgPDwgNCwKPiArCUZCX1JBTkRPTQkJCT0g
-MSA8PCA1LAo+ICAgfTsKPiAgIAo+ICAgdHlwZWRlZiBzdHJ1Y3Qgewo+IEBAIC02NCw2ICs2Niw4
-IEBAIHR5cGVkZWYgc3RydWN0IHsKPiAgIAlpZ3RfcGlwZV9jcmNfdCAqcGlwZV9jcmM7Cj4gICAJ
-dWludDMyX3QgZm9ybWF0Owo+ICAgCXVpbnQ2NF90IGNjc19tb2RpZmllcjsKPiArCXVuc2lnbmVk
-IGludCBzZWVkOwo+ICsJYm9vbCB1c2VyX3NlZWQ7Cj4gICB9IGRhdGFfdDsKPiAgIAo+ICAgc3Rh
-dGljIGNvbnN0IHN0cnVjdCB7Cj4gQEAgLTIwNCw2ICsyMDgsMjIgQEAgc3RhdGljIHZvaWQgY2hl
-Y2tfYWxsX2Njc19wbGFuZXMoaW50IGRybV9mZCwgaWd0X2ZiX3QgKmZiLCBjb25zdCBmbG9hdCAq
-Y2NfY29sb3IKPiAgIAl9Cj4gICB9Cj4gICAKPiArc3RhdGljIHZvaWQgZmlsbF9mYl9yYW5kb20o
-aW50IGRybV9mZCwgaWd0X2ZiX3QgKmZiKQo+ICt7Cj4gKwl2b2lkICptYXA7Cj4gKwl1aW50OF90
-ICpwOwo+ICsJaW50IGk7Cj4gKwo+ICsJZ2VtX3NldF9kb21haW4oZHJtX2ZkLCBmYi0+Z2VtX2hh
-bmRsZSwgSTkxNV9HRU1fRE9NQUlOX0NQVSwgSTkxNV9HRU1fRE9NQUlOX0NQVSk7Cj4gKwo+ICsJ
-cCA9IG1hcCA9IGdlbV9tbWFwX19jcHUoZHJtX2ZkLCBmYi0+Z2VtX2hhbmRsZSwgMCwgZmItPnNp
-emUsIFBST1RfV1JJVEUpOwo+ICsKPiArCWZvciAoaSA9IDA7IGkgPCBmYi0+c2l6ZTsgaSsrKQo+
-ICsJCXBbaV0gPSByYW5kKCk7Cj4gKwo+ICsJbXVubWFwKG1hcCwgZmItPnNpemUpOwo+ICt9Cj4g
-Kwo+ICAgc3RhdGljIGludCBnZXRfY2NzX3BsYW5lX2luZGV4KHVpbnQzMl90IGZvcm1hdCkKPiAg
-IHsKPiAgIAlpbnQgaW5kZXggPSAxOwo+IEBAIC0zMDMsNyArMzIzLDEwIEBAIHN0YXRpYyB2b2lk
-IGdlbmVyYXRlX2ZiKGRhdGFfdCAqZGF0YSwgc3RydWN0IGlndF9mYiAqZmIsCj4gICAJCX0KPiAg
-IAl9Cj4gICAKPiAtCWlmICghKGRhdGEtPmZsYWdzICYgVEVTVF9CQURfUElYRUxfRk9STUFUKSkg
-ewo+ICsJaWYgKGRhdGEtPmZsYWdzICYgVEVTVF9SQU5ET00pIHsKPiArCQlzcmFuZChkYXRhLT5z
-ZWVkKTsKPiArCQlmaWxsX2ZiX3JhbmRvbShkYXRhLT5kcm1fZmQsIGZiKTsKPiArCX0gZWxzZSBp
-ZiAoIShkYXRhLT5mbGFncyAmIFRFU1RfQkFEX1BJWEVMX0ZPUk1BVCkpIHsKPiAgIAkJaW50IGMg
-PSAhIWRhdGEtPnBsYW5lOwo+ICAgCj4gICAJCWlmIChpc19jY3NfY2NfbW9kaWZpZXIobW9kaWZp
-ZXIpKSB7Cj4gQEAgLTQ2NCw2ICs0ODcsOSBAQCBzdGF0aWMgaW50IHRlc3RfY2NzKGRhdGFfdCAq
-ZGF0YSkKPiAgIAkJZGF0YS0+cGlwZV9jcmMgPSBOVUxMOwo+ICAgCX0KPiAgIAo+ICsJaWYgKGRh
-dGEtPmZsYWdzICYgVEVTVF9SQU5ET00pCj4gKwkJdmFsaWRfdGVzdHMgKz0gdHJ5X2NvbmZpZyhk
-YXRhLCBmYl9mbGFncyB8IEZCX0NPTVBSRVNTRUQgfCBGQl9SQU5ET00sIE5VTEwpOwo+ICsKPiAg
-IAlpZiAoZGF0YS0+ZmxhZ3MgJiBURVNUX0JBRF9QSVhFTF9GT1JNQVQgfHwKPiAgIAkgICAgZGF0
-YS0+ZmxhZ3MgJiBURVNUX0JBRF9ST1RBVElPTl85MCB8fAo+ICAgCSAgICBkYXRhLT5mbGFncyAm
-IFRFU1RfTk9fQVVYX0JVRkZFUiB8fAo+IEBAIC01MTMsMTQgKzUzOSwxOCBAQCBzdGF0aWMgdm9p
-ZCB0ZXN0X291dHB1dChkYXRhX3QgKmRhdGEpCj4gICAJaWd0X3JlcXVpcmVfZih2YWxpZF90ZXN0
-cyA+IDAsICJDQ1Mgbm90IHN1cHBvcnRlZCwgc2tpcHBpbmdcbiIpOwo+ICAgfQo+ICAgCj4gLXN0
-YXRpYyBkYXRhX3QgZGF0YTsKPiAtCj4gICBzdGF0aWMgaW50IG9wdF9oYW5kbGVyKGludCBvcHQs
-IGludCBvcHRfaW5kZXgsIHZvaWQgKm9wdF9kYXRhKQo+ICAgewo+ICsJZGF0YV90ICpkYXRhID0g
-b3B0X2RhdGE7Cj4gKwo+ICAgCXN3aXRjaCAob3B0KSB7Cj4gICAJY2FzZSAnYyc6Cj4gICAJCWNo
-ZWNrX2Njc19wbGFuZXMgPSB0cnVlOwo+ICAgCQlicmVhazsKPiArCWNhc2UgJ3MnOgo+ICsJCWRh
-dGEtPnVzZXJfc2VlZCA9IHRydWU7Cj4gKwkJZGF0YS0+c2VlZCA9IHN0cnRvdWwob3B0YXJnLCBO
-VUxMLCAwKTsKPiArCQlicmVhazsKPiAgIAlkZWZhdWx0Ogo+ICAgCQlyZXR1cm4gSUdUX09QVF9I
-QU5ETEVSX0VSUk9SOwo+ICAgCX0KPiBAQCAtNTI4LDExICs1NTgsMTQgQEAgc3RhdGljIGludCBv
-cHRfaGFuZGxlcihpbnQgb3B0LCBpbnQgb3B0X2luZGV4LCB2b2lkICpvcHRfZGF0YSkKPiAgIAly
-ZXR1cm4gSUdUX09QVF9IQU5ETEVSX1NVQ0NFU1M7Cj4gICB9Cj4gICAKPiArc3RhdGljIGRhdGFf
-dCBkYXRhOwo+ICsKPiAgIHN0YXRpYyBjb25zdCBjaGFyICpoZWxwX3N0ciA9Cj4gLSIgIC1jXHRD
-aGVjayB0aGUgcHJlc2VuY2Ugb2YgY29tcHJlc3Npb24gbWV0YS1kYXRhXG4iCj4gKyIgIC1jXHRc
-dENoZWNrIHRoZSBwcmVzZW5jZSBvZiBjb21wcmVzc2lvbiBtZXRhLWRhdGFcbiIKPiArIiAgLXMg
-PHNlZWQ+XHRTZWVkIGZvciByYW5kb20gbnVtYmVyIGdlbmVyYXRvclxuIgo+ICAgOwo+ICAgCj4g
-LWlndF9tYWluX2FyZ3MoImMiLCBOVUxMLCBoZWxwX3N0ciwgb3B0X2hhbmRsZXIsIE5VTEwpCj4g
-K2lndF9tYWluX2FyZ3MoImNzOiIsIE5VTEwsIGhlbHBfc3RyLCBvcHRfaGFuZGxlciwgJmRhdGEp
-Cj4gICB7Cj4gICAJZW51bSBwaXBlIHBpcGU7Cj4gICAKPiBAQCAtNTQ0LDYgKzU3Nyw5IEBAIGln
-dF9tYWluX2FyZ3MoImMiLCBOVUxMLCBoZWxwX3N0ciwgb3B0X2hhbmRsZXIsIE5VTEwpCj4gICAJ
-CWlndF9yZXF1aXJlX3BpcGVfY3JjKGRhdGEuZHJtX2ZkKTsKPiAgIAo+ICAgCQlpZ3RfZGlzcGxh
-eV9yZXF1aXJlKCZkYXRhLmRpc3BsYXksIGRhdGEuZHJtX2ZkKTsKPiArCj4gKwkJaWYgKCFkYXRh
-LnVzZXJfc2VlZCkKPiArCQkJZGF0YS5zZWVkID0gdGltZShOVUxMKTsKPiAgIAl9Cj4gICAKPiAg
-IAlmb3JfZWFjaF9waXBlX3N0YXRpYyhwaXBlKSB7Cj4gQEAgLTU4OCw2ICs2MjQsMTMgQEAgaWd0
-X21haW5fYXJncygiYyIsIE5VTEwsIGhlbHBfc3RyLCBvcHRfaGFuZGxlciwgTlVMTCkKPiAgIAo+
-ICAgCQlkYXRhLnBsYW5lID0gTlVMTDsKPiAgIAo+ICsJCWRhdGEuZmxhZ3MgPSBURVNUX1JBTkRP
-TTsKPiArCQlpZ3RfZGVzY3JpYmUoIlRlc3QgcmFuZG9tIENDUyBkYXRhIik7Cj4gKwkJaWd0X3N1
-YnRlc3RfZigicGlwZS0lcy1yYW5kb20tY2NzLWRhdGEiLCBwaXBlX25hbWUpIHsKPiArCQkJaWd0
-X2luZm8oIlRlc3Rpbmcgd2l0aCBzZWVkICVkXG4iLCBkYXRhLnNlZWQpOwo+ICsJCQl0ZXN0X291
-dHB1dCgmZGF0YSk7Cj4gKwkJfQo+ICsKPiAgIAkJZGF0YS5mbGFncyA9IFRFU1RfTk9fQVVYX0JV
-RkZFUjsKPiAgIAkJaWd0X2Rlc2NyaWJlKCJUZXN0IG1pc3NpbmcgQ0NTIGJ1ZmZlciB3aXRoIGdp
-dmVuIENDUyBtb2RpZmllciIpOwo+ICAgCQlpZ3Rfc3VidGVzdF9mKCJwaXBlLSVzLW1pc3Npbmct
-Y2NzLWJ1ZmZlciIsIHBpcGVfbmFtZSkKPiAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
-Zm8vaWd0LWRldgo=
+Instead of producing skips for the rest when one selftest taints the
+kernel, stop running them altogether. Having the skips produced yields
+no value and just makes future improvements (like correctly tagging
+tests that cause taints) harder. In effect, this gets us back to the
+old setup when tainting made igt_runner immediately kill the test and
+similarly made us not get spurious results for the rest of the
+selftests.
+
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ lib/igt_kmod.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index 2ae45a1a..55295fa5 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -658,9 +658,16 @@ void igt_kselftests(const char *module_name,
+ 	igt_kselftest_get_tests(tst.kmod, filter, &tests);
+ 	igt_subtest_with_dynamic(filter ?: "all") {
+ 		igt_list_for_each_entry_safe(tl, tn, &tests, link) {
++			unsigned long taints;
++
+ 			igt_dynamic_f("%s", unfilter(filter, tl->name))
+ 				igt_kselftest_execute(&tst, tl, options, result);
+ 			free(tl);
++
++			if (igt_kernel_tainted(&taints)) {
++				igt_info("Kernel tainted, not executing more selftests.\n");
++				break;
++			}
+ 		}
+ 	}
+ 
+-- 
+2.29.2
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
