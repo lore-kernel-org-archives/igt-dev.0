@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA09A6E1E8
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Feb 2021 18:55:23 +0000 (UTC)
-From: "Laxminarayan Bharadiya, Pankaj"
- <pankaj.laxminarayan.bharadiya@intel.com>
-Date: Thu, 25 Feb 2021 18:55:19 +0000
-Message-ID: <834d3823399d4898bdad78e75af6d305@intel.com>
-References: <20210214192006.24038-1-arundhati.hagaragi@intel.com>
-In-Reply-To: <20210214192006.24038-1-arundhati.hagaragi@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F35D66E043
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Feb 2021 02:52:13 +0000 (UTC)
+From: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
+Date: Fri, 26 Feb 2021 02:52:10 +0000
+Message-ID: <3994960cbc7145ec8535145a021e2e91@intel.com>
+References: <20210219090037.655641-1-arundhati.hagaragi@intel.com>
+In-Reply-To: <20210219090037.655641-1-arundhati.hagaragi@intel.com>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_addfb_basic:Added subtest
- description
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_atomic_transition:Add
+ subtest description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,346 +25,158 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: "Hagaragi, Arundhati" <arundhati.hagaragi@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+LGTM
+Reviewed-by: Nidhi Gupta
 
+-----Original Message-----
+From: Arundhati Hagaragi <arundhati.hagaragi@intel.com> 
+Sent: Friday, February 19, 2021 2:31 PM
+To: igt-dev@lists.freedesktop.org
+Cc: Hagaragi, Arundhati <arundhati.hagaragi@intel.com>; Gupta; Gupta, Nidhi1 <nidhi1.gupta@intel.com>
+Subject: [PATCH i-g-t v2] tests/kms_atomic_transition:Add subtest description
 
-> -----Original Message-----
-> From: Hagaragi, Arundhati <arundhati.hagaragi@intel.com>
-> Sent: 15 February 2021 00:50
-> To: igt-dev@lists.freedesktop.org
-> Cc: Hagaragi, Arundhati <arundhati.hagaragi@intel.com>; Laxminarayan;
-> Bharadiya; Laxminarayan Bharadiya, Pankaj
-> <pankaj.laxminarayan.bharadiya@intel.com>
-> Subject: [PATCH i-g-t v3] tests/kms_addfb_basic:Added subtest description
-> 
-> Added description for all subtests
-> 
-> Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
-> Cc: Laxminarayan Bharadiya,
-> Pankaj<Pankaj.Laxminarayan.Bharadiya@intel.com>
-> 
-> v2: Modified description to be more specific. (Pankaj)
-> v3: Modified description. (Pankaj)
-> ---
->  tests/kms_addfb_basic.c | 36 +++++++++++++++++++++++++++++++++++-
->  1 file changed, 35 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c index
-> 090abe7f..5e0342c9 100644
-> --- a/tests/kms_addfb_basic.c
-> +++ b/tests/kms_addfb_basic.c
-> @@ -94,6 +94,7 @@ static void invalid_tests(int fd)
-> 
->  	f.flags = LOCAL_DRM_MODE_FB_MODIFIERS;
-> 
-> +	igt_describe("Test that addfb2 call fails correctly for unused
-> +handle");
->  	igt_subtest("unused-handle") {
->  		igt_require_fb_modifiers(fd);
-> 
-> @@ -103,6 +104,7 @@ static void invalid_tests(int fd)
->  		f.handles[1] = 0;
->  	}
-> 
-> +	igt_describe("Test that addfb2 call fails correctly for unused
-> +pitches");
->  	igt_subtest("unused-pitches") {
->  		igt_require_fb_modifiers(fd);
-> 
-> @@ -112,6 +114,7 @@ static void invalid_tests(int fd)
->  		f.pitches[1] = 0;
->  	}
-> 
-> +	igt_describe("Test that addfb2 call fails correctly for unused
-> +offset");
->  	igt_subtest("unused-offsets") {
->  		igt_require_fb_modifiers(fd);
-> 
-> @@ -121,6 +124,7 @@ static void invalid_tests(int fd)
->  		f.offsets[1] = 0;
->  	}
-> 
-> +	igt_describe("Test that addfb2 call fails correctly for unused
-> +modifier");
->  	igt_subtest("unused-modifier") {
->  		igt_require_fb_modifiers(fd);
-> 
-> @@ -130,6 +134,7 @@ static void invalid_tests(int fd)
->  		f.modifier[1] = 0;
->  	}
-> 
-> +	igt_describe("Check if addfb2 call works for clobbered modifier");
->  	igt_subtest("clobberred-modifier") {
->  		igt_require_intel(fd);
->  		f.flags = 0;
-> @@ -141,6 +146,7 @@ static void invalid_tests(int fd)
->  		igt_assert(f.modifier[0] == 0);
->  	}
-> 
-> +	igt_describe("Check if addfb2 call works for legacy formats");
->  	igt_subtest("legacy-format") {
->  		struct {
->  			/* drm_mode_legacy_fb_format() */
-> @@ -266,11 +272,13 @@ static void pitch_tests(int fd)
->  		igt_assert(gem_bo);
->  	}
-> 
-> +	igt_describe("Test that addfb2 call fails correctly without handle");
->  	igt_subtest("no-handle") {
->  		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1
-> &&
->  			   errno == EINVAL);
->  	}
-> 
-> +	igt_describe("Check if addfb2 call works with given handle");
->  	f.handles[0] = gem_bo;
->  	igt_subtest("basic") {
->  		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
-> @@ -278,6 +286,7 @@ static void pitch_tests(int fd)
->  		f.fb_id = 0;
->  	}
-> 
-> +	igt_describe("Test that addfb2 call fails correctly for bad-pitches");
->  	for (i = 0; i < ARRAY_SIZE(bad_pitches); i++) {
->  		igt_subtest_f("bad-pitch-%i", bad_pitches[i]) {
->  			f.pitches[0] = bad_pitches[i];
-> @@ -331,6 +340,7 @@ static void tiling_tests(int fd)
->  		}
-> 
->  		f.pitches[0] = 1024*4;
-> +		igt_describe("Check if addfb2 and rmfb call works for basic x-
-> tiling
-> +test");
->  		igt_subtest("basic-x-tiled-legacy") {
->  			f.handles[0] = tiled_x_bo;
-> 
-> @@ -339,6 +349,7 @@ static void tiling_tests(int fd)
->  			f.fb_id = 0;
->  		}
-> 
-> +		igt_describe("Check if addfb2 call works for x and y tiling");
->  		igt_subtest("framebuffer-vs-set-tiling") {
->  			f.handles[0] = gem_bo;
-> 
-> @@ -350,7 +361,8 @@ static void tiling_tests(int fd)
->  			f.fb_id = 0;
->  		}
-> 
-> -		f.pitches[0] = 512*4;
-> +		igt_describe("Test that addfb2 call fails correctly with given
-> pitch and handle");
+Added description for all subtests
 
-Description looks wrong.
-Here test is verifying if call correctly fails for pitches mismatch. 
+Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Cc: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
+---
+ tests/kms_atomic_transition.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-> +			f.pitches[0] = 512*4;
->  		igt_subtest("tile-pitch-mismatch") {
->  			f.handles[0] = tiled_x_bo;
-> 
-> @@ -358,6 +370,7 @@ static void tiling_tests(int fd)
->  				   errno == EINVAL);
->  		}
-> 
-> +		igt_describe("Test that addfb2 call fails correctly for basic
-> +y-tiling test");
->  		f.pitches[0] = 1024*4;
->  		igt_subtest("basic-y-tiled-legacy") {
->  			f.handles[0] = tiled_y_bo;
-> @@ -409,6 +422,7 @@ static void size_tests(int fd)
->  	f_16.handles[0] = gem_bo;
->  	f_8.handles[0] = gem_bo;
-> 
-> +	igt_describe("Check if addfb2 call works with max size of  buffer
-> +object");
->  	igt_subtest("size-max") {
->  		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
->  		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) ==
-> 0); @@ -424,6 +438,7 @@ static void size_tests(int fd)
->  	f.width++;
->  	f_16.width++;
->  	f_8.width++;
-> +	igt_describe("Test that addfb2 call fails correctly with increased
-> +width of fb");
->  	igt_subtest("too-wide") {
->  		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1
-> &&
->  			   errno == EINVAL);
-> @@ -438,6 +453,7 @@ static void size_tests(int fd)
->  	f.height++;
->  	f_16.height++;
->  	f_8.height++;
-> +	igt_describe("Test that addfb2 call fails correctly with increased
-> +height of fb");
->  	igt_subtest("too-high") {
->  		for (i = 0; i < ARRAY_SIZE(framebuffers); i++) {
->  			igt_debug("Checking framebuffer %i\n", i); @@ -453,6
-> +469,7 @@ static void size_tests(int fd)
->  		}
->  	}
-> 
-> +	igt_describe("Test that addfb2 call fails correctly with small size of
-> +buffer object");
->  	f.handles[0] = gem_bo_small;
->  	igt_subtest("bo-too-small") {
->  		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f), -
-> 1); @@ -467,6 +484,7 @@ static void size_tests(int fd)
->  	}
-> 
->  	/* Just to check that the parameters would work. */
-> +	igt_describe("Check if addfb2 call works for given height");
->  	f.height = 1020;
->  	igt_subtest("small-bo") {
->  		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
-> @@ -474,6 +492,7 @@ static void size_tests(int fd)
->  		f.fb_id = 0;
->  	}
-> 
-> +	igt_describe("Test that addfb2 call fails correctly with small buffer
-> +object after changing tile");
->  	igt_subtest("bo-too-small-due-to-tiling") {
->  		igt_require_intel(fd);
->  		gem_set_tiling(fd, gem_bo_small, I915_TILING_X, 1024*4);
-> @@ -508,6 +527,7 @@ static void addfb25_tests(int fd)
->  		f.handles[0] = gem_bo;
->  	}
-> 
-> +	igt_describe("Test that addfb2 call fails correctly for x-tiling with
-> +given modifier");
->  	igt_subtest("addfb25-modifier-no-flag") {
->  		igt_require_fb_modifiers(fd);
-> 
-> @@ -518,6 +538,7 @@ static void addfb25_tests(int fd)
->  	igt_fixture
->  		f.flags = LOCAL_DRM_MODE_FB_MODIFIERS;
-> 
-> +	igt_describe("Test that addfb2 call fails correctly for irrelevant
-> +modifier");
->  	igt_subtest("addfb25-bad-modifier") {
->  		igt_require_fb_modifiers(fd);
-> 
-> @@ -532,11 +553,13 @@ static void addfb25_tests(int fd)
->  			igt_require_fb_modifiers(fd);
->  		}
-> 
-> +		igt_describe("Test that addfb2 call fails correctly for irrelevant
-> +x-tiling");
->  		igt_subtest("addfb25-x-tiled-mismatch-legacy") {
->  			f.modifier[0] = LOCAL_DRM_FORMAT_MOD_NONE;
->  			igt_assert(drmIoctl(fd,
-> LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
->  		}
-> 
-> +		igt_describe("Check if addfb2 call works for x-tiling");
->  		igt_subtest("addfb25-x-tiled-legacy") {
->  			f.modifier[0] = LOCAL_I915_FORMAT_MOD_X_TILED;
->  			igt_assert(drmIoctl(fd,
-> LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == 0); @@ -544,6 +567,7 @@ static
-> void addfb25_tests(int fd)
->  			f.fb_id = 0;
->  		}
-> 
-> +		igt_describe("Check if addfb2 call works for relevant
-> combination of
-> +tiling and fbs");
->  		igt_subtest("addfb25-framebuffer-vs-set-tiling") {
->  			f.modifier[0] = LOCAL_I915_FORMAT_MOD_X_TILED;
->  			igt_assert(drmIoctl(fd,
-> LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == 0); @@ -596,6 +620,7 @@ static
-> void addfb25_ytile(int fd)
->  		f.handles[0] = gem_bo;
->  	}
-> 
-> +	igt_describe("Check if addfb2 call works for y-tiling");
->  	igt_subtest("addfb25-y-tiled-legacy") {
->  		igt_require_fb_modifiers(fd);
->  		igt_require_intel(fd);
-> @@ -608,6 +633,7 @@ static void addfb25_ytile(int fd)
->  		f.fb_id = 0;
->  	}
-> 
-> +	igt_describe("Check if addfb2 call works for yf-tiling");
->  	igt_subtest("addfb25-yf-tiled-legacy") {
->  		igt_require_fb_modifiers(fd);
->  		igt_require_intel(fd);
-> @@ -620,6 +646,7 @@ static void addfb25_ytile(int fd)
->  		f.fb_id = 0;
->  	}
-> 
-> +	igt_describe("Test that addfb2 call fails correctly for y-tiling with
-> +given height and modifier");
->  	igt_subtest("addfb25-y-tiled-small-legacy") {
->  		igt_require_fb_modifiers(fd);
->  		igt_require_intel(fd);
-> @@ -667,6 +694,8 @@ static void prop_tests(int fd)
->  	get_props.count_props = 1;
->  	get_props.obj_id = f.fb_id;
-> 
-> +	igt_describe("Test that addfb2 call fails correctly to get the properties
-> with combination"
-
-Description needs to be fixed.
-Here DRM_IOCTL_MODE_OBJ_GETPROPERTIES ioctl is being tested not addfb2..
-igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_OBJ_GETPROPERTIES,
-                                    &get_props) == -1 && errno == EINVAL);
-
-> +		       " of any mode object");
->  	igt_subtest("invalid-get-prop-any") {
->  		get_props.obj_type = 0; /* DRM_MODE_OBJECT_ANY */
-> 
-> @@ -674,6 +703,7 @@ static void prop_tests(int fd)
->  				    &get_props) == -1 && errno == EINVAL);
->  	}
-> 
-> +	igt_describe("Test that addfb2 call fails correctly to get the
-> +properties with given mode object");
-
-Same here.
-
->  	igt_subtest("invalid-get-prop") {
->  		get_props.obj_type = DRM_MODE_OBJECT_FB;
-> 
-> @@ -685,6 +715,8 @@ static void prop_tests(int fd)
->  	set_prop.prop_id = 1;
->  	set_prop.obj_id = f.fb_id;
-> 
-> +	igt_describe("Test that addfb2 call fails correctly to set the properties
-> with combination of "
-> +		       "any mode object");
-
-
-Description needs to be fixed. 
-Here DRM_IOCTL_MODE_OBJ_SETPROPERTIES ioctl is being tested not addfb2..
-
-igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_OBJ_SETPROPERTY,
-                                    &set_prop) == -1 && errno == EINVAL);
-
->  	igt_subtest("invalid-set-prop-any") {
->  		set_prop.obj_type = 0; /* DRM_MODE_OBJECT_ANY */
-> 
-> @@ -692,6 +724,7 @@ static void prop_tests(int fd)
->  				    &set_prop) == -1 && errno == EINVAL);
->  	}
-> 
-> +	igt_describe("Test that addfb2 call fails correctly to set the
-> +properties with given mode object");
-
-Same here.
-
-With above comments fixed, 
-Reviewed-by: Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>
-
->  	igt_subtest("invalid-set-prop") {
->  		set_prop.obj_type = DRM_MODE_OBJECT_FB;
-> 
-> @@ -723,6 +756,7 @@ static void master_tests(int fd)
->  		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
->  	}
-> 
-> +	igt_describe("Check that only master can rmfb");
->  	igt_subtest("master-rmfb") {
->  		int master2_fd;
-> 
-> --
-> 2.25.1
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c index e75cc637..9689bf4d 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -993,6 +993,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 			count++;
+ 	}
+ 
++	igt_describe("Check toggling of primary plane with vblank");
+ 	igt_subtest("plane-primary-toggle-with-vblank-wait")
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			if (pipe_count == 2 * count && !data.extended) @@ -1002,6 +1003,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 
+ 		}
+ 
++	igt_describe("Transition test for all plane combinations");
+ 	igt_subtest_with_dynamic("plane-all-transition") {
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			if (pipe_count == 2 * count && !data.extended) @@ -1012,6 +1014,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		}
+ 	}
+ 
++	igt_describe("Transition test for all plane combinations with fencing 
++commit");
+ 	igt_subtest_with_dynamic("plane-all-transition-fencing") {
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			if (pipe_count == 2 * count && !data.extended) @@ -1022,6 +1025,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		}
+ 	}
+ 
++	igt_describe("Transition test for all plane combinations with 
++nonblocking commit");
+ 	igt_subtest_with_dynamic("plane-all-transition-nonblocking") {
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			if (pipe_count == 2 * count && !data.extended) @@ -1032,6 +1036,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		}
+ 	}
+ 
++	igt_describe("Transition test for all plane combinations with 
++nonblocking and fencing commit");
+ 	igt_subtest_with_dynamic("plane-all-transition-nonblocking-fencing") {
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			if (pipe_count == 2 * count && !data.extended) @@ -1042,6 +1047,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		}
+ 	}
+ 
++	igt_describe("Transition test with non blocking commit and make sure commit of disabled plane has "
++		       "to complete before atomic commit on that plane");
+ 	igt_subtest_with_dynamic("plane-use-after-nonblocking-unbind") {
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			if (pipe_count == 2 * count && !data.extended) @@ -1052,6 +1059,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		}
+ 	}
+ 
++	igt_describe("Transition test with non blocking and fencing commit and make sure commit of "
++		       "disabled plane has to complete before atomic commit on that 
++plane");
+ 	igt_subtest_with_dynamic("plane-use-after-nonblocking-unbind-fencing") {
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			if (pipe_count == 2 * count && !data.extended) @@ -1067,6 +1076,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	 * number of combinations, to avoid long runtimes due to modesets on
+ 	 * panels with long power cycle delays.
+ 	 */
++	igt_describe("Modeset test for all plane combinations");
+ 	igt_subtest_with_dynamic("plane-all-modeset-transition")
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			if (pipe_count == 2 * count && !data.extended) @@ -1079,6 +1089,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				run_transition_test(&data, pipe, output, TRANSITION_MODESET, false, false);
+ 		}
+ 
++	igt_describe("Modeset test for all plane combinations with fencing 
++commit");
+ 	igt_subtest_with_dynamic("plane-all-modeset-transition-fencing")
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			if (pipe_count == 2 * count && !data.extended) @@ -1091,6 +1102,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				run_transition_test(&data, pipe, output, TRANSITION_MODESET, false, true);
+ 		}
+ 
++	igt_describe("Modeset test for all plane combinations on internal 
++panels");
+ 	igt_subtest_with_dynamic("plane-all-modeset-transition-internal-panels") {
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			if (pipe_count == 2 * count && !data.extended) @@ -1104,6 +1116,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		}
+ 	}
+ 
++	igt_describe("Modeset test for all plane combinations on internal 
++panels with fencing commit");
+ 	igt_subtest_with_dynamic("plane-all-modeset-transition-fencing-internal-panels") {
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			if (pipe_count == 2 * count && !data.extended) @@ -1117,6 +1130,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		}
+ 	}
+ 
++	igt_describe("Check toggling and modeset transition on plane");
+ 	igt_subtest("plane-toggle-modeset-transition")
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			if (pipe_count == 2 * count && !data.extended) @@ -1125,6 +1139,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 			run_transition_test(&data, pipe, output, TRANSITION_MODESET_DISABLE, false, false);
+ 		}
+ 
++	igt_describe("Modeset transition tests for combinations of crtc 
++enabled");
+ 	igt_subtest_with_dynamic("modeset-transition") {
+ 		for (i = 1; i <= count; i++) {
+ 			igt_dynamic_f("%ix-outputs", i)
+@@ -1132,6 +1147,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		}
+ 	}
+ 
++	igt_describe("Modeset transition tests for combinations of crtc 
++enabled with nonblocking commit");
+ 	igt_subtest_with_dynamic("modeset-transition-nonblocking") {
+ 		for (i = 1; i <= count; i++) {
+ 			igt_dynamic_f("%ix-outputs", i)
+@@ -1139,6 +1155,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		}
+ 	}
+ 
++	igt_describe("Modeset transition tests for combinations of crtc 
++enabled with fencing commit");
+ 	igt_subtest_with_dynamic("modeset-transition-fencing") {
+ 		for (i = 1; i <= count; i++) {
+ 			igt_dynamic_f("%ix-outputs", i)
+@@ -1146,6 +1163,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		}
+ 	}
+ 
++	igt_describe("Modeset transition tests for combinations of crtc enabled with nonblocking &"
++		       " fencing commit");
+ 	igt_subtest_with_dynamic("modeset-transition-nonblocking-fencing") {
+ 		for (i = 1; i <= count; i++) {
+ 			igt_dynamic_f("%ix-outputs", i)
+--
+2.25.1
 
 _______________________________________________
 igt-dev mailing list
