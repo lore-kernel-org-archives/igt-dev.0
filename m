@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C6B976E8F7
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Feb 2021 08:18:40 +0000 (UTC)
-Date: Fri, 26 Feb 2021 10:18:56 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YDiu8Bfvcf/JCAma@platvala-desk.ger.corp.intel.com>
-References: <20210225090954.31197-1-ankit.k.nautiyal@intel.com>
- <YDdsiQXH1k9Xx9qK@platvala-desk.ger.corp.intel.com>
- <ec39dabd-3db2-bcfd-299c-cdb34ab1d890@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C3DA86EDBD
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Feb 2021 10:33:55 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Fri, 26 Feb 2021 23:56:45 +0530
+Message-Id: <20210226182645.30025-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <ec39dabd-3db2-bcfd-299c-cdb34ab1d890@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_invalid_dotclock: Skip the
- test if big joiner is supported
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_vrr: Optimize to read vrr
+ debugfs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,128 +15,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, manasi.d.navare@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 25, 2021 at 03:22:25PM +0530, Nautiyal, Ankit K wrote:
-> Hi Petri,
-> =
-
-> Thanks for your comments. Please find my response inline:
-> =
-
-> On 2/25/2021 2:53 PM, Petri Latvala wrote:
-> > On Thu, Feb 25, 2021 at 02:39:54PM +0530, Ankit Nautiyal wrote:
-> > > Currently the test assumes that the modes with clock more than the
-> > > maximum dot clock will be rejected. This fails in case of
-> > > platforms that combine multiple pipes and modes higher than the
-> > > maximum dotclock can still be supported.
-> > > =
-
-> > > This patch adds a check to skip the test if big joiner can be
-> > > supported for a given platform and connector.
-> > > =
-
-> > > Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> > > ---
-> > >   tests/kms_invalid_dotclock.c | 51 +++++++++++++++++++++++++++++++++=
-+--
-> > >   1 file changed, 49 insertions(+), 2 deletions(-)
-> > > =
-
-> > > diff --git a/tests/kms_invalid_dotclock.c b/tests/kms_invalid_dotcloc=
-k.c
-> > > index 402629ab..5692736b 100644
-> > > --- a/tests/kms_invalid_dotclock.c
-> > > +++ b/tests/kms_invalid_dotclock.c
-> > > @@ -44,6 +44,44 @@ static bool has_scaling_mode_prop(data_t *data)
-> > >   				    NULL, NULL, NULL);
-> > >   }
-> > > +static bool
-> > > +is_dsc_capable(int drm_fd, drmModeConnector *connector)
-> > > +{
-> > > +	int debugfs_fd =3D igt_debugfs_dir(drm_fd);
-> > > +	char filename[128];
-> > > +	char buf[512];
-> > > +	bool dsc =3D false;
-> > > +
-> > > +	sprintf(filename, "%s-%d",
-> > > +		kmstest_connector_type_str(connector->connector_type),
-> > > +		connector->connector_type_id);
-> > > +
-> > > +	strcat(filename, "/i915_dsc_fec_support");
-> > > +
-> > > +	if (igt_debugfs_simple_read(debugfs_fd, filename, buf,
-> > > +				    sizeof(buf)) > 0)
-> > > +		dsc =3D strstr(buf, "DSC_Sink_Support: yes") ? true : false;
-> > > +
-> > > +	close(debugfs_fd);
-> > > +
-> > > +	return dsc;
-> > > +}
-> > Consider moving this to lib/. There's another such function in
-> > kms_dp_dsc.c already.
-> =
-
-> Agreed. To be honest this quite "inspired" from the kms_dp_dsc.c :)
-> =
-
-> In the test kms_dp_dsc, there are other functions as well which read the
-> same debugfs entry and parse different cap/support.
-> =
-
-> The=A0 igt_debugfs_dir is opened once in the beginning of the test and re=
-ad
-> again and again in different functions.
-> =
-
-> What do you suggest? Should we move only the common function? or move oth=
-er
-> functions as well.
-
-
-Move only the functions that would get duplicated in multiple tests,
-unless moving more makes the test code much cleaner. Somewhat easy
-thumb rule :P
-
-
-> =
-
-> Also, the common function will need to be passed an open debugfs fd.
-> =
-
-> So the test using will open debugfs, call this common function and close =
-the
-> debugfs.
-
-
-One possibility is two functions, one you call with the device fd and
-one with the debugfs fd so both use cases are covered and the test
-code for both needs minimal jumping through hoops. Up to you. Much
-harder to do because then you need to come up with good names for the
-two versions and naming things is hard...
-
--- =
-
-Petri Latvala
-
-
-> Thanks & Regards,
-> =
-
-> Ankit
-> =
-
-> =
-
-> > =
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SW5zdGVhZCBvZiByZWFkaW5nIHRoZSB2cnJfcmFuZ2UgZGVidWdmcyBmb3IgZXZlcnkgcmVmcmVz
+aCByYXRlLApyZWFkIGF0IHN0cnRpbmcgb2YgdGhlIHRlc3QgYW5kIHByZXNlcnZlIHRoZSBkYXRh
+IGZvciBlbnRpcmUKc3VidGVzdC4KCkNjOiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFA
+bGludXguaW50ZWwuY29tPgpDYzogTWFuYXNpIE5hdmFyZSA8bWFuYXNpLmQubmF2YXJlQGludGVs
+LmNvbT4KQ2M6IE5pY2hvbGFzIEthemxhdXNrYXMgPG5pY2hvbGFzLmthemxhdXNrYXNAYW1kLmNv
+bT4KU2lnbmVkLW9mZi1ieTogQmhhbnVwcmFrYXNoIE1vZGVtIDxiaGFudXByYWthc2gubW9kZW1A
+aW50ZWwuY29tPgotLS0KIHRlc3RzL2ttc192cnIuYyB8IDMxICsrKysrKysrKysrKysrKysrKy0t
+LS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAxOCBpbnNlcnRpb25zKCspLCAxMyBkZWxldGlv
+bnMoLSkKCmRpZmYgLS1naXQgYS90ZXN0cy9rbXNfdnJyLmMgYi90ZXN0cy9rbXNfdnJyLmMKaW5k
+ZXggZTRlYTc0YzE3Li5iYzQyMDE2MTUgMTAwNjQ0Ci0tLSBhL3Rlc3RzL2ttc192cnIuYworKysg
+Yi90ZXN0cy9rbXNfdnJyLmMKQEAgLTUxLDYgKzUxLDcgQEAgdHlwZWRlZiBzdHJ1Y3QgZGF0YSB7
+CiAJaWd0X3BsYW5lX3QgKnByaW1hcnk7CiAJaWd0X2ZiX3QgZmIwOwogCWlndF9mYl90IGZiMTsK
+KwlyYW5nZV90IHJhbmdlOwogfSBkYXRhX3Q7CiAKIHR5cGVkZWYgc3RydWN0IHZ0ZXN0X25zIHsK
+QEAgLTExNiwxMyArMTE3LDEzIEBAIHN0YXRpYyB1aW50NjRfdCByYXRlX2Zyb21fcmVmcmVzaCh1
+aW50NjRfdCByZWZyZXNoKQogICogIC0gaWYgbWF4IHJhbmdlIGlzIGdyYXRlciB0aGFuIHRoZSBj
+dXJyZW50IG1vZGUgdmZyZXEsIGNvbnNpZGVyCiAgKiAgICAgICBjdXJyZW50IG1vZGUgdmZyZXEg
+YXMgdGhlIG1heCByYW5nZS4KICAqLwotc3RhdGljIHJhbmdlX3QgZ2V0X3Zycl9yYW5nZShkYXRh
+X3QgKmRhdGEsIGlndF9vdXRwdXRfdCAqb3V0cHV0KQorc3RhdGljIHJhbmdlX3QKK2dldF92cnJf
+cmFuZ2UoZGF0YV90ICpkYXRhLCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCwgdWludDMyX3QgY3Vycl92
+cmVmcmVzaCkKIHsKIAljaGFyIGJ1ZlsyNTZdOwogCWNoYXIgKnN0YXJ0X2xvYzsKIAlpbnQgZmQs
+IHJlczsKIAlyYW5nZV90IHJhbmdlOwotCWRybU1vZGVNb2RlSW5mbyAqbW9kZSA9IGlndF9vdXRw
+dXRfZ2V0X21vZGUob3V0cHV0KTsKIAogCWZkID0gaWd0X2RlYnVnZnNfY29ubmVjdG9yX2Rpcihk
+YXRhLT5kcm1fZmQsIG91dHB1dC0+bmFtZSwgT19SRE9OTFkpOwogCWlndF9hc3NlcnQoZmQgPj0g
+MCk7CkBAIC0xMzQsMjMgKzEzNSwyMSBAQCBzdGF0aWMgcmFuZ2VfdCBnZXRfdnJyX3JhbmdlKGRh
+dGFfdCAqZGF0YSwgaWd0X291dHB1dF90ICpvdXRwdXQpCiAKIAlpZ3RfYXNzZXJ0KHN0YXJ0X2xv
+YyA9IHN0cnN0cihidWYsICJNaW46ICIpKTsKIAlpZ3RfYXNzZXJ0X2VxKHNzY2FuZihzdGFydF9s
+b2MsICJNaW46ICV1IiwgJnJhbmdlLm1pbiksIDEpOwotCWlndF9yZXF1aXJlKG1vZGUtPnZyZWZy
+ZXNoID4gcmFuZ2UubWluKTsKKwlpZ3RfcmVxdWlyZShjdXJyX3ZyZWZyZXNoID4gcmFuZ2UubWlu
+KTsKIAogCWlndF9hc3NlcnQoc3RhcnRfbG9jID0gc3Ryc3RyKGJ1ZiwgIk1heDogIikpOwogCWln
+dF9hc3NlcnRfZXEoc3NjYW5mKHN0YXJ0X2xvYywgIk1heDogJXUiLCAmcmFuZ2UubWF4KSwgMSk7
+CiAKLQlyYW5nZS5tYXggPSAobW9kZS0+dnJlZnJlc2ggPCByYW5nZS5tYXgpID8gbW9kZS0+dnJl
+ZnJlc2ggOiByYW5nZS5tYXg7CisJcmFuZ2UubWF4ID0gKGN1cnJfdnJlZnJlc2ggPCByYW5nZS5t
+YXgpID8gY3Vycl92cmVmcmVzaCA6IHJhbmdlLm1heDsKIAogCXJldHVybiByYW5nZTsKIH0KIAog
+LyogUmV0dXJucyB2cnIgdGVzdCBmcmVxdWVuY3kgZm9yIG1pbiwgbWlkICYgbWF4IHJhbmdlLiAq
+Lwotc3RhdGljIHZ0ZXN0X25zX3QgZ2V0X3Rlc3RfcmF0ZV9ucyhkYXRhX3QgKmRhdGEsIGlndF9v
+dXRwdXRfdCAqb3V0cHV0KQorc3RhdGljIHZ0ZXN0X25zX3QgZ2V0X3Rlc3RfcmF0ZV9ucyhyYW5n
+ZV90IHJhbmdlKQogewotCXJhbmdlX3QgcmFuZ2U7CiAJdnRlc3RfbnNfdCB2dGVzdF9uczsKIAot
+CXJhbmdlID0gZ2V0X3Zycl9yYW5nZShkYXRhLCBvdXRwdXQpOwogCXZ0ZXN0X25zLm1pbiA9IHJh
+dGVfZnJvbV9yZWZyZXNoKHJhbmdlLm1pbik7CiAJdnRlc3RfbnMubWlkID0gcmF0ZV9mcm9tX3Jl
+ZnJlc2goKChyYW5nZS5tYXggKyByYW5nZS5taW4pIC8gMikpOwogCXZ0ZXN0X25zLm1heCA9IHJh
+dGVfZnJvbV9yZWZyZXNoKHJhbmdlLm1heCk7CkBAIC0xOTksNiArMTk4LDkgQEAgc3RhdGljIHZv
+aWQgcHJlcGFyZV90ZXN0KGRhdGFfdCAqZGF0YSwgaWd0X291dHB1dF90ICpvdXRwdXQsIGVudW0g
+cGlwZSBwaXBlKQogCiAJaWd0X3B1dF9jYWlyb19jdHgoY3IpOwogCisJLyogQ2FwdHVyZSBWUlIg
+cmFuZ2UgKi8KKwlkYXRhLT5yYW5nZSA9IGdldF92cnJfcmFuZ2UoZGF0YSwgb3V0cHV0LCBtb2Rl
+LnZyZWZyZXNoKTsKKwogCS8qIFRha2UgY2FyZSBvZiBhbnkgcmVxdWlyZWQgbW9kZXNldHRpbmcg
+YmVmb3JlIHRoZSB0ZXN0IGJlZ2lucy4gKi8KIAlkYXRhLT5wcmltYXJ5ID0gaWd0X291dHB1dF9n
+ZXRfcGxhbmVfdHlwZShvdXRwdXQsIERSTV9QTEFORV9UWVBFX1BSSU1BUlkpOwogCWlndF9wbGFu
+ZV9zZXRfZmIoZGF0YS0+cHJpbWFyeSwgJmRhdGEtPmZiMCk7CkBAIC0yNDgsNyArMjUwLDcgQEAg
+ZmxpcF9hbmRfbWVhc3VyZShkYXRhX3QgKmRhdGEsIGlndF9vdXRwdXRfdCAqb3V0cHV0LCBlbnVt
+IHBpcGUgcGlwZSwKIAl1aW50NjRfdCBzdGFydF9ucywgbGFzdF9ldmVudF9ucywgdGFyZ2V0X25z
+OwogCXVpbnQzMl90IHRvdGFsX2ZsaXAgPSAwLCB0b3RhbF9wYXNzID0gMDsKIAlib29sIGZyb250
+ID0gZmFsc2U7Ci0JdnRlc3RfbnNfdCB2dGVzdF9ucyA9IGdldF90ZXN0X3JhdGVfbnMoZGF0YSwg
+b3V0cHV0KTsKKwl2dGVzdF9uc190IHZ0ZXN0X25zID0gZ2V0X3Rlc3RfcmF0ZV9ucyhkYXRhLT5y
+YW5nZSk7CiAKIAkvKiBBbGlnbiB3aXRoIHRoZSBmbGlwIGNvbXBsZXRpb24gZXZlbnQgdG8gc3Bl
+ZWQgdXAgY29udmVyZ2VuY2UuICovCiAJZG9fZmxpcChkYXRhLCAmZGF0YS0+ZmIwKTsKQEAgLTMx
+NiwxNSArMzE4LDE4IEBAIHN0YXRpYyB2b2lkCiB0ZXN0X2Jhc2ljKGRhdGFfdCAqZGF0YSwgZW51
+bSBwaXBlIHBpcGUsIGlndF9vdXRwdXRfdCAqb3V0cHV0LCB1aW50MzJfdCBmbGFncykKIHsKIAl1
+aW50MzJfdCByZXN1bHQ7Ci0JdnRlc3RfbnNfdCB2dGVzdF9ucyA9IGdldF90ZXN0X3JhdGVfbnMo
+ZGF0YSwgb3V0cHV0KTsKLQlyYW5nZV90IHJhbmdlID0gZ2V0X3Zycl9yYW5nZShkYXRhLCBvdXRw
+dXQpOwotCXVpbnQ2NF90IHJhdGUgPSB2dGVzdF9ucy5taWQ7CisJdnRlc3RfbnNfdCB2dGVzdF9u
+czsKKwlyYW5nZV90IHJhbmdlOworCXVpbnQ2NF90IHJhdGU7CisKKwlwcmVwYXJlX3Rlc3QoZGF0
+YSwgb3V0cHV0LCBwaXBlKTsKKwlyYW5nZSA9IGRhdGEtPnJhbmdlOworCXZ0ZXN0X25zID0gZ2V0
+X3Rlc3RfcmF0ZV9ucyhyYW5nZSk7CisJcmF0ZSA9IHZ0ZXN0X25zLm1pZDsKIAogCWlndF9pbmZv
+KCJWUlIgVGVzdCBleGVjdXRpb24gb24gJXMsIFBJUEVfJXMgd2l0aCBWUlIgcmFuZ2U6ICgldS0l
+dSkgSHpcbiIsCiAJCSBvdXRwdXQtPm5hbWUsIGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpLCByYW5n
+ZS5taW4sIHJhbmdlLm1heCk7CiAKLQlwcmVwYXJlX3Rlc3QoZGF0YSwgb3V0cHV0LCBwaXBlKTsK
+LQogCXNldF92cnJfb25fcGlwZShkYXRhLCBwaXBlLCAxKTsKIAogCS8qCi0tIAoyLjIwLjEKCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFp
+bGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
