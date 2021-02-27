@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com
- [IPv6:2a00:1450:4864:20::42a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ACAF76E207
- for <igt-dev@lists.freedesktop.org>; Sun, 28 Feb 2021 12:29:59 +0000 (UTC)
-Received: by mail-wr1-x42a.google.com with SMTP id v15so13199584wrx.4
- for <igt-dev@lists.freedesktop.org>; Sun, 28 Feb 2021 04:29:59 -0800 (PST)
-Message-ID: <52b977b0d59d74e8283c4f2f2630db91df030a1b.camel@linuxfoundation.org>
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-Date: Sun, 28 Feb 2021 12:29:54 +0000
-In-Reply-To: <4b0ea6a7-92a7-566a-ce32-f8548eb87092@mupuf.org>
-References: <20210227144900.3961632-1-richard.purdie@linuxfoundation.org>
- <4b0ea6a7-92a7-566a-ce32-f8548eb87092@mupuf.org>
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
+ [IPv6:2607:f8b0:4864:20::533])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 74AEE6E155
+ for <igt-dev@lists.freedesktop.org>; Sat, 27 Feb 2021 22:04:37 +0000 (UTC)
+Received: by mail-pg1-x533.google.com with SMTP id b21so8540368pgk.7
+ for <igt-dev@lists.freedesktop.org>; Sat, 27 Feb 2021 14:04:37 -0800 (PST)
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sat, 27 Feb 2021 14:04:33 -0800
+Message-Id: <20210227220433.541377-1-raj.khem@gmail.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] meson: Allow source location to be
- configurable
+Subject: [igt-dev] [PATCH i-g-t] lib/igt_edid: Allocate raw 8-bytes for VSDB
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,38 +17,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Martin Peres <martin.peres@mupuf.org>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gU3VuLCAyMDIxLTAyLTI4IGF0IDEyOjA2ICswMjAwLCBNYXJ0aW4gUGVyZXMgd3JvdGU6Cj4g
-T24gMjcvMDIvMjAyMSAxNjo0OSwgUmljaGFyZCBQdXJkaWUgd3JvdGU6Cj4gPiAKPiA+IMKgwqBs
-aWJfdmVyc2lvbiA9IHZjc190YWcoaW5wdXQgOiAndmVyc2lvbi5oLmluJywgb3V0cHV0IDogJ3Zl
-cnNpb24uaCcsCj4gPiDCoMKgCQkgICAgICBmYWxsYmFjayA6ICdOTy1HSVQnLAo+ID4gZGlmZiAt
-LWdpdCBhL21lc29uX29wdGlvbnMudHh0IGIvbWVzb25fb3B0aW9ucy50eHQKPiA+IGluZGV4IGZm
-M2FiZjA4Li5hMGExYWFlZCAxMDA2NDQKPiA+IC0tLSBhL21lc29uX29wdGlvbnMudHh0Cj4gPiAr
-KysgYi9tZXNvbl9vcHRpb25zLnR4dAo+ID4gQEAgLTUwLDMgKzUwLDcgQEAgb3B0aW9uKCd1c2Vf
-cnBhdGgnLAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgdHlwZSA6ICdib29sZWFuJywKPiA+IMKgwqDC
-oMKgwqDCoMKgwqDCoHZhbHVlIDogZmFsc2UsCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqBkZXNjcmlw
-dGlvbiA6ICdTZXQgcnVucGF0aCBvbiBpbnN0YWxsZWQgZXhlY3V0YWJsZXMgZm9yIGxpYmlndC5z
-bycpCj4gPiArCj4gPiArb3B0aW9uKCdzcmNkaXInLAo+ID4gKyAgICAgICB0eXBlIDogJ3N0cmlu
-ZycsCj4gPiArICAgICAgIGRlc2NyaXB0aW9uIDogJ1BhdGggdG8gc291cmNlIGNvZGUgdG8gYmUg
-Y29tcGlsZWQgaW50byBiaW5hcmllcyAob3B0aW9uYWwpJykKPiAKPiBTaG91bGRuJ3QgdGhpcyBy
-ZWFkOiAiUGF0aCB0byBUSEUgc291cmNlIGNvZGUgdG8gYmUgY29tcGlsZWQgCj4gKG9wdGlvbmFs
-KSI/IENvbXBpbGluZyBpbnRvIGJpbmFyaWVzIGlzIGEgbGl0dGxlIHJlZHVuZGFudCwgc28gSSB3
-b3VsZCAKPiBkcm9wIGl0LgoKSSdtIG5vdCBzdXJlIHRoYXQgZG9lcyBxdWl0ZSBtZWFuIHRoZSBz
-YW1lIHRoaW5nLiBUaGUgb3B0aW9uIGlzIHRhbGtpbmcKYWJvdXQgYSBwYXRoIHdoaWNoIGdldHMg
-Y29tcGlsZWQgaW5zaWRlIHRoZSBiaW5hcnkgcmF0aGVyIHRoYW4gYSBwYXRoIHRvIGNvZGUKd2hp
-Y2ggaXMgY29tcGlsZWQuCgpSZWdhcmRsZXNzLCBpdCBjbGVhcmx5IG5lZWRzIHRvIGJlIG1vcmUg
-Y2xlYXIhIDopCgpIb3cgYWJvdXQgIlNvdXJjZSBjb2RlIHBhdGggaW4gdGhlIHRhcmdldCBlbnZp
-cm9ubWVudCBmb3IgdXNlIHdpdGhpbiB0YXJnZXQKYmluYXJpZXMgKG9wdGlvbmFsKSI/CgpDaGVl
-cnMsCgpSaWNoYXJkCgo+IE90aGVyIHRoYW4gdGhpcywgdGhlIHJhdGlvbmFsZSBzZWVtcyBzYW5l
-LCBidXQgSSBhbSBub3QgCj4ga25vd2xlZGdlYWJsZS1lbm91Z2ggYWJvdXQgSUdUJ3MgYnVpbGQg
-c3lzdGVtIHRvIGNvbW1lbnQgbW9yZSBvbiBpdDoKPiAKPiBBY2tlZC1ieTogTWFydGluIFBlcmVz
-IDxtYXJ0aW4ucGVyZXNAbXVwdWYub3JnPgo+IAo+ID4gCj4gCgoKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRl
-dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+hdmi_vsdb is an element of cea_vsdb which makes the size of cea_vsdb to
+be 8 ( 3bytes ieee_oui ) + ( 5bytes hdmi_vsdb struct), its true that we
+only use 7 bytes technically we can only allocate 7byte array but since
+we are writing to elements of hdmi_vsdb struct which is sitting at offet
+4-8 in cea_vsdb, compiler thinks we have an element which is out of
+array bounds since out allocated size is 7bytes
+
+This errors out
+../git/lib/igt_edid.c:365:13: error: array subscript 'struct hdmi_vsdb[0]' is partly outside array bounds of 'char[7]' [-Werror=array-bounds]
+  365 |         hdmi->src_phy_addr[0] = 0x10;
+      |             ^~
+
+allocating one extra byte matches with size of cea_vsdb and compiler is
+happy
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ lib/igt_edid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/igt_edid.c b/lib/igt_edid.c
+index 1c85486d..ce09cc47 100644
+--- a/lib/igt_edid.c
++++ b/lib/igt_edid.c
+@@ -351,7 +351,7 @@ void cea_sad_init_pcm(struct cea_sad *sad, int channels,
+ const struct cea_vsdb *cea_vsdb_get_hdmi_default(size_t *size)
+ {
+ 	/* We'll generate a VSDB with 2 extension fields. */
+-	static char raw[CEA_VSDB_HDMI_MIN_SIZE + 2] = {0};
++	static char raw[CEA_VSDB_HDMI_MIN_SIZE + 3] = {0};
+ 	struct cea_vsdb *vsdb;
+ 	struct hdmi_vsdb *hdmi;
+ 
+-- 
+2.30.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
