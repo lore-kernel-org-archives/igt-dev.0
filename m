@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC3D06E1B8
- for <igt-dev@lists.freedesktop.org>; Sun, 28 Feb 2021 10:03:45 +0000 (UTC)
-References: <20210227221041.541550-1-raj.khem@gmail.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF6E16E1B8
+ for <igt-dev@lists.freedesktop.org>; Sun, 28 Feb 2021 10:07:04 +0000 (UTC)
+References: <20210227144900.3961632-1-richard.purdie@linuxfoundation.org>
 From: Martin Peres <martin.peres@mupuf.org>
-Message-ID: <c8685b17-e199-2f2d-24ef-c53688d45465@mupuf.org>
-Date: Sun, 28 Feb 2021 12:03:22 +0200
+Message-ID: <4b0ea6a7-92a7-566a-ce32-f8548eb87092@mupuf.org>
+Date: Sun, 28 Feb 2021 12:06:42 +0200
 MIME-Version: 1.0
-In-Reply-To: <20210227221041.541550-1-raj.khem@gmail.com>
+In-Reply-To: <20210227144900.3961632-1-richard.purdie@linuxfoundation.org>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_edid: Allocate raw 8-bytes for
- VSDB
+Subject: Re: [igt-dev] [PATCH i-g-t] meson: Allow source location to be
+ configurable
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,48 +22,61 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Khem Raj <raj.khem@gmail.com>, igt-dev@lists.freedesktop.org
+To: Richard Purdie <richard.purdie@linuxfoundation.org>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 28/02/2021 00:10, Khem Raj wrote:
-> hdmi_vsdb is an element of cea_vsdb which makes the size of cea_vsdb to
-> be 8 ( 3bytes ieee_oui ) + ( 5bytes hdmi_vsdb struct), its true that we
-> only use 7 bytes technically we can only allocate 7byte array but since
-> we are writing to elements of hdmi_vsdb struct which is sitting at offet
-> 4-8 in cea_vsdb, compiler thinks we have an element which is out of
-> array bounds since out allocated size is 7bytes
-> 
-> This errors out
-> ../git/lib/igt_edid.c:365:13: error: array subscript 'struct hdmi_vsdb[0]' is partly outside array bounds of 'char[7]' [-Werror=array-bounds]
->    365 |         hdmi->src_phy_addr[0] = 0x10;
->        |             ^~
-> 
-> allocating one extra byte matches with size of cea_vsdb and compiler is
-> happy
-> 
-> Signed-off-by: Khem Raj <raj.khem@gmail.com>
 
-Lookgs good to me, thanks!
 
-Reviewed-by: Martin Peres <martin.peres@mupuf.org>
-
+On 27/02/2021 16:49, Richard Purdie wrote:
+> Hardcoding a build source path into a binary when cross compiling isn't
+> appropriate and breaks build reproducibility. Allow the srcdir to be
+> specified by an optional configuration option to meson.
+> 
+> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
 > ---
->   lib/igt_edid.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   lib/meson.build   | 6 +++++-
+>   meson_options.txt | 4 ++++
+>   2 files changed, 9 insertions(+), 1 deletion(-)
 > 
-> diff --git a/lib/igt_edid.c b/lib/igt_edid.c
-> index 1c85486d..ce09cc47 100644
-> --- a/lib/igt_edid.c
-> +++ b/lib/igt_edid.c
-> @@ -351,7 +351,7 @@ void cea_sad_init_pcm(struct cea_sad *sad, int channels,
->   const struct cea_vsdb *cea_vsdb_get_hdmi_default(size_t *size)
->   {
->   	/* We'll generate a VSDB with 2 extension fields. */
-> -	static char raw[CEA_VSDB_HDMI_MIN_SIZE + 2] = {0};
-> +	static char raw[CEA_VSDB_HDMI_MIN_SIZE + 3] = {0};
->   	struct cea_vsdb *vsdb;
->   	struct hdmi_vsdb *hdmi;
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 114eadde..672b4206 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -125,7 +125,11 @@ if chamelium.found()
+>   	lib_sources += 'igt_chamelium_stream.c'
+>   endif
 >   
+> -srcdir = join_paths(meson.source_root(), 'tests')
+> +if get_option('srcdir') != ''
+> +    srcdir = join_paths(get_option('srcdir'), 'tests')
+> +else
+> +    srcdir = join_paths(meson.source_root(), 'tests')
+> +endif
+>   
+>   lib_version = vcs_tag(input : 'version.h.in', output : 'version.h',
+>   		      fallback : 'NO-GIT',
+> diff --git a/meson_options.txt b/meson_options.txt
+> index ff3abf08..a0a1aaed 100644
+> --- a/meson_options.txt
+> +++ b/meson_options.txt
+> @@ -50,3 +50,7 @@ option('use_rpath',
+>          type : 'boolean',
+>          value : false,
+>          description : 'Set runpath on installed executables for libigt.so')
+> +
+> +option('srcdir',
+> +       type : 'string',
+> +       description : 'Path to source code to be compiled into binaries (optional)')
+
+Shouldn't this read: "Path to THE source code to be compiled 
+(optional)"? Compiling into binaries is a little redundant, so I would 
+drop it.
+
+Other than this, the rationale seems sane, but I am not 
+knowledgeable-enough about IGT's build system to comment more on it:
+
+Acked-by: Martin Peres <martin.peres@mupuf.org>
+
 > 
 _______________________________________________
 igt-dev mailing list
