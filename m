@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E180689FD4
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Mar 2021 23:32:13 +0000 (UTC)
+Date: Mon, 1 Mar 2021 15:37:51 -0800
+From: "Navare, Manasi" <manasi.d.navare@intel.com>
+Message-ID: <20210301233750.GA7960@labuser-Z97X-UD5H>
+References: <20210301170957.23216-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 01 Mar 2021 21:31:00 -0000
-Message-ID: <161463426040.9392.4937183167638191035@emeril.freedesktop.org>
-References: <20210301203747.7177-1-manasi.d.navare@intel.com>
-In-Reply-To: <20210301203747.7177-1-manasi.d.navare@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdG9vbHMv?=
- =?utf-8?q?intel=5Fdisplay=5Fpoller=3A_async_flip_and_vrr_=28rev2=29?=
+Content-Disposition: inline
+In-Reply-To: <20210301170957.23216-1-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_vrr: Optimize to read vrr
+ debugfs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,137 +18,157 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0540309757=="
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0540309757==
-Content-Type: multipart/alternative;
- boundary="===============6383377328635528277=="
+Reviewed-by: Manasi Navare <manasi.d.navare@intel.com>
 
---===============6383377328635528277==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Manasi
 
-== Series Details ==
+On Mon, Mar 01, 2021 at 10:39:56PM +0530, Bhanuprakash Modem wrote:
+> Instead of reading the vrr_range debugfs for every refresh rate,
+> read at strting of the test and preserve the data for entire
+> subtest.
+> =
 
-Series: tools/intel_display_poller: async flip and vrr (rev2)
-URL   : https://patchwork.freedesktop.org/series/85042/
-State : success
+> Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> Cc: Manasi Navare <manasi.d.navare@intel.com>
+> Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>  tests/kms_vrr.c | 31 ++++++++++++++++++-------------
+>  1 file changed, 18 insertions(+), 13 deletions(-)
+> =
 
-== Summary ==
+> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+> index e4ea74c17..bc4201615 100644
+> --- a/tests/kms_vrr.c
+> +++ b/tests/kms_vrr.c
+> @@ -51,6 +51,7 @@ typedef struct data {
+>  	igt_plane_t *primary;
+>  	igt_fb_t fb0;
+>  	igt_fb_t fb1;
+> +	range_t range;
+>  } data_t;
+>  =
 
-CI Bug Log - changes from CI_DRM_9818_full -> IGTPW_5560_full
-====================================================
+>  typedef struct vtest_ns {
+> @@ -116,13 +117,13 @@ static uint64_t rate_from_refresh(uint64_t refresh)
+>   *  - if max range is grater than the current mode vfreq, consider
+>   *       current mode vfreq as the max range.
+>   */
+> -static range_t get_vrr_range(data_t *data, igt_output_t *output)
+> +static range_t
+> +get_vrr_range(data_t *data, igt_output_t *output, uint32_t curr_vrefresh)
+>  {
+>  	char buf[256];
+>  	char *start_loc;
+>  	int fd, res;
+>  	range_t range;
+> -	drmModeModeInfo *mode =3D igt_output_get_mode(output);
+>  =
 
-Summary
--------
+>  	fd =3D igt_debugfs_connector_dir(data->drm_fd, output->name, O_RDONLY);
+>  	igt_assert(fd >=3D 0);
+> @@ -134,23 +135,21 @@ static range_t get_vrr_range(data_t *data, igt_outp=
+ut_t *output)
+>  =
 
-  **SUCCESS**
+>  	igt_assert(start_loc =3D strstr(buf, "Min: "));
+>  	igt_assert_eq(sscanf(start_loc, "Min: %u", &range.min), 1);
+> -	igt_require(mode->vrefresh > range.min);
+> +	igt_require(curr_vrefresh > range.min);
+>  =
 
-  No regressions found.
+>  	igt_assert(start_loc =3D strstr(buf, "Max: "));
+>  	igt_assert_eq(sscanf(start_loc, "Max: %u", &range.max), 1);
+>  =
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5560/index.html
+> -	range.max =3D (mode->vrefresh < range.max) ? mode->vrefresh : range.max;
+> +	range.max =3D (curr_vrefresh < range.max) ? curr_vrefresh : range.max;
+>  =
 
+>  	return range;
+>  }
+>  =
 
-Changes
--------
+>  /* Returns vrr test frequency for min, mid & max range. */
+> -static vtest_ns_t get_test_rate_ns(data_t *data, igt_output_t *output)
+> +static vtest_ns_t get_test_rate_ns(range_t range)
+>  {
+> -	range_t range;
+>  	vtest_ns_t vtest_ns;
+>  =
 
-  No changes found
+> -	range =3D get_vrr_range(data, output);
+>  	vtest_ns.min =3D rate_from_refresh(range.min);
+>  	vtest_ns.mid =3D rate_from_refresh(((range.max + range.min) / 2));
+>  	vtest_ns.max =3D rate_from_refresh(range.max);
+> @@ -199,6 +198,9 @@ static void prepare_test(data_t *data, igt_output_t *=
+output, enum pipe pipe)
+>  =
 
+>  	igt_put_cairo_ctx(cr);
+>  =
 
-Participating hosts (10 -> 8)
-------------------------------
+> +	/* Capture VRR range */
+> +	data->range =3D get_vrr_range(data, output, mode.vrefresh);
+> +
+>  	/* Take care of any required modesetting before the test begins. */
+>  	data->primary =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIM=
+ARY);
+>  	igt_plane_set_fb(data->primary, &data->fb0);
+> @@ -248,7 +250,7 @@ flip_and_measure(data_t *data, igt_output_t *output, =
+enum pipe pipe,
+>  	uint64_t start_ns, last_event_ns, target_ns;
+>  	uint32_t total_flip =3D 0, total_pass =3D 0;
+>  	bool front =3D false;
+> -	vtest_ns_t vtest_ns =3D get_test_rate_ns(data, output);
+> +	vtest_ns_t vtest_ns =3D get_test_rate_ns(data->range);
+>  =
 
-  Missing    (2): pig-kbl-iris pig-icl-1065g7 
+>  	/* Align with the flip completion event to speed up convergence. */
+>  	do_flip(data, &data->fb0);
+> @@ -316,15 +318,18 @@ static void
+>  test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t =
+flags)
+>  {
+>  	uint32_t result;
+> -	vtest_ns_t vtest_ns =3D get_test_rate_ns(data, output);
+> -	range_t range =3D get_vrr_range(data, output);
+> -	uint64_t rate =3D vtest_ns.mid;
+> +	vtest_ns_t vtest_ns;
+> +	range_t range;
+> +	uint64_t rate;
+> +
+> +	prepare_test(data, output, pipe);
+> +	range =3D data->range;
+> +	vtest_ns =3D get_test_rate_ns(range);
+> +	rate =3D vtest_ns.mid;
+>  =
 
+>  	igt_info("VRR Test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\=
+n",
+>  		 output->name, kmstest_pipe_name(pipe), range.min, range.max);
+>  =
 
-Build changes
--------------
+> -	prepare_test(data, output, pipe);
+> -
+>  	set_vrr_on_pipe(data, pipe, 1);
+>  =
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6016 -> IGTPW_5560
-  * Piglit: piglit_4509 -> None
+>  	/*
+> -- =
 
-  CI-20190529: 20190529
-  CI_DRM_9818: fb3b93df7979b1cf6b69ac801d1703c0bf1dde66 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5560: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5560/index.html
-  IGT_6016: 2107b0a53692fb329175bc16169c3699712187aa @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5560/index.html
-
---===============6383377328635528277==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tools/intel_display_poller: async flip and vrr (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/85042/">https://patchwork.freedesktop.org/series/85042/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5560/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5560/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9818_full -&gt; IGTPW_5560_full</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5560/index.html</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Participating hosts (10 -&gt; 8)</h2>
-<p>Missing    (2): pig-kbl-iris pig-icl-1065g7 </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6016 -&gt; IGTPW_5560</li>
-<li>Piglit: piglit_4509 -&gt; None</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9818: fb3b93df7979b1cf6b69ac801d1703c0bf1dde66 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5560: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5560/index.html<br />
-  IGT_6016: 2107b0a53692fb329175bc16169c3699712187aa @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools<br />
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit</p>
-
-</body>
-</html>
-
---===============6383377328635528277==--
-
---===============0540309757==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+> 2.20.1
+> =
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0540309757==--
