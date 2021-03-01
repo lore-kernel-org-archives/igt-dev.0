@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
- [IPv6:2607:f8b0:4864:20::533])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 74AEE6E155
- for <igt-dev@lists.freedesktop.org>; Sat, 27 Feb 2021 22:04:37 +0000 (UTC)
-Received: by mail-pg1-x533.google.com with SMTP id b21so8540368pgk.7
- for <igt-dev@lists.freedesktop.org>; Sat, 27 Feb 2021 14:04:37 -0800 (PST)
-From: Khem Raj <raj.khem@gmail.com>
-Date: Sat, 27 Feb 2021 14:04:33 -0800
-Message-Id: <20210227220433.541377-1-raj.khem@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib/igt_edid: Allocate raw 8-bytes for VSDB
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 01 Mar 2021 08:12:15 -0000
+Message-ID: <161458633569.9388.10685857998327244010@emeril.freedesktop.org>
+References: <20210227220433.541377-1-raj.khem@gmail.com>
+In-Reply-To: <20210227220433.541377-1-raj.khem@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Fedid=3A_Allocate_raw_8-bytes_for_VSDB_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,50 +14,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0569967320=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Khem Raj <raj.khem@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-hdmi_vsdb is an element of cea_vsdb which makes the size of cea_vsdb to
-be 8 ( 3bytes ieee_oui ) + ( 5bytes hdmi_vsdb struct), its true that we
-only use 7 bytes technically we can only allocate 7byte array but since
-we are writing to elements of hdmi_vsdb struct which is sitting at offet
-4-8 in cea_vsdb, compiler thinks we have an element which is out of
-array bounds since out allocated size is 7bytes
+--===============0569967320==
+Content-Type: multipart/alternative;
+ boundary="===============0747154556193191613=="
 
-This errors out
-../git/lib/igt_edid.c:365:13: error: array subscript 'struct hdmi_vsdb[0]' is partly outside array bounds of 'char[7]' [-Werror=array-bounds]
-  365 |         hdmi->src_phy_addr[0] = 0x10;
-      |             ^~
+--===============0747154556193191613==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-allocating one extra byte matches with size of cea_vsdb and compiler is
-happy
+== Series Details ==
 
-Signed-off-by: Khem Raj <raj.khem@gmail.com>
----
- lib/igt_edid.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Series: lib/igt_edid: Allocate raw 8-bytes for VSDB (rev2)
+URL   : https://patchwork.freedesktop.org/series/87459/
+State : failure
 
-diff --git a/lib/igt_edid.c b/lib/igt_edid.c
-index 1c85486d..ce09cc47 100644
---- a/lib/igt_edid.c
-+++ b/lib/igt_edid.c
-@@ -351,7 +351,7 @@ void cea_sad_init_pcm(struct cea_sad *sad, int channels,
- const struct cea_vsdb *cea_vsdb_get_hdmi_default(size_t *size)
- {
- 	/* We'll generate a VSDB with 2 extension fields. */
--	static char raw[CEA_VSDB_HDMI_MIN_SIZE + 2] = {0};
-+	static char raw[CEA_VSDB_HDMI_MIN_SIZE + 3] = {0};
- 	struct cea_vsdb *vsdb;
- 	struct hdmi_vsdb *hdmi;
- 
--- 
-2.30.1
+== Summary ==
+
+Series 87459 revision 2 was fully merged or fully failed: no git log
+
+
+
+--===============0747154556193191613==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_edid: Allocate raw 8-bytes for VSDB (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87459/">https://patchwork.freedesktop.org/series/87459/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+</table>
+
+
+    <p>Series 87459 revision 2 was fully merged or fully failed: no git log</p>
+
+</body>
+</html>
+
+--===============0747154556193191613==--
+
+--===============0569967320==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0569967320==--
