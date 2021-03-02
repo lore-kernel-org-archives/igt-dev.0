@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E41E789DB4
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Mar 2021 00:17:28 +0000 (UTC)
-Date: Tue, 2 Mar 2021 02:17:25 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <YD2EFZNo6fy5f7z4@intel.com>
-References: <20210301203747.7177-1-manasi.d.navare@intel.com>
- <20210301203747.7177-6-manasi.d.navare@intel.com>
- <20210301235410.GE7960@labuser-Z97X-UD5H>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210301235410.GE7960@labuser-Z97X-UD5H>
-Subject: Re: [igt-dev] [PATCH i-g-t 05/14] tools/intel_display_poller: Add
- flipdone tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 02 Mar 2021 00:39:47 -0000
+Message-ID: <161464558701.3588.16219693470698250465@emeril.freedesktop.org>
+References: <20210302000632.2208302-1-richard.purdie@linuxfoundation.org>
+In-Reply-To: <20210302000632.2208302-1-richard.purdie@linuxfoundation.org>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbWVzb246?=
+ =?utf-8?q?_Allow_source_location_to_be_configurable_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,342 +14,317 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1861183442=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Navare, Manasi" <manasi.d.navare@intel.com>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Mar 01, 2021 at 03:54:25PM -0800, Navare, Manasi wrote:
-> On Mon, Mar 01, 2021 at 12:37:38PM -0800, Manasi Navare wrote:
-> > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > =
+--===============1861183442==
+Content-Type: multipart/alternative;
+ boundary="===============1289397660533630511=="
 
-> > Add test for determining on which scanline the flipdone interrupt
-> > is signalled. ilk+ and vlv/chv have this. Earlier platforms had
-> > a "flip pending" bit instead which only seems to respond to CS flips
-> > so not relevant for MMIO based flips.
-> > =
+--===============1289397660533630511==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> > v2: Rework the loops a bit to ease VRR in the future
-> > =
+== Series Details ==
 
-> > Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> =
+Series: meson: Allow source location to be configurable (rev2)
+URL   : https://patchwork.freedesktop.org/series/87456/
+State : success
 
-> Looks good to me in general for checking the flipdone interrupt.
-> So for the changes here:
-> =
+== Summary ==
 
-> Reviewed-by: Manasi Navare <manasi.d.navare@intel.com>
-> =
+CI Bug Log - changes from CI_DRM_9818 -> IGTPW_5561
+====================================================
 
-> Quick question here:
-> How do we test this TEST_FLIPDONE with vrr enabled, we need to add settin=
-g vrr prop etc here?
+Summary
+-------
 
-Just enable vrr whatever way you feel like it. I did it by forcing it on
-always in the kernel. But I guess we could add a knob to eg. testdisplay
-to turn it on. Then you could easily test any mode you want with or
-without vrr.
+  **SUCCESS**
 
-> =
+  No regressions found.
 
-> Manasi
-> =
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/index.html
 
-> > ---
-> >  tools/intel_display_poller.c | 187 ++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 186 insertions(+), 1 deletion(-)
-> > =
+Known issues
+------------
 
-> > diff --git a/tools/intel_display_poller.c b/tools/intel_display_poller.c
-> > index 826833b3..be237221 100644
-> > --- a/tools/intel_display_poller.c
-> > +++ b/tools/intel_display_poller.c
-> > @@ -52,6 +52,9 @@ enum test {
-> >  	TEST_FLIPCOUNT,
-> >  	TEST_PAN,
-> >  	TEST_FLIP,
-> > +	TEST_FLIPDONE,
-> > +	TEST_FLIPDONE_PIPESTAT,
-> > +	TEST_FLIPDONE_DEIIR,
-> >  	TEST_SURFLIVE,
-> >  	TEST_WRAP,
-> >  	TEST_FIELD,
-> > @@ -789,6 +792,158 @@ static void poll_dsl_flip(uint32_t devid, int pip=
-e, int target_scanline, int tar
-> >  	write_reg(surf, saved);
-> >  }
-> >  =
+  Here are the changes found in IGTPW_5561 that come from known issues:
 
-> > +static void poll_dsl_flipdone_pipestat(uint32_t devid, int pipe, int t=
-arget_scanline, int target_fuzz,
-> > +				       uint32_t *min, uint32_t *max, const int count)
-> > +{
-> > +	uint32_t dsl, dsl1 =3D 0, dsl2 =3D 0;
-> > +	uint32_t pipestat, pipestat1, pipestat2, pipestat_save;
-> > +	bool field1 =3D false, field2 =3D false;
-> > +	uint32_t saved, next, surf =3D 0, bit;
-> > +	int i[2] =3D {};
-> > +
-> > +	dsl =3D PIPE_REG(pipe, PIPEA_DSL);
-> > +	pipestat =3D PIPE_REG(pipe, PIPEASTAT);
-> > +	surf =3D dspsurf_reg(devid, pipe);
-> > +
-> > +	bit =3D 1 << 10;
-> > +
-> > +	saved =3D read_reg(surf);
-> > +	next =3D saved;
-> > +
-> > +	pipestat_save =3D read_reg(pipestat) & 0x7fff0000;
-> > +	pipestat1 =3D pipestat_save & ~(1 << (bit<<16));
-> > +	write_reg(pipestat, pipestat1 | bit);
-> > +
-> > +	while (!quit) {
-> > +		while (!quit) {
-> > +			dsl1 =3D read_reg(dsl);
-> > +			field1 =3D dsl1 & 0x80000000;
-> > +			dsl1 &=3D ~0x80000000;
-> > +			if (dsl1 =3D=3D target_scanline)
-> > +				break;
-> > +		}
-> > +
-> > +		write_reg(pipestat, pipestat1 | bit);
-> > +		if (next =3D=3D saved)
-> > +			next =3D saved+256*1024;
-> > +		else
-> > +			next =3D saved;
-> > +		write_reg(surf, next);
-> > +
-> > +		while (!quit) {
-> > +			pipestat2 =3D read_reg(pipestat);
-> > +			dsl2 =3D read_reg(dsl);
-> > +
-> > +			field2 =3D dsl2 & 0x80000000;
-> > +			dsl2 &=3D ~0x80000000;
-> > +
-> > +			if (pipestat2 & bit)
-> > +				break;
-> > +		}
-> > +
-> > +		write_reg(pipestat, pipestat1 | bit);
-> > +
-> > +		if (field1 !=3D field2)
-> > +			printf("fields are different (%u:%u -> %u:%u)\n",
-> > +			       field1, dsl1, field2, dsl2);
-> > +
-> > +		min[field1*count+i[field1]] =3D dsl1;
-> > +		max[field1*count+i[field1]] =3D dsl2;
-> > +		if (++i[field1] >=3D count)
-> > +			break;
-> > +	}
-> > +
-> > +	write_reg(surf, saved);
-> > +	write_reg(pipestat, pipestat_save);
-> > +}
-> > +
-> > +static void poll_dsl_flipdone_deiir(uint32_t devid, int pipe, int targ=
-et_scanline, int target_fuzz,
-> > +				    uint32_t *min, uint32_t *max, const int count)
-> > +{
-> > +	uint32_t dsl, dsl1 =3D 0, dsl2 =3D 0;
-> > +	uint32_t iir, iir2, ier, imr;
-> > +	uint32_t ier_save, imr_save;
-> > +	bool field1 =3D false, field2 =3D false;
-> > +	uint32_t saved, next, surf =3D 0, bit;
-> > +	int i[2] =3D {};
-> > +
-> > +	dsl =3D PIPE_REG(pipe, PIPEA_DSL);
-> > +	surf =3D dspsurf_reg(devid, pipe);
-> > +
-> > +	if (intel_gen(devid) >=3D 9)
-> > +		bit =3D 3;
-> > +	else if (intel_gen(devid) >=3D 8)
-> > +		bit =3D 4;
-> > +	else if (intel_gen(devid) >=3D 7)
-> > +		bit =3D 3 + 5 * pipe;
-> > +	else if (intel_gen(devid) >=3D 5)
-> > +		bit =3D 26 + pipe;
-> > +	else
-> > +		abort();
-> > +	bit =3D 1 << bit;
-> > +
-> > +	if (intel_gen(devid) >=3D 8) {
-> > +		iir =3D GEN8_DE_PIPE_IIR(pipe);
-> > +		ier =3D GEN8_DE_PIPE_IER(pipe);
-> > +		imr =3D GEN8_DE_PIPE_IMR(pipe);
-> > +	} else {
-> > +		iir =3D DEIIR;
-> > +		ier =3D DEIER;
-> > +		imr =3D DEIMR;
-> > +	}
-> > +
-> > +	saved =3D read_reg(surf);
-> > +	next =3D saved;
-> > +
-> > +	imr_save =3D read_reg(imr);
-> > +	ier_save =3D read_reg(ier);
-> > +	write_reg(ier, ier_save & ~bit);
-> > +	write_reg(imr, imr_save & ~bit);
-> > +
-> > +	while (!quit) {
-> > +		while (!quit) {
-> > +			dsl1 =3D read_reg(dsl);
-> > +			field1 =3D dsl1 & 0x80000000;
-> > +			dsl1 &=3D ~0x80000000;
-> > +			if (dsl1 =3D=3D target_scanline)
-> > +				break;
-> > +		}
-> > +
-> > +		write_reg(iir, bit);
-> > +		if (next =3D=3D saved)
-> > +			next =3D saved+256*1024;
-> > +		else
-> > +			next =3D saved;
-> > +		write_reg(surf, next);
-> > +
-> > +		while (!quit) {
-> > +			iir2 =3D read_reg(iir);
-> > +			dsl2 =3D read_reg(dsl);
-> > +
-> > +			field2 =3D dsl2 & 0x80000000;
-> > +			dsl2 &=3D ~0x80000000;
-> > +
-> > +			if (iir2 & bit)
-> > +				break;
-> > +		}
-> > +
-> > +		write_reg(iir, bit);
-> > +
-> > +		if (field1 !=3D field2)
-> > +			printf("fields are different (%u:%u -> %u:%u)\n",
-> > +			       field1, dsl1, field2, dsl2);
-> > +
-> > +		min[field1*count+i[field1]] =3D dsl1;
-> > +		max[field1*count+i[field1]] =3D dsl2;
-> > +		if (++i[field1] >=3D count)
-> > +			break;
-> > +	}
-> > +
-> > +	write_reg(surf, saved);
-> > +	write_reg(imr, imr_save);
-> > +	write_reg(ier, ier_save);
-> > +}
-> > +
-> >  static void poll_dsl_surflive(uint32_t devid, int pipe,
-> >  			      uint32_t *min, uint32_t *max, const int count)
-> >  {
-> > @@ -933,6 +1088,12 @@ static const char *test_name(enum test test, int =
-pipe, int bit, bool test_pixel_
-> >  	case TEST_FLIP:
-> >  		snprintf(str, sizeof str, "%s / pipe %c / Flip", type, pipe_name(pip=
-e));
-> >  		return str;
-> > +	case TEST_FLIPDONE_PIPESTAT:
-> > +		snprintf(str, sizeof str, "%s / pipe %c / Flip done (vlv/chv)", type=
-, pipe_name(pipe));
-> > +		return str;
-> > +	case TEST_FLIPDONE_DEIIR:
-> > +		snprintf(str, sizeof str, "%s / pipe %c / Flip done (pch)", type, pi=
-pe_name(pipe));
-> > +		return str;
-> >  	case TEST_SURFLIVE:
-> >  		snprintf(str, sizeof str, "%s / pipe %c / Surflive", type, pipe_name=
-(pipe));
-> >  		return str;
-> > @@ -950,7 +1111,7 @@ static const char *test_name(enum test test, int p=
-ipe, int bit, bool test_pixel_
-> >  static void __attribute__((noreturn)) usage(const char *name)
-> >  {
-> >  	fprintf(stderr, "Usage: %s [options]\n"
-> > -		" -t,--test <pipestat|iir|framecount|flipcount|pan|flip|surflive|wra=
-p|field>\n"
-> > +		" -t,--test <pipestat|iir|framecount|flipcount|pan|flip|flipdone|sur=
-flive|wrap|field>\n"
-> >  		" -p,--pipe <pipe>\n"
-> >  		" -b,--bit <bit>\n"
-> >  		" -l,--line <target scanline/pixel>\n"
-> > @@ -1002,6 +1163,8 @@ int main(int argc, char *argv[])
-> >  				test =3D TEST_PAN;
-> >  			else if (!strcmp(optarg, "flip"))
-> >  				test =3D TEST_FLIP;
-> > +			else if (!strcmp(optarg, "flipdone"))
-> > +				test =3D TEST_FLIPDONE;
-> >  			else if (!strcmp(optarg, "surflive"))
-> >  				test =3D TEST_SURFLIVE;
-> >  			else if (!strcmp(optarg, "wrap"))
-> > @@ -1117,6 +1280,16 @@ int main(int argc, char *argv[])
-> >  		case TEST_FRAMECOUNT:
-> >  			test =3D TEST_FRAMECOUNT_G4X;
-> >  			break;
-> > +		case TEST_FLIPDONE:
-> > +			/*
-> > +			 * g4x has no apparent "flip done" interrupt,
-> > +			 * and the "flip pending" interrupt does not
-> > +			 * seem to do anything with mmio flips.
-> > +			 */
-> > +			if (IS_G4X(devid))
-> > +				usage(argv[0]);
-> > +			test =3D TEST_FLIPDONE_PIPESTAT;
-> > +			break;
-> >  		case TEST_FLIPCOUNT:
-> >  		case TEST_PIPESTAT:
-> >  		case TEST_PAN:
-> > @@ -1146,6 +1319,9 @@ int main(int argc, char *argv[])
-> >  		case TEST_FRAMECOUNT:
-> >  			test =3D TEST_FRAMECOUNT_G4X;
-> >  			break;
-> > +		case TEST_FLIPDONE:
-> > +			test =3D TEST_FLIPDONE_DEIIR;
-> > +			break;
-> >  		case TEST_FLIPCOUNT:
-> >  		case TEST_PAN:
-> >  		case TEST_FLIP:
-> > @@ -1161,6 +1337,7 @@ int main(int argc, char *argv[])
-> >  	switch (test) {
-> >  	case TEST_IIR:
-> >  	case TEST_FRAMECOUNT:
-> > +	case TEST_FLIPDONE:
-> >  		/* should no longer have the generic tests here */
-> >  		assert(0);
-> >  	default:
-> > @@ -1226,6 +1403,14 @@ int main(int argc, char *argv[])
-> >  			poll_dsl_flip(devid, pipe, target_scanline, target_fuzz,
-> >  				      min, max, count);
-> >  		break;
-> > +	case TEST_FLIPDONE_PIPESTAT:
-> > +		poll_dsl_flipdone_pipestat(devid, pipe, target_scanline, target_fuzz,
-> > +					   min, max, count);
-> > +		break;
-> > +	case TEST_FLIPDONE_DEIIR:
-> > +		poll_dsl_flipdone_deiir(devid, pipe, target_scanline, target_fuzz,
-> > +					min, max, count);
-> > +		break;
-> >  	case TEST_SURFLIVE:
-> >  		poll_dsl_surflive(devid, pipe, min, max, count);
-> >  		break;
-> > -- =
+### IGT changes ###
 
-> > 2.19.1
-> > =
+#### Issues hit ####
 
-> > _______________________________________________
-> > igt-dev mailing list
-> > igt-dev@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+  * igt@amdgpu/amd_basic@semaphore:
+    - fi-icl-y:           NOTRUN -> [SKIP][1] ([fdo#109315]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-icl-y/igt@amdgpu/amd_basic@semaphore.html
 
--- =
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-apl-guc:         NOTRUN -> [SKIP][2] ([fdo#109271]) +1 similar issue
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-apl-guc/igt@gem_exec_fence@basic-busy@bcs0.html
 
-Ville Syrj=E4l=E4
-Intel
+  * igt@gem_huc_copy@huc-copy:
+    - fi-icl-y:           NOTRUN -> [SKIP][3] ([i915#2190])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-icl-y/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_hangman@error-state-basic:
+    - fi-apl-guc:         NOTRUN -> [DMESG-WARN][4] ([i915#1610])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-apl-guc/igt@i915_hangman@error-state-basic.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-icl-y:           NOTRUN -> [SKIP][5] ([fdo#109284] / [fdo#111827]) +8 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-icl-y/igt@kms_chamelium@dp-crc-fast.html
+
+  * igt@kms_chamelium@hdmi-crc-fast:
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][6] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-bsw-n3050/igt@kms_chamelium@hdmi-crc-fast.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-icl-y:           NOTRUN -> [SKIP][7] ([fdo#109285])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-icl-y/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-icl-y:           NOTRUN -> [SKIP][8] ([fdo#109278])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-icl-y/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc-pipe-a:
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][9] ([fdo#109271]) +39 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-bsw-n3050/igt@kms_pipe_crc_basic@hang-read-crc-pipe-a.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - fi-icl-y:           NOTRUN -> [SKIP][10] ([fdo#110189]) +3 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-icl-y/igt@kms_psr@primary_mmap_gtt.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-tgl-y:           [PASS][11] -> [DMESG-WARN][12] ([i915#402]) +2 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9818/fi-tgl-y/igt@prime_vgem@basic-userptr.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-tgl-y/igt@prime_vgem@basic-userptr.html
+
+  * igt@runner@aborted:
+    - fi-apl-guc:         NOTRUN -> [FAIL][13] ([i915#2426])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-apl-guc/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@fbdev@read:
+    - fi-tgl-y:           [DMESG-WARN][14] ([i915#402]) -> [PASS][15] +2 similar issues
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9818/fi-tgl-y/igt@fbdev@read.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-tgl-y/igt@fbdev@read.html
+
+  * igt@gem_linear_blits@basic:
+    - fi-kbl-8809g:       [TIMEOUT][16] ([i915#2502]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9818/fi-kbl-8809g/igt@gem_linear_blits@basic.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-kbl-8809g/igt@gem_linear_blits@basic.html
+
+  * igt@kms_chamelium@hdmi-edid-read:
+    - fi-kbl-7500u:       [FAIL][18] ([i915#2128]) -> [PASS][19]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9818/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109278]: https://bugs.freedesktop.org/show_bug.cgi?id=109278
+  [fdo#109284]: https://bugs.freedesktop.org/show_bug.cgi?id=109284
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1610]: https://gitlab.freedesktop.org/drm/intel/issues/1610
+  [i915#2128]: https://gitlab.freedesktop.org/drm/intel/issues/2128
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#2502]: https://gitlab.freedesktop.org/drm/intel/issues/2502
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (42 -> 40)
+------------------------------
+
+  Additional (3): fi-icl-y fi-apl-guc fi-bsw-n3050 
+  Missing    (5): fi-ilk-m540 fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6016 -> IGTPW_5561
+
+  CI-20190529: 20190529
+  CI_DRM_9818: fb3b93df7979b1cf6b69ac801d1703c0bf1dde66 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5561: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/index.html
+  IGT_6016: 2107b0a53692fb329175bc16169c3699712187aa @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/index.html
+
+--===============1289397660533630511==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>meson: Allow source location to be configurable (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87456/">https://patchwork.freedesktop.org/series/87456/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9818 -&gt; IGTPW_5561</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5561 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@semaphore:</p>
+<ul>
+<li>fi-icl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-icl-y/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-apl-guc/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-icl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-icl-y/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_hangman@error-state-basic:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-apl-guc/igt@i915_hangman@error-state-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1610">i915#1610</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-icl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-icl-y/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109284">fdo#109284</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-crc-fast:</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-bsw-n3050/igt@kms_chamelium@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-icl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-icl-y/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-icl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-icl-y/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109278">fdo#109278</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc-pipe-a:</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-bsw-n3050/igt@kms_pipe_crc_basic@hang-read-crc-pipe-a.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +39 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_mmap_gtt:</p>
+<ul>
+<li>fi-icl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-icl-y/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=110189">fdo#110189</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9818/fi-tgl-y/igt@prime_vgem@basic-userptr.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-tgl-y/igt@prime_vgem@basic-userptr.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-apl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@fbdev@read:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9818/fi-tgl-y/igt@fbdev@read.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-tgl-y/igt@fbdev@read.html">PASS</a> +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_linear_blits@basic:</p>
+<ul>
+<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9818/fi-kbl-8809g/igt@gem_linear_blits@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2502">i915#2502</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-kbl-8809g/igt@gem_linear_blits@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-edid-read:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9818/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2128">i915#2128</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Additional (3): fi-icl-y fi-apl-guc fi-bsw-n3050 <br />
+  Missing    (5): fi-ilk-m540 fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6016 -&gt; IGTPW_5561</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9818: fb3b93df7979b1cf6b69ac801d1703c0bf1dde66 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5561: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/index.html<br />
+  IGT_6016: 2107b0a53692fb329175bc16169c3699712187aa @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============1289397660533630511==--
+
+--===============1861183442==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1861183442==--
