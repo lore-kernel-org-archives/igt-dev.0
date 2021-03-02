@@ -1,7 +1,7 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 265606E948
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Mar 2021 13:29:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4805E898A4
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Mar 2021 13:43:02 +0000 (UTC)
 MIME-Version: 1.0
 In-Reply-To: <YD48PM60jGITDHni@platvala-desk.ger.corp.intel.com>
 References: <20210225083553.7540-1-petri.latvala@intel.com>
@@ -10,8 +10,8 @@ References: <20210225083553.7540-1-petri.latvala@intel.com>
  <161469026970.16094.600012892357124517@build.alporthouse.com>
  <YD48PM60jGITDHni@platvala-desk.ger.corp.intel.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 02 Mar 2021 13:29:08 +0000
-Message-ID: <161469174867.16094.11823053173066273735@build.alporthouse.com>
+Date: Tue, 02 Mar 2021 13:42:47 +0000
+Message-ID: <161469256779.16094.15428266423214157575@build.alporthouse.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] lib/kmod: Stop producing results at all
  for kernel selftests on taint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -30,49 +30,11 @@ Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Quoting Petri Latvala (2021-03-02 13:23:08)
-> On Tue, Mar 02, 2021 at 01:04:29PM +0000, Chris Wilson wrote:
-> > Quoting Petri Latvala (2021-03-02 12:39:35)
-> > > On Tue, Mar 02, 2021 at 11:48:02AM +0000, Chris Wilson wrote:
-> > > > Quoting Petri Latvala (2021-02-25 08:35:53)
-> > > > > Instead of producing skips for the rest when one selftest taints the
-> > > > > kernel, stop running them altogether. Having the skips produced yields
-> > > > > no value and just makes future improvements (like correctly tagging
-> > > > > tests that cause taints) harder. In effect, this gets us back to the
-> > > > > old setup when tainting made igt_runner immediately kill the test and
-> > > > > similarly made us not get spurious results for the rest of the
-> > > > > selftests.
-> > > > 
-> > > > Skip isn't spurious here. I don't see how this impacts tagging the
-> > > > earlier tests. So the only question for me is whether SKIP or NOTRUN is
-> > > > more applicable. And skip is far more informative when run by hand...
-> > > 
-> > > When run by hand on an already tainted kernel, the first (specified)
-> > > selftest still gets a skip and others don't get executed.
-> > > 
-> > > The immediate value I'll be getting from this is my ongoing work on
-> > > the ugly igt@runner@aborted pseudoresult to instead mark the last
-> > > executed test as 'ABORT' result when igt_runner decides to abort the
-> > > execution (due to a taint). If we have skips, I'd need to do some
-> > > selftest-specific handling to not mark the last executed dynamic
-> > > subtest, but the last non-skipping dynamic subtest.
-> > 
-> > The problem does not seem to be intrinsic to igt_kselftests, as any
-> > dynamic subtest that triggers a taint will then proceed to run the next
-> > igt_dynamic which may pass, fail or skip. The runner may not have a
-> > chance to check for a taint until the end of the subtest. It sounds like
-> > a job for the igt_runner <-> igt channel.
-> 
-> Would also require checking for taint mid-execution...
-
-Yes, don't we currently check on a timer, but if there was a channel for
-intermediate test results, we would check then as well.
- 
 > Anyway best practices for dynamic subtests is to never skip, but
-> instead not exist at all. I suppose I could instead mark every single
-> dynamic subtest as abort when abort happens.
+> instead not exist at all.
 
-Why is the test itself marked as abort? The run is aborted, the test
-failed.
+Ok, as that's the prevailing wisdom,
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
 -Chris
 _______________________________________________
 igt-dev mailing list
