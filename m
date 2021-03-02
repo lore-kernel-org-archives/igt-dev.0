@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 521AC6E8BB
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Mar 2021 04:18:26 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+Date: Tue,  2 Mar 2021 09:57:36 +0530
+Message-Id: <20210302042736.28431-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 02 Mar 2021 00:48:32 -0000
-Message-ID: <161464611274.3589.2766711568322509252@emeril.freedesktop.org>
-References: <20210302000632.2208302-1-richard.purdie@linuxfoundation.org>
-In-Reply-To: <20210302000632.2208302-1-richard.purdie@linuxfoundation.org>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgbWVzb246?=
- =?utf-8?q?_Allow_source_location_to_be_configurable_=28rev2=29?=
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_cursor_legacy: added test
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,137 +15,92 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============2050186571=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2050186571==
-Content-Type: multipart/alternative;
- boundary="===============6817989157458165144=="
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/kms_cursor_legacy.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
---===============6817989157458165144==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: meson: Allow source location to be configurable (rev2)
-URL   : https://patchwork.freedesktop.org/series/87456/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9818_full -> IGTPW_5561_full
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/index.html
-
-
-Changes
--------
-
-  No changes found
-
-
-Participating hosts (10 -> 8)
-------------------------------
-
-  Missing    (2): pig-kbl-iris pig-icl-1065g7 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6016 -> IGTPW_5561
-  * Piglit: piglit_4509 -> None
-
-  CI-20190529: 20190529
-  CI_DRM_9818: fb3b93df7979b1cf6b69ac801d1703c0bf1dde66 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5561: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/index.html
-  IGT_6016: 2107b0a53692fb329175bc16169c3699712187aa @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/index.html
-
---===============6817989157458165144==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>meson: Allow source location to be configurable (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87456/">https://patchwork.freedesktop.org/series/87456/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9818_full -&gt; IGTPW_5561_full</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/index.html</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Participating hosts (10 -&gt; 8)</h2>
-<p>Missing    (2): pig-kbl-iris pig-icl-1065g7 </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6016 -&gt; IGTPW_5561</li>
-<li>Piglit: piglit_4509 -&gt; None</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9818: fb3b93df7979b1cf6b69ac801d1703c0bf1dde66 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5561: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5561/index.html<br />
-  IGT_6016: 2107b0a53692fb329175bc16169c3699712187aa @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools<br />
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit</p>
-
-</body>
-</html>
-
---===============6817989157458165144==--
-
---===============2050186571==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index 6034ad04..746e1153 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -1365,6 +1365,9 @@ igt_main
+ 		igt_display_require(&display, display.drm_fd);
+ 	}
+ 
++	/*Test description for pipe-* and all-pipe-* tests*/
++	igt_describe("Test checks how many cursor updates we can fit between vblanks"
++		     "on single pipe with different modes, priority and number of processes");
+ 	igt_subtest_group {
+ 		enum pipe n;
+ 		for_each_pipe_static(n) {
+@@ -1412,6 +1415,10 @@ igt_main
+ 	igt_subtest("long-nonblocking-modeset-vs-cursor-atomic")
+ 		nonblocking_modeset_vs_cursor(&display, 16);
+ 
++	/*Test Description for 2x-* tests*/
++	igt_describe("This test executes flips on both CRTCs"
++		     "while running cursor updates in parallel");
++
+ 	igt_subtest("2x-flip-vs-cursor-legacy")
+ 		two_screens_flip_vs_cursor(&display, 8, false, false);
+ 
+@@ -1442,18 +1449,28 @@ igt_main
+ 	igt_subtest("2x-long-cursor-vs-flip-atomic")
+ 		two_screens_cursor_vs_flip(&display, 50, true);
+ 
++	/*Test description for cursor-crc tests*/
++	igt_describe("Test will first does a page flip and then cursor update");
+ 	igt_subtest("flip-vs-cursor-crc-legacy")
+ 		flip_vs_cursor_crc(&display, false);
+ 
+ 	igt_subtest("flip-vs-cursor-crc-atomic")
+ 		flip_vs_cursor_crc(&display, true);
+ 
++	/*Test description for busy-crc tests*/
++	igt_describe("this test perform a busy bo update followed by a cursor update");
+ 	igt_subtest("flip-vs-cursor-busy-crc-legacy")
+ 		flip_vs_cursor_busy_crc(&display, false);
+ 
+ 	igt_subtest("flip-vs-cursor-busy-crc-atomic")
+ 		flip_vs_cursor_busy_crc(&display, true);
+ 
++	igt_describe("Adds variety of tests:"
++		     "varying-size: change the size of cursor b/w 64*64 to maxw x maxh"
++		     "atomic-transition: alternates between a full screen sprite plane"
++				         "and full screen primary plane"
++		     "toggle: which toggles cursor visibility and make sure cursor moves"
++			      "between updates");
+ 	for (i = 0; i <= flip_test_last; i++) {
+ 		const char *modes[flip_test_last+1] = {
+ 			"legacy",
+@@ -1485,11 +1502,14 @@ igt_main
+ 			}
+ 		}
+ 
++		igt_describe("The essence of the basic test is that neither the cursor nor the"
++			     "nonblocking flip stall the application of the next");
+ 		igt_subtest_f("%sflip-after-cursor-%s", prefix, modes[i])
+ 			basic_flip_cursor(&display, i, FLIP_AFTER_CURSOR, 0);
+ 
+ 		igt_subtest_f("flip-vs-cursor-%s", modes[i])
+ 			flip_vs_cursor(&display, i, 150);
++
+ 		igt_subtest_f("cursor-vs-flip-%s", modes[i])
+ 			cursor_vs_flip(&display, i, 50);
+ 
+-- 
+2.26.2
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============2050186571==--
