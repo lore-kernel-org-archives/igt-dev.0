@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D8F16E949
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Mar 2021 13:03:35 +0000 (UTC)
-From: "Mun, Gwan-gyeong" <gwan-gyeong.mun@intel.com>
-Date: Tue, 2 Mar 2021 13:03:31 +0000
-Message-ID: <daf5879401e8ff09294fc1ac26a05edad6be37d8.camel@intel.com>
-References: <20210222170950.179310-1-jose.souza@intel.com>
-In-Reply-To: <20210222170950.179310-1-jose.souza@intel.com>
-Content-Language: en-US
-Content-ID: <A08E4E8079BEC14DBB7991BADBEF5C5B@intel.com>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 953BE6E94B
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Mar 2021 13:04:37 +0000 (UTC)
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Enable selective
- fetch feature in kernel
+In-Reply-To: <YD4yB/x4tv3Du7vG@platvala-desk.ger.corp.intel.com>
+References: <20210225083553.7540-1-petri.latvala@intel.com>
+ <161468568208.13469.12406365697364305928@build.alporthouse.com>
+ <YD4yB/x4tv3Du7vG@platvala-desk.ger.corp.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue, 02 Mar 2021 13:04:29 +0000
+Message-ID: <161469026970.16094.600012892357124517@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/kmod: Stop producing results at all
+ for kernel selftests on taint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,84 +19,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Souza,
- Jose" <jose.souza@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCAyMDIxLTAyLTIyIGF0IDA5OjA5IC0wODAwLCBKb3PDqSBSb2JlcnRvIGRlIFNvdXph
-IHdyb3RlOg0KPiBFbmFibGUgUFNSMiBzZWxlY3RpdmUgZmV0Y2ggdXNpbmcgZGVidWdmcyBkdXJp
-bmcgdGVzdCBzZXR1cCwgdGhpcyB3aWxsDQo+IGFsbG93IHVzIHRvIGhhdmUgc29tZSB0ZXN0IGNv
-dmVyYWdlIG9mIHRoaXMgZmVhdHVyZSBieSBDSS4NCj4gDQo+IENjOiBHd2FuLWd5ZW9uZyBNdW4g
-PGd3YW4tZ3llb25nLm11bkBpbnRlbC5jb20+DQo+IENjOiBQYW5rYWogQmhhcmFkaXlhIDxwYW5r
-YWoubGF4bWluYXJheWFuLmJoYXJhZGl5YUBpbnRlbC5jb20+DQo+IFNpZ25lZC1vZmYtYnk6IEpv
-c8OpIFJvYmVydG8gZGUgU291emEgPGpvc2Uuc291emFAaW50ZWwuY29tPg0KPiAtLS0NCj4gwqBs
-aWIvaWd0X3Bzci5jwqDCoMKgwqDCoMKgIHzCoCAzICsrKw0KPiDCoGxpYi9pZ3RfcHNyLmjCoMKg
-wqDCoMKgwqAgfMKgIDMgKystDQo+IMKgdGVzdHMva21zX3BzcjJfc2YuYyB8IDEwICsrKysrKy0t
-LS0NCj4gwqAzIGZpbGVzIGNoYW5nZWQsIDExIGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0p
-DQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9wc3IuYyBiL2xpYi9pZ3RfcHNyLmMNCj4gaW5k
-ZXggZDUxNjdmYmFkLi42ODI0MGY5YTMgMTAwNjQ0DQo+IC0tLSBhL2xpYi9pZ3RfcHNyLmMNCj4g
-KysrIGIvbGliL2lndF9wc3IuYw0KPiBAQCAtMTU4LDYgKzE1OCw5IEBAIHN0YXRpYyBib29sIHBz
-cl9zZXQoaW50IGRldmljZSwgaW50IGRlYnVnZnNfZmQsIGludA0KPiBtb2RlKQ0KPiDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNhc2UgUFNSX01PREVfMjoNCj4gwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGVidWdfdmFsID0gIjB4MiI7DQo+
-IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGJyZWFrOw0K
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY2FzZSBQU1JfTU9ERV8yX1NFTF9GRVRD
-SDoNCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkZWJ1
-Z192YWwgPSAiMHg0IjsNCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqBicmVhazsNCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkZWZhdWx0
-Og0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiBE
-aXNhYmxlcyBQU1IgKi8NCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgZGVidWdfdmFsID0gIjB4MSI7DQo+IGRpZmYgLS1naXQgYS9saWIvaWd0X3Bzci5o
-IGIvbGliL2lndF9wc3IuaA0KPiBpbmRleCAyNTExMWNjMmIuLmM0N2IxOTdiMSAxMDA2NDQNCj4g
-LS0tIGEvbGliL2lndF9wc3IuaA0KPiArKysgYi9saWIvaWd0X3Bzci5oDQo+IEBAIC0zMiw3ICsz
-Miw4IEBADQo+IMKgDQo+IMKgZW51bSBwc3JfbW9kZSB7DQo+IMKgwqDCoMKgwqDCoMKgwqBQU1Jf
-TU9ERV8xLA0KPiAtwqDCoMKgwqDCoMKgwqBQU1JfTU9ERV8yDQo+ICvCoMKgwqDCoMKgwqDCoFBT
-Ul9NT0RFXzIsDQo+ICvCoMKgwqDCoMKgwqDCoFBTUl9NT0RFXzJfU0VMX0ZFVENILA0KPiDCoH07
-DQo+IMKgDQo+IMKgYm9vbCBwc3JfZGlzYWJsZWRfY2hlY2soaW50IGRlYnVnZnNfZmQpOw0KPiBk
-aWZmIC0tZ2l0IGEvdGVzdHMva21zX3BzcjJfc2YuYyBiL3Rlc3RzL2ttc19wc3IyX3NmLmMNCj4g
-aW5kZXggMjk2ZWQ4NDc2Li44ZDNlMTMwMTkgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2ttc19wc3Iy
-X3NmLmMNCj4gKysrIGIvdGVzdHMva21zX3BzcjJfc2YuYw0KPiBAQCAtNTYwLDkgKzU2MCw2IEBA
-IGlndF9tYWluDQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRhdGEuZGVi
-dWdmc19mZCwNCj4gUFNSX01PREVfMiksDQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIlNpbmsgZG9lcyBub3Qgc3VwcG9ydCBQU1Iy
-XG4iKTsNCj4gwqANCj4gLQ0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVx
-dWlyZV9mKHBzcjJfc2VsZWN0aXZlX2ZldGNoX2NoZWNrKGRhdGEuZGVidWdmc19mZCkNCj4gLA0K
-PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgIlBTUjIgc2VsZWN0aXZlIGZldGNoIG5vdCBlbmFibGVkXG4iKTsNCj4gLQ0KPiDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEuYnVmbWdyID0gZHJtX2ludGVsX2J1Zm1ncl9n
-ZW1faW5pdChkYXRhLmRybV9mZCwNCj4gNDA5Nik7DQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgaWd0X2Fzc2VydChkYXRhLmJ1Zm1ncik7DQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgZHJtX2ludGVsX2J1Zm1ncl9nZW1fZW5hYmxlX3JldXNlKGRhdGEuYnVmbWdy
-KTsNCj4gQEAgLTU3MSw3ICs1NjgsNyBAQCBpZ3RfbWFpbg0KPiDCoA0KPiDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoC8qIFRlc3QgaWYgUFNSMiBjYW4gYmUgZW5hYmxlZCAqLw0KPiDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlX2YocHNyX2VuYWJsZShk
-YXRhLmRybV9mZCwNCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBkYXRhLmRlYnVnZnNfZmQsIFBT
-Ul9NT0RFXzIpLA0KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRhdGEuZGVidWdmc19mZCwNCj4g
-UFNSX01PREVfMl9TRUxfRkVUQ0gpLA0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJFcnJvciBlbmFibGluZyBQU1IyXG4iKTsNCj4g
-wqANCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLmRhbWFnZV9hcmVhX2Nv
-dW50ID0gTUFYX0RBTUFHRV9BUkVBUzsNCj4gQEAgLTU3OSw2ICs1NzYsMTEgQEAgaWd0X21haW4N
-Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnRlc3RfcGxhbmVfaWQgPSBE
-Uk1fUExBTkVfVFlQRV9QUklNQVJZOw0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oHByZXBhcmUoJmRhdGEpOw0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHIgPSBw
-c3Jfd2FpdF9lbnRyeShkYXRhLmRlYnVnZnNfZmQsIFBTUl9NT0RFXzIpOw0KPiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKCFyKQ0KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBzcl9wcmludF9kZWJ1Z2ZzKGRhdGEuZGVidWdmc19mZCk7
-DQo+ICsNCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlX2YocHNy
-Ml9zZWxlY3RpdmVfZmV0Y2hfY2hlY2soZGF0YS5kZWJ1Z2ZzX2YNCj4gZCksDQo+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiUFNSMiBz
-ZWxlY3RpdmUgZmV0Y2ggbm90IGVuYWJsZWRcbiIpOw0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoGNsZWFudXAoJmRhdGEpOw0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoGlmICghcikNCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgcHNyX3ByaW50X2RlYnVnZnMoZGF0YS5kZWJ1Z2ZzX2ZkKTsNCg0KUmV2aWV3ZWQtYnk6
-IEd3YW4tZ3llb25nIE11biA8Z3dhbi1neWVvbmcubXVuQGludGVsLmNvbT4NCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0
-CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+Quoting Petri Latvala (2021-03-02 12:39:35)
+> On Tue, Mar 02, 2021 at 11:48:02AM +0000, Chris Wilson wrote:
+> > Quoting Petri Latvala (2021-02-25 08:35:53)
+> > > Instead of producing skips for the rest when one selftest taints the
+> > > kernel, stop running them altogether. Having the skips produced yields
+> > > no value and just makes future improvements (like correctly tagging
+> > > tests that cause taints) harder. In effect, this gets us back to the
+> > > old setup when tainting made igt_runner immediately kill the test and
+> > > similarly made us not get spurious results for the rest of the
+> > > selftests.
+> > 
+> > Skip isn't spurious here. I don't see how this impacts tagging the
+> > earlier tests. So the only question for me is whether SKIP or NOTRUN is
+> > more applicable. And skip is far more informative when run by hand...
+> 
+> When run by hand on an already tainted kernel, the first (specified)
+> selftest still gets a skip and others don't get executed.
+> 
+> The immediate value I'll be getting from this is my ongoing work on
+> the ugly igt@runner@aborted pseudoresult to instead mark the last
+> executed test as 'ABORT' result when igt_runner decides to abort the
+> execution (due to a taint). If we have skips, I'd need to do some
+> selftest-specific handling to not mark the last executed dynamic
+> subtest, but the last non-skipping dynamic subtest.
+
+The problem does not seem to be intrinsic to igt_kselftests, as any
+dynamic subtest that triggers a taint will then proceed to run the next
+igt_dynamic which may pass, fail or skip. The runner may not have a
+chance to check for a taint until the end of the subtest. It sounds like
+a job for the igt_runner <-> igt channel.
+-Chris
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
