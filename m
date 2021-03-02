@@ -1,21 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7FD16E175
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Mar 2021 13:54:37 +0000 (UTC)
-Date: Tue, 2 Mar 2021 15:54:58 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YD5DsrwQ1ojBlN/S@platvala-desk.ger.corp.intel.com>
-References: <20210225083553.7540-1-petri.latvala@intel.com>
- <161468568208.13469.12406365697364305928@build.alporthouse.com>
- <YD4yB/x4tv3Du7vG@platvala-desk.ger.corp.intel.com>
- <161469026970.16094.600012892357124517@build.alporthouse.com>
- <YD48PM60jGITDHni@platvala-desk.ger.corp.intel.com>
- <161469174867.16094.11823053173066273735@build.alporthouse.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C1BA89CE1
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Mar 2021 18:30:47 +0000 (UTC)
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Date: Tue,  2 Mar 2021 10:30:03 -0800
+Message-Id: <20210302183003.16374-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <161469174867.16094.11823053173066273735@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/kmod: Stop producing results at all
- for kernel selftests on taint
+Subject: [igt-dev] [PATCH i-g-t] i915/perf: Add test to query CS timestamp
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,69 +18,303 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, Lionel G Landwerlin <lionel.g.landwerlin@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, Chris Wilson <chris.p.wilson@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Mar 02, 2021 at 01:29:08PM +0000, Chris Wilson wrote:
-> Quoting Petri Latvala (2021-03-02 13:23:08)
-> > On Tue, Mar 02, 2021 at 01:04:29PM +0000, Chris Wilson wrote:
-> > > Quoting Petri Latvala (2021-03-02 12:39:35)
-> > > > On Tue, Mar 02, 2021 at 11:48:02AM +0000, Chris Wilson wrote:
-> > > > > Quoting Petri Latvala (2021-02-25 08:35:53)
-> > > > > > Instead of producing skips for the rest when one selftest taints the
-> > > > > > kernel, stop running them altogether. Having the skips produced yields
-> > > > > > no value and just makes future improvements (like correctly tagging
-> > > > > > tests that cause taints) harder. In effect, this gets us back to the
-> > > > > > old setup when tainting made igt_runner immediately kill the test and
-> > > > > > similarly made us not get spurious results for the rest of the
-> > > > > > selftests.
-> > > > > 
-> > > > > Skip isn't spurious here. I don't see how this impacts tagging the
-> > > > > earlier tests. So the only question for me is whether SKIP or NOTRUN is
-> > > > > more applicable. And skip is far more informative when run by hand...
-> > > > 
-> > > > When run by hand on an already tainted kernel, the first (specified)
-> > > > selftest still gets a skip and others don't get executed.
-> > > > 
-> > > > The immediate value I'll be getting from this is my ongoing work on
-> > > > the ugly igt@runner@aborted pseudoresult to instead mark the last
-> > > > executed test as 'ABORT' result when igt_runner decides to abort the
-> > > > execution (due to a taint). If we have skips, I'd need to do some
-> > > > selftest-specific handling to not mark the last executed dynamic
-> > > > subtest, but the last non-skipping dynamic subtest.
-> > > 
-> > > The problem does not seem to be intrinsic to igt_kselftests, as any
-> > > dynamic subtest that triggers a taint will then proceed to run the next
-> > > igt_dynamic which may pass, fail or skip. The runner may not have a
-> > > chance to check for a taint until the end of the subtest. It sounds like
-> > > a job for the igt_runner <-> igt channel.
-> > 
-> > Would also require checking for taint mid-execution...
-> 
-> Yes, don't we currently check on a timer, but if there was a channel for
-> intermediate test results, we would check then as well.
+Add tests to query CS timestamps for different engines.
 
-Ah yes a slight confusion on my part. Aborting, in general, is checked
-between exec()s. Tainting check is done on any activity.
+v2:
+- remove flag parameter
+- assert for minimum usable values rather than maximum
 
-> > Anyway best practices for dynamic subtests is to never skip, but
-> > instead not exist at all. I suppose I could instead mark every single
-> > dynamic subtest as abort when abort happens.
-> 
-> Why is the test itself marked as abort? The run is aborted, the test
-> failed.
+v3:
+- use clock id for cpu timestamps (Lionel)
+- check if query is supported (Ashutosh)
+- test bad queries
 
-Marking the test itself helps handling the aborts better, in the bug
-analysis sense. Instead of just seeing the text "hey we stopped
-everything after this test", you have that test's logs.
+v4: (Chris, Tvrtko)
+- cs_timestamp is a misnomer, use cs_cycles instead
+- use cs cycle frequency returned in the query
+- omit size parameter
 
-So, not only did the test fail, it caused us to abort, is the
-sentiment to send with the abort result.
+v5:
+- use __for_each_physical_engine (Lionel)
+- check for ENODEV (Umesh)
 
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ include/drm-uapi/i915_drm.h |  43 +++++++++
+ tests/i915/i915_query.c     | 186 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 229 insertions(+)
 
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index bf9ea471..a29f8578 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -2176,6 +2176,10 @@ struct drm_i915_query_item {
+ #define DRM_I915_QUERY_TOPOLOGY_INFO    1
+ #define DRM_I915_QUERY_ENGINE_INFO	2
+ #define DRM_I915_QUERY_PERF_CONFIG      3
++	/**
++	 * Query Command Streamer timestamp register.
++	 */
++#define DRM_I915_QUERY_CS_CYCLES	4
+ /* Must be kept compact -- no holes and well documented */
+ 
+ 	/*
+@@ -2309,6 +2313,45 @@ struct drm_i915_engine_info {
+ 	__u64 rsvd1[4];
+ };
+ 
++/**
++ * struct drm_i915_query_cs_cycles
++ *
++ * The query returns the command streamer cycles and the frequency that can be
++ * used to calculate the command streamer timestamp. In addition the query
++ * returns the cpu timestamp that indicates when the command streamer cycle
++ * count was captured.
++ */
++struct drm_i915_query_cs_cycles {
++	/** Engine for which command streamer cycles is queried. */
++	struct i915_engine_class_instance engine;
++
++	/** Must be zero. */
++	__u32 flags;
++
++	/**
++	 * Command streamer cycles as read from the command streamer
++	 * register at 0x358 offset.
++	 */
++	__u64 cs_cycles;
++
++	/** Frequency of the cs cycles in Hz. */
++	__u64 cs_frequency;
++
++	/** CPU timestamp in nanoseconds. */
++	__u64 cpu_timestamp;
++
++	/**
++	 * Reference clock id for CPU timestamp. For definition, see
++	 * clock_gettime(2) and perf_event_open(2). Supported clock ids are
++	 * CLOCK_MONOTONIC, CLOCK_MONOTONIC_RAW, CLOCK_REALTIME, CLOCK_BOOTTIME,
++	 * CLOCK_TAI.
++	 */
++	__s32 clockid;
++
++	/** Must be zero. */
++	__u32 rsvd;
++};
++
+ /**
+  * struct drm_i915_query_engine_info
+  *
+diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
+index 29b938e9..0d7f3256 100644
+--- a/tests/i915/i915_query.c
++++ b/tests/i915/i915_query.c
+@@ -267,6 +267,179 @@ eu_available(const struct drm_i915_query_topology_info *topo_info,
+ 				eu / 8] >> (eu % 8)) & 1;
+ }
+ 
++static bool query_cs_cycles_supported(int fd)
++{
++	struct drm_i915_query_item item = {
++		.query_id = DRM_I915_QUERY_CS_CYCLES,
++	};
++
++	return __i915_query_items(fd, &item, 1) == 0 && item.length > 0;
++}
++
++static void __query_cs_cycles(int i915, void *data, int err)
++{
++	struct drm_i915_query_item item = {
++		.query_id = DRM_I915_QUERY_CS_CYCLES,
++		.data_ptr = to_user_pointer(data),
++		.length = sizeof(struct drm_i915_query_cs_cycles),
++	};
++
++	i915_query_items(i915, &item, 1);
++
++	if (err)
++		igt_assert(item.length == -err);
++}
++
++static bool engine_has_cs_cycles(int i915, uint16_t class, uint16_t instance)
++{
++	struct drm_i915_query_cs_cycles ts = {};
++	struct drm_i915_query_item item = {
++		.query_id = DRM_I915_QUERY_CS_CYCLES,
++		.data_ptr = to_user_pointer(&ts),
++		.length = sizeof(struct drm_i915_query_cs_cycles),
++	};
++
++	ts.engine.engine_class = class;
++	ts.engine.engine_instance = instance;
++
++	i915_query_items(i915, &item, 1);
++
++	return item.length != -ENODEV;
++}
++
++static void
++__cs_cycles(int i915, struct i915_engine_class_instance *engine)
++{
++	struct drm_i915_query_cs_cycles ts1 = {};
++	struct drm_i915_query_cs_cycles ts2 = {};
++	uint64_t delta_cpu, delta_cs, delta_delta;
++	int i, usable = 0;
++	struct {
++		int32_t id;
++		const char *name;
++	} clock[] = {
++		{ CLOCK_MONOTONIC, "CLOCK_MONOTONIC" },
++		{ CLOCK_MONOTONIC_RAW, "CLOCK_MONOTONIC_RAW" },
++		{ CLOCK_REALTIME, "CLOCK_REALTIME" },
++		{ CLOCK_BOOTTIME, "CLOCK_BOOTTIME" },
++		{ CLOCK_TAI, "CLOCK_TAI" },
++	};
++
++	igt_debug("engine[%u:%u]\n",
++		  engine->engine_class,
++		  engine->engine_instance);
++
++	/* Try a new clock every 10 iterations. */
++#define NUM_SNAPSHOTS 10
++	for (i = 0; i < NUM_SNAPSHOTS * ARRAY_SIZE(clock); i++) {
++		int index = i / NUM_SNAPSHOTS;
++
++		ts1.engine = *engine;
++		ts1.clockid = clock[index].id;
++
++		ts2.engine = *engine;
++		ts2.clockid = clock[index].id;
++
++		__query_cs_cycles(i915, &ts1, 0);
++		__query_cs_cycles(i915, &ts2, 0);
++
++		igt_debug("cpu_ts1[%llu], cs_ts1[%llu], freq %llu Hz\n",
++			  ts1.cpu_timestamp,
++			  ts1.cs_cycles,
++			  ts1.cs_frequency);
++		igt_debug("cpu_ts2[%llu], cs_ts2[%llu], freq %llu Hz\n",
++			  ts2.cpu_timestamp,
++			  ts2.cs_cycles,
++			  ts2.cs_frequency);
++
++		delta_cpu = ts2.cpu_timestamp - ts1.cpu_timestamp;
++		delta_cs = (ts2.cs_cycles - ts1.cs_cycles) *
++			   NSEC_PER_SEC / ts1.cs_frequency;
++
++		igt_debug("delta_cpu[%lu], delta_cs[%lu]\n",
++			  delta_cpu, delta_cs);
++
++		delta_delta = delta_cpu > delta_cs ?
++			       delta_cpu - delta_cs :
++			       delta_cs - delta_cpu;
++		igt_debug("delta_delta %lu\n", delta_delta);
++
++		if (delta_delta < 5000)
++			usable++;
++
++		/*
++		 * User needs few good snapshots of the timestamps to
++		 * synchronize cpu time with cs time. Check if we have enough
++		 * usable values before moving to the next clockid.
++		 */
++		if (!((i + 1) % NUM_SNAPSHOTS)) {
++			igt_debug("clock %s\n", clock[index].name);
++			igt_debug("usable %d\n", usable);
++			igt_assert(usable > 2);
++			usable = 0;
++		}
++	}
++}
++
++static void test_cs_cycles(int i915)
++{
++	const struct intel_execution_engine2 *e;
++	struct i915_engine_class_instance engine;
++
++	__for_each_physical_engine(i915, e) {
++		if (engine_has_cs_cycles(i915, e->class, e->instance)) {
++			engine.engine_class = e->class;
++			engine.engine_instance = e->instance;
++			__cs_cycles(i915, &engine);
++		}
++	}
++}
++
++static void test_cs_cycles_invalid(int i915)
++{
++	struct i915_engine_class_instance engine;
++	const struct intel_execution_engine2 *e;
++	struct drm_i915_query_cs_cycles ts = {};
++
++	/* get one engine */
++	__for_each_physical_engine(i915, e)
++		break;
++
++	/* bad engines */
++	ts.engine.engine_class = e->class;
++	ts.engine.engine_instance = -1;
++	__query_cs_cycles(i915, &ts, EINVAL);
++
++	ts.engine.engine_class = -1;
++	ts.engine.engine_instance = e->instance;
++	__query_cs_cycles(i915, &ts, EINVAL);
++
++	ts.engine.engine_class = -1;
++	ts.engine.engine_instance = -1;
++	__query_cs_cycles(i915, &ts, EINVAL);
++
++	/* non zero flags */
++	ts.flags = 1;
++	ts.engine.engine_class = e->class;
++	ts.engine.engine_instance = e->instance;
++	__query_cs_cycles(i915, &ts, EINVAL);
++
++	/* non zero rsvd field */
++	ts.flags = 0;
++	ts.rsvd = 1;
++	__query_cs_cycles(i915, &ts, EINVAL);
++
++	/* bad clockid */
++	ts.rsvd = 0;
++	ts.clockid = -1;
++	__query_cs_cycles(i915, &ts, EINVAL);
++
++	/* sanity check */
++	engine.engine_class = e->class;
++	engine.engine_instance = e->instance;
++	__cs_cycles(i915, &engine);
++}
++
+ /*
+  * Verify that we get coherent values between the legacy getparam slice/subslice
+  * masks and the new topology query.
+@@ -783,6 +956,19 @@ igt_main
+ 			engines(fd);
+ 	}
+ 
++	igt_subtest_group {
++		igt_fixture {
++			igt_require(intel_gen(devid) >= 6);
++			igt_require(query_cs_cycles_supported(fd));
++		}
++
++		igt_subtest("cs-cycles")
++			test_cs_cycles(fd);
++
++		igt_subtest("cs-cycles-invalid")
++			test_cs_cycles_invalid(fd);
++	}
++
+ 	igt_fixture {
+ 		close(fd);
+ 	}
 -- 
-Petri Latvala
+2.20.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
