@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A9CC46E413
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Mar 2021 23:41:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 70E3D896ED
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Mar 2021 23:50:44 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20210302225334.361966-3-alan.previn.teres.alexis@intel.com>
+In-Reply-To: <20210302225334.361966-5-alan.previn.teres.alexis@intel.com>
 References: <20210302225334.361966-1-alan.previn.teres.alexis@intel.com>
- <20210302225334.361966-3-alan.previn.teres.alexis@intel.com>
+ <20210302225334.361966-5-alan.previn.teres.alexis@intel.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 03 Mar 2021 23:41:50 +0000
-Message-ID: <161481491026.25897.13137851056108749856@build.alporthouse.com>
-Subject: Re: [igt-dev] [RFC i-g-t 02/11] Add basic PXP testing of buffer and
- context alloc
+Date: Wed, 03 Mar 2021 23:50:40 +0000
+Message-ID: <161481544040.25897.9787239814984432662@build.alporthouse.com>
+Subject: Re: [igt-dev] [RFC i-g-t 04/11] Perform a regular 3d copy as a
+ control checkpoint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,19 +26,55 @@ To: Alan Previn <alan.previn.teres.alexis@intel.com>, igt-dev@lists.freedesktop.
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Alan Previn (2021-03-02 22:53:25)
-> Test PXP capability support as well as the allocation of protected
-> buffers and protected contexts.
+Quoting Alan Previn (2021-03-02 22:53:27)
+> As a control checkpoint, allocate buffers to be used
+> as texture and render target in the 3d engine for a
+> regular src to dest copy blit and verify buffer pixels.
 > 
 > Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 > ---
->  tests/Makefile.sources |   3 +
->  tests/i915/i915_pxp.c  | 410 +++++++++++++++++++++++++++++++++++++++++
+>  tests/i915/i915_pxp.c | 181 ++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 181 insertions(+)
+> 
+> diff --git a/tests/i915/i915_pxp.c b/tests/i915/i915_pxp.c
+> index 40a817b2..f12ca3d5 100644
+> --- a/tests/i915/i915_pxp.c
+> +++ b/tests/i915/i915_pxp.c
+> @@ -28,6 +28,11 @@ IGT_TEST_DESCRIPTION("Test PXP (Protected Xe Path), which is the component "
+>  #define CTX_MODIFY_PROTECTED_BOTHPARAMS_TO_INVALID 8
+>  #define CTX_MODIFY_UNPROTECTED_BOTHPARAMS_TO_VALID 9
+>  
+> +/* test-configs for protected rendering operations */
+> +#define COPY3D_BASELINE_SRC_TO_DST 1
+> +#define COPY3D_PROTECTED_SRC_TO_PROTDST 2
+> +#define COPY3D_PROTECTED_PROTSRC_TO_PROTDST 3
+> +
+>  static bool is_pxp_hw_supported(int i915)
+>  {
+>         uint32_t gen;
+> @@ -333,10 +338,172 @@ static void test_create_protected_context(int i915, uint32_t test_cfg)
+>         }
+>  }
+>  
+> +static void fill_bo_content(int i915, uint32_t bo,
+> +       uint32_t size, uint32_t initcolor)
+> +{
+> +       uint32_t *ptr, *ptrtmp;
+> +       int loop = 0;
+> +
+> +       ptr = gem_mmap__cpu_coherent(i915, bo, 0,
+> +                       size, PROT_WRITE);
+> +       igt_assert(ptr);
 
-This is a GEM interface so gem_ctx_pxp or gem_exec_pxp, with gem_pxp as
-a final if either the other two don't fit.
+Already done.
 
-(Now when we move to i915/i915_gem_foo.c is another question).
+So the map here is in the WB, but the data may not be in the CPU cache
+nor properly tracked as the buffer may not be cache coherent.
+
+Same for the check.
+
+Use gem_mmap__device_coherent() by default and cpu_coherent only when
+you want to handle the cache coherency.
 -Chris
 _______________________________________________
 igt-dev mailing list
