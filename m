@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 544DE6EA44
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Mar 2021 17:14:41 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F93289CBC
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Mar 2021 17:32:21 +0000 (UTC)
 From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
-Date: Thu, 4 Mar 2021 17:14:37 +0000
-Message-ID: <BYAPR11MB378491EB47FA1A35A3E409438A979@BYAPR11MB3784.namprd11.prod.outlook.com>
+Date: Thu, 4 Mar 2021 17:32:16 +0000
+Message-ID: <BYAPR11MB37844A6CCFD092B79E005AEB8A979@BYAPR11MB3784.namprd11.prod.outlook.com>
 References: <20210302225334.361966-1-alan.previn.teres.alexis@intel.com>
- <20210302225334.361966-5-alan.previn.teres.alexis@intel.com>
- <161481544040.25897.9787239814984432662@build.alporthouse.com>
-In-Reply-To: <161481544040.25897.9787239814984432662@build.alporthouse.com>
+ <20210302225334.361966-9-alan.previn.teres.alexis@intel.com>
+ <161481581356.25897.10300715465632705470@build.alporthouse.com>
+In-Reply-To: <161481581356.25897.10300715465632705470@build.alporthouse.com>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [RFC i-g-t 04/11] Perform a regular 3d copy as a
- control checkpoint
+Subject: Re: [igt-dev] [RFC i-g-t 08/11] Add test where both src and dest
+ are protected
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,69 +20,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Chris Wilson <chris@chris-wilson.co.uk>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thanks Chris - will fix to gem_mmap__device_coherent().
-
------Original Message-----
-From: Chris Wilson <chris@chris-wilson.co.uk> 
-Sent: Wednesday, March 3, 2021 3:51 PM
-To: Teres Alexis, Alan Previn <alan.previn.teres.alexis@intel.com>; igt-dev@lists.freedesktop.org
-Cc: Teres Alexis, Alan Previn <alan.previn.teres.alexis@intel.com>
-Subject: Re: [igt-dev] [RFC i-g-t 04/11] Perform a regular 3d copy as a control checkpoint
-
-Quoting Alan Previn (2021-03-02 22:53:27)
-> As a control checkpoint, allocate buffers to be used as texture and 
-> render target in the 3d engine for a regular src to dest copy blit and 
-> verify buffer pixels.
-> 
-> Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-> ---
->  tests/i915/i915_pxp.c | 181 
-> ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 181 insertions(+)
-> 
-> diff --git a/tests/i915/i915_pxp.c b/tests/i915/i915_pxp.c index 
-> 40a817b2..f12ca3d5 100644
-> --- a/tests/i915/i915_pxp.c
-> +++ b/tests/i915/i915_pxp.c
-> @@ -28,6 +28,11 @@ IGT_TEST_DESCRIPTION("Test PXP (Protected Xe Path), which is the component "
->  #define CTX_MODIFY_PROTECTED_BOTHPARAMS_TO_INVALID 8  #define 
-> CTX_MODIFY_UNPROTECTED_BOTHPARAMS_TO_VALID 9
->  
-> +/* test-configs for protected rendering operations */ #define 
-> +COPY3D_BASELINE_SRC_TO_DST 1 #define COPY3D_PROTECTED_SRC_TO_PROTDST 
-> +2 #define COPY3D_PROTECTED_PROTSRC_TO_PROTDST 3
-> +
->  static bool is_pxp_hw_supported(int i915)  {
->         uint32_t gen;
-> @@ -333,10 +338,172 @@ static void test_create_protected_context(int i915, uint32_t test_cfg)
->         }
->  }
->  
-> +static void fill_bo_content(int i915, uint32_t bo,
-> +       uint32_t size, uint32_t initcolor) {
-> +       uint32_t *ptr, *ptrtmp;
-> +       int loop = 0;
-> +
-> +       ptr = gem_mmap__cpu_coherent(i915, bo, 0,
-> +                       size, PROT_WRITE);
-> +       igt_assert(ptr);
-
-Already done.
-
-So the map here is in the WB, but the data may not be in the CPU cache nor properly tracked as the buffer may not be cache coherent.
-
-Same for the check.
-
-Use gem_mmap__device_coherent() by default and cpu_coherent only when you want to handle the cache coherency.
--Chris
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+QXBvbG9naWVzIGZvciBxdWVzdGlvbjogQXJlIHlvdSBzdWdnZXN0aW5nIEkgcHJvbW90ZSBfX2lu
+dGVsX2V4ZWNfYmIgaW50byBsaWItaGVhZGVycyB0byBiZSByZXVzYWJsZSBhY3Jvc3MgSUdUPyAo
+d2hpY2ggd29ya3MgZ3JlYXQgLSBJIGp1c3Qgd2FzbuKAmXQgc3VyZSBpZiB0aGF0IHdhcyBva2F5
+KS4NCi4uLmFsYW4NCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IENocmlzIFdp
+bHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPiANClNlbnQ6IFdlZG5lc2RheSwgTWFyY2gg
+MywgMjAyMSAzOjU3IFBNDQpUbzogVGVyZXMgQWxleGlzLCBBbGFuIFByZXZpbiA8YWxhbi5wcmV2
+aW4udGVyZXMuYWxleGlzQGludGVsLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+DQpDYzogVGVyZXMgQWxleGlzLCBBbGFuIFByZXZpbiA8YWxhbi5wcmV2aW4udGVyZXMuYWxleGlz
+QGludGVsLmNvbT4NClN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW1JGQyBpLWctdCAwOC8xMV0gQWRk
+IHRlc3Qgd2hlcmUgYm90aCBzcmMgYW5kIGRlc3QgYXJlIHByb3RlY3RlZA0KDQpRdW90aW5nIEFs
+YW4gUHJldmluICgyMDIxLTAzLTAyIDIyOjUzOjMxKQ0KPiBXaGVuIGJvdGggdGhlIHNvdXJjZSBh
+bmQgZGVzdGluYXRpb24gc3VyZmFjZXMgYXJlIHByb3RlY3RlZCwgdGhlIA0KPiBkZXN0aW5hdGlv
+biBwaXhlbCByZXN1bHQgb2YgdGhlIDNkIGNvcHkgb3BlcmF0aW9uIHdvdWxkIGJlIHRoZSBzYW1l
+IGFzIA0KPiB0aGUgc291cmNlLiBCeSBhcHBlbmRpbmcgdGhpcyB0ZXN0IGNhc2UgdG8gdGhlIGVu
+ZCBvZiB0aGUgcHJpb3IgdGVzdCANCj4gKHJhdy1zcmMgdG8gcHJvdGVjdGVkLWRlc3QpIGFuZCBy
+ZXVzaW5nIHRoZSBwcmV2aW91cycgdGVzdCBkZXN0aW5hdGlvbiANCj4gYXMgdGhlIGN1cnJlbnQg
+c291cmNlLCB3ZSBjYW4gcHJvdmUgdGhlIGRpZmZlcmVuY2UgaW4gcmVzdWx0cyBjbGVhcmx5IA0K
+PiBieSByZXBlYXRpbmcgdGhlIHNhbWUgcmVuZGVyIG9wZXJhdGlvbiBidXQgaGF2aW5nIGEgc3Jj
+IGJ1ZmZlciB0aGF0IGlzIA0KPiBwcm90ZWN0ZWQgaW4gdGhpcyBjYXNlLg0KPiANCj4gU2lnbmVk
+LW9mZi1ieTogQWxhbiBQcmV2aW4gPGFsYW4ucHJldmluLnRlcmVzLmFsZXhpc0BpbnRlbC5jb20+
+DQo+IC0tLQ0KPiAgbGliL2ludGVsX2JhdGNoYnVmZmVyLmMgfCAgMTIgKysrKysNCj4gIGxpYi9p
+bnRlbF9iYXRjaGJ1ZmZlci5oIHwgICAyICsNCj4gIHRlc3RzL2k5MTUvaTkxNV9weHAuYyAgIHwg
+MTE3ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0NCj4gIDMgZmlsZXMg
+Y2hhbmdlZCwgMTE2IGluc2VydGlvbnMoKyksIDE1IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAt
+LWdpdCBhL2xpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jIGIvbGliL2ludGVsX2JhdGNoYnVmZmVyLmMg
+aW5kZXggDQo+IDgxMThkYzk0Li44MTlmZDg1ZCAxMDA2NDQNCj4gLS0tIGEvbGliL2ludGVsX2Jh
+dGNoYnVmZmVyLmMNCj4gKysrIGIvbGliL2ludGVsX2JhdGNoYnVmZmVyLmMNCj4gQEAgLTIxOTMs
+NiArMjE5MywxOCBAQCB2b2lkIGludGVsX2JiX2V4ZWMoc3RydWN0IGludGVsX2JiICppYmIsIHVp
+bnQzMl90IGVuZF9vZmZzZXQsDQo+ICAgICAgICAgaWd0X2Fzc2VydF9lcShfX2ludGVsX2JiX2V4
+ZWMoaWJiLCBlbmRfb2Zmc2V0LCBmbGFncywgc3luYyksIA0KPiAwKTsgIH0NCj4gIA0KPiArLyoq
+DQo+ICsgKiBpbnRlbF9iYl9leGVjX25vYXNzZXJ0Og0KPiArICoNCj4gKyAqIFdyYXBwZXIgYXJv
+dW5kIGludGVsX2JiX2V4ZWMgYnV0IHdpdGhvdXQgYXNzZXJ0aW9uIGFuZA0KPiArICogR0VNX0VY
+RUMgaW9jdGwgcmV0dXJuIHZhbHVlIGlzIHBhc3NlZCBiYWNrIHRvIGNhbGxlci4NCj4gKyAqLw0K
+PiAraW50IGludGVsX2JiX2V4ZWNfbm9hc3NlcnQoc3RydWN0IGludGVsX2JiICppYmIsIHVpbnQz
+Ml90IGVuZF9vZmZzZXQsDQo+ICsgICAgICAgICAgICAgICAgICB1aW50NjRfdCBmbGFncywgYm9v
+bCBzeW5jKSB7DQo+ICsgICAgICAgcmV0dXJuIF9faW50ZWxfYmJfZXhlYyhpYmIsIGVuZF9vZmZz
+ZXQsIGZsYWdzLCBzeW5jKTsNCg0KKiBibGlua3MNCg0KSXQncyBjYWxsZWQgX19pbnRlbF9iYl9l
+eGVjKCkgYXMgaXMgdGhlIHBhdHRlcm4gYWxyZWFkeSBlc3RhYmxpc2hlZCBhY3Jvc3MgaWd0Lg0K
+LUNocmlzDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpp
+Z3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczov
+L2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
