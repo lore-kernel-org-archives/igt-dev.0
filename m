@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F93289CBC
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Mar 2021 17:32:21 +0000 (UTC)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D8AC6EA5F
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Mar 2021 18:27:59 +0000 (UTC)
 From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
-Date: Thu, 4 Mar 2021 17:32:16 +0000
-Message-ID: <BYAPR11MB37844A6CCFD092B79E005AEB8A979@BYAPR11MB3784.namprd11.prod.outlook.com>
+Date: Thu, 4 Mar 2021 18:27:56 +0000
+Message-ID: <BYAPR11MB37844B2D370C96A363021DF88A979@BYAPR11MB3784.namprd11.prod.outlook.com>
 References: <20210302225334.361966-1-alan.previn.teres.alexis@intel.com>
- <20210302225334.361966-9-alan.previn.teres.alexis@intel.com>
- <161481581356.25897.10300715465632705470@build.alporthouse.com>
-In-Reply-To: <161481581356.25897.10300715465632705470@build.alporthouse.com>
+ <20210302225334.361966-10-alan.previn.teres.alexis@intel.com>
+ <161481598955.25897.1702124270692264198@build.alporthouse.com>
+In-Reply-To: <161481598955.25897.1702124270692264198@build.alporthouse.com>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [RFC i-g-t 08/11] Add test where both src and dest
- are protected
+Subject: Re: [igt-dev] [RFC i-g-t 09/11] Add test to verify session key
+ renewed after suspend-resume cycle
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,51 +20,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Chris Wilson <chris@chris-wilson.co.uk>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QXBvbG9naWVzIGZvciBxdWVzdGlvbjogQXJlIHlvdSBzdWdnZXN0aW5nIEkgcHJvbW90ZSBfX2lu
-dGVsX2V4ZWNfYmIgaW50byBsaWItaGVhZGVycyB0byBiZSByZXVzYWJsZSBhY3Jvc3MgSUdUPyAo
-d2hpY2ggd29ya3MgZ3JlYXQgLSBJIGp1c3Qgd2FzbuKAmXQgc3VyZSBpZiB0aGF0IHdhcyBva2F5
-KS4NCi4uLmFsYW4NCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IENocmlzIFdp
-bHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPiANClNlbnQ6IFdlZG5lc2RheSwgTWFyY2gg
-MywgMjAyMSAzOjU3IFBNDQpUbzogVGVyZXMgQWxleGlzLCBBbGFuIFByZXZpbiA8YWxhbi5wcmV2
-aW4udGVyZXMuYWxleGlzQGludGVsLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-DQpDYzogVGVyZXMgQWxleGlzLCBBbGFuIFByZXZpbiA8YWxhbi5wcmV2aW4udGVyZXMuYWxleGlz
-QGludGVsLmNvbT4NClN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW1JGQyBpLWctdCAwOC8xMV0gQWRk
-IHRlc3Qgd2hlcmUgYm90aCBzcmMgYW5kIGRlc3QgYXJlIHByb3RlY3RlZA0KDQpRdW90aW5nIEFs
-YW4gUHJldmluICgyMDIxLTAzLTAyIDIyOjUzOjMxKQ0KPiBXaGVuIGJvdGggdGhlIHNvdXJjZSBh
-bmQgZGVzdGluYXRpb24gc3VyZmFjZXMgYXJlIHByb3RlY3RlZCwgdGhlIA0KPiBkZXN0aW5hdGlv
-biBwaXhlbCByZXN1bHQgb2YgdGhlIDNkIGNvcHkgb3BlcmF0aW9uIHdvdWxkIGJlIHRoZSBzYW1l
-IGFzIA0KPiB0aGUgc291cmNlLiBCeSBhcHBlbmRpbmcgdGhpcyB0ZXN0IGNhc2UgdG8gdGhlIGVu
-ZCBvZiB0aGUgcHJpb3IgdGVzdCANCj4gKHJhdy1zcmMgdG8gcHJvdGVjdGVkLWRlc3QpIGFuZCBy
-ZXVzaW5nIHRoZSBwcmV2aW91cycgdGVzdCBkZXN0aW5hdGlvbiANCj4gYXMgdGhlIGN1cnJlbnQg
-c291cmNlLCB3ZSBjYW4gcHJvdmUgdGhlIGRpZmZlcmVuY2UgaW4gcmVzdWx0cyBjbGVhcmx5IA0K
-PiBieSByZXBlYXRpbmcgdGhlIHNhbWUgcmVuZGVyIG9wZXJhdGlvbiBidXQgaGF2aW5nIGEgc3Jj
-IGJ1ZmZlciB0aGF0IGlzIA0KPiBwcm90ZWN0ZWQgaW4gdGhpcyBjYXNlLg0KPiANCj4gU2lnbmVk
-LW9mZi1ieTogQWxhbiBQcmV2aW4gPGFsYW4ucHJldmluLnRlcmVzLmFsZXhpc0BpbnRlbC5jb20+
-DQo+IC0tLQ0KPiAgbGliL2ludGVsX2JhdGNoYnVmZmVyLmMgfCAgMTIgKysrKysNCj4gIGxpYi9p
-bnRlbF9iYXRjaGJ1ZmZlci5oIHwgICAyICsNCj4gIHRlc3RzL2k5MTUvaTkxNV9weHAuYyAgIHwg
-MTE3ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0NCj4gIDMgZmlsZXMg
-Y2hhbmdlZCwgMTE2IGluc2VydGlvbnMoKyksIDE1IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAt
-LWdpdCBhL2xpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jIGIvbGliL2ludGVsX2JhdGNoYnVmZmVyLmMg
-aW5kZXggDQo+IDgxMThkYzk0Li44MTlmZDg1ZCAxMDA2NDQNCj4gLS0tIGEvbGliL2ludGVsX2Jh
-dGNoYnVmZmVyLmMNCj4gKysrIGIvbGliL2ludGVsX2JhdGNoYnVmZmVyLmMNCj4gQEAgLTIxOTMs
-NiArMjE5MywxOCBAQCB2b2lkIGludGVsX2JiX2V4ZWMoc3RydWN0IGludGVsX2JiICppYmIsIHVp
-bnQzMl90IGVuZF9vZmZzZXQsDQo+ICAgICAgICAgaWd0X2Fzc2VydF9lcShfX2ludGVsX2JiX2V4
-ZWMoaWJiLCBlbmRfb2Zmc2V0LCBmbGFncywgc3luYyksIA0KPiAwKTsgIH0NCj4gIA0KPiArLyoq
-DQo+ICsgKiBpbnRlbF9iYl9leGVjX25vYXNzZXJ0Og0KPiArICoNCj4gKyAqIFdyYXBwZXIgYXJv
-dW5kIGludGVsX2JiX2V4ZWMgYnV0IHdpdGhvdXQgYXNzZXJ0aW9uIGFuZA0KPiArICogR0VNX0VY
-RUMgaW9jdGwgcmV0dXJuIHZhbHVlIGlzIHBhc3NlZCBiYWNrIHRvIGNhbGxlci4NCj4gKyAqLw0K
-PiAraW50IGludGVsX2JiX2V4ZWNfbm9hc3NlcnQoc3RydWN0IGludGVsX2JiICppYmIsIHVpbnQz
-Ml90IGVuZF9vZmZzZXQsDQo+ICsgICAgICAgICAgICAgICAgICB1aW50NjRfdCBmbGFncywgYm9v
-bCBzeW5jKSB7DQo+ICsgICAgICAgcmV0dXJuIF9faW50ZWxfYmJfZXhlYyhpYmIsIGVuZF9vZmZz
-ZXQsIGZsYWdzLCBzeW5jKTsNCg0KKiBibGlua3MNCg0KSXQncyBjYWxsZWQgX19pbnRlbF9iYl9l
-eGVjKCkgYXMgaXMgdGhlIHBhdHRlcm4gYWxyZWFkeSBlc3RhYmxpc2hlZCBhY3Jvc3MgaWd0Lg0K
-LUNocmlzDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpp
-Z3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczov
-L2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+Right - got it. Thanks.
+...alan
+
+-----Original Message-----
+From: Chris Wilson <chris@chris-wilson.co.uk> 
+Sent: Wednesday, March 3, 2021 4:00 PM
+To: Teres Alexis, Alan Previn <alan.previn.teres.alexis@intel.com>; igt-dev@lists.freedesktop.org
+Cc: Teres Alexis, Alan Previn <alan.previn.teres.alexis@intel.com>
+Subject: Re: [igt-dev] [RFC i-g-t 09/11] Add test to verify session key renewed after suspend-resume cycle
+
+Quoting Alan Previn (2021-03-02 22:53:32)
+> +static void trigger_powermgt_suspend_cycle(int i915,
+> +       struct powermgt_data *pm)
+> +{
+> +       igt_pm_enable_sata_link_power_management();
+> +
+> +
+> +       igt_system_suspend_autoresume(SUSPEND_STATE_MEM, 
+> + SUSPEND_TEST_DEVICES);
+> +
+> +       igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED);
+> +       gem_test_engine(i915, I915_EXEC_RENDER);
+> +       while 
+> + ((!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE))) {
+
+With an autosuspend delay of 0, this is not guaranteed to ever report ACTIVE.
+
+Just drop everything after wait_for_pm_status(SUSPENDED) as clearly using the protected rendercopy must wake the device.
+-Chris
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
