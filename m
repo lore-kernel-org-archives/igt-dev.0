@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 36CAB6E4A5
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Mar 2021 11:38:50 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+Date: Thu,  4 Mar 2021 17:18:14 +0530
+Message-Id: <20210304114814.1767-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 04 Mar 2021 08:54:48 -0000
-Message-ID: <161484808863.18684.12822728446475022505@emeril.freedesktop.org>
-References: <20210121083432.526247-1-jigar.bhatt@intel.com>
-In-Reply-To: <20210121083432.526247-1-jigar.bhatt@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?s/i915/i915=5Fpm=5Fdc=3A_Add_DC9_igt_test_Function_=28rev6=29?=
+Subject: [igt-dev] [PATCH i-g-t v4] tests/kms_cursor_legacy: added test
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,91 +15,238 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jigar Bhatt <jigar.bhatt@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHMvaTkxNS9pOTE1X3BtX2RjOiBBZGQg
-REM5IGlndCB0ZXN0IEZ1bmN0aW9uIChyZXY2KQpVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZy
-ZWVkZXNrdG9wLm9yZy9zZXJpZXMvODYxNjUvClN0YXRlIDogZmFpbHVyZQoKPT0gU3VtbWFyeSA9
-PQoKSUdUIHBhdGNoc2V0IGJ1aWxkIGZhaWxlZCBvbiBsYXRlc3Qgc3VjY2Vzc2Z1bCBidWlsZAoz
-YzNkMDhhZDYyOWM0MDRhY2UzOTI1NmRhMzM0ZTQzMTdiNTUwZGU2IFJldmVydCAidGVzdHMva21z
-X3ZycjogRXh0ZW5kIHRvIGNvdmVyIGZ1bGwgVlJSIHJhbmdlIgoKWzMwNS81ODZdIExpbmtpbmcg
-dGFyZ2V0IHRvb2xzL2ludGVsX3JlZy4KWzMwNi81ODZdIExpbmtpbmcgdGFyZ2V0IHRlc3RzL2tt
-c19wd3JpdGVfY3JjLgpbMzA3LzU4Nl0gTGlua2luZyB0YXJnZXQgdGVzdHMva21zX3JtZmIuClsz
-MDgvNTg2XSBMaW5raW5nIHRhcmdldCB0ZXN0cy9rbXNfcm90YXRpb25fY3JjLgpbMzA5LzU4Nl0g
-TGlua2luZyB0YXJnZXQgdGVzdHMva21zX3NlbGZ0ZXN0LgpbMzEwLzU4Nl0gTGlua2luZyB0YXJn
-ZXQgdGVzdHMva21zX3NlcXVlbmNlLgpbMzExLzU4Nl0gTGlua2luZyB0YXJnZXQgdGVzdHMva21z
-X3R2X2xvYWRfZGV0ZWN0LgpbMzEyLzU4Nl0gTGlua2luZyB0YXJnZXQgdGVzdHMva21zX3NldG1v
-ZGUuClszMTMvNTg2XSBMaW5raW5nIHRhcmdldCB0ZXN0cy9rbXNfc3lzZnNfZWRpZF90aW1pbmcu
-ClszMTQvNTg2XSBMaW5raW5nIHRhcmdldCB0ZXN0cy9rbXNfdmJsYW5rLgpbMzE1LzU4Nl0gTGlu
-a2luZyB0YXJnZXQgdGVzdHMva21zX3VuaXZlcnNhbF9wbGFuZS4KWzMxNi81ODZdIExpbmtpbmcg
-dGFyZ2V0IHRlc3RzL2ttc192cnIuClszMTcvNTg2XSBMaW5raW5nIHRhcmdldCB0ZXN0cy9rbXNf
-d3JpdGViYWNrLgpbMzE4LzU4Nl0gTGlua2luZyB0YXJnZXQgdGVzdHMvbWV0YV90ZXN0LgpbMzE5
-LzU4Nl0gTGlua2luZyB0YXJnZXQgdGVzdHMvbm91dmVhdV9jcmMuClszMjAvNTg2XSBMaW5raW5n
-IHRhcmdldCB0ZXN0cy9wYW5mcm9zdF9zdWJtaXQuClszMjEvNTg2XSBMaW5raW5nIHRhcmdldCB0
-ZXN0cy9wYW5mcm9zdF9nZXRfcGFyYW0uClszMjIvNTg2XSBMaW5raW5nIHRhcmdldCB0ZXN0cy9w
-YW5mcm9zdF9nZW1fbmV3LgpbMzIzLzU4Nl0gTGlua2luZyB0YXJnZXQgdGVzdHMvcGFuZnJvc3Rf
-cHJpbWUuClszMjQvNTg2XSBMaW5raW5nIHRhcmdldCB0ZXN0cy9wcmltZV9idXN5LgpbMzI1LzU4
-Nl0gTGlua2luZyB0YXJnZXQgdGVzdHMvcHJpbWVfbW1hcC4KWzMyNi81ODZdIExpbmtpbmcgdGFy
-Z2V0IHRlc3RzL3ByaW1lX21tYXBfa21zLgpbMzI3LzU4Nl0gTGlua2luZyB0YXJnZXQgdGVzdHMv
-cHJpbWVfbW1hcF9jb2hlcmVuY3kuClszMjgvNTg2XSBMaW5raW5nIHRhcmdldCB0ZXN0cy9wcmlt
-ZV9zZWxmX2ltcG9ydC4KWzMyOS81ODZdIExpbmtpbmcgdGFyZ2V0IHRlc3RzL3ByaW1lX3VkbC4K
-WzMzMC81ODZdIExpbmtpbmcgdGFyZ2V0IHRlc3RzL3ByaW1lX3ZnZW0uClszMzEvNTg2XSBMaW5r
-aW5nIHRhcmdldCB0ZXN0cy9zeW5jb2JqX2Jhc2ljLgpbMzMyLzU4Nl0gTGlua2luZyB0YXJnZXQg
-dGVzdHMvc3luY29ial93YWl0LgpbMzMzLzU4Nl0gTGlua2luZyB0YXJnZXQgdGVzdHMvc3luY29i
-al90aW1lbGluZS4KWzMzNC81ODZdIExpbmtpbmcgdGFyZ2V0IHRlc3RzL3RlbXBsYXRlLgpbMzM1
-LzU4Nl0gTGlua2luZyB0YXJnZXQgdGVzdHMvdjNkX2dldF9wYXJhbS4KWzMzNi81ODZdIExpbmtp
-bmcgdGFyZ2V0IHRlc3RzL3Rvb2xzX3Rlc3QuClszMzcvNTg2XSBMaW5raW5nIHRhcmdldCB0ZXN0
-cy92M2RfZ2V0X2JvX29mZnNldC4KWzMzOC81ODZdIExpbmtpbmcgdGFyZ2V0IHRlc3RzL3ZjNF93
-YWl0X3NlcW5vLgpbMzM5LzU4Nl0gTGlua2luZyB0YXJnZXQgdGVzdHMvdjNkX21tYXAuClszNDAv
-NTg2XSBMaW5raW5nIHRhcmdldCB0ZXN0cy92YzRfY3JlYXRlX2JvLgpbMzQxLzU4Nl0gTGlua2lu
-ZyB0YXJnZXQgdGVzdHMvdmM0X2RtYWJ1Zl9wb2xsLgpbMzQyLzU4Nl0gTGlua2luZyB0YXJnZXQg
-dGVzdHMvdmM0X2xvb2t1cF9mYWlsLgpbMzQzLzU4Nl0gTGlua2luZyB0YXJnZXQgdGVzdHMvdmM0
-X3B1cmdlYWJsZV9iby4KWzM0NC81ODZdIENvbXBpbGluZyBDIG9iamVjdCAndGVzdHMvdGVzdHNA
-QGk5MTVfcG1fZGNAZXhlL2k5MTVfaTkxNV9wbV9kYy5jLm8nLgpGQUlMRUQ6IHRlc3RzL3Rlc3Rz
-QEBpOTE1X3BtX2RjQGV4ZS9pOTE1X2k5MTVfcG1fZGMuYy5vIApjY2FjaGUgY2MgLUl0ZXN0cy90
-ZXN0c0BAaTkxNV9wbV9kY0BleGUgLUl0ZXN0cyAtSS4uL3Rlc3RzIC1JLi4vaW5jbHVkZS9kcm0t
-dWFwaSAtSWxpYiAtSS4uL2xpYiAtSS4uL2xpYi9zdHVicy9zeXNjYWxscyAtSS4gLUkuLi8gLUkv
-dXNyL2luY2x1ZGUvY2Fpcm8gLUkvdXNyL2luY2x1ZGUvZ2xpYi0yLjAgLUkvdXNyL2xpYi94ODZf
-NjQtbGludXgtZ251L2dsaWItMi4wL2luY2x1ZGUgLUkvdXNyL2luY2x1ZGUvcGl4bWFuLTEgLUkv
-dXNyL2luY2x1ZGUvbGlicG5nMTYgLUkvdXNyL2luY2x1ZGUvZnJlZXR5cGUyIC1JL3Vzci9pbmNs
-dWRlL2xpYnBuZzEyIC1JL3Vzci9pbmNsdWRlL2xpYmRybSAtSS91c3IvaW5jbHVkZS94ODZfNjQt
-bGludXgtZ251IC1JL3Vzci9pbmNsdWRlL2Fsc2EgLUkvdXNyL2luY2x1ZGUgLUkvdXNyL2luY2x1
-ZGUvbGliZHJtL25vdXZlYXUgLUkvaG9tZS9jaWRybS9rZXJuZWxfaGVhZGVycy9pbmNsdWRlIC1m
-ZGlhZ25vc3RpY3MtY29sb3I9YWx3YXlzIC1waXBlIC1EX0ZJTEVfT0ZGU0VUX0JJVFM9NjQgLVdh
-bGwgLVdpbnZhbGlkLXBjaCAtV2V4dHJhIC1zdGQ9Z251MTEgLU8yIC1nIC1EX0dOVV9TT1VSQ0Ug
-LWluY2x1ZGUgY29uZmlnLmggLURfRk9SVElGWV9TT1VSQ0U9MiAtV2JhZC1mdW5jdGlvbi1jYXN0
-IC1XZGVjbGFyYXRpb24tYWZ0ZXItc3RhdGVtZW50IC1XZm9ybWF0PTIgLVdpbXBsaWNpdC1mYWxs
-dGhyb3VnaD0wIC1XbG9naWNhbC1vcCAtV21pc3NpbmctZGVjbGFyYXRpb25zIC1XbWlzc2luZy1m
-b3JtYXQtYXR0cmlidXRlIC1XbWlzc2luZy1ub3JldHVybiAtV21pc3NpbmctcHJvdG90eXBlcyAt
-V25lc3RlZC1leHRlcm5zIC1Xb2xkLXN0eWxlLWRlZmluaXRpb24gLVdwb2ludGVyLWFyaXRoIC1X
-cmVkdW5kYW50LWRlY2xzIC1Xc2hhZG93IC1Xc3RyaWN0LXByb3RvdHlwZXMgLVd1bmluaXRpYWxp
-emVkIC1XdW51c2VkIC1Xbm8tY2xvYmJlcmVkIC1Xbm8tbWF5YmUtdW5pbml0aWFsaXplZCAtV25v
-LW1pc3NpbmctZmllbGQtaW5pdGlhbGl6ZXJzIC1Xbm8tcG9pbnRlci1hcml0aCAtV25vLXNpZ24t
-Y29tcGFyZSAtV25vLXR5cGUtbGltaXRzIC1Xbm8tdW51c2VkLXBhcmFtZXRlciAtV25vLXVudXNl
-ZC1yZXN1bHQgLVdlcnJvcj1hZGRyZXNzIC1XZXJyb3I9YXJyYXktYm91bmRzIC1XZXJyb3I9aW1w
-bGljaXQgLVdlcnJvcj1pbml0LXNlbGYgLVdlcnJvcj1pbnQtdG8tcG9pbnRlci1jYXN0IC1XZXJy
-b3I9bWFpbiAtV2Vycm9yPW1pc3NpbmctYnJhY2VzIC1XZXJyb3I9bm9ubnVsbCAtV2Vycm9yPXBv
-aW50ZXItdG8taW50LWNhc3QgLVdlcnJvcj1yZXR1cm4tdHlwZSAtV2Vycm9yPXNlcXVlbmNlLXBv
-aW50IC1XZXJyb3I9dHJpZ3JhcGhzIC1XZXJyb3I9d3JpdGUtc3RyaW5ncyAtZm5vLWJ1aWx0aW4t
-bWFsbG9jIC1mbm8tYnVpbHRpbi1jYWxsb2MgLWZjb21tb24gLXB0aHJlYWQgIC1NRCAtTVEgJ3Rl
-c3RzL3Rlc3RzQEBpOTE1X3BtX2RjQGV4ZS9pOTE1X2k5MTVfcG1fZGMuYy5vJyAtTUYgJ3Rlc3Rz
-L3Rlc3RzQEBpOTE1X3BtX2RjQGV4ZS9pOTE1X2k5MTVfcG1fZGMuYy5vLmQnIC1vICd0ZXN0cy90
-ZXN0c0BAaTkxNV9wbV9kY0BleGUvaTkxNV9pOTE1X3BtX2RjLmMubycgLWMgLi4vdGVzdHMvaTkx
-NS9pOTE1X3BtX2RjLmMKLi4vdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmM6Mzg2OjY6IGVycm9yOiBl
-eHBlY3RlZCDigJg74oCZIGJlZm9yZSDigJhfQm9vbOKAmQogdGF0aWMgYm9vbCBjaGVja19kYzko
-dWludDMyX3QgZGVidWdmc19mZCwgaW50IHByZXZfZGM1LCBpbnQgcHJldl9kYzYsIGludCBzZWNv
-bmRzKQogICAgICBeCiAgICAgIDsKLi4vdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmM6Mzg2OjEyOiB3
-YXJuaW5nOiBubyBwcmV2aW91cyBwcm90b3R5cGUgZm9yIOKAmGNoZWNrX2RjOeKAmSBbLVdtaXNz
-aW5nLXByb3RvdHlwZXNdCiB0YXRpYyBib29sIGNoZWNrX2RjOSh1aW50MzJfdCBkZWJ1Z2ZzX2Zk
-LCBpbnQgcHJldl9kYzUsIGludCBwcmV2X2RjNiwgaW50IHNlY29uZHMpCiAgICAgICAgICAgIF5+
-fn5+fn5+fgpuaW5qYTogYnVpbGQgc3RvcHBlZDogc3ViY29tbWFuZCBmYWlsZWQuCgoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5n
-IGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
-a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/kms_cursor_legacy.c | 158 +++++++++++++++++++++++---------------
+ 1 file changed, 98 insertions(+), 60 deletions(-)
+
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index 6034ad04..d132ec76 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -1365,6 +1365,9 @@ igt_main
+ 		igt_display_require(&display, display.drm_fd);
+ 	}
+ 
++	/*Test description for pipe-* and all-pipe-* tests*/
++	igt_describe("Test checks how many cursor updates we can fit between vblanks "
++		     "on single pipe with different modes, priority and number of processes");
+ 	igt_subtest_group {
+ 		enum pipe n;
+ 		for_each_pipe_static(n) {
+@@ -1391,69 +1394,91 @@ igt_main
+ 		}
+ 	}
+ 
+-	igt_subtest("all-pipes-single-bo")
+-		stress(&display, -1, 1, DRM_MODE_CURSOR_BO, 20);
+-	igt_subtest("all-pipes-single-move")
+-		stress(&display, -1, 1, DRM_MODE_CURSOR_MOVE, 20);
++       /*Test description for pipe-* and all-pipe-* tests*/
++       igt_describe("Test checks how many cursor updates we can fit between vblanks "
++                    "on all pipes with different modes, priority and number of processes");
++       igt_subtest_group {
+ 
+-	igt_subtest("all-pipes-forked-bo")
+-		stress(&display, -1, ncpus, DRM_MODE_CURSOR_BO, 20);
+-	igt_subtest("all-pipes-forked-move")
+-		stress(&display, -1, ncpus, DRM_MODE_CURSOR_MOVE, 20);
++		igt_subtest("all-pipes-single-bo")
++			stress(&display, -1, 1, DRM_MODE_CURSOR_BO, 20);
++		igt_subtest("all-pipes-single-move")
++			stress(&display, -1, 1, DRM_MODE_CURSOR_MOVE, 20);
+ 
+-	igt_subtest("all-pipes-torture-bo")
+-		stress(&display, -1, -ncpus, DRM_MODE_CURSOR_BO, 20);
+-	igt_subtest("all-pipes-torture-move")
+-		stress(&display, -1, -ncpus, DRM_MODE_CURSOR_MOVE, 20);
++		igt_subtest("all-pipes-forked-bo")
++			stress(&display, -1, ncpus, DRM_MODE_CURSOR_BO, 20);
++		igt_subtest("all-pipes-forked-move")
++			stress(&display, -1, ncpus, DRM_MODE_CURSOR_MOVE, 20);
+ 
+-	igt_subtest("nonblocking-modeset-vs-cursor-atomic")
+-		nonblocking_modeset_vs_cursor(&display, 1);
++		igt_subtest("all-pipes-torture-bo")
++			stress(&display, -1, -ncpus, DRM_MODE_CURSOR_BO, 20);
++		igt_subtest("all-pipes-torture-move")
++			stress(&display, -1, -ncpus, DRM_MODE_CURSOR_MOVE, 20);
+ 
+-	igt_subtest("long-nonblocking-modeset-vs-cursor-atomic")
+-		nonblocking_modeset_vs_cursor(&display, 16);
++		igt_subtest("nonblocking-modeset-vs-cursor-atomic")
++			nonblocking_modeset_vs_cursor(&display, 1);
+ 
+-	igt_subtest("2x-flip-vs-cursor-legacy")
+-		two_screens_flip_vs_cursor(&display, 8, false, false);
++		igt_subtest("long-nonblocking-modeset-vs-cursor-atomic")
++			nonblocking_modeset_vs_cursor(&display, 16);
++	}
++
++	/*Test Description for 2x-* tests*/
++	igt_describe("This test executes flips on both CRTCs "
++		     "while running cursor updates in parallel");
++	igt_subtest_group {
++
++		igt_subtest("2x-flip-vs-cursor-legacy")
++			two_screens_flip_vs_cursor(&display, 8, false, false);
+ 
+-	igt_subtest("2x-flip-vs-cursor-atomic")
+-		two_screens_flip_vs_cursor(&display, 8, false, true);
++		igt_subtest("2x-flip-vs-cursor-atomic")
++			two_screens_flip_vs_cursor(&display, 8, false, true);
+ 
+-	igt_subtest("2x-cursor-vs-flip-legacy")
+-		two_screens_cursor_vs_flip(&display, 8, false);
++		igt_subtest("2x-cursor-vs-flip-legacy")
++			two_screens_cursor_vs_flip(&display, 8, false);
+ 
+-	igt_subtest("2x-long-flip-vs-cursor-legacy")
+-		two_screens_flip_vs_cursor(&display, 150, false, false);
++		igt_subtest("2x-long-flip-vs-cursor-legacy")
++			two_screens_flip_vs_cursor(&display, 150, false, false);
+ 
+-	igt_subtest("2x-long-flip-vs-cursor-atomic")
+-		two_screens_flip_vs_cursor(&display, 150, false, true);
++		igt_subtest("2x-long-flip-vs-cursor-atomic")
++			two_screens_flip_vs_cursor(&display, 150, false, true);
+ 
+-	igt_subtest("2x-long-cursor-vs-flip-legacy")
+-		two_screens_cursor_vs_flip(&display, 50, false);
++		igt_subtest("2x-long-cursor-vs-flip-legacy")
++			two_screens_cursor_vs_flip(&display, 50, false);
+ 
+-	igt_subtest("2x-nonblocking-modeset-vs-cursor-atomic")
+-		two_screens_flip_vs_cursor(&display, 4, true, true);
++		igt_subtest("2x-nonblocking-modeset-vs-cursor-atomic")
++			two_screens_flip_vs_cursor(&display, 4, true, true);
+ 
+-	igt_subtest("2x-cursor-vs-flip-atomic")
+-		two_screens_cursor_vs_flip(&display, 8, true);
++		igt_subtest("2x-cursor-vs-flip-atomic")
++			two_screens_cursor_vs_flip(&display, 8, true);
+ 
+-	igt_subtest("2x-long-nonblocking-modeset-vs-cursor-atomic")
+-		two_screens_flip_vs_cursor(&display, 15, true, true);
++		igt_subtest("2x-long-nonblocking-modeset-vs-cursor-atomic")
++			two_screens_flip_vs_cursor(&display, 15, true, true);
+ 
+-	igt_subtest("2x-long-cursor-vs-flip-atomic")
+-		two_screens_cursor_vs_flip(&display, 50, true);
++		igt_subtest("2x-long-cursor-vs-flip-atomic")
++			two_screens_cursor_vs_flip(&display, 50, true);
++	}
++	
++	/*Test description for cursor-crc tests*/
++	igt_describe("Test will first does a page flip and then cursor update");
++	igt_subtest_group {
+ 
+-	igt_subtest("flip-vs-cursor-crc-legacy")
+-		flip_vs_cursor_crc(&display, false);
++		igt_subtest("flip-vs-cursor-crc-legacy")
++			flip_vs_cursor_crc(&display, false);
+ 
+-	igt_subtest("flip-vs-cursor-crc-atomic")
+-		flip_vs_cursor_crc(&display, true);
++		igt_subtest("flip-vs-cursor-crc-atomic")
++			flip_vs_cursor_crc(&display, true);
++	}
+ 
+-	igt_subtest("flip-vs-cursor-busy-crc-legacy")
+-		flip_vs_cursor_busy_crc(&display, false);
++	/*Test description for busy-crc tests*/
++	igt_describe("this test perform a busy bo update followed by a cursor update");
++	igt_subtest_group {
+ 
+-	igt_subtest("flip-vs-cursor-busy-crc-atomic")
+-		flip_vs_cursor_busy_crc(&display, true);
++		igt_subtest("flip-vs-cursor-busy-crc-legacy")
++			flip_vs_cursor_busy_crc(&display, false);
+ 
++		igt_subtest("flip-vs-cursor-busy-crc-atomic")
++			flip_vs_cursor_busy_crc(&display, true);
++	}
++	
+ 	for (i = 0; i <= flip_test_last; i++) {
+ 		const char *modes[flip_test_last+1] = {
+ 			"legacy",
+@@ -1473,7 +1498,13 @@ igt_main
+ 			break;
+ 		default: break;
+ 		}
+-
++	
++	igt_describe("Adds variety of tests: "
++		     "varying-size: change the size of cursor b/w 64*64 to maxw x maxh. "
++		     "atomic-transition: alternates between a full screen sprite plane. "
++				         "and full screen primary plane. "
++		     "toggle: which toggles cursor visibility and make sure cursor moves between updates.");
++	igt_subtest_group {	
+ 		igt_subtest_f("%sflip-before-cursor-%s", prefix, modes[i])
+ 			basic_flip_cursor(&display, i, FLIP_BEFORE_CURSOR, 0);
+ 
+@@ -1484,27 +1515,34 @@ igt_main
+ 						  BASIC_BUSY);
+ 			}
+ 		}
++	}
+ 
+-		igt_subtest_f("%sflip-after-cursor-%s", prefix, modes[i])
+-			basic_flip_cursor(&display, i, FLIP_AFTER_CURSOR, 0);
++		igt_describe("The essence of the basic test is that neither the cursor nor the "
++			     "nonblocking flip stall the application of the next");
++		igt_subtest_group {
++			
++			igt_subtest_f("%sflip-after-cursor-%s", prefix, modes[i])
++				basic_flip_cursor(&display, i, FLIP_AFTER_CURSOR, 0);
+ 
+-		igt_subtest_f("flip-vs-cursor-%s", modes[i])
+-			flip_vs_cursor(&display, i, 150);
+-		igt_subtest_f("cursor-vs-flip-%s", modes[i])
+-			cursor_vs_flip(&display, i, 50);
++			igt_subtest_f("flip-vs-cursor-%s", modes[i])
++				flip_vs_cursor(&display, i, 150);
+ 
+-		igt_subtest_f("cursorA-vs-flipA-%s", modes[i])
+-			flip(&display, 0, 0, 10, i);
++			igt_subtest_f("cursor-vs-flip-%s", modes[i])
++				cursor_vs_flip(&display, i, 50);
+ 
+-		igt_subtest_f("cursorA-vs-flipB-%s", modes[i])
+-			flip(&display, 0, 1, 10, i);
++			igt_subtest_f("cursorA-vs-flipA-%s", modes[i])
++				flip(&display, 0, 0, 10, i);
+ 
+-		igt_subtest_f("cursorB-vs-flipA-%s", modes[i])
+-			flip(&display, 1, 0, 10, i);
++			igt_subtest_f("cursorA-vs-flipB-%s", modes[i])
++				flip(&display, 0, 1, 10, i);
+ 
+-		igt_subtest_f("cursorB-vs-flipB-%s", modes[i])
+-			flip(&display, 1, 1, 10, i);
+-	}
++			igt_subtest_f("cursorB-vs-flipA-%s", modes[i])
++				flip(&display, 1, 0, 10, i);
++
++			igt_subtest_f("cursorB-vs-flipB-%s", modes[i])
++				flip(&display, 1, 1, 10, i);
++			}
++		}
+ 
+ 	igt_fixture {
+ 		igt_display_fini(&display);
+-- 
+2.26.2
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
