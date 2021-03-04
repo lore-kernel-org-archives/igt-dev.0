@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 586866E422
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Mar 2021 23:59:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7869D6E444
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Mar 2021 00:01:49 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20210302225334.361966-10-alan.previn.teres.alexis@intel.com>
+In-Reply-To: <20210302225334.361966-12-alan.previn.teres.alexis@intel.com>
 References: <20210302225334.361966-1-alan.previn.teres.alexis@intel.com>
- <20210302225334.361966-10-alan.previn.teres.alexis@intel.com>
+ <20210302225334.361966-12-alan.previn.teres.alexis@intel.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 03 Mar 2021 23:59:49 +0000
-Message-ID: <161481598955.25897.1702124270692264198@build.alporthouse.com>
-Subject: Re: [igt-dev] [RFC i-g-t 09/11] Add test to verify session key
- renewed after suspend-resume cycle
+Date: Thu, 04 Mar 2021 00:01:45 +0000
+Message-ID: <161481610561.25897.7563382201944642465@build.alporthouse.com>
+Subject: Re: [igt-dev] [RFC i-g-t 11/11] Verify gem_execbuf fails with stale
+ PXP buffer after teardown
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,24 +26,14 @@ To: Alan Previn <alan.previn.teres.alexis@intel.com>, igt-dev@lists.freedesktop.
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Alan Previn (2021-03-02 22:53:32)
-> +static void trigger_powermgt_suspend_cycle(int i915,
-> +       struct powermgt_data *pm)
-> +{
-> +       igt_pm_enable_sata_link_power_management();
-> +
-> +
-> +       igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_DEVICES);
-> +
-> +       igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED);
-> +       gem_test_engine(i915, I915_EXEC_RENDER);
-> +       while ((!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE))) {
+Quoting Alan Previn (2021-03-02 22:53:34)
+> Add a subtest to verify that reusing a stale protected buffer
+> with a fresh protected context, in a gem_execbuff after a
+> teardown (triggered by suspend-resume cycle) shall fail
+> with -EIO error.
 
-With an autosuspend delay of 0, this is not guaranteed to ever report
-ACTIVE.
-
-Just drop everything after wait_for_pm_status(SUSPENDED) as clearly
-using the protected rendercopy must wake the device.
+I'm used to having a rationale as to why that is the uABI. We can read
+the code, but not the why.
 -Chris
 _______________________________________________
 igt-dev mailing list
