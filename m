@@ -1,8 +1,10 @@
 Return-Path: <dri-devel-bounces@lists.freedesktop.org>
 From: Neil Roberts <nroberts@igalia.com>
-Subject: [PATCH i-g-t 0/2] panfrost: Test accessing a purged buffer via mmap
-Date: Fri,  5 Mar 2021 12:12:44 +0100
-Message-Id: <20210305111246.1381965-1-nroberts@igalia.com>
+Subject: [PATCH i-g-t 1/2] lib/panfrost: Add a utility to madvise a buffer
+Date: Fri,  5 Mar 2021 12:12:45 +0100
+Message-Id: <20210305111246.1381965-2-nroberts@igalia.com>
+In-Reply-To: <20210305111246.1381965-1-nroberts@igalia.com>
+References: <20210305111246.1381965-1-nroberts@igalia.com>
 MIME-Version: 1.0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
  <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
@@ -19,35 +21,46 @@ To: igt-dev@lists.freedesktop.org
 Cc: dri-devel@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This adds a test for Panfrost to make sure that accessing a buffer
-that has been madvised and then purged causes a bus fault. It is
-intended to test the fix provided by this series:
+Signed-off-by: Neil Roberts <nroberts@igalia.com>
+---
+ lib/igt_panfrost.c | 12 ++++++++++++
+ lib/igt_panfrost.h |  1 +
+ 2 files changed, 13 insertions(+)
 
-https://patchwork.freedesktop.org/series/87324/
-
-The series has now been merged into drm-misc-fixes (thanks!)
-
-In order to trigger the purge, the test just tries to allocate a bunch
-of buffers until one of them causes the original buffer to be purged.
-During the review of the kernel patch series, Daniel Vetter suggested
-it would be better to use debugfs or vm_drop_caches file from proc.
-However, I noticed that there are other tests that use the same method
-as in this series (eg, igt_vc4_trigger_purge). Seeing as there is
-already a precedent for IGT tests to do this, I wonder if we could
-leave that as a later change for someone who is more active in
-Panfrost development.
-
-Neil Roberts (2):
-  lib/panfrost: Add a utility to madvise a buffer
-  tests/panfrost: Add a test for accessing a purged buffer
-
- lib/igt_panfrost.c        |  12 ++++
- lib/igt_panfrost.h        |   1 +
- tests/meson.build         |   1 +
- tests/panfrost_purgemap.c | 146 ++++++++++++++++++++++++++++++++++++++
- 4 files changed, 160 insertions(+)
- create mode 100644 tests/panfrost_purgemap.c
-
+diff --git a/lib/igt_panfrost.c b/lib/igt_panfrost.c
+index 8b0c2b77..ffce66a2 100644
+--- a/lib/igt_panfrost.c
++++ b/lib/igt_panfrost.c
+@@ -127,6 +127,18 @@ void igt_panfrost_bo_mmap(int fd, struct panfrost_bo *bo)
+         igt_assert(bo->map);
+ }
+ 
++bool igt_panfrost_bo_madvise(int fd, struct panfrost_bo *bo, uint32_t madv)
++{
++        struct drm_panfrost_madvise madvise = {
++                .handle = bo->handle,
++                .madv = madv,
++        };
++
++        do_ioctl(fd, DRM_IOCTL_PANFROST_MADVISE, &madvise);
++
++        return madvise.retained;
++}
++
+ struct panfrost_submit *igt_panfrost_trivial_job(int fd, bool do_crash, int width, int height, uint32_t color)
+ {
+         struct panfrost_submit *submit;
+diff --git a/lib/igt_panfrost.h b/lib/igt_panfrost.h
+index cc7998dc..df326a6c 100644
+--- a/lib/igt_panfrost.h
++++ b/lib/igt_panfrost.h
+@@ -56,5 +56,6 @@ uint32_t igt_panfrost_get_param(int fd, int param);
+ void *igt_panfrost_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned prot);
+ 
+ void igt_panfrost_bo_mmap(int fd, struct panfrost_bo *bo);
++bool igt_panfrost_bo_madvise(int fd, struct panfrost_bo *bo, uint32_t madv);
+ 
+ #endif /* IGT_PANFROST_H */
 -- 
 2.29.2
 
