@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E7C196EADE
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Mar 2021 07:38:54 +0000 (UTC)
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-References: <20210305064421.23388-1-nidhi1.gupta@intel.com>
- <0cdc8f51-75c4-24ff-ba64-9bd4a47db478@intel.com>
-Message-ID: <ab4b0bec-516e-0ee9-aaf2-a5dfb533885b@intel.com>
-Date: Fri, 5 Mar 2021 13:08:49 +0530
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B03476EADE
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Mar 2021 07:41:51 +0000 (UTC)
+From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Date: Fri,  5 Mar 2021 13:11:57 +0530
+Message-Id: <20210305074157.1305034-1-arundhati.hagaragi@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <0cdc8f51-75c4-24ff-ba64-9bd4a47db478@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v2]
- tests/kms_rotation_crc@exhaust-fences: added check for HW detiler
+Subject: [igt-dev] [PATCH i-g-t v4] tests/kms_properties: Add subtest
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,32 +15,84 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Nidhi Gupta <nidhi1.gupta@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Sharma@freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhhbmtzIGZvciB0aGUgcGF0Y2guIFB1c2hlZC4KCk9uIDA1LU1hci0yMSAxMjo1OCBQTSwgU2hh
-cm1hLCBTd2F0aTIgd3JvdGU6Cj4gTEdUTS4KPiBSZXZpZXdlZC1ieTogU3dhdGkgU2hhcm1hIDxz
-d2F0aTIuc2hhcm1hQGludGVsLmNvbT4KPiAKPiBPbiAwNS1NYXItMjEgMTI6MTQgUE0sIE5pZGhp
-IEd1cHRhIHdyb3RlOgo+PiBIVyBkZXRpbGVyIG5vdCBzdXBwb3J0ZWQgb24gcGxhdGZvcm1zIHcv
-byBhcGVydHVyZS4KPj4gQWRkZWQgZmVhdHVyZSB0ZXN0IG1hY3JvIHRvIHF1ZXJ5IHRoZSBrZXJu
-ZWwgZm9yIHRoZQo+PiBnbG9iYWwgZ3B1IGFwZXJ0dXJlIHNpemUuIEFwZXJ0dXJlIHNpemUgc2hv
-dWxkIGJlCj4+IGdyZWF0ZXIgdGhhbiB6ZXJvIHRvIHN1cHBvcnQgSFcgZGV0aWxlciwgaWYgbm90
-IHNraXAKPj4gdGhlIHRlc3QuCj4+Cj4+IFNpZ25lZC1vZmYtYnk6IE5pZGhpIEd1cHRhIDxuaWRo
-aTEuZ3VwdGFAaW50ZWwuY29tPgo+PiAtLS0KPj4gwqAgdGVzdHMva21zX3JvdGF0aW9uX2NyYy5j
-IHwgMSArCj4+IMKgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKQo+Pgo+PiBkaWZmIC0t
-Z2l0IGEvdGVzdHMva21zX3JvdGF0aW9uX2NyYy5jIGIvdGVzdHMva21zX3JvdGF0aW9uX2NyYy5j
-Cj4+IGluZGV4IGFkZGRiNjkwLi5iY2JiOWJkYyAxMDA2NDQKPj4gLS0tIGEvdGVzdHMva21zX3Jv
-dGF0aW9uX2NyYy5jCj4+ICsrKyBiL3Rlc3RzL2ttc19yb3RhdGlvbl9jcmMuYwo+PiBAQCAtODg0
-LDYgKzg4NCw3IEBAIHN0YXRpYyB2b2lkIAo+PiB0ZXN0X3BsYW5lX3JvdGF0aW9uX2V4aGF1c3Rf
-ZmVuY2VzKGRhdGFfdCAqZGF0YSwKPj4gwqDCoMKgwqDCoCBpbnQgaTsKPj4gwqDCoMKgwqDCoCBp
-Z3RfcmVxdWlyZShpZ3RfcGxhbmVfaGFzX3Byb3AocGxhbmUsIElHVF9QTEFORV9ST1RBVElPTikp
-Owo+PiArwqDCoMKgIGlndF9yZXF1aXJlKGdlbV9hdmFpbGFibGVfZmVuY2VzKGRpc3BsYXktPmRy
-bV9mZCkgPiAwKTsKPj4gwqDCoMKgwqDCoCBwcmVwYXJlX2NydGMoZGF0YSwgb3V0cHV0LCBwaXBl
-LCBwbGFuZSwgZmFsc2UpOwo+Pgo+IAoKLS0gCn5Td2F0aSBTaGFybWEKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0
-LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Added description for all subtests
+
+Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Cc: Sharma, Swati2 <swati2.sharma@intel.com>
+
+v2, v3, v4: modified subtests description to be more specific. (swati)
+---
+ tests/kms_properties.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index b743f9d6..4be24a31 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -735,35 +735,51 @@ igt_main
+ 		igt_display_require(&display, display.drm_fd);
+ 	}
+ 
++	igt_describe("Tests plane properties with legacy commit");
+ 	igt_subtest("plane-properties-legacy")
+ 		plane_properties(&display, false);
+ 
++	igt_describe("Tests plane properties with atomic commit");
+ 	igt_subtest("plane-properties-atomic")
+ 		plane_properties(&display, true);
+ 
++	igt_describe("Tests crtc properties with legacy commit");
+ 	igt_subtest("crtc-properties-legacy")
+ 		crtc_properties(&display, false);
+ 
++	igt_describe("Tests crtc properties with atomic commit");
+ 	igt_subtest("crtc-properties-atomic")
+ 		crtc_properties(&display, true);
+ 
++	igt_describe("Tests connector properties with legacy commit");
+ 	igt_subtest("connector-properties-legacy")
+ 		connector_properties(&display, false);
+ 
++	igt_describe("Tests connector properties with atomic commit");
+ 	igt_subtest("connector-properties-atomic")
+ 		connector_properties(&display, true);
+ 
++	igt_describe("Checks each property of any type with combination of mode object with legacy "
++			"commit and make sure only valid properties are set to mode object else "
++			"return with relevant error");
++
+ 	igt_subtest("invalid-properties-legacy")
+ 		invalid_properties(&display, false);
+ 
++	igt_describe("Checks each property of any type with combination of mode object with atomic "
++			"commit and make sure only valid properties are set to mode object else "
++			"return with relevant error");
++
+ 	igt_subtest("invalid-properties-atomic")
+ 		invalid_properties(&display, true);
+ 
++	igt_describe("Test validates the properties of all planes, crtc and connectors with atomic commit");
+ 	igt_subtest("get_properties-sanity-atomic") {
+ 		igt_skip_on(!display.is_atomic);
+ 		get_prop_sanity(&display, true);
+ 	}
+ 
++	igt_describe("Test validates the properties of all planes, crtc and connectors with legacy commit");
+ 	igt_subtest("get_properties-sanity-non-atomic") {
+ 		if (display.is_atomic)
+ 			igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 0), 0);
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
