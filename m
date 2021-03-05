@@ -1,46 +1,57 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBFDB6E1A2
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Mar 2021 11:09:08 +0000 (UTC)
+Return-Path: <dri-devel-bounces@lists.freedesktop.org>
+From: Neil Roberts <nroberts@igalia.com>
+Subject: [PATCH i-g-t 0/2] panfrost: Test accessing a purged buffer via mmap
+Date: Fri,  5 Mar 2021 12:12:44 +0100
+Message-Id: <20210305111246.1381965-1-nroberts@igalia.com>
 MIME-Version: 1.0
-In-Reply-To: <20210305064421.23388-1-nidhi1.gupta@intel.com>
-References: <20210305064421.23388-1-nidhi1.gupta@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Fri, 05 Mar 2021 11:09:05 +0000
-Message-ID: <161494254503.15221.6286278624136957022@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2]
- tests/kms_rotation_crc@exhaust-fences: added check for HW detiler
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Nidhi Gupta <nidhi1.gupta@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Nidhi Gupta (2021-03-05 06:44:21)
-> HW detiler not supported on platforms w/o aperture.
-> Added feature test macro to query the kernel for the
-> global gpu aperture size. Aperture size should be
-> greater than zero to support HW detiler, if not skip
-> the test.
+This adds a test for Panfrost to make sure that accessing a buffer
+that has been madvised and then purged causes a bus fault. It is
+intended to test the fix provided by this series:
 
-Which is already a requirement for the test. So what are you actually
-trying to achieve?
+https://patchwork.freedesktop.org/series/87324/
 
-        igt_require(total_fbs_size < total_aperture_size * 0.9);
+The series has now been merged into drm-misc-fixes (thanks!)
 
-Maybe that it's mistakenly calling gem_available_aperture_size() and not
-gem_mappable_aperture_size().
--Chris
+In order to trigger the purge, the test just tries to allocate a bunch
+of buffers until one of them causes the original buffer to be purged.
+During the review of the kernel patch series, Daniel Vetter suggested
+it would be better to use debugfs or vm_drop_caches file from proc.
+However, I noticed that there are other tests that use the same method
+as in this series (eg, igt_vc4_trigger_purge). Seeing as there is
+already a precedent for IGT tests to do this, I wonder if we could
+leave that as a later change for someone who is more active in
+Panfrost development.
+
+Neil Roberts (2):
+  lib/panfrost: Add a utility to madvise a buffer
+  tests/panfrost: Add a test for accessing a purged buffer
+
+ lib/igt_panfrost.c        |  12 ++++
+ lib/igt_panfrost.h        |   1 +
+ tests/meson.build         |   1 +
+ tests/panfrost_purgemap.c | 146 ++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 160 insertions(+)
+ create mode 100644 tests/panfrost_purgemap.c
+
+-- 
+2.29.2
+
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+dri-devel mailing list
+dri-devel@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/dri-devel
