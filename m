@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EBC426E82B
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Mar 2021 08:46:34 +0000 (UTC)
-Date: Mon, 8 Mar 2021 10:47:01 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YEXkhTnlwCaFo9Fk@platvala-desk.ger.corp.intel.com>
-References: <20210219172738.263820-1-jcline@redhat.com>
- <20210305164253.11788-1-jcline@redhat.com>
- <20210305164253.11788-2-jcline@redhat.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5838889C54
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Mar 2021 09:48:02 +0000 (UTC)
+Date: Mon, 8 Mar 2021 10:47:56 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210308094756.GB7125@zkempczy-mobl2>
+References: <20210301161403.98278-1-zbigniew.kempczynski@intel.com>
+ <20210301161403.98278-20-zbigniew.kempczynski@intel.com>
+ <161495519869.8241.6229953895790444346@build.alporthouse.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210305164253.11788-2-jcline@redhat.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] kms_hdr: Skip HDR tests on
- pre-Kaby Lake Intel devices
+In-Reply-To: <161495519869.8241.6229953895790444346@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v21 19/35] tests/api_intel_bb: Modify
+ test to verify intel_bb with allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,82 +20,25 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jeremy Cline <jcline@redhat.com>, Swati Sharma <swati2.sharma@intel.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Mar 05, 2021 at 11:42:52AM -0500, Jeremy Cline wrote:
-> According to the Intel documentation[0] I could find, HDR support is
-> only in Kaby Lake+. Skip tests in kms_hdr if the hardware doesn't
-> support HDR.
-> 
-> [0] https://www.intel.com/content/dam/support/us/en/documents/graphics/HDR_Intel_Graphics_TechWhitePaper.pdf
-> 
-> Signed-off-by: Jeremy Cline <jcline@redhat.com>
-
-
-While that might be true, strictly speaking IGT tests are not testing
-the HW capabilities but the kernel interfaces. The difference is often
-only interesting for nitpicking.
-
-However, in this case a good argument can be made either way, with
-what the correct behaviour with setting the "max bpc" property when
-the HW doesn't support HDR _output_ should be. IGT tests should be
-written the way one would expect "real" userspace to behave; does the
-documented kernel interface require userspace to detect the device id
-somehow? The connector property is there so one would assume setting
-it should work and do something.
-
-A good argument can also be made that even though we're testing "just
-the interface", we (Intel) should have a separate test that requires
-actual HW support...
-
-Swati, Maarten, thoughts on this? Are we even testing the right things
-for i915 at all? Are we able to express the HW requirement for HDR
-with something other than comparing devid? Should we? (If we should
-not, please suggest a better way to get around the issue being fixed
-here)
-
-
--- 
-Petri Latvala
-
-
-
-
-> ---
->  tests/kms_hdr.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-> index e9dd7f27..7617e8a5 100644
-> --- a/tests/kms_hdr.c
-> +++ b/tests/kms_hdr.c
-> @@ -644,6 +644,12 @@ igt_main
->  		igt_require(data.display.is_atomic);
->  
->  		igt_display_require_output(&data.display);
-> +
-> +		/* According to Intel documentation, hardware prior to Kaby Lake does
-> +		 * not support HDR.
-> +		 */
-> +		if (is_i915_device(data.fd))
-> +			igt_require(AT_LEAST_GEN(intel_get_drm_devid(data.fd), 9));
->  	}
->  
->  	igt_describe("Tests switching between different display output bpc modes");
-> -- 
-> 2.30.1
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gRnJpLCBNYXIgMDUsIDIwMjEgYXQgMDI6Mzk6NThQTSArMDAwMCwgQ2hyaXMgV2lsc29uIHdy
+b3RlOgo+IFF1b3RpbmcgWmJpZ25pZXcgS2VtcGN6ecWEc2tpICgyMDIxLTAzLTAxIDE2OjEzOjQ3
+KQo+ID4gICAgICAgICBpbnRlbF9iYl9lbWl0X2JiZShpYmIpOwo+ID4gLSAgICAgICBpZ3RfZGVi
+dWcoImV4ZWMgZmxhZ3M6ICUiIFBSSVg2NCAiXG4iLCBmbGFncyk7Cj4gPiAtICAgICAgIGludGVs
+X2JiX2V4ZWMoaWJiLCBpbnRlbF9iYl9vZmZzZXQoaWJiKSwgZmxhZ3MsIHRydWUpOwo+ID4gKyAg
+ICAgICBpbnRlbF9iYl9mbHVzaF9ibGl0KGliYik7Cj4gPiArICAgICAgIGludGVsX2JiX3N5bmMo
+aWJiKTsKPiAKPiBIbW0uIFRoYXQgZG9lcyByZW1pbmQgbWUsIEkgaGF2ZW4ndCBzZWVuIEVYRUNf
+T0JKRUNUX1dSSVRFIGJlaW5nIHNldC4KPiAtQ2hyaXMKCgpJbiBfX2VtaXRfYmxpdCgpIC0+IGlu
+dGVsX2JiX2VtaXRfYmx0X2NvcHkoKSB3ZSBhZGQgZHN0IGFzIHRhcmdldDoKCi4uLgoJaW50ZWxf
+YmJfYWRkX2ludGVsX2J1ZihpYmIsIHNyYywgZmFsc2UpOwoJaW50ZWxfYmJfYWRkX2ludGVsX2J1
+ZihpYmIsIGRzdCwgdHJ1ZSk7Ci4uLgoKLS0KWmJpZ25pZQpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxp
+c3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2lndC1kZXYK
