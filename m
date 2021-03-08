@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5838889C54
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Mar 2021 09:48:02 +0000 (UTC)
-Date: Mon, 8 Mar 2021 10:47:56 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210308094756.GB7125@zkempczy-mobl2>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9A2AB6E84D
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Mar 2021 10:18:01 +0000 (UTC)
+MIME-Version: 1.0
+In-Reply-To: <20210308094756.GB7125@zkempczy-mobl2>
 References: <20210301161403.98278-1-zbigniew.kempczynski@intel.com>
  <20210301161403.98278-20-zbigniew.kempczynski@intel.com>
  <161495519869.8241.6229953895790444346@build.alporthouse.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <161495519869.8241.6229953895790444346@build.alporthouse.com>
+ <20210308094756.GB7125@zkempczy-mobl2>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Mon, 08 Mar 2021 10:17:52 +0000
+Message-ID: <161519867201.19494.17478413461726228682@build.alporthouse.com>
 Subject: Re: [igt-dev] [PATCH i-g-t v21 19/35] tests/api_intel_bb: Modify
  test to verify intel_bb with allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -24,21 +24,24 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: zbigniew.kempczynski@intel.com
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBNYXIgMDUsIDIwMjEgYXQgMDI6Mzk6NThQTSArMDAwMCwgQ2hyaXMgV2lsc29uIHdy
-b3RlOgo+IFF1b3RpbmcgWmJpZ25pZXcgS2VtcGN6ecWEc2tpICgyMDIxLTAzLTAxIDE2OjEzOjQ3
-KQo+ID4gICAgICAgICBpbnRlbF9iYl9lbWl0X2JiZShpYmIpOwo+ID4gLSAgICAgICBpZ3RfZGVi
-dWcoImV4ZWMgZmxhZ3M6ICUiIFBSSVg2NCAiXG4iLCBmbGFncyk7Cj4gPiAtICAgICAgIGludGVs
-X2JiX2V4ZWMoaWJiLCBpbnRlbF9iYl9vZmZzZXQoaWJiKSwgZmxhZ3MsIHRydWUpOwo+ID4gKyAg
-ICAgICBpbnRlbF9iYl9mbHVzaF9ibGl0KGliYik7Cj4gPiArICAgICAgIGludGVsX2JiX3N5bmMo
-aWJiKTsKPiAKPiBIbW0uIFRoYXQgZG9lcyByZW1pbmQgbWUsIEkgaGF2ZW4ndCBzZWVuIEVYRUNf
-T0JKRUNUX1dSSVRFIGJlaW5nIHNldC4KPiAtQ2hyaXMKCgpJbiBfX2VtaXRfYmxpdCgpIC0+IGlu
-dGVsX2JiX2VtaXRfYmx0X2NvcHkoKSB3ZSBhZGQgZHN0IGFzIHRhcmdldDoKCi4uLgoJaW50ZWxf
-YmJfYWRkX2ludGVsX2J1ZihpYmIsIHNyYywgZmFsc2UpOwoJaW50ZWxfYmJfYWRkX2ludGVsX2J1
-ZihpYmIsIGRzdCwgdHJ1ZSk7Ci4uLgoKLS0KWmJpZ25pZQpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxp
-c3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2lndC1kZXYK
+UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjEtMDMtMDggMDk6NDc6NTYpCj4gT24g
+RnJpLCBNYXIgMDUsIDIwMjEgYXQgMDI6Mzk6NThQTSArMDAwMCwgQ2hyaXMgV2lsc29uIHdyb3Rl
+Ogo+ID4gUXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjEtMDMtMDEgMTY6MTM6NDcp
+Cj4gPiA+ICAgICAgICAgaW50ZWxfYmJfZW1pdF9iYmUoaWJiKTsKPiA+ID4gLSAgICAgICBpZ3Rf
+ZGVidWcoImV4ZWMgZmxhZ3M6ICUiIFBSSVg2NCAiXG4iLCBmbGFncyk7Cj4gPiA+IC0gICAgICAg
+aW50ZWxfYmJfZXhlYyhpYmIsIGludGVsX2JiX29mZnNldChpYmIpLCBmbGFncywgdHJ1ZSk7Cj4g
+PiA+ICsgICAgICAgaW50ZWxfYmJfZmx1c2hfYmxpdChpYmIpOwo+ID4gPiArICAgICAgIGludGVs
+X2JiX3N5bmMoaWJiKTsKPiA+IAo+ID4gSG1tLiBUaGF0IGRvZXMgcmVtaW5kIG1lLCBJIGhhdmVu
+J3Qgc2VlbiBFWEVDX09CSkVDVF9XUklURSBiZWluZyBzZXQuCj4gPiAtQ2hyaXMKPiAKPiAKPiBJ
+biBfX2VtaXRfYmxpdCgpIC0+IGludGVsX2JiX2VtaXRfYmx0X2NvcHkoKSB3ZSBhZGQgZHN0IGFz
+IHRhcmdldDoKPiAKPiAuLi4KPiAgICAgICAgIGludGVsX2JiX2FkZF9pbnRlbF9idWYoaWJiLCBz
+cmMsIGZhbHNlKTsKPiAgICAgICAgIGludGVsX2JiX2FkZF9pbnRlbF9idWYoaWJiLCBkc3QsIHRy
+dWUpOwo+IC4uLgoKU28gdGhlIHN5bmMgaXMgYmVjYXVzZT8gRXZlcnl0aW1lIEkgc2VlIGFuIGlt
+cGxpY2l0IHN5bmMgdGhlIGltcGxpY2F0aW9uCmlzIHRoYXQgaXQgaXMgY292ZXJpbmcgb3ZlciBh
+IGJ1Zy4KLUNocmlzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0
+dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
