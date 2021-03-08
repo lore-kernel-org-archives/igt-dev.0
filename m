@@ -1,18 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01B3D89DFC
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Mar 2021 14:26:44 +0000 (UTC)
-Date: Mon, 8 Mar 2021 15:26:38 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210308142638.GA29042@zkempczy-mobl2>
-References: <20210301161403.98278-1-zbigniew.kempczynski@intel.com>
- <20210301161403.98278-33-zbigniew.kempczynski@intel.com>
- <161495640932.8241.13115791967867365730@build.alporthouse.com>
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [63.128.21.124])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 29F736E811
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Mar 2021 15:07:07 +0000 (UTC)
+Received: by mail-qv1-f69.google.com with SMTP id d26so7846538qve.7
+ for <igt-dev@lists.freedesktop.org>; Mon, 08 Mar 2021 07:07:02 -0800 (PST)
+Date: Mon, 8 Mar 2021 10:06:59 -0500
+From: Jeremy Cline <jcline@redhat.com>
+Message-ID: <YEY9k0CEfxg0uAuO@xps13>
+References: <20210219172738.263820-1-jcline@redhat.com>
+ <20210305164253.11788-1-jcline@redhat.com>
+ <20210305164253.11788-2-jcline@redhat.com>
+ <YEXkhTnlwCaFo9Fk@platvala-desk.ger.corp.intel.com>
+ <d95e9fef-ee70-4875-beb6-7ebfee4c56f7@intel.com>
+ <YEYeU0Pq/wsLP/5j@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
+In-Reply-To: <YEYeU0Pq/wsLP/5j@platvala-desk.ger.corp.intel.com>
 Content-Disposition: inline
-In-Reply-To: <161495640932.8241.13115791967867365730@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v21 32/35] tests/gem_ppgtt: Adopt test
- to use intel_bb with allocator
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] kms_hdr: Skip HDR tests on
+ pre-Kaby Lake Intel devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,55 +26,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBNYXIgMDUsIDIwMjEgYXQgMDM6MDA6MDlQTSArMDAwMCwgQ2hyaXMgV2lsc29uIHdy
-b3RlOgo+IFF1b3RpbmcgWmJpZ25pZXcgS2VtcGN6ecWEc2tpICgyMDIxLTAzLTAxIDE2OjE0OjAw
-KQo+ID4gVGVzdHMgd29yayBpbiBtdWx0aXByb2Nlc3MgZW52aXJvbm1lbnQgc28gd2UgbXVzdCB0
-dXJuIG9uL29mZgo+ID4gdGhyZWFkIGluIHBhcmVudCBwcm9jZXNzIHdoaWNoIGlzIHJlc3BvbnNp
-YmxlIGZvciBhbGxvY2F0aW9ucy4KPiA+IAo+ID4gU2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2Vt
-cGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Cj4gPiBDYzogRG9taW5p
-ayBHcnplZ29yemVrIDxkb21pbmlrLmdyemVnb3J6ZWtAaW50ZWwuY29tPgo+ID4gQ2M6IENocmlz
-IFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+ID4gLS0tCj4gPiAgdGVzdHMvaTkx
-NS9nZW1fcHBndHQuYyB8IDYgKysrKysrCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9u
-cygrKQo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fcHBndHQuYyBiL3Rlc3Rz
-L2k5MTUvZ2VtX3BwZ3R0LmMKPiA+IGluZGV4IDVmOGIzNDIyNC4uNjc4YTYzNDk4IDEwMDY0NAo+
-ID4gLS0tIGEvdGVzdHMvaTkxNS9nZW1fcHBndHQuYwo+ID4gKysrIGIvdGVzdHMvaTkxNS9nZW1f
-cHBndHQuYwo+ID4gQEAgLTI4MywxMCArMjgzLDEzIEBAIGlndF9tYWluCj4gPiAgICAgICAgICAg
-ICAgICAgcmNzID0gY2FsbG9jKHNpemVvZigqcmNzKSwgbmNoaWxkKTsKPiA+ICAgICAgICAgICAg
-ICAgICBpZ3RfYXNzZXJ0KHJjcyk7Cj4gPiAgCj4gPiArICAgICAgICAgICAgICAgaW50ZWxfYWxs
-b2NhdG9yX211bHRpcHJvY2Vzc19zdGFydCgpOwo+IAo+IENhbiB3ZSB1c2UgY2hpbGRfcGlkIHRv
-IHdhcm4gd2hlbiBhbiBhbGxvY2F0b3IgaXMgdXNlZCBpbiBhIGNoaWxkPwo+IAo+IEJ1dCBoZXJl
-IHRoZSBhbGxvY2F0b3IgaXMgbm90IHNoYXJlZCBiZXR3ZWVuIGNoaWxkcmVuLCBhcyBlYWNoIGNo
-aWxkCj4gd2lsbCBoYXZlIHRoZWlyIG93biBzZXQgb2YgcHBHVFQgdG8gcGxheSB3aXRoLgo+IAo+
-IFdoYXQgYW0gSSBtaXNzaW5nPwo+IC1DaHJpcwoKRm9yIGZvcmtpbmcgd2UgaGF2ZSB0d28gc2Nl
-bmFyaW9zOgoKMS4gY2hpbGQgd2FudHMgdG8gY29ubmVjdCB0byBwYXJlbnQgaW5mcmFzdHJ1Y3R1
-cmUgKGRlZmF1bHQpLiBBbGxvd3MKICAgc2hhcmluZyA8ZmQsIGN0eD4gYXMgd2VsbCBhcyB1c2Vz
-IGl0cyBvd24gPGZkMiwgY3R4Mj4sIHRodXMgaGF2aW5nCiAgIGl0cyBvd24gdm0uIGdlbV9wcGd0
-dCBpcyBzdWNoIGNhc2UgLSB3ZSBnb3Qgc2luZ2xlIGFsbG9jYXRvciAKICAgaW5mcmFzdHJ1Y3R1
-cmUgYnV0IGNoaWxkcmVuIGNhbiBhY2Nlc3MgaXQgd2l0aCB1bmlxdWUgPGZkLCBjdHg+IGtleS4K
-ICAgT25seSBkcmF3YmFjayBpcyB3ZSB1c2Ugc29tZSBjb21tdW5pY2F0aW9uIGNoYW5uZWwgaW5z
-dGVhZCBvZiAKICAgZGlyZWN0IGFsbG9jYXRpb24uCgoyLiBjaGlsZCB3YW50cyB0byB1bmNvbm5l
-Y3QgZnJvbSBwYXJlbnQgaW5mcmFzdHJ1Y3R1cmUsIHNvIGl0IGxpa2VseQogICBzaG91bGQgY2Fs
-bCBpbnRlbF9hbGxvY2F0b3JfaW5pdCgpIHRvIHByZXBhcmUgZGF0YSBzdHJ1Y3R1cmVzIAogICB3
-aXRoaW4gaXRzIG1lbW9yeS4gaW50ZWxfYWxsb2NhdG9yX2luaXQoKSBkb2Vzbid0IGNhbGwgY2hh
-bm5lbC0+aW5pdCgpCiAgIHNvIGFsbG9jYXRvciBzaG91bGQgYmUgInN0YW5kYWxvbmUiIGZvciBz
-dWNoIGNoaWxkIChzdWJzZXF1ZW50CiAgIGZvcmtzIGFyZSBub3QgYWxsb3dlZCwgSUdUIGRvZXNu
-J3QgYWxsb3cgdG8gZG8gaWd0X2Zvcmsgd2l0aGluCiAgIGlndF9mb3JrIGlmIEknbSBub3Qgd3Jv
-bmcpLiBJIGRpZG4ndCB0ZXN0IHN1Y2ggc2NlbmFyaW8gc28gaXQgaXMKICAgZ29vZCBpZGVhIGZv
-ciB0ZXN0LCBJJ20gZ29pbmcgdG8gYWRkIHRoaXMgaW4gYXBpX2ludGVsX2FsbG9jYXRvci4KCk9u
-bHkgY2FzZSB3aGljaCBpcyBwcm9ibGVtYXRpYyBpczoKCmZkID0gZHJtX29wZW5fZHJpdmVyKERS
-SVZFUl9JTlRFTCk7CmlndF9mb3JrKGNoaWxkLCAxKSB7CgljbG9zZShmZCk7CglmZCA9IGRybV9v
-cGVuX2RyaXZlcihEUklWRVJfSU5URUwpOwoJLi4uCn0KCkluIHRoaXMgY2FzZSBhbGxvY2F0b3Ig
-aXMgbm90IGF3YXJlIGZkIGlzIHNhbWUgYnV0IGk5MTUgaW5zdGFuY2UgZGlmZmVycy4KU28gYWxs
-b2NhdGlvbnMgZm9yIDxmZCwgY3R4PiBpbiBwYXJlbnQvY2hpbGQgaXMgZnJvbSBhbGxvY2F0b3Ig
-cGVyc3BlY3RpdmUKc2FtZSwgYnV0IGZvciBrZXJuZWwgaXMgbm90LgoKLS0KWmJpZ25pZXcKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
-aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
-ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On Mon, Mar 08, 2021 at 02:53:39PM +0200, Petri Latvala wrote:
+> On Mon, Mar 08, 2021 at 06:11:09PM +0530, Sharma, Swati2 wrote:
+> > 
+> > 
+> > On 08-Mar-21 2:17 PM, Petri Latvala wrote:
+> > > On Fri, Mar 05, 2021 at 11:42:52AM -0500, Jeremy Cline wrote:
+> > > > According to the Intel documentation[0] I could find, HDR support is
+> > > > only in Kaby Lake+. Skip tests in kms_hdr if the hardware doesn't
+> > > > support HDR.
+> > > > 
+> > > > [0] https://www.intel.com/content/dam/support/us/en/documents/graphics/HDR_Intel_Graphics_TechWhitePaper.pdf
+> > > > 
+> > > > Signed-off-by: Jeremy Cline <jcline@redhat.com>
+> > > 
+> > > 
+> > > While that might be true, strictly speaking IGT tests are not testing
+> > > the HW capabilities but the kernel interfaces. The difference is often
+> > > only interesting for nitpicking.
+> > > 
+> > > However, in this case a good argument can be made either way, with
+> > > what the correct behaviour with setting the "max bpc" property when
+> > > the HW doesn't support HDR _output_ should be. IGT tests should be
+> > > written the way one would expect "real" userspace to behave; does the
+> > > documented kernel interface require userspace to detect the device id
+> > > somehow? The connector property is there so one would assume setting
+> > > it should work and do something.
+> > > 
+> > > A good argument can also be made that even though we're testing "just
+> > > the interface", we (Intel) should have a separate test that requires
+> > > actual HW support...
+> > > 
+> > > Swati, Maarten, thoughts on this? Are we even testing the right things
+> > > for i915 at all? Are we able to express the HW requirement for HDR
+> > > with something other than comparing devid? Should we? (If we should
+> > > not, please suggest a better way to get around the issue being fixed
+> > > here)
+> > 
+> > There are 2 types of tests which are being validated in kms_hdr
+> > (i) bpc switch
+> > (ii) hdr metadata
+> > And both these tests will skip on platforms which doesn't support respective
+> > connector
+> > properties (MAX_BPC, HDR_OUTPUT_METADATA resp). These tests are independent
+> > of platforms on which they are being tested.
+> > This can be validated from the link below:
+> > https://intel-gfx-ci.01.org/tree/drm-tip/shards-all.html?testfilter=kms_hdr
+> > where you can see platforms which doesn't support either max_bpc or
+> > hdr_metadata
+> > connector properties; tests are being skipped.
+> > 
+> > And I don't think anything is being fixed here
+> 
+> What I meant is the fix in patch 2, removing the removal of the
+> primary plane, which was done because of a HSW limitation. Patch 1
+> (this thread) is then making sure HSW is unaffected by a spurious
+> failure. Sorry for not being clear when pulling more CCs.
+> 
+
+There are definitely finer-grain ways to do this, but this "works" so I
+figured it'd be good to start here and have a discussion about it.
+
+One option would be to just wrap the plane-removal call in a device
+check. Another would be to try and find a plane size that meets whatever
+the scaling requirements are for hsw (assuming there's overlap between
+the conflicting requirements of hardware).
+
+I don't have a strong opinion about where the checks happen, it seems
+like a trade-off between in-test complexity and the breadth of the test
+matrix, and I can't say how useful it is to make sure the MAX_BPC
+interface works on a specific generation of hardware. I'm happy to do
+either of those options (or another option I've not considered),
+whatever you folks think is the best trade-off.
+
+Thanks,
+Jeremy
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
