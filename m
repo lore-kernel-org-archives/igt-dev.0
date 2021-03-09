@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8BBD36E924
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Mar 2021 18:48:53 +0000 (UTC)
-From: "Khajapasha, Mohammed" <mohammed.khajapasha@intel.com>
-Date: Tue, 9 Mar 2021 18:48:43 +0000
-Message-ID: <DM6PR11MB29386B8B04E00B504044C5A2E9929@DM6PR11MB2938.namprd11.prod.outlook.com>
-References: <20210309112943.1398325-1-arundhati.hagaragi@intel.com>
-In-Reply-To: <20210309112943.1398325-1-arundhati.hagaragi@intel.com>
-Content-Language: en-US
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6621B6E95F
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Mar 2021 20:29:34 +0000 (UTC)
+Date: Tue, 9 Mar 2021 21:29:22 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210309202922.GA35970@zkempczy-mobl2>
+References: <20210301161403.98278-1-zbigniew.kempczynski@intel.com>
+ <20210301161403.98278-21-zbigniew.kempczynski@intel.com>
+ <161495550745.8241.1927296627327914264@build.alporthouse.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v8] tests/kms_plane_scaling: Add plane
- scaling test descriptions for subtests
+Content-Disposition: inline
+In-Reply-To: <161495550745.8241.1927296627327914264@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v21 20/35] tests/api_intel_bb: Add
+ subtest to check render batch on the last page
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,113 +20,98 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Hagaragi, Arundhati" <arundhati.hagaragi@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-> -----Original Message-----
-> From: Hagaragi, Arundhati <arundhati.hagaragi@intel.com>
-> Sent: Tuesday, March 9, 2021 5:00 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Gupta, Nidhi1 <nidhi1.gupta@intel.com>; Khajapasha, Mohammed
-> <mohammed.khajapasha@intel.com>
-> Subject: [PATCH i-g-t v8] tests/kms_plane_scaling: Add plane scaling test
-> descriptions for subtests
-> 
-> From: Nidhi Gupta <nidhi1.gupta@intel.com>
-> 
-> Add plane scaling test descriptions for subtests.
-> Plane scaling with tiling rotation, pixel formats, overlay planes and with
-> clipping and clamping
-> 
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> Cc: Khajapasha Mohammed <mohammed.khajapasha@intel.com>
-> 
-> v1-v8 : Review Comments (Khaja)
-> ---
->  tests/kms_plane_scaling.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c index
-> c63eb428..b0d4dcf6 100644
-> --- a/tests/kms_plane_scaling.c
-> +++ b/tests/kms_plane_scaling.c
-> @@ -695,32 +695,38 @@ igt_main_args("", long_opts, help_str,
-> opt_handler, &data)
->  		igt_output_t *output;
-> 
->  		igt_subtest_with_dynamic("plane-scaling") {
-> +			igt_describe("Test plane scaling with overlay
-> planes");
->  			for_each_pipe_with_single_output(&data.display,
-> pipe, output)
->  				igt_dynamic_f("pipe-%s-plane-scaling",
-> kmstest_pipe_name(pipe))
->  					test_plane_scaling_on_pipe(&data,
-> pipe, output);
->  		}
-> 
->  		igt_subtest_with_dynamic("scaler-with-pixel-format") {
-> +			igt_describe("Test plane scaling with pixel formats");
->  			for_each_pipe_with_single_output(&data.display,
-> pipe, output)
->  				igt_dynamic_f("pipe-%s-scaler-with-pixel-
-> format", kmstest_pipe_name(pipe))
-> 
-> 	test_scaler_with_pixel_format_pipe(&data, pipe, output);
->  		}
-> 
->  		igt_subtest_with_dynamic("scaler-with-rotation") {
-> +			igt_describe("Test plane scaling with rotation");
->  			for_each_pipe_with_single_output(&data.display,
-> pipe, output)
->  				igt_dynamic_f("pipe-%s-scaler-with-
-> rotation", kmstest_pipe_name(pipe))
-> 
-> 	test_scaler_with_rotation_pipe(&data, pipe, output);
->  		}
-> 
->  		igt_subtest_with_dynamic("scaler-with-clipping-clamping") {
-> +			igt_describe("Test plane scaling with  clipping-
-> clamping");
->  			for_each_pipe_with_single_output(&data.display,
-> pipe, output)
->  				igt_dynamic_f("pipe-%s-scaler-with-clipping-
-> clamping", kmstest_pipe_name(pipe))
-> 
-> 	test_scaler_with_clipping_clamping_scenario(&data, pipe, output);
->  		}
->  	}
-> 
-> -	igt_subtest_f("2x-scaler-multi-pipe")
-> +	igt_subtest_f("2x-scaler-multi-pipe") {
-> +		igt_describe("Test to display planes on connected pipes and
-> runs
-> +scaling test on it");
-
-"Test multi plane scaling with connected outputs for pipes"
-test_scaler_with_multi_pipe_plane() runs the plane scaling for pipes which are connected with an output,
-and creates the framebuffers for each plane of pipe and runs scaling with connector mode.
-
-With said: Reviewed-by: Khajapasha, Mohammed <mohammed.khajapasha@intel.com>
-
->  		test_scaler_with_multi_pipe_plane(&data);
-> +	}
-> 
->  	igt_fixture
->  		igt_display_fini(&data.display);
-
-
-> --
-> 2.25.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gRnJpLCBNYXIgMDUsIDIwMjEgYXQgMDI6NDU6MDdQTSArMDAwMCwgQ2hyaXMgV2lsc29uIHdy
+b3RlOgo+IFF1b3RpbmcgWmJpZ25pZXcgS2VtcGN6ecWEc2tpICgyMDIxLTAzLTAxIDE2OjEzOjQ4
+KQo+ID4gTGFzdCBwYWdlIChvbiA0OC1iaXQgcHBndHQpIHNlZW1zIHRvIGJlIHByb2JsZW1hdGlj
+IHdoZW4gZnVsbAo+ID4gM0QgcGlwZWxpbmUgYmF0Y2ggaXMgaW5zZXJ0ZWQgYW5kIGV4ZWN1dGVk
+IGZyb20gaXQuIFRyeSB0byBmaW5kIG91dAo+ID4gd2hpY2ggZ2VuZXJhdGlvbnMgYXJlIHN0aWxs
+IHByb25lIHRvIGhhbmcgb24gaXQuCj4gPiAKPiA+IFNpZ25lZC1vZmYtYnk6IFpiaWduaWV3IEtl
+bXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgo+ID4gQ2M6IENocmlz
+IFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+ID4gLS0tCj4gPiAgdGVzdHMvaTkx
+NS9hcGlfaW50ZWxfYmIuYyB8IDc0ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKwo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA3NCBpbnNlcnRpb25zKCspCj4gPiAKPiA+IGRpZmYg
+LS1naXQgYS90ZXN0cy9pOTE1L2FwaV9pbnRlbF9iYi5jIGIvdGVzdHMvaTkxNS9hcGlfaW50ZWxf
+YmIuYwo+ID4gaW5kZXggZDVlZDc3MzE0Li4yMDdhNzBmYWIgMTAwNjQ0Cj4gPiAtLS0gYS90ZXN0
+cy9pOTE1L2FwaV9pbnRlbF9iYi5jCj4gPiArKysgYi90ZXN0cy9pOTE1L2FwaV9pbnRlbF9iYi5j
+Cj4gPiBAQCAtMzYsNiArMzYsNyBAQAo+ID4gICNpbmNsdWRlIDxnbGliLmg+Cj4gPiAgI2luY2x1
+ZGUgPHpsaWIuaD4KPiA+ICAjaW5jbHVkZSAiaW50ZWxfYnVmb3BzLmgiCj4gPiArI2luY2x1ZGUg
+InN3X3N5bmMuaCIKPiA+ICAKPiA+ICAjZGVmaW5lIFBBR0VfU0laRSA0MDk2Cj4gPiAgCj4gPiBA
+QCAtMTM5MSw2ICsxMzkyLDc2IEBAIHN0YXRpYyB2b2lkIHJlbmRlcl9jY3Moc3RydWN0IGJ1Zl9v
+cHMgKmJvcHMpCj4gPiAgICAgICAgIGlndF9hc3NlcnRfZihmYWlscyA9PSAwLCAicmVuZGVyLWNj
+cyBmYWlsczogJWRcbiIsIGZhaWxzKTsKPiA+ICB9Cj4gPiAgCj4gPiArc3RhdGljIHZvaWQgbGFz
+dF9wYWdlKHN0cnVjdCBidWZfb3BzICpib3BzLCB1aW50MzJfdCB3aWR0aCwgdWludDMyX3QgaGVp
+Z2h0KQo+ID4gK3sKPiA+ICsgICAgICAgc3RydWN0IGludGVsX2JiICppYmIxLCAqaWJiMjsKPiA+
+ICsgICAgICAgc3RydWN0IGludGVsX2J1ZiBzcmMsIGRzdDsKPiA+ICsgICAgICAgaW50IGk5MTUg
+PSBidWZfb3BzX2dldF9mZChib3BzKTsKPiA+ICsgICAgICAgdWludDMyX3QgZGV2aWQgPSBpbnRl
+bF9nZXRfZHJtX2RldmlkKGk5MTUpOwo+ID4gKyAgICAgICBpZ3RfcmVuZGVyX2NvcHlmdW5jX3Qg
+cmVuZGVyX2NvcHkgPSBOVUxMOwo+ID4gKyAgICAgICB1aW50NjRfdCBndHRfc2l6ZTsKPiA+ICsg
+ICAgICAgdWludDY0X3QgY3R4Owo+ID4gKyAgICAgICBpbnQgcmV0Owo+ID4gKwo+ID4gKyAgICAg
+ICBpZ3RfcmVxdWlyZShnZW1fdXNlc19mdWxsX3BwZ3R0KGk5MTUpKTsKPiA+ICsgICAgICAgZ3R0
+X3NpemUgPSBnZW1fYXBlcnR1cmVfc2l6ZShpOTE1KTsKPiA+ICsKPiA+ICsgICAgICAgY3R4ID0g
+Z2VtX2NvbnRleHRfY3JlYXRlKGk5MTUpOwo+ID4gKwo+ID4gKyAgICAgICBpYmIxID0gaW50ZWxf
+YmJfY3JlYXRlX2Z1bGwoaTkxNSwgY3R4LCBQQUdFX1NJWkUsCj4gPiArICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIDAsIGd0dF9zaXplLCBJTlRFTF9BTExPQ0FUT1JfU0lNUExFLAo+
+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBBTExPQ19TVFJBVEVHWV9MT1df
+VE9fSElHSCk7Cj4gPiArCj4gPiArICAgICAgIGliYjIgPSBpbnRlbF9iYl9jcmVhdGVfZnVsbChp
+OTE1LCAwLCBQQUdFX1NJWkUsCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IDAsIGd0dF9zaXplLCBJTlRFTF9BTExPQ0FUT1JfU0lNUExFLAo+ID4gKyAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICBBTExPQ19TVFJBVEVHWV9ISUdIX1RPX0xPVyk7Cj4gPiArCj4g
+PiArICAgICAgIGlmIChkZWJ1Z19iYikgewo+ID4gKyAgICAgICAgICAgICAgIGludGVsX2JiX3Nl
+dF9kZWJ1ZyhpYmIxLCB0cnVlKTsKPiA+ICsgICAgICAgICAgICAgICBpbnRlbF9iYl9zZXRfZGVi
+dWcoaWJiMiwgdHJ1ZSk7Cj4gPiArICAgICAgIH0KPiA+ICsKPiA+ICsgICAgICAgc2NyYXRjaF9i
+dWZfaW5pdChib3BzLCAmc3JjLCB3aWR0aCwgaGVpZ2h0LCBJOTE1X1RJTElOR19OT05FLAo+ID4g
+KyAgICAgICAgICAgICAgICAgICAgICAgIEk5MTVfQ09NUFJFU1NJT05fTk9ORSk7Cj4gPiArICAg
+ICAgIHNjcmF0Y2hfYnVmX2luaXQoYm9wcywgJmRzdCwgd2lkdGgsIGhlaWdodCwgSTkxNV9USUxJ
+TkdfTk9ORSwKPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICBJOTE1X0NPTVBSRVNTSU9OX05P
+TkUpOwo+ID4gKyAgICAgICBzY3JhdGNoX2J1Zl9kcmF3X3BhdHRlcm4oYm9wcywgJnNyYywKPiA+
+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDAsIDAsIHdpZHRoLCBoZWlnaHQsCj4g
+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAwLCAwLCB3aWR0aCwgaGVpZ2h0LCAw
+KTsKPiA+ICsKPiA+ICsgICAgICAgcmVuZGVyX2NvcHkgPSBpZ3RfZ2V0X3JlbmRlcl9jb3B5ZnVu
+YyhkZXZpZCk7Cj4gPiArICAgICAgIGlndF9hc3NlcnQocmVuZGVyX2NvcHkpOwo+ID4gKwo+ID4g
+KyAgICAgICByZW5kZXJfY29weShpYmIxLAo+ID4gKyAgICAgICAgICAgICAgICAgICAmc3JjLAo+
+ID4gKyAgICAgICAgICAgICAgICAgICAwLCAwLCB3aWR0aCwgaGVpZ2h0LAo+ID4gKyAgICAgICAg
+ICAgICAgICAgICAmZHN0LAo+ID4gKyAgICAgICAgICAgICAgICAgICAwLCAwKTsKPiA+ICsgICAg
+ICAgZ2VtX3N5bmMoaTkxNSwgZHN0LmhhbmRsZSk7Cj4gPiArICAgICAgIGlndF9hc3NlcnQoc3lu
+Y19mZW5jZV9zdGF0dXMoaWJiMS0+ZmVuY2UpID09IDEpOwo+IAo+IElmIHlvdSBkb24ndCB3YW50
+IHRvIG1peCBhcGlzLCB0aGVuCj4gcy9nZW1fc3luYy9zeW5jX2ZlbmNlX3dhaXQoaWJiMS0+ZmVu
+Y2UsIC0xKSk7Cj4gCj4gQWxzbyBpZ3RfYXNzZXJ0X2VxKHN5bmNfZmVuY2Vfc3RhdHVzKGliYjEt
+PmZlbmNlKSwgMSkpOwoKT2ssIEknbGwgdXNlIHN5bmNfZmVuY2Vfd2FpdCgpLgo+IAo+ID4gKyAg
+ICAgICBpbnRlbF9iYl9kZXN0cm95KGliYjEpOwo+ID4gKwo+ID4gKyAgICAgICBpbnRlbF9idWZf
+Y2xvc2UoYm9wcywgJmRzdCk7Cj4gPiArICAgICAgIHNjcmF0Y2hfYnVmX2luaXQoYm9wcywgJmRz
+dCwgd2lkdGgsIGhlaWdodCwgSTkxNV9USUxJTkdfTk9ORSwKPiA+ICsgICAgICAgICAgICAgICAg
+ICAgICAgICBJOTE1X0NPTVBSRVNTSU9OX05PTkUpOwo+ID4gKwo+ID4gKyAgICAgICByZW5kZXJf
+Y29weShpYmIyLAo+ID4gKyAgICAgICAgICAgICAgICAgICAmc3JjLAo+ID4gKyAgICAgICAgICAg
+ICAgICAgICAwLCAwLCB3aWR0aCwgaGVpZ2h0LAo+ID4gKyAgICAgICAgICAgICAgICAgICAmZHN0
+LAo+ID4gKyAgICAgICAgICAgICAgICAgICAwLCAwKTsKPiA+ICsKPiA+ICsgICAgICAgLyogV2Ug
+bGlrZWx5IGdvdCBhIGhhbmcgaGVyZSwgc28gZnJlZSByZXNvdXJjZXMgYmVmb3JlIGFzc2VydCAq
+Lwo+ID4gKyAgICAgICBnZW1fc3luYyhpOTE1LCBkc3QuaGFuZGxlKTsKPiA+ICsgICAgICAgcmV0
+ID0gc3luY19mZW5jZV9zdGF0dXMoaWJiMi0+ZmVuY2UpOwo+ID4gKwo+ID4gKyAgICAgICBpbnRl
+bF9iYl9kZXN0cm95KGliYjIpOwo+ID4gKyAgICAgICBpbnRlbF9idWZfY2xvc2UoYm9wcywgJnNy
+Yyk7Cj4gPiArICAgICAgIGludGVsX2J1Zl9jbG9zZShib3BzLCAmZHN0KTsKPiA+ICsKPiA+ICsg
+ICAgICAgaWd0X2Fzc2VydF9mKHJldCA9PSAxLCAiQmF0Y2ggaW4gbGFzdCBwYWdlIGluIHJjcyBs
+ZWFkcyB0byBoYW5nXG4iKTsKPiAKPiBOb3cgSSBhbHdheXMgdGhvdWdodCB0aGF0IHRoZSBwb3Np
+dGlvbiBvZiB0aGUgc3RhdGUgaW5zaWRlIHRoZSBsYXN0IGhhbGYKPiBvZiB0aGUgcmVuZGVyY29w
+eSBiYXRjaCBwYWdlIHdvdWxkIHByb3ZpZGUgc3VmZmljaWVudCBwYWRkaW5nIHRvIHByZXZlbnQK
+PiB0aGUgcHJlZmV0Y2ggZnJvbSBjcm9zc2luZyB0aGUgZG9tYWluIGJvdW5kYXJ5Lgo+IAo+IElm
+IHlvdSB3YW50IHRvIHB1c2ggdGhlIHRlc3QgZnVydGhlciB5b3Ugd291bGQgbW92ZSB0aGUgYXV4
+IGJ1ZmZlcnMgb3V0Cj4gb2YgdGhlIGJhdGNoIHBhZ2UgYW5kIHVzZSBleGVjYnVmLmJhdGNoX3N0
+YXJ0X29mZnNldCB0byBwb3NpdGlvbiB0aGUKPiBiYXRjaCBhdCB0aGUgdmVyeSBlbmQgb2YgdGhl
+IHBhZ2UgKGFuZCBwb3NzaWJseSBhIGJpbmFyeSBzZWFyY2ggdGhlcmVpbgo+IHRvIGZpbmQgdGhl
+IGZhaWx1cmUgcG9zaXRpb24pLgo+IC1DaHJpcwoKVGhpcyBpcyBub3QgZWFzeSB0YXNrLiAzZCBw
+aXBlbGluZSBidWlsdCBmb3IgcmVuZGVyY29weSBoYXMgaGFyZCBhc3N1bXB0aW9ucwooc3BsaXQg
+MktCIGNvZGUgKyAyS0IgYXV4IGRhdGEpLiBTbyB3ZSBoYXZlIHRvIGNoYW5nZSByZW5kZXJjb3B5
+IHBpcGVsaW5lcwp0byBhbGxvdyBjb2RlICsgYXV4IHNlcGFyYXRpb24uIEkgZG9uJ3QgdGhpbmsg
+dGhlbiBmYWlsIGluIGxhc3QgcGFnZSBzaG91bGQKYmUgcGFydCBvZiBhbGxvY2F0b3Igc2VyaWVz
+LiBXZSBleHBvc2VkIHRoZSBwcm9ibGVtIHRoZXJlIGFuZCBmb3IgYWxsb2NhdG9yCklNTyB0aGF0
+J3MgZW5vdWdoIHRvIGxpbWl0IHRoZSBwcGd0dCBzcGFjZS4KCi0tClpiaWduaWV3CiAKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5n
+IGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
+a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
