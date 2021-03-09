@@ -1,13 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 34C0E6E8F8
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Mar 2021 14:01:52 +0000 (UTC)
+Date: Tue, 9 Mar 2021 16:01:56 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YEd/1F4XlfMrPqzI@platvala-desk.ger.corp.intel.com>
+References: <20210219172738.263820-1-jcline@redhat.com>
+ <20210305164253.11788-1-jcline@redhat.com>
+ <20210305164253.11788-2-jcline@redhat.com>
+ <YEXkhTnlwCaFo9Fk@platvala-desk.ger.corp.intel.com>
+ <d95e9fef-ee70-4875-beb6-7ebfee4c56f7@intel.com>
+ <YEYeU0Pq/wsLP/5j@platvala-desk.ger.corp.intel.com>
+ <YEY9k0CEfxg0uAuO@xps13>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 09 Mar 2021 13:20:17 -0000
-Message-ID: <161529601762.8980.10474802968469930402@emeril.freedesktop.org>
-References: <20210309112943.1398325-1-arundhati.hagaragi@intel.com>
-In-Reply-To: <20210309112943.1398325-1-arundhati.hagaragi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fplane=5Fscaling=3A_Add_plane_scaling_test_descriptions_fo?=
- =?utf-8?q?r_subtests?=
+Content-Disposition: inline
+In-Reply-To: <YEY9k0CEfxg0uAuO@xps13>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] kms_hdr: Skip HDR tests on
+ pre-Kaby Lake Intel devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,187 +24,100 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1844760169=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+To: Jeremy Cline <jcline@redhat.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1844760169==
-Content-Type: multipart/alternative;
- boundary="===============6741255670149452983=="
-
---===============6741255670149452983==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/kms_plane_scaling: Add plane scaling test descriptions for subtests
-URL   : https://patchwork.freedesktop.org/series/87798/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9844 -> IGTPW_5584
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5584/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5584 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_gttfill@basic:
-    - fi-kbl-8809g:       [PASS][1] -> [TIMEOUT][2] ([i915#3145])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9844/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5584/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][3] ([fdo#109271])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5584/fi-bsw-n3050/igt@gem_exec_gttfill@basic.html
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-bsw-n3050:       NOTRUN -> [INCOMPLETE][4] ([i915#3159])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5584/fi-bsw-n3050/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@gem_linear_blits@basic:
-    - fi-kbl-8809g:       [PASS][5] -> [TIMEOUT][6] ([i915#2502] / [i915#3145]) +1 similar issue
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9844/fi-kbl-8809g/igt@gem_linear_blits@basic.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5584/fi-kbl-8809g/igt@gem_linear_blits@basic.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#2502]: https://gitlab.freedesktop.org/drm/intel/issues/2502
-  [i915#3145]: https://gitlab.freedesktop.org/drm/intel/issues/3145
-  [i915#3159]: https://gitlab.freedesktop.org/drm/intel/issues/3159
-
-
-Participating hosts (45 -> 41)
-------------------------------
-
-  Additional (1): fi-bsw-n3050 
-  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6027 -> IGTPW_5584
-
-  CI-20190529: 20190529
-  CI_DRM_9844: 3108bcbbbf191b3b5e624f21348c306010725a02 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5584: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5584/index.html
-  IGT_6027: b8b3facdfbb99a0b9ef5f541a0ee7d6bca2aafea @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5584/index.html
-
---===============6741255670149452983==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Mon, Mar 08, 2021 at 10:06:59AM -0500, Jeremy Cline wrote:
+> On Mon, Mar 08, 2021 at 02:53:39PM +0200, Petri Latvala wrote:
+> > On Mon, Mar 08, 2021 at 06:11:09PM +0530, Sharma, Swati2 wrote:
+> > > 
+> > > 
+> > > On 08-Mar-21 2:17 PM, Petri Latvala wrote:
+> > > > On Fri, Mar 05, 2021 at 11:42:52AM -0500, Jeremy Cline wrote:
+> > > > > According to the Intel documentation[0] I could find, HDR support is
+> > > > > only in Kaby Lake+. Skip tests in kms_hdr if the hardware doesn't
+> > > > > support HDR.
+> > > > > 
+> > > > > [0] https://www.intel.com/content/dam/support/us/en/documents/graphics/HDR_Intel_Graphics_TechWhitePaper.pdf
+> > > > > 
+> > > > > Signed-off-by: Jeremy Cline <jcline@redhat.com>
+> > > > 
+> > > > 
+> > > > While that might be true, strictly speaking IGT tests are not testing
+> > > > the HW capabilities but the kernel interfaces. The difference is often
+> > > > only interesting for nitpicking.
+> > > > 
+> > > > However, in this case a good argument can be made either way, with
+> > > > what the correct behaviour with setting the "max bpc" property when
+> > > > the HW doesn't support HDR _output_ should be. IGT tests should be
+> > > > written the way one would expect "real" userspace to behave; does the
+> > > > documented kernel interface require userspace to detect the device id
+> > > > somehow? The connector property is there so one would assume setting
+> > > > it should work and do something.
+> > > > 
+> > > > A good argument can also be made that even though we're testing "just
+> > > > the interface", we (Intel) should have a separate test that requires
+> > > > actual HW support...
+> > > > 
+> > > > Swati, Maarten, thoughts on this? Are we even testing the right things
+> > > > for i915 at all? Are we able to express the HW requirement for HDR
+> > > > with something other than comparing devid? Should we? (If we should
+> > > > not, please suggest a better way to get around the issue being fixed
+> > > > here)
+> > > 
+> > > There are 2 types of tests which are being validated in kms_hdr
+> > > (i) bpc switch
+> > > (ii) hdr metadata
+> > > And both these tests will skip on platforms which doesn't support respective
+> > > connector
+> > > properties (MAX_BPC, HDR_OUTPUT_METADATA resp). These tests are independent
+> > > of platforms on which they are being tested.
+> > > This can be validated from the link below:
+> > > https://intel-gfx-ci.01.org/tree/drm-tip/shards-all.html?testfilter=kms_hdr
+> > > where you can see platforms which doesn't support either max_bpc or
+> > > hdr_metadata
+> > > connector properties; tests are being skipped.
+> > > 
+> > > And I don't think anything is being fixed here
+> > 
+> > What I meant is the fix in patch 2, removing the removal of the
+> > primary plane, which was done because of a HSW limitation. Patch 1
+> > (this thread) is then making sure HSW is unaffected by a spurious
+> > failure. Sorry for not being clear when pulling more CCs.
+> > 
+> 
+> There are definitely finer-grain ways to do this, but this "works" so I
+> figured it'd be good to start here and have a discussion about it.
+> 
+> One option would be to just wrap the plane-removal call in a device
+> check. Another would be to try and find a plane size that meets whatever
+> the scaling requirements are for hsw (assuming there's overlap between
+> the conflicting requirements of hardware).
+> 
+> I don't have a strong opinion about where the checks happen, it seems
+> like a trade-off between in-test complexity and the breadth of the test
+> matrix, and I can't say how useful it is to make sure the MAX_BPC
+> interface works on a specific generation of hardware. I'm happy to do
+> either of those options (or another option I've not considered),
+> whatever you folks think is the best trade-off.
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+Checked how HSW actually behaves with this and
+
+https://intel-gfx-ci.01.org/tree/drm-tip/TrybotIGT_300/shard-hsw4/igt@kms_hdr@bpc-switch.html
+
+Swati, what's your opinion? if (amdgpudevice) around the plane removal
+or what's best here?
 
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane_scaling: Add plane scaling test descriptions for subtests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87798/">https://patchwork.freedesktop.org/series/87798/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5584/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5584/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9844 -&gt; IGTPW_5584</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5584/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5584 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_gttfill@basic:</p>
-<ul>
-<li>
-<p>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9844/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5584/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>)</p>
-</li>
-<li>
-<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5584/fi-bsw-n3050/igt@gem_exec_gttfill@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5584/fi-bsw-n3050/igt@gem_exec_suspend@basic-s3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3159">i915#3159</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_linear_blits@basic:</p>
-<ul>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9844/fi-kbl-8809g/igt@gem_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5584/fi-kbl-8809g/igt@gem_linear_blits@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2502">i915#2502</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>) +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (45 -&gt; 41)</h2>
-<p>Additional (1): fi-bsw-n3050 <br />
-  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6027 -&gt; IGTPW_5584</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9844: 3108bcbbbf191b3b5e624f21348c306010725a02 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5584: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5584/index.html<br />
-  IGT_6027: b8b3facdfbb99a0b9ef5f541a0ee7d6bca2aafea @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============6741255670149452983==--
-
---===============1844760169==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============1844760169==--
