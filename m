@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 73D386EA1C
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Mar 2021 14:01:29 +0000 (UTC)
+Date: Wed, 10 Mar 2021 15:01:17 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210310140117.GA80726@zkempczy-mobl2>
+References: <20210310094502.75748-1-zbigniew.kempczynski@intel.com>
+ <161537930742.2307.7050438440568897713@emeril.freedesktop.org>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 10 Mar 2021 14:00:29 -0000
-Message-ID: <161538482983.2306.1570554844265803568@emeril.freedesktop.org>
-References: <20210310210354.9335-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20210310210354.9335-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fbusy=3A_Limit_the_execution_to_two_pipes_=28rev3=29?=
+Content-Disposition: inline
+In-Reply-To: <161537930742.2307.7050438440568897713@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgSW50cm9k?=
+ =?utf-8?q?uce_IGT_allocator_=28rev25=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,448 +20,556 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0483260855=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0483260855==
-Content-Type: multipart/alternative;
- boundary="===============6057970632139233002=="
+On Wed, Mar 10, 2021 at 12:28:27PM +0000, Patchwork wrote:
+>    Patch Details
+> 
+>    Series:  Introduce IGT allocator (rev25)                                
+>    URL:     https://patchwork.freedesktop.org/series/82954/                
+>    State:   failure                                                        
+>    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/index.html 
+> 
+>            CI Bug Log - changes from IGT_6027_full -> IGTPW_5587_full
+> 
+> Summary
+> 
+>    FAILURE
+> 
+>    Serious unknown changes coming with IGTPW_5587_full absolutely need to be
+>    verified manually.
+> 
+>    If you think the reported changes have nothing to do with the changes
+>    introduced in IGTPW_5587_full, please notify your bug team to allow them
+>    to document this new failure mode, which will reduce false positives in
+>    CI.
+> 
+>    External URL:
+>    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/index.html
+> 
+> Possible new issues
+> 
+>    Here are the unknown changes that may have been introduced in
+>    IGTPW_5587_full:
+> 
+>   IGT changes
+> 
+>     Possible regressions
+> 
+>      * {igt@api_intel_bb@last-page} (NEW):
+> 
+>           * shard-glk: NOTRUN -> FAIL
+> 
+>           * shard-kbl: NOTRUN -> FAIL
 
---===============6057970632139233002==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Those failures occurs on few gens (+skylake too, but was not in this shard run)
+so test expose them. Newer gens likely are not prone to hang in last page. 
+As the allocator default vm size exludes that page (due to hang exposed here) 
+we at least should have single test which uses that page with rcs and shows 
+is gen will got hang or not.  
 
-== Series Details ==
+> 
+>      * igt@kms_flip@basic-flip-vs-dpms@c-edp1:
+> 
+>           * shard-tglb: PASS -> INCOMPLETE
 
-Series: tests/kms_busy: Limit the execution to two pipes (rev3)
-URL   : https://patchwork.freedesktop.org/series/87829/
-State : success
+Likely not related to changes in allocator series.
 
-== Summary ==
+--
+Zbigniew
 
-CI Bug Log - changes from IGT_6028 -> IGTPW_5591
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/index.html
-
-New tests
----------
-
-  New tests have been introduced between IGT_6028 and IGTPW_5591:
-
-### New IGT tests (4) ###
-
-  * igt@kms_busy@basic@flip-pipe-a:
-    - Statuses : 1 dmesg-warn(s) 30 pass(s)
-    - Exec time: [0.43, 2.48] s
-
-  * igt@kms_busy@basic@flip-pipe-b:
-    - Statuses : 1 dmesg-warn(s) 21 pass(s)
-    - Exec time: [0.22, 1.87] s
-
-  * igt@kms_busy@basic@modeset-pipe-a:
-    - Statuses : 1 dmesg-warn(s) 27 pass(s) 3 skip(s)
-    - Exec time: [0.0, 5.46] s
-
-  * igt@kms_busy@basic@modeset-pipe-b:
-    - Statuses : 1 dmesg-warn(s) 18 pass(s) 3 skip(s)
-    - Exec time: [0.0, 5.50] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5591 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_suspend@basic-s0:
-    - fi-kbl-soraka:      [PASS][1] -> [INCOMPLETE][2] ([i915#155])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6028/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html
-
-  * igt@gem_linear_blits@basic:
-    - fi-kbl-8809g:       [PASS][3] -> [TIMEOUT][4] ([i915#2502] / [i915#3145]) +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6028/fi-kbl-8809g/igt@gem_linear_blits@basic.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-kbl-8809g/igt@gem_linear_blits@basic.html
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-bsw-nick:        [PASS][5] -> [DMESG-FAIL][6] ([i915#2927])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6028/fi-bsw-nick/igt@i915_selftest@live@late_gt_pm.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-bsw-nick/igt@i915_selftest@live@late_gt_pm.html
-
-  * {igt@kms_busy@basic@flip-pipe-a} (NEW):
-    - fi-glk-dsi:         NOTRUN -> [DMESG-WARN][7] ([i915#3143]) +3 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-glk-dsi/igt@kms_busy@basic@flip-pipe-a.html
-
-  * {igt@kms_busy@basic@modeset-pipe-a} (NEW):
-    - fi-bwr-2160:        NOTRUN -> [SKIP][8] ([fdo#109271]) +1 similar issue
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-bwr-2160/igt@kms_busy@basic@modeset-pipe-a.html
-
-  * {igt@kms_busy@basic@modeset-pipe-b} (NEW):
-    - fi-elk-e7500:       NOTRUN -> [SKIP][9] ([fdo#109271]) +1 similar issue
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-elk-e7500/igt@kms_busy@basic@modeset-pipe-b.html
-    - fi-pnv-d510:        NOTRUN -> [SKIP][10] ([fdo#109271]) +1 similar issue
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-pnv-d510/igt@kms_busy@basic@modeset-pipe-b.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-kbl-7500u:       [PASS][11] -> [FAIL][12] ([i915#1372])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6028/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-
-  * igt@runner@aborted:
-    - fi-bsw-nick:        NOTRUN -> [FAIL][13] ([i915#1436])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-bsw-nick/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_gttfill@basic:
-    - fi-kbl-8809g:       [TIMEOUT][14] ([i915#3145]) -> [PASS][15] +1 similar issue
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6028/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1372]: https://gitlab.freedesktop.org/drm/intel/issues/1372
-  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
-  [i915#155]: https://gitlab.freedesktop.org/drm/intel/issues/155
-  [i915#2502]: https://gitlab.freedesktop.org/drm/intel/issues/2502
-  [i915#2927]: https://gitlab.freedesktop.org/drm/intel/issues/2927
-  [i915#3004]: https://gitlab.freedesktop.org/drm/intel/issues/3004
-  [i915#3143]: https://gitlab.freedesktop.org/drm/intel/issues/3143
-  [i915#3145]: https://gitlab.freedesktop.org/drm/intel/issues/3145
-
-
-Participating hosts (47 -> 41)
-------------------------------
-
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6028 -> IGTPW_5591
-
-  CI-20190529: 20190529
-  CI_DRM_9844: 3108bcbbbf191b3b5e624f21348c306010725a02 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5591: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/index.html
-  IGT_6028: f3109d1e3b554903df9109e1e4d10c881b3f811b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@kms_busy@extended-modeset-hang-newfb
-+igt@kms_busy@extended-modeset-hang-newfb-with-reset
-+igt@kms_busy@extended-modeset-hang-oldfb
-+igt@kms_busy@extended-modeset-hang-oldfb-with-reset
-+igt@kms_busy@extended-pageflip-hang-newfb
-+igt@kms_busy@extended-pageflip-hang-oldfb
-+igt@kms_busy@extended-pageflip-modeset-hang-oldfb
--igt@kms_busy@basic-flip-pipe-a
--igt@kms_busy@basic-flip-pipe-b
--igt@kms_busy@basic-flip-pipe-c
--igt@kms_busy@basic-flip-pipe-d
--igt@kms_busy@basic-flip-pipe-e
--igt@kms_busy@basic-flip-pipe-f
--igt@kms_busy@basic-modeset-pipe-a
--igt@kms_busy@basic-modeset-pipe-b
--igt@kms_busy@basic-modeset-pipe-c
--igt@kms_busy@basic-modeset-pipe-d
--igt@kms_busy@basic-modeset-pipe-e
--igt@kms_busy@basic-modeset-pipe-f
--igt@kms_busy@extended-modeset-hang-newfb-pipe-a
--igt@kms_busy@extended-modeset-hang-newfb-pipe-b
--igt@kms_busy@extended-modeset-hang-newfb-pipe-c
--igt@kms_busy@extended-modeset-hang-newfb-pipe-d
--igt@kms_busy@extended-modeset-hang-newfb-pipe-e
--igt@kms_busy@extended-modeset-hang-newfb-pipe-f
--igt@kms_busy@extended-modeset-hang-newfb-with-reset-pipe-a
--igt@kms_busy@extended-modeset-hang-newfb-with-reset-pipe-b
--igt@kms_busy@extended-modeset-hang-newfb-with-reset-pipe-c
--igt@kms_busy@extended-modeset-hang-newfb-with-reset-pipe-d
--igt@kms_busy@extended-modeset-hang-newfb-with-reset-pipe-e
--igt@kms_busy@extended-modeset-hang-newfb-with-reset-pipe-f
--igt@kms_busy@extended-modeset-hang-oldfb-pipe-a
--igt@kms_busy@extended-modeset-hang-oldfb-pipe-b
--igt@kms_busy@extended-modeset-hang-oldfb-pipe-c
--igt@kms_busy@extended-modeset-hang-oldfb-pipe-d
--igt@kms_busy@extended-modeset-hang-oldfb-pipe-e
--igt@kms_busy@extended-modeset-hang-oldfb-pipe-f
--igt@kms_busy@extended-modeset-hang-oldfb-with-reset-pipe-a
--igt@kms_busy@extended-modeset-hang-oldfb-with-reset-pipe-b
--igt@kms_busy@extended-modeset-hang-oldfb-with-reset-pipe-c
--igt@kms_busy@extended-modeset-hang-oldfb-with-reset-pipe-d
--igt@kms_busy@extended-modeset-hang-oldfb-with-reset-pipe-e
--igt@kms_busy@extended-modeset-hang-oldfb-with-reset-pipe-f
--igt@kms_busy@extended-pageflip-hang-newfb-pipe-a
--igt@kms_busy@extended-pageflip-hang-newfb-pipe-b
--igt@kms_busy@extended-pageflip-hang-newfb-pipe-c
--igt@kms_busy@extended-pageflip-hang-newfb-pipe-d
--igt@kms_busy@extended-pageflip-hang-newfb-pipe-e
--igt@kms_busy@extended-pageflip-hang-newfb-pipe-f
--igt@kms_busy@extended-pageflip-hang-oldfb-pipe-a
--igt@kms_busy@extended-pageflip-hang-oldfb-pipe-b
--igt@kms_busy@extended-pageflip-hang-oldfb-pipe-c
--igt@kms_busy@extended-pageflip-hang-oldfb-pipe-d
--igt@kms_busy@extended-pageflip-hang-oldfb-pipe-e
--igt@kms_busy@extended-pageflip-hang-oldfb-pipe-f
--igt@kms_busy@extended-pageflip-modeset-hang-oldfb-pipe-a
--igt@kms_busy@extended-pageflip-modeset-hang-oldfb-pipe-b
--igt@kms_busy@extended-pageflip-modeset-hang-oldfb-pipe-c
--igt@kms_busy@extended-pageflip-modeset-hang-oldfb-pipe-d
--igt@kms_busy@extended-pageflip-modeset-hang-oldfb-pipe-e
--igt@kms_busy@extended-pageflip-modeset-hang-oldfb-pipe-f
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/index.html
-
---===============6057970632139233002==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_busy: Limit the execution to two pipes (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87829/">https://patchwork.freedesktop.org/series/87829/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6028 -&gt; IGTPW_5591</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/index.html</p>
-<h2>New tests</h2>
-<p>New tests have been introduced between IGT_6028 and IGTPW_5591:</p>
-<h3>New IGT tests (4)</h3>
-<ul>
-<li>
-<p>igt@kms_busy@basic@flip-pipe-a:</p>
-<ul>
-<li>Statuses : 1 dmesg-warn(s) 30 pass(s)</li>
-<li>Exec time: [0.43, 2.48] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip-pipe-b:</p>
-<ul>
-<li>Statuses : 1 dmesg-warn(s) 21 pass(s)</li>
-<li>Exec time: [0.22, 1.87] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@modeset-pipe-a:</p>
-<ul>
-<li>Statuses : 1 dmesg-warn(s) 27 pass(s) 3 skip(s)</li>
-<li>Exec time: [0.0, 5.46] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@modeset-pipe-b:</p>
-<ul>
-<li>Statuses : 1 dmesg-warn(s) 18 pass(s) 3 skip(s)</li>
-<li>Exec time: [0.0, 5.50] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5591 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6028/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/155">i915#155</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_linear_blits@basic:</p>
-<ul>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6028/fi-kbl-8809g/igt@gem_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-kbl-8809g/igt@gem_linear_blits@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2502">i915#2502</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@late_gt_pm:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6028/fi-bsw-nick/igt@i915_selftest@live@late_gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-bsw-nick/igt@i915_selftest@live@late_gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2927">i915#2927</a>)</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_busy@basic@flip-pipe-a} (NEW):</p>
-<ul>
-<li>fi-glk-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-glk-dsi/igt@kms_busy@basic@flip-pipe-a.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3143">i915#3143</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_busy@basic@modeset-pipe-a} (NEW):</p>
-<ul>
-<li>fi-bwr-2160:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-bwr-2160/igt@kms_busy@basic@modeset-pipe-a.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_busy@basic@modeset-pipe-b} (NEW):</p>
-<ul>
-<li>
-<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-elk-e7500/igt@kms_busy@basic@modeset-pipe-b.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-pnv-d510/igt@kms_busy@basic@modeset-pipe-b.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6028/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1372">i915#1372</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-bsw-nick/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@gem_exec_gttfill@basic:<ul>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6028/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (47 -&gt; 41)</h2>
-<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6028 -&gt; IGTPW_5591</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9844: 3108bcbbbf191b3b5e624f21348c306010725a02 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5591: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5591/index.html<br />
-  IGT_6028: f3109d1e3b554903df9109e1e4d10c881b3f811b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-<p>== Testlist changes ==</p>
-<p>+igt@kms_busy@extended-modeset-hang-newfb<br />
-+igt@kms_busy@extended-modeset-hang-newfb-with-reset<br />
-+igt@kms_busy@extended-modeset-hang-oldfb<br />
-+igt@kms_busy@extended-modeset-hang-oldfb-with-reset<br />
-+igt@kms_busy@extended-pageflip-hang-newfb<br />
-+igt@kms_busy@extended-pageflip-hang-oldfb<br />
-+igt@kms_busy@extended-pageflip-modeset-hang-oldfb<br />
--igt@kms_busy@basic-flip-pipe-a<br />
--igt@kms_busy@basic-flip-pipe-b<br />
--igt@kms_busy@basic-flip-pipe-c<br />
--igt@kms_busy@basic-flip-pipe-d<br />
--igt@kms_busy@basic-flip-pipe-e<br />
--igt@kms_busy@basic-flip-pipe-f<br />
--igt@kms_busy@basic-modeset-pipe-a<br />
--igt@kms_busy@basic-modeset-pipe-b<br />
--igt@kms_busy@basic-modeset-pipe-c<br />
--igt@kms_busy@basic-modeset-pipe-d<br />
--igt@kms_busy@basic-modeset-pipe-e<br />
--igt@kms_busy@basic-modeset-pipe-f<br />
--igt@kms_busy@extended-modeset-hang-newfb-pipe-a<br />
--igt@kms_busy@extended-modeset-hang-newfb-pipe-b<br />
--igt@kms_busy@extended-modeset-hang-newfb-pipe-c<br />
--igt@kms_busy@extended-modeset-hang-newfb-pipe-d<br />
--igt@kms_busy@extended-modeset-hang-newfb-pipe-e<br />
--igt@kms_busy@extended-modeset-hang-newfb-pipe-f<br />
--igt@kms_busy@extended-modeset-hang-newfb-with-reset-pipe-a<br />
--igt@kms_busy@extended-modeset-hang-newfb-with-reset-pipe-b<br />
--igt@kms_busy@extended-modeset-hang-newfb-with-reset-pipe-c<br />
--igt@kms_busy@extended-modeset-hang-newfb-with-reset-pipe-d<br />
--igt@kms_busy@extended-modeset-hang-newfb-with-reset-pipe-e<br />
--igt@kms_busy@extended-modeset-hang-newfb-with-reset-pipe-f<br />
--igt@kms_busy@extended-modeset-hang-oldfb-pipe-a<br />
--igt@kms_busy@extended-modeset-hang-oldfb-pipe-b<br />
--igt@kms_busy@extended-modeset-hang-oldfb-pipe-c<br />
--igt@kms_busy@extended-modeset-hang-oldfb-pipe-d<br />
--igt@kms_busy@extended-modeset-hang-oldfb-pipe-e<br />
--igt@kms_busy@extended-modeset-hang-oldfb-pipe-f<br />
--igt@kms_busy@extended-modeset-hang-oldfb-with-reset-pipe-a<br />
--igt@kms_busy@extended-modeset-hang-oldfb-with-reset-pipe-b<br />
--igt@kms_busy@extended-modeset-hang-oldfb-with-reset-pipe-c<br />
--igt@kms_busy@extended-modeset-hang-oldfb-with-reset-pipe-d<br />
--igt@kms_busy@extended-modeset-hang-oldfb-with-reset-pipe-e<br />
--igt@kms_busy@extended-modeset-hang-oldfb-with-reset-pipe-f<br />
--igt@kms_busy@extended-pageflip-hang-newfb-pipe-a<br />
--igt@kms_busy@extended-pageflip-hang-newfb-pipe-b<br />
--igt@kms_busy@extended-pageflip-hang-newfb-pipe-c<br />
--igt@kms_busy@extended-pageflip-hang-newfb-pipe-d<br />
--igt@kms_busy@extended-pageflip-hang-newfb-pipe-e<br />
--igt@kms_busy@extended-pageflip-hang-newfb-pipe-f<br />
--igt@kms_busy@extended-pageflip-hang-oldfb-pipe-a<br />
--igt@kms_busy@extended-pageflip-hang-oldfb-pipe-b<br />
--igt@kms_busy@extended-pageflip-hang-oldfb-pipe-c<br />
--igt@kms_busy@extended-pageflip-hang-oldfb-pipe-d<br />
--igt@kms_busy@extended-pageflip-hang-oldfb-pipe-e<br />
--igt@kms_busy@extended-pageflip-hang-oldfb-pipe-f<br />
--igt@kms_busy@extended-pageflip-modeset-hang-oldfb-pipe-a<br />
--igt@kms_busy@extended-pageflip-modeset-hang-oldfb-pipe-b<br />
--igt@kms_busy@extended-pageflip-modeset-hang-oldfb-pipe-c<br />
--igt@kms_busy@extended-pageflip-modeset-hang-oldfb-pipe-d<br />
--igt@kms_busy@extended-pageflip-modeset-hang-oldfb-pipe-e<br />
--igt@kms_busy@extended-pageflip-modeset-hang-oldfb-pipe-f</p>
-
-</body>
-</html>
-
---===============6057970632139233002==--
-
---===============0483260855==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+> 
+> New tests
+> 
+>    New tests have been introduced between IGT_6027_full and IGTPW_5587_full:
+> 
+>   New IGT tests (44)
+> 
+>      * igt@api_intel_allocator@alloc-simple:
+> 
+>           * Statuses : 5 pass(s)
+>           * Exec time: [0.0] s
+>      * igt@api_intel_allocator@execbuf-with-allocator:
+> 
+>           * Statuses : 5 pass(s) 1 skip(s)
+>           * Exec time: [0.0, 0.01] s
+>      * igt@api_intel_allocator@fork-simple-once:
+> 
+>           * Statuses : 5 pass(s)
+>           * Exec time: [0.01, 0.04] s
+>      * igt@api_intel_allocator@fork-simple-stress:
+> 
+>           * Statuses : 6 pass(s)
+>           * Exec time: [5.40, 5.49] s
+>      * igt@api_intel_allocator@fork-simple-stress-signal:
+> 
+>           * Statuses : 5 pass(s)
+>           * Exec time: [5.41, 5.53] s
+>      * igt@api_intel_allocator@open-vm:
+> 
+>           * Statuses : 6 pass(s)
+>           * Exec time: [0.0, 0.00] s
+>      * igt@api_intel_allocator@print-random:
+> 
+>           * Statuses : 4 pass(s)
+>           * Exec time: [0.0] s
+>      * igt@api_intel_allocator@print-simple:
+> 
+>           * Statuses : 3 pass(s)
+>           * Exec time: [0.0] s
+>      * igt@api_intel_allocator@random-allocator:
+> 
+>           * Statuses :
+>           * Exec time: [None] s
+>      * igt@api_intel_allocator@random-allocator@basic:
+> 
+>           * Statuses : 5 pass(s)
+>           * Exec time: [0.0, 0.00] s
+>      * igt@api_intel_allocator@random-allocator@parallel-one:
+> 
+>           * Statuses : 5 pass(s)
+>           * Exec time: [0.00, 0.01] s
+>      * igt@api_intel_allocator@reopen:
+> 
+>           * Statuses : 5 pass(s)
+>           * Exec time: [0.00, 0.01] s
+>      * igt@api_intel_allocator@reopen-fork:
+> 
+>           * Statuses : 1 pass(s)
+>           * Exec time: [3.24] s
+>      * igt@api_intel_allocator@reserve:
+> 
+>           * Statuses : 5 pass(s)
+>           * Exec time: [0.0] s
+>      * igt@api_intel_allocator@reserve-simple:
+> 
+>           * Statuses : 6 pass(s)
+>           * Exec time: [0.0] s
+>      * igt@api_intel_allocator@reuse:
+> 
+>           * Statuses : 6 pass(s)
+>           * Exec time: [0.0] s
+>      * igt@api_intel_allocator@simple-allocator:
+> 
+>           * Statuses :
+>           * Exec time: [None] s
+>      * igt@api_intel_allocator@simple-allocator@basic:
+> 
+>           * Statuses : 6 pass(s)
+>           * Exec time: [0.00, 0.01] s
+>      * igt@api_intel_allocator@simple-allocator@parallel-one:
+> 
+>           * Statuses : 6 pass(s)
+>           * Exec time: [0.08, 0.18] s
+>      * igt@api_intel_allocator@simple-allocator@reserve:
+> 
+>           * Statuses : 6 pass(s)
+>           * Exec time: [0.0] s
+>      * igt@api_intel_allocator@simple-allocator@reuse:
+> 
+>           * Statuses : 6 pass(s)
+>           * Exec time: [0.0] s
+>      * igt@api_intel_allocator@standalone:
+> 
+>           * Statuses : 4 pass(s)
+>           * Exec time: [0.02, 0.06] s
+>      * igt@api_intel_allocator@two-level-inception:
+> 
+>           * Statuses : 5 pass(s)
+>           * Exec time: [5.41, 5.56] s
+>      * igt@api_intel_allocator@two-level-inception-interruptible:
+> 
+>           * Statuses :
+>           * Exec time: [None] s
+>      * igt@api_intel_bb@add-remove-objects:
+> 
+>           * Statuses : 5 pass(s)
+>           * Exec time: [0.00, 0.02] s
+>      * igt@api_intel_bb@bb-with-allocator:
+> 
+>           * Statuses : 5 pass(s) 1 skip(s)
+>           * Exec time: [0.0, 0.01] s
+>      * igt@api_intel_bb@bb-with-vm:
+> 
+>           * Statuses : 4 pass(s) 1 skip(s)
+>           * Exec time: [0.0, 0.03] s
+>      * igt@api_intel_bb@blit-noreloc-keep-cache-random:
+> 
+>           * Statuses : 5 pass(s) 1 skip(s)
+>           * Exec time: [0.0, 0.02] s
+>      * igt@api_intel_bb@blit-noreloc-purge-cache-random:
+> 
+>           * Statuses : 3 pass(s) 1 skip(s)
+>           * Exec time: [0.0, 0.02] s
+>      * igt@api_intel_bb@destroy-bb:
+> 
+>           * Statuses : 5 pass(s)
+>           * Exec time: [0.01, 0.03] s
+>      * igt@api_intel_bb@last-page:
+> 
+>           * Statuses : 2 fail(s) 2 pass(s) 1 skip(s)
+>           * Exec time: [0.0, 6.73] s
+>      * igt@api_intel_bb@object-noreloc-keep-cache-random:
+> 
+>           * Statuses : 4 pass(s) 1 skip(s)
+>           * Exec time: [0.0, 0.01] s
+>      * igt@api_intel_bb@object-noreloc-keep-cache-simple:
+> 
+>           * Statuses : 5 pass(s) 1 skip(s)
+>           * Exec time: [0.0, 0.01] s
+>      * igt@api_intel_bb@object-noreloc-purge-cache-random:
+> 
+>           * Statuses : 5 pass(s) 1 skip(s)
+>           * Exec time: [0.0, 0.01] s
+>      * igt@api_intel_bb@object-noreloc-purge-cache-simple:
+> 
+>           * Statuses : 5 pass(s) 1 skip(s)
+>           * Exec time: [0.0, 0.01] s
+>      * igt@api_intel_bb@object-reloc-keep-cache:
+> 
+>           * Statuses : 5 pass(s)
+>           * Exec time: [0.00, 0.01] s
+>      * igt@api_intel_bb@object-reloc-purge-cache:
+> 
+>           * Statuses : 6 pass(s)
+>           * Exec time: [0.00, 0.01] s
+>      * igt@api_intel_bb@purge-bb:
+> 
+>           * Statuses : 4 pass(s)
+>           * Exec time: [0.00, 0.01] s
+>      * igt@api_intel_bb@reset-bb:
+> 
+>           * Statuses : 4 pass(s)
+>           * Exec time: [0.00] s
+>      * igt@gem_softpin@allocator-basic:
+> 
+>           * Statuses : 4 pass(s) 1 skip(s)
+>           * Exec time: [0.0, 0.30] s
+>      * igt@gem_softpin@allocator-basic-reserve:
+> 
+>           * Statuses : 5 pass(s)
+>           * Exec time: [0.07, 0.29] s
+>      * igt@gem_softpin@allocator-fork:
+> 
+>           * Statuses : 5 pass(s) 1 skip(s)
+>           * Exec time: [0.0, 2.50] s
+>      * igt@gem_softpin@allocator-nopin:
+> 
+>           * Statuses : 5 pass(s) 1 skip(s)
+>           * Exec time: [0.0, 0.30] s
+>      * igt@gem_softpin@allocator-nopin-reserve:
+> 
+>           * Statuses : 5 pass(s)
+>           * Exec time: [0.07, 0.28] s
+> 
+> Known issues
+> 
+>    Here are the changes found in IGTPW_5587_full that come from known issues:
+> 
+>   IGT changes
+> 
+>     Issues hit
+> 
+>      * igt@gem_create@create-massive:
+> 
+>           * shard-snb: NOTRUN -> DMESG-WARN ([i915#3002]) +1 similar issue
+>      * igt@gem_ctx_persistence@legacy-engines-hostile-preempt:
+> 
+>           * shard-snb: NOTRUN -> SKIP ([fdo#109271] / [i915#1099]) +3 similar
+>             issues
+>      * igt@gem_exec_balancer@hang:
+> 
+>           * shard-iclb: PASS -> INCOMPLETE ([i915#1895])
+>      * igt@gem_exec_fair@basic-flow@rcs0:
+> 
+>           * shard-tglb: PASS -> FAIL ([i915#2842]) +1 similar issue
+>      * igt@gem_exec_fair@basic-none-rrul@rcs0:
+> 
+>           * shard-glk: PASS -> FAIL ([i915#2842]) +1 similar issue
+>      * igt@gem_exec_fair@basic-none-solo@rcs0:
+> 
+>           * shard-kbl: NOTRUN -> FAIL ([i915#2842])
+> 
+>           * shard-glk: NOTRUN -> FAIL ([i915#2842])
+> 
+>           * shard-iclb: NOTRUN -> FAIL ([i915#2842])
+> 
+>           * shard-tglb: NOTRUN -> FAIL ([i915#2842])
+> 
+>      * igt@gem_exec_fair@basic-throttle@rcs0:
+> 
+>           * shard-iclb: PASS -> FAIL ([i915#2849])
+>      * igt@gem_exec_params@secure-non-root:
+> 
+>           * shard-tglb: NOTRUN -> SKIP ([fdo#112283])
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([fdo#112283])
+> 
+>      * igt@gem_exec_reloc@basic-many-active@rcs0:
+> 
+>           * shard-snb: NOTRUN -> FAIL ([i915#2389]) +2 similar issues
+>      * igt@gem_exec_reloc@basic-parallel:
+> 
+>           * shard-kbl: NOTRUN -> TIMEOUT ([i915#1729])
+> 
+>           * shard-apl: NOTRUN -> TIMEOUT ([i915#1729])
+> 
+>      * igt@gem_exec_schedule@u-fairslice@rcs0:
+> 
+>           * shard-apl: PASS -> DMESG-WARN ([i915#1610])
+>      * igt@gem_exec_whisper@basic-contexts-forked-all:
+> 
+>           * shard-glk: PASS -> DMESG-WARN ([i915#118] / [i915#95])
+>      * igt@gem_huc_copy@huc-copy:
+> 
+>           * shard-apl: NOTRUN -> SKIP ([fdo#109271] / [i915#2190])
+> 
+>           * shard-kbl: NOTRUN -> SKIP ([fdo#109271] / [i915#2190])
+> 
+>      * igt@gem_mmap_gtt@cpuset-big-copy:
+> 
+>           * shard-iclb: PASS -> FAIL ([i915#307])
+>      * igt@gem_pread@exhaustion:
+> 
+>           * shard-apl: NOTRUN -> WARN ([i915#2658])
+> 
+>           * shard-snb: NOTRUN -> WARN ([i915#2658])
+> 
+>      * igt@gem_render_copy@yf-tiled-mc-ccs-to-vebox-y-tiled:
+> 
+>           * shard-glk: NOTRUN -> SKIP ([fdo#109271]) +35 similar issues
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([i915#768])
+> 
+>      * igt@gem_userptr_blits@input-checking:
+> 
+>           * shard-kbl: NOTRUN -> DMESG-WARN ([i915#3002])
+>      * igt@gem_userptr_blits@process-exit-mmap@wb:
+> 
+>           * shard-apl: NOTRUN -> SKIP ([fdo#109271] / [i915#1699]) +3 similar
+>             issues
+>      * igt@gem_userptr_blits@process-exit-mmap@wc:
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([i915#1699]) +3 similar issues
+>      * igt@gem_vm_create@destroy-race:
+> 
+>           * shard-tglb: PASS -> TIMEOUT ([i915#2795])
+>      * igt@gen9_exec_parse@allowed-single:
+> 
+>           * shard-glk: PASS -> DMESG-WARN ([i915#1436] / [i915#716])
+>      * igt@gen9_exec_parse@bb-start-param:
+> 
+>           * shard-tglb: NOTRUN -> SKIP ([fdo#112306])
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([fdo#112306])
+> 
+>      * igt@i915_pm_lpsp@kms-lpsp@kms-lpsp-dp:
+> 
+>           * shard-apl: NOTRUN -> SKIP ([fdo#109271] / [i915#1937])
+>      * igt@kms_atomic_transition@plane-all-transition-nonblocking-fencing@dp-1-pipe-b:
+> 
+>           * shard-kbl: PASS -> FAIL ([i915#3168]) +1 similar issue
+>      * igt@kms_big_fb@x-tiled-16bpp-rotate-90:
+> 
+>           * shard-tglb: NOTRUN -> SKIP ([fdo#111614]) +1 similar issue
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([fdo#110725] / [fdo#111614]) +1
+>             similar issue
+> 
+>      * igt@kms_big_fb@yf-tiled-8bpp-rotate-180:
+> 
+>           * shard-tglb: NOTRUN -> SKIP ([fdo#111615]) +1 similar issue
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([fdo#110723])
+> 
+>      * igt@kms_big_joiner@basic:
+> 
+>           * shard-kbl: NOTRUN -> SKIP ([fdo#109271] / [i915#2705])
+> 
+>           * shard-apl: NOTRUN -> SKIP ([fdo#109271] / [i915#2705])
+> 
+>      * igt@kms_ccs@pipe-a-ccs-on-another-bo:
+> 
+>           * shard-snb: NOTRUN -> SKIP ([fdo#109271]) +322 similar issues
+>      * igt@kms_color@pipe-a-gamma:
+> 
+>           * shard-tglb: PASS -> FAIL ([i915#1149])
+>      * igt@kms_color@pipe-d-ctm-0-75:
+> 
+>           * shard-tglb: NOTRUN -> FAIL ([i915#1149] / [i915#315])
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([fdo#109278] / [i915#1149])
+> 
+>      * igt@kms_color_chamelium@pipe-a-ctm-0-5:
+> 
+>           * shard-apl: NOTRUN -> SKIP ([fdo#109271] / [fdo#111827]) +19
+>             similar issues
+>      * igt@kms_color_chamelium@pipe-a-ctm-max:
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([fdo#109284] / [fdo#111827]) +1
+>             similar issue
+>      * igt@kms_color_chamelium@pipe-a-degamma:
+> 
+>           * shard-kbl: NOTRUN -> SKIP ([fdo#109271] / [fdo#111827]) +18
+>             similar issues
+>      * igt@kms_color_chamelium@pipe-d-degamma:
+> 
+>           * shard-glk: NOTRUN -> SKIP ([fdo#109271] / [fdo#111827]) +2
+>             similar issues
+> 
+>           * shard-tglb: NOTRUN -> SKIP ([fdo#109284] / [fdo#111827]) +4
+>             similar issues
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([fdo#109278] / [fdo#109284] /
+>             [fdo#111827])
+> 
+>      * igt@kms_color_chamelium@pipe-invalid-ctm-matrix-sizes:
+> 
+>           * shard-snb: NOTRUN -> SKIP ([fdo#109271] / [fdo#111827]) +13
+>             similar issues
+>      * igt@kms_content_protection@atomic-dpms:
+> 
+>           * shard-tglb: NOTRUN -> SKIP ([fdo#111828]) +1 similar issue
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([fdo#109300] / [fdo#111066])
+> 
+>      * igt@kms_content_protection@legacy:
+> 
+>           * shard-kbl: NOTRUN -> TIMEOUT ([i915#1319]) +1 similar issue
+>      * igt@kms_content_protection@lic:
+> 
+>           * shard-apl: NOTRUN -> TIMEOUT ([i915#1319]) +1 similar issue
+>      * igt@kms_cursor_crc@pipe-a-cursor-128x128-sliding:
+> 
+>           * shard-apl: NOTRUN -> FAIL ([i915#54])
+> 
+>           * shard-kbl: PASS -> FAIL ([i915#54])
+> 
+>      * igt@kms_cursor_crc@pipe-a-cursor-suspend:
+> 
+>           * shard-kbl: PASS -> DMESG-WARN ([i915#180]) +3 similar issues
+>      * igt@kms_cursor_crc@pipe-b-cursor-512x512-random:
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([fdo#109278] / [fdo#109279])
+>      * igt@kms_cursor_crc@pipe-c-cursor-128x128-random:
+> 
+>           * shard-apl: PASS -> FAIL ([i915#54])
+> 
+>           * shard-kbl: NOTRUN -> FAIL ([i915#54])
+> 
+>      * igt@kms_cursor_crc@pipe-c-cursor-512x512-onscreen:
+> 
+>           * shard-tglb: NOTRUN -> SKIP ([fdo#109279]) +1 similar issue
+>      * igt@kms_cursor_legacy@2x-flip-vs-cursor-atomic:
+> 
+>           * shard-glk: PASS -> FAIL ([i915#72])
+>      * igt@kms_cursor_legacy@cursora-vs-flipb-legacy:
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([fdo#109274] / [fdo#109278])
+>      * igt@kms_dp_tiled_display@basic-test-pattern:
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([i915#426])
+> 
+>           * shard-tglb: NOTRUN -> SKIP ([i915#426])
+> 
+>      * igt@kms_flip@2x-flip-vs-expired-vblank@bc-hdmi-a1-hdmi-a2:
+> 
+>           * shard-glk: PASS -> FAIL ([i915#79])
+>      * igt@kms_flip@2x-plain-flip-fb-recreate:
+> 
+>           * shard-tglb: NOTRUN -> SKIP ([fdo#111825]) +15 similar issues
+>      * igt@kms_flip@flip-vs-expired-vblank-interruptible@a-edp1:
+> 
+>           * shard-tglb: PASS -> FAIL ([i915#2598])
+>      * igt@kms_flip@flip-vs-suspend-interruptible@a-dp1:
+> 
+>           * shard-kbl: NOTRUN -> DMESG-WARN ([i915#180]) +2 similar issues
+>      * igt@kms_flip@flip-vs-suspend@b-dp1:
+> 
+>           * shard-apl: PASS -> DMESG-WARN ([i915#180]) +1 similar issue
+>      * igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs:
+> 
+>           * shard-apl: NOTRUN -> SKIP ([fdo#109271] / [i915#2672])
+>      * igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile:
+> 
+>           * shard-apl: NOTRUN -> SKIP ([fdo#109271] / [i915#2642])
+>      * igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-mmap-wc:
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([fdo#109280]) +9 similar issues
+>      * igt@kms_hdr@static-toggle-dpms:
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([i915#1187])
+>      * igt@kms_invalid_dotclock:
+> 
+>           * shard-tglb: NOTRUN -> SKIP ([fdo#110577])
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([fdo#109310])
+> 
+>      * igt@kms_plane@plane-panning-bottom-right-suspend-pipe-d-planes:
+> 
+>           * shard-tglb: PASS -> DMESG-WARN ([i915#1436] / [i915#1602] /
+>             [i915#2411])
+>      * igt@kms_plane_alpha_blend@pipe-a-alpha-7efc:
+> 
+>           * shard-apl: NOTRUN -> FAIL ([fdo#108145] / [i915#265]) +1 similar
+>             issue
+>      * igt@kms_plane_alpha_blend@pipe-c-alpha-7efc:
+> 
+>           * shard-kbl: NOTRUN -> FAIL ([fdo#108145] / [i915#265]) +1 similar
+>             issue
+>      * igt@kms_plane_alpha_blend@pipe-d-constant-alpha-max:
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([fdo#109278]) +4 similar issues
+>      * igt@kms_plane_scaling@2x-scaler-multi-pipe:
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([fdo#109274]) +1 similar issue
+>      * igt@kms_psr2_sf@overlay-primary-update-sf-dmg-area-4:
+> 
+>           * shard-apl: NOTRUN -> SKIP ([fdo#109271] / [i915#658]) +3 similar
+>             issues
+>      * igt@kms_psr2_sf@plane-move-sf-dmg-area-0:
+> 
+>           * shard-kbl: NOTRUN -> SKIP ([fdo#109271] / [i915#658]) +2 similar
+>             issues
+>      * igt@kms_psr2_sf@plane-move-sf-dmg-area-1:
+> 
+>           * shard-glk: NOTRUN -> SKIP ([fdo#109271] / [i915#658])
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([i915#658])
+> 
+>      * igt@kms_psr@psr2_sprite_mmap_gtt:
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([fdo#109441])
+>      * igt@kms_setmode@basic:
+> 
+>           * shard-snb: NOTRUN -> FAIL ([i915#31])
+>      * igt@kms_vblank@pipe-d-wait-forked-hang:
+> 
+>           * shard-apl: NOTRUN -> SKIP ([fdo#109271]) +212 similar issues
+>      * igt@kms_vblank@pipe-d-wait-idle:
+> 
+>           * shard-kbl: NOTRUN -> SKIP ([fdo#109271] / [i915#533])
+>      * igt@kms_vrr@flip-suspend:
+> 
+>           * shard-iclb: NOTRUN -> SKIP ([fdo#109502])
+> 
+>           * shard-tglb: NOTRUN -> SKIP ([fdo#109502])
+> 
+>      * igt@kms_writeback@writeback-check-output:
+> 
+>           * shard-apl: NOTRUN -> SKIP ([fdo#109271] / [i915#2437]) +2 similar
+>             issues
+>      * igt@kms_writeback@writeback-pixel-formats:
+> 
+>           * shard-glk: NOTRUN -> SKIP ([fdo#109271] / [i915#2437])
+> 
+>           * shard-kbl: NOTRUN -> SKIP ([fdo#109271] / [i915#2437])
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0483260855==--
