@@ -1,24 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 280F989F6B
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Mar 2021 12:52:33 +0000 (UTC)
-Date: Wed, 10 Mar 2021 14:53:00 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YEjBLMey+mGjHi9M@platvala-desk.ger.corp.intel.com>
-References: <20210219172738.263820-1-jcline@redhat.com>
- <20210305164253.11788-1-jcline@redhat.com>
- <20210305164253.11788-2-jcline@redhat.com>
- <YEXkhTnlwCaFo9Fk@platvala-desk.ger.corp.intel.com>
- <d95e9fef-ee70-4875-beb6-7ebfee4c56f7@intel.com>
- <YEYeU0Pq/wsLP/5j@platvala-desk.ger.corp.intel.com>
- <YEY9k0CEfxg0uAuO@xps13>
- <YEd/1F4XlfMrPqzI@platvala-desk.ger.corp.intel.com>
- <6ab3fa6c35e24f8b8f8cbcdfd271dfb7@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 765116E23B
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Mar 2021 12:56:57 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Thu, 11 Mar 2021 02:19:18 +0530
+Message-Id: <20210310204918.7072-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <6ab3fa6c35e24f8b8f8cbcdfd271dfb7@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] kms_hdr: Skip HDR tests on
- pre-Kaby Lake Intel devices
+Subject: [igt-dev] [v2 i-g-t] tests/kms_busy: Limit the execution to two
+ pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,120 +19,216 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Shankar, Uma" <uma.shankar@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: Latvala Petri <petri.latvala@intel.com>, Kunche Kishore <kishore.kunche@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Mar 10, 2021 at 02:48:32PM +0200, Shankar, Uma wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Latvala, Petri <petri.latvala@intel.com>
-> > Sent: Tuesday, March 9, 2021 7:32 PM
-> > To: Jeremy Cline <jcline@redhat.com>
-> > Cc: Sharma, Swati2 <swati2.sharma@intel.com>; Maarten Lankhorst
-> > <maarten.lankhorst@linux.intel.com>; igt-dev@lists.freedesktop.org; Shankar, Uma
-> > <uma.shankar@intel.com>
-> > Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] kms_hdr: Skip HDR tests on pre-Kaby Lake
-> > Intel devices
-> > 
-> > On Mon, Mar 08, 2021 at 10:06:59AM -0500, Jeremy Cline wrote:
-> > > On Mon, Mar 08, 2021 at 02:53:39PM +0200, Petri Latvala wrote:
-> > > > On Mon, Mar 08, 2021 at 06:11:09PM +0530, Sharma, Swati2 wrote:
-> > > > >
-> > > > >
-> > > > > On 08-Mar-21 2:17 PM, Petri Latvala wrote:
-> > > > > > On Fri, Mar 05, 2021 at 11:42:52AM -0500, Jeremy Cline wrote:
-> > > > > > > According to the Intel documentation[0] I could find, HDR
-> > > > > > > support is only in Kaby Lake+. Skip tests in kms_hdr if the
-> > > > > > > hardware doesn't support HDR.
-> > > > > > >
-> > > > > > > [0]
-> > > > > > > https://www.intel.com/content/dam/support/us/en/documents/grap
-> > > > > > > hics/HDR_Intel_Graphics_TechWhitePaper.pdf
-> > > > > > >
-> > > > > > > Signed-off-by: Jeremy Cline <jcline@redhat.com>
-> > > > > >
-> > > > > >
-> > > > > > While that might be true, strictly speaking IGT tests are not
-> > > > > > testing the HW capabilities but the kernel interfaces. The
-> > > > > > difference is often only interesting for nitpicking.
-> > > > > >
-> > > > > > However, in this case a good argument can be made either way,
-> > > > > > with what the correct behaviour with setting the "max bpc"
-> > > > > > property when the HW doesn't support HDR _output_ should be. IGT
-> > > > > > tests should be written the way one would expect "real"
-> > > > > > userspace to behave; does the documented kernel interface
-> > > > > > require userspace to detect the device id somehow? The connector
-> > > > > > property is there so one would assume setting it should work and do
-> > something.
-> > > > > >
-> > > > > > A good argument can also be made that even though we're testing
-> > > > > > "just the interface", we (Intel) should have a separate test
-> > > > > > that requires actual HW support...
-> > > > > >
-> > > > > > Swati, Maarten, thoughts on this? Are we even testing the right
-> > > > > > things for i915 at all? Are we able to express the HW
-> > > > > > requirement for HDR with something other than comparing devid?
-> > > > > > Should we? (If we should not, please suggest a better way to get
-> > > > > > around the issue being fixed
-> > > > > > here)
-> > > > >
-> > > > > There are 2 types of tests which are being validated in kms_hdr
-> > > > > (i) bpc switch
-> > > > > (ii) hdr metadata
-> > > > > And both these tests will skip on platforms which doesn't support
-> > > > > respective connector properties (MAX_BPC, HDR_OUTPUT_METADATA
-> > > > > resp). These tests are independent of platforms on which they are
-> > > > > being tested.
-> > > > > This can be validated from the link below:
-> > > > > https://intel-gfx-ci.01.org/tree/drm-tip/shards-all.html?testfilte
-> > > > > r=kms_hdr where you can see platforms which doesn't support either
-> > > > > max_bpc or hdr_metadata connector properties; tests are being
-> > > > > skipped.
-> > > > >
-> > > > > And I don't think anything is being fixed here
-> > > >
-> > > > What I meant is the fix in patch 2, removing the removal of the
-> > > > primary plane, which was done because of a HSW limitation. Patch 1
-> > > > (this thread) is then making sure HSW is unaffected by a spurious
-> > > > failure. Sorry for not being clear when pulling more CCs.
-> > > >
-> > >
-> > > There are definitely finer-grain ways to do this, but this "works" so
-> > > I figured it'd be good to start here and have a discussion about it.
-> > >
-> > > One option would be to just wrap the plane-removal call in a device
-> > > check. Another would be to try and find a plane size that meets
-> > > whatever the scaling requirements are for hsw (assuming there's
-> > > overlap between the conflicting requirements of hardware).
-> > >
-> > > I don't have a strong opinion about where the checks happen, it seems
-> > > like a trade-off between in-test complexity and the breadth of the
-> > > test matrix, and I can't say how useful it is to make sure the MAX_BPC
-> > > interface works on a specific generation of hardware. I'm happy to do
-> > > either of those options (or another option I've not considered),
-> > > whatever you folks think is the best trade-off.
-> > 
-> > 
-> > Checked how HSW actually behaves with this and
-> > 
-> > https://intel-gfx-ci.01.org/tree/drm-tip/TrybotIGT_300/shard-
-> > hsw4/igt@kms_hdr@bpc-switch.html
-> > 
-> > Swati, what's your opinion? if (amdgpudevice) around the plane removal or what's
-> > best here?
-> 
-> Hi Petri,
-> I feel limiting it to amdgpudevice seems a safer and easier route here without disturbing the legacy behavior.
+As all pipes are symmetric, restrict the execution to two pipes
+can save lot of CI time.
 
-Thanks, let's go with that then.
+If we want to execute on all pipes, we need to pass an extra
+argument "-e" indicates extended.
 
-Jeremy, see above.
+Example: ./build/tests/kms_busy -e --r basic
 
+V2:
+* Fix the typo in args handler (Petri)
 
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Latvala Petri <petri.latvala@intel.com>
+Cc: Kunche Kishore <kishore.kunche@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_busy.c | 138 ++++++++++++++++++++++++++---------------------
+ 1 file changed, 77 insertions(+), 61 deletions(-)
+
+diff --git a/tests/kms_busy.c b/tests/kms_busy.c
+index df1f8e11a..f87483785 100644
+--- a/tests/kms_busy.c
++++ b/tests/kms_busy.c
+@@ -30,6 +30,15 @@
+ 
+ IGT_TEST_DESCRIPTION("Basic check of KMS ABI with busy framebuffers.");
+ 
++/* restricted pipe count */
++#define CRTC_RESTRICT_CNT 2
++
++static bool all_pipes = false;
++
++#define for_each_pipe_with_valid_output_limited(display, pipe, output, pipe_count) \
++	for_each_pipe_with_valid_output(display, pipe, output) \
++			for_each_if(pipe_count-- > 0)
++
+ static igt_output_t *
+ set_fb_on_crtc(igt_display_t *dpy, int pipe, struct igt_fb *fb)
+ {
+@@ -287,10 +296,41 @@ static void test_pageflip_modeset_hang(igt_display_t *dpy, enum pipe pipe)
+ 	igt_remove_fb(dpy->drm_fd, &fb);
+ }
+ 
+-igt_main
++static int opt_handler(int opt, int opt_index, void *data)
++{
++	switch (opt) {
++		case 'e':
++			all_pipes = true;
++			break;
++		default:
++			return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++const char *help_str =
++	"  -e \tRun on all pipes. (By default subtests will run on two pipes)\n";
++
++igt_main_args("e:", NULL, help_str, opt_handler, NULL)
+ {
+ 	igt_display_t display = { .drm_fd = -1, .n_pipes = IGT_MAX_PIPES };
+-	enum pipe n;
++
++	int crtc_count;
++	int i;
++	struct {
++		const char *name;
++		bool modeset;
++		bool hang_newfb;
++		bool reset;
++	} tests[] = {
++		{ "extended-pageflip-hang-oldfb", false, false, false },
++		{ "extended-pageflip-hang-newfb", false, true, false },
++		{ "extended-modeset-hang-oldfb", true, false, false },
++		{ "extended-modeset-hang-newfb", true, true, false },
++		{ "extended-modeset-hang-oldfb-with-reset", true, false, true },
++		{ "extended-modeset-hang-newfb-with-reset", true, true, true },
++	};
+ 
+ 	igt_fixture {
+ 		int fd = drm_open_driver_master(DRIVER_INTEL);
+@@ -305,84 +345,60 @@ igt_main
+ 
+ 	/* XXX Extend to cover atomic rendering tests to all planes + legacy */
+ 
+-	igt_subtest_with_dynamic("basic") { /* just run on the first pipe */
++	igt_subtest_with_dynamic("basic") {
+ 		enum pipe pipe;
+ 		igt_output_t *output;
++		crtc_count = (all_pipes)? display.n_pipes : CRTC_RESTRICT_CNT;
+ 
+-		for_each_pipe_with_valid_output(&display, pipe, output) {
+-			igt_dynamic("flip")
++		for_each_pipe_with_valid_output_limited(&display, pipe, output, crtc_count) {
++			igt_dynamic_f("flip-pipe-%s", kmstest_pipe_name(pipe))
+ 				test_flip(&display, pipe, false);
+-			igt_dynamic("modeset")
++			igt_dynamic_f("modeset-pipe-%s", kmstest_pipe_name(pipe))
+ 				test_flip(&display, pipe, true);
+-			break;
+ 		}
+ 	}
+ 
+-	for_each_pipe_static(n) igt_subtest_group {
+-		igt_hang_t hang;
+-
+-		errno = 0;
+-
+-		igt_fixture {
+-			igt_display_require_output_on_pipe(&display, n);
+-		}
+-
+-		igt_subtest_f("basic-flip-pipe-%s", kmstest_pipe_name(n)) {
+-			test_flip(&display, n, false);
+-		}
+-		igt_subtest_f("basic-modeset-pipe-%s", kmstest_pipe_name(n)) {
++	igt_subtest_with_dynamic("extended-pageflip-modeset-hang-oldfb") {
++		enum pipe pipe;
++		igt_output_t *output;
++		crtc_count = (all_pipes)? display.n_pipes : CRTC_RESTRICT_CNT;
+ 
+-			test_flip(&display, n, true);
+-		}
++		for_each_pipe_with_valid_output_limited(&display, pipe, output, crtc_count) {
++			igt_hang_t hang = igt_allow_hang(display.drm_fd, 0, 0);
++			errno = 0;
+ 
+-		igt_fixture {
+-			hang = igt_allow_hang(display.drm_fd, 0, 0);
+-		}
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				test_pageflip_modeset_hang(&display, pipe);
+ 
+-		igt_subtest_f("extended-pageflip-modeset-hang-oldfb-pipe-%s",
+-			      kmstest_pipe_name(n)) {
+-			test_pageflip_modeset_hang(&display, n);
++			igt_disallow_hang(display.drm_fd, hang);
+ 		}
++	}
+ 
+-		igt_fixture
+-			igt_require(display.is_atomic);
+-
+-		igt_subtest_f("extended-pageflip-hang-oldfb-pipe-%s",
+-			      kmstest_pipe_name(n))
+-			test_hang(&display, n, false, false);
+-
+-		igt_subtest_f("extended-pageflip-hang-newfb-pipe-%s",
+-			      kmstest_pipe_name(n))
+-			test_hang(&display, n, false, true);
+-
+-		igt_subtest_f("extended-modeset-hang-oldfb-pipe-%s",
+-			      kmstest_pipe_name(n))
+-			test_hang(&display, n, true, false);
+-
+-		igt_subtest_f("extended-modeset-hang-newfb-pipe-%s",
+-			      kmstest_pipe_name(n))
+-			test_hang(&display, n, true, true);
++	for (i = 0; i < sizeof(tests) / sizeof (tests[0]); i++) {
++		igt_subtest_with_dynamic(tests[i].name) {
++			enum pipe pipe;
++			igt_output_t *output;
++			crtc_count = (all_pipes)? display.n_pipes : CRTC_RESTRICT_CNT;
+ 
+-		igt_subtest_f("extended-modeset-hang-oldfb-with-reset-pipe-%s",
+-			      kmstest_pipe_name(n)) {
+-			igt_set_module_param_int(display.drm_fd, "force_reset_modeset_test", 1);
++			for_each_pipe_with_valid_output_limited(&display, pipe, output, crtc_count) {
++				igt_hang_t hang;
++				errno = 0;
+ 
+-			test_hang(&display, n, true, false);
++				igt_require(display.is_atomic);
++				hang = igt_allow_hang(display.drm_fd, 0, 0);
+ 
+-			igt_set_module_param_int(display.drm_fd, "force_reset_modeset_test", 0);
+-		}
++				igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
++					if (tests[i].reset)
++						igt_set_module_param_int(display.drm_fd, "force_reset_modeset_test", 1);
+ 
+-		igt_subtest_f("extended-modeset-hang-newfb-with-reset-pipe-%s",
+-			      kmstest_pipe_name(n)) {
+-			igt_set_module_param_int(display.drm_fd, "force_reset_modeset_test", 1);
++					test_hang(&display, pipe, tests[i].modeset, tests[i].hang_newfb);
+ 
+-			test_hang(&display, n, true, true);
++					if (tests[i].reset)
++						igt_set_module_param_int(display.drm_fd, "force_reset_modeset_test", 0);
++				}
+ 
+-			igt_set_module_param_int(display.drm_fd, "force_reset_modeset_test", 0);
+-		}
+-
+-		igt_fixture {
+-			igt_disallow_hang(display.drm_fd, hang);
++				igt_disallow_hang(display.drm_fd, hang);
++			}
+ 		}
+ 	}
+ 
 -- 
-Petri Latvala
+2.20.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
