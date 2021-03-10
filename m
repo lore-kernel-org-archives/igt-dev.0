@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 715806E1E9
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Mar 2021 12:20:27 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Thu, 11 Mar 2021 01:42:47 +0530
+Message-Id: <20210310201247.31535-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 10 Mar 2021 11:25:20 -0000
-Message-ID: <161537552029.2308.523657244790686019@emeril.freedesktop.org>
-References: <20210310094502.75748-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20210310094502.75748-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW50cm9k?=
- =?utf-8?q?uce_IGT_allocator_=28rev25=29?=
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_flip: Restrict the hang tests
+ execution to two pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,397 +15,156 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0300012975=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0300012975==
-Content-Type: multipart/alternative;
- boundary="===============8675985030746624281=="
+To save the CI execution time, instead of running on all pipes
+restrict the hang tests execution to two pipes.
 
---===============8675985030746624281==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+If we want to execute on all pipes, we need to pass an extra
+argument "-e" indicates extended.
 
-== Series Details ==
+Example: ./build/tests/kms_flip -e --r flip-vs-modeset-vs-hang
 
-Series: Introduce IGT allocator (rev25)
-URL   : https://patchwork.freedesktop.org/series/82954/
-State : success
+Cc: Uma Shankar <uma.shankar@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_flip.c | 52 +++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 45 insertions(+), 7 deletions(-)
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9844 -> IGTPW_5587
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/index.html
-
-New tests
----------
-
-  New tests have been introduced between CI_DRM_9844 and IGTPW_5587:
-
-### New IGT tests (2) ###
-
-  * igt@gem_softpin@allocator-basic:
-    - Statuses : 27 pass(s) 10 skip(s)
-    - Exec time: [0.0, 1.03] s
-
-  * igt@gem_softpin@allocator-basic-reserve:
-    - Statuses : 27 pass(s) 10 skip(s)
-    - Exec time: [0.0, 1.02] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5587 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_gttfill@basic:
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][1] ([fdo#109271])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-bsw-n3050/igt@gem_exec_gttfill@basic.html
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-bsw-n3050:       NOTRUN -> [INCOMPLETE][2] ([i915#3159])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-bsw-n3050/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@gem_linear_blits@basic:
-    - fi-kbl-8809g:       [PASS][3] -> [TIMEOUT][4] ([i915#2502] / [i915#3145]) +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9844/fi-kbl-8809g/igt@gem_linear_blits@basic.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-kbl-8809g/igt@gem_linear_blits@basic.html
-
-  * {igt@gem_softpin@allocator-basic} (NEW):
-    - fi-byt-j1900:       NOTRUN -> [SKIP][5] ([fdo#109271]) +1 similar issue
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-byt-j1900/igt@gem_softpin@allocator-basic.html
-    - fi-pnv-d510:        NOTRUN -> [SKIP][6] ([fdo#109271]) +1 similar issue
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-pnv-d510/igt@gem_softpin@allocator-basic.html
-    - fi-bwr-2160:        NOTRUN -> [SKIP][7] ([fdo#109271]) +1 similar issue
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-bwr-2160/igt@gem_softpin@allocator-basic.html
-    - {fi-hsw-gt1}:       NOTRUN -> [SKIP][8] ([fdo#109271]) +1 similar issue
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-hsw-gt1/igt@gem_softpin@allocator-basic.html
-    - fi-snb-2520m:       NOTRUN -> [SKIP][9] ([fdo#109271]) +1 similar issue
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-snb-2520m/igt@gem_softpin@allocator-basic.html
-    - fi-ivb-3770:        NOTRUN -> [SKIP][10] ([fdo#109271]) +1 similar issue
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-ivb-3770/igt@gem_softpin@allocator-basic.html
-    - fi-snb-2600:        NOTRUN -> [SKIP][11] ([fdo#109271]) +1 similar issue
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-snb-2600/igt@gem_softpin@allocator-basic.html
-
-  * {igt@gem_softpin@allocator-basic-reserve} (NEW):
-    - fi-elk-e7500:       NOTRUN -> [SKIP][12] ([fdo#109271]) +1 similar issue
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-elk-e7500/igt@gem_softpin@allocator-basic-reserve.html
-    - fi-hsw-4770:        NOTRUN -> [SKIP][13] ([fdo#109271]) +1 similar issue
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-hsw-4770/igt@gem_softpin@allocator-basic-reserve.html
-    - fi-ilk-650:         NOTRUN -> [SKIP][14] ([fdo#109271]) +1 similar issue
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-ilk-650/igt@gem_softpin@allocator-basic-reserve.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-7500u:       [PASS][15] -> [FAIL][16] ([i915#2128])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9844/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@client:
-    - fi-glk-dsi:         [DMESG-FAIL][17] ([i915#3047]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9844/fi-glk-dsi/igt@i915_selftest@live@client.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-glk-dsi/igt@i915_selftest@live@client.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#2128]: https://gitlab.freedesktop.org/drm/intel/issues/2128
-  [i915#2502]: https://gitlab.freedesktop.org/drm/intel/issues/2502
-  [i915#3047]: https://gitlab.freedesktop.org/drm/intel/issues/3047
-  [i915#3145]: https://gitlab.freedesktop.org/drm/intel/issues/3145
-  [i915#3159]: https://gitlab.freedesktop.org/drm/intel/issues/3159
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-
-
-Participating hosts (45 -> 40)
-------------------------------
-
-  Additional (1): fi-bsw-n3050 
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-icl-y fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6027 -> IGTPW_5587
-
-  CI-20190529: 20190529
-  CI_DRM_9844: 3108bcbbbf191b3b5e624f21348c306010725a02 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5587: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/index.html
-  IGT_6027: b8b3facdfbb99a0b9ef5f541a0ee7d6bca2aafea @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@api_intel_allocator@alloc-simple
-+igt@api_intel_allocator@execbuf-with-allocator
-+igt@api_intel_allocator@fork-simple-once
-+igt@api_intel_allocator@fork-simple-stress
-+igt@api_intel_allocator@fork-simple-stress-signal
-+igt@api_intel_allocator@open-vm
-+igt@api_intel_allocator@print-random
-+igt@api_intel_allocator@print-simple
-+igt@api_intel_allocator@random-allocator
-+igt@api_intel_allocator@reopen
-+igt@api_intel_allocator@reopen-fork
-+igt@api_intel_allocator@reserve
-+igt@api_intel_allocator@reserve-simple
-+igt@api_intel_allocator@reuse
-+igt@api_intel_allocator@simple-allocator
-+igt@api_intel_allocator@standalone
-+igt@api_intel_allocator@two-level-inception
-+igt@api_intel_allocator@two-level-inception-interruptible
-+igt@api_intel_bb@add-remove-objects
-+igt@api_intel_bb@bb-with-allocator
-+igt@api_intel_bb@bb-with-vm
-+igt@api_intel_bb@blit-noreloc-keep-cache-random
-+igt@api_intel_bb@blit-noreloc-purge-cache-random
-+igt@api_intel_bb@destroy-bb
-+igt@api_intel_bb@last-page
-+igt@api_intel_bb@object-noreloc-keep-cache-random
-+igt@api_intel_bb@object-noreloc-keep-cache-simple
-+igt@api_intel_bb@object-noreloc-purge-cache-random
-+igt@api_intel_bb@object-noreloc-purge-cache-simple
-+igt@api_intel_bb@object-reloc-keep-cache
-+igt@api_intel_bb@object-reloc-purge-cache
-+igt@api_intel_bb@purge-bb
-+igt@api_intel_bb@reset-bb
-+igt@gem_softpin@allocator-basic
-+igt@gem_softpin@allocator-basic-reserve
-+igt@gem_softpin@allocator-fork
-+igt@gem_softpin@allocator-nopin
-+igt@gem_softpin@allocator-nopin-reserve
--igt@api_intel_bb@check-canonical
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/index.html
-
---===============8675985030746624281==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Introduce IGT allocator (rev25)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/82954/">https://patchwork.freedesktop.org/series/82954/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9844 -&gt; IGTPW_5587</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/index.html</p>
-<h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_9844 and IGTPW_5587:</p>
-<h3>New IGT tests (2)</h3>
-<ul>
-<li>
-<p>igt@gem_softpin@allocator-basic:</p>
-<ul>
-<li>Statuses : 27 pass(s) 10 skip(s)</li>
-<li>Exec time: [0.0, 1.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@allocator-basic-reserve:</p>
-<ul>
-<li>Statuses : 27 pass(s) 10 skip(s)</li>
-<li>Exec time: [0.0, 1.02] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5587 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_gttfill@basic:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-bsw-n3050/igt@gem_exec_gttfill@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-bsw-n3050/igt@gem_exec_suspend@basic-s3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3159">i915#3159</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_linear_blits@basic:</p>
-<ul>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9844/fi-kbl-8809g/igt@gem_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-kbl-8809g/igt@gem_linear_blits@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2502">i915#2502</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_softpin@allocator-basic} (NEW):</p>
-<ul>
-<li>
-<p>fi-byt-j1900:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-byt-j1900/igt@gem_softpin@allocator-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-pnv-d510/igt@gem_softpin@allocator-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-bwr-2160:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-bwr-2160/igt@gem_softpin@allocator-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>{fi-hsw-gt1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-hsw-gt1/igt@gem_softpin@allocator-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-snb-2520m:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-snb-2520m/igt@gem_softpin@allocator-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-ivb-3770/igt@gem_softpin@allocator-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-snb-2600/igt@gem_softpin@allocator-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_softpin@allocator-basic-reserve} (NEW):</p>
-<ul>
-<li>
-<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-elk-e7500/igt@gem_softpin@allocator-basic-reserve.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-hsw-4770/igt@gem_softpin@allocator-basic-reserve.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-ilk-650/igt@gem_softpin@allocator-basic-reserve.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9844/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2128">i915#2128</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@client:<ul>
-<li>fi-glk-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9844/fi-glk-dsi/igt@i915_selftest@live@client.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3047">i915#3047</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/fi-glk-dsi/igt@i915_selftest@live@client.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (45 -&gt; 40)</h2>
-<p>Additional (1): fi-bsw-n3050 <br />
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-icl-y fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6027 -&gt; IGTPW_5587</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9844: 3108bcbbbf191b3b5e624f21348c306010725a02 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5587: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5587/index.html<br />
-  IGT_6027: b8b3facdfbb99a0b9ef5f541a0ee7d6bca2aafea @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-<p>== Testlist changes ==</p>
-<p>+igt@api_intel_allocator@alloc-simple<br />
-+igt@api_intel_allocator@execbuf-with-allocator<br />
-+igt@api_intel_allocator@fork-simple-once<br />
-+igt@api_intel_allocator@fork-simple-stress<br />
-+igt@api_intel_allocator@fork-simple-stress-signal<br />
-+igt@api_intel_allocator@open-vm<br />
-+igt@api_intel_allocator@print-random<br />
-+igt@api_intel_allocator@print-simple<br />
-+igt@api_intel_allocator@random-allocator<br />
-+igt@api_intel_allocator@reopen<br />
-+igt@api_intel_allocator@reopen-fork<br />
-+igt@api_intel_allocator@reserve<br />
-+igt@api_intel_allocator@reserve-simple<br />
-+igt@api_intel_allocator@reuse<br />
-+igt@api_intel_allocator@simple-allocator<br />
-+igt@api_intel_allocator@standalone<br />
-+igt@api_intel_allocator@two-level-inception<br />
-+igt@api_intel_allocator@two-level-inception-interruptible<br />
-+igt@api_intel_bb@add-remove-objects<br />
-+igt@api_intel_bb@bb-with-allocator<br />
-+igt@api_intel_bb@bb-with-vm<br />
-+igt@api_intel_bb@blit-noreloc-keep-cache-random<br />
-+igt@api_intel_bb@blit-noreloc-purge-cache-random<br />
-+igt@api_intel_bb@destroy-bb<br />
-+igt@api_intel_bb@last-page<br />
-+igt@api_intel_bb@object-noreloc-keep-cache-random<br />
-+igt@api_intel_bb@object-noreloc-keep-cache-simple<br />
-+igt@api_intel_bb@object-noreloc-purge-cache-random<br />
-+igt@api_intel_bb@object-noreloc-purge-cache-simple<br />
-+igt@api_intel_bb@object-reloc-keep-cache<br />
-+igt@api_intel_bb@object-reloc-purge-cache<br />
-+igt@api_intel_bb@purge-bb<br />
-+igt@api_intel_bb@reset-bb<br />
-+igt@gem_softpin@allocator-basic<br />
-+igt@gem_softpin@allocator-basic-reserve<br />
-+igt@gem_softpin@allocator-fork<br />
-+igt@gem_softpin@allocator-nopin<br />
-+igt@gem_softpin@allocator-nopin-reserve<br />
--igt@api_intel_bb@check-canonical</p>
-
-</body>
-</html>
-
---===============8675985030746624281==--
-
---===============0300012975==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index e0d009d22..5d47a1c2c 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -85,6 +85,10 @@
+ #define DRM_CAP_TIMESTAMP_MONOTONIC 6
+ #endif
+ 
++/* restricted pipe count */
++#define CRTC_RESTRICT_CNT 2
++static bool all_pipes = false;
++
+ drmModeRes *resources;
+ int drm_fd;
+ static struct buf_ops *bops;
+@@ -1435,10 +1439,17 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ 		__run_test_on_crtc_set(o, crtc_idxs, crtc_count, duration_ms);
+ }
+ 
++static int limit_crtc_count(int count_crtcs)
++{
++	return (count_crtcs > CRTC_RESTRICT_CNT)?
++			CRTC_RESTRICT_CNT : count_crtcs;
++}
++
+ static int run_test(int duration, int flags)
+ {
+ 	struct test_output o;
+ 	int i, n, modes = 0;
++	int count_crtcs;
+ 
+ 	igt_require((flags & TEST_HANG) == 0 || !is_wedged(drm_fd));
+ 	igt_require(!(flags & TEST_FENCE_STRESS) ||
+@@ -1447,9 +1458,14 @@ static int run_test(int duration, int flags)
+ 	resources = drmModeGetResources(drm_fd);
+ 	igt_require(resources);
+ 
++	count_crtcs = resources->count_crtcs;
++	/* Limit the execution to 2 CRTCs for hang tests */
++	if(!!(flags & TEST_HANG) && !all_pipes)
++		count_crtcs = limit_crtc_count(count_crtcs);
++
+ 	/* Count output configurations to scale test runtime. */
+ 	for (i = 0; i < resources->count_connectors; i++) {
+-		for (n = 0; n < resources->count_crtcs; n++) {
++		for (n = 0; n < count_crtcs; n++) {
+ 			memset(&o, 0, sizeof(o));
+ 			o.count = 1;
+ 			o._connector[0] = resources->connectors[i];
+@@ -1471,7 +1487,7 @@ static int run_test(int duration, int flags)
+ 
+ 	/* Find any connected displays */
+ 	for (i = 0; i < resources->count_connectors; i++) {
+-		for (n = 0; n < resources->count_crtcs; n++) {
++		for (n = 0; n < count_crtcs; n++) {
+ 			int crtc_idx;
+ 
+ 			memset(&o, 0, sizeof(o));
+@@ -1494,6 +1510,7 @@ static int run_pair(int duration, int flags)
+ {
+ 	struct test_output o;
+ 	int i, j, m, n, modes = 0;
++	int count_crtcs;
+ 
+ 	igt_require((flags & TEST_HANG) == 0 || !is_wedged(drm_fd));
+ 	igt_require(!(flags & TEST_FENCE_STRESS) ||
+@@ -1502,11 +1519,16 @@ static int run_pair(int duration, int flags)
+ 	resources = drmModeGetResources(drm_fd);
+ 	igt_require(resources);
+ 
++	count_crtcs = resources->count_crtcs;
++	/* Limit the execution to 2 CRTCs for hang tests */
++	if(!!(flags & TEST_HANG) && !all_pipes)
++		count_crtcs = limit_crtc_count(count_crtcs);
++
+ 	/* Find a pair of connected displays */
+ 	for (i = 0; i < resources->count_connectors; i++) {
+-		for (n = 0; n < resources->count_crtcs; n++) {
++		for (n = 0; n < count_crtcs; n++) {
+ 			for (j = i + 1; j < resources->count_connectors; j++) {
+-				for (m = n + 1; m < resources->count_crtcs; m++) {
++				for (m = n + 1; m < count_crtcs; m++) {
+ 					memset(&o, 0, sizeof(o));
+ 					o.count = 2;
+ 					o._connector[0] = resources->connectors[i];
+@@ -1533,9 +1555,9 @@ static int run_pair(int duration, int flags)
+ 
+ 	/* Find a pair of connected displays */
+ 	for (i = 0; i < resources->count_connectors; i++) {
+-		for (n = 0; n < resources->count_crtcs; n++) {
++		for (n = 0; n < count_crtcs; n++) {
+ 			for (j = i + 1; j < resources->count_connectors; j++) {
+-				for (m = n + 1; m < resources->count_crtcs; m++) {
++				for (m = n + 1; m < count_crtcs; m++) {
+ 					int crtc_idxs[2];
+ 
+ 					memset(&o, 0, sizeof(o));
+@@ -1604,7 +1626,23 @@ static void test_nonblocking_read(int in)
+ 	close(fd);
+ }
+ 
+-igt_main
++static int opt_handler(int opt, int opt_index, void *data)
++{
++	switch (opt) {
++		case 'e':
++			all_pipes = true;
++			break;
++		default:
++			return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++const char *help_str =
++	"  -e \tRun on all pipes. (By default subtests will run on two pipes)\n";
++
++igt_main_args("det:", NULL, help_str, opt_handler, NULL)
+ {
+ 	struct {
+ 		int duration;
+-- 
+2.20.1
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0300012975==--
