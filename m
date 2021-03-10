@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73C2B6E9C3
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Mar 2021 06:10:08 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E69166E9CC
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Mar 2021 07:30:32 +0000 (UTC)
 From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
-Date: Wed, 10 Mar 2021 11:41:14 +0530
-Message-Id: <20210310061114.8598-1-arundhati.hagaragi@intel.com>
+Date: Wed, 10 Mar 2021 13:01:39 +0530
+Message-Id: <20210310073139.38013-1-arundhati.hagaragi@intel.com>
 In-Reply-To: <20210309112943.1398325-1-arundhati.hagaragi@intel.com>
 References: <20210309112943.1398325-1-arundhati.hagaragi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v9] tests/kms_plane_scaling: Add plane
+Subject: [igt-dev] [PATCH i-g-t v10] tests/kms_plane_scaling: Add plane
  scaling test descriptions for subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -22,7 +22,7 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Khajapasha Mohammed <mohammed.khajapasha@intel.com>, Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: Mohammed <mohammed.khajapasha@intel.com>, Nidhi Gupta <nidhi1.gupta@intel.com>, Khajapasha@freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
@@ -32,15 +32,15 @@ Plane scaling with tiling rotation, pixel formats, overlay planes and with
 clipping and clamping
 
 Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-Cc: Khajapasha Mohammed <mohammed.khajapasha@intel.com>
+Reviewed-by: Khajapasha, Mohammed <mohammed.khajapasha@intel.com>
 
-v1-v9 : Review Comments (Khaja)
+v1-v10 : Review Comments (Khaja)
 ---
  tests/kms_plane_scaling.c | 8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index c63eb428..1d7fb8d3 100644
+index c63eb428..e8bf78e7 100644
 --- a/tests/kms_plane_scaling.c
 +++ b/tests/kms_plane_scaling.c
 @@ -695,32 +695,38 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
@@ -68,7 +68,7 @@ index c63eb428..1d7fb8d3 100644
  		}
  
  		igt_subtest_with_dynamic("scaler-with-clipping-clamping") {
-+			igt_describe("Test plane scaling with  clipping-clamping");
++			igt_describe("Test plane scaling with clipping-clamping");
  			for_each_pipe_with_single_output(&data.display, pipe, output)
  				igt_dynamic_f("pipe-%s-scaler-with-clipping-clamping", kmstest_pipe_name(pipe))
  					test_scaler_with_clipping_clamping_scenario(&data, pipe, output);
