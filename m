@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60B326EB38
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Mar 2021 09:01:03 +0000 (UTC)
+Date: Thu, 11 Mar 2021 11:01:29 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YEncaV3YkKQ/XY7s@platvala-desk.ger.corp.intel.com>
+References: <20210219172738.263820-1-jcline@redhat.com>
+ <161539472158.2308.9500385517901819221@emeril.freedesktop.org>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 11 Mar 2021 08:43:54 -0000
-Message-ID: <161545223498.28798.837894634105626729@emeril.freedesktop.org>
-References: <20210311070158.17638-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20210311070158.17638-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Ffrontbuffer=5Ftracking=3A_modified_subtest_name?=
+Content-Disposition: inline
+In-Reply-To: <161539472158.2308.9500385517901819221@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/kms=5Fhdr=3A_Fix_bpc-switch_tests_on_AMD_hardware_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,78 +20,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============2050303356=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Nidhi Gupta <nidhi1.gupta@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2050303356==
-Content-Type: multipart/alternative;
- boundary="===============1417734097017221145=="
-
---===============1417734097017221145==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/kms_frontbuffer_tracking: modified subtest name
-URL   : https://patchwork.freedesktop.org/series/87868/
-State : failure
-
-== Summary ==
-
-Series 87868 revision 1 was fully merged or fully failed: no git log
-
-
-
---===============1417734097017221145==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, Mar 10, 2021 at 04:45:21PM +0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: tests/kms_hdr: Fix bpc-switch tests on AMD hardware (rev3)
+> URL   : https://patchwork.freedesktop.org/series/87232/
+> State : failure
+> 
+> == Summary ==
+> 
+> Applying: tests/kms_hdr: Fix bpc-switch tests on AMD hardware
+> Applying: kms_hdr: Fix bpc-switch tests on AMD hardware
+> Using index info to reconstruct a base tree...
+> M	tests/kms_hdr.c
+> Falling back to patching base and 3-way merge...
+> Auto-merging tests/kms_hdr.c
+> CONFLICT (content): Merge conflict in tests/kms_hdr.c
+> Patch failed at 0002 kms_hdr: Fix bpc-switch tests on AMD hardware
+> When you have resolved this problem, run "git am --continue".
+> If you prefer to skip this patch, run "git am --skip" instead.
+> To restore the original branch and stop patching, run "git am --abort".
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+Just patchwork being confused.
+
+Merged this, thanks to all involved!
 
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_frontbuffer_tracking: modified subtest name</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87868/">https://patchwork.freedesktop.org/series/87868/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+-- 
+Petri Latvala
 
-</table>
-
-
-    <p>Series 87868 revision 1 was fully merged or fully failed: no git log</p>
-
-</body>
-</html>
-
---===============1417734097017221145==--
-
---===============2050303356==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============2050303356==--
