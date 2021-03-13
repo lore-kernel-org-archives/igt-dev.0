@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 278CB898BE
- for <igt-dev@lists.freedesktop.org>; Sat, 13 Mar 2021 20:05:57 +0000 (UTC)
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Sat, 13 Mar 2021 12:05:49 -0800
-Message-Id: <20210313200549.16973-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] Revert "tests/kms_plane_scaling: Add plane
- scaling test descriptions for subtests"
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Sat, 13 Mar 2021 20:52:07 -0000
+Message-ID: <161566872730.1841.15758754952182408633@emeril.freedesktop.org>
+References: <20210313200549.16973-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20210313200549.16973-1-ashutosh.dixit@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgUmV2ZXJ0?=
+ =?utf-8?q?_=22tests/kms=5Fplane=5Fscaling=3A_Add_plane_scaling_test_descr?=
+ =?utf-8?q?iptions_for_subtests=22?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,91 +15,225 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0528766957=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This reverts commit b0c056b3513e58332887dc50847f359da3e74e53.
+--===============0528766957==
+Content-Type: multipart/alternative;
+ boundary="===============0235990357826599165=="
 
-Tests are failing with the following signature due to this commit:
+--===============0235990357826599165==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Starting subtest: plane-scaling
-documenting dynamic subsubtests is impossible, document the subtest instead.please refer to lib/igt_core documentation
-kms_plane_scaling: ../lib/igt_core.c:359: internal_assert: Assertion `0' failed.
-Received signal SIGABRT.
-Stack trace:
- #0 [fatal_sig_handler+0xd6]
- #1 [killpg+0x40]
- #2 [gsignal+0xc7]
- #3 [abort+0x141]
- #4 [uselocale+0x33a]
- #5 [__assert_fail+0x42]
- #6 [internal_assert+0x101]
- #7 [igt_describe_f+0x95]
- #8 [__real_main704+0xa45]
- #9 [main+0x3f]
- #10 [__libc_start_main+0xe7]
- #11 [_start+0x2a]
+== Series Details ==
 
-Cc: Petri Latvala <petri.latvala@intel.com>
-Reported-by: Jani Saarinen <jani.saarinen@intel.com>
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/kms_plane_scaling.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+Series: Revert "tests/kms_plane_scaling: Add plane scaling test descriptions for subtests"
+URL   : https://patchwork.freedesktop.org/series/87947/
+State : success
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index e8bf78e776..c63eb428f2 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -695,38 +695,32 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		igt_output_t *output;
- 
- 		igt_subtest_with_dynamic("plane-scaling") {
--			igt_describe("Test plane scaling with overlay planes");
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
- 				igt_dynamic_f("pipe-%s-plane-scaling", kmstest_pipe_name(pipe))
- 					test_plane_scaling_on_pipe(&data, pipe, output);
- 		}
- 
- 		igt_subtest_with_dynamic("scaler-with-pixel-format") {
--			igt_describe("Test plane scaling with pixel formats");
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
- 				igt_dynamic_f("pipe-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe))
- 					test_scaler_with_pixel_format_pipe(&data, pipe, output);
- 		}
- 
- 		igt_subtest_with_dynamic("scaler-with-rotation") {
--			igt_describe("Test plane scaling with rotation");
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
- 				igt_dynamic_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
- 					test_scaler_with_rotation_pipe(&data, pipe, output);
- 		}
- 
- 		igt_subtest_with_dynamic("scaler-with-clipping-clamping") {
--			igt_describe("Test plane scaling with clipping-clamping");
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
- 				igt_dynamic_f("pipe-%s-scaler-with-clipping-clamping", kmstest_pipe_name(pipe))
- 					test_scaler_with_clipping_clamping_scenario(&data, pipe, output);
- 		}
- 	}
- 
--	igt_subtest_f("2x-scaler-multi-pipe") {
--		igt_describe("Test multi plane scaling with connected outputs for pipes");
-+	igt_subtest_f("2x-scaler-multi-pipe")
- 		test_scaler_with_multi_pipe_plane(&data);
--	}
- 
- 	igt_fixture
- 		igt_display_fini(&data.display);
--- 
-2.29.2
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9855 -> IGTPW_5597
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5597 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-kbl-8809g:       [PASS][1] -> [TIMEOUT][2] ([i915#3145]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9855/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html
+
+  * igt@gem_tiled_blits@basic:
+    - fi-kbl-8809g:       [PASS][3] -> [TIMEOUT][4] ([i915#2502] / [i915#3145])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9855/fi-kbl-8809g/igt@gem_tiled_blits@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/fi-kbl-8809g/igt@gem_tiled_blits@basic.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [PASS][5] -> [INCOMPLETE][6] ([i915#2782])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9855/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-soraka:      [DMESG-WARN][7] ([i915#1982]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9855/fi-kbl-soraka/igt@i915_pm_rpm@module-reload.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/fi-kbl-soraka/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@client:
+    - fi-glk-dsi:         [DMESG-FAIL][9] ([i915#3047]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9855/fi-glk-dsi/igt@i915_selftest@live@client.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/fi-glk-dsi/igt@i915_selftest@live@client.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - {fi-rkl-11500t}:    [SKIP][11] ([i915#3180]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9855/fi-rkl-11500t/igt@kms_frontbuffer_tracking@basic.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/fi-rkl-11500t/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2502]: https://gitlab.freedesktop.org/drm/intel/issues/2502
+  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
+  [i915#3047]: https://gitlab.freedesktop.org/drm/intel/issues/3047
+  [i915#3145]: https://gitlab.freedesktop.org/drm/intel/issues/3145
+  [i915#3180]: https://gitlab.freedesktop.org/drm/intel/issues/3180
+
+
+Participating hosts (47 -> 39)
+------------------------------
+
+  Missing    (8): fi-ilk-m540 fi-bsw-n3050 fi-hsw-4200u fi-skl-guc fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6031 -> IGTPW_5597
+
+  CI-20190529: 20190529
+  CI_DRM_9855: 249f72def27bf994655d64d261a0a2694d977f20 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5597: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/index.html
+  IGT_6031: 6ab78f9da7621b62c162929013772b3c6ac87dbd @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/index.html
+
+--===============0235990357826599165==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Revert &quot;tests/kms_plane_scaling: Add plane scaling test descriptions for subtests&quot;</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87947/">https://patchwork.freedesktop.org/series/87947/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9855 -&gt; IGTPW_5597</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5597 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9855/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_blits@basic:</p>
+<ul>
+<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9855/fi-kbl-8809g/igt@gem_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/fi-kbl-8809g/igt@gem_tiled_blits@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2502">i915#2502</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9855/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9855/fi-kbl-soraka/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/fi-kbl-soraka/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@client:</p>
+<ul>
+<li>fi-glk-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9855/fi-glk-dsi/igt@i915_selftest@live@client.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3047">i915#3047</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/fi-glk-dsi/igt@i915_selftest@live@client.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>{fi-rkl-11500t}:    <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9855/fi-rkl-11500t/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3180">i915#3180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/fi-rkl-11500t/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (47 -&gt; 39)</h2>
+<p>Missing    (8): fi-ilk-m540 fi-bsw-n3050 fi-hsw-4200u fi-skl-guc fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6031 -&gt; IGTPW_5597</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9855: 249f72def27bf994655d64d261a0a2694d977f20 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5597: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5597/index.html<br />
+  IGT_6031: 6ab78f9da7621b62c162929013772b3c6ac87dbd @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============0235990357826599165==--
+
+--===============0528766957==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0528766957==--
