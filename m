@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DAD9E6E23F
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Mar 2021 09:16:19 +0000 (UTC)
+References: <20210121083742.46592-1-ashutosh.dixit@intel.com>
+ <e7f8ed82-a9a4-e2a6-5b59-f8391c7d8421@linux.intel.com>
+ <87lfaohuol.wl-ashutosh.dixit@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <c1e0796a-6970-c535-2080-a8ce4dd34f4b@linux.intel.com>
+Date: Tue, 16 Mar 2021 09:16:14 +0000
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 16 Mar 2021 09:11:35 -0000
-Message-ID: <161588589538.23908.15807949618710635419@emeril.freedesktop.org>
-References: <20210315152243.1500889-1-mail@aurabindo.in>
-In-Reply-To: <20210315152243.1500889-1-mail@aurabindo.in>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?amdgpu=3A_Add_test_description_for_amd=5Fabm?=
+In-Reply-To: <87lfaohuol.wl-ashutosh.dixit@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/ioctl_wrappers: Keep IGT working
+ without pread/pwrite ioctls
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,232 +20,164 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0213742350=="
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-2"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Aurabindo Pillai <mail@aurabindo.in>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0213742350==
-Content-Type: multipart/alternative;
- boundary="===============7876239526777396339=="
-
---===============7876239526777396339==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/amdgpu: Add test description for amd_abm
-URL   : https://patchwork.freedesktop.org/series/88002/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9859 -> IGTPW_5605
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5605 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@client:
-    - fi-glk-dsi:         [PASS][1] -> [DMESG-FAIL][2] ([i915#3047])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9859/fi-glk-dsi/igt@i915_selftest@live@client.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/fi-glk-dsi/igt@i915_selftest@live@client.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-kefka:       [PASS][3] -> [INCOMPLETE][4] ([i915#2940])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9859/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
-
-  * igt@runner@aborted:
-    - fi-bsw-kefka:       NOTRUN -> [FAIL][5] ([i915#1436] / [i915#2722])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/fi-bsw-kefka/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_tiled_blits@basic:
-    - fi-kbl-8809g:       [TIMEOUT][6] ([i915#2502] / [i915#3145]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9859/fi-kbl-8809g/igt@gem_tiled_blits@basic.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/fi-kbl-8809g/igt@gem_tiled_blits@basic.html
-
-  * igt@i915_selftest@live@gem_contexts:
-    - {fi-tgl-dsi}:       [DMESG-FAIL][8] -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9859/fi-tgl-dsi/igt@i915_selftest@live@gem_contexts.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/fi-tgl-dsi/igt@i915_selftest@live@gem_contexts.html
-
-  
-#### Warnings ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-glk-dsi:         [DMESG-WARN][10] ([i915#1982] / [i915#3143]) -> [DMESG-WARN][11] ([i915#3143])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9859/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#2502]: https://gitlab.freedesktop.org/drm/intel/issues/2502
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
-  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
-  [i915#3047]: https://gitlab.freedesktop.org/drm/intel/issues/3047
-  [i915#3143]: https://gitlab.freedesktop.org/drm/intel/issues/3143
-  [i915#3145]: https://gitlab.freedesktop.org/drm/intel/issues/3145
 
 
-Participating hosts (45 -> 40)
-------------------------------
+On 15/03/2021 23:19, Dixit, Ashutosh wrote:
+> On Mon, 15 Mar 2021 09:51:04 -0700, Tvrtko Ursulin wrote:
+>>
+>>
+>> On 21/01/2021 08:37, Ashutosh Dixit wrote:
+>>> The general direction at this time is to phase out pread/write ioctls
+>>> and not support them in future products. This means IGT must handle
+>>> the absence of these ioctls. This patch does this by modifying
+>>> gem_read() and gem_write() to do the read/write using the pread/pwrite
+>>> ioctls first but when these ioctls are unavailable fall back to doing
+>>> the read/write using a combination of mmap and memcpy.
+>>>
+>>> Callers who must absolutely use the pread/pwrite ioctls (such as tests
+>>> which test these ioctls or must otherwise only use the pread/pwrite
+>>> ioctls) must use gem_require_pread_pwrite() to skip when these ioctls
+>>> are not available.
+>>>
+>>> v1: Removed __gem_pread, gem_pread, __gem_pwrite and gem_pwrite
+>>>       introduced previously since they are not necessary,
+>>>       gem_require_pread_pwrite is sufficient
+>>> v2: Fix CI failures in gem_advise and gen9_exec_parse by introducing
+>>>       gem_require_pread_pwrite
+>>> v3: Skip mmap for 0 length read/write's
+>>> v4: Remove redundant igt_assert's
+>>> v5: Re-run
+>>> v6: s/EOPNOTSUPP/-EOPNOTSUPP/
+>>> v7: Rebase on latest master, skip gem_exec_parallel@userptr with
+>>>       gem_require_pread_pwrite
+>>>
+>>> Reviewed-by: Zbigniew Kempczy=F1ski <zbigniew.kempczynski@intel.com>
+>>> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>>> ---
+>>>    lib/ioctl_wrappers.c                        | 135 ++++++++++++++++++=
++-
+>>>    lib/ioctl_wrappers.h                        |   3 +
+>>>    tests/i915/gem_exec_parallel.c              |   3 +
+>>>    tests/i915/gem_madvise.c                    |   2 +
+>>>    tests/i915/gem_partial_pwrite_pread.c       |   1 +
+>>>    tests/i915/gem_pread.c                      |   1 +
+>>>    tests/i915/gem_pread_after_blit.c           |   1 +
+>>>    tests/i915/gem_pwrite.c                     |   1 +
+>>>    tests/i915/gem_pwrite_snooped.c             |   1 +
+>>>    tests/i915/gem_readwrite.c                  |   1 +
+>>>    tests/i915/gem_set_tiling_vs_pwrite.c       |   1 +
+>>>    tests/i915/gem_tiled_partial_pwrite_pread.c |   1 +
+>>>    tests/i915/gem_tiled_pread_basic.c          |   1 +
+>>>    tests/i915/gem_tiled_pread_pwrite.c         |   1 +
+>>>    tests/i915/gem_userptr_blits.c              |   2 +
+>>>    tests/i915/gen9_exec_parse.c                |   4 +-
+>>>    16 files changed, 152 insertions(+), 7 deletions(-)
+>>>
+>>> diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+>>> index 45415621b7..4440004c42 100644
+>>> --- a/lib/ioctl_wrappers.c
+>>> +++ b/lib/ioctl_wrappers.c
+>>> @@ -56,6 +56,7 @@
+>>>    #include "igt_debugfs.h"
+>>>    #include "igt_sysfs.h"
+>>>    #include "config.h"
+>>> +#include "i915/gem_mman.h"
+>>>      #ifdef HAVE_VALGRIND
+>>>    #include <valgrind/valgrind.h>
+>>> @@ -324,6 +325,70 @@ void gem_close(int fd, uint32_t handle)
+>>> 	do_ioctl(fd, DRM_IOCTL_GEM_CLOSE, &close_bo);
+>>>    }
+>>>    +static bool is_cache_coherent(int fd, uint32_t handle)
+>>> +{
+>>> +	return gem_get_caching(fd, handle) !=3D I915_CACHING_NONE;
+>>> +}
+>>> +
+>>> +static void mmap_write(int fd, uint32_t handle, uint64_t offset,
+>>> +		       const void *buf, uint64_t length)
+>>> +{
+>>> +	void *map =3D NULL;
+>>> +
+>>> +	if (!length)
+>>> +		return;
+>>> +
+>>> +	if (is_cache_coherent(fd, handle)) {
+>>> +		/* offset arg for mmap functions must be 0 */
+>>
+>> Offset and lenght I think. So I guess none of the tests used non-aligned
+>> access? Might be worth putting those two as asserts at the top of
+>> mmap_write and mmap_read.
+> =
 
-  Missing    (5): fi-ilk-m540 fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+> Hi Tvrtko, sorry I think you missed the logic. offset and length coming
+> into mmap_write() and mmap_read() are non-zero (so tests are using
+> non-aligned access). However __gem_mmap_offset() (called from
+> __gem_mmap__cpu_coherent() etc.) has an assert that needs the offset to be
+> 0 (which is what the comment above refers to). Therefore instead of doing
+> mmap(offset, length) below we do mmap(0, offset + length).
+
+But is offset + length is guaranteed to be page aligned? I thought =
+
+mmap(2) requires it. Well, if it works obviously I was thinking wrong..
+
+Regards,
+
+Tvrtko
 
 
-Build changes
--------------
+> =
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6032 -> IGTPW_5605
+> A similar logic is used in mmap_write() in lib/intel_bufops.c.
+> =
 
-  CI-20190529: 20190529
-  CI_DRM_9859: b6445758fbac33d1fc22c6f9bc4d55309bb77830 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5605: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/index.html
-  IGT_6032: f3fd2cc23455929d0ef276e05e02416b86a6db91 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+>> Patch looks good to me. I did not investigate which tests need pread/pwr=
+ite
+>> and which can just work. I trust that has been established through CI ru=
+ns
+>> and manual inspection.
+> =
 
-== Logs ==
+> Correct.
+> =
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/index.html
+>> Acked-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> =
 
---===============7876239526777396339==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+> Thanks.
+> =
 
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu: Add test description for amd_abm</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88002/">https://patchwork.freedesktop.org/series/88002/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9859 -&gt; IGTPW_5605</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5605 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@client:</p>
-<ul>
-<li>fi-glk-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9859/fi-glk-dsi/igt@i915_selftest@live@client.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/fi-glk-dsi/igt@i915_selftest@live@client.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3047">i915#3047</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9859/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/fi-bsw-kefka/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_tiled_blits@basic:</p>
-<ul>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9859/fi-kbl-8809g/igt@gem_tiled_blits@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2502">i915#2502</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/fi-kbl-8809g/igt@gem_tiled_blits@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gem_contexts:</p>
-<ul>
-<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9859/fi-tgl-dsi/igt@i915_selftest@live@gem_contexts.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/fi-tgl-dsi/igt@i915_selftest@live@gem_contexts.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_pm_rpm@module-reload:<ul>
-<li>fi-glk-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9859/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3143">i915#3143</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3143">i915#3143</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (45 -&gt; 40)</h2>
-<p>Missing    (5): fi-ilk-m540 fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6032 -&gt; IGTPW_5605</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9859: b6445758fbac33d1fc22c6f9bc4d55309bb77830 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5605: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5605/index.html<br />
-  IGT_6032: f3fd2cc23455929d0ef276e05e02416b86a6db91 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============7876239526777396339==--
-
---===============0213742350==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+>> Regards,
+>>
+>> Tvrtko
+>>
+>>> +		map =3D __gem_mmap__cpu_coherent(fd, handle, 0, offset + length,
+>>> +					       PROT_READ | PROT_WRITE);
+>>> +		if (map)
+>>> +			gem_set_domain(fd, handle,
+>>> +				       I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
+>>> +	}
+>>> +
+>>> +	if (!map) {
+>>> +		map =3D __gem_mmap_offset__wc(fd, handle, 0, offset + length,
+>>> +					    PROT_READ | PROT_WRITE);
+>>> +		if (!map)
+>>> +			map =3D gem_mmap__wc(fd, handle, 0, offset + length,
+>>> +					   PROT_READ | PROT_WRITE);
+>>> +		gem_set_domain(fd, handle,
+>>> +			       I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
+>>> +	}
+>>> +
+>>> +	memcpy(map + offset, buf, length);
+>>> +	munmap(map, offset + length);
+>>> +}
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0213742350==--
