@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [63.128.21.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39C536E85B
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Mar 2021 22:50:13 +0000 (UTC)
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 024186E85F
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Mar 2021 22:50:12 +0000 (UTC)
 From: Lyude <lyude@redhat.com>
-Date: Wed, 17 Mar 2021 18:49:45 -0400
-Message-Id: <20210317224949.448284-4-lyude@redhat.com>
+Date: Wed, 17 Mar 2021 18:49:47 -0400
+Message-Id: <20210317224949.448284-6-lyude@redhat.com>
 In-Reply-To: <20210317224949.448284-1-lyude@redhat.com>
 References: <20210317224949.448284-1-lyude@redhat.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/7] lib/drmtest: Remove i915 refs in
- do_ioctl*() docs
+Subject: [igt-dev] [PATCH i-g-t 5/7] lib/debugfs: Fix igt_crc_t docs to
+ mention has_valid_frame
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,37 +28,32 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lyude Paul <lyude@redhat.com>
 
-These aren't i915 specific, looks like some historical junk.
+Looks like this never got updated when has_valid_frame got added.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 Cc: Martin Peres <martin.peres@free.fr>
 Cc: Jeremy Cline <jcline@redhat.com>
 ---
- lib/drmtest.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/igt_debugfs.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/lib/drmtest.h b/lib/drmtest.h
-index c4b15a26..b933f76a 100644
---- a/lib/drmtest.h
-+++ b/lib/drmtest.h
-@@ -117,7 +117,7 @@ bool is_vc4_device(int fd);
- 
+diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
+index d43ba6c6..97cbaa1c 100644
+--- a/lib/igt_debugfs.h
++++ b/lib/igt_debugfs.h
+@@ -70,10 +70,11 @@ typedef struct _igt_pipe_crc igt_pipe_crc_t;
  /**
-  * do_ioctl:
-- * @fd: open i915 drm file descriptor
-+ * @fd: open drm file descriptor
-  * @ioc: ioctl op definition from drm headers
-  * @ioc_data: data pointer for the ioctl operation
+  * igt_crc_t:
+  * @frame: frame number of the capture CRC
++ * @has_valid_frame: whether this CRC entry has a valid frame counter
+  * @n_words: internal field, don't access
+  * @crc: internal field, don't access
   *
-@@ -131,7 +131,7 @@ bool is_vc4_device(int fd);
- 
- /**
-  * do_ioctl_err:
-- * @fd: open i915 drm file descriptor
-+ * @fd: open drm file descriptor
-  * @ioc: ioctl op definition from drm headers
-  * @ioc_data: data pointer for the ioctl operation
-  * @err: value to expect in errno
+- * Pipe CRC value. All other members than @frame are private and should not be
++ * Pipe CRC value. All other members than @frame and @has_valid_frame are private and should not be
+  * inspected by testcases.
+  */
+ typedef struct {
 -- 
 2.29.2
 
