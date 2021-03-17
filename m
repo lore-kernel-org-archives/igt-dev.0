@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from us-smtp-delivery-124.mimecast.com
  (us-smtp-delivery-124.mimecast.com [216.205.24.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7053B6E853
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Mar 2021 22:42:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D05C36E853
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Mar 2021 22:42:35 +0000 (UTC)
 From: Lyude <lyude@redhat.com>
-Date: Wed, 17 Mar 2021 18:42:20 -0400
-Message-Id: <20210317224222.447100-2-lyude@redhat.com>
+Date: Wed, 17 Mar 2021 18:42:22 -0400
+Message-Id: <20210317224222.447100-4-lyude@redhat.com>
 In-Reply-To: <20210317224222.447100-1-lyude@redhat.com>
 References: <20210317224222.447100-1-lyude@redhat.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/3] tests/kms_color: Don't opencode
- igt_check_crc_equal()
+Subject: [igt-dev] [PATCH i-g-t 3/3] tests/kms_color: Stop leaking fbs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,45 +27,68 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lyude Paul <lyude@redhat.com>
 
+While I was testing this out with nouveau, I noticed that this test leaks
+quite a lot of framebuffers. Didn't cause any issues, but we should fix
+this while we're at it.
+
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 Cc: Martin Peres <martin.peres@free.fr>
 Cc: Ben Skeggs <bskeggs@redhat.com>
 Cc: Jeremy Cline <jcline@redhat.com>
 ---
- tests/kms_color.c        | 2 +-
- tests/kms_color_helper.c | 6 ------
- 2 files changed, 1 insertion(+), 7 deletions(-)
+ tests/kms_color.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/tests/kms_color.c b/tests/kms_color.c
-index f2686f57..705c9160 100644
+index 02a1a2de..b1b91c74 100644
 --- a/tests/kms_color.c
 +++ b/tests/kms_color.c
-@@ -506,7 +506,7 @@ static bool test_pipe_ctm(data_t *data,
- 		/* Verify that the CRC of the software computed output is
- 		 * equal to the CRC of the CTM matrix transformation output.
- 		 */
--		ret &= crc_equal(&crc_software, &crc_hardware);
-+		ret &= !igt_skip_crc_compare || igt_check_crc_equal(&crc_software, &crc_hardware);
+@@ -105,6 +105,8 @@ static void test_pipe_degamma(data_t *data,
  
  		igt_plane_set_fb(primary, NULL);
  		igt_output_set_pipe(output, PIPE_NONE);
-diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index ac8e8454..5f223a88 100644
---- a/tests/kms_color_helper.c
-+++ b/tests/kms_color_helper.c
-@@ -245,12 +245,6 @@ get_blob(data_t *data, igt_pipe_t *pipe, enum igt_atomic_crtc_properties prop)
- 	return drmModeGetPropertyBlob(data->drm_fd, prop_value);
- }
++		igt_remove_fb(data->drm_fd, &fb);
++		igt_remove_fb(data->drm_fd, &fb_modeset);
+ 	}
  
--bool crc_equal(igt_crc_t *a, igt_crc_t *b)
--{
--	return igt_skip_crc_compare ||
--		memcmp(a->crc, b->crc, sizeof(a->crc[0]) * a->n_words) == 0;
--}
--
- int
- pipe_set_property_blob_id(igt_pipe_t *pipe,
- 			  enum igt_atomic_crtc_properties prop,
+ 	free_lut(degamma_linear);
+@@ -189,6 +191,8 @@ static void test_pipe_gamma(data_t *data,
+ 
+ 		igt_plane_set_fb(primary, NULL);
+ 		igt_output_set_pipe(output, PIPE_NONE);
++		igt_remove_fb(data->drm_fd, &fb);
++		igt_remove_fb(data->drm_fd, &fb_modeset);
+ 	}
+ 
+ 	free_lut(gamma_full);
+@@ -292,6 +296,8 @@ static void test_pipe_legacy_gamma(data_t *data,
+ 
+ 		igt_plane_set_fb(primary, NULL);
+ 		igt_output_set_pipe(output, PIPE_NONE);
++		igt_remove_fb(data->drm_fd, &fb);
++		igt_remove_fb(data->drm_fd, &fb_modeset);
+ 	}
+ 
+ 	free(red_lut);
+@@ -510,6 +516,8 @@ static bool test_pipe_ctm(data_t *data,
+ 
+ 		igt_plane_set_fb(primary, NULL);
+ 		igt_output_set_pipe(output, PIPE_NONE);
++		igt_remove_fb(data->drm_fd, &fb);
++		igt_remove_fb(data->drm_fd, &fb_modeset);
+ 	}
+ 
+ 	free_lut(degamma_linear);
+@@ -618,6 +626,9 @@ static void test_pipe_limited_range_ctm(data_t *data,
+ 		 * equal to the CRC of the CTM matrix transformation output.
+ 		 */
+ 		igt_assert_crc_equal(&crc_full, &crc_limited);
++
++		igt_remove_fb(data->drm_fd, &fb);
++		igt_remove_fb(data->drm_fd, &fb_modeset);
+ 	}
+ 
+ 	free_lut(gamma_linear);
 -- 
 2.29.2
 
