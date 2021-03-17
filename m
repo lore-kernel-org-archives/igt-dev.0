@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from us-smtp-delivery-124.mimecast.com
  (us-smtp-delivery-124.mimecast.com [216.205.24.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D05C36E853
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Mar 2021 22:42:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE41E6E854
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Mar 2021 22:42:36 +0000 (UTC)
 From: Lyude <lyude@redhat.com>
-Date: Wed, 17 Mar 2021 18:42:22 -0400
-Message-Id: <20210317224222.447100-4-lyude@redhat.com>
+Date: Wed, 17 Mar 2021 18:42:21 -0400
+Message-Id: <20210317224222.447100-3-lyude@redhat.com>
 In-Reply-To: <20210317224222.447100-1-lyude@redhat.com>
 References: <20210317224222.447100-1-lyude@redhat.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/3] tests/kms_color: Stop leaking fbs
+Subject: [igt-dev] [PATCH i-g-t 2/3] tests/kms_color: Allow tests to run on
+ any driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,68 +28,29 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lyude Paul <lyude@redhat.com>
 
-While I was testing this out with nouveau, I noticed that this test leaks
-quite a lot of framebuffers. Didn't cause any issues, but we should fix
-this while we're at it.
+There's no reason I can see for this being Intel/AMD only
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 Cc: Martin Peres <martin.peres@free.fr>
 Cc: Ben Skeggs <bskeggs@redhat.com>
 Cc: Jeremy Cline <jcline@redhat.com>
 ---
- tests/kms_color.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tests/kms_color.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 02a1a2de..b1b91c74 100644
+index 705c9160..02a1a2de 100644
 --- a/tests/kms_color.c
 +++ b/tests/kms_color.c
-@@ -105,6 +105,8 @@ static void test_pipe_degamma(data_t *data,
+@@ -847,7 +847,7 @@ igt_main
+ 	enum pipe pipe;
  
- 		igt_plane_set_fb(primary, NULL);
- 		igt_output_set_pipe(output, PIPE_NONE);
-+		igt_remove_fb(data->drm_fd, &fb);
-+		igt_remove_fb(data->drm_fd, &fb_modeset);
- 	}
- 
- 	free_lut(degamma_linear);
-@@ -189,6 +191,8 @@ static void test_pipe_gamma(data_t *data,
- 
- 		igt_plane_set_fb(primary, NULL);
- 		igt_output_set_pipe(output, PIPE_NONE);
-+		igt_remove_fb(data->drm_fd, &fb);
-+		igt_remove_fb(data->drm_fd, &fb_modeset);
- 	}
- 
- 	free_lut(gamma_full);
-@@ -292,6 +296,8 @@ static void test_pipe_legacy_gamma(data_t *data,
- 
- 		igt_plane_set_fb(primary, NULL);
- 		igt_output_set_pipe(output, PIPE_NONE);
-+		igt_remove_fb(data->drm_fd, &fb);
-+		igt_remove_fb(data->drm_fd, &fb_modeset);
- 	}
- 
- 	free(red_lut);
-@@ -510,6 +516,8 @@ static bool test_pipe_ctm(data_t *data,
- 
- 		igt_plane_set_fb(primary, NULL);
- 		igt_output_set_pipe(output, PIPE_NONE);
-+		igt_remove_fb(data->drm_fd, &fb);
-+		igt_remove_fb(data->drm_fd, &fb_modeset);
- 	}
- 
- 	free_lut(degamma_linear);
-@@ -618,6 +626,9 @@ static void test_pipe_limited_range_ctm(data_t *data,
- 		 * equal to the CRC of the CTM matrix transformation output.
- 		 */
- 		igt_assert_crc_equal(&crc_full, &crc_limited);
-+
-+		igt_remove_fb(data->drm_fd, &fb);
-+		igt_remove_fb(data->drm_fd, &fb_modeset);
- 	}
- 
- 	free_lut(gamma_linear);
+ 	igt_fixture {
+-		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_AMDGPU);
++		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 		if (is_i915_device(data.drm_fd))
+ 			data.devid = intel_get_drm_devid(data.drm_fd);
+ 		kmstest_set_vt_graphics_mode();
 -- 
 2.29.2
 
