@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8BE716E107
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Mar 2021 10:40:59 +0000 (UTC)
-Date: Thu, 18 Mar 2021 11:40:53 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210318104053.GA12222@zkempczy-mobl2>
-References: <20210317144610.108372-1-zbigniew.kempczynski@intel.com>
- <20210317144610.108372-6-zbigniew.kempczynski@intel.com>
- <CAOFGe97V716nqQHiM1Vh0kpz5kws6-dTQo7dMXNbt5Z5uHf0aA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAOFGe97V716nqQHiM1Vh0kpz5kws6-dTQo7dMXNbt5Z5uHf0aA@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v26 05/35] lib/intel_allocator_simple:
- Add simple allocator
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 18 Mar 2021 11:15:46 -0000
+Message-ID: <161606614683.12737.368662233222276257@emeril.freedesktop.org>
+References: <20210121083432.526247-1-jigar.bhatt@intel.com>
+In-Reply-To: <20210121083432.526247-1-jigar.bhatt@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/i915=5Fpm=5Fdc=3A_Add_DC9_igt_test_Function_=28rev9=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,409 +14,255 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============2112422723=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jason Ekstrand <jason@jlekstrand.net>
-Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
+To: Jigar Bhatt <jigar.bhatt@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Mar 17, 2021 at 02:38:35PM -0500, Jason Ekstrand wrote:
+--===============2112422723==
+Content-Type: multipart/alternative;
+ boundary="===============1520547491497371193=="
 
-<cut>
+--===============1520547491497371193==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I've addressed all that weird indentations you've noticed.
-I've seen that code a lot of times so definitely fresh 
-look was refreshing.
+== Series Details ==
 
-> +
-> > +static bool intel_allocator_simple_is_allocated(struct intel_allocator *ial,
-> > +                                               uint32_t handle, uint64_t size,
-> > +                                               uint64_t offset)
-> > +{
-> > +       struct intel_allocator_record *rec;
-> > +       struct intel_allocator_simple *ials;
-> > +       bool same = false;
-> > +
-> > +       igt_assert(ial);
-> > +       ials = (struct intel_allocator_simple *) ial->priv;
-> > +       igt_assert(ials);
-> > +       igt_assert(handle);
-> > +
-> > +       rec = igt_map_find(&ials->objects, &handle);
-> > +       if (rec && __same(rec, handle, size, offset))
-> > +               same = true;
-> > +
-> > +       return same;
-> > +}
-> > +
-> > +static bool intel_allocator_simple_reserve(struct intel_allocator *ial,
-> > +                                          uint32_t handle,
-> > +                                          uint64_t start, uint64_t end)
-> > +{
-> > +       uint64_t size = end - start;
-> 
-> With canonical addresses, our size calculations aren't going to be
-> correct if start and end are on different sides of the 47-bit
-> boundary.  I'm not sure how to deal with that, TBH.  Most of the time,
-> I think you get saved by the fact that you're only really likely to
-> hit that if you have a > 128 TB range which never happens.  One simple
-> thing we could do is
-> 
-> igt_assert(end >> GEN8_GT_ADDRESS_WIDTH == start >> GEN8_GT_ADDRESS_WIDTH);
-> 
-> or similar.  Same goes for the 3-4 other cases below.
+Series: tests/i915/i915_pm_dc: Add DC9 igt test Function (rev9)
+URL   : https://patchwork.freedesktop.org/series/86165/
+State : success
 
-What do you say about:
+== Summary ==
 
-static uint64_t get_size(uint64_t start, uint64_t end)
-{
-	end = end ? end : 1ull << GEN8_GTT_ADDRESS_WIDTH;
+CI Bug Log - changes from IGT_6035 -> IGTPW_5618
+====================================================
 
-	return end - start;
-}
+Summary
+-------
 
-then
+  **SUCCESS**
 
-	igt_assert(end > start || end == 0);
-	size = get_size(start, end);
+  No regressions found.
 
-> 
-> > +       struct intel_allocator_record *rec = NULL;
-> > +       struct intel_allocator_simple *ials;
-> > +
-> > +       igt_assert(ial);
-> > +       ials = (struct intel_allocator_simple *) ial->priv;
-> > +       igt_assert(ials);
-> > +
-> > +       /* clear [63:48] bits to get rid of canonical form */
-> > +       start = DECANONICAL(start);
-> > +       end = DECANONICAL(end);
-> > +       igt_assert(end > start || end == 0);
-> 
-> With always reserving the top 4K, end = 0 should never happen.
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/index.html
 
-That's true, but limit us from catching problems with last page
-- gpu can hang when using 3d pipeline with batch on that page.
-Take a look to:
+Known issues
+------------
 
-https://patchwork.freedesktop.org/patch/424031/?series=82954&rev=26
+  Here are the changes found in IGTPW_5618 that come from known issues:
 
-Daniel requested to remove that test because it hangs gpu
-on glk/kbl/skl so we likely want to check that in the future
-in other cases. So totally excluding last page is not we want imo.
-For "normal" usage I want to skip that page from default but 
-I still want to have a possibility to use it in "full" version.
+### IGT changes ###
 
---
-Zbigniew
+#### Issues hit ####
 
-> 
-> > +
-> > +       if (simple_vma_heap_alloc_addr(ials, start, size)) {
-> > +               rec = malloc(sizeof(*rec));
-> > +               rec->handle = handle;
-> > +               rec->offset = start;
-> > +               rec->size = size;
-> > +
-> > +               igt_map_add(&ials->reserved, &rec->offset, rec);
-> > +
-> > +               ials->reserved_areas++;
-> > +               ials->reserved_size += rec->size;
-> > +               return true;
-> > +       }
-> > +
-> > +       igt_debug("Failed to reserve %llx + %llx\n", (long long)start, (long long)size);
-> > +       return false;
-> > +}
-> > +
-> > +static bool intel_allocator_simple_unreserve(struct intel_allocator *ial,
-> > +                                            uint32_t handle,
-> > +                                            uint64_t start, uint64_t end)
-> > +{
-> > +       uint64_t size = end - start;
-> > +       struct intel_allocator_record *rec = NULL;
-> > +       struct intel_allocator_simple *ials;
-> > +
-> > +       igt_assert(ial);
-> > +       ials = (struct intel_allocator_simple *) ial->priv;
-> > +       igt_assert(ials);
-> > +
-> > +       /* clear [63:48] bits to get rid of canonical form */
-> > +       start = DECANONICAL(start);
-> > +       end = DECANONICAL(end);
-> > +
-> > +       igt_assert(end > start || end == 0);
-> > +
-> > +       rec = igt_map_find(&ials->reserved, &start);
-> > +
-> > +       if (!rec) {
-> > +               igt_debug("Only reserved blocks can be unreserved\n");
-> > +               return false;
-> > +       }
-> > +
-> > +       if (rec->size != size) {
-> > +               igt_debug("Only the whole block unreservation allowed\n");
-> > +               return false;
-> > +       }
-> > +
-> > +       if (rec->handle != handle) {
-> > +               igt_debug("Handle %u doesn't match reservation handle: %u\n",
-> > +                        rec->handle, handle);
-> > +               return false;
-> > +       }
-> > +
-> > +       igt_map_del(&ials->reserved, &start);
-> > +
-> > +       ials->reserved_areas--;
-> > +       ials->reserved_size -= rec->size;
-> > +       free(rec);
-> > +       simple_vma_heap_free(&ials->heap, start, size);
-> > +
-> > +       return true;
-> > +}
-> > +
-> > +static bool intel_allocator_simple_is_reserved(struct intel_allocator *ial,
-> > +                                              uint64_t start, uint64_t end)
-> > +{
-> > +       uint64_t size = end - start;
-> > +       struct intel_allocator_record *rec = NULL;
-> > +       struct intel_allocator_simple *ials;
-> > +
-> > +       igt_assert(ial);
-> > +       ials = (struct intel_allocator_simple *) ial->priv;
-> > +       igt_assert(ials);
-> > +
-> > +       /* clear [63:48] bits to get rid of canonical form */
-> > +       start = DECANONICAL(start);
-> > +       end = DECANONICAL(end);
-> > +
-> > +       igt_assert(end > start || end == 0);
-> > +
-> > +       rec = igt_map_find(&ials->reserved, &start);
-> > +
-> > +       if (!rec)
-> > +               return false;
-> > +
-> > +       if (rec->offset == start && rec->size == size)
-> > +               return true;
-> > +
-> > +       return false;
-> > +}
-> > +
-> > +static bool equal_8bytes(const void *key1, const void *key2)
-> > +{
-> > +       const uint64_t *k1 = key1, *k2 = key2;
-> > +       return *k1 == *k2;
-> > +}
-> > +
-> > +static void intel_allocator_simple_destroy(struct intel_allocator *ial)
-> > +{
-> > +       struct intel_allocator_simple *ials;
-> > +       struct igt_map_entry *pos;
-> > +       struct igt_map *map;
-> > +       int i;
-> > +
-> > +       igt_assert(ial);
-> > +       ials = (struct intel_allocator_simple *) ial->priv;
-> > +       simple_vma_heap_finish(&ials->heap);
-> > +
-> > +       map = &ials->objects;
-> > +       igt_map_for_each(map, i, pos)
-> > +               free(pos->value);
-> > +       igt_map_free(&ials->objects);
-> > +
-> > +       map = &ials->reserved;
-> > +       igt_map_for_each(map, i, pos)
-> > +               free(pos->value);
-> > +       igt_map_free(&ials->reserved);
-> > +
-> > +       free(ial->priv);
-> > +       free(ial);
-> > +}
-> > +
-> > +static bool intel_allocator_simple_is_empty(struct intel_allocator *ial)
-> > +{
-> > +       struct intel_allocator_simple *ials = ial->priv;
-> > +
-> > +       igt_debug("<ial: %p, fd: %d> objects: %" PRId64
-> > +                 ", reserved_areas: %" PRId64 "\n",
-> > +                 ial, ial->fd,
-> > +                 ials->allocated_objects, ials->reserved_areas);
-> > +
-> > +       return !ials->allocated_objects && !ials->reserved_areas;
-> > +}
-> > +
-> > +static void intel_allocator_simple_print(struct intel_allocator *ial, bool full)
-> > +{
-> > +       struct intel_allocator_simple *ials;
-> > +       struct simple_vma_hole *hole;
-> > +       struct simple_vma_heap *heap;
-> > +       struct igt_map_entry *pos;
-> > +       struct igt_map *map;
-> > +       uint64_t total_free = 0, allocated_size = 0, allocated_objects = 0;
-> > +       uint64_t reserved_size = 0, reserved_areas = 0;
-> > +       int i;
-> > +
-> > +       igt_assert(ial);
-> > +       ials = (struct intel_allocator_simple *) ial->priv;
-> > +       igt_assert(ials);
-> > +       heap = &ials->heap;
-> > +
-> > +       igt_info("intel_allocator_simple <ial: %p, fd: %d> on "
-> > +                "[0x%"PRIx64" : 0x%"PRIx64"]:\n", ial, ial->fd,
-> > +                ials->start, ials->end);
-> > +
-> > +       if (full) {
-> > +               igt_info("holes:\n");
-> > +               simple_vma_foreach_hole(hole, heap) {
-> > +                       igt_info("offset = %"PRIu64" (0x%"PRIx64", "
-> > +                                "size = %"PRIu64" (0x%"PRIx64")\n",
-> > +                                hole->offset, hole->offset, hole->size,
-> > +                                hole->size);
-> > +                       total_free += hole->size;
-> > +               }
-> > +               igt_assert(total_free <= ials->total_size);
-> > +               igt_info("total_free: %" PRIx64
-> > +                        ", total_size: %" PRIx64
-> > +                        ", allocated_size: %" PRIx64
-> > +                        ", reserved_size: %" PRIx64 "\n",
-> > +                        total_free, ials->total_size, ials->allocated_size,
-> > +                        ials->reserved_size);
-> > +               igt_assert(total_free ==
-> > +                          ials->total_size - ials->allocated_size - ials->reserved_size);
-> > +
-> > +               igt_info("objects:\n");
-> > +               map = &ials->objects;
-> > +               igt_map_for_each(map, i, pos) {
-> > +                       struct intel_allocator_record *rec = pos->value;
-> > +
-> > +                       igt_info("handle = %d, offset = %"PRIu64" "
-> > +                               "(0x%"PRIx64", size = %"PRIu64" (0x%"PRIx64")\n",
-> > +                                rec->handle, rec->offset, rec->offset,
-> > +                                rec->size, rec->size);
-> > +                       allocated_objects++;
-> > +                       allocated_size += rec->size;
-> > +               }
-> > +               igt_assert(ials->allocated_size == allocated_size);
-> > +               igt_assert(ials->allocated_objects == allocated_objects);
-> > +
-> > +               igt_info("reserved areas:\n");
-> > +               map = &ials->reserved;
-> > +               igt_map_for_each(map, i, pos) {
-> > +                       struct intel_allocator_record *rec = pos->value;
-> > +
-> > +                       igt_info("offset = %"PRIu64" (0x%"PRIx64", "
-> > +                                "size = %"PRIu64" (0x%"PRIx64")\n",
-> > +                                rec->offset, rec->offset,
-> > +                                rec->size, rec->size);
-> > +                       reserved_areas++;
-> > +                       reserved_size += rec->size;
-> > +               }
-> > +               igt_assert(ials->reserved_areas == reserved_areas);
-> > +               igt_assert(ials->reserved_size == reserved_size);
-> > +       } else {
-> > +               simple_vma_foreach_hole(hole, heap)
-> > +                       total_free += hole->size;
-> > +       }
-> > +
-> > +       igt_info("free space: %"PRIu64"B (0x%"PRIx64") (%.2f%% full)\n"
-> > +                "allocated objects: %"PRIu64", reserved areas: %"PRIu64"\n",
-> > +                total_free, total_free,
-> > +                ((double) (ials->total_size - total_free) /
-> > +                 (double) ials->total_size) * 100,
-> > +                ials->allocated_objects, ials->reserved_areas);
-> > +}
-> > +
-> > +static struct intel_allocator *
-> > +__intel_allocator_simple_create(int fd, uint64_t start, uint64_t end,
-> > +                               enum allocator_strategy strategy)
-> > +{
-> > +       struct intel_allocator *ial;
-> > +       struct intel_allocator_simple *ials;
-> > +
-> > +       igt_debug("Using simple allocator\n");
-> > +
-> > +       ial = calloc(1, sizeof(*ial));
-> > +       igt_assert(ial);
-> > +
-> > +       ial->fd = fd;
-> > +       ial->get_address_range = intel_allocator_simple_get_address_range;
-> > +       ial->alloc = intel_allocator_simple_alloc;
-> > +       ial->free = intel_allocator_simple_free;
-> > +       ial->is_allocated = intel_allocator_simple_is_allocated;
-> > +       ial->reserve = intel_allocator_simple_reserve;
-> > +       ial->unreserve = intel_allocator_simple_unreserve;
-> > +       ial->is_reserved = intel_allocator_simple_is_reserved;
-> > +       ial->destroy = intel_allocator_simple_destroy;
-> > +       ial->is_empty = intel_allocator_simple_is_empty;
-> > +       ial->print = intel_allocator_simple_print;
-> > +       ials = ial->priv = malloc(sizeof(struct intel_allocator_simple));
-> > +       igt_assert(ials);
-> > +
-> > +       igt_map_init(&ials->objects);
-> > +       /* Reserved addresses hashtable is indexed by an offset */
-> > +       __igt_map_init(&ials->reserved, equal_8bytes, NULL, 3);
-> 
-> We have this same problem with Mesa.  Maybe just make the hash map
-> take a uint64_t key instead of a void*.  Then it'll work for both
-> cases easily at the cost of a little extra memory on 32-bit platforms.
-> 
-> Looking a bit more, I guess it's not quite as bad as the Mesa case
-> because you have the uint64_t key in the object you're adding so you
-> don't have to malloc a bunch of uint64_t's just to use as keys.
-> 
-> > +
-> > +       ials->start = start;
-> > +       ials->end = end;
-> > +       ials->total_size = end - start;
-> > +       simple_vma_heap_init(&ials->heap, ials->start, ials->total_size,
-> > +                            strategy);
-> > +
-> > +       ials->allocated_size = 0;
-> > +       ials->allocated_objects = 0;
-> > +       ials->reserved_size = 0;
-> > +       ials->reserved_areas = 0;
-> > +
-> > +       return ial;
-> > +}
-> > +
-> > +struct intel_allocator *
-> > +intel_allocator_simple_create(int fd)
-> > +{
-> > +       uint64_t gtt_size = gem_aperture_size(fd);
-> > +
-> > +       if (!gem_uses_full_ppgtt(fd))
-> > +               gtt_size /= 2;
-> > +       else
-> > +               gtt_size -= RESERVED;
-> > +
-> > +       return __intel_allocator_simple_create(fd, 0, gtt_size,
-> > +                                              ALLOC_STRATEGY_HIGH_TO_LOW);
-> > +}
-> > +
-> > +struct intel_allocator *
-> > +intel_allocator_simple_create_full(int fd, uint64_t start, uint64_t end,
-> > +                                  enum allocator_strategy strategy)
-> > +{
-> > +       uint64_t gtt_size = gem_aperture_size(fd);
-> > +
-> > +       igt_assert(end <= gtt_size);
-> > +       if (!gem_uses_full_ppgtt(fd))
-> > +               gtt_size /= 2;
-> > +       igt_assert(end - start <= gtt_size);
-> 
-> Don't you want just `end <= gtt_size`?  When is something only going
-> to use the top half?
-> 
-> > +
-> > +       return __intel_allocator_simple_create(fd, start, end, strategy);
-> > +}
-> > --
-> > 2.26.0
-> >
+  * igt@amdgpu/amd_basic@query-info:
+    - fi-bsw-kefka:       NOTRUN -> [SKIP][1] ([fdo#109271]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/fi-bsw-kefka/igt@amdgpu/amd_basic@query-info.html
+
+  * igt@amdgpu/amd_prime@amd-to-i915:
+    - fi-kbl-8809g:       NOTRUN -> [DMESG-WARN][2] ([i915#2947])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/fi-kbl-8809g/igt@amdgpu/amd_prime@amd-to-i915.html
+
+  * igt@i915_module_load@reload:
+    - fi-kbl-7500u:       [PASS][3] -> [DMESG-WARN][4] ([i915#2605])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6035/fi-kbl-7500u/igt@i915_module_load@reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/fi-kbl-7500u/igt@i915_module_load@reload.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@a-vga1:
+    - fi-bwr-2160:        [PASS][5] -> [FAIL][6] ([i915#2122])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6035/fi-bwr-2160/igt@kms_flip@basic-flip-vs-wf_vblank@a-vga1.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/fi-bwr-2160/igt@kms_flip@basic-flip-vs-wf_vblank@a-vga1.html
+
+  * igt@runner@aborted:
+    - fi-kbl-8809g:       NOTRUN -> [FAIL][7] ([i915#2947])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/fi-kbl-8809g/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_tiled_blits@basic:
+    - fi-kbl-8809g:       [TIMEOUT][8] ([i915#2502] / [i915#3145]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6035/fi-kbl-8809g/igt@gem_tiled_blits@basic.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/fi-kbl-8809g/igt@gem_tiled_blits@basic.html
+
+  * igt@gem_tiled_fence_blits@basic:
+    - fi-kbl-8809g:       [TIMEOUT][10] ([i915#3145]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6035/fi-kbl-8809g/igt@gem_tiled_fence_blits@basic.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/fi-kbl-8809g/igt@gem_tiled_fence_blits@basic.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-kefka:       [INCOMPLETE][12] ([i915#2940]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6035/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1222]: https://gitlab.freedesktop.org/drm/intel/issues/1222
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2122]: https://gitlab.freedesktop.org/drm/intel/issues/2122
+  [i915#2502]: https://gitlab.freedesktop.org/drm/intel/issues/2502
+  [i915#2605]: https://gitlab.freedesktop.org/drm/intel/issues/2605
+  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
+  [i915#2947]: https://gitlab.freedesktop.org/drm/intel/issues/2947
+  [i915#3145]: https://gitlab.freedesktop.org/drm/intel/issues/3145
+
+
+Participating hosts (46 -> 39)
+------------------------------
+
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-glk-dsi fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6035 -> IGTPW_5618
+
+  CI-20190529: 20190529
+  CI_DRM_9867: 5f7383f6c1c95be9758792da71084f8f2c0c5953 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5618: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/index.html
+  IGT_6035: ad5eb02eb3f10a41d0f1feba7efc02db87cd06b8 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@i915_pm_dc@dc9-dpms
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/index.html
+
+--===============1520547491497371193==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/i915_pm_dc: Add DC9 igt test Function (rev9)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/86165/">https://patchwork.freedesktop.org/series/86165/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6035 -&gt; IGTPW_5618</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5618 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@query-info:</p>
+<ul>
+<li>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/fi-bsw-kefka/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_prime@amd-to-i915:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/fi-kbl-8809g/igt@amdgpu/amd_prime@amd-to-i915.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2947">i915#2947</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6035/fi-kbl-7500u/igt@i915_module_load@reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/fi-kbl-7500u/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2605">i915#2605</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-vga1:</p>
+<ul>
+<li>fi-bwr-2160:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6035/fi-bwr-2160/igt@kms_flip@basic-flip-vs-wf_vblank@a-vga1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/fi-bwr-2160/igt@kms_flip@basic-flip-vs-wf_vblank@a-vga1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2122">i915#2122</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/fi-kbl-8809g/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2947">i915#2947</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_tiled_blits@basic:</p>
+<ul>
+<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6035/fi-kbl-8809g/igt@gem_tiled_blits@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2502">i915#2502</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/fi-kbl-8809g/igt@gem_tiled_blits@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_fence_blits@basic:</p>
+<ul>
+<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6035/fi-kbl-8809g/igt@gem_tiled_fence_blits@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/fi-kbl-8809g/igt@gem_tiled_fence_blits@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6035/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (46 -&gt; 39)</h2>
+<p>Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-glk-dsi fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6035 -&gt; IGTPW_5618</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9867: 5f7383f6c1c95be9758792da71084f8f2c0c5953 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5618: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5618/index.html<br />
+  IGT_6035: ad5eb02eb3f10a41d0f1feba7efc02db87cd06b8 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@i915_pm_dc@dc9-dpms</p>
+
+</body>
+</html>
+
+--===============1520547491497371193==--
+
+--===============2112422723==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============2112422723==--
