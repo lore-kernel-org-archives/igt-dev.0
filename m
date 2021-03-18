@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6BACA6E1F7
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Mar 2021 23:34:24 +0000 (UTC)
-From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
-Date: Thu, 18 Mar 2021 23:34:20 +0000
-Message-ID: <BYAPR11MB3784314FCFF4796274101E4E8A699@BYAPR11MB3784.namprd11.prod.outlook.com>
-References: <20210302225334.361966-1-alan.previn.teres.alexis@intel.com>
- <20210302225334.361966-7-alan.previn.teres.alexis@intel.com>
- <161481573538.25897.8547702645218540211@build.alporthouse.com>
-In-Reply-To: <161481573538.25897.8547702645218540211@build.alporthouse.com>
-Content-Language: en-US
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED2476E20B
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Mar 2021 23:54:39 +0000 (UTC)
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+Date: Thu, 18 Mar 2021 16:54:26 -0700
+Message-Id: <20210318235426.448465-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [RFC i-g-t 06/11] Enable protected session and
- protected buffers in rendercopy
+Subject: [igt-dev] [PATCH i-g-t] tool/lsgpu: Fix memory leak when no device
+ is found
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,60 +15,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgdGhlcmUgQ2hyaXMsIA0KV1JUIGJlbG93IHJldmlldyBmZWVkYmFjazogDQoJIi4uLiBqdXN0
-IGhhdmUgdGhlIGNhbGxlciBkbyAxLTMgb25jZSBmb3IgaXRzIHByb3RlY3RlZCBjb250ZXh0LiBD
-YWxsIGl0IHNvbWV0aGluZyBsaWtlIGludGVsX2JiX2VuYWJsZV9weHAoKSwgaW50ZWxfYmJfc2V0
-X3B4cCBpZiBpdCBzaG91bGQgYmUgcmV2ZXJzaWJsZS4iLC4uDQoNCklmIHdlIGFyZSB0aGlua2lu
-ZyBhYm91dCBoYXZpbmcgdGhpcyBuZXcgImludGVsX2JiX3NldF9weHAiIGZ1bmN0aW9uIHRvIGRp
-c3BhdGNoIHRoZSBNSV9TRVRfQVBQSUQgYW5kIFBJUEVfQ09OVFJPTCBIVyBpbnN0cnVjdGlvbnMg
-b3V0IHRvIEhXIGF0IHRoZSB0aW1lIGl0cyBjYWxsZWQsIGl0IHdvdWxkbid0IHdvcmsuICBUaGUg
-cmVhc29uIGZvciB0aGlzIGlzIGJlY2F1c2UgdGhlIEhXIHJlcXVpcmVzIHRoYXQgZW5hYmxpbmcg
-cHJvdGVjdGVkIG1lbW9yeSBhY2Nlc3MgYW5kIGRpc2FibGluZyBwcm90ZWN0ZWQgbWVtb3J5IGFj
-Y2VzcyBtdXN0IGJlIHByb2dyYW1tZWQgaW4gcGFpcnMgd2l0aGluIHRoZSBzYW1lICJkaXNwYXRj
-aCBvZiBjb21tYW5kcyIgdG8gSFcuIEkndmUgdGVzdGVkIGFuZCBjb25maXJtZWQgdGhpcy4gSSB3
-YXMgdGhpbmtpbmcgYWJvdXQgcHJlcGVuZGluZyBhbmQgYXBwZW5kaW5nIHRoZSBpYmIgdXNlZCBi
-eSBfZ2VuOV9yZW5kZXJfb3AgKGF0IHRoZSBwb2ludCB3aGVuIGl0IGNhbGxzIGludGVsX2JiX2V4
-ZWMpIGJ1dCB0aGF0IGRvZXNu4oCZdCBsb29rIHNjYWxhYmxlIHNpbmNlIHRoZSByZW5kZXJpbmcg
-Y29kZSBpcyBtYW5pcHVsYXRpbmcgdGhlIGliYiBwb2ludGVycyBhbmQgc3BsaXR0aW5nIHRoZSBi
-YXRjaGJ1ZmZlciBibyB0byBiZSB1c2VkIGZvciBib3RoIHRoZSAzZCBzdGF0ZSBhcyB3ZWxsIGFz
-IDNkIGluc3RydWN0aW9uLiBJdCBtaWdodCBiZSBwb3NzaWJsZSB0byBjcmVhdGUgYW5kIGNoYWlu
-IGJhdGNoZXMgYXQgdGhlIHRpbWUgb2YgaW50ZWxfYmJfZXhlYyBkZXBlbmRpbmcgb24gdGhlIHB4
-cCBzdGF0ZSBidXQgdGhpcyB3b3VsZCBiZSBhIGRlY2VudCBhbW91bnQgb2YgcmUtd3JpdGUgb2Yg
-dGhlIGludGVsX2JhdGNoYnVmZmVyIGluaXQgKyBjbGVhbnVwIGNvZGUgdG9vLiBBcmUgeW91IG9r
-YXkgd2l0aCB1c2luZyB0aGUgaW50ZWxfYmJfc2V0X3B4cCB0byBvbmx5IG1hcmsgdGhlIGludGVu
-ZGVkIHB4cCBzdGF0ZSBidXQgc3RpbGwgaGF2ZSB0aGUgX2dlbjlfcmVuZGVyX29wIGFjdHVhbGx5
-IHRyaWdnZXIgdGhvc2UgZW5hYmxlLWRpc2FibGUgaW5zdHJ1Y3Rpb24gcGFpcnM/DQoNCi4uLmFs
-YW4NCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IENocmlzIFdpbHNvbiA8Y2hy
-aXNAY2hyaXMtd2lsc29uLmNvLnVrPiANClNlbnQ6IFdlZG5lc2RheSwgTWFyY2ggMywgMjAyMSAz
-OjU2IFBNDQpUbzogVGVyZXMgQWxleGlzLCBBbGFuIFByZXZpbiA8YWxhbi5wcmV2aW4udGVyZXMu
-YWxleGlzQGludGVsLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQpDYzogVGVy
-ZXMgQWxleGlzLCBBbGFuIFByZXZpbiA8YWxhbi5wcmV2aW4udGVyZXMuYWxleGlzQGludGVsLmNv
-bT4NClN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW1JGQyBpLWctdCAwNi8xMV0gRW5hYmxlIHByb3Rl
-Y3RlZCBzZXNzaW9uIGFuZCBwcm90ZWN0ZWQgYnVmZmVycyBpbiByZW5kZXJjb3B5DQoNClF1b3Rp
-bmcgQWxhbiBQcmV2aW4gKDIwMjEtMDMtMDIgMjI6NTM6MjkpDQo+IDEuIEluIF9nZW45X3JlbmRl
-cl9vcCwgY2hlY2sgaWYgdGhlIGluY29taW5nIGJhdGNoYnVmZmVyDQo+ICAgIHdhcyBtYXJrZWQg
-d2l0aCBweHAgZW5hYmxlZC4gSWYgc28sIGluc2VydCBNSV9TRVRfQVBQSUQNCj4gICAgYWxvbmcg
-d2l0aCBQSVBFX0NPTlRST0wgaW5zdHJ1Y3Rpb25zIGF0IHRoZSBzdGFydCBhbmQNCj4gICAgZW5k
-IG9mIHRoZSByZW5kZXJpbmcgb3BlcmF0aW9uIGluIHRoZSBjb21tYW5kIGJ1ZmZlci4NCj4gDQo+
-IDIuIFRoZSB0d28gUElQRV9DT05UUk9McyB3aWxsIGVuYWJsZSBwcm90ZWN0ZWQgbWVtb3J5DQo+
-ICAgIGF0IHRoZSBzdGFydCBvZiB0aGUgYmF0Y2ggYW5kIGRpc2FibGluZyBwcm90ZWN0ZWQNCj4g
-ICAgbWVtb3J5IGF0IHRoZSBlbmQgb2YgaXQuIFRoZXNlIFBJUEVfQ09OVFJPTHMgcmVxdWlyZSBh
-DQo+ICAgIFBvc3QtU3luYyBvcGVyYXRpb24gd2l0aCBhIHdyaXRlIHRvIG1lbW9yeS4NCj4gDQo+
-IDMuIEluIG9yZGVyIHRvIHNhdGlzZnkgIzIsIF9nZW45X3JlbmRlcl9vcCBzaGFsbA0KPiAgICBh
-bGxvY2F0ZSBhbmQgcGluIGEgYm8gdGhhdCBpcyByZWZlcmVuY2VkIGJ5IHRoZQ0KPiAgICBQSVBF
-X0NPTlRST0wgUG9zdFN5bmMgd3JpdGUgdG8gbWVtb3J5Lg0KDQpPciwganVzdCBoYXZlIHRoZSBj
-YWxsZXIgZG8gMS0zIG9uY2UgZm9yIGl0cyBwcm90ZWN0ZWQgY29udGV4dC4NCkNhbGwgaXQgc29t
-ZXRoaW5nIGxpa2UgaW50ZWxfYmJfZW5hYmxlX3B4cCgpLCBpbnRlbF9iYl9zZXRfcHhwIGlmIGl0
-IHNob3VsZCBiZSByZXZlcnNpYmxlLg0KDQo+ICsgICAgICAgaWYgKGliYi0+cHhwLmVuYWJsZWQp
-IHsNCj4gKyAgICAgICAgICAgICAgIGdlbV9zeW5jKGliYi0+aTkxNSwgZmVuY2ViLmhhbmRsZSk7
-DQoNCk5vIGltcGxpY2l0IHN5bmNzLCBldmVyLiBUaGF0IHdpbGwgaGlkZSB0b28gbWF5IGlzc3Vl
-cy4NCi1DaHJpcw0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
-cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+From: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+
+Memory allocated during device scan were not being freed.
+added call of igt_devices_free().
+
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+ tools/lsgpu.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/tools/lsgpu.c b/tools/lsgpu.c
+index 25358bbe..27e76f26 100644
+--- a/tools/lsgpu.c
++++ b/tools/lsgpu.c
+@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
+ 		{"help",              no_argument,       NULL, OPT_HELP},
+ 		{0, 0, 0, 0}
+ 	};
+-	int c, index = 0;
++	int c, ret = 0, index = 0;
+ 	char *env_device = NULL, *opt_device = NULL, *rc_device = NULL;
+ 	struct igt_devices_print_format fmt = {
+ 			.type = IGT_PRINT_USER,
+@@ -257,7 +257,8 @@ int main(int argc, char *argv[])
+ 
+ 		if (!igt_device_card_match(igt_device, &card)) {
+ 			printf("No device found for the filter\n\n");
+-			return -1;
++			ret = -1;
++			goto out;
+ 		}
+ 
+ 		printf("Device detail:\n");
+@@ -272,9 +273,10 @@ int main(int argc, char *argv[])
+ 	} else {
+ 		igt_devices_print(&fmt);
+ 	}
+-
++out:
++	igt_devices_free();
+ 	free(rc_device);
+ 	free(opt_device);
+ 
+-	return 0;
++	return ret;
+ }
+-- 
+2.30.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
