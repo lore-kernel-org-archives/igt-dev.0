@@ -1,13 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [63.128.21.124])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D961F6E921
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Mar 2021 16:49:18 +0000 (UTC)
+Received: by mail-qt1-f199.google.com with SMTP id l11so5802378qtk.2
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Mar 2021 09:49:15 -0700 (PDT)
+Message-ID: <3c5108990850ae8f88952c3149eaa935f7e378e7.camel@redhat.com>
+From: Lyude Paul <lyude@redhat.com>
+Date: Thu, 18 Mar 2021 12:49:13 -0400
+In-Reply-To: <YFMaG3tRgsiizy+J@platvala-desk.ger.corp.intel.com>
+References: <20210317223827.446803-1-lyude@redhat.com>
+ <f42f3af7-658e-b06f-fb79-c36273ac4810@mupuf.org>
+ <YFMaG3tRgsiizy+J@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 18 Mar 2021 16:39:29 -0000
-Message-ID: <161608556922.12740.7491233395915924435@emeril.freedesktop.org>
-References: <20210318012952.53562-1-ashutosh.dixit@intel.com>
-In-Reply-To: <20210318012952.53562-1-ashutosh.dixit@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fexec=5Fparallel=3A_Drop_gem=5Frequire=5Fpread=5Fpwrite_che?=
- =?utf-8?q?ck_from_userptr_tests_=28rev2=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t] lib: Introduce the igt_nouveau library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,188 +21,38 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1976663329=="
+Reply-To: lyude@redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>, Martin Peres <martin.peres@mupuf.org>
+Cc: igt-dev@lists.freedesktop.org, nouveau@lists.freedesktop.org, Martin Peres <martin.peres@free.fr>, Ben Skeggs <bskeggs@redhat.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1976663329==
-Content-Type: multipart/alternative;
- boundary="===============6142807564204397176=="
-
---===============6142807564204397176==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: i915/gem_exec_parallel: Drop gem_require_pread_pwrite check from userptr tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/88085/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9870 -> IGTPW_5623
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5623/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_5623:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@gem_exec_parallel@engines@userptr:
-    - {fi-rkl-11500t}:    [SKIP][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9870/fi-rkl-11500t/igt@gem_exec_parallel@engines@userptr.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5623/fi-rkl-11500t/igt@gem_exec_parallel@engines@userptr.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5623 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_linear_blits@basic:
-    - fi-kbl-8809g:       [PASS][3] -> [TIMEOUT][4] ([i915#2502] / [i915#3145]) +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9870/fi-kbl-8809g/igt@gem_linear_blits@basic.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5623/fi-kbl-8809g/igt@gem_linear_blits@basic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#2502]: https://gitlab.freedesktop.org/drm/intel/issues/2502
-  [i915#3145]: https://gitlab.freedesktop.org/drm/intel/issues/3145
-
-
-Participating hosts (44 -> 39)
-------------------------------
-
-  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6036 -> IGTPW_5623
-
-  CI-20190529: 20190529
-  CI_DRM_9870: a9a5ed8d2432e5335e6c26118cefb2cfff28ae37 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5623: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5623/index.html
-  IGT_6036: 5b535494abcdf5ce2b9be99b7bb5df8ab4733083 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5623/index.html
-
---===============6142807564204397176==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>i915/gem_exec_parallel: Drop gem_require_pread_pwrite check from userptr tests (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88085/">https://patchwork.freedesktop.org/series/88085/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5623/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5623/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9870 -&gt; IGTPW_5623</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5623/index.html</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_5623:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@gem_exec_parallel@engines@userptr:<ul>
-<li>{fi-rkl-11500t}:    <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9870/fi-rkl-11500t/igt@gem_exec_parallel@engines@userptr.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5623/fi-rkl-11500t/igt@gem_exec_parallel@engines@userptr.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5623 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@gem_linear_blits@basic:<ul>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9870/fi-kbl-8809g/igt@gem_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5623/fi-kbl-8809g/igt@gem_linear_blits@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2502">i915#2502</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>) +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (44 -&gt; 39)</h2>
-<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6036 -&gt; IGTPW_5623</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9870: a9a5ed8d2432e5335e6c26118cefb2cfff28ae37 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5623: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5623/index.html<br />
-  IGT_6036: 5b535494abcdf5ce2b9be99b7bb5df8ab4733083 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============6142807564204397176==--
-
---===============1976663329==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============1976663329==--
+T24gVGh1LCAyMDIxLTAzLTE4IGF0IDExOjE1ICswMjAwLCBQZXRyaSBMYXR2YWxhIHdyb3RlOgo+
+IE9uIFRodSwgTWFyIDE4LCAyMDIxIGF0IDA5OjA2OjI5QU0gKzAyMDAsIE1hcnRpbiBQZXJlcyB3
+cm90ZToKPiA+IE9uIDE4LzAzLzIwMjEgMDA6MzgsIEx5dWRlIHdyb3RlOgo+ID4gPiBkaWZmIC0t
+Z2l0IGEvaW5jbHVkZS9kcm0tdWFwaS9kcm1fZm91cmNjLmggYi9pbmNsdWRlL2RybS11YXBpL2Ry
+bV9mb3VyY2MuaAo+ID4gPiBpbmRleCBhN2JjMDU4Yy4uODdjODc0ODUgMTAwNjQ0Cj4gPiA+IC0t
+LSBhL2luY2x1ZGUvZHJtLXVhcGkvZHJtX2ZvdXJjYy5oCj4gPiA+ICsrKyBiL2luY2x1ZGUvZHJt
+LXVhcGkvZHJtX2ZvdXJjYy5oCj4gPiA+IEBAIC02ODEsNyArNjgxLDcgQEAgZHJtX2ZvdXJjY19j
+YW5vbmljYWxpemVfbnZpZGlhX2Zvcm1hdF9tb2QoX191NjQKPiA+ID4gbW9kaWZpZXIpCj4gPiA+
+IMKgIH0KPiA+ID4gwqAgLyoKPiA+ID4gLSAqIDE2QngyIEJsb2NrIExpbmVhciBsYXlvdXQsIHVz
+ZWQgYnkgVGVncmEgSzEgYW5kIGxhdGVyCj4gPiA+ICsgKiAxNkJ4MiBCbG9jayBMaW5lYXIgbGF5
+b3V0LCB1c2VkIGJ5IGRlc2t0b3AgR1BVcywgYW5kIFRlZ3JhIEsxIGFuZAo+ID4gPiBsYXRlcgo+
+ID4gCj4gPiBNYXliZSByZW1vdmUgb25lIG9mIHRoZSAiYW5kInM/Cj4gPiAKPiA+IDE2QngyIEJs
+b2NrIExpbmVhciBsYXlvdXQsIHVzZWQgYnkgZGVza3RvcCBHUFVzLCBhbmQgVGVncmEgSzErCj4g
+Cj4gZHJtX2ZvdXJjYy5oIGlzIGNvcGllZCBmcm9tIHRoZSBrZXJuZWwsIG5vIGhhbmQtZWRpdGlu
+ZyBpbiBJR1QuCgpUaGVzZSBhZGRpdGlvbnMgYXJlIGFsbCBjb3BpZWQgZnJvbSB0aGUgZHJtX2Zv
+dXJjYy5oIGZpbGUgaW4gdGhlIGtlcm5lbCB0aG91Z2gsCmRvIHlvdSB3YW50IG1lIHRvIGp1c3Qg
+dXBkYXRlIHRoZSB3aG9sZSBmaWxlIGluc3RlYWQ/Cgo+IAo+IAoKLS0gClNpbmNlcmVseSwKICAg
+THl1ZGUgUGF1bCAoc2hlL2hlcikKICAgU29mdHdhcmUgRW5naW5lZXIgYXQgUmVkIEhhdAogICAK
+Tm90ZTogSSBkZWFsIHdpdGggYSBsb3Qgb2YgZW1haWxzIGFuZCBoYXZlIGEgbG90IG9mIGJ1Z3Mg
+b24gbXkgcGxhdGUuIElmIHlvdSd2ZQphc2tlZCBtZSBhIHF1ZXN0aW9uLCBhcmUgd2FpdGluZyBm
+b3IgYSByZXZpZXcvbWVyZ2Ugb24gYSBwYXRjaCwgZXRjLiBhbmQgSQpoYXZlbid0IHJlc3BvbmRl
+ZCBpbiBhIHdoaWxlLCBwbGVhc2UgZmVlbCBmcmVlIHRvIHNlbmQgbWUgYW5vdGhlciBlbWFpbCB0
+byBjaGVjawpvbiBteSBzdGF0dXMuIEkgZG9uJ3QgYml0ZSEKCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
+YW4vbGlzdGluZm8vaWd0LWRldgo=
