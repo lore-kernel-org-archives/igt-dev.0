@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 80D6D6E8DB
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Mar 2021 11:25:38 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu, 18 Mar 2021 12:24:07 +0100
-Message-Id: <20210318112407.28717-37-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20210318112407.28717-1-zbigniew.kempczynski@intel.com>
-References: <20210318112407.28717-1-zbigniew.kempczynski@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 687976E069
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Mar 2021 12:03:18 +0000 (UTC)
+From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Thu, 18 Mar 2021 17:23:20 +0530
+Message-Id: <20210318115320.109568-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v27 36/36] lib/intel_batchbuffer: Don't
- collect relocations for newer gens
+Subject: [igt-dev] [i-g-t] tests/kms_content_protection: Initialize fb
+ height width to 0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,49 +15,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: hariom.pandey@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UHJlcGFyaW5nIHVuaXZlcnNhbCBiYXRjaGVzIGZvciByZW5kZXJjb3B5LCBncGdwdSBmaWxsIGFu
-ZCBtZWRpYSBmaWxsCm11c3QgdGFrZSBpbnRvIGFjY291bnQgZG9lcyBrZXJuZWwgc3VwcG9ydCBy
-ZWxvY2F0aW9ucyBmb3Igc3BlY2lmaWVkCmdlbiBvciBub3QuCgpJbiBpbnRlbC1iYiB3ZSBhc3N1
-bWUgcmVsb2NhdGlvbnMgYXJlIHN1cHBvcnRlZCBzbyB1c2VyIGlzIGNhbGxpbmcKaW50ZWxfYmJf
-ZW1pdF9yZWxvYygpIGxpa2UgZnVuY3Rpb25zIHRvIGVtaXQgYWRkcmVzcyBpbiB0aGUgYmF0Y2gK
-d2hhdCBjb2xsZWN0cyByZWxvY2F0aW9uIHJlcXVpcmVkIGZvciBleGVjYnVmIGNhbGwgaW4gaW50
-ZWwtYmIuCkZvciBuZXdlciBnZW5zIGtlcm5lbCB3aWxsIHJlamVjdCBzdWNoIHJlbG9jYXRpb25z
-IHJldHVybmluZwotRUlOVkFMIHNvIHdlIHNob3VsZCBqdXN0IHByb3ZpZGUgYW4gb2Zmc2V0IChy
-ZXR1cm5lZCBmcm9tIGFsbG9jYXRvcikKYW5kIHNraXAgYWRkaW5nIHJlbG9jYXRpb24gZW50cnkg
-dG8gaW50ZWwtYmIuCgpTaWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWdu
-aWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KQ2M6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVr
-c3RyYW5kLm5ldD4KQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgot
-LS0KIGxpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jIHwgOCArKysrKysrLQogMSBmaWxlIGNoYW5nZWQs
-IDcgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9i
-YXRjaGJ1ZmZlci5jIGIvbGliL2ludGVsX2JhdGNoYnVmZmVyLmMKaW5kZXggMWIyMzRiMTRkLi4w
-YjJjNWIyMWUgMTAwNjQ0Ci0tLSBhL2xpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jCisrKyBiL2xpYi9p
-bnRlbF9iYXRjaGJ1ZmZlci5jCkBAIC0yMTQ4LDcgKzIxNDgsOCBAQCBpbnRlbF9iYl9vYmplY3Rf
-Y2xlYXJfZmxhZyhzdHJ1Y3QgaW50ZWxfYmIgKmliYiwgdWludDMyX3QgaGFuZGxlLCB1aW50NjRf
-dCBmbGFnKQogICogQGRlbHRhOiBkZWx0YSB2YWx1ZSB0byBhZGQgdG8gQGJ1ZmZlcidzIGdwdSBh
-ZGRyZXNzCiAgKiBAb2Zmc2V0OiBvZmZzZXQgd2l0aGluIGJiIHRvIGJlIHBhdGNoZWQKICAqCi0g
-KiBGdW5jdGlvbiBhbGxvY2F0ZXMgYWRkaXRpb25hbCByZWxvY2F0aW9uIHNsb3QgaW4gcmVsb2Mg
-YXJyYXkgZm9yIGEgaGFuZGxlLgorICogV2hlbiByZWxvY2F0aW9ucyBhcmUgcmVxdWVzdGVkIGZ1
-bmN0aW9uIGFsbG9jYXRlcyBhZGRpdGlvbmFsIHJlbG9jYXRpb24gc2xvdAorICogaW4gcmVsb2Mg
-YXJyYXkgZm9yIGEgaGFuZGxlLgogICogT2JqZWN0IG11c3QgYmUgcHJldmlvdXNseSBhZGRlZCB0
-byBiYi4KICAqLwogc3RhdGljIHVpbnQ2NF90IGludGVsX2JiX2FkZF9yZWxvYyhzdHJ1Y3QgaW50
-ZWxfYmIgKmliYiwKQEAgLTIxNjcsNiArMjE2OCwxMCBAQCBzdGF0aWMgdWludDY0X3QgaW50ZWxf
-YmJfYWRkX3JlbG9jKHN0cnVjdCBpbnRlbF9iYiAqaWJiLAogCW9iamVjdCA9IGludGVsX2JiX2Zp
-bmRfb2JqZWN0KGliYiwgaGFuZGxlKTsKIAlpZ3RfYXNzZXJ0KG9iamVjdCk7CiAKKwkvKiBJbiBu
-by1yZWxvYyBtb2RlIHdlIGp1c3QgcmV0dXJuIHRoZSBwcmV2aW91c2x5IGFzc2lnbmVkIGFkZHJl
-c3MgKi8KKwlpZiAoIWliYi0+ZW5mb3JjZV9yZWxvY3MpCisJCWdvdG8gb3V0OworCiAJLyogRm9y
-IGliYiB3ZSBoYXZlIHJlbG9jcyBhbGxvY2F0ZWQgaW4gY2h1bmtzICovCiAJaWYgKHRvX2hhbmRs
-ZSA9PSBpYmItPmhhbmRsZSkgewogCQlyZWxvY3MgPSBpYmItPnJlbG9jczsKQEAgLTIyMDcsNiAr
-MjIxMiw3IEBAIHN0YXRpYyB1aW50NjRfdCBpbnRlbF9iYl9hZGRfcmVsb2Moc3RydWN0IGludGVs
-X2JiICppYmIsCiAJCSAgZGVsdGEsIG9mZnNldCwKIAkJICBmcm9tX3VzZXJfcG9pbnRlcihyZWxv
-Y3NbaV0ucHJlc3VtZWRfb2Zmc2V0KSk7CiAKK291dDoKIAlyZXR1cm4gb2JqZWN0LT5vZmZzZXQ7
-CiB9CiAKLS0gCjIuMjYuMAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
-cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-Cg==
+While requesting for framebuffer height and width should be in
+kernel expected limit. As the test is not initializing height
+and width to 0 garbage framebuffer size is getting requested and
+fails. Addressed same, initalizing height and width to 0.
+
+Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+---
+ tests/kms_content_protection.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 0c2173fb..9cd33b87 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -707,7 +707,7 @@ static void test_content_protection_cleanup(void)
+ static void create_fbs(void)
+ {
+ 	igt_output_t *output;
+-	int width, height;
++	int width = 0, height = 0;
+ 	drmModeModeInfo *mode;
+ 
+ 	for_each_connected_output(&data.display, output) {
+-- 
+2.30.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
