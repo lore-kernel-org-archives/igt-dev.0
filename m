@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8BAEC6E093
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Mar 2021 06:42:38 +0000 (UTC)
-References: <20210317224222.447100-1-lyude@redhat.com>
+References: <20210317224949.448284-1-lyude@redhat.com>
 From: Martin Peres <martin.peres@mupuf.org>
-Message-ID: <2bcaa3ba-7bf4-3f39-df09-ea6f8c0e12cd@mupuf.org>
-Date: Thu, 18 Mar 2021 08:42:27 +0200
+Message-ID: <7995a772-c57d-afeb-aa7b-df6f729a3777@mupuf.org>
+Date: Thu, 18 Mar 2021 08:48:20 +0200
 MIME-Version: 1.0
-In-Reply-To: <20210317224222.447100-1-lyude@redhat.com>
+In-Reply-To: <20210317224949.448284-1-lyude@redhat.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 0/3] tests/kms_color: Fixup for nouveau
+Subject: Re: [igt-dev] [PATCH i-g-t 0/7] lib: Miscellaneous cleanups from
+ nouveau work
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,36 +19,45 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lyude <lyude@redhat.com>, igt-dev@lists.freedesktop.org
-Cc: nouveau@lists.freedesktop.org, Martin Peres <martin.peres@free.fr>, Ben Skeggs <bskeggs@redhat.com>
+To: Lyude <lyude@redhat.com>, nouveau@lists.freedesktop.org, igt-dev@lists.freedesktop.org
+Cc: Martin Peres <martin.peres@free.fr>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 18/03/2021 00:42, Lyude wrote:
+On 18/03/2021 00:49, Lyude wrote:
 > From: Lyude Paul <lyude@redhat.com>
 > 
-> This patch series just introduces a small drive-by cleanup for
-> kms_color, and fixes the kms_color test so that it works correctly on
-> nouveau. Note that the invalid LUT/gamma tests will likely currently
-> fail, but I'm going to be submitting some kernel patches to fix these in
-> nouveau very shortly.
-
-The series is:
-
-Reviewed-by: Martin Peres <martin.peres@mupuf.org>
-
+> These are just a couple of small fixes that didn't seem important
+> enough to stick in their own patch series, but were various issues with
+> igt that I found along the way during my recent nouveau igt work.
 > 
 > Cc: Martin Peres <martin.peres@free.fr>
-> Cc: Ben Skeggs <bskeggs@redhat.com>
 > Cc: Jeremy Cline <jcline@redhat.com>
+
+This series looks sensible to me, and do not seem to have affected 
+Intel's results.
+
+I'll refrain from giving a full R-b because I lack the historical 
+context for some of these changes, but it seems safe to me:
+
+Acked-by: Martin Peres <martin.peres@mupuf.org>
+
 > 
-> Lyude Paul (3):
->    tests/kms_color: Don't opencode igt_check_crc_equal()
->    tests/kms_color: Allow tests to run on any driver
->    tests/kms_color: Stop leaking fbs
+> Lyude Paul (7):
+>    lib/drmtest: Use igt_assert_eq() for do_or_die()
+>    lib/drmtest: And use do_or_die() in do_ioctl()
+>    lib/drmtest: Remove i915 refs in do_ioctl*() docs
+>    lib/igt_fb: Remove domain from igt_fb
+>    lib/debugfs: Fix igt_crc_t docs to mention has_valid_frame
+>    lib/igt_aux: Print name of debug var in igt_debug_wait_for_keypress()
+>    lib/debugfs: Fix function name in igt_pipe_crc_get_for_frame() docs
 > 
->   tests/kms_color.c        | 15 +++++++++++++--
->   tests/kms_color_helper.c |  6 ------
->   2 files changed, 13 insertions(+), 8 deletions(-)
+>   lib/drmtest.h     | 8 ++++----
+>   lib/igt_aux.c     | 2 +-
+>   lib/igt_debugfs.c | 2 +-
+>   lib/igt_debugfs.h | 3 ++-
+>   lib/igt_fb.c      | 3 ---
+>   lib/igt_fb.h      | 2 --
+>   6 files changed, 8 insertions(+), 12 deletions(-)
 > 
 _______________________________________________
 igt-dev mailing list
