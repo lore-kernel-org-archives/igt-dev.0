@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F4276E05D
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Mar 2021 06:18:11 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Date: Thu, 18 Mar 2021 06:18:06 +0000
-Message-ID: <6046dc8eacc6413ea19d25bf38e87091@intel.com>
-References: <20210316110434.101381-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
- <161589645945.23909.12262377451070222616@emeril.freedesktop.org>
- <YFG4XANrh0uLuNm4@platvala-desk.ger.corp.intel.com>
- <53e0e82e18f749fcb3d8ff567d0853bd@intel.com>
- <SN6PR11MB342121E5FD45BF0DD5833009DF699@SN6PR11MB3421.namprd11.prod.outlook.com>
-In-Reply-To: <SN6PR11MB342121E5FD45BF0DD5833009DF699@SN6PR11MB3421.namprd11.prod.outlook.com>
-Content-Language: en-US
+Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ABFEF6E093
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Mar 2021 06:39:27 +0000 (UTC)
+References: <20210317224520.447939-1-lyude@redhat.com>
+From: Martin Peres <martin.peres@mupuf.org>
+Message-ID: <4793631d-ee46-3d80-aa24-30d18d42e38b@mupuf.org>
+Date: Thu, 18 Mar 2021 08:39:01 +0200
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdC9p?=
- =?utf-8?q?915/gem=5Fexec=5Freloc=3A_check_reloc_support_in_GEM?=
+In-Reply-To: <20210317224520.447939-1-lyude@redhat.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: Test 32x32 cursors
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,97 +17,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Surendrakumar Upadhyay, TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>, "Latvala, Petri" <petri.latvala@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Lyude <lyude@redhat.com>, igt-dev@lists.freedesktop.org, nouveau@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+Cc: Martin Peres <martin.peres@free.fr>, Ben Skeggs <bskeggs@redhat.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QFN1cmVuZHJha3VtYXIgVXBhZGh5YXksIFRlamFza3VtYXJYIExvb2tzIGxpa2UgYWxsIGdvb2Qu
-DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBTdXJlbmRyYWt1bWFyIFVwYWRo
-eWF5LCBUZWphc2t1bWFyWCA8dGVqYXNrdW1hcnguc3VyZW5kcmFrdW1hci51cGFkaHlheUBpbnRl
-bC5jb20+IA0KU2VudDogV2VkbmVzZGF5LCBNYXJjaCAxNywgMjAyMSA5OjI1IFBNDQpUbzogVnVk
-dW0sIExha3NobWluYXJheWFuYSA8bGFrc2htaW5hcmF5YW5hLnZ1ZHVtQGludGVsLmNvbT47IExh
-dHZhbGEsIFBldHJpIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT47IGlndC1kZXZAbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnDQpTdWJqZWN0OiBSRTogW2lndC1kZXZdIOKclyBGaS5DSS5CQVQ6IGZhaWx1
-cmUgZm9yIHRlc3QvaTkxNS9nZW1fZXhlY19yZWxvYzogY2hlY2sgcmVsb2Mgc3VwcG9ydCBpbiBH
-RU0NCg0KSGkgTGF4bWksDQoNCkl0IGlzIG5vdCByZWxhdGVkIHRvIHBhdGNoLiBQYXRjaCBydW5z
-IGluIGdlbV9leGVjX3JlbG9jIHRlc3RzdWl0IG9ubHkuDQoNClRoYW5rcywNClRlamFzDQoNCj4g
-LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVnVkdW0sIExha3NobWluYXJheWFu
-YSA8bGFrc2htaW5hcmF5YW5hLnZ1ZHVtQGludGVsLmNvbT4NCj4gU2VudDogMTcgTWFyY2ggMjAy
-MSAyMTo0Nw0KPiBUbzogTGF0dmFsYSwgUGV0cmkgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPjsg
-DQo+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBTdXJlbmRyYWt1bWFyIFVw
-YWRoeWF5LCBUZWphc2t1bWFyWCANCj4gPHRlamFza3VtYXJ4LnN1cmVuZHJha3VtYXIudXBhZGh5
-YXlAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSRTogW2lndC1kZXZdIOKclyBGaS5DSS5CQVQ6IGZh
-aWx1cmUgZm9yIA0KPiB0ZXN0L2k5MTUvZ2VtX2V4ZWNfcmVsb2M6IGNoZWNrIHJlbG9jIHN1cHBv
-cnQgaW4gR0VNDQo+IA0KPiBSZS1yZXBvcnRlZC4NCj4gDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2Fn
-ZS0tLS0tDQo+IEZyb206IExhdHZhbGEsIFBldHJpIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4N
-Cj4gU2VudDogV2VkbmVzZGF5LCBNYXJjaCAxNywgMjAyMSAxOjA2IEFNDQo+IFRvOiBpZ3QtZGV2
-QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgVnVkdW0sIExha3NobWluYXJheWFuYSANCj4gPGxha3No
-bWluYXJheWFuYS52dWR1bUBpbnRlbC5jb20+DQo+IENjOiBTdXJlbmRyYWt1bWFyIFVwYWRoeWF5
-LCBUZWphc2t1bWFyWCANCj4gPHRlamFza3VtYXJ4LnN1cmVuZHJha3VtYXIudXBhZGh5YXlAaW50
-ZWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW2lndC1kZXZdIOKclyBGaS5DSS5CQVQ6IGZhaWx1cmUg
-Zm9yIA0KPiB0ZXN0L2k5MTUvZ2VtX2V4ZWNfcmVsb2M6IGNoZWNrIHJlbG9jIHN1cHBvcnQgaW4g
-R0VNDQo+IA0KPiBPbiBUdWUsIE1hciAxNiwgMjAyMSBhdCAxMjowNzozOVBNICswMDAwLCBQYXRj
-aHdvcmsgd3JvdGU6DQo+ID4gPT0gU2VyaWVzIERldGFpbHMgPT0NCj4gPg0KPiA+IFNlcmllczog
-dGVzdC9pOTE1L2dlbV9leGVjX3JlbG9jOiBjaGVjayByZWxvYyBzdXBwb3J0IGluIEdFTQ0KPiA+
-IFVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy84ODAwNS8N
-Cj4gPiBTdGF0ZSA6IGZhaWx1cmUNCj4gPg0KPiA+ID09IFN1bW1hcnkgPT0NCj4gPg0KPiA+IENJ
-IEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20gQ0lfRFJNXzk4NjAgLT4gSUdUUFdfNTYwNyANCj4gPiA9
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09DQo+ID4N
-Cj4gPiBTdW1tYXJ5DQo+ID4gLS0tLS0tLQ0KPiA+DQo+ID4gICAqKkZBSUxVUkUqKg0KPiA+DQo+
-ID4gICBTZXJpb3VzIHVua25vd24gY2hhbmdlcyBjb21pbmcgd2l0aCBJR1RQV181NjA3IGFic29s
-dXRlbHkgbmVlZCB0byBiZQ0KPiA+ICAgdmVyaWZpZWQgbWFudWFsbHkuDQo+ID4NCj4gPiAgIElm
-IHlvdSB0aGluayB0aGUgcmVwb3J0ZWQgY2hhbmdlcyBoYXZlIG5vdGhpbmcgdG8gZG8gd2l0aCB0
-aGUgY2hhbmdlcw0KPiA+ICAgaW50cm9kdWNlZCBpbiBJR1RQV181NjA3LCBwbGVhc2Ugbm90aWZ5
-IHlvdXIgYnVnIHRlYW0gdG8gYWxsb3cgdGhlbQ0KPiA+ICAgdG8gZG9jdW1lbnQgdGhpcyBuZXcg
-ZmFpbHVyZSBtb2RlLCB3aGljaCB3aWxsIHJlZHVjZSBmYWxzZSBwb3NpdGl2ZXMgaW4gQ0kuDQo+
-ID4NCj4gPiAgIEV4dGVybmFsIFVSTDoNCj4gPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcv
-dHJlZS9kcm0tdGlwL0lHVFBXXzU2MDcvaW5kZXguaHRtbA0KPiA+DQo+ID4gUG9zc2libGUgbmV3
-IGlzc3Vlcw0KPiA+IC0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gPg0KPiA+ICAgSGVyZSBhcmUgdGhl
-IHVua25vd24gY2hhbmdlcyB0aGF0IG1heSBoYXZlIGJlZW4gaW50cm9kdWNlZCBpbg0KPiBJR1RQ
-V181NjA3Og0KPiA+DQo+ID4gIyMjIElHVCBjaGFuZ2VzICMjIw0KPiA+DQo+ID4gIyMjIyBQb3Nz
-aWJsZSByZWdyZXNzaW9ucyAjIyMjDQo+ID4NCj4gPiAgICogaWd0QGk5MTVfcG1fcnBtQGJhc2lj
-LXBjaS1kMy1zdGF0ZToNCj4gPiAgICAgLSBmaS1za2wtNjYwMHU6ICAgICAgIFtQQVNTXVsxXSAt
-PiBbRkFJTF1bMl0NCj4gPiAgICBbMV06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVl
-L2RybS10aXAvQ0lfRFJNXzk4NjAvZmktc2tsLQ0KPiA2NjAwdS9pZ3RAaTkxNV9wbV9ycG1AYmFz
-aWMtcGNpLWQzLXN0YXRlLmh0bWwNCj4gPiAgICBbMl06DQo+ID4gaHR0cHM6Ly9pbnRlbC1nZngt
-Y2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV181NjA3L2ZpLXNrbC02NjAwdS9pZ3QNCj4gPiBA
-aQ0KPiA+IDkxNV9wbV9ycG1AYmFzaWMtcGNpLWQzLXN0YXRlLmh0bWwNCj4gPg0KPiANCj4gTGFr
-c2htaSwgZmFsc2UgcG9zaXRpdmUgaGVyZS4NCj4gDQo+IA0KPiAtLQ0KPiBQZXRyaSBMYXR2YWxh
-DQo+IA0KPiANCj4gDQo+IA0KPiA+DQo+ID4gS25vd24gaXNzdWVzDQo+ID4gLS0tLS0tLS0tLS0t
-DQo+ID4NCj4gPiAgIEhlcmUgYXJlIHRoZSBjaGFuZ2VzIGZvdW5kIGluIElHVFBXXzU2MDcgdGhh
-dCBjb21lIGZyb20ga25vd24gaXNzdWVzOg0KPiA+DQo+ID4gIyMjIElHVCBjaGFuZ2VzICMjIw0K
-PiA+DQo+ID4gIyMjIyBQb3NzaWJsZSBmaXhlcyAjIyMjDQo+ID4NCj4gPiAgICogaWd0QGdlbV9l
-eGVjX2d0dGZpbGxAYmFzaWM6DQo+ID4gICAgIC0gZmkta2JsLTg4MDlnOiAgICAgICBbVElNRU9V
-VF1bM10gKFtpOTE1IzMxNDVdKSAtPiBbUEFTU11bNF0NCj4gPiAgICBbM106IGh0dHBzOi8vaW50
-ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvQ0lfRFJNXzk4NjAvZmkta2JsLQ0KPiA4ODA5
-Zy9pZ3RAZ2VtX2V4ZWNfZ3R0ZmlsbEBiYXNpYy5odG1sDQo+ID4gICAgWzRdOg0KPiA+IGh0dHBz
-Oi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfNTYwNy9maS1rYmwtODgw
-OWcvaWd0DQo+ID4gQGcNCj4gPiBlbV9leGVjX2d0dGZpbGxAYmFzaWMuaHRtbA0KPiA+DQo+ID4N
-Cj4gPiAgIHtuYW1lfTogVGhpcyBlbGVtZW50IGlzIHN1cHByZXNzZWQuIFRoaXMgbWVhbnMgaXQg
-aXMgaWdub3JlZCB3aGVuDQo+IGNvbXB1dGluZw0KPiA+ICAgICAgICAgICB0aGUgc3RhdHVzIG9m
-IHRoZSBkaWZmZXJlbmNlIChTVUNDRVNTLCBXQVJOSU5HLCBvciBGQUlMVVJFKS4NCj4gPg0KPiA+
-ICAgW2k5MTUjMzE0NV06IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwv
-aXNzdWVzLzMxNDUNCj4gPiAgIFtpOTE1IzMxODBdOiBodHRwczovL2dpdGxhYi5mcmVlZGVza3Rv
-cC5vcmcvZHJtL2ludGVsL2lzc3Vlcy8zMTgwDQo+ID4NCj4gPg0KPiA+IFBhcnRpY2lwYXRpbmcg
-aG9zdHMgKDQ1IC0+IDQwKQ0KPiA+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiA+
-DQo+ID4gICBNaXNzaW5nICAgICg1KTogZmktaWxrLW01NDAgZmktYnN3LWN5YW4gZmktY3RnLXA4
-NjAwIGZpLWRnMS0xIGZpLWJkdy1zYW11cw0KPiA+DQo+ID4NCj4gPiBCdWlsZCBjaGFuZ2VzDQo+
-ID4gLS0tLS0tLS0tLS0tLQ0KPiA+DQo+ID4gICAqIENJOiBDSS0yMDE5MDUyOSAtPiBOb25lDQo+
-ID4gICAqIElHVDogSUdUXzYwMzMgLT4gSUdUUFdfNTYwNw0KPiA+DQo+ID4gICBDSS0yMDE5MDUy
-OTogMjAxOTA1MjkNCj4gPiAgIENJX0RSTV85ODYwOiAyZjVjODJjOWE2YTQ2OGVjOGIyMGEzYmIz
-MjJjMzI4OWZiMDVlNzdiIEANCj4gZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNp
-L2xpbnV4DQo+ID4gICBJR1RQV181NjA3OiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJl
-ZS9kcm0tDQo+IHRpcC9JR1RQV181NjA3L2luZGV4Lmh0bWwNCj4gPiAgIElHVF82MDMzOiBlY2Zl
-NGM2MTNjZGJjMDgyZTRhNTYxZWFkMTIwYjQwMzQ5YjYzZjJiIEAgDQo+ID4gZ2l0Oi8vYW5vbmdp
-dC5mcmVlZGVza3RvcC5vcmcveG9yZy9hcHAvaW50ZWwtZ3B1LXRvb2xzDQo+ID4NCj4gPiA9PSBM
-b2dzID09DQo+ID4NCj4gPiBGb3IgbW9yZSBkZXRhaWxzIHNlZToNCj4gPiBodHRwczovL2ludGVs
-LWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzU2MDcvaW5kZXguaHRtbA0KPiANCj4g
-PiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0KPiA+IGln
-dC1kZXYgbWFpbGluZyBsaXN0DQo+ID4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4g
-PiBodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYN
-Cj4gDQoNCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-aWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6
-Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On 18/03/2021 00:45, Lyude wrote:
+> From: Lyude Paul <lyude@redhat.com>
+> 
+> Since pre-nve4 only has two cursor sizes (32x32 and 64x64), we should at
+> least test both of them.
+
+This adds 36 subtests, which take about 1s in average. So the runtime is 
+not significantly increased on the Intel side.
+
+It also seems that Intel should add skips or fix the kernel to support 
+these 32xXX format.
+
+@Petri, could you get someone to investigate this?
+
+In the mean time, here is my:
+
+Reviewed-by: Martin Peres <martin.peres@mupuf.org>
+
+Martin
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> Cc: Martin Peres <martin.peres@free.fr>
+> Cc: Ben Skeggs <bskeggs@redhat.com>
+> Cc: Jeremy Cline <jcline@redhat.com>
+> ---
+>   tests/kms_cursor_crc.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+> index 0be8f7f8..c70c4a8f 100644
+> --- a/tests/kms_cursor_crc.c
+> +++ b/tests/kms_cursor_crc.c
+> @@ -683,7 +683,7 @@ static void run_tests_on_pipe(data_t *data, enum pipe pipe)
+>   	igt_fixture
+>   		igt_remove_fb(data->drm_fd, &data->fb);
+>   
+> -	for (cursor_size = 64; cursor_size <= 512; cursor_size *= 2) {
+> +	for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2) {
+>   		int w = cursor_size;
+>   		int h = cursor_size;
+>   
+> 
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
