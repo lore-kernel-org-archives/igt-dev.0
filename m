@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 69A836E8A2
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Mar 2021 09:07:10 +0000 (UTC)
-Date: Thu, 18 Mar 2021 11:07:46 +0200
+Date: Thu, 18 Mar 2021 11:15:07 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YFMYYvO6H9CtANF8@platvala-desk.ger.corp.intel.com>
-References: <20210317144610.108372-1-zbigniew.kempczynski@intel.com>
- <20210317144610.108372-5-zbigniew.kempczynski@intel.com>
+Message-ID: <YFMaG3tRgsiizy+J@platvala-desk.ger.corp.intel.com>
+References: <20210317223827.446803-1-lyude@redhat.com>
+ <f42f3af7-658e-b06f-fb79-c36273ac4810@mupuf.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210317144610.108372-5-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v26 04/35] lib/igt_core: Track child
- process pid and tid
+In-Reply-To: <f42f3af7-658e-b06f-fb79-c36273ac4810@mupuf.org>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib: Introduce the igt_nouveau library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,46 +15,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Martin Peres <martin.peres@mupuf.org>
+Cc: igt-dev@lists.freedesktop.org, nouveau@lists.freedesktop.org, Martin Peres <martin.peres@free.fr>, Ben Skeggs <bskeggs@redhat.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCBNYXIgMTcsIDIwMjEgYXQgMDM6NDU6MzlQTSArMDEwMCwgWmJpZ25pZXcgS2VtcGN6
-ecWEc2tpIHdyb3RlOgo+IEludHJvZHVjZSB2YXJpYWJsZXMgd2hpY2ggY2FuIGRlY3JlYXNlIG51
-bWJlciBvZiBnZXRwaWQoKS9nZXR0aWQoKQo+IGNhbGxzLCBlc3BlY2lhbGx5IGZvciBhbGxvY2F0
-b3Igd2hpY2ggbXVzdCBiZSBhd2FyZSBvZiBtZXRob2QKPiBhY3F1aXJpbmcgYWRkcmVzc2VzLgo+
-IAo+IFdoZW4gY2hpbGQgaXMgc3Bhd25lZCB1c2luZyBpZ3RfZm9yaygpIHdlIGNhbiBjb250cm9s
-IGl0cyBpbml0aWFsaXphdGlvbgo+IGFuZCBwcmVwYXJlIGNoaWxkX3BpZCBpbXBsaWNpdGx5LiBU
-cmFja2luZyBjaGlsZF90aWQgcmVxdWlyZXMgb3VyCj4gaW50ZXJ2ZW50aW9uIGluIHRoZSBjb2Rl
-IGFuZCBkbyBzb21ldGhpbmcgbGlrZSB0aGlzOgo+IAo+IGlmIChjaGlsZF90aWQgPT0gLTEpCj4g
-CWNoaWxkX3RpZCA9IGdldHRpZCgpCj4gCj4gVmFyaWFibGUgd2FzIGNyZWF0ZWQgZm9yIHVzaW5n
-IGluIFRMUyBzbyBlYWNoIHRocmVhZCBpcyBjcmVhdGVkCj4gd2l0aCB2YXJpYWJsZSBzZXQgdG8g
-LTEuIFRoaXMgd2lsbCBnaXZlIGVhY2ggdGhyZWFkIGl0J3Mgb3duICJjb3B5Igo+IGFuZCB0aGVy
-ZSdzIG5vIHJpc2sgdG8gdXNlIG90aGVyIHRocmVhZCB0aWQuIEZvciBlYWNoIGZvcmtlZCBjaGls
-ZAo+IHdlIHJlYXNzaWduIC0xIHRvIGNoaWxkX3RpZCB0byBhdm9pZCB1c2luZyBhbHJlYWR5IHNl
-dCB2YXJpYWJsZS4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpi
-aWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KPiBDYzogRG9taW5payBHcnplZ29yemVrIDxk
-b21pbmlrLmdyemVnb3J6ZWtAaW50ZWwuY29tPgo+IENjOiBDaHJpcyBXaWxzb24gPGNocmlzQGNo
-cmlzLXdpbHNvbi5jby51az4KPiBDYzogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRl
-bC5jb20+Cj4gQWNrZWQtYnk6IEFyanVuIE1lbGthdmVyaSA8YXJqdW4ubWVsa2F2ZXJpQGludGVs
-LmNvbT4KPiAtLS0KPiAgbGliL2lndF9jb3JlLmMgfCA2ICsrKysrKwo+ICAxIGZpbGUgY2hhbmdl
-ZCwgNiBpbnNlcnRpb25zKCspCj4gCj4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfY29yZS5jIGIvbGli
-L2lndF9jb3JlLmMKPiBpbmRleCBmOWRmYWEwZGQuLjJiNDE4MmYxNiAxMDA2NDQKPiAtLS0gYS9s
-aWIvaWd0X2NvcmUuYwo+ICsrKyBiL2xpYi9pZ3RfY29yZS5jCj4gQEAgLTMwNiw2ICszMDYsMTAg
-QEAgaW50IG51bV90ZXN0X2NoaWxkcmVuOwo+ICBpbnQgdGVzdF9jaGlsZHJlbl9zejsKPiAgYm9v
-bCB0ZXN0X2NoaWxkOwo+ICAKPiArLyogRm9yIGFsbG9jYXRvciBwdXJwb3NlcyAqLwo+ICtwaWRf
-dCBjaGlsZF9waWQgID0gLTE7Cj4gK19fdGhyZWFkIHBpZF90IGNoaWxkX3RpZCAgPSAtMTsKPiAr
-Cj4gIGVudW0gewo+ICAJLyoKPiAgCSAqIExldCB0aGUgZmlyc3QgdmFsdWVzIGJlIHVzZWQgYnkg
-aW5kaXZpZHVhbCB0ZXN0cyBzbyBvcHRpb25zIGRvbid0Cj4gQEAgLTIzMDIsNiArMjMwNiw4IEBA
-IGJvb2wgX19pZ3RfZm9yayh2b2lkKQo+ICAJY2FzZSAwOgo+ICAJCXRlc3RfY2hpbGQgPSB0cnVl
-Owo+ICAJCXB0aHJlYWRfbXV0ZXhfaW5pdCgmcHJpbnRfbXV0ZXgsIE5VTEwpOwo+ICsJCWNoaWxk
-X3BpZCA9IGdldHBpZCgpOwo+ICsJCWNoaWxkX3RpZCA9IC0xOwo+ICAJCWV4aXRfaGFuZGxlcl9j
-b3VudCA9IDA7Cj4gIAkJcmVzZXRfaGVscGVyX3Byb2Nlc3NfbGlzdCgpOwo+ICAJCW9vbV9hZGp1
-c3RfZm9yX2Rvb20oKTsKCgpXaGF0IGFib3V0IGlndF9mb3JrX2hlbHBlcj8KCi0tIApQZXRyaSBM
-YXR2YWxhCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
-dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+On Thu, Mar 18, 2021 at 09:06:29AM +0200, Martin Peres wrote:
+> On 18/03/2021 00:38, Lyude wrote:
+> > diff --git a/include/drm-uapi/drm_fourcc.h b/include/drm-uapi/drm_fourcc.h
+> > index a7bc058c..87c87485 100644
+> > --- a/include/drm-uapi/drm_fourcc.h
+> > +++ b/include/drm-uapi/drm_fourcc.h
+> > @@ -681,7 +681,7 @@ drm_fourcc_canonicalize_nvidia_format_mod(__u64 modifier)
+> >   }
+> >   /*
+> > - * 16Bx2 Block Linear layout, used by Tegra K1 and later
+> > + * 16Bx2 Block Linear layout, used by desktop GPUs, and Tegra K1 and later
+> 
+> Maybe remove one of the "and"s?
+> 
+> 16Bx2 Block Linear layout, used by desktop GPUs, and Tegra K1+
+
+drm_fourcc.h is copied from the kernel, no hand-editing in IGT.
+
+
+-- 
+Petri Latvala
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
