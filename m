@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 25FD16E093
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Mar 2021 06:41:51 +0000 (UTC)
-References: <20210317224407.447572-1-lyude@redhat.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8BAEC6E093
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Mar 2021 06:42:38 +0000 (UTC)
+References: <20210317224222.447100-1-lyude@redhat.com>
 From: Martin Peres <martin.peres@mupuf.org>
-Message-ID: <f5554f76-fc26-e307-0fe0-e59d3bca15ba@mupuf.org>
-Date: Thu, 18 Mar 2021 08:41:40 +0200
+Message-ID: <2bcaa3ba-7bf4-3f39-df09-ea6f8c0e12cd@mupuf.org>
+Date: Thu, 18 Mar 2021 08:42:27 +0200
 MIME-Version: 1.0
-In-Reply-To: <20210317224407.447572-1-lyude@redhat.com>
+In-Reply-To: <20210317224222.447100-1-lyude@redhat.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: Don't unset primary_fb
- when testing other planes
+Subject: Re: [igt-dev] [PATCH i-g-t 0/3] tests/kms_color: Fixup for nouveau
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,74 +21,36 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lyude <lyude@redhat.com>, igt-dev@lists.freedesktop.org, nouveau@lists.freedesktop.org
-Cc: Martin Peres <martin.peres@free.fr>, Ben Skeggs <bskeggs@redhat.com>
+To: Lyude <lyude@redhat.com>, igt-dev@lists.freedesktop.org
+Cc: nouveau@lists.freedesktop.org, Martin Peres <martin.peres@free.fr>, Ben Skeggs <bskeggs@redhat.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 18/03/2021 00:44, Lyude wrote:
+On 18/03/2021 00:42, Lyude wrote:
 > From: Lyude Paul <lyude@redhat.com>
 > 
-> Currently, nouveau doesn't support having a CRTC without a primary FB set. We
-> won't reject such configurations, but the behavior is undefined which will cause
-> CRCs to become undefined. So, avoid clearing the primary FB while we're testing
-> non-primary planes.
+> This patch series just introduces a small drive-by cleanup for
+> kms_color, and fixes the kms_color test so that it works correctly on
+> nouveau. Note that the invalid LUT/gamma tests will likely currently
+> fail, but I'm going to be submitting some kernel patches to fix these in
+> nouveau very shortly.
 
-Looks good to me:
+The series is:
 
 Reviewed-by: Martin Peres <martin.peres@mupuf.org>
 
 > 
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
 > Cc: Martin Peres <martin.peres@free.fr>
 > Cc: Ben Skeggs <bskeggs@redhat.com>
 > Cc: Jeremy Cline <jcline@redhat.com>
-> ---
->   tests/kms_plane.c | 9 +++++----
->   1 file changed, 5 insertions(+), 4 deletions(-)
 > 
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index 298a9375..c87983a4 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -817,9 +817,10 @@ enum crc_set { PACKED_CRC_SET,
->   	       MAX_CRC_SET };
->   
->   static bool test_format_plane(data_t *data, enum pipe pipe,
-> -			      igt_output_t *output, igt_plane_t *plane)
-> +			      igt_output_t *output, igt_plane_t *plane, igt_fb_t *primary_fb)
->   {
->   	struct igt_fb fb = {};
-> +	struct igt_fb *clear_fb = plane->type == DRM_PLANE_TYPE_PRIMARY ? primary_fb : NULL;
->   	drmModeModeInfo *mode;
->   	uint32_t format, ref_format;
->   	uint64_t modifier, ref_modifier;
-> @@ -879,7 +880,7 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
->   			height = test_fb.height;
->   		}
->   
-> -		igt_plane_set_fb(plane, NULL);
-> +		igt_plane_set_fb(plane, clear_fb);
->   
->   		igt_remove_fb(data->drm_fd, &test_fb);
->   	}
-> @@ -937,7 +938,7 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
->   
->   	igt_pipe_crc_stop(data->pipe_crc);
->   
-> -	igt_plane_set_fb(plane, NULL);
-> +	igt_plane_set_fb(plane, clear_fb);
->   	igt_remove_fb(data->drm_fd, &fb);
->   
->   	return result;
-> @@ -1010,7 +1011,7 @@ test_pixel_formats(data_t *data, enum pipe pipe)
->   	for_each_plane_on_pipe(&data->display, pipe, plane) {
->   		if (skip_plane(data, plane))
->   			continue;
-> -		result &= test_format_plane(data, pipe, output, plane);
-> +		result &= test_format_plane(data, pipe, output, plane, &primary_fb);
->   	}
->   
->   	test_fini(data);
+> Lyude Paul (3):
+>    tests/kms_color: Don't opencode igt_check_crc_equal()
+>    tests/kms_color: Allow tests to run on any driver
+>    tests/kms_color: Stop leaking fbs
+> 
+>   tests/kms_color.c        | 15 +++++++++++++--
+>   tests/kms_color_helper.c |  6 ------
+>   2 files changed, 13 insertions(+), 8 deletions(-)
 > 
 _______________________________________________
 igt-dev mailing list
