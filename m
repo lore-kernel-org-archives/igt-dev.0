@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED2476E20B
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Mar 2021 23:54:39 +0000 (UTC)
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-Date: Thu, 18 Mar 2021 16:54:26 -0700
-Message-Id: <20210318235426.448465-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tool/lsgpu: Fix memory leak when no device
- is found
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 19 Mar 2021 00:44:22 -0000
+Message-ID: <161611466206.8630.14765219457995552014@emeril.freedesktop.org>
+References: <20210318235426.448465-1-lucas.demarchi@intel.com>
+In-Reply-To: <20210318235426.448465-1-lucas.demarchi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdG9vbC9s?=
+ =?utf-8?q?sgpu=3A_Fix_memory_leak_when_no_device_is_found?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,66 +14,166 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0577051896=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+--===============0577051896==
+Content-Type: multipart/alternative;
+ boundary="===============4761441748975359982=="
 
-Memory allocated during device scan were not being freed.
-added call of igt_devices_free().
+--===============4761441748975359982==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- tools/lsgpu.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+== Series Details ==
 
-diff --git a/tools/lsgpu.c b/tools/lsgpu.c
-index 25358bbe..27e76f26 100644
---- a/tools/lsgpu.c
-+++ b/tools/lsgpu.c
-@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
- 		{"help",              no_argument,       NULL, OPT_HELP},
- 		{0, 0, 0, 0}
- 	};
--	int c, index = 0;
-+	int c, ret = 0, index = 0;
- 	char *env_device = NULL, *opt_device = NULL, *rc_device = NULL;
- 	struct igt_devices_print_format fmt = {
- 			.type = IGT_PRINT_USER,
-@@ -257,7 +257,8 @@ int main(int argc, char *argv[])
- 
- 		if (!igt_device_card_match(igt_device, &card)) {
- 			printf("No device found for the filter\n\n");
--			return -1;
-+			ret = -1;
-+			goto out;
- 		}
- 
- 		printf("Device detail:\n");
-@@ -272,9 +273,10 @@ int main(int argc, char *argv[])
- 	} else {
- 		igt_devices_print(&fmt);
- 	}
--
-+out:
-+	igt_devices_free();
- 	free(rc_device);
- 	free(opt_device);
- 
--	return 0;
-+	return ret;
- }
--- 
-2.30.1
+Series: tool/lsgpu: Fix memory leak when no device is found
+URL   : https://patchwork.freedesktop.org/series/88148/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6039 -> IGTPW_5626
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5626/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5626 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-kbl-8809g:       [TIMEOUT][1] ([i915#3145]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6039/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5626/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html
+
+  * igt@gem_linear_blits@basic:
+    - fi-kbl-8809g:       [TIMEOUT][3] ([i915#2502] / [i915#3145]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6039/fi-kbl-8809g/igt@gem_linear_blits@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5626/fi-kbl-8809g/igt@gem_linear_blits@basic.html
+
+  
+  [i915#2502]: https://gitlab.freedesktop.org/drm/intel/issues/2502
+  [i915#3145]: https://gitlab.freedesktop.org/drm/intel/issues/3145
+
+
+Participating hosts (44 -> 39)
+------------------------------
+
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6039 -> IGTPW_5626
+
+  CI-20190529: 20190529
+  CI_DRM_9870: a9a5ed8d2432e5335e6c26118cefb2cfff28ae37 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5626: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5626/index.html
+  IGT_6039: 8c4a2cda2a92bdd87797969ef299ad7f6e8e993b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5626/index.html
+
+--===============4761441748975359982==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tool/lsgpu: Fix memory leak when no device is found</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88148/">https://patchwork.freedesktop.org/series/88148/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5626/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5626/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6039 -&gt; IGTPW_5626</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5626/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5626 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6039/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5626/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_linear_blits@basic:</p>
+<ul>
+<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6039/fi-kbl-8809g/igt@gem_linear_blits@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2502">i915#2502</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5626/fi-kbl-8809g/igt@gem_linear_blits@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (44 -&gt; 39)</h2>
+<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6039 -&gt; IGTPW_5626</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9870: a9a5ed8d2432e5335e6c26118cefb2cfff28ae37 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5626: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5626/index.html<br />
+  IGT_6039: 8c4a2cda2a92bdd87797969ef299ad7f6e8e993b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============4761441748975359982==--
+
+--===============0577051896==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0577051896==--
