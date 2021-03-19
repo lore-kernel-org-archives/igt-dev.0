@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [63.128.21.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A82D6EA67
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Mar 2021 17:40:57 +0000 (UTC)
-Received: by mail-qk1-f197.google.com with SMTP id y22so29730370qkb.23
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Mar 2021 10:40:54 -0700 (PDT)
-Message-ID: <19ee182cd7965f3a250062dac927eccc7ae31a91.camel@redhat.com>
-From: Lyude Paul <lyude@redhat.com>
-Date: Fri, 19 Mar 2021 13:40:52 -0400
-In-Reply-To: <YFS8vuuArWJtH9Mb@intel.com>
+Date: Fri, 19 Mar 2021 20:00:37 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <YFTmxXGL4qF9Z41X@intel.com>
 References: <20210318222124.970997-1-lyude@redhat.com>
- <20210318222124.970997-2-lyude@redhat.com> <YFS8vuuArWJtH9Mb@intel.com>
+ <20210318222124.970997-2-lyude@redhat.com>
+ <YFS8vuuArWJtH9Mb@intel.com>
+ <19ee182cd7965f3a250062dac927eccc7ae31a91.camel@redhat.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <19ee182cd7965f3a250062dac927eccc7ae31a91.camel@redhat.com>
 Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/kms_cursor_crc: Probe
  kernel for cursor size support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -21,248 +18,388 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: lyude@redhat.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville =?ISO-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Lyude Paul <lyude@redhat.com>
 Cc: igt-dev@lists.freedesktop.org, nouveau@lists.freedesktop.org, Martin Peres <martin.peres@free.fr>, Ben Skeggs <bskeggs@redhat.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCAyMDIxLTAzLTE5IGF0IDE3OjAxICswMjAwLCBWaWxsZSBTeXJqw6Rsw6Qgd3JvdGU6
-Cj4gT24gVGh1LCBNYXIgMTgsIDIwMjEgYXQgMDY6MjE6MjNQTSAtMDQwMCwgTHl1ZGUgd3JvdGU6
-Cj4gPiBGcm9tOiBMeXVkZSBQYXVsIDxseXVkZUByZWRoYXQuY29tPgo+ID4gCj4gPiBDdXJyZW50
-bHkgd2UganVzdCBhc3N1bWUgdGhhdCBldmVyeSBjdXJzb3Igc2l6ZSB1cCB0byBkYXRhLT5jdXJz
-b3JfbWF4X3cvaAo+ID4gd2lsbAo+ID4gYmUgc3VwcG9ydGVkIGJ5IHRoZSBkcml2ZXIsIGFuZCBj
-aGVjayBmb3Igc3VwcG9ydCBvZiBub25zcXVhcmUgY3Vyc29ycyBieQo+ID4gY2hlY2tpbmcgaWYg
-d2UncmUgcnVubmluZyBvbiB1ODE1IGFuZCBpZiBzbywgd2hpY2ggdmFyaWFudCBvZiBpbnRlbCBo
-YXJkd2FyZQo+ID4gd2UncmUgcnVubmluZyBvbi4gVGhpcyBpc24ndCByZWFsbHkgaWRlYWwgYXMg
-d2UncmUgYWJvdXQgdG8gZW5hYmxlIDMyeDMyCj4gPiBjdXJzb3IKPiA+IHNpemUgdGVzdHMgZm9y
-IG5vdXZlYXUsIGFuZCBJbnRlbCBoYXJkd2FyZSBkb2Vzbid0IHN1cHBvcnQgY3Vyc29yIHNpemVz
-IHRoYXQKPiA+IHNtYWxsLgo+ID4gCj4gPiBTbywgZml4IHRoaXMgYnkgcmVtb3ZpbmcgaGFzX25v
-bnNxdWFyZV9jdXJzb3JzKCkgYW5kIHJlcGxhY2luZyBpdCB3aXRoIGEKPiA+IG1vcmUKPiA+IGdl
-bmVyaWMgcmVxdWlyZV9jdXJzb3Jfc2l6ZSgpIGZ1bmN0aW9uIHdoaWNoIGNoZWNrcyB3aGV0aGVy
-IG9yIG5vdCB0aGUKPiA+IGRyaXZlcgo+ID4gd2UncmUgdXNpbmcgc3VwcG9ydHMgYSBnaXZlbiBj
-dXJzb3Igc2l6ZSBieSBhdHRlbXB0aW5nIGEgdGVzdC1vbmx5IGF0b21pYwo+ID4gY29tbWl0Lgo+
-ID4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBMeXVkZSBQYXVsIDxseXVkZUByZWRoYXQuY29tPgo+ID4g
-Q2M6IE1hcnRpbiBQZXJlcyA8bWFydGluLnBlcmVzQGZyZWUuZnI+Cj4gPiBDYzogQmVuIFNrZWdn
-cyA8YnNrZWdnc0ByZWRoYXQuY29tPgo+ID4gQ2M6IEplcmVteSBDbGluZSA8amNsaW5lQHJlZGhh
-dC5jb20+Cj4gPiAtLS0KPiA+IMKgdGVzdHMva21zX2N1cnNvcl9jcmMuYyB8IDEzMSArKysrKysr
-KysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLQo+ID4gwqAxIGZpbGUgY2hhbmdlZCwg
-NzYgaW5zZXJ0aW9ucygrKSwgNTUgZGVsZXRpb25zKC0pCj4gPiAKPiA+IGRpZmYgLS1naXQgYS90
-ZXN0cy9rbXNfY3Vyc29yX2NyYy5jIGIvdGVzdHMva21zX2N1cnNvcl9jcmMuYwo+ID4gaW5kZXgg
-MzU0MWVhMDYuLmI5YzA1NDcyIDEwMDY0NAo+ID4gLS0tIGEvdGVzdHMva21zX2N1cnNvcl9jcmMu
-Ywo+ID4gKysrIGIvdGVzdHMva21zX2N1cnNvcl9jcmMuYwo+ID4gQEAgLTUyMywyNiArNTIzLDQz
-IEBAIHN0YXRpYyB2b2lkIGNyZWF0ZV9jdXJzb3JfZmIoZGF0YV90ICpkYXRhLCBpbnQgY3VyX3cs
-Cj4gPiBpbnQgY3VyX2gpCj4gPiDCoMKgwqDCoMKgwqDCoMKgaWd0X3B1dF9jYWlyb19jdHgoY3Ip
-Owo+ID4gwqB9Cj4gPiDCoAo+ID4gLXN0YXRpYyBib29sIGhhc19ub25zcXVhcmVfY3Vyc29ycyhk
-YXRhX3QgKmRhdGEpCj4gPiArc3RhdGljIHZvaWQgcmVxdWlyZV9jdXJzb3Jfc2l6ZShkYXRhX3Qg
-KmRhdGEsIGludCB3LCBpbnQgaCkKPiA+IMKgewo+ID4gLcKgwqDCoMKgwqDCoMKgdWludDMyX3Qg
-ZGV2aWQ7Cj4gPiArwqDCoMKgwqDCoMKgwqBpZ3RfZmJfdCBwcmltYXJ5X2ZiOwo+ID4gK8KgwqDC
-oMKgwqDCoMKgZHJtTW9kZU1vZGVJbmZvICptb2RlOwo+ID4gK8KgwqDCoMKgwqDCoMKgaWd0X2Rp
-c3BsYXlfdCAqZGlzcGxheSA9ICZkYXRhLT5kaXNwbGF5Owo+ID4gK8KgwqDCoMKgwqDCoMKgaWd0
-X291dHB1dF90ICpvdXRwdXQgPSBkYXRhLT5vdXRwdXQ7Cj4gPiArwqDCoMKgwqDCoMKgwqBpZ3Rf
-cGxhbmVfdCAqcHJpbWFyeSwgKmN1cnNvcjsKPiA+ICvCoMKgwqDCoMKgwqDCoGludCByZXQ7Cj4g
-PiDCoAo+ID4gLcKgwqDCoMKgwqDCoMKgaWYgKCFpc19pOTE1X2RldmljZShkYXRhLT5kcm1fZmQp
-KQo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiBmYWxzZTsKPiA+ICvC
-oMKgwqDCoMKgwqDCoGlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBkYXRhLT5waXBlKTsKPiA+
-IMKgCj4gPiAtwqDCoMKgwqDCoMKgwqBkZXZpZCA9IGludGVsX2dldF9kcm1fZGV2aWQoZGF0YS0+
-ZHJtX2ZkKTsKPiA+ICvCoMKgwqDCoMKgwqDCoG1vZGUgPSBpZ3Rfb3V0cHV0X2dldF9tb2RlKG91
-dHB1dCk7Cj4gPiArwqDCoMKgwqDCoMKgwqBwcmltYXJ5ID0gaWd0X291dHB1dF9nZXRfcGxhbmVf
-dHlwZShvdXRwdXQsIERSTV9QTEFORV9UWVBFX1BSSU1BUlkpOwo+ID4gK8KgwqDCoMKgwqDCoMKg
-Y3Vyc29yID0gaWd0X291dHB1dF9nZXRfcGxhbmVfdHlwZShvdXRwdXQsIERSTV9QTEFORV9UWVBF
-X0NVUlNPUik7Cj4gPiDCoAo+ID4gLcKgwqDCoMKgwqDCoMKgLyoKPiA+IC3CoMKgwqDCoMKgwqDC
-oCAqIFRlc3Qgbm9uLXNxdWFyZSBjdXJzb3JzIGEgYml0IG9uIHRoZSBwbGF0Zm9ybXMKPiA+IC3C
-oMKgwqDCoMKgwqDCoCAqIHRoYXQgc3VwcG9ydCBzdWNoIHRoaW5ncy4KPiA+IC3CoMKgwqDCoMKg
-wqDCoCAqLwo+ID4gLcKgwqDCoMKgwqDCoMKgaWYgKGRldmlkID09IFBDSV9DSElQXzg0NV9HIHx8
-IGRldmlkID09IFBDSV9DSElQX0k4NjVfRykKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqByZXR1cm4gdHJ1ZTsKPiA+ICvCoMKgwqDCoMKgwqDCoC8qIENyZWF0ZSB0ZW1wb3Jhcnkg
-cHJpbWFyeSBmYiBmb3IgdGVzdGluZyAqLwo+ID4gK8KgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydChp
-Z3RfY3JlYXRlX2ZiKGRhdGEtPmRybV9mZCwgbW9kZS0+aGRpc3BsYXksIG1vZGUtCj4gPiA+dmRp
-c3BsYXksIERSTV9GT1JNQVRfWFJHQjg4ODgsCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgTE9DQUxfRFJNX0ZPUk1BVF9N
-T0RfTk9ORSwgJnByaW1hcnlfZmIpKTsKPiA+IMKgCj4gPiAtwqDCoMKgwqDCoMKgwqBpZiAoSVNf
-VkFMTEVZVklFVyhkZXZpZCkgfHwgSVNfQ0hFUlJZVklFVyhkZXZpZCkpCj4gPiAtwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIGZhbHNlOwo+ID4gK8KgwqDCoMKgwqDCoMKgaWd0
-X3BsYW5lX3NldF9mYihwcmltYXJ5LCAmcHJpbWFyeV9mYik7Cj4gPiArwqDCoMKgwqDCoMKgwqBp
-Z3RfcGxhbmVfc2V0X2ZiKGN1cnNvciwgJmRhdGEtPmZiKTsKPiA+ICvCoMKgwqDCoMKgwqDCoGln
-dF9wbGFuZV9zZXRfc2l6ZShjdXJzb3IsIHcsIGgpOwo+ID4gK8KgwqDCoMKgwqDCoMKgaWd0X2Zi
-X3NldF9zaXplKCZkYXRhLT5mYiwgY3Vyc29yLCB3LCBoKTsKPiA+ICsKPiA+ICvCoMKgwqDCoMKg
-wqDCoC8qIFRlc3QgaWYgdGhlIGtlcm5lbCBzdXBwb3J0cyB0aGUgZ2l2ZW4gY3Vyc29yIHNpemUg
-b3Igbm90ICovCj4gPiArwqDCoMKgwqDCoMKgwqByZXQgPSBpZ3RfZGlzcGxheV90cnlfY29tbWl0
-X2F0b21pYyhkaXNwbGF5LAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBEUk1fTU9E
-RV9BVE9NSUNfVEVTVF9PTkxZIHwKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgRFJN
-X01PREVfQVRPTUlDX0FMTE9XX01PREVTRVQsCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgIE5VTEwpOwo+IAo+IFdvdWxkIGJlIGJldHRlciB0byBub3QgZGVwZW5kIG9uIGF0b21pYy4g
-V2UgaGF2ZSBwbGF0Zm9ybXMKPiB0aGF0IGRvbid0IGV4cG9zZSBpdCB5ZXQuCgpEbyB5b3UgaGF2
-ZSBhbnkgb3RoZXIgaWRlYXMgaG93IHdlIGNvdWxkIHByb2JlIGZvciB0aGlzIHRoZW4/IGl0IHNl
-ZW1zIGxpa2UgdGhlCm9ubHkgYWx0ZXJuYXRpdmUgd291bGQgYmUgdG8gYWRkIGludGVsLXNwZWNp
-ZmljIGNoZWNrcyB0byBmaXggdGhhdCwgb3IgYWRkIHNvbWUKaW9jdGwgZm9yIHF1ZXJ5aW5nIHRo
-ZSBtaW5pbXVtIGN1cnNvciBzaXplICh3aGljaCBzb3VuZHMgcHJlZmVyYWJsZSBpbW8pLiB3b3Vs
-ZAp0aGUgbGF0dGVyIHdvcmsgZm9yIHlvdSwgb3IgZG8geW91IGhhdmUgYW5vdGhlciBpZGVhPwo+
-IAo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgaWd0X3BsYW5lX3NldF9mYihwcmltYXJ5LCBOVUxM
-KTsKPiA+ICvCoMKgwqDCoMKgwqDCoGlndF9wbGFuZV9zZXRfZmIoY3Vyc29yLCBOVUxMKTsKPiA+
-ICsKPiA+ICvCoMKgwqDCoMKgwqDCoGlndF9yZW1vdmVfZmIoZGF0YS0+ZHJtX2ZkLCAmcHJpbWFy
-eV9mYik7Cj4gPiArwqDCoMKgwqDCoMKgwqBpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dCwgUElQ
-RV9OT05FKTsKPiA+IMKgCj4gPiAtwqDCoMKgwqDCoMKgwqByZXR1cm4gaW50ZWxfZ2VuKGRldmlk
-KSA+PSA3Owo+ID4gK8KgwqDCoMKgwqDCoMKgaWd0X3NraXBfb25fZihyZXQsICJDdXJzb3Igc2l6
-ZSAlZHglZCBub3Qgc3VwcG9ydGVkIGJ5IGRyaXZlclxuIiwgdywKPiA+IGgpOwo+ID4gwqB9Cj4g
-PiDCoAo+ID4gwqBzdGF0aWMgdm9pZCB0ZXN0X2N1cnNvcl9zaXplKGRhdGFfdCAqZGF0YSkKPiA+
-IEBAIC02OTcsMjcgKzcxNCwzMyBAQCBzdGF0aWMgdm9pZCBydW5fdGVzdHNfb25fcGlwZShkYXRh
-X3QgKmRhdGEsIGVudW0gcGlwZQo+ID4gcGlwZSkKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNyZWF0ZV9jdXJzb3JfZmIoZGF0YSwgdywgaCk7Cj4g
-PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiA+IMKgCj4gPiAtwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgLyogVXNpbmcgY3JlYXRlZCBjdXJzb3IgRkJzIHRvIHRlc3Qg
-Y3Vyc29yIHN1cHBvcnQgKi8KPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rf
-ZGVzY3JpYmUoIkNoZWNrIGlmIGEgZ2l2ZW4tc2l6ZSBjdXJzb3IgaXMgd2VsbC0KPiA+IHBvc2l0
-aW9uZWQgaW5zaWRlIHRoZSBzY3JlZW4uIik7Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgaWd0X3N1YnRlc3RfZigicGlwZS0lcy1jdXJzb3ItJWR4JWQtb25zY3JlZW4iLAo+ID4g
-a21zdGVzdF9waXBlX25hbWUocGlwZSksIHcsIGgpCj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJ1bl90ZXN0KGRhdGEsIHRlc3RfY3JjX29uc2NyZWVu
-LCB3LCBoKTsKPiA+IC0KPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGVz
-Y3JpYmUoIkNoZWNrIGlmIGEgZ2l2ZW4tc2l6ZSBjdXJzb3IgaXMgd2VsbC0KPiA+IHBvc2l0aW9u
-ZWQgb3V0c2lkZSB0aGUgc2NyZWVuLiIpOwo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoGlndF9zdWJ0ZXN0X2YoInBpcGUtJXMtY3Vyc29yLSVkeCVkLW9mZnNjcmVlbiIsCj4gPiBr
-bXN0ZXN0X3BpcGVfbmFtZShwaXBlKSwgdywgaCkKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcnVuX3Rlc3QoZGF0YSwgdGVzdF9jcmNfb2Zmc2NyZWVu
-LCB3LCBoKTsKPiA+IC0KPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGVz
-Y3JpYmUoIkNoZWNrIHRoZSBzbW9vdGggYW5kIHBpeGVsLWJ5LXBpeGVsIGdpdmVuLXNpemUKPiA+
-IGN1cnNvciBtb3ZlbWVudHMgb24iCj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJob3Jpem9udGFsLCB2ZXJ0aWNhbCBhbmQgZGlhZ29u
-YWwuIik7Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3RfZigi
-cGlwZS0lcy1jdXJzb3ItJWR4JWQtc2xpZGluZyIsCj4gPiBrbXN0ZXN0X3BpcGVfbmFtZShwaXBl
-KSwgdywgaCkKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgcnVuX3Rlc3QoZGF0YSwgdGVzdF9jcmNfc2xpZGluZywgdywgaCk7Cj4gPiAtCj4gPiAtwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rlc2NyaWJlKCJDaGVjayByYW5kb20gcGxh
-Y2VtZW50IG9mIGEgY3Vyc29yIHdpdGggZ2l2ZW4KPiA+IHNpemUuIik7Cj4gPiAtwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3RfZigicGlwZS0lcy1jdXJzb3ItJWR4JWQt
-cmFuZG9tIiwKPiA+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpLCB3LCBoKQo+ID4gLcKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBydW5fdGVzdChkYXRhLCB0ZXN0
-X2NyY19yYW5kb20sIHcsIGgpOwo+ID4gLQo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoGlndF9kZXNjcmliZSgiQ2hlY2sgdGhlIHJhcGlkIHVwZGF0ZSBvZiBnaXZlbi1zaXplIGN1
-cnNvcgo+ID4gbW92ZW1lbnRzLiIpOwo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oGlndF9zdWJ0ZXN0X2YoInBpcGUtJXMtY3Vyc29yLSVkeCVkLXJhcGlkLW1vdmVtZW50IiwKPiA+
-IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpLCB3LCBoKSB7Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJ1bl90ZXN0KGRhdGEsIHRlc3RfcmFwaWRfbW92
-ZW1lbnQsIHcsIGgpOwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0
-ZXN0X2dyb3VwIHsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgaWd0X2ZpeHR1cmUKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJlcXVpcmVfY3Vyc29yX3NpemUoZGF0YSwgdywg
-aCk7Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoC8qIFVzaW5nIGNyZWF0ZWQgY3Vyc29yIEZCcyB0byB0ZXN0IGN1cnNvciBzdXBwb3J0Cj4g
-PiAqLwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBp
-Z3RfZGVzY3JpYmUoIkNoZWNrIGlmIGEgZ2l2ZW4tc2l6ZSBjdXJzb3IgaXMgd2VsbC0KPiA+IHBv
-c2l0aW9uZWQgaW5zaWRlIHRoZSAiCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAic2NyZWVuLiIpOwo+ID4g
-K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVz
-dF9mKCJwaXBlLSVzLWN1cnNvci0lZHglZC1vbnNjcmVlbiIsCj4gPiBrbXN0ZXN0X3BpcGVfbmFt
-ZShwaXBlKSwgdywgaCkKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJ1bl90ZXN0KGRhdGEsIHRlc3RfY3JjX29uc2NyZWVu
-LCB3LCBoKTsKPiA+ICsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgaWd0X2Rlc2NyaWJlKCJDaGVjayBpZiBhIGdpdmVuLXNpemUgY3Vyc29yIGlzIHdl
-bGwtCj4gPiBwb3NpdGlvbmVkIG91dHNpZGUgdGhlICIKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJzY3Jl
-ZW4uIik7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oGlndF9zdWJ0ZXN0X2YoInBpcGUtJXMtY3Vyc29yLSVkeCVkLW9mZnNjcmVlbiIsCj4gPiBrbXN0
-ZXN0X3BpcGVfbmFtZShwaXBlKSwgdywgaCkKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJ1bl90ZXN0KGRhdGEsIHRlc3Rf
-Y3JjX29mZnNjcmVlbiwgdywgaCk7Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9kZXNjcmliZSgiQ2hlY2sgdGhlIHNtb290aCBhbmQg
-cGl4ZWwtYnktcGl4ZWwKPiA+IGdpdmVuLXNpemUgY3Vyc29yICIKPiA+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-ICJtb3ZlbWVudHMgb24gaG9yaXpvbnRhbCwgdmVydGljYWwgYW5kCj4gPiBkaWFnb25hbC4iKTsK
-PiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1
-YnRlc3RfZigicGlwZS0lcy1jdXJzb3ItJWR4JWQtc2xpZGluZyIsCj4gPiBrbXN0ZXN0X3BpcGVf
-bmFtZShwaXBlKSwgdywgaCkKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJ1bl90ZXN0KGRhdGEsIHRlc3RfY3JjX3NsaWRp
-bmcsIHcsIGgpOwo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqBpZ3RfZGVzY3JpYmUoIkNoZWNrIHJhbmRvbSBwbGFjZW1lbnQgb2YgYSBjdXJz
-b3IKPiA+IHdpdGggZ2l2ZW4gc2l6ZS4iKTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3RfZigicGlwZS0lcy1jdXJzb3ItJWR4JWQt
-cmFuZG9tIiwKPiA+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpLCB3LCBoKQo+ID4gK8KgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcnVu
-X3Rlc3QoZGF0YSwgdGVzdF9jcmNfcmFuZG9tLCB3LCBoKTsKPiA+ICsKPiA+ICvCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rlc2NyaWJlKCJDaGVjayB0
-aGUgcmFwaWQgdXBkYXRlIG9mIGdpdmVuLXNpemUKPiA+IGN1cnNvciBtb3ZlbWVudHMuIik7Cj4g
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0
-ZXN0X2YoInBpcGUtJXMtY3Vyc29yLSVkeCVkLXJhcGlkLW1vdmVtZW50IiwKPiA+IGttc3Rlc3Rf
-cGlwZV9uYW1lKHBpcGUpLCB3LCBoKQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcnVuX3Rlc3QoZGF0YSwgdGVzdF9yYXBp
-ZF9tb3ZlbWVudCwgdywgaCk7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0K
-PiA+IMKgCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9maXh0dXJlCj4g
-PiBAQCAtNzMwLDI3ICs3NTMsMjUgQEAgc3RhdGljIHZvaWQgcnVuX3Rlc3RzX29uX3BpcGUoZGF0
-YV90ICpkYXRhLCBlbnVtIHBpcGUKPiA+IHBpcGUpCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoCAqLwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBoIC89IDM7
-Cj4gPiDCoAo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9maXh0dXJlIHsK
-PiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKGhh
-c19ub25zcXVhcmVfY3Vyc29ycyhkYXRhKSkKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNyZWF0ZV9jdXJzb3JfZmIoZGF0
-YSwgdywgaCk7Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+ID4gK8KgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9maXh0dXJlCj4gPiArwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNyZWF0ZV9jdXJzb3JfZmIoZGF0YSwgdywg
-aCk7Cj4gPiDCoAo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8qIFVzaW5nIGNy
-ZWF0ZWQgY3Vyc29yIEZCcyB0byB0ZXN0IGN1cnNvciBzdXBwb3J0ICovCj4gPiAtwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3RfZigicGlwZS0lcy1jdXJzb3ItJWR4JWQt
-b25zY3JlZW4iLAo+ID4ga21zdGVzdF9waXBlX25hbWUocGlwZSksIHcsIGgpIHsKPiA+IC3CoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3JlcXVpcmUoaGFz
-X25vbnNxdWFyZV9jdXJzb3JzKGRhdGEpKTsKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgcnVuX3Rlc3QoZGF0YSwgdGVzdF9jcmNfb25zY3JlZW4sIHcs
-IGgpOwo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiA+IC3CoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVzdF9mKCJwaXBlLSVzLWN1cnNvci0lZHglZC1v
-ZmZzY3JlZW4iLAo+ID4ga21zdGVzdF9waXBlX25hbWUocGlwZSksIHcsIGgpIHsKPiA+IC3CoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3JlcXVpcmUoaGFz
-X25vbnNxdWFyZV9jdXJzb3JzKGRhdGEpKTsKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgcnVuX3Rlc3QoZGF0YSwgdGVzdF9jcmNfb2Zmc2NyZWVuLCB3
-LCBoKTsKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gPiAtwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3RfZigicGlwZS0lcy1jdXJzb3ItJWR4JWQt
-c2xpZGluZyIsCj4gPiBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSwgdywgaCkgewo+ID4gLcKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZShoYXNf
-bm9uc3F1YXJlX2N1cnNvcnMoZGF0YSkpOwo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqBydW5fdGVzdChkYXRhLCB0ZXN0X2NyY19zbGlkaW5nLCB3LCBo
-KTsKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gPiAtwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3RfZigicGlwZS0lcy1jdXJzb3ItJWR4JWQtcmFu
-ZG9tIiwKPiA+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpLCB3LCBoKSB7Cj4gPiAtwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlKGhhc19ub25z
-cXVhcmVfY3Vyc29ycyhkYXRhKSk7Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoHJ1bl90ZXN0KGRhdGEsIHRlc3RfY3JjX3JhbmRvbSwgdywgaCk7Cj4g
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3RfZ3JvdXAgewo+ID4g
-K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZml4dHVy
-ZQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgcmVxdWlyZV9jdXJzb3Jfc2l6ZShkYXRhLCB3LCBoKTsKPiA+ICsKPiA+ICvC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLyogVXNpbmcgY3Jl
-YXRlZCBjdXJzb3IgRkJzIHRvIHRlc3QgY3Vyc29yIHN1cHBvcnQKPiA+ICovCj4gPiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0X2YoInBp
-cGUtJXMtY3Vyc29yLSVkeCVkLW9uc2NyZWVuIiwKPiA+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUp
-LCB3LCBoKQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgcnVuX3Rlc3QoZGF0YSwgdGVzdF9jcmNfb25zY3JlZW4sIHcsIGgp
-Owo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqBpZ3Rfc3VidGVzdF9mKCJwaXBlLSVzLWN1cnNvci0lZHglZC1vZmZzY3JlZW4iLAo+ID4ga21z
-dGVzdF9waXBlX25hbWUocGlwZSksIHcsIGgpCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBydW5fdGVzdChkYXRhLCB0ZXN0
-X2NyY19vZmZzY3JlZW4sIHcsIGgpOwo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVzdF9mKCJwaXBlLSVzLWN1cnNvci0lZHgl
-ZC1zbGlkaW5nIiwKPiA+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpLCB3LCBoKQo+ID4gK8KgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-cnVuX3Rlc3QoZGF0YSwgdGVzdF9jcmNfc2xpZGluZywgdywgaCk7Cj4gPiArCj4gPiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0X2YoInBp
-cGUtJXMtY3Vyc29yLSVkeCVkLXJhbmRvbSIsCj4gPiBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSwg
-dywgaCkKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoHJ1bl90ZXN0KGRhdGEsIHRlc3RfY3JjX3JhbmRvbSwgdywgaCk7Cj4g
-PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiA+IMKgCj4gPiDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9maXh0dXJlCj4gPiAtLSAKPiA+IDIuMjkuMgo+ID4g
-Cj4gPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+ID4g
-aWd0LWRldiBtYWlsaW5nIGxpc3QKPiA+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4g
-PiBodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
-PiAKCi0tIApTaW5jZXJlbHksCiAgIEx5dWRlIFBhdWwgKHNoZS9oZXIpCiAgIFNvZnR3YXJlIEVu
-Z2luZWVyIGF0IFJlZCBIYXQKICAgCk5vdGU6IEkgZGVhbCB3aXRoIGEgbG90IG9mIGVtYWlscyBh
-bmQgaGF2ZSBhIGxvdCBvZiBidWdzIG9uIG15IHBsYXRlLiBJZiB5b3UndmUKYXNrZWQgbWUgYSBx
-dWVzdGlvbiwgYXJlIHdhaXRpbmcgZm9yIGEgcmV2aWV3L21lcmdlIG9uIGEgcGF0Y2gsIGV0Yy4g
-YW5kIEkKaGF2ZW4ndCByZXNwb25kZWQgaW4gYSB3aGlsZSwgcGxlYXNlIGZlZWwgZnJlZSB0byBz
-ZW5kIG1lIGFub3RoZXIgZW1haWwgdG8gY2hlY2sKb24gbXkgc3RhdHVzLiBJIGRvbid0IGJpdGUh
-CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
-IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
-LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+On Fri, Mar 19, 2021 at 01:40:52PM -0400, Lyude Paul wrote:
+> On Fri, 2021-03-19 at 17:01 +0200, Ville Syrj=E4l=E4 wrote:
+> > On Thu, Mar 18, 2021 at 06:21:23PM -0400, Lyude wrote:
+> > > From: Lyude Paul <lyude@redhat.com>
+> > > =
+
+> > > Currently we just assume that every cursor size up to data->cursor_ma=
+x_w/h
+> > > will
+> > > be supported by the driver, and check for support of nonsquare cursor=
+s by
+> > > checking if we're running on u815 and if so, which variant of intel h=
+ardware
+> > > we're running on. This isn't really ideal as we're about to enable 32=
+x32
+> > > cursor
+> > > size tests for nouveau, and Intel hardware doesn't support cursor siz=
+es that
+> > > small.
+> > > =
+
+> > > So, fix this by removing has_nonsquare_cursors() and replacing it wit=
+h a
+> > > more
+> > > generic require_cursor_size() function which checks whether or not the
+> > > driver
+> > > we're using supports a given cursor size by attempting a test-only at=
+omic
+> > > commit.
+> > > =
+
+> > > Signed-off-by: Lyude Paul <lyude@redhat.com>
+> > > Cc: Martin Peres <martin.peres@free.fr>
+> > > Cc: Ben Skeggs <bskeggs@redhat.com>
+> > > Cc: Jeremy Cline <jcline@redhat.com>
+> > > ---
+> > > =A0tests/kms_cursor_crc.c | 131 ++++++++++++++++++++++++-------------=
+----
+> > > =A01 file changed, 76 insertions(+), 55 deletions(-)
+> > > =
+
+> > > diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+> > > index 3541ea06..b9c05472 100644
+> > > --- a/tests/kms_cursor_crc.c
+> > > +++ b/tests/kms_cursor_crc.c
+> > > @@ -523,26 +523,43 @@ static void create_cursor_fb(data_t *data, int =
+cur_w,
+> > > int cur_h)
+> > > =A0=A0=A0=A0=A0=A0=A0=A0igt_put_cairo_ctx(cr);
+> > > =A0}
+> > > =A0
+> > > -static bool has_nonsquare_cursors(data_t *data)
+> > > +static void require_cursor_size(data_t *data, int w, int h)
+> > > =A0{
+> > > -=A0=A0=A0=A0=A0=A0=A0uint32_t devid;
+> > > +=A0=A0=A0=A0=A0=A0=A0igt_fb_t primary_fb;
+> > > +=A0=A0=A0=A0=A0=A0=A0drmModeModeInfo *mode;
+> > > +=A0=A0=A0=A0=A0=A0=A0igt_display_t *display =3D &data->display;
+> > > +=A0=A0=A0=A0=A0=A0=A0igt_output_t *output =3D data->output;
+> > > +=A0=A0=A0=A0=A0=A0=A0igt_plane_t *primary, *cursor;
+> > > +=A0=A0=A0=A0=A0=A0=A0int ret;
+> > > =A0
+> > > -=A0=A0=A0=A0=A0=A0=A0if (!is_i915_device(data->drm_fd))
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0return false;
+> > > +=A0=A0=A0=A0=A0=A0=A0igt_output_set_pipe(output, data->pipe);
+> > > =A0
+> > > -=A0=A0=A0=A0=A0=A0=A0devid =3D intel_get_drm_devid(data->drm_fd);
+> > > +=A0=A0=A0=A0=A0=A0=A0mode =3D igt_output_get_mode(output);
+> > > +=A0=A0=A0=A0=A0=A0=A0primary =3D igt_output_get_plane_type(output, D=
+RM_PLANE_TYPE_PRIMARY);
+> > > +=A0=A0=A0=A0=A0=A0=A0cursor =3D igt_output_get_plane_type(output, DR=
+M_PLANE_TYPE_CURSOR);
+> > > =A0
+> > > -=A0=A0=A0=A0=A0=A0=A0/*
+> > > -=A0=A0=A0=A0=A0=A0=A0 * Test non-square cursors a bit on the platfor=
+ms
+> > > -=A0=A0=A0=A0=A0=A0=A0 * that support such things.
+> > > -=A0=A0=A0=A0=A0=A0=A0 */
+> > > -=A0=A0=A0=A0=A0=A0=A0if (devid =3D=3D PCI_CHIP_845_G || devid =3D=3D=
+ PCI_CHIP_I865_G)
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0return true;
+> > > +=A0=A0=A0=A0=A0=A0=A0/* Create temporary primary fb for testing */
+> > > +=A0=A0=A0=A0=A0=A0=A0igt_assert(igt_create_fb(data->drm_fd, mode->hd=
+isplay, mode-
+> > > >vdisplay, DRM_FORMAT_XRGB8888,
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0 LOCAL_DRM_FORMAT_MOD_NONE, &primary_fb));
+> > > =A0
+> > > -=A0=A0=A0=A0=A0=A0=A0if (IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid=
+))
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0return false;
+> > > +=A0=A0=A0=A0=A0=A0=A0igt_plane_set_fb(primary, &primary_fb);
+> > > +=A0=A0=A0=A0=A0=A0=A0igt_plane_set_fb(cursor, &data->fb);
+> > > +=A0=A0=A0=A0=A0=A0=A0igt_plane_set_size(cursor, w, h);
+> > > +=A0=A0=A0=A0=A0=A0=A0igt_fb_set_size(&data->fb, cursor, w, h);
+> > > +
+> > > +=A0=A0=A0=A0=A0=A0=A0/* Test if the kernel supports the given cursor=
+ size or not */
+> > > +=A0=A0=A0=A0=A0=A0=A0ret =3D igt_display_try_commit_atomic(display,
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 DRM_MODE_ATOMI=
+C_TEST_ONLY |
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 DRM_MODE_ATOMI=
+C_ALLOW_MODESET,
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 NULL);
+> > =
+
+> > Would be better to not depend on atomic. We have platforms
+> > that don't expose it yet.
+> =
+
+> Do you have any other ideas how we could probe for this then? it seems li=
+ke the
+> only alternative would be to add intel-specific checks to fix that, or ad=
+d some
+> ioctl for querying the minimum cursor size (which sounds preferable imo).=
+ would
+> the latter work for you, or do you have another idea?
+
+Just do it for real instead of TEST_ONLY.
+
+> > =
+
+> > > +
+> > > +=A0=A0=A0=A0=A0=A0=A0igt_plane_set_fb(primary, NULL);
+> > > +=A0=A0=A0=A0=A0=A0=A0igt_plane_set_fb(cursor, NULL);
+> > > +
+> > > +=A0=A0=A0=A0=A0=A0=A0igt_remove_fb(data->drm_fd, &primary_fb);
+> > > +=A0=A0=A0=A0=A0=A0=A0igt_output_set_pipe(output, PIPE_NONE);
+> > > =A0
+> > > -=A0=A0=A0=A0=A0=A0=A0return intel_gen(devid) >=3D 7;
+> > > +=A0=A0=A0=A0=A0=A0=A0igt_skip_on_f(ret, "Cursor size %dx%d not suppo=
+rted by driver\n", w,
+> > > h);
+> > > =A0}
+> > > =A0
+> > > =A0static void test_cursor_size(data_t *data)
+> > > @@ -697,27 +714,33 @@ static void run_tests_on_pipe(data_t *data, enu=
+m pipe
+> > > pipe)
+> > > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0create_cursor_fb(data, w, h);
+> > > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0}
+> > > =A0
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0/* Using created cursor=
+ FBs to test cursor support */
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_describe("Check if =
+a given-size cursor is well-
+> > > positioned inside the screen.");
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_subtest_f("pipe-%s-=
+cursor-%dx%d-onscreen",
+> > > kmstest_pipe_name(pipe), w, h)
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0run_test(data, test_crc_onscreen, w, h);
+> > > -
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_describe("Check if =
+a given-size cursor is well-
+> > > positioned outside the screen.");
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_subtest_f("pipe-%s-=
+cursor-%dx%d-offscreen",
+> > > kmstest_pipe_name(pipe), w, h)
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0run_test(data, test_crc_offscreen, w, h);
+> > > -
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_describe("Check the=
+ smooth and pixel-by-pixel given-size
+> > > cursor movements on"
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 "horizontal, vertical and diagonal.");
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_subtest_f("pipe-%s-=
+cursor-%dx%d-sliding",
+> > > kmstest_pipe_name(pipe), w, h)
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0run_test(data, test_crc_sliding, w, h);
+> > > -
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_describe("Check ran=
+dom placement of a cursor with given
+> > > size.");
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_subtest_f("pipe-%s-=
+cursor-%dx%d-random",
+> > > kmstest_pipe_name(pipe), w, h)
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0run_test(data, test_crc_random, w, h);
+> > > -
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_describe("Check the=
+ rapid update of given-size cursor
+> > > movements.");
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_subtest_f("pipe-%s-=
+cursor-%dx%d-rapid-movement",
+> > > kmstest_pipe_name(pipe), w, h) {
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0run_test(data, test_rapid_movement, w, h);
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_subtest_group {
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_fixture
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0require_cursor_size(data, w, h);
+> > > +
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0/* Using created cursor FBs to test cursor support
+> > > */
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_describe("Check if a given-size cursor is well-
+> > > positioned inside the "
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 "screen.");
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_subtest_f("pipe-%s-cursor-%dx%d-onscreen",
+> > > kmstest_pipe_name(pipe), w, h)
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0run_test(data, test_crc_onscreen, w, h);
+> > > +
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_describe("Check if a given-size cursor is well-
+> > > positioned outside the "
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 "screen.");
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_subtest_f("pipe-%s-cursor-%dx%d-offscreen",
+> > > kmstest_pipe_name(pipe), w, h)
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0run_test(data, test_crc_offscreen, w, h);
+> > > +
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_describe("Check the smooth and pixel-by-pixel
+> > > given-size cursor "
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 "movements on horizontal, vertical =
+and
+> > > diagonal.");
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_subtest_f("pipe-%s-cursor-%dx%d-sliding",
+> > > kmstest_pipe_name(pipe), w, h)
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0run_test(data, test_crc_sliding, w, h);
+> > > +
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_describe("Check random placement of a cursor
+> > > with given size.");
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_subtest_f("pipe-%s-cursor-%dx%d-random",
+> > > kmstest_pipe_name(pipe), w, h)
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0run_test(data, test_crc_random, w, h);
+> > > +
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_describe("Check the rapid update of given-size
+> > > cursor movements.");
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_subtest_f("pipe-%s-cursor-%dx%d-rapid-movement",
+> > > kmstest_pipe_name(pipe), w, h)
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0run_test(data, test_rapid_movement, w, h);
+> > > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0}
+> > > =A0
+> > > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_fixture
+> > > @@ -730,27 +753,25 @@ static void run_tests_on_pipe(data_t *data, enu=
+m pipe
+> > > pipe)
+> > > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 */
+> > > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0h /=3D 3;
+> > > =A0
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_fixture {
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0if (has_nonsquare_cursors(data))
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0create_cursor_fb(data, w, h);
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0}
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_fixture
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0create_cursor_fb(data, w, h);
+> > > =A0
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0/* Using created cursor=
+ FBs to test cursor support */
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_subtest_f("pipe-%s-=
+cursor-%dx%d-onscreen",
+> > > kmstest_pipe_name(pipe), w, h) {
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_require(has_nonsquare_cursors(data));
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0run_test(data, test_crc_onscreen, w, h);
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0}
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_subtest_f("pipe-%s-=
+cursor-%dx%d-offscreen",
+> > > kmstest_pipe_name(pipe), w, h) {
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_require(has_nonsquare_cursors(data));
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0run_test(data, test_crc_offscreen, w, h);
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0}
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_subtest_f("pipe-%s-=
+cursor-%dx%d-sliding",
+> > > kmstest_pipe_name(pipe), w, h) {
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_require(has_nonsquare_cursors(data));
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0run_test(data, test_crc_sliding, w, h);
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0}
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_subtest_f("pipe-%s-=
+cursor-%dx%d-random",
+> > > kmstest_pipe_name(pipe), w, h) {
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_require(has_nonsquare_cursors(data));
+> > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0run_test(data, test_crc_random, w, h);
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_subtest_group {
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_fixture
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0require_cursor_size(data, w, h);
+> > > +
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0/* Using created cursor FBs to test cursor support
+> > > */
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_subtest_f("pipe-%s-cursor-%dx%d-onscreen",
+> > > kmstest_pipe_name(pipe), w, h)
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0run_test(data, test_crc_onscreen, w, h);
+> > > +
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_subtest_f("pipe-%s-cursor-%dx%d-offscreen",
+> > > kmstest_pipe_name(pipe), w, h)
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0run_test(data, test_crc_offscreen, w, h);
+> > > +
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_subtest_f("pipe-%s-cursor-%dx%d-sliding",
+> > > kmstest_pipe_name(pipe), w, h)
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0run_test(data, test_crc_sliding, w, h);
+> > > +
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0igt_subtest_f("pipe-%s-cursor-%dx%d-random",
+> > > kmstest_pipe_name(pipe), w, h)
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0run_test(data, test_crc_random, w, h);
+> > > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0}
+> > > =A0
+> > > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_fixture
+> > > -- =
+
+> > > 2.29.2
+> > > =
+
+> > > _______________________________________________
+> > > igt-dev mailing list
+> > > igt-dev@lists.freedesktop.org
+> > > https://lists.freedesktop.org/mailman/listinfo/igt-dev
+> > =
+
+> =
+
+> -- =
+
+> Sincerely,
+>    Lyude Paul (she/her)
+>    Software Engineer at Red Hat
+>    =
+
+> Note: I deal with a lot of emails and have a lot of bugs on my plate. If =
+you've
+> asked me a question, are waiting for a review/merge on a patch, etc. and I
+> haven't responded in a while, please feel free to send me another email t=
+o check
+> on my status. I don't bite!
+
+-- =
+
+Ville Syrj=E4l=E4
+Intel
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
