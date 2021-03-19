@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+References: <20210318222124.970997-1-lyude@redhat.com>
+ <20210318222124.970997-2-lyude@redhat.com>
+From: Martin Peres <martin.peres@mupuf.org>
+Message-ID: <72c0f4e1-c785-d52f-a3c2-fe9bbc20b217@mupuf.org>
+Date: Fri, 19 Mar 2021 09:20:29 +0200
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 19 Mar 2021 06:24:50 -0000
-Message-ID: <161613509085.8628.15949291334380363648@emeril.freedesktop.org>
-References: <20210121083432.526247-1-jigar.bhatt@intel.com>
-In-Reply-To: <20210121083432.526247-1-jigar.bhatt@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/i915=5Fpm=5Fdc=3A_Add_DC9_igt_test_Function_=28rev10=29?=
+In-Reply-To: <20210318222124.970997-2-lyude@redhat.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/kms_cursor_crc: Probe
+ kernel for cursor size support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,215 +16,212 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0857713765=="
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jigar Bhatt <jigar.bhatt@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Lyude <lyude@redhat.com>, igt-dev@lists.freedesktop.org, nouveau@lists.freedesktop.org
+Cc: Martin Peres <martin.peres@free.fr>, Ben Skeggs <bskeggs@redhat.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0857713765==
-Content-Type: multipart/alternative;
- boundary="===============4532764931709821329=="
+On 19/03/2021 00:21, Lyude wrote:
+> From: Lyude Paul <lyude@redhat.com>
+> 
+> Currently we just assume that every cursor size up to data->cursor_max_w/h will
+> be supported by the driver, and check for support of nonsquare cursors by
+> checking if we're running on u815 and if so, which variant of intel hardware
+> we're running on. This isn't really ideal as we're about to enable 32x32 cursor
+> size tests for nouveau, and Intel hardware doesn't support cursor sizes that
+> small.
+> 
+> So, fix this by removing has_nonsquare_cursors() and replacing it with a more
+> generic require_cursor_size() function which checks whether or not the driver
+> we're using supports a given cursor size by attempting a test-only atomic
+> commit.
 
---===============4532764931709821329==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Looks clean to me, and results in no new failures in Intel's results 
+(https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5625/shards-all.html?testfilter=kms_cursor_crc), 
+and no changes in the results for any other test.
 
-== Series Details ==
+Not sure I can comment on the implementation details of 
+require_cursor_size(), but everything else, and the series is:
 
-Series: tests/i915/i915_pm_dc: Add DC9 igt test Function (rev10)
-URL   : https://patchwork.freedesktop.org/series/86165/
-State : success
+Reviewed-by: Martin Peres <martin.peres@mupuf.org>
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9872 -> IGTPW_5627
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5627 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_gttfill@basic:
-    - fi-kbl-8809g:       [PASS][1] -> [TIMEOUT][2] ([i915#3145])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-kbl-soraka:      [PASS][3] -> [INCOMPLETE][4] ([i915#794])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-kbl-7500u:       [PASS][5] -> [FAIL][6] ([i915#1372])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_tiled_blits@basic:
-    - fi-kbl-8809g:       [TIMEOUT][7] ([i915#2502] / [i915#3145]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-8809g/igt@gem_tiled_blits@basic.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-8809g/igt@gem_tiled_blits@basic.html
-
-  * igt@gem_tiled_fence_blits@basic:
-    - fi-kbl-8809g:       [TIMEOUT][9] ([i915#3145]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-8809g/igt@gem_tiled_fence_blits@basic.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-8809g/igt@gem_tiled_fence_blits@basic.html
-
-  
-  [i915#1372]: https://gitlab.freedesktop.org/drm/intel/issues/1372
-  [i915#2502]: https://gitlab.freedesktop.org/drm/intel/issues/2502
-  [i915#3145]: https://gitlab.freedesktop.org/drm/intel/issues/3145
-  [i915#794]: https://gitlab.freedesktop.org/drm/intel/issues/794
-
-
-Participating hosts (44 -> 39)
-------------------------------
-
-  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6039 -> IGTPW_5627
-
-  CI-20190529: 20190529
-  CI_DRM_9872: 57125446874b03a2c1ee8efa0f3b2d788a3d31b9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5627: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/index.html
-  IGT_6039: 8c4a2cda2a92bdd87797969ef299ad7f6e8e993b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@i915_pm_dc@dc9-dpms
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/index.html
-
---===============4532764931709821329==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/i915_pm_dc: Add DC9 igt test Function (rev10)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/86165/">https://patchwork.freedesktop.org/series/86165/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9872 -&gt; IGTPW_5627</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5627 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_gttfill@basic:</p>
-<ul>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/794">i915#794</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1372">i915#1372</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_tiled_blits@basic:</p>
-<ul>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-8809g/igt@gem_tiled_blits@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2502">i915#2502</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-8809g/igt@gem_tiled_blits@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_fence_blits@basic:</p>
-<ul>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-8809g/igt@gem_tiled_fence_blits@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-8809g/igt@gem_tiled_fence_blits@basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (44 -&gt; 39)</h2>
-<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6039 -&gt; IGTPW_5627</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9872: 57125446874b03a2c1ee8efa0f3b2d788a3d31b9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5627: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/index.html<br />
-  IGT_6039: 8c4a2cda2a92bdd87797969ef299ad7f6e8e993b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-<p>== Testlist changes ==</p>
-<p>+igt@i915_pm_dc@dc9-dpms</p>
-
-</body>
-</html>
-
---===============4532764931709821329==--
-
---===============0857713765==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> Cc: Martin Peres <martin.peres@free.fr>
+> Cc: Ben Skeggs <bskeggs@redhat.com>
+> Cc: Jeremy Cline <jcline@redhat.com>
+> ---
+>   tests/kms_cursor_crc.c | 131 ++++++++++++++++++++++++-----------------
+>   1 file changed, 76 insertions(+), 55 deletions(-)
+> 
+> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+> index 3541ea06..b9c05472 100644
+> --- a/tests/kms_cursor_crc.c
+> +++ b/tests/kms_cursor_crc.c
+> @@ -523,26 +523,43 @@ static void create_cursor_fb(data_t *data, int cur_w, int cur_h)
+>   	igt_put_cairo_ctx(cr);
+>   }
+>   
+> -static bool has_nonsquare_cursors(data_t *data)
+> +static void require_cursor_size(data_t *data, int w, int h)
+>   {
+> -	uint32_t devid;
+> +	igt_fb_t primary_fb;
+> +	drmModeModeInfo *mode;
+> +	igt_display_t *display = &data->display;
+> +	igt_output_t *output = data->output;
+> +	igt_plane_t *primary, *cursor;
+> +	int ret;
+>   
+> -	if (!is_i915_device(data->drm_fd))
+> -		return false;
+> +	igt_output_set_pipe(output, data->pipe);
+>   
+> -	devid = intel_get_drm_devid(data->drm_fd);
+> +	mode = igt_output_get_mode(output);
+> +	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> +	cursor = igt_output_get_plane_type(output, DRM_PLANE_TYPE_CURSOR);
+>   
+> -	/*
+> -	 * Test non-square cursors a bit on the platforms
+> -	 * that support such things.
+> -	 */
+> -	if (devid == PCI_CHIP_845_G || devid == PCI_CHIP_I865_G)
+> -		return true;
+> +	/* Create temporary primary fb for testing */
+> +	igt_assert(igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
+> +				 LOCAL_DRM_FORMAT_MOD_NONE, &primary_fb));
+>   
+> -	if (IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid))
+> -		return false;
+> +	igt_plane_set_fb(primary, &primary_fb);
+> +	igt_plane_set_fb(cursor, &data->fb);
+> +	igt_plane_set_size(cursor, w, h);
+> +	igt_fb_set_size(&data->fb, cursor, w, h);
+> +
+> +	/* Test if the kernel supports the given cursor size or not */
+> +	ret = igt_display_try_commit_atomic(display,
+> +					    DRM_MODE_ATOMIC_TEST_ONLY |
+> +					    DRM_MODE_ATOMIC_ALLOW_MODESET,
+> +					    NULL);
+> +
+> +	igt_plane_set_fb(primary, NULL);
+> +	igt_plane_set_fb(cursor, NULL);
+> +
+> +	igt_remove_fb(data->drm_fd, &primary_fb);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+>   
+> -	return intel_gen(devid) >= 7;
+> +	igt_skip_on_f(ret, "Cursor size %dx%d not supported by driver\n", w, h);
+>   }
+>   
+>   static void test_cursor_size(data_t *data)
+> @@ -697,27 +714,33 @@ static void run_tests_on_pipe(data_t *data, enum pipe pipe)
+>   			create_cursor_fb(data, w, h);
+>   		}
+>   
+> -		/* Using created cursor FBs to test cursor support */
+> -		igt_describe("Check if a given-size cursor is well-positioned inside the screen.");
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-onscreen", kmstest_pipe_name(pipe), w, h)
+> -			run_test(data, test_crc_onscreen, w, h);
+> -
+> -		igt_describe("Check if a given-size cursor is well-positioned outside the screen.");
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-offscreen", kmstest_pipe_name(pipe), w, h)
+> -			run_test(data, test_crc_offscreen, w, h);
+> -
+> -		igt_describe("Check the smooth and pixel-by-pixel given-size cursor movements on"
+> -		             "horizontal, vertical and diagonal.");
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-sliding", kmstest_pipe_name(pipe), w, h)
+> -			run_test(data, test_crc_sliding, w, h);
+> -
+> -		igt_describe("Check random placement of a cursor with given size.");
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-random", kmstest_pipe_name(pipe), w, h)
+> -			run_test(data, test_crc_random, w, h);
+> -
+> -		igt_describe("Check the rapid update of given-size cursor movements.");
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-rapid-movement", kmstest_pipe_name(pipe), w, h) {
+> -			run_test(data, test_rapid_movement, w, h);
+> +		igt_subtest_group {
+> +			igt_fixture
+> +				require_cursor_size(data, w, h);
+> +
+> +			/* Using created cursor FBs to test cursor support */
+> +			igt_describe("Check if a given-size cursor is well-positioned inside the "
+> +				     "screen.");
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-onscreen", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_crc_onscreen, w, h);
+> +
+> +			igt_describe("Check if a given-size cursor is well-positioned outside the "
+> +				     "screen.");
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-offscreen", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_crc_offscreen, w, h);
+> +
+> +			igt_describe("Check the smooth and pixel-by-pixel given-size cursor "
+> +				     "movements on horizontal, vertical and diagonal.");
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-sliding", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_crc_sliding, w, h);
+> +
+> +			igt_describe("Check random placement of a cursor with given size.");
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-random", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_crc_random, w, h);
+> +
+> +			igt_describe("Check the rapid update of given-size cursor movements.");
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-rapid-movement", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_rapid_movement, w, h);
+>   		}
+>   
+>   		igt_fixture
+> @@ -730,27 +753,25 @@ static void run_tests_on_pipe(data_t *data, enum pipe pipe)
+>   		 */
+>   		h /= 3;
+>   
+> -		igt_fixture {
+> -			if (has_nonsquare_cursors(data))
+> -				create_cursor_fb(data, w, h);
+> -		}
+> +		igt_fixture
+> +			create_cursor_fb(data, w, h);
+>   
+> -		/* Using created cursor FBs to test cursor support */
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-onscreen", kmstest_pipe_name(pipe), w, h) {
+> -			igt_require(has_nonsquare_cursors(data));
+> -			run_test(data, test_crc_onscreen, w, h);
+> -		}
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-offscreen", kmstest_pipe_name(pipe), w, h) {
+> -			igt_require(has_nonsquare_cursors(data));
+> -			run_test(data, test_crc_offscreen, w, h);
+> -		}
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-sliding", kmstest_pipe_name(pipe), w, h) {
+> -			igt_require(has_nonsquare_cursors(data));
+> -			run_test(data, test_crc_sliding, w, h);
+> -		}
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-random", kmstest_pipe_name(pipe), w, h) {
+> -			igt_require(has_nonsquare_cursors(data));
+> -			run_test(data, test_crc_random, w, h);
+> +		igt_subtest_group {
+> +			igt_fixture
+> +				require_cursor_size(data, w, h);
+> +
+> +			/* Using created cursor FBs to test cursor support */
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-onscreen", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_crc_onscreen, w, h);
+> +
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-offscreen", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_crc_offscreen, w, h);
+> +
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-sliding", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_crc_sliding, w, h);
+> +
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-random", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_crc_random, w, h);
+>   		}
+>   
+>   		igt_fixture
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0857713765==--
