@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D45946E985
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Mar 2021 06:02:46 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-Date: Fri, 19 Mar 2021 06:02:43 +0000
-Message-ID: <47b1a35b1fe34558bc0b91206e0819c3@intel.com>
-References: <20210121083432.526247-1-jigar.bhatt@intel.com>
- <1616131284-22839-1-git-send-email-jigar.bhatt@intel.com>
-In-Reply-To: <1616131284-22839-1-git-send-email-jigar.bhatt@intel.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v10] tests/i915/i915_pm_dc: Add DC9 igt
- test Function
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 19 Mar 2021 06:24:50 -0000
+Message-ID: <161613509085.8628.15949291334380363648@emeril.freedesktop.org>
+References: <20210121083432.526247-1-jigar.bhatt@intel.com>
+In-Reply-To: <20210121083432.526247-1-jigar.bhatt@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/i915=5Fpm=5Fdc=3A_Add_DC9_igt_test_Function_=28rev10=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,129 +14,215 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0857713765=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Bhatt, Jigar" <jigar.bhatt@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Jigar Bhatt <jigar.bhatt@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============0857713765==
+Content-Type: multipart/alternative;
+ boundary="===============4532764931709821329=="
+
+--===============4532764931709821329==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/i915/i915_pm_dc: Add DC9 igt test Function (rev10)
+URL   : https://patchwork.freedesktop.org/series/86165/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9872 -> IGTPW_5627
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5627 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-kbl-8809g:       [PASS][1] -> [TIMEOUT][2] ([i915#3145])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-kbl-soraka:      [PASS][3] -> [INCOMPLETE][4] ([i915#794])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-kbl-7500u:       [PASS][5] -> [FAIL][6] ([i915#1372])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_tiled_blits@basic:
+    - fi-kbl-8809g:       [TIMEOUT][7] ([i915#2502] / [i915#3145]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-8809g/igt@gem_tiled_blits@basic.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-8809g/igt@gem_tiled_blits@basic.html
+
+  * igt@gem_tiled_fence_blits@basic:
+    - fi-kbl-8809g:       [TIMEOUT][9] ([i915#3145]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-8809g/igt@gem_tiled_fence_blits@basic.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-8809g/igt@gem_tiled_fence_blits@basic.html
+
+  
+  [i915#1372]: https://gitlab.freedesktop.org/drm/intel/issues/1372
+  [i915#2502]: https://gitlab.freedesktop.org/drm/intel/issues/2502
+  [i915#3145]: https://gitlab.freedesktop.org/drm/intel/issues/3145
+  [i915#794]: https://gitlab.freedesktop.org/drm/intel/issues/794
 
 
-> -----Original Message-----
-> From: Bhatt, Jigar <jigar.bhatt@intel.com>
-> Sent: Friday, March 19, 2021 10:51 AM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Bhatt, Jigar <jigar.bhatt@intel.com>; Gupta, Anshuman
-> <anshuman.gupta@intel.com>
-> Subject: [PATCH i-g-t v10] tests/i915/i915_pm_dc: Add DC9 igt test Function
-> 
-> DC9 igt test validation depends on DC{5,6} counters reset.
-> When Display Engine enters to DC9, it resets DMC f/w and DC5/DC6 counter.
-> We don't have a DC9 counter unlike DC{5,6}, therefore this tests uses DC{5,6}
-> counter reset method to validate DC9.
-Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> 
-> v10: [Anshuman]
-> - Revert the function name with check_dc9() only.
-> 
-> v9: [Anshuman]
-> - Change function name check_dc9() to dc9_failed().
-> 
-> v8: [Anshuman]
-> - Add support_dc6() to check whether a platform supports dc6.
-> 
-> v7: [Anshuman]
-> - Skip if no support of DC6.
-> 
-> v6: [Anshuman]
-> - assert for DC6 counter in setup_dc9_dpms.
-> - Move  dpms_off() to test_dc9_dpms().
-> 
-> Signed-off-by: Jigar Bhatt <jigar.bhatt@intel.com>
-> ---
->  tests/i915/i915_pm_dc.c | 53
-> +++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 53 insertions(+)
-> 
-> diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c index
-> 30c6024..4ba648e 100644
-> --- a/tests/i915/i915_pm_dc.c
-> +++ b/tests/i915/i915_pm_dc.c
-> @@ -384,6 +384,52 @@ static void test_dc_state_dpms(data_t *data, int
-> dc_flag)
->  	cleanup_dc_dpms(data);
->  }
-> 
-> +static bool support_dc6(int debugfs_fd) {
-> +       char buf[4096];
-> +
-> +       igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info",
-> +			       buf, sizeof(buf));
-> +       return strstr(buf, "DC5 -> DC6 count"); }
-> +
-> +static bool check_dc9(uint32_t debugfs_fd, int prev_dc, bool
-> +dc6_supported, int seconds) {
-> +/*
-> + * Since we do not have DC9 Counter,
-> + * So we rely on dc5/dc6 counter reset to check if Display Engine was in DC9.
-> + */
-> +       return igt_wait(dc6_supported ? read_dc_counter(debugfs_fd,
-> CHECK_DC6) <
-> +		       prev_dc : read_dc_counter(debugfs_fd, CHECK_DC5) <
-> +		       prev_dc, seconds, 100);
-> +}
-> +
-> +static void setup_dc9_dpms(data_t *data, int prev_dc, bool
-> +dc6_supported) {
-> +       setup_dc_dpms(data);
-> +       dpms_off(data);
-> +       igt_skip_on_f(!(igt_wait(dc6_supported ? read_dc_counter(data-
-> >debugfs_fd, CHECK_DC6) >
-> +				 prev_dc : read_dc_counter(data->debugfs_fd,
-> CHECK_DC5) >
-> +				 prev_dc, 3000, 100)), "Unable to enters
-> shallow DC states\n");
-> +       dpms_on(data);
-> +       cleanup_dc_dpms(data);
-> +}
-> +
-> +static void test_dc9_dpms(data_t *data) {
-> +       require_dc_counter(data->debugfs_fd, CHECK_DC5);
-> +       bool dc6_supported = support_dc6(data->debugfs_fd);
-> +
-> +       setup_dc9_dpms(data, dc6_supported ? read_dc_counter(data-
-> >debugfs_fd, CHECK_DC6) :
-> +		       read_dc_counter(data->debugfs_fd, CHECK_DC5),
-> dc6_supported);
-> +       dpms_off(data);
-> +       igt_assert_f(check_dc9(data->debugfs_fd, dc6_supported ?
-> +			       read_dc_counter(data->debugfs_fd, CHECK_DC6) :
-> +			       read_dc_counter(data->debugfs_fd, CHECK_DC5),
-> +			       dc6_supported, 3000), "Not in DC9\n");
-> +       dpms_on(data);
-> +}
-> +
->  IGT_TEST_DESCRIPTION("These tests validate Display Power DC states");  int
-> main(int argc, char *argv[])  { @@ -449,6 +495,13 @@ int main(int argc, char
-> *argv[])
->  		test_dc_state_dpms(&data, CHECK_DC6);
->  	}
-> 
-> +	igt_describe("This test validates display engine entry to DC9 state");
-> +	igt_subtest("dc9-dpms") {
-> +	       igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
-> +			       "PC8+ residencies not supported\n");
-> +	       test_dc9_dpms(&data);
-> +       }
-> +
->  	igt_fixture {
->  		free(data.pwr_dmn_info);
->  		close(data.debugfs_fd);
-> --
-> 2.8.1
+Participating hosts (44 -> 39)
+------------------------------
+
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6039 -> IGTPW_5627
+
+  CI-20190529: 20190529
+  CI_DRM_9872: 57125446874b03a2c1ee8efa0f3b2d788a3d31b9 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5627: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/index.html
+  IGT_6039: 8c4a2cda2a92bdd87797969ef299ad7f6e8e993b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@i915_pm_dc@dc9-dpms
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/index.html
+
+--===============4532764931709821329==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/i915_pm_dc: Add DC9 igt test Function (rev10)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/86165/">https://patchwork.freedesktop.org/series/86165/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9872 -&gt; IGTPW_5627</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5627 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/794">i915#794</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1372">i915#1372</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_tiled_blits@basic:</p>
+<ul>
+<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-8809g/igt@gem_tiled_blits@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2502">i915#2502</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-8809g/igt@gem_tiled_blits@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_fence_blits@basic:</p>
+<ul>
+<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9872/fi-kbl-8809g/igt@gem_tiled_fence_blits@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/fi-kbl-8809g/igt@gem_tiled_fence_blits@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (44 -&gt; 39)</h2>
+<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6039 -&gt; IGTPW_5627</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9872: 57125446874b03a2c1ee8efa0f3b2d788a3d31b9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5627: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5627/index.html<br />
+  IGT_6039: 8c4a2cda2a92bdd87797969ef299ad7f6e8e993b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@i915_pm_dc@dc9-dpms</p>
+
+</body>
+</html>
+
+--===============4532764931709821329==--
+
+--===============0857713765==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0857713765==--
