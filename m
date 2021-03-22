@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
- [IPv6:2607:f8b0:4864:20::102f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 544C06E029
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 20:41:29 +0000 (UTC)
-Received: by mail-pj1-x102f.google.com with SMTP id
- a22-20020a17090aa516b02900c1215e9b33so11189739pjq.5
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 13:41:29 -0700 (PDT)
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
+ [IPv6:2607:f8b0:4864:20::1032])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D6AAC6E5B0
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 20:41:33 +0000 (UTC)
+Received: by mail-pj1-x1032.google.com with SMTP id
+ nh23-20020a17090b3657b02900c0d5e235a8so9178519pjb.0
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 13:41:33 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 22 Mar 2021 15:41:14 -0500
-Message-Id: <20210322204123.3331055-1-jason@jlekstrand.net>
-In-Reply-To: <20210319223233.2982842-1-jason@jlekstrand.net>
+Date: Mon, 22 Mar 2021 15:41:17 -0500
+Message-Id: <20210322204123.3331055-4-jason@jlekstrand.net>
+In-Reply-To: <20210322204123.3331055-1-jason@jlekstrand.net>
 References: <20210319223233.2982842-1-jason@jlekstrand.net>
+ <20210322204123.3331055-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 0/9] Adjust IGT for upstream API clean-ups
- (v2)
+Subject: [igt-dev] [PATCH i-g-t 3/9] tests/i915/gem_exec_endless: Stop
+ setting the ring size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,41 +29,45 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-I'm trying to remove some unused APIs from upstream i915.  This i-g-t
-series updates tests in accordance with those removals.  For a few things,
-it simply deletes tests which test explicitly for that feature.  For
-cloning, we do actually use that for a bunch of stuff today so I just
-implement the two clones we care about (engines and VMs) directly with
-getparam and a create setparam.
+I915_CONTEXT_PARAM_RINGSIZE is being removed from upstream i915 because
+it's never been used by any userspace other than IGT.
 
-Jason Ekstrand (9):
-  tests/i915: Drop gem_ctx_ringsize
-  tests/i915/gem_exec_balancer: Drop the ringsize subtest
-  tests/i915/gem_exec_endless: Stop setting the ring size
-  tests/i915/gem_ctx_param: Drop the zeromap subtests
-  tests/i915: Drop gem_ctx_clone
-  tests/i915/gem_ctx_create: Stop cloning engines
-  tests/i915/gem_ctx_persistence: Drop the clone test
-  tests/i915/gem_exec_balancer: Stop cloning engines
-  lib/i915/gem_context: Implement VM and engine cloning manually (v2)
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+---
+ tests/i915/gem_exec_endless.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
- lib/i915/gem_context.c           | 109 ++++++--
- lib/i915/gem_context.h           |   7 +-
- tests/Makefile.sources           |   6 -
- tests/i915/gem_ctx_clone.c       | 450 -------------------------------
- tests/i915/gem_ctx_create.c      |   4 +-
- tests/i915/gem_ctx_param.c       |  33 ---
- tests/i915/gem_ctx_persistence.c |  30 ---
- tests/i915/gem_ctx_ringsize.c    | 345 ------------------------
- tests/i915/gem_ctx_shared.c      |  10 +-
- tests/i915/gem_exec_balancer.c   |  90 +------
- tests/i915/gem_exec_endless.c    |  12 +-
- tests/i915/gem_exec_schedule.c   |   8 +-
- tests/meson.build                |   2 -
- 13 files changed, 108 insertions(+), 998 deletions(-)
- delete mode 100644 tests/i915/gem_ctx_clone.c
- delete mode 100644 tests/i915/gem_ctx_ringsize.c
-
+diff --git a/tests/i915/gem_exec_endless.c b/tests/i915/gem_exec_endless.c
+index 1b320d4c..a3e2fa49 100644
+--- a/tests/i915/gem_exec_endless.c
++++ b/tests/i915/gem_exec_endless.c
+@@ -67,16 +67,6 @@ static unsigned int offset_in_page(void *addr)
+ static uint32_t __supervisor_create_context(int i915,
+ 					    const struct intel_execution_engine2 *e)
+ {
+-	struct drm_i915_gem_context_create_ext_setparam p_ring = {
+-		{
+-			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
+-			.next_extension = 0
+-		},
+-		{
+-			.param = I915_CONTEXT_PARAM_RINGSIZE,
+-			.value = 4096,
+-		},
+-	};
+ 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 2) = {
+ 		.engines = {
+ 			{ e->class, e->instance },
+@@ -86,7 +76,7 @@ static uint32_t __supervisor_create_context(int i915,
+ 	struct drm_i915_gem_context_create_ext_setparam p_engines = {
+ 		{
+ 			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
+-			.next_extension = to_user_pointer(&p_ring)
++			.next_extension = 0,
+ 		},
+ 		{
+ 			.param = I915_CONTEXT_PARAM_ENGINES,
 -- 
 2.29.2
 
