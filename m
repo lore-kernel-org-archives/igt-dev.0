@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0DF06897F5
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 08:08:31 +0000 (UTC)
-From: Jigar Bhatt <jigar.bhatt@intel.com>
-Date: Mon, 22 Mar 2021 13:16:01 +0530
-Message-Id: <1616399161-26567-1-git-send-email-jigar.bhatt@intel.com>
-In-Reply-To: <20210121083432.526247-1-jigar.bhatt@intel.com>
-References: <20210121083432.526247-1-jigar.bhatt@intel.com>
-Subject: [igt-dev] [PATCH i-g-t v11] tests/i915/i915_pm_dc: Add DC9 igt test
+From: "Saarinen, Jani" <jani.saarinen@intel.com>
+Date: Mon, 22 Mar 2021 08:12:44 +0000
+Message-ID: <60064b4df632422fb1ee5782605b19d0@intel.com>
+References: <20210317224407.447572-1-lyude@redhat.com>
+ <f5554f76-fc26-e307-0fe0-e59d3bca15ba@mupuf.org>
+ <3c1b6581-9b61-4e1a-56bd-95c8a2ec6472@gmail.com>
+In-Reply-To: <3c1b6581-9b61-4e1a-56bd-95c8a2ec6472@gmail.com>
+Content-Language: en-US
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: Don't unset primary_fb
+ when testing other planes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,118 +17,98 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, Martin
+ Peres <martin.peres@mupuf.org>, Lyude <lyude@redhat.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>
+Cc: Martin Peres <martin.peres@free.fr>, Ben Skeggs <bskeggs@redhat.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DC9 igt test validation depends on DC{5,6} counters reset.
-When Display Engine enters to DC9, it resets DMC f/w and DC5/DC6 counter.
-We don't have a DC9 counter unlike DC{5,6},
-therefore this tests uses DC{5,6} counter reset method to validate DC9.
-
-v11 :
-- Changing title.
-
-v10: [Anshuman]
-- Revert the function name with check_dc9() only.
-
-v9: [Anshuman]
-- Change function name check_dc9() to dc9_failed().
-
-v8: [Anshuman]
-- Add support_dc6() to check whether a platform supports dc6.
-
-v7: [Anshuman]
-- Skip if no support of DC6.
-
-v6: [Anshuman]
-- assert for DC6 counter in setup_dc9_dpms.
-- Move  dpms_off() to test_dc9_dpms().
-
-Signed-off-by: Jigar Bhatt <jigar.bhatt@intel.com>
----
- tests/i915/i915_pm_dc.c | 53 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
-
-diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
-index 30c6024..f5ea278 100644
---- a/tests/i915/i915_pm_dc.c
-+++ b/tests/i915/i915_pm_dc.c
-@@ -384,6 +384,52 @@ static void test_dc_state_dpms(data_t *data, int dc_flag)
- 	cleanup_dc_dpms(data);
- }
- 
-+static bool support_dc6(int debugfs_fd)
-+{
-+       char buf[4096];
-+
-+       igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info",
-+			       buf, sizeof(buf));
-+       return strstr(buf, "DC5 -> DC6 count");
-+}
-+
-+static bool check_dc9(uint32_t debugfs_fd, int prev_dc, bool dc6_supported, int seconds)
-+{
-+/*
-+ * Since we do not have DC9 Counter,
-+ * So we rely on dc5/dc6 counter reset to check if Display Engine was in DC9.
-+ */
-+       return igt_wait(dc6_supported ? read_dc_counter(debugfs_fd, CHECK_DC6) <
-+		       prev_dc : read_dc_counter(debugfs_fd, CHECK_DC5) <
-+		       prev_dc, seconds, 100);
-+}
-+
-+static void setup_dc9_dpms(data_t *data, int prev_dc, bool dc6_supported)
-+{
-+       setup_dc_dpms(data);
-+       dpms_off(data);
-+       igt_skip_on_f(!(igt_wait(dc6_supported ? read_dc_counter(data->debugfs_fd, CHECK_DC6) >
-+				 prev_dc : read_dc_counter(data->debugfs_fd, CHECK_DC5) >
-+				 prev_dc, 3000, 100)), "Unable to enters shallow DC states\n");
-+       dpms_on(data);
-+       cleanup_dc_dpms(data);
-+}
-+
-+static void test_dc9_dpms(data_t *data)
-+{
-+       require_dc_counter(data->debugfs_fd, CHECK_DC5);
-+       bool dc6_supported = support_dc6(data->debugfs_fd);
-+
-+       setup_dc9_dpms(data, dc6_supported ? read_dc_counter(data->debugfs_fd, CHECK_DC6) :
-+		       read_dc_counter(data->debugfs_fd, CHECK_DC5), dc6_supported);
-+       dpms_off(data);
-+       igt_assert_f(check_dc9(data->debugfs_fd, dc6_supported ?
-+			       read_dc_counter(data->debugfs_fd, CHECK_DC6) :
-+			       read_dc_counter(data->debugfs_fd, CHECK_DC5),
-+			       dc6_supported, 3000), "Not in DC9\n");
-+       dpms_on(data);
-+}
-+
- IGT_TEST_DESCRIPTION("These tests validate Display Power DC states");
- int main(int argc, char *argv[])
- {
-@@ -449,6 +495,13 @@ int main(int argc, char *argv[])
- 		test_dc_state_dpms(&data, CHECK_DC6);
- 	}
- 
-+	igt_describe("This test validates display engine entry to DC9 state");
-+	igt_subtest("dc9-dpms") {
-+	       igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
-+			       "PC8+ residencies not supported\n");
-+	       test_dc9_dpms(&data);
-+       }
-+
- 	igt_fixture {
- 		free(data.pwr_dmn_info);
- 		close(data.debugfs_fd);
--- 
-2.8.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SGksIA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IGlndC1kZXYgPGln
+dC1kZXYtYm91bmNlc0BsaXN0cy5mcmVlZGVza3RvcC5vcmc+IE9uIEJlaGFsZiBPZiBKdWhhLVBl
+a2thDQo+IEhlaWtraWxhDQo+IFNlbnQ6IHN1bm51bnRhaSAyMS4gbWFhbGlza3V1dGEgMjAyMSAy
+Mi4wMw0KPiBUbzogTWFydGluIFBlcmVzIDxtYXJ0aW4ucGVyZXNAbXVwdWYub3JnPjsgTHl1ZGUg
+PGx5dWRlQHJlZGhhdC5jb20+OyBpZ3QtDQo+IGRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7IG5v
+dXZlYXVAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBNYXJ0aW4gUGVyZXMgPG1hcnRpbi5w
+ZXJlc0BmcmVlLmZyPjsgQmVuIFNrZWdncyA8YnNrZWdnc0ByZWRoYXQuY29tPg0KPiBTdWJqZWN0
+OiBSZTogW2lndC1kZXZdIFtQQVRDSCBpLWctdF0gdGVzdHMva21zX3BsYW5lOiBEb24ndCB1bnNl
+dCBwcmltYXJ5X2ZiIHdoZW4NCj4gdGVzdGluZyBvdGhlciBwbGFuZXMNCj4gDQo+IE9uIDE4LjMu
+MjAyMSA4LjQxLCBNYXJ0aW4gUGVyZXMgd3JvdGU6DQo+ID4gT24gMTgvMDMvMjAyMSAwMDo0NCwg
+THl1ZGUgd3JvdGU6DQo+ID4+IEZyb206IEx5dWRlIFBhdWwgPGx5dWRlQHJlZGhhdC5jb20+DQo+
+ID4+DQo+ID4+IEN1cnJlbnRseSwgbm91dmVhdSBkb2Vzbid0IHN1cHBvcnQgaGF2aW5nIGEgQ1JU
+QyB3aXRob3V0IGEgcHJpbWFyeSBGQg0KPiA+PiBzZXQuIFdlIHdvbid0IHJlamVjdCBzdWNoIGNv
+bmZpZ3VyYXRpb25zLCBidXQgdGhlIGJlaGF2aW9yIGlzDQo+ID4+IHVuZGVmaW5lZCB3aGljaCB3
+aWxsIGNhdXNlIENSQ3MgdG8gYmVjb21lIHVuZGVmaW5lZC4gU28sIGF2b2lkDQo+ID4+IGNsZWFy
+aW5nIHRoZSBwcmltYXJ5IEZCIHdoaWxlIHdlJ3JlIHRlc3Rpbmcgbm9uLXByaW1hcnkgcGxhbmVz
+Lg0KPiA+DQo+ID4gTG9va3MgZ29vZCB0byBtZToNCj4gPg0KPiA+IFJldmlld2VkLWJ5OiBNYXJ0
+aW4gUGVyZXMgPG1hcnRpbi5wZXJlc0BtdXB1Zi5vcmc+DQo+ID4NCj4gDQo+IFRoaXMgZG9lc24n
+dCBsb29rIGdvb2QgYXQgYWxsLiBDb2RlIGNoYW5nZXMgd2VyZSBuZXZlciBydW4gb24gY2ksIHNl
+ZSB0aGlzOg0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBX
+XzU2MTQvc2hhcmRzLQ0KPiBhbGwuaHRtbD90ZXN0ZmlsdGVyPWttc19wbGFuZUBwaXhlbC1mb3Jt
+YXQNCj4gDQo+IFRoaXMgaGFwcGVuIGJlY2F1c2Ugb2Y6DQo+IGlndC1ncHUtdG9vbHMkIGdpdCBi
+bGFtZSB0ZXN0cy9pbnRlbC1jaS9ibGFja2xpc3QtcHJlLW1lcmdlLnR4dCAtTCAxNzMsKzENCj4g
+M2U2ODYwOThkOSAoTWFydGluIFBlcmVzIDIwMjAtMDItMjEgMTE6MDA6NDcgKzAyMDAgMTczKSBp
+Z3RAa21zX3BsYW5lQHBpeGVsLQ0KPiBmb3JtYXQtcGlwZS1bYS1kXS1wbGFuZXMoLXNvdXJjZS1j
+bGFtcGluZyk/DQo+IA0KPiBZb3UnbGwgbmVlZCB0byBpbmNsdWRlIHNvbWV0aGluZyBsaWtlIHRo
+aXMgdG8gdGVzdCBhbmQgcmV2aWV3IHdoYXQgZGlkIGNoYW5nZSBvbiBwaXhlbA0KPiBmb3JtYXQg
+dGVzdHM6DQo+IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC80MDQ3MDYv
+P3Nlcmllcz04NDM3MCZyZXY9MQ0KPiANCj4gYnV0IGFzIHRoaXMgcGF0Y2ggc2VlbXMgdG8gYmUg
+YWxyZWFkeSBtZXJnZWQgYXMgdW50ZXN0ZWQgd2Ugbm93IGhhdmUgcGl4ZWwgZm9ybWF0DQo+IHRl
+c3RzIGZhaWxpbmcgcmVsaWFibHkgZXZlciBzaW5jZToNCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2ku
+MDEub3JnL3RyZWUvZHJtLXRpcC9pbmRleC5odG1sP3Rlc3RmaWx0ZXI9a21zX3BsYW5lQHBpeGVs
+LQ0KPiBmb3JtYXQmaG9zdHM9dGdsJTdDaWNsDQo+IA0KPiBJIGhhdmUgb25seSBpbnRlbCBpY2wg
+YXQgaGFuZCBzbyBJIGhhdmUgbm8gc3VnZ2VzdGlvbnMgZm9yIGZpeC4gVGhvdWdoLCBsb29raW5n
+IGF0IHRob3NlDQo+IGZhaWx1cmVzIFN0YW4gKENDZCkgbWF5IGhhdmUgc29tZSBpbnRlcmVzdCBv
+biB0aGVtLg0KQ2FuIHdlIGp1c3Qgc2ltcGx5IHJldmVydCB1bnRpbCBmaXhlZCBwcm9wZXJseT8g
+DQoNCg0KPiANCj4gL0p1aGEtUGVra2ENCj4gDQo+ID4+DQo+ID4+IFNpZ25lZC1vZmYtYnk6IEx5
+dWRlIFBhdWwgPGx5dWRlQHJlZGhhdC5jb20+DQo+ID4+IENjOiBNYXJ0aW4gUGVyZXMgPG1hcnRp
+bi5wZXJlc0BmcmVlLmZyPg0KPiA+PiBDYzogQmVuIFNrZWdncyA8YnNrZWdnc0ByZWRoYXQuY29t
+Pg0KPiA+PiBDYzogSmVyZW15IENsaW5lIDxqY2xpbmVAcmVkaGF0LmNvbT4NCj4gPj4gLS0tDQo+
+ID4+IMKgIHRlc3RzL2ttc19wbGFuZS5jIHwgOSArKysrKy0tLS0NCj4gPj4gwqAgMSBmaWxlIGNo
+YW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkNCj4gPj4NCj4gPj4gZGlmZiAt
+LWdpdCBhL3Rlc3RzL2ttc19wbGFuZS5jIGIvdGVzdHMva21zX3BsYW5lLmMgaW5kZXgNCj4gPj4g
+Mjk4YTkzNzUuLmM4Nzk4M2E0IDEwMDY0NA0KPiA+PiAtLS0gYS90ZXN0cy9rbXNfcGxhbmUuYw0K
+PiA+PiArKysgYi90ZXN0cy9rbXNfcGxhbmUuYw0KPiA+PiBAQCAtODE3LDkgKzgxNywxMCBAQCBl
+bnVtIGNyY19zZXQgeyBQQUNLRURfQ1JDX1NFVCwNCj4gPj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgIE1BWF9DUkNfU0VUIH07DQo+ID4+IMKgIHN0YXRpYyBib29sIHRlc3RfZm9ybWF0X3BsYW5l
+KGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUsDQo+ID4+IC3CoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIGlndF9vdXRwdXRfdCAqb3V0cHV0LCBpZ3RfcGxhbmVfdCAqcGxhbmUp
+DQo+ID4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlndF9vdXRwdXRfdCAq
+b3V0cHV0LCBpZ3RfcGxhbmVfdCAqcGxhbmUsIGlndF9mYl90DQo+ID4+ICpwcmltYXJ5X2ZiKQ0K
+PiA+PiDCoCB7DQo+ID4+IMKgwqDCoMKgwqAgc3RydWN0IGlndF9mYiBmYiA9IHt9Ow0KPiA+PiAr
+wqDCoMKgIHN0cnVjdCBpZ3RfZmIgKmNsZWFyX2ZiID0gcGxhbmUtPnR5cGUgPT0gRFJNX1BMQU5F
+X1RZUEVfUFJJTUFSWSA/DQo+ID4+IHByaW1hcnlfZmIgOiBOVUxMOw0KPiA+PiDCoMKgwqDCoMKg
+IGRybU1vZGVNb2RlSW5mbyAqbW9kZTsNCj4gPj4gwqDCoMKgwqDCoCB1aW50MzJfdCBmb3JtYXQs
+IHJlZl9mb3JtYXQ7DQo+ID4+IMKgwqDCoMKgwqAgdWludDY0X3QgbW9kaWZpZXIsIHJlZl9tb2Rp
+ZmllcjsgQEAgLTg3OSw3ICs4ODAsNyBAQCBzdGF0aWMNCj4gPj4gYm9vbCB0ZXN0X2Zvcm1hdF9w
+bGFuZShkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlLA0KPiA+PiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCBoZWlnaHQgPSB0ZXN0X2ZiLmhlaWdodDsNCj4gPj4gwqDCoMKgwqDCoMKgwqDC
+oMKgIH0NCj4gPj4gLcKgwqDCoMKgwqDCoMKgIGlndF9wbGFuZV9zZXRfZmIocGxhbmUsIE5VTEwp
+Ow0KPiA+PiArwqDCoMKgwqDCoMKgwqAgaWd0X3BsYW5lX3NldF9mYihwbGFuZSwgY2xlYXJfZmIp
+Ow0KPiA+PiDCoMKgwqDCoMKgwqDCoMKgwqAgaWd0X3JlbW92ZV9mYihkYXRhLT5kcm1fZmQsICZ0
+ZXN0X2ZiKTsNCj4gPj4gwqDCoMKgwqDCoCB9DQo+ID4+IEBAIC05MzcsNyArOTM4LDcgQEAgc3Rh
+dGljIGJvb2wgdGVzdF9mb3JtYXRfcGxhbmUoZGF0YV90ICpkYXRhLCBlbnVtDQo+ID4+IHBpcGUg
+cGlwZSwNCj4gPj4gwqDCoMKgwqDCoCBpZ3RfcGlwZV9jcmNfc3RvcChkYXRhLT5waXBlX2NyYyk7
+DQo+ID4+IC3CoMKgwqAgaWd0X3BsYW5lX3NldF9mYihwbGFuZSwgTlVMTCk7DQo+ID4+ICvCoMKg
+wqAgaWd0X3BsYW5lX3NldF9mYihwbGFuZSwgY2xlYXJfZmIpOw0KPiA+PiDCoMKgwqDCoMKgIGln
+dF9yZW1vdmVfZmIoZGF0YS0+ZHJtX2ZkLCAmZmIpOw0KPiA+PiDCoMKgwqDCoMKgIHJldHVybiBy
+ZXN1bHQ7DQo+ID4+IEBAIC0xMDEwLDcgKzEwMTEsNyBAQCB0ZXN0X3BpeGVsX2Zvcm1hdHMoZGF0
+YV90ICpkYXRhLCBlbnVtIHBpcGUNCj4gPj4gcGlwZSkNCj4gPj4gwqDCoMKgwqDCoCBmb3JfZWFj
+aF9wbGFuZV9vbl9waXBlKCZkYXRhLT5kaXNwbGF5LCBwaXBlLCBwbGFuZSkgew0KPiA+PiDCoMKg
+wqDCoMKgwqDCoMKgwqAgaWYgKHNraXBfcGxhbmUoZGF0YSwgcGxhbmUpKQ0KPiA+PiDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCBjb250aW51ZTsNCj4gPj4gLcKgwqDCoMKgwqDCoMKgIHJlc3Vs
+dCAmPSB0ZXN0X2Zvcm1hdF9wbGFuZShkYXRhLCBwaXBlLCBvdXRwdXQsIHBsYW5lKTsNCj4gPj4g
+K8KgwqDCoMKgwqDCoMKgIHJlc3VsdCAmPSB0ZXN0X2Zvcm1hdF9wbGFuZShkYXRhLCBwaXBlLCBv
+dXRwdXQsIHBsYW5lLA0KPiA+PiAmcHJpbWFyeV9mYik7DQo+ID4+IMKgwqDCoMKgwqAgfQ0KPiA+
+PiDCoMKgwqDCoMKgIHRlc3RfZmluaShkYXRhKTsNCj4gPj4NCj4gPiBfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0KPiA+IGlndC1kZXYgbWFpbGluZyBsaXN0
+DQo+ID4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gPiBodHRwczovL2xpc3RzLmZy
+ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYNCj4gDQo+IF9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fDQo+IGlndC1kZXYgbWFpbGluZyBs
+aXN0DQo+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IGh0dHBzOi8vbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg0KX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
