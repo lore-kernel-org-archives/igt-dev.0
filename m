@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD814898A4
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 06:29:12 +0000 (UTC)
-References: <1616390813-26157-1-git-send-email-kunal1.joshi@intel.com>
-From: Martin Peres <martin.peres@mupuf.org>
-Message-ID: <f3a01f1b-3805-2ee8-866c-daa9086c893b@mupuf.org>
-Date: Mon, 22 Mar 2021 08:29:02 +0200
 MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 22 Mar 2021 06:41:26 -0000
+Message-ID: <161639528675.19227.17504740033735781739@emeril.freedesktop.org>
+References: <1616390813-26157-1-git-send-email-kunal1.joshi@intel.com>
 In-Reply-To: <1616390813-26157-1-git-send-email-kunal1.joshi@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_kms: only check chamelium's
- presence in chamelium tests
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Fkms=3A_only_check_chamelium=27s_presence_in_chamelium_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,78 +14,182 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0893293212=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Kunal Joshi <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: Kunal Joshi <kunal1.joshi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 22/03/2021 07:26, Kunal Joshi wrote:
-> Avoid checking if chamelium is present or not in non chamelium
-> tests as its just an overhead.
+--===============0893293212==
+Content-Type: multipart/alternative;
+ boundary="===============1584225181899993872=="
 
-The point of doing this was to stop having screens in CI and instead 
-mostly have chameliums. This means that we need to make sure the 
-chamelium exposes all the ports before starting a KMS test, since some 
-tests may have left the screens disconnected.
+--===============1584225181899993872==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Is that making sense?
+== Series Details ==
 
-> 
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> ---
->   lib/igt_kms.c | 31 ++++++++++++++++++-------------
->   1 file changed, 18 insertions(+), 13 deletions(-)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 08d429a8..397635d8 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -1958,21 +1958,26 @@ void igt_display_require(igt_display_t *display, int drm_fd)
->   
->   #ifdef HAVE_CHAMELIUM
->   	{
-> -		struct chamelium *chamelium;
-> -
-> -		chamelium = chamelium_init_rpc_only();
-> -		if (chamelium) {
-> -			igt_abort_on_f(!chamelium_wait_reachable(chamelium, 20),
-> -				       "cannot reach the configured chamelium!\n");
-> -			igt_abort_on_f(!chamelium_plug_all(chamelium),
-> -				       "failed to plug all the chamelium ports!\n");
-> -			igt_abort_on_f(!chamelium_wait_all_configured_ports_connected(chamelium, drm_fd),
-> -				       "not all configured chamelium ports are connected!\n");
-> -			chamelium_deinit_rpc_only(chamelium);
-> -		}
-> -	}
-> +		if (strstr(igt_test_name(), "feature_discovery") != NULL ||
-> +		    strstr(igt_test_name(), "cham") != NULL) {
-> +
-> +			struct chamelium *chamelium;
-> +
-> +			chamelium = chamelium_init_rpc_only();
-> +			if (chamelium) {
-> +				igt_abort_on_f(!chamelium_wait_reachable(chamelium, 20),
-> +					       "cannot reach the configured chamelium!\n");
-> +				igt_abort_on_f(!chamelium_plug_all(chamelium),
-> +					       "failed to plug all the chamelium ports!\n");
-> +				igt_abort_on_f(!chamelium_wait_all_configured_ports_connected(chamelium, drm_fd),
-> +					       "not all configured chamelium ports are connected!\n");
-> +				chamelium_deinit_rpc_only(chamelium);
-> +			}
-> +		}
-> +	}
->   #endif
->   
-> +
->   	/*
->   	 * With non-contiguous pipes display, crtc mapping is not always same
->   	 * as pipe mapping, In i915 pipe is enum id of i915's crtc object.
-> 
+Series: lib/igt_kms: only check chamelium's presence in chamelium tests
+URL   : https://patchwork.freedesktop.org/series/88229/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9879 -> IGTPW_5631
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5631/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5631 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [PASS][1] -> [INCOMPLETE][2] ([i915#2782])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9879/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5631/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - fi-tgl-u2:          [PASS][3] -> [DMESG-WARN][4] ([i915#2867]) +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9879/fi-tgl-u2/igt@i915_selftest@live@late_gt_pm.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5631/fi-tgl-u2/igt@i915_selftest@live@late_gt_pm.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-kbl-8809g:       [TIMEOUT][5] ([i915#3145]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9879/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5631/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html
+
+  
+  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#3145]: https://gitlab.freedesktop.org/drm/intel/issues/3145
+
+
+Participating hosts (43 -> 39)
+------------------------------
+
+  Missing    (4): fi-ilk-m540 fi-dg1-1 fi-bsw-cyan fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6039 -> IGTPW_5631
+
+  CI-20190529: 20190529
+  CI_DRM_9879: 892960f907bece8a020b30ade522352ded06c94c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5631: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5631/index.html
+  IGT_6039: 8c4a2cda2a92bdd87797969ef299ad7f6e8e993b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5631/index.html
+
+--===============1584225181899993872==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_kms: only check chamelium&#39;s presence in chamelium tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88229/">https://patchwork.freedesktop.org/series/88229/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5631/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5631/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9879 -&gt; IGTPW_5631</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5631/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5631 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9879/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5631/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@late_gt_pm:</p>
+<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9879/fi-tgl-u2/igt@i915_selftest@live@late_gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5631/fi-tgl-u2/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_exec_gttfill@basic:<ul>
+<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9879/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5631/fi-kbl-8809g/igt@gem_exec_gttfill@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (43 -&gt; 39)</h2>
+<p>Missing    (4): fi-ilk-m540 fi-dg1-1 fi-bsw-cyan fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6039 -&gt; IGTPW_5631</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9879: 892960f907bece8a020b30ade522352ded06c94c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5631: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5631/index.html<br />
+  IGT_6039: 8c4a2cda2a92bdd87797969ef299ad7f6e8e993b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============1584225181899993872==--
+
+--===============0893293212==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0893293212==--
