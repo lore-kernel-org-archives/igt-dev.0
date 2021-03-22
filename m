@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
- [IPv6:2607:f8b0:4864:20::1032])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D6AAC6E5B0
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 20:41:33 +0000 (UTC)
-Received: by mail-pj1-x1032.google.com with SMTP id
- nh23-20020a17090b3657b02900c0d5e235a8so9178519pjb.0
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 13:41:33 -0700 (PDT)
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 775F16E029
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 20:41:32 +0000 (UTC)
+Received: by mail-pj1-x102b.google.com with SMTP id
+ f2-20020a17090a4a82b02900c67bf8dc69so11207307pjh.1
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 13:41:32 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 22 Mar 2021 15:41:17 -0500
-Message-Id: <20210322204123.3331055-4-jason@jlekstrand.net>
+Date: Mon, 22 Mar 2021 15:41:16 -0500
+Message-Id: <20210322204123.3331055-3-jason@jlekstrand.net>
 In-Reply-To: <20210322204123.3331055-1-jason@jlekstrand.net>
 References: <20210319223233.2982842-1-jason@jlekstrand.net>
  <20210322204123.3331055-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/9] tests/i915/gem_exec_endless: Stop
- setting the ring size
+Subject: [igt-dev] [PATCH i-g-t 2/9] tests/i915/gem_exec_balancer: Drop the
+ ringsize subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -35,39 +35,108 @@ it's never been used by any userspace other than IGT.
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 ---
- tests/i915/gem_exec_endless.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ tests/i915/gem_exec_balancer.c | 81 ----------------------------------
+ 1 file changed, 81 deletions(-)
 
-diff --git a/tests/i915/gem_exec_endless.c b/tests/i915/gem_exec_endless.c
-index 1b320d4c..a3e2fa49 100644
---- a/tests/i915/gem_exec_endless.c
-+++ b/tests/i915/gem_exec_endless.c
-@@ -67,16 +67,6 @@ static unsigned int offset_in_page(void *addr)
- static uint32_t __supervisor_create_context(int i915,
- 					    const struct intel_execution_engine2 *e)
- {
--	struct drm_i915_gem_context_create_ext_setparam p_ring = {
--		{
--			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
--			.next_extension = 0
--		},
--		{
--			.param = I915_CONTEXT_PARAM_RINGSIZE,
--			.value = 4096,
--		},
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index 01db0e11..bfd65b29 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -2551,84 +2551,6 @@ next:
+ 	gem_quiescent_gpu(i915);
+ }
+ 
+-static void sighandler(int sig)
+-{
+-}
+-
+-static unsigned int measure_inflight(int i915, uint32_t ctx, int timeout)
+-{
+-	igt_spin_t *spin = igt_spin_new(i915, ctx);
+-	unsigned int count;
+-	int err;
+-
+-	fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) | O_NONBLOCK);
+-	signal(SIGALRM, sighandler);
+-	alarm(timeout);
+-
+-	for (count = 1; (err = __execbuf(i915, &spin->execbuf)) == 0; count++)
+-		;
+-	igt_assert_eq(err, -EWOULDBLOCK);
+-
+-	alarm(0);
+-	signal(SIGALRM, SIG_DFL);
+-	fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) & ~O_NONBLOCK);
+-
+-	igt_spin_free(i915, spin);
+-
+-	return count;
+-}
+-
+-static void __resize(int i915, uint32_t ctx)
+-{
+-	struct drm_i915_gem_context_param p = {
+-		.ctx_id = ctx,
+-		.param = I915_CONTEXT_PARAM_RINGSIZE,
 -	};
- 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 2) = {
- 		.engines = {
- 			{ e->class, e->instance },
-@@ -86,7 +76,7 @@ static uint32_t __supervisor_create_context(int i915,
- 	struct drm_i915_gem_context_create_ext_setparam p_engines = {
- 		{
- 			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
--			.next_extension = to_user_pointer(&p_ring)
-+			.next_extension = 0,
- 		},
- 		{
- 			.param = I915_CONTEXT_PARAM_ENGINES,
+-	unsigned int prev[2] = {};
+-	uint64_t elapsed;
+-
+-	elapsed = 0;
+-	gem_quiescent_gpu(i915);
+-	for (p.value = 1 << 12; p.value <= 128 << 12; p.value <<= 1) {
+-		struct timespec tv = {};
+-		unsigned int count;
+-
+-		gem_context_set_param(i915, &p);
+-
+-		igt_nsec_elapsed(&tv);
+-		count = measure_inflight(i915, ctx, 1 + 4 * ceil(elapsed*1e-9));
+-		elapsed = igt_nsec_elapsed(&tv);
+-
+-		igt_info("%6llx -> %'6d\n", p.value, count);
+-		igt_assert(count > 3 * (prev[1] - prev[0]) / 4 + prev[1]);
+-
+-		prev[0] = prev[1];
+-		prev[1] = count;
+-	}
+-	gem_quiescent_gpu(i915);
+-}
+-
+-static void ringsz(int i915)
+-{
+-	for (int class = 0; class < 32; class++) {
+-		struct i915_engine_class_instance *ci;
+-		unsigned int count;
+-		uint32_t ctx;
+-
+-		ci = list_engines(i915, 1u << class, &count);
+-		if (!ci || count < 2)
+-			goto next;
+-
+-		ctx = load_balancer_create(i915, ci, count);
+-		__resize(i915, ctx);
+-		gem_context_destroy(i915, ctx);
+-next:
+-		free(ci);
+-	}
+-
+-	gem_quiescent_gpu(i915);
+-}
+-
+ static void ping(int i915, uint32_t ctx, unsigned int engine)
+ {
+ 	struct drm_i915_gem_exec_object2 obj = {
+@@ -3304,9 +3226,6 @@ igt_main
+ 	igt_subtest("fairslice")
+ 		fairslice(i915);
+ 
+-	igt_subtest("ringsize")
+-		ringsz(i915);
+-
+ 	igt_subtest("nop")
+ 		nop(i915);
+ 
 -- 
 2.29.2
 
