@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com
- [IPv6:2a00:1450:4864:20::12e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F0E96E4E3
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 15:27:41 +0000 (UTC)
-Received: by mail-lf1-x12e.google.com with SMTP id a198so21929688lfd.7
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 08:27:41 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Mon, 22 Mar 2021 17:26:59 +0200
-Message-Id: <20210322152659.2731-2-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20210322152659.2731-1-juhapekka.heikkila@gmail.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F9E86E4F4
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 15:35:07 +0000 (UTC)
+Date: Mon, 22 Mar 2021 17:35:03 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <YFi5Jxw5+yNvlEZB@intel.com>
 References: <20210322152659.2731-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_cursor_crc: use flipping
- instead of frontbuffer
+Content-Disposition: inline
+In-Reply-To: <20210322152659.2731-1-juhapekka.heikkila@gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_addfb_basic: simplify
+ addfb25_ytile tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,228 +18,134 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-take out frontbuffer usage from this test as it may fail this test
-on frontbuffer related issues instead of cursor issues
+On Mon, Mar 22, 2021 at 05:26:58PM +0200, Juha-Pekka Heikkila wrote:
+> use igt_display_has_format_mod(..) to test if tile supported
+> or no.
+> =
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/kms_cursor_crc.c | 74 ++++++++++++++++++++++++------------------
- 1 file changed, 42 insertions(+), 32 deletions(-)
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>  tests/kms_addfb_basic.c | 31 ++++++++++++-------------------
+>  1 file changed, 12 insertions(+), 19 deletions(-)
+> =
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 3541ea066..948714b04 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -70,8 +70,8 @@ typedef struct {
- #define TEST_DPMS (1<<0)
- #define TEST_SUSPEND (1<<1)
- 
--#define FRONTBUFFER 0
--#define RESTOREBUFFER 1
-+#define HWCURSORBUFFER 0
-+#define SWCOMPARISONBUFFER 1
- 
- static void draw_cursor(cairo_t *cr, int x, int y, int cw, int ch, double a)
- {
-@@ -144,22 +144,16 @@ static bool cursor_visible(data_t *data, int x, int y)
- 	return true;
- }
- 
--static void restore_image(data_t *data)
-+static void restore_image(data_t *data, uint32_t buffer)
- {
- 	cairo_t *cr;
--	igt_display_t *display = &data->display;
- 
--	/* rendercopy stripped in igt using cairo */
--	cr = igt_get_cairo_ctx(data->drm_fd,
--			       &data->primary_fb[FRONTBUFFER]);
-+	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[buffer]);
- 	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
- 	cairo_set_source_surface(cr, data->surface, 0, 0);
- 	cairo_rectangle(cr, 0, 0, data->screenw, data->screenh);
- 	cairo_fill(cr);
- 	igt_put_cairo_ctx(cr);
--	igt_dirty_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
--	igt_wait_for_vblank(data->drm_fd,
--			    display->pipes[data->pipe].crtc_offset);
- }
- 
- static void do_single_test(data_t *data, int x, int y)
-@@ -168,12 +162,13 @@ static void do_single_test(data_t *data, int x, int y)
- 	igt_pipe_crc_t *pipe_crc = data->pipe_crc;
- 	igt_crc_t crc, ref_crc;
- 	cairo_t *cr;
--	int ret = 0;
-+	int ret = 0, hwcursorframe;
- 
- 	igt_print_activity();
- 
- 	/* Hardware test */
--	restore_image(data);
-+
-+	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
- 
- 	igt_plane_set_position(data->cursor, x, y);
- 	cursor_enable(data);
-@@ -188,13 +183,16 @@ static void do_single_test(data_t *data, int x, int y)
- 
- 	igt_display_commit(display);
- 
--	/* Extra vblank wait is because nonblocking cursor ioctl */
--	igt_wait_for_vblank(data->drm_fd,
--			display->pipes[data->pipe].crtc_offset);
--	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
-+	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
-+	igt_display_commit(display);
-+
-+	hwcursorframe = kmstest_get_vblank(data->drm_fd, data->pipe, 0) + 1;
-+	restore_image(data, SWCOMPARISONBUFFER);
- 
- 	if (data->flags & (TEST_DPMS | TEST_SUSPEND)) {
- 		igt_crc_t crc_after;
-+		/* Extra vblank wait to build full crc before dpms/suspend */
-+		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
- 		/*
- 		 * stop/start crc to avoid dmesg notifications about userspace
- 		 * reading too slow.
-@@ -223,14 +221,14 @@ static void do_single_test(data_t *data, int x, int y)
- 	cursor_disable(data);
- 
- 	/* Now render the same in software and collect crc */
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-+	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
- 	draw_cursor(cr, x, y, data->curw, data->curh, 1.0);
- 	igt_put_cairo_ctx(cr);
-+	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
- 	igt_display_commit(display);
--	igt_dirty_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
--	/* Extra vblank wait is because nonblocking cursor ioctl */
--	igt_wait_for_vblank(data->drm_fd,
--			display->pipes[data->pipe].crtc_offset);
-+
-+	if (!(data->flags & (TEST_DPMS | TEST_SUSPEND)))
-+		igt_pipe_crc_get_for_frame(data->drm_fd, pipe_crc, hwcursorframe, &crc);
- 
- 	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
- 	igt_assert_crc_equal(&crc, &ref_crc);
-@@ -244,8 +242,6 @@ static void do_fail_test(data_t *data, int x, int y, int expect)
- 	igt_print_activity();
- 
- 	/* Hardware test */
--	restore_image(data);
--
- 	cursor_enable(data);
- 	igt_plane_set_position(data->cursor, x, y);
- 	ret = igt_display_try_commit2(display, COMMIT_LEGACY);
-@@ -367,8 +363,8 @@ static void cleanup_crtc(data_t *data)
- 	igt_plane_set_fb(data->primary, NULL);
- 	igt_display_commit(display);
- 
--	igt_remove_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
--	igt_remove_fb(data->drm_fd, &data->primary_fb[RESTOREBUFFER]);
-+	igt_remove_fb(data->drm_fd, &data->primary_fb[HWCURSORBUFFER]);
-+	igt_remove_fb(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
- 
- 	igt_display_reset(display);
- }
-@@ -389,18 +385,18 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
- 			    DRM_FORMAT_XRGB8888,
- 			    LOCAL_DRM_FORMAT_MOD_NONE,
- 			    0.0, 0.0, 0.0,
--			    &data->primary_fb[FRONTBUFFER]);
-+			    &data->primary_fb[HWCURSORBUFFER]);
- 
- 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
- 			    DRM_FORMAT_XRGB8888,
- 			    LOCAL_DRM_FORMAT_MOD_NONE,
- 			    0.0, 0.0, 0.0,
--			    &data->primary_fb[RESTOREBUFFER]);
-+			    &data->primary_fb[SWCOMPARISONBUFFER]);
- 
- 	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	data->cursor = igt_output_get_plane_type(output, DRM_PLANE_TYPE_CURSOR);
- 
--	igt_plane_set_fb(data->primary, &data->primary_fb[FRONTBUFFER]);
-+	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
- 
- 	igt_display_commit(display);
- 
-@@ -428,6 +424,10 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
- 	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
- 	igt_paint_test_pattern(cr, data->screenw, data->screenh);
- 	cairo_destroy(cr);
-+
-+	/* Set HW cusor buffer in place */
-+	restore_image(data, HWCURSORBUFFER);
-+
- 	igt_pipe_crc_start(data->pipe_crc);
- }
- 
-@@ -462,7 +462,7 @@ static void test_cursor_alpha(data_t *data, double a)
- 	igt_remove_fb(data->drm_fd, &data->fb);
- 
- 	/* Software Test - render cursor in software, drawn it directly on PF */
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-+	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[HWCURSORBUFFER]);
- 	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
- 	igt_put_cairo_ctx(cr);
- 
-@@ -475,7 +475,7 @@ static void test_cursor_alpha(data_t *data, double a)
- 	igt_assert_crc_equal(&crc, &ref_crc);
- 
- 	/*Clear Screen*/
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-+	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[HWCURSORBUFFER]);
- 	igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
- 			0.0, 0.0, 0.0);
- 	igt_put_cairo_ctx(cr);
-@@ -563,6 +563,12 @@ static void test_cursor_size(data_t *data)
- 			      &data->fb);
- 	igt_assert(fb_id);
- 
-+	/* empty buffer */
-+	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[HWCURSORBUFFER]);
-+	igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
-+			0.0, 0.0, 0.0);
-+	igt_put_cairo_ctx(cr);
-+
- 	/* Use a solid white rectangle as the cursor */
- 	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb);
- 	igt_paint_color_alpha(cr, 0, 0, cursor_max_size, cursor_max_size, 1.0, 1.0, 1.0, 1.0);
-@@ -585,16 +591,20 @@ static void test_cursor_size(data_t *data)
- 	/* Software test loop */
- 	for (i = 0, size = cursor_max_size; size >= 64; size /= 2, i++) {
- 		/* Now render the same in software and collect crc */
--		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-+		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[HWCURSORBUFFER]);
- 		igt_paint_color_alpha(cr, 0, 0, size, size, 1.0, 1.0, 1.0, 1.0);
- 		igt_put_cairo_ctx(cr);
-+		igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
- 
- 		igt_display_commit(display);
- 		igt_wait_for_vblank(data->drm_fd,
- 				display->pipes[data->pipe].crtc_offset);
- 		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
- 		/* Clear screen afterwards */
--		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-+		igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
-+		igt_display_commit(display);
-+
-+		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[HWCURSORBUFFER]);
- 		igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
- 				0.0, 0.0, 0.0);
- 		igt_put_cairo_ctx(cr);
--- 
-2.28.0
+> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+> index 1302b1c7b..1fb18d668 100644
+> --- a/tests/kms_addfb_basic.c
+> +++ b/tests/kms_addfb_basic.c
+> @@ -581,26 +581,20 @@ static void addfb25_tests(int fd)
+>  		gem_close(fd, gem_bo);
+>  }
+>  =
 
+> -static int addfb_expected_ret(int fd, uint64_t modifier)
+> +static int addfb_expected_ret(igt_display_t *display, struct local_drm_m=
+ode_fb_cmd2 *f)
+>  {
+> -	int gen;
+> -
+> -	if (!is_i915_device(fd))
+> -		return 0;
+> -
+> -	gen =3D intel_gen(intel_get_drm_devid(fd));
+> -
+> -	if (modifier =3D=3D LOCAL_I915_FORMAT_MOD_Yf_TILED)
+> -		return gen >=3D 9 && gen < 12 ? 0 : -1;
+> -	return gen >=3D 9 ? 0 : -1;
+> +	return igt_display_has_format_mod(display, f->pixel_format,
+> +					  f->modifier[0]) ? 0 : -1;
+
+lgtm
+
+Reviewed-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+
+>  }
+>  =
+
+>  static void addfb25_ytile(int fd)
+>  {
+>  	struct local_drm_mode_fb_cmd2 f =3D {};
+> -	int gen;
+> +	igt_display_t display;
+>  =
+
+>  	igt_fixture {
+> +		igt_display_require(&display, fd);
+> +
+>  		gem_bo =3D igt_create_bo_with_dimensions(fd, 1024, 1024,
+>  			DRM_FORMAT_XRGB8888, 0, 0, NULL, NULL, NULL);
+>  		igt_assert(gem_bo);
+> @@ -627,8 +621,8 @@ static void addfb25_ytile(int fd)
+>  =
+
+>  		f.modifier[0] =3D LOCAL_I915_FORMAT_MOD_Y_TILED;
+>  		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) =3D=3D
+> -			   addfb_expected_ret(fd, f.modifier[0]));
+> -		if (!addfb_expected_ret(fd, f.modifier[0]))
+> +			   addfb_expected_ret(&display, &f));
+> +		if (!addfb_expected_ret(&display, &f))
+>  			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) =3D=3D 0);
+>  		f.fb_id =3D 0;
+>  	}
+> @@ -640,8 +634,8 @@ static void addfb25_ytile(int fd)
+>  =
+
+>  		f.modifier[0] =3D LOCAL_I915_FORMAT_MOD_Yf_TILED;
+>  		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) =3D=3D
+> -			   addfb_expected_ret(fd, f.modifier[0]));
+> -		if (!addfb_expected_ret(fd, f.modifier[0]))
+> +			   addfb_expected_ret(&display, &f));
+> +		if (!addfb_expected_ret(&display, &f))
+>  			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) =3D=3D 0);
+>  		f.fb_id =3D 0;
+>  	}
+> @@ -651,12 +645,10 @@ static void addfb25_ytile(int fd)
+>  		igt_require_fb_modifiers(fd);
+>  		igt_require_intel(fd);
+>  =
+
+> -		gen =3D intel_gen(intel_get_drm_devid(fd));
+> -		igt_require(gen >=3D 9);
+> -
+>  		f.modifier[0] =3D LOCAL_I915_FORMAT_MOD_Y_TILED;
+>  		f.height =3D 1023;
+>  		f.handles[0] =3D gem_bo_small;
+> +		igt_require(addfb_expected_ret(&display, &f) =3D=3D 0);
+>  		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno =
+=3D=3D EINVAL);
+>  		f.fb_id =3D 0;
+>  	}
+> @@ -664,6 +656,7 @@ static void addfb25_ytile(int fd)
+>  	igt_fixture {
+>  		gem_close(fd, gem_bo);
+>  		gem_close(fd, gem_bo_small);
+> +		igt_display_fini(&display);
+>  	}
+>  }
+>  =
+
+> -- =
+
+> 2.28.0
+> =
+
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+-- =
+
+Ville Syrj=E4l=E4
+Intel
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
