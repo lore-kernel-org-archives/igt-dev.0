@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: "Saarinen, Jani" <jani.saarinen@intel.com>
-Date: Mon, 22 Mar 2021 08:12:44 +0000
-Message-ID: <60064b4df632422fb1ee5782605b19d0@intel.com>
-References: <20210317224407.447572-1-lyude@redhat.com>
- <f5554f76-fc26-e307-0fe0-e59d3bca15ba@mupuf.org>
- <3c1b6581-9b61-4e1a-56bd-95c8a2ec6472@gmail.com>
-In-Reply-To: <3c1b6581-9b61-4e1a-56bd-95c8a2ec6472@gmail.com>
-Content-Language: en-US
+Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7CC026E3DB
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 08:17:01 +0000 (UTC)
+References: <1616390813-26157-1-git-send-email-kunal1.joshi@intel.com>
+ <f3a01f1b-3805-2ee8-866c-daa9086c893b@mupuf.org>
+ <20210322072923.GA20972@intel.com>
+From: Martin Peres <martin.peres@mupuf.org>
+Message-ID: <bfe0f396-602b-77c7-951f-ea4d2821ed67@mupuf.org>
+Date: Mon, 22 Mar 2021 10:16:33 +0200
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: Don't unset primary_fb
- when testing other planes
+In-Reply-To: <20210322072923.GA20972@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_kms: only check chamelium's
+ presence in chamelium tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,98 +20,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, Martin
- Peres <martin.peres@mupuf.org>, Lyude <lyude@redhat.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>
-Cc: Martin Peres <martin.peres@free.fr>, Ben Skeggs <bskeggs@redhat.com>
+To: Kunal Joshi <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org, petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGksIA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IGlndC1kZXYgPGln
-dC1kZXYtYm91bmNlc0BsaXN0cy5mcmVlZGVza3RvcC5vcmc+IE9uIEJlaGFsZiBPZiBKdWhhLVBl
-a2thDQo+IEhlaWtraWxhDQo+IFNlbnQ6IHN1bm51bnRhaSAyMS4gbWFhbGlza3V1dGEgMjAyMSAy
-Mi4wMw0KPiBUbzogTWFydGluIFBlcmVzIDxtYXJ0aW4ucGVyZXNAbXVwdWYub3JnPjsgTHl1ZGUg
-PGx5dWRlQHJlZGhhdC5jb20+OyBpZ3QtDQo+IGRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7IG5v
-dXZlYXVAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBNYXJ0aW4gUGVyZXMgPG1hcnRpbi5w
-ZXJlc0BmcmVlLmZyPjsgQmVuIFNrZWdncyA8YnNrZWdnc0ByZWRoYXQuY29tPg0KPiBTdWJqZWN0
-OiBSZTogW2lndC1kZXZdIFtQQVRDSCBpLWctdF0gdGVzdHMva21zX3BsYW5lOiBEb24ndCB1bnNl
-dCBwcmltYXJ5X2ZiIHdoZW4NCj4gdGVzdGluZyBvdGhlciBwbGFuZXMNCj4gDQo+IE9uIDE4LjMu
-MjAyMSA4LjQxLCBNYXJ0aW4gUGVyZXMgd3JvdGU6DQo+ID4gT24gMTgvMDMvMjAyMSAwMDo0NCwg
-THl1ZGUgd3JvdGU6DQo+ID4+IEZyb206IEx5dWRlIFBhdWwgPGx5dWRlQHJlZGhhdC5jb20+DQo+
-ID4+DQo+ID4+IEN1cnJlbnRseSwgbm91dmVhdSBkb2Vzbid0IHN1cHBvcnQgaGF2aW5nIGEgQ1JU
-QyB3aXRob3V0IGEgcHJpbWFyeSBGQg0KPiA+PiBzZXQuIFdlIHdvbid0IHJlamVjdCBzdWNoIGNv
-bmZpZ3VyYXRpb25zLCBidXQgdGhlIGJlaGF2aW9yIGlzDQo+ID4+IHVuZGVmaW5lZCB3aGljaCB3
-aWxsIGNhdXNlIENSQ3MgdG8gYmVjb21lIHVuZGVmaW5lZC4gU28sIGF2b2lkDQo+ID4+IGNsZWFy
-aW5nIHRoZSBwcmltYXJ5IEZCIHdoaWxlIHdlJ3JlIHRlc3Rpbmcgbm9uLXByaW1hcnkgcGxhbmVz
-Lg0KPiA+DQo+ID4gTG9va3MgZ29vZCB0byBtZToNCj4gPg0KPiA+IFJldmlld2VkLWJ5OiBNYXJ0
-aW4gUGVyZXMgPG1hcnRpbi5wZXJlc0BtdXB1Zi5vcmc+DQo+ID4NCj4gDQo+IFRoaXMgZG9lc24n
-dCBsb29rIGdvb2QgYXQgYWxsLiBDb2RlIGNoYW5nZXMgd2VyZSBuZXZlciBydW4gb24gY2ksIHNl
-ZSB0aGlzOg0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBX
-XzU2MTQvc2hhcmRzLQ0KPiBhbGwuaHRtbD90ZXN0ZmlsdGVyPWttc19wbGFuZUBwaXhlbC1mb3Jt
-YXQNCj4gDQo+IFRoaXMgaGFwcGVuIGJlY2F1c2Ugb2Y6DQo+IGlndC1ncHUtdG9vbHMkIGdpdCBi
-bGFtZSB0ZXN0cy9pbnRlbC1jaS9ibGFja2xpc3QtcHJlLW1lcmdlLnR4dCAtTCAxNzMsKzENCj4g
-M2U2ODYwOThkOSAoTWFydGluIFBlcmVzIDIwMjAtMDItMjEgMTE6MDA6NDcgKzAyMDAgMTczKSBp
-Z3RAa21zX3BsYW5lQHBpeGVsLQ0KPiBmb3JtYXQtcGlwZS1bYS1kXS1wbGFuZXMoLXNvdXJjZS1j
-bGFtcGluZyk/DQo+IA0KPiBZb3UnbGwgbmVlZCB0byBpbmNsdWRlIHNvbWV0aGluZyBsaWtlIHRo
-aXMgdG8gdGVzdCBhbmQgcmV2aWV3IHdoYXQgZGlkIGNoYW5nZSBvbiBwaXhlbA0KPiBmb3JtYXQg
-dGVzdHM6DQo+IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC80MDQ3MDYv
-P3Nlcmllcz04NDM3MCZyZXY9MQ0KPiANCj4gYnV0IGFzIHRoaXMgcGF0Y2ggc2VlbXMgdG8gYmUg
-YWxyZWFkeSBtZXJnZWQgYXMgdW50ZXN0ZWQgd2Ugbm93IGhhdmUgcGl4ZWwgZm9ybWF0DQo+IHRl
-c3RzIGZhaWxpbmcgcmVsaWFibHkgZXZlciBzaW5jZToNCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9pbmRleC5odG1sP3Rlc3RmaWx0ZXI9a21zX3BsYW5lQHBpeGVs
-LQ0KPiBmb3JtYXQmaG9zdHM9dGdsJTdDaWNsDQo+IA0KPiBJIGhhdmUgb25seSBpbnRlbCBpY2wg
-YXQgaGFuZCBzbyBJIGhhdmUgbm8gc3VnZ2VzdGlvbnMgZm9yIGZpeC4gVGhvdWdoLCBsb29raW5n
-IGF0IHRob3NlDQo+IGZhaWx1cmVzIFN0YW4gKENDZCkgbWF5IGhhdmUgc29tZSBpbnRlcmVzdCBv
-biB0aGVtLg0KQ2FuIHdlIGp1c3Qgc2ltcGx5IHJldmVydCB1bnRpbCBmaXhlZCBwcm9wZXJseT8g
-DQoNCg0KPiANCj4gL0p1aGEtUGVra2ENCj4gDQo+ID4+DQo+ID4+IFNpZ25lZC1vZmYtYnk6IEx5
-dWRlIFBhdWwgPGx5dWRlQHJlZGhhdC5jb20+DQo+ID4+IENjOiBNYXJ0aW4gUGVyZXMgPG1hcnRp
-bi5wZXJlc0BmcmVlLmZyPg0KPiA+PiBDYzogQmVuIFNrZWdncyA8YnNrZWdnc0ByZWRoYXQuY29t
-Pg0KPiA+PiBDYzogSmVyZW15IENsaW5lIDxqY2xpbmVAcmVkaGF0LmNvbT4NCj4gPj4gLS0tDQo+
-ID4+IMKgIHRlc3RzL2ttc19wbGFuZS5jIHwgOSArKysrKy0tLS0NCj4gPj4gwqAgMSBmaWxlIGNo
-YW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkNCj4gPj4NCj4gPj4gZGlmZiAt
-LWdpdCBhL3Rlc3RzL2ttc19wbGFuZS5jIGIvdGVzdHMva21zX3BsYW5lLmMgaW5kZXgNCj4gPj4g
-Mjk4YTkzNzUuLmM4Nzk4M2E0IDEwMDY0NA0KPiA+PiAtLS0gYS90ZXN0cy9rbXNfcGxhbmUuYw0K
-PiA+PiArKysgYi90ZXN0cy9rbXNfcGxhbmUuYw0KPiA+PiBAQCAtODE3LDkgKzgxNywxMCBAQCBl
-bnVtIGNyY19zZXQgeyBQQUNLRURfQ1JDX1NFVCwNCj4gPj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgIE1BWF9DUkNfU0VUIH07DQo+ID4+IMKgIHN0YXRpYyBib29sIHRlc3RfZm9ybWF0X3BsYW5l
-KGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUsDQo+ID4+IC3CoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgIGlndF9vdXRwdXRfdCAqb3V0cHV0LCBpZ3RfcGxhbmVfdCAqcGxhbmUp
-DQo+ID4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlndF9vdXRwdXRfdCAq
-b3V0cHV0LCBpZ3RfcGxhbmVfdCAqcGxhbmUsIGlndF9mYl90DQo+ID4+ICpwcmltYXJ5X2ZiKQ0K
-PiA+PiDCoCB7DQo+ID4+IMKgwqDCoMKgwqAgc3RydWN0IGlndF9mYiBmYiA9IHt9Ow0KPiA+PiAr
-wqDCoMKgIHN0cnVjdCBpZ3RfZmIgKmNsZWFyX2ZiID0gcGxhbmUtPnR5cGUgPT0gRFJNX1BMQU5F
-X1RZUEVfUFJJTUFSWSA/DQo+ID4+IHByaW1hcnlfZmIgOiBOVUxMOw0KPiA+PiDCoMKgwqDCoMKg
-IGRybU1vZGVNb2RlSW5mbyAqbW9kZTsNCj4gPj4gwqDCoMKgwqDCoCB1aW50MzJfdCBmb3JtYXQs
-IHJlZl9mb3JtYXQ7DQo+ID4+IMKgwqDCoMKgwqAgdWludDY0X3QgbW9kaWZpZXIsIHJlZl9tb2Rp
-ZmllcjsgQEAgLTg3OSw3ICs4ODAsNyBAQCBzdGF0aWMNCj4gPj4gYm9vbCB0ZXN0X2Zvcm1hdF9w
-bGFuZShkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlLA0KPiA+PiDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoCBoZWlnaHQgPSB0ZXN0X2ZiLmhlaWdodDsNCj4gPj4gwqDCoMKgwqDCoMKgwqDC
-oMKgIH0NCj4gPj4gLcKgwqDCoMKgwqDCoMKgIGlndF9wbGFuZV9zZXRfZmIocGxhbmUsIE5VTEwp
-Ow0KPiA+PiArwqDCoMKgwqDCoMKgwqAgaWd0X3BsYW5lX3NldF9mYihwbGFuZSwgY2xlYXJfZmIp
-Ow0KPiA+PiDCoMKgwqDCoMKgwqDCoMKgwqAgaWd0X3JlbW92ZV9mYihkYXRhLT5kcm1fZmQsICZ0
-ZXN0X2ZiKTsNCj4gPj4gwqDCoMKgwqDCoCB9DQo+ID4+IEBAIC05MzcsNyArOTM4LDcgQEAgc3Rh
-dGljIGJvb2wgdGVzdF9mb3JtYXRfcGxhbmUoZGF0YV90ICpkYXRhLCBlbnVtDQo+ID4+IHBpcGUg
-cGlwZSwNCj4gPj4gwqDCoMKgwqDCoCBpZ3RfcGlwZV9jcmNfc3RvcChkYXRhLT5waXBlX2NyYyk7
-DQo+ID4+IC3CoMKgwqAgaWd0X3BsYW5lX3NldF9mYihwbGFuZSwgTlVMTCk7DQo+ID4+ICvCoMKg
-wqAgaWd0X3BsYW5lX3NldF9mYihwbGFuZSwgY2xlYXJfZmIpOw0KPiA+PiDCoMKgwqDCoMKgIGln
-dF9yZW1vdmVfZmIoZGF0YS0+ZHJtX2ZkLCAmZmIpOw0KPiA+PiDCoMKgwqDCoMKgIHJldHVybiBy
-ZXN1bHQ7DQo+ID4+IEBAIC0xMDEwLDcgKzEwMTEsNyBAQCB0ZXN0X3BpeGVsX2Zvcm1hdHMoZGF0
-YV90ICpkYXRhLCBlbnVtIHBpcGUNCj4gPj4gcGlwZSkNCj4gPj4gwqDCoMKgwqDCoCBmb3JfZWFj
-aF9wbGFuZV9vbl9waXBlKCZkYXRhLT5kaXNwbGF5LCBwaXBlLCBwbGFuZSkgew0KPiA+PiDCoMKg
-wqDCoMKgwqDCoMKgwqAgaWYgKHNraXBfcGxhbmUoZGF0YSwgcGxhbmUpKQ0KPiA+PiDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCBjb250aW51ZTsNCj4gPj4gLcKgwqDCoMKgwqDCoMKgIHJlc3Vs
-dCAmPSB0ZXN0X2Zvcm1hdF9wbGFuZShkYXRhLCBwaXBlLCBvdXRwdXQsIHBsYW5lKTsNCj4gPj4g
-K8KgwqDCoMKgwqDCoMKgIHJlc3VsdCAmPSB0ZXN0X2Zvcm1hdF9wbGFuZShkYXRhLCBwaXBlLCBv
-dXRwdXQsIHBsYW5lLA0KPiA+PiAmcHJpbWFyeV9mYik7DQo+ID4+IMKgwqDCoMKgwqAgfQ0KPiA+
-PiDCoMKgwqDCoMKgIHRlc3RfZmluaShkYXRhKTsNCj4gPj4NCj4gPiBfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0KPiA+IGlndC1kZXYgbWFpbGluZyBsaXN0
-DQo+ID4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gPiBodHRwczovL2xpc3RzLmZy
-ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYNCj4gDQo+IF9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fDQo+IGlndC1kZXYgbWFpbGluZyBs
-aXN0DQo+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IGh0dHBzOi8vbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg0KX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRl
-dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On 22/03/2021 09:29, Kunal Joshi wrote:
+> On 2021-03-22 at 08:29:02 +0200, Martin Peres wrote:
+>> On 22/03/2021 07:26, Kunal Joshi wrote:
+>>> Avoid checking if chamelium is present or not in non chamelium
+>>> tests as its just an overhead.
+>>
+>> The point of doing this was to stop having screens in CI and instead mostly
+>> have chameliums. This means that we need to make sure the chamelium exposes
+>> all the ports before starting a KMS test, since some tests may have left the
+>> screens disconnected.
+>>
+>> Is that making sense?
+> 
+> Thanks martin for having a look and yeah i got your point,
+> 
+> But for checking all the ports are connected we can have a script which
+> checks it before the execution starts rather than checking it everytime
+
+Yeah, but then that would not protect against tests that would forget to 
+re-plug the screens and thus would lead to unstable IGT results when the 
+test list is randomized (shard runs).
+
+I think the idea was that the overhead of checking was measured in ms on 
+devices that have a chamelium, and no impact at all on machines without 
+a chamelium, so the convenience was deemed greater than the cost.
+
+Do you have specific measurements that would contradict this?
+
+> 
+> Currently when chamelium is not reachable we get SIGQUIT on all the
+> tests
+> 
+> Starting subtest: basic-fence-flip
+> Received signal SIGQUIT.
+> Stack trace:
+> #0 [fatal_sig_handler+0xd6]
+> #1 [killpg+0x40]
+> #2 [pselect+0x59]
+> #3 [xmlrpc_server_info_disallow_auth_ntlm+0x389]
+> #4 [xmlrpc_server_info_disallow_auth_ntlm+0x786]
+> #5 [xmlrpc_server_info_disallow_auth_ntlm+0xd1f]
+> #6 [xmlrpc_client_call2+0xa8]
+> #7 [xmlrpc_client_call2f_va+0x9e]
+> #8 [__chamelium_rpc_va+0x87]
+> #9 [__chamelium_rpc.constprop.8+0x8c]
+> #10 [chamelium_wait_reachable+0x65]
+> #11 [igt_display_require+0xbe]
+> #12 [test_flip+0x4b]
+> #13 [__real_main1093+0x1c38]
+> #14 [main+0x27]
+> #15 [__libc_start_main+0xe7]
+> #16 [_start+0x2a]
+> 
+> When chamelium is not reachable chamelium_wait_reachable() never returns
+> back and we have inactivity timeout which kills the test.
+
+Isn't that exactly what we want? This seems to be a setup error, and we 
+get a clear message: we can't check the state of the chamelium, so 
+better not run KMS tests which depend on a state we can't check.
+
+> 
+> Regards
+> Kunal Joshi
+> 
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
