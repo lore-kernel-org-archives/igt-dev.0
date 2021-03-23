@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
- [IPv6:2607:f8b0:4864:20::529])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4FA436E836
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 03:51:50 +0000 (UTC)
-Received: by mail-pg1-x529.google.com with SMTP id k24so10370969pgl.6
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 20:51:50 -0700 (PDT)
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
+ [IPv6:2607:f8b0:4864:20::52a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC54E6E840
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 03:51:48 +0000 (UTC)
+Received: by mail-pg1-x52a.google.com with SMTP id 32so4243078pgm.1
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 20:51:48 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 22 Mar 2021 22:51:33 -0500
-Message-Id: <20210323035135.3367084-8-jason@jlekstrand.net>
+Date: Mon, 22 Mar 2021 22:51:32 -0500
+Message-Id: <20210323035135.3367084-7-jason@jlekstrand.net>
 In-Reply-To: <20210323035135.3367084-1-jason@jlekstrand.net>
 References: <20210322204123.3331055-1-jason@jlekstrand.net>
  <20210323035135.3367084-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 7/9] tests/i915/gem_ctx_persistence: Drop
- the clone test
+Subject: [igt-dev] [PATCH i-g-t 6/9] tests/i915/gem_ctx_create: Stop cloning
+ engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,63 +28,31 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We're going to be deleting the CONTEXT_CLONE API since IGT is the only
-userspace to ever use it.  Drop the tests for it.
+There's no reason to clone engines here, especially when context 0 is
+just a default context so creating a new context will have the same
+engines as context 0.
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 ---
- tests/i915/gem_ctx_persistence.c | 30 ------------------------------
- 1 file changed, 30 deletions(-)
+ tests/i915/gem_ctx_create.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
-index 10d057f1..91c30176 100644
---- a/tests/i915/gem_ctx_persistence.c
-+++ b/tests/i915/gem_ctx_persistence.c
-@@ -147,33 +147,6 @@ static void test_idempotent(int i915)
- 	igt_assert_eq(p.value, expected);
- }
+diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
+index 9a512a03..7d2ee8fb 100644
+--- a/tests/i915/gem_ctx_create.c
++++ b/tests/i915/gem_ctx_create.c
+@@ -299,9 +299,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
  
--static void test_clone(int i915)
--{
--	struct drm_i915_gem_context_param p = {
--		.param = I915_CONTEXT_PARAM_PERSISTENCE,
--	};
--	uint32_t ctx, clone;
--
--	/*
--	 * Check that persistence is inherited across a clone.
--	 */
--	igt_require( __gem_context_create(i915, &ctx) == 0);
--
--	p.ctx_id = ctx;
--	p.value = 0;
--	gem_context_set_param(i915, &p);
--
--	clone = gem_context_clone(i915, ctx, I915_CONTEXT_CLONE_FLAGS, 0);
--	gem_context_destroy(i915, ctx);
--
--	p.ctx_id = clone;
--	p.value = -1;
--	gem_context_get_param(i915, &p);
--	igt_assert_eq(p.value, 0);
--
--	gem_context_destroy(i915, clone);
--}
--
- static void test_persistence(int i915, unsigned int engine)
- {
- 	igt_spin_t *spin;
-@@ -1366,9 +1339,6 @@ igt_main
- 	igt_subtest("idempotent")
- 		test_idempotent(i915);
- 
--	igt_subtest("clone")
--		test_clone(i915);
--
- 	igt_subtest("file")
- 		test_nonpersistent_file(i915);
- 
+ 		err = -ENOMEM;
+ 		if (avail_mem > (count + 1) * ctx_size)
+-			err =  __gem_context_clone(fd, 0,
+-						   I915_CONTEXT_CLONE_ENGINES,
+-						   0, &ctx_id);
++			err =  __gem_context_create(fd, &ctx_id);
+ 		if (err) {
+ 			igt_info("Created %lu contexts, before failing with '%s' [%d]\n",
+ 				 count, strerror(-err), -err);
 -- 
 2.29.2
 
