@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
- [IPv6:2607:f8b0:4864:20::102c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D24776E93E
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 17:25:00 +0000 (UTC)
-Received: by mail-pj1-x102c.google.com with SMTP id
- x7-20020a17090a2b07b02900c0ea793940so12512782pjc.2
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 10:25:00 -0700 (PDT)
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
+ [IPv6:2607:f8b0:4864:20::42f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C14616EB0C
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 17:25:02 +0000 (UTC)
+Received: by mail-pf1-x42f.google.com with SMTP id c204so15010508pfc.4
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 10:25:02 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Tue, 23 Mar 2021 12:24:39 -0500
-Message-Id: <20210323172441.3388732-8-jason@jlekstrand.net>
+Date: Tue, 23 Mar 2021 12:24:40 -0500
+Message-Id: <20210323172441.3388732-9-jason@jlekstrand.net>
 In-Reply-To: <20210323172441.3388732-1-jason@jlekstrand.net>
 References: <20210323172441.3388732-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 7/9] tests/i915/gem_ctx_persistence: Drop
- the clone test
+Subject: [igt-dev] [PATCH i-g-t 8/9] tests/i915/gem_exec_balancer: Stop
+ cloning engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,63 +27,39 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We're going to be deleting the CONTEXT_CLONE API since IGT is the only
-userspace to ever use it.  Drop the tests for it.
+We've got the parameters to setup the balancer right there; we may as
+well use them directly.
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 ---
- tests/i915/gem_ctx_persistence.c | 30 ------------------------------
- 1 file changed, 30 deletions(-)
+ tests/i915/gem_exec_balancer.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
-index 10d057f1..91c30176 100644
---- a/tests/i915/gem_ctx_persistence.c
-+++ b/tests/i915/gem_ctx_persistence.c
-@@ -147,33 +147,6 @@ static void test_idempotent(int i915)
- 	igt_assert_eq(p.value, expected);
- }
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index bfd65b29..19948ecb 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -826,8 +826,8 @@ static void bonded_slice(int i915)
+ 		igt_fork(child, count + 1) { /* C: arbitrary background load */
+ 			igt_list_del(&spin->link);
  
--static void test_clone(int i915)
--{
--	struct drm_i915_gem_context_param p = {
--		.param = I915_CONTEXT_PARAM_PERSISTENCE,
--	};
--	uint32_t ctx, clone;
--
--	/*
--	 * Check that persistence is inherited across a clone.
--	 */
--	igt_require( __gem_context_create(i915, &ctx) == 0);
--
--	p.ctx_id = ctx;
--	p.value = 0;
--	gem_context_set_param(i915, &p);
--
--	clone = gem_context_clone(i915, ctx, I915_CONTEXT_CLONE_FLAGS, 0);
--	gem_context_destroy(i915, ctx);
--
--	p.ctx_id = clone;
--	p.value = -1;
--	gem_context_get_param(i915, &p);
--	igt_assert_eq(p.value, 0);
--
--	gem_context_destroy(i915, clone);
--}
--
- static void test_persistence(int i915, unsigned int engine)
- {
- 	igt_spin_t *spin;
-@@ -1366,9 +1339,6 @@ igt_main
- 	igt_subtest("idempotent")
- 		test_idempotent(i915);
+-			ctx = gem_context_clone(i915, ctx,
+-						I915_CONTEXT_CLONE_ENGINES, 0);
++			ctx = gem_context_create(i915);
++			set_load_balancer(i915, ctx, siblings, count, NULL);
  
--	igt_subtest("clone")
--		test_clone(i915);
--
- 	igt_subtest("file")
- 		test_nonpersistent_file(i915);
- 
+ 			while (!READ_ONCE(*stop)) {
+ 				spin = igt_spin_new(i915,
+@@ -2442,8 +2442,7 @@ static void nop(int i915)
+ 				.buffers_ptr = to_user_pointer(&batch),
+ 				.buffer_count = 1,
+ 				.flags = child + 1,
+-				.rsvd1 = gem_context_clone(i915, ctx,
+-							   I915_CONTEXT_CLONE_ENGINES, 0),
++				.rsvd1 = load_balancer_create(i915, ci, count),
+ 			};
+ 			struct timespec tv = {};
+ 			unsigned long nops;
 -- 
 2.29.2
 
