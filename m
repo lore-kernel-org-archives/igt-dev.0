@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78FC56E0EF
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 10:31:48 +0000 (UTC)
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Tue, 23 Mar 2021 11:31:17 +0100
-Message-ID: <11466395.zAa99ISigo@jkrzyszt-mobl1.ger.corp.intel.com>
-In-Reply-To: <20210323101305.00002148@linux.intel.com>
-References: <20210318120554.961342-1-janusz.krzysztofik@linux.intel.com>
- <20210323101305.00002148@linux.intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2447189FA6
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 10:42:44 +0000 (UTC)
+From: Petri Latvala <petri.latvala@intel.com>
+Date: Tue, 23 Mar 2021 12:43:20 +0200
+Message-Id: <20210323104320.23399-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t] tests/core_hotunplug: Be more specific on
- sysfs vs. debugfs issues
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_dp_dsc: Add missing newline in
+ assert message
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,59 +19,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Adam Miszczak <adam.miszczak@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On wtorek, 23 marca 2021 10:13:05 CET Adam Miszczak wrote:
-> Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
-> 
-> > Messages displayed on sysfs health check failures don't provide
-> > information which subtree of sysfs actually failed - device sysfs
-> > itself or device debugfs.  That information could make debugging more
-> > easy if available.
-> > 
-> > Be more specific when reporting sysfs health check failures.
-> > 
-> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > ---
-> >  tests/core_hotunplug.c | 10 ++++++----
-> >  1 file changed, 6 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-> > index e7d2a4472..56a88fefd 100644
-> > --- a/tests/core_hotunplug.c
-> > +++ b/tests/core_hotunplug.c
-> > @@ -351,11 +351,13 @@ static void node_healthcheck(struct hotunplug *priv, unsigned flags)
-> >  	if (!priv->failure) {
-> >  		char path[200];
-> >  
-> > -		priv->failure = "Device sysfs healthckeck failure!";
-> >  		local_debug("%s\n", "running device sysfs healthcheck");
-> > -		if (igt_sysfs_path(fd_drm, path, sizeof(path)) &&
-> > -		    igt_debugfs_path(fd_drm, path, sizeof(path)))
-> > -			priv->failure = NULL;
-> > +		priv->failure = "Device sysfs healthckeck failure!";
-> > +		if (igt_sysfs_path(fd_drm, path, sizeof(path))) {
-> > +			priv->failure = "Device debugfs healthckeck failure!";
-> > +			if (igt_debugfs_path(fd_drm, path, sizeof(path)))
-> > +				priv->failure = NULL;
-> > +		}
-> >  	}
-> >  
-> >  	fd_drm = close_device(fd_drm, "", "health checked ");
-> 
-> LGTM,
-> Reviewed-by: Adam Miszczak <adam.miszczak@linux.intel.com>
+Assert messages need to end in a newline always.
 
-Thanks Adam, pushed.
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Manasi Navare <manasi.d.navare@intel.com>
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+---
+ tests/kms_dp_dsc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Janusz
-
-> 
-
-
-
+diff --git a/tests/kms_dp_dsc.c b/tests/kms_dp_dsc.c
+index e2e3aaa0..194c0639 100644
+--- a/tests/kms_dp_dsc.c
++++ b/tests/kms_dp_dsc.c
+@@ -120,7 +120,7 @@ static void force_dp_dsc_enable(data_t *data)
+ 	strcat(file_name, "/i915_dsc_fec_support");
+ 	igt_debug ("Forcing DSC enable on %s\n", data->conn_name);
+ 	ret = igt_sysfs_write(data->debugfs_fd, file_name, "1", 1);
+-	igt_assert_f(ret > 0, "debugfs_write failed");
++	igt_assert_f(ret > 0, "debugfs_write failed\n");
+ }
+ 
+ static bool is_force_dsc_enabled(data_t *data)
+-- 
+2.29.2
 
 _______________________________________________
 igt-dev mailing list
