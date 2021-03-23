@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
  [IPv6:2607:f8b0:4864:20::52a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC54E6E840
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 03:51:48 +0000 (UTC)
-Received: by mail-pg1-x52a.google.com with SMTP id 32so4243078pgm.1
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 20:51:48 -0700 (PDT)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8DE336E844
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 03:51:51 +0000 (UTC)
+Received: by mail-pg1-x52a.google.com with SMTP id o11so10368540pgs.4
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 20:51:51 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 22 Mar 2021 22:51:32 -0500
-Message-Id: <20210323035135.3367084-7-jason@jlekstrand.net>
+Date: Mon, 22 Mar 2021 22:51:34 -0500
+Message-Id: <20210323035135.3367084-9-jason@jlekstrand.net>
 In-Reply-To: <20210323035135.3367084-1-jason@jlekstrand.net>
 References: <20210322204123.3331055-1-jason@jlekstrand.net>
  <20210323035135.3367084-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 6/9] tests/i915/gem_ctx_create: Stop cloning
- engines
+Subject: [igt-dev] [PATCH i-g-t 8/9] tests/i915/gem_exec_balancer: Stop
+ cloning engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,31 +28,39 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-There's no reason to clone engines here, especially when context 0 is
-just a default context so creating a new context will have the same
-engines as context 0.
+We've got the parameters to setup the balancer right there; we may as
+well use them directly.
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 ---
- tests/i915/gem_ctx_create.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ tests/i915/gem_exec_balancer.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
-index 9a512a03..7d2ee8fb 100644
---- a/tests/i915/gem_ctx_create.c
-+++ b/tests/i915/gem_ctx_create.c
-@@ -299,9 +299,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index bfd65b29..19948ecb 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -826,8 +826,8 @@ static void bonded_slice(int i915)
+ 		igt_fork(child, count + 1) { /* C: arbitrary background load */
+ 			igt_list_del(&spin->link);
  
- 		err = -ENOMEM;
- 		if (avail_mem > (count + 1) * ctx_size)
--			err =  __gem_context_clone(fd, 0,
--						   I915_CONTEXT_CLONE_ENGINES,
--						   0, &ctx_id);
-+			err =  __gem_context_create(fd, &ctx_id);
- 		if (err) {
- 			igt_info("Created %lu contexts, before failing with '%s' [%d]\n",
- 				 count, strerror(-err), -err);
+-			ctx = gem_context_clone(i915, ctx,
+-						I915_CONTEXT_CLONE_ENGINES, 0);
++			ctx = gem_context_create(i915);
++			set_load_balancer(i915, ctx, siblings, count, NULL);
+ 
+ 			while (!READ_ONCE(*stop)) {
+ 				spin = igt_spin_new(i915,
+@@ -2442,8 +2442,7 @@ static void nop(int i915)
+ 				.buffers_ptr = to_user_pointer(&batch),
+ 				.buffer_count = 1,
+ 				.flags = child + 1,
+-				.rsvd1 = gem_context_clone(i915, ctx,
+-							   I915_CONTEXT_CLONE_ENGINES, 0),
++				.rsvd1 = load_balancer_create(i915, ci, count),
+ 			};
+ 			struct timespec tv = {};
+ 			unsigned long nops;
 -- 
 2.29.2
 
