@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 35EC86E825
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 06:42:11 +0000 (UTC)
-From: Karthik B S <karthik.b.s@intel.com>
-Date: Tue, 23 Mar 2021 11:46:39 +0530
-Message-Id: <20210323061639.26460-3-karthik.b.s@intel.com>
-In-Reply-To: <20210323061639.26460-1-karthik.b.s@intel.com>
-References: <20210323061639.26460-1-karthik.b.s@intel.com>
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com
+ [IPv6:2a00:1450:4864:20::62e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 68C386E094
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 08:01:19 +0000 (UTC)
+Received: by mail-ej1-x62e.google.com with SMTP id u5so25544640ejn.8
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 01:01:19 -0700 (PDT)
+References: <20210322082535.1137703-1-martin.peres@mupuf.org>
+ <7f2b6add0365462747512d6d0142cfc67e69ae28.camel@redhat.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Message-ID: <d5b2d18d-265f-a3ee-82e1-f2f53760fd99@gmail.com>
+Date: Tue, 23 Mar 2021 10:01:10 +0200
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_atomic_transition: Reset the
- pipe_count variable
+In-Reply-To: <7f2b6add0365462747512d6d0142cfc67e69ae28.camel@redhat.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] Revert "tests/kms_plane: Don't unset
+ primary_fb when testing other planes"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,161 +22,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: juhapekka.heikkila@gmail.com
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com, petri.latvala@intel.com
+To: lyude@redhat.com, Martin Peres <martin.peres@mupuf.org>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The pipe_count variable is not being reset after every subtest.
-This is not causing any issue when running the subtests individually,
-but when running the full test only the first subtest runs
-and all the other subtests get skipped.
-
-To fix this, reset the pipe_count variable after every subtest.
-
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
----
- tests/kms_atomic_transition.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
-
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index 90df7e33..431824d0 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -1002,7 +1002,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	}
- 
- 	igt_describe("Check toggling of primary plane with vblank");
--	igt_subtest("plane-primary-toggle-with-vblank-wait")
-+	igt_subtest("plane-primary-toggle-with-vblank-wait") {
- 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
- 			if (pipe_count == 2 * count && !data.extended)
- 				break;
-@@ -1010,6 +1010,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 			run_primary_test(&data, pipe, output);
- 
- 		}
-+		pipe_count = 0;
-+	}
- 
- 	igt_describe("Transition test for all plane combinations");
- 	igt_subtest_with_dynamic("plane-all-transition") {
-@@ -1021,6 +1023,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 				run_transition_test(&data, pipe, output, TRANSITION_PLANES, false, false);
- 			test_cleanup(&data, pipe, output, false);
- 		}
-+		pipe_count = 0;
- 	}
- 
- 	igt_describe("Transition test for all plane combinations with fencing commit");
-@@ -1033,6 +1036,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 				run_transition_test(&data, pipe, output, TRANSITION_PLANES, false, true);
- 			test_cleanup(&data, pipe, output, true);
- 		}
-+		pipe_count = 0;
- 	}
- 
- 	igt_describe("Transition test for all plane combinations with nonblocking commit");
-@@ -1045,6 +1049,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 				run_transition_test(&data, pipe, output, TRANSITION_PLANES, true, false);
- 			test_cleanup(&data, pipe, output, false);
- 		}
-+		pipe_count = 0;
- 	}
- 
- 	igt_describe("Transition test for all plane combinations with nonblocking and fencing commit");
-@@ -1057,6 +1062,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 				run_transition_test(&data, pipe, output, TRANSITION_PLANES, true, true);
- 			test_cleanup(&data, pipe, output, true);
- 		}
-+		pipe_count = 0;
- 	}
- 
- 	igt_describe("Transition test with non blocking commit and make sure commit of disabled plane has "
-@@ -1070,6 +1076,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 				run_transition_test(&data, pipe, output, TRANSITION_AFTER_FREE, true, false);
- 			test_cleanup(&data, pipe, output, false);
- 		}
-+		pipe_count = 0;
- 	}
- 
- 	igt_describe("Transition test with non blocking and fencing commit and make sure commit of "
-@@ -1083,6 +1090,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 				run_transition_test(&data, pipe, output, TRANSITION_AFTER_FREE, true, true);
- 			test_cleanup(&data, pipe, output, true);
- 		}
-+		pipe_count = 0;
- 	}
- 
- 	/*
-@@ -1091,7 +1099,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	 * panels with long power cycle delays.
- 	 */
- 	igt_describe("Modeset test for all plane combinations");
--	igt_subtest_with_dynamic("plane-all-modeset-transition")
-+	igt_subtest_with_dynamic("plane-all-modeset-transition") {
- 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
- 			if (pipe_count == 2 * count && !data.extended)
- 				break;
-@@ -1103,9 +1111,11 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 				run_transition_test(&data, pipe, output, TRANSITION_MODESET, false, false);
- 			test_cleanup(&data, pipe, output, false);
- 		}
-+		pipe_count = 0;
-+	}
- 
- 	igt_describe("Modeset test for all plane combinations with fencing commit");
--	igt_subtest_with_dynamic("plane-all-modeset-transition-fencing")
-+	igt_subtest_with_dynamic("plane-all-modeset-transition-fencing") {
- 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
- 			if (pipe_count == 2 * count && !data.extended)
- 				break;
-@@ -1117,6 +1127,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 				run_transition_test(&data, pipe, output, TRANSITION_MODESET, false, true);
- 			test_cleanup(&data, pipe, output, true);
- 		}
-+		pipe_count = 0;
-+	}
- 
- 	igt_describe("Modeset test for all plane combinations on internal panels");
- 	igt_subtest_with_dynamic("plane-all-modeset-transition-internal-panels") {
-@@ -1131,6 +1143,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 				run_transition_test(&data, pipe, output, TRANSITION_MODESET_FAST, false, false);
- 			test_cleanup(&data, pipe, output, false);
- 		}
-+		pipe_count = 0;
- 	}
- 
- 	igt_describe("Modeset test for all plane combinations on internal panels with fencing commit");
-@@ -1146,10 +1159,11 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 				run_transition_test(&data, pipe, output, TRANSITION_MODESET_FAST, false, true);
- 			test_cleanup(&data, pipe, output, true);
- 		}
-+		pipe_count = 0;
- 	}
- 
- 	igt_describe("Check toggling and modeset transition on plane");
--	igt_subtest("plane-toggle-modeset-transition")
-+	igt_subtest("plane-toggle-modeset-transition") {
- 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
- 			if (pipe_count == 2 * count && !data.extended)
- 				break;
-@@ -1157,6 +1171,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 			run_transition_test(&data, pipe, output, TRANSITION_MODESET_DISABLE, false, false);
- 			test_cleanup(&data, pipe, output, false);
- 		}
-+		pipe_count = 0;
-+	}
- 
- 	igt_describe("Modeset transition tests for combinations of crtc enabled");
- 	igt_subtest_with_dynamic("modeset-transition") {
--- 
-2.22.0
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gMjMuMy4yMDIxIDIuMjQsIEx5dWRlIFBhdWwgd3JvdGU6Cj4gaG0gLSBJIGdhdmUgbXkgcmV2
+aWV3ZWQtYnk6IGhlcmUgYmVmb3JlIGJ1dCB0YWtpbmcgYSBjbG9zZXIgbG9vayBhdCB0aGlzLCBJ
+IGFtCj4gc2VlaW5nIHVuZGVycnVucyBiZWluZyBub3RlZCBpbiB0aGUgcGl4ZWwgZm9ybWF0IHRl
+c3RzOgo+IAo+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvaW5kZXgu
+aHRtbD90ZXN0ZmlsdGVyPWttc19wbGFuZUBwaXhlbC1mb3JtYXQmaG9zdHM9dGdsJTdDaWNsCj4g
+Cj4gSSBoYXZlbid0IGdvdHRlbiBhIGNsb3NlciBsb29rIHlldCwgYnV0IEknbSBleHRyZW1lbHkg
+ZG91YnRmdWwgdGhpcyBpcyBhbiBlcnJvcgo+IG9uIHRoZSB0ZXN0J3MgcGFydCB1bmxlc3MgdGhv
+c2UgdW5kZXJydW5zIHdlcmUgdGhlcmUgYmVmb3JlLgoKSnVzdCB0byBub3RlIHRob3NlIHVuZGVy
+cnVucyBhcmUgbm90IG9ubHkgcHJvYmxlbSB0aGVyZS4gSSBhc3N1bWUgCnRoZXkncmUgbWVyZWx5
+IHN5bXB0b20gb2Ygc29tZSBtaXNwcm9ncmFtbWluZy4KCkhlcmUgaXMganVzdCBwbGFpbiBjcmMg
+ZmFpbCB3aGlsZSBydW5uaW5nIG9uIHNwcml0ZSBwbGFuZSwgaWUgd2hpbGUgCmNoYW5nZXMgYXJl
+IGluIHVzZToKaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1f
+OTg3OS9zaGFyZC1pY2xiNy9pZ3RAa21zX3BsYW5lQHBpeGVsLWZvcm1hdC1waXBlLWMtcGxhbmVz
+LXNvdXJjZS1jbGFtcGluZy5odG1sCgpIZXJlIGlzIHN1ZGRlbmx5IHJlcG9ydGVkIHJlYWQgZnJv
+bSBwb3dlcmVkIGRvd24gd2VsbDoKaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJt
+LXRpcC9JR1RfNjAzOC9zaGFyZC1pY2xiMy9pZ3RAa21zX3BsYW5lQHBpeGVsLWZvcm1hdC1waXBl
+LWEtcGxhbmVzLXNvdXJjZS1jbGFtcGluZy5odG1sCgpJbiBwaXhlbCBmb3JtYXQgdGVzdCB0aGVy
+ZSdzIHNlcGFyYXRlIHBhdGggZm9yIHBsYW5hciBmb3JtYXRzIGFuZCBhbGwgCnRoZXNlIHByb2Js
+ZW1zIHN0YXJ0IHRvIHNob3cgd2hlbiB1c2UgcGxhbmFyIGZvcm1hdHMuIEknZCBndWVzcyB0aGF0
+J3MgCnRoZSBwbGFjZSB0byBsb29rIGZvci4KCi9KdWhhLVBla2thCgo+IAo+IE9uIE1vbiwgMjAy
+MS0wMy0yMiBhdCAxMDoyNSArMDIwMCwgTWFydGluIFBlcmVzIHdyb3RlOgo+PiBUaGUgcGF0Y2gg
+bGVkIHRvIGEgcmVncmVzc2lvbiBpbiBpOTE1IHJlc3VsdHMuIFRoZSByZWdyZXNzaW9uIHdhc24n
+dAo+PiBjYXVnaHQgcHJlLW1lcmdlIGJlY2F1c2UgdGhlIHRlc3Qgd2FzIGJsYWNrbGlzdGVkIGZv
+ciBwcmUtbWVyZ2UgYnkKPj4geW91cnMgdHJ1bHkgZHVlIHRvIGl0cyBwcm9oaWJpdGl2ZSBleGVj
+dXRpb24gdGltZSwgYnV0IG15IGNyZWF0aW9uCj4+IGNhbWUgYmFjayB0byBiaXRlIG1lIGluIHRo
+ZSBhc3MsIEZyYWtlbnN0ZWluLXN0eWxlLgo+Pgo+PiBJdCBpcyBjdXJyZW50bHkgdW5jbGVhciBp
+ZiB0aGUgcmVncmVzc2lvbiBpbnRyb2R1Y2VkIGJ5IHRoaXMgY2hhbmdlIGlzCj4+IGFuIGk5MTUg
+YnVnLCBhIEtNUyBzcGVjIHZpb2xhdGlvbiBpbnRyb2R1Y2VkIGJ5IHRoZSBjaGFuZ2UsIG9yCj4+
+IGdlbmVyYWxseSBhIGxvb3NlLXNwZWMgYW5kIGp1c3QgaW5jb21wYXRpYmxlIEhXIGJldHdlZW4g
+TlZJRElBIGFuZAo+PiBJbnRlbC4gV2hpbGUgd2UgZmlndXJlIHRoaXMgdGhpbmcgb3V0LCBsZXQn
+cyBqdXN0IHJldmVydCB0aGUgY2hhbmdlCj4+IGFuZCBwdXQgdGhlIGNvc3Qgb2YgaW50ZWdyYXRp
+b24gb24gdGhlIHBlb3BsZSBwcm9wb3NpbmcgdGhlCj4+IGNoYW5nZSAoTHl1ZGUgYW5kIEkpLgo+
+Pgo+PiBTb3JyeSBmb3IgdGhlIG5vaXNlIQo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBNYXJ0aW4gUGVy
+ZXMgPG1hcnRpbi5wZXJlc0BtdXB1Zi5vcmc+Cj4+IENjOiBKYW5pIFNhYXJpbmVuIDxqYW5pLnNh
+YXJpbmVuQGludGVsLmNvbT4KPj4gQ2M6IEx5dWRlIFBhdWwgPGx5dWRlQHJlZGhhdC5jb20+Cj4+
+IENjOiBqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29tCj4+IC0tLQo+PiAgwqB0ZXN0cy9rbXNf
+cGxhbmUuYyB8IDkgKysrKy0tLS0tCj4+ICDCoDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMo
+KyksIDUgZGVsZXRpb25zKC0pCj4+Cj4+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfcGxhbmUuYyBi
+L3Rlc3RzL2ttc19wbGFuZS5jCj4+IGluZGV4IGM4Nzk4M2E0Li4yOThhOTM3NSAxMDA2NDQKPj4g
+LS0tIGEvdGVzdHMva21zX3BsYW5lLmMKPj4gKysrIGIvdGVzdHMva21zX3BsYW5lLmMKPj4gQEAg
+LTgxNywxMCArODE3LDkgQEAgZW51bSBjcmNfc2V0IHsgUEFDS0VEX0NSQ19TRVQsCj4+ICDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIE1BWF9DUkNfU0VUIH07Cj4+ICAgCj4+ICDCoHN0YXRp
+YyBib29sIHRlc3RfZm9ybWF0X3BsYW5lKGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUsCj4+
+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCwgaWd0X3BsYW5lX3QgKnBsYW5lLCBpZ3RfZmJfdAo+PiAq
+cHJpbWFyeV9mYikKPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIGlndF9vdXRwdXRfdCAqb3V0cHV0LCBpZ3RfcGxhbmVfdCAqcGxhbmUp
+Cj4+ICDCoHsKPj4gIMKgwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgaWd0X2ZiIGZiID0ge307Cj4+IC3C
+oMKgwqDCoMKgwqDCoHN0cnVjdCBpZ3RfZmIgKmNsZWFyX2ZiID0gcGxhbmUtPnR5cGUgPT0gRFJN
+X1BMQU5FX1RZUEVfUFJJTUFSWSA/Cj4+IHByaW1hcnlfZmIgOiBOVUxMOwo+PiAgwqDCoMKgwqDC
+oMKgwqDCoGRybU1vZGVNb2RlSW5mbyAqbW9kZTsKPj4gIMKgwqDCoMKgwqDCoMKgwqB1aW50MzJf
+dCBmb3JtYXQsIHJlZl9mb3JtYXQ7Cj4+ICDCoMKgwqDCoMKgwqDCoMKgdWludDY0X3QgbW9kaWZp
+ZXIsIHJlZl9tb2RpZmllcjsKPj4gQEAgLTg4MCw3ICs4NzksNyBAQCBzdGF0aWMgYm9vbCB0ZXN0
+X2Zvcm1hdF9wbGFuZShkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlLAo+PiAgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaGVpZ2h0ID0gdGVzdF9mYi5o
+ZWlnaHQ7Cj4+ICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPj4gICAKPj4gLcKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9wbGFuZV9zZXRfZmIocGxhbmUsIGNsZWFy
+X2ZiKTsKPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9wbGFuZV9zZXRfZmIo
+cGxhbmUsIE5VTEwpOwo+PiAgIAo+PiAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBp
+Z3RfcmVtb3ZlX2ZiKGRhdGEtPmRybV9mZCwgJnRlc3RfZmIpOwo+PiAgwqDCoMKgwqDCoMKgwqDC
+oH0KPj4gQEAgLTkzOCw3ICs5MzcsNyBAQCBzdGF0aWMgYm9vbCB0ZXN0X2Zvcm1hdF9wbGFuZShk
+YXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlLAo+PiAgIAo+PiAgwqDCoMKgwqDCoMKgwqDCoGln
+dF9waXBlX2NyY19zdG9wKGRhdGEtPnBpcGVfY3JjKTsKPj4gICAKPj4gLcKgwqDCoMKgwqDCoMKg
+aWd0X3BsYW5lX3NldF9mYihwbGFuZSwgY2xlYXJfZmIpOwo+PiArwqDCoMKgwqDCoMKgwqBpZ3Rf
+cGxhbmVfc2V0X2ZiKHBsYW5lLCBOVUxMKTsKPj4gIMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVtb3Zl
+X2ZiKGRhdGEtPmRybV9mZCwgJmZiKTsKPj4gICAKPj4gIMKgwqDCoMKgwqDCoMKgwqByZXR1cm4g
+cmVzdWx0Owo+PiBAQCAtMTAxMSw3ICsxMDEwLDcgQEAgdGVzdF9waXhlbF9mb3JtYXRzKGRhdGFf
+dCAqZGF0YSwgZW51bSBwaXBlIHBpcGUpCj4+ICDCoMKgwqDCoMKgwqDCoMKgZm9yX2VhY2hfcGxh
+bmVfb25fcGlwZSgmZGF0YS0+ZGlzcGxheSwgcGlwZSwgcGxhbmUpIHsKPj4gIMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKHNraXBfcGxhbmUoZGF0YSwgcGxhbmUpKQo+PiAgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29udGludWU7Cj4+
+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXN1bHQgJj0gdGVzdF9mb3JtYXRfcGxh
+bmUoZGF0YSwgcGlwZSwgb3V0cHV0LCBwbGFuZSwKPj4gJnByaW1hcnlfZmIpOwo+PiArwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmVzdWx0ICY9IHRlc3RfZm9ybWF0X3BsYW5lKGRhdGEs
+IHBpcGUsIG91dHB1dCwgcGxhbmUpOwo+PiAgwqDCoMKgwqDCoMKgwqDCoH0KPj4gICAKPj4gIMKg
+wqDCoMKgwqDCoMKgwqB0ZXN0X2ZpbmkoZGF0YSk7Cj4gCgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxp
+c3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2lndC1kZXYK
