@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com
- [IPv6:2607:f8b0:4864:20::52c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3BC1A6E840
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 03:51:46 +0000 (UTC)
-Received: by mail-pg1-x52c.google.com with SMTP id v186so10375326pgv.7
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 20:51:46 -0700 (PDT)
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
+ [IPv6:2607:f8b0:4864:20::529])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4FA436E836
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 03:51:50 +0000 (UTC)
+Received: by mail-pg1-x529.google.com with SMTP id k24so10370969pgl.6
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 20:51:50 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 22 Mar 2021 22:51:30 -0500
-Message-Id: <20210323035135.3367084-5-jason@jlekstrand.net>
+Date: Mon, 22 Mar 2021 22:51:33 -0500
+Message-Id: <20210323035135.3367084-8-jason@jlekstrand.net>
 In-Reply-To: <20210323035135.3367084-1-jason@jlekstrand.net>
 References: <20210322204123.3331055-1-jason@jlekstrand.net>
  <20210323035135.3367084-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 4/9] tests/i915/gem_ctx_param: Drop the
- zeromap subtests
+Subject: [igt-dev] [PATCH i-g-t 7/9] tests/i915/gem_ctx_persistence: Drop
+ the clone test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,71 +28,63 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The idea behind this param is to support OpenCL drivers with relocations
-because OpenCL reserves 0x0 for NULL and, if we placed memory there, it
-would confuse CL kernels.  It was originally sent out as part of a patch
-series including libdrm [1] and Beignet [2] support.  However, the
-libdrm and Beignet patches never landed in their respective upstream
-projects so this API has never been used.  It's never been used in Mesa
-or any other driver, either.
-
-This means that these IGT tests are the only userspace for NO_ZEROMAP
-which has ever really existed.  Let's drop them and drop support from
-i915 as well.
-
-[1]: https://lists.freedesktop.org/archives/intel-gfx/2015-May/067030.html
-[2]: https://lists.freedesktop.org/archives/intel-gfx/2015-May/067031.html
+We're going to be deleting the CONTEXT_CLONE API since IGT is the only
+userspace to ever use it.  Drop the tests for it.
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 ---
- tests/i915/gem_ctx_param.c | 33 ---------------------------------
- 1 file changed, 33 deletions(-)
+ tests/i915/gem_ctx_persistence.c | 30 ------------------------------
+ 1 file changed, 30 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_param.c b/tests/i915/gem_ctx_param.c
-index ab0e3007..47fea06d 100644
---- a/tests/i915/gem_ctx_param.c
-+++ b/tests/i915/gem_ctx_param.c
-@@ -335,39 +335,6 @@ igt_main
- 		gem_context_set_param(fd, &arg);
- 	}
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index 10d057f1..91c30176 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -147,33 +147,6 @@ static void test_idempotent(int i915)
+ 	igt_assert_eq(p.value, expected);
+ }
  
--	arg.param = I915_CONTEXT_PARAM_NO_ZEROMAP;
+-static void test_clone(int i915)
+-{
+-	struct drm_i915_gem_context_param p = {
+-		.param = I915_CONTEXT_PARAM_PERSISTENCE,
+-	};
+-	uint32_t ctx, clone;
 -
--	igt_describe("Validates context set param ioctl in non root mode with param "
--	       "set to no zeromap");
--	igt_subtest("non-root-set-no-zeromap") {
--		igt_fork(child, 1) {
--			igt_drop_root();
+-	/*
+-	 * Check that persistence is inherited across a clone.
+-	 */
+-	igt_require( __gem_context_create(i915, &ctx) == 0);
 -
--			arg.ctx_id = ctx;
--			gem_context_get_param(fd, &arg);
--			arg.value--;
--			gem_context_set_param(fd, &arg);
--		}
+-	p.ctx_id = ctx;
+-	p.value = 0;
+-	gem_context_set_param(i915, &p);
 -
--		igt_waitchildren();
--	}
+-	clone = gem_context_clone(i915, ctx, I915_CONTEXT_CLONE_FLAGS, 0);
+-	gem_context_destroy(i915, ctx);
 -
--	igt_describe("Tests the context set param ioctl with no zeromap enabled in root mode");
--	igt_subtest("root-set-no-zeromap-enabled") {
--		arg.ctx_id = ctx;
--		gem_context_get_param(fd, &arg);
--		arg.value = 1;
--		gem_context_set_param(fd, &arg);
--	}
+-	p.ctx_id = clone;
+-	p.value = -1;
+-	gem_context_get_param(i915, &p);
+-	igt_assert_eq(p.value, 0);
 -
--	igt_describe("Tests the context set param ioctl with no zeromap disabled in root mode");
--	igt_subtest("root-set-no-zeromap-disabled") {
--		arg.ctx_id = ctx;
--		gem_context_get_param(fd, &arg);
--		arg.value = 0;
--		gem_context_set_param(fd, &arg);
--	}
+-	gem_context_destroy(i915, clone);
+-}
 -
- 	igt_describe("Tests that multiple contexts can share the same VMA");
- 	igt_subtest("vm")
- 		test_vm(fd);
+ static void test_persistence(int i915, unsigned int engine)
+ {
+ 	igt_spin_t *spin;
+@@ -1366,9 +1339,6 @@ igt_main
+ 	igt_subtest("idempotent")
+ 		test_idempotent(i915);
+ 
+-	igt_subtest("clone")
+-		test_clone(i915);
+-
+ 	igt_subtest("file")
+ 		test_nonpersistent_file(i915);
+ 
 -- 
 2.29.2
 
