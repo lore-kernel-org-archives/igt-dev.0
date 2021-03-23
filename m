@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C23266E872
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 09:13:31 +0000 (UTC)
+Date: Tue, 23 Mar 2021 10:13:05 +0100
+From: Adam Miszczak <adam.miszczak@linux.intel.com>
+Message-ID: <20210323101305.00002148@linux.intel.com>
+In-Reply-To: <20210318120554.961342-1-janusz.krzysztofik@linux.intel.com>
+References: <20210318120554.961342-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 23 Mar 2021 08:58:33 -0000
-Message-ID: <161648991311.20054.736039227436689259@emeril.freedesktop.org>
-References: <20210322214142.4163173-1-markyacoub@chromium.org>
-In-Reply-To: <20210322214142.4163173-1-markyacoub@chromium.org>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?s/kms=5Fatomic=5Ftransition=3A_Enable_Primary_Plane_on_Enabling?=
- =?utf-8?q?_CRTC=2E?=
+Subject: Re: [igt-dev] [i-g-t] tests/core_hotunplug: Be more specific on
+ sysfs vs. debugfs issues
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,35 +17,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
 
-Series: tests/kms_atomic_transition: Enable Primary Plane on Enabling CRTC.
-URL   : https://patchwork.freedesktop.org/series/88327/
-State : failure
+> Messages displayed on sysfs health check failures don't provide
+> information which subtree of sysfs actually failed - device sysfs
+> itself or device debugfs.  That information could make debugging more
+> easy if available.
+> 
+> Be more specific when reporting sysfs health check failures.
+> 
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> ---
+>  tests/core_hotunplug.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+> index e7d2a4472..56a88fefd 100644
+> --- a/tests/core_hotunplug.c
+> +++ b/tests/core_hotunplug.c
+> @@ -351,11 +351,13 @@ static void node_healthcheck(struct hotunplug *priv, unsigned flags)
+>  	if (!priv->failure) {
+>  		char path[200];
+>  
+> -		priv->failure = "Device sysfs healthckeck failure!";
+>  		local_debug("%s\n", "running device sysfs healthcheck");
+> -		if (igt_sysfs_path(fd_drm, path, sizeof(path)) &&
+> -		    igt_debugfs_path(fd_drm, path, sizeof(path)))
+> -			priv->failure = NULL;
+> +		priv->failure = "Device sysfs healthckeck failure!";
+> +		if (igt_sysfs_path(fd_drm, path, sizeof(path))) {
+> +			priv->failure = "Device debugfs healthckeck failure!";
+> +			if (igt_debugfs_path(fd_drm, path, sizeof(path)))
+> +				priv->failure = NULL;
+> +		}
+>  	}
+>  
+>  	fd_drm = close_device(fd_drm, "", "health checked ");
 
-== Summary ==
-
-Applying: tests/kms_atomic_transition: Enable Primary Plane on Enabling CRTC.
-Using index info to reconstruct a base tree...
-M	tests/kms_atomic_transition.c
-Falling back to patching base and 3-way merge...
-Auto-merging tests/kms_atomic_transition.c
-CONFLICT (content): Merge conflict in tests/kms_atomic_transition.c
-Patch failed at 0001 tests/kms_atomic_transition: Enable Primary Plane on Enabling CRTC.
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
-
+LGTM,
+Reviewed-by: Adam Miszczak <adam.miszczak@linux.intel.com>
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
