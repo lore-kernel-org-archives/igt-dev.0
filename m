@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F199889AB2
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Mar 2021 08:14:17 +0000 (UTC)
-From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
-Date: Wed, 24 Mar 2021 13:44:41 +0530
-Message-Id: <20210324081441.1084322-1-arundhati.hagaragi@intel.com>
+Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com
+ [IPv6:2607:f8b0:4864:20::734])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7CBE06E938
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 15:08:57 +0000 (UTC)
+Received: by mail-qk1-x734.google.com with SMTP id q26so9388737qkm.6
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 08:08:57 -0700 (PDT)
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Tue, 23 Mar 2021 11:08:51 -0400
+Message-Id: <20210323150851.209365-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: Add plane scaling
- test descriptions for subtests
+Subject: [igt-dev] [PATCH] tests/kms_atomic_transition: Enable Primary Plane
+ on Enabling CRTC.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,62 +23,52 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Khajapasha Mohammed <mohammed.khajapasha@intel.com>
+Cc: seanpaul@chromium.org, petri.latvala@intel.com, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add plane scaling test descriptions for subtests.
-Plane scaling with tiling rotation, pixel formats, overlay planes and with
-clipping and clamping
+From: Mark Yacoub <markyacoub@google.com>
 
-Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
-Cc: Khajapasha Mohammed <mohammed.khajapasha@intel.com>
+Setup all plane params before committing anything.
+Do not disable Primary Plane whenever a CRTC is getting enabled.
+
+AMD Driver requires the primary plane to be enabled whenever the CRTC is, otherwise
+drm_mode_cursor_universal may end up trying to enable the cursor plane while all other
+planes are disabled, which is not supported by the hardware.
+
+Tested on Delbin and Volteer with no regression or added latency.
+
 ---
- tests/kms_plane_scaling.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/kms_atomic_transition.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index c63eb428..941f3e54 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -694,24 +694,28 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	igt_subtest_group {
- 		igt_output_t *output;
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index 9689bf4d..cfa04dcd 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -172,7 +172,7 @@ wm_setup_plane(data_t *data, enum pipe pipe,
+ 			continue;
  
-+		igt_describe("Test plane scaling with overlay planes");
- 		igt_subtest_with_dynamic("plane-scaling") {
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
- 				igt_dynamic_f("pipe-%s-plane-scaling", kmstest_pipe_name(pipe))
- 					test_plane_scaling_on_pipe(&data, pipe, output);
- 		}
- 
-+		igt_describe("Test plane scaling with pixel formats");
- 		igt_subtest_with_dynamic("scaler-with-pixel-format") {
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
- 				igt_dynamic_f("pipe-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe))
- 					test_scaler_with_pixel_format_pipe(&data, pipe, output);
- 		}
- 
-+		igt_describe("Test plane scaling with rotation");
- 		igt_subtest_with_dynamic("scaler-with-rotation") {
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
- 				igt_dynamic_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
- 					test_scaler_with_rotation_pipe(&data, pipe, output);
- 		}
- 
-+		igt_describe("Test plane scaling with clipping and clamping");
- 		igt_subtest_with_dynamic("scaler-with-clipping-clamping") {
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
- 				igt_dynamic_f("pipe-%s-scaler-with-clipping-clamping", kmstest_pipe_name(pipe))
-@@ -719,6 +723,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		}
+ 		if (!mask || !(parms[i].mask & mask)) {
+-			if (plane->values[IGT_PLANE_FB_ID]) {
++			if (plane->values[IGT_PLANE_FB_ID] && plane->type != DRM_PLANE_TYPE_PRIMARY) {
+ 				igt_plane_set_fb(plane, NULL);
+ 				planes_set_up++;
+ 			}
+@@ -516,10 +516,9 @@ run_transition_test(data_t *data, enum pipe pipe, igt_output_t *output,
+ 		igt_output_set_pipe(output, pipe);
  	}
  
-+	igt_describe("Test to display planes on connected pipes and runs scaling test on it");
- 	igt_subtest_f("2x-scaler-multi-pipe")
- 		test_scaler_with_multi_pipe_plane(&data);
- 
+-	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+-
+ 	setup_parms(data, pipe, mode, &fb, &argb_fb, &sprite_fb, parms, &iter_max);
+-
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++	
+ 	/*
+ 	 * In some configurations the tests may not run to completion with all
+ 	 * sprite planes lit up at 4k resolution, try decreasing width/size of secondary
 -- 
-2.25.1
+2.31.0.rc2.261.g7f71774620-goog
 
 _______________________________________________
 igt-dev mailing list
