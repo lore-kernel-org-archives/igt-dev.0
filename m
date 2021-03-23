@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
- [IPv6:2607:f8b0:4864:20::52a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8DE336E844
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 03:51:51 +0000 (UTC)
-Received: by mail-pg1-x52a.google.com with SMTP id o11so10368540pgs.4
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 20:51:51 -0700 (PDT)
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com
+ [IPv6:2607:f8b0:4864:20::52d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 13DC76E83B
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 03:51:53 +0000 (UTC)
+Received: by mail-pg1-x52d.google.com with SMTP id k24so10371048pgl.6
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 20:51:53 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 22 Mar 2021 22:51:34 -0500
-Message-Id: <20210323035135.3367084-9-jason@jlekstrand.net>
+Date: Mon, 22 Mar 2021 22:51:35 -0500
+Message-Id: <20210323035135.3367084-10-jason@jlekstrand.net>
 In-Reply-To: <20210323035135.3367084-1-jason@jlekstrand.net>
 References: <20210322204123.3331055-1-jason@jlekstrand.net>
  <20210323035135.3367084-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 8/9] tests/i915/gem_exec_balancer: Stop
- cloning engines
+Subject: [igt-dev] [PATCH i-g-t 9/9] lib/i915/gem_context: Implement VM and
+ engine cloning manually (v3)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,39 +28,370 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We've got the parameters to setup the balancer right there; we may as
-well use them directly.
+We're going to be deleting the CONTEXT_CLONE API since IGT is the only
+userspace to ever use it.  There are only two bits of this API that IGT
+uses in interesting ways so implement them as create params instead of
+cloning.
+
+v2 (Jason Ekstrand):
+ - Fix our usage of the param struct for VM cloning
+ - Handle the case of zero user engines properly
+ - Assert that all cloned engines are physical, not virtual
+
+v3 (Jason Ekstrand):
+ - Drop gem_has_context_clone()
+ - Add docs for [__]gem_context_clone()
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/i915/gem_exec_balancer.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ lib/i915/gem_context.c         | 157 +++++++++++++++++++++++++--------
+ lib/i915/gem_context.h         |   9 +-
+ tests/i915/gem_ctx_shared.c    |  10 +--
+ tests/i915/gem_exec_balancer.c |   2 +-
+ tests/i915/gem_exec_schedule.c |   8 +-
+ 5 files changed, 133 insertions(+), 53 deletions(-)
 
+diff --git a/lib/i915/gem_context.c b/lib/i915/gem_context.c
+index 79411e10..d0eb3159 100644
+--- a/lib/i915/gem_context.c
++++ b/lib/i915/gem_context.c
+@@ -334,28 +334,110 @@ bool gem_context_has_persistence(int i915)
+ 	return __gem_context_get_param(i915, &param) == 0;
+ }
+ 
++static void
++add_ctx_create_ext(struct drm_i915_gem_context_create_ext *ctx,
++		   struct i915_user_extension *ext)
++{
++	ext->next_extension = ctx->extensions;
++	ctx->extensions = to_user_pointer(ext);
++}
++
++/**
++ * __gem_context_clone:
++ * @i915: open i915 drm file descriptor
++ * @src: i915 context id from which to clone parameters
++ * @clone: bitfield of parameters to clone
++ * @flags: context creation flags
++ * @out: resulting context
++ *
++ * Special purpose wrapper to create a new context by cloning params from @src.
++ *
++ * Currently, we support cloning the VM and the engine set.  Engine set
++ * cloning is only supported if they're all "real" engines.  Virtual bonded
++ * or balanced are not supported.
++ */
+ int
+ __gem_context_clone(int i915,
+-		    uint32_t src, unsigned int share,
++		    uint32_t src, unsigned int clone,
+ 		    unsigned int flags,
+ 		    uint32_t *out)
+ {
+-	struct drm_i915_gem_context_create_ext_clone clone = {
+-		{ .name = I915_CONTEXT_CREATE_EXT_CLONE },
+-		.clone_id = src,
+-		.flags = share,
+-	};
+-	struct drm_i915_gem_context_create_ext arg = {
++	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, I915_EXEC_RING_MASK + 1);
++	struct drm_i915_gem_context_create_ext_setparam engines_param, vm_param;
++	unsigned i, count;
++	int err;
++
++	struct drm_i915_gem_context_create_ext ctx_create = {
+ 		.flags = flags | I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
+-		.extensions = to_user_pointer(&clone),
++		.extensions = 0,
+ 	};
+-	int err;
+ 
+-	err = create_ext_ioctl(i915, &arg);
++	if (clone & GEM_CONTEXT_CLONE_ENGINES) {
++		engines_param = (struct drm_i915_gem_context_create_ext_setparam) {
++			.base = {
++				.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
++			},
++			.param = {
++				.param = I915_CONTEXT_PARAM_ENGINES,
++				.size = sizeof(engines),
++				.value = to_user_pointer(&engines),
++			},
++		};
++
++		engines_param.param.ctx_id = src;
++		err = __gem_context_get_param(i915, &engines_param.param);
++		igt_assert_eq(err, 0);
++		if (err)
++			return err;
++
++		if (engines_param.param.size > 0) {
++			igt_assert(engines_param.param.size > sizeof(uint64_t));
++			count = (engines_param.param.size - sizeof(uint64_t)) /
++				sizeof(struct i915_engine_class_instance);
++
++			igt_debug("Cloning context with %u engines:\n", count);
++			for (i = 0; i < count; i++) {
++				igt_debug("    %d, %d\n",
++					  (int)(int16_t)engines.engines[i].engine_class,
++					  (int)(int16_t)engines.engines[i].engine_instance);
++				/* We can't clone virtual engines */
++				igt_assert((int16_t)engines.engines[i].engine_class >= 0);
++				igt_assert((int16_t)engines.engines[i].engine_instance >= 0);
++			}
++
++			engines_param.param.ctx_id = 0;
++			add_ctx_create_ext(&ctx_create, &engines_param.base);
++		}
++	}
++
++	if (clone & GEM_CONTEXT_CLONE_VM) {
++		vm_param = (struct drm_i915_gem_context_create_ext_setparam) {
++			.base = {
++				.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
++			},
++			.param = {
++				.param = I915_CONTEXT_PARAM_VM,
++			},
++		};
++
++		vm_param.param.ctx_id = src;
++		err = __gem_context_get_param(i915, &vm_param.param);
++		igt_assert_eq(err, 0);
++		if (err)
++			return err;
++
++		igt_debug("vm: %d\n", (int)vm_param.param.value);
++
++		vm_param.param.ctx_id = 0;
++		add_ctx_create_ext(&ctx_create, &vm_param.base);
++	}
++
++	err = create_ext_ioctl(i915, &ctx_create);
++	igt_assert_eq(err, 0);
+ 	if (err)
+ 		return err;
+ 
+-	*out = arg.ctx_id;
++	*out = ctx_create.ctx_id;
+ 	return 0;
+ }
+ 
+@@ -373,41 +455,35 @@ static bool __gem_context_has(int i915, uint32_t share, unsigned int flags)
+ 
+ bool gem_contexts_has_shared_gtt(int i915)
+ {
+-	return __gem_context_has(i915, I915_CONTEXT_CLONE_VM, 0);
++	return __gem_context_has(i915, GEM_CONTEXT_CLONE_VM, 0);
+ }
+ 
+ bool gem_has_queues(int i915)
+ {
+-	return __gem_context_has(i915,
+-				 I915_CONTEXT_CLONE_VM,
++	return __gem_context_has(i915, GEM_CONTEXT_CLONE_VM,
+ 				 I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
+ }
+ 
++/**
++ * gem_context_clone: Create a new context, cloning some params from another
++ * @i915: open i915 drm file descriptor
++ * @src: i915 context id from which to clone parameters
++ * @clone: bitfield of parameters to clone
++ * @flags: context creation flags
++ *
++ * Like __gem_context_clone, only asserts on failure.
++ */
+ uint32_t gem_context_clone(int i915,
+-			   uint32_t src, unsigned int share,
++			   uint32_t src, unsigned int clone,
+ 			   unsigned int flags)
+ {
+ 	uint32_t ctx;
+ 
+-	igt_assert_eq(__gem_context_clone(i915, src, share, flags, &ctx), 0);
++	igt_assert_eq(__gem_context_clone(i915, src, clone, flags, &ctx), 0);
+ 
+ 	return ctx;
+ }
+ 
+-bool gem_has_context_clone(int i915)
+-{
+-	struct drm_i915_gem_context_create_ext_clone ext = {
+-		{ .name = I915_CONTEXT_CREATE_EXT_CLONE },
+-		.clone_id = -1,
+-	};
+-	struct drm_i915_gem_context_create_ext create = {
+-		.flags = I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
+-		.extensions = to_user_pointer(&ext),
+-	};
+-
+-	return create_ext_ioctl(i915, &create) == -ENOENT;
+-}
+-
+ /**
+  * gem_context_clone_with_engines:
+  * @i915: open i915 drm file descriptor
+@@ -423,18 +499,21 @@ bool gem_has_context_clone(int i915)
+  */
+ uint32_t gem_context_clone_with_engines(int i915, uint32_t src)
+ {
+-	if (!gem_has_context_clone(i915))
+-		return gem_context_create(i915);
+-	else
+-		return gem_context_clone(i915, src, I915_CONTEXT_CLONE_ENGINES,
+-					 0);
++	uint32_t ctx;
++	int ret;
++
++	ret = __gem_context_clone(i915, src, GEM_CONTEXT_CLONE_ENGINES, 0, &ctx);
++	if (!ret)
++		return ctx;
++
++	return gem_context_create(i915);
+ }
+ 
+ uint32_t gem_queue_create(int i915)
+ {
+ 	return gem_context_clone(i915, 0,
+-				 I915_CONTEXT_CLONE_VM |
+-				 I915_CONTEXT_CLONE_ENGINES,
++				 GEM_CONTEXT_CLONE_VM |
++				 GEM_CONTEXT_CLONE_ENGINES,
+ 				 I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
+ }
+ 
+@@ -448,8 +527,8 @@ uint32_t gem_queue_create(int i915)
+ uint32_t gem_queue_clone_with_engines(int i915, uint32_t src)
+ {
+ 	return gem_context_clone(i915, src,
+-				 I915_CONTEXT_CLONE_ENGINES |
+-				 I915_CONTEXT_CLONE_VM,
++				 GEM_CONTEXT_CLONE_ENGINES |
++				 GEM_CONTEXT_CLONE_VM,
+ 				 I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
+ }
+ 
+diff --git a/lib/i915/gem_context.h b/lib/i915/gem_context.h
+index c2c2b827..a82f0325 100644
+--- a/lib/i915/gem_context.h
++++ b/lib/i915/gem_context.h
+@@ -37,12 +37,15 @@ int __gem_context_destroy(int fd, uint32_t ctx_id);
+ uint32_t gem_context_create_for_engine(int fd, unsigned int class, unsigned int inst);
+ uint32_t gem_context_create_for_class(int i915, unsigned int class, unsigned int *count);
+ 
++#define GEM_CONTEXT_CLONE_ENGINES (1 << 4)
++#define GEM_CONTEXT_CLONE_VM (1 << 5)
++
+ int __gem_context_clone(int i915,
+-			uint32_t src, unsigned int share,
++			uint32_t src, unsigned int clone,
+ 			unsigned int flags,
+ 			uint32_t *out);
+ uint32_t gem_context_clone(int i915,
+-			   uint32_t src, unsigned int share,
++			   uint32_t src, unsigned int clone,
+ 			   unsigned int flags);
+ uint32_t gem_context_clone_with_engines(int i915, uint32_t src);
+ void gem_context_copy_engines(int src_fd, uint32_t src,
+@@ -59,8 +62,6 @@ void gem_require_contexts(int fd);
+ void gem_context_require_bannable(int fd);
+ void gem_context_require_param(int fd, uint64_t param);
+ 
+-bool gem_has_context_clone(int i915);
+-
+ void gem_context_get_param(int fd, struct drm_i915_gem_context_param *p);
+ void gem_context_set_param(int fd, struct drm_i915_gem_context_param *p);
+ int __gem_context_set_param(int fd, struct drm_i915_gem_context_param *p);
+diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
+index 6b21994d..21b07083 100644
+--- a/tests/i915/gem_ctx_shared.c
++++ b/tests/i915/gem_ctx_shared.c
+@@ -82,7 +82,7 @@ static void create_shared_gtt(int i915, unsigned int flags)
+ 	igt_until_timeout(2) {
+ 		parent = flags & DETACHED ? child : 0;
+ 		child = gem_context_clone(i915,
+-					  parent, I915_CONTEXT_CLONE_VM,
++					  parent, GEM_CONTEXT_CLONE_VM,
+ 					  0);
+ 		execbuf.rsvd1 = child;
+ 		gem_execbuf(i915, &execbuf);
+@@ -98,7 +98,7 @@ static void create_shared_gtt(int i915, unsigned int flags)
+ 		execbuf.rsvd1 = parent;
+ 		igt_assert_eq(__gem_execbuf(i915, &execbuf), -ENOENT);
+ 		igt_assert_eq(__gem_context_clone(i915,
+-						  parent, I915_CONTEXT_CLONE_VM,
++						  parent, GEM_CONTEXT_CLONE_VM,
+ 						  0, &parent), -ENOENT);
+ 	}
+ 	if (flags & DETACHED)
+@@ -121,7 +121,7 @@ static void disjoint_timelines(int i915)
+ 	 * distinct timelines. A request queued to one context should be
+ 	 * independent of any shared contexts.
+ 	 */
+-	child = gem_context_clone(i915, 0, I915_CONTEXT_CLONE_VM, 0);
++	child = gem_context_clone(i915, 0, GEM_CONTEXT_CLONE_VM, 0);
+ 	plug = igt_cork_plug(&cork, i915);
+ 
+ 	spin[0] = __igt_spin_new(i915, .ctx = 0, .dependency = plug);
+@@ -161,7 +161,7 @@ static void exhaust_shared_gtt(int i915, unsigned int flags)
+ 		for (;;) {
+ 			parent = child;
+ 			err = __gem_context_clone(i915,
+-						  parent, I915_CONTEXT_CLONE_VM,
++						  parent, GEM_CONTEXT_CLONE_VM,
+ 						  0, &child);
+ 			if (err)
+ 				break;
+@@ -201,7 +201,7 @@ static void exec_shared_gtt(int i915, unsigned int ring)
+ 	int timeline;
+ 	int i;
+ 
+-	clone = gem_context_clone(i915, 0, I915_CONTEXT_CLONE_VM, 0);
++	clone = gem_context_clone(i915, 0, GEM_CONTEXT_CLONE_VM, 0);
+ 
+ 	/* Find a hole big enough for both objects later */
+ 	scratch = gem_create(i915, 16384);
 diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index bfd65b29..19948ecb 100644
+index 19948ecb..5c0f52a6 100644
 --- a/tests/i915/gem_exec_balancer.c
 +++ b/tests/i915/gem_exec_balancer.c
-@@ -826,8 +826,8 @@ static void bonded_slice(int i915)
- 		igt_fork(child, count + 1) { /* C: arbitrary background load */
- 			igt_list_del(&spin->link);
+@@ -627,7 +627,7 @@ static void bonded(int i915, unsigned int flags)
+ 		}
  
--			ctx = gem_context_clone(i915, ctx,
--						I915_CONTEXT_CLONE_ENGINES, 0);
-+			ctx = gem_context_create(i915);
-+			set_load_balancer(i915, ctx, siblings, count, NULL);
+ 		ctx = gem_context_clone(i915,
+-					master, I915_CONTEXT_CLONE_VM,
++					master, GEM_CONTEXT_CLONE_VM,
+ 					I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
+ 		set_load_balancer(i915, ctx, siblings, count, &bonds[limit - 1]);
  
- 			while (!READ_ONCE(*stop)) {
- 				spin = igt_spin_new(i915,
-@@ -2442,8 +2442,7 @@ static void nop(int i915)
- 				.buffers_ptr = to_user_pointer(&batch),
- 				.buffer_count = 1,
- 				.flags = child + 1,
--				.rsvd1 = gem_context_clone(i915, ctx,
--							   I915_CONTEXT_CLONE_ENGINES, 0),
-+				.rsvd1 = load_balancer_create(i915, ci, count),
- 			};
- 			struct timespec tv = {};
- 			unsigned long nops;
+diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
+index 9585059d..aedcdf33 100644
+--- a/tests/i915/gem_exec_schedule.c
++++ b/tests/i915/gem_exec_schedule.c
+@@ -1183,8 +1183,8 @@ noreorder(int i915, unsigned int engine, int prio, unsigned int flags)
+ 		fence = igt_cork_plug(&cork, i915);
+ 
+ 	ctx = gem_context_clone(i915, execbuf.rsvd1,
+-			      I915_CONTEXT_CLONE_ENGINES |
+-			      I915_CONTEXT_CLONE_VM,
++			      GEM_CONTEXT_CLONE_ENGINES |
++			      GEM_CONTEXT_CLONE_VM,
+ 			      0);
+ 	spin = igt_spin_new(i915, ctx,
+ 			    .engine = engine,
+@@ -2428,9 +2428,9 @@ static void *iova_thread(struct ufd_thread *t, int prio)
+ 	unsigned int clone;
+ 	uint32_t ctx;
+ 
+-	clone = I915_CONTEXT_CLONE_ENGINES;
++	clone = GEM_CONTEXT_CLONE_ENGINES;
+ 	if (t->flags & SHARED)
+-		clone |= I915_CONTEXT_CLONE_VM;
++		clone |= GEM_CONTEXT_CLONE_VM;
+ 
+ 	ctx = gem_context_clone(t->i915, 0, clone, 0);
+ 	gem_context_set_priority(t->i915, ctx, prio);
 -- 
 2.29.2
 
