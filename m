@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com
- [IPv6:2607:f8b0:4864:20::82f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 060E16E5C5
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 21:41:46 +0000 (UTC)
-Received: by mail-qt1-x82f.google.com with SMTP id a11so13548785qto.2
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Mar 2021 14:41:46 -0700 (PDT)
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Mon, 22 Mar 2021 17:41:42 -0400
-Message-Id: <20210322214142.4163173-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] tests/kms_atomic_transition: Enable Primary Plane
- on Enabling CRTC.
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 23 Mar 2021 08:58:33 -0000
+Message-ID: <161648991311.20054.736039227436689259@emeril.freedesktop.org>
+References: <20210322214142.4163173-1-markyacoub@chromium.org>
+In-Reply-To: <20210322214142.4163173-1-markyacoub@chromium.org>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/kms=5Fatomic=5Ftransition=3A_Enable_Primary_Plane_on_Enabling?=
+ =?utf-8?q?_CRTC=2E?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,54 +15,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: seanpaul@chromium.org, petri.latvala@intel.com, Mark Yacoub <markyacoub@google.com>
+To: Mark Yacoub <markyacoub@chromium.org>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mark Yacoub <markyacoub@google.com>
+== Series Details ==
 
-Setup all plane params before committing anything.
-Do not disable Primary Plane whenever a CRTC is getting enabled.
+Series: tests/kms_atomic_transition: Enable Primary Plane on Enabling CRTC.
+URL   : https://patchwork.freedesktop.org/series/88327/
+State : failure
 
-AMD Driver requires the primary plane to be enabled whenever the CRTC is, otherwise
-drm_mode_cursor_universal may end up trying to enable the cursor plane while all other
-planes are disabled, which is not supported by the hardware.
+== Summary ==
 
-Tested on Delbin and Volteer with no regression or added latency.
----
- tests/kms_atomic_transition.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Applying: tests/kms_atomic_transition: Enable Primary Plane on Enabling CRTC.
+Using index info to reconstruct a base tree...
+M	tests/kms_atomic_transition.c
+Falling back to patching base and 3-way merge...
+Auto-merging tests/kms_atomic_transition.c
+CONFLICT (content): Merge conflict in tests/kms_atomic_transition.c
+Patch failed at 0001 tests/kms_atomic_transition: Enable Primary Plane on Enabling CRTC.
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index d28a8cdf..51d7795b 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -134,7 +134,7 @@ wm_setup_plane(igt_display_t *display, enum pipe pipe,
- 		int i = plane->index;
- 
- 		if (!mask || !(parms[i].mask & mask)) {
--			if (plane->values[IGT_PLANE_FB_ID]) {
-+			if (plane->values[IGT_PLANE_FB_ID] && plane->type != DRM_PLANE_TYPE_PRIMARY) {
- 				igt_plane_set_fb(plane, NULL);
- 				planes_set_up++;
- 			}
-@@ -478,9 +478,8 @@ run_transition_test(igt_display_t *display, enum pipe pipe, igt_output_t *output
- 		igt_output_set_pipe(output, pipe);
- 	}
- 
--	igt_display_commit2(display, COMMIT_ATOMIC);
--
- 	setup_parms(display, pipe, mode, &fb, &argb_fb, &sprite_fb, parms, &iter_max);
-+	igt_display_commit2(display, COMMIT_ATOMIC);
- 
- 	/*
- 	 * In some configurations the tests may not run to completion with all
--- 
-2.31.0.rc2.261.g7f71774620-goog
 
 _______________________________________________
 igt-dev mailing list
