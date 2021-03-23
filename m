@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B2596E086
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 06:05:41 +0000 (UTC)
+Date: Tue, 23 Mar 2021 08:06:20 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YFmFXK6OE2X1lOM6@platvala-desk.ger.corp.intel.com>
+References: <20210322082535.1137703-1-martin.peres@mupuf.org>
+ <7f2b6add0365462747512d6d0142cfc67e69ae28.camel@redhat.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 23 Mar 2021 04:33:54 -0000
-Message-ID: <161647403461.20054.11866953296629858168@emeril.freedesktop.org>
-References: <20210322204123.3331055-1-jason@jlekstrand.net>
-In-Reply-To: <20210322204123.3331055-1-jason@jlekstrand.net>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/9=5D_tests/i915=3A_Drop_gem=5Fctx?=
- =?utf-8?q?=5Fringsize?=
+Content-Disposition: inline
+In-Reply-To: <7f2b6add0365462747512d6d0142cfc67e69ae28.camel@redhat.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] Revert "tests/kms_plane: Don't unset
+ primary_fb when testing other planes"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,253 +19,151 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1381357268=="
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jason Ekstrand <jason@jlekstrand.net>
+To: Lyude Paul <lyude@redhat.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1381357268==
-Content-Type: multipart/alternative;
- boundary="===============3510758290259611264=="
+On Mon, Mar 22, 2021 at 08:24:26PM -0400, Lyude Paul wrote:
+> hm - I gave my reviewed-by: here before but taking a closer look at this,=
+ I am
+> seeing underruns being noted in the pixel format tests:
+> =
 
---===============3510758290259611264==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+> https://intel-gfx-ci.01.org/tree/drm-tip/index.html?testfilter=3Dkms_plan=
+e@pixel-format&hosts=3Dtgl%7Cicl
+> =
 
-== Series Details ==
+> I haven't gotten a closer look yet, but I'm extremely doubtful this is an=
+ error
+> on the test's part unless those underruns were there before.
 
-Series: series starting with [i-g-t,1/9] tests/i915: Drop gem_ctx_ringsize
-URL   : https://patchwork.freedesktop.org/series/88313/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9882 -> IGTPW_5640
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5640 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-byt-j1900:       NOTRUN -> [SKIP][1] ([fdo#109271]) +27 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/fi-byt-j1900/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_linear_blits@basic:
-    - fi-kbl-8809g:       [PASS][2] -> [TIMEOUT][3] ([i915#2502] / [i915#3145])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9882/fi-kbl-8809g/igt@gem_linear_blits@basic.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/fi-kbl-8809g/igt@gem_linear_blits@basic.html
-
-  * igt@kms_chamelium@hdmi-crc-fast:
-    - fi-byt-j1900:       NOTRUN -> [SKIP][4] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/fi-byt-j1900/igt@kms_chamelium@hdmi-crc-fast.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - fi-tgl-y:           [PASS][5] -> [DMESG-WARN][6] ([i915#402]) +1 similar issue
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9882/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_mmap_gtt@basic:
-    - fi-tgl-y:           [DMESG-WARN][7] ([i915#402]) -> [PASS][8] +1 similar issue
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9882/fi-tgl-y/igt@gem_mmap_gtt@basic.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/fi-tgl-y/igt@gem_mmap_gtt@basic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1222]: https://gitlab.freedesktop.org/drm/intel/issues/1222
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#2502]: https://gitlab.freedesktop.org/drm/intel/issues/2502
-  [i915#3145]: https://gitlab.freedesktop.org/drm/intel/issues/3145
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+The underruns are the regression. The commit might be doing the right
+thing as far as the documented interface is concerned but Intel folks
+need to figure out the actual cause of the underruns and help get this
+in without regressions.
 
 
-Participating hosts (47 -> 41)
-------------------------------
+-- =
 
-  Additional (1): fi-byt-j1900 
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-icl-y fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6040 -> IGTPW_5640
-
-  CI-20190529: 20190529
-  CI_DRM_9882: 34f82d5853a3c6467ccf71e055e3432d2b12ecb9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5640: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/index.html
-  IGT_6040: 69b578b6ab0a36750f0d23c223a3487fc88fb6a7 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+Petri Latvala
 
 
 
-== Testlist changes ==
+> =
 
--igt@gem_ctx_clone@engines
--igt@gem_ctx_clone@flags
--igt@gem_ctx_clone@invalid
--igt@gem_ctx_clone@scheduler
--igt@gem_ctx_clone@vm
--igt@gem_ctx_param@non-root-set-no-zeromap
--igt@gem_ctx_param@root-set-no-zeromap-disabled
--igt@gem_ctx_param@root-set-no-zeromap-enabled
--igt@gem_ctx_persistence@clone
--igt@gem_ctx_ringsize@active
--igt@gem_ctx_ringsize@clone
--igt@gem_ctx_ringsize@create
--igt@gem_ctx_ringsize@idempotent
--igt@gem_ctx_ringsize@idle
--igt@gem_ctx_ringsize@invalid
--igt@gem_ctx_ringsize@plugged
--igt@gem_exec_balancer@ringsize
+> On Mon, 2021-03-22 at 10:25 +0200, Martin Peres wrote:
+> > The patch led to a regression in i915 results. The regression wasn't
+> > caught pre-merge because the test was blacklisted for pre-merge by
+> > yours truly due to its prohibitive execution time, but my creation
+> > came back to bite me in the ass, Frakenstein-style.
+> > =
 
-== Logs ==
+> > It is currently unclear if the regression introduced by this change is
+> > an i915 bug, a KMS spec violation introduced by the change, or
+> > generally a loose-spec and just incompatible HW between NVIDIA and
+> > Intel. While we figure this thing out, let's just revert the change
+> > and put the cost of integration on the people proposing the
+> > change (Lyude and I).
+> > =
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/index.html
+> > Sorry for the noise!
+> > =
 
---===============3510758290259611264==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+> > Signed-off-by: Martin Peres <martin.peres@mupuf.org>
+> > Cc: Jani Saarinen <jani.saarinen@intel.com>
+> > Cc: Lyude Paul <lyude@redhat.com>
+> > Cc: juhapekka.heikkila@gmail.com
+> > ---
+> > =A0tests/kms_plane.c | 9 ++++-----
+> > =A01 file changed, 4 insertions(+), 5 deletions(-)
+> > =
 
+> > diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> > index c87983a4..298a9375 100644
+> > --- a/tests/kms_plane.c
+> > +++ b/tests/kms_plane.c
+> > @@ -817,10 +817,9 @@ enum crc_set { PACKED_CRC_SET,
+> > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MAX_CRC_SET };
+> > =A0
+> > =A0static bool test_format_plane(data_t *data, enum pipe pipe,
+> > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 igt_output_t *output, igt_plane_t *plane, igt_fb_t
+> > *primary_fb)
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 igt_output_t *output, igt_plane_t *plane)
+> > =A0{
+> > =A0=A0=A0=A0=A0=A0=A0=A0struct igt_fb fb =3D {};
+> > -=A0=A0=A0=A0=A0=A0=A0struct igt_fb *clear_fb =3D plane->type =3D=3D DR=
+M_PLANE_TYPE_PRIMARY ?
+> > primary_fb : NULL;
+> > =A0=A0=A0=A0=A0=A0=A0=A0drmModeModeInfo *mode;
+> > =A0=A0=A0=A0=A0=A0=A0=A0uint32_t format, ref_format;
+> > =A0=A0=A0=A0=A0=A0=A0=A0uint64_t modifier, ref_modifier;
+> > @@ -880,7 +879,7 @@ static bool test_format_plane(data_t *data, enum pi=
+pe pipe,
+> > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0height =3D test_fb.height;
+> > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0}
+> > =A0
+> > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_plane_set_fb(plane, c=
+lear_fb);
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_plane_set_fb(plane, N=
+ULL);
+> > =A0
+> > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0igt_remove_fb(data->drm=
+_fd, &test_fb);
+> > =A0=A0=A0=A0=A0=A0=A0=A0}
+> > @@ -938,7 +937,7 @@ static bool test_format_plane(data_t *data, enum pi=
+pe pipe,
+> > =A0
+> > =A0=A0=A0=A0=A0=A0=A0=A0igt_pipe_crc_stop(data->pipe_crc);
+> > =A0
+> > -=A0=A0=A0=A0=A0=A0=A0igt_plane_set_fb(plane, clear_fb);
+> > +=A0=A0=A0=A0=A0=A0=A0igt_plane_set_fb(plane, NULL);
+> > =A0=A0=A0=A0=A0=A0=A0=A0igt_remove_fb(data->drm_fd, &fb);
+> > =A0
+> > =A0=A0=A0=A0=A0=A0=A0=A0return result;
+> > @@ -1011,7 +1010,7 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+> > =A0=A0=A0=A0=A0=A0=A0=A0for_each_plane_on_pipe(&data->display, pipe, pl=
+ane) {
+> > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0if (skip_plane(data, pl=
+ane))
+> > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0continue;
+> > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0result &=3D test_format_p=
+lane(data, pipe, output, plane,
+> > &primary_fb);
+> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0result &=3D test_format_p=
+lane(data, pipe, output, plane);
+> > =A0=A0=A0=A0=A0=A0=A0=A0}
+> > =A0
+> > =A0=A0=A0=A0=A0=A0=A0=A0test_fini(data);
+> =
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+> -- =
 
+> Sincerely,
+>    Lyude Paul (she/her)
+>    Software Engineer at Red Hat
+>    =
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/9] tests/i915: Drop gem_ctx_ringsize</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88313/">https://patchwork.freedesktop.org/series/88313/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+> Note: I deal with a lot of emails and have a lot of bugs on my plate. If =
+you've
+> asked me a question, are waiting for a review/merge on a patch, etc. and I
+> haven't responded in a while, please feel free to send me another email t=
+o check
+> on my status. I don't bite!
+> =
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9882 -&gt; IGTPW_5640</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5640 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-byt-j1900:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/fi-byt-j1900/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +27 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_linear_blits@basic:</p>
-<ul>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9882/fi-kbl-8809g/igt@gem_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/fi-kbl-8809g/igt@gem_linear_blits@basic.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2502">i915#2502</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3145">i915#3145</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-crc-fast:</p>
-<ul>
-<li>fi-byt-j1900:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/fi-byt-j1900/igt@kms_chamelium@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9882/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@gem_mmap_gtt@basic:<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9882/fi-tgl-y/igt@gem_mmap_gtt@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/fi-tgl-y/igt@gem_mmap_gtt@basic.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (47 -&gt; 41)</h2>
-<p>Additional (1): fi-byt-j1900 <br />
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-icl-y fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6040 -&gt; IGTPW_5640</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9882: 34f82d5853a3c6467ccf71e055e3432d2b12ecb9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5640: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5640/index.html<br />
-  IGT_6040: 69b578b6ab0a36750f0d23c223a3487fc88fb6a7 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-<p>== Testlist changes ==</p>
-<p>-igt@gem_ctx_clone@engines<br />
--igt@gem_ctx_clone@flags<br />
--igt@gem_ctx_clone@invalid<br />
--igt@gem_ctx_clone@scheduler<br />
--igt@gem_ctx_clone@vm<br />
--igt@gem_ctx_param@non-root-set-no-zeromap<br />
--igt@gem_ctx_param@root-set-no-zeromap-disabled<br />
--igt@gem_ctx_param@root-set-no-zeromap-enabled<br />
--igt@gem_ctx_persistence@clone<br />
--igt@gem_ctx_ringsize@active<br />
--igt@gem_ctx_ringsize@clone<br />
--igt@gem_ctx_ringsize@create<br />
--igt@gem_ctx_ringsize@idempotent<br />
--igt@gem_ctx_ringsize@idle<br />
--igt@gem_ctx_ringsize@invalid<br />
--igt@gem_ctx_ringsize@plugged<br />
--igt@gem_exec_balancer@ringsize</p>
-
-</body>
-</html>
-
---===============3510758290259611264==--
-
---===============1381357268==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============1381357268==--
