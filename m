@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9509F6EA5A
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 17:25:27 +0000 (UTC)
-From: Lyude <lyude@redhat.com>
-Date: Tue, 23 Mar 2021 13:25:13 -0400
-Message-Id: <20210323172513.1519481-1-lyude@redhat.com>
-In-Reply-To: <20210318222124.970997-2-lyude@redhat.com>
-References: <20210318222124.970997-2-lyude@redhat.com>
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com
+ [IPv6:2607:f8b0:4864:20::433])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D9F86EBA6
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 17:25:04 +0000 (UTC)
+Received: by mail-pf1-x433.google.com with SMTP id g15so15014992pfq.3
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 10:25:04 -0700 (PDT)
+From: Jason Ekstrand <jason@jlekstrand.net>
+Date: Tue, 23 Mar 2021 12:24:41 -0500
+Message-Id: <20210323172441.3388732-10-jason@jlekstrand.net>
+In-Reply-To: <20210323172441.3388732-1-jason@jlekstrand.net>
+References: <20210323172441.3388732-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v3] tests/kms_cursor_crc: Probe kernel for
- cursor size support
+Subject: [igt-dev] [PATCH i-g-t 9/9] lib/i915/gem_context: Implement VM and
+ engine cloning manually (v3)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,199 +25,372 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: nouveau@lists.freedesktop.org, Martin Peres <martin.peres@free.fr>, Ben Skeggs <bskeggs@redhat.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lyude Paul <lyude@redhat.com>
+We're going to be deleting the CONTEXT_CLONE API since IGT is the only
+userspace to ever use it.  There are only two bits of this API that IGT
+uses in interesting ways so implement them as create params instead of
+cloning.
 
-Currently we just assume that every cursor size up to data->cursor_max_w/h will
-be supported by the driver, and check for support of nonsquare cursors by
-checking if we're running on u815 and if so, which variant of intel hardware
-we're running on. This isn't really ideal as we're about to enable 32x32 cursor
-size tests for nouveau, and Intel hardware doesn't support cursor sizes that
-small.
+v2 (Jason Ekstrand):
+ - Fix our usage of the param struct for VM cloning
+ - Handle the case of zero user engines properly
+ - Assert that all cloned engines are physical, not virtual
 
-So, fix this by removing has_nonsquare_cursors() and replacing it with a more
-generic require_cursor_size() function which checks whether or not the driver
-we're using supports a given cursor size by attempting a test-only atomic
-commit.
+v3 (Jason Ekstrand):
+ - Drop gem_has_context_clone()
+ - Add docs for [__]gem_context_clone()
 
-v3:
-* Also probe for cursor support on systems without atomic support
-
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Cc: Martin Peres <martin.peres@free.fr>
-Cc: Ben Skeggs <bskeggs@redhat.com>
-Cc: Jeremy Cline <jcline@redhat.com>
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/kms_cursor_crc.c | 133 ++++++++++++++++++++++++-----------------
- 1 file changed, 78 insertions(+), 55 deletions(-)
+ lib/i915/gem_context.c         | 157 +++++++++++++++++++++++++--------
+ lib/i915/gem_context.h         |   9 +-
+ tests/i915/gem_ctx_shared.c    |  10 +--
+ tests/i915/gem_exec_balancer.c |   2 +-
+ tests/i915/gem_exec_schedule.c |   8 +-
+ 5 files changed, 133 insertions(+), 53 deletions(-)
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 3541ea06..529e2171 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -523,26 +523,45 @@ static void create_cursor_fb(data_t *data, int cur_w, int cur_h)
- 	igt_put_cairo_ctx(cr);
+diff --git a/lib/i915/gem_context.c b/lib/i915/gem_context.c
+index 79411e10..d0eb3159 100644
+--- a/lib/i915/gem_context.c
++++ b/lib/i915/gem_context.c
+@@ -334,28 +334,110 @@ bool gem_context_has_persistence(int i915)
+ 	return __gem_context_get_param(i915, &param) == 0;
  }
  
--static bool has_nonsquare_cursors(data_t *data)
-+static void require_cursor_size(data_t *data, int w, int h)
++static void
++add_ctx_create_ext(struct drm_i915_gem_context_create_ext *ctx,
++		   struct i915_user_extension *ext)
++{
++	ext->next_extension = ctx->extensions;
++	ctx->extensions = to_user_pointer(ext);
++}
++
++/**
++ * __gem_context_clone:
++ * @i915: open i915 drm file descriptor
++ * @src: i915 context id from which to clone parameters
++ * @clone: bitfield of parameters to clone
++ * @flags: context creation flags
++ * @out: resulting context
++ *
++ * Special purpose wrapper to create a new context by cloning params from @src.
++ *
++ * Currently, we support cloning the VM and the engine set.  Engine set
++ * cloning is only supported if they're all "real" engines.  Virtual bonded
++ * or balanced are not supported.
++ */
+ int
+ __gem_context_clone(int i915,
+-		    uint32_t src, unsigned int share,
++		    uint32_t src, unsigned int clone,
+ 		    unsigned int flags,
+ 		    uint32_t *out)
  {
--	uint32_t devid;
-+	igt_fb_t primary_fb;
-+	drmModeModeInfo *mode;
-+	igt_display_t *display = &data->display;
-+	igt_output_t *output = data->output;
-+	igt_plane_t *primary, *cursor;
-+	int ret;
- 
--	if (!is_i915_device(data->drm_fd))
--		return false;
-+	igt_output_set_pipe(output, data->pipe);
- 
--	devid = intel_get_drm_devid(data->drm_fd);
-+	mode = igt_output_get_mode(output);
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+	cursor = igt_output_get_plane_type(output, DRM_PLANE_TYPE_CURSOR);
+-	struct drm_i915_gem_context_create_ext_clone clone = {
+-		{ .name = I915_CONTEXT_CREATE_EXT_CLONE },
+-		.clone_id = src,
+-		.flags = share,
+-	};
+-	struct drm_i915_gem_context_create_ext arg = {
++	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, I915_EXEC_RING_MASK + 1);
++	struct drm_i915_gem_context_create_ext_setparam engines_param, vm_param;
++	unsigned i, count;
++	int err;
 +
-+	/* Create temporary primary fb for testing */
-+	igt_assert(igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
-+				 LOCAL_DRM_FORMAT_MOD_NONE, &primary_fb));
++	struct drm_i915_gem_context_create_ext ctx_create = {
+ 		.flags = flags | I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
+-		.extensions = to_user_pointer(&clone),
++		.extensions = 0,
+ 	};
+-	int err;
+ 
+-	err = create_ext_ioctl(i915, &arg);
++	if (clone & GEM_CONTEXT_CLONE_ENGINES) {
++		engines_param = (struct drm_i915_gem_context_create_ext_setparam) {
++			.base = {
++				.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
++			},
++			.param = {
++				.param = I915_CONTEXT_PARAM_ENGINES,
++				.size = sizeof(engines),
++				.value = to_user_pointer(&engines),
++			},
++		};
 +
-+	igt_plane_set_fb(primary, &primary_fb);
-+	igt_plane_set_fb(cursor, &data->fb);
-+	igt_plane_set_size(cursor, w, h);
-+	igt_fb_set_size(&data->fb, cursor, w, h);
++		engines_param.param.ctx_id = src;
++		err = __gem_context_get_param(i915, &engines_param.param);
++		igt_assert_eq(err, 0);
++		if (err)
++			return err;
 +
-+	/* Test if the kernel supports the given cursor size or not */
-+	if (display->is_atomic)
-+		ret = igt_display_try_commit_atomic(display,
-+						    DRM_MODE_ATOMIC_TEST_ONLY |
-+						    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	else
-+		ret = igt_display_try_commit2(display, COMMIT_LEGACY);
++		if (engines_param.param.size > 0) {
++			igt_assert(engines_param.param.size > sizeof(uint64_t));
++			count = (engines_param.param.size - sizeof(uint64_t)) /
++				sizeof(struct i915_engine_class_instance);
++
++			igt_debug("Cloning context with %u engines:\n", count);
++			for (i = 0; i < count; i++) {
++				igt_debug("    %d, %d\n",
++					  (int)(int16_t)engines.engines[i].engine_class,
++					  (int)(int16_t)engines.engines[i].engine_instance);
++				/* We can't clone virtual engines */
++				igt_assert((int16_t)engines.engines[i].engine_class >= 0);
++				igt_assert((int16_t)engines.engines[i].engine_instance >= 0);
++			}
++
++			engines_param.param.ctx_id = 0;
++			add_ctx_create_ext(&ctx_create, &engines_param.base);
++		}
++	}
++
++	if (clone & GEM_CONTEXT_CLONE_VM) {
++		vm_param = (struct drm_i915_gem_context_create_ext_setparam) {
++			.base = {
++				.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
++			},
++			.param = {
++				.param = I915_CONTEXT_PARAM_VM,
++			},
++		};
++
++		vm_param.param.ctx_id = src;
++		err = __gem_context_get_param(i915, &vm_param.param);
++		igt_assert_eq(err, 0);
++		if (err)
++			return err;
++
++		igt_debug("vm: %d\n", (int)vm_param.param.value);
++
++		vm_param.param.ctx_id = 0;
++		add_ctx_create_ext(&ctx_create, &vm_param.base);
++	}
++
++	err = create_ext_ioctl(i915, &ctx_create);
++	igt_assert_eq(err, 0);
+ 	if (err)
+ 		return err;
  
--	/*
--	 * Test non-square cursors a bit on the platforms
--	 * that support such things.
--	 */
--	if (devid == PCI_CHIP_845_G || devid == PCI_CHIP_I865_G)
--		return true;
-+	igt_plane_set_fb(primary, NULL);
-+	igt_plane_set_fb(cursor, NULL);
- 
--	if (IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid))
--		return false;
-+	igt_remove_fb(data->drm_fd, &primary_fb);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 
--	return intel_gen(devid) >= 7;
-+	igt_skip_on_f(ret, "Cursor size %dx%d not supported by driver\n", w, h);
+-	*out = arg.ctx_id;
++	*out = ctx_create.ctx_id;
+ 	return 0;
  }
  
- static void test_cursor_size(data_t *data)
-@@ -697,27 +716,33 @@ static void run_tests_on_pipe(data_t *data, enum pipe pipe)
- 			create_cursor_fb(data, w, h);
+@@ -373,41 +455,35 @@ static bool __gem_context_has(int i915, uint32_t share, unsigned int flags)
+ 
+ bool gem_contexts_has_shared_gtt(int i915)
+ {
+-	return __gem_context_has(i915, I915_CONTEXT_CLONE_VM, 0);
++	return __gem_context_has(i915, GEM_CONTEXT_CLONE_VM, 0);
+ }
+ 
+ bool gem_has_queues(int i915)
+ {
+-	return __gem_context_has(i915,
+-				 I915_CONTEXT_CLONE_VM,
++	return __gem_context_has(i915, GEM_CONTEXT_CLONE_VM,
+ 				 I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
+ }
+ 
++/**
++ * gem_context_clone: Create a new context, cloning some params from another
++ * @i915: open i915 drm file descriptor
++ * @src: i915 context id from which to clone parameters
++ * @clone: bitfield of parameters to clone
++ * @flags: context creation flags
++ *
++ * Like __gem_context_clone, only asserts on failure.
++ */
+ uint32_t gem_context_clone(int i915,
+-			   uint32_t src, unsigned int share,
++			   uint32_t src, unsigned int clone,
+ 			   unsigned int flags)
+ {
+ 	uint32_t ctx;
+ 
+-	igt_assert_eq(__gem_context_clone(i915, src, share, flags, &ctx), 0);
++	igt_assert_eq(__gem_context_clone(i915, src, clone, flags, &ctx), 0);
+ 
+ 	return ctx;
+ }
+ 
+-bool gem_has_context_clone(int i915)
+-{
+-	struct drm_i915_gem_context_create_ext_clone ext = {
+-		{ .name = I915_CONTEXT_CREATE_EXT_CLONE },
+-		.clone_id = -1,
+-	};
+-	struct drm_i915_gem_context_create_ext create = {
+-		.flags = I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
+-		.extensions = to_user_pointer(&ext),
+-	};
+-
+-	return create_ext_ioctl(i915, &create) == -ENOENT;
+-}
+-
+ /**
+  * gem_context_clone_with_engines:
+  * @i915: open i915 drm file descriptor
+@@ -423,18 +499,21 @@ bool gem_has_context_clone(int i915)
+  */
+ uint32_t gem_context_clone_with_engines(int i915, uint32_t src)
+ {
+-	if (!gem_has_context_clone(i915))
+-		return gem_context_create(i915);
+-	else
+-		return gem_context_clone(i915, src, I915_CONTEXT_CLONE_ENGINES,
+-					 0);
++	uint32_t ctx;
++	int ret;
++
++	ret = __gem_context_clone(i915, src, GEM_CONTEXT_CLONE_ENGINES, 0, &ctx);
++	if (!ret)
++		return ctx;
++
++	return gem_context_create(i915);
+ }
+ 
+ uint32_t gem_queue_create(int i915)
+ {
+ 	return gem_context_clone(i915, 0,
+-				 I915_CONTEXT_CLONE_VM |
+-				 I915_CONTEXT_CLONE_ENGINES,
++				 GEM_CONTEXT_CLONE_VM |
++				 GEM_CONTEXT_CLONE_ENGINES,
+ 				 I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
+ }
+ 
+@@ -448,8 +527,8 @@ uint32_t gem_queue_create(int i915)
+ uint32_t gem_queue_clone_with_engines(int i915, uint32_t src)
+ {
+ 	return gem_context_clone(i915, src,
+-				 I915_CONTEXT_CLONE_ENGINES |
+-				 I915_CONTEXT_CLONE_VM,
++				 GEM_CONTEXT_CLONE_ENGINES |
++				 GEM_CONTEXT_CLONE_VM,
+ 				 I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
+ }
+ 
+diff --git a/lib/i915/gem_context.h b/lib/i915/gem_context.h
+index c2c2b827..a82f0325 100644
+--- a/lib/i915/gem_context.h
++++ b/lib/i915/gem_context.h
+@@ -37,12 +37,15 @@ int __gem_context_destroy(int fd, uint32_t ctx_id);
+ uint32_t gem_context_create_for_engine(int fd, unsigned int class, unsigned int inst);
+ uint32_t gem_context_create_for_class(int i915, unsigned int class, unsigned int *count);
+ 
++#define GEM_CONTEXT_CLONE_ENGINES (1 << 4)
++#define GEM_CONTEXT_CLONE_VM (1 << 5)
++
+ int __gem_context_clone(int i915,
+-			uint32_t src, unsigned int share,
++			uint32_t src, unsigned int clone,
+ 			unsigned int flags,
+ 			uint32_t *out);
+ uint32_t gem_context_clone(int i915,
+-			   uint32_t src, unsigned int share,
++			   uint32_t src, unsigned int clone,
+ 			   unsigned int flags);
+ uint32_t gem_context_clone_with_engines(int i915, uint32_t src);
+ void gem_context_copy_engines(int src_fd, uint32_t src,
+@@ -59,8 +62,6 @@ void gem_require_contexts(int fd);
+ void gem_context_require_bannable(int fd);
+ void gem_context_require_param(int fd, uint64_t param);
+ 
+-bool gem_has_context_clone(int i915);
+-
+ void gem_context_get_param(int fd, struct drm_i915_gem_context_param *p);
+ void gem_context_set_param(int fd, struct drm_i915_gem_context_param *p);
+ int __gem_context_set_param(int fd, struct drm_i915_gem_context_param *p);
+diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
+index 6b21994d..21b07083 100644
+--- a/tests/i915/gem_ctx_shared.c
++++ b/tests/i915/gem_ctx_shared.c
+@@ -82,7 +82,7 @@ static void create_shared_gtt(int i915, unsigned int flags)
+ 	igt_until_timeout(2) {
+ 		parent = flags & DETACHED ? child : 0;
+ 		child = gem_context_clone(i915,
+-					  parent, I915_CONTEXT_CLONE_VM,
++					  parent, GEM_CONTEXT_CLONE_VM,
+ 					  0);
+ 		execbuf.rsvd1 = child;
+ 		gem_execbuf(i915, &execbuf);
+@@ -98,7 +98,7 @@ static void create_shared_gtt(int i915, unsigned int flags)
+ 		execbuf.rsvd1 = parent;
+ 		igt_assert_eq(__gem_execbuf(i915, &execbuf), -ENOENT);
+ 		igt_assert_eq(__gem_context_clone(i915,
+-						  parent, I915_CONTEXT_CLONE_VM,
++						  parent, GEM_CONTEXT_CLONE_VM,
+ 						  0, &parent), -ENOENT);
+ 	}
+ 	if (flags & DETACHED)
+@@ -121,7 +121,7 @@ static void disjoint_timelines(int i915)
+ 	 * distinct timelines. A request queued to one context should be
+ 	 * independent of any shared contexts.
+ 	 */
+-	child = gem_context_clone(i915, 0, I915_CONTEXT_CLONE_VM, 0);
++	child = gem_context_clone(i915, 0, GEM_CONTEXT_CLONE_VM, 0);
+ 	plug = igt_cork_plug(&cork, i915);
+ 
+ 	spin[0] = __igt_spin_new(i915, .ctx = 0, .dependency = plug);
+@@ -161,7 +161,7 @@ static void exhaust_shared_gtt(int i915, unsigned int flags)
+ 		for (;;) {
+ 			parent = child;
+ 			err = __gem_context_clone(i915,
+-						  parent, I915_CONTEXT_CLONE_VM,
++						  parent, GEM_CONTEXT_CLONE_VM,
+ 						  0, &child);
+ 			if (err)
+ 				break;
+@@ -201,7 +201,7 @@ static void exec_shared_gtt(int i915, unsigned int ring)
+ 	int timeline;
+ 	int i;
+ 
+-	clone = gem_context_clone(i915, 0, I915_CONTEXT_CLONE_VM, 0);
++	clone = gem_context_clone(i915, 0, GEM_CONTEXT_CLONE_VM, 0);
+ 
+ 	/* Find a hole big enough for both objects later */
+ 	scratch = gem_create(i915, 16384);
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index 19948ecb..5c0f52a6 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -627,7 +627,7 @@ static void bonded(int i915, unsigned int flags)
  		}
  
--		/* Using created cursor FBs to test cursor support */
--		igt_describe("Check if a given-size cursor is well-positioned inside the screen.");
--		igt_subtest_f("pipe-%s-cursor-%dx%d-onscreen", kmstest_pipe_name(pipe), w, h)
--			run_test(data, test_crc_onscreen, w, h);
--
--		igt_describe("Check if a given-size cursor is well-positioned outside the screen.");
--		igt_subtest_f("pipe-%s-cursor-%dx%d-offscreen", kmstest_pipe_name(pipe), w, h)
--			run_test(data, test_crc_offscreen, w, h);
--
--		igt_describe("Check the smooth and pixel-by-pixel given-size cursor movements on"
--		             "horizontal, vertical and diagonal.");
--		igt_subtest_f("pipe-%s-cursor-%dx%d-sliding", kmstest_pipe_name(pipe), w, h)
--			run_test(data, test_crc_sliding, w, h);
--
--		igt_describe("Check random placement of a cursor with given size.");
--		igt_subtest_f("pipe-%s-cursor-%dx%d-random", kmstest_pipe_name(pipe), w, h)
--			run_test(data, test_crc_random, w, h);
--
--		igt_describe("Check the rapid update of given-size cursor movements.");
--		igt_subtest_f("pipe-%s-cursor-%dx%d-rapid-movement", kmstest_pipe_name(pipe), w, h) {
--			run_test(data, test_rapid_movement, w, h);
-+		igt_subtest_group {
-+			igt_fixture
-+				require_cursor_size(data, w, h);
-+
-+			/* Using created cursor FBs to test cursor support */
-+			igt_describe("Check if a given-size cursor is well-positioned inside the "
-+				     "screen.");
-+			igt_subtest_f("pipe-%s-cursor-%dx%d-onscreen", kmstest_pipe_name(pipe), w, h)
-+				run_test(data, test_crc_onscreen, w, h);
-+
-+			igt_describe("Check if a given-size cursor is well-positioned outside the "
-+				     "screen.");
-+			igt_subtest_f("pipe-%s-cursor-%dx%d-offscreen", kmstest_pipe_name(pipe), w, h)
-+				run_test(data, test_crc_offscreen, w, h);
-+
-+			igt_describe("Check the smooth and pixel-by-pixel given-size cursor "
-+				     "movements on horizontal, vertical and diagonal.");
-+			igt_subtest_f("pipe-%s-cursor-%dx%d-sliding", kmstest_pipe_name(pipe), w, h)
-+				run_test(data, test_crc_sliding, w, h);
-+
-+			igt_describe("Check random placement of a cursor with given size.");
-+			igt_subtest_f("pipe-%s-cursor-%dx%d-random", kmstest_pipe_name(pipe), w, h)
-+				run_test(data, test_crc_random, w, h);
-+
-+			igt_describe("Check the rapid update of given-size cursor movements.");
-+			igt_subtest_f("pipe-%s-cursor-%dx%d-rapid-movement", kmstest_pipe_name(pipe), w, h)
-+				run_test(data, test_rapid_movement, w, h);
- 		}
+ 		ctx = gem_context_clone(i915,
+-					master, I915_CONTEXT_CLONE_VM,
++					master, GEM_CONTEXT_CLONE_VM,
+ 					I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
+ 		set_load_balancer(i915, ctx, siblings, count, &bonds[limit - 1]);
  
- 		igt_fixture
-@@ -730,27 +755,25 @@ static void run_tests_on_pipe(data_t *data, enum pipe pipe)
- 		 */
- 		h /= 3;
+diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
+index 9585059d..aedcdf33 100644
+--- a/tests/i915/gem_exec_schedule.c
++++ b/tests/i915/gem_exec_schedule.c
+@@ -1183,8 +1183,8 @@ noreorder(int i915, unsigned int engine, int prio, unsigned int flags)
+ 		fence = igt_cork_plug(&cork, i915);
  
--		igt_fixture {
--			if (has_nonsquare_cursors(data))
--				create_cursor_fb(data, w, h);
--		}
-+		igt_fixture
-+			create_cursor_fb(data, w, h);
+ 	ctx = gem_context_clone(i915, execbuf.rsvd1,
+-			      I915_CONTEXT_CLONE_ENGINES |
+-			      I915_CONTEXT_CLONE_VM,
++			      GEM_CONTEXT_CLONE_ENGINES |
++			      GEM_CONTEXT_CLONE_VM,
+ 			      0);
+ 	spin = igt_spin_new(i915, ctx,
+ 			    .engine = engine,
+@@ -2428,9 +2428,9 @@ static void *iova_thread(struct ufd_thread *t, int prio)
+ 	unsigned int clone;
+ 	uint32_t ctx;
  
--		/* Using created cursor FBs to test cursor support */
--		igt_subtest_f("pipe-%s-cursor-%dx%d-onscreen", kmstest_pipe_name(pipe), w, h) {
--			igt_require(has_nonsquare_cursors(data));
--			run_test(data, test_crc_onscreen, w, h);
--		}
--		igt_subtest_f("pipe-%s-cursor-%dx%d-offscreen", kmstest_pipe_name(pipe), w, h) {
--			igt_require(has_nonsquare_cursors(data));
--			run_test(data, test_crc_offscreen, w, h);
--		}
--		igt_subtest_f("pipe-%s-cursor-%dx%d-sliding", kmstest_pipe_name(pipe), w, h) {
--			igt_require(has_nonsquare_cursors(data));
--			run_test(data, test_crc_sliding, w, h);
--		}
--		igt_subtest_f("pipe-%s-cursor-%dx%d-random", kmstest_pipe_name(pipe), w, h) {
--			igt_require(has_nonsquare_cursors(data));
--			run_test(data, test_crc_random, w, h);
-+		igt_subtest_group {
-+			igt_fixture
-+				require_cursor_size(data, w, h);
-+
-+			/* Using created cursor FBs to test cursor support */
-+			igt_subtest_f("pipe-%s-cursor-%dx%d-onscreen", kmstest_pipe_name(pipe), w, h)
-+				run_test(data, test_crc_onscreen, w, h);
-+
-+			igt_subtest_f("pipe-%s-cursor-%dx%d-offscreen", kmstest_pipe_name(pipe), w, h)
-+				run_test(data, test_crc_offscreen, w, h);
-+
-+			igt_subtest_f("pipe-%s-cursor-%dx%d-sliding", kmstest_pipe_name(pipe), w, h)
-+				run_test(data, test_crc_sliding, w, h);
-+
-+			igt_subtest_f("pipe-%s-cursor-%dx%d-random", kmstest_pipe_name(pipe), w, h)
-+				run_test(data, test_crc_random, w, h);
- 		}
+-	clone = I915_CONTEXT_CLONE_ENGINES;
++	clone = GEM_CONTEXT_CLONE_ENGINES;
+ 	if (t->flags & SHARED)
+-		clone |= I915_CONTEXT_CLONE_VM;
++		clone |= GEM_CONTEXT_CLONE_VM;
  
- 		igt_fixture
+ 	ctx = gem_context_clone(t->i915, 0, clone, 0);
+ 	gem_context_set_priority(t->i915, ctx, prio);
 -- 
 2.29.2
 
