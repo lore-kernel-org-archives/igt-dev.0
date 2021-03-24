@@ -1,19 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B5A46E1F7
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Mar 2021 07:57:56 +0000 (UTC)
-From: "Saarinen, Jani" <jani.saarinen@intel.com>
-Date: Wed, 24 Mar 2021 07:57:54 +0000
-Message-ID: <693613be0fe443b9ab16011847a429be@intel.com>
-References: <20210322184539.123128-1-arek@hiler.eu>
- <161645090879.19229.3811293110753986704@emeril.freedesktop.org>
- <20210323190459.xt5vp2arjvgb6spn@hatecraft.localdomain>
-In-Reply-To: <20210323190459.xt5vp2arjvgb6spn@hatecraft.localdomain>
-Content-Language: en-US
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F199889AB2
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Mar 2021 08:14:17 +0000 (UTC)
+From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Date: Wed, 24 Mar 2021 13:44:41 +0530
+Message-Id: <20210324081441.1084322-1-arundhati.hagaragi@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?drm=5Fread=3A_Don=27t_use_deprecated_siginterrupt?=
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: Add plane scaling
+ test descriptions for subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,51 +15,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arkadiusz Hiler <arek@hiler.eu>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Khajapasha Mohammed <mohammed.khajapasha@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGksIA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IGlndC1kZXYgPGln
-dC1kZXYtYm91bmNlc0BsaXN0cy5mcmVlZGVza3RvcC5vcmc+IE9uIEJlaGFsZiBPZiBBcmthZGl1
-c3ogSGlsZXINCj4gU2VudDogdGlpc3RhaSAyMy4gbWFhbGlza3V1dGEgMjAyMSAyMS4wNQ0KPiBU
-bzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gQ2M6IExhdHZhbGEsIFBldHJpIDxw
-ZXRyaS5sYXR2YWxhQGludGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtpZ3QtZGV2XSDinJcgRmku
-Q0kuQkFUOiBmYWlsdXJlIGZvciB0ZXN0cy9kcm1fcmVhZDogRG9uJ3QgdXNlIGRlcHJlY2F0ZWQN
-Cj4gc2lnaW50ZXJydXB0DQo+IA0KPiBPbiBNb24sIE1hciAyMiwgMjAyMSBhdCAxMDowODoyOFBN
-IC0wMDAwLCBQYXRjaHdvcmsgd3JvdGU6DQo+ID4gPT0gU2VyaWVzIERldGFpbHMgPT0NCj4gPg0K
-PiA+IFNlcmllczogdGVzdHMvZHJtX3JlYWQ6IERvbid0IHVzZSBkZXByZWNhdGVkIHNpZ2ludGVy
-cnVwdA0KPiA+IFVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmll
-cy84ODI5OC8NCj4gPiBTdGF0ZSA6IGZhaWx1cmUNCj4gPg0KPiA+ID09IFN1bW1hcnkgPT0NCj4g
-Pg0KPiA+IENJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20gQ0lfRFJNXzk4ODIgLT4gSUdUUFdfNTYz
-OA0KPiA+ID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT0NCj4gPg0KPiA+IFN1bW1hcnkNCj4gPiAtLS0tLS0tDQo+ID4NCj4gPiAgICoqRkFJTFVSRSoq
-DQo+ID4NCj4gPiAgIFNlcmlvdXMgdW5rbm93biBjaGFuZ2VzIGNvbWluZyB3aXRoIElHVFBXXzU2
-MzggYWJzb2x1dGVseSBuZWVkIHRvIGJlDQo+ID4gICB2ZXJpZmllZCBtYW51YWxseS4NCj4gPg0K
-PiA+ICAgSWYgeW91IHRoaW5rIHRoZSByZXBvcnRlZCBjaGFuZ2VzIGhhdmUgbm90aGluZyB0byBk
-byB3aXRoIHRoZSBjaGFuZ2VzDQo+ID4gICBpbnRyb2R1Y2VkIGluIElHVFBXXzU2MzgsIHBsZWFz
-ZSBub3RpZnkgeW91ciBidWcgdGVhbSB0byBhbGxvdyB0aGVtDQo+ID4gICB0byBkb2N1bWVudCB0
-aGlzIG5ldyBmYWlsdXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBp
-biBDSS4NCj4gPg0KPiA+ICAgRXh0ZXJuYWwgVVJMOg0KPiA+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNp
-LjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfNTYzOC9pbmRleC5odG1sDQo+ID4NCj4gPiBQb3Nz
-aWJsZSBuZXcgaXNzdWVzDQo+ID4gLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiA+DQo+ID4gICBIZXJl
-IGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQgbWF5IGhhdmUgYmVlbiBpbnRyb2R1Y2VkIGlu
-IElHVFBXXzU2Mzg6DQo+ID4NCj4gPiAjIyMgSUdUIGNoYW5nZXMgIyMjDQo+ID4NCj4gPiAjIyMj
-IFBvc3NpYmxlIHJlZ3Jlc3Npb25zICMjIyMNCj4gPg0KPiA+ICAgKiBpZ3RAaTkxNV9zZWxmdGVz
-dEBsaXZlQGd0X3BtOg0KPiA+ICAgICAtIGZpLXRnbC11MjogICAgICAgICAgW1BBU1NdWzFdIC0+
-IFtETUVTRy1XQVJOXVsyXSArMiBzaW1pbGFyIGlzc3Vlcw0KPiA+ICAgIFsxXTogaHR0cHM6Ly9p
-bnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fOTg4Mi9maS10Z2wtDQo+IHUy
-L2lndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAZ3RfcG0uaHRtbA0KPiA+ICAgIFsyXToNCj4gPiBodHRw
-czovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzU2MzgvZmktdGdsLXUy
-L2lndEBpOTE1DQo+ID4gX3NlbGZ0ZXN0QGxpdmVAZ3RfcG0uaHRtbA0KPiANCj4gV2hvIGRvIEkg
-Q0MgZm9yIGZhbHNlIHBvc2l0aXZlcyBub3dhZGF5cz8NCkBWdWR1bSwgTGFrc2htaW5hcmF5YW5h
-IHN0aWxsLi4uDQoNCj4gDQo+IC0tDQo+IENoZWVycywNCj4gQXJlaw0KPiBfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0KPiBpZ3QtZGV2IG1haWxpbmcgbGlz
-dA0KPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBodHRwczovL2xpc3RzLmZyZWVk
-ZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYNCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
-YW4vbGlzdGluZm8vaWd0LWRldgo=
+Add plane scaling test descriptions for subtests.
+Plane scaling with tiling rotation, pixel formats, overlay planes and with
+clipping and clamping
+
+Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Cc: Khajapasha Mohammed <mohammed.khajapasha@intel.com>
+---
+ tests/kms_plane_scaling.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index c63eb428..941f3e54 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -694,24 +694,28 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	igt_subtest_group {
+ 		igt_output_t *output;
+ 
++		igt_describe("Test plane scaling with overlay planes");
+ 		igt_subtest_with_dynamic("plane-scaling") {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output)
+ 				igt_dynamic_f("pipe-%s-plane-scaling", kmstest_pipe_name(pipe))
+ 					test_plane_scaling_on_pipe(&data, pipe, output);
+ 		}
+ 
++		igt_describe("Test plane scaling with pixel formats");
+ 		igt_subtest_with_dynamic("scaler-with-pixel-format") {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output)
+ 				igt_dynamic_f("pipe-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe))
+ 					test_scaler_with_pixel_format_pipe(&data, pipe, output);
+ 		}
+ 
++		igt_describe("Test plane scaling with rotation");
+ 		igt_subtest_with_dynamic("scaler-with-rotation") {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output)
+ 				igt_dynamic_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
+ 					test_scaler_with_rotation_pipe(&data, pipe, output);
+ 		}
+ 
++		igt_describe("Test plane scaling with clipping and clamping");
+ 		igt_subtest_with_dynamic("scaler-with-clipping-clamping") {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output)
+ 				igt_dynamic_f("pipe-%s-scaler-with-clipping-clamping", kmstest_pipe_name(pipe))
+@@ -719,6 +723,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		}
+ 	}
+ 
++	igt_describe("Test to display planes on connected pipes and runs scaling test on it");
+ 	igt_subtest_f("2x-scaler-multi-pipe")
+ 		test_scaler_with_multi_pipe_plane(&data);
+ 
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
