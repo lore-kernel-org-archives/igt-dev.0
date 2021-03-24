@@ -1,12 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B23B36E986
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Mar 2021 07:20:44 +0000 (UTC)
-From: Jigar Bhatt <jigar.bhatt@intel.com>
-Date: Wed, 24 Mar 2021 12:28:07 +0530
-Message-Id: <1616569087-30691-1-git-send-email-jigar.bhatt@intel.com>
-Subject: [igt-dev] [i-g-t RFC] tests/i915_pm_rpm: Add suspend-resume-latency
- test
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E0B46E2D8
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Mar 2021 07:23:58 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+Date: Wed, 24 Mar 2021 07:23:56 +0000
+Message-ID: <822fd8d4177346818890902cb0f33c6f@intel.com>
+References: <20210323122943.6362-1-mohammed.khajapasha@intel.com>
+ <20210323122943.6362-2-mohammed.khajapasha@intel.com>
+In-Reply-To: <20210323122943.6362-2-mohammed.khajapasha@intel.com>
+Content-Language: en-US
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] test/kms_plane_scaling: Don't run
+ scaler clip/clamp with all formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,127 +19,76 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: "Khajapasha, Mohammed" <mohammed.khajapasha@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Measuring the suspend-resume time using
-tracefs, writing Suspend Started, Suspend Completed,
-Resume Ended timestamp into tracefs file.
-After writing it's reading from tracefs file and
-measuring different, suspend and resume ,
-individual must be less than 1 sec.
+> -----Original Message-----
+> From: Khajapasha, Mohammed <mohammed.khajapasha@intel.com>
+> Sent: Tuesday, March 23, 2021 2:30 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Kahola, Mika <mika.kahola@intel.com>; juhapekka.heikkila@gmail.com
+> Subject: [PATCH i-g-t 1/1] test/kms_plane_scaling: Don't run scaler clip/clamp
+> with all formats
+> 
+> Don't run plane scaler tests with all formats for pipe C & D.
+> We probably don't need to test plane scaler tests with each format for pipe C
+> & D.
+> 
+> $ time ./build/tests/kms_plane_scaling
+> - real	6m53,143s
+> + real	4m39,406s
+> 
+> Cc: juhapekka.heikkila@gmail.com
+> Cc: Mika Kahola <mika.kahola@intel.com>
+> Signed-off-by: Mohammed Khajapasha
+> <mohammed.khajapasha@intel.com>
 
-Signed-off-by: Jigar Bhatt <jigar.bhatt@intel.com>
----
- tests/i915/i915_pm_rpm.c | 81 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
 
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 694a3ea..67d823c 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -1998,6 +1998,83 @@ static int opt_handler(int opt, int opt_index, void *data)
- 	return IGT_OPT_HANDLER_SUCCESS;
- }
- 
-+static void dpms_off(struct mode_set_data *data)
-+{
-+        for (int i = 0; i < data->res->count_connectors; i++) {
-+                drmModeConnectorPtr c = data->connectors[i];
-+                kmstest_set_connector_dpms(drm_fd, c, DRM_MODE_DPMS_OFF);
-+        }
-+}
-+static void dpms_on(struct mode_set_data *data)
-+{
-+        igt_display_t display;
-+
-+        igt_display_require(&display, drm_fd);
-+        for (int i = 0; i < data->res->count_connectors; i++) {
-+                drmModeConnectorPtr c = data->connectors[i];
-+                kmstest_set_connector_dpms(drm_fd, c, DRM_MODE_DPMS_ON);
-+        }
-+
-+}
-+
-+static uint32_t get_trace_timestamp(char *dc_data)
-+{
-+        char *e;
-+        long ret;
-+        char *s = strchr(dc_data, ':');
-+
-+        assert(s);
-+        s++;
-+        ret = strtol(s, &e, 10);
-+        assert(((ret != LONG_MIN && ret != LONG_MAX) || errno != ERANGE) &&
-+               e > s && *e == '\n' && ret >= 0);
-+        return ret;
-+}
-+
-+static long int get_timestamp(void)
-+{
-+        struct timespec start;
-+
-+        clock_gettime(CLOCK_MONOTONIC_RAW, &start);
-+        return ( start.tv_sec * 1000000 + (start.tv_nsec / 1000));
-+}
-+
-+static void read_trace(void)
-+{
-+        int fd;
-+        char buf[4096];
-+
-+        fd=open("/sys/kernel/debug/tracing/trace",O_RDONLY);
-+        igt_assert(fd>0);
-+        igt_assert(read(fd, buf, sizeof(buf)));
-+        igt_assert(((float)(get_trace_timestamp(strstr(buf,"Suspend_Completed")) -
-+			get_trace_timestamp(strstr(buf,"Suspend_Started")))/1000000)<2);
-+        igt_assert(((float)(get_trace_timestamp(strstr(buf,"Resume_Ended")) -
-+			get_trace_timestamp(strstr(buf,"Suspend_Completed")))/1000000)<1);
-+        close(fd);
-+}
-+
-+static void test_suspend_resume_latency(struct mode_set_data *data)
-+{
-+        int fd;
-+        char msg[400];
-+
-+        fd=open("/sys/kernel/debug/tracing/trace_marker",O_WRONLY);
-+        igt_assert(fd>0);
-+        snprintf(msg,100,"Suspend_Started : %ld",get_timestamp());
-+        write(fd,msg,strlen(msg));
-+        dpms_off(data);
-+        igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-+        snprintf(msg,100,"Suspend_Completed : %ld",get_timestamp());
-+        write(fd,msg,strlen(msg));
-+        dpms_on(data);
-+        igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
-+        snprintf(msg,100,"Resume_Ended : %ld",get_timestamp());
-+        write(fd,msg,strlen(msg));
-+        close(fd);
-+        read_trace();
-+}
-+
- const char *help_str =
- 	"  --stress\t\tMake the stress-tests more stressful.\n"
- 	"  --stay\t\tDisable all screen and try to go into runtime pm. Useful for debugging.";
-@@ -2147,6 +2224,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		pm_test_caching();
- 	}
- 
-+	igt_subtest("suspend-resume-latency") {
-+                test_suspend_resume_latency(&ms_data);
-+        }
-+
- 	igt_fixture
- 		teardown_environment(false);
- 
--- 
-2.8.1
+> ---
+>  tests/kms_plane_scaling.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c index
+> c63eb428..31f14275 100644
+> --- a/tests/kms_plane_scaling.c
+> +++ b/tests/kms_plane_scaling.c
+> @@ -230,6 +230,18 @@ static bool test_format(data_t *data,
+>  	return true;
+>  }
+> 
+> +static bool test_pipe_iteration(data_t *data, enum pipe pipe, int
+> +iteration) {
+> +	if (!is_i915_device(data->drm_fd) ||
+> +	    data->extended)
+> +		return true;
+> +
+> +	if ((pipe > PIPE_B) && (iteration >= 2))
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+>  static void test_scaler_with_rotation_pipe(data_t *d, enum pipe pipe,
+>  					   igt_output_t *output)
+>  {
+> @@ -532,6 +544,9 @@ test_scaler_with_clipping_clamping_scenario(data_t
+> *d, enum pipe pipe, igt_outpu
+>  		unsigned f1 = d->plane1->drm_plane->formats[i];
+>  		struct igt_vec tested_formats2;
+> 
+> +		if (!test_pipe_iteration(d, pipe, i))
+> +			continue;
+> +
+>  		if (!test_format(d, &tested_formats1, f1) ||
+>  		    !can_scale(d, f1))
+>  			continue;
+> --
+> 2.29.2.154.g7f7ebe054a
 
 _______________________________________________
 igt-dev mailing list
