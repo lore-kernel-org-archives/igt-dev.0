@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 008566E44E
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Mar 2021 08:56:02 +0000 (UTC)
-Date: Wed, 24 Mar 2021 10:56:43 +0200
+Date: Wed, 24 Mar 2021 10:59:44 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YFr+y1npRCb+ZNj6@platvala-desk.ger.corp.intel.com>
-References: <20210322184539.123128-1-arek@hiler.eu>
+Message-ID: <YFr/gNrLan2uxp84@platvala-desk.ger.corp.intel.com>
+References: <20210318222124.970997-2-lyude@redhat.com>
+ <20210323172513.1519481-1-lyude@redhat.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210322184539.123128-1-arek@hiler.eu>
-Subject: Re: [igt-dev] [PATCH] tests/drm_read: Don't use deprecated
- siginterrupt
+In-Reply-To: <20210323172513.1519481-1-lyude@redhat.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_cursor_crc: Probe kernel
+ for cursor size support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,41 +16,221 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arkadiusz Hiler <arek@hiler.eu>
-Cc: igt-dev@lists.freedesktop.org
+To: Lyude <lyude@redhat.com>
+Cc: igt-dev@lists.freedesktop.org, nouveau@lists.freedesktop.org, Martin Peres <martin.peres@free.fr>, Ben Skeggs <bskeggs@redhat.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCBNYXIgMjIsIDIwMjEgYXQgMDg6NDU6MzlQTSArMDIwMCwgQXJrYWRpdXN6IEhpbGVy
-IHdyb3RlOgo+IFNpbmNlIHdlIGFyZSB1c2luZyBzaWdhY3Rpb24oKSB3ZSBjYW4gYWxzbyByZWdp
-c3RlciB0aGUgc2lnbmFsIGhhbmRsZXIKPiBpbiBvbmUgZ28uCj4gCj4gRml4ZXM6ICJ3YXJuaW5n
-OiDigJhzaWdpbnRlcnJ1cHTigJkgaXMgZGVwcmVjYXRlZDogVXNlIHNpZ2FjdGlvbiB3aXRoIFNB
-X1JFU1RBUlQgaW5zdGVhZCIKPiBTaWduZWQtb2ZmLWJ5OiBBcmthZGl1c3ogSGlsZXIgPGFyZWtA
-aGlsZXIuZXU+CgpSZXZpZXdlZC1ieTogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRl
-bC5jb20+Cgo+IC0tLQo+ICB0ZXN0cy9kcm1fcmVhZC5jIHwgMTEgKysrKysrKy0tLS0KPiAgMSBm
-aWxlIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0t
-Z2l0IGEvdGVzdHMvZHJtX3JlYWQuYyBiL3Rlc3RzL2RybV9yZWFkLmMKPiBpbmRleCBjZmIxYzA0
-ZC4uY2NmOWQ4MjIgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMvZHJtX3JlYWQuYwo+ICsrKyBiL3Rlc3Rz
-L2RybV9yZWFkLmMKPiBAQCAtNDgsNyArNDgsNyBAQAo+ICAKPiAgSUdUX1RFU1RfREVTQ1JJUFRJ
-T04oIkNhbGwgcmVhZChkcm0pIGFuZCBzZWUgaWYgaXQgYmVoYXZlcy4iKTsKPiAgCj4gLXN0YXRp
-YyB2b2lkIHNpZ2hhbmRsZXIoaW50IHNpZykKPiArc3RhdGljIHZvaWQgc2lnaGFuZGxlcihpbnQg
-c2lnLCBzaWdpbmZvX3QgKiBpbmZvLCB2b2lkICpjb250ZXh0KQo+ICB7Cj4gIH0KPiAgCj4gQEAg
-LTI1NywxMiArMjU3LDE1IEBAIGlndF9tYWluCj4gIAlzdHJ1Y3QgaWd0X2ZiIGZiOwo+ICAJZW51
-bSBwaXBlIHBpcGU7Cj4gIAo+IC0Jc2lnbmFsKFNJR0FMUk0sIHNpZ2hhbmRsZXIpOwo+IC0Jc2ln
-aW50ZXJydXB0KFNJR0FMUk0sIDEpOwo+IC0KPiAgCWlndF9maXh0dXJlIHsKPiArCQlzdHJ1Y3Qg
-c2lnYWN0aW9uIGFsYXJtX2FjdGlvbiA9IHt9Owo+ICAJCWlndF9vdXRwdXRfdCAqb3V0cHV0Owo+
-ICAKPiArCQlpZ3RfYXNzZXJ0X25lcShzaWdhY3Rpb24oU0lHQUxSTSwgTlVMTCwgJmFsYXJtX2Fj
-dGlvbiksIC0xKTsKPiArCQlhbGFybV9hY3Rpb24uc2FfZmxhZ3MgJj0gflNBX1JFU1RBUlQ7Cj4g
-KwkJYWxhcm1fYWN0aW9uLnNhX3NpZ2FjdGlvbiA9IHNpZ2hhbmRsZXI7Cj4gKwkJaWd0X2Fzc2Vy
-dF9uZXEoc2lnYWN0aW9uKFNJR0FMUk0sICZhbGFybV9hY3Rpb24sIE5VTEwpLCAtMSk7Cj4gKwo+
-ICAJCWZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfQU5ZKTsKPiAgCQlrbXN0ZXN0
-X3NldF92dF9ncmFwaGljc19tb2RlKCk7Cj4gIAo+IC0tIAo+IDIuMzEuMAo+IAo+IF9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gaWd0LWRldiBtYWlsaW5n
-IGxpc3QKPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwo+IGh0dHBzOi8vbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
-QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2lndC1kZXYK
+On Tue, Mar 23, 2021 at 01:25:13PM -0400, Lyude wrote:
+> From: Lyude Paul <lyude@redhat.com>
+> 
+> Currently we just assume that every cursor size up to data->cursor_max_w/h will
+> be supported by the driver, and check for support of nonsquare cursors by
+> checking if we're running on u815 and if so, which variant of intel hardware
+
+The right side of your keyboard dodged your fingers when writing "i915" here.
+
+-- 
+Petri Latvala
+
+
+
+> we're running on. This isn't really ideal as we're about to enable 32x32 cursor
+> size tests for nouveau, and Intel hardware doesn't support cursor sizes that
+> small.
+> 
+> So, fix this by removing has_nonsquare_cursors() and replacing it with a more
+> generic require_cursor_size() function which checks whether or not the driver
+> we're using supports a given cursor size by attempting a test-only atomic
+> commit.
+> 
+> v3:
+> * Also probe for cursor support on systems without atomic support
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> Cc: Martin Peres <martin.peres@free.fr>
+> Cc: Ben Skeggs <bskeggs@redhat.com>
+> Cc: Jeremy Cline <jcline@redhat.com>
+> ---
+>  tests/kms_cursor_crc.c | 133 ++++++++++++++++++++++++-----------------
+>  1 file changed, 78 insertions(+), 55 deletions(-)
+> 
+> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+> index 3541ea06..529e2171 100644
+> --- a/tests/kms_cursor_crc.c
+> +++ b/tests/kms_cursor_crc.c
+> @@ -523,26 +523,45 @@ static void create_cursor_fb(data_t *data, int cur_w, int cur_h)
+>  	igt_put_cairo_ctx(cr);
+>  }
+>  
+> -static bool has_nonsquare_cursors(data_t *data)
+> +static void require_cursor_size(data_t *data, int w, int h)
+>  {
+> -	uint32_t devid;
+> +	igt_fb_t primary_fb;
+> +	drmModeModeInfo *mode;
+> +	igt_display_t *display = &data->display;
+> +	igt_output_t *output = data->output;
+> +	igt_plane_t *primary, *cursor;
+> +	int ret;
+>  
+> -	if (!is_i915_device(data->drm_fd))
+> -		return false;
+> +	igt_output_set_pipe(output, data->pipe);
+>  
+> -	devid = intel_get_drm_devid(data->drm_fd);
+> +	mode = igt_output_get_mode(output);
+> +	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> +	cursor = igt_output_get_plane_type(output, DRM_PLANE_TYPE_CURSOR);
+> +
+> +	/* Create temporary primary fb for testing */
+> +	igt_assert(igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
+> +				 LOCAL_DRM_FORMAT_MOD_NONE, &primary_fb));
+> +
+> +	igt_plane_set_fb(primary, &primary_fb);
+> +	igt_plane_set_fb(cursor, &data->fb);
+> +	igt_plane_set_size(cursor, w, h);
+> +	igt_fb_set_size(&data->fb, cursor, w, h);
+> +
+> +	/* Test if the kernel supports the given cursor size or not */
+> +	if (display->is_atomic)
+> +		ret = igt_display_try_commit_atomic(display,
+> +						    DRM_MODE_ATOMIC_TEST_ONLY |
+> +						    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +	else
+> +		ret = igt_display_try_commit2(display, COMMIT_LEGACY);
+>  
+> -	/*
+> -	 * Test non-square cursors a bit on the platforms
+> -	 * that support such things.
+> -	 */
+> -	if (devid == PCI_CHIP_845_G || devid == PCI_CHIP_I865_G)
+> -		return true;
+> +	igt_plane_set_fb(primary, NULL);
+> +	igt_plane_set_fb(cursor, NULL);
+>  
+> -	if (IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid))
+> -		return false;
+> +	igt_remove_fb(data->drm_fd, &primary_fb);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+>  
+> -	return intel_gen(devid) >= 7;
+> +	igt_skip_on_f(ret, "Cursor size %dx%d not supported by driver\n", w, h);
+>  }
+>  
+>  static void test_cursor_size(data_t *data)
+> @@ -697,27 +716,33 @@ static void run_tests_on_pipe(data_t *data, enum pipe pipe)
+>  			create_cursor_fb(data, w, h);
+>  		}
+>  
+> -		/* Using created cursor FBs to test cursor support */
+> -		igt_describe("Check if a given-size cursor is well-positioned inside the screen.");
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-onscreen", kmstest_pipe_name(pipe), w, h)
+> -			run_test(data, test_crc_onscreen, w, h);
+> -
+> -		igt_describe("Check if a given-size cursor is well-positioned outside the screen.");
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-offscreen", kmstest_pipe_name(pipe), w, h)
+> -			run_test(data, test_crc_offscreen, w, h);
+> -
+> -		igt_describe("Check the smooth and pixel-by-pixel given-size cursor movements on"
+> -		             "horizontal, vertical and diagonal.");
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-sliding", kmstest_pipe_name(pipe), w, h)
+> -			run_test(data, test_crc_sliding, w, h);
+> -
+> -		igt_describe("Check random placement of a cursor with given size.");
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-random", kmstest_pipe_name(pipe), w, h)
+> -			run_test(data, test_crc_random, w, h);
+> -
+> -		igt_describe("Check the rapid update of given-size cursor movements.");
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-rapid-movement", kmstest_pipe_name(pipe), w, h) {
+> -			run_test(data, test_rapid_movement, w, h);
+> +		igt_subtest_group {
+> +			igt_fixture
+> +				require_cursor_size(data, w, h);
+> +
+> +			/* Using created cursor FBs to test cursor support */
+> +			igt_describe("Check if a given-size cursor is well-positioned inside the "
+> +				     "screen.");
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-onscreen", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_crc_onscreen, w, h);
+> +
+> +			igt_describe("Check if a given-size cursor is well-positioned outside the "
+> +				     "screen.");
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-offscreen", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_crc_offscreen, w, h);
+> +
+> +			igt_describe("Check the smooth and pixel-by-pixel given-size cursor "
+> +				     "movements on horizontal, vertical and diagonal.");
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-sliding", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_crc_sliding, w, h);
+> +
+> +			igt_describe("Check random placement of a cursor with given size.");
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-random", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_crc_random, w, h);
+> +
+> +			igt_describe("Check the rapid update of given-size cursor movements.");
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-rapid-movement", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_rapid_movement, w, h);
+>  		}
+>  
+>  		igt_fixture
+> @@ -730,27 +755,25 @@ static void run_tests_on_pipe(data_t *data, enum pipe pipe)
+>  		 */
+>  		h /= 3;
+>  
+> -		igt_fixture {
+> -			if (has_nonsquare_cursors(data))
+> -				create_cursor_fb(data, w, h);
+> -		}
+> +		igt_fixture
+> +			create_cursor_fb(data, w, h);
+>  
+> -		/* Using created cursor FBs to test cursor support */
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-onscreen", kmstest_pipe_name(pipe), w, h) {
+> -			igt_require(has_nonsquare_cursors(data));
+> -			run_test(data, test_crc_onscreen, w, h);
+> -		}
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-offscreen", kmstest_pipe_name(pipe), w, h) {
+> -			igt_require(has_nonsquare_cursors(data));
+> -			run_test(data, test_crc_offscreen, w, h);
+> -		}
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-sliding", kmstest_pipe_name(pipe), w, h) {
+> -			igt_require(has_nonsquare_cursors(data));
+> -			run_test(data, test_crc_sliding, w, h);
+> -		}
+> -		igt_subtest_f("pipe-%s-cursor-%dx%d-random", kmstest_pipe_name(pipe), w, h) {
+> -			igt_require(has_nonsquare_cursors(data));
+> -			run_test(data, test_crc_random, w, h);
+> +		igt_subtest_group {
+> +			igt_fixture
+> +				require_cursor_size(data, w, h);
+> +
+> +			/* Using created cursor FBs to test cursor support */
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-onscreen", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_crc_onscreen, w, h);
+> +
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-offscreen", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_crc_offscreen, w, h);
+> +
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-sliding", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_crc_sliding, w, h);
+> +
+> +			igt_subtest_f("pipe-%s-cursor-%dx%d-random", kmstest_pipe_name(pipe), w, h)
+> +				run_test(data, test_crc_random, w, h);
+>  		}
+>  
+>  		igt_fixture
+> -- 
+> 2.29.2
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
