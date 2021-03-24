@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com
- [IPv6:2607:f8b0:4864:20::734])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7CBE06E938
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 15:08:57 +0000 (UTC)
-Received: by mail-qk1-x734.google.com with SMTP id q26so9388737qkm.6
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Mar 2021 08:08:57 -0700 (PDT)
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Tue, 23 Mar 2021 11:08:51 -0400
-Message-Id: <20210323150851.209365-1-markyacoub@chromium.org>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 720AC897EE
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Mar 2021 08:47:03 +0000 (UTC)
+Date: Wed, 24 Mar 2021 10:47:37 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YFr8qQwbj/hSQOmd@platvala-desk.ger.corp.intel.com>
+References: <20210323180347.48355-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] tests/kms_atomic_transition: Enable Primary Plane
- on Enabling CRTC.
+Content-Disposition: inline
+In-Reply-To: <20210323180347.48355-1-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/gem_mmap_offset: Fix invalid
+ munmap
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,59 +18,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: seanpaul@chromium.org, petri.latvala@intel.com, Mark Yacoub <markyacoub@google.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mark Yacoub <markyacoub@google.com>
-
-Setup all plane params before committing anything.
-Do not disable Primary Plane whenever a CRTC is getting enabled.
-
-AMD Driver requires the primary plane to be enabled whenever the CRTC is, otherwise
-drm_mode_cursor_universal may end up trying to enable the cursor plane while all other
-planes are disabled, which is not supported by the hardware.
-
-Tested on Delbin and Volteer with no regression or added latency.
-
----
- tests/kms_atomic_transition.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index 9689bf4d..cfa04dcd 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -172,7 +172,7 @@ wm_setup_plane(data_t *data, enum pipe pipe,
- 			continue;
- 
- 		if (!mask || !(parms[i].mask & mask)) {
--			if (plane->values[IGT_PLANE_FB_ID]) {
-+			if (plane->values[IGT_PLANE_FB_ID] && plane->type != DRM_PLANE_TYPE_PRIMARY) {
- 				igt_plane_set_fb(plane, NULL);
- 				planes_set_up++;
- 			}
-@@ -516,10 +516,9 @@ run_transition_test(data_t *data, enum pipe pipe, igt_output_t *output,
- 		igt_output_set_pipe(output, pipe);
- 	}
- 
--	igt_display_commit2(&data->display, COMMIT_ATOMIC);
--
- 	setup_parms(data, pipe, mode, &fb, &argb_fb, &sprite_fb, parms, &iter_max);
--
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+	
- 	/*
- 	 * In some configurations the tests may not run to completion with all
- 	 * sprite planes lit up at 4k resolution, try decreasing width/size of secondary
--- 
-2.31.0.rc2.261.g7f71774620-goog
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gVHVlLCBNYXIgMjMsIDIwMjEgYXQgMDc6MDM6NDdQTSArMDEwMCwgWmJpZ25pZXcgS2VtcGN6
+ecWEc2tpIHdyb3RlOgo+IEZpeCBuYXN0eSBidWcgd2hpY2ggbGVhZHMgdG8gU0lHU0VHViBpbiBi
+bHQtY29oZXJlbmN5IHRlc3QuCj4gSW5zdGVhZCBvZiBwb2ludGVyIHVubWFwIHdhcyBkb25lIG9u
+IGludGVsX2J1ZiB3aGF0IHdhcyB3cm9uZy4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBL
+ZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KPiBDYzogUGV0cmkg
+TGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+Cj4gQ2M6IENocmlzIFdpbHNvbiA8Y2hy
+aXNAY2hyaXMtd2lsc29uLmNvLnVrPgoKUmV2aWV3ZWQtYnk6IFBldHJpIExhdHZhbGEgPHBldHJp
+LmxhdHZhbGFAaW50ZWwuY29tPgoKPiAtLS0KPiAgdGVzdHMvaTkxNS9nZW1fbW1hcF9vZmZzZXQu
+YyB8IDIgKy0KPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0p
+Cj4gCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvZ2VtX21tYXBfb2Zmc2V0LmMgYi90ZXN0cy9p
+OTE1L2dlbV9tbWFwX29mZnNldC5jCj4gaW5kZXggOGIyOWQwYTBhLi5kZTkyN2UzMmUgMTAwNjQ0
+Cj4gLS0tIGEvdGVzdHMvaTkxNS9nZW1fbW1hcF9vZmZzZXQuYwo+ICsrKyBiL3Rlc3RzL2k5MTUv
+Z2VtX21tYXBfb2Zmc2V0LmMKPiBAQCAtNTkxLDcgKzU5MSw3IEBAIHN0YXRpYyBzdHJ1Y3QgaW50
+ZWxfYnVmICpjcmVhdGVfYm8oc3RydWN0IGJ1Zl9vcHMgKmJvcHMsIHVpbnQzMl90IHZhbHVlLAo+
+ICAJZm9yIChpbnQgaSA9IDA7IGkgPCA2NCAvIHNpemVvZigqdik7IGkrKykKPiAgCQl2W2ldID0g
+dmFsdWU7Cj4gIAo+IC0JbXVubWFwKGJ1Ziwgc2l6ZSk7Cj4gKwltdW5tYXAodiwgc2l6ZSk7Cj4g
+IAo+ICAJcmV0dXJuIGJ1ZjsKPiAgfQo+IC0tIAo+IDIuMjYuMAo+IApfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3Qt
+ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
