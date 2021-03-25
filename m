@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E2A426EB20
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Mar 2021 07:23:18 +0000 (UTC)
-References: <1616569087-30691-1-git-send-email-jigar.bhatt@intel.com>
- <1616650650-2195-1-git-send-email-jigar.bhatt@intel.com>
-From: Martin Peres <martin.peres@mupuf.org>
-Message-ID: <eff907c3-d780-ad9a-e19b-afecb4580119@mupuf.org>
-Date: Thu, 25 Mar 2021 09:23:06 +0200
+Date: Thu, 25 Mar 2021 10:35:33 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YFxLVbF2lgu5t0LH@platvala-desk.ger.corp.intel.com>
+References: <20210317223827.446803-1-lyude@redhat.com>
+ <YFMasrshhYVa7daJ@platvala-desk.ger.corp.intel.com>
+ <053d072282736247a1f52d907f89cdb430d473b5.camel@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <1616650650-2195-1-git-send-email-jigar.bhatt@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [i-g-t RFC v1] tests/i915_pm_rpm: Add
- suspend-resume-latency test
+Content-Disposition: inline
+In-Reply-To: <053d072282736247a1f52d907f89cdb430d473b5.camel@redhat.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib: Introduce the igt_nouveau library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,163 +16,159 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jigar Bhatt <jigar.bhatt@intel.com>, igt-dev@lists.freedesktop.org
+To: Lyude Paul <lyude@redhat.com>
+Cc: igt-dev@lists.freedesktop.org, nouveau@lists.freedesktop.org, Martin Peres <martin.peres@free.fr>, Ben Skeggs <bskeggs@redhat.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 25/03/2021 07:37, Jigar Bhatt wrote:
-> Measuring the suspend-resume time using
-> tracefs, writing Suspend Started, Suspend Completed,
-> Resume Ended timestamp into tracefs file.
-> After writing it's reading from tracefs file and
-> measuring different, suspend and resume ,
-> individual must be less than 1 sec.
+On Wed, Mar 24, 2021 at 06:24:54PM -0400, Lyude Paul wrote:
+> On Thu, 2021-03-18 at 11:17 +0200, Petri Latvala wrote:
+> > On Wed, Mar 17, 2021 at 06:38:27PM -0400, Lyude wrote:
+> > > From: Lyude Paul <lyude@redhat.com>
+> > > =
 
-Ahhhh, finally someone got to it! Thanks so much for this, as I was 
-feeling bad for not having had the time to write it myself...
+> > > This introduces the igt_nouveau library, which enables support for ti=
+ling
+> > > formats on nouveau, along with accelerated clears for allocated bos i=
+n VRAM
+> > > using the dma-copy engine present on Nvidia hardware since Tesla. Typ=
+ically
+> > > the latter would be handled by the kernel automatically, which is the
+> > > long-term plan for nouveau, but since the kernel doesn't yet support =
+that
+> > > we implement this in igt in order to fulfill the expectation that mos=
+t of
+> > > igt has in which newly allocated fbs are expected to be zero-filled by
+> > > default.
+> > > =
 
-Comments are inlined!
+> > > The dma-copy engine is capable of fast blitting, and is also able to
+> > > perform tiling/untiling at the same time. This is worth mentioning be=
+cause
+> > > unlike many of the other drivers supported in igt, we go out of our w=
+ay to
+> > > avoid using mmap() in order to perform CPU rendering wherever possibl=
+e.
+> > > Instead of mmap()ing an fb that we want to draw to on the CPU (whethe=
+r it
+> > > be for converting formats, or just normal rendering), we instead use
+> > > dma-copy to blit linear/tiled fbs over to linear system memory which =
+we
+> > > mmap() instead. This is primarily because while mmap() is typically
+> > > painfully slow for vram, it's even slower on nouveau due to the curre=
+nt
+> > > lack of dynamic reclocking in our driver. Furthermore, using the dma-=
+copy
+> > > engine for copying things over to system ram is also dramatically fas=
+ter
+> > > than using igt's memcpy wc helpers even when no tiling is involved. S=
+uch
+> > > speed improvements are both quite nice, but also very necessary for c=
+ertain
+> > > tests like kms_plane that are rather sensitive when it comes to slow
+> > > rendering with drivers.
+> > > =
 
-> 
-> v1:
-> - Add limits.h and time.h
-> 
-> Signed-off-by: Jigar Bhatt <jigar.bhatt@intel.com>
-> ---
->   tests/i915/i915_pm_rpm.c | 86 ++++++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 86 insertions(+)
-> 
-> diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-> index 694a3ea..3cc9259 100644
-> --- a/tests/i915/i915_pm_rpm.c
-> +++ b/tests/i915/i915_pm_rpm.c
-> @@ -53,6 +53,8 @@
->   #include "igt_debugfs.h"
->   #include "igt_device.h"
->   #include "igt_edid.h"
-> +#include "limits.h"
-> +#include "time.h"
->   
->   #define MSR_PC8_RES	0x630
->   #define MSR_PC9_RES	0x631
-> @@ -1998,6 +2000,85 @@ static int opt_handler(int opt, int opt_index, void *data)
->   	return IGT_OPT_HANDLER_SUCCESS;
->   }
->   
-> +static void dpms_off(struct mode_set_data *data)
-> +{
-> +	for (int i = 0; i < data->res->count_connectors; i++) {
-> +		drmModeConnectorPtr c = data->connectors[i];
-> +
-> +		kmstest_set_connector_dpms(drm_fd, c, DRM_MODE_DPMS_OFF);
-> +	}
-> +}
-> +
-> +static void dpms_on(struct mode_set_data *data)
-> +{
-> +	igt_display_t display;
-> +
-> +	igt_display_require(&display, drm_fd);
-> +	for (int i = 0; i < data->res->count_connectors; i++) {
-> +		drmModeConnectorPtr c = data->connectors[i];
-> +
-> +		kmstest_set_connector_dpms(drm_fd, c, DRM_MODE_DPMS_ON);
-> +	}
-> +}
-> +
-> +static uint32_t get_trace_timestamp(char *dc_data)
-> +{
-> +	char *e;
-> +	long ret;
-> +	char *s = strchr(dc_data, ':');
-> +
-> +	assert(s);
-> +	s++;
-> +	ret = strtol(s, &e, 10);
-> +	assert(((ret != LONG_MIN && ret != LONG_MAX) || errno != ERANGE) &&
-> +		e > s && *e == '\n' && ret >= 0);it is impossible to know from the userspace how long it will take for the machine to go to sleep
-> +	return ret;
-> +}
-> +
-> +static long get_timestamp(void)
-> +{
-> +	struct timespec start;
-> +
-> +	clock_gettime(CLOCK_MONOTONIC_RAW, &start);
-> +	return (start.tv_sec * 1000000 + (start.tv_nsec / 1000));
-> +}
+> > > This doesn't mean we won't want to provide a way of using mmap() for
+> > > rendering in the future however, as at least basic testing of mmap() =
+is
+> > > certainly something we eventually want for nouveau. However, I think =
+the
+> > > best way for us to do this in the future will be to adapt the igt_dra=
+w API
+> > > to work with nouveau so we can explicitly request using mmap() in tes=
+ts
+> > > which need it.
+> > > =
 
-By using a monotonic clock, you are measuring the kernel overhead of 
-going to sleep and resuming, and not the time spent off.
+> > > Finally, this code also adds a hard dependency on libdrm support for
+> > > nouveau tests. The main reason for this is currently there are no real
+> > > applications that use nouveau's ioctls directly (mesa for instance, u=
+ses
+> > > libdrm as well) and also that nouveau's ioctls are currently a bit
+> > > complicated to use by hand. This will likely be temporary however, as=
+ Ben
+> > > Skeggs is planning on revamping a lot of nouveau's APIs to simplify t=
+hem
+> > > and make libdrm support for nouveau obsolete in the future. Note that=
+ we
+> > > take care to make sure that users can still disable libdrm support for
+> > > nouveau if needed, with the only caveat being that any tests using
+> > > igt_nouveau will be disabled, along with any tiling support for
+> > > nvidia-specific tiling formats.
+> > > =
 
-I think you need to explain why you are using it in the commit message 
-(we assume the firmware is basically immediate, as measuring anything 
-there is trickyMartin and measuring the wall time is tricky due to 
-unreliable RTC clocks, and the inability to start the wake up 
-milliseconds after suspend without a kernel patch).
+> > > This should enable igt tests which test tiling formats to run on nouv=
+eau,
+> > > and fix some seemingly random test failures as a result of not having
+> > > zero-filled buffers in a few other tests like kms_cursor_crc.
+> > > =
 
-> +
-> +static void read_trace(void)
-> +{
-> +	int fd;
-> +	char buf[4096];
-> +
-> +	fd = open("/sys/kernel/debug/tracing/trace", O_RDONLY);
-> +	igt_assert(fd > 0);
-> +	igt_assert(read(fd, buf, sizeof(buf)));
-> +	igt_assert(((float)(get_trace_timestamp(strstr(buf, "Suspend_Completed")) -
-> +			get_trace_timestamp(strstr(buf, "Suspend_Started"))) / 1000000) < 1);
-> +	igt_assert(((float)(get_trace_timestamp(strstr(buf, "Resume_Ended")) -
-> +			get_trace_timestamp(strstr(buf, "Suspend_Completed"))) / 1000000) < 1);
-> +	close(fd);
-> +}
-> +
-> +static void test_suspend_resume_latency(struct mode_set_data *data)
-> +{
-> +	int fd;
-> +	char msg[400];
-> +
-> +	fd = open("/sys/kernel/debug/tracing/trace_marker", O_WRONLY);
-> +	igt_assert(fd > 0);
-> +	snprintf(msg, 100, "Suspend_Started : %ld", get_timestamp());
-> +	write(fd, msg, strlen(msg));
-> +	dpms_off(data);
-> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-> +	snprintf(msg, 100, "Suspend_Completed : %ld", get_timestamp());
-> +	write(fd, msg, strlen(msg));
-> +	dpms_on(data);
-> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
-> +	snprintf(msg, 100, "Resume_Ended : %ld", get_timestamp());
-> +	write(fd, msg, strlen(msg));
-> +	close(fd);
-> +	read_trace();
-> +}
+> > > Signed-off-by: Lyude Paul <lyude@redhat.com>
+> > > Cc: Martin Peres <martin.peres@free.fr>
+> > > Cc: Ben Skeggs <bskeggs@redhat.com>
+> > > Cc: Jeremy Cline <jcline@redhat.com>
+> > > ---
+> > > =A0.gitlab-ci.yml=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 =
+|=A0=A0 7 +
+> > > =A0include/drm-uapi/drm_fourcc.h=A0=A0 |=A0=A0 2 +-
+> > > =A0lib/drmtest.c=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 |=A0=A0 5 +
+> > > =A0lib/igt_fb.c=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 |=A0 98 +++++++--
+> > > =A0lib/igt_fb.h=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 |=A0=A0 2 +
+> > > =A0lib/igt_nouveau.c=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 | 281 =
+++++++++++++++++++++++++++
+> > > =A0lib/igt_nouveau.h=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0 6=
+5 ++++++
+> > > =A0lib/meson.build=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=
+=A0=A0 8 +
+> > > =A0lib/nouveau/cea0b5.c=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 | 252 ++++++=
++++++++++++++++++
+> > > =A0lib/nouveau/nvhw/class/cl906f.h | 103 ++++++++++
+> > > =A0lib/nouveau/nvhw/class/cla0b5.h | 250 +++++++++++++++++++++++
+> > > =A0lib/nouveau/nvhw/drf.h=A0=A0=A0=A0=A0=A0=A0=A0=A0 | 209 ++++++++++=
++++++++++
+> > > =A0lib/nouveau/nvif/push.h=A0=A0=A0=A0=A0=A0=A0=A0 | 345 ++++++++++++=
+++++++++++++++++++++
+> > > =A0lib/nouveau/nvif/push906f.h=A0=A0=A0=A0 |=A0 70 +++++++
+> > > =A0lib/nouveau/priv.h=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0 57 =
+++++++
+> > > =A0meson.build=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 |=A0=A0 3 +
+> > > =A0tests/meson.build=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=
+=A0 2 +-
+> > > =A017 files changed, 1745 insertions(+), 14 deletions(-)
+> > > =A0create mode 100644 lib/igt_nouveau.c
+> > > =A0create mode 100644 lib/igt_nouveau.h
+> > > =A0create mode 100644 lib/nouveau/cea0b5.c
+> > > =A0create mode 100644 lib/nouveau/nvhw/class/cl906f.h
+> > > =A0create mode 100644 lib/nouveau/nvhw/class/cla0b5.h
+> > > =A0create mode 100644 lib/nouveau/nvhw/drf.h
+> > > =A0create mode 100644 lib/nouveau/nvif/push.h
+> > > =A0create mode 100644 lib/nouveau/nvif/push906f.h
+> > > =A0create mode 100644 lib/nouveau/priv.h
+> > =
 
-Why do you change the DPMS state during the state? Wouldn't you want to 
-have two tests: one with dpms on, and one with dpms off?
+> > Do you want to support autotools?
+> =
 
-Martin
+> nope :P. I can if it's needed, but otherwise I'm totally fine with this b=
+eing a
+> meson-only feature
 
-> +
->   const char *help_str =
->   	"  --stress\t\tMake the stress-tests more stressful.\n"
->   	"  --stay\t\tDisable all screen and try to go into runtime pm. Useful for debugging.";
-> @@ -2147,6 +2228,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->   		pm_test_caching();
->   	}
->   
-> +	igt_subtest("suspend-resume-latency") {
-> +		test_suspend_resume_latency(&ms_data);
-> +	}
-> +
-> +
->   	igt_fixture
->   		teardown_environment(false);
->   
-> 
+
+Ah yes! Our "does this also build with autotools" check already
+ignores tests that match the string "nouveau"...
+
+
+-- =
+
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
