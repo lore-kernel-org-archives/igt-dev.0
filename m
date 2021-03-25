@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 924C66EB23
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Mar 2021 05:45:54 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C648C6EB28
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Mar 2021 05:45:53 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Wed, 24 Mar 2021 22:45:49 -0700
-Message-Id: <20210325054549.465386-16-alan.previn.teres.alexis@intel.com>
+Date: Wed, 24 Mar 2021 22:45:47 -0700
+Message-Id: <20210325054549.465386-14-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210325054549.465386-1-alan.previn.teres.alexis@intel.com>
 References: <20210325054549.465386-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 15/15] tests/i915_pxp: CRC validation for
- display tests.
+Subject: [igt-dev] [PATCH i-g-t v2 13/15] Ensure RESET_STAT reports
+ invalidated protected context
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,340 +22,99 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Karthik B S <karthik.b.s@intel.com>
+When protected contexts are created but get invalidated
+due to PXP session teardown (such as after a suspend-resume
+cycle), RESET_STAT ioctl for said context will report it
+as I915_CONTEXT_INVALIDATED.
 
-Added subtests to validate pxp using CRC validation.
-
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 ---
- tests/i915/gem_pxp.c | 276 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 276 insertions(+)
+ tests/i915/gem_pxp.c | 48 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
 diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 583983f2..dfc0e15b 100644
+index 4e50262b..05083ac9 100644
 --- a/tests/i915/gem_pxp.c
 +++ b/tests/i915/gem_pxp.c
-@@ -10,6 +10,7 @@
- #include "igt_device.h"
- #include "igt_sysfs.h"
- #include "i915/gem.h"
-+#include <fcntl.h>
+@@ -41,6 +41,7 @@ IGT_TEST_DESCRIPTION("Test PXP (Protected Xe Path), which is the component "
+ #define SESSION_PMSUSPEND_STALEPROTCTX_BAN_EXEC 2
+ #define SESSION_PMSUSPEND_STALEPROTBO_BAN_EXEC 3
+ #define SESSION_PMSUSPEND_STALECTX_STALEPROTBO_EXEC_OK 4
++#define SESSION_PMSUSPEND_STALEPROTCTX_IN_RESETSTAT 5
  
- IGT_TEST_DESCRIPTION("Test PXP (Protected Xe Path), which is the component "
- 			"that allows the handling of protected content through "
-@@ -383,6 +384,7 @@ static void fill_bo_content(int i915, uint32_t bo,
- #define COPY_BUFFER                5
- 
- #define COMPARE_N_PIXELS_VERBOSELY 0
-+
- static void assert_bo_content_check(int i915, uint32_t bo,
- 	int compare_op, uint32_t size, uint32_t color, uint32_t *auxptr, int auxsize)
- {
-@@ -489,6 +491,7 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected,
- #define TSTSURF_INITCOLOR1  0x12341234
- #define TSTSURF_INITCOLOR2  0x56785678
- #define TSTSURF_INITCOLOR3  0xabcdabcd
-+#define TSTSURF_GREENCOLOR  0xFF00FF00
- static void __test_render_protected_buffer(int i915, uint32_t test_cfg,
- 	uint32_t *outpixels, int outsize)
- {
-@@ -1005,6 +1008,262 @@ static void test_protected_session_teardown(int i915, uint32_t test_cfg,
+ /* Struct and defintions for power management. */
+ struct powermgt_data {
+@@ -738,6 +739,25 @@ static void gem_execbuf_flush_store_dw(int i915, struct intel_bb *ibb,
  	}
  }
  
-+static void setup_protected_fb(int i915, int width, int height, igt_fb_t *fb, uint32_t ctx)
++static void check_context_invalid_state(int i915,
++		uint32_t ctx, bool is_expected_invalid)
 +{
-+	int err;
-+	uint32_t srcbo;
-+	struct intel_buf *srcbuf, *dstbuf;
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb;
-+	uint32_t devid;
-+	igt_render_copyfunc_t rendercopy;
++	struct drm_i915_reset_stats rs;
++	bool ctx_is_invalid = false;
++	int ret;
 +
-+	devid = intel_get_drm_devid(i915);
-+	igt_assert(devid);
++	memset(&rs, 0, sizeof(rs));
++	rs.ctx_id = ctx;
 +
-+	rendercopy = igt_get_render_copyfunc(devid);
-+	igt_assert(rendercopy);
++	ret = drmIoctl(i915, DRM_IOCTL_I915_GET_RESET_STATS, &rs);
++	igt_assert(ret == 0);
 +
-+	bops = buf_ops_create(i915);
-+	igt_assert(bops);
++	if (rs.flags & I915_CONTEXT_INVALIDATED)
++		ctx_is_invalid = true;
++	igt_assert_eq(is_expected_invalid, ctx_is_invalid);
 +
-+	igt_init_fb(fb, i915, width, height, DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
-+		    IGT_COLOR_YCBCR_BT709, IGT_COLOR_YCBCR_LIMITED_RANGE);
-+
-+	igt_calc_fb_size(i915, width, height, DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE, &fb->size, &fb->strides[0]);
-+
-+	fb->gem_handle = create_protected_bo(i915, fb->size, true, true, 0);
-+	err = __gem_set_tiling(i915, fb->gem_handle,
-+			       igt_fb_mod_to_tiling(fb->modifier), fb->strides[0]);
-+	igt_assert(err == 0 || err == -EOPNOTSUPP);
-+
-+	do_or_die(__kms_addfb(fb->fd, fb->gem_handle,fb->width, fb->height, fb->drm_format,
-+			      fb->modifier, fb->strides, fb->offsets, fb->num_planes,
-+			      LOCAL_DRM_MODE_FB_MODIFIERS, &fb->fb_id));
-+
-+	dstbuf = intel_buf_create_using_handle(bops, fb->gem_handle,
-+					       fb->width, fb->height,
-+					       fb->plane_bpp[0], 0, igt_fb_mod_to_tiling(fb->modifier), 0);
-+	dstbuf->is_protected = true;
-+
-+	srcbo = alloc_and_fill_dest_buff(i915, false, fb->size,
-+					 TSTSURF_GREENCOLOR);
-+	srcbuf = intel_buf_create_using_handle(bops, srcbo,
-+					       fb->width, fb->height,
-+					       fb->plane_bpp[0], 0, igt_fb_mod_to_tiling(fb->modifier), 0);
-+
-+	ibb = intel_bb_create_with_context(i915, ctx, 4096);
-+	igt_assert(ibb);
-+
-+	ibb->pxp.enabled = true;
-+	ibb->pxp.apptype = DISPLAY_APPTYPE;
-+	ibb->pxp.appid = I915_PROTECTED_CONTENT_DEFAULT_SESSION;
-+
-+	gen12_render_copyfunc(ibb,
-+			      srcbuf, 0, 0,
-+			      fb->width, fb->height,
-+			      dstbuf, 0, 0);
-+
-+	gem_sync(i915, fb->gem_handle);
-+	assert_bo_content_check(i915, fb->gem_handle, COMPARE_COLOR_UNREADIBLE, fb->size, TSTSURF_GREENCOLOR, NULL, 0);
-+
-+	intel_bb_destroy(ibb);
-+	intel_buf_destroy(srcbuf);
-+	gem_close(i915, srcbo);
 +}
 +
-+static void __debugfs_read(int fd, const char *param, char *buf, int len)
-+{
-+	len = igt_debugfs_simple_read(fd, param, buf, len);
-+	if (len < 0)
-+		igt_assert_eq(len, -ENODEV);
-+}
-+
-+#define debugfs_read(fd, p, arr) __debugfs_read(fd, p, arr, sizeof(arr))
-+#define MAX_SINK_HDCP_CAP_BUF_LEN	5000
-+
-+#define CP_UNDESIRED				0
-+#define CP_DESIRED				1
-+#define CP_ENABLED				2
-+
-+#define KERNEL_AUTH_TIME_ALLOWED_MSEC		(3 *  6 * 1000)
-+#define KERNEL_DISABLE_TIME_ALLOWED_MSEC	(1 * 1000)
-+
-+static bool
-+wait_for_prop_value(igt_output_t *output, uint64_t expected,
-+		    uint32_t timeout_mSec)
-+{
-+	uint64_t val;
-+	int i;
-+
-+	for (i = 0; i < timeout_mSec; i++) {
-+		val = igt_output_get_prop(output, IGT_CONNECTOR_CONTENT_PROTECTION);
-+		if (val == expected)
-+			return true;
-+		usleep(1000);
-+	}
-+
-+	igt_info("prop_value mismatch %" PRId64 " != %" PRId64 "\n", val, expected);
-+
-+	return false;
-+}
-+
-+static bool sink_hdcp_capable(int i915, igt_output_t *output)
-+{
-+	char buf[MAX_SINK_HDCP_CAP_BUF_LEN];
-+	int fd;
-+
-+	fd = igt_debugfs_connector_dir(i915, output->name, O_RDONLY);
-+	if (fd < 0)
-+		return false;
-+
-+	if (is_i915_device(i915))
-+		debugfs_read(fd, "i915_hdcp_sink_capability", buf);
-+	else
-+		debugfs_read(fd, "hdcp_sink_capability", buf);
-+
-+	close(fd);
-+
-+	igt_debug("Sink capability: %s\n", buf);
-+
-+	return strstr(buf, "HDCP1.4");
-+}
-+
-+static bool output_hdcp_capable(int i915, igt_output_t *output, bool content_type)
-+{
-+	if (!output->props[IGT_CONNECTOR_CONTENT_PROTECTION])
-+		return false;
-+	if (!output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE] && content_type)
-+		return false;
-+	if (!sink_hdcp_capable(i915, output))
-+		return false;
-+
-+	return true;
-+}
-+
-+static void test_display_protected_crc(int i915, igt_display_t *display, bool hdcp)
-+{
-+	igt_output_t *output;
-+	drmModeModeInfo *mode;
-+	igt_fb_t ref_fb, protected_fb;
-+	igt_plane_t *plane;
-+	igt_pipe_t *pipe;
-+	igt_pipe_crc_t *pipe_crc;
-+	igt_crc_t ref_crc, new_crc;
-+	int width = 0, height = 0, i = 0, ret, count, valid_outputs = 0;
-+	uint32_t ctx;
-+	igt_output_t *hdcp_output[IGT_MAX_PIPES];
-+
-+	ctx = create_protected_ctx(i915, true, true,
-+				   true, false, 0);
-+
-+	for_each_connected_output(display, output) {
-+		mode = igt_output_get_mode(output);
-+
-+		width = max(width, mode->hdisplay);
-+		height = max(height, mode->vdisplay);
-+
-+		if (!output_hdcp_capable(i915, output, 0))
-+			continue;
-+
-+		hdcp_output[valid_outputs++] = output;
-+	}
-+
-+	if (hdcp)
-+		igt_require_f(valid_outputs > 0,
-+			      "No HDCP capable connector found\n");
-+
-+	igt_create_color_fb(i915, width, height, DRM_FORMAT_XRGB8888,
-+			    LOCAL_DRM_FORMAT_MOD_NONE, 0, 1, 0, &ref_fb);
-+
-+	/* Do a modeset on all outputs */
-+	for_each_connected_output(display, output) {
-+		mode = igt_output_get_mode(output);
-+		pipe = &display->pipes[i];
-+		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+		igt_require(igt_pipe_connector_valid(i, output));
-+		igt_output_set_pipe(output, i);
-+
-+		igt_plane_set_fb(plane, &ref_fb);
-+		igt_fb_set_size(&ref_fb, plane, mode->hdisplay, mode->vdisplay);
-+		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-+
-+		igt_display_commit2(display, COMMIT_ATOMIC);
-+		i++;
-+	}
-+
-+	if (hdcp) {
-+		/* Enable HDCP on all the valid connectors */
-+		for (count = 0; count < valid_outputs; count++) {
-+			igt_output_set_prop_value(hdcp_output[count], IGT_CONNECTOR_CONTENT_PROTECTION, CP_DESIRED);
-+			if (output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE])
-+				igt_output_set_prop_value(hdcp_output[count], IGT_CONNECTOR_HDCP_CONTENT_TYPE, 0);
-+		}
-+
-+		igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+		/*Verify that HDCP is enabled on all valid connectors */
-+		for (count = 0; count < valid_outputs; count++) {
-+			ret = wait_for_prop_value(hdcp_output[count], CP_ENABLED, KERNEL_AUTH_TIME_ALLOWED_MSEC);
-+			igt_assert_f(ret, "Content Protection not enabled on %s\n", hdcp_output[count]->name);
-+		}
-+	}
-+
-+	setup_protected_fb(i915, width, height, &protected_fb, ctx);
-+
-+	for_each_connected_output(display, output) {
-+		mode = igt_output_get_mode(output);
-+		pipe = &display->pipes[output->pending_pipe];
-+		pipe_crc = igt_pipe_crc_new(i915, pipe->pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
-+		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+		igt_require(igt_pipe_connector_valid(pipe->pipe, output));
-+		igt_output_set_pipe(output, pipe->pipe);
-+
-+		igt_plane_set_fb(plane, &ref_fb);
-+		igt_fb_set_size(&ref_fb, plane, mode->hdisplay, mode->vdisplay);
-+		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-+
-+		igt_display_commit2(display, COMMIT_ATOMIC);
-+		igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
-+
-+		igt_plane_set_fb(plane, &protected_fb);
-+		igt_fb_set_size(&protected_fb, plane, mode->hdisplay, mode->vdisplay);
-+		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-+
-+		igt_display_commit2(display, COMMIT_ATOMIC);
-+		igt_pipe_crc_collect_crc(pipe_crc, &new_crc);
-+		igt_assert_crc_equal(&ref_crc, &new_crc);
-+
-+		if (hdcp) {
-+			/* Disable HDCP and collect CRC */
-+			igt_output_set_prop_value(hdcp_output[0], IGT_CONNECTOR_CONTENT_PROTECTION,
-+						  CP_UNDESIRED);
-+			igt_display_commit2(display, COMMIT_ATOMIC);
-+			ret = wait_for_prop_value(hdcp_output[0], CP_UNDESIRED,
-+						  KERNEL_DISABLE_TIME_ALLOWED_MSEC);
-+			igt_assert_f(ret, "Content Protection not cleared\n");
-+
-+			igt_plane_set_fb(plane, &protected_fb);
-+			igt_fb_set_size(&protected_fb, plane, mode->hdisplay, mode->vdisplay);
-+			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-+
-+			igt_display_commit2(display, COMMIT_ATOMIC);
-+			igt_pipe_crc_collect_crc(pipe_crc, &new_crc);
-+			igt_assert_f(!igt_check_crc_equal(&ref_crc, &new_crc),
-+				     "CRC's are expected to be different after HDCP is disabled\n");
-+		}
-+		/*
-+		 * Testing with one pipe-output combination is sufficient.
-+		 * So break the loop.
-+		 */
-+		break;
-+	}
-+
-+	gem_context_destroy(i915, ctx);
-+	igt_remove_fb(i915, &ref_fb);
-+	igt_remove_fb(i915, &protected_fb);
-+}
-+
- igt_main
+ static void test_protected_session_teardown(int i915, uint32_t test_cfg,
+ 		struct powermgt_data *pm)
  {
- 	int i915 = -1;
-@@ -1012,6 +1271,7 @@ igt_main
- 	struct powermgt_data pm = {0};
- 	igt_render_copyfunc_t rendercopy = NULL;
- 	uint32_t devid = 0;
-+	igt_display_t display;
+@@ -839,6 +859,29 @@ static void test_protected_session_teardown(int i915, uint32_t test_cfg,
+ 		buf_ops_destroy(bops);
+ 		break;
  
- 	igt_fixture
- 	{
-@@ -1137,7 +1397,23 @@ igt_main
++	case SESSION_PMSUSPEND_STALEPROTCTX_IN_RESETSTAT:
++		ctx = create_protected_ctx(i915, true, true,
++			true, false, 0);
++		assert_ctx_protected_param(i915, ctx, true);
++
++		ibb = intel_bb_create_with_context(i915, ctx, 4096);
++		igt_assert(ibb);
++
++		bops = buf_ops_create(i915);
++		igt_assert(bops);
++
++		fencebuf = intel_buf_create_using_handle(bops, fencebo,
++				256, 4,	32, 0, I915_TILING_NONE, 0);
++		intel_bb_add_intel_buf(ibb, fencebuf, true);
++
++		gem_execbuf_flush_store_dw(i915, ibb, ctx, fencebuf, 0);
++
++		check_context_invalid_state(i915, ctx, false);
++
++		trigger_powermgt_suspend_cycle(i915, pm);
++		check_context_invalid_state(i915, ctx, true);
++		break;
++
+ 	default:
+ 		igt_info("Skipping unknown power-mgt test_cfg = %d\n",
+ 			test_cfg);
+@@ -969,6 +1012,11 @@ igt_main
+ 				SESSION_PMSUSPEND_STALECTX_STALEPROTBO_EXEC_OK,
  				&pm);
  		}
- 	}
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require(pxp_supported);
-+			devid = intel_get_drm_devid(i915);
-+			igt_assert(devid);
-+			rendercopy = igt_get_render_copyfunc(devid);
-+			igt_require(rendercopy);
- 
-+			igt_require_pipe_crc(i915);
-+			igt_display_require(&display, i915);
++		igt_subtest("old-prot-context-reports-reset-stat-after-suspend-resume") {
++			test_protected_session_teardown(i915,
++				SESSION_PMSUSPEND_STALEPROTCTX_IN_RESETSTAT,
++				&pm);
 +		}
-+		igt_describe("Test the display CRC");
-+		igt_subtest("display-protected-crc-without-hdcp")
-+			test_display_protected_crc(i915, &display, 0);
-+		igt_subtest("display-protected-crc-with-hdcp")
-+			test_display_protected_crc(i915, &display, 1);
-+	}
- 	igt_fixture {
- 		close(i915);
  	}
+ 
+ 	igt_fixture {
 -- 
 2.25.1
 
