@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C5DE36EB26
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C08D6EB25
  for <igt-dev@lists.freedesktop.org>; Thu, 25 Mar 2021 05:45:53 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Wed, 24 Mar 2021 22:45:42 -0700
-Message-Id: <20210325054549.465386-9-alan.previn.teres.alexis@intel.com>
+Date: Wed, 24 Mar 2021 22:45:43 -0700
+Message-Id: <20210325054549.465386-10-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210325054549.465386-1-alan.previn.teres.alexis@intel.com>
 References: <20210325054549.465386-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 08/15] Add test where both src and dest
- are protected
+Subject: [igt-dev] [PATCH i-g-t v2 09/15] Verify PXP teardown occured
+ through suspend-resume
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,231 +25,175 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When both the source and destination surfaces are
-protected, the destination pixel result of the 3d
-copy operation would be the same as the source. By
-appending this test case to the end of the prior
-test (raw-src to protected-dest) and reusing the
-previous' test destination as the current source,
-we can prove that new-source was decrypted properly
-as we would see the difference in results: repeating
-the same render operation but with a src buffer
-that is protected in this case yields matching
-(but still encrypted) output rendered pixels.
+During a suspend-resume cycle, the hardware and driver shall
+ensure the PXP session and keys are torn down and re-
+established. Verify that key change did occur by repeating
+the 3d rendercopy operation before and after a suspend cycle
+and ensuring that the encrypted output is different.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 ---
- tests/i915/gem_pxp.c | 117 ++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 104 insertions(+), 13 deletions(-)
+ tests/i915/gem_pxp.c | 100 +++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 97 insertions(+), 3 deletions(-)
 
 diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 825edbf1..e5d8e1f7 100644
+index e5d8e1f7..06bfb6ca 100644
 --- a/tests/i915/gem_pxp.c
 +++ b/tests/i915/gem_pxp.c
-@@ -358,29 +358,52 @@ static void fill_bo_content(int i915, uint32_t bo,
+@@ -6,6 +6,8 @@
+ #include <sys/ioctl.h>
  
- #define COMPARE_COLOR_READIBLE     1
- #define COMPARE_COLOR_UNREADIBLE   2
-+#define COMPARE_BUFFER_READIBLE    3
-+#define COMPARE_BUFFER_UNREADIBLE  4
-+#define COPY_BUFFER                5
+ #include "igt.h"
++#include "igt_device.h"
++#include "igt_sysfs.h"
+ #include "i915/gem.h"
+ 
+ IGT_TEST_DESCRIPTION("Test PXP (Protected Xe Path), which is the component "
+@@ -32,6 +34,16 @@ IGT_TEST_DESCRIPTION("Test PXP (Protected Xe Path), which is the component "
+ #define COPY3D_BASELINE_SRC_TO_DST 1
+ #define COPY3D_PROTECTED_SRC_TO_PROTDST 2
+ #define COPY3D_PROTECTED_PROTSRC_TO_PROTDST 3
++#define COPY3D_PROTECTED_SRC_TO_PROTDST_SAMPLED 4
 +
- #define COMPARE_N_PIXELS_VERBOSELY 0
- static void assert_bo_content_check(int i915, uint32_t bo,
--	int compare_op, uint32_t size, uint32_t color)
-+	int compare_op, uint32_t size, uint32_t color, uint32_t *auxptr, int auxsize)
++/* test-configs for power-management triggered protected session teardown */
++#define SESSION_PMSUSPEND_TEARDOWN_KEY_CHANGE 1
++
++/* Struct and defintions for power management. */
++struct powermgt_data {
++	int debugfsdir;
++	bool has_runtime_pm;
++};
+ 
+ static bool is_pxp_hw_supported(int i915)
  {
--	uint32_t *ptr, *ptrtmp;
-+	uint32_t *ptr, *ptrtmp, *auxtmp;
- 	int loop = 0, num_matches = 0;
- 	uint32_t value;
--	bool op_readible = (compare_op == COMPARE_COLOR_READIBLE);
-+	bool op_readible = ((compare_op == COMPARE_COLOR_READIBLE) ||
-+		 (compare_op == COMPARE_BUFFER_READIBLE));
-+	bool chk_buff = ((compare_op == COMPARE_BUFFER_READIBLE) ||
-+		 (compare_op == COMPARE_BUFFER_UNREADIBLE));
-+	bool copy_buff = (compare_op == COPY_BUFFER);
- 
- 	ptr = gem_mmap__device_coherent(i915, bo, 0, size, PROT_READ);
- 	ptrtmp = ptr;
- 
-+	if (chk_buff || copy_buff) {
-+		if (auxsize < size)
-+			auxptr = NULL;
-+		igt_assert(auxptr);
-+		auxtmp = auxptr;
-+	}
-+
- 	if (COMPARE_N_PIXELS_VERBOSELY) {
- 		igt_info("--------->>>\n");
- 		while (loop < COMPARE_N_PIXELS_VERBOSELY && loop < (size/4)) {
- 			value = *ptrtmp;
--			igt_info("Color read = 0x%08x ", value);
--			igt_info("expected %c= 0x%08x)\n",
--				op_readible?'=':'!', color);
-+			if (chk_buff)
-+				color = *auxtmp;
-+			if (copy_buff)
-+				igt_info("Color copy = 0x%08x\n", value);
-+			else {
-+				igt_info("Color read = 0x%08x ", value);
-+				igt_info("expected %c= 0x%08x)\n",
-+					op_readible?'=':'!', color);
-+			}
-+			++auxtmp;
- 			++ptrtmp;
- 			++loop;
- 		}
- 		igt_info("<<<---------\n");
-+		auxtmp = auxptr;
- 		ptrtmp = ptr;
- 		loop = 0;
- 	}
-@@ -388,8 +411,25 @@ static void assert_bo_content_check(int i915, uint32_t bo,
- 	/*count all pixels for matches */
- 	while (loop++ < (size/4)) {
- 		value = *ptrtmp;
--		if (value == color)
--			++num_matches;
-+		switch (compare_op) {
-+		case COMPARE_COLOR_READIBLE:
-+		case COMPARE_COLOR_UNREADIBLE:
-+			if (value == color)
-+				++num_matches;
-+			break;
-+		case COMPARE_BUFFER_READIBLE:
-+		case COMPARE_BUFFER_UNREADIBLE:
-+			if (value == (*auxtmp))
-+				++num_matches;
-+			++auxtmp;
-+			break;
-+		case COPY_BUFFER:
-+			*auxtmp = value;
-+			++auxtmp;
-+			break;
-+		default:
-+			break;
-+		}
- 		++ptrtmp;
- 	}
- 
-@@ -411,7 +451,7 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected,
- 	igt_assert(bo);
- 	fill_bo_content(i915, bo, size, init_color);
- 	assert_bo_content_check(i915, bo, COMPARE_COLOR_READIBLE,
--		size, init_color);
-+		size, init_color, NULL, 0);
- 
- 	return bo;
- }
-@@ -428,14 +468,16 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected,
- #define TSTSURF_FILLCOLOR2  0xdeaddead
+@@ -469,8 +481,8 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected,
  #define TSTSURF_INITCOLOR1  0x12341234
  #define TSTSURF_INITCOLOR2  0x56785678
-+#define TSTSURF_INITCOLOR3  0xabcdabcd
- 
- static void test_render_protected_buffer(int i915, uint32_t test_cfg)
+ #define TSTSURF_INITCOLOR3  0xabcdabcd
+-
+-static void test_render_protected_buffer(int i915, uint32_t test_cfg)
++static void __test_render_protected_buffer(int i915, uint32_t test_cfg,
++	uint32_t *outpixels, int outsize)
  {
--	uint32_t ctx, srcbo, dstbo;
--	struct intel_buf *srcbuf, *dstbuf;
-+	uint32_t ctx, srcbo, dstbo, dstbo2;
-+	struct intel_buf *srcbuf, *dstbuf, *dstbuf2;
- 	struct buf_ops *bops;
- 	struct intel_bb *ibb;
- 	uint32_t devid;
-+	uint32_t encrypted[TSTSURF_SIZE/TSTSURF_BYTESPP];
- 
- 	devid = intel_get_drm_devid(i915);
- 	igt_assert(devid);
-@@ -472,7 +514,7 @@ static void test_render_protected_buffer(int i915, uint32_t test_cfg)
- 		gem_sync(i915, dstbo);
- 
- 		assert_bo_content_check(i915, dstbo, COMPARE_COLOR_READIBLE,
--			TSTSURF_SIZE, TSTSURF_FILLCOLOR1);
-+			TSTSURF_SIZE, TSTSURF_FILLCOLOR1, NULL, 0);
- 
- 		intel_bb_destroy(ibb);
- 		intel_buf_destroy(srcbuf);
-@@ -483,6 +525,7 @@ static void test_render_protected_buffer(int i915, uint32_t test_cfg)
- 		break;
+ 	uint32_t ctx, srcbo, dstbo, dstbo2;
+ 	struct intel_buf *srcbuf, *dstbuf, *dstbuf2;
+@@ -526,6 +538,7 @@ static void test_render_protected_buffer(int i915, uint32_t test_cfg)
  
  	case COPY3D_PROTECTED_SRC_TO_PROTDST:
-+	case COPY3D_PROTECTED_PROTSRC_TO_PROTDST:
+ 	case COPY3D_PROTECTED_PROTSRC_TO_PROTDST:
++	case COPY3D_PROTECTED_SRC_TO_PROTDST_SAMPLED:
  		/* Perform a protected render operation but only label
  		 * the dest as protected. After rendering, the content
  		 * should be encrypted
-@@ -515,15 +558,60 @@ static void test_render_protected_buffer(int i915, uint32_t test_cfg)
- 		gem_sync(i915, dstbo);
- 
+@@ -560,7 +573,12 @@ static void test_render_protected_buffer(int i915, uint32_t test_cfg)
  		assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
--			TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
-+			TSTSURF_SIZE, TSTSURF_FILLCOLOR2, NULL, 0);
-+
-+		if (test_cfg == COPY3D_PROTECTED_SRC_TO_PROTDST) {
-+			intel_bb_destroy(ibb);
-+			intel_buf_destroy(srcbuf);
-+			gem_close(i915, srcbo);
-+			intel_buf_destroy(dstbuf);
-+			gem_close(i915, dstbo);
-+			gem_context_destroy(i915, ctx);
-+			break;
-+		}
-+
-+		/* For COPY3D_PROTECTED_PROTSRC_TO_PROTDST, reuse
-+		 * prior dst as the new-src and create a new dst2 as
-+		 * the new-dest. Take a copy of encrypted content
-+		 * from new-src for comparison after render operation.
-+		 * After the rendering, we should find no difference
-+		 * in content since both new-src and new-dest are
-+		 * labelled as encrypted. HW should read and decrypt
-+		 * new-src, perform the render and re-encrypt when
-+		 * going into new-dest
-+		 */
-+		assert_bo_content_check(i915, dstbo, COPY_BUFFER,
-+			TSTSURF_SIZE, 0, encrypted, TSTSURF_SIZE);
-+
-+		dstbo2 = alloc_and_fill_dest_buff(i915, false,
-+				TSTSURF_SIZE, TSTSURF_INITCOLOR3);
-+		dstbuf2 = intel_buf_create_using_handle(bops, dstbo2,
-+				TSTSURF_WIDTH, TSTSURF_HEIGHT,
-+				TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
-+		intel_buf_set_pxp(dstbuf2, true);
-+
-+		intel_buf_set_pxp(dstbuf, true);/*this time, src is protected*/
-+
-+		intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE,
-+			I915_PROTECTED_CONTENT_DEFAULT_SESSION);
-+
-+		gen12_render_copyfunc(ibb, dstbuf, 0, 0,
-+			TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf2, 0, 0);
-+
-+		gem_sync(i915, dstbo2);
-+		assert_bo_content_check(i915, dstbo2, COMPARE_BUFFER_READIBLE,
-+			TSTSURF_SIZE, 0, encrypted, TSTSURF_SIZE);
+ 			TSTSURF_SIZE, TSTSURF_FILLCOLOR2, NULL, 0);
  
- 		intel_bb_destroy(ibb);
- 		intel_buf_destroy(srcbuf);
- 		gem_close(i915, srcbo);
- 		intel_buf_destroy(dstbuf);
- 		gem_close(i915, dstbo);
-+		intel_buf_destroy(dstbuf2);
-+		gem_close(i915, dstbo2);
- 		gem_context_destroy(i915, ctx);
- 		break;
+-		if (test_cfg == COPY3D_PROTECTED_SRC_TO_PROTDST) {
++		if (test_cfg == COPY3D_PROTECTED_SRC_TO_PROTDST_SAMPLED)
++			assert_bo_content_check(i915, dstbo, COPY_BUFFER,
++				TSTSURF_SIZE, 0, outpixels, outsize);
 +
- 	default:
- 		igt_info("Skipping unknown render test_cfg = %d\n",
- 			test_cfg);
-@@ -622,6 +710,9 @@ igt_main
- 		igt_subtest("protected-raw-src-copy-not-readible")
++		if ((test_cfg == COPY3D_PROTECTED_SRC_TO_PROTDST) ||
++			(test_cfg == COPY3D_PROTECTED_SRC_TO_PROTDST_SAMPLED)) {
+ 			intel_bb_destroy(ibb);
+ 			intel_buf_destroy(srcbuf);
+ 			gem_close(i915, srcbo);
+@@ -621,11 +639,71 @@ static void test_render_protected_buffer(int i915, uint32_t test_cfg)
+ 	buf_ops_destroy(bops);
+ }
+ 
++static void test_render_protected_buffer(int i915, uint32_t test_cfg)
++{
++	__test_render_protected_buffer(i915, test_cfg, NULL, 0);
++}
++
++static void init_powermgt_resources(int i915, struct powermgt_data *pm)
++{
++	pm->debugfsdir = igt_debugfs_dir(i915);
++	igt_require(pm->debugfsdir != -1);
++	pm->has_runtime_pm = igt_setup_runtime_pm(i915);
++	igt_require(pm->has_runtime_pm);
++
++}
++
++static void trigger_powermgt_suspend_cycle(int i915,
++	struct powermgt_data *pm)
++{
++	igt_pm_enable_sata_link_power_management();
++
++
++	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_DEVICES);
++	igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED);
++}
++
++static void test_protected_session_teardown(int i915, uint32_t test_cfg,
++		struct powermgt_data *pm)
++{
++	uint32_t encrypted_pixels_b4[TSTSURF_SIZE/TSTSURF_BYTESPP];
++	uint32_t encrypted_pixels_aft[TSTSURF_SIZE/TSTSURF_BYTESPP];
++	int matched_after_keychange = 0, loop = 0;
++
++	switch (test_cfg) {
++	case SESSION_PMSUSPEND_TEARDOWN_KEY_CHANGE:
++		__test_render_protected_buffer(i915,
++			COPY3D_PROTECTED_SRC_TO_PROTDST_SAMPLED,
++			encrypted_pixels_b4, TSTSURF_SIZE);
++
++		trigger_powermgt_suspend_cycle(i915, pm);
++
++		__test_render_protected_buffer(i915,
++			COPY3D_PROTECTED_SRC_TO_PROTDST_SAMPLED,
++			encrypted_pixels_aft, TSTSURF_SIZE);
++
++		while (loop < (TSTSURF_SIZE/TSTSURF_BYTESPP)) {
++			if (encrypted_pixels_b4[loop] ==
++				encrypted_pixels_aft[loop])
++				++matched_after_keychange;
++			++loop;
++		}
++		igt_assert_eq(matched_after_keychange, 0);
++		break;
++
++
++	default:
++		igt_info("Skipping unknown power-mgt test_cfg = %d\n",
++			test_cfg);
++		break;
++	}
++}
+ 
+ igt_main
+ {
+ 	int i915 = -1;
+ 	bool pxp_supported = false;
++	struct powermgt_data pm = {0};
+ 	igt_render_copyfunc_t rendercopy = NULL;
+ 	uint32_t devid = 0;
+ 
+@@ -714,6 +792,22 @@ igt_main
  			test_render_protected_buffer(i915,
- 				COPY3D_PROTECTED_SRC_TO_PROTDST);
-+		igt_subtest("protected-encrypted-src-copy-not-readible")
-+			test_render_protected_buffer(i915,
-+				COPY3D_PROTECTED_PROTSRC_TO_PROTDST);
+ 				COPY3D_PROTECTED_PROTSRC_TO_PROTDST);
  	}
++	igt_subtest_group {
++		igt_fixture {
++			igt_require(pxp_supported);
++			devid = intel_get_drm_devid(i915);
++			igt_assert(devid);
++			rendercopy = igt_get_render_copyfunc(devid);
++			igt_require(rendercopy);
++			init_powermgt_resources(i915, &pm);
++		}
++		igt_describe("Verify suspend-resume teardown management:");
++		igt_subtest("verify-pxp-key-change-after-suspend-resume") {
++			test_protected_session_teardown(i915,
++				SESSION_PMSUSPEND_TEARDOWN_KEY_CHANGE,
++				&pm);
++		}
++	}
  
  	igt_fixture {
+ 		close(i915);
 -- 
 2.25.1
 
