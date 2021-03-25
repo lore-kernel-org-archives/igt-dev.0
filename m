@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 365676EB1C
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Mar 2021 05:45:53 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E1966EB25
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Mar 2021 05:45:54 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Wed, 24 Mar 2021 22:45:37 -0700
-Message-Id: <20210325054549.465386-4-alan.previn.teres.alexis@intel.com>
+Date: Wed, 24 Mar 2021 22:45:46 -0700
+Message-Id: <20210325054549.465386-13-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210325054549.465386-1-alan.previn.teres.alexis@intel.com>
 References: <20210325054549.465386-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 03/15] Perform a regular 3d copy as a
- control checkpoint
+Subject: [igt-dev] [PATCH i-g-t v2 12/15] Verify execbuf ok with stale
+ prot-buff and regular context
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,217 +25,80 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As a control checkpoint, allocate buffers to be used
-as texture and render target in the 3d engine for a
-regular src to dest copy blit and verify buffer pixels.
+Add a subtest to verify that reusing a stale protected
+buffer in a gem_execbuff call, but using a regular (not-
+protcted) context will succeed despite after a teardown
+(triggered by suspend-resume cycle).
+
+This ensures that user space applications that choose
+not to opt-in for strict PXP teardown awareness (by
+using a regular context) wont suffer gem_execbuff
+failures if a protected buffer was among the assets
+used in any of its rendering operations.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 ---
- tests/i915/gem_pxp.c | 173 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 173 insertions(+)
+ tests/i915/gem_pxp.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
 diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 40a817b2..7071cd0e 100644
+index bf6a8ef1..4e50262b 100644
 --- a/tests/i915/gem_pxp.c
 +++ b/tests/i915/gem_pxp.c
-@@ -28,6 +28,11 @@ IGT_TEST_DESCRIPTION("Test PXP (Protected Xe Path), which is the component "
- #define CTX_MODIFY_PROTECTED_BOTHPARAMS_TO_INVALID 8
- #define CTX_MODIFY_UNPROTECTED_BOTHPARAMS_TO_VALID 9
+@@ -40,6 +40,7 @@ IGT_TEST_DESCRIPTION("Test PXP (Protected Xe Path), which is the component "
+ #define SESSION_PMSUSPEND_TEARDOWN_KEY_CHANGE 1
+ #define SESSION_PMSUSPEND_STALEPROTCTX_BAN_EXEC 2
+ #define SESSION_PMSUSPEND_STALEPROTBO_BAN_EXEC 3
++#define SESSION_PMSUSPEND_STALECTX_STALEPROTBO_EXEC_OK 4
  
-+/* test-configs for protected rendering operations */
-+#define COPY3D_BASELINE_SRC_TO_DST 1
-+#define COPY3D_PROTECTED_SRC_TO_PROTDST 2
-+#define COPY3D_PROTECTED_PROTSRC_TO_PROTDST 3
-+
- static bool is_pxp_hw_supported(int i915)
- {
- 	uint32_t gen;
-@@ -333,10 +338,164 @@ static void test_create_protected_context(int i915, uint32_t test_cfg)
- 	}
- }
+ /* Struct and defintions for power management. */
+ struct powermgt_data {
+@@ -771,9 +772,18 @@ static void test_protected_session_teardown(int i915, uint32_t test_cfg,
  
-+static void fill_bo_content(int i915, uint32_t bo,
-+	uint32_t size, uint32_t initcolor)
-+{
-+	uint32_t *ptr, *ptrtmp;
-+	int loop = 0;
+ 	case SESSION_PMSUSPEND_STALEPROTCTX_BAN_EXEC:
+ 	case SESSION_PMSUSPEND_STALEPROTBO_BAN_EXEC:
+-		ctx = create_protected_ctx(i915, true, true,
+-			true, false, 0);
+-		assert_ctx_protected_param(i915, ctx, true);
++	case SESSION_PMSUSPEND_STALECTX_STALEPROTBO_EXEC_OK:
 +
-+	ptr = gem_mmap__device_coherent(i915, bo, 0, size, PROT_WRITE);
-+	ptrtmp = ptr;
++		if (test_cfg == SESSION_PMSUSPEND_STALECTX_STALEPROTBO_EXEC_OK) {
++			ctx = create_protected_ctx(i915, false, false,
++				false, false, 0);
++			assert_ctx_protected_param(i915, ctx, false);
 +
-+	/* read and count all dword matches till size */
-+	while (loop++ < (size/4)) {
-+		*ptrtmp = initcolor;
-+		++ptrtmp;
-+	}
-+
-+	igt_assert(gem_munmap(ptr, size) == 0);
-+}
-+
-+#define COMPARE_COLOR_READIBLE     1
-+#define COMPARE_COLOR_UNREADIBLE   2
-+#define COMPARE_N_PIXELS_VERBOSELY 0
-+static void assert_bo_content_check(int i915, uint32_t bo,
-+	int compare_op, uint32_t size, uint32_t color)
-+{
-+	uint32_t *ptr, *ptrtmp;
-+	int loop = 0, num_matches = 0;
-+	uint32_t value;
-+	bool op_readible = (compare_op == COMPARE_COLOR_READIBLE);
-+
-+	ptr = gem_mmap__device_coherent(i915, bo, 0, size, PROT_READ);
-+	ptrtmp = ptr;
-+
-+	if (COMPARE_N_PIXELS_VERBOSELY) {
-+		igt_info("--------->>>\n");
-+		while (loop < COMPARE_N_PIXELS_VERBOSELY && loop < (size/4)) {
-+			value = *ptrtmp;
-+			igt_info("Color read = 0x%08x ", value);
-+			igt_info("expected %c= 0x%08x)\n",
-+				op_readible?'=':'!', color);
-+			++ptrtmp;
-+			++loop;
++		} else {
++			ctx = create_protected_ctx(i915, true, true,
++				true, false, 0);
++			assert_ctx_protected_param(i915, ctx, true);
 +		}
-+		igt_info("<<<---------\n");
-+		ptrtmp = ptr;
-+		loop = 0;
-+	}
-+
-+	/*count all pixels for matches */
-+	while (loop++ < (size/4)) {
-+		value = *ptrtmp;
-+		if (value == color)
-+			++num_matches;
-+		++ptrtmp;
-+	}
-+
-+	if (op_readible)
-+		igt_assert_eq(num_matches, (size/4));
-+	else
-+		igt_assert_eq(num_matches, 0);
-+
-+	igt_assert(gem_munmap(ptr, size) == 0);
-+}
-+
-+static uint32_t alloc_and_fill_dest_buff(int i915, bool protected,
-+	uint32_t size, uint32_t init_color)
-+{
-+	uint32_t bo;
-+
-+	bo = create_protected_bo(i915, size,
-+		protected, protected, 0);
-+	igt_assert(bo);
-+	fill_bo_content(i915, bo, size, init_color);
-+	assert_bo_content_check(i915, bo, COMPARE_COLOR_READIBLE,
-+		size, init_color);
-+
-+	return bo;
-+}
-+
-+/* Rendering tests surface attributes, keep it simple:
-+ * page aligned width==stride, thus, and size
-+ */
-+#define TSTSURF_WIDTH       1024
-+#define TSTSURF_HEIGHT      128
-+#define TSTSURF_BYTESPP     4
-+#define TSTSURF_STRIDE      (TSTSURF_WIDTH*TSTSURF_BYTESPP)
-+#define TSTSURF_SIZE        (TSTSURF_STRIDE*TSTSURF_HEIGHT)
-+#define TSTSURF_FILLCOLOR1  0xfaceface
-+#define TSTSURF_INITCOLOR1  0x12341234
-+
-+static void test_render_protected_buffer(int i915, uint32_t test_cfg)
-+{
-+	uint32_t ctx, srcbo, dstbo;
-+	struct intel_buf *srcbuf, *dstbuf;
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb;
-+	uint32_t devid;
-+
-+	devid = intel_get_drm_devid(i915);
-+	igt_assert(devid);
-+
-+	bops = buf_ops_create(i915);
-+	igt_assert(bops);
-+
-+	switch (test_cfg) {
-+	case COPY3D_BASELINE_SRC_TO_DST:
-+		/* Perform a regular 3d copy as a control checkpoint */
-+		ctx = create_protected_ctx(i915, false, false,
-+			false, false, 0);
-+		assert_ctx_protected_param(i915, ctx, false);
-+
-+		dstbo = alloc_and_fill_dest_buff(i915, false,
-+				TSTSURF_SIZE, TSTSURF_INITCOLOR1);
-+		dstbuf = intel_buf_create_using_handle(bops, dstbo,
-+				TSTSURF_WIDTH, TSTSURF_HEIGHT,
-+				TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
-+
-+		srcbo = alloc_and_fill_dest_buff(i915, false,
-+				TSTSURF_SIZE, TSTSURF_FILLCOLOR1);
-+		srcbuf = intel_buf_create_using_handle(bops, srcbo,
-+				TSTSURF_WIDTH, TSTSURF_HEIGHT,
-+				TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
-+
-+		ibb = intel_bb_create_with_context(i915, ctx, 4096);
-+		igt_assert(ibb);
-+
-+		gen12_render_copyfunc(ibb,
-+			srcbuf, 0, 0,
-+			TSTSURF_WIDTH, TSTSURF_HEIGHT,
-+			dstbuf, 0, 0);
-+		gem_sync(i915, dstbo);
-+
-+		assert_bo_content_check(i915, dstbo, COMPARE_COLOR_READIBLE,
-+			TSTSURF_SIZE, TSTSURF_FILLCOLOR1);
-+
-+		intel_bb_destroy(ibb);
-+		intel_buf_destroy(srcbuf);
-+		gem_close(i915, srcbo);
-+		intel_buf_destroy(dstbuf);
-+		gem_close(i915, dstbo);
-+		gem_context_destroy(i915, ctx);
-+		break;
-+
-+	default:
-+		igt_info("Skipping unknown render test_cfg = %d\n",
-+			test_cfg);
-+		break;
-+	}
-+
-+	buf_ops_destroy(bops);
-+}
-+
-+
- igt_main
- {
- 	int i915 = -1;
- 	bool pxp_supported = false;
-+	igt_render_copyfunc_t rendercopy = NULL;
-+	uint32_t devid = 0;
  
- 	igt_fixture
- 	{
-@@ -403,6 +562,20 @@ igt_main
- 				i915,
- 				CTX_MODIFY_PROTECTED_BOTHPARAMS_TO_INVALID);
- 	}
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require(pxp_supported);
-+			devid = intel_get_drm_devid(i915);
-+			igt_assert(devid);
-+			rendercopy = igt_get_render_copyfunc(devid);
-+			igt_require(rendercopy);
+ 		if (test_cfg == SESSION_PMSUSPEND_STALEPROTCTX_BAN_EXEC) {
+ 			/* use normal buffers for testing for invalidation
+@@ -812,7 +822,10 @@ static void test_protected_session_teardown(int i915, uint32_t test_cfg,
+ 			igt_assert(ibb2);
+ 			gem_execbuf_flush_store_dw(i915, ibb2, ctx2, fencebuf, -EIO);
+ 		} else {
+-			gem_execbuf_flush_store_dw(i915, ibb, ctx, fencebuf, -EIO);
++			if (test_cfg == SESSION_PMSUSPEND_STALEPROTCTX_BAN_EXEC)
++				gem_execbuf_flush_store_dw(i915, ibb, ctx, fencebuf, -EIO);
++			else if (test_cfg == SESSION_PMSUSPEND_STALECTX_STALEPROTBO_EXEC_OK)
++				gem_execbuf_flush_store_dw(i915, ibb, ctx, fencebuf, 0);
+ 		}
+ 
+ 		intel_bb_destroy(ibb);
+@@ -951,6 +964,11 @@ igt_main
+ 				SESSION_PMSUSPEND_STALEPROTBO_BAN_EXEC,
+ 				&pm);
+ 		}
++		igt_subtest("allow-regular-ctx-old-prot-buff-execution-after-suspend-resume") {
++			test_protected_session_teardown(i915,
++				SESSION_PMSUSPEND_STALECTX_STALEPROTBO_EXEC_OK,
++				&pm);
 +		}
-+
-+		igt_describe("Verify protected render operations:");
-+		igt_subtest("regular-baseline-src-copy-readible")
-+			test_render_protected_buffer(i915,
-+				COPY3D_BASELINE_SRC_TO_DST);
-+	}
+ 	}
  
  	igt_fixture {
- 		close(i915);
 -- 
 2.25.1
 
