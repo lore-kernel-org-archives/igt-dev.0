@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED3676EDF5
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Mar 2021 19:11:19 +0000 (UTC)
 From: Arkadiusz Hiler <arek@hiler.eu>
-Date: Thu, 25 Mar 2021 20:59:12 +0200
-Message-Id: <20210325185915.51590-2-arek@hiler.eu>
-In-Reply-To: <20210325185915.51590-1-arek@hiler.eu>
-References: <20210325185915.51590-1-arek@hiler.eu>
+Date: Thu, 25 Mar 2021 21:10:57 +0200
+Message-Id: <20210325191057.55288-1-arek@hiler.eu>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/5] tests: Build gem_concurrent_all with
- meson
+Subject: [igt-dev] [PATCH i-g-t] README: Spell "privileged" correctly
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,41 +19,27 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
-
-...and add it to test-list-full.txt just like we do when building with
-autotools.
 
 Signed-off-by: Arkadiusz Hiler <arek@hiler.eu>
 ---
- tests/meson.build | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/meson.build b/tests/meson.build
-index 54a1a3c7..8e3cd390 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -402,6 +402,19 @@ test_list_target = custom_target('testlist',
- 	      install : true,
- 	      install_dir : libexecdir)
+diff --git a/README.md b/README.md
+index f33e9455..6d9e40f3 100644
+--- a/README.md
++++ b/README.md
+@@ -110,7 +110,7 @@ podman/docker to to run it on your system.
  
-+test_executables += executable('gem_concurrent_all', 'i915/gem_concurrent_all.c',
-+	   dependencies : test_deps + [ libatomic ],
-+	   install_dir : libexecdir,
-+	   install_rpath : libexecdir_rpathdir,
-+	   install : true)
-+test_list += 'gem_concurrent_all'
-+
-+test_list_full_target = custom_target('testlist-full',
-+	      output : 'test-list-full.txt',
-+	      command : [ gen_testlist, '@OUTPUT@', test_list ],
-+	      install : true,
-+	      install_dir : libexecdir)
-+
- test_script = find_program('igt_command_line.sh')
- foreach prog : test_list
- 	test('testcase check ' + prog, test_script, args : prog)
+ Oneliner to get you started with the latest master:
+ 
+-    # podman run --rm --priviledged registry.freedesktop.org/drm/igt-gpu-tools/igt:master
++    # podman run --rm --privileged registry.freedesktop.org/drm/igt-gpu-tools/igt:master
+ 
+ 
+ Other Things
 -- 
 2.31.0
 
