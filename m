@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A92126EB1B
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D2FCF6EB1C
  for <igt-dev@lists.freedesktop.org>; Thu, 25 Mar 2021 05:45:52 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Wed, 24 Mar 2021 22:45:34 -0700
-Message-Id: <20210325054549.465386-1-alan.previn.teres.alexis@intel.com>
+Date: Wed, 24 Mar 2021 22:45:35 -0700
+Message-Id: <20210325054549.465386-2-alan.previn.teres.alexis@intel.com>
+In-Reply-To: <20210325054549.465386-1-alan.previn.teres.alexis@intel.com>
+References: <20210325054549.465386-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 00/15] Introduce PXP Test
+Subject: [igt-dev] [PATCH i-g-t v2 01/15] Sync i915_drm.h UAPI for PXP
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,75 +24,158 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This series adds i915_pxp tests for the new PXP subsystem currently
-being reviewed at https://patchwork.freedesktop.org/series/86798/ .
-This series currently includes 4 groups of tests addressing the
-features and restrictions described by Daniele's series :
-   1. test i915 interfaces for allocation of protected bo's
-      and contexts and enforcement of UAPI rule disallowing the
-      modification of parameters after it's been created.
-   2. verify PXP subsystem protected sessions generate encrypted
-      content on protected output buffers and decrypt protected
-      inputs buffers.
-   3. verify i915 PXP auto-teardown succeeds on suspend-resume
-      cycles and gem-exec of stale protected assets fail. Ensure
-      protected-contexts adhere to stricter invalidation
-      enforcement upon teardown event.
-   4. Ensure that display plane decryption works as expected with
-      protected buffers with and without HDCP.
+Sync i915_drm.h UAPI for PXP
 
-Changes from prior rev1 to now:
-   v2: 
-      - Addressed all rev1 review comments except these:
-           1.Chris Wilson : "...have the caller do 1-3 once for its protected
-             context. Call it something like intel_bb_enable_pxp(),
-             intel_bb_set_pxp if it should be reversible.".
-             -  This couldn't be implemented because [1] HW needs different
-             instruction sequences for enabling/disabling PXP depending
-             on the engine class and [2] the pair of "pxp-enable" and "pxp-
-             disable" instructions need to be contained within the same batch
-             that is dispatched to the hardware. That said, implementing
-             internal intel_batchbuffer funtionality for this would conflict
-             with how rendercopy_gen9 uses batch buffer memory by repositioing
-             the pointer and consuming unused portions of the batch buffer as
-             3d state offsets that batchbuffer has no visibility.
-         
-      - Added these additional subtests:
-           1. verify that buffer sharing works across testing pxp context.
-           2. verify teardown bans contexts via DRM_IOCTL_I915_GET_RESET_STAT.
-           3. verify display plane decryption of protected buffers.
+Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+---
+ include/drm-uapi/i915_drm.h | 94 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 93 insertions(+), 1 deletion(-)
 
-Alan Previn (14):
-  Sync i915_drm.h UAPI for PXP
-  Add basic PXP testing of buffer and context alloc
-  Perform a regular 3d copy as a control checkpoint
-  Add PXP attribute support in batchbuffer and buffer_ops libs
-  Add MI_SET_APPID instruction definition
-  Enable protected session cmd in gen12_render_copyfunc
-  Add subtest to copy raw source to protected dest
-  Add test where both src and dest are protected
-  Verify PXP teardown occured through suspend-resume
-  Verify execbuf fails with stale PXP context after teardown
-  Verify execbuf fails with stale PXP buffer after teardown
-  Verify execbuf ok with stale prot-buff and regular context
-  Ensure RESET_STAT reports invalidated protected context
-  Verify protected surfaces are dma buffer sharable
-
-Karthik B S (1):
-  tests/i915_pxp: CRC validation for display tests.
-
- include/drm-uapi/i915_drm.h |   94 ++-
- lib/intel_batchbuffer.c     |   23 +-
- lib/intel_batchbuffer.h     |   30 +
- lib/intel_bufops.h          |   15 +
- lib/intel_reg.h             |    9 +
- lib/rendercopy_gen9.c       |   73 +-
- tests/Makefile.sources      |    3 +
- tests/i915/gem_pxp.c        | 1420 +++++++++++++++++++++++++++++++++++
- tests/meson.build           |    1 +
- 9 files changed, 1659 insertions(+), 9 deletions(-)
- create mode 100644 tests/i915/gem_pxp.c
-
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index bf9ea471..c6dd8b58 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -392,6 +392,7 @@ typedef struct _drm_i915_sarea {
+ #define DRM_IOCTL_I915_GEM_ENTERVT	DRM_IO(DRM_COMMAND_BASE + DRM_I915_GEM_ENTERVT)
+ #define DRM_IOCTL_I915_GEM_LEAVEVT	DRM_IO(DRM_COMMAND_BASE + DRM_I915_GEM_LEAVEVT)
+ #define DRM_IOCTL_I915_GEM_CREATE	DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_CREATE, struct drm_i915_gem_create)
++#define DRM_IOCTL_I915_GEM_CREATE_EXT   DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_CREATE, struct drm_i915_gem_create_ext)
+ #define DRM_IOCTL_I915_GEM_PREAD	DRM_IOW (DRM_COMMAND_BASE + DRM_I915_GEM_PREAD, struct drm_i915_gem_pread)
+ #define DRM_IOCTL_I915_GEM_PWRITE	DRM_IOW (DRM_COMMAND_BASE + DRM_I915_GEM_PWRITE, struct drm_i915_gem_pwrite)
+ #define DRM_IOCTL_I915_GEM_MMAP		DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_MMAP, struct drm_i915_gem_mmap)
+@@ -729,6 +730,27 @@ struct drm_i915_gem_create {
+ 	__u32 pad;
+ };
+ 
++struct drm_i915_gem_create_ext {
++	/**
++	 * Requested size for the object.
++	 *
++	 * The (page-aligned) allocated size for the object will be returned.
++	 */
++	__u64 size;
++	/**
++	 * Returned handle for the object.
++	 *
++	 * Object handles are nonzero.
++	 */
++	__u32 handle;
++	__u32 pad;
++#define I915_GEM_CREATE_EXT_SETPARAM (1u << 0)
++#define I915_GEM_CREATE_EXT_FLAGS_UNKNOWN \
++	(-(I915_GEM_CREATE_EXT_SETPARAM << 1))
++	__u64 extensions;
++
++};
++
+ struct drm_i915_gem_pread {
+ 	/** Handle for the object being read. */
+ 	__u32 handle;
+@@ -1694,11 +1716,76 @@ struct drm_i915_gem_context_param {
+  * Default is 16 KiB.
+  */
+ #define I915_CONTEXT_PARAM_RINGSIZE	0xc
++
++/*
++ * I915_CONTEXT_PARAM_PROTECTED_CONTENT:
++ *
++ * Enable usage of protected content with the context. This flag can only be
++ * set at context creation time and, when set to true, must be preceded by
++ * an explicit setting of I915_CONTEXT_PARAM_RECOVERABLE to false. This flag
++ * can't be set to true in conjunction with setting the
++ * I915_CONTEXT_PARAM_BANNABLE flag to false.
++ *
++ * Given the numerous restriction on this flag, there are several unique
++ * failure cases:
++ *
++ * -ENODEV: feature not available
++ * -EEXIST: trying to modify an existing context
++ * -EPERM: trying to mark a recoverable or not bannable context as protected
++ */
++#define I915_CONTEXT_PARAM_PROTECTED_CONTENT    0xd
+ /* Must be kept compact -- no holes and well documented */
+ 
+ 	__u64 value;
+ };
+ 
++struct drm_i915_gem_object_param {
++	/* Object handle (0 for I915_GEM_CREATE_EXT_SETPARAM) */
++	__u32 handle;
++
++	/* Data pointer size */
++	__u32 size;
++
++/*
++ * I915_OBJECT_PARAM:
++ *
++ * Select object namespace for the param.
++ */
++#define I915_OBJECT_PARAM  (1ull << 32)
++
++/*
++ * I915_OBJECT_PARAM_PROTECTED_CONTENT:
++ *
++ * If set to true, buffer contents is expected to be protected by PXP
++ * encryption and requires decryption for scan out and processing. This is
++ * only possible on platforms that have PXP enabled, on all other scenarios
++ * setting this flag will cause the ioctl to fail and return -ENODEV.
++ *
++ * Protected buffers can only be used with contexts created using the
++ * I915_CONTEXT_PARAM_PROTECTED_CONTENT flag. The buffer contents are
++ * considered invalid after a PXP session teardown.
++ *
++ * Given the restriction above, the following errors are possible when
++ * submitting a protected object in an execbuf call:
++ *
++ * -ENODEV: PXP session not currently active
++ * -EIO: buffer has become invalid after a teardown event
++ * -EPERM: buffer submitted using a context not marked as protected
++ */
++#define I915_OBJECT_PARAM_PROTECTED_CONTENT  0x0
++/* Must be kept compact -- no holes and well documented */
++
++	__u64 param;
++
++	/* Data value or pointer */
++	__u64 data;
++};
++
++struct drm_i915_gem_create_ext_setparam {
++	struct i915_user_extension base;
++	struct drm_i915_gem_object_param param;
++};
++
+ /**
+  * Context SSEU programming
+  *
+@@ -1924,6 +2011,7 @@ struct drm_i915_reg_read {
+ struct drm_i915_reset_stats {
+ 	__u32 ctx_id;
+ 	__u32 flags;
++#define I915_CONTEXT_INVALIDATED 0x1
+ 
+ 	/* All resets since boot/module reload, for all contexts */
+ 	__u32 reset_count;
+@@ -2093,7 +2181,7 @@ struct drm_i915_perf_open_param {
+  * Change metrics_set captured by a stream.
+  *
+  * If the stream is bound to a specific context, the configuration change
+- * will performed __inline__ with that context such that it takes effect before
++ * will performed inline with that context such that it takes effect before
+  * the next execbuf submission.
+  *
+  * Returns the previously bound metrics set id, or a negative error code.
+@@ -2376,6 +2464,10 @@ struct drm_i915_query_perf_config {
+ 	__u8 data[];
+ };
+ 
++
++/* ID of the protected content session managed by i915 when PXP is active */
++#define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
++
+ #if defined(__cplusplus)
+ }
+ #endif
 -- 
 2.25.1
 
