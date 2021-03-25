@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0BB1D6EB1B
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 051906EB2A
  for <igt-dev@lists.freedesktop.org>; Thu, 25 Mar 2021 05:45:53 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Wed, 24 Mar 2021 22:45:36 -0700
-Message-Id: <20210325054549.465386-3-alan.previn.teres.alexis@intel.com>
+Date: Wed, 24 Mar 2021 22:45:44 -0700
+Message-Id: <20210325054549.465386-11-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210325054549.465386-1-alan.previn.teres.alexis@intel.com>
 References: <20210325054549.465386-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 02/15] Add basic PXP testing of buffer
- and context alloc
+Subject: [igt-dev] [PATCH i-g-t v2 10/15] Verify execbuf fails with stale
+ PXP context after teardown
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,247 +17,215 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGVzdCBQWFAgY2FwYWJpbGl0eSBzdXBwb3J0IGFzIHdlbGwgYXMgdGhlIGFsbG9jYXRpb24gb2Yg
-cHJvdGVjdGVkCmJ1ZmZlcnMgYW5kIHByb3RlY3RlZCBjb250ZXh0cy4KClNpZ25lZC1vZmYtYnk6
-IEFsYW4gUHJldmluIDxhbGFuLnByZXZpbi50ZXJlcy5hbGV4aXNAaW50ZWwuY29tPgotLS0KIHRl
-c3RzL01ha2VmaWxlLnNvdXJjZXMgfCAgIDMgKwogdGVzdHMvaTkxNS9nZW1fcHhwLmMgICB8IDQx
-MCArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwogdGVzdHMvbWVzb24u
-YnVpbGQgICAgICB8ICAgMSArCiAzIGZpbGVzIGNoYW5nZWQsIDQxNCBpbnNlcnRpb25zKCspCiBj
-cmVhdGUgbW9kZSAxMDA2NDQgdGVzdHMvaTkxNS9nZW1fcHhwLmMKCmRpZmYgLS1naXQgYS90ZXN0
-cy9NYWtlZmlsZS5zb3VyY2VzIGIvdGVzdHMvTWFrZWZpbGUuc291cmNlcwppbmRleCA0ZjI0ZmIz
-YS4uMDU5NTIwNjYgMTAwNjQ0Ci0tLSBhL3Rlc3RzL01ha2VmaWxlLnNvdXJjZXMKKysrIGIvdGVz
-dHMvTWFrZWZpbGUuc291cmNlcwpAQCAtMzcwLDYgKzM3MCw5IEBAIGdlbV9wd3JpdGVfU09VUkNF
-UyA9IGk5MTUvZ2VtX3B3cml0ZS5jCiBURVNUU19wcm9ncyArPSBnZW1fcHdyaXRlX3Nub29wZWQK
-IGdlbV9wd3JpdGVfc25vb3BlZF9TT1VSQ0VTID0gaTkxNS9nZW1fcHdyaXRlX3Nub29wZWQuYwog
-CitURVNUU19wcm9ncyArPSBnZW1fcHhwCitnZW1fcHhwX1NPVVJDRVMgPSBpOTE1L2dlbV9weHAu
-YworCiBURVNUU19wcm9ncyArPSBnZW1fcmVhZF9yZWFkX3NwZWVkCiBnZW1fcmVhZF9yZWFkX3Nw
-ZWVkX1NPVVJDRVMgPSBpOTE1L2dlbV9yZWFkX3JlYWRfc3BlZWQuYwogCmRpZmYgLS1naXQgYS90
-ZXN0cy9pOTE1L2dlbV9weHAuYyBiL3Rlc3RzL2k5MTUvZ2VtX3B4cC5jCm5ldyBmaWxlIG1vZGUg
-MTAwNjQ0CmluZGV4IDAwMDAwMDAwLi40MGE4MTdiMgotLS0gL2Rldi9udWxsCisrKyBiL3Rlc3Rz
-L2k5MTUvZ2VtX3B4cC5jCkBAIC0wLDAgKzEsNDEwIEBACisvLyBTUERYLUxpY2Vuc2UtSWRlbnRp
-ZmllcjogTUlUCisvKgorICogQ29weXJpZ2h0IMKpIDIwMjEgSW50ZWwgQ29ycG9yYXRpb24KKyAq
-LworCisjaW5jbHVkZSA8c3lzL2lvY3RsLmg+CisKKyNpbmNsdWRlICJpZ3QuaCIKKyNpbmNsdWRl
-ICJpOTE1L2dlbS5oIgorCitJR1RfVEVTVF9ERVNDUklQVElPTigiVGVzdCBQWFAgKFByb3RlY3Rl
-ZCBYZSBQYXRoKSwgd2hpY2ggaXMgdGhlIGNvbXBvbmVudCAiCisJCQkidGhhdCBhbGxvd3MgdGhl
-IGhhbmRsaW5nIG9mIHByb3RlY3RlZCBjb250ZW50IHRocm91Z2ggIgorCQkJInRoZSBhcmJpdHJh
-dGlvbiBvZiBoYXJkd2FyZSBwcm90ZWN0ZWQgc2Vzc2lvbnMuIik7CisKKy8qIHRlc3QtY29uZmln
-cyBmb3IgcHJvdGVjdGVkIGJ1ZmZlciBjcmVhdGlvbiovCisjZGVmaW5lIEJPX0FMTE9DX05PX0hX
-X1NVUFBPUlQgMQorI2RlZmluZSBCT19BTExPQ19QUk9URUNUX09OIDIKKyNkZWZpbmUgQk9fQUxM
-T0NfUFJPVEVDVF9PRkYgMworCisvKiB0ZXN0LWNvbmZpZ3MgZm9yIHByb3RlY3RlZCBjb250ZXh0
-IGNyZWF0aW9uKi8KKyNkZWZpbmUgQ1RYX0FMTE9DX05PX0hXX1NVUFBPUlQgMQorI2RlZmluZSBD
-VFhfQUxMT0NfUkVDT1ZFUl9PRkZfUFJPVEVDVF9PRkYgMgorI2RlZmluZSBDVFhfQUxMT0NfUkVD
-T1ZFUl9PRkZfUFJPVEVDVF9PTiAzCisjZGVmaW5lIENUWF9BTExPQ19SRUNPVkVSX09OX1BST1RF
-Q1RfT0ZGIDQKKyNkZWZpbmUgQ1RYX0FMTE9DX1JFQ09WRVJfT05fUFJPVEVDVF9PTiA1CisjZGVm
-aW5lIENUWF9NT0RJRllfUFJPVEVDVEVEX1JFQ09WRVJfT0ZGX1RPX09OIDYKKyNkZWZpbmUgQ1RY
-X01PRElGWV9QUk9URUNURURfUFJPVEVDVF9PTl9UT19PRkYgNworI2RlZmluZSBDVFhfTU9ESUZZ
-X1BST1RFQ1RFRF9CT1RIUEFSQU1TX1RPX0lOVkFMSUQgOAorI2RlZmluZSBDVFhfTU9ESUZZX1VO
-UFJPVEVDVEVEX0JPVEhQQVJBTVNfVE9fVkFMSUQgOQorCitzdGF0aWMgYm9vbCBpc19weHBfaHdf
-c3VwcG9ydGVkKGludCBpOTE1KQoreworCXVpbnQzMl90IGdlbjsKKworCWdlbiA9IGludGVsX2dl
-bihpbnRlbF9nZXRfZHJtX2RldmlkKGk5MTUpKTsKKwlpZiAoIWdlbikgeworCQlpZ3RfaW5mbygi
-Tm8gZGV2aWNlIGluZm8gZm91bmQgLSBhc3N1bWUgbm8gUFhQIHN1cHBvcnQuXG4iKTsKKwkJcmV0
-dXJuIGZhbHNlOworCX0KKworCWlmIChnZW4gPj0gMTIpCisJCXJldHVybiB0cnVlOworCisJcmV0
-dXJuIGZhbHNlOworfQorCitzdGF0aWMgdWludDMyX3QgY3JlYXRlX3Byb3RlY3RlZF9ibyhpbnQg
-aTkxNSwgdWludDMyX3Qgc2l6ZSwKKwkJCQkgICAgYm9vbCB3aXRoX3Byb3RlY3RlZF9wYXJhbSwK
-KwkJCQkgICAgYm9vbCBwcm90ZWN0ZWRfaXNfdHJ1ZSwgaW50IGV4cGVjdGVkX3JldHVybikKK3sK
-KwlpbnQgcmV0OworCisJc3RydWN0IGRybV9pOTE1X2dlbV9vYmplY3RfcGFyYW0gcHJvdGVjdGVk
-X3BhcmFtID0geworCQkucGFyYW0gPSBJOTE1X09CSkVDVF9QQVJBTSB8IEk5MTVfT0JKRUNUX1BB
-UkFNX1BST1RFQ1RFRF9DT05URU5ULAorCQkuZGF0YSA9IDAsCisJfTsKKworCXN0cnVjdCBkcm1f
-aTkxNV9nZW1fY3JlYXRlX2V4dF9zZXRwYXJhbSBzZXRwYXJhbV9wcm90ZWN0ZWQgPSB7CisJCS5i
-YXNlID0geyAubmFtZSA9IEk5MTVfR0VNX0NSRUFURV9FWFRfU0VUUEFSQU0gfSwKKwkJLnBhcmFt
-ID0gcHJvdGVjdGVkX3BhcmFtLAorCX07CisKKwlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2NyZWF0ZV9l
-eHQgY3JlYXRlX2V4dCA9IHsKKwkJLnNpemUgPSBzaXplLAorCQkuZXh0ZW5zaW9ucyA9ICh1aW50
-cHRyX3QpJnNldHBhcmFtX3Byb3RlY3RlZCwKKwl9OworCisJaWYgKCF3aXRoX3Byb3RlY3RlZF9w
-YXJhbSkgeworCQljcmVhdGVfZXh0LmV4dGVuc2lvbnMgPSAwOworCX0gZWxzZSB7CisJCWlmIChw
-cm90ZWN0ZWRfaXNfdHJ1ZSkgeworCQkJcHJvdGVjdGVkX3BhcmFtLmRhdGEgPSAxOworCQkJc2V0
-cGFyYW1fcHJvdGVjdGVkLnBhcmFtID0gcHJvdGVjdGVkX3BhcmFtOworCQl9IGVsc2UgeworCQkJ
-cHJvdGVjdGVkX3BhcmFtLmRhdGEgPSAwOworCQkJc2V0cGFyYW1fcHJvdGVjdGVkLnBhcmFtID0g
-cHJvdGVjdGVkX3BhcmFtOworCQl9CisJfQorCisJcmV0ID0gaW9jdGwoaTkxNSwgRFJNX0lPQ1RM
-X0k5MTVfR0VNX0NSRUFURV9FWFQsICZjcmVhdGVfZXh0KTsKKwlpZ3RfYXNzZXJ0X2VxKHJldCwg
-ZXhwZWN0ZWRfcmV0dXJuKTsKKworCXJldHVybiBjcmVhdGVfZXh0LmhhbmRsZTsKK30KKworc3Rh
-dGljIHZvaWQgdGVzdF9jcmVhdGVfcHJvdGVjdGVkX2J1ZmZlcihpbnQgaTkxNSwgdWludDMyX3Qg
-dGVzdF9jZmcpCit7CisJdWludDMyX3QgYm87CisKKwlzd2l0Y2ggKHRlc3RfY2ZnKSB7CisJY2Fz
-ZSBCT19BTExPQ19OT19IV19TVVBQT1JUOgorCQlibyA9IGNyZWF0ZV9wcm90ZWN0ZWRfYm8oaTkx
-NSwgNDA5NiwgZmFsc2UsIGZhbHNlLCAwKTsKKwkJZ2VtX2Nsb3NlKGk5MTUsIGJvKTsKKwkJYm8g
-PSBjcmVhdGVfcHJvdGVjdGVkX2JvKGk5MTUsIDQwOTYsIHRydWUsIHRydWUsIC1FTk9ERVYpOwor
-CQlpZ3RfYXNzZXJ0X2VxKGJvLCAwKTsKKwkJYnJlYWs7CisKKwljYXNlIEJPX0FMTE9DX1BST1RF
-Q1RfT0ZGOgorCQlibyA9IGNyZWF0ZV9wcm90ZWN0ZWRfYm8oaTkxNSwgNDA5NiwgZmFsc2UsIGZh
-bHNlLCAwKTsKKwkJZ2VtX2Nsb3NlKGk5MTUsIGJvKTsKKwkJYnJlYWs7CisKKwljYXNlIEJPX0FM
-TE9DX1BST1RFQ1RfT046CisJCWJvID0gY3JlYXRlX3Byb3RlY3RlZF9ibyhpOTE1LCA0MDk2LCB0
-cnVlLCB0cnVlLCAwKTsKKwkJZ2VtX2Nsb3NlKGk5MTUsIGJvKTsKKwkJYnJlYWs7CisKKwlkZWZh
-dWx0OgorCQlpZ3RfaW5mbygiU2tpcHBpbmcgdW5rbm93biBidWZmZXIgdGVzdF9jZmcgPSAlZFxu
-IiwgdGVzdF9jZmcpOworCQlicmVhazsKKwl9Cit9CisKK3N0YXRpYyBpbnQgY3JlYXRlX2V4dF9p
-b2N0bChpbnQgaTkxNSwKKwkJCSAgICBzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2NvbnRleHRfY3JlYXRl
-X2V4dCAqYXJnKQoreworCWludCBlcnI7CisKKwllcnIgPSAwOworCWlmIChpZ3RfaW9jdGwoaTkx
-NSwgRFJNX0lPQ1RMX0k5MTVfR0VNX0NPTlRFWFRfQ1JFQVRFX0VYVCwgYXJnKSkgeworCQllcnIg
-PSAtZXJybm87CisJCWlndF9hc3N1bWUoZXJyKTsKKwl9CisKKwllcnJubyA9IDA7CisJcmV0dXJu
-IGVycjsKK30KKworc3RhdGljIHVpbnQzMl90IGNyZWF0ZV9wcm90ZWN0ZWRfY3R4KGludCBpOTE1
-LCBib29sIHdpdGhfcHJvdGVjdGVkX3BhcmFtLAorCQkJCSAgICAgYm9vbCBwcm90ZWN0ZWRfaXNf
-dHJ1ZSwKKwkJCQkgICAgIGJvb2wgd2l0aF9yZWNvdmVyYWJsZV9wYXJhbSwKKwkJCQkgICAgIGJv
-b2wgcmVjb3ZlcmFibGVfaXNfdHJ1ZSwKKwkJCQkgICAgIGludCBleHBlY3RlZF9yZXR1cm4pCit7
-CisJaW50IHJldDsKKworCXN0cnVjdCBkcm1faTkxNV9nZW1fY29udGV4dF9jcmVhdGVfZXh0X3Nl
-dHBhcmFtIHBfcHJvdCA9IHsKKwkJLmJhc2UgPSB7CisJCQkubmFtZSA9IEk5MTVfQ09OVEVYVF9D
-UkVBVEVfRVhUX1NFVFBBUkFNLAorCQkJLm5leHRfZXh0ZW5zaW9uID0gMCwKKwkJfSwKKwkJLnBh
-cmFtID0geworCQkJLnBhcmFtID0gSTkxNV9DT05URVhUX1BBUkFNX1BST1RFQ1RFRF9DT05URU5U
-LAorCQkJLnZhbHVlID0gMCwKKwkJfQorCX07CisJc3RydWN0IGRybV9pOTE1X2dlbV9jb250ZXh0
-X2NyZWF0ZV9leHRfc2V0cGFyYW0gcF9ub3JlY292ZXIgPSB7CisJCS5iYXNlID0geworCQkJLm5h
-bWUgPSBJOTE1X0NPTlRFWFRfQ1JFQVRFX0VYVF9TRVRQQVJBTSwKKwkJCS5uZXh0X2V4dGVuc2lv
-biA9IDAsCisJCX0sCisJCS5wYXJhbSA9IHsKKwkJCS5wYXJhbSA9IEk5MTVfQ09OVEVYVF9QQVJB
-TV9SRUNPVkVSQUJMRSwKKwkJCS52YWx1ZSA9IDAsCisJCX0KKwl9OworCXN0cnVjdCBkcm1faTkx
-NV9nZW1fY29udGV4dF9jcmVhdGVfZXh0IGNyZWF0ZSA9IHsKKwkJLmZsYWdzID0gSTkxNV9DT05U
-RVhUX0NSRUFURV9GTEFHU19VU0VfRVhURU5TSU9OUywKKwkJLmV4dGVuc2lvbnMgPSAwLAorCX07
-CisKKwlwX3Byb3QucGFyYW0udmFsdWUgPSBwcm90ZWN0ZWRfaXNfdHJ1ZTsKKwlwX25vcmVjb3Zl
-ci5wYXJhbS52YWx1ZSA9IHJlY292ZXJhYmxlX2lzX3RydWU7CisKKwlpZiAod2l0aF9wcm90ZWN0
-ZWRfcGFyYW0gJiYgd2l0aF9yZWNvdmVyYWJsZV9wYXJhbSkgeworCQljcmVhdGUuZXh0ZW5zaW9u
-cyA9IHRvX3VzZXJfcG9pbnRlcigmKHBfbm9yZWNvdmVyLmJhc2UpKTsKKwkJcF9ub3JlY292ZXIu
-YmFzZS5uZXh0X2V4dGVuc2lvbiA9CisJCQl0b191c2VyX3BvaW50ZXIoJihwX3Byb3QuYmFzZSkp
-OworCX0gZWxzZSBpZiAoIXdpdGhfcHJvdGVjdGVkX3BhcmFtICYmIHdpdGhfcmVjb3ZlcmFibGVf
-cGFyYW0pIHsKKwkJY3JlYXRlLmV4dGVuc2lvbnMgPSB0b191c2VyX3BvaW50ZXIoJihwX25vcmVj
-b3Zlci5iYXNlKSk7CisJCXBfbm9yZWNvdmVyLmJhc2UubmV4dF9leHRlbnNpb24gPSAwOworCX0g
-ZWxzZSBpZiAod2l0aF9wcm90ZWN0ZWRfcGFyYW0gJiYgIXdpdGhfcmVjb3ZlcmFibGVfcGFyYW0p
-IHsKKwkJY3JlYXRlLmV4dGVuc2lvbnMgPSB0b191c2VyX3BvaW50ZXIoJihwX3Byb3QuYmFzZSkp
-OworCQlwX3Byb3QuYmFzZS5uZXh0X2V4dGVuc2lvbiA9IDA7CisJfSBlbHNlIGlmICghd2l0aF9w
-cm90ZWN0ZWRfcGFyYW0gJiYgIXdpdGhfcmVjb3ZlcmFibGVfcGFyYW0pIHsKKwkJY3JlYXRlLmZs
-YWdzID0gMDsKKwl9CisKKwlyZXQgPSBjcmVhdGVfZXh0X2lvY3RsKGk5MTUsICZjcmVhdGUpOwor
-CWlndF9hc3NlcnRfZXEocmV0LCBleHBlY3RlZF9yZXR1cm4pOworCisJcmV0dXJuIGNyZWF0ZS5j
-dHhfaWQ7Cit9CisKKyNkZWZpbmUgQ0hBTkdFX1BBUkFNX1BST1RFQ1RFRCAweDAwMDEKKyNkZWZp
-bmUgQ0hBTkdFX1BBUkFNX1JFQ09WRVJZIDB4MDAwMgorc3RhdGljIHZvaWQgbW9kaWZ5X2N0eF9w
-cm90ZWN0ZWRfcGFyYW0oaW50IGk5MTUsIHVpbnQzMl90IGN0eF9pZCwKKwkJCQkgICAgICAgdWlu
-dDMyX3QgY2hhbmdlX3BhcmFtX21hc2ssCisJCQkJICAgICAgIGJvb2wgcGFyYW1fdmFsdWUsIGlu
-dCBleHBlY3RlZF9yZXR1cm4pCit7CisJaW50IHJldDsKKworCXN0cnVjdCBkcm1faTkxNV9nZW1f
-Y29udGV4dF9wYXJhbSBjdHhfcGFyYW0gPSB7CisJCS5jdHhfaWQgPSBjdHhfaWQsCisJCS5wYXJh
-bSA9IDAsCisJCS52YWx1ZSA9IDAsCisJfTsKKworCWlmIChjaGFuZ2VfcGFyYW1fbWFzayA9PSBD
-SEFOR0VfUEFSQU1fUFJPVEVDVEVEKSB7CisJCWN0eF9wYXJhbS5wYXJhbSA9IEk5MTVfQ09OVEVY
-VF9QQVJBTV9QUk9URUNURURfQ09OVEVOVDsKKwkJY3R4X3BhcmFtLnZhbHVlID0gKGludClwYXJh
-bV92YWx1ZTsKKwl9IGVsc2UgaWYgKGNoYW5nZV9wYXJhbV9tYXNrID09IENIQU5HRV9QQVJBTV9S
-RUNPVkVSWSkgeworCQljdHhfcGFyYW0ucGFyYW0gPSBJOTE1X0NPTlRFWFRfUEFSQU1fUkVDT1ZF
-UkFCTEU7CisJCWN0eF9wYXJhbS52YWx1ZSA9IChpbnQpcGFyYW1fdmFsdWU7CisJfSBlbHNlIHsK
-KwkJcmV0dXJuOworCX0KKworCXJldCA9IGlvY3RsKGk5MTUsIERSTV9JT0NUTF9JOTE1X0dFTV9D
-T05URVhUX1NFVFBBUkFNLCAmY3R4X3BhcmFtKTsKKworCWlndF9hc3NlcnRfZXEocmV0LCBleHBl
-Y3RlZF9yZXR1cm4pOworfQorCitzdGF0aWMgdm9pZCBhc3NlcnRfY3R4X3Byb3RlY3RlZF9wYXJh
-bShpbnQgaTkxNSwgdWludDMyX3QgY3R4X2lkLAorCQkJCSAgICAgICBib29sIGlzX3Byb3RlY3Rl
-ZCkKK3sKKwlpbnQgcmV0OworCisJc3RydWN0IGRybV9pOTE1X2dlbV9jb250ZXh0X3BhcmFtIGN0
-eF9wYXJhbSA9IHsKKwkJLmN0eF9pZCA9IGN0eF9pZCwKKwkJLnBhcmFtID0gSTkxNV9DT05URVhU
-X1BBUkFNX1BST1RFQ1RFRF9DT05URU5ULAorCX07CisKKwlyZXQgPSBpb2N0bChpOTE1LCBEUk1f
-SU9DVExfSTkxNV9HRU1fQ09OVEVYVF9HRVRQQVJBTSwgJmN0eF9wYXJhbSk7CisJaWd0X2Fzc2Vy
-dF9lcShyZXQsIDApOworCWlndF9hc3NlcnRfZXEoY3R4X3BhcmFtLnZhbHVlLCAoaW50KWlzX3By
-b3RlY3RlZCk7Cit9CisKK3N0YXRpYyB2b2lkIGFzc2VydF9jdHhfcmVjb3ZlcnlfcGFyYW0oaW50
-IGk5MTUsIHVpbnQzMl90IGN0eF9pZCwKKwkJCQkgICAgICBib29sIGlzX3JlY292ZXJhYmxlKQor
-eworCWludCByZXQ7CisKKwlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2NvbnRleHRfcGFyYW0gY3R4X3Bh
-cmFtID0geworCQkuY3R4X2lkID0gY3R4X2lkLAorCQkucGFyYW0gPSBJOTE1X0NPTlRFWFRfUEFS
-QU1fUkVDT1ZFUkFCTEUsCisJfTsKKworCXJldCA9IGlvY3RsKGk5MTUsIERSTV9JT0NUTF9JOTE1
-X0dFTV9DT05URVhUX0dFVFBBUkFNLCAmY3R4X3BhcmFtKTsKKwlpZ3RfYXNzZXJ0X2VxKHJldCwg
-MCk7CisJaWd0X2Fzc2VydF9lcShjdHhfcGFyYW0udmFsdWUsIChpbnQpaXNfcmVjb3ZlcmFibGUp
-OworfQorCitzdGF0aWMgdm9pZCB0ZXN0X2NyZWF0ZV9wcm90ZWN0ZWRfY29udGV4dChpbnQgaTkx
-NSwgdWludDMyX3QgdGVzdF9jZmcpCit7CisJdWludDMyX3QgY3R4OworCisJc3dpdGNoICh0ZXN0
-X2NmZykgeworCWNhc2UgQ1RYX0FMTE9DX05PX0hXX1NVUFBPUlQ6CisJCWN0eCA9IGNyZWF0ZV9w
-cm90ZWN0ZWRfY3R4KGk5MTUsIHRydWUsIHRydWUsIHRydWUsIGZhbHNlLAorCQkJCQkgICAtRU5P
-REVWKTsKKwkJaWd0X2Fzc2VydF9lcShjdHgsIDApOworCWNhc2UgQ1RYX0FMTE9DX1JFQ09WRVJf
-T0ZGX1BST1RFQ1RfT0ZGOgorCQljdHggPSBjcmVhdGVfcHJvdGVjdGVkX2N0eChpOTE1LCB0cnVl
-LCBmYWxzZSwgdHJ1ZSwgZmFsc2UsIDApOworCQlhc3NlcnRfY3R4X3Byb3RlY3RlZF9wYXJhbShp
-OTE1LCBjdHgsIGZhbHNlKTsKKwkJYXNzZXJ0X2N0eF9yZWNvdmVyeV9wYXJhbShpOTE1LCBjdHgs
-IGZhbHNlKTsKKwkJZ2VtX2NvbnRleHRfZGVzdHJveShpOTE1LCBjdHgpOworCQlicmVhazsKKwor
-CWNhc2UgQ1RYX0FMTE9DX1JFQ09WRVJfT0ZGX1BST1RFQ1RfT046CisJCWN0eCA9IGNyZWF0ZV9w
-cm90ZWN0ZWRfY3R4KGk5MTUsIHRydWUsIHRydWUsIHRydWUsIGZhbHNlLCAwKTsKKwkJYXNzZXJ0
-X2N0eF9wcm90ZWN0ZWRfcGFyYW0oaTkxNSwgY3R4LCB0cnVlKTsKKwkJYXNzZXJ0X2N0eF9yZWNv
-dmVyeV9wYXJhbShpOTE1LCBjdHgsIGZhbHNlKTsKKwkJZ2VtX2NvbnRleHRfZGVzdHJveShpOTE1
-LCBjdHgpOworCQlicmVhazsKKworCWNhc2UgQ1RYX0FMTE9DX1JFQ09WRVJfT05fUFJPVEVDVF9P
-RkY6CisJCWN0eCA9IGNyZWF0ZV9wcm90ZWN0ZWRfY3R4KGk5MTUsIHRydWUsIGZhbHNlLCB0cnVl
-LCB0cnVlLCAwKTsKKwkJYXNzZXJ0X2N0eF9wcm90ZWN0ZWRfcGFyYW0oaTkxNSwgY3R4LCBmYWxz
-ZSk7CisJCWFzc2VydF9jdHhfcmVjb3ZlcnlfcGFyYW0oaTkxNSwgY3R4LCB0cnVlKTsKKwkJZ2Vt
-X2NvbnRleHRfZGVzdHJveShpOTE1LCBjdHgpOworCQlicmVhazsKKworCWNhc2UgQ1RYX0FMTE9D
-X1JFQ09WRVJfT05fUFJPVEVDVF9PTjoKKwkJY3R4ID0gY3JlYXRlX3Byb3RlY3RlZF9jdHgoaTkx
-NSwgdHJ1ZSwgdHJ1ZSwgdHJ1ZSwgdHJ1ZSwKKwkJCQkJICAgLUVQRVJNKTsKKwkJaWd0X2Fzc2Vy
-dF9lcShjdHgsIDApOworCQljdHggPSBjcmVhdGVfcHJvdGVjdGVkX2N0eChpOTE1LCB0cnVlLCB0
-cnVlLCBmYWxzZSwgZmFsc2UsCisJCQkJCSAgIC1FUEVSTSk7CisJCWlndF9hc3NlcnRfZXEoY3R4
-LCAwKTsKKwkJYnJlYWs7CisKKwljYXNlIENUWF9NT0RJRllfUFJPVEVDVEVEX1JFQ09WRVJfT0ZG
-X1RPX09OOgorCQljdHggPSBjcmVhdGVfcHJvdGVjdGVkX2N0eChpOTE1LCB0cnVlLCB0cnVlLCB0
-cnVlLCBmYWxzZSwgMCk7CisJCWFzc2VydF9jdHhfcHJvdGVjdGVkX3BhcmFtKGk5MTUsIGN0eCwg
-dHJ1ZSk7CisJCWFzc2VydF9jdHhfcmVjb3ZlcnlfcGFyYW0oaTkxNSwgY3R4LCBmYWxzZSk7CisJ
-CW1vZGlmeV9jdHhfcHJvdGVjdGVkX3BhcmFtKGk5MTUsIGN0eCwgQ0hBTkdFX1BBUkFNX1JFQ09W
-RVJZLAorCQkJCQkgICB0cnVlLCAtRVBFUk0pOworCQlhc3NlcnRfY3R4X3JlY292ZXJ5X3BhcmFt
-KGk5MTUsIGN0eCwgZmFsc2UpOworCQlnZW1fY29udGV4dF9kZXN0cm95KGk5MTUsIGN0eCk7CisJ
-CWJyZWFrOworCisJY2FzZSBDVFhfTU9ESUZZX1BST1RFQ1RFRF9QUk9URUNUX09OX1RPX09GRjoK
-KwkJY3R4ID0gY3JlYXRlX3Byb3RlY3RlZF9jdHgoaTkxNSwgdHJ1ZSwgdHJ1ZSwgdHJ1ZSwgZmFs
-c2UsIDApOworCQlhc3NlcnRfY3R4X3Byb3RlY3RlZF9wYXJhbShpOTE1LCBjdHgsIHRydWUpOwor
-CQlhc3NlcnRfY3R4X3JlY292ZXJ5X3BhcmFtKGk5MTUsIGN0eCwgZmFsc2UpOworCQltb2RpZnlf
-Y3R4X3Byb3RlY3RlZF9wYXJhbShpOTE1LCBjdHgsIENIQU5HRV9QQVJBTV9QUk9URUNURUQsCisJ
-CQkJCSAgIGZhbHNlLCAtRVBFUk0pOworCQlhc3NlcnRfY3R4X3Byb3RlY3RlZF9wYXJhbShpOTE1
-LCBjdHgsIHRydWUpOworCQlhc3NlcnRfY3R4X3JlY292ZXJ5X3BhcmFtKGk5MTUsIGN0eCwgZmFs
-c2UpOworCQlnZW1fY29udGV4dF9kZXN0cm95KGk5MTUsIGN0eCk7CisJCWJyZWFrOworCisJY2Fz
-ZSBDVFhfTU9ESUZZX1BST1RFQ1RFRF9CT1RIUEFSQU1TX1RPX0lOVkFMSUQ6CisJCWN0eCA9IGNy
-ZWF0ZV9wcm90ZWN0ZWRfY3R4KGk5MTUsIHRydWUsIHRydWUsIHRydWUsIGZhbHNlLCAwKTsKKwkJ
-YXNzZXJ0X2N0eF9wcm90ZWN0ZWRfcGFyYW0oaTkxNSwgY3R4LCB0cnVlKTsKKwkJYXNzZXJ0X2N0
-eF9yZWNvdmVyeV9wYXJhbShpOTE1LCBjdHgsIGZhbHNlKTsKKwkJbW9kaWZ5X2N0eF9wcm90ZWN0
-ZWRfcGFyYW0oaTkxNSwgY3R4LCBDSEFOR0VfUEFSQU1fUkVDT1ZFUlksCisJCQkJCSAgIHRydWUs
-IC1FUEVSTSk7CisJCW1vZGlmeV9jdHhfcHJvdGVjdGVkX3BhcmFtKGk5MTUsIGN0eCwgQ0hBTkdF
-X1BBUkFNX1BST1RFQ1RFRCwKKwkJCQkJICAgZmFsc2UsIC1FUEVSTSk7CisJCWFzc2VydF9jdHhf
-cHJvdGVjdGVkX3BhcmFtKGk5MTUsIGN0eCwgdHJ1ZSk7CisJCWFzc2VydF9jdHhfcmVjb3Zlcnlf
-cGFyYW0oaTkxNSwgY3R4LCBmYWxzZSk7CisJCWdlbV9jb250ZXh0X2Rlc3Ryb3koaTkxNSwgY3R4
-KTsKKwkJYnJlYWs7CisKKwljYXNlIENUWF9NT0RJRllfVU5QUk9URUNURURfQk9USFBBUkFNU19U
-T19WQUxJRDoKKwkJY3R4ID0gY3JlYXRlX3Byb3RlY3RlZF9jdHgoaTkxNSwgZmFsc2UsIGZhbHNl
-LCBmYWxzZSwgZmFsc2UsIDApOworCQlhc3NlcnRfY3R4X3Byb3RlY3RlZF9wYXJhbShpOTE1LCBj
-dHgsIGZhbHNlKTsKKwkJYXNzZXJ0X2N0eF9yZWNvdmVyeV9wYXJhbShpOTE1LCBjdHgsIHRydWUp
-OworCQltb2RpZnlfY3R4X3Byb3RlY3RlZF9wYXJhbShpOTE1LCBjdHgsIENIQU5HRV9QQVJBTV9S
-RUNPVkVSWSwKKwkJCQkJICAgZmFsc2UsIDApOworCQltb2RpZnlfY3R4X3Byb3RlY3RlZF9wYXJh
-bShpOTE1LCBjdHgsIENIQU5HRV9QQVJBTV9QUk9URUNURUQsCisJCQkJCSAgIHRydWUsIC1FUEVS
-TSk7CisJCWFzc2VydF9jdHhfcHJvdGVjdGVkX3BhcmFtKGk5MTUsIGN0eCwgZmFsc2UpOworCQlh
-c3NlcnRfY3R4X3JlY292ZXJ5X3BhcmFtKGk5MTUsIGN0eCwgZmFsc2UpOworCQlnZW1fY29udGV4
-dF9kZXN0cm95KGk5MTUsIGN0eCk7CisJCWJyZWFrOworCisJZGVmYXVsdDoKKwkJaWd0X2luZm8o
-IlNraXBwaW5nIHVua25vd24gY29udGV4dCB0ZXN0X2NmZyA9ICVkXG4iLCB0ZXN0X2NmZyk7CisJ
-CWJyZWFrOworCX0KK30KKworaWd0X21haW4KK3sKKwlpbnQgaTkxNSA9IC0xOworCWJvb2wgcHhw
-X3N1cHBvcnRlZCA9IGZhbHNlOworCisJaWd0X2ZpeHR1cmUKKwl7CisJCWk5MTUgPSBkcm1fb3Bl
-bl9kcml2ZXIoRFJJVkVSX0lOVEVMKTsKKwkJaWd0X3JlcXVpcmUoaTkxNSk7CisJCWlndF9yZXF1
-aXJlX2dlbShpOTE1KTsKKwkJcHhwX3N1cHBvcnRlZCA9IGlzX3B4cF9od19zdXBwb3J0ZWQoaTkx
-NSk7CisJfQorCisJaWd0X3N1YnRlc3RfZ3JvdXAgeworCQlpZ3RfZml4dHVyZSB7CisJCQlpZ3Rf
-cmVxdWlyZSgocHhwX3N1cHBvcnRlZCA9PSAwKSk7CisJCX0KKworCQlpZ3RfZGVzY3JpYmUoIlZl
-cmlmeSBwcm90ZWN0ZWQgYnVmZmVyIG9uIHVuc3VwcG9ydGVkIGh3OiIpOworCQlpZ3Rfc3VidGVz
-dCgiaHctcmVqZWN0cy1weHAtYnVmZmVyIikKKwkJCXRlc3RfY3JlYXRlX3Byb3RlY3RlZF9idWZm
-ZXIoaTkxNSwKKwkJCQlCT19BTExPQ19OT19IV19TVVBQT1JUKTsKKwkJaWd0X2Rlc2NyaWJlKCJW
-ZXJpZnkgcHJvdGVjdGVkIGNvbnRleHQgb24gdW5zdXBwb3J0ZWQgaHc6Iik7CisJCWlndF9zdWJ0
-ZXN0KCJody1yZWplY3RzLXB4cC1jb250ZXh0IikKKwkJCXRlc3RfY3JlYXRlX3Byb3RlY3RlZF9j
-b250ZXh0KGk5MTUsCisJCQkJQ1RYX0FMTE9DX05PX0hXX1NVUFBPUlQpOworCX0KKworCWlndF9z
-dWJ0ZXN0X2dyb3VwIHsKKwkJaWd0X2ZpeHR1cmUgeworCQkJaWd0X3JlcXVpcmUocHhwX3N1cHBv
-cnRlZCk7CisJCX0KKworCQlpZ3RfZGVzY3JpYmUoIlZlcmlmeSBwcm90ZWN0ZWQgYnVmZmVyIG9u
-IHN1cHBvcnRlZCBodzoiKTsKKwkJaWd0X3N1YnRlc3QoImNyZWF0ZS1yZWd1bGFyLWJ1ZmZlciIp
-CisJCQl0ZXN0X2NyZWF0ZV9wcm90ZWN0ZWRfYnVmZmVyKGk5MTUsCisJCQkJQk9fQUxMT0NfUFJP
-VEVDVF9PRkYpOworCQlpZ3Rfc3VidGVzdCgiY3JlYXRlLXByb3RlY3RlZC1idWZmZXIiKQorCQkJ
-dGVzdF9jcmVhdGVfcHJvdGVjdGVkX2J1ZmZlcihpOTE1LCBCT19BTExPQ19QUk9URUNUX09OKTsK
-KworCQlpZ3RfZGVzY3JpYmUoIlZlcmlmeSBwcm90ZWN0ZWQgY29udGV4dCBvbiBzdXBwb3J0ZWQg
-aHc6Iik7CisJCWlndF9zdWJ0ZXN0KCJjcmVhdGUtcmVndWxhci1jb250ZXh0LTEiKQorCQkJdGVz
-dF9jcmVhdGVfcHJvdGVjdGVkX2NvbnRleHQoCisJCQkJaTkxNSwgQ1RYX0FMTE9DX1JFQ09WRVJf
-T0ZGX1BST1RFQ1RfT0ZGKTsKKwkJaWd0X3N1YnRlc3QoImNyZWF0ZS1yZWd1bGFyLWNvbnRleHQt
-MiIpCisJCQl0ZXN0X2NyZWF0ZV9wcm90ZWN0ZWRfY29udGV4dCgKKwkJCQlpOTE1LCBDVFhfQUxM
-T0NfUkVDT1ZFUl9PTl9QUk9URUNUX09GRik7CisJCWlndF9zdWJ0ZXN0KCJmYWlsLWludmFsaWQt
-cHJvdGVjdGVkLWNvbnRleHQiKQorCQkJdGVzdF9jcmVhdGVfcHJvdGVjdGVkX2NvbnRleHQoCisJ
-CQkJaTkxNSwgQ1RYX0FMTE9DX1JFQ09WRVJfT05fUFJPVEVDVF9PTik7CisJCWlndF9zdWJ0ZXN0
-KCJjcmVhdGUtdmFsaWQtcHJvdGVjdGVkLWNvbnRleHQiKQorCQkJdGVzdF9jcmVhdGVfcHJvdGVj
-dGVkX2NvbnRleHQoCisJCQkJaTkxNSwgQ1RYX0FMTE9DX1JFQ09WRVJfT0ZGX1BST1RFQ1RfT04p
-OworCisJCWlndF9kZXNjcmliZSgiVmVyaWZ5IHByb3RlY3RlZCBjb250ZXh0IGludGVncml0eToi
-KTsKKwkJaWd0X3N1YnRlc3QoInJlamVjdC1tb2RpZnktY29udGV4dC1wcm90ZWN0aW9uLW9uIikK
-KwkJCXRlc3RfY3JlYXRlX3Byb3RlY3RlZF9jb250ZXh0KAorCQkJCWk5MTUsCisJCQkJQ1RYX01P
-RElGWV9VTlBST1RFQ1RFRF9CT1RIUEFSQU1TX1RPX1ZBTElEKTsKKwkJaWd0X3N1YnRlc3QoInJl
-amVjdC1tb2RpZnktY29udGV4dC1wcm90ZWN0aW9uLW9mZi0xIikKKwkJCXRlc3RfY3JlYXRlX3By
-b3RlY3RlZF9jb250ZXh0KAorCQkJCWk5MTUsIENUWF9NT0RJRllfUFJPVEVDVEVEX1JFQ09WRVJf
-T0ZGX1RPX09OKTsKKwkJaWd0X3N1YnRlc3QoInJlamVjdC1tb2RpZnktY29udGV4dC1wcm90ZWN0
-aW9uLW9mZi0yIikKKwkJCXRlc3RfY3JlYXRlX3Byb3RlY3RlZF9jb250ZXh0KAorCQkJCWk5MTUs
-IENUWF9NT0RJRllfUFJPVEVDVEVEX1BST1RFQ1RfT05fVE9fT0ZGKTsKKwkJaWd0X3N1YnRlc3Qo
-InJlamVjdC1tb2RpZnktY29udGV4dC1wcm90ZWN0aW9uLW9mZi0zIikKKwkJCXRlc3RfY3JlYXRl
-X3Byb3RlY3RlZF9jb250ZXh0KAorCQkJCWk5MTUsCisJCQkJQ1RYX01PRElGWV9QUk9URUNURURf
-Qk9USFBBUkFNU19UT19JTlZBTElEKTsKKwl9CisKKwlpZ3RfZml4dHVyZSB7CisJCWNsb3NlKGk5
-MTUpOworCX0KK30KZGlmZiAtLWdpdCBhL3Rlc3RzL21lc29uLmJ1aWxkIGIvdGVzdHMvbWVzb24u
-YnVpbGQKaW5kZXggODI1ZTAxODMuLmU3MTQ0MDM5IDEwMDY0NAotLS0gYS90ZXN0cy9tZXNvbi5i
-dWlsZAorKysgYi90ZXN0cy9tZXNvbi5idWlsZApAQCAtMTg5LDYgKzE4OSw3IEBAIGk5MTVfcHJv
-Z3MgPSBbCiAJJ2dlbV9wcmVhZF9hZnRlcl9ibGl0JywKIAknZ2VtX3B3cml0ZScsCiAJJ2dlbV9w
-d3JpdGVfc25vb3BlZCcsCisJJ2dlbV9weHAnLAogCSdnZW1fcmVhZF9yZWFkX3NwZWVkJywKIAkn
-Z2VtX3JlYWR3cml0ZScsCiAJJ2dlbV9yZWdfcmVhZCcsCi0tIAoyLjI1LjEKCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0
-CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+Add a subtest to verify that reusing a stale protected context
+in a gem_execbuff after a teardown (triggered by suspend-resume
+cycle) shall fail with -EIO error.
+
+NOTE: The end-to-end architecture requirement includes that
+any break in the links of the PXP sessions needs to trigger a
+full teardown and the application needs to be made aware of that
+allowing it to re-establish the end-to-end pipeline of buffers,
+contexts and renders again if it chooses to. This stricter
+behavior targets only contexts created with PXP enabled.
+
+Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+---
+ lib/intel_batchbuffer.c |   2 +-
+ lib/intel_batchbuffer.h |   2 +
+ tests/i915/gem_pxp.c    | 115 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 118 insertions(+), 1 deletion(-)
+
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index be9fc2ad..fa5e0e2f 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -2133,7 +2133,7 @@ static void update_offsets(struct intel_bb *ibb,
+  * Note: In this step execobj for bb is allocated and inserted to the objects
+  * array.
+ */
+-static int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
++int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
+ 			   uint64_t flags, bool sync)
+ {
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+index 66af6e09..c838f38b 100644
+--- a/lib/intel_batchbuffer.h
++++ b/lib/intel_batchbuffer.h
+@@ -653,6 +653,8 @@ uint64_t intel_bb_offset_reloc_to_object(struct intel_bb *ibb,
+ 					 uint32_t offset,
+ 					 uint64_t presumed_offset);
+ 
++int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
++		   uint64_t flags, bool sync);
+ void intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
+ 		   uint64_t flags, bool sync);
+ 
+diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+index 06bfb6ca..0cb37177 100644
+--- a/tests/i915/gem_pxp.c
++++ b/tests/i915/gem_pxp.c
+@@ -38,6 +38,7 @@ IGT_TEST_DESCRIPTION("Test PXP (Protected Xe Path), which is the component "
+ 
+ /* test-configs for power-management triggered protected session teardown */
+ #define SESSION_PMSUSPEND_TEARDOWN_KEY_CHANGE 1
++#define SESSION_PMSUSPEND_STALEPROTCTX_BAN_EXEC 2
+ 
+ /* Struct and defintions for power management. */
+ struct powermgt_data {
+@@ -663,12 +664,88 @@ static void trigger_powermgt_suspend_cycle(int i915,
+ 	igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED);
+ }
+ 
++#define GFX_OP_PIPE_CONTROL    ((3 << 29) | (3 << 27) | (2 << 24))
++#define PIPE_CONTROL_CS_STALL	            (1 << 20)
++#define PIPE_CONTROL_RENDER_TARGET_FLUSH    (1 << 12)
++#define PIPE_CONTROL_FLUSH_ENABLE           (1 << 7)
++#define PIPE_CONTROL_DATA_CACHE_INVALIDATE  (1 << 5)
++#define PIPE_CONTROL_PROTECTEDPATH_DISABLE  (1 << 27)
++#define PIPE_CONTROL_PROTECTEDPATH_ENABLE   (1 << 22)
++#define PIPE_CONTROL_POST_SYNC_OP           (1 << 14)
++#define PIPE_CONTROL_POST_SYNC_OP_STORE_DW_IDX (1 << 21)
++#define PS_OP_TAG_BEFORE                    0x1234fed0
++#define PS_OP_TAG_AFTER                     0x5678cbaf
++static void emit_pipectrl(struct intel_bb *ibb,
++		 struct intel_buf *fenceb, bool before)
++{
++	uint32_t pipe_ctl_flags = 0;
++	uint32_t ps_op_id;
++
++	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL);
++	intel_bb_out(ibb, pipe_ctl_flags);
++
++	if (before)
++		ps_op_id = PS_OP_TAG_BEFORE;
++	else
++		ps_op_id = PS_OP_TAG_AFTER;
++
++	pipe_ctl_flags = (PIPE_CONTROL_FLUSH_ENABLE |
++				PIPE_CONTROL_CS_STALL |
++				PIPE_CONTROL_POST_SYNC_OP);
++	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL | 4);
++	intel_bb_out(ibb, pipe_ctl_flags);
++	intel_bb_emit_reloc(ibb, fenceb->handle,
++		0, I915_GEM_DOMAIN_COMMAND,
++		(before?0:8), fenceb->addr.offset);
++	intel_bb_out(ibb, ps_op_id);
++	intel_bb_out(ibb, ps_op_id);
++	intel_bb_out(ibb, MI_NOOP);
++	intel_bb_out(ibb, MI_NOOP);
++}
++
++static void assert_pipectl_storedw_done(int i915, uint32_t bo)
++{
++	uint32_t *ptr;
++	uint32_t success_mask = 0x0;
++
++	ptr = gem_mmap__device_coherent(i915, bo, 0, 4096, PROT_READ);
++
++	if (ptr[0] == PS_OP_TAG_BEFORE && ptr[1] == PS_OP_TAG_BEFORE)
++		success_mask |= 0x1;
++
++	igt_assert_eq(success_mask, 0x1);
++	igt_assert(gem_munmap(ptr, 4096) == 0);
++}
++
++static void gem_execbuf_flush_store_dw(int i915, struct intel_bb *ibb,
++	uint32_t ctx, struct intel_buf *fence, int expected_gemexec_response)
++{
++	int execret;
++
++	intel_bb_ptr_set(ibb, 0);
++	intel_bb_add_intel_buf(ibb, fence, true);
++	emit_pipectrl(ibb, fence, true);
++	intel_bb_emit_bbe(ibb);
++	execret = __intel_bb_exec(ibb, intel_bb_offset(ibb),
++		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, false);
++
++	igt_assert_eq(execret, expected_gemexec_response);
++	if (expected_gemexec_response == 0) {
++		gem_sync(ibb->i915, fence->handle);
++		assert_pipectl_storedw_done(i915, fence->handle);
++	}
++}
++
+ static void test_protected_session_teardown(int i915, uint32_t test_cfg,
+ 		struct powermgt_data *pm)
+ {
+ 	uint32_t encrypted_pixels_b4[TSTSURF_SIZE/TSTSURF_BYTESPP];
+ 	uint32_t encrypted_pixels_aft[TSTSURF_SIZE/TSTSURF_BYTESPP];
+ 	int matched_after_keychange = 0, loop = 0;
++	uint32_t ctx, fencebo;
++	struct intel_buf *fencebuf;
++	struct buf_ops *bops;
++	struct intel_bb *ibb;
+ 
+ 	switch (test_cfg) {
+ 	case SESSION_PMSUSPEND_TEARDOWN_KEY_CHANGE:
+@@ -691,6 +768,39 @@ static void test_protected_session_teardown(int i915, uint32_t test_cfg,
+ 		igt_assert_eq(matched_after_keychange, 0);
+ 		break;
+ 
++	case SESSION_PMSUSPEND_STALEPROTCTX_BAN_EXEC:
++		ctx = create_protected_ctx(i915, true, true,
++			true, false, 0);
++		assert_ctx_protected_param(i915, ctx, true);
++
++		/* use normal buffers for testing for invalidation
++		 * of protected contexts to ensure kernel is catching
++		 * the invalidated context (not buffer)
++		 */
++		fencebo = alloc_and_fill_dest_buff(i915, false,
++				4096, 0);
++
++		ibb = intel_bb_create_with_context(i915, ctx, 4096);
++		igt_assert(ibb);
++
++		bops = buf_ops_create(i915);
++		igt_assert(bops);
++
++		fencebuf = intel_buf_create_using_handle(bops, fencebo,
++				256, 4,	32, 0, I915_TILING_NONE, 0);
++		intel_bb_add_intel_buf(ibb, fencebuf, true);
++
++		gem_execbuf_flush_store_dw(i915, ibb, ctx, fencebuf, 0);
++		trigger_powermgt_suspend_cycle(i915, pm);
++
++		gem_execbuf_flush_store_dw(i915, ibb, ctx, fencebuf, -EIO);
++
++		intel_bb_destroy(ibb);
++		intel_buf_destroy(fencebuf);
++		gem_close(i915, fencebo);
++		gem_context_destroy(i915, ctx);
++		buf_ops_destroy(bops);
++		break;
+ 
+ 	default:
+ 		igt_info("Skipping unknown power-mgt test_cfg = %d\n",
+@@ -807,6 +917,11 @@ igt_main
+ 				SESSION_PMSUSPEND_TEARDOWN_KEY_CHANGE,
+ 				&pm);
+ 		}
++		igt_subtest("reject-old-prot-context-execution-after-suspend-resume") {
++			test_protected_session_teardown(i915,
++				SESSION_PMSUSPEND_STALEPROTCTX_BAN_EXEC,
++				&pm);
++		}
+ 	}
+ 
+ 	igt_fixture {
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
