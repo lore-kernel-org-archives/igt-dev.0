@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 051906EB2A
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6AC4C6EB23
  for <igt-dev@lists.freedesktop.org>; Thu, 25 Mar 2021 05:45:53 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Wed, 24 Mar 2021 22:45:44 -0700
-Message-Id: <20210325054549.465386-11-alan.previn.teres.alexis@intel.com>
+Date: Wed, 24 Mar 2021 22:45:41 -0700
+Message-Id: <20210325054549.465386-8-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210325054549.465386-1-alan.previn.teres.alexis@intel.com>
 References: <20210325054549.465386-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 10/15] Verify execbuf fails with stale
- PXP context after teardown
+Subject: [igt-dev] [PATCH i-g-t v2 07/15] Add subtest to copy raw source to
+ protected dest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,200 +25,88 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a subtest to verify that reusing a stale protected context
-in a gem_execbuff after a teardown (triggered by suspend-resume
-cycle) shall fail with -EIO error.
-
-NOTE: The end-to-end architecture requirement includes that
-any break in the links of the PXP sessions needs to trigger a
-full teardown and the application needs to be made aware of that
-allowing it to re-establish the end-to-end pipeline of buffers,
-contexts and renders again if it chooses to. This stricter
-behavior targets only contexts created with PXP enabled.
+Add subtest to 3d-copy raw source buffer (with
+known readible content) to a destination buffer
+marked as protected with a protected session using
+default session keys. The destination buffer is
+verified to be different from the source (when
+read via CPU) because its encrypted.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 ---
- lib/intel_batchbuffer.c |   2 +-
- lib/intel_batchbuffer.h |   2 +
- tests/i915/gem_pxp.c    | 115 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 118 insertions(+), 1 deletion(-)
+ tests/i915/gem_pxp.c | 47 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index be9fc2ad..fa5e0e2f 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -2133,7 +2133,7 @@ static void update_offsets(struct intel_bb *ibb,
-  * Note: In this step execobj for bb is allocated and inserted to the objects
-  * array.
- */
--static int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
-+int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
- 			   uint64_t flags, bool sync)
- {
- 	struct drm_i915_gem_execbuffer2 execbuf;
-diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-index 66af6e09..c838f38b 100644
---- a/lib/intel_batchbuffer.h
-+++ b/lib/intel_batchbuffer.h
-@@ -653,6 +653,8 @@ uint64_t intel_bb_offset_reloc_to_object(struct intel_bb *ibb,
- 					 uint32_t offset,
- 					 uint64_t presumed_offset);
- 
-+int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
-+		   uint64_t flags, bool sync);
- void intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
- 		   uint64_t flags, bool sync);
- 
 diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 06bfb6ca..0cb37177 100644
+index 7071cd0e..825edbf1 100644
 --- a/tests/i915/gem_pxp.c
 +++ b/tests/i915/gem_pxp.c
-@@ -38,6 +38,7 @@ IGT_TEST_DESCRIPTION("Test PXP (Protected Xe Path), which is the component "
+@@ -425,7 +425,9 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected,
+ #define TSTSURF_STRIDE      (TSTSURF_WIDTH*TSTSURF_BYTESPP)
+ #define TSTSURF_SIZE        (TSTSURF_STRIDE*TSTSURF_HEIGHT)
+ #define TSTSURF_FILLCOLOR1  0xfaceface
++#define TSTSURF_FILLCOLOR2  0xdeaddead
+ #define TSTSURF_INITCOLOR1  0x12341234
++#define TSTSURF_INITCOLOR2  0x56785678
  
- /* test-configs for power-management triggered protected session teardown */
- #define SESSION_PMSUSPEND_TEARDOWN_KEY_CHANGE 1
-+#define SESSION_PMSUSPEND_STALEPROTCTX_BAN_EXEC 2
- 
- /* Struct and defintions for power management. */
- struct powermgt_data {
-@@ -663,12 +664,88 @@ static void trigger_powermgt_suspend_cycle(int i915,
- 	igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED);
- }
- 
-+#define GFX_OP_PIPE_CONTROL    ((3 << 29) | (3 << 27) | (2 << 24))
-+#define PIPE_CONTROL_CS_STALL	            (1 << 20)
-+#define PIPE_CONTROL_RENDER_TARGET_FLUSH    (1 << 12)
-+#define PIPE_CONTROL_FLUSH_ENABLE           (1 << 7)
-+#define PIPE_CONTROL_DATA_CACHE_INVALIDATE  (1 << 5)
-+#define PIPE_CONTROL_PROTECTEDPATH_DISABLE  (1 << 27)
-+#define PIPE_CONTROL_PROTECTEDPATH_ENABLE   (1 << 22)
-+#define PIPE_CONTROL_POST_SYNC_OP           (1 << 14)
-+#define PIPE_CONTROL_POST_SYNC_OP_STORE_DW_IDX (1 << 21)
-+#define PS_OP_TAG_BEFORE                    0x1234fed0
-+#define PS_OP_TAG_AFTER                     0x5678cbaf
-+static void emit_pipectrl(struct intel_bb *ibb,
-+		 struct intel_buf *fenceb, bool before)
-+{
-+	uint32_t pipe_ctl_flags = 0;
-+	uint32_t ps_op_id;
-+
-+	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL);
-+	intel_bb_out(ibb, pipe_ctl_flags);
-+
-+	if (before)
-+		ps_op_id = PS_OP_TAG_BEFORE;
-+	else
-+		ps_op_id = PS_OP_TAG_AFTER;
-+
-+	pipe_ctl_flags = (PIPE_CONTROL_FLUSH_ENABLE |
-+				PIPE_CONTROL_CS_STALL |
-+				PIPE_CONTROL_POST_SYNC_OP);
-+	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL | 4);
-+	intel_bb_out(ibb, pipe_ctl_flags);
-+	intel_bb_emit_reloc(ibb, fenceb->handle,
-+		0, I915_GEM_DOMAIN_COMMAND,
-+		(before?0:8), fenceb->addr.offset);
-+	intel_bb_out(ibb, ps_op_id);
-+	intel_bb_out(ibb, ps_op_id);
-+	intel_bb_out(ibb, MI_NOOP);
-+	intel_bb_out(ibb, MI_NOOP);
-+}
-+
-+static void assert_pipectl_storedw_done(int i915, uint32_t bo)
-+{
-+	uint32_t *ptr;
-+	uint32_t success_mask = 0x0;
-+
-+	ptr = gem_mmap__device_coherent(i915, bo, 0, 4096, PROT_READ);
-+
-+	if (ptr[0] == PS_OP_TAG_BEFORE && ptr[1] == PS_OP_TAG_BEFORE)
-+		success_mask |= 0x1;
-+
-+	igt_assert_eq(success_mask, 0x1);
-+	igt_assert(gem_munmap(ptr, 4096) == 0);
-+}
-+
-+static void gem_execbuf_flush_store_dw(int i915, struct intel_bb *ibb,
-+	uint32_t ctx, struct intel_buf *fence, int expected_gemexec_response)
-+{
-+	int execret;
-+
-+	intel_bb_ptr_set(ibb, 0);
-+	intel_bb_add_intel_buf(ibb, fence, true);
-+	emit_pipectrl(ibb, fence, true);
-+	intel_bb_emit_bbe(ibb);
-+	execret = __intel_bb_exec(ibb, intel_bb_offset(ibb),
-+		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, false);
-+
-+	igt_assert_eq(execret, expected_gemexec_response);
-+	if (expected_gemexec_response == 0) {
-+		gem_sync(ibb->i915, fence->handle);
-+		assert_pipectl_storedw_done(i915, fence->handle);
-+	}
-+}
-+
- static void test_protected_session_teardown(int i915, uint32_t test_cfg,
- 		struct powermgt_data *pm)
+ static void test_render_protected_buffer(int i915, uint32_t test_cfg)
  {
- 	uint32_t encrypted_pixels_b4[TSTSURF_SIZE/TSTSURF_BYTESPP];
- 	uint32_t encrypted_pixels_aft[TSTSURF_SIZE/TSTSURF_BYTESPP];
- 	int matched_after_keychange = 0, loop = 0;
-+	uint32_t ctx, fencebo;
-+	struct intel_buf *fencebuf;
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb;
- 
- 	switch (test_cfg) {
- 	case SESSION_PMSUSPEND_TEARDOWN_KEY_CHANGE:
-@@ -691,6 +768,39 @@ static void test_protected_session_teardown(int i915, uint32_t test_cfg,
- 		igt_assert_eq(matched_after_keychange, 0);
+@@ -480,6 +482,48 @@ static void test_render_protected_buffer(int i915, uint32_t test_cfg)
+ 		gem_context_destroy(i915, ctx);
  		break;
  
-+	case SESSION_PMSUSPEND_STALEPROTCTX_BAN_EXEC:
++	case COPY3D_PROTECTED_SRC_TO_PROTDST:
++		/* Perform a protected render operation but only label
++		 * the dest as protected. After rendering, the content
++		 * should be encrypted
++		 */
 +		ctx = create_protected_ctx(i915, true, true,
 +			true, false, 0);
 +		assert_ctx_protected_param(i915, ctx, true);
 +
-+		/* use normal buffers for testing for invalidation
-+		 * of protected contexts to ensure kernel is catching
-+		 * the invalidated context (not buffer)
-+		 */
-+		fencebo = alloc_and_fill_dest_buff(i915, false,
-+				4096, 0);
++		dstbo = alloc_and_fill_dest_buff(i915, true,
++				TSTSURF_SIZE, TSTSURF_INITCOLOR2);
++		dstbuf = intel_buf_create_using_handle(bops, dstbo,
++				TSTSURF_WIDTH, TSTSURF_HEIGHT,
++				TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
++		intel_buf_set_pxp(dstbuf, true);
++
++		srcbo = alloc_and_fill_dest_buff(i915, false,
++				TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
++		srcbuf = intel_buf_create_using_handle(bops, srcbo,
++				TSTSURF_WIDTH, TSTSURF_HEIGHT,
++				TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
 +
 +		ibb = intel_bb_create_with_context(i915, ctx, 4096);
 +		igt_assert(ibb);
 +
-+		bops = buf_ops_create(i915);
-+		igt_assert(bops);
++		intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE,
++			I915_PROTECTED_CONTENT_DEFAULT_SESSION);
 +
-+		fencebuf = intel_buf_create_using_handle(bops, fencebo,
-+				256, 4,	32, 0, I915_TILING_NONE, 0);
-+		intel_bb_add_intel_buf(ibb, fencebuf, true);
++		gen12_render_copyfunc(ibb, srcbuf, 0, 0,
++			TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
++		gem_sync(i915, dstbo);
 +
-+		gem_execbuf_flush_store_dw(i915, ibb, ctx, fencebuf, 0);
-+		trigger_powermgt_suspend_cycle(i915, pm);
-+
-+		gem_execbuf_flush_store_dw(i915, ibb, ctx, fencebuf, -EIO);
++		assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
++			TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
 +
 +		intel_bb_destroy(ibb);
-+		intel_buf_destroy(fencebuf);
-+		gem_close(i915, fencebo);
++		intel_buf_destroy(srcbuf);
++		gem_close(i915, srcbo);
++		intel_buf_destroy(dstbuf);
++		gem_close(i915, dstbo);
 +		gem_context_destroy(i915, ctx);
-+		buf_ops_destroy(bops);
 +		break;
- 
  	default:
- 		igt_info("Skipping unknown power-mgt test_cfg = %d\n",
-@@ -807,6 +917,11 @@ igt_main
- 				SESSION_PMSUSPEND_TEARDOWN_KEY_CHANGE,
- 				&pm);
- 		}
-+		igt_subtest("reject-old-prot-context-execution-after-suspend-resume") {
-+			test_protected_session_teardown(i915,
-+				SESSION_PMSUSPEND_STALEPROTCTX_BAN_EXEC,
-+				&pm);
-+		}
+ 		igt_info("Skipping unknown render test_cfg = %d\n",
+ 			test_cfg);
+@@ -575,6 +619,9 @@ igt_main
+ 		igt_subtest("regular-baseline-src-copy-readible")
+ 			test_render_protected_buffer(i915,
+ 				COPY3D_BASELINE_SRC_TO_DST);
++		igt_subtest("protected-raw-src-copy-not-readible")
++			test_render_protected_buffer(i915,
++				COPY3D_PROTECTED_SRC_TO_PROTDST);
  	}
  
  	igt_fixture {
