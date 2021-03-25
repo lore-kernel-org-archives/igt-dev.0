@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C648C6EB28
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Mar 2021 05:45:53 +0000 (UTC)
-From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Wed, 24 Mar 2021 22:45:47 -0700
-Message-Id: <20210325054549.465386-14-alan.previn.teres.alexis@intel.com>
-In-Reply-To: <20210325054549.465386-1-alan.previn.teres.alexis@intel.com>
-References: <20210325054549.465386-1-alan.previn.teres.alexis@intel.com>
-MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 13/15] Ensure RESET_STAT reports
- invalidated protected context
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 035916EB1B
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Mar 2021 06:00:19 +0000 (UTC)
+From: Jigar Bhatt <jigar.bhatt@intel.com>
+Date: Thu, 25 Mar 2021 11:07:30 +0530
+Message-Id: <1616650650-2195-1-git-send-email-jigar.bhatt@intel.com>
+In-Reply-To: <1616569087-30691-1-git-send-email-jigar.bhatt@intel.com>
+References: <1616569087-30691-1-git-send-email-jigar.bhatt@intel.com>
+Subject: [igt-dev] [i-g-t RFC v1] tests/i915_pm_rpm: Add
+ suspend-resume-latency test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,106 +16,142 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When protected contexts are created but get invalidated
-due to PXP session teardown (such as after a suspend-resume
-cycle), RESET_STAT ioctl for said context will report it
-as I915_CONTEXT_INVALIDATED.
+Measuring the suspend-resume time using
+tracefs, writing Suspend Started, Suspend Completed,
+Resume Ended timestamp into tracefs file.
+After writing it's reading from tracefs file and
+measuring different, suspend and resume ,
+individual must be less than 1 sec.
 
-Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+v1:
+- Add limits.h and time.h
+
+Signed-off-by: Jigar Bhatt <jigar.bhatt@intel.com>
 ---
- tests/i915/gem_pxp.c | 48 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+ tests/i915/i915_pm_rpm.c | 86 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 86 insertions(+)
 
-diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 4e50262b..05083ac9 100644
---- a/tests/i915/gem_pxp.c
-+++ b/tests/i915/gem_pxp.c
-@@ -41,6 +41,7 @@ IGT_TEST_DESCRIPTION("Test PXP (Protected Xe Path), which is the component "
- #define SESSION_PMSUSPEND_STALEPROTCTX_BAN_EXEC 2
- #define SESSION_PMSUSPEND_STALEPROTBO_BAN_EXEC 3
- #define SESSION_PMSUSPEND_STALECTX_STALEPROTBO_EXEC_OK 4
-+#define SESSION_PMSUSPEND_STALEPROTCTX_IN_RESETSTAT 5
+diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+index 694a3ea..3cc9259 100644
+--- a/tests/i915/i915_pm_rpm.c
++++ b/tests/i915/i915_pm_rpm.c
+@@ -53,6 +53,8 @@
+ #include "igt_debugfs.h"
+ #include "igt_device.h"
+ #include "igt_edid.h"
++#include "limits.h"
++#include "time.h"
  
- /* Struct and defintions for power management. */
- struct powermgt_data {
-@@ -738,6 +739,25 @@ static void gem_execbuf_flush_store_dw(int i915, struct intel_bb *ibb,
- 	}
+ #define MSR_PC8_RES	0x630
+ #define MSR_PC9_RES	0x631
+@@ -1998,6 +2000,85 @@ static int opt_handler(int opt, int opt_index, void *data)
+ 	return IGT_OPT_HANDLER_SUCCESS;
  }
  
-+static void check_context_invalid_state(int i915,
-+		uint32_t ctx, bool is_expected_invalid)
++static void dpms_off(struct mode_set_data *data)
 +{
-+	struct drm_i915_reset_stats rs;
-+	bool ctx_is_invalid = false;
-+	int ret;
++	for (int i = 0; i < data->res->count_connectors; i++) {
++		drmModeConnectorPtr c = data->connectors[i];
 +
-+	memset(&rs, 0, sizeof(rs));
-+	rs.ctx_id = ctx;
-+
-+	ret = drmIoctl(i915, DRM_IOCTL_I915_GET_RESET_STATS, &rs);
-+	igt_assert(ret == 0);
-+
-+	if (rs.flags & I915_CONTEXT_INVALIDATED)
-+		ctx_is_invalid = true;
-+	igt_assert_eq(is_expected_invalid, ctx_is_invalid);
-+
++		kmstest_set_connector_dpms(drm_fd, c, DRM_MODE_DPMS_OFF);
++	}
 +}
 +
- static void test_protected_session_teardown(int i915, uint32_t test_cfg,
- 		struct powermgt_data *pm)
- {
-@@ -839,6 +859,29 @@ static void test_protected_session_teardown(int i915, uint32_t test_cfg,
- 		buf_ops_destroy(bops);
- 		break;
- 
-+	case SESSION_PMSUSPEND_STALEPROTCTX_IN_RESETSTAT:
-+		ctx = create_protected_ctx(i915, true, true,
-+			true, false, 0);
-+		assert_ctx_protected_param(i915, ctx, true);
++static void dpms_on(struct mode_set_data *data)
++{
++	igt_display_t display;
 +
-+		ibb = intel_bb_create_with_context(i915, ctx, 4096);
-+		igt_assert(ibb);
++	igt_display_require(&display, drm_fd);
++	for (int i = 0; i < data->res->count_connectors; i++) {
++		drmModeConnectorPtr c = data->connectors[i];
 +
-+		bops = buf_ops_create(i915);
-+		igt_assert(bops);
++		kmstest_set_connector_dpms(drm_fd, c, DRM_MODE_DPMS_ON);
++	}
++}
 +
-+		fencebuf = intel_buf_create_using_handle(bops, fencebo,
-+				256, 4,	32, 0, I915_TILING_NONE, 0);
-+		intel_bb_add_intel_buf(ibb, fencebuf, true);
++static uint32_t get_trace_timestamp(char *dc_data)
++{
++	char *e;
++	long ret;
++	char *s = strchr(dc_data, ':');
 +
-+		gem_execbuf_flush_store_dw(i915, ibb, ctx, fencebuf, 0);
++	assert(s);
++	s++;
++	ret = strtol(s, &e, 10);
++	assert(((ret != LONG_MIN && ret != LONG_MAX) || errno != ERANGE) &&
++		e > s && *e == '\n' && ret >= 0);
++	return ret;
++}
 +
-+		check_context_invalid_state(i915, ctx, false);
++static long get_timestamp(void)
++{
++	struct timespec start;
 +
-+		trigger_powermgt_suspend_cycle(i915, pm);
-+		check_context_invalid_state(i915, ctx, true);
-+		break;
++	clock_gettime(CLOCK_MONOTONIC_RAW, &start);
++	return (start.tv_sec * 1000000 + (start.tv_nsec / 1000));
++}
 +
- 	default:
- 		igt_info("Skipping unknown power-mgt test_cfg = %d\n",
- 			test_cfg);
-@@ -969,6 +1012,11 @@ igt_main
- 				SESSION_PMSUSPEND_STALECTX_STALEPROTBO_EXEC_OK,
- 				&pm);
- 		}
-+		igt_subtest("old-prot-context-reports-reset-stat-after-suspend-resume") {
-+			test_protected_session_teardown(i915,
-+				SESSION_PMSUSPEND_STALEPROTCTX_IN_RESETSTAT,
-+				&pm);
-+		}
++static void read_trace(void)
++{
++	int fd;
++	char buf[4096];
++
++	fd = open("/sys/kernel/debug/tracing/trace", O_RDONLY);
++	igt_assert(fd > 0);
++	igt_assert(read(fd, buf, sizeof(buf)));
++	igt_assert(((float)(get_trace_timestamp(strstr(buf, "Suspend_Completed")) -
++			get_trace_timestamp(strstr(buf, "Suspend_Started"))) / 1000000) < 1);
++	igt_assert(((float)(get_trace_timestamp(strstr(buf, "Resume_Ended")) -
++			get_trace_timestamp(strstr(buf, "Suspend_Completed"))) / 1000000) < 1);
++	close(fd);
++}
++
++static void test_suspend_resume_latency(struct mode_set_data *data)
++{
++	int fd;
++	char msg[400];
++
++	fd = open("/sys/kernel/debug/tracing/trace_marker", O_WRONLY);
++	igt_assert(fd > 0);
++	snprintf(msg, 100, "Suspend_Started : %ld", get_timestamp());
++	write(fd, msg, strlen(msg));
++	dpms_off(data);
++	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
++	snprintf(msg, 100, "Suspend_Completed : %ld", get_timestamp());
++	write(fd, msg, strlen(msg));
++	dpms_on(data);
++	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
++	snprintf(msg, 100, "Resume_Ended : %ld", get_timestamp());
++	write(fd, msg, strlen(msg));
++	close(fd);
++	read_trace();
++}
++
+ const char *help_str =
+ 	"  --stress\t\tMake the stress-tests more stressful.\n"
+ 	"  --stay\t\tDisable all screen and try to go into runtime pm. Useful for debugging.";
+@@ -2147,6 +2228,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		pm_test_caching();
  	}
  
- 	igt_fixture {
++	igt_subtest("suspend-resume-latency") {
++		test_suspend_resume_latency(&ms_data);
++	}
++
++
+ 	igt_fixture
+ 		teardown_environment(false);
+ 
 -- 
-2.25.1
+2.8.1
 
 _______________________________________________
 igt-dev mailing list
