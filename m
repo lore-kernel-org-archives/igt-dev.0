@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 16FD96E1B8
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Mar 2021 12:15:21 +0000 (UTC)
-References: <20210326090326.2160-1-anandx.ram.moon@intel.com>
- <0e8ec332-52d5-53b4-0019-7d51a732efe9@intel.com>
- <SA2PR11MB5068C839EBD50D718999C2A8AE619@SA2PR11MB5068.namprd11.prod.outlook.com>
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <771a8d0a-b3a9-309b-1577-35b245ec9d00@intel.com>
-Date: Fri, 26 Mar 2021 14:15:16 +0200
-MIME-Version: 1.0
-In-Reply-To: <SA2PR11MB5068C839EBD50D718999C2A8AE619@SA2PR11MB5068.namprd11.prod.outlook.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7BB046F3CB
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Mar 2021 12:48:57 +0000 (UTC)
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Date: Fri, 26 Mar 2021 12:48:51 +0000
+Message-ID: <SN6PR11MB332719947711F28B1B11684A8D619@SN6PR11MB3327.namprd11.prod.outlook.com>
+References: <20210310210354.9335-1-bhanuprakash.modem@intel.com>
+ <YF3OnUsqyXXRlNNC@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <YF3OnUsqyXXRlNNC@platvala-desk.ger.corp.intel.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [i-g-t v2] tests/i915/perf: Added check for testcase
- to get discarded on less than gen12 platform
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [v3 i-g-t] tests/kms_busy: Limit the execution to two
+ pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,133 +19,297 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Ram Moon, AnandX" <anandx.ram.moon@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Nerlige Ramappa, Umesh" <umesh.nerlige.ramappa@intel.com>, "Latvala, Petri" <petri.latvala@intel.com>
+To: "Latvala, Petri" <petri.latvala@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Kunche,
+ Kishore" <kishore.kunche@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 26/03/2021 12:53, Ram Moon, AnandX wrote:
-> Hi All,
->
-> -----Original Message-----
-> From: Landwerlin, Lionel G <lionel.g.landwerlin@intel.com>
-> Sent: Friday, March 26, 2021 3:38 PM
-> To: Ram Moon, AnandX <anandx.ram.moon@intel.com>; igt-dev@lists.freedesktop.org; Nerlige Ramappa, Umesh <umesh.nerlige.ramappa@intel.com>; Latvala, Petri <petri.latvala@intel.com>
-> Subject: Re: [i-g-t v2] tests/i915/perf: Added check for testcase to get discarded on less than gen12 platform
->
-> On 26/03/2021 11:03, Anand Moon wrote:
->> Added check for testcase to get discarded on less than gen12 platform
->>
->> v2: Added check in gen12 sub testcase to return.
->>
->> Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
->> Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
->> Signed-off-by: Anand Moon <anandx.ram.moon@intel.com>
->> ---
->>    tests/i915/perf.c | 11 +++++++++--
->>    1 file changed, 9 insertions(+), 2 deletions(-)
->>
->> diff --git a/tests/i915/perf.c b/tests/i915/perf.c index
->> 664fd0a9..b78a714e 100644
->> --- a/tests/i915/perf.c
->> +++ b/tests/i915/perf.c
->> @@ -2389,6 +2389,9 @@ gen12_test_oa_tlb_invalidate(void)
->>    int num_reports1, num_reports2, num_expected_reports;
->>    int64_t duration;
->>
->> +if (intel_gen(devid) < 12)
->> +return;
->> +
->>    /* Capture reports for 5 seconds twice and then make sure you get around
->>     * the same number of reports. In the case of failure, the number of
->>     * reports will vary largely since the beginning of the OA buffer
->> @@ -3003,6 +3006,9 @@ gen12_test_mi_rpc(void)
->>    size_t format_size_32;
->>    struct oa_format format = get_oa_format(test_set->perf_oa_format);
->>
->> +if (intel_gen(devid) < 12)
->> +return;
->> +
->>    /* Ensure perf_stream_paranoid is set to 1 by default */
->>    write_u64_file("/proc/sys/dev/i915/perf_stream_paranoid", 1);
->>
->> @@ -4115,6 +4121,9 @@ gen12_test_single_ctx_render_target_writes_a_counter(void)
->>    int child_ret;
->>    struct igt_helper_process child = {};
->>
->> +if (intel_gen(devid) < 12)
->> +return;
->> +
->>    /* Ensure perf_stream_paranoid is set to 1 by default */
->>    write_u64_file("/proc/sys/dev/i915/perf_stream_paranoid", 1);
->>
->> @@ -5062,8 +5071,6 @@ igt_main
->>    }
->>
->>    igt_subtest_group {
->> -igt_fixture igt_require(intel_gen(devid) >= 12);
->> -
->>    igt_describe("Test MI REPORT PERF COUNT for Gen 12");
->>    igt_subtest("gen12-mi-rpc")
->>    gen12_test_mi_rpc();
-> Could you maybe explain how those tests are run on gen < 12 when there is a igt_fixture igt_require(intel_gen(devid) >= 12); that is supposed to prevent that from happening?
->
-> On EHL gen11 platform I am observing following when we run this test case.
->
-> gta@DUT057-EHL:~/anand_devel/igt-gpu-tools/build/tests$ sudo ./perf --r stress-open-close
-> IGT-Version: 1.25-ge7603927 (x86_64) (Linux: 5.12.0-rc4-9900 x86_64)
-> Test requirement not met in function __real_main4900, file ../tests/i915/perf.c:5065:
-> Test requirement: intel_gen(devid) >= 12
-> Last errno: 2, No such file or directory
-> Starting subtest: stress-open-close
-> Subtest stress-open-close: SUCCESS (2.256s)
+> From: Latvala, Petri <petri.latvala@intel.com>
+> Sent: Friday, March 26, 2021 5:38 PM
+> To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> Cc: igt-dev@lists.freedesktop.org; Kunche, Kishore
+> <kishore.kunche@intel.com>
+> Subject: Re: [igt-dev] [v3 i-g-t] tests/kms_busy: Limit the execution to
+> two pipes
+> 
+> On Thu, Mar 11, 2021 at 02:33:54AM +0530, Bhanuprakash Modem wrote:
+> > As all pipes are symmetric, restrict the execution to two pipes
+> > can save lot of CI time.
+> >
+> > If we want to execute on all pipes, we need to pass an extra
+> > argument "-e" indicates extended.
+> >
+> > Example: ./build/tests/kms_busy -e --r basic
+> >
+> > V2, V3:
+> > * Fix the typo in args handler (Petri)
+> >
+> > Cc: Karthik B S <karthik.b.s@intel.com>
+> > Cc: Latvala Petri <petri.latvala@intel.com>
+> > Cc: Kunche Kishore <kishore.kunche@intel.com>
+> > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> > ---
+> >  tests/kms_busy.c | 138 ++++++++++++++++++++++++++---------------------
+> >  1 file changed, 77 insertions(+), 61 deletions(-)
+> >
+> > diff --git a/tests/kms_busy.c b/tests/kms_busy.c
+> > index df1f8e11a..9ced75742 100644
+> > --- a/tests/kms_busy.c
+> > +++ b/tests/kms_busy.c
+> > @@ -30,6 +30,15 @@
+> >
+> >  IGT_TEST_DESCRIPTION("Basic check of KMS ABI with busy framebuffers.");
+> >
+> > +/* restricted pipe count */
+> > +#define CRTC_RESTRICT_CNT 2
+> > +
+> > +static bool all_pipes = false;
+> > +
+> > +#define for_each_pipe_with_valid_output_limited(display, pipe, output,
+> pipe_count) \
+> > +	for_each_pipe_with_valid_output(display, pipe, output) \
+> > +			for_each_if(pipe_count-- > 0)
+> > +
+> 
+> 
+> I don't like the semantics of a loop like this (as I think I've
+> commented on another patch): The pipe_count parameter needs to be an
+> lvalue, the caller needs to remember to reset it (below code doesn't
+> do it)...
+
+Thanks Petri, I'll take care of this in next version.
+
+> 
+> 
+> 
+> >  static igt_output_t *
+> >  set_fb_on_crtc(igt_display_t *dpy, int pipe, struct igt_fb *fb)
+> >  {
+> > @@ -287,10 +296,41 @@ static void
+> test_pageflip_modeset_hang(igt_display_t *dpy, enum pipe pipe)
+> >  	igt_remove_fb(dpy->drm_fd, &fb);
+> >  }
+> >
+> > -igt_main
+> > +static int opt_handler(int opt, int opt_index, void *data)
+> > +{
+> > +	switch (opt) {
+> > +		case 'e':
+> > +			all_pipes = true;
+> > +			break;
+> > +		default:
+> > +			return IGT_OPT_HANDLER_ERROR;
+> > +	}
+> > +
+> > +	return IGT_OPT_HANDLER_SUCCESS;
+> > +}
+> > +
+> > +const char *help_str =
+> > +	"  -e \tRun on all pipes. (By default subtests will run on two
+> pipes)\n";
+> > +
+> > +igt_main_args("e", NULL, help_str, opt_handler, NULL)
+> >  {
+> >  	igt_display_t display = { .drm_fd = -1, .n_pipes = IGT_MAX_PIPES };
+> > -	enum pipe n;
+> > +
+> > +	int crtc_count;
+> > +	int i;
+> > +	struct {
+> > +		const char *name;
+> > +		bool modeset;
+> > +		bool hang_newfb;
+> > +		bool reset;
+> > +	} tests[] = {
+> > +		{ "extended-pageflip-hang-oldfb", false, false, false },
+> > +		{ "extended-pageflip-hang-newfb", false, true, false },
+> > +		{ "extended-modeset-hang-oldfb", true, false, false },
+> > +		{ "extended-modeset-hang-newfb", true, true, false },
+> > +		{ "extended-modeset-hang-oldfb-with-reset", true, false, true
+> },
+> > +		{ "extended-modeset-hang-newfb-with-reset", true, true, true },
+> > +	};
+> >
+> >  	igt_fixture {
+> >  		int fd = drm_open_driver_master(DRIVER_INTEL);
+> > @@ -305,84 +345,60 @@ igt_main
+> >
+> >  	/* XXX Extend to cover atomic rendering tests to all planes + legacy
+> */
+> >
+> > -	igt_subtest_with_dynamic("basic") { /* just run on the first pipe */
+> > +	igt_subtest_with_dynamic("basic") {
+> >  		enum pipe pipe;
+> >  		igt_output_t *output;
+> > +		crtc_count = (all_pipes)? display.n_pipes : CRTC_RESTRICT_CNT;
+> >
+> > -		for_each_pipe_with_valid_output(&display, pipe, output) {
+> > -			igt_dynamic("flip")
+> > +		for_each_pipe_with_valid_output_limited(&display, pipe, output,
+> crtc_count) {
+> > +			igt_dynamic_f("flip-pipe-%s", kmstest_pipe_name(pipe))
+> >  				test_flip(&display, pipe, false);
+> > -			igt_dynamic("modeset")
+> > +			igt_dynamic_f("modeset-pipe-%s", kmstest_pipe_name(pipe))
+> >  				test_flip(&display, pipe, true);
+> > -			break;
+> 
+> Commit message says this limits the amount of pipes used, but the
+> original code only executes on the first pipe.
+> 
+Without this patch
+
+These basic tests are without hang, running on single pipe:
+igt_subtest_with_dynamic("basic") {
+   igt_dynamic("flip");
+   igt_dynamic("modeset");
+   break;
+}
+And these tests are with hang, running on all pipes:
+for_each_pipe_static(pipe) {
+   Allow hang;
+   igt_subtest_f("basic-flip-pipe-%s");
+   igt_subtest_f("basic-modeset-pipe-%s");
+}
 
 
-Not sure I see where the issue is here.
-
-The stress-open-close test is passing and there are some warnings about 
-a requirement not met above.
-
-But as far as I know requirements are the way to tell whether a test can 
-be run or not.
-
-
--Lionel
-
-
->
-> So in order to fix this issue I propose to add below code in subtest.
->
-> igt_skip_on(intel_gen(devid) < 12);
->
-> So that the testcase will changes from SUCCESS to SKIP. Is this ok with you.
->
-> Subtest gen8-unprivileged-single-ctx-counters: SUCCESS (0.197s)
-> Starting subtest: gen12-mi-rpc
-> Test requirement not met in function gen12_test_mi_rpc, file ../tests/i915/perf.c:3008:
-> Test requirement: !(intel_gen(devid) < 12)
-> Subtest gen12-mi-rpc: SKIP (0.000s)
-> Starting subtest: gen12-oa-tlb-invalidate
-> Test requirement not met in function gen12_test_oa_tlb_invalidate, file ../tests/i915/perf.c:2392:
-> Test requirement: !(intel_gen(devid) < 12)
-> Subtest gen12-oa-tlb-invalidate: SKIP (0.000s)
-> Starting subtest: gen12-unprivileged-single-ctx-counters
-> Test requirement not met in function gen12_test_single_ctx_render_target_writes_a_counter, file ../tests/i915/perf.c:4122:
-> Test requirement: !(intel_gen(devid) < 12)
-> Subtest gen12-unprivileged-single-ctx-counters: SKIP (0.000s)
->
-> Thanks
-> -Anand
->
->
-> Thanks,
->
->
-> -Lionel
->
-
+With this patch it became:
+igt_subtest_with_dynamic("basic") {
+   igt_dynamic("flip");
+   igt_dynamic("modeset");
+   if (pipe_count >= 2)
+       break;
+}
+And we lost the basic tests with hang. I'll float a new version by
+addressing this. Thanks for the review.
+> 
+> 
+> --
+> Petri Latvala
+> 
+> 
+> >  		}
+> >  	}
+> >
+> > -	for_each_pipe_static(n) igt_subtest_group {
+> > -		igt_hang_t hang;
+> > -
+> > -		errno = 0;
+> > -
+> > -		igt_fixture {
+> > -			igt_display_require_output_on_pipe(&display, n);
+> > -		}
+> > -
+> > -		igt_subtest_f("basic-flip-pipe-%s", kmstest_pipe_name(n)) {
+> > -			test_flip(&display, n, false);
+> > -		}
+> > -		igt_subtest_f("basic-modeset-pipe-%s", kmstest_pipe_name(n)) {
+> > +	igt_subtest_with_dynamic("extended-pageflip-modeset-hang-oldfb") {
+> > +		enum pipe pipe;
+> > +		igt_output_t *output;
+> > +		crtc_count = (all_pipes)? display.n_pipes : CRTC_RESTRICT_CNT;
+> >
+> > -			test_flip(&display, n, true);
+> > -		}
+> > +		for_each_pipe_with_valid_output_limited(&display, pipe, output,
+> crtc_count) {
+> > +			igt_hang_t hang = igt_allow_hang(display.drm_fd, 0, 0);
+> > +			errno = 0;
+> >
+> > -		igt_fixture {
+> > -			hang = igt_allow_hang(display.drm_fd, 0, 0);
+> > -		}
+> > +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
+> > +				test_pageflip_modeset_hang(&display, pipe);
+> >
+> > -		igt_subtest_f("extended-pageflip-modeset-hang-oldfb-pipe-%s",
+> > -			      kmstest_pipe_name(n)) {
+> > -			test_pageflip_modeset_hang(&display, n);
+> > +			igt_disallow_hang(display.drm_fd, hang);
+> >  		}
+> > +	}
+> >
+> > -		igt_fixture
+> > -			igt_require(display.is_atomic);
+> > -
+> > -		igt_subtest_f("extended-pageflip-hang-oldfb-pipe-%s",
+> > -			      kmstest_pipe_name(n))
+> > -			test_hang(&display, n, false, false);
+> > -
+> > -		igt_subtest_f("extended-pageflip-hang-newfb-pipe-%s",
+> > -			      kmstest_pipe_name(n))
+> > -			test_hang(&display, n, false, true);
+> > -
+> > -		igt_subtest_f("extended-modeset-hang-oldfb-pipe-%s",
+> > -			      kmstest_pipe_name(n))
+> > -			test_hang(&display, n, true, false);
+> > -
+> > -		igt_subtest_f("extended-modeset-hang-newfb-pipe-%s",
+> > -			      kmstest_pipe_name(n))
+> > -			test_hang(&display, n, true, true);
+> > +	for (i = 0; i < sizeof(tests) / sizeof (tests[0]); i++) {
+> > +		igt_subtest_with_dynamic(tests[i].name) {
+> > +			enum pipe pipe;
+> > +			igt_output_t *output;
+> > +			crtc_count = (all_pipes)? display.n_pipes :
+> CRTC_RESTRICT_CNT;
+> >
+> > -		igt_subtest_f("extended-modeset-hang-oldfb-with-reset-pipe-%s",
+> > -			      kmstest_pipe_name(n)) {
+> > -			igt_set_module_param_int(display.drm_fd,
+> "force_reset_modeset_test", 1);
+> > +			for_each_pipe_with_valid_output_limited(&display, pipe,
+> output, crtc_count) {
+> > +				igt_hang_t hang;
+> > +				errno = 0;
+> >
+> > -			test_hang(&display, n, true, false);
+> > +				igt_require(display.is_atomic);
+> > +				hang = igt_allow_hang(display.drm_fd, 0, 0);
+> >
+> > -			igt_set_module_param_int(display.drm_fd,
+> "force_reset_modeset_test", 0);
+> > -		}
+> > +				igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
+> > +					if (tests[i].reset)
+> > +						igt_set_module_param_int(display.drm_fd,
+> "force_reset_modeset_test", 1);
+> >
+> > -		igt_subtest_f("extended-modeset-hang-newfb-with-reset-pipe-%s",
+> > -			      kmstest_pipe_name(n)) {
+> > -			igt_set_module_param_int(display.drm_fd,
+> "force_reset_modeset_test", 1);
+> > +					test_hang(&display, pipe, tests[i].modeset,
+> tests[i].hang_newfb);
+> >
+> > -			test_hang(&display, n, true, true);
+> > +					if (tests[i].reset)
+> > +						igt_set_module_param_int(display.drm_fd,
+> "force_reset_modeset_test", 0);
+> > +				}
+> >
+> > -			igt_set_module_param_int(display.drm_fd,
+> "force_reset_modeset_test", 0);
+> > -		}
+> > -
+> > -		igt_fixture {
+> > -			igt_disallow_hang(display.drm_fd, hang);
+> > +				igt_disallow_hang(display.drm_fd, hang);
+> > +			}
+> >  		}
+> >  	}
+> >
+> > --
+> > 2.20.1
+> >
+> > _______________________________________________
+> > igt-dev mailing list
+> > igt-dev@lists.freedesktop.org
+> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
