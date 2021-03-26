@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF3DB6EEAF
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Mar 2021 06:29:12 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Date: Fri, 26 Mar 2021 06:29:08 +0000
-Message-ID: <8caef4990e5645b4b0cba6237b4415fe@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E1C3E6EEB4
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Mar 2021 06:58:59 +0000 (UTC)
+Date: Fri, 26 Mar 2021 07:58:53 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210326065853.GA3927@zkempczy-mobl2>
 References: <20210326043303.67982-1-ashutosh.dixit@intel.com>
- <161673556118.10687.11984445367484468676@emeril.freedesktop.org>
- <875z1exytf.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <875z1exytf.wl-ashutosh.dixit@intel.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaTkxNTog?=
- =?utf-8?q?Skip_two_subsets_when_pread/pwrite_are_unavailable?=
+Content-Disposition: inline
+In-Reply-To: <20210326043303.67982-1-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915: Skip two subsets when
+ pread/pwrite are unavailable
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,39 +18,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UmUtcmVwb3J0ZWQuDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBEaXhpdCwg
-QXNodXRvc2ggPGFzaHV0b3NoLmRpeGl0QGludGVsLmNvbT4gDQpTZW50OiBUaHVyc2RheSwgTWFy
-Y2ggMjUsIDIwMjEgMTA6MzUgUE0NClRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsg
-VnVkdW0sIExha3NobWluYXJheWFuYSA8bGFrc2htaW5hcmF5YW5hLnZ1ZHVtQGludGVsLmNvbT4N
-ClN1YmplY3Q6IFJlOiDinJcgRmkuQ0kuQkFUOiBmYWlsdXJlIGZvciBpOTE1OiBTa2lwIHR3byBz
-dWJzZXRzIHdoZW4gcHJlYWQvcHdyaXRlIGFyZSB1bmF2YWlsYWJsZQ0KDQpPbiBUaHUsIDI1IE1h
-ciAyMDIxIDIyOjEyOjQxIC0wNzAwLCBQYXRjaHdvcmsgd3JvdGU6DQo+DQo+IFBhdGNoIERldGFp
-bHMNCj4NCj4gIFNlcmllczogIGk5MTU6IFNraXAgdHdvIHN1YnNldHMgd2hlbiBwcmVhZC9wd3Jp
-dGUgYXJlIHVuYXZhaWxhYmxlDQo+ICBVUkw6ICBodHRwczovL3BhdGNod29yay5mcmVlZGVza3Rv
-cC5vcmcvc2VyaWVzLzg4NDcwLw0KPiAgU3RhdGU6ICBmYWlsdXJlDQo+ICBEZXRhaWxzOiAgDQo+
-IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfNTY2OC9pbmRl
-eC5odG1sDQo+DQo+IENJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20gQ0lfRFJNXzk5MDAgLT4gSUdU
-UFdfNTY2OA0KPg0KPiBTdW1tYXJ5DQo+DQo+IEZBSUxVUkUNCj4NCj4gU2VyaW91cyB1bmtub3du
-IGNoYW5nZXMgY29taW5nIHdpdGggSUdUUFdfNTY2OCBhYnNvbHV0ZWx5IG5lZWQgdG8gYmUgDQo+
-IHZlcmlmaWVkIG1hbnVhbGx5Lg0KPg0KPiBJZiB5b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5n
-ZXMgaGF2ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhlIGNoYW5nZXMgDQo+IGludHJvZHVjZWQgaW4g
-SUdUUFdfNTY2OCwgcGxlYXNlIG5vdGlmeSB5b3VyIGJ1ZyB0ZWFtIHRvIGFsbG93IHRoZW0gdG8g
-DQo+IGRvY3VtZW50IHRoaXMgbmV3IGZhaWx1cmUgbW9kZSwgd2hpY2ggd2lsbCByZWR1Y2UgZmFs
-c2UgcG9zaXRpdmVzIGluIENJLg0KPg0KPiBFeHRlcm5hbCBVUkw6IA0KPiBodHRwczovL2ludGVs
-LWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzU2NjgvaW5kZXguaHRtbA0KPg0KPiBQ
-b3NzaWJsZSBuZXcgaXNzdWVzDQo+DQo+IEhlcmUgYXJlIHRoZSB1bmtub3duIGNoYW5nZXMgdGhh
-dCBtYXkgaGF2ZSBiZWVuIGludHJvZHVjZWQgaW4gSUdUUFdfNTY2ODoNCj4NCj4gSUdUIGNoYW5n
-ZXMNCj4NCj4gUG9zc2libGUgcmVncmVzc2lvbnMNCj4NCj4gKiBpZ3RAaTkxNV9zZWxmdGVzdEBs
-aXZlQGhhbmdjaGVjazoNCj4NCj4gICogZmktYnl0LWoxOTAwOiBOT1RSVU4gLT4gRE1FU0ctV0FS
-Tg0KDQpUaGlzIGlzIGEgZmFsc2UgcG9zaXRpdmUsIHRoaXMgcGF0Y2ggY2Fubm90IGNhdXNlIHRo
-aXMgdGVzdCB0byBmYWlsLiBUaGFua3MuDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVk
-ZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2lndC1kZXYK
+On Thu, Mar 25, 2021 at 09:33:03PM -0700, Ashutosh Dixit wrote:
+> The pread/pwrite replacement implemented in
+> ad5eb02eb3f1 ("lib/ioctl_wrappers: Keep IGT working without pread/pwrite
+> ioctls") uses gem_set_domain which pins all pages which have to be
+> read/written. When the read/write size is large this causes gem_set_domain
+> to return -ENOMEM with a trace such as:
+> 
+> ioctl_wrappers-CRITICAL: Test assertion failure function gem_set_domain, file ../lib/ioctl_wrappers.c:563:
+> ioctl_wrappers-CRITICAL: Failed assertion: __gem_set_domain(fd, handle, read, write) == 0
+> ioctl_wrappers-CRITICAL: Last errno: 12, Cannot allocate memory
+> ioctl_wrappers-CRITICAL: error: -12 != 0
+> igt_core-INFO: Stack trace:
+> igt_core-INFO:   #0 ../lib/igt_core.c:1746 __igt_fail_assert()
+> igt_core-INFO:   #1 [gem_set_domain+0x44]
+> igt_core-INFO:   #2 ../lib/ioctl_wrappers.c:367 gem_write()
+> igt_core-INFO:   #3 ../tests/prime_mmap.c:67 test_aperture_limit()
+> igt_core-INFO:   #4 ../tests/prime_mmap.c:578 __real_main530()
+> igt_core-INFO:   #5 ../tests/prime_mmap.c:530 main()
+> 
+> Skip these tests when pread/pwrite are unavailable because they cannot pass
+> with the pread/pwrite replacement.
+> 
+> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> ---
+>  tests/i915/gem_exec_params.c | 2 ++
+>  tests/prime_mmap.c           | 2 ++
+>  2 files changed, 4 insertions(+)
+> 
+> diff --git a/tests/i915/gem_exec_params.c b/tests/i915/gem_exec_params.c
+> index 6840cf40ce..a7bcd39d32 100644
+> --- a/tests/i915/gem_exec_params.c
+> +++ b/tests/i915/gem_exec_params.c
+> @@ -314,6 +314,8 @@ static void test_larger_than_life_batch(int fd)
+>  	 */
+>  	igt_require(size < gem_aperture_size(fd));
+>  	intel_require_memory(2, size, CHECK_RAM); /* batch + shadow */
+> +	/* Prevent gem_set_domain -ENOMEM failures */
+> +	gem_require_pread_pwrite(fd);
+
+I have doubts regarding that test. 
+
+What is real cause we got -ENOMEM in that subtest? And on which 
+machines? I've enforced on my SKL (gen9) to use mmap/set_domain 
+and I see success on that test.
+
+Why require:
+
+	igt_require(size < gem_aperture_size(fd));
+
+comes after:
+
+	uint64_t size = 1ULL << 32; /* batch_len is __u32 as per the ABI */
+	struct drm_i915_gem_exec_object2 exec = {
+		.handle = batch_create_size(fd, size),
+	};
+
+I think require before mmap/set_domain would catch this issue.
+
+--
+Zbigniew
+ 
+>  
+>  	__for_each_physical_engine(fd, e) {
+>  		/* Keep the batch_len implicit [0] */
+> diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
+> index cdf2d51497..af313917da 100644
+> --- a/tests/prime_mmap.c
+> +++ b/tests/prime_mmap.c
+> @@ -451,6 +451,8 @@ test_aperture_limit(void)
+>  	uint64_t size1 = (gem_mappable_aperture_size(fd) * 7) / 8;
+>  	uint64_t size2 = (gem_mappable_aperture_size(fd) * 3) / 8;
+>  
+> +	/* Prevent gem_set_domain -ENOMEM failures */
+> +	gem_require_pread_pwrite(fd);
+>  	handle1 = gem_create(fd, size1);
+>  	fill_bo(handle1, BO_SIZE);
+>  
+> -- 
+> 2.29.2
+> 
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
