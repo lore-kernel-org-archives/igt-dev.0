@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-il1-x136.google.com (mail-il1-x136.google.com
- [IPv6:2607:f8b0:4864:20::136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 11E106E3FC
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Mar 2021 13:06:44 +0000 (UTC)
-Received: by mail-il1-x136.google.com with SMTP id w2so10679940ilj.12
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Mar 2021 06:06:44 -0700 (PDT)
+Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com
+ [IPv6:2607:f8b0:4864:20::d34])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 422696E420
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Mar 2021 14:03:49 +0000 (UTC)
+Received: by mail-io1-xd34.google.com with SMTP id z3so12843164ioc.8
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Mar 2021 07:03:49 -0700 (PDT)
 From: Aurabindo Pillai <mail@aurabindo.in>
-Date: Mon, 29 Mar 2021 09:06:42 -0400
-Message-Id: <20210329130642.236359-1-mail@aurabindo.in>
+Date: Mon, 29 Mar 2021 10:03:47 -0400
+Message-Id: <20210329140347.240201-1-mail@aurabindo.in>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] tests/amdgpu: Add test description for amd_abm
+Subject: [igt-dev] [PATCH v2] tests/amdgpu: Add test description for amd_abm
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,7 +28,8 @@ From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
 Add overall test description for amd_abm
 
-Change-Id: I4baa52ea66189688b12a82befbbd842ba3d3a24d
+Changed in v2: Removed change id.
+
 Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
 ---
  tests/amdgpu/amd_abm.c | 2 ++
