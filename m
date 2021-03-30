@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 635DA6E044
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Mar 2021 18:02:47 +0000 (UTC)
-Date: Tue, 30 Mar 2021 11:02:16 -0700
-From: Matt Roper <matthew.d.roper@intel.com>
-Message-ID: <20210330180216.GK602945@mdroper-desk1.amr.corp.intel.com>
-References: <20210318235426.448465-1-lucas.demarchi@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2BCC56E947
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Mar 2021 18:06:05 +0000 (UTC)
+From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Date: Tue, 30 Mar 2021 18:06:00 +0000
+Message-ID: <b6e87624b5404a29bd8cf59dde705614@intel.com>
+References: <20210330035056.52019-1-ashutosh.dixit@intel.com>
+ <161708206647.22471.13837189475686372810@emeril.freedesktop.org>
+ <87tuot19hw.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <87tuot19hw.wl-ashutosh.dixit@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210318235426.448465-1-lucas.demarchi@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tool/lsgpu: Fix memory leak when no
- device is found
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgaTkxNTog?=
+ =?utf-8?q?Avoid_set=5Fdomain_-ENOMEM_error_with_huge_buffers?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,86 +21,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Ayaz A Siddiqui <ayaz.siddiqui@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Mar 18, 2021 at 04:54:26PM -0700, Lucas De Marchi wrote:
-> From: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-> 
-> Memory allocated during device scan were not being freed.
-> added call of igt_devices_free().
-> 
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-
-Is this just to appease static analysis?  If the program is already
-terminating, all of the memory is going to immediately get freed by the
-OS anyway, so I'm not sure it really matters.  But the changes here look
-fine so,
-
-Acked-by: Matt Roper <matthew.d.roper@intel.com>
-
-> ---
->  tools/lsgpu.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tools/lsgpu.c b/tools/lsgpu.c
-> index 25358bbe..27e76f26 100644
-> --- a/tools/lsgpu.c
-> +++ b/tools/lsgpu.c
-> @@ -171,7 +171,7 @@ int main(int argc, char *argv[])
->  		{"help",              no_argument,       NULL, OPT_HELP},
->  		{0, 0, 0, 0}
->  	};
-> -	int c, index = 0;
-> +	int c, ret = 0, index = 0;
->  	char *env_device = NULL, *opt_device = NULL, *rc_device = NULL;
->  	struct igt_devices_print_format fmt = {
->  			.type = IGT_PRINT_USER,
-> @@ -257,7 +257,8 @@ int main(int argc, char *argv[])
->  
->  		if (!igt_device_card_match(igt_device, &card)) {
->  			printf("No device found for the filter\n\n");
-> -			return -1;
-> +			ret = -1;
-> +			goto out;
->  		}
->  
->  		printf("Device detail:\n");
-> @@ -272,9 +273,10 @@ int main(int argc, char *argv[])
->  	} else {
->  		igt_devices_print(&fmt);
->  	}
-> -
-> +out:
-> +	igt_devices_free();
->  	free(rc_device);
->  	free(opt_device);
->  
-> -	return 0;
-> +	return ret;
->  }
-> -- 
-> 2.30.1
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
--- 
-Matt Roper
-Graphics Software Engineer
-VTT-OSGC Platform Enablement
-Intel Corporation
-(916) 356-2795
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+UmUtcmVwb3J0ZWQuDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBEaXhpdCwg
+QXNodXRvc2ggPGFzaHV0b3NoLmRpeGl0QGludGVsLmNvbT4gDQpTZW50OiBNb25kYXksIE1hcmNo
+IDI5LCAyMDIxIDEwOjQ0IFBNDQpUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7IFZ1
+ZHVtLCBMYWtzaG1pbmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1bUBpbnRlbC5jb20+DQpT
+dWJqZWN0OiBSZTog4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgaTkxNTogQXZvaWQgc2V0X2Rv
+bWFpbiAtRU5PTUVNIGVycm9yIHdpdGggaHVnZSBidWZmZXJzDQoNCk9uIE1vbiwgMjkgTWFyIDIw
+MjEgMjI6Mjc6NDYgLTA3MDAsIFBhdGNod29yayB3cm90ZToNCj4NCj4gWzEgIDx0ZXh0L3BsYWlu
+OyB1dGYtOCAoN2JpdCk+XQ0KPiBbMiAgPHRleHQvaHRtbDsgdXRmLTggKHF1b3RlZC1wcmludGFi
+bGUpPl0gUHJvamVjdCBMaXN0IC0gUGF0Y2h3b3JrDQo+DQo+IFBhdGNoIERldGFpbHMNCj4NCj4g
+IFNlcmllczogIGk5MTU6IEF2b2lkIHNldF9kb21haW4gLUVOT01FTSBlcnJvciB3aXRoIGh1Z2Ug
+YnVmZmVycw0KPiAgVVJMOiAgaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmll
+cy84ODU2MS8NCj4gIFN0YXRlOiAgZmFpbHVyZQ0KPiAgRGV0YWlsczogIA0KPiBodHRwczovL2lu
+dGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzU2NzUvaW5kZXguaHRtbA0KPg0K
+PiBDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIENJX0RSTV85OTE0X2Z1bGwgLT4gSUdUUFdfNTY3
+NV9mdWxsDQo+DQo+IFN1bW1hcnkNCj4NCj4gRkFJTFVSRQ0KPg0KPiBTZXJpb3VzIHVua25vd24g
+Y2hhbmdlcyBjb21pbmcgd2l0aCBJR1RQV181Njc1X2Z1bGwgYWJzb2x1dGVseSBuZWVkIHRvIA0K
+PiBiZSB2ZXJpZmllZCBtYW51YWxseS4NCj4NCj4gSWYgeW91IHRoaW5rIHRoZSByZXBvcnRlZCBj
+aGFuZ2VzIGhhdmUgbm90aGluZyB0byBkbyB3aXRoIHRoZSBjaGFuZ2VzIA0KPiBpbnRyb2R1Y2Vk
+IGluIElHVFBXXzU2NzVfZnVsbCwgcGxlYXNlIG5vdGlmeSB5b3VyIGJ1ZyB0ZWFtIHRvIGFsbG93
+IA0KPiB0aGVtIHRvIGRvY3VtZW50IHRoaXMgbmV3IGZhaWx1cmUgbW9kZSwgd2hpY2ggd2lsbCBy
+ZWR1Y2UgZmFsc2UgcG9zaXRpdmVzIGluIENJLg0KPg0KPiBFeHRlcm5hbCBVUkw6IA0KPiBodHRw
+czovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzU2NzUvaW5kZXguaHRt
+bA0KPg0KPiBQb3NzaWJsZSBuZXcgaXNzdWVzDQo+DQo+IEhlcmUgYXJlIHRoZSB1bmtub3duIGNo
+YW5nZXMgdGhhdCBtYXkgaGF2ZSBiZWVuIGludHJvZHVjZWQgaW4gSUdUUFdfNTY3NV9mdWxsOg0K
+Pg0KPiBJR1QgY2hhbmdlcw0KPg0KPiBQb3NzaWJsZSByZWdyZXNzaW9ucw0KPg0KPiAqIGlndEBw
+ZXJmQHBvbGxpbmctcGFyYW1ldGVyaXplZDoNCj4NCj4gICogc2hhcmQtaWNsYjogUEFTUyAtPiBT
+S0lQDQo+DQo+ICAqIHNoYXJkLXRnbGI6IFBBU1MgLT4gU0tJUA0KDQpUaGlzIGlzIGZhbHNlIHBv
+c2l0aXZlLiBUaGlzIHBhdGNoIGNhbm5vdCBhZmZlY3QgdGhpcyB0ZXN0LiBJdCBjYW4gb25seSBh
+ZmZlY3QgaWd0QHByaW1lX21tYXAgYW5kIGlndEBnZW1fZXhlY19wYXJhbXMuIFRoYW5rcy4NCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFp
+bGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
