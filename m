@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 587E56E910
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Mar 2021 14:40:41 +0000 (UTC)
-Date: Tue, 30 Mar 2021 17:40:37 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <YGM4ZUNzzYKt1xwO@intel.com>
-References: <20210324183008.18170-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210324183008.18170-1-juhapekka.heikkila@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: use flipping
- instead of frontbuffer
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 30 Mar 2021 15:07:33 -0000
+Message-ID: <161711685396.22471.12490798614474379812@emeril.freedesktop.org>
+References: <20210330035056.52019-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20210330035056.52019-1-ashutosh.dixit@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNTog?=
+ =?utf-8?q?Avoid_set=5Fdomain_-ENOMEM_error_with_huge_buffers?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,347 +14,291 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1045256849=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Mar 24, 2021 at 08:30:08PM +0200, Juha-Pekka Heikkila wrote:
-> take out frontbuffer usage from this test as it may fail this test
-> on frontbuffer related issues instead of cursor issues
-> =
+--===============1045256849==
+Content-Type: multipart/alternative;
+ boundary="===============2745376911938702147=="
 
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->  tests/kms_cursor_crc.c | 98 +++++++++++++++++++++++-------------------
->  1 file changed, 54 insertions(+), 44 deletions(-)
-> =
+--===============2745376911938702147==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-> index 13d6156c9..d172d703e 100644
-> --- a/tests/kms_cursor_crc.c
-> +++ b/tests/kms_cursor_crc.c
-> @@ -70,8 +70,8 @@ typedef struct {
->  #define TEST_DPMS (1<<0)
->  #define TEST_SUSPEND (1<<1)
->  =
+== Series Details ==
 
-> -#define FRONTBUFFER 0
-> -#define RESTOREBUFFER 1
-> +#define HWCURSORBUFFER 0
-> +#define SWCOMPARISONBUFFER 1
->  =
+Series: i915: Avoid set_domain -ENOMEM error with huge buffers
+URL   : https://patchwork.freedesktop.org/series/88561/
+State : success
 
->  static void draw_cursor(cairo_t *cr, int x, int y, int cw, int ch, doubl=
-e a)
->  {
-> @@ -144,22 +144,16 @@ static bool cursor_visible(data_t *data, int x, int=
- y)
->  	return true;
->  }
->  =
+== Summary ==
 
-> -static void restore_image(data_t *data)
-> +static void restore_image(data_t *data, uint32_t buffer)
->  {
->  	cairo_t *cr;
-> -	igt_display_t *display =3D &data->display;
->  =
+CI Bug Log - changes from CI_DRM_9914 -> IGTPW_5675
+====================================================
 
-> -	/* rendercopy stripped in igt using cairo */
-> -	cr =3D igt_get_cairo_ctx(data->drm_fd,
-> -			       &data->primary_fb[FRONTBUFFER]);
-> +	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[buffer]);
->  	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
->  	cairo_set_source_surface(cr, data->surface, 0, 0);
->  	cairo_rectangle(cr, 0, 0, data->screenw, data->screenh);
->  	cairo_fill(cr);
->  	igt_put_cairo_ctx(cr);
-> -	igt_dirty_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-> -	igt_wait_for_vblank(data->drm_fd,
-> -			    display->pipes[data->pipe].crtc_offset);
->  }
->  =
+Summary
+-------
 
->  static void do_single_test(data_t *data, int x, int y)
-> @@ -168,13 +162,11 @@ static void do_single_test(data_t *data, int x, int=
- y)
->  	igt_pipe_crc_t *pipe_crc =3D data->pipe_crc;
->  	igt_crc_t crc, ref_crc;
->  	cairo_t *cr;
-> -	int ret =3D 0;
-> +	int ret =3D 0, hwcursorframe;
->  =
+  **SUCCESS**
 
->  	igt_print_activity();
->  =
+  No regressions found.
 
->  	/* Hardware test */
-> -	restore_image(data);
-> -
->  	igt_plane_set_position(data->cursor, x, y);
->  	cursor_enable(data);
->  =
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/index.html
 
-> @@ -182,19 +174,21 @@ static void do_single_test(data_t *data, int x, int=
- y)
->  		ret =3D igt_display_try_commit2(display, COMMIT_LEGACY);
->  		igt_assert_eq(ret, -EINVAL);
->  		igt_plane_set_position(data->cursor, 0, y);
-> -
->  		return;
->  	}
->  =
+Known issues
+------------
 
->  	igt_display_commit(display);
->  =
+  Here are the changes found in IGTPW_5675 that come from known issues:
 
-> -	/* Extra vblank wait is because nonblocking cursor ioctl */
-> -	igt_wait_for_vblank(data->drm_fd,
-> -			display->pipes[data->pipe].crtc_offset);
-> -	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
-> +	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
-> +	igt_display_commit(display);
-> +
-> +	hwcursorframe =3D kmstest_get_vblank(data->drm_fd, data->pipe, 0) + 1;
-> +	restore_image(data, SWCOMPARISONBUFFER);
->  =
+### IGT changes ###
 
->  	if (data->flags & (TEST_DPMS | TEST_SUSPEND)) {
->  		igt_crc_t crc_after;
-> +		/* Extra vblank wait to build full crc before dpms/suspend */
-> +		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
->  		/*
->  		 * stop/start crc to avoid dmesg notifications about userspace
->  		 * reading too slow.
-> @@ -220,18 +214,22 @@ static void do_single_test(data_t *data, int x, int=
- y)
->  		igt_assert_crc_equal(&crc, &crc_after);
->  	}
->  =
+#### Issues hit ####
 
-> -	cursor_disable(data);
-> -
->  	/* Now render the same in software and collect crc */
-> -	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-> +	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBU=
-FFER]);
->  	draw_cursor(cr, x, y, data->curw, data->curh, 1.0);
->  	igt_put_cairo_ctx(cr);
-> +	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
->  	igt_display_commit(display);
-> -	igt_dirty_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-> -	/* Extra vblank wait is because nonblocking cursor ioctl */
-> +
-> +	cursor_disable(data);
-> +	igt_display_commit(display);
+  * igt@amdgpu/amd_cs_nop@sync-fork-gfx0:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][1] ([fdo#109271]) +19 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-skl-6600u/igt@amdgpu/amd_cs_nop@sync-fork-gfx0.html
 
-Why the double commit?
+  * igt@fbdev@write:
+    - fi-tgl-y:           [PASS][2] -> [DMESG-WARN][3] ([i915#402]) +1 similar issue
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9914/fi-tgl-y/igt@fbdev@write.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-tgl-y/igt@fbdev@write.html
 
-> +
->  	igt_wait_for_vblank(data->drm_fd,
->  			display->pipes[data->pipe].crtc_offset);
+  * igt@gem_huc_copy@huc-copy:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#2190])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html
 
-Why is this still here? Ah, legacy commits means cursor doesn't
-block. Still a single commit should be fine AFAICS, even if
-we need to keep the extra vblank waits.
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-skl-6600u:       NOTRUN -> [FAIL][5] ([i915#3239])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-skl-6600u/igt@i915_pm_rpm@basic-pci-d3-state.html
 
->  =
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-7500u:       [PASS][6] -> [DMESG-WARN][7] ([i915#2605])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9914/fi-kbl-7500u/igt@i915_pm_rpm@module-reload.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-kbl-7500u/igt@i915_pm_rpm@module-reload.html
 
-> +	if (!(data->flags & (TEST_DPMS | TEST_SUSPEND)))
-> +		igt_pipe_crc_get_for_frame(data->drm_fd, pipe_crc, hwcursorframe, &crc=
-);
+  * igt@kms_chamelium@vga-edid-read:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-skl-6600u/igt@kms_chamelium@vga-edid-read.html
 
-Why are we not just grabbing the crc earlier like we used to?
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][9] ([fdo#109271] / [i915#533])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-skl-6600u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
 
-> +
->  	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
->  	igt_assert_crc_equal(&crc, &ref_crc);
->  }
-> @@ -244,8 +242,6 @@ static void do_fail_test(data_t *data, int x, int y, =
-int expect)
->  	igt_print_activity();
->  =
+  * igt@runner@aborted:
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][10] ([i915#1602] / [i915#2029])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-bdw-5557u/igt@runner@aborted.html
 
->  	/* Hardware test */
-> -	restore_image(data);
-> -
->  	cursor_enable(data);
->  	igt_plane_set_position(data->cursor, x, y);
->  	ret =3D igt_display_try_commit2(display, COMMIT_LEGACY);
-> @@ -367,8 +363,8 @@ static void cleanup_crtc(data_t *data)
->  	igt_plane_set_fb(data->primary, NULL);
->  	igt_display_commit(display);
->  =
+  
+#### Possible fixes ####
 
-> -	igt_remove_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-> -	igt_remove_fb(data->drm_fd, &data->primary_fb[RESTOREBUFFER]);
-> +	igt_remove_fb(data->drm_fd, &data->primary_fb[HWCURSORBUFFER]);
-> +	igt_remove_fb(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
->  =
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-skl-6600u:       [INCOMPLETE][11] ([i915#198]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9914/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
 
->  	igt_display_reset(display);
->  }
-> @@ -389,18 +385,18 @@ static void prepare_crtc(data_t *data, igt_output_t=
- *output,
->  			    DRM_FORMAT_XRGB8888,
->  			    LOCAL_DRM_FORMAT_MOD_NONE,
->  			    0.0, 0.0, 0.0,
-> -			    &data->primary_fb[FRONTBUFFER]);
-> +			    &data->primary_fb[HWCURSORBUFFER]);
->  =
+  * igt@gem_flink_basic@double-flink:
+    - fi-tgl-y:           [DMESG-WARN][13] ([i915#402]) -> [PASS][14] +1 similar issue
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9914/fi-tgl-y/igt@gem_flink_basic@double-flink.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-tgl-y/igt@gem_flink_basic@double-flink.html
 
->  	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
->  			    DRM_FORMAT_XRGB8888,
->  			    LOCAL_DRM_FORMAT_MOD_NONE,
->  			    0.0, 0.0, 0.0,
-> -			    &data->primary_fb[RESTOREBUFFER]);
-> +			    &data->primary_fb[SWCOMPARISONBUFFER]);
->  =
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-kbl-7500u:       [FAIL][15] ([i915#1372]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9914/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
 
->  	data->primary =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIM=
-ARY);
->  	data->cursor =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_CURSO=
-R);
->  =
+  
+#### Warnings ####
 
-> -	igt_plane_set_fb(data->primary, &data->primary_fb[FRONTBUFFER]);
-> +	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
->  =
+  * igt@i915_pm_rpm@module-reload:
+    - fi-glk-dsi:         [DMESG-WARN][17] ([i915#1982] / [i915#3143]) -> [DMESG-WARN][18] ([i915#3143])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9914/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html
 
->  	igt_display_commit(display);
->  =
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1372]: https://gitlab.freedesktop.org/drm/intel/issues/1372
+  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
+  [i915#198]: https://gitlab.freedesktop.org/drm/intel/issues/198
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2029]: https://gitlab.freedesktop.org/drm/intel/issues/2029
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2605]: https://gitlab.freedesktop.org/drm/intel/issues/2605
+  [i915#3143]: https://gitlab.freedesktop.org/drm/intel/issues/3143
+  [i915#3239]: https://gitlab.freedesktop.org/drm/intel/issues/3239
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
 
-> @@ -428,6 +424,10 @@ static void prepare_crtc(data_t *data, igt_output_t =
-*output,
->  	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
->  	igt_paint_test_pattern(cr, data->screenw, data->screenh);
->  	cairo_destroy(cr);
-> +
-> +	/* Set HW cusor buffer in place */
-> +	restore_image(data, HWCURSORBUFFER);
-> +
->  	igt_pipe_crc_start(data->pipe_crc);
->  }
->  =
 
-> @@ -447,6 +447,15 @@ static void test_cursor_alpha(data_t *data, double a)
->  				    LOCAL_DRM_FORMAT_MOD_NONE,
->  				    &data->fb);
->  	igt_assert(fb_id);
-> +
-> +	/* empty buffer */
-> +	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[HWCURSORBUFFER=
-]);
-> +	igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
-> +			0.0, 0.0, 0.0);
-> +	igt_put_cairo_ctx(cr);
-> +	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
-> +	igt_display_commit(display);
+Participating hosts (44 -> 38)
+------------------------------
 
-Why are we rendering this again? Shouldn't this fb remaing unchanged
-throughout the test?
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-tgl-u2 fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
 
-> +
->  	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->fb);
->  	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
->  	igt_put_cairo_ctx(cr);
-> @@ -462,23 +471,17 @@ static void test_cursor_alpha(data_t *data, double =
-a)
->  	igt_remove_fb(data->drm_fd, &data->fb);
->  =
 
->  	/* Software Test - render cursor in software, drawn it directly on PF */
-> -	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-> +	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBU=
-FFER]);
->  	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
->  	igt_put_cairo_ctx(cr);
-> -
-> +	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
->  	igt_display_commit(display);
->  	igt_wait_for_vblank(data->drm_fd,
-> -			display->pipes[data->pipe].crtc_offset);
-> +			    display->pipes[data->pipe].crtc_offset);
->  	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
->  =
+Build changes
+-------------
 
->  	/* Compare CRC from Hardware/Software tests */
->  	igt_assert_crc_equal(&crc, &ref_crc);
-> -
-> -	/*Clear Screen*/
-> -	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-> -	igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
-> -			0.0, 0.0, 0.0);
-> -	igt_put_cairo_ctx(cr);
->  }
->  =
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6047 -> IGTPW_5675
 
->  static void test_cursor_transparent(data_t *data)
-> @@ -582,6 +585,11 @@ static void test_cursor_size(data_t *data)
->  			      &data->fb);
->  	igt_assert(fb_id);
->  =
+  CI-20190529: 20190529
+  CI_DRM_9914: 808d9e2b1a7dbaede3bd8b5860eb2c33adec9510 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5675: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/index.html
+  IGT_6047: 3887134e739f480cefe1dc7f13eb54f7bf3ca27f @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
-> +	/* empty buffer */
-> +	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[HWCURSORBUFFER=
-]);
-> +	igt_paint_color(cr, 0, 0, data->screenw, data->screenh, 0.0, 0.0, 0.0);
-> +	igt_put_cairo_ctx(cr);
+== Logs ==
 
-Another one.
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/index.html
 
-> +
->  	/* Use a solid white rectangle as the cursor */
->  	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->fb);
->  	igt_paint_color_alpha(cr, 0, 0, cursor_max_size, cursor_max_size, 1.0, =
-1.0, 1.0, 1.0);
-> @@ -604,16 +612,18 @@ static void test_cursor_size(data_t *data)
->  	/* Software test loop */
->  	for (i =3D 0, size =3D cursor_max_size; size >=3D 64; size /=3D 2, i++)=
- {
->  		/* Now render the same in software and collect crc */
-> -		cr =3D igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-> +		cr =3D igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[HWCURSORBUFFE=
-R]);
->  		igt_paint_color_alpha(cr, 0, 0, size, size, 1.0, 1.0, 1.0, 1.0);
->  		igt_put_cairo_ctx(cr);
+--===============2745376911938702147==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-and here.
 
-> -
-> +		igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
->  		igt_display_commit(display);
-> -		igt_wait_for_vblank(data->drm_fd,
-> -				display->pipes[data->pipe].crtc_offset);
->  		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
-> +
->  		/* Clear screen afterwards */
-> -		cr =3D igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-> +		igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
-> +		igt_display_commit(display);
-> +
-> +		cr =3D igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[HWCURSORBUFFE=
-R]);
->  		igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
->  				0.0, 0.0, 0.0);
->  		igt_put_cairo_ctx(cr);
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
-Hmm. This loop is now a bit confusing. We're flipping back
-and forth between the two fbs on the primary plane but we
-only actually care what happens during the sw side of it.
-Might make sense to combine the two loops, grab the crc for
-the hw and sw cursor back-to-back, and thus just get
-rid of the crc[] array entirely.
 
--- =
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915: Avoid set_domain -ENOMEM error with huge buffers</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88561/">https://patchwork.freedesktop.org/series/88561/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-Ville Syrj=E4l=E4
-Intel
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9914 -&gt; IGTPW_5675</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5675 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-fork-gfx0:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-skl-6600u/igt@amdgpu/amd_cs_nop@sync-fork-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +19 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@fbdev@write:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9914/fi-tgl-y/igt@fbdev@write.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-tgl-y/igt@fbdev@write.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-skl-6600u/igt@i915_pm_rpm@basic-pci-d3-state.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3239">i915#3239</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9914/fi-kbl-7500u/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-kbl-7500u/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2605">i915#2605</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@vga-edid-read:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-skl-6600u/igt@kms_chamelium@vga-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-skl-6600u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2029">i915#2029</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9914/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/198">i915#198</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_flink_basic@double-flink:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9914/fi-tgl-y/igt@gem_flink_basic@double-flink.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-tgl-y/igt@gem_flink_basic@double-flink.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9914/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1372">i915#1372</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>fi-glk-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9914/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3143">i915#3143</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3143">i915#3143</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (44 -&gt; 38)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-tgl-u2 fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6047 -&gt; IGTPW_5675</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9914: 808d9e2b1a7dbaede3bd8b5860eb2c33adec9510 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5675: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5675/index.html<br />
+  IGT_6047: 3887134e739f480cefe1dc7f13eb54f7bf3ca27f @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============2745376911938702147==--
+
+--===============1045256849==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1045256849==--
