@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 415656E8C4
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Mar 2021 12:34:07 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+Date: Tue, 30 Mar 2021 12:34:04 +0000
+Message-ID: <82eb1d95afcd4383ac8a15e2a2d64e48@intel.com>
+References: <20210325171222.26283-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20210325171222.26283-1-juhapekka.heikkila@gmail.com>
+Content-Language: en-US
 MIME-Version: 1.0
-References: <20210318162400.2065097-1-tvrtko.ursulin@linux.intel.com>
- <20210318162400.2065097-2-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20210318162400.2065097-2-tvrtko.ursulin@linux.intel.com>
-From: Matthew Auld <matthew.william.auld@gmail.com>
-Date: Tue, 30 Mar 2021 11:49:56 +0100
-Message-ID: <CAM0jSHOx2qmW0-BsBZBEGcg2rREGi=2QePymqzfAyQUCKg-Ggw@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib: Add helper for reading
- modparam values
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_flip_scaled_crc: skip test if
+ no requested mode and exceed cdclk limits
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,61 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Intel Graphics Development <Intel-gfx@lists.freedesktop.org>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 18 Mar 2021 at 16:24, Tvrtko Ursulin
-<tvrtko.ursulin@linux.intel.com> wrote:
->
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->
-> Add __igt_params_get for simple reading of modparams.
->
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Juha-
+> Pekka Heikkila
+> Sent: Thursday, March 25, 2021 7:12 PM
+> To: igt-dev@lists.freedesktop.org
+> Subject: [igt-dev] [PATCH i-g-t] tests/kms_flip_scaled_crc: skip test if no
+> requested mode and exceed cdclk limits
+> 
+> If there was no requested 640p or 1080p mode available in connector and
+> flipping to scaled fb fail with einval assume cdclk limits were exceeded and
+> skip test instead of failing.
+> 
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+
 > ---
->  lib/igt_params.c | 26 ++++++++++++++++++++++++++
->  lib/igt_params.h |  2 ++
->  2 files changed, 28 insertions(+)
->
-> diff --git a/lib/igt_params.c b/lib/igt_params.c
-> index c06416988baa..1dc6de77b2e0 100644
-> --- a/lib/igt_params.c
-> +++ b/lib/igt_params.c
-> @@ -156,6 +156,32 @@ int igt_params_open(int device)
->         return params;
->  }
->
-> +/**
-> + * __igt_params_get:
-> + * @device: fd of the device
-> + * @parameter: the name of the parameter to set
-
-to get
-
-> + *
-> + * This reads the value of the modparam.
-> + *
-> + * Returns:
-> + * A nul-terminated string, must be freed by caller after use, or NULL
-> + * on failure.
-> + */
-> +char *__igt_params_get(int device, const char *parameter)
-> +{
-> +       char *str;
-> +       int dir;
-> +
-> +       dir = igt_params_open(device);
-> +       if (dir < 0)
-> +               return NULL;
-> +
-> +       str = igt_sysfs_get(dir, parameter);
-> +       close(dir);
-> +
-> +       return str;
-> +}
-
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+>  tests/kms_flip_scaled_crc.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/tests/kms_flip_scaled_crc.c b/tests/kms_flip_scaled_crc.c index
+> c41709b68..35417396e 100644
+> --- a/tests/kms_flip_scaled_crc.c
+> +++ b/tests/kms_flip_scaled_crc.c
+> @@ -204,6 +204,9 @@ static void test_flip_to_scaled(data_t *data, uint32_t
+> index, enum pipe pipe,
+> 
+>  	igt_require_f(ret != -ERANGE,
+>  		      "Platform scaling limits exceeded, skipping.\n");
+> +	igt_require_f(!(ret == -EINVAL && !modetoset),
+> +		      "No %dp and default mode too big, cdclk limits exceeded.
+> Skipping.\n",
+> +		      data->attemptmodeheight);
+>  	igt_assert_eq(ret, 0);
+> 
+>  	igt_assert(read(data->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
+> --
+> 2.28.0
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
