@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EAB236E0D0
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Mar 2021 22:02:46 +0000 (UTC)
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Tue, 30 Mar 2021 15:02:40 -0700
-Message-Id: <20210330220240.62379-1-ashutosh.dixit@intel.com>
-In-Reply-To: <20210330035056.52019-1-ashutosh.dixit@intel.com>
-References: <20210330035056.52019-1-ashutosh.dixit@intel.com>
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com
+ [IPv6:2a00:1450:4864:20::52e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C28F26E9F9
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 Mar 2021 07:32:52 +0000 (UTC)
+Received: by mail-ed1-x52e.google.com with SMTP id dm8so21115701edb.2
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 Mar 2021 00:32:52 -0700 (PDT)
+References: <20210330161848.18186-1-ville.syrjala@linux.intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Message-ID: <e64803f4-adfc-7741-a527-ce20bb512edf@gmail.com>
+Date: Wed, 31 Mar 2021 10:32:43 +0300
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915: Avoid set_domain -ENOMEM error with
- large objects
+In-Reply-To: <20210330161848.18186-1-ville.syrjala@linux.intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_atomic_transition: Fix the
+ is_atomic check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,131 +21,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: juhapekka.heikkila@gmail.com
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When pread/pwrite are unavailable, the pread/pwrite replacement implemented
-in ad5eb02eb3f1 ("lib/ioctl_wrappers: Keep IGT working without pread/pwrite
-ioctls") uses gem_set_domain which pins the entire gem object, even when
-the actual read/write size is small. This causes gem_set_domain to return
--ENOMEM for large objects with a trace such as:
-
-ioctl_wrappers-CRITICAL: Test assertion failure function gem_set_domain, file ../lib/ioctl_wrappers.c:563:
-ioctl_wrappers-CRITICAL: Failed assertion: __gem_set_domain(fd, handle, read, write) == 0
-ioctl_wrappers-CRITICAL: Last errno: 12, Cannot allocate memory
-ioctl_wrappers-CRITICAL: error: -12 != 0
-igt_core-INFO: Stack trace:
-igt_core-INFO:   #0 ../lib/igt_core.c:1746 __igt_fail_assert()
-igt_core-INFO:   #1 [gem_set_domain+0x44]
-igt_core-INFO:   #2 ../lib/ioctl_wrappers.c:367 gem_write()
-igt_core-INFO:   #3 ../tests/prime_mmap.c:67 test_aperture_limit()
-igt_core-INFO:   #4 ../tests/prime_mmap.c:578 __real_main530()
-igt_core-INFO:   #5 ../tests/prime_mmap.c:530 main()
-
-Therefore avoid using the pread/pwrite replacement for large objects, mmap
-and write instead. This fixes failures seen in
-prime_mmap@test_aperture_limit and gem_exec_params@larger-than-life-batch
-when pread/pwrite are unavailable.
-
-v2: Remove fill_bo calls in prime_mmap@test_aperture_limit (Mike Ruhl)
-
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/i915/gem_exec_params.c |  5 ++++-
- tests/prime_mmap.c           | 25 ++++++++++++++-----------
- 2 files changed, 18 insertions(+), 12 deletions(-)
-
-diff --git a/tests/i915/gem_exec_params.c b/tests/i915/gem_exec_params.c
-index 6840cf40ce..613bc26485 100644
---- a/tests/i915/gem_exec_params.c
-+++ b/tests/i915/gem_exec_params.c
-@@ -254,9 +254,12 @@ static uint32_t batch_create_size(int fd, uint64_t size)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	uint32_t handle;
-+	char *ptr;
- 
- 	handle = gem_create(fd, size);
--	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
-+	ptr = gem_mmap__device_coherent(fd, handle, 0, sizeof(bbe), PROT_WRITE);
-+	memcpy(ptr, &bbe, sizeof(bbe));
-+	munmap(ptr, sizeof(bbe));
- 
- 	return handle;
- }
-diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
-index cdf2d51497..9a783257d4 100644
---- a/tests/prime_mmap.c
-+++ b/tests/prime_mmap.c
-@@ -68,9 +68,13 @@ fill_bo(uint32_t handle, size_t size)
- }
- 
- static void
--fill_bo_cpu(char *ptr)
-+fill_bo_cpu(char *ptr, size_t size)
- {
--	memcpy(ptr, pattern, sizeof(pattern));
-+	off_t i;
-+	for (i = 0; i < size; i += sizeof(pattern))
-+	{
-+		memcpy(ptr + i, pattern, sizeof(pattern));
-+	}
- }
- 
- static void
-@@ -208,7 +212,7 @@ test_correct_cpu_write(void)
- 	igt_assert(ptr != MAP_FAILED);
- 
- 	/* Fill bo using CPU */
--	fill_bo_cpu(ptr);
-+	fill_bo_cpu(ptr, BO_SIZE);
- 
- 	/* Check pattern correctness */
- 	igt_assert(memcmp(ptr, pattern, sizeof(pattern)) == 0);
-@@ -236,7 +240,7 @@ test_forked_cpu_write(void)
- 	igt_fork(childno, 1) {
- 		ptr = mmap(NULL, BO_SIZE, PROT_READ | PROT_WRITE , MAP_SHARED, dma_buf_fd, 0);
- 		igt_assert(ptr != MAP_FAILED);
--		fill_bo_cpu(ptr);
-+		fill_bo_cpu(ptr, BO_SIZE);
- 
- 		igt_assert(memcmp(ptr, pattern, sizeof(pattern)) == 0);
- 		munmap(ptr, BO_SIZE);
-@@ -452,20 +456,19 @@ test_aperture_limit(void)
- 	uint64_t size2 = (gem_mappable_aperture_size(fd) * 3) / 8;
- 
- 	handle1 = gem_create(fd, size1);
--	fill_bo(handle1, BO_SIZE);
--
--	dma_buf_fd1 = prime_handle_to_fd(fd, handle1);
-+	dma_buf_fd1 = prime_handle_to_fd_for_mmap(fd, handle1);
- 	igt_assert(errno == 0);
--	ptr1 = mmap(NULL, size1, PROT_READ, MAP_SHARED, dma_buf_fd1, 0);
-+	ptr1 = mmap(NULL, size1, PROT_READ | PROT_WRITE, MAP_SHARED, dma_buf_fd1, 0);
- 	igt_assert(ptr1 != MAP_FAILED);
-+	fill_bo_cpu(ptr1, BO_SIZE);
- 	igt_assert(memcmp(ptr1, pattern, sizeof(pattern)) == 0);
- 
- 	handle2 = gem_create(fd, size1);
--	fill_bo(handle2, BO_SIZE);
--	dma_buf_fd2 = prime_handle_to_fd(fd, handle2);
-+	dma_buf_fd2 = prime_handle_to_fd_for_mmap(fd, handle2);
- 	igt_assert(errno == 0);
--	ptr2 = mmap(NULL, size2, PROT_READ, MAP_SHARED, dma_buf_fd2, 0);
-+	ptr2 = mmap(NULL, size2, PROT_READ | PROT_WRITE, MAP_SHARED, dma_buf_fd2, 0);
- 	igt_assert(ptr2 != MAP_FAILED);
-+	fill_bo_cpu(ptr2, BO_SIZE);
- 	igt_assert(memcmp(ptr2, pattern, sizeof(pattern)) == 0);
- 
- 	igt_assert(memcmp(ptr1, ptr2, BO_SIZE) == 0);
--- 
-2.31.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+UmV2aWV3ZWQtYnk6IEp1aGEtUGVra2EgSGVpa2tpbGEgPGp1aGFwZWtrYS5oZWlra2lsYUBnbWFp
+bC5jb20+CgpPbiAzMC4zLjIwMjEgMTkuMTgsIFZpbGxlIFN5cmphbGEgd3JvdGU6Cj4gRnJvbTog
+VmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KPiAKPiBXZSB3
+YW50IHRvIGNoZWNrIHRoZSB2YWx1ZSBvZiBpc19hdG9taWMsIG5vdCBpdHMgYWRkcmVzcy4gU2hv
+dWxkCj4gbWFrZSB0aGUgdGVzdCBza2lwIGNvcnJlY3RseSBhZ2FpbiB3aGVuIHRoZSBkcml2ZXIg
+ZG9lc24ndCBhZHZlcnRpc2UKPiBhdG9taWMgc3VwcG9ydC4KPiAKPiBDYzogTmlkaGkgR3VwdGEg
+PG5pZGhpMS5ndXB0YUBpbnRlbC5jb20+Cj4gRml4ZXM6IGU3OTZjYTdjZTZmZSAoInRlc3RzL2tt
+c19hdG9taWNfdHJhbnNpdGlvbjpyZWR1Y2UgZXhlY3V0aW9uIHRpbWUiKQo+IFNpZ25lZC1vZmYt
+Ynk6IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+Cj4gLS0t
+Cj4gICB0ZXN0cy9rbXNfYXRvbWljX3RyYW5zaXRpb24uYyB8IDIgKy0KPiAgIDEgZmlsZSBjaGFu
+Z2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0
+cy9rbXNfYXRvbWljX3RyYW5zaXRpb24uYyBiL3Rlc3RzL2ttc19hdG9taWNfdHJhbnNpdGlvbi5j
+Cj4gaW5kZXggNDMxODI0ZDBjZGI0Li5iZTYwOTQwZDcxYmYgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMv
+a21zX2F0b21pY190cmFuc2l0aW9uLmMKPiArKysgYi90ZXN0cy9rbXNfYXRvbWljX3RyYW5zaXRp
+b24uYwo+IEBAIC05OTMsNyArOTkzLDcgQEAgaWd0X21haW5fYXJncygiIiwgbG9uZ19vcHRzLCBo
+ZWxwX3N0ciwgb3B0X2hhbmRsZXIsICZkYXRhKQo+ICAgCQlrbXN0ZXN0X3NldF92dF9ncmFwaGlj
+c19tb2RlKCk7Cj4gICAKPiAgIAkJaWd0X2Rpc3BsYXlfcmVxdWlyZSgmZGF0YS5kaXNwbGF5LCBk
+YXRhLmRybV9mZCk7Cj4gLQkJaWd0X3JlcXVpcmUoJmRhdGEuZGlzcGxheS5pc19hdG9taWMpOwo+
+ICsJCWlndF9yZXF1aXJlKGRhdGEuZGlzcGxheS5pc19hdG9taWMpOwo+ICAgCj4gICAJCWlndF9k
+aXNwbGF5X3JlcXVpcmVfb3V0cHV0KCZkYXRhLmRpc3BsYXkpOwo+ICAgCj4gCgpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlz
+dAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9w
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
