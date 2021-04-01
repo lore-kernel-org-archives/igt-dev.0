@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A0816E43C
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Mar 2021 07:33:49 +0000 (UTC)
-Date: Mon, 1 Mar 2021 09:34:08 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YDyY8PhAzy9+7vTd@platvala-desk.ger.corp.intel.com>
-References: <20210227221041.541550-1-raj.khem@gmail.com>
- <c8685b17-e199-2f2d-24ef-c53688d45465@mupuf.org>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7CBE66EBA7
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Apr 2021 00:43:18 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Date: Wed, 31 Mar 2021 17:43:13 -0700
+Message-Id: <20210401004313.65166-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20210330035056.52019-1-ashutosh.dixit@intel.com>
+References: <20210330035056.52019-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <c8685b17-e199-2f2d-24ef-c53688d45465@mupuf.org>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_edid: Allocate raw 8-bytes for
- VSDB
+Subject: [igt-dev] [PATCH i-g-t] i915: Avoid set_domain -ENOMEM error with
+ large objects
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,39 +21,128 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Martin Peres <martin.peres@mupuf.org>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Matthew Auld <matthew.auld@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Sun, Feb 28, 2021 at 12:03:22PM +0200, Martin Peres wrote:
-> On 28/02/2021 00:10, Khem Raj wrote:
-> > hdmi_vsdb is an element of cea_vsdb which makes the size of cea_vsdb to
-> > be 8 ( 3bytes ieee_oui ) + ( 5bytes hdmi_vsdb struct), its true that we
-> > only use 7 bytes technically we can only allocate 7byte array but since
-> > we are writing to elements of hdmi_vsdb struct which is sitting at offet
-> > 4-8 in cea_vsdb, compiler thinks we have an element which is out of
-> > array bounds since out allocated size is 7bytes
-> > 
-> > This errors out
-> > ../git/lib/igt_edid.c:365:13: error: array subscript 'struct hdmi_vsdb[0]' is partly outside array bounds of 'char[7]' [-Werror=array-bounds]
-> >    365 |         hdmi->src_phy_addr[0] = 0x10;
-> >        |             ^~
-> > 
-> > allocating one extra byte matches with size of cea_vsdb and compiler is
-> > happy
-> > 
-> > Signed-off-by: Khem Raj <raj.khem@gmail.com>
-> 
-> Lookgs good to me, thanks!
-> 
-> Reviewed-by: Martin Peres <martin.peres@mupuf.org>
+When pread/pwrite are unavailable, the pread/pwrite replacement implemented
+in ad5eb02eb3f1 ("lib/ioctl_wrappers: Keep IGT working without pread/pwrite
+ioctls") uses gem_set_domain which pins the entire gem object, even when
+the actual read/write size is small. This causes gem_set_domain to return
+-ENOMEM for large objects with a trace such as:
 
+ioctl_wrappers-CRITICAL: Test assertion failure function gem_set_domain, file ../lib/ioctl_wrappers.c:563:
+ioctl_wrappers-CRITICAL: Failed assertion: __gem_set_domain(fd, handle, read, write) == 0
+ioctl_wrappers-CRITICAL: Last errno: 12, Cannot allocate memory
+ioctl_wrappers-CRITICAL: error: -12 != 0
+igt_core-INFO: Stack trace:
+igt_core-INFO:   #0 ../lib/igt_core.c:1746 __igt_fail_assert()
+igt_core-INFO:   #1 [gem_set_domain+0x44]
+igt_core-INFO:   #2 ../lib/ioctl_wrappers.c:367 gem_write()
+igt_core-INFO:   #3 ../tests/prime_mmap.c:67 test_aperture_limit()
+igt_core-INFO:   #4 ../tests/prime_mmap.c:578 __real_main530()
+igt_core-INFO:   #5 ../tests/prime_mmap.c:530 main()
 
-Merged, thanks.
+Therefore avoid using the pread/pwrite replacement for large objects, mmap
+and write instead. This fixes failures seen in
+prime_mmap@test_aperture_limit and gem_exec_params@larger-than-life-batch
+when pread/pwrite are unavailable.
 
+v2: Remove fill_bo calls in prime_mmap@test_aperture_limit (Mike Ruhl)
+v3: s/gem_mmap__device_coherent/gem_mmap__wc/ (Matt Auld)
 
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/gem_exec_params.c |  5 ++++-
+ tests/prime_mmap.c           | 25 ++++++++++++++-----------
+ 2 files changed, 18 insertions(+), 12 deletions(-)
+
+diff --git a/tests/i915/gem_exec_params.c b/tests/i915/gem_exec_params.c
+index 6840cf40ce..df4c5c8f54 100644
+--- a/tests/i915/gem_exec_params.c
++++ b/tests/i915/gem_exec_params.c
+@@ -254,9 +254,12 @@ static uint32_t batch_create_size(int fd, uint64_t size)
+ {
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	uint32_t handle;
++	char *ptr;
+ 
+ 	handle = gem_create(fd, size);
+-	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
++	ptr = gem_mmap__wc(fd, handle, 0, sizeof(bbe), PROT_WRITE);
++	memcpy(ptr, &bbe, sizeof(bbe));
++	munmap(ptr, sizeof(bbe));
+ 
+ 	return handle;
+ }
+diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
+index cdf2d51497..9a783257d4 100644
+--- a/tests/prime_mmap.c
++++ b/tests/prime_mmap.c
+@@ -68,9 +68,13 @@ fill_bo(uint32_t handle, size_t size)
+ }
+ 
+ static void
+-fill_bo_cpu(char *ptr)
++fill_bo_cpu(char *ptr, size_t size)
+ {
+-	memcpy(ptr, pattern, sizeof(pattern));
++	off_t i;
++	for (i = 0; i < size; i += sizeof(pattern))
++	{
++		memcpy(ptr + i, pattern, sizeof(pattern));
++	}
+ }
+ 
+ static void
+@@ -208,7 +212,7 @@ test_correct_cpu_write(void)
+ 	igt_assert(ptr != MAP_FAILED);
+ 
+ 	/* Fill bo using CPU */
+-	fill_bo_cpu(ptr);
++	fill_bo_cpu(ptr, BO_SIZE);
+ 
+ 	/* Check pattern correctness */
+ 	igt_assert(memcmp(ptr, pattern, sizeof(pattern)) == 0);
+@@ -236,7 +240,7 @@ test_forked_cpu_write(void)
+ 	igt_fork(childno, 1) {
+ 		ptr = mmap(NULL, BO_SIZE, PROT_READ | PROT_WRITE , MAP_SHARED, dma_buf_fd, 0);
+ 		igt_assert(ptr != MAP_FAILED);
+-		fill_bo_cpu(ptr);
++		fill_bo_cpu(ptr, BO_SIZE);
+ 
+ 		igt_assert(memcmp(ptr, pattern, sizeof(pattern)) == 0);
+ 		munmap(ptr, BO_SIZE);
+@@ -452,20 +456,19 @@ test_aperture_limit(void)
+ 	uint64_t size2 = (gem_mappable_aperture_size(fd) * 3) / 8;
+ 
+ 	handle1 = gem_create(fd, size1);
+-	fill_bo(handle1, BO_SIZE);
+-
+-	dma_buf_fd1 = prime_handle_to_fd(fd, handle1);
++	dma_buf_fd1 = prime_handle_to_fd_for_mmap(fd, handle1);
+ 	igt_assert(errno == 0);
+-	ptr1 = mmap(NULL, size1, PROT_READ, MAP_SHARED, dma_buf_fd1, 0);
++	ptr1 = mmap(NULL, size1, PROT_READ | PROT_WRITE, MAP_SHARED, dma_buf_fd1, 0);
+ 	igt_assert(ptr1 != MAP_FAILED);
++	fill_bo_cpu(ptr1, BO_SIZE);
+ 	igt_assert(memcmp(ptr1, pattern, sizeof(pattern)) == 0);
+ 
+ 	handle2 = gem_create(fd, size1);
+-	fill_bo(handle2, BO_SIZE);
+-	dma_buf_fd2 = prime_handle_to_fd(fd, handle2);
++	dma_buf_fd2 = prime_handle_to_fd_for_mmap(fd, handle2);
+ 	igt_assert(errno == 0);
+-	ptr2 = mmap(NULL, size2, PROT_READ, MAP_SHARED, dma_buf_fd2, 0);
++	ptr2 = mmap(NULL, size2, PROT_READ | PROT_WRITE, MAP_SHARED, dma_buf_fd2, 0);
+ 	igt_assert(ptr2 != MAP_FAILED);
++	fill_bo_cpu(ptr2, BO_SIZE);
+ 	igt_assert(memcmp(ptr2, pattern, sizeof(pattern)) == 0);
+ 
+ 	igt_assert(memcmp(ptr1, ptr2, BO_SIZE) == 0);
 -- 
-Petri Latvala
+2.31.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
