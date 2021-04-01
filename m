@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
- [IPv6:2607:f8b0:4864:20::42e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 261086E07D
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Apr 2021 02:13:31 +0000 (UTC)
-Received: by mail-pf1-x42e.google.com with SMTP id j25so360102pfe.2
- for <igt-dev@lists.freedesktop.org>; Wed, 31 Mar 2021 19:13:31 -0700 (PDT)
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
+ [IPv6:2607:f8b0:4864:20::102d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A07126EC12
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Apr 2021 02:13:32 +0000 (UTC)
+Received: by mail-pj1-x102d.google.com with SMTP id
+ kk2-20020a17090b4a02b02900c777aa746fso160838pjb.3
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 Mar 2021 19:13:32 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed, 31 Mar 2021 21:12:38 -0500
-Message-Id: <20210401021243.4147604-26-jason@jlekstrand.net>
+Date: Wed, 31 Mar 2021 21:12:39 -0500
+Message-Id: <20210401021243.4147604-27-jason@jlekstrand.net>
 In-Reply-To: <20210401021243.4147604-1-jason@jlekstrand.net>
 References: <20210401021243.4147604-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC 25/30] tests/i915/gem_ctx_exec: Convert to
+Subject: [igt-dev] [RFC 26/30] tests/i915/gem_exec_suspend: Convert to
  intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,56 +29,175 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 ---
- tests/i915/gem_ctx_exec.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tests/i915/gem_exec_suspend.c | 56 +++++++++++++++++++++--------------
+ 1 file changed, 33 insertions(+), 23 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
-index 03c66bf7..6dfac11c 100644
---- a/tests/i915/gem_ctx_exec.c
-+++ b/tests/i915/gem_ctx_exec.c
-@@ -267,7 +267,7 @@ static void nohangcheck_hostile(int i915)
+diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
+index a31dd662..81625a80 100644
+--- a/tests/i915/gem_exec_suspend.c
++++ b/tests/i915/gem_exec_suspend.c
+@@ -50,7 +50,8 @@
+ #define CACHED (1<<8)
+ #define HANG (2<<8)
+ 
+-static void run_test(int fd, unsigned engine, unsigned flags);
++static void run_test(int fd, const intel_ctx_t *ctx,
++		     unsigned engine, unsigned flags);
+ 
+ static void check_bo(int fd, uint32_t handle)
+ {
+@@ -65,12 +66,13 @@ static void check_bo(int fd, uint32_t handle)
+ 	munmap(map, 4096);
+ }
+ 
+-static void test_all(int fd, unsigned flags)
++static void test_all(int fd, const intel_ctx_t *ctx, unsigned flags)
+ {
+-	run_test(fd, ALL_ENGINES, flags & ~0xff);
++	run_test(fd, ctx, ALL_ENGINES, flags & ~0xff);
+ }
+ 
+-static void run_test(int fd, unsigned engine, unsigned flags)
++static void run_test(int fd, const intel_ctx_t *ctx,
++		     unsigned engine, unsigned flags)
+ {
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+@@ -85,7 +87,7 @@ static void run_test(int fd, unsigned engine, unsigned flags)
+ 	if (engine == ALL_ENGINES) {
+ 		const struct intel_execution_engine2 *e;
+ 
+-		__for_each_physical_engine(fd, e) {
++		for_each_ctx_engine(fd, ctx, e) {
+ 			if (gem_class_can_store_dword(fd, e->class))
+ 				engines[nengine++] = e->flags;
+ 		}
+@@ -96,7 +98,7 @@ static void run_test(int fd, unsigned engine, unsigned flags)
+ 
+ 	/* Before suspending, check normal operation */
+ 	if (mode(flags) != NOSLEEP)
+-		test_all(fd, flags);
++		test_all(fd, ctx, flags);
+ 
+ 	gem_quiescent_gpu(fd);
+ 
+@@ -106,6 +108,7 @@ static void run_test(int fd, unsigned engine, unsigned flags)
+ 	execbuf.flags = 1 << 11;
+ 	if (gen < 6)
+ 		execbuf.flags |= I915_EXEC_SECURE;
++	execbuf.rsvd1 = ctx->id;
+ 
+ 	memset(obj, 0, sizeof(obj));
+ 	obj[0].handle = gem_create(fd, 4096);
+@@ -202,7 +205,7 @@ static void run_test(int fd, unsigned engine, unsigned flags)
+ 
+ 	/* After resume, make sure it still works */
+ 	if (mode(flags) != NOSLEEP)
+-		test_all(fd, flags);
++		test_all(fd, ctx, flags);
+ }
+ 
+ struct battery_sample {
+@@ -229,7 +232,8 @@ static double d_time(const struct battery_sample *after,
+ 		(after->tv.tv_nsec - before->tv.tv_nsec) * 1e-9); /* s */
+ }
+ 
+-static void power_test(int i915, unsigned engine, unsigned flags)
++static void power_test(int i915, const intel_ctx_t *ctx,
++		       unsigned engine, unsigned flags)
+ {
+ 	struct battery_sample before, after;
+ 	char *status;
+@@ -249,7 +253,7 @@ static void power_test(int i915, unsigned engine, unsigned flags)
+ 	igt_set_autoresume_delay(5 * 60); /* 5 minutes; longer == more stable */
+ 
+ 	igt_assert(get_power(dir, &before));
+-	run_test(i915, engine, flags);
++	run_test(i915, ctx, engine, flags);
+ 	igt_assert(get_power(dir, &after));
+ 
+ 	igt_set_autoresume_delay(0);
+@@ -273,6 +277,7 @@ igt_main
+ 	}, *m;
  	const struct intel_execution_engine2 *e;
  	igt_hang_t hang;
- 	int fence = -1;
--	uint32_t ctx;
-+	intel_ctx_t *ctx;
- 	int err = 0;
- 	int dir;
++	const intel_ctx_t *ctx;
+ 	int fd;
  
-@@ -281,12 +281,12 @@ static void nohangcheck_hostile(int i915)
- 	dir = igt_params_open(i915);
- 	igt_require(dir != -1);
+ 	igt_fixture {
+@@ -280,38 +285,43 @@ igt_main
+ 		igt_require_gem(fd);
+ 		igt_require(gem_can_store_dword(fd, 0));
  
--	ctx = gem_context_create(i915);
--	hang = igt_allow_hang(i915, ctx, 0);
-+	ctx = intel_ctx_create_all_physical(i915);
-+	hang = igt_allow_hang(i915, ctx->id, 0);
++		if (gem_has_contexts(fd))
++			ctx = intel_ctx_create_all_physical(fd);
++		else
++			ctx = intel_ctx_0(fd);
++
+ 		igt_fork_hang_detector(fd);
+ 	}
  
- 	igt_require(__enable_hangcheck(dir, false));
+ 	igt_subtest("basic")
+-		run_test(fd, ALL_ENGINES, NOSLEEP);
++		run_test(fd, ctx, ALL_ENGINES, NOSLEEP);
+ 	igt_subtest("basic-S0")
+-		run_test(fd, ALL_ENGINES, IDLE);
++		run_test(fd, ctx, ALL_ENGINES, IDLE);
+ 	igt_subtest("basic-S3-devices")
+-		run_test(fd, ALL_ENGINES, SUSPEND_DEVICES);
++		run_test(fd, ctx, ALL_ENGINES, SUSPEND_DEVICES);
+ 	igt_subtest("basic-S3")
+-		run_test(fd, ALL_ENGINES, SUSPEND);
++		run_test(fd, ctx, ALL_ENGINES, SUSPEND);
+ 	igt_subtest("basic-S4-devices")
+-		run_test(fd, ALL_ENGINES, HIBERNATE_DEVICES);
++		run_test(fd, ctx, ALL_ENGINES, HIBERNATE_DEVICES);
+ 	igt_subtest("basic-S4")
+-		run_test(fd, ALL_ENGINES, HIBERNATE);
++		run_test(fd, ctx, ALL_ENGINES, HIBERNATE);
  
--	____for_each_physical_engine(i915, ctx, e) {
-+	for_each_ctx_engine(i915, ctx, e) {
- 		igt_spin_t *spin;
- 		int new;
+ 	for (m = modes; m->suffix; m++) {
+ 		igt_subtest_with_dynamic_f("uncached-%s", m->suffix) {
+-			__for_each_physical_engine(fd, e) {
++			for_each_ctx_engine(fd, ctx, e) {
+ 				if (!gem_class_can_store_dword(fd, e->class))
+ 					continue;
+ 				igt_dynamic_f("%s", e->name)
+-					run_test(fd, e->flags, m->mode | UNCACHED);
++					run_test(fd, ctx, e->flags, m->mode | UNCACHED);
+ 			}
+ 		}
  
-@@ -294,7 +294,7 @@ static void nohangcheck_hostile(int i915)
- 		gem_engine_property_printf(i915, e->name,
- 					   "preempt_timeout_ms", "%d", 50);
- 
--		spin = __igt_spin_new(i915, ctx,
-+		spin = __igt_spin_new(i915, .ctx = ctx,
- 				      .engine = e->flags,
- 				      .flags = (IGT_SPIN_NO_PREEMPTION |
- 						IGT_SPIN_FENCE_OUT));
-@@ -315,7 +315,7 @@ static void nohangcheck_hostile(int i915)
- 			fence = tmp;
+ 		igt_subtest_with_dynamic_f("cached-%s", m->suffix) {
+-			__for_each_physical_engine(fd, e) {
++			for_each_ctx_engine(fd, ctx, e) {
+ 				if (!gem_class_can_store_dword(fd, e->class))
+ 					continue;
+ 				igt_dynamic_f("%s", e->name)
+-					run_test(fd, e->flags, m->mode | CACHED);
++					run_test(fd, ctx, e->flags, m->mode | CACHED);
+ 			}
  		}
  	}
--	gem_context_destroy(i915, ctx);
-+	intel_ctx_destroy(i915, ctx);
- 	igt_assert(fence != -1);
+@@ -322,14 +332,14 @@ igt_main
+ 	}
  
- 	if (sync_fence_wait(fence, MSEC_PER_SEC)) { /* 640ms preempt-timeout */
+ 	igt_subtest("hang-S3")
+-		run_test(fd, 0, SUSPEND | HANG);
++		run_test(fd, intel_ctx_0(fd), 0, SUSPEND | HANG);
+ 	igt_subtest("hang-S4")
+-		run_test(fd, 0, HIBERNATE | HANG);
++		run_test(fd, intel_ctx_0(fd), 0, HIBERNATE | HANG);
+ 
+ 	igt_subtest("power-S0")
+-		power_test(fd, 0, IDLE);
++		power_test(fd, intel_ctx_0(fd), 0, IDLE);
+ 	igt_subtest("power-S3")
+-		power_test(fd, 0, SUSPEND);
++		power_test(fd, intel_ctx_0(fd), 0, SUSPEND);
+ 
+ 	igt_fixture {
+ 		igt_disallow_hang(fd, hang);
 -- 
 2.29.2
 
