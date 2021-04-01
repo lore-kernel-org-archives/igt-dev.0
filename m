@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
- [IPv6:2607:f8b0:4864:20::52f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 045766EC14
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Apr 2021 02:13:23 +0000 (UTC)
-Received: by mail-pg1-x52f.google.com with SMTP id i6so610103pgs.1
- for <igt-dev@lists.freedesktop.org>; Wed, 31 Mar 2021 19:13:22 -0700 (PDT)
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com
+ [IPv6:2607:f8b0:4864:20::52e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA4A76EC15
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Apr 2021 02:13:24 +0000 (UTC)
+Received: by mail-pg1-x52e.google.com with SMTP id f10so578975pgl.9
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 Mar 2021 19:13:24 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed, 31 Mar 2021 21:12:33 -0500
-Message-Id: <20210401021243.4147604-21-jason@jlekstrand.net>
+Date: Wed, 31 Mar 2021 21:12:34 -0500
+Message-Id: <20210401021243.4147604-22-jason@jlekstrand.net>
 In-Reply-To: <20210401021243.4147604-1-jason@jlekstrand.net>
 References: <20210401021243.4147604-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC 20/30] tests/i915/i915_hangman: Convert to
+Subject: [igt-dev] [RFC 21/30] tests/i915/gem_ringfill: Convert to
  intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,126 +28,161 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 ---
- tests/i915/i915_hangman.c | 35 ++++++++++++++++++++---------------
- 1 file changed, 20 insertions(+), 15 deletions(-)
+ tests/i915/gem_ringfill.c | 47 +++++++++++++++++++++++----------------
+ 1 file changed, 28 insertions(+), 19 deletions(-)
 
-diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index 72e4d8b8..f40d5c90 100644
---- a/tests/i915/i915_hangman.c
-+++ b/tests/i915/i915_hangman.c
-@@ -204,7 +204,7 @@ static void check_error_state(const char *expected_ring_name,
- 	igt_assert(found);
+diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
+index 78903707..dcbf08ba 100644
+--- a/tests/i915/gem_ringfill.c
++++ b/tests/i915/gem_ringfill.c
+@@ -93,7 +93,7 @@ static void fill_ring(int fd,
+ 	}
  }
  
--static void test_error_state_capture(unsigned ring_id,
-+static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
- 				     const char *ring_name)
- {
- 	uint32_t *batch;
-@@ -213,7 +213,7 @@ static void test_error_state_capture(unsigned ring_id,
+-static void setup_execbuf(int fd,
++static void setup_execbuf(int fd, const intel_ctx_t *ctx,
+ 			  struct drm_i915_gem_execbuffer2 *execbuf,
+ 			  struct drm_i915_gem_exec_object2 *obj,
+ 			  struct drm_i915_gem_relocation_entry *reloc,
+@@ -114,6 +114,8 @@ static void setup_execbuf(int fd,
+ 	if (gen > 3 && gen < 6)
+ 		execbuf->flags |= I915_EXEC_SECURE;
  
- 	clear_error_state();
- 
--	hang = igt_hang_ctx(device, 0, ring_id, HANG_ALLOW_CAPTURE);
-+	hang = igt_hang_ctx(device, ctx->id, ring_id, HANG_ALLOW_CAPTURE);
- 	offset = hang.spin->obj[IGT_SPIN_BATCH].offset;
- 
- 	batch = gem_mmap__cpu(device, hang.spin->handle, 0, 4096, PROT_READ);
-@@ -226,32 +226,34 @@ static void test_error_state_capture(unsigned ring_id,
++	execbuf->rsvd1 = ctx->id;
++
+ 	obj[0].handle = gem_create(fd, 4096);
+ 	gem_write(fd, obj[0].handle, 0, &bbe, sizeof(bbe));
+ 	execbuf->buffer_count = 1;
+@@ -167,7 +169,8 @@ static void setup_execbuf(int fd,
+ 	check_bo(fd, obj[0].handle);
  }
  
- static void
--test_engine_hang(const struct intel_execution_engine2 *e, unsigned int flags)
-+test_engine_hang(const intel_ctx_t *ctx,
-+		 const struct intel_execution_engine2 *e, unsigned int flags)
+-static void run_test(int fd, unsigned ring, unsigned flags, unsigned timeout)
++static void run_test(int fd, const intel_ctx_t *ctx, unsigned ring,
++		     unsigned flags, unsigned timeout)
  {
- 	const struct intel_execution_engine2 *other;
-+	intel_ctx_t *tmp_ctx;
- 	igt_spin_t *spin, *next;
- 	IGT_LIST_HEAD(list);
--	uint32_t ctx;
+ 	struct drm_i915_gem_exec_object2 obj[2];
+ 	struct drm_i915_gem_relocation_entry reloc[1024];
+@@ -175,15 +178,15 @@ static void run_test(int fd, unsigned ring, unsigned flags, unsigned timeout)
+ 	igt_hang_t hang;
  
- 	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
- 		    gem_has_cmdparser(device, e->flags));
- 
- 	/* Fill all the other engines with background load */
--	__for_each_physical_engine(device, other) {
-+	for_each_ctx_engine(device, ctx, other) {
- 		if (other->flags == e->flags)
- 			continue;
- 
--		ctx = gem_context_clone_with_engines(device, 0);
--		spin = __igt_spin_new(device, ctx,
-+		tmp_ctx = intel_ctx_create(device, &ctx->cfg);
-+		spin = __igt_spin_new(device, .ctx = tmp_ctx,
- 				      .engine = other->flags,
- 				      .flags = IGT_SPIN_FENCE_OUT);
--		gem_context_destroy(device, ctx);
-+		intel_ctx_destroy(device, tmp_ctx);
- 
- 		igt_list_move(&spin->link, &list);
+ 	if (flags & (SUSPEND | HIBERNATE)) {
+-		run_test(fd, ring, 0, 0);
++		run_test(fd, ctx, ring, 0, 0);
+ 		gem_quiescent_gpu(fd);
  	}
  
- 	/* And on the target engine, we hang */
- 	spin = igt_spin_new(device,
-+			    .ctx = ctx,
- 			    .engine = e->flags,
- 			    .flags = (IGT_SPIN_FENCE_OUT |
- 				      IGT_SPIN_NO_PREEMPTION |
-@@ -310,13 +312,16 @@ static void hangcheck_unterminated(void)
- igt_main
- {
- 	const struct intel_execution_engine2 *e;
-+	const intel_ctx_t *ctx = NULL;
- 	igt_hang_t hang = {};
+-	setup_execbuf(fd, &execbuf, obj, reloc, ring);
++	setup_execbuf(fd, ctx, &execbuf, obj, reloc, ring);
+ 
+ 	memset(&hang, 0, sizeof(hang));
+ 	if (flags & HANG)
+-		hang = igt_hang_ring(fd, ring & ~(3<<13));
++		hang = igt_hang_ctx(fd, ctx->id, ring & ~(3<<13), 0);
+ 
+ 	if (flags & (CHILD | FORKED | BOMB)) {
+ 		int nchild;
+@@ -197,16 +200,19 @@ static void run_test(int fd, unsigned ring, unsigned flags, unsigned timeout)
+ 
+ 		igt_debug("Forking %d children\n", nchild);
+ 		igt_fork(child, nchild) {
++			intel_ctx_t *child_ctx = NULL;
+ 			if (flags & NEWFD) {
+ 				int this;
+ 
+ 				this = gem_reopen_driver(fd);
+-				gem_context_copy_engines(fd, 0, this, 0);
++				child_ctx = intel_ctx_create(fd, &ctx->cfg);
+ 				fd = this;
+ 
+-				setup_execbuf(fd, &execbuf, obj, reloc, ring);
++				setup_execbuf(fd, child_ctx, &execbuf, obj, reloc, ring);
+ 			}
+ 			fill_ring(fd, &execbuf, flags, timeout);
++			if (child_ctx)
++				intel_ctx_destroy(fd, child_ctx);
+ 		}
+ 
+ 		if (flags & SUSPEND)
+@@ -234,7 +240,7 @@ static void run_test(int fd, unsigned ring, unsigned flags, unsigned timeout)
+ 
+ 	if (flags & (SUSPEND | HIBERNATE)) {
+ 		gem_quiescent_gpu(fd);
+-		run_test(fd, ring, 0, 0);
++		run_test(fd, ctx, ring, 0, 0);
+ 	}
+ }
+ 
+@@ -285,6 +291,7 @@ igt_main
+ 		{ NULL }
+ 	}, *m;
+ 	bool master = false;
++	const intel_ctx_t *ctx;
+ 	int fd = -1;
  
  	igt_fixture {
- 		device = drm_open_driver(DRIVER_INTEL);
- 		igt_require_gem(device);
- 
--		hang = igt_allow_hang(device, 0, HANG_ALLOW_CAPTURE);
-+		ctx = intel_ctx_create_all_physical(device);
+@@ -304,22 +311,23 @@ igt_main
+ 		ring_size = gem_measure_ring_inflight(fd, ALL_ENGINES, 0);
+ 		igt_info("Ring size: %d batches\n", ring_size);
+ 		igt_require(ring_size);
 +
-+		hang = igt_allow_hang(device, ctx->id, HANG_ALLOW_CAPTURE);
- 
- 		sysfs = igt_sysfs_open(device);
- 		igt_assert(sysfs != -1);
-@@ -328,9 +333,9 @@ igt_main
- 		test_error_state_basic();
- 
- 	igt_subtest_with_dynamic("error-state-capture") {
--		__for_each_physical_engine(device, e) {
-+		for_each_ctx_engine(device, ctx, e) {
- 			igt_dynamic_f("%s", e->name)
--				test_error_state_capture(e->flags, e->name);
-+				test_error_state_capture(ctx, e->flags, e->name);
- 		}
++		if (gem_has_contexts(fd))
++			ctx = intel_ctx_create_all_physical(fd);
++		else
++			ctx = intel_ctx_0(fd);
  	}
  
-@@ -346,9 +351,9 @@ igt_main
-                 ioctl(device, DRM_IOCTL_I915_GETPARAM, &gp);
- 		igt_require(has_gpu_reset > 1);
+ 	/* Legacy path for selecting "rings". */
+ 	for (m = modes; m->suffix; m++) {
+ 		igt_subtest_with_dynamic_f("legacy-%s", m->suffix) {
+-			const struct intel_execution_ring *e;
+-
+ 			igt_skip_on(m->flags & NEWFD && master);
  
--		__for_each_physical_engine(device, e) {
-+		for_each_ctx_engine(device, ctx, e) {
- 			igt_dynamic_f("%s", e->name)
--				test_engine_hang(e, 0);
-+				test_engine_hang(ctx, e, 0);
+-			for (e = intel_execution_rings; e->name; e++) {
+-				if (!gem_has_ring(fd, eb_ring(e)))
+-					continue;
+-
++			for_each_ring(e, fd) {
+ 				igt_dynamic_f("%s", e->name) {
+ 					igt_require(gem_can_store_dword(fd, eb_ring(e)));
+-					run_test(fd, eb_ring(e),
++					run_test(fd, intel_ctx_0(fd),
++						 eb_ring(e),
+ 						 m->flags,
+ 						 m->timeout);
+ 					gem_quiescent_gpu(fd);
+@@ -334,12 +342,13 @@ igt_main
+ 			const struct intel_execution_engine2 *e;
+ 
+ 			igt_skip_on(m->flags & NEWFD && master);
+-			__for_each_physical_engine(fd, e) {
++			for_each_ctx_engine(fd, ctx, e) {
+ 				if (!gem_class_can_store_dword(fd, e->class))
+ 					continue;
+ 
+ 				igt_dynamic_f("%s", e->name) {
+-					run_test(fd, e->flags,
++					run_test(fd, ctx,
++						 e->flags,
+ 						 m->flags,
+ 						 m->timeout);
+ 					gem_quiescent_gpu(fd);
+@@ -351,12 +360,12 @@ igt_main
+ 	igt_subtest("basic-all") {
+ 		const struct intel_execution_engine2 *e;
+ 
+-		__for_each_physical_engine(fd, e) {
++		for_each_ctx_engine(fd, ctx, e) {
+ 			if (!gem_class_can_store_dword(fd, e->class))
+ 				continue;
+ 
+ 			igt_fork(child, 1)
+-				run_test(fd, e->flags, 0, 1);
++				run_test(fd, ctx, e->flags, 0, 1);
  		}
- 	}
  
-@@ -363,9 +368,9 @@ igt_main
- 		ioctl(device, DRM_IOCTL_I915_GETPARAM, &gp);
- 		igt_require(has_gpu_reset > 1);
- 
--		__for_each_physical_engine(device, e) {
-+		for_each_ctx_engine(device, ctx, e) {
- 			igt_dynamic_f("%s", e->name)
--				test_engine_hang(e, IGT_SPIN_INVALID_CS);
-+				test_engine_hang(ctx, e, IGT_SPIN_INVALID_CS);
- 		}
- 	}
- 
+ 		igt_waitchildren();
 -- 
 2.29.2
 
