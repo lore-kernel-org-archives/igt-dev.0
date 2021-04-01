@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E42436ECFD
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Apr 2021 18:19:02 +0000 (UTC)
+From: Khaled Almahallawy <khaled.almahallawy@intel.com>
+Date: Thu,  1 Apr 2021 11:21:41 -0700
+Message-Id: <20210401182141.946535-1-khaled.almahallawy@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 01 Apr 2021 17:24:33 -0000
-Message-ID: <161729787344.12178.997803184202799137@emeril.freedesktop.org>
-References: <20210401143643.7867-1-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20210401143643.7867-1-janusz.krzysztofik@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5BRFC=2Ci-g-t=2C1/6=5D_tests/core=5Fhotunplug?=
- =?utf-8?q?=3A_Add_=27GEM_context=27_variants?=
+Subject: [igt-dev] [PATCH] Revert "Add eDP support in Link Layer Compliance
+ Tool"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,224 +15,38 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0522381548=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: shawn.c.lee@intel.com, Khaled Almahallawy <khaled.almahallawy@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0522381548==
-Content-Type: multipart/alternative;
- boundary="===============4854120184901265256=="
-
---===============4854120184901265256==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: series starting with [RFC,i-g-t,1/6] tests/core_hotunplug: Add 'GEM context' variants
-URL   : https://patchwork.freedesktop.org/series/88666/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_9923 -> IGTPW_5687
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5687/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5687 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@semaphore:
-    - fi-icl-y:           NOTRUN -> [SKIP][1] ([fdo#109315]) +17 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5687/fi-icl-y/igt@amdgpu/amd_basic@semaphore.html
-
-  * igt@prime_self_import@basic-with_one_bo:
-    - fi-tgl-y:           [PASS][2] -> [DMESG-WARN][3] ([i915#402]) +1 similar issue
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9923/fi-tgl-y/igt@prime_self_import@basic-with_one_bo.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5687/fi-tgl-y/igt@prime_self_import@basic-with_one_bo.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-icl-y:           [INCOMPLETE][4] ([i915#2782]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9923/fi-icl-y/igt@i915_selftest@live@hangcheck.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5687/fi-icl-y/igt@i915_selftest@live@hangcheck.html
-
-  * igt@prime_self_import@basic-with_one_bo_two_files:
-    - fi-tgl-y:           [DMESG-WARN][6] ([i915#402]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9923/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5687/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
-
-  
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-
-
-Participating hosts (47 -> 41)
-------------------------------
-
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6056 -> IGTPW_5687
-
-  CI-20190529: 20190529
-  CI_DRM_9923: 393640bea31c5d35f268c3d3e6bf77fe0dff2bb8 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5687: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5687/index.html
-  IGT_6056: 84e6a7e19ccc7fafc46f372e756cad9d4aa093f7 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@core_hotunplug@ctx-hotunbind-lateclose
-+igt@core_hotunplug@ctx-hotunplug-lateclose
-+igt@core_hotunplug@gem-hotunbind-lateclose
-+igt@core_hotunplug@gem-hotunplug-lateclose
-+igt@core_hotunplug@prime-hotunbind-lateclose
-+igt@core_hotunplug@prime-hotunplug-lateclose
-+igt@core_hotunplug@spin-hotunbind-lateclose
-+igt@core_hotunplug@spin-hotunplug-lateclose
-+igt@core_hotunplug@userptr-hotunbind-lateclose
-+igt@core_hotunplug@userptr-hotunplug-lateclose
-+igt@core_hotunplug@vm-hotunbind-lateclose
-+igt@core_hotunplug@vm-hotunplug-lateclose
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5687/index.html
-
---===============4854120184901265256==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [RFC,i-g-t,1/6] tests/core_hotunplug: Add &#39;GEM context&#39; variants</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88666/">https://patchwork.freedesktop.org/series/88666/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5687/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5687/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9923 -&gt; IGTPW_5687</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5687/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5687 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@semaphore:</p>
-<ul>
-<li>fi-icl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5687/fi-icl-y/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_self_import@basic-with_one_bo:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9923/fi-tgl-y/igt@prime_self_import@basic-with_one_bo.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5687/fi-tgl-y/igt@prime_self_import@basic-with_one_bo.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-icl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9923/fi-icl-y/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5687/fi-icl-y/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@prime_self_import@basic-with_one_bo_two_files:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9923/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5687/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (47 -&gt; 41)</h2>
-<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6056 -&gt; IGTPW_5687</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9923: 393640bea31c5d35f268c3d3e6bf77fe0dff2bb8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5687: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5687/index.html<br />
-  IGT_6056: 84e6a7e19ccc7fafc46f372e756cad9d4aa093f7 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-<p>== Testlist changes ==</p>
-<p>+igt@core_hotunplug@ctx-hotunbind-lateclose<br />
-+igt@core_hotunplug@ctx-hotunplug-lateclose<br />
-+igt@core_hotunplug@gem-hotunbind-lateclose<br />
-+igt@core_hotunplug@gem-hotunplug-lateclose<br />
-+igt@core_hotunplug@prime-hotunbind-lateclose<br />
-+igt@core_hotunplug@prime-hotunplug-lateclose<br />
-+igt@core_hotunplug@spin-hotunbind-lateclose<br />
-+igt@core_hotunplug@spin-hotunplug-lateclose<br />
-+igt@core_hotunplug@userptr-hotunbind-lateclose<br />
-+igt@core_hotunplug@userptr-hotunplug-lateclose<br />
-+igt@core_hotunplug@vm-hotunbind-lateclose<br />
-+igt@core_hotunplug@vm-hotunplug-lateclose</p>
-
-</body>
-</html>
-
---===============4854120184901265256==--
-
---===============0522381548==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0522381548==--
+VGhlIGVEUCBjaGFuZ2UgZGlkbuKAmXQgdGFrZSBpbnRvIGFjY291bnQgY2hvb3NpbmcgdGhlIHJp
+Z2h0IENSVEMgd2hlbiBjb21wbGlhbmNlIGlzIHJlcXVlc3RlZCBvbiBleHRlcm5hbCBEUC4KVGhp
+cyBjYXVzZXMgSG90cGx1ZyBVZXZlbnQgc2VudCBmcm9tIHRoZSBrZXJuZWwgKGludGVsX2RwX3No
+b3J0X3B1bHNlKSB0byBhbHdheXMgdHJpZ2dlciBMVCBvbiBlRFAuCldpdGhvdXQgcmV2ZXJ0aW5n
+IHRoaXMgY2hhbmdlIHRoZSBvbmx5IHdheSB0byBydW4gY29tcGxpYW5jZSBvbiBleHRlcm5hbCBk
+aXNwbGF5IGlzIHRvIGRpc2Nvbm5lY3QgdGhlIGVEUCBjYWJsZSB3aGljaCBpcyBwYWluIGZvciBP
+RE1zLgoKU28gcmV2ZXJ0aW5nIHRoaXMgY2hhbmdlIHVudGlsIGEgZnVsbCBzb2x1dGlvbiB0aGF0
+IGhhbmRsZXMgbXVsdGlwbGUgY29ubmVjdGVkIGRpc3BsYXlzIGluIHBsYWNlLgoKVGhpcyByZXZl
+cnRzIGNvbW1pdCAzOTE5MjliNzQwMmZkMDQxN2RjYjkwMjZjMjAyMjQxNDEzNjUzOTQyLgoKU2ln
+bmVkLW9mZi1ieTogS2hhbGVkIEFsbWFoYWxsYXd5IDxraGFsZWQuYWxtYWhhbGxhd3lAaW50ZWwu
+Y29tPgotLS0KIHRvb2xzL2ludGVsX2RwX2NvbXBsaWFuY2UuYyB8IDMgKy0tCiAxIGZpbGUgY2hh
+bmdlZCwgMSBpbnNlcnRpb24oKyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdG9vbHMv
+aW50ZWxfZHBfY29tcGxpYW5jZS5jIGIvdG9vbHMvaW50ZWxfZHBfY29tcGxpYW5jZS5jCmluZGV4
+IDIxN2ExMjQ3OWEyZC4uZmI5NDYwNTYxYzI5IDEwMDY0NAotLS0gYS90b29scy9pbnRlbF9kcF9j
+b21wbGlhbmNlLmMKKysrIGIvdG9vbHMvaW50ZWxfZHBfY29tcGxpYW5jZS5jCkBAIC03MDksOCAr
+NzA5LDcgQEAgaW50IHVwZGF0ZV9kaXNwbGF5KGludCBtb2RlLCBib29sIGlzX2NvbXBsaWFuY2Vf
+dGVzdCkKIAkJY29ubiA9ICZjb25uZWN0b3JzW2NudF07CiAJCWNvbm4tPmlkID0gcmVzb3VyY2Vz
+LT5jb25uZWN0b3JzW2NudF07CiAJCWMgPSBkcm1Nb2RlR2V0Q29ubmVjdG9yKGRybV9mZCwgY29u
+bi0+aWQpOwotCQlpZiAoKGMtPmNvbm5lY3Rvcl90eXBlID09IERSTV9NT0RFX0NPTk5FQ1RPUl9E
+aXNwbGF5UG9ydCB8fAotCQkgICAgYy0+Y29ubmVjdG9yX3R5cGUgPT0gRFJNX01PREVfQ09OTkVD
+VE9SX2VEUCkgJiYKKwkJaWYgKGMtPmNvbm5lY3Rvcl90eXBlID09IERSTV9NT0RFX0NPTk5FQ1RP
+Ul9EaXNwbGF5UG9ydCAmJgogCQkgICAgYy0+Y29ubmVjdGlvbiA9PSBEUk1fTU9ERV9DT05ORUNU
+RUQpIHsKIAkJCXRlc3RfY29ubmVjdG9yX2lkID0gYy0+Y29ubmVjdG9yX2lkOwogCQkJY29ubi0+
+Y29ubmVjdG9yID0gYzsKLS0gCjIuMjUuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVl
+ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9pZ3QtZGV2Cg==
