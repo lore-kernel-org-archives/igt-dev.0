@@ -1,88 +1,63 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3537F6E0F8
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Apr 2021 16:55:10 +0000 (UTC)
+Date: Thu, 1 Apr 2021 19:54:50 +0300
+From: Arkadiusz Hiler <arek@hiler.eu>
+Message-ID: <20210401165450.e3mdubfmrkgyi225@hatecraft.localdomain>
+References: <20210325185915.51590-1-arek@hiler.eu>
+ <20210325185915.51590-2-arek@hiler.eu>
+ <YFz8Gje1NPcu5ohy@phenom.ffwll.local>
 MIME-Version: 1.0
-References: <20210331091241.2566311-1-tvrtko.ursulin@linux.intel.com>
- <CAM0jSHPM+8DEJGo38wA=0zGtEaeN1u1rqeL9S2PjEHrZSai7bg@mail.gmail.com>
- <a94d9968-173b-f9f5-5f44-598fed2c1fd4@linux.intel.com>
-In-Reply-To: <a94d9968-173b-f9f5-5f44-598fed2c1fd4@linux.intel.com>
-From: Matthew Auld <matthew.william.auld@gmail.com>
-Date: Thu, 1 Apr 2021 16:12:29 +0100
-Message-ID: <CAM0jSHOBW1vVRknZBsZor6DRLi=i1=jEdWr8+awKDNoLqnum9w@mail.gmail.com>
-Subject: Re: [Intel-gfx] [igt-dev] [PATCH i-g-t] intel_gpu_top: Document how
- to use JSON output
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Content-Disposition: inline
+In-Reply-To: <YFz8Gje1NPcu5ohy@phenom.ffwll.local>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/5] tests: Build gem_concurrent_all
+ with meson
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Intel Graphics Development <Intel-gfx@lists.freedesktop.org>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Daniel Vetter <daniel@ffwll.ch>
+Cc: igt-dev@lists.freedesktop.org, Tomi Sarvela <tomi.p.sarvela@intel.com>, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 1 Apr 2021 at 15:58, Tvrtko Ursulin
-<tvrtko.ursulin@linux.intel.com> wrote:
->
->
-> On 01/04/2021 15:49, Matthew Auld wrote:
-> > On Wed, 31 Mar 2021 at 10:12, Tvrtko Ursulin
-> > <tvrtko.ursulin@linux.intel.com> wrote:
-> >>
-> >> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> >>
-> >> Put a note on how to use JSON output into the man page.
-> >>
-> >> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> >> References: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/100
-> >> ---
-> >>   man/intel_gpu_top.rst | 5 +++++
-> >>   1 file changed, 5 insertions(+)
-> >>
-> >> diff --git a/man/intel_gpu_top.rst b/man/intel_gpu_top.rst
-> >> index f6d74852558b..94fdc6520fd3 100644
-> >> --- a/man/intel_gpu_top.rst
-> >> +++ b/man/intel_gpu_top.rst
-> >> @@ -81,6 +81,11 @@ Filter types: ::
-> >>       pci      pci:[vendor=%04x/name][,device=%04x][,card=%d]
-> >>                vendor is hex number or vendor name
-> >>
-> >> +JSON OUTPUT
-> >> +===========
-> >> +
-> >> +To parse the JSON as output by the tool the consumer should wrap its entirety into square brackets ([ ]). This will make each sample point an JSON array element and will avoid "Multiple root elements" JSON validation error.
-> >> +
-> >
-> > a JSON array element
-> >
-> > It could be argued that this should go into LIMITATIONS?
->
-> Hm yes, 50-50 or you lean more towards limitations? Otherwise inertia
-> says it can also stay as is.
+On Thu, Mar 25, 2021 at 10:09:46PM +0100, Daniel Vetter wrote:
+> On Thu, Mar 25, 2021 at 08:59:12PM +0200, Arkadiusz Hiler wrote:
+> > ...and add it to test-list-full.txt just like we do when building with
+> > autotools.
+> > 
+> > Signed-off-by: Arkadiusz Hiler <arek@hiler.eu>
+> 
+> tbh it might be time to sunset this. I kinda started it, it grew to
+> astronomical combinatorial combinations, it's been on the skiplist since
+> ages, and there's even more stuff on the skiplist. Looking at the history
+> it started very benign to tests some pwrite/pread vs rendering
+> synchronization issues. But it's definitely not doing just that anymore.
+> 
+> But maybe in a next patch series.
+> 
+> On the series: Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-Just keep it as-is.
+Ripping things out in a separate series IMO makes more sense, yep.
 
->
-> Regards,
->
-> Tvrtko
->
-> > Acked-by: Matthew Auld <matthew.auld@intel.com>
-> >
-> >>   LIMITATIONS
-> >>   ===========
-> >>
-> >> --
-> >> 2.27.0
-> >>
-> >> _______________________________________________
-> >> igt-dev mailing list
-> >> igt-dev@lists.freedesktop.org
-> >> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Thanks for the ACK :-)
+
+/me pokes Petri and Tomi
+
+Seems like the change was picked up and went through Intel's CI just
+fine. Is there anything that blocks this series for you folks?
+
+-- 
+Cheers,
+Arek
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
