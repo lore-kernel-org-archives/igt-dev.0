@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 511D289FD3
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Apr 2021 02:09:38 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A47726E062
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Apr 2021 02:19:18 +0000 (UTC)
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
-Date: Tue,  6 Apr 2021 07:49:25 +0530
-Message-Id: <20210406021925.28234-1-nidhi1.gupta@intel.com>
+Date: Tue,  6 Apr 2021 07:59:16 +0530
+Message-Id: <20210406022916.31998-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_available_modes_crc : Added test
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_concurrent : Added test
  description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -27,21 +27,22 @@ Added test description.
 
 Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_available_modes_crc.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/kms_concurrent.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/kms_available_modes_crc.c b/tests/kms_available_modes_crc.c
-index 17e0f237..a1dd1289 100644
---- a/tests/kms_available_modes_crc.c
-+++ b/tests/kms_available_modes_crc.c
-@@ -448,6 +448,7 @@ igt_main
+diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+index 5a269014..c3f29ec7 100644
+--- a/tests/kms_concurrent.c
++++ b/tests/kms_concurrent.c
+@@ -329,6 +329,8 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+ 		igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
+ 	}
  
- 	data.commit = data.display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY;
- 
-+	igt_describe("CRC test for all different plane modes which kernel advertises.");
- 	igt_subtest("available_mode_test_crc") {
- 		gem_require_mappable_ggtt(data.gfx_fd);
- 		test_available_modes(&data);
++	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
++		     "resolution.");
+ 	igt_subtest_f("pipe-%s", kmstest_pipe_name(pipe))
+ 		for_each_valid_output_on_pipe(&data->display, pipe, output)
+ 			run_test(data, pipe, output);
 -- 
 2.26.2
 
