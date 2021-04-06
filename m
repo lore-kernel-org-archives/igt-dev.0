@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1690E6E59D
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Apr 2021 04:39:07 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-Date: Tue,  6 Apr 2021 10:19:09 +0530
-Message-Id: <20210406044909.20915-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_content_protection : Added
- subtest description
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 06 Apr 2021 04:48:29 -0000
+Message-ID: <161768450987.18461.17377787974522049372@emeril.freedesktop.org>
+References: <20210406030025.11380-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20210406030025.11380-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fpipe=5Fb=5Fc=5Fivb_=3A_Added_test_description?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,97 +14,167 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1339793720=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added subtest description.
+--===============1339793720==
+Content-Type: multipart/alternative;
+ boundary="===============7881918523978095326=="
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_content_protection.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+--===============7881918523978095326==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 0fdbacdd..5a75b871 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -735,46 +735,58 @@ igt_main
- 		create_fbs();
- 	}
- 
-+	igt_describe("Test content protection with legacy style commit.");
- 	igt_subtest("legacy") {
- 		data.cp_tests = 0;
- 		test_content_protection(COMMIT_LEGACY, HDCP_CONTENT_TYPE_0);
- 	}
- 
-+	igt_describe("Test content protection with atomic modesetting");
- 	igt_subtest("atomic") {
- 		igt_require(data.display.is_atomic);
- 		data.cp_tests = 0;
- 		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
- 	}
- 
-+	igt_describe("Test content protection with DPMS ON/OFF during atomic modesetting.");
- 	igt_subtest("atomic-dpms") {
- 		igt_require(data.display.is_atomic);
- 		data.cp_tests = CP_DPMS;
- 		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
- 	}
- 
-+	igt_describe("Test for the integrity of link.");
- 	igt_subtest("LIC") {
- 		igt_require(data.display.is_atomic);
- 		data.cp_tests = CP_LIC;
- 		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
- 	}
- 
-+	igt_describe("Test content protection with content type 1 that "
-+		     "can be handled only through HDCP2.2.");
- 	igt_subtest("type1") {
- 		igt_require(data.display.is_atomic);
- 		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
- 	}
- 
-+	igt_describe("Test the teardown and rebuild of the interface between "
-+		     "I915 and mei hdcp.");
- 	igt_subtest("mei_interface") {
- 		igt_require(data.display.is_atomic);
- 		data.cp_tests = CP_MEI_RELOAD;
- 		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
- 	}
- 
-+	igt_describe("Test the content type change when the content protection already "
-+		     "enabled.");
- 	igt_subtest("content_type_change") {
- 		igt_require(data.display.is_atomic);
- 		data.cp_tests = CP_TYPE_CHANGE;
- 		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
- 	}
- 
-+	igt_describe("Test to detect the HDCP status change when we are reading the uevent "
-+		     "sent with the corresponding connector id and property id.");
- 	igt_subtest("uevent") {
- 		igt_require(data.display.is_atomic);
- 		data.cp_tests = CP_UEVENT;
-@@ -792,6 +804,8 @@ igt_main
- 	 *  either of these options, we test SRM writing from userspace and
- 	 *  validation of the same at kernel. Something is better than nothing.
- 	 */
-+	igt_describe("This test writes the facsimile SRM into the /lib/firmware/ "
-+		     "and check the kernel parsing of it by invoking the hdcp authentication.");
- 	igt_subtest("srm") {
- 		bool ret;
- 
--- 
-2.26.2
+== Series Details ==
+
+Series: tests/kms_pipe_b_c_ivb : Added test description
+URL   : https://patchwork.freedesktop.org/series/88730/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9928 -> IGTPW_5696
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5696 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@write:
+    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +2 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9928/fi-tgl-y/igt@fbdev@write.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/fi-tgl-y/igt@fbdev@write.html
+
+  
+#### Possible fixes ####
+
+  * igt@prime_self_import@basic-with_one_bo_two_files:
+    - fi-tgl-y:           [DMESG-WARN][3] ([i915#402]) -> [PASS][4] +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9928/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
+
+  
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (45 -> 39)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6056 -> IGTPW_5696
+
+  CI-20190529: 20190529
+  CI_DRM_9928: 39a8c358dcd5eaa8c6f8c81c69055d4f6574307c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5696: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/index.html
+  IGT_6056: 84e6a7e19ccc7fafc46f372e756cad9d4aa093f7 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/index.html
+
+--===============7881918523978095326==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_pipe_b_c_ivb : Added test description</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88730/">https://patchwork.freedesktop.org/series/88730/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9928 -&gt; IGTPW_5696</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5696 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@fbdev@write:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9928/fi-tgl-y/igt@fbdev@write.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/fi-tgl-y/igt@fbdev@write.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@prime_self_import@basic-with_one_bo_two_files:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9928/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (45 -&gt; 39)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6056 -&gt; IGTPW_5696</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9928: 39a8c358dcd5eaa8c6f8c81c69055d4f6574307c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5696: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/index.html<br />
+  IGT_6056: 84e6a7e19ccc7fafc46f372e756cad9d4aa093f7 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============7881918523978095326==--
+
+--===============1339793720==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1339793720==--
