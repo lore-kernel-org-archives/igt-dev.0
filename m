@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C59C89F99
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Apr 2021 02:50:22 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BBB7E6E062
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Apr 2021 02:55:13 +0000 (UTC)
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
-Date: Tue,  6 Apr 2021 08:30:25 +0530
-Message-Id: <20210406030025.11380-1-nidhi1.gupta@intel.com>
+Date: Tue,  6 Apr 2021 08:35:16 +0530
+Message-Id: <20210406030516.14672-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_pipe_b_c_ivb : Added test
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling : Added test
  description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,45 +23,53 @@ To: igt-dev@lists.freedesktop.org
 Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added test description
+Added test description.
 
 Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_pipe_b_c_ivb.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ tests/kms_plane_scaling.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/kms_pipe_b_c_ivb.c b/tests/kms_pipe_b_c_ivb.c
-index 94768eec..5823ae2a 100644
---- a/tests/kms_pipe_b_c_ivb.c
-+++ b/tests/kms_pipe_b_c_ivb.c
-@@ -264,18 +264,28 @@ igt_main
- 		igt_display_require(&data.display, data.drm_fd);
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 31f14275..34efc588 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -709,24 +709,28 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	igt_subtest_group {
+ 		igt_output_t *output;
+ 
++		igt_describe("Tests plane scaling per pipe.");
+ 		igt_subtest_with_dynamic("plane-scaling") {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output)
+ 				igt_dynamic_f("pipe-%s-plane-scaling", kmstest_pipe_name(pipe))
+ 					test_plane_scaling_on_pipe(&data, pipe, output);
+ 		}
+ 
++		igt_describe("Tests scaling with pixel formats.");
+ 		igt_subtest_with_dynamic("scaler-with-pixel-format") {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output)
+ 				igt_dynamic_f("pipe-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe))
+ 					test_scaler_with_pixel_format_pipe(&data, pipe, output);
+ 		}
+ 
++		igt_describe("Tests scaling with tiling rotation.");
+ 		igt_subtest_with_dynamic("scaler-with-rotation") {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output)
+ 				igt_dynamic_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
+ 					test_scaler_with_rotation_pipe(&data, pipe, output);
+ 		}
+ 
++		igt_describe("Tests scaling with clipping and clamping.");
+ 		igt_subtest_with_dynamic("scaler-with-clipping-clamping") {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output)
+ 				igt_dynamic_f("pipe-%s-scaler-with-clipping-clamping", kmstest_pipe_name(pipe))
+@@ -734,6 +738,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		}
  	}
  
-+	igt_describe("Tests pipe-B and pipe-C interactions in IVB by enabling pipe-B with mode "
-+		     "that requires 3 lanes and then enabling pipe-c with dpms off/on pipe-B.");
- 	igt_subtest("pipe-B-dpms-off-modeset-pipe-C")
- 		test_dpms(&data);
- 
-+	igt_describe("Tests pipe-B and pipe-C interactions in IVB by enabling 2 different modes "
-+		     "on pipe-B and then a single mode on pipe-C.");
- 	igt_subtest("pipe-B-double-modeset-then-modeset-pipe-C")
- 		test_lane_reduction(&data);
- 
-+	igt_describe("Tests pipe-B and pipe-C interactions in IVB by disabling pipe-B and then "
-+		     "setting mode on pipe-C.");
- 	igt_subtest("disable-pipe-B-enable-pipe-C")
- 		test_disable_pipe_B(&data);
- 
-+	igt_describe("Tests pipe-B and pipe-C interactions in IVB by enabling pipe-B with 3 lanes "
-+		     "from pipe-C.");
- 	igt_subtest("from-pipe-C-to-B-with-3-lanes")
- 		test_from_C_to_B_with_3_lanes(&data);
- 
-+	igt_describe("Tests pipe-B and pipe-C interactions in IVB by enabling pipe-C while pipe-B "
-+		     "has 3-lanes");
- 	igt_subtest("enable-pipe-C-while-B-has-3-lanes")
- 		test_fail_enable_pipe_C_while_B_has_3_lanes(&data);
++	igt_describe("Tests scaling with multi-pipe scenario.");
+ 	igt_subtest_f("2x-scaler-multi-pipe")
+ 		test_scaler_with_multi_pipe_plane(&data);
  
 -- 
 2.26.2
