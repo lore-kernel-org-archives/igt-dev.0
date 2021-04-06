@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2054.outbound.protection.outlook.com [40.107.243.54])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 79C576E11C
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Apr 2021 19:15:00 +0000 (UTC)
-From: Sung Joon Kim <sungkim@amd.com>
-Date: Tue,  6 Apr 2021 15:14:38 -0400
-Message-Id: <20210406191439.56926-1-sungkim@amd.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 1/2] lib/igt_fb: Add proper linear mode
- stride/size calculation for amdgpu
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 06 Apr 2021 20:06:08 -0000
+Message-ID: <161773956802.18459.2531974473025057868@emeril.freedesktop.org>
+References: <20210406191439.56926-1-sungkim@amd.com>
+In-Reply-To: <20210406191439.56926-1-sungkim@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5B1/2=5D_lib/igt=5Ffb=3A_Add_proper_linear_mode?=
+ =?utf-8?q?_stride/size_calculation_for_amdgpu?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,151 +15,202 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1988979778=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Sung Joon Kim <sungkim@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Allow plane stride/size calculation for linear tiling mode when rotation is applied. Does not have impact on other gpus.
+--===============1988979778==
+Content-Type: multipart/alternative;
+ boundary="===============1750401155550246613=="
 
-Signed-off-by: Sung Joon Kim <sungkim@amd.com>
----
- lib/igt_amd.c | 31 ++++++++++++++++++++++++++++++-
- lib/igt_amd.h |  2 ++
- lib/igt_fb.c  | 35 +++++++++++++++++++----------------
- 3 files changed, 51 insertions(+), 17 deletions(-)
+--===============1750401155550246613==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index a4e1cb59..781da595 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -137,7 +137,36 @@ unsigned int igt_amd_fb_get_blk_size_table_idx(unsigned int bpp)
- 
- 	return blk_size_table_index;
- }
--
-+void igt_amd_fb_calculate_dimension(uint64_t modifier, unsigned int bpp,
-+				       unsigned int *width, unsigned int *height)
-+{
-+	uint64_t mod = AMD_FMT_MOD_GET(TILE, modifier);
-+
-+	switch(mod) {
-+	case LOCAL_DRM_FORMAT_MOD_NONE:
-+		if (*height > *width) {
-+			/*
-+			 * For rotated linear buffer
-+			 * Called from setup_linear_mapping
-+			 */
-+			igt_amd_fb_calculate_tile_dimension(bpp, width, height);
-+		}
-+		else {
-+			*width = 256 / (bpp >> 3);
-+			// height is the same
-+		}
-+		break;
-+	case AMD_FMT_MOD_TILE_GFX9_64K_S:
-+	case AMD_FMT_MOD_TILE_GFX9_64K_D:
-+	case AMD_FMT_MOD_TILE_GFX9_64K_S_X:
-+	case AMD_FMT_MOD_TILE_GFX9_64K_D_X:
-+	case AMD_FMT_MOD_TILE_GFX9_64K_R_X:
-+		igt_amd_fb_calculate_tile_dimension(bpp, width, height);
-+		break;
-+	default:
-+		igt_assert(false);
-+	}
-+}
- void igt_amd_fb_calculate_tile_dimension(unsigned int bpp,
- 				       unsigned int *width, unsigned int *height)
- {
-diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-index 6656d901..9e169604 100644
---- a/lib/igt_amd.h
-+++ b/lib/igt_amd.h
-@@ -31,6 +31,8 @@ void *igt_amd_mmap_bo(int fd, uint32_t handle, uint64_t size, int prot);
- unsigned int igt_amd_compute_offset(unsigned int* swizzle_pattern,
- 				       unsigned int x, unsigned int y);
- unsigned int igt_amd_fb_get_blk_size_table_idx(unsigned int bpp);
-+void igt_amd_fb_calculate_dimension(uint64_t modifier, unsigned int bpp,
-+				       unsigned int *width, unsigned int *height);
- void igt_amd_fb_calculate_tile_dimension(unsigned int bpp,
- 				       unsigned int *width, unsigned int *height);
- uint32_t igt_amd_fb_tiled_offset(unsigned int bpp, unsigned int x_input,
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 4ded7e78..c4501179 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -708,23 +708,26 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
- 		stride = roundup_power_of_two(stride);
- 
- 		return stride;
--	} else if (igt_format_is_yuv(fb->drm_format) && is_amdgpu_device(fb->fd)) {
-+	} else if (is_amdgpu_device(fb->fd)) {
- 		/*
- 		 * Chroma address needs to be aligned to 256 bytes on AMDGPU
- 		 * so the easiest way is to align the luma stride to 256.
- 		 */
--		return ALIGN(min_stride, 256);
--	} else if (fb->modifier != LOCAL_DRM_FORMAT_MOD_NONE && is_amdgpu_device(fb->fd)) {
--		/*
--		 * For amdgpu device with tiling mode
--		 */
--		unsigned int tile_width, tile_height;
-+		if (igt_format_is_yuv(fb->drm_format))
-+			return ALIGN(min_stride, 256);
-+		else {
-+			/*
-+			 * For amdgpu device with tiling mode
-+			 */
-+			unsigned int tile_width = fb->plane_width[plane];
-+			unsigned int tile_height = fb->plane_height[plane];
- 
--		igt_amd_fb_calculate_tile_dimension(fb->plane_bpp[plane],
--				     &tile_width, &tile_height);
--		tile_width *= (fb->plane_bpp[plane] / 8);
-+			igt_amd_fb_calculate_dimension(fb->modifier, fb->plane_bpp[plane],
-+					&tile_width, &tile_height);
-+			tile_width *= (fb->plane_bpp[plane] / 8);
- 
--		return ALIGN(min_stride, tile_width);
-+			return ALIGN(min_stride, tile_width);
-+		}
- 	} else if (is_gen12_ccs_cc_plane(fb, plane)) {
- 		/* clear color always fixed to 64 bytes */
- 		return 64;
-@@ -775,13 +778,14 @@ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
- 		size = roundup_power_of_two(size);
- 
- 		return size;
--	} else if (fb->modifier != LOCAL_DRM_FORMAT_MOD_NONE && is_amdgpu_device(fb->fd)) {
-+	} else if (is_amdgpu_device(fb->fd)) {
- 		/*
- 		 * For amdgpu device with tiling mode
- 		 */
--		unsigned int tile_width, tile_height;
-+		unsigned int tile_width = fb->plane_width[plane];
-+		unsigned int tile_height = fb->plane_height[plane];
- 
--		igt_amd_fb_calculate_tile_dimension(fb->plane_bpp[plane],
-+		igt_amd_fb_calculate_dimension(fb->modifier, fb->plane_bpp[plane],
- 				     &tile_width, &tile_height);
- 		tile_height *= (fb->plane_bpp[plane] / 8);
- 
-@@ -1025,8 +1029,7 @@ static int create_bo_for_fb(struct igt_fb *fb, bool prefer_sysmem)
- 	if (fb->modifier || fb->size || fb->strides[0] ||
- 	    (is_i915_device(fd) && igt_format_is_yuv(fb->drm_format)) ||
- 	    (is_i915_device(fd) && igt_format_is_fp16(fb->drm_format)) ||
--	    (is_amdgpu_device(fd) && igt_format_is_yuv(fb->drm_format)) ||
--	    is_nouveau_device(fd))
-+	    is_amdgpu_device(fd) || is_nouveau_device(fd))
- 		device_bo = true;
- 
- 	/* Sets offets and stride if necessary. */
--- 
-2.25.1
+== Series Details ==
+
+Series: series starting with [1/2] lib/igt_fb: Add proper linear mode stride/size calculation for amdgpu
+URL   : https://patchwork.freedesktop.org/series/88773/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9930 -> IGTPW_5704
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5704/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5704 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@write:
+    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9930/fi-tgl-y/igt@fbdev@write.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5704/fi-tgl-y/igt@fbdev@write.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-tgl-y:           [PASS][3] -> [DMESG-FAIL][4] ([i915#541])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9930/fi-tgl-y/igt@i915_selftest@live@gt_heartbeat.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5704/fi-tgl-y/igt@i915_selftest@live@gt_heartbeat.html
+
+  
+#### Possible fixes ####
+
+  * igt@debugfs_test@read_all_entries:
+    - fi-tgl-y:           [DMESG-WARN][5] ([i915#1982] / [i915#402]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9930/fi-tgl-y/igt@debugfs_test@read_all_entries.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5704/fi-tgl-y/igt@debugfs_test@read_all_entries.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - {fi-hsw-gt1}:       [DMESG-WARN][7] ([i915#3303]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9930/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5704/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1222]: https://gitlab.freedesktop.org/drm/intel/issues/1222
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#541]: https://gitlab.freedesktop.org/drm/intel/issues/541
+
+
+Participating hosts (45 -> 39)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6058 -> IGTPW_5704
+
+  CI-20190529: 20190529
+  CI_DRM_9930: 64ca4816d6657b4f651f7c44bb0458d7fdd9a775 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5704: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5704/index.html
+  IGT_6058: 5db5b0d311e79ecb45d3f5a7b98c430c3bb1ed6b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5704/index.html
+
+--===============1750401155550246613==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/2] lib/igt_fb: Add proper linear mode stride/size calculation for amdgpu</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88773/">https://patchwork.freedesktop.org/series/88773/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5704/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5704/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9930 -&gt; IGTPW_5704</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5704/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5704 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@write:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9930/fi-tgl-y/igt@fbdev@write.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5704/fi-tgl-y/igt@fbdev@write.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9930/fi-tgl-y/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5704/fi-tgl-y/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/541">i915#541</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@read_all_entries:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9930/fi-tgl-y/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5704/fi-tgl-y/igt@debugfs_test@read_all_entries.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>{fi-hsw-gt1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9930/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5704/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (45 -&gt; 39)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6058 -&gt; IGTPW_5704</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9930: 64ca4816d6657b4f651f7c44bb0458d7fdd9a775 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5704: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5704/index.html<br />
+  IGT_6058: 5db5b0d311e79ecb45d3f5a7b98c430c3bb1ed6b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============1750401155550246613==--
+
+--===============1988979778==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1988979778==--
