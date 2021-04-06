@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 06 Apr 2021 04:48:29 -0000
-Message-ID: <161768450987.18461.17377787974522049372@emeril.freedesktop.org>
-References: <20210406030025.11380-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20210406030025.11380-1-nidhi1.gupta@intel.com>
+Date: Tue, 06 Apr 2021 05:15:17 -0000
+Message-ID: <161768611711.18458.16742316670594600384@emeril.freedesktop.org>
+References: <20210406030516.14672-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20210406030516.14672-1-nidhi1.gupta@intel.com>
 Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fpipe=5Fb=5Fc=5Fivb_=3A_Added_test_description?=
+ =?utf-8?q?kms=5Fplane=5Fscaling_=3A_Added_test_description?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,31 +15,31 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1339793720=="
+Content-Type: multipart/mixed; boundary="===============0586951917=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Nidhi Gupta <nidhi1.gupta@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1339793720==
+--===============0586951917==
 Content-Type: multipart/alternative;
- boundary="===============7881918523978095326=="
+ boundary="===============2642826761063736233=="
 
---===============7881918523978095326==
+--===============2642826761063736233==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/kms_pipe_b_c_ivb : Added test description
-URL   : https://patchwork.freedesktop.org/series/88730/
+Series: tests/kms_plane_scaling : Added test description
+URL   : https://patchwork.freedesktop.org/series/88731/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_9928 -> IGTPW_5696
+CI Bug Log - changes from CI_DRM_9928 -> IGTPW_5697
 ====================================================
 
 Summary
@@ -49,56 +49,62 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5697/index.html
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_5696 that come from known issues:
+  Here are the changes found in IGTPW_5697 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@fbdev@write:
-    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +2 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9928/fi-tgl-y/igt@fbdev@write.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/fi-tgl-y/igt@fbdev@write.html
+  * igt@debugfs_test@read_all_entries:
+    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9928/fi-tgl-y/igt@debugfs_test@read_all_entries.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5697/fi-tgl-y/igt@debugfs_test@read_all_entries.html
+
+  * igt@i915_selftest@live@sanitycheck:
+    - fi-kbl-7500u:       [PASS][3] -> [DMESG-WARN][4] ([i915#2605])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9928/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5697/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html
 
   
 #### Possible fixes ####
 
   * igt@prime_self_import@basic-with_one_bo_two_files:
-    - fi-tgl-y:           [DMESG-WARN][3] ([i915#402]) -> [PASS][4] +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9928/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
+    - fi-tgl-y:           [DMESG-WARN][5] ([i915#402]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9928/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5697/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
 
   
+  [i915#2605]: https://gitlab.freedesktop.org/drm/intel/issues/2605
   [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
 
 
-Participating hosts (45 -> 39)
+Participating hosts (45 -> 38)
 ------------------------------
 
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-icl-y fi-bdw-samus 
 
 
 Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_6056 -> IGTPW_5696
+  * IGT: IGT_6056 -> IGTPW_5697
 
   CI-20190529: 20190529
   CI_DRM_9928: 39a8c358dcd5eaa8c6f8c81c69055d4f6574307c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5696: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/index.html
+  IGTPW_5697: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5697/index.html
   IGT_6056: 84e6a7e19ccc7fafc46f372e756cad9d4aa093f7 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5697/index.html
 
---===============7881918523978095326==
+--===============2642826761063736233==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -118,55 +124,63 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/kms_pipe_b_c_ivb : Added test description</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88730/">https://patchwork.freedesktop.org/series/88730/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_scaling : Added test description</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88731/">https://patchwork.freedesktop.org/series/88731/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5697/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5697/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_9928 -&gt; IGTPW_5696</h1>
+    <h1>CI Bug Log - changes from CI_DRM_9928 -&gt; IGTPW_5697</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/index.html</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5697/index.html</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5696 that come from known issues:</p>
+<p>Here are the changes found in IGTPW_5697 that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
-<li>igt@fbdev@write:<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9928/fi-tgl-y/igt@fbdev@write.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/fi-tgl-y/igt@fbdev@write.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +2 similar issues</li>
+<li>
+<p>igt@debugfs_test@read_all_entries:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9928/fi-tgl-y/igt@debugfs_test@read_all_entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5697/fi-tgl-y/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@sanitycheck:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9928/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5697/fi-kbl-7500u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2605">i915#2605</a>)</li>
 </ul>
 </li>
 </ul>
 <h4>Possible fixes</h4>
 <ul>
 <li>igt@prime_self_import@basic-with_one_bo_two_files:<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9928/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">PASS</a> +1 similar issue</li>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9928/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5697/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">PASS</a></li>
 </ul>
 </li>
 </ul>
-<h2>Participating hosts (45 -&gt; 39)</h2>
-<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Participating hosts (45 -&gt; 38)</h2>
+<p>Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-icl-y fi-bdw-samus </p>
 <h2>Build changes</h2>
 <ul>
 <li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6056 -&gt; IGTPW_5696</li>
+<li>IGT: IGT_6056 -&gt; IGTPW_5697</li>
 </ul>
 <p>CI-20190529: 20190529<br />
   CI_DRM_9928: 39a8c358dcd5eaa8c6f8c81c69055d4f6574307c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5696: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5696/index.html<br />
+  IGTPW_5697: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5697/index.html<br />
   IGT_6056: 84e6a7e19ccc7fafc46f372e756cad9d4aa093f7 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
 
 </body>
 </html>
 
---===============7881918523978095326==--
+--===============2642826761063736233==--
 
---===============1339793720==
+--===============0586951917==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -177,4 +191,4 @@ igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
---===============1339793720==--
+--===============0586951917==--
