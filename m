@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6486489A9F
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Apr 2021 08:29:08 +0000 (UTC)
-From: "Surendrakumar Upadhyay, TejaskumarX"
- <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Date: Wed, 7 Apr 2021 08:29:05 +0000
-Message-ID: <SN6PR11MB34217697449095B84B8B7B4FDF759@SN6PR11MB3421.namprd11.prod.outlook.com>
-References: <20210407030952.44288-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
- <YG1igzvUPT41npFD@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YG1igzvUPT41npFD@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E5AB89949
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Apr 2021 09:49:24 +0000 (UTC)
+From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Wed,  7 Apr 2021 15:08:57 +0530
+Message-Id: <20210407093857.45333-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t] test/i915/basic-wide-active: set max
- relocation limit
+Subject: [igt-dev] [i-g-t] lib/gem_execbuf_wr: Add gem_has_relocations check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,46 +18,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>, "Lankhorst, Maarten" <maarten.lankhorst@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pandey,
- Hariom" <hariom.pandey@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: hariom.pandey@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Petri,
+Check if relocation and execbuf ioctls are supported on
+respective platform or not. This will mark it skip instead
+of misleading fail if relocations are not supported.
 
-We have limitation with driver in respect to many relocs thus relocs are removed from GEN12 onwards but still GEN11 and below are using many relocs. This patch makes practical possible number combinations in order to make test pass on GEN11 and below.
+Gitlab#3276
 
-Maarten would you like to add anything here with respect to Petri's comment below!
+Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+---
+ lib/ioctl_wrappers.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Thanks,
-Tejas
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index 4440004c..465da0bc 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -57,6 +57,7 @@
+ #include "igt_sysfs.h"
+ #include "config.h"
+ #include "i915/gem_mman.h"
++#include "i915/gem_submission.h"
+ 
+ #ifdef HAVE_VALGRIND
+ #include <valgrind/valgrind.h>
+@@ -636,6 +637,9 @@ void gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf)
+ int __gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf)
+ {
+ 	int err = 0;
++
++	/* Check if relocations is supported with execbuffer2 */
++	igt_require(gem_has_relocations(fd));
+ 	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_EXECBUFFER2_WR, execbuf)) {
+ 		err = -errno;
+ 		igt_assume(err != 0);
+-- 
+2.30.0
 
-> -----Original Message-----
-> From: Latvala, Petri <petri.latvala@intel.com>
-> Sent: 07 April 2021 13:13
-> To: Surendrakumar Upadhyay, TejaskumarX
-> <tejaskumarx.surendrakumar.upadhyay@intel.com>
-> Cc: igt-dev@lists.freedesktop.org; Pandey, Hariom
-> <hariom.pandey@intel.com>
-> Subject: Re: [igt-dev] [i-g-t] test/i915/basic-wide-active: set max relocation
-> limit
-> 
-> On Wed, Apr 07, 2021 at 08:39:52AM +0530, Tejas Upadhyay wrote:
-> > practically its highly unlike to get as many relocations which
-> > basic-wide-active test is testing thus setting and adjusting max limit
-> > and count to avoid failures on legacy platforms like KBL.
-> 
-> The previous such patch against gem_exec_reloc had an unaddressed
-> objection and it was still merged. If you don't agree with the objection, you
-> still need to explain how in your view it's not valid.
-> 
-> This commit message quite clearly says the purpose of this patch is to ignore
-> failures, improving passrate metrics instead of driver health. The same
-> objection to this patch applies as far as I can see, so nak on this.
-> 
-> 
-> --
-> Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
