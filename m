@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 13CB76EA13
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 07:01:32 +0000 (UTC)
-From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
-Date: Thu,  8 Apr 2021 12:31:36 +0530
-Message-Id: <20210408070136.1157973-1-arundhati.hagaragi@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 982F46EA13
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 07:02:56 +0000 (UTC)
+From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Thu,  8 Apr 2021 12:22:31 +0530
+Message-Id: <20210408065231.47694-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_dp_dsc: Add subtest description
+Subject: [igt-dev] [i-g-t] lib/gem_submission: Remove __gem_execbuf call
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,40 +14,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Gupta@freedesktop.org, Nidhi1 <nidhi1.gupta@intel.com>
+Cc: hariom.pandey@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added description for subtest
-
-Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
-Cc: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
----
- tests/kms_dp_dsc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/tests/kms_dp_dsc.c b/tests/kms_dp_dsc.c
-index e2e3aaa0..60ed3855 100644
---- a/tests/kms_dp_dsc.c
-+++ b/tests/kms_dp_dsc.c
-@@ -271,7 +271,8 @@ igt_main
- 	}
- 
- 	for (test_cnt = 0; test_cnt < ARRAY_SIZE(tests); test_cnt++) {
--
-+		igt_describe("Validate display stream compression functionality if supported on "
-+			       "DP/eDP connector");
- 		igt_subtest_f("basic-dsc-enable-%s",
- 			      kmstest_connector_type_str(tests[test_cnt])) {
- 			test_conn_cnt = 0;
--- 
-2.25.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+QWZ0ZXIgcmVsb2Mgc3VwcG9ydCBnb3QgZHJvcHBlZCBvbiBHRU4xMi8xMissIGxvdCBvZiB0ZXN0
+cyBhcmUKcmVwb3J0aW5nIGZhaWx1cmVzIHdoaWNoIHNob3VsZCBiZSBza2lwcGVkIHVzaW5nIGNo
+ZWNrCmdlbV9oYXNfcmVsb2NhdGlvbnMoKS4gVGhlIHByb2JsZW0gaXMgbG90IG9mIHRob3NlIGZh
+aWx1cmVzIGFyZQpkdWUgdG8gZGlyZWN0IF9fZ2VtX2V4ZWNidWYoKSBjYWxsIHdoZXJlIHdlIGNh
+bnQgcHV0IGdlbV9oYXNfCnJlbG9jYXRpb25zIGNoZWNrIHRvIHNraXAgdGhlIHRlc3QgaW4gY2Fz
+ZSBwbGF0Zm9ybSBkb2VzIG5vdApzdXBwb3J0IHJlYXNvbiBiZWluZyBpdCBhbHNvIGNhbGxzIF9f
+Z2VtX2V4ZWNidWYgd2hpY2ggY3JlYXRlcwpuZXZlciBlbmRpbmcgbG9vcC4gVGh1cyB0byBhdm9p
+ZCBsb29waW5nLCBjYWxsIF9fZ2VtX2V4ZWNidWYoKQppbnNpZGUgZ2VtX2hhc19yZWxvY2F0aW9u
+cygpIGlzIHJlcGxhY2VkIHdpdGggZGlyZWN0IGlvY3RsIGNhbGwuCgpDYzogWmJpZ25pZXcgS2Vt
+cGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6
+IFRlamFzIFVwYWRoeWF5IDx0ZWphc2t1bWFyeC5zdXJlbmRyYWt1bWFyLnVwYWRoeWF5QGludGVs
+LmNvbT4KLS0tCiBsaWIvaTkxNS9nZW1fc3VibWlzc2lvbi5jIHwgOCArKysrKysrLQogMSBmaWxl
+IGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2xp
+Yi9pOTE1L2dlbV9zdWJtaXNzaW9uLmMgYi9saWIvaTkxNS9nZW1fc3VibWlzc2lvbi5jCmluZGV4
+IDA1MWY5ZDA0Li41MGE4YWUxMSAxMDA2NDQKLS0tIGEvbGliL2k5MTUvZ2VtX3N1Ym1pc3Npb24u
+YworKysgYi9saWIvaTkxNS9nZW1fc3VibWlzc2lvbi5jCkBAIC00MjIsOCArNDIyLDE0IEBAIGJv
+b2wgZ2VtX2hhc19yZWxvY2F0aW9ucyhpbnQgaTkxNSkKIAkJLmJ1ZmZlcl9jb3VudCA9IDEsCiAJ
+fTsKIAlib29sIGhhc19yZWxvY3M7CisJaW50IGVyciA9IDA7CisKKwlpZiAoaWd0X2lvY3RsKGk5
+MTUsIERSTV9JT0NUTF9JOTE1X0dFTV9FWEVDQlVGRkVSMiwgJmV4ZWNidWYpKSB7CisJCWVyciA9
+IC1lcnJubzsKKwkJaWd0X2Fzc3VtZShlcnIgIT0gMCk7CisJfQogCi0JaGFzX3JlbG9jcyA9IF9f
+Z2VtX2V4ZWNidWYoaTkxNSwgJmV4ZWNidWYpID09IC1FTk9FTlQ7CisJaGFzX3JlbG9jcyA9IGVy
+ciA9PSAtRU5PRU5UOwogCWdlbV9jbG9zZShpOTE1LCBvYmouaGFuZGxlKTsKIAogCXJldHVybiBo
+YXNfcmVsb2NzOwotLSAKMi4zMC4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
+dG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2ln
+dC1kZXYK
