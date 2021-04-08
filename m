@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 46DC66EA19
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 07:16:39 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D61A76EA1F
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 07:27:53 +0000 (UTC)
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
-Date: Thu,  8 Apr 2021 12:56:42 +0530
-Message-Id: <20210408072642.21995-1-nidhi1.gupta@intel.com>
+Date: Thu,  8 Apr 2021 13:07:48 +0530
+Message-Id: <20210408073748.26234-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_panel_fitting.c : Added test
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_lowres : Added test
  description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -27,25 +27,37 @@ Added test description.
 
 Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_panel_fitting.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/kms_plane_lowres.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
-index 4f4c5608..398addeb 100644
---- a/tests/kms_panel_fitting.c
-+++ b/tests/kms_panel_fitting.c
-@@ -257,9 +257,11 @@ igt_main
- 		igt_display_require_output(&data.display);
+diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+index a5af1f8a..5cfe53c8 100644
+--- a/tests/kms_plane_lowres.c
++++ b/tests/kms_plane_lowres.c
+@@ -301,15 +301,23 @@ igt_main
+ 
+ 	for_each_pipe_static(pipe) {
+ 		data.pipe = pipe;
++		igt_describe("Tests the visibility of the planes when switching between "
++			     "high and low resolution with tiling as none.");
+ 		igt_subtest_f("pipe-%s-tiling-none", kmstest_pipe_name(pipe))
+ 			test_planes_on_pipe(&data, LOCAL_DRM_FORMAT_MOD_NONE);
+ 
++		igt_describe("Tests the visibility of the planes when switching between "
++			     "high and low resolution with x-tiling.");
+ 		igt_subtest_f("pipe-%s-tiling-x", kmstest_pipe_name(pipe))
+ 			test_planes_on_pipe(&data, LOCAL_I915_FORMAT_MOD_X_TILED);
+ 
++		igt_describe("Tests the visibility of the planes when switching between "
++			     "high and low resolution with y-tiling.");
+ 		igt_subtest_f("pipe-%s-tiling-y", kmstest_pipe_name(pipe))
+ 			test_planes_on_pipe(&data, LOCAL_I915_FORMAT_MOD_Y_TILED);
+ 
++		igt_describe("Tests the visibility of the planes when switching between "
++			     "high and low resolution with yf-tiling.");
+ 		igt_subtest_f("pipe-%s-tiling-yf", kmstest_pipe_name(pipe))
+ 			test_planes_on_pipe(&data, LOCAL_I915_FORMAT_MOD_Yf_TILED);
  	}
- 
-+	igt_describe("Tests panel fitting usages with legacy style commit.");
- 	igt_subtest("legacy")
- 		test_panel_fitting(&data);
- 
-+	igt_describe("Tests panel fitting usages with atomic fastset.");
- 	igt_subtest("atomic-fastset")
- 		test_atomic_fastset(&data);
- 
 -- 
 2.26.2
 
