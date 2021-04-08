@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3A976E2D1
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 18:23:49 +0000 (UTC)
-Date: Thu, 8 Apr 2021 11:30:34 -0700
-From: "Navare, Manasi" <manasi.d.navare@intel.com>
-Message-ID: <20210408183034.GE18350@labuser-Z97X-UD5H>
-References: <20210301203747.7177-1-manasi.d.navare@intel.com>
- <20210301203747.7177-11-manasi.d.navare@intel.com>
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com
+ [IPv6:2a00:1450:4864:20::42b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D449F6E30C
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 18:44:03 +0000 (UTC)
+Received: by mail-wr1-x42b.google.com with SMTP id q26so3184778wrz.9
+ for <igt-dev@lists.freedesktop.org>; Thu, 08 Apr 2021 11:44:03 -0700 (PDT)
+Date: Thu, 8 Apr 2021 20:43:59 +0200
+From: Daniel Vetter <daniel@ffwll.ch>
+Message-ID: <YG9O7xbvXCrokC/g@phenom.ffwll.local>
+References: <20210401021243.4147604-1-jason@jlekstrand.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210301203747.7177-11-manasi.d.navare@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 10/14] tools/intel_display_poller: Add
- frame timestamp tests
+In-Reply-To: <20210401021243.4147604-1-jason@jlekstrand.net>
+Subject: Re: [igt-dev] [RFC 00/30] Stop cloning contexts
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,222 +20,211 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Jason Ekstrand <jason@jlekstrand.net>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Mar 01, 2021 at 12:37:43PM -0800, Manasi Navare wrote:
-> From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> =
+On Wed, Mar 31, 2021 at 09:12:13PM -0500, Jason Ekstrand wrote:
+> I'm trying to clean up some of our uAPI technical debt in i915.  One of the
+> biggest areas we have right now is context mutability.  There's no good
+> reason why things like the set of engines or the VM should be able to be
+> changed on the fly and no "real" userspace actually relies on this
+> functionality.  It does, however, make for a good excuse for tests and lots
+> of bug reports as things like swapping out the set of engines under load
+> break randomly.  The solution here is to stop allowing that behavior and
+> simplify the i915 internals.
 
-> Add a couple of new test modes to verify how frame timestamps
-> work.
-> * frametimestamp determines on which scanline the frame
->   timestamp is sampled
-> * timestamp returns the difference between the current timestamp
->   on a specific scanline from the last sampled frame timestamp.
->   This can be used to determine if the timestamp ticks at the
->   expected rate.
-> =
+Randomly going to drop this here, but I think we might also want to
+rethink the magic behaviour that for physical engines (except if you've
+done your own selection) we instantiate intel_context on-demand in
+execbuf.
 
-> Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+Minimally would be neat to limit that magic behaviour to at least the
+default context, but I fear that would be another massive pile of igt
+changes. But if we can kinda do that in one go, might be real sweet to aim
+for that with your work here too. Just as some prep.
+-Daniel
 
-Reviewed-by: Manasi Navare <manasi.d.navare@intel.com>
-
-Manasi
-
-> ---
->  tools/intel_display_poller.c | 103 ++++++++++++++++++++++++++++++++++-
->  1 file changed, 102 insertions(+), 1 deletion(-)
-> =
-
-> diff --git a/tools/intel_display_poller.c b/tools/intel_display_poller.c
-> index 260818db..ae3f993f 100644
-> --- a/tools/intel_display_poller.c
-> +++ b/tools/intel_display_poller.c
-> @@ -49,6 +49,8 @@ enum test {
->  	TEST_FRAMECOUNT,
->  	TEST_FRAMECOUNT_GEN3,
->  	TEST_FRAMECOUNT_G4X,
-> +	TEST_FRAMETIMESTAMP,
-> +	TEST_TIMESTAMP,
->  	TEST_FLIPCOUNT,
->  	TEST_PAN,
->  	TEST_FLIP,
-> @@ -732,6 +734,80 @@ static void poll_dsl_framecount_gen3(int pipe, uint3=
-2_t *min, uint32_t *max, con
->  	}
->  }
->  =
-
-> +
-> +static void poll_dsl_frametimestamp(uint32_t devid, int pipe,
-> +				    uint32_t *min, uint32_t *max, const int count)
-> +{
-> +	uint32_t dsl, dsl1, dsl2, frm, frm1, frm2;
-> +	bool field1, field2;
-> +	int i[2] =3D {};
-> +
-> +	frm =3D PIPE_REG(pipe, PIPEAFRMTMSMTP);
-> +	dsl =3D PIPE_REG(pipe, PIPEA_DSL);
-> +
-> +	while (!quit) {
-> +		while (!quit) {
-> +			dsl1 =3D read_reg(dsl);
-> +			frm1 =3D read_reg(frm);
-> +			frm2 =3D read_reg(frm);
-> +			dsl2 =3D read_reg(dsl);
-> +
-> +			field1 =3D dsl1 & 0x80000000;
-> +			field2 =3D dsl2 & 0x80000000;
-> +			dsl1 &=3D ~0x80000000;
-> +			dsl2 &=3D ~0x80000000;
-> +
-> +			if (frm1 !=3D frm2)
-> +				break;
-> +		}
-> +
-> +		if (field1 !=3D field2)
-> +			printf("fields are different (%u:%u -> %u:%u)\n",
-> +			       field1, dsl1, field2, dsl2);
-> +
-> +		min[field1*count+i[field1]] =3D dsl1;
-> +		max[field1*count+i[field1]] =3D dsl2;
-> +		if (++i[field1] >=3D count)
-> +			break;
-> +	}
-> +}
-> +
-> +static uint32_t timestamp_reg(uint32_t devid)
-> +{
-> +	if (intel_gen(devid) >=3D 7)
-> +		return IVB_TIMESTAMP_CTR;
-> +	else if (intel_gen(devid) >=3D 5)
-> +		return ILK_TIMESTAMP_HI;
-> +	else
-> +		return TIMESTAMP_QW + 4;
-> +}
-> +
-> +static void poll_dsl_timestamp(uint32_t devid, int pipe, int target_scan=
-line,
-> +			       uint32_t *min, uint32_t *max, const int count)
-> +{
-> +	uint32_t dsl1, frm, frm1, ts, ts1;
-> +	bool field1;
-> +	int i[2] =3D {};
-> +
-> +	ts =3D timestamp_reg(devid);
-> +	frm =3D PIPE_REG(pipe, PIPEAFRMTMSMTP);
-> +
-> +	while (!quit) {
-> +		dsl1 =3D wait_scanline(pipe, target_scanline, &field1);
-> +
-> +		frm1 =3D read_reg(frm);
-> +		ts1 =3D read_reg(ts);
-> +
-> +		field1 =3D dsl1 & 0x80000000;
-> +		dsl1 &=3D ~0x80000000;
-> +
-> +		min[field1*count+i[field1]] =3D dsl1;
-> +		max[field1*count+i[field1]] =3D ts1 - frm1;
-> +		if (++i[field1] >=3D count)
-> +			break;
-> +	}
-> +}
-> +
->  static void poll_dsl_pan(uint32_t devid, int pipe, int target_scanline, =
-int target_fuzz,
->  			 uint32_t *min, uint32_t *max, const int count)
->  {
-> @@ -1087,6 +1163,12 @@ static const char *test_name(enum test test, int p=
-ipe, int bit, bool test_pixel_
->  	case TEST_FRAMECOUNT_G4X:
->  		snprintf(str, sizeof str, "%s / pipe %c / Frame count (g4x+)", type, p=
-ipe_name(pipe));
->  		return str;
-> +	case TEST_FRAMETIMESTAMP:
-> +		snprintf(str, sizeof str, "%s / pipe %c / Frame timestamp", type, pipe=
-_name(pipe));
-> +		return str;
-> +	case TEST_TIMESTAMP:
-> +		snprintf(str, sizeof str, "%s / pipe %c / Timestamp", type, pipe_name(=
-pipe));
-> +		return str;
->  	case TEST_FLIPCOUNT:
->  		snprintf(str, sizeof str, "%s / pipe %c / Flip count (g4x+)", type, pi=
-pe_name(pipe));
->  		return str;
-> @@ -1119,7 +1201,7 @@ static const char *test_name(enum test test, int pi=
-pe, int bit, bool test_pixel_
->  static void __attribute__((noreturn)) usage(const char *name)
->  {
->  	fprintf(stderr, "Usage: %s [options]\n"
-> -		" -t,--test <pipestat|iir|framecount|flipcount|pan|flip|flipdone|surfl=
-ive|wrap|field>\n"
-> +		" -t,--test <pipestat|iir|framecount|flipcount|frametimestamp|timestam=
-p|pan|flip|flipdone|surflive|wrap|field>\n"
->  		" -p,--pipe <pipe>\n"
->  		" -b,--bit <bit>\n"
->  		" -l,--line <target scanline/pixel>\n"
-> @@ -1170,6 +1252,10 @@ int main(int argc, char *argv[])
->  				test =3D TEST_FRAMECOUNT;
->  			else if (!strcmp(optarg, "flipcount"))
->  				test =3D TEST_FLIPCOUNT;
-> +			else if (!strcmp(optarg, "frametimestamp"))
-> +				test =3D TEST_FRAMETIMESTAMP;
-> +			else if (!strcmp(optarg, "timestamp"))
-> +				test =3D TEST_TIMESTAMP;
->  			else if (!strcmp(optarg, "pan"))
->  				test =3D TEST_PAN;
->  			else if (!strcmp(optarg, "flip"))
-> @@ -1318,6 +1404,11 @@ int main(int argc, char *argv[])
->  		case TEST_WRAP:
->  		case TEST_FIELD:
->  			break;
-> +		case TEST_FRAMETIMESTAMP:
-> +		case TEST_TIMESTAMP:
-> +			if (!IS_G4X(devid))
-> +				usage(argv[0]);
-> +			break;
->  		default:
->  			usage(argv[0]);
->  		}
-> @@ -1348,6 +1439,8 @@ int main(int argc, char *argv[])
->  		case TEST_SURFLIVE:
->  		case TEST_WRAP:
->  		case TEST_FIELD:
-> +		case TEST_TIMESTAMP:
-> +		case TEST_FRAMETIMESTAMP:
->  			break;
->  		default:
->  			usage(argv[0]);
-> @@ -1403,6 +1496,14 @@ int main(int argc, char *argv[])
->  		assert(!test_pixelcount);
->  		poll_dsl_framecount_g4x(pipe, min, max, count);
->  		break;
-> +	case TEST_FRAMETIMESTAMP:
-> +		assert(!test_pixelcount);
-> +		poll_dsl_frametimestamp(devid, pipe, min, max, count);
-> +		break;
-> +	case TEST_TIMESTAMP:
-> +		assert(!test_pixelcount);
-> +		poll_dsl_timestamp(devid, pipe, target_scanline, min, max, count);
-> +		break;
->  	case TEST_FLIPCOUNT:
->  		assert(!test_pixelcount);
->  		poll_dsl_flipcount_g4x(devid, pipe, min, max, count);
-> -- =
-
-> 2.19.1
-> =
-
+> 
+> In particular, we'd like to remove the following from the i915 API:
+> 
+>  1. I915_CONTEXT_CLONE_*.  These are only used by IGT and have never been
+>     used by any "real" userspace.
+> 
+>  2. Changing the VM or set of engines via SETPARAM after they've been
+>     "used" by an execbuf or similar.  This would effectively make those
+>     parameters create params rather than mutable state.  We can't drop
+>     setparam entirely for those because media does use it but we can
+>     enforce some rules.
+> 
+>  3. Unused (by non-IGT userspace) GETPARAM for things like engines.
+> 
+> As much as we'd love to do that, we have a bit of a problem in IGT.  The
+> way we handle multi-engine testing today relies heavily on this soon-to-be-
+> deprecated functionality.  In particular, the standard flow is usually
+> something like this:
+> 
+>     static void run_test1(int fd, uint32_t engine)
+>     {
+>         igt_spin_t *spin;
+> 
+>         ctx = = gem_context_clone_with_engines(fd, 0);
+>         __igt_spin_new(fd, ctx, .engine = engine);
+> 
+>         /* do some testing with ctx */
+> 
+>         igt_spin_free(fd, spin);
+>         gem_destroy_context(fd, ctx);
+>     }
+> 
+>     igt_main
+>     {
+>         struct intel_execution_engine2 *e;
+> 
+>         /* Usual fixture code */
+> 
+>         __for_each_physical_engine(fd, e)
+>             run_test1(fd, e->flags);
+> 
+>         __for_each_physical_engine(fd, e)
+>             run_test2(fd, e->flags);
+>     }
+> 
+> Let's walk through what this does:
+> 
+>  1. __for_each_physical_engine calls intel_init_engine_list() which resets
+>     the set of engines on ctx0 to the full set of engines available as per
+>     the engine query.  On older kernels/hardware where we don't have the
+>     engines query, it leaves the set alone.
+> 
+>  2. intel_init_engine_list() also returns a set of engines for iteration
+>     and __for_each_physical_engine() sets up a for loop to walk the set.
+> 
+>  3. gem_context_clone_with_engines() creates a new context using
+>     I915_CONTEXT_CONTEXT_CLONE_ENGINES (not used by anything other than
+>     IGT) to ask that the newly created context has the same set of engines
+>     as ctx0.  Remember we changed that at the start of loop iteration!
+> 
+>  4. When the context is passed to __igt_spin_new(), it calls
+>     gem_context_lookup_engine which does a GETPARAM to introspet the set of
+>     engines on the context and figure out the engine class.
+> 
+> If you've been keeping track, this trivial and extremely common example
+> uses every single one of these soon-to-be-deprecated APIs even though the
+> test author may be completely obvious to it.  It also means that getting
+> rid of IGT's use of them is going to require some fairly deep surgery.
+> 
+> The approach proposed and partially implemented here is to add a new
+> wrapper struct intel_ctx_t which wraps a GEM context handle as well as the
+> full set of parameters used to create it, represented by intel_ctx_cfg_t.
+> We can then use the context anywhere we would regularly use a context, we
+> just have to do ctx->id.  If we want to clone it, we can do so by re-using
+> the create parameters by calling intel_ctx_create(fd, &old_ctx->cfg);
+> 
+> So far, I'm pretty happy with this solution.  I've converted around 25 test
+> programs and it's working quite well.  The only real sore point so far is
+> around dealing with platforms that don't support contexts.  We could
+> special case ctx0 a bit more but, right now, I'm just adding an if
+> statement and leaking the intel_ctx_t.  I'm happy to take suggestions
+> there.
+> 
+> --Jason
+> 
+> 
+> Jason Ekstrand (30):
+>   lib/i915/gem_engine_topology: Expose the __query_engines helper
+>   lib: Add an intel_ctx wrapper struct and helpers
+>   lib/i915/gem_engine_topology: Add an iterator for intel_ctx_t
+>   tests/i915/gem_exec_basic: Convert to intel_ctx_t
+>   lib/igt_spin: Rename igt_spin_factory::ctx to ctx_id
+>   lib/igt_spin: Support intel_ctx_t
+>   tests/i915/gem_exec_fence: Convert to intel_ctx_t
+>   tests/i915/gem_exec_schedule: Convert to intel_ctx_t
+>   tests/i915/perf_pmu: Convert to intel_ctx_t
+>   tests/i915/gem_exec_nop: Convert to intel_ctx_t
+>   tests/i915/gem_exec_reloc: Convert to intel_ctx_t
+>   tests/i915/gem_busy: Convert to intel_ctx_t
+>   tests/i915/gem_ctx_isolation: Convert to intel_ctx_t
+>   tests/i915/gem_exec_async: Convert to intel_ctx_t
+>   tests/i915/sysfs_clients: Convert to intel_ctx_t
+>   tests/i915/gem_exec_fair: Convert to intel_ctx_t
+>   tests/i915/gem_spin_batch: Convert to intel_ctx_t
+>   tests/i915/gem_exec_store: Convert to intel_ctx_t
+>   tests/amdgpu/amd_prime: Convert to intel_ctx_t
+>   tests/i915/i915_hangman: Convert to intel_ctx_t
+>   tests/i915/gem_ringfill: Convert to intel_ctx_t
+>   tests/prime_busy: Convert to intel_ctx_t
+>   tests/prime_vgem: Convert to intel_ctx_t
+>   tests/gem_exec_whisper: Convert to intel_ctx_t
+>   tests/i915/gem_ctx_exec: Convert to intel_ctx_t
+>   tests/i915/gem_exec_suspend: Convert to intel_ctx_t
+>   tests/i915/gem_sync: Convert to intel_ctx_t
+>   tests/i915/gem_userptr_blits: Convert to intel_ctx_t
+>   tests/i915/gem_wait: Convert to intel_ctx_t
+>   tests/i915/gem_request_retire: Convert to intel_ctx_t
+> 
+>  lib/i915/gem_context.c          |  34 ++
+>  lib/i915/gem_context.h          |   2 +
+>  lib/i915/gem_engine_topology.c  |  61 ++-
+>  lib/i915/gem_engine_topology.h  |  16 +-
+>  lib/igt_dummyload.c             |  30 +-
+>  lib/igt_dummyload.h             |   6 +-
+>  lib/igt_gt.c                    |   2 +-
+>  lib/intel_ctx.c                 | 159 ++++++
+>  lib/intel_ctx.h                 | 110 ++++
+>  lib/meson.build                 |   1 +
+>  tests/amdgpu/amd_prime.c        |  10 +-
+>  tests/i915/gem_busy.c           |  80 +--
+>  tests/i915/gem_ctx_engines.c    |   6 +-
+>  tests/i915/gem_ctx_exec.c       |  14 +-
+>  tests/i915/gem_ctx_isolation.c  | 111 ++--
+>  tests/i915/gem_ctx_shared.c     |  16 +-
+>  tests/i915/gem_eio.c            |   2 +-
+>  tests/i915/gem_exec_async.c     |  31 +-
+>  tests/i915/gem_exec_balancer.c  |  26 +-
+>  tests/i915/gem_exec_basic.c     |  10 +-
+>  tests/i915/gem_exec_fair.c      |  99 ++--
+>  tests/i915/gem_exec_fence.c     | 189 ++++---
+>  tests/i915/gem_exec_latency.c   |   2 +-
+>  tests/i915/gem_exec_nop.c       | 158 +++---
+>  tests/i915/gem_exec_reloc.c     | 102 ++--
+>  tests/i915/gem_exec_schedule.c  | 875 +++++++++++++++++---------------
+>  tests/i915/gem_exec_store.c     |  38 +-
+>  tests/i915/gem_exec_suspend.c   |  56 +-
+>  tests/i915/gem_exec_whisper.c   |  86 ++--
+>  tests/i915/gem_request_retire.c |  17 +-
+>  tests/i915/gem_ringfill.c       |  47 +-
+>  tests/i915/gem_spin_batch.c     |  83 +--
+>  tests/i915/gem_sync.c           | 162 +++---
+>  tests/i915/gem_userptr_blits.c  |  31 +-
+>  tests/i915/gem_vm_create.c      |   4 +-
+>  tests/i915/gem_wait.c           |  23 +-
+>  tests/i915/gem_workarounds.c    |   2 +-
+>  tests/i915/i915_hangman.c       |  35 +-
+>  tests/i915/perf_pmu.c           | 225 ++++----
+>  tests/i915/sysfs_clients.c      |  87 ++--
+>  tests/prime_busy.c              |  19 +-
+>  tests/prime_vgem.c              |  38 +-
+>  42 files changed, 1927 insertions(+), 1178 deletions(-)
+>  create mode 100644 lib/intel_ctx.c
+>  create mode 100644 lib/intel_ctx.h
+> 
+> -- 
+> 2.29.2
+> 
 > _______________________________________________
 > igt-dev mailing list
 > igt-dev@lists.freedesktop.org
 > https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
