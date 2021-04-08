@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 45FD36E40D
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 22:26:35 +0000 (UTC)
-From: "Navare, Manasi D" <manasi.d.navare@intel.com>
-Date: Thu, 8 Apr 2021 22:26:31 +0000
-Message-ID: <44e841ff418c488a9998817113b2cfd5@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A06A66E41D
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 23:27:00 +0000 (UTC)
+From: "Almahallawy, Khaled" <khaled.almahallawy@intel.com>
+Date: Thu, 8 Apr 2021 23:26:55 +0000
+Message-ID: <6ec0d38f64d3a44d5d68a2592ead2afa1cdbdb78.camel@intel.com>
 References: <20210408002158.1318976-1-khaled.almahallawy@intel.com>
  <20210408215111.1324847-1-khaled.almahallawy@intel.com>
-In-Reply-To: <20210408215111.1324847-1-khaled.almahallawy@intel.com>
+ <44e841ff418c488a9998817113b2cfd5@intel.com>
+In-Reply-To: <44e841ff418c488a9998817113b2cfd5@intel.com>
 Content-Language: en-US
+Content-ID: <6657A83EA10A7245A69FF1EE124E71D5@namprd11.prod.outlook.com>
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t v2] tools: Fix running
  intel_dp_compliance if it is found in the search path($PATH env variable)
@@ -19,108 +21,86 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Almahallawy, Khaled" <khaled.almahallawy@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Navare,
+ Manasi D" <manasi.d.navare@intel.com>
 Cc: "Latvala, Petri" <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-If there is a Gitlab issue around it please mention that in the commit message.
-Else this looks good to me
-
-Reviewed-by: Manasi Navare <manasi.d.navare@intel.com>
-
-Manasi
-
------Original Message-----
-From: Almahallawy, Khaled <khaled.almahallawy@intel.com> 
-Sent: Thursday, April 8, 2021 2:51 PM
-To: igt-dev@lists.freedesktop.org
-Cc: Latvala, Petri <petri.latvala@intel.com>; Navare, Manasi D <manasi.d.navare@intel.com>; Almahallawy, Khaled <khaled.almahallawy@intel.com>
-Subject: [PATCH i-g-t v2] tools: Fix running intel_dp_compliance if it is found in the search path($PATH env variable)
-
-When intel_dp_compliance binary location is part of PATH environment variable, running it from the shell without relative or full path, cause the following assertion failure because chdir:
-
-$:~# intel_dp_compliance
-(intel_dp_compliance:3070) CRITICAL: Test assertion failure function enter_exec_path, file ../tools/igt_compliance_utils.c:56:
-(intel_dp_compliance:3070) CRITICAL: Failed assertion: ret == 0
-(intel_dp_compliance:3070) CRITICAL: Last errno: 2, No such file or directory
-(intel_dp_compliance:3070) CRITICAL: error: -1 != 0 Stack trace:
-  #0 ../lib/igt_core.c:1726 __igt_fail_assert()
-  #1 [enter_exec_path+0x8b]
-  #2 ../tools/intel_dp_compliance.c:843 main()
-  #3 ../csu/libc-start.c:342 __libc_start_main()
-  #4 [_start+0x2e]
-Test (null) failed.
-**** DEBUG ****
-(intel_dp_compliance:3070) CRITICAL: Test assertion failure function enter_exec_path, file ../tools/igt_compliance_utils.c:56:
-(intel_dp_compliance:3070) CRITICAL: Failed assertion: ret == 0
-(intel_dp_compliance:3070) CRITICAL: Last errno: 2, No such file or directory
-(intel_dp_compliance:3070) CRITICAL: error: -1 != 0
-(intel_dp_compliance:3070) igt_core-INFO: Stack trace:
-(intel_dp_compliance:3070) igt_core-INFO:   #0 ../lib/igt_core.c:1726 __igt_fail_assert()
-(intel_dp_compliance:3070) igt_core-INFO:   #1 [enter_exec_path+0x8b]
-(intel_dp_compliance:3070) igt_core-INFO:   #2 ../tools/intel_dp_compliance.c:843 main()
-(intel_dp_compliance:3070) igt_core-INFO:   #3 ../csu/libc-start.c:342 __libc_start_main()
-(intel_dp_compliance:3070) igt_core-INFO:   #4 [_start+0x2e]
-****  END  ****
-FAIL (-1.000s)
-
-This patch fixes this issue.
-
-v2: (PATH_MAX - 1) and dirname (Petri)
-
-Signed-off-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
----
- tools/igt_compliance_utils.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
-
-diff --git a/tools/igt_compliance_utils.c b/tools/igt_compliance_utils.c index d6a2e4e529d9..0faf3fc874e6 100644
---- a/tools/igt_compliance_utils.c
-+++ b/tools/igt_compliance_utils.c
-@@ -29,7 +29,7 @@
- #include <stdlib.h>
- #include <signal.h>
- #include <termios.h>
--
-+#include <libgen.h>
- #include <sys/stat.h>
- 
- #include "igt_dp_compliance.h"
-@@ -39,22 +39,14 @@ struct termios saved_tio;
- 
- void enter_exec_path(char **argv)
- {
--	char *exec_path = NULL;
--	char *pos = NULL;
--	short len_path = 0;
-+	char exec_path[PATH_MAX];
- 	int ret;
- 
--	len_path = strlen(argv[0]);
--	exec_path = (char *) malloc(len_path);
--
--	memcpy(exec_path, argv[0], len_path);
--	pos = strrchr(exec_path, '/');
--	if (pos != NULL)
--		*(pos+1) = '\0';
--
--	ret = chdir(exec_path);
-+	memset(exec_path, 0, sizeof(exec_path));
-+	ret = readlink("/proc/self/exe", exec_path, sizeof(exec_path)-1);
-+	igt_assert(ret != -1);
-+	ret = chdir(dirname(exec_path));
- 	igt_assert_eq(ret, 0);
--	free(exec_path);
- }
- 
- static void restore_termio_mode(int sig)
---
-2.25.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SGkgTWFuYXNpLA0KIA0KVGhlcmUgaXMgbm8gZ2l0bGFiIGlzc3VlLiBKdXN0IHRyeWluZyB0byBz
+YXZlIGV4dHJhIHRpbWUgc3BlbnQNCmNvbW11bmljYXRpbmcgd2l0aCBPRE1zIGFuZCBmYWxzZSBw
+b3NpdGl2ZXMgdGhleSByZXBvcnQgd2hlbg0KaW50ZWxfZHBfY29tcGxpYW5jZSBkb2VzbuKAmXQg
+d29yay4NCiANClRoYW5rIHlvdSBhbmQgUGV0cmkgZm9yIHJldmlldyBhbmQgZmVlZGJhY2suDQog
+DQp+S2hhbGVkDQoNCk9uIFRodSwgMjAyMS0wNC0wOCBhdCAyMjoyNiArMDAwMCwgTmF2YXJlLCBN
+YW5hc2kgRCB3cm90ZToNCj4gSWYgdGhlcmUgaXMgYSBHaXRsYWIgaXNzdWUgYXJvdW5kIGl0IHBs
+ZWFzZSBtZW50aW9uIHRoYXQgaW4gdGhlDQo+IGNvbW1pdCBtZXNzYWdlLg0KPiBFbHNlIHRoaXMg
+bG9va3MgZ29vZCB0byBtZQ0KPiANCj4gUmV2aWV3ZWQtYnk6IE1hbmFzaSBOYXZhcmUgPG1hbmFz
+aS5kLm5hdmFyZUBpbnRlbC5jb20+DQo+IA0KPiBNYW5hc2kNCj4gDQo+IC0tLS0tT3JpZ2luYWwg
+TWVzc2FnZS0tLS0tDQo+IEZyb206IEFsbWFoYWxsYXd5LCBLaGFsZWQgPGtoYWxlZC5hbG1haGFs
+bGF3eUBpbnRlbC5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBBcHJpbCA4LCAyMDIxIDI6NTEgUE0N
+Cj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBMYXR2YWxhLCBQZXRy
+aSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+OyBOYXZhcmUsIE1hbmFzaSBEIDwNCj4gbWFuYXNp
+LmQubmF2YXJlQGludGVsLmNvbT47IEFsbWFoYWxsYXd5LCBLaGFsZWQgPA0KPiBraGFsZWQuYWxt
+YWhhbGxhd3lAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBbUEFUQ0ggaS1nLXQgdjJdIHRvb2xzOiBG
+aXggcnVubmluZyBpbnRlbF9kcF9jb21wbGlhbmNlIGlmDQo+IGl0IGlzIGZvdW5kIGluIHRoZSBz
+ZWFyY2ggcGF0aCgkUEFUSCBlbnYgdmFyaWFibGUpDQo+IA0KPiBXaGVuIGludGVsX2RwX2NvbXBs
+aWFuY2UgYmluYXJ5IGxvY2F0aW9uIGlzIHBhcnQgb2YgUEFUSCBlbnZpcm9ubWVudA0KPiB2YXJp
+YWJsZSwgcnVubmluZyBpdCBmcm9tIHRoZSBzaGVsbCB3aXRob3V0IHJlbGF0aXZlIG9yIGZ1bGwg
+cGF0aCwNCj4gY2F1c2UgdGhlIGZvbGxvd2luZyBhc3NlcnRpb24gZmFpbHVyZSBiZWNhdXNlIGNo
+ZGlyOg0KPiANCj4gJDp+IyBpbnRlbF9kcF9jb21wbGlhbmNlDQo+IChpbnRlbF9kcF9jb21wbGlh
+bmNlOjMwNzApIENSSVRJQ0FMOiBUZXN0IGFzc2VydGlvbiBmYWlsdXJlIGZ1bmN0aW9uDQo+IGVu
+dGVyX2V4ZWNfcGF0aCwgZmlsZSAuLi90b29scy9pZ3RfY29tcGxpYW5jZV91dGlscy5jOjU2Og0K
+PiAoaW50ZWxfZHBfY29tcGxpYW5jZTozMDcwKSBDUklUSUNBTDogRmFpbGVkIGFzc2VydGlvbjog
+cmV0ID09IDANCj4gKGludGVsX2RwX2NvbXBsaWFuY2U6MzA3MCkgQ1JJVElDQUw6IExhc3QgZXJy
+bm86IDIsIE5vIHN1Y2ggZmlsZSBvcg0KPiBkaXJlY3RvcnkNCj4gKGludGVsX2RwX2NvbXBsaWFu
+Y2U6MzA3MCkgQ1JJVElDQUw6IGVycm9yOiAtMSAhPSAwIFN0YWNrIHRyYWNlOg0KPiAgICMwIC4u
+L2xpYi9pZ3RfY29yZS5jOjE3MjYgX19pZ3RfZmFpbF9hc3NlcnQoKQ0KPiAgICMxIFtlbnRlcl9l
+eGVjX3BhdGgrMHg4Yl0NCj4gICAjMiAuLi90b29scy9pbnRlbF9kcF9jb21wbGlhbmNlLmM6ODQz
+IG1haW4oKQ0KPiAgICMzIC4uL2NzdS9saWJjLXN0YXJ0LmM6MzQyIF9fbGliY19zdGFydF9tYWlu
+KCkNCj4gICAjNCBbX3N0YXJ0KzB4MmVdDQo+IFRlc3QgKG51bGwpIGZhaWxlZC4NCj4gKioqKiBE
+RUJVRyAqKioqDQo+IChpbnRlbF9kcF9jb21wbGlhbmNlOjMwNzApIENSSVRJQ0FMOiBUZXN0IGFz
+c2VydGlvbiBmYWlsdXJlIGZ1bmN0aW9uDQo+IGVudGVyX2V4ZWNfcGF0aCwgZmlsZSAuLi90b29s
+cy9pZ3RfY29tcGxpYW5jZV91dGlscy5jOjU2Og0KPiAoaW50ZWxfZHBfY29tcGxpYW5jZTozMDcw
+KSBDUklUSUNBTDogRmFpbGVkIGFzc2VydGlvbjogcmV0ID09IDANCj4gKGludGVsX2RwX2NvbXBs
+aWFuY2U6MzA3MCkgQ1JJVElDQUw6IExhc3QgZXJybm86IDIsIE5vIHN1Y2ggZmlsZSBvcg0KPiBk
+aXJlY3RvcnkNCj4gKGludGVsX2RwX2NvbXBsaWFuY2U6MzA3MCkgQ1JJVElDQUw6IGVycm9yOiAt
+MSAhPSAwDQo+IChpbnRlbF9kcF9jb21wbGlhbmNlOjMwNzApIGlndF9jb3JlLUlORk86IFN0YWNr
+IHRyYWNlOg0KPiAoaW50ZWxfZHBfY29tcGxpYW5jZTozMDcwKSBpZ3RfY29yZS1JTkZPOiAgICMw
+IC4uL2xpYi9pZ3RfY29yZS5jOjE3MjYNCj4gX19pZ3RfZmFpbF9hc3NlcnQoKQ0KPiAoaW50ZWxf
+ZHBfY29tcGxpYW5jZTozMDcwKSBpZ3RfY29yZS1JTkZPOiAgICMxIFtlbnRlcl9leGVjX3BhdGgr
+MHg4Yl0NCj4gKGludGVsX2RwX2NvbXBsaWFuY2U6MzA3MCkgaWd0X2NvcmUtSU5GTzogICAjMg0K
+PiAuLi90b29scy9pbnRlbF9kcF9jb21wbGlhbmNlLmM6ODQzIG1haW4oKQ0KPiAoaW50ZWxfZHBf
+Y29tcGxpYW5jZTozMDcwKSBpZ3RfY29yZS1JTkZPOiAgICMzIC4uL2NzdS9saWJjLQ0KPiBzdGFy
+dC5jOjM0MiBfX2xpYmNfc3RhcnRfbWFpbigpDQo+IChpbnRlbF9kcF9jb21wbGlhbmNlOjMwNzAp
+IGlndF9jb3JlLUlORk86ICAgIzQgW19zdGFydCsweDJlXQ0KPiAqKioqICBFTkQgICoqKioNCj4g
+RkFJTCAoLTEuMDAwcykNCj4gDQo+IFRoaXMgcGF0Y2ggZml4ZXMgdGhpcyBpc3N1ZS4NCj4gDQo+
+IHYyOiAoUEFUSF9NQVggLSAxKSBhbmQgZGlybmFtZSAoUGV0cmkpDQo+IA0KPiBTaWduZWQtb2Zm
+LWJ5OiBLaGFsZWQgQWxtYWhhbGxhd3kgPGtoYWxlZC5hbG1haGFsbGF3eUBpbnRlbC5jb20+DQo+
+IC0tLQ0KPiAgdG9vbHMvaWd0X2NvbXBsaWFuY2VfdXRpbHMuYyB8IDIwICsrKysrKy0tLS0tLS0t
+LS0tLS0tDQo+ICAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspLCAxNCBkZWxldGlvbnMo
+LSkNCj4gDQo+IGRpZmYgLS1naXQgYS90b29scy9pZ3RfY29tcGxpYW5jZV91dGlscy5jDQo+IGIv
+dG9vbHMvaWd0X2NvbXBsaWFuY2VfdXRpbHMuYyBpbmRleCBkNmEyZTRlNTI5ZDkuLjBmYWYzZmM4
+NzRlNg0KPiAxMDA2NDQNCj4gLS0tIGEvdG9vbHMvaWd0X2NvbXBsaWFuY2VfdXRpbHMuYw0KPiAr
+KysgYi90b29scy9pZ3RfY29tcGxpYW5jZV91dGlscy5jDQo+IEBAIC0yOSw3ICsyOSw3IEBADQo+
+ICAjaW5jbHVkZSA8c3RkbGliLmg+DQo+ICAjaW5jbHVkZSA8c2lnbmFsLmg+DQo+ICAjaW5jbHVk
+ZSA8dGVybWlvcy5oPg0KPiAtDQo+ICsjaW5jbHVkZSA8bGliZ2VuLmg+DQo+ICAjaW5jbHVkZSA8
+c3lzL3N0YXQuaD4NCj4gDQo+ICAjaW5jbHVkZSAiaWd0X2RwX2NvbXBsaWFuY2UuaCINCj4gQEAg
+LTM5LDIyICszOSwxNCBAQCBzdHJ1Y3QgdGVybWlvcyBzYXZlZF90aW87DQo+IA0KPiAgdm9pZCBl
+bnRlcl9leGVjX3BhdGgoY2hhciAqKmFyZ3YpDQo+ICB7DQo+IC1jaGFyICpleGVjX3BhdGggPSBO
+VUxMOw0KPiAtY2hhciAqcG9zID0gTlVMTDsNCj4gLXNob3J0IGxlbl9wYXRoID0gMDsNCj4gK2No
+YXIgZXhlY19wYXRoW1BBVEhfTUFYXTsNCj4gIGludCByZXQ7DQo+IA0KPiAtbGVuX3BhdGggPSBz
+dHJsZW4oYXJndlswXSk7DQo+IC1leGVjX3BhdGggPSAoY2hhciAqKSBtYWxsb2MobGVuX3BhdGgp
+Ow0KPiAtDQo+IC1tZW1jcHkoZXhlY19wYXRoLCBhcmd2WzBdLCBsZW5fcGF0aCk7DQo+IC1wb3Mg
+PSBzdHJyY2hyKGV4ZWNfcGF0aCwgJy8nKTsNCj4gLWlmIChwb3MgIT0gTlVMTCkNCj4gLSoocG9z
+KzEpID0gJ1wwJzsNCj4gLQ0KPiAtcmV0ID0gY2hkaXIoZXhlY19wYXRoKTsNCj4gK21lbXNldChl
+eGVjX3BhdGgsIDAsIHNpemVvZihleGVjX3BhdGgpKTsNCj4gK3JldCA9IHJlYWRsaW5rKCIvcHJv
+Yy9zZWxmL2V4ZSIsIGV4ZWNfcGF0aCwgc2l6ZW9mKGV4ZWNfcGF0aCktMSk7DQo+ICtpZ3RfYXNz
+ZXJ0KHJldCAhPSAtMSk7DQo+ICtyZXQgPSBjaGRpcihkaXJuYW1lKGV4ZWNfcGF0aCkpOw0KPiAg
+aWd0X2Fzc2VydF9lcShyZXQsIDApOw0KPiAtZnJlZShleGVjX3BhdGgpOw0KPiAgfQ0KPiANCj4g
+IHN0YXRpYyB2b2lkIHJlc3RvcmVfdGVybWlvX21vZGUoaW50IHNpZykNCj4gLS0NCj4gMi4yNS4x
+DQo+IA0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0
+LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9s
+aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
