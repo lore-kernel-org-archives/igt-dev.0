@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com
- [IPv6:2a00:1450:4864:20::42e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB0C06E1E0
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 20:15:42 +0000 (UTC)
-Received: by mail-wr1-x42e.google.com with SMTP id x15so3437937wrq.3
- for <igt-dev@lists.freedesktop.org>; Thu, 08 Apr 2021 13:15:42 -0700 (PDT)
-Date: Thu, 8 Apr 2021 22:15:38 +0200
-From: Daniel Vetter <daniel@ffwll.ch>
-Message-ID: <YG9kaiIzM4Nsujvl@phenom.ffwll.local>
-References: <20210408073748.26234-1-nidhi1.gupta@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8574F6E3F9
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 21:48:16 +0000 (UTC)
+From: Khaled Almahallawy <khaled.almahallawy@intel.com>
+Date: Thu,  8 Apr 2021 14:51:11 -0700
+Message-Id: <20210408215111.1324847-1-khaled.almahallawy@intel.com>
+In-Reply-To: <20210408002158.1318976-1-khaled.almahallawy@intel.com>
+References: <20210408002158.1318976-1-khaled.almahallawy@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210408073748.26234-1-nidhi1.gupta@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_lowres : Added test
- description
+Subject: [igt-dev] [PATCH i-g-t v2] tools: Fix running intel_dp_compliance
+ if it is found in the search path($PATH env variable)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,68 +21,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Nidhi Gupta <nidhi1.gupta@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Apr 08, 2021 at 01:07:48PM +0530, Nidhi Gupta wrote:
-> Added test description.
-> 
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+When intel_dp_compliance binary location is part of PATH environment variable, running it from the shell without relative or full path, cause the following assertion failure because chdir:
 
-I don't think it makes sense to have an individual series for each of
-these, that just needlessly blows through CI bandwidth for no real gain.
-Also, it means they're all very spread around and harder to find for a
-motivated reviewer.
+$:~# intel_dp_compliance
+(intel_dp_compliance:3070) CRITICAL: Test assertion failure function enter_exec_path, file ../tools/igt_compliance_utils.c:56:
+(intel_dp_compliance:3070) CRITICAL: Failed assertion: ret == 0
+(intel_dp_compliance:3070) CRITICAL: Last errno: 2, No such file or directory
+(intel_dp_compliance:3070) CRITICAL: error: -1 != 0
+Stack trace:
+  #0 ../lib/igt_core.c:1726 __igt_fail_assert()
+  #1 [enter_exec_path+0x8b]
+  #2 ../tools/intel_dp_compliance.c:843 main()
+  #3 ../csu/libc-start.c:342 __libc_start_main()
+  #4 [_start+0x2e]
+Test (null) failed.
+**** DEBUG ****
+(intel_dp_compliance:3070) CRITICAL: Test assertion failure function enter_exec_path, file ../tools/igt_compliance_utils.c:56:
+(intel_dp_compliance:3070) CRITICAL: Failed assertion: ret == 0
+(intel_dp_compliance:3070) CRITICAL: Last errno: 2, No such file or directory
+(intel_dp_compliance:3070) CRITICAL: error: -1 != 0
+(intel_dp_compliance:3070) igt_core-INFO: Stack trace:
+(intel_dp_compliance:3070) igt_core-INFO:   #0 ../lib/igt_core.c:1726 __igt_fail_assert()
+(intel_dp_compliance:3070) igt_core-INFO:   #1 [enter_exec_path+0x8b]
+(intel_dp_compliance:3070) igt_core-INFO:   #2 ../tools/intel_dp_compliance.c:843 main()
+(intel_dp_compliance:3070) igt_core-INFO:   #3 ../csu/libc-start.c:342 __libc_start_main()
+(intel_dp_compliance:3070) igt_core-INFO:   #4 [_start+0x2e]
+****  END  ****
+FAIL (-1.000s)
 
-Please group them up, ideally so that you do all the annotation for a set
-of tests that are all related.
--Daniel
+This patch fixes this issue.
 
-> ---
->  tests/kms_plane_lowres.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
-> index a5af1f8a..5cfe53c8 100644
-> --- a/tests/kms_plane_lowres.c
-> +++ b/tests/kms_plane_lowres.c
-> @@ -301,15 +301,23 @@ igt_main
->  
->  	for_each_pipe_static(pipe) {
->  		data.pipe = pipe;
-> +		igt_describe("Tests the visibility of the planes when switching between "
-> +			     "high and low resolution with tiling as none.");
->  		igt_subtest_f("pipe-%s-tiling-none", kmstest_pipe_name(pipe))
->  			test_planes_on_pipe(&data, LOCAL_DRM_FORMAT_MOD_NONE);
->  
-> +		igt_describe("Tests the visibility of the planes when switching between "
-> +			     "high and low resolution with x-tiling.");
->  		igt_subtest_f("pipe-%s-tiling-x", kmstest_pipe_name(pipe))
->  			test_planes_on_pipe(&data, LOCAL_I915_FORMAT_MOD_X_TILED);
->  
-> +		igt_describe("Tests the visibility of the planes when switching between "
-> +			     "high and low resolution with y-tiling.");
->  		igt_subtest_f("pipe-%s-tiling-y", kmstest_pipe_name(pipe))
->  			test_planes_on_pipe(&data, LOCAL_I915_FORMAT_MOD_Y_TILED);
->  
-> +		igt_describe("Tests the visibility of the planes when switching between "
-> +			     "high and low resolution with yf-tiling.");
->  		igt_subtest_f("pipe-%s-tiling-yf", kmstest_pipe_name(pipe))
->  			test_planes_on_pipe(&data, LOCAL_I915_FORMAT_MOD_Yf_TILED);
->  	}
-> -- 
-> 2.26.2
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+v2: (PATH_MAX - 1) and dirname (Petri)
 
+Signed-off-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
+---
+ tools/igt_compliance_utils.c | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
+
+diff --git a/tools/igt_compliance_utils.c b/tools/igt_compliance_utils.c
+index d6a2e4e529d9..0faf3fc874e6 100644
+--- a/tools/igt_compliance_utils.c
++++ b/tools/igt_compliance_utils.c
+@@ -29,7 +29,7 @@
+ #include <stdlib.h>
+ #include <signal.h>
+ #include <termios.h>
+-
++#include <libgen.h>
+ #include <sys/stat.h>
+ 
+ #include "igt_dp_compliance.h"
+@@ -39,22 +39,14 @@ struct termios saved_tio;
+ 
+ void enter_exec_path(char **argv)
+ {
+-	char *exec_path = NULL;
+-	char *pos = NULL;
+-	short len_path = 0;
++	char exec_path[PATH_MAX];
+ 	int ret;
+ 
+-	len_path = strlen(argv[0]);
+-	exec_path = (char *) malloc(len_path);
+-
+-	memcpy(exec_path, argv[0], len_path);
+-	pos = strrchr(exec_path, '/');
+-	if (pos != NULL)
+-		*(pos+1) = '\0';
+-
+-	ret = chdir(exec_path);
++	memset(exec_path, 0, sizeof(exec_path));
++	ret = readlink("/proc/self/exe", exec_path, sizeof(exec_path)-1);
++	igt_assert(ret != -1);
++	ret = chdir(dirname(exec_path));
+ 	igt_assert_eq(ret, 0);
+-	free(exec_path);
+ }
+ 
+ static void restore_termio_mode(int sig)
 -- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+2.25.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
