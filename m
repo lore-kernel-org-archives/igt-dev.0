@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5FC6B6EA42
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 09:37:22 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D0CD6EA41
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 09:39:25 +0000 (UTC)
 From: "Surendrakumar Upadhyay, TejaskumarX"
  <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Date: Thu, 8 Apr 2021 09:37:16 +0000
-Message-ID: <SN6PR11MB34213A9CE130D5A5D20DD0EADF749@SN6PR11MB3421.namprd11.prod.outlook.com>
-References: <20210407093857.45333-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
- <20210408091614.GA49645@zkempczy-mobl2>
-In-Reply-To: <20210408091614.GA49645@zkempczy-mobl2>
+Date: Thu, 8 Apr 2021 09:39:19 +0000
+Message-ID: <SN6PR11MB3421E22329FA8E875A0AE0BDDF749@SN6PR11MB3421.namprd11.prod.outlook.com>
+References: <20210408065231.47694-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+ <20210408093320.GA55970@zkempczy-mobl2>
+In-Reply-To: <20210408093320.GA55970@zkempczy-mobl2>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t] lib/gem_execbuf_wr: Add gem_has_relocations
- check
+Subject: Re: [igt-dev] [i-g-t] lib/gem_submission: Remove __gem_execbuf call
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,8 +19,8 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-2"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
@@ -29,79 +28,46 @@ Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pandey,
  Hariom" <hariom.pandey@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-> -----Original Message-----
-> From: Zbigniew Kempczy=F1ski <zbigniew.kempczynski@intel.com>
-> Sent: 08 April 2021 14:46
-> To: Surendrakumar Upadhyay, TejaskumarX
-> <tejaskumarx.surendrakumar.upadhyay@intel.com>
-> Cc: igt-dev@lists.freedesktop.org; Pandey, Hariom
-> <hariom.pandey@intel.com>
-> Subject: Re: [igt-dev] [i-g-t] lib/gem_execbuf_wr: Add gem_has_relocations
-> check
-> =
-
-> On Wed, Apr 07, 2021 at 03:08:57PM +0530, Tejas Upadhyay wrote:
-> > Check if relocation and execbuf ioctls are supported on respective
-> > platform or not. This will mark it skip instead of misleading fail if
-> > relocations are not supported.
-> >
-> > Gitlab#3276
-> =
-
-> NAK.
-> =
-
-> That means we're not able to use gen12+ in IGT anymore.
-> How do we could run GPU jobs then?
-
-Whichever tests are using relocations are failing not all GPU tests.
-
-> =
-
-> --
-> Zbigniew
-> =
-
-> >
-> > Signed-off-by: Tejas Upadhyay
-> > <tejaskumarx.surendrakumar.upadhyay@intel.com>
-> > ---
-> >  lib/ioctl_wrappers.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >
-> > diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c index
-> > 4440004c..465da0bc 100644
-> > --- a/lib/ioctl_wrappers.c
-> > +++ b/lib/ioctl_wrappers.c
-> > @@ -57,6 +57,7 @@
-> >  #include "igt_sysfs.h"
-> >  #include "config.h"
-> >  #include "i915/gem_mman.h"
-> > +#include "i915/gem_submission.h"
-> >
-> >  #ifdef HAVE_VALGRIND
-> >  #include <valgrind/valgrind.h>
-> > @@ -636,6 +637,9 @@ void gem_execbuf(int fd, struct
-> > drm_i915_gem_execbuffer2 *execbuf)  int __gem_execbuf_wr(int fd,
-> > struct drm_i915_gem_execbuffer2 *execbuf)  {
-> >  	int err =3D 0;
-> > +
-> > +	/* Check if relocations is supported with execbuffer2 */
-> > +	igt_require(gem_has_relocations(fd));
-> >  	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_EXECBUFFER2_WR, execbuf))
-> {
-> >  		err =3D -errno;
-> >  		igt_assume(err !=3D 0);
-> > --
-> > 2.30.0
-> >
-> > _______________________________________________
-> > igt-dev mailing list
-> > igt-dev@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IFpiaWduaWV3IEtlbXBjennF
+hHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPg0KPiBTZW50OiAwOCBBcHJpbCAy
+MDIxIDE1OjAzDQo+IFRvOiBTdXJlbmRyYWt1bWFyIFVwYWRoeWF5LCBUZWphc2t1bWFyWA0KPiA8
+dGVqYXNrdW1hcnguc3VyZW5kcmFrdW1hci51cGFkaHlheUBpbnRlbC5jb20+DQo+IENjOiBpZ3Qt
+ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgUGFuZGV5LCBIYXJpb20NCj4gPGhhcmlvbS5wYW5k
+ZXlAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW2lndC1kZXZdIFtpLWctdF0gbGliL2dlbV9z
+dWJtaXNzaW9uOiBSZW1vdmUgX19nZW1fZXhlY2J1ZiBjYWxsDQo+IA0KPiBPbiBUaHUsIEFwciAw
+OCwgMjAyMSBhdCAxMjoyMjozMVBNICswNTMwLCBUZWphcyBVcGFkaHlheSB3cm90ZToNCj4gPiBB
+ZnRlciByZWxvYyBzdXBwb3J0IGdvdCBkcm9wcGVkIG9uIEdFTjEyLzEyKywgbG90IG9mIHRlc3Rz
+IGFyZQ0KPiA+IHJlcG9ydGluZyBmYWlsdXJlcyB3aGljaCBzaG91bGQgYmUgc2tpcHBlZCB1c2lu
+ZyBjaGVjaw0KPiA+IGdlbV9oYXNfcmVsb2NhdGlvbnMoKS4gVGhlIHByb2JsZW0gaXMgbG90IG9m
+IHRob3NlIGZhaWx1cmVzIGFyZSBkdWUgdG8NCj4gPiBkaXJlY3QgX19nZW1fZXhlY2J1ZigpIGNh
+bGwgd2hlcmUgd2UgY2FudCBwdXQgZ2VtX2hhc18gcmVsb2NhdGlvbnMNCj4gPiBjaGVjayB0byBz
+a2lwIHRoZSB0ZXN0IGluIGNhc2UgcGxhdGZvcm0gZG9lcyBub3Qgc3VwcG9ydCByZWFzb24gYmVp
+bmcNCj4gPiBpdCBhbHNvIGNhbGxzIF9fZ2VtX2V4ZWNidWYgd2hpY2ggY3JlYXRlcyBuZXZlciBl
+bmRpbmcgbG9vcC4gVGh1cyB0bw0KPiA+IGF2b2lkIGxvb3BpbmcsIGNhbGwgX19nZW1fZXhlY2J1
+ZigpIGluc2lkZSBnZW1faGFzX3JlbG9jYXRpb25zKCkgaXMNCj4gPiByZXBsYWNlZCB3aXRoIGRp
+cmVjdCBpb2N0bCBjYWxsLg0KPiANCj4gV2UgY2Fubm90IGRvIHRoYXQuIFdlIGhhdmUgdG8gZml4
+IHRlc3RzLCBub3QgdG8gc2tpcCB0aGVtLg0KV2UgYXJlIGFscmVhZHkgc2tpcHBpbmcgZm9yIGdl
+bV9leGVjX3JlbG9jIGFmdGVyIGNoZWNraW5nIHJlbG9jIHN1cHBvcnQuDQo+IA0KPiAtLQ0KPiBa
+Ymlnbmlldw0KPiANCj4gPg0KPiA+IENjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3
+LmtlbXBjenluc2tpQGludGVsLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBUZWphcyBVcGFkaHlh
+eQ0KPiA+IDx0ZWphc2t1bWFyeC5zdXJlbmRyYWt1bWFyLnVwYWRoeWF5QGludGVsLmNvbT4NCj4g
+PiAtLS0NCj4gPiAgbGliL2k5MTUvZ2VtX3N1Ym1pc3Npb24uYyB8IDggKysrKysrKy0NCj4gPiAg
+MSBmaWxlIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiA+DQo+ID4g
+ZGlmZiAtLWdpdCBhL2xpYi9pOTE1L2dlbV9zdWJtaXNzaW9uLmMgYi9saWIvaTkxNS9nZW1fc3Vi
+bWlzc2lvbi5jDQo+ID4gaW5kZXggMDUxZjlkMDQuLjUwYThhZTExIDEwMDY0NA0KPiA+IC0tLSBh
+L2xpYi9pOTE1L2dlbV9zdWJtaXNzaW9uLmMNCj4gPiArKysgYi9saWIvaTkxNS9nZW1fc3VibWlz
+c2lvbi5jDQo+ID4gQEAgLTQyMiw4ICs0MjIsMTQgQEAgYm9vbCBnZW1faGFzX3JlbG9jYXRpb25z
+KGludCBpOTE1KQ0KPiA+ICAJCS5idWZmZXJfY291bnQgPSAxLA0KPiA+ICAJfTsNCj4gPiAgCWJv
+b2wgaGFzX3JlbG9jczsNCj4gPiArCWludCBlcnIgPSAwOw0KPiA+ICsNCj4gPiArCWlmIChpZ3Rf
+aW9jdGwoaTkxNSwgRFJNX0lPQ1RMX0k5MTVfR0VNX0VYRUNCVUZGRVIyLCAmZXhlY2J1ZikpIHsN
+Cj4gPiArCQllcnIgPSAtZXJybm87DQo+ID4gKwkJaWd0X2Fzc3VtZShlcnIgIT0gMCk7DQo+ID4g
+Kwl9DQo+ID4NCj4gPiAtCWhhc19yZWxvY3MgPSBfX2dlbV9leGVjYnVmKGk5MTUsICZleGVjYnVm
+KSA9PSAtRU5PRU5UOw0KPiA+ICsJaGFzX3JlbG9jcyA9IGVyciA9PSAtRU5PRU5UOw0KPiA+ICAJ
+Z2VtX2Nsb3NlKGk5MTUsIG9iai5oYW5kbGUpOw0KPiA+DQo+ID4gIAlyZXR1cm4gaGFzX3JlbG9j
+czsNCj4gPiAtLQ0KPiA+IDIuMzAuMA0KPiA+DQo+ID4gX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18NCj4gPiBpZ3QtZGV2IG1haWxpbmcgbGlzdA0KPiA+IGln
+dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+ID4gaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
+cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2DQpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3Rz
+LmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xp
+c3RpbmZvL2lndC1kZXYK
