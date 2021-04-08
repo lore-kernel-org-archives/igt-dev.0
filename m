@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A61526E2C0
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 17:51:09 +0000 (UTC)
-Date: Thu, 8 Apr 2021 10:57:53 -0700
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2991B6E2C7
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 17:56:44 +0000 (UTC)
+Date: Thu, 8 Apr 2021 11:03:29 -0700
 From: "Navare, Manasi" <manasi.d.navare@intel.com>
-Message-ID: <20210408175753.GA18296@labuser-Z97X-UD5H>
+Message-ID: <20210408180323.GB18296@labuser-Z97X-UD5H>
 References: <20210301203747.7177-1-manasi.d.navare@intel.com>
- <20210301203747.7177-6-manasi.d.navare@intel.com>
- <20210301235410.GE7960@labuser-Z97X-UD5H>
- <YD2EFZNo6fy5f7z4@intel.com>
+ <20210301203747.7177-14-manasi.d.navare@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <YD2EFZNo6fy5f7z4@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 05/14] tools/intel_display_poller: Add
- flipdone tests
+In-Reply-To: <20210301203747.7177-14-manasi.d.navare@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 13/14] tools/intel_display_poller: Add
+ vrr-wrap test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,353 +23,165 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Mar 02, 2021 at 02:17:25AM +0200, Ville Syrj=E4l=E4 wrote:
-> On Mon, Mar 01, 2021 at 03:54:25PM -0800, Navare, Manasi wrote:
-> > On Mon, Mar 01, 2021 at 12:37:38PM -0800, Manasi Navare wrote:
-> > > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > > =
-
-> > > Add test for determining on which scanline the flipdone interrupt
-> > > is signalled. ilk+ and vlv/chv have this. Earlier platforms had
-> > > a "flip pending" bit instead which only seems to respond to CS flips
-> > > so not relevant for MMIO based flips.
-> > > =
-
-> > > v2: Rework the loops a bit to ease VRR in the future
-> > > =
-
-> > > Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > =
-
-> > Looks good to me in general for checking the flipdone interrupt.
-> > So for the changes here:
-> > =
-
-> > Reviewed-by: Manasi Navare <manasi.d.navare@intel.com>
-> > =
-
-> > Quick question here:
-> > How do we test this TEST_FLIPDONE with vrr enabled, we need to add sett=
-ing vrr prop etc here?
+On Mon, Mar 01, 2021 at 12:37:46PM -0800, Manasi Navare wrote:
+> From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
 > =
 
-> Just enable vrr whatever way you feel like it. I did it by forcing it on
-> always in the kernel. But I guess we could add a knob to eg. testdisplay
-> to turn it on. Then you could easily test any mode you want with or
-> without vrr.
->
+> The VRR_STATUS2 registers contains yet anoher scanline counter.
+> Let's add a test to check when it wraps.
+> =
 
-Yes adding that knob will be good so we can start using testdisplay to test=
- vrr.
-Are you going to add that as a separate series?
-Also for running the test_flipdone in this poller tool we would also need a=
- similar knowb right?
+> Not sure this is actually useful. A better way might be to
+> allow wholesale replacement of the normal scanline counter
+> register with the VRR STATUS2? Not sure we care about this
+> register at all actually.
+
+Why do we need this test? This vertical scanline counter is just used
+to issue flip on a particular scanline mostly used for HW debug.
+How did you use the wrap test for testing VRR?
 
 Manasi
- =
 
-> > =
-
-> > Manasi
-> > =
-
-> > > ---
-> > >  tools/intel_display_poller.c | 187 +++++++++++++++++++++++++++++++++=
-+-
-> > >  1 file changed, 186 insertions(+), 1 deletion(-)
-> > > =
-
-> > > diff --git a/tools/intel_display_poller.c b/tools/intel_display_polle=
-r.c
-> > > index 826833b3..be237221 100644
-> > > --- a/tools/intel_display_poller.c
-> > > +++ b/tools/intel_display_poller.c
-> > > @@ -52,6 +52,9 @@ enum test {
-> > >  	TEST_FLIPCOUNT,
-> > >  	TEST_PAN,
-> > >  	TEST_FLIP,
-> > > +	TEST_FLIPDONE,
-> > > +	TEST_FLIPDONE_PIPESTAT,
-> > > +	TEST_FLIPDONE_DEIIR,
-> > >  	TEST_SURFLIVE,
-> > >  	TEST_WRAP,
-> > >  	TEST_FIELD,
-> > > @@ -789,6 +792,158 @@ static void poll_dsl_flip(uint32_t devid, int p=
-ipe, int target_scanline, int tar
-> > >  	write_reg(surf, saved);
-> > >  }
-> > >  =
-
-> > > +static void poll_dsl_flipdone_pipestat(uint32_t devid, int pipe, int=
- target_scanline, int target_fuzz,
-> > > +				       uint32_t *min, uint32_t *max, const int count)
-> > > +{
-> > > +	uint32_t dsl, dsl1 =3D 0, dsl2 =3D 0;
-> > > +	uint32_t pipestat, pipestat1, pipestat2, pipestat_save;
-> > > +	bool field1 =3D false, field2 =3D false;
-> > > +	uint32_t saved, next, surf =3D 0, bit;
-> > > +	int i[2] =3D {};
-> > > +
-> > > +	dsl =3D PIPE_REG(pipe, PIPEA_DSL);
-> > > +	pipestat =3D PIPE_REG(pipe, PIPEASTAT);
-> > > +	surf =3D dspsurf_reg(devid, pipe);
-> > > +
-> > > +	bit =3D 1 << 10;
-> > > +
-> > > +	saved =3D read_reg(surf);
-> > > +	next =3D saved;
-> > > +
-> > > +	pipestat_save =3D read_reg(pipestat) & 0x7fff0000;
-> > > +	pipestat1 =3D pipestat_save & ~(1 << (bit<<16));
-> > > +	write_reg(pipestat, pipestat1 | bit);
-> > > +
-> > > +	while (!quit) {
-> > > +		while (!quit) {
-> > > +			dsl1 =3D read_reg(dsl);
-> > > +			field1 =3D dsl1 & 0x80000000;
-> > > +			dsl1 &=3D ~0x80000000;
-> > > +			if (dsl1 =3D=3D target_scanline)
-> > > +				break;
-> > > +		}
-> > > +
-> > > +		write_reg(pipestat, pipestat1 | bit);
-> > > +		if (next =3D=3D saved)
-> > > +			next =3D saved+256*1024;
-> > > +		else
-> > > +			next =3D saved;
-> > > +		write_reg(surf, next);
-> > > +
-> > > +		while (!quit) {
-> > > +			pipestat2 =3D read_reg(pipestat);
-> > > +			dsl2 =3D read_reg(dsl);
-> > > +
-> > > +			field2 =3D dsl2 & 0x80000000;
-> > > +			dsl2 &=3D ~0x80000000;
-> > > +
-> > > +			if (pipestat2 & bit)
-> > > +				break;
-> > > +		}
-> > > +
-> > > +		write_reg(pipestat, pipestat1 | bit);
-> > > +
-> > > +		if (field1 !=3D field2)
-> > > +			printf("fields are different (%u:%u -> %u:%u)\n",
-> > > +			       field1, dsl1, field2, dsl2);
-> > > +
-> > > +		min[field1*count+i[field1]] =3D dsl1;
-> > > +		max[field1*count+i[field1]] =3D dsl2;
-> > > +		if (++i[field1] >=3D count)
-> > > +			break;
-> > > +	}
-> > > +
-> > > +	write_reg(surf, saved);
-> > > +	write_reg(pipestat, pipestat_save);
-> > > +}
-> > > +
-> > > +static void poll_dsl_flipdone_deiir(uint32_t devid, int pipe, int ta=
-rget_scanline, int target_fuzz,
-> > > +				    uint32_t *min, uint32_t *max, const int count)
-> > > +{
-> > > +	uint32_t dsl, dsl1 =3D 0, dsl2 =3D 0;
-> > > +	uint32_t iir, iir2, ier, imr;
-> > > +	uint32_t ier_save, imr_save;
-> > > +	bool field1 =3D false, field2 =3D false;
-> > > +	uint32_t saved, next, surf =3D 0, bit;
-> > > +	int i[2] =3D {};
-> > > +
-> > > +	dsl =3D PIPE_REG(pipe, PIPEA_DSL);
-> > > +	surf =3D dspsurf_reg(devid, pipe);
-> > > +
-> > > +	if (intel_gen(devid) >=3D 9)
-> > > +		bit =3D 3;
-> > > +	else if (intel_gen(devid) >=3D 8)
-> > > +		bit =3D 4;
-> > > +	else if (intel_gen(devid) >=3D 7)
-> > > +		bit =3D 3 + 5 * pipe;
-> > > +	else if (intel_gen(devid) >=3D 5)
-> > > +		bit =3D 26 + pipe;
-> > > +	else
-> > > +		abort();
-> > > +	bit =3D 1 << bit;
-> > > +
-> > > +	if (intel_gen(devid) >=3D 8) {
-> > > +		iir =3D GEN8_DE_PIPE_IIR(pipe);
-> > > +		ier =3D GEN8_DE_PIPE_IER(pipe);
-> > > +		imr =3D GEN8_DE_PIPE_IMR(pipe);
-> > > +	} else {
-> > > +		iir =3D DEIIR;
-> > > +		ier =3D DEIER;
-> > > +		imr =3D DEIMR;
-> > > +	}
-> > > +
-> > > +	saved =3D read_reg(surf);
-> > > +	next =3D saved;
-> > > +
-> > > +	imr_save =3D read_reg(imr);
-> > > +	ier_save =3D read_reg(ier);
-> > > +	write_reg(ier, ier_save & ~bit);
-> > > +	write_reg(imr, imr_save & ~bit);
-> > > +
-> > > +	while (!quit) {
-> > > +		while (!quit) {
-> > > +			dsl1 =3D read_reg(dsl);
-> > > +			field1 =3D dsl1 & 0x80000000;
-> > > +			dsl1 &=3D ~0x80000000;
-> > > +			if (dsl1 =3D=3D target_scanline)
-> > > +				break;
-> > > +		}
-> > > +
-> > > +		write_reg(iir, bit);
-> > > +		if (next =3D=3D saved)
-> > > +			next =3D saved+256*1024;
-> > > +		else
-> > > +			next =3D saved;
-> > > +		write_reg(surf, next);
-> > > +
-> > > +		while (!quit) {
-> > > +			iir2 =3D read_reg(iir);
-> > > +			dsl2 =3D read_reg(dsl);
-> > > +
-> > > +			field2 =3D dsl2 & 0x80000000;
-> > > +			dsl2 &=3D ~0x80000000;
-> > > +
-> > > +			if (iir2 & bit)
-> > > +				break;
-> > > +		}
-> > > +
-> > > +		write_reg(iir, bit);
-> > > +
-> > > +		if (field1 !=3D field2)
-> > > +			printf("fields are different (%u:%u -> %u:%u)\n",
-> > > +			       field1, dsl1, field2, dsl2);
-> > > +
-> > > +		min[field1*count+i[field1]] =3D dsl1;
-> > > +		max[field1*count+i[field1]] =3D dsl2;
-> > > +		if (++i[field1] >=3D count)
-> > > +			break;
-> > > +	}
-> > > +
-> > > +	write_reg(surf, saved);
-> > > +	write_reg(imr, imr_save);
-> > > +	write_reg(ier, ier_save);
-> > > +}
-> > > +
-> > >  static void poll_dsl_surflive(uint32_t devid, int pipe,
-> > >  			      uint32_t *min, uint32_t *max, const int count)
-> > >  {
-> > > @@ -933,6 +1088,12 @@ static const char *test_name(enum test test, in=
-t pipe, int bit, bool test_pixel_
-> > >  	case TEST_FLIP:
-> > >  		snprintf(str, sizeof str, "%s / pipe %c / Flip", type, pipe_name(p=
-ipe));
-> > >  		return str;
-> > > +	case TEST_FLIPDONE_PIPESTAT:
-> > > +		snprintf(str, sizeof str, "%s / pipe %c / Flip done (vlv/chv)", ty=
-pe, pipe_name(pipe));
-> > > +		return str;
-> > > +	case TEST_FLIPDONE_DEIIR:
-> > > +		snprintf(str, sizeof str, "%s / pipe %c / Flip done (pch)", type, =
-pipe_name(pipe));
-> > > +		return str;
-> > >  	case TEST_SURFLIVE:
-> > >  		snprintf(str, sizeof str, "%s / pipe %c / Surflive", type, pipe_na=
-me(pipe));
-> > >  		return str;
-> > > @@ -950,7 +1111,7 @@ static const char *test_name(enum test test, int=
- pipe, int bit, bool test_pixel_
-> > >  static void __attribute__((noreturn)) usage(const char *name)
-> > >  {
-> > >  	fprintf(stderr, "Usage: %s [options]\n"
-> > > -		" -t,--test <pipestat|iir|framecount|flipcount|pan|flip|surflive|w=
-rap|field>\n"
-> > > +		" -t,--test <pipestat|iir|framecount|flipcount|pan|flip|flipdone|s=
-urflive|wrap|field>\n"
-> > >  		" -p,--pipe <pipe>\n"
-> > >  		" -b,--bit <bit>\n"
-> > >  		" -l,--line <target scanline/pixel>\n"
-> > > @@ -1002,6 +1163,8 @@ int main(int argc, char *argv[])
-> > >  				test =3D TEST_PAN;
-> > >  			else if (!strcmp(optarg, "flip"))
-> > >  				test =3D TEST_FLIP;
-> > > +			else if (!strcmp(optarg, "flipdone"))
-> > > +				test =3D TEST_FLIPDONE;
-> > >  			else if (!strcmp(optarg, "surflive"))
-> > >  				test =3D TEST_SURFLIVE;
-> > >  			else if (!strcmp(optarg, "wrap"))
-> > > @@ -1117,6 +1280,16 @@ int main(int argc, char *argv[])
-> > >  		case TEST_FRAMECOUNT:
-> > >  			test =3D TEST_FRAMECOUNT_G4X;
-> > >  			break;
-> > > +		case TEST_FLIPDONE:
-> > > +			/*
-> > > +			 * g4x has no apparent "flip done" interrupt,
-> > > +			 * and the "flip pending" interrupt does not
-> > > +			 * seem to do anything with mmio flips.
-> > > +			 */
-> > > +			if (IS_G4X(devid))
-> > > +				usage(argv[0]);
-> > > +			test =3D TEST_FLIPDONE_PIPESTAT;
-> > > +			break;
-> > >  		case TEST_FLIPCOUNT:
-> > >  		case TEST_PIPESTAT:
-> > >  		case TEST_PAN:
-> > > @@ -1146,6 +1319,9 @@ int main(int argc, char *argv[])
-> > >  		case TEST_FRAMECOUNT:
-> > >  			test =3D TEST_FRAMECOUNT_G4X;
-> > >  			break;
-> > > +		case TEST_FLIPDONE:
-> > > +			test =3D TEST_FLIPDONE_DEIIR;
-> > > +			break;
-> > >  		case TEST_FLIPCOUNT:
-> > >  		case TEST_PAN:
-> > >  		case TEST_FLIP:
-> > > @@ -1161,6 +1337,7 @@ int main(int argc, char *argv[])
-> > >  	switch (test) {
-> > >  	case TEST_IIR:
-> > >  	case TEST_FRAMECOUNT:
-> > > +	case TEST_FLIPDONE:
-> > >  		/* should no longer have the generic tests here */
-> > >  		assert(0);
-> > >  	default:
-> > > @@ -1226,6 +1403,14 @@ int main(int argc, char *argv[])
-> > >  			poll_dsl_flip(devid, pipe, target_scanline, target_fuzz,
-> > >  				      min, max, count);
-> > >  		break;
-> > > +	case TEST_FLIPDONE_PIPESTAT:
-> > > +		poll_dsl_flipdone_pipestat(devid, pipe, target_scanline, target_fu=
-zz,
-> > > +					   min, max, count);
-> > > +		break;
-> > > +	case TEST_FLIPDONE_DEIIR:
-> > > +		poll_dsl_flipdone_deiir(devid, pipe, target_scanline, target_fuzz,
-> > > +					min, max, count);
-> > > +		break;
-> > >  	case TEST_SURFLIVE:
-> > >  		poll_dsl_surflive(devid, pipe, min, max, count);
-> > >  		break;
-> > > -- =
-
-> > > 2.19.1
-> > > =
-
-> > > _______________________________________________
-> > > igt-dev mailing list
-> > > igt-dev@lists.freedesktop.org
-> > > https://lists.freedesktop.org/mailman/listinfo/igt-dev
-> > _______________________________________________
-> > igt-dev mailing list
-> > igt-dev@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
 > =
 
+> Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> ---
+>  tools/intel_display_poller.c | 43 ++++++++++++++++++++++++++++++------
+>  1 file changed, 36 insertions(+), 7 deletions(-)
+> =
+
+> diff --git a/tools/intel_display_poller.c b/tools/intel_display_poller.c
+> index 37383dc8..6c417050 100644
+> --- a/tools/intel_display_poller.c
+> +++ b/tools/intel_display_poller.c
+> @@ -59,6 +59,7 @@ enum test {
+>  	TEST_FLIPDONE_DEIIR,
+>  	TEST_SURFLIVE,
+>  	TEST_WRAP,
+> +	TEST_VRR_WRAP,
+>  	TEST_FIELD,
+>  };
+>  =
+
+> @@ -1149,16 +1150,14 @@ static void poll_dsl_surflive(uint32_t devid, int=
+ pipe,
+>  	write_reg(surf, saved);
+>  }
+>  =
+
+> -static void poll_dsl_wrap(uint32_t devid, int pipe,
+> -			  uint32_t *min, uint32_t *max, const int count,
+> -			  int vrr_push_scanline)
+> +static void _poll_dsl_wrap(uint32_t devid, int pipe,
+> +			   uint32_t *min, uint32_t *max, const int count,
+> +			   int vrr_push_scanline, uint32_t dsl)
+>  {
+> -	uint32_t dsl, dsl1, dsl2;
+> +	uint32_t dsl1, dsl2;
+>  	bool field1, field2;
+>  	int i[2] =3D {};
+>  =
+
+> -	dsl =3D PIPE_REG(pipe, PIPEA_DSL);
+> -
+>  	while (!quit) {
+>  		push_vrr(devid, pipe, vrr_push_scanline);
+>  =
+
+> @@ -1186,6 +1185,24 @@ static void poll_dsl_wrap(uint32_t devid, int pipe,
+>  	}
+>  }
+>  =
+
+> +static void poll_dsl_wrap(uint32_t devid,
+> +			  int pipe, uint32_t *min, uint32_t *max, const int count,
+> +			  int vrr_push_scanline)
+> +{
+> +	return _poll_dsl_wrap(devid, pipe, min, max, count,
+> +			      vrr_push_scanline,
+> +			      PIPE_REG(pipe, PIPEA_DSL));
+> +}
+> +
+> +static void poll_vrr_wrap(uint32_t devid,
+> +			  int pipe, uint32_t *min, uint32_t *max, const int count,
+> +			  int vrr_push_scanline)
+> +{
+> +	return _poll_dsl_wrap(devid, pipe, min, max, count,
+> +			      vrr_push_scanline,
+> +			      trans_reg(devid, pipe, TRANS_VRR_STATUS2_A));
+> +}
+> +
+>  static void poll_dsl_field(int pipe, uint32_t *min, uint32_t *max, const=
+ int count)
+>  {
+>  	uint32_t dsl, dsl1, dsl2;
+> @@ -1267,6 +1284,9 @@ static const char *test_name(enum test test, int pi=
+pe, int bit, bool test_pixel_
+>  	case TEST_FIELD:
+>  		snprintf(str, sizeof str, "%s / pipe %c / Field", type, pipe_name(pipe=
+));
+>  		return str;
+> +	case TEST_VRR_WRAP:
+> +		snprintf(str, sizeof str, "%s / pipe %c / VRR wrap", type, pipe_name(p=
+ipe));
+> +		return str;
+>  	default:
+>  		return "";
+>  	}
+> @@ -1275,7 +1295,7 @@ static const char *test_name(enum test test, int pi=
+pe, int bit, bool test_pixel_
+>  static void __attribute__((noreturn)) usage(const char *name)
+>  {
+>  	fprintf(stderr, "Usage: %s [options]\n"
+> -		" -t,--test <pipestat|iir|framecount|flipcount|frametimestamp|timestam=
+p|pan|flip|flipdone|surflive|wrap|field>\n"
+> +		" -t,--test <pipestat|iir|framecount|flipcount|frametimestamp|timestam=
+p|pan|flip|flipdone|surflive|wrap|field|vrr-wrap>\n"
+>  		" -p,--pipe <pipe>\n"
+>  		" -b,--bit <bit>\n"
+>  		" -l,--line <target scanline/pixel>\n"
+> @@ -1345,6 +1365,8 @@ int main(int argc, char *argv[])
+>  				test =3D TEST_WRAP;
+>  			else if (!strcmp(optarg, "field"))
+>  				test =3D TEST_FIELD;
+> +			else if (!strcmp(optarg, "vrr-wrap"))
+> +				test =3D TEST_VRR_WRAP;
+>  			else
+>  				usage(argv[0]);
+>  			break;
+> @@ -1527,6 +1549,10 @@ int main(int argc, char *argv[])
+>  		case TEST_FLIPDONE:
+>  			test =3D TEST_FLIPDONE_DEIIR;
+>  			break;
+> +		case TEST_VRR_WRAP:
+> +			if (intel_gen(devid) < 11)
+> +				usage(argv[0]);
+> +			break;
+>  		case TEST_FLIPCOUNT:
+>  		case TEST_PAN:
+>  		case TEST_FLIP:
+> @@ -1638,6 +1664,9 @@ int main(int argc, char *argv[])
+>  	case TEST_FIELD:
+>  		poll_dsl_field(pipe, min, max, count);
+>  		break;
+> +	case TEST_VRR_WRAP:
+> +		poll_vrr_wrap(devid, pipe, min, max, count, vrr_push_scanline);
+> +		break;
+>  	default:
+>  		assert(0);
+>  	}
 > -- =
 
-> Ville Syrj=E4l=E4
-> Intel
+> 2.19.1
+> =
+
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
