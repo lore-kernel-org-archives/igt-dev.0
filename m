@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com
- [IPv6:2a00:1450:4864:20::431])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C444E6E9E3
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 07:38:18 +0000 (UTC)
-Received: by mail-wr1-x431.google.com with SMTP id x15so1003590wrq.3
- for <igt-dev@lists.freedesktop.org>; Thu, 08 Apr 2021 00:38:18 -0700 (PDT)
-References: <20210406021925.28234-1-nidhi1.gupta@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <16407785-26b8-70eb-412f-be5abe9ed412@gmail.com>
-Date: Thu, 8 Apr 2021 10:38:11 +0300
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8DFF86E9E3
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 07:44:52 +0000 (UTC)
+Date: Thu, 8 Apr 2021 09:44:46 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210408074446.GA7412@zkempczy-mobl2>
+References: <20210402093844.39637-1-zbigniew.kempczynski@intel.com>
+ <20210402093844.39637-3-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20210406021925.28234-1-nidhi1.gupta@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_available_modes_crc : Added
- test description
+Content-Disposition: inline
+In-Reply-To: <20210402093844.39637-3-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v30 02/39] lib/igt_list: Add
+ igt_list_for_each_entry_safe_reverse
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,44 +19,38 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Nidhi Gupta <nidhi1.gupta@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-I did yesterday remove kms_available_modes_crc test from igt, this patch 
-will not apply for that reason.
-
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/commit/26b0a1ccd0ee0bff29e55d18c3fd8cbf83299049
-
-/Juha-Pekka
-
-On 6.4.2021 5.19, Nidhi Gupta wrote:
-> Added test description.
-> 
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> ---
->   tests/kms_available_modes_crc.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/tests/kms_available_modes_crc.c b/tests/kms_available_modes_crc.c
-> index 17e0f237..a1dd1289 100644
-> --- a/tests/kms_available_modes_crc.c
-> +++ b/tests/kms_available_modes_crc.c
-> @@ -448,6 +448,7 @@ igt_main
->   
->   	data.commit = data.display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY;
->   
-> +	igt_describe("CRC test for all different plane modes which kernel advertises.");
->   	igt_subtest("available_mode_test_crc") {
->   		gem_require_mappable_ggtt(data.gfx_fd);
->   		test_available_modes(&data);
-> 
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gRnJpLCBBcHIgMDIsIDIwMjEgYXQgMTE6Mzg6MDdBTSArMDIwMCwgWmJpZ25pZXcgS2VtcGN6
+ecWEc2tpIHdyb3RlOgo+IEZyb206IERvbWluaWsgR3J6ZWdvcnplayA8ZG9taW5pay5ncnplZ29y
+emVrQGludGVsLmNvbT4KPiAKPiBBZGRlZCBzYWZlIHZlcnNpb24gb2YgcmV2ZXJzZWQgaXRlcmF0
+aW9uIG92ZXIgaWd0X2xpc3QuCj4gCj4gU2lnbmVkLW9mZi1ieTogRG9taW5payBHcnplZ29yemVr
+IDxkb21pbmlrLmdyemVnb3J6ZWtAaW50ZWwuY29tPgo+IENjOiBaYmlnbmlldyBLZW1wY3p5xYRz
+a2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KPiBDYzogQ2hyaXMgV2lsc29uIDxj
+aHJpc0BjaHJpcy13aWxzb24uY28udWs+CgpUaGlzIGxvb2tzIG9rLgoKUmV2aWV3ZWQtYnk6IFpi
+aWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgoKPiAt
+LS0KPiAgbGliL2lndF9saXN0LmggfCA2ICsrKysrKwo+ICAxIGZpbGUgY2hhbmdlZCwgNiBpbnNl
+cnRpb25zKCspCj4gCj4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfbGlzdC5oIGIvbGliL2lndF9saXN0
+LmgKPiBpbmRleCBjYzkzZDdhMGQuLmJlNjNmZDgwNiAxMDA2NDQKPiAtLS0gYS9saWIvaWd0X2xp
+c3QuaAo+ICsrKyBiL2xpYi9pZ3RfbGlzdC5oCj4gQEAgLTEwOCw2ICsxMDgsMTIgQEAgYm9vbCBp
+Z3RfbGlzdF9lbXB0eShjb25zdCBzdHJ1Y3QgaWd0X2xpc3RfaGVhZCAqaGVhZCk7Cj4gIAkgICAg
+ICZwb3MtPm1lbWJlciAhPSAoaGVhZCk7CQkJCQlcCj4gIAkgICAgIHBvcyA9IGlndF9jb250YWlu
+ZXJfb2YoKHBvcyktPm1lbWJlci5wcmV2LCBwb3MsIG1lbWJlcikpCj4gIAo+ICsjZGVmaW5lIGln
+dF9saXN0X2Zvcl9lYWNoX2VudHJ5X3NhZmVfcmV2ZXJzZShwb3MsIHRtcCwgaGVhZCwgbWVtYmVy
+KQlcCj4gKwlmb3IgKHBvcyA9IGlndF9jb250YWluZXJfb2YoKGhlYWQpLT5wcmV2LCBwb3MsIG1l
+bWJlciksCQlcCj4gKwkgICAgIHRtcCA9IGlndF9jb250YWluZXJfb2YoKHBvcyktPm1lbWJlci5w
+cmV2LCB0bXAsIG1lbWJlcik7CVwKPiArCSAgICAgJnBvcy0+bWVtYmVyICE9IChoZWFkKTsJCQkJ
+CVwKPiArCSAgICAgcG9zID0gdG1wLAkJCQkJCQlcCj4gKwkgICAgIHRtcCA9IGlndF9jb250YWlu
+ZXJfb2YoKHBvcyktPm1lbWJlci5wcmV2LCB0bXAsIG1lbWJlcikpCj4gIAo+ICAvKiBJR1QgY3Vz
+dG9tIGhlbHBlcnMgKi8KPiAgCj4gLS0gCj4gMi4yNi4wCj4gCj4gX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBpZ3QtZGV2IG1haWxpbmcgbGlzdAo+IGln
+dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4gaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
+Zm8vaWd0LWRldgo=
