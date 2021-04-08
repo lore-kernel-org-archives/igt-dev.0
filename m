@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com
- [IPv6:2a00:1450:4864:20::434])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 287ED6E1B1
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 20:13:20 +0000 (UTC)
-Received: by mail-wr1-x434.google.com with SMTP id f12so3462628wro.0
- for <igt-dev@lists.freedesktop.org>; Thu, 08 Apr 2021 13:13:20 -0700 (PDT)
-Date: Thu, 8 Apr 2021 22:13:16 +0200
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com
+ [IPv6:2a00:1450:4864:20::42e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB0C06E1E0
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Apr 2021 20:15:42 +0000 (UTC)
+Received: by mail-wr1-x42e.google.com with SMTP id x15so3437937wrq.3
+ for <igt-dev@lists.freedesktop.org>; Thu, 08 Apr 2021 13:15:42 -0700 (PDT)
+Date: Thu, 8 Apr 2021 22:15:38 +0200
 From: Daniel Vetter <daniel@ffwll.ch>
-Message-ID: <YG9j3HqjZCk71Dmi@phenom.ffwll.local>
-References: <20210401114316.2597715-1-tvrtko.ursulin@linux.intel.com>
- <YGW2pTimwjHEDf3M@platvala-desk.ger.corp.intel.com>
+Message-ID: <YG9kaiIzM4Nsujvl@phenom.ffwll.local>
+References: <20210408073748.26234-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <YGW2pTimwjHEDf3M@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] gem_watchdog: Fix autotools
- build
+In-Reply-To: <20210408073748.26234-1-nidhi1.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_lowres : Added test
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,53 +25,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org
+To: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Apr 01, 2021 at 03:03:49PM +0300, Petri Latvala wrote:
-> On Thu, Apr 01, 2021 at 12:43:16PM +0100, Tvrtko Ursulin wrote:
-> > From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> > 
-> > Correcting a brain malfunction while typing in Makefile.sources.
-> > 
-> > Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+On Thu, Apr 08, 2021 at 01:07:48PM +0530, Nidhi Gupta wrote:
+> Added test description.
 > 
-> Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 
-Isn't autotools now going away with Arek's series?
+I don't think it makes sense to have an individual series for each of
+these, that just needlessly blows through CI bandwidth for no real gain.
+Also, it means they're all very spread around and harder to find for a
+motivated reviewer.
+
+Please group them up, ideally so that you do all the annotation for a set
+of tests that are all related.
 -Daniel
 
+> ---
+>  tests/kms_plane_lowres.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
+> diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+> index a5af1f8a..5cfe53c8 100644
+> --- a/tests/kms_plane_lowres.c
+> +++ b/tests/kms_plane_lowres.c
+> @@ -301,15 +301,23 @@ igt_main
+>  
+>  	for_each_pipe_static(pipe) {
+>  		data.pipe = pipe;
+> +		igt_describe("Tests the visibility of the planes when switching between "
+> +			     "high and low resolution with tiling as none.");
+>  		igt_subtest_f("pipe-%s-tiling-none", kmstest_pipe_name(pipe))
+>  			test_planes_on_pipe(&data, LOCAL_DRM_FORMAT_MOD_NONE);
+>  
+> +		igt_describe("Tests the visibility of the planes when switching between "
+> +			     "high and low resolution with x-tiling.");
+>  		igt_subtest_f("pipe-%s-tiling-x", kmstest_pipe_name(pipe))
+>  			test_planes_on_pipe(&data, LOCAL_I915_FORMAT_MOD_X_TILED);
+>  
+> +		igt_describe("Tests the visibility of the planes when switching between "
+> +			     "high and low resolution with y-tiling.");
+>  		igt_subtest_f("pipe-%s-tiling-y", kmstest_pipe_name(pipe))
+>  			test_planes_on_pipe(&data, LOCAL_I915_FORMAT_MOD_Y_TILED);
+>  
+> +		igt_describe("Tests the visibility of the planes when switching between "
+> +			     "high and low resolution with yf-tiling.");
+>  		igt_subtest_f("pipe-%s-tiling-yf", kmstest_pipe_name(pipe))
+>  			test_planes_on_pipe(&data, LOCAL_I915_FORMAT_MOD_Yf_TILED);
+>  	}
+> -- 
+> 2.26.2
 > 
-> > ---
-> >  tests/Makefile.sources | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/tests/Makefile.sources b/tests/Makefile.sources
-> > index e992285fedc5..194df8e27dd0 100644
-> > --- a/tests/Makefile.sources
-> > +++ b/tests/Makefile.sources
-> > @@ -464,7 +464,7 @@ TESTS_progs += gem_wait
-> >  gem_wait_SOURCES = i915/gem_wait.c
-> >  
-> >  TESTS_progs += gem_watchdog
-> > -gem_exec_watchdog_SOURCES = i915/gem_watchdog.c
-> > +gem_watchdog_SOURCES = i915/gem_watchdog.c
-> >  
-> >  TESTS_progs += gem_workarounds
-> >  gem_workarounds_SOURCES = i915/gem_workarounds.c
-> > -- 
-> > 2.27.0
-> > 
-> > _______________________________________________
-> > Intel-gfx mailing list
-> > Intel-gfx@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/intel-gfx
 > _______________________________________________
-> Intel-gfx mailing list
-> Intel-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
 -- 
 Daniel Vetter
