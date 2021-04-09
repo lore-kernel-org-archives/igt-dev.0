@@ -1,518 +1,270 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Fri,  9 Apr 2021 10:57:04 +0200
-Message-Id: <20210409085704.40233-1-janusz.krzysztofik@linux.intel.com>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [RFC PATCH] tests/gem_userptr_blits: Check for banned
- mmap-offset
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 09 Apr 2021 09:17:16 -0000
+Message-ID: <161795983651.10583.12631733913573548298@emeril.freedesktop.org>
+References: <20210409064525.1437661-1-arundhati.hagaragi@intel.com>
+In-Reply-To: <20210409064525.1437661-1-arundhati.hagaragi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fpsr=3A_Add_subtest_description?=
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0383054441=="
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Support for mmap-offset to userptr has been obsoleted, then related
-lockdep splat reported issues are not going to be resolved other than
-still banning mmap-offset to userptr attempts.
+--===============0383054441==
+Content-Type: multipart/alternative;
+ boundary="===============3578072110464268572=="
 
-Replace "mmap-offset-invalidate-*" and "readonly-mmap-unsync" subtests
-which now skip with a negative "mmap-offset-banned" that fails if a
-mmap-offset attempt to a userptr object doesn't return ENODEV.  Also,
-remove mmap-offset to userptr dependent processing paths from other
-subtest bodies and drop obsolete subtest variants.
+--===============3578072110464268572==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- tests/i915/gem_userptr_blits.c | 324 +++------------------------------
- 1 file changed, 30 insertions(+), 294 deletions(-)
+== Series Details ==
 
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index 7a80c0161..aad5f141b 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -70,52 +70,12 @@
- #endif
- 
- static uint32_t userptr_flags;
--static bool *can_mmap;
- 
- #define WIDTH 512
- #define HEIGHT 512
- 
- static uint32_t linear[WIDTH*HEIGHT];
- 
--static bool has_mmap(int i915, const struct mmap_offset *t)
--{
--	void *ptr, *map;
--	uint32_t handle;
--
--	handle = gem_create(i915, PAGE_SIZE);
--	map = __gem_mmap_offset(i915, handle, 0, PAGE_SIZE, PROT_WRITE,
--				t->type);
--	gem_close(i915, handle);
--	if (map) {
--		munmap(map, PAGE_SIZE);
--	} else {
--		igt_debug("no HW / kernel support for mmap-offset(%s)\n",
--			  t->name);
--		return false;
--	}
--	map = NULL;
--
--	igt_assert(posix_memalign(&ptr, PAGE_SIZE, PAGE_SIZE) == 0);
--
--	if (__gem_userptr(i915, ptr, 4096, 0,
--			  I915_USERPTR_UNSYNCHRONIZED, &handle))
--		goto out_ptr;
--	igt_assert(handle != 0);
--
--	map = __gem_mmap_offset(i915, handle, 0, 4096, PROT_WRITE, t->type);
--	if (map)
--		munmap(map, 4096);
--	else
--		igt_debug("mmap-offset(%s) banned, lockdep loop prevention\n",
--			  t->name);
--
--	gem_close(i915, handle);
--out_ptr:
--	free(ptr);
--
--	return map != NULL;
--}
--
- static void gem_userptr_test_unsynchronized(void)
- {
- 	userptr_flags = I915_USERPTR_UNSYNCHRONIZED;
-@@ -914,28 +874,13 @@ static int test_invalid_mapping(int fd, const struct mmap_offset *t)
- }
- 
- #define PE_BUSY 0x1
--static void test_process_exit(int fd, const struct mmap_offset *mmo, int flags)
-+static void test_process_exit(int fd, int flags)
- {
--	if (mmo)
--		igt_require_f(can_mmap[mmo->type],
--			      "HW & kernel support for LLC and mmap-offset(%s) over userptr\n",
--			      mmo->name);
--
- 	igt_fork(child, 1) {
- 		uint32_t handle;
- 
- 		handle = create_userptr_bo(fd, sizeof(linear));
- 
--		if (mmo) {
--			uint32_t *ptr;
--
--			ptr = __gem_mmap_offset(fd, handle, 0, sizeof(linear),
--						PROT_READ | PROT_WRITE,
--						mmo->type);
--			if (ptr)
--				*ptr = 0;
--		}
--
- 		if (flags & PE_BUSY)
- 			igt_assert_eq(copy(fd, handle, handle), 0);
- 	}
-@@ -1064,53 +1009,30 @@ static int test_map_fixed_invalidate(int fd, uint32_t flags,
- 	return 0;
- }
- 
--static void test_mmap_offset_invalidate(int fd,
--					const struct mmap_offset *t,
--					unsigned int flags)
--#define MMOI_ACTIVE (1u << 0)
-+static void test_mmap_offset_banned(int fd, const struct mmap_offset *t)
- {
--	igt_spin_t *spin = NULL;
--	uint32_t handle;
--	uint32_t *map;
-+	struct drm_i915_gem_mmap_offset arg;
- 	void *ptr;
- 
- 	/* check if mmap_offset type is supported by hardware, skip if not */
--	handle = gem_create(fd, PAGE_SIZE);
--	map = __gem_mmap_offset(fd, handle, 0, PAGE_SIZE,
--				PROT_READ | PROT_WRITE, t->type);
--	igt_require_f(map,
--		      "HW & kernel support for mmap_offset(%s)\n", t->name);
--	munmap(map, PAGE_SIZE);
--	gem_close(fd, handle);
-+	memset(&arg, 0, sizeof(arg));
-+	arg.flags = t->type;
-+	arg.handle = gem_create(fd, PAGE_SIZE);
-+	igt_skip_on_f(igt_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_OFFSET, &arg),
-+				"HW & kernel support for mmap_offset(%s)\n", t->name);
-+	gem_close(fd, arg.handle);
- 
- 	/* create userptr object */
-+	memset(&arg, 0, sizeof(arg));
-+	arg.flags = t->type;
- 	igt_assert_eq(posix_memalign(&ptr, PAGE_SIZE, PAGE_SIZE), 0);
--	gem_userptr(fd, ptr, PAGE_SIZE, 0, userptr_flags, &handle);
-+	gem_userptr(fd, ptr, PAGE_SIZE, 0, userptr_flags, &arg.handle);
- 
--	/* set up mmap-offset mapping on top of the object, skip if refused */
--	map = __gem_mmap_offset(fd, handle, 0, PAGE_SIZE,
--				PROT_READ | PROT_WRITE, t->type);
--	igt_require_f(map, "mmap-offset banned, lockdep loop prevention\n");
--
--	/* set object pages in order to activate MMU notifier for it */
--	gem_set_domain(fd, handle, t->domain, t->domain);
--	*map = 0;
--
--	if (flags & MMOI_ACTIVE) {
--		gem_quiescent_gpu(fd);
--		spin = igt_spin_new(fd,
--				    .dependency = handle,
--				    .flags = IGT_SPIN_NO_PREEMPTION);
--		igt_spin_set_timeout(spin, NSEC_PER_SEC); /* XXX borked */
--	}
-+	/* try to set up mmap-offset mapping on top of the object, fail if not banned */
-+	do_ioctl_err(fd, DRM_IOCTL_I915_GEM_MMAP_OFFSET, &arg, ENODEV);
- 
--	/* trigger the notifier */
-+	gem_close(fd, arg.handle);
- 	munmap(ptr, PAGE_SIZE);
--
--	/* cleanup */
--	igt_spin_free(fd, spin);
--	munmap(map, PAGE_SIZE);
--	gem_close(fd, handle);
- }
- 
- static int test_forbidden_ops(int fd)
-@@ -1195,36 +1117,28 @@ static void (* volatile orig_sigbus)(int sig, siginfo_t *info, void *param);
- static volatile unsigned long sigbus_start;
- static volatile long sigbus_cnt = -1;
- 
--static void *umap(int fd, uint32_t handle, const struct mmap_offset *mmo)
-+static void *umap(int fd, uint32_t handle)
- {
- 	void *ptr;
-+	uint32_t tmp = gem_create(fd, sizeof(linear));
- 
--	if (mmo) {
--		ptr = __gem_mmap_offset(fd, handle, 0, sizeof(linear),
--					PROT_READ | PROT_WRITE, mmo->type);
--		igt_assert(ptr);
--	} else {
--		uint32_t tmp = gem_create(fd, sizeof(linear));
--		igt_assert_eq(copy(fd, tmp, handle), 0);
--		ptr = gem_mmap__cpu(fd, tmp, 0, sizeof(linear), PROT_READ);
--		gem_close(fd, tmp);
--	}
-+	igt_assert_eq(copy(fd, tmp, handle), 0);
-+	ptr = gem_mmap__cpu(fd, tmp, 0, sizeof(linear), PROT_READ);
-+	gem_close(fd, tmp);
- 
- 	return ptr;
- }
- 
- static void
--check_bo(int fd1, uint32_t handle1, int is_userptr, int fd2, uint32_t handle2,
--	 const struct mmap_offset *mmo)
-+check_bo(int fd1, uint32_t handle1, int is_userptr, int fd2, uint32_t handle2)
- {
- 	unsigned char *ptr1, *ptr2;
--	unsigned long size = sizeof(linear);
- 
--	ptr2 = umap(fd2, handle2, mmo);
-+	ptr2 = umap(fd2, handle2);
- 	if (is_userptr)
- 		ptr1 = is_userptr > 0 ? get_handle_ptr(handle1) : ptr2;
- 	else
--		ptr1 = umap(fd1, handle1, mmo);
-+		ptr1 = umap(fd1, handle1);
- 
- 	igt_assert(ptr1);
- 	igt_assert(ptr2);
-@@ -1232,12 +1146,6 @@ check_bo(int fd1, uint32_t handle1, int is_userptr, int fd2, uint32_t handle2,
- 	sigbus_start = (unsigned long)ptr2;
- 	igt_assert(memcmp(ptr1, ptr2, sizeof(linear)) == 0);
- 
--	if (mmo) {
--		counter++;
--		memset(ptr1, counter, size);
--		memset(ptr2, counter, size);
--	}
--
- 	if (!is_userptr)
- 		munmap(ptr1, sizeof(linear));
- 	munmap(ptr2, sizeof(linear));
-@@ -1260,47 +1168,15 @@ static int export_handle(int fd, uint32_t handle, int *outfd)
- 	return ret;
- }
- 
--static void sigbus(int sig, siginfo_t *info, void *param)
--{
--	unsigned long ptr = (unsigned long)info->si_addr;
--	void *addr;
--
--	if (ptr >= sigbus_start &&
--	    ptr < sigbus_start + sizeof(linear)) {
--		/* replace mapping to allow progress */
--		munmap((void *)sigbus_start, sizeof(linear));
--		addr = mmap((void *)sigbus_start, sizeof(linear),
--			    PROT_READ | PROT_WRITE,
--			    MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
--		igt_assert((unsigned long)addr == sigbus_start);
--		memset(addr, counter, sizeof(linear));
--
--		sigbus_cnt++;
--		return;
--	}
--
--	if (orig_sigbus)
--		orig_sigbus(sig, info, param);
--	igt_assert(0);
--}
--
- static int test_dmabuf(void)
- {
- 	int fd1, fd2;
- 	uint32_t handle, handle_import;
- 	int dma_buf_fd = -1;
- 	int ret;
--	const struct mmap_offset *mmo = NULL;
- 
- 	fd1 = drm_open_driver(DRIVER_INTEL);
- 
--	for_each_mmap_offset_type(fd1, t)
--		if (can_mmap[t->type]) {
--			igt_debug("using mmap-offset(%s)\n", t->name);
--			mmo = t;
--			break;
--	}
--
- 	handle = create_userptr_bo(fd1, sizeof(linear));
- 	memset(get_handle_ptr(handle), counter, sizeof(linear));
- 
-@@ -1317,35 +1193,16 @@ static int test_dmabuf(void)
- 
- 	fd2 = drm_open_driver(DRIVER_INTEL);
- 	handle_import = prime_fd_to_handle(fd2, dma_buf_fd);
--	check_bo(fd1, handle, 1, fd2, handle_import, mmo);
-+	check_bo(fd1, handle, 1, fd2, handle_import);
- 
- 	/* close dma_buf, check whether nothing disappears. */
- 	close(dma_buf_fd);
--	check_bo(fd1, handle, 1, fd2, handle_import, mmo);
-+	check_bo(fd1, handle, 1, fd2, handle_import);
- 
- 	/* destroy userptr object and expect SIGBUS */
- 	free_userptr_bo(fd1, handle);
- 	close(fd1);
- 
--	if (mmo) {
--		struct sigaction sigact, orig_sigact;
--
--		memset(&sigact, 0, sizeof(sigact));
--		sigact.sa_sigaction = sigbus;
--		sigact.sa_flags = SA_SIGINFO;
--		ret = sigaction(SIGBUS, &sigact, &orig_sigact);
--		igt_assert_eq(ret, 0);
--
--		orig_sigbus = orig_sigact.sa_sigaction;
--
--		sigbus_cnt = 0;
--		check_bo(fd2, handle_import, -1, fd2, handle_import, mmo);
--		igt_assert(sigbus_cnt > 0);
--
--		ret = sigaction(SIGBUS, &orig_sigact, NULL);
--		igt_assert_eq(ret, 0);
--	}
--
- 	close(fd2);
- 	reset_handle_ptr();
- 
-@@ -1548,93 +1405,6 @@ static void test_readonly(int i915)
- 	munmap(pages, sz);
- }
- 
--static jmp_buf sigjmp;
--
--__noreturn static void sigjmp_handler(int sig)
--{
--	siglongjmp(sigjmp, sig);
--}
--
--static void test_readonly_mmap(int i915, const struct mmap_offset *t)
--{
--	char *original, *result;
--	uint32_t handle;
--	uint32_t sz;
--	void *pages;
--	void *ptr;
--	int sig;
--
--	/*
--	 * A quick check to ensure that we cannot circumvent the
--	 * read-only nature of our memory by creating a GTT mmap into
--	 * the pages. Imagine receiving a readonly SHM segment from
--	 * another process, or a readonly file mmap, it must remain readonly
--	 * on the GPU as well.
--	 */
--
--	handle = gem_create(i915, PAGE_SIZE);
--	ptr = __gem_mmap_offset(i915, handle, 0, PAGE_SIZE,
--				PROT_READ | PROT_WRITE, t->type);
--	gem_close(i915, handle);
--	igt_require_f(ptr, "HW & kernel support for mmap-offset(%s)\n",
--		      t->name);
--	munmap(ptr, PAGE_SIZE);
--
--	igt_require(igt_setup_clflush());
--
--	sz = 16 << 12;
--	pages = mmap(NULL, sz, PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
--	igt_assert(pages != MAP_FAILED);
--
--	igt_require(__gem_userptr(i915, pages, sz, true, userptr_flags, &handle) == 0);
--	gem_set_caching(i915, handle, 0);
--
--	memset(pages, 0xa5, sz);
--	igt_clflush_range(pages, sz);
--	original = g_compute_checksum_for_data(G_CHECKSUM_SHA1, pages, sz);
--
--	ptr = __gem_mmap_offset(i915, handle, 0, sz, PROT_WRITE, t->type);
--	igt_assert(ptr == NULL);
--
--	/* Optional kernel support for GTT mmaps of userptr */
--	ptr = __gem_mmap_offset(i915, handle, 0, sz, PROT_READ, t->type);
--	gem_close(i915, handle);
--
--	if (ptr) { /* Check that a write into the GTT readonly map fails */
--		if (!(sig = sigsetjmp(sigjmp, 1))) {
--			signal(SIGBUS, sigjmp_handler);
--			signal(SIGSEGV, sigjmp_handler);
--			memset(ptr, 0x5a, sz);
--			igt_assert(0);
--		}
--		igt_assert_eq(sig, SIGSEGV);
--
--		/* Check that we disallow removing the readonly protection */
--		igt_assert(mprotect(ptr, sz, PROT_WRITE));
--		if (!(sig = sigsetjmp(sigjmp, 1))) {
--			signal(SIGBUS, sigjmp_handler);
--			signal(SIGSEGV, sigjmp_handler);
--			memset(ptr, 0x5a, sz);
--			igt_assert(0);
--		}
--		igt_assert_eq(sig, SIGSEGV);
--
--		/* A single read from the GTT pointer to prove that works */
--		igt_assert_eq_u32(*(uint8_t *)ptr, 0xa5);
--		munmap(ptr, sz);
--	}
--
--	/* Double check that the kernel did indeed not let any writes through */
--	igt_clflush_range(pages, sz);
--	result = g_compute_checksum_for_data(G_CHECKSUM_SHA1, pages, sz);
--	igt_assert(!strcmp(original, result));
--
--	g_free(original);
--	g_free(result);
--
--	munmap(pages, sz);
--}
--
- static void test_readonly_pwrite(int i915)
- {
- 	char *original, *result;
-@@ -2423,12 +2193,6 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
- 				mmo_max = t->type + 1;
- 		igt_assert(mmo_max);
- 
--		can_mmap = calloc(mmo_max, sizeof(*can_mmap));
--		igt_assert(can_mmap);
--
--		for_each_mmap_offset_type(fd, t)
--			can_mmap[t->type] = has_mmap(fd, t) && gem_has_llc(fd);
--
- 		size = sizeof(linear);
- 
- 		aperture_size = gem_aperture_size(fd);
-@@ -2520,12 +2284,6 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
- 		igt_subtest("readonly-unsync")
- 			test_readonly(fd);
- 
--		igt_describe("Examine mmap-offset mapping to read-only userptr");
--		igt_subtest_with_dynamic("readonly-mmap-unsync")
--			for_each_mmap_offset_type(fd, t)
--				igt_dynamic(t->name)
--					test_readonly_mmap(fd, t);
--
- 		igt_subtest("readonly-pwrite-unsync")
- 			test_readonly_pwrite(fd);
- 
-@@ -2595,22 +2353,10 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
- 		}
- 
- 		igt_subtest("process-exit")
--			test_process_exit(fd, NULL, 0);
--
--		igt_describe("Test process exit with userptr object mmapped via mmap-offset");
--		igt_subtest_with_dynamic("process-exit-mmap")
--			for_each_mmap_offset_type(fd, t)
--				igt_dynamic(t->name)
--					test_process_exit(fd, t, 0);
-+			test_process_exit(fd, 0);
- 
- 		igt_subtest("process-exit-busy")
--			test_process_exit(fd, NULL, PE_BUSY);
--
--		igt_describe("Test process exit with busy userptr object mmapped via mmap-offset");
--		igt_subtest_with_dynamic("process-exit-mmap-busy")
--			for_each_mmap_offset_type(fd, t)
--				igt_dynamic(t->name)
--					test_process_exit(fd, t, PE_BUSY);
-+			test_process_exit(fd, PE_BUSY);
- 
- 		igt_subtest("create-destroy-sync")
- 			test_create_destroy(fd, 5);
-@@ -2655,18 +2401,11 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
- 			}
- 		}
- 
--		igt_describe("Invalidate pages of idle userptr with mmap-offset on top");
--		igt_subtest_with_dynamic("mmap-offset-invalidate-idle")
-+		igt_describe("Verify mmap_offset to userptr is banned");
-+		igt_subtest_with_dynamic("mmap-offset-banned")
- 			for_each_mmap_offset_type(fd, t)
- 				igt_dynamic_f("%s", t->name)
--					test_mmap_offset_invalidate(fd, t, 0);
--
--		igt_describe("Invalidate pages of active userptr with mmap-offset on top");
--		igt_subtest_with_dynamic("mmap-offset-invalidate-active")
--			for_each_mmap_offset_type(fd, t)
--				igt_dynamic_f("%s", t->name)
--					test_mmap_offset_invalidate(fd, t,
--								   MMOI_ACTIVE);
-+					test_mmap_offset_banned(fd, t);
- 
- 		igt_subtest("coherency-sync")
- 			test_coherency(fd, count);
-@@ -2748,7 +2487,4 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
- 
- 	igt_subtest("access-control")
- 		test_access_control(fd);
--
--	igt_fixture
--		free(can_mmap);
- }
--- 
-2.25.1
+Series: tests/kms_psr: Add subtest description
+URL   : https://patchwork.freedesktop.org/series/88892/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6062 -> IGTPW_5720
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5720 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@semaphore:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][1] ([fdo#109271]) +27 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html
+
+  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
+    - fi-snb-2600:        NOTRUN -> [SKIP][2] ([fdo#109271]) +17 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
+
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-bdw-5557u:       NOTRUN -> [WARN][3] ([i915#2283])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@gem_render_tiled_blits@basic:
+    - fi-tgl-y:           [PASS][4] -> [DMESG-WARN][5] ([i915#402])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6062/fi-tgl-y/igt@gem_render_tiled_blits@basic.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-tgl-y/igt@gem_render_tiled_blits@basic.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-kbl-7500u:       [PASS][6] -> [FAIL][7] ([i915#1372])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6062/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [INCOMPLETE][9] ([i915#2782]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6062/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-icl-u2:          [DMESG-WARN][11] ([i915#2203] / [i915#2868]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6062/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@prime_self_import@basic-with_one_bo_two_files:
+    - fi-tgl-y:           [DMESG-WARN][13] ([i915#402]) -> [PASS][14] +1 similar issue
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6062/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1222]: https://gitlab.freedesktop.org/drm/intel/issues/1222
+  [i915#1372]: https://gitlab.freedesktop.org/drm/intel/issues/1372
+  [i915#2203]: https://gitlab.freedesktop.org/drm/intel/issues/2203
+  [i915#2283]: https://gitlab.freedesktop.org/drm/intel/issues/2283
+  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
+  [i915#2868]: https://gitlab.freedesktop.org/drm/intel/issues/2868
+  [i915#3277]: https://gitlab.freedesktop.org/drm/intel/issues/3277
+  [i915#3283]: https://gitlab.freedesktop.org/drm/intel/issues/3283
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (43 -> 38)
+------------------------------
+
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-n3050 fi-bsw-cyan fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6062 -> IGTPW_5720
+
+  CI-20190529: 20190529
+  CI_DRM_9949: caf1e8d36f0bdd43bfd47e5a6f46d4b691d284e3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5720: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/index.html
+  IGT_6062: 441ae5b824e59871989b88535121e756166877cd @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/index.html
+
+--===============3578072110464268572==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_psr: Add subtest description</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88892/">https://patchwork.freedesktop.org/series/88892/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6062 -&gt; IGTPW_5720</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5720 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@semaphore:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +27 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-fork-compute0:</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2283">i915#2283</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_tiled_blits@basic:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6062/fi-tgl-y/igt@gem_render_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-tgl-y/igt@gem_render_tiled_blits@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>
+<p>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6062/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1372">i915#1372</a>)</p>
+</li>
+<li>
+<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6062/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6062/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2868">i915#2868</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@prime_self_import@basic-with_one_bo_two_files:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6062/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/fi-tgl-y/igt@prime_self_import@basic-with_one_bo_two_files.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (43 -&gt; 38)</h2>
+<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-n3050 fi-bsw-cyan fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6062 -&gt; IGTPW_5720</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9949: caf1e8d36f0bdd43bfd47e5a6f46d4b691d284e3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5720: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5720/index.html<br />
+  IGT_6062: 441ae5b824e59871989b88535121e756166877cd @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============3578072110464268572==--
+
+--===============0383054441==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0383054441==--
