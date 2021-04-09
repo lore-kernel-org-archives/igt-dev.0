@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D927A6E4CA
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Apr 2021 17:13:46 +0000 (UTC)
-From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
-Date: Fri,  9 Apr 2021 22:43:52 +0530
-Message-Id: <20210409171352.1570240-1-arundhati.hagaragi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] Added tests description
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 09 Apr 2021 18:04:19 -0000
+Message-ID: <161799145910.10580.12135539266269605098@emeril.freedesktop.org>
+References: <20210409171352.1570240-1-arundhati.hagaragi@intel.com>
+In-Reply-To: <20210409171352.1570240-1-arundhati.hagaragi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkZWQg?=
+ =?utf-8?q?tests_description?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,335 +14,225 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0360864443=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Gupta@freedesktop.org, Nidhi1 <nidhi1.gupta@intel.com>
+To: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added description for following kms tests:
-   tests/kms_color.c
-   tests/kms_dp_dsc.c
-   tests/kms_flip.c
-   tests/kms_flip_tiling.c
-   tests/kms_psr.c
+--===============0360864443==
+Content-Type: multipart/alternative;
+ boundary="===============8752576463607603086=="
 
-Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
-Cc: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
----
- tests/kms_color.c       | 16 ++++++++++++++++
- tests/kms_dp_dsc.c      |  3 ++-
- tests/kms_flip.c        |  5 +++++
- tests/kms_flip_tiling.c | 10 +++++++++-
- tests/kms_psr.c         | 12 ++++++++++++
- 5 files changed, 44 insertions(+), 2 deletions(-)
+--===============8752576463607603086==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index b1b91c74..3a42532a 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -687,6 +687,7 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 	data->color_depth = 8;
- 	delta = 1.0 / (1 << data->color_depth);
- 
-+	igt_describe("Check the color transformation from red to blue");
- 	igt_subtest_f("pipe-%s-ctm-red-to-blue", kmstest_pipe_name(p)) {
- 		color_t blue_green_blue[] = {
- 			{ 0.0, 0.0, 1.0 },
-@@ -700,6 +701,7 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 					 blue_green_blue, ctm));
- 	}
- 
-+	igt_describe("Check the color transformation from green to red");
- 	igt_subtest_f("pipe-%s-ctm-green-to-red", kmstest_pipe_name(p)) {
- 		color_t red_red_blue[] = {
- 			{ 1.0, 0.0, 0.0 },
-@@ -713,6 +715,7 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 					 red_red_blue, ctm));
- 	}
- 
-+	igt_describe("Check the color transformation from blue to red");
- 	igt_subtest_f("pipe-%s-ctm-blue-to-red", kmstest_pipe_name(p)) {
- 		color_t red_green_red[] = {
- 			{ 1.0, 0.0, 0.0 },
-@@ -730,6 +733,7 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 	 * the it depends on the hardware we're dealing with, we can
- 	 * either get clamped or rounded values and we also need to
- 	 * account for odd number of items in the LUTs. */
-+	igt_describe("Check the color transformation for 0.25 transparency");
- 	igt_subtest_f("pipe-%s-ctm-0-25", kmstest_pipe_name(p)) {
- 		color_t expected_colors[] = {
- 			{ 0.0, }, { 0.0, }, { 0.0, }
-@@ -751,6 +755,7 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 		igt_assert(success);
- 	}
- 
-+	igt_describe("Check the color transformation for 0.5 transparency");
- 	igt_subtest_f("pipe-%s-ctm-0-5", kmstest_pipe_name(p)) {
- 		color_t expected_colors[] = {
- 			{ 0.0, }, { 0.0, }, { 0.0, }
-@@ -772,6 +777,7 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 		igt_assert(success);
- 	}
- 
-+	igt_describe("Check the color transformation for 0.75 transparency");
- 	igt_subtest_f("pipe-%s-ctm-0-75", kmstest_pipe_name(p)) {
- 		color_t expected_colors[] = {
- 			{ 0.0, }, { 0.0, }, { 0.0, }
-@@ -793,6 +799,7 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 		igt_assert(success);
- 	}
- 
-+	igt_describe("Check the color transformation for maximum transparency");
- 	igt_subtest_f("pipe-%s-ctm-max", kmstest_pipe_name(p)) {
- 		color_t full_rgb[] = {
- 			{ 1.0, 0.0, 0.0 },
-@@ -811,6 +818,7 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 					 full_rgb, ctm));
- 	}
- 
-+	igt_describe("Check the color transformation for negative transparency");
- 	igt_subtest_f("pipe-%s-ctm-negative", kmstest_pipe_name(p)) {
- 		color_t all_black[] = {
- 			{ 0.0, 0.0, 0.0 },
-@@ -829,15 +837,20 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 		test_pipe_limited_range_ctm(data, primary);
- #endif
- 
-+	igt_describe("Verify that degamma LUT transformation works correctly");
- 	igt_subtest_f("pipe-%s-degamma", kmstest_pipe_name(p))
- 		test_pipe_degamma(data, primary);
- 
-+	igt_describe("Verify that gamma LUT transformation works correctly");
- 	igt_subtest_f("pipe-%s-gamma", kmstest_pipe_name(p))
- 		test_pipe_gamma(data, primary);
- 
-+	igt_describe("Verify that legacy gamma LUT transformation works correctly");
- 	igt_subtest_f("pipe-%s-legacy-gamma", kmstest_pipe_name(p))
- 		test_pipe_legacy_gamma(data, primary);
- 
-+	igt_describe("Verify that setting the legacy gamma LUT resets the gamma LUT set through "
-+			"GAMMA_LUT property");
- 	igt_subtest_f("pipe-%s-legacy-gamma-reset", kmstest_pipe_name(p))
- 		test_pipe_legacy_gamma_reset(data, primary);
- 
-@@ -870,12 +883,15 @@ igt_main
- 		igt_subtest_group
- 			run_tests_for_pipe(&data, pipe);
- 
-+	igt_describe("Negative check for invalid gamma lut sizes");
- 	igt_subtest_f("pipe-invalid-gamma-lut-sizes")
- 		invalid_gamma_lut_sizes(&data);
- 
-+	igt_describe("Negative check for invalid degamma lut sizes");
- 	igt_subtest_f("pipe-invalid-degamma-lut-sizes")
- 		invalid_degamma_lut_sizes(&data);
- 
-+	igt_describe("Negative check for color tranformation matrix sizes");
- 	igt_subtest_f("pipe-invalid-ctm-matrix-sizes")
- 		invalid_ctm_matrix_sizes(&data);
- 
-diff --git a/tests/kms_dp_dsc.c b/tests/kms_dp_dsc.c
-index e2e3aaa0..60ed3855 100644
---- a/tests/kms_dp_dsc.c
-+++ b/tests/kms_dp_dsc.c
-@@ -271,7 +271,8 @@ igt_main
- 	}
- 
- 	for (test_cnt = 0; test_cnt < ARRAY_SIZE(tests); test_cnt++) {
--
-+		igt_describe("Validate display stream compression functionality if supported on "
-+			       "DP/eDP connector");
- 		igt_subtest_f("basic-dsc-enable-%s",
- 			      kmstest_connector_type_str(tests[test_cnt])) {
- 			test_conn_cnt = 0;
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index e0d009d2..64907c2c 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -1667,10 +1667,12 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Tests that nonblocking reading fails correctly");
- 	igt_subtest("nonblocking-read")
- 		test_nonblocking_read(drm_fd);
- 
- 	for (i = 0; i < sizeof(tests) / sizeof (tests[0]); i++) {
-+		igt_describe("Basic test for validating modeset, dpms and pageflips");
- 		igt_subtest_with_dynamic_f("%s%s",
- 			      tests[i].flags & TEST_BASIC ? "basic-" : "",
- 			      tests[i].name)
-@@ -1679,6 +1681,7 @@ igt_main
- 		if (tests[i].flags & TEST_NO_2X_OUTPUT)
- 			continue;
- 
-+		igt_describe("Test for validating modeset, dpms and pageflips with a pair of connected displays");
- 		igt_subtest_with_dynamic_f("2x-%s", tests[i].name)
- 			run_pair(tests[i].duration, tests[i].flags);
- 	}
-@@ -1705,12 +1708,14 @@ igt_main
- 		if (tests[i].flags & (TEST_EINVAL | TEST_EBUSY | TEST_HANG))
- 			continue;
- 
-+		igt_describe("Interrupt test for validating modeset, dpms and pageflips");
- 		igt_subtest_with_dynamic_f("%s-interruptible", tests[i].name)
- 			run_test(tests[i].duration, tests[i].flags);
- 
- 		if (tests[i].flags & TEST_NO_2X_OUTPUT)
- 			continue;
- 
-+		 igt_describe("Interrupt test for validating modeset, dpms and pageflips with pair of connected displays");
- 		igt_subtest_with_dynamic_f("2x-%s-interruptible", tests[i].name)
- 			run_pair(tests[i].duration, tests[i].flags);
- 	}
-diff --git a/tests/kms_flip_tiling.c b/tests/kms_flip_tiling.c
-index 7a736fba..09e99580 100644
---- a/tests/kms_flip_tiling.c
-+++ b/tests/kms_flip_tiling.c
-@@ -173,6 +173,7 @@ igt_main
- 	 * generated and compared to the reference one.
- 	 */
- 
-+	igt_describe("Check pageflip from tiled buffer to linear one works correctly with x tiling");
- 	igt_subtest_with_dynamic("flip-changes-tiling") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_X_TILED,
- 				       LOCAL_DRM_FORMAT_MOD_NONE };
-@@ -187,6 +188,7 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Check pageflip from tiled buffer to linear one works correctly with y tiling");
- 	igt_subtest_with_dynamic("flip-changes-tiling-Y") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Y_TILED,
- 				       LOCAL_DRM_FORMAT_MOD_NONE };
-@@ -205,7 +207,7 @@ igt_main
- 		}
- 	}
- 
--
-+	igt_describe("Check pageflip from tiled buffer to linear one works correctly with yf tiling");
- 	igt_subtest_with_dynamic("flip-changes-tiling-Yf") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Yf_TILED,
- 				       LOCAL_DRM_FORMAT_MOD_NONE };
-@@ -232,6 +234,7 @@ igt_main
- 	 * reference one.
- 	 */
- 
-+	igt_describe("Check pageflip from tiled buffer to another tiled one works correctly with x tiling");
- 	igt_subtest_with_dynamic("flip-X-tiled") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_X_TILED,
- 				       LOCAL_I915_FORMAT_MOD_X_TILED };
-@@ -246,6 +249,7 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Check pageflip from tiled buffer to another tiled one works correctly with y tiling");
- 	igt_subtest_with_dynamic("flip-Y-tiled") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Y_TILED,
- 				       LOCAL_I915_FORMAT_MOD_Y_TILED };
-@@ -264,6 +268,7 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Check pageflip from tiled buffer to another tiled one works correctly with yf tiling");
- 	igt_subtest_with_dynamic("flip-Yf-tiled") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Yf_TILED,
- 				       LOCAL_I915_FORMAT_MOD_Yf_TILED };
-@@ -290,6 +295,7 @@ igt_main
- 	 * reference one.
- 	 */
- 
-+	igt_describe("Check pageflip from linear buffer to tiled one works correctly with x tiling");
- 	igt_subtest_with_dynamic("flip-to-X-tiled") {
- 		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
- 				       LOCAL_I915_FORMAT_MOD_X_TILED };
-@@ -304,6 +310,7 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Check pageflip from linear buffer to tiled one works correctly with y tiling");
- 	igt_subtest_with_dynamic("flip-to-Y-tiled") {
- 		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
- 				       LOCAL_I915_FORMAT_MOD_Y_TILED };
-@@ -322,6 +329,7 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Check pageflip from linear buffer to tiled one works correctly with yf tiling");
- 	igt_subtest_with_dynamic("flip-to-Yf-tiled") {
- 		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
- 				       LOCAL_I915_FORMAT_MOD_Yf_TILED };
-diff --git a/tests/kms_psr.c b/tests/kms_psr.c
-index 4b7513d7..a80abf19 100644
---- a/tests/kms_psr.c
-+++ b/tests/kms_psr.c
-@@ -480,12 +480,14 @@ igt_main_args("", long_options, help_str, opt_handler, &data)
- 	for (data.op_psr_mode = PSR_MODE_1; data.op_psr_mode <= PSR_MODE_2;
- 	     data.op_psr_mode++) {
- 
-+		igt_describe("Basic check for psr if it is detecting changes made in planes");
- 		igt_subtest_f("%sbasic", append_subtest_name[data.op_psr_mode]) {
- 			data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
- 			test_setup(&data);
- 			test_cleanup(&data);
- 		}
- 
-+		igt_describe("Check if psr is detecting changes when drrs is disabled");
- 		igt_subtest_f("%sno_drrs", append_subtest_name[data.op_psr_mode]) {
- 			data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
- 			test_setup(&data);
-@@ -494,6 +496,8 @@ igt_main_args("", long_options, help_str, opt_handler, &data)
- 		}
- 
- 		for (op = PAGE_FLIP; op <= RENDER; op++) {
-+			igt_describe("Check if psr is detecting page-flipping,memory mapping and "
-+					"rendering operations performed on primary planes");
- 			igt_subtest_f("%sprimary_%s",
- 				      append_subtest_name[data.op_psr_mode],
- 				      op_str(op)) {
-@@ -506,6 +510,8 @@ igt_main_args("", long_options, help_str, opt_handler, &data)
- 		}
- 
- 		for (op = MMAP_GTT; op <= PLANE_ONOFF; op++) {
-+			igt_describe("Check if psr is detecting memory mapping,rendering "
-+					"and plane operations performed on sprite planes");
- 			igt_subtest_f("%ssprite_%s",
- 				      append_subtest_name[data.op_psr_mode],
- 				      op_str(op)) {
-@@ -516,6 +522,8 @@ igt_main_args("", long_options, help_str, opt_handler, &data)
- 				test_cleanup(&data);
- 			}
- 
-+			igt_describe("Check if psr is detecting memory mapping, rendering "
-+					"and plane operations performed on cursor planes");
- 			igt_subtest_f("%scursor_%s",
- 				      append_subtest_name[data.op_psr_mode],
- 				      op_str(op)) {
-@@ -527,6 +535,8 @@ igt_main_args("", long_options, help_str, opt_handler, &data)
- 			}
- 		}
- 
-+		igt_describe("Check if psr is detecting changes when rendering operation is performed"
-+				"  with dpms enabled or disabled");
- 		igt_subtest_f("%sdpms", append_subtest_name[data.op_psr_mode]) {
- 			data.op = RENDER;
- 			data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
-@@ -536,6 +546,8 @@ igt_main_args("", long_options, help_str, opt_handler, &data)
- 			test_cleanup(&data);
- 		}
- 
-+		igt_describe("Check if psr is detecting changes when plane operation is performed "
-+				"with suspend resume cycles");
- 		igt_subtest_f("%ssuspend", append_subtest_name[data.op_psr_mode]) {
- 			data.op = PLANE_ONOFF;
- 			data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
--- 
-2.25.1
+== Series Details ==
+
+Series: Added tests description
+URL   : https://patchwork.freedesktop.org/series/88915/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9951 -> IGTPW_5726
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5726 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_cs_nop@sync-compute0:
+    - fi-kbl-r:           NOTRUN -> [SKIP][1] ([fdo#109271]) +21 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/fi-kbl-r/igt@amdgpu/amd_cs_nop@sync-compute0.html
+
+  * igt@gem_flink_basic@bad-open:
+    - fi-tgl-y:           [PASS][2] -> [DMESG-WARN][3] ([i915#402])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9951/fi-tgl-y/igt@gem_flink_basic@bad-open.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/fi-tgl-y/igt@gem_flink_basic@bad-open.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-r:           NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#2190])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/fi-kbl-r/igt@gem_huc_copy@huc-copy.html
+
+  * igt@kms_chamelium@hdmi-edid-read:
+    - fi-kbl-r:           NOTRUN -> [SKIP][5] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/fi-kbl-r/igt@kms_chamelium@hdmi-edid-read.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-r:           NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#533])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/fi-kbl-r/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@runner@aborted:
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][7] ([i915#1602] / [i915#2029])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/fi-bdw-5557u/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@fbdev@write:
+    - fi-tgl-y:           [DMESG-WARN][8] ([i915#402]) -> [PASS][9] +1 similar issue
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9951/fi-tgl-y/igt@fbdev@write.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/fi-tgl-y/igt@fbdev@write.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
+  [i915#2029]: https://gitlab.freedesktop.org/drm/intel/issues/2029
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Participating hosts (45 -> 39)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6063 -> IGTPW_5726
+
+  CI-20190529: 20190529
+  CI_DRM_9951: b8be3c4aea9ea5c0571c934a58869af902ac4dd0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5726: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/index.html
+  IGT_6063: d3b7f74ce5df6fdea03e490b7c64f0c6bfe76f03 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/index.html
+
+--===============8752576463607603086==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Added tests description</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88915/">https://patchwork.freedesktop.org/series/88915/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9951 -&gt; IGTPW_5726</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5726 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-compute0:</p>
+<ul>
+<li>fi-kbl-r:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/fi-kbl-r/igt@amdgpu/amd_cs_nop@sync-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +21 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_flink_basic@bad-open:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9951/fi-tgl-y/igt@gem_flink_basic@bad-open.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/fi-tgl-y/igt@gem_flink_basic@bad-open.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-r:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/fi-kbl-r/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-edid-read:</p>
+<ul>
+<li>fi-kbl-r:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/fi-kbl-r/igt@kms_chamelium@hdmi-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-r:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/fi-kbl-r/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2029">i915#2029</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@fbdev@write:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9951/fi-tgl-y/igt@fbdev@write.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/fi-tgl-y/igt@fbdev@write.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (45 -&gt; 39)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6063 -&gt; IGTPW_5726</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9951: b8be3c4aea9ea5c0571c934a58869af902ac4dd0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5726: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5726/index.html<br />
+  IGT_6063: d3b7f74ce5df6fdea03e490b7c64f0c6bfe76f03 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============8752576463607603086==--
+
+--===============0360864443==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0360864443==--
