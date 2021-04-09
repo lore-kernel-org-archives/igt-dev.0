@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 08C4A6E49A
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Apr 2021 11:39:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1466A6E49B
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Apr 2021 11:39:51 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Sat, 10 Apr 2021 01:00:45 +0530
-Message-Id: <20210409193048.6857-3-bhanuprakash.modem@intel.com>
+Date: Sat, 10 Apr 2021 01:00:46 +0530
+Message-Id: <20210409193048.6857-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20210409193048.6857-1-bhanuprakash.modem@intel.com>
 References: <20210409193048.6857-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/5] lib/igt_kms: Identify outputs that
- shares link bandwidth
+Subject: [igt-dev] [PATCH i-g-t 3/5] lib/igt_kms: helper to override the
+ mode on all connectors
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,86 +25,86 @@ To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We have to read the PATH property and parse it to identify the
-connector that shares the BW of the same link. Parsing the PATH
-property consists of finding all connectors with the same X prefix
-in the X-Y[-Z...] path property format and assigning a unique
-non-zero link_group_id to all such connectors.
+This helper will iterate through all connectors those have a
+pending_pipe != PIPE_NONE set by the test upto the point of
+calling this helper. And find the combination using the most
+bandwidth by ATOMIC_TEST_ONLY then return to the test.
 
-Connectors without a PATH property are not an MST output, so their
-link_group_id can be left at 0.
-
-v2:
-Update the link_group_id in igt_output_refresh(). (Ankit)
+This helper would override the mode on all connectors that will
+be modeset by the next igt_display_commit() call in the test.
 
 Cc: Imre Deak <imre.deak@intel.com>
 Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- lib/igt_kms.c | 29 +++++++++++++++++++++++++++++
+ lib/igt_kms.c | 41 +++++++++++++++++++++++++++++++++++++++++
  lib/igt_kms.h |  1 +
- 2 files changed, 30 insertions(+)
+ 2 files changed, 42 insertions(+)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index f1a989368..1ba938982 100644
+index 1ba938982..c439456c5 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -1684,6 +1684,32 @@ static void igt_display_log_shift(igt_display_t *display, int shift)
- 	igt_assert(display->log_shift >= 0);
+@@ -3871,6 +3871,47 @@ void igt_output_set_pipe(igt_output_t *output, enum pipe pipe)
+ 	}
  }
  
++#define for_each_connector_mode(output)		\
++	for (int i__ = 0;  i__ < output->config.connector->count_modes; i__++)
++
 +static
-+void igt_update_output_link_group_id(int drmfd, igt_output_t *output)
++bool __override_all_active_output_modes_to_fit_link_bw(igt_display_t *display, int base)
 +{
-+	uint64_t blob_id;
-+	drmModePropertyBlobPtr blob;
-+	char *temp;
++	for ( ; base < display->n_outputs; base++) {
++		igt_output_t *output = &display->outputs[base];
 +
-+	if(!igt_output_has_prop(output, IGT_CONNECTOR_PATH)) {
-+		output->link_group_id = 0;
-+		return;
++		if (output->pending_pipe == PIPE_NONE ||
++		    output->link_group_id <= 0)
++			continue;
++
++		for_each_connector_mode(output) {
++			igt_output_override_mode(output, &output->config.connector->modes[i__]);
++			if(__override_all_active_output_modes_to_fit_link_bw(display, base + 1))
++				return true;
++
++			if(igt_display_try_commit_atomic(display,
++					DRM_MODE_ATOMIC_TEST_ONLY |
++					DRM_MODE_ATOMIC_ALLOW_MODESET,
++					NULL) == 0)
++				return true;
++		}
 +	}
-+
-+	blob_id = igt_output_get_prop(output, IGT_CONNECTOR_PATH);
-+	blob = drmModeGetPropertyBlob(drmfd, blob_id);
-+	igt_assert(blob);
-+
-+	temp = strtok((char *)blob->data, ":");
-+	if (strcmp(temp, "mst") == 0)
-+		output->link_group_id = atoi(strtok(NULL, "-"));
-+	else
-+		output->link_group_id = 0;
-+
-+	drmModeFreePropertyBlob(blob);
-+	return;
++	return false;
 +}
 +
- void igt_output_refresh(igt_output_t *output)
- {
- 	igt_display_t *display = output->display;
-@@ -1709,6 +1735,9 @@ void igt_output_refresh(igt_output_t *output)
- 		igt_atomic_fill_connector_props(display, output,
- 			IGT_NUM_CONNECTOR_PROPS, igt_connector_prop_names);
- 
-+	/* Identify all connectors that share the BW of the same link */
-+	igt_update_output_link_group_id(display->drm_fd, output);
++/**
++ * override_all_active_output_modes_to_fit_link_bw:
++ * @display: a pointer to an #igt_display_t structure
++ *
++ * Override the mode on all connectors those are sharing the link bw
++ *
++ * Returns: true if a valid connector mode combo found, else false
++ */
++bool override_all_active_output_modes_to_fit_link_bw(igt_display_t *display)
++{
++	return __override_all_active_output_modes_to_fit_link_bw(display, 0);
++}
 +
- 	LOG(display, "%s: Selecting pipe %s\n", output->name,
- 	    kmstest_pipe_name(output->pending_pipe));
- }
+ /*
+  * igt_pipe_refresh:
+  * @display: a pointer to an #igt_display_t structure
 diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 39a1ea570..c828e78b5 100644
+index c828e78b5..2998cf377 100644
 --- a/lib/igt_kms.h
 +++ b/lib/igt_kms.h
-@@ -386,6 +386,7 @@ typedef struct {
- 	drmModeModeInfo override_mode;
+@@ -894,5 +894,6 @@ void igt_require_pipe(igt_display_t *display,
  
- 	int32_t writeback_out_fence_fd;
-+	int link_group_id;
+ void igt_dump_connectors_fd(int drmfd);
+ void igt_dump_crtcs_fd(int drmfd);
++bool override_all_active_output_modes_to_fit_link_bw(igt_display_t *display);
  
- 	/* bitmask of changed properties */
- 	uint64_t changed;
+ #endif /* __IGT_KMS_H__ */
 -- 
 2.20.1
 
