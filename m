@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com
- [IPv6:2607:f8b0:4864:20::633])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 911BE6E2ED
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Apr 2021 03:55:42 +0000 (UTC)
-Received: by mail-pl1-x633.google.com with SMTP id u7so5679454plr.6
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Apr 2021 20:55:42 -0700 (PDT)
-From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 12 Apr 2021 22:53:50 -0500
-Message-Id: <20210413035350.261794-75-jason@jlekstrand.net>
-In-Reply-To: <20210413035350.261794-1-jason@jlekstrand.net>
-References: <20210413035350.261794-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 74/74] lib/i915/gem_engine_topology: Delete
- the old physical engine iterators
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 13 Apr 2021 04:42:33 -0000
+Message-ID: <161828895315.8795.1316383632013123289@emeril.freedesktop.org>
+References: <20210413035350.261794-1-jason@jlekstrand.net>
+In-Reply-To: <20210413035350.261794-1-jason@jlekstrand.net>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgU3RvcCBk?=
+ =?utf-8?q?epending_on_context_mutation?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,143 +14,225 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0431198228=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Jason Ekstrand <jason@jlekstrand.net>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
----
- lib/i915/gem_engine_topology.c | 58 ----------------------------------
- lib/i915/gem_engine_topology.h | 15 ---------
- 2 files changed, 73 deletions(-)
+--===============0431198228==
+Content-Type: multipart/alternative;
+ boundary="===============4042664600308927504=="
 
-diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-index ec891dab..38da2003 100644
---- a/lib/i915/gem_engine_topology.c
-+++ b/lib/i915/gem_engine_topology.c
-@@ -79,25 +79,6 @@ int __gem_query_engines(int fd,
- 	return __gem_query(fd, &query);
- }
- 
--static void ctx_map_engines(int fd, struct intel_engine_data *ed,
--			    struct drm_i915_gem_context_param *param)
--{
--	struct i915_context_param_engines *engines =
--			from_user_pointer(param->value);
--	int i = 0;
--
--	for (typeof(engines->engines[0]) *p = &engines->engines[0];
--	     i < ed->nengines; i++, p++) {
--		p->engine_class = ed->engines[i].class;
--		p->engine_instance = ed->engines[i].instance;
--	}
--
--	param->size = offsetof(typeof(*engines), engines[i]);
--	engines->extensions = 0;
--
--	gem_context_set_param(fd, param);
--}
--
- static const char *class_names[] = {
- 	[I915_ENGINE_CLASS_RENDER]	  = "rcs",
- 	[I915_ENGINE_CLASS_COPY]	  = "bcs",
-@@ -158,11 +139,6 @@ static int __query_engine_list(int fd, struct intel_engine_data *ed)
- 	return 0;
- }
- 
--static void query_engine_list(int fd, struct intel_engine_data *ed)
--{
--	igt_assert_eq(__query_engine_list(fd, ed), 0);
--}
--
- struct intel_execution_engine2 *
- intel_get_current_engine(struct intel_engine_data *ed)
- {
-@@ -267,40 +243,6 @@ static int gem_topology_get_param(int fd,
- 	return 0;
- }
- 
--struct intel_engine_data intel_init_engine_list(int fd, uint32_t ctx_id)
--{
--	DEFINE_CONTEXT_ENGINES_PARAM(engines, param, ctx_id, GEM_MAX_ENGINES);
--	struct intel_engine_data engine_data = { };
--	int i;
--
--	if (gem_topology_get_param(fd, &param)) {
--		/* if kernel does not support engine/context mapping */
--		return intel_engine_list_for_static(fd);
--	}
--
--	if (!param.size) {
--		query_engine_list(fd, &engine_data);
--		ctx_map_engines(fd, &engine_data, &param);
--	} else {
--		/* engine count can be inferred from size */
--		param.size -= sizeof(struct i915_context_param_engines);
--		param.size /= sizeof(struct i915_engine_class_instance);
--
--		igt_assert_f(param.size <= GEM_MAX_ENGINES,
--			     "unsupported engine count\n");
--
--		for (i = 0; i < param.size; i++)
--			init_engine(&engine_data.engines[i],
--				    engines.engines[i].engine_class,
--				    engines.engines[i].engine_instance,
--				    i);
--
--		engine_data.nengines = i;
--	}
--
--	return engine_data;
--}
--
- int gem_context_lookup_engine(int fd, uint64_t engine, uint32_t ctx_id,
- 			      struct intel_execution_engine2 *e)
- {
-diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
-index b2e15c1e..d0fa4590 100644
---- a/lib/i915/gem_engine_topology.h
-+++ b/lib/i915/gem_engine_topology.h
-@@ -43,7 +43,6 @@ bool gem_has_engine_topology(int fd);
- struct intel_engine_data intel_engine_list_of_physical(int fd);
- struct intel_engine_data
- intel_engine_list_for_ctx_cfg(int fd, const intel_ctx_cfg_t *cfg);
--struct intel_engine_data intel_init_engine_list(int fd, uint32_t ctx_id);
- 
- /* iteration functions */
- struct intel_execution_engine2 *
-@@ -76,25 +75,11 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags);
- #define for_each_ctx_engine(fd__, ctx__, e__) \
- 	for_each_ctx_cfg_engine(fd__, &(ctx__)->cfg, e__)
- 
--#define for_each_context_engine(fd__, ctx__, e__) \
--	for (struct intel_engine_data i__ = intel_init_engine_list(fd__, ctx__); \
--	     ((e__) = intel_get_current_engine(&i__)); \
--	     intel_next_engine(&i__))
--
- #define for_each_physical_engine(fd__, e__) \
- 	for (struct intel_engine_data i__##e__ = intel_engine_list_of_physical(fd__); \
- 	     ((e__) = intel_get_current_physical_engine(&i__##e__)); \
- 	     intel_next_engine(&i__##e__))
- 
--/* needs to replace "for_each_physical_engine" when conflicts are fixed */
--#define ____for_each_physical_engine(fd__, ctx__, e__) \
--	for (struct intel_engine_data i__##e__ = intel_init_engine_list(fd__, ctx__); \
--	     ((e__) = intel_get_current_physical_engine(&i__##e__)); \
--	     intel_next_engine(&i__##e__))
--
--#define __for_each_physical_engine(fd__, e__) \
--	____for_each_physical_engine(fd__, 0, e__)
--
- __attribute__((format(scanf, 4, 5)))
- int gem_engine_property_scanf(int i915, const char *engine, const char *attr,
- 			      const char *fmt, ...);
--- 
-2.31.1
+--===============4042664600308927504==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: Stop depending on context mutation
+URL   : https://patchwork.freedesktop.org/series/88986/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9962 -> IGTPW_5735
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5735/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5735 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@semaphore:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][1] ([fdo#109271]) +27 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5735/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html
+
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-bdw-5557u:       NOTRUN -> [WARN][2] ([i915#2283])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5735/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][3] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5735/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#2283]: https://gitlab.freedesktop.org/drm/intel/issues/2283
+
+
+Participating hosts (47 -> 41)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6063 -> IGTPW_5735
+
+  CI-20190529: 20190529
+  CI_DRM_9962: 2847b855cf291d61694ccfefa4f37d74d61f752b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5735: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5735/index.html
+  IGT_6063: d3b7f74ce5df6fdea03e490b7c64f0c6bfe76f03 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
+-igt@gem_ctx_clone@engines
+-igt@gem_ctx_clone@flags
+-igt@gem_ctx_clone@invalid
+-igt@gem_ctx_clone@scheduler
+-igt@gem_ctx_clone@vm
+-igt@gem_ctx_engines@idempotent
+-igt@gem_ctx_engines@libapi
+-igt@gem_ctx_param@non-root-set-no-zeromap
+-igt@gem_ctx_param@root-set-no-zeromap-disabled
+-igt@gem_ctx_param@root-set-no-zeromap-enabled
+-igt@gem_ctx_persistence@clone
+-igt@gem_ctx_persistence@close-replace-race
+-igt@gem_ctx_persistence@replace
+-igt@gem_ctx_persistence@replace-hostile
+-igt@gem_ctx_ringsize@active
+-igt@gem_ctx_ringsize@clone
+-igt@gem_ctx_ringsize@create
+-igt@gem_ctx_ringsize@idempotent
+-igt@gem_ctx_ringsize@idle
+-igt@gem_ctx_ringsize@invalid
+-igt@gem_ctx_ringsize@plugged
+-igt@gem_exec_balancer@ringsize
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5735/index.html
+
+--===============4042664600308927504==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Stop depending on context mutation</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88986/">https://patchwork.freedesktop.org/series/88986/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5735/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5735/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9962 -&gt; IGTPW_5735</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5735/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5735 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@semaphore:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5735/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +27 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5735/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2283">i915#2283</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5735/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (47 -&gt; 41)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6063 -&gt; IGTPW_5735</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9962: 2847b855cf291d61694ccfefa4f37d74d61f752b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5735: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5735/index.html<br />
+  IGT_6063: d3b7f74ce5df6fdea03e490b7c64f0c6bfe76f03 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>-igt@gem_ctx_clone@engines<br />
+-igt@gem_ctx_clone@flags<br />
+-igt@gem_ctx_clone@invalid<br />
+-igt@gem_ctx_clone@scheduler<br />
+-igt@gem_ctx_clone@vm<br />
+-igt@gem_ctx_engines@idempotent<br />
+-igt@gem_ctx_engines@libapi<br />
+-igt@gem_ctx_param@non-root-set-no-zeromap<br />
+-igt@gem_ctx_param@root-set-no-zeromap-disabled<br />
+-igt@gem_ctx_param@root-set-no-zeromap-enabled<br />
+-igt@gem_ctx_persistence@clone<br />
+-igt@gem_ctx_persistence@close-replace-race<br />
+-igt@gem_ctx_persistence@replace<br />
+-igt@gem_ctx_persistence@replace-hostile<br />
+-igt@gem_ctx_ringsize@active<br />
+-igt@gem_ctx_ringsize@clone<br />
+-igt@gem_ctx_ringsize@create<br />
+-igt@gem_ctx_ringsize@idempotent<br />
+-igt@gem_ctx_ringsize@idle<br />
+-igt@gem_ctx_ringsize@invalid<br />
+-igt@gem_ctx_ringsize@plugged<br />
+-igt@gem_exec_balancer@ringsize</p>
+
+</body>
+</html>
+
+--===============4042664600308927504==--
+
+--===============0431198228==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0431198228==--
