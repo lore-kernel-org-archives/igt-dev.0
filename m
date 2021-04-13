@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
- [IPv6:2607:f8b0:4864:20::102d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 870006E2DF
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Apr 2021 03:55:36 +0000 (UTC)
-Received: by mail-pj1-x102d.google.com with SMTP id
- em21-20020a17090b0155b029014e204a81e6so627861pjb.1
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Apr 2021 20:55:36 -0700 (PDT)
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com
+ [IPv6:2607:f8b0:4864:20::633])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C2C36E2E1
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Apr 2021 03:55:38 +0000 (UTC)
+Received: by mail-pl1-x633.google.com with SMTP id z22so2359742plo.3
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Apr 2021 20:55:38 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 12 Apr 2021 22:53:46 -0500
-Message-Id: <20210413035350.261794-71-jason@jlekstrand.net>
+Date: Mon, 12 Apr 2021 22:53:47 -0500
+Message-Id: <20210413035350.261794-72-jason@jlekstrand.net>
 In-Reply-To: <20210413035350.261794-1-jason@jlekstrand.net>
 References: <20210413035350.261794-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 70/74] tests/i915/gem_ctx_create: Convert
- benchmarks to intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 71/74] lib/i915/gem_context: Delete all the
+ context clone/copy stuff
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,244 +28,211 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 ---
- tests/i915/gem_ctx_create.c | 76 +++++++++++++++++++------------------
- 1 file changed, 40 insertions(+), 36 deletions(-)
+ lib/i915/gem_context.c | 149 -----------------------------------------
+ lib/i915/gem_context.h |  16 -----
+ 2 files changed, 165 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
-index 9a512a03..bc78162f 100644
---- a/tests/i915/gem_ctx_create.c
-+++ b/tests/i915/gem_ctx_create.c
-@@ -78,7 +78,8 @@ static double elapsed(const struct timespec *start,
- 	return (end->tv_sec - start->tv_sec) + 1e-9*(end->tv_nsec - start->tv_nsec);
+diff --git a/lib/i915/gem_context.c b/lib/i915/gem_context.c
+index 49ed7120..b4bf7ef6 100644
+--- a/lib/i915/gem_context.c
++++ b/lib/i915/gem_context.c
+@@ -391,125 +391,6 @@ bool gem_context_has_persistence(int i915)
+ 	return __gem_context_get_param(i915, &param) == 0;
  }
  
--static void files(int core, int timeout, const int ncpus)
-+static void files(int core, const intel_ctx_cfg_t *cfg,
-+		  int timeout, const int ncpus)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	struct drm_i915_gem_execbuffer2 execbuf;
-@@ -97,18 +98,22 @@ static void files(int core, int timeout, const int ncpus)
- 	igt_fork(child, ncpus) {
- 		struct timespec start, end;
- 		unsigned count = 0;
-+		const intel_ctx_t *ctx;
- 		int fd;
- 
- 		clock_gettime(CLOCK_MONOTONIC, &start);
- 		do {
- 			fd = gem_reopen_driver(core);
--			gem_context_copy_engines(core, 0, fd, 0);
-+
-+			ctx = intel_ctx_create(fd, cfg);
-+			execbuf.rsvd1 = ctx->id;
- 
- 			obj.handle = gem_open(fd, name);
- 			execbuf.flags &= ~ENGINE_FLAGS;
- 			execbuf.flags |= ppgtt_engines[count % ppgtt_nengine];
- 			gem_execbuf(fd, &execbuf);
- 
-+			intel_ctx_destroy(fd, ctx);
- 			close(fd);
- 			count++;
- 
-@@ -125,7 +130,8 @@ static void files(int core, int timeout, const int ncpus)
- 	gem_close(core, batch);
- }
- 
--static void active(int fd, const struct intel_execution_engine2 *e,
-+static void active(int fd, const intel_ctx_cfg_t *cfg,
-+		   const struct intel_execution_engine2 *e,
- 		   int timeout, int ncpus)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
-@@ -157,19 +163,19 @@ static void active(int fd, const struct intel_execution_engine2 *e,
- 	if (ncpus < 0) {
- 		igt_fork(child, ppgtt_nengine) {
- 			unsigned long count = 0;
--			int i915;
-+			const intel_ctx_t *ctx;
- 
--			i915 = gem_reopen_driver(fd);
- 			/*
- 			 * Ensure the gpu is idle by launching
- 			 * a nop execbuf and stalling for it
- 			 */
--			gem_quiescent_gpu(i915);
--			gem_context_copy_engines(fd, 0, i915, 0);
-+			gem_quiescent_gpu(fd);
- 
- 			if (ppgtt_engines[child] == e->flags)
- 				continue;
- 
-+			ctx = intel_ctx_create(fd, cfg);
-+			execbuf.rsvd1 = ctx->id;
- 			execbuf.flags = ppgtt_engines[child];
- 
- 			while (!READ_ONCE(*shared)) {
-@@ -182,6 +188,7 @@ static void active(int fd, const struct intel_execution_engine2 *e,
- 			}
- 
- 			igt_debug("hog[%d]: cycles=%lu\n", child, count);
-+			intel_ctx_destroy(fd, ctx);
- 		}
- 		ncpus = -ncpus;
- 	}
-@@ -189,33 +196,27 @@ static void active(int fd, const struct intel_execution_engine2 *e,
- 	igt_fork(child, ncpus) {
- 		struct timespec start, end;
- 		unsigned count = 0;
--		int i915;
--		uint32_t ctx;
- 
--		i915 = gem_reopen_driver(fd);
- 		/*
- 		 * Ensure the gpu is idle by launching
- 		 * a nop execbuf and stalling for it.
- 		 */
--		gem_quiescent_gpu(i915);
--		ctx = gem_context_create(i915);
--		gem_context_copy_engines(fd, 0, i915, ctx);
-+		gem_quiescent_gpu(fd);
- 
- 		clock_gettime(CLOCK_MONOTONIC, &start);
- 		do {
--			execbuf.rsvd1 = gem_context_clone_with_engines(fd, ctx);
-+			const intel_ctx_t *ctx = intel_ctx_create(fd, cfg);
-+			execbuf.rsvd1 = ctx->id;
- 			for (unsigned n = 0; n < nengine; n++) {
- 				execbuf.flags = engines[n];
- 				gem_execbuf(fd, &execbuf);
- 			}
--			gem_context_destroy(fd, execbuf.rsvd1);
-+			intel_ctx_destroy(fd, ctx);
- 			count++;
- 
- 			clock_gettime(CLOCK_MONOTONIC, &end);
- 		} while (elapsed(&start, &end) < timeout);
- 
--		gem_context_destroy(fd, ctx);
+-int
+-__gem_context_clone(int i915,
+-		    uint32_t src, unsigned int share,
+-		    unsigned int flags,
+-		    uint32_t *out)
+-{
+-	struct drm_i915_gem_context_create_ext_clone clone = {
+-		{ .name = I915_CONTEXT_CREATE_EXT_CLONE },
+-		.clone_id = src,
+-		.flags = share,
+-	};
+-	struct drm_i915_gem_context_create_ext arg = {
+-		.flags = flags | I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
+-		.extensions = to_user_pointer(&clone),
+-	};
+-	int err;
 -
- 		gem_sync(fd, obj.handle);
- 		clock_gettime(CLOCK_MONOTONIC, &end);
- 		igt_info("[%d] Context creation + execution: %.3f us\n",
-@@ -276,7 +277,8 @@ static uint64_t total_avail_mem(unsigned mode)
- 	return total << 20;
+-	err = create_ext_ioctl(i915, &arg);
+-	if (err)
+-		return err;
+-
+-	*out = arg.ctx_id;
+-	return 0;
+-}
+-
+-static bool __gem_context_has(int i915, uint32_t share, unsigned int flags)
+-{
+-	uint32_t ctx = 0;
+-
+-	__gem_context_clone(i915, 0, share, flags, &ctx);
+-	if (ctx)
+-		gem_context_destroy(i915, ctx);
+-
+-	errno = 0;
+-	return ctx;
+-}
+-
+-bool gem_contexts_has_shared_gtt(int i915)
+-{
+-	return __gem_context_has(i915, I915_CONTEXT_CLONE_VM, 0);
+-}
+-
+-bool gem_has_queues(int i915)
+-{
+-	return __gem_context_has(i915,
+-				 I915_CONTEXT_CLONE_VM,
+-				 I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
+-}
+-
+-uint32_t gem_context_clone(int i915,
+-			   uint32_t src, unsigned int share,
+-			   unsigned int flags)
+-{
+-	uint32_t ctx;
+-
+-	igt_assert_eq(__gem_context_clone(i915, src, share, flags, &ctx), 0);
+-
+-	return ctx;
+-}
+-
+-bool gem_has_context_clone(int i915)
+-{
+-	struct drm_i915_gem_context_create_ext_clone ext = {
+-		{ .name = I915_CONTEXT_CREATE_EXT_CLONE },
+-		.clone_id = -1,
+-	};
+-	struct drm_i915_gem_context_create_ext create = {
+-		.flags = I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
+-		.extensions = to_user_pointer(&ext),
+-	};
+-
+-	return create_ext_ioctl(i915, &create) == -ENOENT;
+-}
+-
+-/**
+- * gem_context_clone_with_engines:
+- * @i915: open i915 drm file descriptor
+- * @src: i915 context id
+- *
+- * Special purpose wrapper to create a new context by cloning engines from @src.
+- *
+- * In can be called regardless of whether the kernel supports context cloning.
+- *
+- * Intended purpose is to use for creating contexts against which work will be
+- * submitted and the engine index came from external source, derived from a
+- * default context potentially configured with an engine map.
+- */
+-uint32_t gem_context_clone_with_engines(int i915, uint32_t src)
+-{
+-	if (!gem_has_context_clone(i915))
+-		return gem_context_create(i915);
+-	else
+-		return gem_context_clone(i915, src, I915_CONTEXT_CLONE_ENGINES,
+-					 0);
+-}
+-
+-uint32_t gem_queue_create(int i915)
+-{
+-	return gem_context_clone(i915, 0,
+-				 I915_CONTEXT_CLONE_VM |
+-				 I915_CONTEXT_CLONE_ENGINES,
+-				 I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
+-}
+-
+-/**
+- * gem_queue_clone_with_engines:
+- * @i915: open i915 drm file descriptor
+- * @src: i915 context id
+- *
+- * See gem_context_clone_with_engines.
+- */
+-uint32_t gem_queue_clone_with_engines(int i915, uint32_t src)
+-{
+-	return gem_context_clone(i915, src,
+-				 I915_CONTEXT_CLONE_ENGINES |
+-				 I915_CONTEXT_CLONE_VM,
+-				 I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
+-}
+-
+ bool gem_context_has_engine(int fd, uint32_t ctx, uint64_t engine)
+ {
+ 	struct drm_i915_gem_exec_object2 exec = {};
+@@ -535,36 +416,6 @@ bool gem_context_has_engine(int fd, uint32_t ctx, uint64_t engine)
+ 	return __gem_execbuf(fd, &execbuf) == -ENOENT;
  }
  
--static void maximum(int fd, int ncpus, unsigned mode)
-+static void maximum(int fd, const intel_ctx_cfg_t *cfg,
-+		    int ncpus, unsigned mode)
+-/**
+- * gem_context_copy_engines:
+- * @src_fd: open i915 drm file descriptor where @src context belongs to
+- * @src: source engine map context id
+- * @dst_fd: open i915 drm file descriptor where @dst context belongs to
+- * @dst: destination engine map context id
+- *
+- * Special purpose helper for copying engine map from one context to another.
+- *
+- * In can be called regardless of whether the kernel supports context engine
+- * maps and is a no-op if not supported.
+- */
+-void
+-gem_context_copy_engines(int src_fd, uint32_t src, int dst_fd, uint32_t dst)
+-{
+-	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, I915_EXEC_RING_MASK + 1);
+-	struct drm_i915_gem_context_param param = {
+-		.param = I915_CONTEXT_PARAM_ENGINES,
+-		.ctx_id = src,
+-		.size = sizeof(engines),
+-		.value = to_user_pointer(&engines),
+-	};
+-
+-	if (__gem_context_get_param(src_fd, &param))
+-		return;
+-
+-	param.ctx_id = dst;
+-	gem_context_set_param(dst_fd, &param);
+-}
+-
+ uint32_t gem_context_create_for_engine(int i915, unsigned int class, unsigned int inst)
  {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	struct drm_i915_gem_execbuffer2 execbuf;
-@@ -299,9 +301,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
+ 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 1) = {
+diff --git a/lib/i915/gem_context.h b/lib/i915/gem_context.h
+index 91bb9e7f..1ba405ca 100644
+--- a/lib/i915/gem_context.h
++++ b/lib/i915/gem_context.h
+@@ -40,20 +40,6 @@ int __gem_context_destroy(int fd, uint32_t ctx_id);
+ uint32_t gem_context_create_for_engine(int fd, unsigned int class, unsigned int inst);
+ uint32_t gem_context_create_for_class(int i915, unsigned int class, unsigned int *count);
  
- 		err = -ENOMEM;
- 		if (avail_mem > (count + 1) * ctx_size)
--			err =  __gem_context_clone(fd, 0,
--						   I915_CONTEXT_CLONE_ENGINES,
--						   0, &ctx_id);
-+			err =  __gem_context_create(fd, &ctx_id);
- 		if (err) {
- 			igt_info("Created %lu contexts, before failing with '%s' [%d]\n",
- 				 count, strerror(-err), -err);
-@@ -322,6 +322,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
+-int __gem_context_clone(int i915,
+-			uint32_t src, unsigned int share,
+-			unsigned int flags,
+-			uint32_t *out);
+-uint32_t gem_context_clone(int i915,
+-			   uint32_t src, unsigned int share,
+-			   unsigned int flags);
+-uint32_t gem_context_clone_with_engines(int i915, uint32_t src);
+-void gem_context_copy_engines(int src_fd, uint32_t src,
+-			      int dst_fd, uint32_t dst);
+-
+-uint32_t gem_queue_create(int i915);
+-uint32_t gem_queue_clone_with_engines(int i915, uint32_t src);
+-
+ bool gem_contexts_has_shared_gtt(int i915);
+ bool gem_has_queues(int i915);
  
- 	igt_fork(child, ncpus) {
- 		struct timespec start, end;
-+		const intel_ctx_t *ctx;
- 		int i915;
+@@ -62,8 +48,6 @@ void gem_require_contexts(int fd);
+ void gem_context_require_bannable(int fd);
+ void gem_context_require_param(int fd, uint64_t param);
  
- 		i915 = gem_reopen_driver(fd);
-@@ -330,7 +331,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
- 		 * a nop execbuf and stalling for it.
- 		 */
- 		gem_quiescent_gpu(i915);
--		gem_context_copy_engines(fd, 0, i915, 0);
-+		ctx = intel_ctx_create(i915, cfg);
- 
- 		hars_petruska_f54_1_random_perturb(child);
- 		obj[0].handle = gem_create(i915, 4096);
-@@ -351,6 +352,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
- 		gem_sync(i915, obj[0].handle);
- 		clock_gettime(CLOCK_MONOTONIC, &end);
- 		gem_close(i915, obj[0].handle);
-+		intel_ctx_destroy(i915, ctx);
- 
- 		igt_info("[%d] Context execution: %.3f us\n", child,
- 			 elapsed(&start, &end) / (3 * count * all_nengine) * 1e6);
-@@ -560,6 +562,7 @@ igt_main
- 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
- 	struct drm_i915_gem_context_create create;
- 	const struct intel_execution_engine2 *e;
-+	intel_ctx_cfg_t cfg;
- 	int fd = -1;
- 
- 	igt_fixture {
-@@ -567,7 +570,8 @@ igt_main
- 		igt_require_gem(fd);
- 		gem_require_contexts(fd);
- 
--		__for_each_physical_engine(fd, e)
-+		cfg = intel_ctx_cfg_all_physical(fd);
-+		for_each_ctx_cfg_engine(fd, &cfg, e)
- 			all_engines[all_nengine++] = e->flags;
- 		igt_require(all_nengine);
- 
-@@ -597,39 +601,39 @@ igt_main
- 		iris_pipeline(fd);
- 
- 	igt_subtest("maximum-mem")
--		maximum(fd, ncpus, CHECK_RAM);
-+		maximum(fd, &cfg, ncpus, CHECK_RAM);
- 	igt_subtest("maximum-swap")
--		maximum(fd, ncpus, CHECK_RAM | CHECK_SWAP);
-+		maximum(fd, &cfg, ncpus, CHECK_RAM | CHECK_SWAP);
- 
- 	igt_subtest("basic-files")
--		files(fd, 2, 1);
-+		files(fd, &cfg, 2, 1);
- 	igt_subtest("files")
--		files(fd, 20, 1);
-+		files(fd, &cfg, 20, 1);
- 	igt_subtest("forked-files")
--		files(fd, 20, ncpus);
-+		files(fd, &cfg, 20, ncpus);
- 
- 	/* NULL value means all engines */
- 	igt_subtest("active-all")
--		active(fd, NULL, 20, 1);
-+		active(fd, &cfg, NULL, 20, 1);
- 	igt_subtest("forked-active-all")
--		active(fd, NULL, 20, ncpus);
-+		active(fd, &cfg, NULL, 20, ncpus);
- 
- 	igt_subtest_with_dynamic("active") {
--		__for_each_physical_engine(fd, e) {
-+		for_each_ctx_cfg_engine(fd, &cfg, e) {
- 			igt_dynamic_f("%s", e->name)
--				active(fd, e, 20, 1);
-+				active(fd, &cfg, e, 20, 1);
- 		}
- 	}
- 	igt_subtest_with_dynamic("forked-active") {
--		__for_each_physical_engine(fd, e) {
-+		for_each_ctx_cfg_engine(fd, &cfg, e) {
- 			igt_dynamic_f("%s", e->name)
--				active(fd, e, 20, ncpus);
-+				active(fd, &cfg, e, 20, ncpus);
- 		}
- 	}
- 	igt_subtest_with_dynamic("hog") {
--		__for_each_physical_engine(fd, e) {
-+		for_each_ctx_cfg_engine(fd, &cfg, e) {
- 			igt_dynamic_f("%s", e->name)
--				active(fd, e, 20, -1);
-+				active(fd, &cfg, e, 20, -1);
- 		}
- 	}
- 
+-bool gem_has_context_clone(int i915);
+-
+ void gem_context_get_param(int fd, struct drm_i915_gem_context_param *p);
+ void gem_context_set_param(int fd, struct drm_i915_gem_context_param *p);
+ int __gem_context_set_param(int fd, struct drm_i915_gem_context_param *p);
 -- 
 2.31.1
 
