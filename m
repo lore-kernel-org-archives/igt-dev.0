@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com
- [IPv6:2607:f8b0:4864:20::534])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D5A66E214
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Apr 2021 03:54:13 +0000 (UTC)
-Received: by mail-pg1-x534.google.com with SMTP id f29so10997135pgm.8
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Apr 2021 20:54:13 -0700 (PDT)
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com
+ [IPv6:2607:f8b0:4864:20::635])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B5F8D6E1BC
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Apr 2021 03:54:14 +0000 (UTC)
+Received: by mail-pl1-x635.google.com with SMTP id p16so3529498plf.12
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Apr 2021 20:54:14 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 12 Apr 2021 22:52:48 -0500
-Message-Id: <20210413035350.261794-13-jason@jlekstrand.net>
+Date: Mon, 12 Apr 2021 22:52:49 -0500
+Message-Id: <20210413035350.261794-14-jason@jlekstrand.net>
 In-Reply-To: <20210413035350.261794-1-jason@jlekstrand.net>
 References: <20210413035350.261794-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 12/74] lib/i915/gem_engine_topology: Add an
- iterator for intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 13/74] tests/i915/gem_exec_basic: Convert to
+ intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,82 +27,55 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+This acts as a template for the rest of this patch series.  The rough
+idea is that we create a new context if the HW supports contexts and
+otherwise we use intel_ctx_0().  Once we have an intel_ctx_t, we can
+iterate over all of the engines in it in a consistent way.
 ---
- lib/i915/gem_engine_topology.c | 21 +++++++++++++++++++++
- lib/i915/gem_engine_topology.h | 14 ++++++++++++--
- 2 files changed, 33 insertions(+), 2 deletions(-)
+ tests/i915/gem_exec_basic.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-index 4319895f..ec891dab 100644
---- a/lib/i915/gem_engine_topology.c
-+++ b/lib/i915/gem_engine_topology.c
-@@ -234,6 +234,27 @@ struct intel_engine_data intel_engine_list_of_physical(int fd)
- 	return intel_engine_list_for_static(fd);
- }
- 
-+struct intel_engine_data
-+intel_engine_list_for_ctx_cfg(int fd, const intel_ctx_cfg_t *cfg)
-+{
-+	if (fd >= 0 && cfg->num_engines) {
-+		struct intel_engine_data engine_data = { };
-+		int i;
-+
-+		engine_data.nengines = cfg->num_engines;
-+		for (i = 0; i < cfg->num_engines; i++)
-+			init_engine(&engine_data.engines[i],
-+				    cfg->engines[i].engine_class,
-+				    cfg->engines[i].engine_instance,
-+				    i);
-+
-+		return engine_data;
-+	} else {
-+		/* This is a legacy context */
-+		return intel_engine_list_for_static(fd);
-+	}
-+}
-+
- static int gem_topology_get_param(int fd,
- 				  struct drm_i915_gem_context_param *p)
+diff --git a/tests/i915/gem_exec_basic.c b/tests/i915/gem_exec_basic.c
+index 31f6a234..e21f9ff1 100644
+--- a/tests/i915/gem_exec_basic.c
++++ b/tests/i915/gem_exec_basic.c
+@@ -41,10 +41,13 @@ static uint32_t batch_create(int fd)
+ igt_main
  {
-diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
-index 69565240..b2e15c1e 100644
---- a/lib/i915/gem_engine_topology.h
-+++ b/lib/i915/gem_engine_topology.h
-@@ -26,8 +26,7 @@
+ 	const struct intel_execution_engine2 *e;
++	const intel_ctx_t *ctx = NULL;
+ 	int fd = -1;
  
- #include "igt_gt.h"
- #include "i915_drm.h"
--
--#define GEM_MAX_ENGINES		I915_EXEC_RING_MASK + 1
-+#include "intel_ctx.h"
- 
- int __gem_query_engines(int fd,
- 			struct drm_i915_query_engine_info *query_engines,
-@@ -42,6 +41,8 @@ struct intel_engine_data {
- 
- bool gem_has_engine_topology(int fd);
- struct intel_engine_data intel_engine_list_of_physical(int fd);
-+struct intel_engine_data
-+intel_engine_list_for_ctx_cfg(int fd, const intel_ctx_cfg_t *cfg);
- struct intel_engine_data intel_init_engine_list(int fd, uint32_t ctx_id);
- 
- /* iteration functions */
-@@ -66,6 +67,15 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags);
- #define __for_each_static_engine(e__) \
- 	for ((e__) = intel_execution_engines2; (e__)->name[0]; (e__)++)
- 
-+#define for_each_ctx_cfg_engine(fd__, ctx_cfg__, e__) \
-+	for (struct intel_engine_data i__##e__ = \
-+			intel_engine_list_for_ctx_cfg(fd__, ctx_cfg__); \
-+	     ((e__) = intel_get_current_engine(&i__##e__)); \
-+	     intel_next_engine(&i__##e__))
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_INTEL);
++		ctx = intel_ctx_create_all_physical(fd);
 +
-+#define for_each_ctx_engine(fd__, ctx__, e__) \
-+	for_each_ctx_cfg_engine(fd__, &(ctx__)->cfg, e__)
-+
- #define for_each_context_engine(fd__, ctx__, e__) \
- 	for (struct intel_engine_data i__ = intel_init_engine_list(fd__, ctx__); \
- 	     ((e__) = intel_get_current_engine(&i__)); \
+ 		/* igt_require_gem(fd); // test is mandatory */
+ 		igt_fork_hang_detector(fd);
+ 	}
+@@ -54,12 +57,13 @@ igt_main
+ 			.handle = batch_create(fd),
+ 		};
+ 
+-		__for_each_physical_engine(fd, e) {
++		for_each_ctx_engine(fd, ctx, e) {
+ 			igt_dynamic_f("%s", e->name) {
+ 				struct drm_i915_gem_execbuffer2 execbuf = {
+ 					.buffers_ptr = to_user_pointer(&exec),
+ 					.buffer_count = 1,
+ 					.flags = e->flags,
++					.rsvd1 = ctx->id,
+ 				};
+ 
+ 				gem_execbuf(fd, &execbuf);
+@@ -72,6 +76,7 @@ igt_main
+ 
+ 	igt_fixture {
+ 		igt_stop_hang_detector();
++		intel_ctx_destroy(fd, ctx);
+ 		close(fd);
+ 	}
+ }
 -- 
 2.31.1
 
