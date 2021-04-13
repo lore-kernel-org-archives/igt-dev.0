@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
- [IPv6:2607:f8b0:4864:20::1033])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF2E76E1B7
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Apr 2021 03:54:01 +0000 (UTC)
-Received: by mail-pj1-x1033.google.com with SMTP id s14so2927228pjl.5
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Apr 2021 20:54:01 -0700 (PDT)
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
+ [IPv6:2607:f8b0:4864:20::62a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 92D116E1A8
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Apr 2021 03:54:04 +0000 (UTC)
+Received: by mail-pl1-x62a.google.com with SMTP id z22so2358216plo.3
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Apr 2021 20:54:04 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 12 Apr 2021 22:52:40 -0500
-Message-Id: <20210413035350.261794-5-jason@jlekstrand.net>
+Date: Mon, 12 Apr 2021 22:52:42 -0500
+Message-Id: <20210413035350.261794-7-jason@jlekstrand.net>
 In-Reply-To: <20210413035350.261794-1-jason@jlekstrand.net>
 References: <20210413035350.261794-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 04/74] tests/i915/gem_ctx_param: Drop the
- zeromap subtests
+Subject: [igt-dev] [PATCH i-g-t 06/74] lib/i915/gem_engine_topology: Expose
+ the __query_engines helper
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,71 +27,64 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The idea behind this param is to support OpenCL drivers with relocations
-because OpenCL reserves 0x0 for NULL and, if we placed memory there, it
-would confuse CL kernels.  It was originally sent out as part of a patch
-series including libdrm [1] and Beignet [2] support.  However, the
-libdrm and Beignet patches never landed in their respective upstream
-projects so this API has never been used.  It's never been used in Mesa
-or any other driver, either.
-
-This means that these IGT tests are the only userspace for NO_ZEROMAP
-which has ever really existed.  Let's drop them and drop support from
-i915 as well.
-
-[1]: https://lists.freedesktop.org/archives/intel-gfx/2015-May/067030.html
-[2]: https://lists.freedesktop.org/archives/intel-gfx/2015-May/067031.html
-
-Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 ---
- tests/i915/gem_ctx_param.c | 33 ---------------------------------
- 1 file changed, 33 deletions(-)
+ lib/i915/gem_engine_topology.c | 20 +++++++++++---------
+ lib/i915/gem_engine_topology.h |  4 ++++
+ 2 files changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_param.c b/tests/i915/gem_ctx_param.c
-index ab0e3007..47fea06d 100644
---- a/tests/i915/gem_ctx_param.c
-+++ b/tests/i915/gem_ctx_param.c
-@@ -335,39 +335,6 @@ igt_main
- 		gem_context_set_param(fd, &arg);
- 	}
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index c12cd920..5d196f59 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -62,14 +62,9 @@ static int __gem_query(int fd, struct drm_i915_query *q)
+ 	return err;
+ }
  
--	arg.param = I915_CONTEXT_PARAM_NO_ZEROMAP;
+-static void gem_query(int fd, struct drm_i915_query *q)
+-{
+-	igt_assert_eq(__gem_query(fd, q), 0);
+-}
 -
--	igt_describe("Validates context set param ioctl in non root mode with param "
--	       "set to no zeromap");
--	igt_subtest("non-root-set-no-zeromap") {
--		igt_fork(child, 1) {
--			igt_drop_root();
--
--			arg.ctx_id = ctx;
--			gem_context_get_param(fd, &arg);
--			arg.value--;
--			gem_context_set_param(fd, &arg);
--		}
--
--		igt_waitchildren();
--	}
--
--	igt_describe("Tests the context set param ioctl with no zeromap enabled in root mode");
--	igt_subtest("root-set-no-zeromap-enabled") {
--		arg.ctx_id = ctx;
--		gem_context_get_param(fd, &arg);
--		arg.value = 1;
--		gem_context_set_param(fd, &arg);
--	}
--
--	igt_describe("Tests the context set param ioctl with no zeromap disabled in root mode");
--	igt_subtest("root-set-no-zeromap-disabled") {
--		arg.ctx_id = ctx;
--		gem_context_get_param(fd, &arg);
--		arg.value = 0;
--		gem_context_set_param(fd, &arg);
--	}
--
- 	igt_describe("Tests that multiple contexts can share the same VMA");
- 	igt_subtest("vm")
- 		test_vm(fd);
+-static void query_engines(int fd,
+-			  struct drm_i915_query_engine_info *query_engines,
+-			  int length)
++int __gem_query_engines(int fd,
++			struct drm_i915_query_engine_info *query_engines,
++			int length)
+ {
+ 	struct drm_i915_query_item item = { };
+ 	struct drm_i915_query query = { };
+@@ -81,7 +76,14 @@ static void query_engines(int fd,
+ 
+ 	item.data_ptr = to_user_pointer(query_engines);
+ 
+-	gem_query(fd, &query);
++	return __gem_query(fd, &query);
++}
++
++static void query_engines(int fd,
++			  struct drm_i915_query_engine_info *query_engines,
++			  int length)
++{
++	igt_assert_eq(__gem_query_engines(fd, query_engines, length), 0);
+ }
+ 
+ static void ctx_map_engines(int fd, struct intel_engine_data *ed,
+diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+index f5edcb5d..76b7cd4d 100644
+--- a/lib/i915/gem_engine_topology.h
++++ b/lib/i915/gem_engine_topology.h
+@@ -29,6 +29,10 @@
+ 
+ #define GEM_MAX_ENGINES		I915_EXEC_RING_MASK + 1
+ 
++int __gem_query_engines(int fd,
++			struct drm_i915_query_engine_info *query_engines,
++			int length);
++
+ struct intel_engine_data {
+ 	uint32_t nengines;
+ 	uint32_t n;
 -- 
 2.31.1
 
