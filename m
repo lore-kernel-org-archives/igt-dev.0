@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com
- [IPv6:2607:f8b0:4864:20::635])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B5F8D6E1BC
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Apr 2021 03:54:14 +0000 (UTC)
-Received: by mail-pl1-x635.google.com with SMTP id p16so3529498plf.12
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Apr 2021 20:54:14 -0700 (PDT)
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
+ [IPv6:2607:f8b0:4864:20::632])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF4366E1A8
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Apr 2021 03:54:17 +0000 (UTC)
+Received: by mail-pl1-x632.google.com with SMTP id w8so5150065plg.9
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Apr 2021 20:54:17 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 12 Apr 2021 22:52:49 -0500
-Message-Id: <20210413035350.261794-14-jason@jlekstrand.net>
+Date: Mon, 12 Apr 2021 22:52:51 -0500
+Message-Id: <20210413035350.261794-16-jason@jlekstrand.net>
 In-Reply-To: <20210413035350.261794-1-jason@jlekstrand.net>
 References: <20210413035350.261794-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 13/74] tests/i915/gem_exec_basic: Convert to
- intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 15/74] lib/igt_spin: Support intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,55 +26,96 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This acts as a template for the rest of this patch series.  The rough
-idea is that we create a new context if the HW supports contexts and
-otherwise we use intel_ctx_0().  Once we have an intel_ctx_t, we can
-iterate over all of the engines in it in a consistent way.
 ---
- tests/i915/gem_exec_basic.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ lib/igt_dummyload.c | 30 ++++++++++++++++++++++--------
+ lib/igt_dummyload.h |  4 ++++
+ 2 files changed, 26 insertions(+), 8 deletions(-)
 
-diff --git a/tests/i915/gem_exec_basic.c b/tests/i915/gem_exec_basic.c
-index 31f6a234..e21f9ff1 100644
---- a/tests/i915/gem_exec_basic.c
-+++ b/tests/i915/gem_exec_basic.c
-@@ -41,10 +41,13 @@ static uint32_t batch_create(int fd)
- igt_main
- {
- 	const struct intel_execution_engine2 *e;
-+	const intel_ctx_t *ctx = NULL;
- 	int fd = -1;
+diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+index 5a11ec4e..ac83b331 100644
+--- a/lib/igt_dummyload.c
++++ b/lib/igt_dummyload.c
+@@ -123,16 +123,28 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	addr += random() % addr / 2;
+ 	addr &= -4096;
  
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_INTEL);
-+		ctx = intel_ctx_create_all_physical(fd);
++	assert(!(opts->ctx && opts->ctx_id));
 +
- 		/* igt_require_gem(fd); // test is mandatory */
- 		igt_fork_hang_detector(fd);
- 	}
-@@ -54,12 +57,13 @@ igt_main
- 			.handle = batch_create(fd),
- 		};
+ 	nengine = 0;
+ 	if (opts->engine == ALL_ENGINES) {
+ 		struct intel_execution_engine2 *engine;
  
--		__for_each_physical_engine(fd, e) {
-+		for_each_ctx_engine(fd, ctx, e) {
- 			igt_dynamic_f("%s", e->name) {
- 				struct drm_i915_gem_execbuffer2 execbuf = {
- 					.buffers_ptr = to_user_pointer(&exec),
- 					.buffer_count = 1,
- 					.flags = e->flags,
-+					.rsvd1 = ctx->id,
- 				};
+-		for_each_context_engine(fd, opts->ctx_id, engine) {
+-			if (opts->flags & IGT_SPIN_POLL_RUN &&
+-			    !gem_class_can_store_dword(fd, engine->class))
+-				continue;
++		if (opts->ctx) {
++			for_each_ctx_engine(fd, opts->ctx, engine) {
++				if (opts->flags & IGT_SPIN_POLL_RUN &&
++				    !gem_class_can_store_dword(fd, engine->class))
++					continue;
  
- 				gem_execbuf(fd, &execbuf);
-@@ -72,6 +76,7 @@ igt_main
+-			flags[nengine++] = engine->flags;
++				flags[nengine++] = engine->flags;
++			}
++		} else {
++			for_each_context_engine(fd, opts->ctx_id, engine) {
++				if (opts->flags & IGT_SPIN_POLL_RUN &&
++				    !gem_class_can_store_dword(fd, engine->class))
++					continue;
++
++				flags[nengine++] = engine->flags;
++			}
+ 		}
+ 	} else {
+ 		flags[nengine++] = opts->engine;
+@@ -325,7 +337,7 @@ emit_recursive_batch(igt_spin_t *spin,
  
- 	igt_fixture {
- 		igt_stop_hang_detector();
-+		intel_ctx_destroy(fd, ctx);
- 		close(fd);
- 	}
- }
+ 	execbuf->buffers_ptr =
+ 	       	to_user_pointer(obj + (2 - execbuf->buffer_count));
+-	execbuf->rsvd1 = opts->ctx_id;
++	execbuf->rsvd1 = opts->ctx ? opts->ctx->id : opts->ctx_id;
+ 
+ 	if (opts->flags & IGT_SPIN_FENCE_OUT)
+ 		execbuf->flags |= I915_EXEC_FENCE_OUT;
+@@ -422,8 +434,10 @@ igt_spin_factory(int fd, const struct igt_spin_factory *opts)
+ 		struct intel_execution_engine2 e;
+ 		int class;
+ 
+-		if (!gem_context_lookup_engine(fd, opts->engine,
+-					       opts->ctx_id, &e)) {
++		if (opts->ctx) {
++			class = opts->ctx->cfg.engines[opts->engine].engine_class;
++		} else if (!gem_context_lookup_engine(fd, opts->engine,
++						      opts->ctx_id, &e)) {
+ 			class = e.class;
+ 		} else {
+ 			gem_require_ring(fd, opts->engine);
+diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
+index aee72da8..b26a7b7d 100644
+--- a/lib/igt_dummyload.h
++++ b/lib/igt_dummyload.h
+@@ -32,9 +32,12 @@
+ #include "igt_list.h"
+ #include "i915_drm.h"
+ 
++struct intel_ctx;
++
+ typedef struct igt_spin {
+ 	struct igt_list_head link;
+ 
++
+ 	uint32_t handle;
+ 	uint32_t poll_handle;
+ 
+@@ -61,6 +64,7 @@ typedef struct igt_spin {
+ 
+ struct igt_spin_factory {
+ 	uint32_t ctx_id;
++	const struct intel_ctx *ctx;
+ 	uint32_t dependency;
+ 	unsigned int engine;
+ 	unsigned int flags;
 -- 
 2.31.1
 
