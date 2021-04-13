@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com
- [IPv6:2607:f8b0:4864:20::52c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A31BB6E22F
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Apr 2021 03:55:10 +0000 (UTC)
-Received: by mail-pg1-x52c.google.com with SMTP id t140so10979715pgb.13
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Apr 2021 20:55:10 -0700 (PDT)
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
+ [IPv6:2607:f8b0:4864:20::629])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C2346E222
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Apr 2021 03:55:12 +0000 (UTC)
+Received: by mail-pl1-x629.google.com with SMTP id h20so7495175plr.4
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Apr 2021 20:55:12 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 12 Apr 2021 22:53:28 -0500
-Message-Id: <20210413035350.261794-53-jason@jlekstrand.net>
+Date: Mon, 12 Apr 2021 22:53:29 -0500
+Message-Id: <20210413035350.261794-54-jason@jlekstrand.net>
 In-Reply-To: <20210413035350.261794-1-jason@jlekstrand.net>
 References: <20210413035350.261794-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 52/74] tests/i915/gem_exec_capture: Convert
+Subject: [igt-dev] [PATCH i-g-t 53/74] tests/i915/gem_exec_create: Convert
  to intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,122 +28,52 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 ---
- tests/i915/gem_exec_capture.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ tests/i915/gem_exec_create.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-index 3da78d63..e0bb5b4d 100644
---- a/tests/i915/gem_exec_capture.c
-+++ b/tests/i915/gem_exec_capture.c
-@@ -60,7 +60,8 @@ static void check_error_state(int dir, struct drm_i915_gem_exec_object2 *obj)
- 	igt_assert(found);
- }
+diff --git a/tests/i915/gem_exec_create.c b/tests/i915/gem_exec_create.c
+index 6529da7e..7434b3e4 100644
+--- a/tests/i915/gem_exec_create.c
++++ b/tests/i915/gem_exec_create.c
+@@ -60,16 +60,21 @@ static void all(int fd, unsigned flags, int timeout, int ncpus)
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
+ 	unsigned engines[I915_EXEC_RING_MASK + 1], nengine;
++	const intel_ctx_t *ctx;
  
--static void __capture1(int fd, int dir, unsigned ring, uint32_t target)
-+static void __capture1(int fd, int dir, const intel_ctx_t *ctx,
-+		       unsigned ring, uint32_t target)
- {
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
- 	struct drm_i915_gem_exec_object2 obj[4];
-@@ -147,6 +148,7 @@ static void __capture1(int fd, int dir, unsigned ring, uint32_t target)
- 	execbuf.flags = ring;
- 	if (gen > 3 && gen < 6)
- 		execbuf.flags |= I915_EXEC_SECURE;
+ 	nengine = 0;
+ 	if (flags & ENGINES) { /* Modern API to iterate over *all* engines */
+ 		const struct intel_execution_engine2 *e;
+ 
+-		__for_each_physical_engine(fd, e)
++		ctx = intel_ctx_create_all_physical(fd);
++
++		for_each_ctx_engine(fd, ctx, e)
+ 			engines[nengine++] = e->flags;
+ 
+ 		/* Note: modifies engine map on context 0 */
+ 	} else {
++		ctx = intel_ctx_0(fd);
++
+ 		for_each_physical_ring(e, fd)
+ 			engines[nengine++] = eb_ring(e);
+ 	}
+@@ -84,6 +89,7 @@ static void all(int fd, unsigned flags, int timeout, int ncpus)
+ 	execbuf.buffer_count = 1;
+ 	execbuf.flags |= I915_EXEC_HANDLE_LUT;
+ 	execbuf.flags |= I915_EXEC_NO_RELOC;
 +	execbuf.rsvd1 = ctx->id;
- 
- 	igt_assert(!READ_ONCE(*seqno));
- 	gem_execbuf(fd, &execbuf);
-@@ -167,12 +169,12 @@ static void __capture1(int fd, int dir, unsigned ring, uint32_t target)
- 	gem_close(fd, obj[SCRATCH].handle);
+ 	if (__gem_execbuf(fd, &execbuf)) {
+ 		execbuf.flags = 0;
+ 		gem_execbuf(fd, &execbuf);
+@@ -131,6 +137,7 @@ static void all(int fd, unsigned flags, int timeout, int ncpus)
+ 	}
+ 	igt_waitchildren();
+ 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
++	intel_ctx_destroy(fd, ctx);
  }
- 
--static void capture(int fd, int dir, unsigned ring)
-+static void capture(int fd, int dir, const intel_ctx_t *ctx, unsigned ring)
- {
- 	uint32_t handle;
- 
- 	handle = gem_create(fd, 4096);
--	__capture1(fd, dir, ring, handle);
-+	__capture1(fd, dir, ctx, ring, handle);
- 	gem_close(fd, handle);
- }
- 
-@@ -495,7 +497,8 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
- 	free(offsets);
- }
- 
--static void prioinv(int fd, int dir, unsigned ring, const char *name)
-+static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
-+		    unsigned ring, const char *name)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	struct drm_i915_gem_exec_object2 obj = {
-@@ -505,6 +508,7 @@ static void prioinv(int fd, int dir, unsigned ring, const char *name)
- 		.buffers_ptr = to_user_pointer(&obj),
- 		.buffer_count = 1,
- 		.flags = ring,
-+		.rsvd1 = ctx->id,
- 	};
- 	int64_t timeout = NSEC_PER_SEC; /* 1s, feeling generous, blame debug */
- 	uint64_t ram, gtt, size = 4 << 20;
-@@ -572,7 +576,7 @@ static void userptr(int fd, int dir)
- 	igt_assert(posix_memalign(&ptr, 4096, 4096) == 0);
- 	igt_require(__gem_userptr(fd, ptr, 4096, 0, 0, &handle) == 0);
- 
--	__capture1(fd, dir, 0, handle);
-+	__capture1(fd, dir, intel_ctx_0(fd), 0, handle);
- 
- 	gem_close(fd, handle);
- 	free(ptr);
-@@ -595,14 +599,15 @@ static size_t safer_strlen(const char *s)
- 	return s ? strlen(s) : 0;
- }
- 
--#define test_each_engine(T, i915, e) \
--	igt_subtest_with_dynamic(T) __for_each_physical_engine(i915, e) \
-+#define test_each_engine(T, i915, ctx, e) \
-+	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
- 		for_each_if(gem_class_can_store_dword(i915, (e)->class)) \
- 			igt_dynamic_f("%s", (e)->name)
  
  igt_main
- {
- 	const struct intel_execution_engine2 *e;
-+	const intel_ctx_t *ctx = NULL;
- 	igt_hang_t hang;
- 	int fd = -1;
- 	int dir = -1;
-@@ -619,15 +624,16 @@ igt_main
- 		igt_require_gem(fd);
- 		gem_require_mmap_wc(fd);
- 		igt_require(has_capture(fd));
--		igt_allow_hang(fd, 0, HANG_ALLOW_CAPTURE);
-+		ctx = intel_ctx_create_all_physical(fd);
-+		igt_allow_hang(fd, ctx->id, HANG_ALLOW_CAPTURE);
- 
- 		dir = igt_sysfs_open(fd);
- 		igt_require(igt_sysfs_set(dir, "error", "Begone!"));
- 		igt_require(safer_strlen(igt_sysfs_get(dir, "error")) > 0);
- 	}
- 
--	test_each_engine("capture", fd, e)
--		capture(fd, dir, e->flags);
-+	test_each_engine("capture", fd, ctx, e)
-+		capture(fd, dir, ctx, e->flags);
- 
- 	igt_subtest_f("many-4K-zero") {
- 		igt_require(gem_can_store_dword(fd, 0));
-@@ -661,8 +667,8 @@ igt_main
- 		userptr(fd, dir);
- 	}
- 
--	test_each_engine("pi", fd, e)
--		prioinv(fd, dir, e->flags, e->name);
-+	test_each_engine("pi", fd, ctx, e)
-+		prioinv(fd, dir, ctx, e->flags, e->name);
- 
- 	igt_fixture {
- 		close(dir);
 -- 
 2.31.1
 
