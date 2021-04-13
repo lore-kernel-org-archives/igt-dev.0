@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
  [IPv6:2607:f8b0:4864:20::42e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D35606E2B6
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Apr 2021 03:55:30 +0000 (UTC)
-Received: by mail-pf1-x42e.google.com with SMTP id a85so10121647pfa.0
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Apr 2021 20:55:30 -0700 (PDT)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6CCAA6E2B6
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Apr 2021 03:55:32 +0000 (UTC)
+Received: by mail-pf1-x42e.google.com with SMTP id m11so10561846pfc.11
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Apr 2021 20:55:32 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 12 Apr 2021 22:53:42 -0500
-Message-Id: <20210413035350.261794-67-jason@jlekstrand.net>
+Date: Mon, 12 Apr 2021 22:53:43 -0500
+Message-Id: <20210413035350.261794-68-jason@jlekstrand.net>
 In-Reply-To: <20210413035350.261794-1-jason@jlekstrand.net>
 References: <20210413035350.261794-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 66/74] lib/i915: Use for_each_physical_ring
- for submission tests
+Subject: [igt-dev] [PATCH i-g-t 67/74] tests/i915/gem_ctx_engines: Rework
+ execute-one*
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,52 +27,150 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This does make the assumption that ctx0 has the default set of engines
-but, now that we've converted everything to intel_ctx_t, this assumption
-should be ok.
+Instead of switching out the set of engines constantly, create a new
+context for every set of engines.  This means, among other things, that
+there's no point in testing whether or not the context is in a "default"
+because there's no more resetting it.
 ---
- lib/i915/gem_submission.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ tests/i915/gem_ctx_engines.c | 53 +++++++++++++-----------------------
+ 1 file changed, 19 insertions(+), 34 deletions(-)
 
-diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
-index 051f9d04..c13dfdce 100644
---- a/lib/i915/gem_submission.c
-+++ b/lib/i915/gem_submission.c
-@@ -32,6 +32,7 @@
+diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
+index 058b2cc2..be9671dd 100644
+--- a/tests/i915/gem_ctx_engines.c
++++ b/tests/i915/gem_ctx_engines.c
+@@ -318,7 +318,6 @@ static void execute_one(int i915)
+ {
+ 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, I915_EXEC_RING_MASK + 1);
+ 	struct drm_i915_gem_context_param param = {
+-		.ctx_id = gem_context_create(i915),
+ 		.param = I915_CONTEXT_PARAM_ENGINES,
+ 		.value = to_user_pointer(&engines),
+ 		/* .size to be filled in later */
+@@ -329,28 +328,13 @@ static void execute_one(int i915)
+ 	struct drm_i915_gem_execbuffer2 execbuf = {
+ 		.buffers_ptr = to_user_pointer(&obj),
+ 		.buffer_count = 1,
+-		.rsvd1 = param.ctx_id,
+ 	};
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	const struct intel_execution_engine2 *e;
+-	igt_spin_t *spin;
+-
+-	/* Prewarm the spinner */
+-	spin = igt_spin_new(i915, .ctx_id = param.ctx_id,
+-			    .flags = (IGT_SPIN_NO_PREEMPTION |
+-				      IGT_SPIN_POLL_RUN));
  
- #include "i915/gem.h"
- #include "i915/gem_engine_topology.h"
-+#include "i915/gem_ring.h"
- #include "i915/gem_submission.h"
- 
- #include "igt_core.h"
-@@ -199,10 +200,8 @@ void gem_test_engine(int i915, unsigned int engine)
  	gem_write(i915, obj.handle, 0, &bbe, sizeof(bbe));
  
- 	if (engine == ALL_ENGINES) {
--		const struct intel_execution_engine2 *e2;
+-	/* Unadulterated I915_EXEC_DEFAULT should work */
+-	execbuf.flags = 0;
+-	gem_execbuf(i915, &execbuf);
+-	obj.flags |= EXEC_OBJECT_PINNED;
 -
--		__for_each_physical_engine(i915, e2) {
--			execbuf.flags = e2->flags;
-+		for_each_physical_ring(e, i915) {
-+			execbuf.flags = eb_ring(e);
- 			gem_execbuf(i915, &execbuf);
- 		}
- 	} else {
-@@ -381,11 +380,9 @@ unsigned int gem_submission_measure(int i915, unsigned int engine)
- 		fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) | O_NONBLOCK);
+-	igt_spin_end(spin);
+-	gem_sync(i915, obj.handle);
+-
+-	__for_each_physical_engine(i915, e) {
++	for_each_physical_engine(i915, e) {
+ 		struct drm_i915_gem_busy busy = { .handle = obj.handle };
  
- 	if (engine == ALL_ENGINES) {
--		struct intel_execution_engine2 *e;
--
- 		size = -1;
--		__for_each_physical_engine(i915, e) {
--			unsigned int this =  __measure_ringsize(i915, e->flags);
-+		for_each_physical_ring(e, i915) {
-+			unsigned int this =  __measure_ringsize(i915, eb_ring(e));
- 			if (this < size)
- 				size = this;
+ 		if (!gem_class_can_store_dword(i915, e->class))
+@@ -359,19 +343,26 @@ static void execute_one(int i915)
+ 		igt_debug("Testing [%s...]\n", e->name);
+ 
+ 		for (int i = -1; i <= I915_EXEC_RING_MASK; i++) {
++			igt_spin_t *spin;
++
+ 			memset(&engines, 0, sizeof(engines));
+ 			engine_class(&engines, 0) = e->class;
+ 			engine_instance(&engines, 0) = e->instance;
+ 			param.size = offsetof(typeof(engines), engines[1]);
++			param.ctx_id = gem_context_create(i915);
+ 			gem_context_set_param(i915, &param);
+ 
+-			gem_sync(i915, spin->handle);
+-			igt_spin_reset(spin);
+-			gem_execbuf(i915, &spin->execbuf);
++			spin = igt_spin_new(i915, .ctx_id = param.ctx_id,
++					    .flags = (IGT_SPIN_NO_PREEMPTION |
++						      IGT_SPIN_POLL_RUN));
+ 
+ 			do_ioctl(i915, DRM_IOCTL_I915_GEM_BUSY, &busy);
+ 			igt_assert_eq(busy.busy, 0);
+ 
++			/* Create a new context with a lot of engines */
++			gem_context_destroy(i915, param.ctx_id);
++			param.ctx_id = gem_context_create(i915);
++
+ 			igt_debug("Testing with map of %d engines\n", i + 1);
+ 			memset(&engines.engines, -1, sizeof(engines.engines));
+ 			if (i != -1) {
+@@ -385,6 +376,7 @@ static void execute_one(int i915)
+ 			for (int j = 0; j <= I915_EXEC_RING_MASK; j++) {
+ 				int expected = j == i ? 0 : -EINVAL;
+ 
++				execbuf.rsvd1 = param.ctx_id;
+ 				execbuf.flags = j;
+ 				igt_assert_f(__gem_execbuf(i915, &execbuf) == expected,
+ 					     "Failed to report the %s engine for slot %d (valid at %d)\n",
+@@ -395,38 +387,31 @@ static void execute_one(int i915)
+ 			igt_assert_eq(batch_busy(busy.busy),
+ 				      i != -1 ? 1 << e->class : 0);
+ 
+-			igt_spin_end(spin);
++			igt_spin_free(i915, spin);
+ 
+ 			gem_sync(i915, obj.handle);
++			gem_context_destroy(i915, param.ctx_id);
+ 			do_ioctl(i915, DRM_IOCTL_I915_GEM_BUSY, &busy);
+ 			igt_assert_eq(busy.busy, 0);
  		}
+ 	}
+ 
+-	/* Restore the defaults and check I915_EXEC_DEFAULT works again. */
+-	param.size = 0;
+-	gem_context_set_param(i915, &param);
+-	execbuf.flags = 0;
+-	gem_execbuf(i915, &execbuf);
+-
+-	igt_spin_free(i915, spin);
+-
+ 	gem_close(i915, obj.handle);
+-	gem_context_destroy(i915, param.ctx_id);
+ }
+ 
+ static void execute_oneforall(int i915)
+ {
+ 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, I915_EXEC_RING_MASK + 1);
+ 	struct drm_i915_gem_context_param param = {
+-		.ctx_id = gem_context_create(i915),
+ 		.param = I915_CONTEXT_PARAM_ENGINES,
+ 		.value = to_user_pointer(&engines),
+ 		.size = sizeof(engines),
+ 	};
+ 	const struct intel_execution_engine2 *e;
+ 
+-	__for_each_physical_engine(i915, e) {
++	for_each_physical_engine(i915, e) {
++		param.ctx_id = gem_context_create(i915);
++
+ 		memset(&engines, 0, sizeof(engines));
+ 		for (int i = 0; i <= I915_EXEC_RING_MASK; i++) {
+ 			engine_class(&engines, i) = e->class;
+@@ -448,9 +433,9 @@ static void execute_oneforall(int i915)
+ 
+ 			igt_spin_free(i915, spin);
+ 		}
+-	}
+ 
+-	gem_context_destroy(i915, param.ctx_id);
++		gem_context_destroy(i915, param.ctx_id);
++	}
+ }
+ 
+ static void execute_allforone(int i915)
 -- 
 2.31.1
 
