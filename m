@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com
- [IPv6:2607:f8b0:4864:20::62d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 28A616EAC7
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:13:00 +0000 (UTC)
-Received: by mail-pl1-x62d.google.com with SMTP id u15so4079589plf.10
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:13:00 -0700 (PDT)
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
+ [IPv6:2607:f8b0:4864:20::1029])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E51B76EAC9
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:13:02 +0000 (UTC)
+Received: by mail-pj1-x1029.google.com with SMTP id
+ kb13-20020a17090ae7cdb02901503d67f0beso1865305pjb.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:13:02 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 15 Apr 2021 14:11:15 -0500
-Message-Id: <20210415191145.2137858-45-jason@jlekstrand.net>
+Date: Thu, 15 Apr 2021 14:11:17 -0500
+Message-Id: <20210415191145.2137858-47-jason@jlekstrand.net>
 In-Reply-To: <20210415191145.2137858-1-jason@jlekstrand.net>
 References: <20210415191145.2137858-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 44/74] tests/i915/gem_create: Convert to
- intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 46/74] tests/i915/gem_exec_parallel: Convert
+ to intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,51 +29,129 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 ---
- tests/i915/gem_create.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ tests/i915/gem_exec_parallel.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-index ce985053..890dd8e8 100644
---- a/tests/i915/gem_create.c
-+++ b/tests/i915/gem_create.c
-@@ -245,20 +245,24 @@ static void always_clear(int i915, int timeout)
- static void busy_create(int i915, int timeout)
- {
- 	struct intel_execution_engine2 *e;
+diff --git a/tests/i915/gem_exec_parallel.c b/tests/i915/gem_exec_parallel.c
+index c9cf9d7a..89330c20 100644
+--- a/tests/i915/gem_exec_parallel.c
++++ b/tests/i915/gem_exec_parallel.c
+@@ -56,6 +56,7 @@ struct thread {
+ 	unsigned flags;
+ 	uint32_t *scratch;
+ 	unsigned id;
 +	const intel_ctx_t *ctx;
- 	igt_spin_t *spin[I915_EXEC_RING_MASK + 1];
- 	unsigned long count = 0;
+ 	unsigned engine;
+ 	uint32_t used;
+ 	int fd, gen, *go;
+@@ -67,6 +68,7 @@ static void *thread(void *data)
+ 	struct drm_i915_gem_exec_object2 obj[2];
+ 	struct drm_i915_gem_relocation_entry reloc;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
++	const intel_ctx_t *tmp_ctx = NULL;
+ 	uint32_t batch[16];
+ 	uint16_t used;
+ 	int fd, i;
+@@ -78,7 +80,6 @@ static void *thread(void *data)
  
-+	ctx = intel_ctx_create_all_physical(i915);
-+
- 	igt_fork_hang_detector(i915);
--	__for_each_physical_engine(i915, e)
--		spin[e->flags] = igt_spin_new(i915, .engine = e->flags);
-+	for_each_ctx_engine(i915, ctx, e)
-+		spin[e->flags] = igt_spin_new(i915, .ctx = ctx,
-+					      .engine = e->flags);
+ 	if (t->flags & FDS) {
+ 		fd = gem_reopen_driver(t->fd);
+-		gem_context_copy_engines(t->fd, 0, fd, 0);
+ 	} else {
+ 		fd = t->fd;
+ 	}
+@@ -121,8 +122,11 @@ static void *thread(void *data)
+ 	execbuf.flags |= I915_EXEC_NO_RELOC;
+ 	if (t->gen < 6)
+ 		execbuf.flags |= I915_EXEC_SECURE;
+-	if (t->flags & CONTEXTS) {
+-		execbuf.rsvd1 = gem_context_clone_with_engines(fd, 0);
++	if (t->flags & (CONTEXTS | FDS)) {
++		tmp_ctx = intel_ctx_create(fd, &t->ctx->cfg);
++		execbuf.rsvd1 = tmp_ctx->id;
++	} else {
++		execbuf.rsvd1 = t->ctx->id;
+ 	}
  
- 	igt_until_timeout(timeout) {
--		__for_each_physical_engine(i915, e) {
-+		for_each_ctx_engine(i915, ctx, e) {
- 			uint32_t handle;
- 			igt_spin_t *next;
+ 	used = 0;
+@@ -141,8 +145,8 @@ static void *thread(void *data)
+ 			gem_close(fd, obj[0].handle);
+ 	}
  
- 			handle = gem_create(i915, 4096);
--			next = igt_spin_new(i915,
-+			next = igt_spin_new(i915, .ctx = ctx,
- 					    .engine = e->flags,
- 					    .dependency = handle,
- 					    .flags = IGT_SPIN_SOFTDEP);
-@@ -271,6 +275,8 @@ static void busy_create(int i915, int timeout)
+-	if (t->flags & CONTEXTS)
+-		gem_context_destroy(fd, execbuf.rsvd1);
++	if (t->flags & (CONTEXTS | FDS))
++		intel_ctx_destroy(fd, tmp_ctx);
+ 	gem_close(fd, obj[1].handle);
+ 	if (t->flags & FDS)
+ 		close(fd);
+@@ -196,7 +200,8 @@ static void handle_close(int fd, unsigned int flags, uint32_t handle, void *data
+ 	gem_close(fd, handle);
+ }
+ 
+-static void all(int fd, struct intel_execution_engine2 *engine, unsigned flags)
++static void all(int fd, const intel_ctx_t *ctx,
++		struct intel_execution_engine2 *engine, unsigned flags)
+ {
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+ 	unsigned engines[I915_EXEC_RING_MASK + 1], nengine;
+@@ -219,7 +224,7 @@ static void all(int fd, struct intel_execution_engine2 *engine, unsigned flags)
+ 	nengine = 0;
+ 	if (!engine) {
+ 		struct intel_execution_engine2 *e;
+-		__for_each_physical_engine(fd, e) {
++		for_each_ctx_engine(fd, ctx, e) {
+ 			if (gem_class_can_store_dword(fd, e->class))
+ 				engines[nengine++] = e->flags;
+ 		}
+@@ -246,6 +251,7 @@ static void all(int fd, struct intel_execution_engine2 *engine, unsigned flags)
+ 		threads[i].id = i;
+ 		threads[i].fd = fd;
+ 		threads[i].gen = gen;
++		threads[i].ctx = ctx;
+ 		threads[i].engine = engines[i % nengine];
+ 		threads[i].flags = flags;
+ 		threads[i].scratch = scratch;
+@@ -287,11 +293,13 @@ igt_main
+ 		{ "userptr", USERPTR },
+ 		{ NULL }
+ 	};
++	const intel_ctx_t *ctx = NULL;
+ 	int fd;
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver_master(DRIVER_INTEL);
+ 		igt_require_gem(fd);
++		ctx = intel_ctx_create_all_physical(fd);
+ 
+ 		igt_fork_hang_detector(fd);
+ 	}
+@@ -300,21 +308,22 @@ igt_main
+ 		for (const struct mode *m = modes; m->name; m++)
+ 			igt_dynamic(m->name)
+ 				/* NULL value means all engines */
+-				all(fd, NULL, m->flags);
++				all(fd, ctx, NULL, m->flags);
+ 	}
+ 
+ 	for (const struct mode *m = modes; m->name; m++) {
+ 		igt_subtest_with_dynamic(m->name) {
+-			__for_each_physical_engine(fd, e) {
++			for_each_ctx_engine(fd, ctx, e) {
+ 				if (gem_class_can_store_dword(fd, e->class))
+ 					igt_dynamic(e->name)
+-						all(fd, e, m->flags);
++						all(fd, ctx, e, m->flags);
+ 			}
  		}
  	}
  
-+	intel_ctx_destroy(i915, ctx);
-+
- 	igt_info("Created %ld objects while busy\n", count);
- 
- 	gem_quiescent_gpu(i915);
+ 	igt_fixture {
+ 		igt_stop_hang_detector();
++		intel_ctx_destroy(fd, ctx);
+ 		close(fd);
+ 	}
+ }
 -- 
 2.31.1
 
