@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
- [IPv6:2607:f8b0:4864:20::533])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 006DF6EAB9
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:11:53 +0000 (UTC)
-Received: by mail-pg1-x533.google.com with SMTP id d10so17554488pgf.12
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:11:53 -0700 (PDT)
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com
+ [IPv6:2607:f8b0:4864:20::52c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B9D146EAB8
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:11:51 +0000 (UTC)
+Received: by mail-pg1-x52c.google.com with SMTP id p12so17556479pgj.10
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:11:51 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 15 Apr 2021 14:10:32 -0500
-Message-Id: <20210415191145.2137858-2-jason@jlekstrand.net>
-In-Reply-To: <20210415191145.2137858-1-jason@jlekstrand.net>
-References: <20210415191145.2137858-1-jason@jlekstrand.net>
+Date: Thu, 15 Apr 2021 14:10:31 -0500
+Message-Id: <20210415191145.2137858-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 01/74] tests/i915: Drop gem_ctx_ringsize
+Subject: [igt-dev] [PATCH i-g-t 00/74] Stop depending on context mutation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,185 +17,259 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Daniel Vetter <daniel@ffwll.ch>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-STkxNV9DT05URVhUX1BBUkFNX1JJTkdTSVpFIGlzIGJlaW5nIHJlbW92ZWQgZnJvbSB1cHN0cmVh
-bSBpOTE1IGJlY2F1c2UKaXQncyBuZXZlciBiZWVuIHVzZWQgYnkgYW55IHVzZXJzcGFjZSBvdGhl
-ciB0aGFuIElHVC4KClNpZ25lZC1vZmYtYnk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3Ry
-YW5kLm5ldD4KUmV2aWV3ZWQtYnk6IERhbmllbCBWZXR0ZXIgPGRhbmllbC52ZXR0ZXJAZmZ3bGwu
-Y2g+Ci0tLQogdGVzdHMvaTkxNS9nZW1fY3R4X3JpbmdzaXplLmMgfCAzNDUgLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogdGVzdHMvbWVzb24uYnVpbGQgICAgICAgICAgICAgfCAg
-IDEgLQogMiBmaWxlcyBjaGFuZ2VkLCAzNDYgZGVsZXRpb25zKC0pCiBkZWxldGUgbW9kZSAxMDA2
-NDQgdGVzdHMvaTkxNS9nZW1fY3R4X3JpbmdzaXplLmMKCmRpZmYgLS1naXQgYS90ZXN0cy9pOTE1
-L2dlbV9jdHhfcmluZ3NpemUuYyBiL3Rlc3RzL2k5MTUvZ2VtX2N0eF9yaW5nc2l6ZS5jCmRlbGV0
-ZWQgZmlsZSBtb2RlIDEwMDY0NAppbmRleCA2MDE4N2I3Yy4uMDAwMDAwMDAKLS0tIGEvdGVzdHMv
-aTkxNS9nZW1fY3R4X3JpbmdzaXplLmMKKysrIC9kZXYvbnVsbApAQCAtMSwzNDUgKzAsMCBAQAot
-LyoKLSAqIENvcHlyaWdodCDCqSAyMDE5IEludGVsIENvcnBvcmF0aW9uCi0gKgotICogUGVybWlz
-c2lvbiBpcyBoZXJlYnkgZ3JhbnRlZCwgZnJlZSBvZiBjaGFyZ2UsIHRvIGFueSBwZXJzb24gb2J0
-YWluaW5nIGEKLSAqIGNvcHkgb2YgdGhpcyBzb2Z0d2FyZSBhbmQgYXNzb2NpYXRlZCBkb2N1bWVu
-dGF0aW9uIGZpbGVzICh0aGUgIlNvZnR3YXJlIiksCi0gKiB0byBkZWFsIGluIHRoZSBTb2Z0d2Fy
-ZSB3aXRob3V0IHJlc3RyaWN0aW9uLCBpbmNsdWRpbmcgd2l0aG91dCBsaW1pdGF0aW9uCi0gKiB0
-aGUgcmlnaHRzIHRvIHVzZSwgY29weSwgbW9kaWZ5LCBtZXJnZSwgcHVibGlzaCwgZGlzdHJpYnV0
-ZSwgc3VibGljZW5zZSwKLSAqIGFuZC9vciBzZWxsIGNvcGllcyBvZiB0aGUgU29mdHdhcmUsIGFu
-ZCB0byBwZXJtaXQgcGVyc29ucyB0byB3aG9tIHRoZQotICogU29mdHdhcmUgaXMgZnVybmlzaGVk
-IHRvIGRvIHNvLCBzdWJqZWN0IHRvIHRoZSBmb2xsb3dpbmcgY29uZGl0aW9uczoKLSAqCi0gKiBU
-aGUgYWJvdmUgY29weXJpZ2h0IG5vdGljZSBhbmQgdGhpcyBwZXJtaXNzaW9uIG5vdGljZSAoaW5j
-bHVkaW5nIHRoZSBuZXh0Ci0gKiBwYXJhZ3JhcGgpIHNoYWxsIGJlIGluY2x1ZGVkIGluIGFsbCBj
-b3BpZXMgb3Igc3Vic3RhbnRpYWwgcG9ydGlvbnMgb2YgdGhlCi0gKiBTb2Z0d2FyZS4KLSAqCi0g
-KiBUSEUgU09GVFdBUkUgSVMgUFJPVklERUQgIkFTIElTIiwgV0lUSE9VVCBXQVJSQU5UWSBPRiBB
-TlkgS0lORCwgRVhQUkVTUyBPUgotICogSU1QTElFRCwgSU5DTFVESU5HIEJVVCBOT1QgTElNSVRF
-RCBUTyBUSEUgV0FSUkFOVElFUyBPRiBNRVJDSEFOVEFCSUxJVFksCi0gKiBGSVRORVNTIEZPUiBB
-IFBBUlRJQ1VMQVIgUFVSUE9TRSBBTkQgTk9OSU5GUklOR0VNRU5ULiAgSU4gTk8gRVZFTlQgU0hB
-TEwKLSAqIFRIRSBBVVRIT1JTIE9SIENPUFlSSUdIVCBIT0xERVJTIEJFIExJQUJMRSBGT1IgQU5Z
-IENMQUlNLCBEQU1BR0VTIE9SIE9USEVSCi0gKiBMSUFCSUxJVFksIFdIRVRIRVIgSU4gQU4gQUNU
-SU9OIE9GIENPTlRSQUNULCBUT1JUIE9SIE9USEVSV0lTRSwgQVJJU0lORwotICogRlJPTSwgT1VU
-IE9GIE9SIElOIENPTk5FQ1RJT04gV0lUSCBUSEUgU09GVFdBUkUgT1IgVEhFIFVTRSBPUiBPVEhF
-UiBERUFMSU5HUwotICogSU4gVEhFIFNPRlRXQVJFLgotICovCi0KLSNpbmNsdWRlIDxlcnJuby5o
-PgotI2luY2x1ZGUgPGZjbnRsLmg+Ci0jaW5jbHVkZSA8aW50dHlwZXMuaD4KLSNpbmNsdWRlIDxt
-YXRoLmg+Ci0jaW5jbHVkZSA8c2lnbmFsLmg+Ci0jaW5jbHVkZSA8c3lzL2lvY3RsLmg+Ci0jaW5j
-bHVkZSA8c3lzL3R5cGVzLmg+Ci0jaW5jbHVkZSA8dW5pc3RkLmg+Ci0KLSNpbmNsdWRlICJkcm10
-ZXN0LmgiCi0jaW5jbHVkZSAiaTkxNS9nZW0uaCIKLSNpbmNsdWRlICJpOTE1L2dlbV9jb250ZXh0
-LmgiCi0jaW5jbHVkZSAiaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmgiCi0jaW5jbHVkZSAiaW9j
-dGxfd3JhcHBlcnMuaCIgLyogZ2VtX3dhaXQoKSEgKi8KLSNpbmNsdWRlICJzd19zeW5jLmgiCi0K
-LXN0YXRpYyBib29sIGhhc19yaW5nc2l6ZShpbnQgaTkxNSkKLXsKLQlzdHJ1Y3QgZHJtX2k5MTVf
-Z2VtX2NvbnRleHRfcGFyYW0gcCA9IHsKLQkJLnBhcmFtID0gSTkxNV9DT05URVhUX1BBUkFNX1JJ
-TkdTSVpFLAotCX07Ci0KLQlyZXR1cm4gX19nZW1fY29udGV4dF9nZXRfcGFyYW0oaTkxNSwgJnAp
-ID09IDA7Ci19Ci0KLXN0YXRpYyB2b2lkIHRlc3RfaWRlbXBvdGVudChpbnQgaTkxNSkKLXsKLQlz
-dHJ1Y3QgZHJtX2k5MTVfZ2VtX2NvbnRleHRfcGFyYW0gcCA9IHsKLQkJLnBhcmFtID0gSTkxNV9D
-T05URVhUX1BBUkFNX1JJTkdTSVpFLAotCX07Ci0JdWludDMyX3Qgc2F2ZWQ7Ci0KLQkvKgotCSAq
-IFNpbXBsZSB0ZXN0IHRvIHZlcmlmeSB0aGF0IHdlIGFyZSBhYmxlIHRvIHJlYWQgYmFjayB0aGUg
-c2FtZQotCSAqIHZhbHVlIGFzIHdlIHNldC4KLQkgKi8KLQotCWdlbV9jb250ZXh0X2dldF9wYXJh
-bShpOTE1LCAmcCk7Ci0Jc2F2ZWQgPSBwLnZhbHVlOwotCi0JZm9yICh1aW50MzJfdCB4ID0gMSA8
-PCAxMjsgeCA8PSAxMjggPDwgMTI7IHggPDw9IDEpIHsKLQkJcC52YWx1ZSA9IHg7Ci0JCWdlbV9j
-b250ZXh0X3NldF9wYXJhbShpOTE1LCAmcCk7Ci0JCWdlbV9jb250ZXh0X2dldF9wYXJhbShpOTE1
-LCAmcCk7Ci0JCWlndF9hc3NlcnRfZXFfdTMyKHAudmFsdWUsIHgpOwotCX0KLQotCXAudmFsdWUg
-PSBzYXZlZDsKLQlnZW1fY29udGV4dF9zZXRfcGFyYW0oaTkxNSwgJnApOwotfQotCi1zdGF0aWMg
-dm9pZCB0ZXN0X2ludmFsaWQoaW50IGk5MTUpCi17Ci0Jc3RydWN0IGRybV9pOTE1X2dlbV9jb250
-ZXh0X3BhcmFtIHAgPSB7Ci0JCS5wYXJhbSA9IEk5MTVfQ09OVEVYVF9QQVJBTV9SSU5HU0laRSwK
-LQl9OwotCXVpbnQ2NF90IGludmFsaWRbXSA9IHsKLQkJMCwgMSwgNDA5NSwgNDA5NywgODE5MSwg
-ODE5MywKLQkJLyogdXBwZXIgbGltaXQgbWF5IGJlIEhXIGRlcGVuZGVudCwgYXRtIGl0IGlzIDUx
-MktpQiAqLwotCQkoNTEyIDw8IDEwKSAtIDEsICg1MTIgPDwgMTApICsgMSwKLQkJLTEsIC0xdQot
-CX07Ci0JdWludDMyX3Qgc2F2ZWQ7Ci0KLQkvKgotCSAqIFRoZSBIVyBvbmx5IGFjY2VwdHMgY2Vy
-dGFpbiBhbGlnbmVkIHZhbHVlcyBhbmQgc28gd2UgcmVqZWN0Ci0JICogYW55IGludmFsaWQgc2l6
-ZXMgc3BlY2lmaWVkIGJ5IHRoZSB1c2VyLgotCSAqCi0JICogQ3VycmVudGx5LCB0aGUgSFcgb25s
-eSBhY2NlcHRzIDRLaUIgLSA1MTJLaUIgaW4gNEsgaW5jcmVtZW50cywKLQkgKiBhbmQgaXMgdW5s
-aWtlbHkgdG8gZXZlciBhY2NlcHQgc21hbGxlci4KLQkgKi8KLQotCWdlbV9jb250ZXh0X2dldF9w
-YXJhbShpOTE1LCAmcCk7Ci0Jc2F2ZWQgPSBwLnZhbHVlOwotCi0JZm9yIChpbnQgaSA9IDA7IGkg
-PCBBUlJBWV9TSVpFKGludmFsaWQpOyBpKyspIHsKLQkJcC52YWx1ZSA9IGludmFsaWRbaV07Ci0J
-CWlndF9hc3NlcnRfZXEoX19nZW1fY29udGV4dF9zZXRfcGFyYW0oaTkxNSwgJnApLCAtRUlOVkFM
-KTsKLQkJZ2VtX2NvbnRleHRfZ2V0X3BhcmFtKGk5MTUsICZwKTsKLQkJaWd0X2Fzc2VydF9lcV91
-NjQocC52YWx1ZSwgc2F2ZWQpOwotCX0KLX0KLQotc3RhdGljIGludCBjcmVhdGVfZXh0X2lvY3Rs
-KGludCBpOTE1LAotCQkJICAgIHN0cnVjdCBkcm1faTkxNV9nZW1fY29udGV4dF9jcmVhdGVfZXh0
-ICphcmcpCi17Ci0JaW50IGVycjsKLQotCWVyciA9IDA7Ci0JaWYgKGlndF9pb2N0bChpOTE1LCBE
-Uk1fSU9DVExfSTkxNV9HRU1fQ09OVEVYVF9DUkVBVEVfRVhULCBhcmcpKSB7Ci0JCWVyciA9IC1l
-cnJubzsKLQkJaWd0X2Fzc3VtZShlcnIpOwotCX0KLQotCWVycm5vID0gMDsKLQlyZXR1cm4gZXJy
-OwotfQotCi1zdGF0aWMgdm9pZCB0ZXN0X2NyZWF0ZShpbnQgaTkxNSkKLXsKLQlzdHJ1Y3QgZHJt
-X2k5MTVfZ2VtX2NvbnRleHRfY3JlYXRlX2V4dF9zZXRwYXJhbSBwID0gewotCQkuYmFzZSA9IHsK
-LQkJCS5uYW1lID0gSTkxNV9DT05URVhUX0NSRUFURV9FWFRfU0VUUEFSQU0sCi0JCQkubmV4dF9l
-eHRlbnNpb24gPSAwLCAvKiBlbmQgb2YgY2hhaW4gKi8KLQkJfSwKLQkJLnBhcmFtID0gewotCQkJ
-LnBhcmFtID0gSTkxNV9DT05URVhUX1BBUkFNX1JJTkdTSVpFLAotCQkJLnZhbHVlID0gNTEyIDw8
-IDEwLAotCQl9Ci0JfTsKLQlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2NvbnRleHRfY3JlYXRlX2V4dCBj
-cmVhdGUgPSB7Ci0JCS5mbGFncyA9IEk5MTVfQ09OVEVYVF9DUkVBVEVfRkxBR1NfVVNFX0VYVEVO
-U0lPTlMsCi0JCS5leHRlbnNpb25zID0gdG9fdXNlcl9wb2ludGVyKCZwKSwKLQl9OwotCi0JLyoK
-LQkgKiBDaGVjayB0aGF0IHRoZSByaW5nc2l6ZSBwYXJhbWV0ZXIgaXMgdXNlZCBkdXJpbmcgY29u
-dGV4dCBjb25zdHVjdGlvbi4KLQkgKi8KLQotCWlndF9hc3NlcnRfZXEoY3JlYXRlX2V4dF9pb2N0
-bChpOTE1LCAmY3JlYXRlKSwgIDApOwotCi0JcC5wYXJhbS5jdHhfaWQgPSBjcmVhdGUuY3R4X2lk
-OwotCXAucGFyYW0udmFsdWUgPSAwOwotCWdlbV9jb250ZXh0X2dldF9wYXJhbShpOTE1LCAmcC5w
-YXJhbSk7Ci0JaWd0X2Fzc2VydF9lcShwLnBhcmFtLnZhbHVlLCA1MTIgPDwgMTApOwotCi0JZ2Vt
-X2NvbnRleHRfZGVzdHJveShpOTE1LCBjcmVhdGUuY3R4X2lkKTsKLX0KLQotc3RhdGljIHZvaWQg
-dGVzdF9jbG9uZShpbnQgaTkxNSkKLXsKLQlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2NvbnRleHRfY3Jl
-YXRlX2V4dF9zZXRwYXJhbSBwID0gewotCQkuYmFzZSA9IHsKLQkJCS5uYW1lID0gSTkxNV9DT05U
-RVhUX0NSRUFURV9FWFRfU0VUUEFSQU0sCi0JCQkubmV4dF9leHRlbnNpb24gPSAwLCAvKiBlbmQg
-b2YgY2hhaW4gKi8KLQkJfSwKLQkJLnBhcmFtID0gewotCQkJLnBhcmFtID0gSTkxNV9DT05URVhU
-X1BBUkFNX1JJTkdTSVpFLAotCQkJLnZhbHVlID0gNTEyIDw8IDEwLAotCQl9Ci0JfTsKLQlzdHJ1
-Y3QgZHJtX2k5MTVfZ2VtX2NvbnRleHRfY3JlYXRlX2V4dCBjcmVhdGUgPSB7Ci0JCS5mbGFncyA9
-IEk5MTVfQ09OVEVYVF9DUkVBVEVfRkxBR1NfVVNFX0VYVEVOU0lPTlMsCi0JCS5leHRlbnNpb25z
-ID0gdG9fdXNlcl9wb2ludGVyKCZwKSwKLQl9OwotCi0JLyoKLQkgKiBDaGVjayB0aGF0IHRoZSBy
-aW5nc2l6ZSBpcyBjb3BpZWQgYWNyb3NzIGR1cmluZyBjb250ZXh0IGNsb25pbmcuCi0JICovCi0K
-LQlpZ3RfYXNzZXJ0X2VxKGNyZWF0ZV9leHRfaW9jdGwoaTkxNSwgJmNyZWF0ZSksICAwKTsKLQot
-CXAucGFyYW0uY3R4X2lkID0gZ2VtX2NvbnRleHRfY2xvbmUoaTkxNSwgY3JlYXRlLmN0eF9pZCwK
-LQkJCQkJICAgSTkxNV9DT05URVhUX0NMT05FX0VOR0lORVMsIDApOwotCWlndF9hc3NlcnRfbmVx
-KHAucGFyYW0uY3R4X2lkLCBjcmVhdGUuY3R4X2lkKTsKLQlnZW1fY29udGV4dF9kZXN0cm95KGk5
-MTUsIGNyZWF0ZS5jdHhfaWQpOwotCi0JcC5wYXJhbS52YWx1ZSA9IDA7Ci0JZ2VtX2NvbnRleHRf
-Z2V0X3BhcmFtKGk5MTUsICZwLnBhcmFtKTsKLQlpZ3RfYXNzZXJ0X2VxKHAucGFyYW0udmFsdWUs
-IDUxMiA8PCAxMCk7Ci0KLQlnZW1fY29udGV4dF9kZXN0cm95KGk5MTUsIHAucGFyYW0uY3R4X2lk
-KTsKLX0KLQotc3RhdGljIGludCBfX2V4ZWNidWYoaW50IGk5MTUsIHN0cnVjdCBkcm1faTkxNV9n
-ZW1fZXhlY2J1ZmZlcjIgKmV4ZWNidWYpCi17Ci0JaW50IGVycjsKLQotCWVyciA9IDA7Ci0JaWYg
-KGlvY3RsKGk5MTUsIERSTV9JT0NUTF9JOTE1X0dFTV9FWEVDQlVGRkVSMiwgZXhlY2J1ZikpIHsK
-LQkJZXJyID0gLWVycm5vOwotCQlpZ3RfYXNzdW1lKGVycik7Ci0JfQotCi0JZXJybm8gPSAwOwot
-CXJldHVybiBlcnI7Ci19Ci0KLSNkZWZpbmUgSURMRSAoMSA8PCAwKQotI2RlZmluZSBQTFVHICgx
-IDw8IDEpCi0KLXN0YXRpYyB2b2lkIHNpZ2hhbmRsZXIoaW50IHNpZykKLXsKLX0KLQotc3RhdGlj
-IHVuc2lnbmVkIGludAotbWVhc3VyZV9pbmZsaWdodChpbnQgaTkxNSwgdW5zaWduZWQgaW50IGVu
-Z2luZSwgaW50IHRpbWVvdXQsIHVuc2lnbmVkIGludCBmbGFncykKLXsKLQlJR1RfQ09SS19GRU5D
-RShjb3JrKTsKLQl1bnNpZ25lZCBpbnQgY291bnQ7Ci0JaWd0X3NwaW5fdCAqc3BpbjsKLQlpbnQg
-ZmVuY2U7Ci0JaW50IGVycjsKLQotCWZjbnRsKGk5MTUsIEZfU0VURkwsIGZjbnRsKGk5MTUsIEZf
-R0VURkwpIHwgT19OT05CTE9DSyk7Ci0Jc2lnbmFsKFNJR0FMUk0sIHNpZ2hhbmRsZXIpOwotCWFs
-YXJtKHRpbWVvdXQpOwotCi0JZmVuY2UgPSBpZ3RfY29ya19wbHVnKCZjb3JrLCBpOTE1KTsKLQlz
-cGluID0gaWd0X3NwaW5fbmV3KGk5MTUsCi0JCQkgICAgLmVuZ2luZSA9IGVuZ2luZSwKLQkJCSAg
-ICAuZmVuY2UgPSBmZW5jZSwKLQkJCSAgICAuZmxhZ3MgPSAoZmxhZ3MgJiBQTFVHKSA/IElHVF9T
-UElOX0ZFTkNFX0lOIDogMCk7Ci0JZm9yIChjb3VudCA9IDE7IChlcnIgPSBfX2V4ZWNidWYoaTkx
-NSwgJnNwaW4tPmV4ZWNidWYpKSA9PSAwOyBjb3VudCsrKQotCQk7Ci0JaWd0X2RlYnVnZnNfZHVt
-cChpOTE1LCAiaTkxNV9lbmdpbmVfaW5mbyIpOwotCWlndF9hc3NlcnRfZXEoZXJyLCAtRVdPVUxE
-QkxPQ0spOwotCWNsb3NlKGZlbmNlKTsKLQotCWFsYXJtKDApOwotCXNpZ25hbChTSUdBTFJNLCBT
-SUdfREZMKTsKLQlmY250bChpOTE1LCBGX1NFVEZMLCBmY250bChpOTE1LCBGX0dFVEZMKSAmIH5P
-X05PTkJMT0NLKTsKLQotCWlndF9zcGluX2ZyZWUoaTkxNSwgc3Bpbik7Ci0JaWd0X2NvcmtfdW5w
-bHVnKCZjb3JrKTsKLQotCXJldHVybiBjb3VudDsKLX0KLQotc3RhdGljIHZvaWQgdGVzdF9yZXNp
-emUoaW50IGk5MTUsCi0JCQljb25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmUs
-Ci0JCQl2b2lkICpkYXRhKQotI2RlZmluZSBhc19wb2ludGVyKHgpICh2b2lkICopKHVpbnRwdHJf
-dCkoeCkKLXsKLQlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2NvbnRleHRfcGFyYW0gcCA9IHsKLQkJLnBh
-cmFtID0gSTkxNV9DT05URVhUX1BBUkFNX1JJTkdTSVpFLAotCX07Ci0JdW5zaWduZWQgbG9uZyBm
-bGFncyA9ICh1aW50cHRyX3QpZGF0YTsKLQl1bnNpZ25lZCBpbnQgcHJldlsyXSA9IHt9OwotCXVp
-bnQ2NF90IGVsYXBzZWQ7Ci0JdWludDMyX3Qgc2F2ZWQ7Ci0KLQkvKgotCSAqIFRoZSByaW5nc2l6
-ZSBkaXJlY3RseSBhZmZlY3RzIHRoZSBudW1iZXIgb2YgYmF0Y2hlcyB3ZSBjYW4gaGF2ZQotCSAq
-IGluZmxpZ2h0IC0tIHdoZW4gd2UgcnVuIG91dCBvZiByb29tIGluIHRoZSByaW5nLCB0aGUgY2xp
-ZW50IGlzCi0JICogYmxvY2tlZCAob3IgaWYgT19OT05CTE9DSyBpcyBzcGVjaWZpZWQsIC1FV09V
-TERCTE9DSyBpcyByZXBvcnRlZCkuCi0JICogVGhlIGtlcm5lbCB0aHJvdHRsZXMgdGhlIGNsaWVu
-dCB3aGVuIHRoZXkgZW50ZXIgdGhlIGxhc3QgNEtpQiBwYWdlLAotCSAqIHNvIGFzIHdlIGRvdWJs
-ZSB0aGUgc2l6ZSBvZiB0aGUgcmluZywgd2UgbmVhcmx5IGRvdWJsZSB0aGUgbnVtYmVyCi0JICog
-b2YgcmVxdWVzdHMgd2UgY2FuIGZpdCBhcyAyXm4tMTogaS5lIDAsIDEsIDMsIDcsIDE1LCAzMSBw
-YWdlcy4KLQkgKi8KLQotCWdlbV9jb250ZXh0X2dldF9wYXJhbShpOTE1LCAmcCk7Ci0Jc2F2ZWQg
-PSBwLnZhbHVlOwotCi0JLyogWFhYIGRpc2FibGUgaGFuZ2NoZWNraW5nPyAqLwotCWVsYXBzZWQg
-PSAwOwotCWdlbV9xdWllc2NlbnRfZ3B1KGk5MTUpOwotCWZvciAocC52YWx1ZSA9IDEgPDwgMTI7
-IHAudmFsdWUgPD0gMTI4IDw8IDEyOyBwLnZhbHVlIDw8PSAxKSB7Ci0JCXN0cnVjdCB0aW1lc3Bl
-YyB0diA9IHt9OwotCQl1bnNpZ25lZCBpbnQgY291bnQ7Ci0KLQkJZ2VtX2NvbnRleHRfc2V0X3Bh
-cmFtKGk5MTUsICZwKTsKLQotCQlpZ3RfbnNlY19lbGFwc2VkKCZ0dik7Ci0JCWNvdW50ID0gbWVh
-c3VyZV9pbmZsaWdodChpOTE1LAotCQkJCQkgZS0+ZmxhZ3MsCi0JCQkJCSAxICsgNCAqIGNlaWwo
-ZWxhcHNlZCoxZS05KSwKLQkJCQkJIGZsYWdzKTsKLQkJZWxhcHNlZCA9IGlndF9uc2VjX2VsYXBz
-ZWQoJnR2KTsKLQotCQlpZ3RfaW5mbygiJXM6ICU2bGx4IC0+ICUnNmRcbiIsIGUtPm5hbWUsIHAu
-dmFsdWUsIGNvdW50KTsKLQkJaWd0X2Fzc2VydChjb3VudCA+IDMgKiAocHJldlsxXSAtIHByZXZb
-MF0pIC8gNCArIHByZXZbMV0pOwotCQlpZiAoZmxhZ3MgJiBJRExFKQotCQkJZ2VtX3F1aWVzY2Vu
-dF9ncHUoaTkxNSk7Ci0KLQkJcHJldlswXSA9IHByZXZbMV07Ci0JCXByZXZbMV0gPSBjb3VudDsK
-LQl9Ci0JZ2VtX3F1aWVzY2VudF9ncHUoaTkxNSk7Ci0KLQlwLnZhbHVlID0gc2F2ZWQ7Ci0JZ2Vt
-X2NvbnRleHRfc2V0X3BhcmFtKGk5MTUsICZwKTsKLX0KLQotc3RhdGljIHZvaWQgZ2VtX3Rlc3Rf
-ZWFjaF9lbmdpbmUoaW50IGk5MTUsIGNvbnN0IGNoYXIgKm5hbWUsCi0JCQkJIHZvaWQgKCpmbiko
-aW50IGk5MTUsCi0JCQkJCSAgICBjb25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIg
-KmUsCi0JCQkJCSAgICB2b2lkICpkYXRhKSwKLQkJCQkgdm9pZCAqZGF0YSkKLXsKLQljb25zdCBz
-dHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmU7Ci0KLQlpZ3Rfc3VidGVzdF93aXRoX2R5
-bmFtaWMobmFtZSkgewotCQlfX2Zvcl9lYWNoX3BoeXNpY2FsX2VuZ2luZShpOTE1LCBlKSB7Ci0J
-CQlpZ3RfZHluYW1pY19mKCIlcyIsIGUtPm5hbWUpCi0JCQkJZm4oaTkxNSwgZSwgZGF0YSk7Ci0J
-CX0KLQl9Ci19Ci0KLWlndF9tYWluCi17Ci0JaW50IGk5MTU7Ci0KLQlpZ3RfZml4dHVyZSB7Ci0J
-CWk5MTUgPSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX0lOVEVMKTsKLQkJaWd0X3JlcXVpcmVfZ2Vt
-KGk5MTUpOwotCi0JCWlndF9yZXF1aXJlKGhhc19yaW5nc2l6ZShpOTE1KSk7Ci0JfQotCi0JaWd0
-X3N1YnRlc3QoImlkZW1wb3RlbnQiKQotCQl0ZXN0X2lkZW1wb3RlbnQoaTkxNSk7Ci0KLQlpZ3Rf
-c3VidGVzdCgiaW52YWxpZCIpCi0JCXRlc3RfaW52YWxpZChpOTE1KTsKLQotCWlndF9zdWJ0ZXN0
-KCJjcmVhdGUiKQotCQl0ZXN0X2NyZWF0ZShpOTE1KTsKLQlpZ3Rfc3VidGVzdCgiY2xvbmUiKQot
-CQl0ZXN0X2Nsb25lKGk5MTUpOwotCi0JZ2VtX3Rlc3RfZWFjaF9lbmdpbmUoaTkxNSwgImlkbGUi
-LCB0ZXN0X3Jlc2l6ZSwgYXNfcG9pbnRlcihJRExFKSk7Ci0JZ2VtX3Rlc3RfZWFjaF9lbmdpbmUo
-aTkxNSwgImFjdGl2ZSIsIHRlc3RfcmVzaXplLCAwKTsKLQlnZW1fdGVzdF9lYWNoX2VuZ2luZShp
-OTE1LCAicGx1Z2dlZCIsIHRlc3RfcmVzaXplLCBhc19wb2ludGVyKFBMVUcpKTsKLQotCS8qIFhY
-WCBjdHgtPmVuZ2luZXNbXT8gQ2xvbmUgKGFib3ZlKSBzaG91bGQgYmUgZW5vdWdoICovCi0KLQlp
-Z3RfZml4dHVyZSB7Ci0JCWNsb3NlKGk5MTUpOwotCX0KLX0KZGlmZiAtLWdpdCBhL3Rlc3RzL21l
-c29uLmJ1aWxkIGIvdGVzdHMvbWVzb24uYnVpbGQKaW5kZXggNmFkMzQ0MDkuLjJjNTc5ZDRjIDEw
-MDY0NAotLS0gYS90ZXN0cy9tZXNvbi5idWlsZAorKysgYi90ZXN0cy9tZXNvbi5idWlsZApAQCAt
-MTMzLDcgKzEzMyw2IEBAIGk5MTVfcHJvZ3MgPSBbCiAJJ2dlbV9jdHhfaXNvbGF0aW9uJywKIAkn
-Z2VtX2N0eF9wYXJhbScsCiAJJ2dlbV9jdHhfcGVyc2lzdGVuY2UnLAotCSdnZW1fY3R4X3Jpbmdz
-aXplJywKIAknZ2VtX2N0eF9zaGFyZWQnLAogCSdnZW1fY3R4X3N3aXRjaCcsCiAJJ2dlbV9ldmlj
-dF9hbGlnbm1lbnQnLAotLSAKMi4zMS4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVk
-ZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2lndC1kZXYK
+I'm trying to clean up some of our uAPI technical debt in i915.  One of the
+biggest areas we have right now is context mutability.  There's no good
+reason why things like the set of engines or the VM should be able to be
+changed on the fly and no "real" userspace actually relies on this
+functionality.  It does, however, make for a good excuse for tests and lots
+of bug reports as things like swapping out the set of engines under load
+break randomly.  The solution here is to stop allowing that behavior and
+simplify the i915 internals.
+
+In particular, we'd like to remove the following from the i915 API:
+
+ 1. I915_CONTEXT_CLONE_*.  These are only used by IGT and have never been
+    used by any "real" userspace.
+
+ 2. Changing the VM or set of engines via SETPARAM after they've been
+    "used" by an execbuf or similar.  This would effectively make those
+    parameters create params rather than mutable state.  We can't drop
+    setparam entirely for those because media does use it but we can
+    enforce some rules.
+
+ 3. Unused (by non-IGT userspace) GETPARAM for things like engines.
+
+As much as we'd love to do that, we have a bit of a problem in IGT.  The
+way we handle multi-engine testing today relies heavily on this soon-to-be-
+deprecated functionality.  In particular, the standard flow is usually
+something like this:
+
+    static void run_test1(int fd, uint32_t engine)
+    {
+        igt_spin_t *spin;
+
+        ctx = = gem_context_clone_with_engines(fd, 0);
+        __igt_spin_new(fd, ctx, .engine = engine);
+
+        /* do some testing with ctx */
+
+        igt_spin_free(fd, spin);
+        gem_destroy_context(fd, ctx);
+    }
+
+    igt_main
+    {
+        struct intel_execution_engine2 *e;
+
+        /* Usual fixture code */
+
+        __for_each_physical_engine(fd, e)
+            run_test1(fd, e->flags);
+
+        __for_each_physical_engine(fd, e)
+            run_test2(fd, e->flags);
+    }
+
+Let's walk through what this does:
+
+ 1. __for_each_physical_engine calls intel_init_engine_list() which resets
+    the set of engines on ctx0 to the full set of engines available as per
+    the engine query.  On older kernels/hardware where we don't have the
+    engines query, it leaves the set alone.
+
+ 2. intel_init_engine_list() also returns a set of engines for iteration
+    and __for_each_physical_engine() sets up a for loop to walk the set.
+
+ 3. gem_context_clone_with_engines() creates a new context using
+    I915_CONTEXT_CONTEXT_CLONE_ENGINES (not used by anything other than
+    IGT) to ask that the newly created context has the same set of engines
+    as ctx0.  Remember we changed that at the start of loop iteration!
+
+ 4. When the context is passed to __igt_spin_new(), it calls
+    gem_context_lookup_engine which does a GETPARAM to introspet the set of
+    engines on the context and figure out the engine class.
+
+If you've been keeping track, this trivial and extremely common example
+uses every single one of these soon-to-be-deprecated APIs even though the
+test author may be completely obvious to it.  It also means that getting
+rid of IGT's use of them is going to require some fairly deep surgery.
+
+The approach proposed and partially implemented here is to add a new
+wrapper struct intel_ctx_t which wraps a GEM context handle as well as the
+full set of parameters used to create it, represented by intel_ctx_cfg_t.
+We can then use the context anywhere we would regularly use a context, we
+just have to do ctx->id.  If we want to clone it, we can do so by re-using
+the create parameters by calling intel_ctx_create(fd, &old_ctx->cfg);
+
+Along with the above rework (which got long, sorry) I've got a few other
+patches in here which delete tests which exist expressly to test APIs that
+are on the chopping block.
+
+--Jason
+
+
+Cc: Daniel Vetter <daniel@ffwll.ch>
+
+Jason Ekstrand (74):
+  tests/i915: Drop gem_ctx_ringsize
+  tests/i915/gem_exec_balancer: Drop the ringsize subtest
+  tests/i915/gem_exec_endless: Stop setting the ring size
+  tests/i915/gem_ctx_param: Drop the zeromap subtests
+  tests/i915: Drop gem_ctx_clone
+  lib/i915/gem_engine_topology: Expose the __query_engines helper
+  lib/i915/gem_context: Add gem_context_create_ext helpers
+  lib: Add an intel_ctx wrapper struct and helpers (v2)
+  lib/i915/gem_engine_topology: Rework query_engine_list()
+  lib/i915/gem_engine_topology: Factor out static engine listing
+  lib/i915/gem_engine_topology: Add an iterator which doesn't munge
+    contexts
+  lib/i915/gem_engine_topology: Add an iterator for intel_ctx_t
+  tests/i915/gem_exec_basic: Convert to intel_ctx_t
+  lib/igt_spin: Rename igt_spin_factory::ctx to ctx_id
+  lib/igt_spin: Support intel_ctx_t
+  tests/i915/gem_exec_fence: Move the engine data into
+    inter_engine_context
+  tests/i915/gem_exec_fence: Convert to intel_ctx_t
+  tests/i915/gem_exec_schedule: Convert to intel_ctx_t
+  tests/i915/perf_pmu: Convert to intel_ctx_t
+  tests/i915/gem_exec_nop: Convert to intel_ctx_t
+  tests/i915/gem_exec_reloc: Convert to intel_ctx_t
+  tests/i915/gem_busy: Convert to intel_ctx_t
+  tests/i915/gem_ctx_isolation: Convert to intel_ctx_t
+  tests/i915/gem_exec_async: Convert to intel_ctx_t
+  tests/i915/sysfs_clients: Convert to intel_ctx_t
+  tests/i915/gem_exec_fair: Convert to intel_ctx_t
+  tests/i915/gem_spin_batch: Convert to intel_ctx_t
+  tests/i915/gem_exec_store: Convert to intel_ctx_t
+  tests/amdgpu/amd_prime: Convert to intel_ctx_t
+  tests/i915/i915_hangman: Convert to intel_ctx_t
+  tests/i915/gem_ringfill: Convert to intel_ctx_t
+  tests/prime_busy: Convert to intel_ctx_t
+  tests/prime_vgem: Convert to intel_ctx_t
+  tests/gem_exec_whisper: Convert to intel_ctx_t
+  tests/i915/gem_ctx_exec: Stop cloning contexts in close_race
+  tests/i915/gem_ctx_exec: Convert to intel_ctx_t
+  tests/i915/gem_exec_suspend: Convert to intel_ctx_t
+  tests/i915/gem_sync: Convert to intel_ctx_t
+  tests/i915/gem_userptr_blits: Convert to intel_ctx_t
+  tests/i915/gem_wait: Convert to intel_ctx_t
+  tests/i915/gem_request_retire: Convert to intel_ctx_t
+  tests/i915/gem_ctx_shared: Convert to intel_ctx_t
+  tests/i915/gem_ctx_shared: Stop cloning contexts
+  tests/i915/gem_create: Convert to intel_ctx_t
+  tests/i915/gem_ctx_switch: Convert to intel_ctx_t
+  tests/i915/gem_exec_parallel: Convert to intel_ctx_t
+  tests/i915/gem_exec_latency: Convert to intel_ctx_t
+  tests/i915/gem_watchdog: Convert to intel_ctx_t
+  tests/i915/gem_shrink: Convert to intel_ctx_t
+  tests/i915/gem_exec_params: Convert to intel_ctx_t
+  tests/i915/gem_exec_gttfill: Convert to intel_ctx_t
+  tests/i915/gem_exec_capture: Convert to intel_ctx_t
+  tests/i915/gem_exec_create: Convert to intel_ctx_t
+  tests/i915/gem_exec_await: Convert to intel_ctx_t
+  tests/i915/gem_ctx_persistence: Drop the clone subtest
+  tests/i915/gem_ctx_persistence: Drop the engine replace subtests
+  tests/i915/gem_ctx_persistence: Convert to intel_ctx_t
+  tests/i915/module_load: Convert to intel_ctx_t
+  tests/i915/pm_rc6_residency: Convert to intel_ctx_t
+  tests/i915/gem_cs_tlb: Convert to intel_ctx_t
+  tests/core_hotplug: Convert to intel_ctx_t
+  tests/i915/gem_exec_balancer: Stop cloning engines
+  tests/i915/gem_exec_balancer: Don't reset engines on a context
+  tests/i915/gem_exec_balancer: Stop munging ctx0 engines
+  tests/i915/gem_exec_endless: Stop munging ctx0 engines
+  lib/i915: Use for_each_physical_ring for submission tests
+  tests/i915/gem_ctx_engines: Rework execute-one*
+  tests/i915/gem_ctx_engines: Use better engine iteration
+  tests/i915/gem_ctx_engines: Drop the idempotent subtest
+  tests/i915/gem_ctx_create: Convert benchmarks to intel_ctx_t
+  lib/i915/gem_context: Delete all the context clone/copy stuff
+  tests/i915/gem_ctx_engines: Delete the libapi subtest
+  lib/igt_dummyload: Stop supporting ALL_ENGINES without an intel_ctx_t
+  lib/i915/gem_engine_topology: Delete the old physical engine iterators
+
+ lib/i915/gem_context.c             | 206 ++-----
+ lib/i915/gem_context.h             |  19 +-
+ lib/i915/gem_engine_topology.c     | 142 +++--
+ lib/i915/gem_engine_topology.h     |  29 +-
+ lib/i915/gem_submission.c          |  13 +-
+ lib/igt_dummyload.c                |  13 +-
+ lib/igt_dummyload.h                |   6 +-
+ lib/igt_gt.c                       |   2 +-
+ lib/intel_ctx.c                    | 177 ++++++
+ lib/intel_ctx.h                    | 112 ++++
+ lib/meson.build                    |   1 +
+ tests/amdgpu/amd_prime.c           |  10 +-
+ tests/core_hotunplug.c             |   6 +-
+ tests/i915/gem_busy.c              |  77 +--
+ tests/i915/gem_create.c            |  14 +-
+ tests/i915/gem_cs_tlb.c            |  10 +-
+ tests/i915/gem_ctx_clone.c         | 450 ---------------
+ tests/i915/gem_ctx_create.c        |  76 +--
+ tests/i915/gem_ctx_engines.c       | 239 ++------
+ tests/i915/gem_ctx_exec.c          |  19 +-
+ tests/i915/gem_ctx_isolation.c     | 112 ++--
+ tests/i915/gem_ctx_param.c         |  33 --
+ tests/i915/gem_ctx_persistence.c   | 435 ++++----------
+ tests/i915/gem_ctx_ringsize.c      | 345 ------------
+ tests/i915/gem_ctx_shared.c        | 335 ++++++-----
+ tests/i915/gem_ctx_switch.c        | 115 ++--
+ tests/i915/gem_eio.c               |   2 +-
+ tests/i915/gem_exec_async.c        |  32 +-
+ tests/i915/gem_exec_await.c        |  20 +-
+ tests/i915/gem_exec_balancer.c     | 293 ++++------
+ tests/i915/gem_exec_basic.c        |   7 +-
+ tests/i915/gem_exec_capture.c      |  30 +-
+ tests/i915/gem_exec_create.c       |   9 +-
+ tests/i915/gem_exec_endless.c      |  14 +-
+ tests/i915/gem_exec_fair.c         | 112 ++--
+ tests/i915/gem_exec_fence.c        | 302 +++++-----
+ tests/i915/gem_exec_gttfill.c      |  15 +-
+ tests/i915/gem_exec_latency.c      | 118 ++--
+ tests/i915/gem_exec_nop.c          | 156 ++---
+ tests/i915/gem_exec_parallel.c     |  29 +-
+ tests/i915/gem_exec_params.c       |   4 +-
+ tests/i915/gem_exec_reloc.c        | 102 ++--
+ tests/i915/gem_exec_schedule.c     | 876 +++++++++++++++--------------
+ tests/i915/gem_exec_store.c        |  36 +-
+ tests/i915/gem_exec_suspend.c      |  52 +-
+ tests/i915/gem_exec_whisper.c      |  83 ++-
+ tests/i915/gem_request_retire.c    |  17 +-
+ tests/i915/gem_ringfill.c          |  48 +-
+ tests/i915/gem_shrink.c            |  37 +-
+ tests/i915/gem_spin_batch.c        |  79 +--
+ tests/i915/gem_sync.c              | 159 +++---
+ tests/i915/gem_userptr_blits.c     |  25 +-
+ tests/i915/gem_vm_create.c         |   4 +-
+ tests/i915/gem_wait.c              |  20 +-
+ tests/i915/gem_watchdog.c          | 167 ++----
+ tests/i915/gem_workarounds.c       |   2 +-
+ tests/i915/i915_hangman.c          |  37 +-
+ tests/i915/i915_module_load.c      |   7 +-
+ tests/i915/i915_pm_rc6_residency.c |   7 +-
+ tests/i915/perf_pmu.c              | 226 ++++----
+ tests/i915/sysfs_clients.c         |  87 +--
+ tests/meson.build                  |   2 -
+ tests/prime_busy.c                 |  19 +-
+ tests/prime_vgem.c                 |  35 +-
+ 64 files changed, 2785 insertions(+), 3481 deletions(-)
+ create mode 100644 lib/intel_ctx.c
+ create mode 100644 lib/intel_ctx.h
+ delete mode 100644 tests/i915/gem_ctx_clone.c
+ delete mode 100644 tests/i915/gem_ctx_ringsize.c
+
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
