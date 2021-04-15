@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
- [IPv6:2607:f8b0:4864:20::434])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 725FB6EAD9
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:13:41 +0000 (UTC)
-Received: by mail-pf1-x434.google.com with SMTP id c17so16719778pfn.6
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:13:41 -0700 (PDT)
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
+ [IPv6:2607:f8b0:4864:20::52b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 606A86EAD9
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:13:44 +0000 (UTC)
+Received: by mail-pg1-x52b.google.com with SMTP id t22so17601045pgu.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:13:44 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 15 Apr 2021 14:11:43 -0500
-Message-Id: <20210415191145.2137858-73-jason@jlekstrand.net>
+Date: Thu, 15 Apr 2021 14:11:45 -0500
+Message-Id: <20210415191145.2137858-75-jason@jlekstrand.net>
 In-Reply-To: <20210415191145.2137858-1-jason@jlekstrand.net>
 References: <20210415191145.2137858-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 72/74] tests/i915/gem_ctx_engines: Delete
- the libapi subtest
+Subject: [igt-dev] [PATCH i-g-t 74/74] lib/i915/gem_engine_topology: Delete
+ the old physical engine iterators
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,100 +27,132 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-It just tests enumeration APIs that we're about to delete.
 ---
- tests/i915/gem_ctx_engines.c | 71 ------------------------------------
- 1 file changed, 71 deletions(-)
+ lib/i915/gem_engine_topology.c | 58 ----------------------------------
+ lib/i915/gem_engine_topology.h | 15 ---------
+ 2 files changed, 73 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
-index c353eae7..3009912b 100644
---- a/tests/i915/gem_ctx_engines.c
-+++ b/tests/i915/gem_ctx_engines.c
-@@ -558,74 +558,6 @@ static void independent_all(int i915, const intel_ctx_t *ctx)
- 	igt_waitchildren();
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index ec891dab..38da2003 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -79,25 +79,6 @@ int __gem_query_engines(int fd,
+ 	return __gem_query(fd, &query);
  }
  
--static void libapi(int i915)
+-static void ctx_map_engines(int fd, struct intel_engine_data *ed,
+-			    struct drm_i915_gem_context_param *param)
 -{
--	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 64) = {};
--	struct drm_i915_gem_context_param p = {
--		.ctx_id = gem_context_create(i915),
--		.param = I915_CONTEXT_PARAM_ENGINES,
--		.value = to_user_pointer(&engines),
--	};
--	const struct intel_execution_engine2 *e;
--	unsigned int count, idx;
+-	struct i915_context_param_engines *engines =
+-			from_user_pointer(param->value);
+-	int i = 0;
 -
--	p.size = sizeof(struct i915_context_param_engines);
--	gem_context_set_param(i915, &p);
--
--	/* An empty context should be a short loop */
--	count = 0;
--	for_each_context_engine(i915, p.ctx_id, e)
--		count++;
--	igt_assert_eq(count, 0);
--
--	p.size += sizeof(struct i915_engine_class_instance);
--	engine_class(&engines, 0) = -1;
--	engine_instance(&engines, 0) = -1;
--	gem_context_set_param(i915, &p);
--
--	/* We report all engines from the context, even if invalid/unusable */
--	count = 0;
--	for_each_context_engine(i915, p.ctx_id, e) {
--		igt_assert_eq(e->class, engine_class(&engines, 0));
--		igt_assert_eq(e->instance, engine_instance(&engines, 0));
--		count++;
--	}
--	igt_assert_eq(count, 1);
--
--	/* Check that every known engine can be found from the context map */
--	idx = 0;
--	p.size = sizeof(struct i915_context_param_engines);
--	p.size += sizeof(struct i915_engine_class_instance);
--	for (engine_class(&engines, idx) = 0;
--	     engine_class(&engines, idx) < 16;
--	     engine_class(&engines, idx)++) {
--		for (engine_instance(&engines, idx) = 0;
--		     engine_instance(&engines, idx) < 16;
--		     engine_instance(&engines, idx)++) {
--			if (__gem_context_set_param(i915, &p))
--				break;
--
--			count = 0;
--			for_each_context_engine(i915, p.ctx_id, e) {
--				igt_assert_eq(e->class,
--					      engine_class(&engines, count));
--				igt_assert_eq(e->instance,
--					      engine_instance(&engines, count));
--				count++;
--			}
--			igt_assert_eq(count, idx + 1);
--
--			engines.engines[(idx + 1) % 64] = engines.engines[idx];
--			idx = (idx + 1) % 64;
--
--			p.size = sizeof(struct i915_context_param_engines);
--			p.size += (idx + 1) * sizeof(struct i915_engine_class_instance);
--		}
+-	for (typeof(engines->engines[0]) *p = &engines->engines[0];
+-	     i < ed->nengines; i++, p++) {
+-		p->engine_class = ed->engines[i].class;
+-		p->engine_instance = ed->engines[i].instance;
 -	}
 -
--	gem_context_destroy(i915, p.ctx_id);
+-	param->size = offsetof(typeof(*engines), engines[i]);
+-	engines->extensions = 0;
+-
+-	gem_context_set_param(fd, param);
 -}
 -
- igt_main
- {
- 	const struct intel_execution_engine2 *e;
-@@ -671,9 +603,6 @@ igt_main
- 			independent_all(i915, ctx);
- 	}
- 
--	igt_subtest("libapi")
--		libapi(i915);
--
- 	igt_fixture
- 		igt_stop_hang_detector();
+ static const char *class_names[] = {
+ 	[I915_ENGINE_CLASS_RENDER]	  = "rcs",
+ 	[I915_ENGINE_CLASS_COPY]	  = "bcs",
+@@ -158,11 +139,6 @@ static int __query_engine_list(int fd, struct intel_engine_data *ed)
+ 	return 0;
  }
+ 
+-static void query_engine_list(int fd, struct intel_engine_data *ed)
+-{
+-	igt_assert_eq(__query_engine_list(fd, ed), 0);
+-}
+-
+ struct intel_execution_engine2 *
+ intel_get_current_engine(struct intel_engine_data *ed)
+ {
+@@ -267,40 +243,6 @@ static int gem_topology_get_param(int fd,
+ 	return 0;
+ }
+ 
+-struct intel_engine_data intel_init_engine_list(int fd, uint32_t ctx_id)
+-{
+-	DEFINE_CONTEXT_ENGINES_PARAM(engines, param, ctx_id, GEM_MAX_ENGINES);
+-	struct intel_engine_data engine_data = { };
+-	int i;
+-
+-	if (gem_topology_get_param(fd, &param)) {
+-		/* if kernel does not support engine/context mapping */
+-		return intel_engine_list_for_static(fd);
+-	}
+-
+-	if (!param.size) {
+-		query_engine_list(fd, &engine_data);
+-		ctx_map_engines(fd, &engine_data, &param);
+-	} else {
+-		/* engine count can be inferred from size */
+-		param.size -= sizeof(struct i915_context_param_engines);
+-		param.size /= sizeof(struct i915_engine_class_instance);
+-
+-		igt_assert_f(param.size <= GEM_MAX_ENGINES,
+-			     "unsupported engine count\n");
+-
+-		for (i = 0; i < param.size; i++)
+-			init_engine(&engine_data.engines[i],
+-				    engines.engines[i].engine_class,
+-				    engines.engines[i].engine_instance,
+-				    i);
+-
+-		engine_data.nengines = i;
+-	}
+-
+-	return engine_data;
+-}
+-
+ int gem_context_lookup_engine(int fd, uint64_t engine, uint32_t ctx_id,
+ 			      struct intel_execution_engine2 *e)
+ {
+diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+index b2e15c1e..d0fa4590 100644
+--- a/lib/i915/gem_engine_topology.h
++++ b/lib/i915/gem_engine_topology.h
+@@ -43,7 +43,6 @@ bool gem_has_engine_topology(int fd);
+ struct intel_engine_data intel_engine_list_of_physical(int fd);
+ struct intel_engine_data
+ intel_engine_list_for_ctx_cfg(int fd, const intel_ctx_cfg_t *cfg);
+-struct intel_engine_data intel_init_engine_list(int fd, uint32_t ctx_id);
+ 
+ /* iteration functions */
+ struct intel_execution_engine2 *
+@@ -76,25 +75,11 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags);
+ #define for_each_ctx_engine(fd__, ctx__, e__) \
+ 	for_each_ctx_cfg_engine(fd__, &(ctx__)->cfg, e__)
+ 
+-#define for_each_context_engine(fd__, ctx__, e__) \
+-	for (struct intel_engine_data i__ = intel_init_engine_list(fd__, ctx__); \
+-	     ((e__) = intel_get_current_engine(&i__)); \
+-	     intel_next_engine(&i__))
+-
+ #define for_each_physical_engine(fd__, e__) \
+ 	for (struct intel_engine_data i__##e__ = intel_engine_list_of_physical(fd__); \
+ 	     ((e__) = intel_get_current_physical_engine(&i__##e__)); \
+ 	     intel_next_engine(&i__##e__))
+ 
+-/* needs to replace "for_each_physical_engine" when conflicts are fixed */
+-#define ____for_each_physical_engine(fd__, ctx__, e__) \
+-	for (struct intel_engine_data i__##e__ = intel_init_engine_list(fd__, ctx__); \
+-	     ((e__) = intel_get_current_physical_engine(&i__##e__)); \
+-	     intel_next_engine(&i__##e__))
+-
+-#define __for_each_physical_engine(fd__, e__) \
+-	____for_each_physical_engine(fd__, 0, e__)
+-
+ __attribute__((format(scanf, 4, 5)))
+ int gem_engine_property_scanf(int i915, const char *engine, const char *attr,
+ 			      const char *fmt, ...);
 -- 
 2.31.1
 
