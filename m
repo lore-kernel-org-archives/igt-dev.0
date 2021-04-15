@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 24E276E115
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 10:08:38 +0000 (UTC)
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Thu, 15 Apr 2021 13:35:34 +0200
-Message-ID: <4392350.LvFx2qVVIh@jkrzyszt-mobl1.ger.corp.intel.com>
-In-Reply-To: <8be9557312e7cfb27738766dcfbc498d1e0e10b5.camel@linux.intel.com>
-References: <20210408083157.23014-1-janusz.krzysztofik@linux.intel.com>
- <8be9557312e7cfb27738766dcfbc498d1e0e10b5.camel@linux.intel.com>
+Date: Thu, 15 Apr 2021 12:08:19 +0200
+Message-Id: <20210415100819.107223-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [Intel-gfx] [RFC PATCH 1/2] tests/core_hotunplug: Add
- perf health check
+Subject: [igt-dev] [CI i-g-t] intel-ci: Unblock core_hotunplug@hot*bind*
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,28 +15,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: intel-gfx@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gxZtyb2RhLCAxNCBrd2lldG5pYSAyMDIxIDExOjUwOjEwIENFU1QgTWFyY2luIEJlcm5hdG93
-aWN6IHdyb3RlOgo+IE9uIFRodSwgMjAyMS0wNC0wOCBhdCAxMDozMSArMDIwMCwgSmFudXN6IEty
-enlzenRvZmlrIHdyb3RlOgo+ID4gU29tZXRpbWVzIENJIHJlcG9ydHMgc2tpcHMgb2YgcGVyZiBz
-dWJ0ZXN0cyB3aGVuIHJ1biBzdWJzZXF1ZW50bHkKPiA+IGFmdGVyCj4gPiBjb3JlX2hvdHVucGx1
-Zy4gIFRoYXQgbWF5IGJlIGFuIGluZGljYXRpb24gb2YgaXNzdWVzIHdpdGggcmVzdG9yaW5nCj4g
-PiBkZXZpY2UgcGVyZiBmZWF0dXJlcyBvbiBkcml2ZXIgKGhvdClyZWJpbmQuCj4gPiAKPiA+IERl
-dGVjdCBkZXZpY2UgcGVyZiBzdXBwb3J0IGF0IHRlc3Qgc3RhcnQgYW5kIGNoZWNrIGlmIHN0aWxs
-IGF2YWlsYWJsZQo+ID4gYWZ0ZXIgZHJpdmVyIHJlYmluZC4gIElmIHRoYXQgZmFpbHMsIGEgcG9z
-dC1zdWJ0ZXN0IGRldmljZSByZWNvdmVyeQo+ID4gc3RlcCByZXN0b3JlcyB0aGUgZGV2aWNlIHBl
-cmYgc3VwcG9ydCBzbyBubyBzdWJzZXF1ZW50bHkgZXhlY3V0ZWQKPiA+IHRlc3RzCj4gPiBhcmUg
-YWZmZWN0ZWQuCj4gPiAKPiA+IFNpZ25lZC1vZmYtYnk6IEphbnVzeiBLcnp5c3p0b2ZpayA8amFu
-dXN6LmtyenlzenRvZmlrQGxpbnV4LmludGVsLmNvbQouLi4KPiBMR1RNLAo+IEFja2VkLWJ5OiBN
-YXJjaW4gQmVybmF0b3dpY3ogPG1hcmNpbi5iZXJuYXRvd2ljekBsaW51eC5pbnRlbC5jb20+CgpU
-aGFuayB5b3UgTWFyY2luLCBwdXNoZWQuCgpKYW51c3oKCj4gCj4gCj4gCgoKCgpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlz
-dAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9w
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+Commit be529747d8ea ("intel-ci: Broaden core_hotunplug blacklist")
+blamed issues triggered by hot variants[*] as responsible for random
+failures in subsequently executed tests,
+
+According to the issue history[*], last reported occurrences were
+not related to core_hotunplug.  Remove hot*bind* subtests from CI
+blocklist.
+
+[*] https://gitlab.freedesktop.org/drm/intel/-/issues/2644.
+
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Acked-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+---
+ tests/intel-ci/blacklist.txt | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+index 33f92e37f..595fd0ca6 100644
+--- a/tests/intel-ci/blacklist.txt
++++ b/tests/intel-ci/blacklist.txt
+@@ -112,10 +112,10 @@ igt@.*@.*pipe-f($|-.*)
+ # Temporary workarounds for CI-impacting bugs
+ ###############################################
+ 
+-# Currently fails and leaves the machine in a very bad state, and
+-# causes coverage loss for other tests. IOMMU related.
+-# https://gitlab.freedesktop.org/drm/intel/-/issues/2644
+-igt@core_hotunplug@.*(hot|plug).*
++# *plug* subtests still fail and leave the
++# machine in a very bad state, causing coverage
++# loss for other tests.  IOMMU related.
++igt@core_hotunplug@.*plug.*
+ 
+ # hangs several gens of hosts, and has no immediate fix
+ igt@device_reset@reset-bound
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
