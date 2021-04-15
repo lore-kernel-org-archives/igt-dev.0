@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
- [IPv6:2607:f8b0:4864:20::62b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 589116EABB
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:12:31 +0000 (UTC)
-Received: by mail-pl1-x62b.google.com with SMTP id 20so8673394pll.7
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:12:31 -0700 (PDT)
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com
+ [IPv6:2607:f8b0:4864:20::42d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 92BF36EABB
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:12:35 +0000 (UTC)
+Received: by mail-pf1-x42d.google.com with SMTP id a85so16269275pfa.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:12:35 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 15 Apr 2021 14:10:56 -0500
-Message-Id: <20210415191145.2137858-26-jason@jlekstrand.net>
+Date: Thu, 15 Apr 2021 14:10:59 -0500
+Message-Id: <20210415191145.2137858-29-jason@jlekstrand.net>
 In-Reply-To: <20210415191145.2137858-1-jason@jlekstrand.net>
 References: <20210415191145.2137858-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 25/74] tests/i915/sysfs_clients: Convert to
+Subject: [igt-dev] [PATCH i-g-t 28/74] tests/i915/gem_exec_store: Convert to
  intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,287 +28,136 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 ---
- tests/i915/sysfs_clients.c | 87 ++++++++++++++++++++------------------
- 1 file changed, 46 insertions(+), 41 deletions(-)
+ tests/i915/gem_exec_store.c | 36 ++++++++++++++++++++++--------------
+ 1 file changed, 22 insertions(+), 14 deletions(-)
 
-diff --git a/tests/i915/sysfs_clients.c b/tests/i915/sysfs_clients.c
-index 0b7066c0..5e8fcb56 100644
---- a/tests/i915/sysfs_clients.c
-+++ b/tests/i915/sysfs_clients.c
-@@ -18,12 +18,12 @@
+diff --git a/tests/i915/gem_exec_store.c b/tests/i915/gem_exec_store.c
+index 771ee169..e8424439 100644
+--- a/tests/i915/gem_exec_store.c
++++ b/tests/i915/gem_exec_store.c
+@@ -36,7 +36,8 @@
  
- #include "drmtest.h"
- #include "i915/gem.h"
--#include "i915/gem_context.h"
- #include "i915/gem_engine_topology.h"
- #include "i915/gem_mman.h"
- #include "igt_aux.h"
- #include "igt_dummyload.h"
- #include "igt_sysfs.h"
-+#include "intel_ctx.h"
- #include "ioctl_wrappers.h"
+ #define ENGINE_MASK  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
  
- #define __require_within_epsilon(x, ref, tol_up, tol_down) \
-@@ -392,34 +392,26 @@ static uint64_t measured_usleep(unsigned int usec)
- 	return igt_nsec_elapsed(&tv);
- }
- 
--static int reopen_client(int i915)
--{
--	int clone;
--
--	clone = gem_reopen_driver(i915);
--	gem_context_copy_engines(i915, 0, clone, 0);
--	close(i915);
--
--	return clone;
--}
--
- static void
--busy_one(int i915, int clients, const struct intel_execution_engine2 *e)
-+busy_one(int i915, int clients, const intel_ctx_cfg_t *cfg,
-+	 const struct intel_execution_engine2 *e)
+-static void store_dword(int fd, const struct intel_execution_engine2 *e)
++static void store_dword(int fd, const intel_ctx_t *ctx,
++			const struct intel_execution_engine2 *e)
  {
- 	int64_t active, idle, old, other[MAX_CLASS];
- 	struct timespec tv;
-+	const intel_ctx_t *ctx;
- 	igt_spin_t *spin;
- 	uint64_t delay;
- 	int me;
- 
- 	/* Create a fresh client with 0 runtime */
--	i915 = reopen_client(i915);
-+	i915 = gem_reopen_driver(i915);
- 
- 	me = find_me(clients, getpid());
- 	igt_assert(me != -1);
- 
-+	ctx = intel_ctx_create(i915, cfg);
- 	spin = igt_spin_new(i915,
--			    gem_context_clone_with_engines(i915, 0),
-+			    .ctx = ctx,
- 			    .engine = e->flags,
- 			    .flags = IGT_SPIN_POLL_RUN);
- 	igt_spin_busywait_until_started(spin);
-@@ -471,7 +463,7 @@ busy_one(int i915, int clients, const struct intel_execution_engine2 *e)
- 		igt_assert(idle >= active);
- 	}
- 
--	gem_context_destroy(i915, spin->execbuf.rsvd1);
-+	intel_ctx_destroy(i915, ctx);
- 
- 	/* And finally after the executing context is no more */
- 	old = read_runtime(me, e->class);
-@@ -512,28 +504,29 @@ busy_one(int i915, int clients, const struct intel_execution_engine2 *e)
- 	close(i915);
- }
- 
--static void busy_all(int i915, int clients)
-+static void busy_all(int i915, int clients, const intel_ctx_cfg_t *cfg)
- {
- 	const struct intel_execution_engine2 *e;
- 	int64_t active[MAX_CLASS];
- 	int64_t idle[MAX_CLASS];
- 	int64_t old[MAX_CLASS];
- 	uint64_t classes = 0;
-+	const intel_ctx_t *ctx;
- 	igt_spin_t *spin;
- 	int expect = 0;
- 	int64_t delay;
- 	int me;
- 
- 	/* Create a fresh client with 0 runtime */
--	i915 = reopen_client(i915);
-+	i915 = gem_reopen_driver(i915);
- 
- 	me = find_me(clients, getpid());
- 	igt_assert(me != -1);
- 
--	spin = igt_spin_new(i915,
--			    gem_context_clone_with_engines(i915, 0),
-+	ctx = intel_ctx_create(i915, cfg);
-+	spin = igt_spin_new(i915, .ctx = ctx,
- 			    .flags = IGT_SPIN_POLL_RUN);
--	__for_each_physical_engine(i915, e) {
-+	for_each_ctx_engine(i915, ctx, e) {
- 		if (!gem_class_can_store_dword(i915, e->class))
- 			continue;
- 
-@@ -579,7 +572,7 @@ static void busy_all(int i915, int clients)
- 		igt_assert(idle[i] >= active[i]);
- 	}
- 
--	gem_context_destroy(i915, spin->execbuf.rsvd1);
-+	intel_ctx_destroy(i915, ctx);
- 	igt_spin_free(i915, spin);
- 
- 	/* And finally after the executing context is no more */
-@@ -596,17 +589,19 @@ static void busy_all(int i915, int clients)
- }
- 
- static void
--split_child(int i915, int clients,
-+split_child(int i915, int clients, const intel_ctx_cfg_t *cfg,
- 	    const struct intel_execution_engine2 *e,
- 	    int sv)
- {
- 	int64_t runtime[2] = {};
-+	const intel_ctx_t *ctx;
- 	igt_spin_t *spin;
- 	int go = 1;
- 
--	i915 = reopen_client(i915);
-+	i915 = gem_reopen_driver(i915);
- 
--	spin = igt_spin_new(i915, .engine = e->flags);
-+	ctx = intel_ctx_create(i915, cfg);
-+	spin = igt_spin_new(i915, .ctx = ctx, .engine = e->flags);
- 	igt_spin_end(spin);
- 	gem_sync(i915, spin->handle);
- 
-@@ -626,12 +621,14 @@ split_child(int i915, int clients,
- 	igt_spin_free(i915, spin);
- 
- 	runtime[0] = read_runtime(find_me(clients, getpid()), e->class);
-+	intel_ctx_destroy(i915, ctx);
- 	write(sv, runtime, sizeof(runtime));
- }
- 
- static void
--__split(int i915, int clients, const struct intel_execution_engine2 *e, int f,
--	void (*fn)(int i915, int clients,
-+__split(int i915, int clients, const intel_ctx_cfg_t *cfg,
-+	const struct intel_execution_engine2 *e, int f,
-+	void (*fn)(int i915, int clients, const intel_ctx_cfg_t *cfg,
- 		   const struct intel_execution_engine2 *e,
- 		   int sv))
- {
-@@ -652,7 +649,7 @@ __split(int i915, int clients, const struct intel_execution_engine2 *e, int f,
- 
- 		igt_assert(socketpair(AF_UNIX, SOCK_DGRAM, 0, c->sv) == 0);
- 		igt_fork(child, 1)
--			fn(i915, clients, e, c->sv[1]);
-+			fn(i915, clients, cfg, e, c->sv[1]);
- 
- 		read(c->sv[0], &go, sizeof(go));
- 	}
-@@ -720,13 +717,14 @@ __split(int i915, int clients, const struct intel_execution_engine2 *e, int f,
- }
- 
- static void
--split(int i915, int clients, const struct intel_execution_engine2 *e, int f)
-+split(int i915, int clients, const intel_ctx_cfg_t *cfg,
-+      const struct intel_execution_engine2 *e, int f)
- {
--	__split(i915, clients, e, f, split_child);
-+	__split(i915, clients, cfg, e, f, split_child);
- }
- 
- static void
--sema_child(int i915, int clients,
-+sema_child(int i915, int clients, const intel_ctx_cfg_t *cfg,
- 	   const struct intel_execution_engine2 *e,
- 	   int sv)
- {
-@@ -739,9 +737,12 @@ sema_child(int i915, int clients,
- 		.buffer_count = 1,
- 		.flags = e->flags,
- 	};
-+	const intel_ctx_t *ctx;
- 	uint32_t *cs, *sema;
- 
--	i915 = reopen_client(i915);
-+	i915 = gem_reopen_driver(i915);
-+	ctx = intel_ctx_create(i915, cfg);
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+ 	struct drm_i915_gem_exec_object2 obj[2];
+@@ -52,6 +53,7 @@ static void store_dword(int fd, const struct intel_execution_engine2 *e)
+ 	execbuf.flags = e->flags;
+ 	if (gen > 3 && gen < 6)
+ 		execbuf.flags |= I915_EXEC_SECURE;
 +	execbuf.rsvd1 = ctx->id;
  
- 	obj.handle = gem_create(i915, 4096);
- 	obj.offset = obj.handle << 12;
-@@ -771,6 +772,7 @@ sema_child(int i915, int clients,
- 	*sema = 0;
- 	gem_execbuf(i915, &execbuf);
- 	gem_close(i915, obj.handle);
-+	intel_ctx_destroy(i915, ctx);
- 
- 	write(sv, sema, sizeof(*sema));
- 	read(sv, sema, sizeof(*sema));
-@@ -794,9 +796,10 @@ sema_child(int i915, int clients,
+ 	memset(obj, 0, sizeof(obj));
+ 	obj[0].handle = gem_create(fd, 4096);
+@@ -93,7 +95,8 @@ static void store_dword(int fd, const struct intel_execution_engine2 *e)
  }
  
- static void
--sema(int i915, int clients, const struct intel_execution_engine2 *e, int f)
-+sema(int i915, int clients, const intel_ctx_cfg_t *cfg,
-+     const struct intel_execution_engine2 *e, int f)
+ #define PAGES 1
+-static void store_cachelines(int fd, const struct intel_execution_engine2 *e,
++static void store_cachelines(int fd, const intel_ctx_t *ctx,
++			     const struct intel_execution_engine2 *e,
+ 			     unsigned int flags)
  {
--	__split(i915, clients, e, f, sema_child);
-+	__split(i915, clients, cfg, e, f, sema_child);
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+@@ -113,6 +116,7 @@ static void store_cachelines(int fd, const struct intel_execution_engine2 *e,
+ 	execbuf.flags = e->flags;
+ 	if (gen > 3 && gen < 6)
+ 		execbuf.flags |= I915_EXEC_SECURE;
++	execbuf.rsvd1 = ctx->id;
+ 
+ 	obj = calloc(execbuf.buffer_count, sizeof(*obj));
+ 	igt_assert(obj);
+@@ -170,7 +174,7 @@ static void store_cachelines(int fd, const struct intel_execution_engine2 *e,
+ 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
  }
  
- static int read_all(int clients, pid_t pid, int class, uint64_t *runtime)
-@@ -944,21 +947,23 @@ static bool has_busy(int clients)
- static void test_busy(int i915, int clients)
+-static void store_all(int fd)
++static void store_all(int fd, const intel_ctx_t *ctx)
+ {
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+ 	struct drm_i915_gem_exec_object2 obj[2];
+@@ -185,7 +189,7 @@ static void store_all(int fd)
+ 	int i, j;
+ 
+ 	nengine = 0;
+-	__for_each_physical_engine(fd, engine) {
++	for_each_ctx_engine(fd, ctx, engine) {
+ 		if (!gem_class_can_store_dword(fd, engine->class))
+ 			continue;
+ 		nengine++;
+@@ -206,6 +210,7 @@ static void store_all(int fd)
+ 	execbuf.buffer_count = 2;
+ 	if (gen < 6)
+ 		execbuf.flags |= I915_EXEC_SECURE;
++	execbuf.rsvd1 = ctx->id;
+ 
+ 	memset(obj, 0, sizeof(obj));
+ 	obj[0].handle = gem_create(fd, nengine*sizeof(uint32_t));
+@@ -231,7 +236,7 @@ static void store_all(int fd)
+ 
+ 	nengine = 0;
+ 	intel_detect_and_clear_missed_interrupts(fd);
+-	__for_each_physical_engine(fd, engine) {
++	for_each_ctx_engine(fd, ctx, engine) {
+ 		if (!gem_class_can_store_dword(fd, engine->class))
+ 			continue;
+ 
+@@ -322,14 +327,15 @@ static int print_welcome(int fd)
+ 	return ffs(info->gen);
+ }
+ 
+-#define test_each_engine(T, i915, e)  \
+-	igt_subtest_with_dynamic(T) __for_each_physical_engine(i915, e) \
++#define test_each_engine(T, i915, ctx, e)  \
++	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
+ 		for_each_if(gem_class_can_store_dword(i915, (e)->class)) \
+ 			igt_dynamic_f("%s", (e)->name)
+ 
+ igt_main
  {
  	const struct intel_execution_engine2 *e;
-+	intel_ctx_cfg_t cfg;
- 	const int frac[] = { 10, 25, 50 };
++	const intel_ctx_t *ctx = NULL;
+ 	int fd;
  
  	igt_fixture {
- 		igt_require(gem_has_contexts(i915));
- 		igt_require(has_busy(clients));
-+		cfg = intel_ctx_cfg_all_physical(i915);
+@@ -342,24 +348,26 @@ igt_main
+ 			igt_device_set_master(fd);
+ 
+ 		igt_require_gem(fd);
++		ctx = intel_ctx_create_all_physical(fd);
+ 
+ 		igt_fork_hang_detector(fd);
  	}
  
- 	igt_subtest_with_dynamic("busy") {
--		__for_each_physical_engine(i915, e) {
-+		for_each_ctx_cfg_engine(i915, &cfg, e) {
- 			if (!gem_class_can_store_dword(i915, e->class))
- 				continue;
- 			igt_dynamic_f("%s", e->name) {
- 				gem_quiescent_gpu(i915);
- 				igt_fork(child, 1)
--					busy_one(i915, clients, e);
-+					busy_one(i915, clients, &cfg, e);
- 				igt_waitchildren();
- 				gem_quiescent_gpu(i915);
- 			}
-@@ -967,7 +972,7 @@ static void test_busy(int i915, int clients)
- 		igt_dynamic("all") {
- 			gem_quiescent_gpu(i915);
- 			igt_fork(child, 1)
--				busy_all(i915, clients);
-+				busy_all(i915, clients, &cfg);
- 			igt_waitchildren();
- 			gem_quiescent_gpu(i915);
- 		}
-@@ -975,10 +980,10 @@ static void test_busy(int i915, int clients)
+ 	igt_subtest("basic")
+-		store_all(fd);
++		store_all(fd, ctx);
  
- 	for (int i = 0; i < ARRAY_SIZE(frac); i++) {
- 		igt_subtest_with_dynamic_f("split-%d", frac[i]) {
--			__for_each_physical_engine(i915, e) {
-+			for_each_ctx_cfg_engine(i915, &cfg, e) {
- 				igt_dynamic_f("%s", e->name) {
- 					gem_quiescent_gpu(i915);
--					split(i915, clients, e, frac[i]);
-+					split(i915, clients, &cfg, e, frac[i]);
- 					gem_quiescent_gpu(i915);
- 				}
- 			}
-@@ -993,13 +998,13 @@ static void test_busy(int i915, int clients)
+-	test_each_engine("dword", fd, e)
+-		store_dword(fd, e);
++	test_each_engine("dword", fd, ctx, e)
++		store_dword(fd, ctx, e);
  
- 		for (int i = 0; i < ARRAY_SIZE(frac); i++) {
- 			igt_subtest_with_dynamic_f("sema-%d", frac[i]) {
--				__for_each_physical_engine(i915, e) {
-+				for_each_ctx_cfg_engine(i915, &cfg, e) {
- 					if (!gem_class_has_mutable_submission(i915, e->class))
- 						continue;
+-	test_each_engine("cachelines", fd, e)
+-		store_cachelines(fd, e, 0);
++	test_each_engine("cachelines", fd, ctx, e)
++		store_cachelines(fd, ctx, e, 0);
  
- 					igt_dynamic_f("%s", e->name) {
- 						igt_drop_caches_set(i915, DROP_RESET_ACTIVE);
--						sema(i915, clients, e, frac[i]);
-+						sema(i915, clients, &cfg, e, frac[i]);
- 						gem_quiescent_gpu(i915);
- 					}
- 					igt_drop_caches_set(i915, DROP_RESET_ACTIVE);
+-	test_each_engine("pages", fd, e)
+-		store_cachelines(fd, e, PAGES);
++	test_each_engine("pages", fd, ctx, e)
++		store_cachelines(fd, ctx, e, PAGES);
+ 
+ 	igt_fixture {
+ 		igt_stop_hang_detector();
++		intel_ctx_destroy(fd, ctx);
+ 		close(fd);
+ 	}
+ }
 -- 
 2.31.1
 
