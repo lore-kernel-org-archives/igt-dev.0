@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
- [IPv6:2607:f8b0:4864:20::533])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 255516EAC1
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:12:37 +0000 (UTC)
-Received: by mail-pg1-x533.google.com with SMTP id y32so17550117pga.11
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:12:37 -0700 (PDT)
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
+ [IPv6:2607:f8b0:4864:20::62c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7FA676EABF
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:12:41 +0000 (UTC)
+Received: by mail-pl1-x62c.google.com with SMTP id d8so12620634plh.11
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:12:41 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 15 Apr 2021 14:11:00 -0500
-Message-Id: <20210415191145.2137858-30-jason@jlekstrand.net>
+Date: Thu, 15 Apr 2021 14:11:03 -0500
+Message-Id: <20210415191145.2137858-33-jason@jlekstrand.net>
 In-Reply-To: <20210415191145.2137858-1-jason@jlekstrand.net>
 References: <20210415191145.2137858-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 29/74] tests/amdgpu/amd_prime: Convert to
+Subject: [igt-dev] [PATCH i-g-t 32/74] tests/prime_busy: Convert to
  intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -27,53 +27,91 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Written totally blind but I'm pretty sure it's right.
 ---
- tests/amdgpu/amd_prime.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tests/prime_busy.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/tests/amdgpu/amd_prime.c b/tests/amdgpu/amd_prime.c
-index 537b0bcd..cf8a0ad9 100644
---- a/tests/amdgpu/amd_prime.c
-+++ b/tests/amdgpu/amd_prime.c
-@@ -172,6 +172,7 @@ static void unplug(struct cork *c)
- static void i915_to_amd(int i915, int amd, amdgpu_device_handle device)
+diff --git a/tests/prime_busy.c b/tests/prime_busy.c
+index aec76393..5c8e44ab 100644
+--- a/tests/prime_busy.c
++++ b/tests/prime_busy.c
+@@ -39,7 +39,7 @@ static bool prime_busy(struct pollfd *pfd, bool excl)
+ #define HANG 0x4
+ #define POLL 0x8
+ 
+-static void busy(int fd, unsigned ring, unsigned flags)
++static void busy(int fd, const intel_ctx_t *ctx, unsigned ring, unsigned flags)
  {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
-+	intel_ctx_cfg_t cfg;
- 	struct drm_i915_gem_exec_object2 obj[2];
- 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	const int gen = intel_gen(intel_get_drm_devid(fd));
+ 	const uint32_t _bbe = MI_BATCH_BUFFER_END;
+@@ -62,6 +62,7 @@ static void busy(int fd, unsigned ring, unsigned flags)
+ 	execbuf.flags = ring;
+ 	if (gen < 6)
+ 		execbuf.flags |= I915_EXEC_SECURE;
++	execbuf.rsvd1 = ctx->id;
+ 
+ 	memset(obj, 0, sizeof(obj));
+ 	obj[SCRATCH].handle = gem_create(fd, 4096);
+@@ -185,7 +186,7 @@ static void busy(int fd, unsigned ring, unsigned flags)
+ 	close(pfd[SCRATCH].fd);
+ }
+ 
+-static void test_mode(int fd, unsigned int flags)
++static void test_mode(int fd, const intel_ctx_t *ctx, unsigned int flags)
+ {
  	const struct intel_execution_engine2 *e;
-@@ -180,8 +181,10 @@ static void i915_to_amd(int i915, int amd, amdgpu_device_handle device)
- 	unsigned long count;
- 	struct cork c;
+ 	igt_hang_t hang = {};
+@@ -195,7 +196,7 @@ static void test_mode(int fd, unsigned int flags)
+ 	else
+ 		hang = igt_allow_hang(fd, 0, 0);
  
-+	cfg = intel_ctx_cfg_all_physical(i915);
-+
- 	nengine = 0;
--	__for_each_physical_engine(i915, e)
-+	for_each_ctx_cfg_engine(i915, &cfg, e)
- 		engines[nengine++] = e->flags;
- 	igt_require(nengine);
+-	__for_each_physical_engine(fd, e) {
++	for_each_ctx_engine(fd, ctx, e) {
+ 		if (!gem_class_can_store_dword(fd, e->class))
+ 			continue;
  
-@@ -198,14 +201,15 @@ static void i915_to_amd(int i915, int amd, amdgpu_device_handle device)
+@@ -203,7 +204,7 @@ static void test_mode(int fd, unsigned int flags)
+ 			continue;
  
- 	count = 0;
- 	igt_until_timeout(5) {
--		execbuf.rsvd1 = gem_context_clone_with_engines(i915, 0);
-+		const intel_ctx_t *ctx = intel_ctx_create(i915, &cfg);
-+		execbuf.rsvd1 = ctx->id;
+ 		igt_dynamic_f("%s", e->name)
+-			busy(fd, e->flags, flags);
++			busy(fd, ctx, e->flags, flags);
+ 	}
  
- 		for (unsigned n = 0; n < nengine; n++) {
- 			execbuf.flags = engines[n];
- 			gem_execbuf(i915, &execbuf);
+ 	if ((flags & HANG) == 0)
+@@ -214,11 +215,13 @@ static void test_mode(int fd, unsigned int flags)
+ 
+ igt_main
+ {
++	const intel_ctx_t *ctx;
+ 	int fd = -1;
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver_master(DRIVER_INTEL);
+ 		igt_require_gem(fd);
++		ctx = intel_ctx_create_all_physical(fd);
+ 	}
+ 
+ 	igt_subtest_group {
+@@ -237,13 +240,15 @@ igt_main
+ 
+ 		for (const struct mode *m = modes; m->name; m++) {
+ 			igt_subtest_with_dynamic(m->name)
+-				test_mode(fd, m->flags);
++				test_mode(fd, ctx, m->flags);
+ 
+ 			igt_subtest_with_dynamic_f("%s-wait", m->name)
+-				test_mode(fd, m->flags | POLL);
++				test_mode(fd, ctx, m->flags | POLL);
  		}
+ 	}
  
--		gem_context_destroy(i915, execbuf.rsvd1);
-+		intel_ctx_destroy(i915, ctx);
- 		count++;
- 
- 		if (!gem_uses_full_ppgtt(i915))
+-	igt_fixture
++	igt_fixture {
++		intel_ctx_destroy(fd, ctx);
+ 		close(fd);
++	}
+ }
 -- 
 2.31.1
 
