@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
- [IPv6:2607:f8b0:4864:20::1034])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 48FA36EAD1
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:13:29 +0000 (UTC)
-Received: by mail-pj1-x1034.google.com with SMTP id
- ot17-20020a17090b3b51b0290109c9ac3c34so14959466pjb.4
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:13:29 -0700 (PDT)
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
+ [IPv6:2607:f8b0:4864:20::630])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA9D26EAD4
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:13:30 +0000 (UTC)
+Received: by mail-pl1-x630.google.com with SMTP id d8so12621855plh.11
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:13:30 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 15 Apr 2021 14:11:35 -0500
-Message-Id: <20210415191145.2137858-65-jason@jlekstrand.net>
+Date: Thu, 15 Apr 2021 14:11:36 -0500
+Message-Id: <20210415191145.2137858-66-jason@jlekstrand.net>
 In-Reply-To: <20210415191145.2137858-1-jason@jlekstrand.net>
 References: <20210415191145.2137858-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 64/74] tests/i915/gem_exec_balancer: Stop
+Subject: [igt-dev] [PATCH i-g-t 65/74] tests/i915/gem_exec_endless: Stop
  munging ctx0 engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -29,22 +28,22 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 ---
- tests/i915/gem_exec_balancer.c | 2 +-
+ tests/i915/gem_exec_endless.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index 9fc5fe6d..5844b25c 100644
---- a/tests/i915/gem_exec_balancer.c
-+++ b/tests/i915/gem_exec_balancer.c
-@@ -3080,7 +3080,7 @@ static void noheartbeat(int i915)
- 	 * heartbeat has already been disabled.
- 	 */
+diff --git a/tests/i915/gem_exec_endless.c b/tests/i915/gem_exec_endless.c
+index a3e2fa49..5eed8f21 100644
+--- a/tests/i915/gem_exec_endless.c
++++ b/tests/i915/gem_exec_endless.c
+@@ -308,7 +308,7 @@ static void endless_dispatch(int i915, const struct intel_execution_engine2 *e)
+ }
  
--	__for_each_physical_engine(i915, e)
-+	for_each_physical_engine(i915, e)
- 		set_heartbeat(i915, e->name, 0);
+ #define test_each_engine(T, i915, e) \
+-	igt_subtest_with_dynamic(T) __for_each_physical_engine(i915, e) \
++	igt_subtest_with_dynamic(T) for_each_physical_engine(i915, e) \
+ 		for_each_if(gem_class_can_store_dword(i915, (e)->class)) \
+ 			igt_dynamic_f("%s", (e)->name)
  
- 	for (int class = 0; class < 32; class++) {
 -- 
 2.31.1
 
