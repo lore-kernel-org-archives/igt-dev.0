@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
- [IPv6:2607:f8b0:4864:20::629])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 278FB6EAD0
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:13:23 +0000 (UTC)
-Received: by mail-pl1-x629.google.com with SMTP id z22so7504734plo.3
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:13:23 -0700 (PDT)
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
+ [IPv6:2607:f8b0:4864:20::62c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA6E06EAD1
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:13:25 +0000 (UTC)
+Received: by mail-pl1-x62c.google.com with SMTP id u7so10821460plr.6
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:13:25 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 15 Apr 2021 14:11:31 -0500
-Message-Id: <20210415191145.2137858-61-jason@jlekstrand.net>
+Date: Thu, 15 Apr 2021 14:11:33 -0500
+Message-Id: <20210415191145.2137858-63-jason@jlekstrand.net>
 In-Reply-To: <20210415191145.2137858-1-jason@jlekstrand.net>
 References: <20210415191145.2137858-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 60/74] tests/i915/gem_cs_tlb: Convert to
- intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 62/74] tests/i915/gem_exec_balancer: Stop
+ cloning engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,54 +27,90 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+We have the list of engines and bonding info in each case.  Using clone
+is just being lazy for no good reason.
 ---
- tests/i915/gem_cs_tlb.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tests/i915/gem_exec_balancer.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/tests/i915/gem_cs_tlb.c b/tests/i915/gem_cs_tlb.c
-index f72879c3..d87aa829 100644
---- a/tests/i915/gem_cs_tlb.c
-+++ b/tests/i915/gem_cs_tlb.c
-@@ -90,7 +90,8 @@ mmap_coherent(int fd, uint32_t handle, int size)
- 	return ptr;
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index c1b64578..44c9b05d 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -826,8 +826,7 @@ static void bonded_slice(int i915)
+ 		igt_fork(child, count + 1) { /* C: arbitrary background load */
+ 			igt_list_del(&spin->link);
+ 
+-			ctx = gem_context_clone(i915, ctx,
+-						I915_CONTEXT_CLONE_ENGINES, 0);
++			ctx = load_balancer_create(i915, siblings, count);
+ 
+ 			while (!READ_ONCE(*stop)) {
+ 				spin = igt_spin_new(i915,
+@@ -2279,7 +2278,8 @@ static int __execbuf(int i915, struct drm_i915_gem_execbuffer2 *execbuf)
+ 	return err;
  }
  
--static void run_on_ring(int fd, unsigned ring_id, const char *ring_name)
-+static void run_on_ring(int fd, const intel_ctx_t *ctx,
-+			unsigned ring_id, const char *ring_name)
+-static uint32_t *sema(int i915, uint32_t ctx)
++static uint32_t *sema(int i915, struct i915_engine_class_instance *ci,
++		      unsigned int count)
  {
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	struct drm_i915_gem_exec_object2 execobj;
-@@ -116,6 +117,7 @@ static void run_on_ring(int fd, unsigned ring_id, const char *ring_name)
- 	memset(&execbuf, 0, sizeof(execbuf));
- 	execbuf.buffers_ptr = to_user_pointer(&execobj);
- 	execbuf.buffer_count = 1;
-+	execbuf.rsvd1 = ctx->id;
- 	execbuf.flags = ring_id;
+ 	uint32_t *ctl;
+ 	struct drm_i915_gem_exec_object2 batch = {
+@@ -2290,7 +2290,7 @@ static uint32_t *sema(int i915, uint32_t ctx)
+ 	struct drm_i915_gem_execbuffer2 execbuf = {
+ 		.buffers_ptr = to_user_pointer(&batch),
+ 		.buffer_count = 1,
+-		.rsvd1 = gem_context_clone_with_engines(i915, ctx),
++		.rsvd1 = load_balancer_create(i915, ci, count),
+ 	};
  
- 	/* Execute once to allocate a gtt-offset */
-@@ -143,17 +145,19 @@ static void run_on_ring(int fd, unsigned ring_id, const char *ring_name)
- igt_main
+ 	for (int n = 1; n <= 32; n++) {
+@@ -2312,12 +2312,14 @@ static uint32_t *sema(int i915, uint32_t ctx)
+ 	return ctl;
+ }
+ 
+-static void __waits(int i915, int timeout, uint32_t ctx, unsigned int count)
++static void __waits(int i915, int timeout,
++		    struct i915_engine_class_instance *ci,
++		    unsigned int count)
  {
- 	const struct intel_execution_engine2 *e;
-+	const intel_ctx_t *ctx = NULL;
- 	int fd = -1;
+ 	uint32_t *semaphores[count + 1];
  
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_INTEL);
- 		igt_require_gem(fd);
-+		ctx = intel_ctx_create_all_physical(fd);
- 	}
+ 	for (int i = 0; i <= count; i++)
+-		semaphores[i] = sema(i915, ctx);
++		semaphores[i] = sema(i915, ci, count);
  
- 	igt_subtest_with_dynamic("engines") {
--		__for_each_physical_engine(fd, e) {
-+		for_each_ctx_engine(fd, ctx, e) {
- 			igt_dynamic_f("%s", e->name)
--				run_on_ring(fd, e->flags, e->name);
-+				run_on_ring(fd, ctx, e->flags, e->name);
+ 	igt_until_timeout(timeout) {
+ 		int i = rand() % (count + 1);
+@@ -2329,7 +2331,7 @@ static void __waits(int i915, int timeout, uint32_t ctx, unsigned int count)
+ 		if ((*semaphores[i] += rand() % 32) >= 32) {
+ 			*semaphores[i] = 0xffffffff;
+ 			munmap(semaphores[i], 4096);
+-			semaphores[i] = sema(i915, ctx);
++			semaphores[i] = sema(i915, ci, count);
  		}
  	}
  
+@@ -2358,7 +2360,7 @@ static void waits(int i915, int timeout)
+ 		if (count > 1) {
+ 			uint32_t ctx = load_balancer_create(i915, ci, count);
+ 
+-			__waits(i915, timeout, ctx, count);
++			__waits(i915, timeout, ci, count);
+ 
+ 			gem_context_destroy(i915, ctx);
+ 		}
+@@ -2442,8 +2444,7 @@ static void nop(int i915)
+ 				.buffers_ptr = to_user_pointer(&batch),
+ 				.buffer_count = 1,
+ 				.flags = child + 1,
+-				.rsvd1 = gem_context_clone(i915, ctx,
+-							   I915_CONTEXT_CLONE_ENGINES, 0),
++				.rsvd1 = load_balancer_create(i915, ci, count),
+ 			};
+ 			struct timespec tv = {};
+ 			unsigned long nops;
 -- 
 2.31.1
 
