@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
- [IPv6:2607:f8b0:4864:20::634])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 001AC6EABC
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:11:58 +0000 (UTC)
-Received: by mail-pl1-x634.google.com with SMTP id j7so12631224plx.2
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:11:58 -0700 (PDT)
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com
+ [IPv6:2607:f8b0:4864:20::62d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6A846EABB
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:11:55 +0000 (UTC)
+Received: by mail-pl1-x62d.google.com with SMTP id 20so8672455pll.7
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:11:55 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 15 Apr 2021 14:10:35 -0500
-Message-Id: <20210415191145.2137858-5-jason@jlekstrand.net>
+Date: Thu, 15 Apr 2021 14:10:33 -0500
+Message-Id: <20210415191145.2137858-3-jason@jlekstrand.net>
 In-Reply-To: <20210415191145.2137858-1-jason@jlekstrand.net>
 References: <20210415191145.2137858-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 04/74] tests/i915/gem_ctx_param: Drop the
- zeromap subtests
+Subject: [igt-dev] [PATCH i-g-t 02/74] tests/i915/gem_exec_balancer: Drop
+ the ringsize subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,71 +27,114 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The idea behind this param is to support OpenCL drivers with relocations
-because OpenCL reserves 0x0 for NULL and, if we placed memory there, it
-would confuse CL kernels.  It was originally sent out as part of a patch
-series including libdrm [1] and Beignet [2] support.  However, the
-libdrm and Beignet patches never landed in their respective upstream
-projects so this API has never been used.  It's never been used in Mesa
-or any other driver, either.
-
-This means that these IGT tests are the only userspace for NO_ZEROMAP
-which has ever really existed.  Let's drop them and drop support from
-i915 as well.
-
-[1]: https://lists.freedesktop.org/archives/intel-gfx/2015-May/067030.html
-[2]: https://lists.freedesktop.org/archives/intel-gfx/2015-May/067031.html
+I915_CONTEXT_PARAM_RINGSIZE is being removed from upstream i915 because
+it's never been used by any userspace other than IGT.
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 ---
- tests/i915/gem_ctx_param.c | 33 ---------------------------------
- 1 file changed, 33 deletions(-)
+ tests/i915/gem_exec_balancer.c | 81 ----------------------------------
+ 1 file changed, 81 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_param.c b/tests/i915/gem_ctx_param.c
-index ab0e3007..47fea06d 100644
---- a/tests/i915/gem_ctx_param.c
-+++ b/tests/i915/gem_ctx_param.c
-@@ -335,39 +335,6 @@ igt_main
- 		gem_context_set_param(fd, &arg);
- 	}
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index 01db0e11..bfd65b29 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -2551,84 +2551,6 @@ next:
+ 	gem_quiescent_gpu(i915);
+ }
  
--	arg.param = I915_CONTEXT_PARAM_NO_ZEROMAP;
+-static void sighandler(int sig)
+-{
+-}
 -
--	igt_describe("Validates context set param ioctl in non root mode with param "
--	       "set to no zeromap");
--	igt_subtest("non-root-set-no-zeromap") {
--		igt_fork(child, 1) {
--			igt_drop_root();
+-static unsigned int measure_inflight(int i915, uint32_t ctx, int timeout)
+-{
+-	igt_spin_t *spin = igt_spin_new(i915, ctx);
+-	unsigned int count;
+-	int err;
 -
--			arg.ctx_id = ctx;
--			gem_context_get_param(fd, &arg);
--			arg.value--;
--			gem_context_set_param(fd, &arg);
--		}
+-	fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) | O_NONBLOCK);
+-	signal(SIGALRM, sighandler);
+-	alarm(timeout);
 -
--		igt_waitchildren();
+-	for (count = 1; (err = __execbuf(i915, &spin->execbuf)) == 0; count++)
+-		;
+-	igt_assert_eq(err, -EWOULDBLOCK);
+-
+-	alarm(0);
+-	signal(SIGALRM, SIG_DFL);
+-	fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) & ~O_NONBLOCK);
+-
+-	igt_spin_free(i915, spin);
+-
+-	return count;
+-}
+-
+-static void __resize(int i915, uint32_t ctx)
+-{
+-	struct drm_i915_gem_context_param p = {
+-		.ctx_id = ctx,
+-		.param = I915_CONTEXT_PARAM_RINGSIZE,
+-	};
+-	unsigned int prev[2] = {};
+-	uint64_t elapsed;
+-
+-	elapsed = 0;
+-	gem_quiescent_gpu(i915);
+-	for (p.value = 1 << 12; p.value <= 128 << 12; p.value <<= 1) {
+-		struct timespec tv = {};
+-		unsigned int count;
+-
+-		gem_context_set_param(i915, &p);
+-
+-		igt_nsec_elapsed(&tv);
+-		count = measure_inflight(i915, ctx, 1 + 4 * ceil(elapsed*1e-9));
+-		elapsed = igt_nsec_elapsed(&tv);
+-
+-		igt_info("%6llx -> %'6d\n", p.value, count);
+-		igt_assert(count > 3 * (prev[1] - prev[0]) / 4 + prev[1]);
+-
+-		prev[0] = prev[1];
+-		prev[1] = count;
+-	}
+-	gem_quiescent_gpu(i915);
+-}
+-
+-static void ringsz(int i915)
+-{
+-	for (int class = 0; class < 32; class++) {
+-		struct i915_engine_class_instance *ci;
+-		unsigned int count;
+-		uint32_t ctx;
+-
+-		ci = list_engines(i915, 1u << class, &count);
+-		if (!ci || count < 2)
+-			goto next;
+-
+-		ctx = load_balancer_create(i915, ci, count);
+-		__resize(i915, ctx);
+-		gem_context_destroy(i915, ctx);
+-next:
+-		free(ci);
 -	}
 -
--	igt_describe("Tests the context set param ioctl with no zeromap enabled in root mode");
--	igt_subtest("root-set-no-zeromap-enabled") {
--		arg.ctx_id = ctx;
--		gem_context_get_param(fd, &arg);
--		arg.value = 1;
--		gem_context_set_param(fd, &arg);
--	}
+-	gem_quiescent_gpu(i915);
+-}
 -
--	igt_describe("Tests the context set param ioctl with no zeromap disabled in root mode");
--	igt_subtest("root-set-no-zeromap-disabled") {
--		arg.ctx_id = ctx;
--		gem_context_get_param(fd, &arg);
--		arg.value = 0;
--		gem_context_set_param(fd, &arg);
--	}
+ static void ping(int i915, uint32_t ctx, unsigned int engine)
+ {
+ 	struct drm_i915_gem_exec_object2 obj = {
+@@ -3304,9 +3226,6 @@ igt_main
+ 	igt_subtest("fairslice")
+ 		fairslice(i915);
+ 
+-	igt_subtest("ringsize")
+-		ringsz(i915);
 -
- 	igt_describe("Tests that multiple contexts can share the same VMA");
- 	igt_subtest("vm")
- 		test_vm(fd);
+ 	igt_subtest("nop")
+ 		nop(i915);
+ 
 -- 
 2.31.1
 
