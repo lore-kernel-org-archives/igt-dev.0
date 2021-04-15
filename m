@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com
- [IPv6:2607:f8b0:4864:20::102e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC5B56EAC9
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:13:08 +0000 (UTC)
-Received: by mail-pj1-x102e.google.com with SMTP id
- b8-20020a17090a5508b029014d0fbe9b64so14952770pji.5
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:13:08 -0700 (PDT)
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
+ [IPv6:2607:f8b0:4864:20::533])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D8F596E0BE
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:13:05 +0000 (UTC)
+Received: by mail-pg1-x533.google.com with SMTP id d10so17556586pgf.12
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:13:05 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 15 Apr 2021 14:11:21 -0500
-Message-Id: <20210415191145.2137858-51-jason@jlekstrand.net>
+Date: Thu, 15 Apr 2021 14:11:19 -0500
+Message-Id: <20210415191145.2137858-49-jason@jlekstrand.net>
 In-Reply-To: <20210415191145.2137858-1-jason@jlekstrand.net>
 References: <20210415191145.2137858-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 50/74] tests/i915/gem_exec_params: Convert
- to intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 48/74] tests/i915/gem_watchdog: Convert to
+ intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,32 +28,341 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 ---
- tests/i915/gem_exec_params.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/i915/gem_watchdog.c | 169 +++++++++++---------------------------
+ 1 file changed, 46 insertions(+), 123 deletions(-)
 
-diff --git a/tests/i915/gem_exec_params.c b/tests/i915/gem_exec_params.c
-index 6840cf40..05052882 100644
---- a/tests/i915/gem_exec_params.c
-+++ b/tests/i915/gem_exec_params.c
-@@ -298,8 +298,10 @@ static void test_larger_than_life_batch(int fd)
+diff --git a/tests/i915/gem_watchdog.c b/tests/i915/gem_watchdog.c
+index 22acf15c..15709682 100644
+--- a/tests/i915/gem_watchdog.c
++++ b/tests/i915/gem_watchdog.c
+@@ -30,36 +30,13 @@
+ #include <sched.h>
+ 
+ #include "i915/gem.h"
++#include "i915/gem_vm.h"
+ #include "igt.h"
+ #include "igt_params.h"
+ #include "sw_sync.h"
+ 
+ #define EWATCHDOG EINTR
+ 
+-static struct drm_i915_query_engine_info *__engines__;
+-
+-static int __i915_query(int fd, struct drm_i915_query *q)
+-{
+-	if (igt_ioctl(fd, DRM_IOCTL_I915_QUERY, q))
+-		return -errno;
+-	return 0;
+-}
+-
+-static int
+-__i915_query_items(int fd, struct drm_i915_query_item *items, uint32_t n_items)
+-{
+-	struct drm_i915_query q = {
+-		.num_items = n_items,
+-		.items_ptr = to_user_pointer(items),
+-	};
+-	return __i915_query(fd, &q);
+-}
+-
+-#define i915_query_items(fd, items, n_items) do { \
+-		igt_assert_eq(__i915_query_items(fd, items, n_items), 0); \
+-		errno = 0; \
+-	} while (0)
+-
+ static unsigned int default_timeout_wait_s;
+ static const unsigned int watchdog_us = 500 * 1000;
+ 
+@@ -127,56 +104,43 @@ static unsigned int spin_flags(void)
+ 	return IGT_SPIN_POLL_RUN | IGT_SPIN_FENCE_OUT;
+ }
+ 
+-static void physical(int i915)
++static void physical(int i915, const intel_ctx_t *ctx)
+ {
+ 	const unsigned int wait_us = default_timeout_wait_s * USEC_PER_SEC;
+-	unsigned int num_engines = __engines__->num_engines, i, count;
++	unsigned int num_engines, i, count;
+ 	const struct intel_execution_engine2 *e;
+-	unsigned int expect = num_engines;
+-	igt_spin_t *spin[num_engines];
++	igt_spin_t *spin[GEM_MAX_ENGINES];
+ 
+ 	i = 0;
+-	__for_each_physical_engine(i915, e) {
+-		spin[i] = igt_spin_new(i915,
++	for_each_ctx_engine(i915, ctx, e) {
++		spin[i] = igt_spin_new(i915, .ctx = ctx,
+ 				       .engine = e->flags,
+ 				       .flags = spin_flags());
+ 		i++;
+ 	}
++	num_engines = i;
+ 
+-	count = wait_timeout(i915, spin, num_engines, wait_us, expect);
++	count = wait_timeout(i915, spin, num_engines, wait_us, num_engines);
+ 
+ 	for (i = 0; i < num_engines; i++)
+ 		igt_spin_free(i915, spin[i]);
+ 
+-	igt_assert_eq(count, expect);
++	igt_assert_eq(count, num_engines);
+ }
+ 
+ static struct i915_engine_class_instance *
+-list_engines(unsigned int class, unsigned int *out)
++list_engines(const intel_ctx_cfg_t *cfg,
++	     unsigned int class, unsigned int *out)
+ {
+ 	struct i915_engine_class_instance *ci;
+-	unsigned int count = 0, size = 64, i;
++	unsigned int count = 0, i;
+ 
+-	ci = malloc(size * sizeof(*ci));
++	ci = malloc(cfg->num_engines * sizeof(*ci));
+ 	igt_assert(ci);
+ 
+-	for (i = 0; i < __engines__->num_engines; i++) {
+-		struct drm_i915_engine_info *engine =
+-			(struct drm_i915_engine_info *)&__engines__->engines[i];
+-
+-		if (class != engine->engine.engine_class)
+-			continue;
+-
+-		if (count == size) {
+-			size *= 2;
+-			ci = realloc(ci, size * sizeof(*ci));
+-			igt_assert(ci);
+-		}
+-
+-		ci[count++] = (struct i915_engine_class_instance){
+-			.engine_class = class,
+-			.engine_instance = engine->engine.engine_instance,
+-		};
++	for (i = 0; i < cfg->num_engines; i++) {
++		if (class == cfg->engines[i].engine_class)
++			ci[count++] = cfg->engines[i];
+ 	}
+ 
+ 	if (!count) {
+@@ -243,49 +207,27 @@ static void set_load_balancer(int i915, uint32_t ctx,
+ 	igt_assert_eq(__set_load_balancer(i915, ctx, ci, count, ext), 0);
+ }
+ 
+-static void ctx_set_vm(int i915, uint32_t ctx, uint32_t vm)
+-{
+-	struct drm_i915_gem_context_param arg = {
+-		.param = I915_CONTEXT_PARAM_VM,
+-		.ctx_id = ctx,
+-		.value = vm,
+-	};
+-
+-	gem_context_set_param(i915, &arg);
+-}
+-
+-static uint32_t ctx_get_vm(int i915, uint32_t ctx)
+-{
+-        struct drm_i915_gem_context_param arg;
+-
+-        memset(&arg, 0, sizeof(arg));
+-        arg.param = I915_CONTEXT_PARAM_VM;
+-        arg.ctx_id = ctx;
+-        gem_context_get_param(i915, &arg);
+-        igt_assert(arg.value);
+-
+-        return arg.value;
+-}
+-
+-static void virtual(int i915)
++static void virtual(int i915, const intel_ctx_cfg_t *base_cfg)
+ {
+ 	const unsigned int wait_us = default_timeout_wait_s * USEC_PER_SEC;
+-	unsigned int num_engines = __engines__->num_engines, i, count;
++	unsigned int num_engines = base_cfg->num_engines, i, count;
+ 	igt_spin_t *spin[num_engines];
+ 	unsigned int expect = num_engines;
+-	uint32_t ctx[num_engines];
+-	uint32_t vm;
++	intel_ctx_cfg_t cfg = *base_cfg;
++	const intel_ctx_t *ctx[num_engines];
+ 
+ 	igt_require(gem_has_execlists(i915));
+ 
+ 	igt_debug("%u virtual engines\n", num_engines);
+ 	igt_require(num_engines);
+ 
++	cfg.vm = gem_vm_create(i915);
++
+ 	i = 0;
+ 	for (int class = 0; class < 32; class++) {
+ 		struct i915_engine_class_instance *ci;
+ 
+-		ci = list_engines(class, &count);
++		ci = list_engines(base_cfg, class, &count);
+ 		if (!ci)
+ 			continue;
+ 
+@@ -295,17 +237,12 @@ static void virtual(int i915)
+ 
+ 			igt_assert(i < num_engines);
+ 
+-			ctx[i] = gem_context_create(i915);
++			ctx[i] = intel_ctx_create(i915, &cfg);
+ 
+-			if (!i)
+-				vm = ctx_get_vm(i915, ctx[i]);
+-			else
+-				ctx_set_vm(i915, ctx[i], vm);
+-
+-			set_load_balancer(i915, ctx[i], ci, count, NULL);
++			set_load_balancer(i915, ctx[i]->id, ci, count, NULL);
+ 
+ 			spin[i] = igt_spin_new(i915,
+-					       .ctx_id = ctx[i],
++					       .ctx = ctx[i],
+ 					       .flags = spin_flags());
+ 			i++;
+ 		}
+@@ -316,8 +253,8 @@ static void virtual(int i915)
+ 	count = wait_timeout(i915, spin, num_engines, wait_us, expect);
+ 
+ 	for (i = 0; i < num_engines && spin[i]; i++) {
+-		gem_context_destroy(i915, ctx[i]);
+ 		igt_spin_free(i915, spin[i]);
++		intel_ctx_destroy(i915, ctx[i]);
+ 	}
+ 
+ 	igt_assert_eq(count, expect);
+@@ -498,17 +435,6 @@ delay_create(int i915, uint32_t ctx,
+ 	return obj;
+ }
+ 
+-static uint32_t vm_clone(int i915)
+-{
+-	uint32_t ctx = 0;
+-	__gem_context_clone(i915, 0,
+-			    I915_CONTEXT_CLONE_VM |
+-			    I915_CONTEXT_CLONE_ENGINES,
+-			    I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE,
+-			    &ctx);
+-	return ctx;
+-}
+-
+ static int __execbuf(int i915, struct drm_i915_gem_execbuffer2 *execbuf)
+ {
+ 	int err;
+@@ -525,6 +451,7 @@ static int __execbuf(int i915, struct drm_i915_gem_execbuffer2 *execbuf)
+ 
+ static uint32_t
+ far_delay(int i915, unsigned long delay, unsigned int target,
++	  const intel_ctx_t *ctx,
+ 	  const struct intel_execution_engine2 *e, int *fence)
+ {
+ 	struct drm_i915_gem_exec_object2 obj = delay_create(i915, 0, e, delay);
+@@ -539,6 +466,7 @@ far_delay(int i915, unsigned long delay, unsigned int target,
+ 		.buffer_count = 2,
+ 		.flags = e->flags,
+ 	};
++	intel_ctx_cfg_t cfg = ctx->cfg;
+ 	uint32_t handle = gem_create(i915, 4096);
+ 	unsigned long count, submit;
+ 
+@@ -551,23 +479,27 @@ far_delay(int i915, unsigned long delay, unsigned int target,
+ 	submit *= NSEC_PER_SEC;
+ 	submit /= 2 * delay;
+ 
++	if (gem_has_vm(i915))
++		cfg.vm = gem_vm_create(i915);
++
+ 	/*
+ 	 * Submit a few long chains of individually short pieces of work
+ 	 * against a shared object.
+ 	 */
+ 	for (count = 0; count < submit;) {
+-		execbuf.rsvd1 = vm_clone(i915);
++		const intel_ctx_t *tmp_ctx = intel_ctx_create(i915, &cfg);
++		execbuf.rsvd1 = tmp_ctx->id;
+ 		if (!execbuf.rsvd1)
+ 			break;
+ 
+ 		batch[1] = obj;
+ 		while (__execbuf(i915, &execbuf) == 0)
+ 			count++;
+-		gem_context_destroy(i915, execbuf.rsvd1);
++		intel_ctx_destroy(i915, tmp_ctx);
+ 	}
+ 
+ 	execbuf.flags |= I915_EXEC_FENCE_OUT;
+-	execbuf.rsvd1 = 0;
++	execbuf.rsvd1 = ctx->id;
+ 	batch[1] = batch[0];
+ 	batch[1].flags &= ~EXEC_OBJECT_WRITE;
+ 	batch[0].handle = handle;
+@@ -583,11 +515,12 @@ far_delay(int i915, unsigned long delay, unsigned int target,
+ }
+ 
+ static void
+-far_fence(int i915, int timeout, const struct intel_execution_engine2 *e)
++far_fence(int i915, int timeout, const intel_ctx_t *ctx,
++	  const struct intel_execution_engine2 *e)
+ {
+ 	int fence = -1;
+ 	uint32_t handle =
+-		far_delay(i915, NSEC_PER_SEC / 250, timeout, e, &fence);
++		far_delay(i915, NSEC_PER_SEC / 250, timeout, ctx, e, &fence);
+ 
+ 	gem_close(i915, handle);
+ 
+@@ -626,10 +559,10 @@ far_fence(int i915, int timeout, const struct intel_execution_engine2 *e)
+ igt_main
  {
  	const struct intel_execution_engine2 *e;
- 	uint64_t size = 1ULL << 32; /* batch_len is __u32 as per the ABI */
-+	const intel_ctx_t *ctx = intel_ctx_create_all_physical(fd);
- 	struct drm_i915_gem_exec_object2 exec = {
- 		.handle = batch_create_size(fd, size),
-+		.rsvd1 = ctx->id,
- 	};
- 	struct drm_i915_gem_execbuffer2 execbuf = {
- 		.buffers_ptr = to_user_pointer(&exec),
-@@ -315,7 +317,7 @@ static void test_larger_than_life_batch(int fd)
- 	igt_require(size < gem_aperture_size(fd));
- 	intel_require_memory(2, size, CHECK_RAM); /* batch + shadow */
++	const intel_ctx_t *ctx;
+ 	int i915 = -1;
  
--	__for_each_physical_engine(fd, e) {
-+	for_each_ctx_engine(fd, ctx, e) {
- 		/* Keep the batch_len implicit [0] */
- 		execbuf.flags = e->flags;
+ 	igt_fixture {
+-		struct drm_i915_query_item item;
+ 		char *tmp;
+ 
+ 		i915 = drm_open_driver_master(DRIVER_INTEL);
+@@ -651,32 +584,22 @@ igt_main
+ 		}
+ 
+ 		i915 = gem_reopen_driver(i915); /* Apply modparam. */
+-
+-		__engines__ = malloc(4096);
+-		igt_assert(__engines__);
+-		memset(__engines__, 0, 4096);
+-		memset(&item, 0, sizeof(item));
+-		item.query_id = DRM_I915_QUERY_ENGINE_INFO;
+-		item.data_ptr = to_user_pointer(__engines__);
+-		item.length = 4096;
+-		i915_query_items(i915, &item, 1);
+-		igt_assert(item.length >= 0);
+-		igt_assert(item.length <= 4096);
+-		igt_assert(__engines__->num_engines > 0);
++		ctx = intel_ctx_create_all_physical(i915);
+ 	}
+ 
+ 	igt_subtest_group {
+ 		igt_subtest("default-physical")
+-			physical(i915);
++			physical(i915, ctx);
+ 
+ 		igt_subtest("default-virtual")
+-			virtual(i915);
++			virtual(i915, &ctx->cfg);
+ 	}
+ 
+ 	igt_subtest_with_dynamic("far-fence") {
+-		__for_each_physical_engine(i915, e) {
++		for_each_ctx_engine(i915, ctx, e) {
+ 			igt_dynamic_f("%s", e->name)
+-				far_fence(i915, default_timeout_wait_s * 3, e);
++				far_fence(i915, default_timeout_wait_s * 3,
++					  ctx, e);
+ 		}
+ 	}
  
 -- 
 2.31.1
