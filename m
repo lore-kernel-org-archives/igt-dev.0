@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com
  [IPv6:2a00:1450:4864:20::42b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E60F86EA7E
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 16:10:41 +0000 (UTC)
-Received: by mail-wr1-x42b.google.com with SMTP id j5so22890738wrn.4
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 09:10:41 -0700 (PDT)
-Date: Thu, 15 Apr 2021 18:10:38 +0200
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF9C66EA7E
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 16:12:35 +0000 (UTC)
+Received: by mail-wr1-x42b.google.com with SMTP id x7so23831702wrw.10
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 09:12:35 -0700 (PDT)
+Date: Thu, 15 Apr 2021 18:12:32 +0200
 From: Daniel Vetter <daniel@ffwll.ch>
-Message-ID: <YHhlflWm1ptdgfbx@phenom.ffwll.local>
+Message-ID: <YHhl8FfvnJgjInfe@phenom.ffwll.local>
 References: <20210413035350.261794-1-jason@jlekstrand.net>
  <20210413035350.261794-15-jason@jlekstrand.net>
 MIME-Version: 1.0
@@ -32,7 +32,12 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 On Mon, Apr 12, 2021 at 10:52:50PM -0500, Jason Ekstrand wrote:
 
-+sob = Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+So yes I know it's a pre-existing condition, but igt_dummyload is almost
+completely documented, and you're touching the undocumented part. Could
+you add a patch to rectify that?
+
+This here makes sense I think.
+-Daniel
 
 > ---
 >  lib/igt_dummyload.c            |  6 +++---
