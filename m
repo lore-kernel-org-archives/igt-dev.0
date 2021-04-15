@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F3C16EAB8
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:12:55 +0000 (UTC)
-Received: by mail-pl1-x632.google.com with SMTP id w8so10293931plg.9
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:12:55 -0700 (PDT)
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com
+ [IPv6:2607:f8b0:4864:20::531])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 912F76EAC5
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:12:58 +0000 (UTC)
+Received: by mail-pg1-x531.google.com with SMTP id p12so17558407pgj.10
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:12:58 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 15 Apr 2021 14:11:12 -0500
-Message-Id: <20210415191145.2137858-42-jason@jlekstrand.net>
+Date: Thu, 15 Apr 2021 14:11:14 -0500
+Message-Id: <20210415191145.2137858-44-jason@jlekstrand.net>
 In-Reply-To: <20210415191145.2137858-1-jason@jlekstrand.net>
 References: <20210415191145.2137858-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 41/74] tests/i915/gem_request_retire:
- Convert to intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 43/74] tests/i915/gem_ctx_shared: Stop
+ cloning contexts
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,56 +27,146 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Instead use either GET/SET_CONTEXT_PARAM or a create ext.
 ---
- tests/i915/gem_request_retire.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ tests/i915/gem_ctx_shared.c | 77 ++++++++++++++++++++++++++++++-------
+ 1 file changed, 63 insertions(+), 14 deletions(-)
 
-diff --git a/tests/i915/gem_request_retire.c b/tests/i915/gem_request_retire.c
-index c23ddfb7..3df54f2a 100644
---- a/tests/i915/gem_request_retire.c
-+++ b/tests/i915/gem_request_retire.c
-@@ -62,24 +62,26 @@ static void
- test_retire_vma_not_inactive(int fd)
- {
- 	struct intel_execution_engine2 *e;
--
-+	const intel_ctx_t *ctx;
- 	igt_spin_t *bg = NULL;
+diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
+index 1c7458c0..84dd956e 100644
+--- a/tests/i915/gem_ctx_shared.c
++++ b/tests/i915/gem_ctx_shared.c
+@@ -62,6 +62,48 @@ static int priorities[] = {
  
--	__for_each_physical_engine(fd, e) {
-+	ctx = intel_ctx_create_all_physical(fd);
+ IGT_TEST_DESCRIPTION("Test shared contexts.");
+ 
++static int __get_vm(int i915, uint32_t ctx, uint32_t *vm)
++{
++	struct drm_i915_gem_context_param p = {
++		.ctx_id = ctx,
++		.param = I915_CONTEXT_PARAM_VM,
++	};
++	int err = __gem_context_get_param(i915, &p);
++	if (err)
++		return err;
 +
-+	for_each_ctx_engine(fd, ctx, e) {
- 		igt_spin_t *spin;
--		uint32_t ctx;
-+		const intel_ctx_t *spin_ctx;
++	igt_assert(p.value > 0 && p.value < UINT32_MAX);
++	*vm = p.value;
++
++	return 0;
++}
++
++static uint32_t get_vm(int i915, uint32_t ctx)
++{
++	uint32_t vm;
++	igt_assert_eq(__get_vm(i915, ctx, &vm), 0);
++	return vm;
++}
++
++static void set_vm(int i915, uint32_t ctx, uint32_t vm)
++{
++	struct drm_i915_gem_context_param p = {
++		.ctx_id = ctx,
++		.param = I915_CONTEXT_PARAM_VM,
++		.value = vm
++	};
++	gem_context_set_param(i915, &p);
++}
++
++static void copy_vm(int i915, uint32_t dst, uint32_t src)
++{
++	uint32_t vm = get_vm(i915, src);
++	set_vm(i915, dst, vm);
++
++	/* GETPARAM gets a reference to the VM which we have to drop */
++	gem_vm_destroy(i915, vm);
++}
++
+ static void create_shared_gtt(int i915, unsigned int flags)
+ #define DETACHED 0x1
+ {
+@@ -82,9 +124,9 @@ static void create_shared_gtt(int i915, unsigned int flags)
+ 	child = flags & DETACHED ? gem_context_create(i915) : 0;
+ 	igt_until_timeout(2) {
+ 		parent = flags & DETACHED ? child : 0;
+-		child = gem_context_clone(i915,
+-					  parent, I915_CONTEXT_CLONE_VM,
+-					  0);
++		child = gem_context_create(i915);
++		copy_vm(i915, child, parent);
++
+ 		execbuf.rsvd1 = child;
+ 		gem_execbuf(i915, &execbuf);
  
- 		if (!bg) {
--			bg = igt_spin_new(fd, .engine = e->flags);
-+			bg = igt_spin_new(fd, .ctx = ctx, .engine = e->flags);
- 			continue;
+@@ -98,9 +140,7 @@ static void create_shared_gtt(int i915, unsigned int flags)
+ 
+ 		execbuf.rsvd1 = parent;
+ 		igt_assert_eq(__gem_execbuf(i915, &execbuf), -ENOENT);
+-		igt_assert_eq(__gem_context_clone(i915,
+-						  parent, I915_CONTEXT_CLONE_VM,
+-						  0, &parent), -ENOENT);
++		igt_assert_eq(__get_vm(i915, parent, &parent), -ENOENT);
+ 	}
+ 	if (flags & DETACHED)
+ 		gem_context_destroy(i915, child);
+@@ -151,8 +191,19 @@ static void disjoint_timelines(int i915, const intel_ctx_cfg_t *cfg)
+ static void exhaust_shared_gtt(int i915, unsigned int flags)
+ #define EXHAUST_LRC 0x1
+ {
++	struct drm_i915_gem_context_create_ext_setparam vm_create_ext = {
++		.base = {
++			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
++		},
++		.param = {
++			.param = I915_CONTEXT_PARAM_VM,
++		},
++	};
++
+ 	i915 = gem_reopen_driver(i915);
+ 
++	vm_create_ext.param.value = gem_vm_create(i915);
++
+ 	igt_fork(pid, 1) {
+ 		const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 		struct drm_i915_gem_exec_object2 obj = {
+@@ -162,23 +213,21 @@ static void exhaust_shared_gtt(int i915, unsigned int flags)
+ 			.buffers_ptr = to_user_pointer(&obj),
+ 			.buffer_count = 1,
+ 		};
+-		uint32_t parent, child;
+ 		unsigned long count = 0;
+ 		int err;
+ 
+ 		gem_write(i915, obj.handle, 0, &bbe, sizeof(bbe));
+ 
+-		child = 0;
+ 		for (;;) {
+-			parent = child;
+-			err = __gem_context_clone(i915,
+-						  parent, I915_CONTEXT_CLONE_VM,
+-						  0, &child);
++			uint32_t ctx;
++			err = __gem_context_create_ext(i915, 0,
++						       to_user_pointer(&vm_create_ext),
++						       &ctx);
+ 			if (err)
+ 				break;
+ 
+ 			if (flags & EXHAUST_LRC) {
+-				execbuf.rsvd1 = child;
++				execbuf.rsvd1 = ctx;
+ 				err = __gem_execbuf(i915, &execbuf);
+ 				if (err)
+ 					break;
+@@ -848,7 +897,7 @@ igt_main
+ 
+ 	igt_subtest_group {
+ 		igt_fixture {
+-			igt_require(gem_contexts_has_shared_gtt(i915));
++			igt_require(gem_has_vm(i915));
+ 			igt_fork_hang_detector(i915);
  		}
  
--		ctx = gem_context_clone_with_engines(fd, 0);
--		spin = igt_spin_new(fd, ctx,
-+		spin_ctx = intel_ctx_create(fd, &ctx->cfg);
-+		spin = igt_spin_new(fd, .ctx = spin_ctx,
- 				    .engine = e->flags,
- 				    .dependency = bg->handle,
- 				    .flags = IGT_SPIN_SOFTDEP);
--		gem_context_destroy(fd, ctx);
-+		intel_ctx_destroy(fd, spin_ctx);
- 		igt_spin_end(spin);
- 
- 		gem_sync(fd, spin->handle);
-@@ -88,6 +90,7 @@ test_retire_vma_not_inactive(int fd)
- 
- 	igt_drop_caches_set(fd, DROP_RETIRE);
- 	igt_spin_free(fd, bg);
-+	intel_ctx_destroy(fd, ctx);
- }
- 
- int fd;
 -- 
 2.31.1
 
