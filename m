@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com
- [IPv6:2a00:1450:4864:20::533])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A3926EAA8
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 18:05:23 +0000 (UTC)
-Received: by mail-ed1-x533.google.com with SMTP id f8so29163253edd.11
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 11:05:23 -0700 (PDT)
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com
+ [IPv6:2a00:1450:4864:20::62c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 268A36EAB7
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 18:51:11 +0000 (UTC)
+Received: by mail-ej1-x62c.google.com with SMTP id g5so31717326ejx.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 11:51:10 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210413035350.261794-1-jason@jlekstrand.net>
- <20210413035350.261794-10-jason@jlekstrand.net>
- <YHhh9Fxgt7Y1RKE4@phenom.ffwll.local>
-In-Reply-To: <YHhh9Fxgt7Y1RKE4@phenom.ffwll.local>
+ <20210413035350.261794-12-jason@jlekstrand.net>
+ <YHhi5brLOMZTEZaJ@phenom.ffwll.local>
+In-Reply-To: <YHhi5brLOMZTEZaJ@phenom.ffwll.local>
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 15 Apr 2021 13:05:10 -0500
-Message-ID: <CAOFGe94bWKrobEPNmASMqNvb=rss7PEkFB7k2MweJXi0jmX4oA@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 09/74] lib/i915/gem_engine_topology:
- Rework query_engine_list()
+Date: Thu, 15 Apr 2021 13:50:57 -0500
+Message-ID: <CAOFGe94inehfuG9Y4oyh65Nx9rFsNm_JLVQtL_hzphBjkE_q_w@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 11/74] lib/i915/gem_engine_topology: Add
+ an iterator which doesn't munge contexts
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,71 +30,81 @@ To: Daniel Vetter <daniel@ffwll.ch>
 Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Apr 15, 2021 at 10:55 AM Daniel Vetter <daniel@ffwll.ch> wrote:
+On Thu, Apr 15, 2021 at 10:59 AM Daniel Vetter <daniel@ffwll.ch> wrote:
 >
-> On Mon, Apr 12, 2021 at 10:52:45PM -0500, Jason Ekstrand wrote:
-> > This gives us a no-assert version.
+> On Mon, Apr 12, 2021 at 10:52:47PM -0500, Jason Ekstrand wrote:
+> > the current for_each_physical_engine iterators smash the set of engines
+> > on the context (or ctx0 for the __ version).  This new one just gets the
+> > list of engines from i915 and iterates over them.
 >
-> Add gtk+sob and then Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+> gtkdoc for this please.
+>
+> Also since you screamed at this all quite a bit if you feel like adding
+> the  SECTION: overview section which gives you a few pointers to the main
+> concepts/functions would be really awesome. I guess asking for all the
+> missing docs is a bit much, but the overview/wtf/howto would be nice to
+> add. At least the canonical example for how to use this in an igt test or
+> something like that.
 
-This is all static so no new API is exposed.
+This iterator is pretty uninteresting but the ones in the next patch
+are much more important.  I've added a nice doc including code
+examples in the next patch for how to use the config/context/for_each
+pattern.
 
+--Jason
+
+> Anyway lgtm I guess, Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+>
 > > ---
-> >  lib/i915/gem_engine_topology.c | 22 ++++++++++++----------
-> >  1 file changed, 12 insertions(+), 10 deletions(-)
+> >  lib/i915/gem_engine_topology.c | 10 ++++++++++
+> >  lib/i915/gem_engine_topology.h |  6 ++++++
+> >  2 files changed, 16 insertions(+)
 > >
 > > diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-> > index 5d196f59..833b3abe 100644
+> > index 606d3c1d..4319895f 100644
 > > --- a/lib/i915/gem_engine_topology.c
 > > +++ b/lib/i915/gem_engine_topology.c
-> > @@ -79,13 +79,6 @@ int __gem_query_engines(int fd,
-> >       return __gem_query(fd, &query);
+> > @@ -224,6 +224,16 @@ static struct intel_engine_data intel_engine_list_for_static(int fd)
+> >       return engine_data;
 > >  }
 > >
-> > -static void query_engines(int fd,
-> > -                       struct drm_i915_query_engine_info *query_engines,
-> > -                       int length)
-> > -{
-> > -     igt_assert_eq(__gem_query_engines(fd, query_engines, length), 0);
-> > -}
-> > -
-> >  static void ctx_map_engines(int fd, struct intel_engine_data *ed,
-> >                           struct drm_i915_gem_context_param *param)
-> >  {
-> > @@ -144,14 +137,16 @@ static void init_engine(struct intel_execution_engine2 *e2,
-> >       igt_assert(ret < sizeof(e2->name));
-> >  }
-> >
-> > -static void query_engine_list(int fd, struct intel_engine_data *ed)
-> > +static int __query_engine_list(int fd, struct intel_engine_data *ed)
-> >  {
-> >       uint8_t buff[SIZEOF_QUERY] = { };
-> >       struct drm_i915_query_engine_info *query_engine =
-> >                       (struct drm_i915_query_engine_info *) buff;
-> > -     int i;
-> > +     int i, err;
-> >
-> > -     query_engines(fd, query_engine, SIZEOF_QUERY);
-> > +     err = __gem_query_engines(fd, query_engine, SIZEOF_QUERY);
-> > +     if (err)
-> > +             return err;
-> >
-> >       for (i = 0; i < query_engine->num_engines; i++)
-> >               init_engine(&ed->engines[i],
-> > @@ -159,6 +154,13 @@ static void query_engine_list(int fd, struct intel_engine_data *ed)
-> >                           query_engine->engines[i].engine.engine_instance, i);
-> >
-> >       ed->nengines = query_engine->num_engines;
+> > +struct intel_engine_data intel_engine_list_of_physical(int fd)
+> > +{
+> > +     struct intel_engine_data engine_data = { };
 > > +
-> > +     return 0;
+> > +     if (__query_engine_list(fd, &engine_data) == 0)
+> > +             return engine_data;
+> > +
+> > +     return intel_engine_list_for_static(fd);
 > > +}
 > > +
-> > +static void query_engine_list(int fd, struct intel_engine_data *ed)
-> > +{
-> > +     igt_assert_eq(__query_engine_list(fd, ed), 0);
-> >  }
+> >  static int gem_topology_get_param(int fd,
+> >                                 struct drm_i915_gem_context_param *p)
+> >  {
+> > diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+> > index 76b7cd4d..69565240 100644
+> > --- a/lib/i915/gem_engine_topology.h
+> > +++ b/lib/i915/gem_engine_topology.h
+> > @@ -41,6 +41,7 @@ struct intel_engine_data {
+> >  };
 > >
-> >  struct intel_execution_engine2 *
+> >  bool gem_has_engine_topology(int fd);
+> > +struct intel_engine_data intel_engine_list_of_physical(int fd);
+> >  struct intel_engine_data intel_init_engine_list(int fd, uint32_t ctx_id);
+> >
+> >  /* iteration functions */
+> > @@ -70,6 +71,11 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags);
+> >            ((e__) = intel_get_current_engine(&i__)); \
+> >            intel_next_engine(&i__))
+> >
+> > +#define for_each_physical_engine(fd__, e__) \
+> > +     for (struct intel_engine_data i__##e__ = intel_engine_list_of_physical(fd__); \
+> > +          ((e__) = intel_get_current_physical_engine(&i__##e__)); \
+> > +          intel_next_engine(&i__##e__))
+> > +
+> >  /* needs to replace "for_each_physical_engine" when conflicts are fixed */
+> >  #define ____for_each_physical_engine(fd__, ctx__, e__) \
+> >       for (struct intel_engine_data i__##e__ = intel_init_engine_list(fd__, ctx__); \
 > > --
 > > 2.31.1
 > >
