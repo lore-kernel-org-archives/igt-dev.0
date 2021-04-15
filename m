@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com
- [IPv6:2607:f8b0:4864:20::62d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6A846EABB
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:11:55 +0000 (UTC)
-Received: by mail-pl1-x62d.google.com with SMTP id 20so8672455pll.7
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:11:55 -0700 (PDT)
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
+ [IPv6:2607:f8b0:4864:20::434])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE64C6EABD
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 19:12:01 +0000 (UTC)
+Received: by mail-pf1-x434.google.com with SMTP id 10so7825743pfl.1
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Apr 2021 12:12:01 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 15 Apr 2021 14:10:33 -0500
-Message-Id: <20210415191145.2137858-3-jason@jlekstrand.net>
+Date: Thu, 15 Apr 2021 14:10:37 -0500
+Message-Id: <20210415191145.2137858-7-jason@jlekstrand.net>
 In-Reply-To: <20210415191145.2137858-1-jason@jlekstrand.net>
 References: <20210415191145.2137858-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 02/74] tests/i915/gem_exec_balancer: Drop
- the ringsize subtest
+Subject: [igt-dev] [PATCH i-g-t 06/74] lib/i915/gem_engine_topology: Expose
+ the __query_engines helper
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,114 +27,64 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-I915_CONTEXT_PARAM_RINGSIZE is being removed from upstream i915 because
-it's never been used by any userspace other than IGT.
-
-Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 ---
- tests/i915/gem_exec_balancer.c | 81 ----------------------------------
- 1 file changed, 81 deletions(-)
+ lib/i915/gem_engine_topology.c | 20 +++++++++++---------
+ lib/i915/gem_engine_topology.h |  4 ++++
+ 2 files changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index 01db0e11..bfd65b29 100644
---- a/tests/i915/gem_exec_balancer.c
-+++ b/tests/i915/gem_exec_balancer.c
-@@ -2551,84 +2551,6 @@ next:
- 	gem_quiescent_gpu(i915);
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index c12cd920..5d196f59 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -62,14 +62,9 @@ static int __gem_query(int fd, struct drm_i915_query *q)
+ 	return err;
  }
  
--static void sighandler(int sig)
+-static void gem_query(int fd, struct drm_i915_query *q)
 -{
+-	igt_assert_eq(__gem_query(fd, q), 0);
 -}
 -
--static unsigned int measure_inflight(int i915, uint32_t ctx, int timeout)
--{
--	igt_spin_t *spin = igt_spin_new(i915, ctx);
--	unsigned int count;
--	int err;
--
--	fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) | O_NONBLOCK);
--	signal(SIGALRM, sighandler);
--	alarm(timeout);
--
--	for (count = 1; (err = __execbuf(i915, &spin->execbuf)) == 0; count++)
--		;
--	igt_assert_eq(err, -EWOULDBLOCK);
--
--	alarm(0);
--	signal(SIGALRM, SIG_DFL);
--	fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) & ~O_NONBLOCK);
--
--	igt_spin_free(i915, spin);
--
--	return count;
--}
--
--static void __resize(int i915, uint32_t ctx)
--{
--	struct drm_i915_gem_context_param p = {
--		.ctx_id = ctx,
--		.param = I915_CONTEXT_PARAM_RINGSIZE,
--	};
--	unsigned int prev[2] = {};
--	uint64_t elapsed;
--
--	elapsed = 0;
--	gem_quiescent_gpu(i915);
--	for (p.value = 1 << 12; p.value <= 128 << 12; p.value <<= 1) {
--		struct timespec tv = {};
--		unsigned int count;
--
--		gem_context_set_param(i915, &p);
--
--		igt_nsec_elapsed(&tv);
--		count = measure_inflight(i915, ctx, 1 + 4 * ceil(elapsed*1e-9));
--		elapsed = igt_nsec_elapsed(&tv);
--
--		igt_info("%6llx -> %'6d\n", p.value, count);
--		igt_assert(count > 3 * (prev[1] - prev[0]) / 4 + prev[1]);
--
--		prev[0] = prev[1];
--		prev[1] = count;
--	}
--	gem_quiescent_gpu(i915);
--}
--
--static void ringsz(int i915)
--{
--	for (int class = 0; class < 32; class++) {
--		struct i915_engine_class_instance *ci;
--		unsigned int count;
--		uint32_t ctx;
--
--		ci = list_engines(i915, 1u << class, &count);
--		if (!ci || count < 2)
--			goto next;
--
--		ctx = load_balancer_create(i915, ci, count);
--		__resize(i915, ctx);
--		gem_context_destroy(i915, ctx);
--next:
--		free(ci);
--	}
--
--	gem_quiescent_gpu(i915);
--}
--
- static void ping(int i915, uint32_t ctx, unsigned int engine)
+-static void query_engines(int fd,
+-			  struct drm_i915_query_engine_info *query_engines,
+-			  int length)
++int __gem_query_engines(int fd,
++			struct drm_i915_query_engine_info *query_engines,
++			int length)
  {
- 	struct drm_i915_gem_exec_object2 obj = {
-@@ -3304,9 +3226,6 @@ igt_main
- 	igt_subtest("fairslice")
- 		fairslice(i915);
+ 	struct drm_i915_query_item item = { };
+ 	struct drm_i915_query query = { };
+@@ -81,7 +76,14 @@ static void query_engines(int fd,
  
--	igt_subtest("ringsize")
--		ringsz(i915);
--
- 	igt_subtest("nop")
- 		nop(i915);
+ 	item.data_ptr = to_user_pointer(query_engines);
  
+-	gem_query(fd, &query);
++	return __gem_query(fd, &query);
++}
++
++static void query_engines(int fd,
++			  struct drm_i915_query_engine_info *query_engines,
++			  int length)
++{
++	igt_assert_eq(__gem_query_engines(fd, query_engines, length), 0);
+ }
+ 
+ static void ctx_map_engines(int fd, struct intel_engine_data *ed,
+diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+index f5edcb5d..76b7cd4d 100644
+--- a/lib/i915/gem_engine_topology.h
++++ b/lib/i915/gem_engine_topology.h
+@@ -29,6 +29,10 @@
+ 
+ #define GEM_MAX_ENGINES		I915_EXEC_RING_MASK + 1
+ 
++int __gem_query_engines(int fd,
++			struct drm_i915_query_engine_info *query_engines,
++			int length);
++
+ struct intel_engine_data {
+ 	uint32_t nengines;
+ 	uint32_t n;
 -- 
 2.31.1
 
