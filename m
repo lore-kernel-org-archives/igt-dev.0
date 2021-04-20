@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C18A86E4B3
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Apr 2021 08:04:07 +0000 (UTC)
-Date: Tue, 20 Apr 2021 11:04:03 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <YH6K8yy6ZUb448NG@intel.com>
-References: <20210416174841.20132-1-ville.syrjala@linux.intel.com>
- <20210416174841.20132-4-ville.syrjala@linux.intel.com>
- <YH6GB4Lw4wtHwDuM@platvala-desk.ger.corp.intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8814E6E7DA
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Apr 2021 10:47:08 +0000 (UTC)
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+Date: Tue, 20 Apr 2021 13:47:04 +0300
+Message-Id: <20210420104704.5018-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <YH6GB4Lw4wtHwDuM@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] lib/kms: Commit primary plane props
- with COMMIT_LEGACY
+Subject: [igt-dev] [PATCH i-g-t v2] lib/kms: Commit primary plane props with
+ COMMIT_LEGACY
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,47 +15,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Apr 20, 2021 at 10:43:03AM +0300, Petri Latvala wrote:
-> On Fri, Apr 16, 2021 at 08:48:40PM +0300, Ville Syrjala wrote:
-> > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > =
-
-> > Currently COMMIT_LEGACY for the primary plane only issues the
-> > setcrtc ioctl, leaving all other plane properties unchanged
-> > even if they were flagged as needing an update. Let's issue
-> > the appropriate setprop ioctls in addition to the setcrtc to
-> > make sure the plane state really reflects what was requested.
-> > =
-
-> > Without this the prop values can leak between tests. Eg. on
-> > skl/derivatives running one of the failing kms_plane_alpha_blend
-> > subtests first, and following it up with kms_cursor_crc (which
-> > only uses legacy commits) causes crc mismatches since the
-> > primary plane alpha is still left at some stale value despite
-> > igt_plane_reset() trying to reset it back to 1.0.
-> > =
-
-> > Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> =
-
-> The reasoning is sound and this seems to do what the commit message
-> explains, but why does kms_flip_tiling fail consistently with it?
-
-Dunno yet. Annoyingly it passes with flying color on my local glk.
-
--- =
-
-Ville Syrj=E4l=E4
-Intel
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KCkN1
+cnJlbnRseSBDT01NSVRfTEVHQUNZIGZvciB0aGUgcHJpbWFyeSBwbGFuZSBvbmx5IGlzc3VlcyB0
+aGUKc2V0Y3J0YyBpb2N0bCwgbGVhdmluZyBhbGwgb3RoZXIgcGxhbmUgcHJvcGVydGllcyB1bmNo
+YW5nZWQKZXZlbiBpZiB0aGV5IHdlcmUgZmxhZ2dlZCBhcyBuZWVkaW5nIGFuIHVwZGF0ZS4gTGV0
+J3MgaXNzdWUKdGhlIGFwcHJvcHJpYXRlIHNldHByb3AgaW9jdGxzIGluIGFkZGl0aW9uIHRvIHRo
+ZSBzZXRjcnRjIHRvCm1ha2Ugc3VyZSB0aGUgcGxhbmUgc3RhdGUgcmVhbGx5IHJlZmxlY3RzIHdo
+YXQgd2FzIHJlcXVlc3RlZC4KCldpdGhvdXQgdGhpcyB0aGUgcHJvcCB2YWx1ZXMgY2FuIGxlYWsg
+YmV0d2VlbiB0ZXN0cy4gRWcuIG9uCnNrbC9kZXJpdmF0aXZlcyBydW5uaW5nIG9uZSBvZiB0aGUg
+ZmFpbGluZyBrbXNfcGxhbmVfYWxwaGFfYmxlbmQKc3VidGVzdHMgZmlyc3QsIGFuZCBmb2xsb3dp
+bmcgaXQgdXAgd2l0aCBrbXNfY3Vyc29yX2NyYyAod2hpY2gKb25seSB1c2VzIGxlZ2FjeSBjb21t
+aXRzKSBjYXVzZXMgY3JjIG1pc21hdGNoZXMgc2luY2UgdGhlCnByaW1hcnkgcGxhbmUgYWxwaGEg
+aXMgc3RpbGwgbGVmdCBhdCBzb21lIHN0YWxlIHZhbHVlIGRlc3BpdGUKaWd0X3BsYW5lX3Jlc2V0
+KCkgdHJ5aW5nIHRvIHJlc2V0IGl0IGJhY2sgdG8gMS4wLgoKdjI6IGRvIHRoZSBTZXRQcm9wcyBl
+dmVuIGlmIFNldENydGMgaXNuJ3QgbmVlZGVkCiAgICBjbGVhciB0aGUgY2hhbmdlZCBmbGFncyBm
+b3IgdGhlIHByb3BzCgpTaWduZWQtb2ZmLWJ5OiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmph
+bGFAbGludXguaW50ZWwuY29tPgotLS0KIGxpYi9pZ3Rfa21zLmMgfCA2MiArKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAz
+NiBpbnNlcnRpb25zKCspLCAyNiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9saWIvaWd0X2tt
+cy5jIGIvbGliL2lndF9rbXMuYwppbmRleCAwOGQ0MjlhODE5MGEuLjI3OWI4Y2VlNDJkMCAxMDA2
+NDQKLS0tIGEvbGliL2lndF9rbXMuYworKysgYi9saWIvaWd0X2ttcy5jCkBAIC0yNjYwLDYgKzI2
+NjAsMzYgQEAgaWd0X2F0b21pY19wcmVwYXJlX3BsYW5lX2NvbW1pdChpZ3RfcGxhbmVfdCAqcGxh
+bmUsIGlndF9waXBlX3QgKnBpcGUsCiAJICAgKDFVTEwgPDwgSUdUX1BMQU5FX0NSVENfSUQpIHwg
+XAogCSAgICgxVUxMIDw8IElHVF9QTEFORV9JTl9GRU5DRV9GRCkpKQogCitzdGF0aWMgaW50IHBs
+YW5lX2NvbW1pdF9wcm9wcyhpZ3RfcGxhbmVfdCAqcGxhbmUsCisJCQkgICAgICBpZ3RfcGlwZV90
+ICpwaXBlLAorCQkJICAgICAgYm9vbCBmYWlsX29uX2Vycm9yKQoreworCWlndF9kaXNwbGF5X3Qg
+KmRpc3BsYXkgPSBwaXBlLT5kaXNwbGF5OworCXVpbnQ2NF90IGNoYW5nZWRfbWFzazsKKwlpbnQg
+cmV0LCBpOworCisJY2hhbmdlZF9tYXNrID0gcGxhbmUtPmNoYW5nZWQgJiBMRUdBQ1lfUExBTkVf
+Q09NTUlUX01BU0s7CisKKwlmb3IgKGkgPSAwOyBpIDwgSUdUX05VTV9QTEFORV9QUk9QUzsgaSsr
+KSB7CisJCWlmICghKGNoYW5nZWRfbWFzayAmICgxIDw8IGkpKSkKKwkJCWNvbnRpbnVlOworCisJ
+CUxPRyhkaXNwbGF5LCAiU2V0UHJvcCBwbGFuZSAlcy4lZCBcIiVzXCIgdG8gMHglIlBSSXg2NCIv
+JSJQUklpNjQiXG4iLAorCQkJa21zdGVzdF9waXBlX25hbWUocGlwZS0+cGlwZSksIHBsYW5lLT5p
+bmRleCwgaWd0X3BsYW5lX3Byb3BfbmFtZXNbaV0sCisJCQlwbGFuZS0+dmFsdWVzW2ldLCBwbGFu
+ZS0+dmFsdWVzW2ldKTsKKworCQlpZ3RfYXNzZXJ0KHBsYW5lLT5wcm9wc1tpXSk7CisKKwkJcmV0
+ID0gaWd0X3BsYW5lX3NldF9wcm9wZXJ0eShwbGFuZSwKKwkJCQkJICAgICBwbGFuZS0+cHJvcHNb
+aV0sCisJCQkJCSAgICAgcGxhbmUtPnZhbHVlc1tpXSk7CisKKwkJQ0hFQ0tfUkVUVVJOKHJldCwg
+ZmFpbF9vbl9lcnJvcik7CisJfQorCisJcmV0dXJuIDA7Cit9CisKIC8qCiAgKiBDb21taXQgcG9z
+aXRpb24gYW5kIGZiIGNoYW5nZXMgdG8gYSBEUk0gcGxhbmUgdmlhIHRoZSBTZXRQbGFuZSBpb2N0
+bDsgaWYgdGhlCiAgKiBEUk0gY2FsbCB0byBwcm9ncmFtIHRoZSBwbGFuZSBmYWlscywgd2UnbGwg
+ZWl0aGVyIGZhaWwgaW1tZWRpYXRlbHkgKGZvcgpAQCAtMjY3Miw3ICsyNzAyLDcgQEAgc3RhdGlj
+IGludCBpZ3RfZHJtX3BsYW5lX2NvbW1pdChpZ3RfcGxhbmVfdCAqcGxhbmUsCiB7CiAJaWd0X2Rp
+c3BsYXlfdCAqZGlzcGxheSA9IHBpcGUtPmRpc3BsYXk7CiAJdWludDMyX3QgZmJfaWQsIGNydGNf
+aWQ7Ci0JaW50IHJldCwgaTsKKwlpbnQgcmV0OwogCXVpbnQzMl90IHNyY194OwogCXVpbnQzMl90
+IHNyY195OwogCXVpbnQzMl90IHNyY193OwpAQCAtMjY4MSw3ICsyNzExLDYgQEAgc3RhdGljIGlu
+dCBpZ3RfZHJtX3BsYW5lX2NvbW1pdChpZ3RfcGxhbmVfdCAqcGxhbmUsCiAJaW50MzJfdCBjcnRj
+X3k7CiAJdWludDMyX3QgY3J0Y193OwogCXVpbnQzMl90IGNydGNfaDsKLQl1aW50NjRfdCBjaGFu
+Z2VkX21hc2s7CiAJYm9vbCBzZXRwbGFuZSA9CiAJCWlndF9wbGFuZV9pc19wcm9wX2NoYW5nZWQo
+cGxhbmUsIElHVF9QTEFORV9GQl9JRCkgfHwKIAkJcGxhbmUtPmNoYW5nZWQgJiBJR1RfUExBTkVf
+Q09PUkRfQ0hBTkdFRF9NQVNLOwpAQCAtMjc0MiwyNiArMjc3MSw3IEBAIHN0YXRpYyBpbnQgaWd0
+X2RybV9wbGFuZV9jb21taXQoaWd0X3BsYW5lX3QgKnBsYW5lLAogCQlDSEVDS19SRVRVUk4ocmV0
+LCBmYWlsX29uX2Vycm9yKTsKIAl9CiAKLQljaGFuZ2VkX21hc2sgPSBwbGFuZS0+Y2hhbmdlZCAm
+IExFR0FDWV9QTEFORV9DT01NSVRfTUFTSzsKLQotCWZvciAoaSA9IDA7IGkgPCBJR1RfTlVNX1BM
+QU5FX1BST1BTOyBpKyspIHsKLQkJaWYgKCEoY2hhbmdlZF9tYXNrICYgKDEgPDwgaSkpKQotCQkJ
+Y29udGludWU7Ci0KLQkJTE9HKGRpc3BsYXksICJTZXRQcm9wIHBsYW5lICVzLiVkIFwiJXNcIiB0
+byAweCUiUFJJeDY0Ii8lIlBSSWk2NCJcbiIsCi0JCQlrbXN0ZXN0X3BpcGVfbmFtZShwaXBlLT5w
+aXBlKSwgcGxhbmUtPmluZGV4LCBpZ3RfcGxhbmVfcHJvcF9uYW1lc1tpXSwKLQkJCXBsYW5lLT52
+YWx1ZXNbaV0sIHBsYW5lLT52YWx1ZXNbaV0pOwotCi0JCWlndF9hc3NlcnQocGxhbmUtPnByb3Bz
+W2ldKTsKLQotCQlyZXQgPSBpZ3RfcGxhbmVfc2V0X3Byb3BlcnR5KHBsYW5lLAotCQkJCQkgICAg
+IHBsYW5lLT5wcm9wc1tpXSwKLQkJCQkJICAgICBwbGFuZS0+dmFsdWVzW2ldKTsKLQotCQlDSEVD
+S19SRVRVUk4ocmV0LCBmYWlsX29uX2Vycm9yKTsKLQl9Ci0KLQlyZXR1cm4gMDsKKwlyZXR1cm4g
+cGxhbmVfY29tbWl0X3Byb3BzKHBsYW5lLCBwaXBlLCBmYWlsX29uX2Vycm9yKTsKIH0KIAogLyoK
+QEAgLTI4NDEsNyArMjg1MSw3IEBAIHN0YXRpYyBpbnQgaWd0X3ByaW1hcnlfcGxhbmVfY29tbWl0
+X2xlZ2FjeShpZ3RfcGxhbmVfdCAqcHJpbWFyeSwKIAlpZiAoIWlndF9wbGFuZV9pc19wcm9wX2No
+YW5nZWQocHJpbWFyeSwgSUdUX1BMQU5FX0ZCX0lEKSAmJgogCSAgICAhKHByaW1hcnktPmNoYW5n
+ZWQgJiBJR1RfUExBTkVfQ09PUkRfQ0hBTkdFRF9NQVNLKSAmJgogCSAgICAhaWd0X3BpcGVfb2Jq
+X2lzX3Byb3BfY2hhbmdlZChwcmltYXJ5LT5waXBlLCBJR1RfQ1JUQ19NT0RFX0lEKSkKLQkJcmV0
+dXJuIDA7CisJCWdvdG8gc2tpcF9zZXRjcnRjOwogCiAJY3J0Y19pZCA9IHBpcGUtPmNydGNfaWQ7
+CiAJZmJfaWQgPSBvdXRwdXQgPyBpZ3RfcGxhbmVfZ2V0X2ZiX2lkKHByaW1hcnkpIDogMDsKQEAg
+LTI4ODYsNyArMjg5Niw4IEBAIHN0YXRpYyBpbnQgaWd0X3ByaW1hcnlfcGxhbmVfY29tbWl0X2xl
+Z2FjeShpZ3RfcGxhbmVfdCAqcHJpbWFyeSwKIAogCUNIRUNLX1JFVFVSTihyZXQsIGZhaWxfb25f
+ZXJyb3IpOwogCi0JcmV0dXJuIDA7Citza2lwX3NldGNydGM6CisJcmV0dXJuIHBsYW5lX2NvbW1p
+dF9wcm9wcyhwcmltYXJ5LCBwaXBlLCBmYWlsX29uX2Vycm9yKTsKIH0KIAogc3RhdGljIGludCBp
+Z3RfcGxhbmVfZml4dXBfcm90YXRpb24oaWd0X3BsYW5lX3QgKnBsYW5lLApAQCAtMzQ2Nyw4ICsz
+NDc4LDcgQEAgZGlzcGxheV9jb21taXRfY2hhbmdlZChpZ3RfZGlzcGxheV90ICpkaXNwbGF5LCBl
+bnVtIGlndF9jb21taXRfc3R5bGUgcykKIAkJCQlpZ3RfcGxhbmVfY2xlYXJfcHJvcF9jaGFuZ2Vk
+KHBsYW5lLCBJR1RfUExBTkVfRkJfSUQpOwogCiAJCQkJaWYgKHMgIT0gQ09NTUlUX0xFR0FDWSB8
+fAotCQkJCSAgICAhKHBsYW5lLT50eXBlID09IERSTV9QTEFORV9UWVBFX1BSSU1BUlkgfHwKLQkJ
+CQkgICAgICBwbGFuZS0+dHlwZSA9PSBEUk1fUExBTkVfVFlQRV9DVVJTT1IpKQorCQkJCSAgICBw
+bGFuZS0+dHlwZSAhPSBEUk1fUExBTkVfVFlQRV9DVVJTT1IpCiAJCQkJCXBsYW5lLT5jaGFuZ2Vk
+ICY9IH5MRUdBQ1lfUExBTkVfQ09NTUlUX01BU0s7CiAKIAkJCQlpZiAoZGlzcGxheS0+Zmlyc3Rf
+Y29tbWl0KQotLSAKMi4yNi4zCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
+Lm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
+ZXYK
