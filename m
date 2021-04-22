@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A8D8B6EA33
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Apr 2021 06:12:07 +0000 (UTC)
-Date: Thu, 22 Apr 2021 09:13:13 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YIET+VN+JnRrbuja@platvala-desk.ger.corp.intel.com>
-References: <20210416172724.3203107-1-markyacoub@chromium.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9F0F96E054
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Apr 2021 07:46:57 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Thu, 22 Apr 2021 21:07:22 +0530
+Message-Id: <20210422153727.11323-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210416172724.3203107-1-markyacoub@chromium.org>
-Subject: Re: [igt-dev] [PATCH v2] tests/kms_atomic_transition: Enable
- Primary Plane on Enabling CRTC.
+Subject: [igt-dev] [v2 i-g-t 0/5] Fix mode selection for 2x tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,38 +18,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>
-Cc: igt-dev@lists.freedesktop.org, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Apr 16, 2021 at 01:27:24PM -0400, Mark Yacoub wrote:
-> From: Mark Yacoub <markyacoub@google.com>
-> 
-> Setup all plane params before committing anything.
-> Do not disable Primary Plane whenever a CRTC is getting enabled.
-> 
-> AMD Driver requires the primary plane to be enabled whenever the CRTC is, otherwise
-> drm_mode_cursor_universal may end up trying to enable the cursor plane while all other
-> planes are disabled, which is not supported by the hardware.
-> 
-> === Changes from v1 ===
-> Remove product names from commit message
-> 
-> Cc: Nicholas.Kazlauskas@amd.com
-> ---
->  tests/kms_atomic_transition.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
+When two monitors connected through MST, the second monitor also
+tries to use the same mode. So two such modes may not fit into the
+link bandwidth.
 
+This series will find a combination of modes that fit into the BW.
 
-I've asked Intel display folks to chime in whether i915 needs any of
-this flow needs to be unchanged with is_i915_device(), no response
-yet. We also need a word from someone to confirm that this patch does
-what it says on the tin for amdgpu. Nicholas, are you able to get
-someone to look at this?
+IGT core helper would override the mode on all connectors that will
+be modeset by the next igt_display_commit() call in the test. These
+are all the connectors in igt_display_t that have a pending_pipe set
+by the test up to the point of calling this helper.
 
+TODO: Sort the mode combinations in decending ordered.
 
--- 
-Petri Latvala
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+
+Bhanuprakash Modem (5):
+  lib/igt_kms: helper to override the mode on all connectors
+  tests/kms_frontbuffer_tracking: Fix mode selection for 2x tests
+  tests/kms_cursor_legacy: Fix mode selection for 2x tests
+  tests/debugfs_test: Fix mode selection for MST
+  tests/kms_content_protection: Fix mode selection for 2x tests
+
+ lib/igt_kms.c                    | 40 +++++++++++++++++++++++++++
+ lib/igt_kms.h                    |  1 +
+ tests/debugfs_test.c             | 10 +++++++
+ tests/kms_content_protection.c   | 41 +++++++++++-----------------
+ tests/kms_cursor_legacy.c        | 47 ++++++++++++++++++++++++++++++--
+ tests/kms_frontbuffer_tracking.c | 33 ++++++++++++++++++++++
+ 6 files changed, 144 insertions(+), 28 deletions(-)
+
+--
+2.20.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
