@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 44E436E0F8
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Apr 2021 07:47:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 286436E054
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Apr 2021 07:47:07 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Thu, 22 Apr 2021 21:07:25 +0530
-Message-Id: <20210422153727.11323-4-bhanuprakash.modem@intel.com>
+Date: Thu, 22 Apr 2021 21:07:26 +0530
+Message-Id: <20210422153727.11323-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20210422153727.11323-1-bhanuprakash.modem@intel.com>
 References: <20210422153727.11323-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [v2 i-g-t 3/5] tests/kms_cursor_legacy: Fix mode
- selection for 2x tests
+Subject: [igt-dev] [v2 i-g-t 4/5] tests/debugfs_test: Fix mode selection for
+ MST
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,103 +30,42 @@ link bandwidth.
 
 This patch will find a combination of modes that fit into the BW.
 
-V2:
-* Remove MST specific logic (Daniel)
-
 Cc: Imre Deak <imre.deak@intel.com>
 Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_cursor_legacy.c | 47 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 44 insertions(+), 3 deletions(-)
+ tests/debugfs_test.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 4723e1ff9..afa67e2c0 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -50,6 +50,15 @@ IGT_TEST_DESCRIPTION("Stress legacy cursor ioctl");
+diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c
+index 46ba0a8be..e66a59231 100644
+--- a/tests/debugfs_test.c
++++ b/tests/debugfs_test.c
+@@ -104,6 +104,7 @@ static void kms_tests(int fd, int debugfs)
  
- igt_pipe_crc_t *pipe_crc;
+ 	igt_subtest("read_all_entries_display_on") {
+ 		/* try to light all pipes */
++retry:
+ 		for_each_pipe(&display, pipe) {
+ 			igt_output_t *output;
  
-+static void override_output_modes(igt_display_t *display, igt_output_t *output, igt_output_t *output2)
-+{
-+	bool found = override_all_active_output_modes_to_fit_link_bw(display);
-+	igt_require_f(found, "No valid mode combo found.\n");
-+
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_output_set_pipe(output2, PIPE_NONE);
-+}
-+
- static void stress(igt_display_t *display,
- 		   enum pipe pipe, int num_children, unsigned mode,
- 		   int timeout)
-@@ -393,6 +402,7 @@ static void flip(igt_display_t *display,
- 	struct drm_mode_cursor arg[2];
- 	uint64_t *results;
- 	struct igt_fb fb_info, fb_info2, argb_fb, cursor_fb, cursor_fb2;
-+	igt_output_t *output, *output2;
+@@ -128,6 +129,15 @@ static void kms_tests(int fd, int debugfs)
+ 			}
+ 		}
  
- 	results = mmap(NULL, PAGE_SIZE, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
- 	igt_assert(results != MAP_FAILED);
-@@ -406,9 +416,20 @@ static void flip(igt_display_t *display,
- 	if (mode >= flip_test_atomic)
- 		igt_require(display->is_atomic);
- 
--	igt_require(set_fb_on_crtc(display, flip_pipe, &fb_info));
--	if (flip_pipe != cursor_pipe)
--		igt_require(set_fb_on_crtc(display, cursor_pipe, &fb_info2));
-+	igt_require((output = set_fb_on_crtc(display, flip_pipe, &fb_info)));
-+	if (flip_pipe != cursor_pipe) {
-+		igt_require((output2 = set_fb_on_crtc(display, cursor_pipe, &fb_info2)));
-+
-+		if (igt_display_try_commit_atomic(display,
-+					  DRM_MODE_ATOMIC_TEST_ONLY |
-+					  DRM_MODE_ATOMIC_ALLOW_MODESET,
-+					  NULL) != 0) {
-+			override_output_modes(display, output, output2);
-+
-+			igt_require((output = set_fb_on_crtc(display, flip_pipe, &fb_info)));
-+			igt_require((output2 = set_fb_on_crtc(display, cursor_pipe, &fb_info2)));
++		if (igt_display_try_commit_atomic(&display,
++					DRM_MODE_ATOMIC_TEST_ONLY |
++					DRM_MODE_ATOMIC_ALLOW_MODESET,
++					NULL) != 0) {
++			bool found = override_all_active_output_modes_to_fit_link_bw(&display);
++			igt_require_f(found, "No valid mode combo found.\n");
++			goto retry;
 +		}
-+	}
- 
- 	igt_create_color_fb(display->drm_fd, fb_info.width, fb_info.height, DRM_FORMAT_ARGB8888, 0, .5, .5, .5, &cursor_fb);
- 
-@@ -879,6 +900,16 @@ static void two_screens_flip_vs_cursor(igt_display_t *display, int nloops, bool
- 	igt_require((output = set_fb_on_crtc(display, pipe, &fb_info)));
- 	igt_require((output2 = set_fb_on_crtc(display, pipe2, &fb2_info)));
- 
-+	if (igt_display_try_commit_atomic(display,
-+					  DRM_MODE_ATOMIC_TEST_ONLY |
-+					  DRM_MODE_ATOMIC_ALLOW_MODESET,
-+					  NULL) != 0) {
-+		override_output_modes(display, output, output2);
 +
-+		igt_require((output = set_fb_on_crtc(display, pipe, &fb_info)));
-+		igt_require((output2 = set_fb_on_crtc(display, pipe2, &fb2_info)));
-+	}
-+
- 	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888, 0, 1., 1., 1., &cursor_fb);
- 	set_cursor_on_pipe(display, pipe, &cursor_fb);
- 	populate_cursor_args(display, pipe, arg1, &cursor_fb);
-@@ -1129,6 +1160,16 @@ static void two_screens_cursor_vs_flip(igt_display_t *display, int nloops, bool
- 	igt_require((outputs[0] = set_fb_on_crtc(display, pipe[0], &fb_info[0])));
- 	igt_require((outputs[1] = set_fb_on_crtc(display, pipe[1], &fb_info[1])));
+ 		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
  
-+	if (igt_display_try_commit_atomic(display,
-+					  DRM_MODE_ATOMIC_TEST_ONLY |
-+					  DRM_MODE_ATOMIC_ALLOW_MODESET,
-+					  NULL) != 0) {
-+		override_output_modes(display, outputs[0], outputs[1]);
-+
-+		igt_require((outputs[0] = set_fb_on_crtc(display, pipe[0], &fb_info[0])));
-+		igt_require((outputs[1] = set_fb_on_crtc(display, pipe[1], &fb_info[1])));
-+	}
-+
- 	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888, 0, 1., 1., 1., &cursor_fb);
- 
- 	set_cursor_on_pipe(display, pipe[0], &cursor_fb);
+ 		read_and_discard_sysfs_entries(debugfs, 0);
 -- 
 2.20.1
 
