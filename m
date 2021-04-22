@@ -1,24 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com
- [IPv6:2a00:1450:4864:20::32f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B79306E147
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Apr 2021 10:01:45 +0000 (UTC)
-Received: by mail-wm1-x32f.google.com with SMTP id
- n10-20020a05600c4f8ab0290130f0d3cba3so3897578wmq.1
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Apr 2021 03:01:45 -0700 (PDT)
-Date: Thu, 22 Apr 2021 12:01:42 +0200
-From: Daniel Vetter <daniel@ffwll.ch>
-Message-ID: <YIFJhoTaYfbRVafu@phenom.ffwll.local>
-References: <20210420221720.14656-1-ville.syrjala@linux.intel.com>
- <161897657623.19928.11652686076116912215@emeril.freedesktop.org>
- <YIBcroO7VtZB7rfL@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 963D66EA6F
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Apr 2021 11:33:58 +0000 (UTC)
+Date: Thu, 22 Apr 2021 14:35:03 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YIFfZ4bZ5FQ/XaFY@platvala-desk.ger.corp.intel.com>
+References: <20210105081352.82045-1-kunal1.joshi@intel.com>
+ <20210105081352.82045-2-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <YIBcroO7VtZB7rfL@intel.com>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2Cv3=2C1/3=5D_lib/kms=3A_Commit_primary?=
- =?utf-8?q?_plane_props_with_COMMIT=5FLEGACY?=
+In-Reply-To: <20210105081352.82045-2-kunal1.joshi@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v6 1/3] Make basic chamelium function
+ accessible to other tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,44 +19,84 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Kunal Joshi <kunal1.joshi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Apr 21, 2021 at 08:11:10PM +0300, Ville Syrj=E4l=E4 wrote:
-> On Wed, Apr 21, 2021 at 03:42:56AM -0000, Patchwork wrote:
-> > =3D=3D Series Details =3D=3D
-> > =
+On Tue, Jan 05, 2021 at 01:43:50PM +0530, Kunal Joshi wrote:
+> There are many use case where we can integrate chamelium with other tests,
+> Migrating some of basic chamelium functions to igt_chamelium lib to avoid
+> Code rewriting.
+> 
+> v2: Moved one more function reset_state from tests/kms_chamelium to
+> lib/igt_chamelium.
+> 
+> v3: - Shifted disabling of modeset to igt_kms
+>     - Replace connection_str with kmstest_connector_status_str (Petri)
+>     - Generalized require__connector_present (Petri)
+>     - Avoided using data_chamelium_t struct (Petri)
+> 
+> v4: - Moved function to library (Petri)
+>     - Renamed some functions and added documentation (Petri)
+> 
+> v6: - Documentation of functions(Petri)
+>     - Shifted function to igt_kms and renamed (Petri)
+> 
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>  lib/igt_chamelium.c   | 131 +++++++++++++++
+>  lib/igt_chamelium.h   |  28 ++++
+>  lib/igt_kms.c         | 100 +++++++++++
+>  lib/igt_kms.h         |  23 ++-
+>  tests/kms_chamelium.c | 378 +++++++++++++++---------------------------
+>  5 files changed, 411 insertions(+), 249 deletions(-)
+> 
+> diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+> index 585fdfa8..112181d1 100644
+> --- a/lib/igt_chamelium.c
+> +++ b/lib/igt_chamelium.c
+> @@ -218,6 +218,137 @@ const char *chamelium_port_get_name(struct chamelium_port *port)
+>  	return port->name;
+>  }
+>  
+> +/**
+> + * chamelium_require_connector_present
+> + * @ports: All connected ports
+> + * @type: Required port type
+> + * @port_count: Total port count
+> + * @count: The required number of port count
+> + *
+> + * Check there are required ports connected of given type
+> + */
+> +void
+> +chamelium_require_connector_present(struct chamelium_port **ports,
+> +				    unsigned int type,
+> +				    int port_count,
+> +				    int count)
+> +{
+> +	int i;
+> +	int found = 0;
+> +
+> +	for (i = 0; i < port_count; i++) {
+> +		if (chamelium_port_get_type(ports[i]) == type)
+> +			found++;
+> +	}
+> +
+> +	igt_require_f(found == count,
+> +		      "port of type %s found %d and required %d\n",
+> +		      kmstest_connector_type_str(type), found, count);
+> +}
 
-> > Series: series starting with [i-g-t,v3,1/3] lib/kms: Commit primary pla=
-ne props with COMMIT_LEGACY
-> > URL   : https://patchwork.freedesktop.org/series/89278/
-> > State : success
-> =
+I can't think of a reason to require exactly 'count' ports, as opposed to >=.
 
-> So apparently avoiding those two redundant color encoding/range
-> setprop ioctls when chaging the fb does avoid the test failure
-> on glk. How on earth two setprop ioctl can do this is a mystery
-> The setprops should essentially be nops, and should just result
-> in reprogramming the plane registers a few times using an
-> identical state.
 
-Might we need a full modeset for the hw to pick them up perhaps? Or at
-least plane enable/disable cycle. Doesn't make sense, but hey hw, maybe it
-only picks these up on initial enable.
-
-Only other thing I can think of is to maybe double check the state
-readout to make sure we really program this correctly in both cases.
--Daniel
--- =
-
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
