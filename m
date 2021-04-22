@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE09A6EA87
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Apr 2021 13:26:09 +0000 (UTC)
-Date: Thu, 22 Apr 2021 16:25:57 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <YIF5ZT/bM+n+OqJf@intel.com>
-References: <20210420221720.14656-1-ville.syrjala@linux.intel.com>
- <161897657623.19928.11652686076116912215@emeril.freedesktop.org>
- <YIBcroO7VtZB7rfL@intel.com> <YIFJhoTaYfbRVafu@phenom.ffwll.local>
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2074.outbound.protection.outlook.com [40.107.236.74])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 850F06E0DF
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Apr 2021 14:08:08 +0000 (UTC)
+References: <20210416172724.3203107-1-markyacoub@chromium.org>
+ <YIET+VN+JnRrbuja@platvala-desk.ger.corp.intel.com>
+From: "Kazlauskas, Nicholas" <nicholas.kazlauskas@amd.com>
+Message-ID: <caafcb6d-a664-5df3-8e3c-59ffb2e0bd84@amd.com>
+Date: Thu, 22 Apr 2021 10:08:00 -0400
+In-Reply-To: <YIET+VN+JnRrbuja@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <YIFJhoTaYfbRVafu@phenom.ffwll.local>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2Cv3=2C1/3=5D_lib/kms=3A_Commit_primary?=
- =?utf-8?q?_plane_props_with_COMMIT=5FLEGACY?=
+Subject: Re: [igt-dev] [PATCH v2] tests/kms_atomic_transition: Enable
+ Primary Plane on Enabling CRTC.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,64 +20,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Daniel Vetter <daniel@ffwll.ch>
-Cc: igt-dev@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>, Mark Yacoub <markyacoub@chromium.org>
+Cc: igt-dev@lists.freedesktop.org, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Apr 22, 2021 at 12:01:42PM +0200, Daniel Vetter wrote:
-> On Wed, Apr 21, 2021 at 08:11:10PM +0300, Ville Syrj=E4l=E4 wrote:
-> > On Wed, Apr 21, 2021 at 03:42:56AM -0000, Patchwork wrote:
-> > > =3D=3D Series Details =3D=3D
-> > > =
+On 2021-04-22 2:13 a.m., Petri Latvala wrote:
+> On Fri, Apr 16, 2021 at 01:27:24PM -0400, Mark Yacoub wrote:
+>> From: Mark Yacoub <markyacoub@google.com>
+>>
+>> Setup all plane params before committing anything.
+>> Do not disable Primary Plane whenever a CRTC is getting enabled.
+>>
+>> AMD Driver requires the primary plane to be enabled whenever the CRTC is, otherwise
+>> drm_mode_cursor_universal may end up trying to enable the cursor plane while all other
+>> planes are disabled, which is not supported by the hardware.
+>>
+>> === Changes from v1 ===
+>> Remove product names from commit message
+>>
+>> Cc: Nicholas.Kazlauskas@amd.com
+>> ---
+>>   tests/kms_atomic_transition.c | 7 +++----
+>>   1 file changed, 3 insertions(+), 4 deletions(-)
+> 
+> 
+> I've asked Intel display folks to chime in whether i915 needs any of
+> this flow needs to be unchanged with is_i915_device(), no response
+> yet. We also need a word from someone to confirm that this patch does
+> what it says on the tin for amdgpu. Nicholas, are you able to get
+> someone to look at this?
+> 
+> 
 
-> > > Series: series starting with [i-g-t,v3,1/3] lib/kms: Commit primary p=
-lane props with COMMIT_LEGACY
-> > > URL   : https://patchwork.freedesktop.org/series/89278/
-> > > State : success
-> > =
+Shifting the initial commit after setup_parms seems correct, but I'm not 
+sure if avoiding the disable has any impact to the test itself. I would 
+think that it does from initial inspection.
 
-> > So apparently avoiding those two redundant color encoding/range
-> > setprop ioctls when chaging the fb does avoid the test failure
-> > on glk. How on earth two setprop ioctl can do this is a mystery
-> > The setprops should essentially be nops, and should just result
-> > in reprogramming the plane registers a few times using an
-> > identical state.
-> =
+The test comment talks about the RMFB CRTC disable case but I don't 
+actually see anything testing this specifically in the test? I didn't 
+think out fencing was related.
 
-> Might we need a full modeset for the hw to pick them up perhaps? Or at
-> least plane enable/disable cycle. Doesn't make sense, but hey hw, maybe it
-> only picks these up on initial enable.
-
-I was pondering about a resurgence of the old "some DSPCNTR bits
-can't be changed while in CxSR" issue. But that sort of thing
-should likely make the pixel format tests fail since they do
-switch these around dynamically. Another issue is that these bits
-aren't supposed to affect RGB scanout at all, and those extra
-setprop ioctls aren't actually changing the state at all.
-
-> Only other thing I can think of is to maybe double check the state
-> readout to make sure we really program this correctly in both cases.
-
-Yeah, some kind of mishap in programming is what I was thinking
-initially. So far didn't see any obvious issues in the code. I guess
-I cound stick a bit of readout somewhere to confirm some of the
-bits at least make sense.
-
-But it might actually be some crc enable/disable race. At least I was
-seeing some oddball crcs yesterday when I started to run the inner
-bits of these tests in a loop. The code even still has that super
-sketchy "let's throw out an extra crc on gen8 because it sometimes
-looks bad" hack. I guess no one ever root caused that. I'll dig
-into it a bit more.
-
--- =
-
-Ville Syrj=E4l=E4
-Intel
+Regards,
+Nicholas Kazlauskas
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
