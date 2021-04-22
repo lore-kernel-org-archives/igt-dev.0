@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D5E3F6E03B
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Apr 2021 07:47:09 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Thu, 22 Apr 2021 21:07:27 +0530
-Message-Id: <20210422153727.11323-6-bhanuprakash.modem@intel.com>
-In-Reply-To: <20210422153727.11323-1-bhanuprakash.modem@intel.com>
-References: <20210422153727.11323-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [v2 i-g-t 5/5] tests/kms_content_protection: Fix mode
- selection for 2x tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 22 Apr 2021 08:33:43 -0000
+Message-ID: <161908042379.10416.2003545305686423120@emeril.freedesktop.org>
+References: <20210422153727.11323-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20210422153727.11323-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgRml4IG1v?=
+ =?utf-8?q?de_selection_for_2x_tests_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,106 +14,172 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1425064892=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When two monitors connected through MST, the second monitor also
-tries to use the same mode. So two such modes may not fit into the
-link bandwidth.
+--===============1425064892==
+Content-Type: multipart/alternative;
+ boundary="===============9133249395534680042=="
 
-This patch will find a combination of modes that fit into the BW.
+--===============9133249395534680042==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_content_protection.c | 41 +++++++++++++---------------------
- 1 file changed, 16 insertions(+), 25 deletions(-)
+== Series Details ==
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 5a75b871c..90047029d 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -452,39 +452,18 @@ static bool sink_hdcp2_capable(igt_output_t *output)
- 	return strstr(buf, "HDCP2.2");
- }
- 
--static void prepare_modeset_on_mst_output(igt_output_t *output, enum pipe pipe)
-+static void prepare_modeset_on_mst_output(igt_output_t *output)
- {
--	drmModeConnectorPtr c = output->config.connector;
- 	drmModeModeInfo *mode;
- 	igt_plane_t *primary;
--	int i, width, height;
-+	int width, height;
-+	enum pipe pipe = output->pending_pipe;
- 
- 	mode = igt_output_get_mode(output);
- 
--	/*
--	 * TODO: Add logic to use the highest possible modes on each output.
--	 * Currently using 2k modes by default on all the outputs.
--	 */
--	igt_debug("Before mode override: Output %s Mode hdisplay %d Mode vdisplay %d\n",
--		   output->name, mode->hdisplay, mode->vdisplay);
--
--	if (mode->hdisplay > 1920 && mode->vdisplay > 1080) {
--		for (i = 0; i < c->count_modes; i++) {
--			if (c->modes[i].hdisplay <= 1920 && c->modes[i].vdisplay <= 1080) {
--				mode = &c->modes[i];
--				igt_output_override_mode(output, mode);
--				break;
--			}
--		}
--	}
--
--	igt_debug("After mode overide: Output %s Mode hdisplay %d Mode vdisplay %d\n",
--		   output->name, mode->hdisplay, mode->vdisplay);
--
- 	width = mode->hdisplay;
- 	height = mode->vdisplay;
- 
--	igt_output_set_pipe(output, pipe);
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	igt_plane_set_fb(primary, NULL);
- 	igt_plane_set_fb(primary, pipe % 2 ? &data.red : &data.green);
-@@ -624,7 +603,8 @@ test_content_protection_mst(int content_type)
- 
- 		igt_assert_f(igt_pipe_connector_valid(pipe, output), "Output-pipe combination invalid\n");
- 
--		prepare_modeset_on_mst_output(output, pipe);
-+		igt_output_set_pipe(output, pipe);
-+		prepare_modeset_on_mst_output(output);
- 		mst_output[dp_mst_outputs++] = output;
- 
- 		pipe++;
-@@ -635,6 +615,17 @@ test_content_protection_mst(int content_type)
- 
- 	igt_require_f(dp_mst_outputs > 1, "No DP MST set up with >= 2 outputs found in a single topology\n");
- 
-+	if (igt_display_try_commit_atomic(display,
-+				DRM_MODE_ATOMIC_TEST_ONLY |
-+				DRM_MODE_ATOMIC_ALLOW_MODESET,
-+				NULL) != 0) {
-+		bool found = override_all_active_output_modes_to_fit_link_bw(display);
-+		igt_require_f(found, "No valid mode combo found for MST modeset\n");
-+
-+		for (count = 0; count < dp_mst_outputs; count++)
-+			prepare_modeset_on_mst_output(mst_output[count]);
-+	}
-+
- 	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
- 	igt_require_f(ret == 0, "Commit failure during MST modeset\n");
- 
--- 
-2.20.1
+Series: Fix mode selection for 2x tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/88902/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9996 -> IGTPW_5758
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5758/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5758 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - {fi-rkl-11500t}:    [SKIP][1] ([i915#1849] / [i915#3180]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9996/fi-rkl-11500t/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5758/fi-rkl-11500t/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
+    - fi-cfl-8109u:       [DMESG-WARN][3] ([i915#165]) -> [PASS][4] +15 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9996/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5758/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#165]: https://gitlab.freedesktop.org/drm/intel/issues/165
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#3180]: https://gitlab.freedesktop.org/drm/intel/issues/3180
+
+
+Participating hosts (42 -> 39)
+------------------------------
+
+  Missing    (3): fi-dg1-1 fi-bsw-cyan fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6072 -> IGTPW_5758
+
+  CI-20190529: 20190529
+  CI_DRM_9996: 5b6d86e9056ec6b01571ecf0ed5fe0818d7b2e3c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5758: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5758/index.html
+  IGT_6072: 0a51f49df9f5ca535fc0206a27a6780de6b52320 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5758/index.html
+
+--===============9133249395534680042==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Fix mode selection for 2x tests (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88902/">https://patchwork.freedesktop.org/series/88902/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5758/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5758/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9996 -&gt; IGTPW_5758</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5758/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5758 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>{fi-rkl-11500t}:    <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9996/fi-rkl-11500t/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3180">i915#3180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5758/fi-rkl-11500t/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9996/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/165">i915#165</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5758/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> +15 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (42 -&gt; 39)</h2>
+<p>Missing    (3): fi-dg1-1 fi-bsw-cyan fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6072 -&gt; IGTPW_5758</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9996: 5b6d86e9056ec6b01571ecf0ed5fe0818d7b2e3c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5758: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5758/index.html<br />
+  IGT_6072: 0a51f49df9f5ca535fc0206a27a6780de6b52320 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============9133249395534680042==--
+
+--===============1425064892==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1425064892==--
