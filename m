@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com
- [IPv6:2607:f8b0:4864:20::534])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E3F946EC91
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 21:53:10 +0000 (UTC)
-Received: by mail-pg1-x534.google.com with SMTP id s22so14975199pgk.6
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 14:53:10 -0700 (PDT)
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
+ [IPv6:2607:f8b0:4864:20::530])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B8DFE6EC93
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 21:53:13 +0000 (UTC)
+Received: by mail-pg1-x530.google.com with SMTP id w10so36092137pgh.5
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 14:53:13 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Fri, 23 Apr 2021 16:52:50 -0500
-Message-Id: <20210423215252.877174-9-jason@jlekstrand.net>
+Date: Fri, 23 Apr 2021 16:52:52 -0500
+Message-Id: <20210423215252.877174-11-jason@jlekstrand.net>
 In-Reply-To: <20210423214853.876911-1-jason@jlekstrand.net>
 References: <20210423214853.876911-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 87/89] lib/intel_bb: Remove
- intel_bb_assign_vm and tests
+Subject: [igt-dev] [PATCH i-g-t 89/89] tests/i915/gen9_exec_parse: Convert
+ to intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,222 +27,324 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-It's not used by anything other than the tests for that functionality
-and it relies on setting the VM via SET_CONTEXT_PARAM which is
-deprecated.  Delete it for now.  We can add it back in later if it's
-actually useful and do it properly then.
 ---
- lib/intel_batchbuffer.c   |  52 -------------------
- lib/intel_batchbuffer.h   |   3 --
- tests/i915/api_intel_bb.c | 104 --------------------------------------
- 3 files changed, 159 deletions(-)
+ tests/i915/gen9_exec_parse.c | 106 +++++++++++++++++------------------
+ 1 file changed, 53 insertions(+), 53 deletions(-)
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 0b2c5b21..c300e26e 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -1513,14 +1513,6 @@ static void __intel_bb_destroy_cache(struct intel_bb *ibb)
- 	ibb->root = NULL;
+diff --git a/tests/i915/gen9_exec_parse.c b/tests/i915/gen9_exec_parse.c
+index f9de90d2..fdcaefb8 100644
+--- a/tests/i915/gen9_exec_parse.c
++++ b/tests/i915/gen9_exec_parse.c
+@@ -80,7 +80,7 @@ __checked_execbuf(int i915, struct drm_i915_gem_execbuffer2 *eb)
  }
  
--static void __intel_bb_detach_intel_bufs(struct intel_bb *ibb)
--{
--	struct intel_buf *entry, *tmp;
--
--	igt_list_for_each_entry_safe(entry, tmp, &ibb->intel_bufs, link)
--		intel_bb_detach_intel_buf(ibb, entry);
--}
--
- static void __intel_bb_remove_intel_bufs(struct intel_bb *ibb)
+ static int
+-__exec_batch_patched(int i915, int engine,
++__exec_batch_patched(int i915, const intel_ctx_t *ctx, int engine,
+ 		     uint32_t cmd_bo, const uint32_t *cmds, int size,
+ 		     uint32_t target_bo, uint64_t target_offset, uint64_t target_delta)
  {
- 	struct intel_buf *entry, *tmp;
-@@ -1649,50 +1641,6 @@ int intel_bb_sync(struct intel_bb *ibb)
- 	return ret;
+@@ -109,12 +109,13 @@ __exec_batch_patched(int i915, int engine,
+ 	execbuf.buffers_ptr = to_user_pointer(obj);
+ 	execbuf.buffer_count = 2;
+ 	execbuf.batch_len = size;
++	execbuf.rsvd1 = ctx->id;
+ 	execbuf.flags = engine;
+ 
+ 	return __checked_execbuf(i915, &execbuf);
  }
  
--uint64_t intel_bb_assign_vm(struct intel_bb *ibb, uint64_t allocator,
--			    uint32_t vm_id)
--{
--	struct drm_i915_gem_context_param arg = {
--		.param = I915_CONTEXT_PARAM_VM,
--	};
--	uint64_t prev_allocator = ibb->allocator_handle;
--	bool closed = false;
--
--	if (ibb->vm_id == vm_id) {
--		igt_debug("Skipping to assign same vm_id: %u\n", vm_id);
--		return 0;
--	}
--
--	/* Cannot switch if someone keeps bb refcount */
--	igt_assert(ibb->refcount == 1);
--
--	/* Detach intel_bufs and remove bb handle */
--	__intel_bb_detach_intel_bufs(ibb);
--	intel_bb_remove_object(ibb, ibb->handle, ibb->batch_offset, ibb->size);
--
--	/* Cache + objects are not valid after change anymore */
--	__intel_bb_destroy_objects(ibb);
--	__intel_bb_destroy_cache(ibb);
--
--	/* Attach new allocator */
--	ibb->allocator_handle = allocator;
--
--	/* Setparam */
--	ibb->vm_id = vm_id;
--
--	/* Skip set param, we likely return to default vm */
--	if (vm_id) {
--		arg.ctx_id = ibb->ctx;
--		arg.value = vm_id;
--		gem_context_set_param(ibb->i915, &arg);
--	}
--
--	/* Recreate bb */
--	intel_bb_reset(ibb, false);
--
--	return closed ? 0 : prev_allocator;
--}
--
- /*
-  * intel_bb_print:
-  * @ibb: pointer to intel_bb
-diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-index 6f148713..a2056a66 100644
---- a/lib/intel_batchbuffer.h
-+++ b/lib/intel_batchbuffer.h
-@@ -523,9 +523,6 @@ static inline void intel_bb_unref(struct intel_bb *ibb)
- void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache);
- int intel_bb_sync(struct intel_bb *ibb);
+-static void exec_batch_patched(int i915, int engine,
++static void exec_batch_patched(int i915, const intel_ctx_t *ctx, int engine,
+ 			       uint32_t cmd_bo, const uint32_t *cmds,
+ 			       int size, int patch_offset,
+ 			       long int expected_value)
+@@ -123,7 +124,8 @@ static void exec_batch_patched(int i915, int engine,
+ 	uint64_t actual_value = 0;
+ 	long int ret;
  
--uint64_t intel_bb_assign_vm(struct intel_bb *ibb, uint64_t allocator,
--			    uint32_t vm_id);
--
- void intel_bb_print(struct intel_bb *ibb);
- void intel_bb_dump(struct intel_bb *ibb, const char *filename);
- void intel_bb_set_debug(struct intel_bb *ibb, bool debug);
-diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
-index eafa856d..c3b4f75d 100644
---- a/tests/i915/api_intel_bb.c
-+++ b/tests/i915/api_intel_bb.c
-@@ -240,107 +240,6 @@ static void bb_with_allocator(struct buf_ops *bops)
- 	intel_bb_destroy(ibb);
+-	ret = __exec_batch_patched(i915, engine, cmd_bo, cmds, size, target_bo, patch_offset, 0);
++	ret = __exec_batch_patched(i915, ctx, engine, cmd_bo, cmds, size,
++				   target_bo, patch_offset, 0);
+ 	if (ret) {
+ 		igt_assert_lt(ret, 0);
+ 		gem_close(i915, target_bo);
+@@ -138,8 +140,8 @@ static void exec_batch_patched(int i915, int engine,
+ 	igt_assert_eq(actual_value, expected_value);
  }
  
--static void bb_with_vm(struct buf_ops *bops)
--{
--	int i915 = buf_ops_get_fd(bops);
--	struct drm_i915_gem_context_param arg = {
--		.param = I915_CONTEXT_PARAM_VM,
--	};
--	struct intel_bb *ibb;
--	struct intel_buf *src, *dst, *gap;
--	uint32_t ctx = 0, vm_id1, vm_id2;
--	uint64_t prev_vm, vm;
--	uint64_t src_addr[5], dst_addr[5];
--
--	igt_require(gem_uses_full_ppgtt(i915));
--
--	ibb = intel_bb_create_with_allocator(i915, ctx, PAGE_SIZE,
--					     INTEL_ALLOCATOR_SIMPLE);
--	if (debug_bb)
--		intel_bb_set_debug(ibb, true);
--
--	src = intel_buf_create(bops, 4096/32, 32, 8, 0, I915_TILING_NONE,
--			       I915_COMPRESSION_NONE);
--	dst = intel_buf_create(bops, 4096/32, 32, 8, 0, I915_TILING_NONE,
--			       I915_COMPRESSION_NONE);
--	gap = intel_buf_create(bops, 4096, 128, 8, 0, I915_TILING_NONE,
--			       I915_COMPRESSION_NONE);
--
--	/* vm for second blit */
--	vm_id1 = gem_vm_create(i915);
--
--	/* Get vm_id for default vm */
--	arg.ctx_id = ctx;
--	gem_context_get_param(i915, &arg);
--	vm_id2 = arg.value;
--
--	igt_debug("Vm_id1: %u\n", vm_id1);
--	igt_debug("Vm_id2: %u\n", vm_id2);
--
--	/* First blit without set calling setparam */
--	intel_bb_copy_intel_buf(ibb, dst, src, 4096);
--	src_addr[0] = src->addr.offset;
--	dst_addr[0] = dst->addr.offset;
--	igt_debug("step1: src: 0x%llx, dst: 0x%llx\n",
--		  (long long) src_addr[0], (long long) dst_addr[0]);
--
--	/* Open new allocator with vm_id */
--	vm = intel_allocator_open_vm(i915, vm_id1, INTEL_ALLOCATOR_SIMPLE);
--	prev_vm = intel_bb_assign_vm(ibb, vm, vm_id1);
--
--	intel_bb_add_intel_buf(ibb, gap, false);
--	intel_bb_copy_intel_buf(ibb, dst, src, 4096);
--	src_addr[1] = src->addr.offset;
--	dst_addr[1] = dst->addr.offset;
--	igt_debug("step2: src: 0x%llx, dst: 0x%llx\n",
--		  (long long) src_addr[1], (long long) dst_addr[1]);
--
--	/* Back with default vm */
--	intel_bb_assign_vm(ibb, prev_vm, vm_id2);
--	intel_bb_add_intel_buf(ibb, gap, false);
--	intel_bb_copy_intel_buf(ibb, dst, src, 4096);
--	src_addr[2] = src->addr.offset;
--	dst_addr[2] = dst->addr.offset;
--	igt_debug("step3: src: 0x%llx, dst: 0x%llx\n",
--		  (long long) src_addr[2], (long long) dst_addr[2]);
--
--	/* And exchange one more time */
--	intel_bb_assign_vm(ibb, vm, vm_id1);
--	intel_bb_copy_intel_buf(ibb, dst, src, 4096);
--	src_addr[3] = src->addr.offset;
--	dst_addr[3] = dst->addr.offset;
--	igt_debug("step4: src: 0x%llx, dst: 0x%llx\n",
--		  (long long) src_addr[3], (long long) dst_addr[3]);
--
--	/* Back with default vm */
--	gem_vm_destroy(i915, vm_id1);
--	gem_vm_destroy(i915, vm_id2);
--	intel_bb_assign_vm(ibb, prev_vm, 0);
--
--	/* We can close it after assign previous vm to ibb */
--	intel_allocator_close(vm);
--
--	/* Try default vm still works */
--	intel_bb_copy_intel_buf(ibb, dst, src, 4096);
--	src_addr[4] = src->addr.offset;
--	dst_addr[4] = dst->addr.offset;
--	igt_debug("step5: src: 0x%llx, dst: 0x%llx\n",
--		  (long long) src_addr[4], (long long) dst_addr[4]);
--
--	/* Addresses should match for vm and prev_vm blits */
--	igt_assert_eq(src_addr[0], src_addr[2]);
--	igt_assert_eq(dst_addr[0], dst_addr[2]);
--	igt_assert_eq(src_addr[1], src_addr[3]);
--	igt_assert_eq(dst_addr[1], dst_addr[3]);
--	igt_assert_eq(src_addr[2], src_addr[4]);
--	igt_assert_eq(dst_addr[2], dst_addr[4]);
--
--	intel_buf_destroy(src);
--	intel_buf_destroy(dst);
--	intel_buf_destroy(gap);
--	intel_bb_destroy(ibb);
--}
--
- /*
-  * Make sure we lead to realloc in the intel_bb.
-  */
-@@ -1557,9 +1456,6 @@ igt_main_args("dpib", NULL, help_str, opt_handler, NULL)
- 	igt_subtest("bb-with-allocator")
- 		bb_with_allocator(bops);
+-static int __exec_batch(int i915, int engine, uint32_t cmd_bo,
+-			const uint32_t *cmds, int size)
++static int __exec_batch(int i915, const intel_ctx_t *ctx, int engine,
++			uint32_t cmd_bo, const uint32_t *cmds, int size)
+ {
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj[1];
+@@ -153,6 +155,7 @@ static int __exec_batch(int i915, int engine, uint32_t cmd_bo,
+ 	execbuf.buffers_ptr = to_user_pointer(obj);
+ 	execbuf.buffer_count = 1;
+ 	execbuf.batch_len = size;
++	execbuf.rsvd1 = ctx->id;
+ 	execbuf.flags = engine;
  
--	igt_subtest("bb-with-vm")
--		bb_with_vm(bops);
--
- 	igt_subtest("lot-of-buffers")
- 		lot_of_buffers(bops);
+ 	return  __checked_execbuf(i915, &execbuf);
+@@ -172,12 +175,12 @@ static void print_batch(const uint32_t *cmds, const uint32_t sz)
+ #define print_batch(cmds, size)
+ #endif
  
+-#define exec_batch(i915, engine, bo, cmds, sz, expected)	\
++#define exec_batch(i915, ctx, engine, bo, cmds, sz, expected)	\
+ 	print_batch(cmds, sz); \
+-	igt_assert_eq(__exec_batch(i915, engine, bo, cmds, sz), expected)
++	igt_assert_eq(__exec_batch(i915, ctx, engine, bo, cmds, sz), expected)
+ 
+-static void exec_split_batch(int i915, int engine, const uint32_t *cmds,
+-			     int size, int expected_ret)
++static void exec_split_batch(int i915, const intel_ctx_t *ctx, int engine,
++			     const uint32_t *cmds, int size, int expected_ret)
+ {
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj[1];
+@@ -212,6 +215,7 @@ static void exec_split_batch(int i915, int engine, const uint32_t *cmds,
+ 	execbuf.batch_len =
+ 		ALIGN(size + actual_start_offset - execbuf.batch_start_offset,
+ 		      0x8);
++	execbuf.rsvd1 = ctx->id;
+ 	execbuf.flags = engine;
+ 
+ 	igt_assert_eq(__checked_execbuf(i915, &execbuf), expected_ret);
+@@ -219,7 +223,7 @@ static void exec_split_batch(int i915, int engine, const uint32_t *cmds,
+ 	gem_close(i915, cmd_bo);
+ }
+ 
+-static void exec_batch_chained(int i915, int engine,
++static void exec_batch_chained(int i915, const intel_ctx_t *ctx, int engine,
+ 			       uint32_t cmd_bo, const uint32_t *cmds,
+ 			       int size, int patch_offset,
+ 			       uint64_t expected_value,
+@@ -275,6 +279,7 @@ static void exec_batch_chained(int i915, int engine,
+ 	execbuf.buffers_ptr = to_user_pointer(obj);
+ 	execbuf.buffer_count = 3;
+ 	execbuf.batch_len = sizeof(first_level_cmds);
++	execbuf.rsvd1 = ctx->id;
+ 	execbuf.flags = engine;
+ 
+ 	ret = __checked_execbuf(i915, &execbuf);
+@@ -370,7 +375,8 @@ static void test_allowed_all(const int i915, const uint32_t handle)
+ 
+ 	b = inject_cmd(b, MI_BATCH_BUFFER_END, 1);
+ 
+-	exec_batch(i915, I915_EXEC_BLT, handle, batch, batch_bytes(batch, b), 0);
++	exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT,
++		   handle, batch, batch_bytes(batch, b), 0);
+ }
+ 
+ static void test_allowed_single(const int i915, const uint32_t handle)
+@@ -385,7 +391,8 @@ static void test_allowed_single(const int i915, const uint32_t handle)
+ 
+ 		b = inject_cmd(b, MI_BATCH_BUFFER_END, 1);
+ 
+-		igt_assert_eq(__exec_batch(i915, I915_EXEC_BLT, handle,
++		igt_assert_eq(__exec_batch(i915, intel_ctx_0(i915),
++					   I915_EXEC_BLT, handle,
+ 					   batch, batch_bytes(batch, b)),
+ 			      0);
+ 	};
+@@ -657,14 +664,14 @@ static void test_bb_chained(const int i915, const uint32_t handle)
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 
+-	exec_batch_chained(i915, I915_EXEC_RENDER,
++	exec_batch_chained(i915, intel_ctx_0(i915), I915_EXEC_RENDER,
+ 			   handle,
+ 			   batch, sizeof(batch),
+ 			   4,
+ 			   0xbaadf00d,
+ 			   0);
+ 
+-	exec_batch_chained(i915, I915_EXEC_BLT,
++	exec_batch_chained(i915, intel_ctx_0(i915), I915_EXEC_BLT,
+ 			   handle,
+ 			   batch, sizeof(batch),
+ 			   4,
+@@ -689,11 +696,11 @@ static void test_cmd_crossing_page(const int i915, const uint32_t handle)
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 
+-	exec_split_batch(i915, I915_EXEC_BLT,
++	exec_split_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT,
+ 			 lri_ok, sizeof(lri_ok),
+ 			 0);
+ 
+-	exec_batch_patched(i915, I915_EXEC_BLT, handle,
++	exec_batch_patched(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 			   store_reg, sizeof(store_reg),
+ 			   2 * sizeof(uint32_t), /* reloc */
+ 			   0xbaadf00d);
+@@ -728,25 +735,25 @@ static void test_invalid_length(const int i915, const uint32_t handle)
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 
+-	exec_batch(i915, I915_EXEC_BLT, handle,
++	exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 		   lri_ok, sizeof(lri_ok),
+ 		   0);
+ 
+-	exec_batch_patched(i915, I915_EXEC_BLT, handle,
++	exec_batch_patched(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 			   store_reg, sizeof(store_reg),
+ 			   2 * sizeof(uint32_t), /* reloc */
+ 			   ok_val);
+ 
+-	exec_batch(i915, I915_EXEC_BLT, handle,
++	exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 		   lri_bad, 0,
+ 		   0);
+ 
+-	exec_batch_patched(i915, I915_EXEC_BLT, handle,
++	exec_batch_patched(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 			   store_reg, sizeof(store_reg),
+ 			   2 * sizeof(uint32_t), /* reloc */
+ 			   ok_val);
+ 
+-	exec_batch(i915, I915_EXEC_BLT, handle,
++	exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 		   lri_ok, 4096,
+ 		   0);
+ 
+@@ -841,20 +848,20 @@ static void test_register(const int i915, const uint32_t handle,
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 
+-	exec_batch(i915, I915_EXEC_BLT, handle,
++	exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 		   lri_mask, sizeof(lri_mask),
+ 		   r->privileged ? -EACCES : 0);
+ 
+-	exec_batch_patched(i915, I915_EXEC_BLT, handle,
++	exec_batch_patched(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 			   store_reg, sizeof(store_reg),
+ 			   2 * sizeof(uint32_t), /* reloc */
+ 			   r->privileged ? -EACCES : r->mask);
+ 
+-	exec_batch(i915, I915_EXEC_BLT, handle,
++	exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 		   lri_zero, sizeof(lri_zero),
+ 		   r->privileged ? -EACCES : 0);
+ 
+-	exec_batch_patched(i915, I915_EXEC_BLT, handle,
++	exec_batch_patched(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 			   store_reg, sizeof(store_reg),
+ 			   2 * sizeof(uint32_t), /* reloc */
+ 			   r->privileged ? -EACCES : 0);
+@@ -885,8 +892,8 @@ static long int read_reg(const int i915, const uint32_t handle,
+ 
+ 	target_bo = gem_create(i915, HANDLE_SIZE);
+ 
+-	ret = __exec_batch_patched(i915, I915_EXEC_BLT, handle,
+-				   store_reg, sizeof(store_reg),
++	ret = __exec_batch_patched(i915, intel_ctx_0(i915), I915_EXEC_BLT,
++				   handle, store_reg, sizeof(store_reg),
+ 				   target_bo, 2 * sizeof(uint32_t), 0);
+ 
+ 	if (ret) {
+@@ -912,7 +919,7 @@ static int write_reg(const int i915, const uint32_t handle,
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 
+-	return __exec_batch(i915, I915_EXEC_BLT, handle,
++	return __exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 			    lri, sizeof(lri));
+ }
+ 
+@@ -998,7 +1005,8 @@ static void test_unaligned_jump(const int i915, const uint32_t handle)
+ }
+ 
+ static void
+-test_reject_on_engine(int i915, uint32_t handle, unsigned int engine)
++test_reject_on_engine(int i915, const intel_ctx_t *ctx, unsigned int engine,
++		      uint32_t handle)
+ {
+ 	const uint32_t invalid_cmd[] = {
+ 		INSTR_INVALID_CLIENT << INSTR_CLIENT_SHIFT,
+@@ -1009,45 +1017,37 @@ test_reject_on_engine(int i915, uint32_t handle, unsigned int engine)
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 
+-	exec_batch(i915, engine, handle,
++	exec_batch(i915, ctx, engine, handle,
+ 		   invalid_cmd, sizeof(invalid_cmd),
+ 		   -EINVAL);
+ 
+-	exec_batch(i915, engine, handle,
++	exec_batch(i915, ctx, engine, handle,
+ 		   invalid_set_context, sizeof(invalid_set_context),
+ 		   -EINVAL);
+ }
+ 
+ static void test_rejected(int i915, uint32_t handle, bool ctx_param)
+ {
+-#define engine_class(e, n) ((e)->engines[(n)].engine_class)
+-#define engine_instance(e, n) ((e)->engines[(n)].engine_instance)
+-
+ 	if (ctx_param) {
++		intel_ctx_cfg_t cfg = {};
++		const intel_ctx_t *ctx;
+ 		int i;
+ 
+-		I915_DEFINE_CONTEXT_PARAM_ENGINES(engines , I915_EXEC_RING_MASK + 1);
+-		struct drm_i915_gem_context_param param = {
+-			.ctx_id = 0,
+-			.param = I915_CONTEXT_PARAM_ENGINES,
+-			.value = to_user_pointer(&engines),
+-			.size = sizeof(engines),
+-		};
+-
+-		memset(&engines, 0, sizeof(engines));
+-		for (i = 0; i <= I915_EXEC_RING_MASK; i++) {
+-			engine_class(&engines, i) = I915_ENGINE_CLASS_COPY;
+-			engine_instance(&engines, i) = 0;
++		for (i = 0; i < GEM_MAX_ENGINES; i++) {
++			cfg.engines[i].engine_class = I915_ENGINE_CLASS_COPY;
++			cfg.engines[i].engine_instance = 0;
+ 		}
+-		gem_context_set_param(i915, &param);
++		cfg.num_engines = GEM_MAX_ENGINES;
++
++		ctx = intel_ctx_create(i915, &cfg);
+ 
+ 		for (i = 0; i <= I915_EXEC_RING_MASK; i++)
+-			test_reject_on_engine(i915, handle, i);
++			test_reject_on_engine(i915, ctx, i, handle);
+ 
+-		param.size = 0;
+-		gem_context_set_param(i915, &param);
++		intel_ctx_destroy(i915, ctx);
+ 	} else {
+-		test_reject_on_engine(i915, handle, I915_EXEC_BLT);
++		test_reject_on_engine(i915, intel_ctx_0(i915),
++				      I915_EXEC_BLT, handle);
+ 	}
+ }
+ 
+@@ -1222,7 +1222,7 @@ igt_main
+ 	igt_subtest("batch-without-end") {
+ 		const uint32_t noop[1024] = { 0 };
+ 
+-		exec_batch(i915, I915_EXEC_BLT, handle,
++		exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 			   noop, sizeof(noop),
+ 			   -EINVAL);
+ 	}
+@@ -1230,7 +1230,7 @@ igt_main
+ 	igt_subtest("batch-zero-length") {
+ 		const uint32_t noop[] = { 0, MI_BATCH_BUFFER_END };
+ 
+-		exec_batch(i915, I915_EXEC_BLT, handle,
++		exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 			   noop, 0,
+ 			   -EINVAL);
+ 	}
 -- 
 2.31.1
 
