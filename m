@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
- [IPv6:2607:f8b0:4864:20::1033])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1774C6EC75
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 21:53:00 +0000 (UTC)
-Received: by mail-pj1-x1033.google.com with SMTP id
- g1-20020a17090adac1b0290150d07f9402so1886207pjx.5
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 14:53:00 -0700 (PDT)
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
+ [IPv6:2607:f8b0:4864:20::1031])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F078F6EC7B
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 21:53:02 +0000 (UTC)
+Received: by mail-pj1-x1031.google.com with SMTP id s14so18942781pjl.5
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 14:53:02 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Fri, 23 Apr 2021 16:52:43 -0500
-Message-Id: <20210423215252.877174-2-jason@jlekstrand.net>
+Date: Fri, 23 Apr 2021 16:52:45 -0500
+Message-Id: <20210423215252.877174-4-jason@jlekstrand.net>
 In-Reply-To: <20210423214853.876911-1-jason@jlekstrand.net>
 References: <20210423214853.876911-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 80/89] lib/i915/gem_context: Delete all the
- context clone/copy stuff
+Subject: [igt-dev] [PATCH i-g-t 82/89] lib/igt_dummyload: Stop supporting
+ ALL_ENGINES without an intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,240 +29,42 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- lib/i915/gem_context.c | 175 -----------------------------------------
- lib/i915/gem_context.h |  17 ----
- 2 files changed, 192 deletions(-)
+ lib/igt_dummyload.c | 21 ++++++---------------
+ 1 file changed, 6 insertions(+), 15 deletions(-)
 
-diff --git a/lib/i915/gem_context.c b/lib/i915/gem_context.c
-index 1dda0924..7029f4f0 100644
---- a/lib/i915/gem_context.c
-+++ b/lib/i915/gem_context.c
-@@ -390,125 +390,6 @@ bool gem_context_has_persistence(int i915)
- 	return __gem_context_get_param(i915, &param) == 0;
- }
+diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+index ac83b331..ae6c9542 100644
+--- a/lib/igt_dummyload.c
++++ b/lib/igt_dummyload.c
+@@ -129,22 +129,13 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	if (opts->engine == ALL_ENGINES) {
+ 		struct intel_execution_engine2 *engine;
  
--int
--__gem_context_clone(int i915,
--		    uint32_t src, unsigned int share,
--		    unsigned int flags,
--		    uint32_t *out)
--{
--	struct drm_i915_gem_context_create_ext_clone clone = {
--		{ .name = I915_CONTEXT_CREATE_EXT_CLONE },
--		.clone_id = src,
--		.flags = share,
--	};
--	struct drm_i915_gem_context_create_ext arg = {
--		.flags = flags | I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
--		.extensions = to_user_pointer(&clone),
--	};
--	int err;
--
--	err = create_ext_ioctl(i915, &arg);
--	if (err)
--		return err;
--
--	*out = arg.ctx_id;
--	return 0;
--}
--
--static bool __gem_context_has(int i915, uint32_t share, unsigned int flags)
--{
--	uint32_t ctx = 0;
--
--	__gem_context_clone(i915, 0, share, flags, &ctx);
--	if (ctx)
--		gem_context_destroy(i915, ctx);
--
--	errno = 0;
--	return ctx;
--}
--
--bool gem_contexts_has_shared_gtt(int i915)
--{
--	return __gem_context_has(i915, I915_CONTEXT_CLONE_VM, 0);
--}
--
--bool gem_has_queues(int i915)
--{
--	return __gem_context_has(i915,
--				 I915_CONTEXT_CLONE_VM,
--				 I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
--}
--
--uint32_t gem_context_clone(int i915,
--			   uint32_t src, unsigned int share,
--			   unsigned int flags)
--{
--	uint32_t ctx;
--
--	igt_assert_eq(__gem_context_clone(i915, src, share, flags, &ctx), 0);
--
--	return ctx;
--}
--
--bool gem_has_context_clone(int i915)
--{
--	struct drm_i915_gem_context_create_ext_clone ext = {
--		{ .name = I915_CONTEXT_CREATE_EXT_CLONE },
--		.clone_id = -1,
--	};
--	struct drm_i915_gem_context_create_ext create = {
--		.flags = I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
--		.extensions = to_user_pointer(&ext),
--	};
--
--	return create_ext_ioctl(i915, &create) == -ENOENT;
--}
--
--/**
-- * gem_context_clone_with_engines:
-- * @i915: open i915 drm file descriptor
-- * @src: i915 context id
-- *
-- * Special purpose wrapper to create a new context by cloning engines from @src.
-- *
-- * In can be called regardless of whether the kernel supports context cloning.
-- *
-- * Intended purpose is to use for creating contexts against which work will be
-- * submitted and the engine index came from external source, derived from a
-- * default context potentially configured with an engine map.
-- */
--uint32_t gem_context_clone_with_engines(int i915, uint32_t src)
--{
--	if (!gem_has_context_clone(i915))
--		return gem_context_create(i915);
--	else
--		return gem_context_clone(i915, src, I915_CONTEXT_CLONE_ENGINES,
--					 0);
--}
--
--uint32_t gem_queue_create(int i915)
--{
--	return gem_context_clone(i915, 0,
--				 I915_CONTEXT_CLONE_VM |
--				 I915_CONTEXT_CLONE_ENGINES,
--				 I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
--}
--
--/**
-- * gem_queue_clone_with_engines:
-- * @i915: open i915 drm file descriptor
-- * @src: i915 context id
-- *
-- * See gem_context_clone_with_engines.
-- */
--uint32_t gem_queue_clone_with_engines(int i915, uint32_t src)
--{
--	return gem_context_clone(i915, src,
--				 I915_CONTEXT_CLONE_ENGINES |
--				 I915_CONTEXT_CLONE_VM,
--				 I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
--}
--
- bool gem_context_has_engine(int fd, uint32_t ctx, uint64_t engine)
- {
- 	struct drm_i915_gem_exec_object2 exec = {};
-@@ -534,62 +415,6 @@ bool gem_context_has_engine(int fd, uint32_t ctx, uint64_t engine)
- 	return __gem_execbuf(fd, &execbuf) == -ENOENT;
- }
+-		if (opts->ctx) {
+-			for_each_ctx_engine(fd, opts->ctx, engine) {
+-				if (opts->flags & IGT_SPIN_POLL_RUN &&
+-				    !gem_class_can_store_dword(fd, engine->class))
+-					continue;
++		igt_assert(opts->ctx);
++		for_each_ctx_engine(fd, opts->ctx, engine) {
++			if (opts->flags & IGT_SPIN_POLL_RUN &&
++			    !gem_class_can_store_dword(fd, engine->class))
++				continue;
  
--/**
-- * gem_context_copy_engines:
-- * @src_fd: open i915 drm file descriptor where @src context belongs to
-- * @src: source engine map context id
-- * @dst_fd: open i915 drm file descriptor where @dst context belongs to
-- * @dst: destination engine map context id
-- *
-- * Special purpose helper for copying engine map from one context to another.
-- *
-- * In can be called regardless of whether the kernel supports context engine
-- * maps and is a no-op if not supported.
-- */
--void
--gem_context_copy_engines(int src_fd, uint32_t src, int dst_fd, uint32_t dst)
--{
--	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, I915_EXEC_RING_MASK + 1);
--	struct drm_i915_gem_context_param param = {
--		.param = I915_CONTEXT_PARAM_ENGINES,
--		.ctx_id = src,
--		.size = sizeof(engines),
--		.value = to_user_pointer(&engines),
--	};
+-				flags[nengine++] = engine->flags;
+-			}
+-		} else {
+-			for_each_context_engine(fd, opts->ctx_id, engine) {
+-				if (opts->flags & IGT_SPIN_POLL_RUN &&
+-				    !gem_class_can_store_dword(fd, engine->class))
+-					continue;
 -
--	if (__gem_context_get_param(src_fd, &param))
--		return;
--
--	param.ctx_id = dst;
--	gem_context_set_param(dst_fd, &param);
--}
--
--uint32_t gem_context_create_for_engine(int i915, unsigned int class, unsigned int inst)
--{
--	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 1) = {
--		.engines = { { .engine_class = class, .engine_instance = inst } }
--	};
--	struct drm_i915_gem_context_create_ext_setparam p_engines = {
--		.base = {
--			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
--			.next_extension = 0, /* end of chain */
--		},
--		.param = {
--			.param = I915_CONTEXT_PARAM_ENGINES,
--			.value = to_user_pointer(&engines),
--			.size = sizeof(engines),
--		},
--	};
--	struct drm_i915_gem_context_create_ext create = {
--		.flags = I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
--		.extensions = to_user_pointer(&p_engines),
--	};
--
--	igt_assert_eq(create_ext_ioctl(i915, &create), 0);
--	igt_assert_neq(create.ctx_id, 0);
--	return create.ctx_id;
--}
--
- static size_t sizeof_param_engines(int count)
- {
- 	return offsetof(struct i915_context_param_engines, engines[count]);
-diff --git a/lib/i915/gem_context.h b/lib/i915/gem_context.h
-index 91bb9e7f..f49594cb 100644
---- a/lib/i915/gem_context.h
-+++ b/lib/i915/gem_context.h
-@@ -37,23 +37,8 @@ int __gem_context_create_ext(int fd, uint32_t flags, uint64_t extensions,
- void gem_context_destroy(int fd, uint32_t ctx_id);
- int __gem_context_destroy(int fd, uint32_t ctx_id);
- 
--uint32_t gem_context_create_for_engine(int fd, unsigned int class, unsigned int inst);
- uint32_t gem_context_create_for_class(int i915, unsigned int class, unsigned int *count);
- 
--int __gem_context_clone(int i915,
--			uint32_t src, unsigned int share,
--			unsigned int flags,
--			uint32_t *out);
--uint32_t gem_context_clone(int i915,
--			   uint32_t src, unsigned int share,
--			   unsigned int flags);
--uint32_t gem_context_clone_with_engines(int i915, uint32_t src);
--void gem_context_copy_engines(int src_fd, uint32_t src,
--			      int dst_fd, uint32_t dst);
--
--uint32_t gem_queue_create(int i915);
--uint32_t gem_queue_clone_with_engines(int i915, uint32_t src);
--
- bool gem_contexts_has_shared_gtt(int i915);
- bool gem_has_queues(int i915);
- 
-@@ -62,8 +47,6 @@ void gem_require_contexts(int fd);
- void gem_context_require_bannable(int fd);
- void gem_context_require_param(int fd, uint64_t param);
- 
--bool gem_has_context_clone(int i915);
--
- void gem_context_get_param(int fd, struct drm_i915_gem_context_param *p);
- void gem_context_set_param(int fd, struct drm_i915_gem_context_param *p);
- int __gem_context_set_param(int fd, struct drm_i915_gem_context_param *p);
+-				flags[nengine++] = engine->flags;
+-			}
++			flags[nengine++] = engine->flags;
+ 		}
+ 	} else {
+ 		flags[nengine++] = opts->engine;
 -- 
 2.31.1
 
