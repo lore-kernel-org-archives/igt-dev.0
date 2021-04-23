@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 228E96E075
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA59E6E075
  for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 07:44:49 +0000 (UTC)
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Date: Fri, 23 Apr 2021 10:44:36 +0300
-Message-Id: <20210423074444.175199-1-lionel.g.landwerlin@intel.com>
+Date: Fri, 23 Apr 2021 10:44:37 +0300
+Message-Id: <20210423074444.175199-2-lionel.g.landwerlin@intel.com>
+In-Reply-To: <20210423074444.175199-1-lionel.g.landwerlin@intel.com>
+References: <20210423074444.175199-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 0/8] lib/i915/perf: Small improvements
+Subject: [igt-dev] [PATCH i-g-t 1/8] lib/i915/perf: add name checker for
+ conversion
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,56 +24,75 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi all,
+List all supported generations so we can fail sooner.
 
-Here are a few improvements for converter scripts & meson build system
-files.
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+---
+ lib/i915/perf-configs/mdapi-xml-convert.py |  2 +-
+ lib/i915/perf-configs/oa_guid_registry.py  | 23 ++++++++++++++++++++++
+ lib/i915/perf-configs/update-guids.py      |  2 +-
+ 3 files changed, 25 insertions(+), 2 deletions(-)
 
-Cheers,
-
-Lionel Landwerlin (8):
-  lib/i915/perf: add name checker for conversion
-  lib/i915/perf-configs: rename metric descriptions
-  lib/i915/perf-config: simplify converter script
-  lib/i915/perf-config: document devinfo fields
-  lib/i915/perf-config: don't forget to resolve single variable
-  lib/i915/perf-config: sanitize GT names
-  lib/i915/perf: have python scripts a custom_target input
-  tools/i915-perf-recorder: print out oa format
-
- lib/i915/perf-configs/codegen.py              | 45 ++++++++++++-------
- lib/i915/perf-configs/mdapi-xml-convert.py    | 26 +++++------
- lib/i915/perf-configs/oa-adl.xml              | 18 ++++----
- lib/i915/perf-configs/oa-bdw.xml              | 24 +++++-----
- lib/i915/perf-configs/oa-bxt.xml              | 24 +++++-----
- lib/i915/perf-configs/oa-cflgt2.xml           | 26 +++++------
- lib/i915/perf-configs/oa-cflgt3.xml           | 26 +++++------
- lib/i915/perf-configs/oa-chv.xml              |  8 ++--
- lib/i915/perf-configs/oa-cnl.xml              | 16 +++----
- lib/i915/perf-configs/oa-dg1.xml              | 18 ++++----
- lib/i915/perf-configs/oa-ehl.xml              | 20 ++++-----
- lib/i915/perf-configs/oa-glk.xml              | 20 ++++-----
- lib/i915/perf-configs/oa-hsw.xml              | 12 ++---
- lib/i915/perf-configs/oa-icl.xml              | 20 ++++-----
- lib/i915/perf-configs/oa-kblgt2.xml           | 22 ++++-----
- lib/i915/perf-configs/oa-kblgt3.xml           | 22 ++++-----
- lib/i915/perf-configs/oa-rkl.xml              | 20 ++++-----
- lib/i915/perf-configs/oa-sklgt2.xml           | 22 ++++-----
- lib/i915/perf-configs/oa-sklgt3.xml           | 22 ++++-----
- lib/i915/perf-configs/oa-sklgt4.xml           | 22 ++++-----
- lib/i915/perf-configs/oa-tglgt1.xml           | 20 ++++-----
- lib/i915/perf-configs/oa-tglgt2.xml           | 20 ++++-----
- lib/i915/perf-configs/oa_guid_registry.py     | 29 ++++++++++++
- .../perf-configs/perf-metricset-codegen.py    |  4 +-
- lib/i915/perf-configs/update-guids.py         |  4 +-
- lib/i915/perf.h                               |  6 +++
- lib/meson.build                               | 25 +++++------
- meson.build                                   |  4 +-
- tools/i915-perf/i915_perf_recorder.c          |  5 ++-
- 29 files changed, 297 insertions(+), 253 deletions(-)
-
---
+diff --git a/lib/i915/perf-configs/mdapi-xml-convert.py b/lib/i915/perf-configs/mdapi-xml-convert.py
+index b184a6385..7d9f35e4d 100755
+--- a/lib/i915/perf-configs/mdapi-xml-convert.py
++++ b/lib/i915/perf-configs/mdapi-xml-convert.py
+@@ -546,7 +546,7 @@ for arg in args.xml:
+             print_err("WARNING: duplicate set named \"" + set_symbol_name + "\" (SKIPPING)")
+             continue
+ 
+-        chipset = mdapi_set.get('SupportedHW')
++        chipset = oa_registry.Registry.chipset_name(mdapi_set.get('SupportedHW'))
+         if concurrent_group.get('SupportedGT') != None:
+             chipset = chipset + concurrent_group.get('SupportedGT')
+         if chipset not in chipsets:
+diff --git a/lib/i915/perf-configs/oa_guid_registry.py b/lib/i915/perf-configs/oa_guid_registry.py
+index 2df6bdfb3..e40c9fe09 100644
+--- a/lib/i915/perf-configs/oa_guid_registry.py
++++ b/lib/i915/perf-configs/oa_guid_registry.py
+@@ -81,3 +81,26 @@ class Registry:
+         """
+ 
+         return "%s-%s" % (chipset, hash)
++
++
++    @staticmethod
++    def chipset_name(name):
++        known_chipsets = ( 'HSW',
++                           'BDW',
++                           'CHV',
++                           'SKL',
++                           'BXT',
++                           'KBL',
++                           'GLK',
++                           'CFL',
++                           'CNL',
++                           'ICL',
++                           'EHL',
++                           'TGL',
++                           'RKL',
++                           'DG1' )
++        if name in known_chipsets:
++            return name
++
++        # Unknown HW
++        assert 0
+diff --git a/lib/i915/perf-configs/update-guids.py b/lib/i915/perf-configs/update-guids.py
+index 4a9392171..16764f5bd 100755
+--- a/lib/i915/perf-configs/update-guids.py
++++ b/lib/i915/perf-configs/update-guids.py
+@@ -126,7 +126,7 @@ for arg in args.xml:
+ 
+         mdapi_config_hash = oa_registry.Registry.mdapi_hw_config_hash(mdapi_set)
+ 
+-        chipset = mdapi_set.get('SupportedHW').lower()
++        chipset = oa_registry.Registry.chipset_name(mdapi_set.get('SupportedHW')).lower()
+         if concurrent_group.get('SupportedGT') != None:
+             chipset = chipset + concurrent_group.get('SupportedGT').lower()
+ 
+-- 
 2.27.0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
