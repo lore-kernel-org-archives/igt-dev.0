@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com
- [IPv6:2a00:1450:4864:20::130])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D6BAB6EC25
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 17:26:53 +0000 (UTC)
-Received: by mail-lf1-x130.google.com with SMTP id h36so24453172lfv.7
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 10:26:53 -0700 (PDT)
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com
+ [IPv6:2607:f8b0:4864:20::429])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A251A6EC6E
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 21:49:05 +0000 (UTC)
+Received: by mail-pf1-x429.google.com with SMTP id a12so34913725pfc.7
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 14:49:05 -0700 (PDT)
+From: Jason Ekstrand <jason@jlekstrand.net>
+Date: Fri, 23 Apr 2021 16:47:26 -0500
+Message-Id: <20210423214853.876911-3-jason@jlekstrand.net>
+In-Reply-To: <20210423214853.876911-1-jason@jlekstrand.net>
+References: <20210423214853.876911-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-References: <20210416172724.3203107-1-markyacoub@chromium.org>
- <YIET+VN+JnRrbuja@platvala-desk.ger.corp.intel.com>
- <YIGHLlwvjmxsryra@intel.com>
-In-Reply-To: <YIGHLlwvjmxsryra@intel.com>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Fri, 23 Apr 2021 13:26:41 -0400
-Message-ID: <CAJUqKUpL4VOD=oxNo+hYkN2tchYUSoLFGs4-pOR4ksMVe0LqQQ@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH v2] tests/kms_atomic_transition: Enable
- Primary Plane on Enabling CRTC.
+Subject: [igt-dev] [PATCH i-g-t 02/89] tests/i915/gem_exec_balancer: Drop
+ the ringsize subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,51 +20,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Sean Paul <seanpaul@chromium.org>, Petri Latvala <petri.latvala@intel.com>, Mark Yacoub <markyacoub@google.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBBcHIgMjIsIDIwMjEgYXQgMTA6MjQgQU0gVmlsbGUgU3lyasOkbMOkCjx2aWxsZS5z
-eXJqYWxhQGxpbnV4LmludGVsLmNvbT4gd3JvdGU6Cj4KPiBPbiBUaHUsIEFwciAyMiwgMjAyMSBh
-dCAwOToxMzoxM0FNICswMzAwLCBQZXRyaSBMYXR2YWxhIHdyb3RlOgo+ID4gT24gRnJpLCBBcHIg
-MTYsIDIwMjEgYXQgMDE6Mjc6MjRQTSAtMDQwMCwgTWFyayBZYWNvdWIgd3JvdGU6Cj4gPiA+IEZy
-b206IE1hcmsgWWFjb3ViIDxtYXJreWFjb3ViQGdvb2dsZS5jb20+Cj4gPiA+Cj4gPiA+IFNldHVw
-IGFsbCBwbGFuZSBwYXJhbXMgYmVmb3JlIGNvbW1pdHRpbmcgYW55dGhpbmcuCj4gPiA+IERvIG5v
-dCBkaXNhYmxlIFByaW1hcnkgUGxhbmUgd2hlbmV2ZXIgYSBDUlRDIGlzIGdldHRpbmcgZW5hYmxl
-ZC4KPiA+ID4KPiA+ID4gQU1EIERyaXZlciByZXF1aXJlcyB0aGUgcHJpbWFyeSBwbGFuZSB0byBi
-ZSBlbmFibGVkIHdoZW5ldmVyIHRoZSBDUlRDIGlzLCBvdGhlcndpc2UKPiA+ID4gZHJtX21vZGVf
-Y3Vyc29yX3VuaXZlcnNhbCBtYXkgZW5kIHVwIHRyeWluZyB0byBlbmFibGUgdGhlIGN1cnNvciBw
-bGFuZSB3aGlsZSBhbGwgb3RoZXIKPiA+ID4gcGxhbmVzIGFyZSBkaXNhYmxlZCwgd2hpY2ggaXMg
-bm90IHN1cHBvcnRlZCBieSB0aGUgaGFyZHdhcmUuCj4gPiA+Cj4gPiA+ID09PSBDaGFuZ2VzIGZy
-b20gdjEgPT09Cj4gPiA+IFJlbW92ZSBwcm9kdWN0IG5hbWVzIGZyb20gY29tbWl0IG1lc3NhZ2UK
-PiA+ID4KPiA+ID4gQ2M6IE5pY2hvbGFzLkthemxhdXNrYXNAYW1kLmNvbQo+ID4gPiAtLS0KPiA+
-ID4gIHRlc3RzL2ttc19hdG9taWNfdHJhbnNpdGlvbi5jIHwgNyArKystLS0tCj4gPiA+ICAxIGZp
-bGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQo+ID4KPiA+Cj4gPiBJ
-J3ZlIGFza2VkIEludGVsIGRpc3BsYXkgZm9sa3MgdG8gY2hpbWUgaW4gd2hldGhlciBpOTE1IG5l
-ZWRzIGFueSBvZgo+ID4gdGhpcyBmbG93IG5lZWRzIHRvIGJlIHVuY2hhbmdlZCB3aXRoIGlzX2k5
-MTVfZGV2aWNlKCksIG5vIHJlc3BvbnNlCj4gPiB5ZXQuCj4KPiBEdW5ubyBpZiBhbnlvbmUgYnV0
-IE1hYXJ0ZW4ga25vd3Mgd2hhdCB0aGUgdGVzdCBkb2VzIGV4YWN0bHkuCj4KPiBJbiBnZW5lcmFs
-IEknZCBwcmVmZXIgdGhlcmUgd2FzIHNvbWUgZ2VuZXJpYyB3YXkgdG8gaGFuZGxlIHRoZQo+ICJw
-cmltYXJ5IHBsYW5lIGNhbid0IGJlIGRpc2FibGVkIiB0aGluZyBzbyB0aGF0IHdlIHdvdWxkbid0
-IG5lZWQKPiBzcGVjaWFsIGxvZ2ljL2Fsd2F5cyBmb3JjaW5nIHRoZSBwcmltYXJ5IHBsYW5lIG9u
-IGluIGFsbCB0ZXN0cy4KPiBCdXQgSSdtIG5vdCBzdXJlIGlmIHdlIGNvdWxkIGVhc2lseSBhZGQg
-c29tZSBraW5kIFRFU1RfT05MWSBwcm9iZQo+IGludG8gaWd0X2Rpc3BsYXlfcmVxdWlyZSgpK21h
-a2UgaWd0X2ttcyBqdXN0IGF1dG9tYWdpY2FsbHkgZW5hYmxlCj4gdGhlIHBsYW5lIHdoZW4gbmVl
-ZGVkIGZvciB0aGlzLi4uCj4KPiBJJ20gc2xpZ2h0bHkgdGVtcHRlZCB0byBldmVuIHN1Z2dlc3Qg
-dGhhdCBtYXliZSB0aGUga2VybmVsIGRyaXZlcgo+IHNob3VsZCBqdXN0IGhhbmRsZSB0aGlzIGJ5
-IGFsd2F5cyBrZWVwaW5nIHRoZSBwbGFuZSBvbiBidXQgZm9yY2UKPiBpdCB0byBzY2FuIG91dCBi
-bGFjayB3aGVuIGl0J3MgbG9naWNhbGx5IGRpc2FibGVkLi4uCgpGYWlsaW5nIHRvIHR1cm4gb24g
-dGhlIENSVEMgd2l0aCBwcmltYXJ5IHBsYW5lIGRpc2FibGVkIGNhdXNlcwpmYWlsdXJlcyBpbiBt
-YW55IHBsYWNlcyBpbiBJR1QgdGVzdHMsIGFuZCByZWNlbnRseSBvbiB1c2Vyc3BhY2UgKGZpeGVk
-CmluIENocm9tZSkuCk5pY2hvbGFzLCBlY2hvaW5nIFZpbGxlJ3Mgc3VnZ2VzdGlvbiwgd291bGQg
-dGhpcyBiZSBiZXN0IGhhbmRsZWQgYnkKdGhlIGRyaXZlciwgb3Igd2Ugc2hvdWxkIG1vZGlmeSB0
-aGUgdGVzdHMgKGFsc28sIG5vdCB0aGUgYmVzdCBpZGVhLApidXQgY291bGQgYmUgc3BlY2lmaWMg
-dG8gQU1EKSB0byBhY2NvdW50IGZvciB0aGUgYW1kZ3B1IGJlaGF2aW9yPwoKPiAtLQo+IFZpbGxl
-IFN5cmrDpGzDpAo+IEludGVsCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRl
-dgo=
+I915_CONTEXT_PARAM_RINGSIZE is being removed from upstream i915 because
+it's never been used by any userspace other than IGT.
+
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+---
+ tests/i915/gem_exec_balancer.c | 81 ----------------------------------
+ 1 file changed, 81 deletions(-)
+
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index 01db0e11..bfd65b29 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -2551,84 +2551,6 @@ next:
+ 	gem_quiescent_gpu(i915);
+ }
+ 
+-static void sighandler(int sig)
+-{
+-}
+-
+-static unsigned int measure_inflight(int i915, uint32_t ctx, int timeout)
+-{
+-	igt_spin_t *spin = igt_spin_new(i915, ctx);
+-	unsigned int count;
+-	int err;
+-
+-	fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) | O_NONBLOCK);
+-	signal(SIGALRM, sighandler);
+-	alarm(timeout);
+-
+-	for (count = 1; (err = __execbuf(i915, &spin->execbuf)) == 0; count++)
+-		;
+-	igt_assert_eq(err, -EWOULDBLOCK);
+-
+-	alarm(0);
+-	signal(SIGALRM, SIG_DFL);
+-	fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) & ~O_NONBLOCK);
+-
+-	igt_spin_free(i915, spin);
+-
+-	return count;
+-}
+-
+-static void __resize(int i915, uint32_t ctx)
+-{
+-	struct drm_i915_gem_context_param p = {
+-		.ctx_id = ctx,
+-		.param = I915_CONTEXT_PARAM_RINGSIZE,
+-	};
+-	unsigned int prev[2] = {};
+-	uint64_t elapsed;
+-
+-	elapsed = 0;
+-	gem_quiescent_gpu(i915);
+-	for (p.value = 1 << 12; p.value <= 128 << 12; p.value <<= 1) {
+-		struct timespec tv = {};
+-		unsigned int count;
+-
+-		gem_context_set_param(i915, &p);
+-
+-		igt_nsec_elapsed(&tv);
+-		count = measure_inflight(i915, ctx, 1 + 4 * ceil(elapsed*1e-9));
+-		elapsed = igt_nsec_elapsed(&tv);
+-
+-		igt_info("%6llx -> %'6d\n", p.value, count);
+-		igt_assert(count > 3 * (prev[1] - prev[0]) / 4 + prev[1]);
+-
+-		prev[0] = prev[1];
+-		prev[1] = count;
+-	}
+-	gem_quiescent_gpu(i915);
+-}
+-
+-static void ringsz(int i915)
+-{
+-	for (int class = 0; class < 32; class++) {
+-		struct i915_engine_class_instance *ci;
+-		unsigned int count;
+-		uint32_t ctx;
+-
+-		ci = list_engines(i915, 1u << class, &count);
+-		if (!ci || count < 2)
+-			goto next;
+-
+-		ctx = load_balancer_create(i915, ci, count);
+-		__resize(i915, ctx);
+-		gem_context_destroy(i915, ctx);
+-next:
+-		free(ci);
+-	}
+-
+-	gem_quiescent_gpu(i915);
+-}
+-
+ static void ping(int i915, uint32_t ctx, unsigned int engine)
+ {
+ 	struct drm_i915_gem_exec_object2 obj = {
+@@ -3304,9 +3226,6 @@ igt_main
+ 	igt_subtest("fairslice")
+ 		fairslice(i915);
+ 
+-	igt_subtest("ringsize")
+-		ringsz(i915);
+-
+ 	igt_subtest("nop")
+ 		nop(i915);
+ 
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
