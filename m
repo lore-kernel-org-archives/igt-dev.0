@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
- [IPv6:2607:f8b0:4864:20::1035])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E4F56EC8C
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 21:50:49 +0000 (UTC)
-Received: by mail-pj1-x1035.google.com with SMTP id
- em21-20020a17090b0155b029014e204a81e6so5105667pjb.1
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 14:50:49 -0700 (PDT)
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
+ [IPv6:2607:f8b0:4864:20::1032])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6AF266EC8D
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 21:50:50 +0000 (UTC)
+Received: by mail-pj1-x1032.google.com with SMTP id
+ e8-20020a17090a7288b029014e51f5a6baso1905012pjg.2
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 14:50:50 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Fri, 23 Apr 2021 16:48:31 -0500
-Message-Id: <20210423214853.876911-68-jason@jlekstrand.net>
+Date: Fri, 23 Apr 2021 16:48:32 -0500
+Message-Id: <20210423214853.876911-69-jason@jlekstrand.net>
 In-Reply-To: <20210423214853.876911-1-jason@jlekstrand.net>
 References: <20210423214853.876911-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 67/89] tests/i915/gem_exec_balancer: Drop
- bonded tests
+Subject: [igt-dev] [PATCH i-g-t 68/89] lib/intel_ctx: Add load balancing
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,388 +28,160 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Support for combining bonding and balancing is being removed from i915
-because it's not used by media.
+We use the same convention as the load balancing tests and, when
+balancing is requested, we make a context with N+1 engines where the
+first one is the balanced engine and the others are physical engines.
 ---
- tests/i915/gem_exec_balancer.c | 330 ---------------------------------
- 1 file changed, 330 deletions(-)
+ lib/i915/gem_engine_topology.c | 27 ++++++++++++++----
+ lib/intel_ctx.c                | 50 +++++++++++++++++++++++++++++++---
+ lib/intel_ctx.h                |  2 ++
+ 3 files changed, 69 insertions(+), 10 deletions(-)
 
-diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index 5844b25c..ed0dbb6d 100644
---- a/tests/i915/gem_exec_balancer.c
-+++ b/tests/i915/gem_exec_balancer.c
-@@ -123,21 +123,6 @@ static bool has_perf_engines(int i915)
- 	return i915_perf_type_id(i915);
- }
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index ac707cb3..1bebe848 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -311,12 +311,27 @@ intel_engine_list_for_ctx_cfg(int fd, const intel_ctx_cfg_t *cfg)
+ 		struct intel_engine_data engine_data = { };
+ 		int i;
  
--static int __set_vm(int i915, uint32_t ctx, uint32_t vm)
--{
--	struct drm_i915_gem_context_param p = {
--		.ctx_id = ctx,
--		.param = I915_CONTEXT_PARAM_VM,
--		.value = vm
--	};
--	return __gem_context_set_param(i915, &p);
--}
--
--static void set_vm(int i915, uint32_t ctx, uint32_t vm)
--{
--	igt_assert_eq(__set_vm(i915, ctx, vm), 0);
--}
--
- static int __set_engines(int i915, uint32_t ctx,
- 			 const struct i915_engine_class_instance *ci,
- 			 unsigned int count)
-@@ -484,31 +469,6 @@ static double measure_min_load(int pmu, unsigned int num, int period_us)
- 	return min / (double)d_t;
- }
+-		engine_data.nengines = cfg->num_engines;
+-		for (i = 0; i < cfg->num_engines; i++)
+-			init_engine(&engine_data.engines[i],
+-				    cfg->engines[i].engine_class,
+-				    cfg->engines[i].engine_instance,
+-				    i);
++		if (cfg->load_balance) {
++			engine_data.nengines = cfg->num_engines + 1;
++
++			init_engine(&engine_data.engines[0],
++				    I915_ENGINE_CLASS_INVALID,
++				    I915_ENGINE_CLASS_INVALID_NONE,
++				    0);
++
++			for (i = 0; i < cfg->num_engines; i++)
++				init_engine(&engine_data.engines[i + 1],
++					    cfg->engines[i].engine_class,
++					    cfg->engines[i].engine_instance,
++					    i + 1);
++		} else {
++			engine_data.nengines = cfg->num_engines;
++			for (i = 0; i < cfg->num_engines; i++)
++				init_engine(&engine_data.engines[i],
++					    cfg->engines[i].engine_class,
++					    cfg->engines[i].engine_instance,
++					    i);
++		}
  
--static void measure_all_load(int pmu, double *v, unsigned int num, int period_us)
--{
--	uint64_t data[2 + num];
--	uint64_t d_t, d_v[num];
--
--	kick_kthreads();
--
--	igt_assert_eq(read(pmu, data, sizeof(data)), sizeof(data));
--	for (unsigned int n = 0; n < num; n++)
--		d_v[n] = -data[2 + n];
--	d_t = -data[1];
--
--	usleep(period_us);
--
--	igt_assert_eq(read(pmu, data, sizeof(data)), sizeof(data));
--
--	d_t += data[1];
--	for (unsigned int n = 0; n < num; n++) {
--		d_v[n] += data[2 + n];
--		igt_debug("engine[%d]: %.1f%%\n",
--			  n, d_v[n] / (double)d_t * 100);
--		v[n] = d_v[n] / (double)d_t;
--	}
--}
--
- static int
- add_pmu(int i915, int pmu, const struct i915_engine_class_instance *ci)
+ 		return engine_data;
+ 	} else {
+diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
+index f6b147e0..e2c13294 100644
+--- a/lib/intel_ctx.c
++++ b/lib/intel_ctx.c
+@@ -100,6 +100,7 @@ static int
+ __context_create_cfg(int fd, const intel_ctx_cfg_t *cfg, uint32_t *ctx_id)
  {
-@@ -593,147 +553,6 @@ static void individual(int i915)
- 	gem_quiescent_gpu(i915);
- }
+ 	uint64_t ext_root = 0;
++	I915_DEFINE_CONTEXT_ENGINES_LOAD_BALANCE(balance, GEM_MAX_ENGINES);
+ 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, GEM_MAX_ENGINES);
+ 	struct drm_i915_gem_context_create_ext_setparam engines_param, vm_param;
+ 	struct drm_i915_gem_context_create_ext_setparam persist_param;
+@@ -131,9 +132,39 @@ __context_create_cfg(int fd, const intel_ctx_cfg_t *cfg, uint32_t *ctx_id)
+ 	}
  
--static void bonded(int i915, unsigned int flags)
--#define CORK 0x1
--{
--	I915_DEFINE_CONTEXT_ENGINES_BOND(bonds[16], 1);
--	struct i915_engine_class_instance *master_engines;
--	uint32_t vm;
--
--	/*
--	 * I915_CONTEXT_PARAM_ENGINE provides an extension that allows us
--	 * to specify which engine(s) to pair with a parallel (EXEC_SUBMIT)
--	 * request submitted to another engine.
--	 */
--
--	vm = gem_vm_create(i915);
--
--	memset(bonds, 0, sizeof(bonds));
--	for (int n = 0; n < ARRAY_SIZE(bonds); n++) {
--		bonds[n].base.name = I915_CONTEXT_ENGINES_EXT_BOND;
--		bonds[n].base.next_extension =
--			n ? to_user_pointer(&bonds[n - 1]) : 0;
--		bonds[n].num_bonds = 1;
--	}
--
--	for (int class = 0; class < 32; class++) {
--		struct i915_engine_class_instance *siblings;
--		unsigned int count, limit, *order;
--		uint32_t master, ctx;
--		int n;
--
--		siblings = list_engines(i915, 1u << class, &count);
--		if (!siblings)
--			continue;
--
--		if (count < 2) {
--			free(siblings);
--			continue;
--		}
--
--		master_engines = list_engines(i915, ~(1u << class), &limit);
--		master = gem_context_create_ext(i915, I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE, 0);
--		set_vm(i915, master, vm);
--		set_engines(i915, master, master_engines, limit);
--
--		limit = min(count, limit);
--		igt_assert(limit <= ARRAY_SIZE(bonds));
--		for (n = 0; n < limit; n++) {
--			bonds[n].master = master_engines[n];
--			bonds[n].engines[0] = siblings[n];
--		}
--
--		ctx = gem_context_create_ext(i915, I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE, 0);
--		set_vm(i915, master, vm);
--		set_engines(i915, master, master_engines, limit);
--		set_load_balancer(i915, ctx, siblings, count, &bonds[limit - 1]);
--
--		order = malloc(sizeof(*order) * 8 * limit);
--		igt_assert(order);
--		for (n = 0; n < limit; n++)
--			order[2 * limit - n - 1] = order[n] = n % limit;
--		memcpy(order + 2 * limit, order, 2 * limit * sizeof(*order));
--		memcpy(order + 4 * limit, order, 4 * limit * sizeof(*order));
--		igt_permute_array(order + 2 * limit, 6 * limit, igt_exchange_int);
--
--		for (n = 0; n < 8 * limit; n++) {
--			struct drm_i915_gem_execbuffer2 eb;
--			igt_spin_t *spin, *plug;
--			IGT_CORK_HANDLE(cork);
--			double v[limit];
--			int pmu[limit + 1];
--			int bond = order[n];
--
--			pmu[0] = -1;
--			for (int i = 0; i < limit; i++)
--				pmu[i] = add_pmu(i915, pmu[0], &siblings[i]);
--			pmu[limit] = add_pmu(i915,
--					     pmu[0], &master_engines[bond]);
--
--			igt_assert(siblings[bond].engine_class !=
--				   master_engines[bond].engine_class);
--
--			plug = NULL;
--			if (flags & CORK) {
--				plug = __igt_spin_new(i915,
--						      .ctx_id = master,
--						      .engine = bond,
--						      .dependency = igt_cork_plug(&cork, i915));
--			}
--
--			spin = __igt_spin_new(i915,
--					      .ctx_id = master,
--					      .engine = bond,
--					      .flags = IGT_SPIN_FENCE_OUT);
--
--			eb = spin->execbuf;
--			eb.rsvd1 = ctx;
--			eb.rsvd2 = spin->out_fence;
--			eb.flags = I915_EXEC_FENCE_SUBMIT;
--			gem_execbuf(i915, &eb);
--
--			if (plug) {
--				igt_cork_unplug(&cork);
--				igt_spin_free(i915, plug);
--			}
--
--			measure_all_load(pmu[0], v, limit + 1, 10000);
--			igt_spin_free(i915, spin);
--
--			igt_assert_f(v[bond] > 0.90,
--				     "engine %d (class:instance %s:%d) was found to be only %.1f%% busy\n",
--				     bond,
--				     class_to_str(siblings[bond].engine_class),
--				     siblings[bond].engine_instance,
--				     100 * v[bond]);
--			for (int other = 0; other < limit; other++) {
--				if (other == bond)
--					continue;
--
--				igt_assert_f(v[other] == 0,
--					     "engine %d (class:instance %s:%d) was not idle, and actually %.1f%% busy\n",
--					     other,
--					     class_to_str(siblings[other].engine_class),
--					     siblings[other].engine_instance,
--					     100 * v[other]);
--			}
--			igt_assert_f(v[limit] > 0.90,
--				     "master (class:instance %s:%d) was found to be only %.1f%% busy\n",
--				     class_to_str(master_engines[bond].engine_class),
--				     master_engines[bond].engine_instance,
--				     100 * v[limit]);
--
--			close(pmu[0]);
--		}
--
--		free(order);
--		gem_context_destroy(i915, master);
--		gem_context_destroy(i915, ctx);
--		free(master_engines);
--		free(siblings);
--	}
--}
--
- #define VIRTUAL_ENGINE (1u << 0)
+ 	if (cfg->num_engines) {
++		unsigned num_logical_engines = 0;
+ 		memset(&engines, 0, sizeof(engines));
+-		for (i = 0; i < cfg->num_engines; i++)
+-			engines.engines[i] = cfg->engines[i];
++
++		if (cfg->load_balance) {
++			memset(&balance, 0, sizeof(balance));
++
++			/* In this case, the first engine is the virtual
++			 * balanced engine and the subsequent engines are
++			 * the actual requested engines.
++			 */
++			assert(cfg->num_engines + 1 <= GEM_MAX_ENGINES);
++			num_logical_engines = cfg->num_engines + 1;
++
++			engines.engines[0].engine_class =
++				I915_ENGINE_CLASS_INVALID;
++			engines.engines[0].engine_instance =
++				I915_ENGINE_CLASS_INVALID_NONE;
++
++			balance.num_siblings = cfg->num_engines;
++			for (i = 0; i < cfg->num_engines; i++) {
++				igt_assert_eq(cfg->engines[0].engine_class,
++					      cfg->engines[i].engine_class);
++				balance.engines[i] = cfg->engines[i];
++				engines.engines[i + 1] = cfg->engines[i];
++			}
++
++			engines.extensions = to_user_pointer(&balance);
++		} else {
++			assert(cfg->num_engines <= GEM_MAX_ENGINES);
++			num_logical_engines = cfg->num_engines;
++			for (i = 0; i < cfg->num_engines; i++)
++				engines.engines[i] = cfg->engines[i];
++		}
  
- static unsigned int offset_in_page(void *addr)
-@@ -1810,126 +1629,6 @@ static void indices(int i915)
- 	gem_quiescent_gpu(i915);
- }
+ 		engines_param = (struct drm_i915_gem_context_create_ext_setparam) {
+ 			.base = {
+@@ -141,11 +172,13 @@ __context_create_cfg(int fd, const intel_ctx_cfg_t *cfg, uint32_t *ctx_id)
+ 			},
+ 			.param = {
+ 				.param = I915_CONTEXT_PARAM_ENGINES,
+-				.size = sizeof_param_engines(cfg->num_engines),
++				.size = sizeof_param_engines(num_logical_engines),
+ 				.value = to_user_pointer(&engines),
+ 			},
+ 		};
+ 		add_user_ext(&ext_root, &engines_param.base);
++	} else {
++		igt_assert(!cfg->load_balance);
+ 	}
  
--static void __bonded_early(int i915,
--			   const struct i915_engine_class_instance *siblings,
--			   unsigned int count,
--			   unsigned int flags)
--{
--	I915_DEFINE_CONTEXT_ENGINES_BOND(bonds[count], 1);
--	uint32_t handle = batch_create(i915);
--	struct drm_i915_gem_exec_object2 batch = {
--		.handle = handle,
--	};
--	struct drm_i915_gem_execbuffer2 execbuf = {
--		.buffers_ptr = to_user_pointer(&batch),
--		.buffer_count = 1,
--	};
--	uint32_t vm, ctx;
--	igt_spin_t *spin;
--
--	memset(bonds, 0, sizeof(bonds));
--	for (int n = 0; n < ARRAY_SIZE(bonds); n++) {
--		bonds[n].base.name = I915_CONTEXT_ENGINES_EXT_BOND;
--		bonds[n].base.next_extension =
--			n ? to_user_pointer(&bonds[n - 1]) : 0;
--
--		bonds[n].master = siblings[n];
--		bonds[n].num_bonds = 1;
--		bonds[n].engines[0] = siblings[(n + 1) % count];
--	}
--
--	/* We share a VM so that the spin cancel will work without a reloc */
--	vm = gem_vm_create(i915);
--
--	ctx = gem_context_create(i915);
--	set_vm(i915, ctx, vm);
--	set_load_balancer(i915, ctx, siblings, count,
--			  flags & VIRTUAL_ENGINE ? &bonds : NULL);
--
--	/* A: spin forever on engine 1 */
--	spin = igt_spin_new(i915,
--			    .ctx_id = ctx,
--			    .engine = (flags & VIRTUAL_ENGINE) ? 0 : 1,
--			    .flags = IGT_SPIN_NO_PREEMPTION);
--
--	/* B: runs after A on engine 1 */
--	execbuf.rsvd1 = ctx;
--	execbuf.flags = I915_EXEC_FENCE_OUT;
--	execbuf.flags |= spin->execbuf.flags & 63;
--	gem_execbuf_wr(i915, &execbuf);
--
--	/* B': run in parallel with B on engine 2, i.e. not before A! */
--	execbuf.flags = I915_EXEC_FENCE_SUBMIT | I915_EXEC_FENCE_OUT;
--	if(!(flags & VIRTUAL_ENGINE))
--		execbuf.flags |= 2;
--	execbuf.rsvd2 >>= 32;
--	gem_execbuf_wr(i915, &execbuf);
--
--	/* C: prevent anything running on engine 2 after B' */
--	spin->execbuf.flags = execbuf.flags & 63;
--	gem_execbuf(i915, &spin->execbuf);
--
--	igt_debugfs_dump(i915, "i915_engine_info");
--
--	/* D: cancel the spinner from engine 2 (new context) */
--	gem_context_destroy(i915, ctx);
--	ctx = gem_context_create(i915);
--	set_vm(i915, ctx, vm);
--	set_load_balancer(i915, ctx, siblings, count,
--			  flags & VIRTUAL_ENGINE ? &bonds : NULL);
--	batch.handle = create_semaphore_to_spinner(i915, spin);
--	execbuf.rsvd1 = ctx;
--	execbuf.flags = 0;
--	if(!(flags & VIRTUAL_ENGINE))
--		execbuf.flags |= 2;
--	gem_execbuf(i915, &execbuf);
--	gem_close(i915, batch.handle);
--
--	/* If C runs before D, we never cancel the spinner and so hang */
--	gem_sync(i915, handle);
--
--	/* Check the bonded pair completed successfully */
--	igt_assert_eq(sync_fence_status(execbuf.rsvd2 & 0xffffffff), 1);
--	igt_assert_eq(sync_fence_status(execbuf.rsvd2 >> 32), 1);
--
--	close(execbuf.rsvd2);
--	close(execbuf.rsvd2 >> 32);
--
--	gem_context_destroy(i915, ctx);
--	gem_close(i915, handle);
--	igt_spin_free(i915, spin);
--}
--
--static void bonded_early(int i915)
--{
--	/*
--	 * Our goal is to start the bonded payloads at roughly the same time.
--	 * We do not want to start the secondary batch too early as it will
--	 * do nothing but hog the GPU until the first has a chance to execute.
--	 * So if we were to arbitrary delay the first by running it after a
--	 * spinner...
--	 *
--	 * By using a pair of spinners, we can create a bonded hog that when
--	 * set in motion will fully utilize both engines [if the scheduling is
--	 * incorrect]. We then use a third party submitted after the bonded
--	 * pair to cancel the spinner from the GPU -- if it is unable to run,
--	 * the spinner is never cancelled, and the bonded pair will cause a GPU
--	 * hang.
--	 */
--
--	for (int class = 0; class < 32; class++) {
--		struct i915_engine_class_instance *siblings;
--		unsigned int count;
--
--		siblings = list_engines(i915, 1u << class, &count);
--		if (count > 1) {
--			__bonded_early(i915, siblings, count, 0);
--			__bonded_early(i915, siblings, count, VIRTUAL_ENGINE);
--		}
--		free(siblings);
--	}
--}
--
- static void busy(int i915)
+ 	return __gem_context_create_ext(fd, cfg->flags, ext_root, ctx_id);
+@@ -276,7 +309,16 @@ void intel_ctx_destroy(int fd, const intel_ctx_t *ctx)
+  */
+ unsigned int intel_ctx_engine_class(const intel_ctx_t *ctx, unsigned int engine)
  {
- 	uint32_t scratch = gem_create(i915, 4096);
-@@ -3170,22 +2869,6 @@ static bool has_load_balancer(int i915)
- 	return err == 0;
- }
- 
--static bool has_bonding(int i915)
--{
--	I915_DEFINE_CONTEXT_ENGINES_BOND(bonds, 0) = {
--		.base.name = I915_CONTEXT_ENGINES_EXT_BOND,
--	};
--	struct i915_engine_class_instance ci = {};
--	uint32_t ctx;
--	int err;
--
--	ctx = gem_context_create(i915);
--	err = __set_load_balancer(i915, ctx, &ci, 1, &bonds);
--	gem_context_destroy(i915, ctx);
--
--	return err == 0;
--}
--
- igt_main
- {
- 	int i915 = -1;
-@@ -3257,19 +2940,6 @@ igt_main
- 	igt_subtest("smoke")
- 		smoketest(i915, 20);
- 
--	igt_subtest_group {
--		igt_fixture igt_require(has_bonding(i915));
--
--		igt_subtest("bonded-imm")
--			bonded(i915, 0);
--
--		igt_subtest("bonded-cork")
--			bonded(i915, CORK);
--
--		igt_subtest("bonded-early")
--			bonded_early(i915);
--	}
--
- 	igt_subtest("bonded-slice")
- 		bonded_slice(i915);
- 
+-	if (ctx->cfg.num_engines) {
++	if (ctx->cfg.load_balance) {
++		if (engine == 0) {
++			/* This is our virtual engine */
++			return ctx->cfg.engines[0].engine_class;
++		} else {
++			/* This is a physical engine */
++			igt_assert(engine - 1 < ctx->cfg.num_engines);
++			return ctx->cfg.engines[engine - 1].engine_class;
++		}
++	} else if (ctx->cfg.num_engines) {
+ 		igt_assert(engine < ctx->cfg.num_engines);
+ 		return ctx->cfg.engines[engine].engine_class;
+ 	} else {
+diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
+index 06a14302..2f2ea31b 100644
+--- a/lib/intel_ctx.h
++++ b/lib/intel_ctx.h
+@@ -35,6 +35,7 @@
+  * @flags: Context create flags
+  * @vm: VM to inherit or 0 for using a per-context VM
+  * @nopersist: set I915_CONTEXT_PARAM_PERSISTENCE to 0
++ * @load_balance: True if the first engine should be a load balancing engine
+  * @num_engines: Number of client-specified engines or 0 for legacy mode
+  * @engines: Client-specified engines
+  *
+@@ -44,6 +45,7 @@ typedef struct intel_ctx_cfg {
+ 	uint32_t flags;
+ 	uint32_t vm;
+ 	bool nopersist;
++	bool load_balance;
+ 	unsigned int num_engines;
+ 	struct i915_engine_class_instance engines[GEM_MAX_ENGINES];
+ } intel_ctx_cfg_t;
 -- 
 2.31.1
 
