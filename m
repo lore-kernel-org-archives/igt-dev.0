@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com
- [IPv6:2a00:1450:4864:20::52b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B48D66EC98
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 21:57:24 +0000 (UTC)
-Received: by mail-ed1-x52b.google.com with SMTP id j7so22117426eds.8
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 14:57:24 -0700 (PDT)
 MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 23 Apr 2021 22:43:51 -0000
+Message-ID: <161921783108.2791.1927201999516544354@emeril.freedesktop.org>
 References: <20210423214853.876911-1-jason@jlekstrand.net>
 In-Reply-To: <20210423214853.876911-1-jason@jlekstrand.net>
-From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Fri, 23 Apr 2021 16:57:11 -0500
-Message-ID: <CAOFGe94Ms0kiCF8zOAzprZs6KjCCFEwbeReMTFn0hja_qjQzpw@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 00/89] Stop depending on context
- mutation (v3)
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgU3RvcCBk?=
+ =?utf-8?q?epending_on_context_mutation_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,297 +14,236 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1349771162=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: IGT GPU Tools <igt-dev@lists.freedesktop.org>
+To: Jason Ekstrand <jason@jlekstrand.net>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Unfortunately, there are a few SOB's missing on this series.  I
-realized it after I'd sent the first 50 or so.  I've added them
-locally.
+--===============1349771162==
+Content-Type: multipart/alternative;
+ boundary="===============5160360463873570493=="
 
---Jason
+--===============5160360463873570493==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Fri, Apr 23, 2021 at 4:49 PM Jason Ekstrand <jason@jlekstrand.net> wrote:
->
-> I'm trying to clean up some of our uAPI technical debt in i915.  One of the
-> biggest areas we have right now is context mutability.  There's no good
-> reason why things like the set of engines or the VM should be able to be
-> changed on the fly and no "real" userspace actually relies on this
-> functionality.  It does, however, make for a good excuse for tests and lots
-> of bug reports as things like swapping out the set of engines under load
-> break randomly.  The solution here is to stop allowing that behavior and
-> simplify the i915 internals.
->
-> In particular, we'd like to remove the following from the i915 API:
->
->  1. I915_CONTEXT_CLONE_*.  These are only used by IGT and have never been
->     used by any "real" userspace.
->
->  2. Changing the VM or set of engines via SETPARAM after they've been
->     "used" by an execbuf or similar.  This would effectively make those
->     parameters create params rather than mutable state.  We can't drop
->     setparam entirely for those because media does use it but we can
->     enforce some rules.
->
->  3. Unused (by non-IGT userspace) GETPARAM for things like engines.
->
-> As much as we'd love to do that, we have a bit of a problem in IGT.  The
-> way we handle multi-engine testing today relies heavily on this soon-to-be-
-> deprecated functionality.  In particular, the standard flow is usually
-> something like this:
->
->     static void run_test1(int fd, uint32_t engine)
->     {
->         igt_spin_t *spin;
->
->         ctx = = gem_context_clone_with_engines(fd, 0);
->         __igt_spin_new(fd, ctx, .engine = engine);
->
->         /* do some testing with ctx */
->
->         igt_spin_free(fd, spin);
->         gem_destroy_context(fd, ctx);
->     }
->
->     igt_main
->     {
->         struct intel_execution_engine2 *e;
->
->         /* Usual fixture code */
->
->         __for_each_physical_engine(fd, e)
->             run_test1(fd, e->flags);
->
->         __for_each_physical_engine(fd, e)
->             run_test2(fd, e->flags);
->     }
->
-> Let's walk through what this does:
->
->  1. __for_each_physical_engine calls intel_init_engine_list() which resets
->     the set of engines on ctx0 to the full set of engines available as per
->     the engine query.  On older kernels/hardware where we don't have the
->     engines query, it leaves the set alone.
->
->  2. intel_init_engine_list() also returns a set of engines for iteration
->     and __for_each_physical_engine() sets up a for loop to walk the set.
->
->  3. gem_context_clone_with_engines() creates a new context using
->     I915_CONTEXT_CONTEXT_CLONE_ENGINES (not used by anything other than
->     IGT) to ask that the newly created context has the same set of engines
->     as ctx0.  Remember we changed that at the start of loop iteration!
->
->  4. When the context is passed to __igt_spin_new(), it calls
->     gem_context_lookup_engine which does a GETPARAM to introspet the set of
->     engines on the context and figure out the engine class.
->
-> If you've been keeping track, this trivial and extremely common example
-> uses every single one of these soon-to-be-deprecated APIs even though the
-> test author may be completely obvious to it.  It also means that getting
-> rid of IGT's use of them is going to require some fairly deep surgery.
->
-> The approach proposed and partially implemented here is to add a new
-> wrapper struct intel_ctx_t which wraps a GEM context handle as well as the
-> full set of parameters used to create it, represented by intel_ctx_cfg_t.
-> We can then use the context anywhere we would regularly use a context, we
-> just have to do ctx->id.  If we want to clone it, we can do so by re-using
-> the create parameters by calling intel_ctx_create(fd, &old_ctx->cfg);
->
-> Along with the above rework (which got long, sorry) I've got a few other
-> patches in here which delete tests which exist expressly to test APIs that
-> are on the chopping block.
->
-> v2 (Jason Ekstrand):
->  - Better documentation
->  - Two more patches at the end to clean up query APIs even more
->
-> v3 (Jason Ekstrand):
->  - Improved intel_ctx interface
->  - More tests converted to intel_ctx_t
->  - Misc. bug fixes
->
-> --Jason
->
-> Jason Ekstrand (89):
->   tests/i915: Drop gem_ctx_ringsize
->   tests/i915/gem_exec_balancer: Drop the ringsize subtest
->   tests/i915/gem_exec_endless: Stop setting the ring size
->   tests/i915/gem_ctx_param: Drop the zeromap subtests
->   tests/i915: Drop gem_ctx_clone
->   docs: Add gem_engine_topology.h to the docs
->   lib/i915/gem_engine_topology: Expose the __query_engines helper (v2)
->   lib/i915/gem_context: Add gem_context_create_ext helpers
->   lib: Add an intel_ctx wrapper struct and helpers (v4)
->   lib/i915/gem_engine_topology: Rework query_engine_list()
->   lib/i915/gem_engine_topology: Factor out static engine listing
->   lib/i915/gem_engine_topology: Add an iterator which doesn't munge
->     contexts (v2)
->   lib/i915/gem_engine_topology: Add an iterator for intel_ctx_t (v2)
->   tests/i915/gem_exec_basic: Convert to intel_ctx_t
->   lib/dummyload: Better document igt_spin_factory
->   lib/dummyload: Rename igt_spin_factory::ctx to ctx_id
->   lib/dummyload: Support intel_ctx_t
->   tests/i915/gem_exec_fence: Move the engine data into
->     inter_engine_context
->   tests/i915/gem_exec_fence: Convert to intel_ctx_t
->   tests/i915/gem_exec_schedule: Convert to intel_ctx_t
->   tests/i915/perf_pmu: Convert to intel_ctx_t
->   tests/i915/gem_exec_nop: Convert to intel_ctx_t
->   tests/i915/gem_exec_reloc: Convert to intel_ctx_t
->   tests/i915/gem_busy: Convert to intel_ctx_t
->   tests/i915/gem_ctx_isolation: Convert to intel_ctx_t
->   tests/i915/gem_exec_async: Convert to intel_ctx_t
->   tests/i915/sysfs_clients: Convert to intel_ctx_t
->   tests/i915/gem_exec_fair: Convert to intel_ctx_t
->   tests/i915/gem_spin_batch: Convert to intel_ctx_t
->   tests/i915/gem_exec_store: Convert to intel_ctx_t
->   tests/amdgpu/amd_prime: Convert to intel_ctx_t
->   tests/i915/i915_hangman: Convert to intel_ctx_t
->   tests/i915/gem_ringfill: Convert to intel_ctx_t
->   tests/prime_busy: Convert to intel_ctx_t
->   tests/prime_vgem: Convert to intel_ctx_t
->   tests/gem_exec_whisper: Convert to intel_ctx_t
->   tests/i915/gem_ctx_exec: Stop cloning contexts in close_race
->   tests/i915/gem_ctx_exec: Convert to intel_ctx_t
->   tests/i915/gem_exec_suspend: Convert to intel_ctx_t
->   tests/i915/gem_sync: Convert to intel_ctx_t
->   tests/i915/gem_userptr_blits: Convert to intel_ctx_t
->   tests/i915/gem_wait: Convert to intel_ctx_t
->   tests/i915/gem_request_retire: Convert to intel_ctx_t
->   tests/i915/gem_ctx_shared: Convert to intel_ctx_t
->   tests/i915/gem_ctx_shared: Stop cloning contexts
->   tests/i915/gem_create: Convert to intel_ctx_t
->   tests/i915/gem_ctx_switch: Convert to intel_ctx_t
->   tests/i915/gem_exec_parallel: Convert to intel_ctx_t
->   tests/i915/gem_exec_latency: Convert to intel_ctx_t
->   tests/i915/gem_watchdog: Convert to intel_ctx_t
->   tests/i915/gem_shrink: Convert to intel_ctx_t
->   tests/i915/gem_exec_params: Convert to intel_ctx_t
->   tests/i915/gem_exec_gttfill: Convert to intel_ctx_t
->   tests/i915/gem_exec_capture: Convert to intel_ctx_t
->   tests/i915/gem_exec_create: Convert to intel_ctx_t
->   tests/i915/gem_exec_await: Convert to intel_ctx_t
->   tests/i915/gem_ctx_persistence: Drop the clone subtest
->   tests/i915/gem_ctx_persistence: Drop the engine replace subtests
->   tests/i915/gem_ctx_persistence: Convert to intel_ctx_t
->   tests/i915/module_load: Convert to intel_ctx_t
->   tests/i915/pm_rc6_residency: Convert to intel_ctx_t
->   tests/i915/gem_cs_tlb: Convert to intel_ctx_t
->   tests/core_hotplug: Convert to intel_ctx_t
->   tests/i915/gem_exec_balancer: Stop cloning engines
->   tests/i915/gem_exec_balancer: Don't reset engines on a context
->   tests/i915/gem_exec_balancer: Stop munging ctx0 engines
->   tests/i915/gem_exec_balancer: Drop bonded tests
->   lib/intel_ctx: Add load balancing support
->   tests/i915/gem_exec_balancer: Convert to intel_ctx_t
->   tests/i915/gem_exec_endless: Stop munging ctx0 engines
->   lib/i915: Use for_each_physical_ring for submission tests
->   tests/i915/gem_ctx_engines: Rework execute-one*
->   tests/i915/gem_ctx_engines: Use better engine iteration
->   tests/i915/gem_ctx_engines: Drop the idempotent subtest
->   tests/i915/gem_ctx_create: Convert benchmarks to intel_ctx_t
->   tests/i915/gem_vm_create: Delete destroy racing tests
->   tests/i915/gem_vm_create: Use intel_ctx_t in the execbuf test
->   tests/i915/sysfs: Convert to intel_ctx_t
->   tests/i915/gem_workarounds: Convert to intel_ctx_t
->   lib/i915/gem_context: Delete all the context clone/copy stuff
->   tests/i915/gem_ctx_engines: Delete the libapi subtest
->   lib/igt_dummyload: Stop supporting ALL_ENGINES without an intel_ctx_t
->   lib/i915/gem_engine_topology: Delete the old physical engine iterators
->   tests/i915/gem_mmap_gtt: Convert to intel_ctx_t
->   igt/dummyload: Require an intel_ctx_t for POLL_RUN and !ALL_ENGINES
->   lib/i915: Rework engine API availability checks (v2)
->   lib/intel_bb: Remove intel_bb_assign_vm and tests
->   tests/i915/gem_ctx_param: Stop setting VMs on old contexts
->   tests/i915/gen9_exec_parse: Convert to intel_ctx_t
->
->  .../igt-gpu-tools/igt-gpu-tools-docs.xml      |   2 +
->  lib/i915/gem_context.c                        | 261 ++----
->  lib/i915/gem_context.h                        |  21 +-
->  lib/i915/gem_engine_topology.c                | 277 +++---
->  lib/i915/gem_engine_topology.h                |  78 +-
->  lib/i915/gem_submission.c                     |  13 +-
->  lib/igt_dummyload.c                           |  25 +-
->  lib/igt_dummyload.h                           |  28 +-
->  lib/igt_gt.c                                  |   2 +-
->  lib/intel_batchbuffer.c                       |  52 -
->  lib/intel_batchbuffer.h                       |   3 -
->  lib/intel_ctx.c                               | 327 +++++++
->  lib/intel_ctx.h                               |  79 ++
->  lib/meson.build                               |   1 +
->  tests/amdgpu/amd_prime.c                      |  10 +-
->  tests/core_hotunplug.c                        |   6 +-
->  tests/i915/api_intel_bb.c                     | 104 --
->  tests/i915/gem_busy.c                         |  77 +-
->  tests/i915/gem_create.c                       |  14 +-
->  tests/i915/gem_cs_tlb.c                       |  10 +-
->  tests/i915/gem_ctx_clone.c                    | 450 ---------
->  tests/i915/gem_ctx_create.c                   |  76 +-
->  tests/i915/gem_ctx_engines.c                  | 276 +-----
->  tests/i915/gem_ctx_exec.c                     |  54 +-
->  tests/i915/gem_ctx_isolation.c                | 112 +--
->  tests/i915/gem_ctx_param.c                    |  47 +-
->  tests/i915/gem_ctx_persistence.c              | 457 +++------
->  tests/i915/gem_ctx_ringsize.c                 | 345 -------
->  tests/i915/gem_ctx_shared.c                   | 335 ++++---
->  tests/i915/gem_ctx_switch.c                   | 115 ++-
->  tests/i915/gem_eio.c                          |   2 +-
->  tests/i915/gem_exec_async.c                   |  32 +-
->  tests/i915/gem_exec_await.c                   |  20 +-
->  tests/i915/gem_exec_balancer.c                | 887 ++++--------------
->  tests/i915/gem_exec_basic.c                   |   7 +-
->  tests/i915/gem_exec_capture.c                 |  30 +-
->  tests/i915/gem_exec_create.c                  |   9 +-
->  tests/i915/gem_exec_endless.c                 |  14 +-
->  tests/i915/gem_exec_fair.c                    | 112 ++-
->  tests/i915/gem_exec_fence.c                   | 302 +++---
->  tests/i915/gem_exec_gttfill.c                 |  15 +-
->  tests/i915/gem_exec_latency.c                 | 118 +--
->  tests/i915/gem_exec_nop.c                     | 156 +--
->  tests/i915/gem_exec_parallel.c                |  29 +-
->  tests/i915/gem_exec_params.c                  |   4 +-
->  tests/i915/gem_exec_reloc.c                   | 102 +-
->  tests/i915/gem_exec_schedule.c                | 887 +++++++++---------
->  tests/i915/gem_exec_store.c                   |  36 +-
->  tests/i915/gem_exec_suspend.c                 |  52 +-
->  tests/i915/gem_exec_whisper.c                 |  83 +-
->  tests/i915/gem_mmap_gtt.c                     |  18 +-
->  tests/i915/gem_request_retire.c               |  17 +-
->  tests/i915/gem_ringfill.c                     |  48 +-
->  tests/i915/gem_shrink.c                       |  37 +-
->  tests/i915/gem_spin_batch.c                   |  79 +-
->  tests/i915/gem_sync.c                         | 159 ++--
->  tests/i915/gem_userptr_blits.c                |  25 +-
->  tests/i915/gem_vm_create.c                    | 125 +--
->  tests/i915/gem_wait.c                         |  20 +-
->  tests/i915/gem_watchdog.c                     | 167 +---
->  tests/i915/gem_workarounds.c                  |  11 +-
->  tests/i915/gen9_exec_parse.c                  | 106 +--
->  tests/i915/i915_hangman.c                     |  37 +-
->  tests/i915/i915_module_load.c                 |   7 +-
->  tests/i915/i915_pm_rc6_residency.c            |   7 +-
->  tests/i915/i915_query.c                       |  17 +-
->  tests/i915/perf_pmu.c                         | 226 +++--
->  tests/i915/sysfs_clients.c                    |  87 +-
->  tests/i915/sysfs_heartbeat_interval.c         |  40 +-
->  tests/i915/sysfs_preempt_timeout.c            |  39 +-
->  tests/i915/sysfs_timeslice_duration.c         |  51 +-
->  tests/meson.build                             |   2 -
->  tests/prime_busy.c                            |  19 +-
->  tests/prime_vgem.c                            |  35 +-
->  74 files changed, 3374 insertions(+), 4559 deletions(-)
->  create mode 100644 lib/intel_ctx.c
->  create mode 100644 lib/intel_ctx.h
->  delete mode 100644 tests/i915/gem_ctx_clone.c
->  delete mode 100644 tests/i915/gem_ctx_ringsize.c
->
-> --
-> 2.31.1
->
+== Series Details ==
+
+Series: Stop depending on context mutation (rev4)
+URL   : https://patchwork.freedesktop.org/series/88986/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10005 -> IGTPW_5761
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5761/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5761 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#1982])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10005/fi-tgl-y/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5761/fi-tgl-y/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2373]: https://gitlab.freedesktop.org/drm/intel/issues/2373
+  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
+  [i915#3276]: https://gitlab.freedesktop.org/drm/intel/issues/3276
+  [i915#3277]: https://gitlab.freedesktop.org/drm/intel/issues/3277
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3283]: https://gitlab.freedesktop.org/drm/intel/issues/3283
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+  [i915#750]: https://gitlab.freedesktop.org/drm/intel/issues/750
+
+
+Participating hosts (43 -> 37)
+------------------------------
+
+  Additional (1): fi-rkl-11500t 
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-n3050 fi-bsw-cyan fi-dg1-1 fi-icl-y fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6074 -> IGTPW_5761
+
+  CI-20190529: 20190529
+  CI_DRM_10005: 7a27cb7ac19a95d801c391044cea5274677e7744 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5761: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5761/index.html
+  IGT_6074: 3f43ae9fd22dc5a517786b984dc3aa717997664f @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
+-igt@api_intel_bb@bb-with-vm
+-igt@gem_ctx_clone@engines
+-igt@gem_ctx_clone@flags
+-igt@gem_ctx_clone@invalid
+-igt@gem_ctx_clone@scheduler
+-igt@gem_ctx_clone@vm
+-igt@gem_ctx_engines@idempotent
+-igt@gem_ctx_engines@libapi
+-igt@gem_ctx_param@non-root-set-no-zeromap
+-igt@gem_ctx_param@root-set-no-zeromap-disabled
+-igt@gem_ctx_param@root-set-no-zeromap-enabled
+-igt@gem_ctx_persistence@clone
+-igt@gem_ctx_persistence@close-replace-race
+-igt@gem_ctx_persistence@replace
+-igt@gem_ctx_persistence@replace-hostile
+-igt@gem_ctx_ringsize@active
+-igt@gem_ctx_ringsize@clone
+-igt@gem_ctx_ringsize@create
+-igt@gem_ctx_ringsize@idempotent
+-igt@gem_ctx_ringsize@idle
+-igt@gem_ctx_ringsize@invalid
+-igt@gem_ctx_ringsize@plugged
+-igt@gem_exec_balancer@bonded-cork
+-igt@gem_exec_balancer@bonded-early
+-igt@gem_exec_balancer@bonded-imm
+-igt@gem_exec_balancer@ringsize
+-igt@gem_vm_create@async-destroy
+-igt@gem_vm_create@destroy-race
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5761/index.html
+
+--===============5160360463873570493==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Stop depending on context mutation (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88986/">https://patchwork.freedesktop.org/series/88986/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5761/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5761/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10005 -&gt; IGTPW_5761</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5761/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5761 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10005/fi-tgl-y/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5761/fi-tgl-y/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (43 -&gt; 37)</h2>
+<p>Additional (1): fi-rkl-11500t <br />
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-n3050 fi-bsw-cyan fi-dg1-1 fi-icl-y fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6074 -&gt; IGTPW_5761</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10005: 7a27cb7ac19a95d801c391044cea5274677e7744 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5761: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5761/index.html<br />
+  IGT_6074: 3f43ae9fd22dc5a517786b984dc3aa717997664f @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>-igt@api_intel_bb@bb-with-vm<br />
+-igt@gem_ctx_clone@engines<br />
+-igt@gem_ctx_clone@flags<br />
+-igt@gem_ctx_clone@invalid<br />
+-igt@gem_ctx_clone@scheduler<br />
+-igt@gem_ctx_clone@vm<br />
+-igt@gem_ctx_engines@idempotent<br />
+-igt@gem_ctx_engines@libapi<br />
+-igt@gem_ctx_param@non-root-set-no-zeromap<br />
+-igt@gem_ctx_param@root-set-no-zeromap-disabled<br />
+-igt@gem_ctx_param@root-set-no-zeromap-enabled<br />
+-igt@gem_ctx_persistence@clone<br />
+-igt@gem_ctx_persistence@close-replace-race<br />
+-igt@gem_ctx_persistence@replace<br />
+-igt@gem_ctx_persistence@replace-hostile<br />
+-igt@gem_ctx_ringsize@active<br />
+-igt@gem_ctx_ringsize@clone<br />
+-igt@gem_ctx_ringsize@create<br />
+-igt@gem_ctx_ringsize@idempotent<br />
+-igt@gem_ctx_ringsize@idle<br />
+-igt@gem_ctx_ringsize@invalid<br />
+-igt@gem_ctx_ringsize@plugged<br />
+-igt@gem_exec_balancer@bonded-cork<br />
+-igt@gem_exec_balancer@bonded-early<br />
+-igt@gem_exec_balancer@bonded-imm<br />
+-igt@gem_exec_balancer@ringsize<br />
+-igt@gem_vm_create@async-destroy<br />
+-igt@gem_vm_create@destroy-race</p>
+
+</body>
+</html>
+
+--===============5160360463873570493==--
+
+--===============1349771162==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1349771162==--
