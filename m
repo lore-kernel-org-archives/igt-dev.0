@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
- [IPv6:2607:f8b0:4864:20::52f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFB5D6EC70
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 21:49:19 +0000 (UTC)
-Received: by mail-pg1-x52f.google.com with SMTP id y32so36061924pga.11
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 14:49:19 -0700 (PDT)
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com
+ [IPv6:2607:f8b0:4864:20::531])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B2EF16EC64
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 21:49:24 +0000 (UTC)
+Received: by mail-pg1-x531.google.com with SMTP id q10so36059742pgj.2
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 14:49:24 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Fri, 23 Apr 2021 16:47:35 -0500
-Message-Id: <20210423214853.876911-12-jason@jlekstrand.net>
+Date: Fri, 23 Apr 2021 16:47:38 -0500
+Message-Id: <20210423214853.876911-15-jason@jlekstrand.net>
 In-Reply-To: <20210423214853.876911-1-jason@jlekstrand.net>
 References: <20210423214853.876911-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 11/89] lib/i915/gem_engine_topology: Factor
- out static engine listing
+Subject: [igt-dev] [PATCH i-g-t 14/89] tests/i915/gem_exec_basic: Convert to
+ intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,81 +27,57 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
-Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
----
- lib/i915/gem_engine_topology.c | 51 +++++++++++++++++++---------------
- 1 file changed, 29 insertions(+), 22 deletions(-)
+This acts as a template for the rest of this patch series.  The rough
+idea is that we create a new context if the HW supports contexts and
+otherwise we use intel_ctx_0().  Once we have an intel_ctx_t, we can
+iterate over all of the engines in it in a consistent way.
 
-diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-index ae8d2a33..d1f94761 100644
---- a/lib/i915/gem_engine_topology.c
-+++ b/lib/i915/gem_engine_topology.c
-@@ -212,6 +212,34 @@ intel_get_current_physical_engine(struct intel_engine_data *ed)
- 	return e;
- }
- 
-+static struct intel_engine_data intel_engine_list_for_static(int fd)
-+{
-+	const struct intel_execution_engine2 *e2;
-+	struct intel_engine_data engine_data = { };
-+
-+	igt_debug("using pre-allocated engine list\n");
-+
-+	__for_each_static_engine(e2) {
-+		if (igt_only_list_subtests() ||
-+		    (fd < 0) ||
-+		    gem_has_ring(fd, e2->flags)) {
-+			struct intel_execution_engine2 *__e2 =
-+				&engine_data.engines[
-+				engine_data.nengines];
-+
-+			strcpy(__e2->name, e2->name);
-+			__e2->instance   = e2->instance;
-+			__e2->class      = e2->class;
-+			__e2->flags      = e2->flags;
-+			__e2->is_virtual = false;
-+
-+			engine_data.nengines++;
-+                }
-+	}
-+
-+	return engine_data;
-+}
-+
- static int gem_topology_get_param(int fd,
- 				  struct drm_i915_gem_context_param *p)
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+---
+ tests/i915/gem_exec_basic.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/tests/i915/gem_exec_basic.c b/tests/i915/gem_exec_basic.c
+index 31f6a234..e21f9ff1 100644
+--- a/tests/i915/gem_exec_basic.c
++++ b/tests/i915/gem_exec_basic.c
+@@ -41,10 +41,13 @@ static uint32_t batch_create(int fd)
+ igt_main
  {
-@@ -232,28 +260,7 @@ struct intel_engine_data intel_init_engine_list(int fd, uint32_t ctx_id)
+ 	const struct intel_execution_engine2 *e;
++	const intel_ctx_t *ctx = NULL;
+ 	int fd = -1;
  
- 	if (gem_topology_get_param(fd, &param)) {
- 		/* if kernel does not support engine/context mapping */
--		const struct intel_execution_engine2 *e2;
--
--		igt_debug("using pre-allocated engine list\n");
--
--		__for_each_static_engine(e2) {
--			if (igt_only_list_subtests() ||
--			    (fd < 0) ||
--			    gem_has_ring(fd, e2->flags)) {
--				struct intel_execution_engine2 *__e2 =
--					&engine_data.engines[
--					engine_data.nengines];
--
--				strcpy(__e2->name, e2->name);
--				__e2->instance   = e2->instance;
--				__e2->class      = e2->class;
--				__e2->flags      = e2->flags;
--				__e2->is_virtual = false;
--
--				engine_data.nengines++;
--                        }
--		}
--		return engine_data;
-+		return intel_engine_list_for_static(fd);
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_INTEL);
++		ctx = intel_ctx_create_all_physical(fd);
++
+ 		/* igt_require_gem(fd); // test is mandatory */
+ 		igt_fork_hang_detector(fd);
  	}
+@@ -54,12 +57,13 @@ igt_main
+ 			.handle = batch_create(fd),
+ 		};
  
- 	if (!param.size) {
+-		__for_each_physical_engine(fd, e) {
++		for_each_ctx_engine(fd, ctx, e) {
+ 			igt_dynamic_f("%s", e->name) {
+ 				struct drm_i915_gem_execbuffer2 execbuf = {
+ 					.buffers_ptr = to_user_pointer(&exec),
+ 					.buffer_count = 1,
+ 					.flags = e->flags,
++					.rsvd1 = ctx->id,
+ 				};
+ 
+ 				gem_execbuf(fd, &execbuf);
+@@ -72,6 +76,7 @@ igt_main
+ 
+ 	igt_fixture {
+ 		igt_stop_hang_detector();
++		intel_ctx_destroy(fd, ctx);
+ 		close(fd);
+ 	}
+ }
 -- 
 2.31.1
 
