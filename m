@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 777D66EB4F
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 07:44:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AEB556EB50
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Apr 2021 07:44:56 +0000 (UTC)
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Date: Fri, 23 Apr 2021 10:44:41 +0300
-Message-Id: <20210423074444.175199-6-lionel.g.landwerlin@intel.com>
+Date: Fri, 23 Apr 2021 10:44:42 +0300
+Message-Id: <20210423074444.175199-7-lionel.g.landwerlin@intel.com>
 In-Reply-To: <20210423074444.175199-1-lionel.g.landwerlin@intel.com>
 References: <20210423074444.175199-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 5/8] lib/i915/perf-config: don't forget to
- resolve single variable
+Subject: [igt-dev] [PATCH i-g-t 6/8] lib/i915/perf-config: sanitize GT names
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,127 +23,62 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In the case where an expression is a single variable like
-expression="$EuThreadsCount" we should resolve that last variable to a
-codegen expression.
-
-Take the opportunity to uniformize the hash table keys (require "$"
-prefix everywhere).
+Make sure we don't have any space in there.
 
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- lib/i915/perf-configs/codegen.py              | 45 ++++++++++++-------
- .../perf-configs/perf-metricset-codegen.py    |  4 +-
- 2 files changed, 31 insertions(+), 18 deletions(-)
+ lib/i915/perf-configs/mdapi-xml-convert.py | 2 +-
+ lib/i915/perf-configs/oa_guid_registry.py  | 6 ++++++
+ lib/i915/perf-configs/update-guids.py      | 2 +-
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/lib/i915/perf-configs/codegen.py b/lib/i915/perf-configs/codegen.py
-index 7d5cb3af5..c0b22977c 100644
---- a/lib/i915/perf-configs/codegen.py
-+++ b/lib/i915/perf-configs/codegen.py
-@@ -94,8 +94,8 @@ class Set:
-             counter = Counter(self, xml_counter)
-             self.counters.append(counter)
-             self.counter_vars["$" + counter.get('symbol_name')] = counter
--            self.max_funcs[counter.get('symbol_name')] = counter.max_sym
--            self.read_funcs[counter.get('symbol_name')] = counter.read_sym
-+            self.max_funcs["$" + counter.get('symbol_name')] = counter.max_sym
-+            self.read_funcs["$" + counter.get('symbol_name')] = counter.read_sym
+diff --git a/lib/i915/perf-configs/mdapi-xml-convert.py b/lib/i915/perf-configs/mdapi-xml-convert.py
+index fab334919..d26ff623e 100755
+--- a/lib/i915/perf-configs/mdapi-xml-convert.py
++++ b/lib/i915/perf-configs/mdapi-xml-convert.py
+@@ -544,7 +544,7 @@ for arg in args.xml:
+         chipset = oa_registry.Registry.chipset_name(mdapi_set.get('SupportedHW'))
+         chipset_fullname = chipset
+         if concurrent_group.get('SupportedGT') != None:
+-            chipset_fullname = chipset_fullname + concurrent_group.get('SupportedGT')
++            chipset_fullname = chipset_fullname + oa_registry.Registry.gt_name(concurrent_group.get('SupportedGT'))
+         if chipset not in chipsets:
+             print_err("WARNING: unsupported chipset {0}, consider updating {1}".format(chipset, __file__))
+             continue
+diff --git a/lib/i915/perf-configs/oa_guid_registry.py b/lib/i915/perf-configs/oa_guid_registry.py
+index e40c9fe09..1e082ddfd 100644
+--- a/lib/i915/perf-configs/oa_guid_registry.py
++++ b/lib/i915/perf-configs/oa_guid_registry.py
+@@ -1,6 +1,7 @@
  
-         for counter in self.counters:
-             counter.compute_hashes()
-@@ -256,6 +256,13 @@ class Gen:
-     def splice_ugte(self, args):
-         return self.brkt(args[1]) + " >= " + self.brkt(args[0])
+ import copy
+ import hashlib
++import re
  
-+    def resolve_variable(self, name, set):
-+        if name in self.hw_vars:
-+            return self.hw_vars[name]['c']
-+        if name in set.counter_vars:
-+            return set.read_funcs[name] + "(perf, metric_set, accumulator)"
-+        return None
+ import xml.etree.ElementTree as et
+ 
+@@ -104,3 +105,8 @@ class Registry:
+ 
+         # Unknown HW
+         assert 0
 +
-     def output_rpn_equation_code(self, set, counter, equation):
-         self.c("/* RPN equation: " + equation + " */")
-         tokens = equation.split()
-@@ -272,13 +279,10 @@ class Gen:
-                 for i in range(0, argc):
-                     operand = stack.pop()
-                     if operand[0] == "$":
--                        if operand in self.hw_vars:
--                            operand = self.hw_vars[operand]['c']
--                        elif operand in set.counter_vars:
--                            reference = set.counter_vars[operand]
--                            operand = set.read_funcs[operand[1:]] + "(perf, metric_set, accumulator)"
--                        else:
-+                        resolved_variable = self.resolve_variable(operand, set)
-+                        if resolved_variable == None:
-                             raise Exception("Failed to resolve variable " + operand + " in equation " + equation + " for " + set.name + " :: " + counter.get('name'));
-+                        operand = resolved_variable
-                     args.append(operand)
- 
-                 tmp_id = callback(tmp_id, args)
-@@ -293,10 +297,11 @@ class Gen:
- 
-         value = stack[-1]
- 
--        if value in self.hw_vars:
--            value = self.hw_vars[value]['c']
--        if value in set.counter_vars:
--            value = set.read_funcs[value[1:]] + "(perf, metric_set, accumulator)"
-+        if value[0] == "$":
-+            resolved_variable = self.resolve_variable(value, set)
-+            if resolved_variable == None:
-+                raise Exception("Failed to resolve variable " + value + " in expression " + expression + " for " + set.name + " :: " + counter_name)
-+            value = resolved_variable
- 
-         self.c("\nreturn " + value + ";")
- 
-@@ -313,10 +318,10 @@ class Gen:
-                 for i in range(0, argc):
-                     operand = stack.pop()
-                     if operand[0] == "$":
--                        if operand in self.hw_vars:
--                            operand = self.hw_vars[operand]['c']
--                        else:
-+                        resolved_variable = self.resolve_variable(operand, set)
-+                        if resolved_variable == None:
-                             raise Exception("Failed to resolve variable " + operand + " in expression " + expression + " for " + set.name + " :: " + counter_name)
-+                        operand = resolved_variable
-                     args.append(operand)
- 
-                 subexp = callback(args)
-@@ -328,7 +333,15 @@ class Gen:
-                     counter_name + ".\nThis is probably due to some unhandled RPN operation, in the expression \"" +
-                     expression + "\"")
- 
--        return stack[-1]
-+        value = stack[-1]
 +
-+        if value[0] == "$":
-+            resolved_variable = self.resolve_variable(value, set)
-+            if resolved_variable == None:
-+                raise Exception("Failed to resolve variable " + value + " in expression " + expression + " for " + set.name + " :: " + counter_name)
-+            value = resolved_variable
-+
-+        return value
++    @staticmethod
++    def gt_name(name):
++        return re.sub(' ', '', name)
+diff --git a/lib/i915/perf-configs/update-guids.py b/lib/i915/perf-configs/update-guids.py
+index 16764f5bd..d38a7a955 100755
+--- a/lib/i915/perf-configs/update-guids.py
++++ b/lib/i915/perf-configs/update-guids.py
+@@ -128,7 +128,7 @@ for arg in args.xml:
  
-     def output_availability(self, set, availability, counter_name):
-         expression = self.splice_rpn_expression(set, counter_name, availability)
-diff --git a/lib/i915/perf-configs/perf-metricset-codegen.py b/lib/i915/perf-configs/perf-metricset-codegen.py
-index 63616c41d..00528c316 100644
---- a/lib/i915/perf-configs/perf-metricset-codegen.py
-+++ b/lib/i915/perf-configs/perf-metricset-codegen.py
-@@ -69,8 +69,8 @@ def output_counter_report(set, counter):
-     c("counter->type = INTEL_PERF_LOGICAL_COUNTER_TYPE_{0};\n".format(semantic_type_uc))
-     c("counter->storage = INTEL_PERF_LOGICAL_COUNTER_STORAGE_{0};\n".format(data_type_uc))
-     c("counter->unit = INTEL_PERF_LOGICAL_COUNTER_UNIT_{0};\n".format(output_units(counter.get('units'))))
--    c("counter->read_{0} = {1};\n".format(data_type, set.read_funcs[counter.get('symbol_name')]))
--    c("counter->max_{0} = {1};\n".format(data_type, set.max_funcs[counter.get('symbol_name')]))
-+    c("counter->read_{0} = {1};\n".format(data_type, set.read_funcs["$" + counter.get('symbol_name')]))
-+    c("counter->max_{0} = {1};\n".format(data_type, set.max_funcs["$" + counter.get('symbol_name')]))
-     c("intel_perf_add_logical_counter(perf, counter, \"{0}\");\n".format(counter.get('mdapi_group')))
+         chipset = oa_registry.Registry.chipset_name(mdapi_set.get('SupportedHW')).lower()
+         if concurrent_group.get('SupportedGT') != None:
+-            chipset = chipset + concurrent_group.get('SupportedGT').lower()
++            chipset = chipset + oa_registry.Registry.gt_name(concurrent_group.get('SupportedGT')).lower()
  
-     if availability:
+         set_name = mdapi_set.get('SymbolName')
+ 
 -- 
 2.27.0
 
