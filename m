@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9AB976E7D3
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Apr 2021 10:31:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 77A436E7D2
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Apr 2021 10:31:28 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Mon, 26 Apr 2021 23:51:30 +0530
-Message-Id: <20210426182136.2815-9-bhanuprakash.modem@intel.com>
+Date: Mon, 26 Apr 2021 23:51:27 +0530
+Message-Id: <20210426182136.2815-6-bhanuprakash.modem@intel.com>
 In-Reply-To: <20210426182136.2815-1-bhanuprakash.modem@intel.com>
 References: <20210426182136.2815-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [v3 i-g-t 08/14] tests/kms_plane: Reset the state before
- exiting the test
+Subject: [igt-dev] [v3 i-g-t 05/14] tests/kms_content_protection: Fix mode
+ selection for 2x tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,78 +24,95 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Before starting the next subtest, clean up the states to default
-values, those are assumed by other tests. This patch will also fix
-few typos & depricated macros.
+When two monitors connected through MST, the second monitor also
+tries to use the same mode. So two such modes may not fit into the
+link bandwidth.
+
+This patch will find a combination of modes that fit into the BW.
 
 Cc: Imre Deak <imre.deak@intel.com>
 Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_plane.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ tests/kms_content_protection.c | 41 +++++++++++++---------------------
+ 1 file changed, 16 insertions(+), 25 deletions(-)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 9fe253a8c..bea3cef00 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -132,7 +132,7 @@ test_grab_crc(data_t *data, igt_output_t *output, enum pipe pipe,
- 
- 	igt_output_set_pipe(output, pipe);
- 
--	primary = igt_output_get_plane(output, 0);
-+	primary = igt_output_get_plane(output, DRM_PLANE_TYPE_PRIMARY);
- 
- 	mode = igt_output_get_mode(output);
- 	if (flags & TEST_POSITION_PARTIALLY_COVERED) {
-@@ -251,7 +251,11 @@ test_plane_position_with_output(data_t *data,
- 	igt_plane_set_fb(sprite, NULL);
- 
- 	/* reset the constraint on the pipe */
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+
-+	igt_remove_fb(data->drm_fd, &primary_fb);
-+	igt_remove_fb(data->drm_fd, &sprite_fb);
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 5a75b871c..90047029d 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -452,39 +452,18 @@ static bool sink_hdcp2_capable(igt_output_t *output)
+ 	return strstr(buf, "HDCP2.2");
  }
  
- static void
-@@ -288,7 +292,7 @@ test_plane_position(data_t *data, enum pipe pipe, unsigned int flags)
-  *     (vdisplay, hdisplay) we do get the same CRC than the full blue fb.
-  */
- static void
--create_fb_for_mode__panning(data_t *data, drmModeModeInfo *mode,
-+create_fb_for_mode_panning(data_t *data, drmModeModeInfo *mode,
- 			    struct igt_fb *fb /* out */)
+-static void prepare_modeset_on_mst_output(igt_output_t *output, enum pipe pipe)
++static void prepare_modeset_on_mst_output(igt_output_t *output)
  {
- 	unsigned int fb_id;
-@@ -332,9 +336,9 @@ test_plane_panning_with_output(data_t *data,
- 	igt_output_set_pipe(output, pipe);
+-	drmModeConnectorPtr c = output->config.connector;
+ 	drmModeModeInfo *mode;
+ 	igt_plane_t *primary;
+-	int i, width, height;
++	int width, height;
++	enum pipe pipe = output->pending_pipe;
  
  	mode = igt_output_get_mode(output);
--	primary = igt_output_get_plane(output, 0);
-+	primary = igt_output_get_plane(output, DRM_PLANE_TYPE_PRIMARY);
  
--	create_fb_for_mode__panning(data, mode, &primary_fb);
-+	create_fb_for_mode_panning(data, mode, &primary_fb);
- 	igt_plane_set_fb(primary, &primary_fb);
+-	/*
+-	 * TODO: Add logic to use the highest possible modes on each output.
+-	 * Currently using 2k modes by default on all the outputs.
+-	 */
+-	igt_debug("Before mode override: Output %s Mode hdisplay %d Mode vdisplay %d\n",
+-		   output->name, mode->hdisplay, mode->vdisplay);
+-
+-	if (mode->hdisplay > 1920 && mode->vdisplay > 1080) {
+-		for (i = 0; i < c->count_modes; i++) {
+-			if (c->modes[i].hdisplay <= 1920 && c->modes[i].vdisplay <= 1080) {
+-				mode = &c->modes[i];
+-				igt_output_override_mode(output, mode);
+-				break;
+-			}
+-		}
+-	}
+-
+-	igt_debug("After mode overide: Output %s Mode hdisplay %d Mode vdisplay %d\n",
+-		   output->name, mode->hdisplay, mode->vdisplay);
+-
+ 	width = mode->hdisplay;
+ 	height = mode->vdisplay;
  
- 	if (flags & TEST_PANNING_TOP_LEFT)
-@@ -355,8 +359,11 @@ test_plane_panning_with_output(data_t *data,
+-	igt_output_set_pipe(output, pipe);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
  	igt_plane_set_fb(primary, NULL);
+ 	igt_plane_set_fb(primary, pipe % 2 ? &data.red : &data.green);
+@@ -624,7 +603,8 @@ test_content_protection_mst(int content_type)
  
- 	/* reset states to neutral values, assumed by other tests */
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_fb_set_position(&primary_fb, primary, 0, 0);
-+	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 		igt_assert_f(igt_pipe_connector_valid(pipe, output), "Output-pipe combination invalid\n");
+ 
+-		prepare_modeset_on_mst_output(output, pipe);
++		igt_output_set_pipe(output, pipe);
++		prepare_modeset_on_mst_output(output);
+ 		mst_output[dp_mst_outputs++] = output;
+ 
+ 		pipe++;
+@@ -635,6 +615,17 @@ test_content_protection_mst(int content_type)
+ 
+ 	igt_require_f(dp_mst_outputs > 1, "No DP MST set up with >= 2 outputs found in a single topology\n");
+ 
++	if (igt_display_try_commit_atomic(display,
++				DRM_MODE_ATOMIC_TEST_ONLY |
++				DRM_MODE_ATOMIC_ALLOW_MODESET,
++				NULL) != 0) {
++		bool found = override_all_active_output_modes_to_fit_link_bw(display);
++		igt_require_f(found, "No valid mode combo found for MST modeset\n");
 +
-+	igt_remove_fb(data->drm_fd, &primary_fb);
- }
++		for (count = 0; count < dp_mst_outputs; count++)
++			prepare_modeset_on_mst_output(mst_output[count]);
++	}
++
+ 	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
+ 	igt_require_f(ret == 0, "Commit failure during MST modeset\n");
  
- static void
 -- 
 2.20.1
 
