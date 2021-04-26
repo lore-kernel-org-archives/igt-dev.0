@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C8FE6E82E
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Apr 2021 10:31:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E5646E832
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Apr 2021 10:31:39 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Mon, 26 Apr 2021 23:51:29 +0530
-Message-Id: <20210426182136.2815-8-bhanuprakash.modem@intel.com>
+Date: Mon, 26 Apr 2021 23:51:31 +0530
+Message-Id: <20210426182136.2815-10-bhanuprakash.modem@intel.com>
 In-Reply-To: <20210426182136.2815-1-bhanuprakash.modem@intel.com>
 References: <20210426182136.2815-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [v3 i-g-t 07/14] tests/kms_atomic_transition: Fix mode
- selection for 2x tests
+Subject: [igt-dev] [v3 i-g-t 09/14] tests/kms_plane_alpha_blend: Reset the
+ state before exiting the test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,55 +24,41 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When two monitors connected through MST, the second monitor also
-tries to use the same mode. So two such modes may not fit into the
-link bandwidth.
-
-This patch will find a combination of modes that fit into the BW.
+Before starting the next subtest, clean up the states to default
+values, those are assumed by other tests. This patch will also fix
+few redundant checks.
 
 Cc: Imre Deak <imre.deak@intel.com>
 Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_atomic_transition.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ tests/kms_plane_alpha_blend.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index be60940d7..dd3c26307 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -100,6 +100,7 @@ run_primary_test(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_plane_set_fb(primary, NULL);
- 	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_remove_fb(data->drm_fd, &fb);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+index 5e80ae36e..a37cb27c7 100644
+--- a/tests/kms_plane_alpha_blend.c
++++ b/tests/kms_plane_alpha_blend.c
+@@ -237,8 +237,6 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe)
+ 	}
+ 
+ 	igt_plane_set_fb(primary, &data->black_fb);
+-	/* reset alpha property to default */
+-	reset_alpha(display, pipe);
  }
  
- static void *fence_inc_thread(void *arg)
-@@ -793,6 +794,7 @@ static void run_modeset_tests(data_t *data, int howmany, bool nonblocking, bool
- 	for (i = 0; i < data->display.n_outputs; i++)
- 		igt_output_set_pipe(&data->display.outputs[i], PIPE_NONE);
+ static void basic_alpha(data_t *data, enum pipe pipe, igt_plane_t *plane)
+@@ -507,6 +505,9 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, bool blend,
+ 		igt_plane_set_fb(plane, NULL);
+ 	}
  
-+retry:
- 	for_each_connected_output(&data->display, output) {
- 		drmModeModeInfo *mode = igt_output_get_mode(output);
- 
-@@ -839,6 +841,14 @@ static void run_modeset_tests(data_t *data, int howmany, bool nonblocking, bool
- 
- 	iter_max = 1 << j;
- 
-+	if (igt_display_try_commit_atomic(&data->display,
-+				DRM_MODE_ATOMIC_TEST_ONLY |
-+				DRM_MODE_ATOMIC_ALLOW_MODESET,
-+				NULL) != 0) {
-+		bool found = override_all_active_output_modes_to_fit_link_bw(&data->display);
-+		igt_require_f(found, "No valid mode combo found.\n");
-+		goto retry;
-+	}
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
- 	for (i = 0; i < iter_max; i++) {
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++
+ 	igt_require_f(found, "No planes with %s property found\n",
+ 		      blend ? "pixel blending mode" : "alpha");
+ 	igt_require_f(multiply, "Multiplied (plane x pixel) alpha not available\n");
 -- 
 2.20.1
 
