@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1BAB06E7D3
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Apr 2021 10:31:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5273C6E7E6
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Apr 2021 10:31:45 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Mon, 26 Apr 2021 23:51:32 +0530
-Message-Id: <20210426182136.2815-11-bhanuprakash.modem@intel.com>
+Date: Mon, 26 Apr 2021 23:51:34 +0530
+Message-Id: <20210426182136.2815-13-bhanuprakash.modem@intel.com>
 In-Reply-To: <20210426182136.2815-1-bhanuprakash.modem@intel.com>
 References: <20210426182136.2815-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [v3 i-g-t 10/14] tests/kms_cursor_edge_walk: Reset the
- state before exiting the test
+Subject: [igt-dev] [v3 i-g-t 12/14] tests/kms_plane_cursor: Reset the state
+ before exiting the test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,30 +32,24 @@ Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_cursor_edge_walk.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tests/kms_plane_cursor.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-index 69662afec..d1d8a9143 100644
---- a/tests/kms_cursor_edge_walk.c
-+++ b/tests/kms_cursor_edge_walk.c
-@@ -225,6 +225,7 @@ static void cleanup_crtc(data_t *data)
- 
- 	igt_remove_fb(data->drm_fd, &data->primary_fb);
- 	igt_remove_fb(data->drm_fd, &data->fb);
-+	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+index bc9d42940..9bda47466 100644
+--- a/tests/kms_plane_cursor.c
++++ b/tests/kms_plane_cursor.c
+@@ -93,6 +93,10 @@ static void test_fini(data_t *data)
+ {
+ 	igt_pipe_crc_free(data->pipe_crc);
+ 	igt_display_reset(&data->display);
++	igt_plane_set_fb(data->primary, NULL);
++	igt_plane_set_fb(data->overlay, NULL);
++	igt_plane_set_fb(data->cursor, NULL);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
  }
  
- static void prepare_crtc(data_t *data)
-@@ -268,6 +269,8 @@ static void test_crtc(data_t *data, unsigned int edges)
- 	create_cursor_fb(data, data->curw, data->curh);
- 
- 	test_edges(data, edges);
-+
-+	cleanup_crtc(data);
- }
- 
- static int opt_handler(int opt, int opt_index, void *_data)
+ /* Fills a FB with the solid color given. */
 -- 
 2.20.1
 
