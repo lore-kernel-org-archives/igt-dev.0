@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 43EE96E8F8
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Apr 2021 05:43:07 +0000 (UTC)
-Date: Tue, 27 Apr 2021 08:44:16 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YIeksMD1OOJpeWTe@platvala-desk.ger.corp.intel.com>
-References: <20210426093206.9182-1-kunal1.joshi@intel.com>
- <20210426093206.9182-2-kunal1.joshi@intel.com>
- <87czugwwxg.wl-ashutosh.dixit@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78D716E8F9
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Apr 2021 05:43:11 +0000 (UTC)
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+Date: Tue, 27 Apr 2021 05:43:07 +0000
+Message-ID: <e753b43c0a134041b0d1f5f3ee06649b@intel.com>
+References: <20210427054219.21305-1-petri.latvala@intel.com>
+In-Reply-To: <20210427054219.21305-1-petri.latvala@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <87czugwwxg.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/4] Make basic chamelium function
- accessible to other tests
+Subject: Re: [igt-dev] [PATCH i-g-t] lib: Put edid_ar_svds where it's used
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,44 +17,25 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Kunal Joshi <kunal1.joshi@intel.com>
+To: "Latvala, Petri" <petri.latvala@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCBBcHIgMjYsIDIwMjEgYXQgMDI6MzY6MTFQTSAtMDcwMCwgRGl4aXQsIEFzaHV0b3No
-IHdyb3RlOgo+IE9uIE1vbiwgMjYgQXByIDIwMjEgMDI6MzI6MDMgLTA3MDAsIEt1bmFsIEpvc2hp
-IHdyb3RlOgo+ID4KPiA+IGRpZmYgLS1naXQgYS9saWIvaWd0X2NoYW1lbGl1bS5oIGIvbGliL2ln
-dF9jaGFtZWxpdW0uaAo+ID4gaW5kZXggYmZjYjdiYjQuLmE0YWNlMzk3IDEwMDY0NAo+ID4gLS0t
-IGEvbGliL2lndF9jaGFtZWxpdW0uaAo+ID4gKysrIGIvbGliL2lndF9jaGFtZWxpdW0uaAo+ID4g
-QEAgLTMyLDYgKzMyLDcgQEAKPiA+ICAjaW5jbHVkZSA8eGY4NmRybU1vZGUuaD4KPiA+Cj4gPiAg
-I2luY2x1ZGUgImlndF9kZWJ1Z2ZzLmgiCj4gPiArI2luY2x1ZGUgImlndF9rbXMuaCIKPiA+Cj4g
-PiAgc3RydWN0IGlndF9mYjsKPiA+ICBzdHJ1Y3QgZWRpZDsKPiA+IEBAIC04MSw2ICs4MiwxMSBA
-QCBzdHJ1Y3QgY2hhbWVsaXVtX2luZm9mcmFtZSB7Cj4gPgo+ID4gIHN0cnVjdCBjaGFtZWxpdW1f
-ZWRpZDsKPiA+Cj4gPiArLyogU2V0IG9mIFZpZGVvIElkZW50aWZpY2F0aW9uIENvZGVzIGFkdmVy
-dGlzZWQgaW4gdGhlIEVESUQgKi8KPiA+ICtzdGF0aWMgY29uc3QgdWludDhfdCBlZGlkX2FyX3N2
-ZHNbXSA9IHsKPiA+ICsJMTYsIC8qIDEwODBwIEAgNjBIeiwgMTY6OSAqLwo+ID4gK307Cj4gPiAr
-Cj4gCj4gQmVjYXVzZSBsaWIvaWd0X2ttcy5jIGluY2x1ZGVzIGlndF9jaGFtZWxpdW0uaCBvbmx5
-IGlmIEhBVkVfQ0hBTUVMSVVNIGlzCj4gI2lmZGVmJ2QsIHRoaXMgYnJlYWtzIHRoZSBidWlsZCBv
-biBzeXN0ZW1zIG9uIHdoaWNoIEhBVkVfQ0hBTUVMSVVNIGlzIG5vdAo+IGRlZmluZWQ6Cj4gCj4g
-Li4vbGliL2lndF9rbXMuYzogSW4gZnVuY3Rpb24g4oCYaWd0X2ttc19nZXRfYXNwZWN0X3JhdGlv
-X2VkaWTigJk6Cj4gLi4vbGliL2lndF9rbXMuYzo1MjE6NTQ6IGVycm9yOiDigJhlZGlkX2FyX3N2
-ZHPigJkgdW5kZWNsYXJlZCAoZmlyc3QgdXNlIGluIHRoaXMgZnVuY3Rpb24pOz4KPiAgIDUyMSB8
-ICBjZWFfZGF0YV9zaXplICs9IGVkaWRfY2VhX2RhdGFfYmxvY2tfc2V0X3N2ZChibG9jaywgZWRp
-ZF9hcl9zdmRzLAo+ICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICBefn5+fn5+fn5+fn4KPiAgICAgICB8ICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZWRpZF80a19zdmRzCj4gLi4vbGli
-L2lndF9rbXMuYzo1MjE6NTQ6IG5vdGU6IGVhY2ggdW5kZWNsYXJlZCBpZGVudGlmaWVyIGlzIHJl
-cG9ydGVkIG9ubHkgb25jZSBmb3IgZWFjPgo+IFsxMy84MzddIENvbXBpbGluZyBDIG9iamVjdCBs
-aWIvbGliaTkxNV9wZXJmLnNvLjEucC9tZXNvbi1nZW5lcmF0ZWRfLi5faTkxNV9wZXJmX21ldHJp
-Yz4KPiAKPiBTbyBJR1QgYnVpbGQgaXMgbm93IGJyb2tlbi4KCgpGaXggcGF0Y2ggc2VudC4gU2hv
-dWxkIGhhdmUgc2VlbiB0aGlzIGluIHJldmlldywgYW5kIHdlIHdvdWxkIGhhdmUKY2F1Z2h0IGl0
-IHdpdGggZ2l0bGFiIENJIGlmIG9ubHkgdGhlIHJlcG9ydGluZyByZWxheSB3YXNuJ3QgYnJva2Vu
-IGF0CnRoZSByaWdodCBtb21lbnQuIEkgcmVzdGFydGVkIGl0IGFuZCBub3cgd2Ugc2hvdWxkIGJl
-IGdldHRpbmcgdGhpcwplcnJvciByZXBvcnRlZCBmb3IgdGhpcyBzZXJpZXMuCgoKLS0gClBldHJp
-IExhdHZhbGEKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-aWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6
-Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+From: Latvala, Petri <petri.latvala@intel.com> 
+Sent: Tuesday, April 27, 2021 11:12 AM
+To: igt-dev@lists.freedesktop.org
+Cc: Latvala, Petri <petri.latvala@intel.com>; Joshi, Kunal1 <kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t] lib: Put edid_ar_svds where it's used
+
+edid_ar_svds was hiding in igt_chamelium instead of igt_kms where it's used, breaking IGT building when chamelium support was disabled.
+
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
