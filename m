@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
- [IPv6:2607:f8b0:4864:20::636])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C2FE6EC31
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Apr 2021 20:21:54 +0000 (UTC)
-Received: by mail-pl1-x636.google.com with SMTP id t21so2404129plo.2
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Apr 2021 13:21:54 -0700 (PDT)
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
+ [IPv6:2607:f8b0:4864:20::1029])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 09F466EC31
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Apr 2021 20:21:53 +0000 (UTC)
+Received: by mail-pj1-x1029.google.com with SMTP id
+ f11-20020a17090a638bb02901524d3a3d48so9637826pjj.3
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Apr 2021 13:21:53 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed, 28 Apr 2021 15:21:43 -0500
-Message-Id: <20210428202143.1388452-5-jason@jlekstrand.net>
+Date: Wed, 28 Apr 2021 15:21:42 -0500
+Message-Id: <20210428202143.1388452-4-jason@jlekstrand.net>
 In-Reply-To: <20210428202143.1388452-1-jason@jlekstrand.net>
 References: <20210428202143.1388452-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 4/4] tests/i915/gem_exec_balancer: Add a
- test for combind balancing and bonding
+Subject: [igt-dev] [PATCH i-g-t 3/4] tests/i915/gem_ctx_engines: Add more
+ invalid SET_CONTEXT_PARAM cases
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,53 +29,61 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 ---
- tests/i915/gem_exec_balancer.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ tests/i915/gem_ctx_engines.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index 4f1fa390..b594e2e1 100644
---- a/tests/i915/gem_exec_balancer.c
-+++ b/tests/i915/gem_exec_balancer.c
-@@ -167,6 +167,7 @@ static uint32_t batch_create(int i915)
- static void invalid_balancer(int i915)
+diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
+index e8d88aa4..f4ee990b 100644
+--- a/tests/i915/gem_ctx_engines.c
++++ b/tests/i915/gem_ctx_engines.c
+@@ -48,12 +48,14 @@
+ static void invalid_engines(int i915)
  {
- 	I915_DEFINE_CONTEXT_ENGINES_LOAD_BALANCE(balancer, 64);
-+	I915_DEFINE_CONTEXT_ENGINES_BOND(bond, 1);
- 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 64);
- 	struct drm_i915_gem_context_param p = {
+ 	struct i915_context_param_engines stack = {}, *engines;
++	uint32_t ctx_id = gem_context_create(i915);
+ 	struct drm_i915_gem_context_param param = {
+-		.ctx_id = gem_context_create(i915),
++		.ctx_id = ctx_id,
  		.param = I915_CONTEXT_PARAM_ENGINES,
-@@ -283,6 +284,31 @@ static void invalid_balancer(int i915)
+ 		.value = to_user_pointer(&stack),
+ 	};
+ 	uint32_t handle;
++	igt_spin_t *spin;
+ 	void *ptr;
  
- 		munmap(ptr + 4096, 4096);
+ 	param.size = 0;
+@@ -68,6 +70,9 @@ static void invalid_engines(int i915)
+ 	param.size = sizeof(stack) + 1;
+ 	igt_assert_eq(__gem_context_set_param(i915, &param), -EINVAL);
  
-+		if (count >= 2) {
-+			/* You can't bond to a balanced engine */
-+			memset(&bond, 0, sizeof(bond));
-+			bond.base.name = I915_CONTEXT_ENGINES_EXT_BOND;
-+			bond.master = ci[0];
-+			bond.virtual_index = 0;
-+			bond.num_bonds = 1;
-+			bond.engines[0] = ci[1];
++	param.size = sizeof(*engines) + (I915_EXEC_RING_MASK + 2) * sizeof(*engines->engines);
++	igt_assert_eq(__gem_context_set_param(i915, &param), -EINVAL);
 +
-+			balancer.base.next_extension = to_user_pointer(&bond);
-+			balancer.engine_index = 0;
-+			balancer.num_siblings = count;
-+			memcpy(balancer.engines, ci, count * sizeof(*ci));
+ 	param.size = 0;
+ 	igt_assert_eq(__gem_context_set_param(i915, &param), 0);
+ 
+@@ -159,9 +164,20 @@ static void invalid_engines(int i915)
+ 
+ 	munmap(ptr + 4096, 4096);
+ 
++	/* Test that we can't set engines after we've done an execbuf */
++	spin = igt_spin_new(i915, .ctx_id = ctx_id);
++	igt_spin_free(i915, spin);
++	param.size = 0;
++	igt_assert_eq(__gem_context_set_param(i915, &param), -EINVAL);
 +
-+			memset(&engines, 0, sizeof(engines));
-+			engines.engines[0].engine_class = I915_ENGINE_CLASS_INVALID;
-+			engines.engines[0].engine_instance = I915_ENGINE_CLASS_INVALID_NONE;
-+			engines.extensions = to_user_pointer(&balancer);
++	/* Test that we can't set engines on ctx0 */
++	param.ctx_id = 0;
++	param.size = 0;
++	igt_assert_eq(__gem_context_set_param(i915, &param), -ENOENT);
 +
-+			p.size = (sizeof(struct i915_context_param_engines) +
-+				  sizeof(*engines.engines));
-+
-+			igt_assert_eq(__gem_context_set_param(i915, &p), -EINVAL);
-+		}
-+
- 		gem_context_destroy(i915, p.ctx_id);
- 		free(ci);
- 	}
+ out:
+ 	munmap(engines, 4096);
+-	gem_context_destroy(i915, param.ctx_id);
++	gem_context_destroy(i915, ctx_id);
+ }
+ 
+ static uint32_t batch_create(int i915)
 -- 
 2.31.1
 
