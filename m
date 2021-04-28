@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 86F7D89DB5
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Apr 2021 08:12:02 +0000 (UTC)
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Wed, 28 Apr 2021 08:11:57 +0000
-Message-ID: <SN6PR11MB33278DC25432FAC5476E9E4B8D409@SN6PR11MB3327.namprd11.prod.outlook.com>
-References: <20210426182136.2815-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20210426182136.2815-1-bhanuprakash.modem@intel.com>
-Content-Language: en-US
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com
+ [IPv6:2a00:1450:4864:20::42a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C7196EB4B
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Apr 2021 14:38:40 +0000 (UTC)
+Received: by mail-wr1-x42a.google.com with SMTP id d11so5487283wrw.8
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Apr 2021 07:38:40 -0700 (PDT)
+References: <20210427222548.1778-1-ville.syrjala@linux.intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Message-ID: <37ccb526-04d4-ba4f-9378-d366ca532c8f@gmail.com>
+Date: Wed, 28 Apr 2021 17:38:32 +0300
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v3 i-g-t 00/14] Fix mode selection for 2x tests
+In-Reply-To: <20210427222548.1778-1-ville.syrjala@linux.intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_async_flips: Fix flip
+ timestamp checks
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,84 +21,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: juhapekka.heikkila@gmail.com
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> Sent: Monday, April 26, 2021 11:51 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Deak, Imre
-> <imre.deak@intel.com>; Nautiyal, Ankit K <ankit.k.nautiyal@intel.com>; Daniel
-> Vetter <daniel.vetter@ffwll.ch>
-> Subject: [v3 i-g-t 00/14] Fix mode selection for 2x tests
-> 
-> When two monitors connected through MST, the second monitor also
-> tries to use the same mode. So two such modes may not fit into the
-> link bandwidth.
-> 
-> This series will find a combination of modes that fit into the BW.
-> 
-> IGT core helper would override the mode on all connectors that will
-> be modeset by the next igt_display_commit() call in the test. These
-> are all the connectors in igt_display_t that have a pending_pipe set
-> by the test up to the point of calling this helper.
-> 
-> For 1x tests, cleanup the state before exiting the test.
-> 
-> Follow-up:
-> As modeset will happen one by one, we can't apply this approach on
-> tests/kms_flip.c & tests/kms_setmode.c
-> 
-> 
-> Cc: Imre Deak <imre.deak@intel.com>
-> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> 
-> Bhanuprakash Modem (14):
->   lib/igt_kms: helper to override the mode on all connectors
->   tests/kms_frontbuffer_tracking: Fix mode selection for 2x tests
->   tests/kms_cursor_legacy: Fix mode selection for 2x tests
->   tests/debugfs_test: Fix mode selection for MST
->   tests/kms_content_protection: Fix mode selection for 2x tests
->   tests/kms_plane_scaling: Fix mode selection for 2x tests
->   tests/kms_atomic_transition: Fix mode selection for 2x tests
->   tests/kms_plane: Reset the state before exiting the test
->   tests/kms_plane_alpha_blend: Reset the state before exiting the test
->   tests/kms_cursor_edge_walk: Reset the state before exiting the test
->   tests/kms_plane_lowres: Reset the state before exiting the test
->   tests/kms_plane_cursor: Reset the state before exiting the test
->   tests/kms_flip_scaled_crc: Reset the state before exiting the test
->   tests/kms_vblank: Reset the state before exiting the test
-> 
->  lib/igt_kms.c                    | 55 ++++++++++++++++++++++++++++++++
->  lib/igt_kms.h                    |  1 +
->  tests/debugfs_test.c             | 10 ++++++
->  tests/kms_atomic_transition.c    | 10 ++++++
->  tests/kms_content_protection.c   | 41 ++++++++++--------------
->  tests/kms_cursor_edge_walk.c     |  3 ++
->  tests/kms_cursor_legacy.c        | 47 +++++++++++++++++++++++++--
->  tests/kms_flip_scaled_crc.c      |  5 +++
->  tests/kms_frontbuffer_tracking.c | 33 +++++++++++++++++++
->  tests/kms_plane.c                | 19 +++++++----
->  tests/kms_plane_alpha_blend.c    |  5 +--
->  tests/kms_plane_cursor.c         |  4 +++
->  tests/kms_plane_lowres.c         |  9 ++----
->  tests/kms_plane_scaling.c        | 15 +++++++--
->  tests/kms_vblank.c               |  2 ++
->  15 files changed, 214 insertions(+), 45 deletions(-)
-
-@Imre/@Daniel, if possible can you please review this series?
-
-> 
-> --
-> 2.20.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+UmV2aWV3ZWQtYnk6IEp1aGEtUGVra2EgSGVpa2tpbGEgPGp1aGFwZWtrYS5oZWlra2lsYUBnbWFp
+bC5jb20+CgpPbiAyOC40LjIwMjEgMS4yNSwgVmlsbGUgU3lyamFsYSB3cm90ZToKPiBGcm9tOiBW
+aWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPgo+IAo+IENoZWNr
+IHRoZSBmbGlwIHRpbWVzdGFtcCBmcm9tIHRoZSBldmVudCAobm90IHRoZSB0aW1lIHdlIGdvdCB0
+aGUKPiBldmVudCkgYWdhaW5zdCB0aGUgdmJsYW5rIHRpbWVzdGFtcHMuIEFsc28gaWYgdGhpbmdz
+IGFyZSBnb2luZwo+IHdlbGwgd2Ugc2hvdWxkIGV4cGVjdCB0aGUgZmxpcCB0aW1lc3RhbXAgdG8g
+aW4gZmFjdCBtYXRjaCB0aGUKPiBmaXJzdCB2YmxhbmsgdGltZXN0YW1wLCBzbyBhbGxvdyB0aGVt
+IHRvIGJlIGVxdWFsLgo+IAo+IENjOiBLYXJ0aGlrIEIgUyA8a2FydGhpay5iLnNAaW50ZWwuY29t
+Pgo+IFNpZ25lZC1vZmYtYnk6IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5p
+bnRlbC5jb20+Cj4gLS0tCj4gICB0ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYyB8IDQgKystLQo+ICAg
+MSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKPiAKPiBkaWZm
+IC0tZ2l0IGEvdGVzdHMva21zX2FzeW5jX2ZsaXBzLmMgYi90ZXN0cy9rbXNfYXN5bmNfZmxpcHMu
+Ywo+IGluZGV4IGUzOTdhNTRiODc0Zi4uYTYwZWFiNjg4MDI0IDEwMDY0NAo+IC0tLSBhL3Rlc3Rz
+L2ttc19hc3luY19mbGlwcy5jCj4gKysrIGIvdGVzdHMva21zX2FzeW5jX2ZsaXBzLmMKPiBAQCAt
+ODksNyArODksNyBAQCBzdGF0aWMgdm9pZCBmbGlwX2hhbmRsZXIoaW50IGZkXywgdW5zaWduZWQg
+aW50IHNlcXVlbmNlLCB1bnNpZ25lZCBpbnQgdHZfc2VjLAo+ICAgCj4gICAJbGFzdF9tcyA9IGN1
+cl9tczsKPiAgIAo+IC0JZGF0YS0+ZmxpcF90aW1lc3RhbXBfdXMgPSB0cy50dl9zZWMgKiAxMDAw
+MDAwICsgdHMudHZfbnNlYyAvIDEwMDA7Cj4gKwlkYXRhLT5mbGlwX3RpbWVzdGFtcF91cyA9IHR2
+X3NlYyAqIDEwMDAwMDBsICsgdHZfdXNlYzsKPiAgIH0KPiAgIAo+ICAgc3RhdGljIHZvaWQgd2Fp
+dF9mbGlwX2V2ZW50KGRhdGFfdCAqZGF0YSkKPiBAQCAtMjgyLDcgKzI4Miw3IEBAIHN0YXRpYyB2
+b2lkIHRlc3RfdGltZXN0YW1wKGRhdGFfdCAqZGF0YSkKPiAgIAlpZ3RfaW5mbygidmJsMV90aW1l
+c3RhbXAgPSAlbGR1c1xuZmxpcF90aW1lc3RhbXAgPSAlbGR1c1xudmJsMl90aW1lc3RhbXAgPSAl
+bGR1c1xuIiwKPiAgIAkJIHZibF90aW1lLCBkYXRhLT5mbGlwX3RpbWVzdGFtcF91cywgdmJsX3Rp
+bWUxKTsKPiAgIAo+IC0JaWd0X2Fzc2VydF9mKHZibF90aW1lIDwgZGF0YS0+ZmxpcF90aW1lc3Rh
+bXBfdXMgJiYgdmJsX3RpbWUxID4gZGF0YS0+ZmxpcF90aW1lc3RhbXBfdXMsCj4gKwlpZ3RfYXNz
+ZXJ0X2YodmJsX3RpbWUgPD0gZGF0YS0+ZmxpcF90aW1lc3RhbXBfdXMgJiYgdmJsX3RpbWUxID4g
+ZGF0YS0+ZmxpcF90aW1lc3RhbXBfdXMsCj4gICAJCSAgICAgIkFzeW5jIGZsaXAgdGltZSBzdGFt
+cCBpcyBleHBlY3RlZCB0byBiZSBpbiBiZXR3ZWVuIDIgdmJsYW5rIHRpbWUgc3RhbXBzXG4iKTsK
+PiAgIH0KPiAgIAo+IAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
+aHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
