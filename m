@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 315156ECC6
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Apr 2021 00:30:06 +0000 (UTC)
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Date: Wed, 28 Apr 2021 17:29:59 -0700
-Message-Id: <20210429002959.69473-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/perf: Add test to query CS timestamp
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 29 Apr 2021 01:25:41 -0000
+Message-ID: <161965954172.20426.6078517664835158543@emeril.freedesktop.org>
+References: <20210429002959.69473-1-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20210429002959.69473-1-umesh.nerlige.ramappa@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9w?=
+ =?utf-8?q?erf=3A_Add_test_to_query_CS_timestamp_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,326 +14,200 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1947562675=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add tests to query CS timestamps for different engines.
+--===============1947562675==
+Content-Type: multipart/alternative;
+ boundary="===============0105310479852178023=="
 
-v2:
-- remove flag parameter
-- assert for minimum usable values rather than maximum
+--===============0105310479852178023==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v3:
-- use clock id for cpu timestamps (Lionel)
-- check if query is supported (Ashutosh)
-- test bad queries
+== Series Details ==
 
-v4: (Chris, Tvrtko)
-- cs_timestamp is a misnomer, use cs_cycles instead
-- use cs cycle frequency returned in the query
-- omit size parameter
+Series: i915/perf: Add test to query CS timestamp (rev6)
+URL   : https://patchwork.freedesktop.org/series/87553/
+State : success
 
-v5:
-- use __for_each_physical_engine (Lionel)
-- check for ENODEV (Umesh)
+== Summary ==
 
-v6: Use 2 cpu timestamps to calculate reg read time (Lionel)
-v7: Refactor test code and add a spinner (Chris)
-v8: Update cpu_timestamp array split into timestamp and delta
+CI Bug Log - changes from IGT_6077 -> IGTPW_5769
+====================================================
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
----
- include/drm-uapi/i915_drm.h |  52 ++++++++++
- tests/i915/i915_query.c     | 190 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 242 insertions(+)
+Summary
+-------
 
-diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-index bf9ea471..1d1fe852 100644
---- a/include/drm-uapi/i915_drm.h
-+++ b/include/drm-uapi/i915_drm.h
-@@ -2176,6 +2176,10 @@ struct drm_i915_query_item {
- #define DRM_I915_QUERY_TOPOLOGY_INFO    1
- #define DRM_I915_QUERY_ENGINE_INFO	2
- #define DRM_I915_QUERY_PERF_CONFIG      3
-+	/**
-+	 * Query Command Streamer timestamp register.
-+	 */
-+#define DRM_I915_QUERY_CS_CYCLES	4
- /* Must be kept compact -- no holes and well documented */
- 
- 	/*
-@@ -2309,6 +2313,54 @@ struct drm_i915_engine_info {
- 	__u64 rsvd1[4];
- };
- 
-+/**
-+ * struct drm_i915_query_cs_cycles
-+ *
-+ * The query returns the command streamer cycles, the frequency that can be
-+ * used to calculate the command streamer timestamp, a cpu timestamp indicating
-+ * when the cs cycles was captured and a cpu_delta capturing time taken to read
-+ * the cs_cycles register.
-+ */
-+struct drm_i915_query_cs_cycles {
-+	/** Engine for which command streamer cycles is queried. */
-+	struct i915_engine_class_instance engine;
-+
-+	/** Must be zero. */
-+	__u32 flags;
-+
-+	/**
-+	 * Command streamer cycles as read from the command streamer
-+	 * register at 0x358 offset.
-+	 */
-+	__u64 cs_cycles;
-+
-+	/** Frequency of the cs cycles in Hz. */
-+	__u64 cs_frequency;
-+
-+	/**
-+	 * CPU timestamp in ns. The timestamp is captured before reading the
-+	 * cs_cycles register using the reference clockid set by the user.
-+	 */
-+	__u64 cpu_timestamp;
-+
-+	/**
-+	 * Time delta in ns captured around reading the lower dword of the
-+	 * cs_cycles register.
-+	 */
-+	__u64 cpu_delta;
-+
-+	/**
-+	 * Reference clock id for CPU timestamp. For definition, see
-+	 * clock_gettime(2) and perf_event_open(2). Supported clock ids are
-+	 * CLOCK_MONOTONIC, CLOCK_MONOTONIC_RAW, CLOCK_REALTIME, CLOCK_BOOTTIME,
-+	 * CLOCK_TAI.
-+	 */
-+	__s32 clockid;
-+
-+	/** Must be zero. */
-+	__u32 rsvd;
-+};
-+
- /**
-  * struct drm_i915_query_engine_info
-  *
-diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
-index 29b938e9..3c6c5c54 100644
---- a/tests/i915/i915_query.c
-+++ b/tests/i915/i915_query.c
-@@ -267,6 +267,184 @@ eu_available(const struct drm_i915_query_topology_info *topo_info,
- 				eu / 8] >> (eu % 8)) & 1;
- }
- 
-+static int __query_cs_cycles(int i915, void *data)
-+{
-+	struct drm_i915_query_item item = {
-+		.query_id = DRM_I915_QUERY_CS_CYCLES,
-+		.data_ptr = to_user_pointer(data),
-+		.length = data ? sizeof(struct drm_i915_query_cs_cycles) : 0,
-+	};
-+
-+	i915_query_items(i915, &item, 1);
-+
-+	return item.length;
-+}
-+
-+static bool query_cs_cycles_supported(int fd)
-+{
-+	return __query_cs_cycles(fd, NULL) > 0;
-+}
-+
-+static bool engine_has_cs_cycles(int i915, uint16_t class, uint16_t instance)
-+{
-+	struct drm_i915_query_cs_cycles ts = {
-+		.engine = { class, instance }
-+	};
-+
-+	return __query_cs_cycles(i915, &ts) != -ENODEV;
-+}
-+
-+static void
-+__cs_cycles(int i915, struct i915_engine_class_instance *engine)
-+{
-+	struct drm_i915_query_cs_cycles ts1 = {};
-+	struct drm_i915_query_cs_cycles ts2 = {};
-+	uint64_t delta_cpu, delta_cs, delta_delta;
-+	int i, usable = 0;
-+	igt_spin_t *spin;
-+	uint32_t ctx;
-+	struct {
-+		int32_t id;
-+		const char *name;
-+	} clock[] = {
-+		{ CLOCK_MONOTONIC, "CLOCK_MONOTONIC" },
-+		{ CLOCK_MONOTONIC_RAW, "CLOCK_MONOTONIC_RAW" },
-+		{ CLOCK_REALTIME, "CLOCK_REALTIME" },
-+		{ CLOCK_BOOTTIME, "CLOCK_BOOTTIME" },
-+		{ CLOCK_TAI, "CLOCK_TAI" },
-+	};
-+
-+	igt_debug("engine[%u:%u]\n",
-+		  engine->engine_class,
-+		  engine->engine_instance);
-+
-+	ctx = gem_context_create_for_engine(i915,
-+					    engine->engine_class,
-+					    engine->engine_instance);
-+	spin = igt_spin_new(i915, ctx);
-+
-+	/* Try a new clock every 10 iterations. */
-+#define NUM_SNAPSHOTS 10
-+	for (i = 0; i < NUM_SNAPSHOTS * ARRAY_SIZE(clock); i++) {
-+		int index = i / NUM_SNAPSHOTS;
-+
-+		ts1.engine = *engine;
-+		ts1.clockid = clock[index].id;
-+
-+		ts2.engine = *engine;
-+		ts2.clockid = clock[index].id;
-+
-+		igt_assert_eq(__query_cs_cycles(i915, &ts1), sizeof(ts1));
-+		igt_assert_eq(__query_cs_cycles(i915, &ts2), sizeof(ts2));
-+
-+		igt_debug("[1] cpu_ts before %llu, reg read time %llu\n",
-+			  ts1.cpu_timestamp,
-+			  ts1.cpu_delta);
-+		igt_debug("[1] cs_ts %llu, freq %llu Hz\n",
-+			  ts1.cs_cycles, ts1.cs_frequency);
-+
-+		igt_debug("[2] cpu_ts before %llu, reg read time %llu\n",
-+			  ts2.cpu_timestamp,
-+			  ts2.cpu_delta);
-+		igt_debug("[2] cs_ts %llu, freq %llu Hz\n",
-+			  ts2.cs_cycles, ts2.cs_frequency);
-+
-+		delta_cpu = ts2.cpu_timestamp - ts1.cpu_timestamp;
-+		delta_cs = (ts2.cs_cycles - ts1.cs_cycles) *
-+			   NSEC_PER_SEC / ts1.cs_frequency;
-+
-+		igt_debug("delta_cpu[%lu], delta_cs[%lu]\n",
-+			  delta_cpu, delta_cs);
-+
-+		delta_delta = delta_cpu > delta_cs ?
-+			       delta_cpu - delta_cs :
-+			       delta_cs - delta_cpu;
-+		igt_debug("delta_delta %lu\n", delta_delta);
-+
-+		if (delta_delta < 5000)
-+			usable++;
-+
-+		/*
-+		 * User needs few good snapshots of the timestamps to
-+		 * synchronize cpu time with cs time. Check if we have enough
-+		 * usable values before moving to the next clockid.
-+		 */
-+		if (!((i + 1) % NUM_SNAPSHOTS)) {
-+			igt_debug("clock %s\n", clock[index].name);
-+			igt_debug("usable %d\n", usable);
-+			igt_assert(usable > 2);
-+			usable = 0;
-+		}
-+	}
-+
-+	gem_context_destroy(i915, ctx);
-+	igt_spin_free(i915, spin);
-+}
-+
-+static void test_cs_cycles(int i915)
-+{
-+	const struct intel_execution_engine2 *e;
-+	struct i915_engine_class_instance engine;
-+
-+	__for_each_physical_engine(i915, e) {
-+		if (engine_has_cs_cycles(i915, e->class, e->instance)) {
-+			engine.engine_class = e->class;
-+			engine.engine_instance = e->instance;
-+			__cs_cycles(i915, &engine);
-+		}
-+	}
-+}
-+
-+static void test_cs_cycles_invalid(int i915)
-+{
-+	struct i915_engine_class_instance engine;
-+	const struct intel_execution_engine2 *e;
-+	struct drm_i915_query_cs_cycles ts = {};
-+
-+	/* get one engine */
-+	__for_each_physical_engine(i915, e)
-+		break;
-+
-+	/* sanity check engine selection is valid */
-+	ts.engine.engine_class = e->class;
-+	ts.engine.engine_instance = e->instance;
-+	igt_assert_eq(__query_cs_cycles(i915, &ts), sizeof(ts));
-+
-+	/* bad engines */
-+	ts.engine.engine_class = e->class;
-+	ts.engine.engine_instance = -1;
-+	igt_assert_eq(__query_cs_cycles(i915, &ts), -EINVAL);
-+
-+	ts.engine.engine_class = -1;
-+	ts.engine.engine_instance = e->instance;
-+	igt_assert_eq(__query_cs_cycles(i915, &ts), -EINVAL);
-+
-+	ts.engine.engine_class = -1;
-+	ts.engine.engine_instance = -1;
-+	igt_assert_eq(__query_cs_cycles(i915, &ts), -EINVAL);
-+
-+	/* non zero flags */
-+	ts.flags = 1;
-+	ts.engine.engine_class = e->class;
-+	ts.engine.engine_instance = e->instance;
-+	igt_assert_eq(__query_cs_cycles(i915, &ts), -EINVAL);
-+
-+	/* non zero rsvd field */
-+	ts.flags = 0;
-+	ts.rsvd = 1;
-+	igt_assert_eq(__query_cs_cycles(i915, &ts), -EINVAL);
-+
-+	/* bad clockid */
-+	ts.rsvd = 0;
-+	ts.clockid = -1;
-+	igt_assert_eq(__query_cs_cycles(i915, &ts), -EINVAL);
-+
-+	/* sanity check */
-+	engine.engine_class = e->class;
-+	engine.engine_instance = e->instance;
-+	__cs_cycles(i915, &engine);
-+}
-+
- /*
-  * Verify that we get coherent values between the legacy getparam slice/subslice
-  * masks and the new topology query.
-@@ -783,6 +961,18 @@ igt_main
- 			engines(fd);
- 	}
- 
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require(query_cs_cycles_supported(fd));
-+		}
-+
-+		igt_subtest("cs-cycles-invalid")
-+			test_cs_cycles_invalid(fd);
-+
-+		igt_subtest("cs-cycles")
-+			test_cs_cycles(fd);
-+	}
-+
- 	igt_fixture {
- 		close(fd);
- 	}
--- 
-2.20.1
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5769/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5769 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_cs_nop@fork-gfx0:
+    - fi-tgl-y:           NOTRUN -> [SKIP][1] ([fdo#109315] / [i915#2575]) +14 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5769/fi-tgl-y/igt@amdgpu/amd_cs_nop@fork-gfx0.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-icl-u2:          [PASS][2] -> [DMESG-WARN][3] ([i915#2203] / [i915#2868])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6077/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5769/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
+    - fi-cfl-8109u:       [DMESG-WARN][4] ([i915#165]) -> [PASS][5] +15 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6077/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5769/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [i915#165]: https://gitlab.freedesktop.org/drm/intel/issues/165
+  [i915#2203]: https://gitlab.freedesktop.org/drm/intel/issues/2203
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#2868]: https://gitlab.freedesktop.org/drm/intel/issues/2868
+  [i915#3277]: https://gitlab.freedesktop.org/drm/intel/issues/3277
+  [i915#3283]: https://gitlab.freedesktop.org/drm/intel/issues/3283
+
+
+Participating hosts (44 -> 38)
+------------------------------
+
+  Missing    (6): fi-kbl-soraka fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6077 -> IGTPW_5769
+
+  CI-20190529: 20190529
+  CI_DRM_10023: a8bf9e284933fa5c1cb821b48ba95821e5d1cc3f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5769: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5769/index.html
+  IGT_6077: 126a3f6fc0e97786e2819085efc84e741093aed5 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@i915_query@cs-cycles
++igt@i915_query@cs-cycles-invalid
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5769/index.html
+
+--===============0105310479852178023==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915/perf: Add test to query CS timestamp (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87553/">https://patchwork.freedesktop.org/series/87553/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5769/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5769/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6077 -&gt; IGTPW_5769</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5769/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5769 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_cs_nop@fork-gfx0:</p>
+<ul>
+<li>fi-tgl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5769/fi-tgl-y/igt@amdgpu/amd_cs_nop@fork-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +14 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6077/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5769/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2868">i915#2868</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6077/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/165">i915#165</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5769/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> +15 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (44 -&gt; 38)</h2>
+<p>Missing    (6): fi-kbl-soraka fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6077 -&gt; IGTPW_5769</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10023: a8bf9e284933fa5c1cb821b48ba95821e5d1cc3f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5769: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5769/index.html<br />
+  IGT_6077: 126a3f6fc0e97786e2819085efc84e741093aed5 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@i915_query@cs-cycles<br />
++igt@i915_query@cs-cycles-invalid</p>
+
+</body>
+</html>
+
+--===============0105310479852178023==--
+
+--===============1947562675==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1947562675==--
