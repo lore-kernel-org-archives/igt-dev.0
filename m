@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 243956E14F
- for <igt-dev@lists.freedesktop.org>; Mon,  3 May 2021 19:43:50 +0000 (UTC)
-Date: Mon, 3 May 2021 22:43:45 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <YJBScZmyJylibAjR@intel.com>
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com
+ [IPv6:2a00:1450:4864:20::52d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EAAB36E14F
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 May 2021 19:48:12 +0000 (UTC)
+Received: by mail-ed1-x52d.google.com with SMTP id bf4so7719595edb.11
+ for <igt-dev@lists.freedesktop.org>; Mon, 03 May 2021 12:48:12 -0700 (PDT)
+MIME-Version: 1.0
 References: <20210503182555.12284-1-mario.kleiner.de@gmail.com>
  <20210503182555.12284-3-mario.kleiner.de@gmail.com>
  <YJBFTJtnHhQx74jd@intel.com>
  <CAEsyxyjE8AzJWm8EsQ7W6kAv4_DN26RFWe7OE3Qc51i4xqT0dA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAEsyxyjE8AzJWm8EsQ7W6kAv4_DN26RFWe7OE3Qc51i4xqT0dA@mail.gmail.com>
+ <YJBScZmyJylibAjR@intel.com>
+In-Reply-To: <YJBScZmyJylibAjR@intel.com>
+From: Mario Kleiner <mario.kleiner.de@gmail.com>
+Date: Mon, 3 May 2021 21:47:59 +0200
+Message-ID: <CAEsyxyj9Q0GFGJxKjgUgAc2csT5E9iCtjzPWy8PveB08ecp2YA@mail.gmail.com>
 Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/igt_fb: Add support for testing
  of 16 bpc fixed point formats.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -21,128 +24,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mario Kleiner <mario.kleiner.de@gmail.com>
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org, Alex Deucher <alexander.deucher@amd.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, May 03, 2021 at 09:32:19PM +0200, Mario Kleiner wrote:
-> On Mon, May 3, 2021 at 8:48 PM Ville Syrj=E4l=E4
-> <ville.syrjala@linux.intel.com> wrote:
-> >
-> > On Mon, May 03, 2021 at 08:25:55PM +0200, Mario Kleiner wrote:
-> > > This is used to support testing the 16 bpc formats, e.g., via:
-> > >
-> > > kms_plane --run-subtest pixel-format-pipe-A-planes
-> > >
-> > > So far this was successfully tested on AMD RavenRidge with DCN-1
-> > > display hw.
-> > >
-> > > The new conversion routines are slightly adapted copies of the
-> > > convert_float_to_fp16() and convert_fp16_to_float() functions,
-> > > with the conversion math modified for float <-> uint16 instead.
-> > >
-> > > Signed-off-by: Mario Kleiner <mario.kleiner.de@gmail.com>
-> > > Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > > Cc: Alex Deucher <alexander.deucher@amd.com>
-> > > ---
-> > >  lib/igt_fb.c | 123 +++++++++++++++++++++++++++++++++++++++++++++++++=
-++
-> > >  1 file changed, 123 insertions(+)
-> > >
-> > > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> > > index 954e1181..148e6c0f 100644
-> > > --- a/lib/igt_fb.c
-> > > +++ b/lib/igt_fb.c
-> > > @@ -220,6 +220,22 @@ static const struct format_desc_struct {
-> > >         .cairo_id =3D CAIRO_FORMAT_RGBA128F, .convert =3D true,
-> > >         .num_planes =3D 1, .plane_bpp =3D { 64, },
-> > >       },
-> > > +     { .name =3D "XRGB16161616", .depth =3D -1, .drm_id =3D DRM_FORM=
-AT_XRGB16161616,
-> > > +       .cairo_id =3D CAIRO_FORMAT_RGBA128F, .convert =3D true,
-> > > +       .num_planes =3D 1, .plane_bpp =3D { 64, },
-> > > +     },
-> > > +     { .name =3D "ARGB16161616", .depth =3D -1, .drm_id =3D DRM_FORM=
-AT_ARGB16161616,
-> > > +       .cairo_id =3D CAIRO_FORMAT_RGBA128F, .convert =3D true,
-> > > +       .num_planes =3D 1, .plane_bpp =3D { 64, },
-> > > +     },
-> > > +     { .name =3D "XBGR16161616", .depth =3D -1, .drm_id =3D DRM_FORM=
-AT_XBGR16161616,
-> > > +       .cairo_id =3D CAIRO_FORMAT_RGBA128F, .convert =3D true,
-> > > +       .num_planes =3D 1, .plane_bpp =3D { 64, },
-> > > +     },
-> > > +     { .name =3D "ABGR16161616", .depth =3D -1, .drm_id =3D DRM_FORM=
-AT_ABGR16161616,
-> > > +       .cairo_id =3D CAIRO_FORMAT_RGBA128F, .convert =3D true,
-> > > +       .num_planes =3D 1, .plane_bpp =3D { 64, },
-> > > +     },
-> > >       { .name =3D "NV12", .depth =3D -1, .drm_id =3D DRM_FORMAT_NV12,
-> > >         .cairo_id =3D CAIRO_FORMAT_RGB24, .convert =3D true,
-> > >         .num_planes =3D 2, .plane_bpp =3D { 8, 16, },
-> > > @@ -3365,9 +3381,13 @@ static const unsigned char *rgbx_swizzle(uint3=
-2_t format)
-> > >       default:
-> > >       case DRM_FORMAT_XRGB16161616F:
-> > >       case DRM_FORMAT_ARGB16161616F:
-> > > +     case DRM_FORMAT_XRGB16161616:
-> > > +     case DRM_FORMAT_ARGB16161616:
-> > >               return swizzle_bgrx;
-> > >       case DRM_FORMAT_XBGR16161616F:
-> > >       case DRM_FORMAT_ABGR16161616F:
-> > > +     case DRM_FORMAT_XBGR16161616:
-> > > +     case DRM_FORMAT_ABGR16161616:
-> > >               return swizzle_rgbx;
-> > >       }
-> > >  }
-> > > @@ -3451,6 +3471,97 @@ static void convert_float_to_fp16(struct fb_co=
-nvert *cvt)
-> > >       }
-> > >  }
-> > >
-> > > +static void float_to_uint16(const float *f, uint16_t *h, unsigned in=
-t num)
-> > > +{
-> > > +     for (int i =3D 0; i < num; i++)
-> > > +             h[i] =3D f[i] * 65535.0f + 0.5f;
-> > > +}
-> > > +
-> > > +static void uint16_to_float(const uint16_t *h, float *f, unsigned in=
-t num)
-> > > +{
-> > > +     for (int i =3D 0; i < num; i++)
-> > > +             f[i] =3D ((float) h[i]) / 65535.0f;
-> >
-> > nit: the cast shouldn't be necessary.
-> >
-> > Looks good otherwise.
-> > Reviewed-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> >
-> Thanks for the quick review. Compiler and test results agree with you :).
-> =
-
-> However, all other uintsomething_to_float() conversion routines, e.g.,
-> for the yuv formats and for fp16_to_float() all use that apparently
-> redundant cast, which is why I left it for consistency with the rest
-> of the code. And in case those wiser people who wrote those bits may
-> know something that i don't see?
-> =
-
-> Should I change the patch to drop the cast, and resend?
-
-Maybe not be worth the hassl esp. if there are redundant casts all over
-anyway. We could do a global pass later to clear them all up, or just
-squint and pretend they're not there :P
-
--- =
-
-Ville Syrj=E4l=E4
-Intel
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gTW9uLCBNYXkgMywgMjAyMSBhdCA5OjQzIFBNIFZpbGxlIFN5cmrDpGzDpAo8dmlsbGUuc3ly
+amFsYUBsaW51eC5pbnRlbC5jb20+IHdyb3RlOgo+Cj4gT24gTW9uLCBNYXkgMDMsIDIwMjEgYXQg
+MDk6MzI6MTlQTSArMDIwMCwgTWFyaW8gS2xlaW5lciB3cm90ZToKPiA+IE9uIE1vbiwgTWF5IDMs
+IDIwMjEgYXQgODo0OCBQTSBWaWxsZSBTeXJqw6Rsw6QKPiA+IDx2aWxsZS5zeXJqYWxhQGxpbnV4
+LmludGVsLmNvbT4gd3JvdGU6Cj4gPiA+Cj4gPiA+IE9uIE1vbiwgTWF5IDAzLCAyMDIxIGF0IDA4
+OjI1OjU1UE0gKzAyMDAsIE1hcmlvIEtsZWluZXIgd3JvdGU6Cj4gPiA+ID4gVGhpcyBpcyB1c2Vk
+IHRvIHN1cHBvcnQgdGVzdGluZyB0aGUgMTYgYnBjIGZvcm1hdHMsIGUuZy4sIHZpYToKPiA+ID4g
+Pgo+ID4gPiA+IGttc19wbGFuZSAtLXJ1bi1zdWJ0ZXN0IHBpeGVsLWZvcm1hdC1waXBlLUEtcGxh
+bmVzCj4gPiA+ID4KPiA+ID4gPiBTbyBmYXIgdGhpcyB3YXMgc3VjY2Vzc2Z1bGx5IHRlc3RlZCBv
+biBBTUQgUmF2ZW5SaWRnZSB3aXRoIERDTi0xCj4gPiA+ID4gZGlzcGxheSBody4KPiA+ID4gPgo+
+ID4gPiA+IFRoZSBuZXcgY29udmVyc2lvbiByb3V0aW5lcyBhcmUgc2xpZ2h0bHkgYWRhcHRlZCBj
+b3BpZXMgb2YgdGhlCj4gPiA+ID4gY29udmVydF9mbG9hdF90b19mcDE2KCkgYW5kIGNvbnZlcnRf
+ZnAxNl90b19mbG9hdCgpIGZ1bmN0aW9ucywKPiA+ID4gPiB3aXRoIHRoZSBjb252ZXJzaW9uIG1h
+dGggbW9kaWZpZWQgZm9yIGZsb2F0IDwtPiB1aW50MTYgaW5zdGVhZC4KPiA+ID4gPgo+ID4gPiA+
+IFNpZ25lZC1vZmYtYnk6IE1hcmlvIEtsZWluZXIgPG1hcmlvLmtsZWluZXIuZGVAZ21haWwuY29t
+Pgo+ID4gPiA+IENjOiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwu
+Y29tPgo+ID4gPiA+IENjOiBBbGV4IERldWNoZXIgPGFsZXhhbmRlci5kZXVjaGVyQGFtZC5jb20+
+Cj4gPiA+ID4gLS0tCj4gPiA+ID4gIGxpYi9pZ3RfZmIuYyB8IDEyMyArKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKPiA+ID4gPiAgMSBmaWxlIGNoYW5n
+ZWQsIDEyMyBpbnNlcnRpb25zKCspCj4gPiA+ID4KPiA+ID4gPiBkaWZmIC0tZ2l0IGEvbGliL2ln
+dF9mYi5jIGIvbGliL2lndF9mYi5jCj4gPiA+ID4gaW5kZXggOTU0ZTExODEuLjE0OGU2YzBmIDEw
+MDY0NAo+ID4gPiA+IC0tLSBhL2xpYi9pZ3RfZmIuYwo+ID4gPiA+ICsrKyBiL2xpYi9pZ3RfZmIu
+Ywo+ID4gPiA+IEBAIC0yMjAsNiArMjIwLDIyIEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3QgZm9ybWF0
+X2Rlc2Nfc3RydWN0IHsKPiA+ID4gPiAgICAgICAgIC5jYWlyb19pZCA9IENBSVJPX0ZPUk1BVF9S
+R0JBMTI4RiwgLmNvbnZlcnQgPSB0cnVlLAo+ID4gPiA+ICAgICAgICAgLm51bV9wbGFuZXMgPSAx
+LCAucGxhbmVfYnBwID0geyA2NCwgfSwKPiA+ID4gPiAgICAgICB9LAo+ID4gPiA+ICsgICAgIHsg
+Lm5hbWUgPSAiWFJHQjE2MTYxNjE2IiwgLmRlcHRoID0gLTEsIC5kcm1faWQgPSBEUk1fRk9STUFU
+X1hSR0IxNjE2MTYxNiwKPiA+ID4gPiArICAgICAgIC5jYWlyb19pZCA9IENBSVJPX0ZPUk1BVF9S
+R0JBMTI4RiwgLmNvbnZlcnQgPSB0cnVlLAo+ID4gPiA+ICsgICAgICAgLm51bV9wbGFuZXMgPSAx
+LCAucGxhbmVfYnBwID0geyA2NCwgfSwKPiA+ID4gPiArICAgICB9LAo+ID4gPiA+ICsgICAgIHsg
+Lm5hbWUgPSAiQVJHQjE2MTYxNjE2IiwgLmRlcHRoID0gLTEsIC5kcm1faWQgPSBEUk1fRk9STUFU
+X0FSR0IxNjE2MTYxNiwKPiA+ID4gPiArICAgICAgIC5jYWlyb19pZCA9IENBSVJPX0ZPUk1BVF9S
+R0JBMTI4RiwgLmNvbnZlcnQgPSB0cnVlLAo+ID4gPiA+ICsgICAgICAgLm51bV9wbGFuZXMgPSAx
+LCAucGxhbmVfYnBwID0geyA2NCwgfSwKPiA+ID4gPiArICAgICB9LAo+ID4gPiA+ICsgICAgIHsg
+Lm5hbWUgPSAiWEJHUjE2MTYxNjE2IiwgLmRlcHRoID0gLTEsIC5kcm1faWQgPSBEUk1fRk9STUFU
+X1hCR1IxNjE2MTYxNiwKPiA+ID4gPiArICAgICAgIC5jYWlyb19pZCA9IENBSVJPX0ZPUk1BVF9S
+R0JBMTI4RiwgLmNvbnZlcnQgPSB0cnVlLAo+ID4gPiA+ICsgICAgICAgLm51bV9wbGFuZXMgPSAx
+LCAucGxhbmVfYnBwID0geyA2NCwgfSwKPiA+ID4gPiArICAgICB9LAo+ID4gPiA+ICsgICAgIHsg
+Lm5hbWUgPSAiQUJHUjE2MTYxNjE2IiwgLmRlcHRoID0gLTEsIC5kcm1faWQgPSBEUk1fRk9STUFU
+X0FCR1IxNjE2MTYxNiwKPiA+ID4gPiArICAgICAgIC5jYWlyb19pZCA9IENBSVJPX0ZPUk1BVF9S
+R0JBMTI4RiwgLmNvbnZlcnQgPSB0cnVlLAo+ID4gPiA+ICsgICAgICAgLm51bV9wbGFuZXMgPSAx
+LCAucGxhbmVfYnBwID0geyA2NCwgfSwKPiA+ID4gPiArICAgICB9LAo+ID4gPiA+ICAgICAgIHsg
+Lm5hbWUgPSAiTlYxMiIsIC5kZXB0aCA9IC0xLCAuZHJtX2lkID0gRFJNX0ZPUk1BVF9OVjEyLAo+
+ID4gPiA+ICAgICAgICAgLmNhaXJvX2lkID0gQ0FJUk9fRk9STUFUX1JHQjI0LCAuY29udmVydCA9
+IHRydWUsCj4gPiA+ID4gICAgICAgICAubnVtX3BsYW5lcyA9IDIsIC5wbGFuZV9icHAgPSB7IDgs
+IDE2LCB9LAo+ID4gPiA+IEBAIC0zMzY1LDkgKzMzODEsMTMgQEAgc3RhdGljIGNvbnN0IHVuc2ln
+bmVkIGNoYXIgKnJnYnhfc3dpenpsZSh1aW50MzJfdCBmb3JtYXQpCj4gPiA+ID4gICAgICAgZGVm
+YXVsdDoKPiA+ID4gPiAgICAgICBjYXNlIERSTV9GT1JNQVRfWFJHQjE2MTYxNjE2RjoKPiA+ID4g
+PiAgICAgICBjYXNlIERSTV9GT1JNQVRfQVJHQjE2MTYxNjE2RjoKPiA+ID4gPiArICAgICBjYXNl
+IERSTV9GT1JNQVRfWFJHQjE2MTYxNjE2Ogo+ID4gPiA+ICsgICAgIGNhc2UgRFJNX0ZPUk1BVF9B
+UkdCMTYxNjE2MTY6Cj4gPiA+ID4gICAgICAgICAgICAgICByZXR1cm4gc3dpenpsZV9iZ3J4Owo+
+ID4gPiA+ICAgICAgIGNhc2UgRFJNX0ZPUk1BVF9YQkdSMTYxNjE2MTZGOgo+ID4gPiA+ICAgICAg
+IGNhc2UgRFJNX0ZPUk1BVF9BQkdSMTYxNjE2MTZGOgo+ID4gPiA+ICsgICAgIGNhc2UgRFJNX0ZP
+Uk1BVF9YQkdSMTYxNjE2MTY6Cj4gPiA+ID4gKyAgICAgY2FzZSBEUk1fRk9STUFUX0FCR1IxNjE2
+MTYxNjoKPiA+ID4gPiAgICAgICAgICAgICAgIHJldHVybiBzd2l6emxlX3JnYng7Cj4gPiA+ID4g
+ICAgICAgfQo+ID4gPiA+ICB9Cj4gPiA+ID4gQEAgLTM0NTEsNiArMzQ3MSw5NyBAQCBzdGF0aWMg
+dm9pZCBjb252ZXJ0X2Zsb2F0X3RvX2ZwMTYoc3RydWN0IGZiX2NvbnZlcnQgKmN2dCkKPiA+ID4g
+PiAgICAgICB9Cj4gPiA+ID4gIH0KPiA+ID4gPgo+ID4gPiA+ICtzdGF0aWMgdm9pZCBmbG9hdF90
+b191aW50MTYoY29uc3QgZmxvYXQgKmYsIHVpbnQxNl90ICpoLCB1bnNpZ25lZCBpbnQgbnVtKQo+
+ID4gPiA+ICt7Cj4gPiA+ID4gKyAgICAgZm9yIChpbnQgaSA9IDA7IGkgPCBudW07IGkrKykKPiA+
+ID4gPiArICAgICAgICAgICAgIGhbaV0gPSBmW2ldICogNjU1MzUuMGYgKyAwLjVmOwo+ID4gPiA+
+ICt9Cj4gPiA+ID4gKwo+ID4gPiA+ICtzdGF0aWMgdm9pZCB1aW50MTZfdG9fZmxvYXQoY29uc3Qg
+dWludDE2X3QgKmgsIGZsb2F0ICpmLCB1bnNpZ25lZCBpbnQgbnVtKQo+ID4gPiA+ICt7Cj4gPiA+
+ID4gKyAgICAgZm9yIChpbnQgaSA9IDA7IGkgPCBudW07IGkrKykKPiA+ID4gPiArICAgICAgICAg
+ICAgIGZbaV0gPSAoKGZsb2F0KSBoW2ldKSAvIDY1NTM1LjBmOwo+ID4gPgo+ID4gPiBuaXQ6IHRo
+ZSBjYXN0IHNob3VsZG4ndCBiZSBuZWNlc3NhcnkuCj4gPiA+Cj4gPiA+IExvb2tzIGdvb2Qgb3Ro
+ZXJ3aXNlLgo+ID4gPiBSZXZpZXdlZC1ieTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxh
+QGxpbnV4LmludGVsLmNvbT4KPiA+ID4KPiA+IFRoYW5rcyBmb3IgdGhlIHF1aWNrIHJldmlldy4g
+Q29tcGlsZXIgYW5kIHRlc3QgcmVzdWx0cyBhZ3JlZSB3aXRoIHlvdSA6KS4KPiA+Cj4gPiBIb3dl
+dmVyLCBhbGwgb3RoZXIgdWludHNvbWV0aGluZ190b19mbG9hdCgpIGNvbnZlcnNpb24gcm91dGlu
+ZXMsIGUuZy4sCj4gPiBmb3IgdGhlIHl1diBmb3JtYXRzIGFuZCBmb3IgZnAxNl90b19mbG9hdCgp
+IGFsbCB1c2UgdGhhdCBhcHBhcmVudGx5Cj4gPiByZWR1bmRhbnQgY2FzdCwgd2hpY2ggaXMgd2h5
+IEkgbGVmdCBpdCBmb3IgY29uc2lzdGVuY3kgd2l0aCB0aGUgcmVzdAo+ID4gb2YgdGhlIGNvZGUu
+IEFuZCBpbiBjYXNlIHRob3NlIHdpc2VyIHBlb3BsZSB3aG8gd3JvdGUgdGhvc2UgYml0cyBtYXkK
+PiA+IGtub3cgc29tZXRoaW5nIHRoYXQgaSBkb24ndCBzZWU/Cj4gPgo+ID4gU2hvdWxkIEkgY2hh
+bmdlIHRoZSBwYXRjaCB0byBkcm9wIHRoZSBjYXN0LCBhbmQgcmVzZW5kPwo+Cj4gTWF5YmUgbm90
+IGJlIHdvcnRoIHRoZSBoYXNzbCBlc3AuIGlmIHRoZXJlIGFyZSByZWR1bmRhbnQgY2FzdHMgYWxs
+IG92ZXIKPiBhbnl3YXkuIFdlIGNvdWxkIGRvIGEgZ2xvYmFsIHBhc3MgbGF0ZXIgdG8gY2xlYXIg
+dGhlbSBhbGwgdXAsIG9yIGp1c3QKPiBzcXVpbnQgYW5kIHByZXRlbmQgdGhleSdyZSBub3QgdGhl
+cmUgOlAKPgo+IC0tCj4gVmlsbGUgU3lyasOkbMOkCj4gSW50ZWwKCk9rLCB0aGVuIGknbGwgbGVh
+dmUgaXQgYXMgaXMuCi1tYXJpbwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
+Lm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
+ZXYK
