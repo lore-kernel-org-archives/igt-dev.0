@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 069ED6E3BB
- for <igt-dev@lists.freedesktop.org>; Mon,  3 May 2021 16:53:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 589A46E9CE
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 May 2021 16:53:29 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Tue,  4 May 2021 06:13:01 +0530
-Message-Id: <20210504004313.28804-3-bhanuprakash.modem@intel.com>
+Date: Tue,  4 May 2021 06:13:03 +0530
+Message-Id: <20210504004313.28804-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20210504004313.28804-1-bhanuprakash.modem@intel.com>
 References: <20210504004313.28804-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [v4 i-g-t 02/14] tests/kms_frontbuffer_tracking: Fix mode
- selection for 2x tests
+Subject: [igt-dev] [v4 i-g-t 04/14] tests/debugfs_test: Fix mode selection
+ for MST
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,68 +30,42 @@ link bandwidth.
 
 This patch will find a combination of modes that fit into the BW.
 
-V2:
-* Remove MST specific logic (Daniel)
-
 Cc: Imre Deak <imre.deak@intel.com>
 Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_frontbuffer_tracking.c | 33 ++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ tests/debugfs_test.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/tests/kms_frontbuffer_tracking.c b/tests/kms_frontbuffer_tracking.c
-index 2e74bec6f..211a5f3f8 100644
---- a/tests/kms_frontbuffer_tracking.c
-+++ b/tests/kms_frontbuffer_tracking.c
-@@ -1683,6 +1683,33 @@ static void enable_prim_screen_and_wait(const struct test_mode *t)
- 	do_assertions(ASSERT_NO_ACTION_CHANGE);
- }
+diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c
+index 46ba0a8be..83875fbce 100644
+--- a/tests/debugfs_test.c
++++ b/tests/debugfs_test.c
+@@ -104,6 +104,7 @@ static void kms_tests(int fd, int debugfs)
  
-+static void update_modeset_cached_params(void)
-+{
-+	bool found = false;
-+
-+	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
-+	igt_output_set_pipe(scnd_mode_params.output, scnd_mode_params.pipe);
-+
-+	found = igt_override_all_active_output_modes_to_fit_link_bw(&drm.display);
-+	igt_require_f(found, "No valid mode combo found.\n");
-+
-+	prim_mode_params.mode_copy = *igt_output_get_mode(prim_mode_params.output);
-+	prim_mode_params.mode = &prim_mode_params.mode_copy;
-+	prim_mode_params.primary.w = prim_mode_params.mode->hdisplay;
-+	prim_mode_params.primary.h = prim_mode_params.mode->vdisplay;
-+
-+	scnd_mode_params.mode_copy = *igt_output_get_mode(scnd_mode_params.output);
-+	scnd_mode_params.mode = &scnd_mode_params.mode_copy;
-+	scnd_mode_params.primary.w = scnd_mode_params.mode->hdisplay;
-+	scnd_mode_params.primary.h = scnd_mode_params.mode->vdisplay;
-+
-+	fill_fb_region(&prim_mode_params.primary, COLOR_PRIM_BG);
-+	fill_fb_region(&scnd_mode_params.primary, COLOR_SCND_BG);
-+
-+	__set_mode_for_params(&prim_mode_params);
-+	__set_mode_for_params(&scnd_mode_params);
-+}
-+
- static void enable_both_screens_and_wait(const struct test_mode *t)
- {
- 	fill_fb_region(&prim_mode_params.primary, COLOR_PRIM_BG);
-@@ -1691,6 +1718,12 @@ static void enable_both_screens_and_wait(const struct test_mode *t)
- 	__set_mode_for_params(&prim_mode_params);
- 	__set_mode_for_params(&scnd_mode_params);
+ 	igt_subtest("read_all_entries_display_on") {
+ 		/* try to light all pipes */
++retry:
+ 		for_each_pipe(&display, pipe) {
+ 			igt_output_t *output;
  
-+	if (igt_display_try_commit_atomic(&drm.display,
-+					  DRM_MODE_ATOMIC_TEST_ONLY |
-+					  DRM_MODE_ATOMIC_ALLOW_MODESET,
-+					  NULL) != 0)
-+		update_modeset_cached_params();
-+
- 	igt_display_commit2(&drm.display, drm.display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+@@ -128,6 +129,15 @@ static void kms_tests(int fd, int debugfs)
+ 			}
+ 		}
  
- 	wanted_crc = &blue_crcs[t->format].crc;
++		if (igt_display_try_commit_atomic(&display,
++					DRM_MODE_ATOMIC_TEST_ONLY |
++					DRM_MODE_ATOMIC_ALLOW_MODESET,
++					NULL) != 0) {
++			bool found = igt_override_all_active_output_modes_to_fit_link_bw(&display);
++			igt_require_f(found, "No valid mode combo found.\n");
++			goto retry;
++		}
++
+ 		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 
+ 		read_and_discard_sysfs_entries(debugfs, 0);
 -- 
 2.20.1
 
