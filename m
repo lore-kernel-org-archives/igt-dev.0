@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB6A46E3BB
- for <igt-dev@lists.freedesktop.org>; Mon,  3 May 2021 16:53:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 026F06E9E0
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 May 2021 16:53:58 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Tue,  4 May 2021 06:13:09 +0530
-Message-Id: <20210504004313.28804-11-bhanuprakash.modem@intel.com>
+Date: Tue,  4 May 2021 06:13:13 +0530
+Message-Id: <20210504004313.28804-15-bhanuprakash.modem@intel.com>
 In-Reply-To: <20210504004313.28804-1-bhanuprakash.modem@intel.com>
 References: <20210504004313.28804-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [v4 i-g-t 10/14] tests/kms_cursor_edge_walk: Reset the
- state before exiting the test
+Subject: [igt-dev] [v4 i-g-t 14/14] tests/kms_vblank: Reset the state before
+ exiting the test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,30 +32,22 @@ Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_cursor_edge_walk.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tests/kms_vblank.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-index 69662afec..d1d8a9143 100644
---- a/tests/kms_cursor_edge_walk.c
-+++ b/tests/kms_cursor_edge_walk.c
-@@ -225,6 +225,7 @@ static void cleanup_crtc(data_t *data)
+diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+index e561e41d7..93b01eba0 100644
+--- a/tests/kms_vblank.c
++++ b/tests/kms_vblank.c
+@@ -96,6 +96,8 @@ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
  
- 	igt_remove_fb(data->drm_fd, &data->primary_fb);
- 	igt_remove_fb(data->drm_fd, &data->fb);
-+	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
+ {
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit(&data->display);
+ 	igt_remove_fb(fd, &data->primary_fb);
  }
  
- static void prepare_crtc(data_t *data)
-@@ -268,6 +269,8 @@ static void test_crtc(data_t *data, unsigned int edges)
- 	create_cursor_fb(data, data->curw, data->curh);
- 
- 	test_edges(data, edges);
-+
-+	cleanup_crtc(data);
- }
- 
- static int opt_handler(int opt, int opt_index, void *_data)
 -- 
 2.20.1
 
