@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73B736E9D6
- for <igt-dev@lists.freedesktop.org>; Mon,  3 May 2021 16:53:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB6A46E3BB
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 May 2021 16:53:57 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Tue,  4 May 2021 06:13:12 +0530
-Message-Id: <20210504004313.28804-14-bhanuprakash.modem@intel.com>
+Date: Tue,  4 May 2021 06:13:09 +0530
+Message-Id: <20210504004313.28804-11-bhanuprakash.modem@intel.com>
 In-Reply-To: <20210504004313.28804-1-bhanuprakash.modem@intel.com>
 References: <20210504004313.28804-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [v4 i-g-t 13/14] tests/kms_flip_scaled_crc: Reset the
+Subject: [igt-dev] [v4 i-g-t 10/14] tests/kms_cursor_edge_walk: Reset the
  state before exiting the test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,32 +32,30 @@ Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_flip_scaled_crc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/kms_cursor_edge_walk.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/kms_flip_scaled_crc.c b/tests/kms_flip_scaled_crc.c
-index 4923f1235..671ba7367 100644
---- a/tests/kms_flip_scaled_crc.c
-+++ b/tests/kms_flip_scaled_crc.c
-@@ -156,6 +156,7 @@ static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
- 	int ret;
+diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
+index 69662afec..d1d8a9143 100644
+--- a/tests/kms_cursor_edge_walk.c
++++ b/tests/kms_cursor_edge_walk.c
+@@ -225,6 +225,7 @@ static void cleanup_crtc(data_t *data)
  
- 	igt_display_reset(&data->display);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
- 	igt_debug("running on output %s pipe %s\n", output->name,
- 		  kmstest_pipe_name(pipe));
-@@ -246,6 +247,10 @@ static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
- 	data->pipe_crc = NULL;
- 
- 	clear_lut(data, pipe);
-+
-+	igt_output_set_pipe(output, pipe);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 	igt_remove_fb(data->drm_fd, &data->primary_fb);
+ 	igt_remove_fb(data->drm_fd, &data->fb);
++	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
  }
  
- igt_main
+ static void prepare_crtc(data_t *data)
+@@ -268,6 +269,8 @@ static void test_crtc(data_t *data, unsigned int edges)
+ 	create_cursor_fb(data, data->curw, data->curh);
+ 
+ 	test_edges(data, edges);
++
++	cleanup_crtc(data);
+ }
+ 
+ static int opt_handler(int opt, int opt_index, void *_data)
 -- 
 2.20.1
 
