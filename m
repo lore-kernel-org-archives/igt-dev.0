@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C99F6E9D1
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49D5E6E9D4
  for <igt-dev@lists.freedesktop.org>; Mon,  3 May 2021 16:53:58 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Tue,  4 May 2021 06:13:11 +0530
-Message-Id: <20210504004313.28804-13-bhanuprakash.modem@intel.com>
+Date: Tue,  4 May 2021 06:13:10 +0530
+Message-Id: <20210504004313.28804-12-bhanuprakash.modem@intel.com>
 In-Reply-To: <20210504004313.28804-1-bhanuprakash.modem@intel.com>
 References: <20210504004313.28804-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [v4 i-g-t 12/14] tests/kms_plane_cursor: Reset the state
+Subject: [igt-dev] [v4 i-g-t 11/14] tests/kms_plane_lowres: Reset the state
  before exiting the test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -25,31 +25,41 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Before starting the next subtest, clean up the states to default
-values, those are assumed by other tests.
+values, those are assumed by other tests. This patch will also fix
+few redundant checks.
 
 Cc: Imre Deak <imre.deak@intel.com>
 Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_plane_cursor.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/kms_plane_lowres.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
-index bc9d42940..9bda47466 100644
---- a/tests/kms_plane_cursor.c
-+++ b/tests/kms_plane_cursor.c
-@@ -93,6 +93,10 @@ static void test_fini(data_t *data)
- {
- 	igt_pipe_crc_free(data->pipe_crc);
- 	igt_display_reset(&data->display);
-+	igt_plane_set_fb(data->primary, NULL);
-+	igt_plane_set_fb(data->overlay, NULL);
-+	igt_plane_set_fb(data->cursor, NULL);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+index 5cfe53c8b..95346e289 100644
+--- a/tests/kms_plane_lowres.c
++++ b/tests/kms_plane_lowres.c
+@@ -270,16 +270,13 @@ test_planes_on_pipe(data_t *data, uint64_t modifier)
+ 	igt_info("Testing connector %s using pipe %s\n",
+ 		 igt_output_name(data->output), kmstest_pipe_name(data->pipe));
+ 
+-	for_each_plane_on_pipe(&data->display, data->pipe, plane) {
+-		data->output = igt_get_single_output_for_pipe(&data->display, data->pipe);
+-		igt_require(data->output);
+-
++	for_each_plane_on_pipe(&data->display, data->pipe, plane)
+ 		tested += test_planes_on_pipe_with_output(data, plane, modifier);
+-	}
+ 
+-	igt_assert(tested > 0);
+ 	igt_output_set_pipe(data->output, PIPE_NONE);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	igt_assert(tested > 0);
  }
  
- /* Fills a FB with the solid color given. */
+ igt_main
 -- 
 2.20.1
 
