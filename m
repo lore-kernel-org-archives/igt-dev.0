@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E45D36E9D1
- for <igt-dev@lists.freedesktop.org>; Mon,  3 May 2021 16:53:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DBAA46E9D3
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 May 2021 16:53:35 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Tue,  4 May 2021 06:13:04 +0530
-Message-Id: <20210504004313.28804-6-bhanuprakash.modem@intel.com>
+Date: Tue,  4 May 2021 06:13:05 +0530
+Message-Id: <20210504004313.28804-7-bhanuprakash.modem@intel.com>
 In-Reply-To: <20210504004313.28804-1-bhanuprakash.modem@intel.com>
 References: <20210504004313.28804-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [v4 i-g-t 05/14] tests/kms_content_protection: Fix mode
+Subject: [igt-dev] [v4 i-g-t 06/14] tests/kms_plane_scaling: Fix mode
  selection for 2x tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -35,84 +35,44 @@ Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_content_protection.c | 41 +++++++++++++---------------------
- 1 file changed, 16 insertions(+), 25 deletions(-)
+ tests/kms_plane_scaling.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 5a75b871c..631a430f1 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -452,39 +452,18 @@ static bool sink_hdcp2_capable(igt_output_t *output)
- 	return strstr(buf, "HDCP2.2");
- }
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 34efc588e..1bda5ff65 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -630,9 +630,6 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
+ 	d->plane3 = igt_output_get_plane(output2, 0);
+ 	d->plane4 = get_num_scalers(d, pipe2) >= 2 ? igt_output_get_plane(output2, 1) : NULL;
  
--static void prepare_modeset_on_mst_output(igt_output_t *output, enum pipe pipe)
-+static void prepare_modeset_on_mst_output(igt_output_t *output)
- {
--	drmModeConnectorPtr c = output->config.connector;
- 	drmModeModeInfo *mode;
- 	igt_plane_t *primary;
--	int i, width, height;
-+	int width, height;
-+	enum pipe pipe = output->pending_pipe;
- 
- 	mode = igt_output_get_mode(output);
- 
--	/*
--	 * TODO: Add logic to use the highest possible modes on each output.
--	 * Currently using 2k modes by default on all the outputs.
--	 */
--	igt_debug("Before mode override: Output %s Mode hdisplay %d Mode vdisplay %d\n",
--		   output->name, mode->hdisplay, mode->vdisplay);
+-	mode1 = igt_output_get_mode(output1);
+-	mode2 = igt_output_get_mode(output2);
 -
--	if (mode->hdisplay > 1920 && mode->vdisplay > 1080) {
--		for (i = 0; i < c->count_modes; i++) {
--			if (c->modes[i].hdisplay <= 1920 && c->modes[i].vdisplay <= 1080) {
--				mode = &c->modes[i];
--				igt_output_override_mode(output, mode);
--				break;
--			}
--		}
--	}
--
--	igt_debug("After mode overide: Output %s Mode hdisplay %d Mode vdisplay %d\n",
--		   output->name, mode->hdisplay, mode->vdisplay);
--
- 	width = mode->hdisplay;
- 	height = mode->vdisplay;
+ 	igt_skip_on(!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888,
+ 						tiling));
  
--	igt_output_set_pipe(output, pipe);
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	igt_plane_set_fb(primary, NULL);
- 	igt_plane_set_fb(primary, pipe % 2 ? &data.red : &data.green);
-@@ -624,7 +603,8 @@ test_content_protection_mst(int content_type)
- 
- 		igt_assert_f(igt_pipe_connector_valid(pipe, output), "Output-pipe combination invalid\n");
- 
--		prepare_modeset_on_mst_output(output, pipe);
-+		igt_output_set_pipe(output, pipe);
-+		prepare_modeset_on_mst_output(output);
- 		mst_output[dp_mst_outputs++] = output;
- 
- 		pipe++;
-@@ -635,6 +615,17 @@ test_content_protection_mst(int content_type)
- 
- 	igt_require_f(dp_mst_outputs > 1, "No DP MST set up with >= 2 outputs found in a single topology\n");
- 
+@@ -658,8 +655,20 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
+ 	igt_plane_set_fb(d->plane3, &d->fb[2]);
+ 	if (d->plane4)
+ 		igt_plane_set_fb(d->plane4, &d->fb[3]);
++
 +	if (igt_display_try_commit_atomic(display,
 +				DRM_MODE_ATOMIC_TEST_ONLY |
 +				DRM_MODE_ATOMIC_ALLOW_MODESET,
 +				NULL) != 0) {
 +		bool found = igt_override_all_active_output_modes_to_fit_link_bw(display);
-+		igt_require_f(found, "No valid mode combo found for MST modeset\n");
-+
-+		for (count = 0; count < dp_mst_outputs; count++)
-+			prepare_modeset_on_mst_output(mst_output[count]);
++		igt_require_f(found, "No valid mode combo found.\n");
 +	}
 +
- 	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
- 	igt_require_f(ret == 0, "Commit failure during MST modeset\n");
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
  
++	mode1 = igt_output_get_mode(output1);
++	mode2 = igt_output_get_mode(output2);
++
+ 	/* Upscaling Primary */
+ 	igt_plane_set_size(d->plane1, mode1->hdisplay, mode1->vdisplay);
+ 	igt_plane_set_size(d->plane3, mode2->hdisplay, mode2->vdisplay);
 -- 
 2.20.1
 
