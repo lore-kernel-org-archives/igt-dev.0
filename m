@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CCB0D6E123
- for <igt-dev@lists.freedesktop.org>; Mon,  3 May 2021 16:53:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E45D36E9D1
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 May 2021 16:53:32 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Tue,  4 May 2021 06:12:59 +0530
-Message-Id: <20210504004313.28804-1-bhanuprakash.modem@intel.com>
+Date: Tue,  4 May 2021 06:13:04 +0530
+Message-Id: <20210504004313.28804-6-bhanuprakash.modem@intel.com>
+In-Reply-To: <20210504004313.28804-1-bhanuprakash.modem@intel.com>
+References: <20210504004313.28804-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [v4 i-g-t 00/14] Fix mode selection for 2x tests
+Subject: [igt-dev] [v4 i-g-t 05/14] tests/kms_content_protection: Fix mode
+ selection for 2x tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,58 +28,92 @@ When two monitors connected through MST, the second monitor also
 tries to use the same mode. So two such modes may not fit into the
 link bandwidth.
 
-This series will find a combination of modes that fit into the BW.
-
-IGT core helper would override the mode on all connectors that will
-be modeset by the next igt_display_commit() call in the test. These
-are all the connectors in igt_display_t that have a pending_pipe set
-by the test up to the point of calling this helper.
-
-For 1x tests, cleanup the state before exiting the test.
-
-Follow-up:
-As modeset will happen one by one, we can't apply this approach on
-tests/kms_flip.c & tests/kms_setmode.c
+This patch will find a combination of modes that fit into the BW.
 
 Cc: Imre Deak <imre.deak@intel.com>
 Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_content_protection.c | 41 +++++++++++++---------------------
+ 1 file changed, 16 insertions(+), 25 deletions(-)
 
-Bhanuprakash Modem (14):
-  lib/igt_kms: helper to override the mode on all connectors
-  tests/kms_frontbuffer_tracking: Fix mode selection for 2x tests
-  tests/kms_cursor_legacy: Fix mode selection for 2x tests
-  tests/debugfs_test: Fix mode selection for MST
-  tests/kms_content_protection: Fix mode selection for 2x tests
-  tests/kms_plane_scaling: Fix mode selection for 2x tests
-  tests/kms_atomic_transition: Fix mode selection for 2x tests
-  tests/kms_plane: Reset the state before exiting the test
-  tests/kms_plane_alpha_blend: Reset the state before exiting the test
-  tests/kms_cursor_edge_walk: Reset the state before exiting the test
-  tests/kms_plane_lowres: Reset the state before exiting the test
-  tests/kms_plane_cursor: Reset the state before exiting the test
-  tests/kms_flip_scaled_crc: Reset the state before exiting the test
-  tests/kms_vblank: Reset the state before exiting the test
-
- lib/igt_kms.c                    | 72 ++++++++++++++++++++++++++++++++
- lib/igt_kms.h                    |  1 +
- tests/debugfs_test.c             | 10 +++++
- tests/kms_atomic_transition.c    | 10 +++++
- tests/kms_content_protection.c   | 41 +++++++-----------
- tests/kms_cursor_edge_walk.c     |  3 ++
- tests/kms_cursor_legacy.c        | 47 +++++++++++++++++++--
- tests/kms_flip_scaled_crc.c      |  5 +++
- tests/kms_frontbuffer_tracking.c | 33 +++++++++++++++
- tests/kms_plane.c                | 19 ++++++---
- tests/kms_plane_alpha_blend.c    |  5 ++-
- tests/kms_plane_cursor.c         |  4 ++
- tests/kms_plane_lowres.c         |  9 ++--
- tests/kms_plane_scaling.c        | 15 +++++--
- tests/kms_vblank.c               |  2 +
- 15 files changed, 231 insertions(+), 45 deletions(-)
-
---
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 5a75b871c..631a430f1 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -452,39 +452,18 @@ static bool sink_hdcp2_capable(igt_output_t *output)
+ 	return strstr(buf, "HDCP2.2");
+ }
+ 
+-static void prepare_modeset_on_mst_output(igt_output_t *output, enum pipe pipe)
++static void prepare_modeset_on_mst_output(igt_output_t *output)
+ {
+-	drmModeConnectorPtr c = output->config.connector;
+ 	drmModeModeInfo *mode;
+ 	igt_plane_t *primary;
+-	int i, width, height;
++	int width, height;
++	enum pipe pipe = output->pending_pipe;
+ 
+ 	mode = igt_output_get_mode(output);
+ 
+-	/*
+-	 * TODO: Add logic to use the highest possible modes on each output.
+-	 * Currently using 2k modes by default on all the outputs.
+-	 */
+-	igt_debug("Before mode override: Output %s Mode hdisplay %d Mode vdisplay %d\n",
+-		   output->name, mode->hdisplay, mode->vdisplay);
+-
+-	if (mode->hdisplay > 1920 && mode->vdisplay > 1080) {
+-		for (i = 0; i < c->count_modes; i++) {
+-			if (c->modes[i].hdisplay <= 1920 && c->modes[i].vdisplay <= 1080) {
+-				mode = &c->modes[i];
+-				igt_output_override_mode(output, mode);
+-				break;
+-			}
+-		}
+-	}
+-
+-	igt_debug("After mode overide: Output %s Mode hdisplay %d Mode vdisplay %d\n",
+-		   output->name, mode->hdisplay, mode->vdisplay);
+-
+ 	width = mode->hdisplay;
+ 	height = mode->vdisplay;
+ 
+-	igt_output_set_pipe(output, pipe);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, NULL);
+ 	igt_plane_set_fb(primary, pipe % 2 ? &data.red : &data.green);
+@@ -624,7 +603,8 @@ test_content_protection_mst(int content_type)
+ 
+ 		igt_assert_f(igt_pipe_connector_valid(pipe, output), "Output-pipe combination invalid\n");
+ 
+-		prepare_modeset_on_mst_output(output, pipe);
++		igt_output_set_pipe(output, pipe);
++		prepare_modeset_on_mst_output(output);
+ 		mst_output[dp_mst_outputs++] = output;
+ 
+ 		pipe++;
+@@ -635,6 +615,17 @@ test_content_protection_mst(int content_type)
+ 
+ 	igt_require_f(dp_mst_outputs > 1, "No DP MST set up with >= 2 outputs found in a single topology\n");
+ 
++	if (igt_display_try_commit_atomic(display,
++				DRM_MODE_ATOMIC_TEST_ONLY |
++				DRM_MODE_ATOMIC_ALLOW_MODESET,
++				NULL) != 0) {
++		bool found = igt_override_all_active_output_modes_to_fit_link_bw(display);
++		igt_require_f(found, "No valid mode combo found for MST modeset\n");
++
++		for (count = 0; count < dp_mst_outputs; count++)
++			prepare_modeset_on_mst_output(mst_output[count]);
++	}
++
+ 	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
+ 	igt_require_f(ret == 0, "Commit failure during MST modeset\n");
+ 
+-- 
 2.20.1
 
 _______________________________________________
