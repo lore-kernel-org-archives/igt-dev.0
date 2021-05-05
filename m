@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B5E4E6E428
- for <igt-dev@lists.freedesktop.org>; Wed,  5 May 2021 06:55:48 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Wed,  5 May 2021 08:54:54 +0200
-Message-Id: <20210505065454.16096-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Remove bufmgr leftover
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 05 May 2021 07:27:35 -0000
+Message-ID: <162019965568.25406.5020113990925806742@emeril.freedesktop.org>
+References: <20210505065454.16096-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20210505065454.16096-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fpsr2=5Fsf=3A_Remove_bufmgr_leftover?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,39 +14,162 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0049263468=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-bGliZHJtIGJ1Zm1nciBpcyBpbml0aWFsaXplZCBpbiB0aGUgdGVzdCBidXQgdXNlZCBub3doZXJl
-LiBSZW1vdmUKaXQgdG8gYXZvaWQgY29uZnVzaW9uIHdpdGggcmVhbCBsaWJkcm0gdXNhZ2UuCgpT
-aWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tp
-QGludGVsLmNvbT4KQ2M6IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgpB
-c2h1dG9zaCBEaXhpdCA8YXNodXRvc2guZGl4aXRAaW50ZWwuY29tPgotLS0KIHRlc3RzL2ttc19w
-c3IyX3NmLmMgfCA3IC0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA3IGRlbGV0aW9ucygtKQoKZGlm
-ZiAtLWdpdCBhL3Rlc3RzL2ttc19wc3IyX3NmLmMgYi90ZXN0cy9rbXNfcHNyMl9zZi5jCmluZGV4
-IDhkM2UxMzAxOS4uNTAwYTZmNTQ5IDEwMDY0NAotLS0gYS90ZXN0cy9rbXNfcHNyMl9zZi5jCisr
-KyBiL3Rlc3RzL2ttc19wc3IyX3NmLmMKQEAgLTI5LDcgKzI5LDYgQEAKICNpbmNsdWRlIDxzdGRi
-b29sLmg+CiAjaW5jbHVkZSA8c3RkaW8uaD4KICNpbmNsdWRlIDxzdHJpbmcuaD4KLSNpbmNsdWRl
-ICJpbnRlbF9idWZtZ3IuaCIKIAogSUdUX1RFU1RfREVTQ1JJUFRJT04oIlRlc3RzIHRvIHZhcmlm
-eSBQU1IyIHNlbGVjdGl2ZSBmZXRjaCBieSBzZW5kaW5nIG11bHRpcGxlIgogCQkgICAgICIgZGFt
-YWdlZCBhcmVhcyIpOwpAQCAtNTYsNyArNTUsNiBAQCB0eXBlZGVmIHN0cnVjdCB7CiAJaW50IGRy
-bV9mZDsKIAlpbnQgZGVidWdmc19mZDsKIAlpZ3RfZGlzcGxheV90IGRpc3BsYXk7Ci0JZHJtX2lu
-dGVsX2J1Zm1nciAqYnVmbWdyOwogCWRybU1vZGVNb2RlSW5mbyAqbW9kZTsKIAlpZ3Rfb3V0cHV0
-X3QgKm91dHB1dDsKIAlzdHJ1Y3QgaWd0X2ZiIGZiX3ByaW1hcnksIGZiX292ZXJsYXksIGZiX2N1
-cnNvcjsKQEAgLTU2MCwxMCArNTU4LDYgQEAgaWd0X21haW4KIAkJCQkJICAgICAgIGRhdGEuZGVi
-dWdmc19mZCwgUFNSX01PREVfMiksCiAJCQkgICAgICAiU2luayBkb2VzIG5vdCBzdXBwb3J0IFBT
-UjJcbiIpOwogCi0JCWRhdGEuYnVmbWdyID0gZHJtX2ludGVsX2J1Zm1ncl9nZW1faW5pdChkYXRh
-LmRybV9mZCwgNDA5Nik7Ci0JCWlndF9hc3NlcnQoZGF0YS5idWZtZ3IpOwotCQlkcm1faW50ZWxf
-YnVmbWdyX2dlbV9lbmFibGVfcmV1c2UoZGF0YS5idWZtZ3IpOwotCiAJCWRpc3BsYXlfaW5pdCgm
-ZGF0YSk7CiAKIAkJLyogVGVzdCBpZiBQU1IyIGNhbiBiZSBlbmFibGVkICovCkBAIC02NDUsNyAr
-NjM5LDYgQEAgaWd0X21haW4KIAogCWlndF9maXh0dXJlIHsKIAkJY2xvc2UoZGF0YS5kZWJ1Z2Zz
-X2ZkKTsKLQkJZHJtX2ludGVsX2J1Zm1ncl9kZXN0cm95KGRhdGEuYnVmbWdyKTsKIAkJZGlzcGxh
-eV9maW5pKCZkYXRhKTsKIAl9CiB9Ci0tIAoyLjI2LjAKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4v
-bGlzdGluZm8vaWd0LWRldgo=
+--===============0049263468==
+Content-Type: multipart/alternative;
+ boundary="===============3084007780518896560=="
+
+--===============3084007780518896560==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/kms_psr2_sf: Remove bufmgr leftover
+URL   : https://patchwork.freedesktop.org/series/89796/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10046 -> IGTPW_5782
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5782/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5782 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_prime@amd-to-i915:
+    - fi-tgl-y:           NOTRUN -> [SKIP][1] ([fdo#109315] / [i915#2575])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5782/fi-tgl-y/igt@amdgpu/amd_prime@amd-to-i915.html
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5782/fi-kbl-soraka/igt@amdgpu/amd_prime@amd-to-i915.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+
+
+Participating hosts (45 -> 39)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-cml-s fi-hsw-4200u fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6077 -> IGTPW_5782
+
+  CI-20190529: 20190529
+  CI_DRM_10046: dd7bc2f509bb416be13e6c376d676f11ac7fd1ca @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5782: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5782/index.html
+  IGT_6077: 126a3f6fc0e97786e2819085efc84e741093aed5 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5782/index.html
+
+--===============3084007780518896560==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_psr2_sf: Remove bufmgr leftover</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/89796/">https://patchwork.freedesktop.org/series/89796/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5782/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5782/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10046 -&gt; IGTPW_5782</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5782/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5782 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_prime@amd-to-i915:</p>
+<ul>
+<li>
+<p>fi-tgl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5782/fi-tgl-y/igt@amdgpu/amd_prime@amd-to-i915.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>)</p>
+</li>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5782/fi-kbl-soraka/igt@amdgpu/amd_prime@amd-to-i915.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (45 -&gt; 39)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-cml-s fi-hsw-4200u fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6077 -&gt; IGTPW_5782</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10046: dd7bc2f509bb416be13e6c376d676f11ac7fd1ca @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5782: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5782/index.html<br />
+  IGT_6077: 126a3f6fc0e97786e2819085efc84e741093aed5 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============3084007780518896560==--
+
+--===============0049263468==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0049263468==--
