@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DED06E043
- for <igt-dev@lists.freedesktop.org>; Wed,  5 May 2021 10:27:43 +0000 (UTC)
-Date: Wed, 5 May 2021 13:27:37 +0300
-From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20210505102737.GA126925@ideak-desk.fi.intel.com>
-References: <20210429192628.4056795-1-imre.deak@intel.com>
- <20210429192628.4056795-2-imre.deak@intel.com>
- <20210505002305.7bagmdtisnu6hsiw@outlook.office365.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E3216E122
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 May 2021 11:04:30 +0000 (UTC)
+References: <20210504004313.28804-1-bhanuprakash.modem@intel.com>
+ <20210504004313.28804-2-bhanuprakash.modem@intel.com>
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+Message-ID: <b18f786c-b81c-ee6e-e497-c9b9ad319a96@intel.com>
+Date: Wed, 5 May 2021 16:34:15 +0530
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210505002305.7bagmdtisnu6hsiw@outlook.office365.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/kms_ccs: Skip CCS color clear
- value check for randomizing subtests
+In-Reply-To: <20210504004313.28804-2-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [v4 i-g-t 01/14] lib/igt_kms: helper to override the
+ mode on all connectors
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,119 +19,139 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+LGTM.
 
-On Tue, May 04, 2021 at 08:23:05PM -0400, Rodrigo Siqueira wrote:
-> Hi,
-> =
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-> I looked at kms_ccs and tried to find a reference for "color control
-> surfaces" in DRM, and I found multiple references for this format in
-> i915.
-
-CCS means here Compression Control Surface. Yes, the render and media
-GPU engines use their own compression format, hence multiple CCS
-modifiers are needed. There are also format differences between
-platforms, which further increases the number of modifiers.
-
-> Is it an Intel-specific format? Is kms_ccs a test that can be
-> executed in different ASICs?
-
-Yes, the CCS FB modifiers are Intel specific and kms_ccs will not run on
-other platforms.
-
---Imre
-
-> Thanks
-> Siqueira
-> =
-
-> On 04/29, Imre Deak wrote:
-> > When filling the color planes with randomized content, the color clear
-> > values won't match what the HW actually wrote there, so skip the clear
-> > value check in this case.
-> > =
-
-> > Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> > Cc: Mika Kahola <mika.kahola@intel.com>
-> > Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > Signed-off-by: Imre Deak <imre.deak@intel.com>
-> > ---
-> >  tests/kms_ccs.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > =
-
-> > diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
-> > index 30e0fdb54..61c9b2277 100644
-> > --- a/tests/kms_ccs.c
-> > +++ b/tests/kms_ccs.c
-> > @@ -195,7 +195,7 @@ static void check_ccs_cc_plane(int drm_fd, igt_fb_t=
- *fb, int plane, const float
-> >  	munmap(map, fb->size);
-> >  };
-> >  =
-
-> > -static void check_all_ccs_planes(int drm_fd, igt_fb_t *fb, const float=
- *cc_color)
-> > +static void check_all_ccs_planes(int drm_fd, igt_fb_t *fb, const float=
- *cc_color, bool check_cc_plane)
-> >  {
-> >  	int i;
-> >  =
-
-> > @@ -203,7 +203,7 @@ static void check_all_ccs_planes(int drm_fd, igt_fb=
-_t *fb, const float *cc_color
-> >  		if (igt_fb_is_ccs_plane(fb, i) &&
-> >  		    !igt_fb_is_gen12_ccs_cc_plane(fb, i))
-> >  			check_ccs_plane(drm_fd, fb, i);
-> > -		else if (igt_fb_is_gen12_ccs_cc_plane(fb, i))
-> > +		else if (igt_fb_is_gen12_ccs_cc_plane(fb, i) && check_cc_plane)
-> >  			check_ccs_cc_plane(drm_fd, fb, i, cc_color);
-> >  	}
-> >  }
-> > @@ -348,7 +348,7 @@ static void generate_fb(data_t *data, struct igt_fb=
- *fb,
-> >  		igt_assert_eq(ret, 0);
-> >  =
-
-> >  	if (check_ccs_planes)
-> > -		check_all_ccs_planes(data->drm_fd, fb, cc_color);
-> > +		check_all_ccs_planes(data->drm_fd, fb, cc_color, !(data->flags & TES=
-T_RANDOM));
-> >  =
-
-> >  	fb->fb_id =3D f.fb_id;
-> >  }
-> > -- =
-
-> > 2.27.0
-> > =
-
-> > _______________________________________________
-> > igt-dev mailing list
-> > igt-dev@lists.freedesktop.org
-> > https://nam11.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Flis=
-ts.freedesktop.org%2Fmailman%2Flistinfo%2Figt-dev&amp;data=3D04%7C01%7CRodr=
-igo.Siqueira%40amd.com%7C015d075eda3348bce83208d90b44b52e%7C3dd8961fe4884e6=
-08e11a82d994e183d%7C0%7C0%7C637553211995281967%7CUnknown%7CTWFpbGZsb3d8eyJW=
-IjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;s=
-data=3DIqMSw%2BtvmobHEOTGjdcrUL%2BE3gW6QlRfavthnqM1%2FVc%3D&amp;reserved=3D0
-> =
-
-> -- =
-
-> Rodrigo Siqueira
-> https://siqueira.tech
-
-
+On 5/4/2021 6:13 AM, Bhanuprakash Modem wrote:
+> This helper will iterate through all connectors those have a
+> pending_pipe != PIPE_NONE set by the test upto the point of
+> calling this helper. And find the combination by using
+> ATOMIC_TEST_ONLY then return to the test.
+>
+> This helper would override the mode on all connectors that will
+> be modeset by the next igt_display_commit() call in the test.
+>
+> V2:
+> * Remove MST specific logic (Daniel)
+> V3:
+> * Sort connector modes in descending order
+> V4:
+> * Fine tune the logic to reduce #of interations (Ankit)
+> * Update the documentation (Ankit)
+>
+> Cc: Imre Deak <imre.deak@intel.com>
+> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   lib/igt_kms.c | 72 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>   lib/igt_kms.h |  1 +
+>   2 files changed, 73 insertions(+)
+>
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 47b829b0c..d604c1b38 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -4048,6 +4048,78 @@ void igt_output_set_pipe(igt_output_t *output, enum pipe pipe)
+>   	}
+>   }
+>   
+> +#define for_each_connector_mode(output)		\
+> +	for (int i__ = 0;  i__ < output->config.connector->count_modes; i__++)
+> +
+> +static int sort_drm_modes(const void *a, const void *b)
+> +{
+> +	const drmModeModeInfo *mode1 = a, *mode2 = b;
+> +
+> +	return (mode1->clock < mode2->clock) - (mode2->clock < mode1->clock);
+> +}
+> +
+> +static
+> +bool __override_all_active_output_modes_to_fit_link_bw(igt_display_t *display,
+> +							igt_output_t *outputs[IGT_MAX_PIPES],
+> +							const int n_outputs,
+> +							int base)
+> +{
+> +	igt_output_t *output = NULL;
+> +
+> +	if (base >= n_outputs)
+> +		return false;
+> +
+> +	output = outputs[base];
+> +
+> +	for_each_connector_mode(output) {
+> +		igt_output_override_mode(output, &output->config.connector->modes[i__]);
+> +
+> +		if (__override_all_active_output_modes_to_fit_link_bw(display, outputs, n_outputs, base + 1))
+> +			return true;
+> +
+> +		if (igt_display_try_commit_atomic(display,
+> +				DRM_MODE_ATOMIC_TEST_ONLY |
+> +				DRM_MODE_ATOMIC_ALLOW_MODESET,
+> +				NULL) == 0)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+> +/**
+> + * igt_override_all_active_output_modes_to_fit_link_bw:
+> + * @display: a pointer to an #igt_display_t structure
+> + *
+> + * Override the mode on all active outputs (i.e. pending_pipe != PIPE_NONE)
+> + * on basis of bandwidth.
+> + *
+> + * Returns: true if a valid connector mode combo found, else false
+> + */
+> +bool igt_override_all_active_output_modes_to_fit_link_bw(igt_display_t *display)
+> +{
+> +	int i, n_outputs = 0;
+> +	igt_output_t *outputs[IGT_MAX_PIPES];
+> +
+> +	for (i = 0 ; i < display->n_outputs; i++) {
+> +		igt_output_t *output = &display->outputs[i];
+> +
+> +		if (output->pending_pipe == PIPE_NONE)
+> +			continue;
+> +
+> +		/* Sort the modes in descending order by clock freq. */
+> +		qsort(output->config.connector->modes,
+> +		      output->config.connector->count_modes,
+> +		      sizeof(drmModeModeInfo),
+> +		      sort_drm_modes);
+> +
+> +		outputs[n_outputs++] = output;
+> +	}
+> +	igt_require_f(n_outputs, "No active outputs found.\n");
+> +
+> +	return __override_all_active_output_modes_to_fit_link_bw(display, outputs, n_outputs, 0);
+> +}
+> +
+>   /*
+>    * igt_pipe_refresh:
+>    * @display: a pointer to an #igt_display_t structure
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 85f0769c9..95463b1c5 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -915,5 +915,6 @@ void igt_require_pipe(igt_display_t *display,
+>   
+>   void igt_dump_connectors_fd(int drmfd);
+>   void igt_dump_crtcs_fd(int drmfd);
+> +bool igt_override_all_active_output_modes_to_fit_link_bw(igt_display_t *display);
+>   
+>   #endif /* __IGT_KMS_H__ */
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
