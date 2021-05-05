@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7DED06E043
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 May 2021 10:27:43 +0000 (UTC)
+Date: Wed, 5 May 2021 13:27:37 +0300
+From: Imre Deak <imre.deak@intel.com>
+Message-ID: <20210505102737.GA126925@ideak-desk.fi.intel.com>
+References: <20210429192628.4056795-1-imre.deak@intel.com>
+ <20210429192628.4056795-2-imre.deak@intel.com>
+ <20210505002305.7bagmdtisnu6hsiw@outlook.office365.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 05 May 2021 09:59:01 -0000
-Message-ID: <162020874123.25406.17455841975174246697@emeril.freedesktop.org>
-References: <20210505083958.25105-1-petri.latvala@intel.com>
-In-Reply-To: <20210505083958.25105-1-petri.latvala@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgcHJpbWVf?=
- =?utf-8?q?udl=3A_Add_test_description?=
+Content-Disposition: inline
+In-Reply-To: <20210505002305.7bagmdtisnu6hsiw@outlook.office365.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/kms_ccs: Skip CCS color clear
+ value check for randomizing subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,211 +20,120 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============2027474503=="
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
+To: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2027474503==
-Content-Type: multipart/alternative;
- boundary="===============5941917594659407476=="
+Hi,
 
---===============5941917594659407476==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Tue, May 04, 2021 at 08:23:05PM -0400, Rodrigo Siqueira wrote:
+> Hi,
+> =
 
-== Series Details ==
+> I looked at kms_ccs and tried to find a reference for "color control
+> surfaces" in DRM, and I found multiple references for this format in
+> i915.
 
-Series: prime_udl: Add test description
-URL   : https://patchwork.freedesktop.org/series/89800/
-State : success
+CCS means here Compression Control Surface. Yes, the render and media
+GPU engines use their own compression format, hence multiple CCS
+modifiers are needed. There are also format differences between
+platforms, which further increases the number of modifiers.
 
-== Summary ==
+> Is it an Intel-specific format? Is kms_ccs a test that can be
+> executed in different ASICs?
 
-CI Bug Log - changes from IGT_6078 -> IGTPW_5783
-====================================================
+Yes, the CCS FB modifiers are Intel specific and kms_ccs will not run on
+other platforms.
 
-Summary
--------
+--Imre
 
-  **SUCCESS**
+> Thanks
+> Siqueira
+> =
 
-  No regressions found.
+> On 04/29, Imre Deak wrote:
+> > When filling the color planes with randomized content, the color clear
+> > values won't match what the HW actually wrote there, so skip the clear
+> > value check in this case.
+> > =
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/index.html
+> > Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> > Cc: Mika Kahola <mika.kahola@intel.com>
+> > Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> > Signed-off-by: Imre Deak <imre.deak@intel.com>
+> > ---
+> >  tests/kms_ccs.c | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > =
 
-Known issues
-------------
+> > diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
+> > index 30e0fdb54..61c9b2277 100644
+> > --- a/tests/kms_ccs.c
+> > +++ b/tests/kms_ccs.c
+> > @@ -195,7 +195,7 @@ static void check_ccs_cc_plane(int drm_fd, igt_fb_t=
+ *fb, int plane, const float
+> >  	munmap(map, fb->size);
+> >  };
+> >  =
 
-  Here are the changes found in IGTPW_5783 that come from known issues:
+> > -static void check_all_ccs_planes(int drm_fd, igt_fb_t *fb, const float=
+ *cc_color)
+> > +static void check_all_ccs_planes(int drm_fd, igt_fb_t *fb, const float=
+ *cc_color, bool check_cc_plane)
+> >  {
+> >  	int i;
+> >  =
 
-### IGT changes ###
+> > @@ -203,7 +203,7 @@ static void check_all_ccs_planes(int drm_fd, igt_fb=
+_t *fb, const float *cc_color
+> >  		if (igt_fb_is_ccs_plane(fb, i) &&
+> >  		    !igt_fb_is_gen12_ccs_cc_plane(fb, i))
+> >  			check_ccs_plane(drm_fd, fb, i);
+> > -		else if (igt_fb_is_gen12_ccs_cc_plane(fb, i))
+> > +		else if (igt_fb_is_gen12_ccs_cc_plane(fb, i) && check_cc_plane)
+> >  			check_ccs_cc_plane(drm_fd, fb, i, cc_color);
+> >  	}
+> >  }
+> > @@ -348,7 +348,7 @@ static void generate_fb(data_t *data, struct igt_fb=
+ *fb,
+> >  		igt_assert_eq(ret, 0);
+> >  =
 
-#### Issues hit ####
+> >  	if (check_ccs_planes)
+> > -		check_all_ccs_planes(data->drm_fd, fb, cc_color);
+> > +		check_all_ccs_planes(data->drm_fd, fb, cc_color, !(data->flags & TES=
+T_RANDOM));
+> >  =
 
-  * igt@amdgpu/amd_basic@cs-compute:
-    - fi-tgl-y:           NOTRUN -> [SKIP][1] ([fdo#109315] / [i915#2575]) +3 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/fi-tgl-y/igt@amdgpu/amd_basic@cs-compute.html
+> >  	fb->fb_id =3D f.fb_id;
+> >  }
+> > -- =
 
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-kbl-7500u:       [PASS][2] -> [FAIL][3] ([i915#1372])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6078/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+> > 2.27.0
+> > =
 
-  
-#### Possible fixes ####
+> > _______________________________________________
+> > igt-dev mailing list
+> > igt-dev@lists.freedesktop.org
+> > https://nam11.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Flis=
+ts.freedesktop.org%2Fmailman%2Flistinfo%2Figt-dev&amp;data=3D04%7C01%7CRodr=
+igo.Siqueira%40amd.com%7C015d075eda3348bce83208d90b44b52e%7C3dd8961fe4884e6=
+08e11a82d994e183d%7C0%7C0%7C637553211995281967%7CUnknown%7CTWFpbGZsb3d8eyJW=
+IjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;s=
+data=3DIqMSw%2BtvmobHEOTGjdcrUL%2BE3gW6QlRfavthnqM1%2FVc%3D&amp;reserved=3D0
+> =
 
-  * igt@gem_exec_suspend@basic-s0:
-    - fi-ilk-650:         [DMESG-WARN][4] ([i915#164]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6078/fi-ilk-650/igt@gem_exec_suspend@basic-s0.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/fi-ilk-650/igt@gem_exec_suspend@basic-s0.html
-    - {fi-tgl-1115g4}:    [FAIL][6] ([i915#1888]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6078/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+> -- =
 
-  * igt@i915_pm_rpm@basic-rte:
-    - {fi-tgl-1115g4}:    [DMESG-WARN][8] ([i915#402]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6078/fi-tgl-1115g4/igt@i915_pm_rpm@basic-rte.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/fi-tgl-1115g4/igt@i915_pm_rpm@basic-rte.html
+> Rodrigo Siqueira
+> https://siqueira.tech
 
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [i915#1372]: https://gitlab.freedesktop.org/drm/intel/issues/1372
-  [i915#164]: https://gitlab.freedesktop.org/drm/intel/issues/164
-  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-
-
-Participating hosts (44 -> 39)
-------------------------------
-
-  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6078 -> IGTPW_5783
-
-  CI-20190529: 20190529
-  CI_DRM_10047: 6bc6aeb4870cfb28f24523f42157cf9a86be80d7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5783: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/index.html
-  IGT_6078: 2c65d8df10f96e30a02de1db605934d3e47433dd @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/index.html
-
---===============5941917594659407476==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>prime_udl: Add test description</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/89800/">https://patchwork.freedesktop.org/series/89800/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6078 -&gt; IGTPW_5783</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5783 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@cs-compute:</p>
-<ul>
-<li>fi-tgl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/fi-tgl-y/igt@amdgpu/amd_basic@cs-compute.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6078/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1372">i915#1372</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0:</p>
-<ul>
-<li>
-<p>fi-ilk-650:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6078/fi-ilk-650/igt@gem_exec_suspend@basic-s0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/164">i915#164</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/fi-ilk-650/igt@gem_exec_suspend@basic-s0.html">PASS</a></p>
-</li>
-<li>
-<p>{fi-tgl-1115g4}:    <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6078/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@basic-rte:</p>
-<ul>
-<li>{fi-tgl-1115g4}:    <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6078/fi-tgl-1115g4/igt@i915_pm_rpm@basic-rte.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/fi-tgl-1115g4/igt@i915_pm_rpm@basic-rte.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (44 -&gt; 39)</h2>
-<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6078 -&gt; IGTPW_5783</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10047: 6bc6aeb4870cfb28f24523f42157cf9a86be80d7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5783: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5783/index.html<br />
-  IGT_6078: 2c65d8df10f96e30a02de1db605934d3e47433dd @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============5941917594659407476==--
-
---===============2027474503==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============2027474503==--
