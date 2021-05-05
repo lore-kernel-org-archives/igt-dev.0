@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4CD26E441
- for <igt-dev@lists.freedesktop.org>; Wed,  5 May 2021 08:38:51 +0000 (UTC)
-From: Petri Latvala <petri.latvala@intel.com>
-Date: Wed,  5 May 2021 11:39:58 +0300
-Message-Id: <20210505083958.25105-1-petri.latvala@intel.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Wed, 05 May 2021 11:56:53 +0200
+Message-ID: <2304292.ECZNHGQPT7@jkrzyszt-mobl1.ger.corp.intel.com>
+In-Reply-To: <bd835d14-d17d-390f-5dff-2348e220be60@intel.com>
+References: <20210430161808.323225-1-janusz.krzysztofik@linux.intel.com>
+ <bd835d14-d17d-390f-5dff-2348e220be60@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] prime_udl: Add test description
+Subject: Re: [igt-dev] [RFC PATCH i-g-t] lib/i915/perf: Fix non-card0
+ processing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,66 +15,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org, Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a test description line, and remove the misleading comment
-entirely. The comment has been copied from prime_nv_test.c and
-mistakenly says the test is using nouveau.
-
-Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-Cc: Arkadiusz Hiler <arek@hiler.eu>
----
-
-The test is also out of date in various ways and should probably
-rather be removed in favor of more general prime tests...
-
-
- tests/prime_udl.c | 18 ++----------------
- 1 file changed, 2 insertions(+), 16 deletions(-)
-
-diff --git a/tests/prime_udl.c b/tests/prime_udl.c
-index 9b600659..582e31f5 100644
---- a/tests/prime_udl.c
-+++ b/tests/prime_udl.c
-@@ -1,19 +1,3 @@
--/* basic set of prime tests between intel and nouveau */
--
--/* test list - 
--   1. share buffer from intel -> nouveau.
--   2. share buffer from nouveau -> intel
--   3. share intel->nouveau, map on both, write intel, read nouveau
--   4. share intel->nouveau, blit intel fill, readback on nouveau
--   test 1 + map buffer, read/write, map other size.
--   do some hw actions on the buffer
--   some illegal operations -
--       close prime fd try and map
--
--   TODO add some nouveau rendering tests
--*/
--
--   
- #include "igt.h"
- #include <stdio.h>
- #include <stdlib.h>
-@@ -29,6 +13,8 @@
- 
- #include "intel_bufmgr.h"
- 
-+IGT_TEST_DESCRIPTION("Basic set of prime tests between Intel and DisplayLink");
-+
- int intel_fd = -1, udl_fd = -1;
- drm_intel_bufmgr *bufmgr;
- uint32_t devid;
--- 
-2.29.2
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SGkgTGlvbmVsLAoKT24gcG9uaWVkemlhxYJlaywgMyBtYWphIDIwMjEgMDk6MDc6MDkgQ0VTVCBM
+aW9uZWwgTGFuZHdlcmxpbiB3cm90ZToKPiBPbiAzMC8wNC8yMDIxIDE5OjE4LCBKYW51c3ogS3J6
+eXN6dG9maWsgd3JvdGU6Cj4gPiBJR1QgaTkxNS9wZXJmIGxpYnJhcnkgZnVuY3Rpb25zIG5vdyBh
+bHdheXMgb3BlcmF0ZSBvbiBzeXNmcyBwZXJmCj4gPiBhdHRyaWJ1dGVzIG9mIGNhcmQwIGRldmlj
+ZSBub2RlLCBubyBtYXR0ZXIgd2hpY2ggRFJNIGRldmljZSBmZCBhIHVzZXIKPiA+IHBhc3Nlcy4g
+IFRoZSBpbnRlbnRpb24gd2FzIHRvIGFsd2F5cyBzd2l0Y2ggdG8gcHJpbWFyeSBkZXZpY2Ugbm9k
+ZSBpZgo+ID4gYSB1c2VyIHBhc3NlcyBhIHJlbmRlciBkZXZpY2Ugbm9kZSBmZCwgYnV0IHRoYXQg
+YnJlYWtzIGhhbmRsaW5nIG9mCj4gPiBub24tY2FyZDAgZGV2aWNlcy4KPiA+Cj4gPiBJbnN0ZWFk
+IG9mIGZvcmNpYmx5IHVzaW5nIERSTSBkZXZpY2UgbWlub3IgbnVtYmVyIDAgd2hlbiBvcGVuaW5n
+IGEKPiA+IGRldmljZSBzeXNmcyBhcmVhLCBjb252ZXJ0IGRldmljZSBtaW5vciBudW1iZXIgb2Yg
+YSB1c2VyIHBhc3NlZCBkZXZpY2UKPiA+IGZkIHRvIHRoZSBtaW5vciBudW1iZXIgb2YgcmVzcGVj
+dGl2ZSBwcmltYXJ5IChjYXJkWCkgZGV2aWNlIG5vZGUuCj4gPgo+ID4gU2lnbmVkLW9mZi1ieTog
+SmFudXN6IEtyenlzenRvZmlrIDxqYW51c3oua3J6eXN6dG9maWtAbGludXguaW50ZWwuY29tPgo+
+ID4gLS0tCj4gPiAgIGxpYi9pOTE1L3BlcmYuYyB8IDQgKystLQo+ID4gICAxIGZpbGUgY2hhbmdl
+ZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQo+ID4KPiA+IGRpZmYgLS1naXQgYS9s
+aWIvaTkxNS9wZXJmLmMgYi9saWIvaTkxNS9wZXJmLmMKPiA+IGluZGV4IDU2ZDVjMGIzYS4uMzM2
+ODI0ZGY3IDEwMDY0NAo+ID4gLS0tIGEvbGliL2k5MTUvcGVyZi5jCj4gPiArKysgYi9saWIvaTkx
+NS9wZXJmLmMKPiA+IEBAIC0zNzYsOCArMzc2LDggQEAgb3Blbl9tYXN0ZXJfc3lzZnNfZGlyKGlu
+dCBkcm1fZmQpCj4gPiAgIAlpZiAoZnN0YXQoZHJtX2ZkLCAmc3QpIHx8ICFTX0lTQ0hSKHN0LnN0
+X21vZGUpKQo+ID4gICAgICAgICAgICAgICAgICAgcmV0dXJuIC0xOwo+ID4gICAKPiA+IC0gICAg
+ICAgIHNucHJpbnRmKHBhdGgsIHNpemVvZihwYXRoKSwgIi9zeXMvZGV2L2NoYXIvJWQ6MCIsCj4g
+PiAtICAgICAgICAgICAgICAgICBtYWpvcihzdC5zdF9yZGV2KSk7Cj4gPiArICAgICAgICBzbnBy
+aW50ZihwYXRoLCBzaXplb2YocGF0aCksICIvc3lzL2Rldi9jaGFyLyVkOiVkIiwKPiA+ICsgICAg
+ICAgICAgICAgICAgIG1ham9yKHN0LnN0X3JkZXYpLCBtaW5vcihzdC5zdF9yZGV2KSAmIH4xMjgp
+Owo+IAo+IAo+IElzbid0IGl0IG1pbm9yKHN0LnN0X3JkZXYpICYgMHhmZiA/IAoKRGlkIHlvdSBt
+ZWFuIDB4N2Y/Cgo+IG9yIGV2ZW4gMHgzZiA/Cj4gCj4gTG9va3MgbGlrZSAvZGV2L2RyaS9jb250
+cm9sRDY0IGNhbiBleGlzdCB0b28uCgpOb3QgYW55IGxvbmdlciwgc2VlIGNvbW1pdCAwZDQ5ZjMw
+M2U4YTcgKCJkcm06IHJlbW92ZSBhbGwgY29udHJvbCBub2RlIGNvZGUiKS4KCkhvd2V2ZXIsIG15
+IGFwcHJvYWNoIG9mIGFwcGx5aW5nIGEgbWFzayBpcyBvdmVyc2ltcGxpZmllZC4gIE1pbm9yIG51
+bWJlcnMgZm9yIApkaWZmZXJlbnQgbm9kZSB0eXBlcyAocHJpbWFyeSBhbmQgcmVuZGVyKSBhcmUg
+aGFuZGxlZCBzZXBhcmF0ZWx5LiAgSSdtIGdvaW5nIAp0byBwcm9wb3NlIGEgbWV0aG9kIHNpbWls
+YXIgdG8gdGhhdCBpbXBsZW1lbnRlZCBpbiBpZ3RfZGVidWdmc19wYXRoKCkuCgpUaGFua3MsCkph
+bnVzegoKCj4gCj4gCj4gLUxpb25lbAo+IAo+IAo+ID4gICAKPiA+ICAgCXJldHVybiBvcGVuKHBh
+dGgsIE9fRElSRUNUT1JZKTsKPiA+ICAgfQo+IAo+IAo+IAoKCgoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
