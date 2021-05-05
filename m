@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5AB606EB42
- for <igt-dev@lists.freedesktop.org>; Tue,  4 May 2021 18:53:47 +0000 (UTC)
-Date: Tue, 4 May 2021 21:53:41 +0300
-From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20210504185341.GC30246@ideak-desk.fi.intel.com>
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12on2089.outbound.protection.outlook.com [40.107.243.89])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCE266EB46
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 May 2021 00:23:09 +0000 (UTC)
+Date: Tue, 4 May 2021 20:23:05 -0400
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Message-ID: <20210505002305.7bagmdtisnu6hsiw@outlook.office365.com>
 References: <20210429192628.4056795-1-imre.deak@intel.com>
- <161974412821.17884.14333591157395148453@emeril.freedesktop.org>
- <20210504150058.GB30246@ideak-desk.fi.intel.com>
- <YJFkhyFk3bTceeqf@intel.com>
+ <20210429192628.4056795-2-imre.deak@intel.com>
+In-Reply-To: <20210429192628.4056795-2-imre.deak@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <YJFkhyFk3bTceeqf@intel.com>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbGliL2ln?=
- =?utf-8?q?t=5Ffb=3A_A_few_changes_to_fix_test_runs_on_ADL=5FP?=
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/kms_ccs: Skip CCS color clear
+ value check for randomizing subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,120 +19,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="===============0223197098=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Imre Deak <imre.deak@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, May 04, 2021 at 06:13:11PM +0300, Ville Syrj=E4l=E4 wrote:
-> On Tue, May 04, 2021 at 06:00:58PM +0300, Imre Deak wrote:
-> > On Fri, Apr 30, 2021 at 12:55:28AM +0000, Patchwork wrote:
-> > > =3D=3D Series Details =3D=3D
-> > > =
+--===============0223197098==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="flqfuwljhcvmkgyp"
+Content-Disposition: inline
 
-> > > Series: lib/igt_fb: A few changes to fix test runs on ADL_P
-> > > URL   : https://patchwork.freedesktop.org/series/89668/
-> > > State : failure
-> > > =
+--flqfuwljhcvmkgyp
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > > =3D=3D Summary =3D=3D
-> > > =
+Hi,
 
-> > > CI Bug Log - changes from CI_DRM_10028_full -> IGTPW_5771_full
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> > > =
+I looked at kms_ccs and tried to find a reference for "color control
+surfaces" in DRM, and I found multiple references for this format in
+i915. Is it an Intel-specific format? Is kms_ccs a test that can be
+executed in different ASICs?
 
-> > > Summary
-> > > -------
-> > > =
+Thanks
+Siqueira
 
-> > >   **FAILURE**
-> > > =
+On 04/29, Imre Deak wrote:
+> When filling the color planes with randomized content, the color clear
+> values won't match what the HW actually wrote there, so skip the clear
+> value check in this case.
+>=20
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Cc: Mika Kahola <mika.kahola@intel.com>
+> Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> Signed-off-by: Imre Deak <imre.deak@intel.com>
+> ---
+>  tests/kms_ccs.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
+> index 30e0fdb54..61c9b2277 100644
+> --- a/tests/kms_ccs.c
+> +++ b/tests/kms_ccs.c
+> @@ -195,7 +195,7 @@ static void check_ccs_cc_plane(int drm_fd, igt_fb_t *=
+fb, int plane, const float
+>  	munmap(map, fb->size);
+>  };
+> =20
+> -static void check_all_ccs_planes(int drm_fd, igt_fb_t *fb, const float *=
+cc_color)
+> +static void check_all_ccs_planes(int drm_fd, igt_fb_t *fb, const float *=
+cc_color, bool check_cc_plane)
+>  {
+>  	int i;
+> =20
+> @@ -203,7 +203,7 @@ static void check_all_ccs_planes(int drm_fd, igt_fb_t=
+ *fb, const float *cc_color
+>  		if (igt_fb_is_ccs_plane(fb, i) &&
+>  		    !igt_fb_is_gen12_ccs_cc_plane(fb, i))
+>  			check_ccs_plane(drm_fd, fb, i);
+> -		else if (igt_fb_is_gen12_ccs_cc_plane(fb, i))
+> +		else if (igt_fb_is_gen12_ccs_cc_plane(fb, i) && check_cc_plane)
+>  			check_ccs_cc_plane(drm_fd, fb, i, cc_color);
+>  	}
+>  }
+> @@ -348,7 +348,7 @@ static void generate_fb(data_t *data, struct igt_fb *=
+fb,
+>  		igt_assert_eq(ret, 0);
+> =20
+>  	if (check_ccs_planes)
+> -		check_all_ccs_planes(data->drm_fd, fb, cc_color);
+> +		check_all_ccs_planes(data->drm_fd, fb, cc_color, !(data->flags & TEST_=
+RANDOM));
+> =20
+>  	fb->fb_id =3D f.fb_id;
+>  }
+> --=20
+> 2.27.0
+>=20
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://nam11.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Flists=
+=2Efreedesktop.org%2Fmailman%2Flistinfo%2Figt-dev&amp;data=3D04%7C01%7CRodr=
+igo.Siqueira%40amd.com%7C015d075eda3348bce83208d90b44b52e%7C3dd8961fe4884e6=
+08e11a82d994e183d%7C0%7C0%7C637553211995281967%7CUnknown%7CTWFpbGZsb3d8eyJW=
+IjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;s=
+data=3DIqMSw%2BtvmobHEOTGjdcrUL%2BE3gW6QlRfavthnqM1%2FVc%3D&amp;reserved=3D0
 
-> > >   Serious unknown changes coming with IGTPW_5771_full absolutely need=
- to be
-> > >   verified manually.
-> > >   =
+--=20
+Rodrigo Siqueira
+https://siqueira.tech
 
-> > >   If you think the reported changes have nothing to do with the chang=
-es
-> > >   introduced in IGTPW_5771_full, please notify your bug team to allow=
- them
-> > >   to document this new failure mode, which will reduce false positive=
-s in CI.
-> > > =
+--flqfuwljhcvmkgyp
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> > >   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5771/i=
-ndex.html
-> > > =
+-----BEGIN PGP SIGNATURE-----
 
-> > > Possible new issues
-> > > -------------------
-> > > =
+iQIzBAABCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAmCR5WkACgkQWJzP/com
+vP/O+xAAsX2bzBTHMj4Akx0AYfWYnvLS0LDmO8sM7XkuOTae6OY2MzWOZ19xM60H
+qNO6j2c5/oNXT7GoJ5wG79bFNknJ70VOVwL75J4OqMzWF5/ubzwxFs/9C3zkALZZ
+6ozNT8kKKpkH3dMPIIXv88cq6xg65TNDLfNajWOGz9KoZ5fU+ZSG6f1AP+DIgdAS
+MrOSLftV5s/gjhnbULTm2mw0ziaiN3+Y87oZxHJPbK/j53+DH8q1tJO+QC9gyUzW
+lPYnbu4tUtJ+j3k8KWKfQufvBlQg8DbRf09bZ+/zU37LJlOl7Q9RBrAJJXeKv1tg
+R5HFb7ebk9x+mKWL56FylXFy+qCo1MHLlo/hyeShxJ20/qqCsuZLSZeiaO9bKCJq
+oVOw+4jwpoa7rqbF+Umm/vOEd7tI9Em0DsPr2IsAkXc3ZN8GSvvnaaWu3hqCqjPV
+QDQyHMUBQYwUeijBU729uCDMxrLYlea5cQWaKc1Zg8XKavdFaMDQ0k7TArECatKc
+62e5E/AYMzUcVgjgCMIsCaP9Vje6iXkR5tjZ067oNx1lyqP6sAOqmE+8sbM1GTSW
+rkUq0Q3WC/ySSHyTX8x6/qUqGBXFuo770wR9TFmgkg79nVLD758cEmsqR9sU+c18
+Ul31QNnpg+OesTSm94J1A92MXQRL5p+CwwO/4yWAOf27GZpKNEo=
+=M6sO
+-----END PGP SIGNATURE-----
 
-> > >   Here are the unknown changes that may have been introduced in IGTPW=
-_5771_full:
-> > > =
+--flqfuwljhcvmkgyp--
 
-> > > ### IGT changes ###
-> > > =
+--===============0223197098==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-> > > #### Possible regressions ####
-> > > =
-
-> > >   * igt@kms_plane@pixel-format-pipe-a-planes:
-> > >     - shard-tglb:         [PASS][1] -> [SKIP][2]
-> > >    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10028/shard-t=
-glb3/igt@kms_plane@pixel-format-pipe-a-planes.html
-> > >    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5771/shard-tgl=
-b7/igt@kms_plane@pixel-format-pipe-a-planes.html
-> > =
-
-> > Test requirement not met in function test_format_plane, file ../tests/k=
-ms_plane.c:912:
-> > Test requirement: num_unique_crcs(ref_crc[PLANAR_CRC_SET], data->num_co=
-lors) > 1
-> > =
-
-> > after a bunch of CRC mismatches, so I suppose the CRC generation gets
-> > stuck at one point.
-> > =
-
-> > It's on the same path this patchset changes, however on TGL the patchset
-> > should have no functional change: the stride calculated by
-> > __intel_buf_init() and the stride passed to it by
-> > igt_fb_create_intel_buf() always match based on my tests. After testing
-> > the same CI testlist locally on 2 TGLs, I also rerun the testlist where
-> > this problem didn't happen:
-> =
-
-> There's definitely something hinky going on with tgl since kms_big_fb
-> is also failing atm in ci. But dunno if that's related or not.
-
-That seems to get triggered by kms_psr2_sf followed by kms_big_fb. I
-could repro this only (consistently) on TGL/A0 (all TGL shards are like
-this) either running kms_psr2_sf/plane-move-sf-dmg-area-1 or
-kms_psr2_sf/overlay-primary-update-sf-dmg-area-4 followed by
-kms_big_fb/x-tiled-64bpp-rotate-180 .
-
-The same doesn't happen on TGL/B0 with the same panel as used by by TGL
-shards, though PSR got disabled on B0 due to some PSR RFB error.
-
-Since this problem seems to happen consistently on A0, affecting later
-tests I suggest blacklisting kms_psr2_sf at least on those machines,
-until the problem is root caused, or at least to see how the kms_big_fb
-results change.
-
-> -- =
-
-> Ville Syrj=E4l=E4
-> Intel
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0223197098==--
