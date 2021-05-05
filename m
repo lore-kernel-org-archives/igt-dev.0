@@ -1,23 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A07E389A59
- for <igt-dev@lists.freedesktop.org>; Wed,  5 May 2021 21:03:30 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Wed, 5 May 2021 21:03:26 +0000
-Message-ID: <cc200627059dd5679b19ddef2846319d865e8e9a.camel@intel.com>
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2087.outbound.protection.outlook.com [40.107.93.87])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D96A6EC7F
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 May 2021 23:07:50 +0000 (UTC)
+Date: Wed, 5 May 2021 19:07:44 -0400
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Message-ID: <20210505230744.z6hgbbx2hsvsvsxb@outlook.office365.com>
 References: <20210429192628.4056795-1-imre.deak@intel.com>
- <161974412821.17884.14333591157395148453@emeril.freedesktop.org>
- <20210504150058.GB30246@ideak-desk.fi.intel.com>
- <YJFkhyFk3bTceeqf@intel.com>
- <20210504185341.GC30246@ideak-desk.fi.intel.com>
- <5e2745418cd04838960f6d85014bfd3f@intel.com>
-In-Reply-To: <5e2745418cd04838960f6d85014bfd3f@intel.com>
-Content-Language: en-US
-Content-ID: <81C01A3AECE30547A149E5F7F3283B41@intel.com>
+ <20210429192628.4056795-2-imre.deak@intel.com>
+ <20210505002305.7bagmdtisnu6hsiw@outlook.office365.com>
+ <20210505102737.GA126925@ideak-desk.fi.intel.com>
+In-Reply-To: <20210505102737.GA126925@ideak-desk.fi.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbGliL2ln?=
- =?utf-8?q?t=5Ffb=3A_A_few_changes_to_fix_test_runs_on_ADL=5FP?=
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/kms_ccs: Skip CCS color clear
+ value check for randomizing subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,96 +21,161 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1662959969=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Saarinen, Jani" <jani.saarinen@intel.com>, "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>, "Mun,
- Gwan-gyeong" <gwan-gyeong.mun@intel.com>, "Deak, Imre" <imre.deak@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Imre Deak <imre.deak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCAyMDIxLTA1LTA1IGF0IDA5OjA2ICswMTAwLCBTYWFyaW5lbiwgSmFuaSB3cm90ZToN
-Cj4gK0BNdW4sIEd3YW4tZ3llb25nLCBAU291emEsIEpvc2UuIFNlZSBiZWxvdyBmcm9tIEltcmUu
-DQo+IA0KPiA+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gRnJvbTogaWd0LWRldiA8
-aWd0LWRldi1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mIEltcmUg
-RGVhaw0KPiA+IFNlbnQ6IHRpaXN0YWkgNC4gdG91a29rdXV0YSAyMDIxIDIxLjU0DQo+ID4gVG86
-IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+DQo+ID4gQ2M6
-IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+ID4gU3ViamVjdDogUmU6IFtpZ3QtZGV2
-XSDinJcgRmkuQ0kuSUdUOiBmYWlsdXJlIGZvciBsaWIvaWd0X2ZiOiBBIGZldyBjaGFuZ2VzIHRv
-IGZpeCB0ZXN0IHJ1bnMNCj4gPiBvbiBBRExfUA0KPiA+IA0KPiA+IE9uIFR1ZSwgTWF5IDA0LCAy
-MDIxIGF0IDA2OjEzOjExUE0gKzAzMDAsIFZpbGxlIFN5cmrDpGzDpCB3cm90ZToNCj4gPiA+IE9u
-IFR1ZSwgTWF5IDA0LCAyMDIxIGF0IDA2OjAwOjU4UE0gKzAzMDAsIEltcmUgRGVhayB3cm90ZToN
-Cj4gPiA+ID4gT24gRnJpLCBBcHIgMzAsIDIwMjEgYXQgMTI6NTU6MjhBTSArMDAwMCwgUGF0Y2h3
-b3JrIHdyb3RlOg0KPiA+ID4gPiA+ID09IFNlcmllcyBEZXRhaWxzID09DQo+ID4gPiA+ID4gDQo+
-ID4gPiA+ID4gU2VyaWVzOiBsaWIvaWd0X2ZiOiBBIGZldyBjaGFuZ2VzIHRvIGZpeCB0ZXN0IHJ1
-bnMgb24gQURMX1ANCj4gPiA+ID4gPiBVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNr
-dG9wLm9yZy9zZXJpZXMvODk2NjgvDQo+ID4gPiA+ID4gU3RhdGUgOiBmYWlsdXJlDQo+ID4gPiA+
-ID4gDQo+ID4gPiA+ID4gPT0gU3VtbWFyeSA9PQ0KPiA+ID4gPiA+IA0KPiA+ID4gPiA+IENJIEJ1
-ZyBMb2cgLSBjaGFuZ2VzIGZyb20gQ0lfRFJNXzEwMDI4X2Z1bGwgLT4gSUdUUFdfNTc3MV9mdWxs
-DQo+ID4gPiA+ID4gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PQ0KPiA+ID4gPiA+IA0KPiA+ID4gPiA+IFN1bW1hcnkNCj4gPiA+ID4gPiAtLS0tLS0t
-DQo+ID4gPiA+ID4gDQo+ID4gPiA+ID4gICAqKkZBSUxVUkUqKg0KPiA+ID4gPiA+IA0KPiA+ID4g
-PiA+ICAgU2VyaW91cyB1bmtub3duIGNoYW5nZXMgY29taW5nIHdpdGggSUdUUFdfNTc3MV9mdWxs
-IGFic29sdXRlbHkgbmVlZCB0bw0KPiA+IGJlDQo+ID4gPiA+ID4gICB2ZXJpZmllZCBtYW51YWxs
-eS4NCj4gPiA+ID4gPiANCj4gPiA+ID4gPiAgIElmIHlvdSB0aGluayB0aGUgcmVwb3J0ZWQgY2hh
-bmdlcyBoYXZlIG5vdGhpbmcgdG8gZG8gd2l0aCB0aGUgY2hhbmdlcw0KPiA+ID4gPiA+ICAgaW50
-cm9kdWNlZCBpbiBJR1RQV181NzcxX2Z1bGwsIHBsZWFzZSBub3RpZnkgeW91ciBidWcgdGVhbSB0
-byBhbGxvdyB0aGVtDQo+ID4gPiA+ID4gICB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJlIG1v
-ZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4NCj4gPiA+ID4gPiAN
-Cj4gPiA+ID4gPiAgIEV4dGVybmFsIFVSTDoNCj4gPiA+ID4gPiBodHRwczovL2ludGVsLWdmeC1j
-aS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzU3NzEvaW5kZXguaHRtbA0KPiA+ID4gPiA+IA0K
-PiA+ID4gPiA+IFBvc3NpYmxlIG5ldyBpc3N1ZXMNCj4gPiA+ID4gPiAtLS0tLS0tLS0tLS0tLS0t
-LS0tDQo+ID4gPiA+ID4gDQo+ID4gPiA+ID4gICBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2Vz
-IHRoYXQgbWF5IGhhdmUgYmVlbiBpbnRyb2R1Y2VkIGluDQo+ID4gSUdUUFdfNTc3MV9mdWxsOg0K
-PiA+ID4gPiA+IA0KPiA+ID4gPiA+ICMjIyBJR1QgY2hhbmdlcyAjIyMNCj4gPiA+ID4gPiANCj4g
-PiA+ID4gPiAjIyMjIFBvc3NpYmxlIHJlZ3Jlc3Npb25zICMjIyMNCj4gPiA+ID4gPiANCj4gPiA+
-ID4gPiAgICogaWd0QGttc19wbGFuZUBwaXhlbC1mb3JtYXQtcGlwZS1hLXBsYW5lczoNCj4gPiA+
-ID4gPiAgICAgLSBzaGFyZC10Z2xiOiAgICAgICAgIFtQQVNTXVsxXSAtPiBbU0tJUF1bMl0NCj4g
-PiA+ID4gPiAgICBbMV06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAv
-Q0lfRFJNXzEwMDI4L3NoYXJkLQ0KPiA+IHRnbGIzL2lndEBrbXNfcGxhbmVAcGl4ZWwtZm9ybWF0
-LXBpcGUtYS1wbGFuZXMuaHRtbA0KPiA+ID4gPiA+ICAgIFsyXToNCj4gPiA+ID4gPiBodHRwczov
-L2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzU3NzEvc2hhcmQtdGdsYjcv
-aWcNCj4gPiA+ID4gPiB0QGttc19wbGFuZUBwaXhlbC1mb3JtYXQtcGlwZS1hLXBsYW5lcy5odG1s
-DQo+ID4gPiA+IA0KPiA+ID4gPiBUZXN0IHJlcXVpcmVtZW50IG5vdCBtZXQgaW4gZnVuY3Rpb24g
-dGVzdF9mb3JtYXRfcGxhbmUsIGZpbGUNCj4gPiAuLi90ZXN0cy9rbXNfcGxhbmUuYzo5MTI6DQo+
-ID4gPiA+IFRlc3QgcmVxdWlyZW1lbnQ6IG51bV91bmlxdWVfY3JjcyhyZWZfY3JjW1BMQU5BUl9D
-UkNfU0VUXSwNCj4gPiA+ID4gZGF0YS0+bnVtX2NvbG9ycykgPiAxDQo+ID4gPiA+IA0KPiA+ID4g
-PiBhZnRlciBhIGJ1bmNoIG9mIENSQyBtaXNtYXRjaGVzLCBzbyBJIHN1cHBvc2UgdGhlIENSQyBn
-ZW5lcmF0aW9uDQo+ID4gPiA+IGdldHMgc3R1Y2sgYXQgb25lIHBvaW50Lg0KPiA+ID4gPiANCj4g
-PiA+ID4gSXQncyBvbiB0aGUgc2FtZSBwYXRoIHRoaXMgcGF0Y2hzZXQgY2hhbmdlcywgaG93ZXZl
-ciBvbiBUR0wgdGhlDQo+ID4gPiA+IHBhdGNoc2V0IHNob3VsZCBoYXZlIG5vIGZ1bmN0aW9uYWwg
-Y2hhbmdlOiB0aGUgc3RyaWRlIGNhbGN1bGF0ZWQgYnkNCj4gPiA+ID4gX19pbnRlbF9idWZfaW5p
-dCgpIGFuZCB0aGUgc3RyaWRlIHBhc3NlZCB0byBpdCBieQ0KPiA+ID4gPiBpZ3RfZmJfY3JlYXRl
-X2ludGVsX2J1ZigpIGFsd2F5cyBtYXRjaCBiYXNlZCBvbiBteSB0ZXN0cy4gQWZ0ZXINCj4gPiA+
-ID4gdGVzdGluZyB0aGUgc2FtZSBDSSB0ZXN0bGlzdCBsb2NhbGx5IG9uIDIgVEdMcywgSSBhbHNv
-IHJlcnVuIHRoZQ0KPiA+ID4gPiB0ZXN0bGlzdCB3aGVyZSB0aGlzIHByb2JsZW0gZGlkbid0IGhh
-cHBlbjoNCj4gPiA+IA0KPiA+ID4gVGhlcmUncyBkZWZpbml0ZWx5IHNvbWV0aGluZyBoaW5reSBn
-b2luZyBvbiB3aXRoIHRnbCBzaW5jZSBrbXNfYmlnX2ZiDQo+ID4gPiBpcyBhbHNvIGZhaWxpbmcg
-YXRtIGluIGNpLiBCdXQgZHVubm8gaWYgdGhhdCdzIHJlbGF0ZWQgb3Igbm90Lg0KPiA+IA0KPiA+
-IFRoYXQgc2VlbXMgdG8gZ2V0IHRyaWdnZXJlZCBieSBrbXNfcHNyMl9zZiBmb2xsb3dlZCBieSBr
-bXNfYmlnX2ZiLiBJIGNvdWxkIHJlcHJvDQo+ID4gdGhpcyBvbmx5IChjb25zaXN0ZW50bHkpIG9u
-IFRHTC9BMCAoYWxsIFRHTCBzaGFyZHMgYXJlIGxpa2UNCj4gPiB0aGlzKSBlaXRoZXIgcnVubmlu
-ZyBrbXNfcHNyMl9zZi9wbGFuZS1tb3ZlLXNmLWRtZy1hcmVhLTEgb3INCj4gPiBrbXNfcHNyMl9z
-Zi9vdmVybGF5LXByaW1hcnktdXBkYXRlLXNmLWRtZy1hcmVhLTQgZm9sbG93ZWQgYnkNCj4gPiBr
-bXNfYmlnX2ZiL3gtdGlsZWQtNjRicHAtcm90YXRlLTE4MCAuDQo+ID4gDQo+ID4gVGhlIHNhbWUg
-ZG9lc24ndCBoYXBwZW4gb24gVEdML0IwIHdpdGggdGhlIHNhbWUgcGFuZWwgYXMgdXNlZCBieSBi
-eSBUR0wgc2hhcmRzLA0KPiA+IHRob3VnaCBQU1IgZ290IGRpc2FibGVkIG9uIEIwIGR1ZSB0byBz
-b21lIFBTUiBSRkIgZXJyb3IuDQo+ID4gDQo+ID4gU2luY2UgdGhpcyBwcm9ibGVtIHNlZW1zIHRv
-IGhhcHBlbiBjb25zaXN0ZW50bHkgb24gQTAsIGFmZmVjdGluZyBsYXRlciB0ZXN0cyBJIHN1Z2dl
-c3QNCj4gPiBibGFja2xpc3Rpbmcga21zX3BzcjJfc2YgYXQgbGVhc3Qgb24gdGhvc2UgbWFjaGlu
-ZXMsIHVudGlsIHRoZSBwcm9ibGVtIGlzIHJvb3QNCj4gPiBjYXVzZWQsIG9yIGF0IGxlYXN0IHRv
-IHNlZSBob3cgdGhlIGttc19iaWdfZmIgcmVzdWx0cyBjaGFuZ2UuDQoNCldlIGhhdmUgdHdvIFBT
-UjIgU0Ygd29ya2Fyb3VuZHMgbWlzc2luZyBpbXBsZW1lbnRhdGlvbiwgMTQwMTAxMDM3OTIgZml4
-ZWQgb24gZGlzcGxheSBiMCBhbmQgMTQwMTAyNTQxODUgZml4ZWQgb24gZGlzcGxheSBDMC4NClRo
-ZXkga2luZCBvZiBjb25mbGljdCB3aXRoIGVhY2ggb3RoZXIgc28gd291bGQgbmVlZCBhIGxpdHRs
-ZSBiaXQgb2YgdGVzdGluZyBidXQgZm9yIG5vdyB3ZSBjb3VsZCBkaXNhYmxlIFBTUjIgU0YgdXAg
-dG8gVEdMIGRpc3BsYXkgQzAgc3RlcHBpbmcsIHdpbGwNCmJlIHNlbmRpbmcgdGhpcyBwYXRjaCBp
-biBhIGNvdXBsZSBvZiBtaW51dGVzLg0KDQoNCj4gPiANCj4gPiA+IC0tDQo+ID4gPiBWaWxsZSBT
-eXJqw6Rsw6QNCj4gPiA+IEludGVsDQo+ID4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18NCj4gPiBpZ3QtZGV2IG1haWxpbmcgbGlzdA0KPiA+IGlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+ID4gaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2DQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
-Zm8vaWd0LWRldgo=
+--===============1662959969==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="w5je3bujjwcawly7"
+Content-Disposition: inline
+
+--w5je3bujjwcawly7
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 05/05, Imre Deak wrote:
+> Hi,
+>=20
+> On Tue, May 04, 2021 at 08:23:05PM -0400, Rodrigo Siqueira wrote:
+> > Hi,
+> >=20
+> > I looked at kms_ccs and tried to find a reference for "color control
+> > surfaces" in DRM, and I found multiple references for this format in
+> > i915.
+>=20
+> CCS means here Compression Control Surface. Yes, the render and media
+> GPU engines use their own compression format, hence multiple CCS
+> modifiers are needed. There are also format differences between
+> platforms, which further increases the number of modifiers.
+>=20
+> > Is it an Intel-specific format? Is kms_ccs a test that can be
+> > executed in different ASICs?
+>=20
+> Yes, the CCS FB modifiers are Intel specific and kms_ccs will not run on
+> other platforms.
+
+Thanks for the explanation.
+=20
+> --Imre
+>=20
+> > Thanks
+> > Siqueira
+> >=20
+> > On 04/29, Imre Deak wrote:
+> > > When filling the color planes with randomized content, the color clear
+> > > values won't match what the HW actually wrote there, so skip the clear
+> > > value check in this case.
+> > >=20
+> > > Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> > > Cc: Mika Kahola <mika.kahola@intel.com>
+> > > Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> > > Signed-off-by: Imre Deak <imre.deak@intel.com>
+> > > ---
+> > >  tests/kms_ccs.c | 6 +++---
+> > >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > >=20
+> > > diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
+> > > index 30e0fdb54..61c9b2277 100644
+> > > --- a/tests/kms_ccs.c
+> > > +++ b/tests/kms_ccs.c
+> > > @@ -195,7 +195,7 @@ static void check_ccs_cc_plane(int drm_fd, igt_fb=
+_t *fb, int plane, const float
+> > >  	munmap(map, fb->size);
+> > >  };
+> > > =20
+> > > -static void check_all_ccs_planes(int drm_fd, igt_fb_t *fb, const flo=
+at *cc_color)
+> > > +static void check_all_ccs_planes(int drm_fd, igt_fb_t *fb, const flo=
+at *cc_color, bool check_cc_plane)
+> > >  {
+> > >  	int i;
+> > > =20
+> > > @@ -203,7 +203,7 @@ static void check_all_ccs_planes(int drm_fd, igt_=
+fb_t *fb, const float *cc_color
+> > >  		if (igt_fb_is_ccs_plane(fb, i) &&
+> > >  		    !igt_fb_is_gen12_ccs_cc_plane(fb, i))
+> > >  			check_ccs_plane(drm_fd, fb, i);
+> > > -		else if (igt_fb_is_gen12_ccs_cc_plane(fb, i))
+> > > +		else if (igt_fb_is_gen12_ccs_cc_plane(fb, i) && check_cc_plane)
+> > >  			check_ccs_cc_plane(drm_fd, fb, i, cc_color);
+> > >  	}
+> > >  }
+> > > @@ -348,7 +348,7 @@ static void generate_fb(data_t *data, struct igt_=
+fb *fb,
+> > >  		igt_assert_eq(ret, 0);
+> > > =20
+> > >  	if (check_ccs_planes)
+> > > -		check_all_ccs_planes(data->drm_fd, fb, cc_color);
+> > > +		check_all_ccs_planes(data->drm_fd, fb, cc_color, !(data->flags & T=
+EST_RANDOM));
+> > > =20
+> > >  	fb->fb_id =3D f.fb_id;
+> > >  }
+> > > --=20
+> > > 2.27.0
+> > >=20
+> > > _______________________________________________
+> > > igt-dev mailing list
+> > > igt-dev@lists.freedesktop.org
+> > > https://nam11.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fl=
+ists.freedesktop.org%2Fmailman%2Flistinfo%2Figt-dev&amp;data=3D04%7C01%7CRo=
+drigo.Siqueira%40amd.com%7Cedb4aea1c4e249252dfb08d90fb06aef%7C3dd8961fe4884=
+e608e11a82d994e183d%7C0%7C0%7C637558072643709539%7CUnknown%7CTWFpbGZsb3d8ey=
+JWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp=
+;sdata=3D%2FwF620WrokFKD77Athnep%2FYb%2BY6AFOl%2FPj%2B%2F1PdCfL0%3D&amp;res=
+erved=3D0
+> >=20
+> > --=20
+> > Rodrigo Siqueira
+> > https://nam11.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fsiq=
+ueira.tech%2F&amp;data=3D04%7C01%7CRodrigo.Siqueira%40amd.com%7Cedb4aea1c4e=
+249252dfb08d90fb06aef%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C63755807=
+2643719534%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJB=
+TiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=3DoKsprNNETtsy012m2FFAtNiX71Nfs=
+Txjapl1FW2dEcw%3D&amp;reserved=3D0
+>=20
+>=20
+
+--=20
+Rodrigo Siqueira
+https://siqueira.tech
+
+--w5je3bujjwcawly7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAmCTJTsACgkQWJzP/com
+vP/w5hAAyD0QCMqaBVIeHzAhCW/AvO3hYl+cGfglCh4bP+CezOfTM0zijMf3lvvU
+xJlR4gK/2r1OJP5AgVsmzidS2y+5OA4m63dn1VCyNCJI06H7Lpeed3IAfG08W6mI
+kBn4WbV3QTvz/yMs1N/6NuPpaSMD+DAN8zXY1/2udfx4I24zyYble8dGsOeOTe3T
+tz2E5Hs5gCrxtYYwLAGXNd1jHfpomiTta8zUu5sXynMnKtsKG0hStX07aaMVKkfg
+mD3elFxdW4IZVeLVMnPc9ekJ/BLOF9uvYdmrBZCFtW1f5NKALxMYdlBcjqkwHLh7
+CGjS4owKYnHg4IGMQvxqguyZV+4HFmplnW4JaA3gA2Tb0BD67Y7/LWhoyDAJAN/l
+UqSuRDoXjnztfv+bzwiXjN16TEs+UjTPjDtekeYZkdJwib2LGs/4jix72W4oDq2k
+tpm7McC8icmEgY2OuQWVhZhfrImNc4LQ6eKEIuN0VqTbWLH5H2qe2IfN865Y6HeF
++WD8HNN7PkuCyvql1xEK1s6xMNKuFYC9Gx5roQSzEcudiy1UQVJpiHlAYUNSfqQO
++qcJikvHr5faxUCwWj09y5OSlH1ki7JQkobFee6yhBVvCNrs8OAFy64w5buKkW9l
+U0GjdhlSBD/BVLFUYzp562fx6Pv+NA6Yp2el4B3afv/woW0z31w=
+=qhz8
+-----END PGP SIGNATURE-----
+
+--w5je3bujjwcawly7--
+
+--===============1662959969==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1662959969==--
