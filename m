@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D486F6E0E9
- for <igt-dev@lists.freedesktop.org>; Wed,  5 May 2021 08:09:52 +0000 (UTC)
-Date: Wed, 5 May 2021 11:11:11 +0300
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD1CF89E50
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 May 2021 08:18:15 +0000 (UTC)
+Date: Wed, 5 May 2021 11:19:31 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YJJTH7bf39xPn/ov@platvala-desk.ger.corp.intel.com>
-References: <20210505065454.16096-1-zbigniew.kempczynski@intel.com>
+Message-ID: <YJJVE5S1Y1kEMCD+@platvala-desk.ger.corp.intel.com>
+References: <20210504070415.5057-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210505065454.16096-1-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Remove bufmgr
- leftover
+In-Reply-To: <20210504070415.5057-1-kunal1.joshi@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_chamelium: Retry DP FSM on
+ Failure
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,43 +18,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kunal Joshi <kunal1.joshi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCBNYXkgMDUsIDIwMjEgYXQgMDg6NTQ6NTRBTSArMDIwMCwgWmJpZ25pZXcgS2VtcGN6
-ecWEc2tpIHdyb3RlOgo+IGxpYmRybSBidWZtZ3IgaXMgaW5pdGlhbGl6ZWQgaW4gdGhlIHRlc3Qg
-YnV0IHVzZWQgbm93aGVyZS4gUmVtb3ZlCj4gaXQgdG8gYXZvaWQgY29uZnVzaW9uIHdpdGggcmVh
-bCBsaWJkcm0gdXNhZ2UuCj4gCj4gU2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tp
-IDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Cj4gQ2M6IFBldHJpIExhdHZhbGEgPHBl
-dHJpLmxhdHZhbGFAaW50ZWwuY29tPgo+IEFzaHV0b3NoIERpeGl0IDxhc2h1dG9zaC5kaXhpdEBp
-bnRlbC5jb20+CgpSZXZpZXdlZC1ieTogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRl
-bC5jb20+CgoKCj4gLS0tCj4gIHRlc3RzL2ttc19wc3IyX3NmLmMgfCA3IC0tLS0tLS0KPiAgMSBm
-aWxlIGNoYW5nZWQsIDcgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19w
-c3IyX3NmLmMgYi90ZXN0cy9rbXNfcHNyMl9zZi5jCj4gaW5kZXggOGQzZTEzMDE5Li41MDBhNmY1
-NDkgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMva21zX3BzcjJfc2YuYwo+ICsrKyBiL3Rlc3RzL2ttc19w
-c3IyX3NmLmMKPiBAQCAtMjksNyArMjksNiBAQAo+ICAjaW5jbHVkZSA8c3RkYm9vbC5oPgo+ICAj
-aW5jbHVkZSA8c3RkaW8uaD4KPiAgI2luY2x1ZGUgPHN0cmluZy5oPgo+IC0jaW5jbHVkZSAiaW50
-ZWxfYnVmbWdyLmgiCj4gIAo+ICBJR1RfVEVTVF9ERVNDUklQVElPTigiVGVzdHMgdG8gdmFyaWZ5
-IFBTUjIgc2VsZWN0aXZlIGZldGNoIGJ5IHNlbmRpbmcgbXVsdGlwbGUiCj4gIAkJICAgICAiIGRh
-bWFnZWQgYXJlYXMiKTsKPiBAQCAtNTYsNyArNTUsNiBAQCB0eXBlZGVmIHN0cnVjdCB7Cj4gIAlp
-bnQgZHJtX2ZkOwo+ICAJaW50IGRlYnVnZnNfZmQ7Cj4gIAlpZ3RfZGlzcGxheV90IGRpc3BsYXk7
-Cj4gLQlkcm1faW50ZWxfYnVmbWdyICpidWZtZ3I7Cj4gIAlkcm1Nb2RlTW9kZUluZm8gKm1vZGU7
-Cj4gIAlpZ3Rfb3V0cHV0X3QgKm91dHB1dDsKPiAgCXN0cnVjdCBpZ3RfZmIgZmJfcHJpbWFyeSwg
-ZmJfb3ZlcmxheSwgZmJfY3Vyc29yOwo+IEBAIC01NjAsMTAgKzU1OCw2IEBAIGlndF9tYWluCj4g
-IAkJCQkJICAgICAgIGRhdGEuZGVidWdmc19mZCwgUFNSX01PREVfMiksCj4gIAkJCSAgICAgICJT
-aW5rIGRvZXMgbm90IHN1cHBvcnQgUFNSMlxuIik7Cj4gIAo+IC0JCWRhdGEuYnVmbWdyID0gZHJt
-X2ludGVsX2J1Zm1ncl9nZW1faW5pdChkYXRhLmRybV9mZCwgNDA5Nik7Cj4gLQkJaWd0X2Fzc2Vy
-dChkYXRhLmJ1Zm1ncik7Cj4gLQkJZHJtX2ludGVsX2J1Zm1ncl9nZW1fZW5hYmxlX3JldXNlKGRh
-dGEuYnVmbWdyKTsKPiAtCj4gIAkJZGlzcGxheV9pbml0KCZkYXRhKTsKPiAgCj4gIAkJLyogVGVz
-dCBpZiBQU1IyIGNhbiBiZSBlbmFibGVkICovCj4gQEAgLTY0NSw3ICs2MzksNiBAQCBpZ3RfbWFp
-bgo+ICAKPiAgCWlndF9maXh0dXJlIHsKPiAgCQljbG9zZShkYXRhLmRlYnVnZnNfZmQpOwo+IC0J
-CWRybV9pbnRlbF9idWZtZ3JfZGVzdHJveShkYXRhLmJ1Zm1ncik7Cj4gIAkJZGlzcGxheV9maW5p
-KCZkYXRhKTsKPiAgCX0KPiAgfQo+IC0tIAo+IDIuMjYuMAo+IApfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
-QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2lndC1kZXYK
+On Tue, May 04, 2021 at 07:04:15AM +0000, Kunal Joshi wrote:
+> We have a thread called chamelium_fsm_mon which monitors HPD events
+> triggered by chamelium, Unfortunately not always the HPD event arrives
+> in a fixed interval (mostly does), Quick fix to this is to retry.
+> 
+> v2: Remove redundant assert (Bhanu)
+> 
+> Fixes :- https://gitlab.freedesktop.org/drm/intel/-/issues/262
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Modem Bhanuprakash <bhanuprakash.modem@intel.com>
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> ---
+>  lib/igt_chamelium.c | 28 ++++++++++++++++++++++++----
+>  1 file changed, 24 insertions(+), 4 deletions(-)
+> 
+> diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+> index 7085122a7..c385534c6 100644
+> --- a/lib/igt_chamelium.c
+> +++ b/lib/igt_chamelium.c
+> @@ -522,12 +522,32 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
+>  {
+>  	xmlrpc_value *res;
+>  	va_list va_args;
+> +	int fsm_trials_left = 5;
+>  
+> -	va_start(va_args, format_str);
+> -	res = __chamelium_rpc_va(chamelium, fsm_port, method_name,
+> -				 format_str, va_args);
+> -	va_end(va_args);
+> +	if (strcmp(method_name, "CaptureVideo") == 0) {
+> +
+> +		while (fsm_trials_left) {
+> +
+
+Remove this extra empty line.
+
+> +			va_start(va_args, format_str);
+> +			res = __chamelium_rpc_va(chamelium, fsm_port,
+> +						 method_name, format_str,
+> +						 va_args);
+> +			va_end(va_args);
+>  
+> +			if (!chamelium->env.fault_occurred)
+> +				break;
+
+Ok, I was wondering if you need to clear chamelium->env here but
+__chamelium_rpc_va does that. Ok.
+
+> +
+> +			igt_debug("DP FSM failed retrying, tries left %d\n", fsm_trials_left);
+> +			--fsm_trials_left;
+> +		}
+> +	} else {
+> +
+
+Another extra empty line.
+
+With the extra empty lines removed this is
+
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+
+
+Is CaptureVideo really the only method that needs this retrying?
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
