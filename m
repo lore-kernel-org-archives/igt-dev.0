@@ -1,19 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB2DC6E128
- for <igt-dev@lists.freedesktop.org>; Thu,  6 May 2021 10:46:09 +0000 (UTC)
-Date: Thu, 6 May 2021 13:47:26 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YJPJProRJ2xjknag@platvala-desk.ger.corp.intel.com>
-References: <20210506065709.345576-1-janusz.krzysztofik@linux.intel.com>
- <162029057563.15690.18220796691062482558@emeril.freedesktop.org>
- <2063837.K71DO8KEF6@jkrzyszt-mobl1.ger.corp.intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <2063837.K71DO8KEF6@jkrzyszt-mobl1.ger.corp.intel.com>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbGliL2k5?=
- =?utf-8?q?15/perf=3A_Fix_non-card0_processing_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 06 May 2021 11:56:31 -0000
+Message-ID: <162030219162.15690.12614111623691455005@emeril.freedesktop.org>
+References: <20210506065709.345576-1-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20210506065709.345576-1-janusz.krzysztofik@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2k5?=
+ =?utf-8?q?15/perf=3A_Fix_non-card0_processing_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,89 +14,165 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1673262951=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, "Vudum,
- Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, May 06, 2021 at 12:41:07PM +0200, Janusz Krzysztofik wrote:
-> On czwartek, 6 maja 2021 10:42:55 CEST Patchwork wrote:
-> > == Series Details ==
-> > 
-> > Series: lib/i915/perf: Fix non-card0 processing (rev4)
-> > URL   : https://patchwork.freedesktop.org/series/89701/
-> > State : failure
-> > 
-> > == Summary ==
-> > 
-> > CI Bug Log - changes from IGT_6080_full -> IGTPW_5786_full
-> > ====================================================
-> > 
-> > Summary
-> > -------
-> > 
-> >   **FAILURE**
-> > 
-> >   Serious unknown changes coming with IGTPW_5786_full absolutely need to be
-> >   verified manually.
-> >   
-> >   If you think the reported changes have nothing to do with the changes
-> >   introduced in IGTPW_5786_full, please notify your bug team to allow them
-> >   to document this new failure mode, which will reduce false positives in 
-> CI.
-> > 
-> >   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5786/
-> index.html
-> > 
-> > Possible new issues
-> > -------------------
-> > 
-> >   Here are the unknown changes that may have been introduced in 
-> IGTPW_5786_full:
-> > 
-> > ### IGT changes ###
-> > 
-> > #### Possible regressions ####
-> > 
-> >   * igt@kms_big_fb@y-tiled-16bpp-rotate-180:
-> >     - shard-tglb:         [PASS][1] -> [FAIL][2]
-> >    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6080/shard-tglb6/
-> igt@kms_big_fb@y-tiled-16bpp-rotate-180.html
-> >    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5786/shard-tglb5/
-> igt@kms_big_fb@y-tiled-16bpp-rotate-180.html
-> > 
-> >   * igt@kms_cursor_crc@pipe-c-cursor-128x42-sliding:
-> >     - shard-apl:          [PASS][3] -> [FAIL][4]
-> >    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6080/shard-apl2/
-> igt@kms_cursor_crc@pipe-c-cursor-128x42-sliding.html
-> >    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5786/shard-apl8/
-> igt@kms_cursor_crc@pipe-c-cursor-128x42-sliding.html
-> >     - shard-kbl:          [PASS][5] -> [FAIL][6] +1 similar issue
-> >    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6080/shard-kbl2/
-> igt@kms_cursor_crc@pipe-c-cursor-128x42-sliding.html
-> >    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5786/shard-kbl2/
-> igt@kms_cursor_crc@pipe-c-cursor-128x42-sliding.html
-> 
-> The change only affects two tests which are calling intel_perf_for_fd(): perf 
-> and core_hotunplug.  In the two latter cases reported above, none of those two 
-> tests were executed in the same run before the reported failure occurred so 
-> there is no way for the change to be responsible for that failure.
-> 
-> In the first case of the above three, a perf test was indeed executed a few 
-> steps before the reported failure occurred, but for me it's hard to understand 
-> how that could be the reason of that failure, close to impossible.  Lakshmi, 
-> can we please retry?
+--===============1673262951==
+Content-Type: multipart/alternative;
+ boundary="===============6096427516643029814=="
 
-Retest queued.
+--===============6096427516643029814==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: lib/i915/perf: Fix non-card0 processing (rev5)
+URL   : https://patchwork.freedesktop.org/series/89701/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10051 -> IGTPW_5787
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5787/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5787 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_cs_nop@sync-gfx0:
+    - fi-tgl-y:           NOTRUN -> [SKIP][1] ([fdo#109315] / [i915#2575]) +3 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5787/fi-tgl-y/igt@amdgpu/amd_cs_nop@sync-gfx0.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109278]: https://bugs.freedesktop.org/show_bug.cgi?id=109278
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1208]: https://gitlab.freedesktop.org/drm/intel/issues/1208
+  [i915#1614]: https://gitlab.freedesktop.org/drm/intel/issues/1614
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
 
 
--- 
-Petri Latvala
+Participating hosts (44 -> 40)
+------------------------------
+
+  Additional (1): fi-cml-drallion 
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6080 -> IGTPW_5787
+
+  CI-20190529: 20190529
+  CI_DRM_10051: 192c13a9a811dc07a77e56aae334fad855903764 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5787: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5787/index.html
+  IGT_6080: 1c450c3d4df19cf1087b8ccff3b62cb51addacae @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5787/index.html
+
+--===============6096427516643029814==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/i915/perf: Fix non-card0 processing (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/89701/">https://patchwork.freedesktop.org/series/89701/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5787/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5787/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10051 -&gt; IGTPW_5787</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5787/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5787 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@amdgpu/amd_cs_nop@sync-gfx0:<ul>
+<li>fi-tgl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5787/fi-tgl-y/igt@amdgpu/amd_cs_nop@sync-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +3 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (44 -&gt; 40)</h2>
+<p>Additional (1): fi-cml-drallion <br />
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6080 -&gt; IGTPW_5787</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10051: 192c13a9a811dc07a77e56aae334fad855903764 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5787: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5787/index.html<br />
+  IGT_6080: 1c450c3d4df19cf1087b8ccff3b62cb51addacae @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============6096427516643029814==--
+
+--===============1673262951==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1673262951==--
