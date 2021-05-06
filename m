@@ -1,175 +1,101 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D447B6E051
- for <igt-dev@lists.freedesktop.org>; Thu,  6 May 2021 04:56:36 +0000 (UTC)
-References: <20210304155018.12745-1-ville.syrjala@linux.intel.com>
- <1b64c045-1f80-0e24-c707-7e522f861450@intel.com> <YJKIZmqQ2CfA1d70@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-Message-ID: <12515e20-bda9-ea31-bdd4-9d7f70c73573@intel.com>
-Date: Thu, 6 May 2021 10:26:32 +0530
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Thu,  6 May 2021 08:57:09 +0200
+Message-Id: <20210506065709.345576-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <YJKIZmqQ2CfA1d70@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_async_flips: Add CRC test to
- make sure the correct fb is being scanned out
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: [Intel-gfx] [PATCH i-g-t v4] lib/i915/perf: Fix non-card0 processing
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gNS81LzIwMjEgNToyOCBQTSwgVmlsbGUgU3lyasOkbMOkIHdyb3RlOgo+IE9uIFdlZCwgTWF5
-IDA1LCAyMDIxIGF0IDA5OjAyOjQyQU0gKzA1MzAsIEthcnRoaWsgQiBTIHdyb3RlOgo+PiBPbiAz
-LzQvMjAyMSA5OjIwIFBNLCBWaWxsZSBTeXJqYWxhIHdyb3RlOgo+Pj4gRnJvbTogVmlsbGUgU3ly
-asOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KPj4+Cj4+PiBVc2UgQ1JDIHRv
-IGNvbmZpcm0gdGhhdCB0aGUgb2xkIGZiIGlzIG5vIGxvbmdlciBiZWluZyBzY2FubmVkCj4+PiBv
-dXQgYWZ0ZXIgdGhlIGFzeW5jIGZsaXAgY29tcGxldGVzLiBXZSBkbyB0aGlzIGJ5IGltbWVkaWF0
-ZWx5Cj4+PiByZW5kZXJpbmcgZ2FyYmFnZSBpbnRvIHRoZSBvbGQgZmIgYWZ0ZXIgcmVjZWl2aW5n
-IHRoZSBmbGlwCj4+PiBldmVudC4gU2hvdWxkIGZhaWwgaWYgc29tZW9uZSBpcyBpbXByb3Blcmx5
-IHVzaW5nIG1haWxib3ggc3R5bGUKPj4+IGZsaXBzIHdoaWxlIGNsYWltaW5nIHRvIGRvIGFzeW5j
-IGZsaXBzLgo+Pj4KPj4+IFNpZ25lZC1vZmYtYnk6IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3ly
-amFsYUBsaW51eC5pbnRlbC5jb20+Cj4+PiAtLS0KPj4+ICAgIHRlc3RzL2ttc19hc3luY19mbGlw
-cy5jIHwgMTM1ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKPj4+ICAg
-IDEgZmlsZSBjaGFuZ2VkLCAxMzUgaW5zZXJ0aW9ucygrKQo+Pj4KPj4+IGRpZmYgLS1naXQgYS90
-ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYyBiL3Rlc3RzL2ttc19hc3luY19mbGlwcy5jCj4+PiBpbmRl
-eCBlMzk3YTU0Yjg3NGYuLmJjMGY5NWI5ZWJmNiAxMDA2NDQKPj4+IC0tLSBhL3Rlc3RzL2ttc19h
-c3luY19mbGlwcy5jCj4+PiArKysgYi90ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYwo+Pj4gQEAgLTUy
-LDYgKzUyLDExIEBAIHR5cGVkZWYgc3RydWN0IHsKPj4+ICAgICAgICAgICBkcm1Nb2RlQ29ubmVj
-dG9yUHRyIGNvbm5lY3RvcjsKPj4+ICAgICAgICAgICB1bnNpZ25lZCBsb25nIGZsaXBfdGltZXN0
-YW1wX3VzOwo+Pj4gICAgICAgICAgIGRvdWJsZSBmbGlwX2ludGVydmFsOwo+Pj4gKyAgICAgICBp
-Z3RfcGlwZV9jcmNfdCAqcGlwZV9jcmM7Cj4+PiArICAgICAgIGlndF9jcmNfdCByZWZfY3JjOwo+
-Pj4gKyAgICAgICBpbnQgZmxpcF9jb3VudDsKPj4+ICsgICAgICAgaW50IGZyYW1lX2NvdW50Owo+
-Pj4gKyAgICAgICBib29sIGZsaXBfcGVuZGluZzsKPj4+ICAgIH0gZGF0YV90Owo+Pj4KPj4+ICAg
-IHN0YXRpYyBkcm1Nb2RlQ29ubmVjdG9yUHRyIGZpbmRfY29ubmVjdG9yX2Zvcl9tb2Rlc2V0KGRh
-dGFfdCAqZGF0YSkKPj4+IEBAIC0zNzksNiArMzg0LDEzMiBAQCBzdGF0aWMgdm9pZCB0ZXN0X2lu
-aXQoZGF0YV90ICpkYXRhKQo+Pj4gICAgICAgICAgIGRybU1vZGVGcmVlUmVzb3VyY2VzKHJlcyk7
-Cj4+PiAgICB9Cj4+Pgo+Pj4gK3N0YXRpYyB2b2lkIHF1ZXVlX3ZibGFuayhkYXRhX3QgKmRhdGEp
-Cj4+PiArewo+Pj4gKyAgICAgICBkcm1WQmxhbmsgd2FpdF92YmwgPSB7Cj4+PiArICAgICAgICAg
-ICAgICAgLnJlcXVlc3QudHlwZSA9IERSTV9WQkxBTktfUkVMQVRJVkUgfCBEUk1fVkJMQU5LX0VW
-RU5UIHwKPj4+ICsgICAgICAgICAgICAgICAgICAgICAgIGttc3Rlc3RfZ2V0X3BpcGVfZnJvbV9j
-cnRjX2lkKGRhdGEtPmRybV9mZCwgZGF0YS0+Y3J0Y19pZCksCj4+PiArICAgICAgICAgICAgICAg
-LnJlcXVlc3Quc2VxdWVuY2UgPSAxLAo+Pj4gKyAgICAgICAgICAgICAgIC5yZXF1ZXN0LnNpZ25h
-bCA9IChsb25nKWRhdGEsCj4+PiArICAgICAgIH07Cj4+PiArCj4+PiArICAgICAgIGlndF9hc3Nl
-cnQoZHJtSW9jdGwoZGF0YS0+ZHJtX2ZkLCBEUk1fSU9DVExfV0FJVF9WQkxBTkssICZ3YWl0X3Zi
-bCkgPT0gMCk7Cj4+PiArfQo+Pj4gKwo+Pj4gK3N0YXRpYyB2b2lkIHZibGFua19oYW5kbGVyX2Ny
-YyhpbnQgZmRfLCB1bnNpZ25lZCBpbnQgc2VxdWVuY2UsIHVuc2lnbmVkIGludCB0dl9zZWMsCj4+
-PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdW5zaWduZWQgaW50IHR2X3VzZWMsIHZv
-aWQgKl9kYXRhKQo+Pj4gK3sKPj4+ICsgICAgICAgZGF0YV90ICpkYXRhID0gX2RhdGE7Cj4+PiAr
-ICAgICAgIGlndF9jcmNfdCBjcmM7Cj4+PiArCj4+PiArICAgICAgIGRhdGEtPmZyYW1lX2NvdW50
-Kys7Cj4+PiArCj4+PiArICAgICAgIGlndF9waXBlX2NyY19nZXRfc2luZ2xlKGRhdGEtPnBpcGVf
-Y3JjLCAmY3JjKTsKPj4+ICsgICAgICAgaWd0X2Fzc2VydF9jcmNfZXF1YWwoJmRhdGEtPnJlZl9j
-cmMsICZjcmMpOwo+Pj4gKwo+Pj4gKyAgICAgICAvKiBjaGVjayBhZ2FpbiBuZXh0IHZibGFuayAq
-Lwo+Pj4gKyAgICAgICBxdWV1ZV92YmxhbmsoZGF0YSk7Cj4+PiArfQo+Pj4gKwo+Pj4gK3N0YXRp
-YyB2b2lkIGZsaXBfaGFuZGxlcl9jcmMoaW50IGZkXywgdW5zaWduZWQgaW50IHNlcXVlbmNlLCB1
-bnNpZ25lZCBpbnQgdHZfc2VjLAo+Pj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICB1bnNp
-Z25lZCBpbnQgdHZfdXNlYywgdm9pZCAqX2RhdGEpCj4+PiArewo+Pj4gKyAgICAgICBkYXRhX3Qg
-KmRhdGEgPSBfZGF0YTsKPj4+ICsKPj4+ICsgICAgICAgZGF0YS0+ZmxpcF9wZW5kaW5nID0gZmFs
-c2U7Cj4+PiArICAgICAgIGRhdGEtPmZsaXBfY291bnQrKzsKPj4+ICt9Cj4+PiArCj4+PiArc3Rh
-dGljIHZvaWQgd2FpdF9ldmVudHNfY3JjKGRhdGFfdCAqZGF0YSkKPj4+ICt7Cj4+PiArICAgICAg
-IGRybUV2ZW50Q29udGV4dCBldmN0eCA9IHsKPj4+ICsgICAgICAgICAgICAgICAudmVyc2lvbiA9
-IDIsCj4+PiArICAgICAgICAgICAgICAgLnZibGFua19oYW5kbGVyID0gdmJsYW5rX2hhbmRsZXJf
-Y3JjLAo+Pj4gKyAgICAgICAgICAgICAgIC5wYWdlX2ZsaXBfaGFuZGxlciA9IGZsaXBfaGFuZGxl
-cl9jcmMsCj4+PiArICAgICAgIH07Cj4+PiArCj4+PiArICAgICAgIHdoaWxlIChkYXRhLT5mbGlw
-X3BlbmRpbmcpIHsKPj4+ICsgICAgICAgICAgICAgICBzdHJ1Y3QgcG9sbGZkIHBmZCA9IHsKPj4+
-ICsgICAgICAgICAgICAgICAgICAgICAgIC5mZCA9IGRhdGEtPmRybV9mZCwKPj4+ICsgICAgICAg
-ICAgICAgICAgICAgICAgIC5ldmVudHMgPSBQT0xMSU4sCj4+PiArICAgICAgICAgICAgICAgfTsK
-Pj4+ICsgICAgICAgICAgICAgICBpbnQgcmV0Owo+Pj4gKwo+Pj4gKyAgICAgICAgICAgICAgIHJl
-dCA9IHBvbGwoJnBmZCwgMSwgMjAwMCk7Cj4+PiArCj4+PiArICAgICAgICAgICAgICAgc3dpdGNo
-IChyZXQpIHsKPj4+ICsgICAgICAgICAgICAgICBjYXNlIDA6Cj4+PiArICAgICAgICAgICAgICAg
-ICAgICAgICBpZ3RfYXNzZXJ0X2YoMCwgIkZsaXAgVGltZW91dFxuIik7Cj4+PiArICAgICAgICAg
-ICAgICAgICAgICAgICBicmVhazsKPj4+ICsgICAgICAgICAgICAgICBjYXNlIDE6Cj4+PiArICAg
-ICAgICAgICAgICAgICAgICAgICByZXQgPSBkcm1IYW5kbGVFdmVudChkYXRhLT5kcm1fZmQsICZl
-dmN0eCk7Cj4+PiArICAgICAgICAgICAgICAgICAgICAgICBpZ3RfYXNzZXJ0KHJldCA9PSAwKTsK
-Pj4+ICsgICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOwo+Pj4gKyAgICAgICAgICAgICAgIGRl
-ZmF1bHQ6Cj4+PiArICAgICAgICAgICAgICAgICAgICAgICAvKiB1bmV4cGVjdGVkICovCj4+PiAr
-ICAgICAgICAgICAgICAgICAgICAgICBpZ3RfYXNzZXJ0KDApOwo+Pj4gKyAgICAgICAgICAgICAg
-IH0KPj4+ICsgICAgICAgfQo+Pj4gK30KPj4+ICsKPj4+ICtzdGF0aWMgdW5zaWduZWQgaW50IGNs
-b2NrX21zKHZvaWQpCj4+PiArewo+Pj4gKyAgICAgICBzdHJ1Y3QgdGltZXNwZWMgdHM7Cj4+PiAr
-Cj4+PiArICAgICAgIGNsb2NrX2dldHRpbWUoQ0xPQ0tfTU9OT1RPTklDLCAmdHMpOwo+Pj4gKwo+
-Pj4gKyAgICAgICByZXR1cm4gdHMudHZfc2VjICogMTAwMCArIHRzLnR2X25zZWMgLyAxMDAwMDAw
-Owo+Pj4gK30KPj4+ICsKPj4+ICtzdGF0aWMgdm9pZCB0ZXN0X2NyYyhkYXRhX3QgKmRhdGEpCj4+
-PiArewo+Pj4gKyAgICAgICB1bnNpZ25lZCBpbnQgZnJhbWUgPSAwOwo+Pj4gKyAgICAgICB1bnNp
-Z25lZCBpbnQgc3RhcnQ7Cj4+PiArICAgICAgIGludCByZXQ7Cj4+PiArCj4+PiArICAgICAgIGRh
-dGEtPmZsaXBfY291bnQgPSAwOwo+Pj4gKyAgICAgICBkYXRhLT5mcmFtZV9jb3VudCA9IDA7Cj4+
-PiArICAgICAgIGRhdGEtPmZsaXBfcGVuZGluZyA9IGZhbHNlOwo+Pj4gKwo+Pj4gKyAgICAgICBp
-Z3RfZHJhd19maWxsX2ZiKGRhdGEtPmRybV9mZCwgJmRhdGEtPmJ1ZnNbZnJhbWVdLCAweGZmMDAw
-MGZmKTsKPj4+ICsgICAgICAgcmV0ID0gZHJtTW9kZVNldENydGMoZGF0YS0+ZHJtX2ZkLCBkYXRh
-LT5jcnRjX2lkLCBkYXRhLT5idWZzW2ZyYW1lXS5mYl9pZCwgMCwgMCwKPj4+ICsgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgJmRhdGEtPmNvbm5lY3Rvci0+Y29ubmVjdG9yX2lkLCAxLCAmZGF0
-YS0+Y29ubmVjdG9yLT5tb2Rlc1swXSk7Cj4+PiArICAgICAgIGlndF9hc3NlcnRfZXEocmV0LCAw
-KTsKPj4+ICsKPj4+ICsgICAgICAgZGF0YS0+cGlwZV9jcmMgPSBpZ3RfcGlwZV9jcmNfbmV3KGRh
-dGEtPmRybV9mZCwKPj4+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IGttc3Rlc3RfZ2V0X3BpcGVfZnJvbV9jcnRjX2lkKGRhdGEtPmRybV9mZCwgZGF0YS0+Y3J0Y19p
-ZCksCj4+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBJTlRFTF9Q
-SVBFX0NSQ19TT1VSQ0VfQVVUTyk7Cj4+PiArCj4+PiArICAgICAgIGlndF9waXBlX2NyY19zdGFy
-dChkYXRhLT5waXBlX2NyYyk7Cj4+PiArICAgICAgIGlndF9waXBlX2NyY19nZXRfc2luZ2xlKGRh
-dGEtPnBpcGVfY3JjLCAmZGF0YS0+cmVmX2NyYyk7Cj4+PiArCj4+PiArICAgICAgIHF1ZXVlX3Zi
-bGFuayhkYXRhKTsKPj4+ICsKPj4+ICsgICAgICAgc3RhcnQgPSBjbG9ja19tcygpOwo+Pj4gKwo+
-Pj4gKyAgICAgICB3aGlsZSAoY2xvY2tfbXMoKSAtIHN0YXJ0IDwgMjAwMCkgewo+Pj4gKyAgICAg
-ICAgICAgICAgIC8qIGZpbGwgdGhlIG5leHQgZmIgd2l0aCB0aGUgZXhwZWN0ZWQgY29sb3IgKi8K
-Pj4+ICsgICAgICAgICAgICAgICBpZ3RfZHJhd19maWxsX2ZiKGRhdGEtPmRybV9mZCwgJmRhdGEt
-PmJ1ZnNbZnJhbWVdLCAweGZmMDAwMGZmKTsKPj4+ICsKPj4+ICsgICAgICAgICAgICAgICBkYXRh
-LT5mbGlwX3BlbmRpbmcgPSB0cnVlOwo+Pj4gKyAgICAgICAgICAgICAgIHJldCA9IGRybU1vZGVQ
-YWdlRmxpcChkYXRhLT5kcm1fZmQsIGRhdGEtPmNydGNfaWQsIGRhdGEtPmJ1ZnNbZnJhbWVdLmZi
-X2lkLAo+Pj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBEUk1fTU9ERV9Q
-QUdFX0ZMSVBfQVNZTkMgfCBEUk1fTU9ERV9QQUdFX0ZMSVBfRVZFTlQsIGRhdGEpOwo+Pj4gKyAg
-ICAgICAgICAgICAgIGlndF9hc3NlcnRfZXEocmV0LCAwKTsKPj4+ICsKPj4+ICsgICAgICAgICAg
-ICAgICB3YWl0X2V2ZW50c19jcmMoZGF0YSk7Cj4+PiArCj4+PiArICAgICAgICAgICAgICAgLyog
-Y2xvYmJlciB0aGUgcHJldmlvdXMgZmIgd2hpY2ggc2hvdWxkIG5vIGxvbmdlciBiZSBzY2FubmVk
-IG91dCAqLwo+Pj4gKyAgICAgICAgICAgICAgIGZyYW1lID0gIWZyYW1lOwo+PiBIaSwKPj4KPj4g
-QXMgbWVudGlvbmVkIGluIHRoZSBjb21taXQgbWVzc2FnZSwgd2UgYXJlIHRyeWluZyB0byByZW5k
-ZXIgZ2FyYmFnZSB0bwo+PiB0aGUgb2xkIGZiIGFmdGVyIGZsaXAgZXZlbnRzIGFyZSBjb21wbGV0
-ZWQuCj4+IEJ1dCBoZXJlIHRoZSBmcmFtZSB2YXJpYWJsZSBpcyBhbHJlYWR5IHVwZGF0ZWQgYmVm
-b3JlIGZpbGxpbmcgaXQgd2l0aAo+PiBnYXJiYWdlLgo+PiBUaGlzIG1lYW5zIHdlJ3JlIGZpbGxp
-bmcgdGhpcyBnYXJiYWdlIG9uIG5ldyBmYiBhbmQgdGhlbiB3ZSBhZ2FpbiBmaWxsCj4+IHRoZSBz
-YW1lIGZiIHdpdGggZ3JlZW4gaW4gdGhlIHN0YXJ0IG9mIHRoZSB3aGlsZSBsb29wIGJlZm9yZSBz
-dWJtaXR0aW5nCj4+IHRoZSBuZXh0IGZsaXA/Cj4+IElzIG15IHVuZGVyc3RhbmRpbmcgYWJvdmUg
-Y29ycmVjdD8gSWYgbm90LCBjb3VsZCB5b3UgcGxlYXNlIGxldCBtZSBrbm93Cj4+IHdoYXQgSSdt
-IG1pc3NpbmcgaGVyZT8KPiBXZSdyZSB0cnlpbmcgdG8gc2VlIGlmIHdyaXRpbmcgZ2FyYmFnZSB0
-byB0aGUgZmIgd2hpY2ggaXMgbm90Cj4gc3VwcG9zZWRseSBiZWluZyBzY2FubmVkIG91dCByZXN1
-bHRzIGluIGEgY3JjIGNoYW5nZS4gQW5kCj4gYmVmb3JlIHdlIGFjdHVhbGx5IGZsaXAgYmFjayB0
-byB0aGF0IGZiIHdlIG5lZWQgdG8gZ2V0IHJpZCBvZgo+IHRoZSBnYXJiYWdlIGFnYWluIGFuZCBy
-ZXBsYWNlIGl0IHdpdGggdGhlIGNvcnJlY3QgY29sb3IuCj4KPiBUaGlzIHNob3VsZCBmYWlsIGlm
-IHRoZSBoYXJkd2FyZS9kcml2ZXIgbGllcyBhYm91dCBzdXBwb3J0aW5nCj4gYXN5bmMgZmxpcHMg
-YW5kIGFjdHVhbGx5IGZha2VzIGl0IHVzaW5nIG1haWxib3ggZmxpcHMgYmVjYXVzZQo+IHdlIHdp
-bGwgZW5kIHVwIHdyaXRpbmcgZ2FyYmFnZSBpbnRvIHRoZSBjdXJyZW50IHNjYW5vdXQgYnVmZmVy
-LgoKVGhhbmsgeW91IGZvciB0aGUgY2xhcmlmaWNhdGlvbi4gTm93IGl0IG1ha2VzIHNlbnNlIHdo
-eSBJIHdhcyBnZXR0aW5nIApDUkMgbWlzbWF0Y2ggd2hlbiBJIHRyaWVkIHRoZSBvdGhlciB3YXkg
-YXJvdW5kLgoKVGhpcyBwYXRjaCBsb29rcyBnb29kIHRvIG1lLgoKUmV2aWV3ZWQtYnk6IEthcnRo
-aWsgQiBTIDxrYXJ0aGlrLmIuc0BpbnRlbC5jb20+Cgo+Cj4+IEkgdHJpZWQgdG8gcnVuIGl0IG9u
-IG15IGxvY2FsIHNldHVwIGJ5IG1vdmluZyB0aGUgdGhlIGZyYW1lIHZhcmlhYmxlCj4+IHVwZGF0
-ZSBhZnRlciB0aGUgZmlsbF9mYiBiZWxvdywgYnV0IHdlIHNlZSBhIENSQyBtaXNtYXRjaCBpbiB0
-aGF0IGNhc2UuCj4+IFNvIEkgdGhpbmsgSSdtIG1pc3Npbmcgc29tZXRoaW5nIGhlcmUuIEJ1dCBu
-b3Qgc3VyZSB3aGF0IEknbSBtaXNzaW5nLgo+Pgo+PiBUaGFua3MsCj4+Cj4+IEthcnRoaWsuQi5T
-Cj4+Cj4+PiArICAgICAgICAgICAgICAgaWd0X2RyYXdfZmlsbF9mYihkYXRhLT5kcm1fZmQsICZk
-YXRhLT5idWZzW2ZyYW1lXSwgcmFuZCgpKTsKPj4+ICsgICAgICAgfQo+Pj4gKwo+Pj4gKyAgICAg
-ICBpZ3RfcGlwZV9jcmNfc3RvcChkYXRhLT5waXBlX2NyYyk7Cj4+PiArICAgICAgIGlndF9waXBl
-X2NyY19mcmVlKGRhdGEtPnBpcGVfY3JjKTsKPj4+ICsKPj4+ICsgICAgICAgLyogbWFrZSBzdXJl
-IHdlIGdvdCBhdCBhIHJlYXNvbmFibGUgbnVtYmVyIG9mIGFzeW5jIGZsaXBzIGRvbmUgKi8KPj4+
-ICsgICAgICAgaWd0X2Fzc2VydF9sdChkYXRhLT5mcmFtZV9jb3VudCAqIDIsIGRhdGEtPmZsaXBf
-Y291bnQpOwo+Pj4gK30KPj4+ICsKPj4+ICAgIGlndF9tYWluCj4+PiAgICB7Cj4+PiAgICAgICAg
-ICAgc3RhdGljIGRhdGFfdCBkYXRhOwo+Pj4gQEAgLTQxOSw2ICs1NTAsMTAgQEAgaWd0X21haW4K
-Pj4+ICAgICAgICAgICAgICAgICAgIGlndF9zdWJ0ZXN0KCJpbnZhbGlkLWFzeW5jLWZsaXAiKQo+
-Pj4gICAgICAgICAgICAgICAgICAgICAgICAgICB0ZXN0X2ludmFsaWQoJmRhdGEpOwo+Pj4KPj4+
-ICsgICAgICAgICAgICAgICBpZ3RfZGVzY3JpYmUoIlVzZSBDUkMgdG8gdmVyaWZ5IGFzeW5jIGZs
-aXAgc2NhbnMgb3V0IHRoZSBjb3JyZWN0IGZyYW1lYnVmZmVyIik7Cj4+PiArICAgICAgICAgICAg
-ICAgaWd0X3N1YnRlc3QoImNyYyIpCj4+PiArICAgICAgICAgICAgICAgICAgICAgICB0ZXN0X2Ny
-YygmZGF0YSk7Cj4+PiArCj4+PiAgICAgICAgICAgICAgICAgICBpZ3RfZml4dHVyZSB7Cj4+PiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIGZvciAoaSA9IDA7IGkgPCBBUlJBWV9TSVpFKGRhdGEu
-YnVmcyk7IGkrKykKPj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZ3RfcmVt
-b3ZlX2ZiKGRhdGEuZHJtX2ZkLCAmZGF0YS5idWZzW2ldKTsKPj4+IC0tCj4+PiAyLjI2LjIKPj4+
-Cj4+PiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+Pj4g
-aWd0LWRldiBtYWlsaW5nIGxpc3QKPj4+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4+
-PiBodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
-CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
-IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
-LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+IGT i915/perf library functions now always operate on sysfs perf
+attributes of card0 device node, no matter which DRM device fd a user
+passes.  The intention was to always switch to primary device node if
+a user passes a render device node fd, but that breaks handling of
+non-card0 devices.
+
+If a user passed a render device node fd, find a primary device node of
+the same device and use it instead of forcibly using the primary device
+with minor number 0 when opening the device sysfs area.
+
+v2: Don't assume primary minor matches render minor with masked type.
+v3: Reset sysfs dir fd if no match, consequently spell out error paths,
+    add a comment on convertion of renderD* to cardX (Lionel).
+v4: Limit primary lookup to minors <64 (Chris)
+
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com> # v3
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ lib/i915/perf.c | 35 ++++++++++++++++++++++++++++++++---
+ 1 file changed, 32 insertions(+), 3 deletions(-)
+
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index 56d5c0b3a..5644a3469 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -372,14 +372,43 @@ open_master_sysfs_dir(int drm_fd)
+ {
+ 	char path[128];
+ 	struct stat st;
++	int sysfs;
+ 
+ 	if (fstat(drm_fd, &st) || !S_ISCHR(st.st_mode))
+                 return -1;
+ 
+-        snprintf(path, sizeof(path), "/sys/dev/char/%d:0",
+-                 major(st.st_rdev));
++	snprintf(path, sizeof(path), "/sys/dev/char/%d:%d", major(st.st_rdev), minor(st.st_rdev));
++	sysfs = open(path, O_DIRECTORY);
++	if (sysfs < 0)
++		return sysfs;
+ 
+-	return open(path, O_DIRECTORY);
++	if (minor(st.st_rdev) >= 128) {
++		/* If we were given a renderD* drm_fd, find it's associated cardX node. */
++		char device[100], cmp[100];
++		int device_len, cmp_len, i;
++
++		device_len = readlinkat(sysfs, "device", device, sizeof(device));
++		close(sysfs);
++		if (device_len < 0)
++			return device_len;
++
++		for (i = 0; i < 64; i++) {
++
++			snprintf(path, sizeof(path), "/sys/dev/char/%d:%d", major(st.st_rdev), i);
++			sysfs = open(path, O_DIRECTORY);
++			if (sysfs < 0)
++				continue;
++
++			cmp_len = readlinkat(sysfs, "device", cmp, sizeof(cmp));
++			if (cmp_len == device_len && !memcmp(cmp, device, cmp_len))
++				break;
++
++			close(sysfs);
++			sysfs = -1;
++		}
++	}
++
++	return sysfs;
+ }
+ 
+ struct intel_perf *
+-- 
+2.25.1
+
+_______________________________________________
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
