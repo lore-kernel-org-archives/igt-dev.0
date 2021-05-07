@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A74DC6E06B
- for <igt-dev@lists.freedesktop.org>; Fri,  7 May 2021 12:51:26 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8736D6E082
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 May 2021 13:08:17 +0000 (UTC)
 From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
-Date: Fri,  7 May 2021 18:20:39 +0530
-Message-Id: <20210507125039.2255568-1-arundhati.hagaragi@intel.com>
+Date: Fri,  7 May 2021 18:37:14 +0530
+Message-Id: <20210507130714.2261738-1-arundhati.hagaragi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_lease: Add subtest description
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_mmap_write_crc: Add subtest
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,27 +20,30 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: S@freedesktop.org, B@freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Added description for subtest
 
 Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Cc: B S, Karthik <karthik.b.s@intel.com>
 ---
- tests/kms_lease.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/kms_mmap_write_crc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 6397ef8f..957af1e0 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -1307,6 +1307,7 @@ igt_main
+diff --git a/tests/kms_mmap_write_crc.c b/tests/kms_mmap_write_crc.c
+index 46013808..a38ed231 100644
+--- a/tests/kms_mmap_write_crc.c
++++ b/tests/kms_mmap_write_crc.c
+@@ -289,6 +289,8 @@ igt_main_args("n", NULL, NULL, opt_handler, NULL)
+ 		igt_info("Using %d rounds for the test\n", ROUNDS);
  
- 	for (f = funcs; f->name; f++) {
+ 		for (i = 0; i < ROUNDS; i++)
++		igt_describe("Tests that writing non-white to the fb and flip to it to make it fully"
++				" UC/WC and make sure caching mode has become UC/WC");
+ 			run_test(&data);
+ 	}
  
-+		igt_describe("Tests the valid crtc/connector combinations for given function");
- 		igt_subtest_f("%s", f->name) {
- 			run_test(&data, f->func);
- 		}
 -- 
 2.25.1
 
