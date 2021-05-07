@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA32B6E079
- for <igt-dev@lists.freedesktop.org>; Fri,  7 May 2021 13:19:31 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BA2B6E0F8
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 May 2021 13:32:52 +0000 (UTC)
 From: Nischal Varide <nischal.varide@intel.com>
-Date: Fri,  7 May 2021 11:57:00 +0530
-Message-Id: <20210507062700.23126-2-nischal.varide@intel.com>
-In-Reply-To: <20210507062700.23126-1-nischal.varide@intel.com>
-References: <20210506004719.4121-2-nischal.varide@intel.com>
- <20210507062700.23126-1-nischal.varide@intel.com>
+Date: Fri,  7 May 2021 12:10:27 +0530
+Message-Id: <20210507064027.23295-2-nischal.varide@intel.com>
+In-Reply-To: <20210507064027.23295-1-nischal.varide@intel.com>
+References: <20210507064027.23295-1-nischal.varide@intel.com>
 MIME-Version: 1.0
 Subject: [igt-dev] [RFC v2 1/1] drm/i915/display: New Property Creation for
  HDMI
