@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4517D6E046
- for <igt-dev@lists.freedesktop.org>; Fri,  7 May 2021 12:46:20 +0000 (UTC)
-References: <20210504004313.28804-1-bhanuprakash.modem@intel.com>
- <20210504004313.28804-3-bhanuprakash.modem@intel.com>
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-Message-ID: <c5161ad2-9618-ce20-f905-6f900af11e10@intel.com>
-Date: Fri, 7 May 2021 18:16:15 +0530
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A74DC6E06B
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 May 2021 12:51:26 +0000 (UTC)
+From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Date: Fri,  7 May 2021 18:20:39 +0530
+Message-Id: <20210507125039.2255568-1-arundhati.hagaragi@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20210504004313.28804-3-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [v4 i-g-t 02/14] tests/kms_frontbuffer_tracking: Fix
- mode selection for 2x tests
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_lease: Add subtest description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,68 +14,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Ck9uIDUvNC8yMDIxIDY6MTMgQU0sIEJoYW51cHJha2FzaCBNb2RlbSB3cm90ZToKPiBXaGVuIHR3
-byBtb25pdG9ycyBjb25uZWN0ZWQgdGhyb3VnaCBNU1QsIHRoZSBzZWNvbmQgbW9uaXRvciBhbHNv
-Cj4gdHJpZXMgdG8gdXNlIHRoZSBzYW1lIG1vZGUuIFNvIHR3byBzdWNoIG1vZGVzIG1heSBub3Qg
-Zml0IGludG8gdGhlCj4gbGluayBiYW5kd2lkdGguCj4KPiBUaGlzIHBhdGNoIHdpbGwgZmluZCBh
-IGNvbWJpbmF0aW9uIG9mIG1vZGVzIHRoYXQgZml0IGludG8gdGhlIEJXLgo+Cj4gVjI6Cj4gKiBS
-ZW1vdmUgTVNUIHNwZWNpZmljIGxvZ2ljIChEYW5pZWwpCj4KPiBDYzogSW1yZSBEZWFrIDxpbXJl
-LmRlYWtAaW50ZWwuY29tPgo+IENjOiBBbmtpdCBOYXV0aXlhbCA8YW5raXQuay5uYXV0aXlhbEBp
-bnRlbC5jb20+Cj4gQ2M6IERhbmllbCBWZXR0ZXIgPGRhbmllbC52ZXR0ZXJAZmZ3bGwuY2g+Cj4g
-U2lnbmVkLW9mZi1ieTogQmhhbnVwcmFrYXNoIE1vZGVtIDxiaGFudXByYWthc2gubW9kZW1AaW50
-ZWwuY29tPgo+IC0tLQo+ICAgdGVzdHMva21zX2Zyb250YnVmZmVyX3RyYWNraW5nLmMgfCAzMyAr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+ICAgMSBmaWxlIGNoYW5nZWQsIDMzIGlu
-c2VydGlvbnMoKykKPgo+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfZnJvbnRidWZmZXJfdHJhY2tp
-bmcuYyBiL3Rlc3RzL2ttc19mcm9udGJ1ZmZlcl90cmFja2luZy5jCj4gaW5kZXggMmU3NGJlYzZm
-Li4yMTFhNWYzZjggMTAwNjQ0Cj4gLS0tIGEvdGVzdHMva21zX2Zyb250YnVmZmVyX3RyYWNraW5n
-LmMKPiArKysgYi90ZXN0cy9rbXNfZnJvbnRidWZmZXJfdHJhY2tpbmcuYwo+IEBAIC0xNjgzLDYg
-KzE2ODMsMzMgQEAgc3RhdGljIHZvaWQgZW5hYmxlX3ByaW1fc2NyZWVuX2FuZF93YWl0KGNvbnN0
-IHN0cnVjdCB0ZXN0X21vZGUgKnQpCj4gICAJZG9fYXNzZXJ0aW9ucyhBU1NFUlRfTk9fQUNUSU9O
-X0NIQU5HRSk7Cj4gICB9Cj4gICAKPiArc3RhdGljIHZvaWQgdXBkYXRlX21vZGVzZXRfY2FjaGVk
-X3BhcmFtcyh2b2lkKQo+ICt7Cj4gKwlib29sIGZvdW5kID0gZmFsc2U7Cj4gKwo+ICsJaWd0X291
-dHB1dF9zZXRfcGlwZShwcmltX21vZGVfcGFyYW1zLm91dHB1dCwgcHJpbV9tb2RlX3BhcmFtcy5w
-aXBlKTsKPiArCWlndF9vdXRwdXRfc2V0X3BpcGUoc2NuZF9tb2RlX3BhcmFtcy5vdXRwdXQsIHNj
-bmRfbW9kZV9wYXJhbXMucGlwZSk7Cj4gKwo+ICsJZm91bmQgPSBpZ3Rfb3ZlcnJpZGVfYWxsX2Fj
-dGl2ZV9vdXRwdXRfbW9kZXNfdG9fZml0X2xpbmtfYncoJmRybS5kaXNwbGF5KTsKPiArCWlndF9y
-ZXF1aXJlX2YoZm91bmQsICJObyB2YWxpZCBtb2RlIGNvbWJvIGZvdW5kLlxuIik7Cj4gKwo+ICsJ
-cHJpbV9tb2RlX3BhcmFtcy5tb2RlX2NvcHkgPSAqaWd0X291dHB1dF9nZXRfbW9kZShwcmltX21v
-ZGVfcGFyYW1zLm91dHB1dCk7Cj4gKwlwcmltX21vZGVfcGFyYW1zLm1vZGUgPSAmcHJpbV9tb2Rl
-X3BhcmFtcy5tb2RlX2NvcHk7Cj4gKwlwcmltX21vZGVfcGFyYW1zLnByaW1hcnkudyA9IHByaW1f
-bW9kZV9wYXJhbXMubW9kZS0+aGRpc3BsYXk7Cj4gKwlwcmltX21vZGVfcGFyYW1zLnByaW1hcnku
-aCA9IHByaW1fbW9kZV9wYXJhbXMubW9kZS0+dmRpc3BsYXk7Cj4gKwo+ICsJc2NuZF9tb2RlX3Bh
-cmFtcy5tb2RlX2NvcHkgPSAqaWd0X291dHB1dF9nZXRfbW9kZShzY25kX21vZGVfcGFyYW1zLm91
-dHB1dCk7Cj4gKwlzY25kX21vZGVfcGFyYW1zLm1vZGUgPSAmc2NuZF9tb2RlX3BhcmFtcy5tb2Rl
-X2NvcHk7Cj4gKwlzY25kX21vZGVfcGFyYW1zLnByaW1hcnkudyA9IHNjbmRfbW9kZV9wYXJhbXMu
-bW9kZS0+aGRpc3BsYXk7Cj4gKwlzY25kX21vZGVfcGFyYW1zLnByaW1hcnkuaCA9IHNjbmRfbW9k
-ZV9wYXJhbXMubW9kZS0+dmRpc3BsYXk7Cj4gKwo+ICsJZmlsbF9mYl9yZWdpb24oJnByaW1fbW9k
-ZV9wYXJhbXMucHJpbWFyeSwgQ09MT1JfUFJJTV9CRyk7Cj4gKwlmaWxsX2ZiX3JlZ2lvbigmc2Nu
-ZF9tb2RlX3BhcmFtcy5wcmltYXJ5LCBDT0xPUl9TQ05EX0JHKTsKPiArCj4gKwlfX3NldF9tb2Rl
-X2Zvcl9wYXJhbXMoJnByaW1fbW9kZV9wYXJhbXMpOwo+ICsJX19zZXRfbW9kZV9mb3JfcGFyYW1z
-KCZzY25kX21vZGVfcGFyYW1zKTsKPiArfQo+ICsKPiAgIHN0YXRpYyB2b2lkIGVuYWJsZV9ib3Ro
-X3NjcmVlbnNfYW5kX3dhaXQoY29uc3Qgc3RydWN0IHRlc3RfbW9kZSAqdCkKPiAgIHsKPiAgIAlm
-aWxsX2ZiX3JlZ2lvbigmcHJpbV9tb2RlX3BhcmFtcy5wcmltYXJ5LCBDT0xPUl9QUklNX0JHKTsK
-PiBAQCAtMTY5MSw2ICsxNzE4LDEyIEBAIHN0YXRpYyB2b2lkIGVuYWJsZV9ib3RoX3NjcmVlbnNf
-YW5kX3dhaXQoY29uc3Qgc3RydWN0IHRlc3RfbW9kZSAqdCkKPiAgIAlfX3NldF9tb2RlX2Zvcl9w
-YXJhbXMoJnByaW1fbW9kZV9wYXJhbXMpOwo+ICAgCV9fc2V0X21vZGVfZm9yX3BhcmFtcygmc2Nu
-ZF9tb2RlX3BhcmFtcyk7Cj4gICAKPiArCWlmIChpZ3RfZGlzcGxheV90cnlfY29tbWl0X2F0b21p
-YygmZHJtLmRpc3BsYXksCj4gKwkJCQkJICBEUk1fTU9ERV9BVE9NSUNfVEVTVF9PTkxZIHwKPiAr
-CQkJCQkgIERSTV9NT0RFX0FUT01JQ19BTExPV19NT0RFU0VULAo+ICsJCQkJCSAgTlVMTCkgIT0g
-MCkKPiArCQl1cGRhdGVfbW9kZXNldF9jYWNoZWRfcGFyYW1zKCk7Cj4gKwo+ICAgCWlndF9kaXNw
-bGF5X2NvbW1pdDIoJmRybS5kaXNwbGF5LCBkcm0uZGlzcGxheS5pc19hdG9taWMgPyBDT01NSVRf
-QVRPTUlDIDogQ09NTUlUX0xFR0FDWSk7CgpBcyBzdWdnZXN0ZWQgaW4gcHJldmlvdXMgcGF0Y2gs
-IGZvciBsZWdhY3kgY29tbWl0IGNhc2Ugd2UgbmVlZCB0byBtb2RpZnkgCnRoZcKgIGlndF9vdmVy
-cmlkZV9hbGxfYWN0aXZlX291dHB1dF9tb2Rlc190b19maXRfbGlua19idygpLCBhbmQgdXNlIAp0
-cnlfY29tbWl0MigpIGNhbGxzLgoKT3IgZWxzZSBpZiB3ZSB3YW50IHRvIHRyeSBjb21iaW5hdGlv
-biBvZiBtb2RlcyBvbmx5IGZvciBhdG9taWMgY29tbWl0LCAKdGhlbiB3ZSBuZWVkIHRvIHNraXAg
-dGhpcyBmb3IgbGVnYWN5IGNvbW1pdC4KCgpSZWdhcmRzLAoKQW5raXQKCj4gICAKPiAgIAl3YW50
-ZWRfY3JjID0gJmJsdWVfY3Jjc1t0LT5mb3JtYXRdLmNyYzsKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9pZ3QtZGV2Cg==
+Added description for subtest
+
+Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+---
+ tests/kms_lease.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+index 6397ef8f..957af1e0 100644
+--- a/tests/kms_lease.c
++++ b/tests/kms_lease.c
+@@ -1307,6 +1307,7 @@ igt_main
+ 
+ 	for (f = funcs; f->name; f++) {
+ 
++		igt_describe("Tests the valid crtc/connector combinations for given function");
+ 		igt_subtest_f("%s", f->name) {
+ 			run_test(&data, f->func);
+ 		}
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
