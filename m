@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 117B66E03B
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 May 2021 09:52:58 +0000 (UTC)
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Date: Fri, 7 May 2021 09:52:45 +0000
+Message-ID: <SN6PR11MB33276572413317DA5EC0B26D8D579@SN6PR11MB3327.namprd11.prod.outlook.com>
+References: <20210506152542.26856-1-venkata.sai.patnana@intel.com>
+In-Reply-To: <20210506152542.26856-1-venkata.sai.patnana@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 07 May 2021 09:24:12 -0000
-Message-ID: <162037945252.10707.6363201460369892688@emeril.freedesktop.org>
-References: <20210506223025.14181-1-nischal.varide@intel.com>
-In-Reply-To: <20210506223025.14181-1-nischal.varide@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdC9r?=
- =?utf-8?q?md=5Fhdmi=3A_Test_case_for_new_HDMI_property?=
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_plane: Restrict the test
+ execution to two pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,214 +18,281 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0618433243=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Nischal Varide <nischal.varide@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Patnana, Venkata Sai" <venkata.sai.patnana@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Latvala, Petri" <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0618433243==
-Content-Type: multipart/alternative;
- boundary="===============7971768341633612816=="
-
---===============7971768341633612816==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: test/kmd_hdmi: Test case for new HDMI property
-URL   : https://patchwork.freedesktop.org/series/89860/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_10056 -> IGTPW_5790
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5790 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@semaphore:
-    - fi-bdw-5557u:       NOTRUN -> [SKIP][1] ([fdo#109271]) +23 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html
-
-  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
-    - fi-snb-2600:        NOTRUN -> [SKIP][2] ([fdo#109271]) +17 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
-
-  * igt@amdgpu/amd_prime@amd-to-i915:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/fi-kbl-soraka/igt@amdgpu/amd_prime@amd-to-i915.html
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-bdw-5557u:       NOTRUN -> [WARN][4] ([i915#2283])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html
-
+> From: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>
+> Sent: Thursday, May 6, 2021 8:56 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: B S, Karthik <karthik.b.s@intel.com>; Shankar, Uma
+> <uma.shankar@intel.com>; Patnana, Venkata Sai <venkata.sai.patnana@intel.com>;
+> Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Latvala, Petri
+> <petri.latvala@intel.com>
+> Subject: [PATCH i-g-t v3] tests/kms_plane: Restrict the test execution to two
+> pipes
+> 
+> From: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+> 
+> v2: Moved to igt tests to dynamic (petri)
+> v3: Implemented clamping in the tests directly
+>     with an open-coded counting (petri)
+> Cc: Uma Shankar <uma.shankar@intel.com>
+> Cc: Modem Bhanuprakash <bhanuprakash.modem@intel.com>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Signed-off-by: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+> ---
+>  tests/kms_plane.c | 131 +++++++++++++++++++++++++++++++++-------------
+>  1 file changed, 95 insertions(+), 36 deletions(-)
+> 
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index 9fe253a8c3..a0d99e3f57 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -39,6 +39,9 @@
+>   */
+>  #define LUT_MASK 0xf800
+> 
+> +/* restricted pipe count */
+> +#define CRTC_RESTRICT_CNT 2
+> +
+>  typedef struct {
+>  	float red;
+>  	float green;
+> @@ -58,6 +61,7 @@ typedef struct {
+>  	int num_colors;
+>  	uint32_t crop;
+>  	bool extended;
+> +	bool all_pipes;
+>  } data_t;
+> 
+>  static color_t red   = { 1.0f, 0.0f, 0.0f };
+> @@ -1057,62 +1061,115 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+>  	igt_assert_f(result, "At least one CRC mismatch happened\n");
+>  }
+> 
+> +static bool is_pipe_limit_reached(int count, bool all_pipes) {
+Instead of having "all_pipes" in data_t structure, declare as a global and
+we don't need to pass as an argument to this function everytime.
   
-#### Possible fixes ####
+> +	return count == CRTC_RESTRICT_CNT && !all_pipes;
+> +}
+> +
+>  static void
+> -run_tests_for_pipe_plane(data_t *data, enum pipe pipe)
+> +run_tests_for_pipe_plane(data_t *data)
+>  {
+> +	enum pipe pipe;
+> +	int count;
+>  	igt_fixture {
+>  		igt_require_pipe(&data->display, pipe);
+>  		igt_require(data->display.pipes[pipe].n_planes > 0);
+>  	}
+> 
+>  	igt_describe("verify the pixel formats for given plane and pipe");
+> -	igt_subtest_f("pixel-format-pipe-%s-planes",
+> -		      kmstest_pipe_name(pipe))
+> -		test_pixel_formats(data, pipe);
+> -
+> +	igt_subtest_with_dynamic_f("pixel-format-pipe-planes") {
+> +		count = 0;
+> +		for_each_pipe(&data->display, pipe) {
+> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
+> +				test_pixel_formats(data, pipe);
+> +			if (is_pipe_limit_reached(++count, data->all_pipes))
+Please check the above comment, this can be updated as
+if (is_pipe_limit_reached(++count))
 
-  * igt@i915_selftest@live@hangcheck:
-    - fi-snb-2600:        [INCOMPLETE][5] ([i915#2782]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10056/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+And this comment is applicable wherever you are useing this function call.
 
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
+> +				break;
+> +		}
+> +	}
+>  	igt_describe("verify the pixel formats for given plane and pipe with
+> source clamping");
+> -	igt_subtest_f("pixel-format-pipe-%s-planes-source-clamping",
+> -		      kmstest_pipe_name(pipe)) {
+> -		data->crop = 4;
+> -		test_pixel_formats(data, pipe);
+> +	igt_subtest_with_dynamic_f("pixel-format-pipe-planes-source-clamping") {
+> +		count = 0;
+> +		for_each_pipe(&data->display, pipe) {
+> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
+> +				data->crop = 4;
+> +				test_pixel_formats(data, pipe);
+> +			}
+> +			if (is_pipe_limit_reached(++count, data->all_pipes))
+> +				break;
+> +		}
+>  	}
+> 
+>  	data->crop = 0;
+>  	igt_describe("verify plane position using two planes to create a fully
+> covered screen");
+> -	igt_subtest_f("plane-position-covered-pipe-%s-planes",
+> -		      kmstest_pipe_name(pipe))
+> -		test_plane_position(data, pipe, 0);
+> +	igt_subtest_with_dynamic_f("plane-position-covered-pipe-planes") {
+> +		count = 0;
+> +		for_each_pipe(&data->display, pipe) {
+> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
+> +				test_plane_position(data, pipe, 0);
+> +			if (is_pipe_limit_reached(++count, data->all_pipes))
+> +				break;
+> +		}
+> +	}
+> 
+>  	igt_describe("verify plane position using two planes to create a
+> partially covered screen");
+> -	igt_subtest_f("plane-position-hole-pipe-%s-planes",
+> -		      kmstest_pipe_name(pipe))
+> -		test_plane_position(data, pipe,
+> -				    TEST_POSITION_PARTIALLY_COVERED);
+> +	igt_subtest_with_dynamic_f("plane-position-hole-pipe-planes") {
+> +		count = 0;
+> +		for_each_pipe(&data->display, pipe) {
+> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
+> +				test_plane_position(data, pipe,
+> +				TEST_POSITION_PARTIALLY_COVERED);
+> +			if (is_pipe_limit_reached(++count, data->all_pipes))
+> +				break;
+> +		}
+> +	}
+> 
+>  	igt_describe("verify plane position using two planes to create a
+> partially covered screen and"
+>  		       "check for DPMS");
+> -	igt_subtest_f("plane-position-hole-dpms-pipe-%s-planes",
+> -		      kmstest_pipe_name(pipe))
+> -		test_plane_position(data, pipe,
+> -				    TEST_POSITION_PARTIALLY_COVERED |
+> -				    TEST_DPMS);
+> +	igt_subtest_with_dynamic_f("plane-position-hole-dpms-pipe-planes") {
+> +		count = 0;
+> +		for_each_pipe(&data->display, pipe) {
+> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
+> +				test_plane_position(data, pipe,
+> +				TEST_POSITION_PARTIALLY_COVERED | TEST_DPMS);
+> +			if (is_pipe_limit_reached(++count, data->all_pipes))
+> +				break;
+> +		}
+> +	}
+> 
+>  	igt_describe("verify plane panning at top-left position using primary
+> plane");
+> -	igt_subtest_f("plane-panning-top-left-pipe-%s-planes",
+> -		      kmstest_pipe_name(pipe))
+> -		test_plane_panning(data, pipe, TEST_PANNING_TOP_LEFT);
+> +	igt_subtest_with_dynamic_f("plane-panning-top-left-pipe-planes") {
+> +		count = 0;
+> +		for_each_pipe(&data->display, pipe) {
+> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
+> +				test_plane_panning(data, pipe, TEST_PANNING_TOP_LEFT);
+> +			if (is_pipe_limit_reached(++count, data->all_pipes))
+> +				break;
+> +		}
+> +	}
+> 
+>  	igt_describe("verify plane panning at bottom-right position using
+> primary plane");
+> -	igt_subtest_f("plane-panning-bottom-right-pipe-%s-planes",
+> -		      kmstest_pipe_name(pipe))
+> -		test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT);
+> +	igt_subtest_with_dynamic_f("plane-panning-bottom-right-pipe-planes") {
+> +		count = 0;
+> +		for_each_pipe(&data->display, pipe) {
+> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
+> +				test_plane_panning(data, pipe,
+> TEST_PANNING_BOTTOM_RIGHT);
+> +			if (is_pipe_limit_reached(++count, data->all_pipes))
+> +				break;
+> +		}
+> +	}
+> 
+>  	igt_describe("verify plane panning at bottom-right position using
+> primary plane and executes system"
+>  		       "suspend cycles");
+> -	igt_subtest_f("plane-panning-bottom-right-suspend-pipe-%s-planes",
+> -		      kmstest_pipe_name(pipe))
+> -		test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT |
+> -					       TEST_SUSPEND_RESUME);
+> +	igt_subtest_with_dynamic_f("plane-panning-bottom-right-suspend-pipe-
+> planes") {
+> +		count = 0;
+> +		for_each_pipe(&data->display, pipe) {
+> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
+> +				test_plane_panning(data, pipe,
+> +				TEST_PANNING_BOTTOM_RIGHT |
+> +				TEST_SUSPEND_RESUME);
+> +			if (is_pipe_limit_reached(++count, data->all_pipes))
+> +				break;
+> +		}
+> +	}
+>  }
+> 
+>  static int opt_handler(int opt, int opt_index, void *_data)
+> @@ -1123,6 +1180,9 @@ static int opt_handler(int opt, int opt_index, void
+> *_data)
+>  	case 'e':
+>  		data->extended = true;
+>  		break;
+> +	case 'p':
+> +		data->all_pipes = true;
+Please check the very first comment.
 
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#2283]: https://gitlab.freedesktop.org/drm/intel/issues/2283
-  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
-  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+> +		break;
+>  	}
+> 
+>  	return IGT_OPT_HANDLER_SUCCESS;
+> @@ -1130,18 +1190,18 @@ static int opt_handler(int opt, int opt_index, void
+> *_data)
+> 
+>  static const struct option long_opts[] = {
+>  	{ .name = "extended", .has_arg = false, .val = 'e', },
+> +	{ .name = "all_pipes", .has_arg = false, .val = 'p', },
+>  	{}
+>  };
+> 
+>  static const char help_str[] =
+> -	"  --extended\t\tRun the extended tests\n";
+> +	"  --extended\t\tRun the extended tests\n"
+> +	"  -e \t\tRun on all pipes. (Default it will Run only two pipes)\n";
+Typo. s/-e/-p/
+Also use 3 tabs to match with the previous menu item.
 
+  --extended            Run the extended tests
+  -e            Run on all pipes. (Default it will Run only two pipes)
 
-Participating hosts (43 -> 39)
-------------------------------
-
-  Missing    (4): fi-ilk-m540 fi-dg1-1 fi-bdw-samus fi-hsw-4200u 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6080 -> IGTPW_5790
-
-  CI-20190529: 20190529
-  CI_DRM_10056: ba8b31d76abe45a6e486ba8cb73c53d147984e28 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5790: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/index.html
-  IGT_6080: 1c450c3d4df19cf1087b8ccff3b62cb51addacae @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@kms_hdmi@hdmi_vendor_product
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/index.html
-
---===============7971768341633612816==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>test/kmd_hdmi: Test case for new HDMI property</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/89860/">https://patchwork.freedesktop.org/series/89860/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10056 -&gt; IGTPW_5790</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5790 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@semaphore:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +23 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_cs_nop@sync-fork-compute0:</p>
-<ul>
-<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_prime@amd-to-i915:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/fi-kbl-soraka/igt@amdgpu/amd_prime@amd-to-i915.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2283">i915#2283</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10056/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (43 -&gt; 39)</h2>
-<p>Missing    (4): fi-ilk-m540 fi-dg1-1 fi-bdw-samus fi-hsw-4200u </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6080 -&gt; IGTPW_5790</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10056: ba8b31d76abe45a6e486ba8cb73c53d147984e28 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5790: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5790/index.html<br />
-  IGT_6080: 1c450c3d4df19cf1087b8ccff3b62cb51addacae @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-<p>== Testlist changes ==</p>
-<p>+igt@kms_hdmi@hdmi_vendor_product</p>
-
-</body>
-</html>
-
---===============7971768341633612816==--
-
---===============0618433243==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+> 
+>  static data_t data;
+> 
+>  igt_main_args("", long_opts, help_str, opt_handler, &data)
+>  {
+> -	enum pipe pipe;
+> -
+>  	igt_fixture {
+>  		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> 
+> @@ -1151,8 +1211,7 @@ igt_main_args("", long_opts, help_str, opt_handler,
+> &data)
+>  		igt_display_require(&data.display, data.drm_fd);
+>  	}
+> 
+> -	for_each_pipe_static(pipe)
+> -		run_tests_for_pipe_plane(&data, pipe);
+> +	run_tests_for_pipe_plane(&data);
+> 
+>  	igt_fixture {
+>  		igt_display_fini(&data.display);
+> --
+> 2.25.1
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0618433243==--
