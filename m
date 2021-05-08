@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01BC76E09A
- for <igt-dev@lists.freedesktop.org>; Sat,  8 May 2021 08:33:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D9E76E09A
+ for <igt-dev@lists.freedesktop.org>; Sat,  8 May 2021 08:33:21 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Sat,  8 May 2021 21:52:50 +0530
-Message-Id: <20210508162303.8235-2-bhanuprakash.modem@intel.com>
-In-Reply-To: <20210508162303.8235-1-bhanuprakash.modem@intel.com>
-References: <20210508162303.8235-1-bhanuprakash.modem@intel.com>
+Date: Sat,  8 May 2021 21:52:49 +0530
+Message-Id: <20210508162303.8235-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [v5 i-g-t 01/14] lib/igt_kms: helper to override the mode
- on all connectors
+Subject: [igt-dev] [v5 i-g-t 00/14] Fix mode selection for 2x tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,141 +19,64 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This helper will iterate through all connectors those have a
-pending_pipe != PIPE_NONE set by the test upto the point of
-calling this helper. And find the combination by using
-ATOMIC_TEST_ONLY then return to the test.
+When two monitors connected through MST, the second monitor also
+tries to use the same mode. So two such modes may not fit into the
+link bandwidth.
 
-This helper would override the mode on all connectors that will
-be modeset by the next igt_display_commit() call in the test.
+This series will find a combination of modes that fit into the BW.
 
-V2:
-* Remove MST specific logic (Daniel)
-V3:
-* Sort connector modes in descending order
-V4:
-* Fine tune the logic to reduce #of interations (Ankit)
-* Update the documentation (Ankit)
-V5:
-* Fix function name to make it generic (Ankit)
-* Add support for legacy commit (Ankit)
+IGT core helper would override the mode on all connectors that will
+be modeset by the next igt_display_commit() call in the test. These
+are all the connectors in igt_display_t that have a pending_pipe set
+by the test up to the point of calling this helper.
+
+For 1x tests, cleanup the state before exiting the test.
+
+Follow-up:
+As modeset will happen one by one, we can't apply this approach on
+tests/kms_flip.c & tests/kms_setmode.c
 
 Cc: Imre Deak <imre.deak@intel.com>
 Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
----
- lib/igt_kms.c | 79 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  1 +
- 2 files changed, 80 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 47b829b0c..28fb9c094 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -4048,6 +4048,85 @@ void igt_output_set_pipe(igt_output_t *output, enum pipe pipe)
- 	}
- }
- 
-+#define for_each_connector_mode(output)		\
-+	for (int i__ = 0;  i__ < output->config.connector->count_modes; i__++)
-+
-+static int sort_drm_modes(const void *a, const void *b)
-+{
-+	const drmModeModeInfo *mode1 = a, *mode2 = b;
-+
-+	return (mode1->clock < mode2->clock) - (mode2->clock < mode1->clock);
-+}
-+
-+static
-+bool __override_all_active_output_modes_to_fit_bw(igt_display_t *display,
-+						  igt_output_t *outputs[IGT_MAX_PIPES],
-+						  const int n_outputs,
-+						  int base)
-+{
-+	igt_output_t *output = NULL;
-+
-+	if (base >= n_outputs)
-+		return false;
-+
-+	output = outputs[base];
-+
-+	for_each_connector_mode(output) {
-+		int ret;
-+
-+		igt_output_override_mode(output, &output->config.connector->modes[i__]);
-+
-+		if (__override_all_active_output_modes_to_fit_bw(display, outputs, n_outputs, base + 1))
-+			return true;
-+
-+		if (display->is_atomic)
-+			ret = igt_display_try_commit_atomic(display,
-+					DRM_MODE_ATOMIC_TEST_ONLY |
-+					DRM_MODE_ATOMIC_ALLOW_MODESET,
-+					NULL);
-+		else
-+			ret = igt_display_try_commit2(display, COMMIT_LEGACY);
-+
-+		if (!ret)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+/**
-+ * igt_override_all_active_output_modes_to_fit_bw:
-+ * @display: a pointer to an #igt_display_t structure
-+ *
-+ * Override the mode on all active outputs (i.e. pending_pipe != PIPE_NONE)
-+ * on basis of bandwidth.
-+ *
-+ * Returns: true if a valid connector mode combo found, else false
-+ */
-+bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display)
-+{
-+	int i, n_outputs = 0;
-+	igt_output_t *outputs[IGT_MAX_PIPES];
-+
-+	for (i = 0 ; i < display->n_outputs; i++) {
-+		igt_output_t *output = &display->outputs[i];
-+
-+		if (output->pending_pipe == PIPE_NONE)
-+			continue;
-+
-+		/* Sort the modes in descending order by clock freq. */
-+		qsort(output->config.connector->modes,
-+		      output->config.connector->count_modes,
-+		      sizeof(drmModeModeInfo),
-+		      sort_drm_modes);
-+
-+		outputs[n_outputs++] = output;
-+	}
-+	igt_require_f(n_outputs, "No active outputs found.\n");
-+
-+	return __override_all_active_output_modes_to_fit_bw(display, outputs, n_outputs, 0);
-+}
-+
- /*
-  * igt_pipe_refresh:
-  * @display: a pointer to an #igt_display_t structure
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 85f0769c9..8cde24b79 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -915,5 +915,6 @@ void igt_require_pipe(igt_display_t *display,
- 
- void igt_dump_connectors_fd(int drmfd);
- void igt_dump_crtcs_fd(int drmfd);
-+bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display);
- 
- #endif /* __IGT_KMS_H__ */
--- 
+Bhanuprakash Modem (14):
+  lib/igt_kms: helper to override the mode on all connectors
+  tests/kms_frontbuffer_tracking: Fix mode selection for 2x tests
+  tests/kms_cursor_legacy: Fix mode selection for 2x tests
+  tests/debugfs_test: Fix mode selection for MST
+  tests/kms_content_protection: Fix mode selection for 2x tests
+  tests/kms_plane_scaling: Fix mode selection for 2x tests
+  tests/kms_atomic_transition: Fix mode selection for 2x tests
+  tests/kms_plane: Reset the state before exiting the test
+  tests/kms_plane_alpha_blend: Reset the state before exiting the test
+  tests/kms_cursor_edge_walk: Reset the state before exiting the test
+  tests/kms_plane_lowres: Reset the state before exiting the test
+  tests/kms_plane_cursor: Reset the state before exiting the test
+  tests/kms_flip_scaled_crc: Reset the state before exiting the test
+  tests/kms_vblank: Reset the state before exiting the test
+
+ lib/igt_kms.c                    | 79 ++++++++++++++++++++++++++++++++
+ lib/igt_kms.h                    |  1 +
+ tests/debugfs_test.c             | 21 +++++++++
+ tests/kms_atomic_transition.c    | 15 ++++++
+ tests/kms_content_protection.c   | 41 +++++++----------
+ tests/kms_cursor_edge_walk.c     |  3 ++
+ tests/kms_cursor_legacy.c        | 50 ++++++++++++++++++--
+ tests/kms_flip_scaled_crc.c      |  5 ++
+ tests/kms_frontbuffer_tracking.c | 40 ++++++++++++++++
+ tests/kms_plane.c                | 15 ++++--
+ tests/kms_plane_alpha_blend.c    |  5 +-
+ tests/kms_plane_cursor.c         |  4 ++
+ tests/kms_plane_lowres.c         |  9 ++--
+ tests/kms_plane_scaling.c        | 15 ++++--
+ tests/kms_vblank.c               |  2 +
+ 15 files changed, 262 insertions(+), 43 deletions(-)
+
+--
 2.20.1
 
 _______________________________________________
