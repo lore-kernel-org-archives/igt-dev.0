@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 140966E09A
- for <igt-dev@lists.freedesktop.org>; Sat,  8 May 2021 08:33:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 31A346E868
+ for <igt-dev@lists.freedesktop.org>; Sat,  8 May 2021 08:33:42 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Sat,  8 May 2021 21:52:58 +0530
-Message-Id: <20210508162303.8235-10-bhanuprakash.modem@intel.com>
+Date: Sat,  8 May 2021 21:52:59 +0530
+Message-Id: <20210508162303.8235-11-bhanuprakash.modem@intel.com>
 In-Reply-To: <20210508162303.8235-1-bhanuprakash.modem@intel.com>
 References: <20210508162303.8235-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [v5 i-g-t 09/14] tests/kms_plane_alpha_blend: Reset the
+Subject: [igt-dev] [v5 i-g-t 10/14] tests/kms_cursor_edge_walk: Reset the
  state before exiting the test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -25,40 +25,37 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Before starting the next subtest, clean up the states to default
-values, those are assumed by other tests. This patch will also fix
-few redundant checks.
+values, those are assumed by other tests.
 
 Cc: Imre Deak <imre.deak@intel.com>
 Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_plane_alpha_blend.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tests/kms_cursor_edge_walk.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-index 5e80ae36e..a37cb27c7 100644
---- a/tests/kms_plane_alpha_blend.c
-+++ b/tests/kms_plane_alpha_blend.c
-@@ -237,8 +237,6 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe)
- 	}
+diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
+index 69662afec..d1d8a9143 100644
+--- a/tests/kms_cursor_edge_walk.c
++++ b/tests/kms_cursor_edge_walk.c
+@@ -225,6 +225,7 @@ static void cleanup_crtc(data_t *data)
  
- 	igt_plane_set_fb(primary, &data->black_fb);
--	/* reset alpha property to default */
--	reset_alpha(display, pipe);
+ 	igt_remove_fb(data->drm_fd, &data->primary_fb);
+ 	igt_remove_fb(data->drm_fd, &data->fb);
++	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
  }
  
- static void basic_alpha(data_t *data, enum pipe pipe, igt_plane_t *plane)
-@@ -507,6 +505,9 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, bool blend,
- 		igt_plane_set_fb(plane, NULL);
- 	}
+ static void prepare_crtc(data_t *data)
+@@ -268,6 +269,8 @@ static void test_crtc(data_t *data, unsigned int edges)
+ 	create_cursor_fb(data, data->curw, data->curh);
  
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(display, COMMIT_ATOMIC);
+ 	test_edges(data, edges);
 +
- 	igt_require_f(found, "No planes with %s property found\n",
- 		      blend ? "pixel blending mode" : "alpha");
- 	igt_require_f(multiply, "Multiplied (plane x pixel) alpha not available\n");
++	cleanup_crtc(data);
+ }
+ 
+ static int opt_handler(int opt, int opt_index, void *_data)
 -- 
 2.20.1
 
