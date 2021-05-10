@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1BAC36E441
- for <igt-dev@lists.freedesktop.org>; Mon, 10 May 2021 09:31:42 +0000 (UTC)
-From: Jani Nikula <jani.nikula@linux.intel.com>
-In-Reply-To: <20210507064027.23295-2-nischal.varide@intel.com>
-References: <20210507064027.23295-1-nischal.varide@intel.com>
- <20210507064027.23295-2-nischal.varide@intel.com>
-Date: Mon, 10 May 2021 12:31:35 +0300
-Message-ID: <87zgx3ue88.fsf@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A264F89C9C
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 May 2021 13:24:14 +0000 (UTC)
+From: venkata.sai.patnana@intel.com
+Date: Mon, 10 May 2021 18:44:21 +0530
+Message-Id: <20210510131421.3777-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [RFC v2 1/1] drm/i915/display: New Property Creation
- for HDMI
+Subject: [igt-dev] [PATCH i-g-t v4] tests/kms_plane: Restrict the test
+ execution to two pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,214 +19,241 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Nischal Varide <nischal.varide@intel.com>, igt-dev@lists.freedesktop.org, nischal.varide@intel.com, uma.shankar@intel.com, ankit.k.nautiyal@intel.com
+To: igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, 07 May 2021, Nischal Varide <nischal.varide@intel.com> wrote:
-> Right now the HDMI properties like vendor and product ids are hardcoded
-> in the function "intel_hdmi_compute_spd_infoframe()".
->
-> ret = hdmi_spd_infoframe_init(frame, "Intel", "Integrated gfx").
->
-> This patch enables the possibility of setting vendor and product id fields
-> of the Infoframe structure in the userspace instead of hardcoding in
-> the kernel, and this will help display manufacturers preload picture
-> configurations for the devices.
+From: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
 
-And what does that mean? :o
+v2: Moved to igt tests to dynamic (petri)
+v3: Implemented clamping in the tests directly
+    with an open-coded counting (petri)
+v4: Updated subtest as suggested(petri)
+    Updated Help string (Bhanu)
+Cc: Uma Shankar <uma.shankar@intel.com>
+Cc: Modem Bhanuprakash <bhanuprakash.modem@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+---
+ tests/kms_plane.c | 132 +++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 96 insertions(+), 36 deletions(-)
 
-As Ville said, uapi changes need to be posted on dri-devel in addition
-to intel-gfx mailing lists.
-
-BR,
-Jani.
-
-
->
-> The changes has been tested by an IGT testcase which got floated.
->
-> v2: Edited the commit message on comments received (Ville, Jani)
-> v1: Create new property for vendor and product id of HDMI.
->
-> Signed-off-by: Nischal Varide <nischal.varide@intel.com>
-> ---
->  drivers/gpu/drm/i915/display/intel_atomic.c   | 14 +++++++++++++
->  .../gpu/drm/i915/display/intel_connector.c    | 20 +++++++++++++++++++
->  .../gpu/drm/i915/display/intel_connector.h    |  1 +
->  .../drm/i915/display/intel_display_types.h    |  5 +++++
->  drivers/gpu/drm/i915/display/intel_hdmi.c     | 14 ++++++++++++-
->  drivers/gpu/drm/i915/display/intel_hdmi.h     |  5 +++++
->  drivers/gpu/drm/i915/i915_drv.h               |  1 +
->  7 files changed, 59 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/i915/display/intel_atomic.c b/drivers/gpu/drm/i915/display/intel_atomic.c
-> index 45feaaddab26..4d38eeb9dd33 100644
-> --- a/drivers/gpu/drm/i915/display/intel_atomic.c
-> +++ b/drivers/gpu/drm/i915/display/intel_atomic.c
-> @@ -65,6 +65,9 @@ int intel_digital_connector_atomic_get_property(struct drm_connector *connector,
->  		*val = intel_conn_state->force_audio;
->  	else if (property == dev_priv->broadcast_rgb_property)
->  		*val = intel_conn_state->broadcast_rgb;
-> +	else if (property ==  dev_priv->hdmi_vendor_product_property)
-> +		*val = (intel_conn_state->hdmi_vendor_product_blob)
-> +			? (intel_conn_state->hdmi_vendor_product_blob->base.id) : 0;
->  	else {
->  		drm_dbg_atomic(&dev_priv->drm,
->  			       "Unknown property [PROP:%d:%s]\n",
-> @@ -93,6 +96,7 @@ int intel_digital_connector_atomic_set_property(struct drm_connector *connector,
->  	struct drm_i915_private *dev_priv = to_i915(dev);
->  	struct intel_digital_connector_state *intel_conn_state =
->  		to_intel_digital_connector_state(state);
-> +	struct drm_property_blob *new_blob = NULL;
->  
->  	if (property == dev_priv->force_audio_property) {
->  		intel_conn_state->force_audio = val;
-> @@ -104,6 +108,16 @@ int intel_digital_connector_atomic_set_property(struct drm_connector *connector,
->  		return 0;
->  	}
->  
-> +	if (property ==  dev_priv->hdmi_vendor_product_property) {
-> +		new_blob = drm_property_lookup_blob(dev, val);
-> +		if (new_blob == NULL)
-> +			return -EINVAL;
-> +		if (drm_property_replace_blob
-> +			(&intel_conn_state->hdmi_vendor_product_blob, new_blob)) {
-> +			drm_property_blob_put(new_blob);
-> +			return 0;
-> +		}
-> +	}
->  	drm_dbg_atomic(&dev_priv->drm, "Unknown property [PROP:%d:%s]\n",
->  		       property->base.id, property->name);
->  	return -EINVAL;
-> diff --git a/drivers/gpu/drm/i915/display/intel_connector.c b/drivers/gpu/drm/i915/display/intel_connector.c
-> index d5ceb7bdc14b..c4ce8f70e752 100644
-> --- a/drivers/gpu/drm/i915/display/intel_connector.c
-> +++ b/drivers/gpu/drm/i915/display/intel_connector.c
-> @@ -269,6 +269,26 @@ intel_attach_broadcast_rgb_property(struct drm_connector *connector)
->  	drm_object_attach_property(&connector->base, prop, 0);
->  }
->  
-> +void
-> +intel_attach_hdmi_vendor_product_property(struct drm_connector *connector)
-> +{
-> +	struct drm_device *dev = connector->dev;
-> +	struct drm_i915_private *dev_priv = to_i915(dev);
-> +	struct drm_property *prop;
-> +
-> +	prop = dev_priv->hdmi_vendor_product_property;
-> +	if (!prop) {
-> +		prop = drm_property_create(dev, DRM_MODE_PROP_BLOB |
-> +			DRM_MODE_PROP_ATOMIC, "hdmi_vendor_product", 0);
-> +		if (!prop)
-> +			return;
-> +
-> +		dev_priv->hdmi_vendor_product_property = prop;
-> +	}
-> +
-> +	drm_object_attach_property(&connector->base, prop, 0);
-> +}
-> +
->  void
->  intel_attach_aspect_ratio_property(struct drm_connector *connector)
->  {
-> diff --git a/drivers/gpu/drm/i915/display/intel_connector.h b/drivers/gpu/drm/i915/display/intel_connector.h
-> index 661a37a3c6d8..9e16e098f53a 100644
-> --- a/drivers/gpu/drm/i915/display/intel_connector.h
-> +++ b/drivers/gpu/drm/i915/display/intel_connector.h
-> @@ -27,6 +27,7 @@ enum pipe intel_connector_get_pipe(struct intel_connector *connector);
->  int intel_connector_update_modes(struct drm_connector *connector,
->  				 struct edid *edid);
->  int intel_ddc_get_modes(struct drm_connector *c, struct i2c_adapter *adapter);
-> +void intel_attach_hdmi_vendor_product_property(struct drm_connector *connector);
->  void intel_attach_force_audio_property(struct drm_connector *connector);
->  void intel_attach_broadcast_rgb_property(struct drm_connector *connector);
->  void intel_attach_aspect_ratio_property(struct drm_connector *connector);
-> diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/drivers/gpu/drm/i915/display/intel_display_types.h
-> index 6d8cdaa36748..d29f54163044 100644
-> --- a/drivers/gpu/drm/i915/display/intel_display_types.h
-> +++ b/drivers/gpu/drm/i915/display/intel_display_types.h
-> @@ -549,6 +549,11 @@ struct intel_digital_connector_state {
->  
->  	enum hdmi_force_audio force_audio;
->  	int broadcast_rgb;
-> +	/*
-> +	 * hdmi_infoframe metadata
-> +	 * DRM blob with hdmi vendor and product info
-> +	 */
-> +	struct drm_property_blob *hdmi_vendor_product_blob;
->  };
->  
->  #define to_intel_digital_connector_state(x) container_of(x, struct intel_digital_connector_state, base)
-> diff --git a/drivers/gpu/drm/i915/display/intel_hdmi.c b/drivers/gpu/drm/i915/display/intel_hdmi.c
-> index 28e297296160..6bda096b411d 100644
-> --- a/drivers/gpu/drm/i915/display/intel_hdmi.c
-> +++ b/drivers/gpu/drm/i915/display/intel_hdmi.c
-> @@ -762,6 +762,9 @@ intel_hdmi_compute_spd_infoframe(struct intel_encoder *encoder,
->  {
->  	struct hdmi_spd_infoframe *frame = &crtc_state->infoframes.spd.spd;
->  	int ret;
-> +	struct hdmi_vendor_product_info *hdmi_vp_info;
-> +	struct intel_digital_connector_state *intel_conn_state =
-> +		to_intel_digital_connector_state(conn_state);
->  
->  	if (!crtc_state->has_infoframe)
->  		return true;
-> @@ -769,7 +772,15 @@ intel_hdmi_compute_spd_infoframe(struct intel_encoder *encoder,
->  	crtc_state->infoframes.enable |=
->  		intel_hdmi_infoframe_enable(HDMI_INFOFRAME_TYPE_SPD);
->  
-> -	ret = hdmi_spd_infoframe_init(frame, "Intel", "Integrated gfx");
-> +	if (!intel_conn_state->hdmi_vendor_product_blob) {
-> +		ret = hdmi_spd_infoframe_init(frame, "intel", "Integrated gfx");
-> +	} else {
-> +		if (intel_conn_state->hdmi_vendor_product_blob->data) {
-> +			hdmi_vp_info = intel_conn_state->hdmi_vendor_product_blob->data;
-> +			ret = hdmi_spd_infoframe_init(frame, hdmi_vp_info->vendor,
-> +					hdmi_vp_info->product);
-> +		}
-> +	}
->  	if (drm_WARN_ON(encoder->base.dev, ret))
->  		return false;
->  
-> @@ -2456,6 +2467,7 @@ intel_hdmi_add_properties(struct intel_hdmi *intel_hdmi, struct drm_connector *c
->  	intel_attach_force_audio_property(connector);
->  	intel_attach_broadcast_rgb_property(connector);
->  	intel_attach_aspect_ratio_property(connector);
-> +	intel_attach_hdmi_vendor_product_property(connector);
->  
->  	intel_attach_hdmi_colorspace_property(connector);
->  	drm_connector_attach_content_type_property(connector);
-> diff --git a/drivers/gpu/drm/i915/display/intel_hdmi.h b/drivers/gpu/drm/i915/display/intel_hdmi.h
-> index b43a180d007e..5be7179389d1 100644
-> --- a/drivers/gpu/drm/i915/display/intel_hdmi.h
-> +++ b/drivers/gpu/drm/i915/display/intel_hdmi.h
-> @@ -23,6 +23,11 @@ struct drm_connector_state;
->  union hdmi_infoframe;
->  enum port;
->  
-> +/*Vendor Id and Product Id for the Hdmi property exported to Userspace*/
-> +struct hdmi_vendor_product_info {
-> +	char vendor[30];
-> +	char product[30];
-> +};
->  void intel_hdmi_init_connector(struct intel_digital_port *dig_port,
->  			       struct intel_connector *intel_connector);
->  int intel_hdmi_compute_config(struct intel_encoder *encoder,
-> diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-> index 3cfa6effbb5f..9e3373c0f1eb 100644
-> --- a/drivers/gpu/drm/i915/i915_drv.h
-> +++ b/drivers/gpu/drm/i915/i915_drv.h
-> @@ -1014,6 +1014,7 @@ struct drm_i915_private {
->  
->  	struct drm_property *broadcast_rgb_property;
->  	struct drm_property *force_audio_property;
-> +	struct drm_property *hdmi_vendor_product_property;
->  
->  	/* hda/i915 audio component */
->  	struct i915_audio_component *audio_component;
-
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 9fe253a8c3..7729f45a15 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -39,6 +39,9 @@
+  */
+ #define LUT_MASK 0xf800
+ 
++/* restricted pipe count */
++#define CRTC_RESTRICT_CNT 2
++
+ typedef struct {
+ 	float red;
+ 	float green;
+@@ -60,6 +63,8 @@ typedef struct {
+ 	bool extended;
+ } data_t;
+ 
++bool all_pipes;
++
+ static color_t red   = { 1.0f, 0.0f, 0.0f };
+ static color_t green = { 0.0f, 1.0f, 0.0f };
+ static color_t blue  = { 0.0f, 0.0f, 1.0f };
+@@ -1057,62 +1062,115 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+ 	igt_assert_f(result, "At least one CRC mismatch happened\n");
+ }
+ 
++static bool is_pipe_limit_reached(int count) {
++	return count == CRTC_RESTRICT_CNT && !all_pipes;
++}
++
+ static void
+-run_tests_for_pipe_plane(data_t *data, enum pipe pipe)
++run_tests_for_pipe_plane(data_t *data)
+ {
++	enum pipe pipe;
++	int count;
+ 	igt_fixture {
+ 		igt_require_pipe(&data->display, pipe);
+ 		igt_require(data->display.pipes[pipe].n_planes > 0);
+ 	}
+ 
+ 	igt_describe("verify the pixel formats for given plane and pipe");
+-	igt_subtest_f("pixel-format-pipe-%s-planes",
+-		      kmstest_pipe_name(pipe))
+-		test_pixel_formats(data, pipe);
+-
++	igt_subtest_with_dynamic_f("pixel-format-planes") {
++		count = 0;
++		for_each_pipe(&data->display, pipe) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				test_pixel_formats(data, pipe);
++			if (is_pipe_limit_reached(++count))
++				break;
++		}
++	}
+ 	igt_describe("verify the pixel formats for given plane and pipe with source clamping");
+-	igt_subtest_f("pixel-format-pipe-%s-planes-source-clamping",
+-		      kmstest_pipe_name(pipe)) {
+-		data->crop = 4;
+-		test_pixel_formats(data, pipe);
++	igt_subtest_with_dynamic_f("pixel-format-planes-source-clamping") {
++		count = 0;
++		for_each_pipe(&data->display, pipe) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
++				data->crop = 4;
++				test_pixel_formats(data, pipe);
++			}
++			if (is_pipe_limit_reached(++count))
++				break;
++		}
+ 	}
+ 
+ 	data->crop = 0;
+ 	igt_describe("verify plane position using two planes to create a fully covered screen");
+-	igt_subtest_f("plane-position-covered-pipe-%s-planes",
+-		      kmstest_pipe_name(pipe))
+-		test_plane_position(data, pipe, 0);
++	igt_subtest_with_dynamic_f("plane-position-covered-planes") {
++		count = 0;
++		for_each_pipe(&data->display, pipe) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				test_plane_position(data, pipe, 0);
++			if (is_pipe_limit_reached(++count))
++				break;
++		}
++	}
+ 
+ 	igt_describe("verify plane position using two planes to create a partially covered screen");
+-	igt_subtest_f("plane-position-hole-pipe-%s-planes",
+-		      kmstest_pipe_name(pipe))
+-		test_plane_position(data, pipe,
+-				    TEST_POSITION_PARTIALLY_COVERED);
++	igt_subtest_with_dynamic_f("plane-position-hole-planes") {
++		count = 0;
++		for_each_pipe(&data->display, pipe) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				test_plane_position(data, pipe,
++				TEST_POSITION_PARTIALLY_COVERED);
++			if (is_pipe_limit_reached(++count))
++				break;
++		}
++	}
+ 
+ 	igt_describe("verify plane position using two planes to create a partially covered screen and"
+ 		       "check for DPMS");
+-	igt_subtest_f("plane-position-hole-dpms-pipe-%s-planes",
+-		      kmstest_pipe_name(pipe))
+-		test_plane_position(data, pipe,
+-				    TEST_POSITION_PARTIALLY_COVERED |
+-				    TEST_DPMS);
++	igt_subtest_with_dynamic_f("plane-position-hole-dpms-planes") {
++		count = 0;
++		for_each_pipe(&data->display, pipe) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				test_plane_position(data, pipe,
++				TEST_POSITION_PARTIALLY_COVERED | TEST_DPMS);
++			if (is_pipe_limit_reached(++count))
++				break;
++		}
++	}
+ 
+ 	igt_describe("verify plane panning at top-left position using primary plane");
+-	igt_subtest_f("plane-panning-top-left-pipe-%s-planes",
+-		      kmstest_pipe_name(pipe))
+-		test_plane_panning(data, pipe, TEST_PANNING_TOP_LEFT);
++	igt_subtest_with_dynamic_f("plane-panning-top-left-planes") {
++		count = 0;
++		for_each_pipe(&data->display, pipe) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				test_plane_panning(data, pipe, TEST_PANNING_TOP_LEFT);
++			if (is_pipe_limit_reached(++count))
++				break;
++		}
++	}
+ 
+ 	igt_describe("verify plane panning at bottom-right position using primary plane");
+-	igt_subtest_f("plane-panning-bottom-right-pipe-%s-planes",
+-		      kmstest_pipe_name(pipe))
+-		test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT);
++	igt_subtest_with_dynamic_f("plane-panning-bottom-right-planes") {
++		count = 0;
++		for_each_pipe(&data->display, pipe) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT);
++			if (is_pipe_limit_reached(++count))
++				break;
++		}
++	}
+ 
+ 	igt_describe("verify plane panning at bottom-right position using primary plane and executes system"
+ 		       "suspend cycles");
+-	igt_subtest_f("plane-panning-bottom-right-suspend-pipe-%s-planes",
+-		      kmstest_pipe_name(pipe))
+-		test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT |
+-					       TEST_SUSPEND_RESUME);
++	igt_subtest_with_dynamic_f("plane-panning-bottom-right-suspend-planes") {
++		count = 0;
++		for_each_pipe(&data->display, pipe) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				test_plane_panning(data, pipe,
++				TEST_PANNING_BOTTOM_RIGHT |
++				TEST_SUSPEND_RESUME);
++			if (is_pipe_limit_reached(++count))
++				break;
++		}
++	}
+ }
+ 
+ static int opt_handler(int opt, int opt_index, void *_data)
+@@ -1123,6 +1181,9 @@ static int opt_handler(int opt, int opt_index, void *_data)
+ 	case 'e':
+ 		data->extended = true;
+ 		break;
++	case 'p':
++		all_pipes = true;
++		break;
+ 	}
+ 
+ 	return IGT_OPT_HANDLER_SUCCESS;
+@@ -1130,18 +1191,18 @@ static int opt_handler(int opt, int opt_index, void *_data)
+ 
+ static const struct option long_opts[] = {
+ 	{ .name = "extended", .has_arg = false, .val = 'e', },
++	{ .name = "all_pipes", .has_arg = false, .val = 'p', },
+ 	{}
+ };
+ 
+ static const char help_str[] =
+-	"  --extended\t\tRun the extended tests\n";
++	"  --extended\t\tRun the extended tests\n"
++	"  --all_pipes\t\tRun on all pipes.(Default it will Run only two pipes)\n";
+ 
+ static data_t data;
+ 
+ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ {
+-	enum pipe pipe;
+-
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 
+@@ -1151,8 +1212,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		igt_display_require(&data.display, data.drm_fd);
+ 	}
+ 
+-	for_each_pipe_static(pipe)
+-		run_tests_for_pipe_plane(&data, pipe);
++	run_tests_for_pipe_plane(&data);
+ 
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
 -- 
-Jani Nikula, Intel Open Source Graphics Center
+2.25.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
