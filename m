@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E09A86E9C1
- for <igt-dev@lists.freedesktop.org>; Tue, 11 May 2021 05:57:28 +0000 (UTC)
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Tue, 11 May 2021 05:57:21 +0000
-Message-ID: <SN6PR11MB332703D203DA4E91A64F713B8D539@SN6PR11MB3327.namprd11.prod.outlook.com>
-References: <20210510131421.3777-1-venkata.sai.patnana@intel.com>
-In-Reply-To: <20210510131421.3777-1-venkata.sai.patnana@intel.com>
-Content-Language: en-US
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D58026E9C1
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 May 2021 06:02:32 +0000 (UTC)
+References: <20210508162303.8235-1-bhanuprakash.modem@intel.com>
+ <20210508162303.8235-7-bhanuprakash.modem@intel.com>
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+Message-ID: <b822534d-76d5-b9ae-ebd8-f1c7c03659a6@intel.com>
+Date: Tue, 11 May 2021 11:32:26 +0530
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v4] tests/kms_plane: Restrict the test
- execution to two pipes
+In-Reply-To: <20210508162303.8235-7-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [v5 i-g-t 06/14] tests/kms_plane_scaling: Fix mode
+ selection for 2x tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,288 +19,76 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Patnana, Venkata Sai" <venkata.sai.patnana@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> From: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>
-> Sent: Monday, May 10, 2021 6:44 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: B S, Karthik <karthik.b.s@intel.com>; Shankar, Uma
-> <uma.shankar@intel.com>; Patnana, Venkata Sai <venkata.sai.patnana@intel.com>;
-> Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Latvala, Petri
-> <petri.latvala@intel.com>
-> Subject: [PATCH i-g-t v4] tests/kms_plane: Restrict the test execution to two
-> pipes
-> 
-> From: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
-> 
-> v2: Moved to igt tests to dynamic (petri)
-> v3: Implemented clamping in the tests directly
->     with an open-coded counting (petri)
-> v4: Updated subtest as suggested(petri)
->     Updated Help string (Bhanu)
-> Cc: Uma Shankar <uma.shankar@intel.com>
-> Cc: Modem Bhanuprakash <bhanuprakash.modem@intel.com>
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> Signed-off-by: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+
+On 5/8/2021 9:52 PM, Bhanuprakash Modem wrote:
+> When two monitors connected through MST, the second monitor also
+> tries to use the same mode. So two such modes may not fit into the
+> link bandwidth.
+>
+> This patch will find a combination of modes that fit into the BW.
+>
+> Cc: Imre Deak <imre.deak@intel.com>
+> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->  tests/kms_plane.c | 132 +++++++++++++++++++++++++++++++++-------------
->  1 file changed, 96 insertions(+), 36 deletions(-)
-> 
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index 9fe253a8c3..7729f45a15 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -39,6 +39,9 @@
->   */
->  #define LUT_MASK 0xf800
-> 
-> +/* restricted pipe count */
-> +#define CRTC_RESTRICT_CNT 2
-> +
->  typedef struct {
->  	float red;
->  	float green;
-> @@ -60,6 +63,8 @@ typedef struct {
->  	bool extended;
->  } data_t;
-> 
-> +bool all_pipes;
-Please make this "static" variable.
- 
-> +
->  static color_t red   = { 1.0f, 0.0f, 0.0f };
->  static color_t green = { 0.0f, 1.0f, 0.0f };
->  static color_t blue  = { 0.0f, 0.0f, 1.0f };
-> @@ -1057,62 +1062,115 @@ test_pixel_formats(data_t *data, enum pipe pipe)
->  	igt_assert_f(result, "At least one CRC mismatch happened\n");
->  }
-> 
-> +static bool is_pipe_limit_reached(int count) {
-> +	return count == CRTC_RESTRICT_CNT && !all_pipes;
-
-Nothing wrong with this condition check, still I suggest to use ">=" for
-extra precaution.
- 
-> +}
-> +
->  static void
-> -run_tests_for_pipe_plane(data_t *data, enum pipe pipe)
-> +run_tests_for_pipe_plane(data_t *data)
->  {
-> +	enum pipe pipe;
-> +	int count;
->  	igt_fixture {
->  		igt_require_pipe(&data->display, pipe);
->  		igt_require(data->display.pipes[pipe].n_planes > 0);
->  	}
-> 
->  	igt_describe("verify the pixel formats for given plane and pipe");
-> -	igt_subtest_f("pixel-format-pipe-%s-planes",
-> -		      kmstest_pipe_name(pipe))
-> -		test_pixel_formats(data, pipe);
+>   tests/kms_plane_scaling.c | 15 ++++++++++++---
+>   1 file changed, 12 insertions(+), 3 deletions(-)
+>
+> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+> index 34efc588e..7464b5bdf 100644
+> --- a/tests/kms_plane_scaling.c
+> +++ b/tests/kms_plane_scaling.c
+> @@ -630,9 +630,6 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
+>   	d->plane3 = igt_output_get_plane(output2, 0);
+>   	d->plane4 = get_num_scalers(d, pipe2) >= 2 ? igt_output_get_plane(output2, 1) : NULL;
+>   
+> -	mode1 = igt_output_get_mode(output1);
+> -	mode2 = igt_output_get_mode(output2);
 > -
-> +	igt_subtest_with_dynamic_f("pixel-format-planes") {
-
-Subtest names are not meaning full to me. How about below suggestions?
-
-igt_subtest_with_dynamic_f("something")
-	igt_dynamic_f("pipe-%s-planes", pipe_name)
-
-(OR)
-
-igt_subtest_with_dynamic_f("plane-something")
-	igt_dynamic_f("pipe-%s", pipe_name)
-
-> +		count = 0;
-> +		for_each_pipe(&data->display, pipe) {
-> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
-> +				test_pixel_formats(data, pipe);
-> +			if (is_pipe_limit_reached(++count))
-> +				break;
-> +		}
+>   	igt_skip_on(!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888,
+>   						tiling));
+>   
+> @@ -658,8 +655,20 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
+>   	igt_plane_set_fb(d->plane3, &d->fb[2]);
+>   	if (d->plane4)
+>   		igt_plane_set_fb(d->plane4, &d->fb[3]);
+> +
+> +	if (igt_display_try_commit_atomic(display,
+> +				DRM_MODE_ATOMIC_TEST_ONLY |
+> +				DRM_MODE_ATOMIC_ALLOW_MODESET,
+> +				NULL) != 0) {
+> +		bool found = igt_override_all_active_output_modes_to_fit_bw(display);
+> +		igt_require_f(found, "No valid mode combo found.\n");
 > +	}
->  	igt_describe("verify the pixel formats for given plane and pipe with
-> source clamping");
-> -	igt_subtest_f("pixel-format-pipe-%s-planes-source-clamping",
-> -		      kmstest_pipe_name(pipe)) {
-> -		data->crop = 4;
-> -		test_pixel_formats(data, pipe);
-> +	igt_subtest_with_dynamic_f("pixel-format-planes-source-clamping") {
-> +		count = 0;
-> +		for_each_pipe(&data->display, pipe) {
-> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
-> +				data->crop = 4;
-> +				test_pixel_formats(data, pipe);
-> +			}
-> +			if (is_pipe_limit_reached(++count))
-> +				break;
-> +		}
->  	}
-> 
->  	data->crop = 0;
->  	igt_describe("verify plane position using two planes to create a fully
-> covered screen");
-> -	igt_subtest_f("plane-position-covered-pipe-%s-planes",
-> -		      kmstest_pipe_name(pipe))
-> -		test_plane_position(data, pipe, 0);
-> +	igt_subtest_with_dynamic_f("plane-position-covered-planes") {
-> +		count = 0;
-> +		for_each_pipe(&data->display, pipe) {
-> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
-> +				test_plane_position(data, pipe, 0);
-> +			if (is_pipe_limit_reached(++count))
-> +				break;
-> +		}
-> +	}
-> 
->  	igt_describe("verify plane position using two planes to create a
-> partially covered screen");
-> -	igt_subtest_f("plane-position-hole-pipe-%s-planes",
-> -		      kmstest_pipe_name(pipe))
-> -		test_plane_position(data, pipe,
-> -				    TEST_POSITION_PARTIALLY_COVERED);
-> +	igt_subtest_with_dynamic_f("plane-position-hole-planes") {
-> +		count = 0;
-> +		for_each_pipe(&data->display, pipe) {
-> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
-> +				test_plane_position(data, pipe,
-> +				TEST_POSITION_PARTIALLY_COVERED);
-> +			if (is_pipe_limit_reached(++count))
-> +				break;
-> +		}
-> +	}
-> 
->  	igt_describe("verify plane position using two planes to create a
-> partially covered screen and"
->  		       "check for DPMS");
-> -	igt_subtest_f("plane-position-hole-dpms-pipe-%s-planes",
-> -		      kmstest_pipe_name(pipe))
-> -		test_plane_position(data, pipe,
-> -				    TEST_POSITION_PARTIALLY_COVERED |
-> -				    TEST_DPMS);
-> +	igt_subtest_with_dynamic_f("plane-position-hole-dpms-planes") {
-> +		count = 0;
-> +		for_each_pipe(&data->display, pipe) {
-> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
-> +				test_plane_position(data, pipe,
-> +				TEST_POSITION_PARTIALLY_COVERED | TEST_DPMS);
-> +			if (is_pipe_limit_reached(++count))
-> +				break;
-> +		}
-> +	}
-> 
->  	igt_describe("verify plane panning at top-left position using primary
-> plane");
-> -	igt_subtest_f("plane-panning-top-left-pipe-%s-planes",
-> -		      kmstest_pipe_name(pipe))
-> -		test_plane_panning(data, pipe, TEST_PANNING_TOP_LEFT);
-> +	igt_subtest_with_dynamic_f("plane-panning-top-left-planes") {
-> +		count = 0;
-> +		for_each_pipe(&data->display, pipe) {
-> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
-> +				test_plane_panning(data, pipe, TEST_PANNING_TOP_LEFT);
-> +			if (is_pipe_limit_reached(++count))
-> +				break;
-> +		}
-> +	}
-> 
->  	igt_describe("verify plane panning at bottom-right position using
-> primary plane");
-> -	igt_subtest_f("plane-panning-bottom-right-pipe-%s-planes",
-> -		      kmstest_pipe_name(pipe))
-> -		test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT);
-> +	igt_subtest_with_dynamic_f("plane-panning-bottom-right-planes") {
-> +		count = 0;
-> +		for_each_pipe(&data->display, pipe) {
-> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
-> +				test_plane_panning(data, pipe,
-> TEST_PANNING_BOTTOM_RIGHT);
-> +			if (is_pipe_limit_reached(++count))
-> +				break;
-> +		}
-> +	}
-> 
->  	igt_describe("verify plane panning at bottom-right position using
-> primary plane and executes system"
->  		       "suspend cycles");
-> -	igt_subtest_f("plane-panning-bottom-right-suspend-pipe-%s-planes",
-> -		      kmstest_pipe_name(pipe))
-> -		test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT |
-> -					       TEST_SUSPEND_RESUME);
-> +	igt_subtest_with_dynamic_f("plane-panning-bottom-right-suspend-planes")
-> {
-> +		count = 0;
-> +		for_each_pipe(&data->display, pipe) {
-> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
-> +				test_plane_panning(data, pipe,
-> +				TEST_PANNING_BOTTOM_RIGHT |
-> +				TEST_SUSPEND_RESUME);
-> +			if (is_pipe_limit_reached(++count))
-> +				break;
-> +		}
-> +	}
->  }
-> 
->  static int opt_handler(int opt, int opt_index, void *_data)
-> @@ -1123,6 +1181,9 @@ static int opt_handler(int opt, int opt_index, void
-> *_data)
->  	case 'e':
->  		data->extended = true;
->  		break;
-> +	case 'p':
-> +		all_pipes = true;
-> +		break;
->  	}
-> 
->  	return IGT_OPT_HANDLER_SUCCESS;
-> @@ -1130,18 +1191,18 @@ static int opt_handler(int opt, int opt_index, void
-> *_data)
-> 
->  static const struct option long_opts[] = {
->  	{ .name = "extended", .has_arg = false, .val = 'e', },
-> +	{ .name = "all_pipes", .has_arg = false, .val = 'p', },
->  	{}
->  };
-> 
->  static const char help_str[] =
-> -	"  --extended\t\tRun the extended tests\n";
-> +	"  --extended\t\tRun the extended tests\n"
-> +	"  --all_pipes\t\tRun on all pipes.(Default it will Run only two
-I think we need to use "-" instead of "_" for long_opts names
-s/--all_pipes/--all-pipes/
+> +
+>   	igt_display_commit2(display, COMMIT_ATOMIC);
 
-> pipes)\n";
-> 
->  static data_t data;
-> 
->  igt_main_args("", long_opts, help_str, opt_handler, &data)
->  {
-> -	enum pipe pipe;
-> -
->  	igt_fixture {
->  		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> 
-> @@ -1151,8 +1212,7 @@ igt_main_args("", long_opts, help_str, opt_handler,
-> &data)
->  		igt_display_require(&data.display, data.drm_fd);
->  	}
-> 
-> -	for_each_pipe_static(pipe)
-> -		run_tests_for_pipe_plane(&data, pipe);
-> +	run_tests_for_pipe_plane(&data);
-> 
->  	igt_fixture {
->  		igt_display_fini(&data.display);
-> --
-> 2.25.1
+As discussed in previous patches, this commit should be part of else block.
 
+Also commit message can be modified for general 2x cases.
+
+Other than that patch looks good to me.
+
+With above fixed:
+
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+
+
+>   
+> +	mode1 = igt_output_get_mode(output1);
+> +	mode2 = igt_output_get_mode(output2);
+> +
+>   	/* Upscaling Primary */
+>   	igt_plane_set_size(d->plane1, mode1->hdisplay, mode1->vdisplay);
+>   	igt_plane_set_size(d->plane3, mode2->hdisplay, mode2->vdisplay);
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
