@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BAC76E9B5
- for <igt-dev@lists.freedesktop.org>; Tue, 11 May 2021 05:23:33 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 873A46E051
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 May 2021 05:55:05 +0000 (UTC)
 References: <20210508162303.8235-1-bhanuprakash.modem@intel.com>
- <20210508162303.8235-4-bhanuprakash.modem@intel.com>
+ <20210508162303.8235-6-bhanuprakash.modem@intel.com>
 From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-Message-ID: <3e583ee9-43e1-7b57-eb7d-851126a6bbe8@intel.com>
-Date: Tue, 11 May 2021 10:53:27 +0530
+Message-ID: <cc6e5a18-3d44-9982-6e3a-e62aee292204@intel.com>
+Date: Tue, 11 May 2021 11:24:59 +0530
 MIME-Version: 1.0
-In-Reply-To: <20210508162303.8235-4-bhanuprakash.modem@intel.com>
+In-Reply-To: <20210508162303.8235-6-bhanuprakash.modem@intel.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [v5 i-g-t 03/14] tests/kms_cursor_legacy: Fix mode
- selection for 2x tests
+Subject: Re: [igt-dev] [v5 i-g-t 05/14] tests/kms_content_protection: Fix
+ mode selection for 2x tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,126 +26,112 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Nice to see #TODO for the test getting implemented :)
+
+The test was earlier trying with hard coded 2K mode on MST panels. This 
+takes care of that.
+
+Please find comments inline:
 
 On 5/8/2021 9:52 PM, Bhanuprakash Modem wrote:
 > When two monitors connected through MST, the second monitor also
 > tries to use the same mode. So two such modes may not fit into the
 > link bandwidth.
-
-Change looks good to me.
-
-For this patch as well as other patches, the commit message can be 
-modified as the change is no longer specific for MST, but any 2x setup 
-in general.
-
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-
-
 >
 > This patch will find a combination of modes that fit into the BW.
->
-> V2:
-> * Remove MST specific logic (Daniel)
-> V3:
-> * Add support for legacy commit (Ankit)
 >
 > Cc: Imre Deak <imre.deak@intel.com>
 > Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 > Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->   tests/kms_cursor_legacy.c | 50 ++++++++++++++++++++++++++++++++++++---
->   1 file changed, 47 insertions(+), 3 deletions(-)
+>   tests/kms_content_protection.c | 41 +++++++++++++---------------------
+>   1 file changed, 16 insertions(+), 25 deletions(-)
 >
-> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> index 4723e1ff9..571ea59cf 100644
-> --- a/tests/kms_cursor_legacy.c
-> +++ b/tests/kms_cursor_legacy.c
-> @@ -50,6 +50,27 @@ IGT_TEST_DESCRIPTION("Stress legacy cursor ioctl");
+> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+> index 5a75b871c..1d1a439a9 100644
+> --- a/tests/kms_content_protection.c
+> +++ b/tests/kms_content_protection.c
+> @@ -452,39 +452,18 @@ static bool sink_hdcp2_capable(igt_output_t *output)
+>   	return strstr(buf, "HDCP2.2");
+>   }
 >   
->   igt_pipe_crc_t *pipe_crc;
+> -static void prepare_modeset_on_mst_output(igt_output_t *output, enum pipe pipe)
+> +static void prepare_modeset_on_mst_output(igt_output_t *output)
+>   {
+> -	drmModeConnectorPtr c = output->config.connector;
+>   	drmModeModeInfo *mode;
+>   	igt_plane_t *primary;
+> -	int i, width, height;
+> +	int width, height;
+> +	enum pipe pipe = output->pending_pipe;
 >   
-> +static int try_commit(igt_display_t *display)
-> +{
-> +	return (display->is_atomic) ?
-> +			igt_display_try_commit_atomic(display,
-> +					DRM_MODE_ATOMIC_TEST_ONLY |
-> +					DRM_MODE_ATOMIC_ALLOW_MODESET,
-> +					NULL) :
-> +			igt_display_try_commit2(display, COMMIT_LEGACY);
-> +}
-> +
-> +static void override_output_modes(igt_display_t *display,
-> +				  igt_output_t *output1,
-> +				  igt_output_t *output2)
-> +{
-> +	bool found = igt_override_all_active_output_modes_to_fit_bw(display);
-> +	igt_require_f(found, "No valid mode combo found.\n");
-> +
-> +	igt_output_set_pipe(output1, PIPE_NONE);
-> +	igt_output_set_pipe(output2, PIPE_NONE);
-> +}
-> +
->   static void stress(igt_display_t *display,
->   		   enum pipe pipe, int num_children, unsigned mode,
->   		   int timeout)
-> @@ -393,6 +414,7 @@ static void flip(igt_display_t *display,
->   	struct drm_mode_cursor arg[2];
->   	uint64_t *results;
->   	struct igt_fb fb_info, fb_info2, argb_fb, cursor_fb, cursor_fb2;
-> +	igt_output_t *output, *output2;
+>   	mode = igt_output_get_mode(output);
 >   
->   	results = mmap(NULL, PAGE_SIZE, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
->   	igt_assert(results != MAP_FAILED);
-> @@ -406,9 +428,17 @@ static void flip(igt_display_t *display,
->   	if (mode >= flip_test_atomic)
->   		igt_require(display->is_atomic);
+> -	/*
+> -	 * TODO: Add logic to use the highest possible modes on each output.
+> -	 * Currently using 2k modes by default on all the outputs.
+> -	 */
+> -	igt_debug("Before mode override: Output %s Mode hdisplay %d Mode vdisplay %d\n",
+> -		   output->name, mode->hdisplay, mode->vdisplay);
+> -
+> -	if (mode->hdisplay > 1920 && mode->vdisplay > 1080) {
+> -		for (i = 0; i < c->count_modes; i++) {
+> -			if (c->modes[i].hdisplay <= 1920 && c->modes[i].vdisplay <= 1080) {
+> -				mode = &c->modes[i];
+> -				igt_output_override_mode(output, mode);
+> -				break;
+> -			}
+> -		}
+> -	}
+> -
+> -	igt_debug("After mode overide: Output %s Mode hdisplay %d Mode vdisplay %d\n",
+> -		   output->name, mode->hdisplay, mode->vdisplay);
+> -
+>   	width = mode->hdisplay;
+>   	height = mode->vdisplay;
 >   
-> -	igt_require(set_fb_on_crtc(display, flip_pipe, &fb_info));
-> -	if (flip_pipe != cursor_pipe)
-> -		igt_require(set_fb_on_crtc(display, cursor_pipe, &fb_info2));
-> +	igt_require((output = set_fb_on_crtc(display, flip_pipe, &fb_info)));
-> +	if (flip_pipe != cursor_pipe) {
-> +		igt_require((output2 = set_fb_on_crtc(display, cursor_pipe, &fb_info2)));
-> +
-> +		if (try_commit(display)) {
-> +			override_output_modes(display, output, output2);
-> +
-> +			igt_require((output = set_fb_on_crtc(display, flip_pipe, &fb_info)));
-> +			igt_require((output2 = set_fb_on_crtc(display, cursor_pipe, &fb_info2)));
-> +		}
-> +	}
+> -	igt_output_set_pipe(output, pipe);
+>   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+>   	igt_plane_set_fb(primary, NULL);
+>   	igt_plane_set_fb(primary, pipe % 2 ? &data.red : &data.green);
+> @@ -624,7 +603,8 @@ test_content_protection_mst(int content_type)
 >   
->   	igt_create_color_fb(display->drm_fd, fb_info.width, fb_info.height, DRM_FORMAT_ARGB8888, 0, .5, .5, .5, &cursor_fb);
+>   		igt_assert_f(igt_pipe_connector_valid(pipe, output), "Output-pipe combination invalid\n");
 >   
-> @@ -879,6 +909,13 @@ static void two_screens_flip_vs_cursor(igt_display_t *display, int nloops, bool
->   	igt_require((output = set_fb_on_crtc(display, pipe, &fb_info)));
->   	igt_require((output2 = set_fb_on_crtc(display, pipe2, &fb2_info)));
+> -		prepare_modeset_on_mst_output(output, pipe);
+> +		igt_output_set_pipe(output, pipe);
+> +		prepare_modeset_on_mst_output(output);
+>   		mst_output[dp_mst_outputs++] = output;
 >   
-> +	if (try_commit(display)) {
-> +		override_output_modes(display, output, output2);
-> +
-> +		igt_require((output = set_fb_on_crtc(display, pipe, &fb_info)));
-> +		igt_require((output2 = set_fb_on_crtc(display, pipe2, &fb2_info)));
-> +	}
-> +
->   	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888, 0, 1., 1., 1., &cursor_fb);
->   	set_cursor_on_pipe(display, pipe, &cursor_fb);
->   	populate_cursor_args(display, pipe, arg1, &cursor_fb);
-> @@ -1129,6 +1166,13 @@ static void two_screens_cursor_vs_flip(igt_display_t *display, int nloops, bool
->   	igt_require((outputs[0] = set_fb_on_crtc(display, pipe[0], &fb_info[0])));
->   	igt_require((outputs[1] = set_fb_on_crtc(display, pipe[1], &fb_info[1])));
+>   		pipe++;
+> @@ -635,6 +615,17 @@ test_content_protection_mst(int content_type)
 >   
-> +	if (try_commit(display)) {
-> +		override_output_modes(display, outputs[0], outputs[1]);
+>   	igt_require_f(dp_mst_outputs > 1, "No DP MST set up with >= 2 outputs found in a single topology\n");
+>   
+> +	if (igt_display_try_commit_atomic(display,
+> +				DRM_MODE_ATOMIC_TEST_ONLY |
+> +				DRM_MODE_ATOMIC_ALLOW_MODESET,
+> +				NULL) != 0) {
+> +		bool found = igt_override_all_active_output_modes_to_fit_bw(display);
+> +		igt_require_f(found, "No valid mode combo found for MST modeset\n");
 > +
-> +		igt_require((outputs[0] = set_fb_on_crtc(display, pipe[0], &fb_info[0])));
-> +		igt_require((outputs[1] = set_fb_on_crtc(display, pipe[1], &fb_info[1])));
+> +		for (count = 0; count < dp_mst_outputs; count++)
+> +			prepare_modeset_on_mst_output(mst_output[count]);
 > +	}
 > +
->   	igt_create_color_fb(display->drm_fd, 64, 64, DRM_FORMAT_ARGB8888, 0, 1., 1., 1., &cursor_fb);
+>   	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
+
+The above statement should be in the else block for the if-block. If the 
+try commit in the if block passes we don't need another commit.
+
+With that fixed:
+
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+
+
+>   	igt_require_f(ret == 0, "Commit failure during MST modeset\n");
 >   
->   	set_cursor_on_pipe(display, pipe[0], &cursor_fb);
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
