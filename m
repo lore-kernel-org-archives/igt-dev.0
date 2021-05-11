@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B3D36E9E2
- for <igt-dev@lists.freedesktop.org>; Tue, 11 May 2021 10:07:08 +0000 (UTC)
-References: <20210508162303.8235-1-bhanuprakash.modem@intel.com>
- <20210508162303.8235-5-bhanuprakash.modem@intel.com>
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-Message-ID: <cb9a6ea2-48c0-2f3b-6fdc-4114a2a081a7@intel.com>
-Date: Tue, 11 May 2021 15:37:03 +0530
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0CC686EA17
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 May 2021 10:07:10 +0000 (UTC)
+References: <20210511090000.1521342-1-maarten.lankhorst@linux.intel.com>
+ <YJpTbnb1mdUScc49@platvala-desk.ger.corp.intel.com>
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Message-ID: <d97a3684-a7e1-53f7-ad1c-c5a34826d8ba@linux.intel.com>
+Date: Tue, 11 May 2021 12:07:06 +0200
 MIME-Version: 1.0
-In-Reply-To: <20210508162303.8235-5-bhanuprakash.modem@intel.com>
+In-Reply-To: <YJpTbnb1mdUScc49@platvala-desk.ger.corp.intel.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [v5 i-g-t 04/14] tests/debugfs_test: Fix mode
- selection for MST
+Subject: Re: [igt-dev] [PATCH i-g-t] i915: Handle the case where legacy mmap
+ is not available
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,89 +19,38 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, igt-dev@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 5/8/2021 9:52 PM, Bhanuprakash Modem wrote:
-> When two monitors connected through MST, the second monitor also
-> tries to use the same mode. So two such modes may not fit into the
-> link bandwidth.
+Op 11-05-2021 om 11:50 schreef Petri Latvala:
+> On Tue, May 11, 2021 at 11:00:00AM +0200, Maarten Lankhorst wrote:
+>> We will remove support for the legacy mmap ioctl, so handle that
+>> case without rewriting all tests.
+>>
+>> When the gem_mmap ioctl is not available, transparently fallback to mmap_offset.
+>>
+>> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>> ---
+>> Test-with: 20210510132305.1440923-1-maarten.lankhorst@linux.intel.com
 >
-> This patch will find a combination of modes that fit into the BW.
+> Test-with needs to be:
 >
-> V2:
-> * Add support for legacy commit (Ankit)
+> - in cover letter, not in patch
+> - in kernel's cover letter, not IGT's
 >
-> Cc: Imre Deak <imre.deak@intel.com>
-> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/debugfs_test.c | 21 +++++++++++++++++++++
->   1 file changed, 21 insertions(+)
 >
-> diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c
-> index 46ba0a8be..e50f213ae 100644
-> --- a/tests/debugfs_test.c
-> +++ b/tests/debugfs_test.c
-> @@ -98,12 +98,14 @@ static void kms_tests(int fd, int debugfs)
->   	igt_display_t display;
->   	struct igt_fb fb[IGT_MAX_PIPES];
->   	enum pipe pipe;
-> +	int ret;
->   
->   	igt_fixture
->   		igt_display_require(&display, fd);
->   
->   	igt_subtest("read_all_entries_display_on") {
->   		/* try to light all pipes */
-> +retry:
->   		for_each_pipe(&display, pipe) {
->   			igt_output_t *output;
->   
-> @@ -128,6 +130,25 @@ static void kms_tests(int fd, int debugfs)
->   			}
->   		}
->   
-> +		if (display.is_atomic)
-> +			ret = igt_display_try_commit_atomic(&display,
-> +					DRM_MODE_ATOMIC_TEST_ONLY |
-> +					DRM_MODE_ATOMIC_ALLOW_MODESET,
-> +					NULL);
-> +		else
-> +			ret = igt_display_try_commit2(&display, COMMIT_LEGACY);
-> +
-> +		if (ret) {
-> +			igt_output_t *output;
-> +			bool found = igt_override_all_active_output_modes_to_fit_bw(&display);
-> +			igt_require_f(found, "No valid mode combo found.\n");
-> +
-> +			for_each_connected_output(&display, output)
-> +				igt_output_set_pipe(output, PIPE_NONE);
-> +
-> +			goto retry;
-> +		}
-> +
->   		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>
+Thanks for the explanation!
 
-I think this commit is not required. We will get here after only when 
-try_commit is already a success, either in first try or after retry.
+Is a cover letter required even for a single patch?
 
-Also request to modify the subject and commit msg to remove MST specific 
-use.
+~Maarten
 
-With that fixed:
-
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-
-
->   
->   		read_and_discard_sysfs_entries(debugfs, 0);
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
