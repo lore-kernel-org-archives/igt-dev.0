@@ -1,155 +1,136 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Matthew Auld <matthew.auld@intel.com>
-Date: Tue, 11 May 2021 17:51:10 +0100
-Message-Id: <20210511165117.428062-6-matthew.auld@intel.com>
+Date: Tue, 11 May 2021 17:51:09 +0100
+Message-Id: <20210511165117.428062-5-matthew.auld@intel.com>
 In-Reply-To: <20210511165117.428062-1-matthew.auld@intel.com>
 References: <20210511165117.428062-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 05/12] tests/i915/gem_gpgpu_fill: Use memory
- region interface
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Subject: [Intel-gfx] [PATCH i-g-t 04/12] tests/i915/gem_exec_basic: Use
+ memory region interface
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: thomas.hellstrom@linux.intel.com, petri.latvala@intel.com, intel-gfx@lists.freedesktop.org, daniel@ffwll.ch
+Cc: thomas.hellstrom@linux.intel.com, Dominik Grzegorzek <dominik.grzegorzek@intel.com>, intel-gfx@lists.freedesktop.org, Andrzej Turko <andrzej.turko@linux.intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Andrzej Turko <andrzej.turko@linux.intel.com>
 
-Converted the test gem_gpgpu_fill to use memory region uapi.
+Converted the test gem_exec_basic to use the memory region uapi.
 
 Signed-off-by: Andrzej Turko <andrzej.turko@linux.intel.com>
 Cc: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
 Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 ---
- tests/i915/gem_gpgpu_fill.c | 42 ++++++++++++++++++++++++++++++-------
- 1 file changed, 34 insertions(+), 8 deletions(-)
+ tests/i915/gem_exec_basic.c | 50 +++++++++++++++++++++++++------------
+ 1 file changed, 34 insertions(+), 16 deletions(-)
 
-diff --git a/tests/i915/gem_gpgpu_fill.c b/tests/i915/gem_gpgpu_fill.c
-index 5b11fb35..a6da3bce 100644
---- a/tests/i915/gem_gpgpu_fill.c
-+++ b/tests/i915/gem_gpgpu_fill.c
-@@ -45,13 +45,14 @@
- #include "drm.h"
- #include "i915/gem.h"
+diff --git a/tests/i915/gem_exec_basic.c b/tests/i915/gem_exec_basic.c
+index 5021852f..d1569781 100644
+--- a/tests/i915/gem_exec_basic.c
++++ b/tests/i915/gem_exec_basic.c
+@@ -22,17 +22,18 @@
+  */
+ 
  #include "igt.h"
 +#include "igt_collection.h"
- #include "intel_bufops.h"
-+#include "i915/intel_memory_region.h"
  
- #define WIDTH 64
- #define HEIGHT 64
- #define STRIDE (WIDTH)
- #define SIZE (HEIGHT*STRIDE)
--
- #define COLOR_C4	0xc4
- #define COLOR_4C	0x4c
+ #include "i915/gem_create.h"
  
-@@ -62,10 +63,11 @@ typedef struct {
- } data_t;
+ IGT_TEST_DESCRIPTION("Basic sanity check of execbuf-ioctl rings.");
  
- static struct intel_buf *
--create_buf(data_t *data, int width, int height, uint8_t color)
-+create_buf(data_t *data, int width, int height, uint8_t color, uint32_t region)
+-static uint32_t batch_create(int fd)
++static uint32_t batch_create(int fd, uint32_t batch_size, uint32_t region)
  {
- 	struct intel_buf *buf;
- 	uint8_t *ptr;
-+	uint32_t handle;
- 	int i;
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	uint32_t handle;
  
- 	buf = calloc(1, sizeof(*buf));
-@@ -75,8 +77,10 @@ create_buf(data_t *data, int width, int height, uint8_t color)
- 	 * Legacy code uses 32 bpp after buffer creation.
- 	 * Let's do the same due to keep shader intact.
- 	 */
--	intel_buf_init(data->bops, buf, width/4, height, 32, 0,
--		       I915_TILING_NONE, 0);
-+	handle = gem_create_in_memory_regions(data->drm_fd, SIZE, region);
-+	intel_buf_init_using_handle(data->bops, handle, buf,
-+				    width/4, height, 32, 0,
-+				    I915_TILING_NONE, 0);
+-	handle = gem_create(fd, 4096);
++	handle = gem_create_in_memory_regions(fd, batch_size, region);
+ 	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
  
- 	ptr = gem_mmap__cpu_coherent(data->drm_fd, buf->handle, 0,
- 				     buf->surface[0].size, PROT_WRITE);
-@@ -99,15 +103,16 @@ static void buf_check(uint8_t *ptr, int x, int y, uint8_t color)
- 		     color, val, x, y);
- }
- 
--static void gpgpu_fill(data_t *data, igt_fillfunc_t fill)
-+static void gpgpu_fill(data_t *data, igt_fillfunc_t fill, uint32_t region)
- {
- 	struct intel_buf *buf;
- 	uint8_t *ptr;
- 	int i, j;
- 
--	buf = create_buf(data, WIDTH, HEIGHT, COLOR_C4);
-+	buf = create_buf(data, WIDTH, HEIGHT, COLOR_C4, region);
- 	ptr = gem_mmap__device_coherent(data->drm_fd, buf->handle, 0,
- 					buf->surface[0].size, PROT_READ);
-+
- 	for (i = 0; i < WIDTH; i++)
- 		for (j = 0; j < HEIGHT; j++)
- 			buf_check(ptr, i, j, COLOR_C4);
-@@ -123,10 +128,13 @@ static void gpgpu_fill(data_t *data, igt_fillfunc_t fill)
- 
- 	munmap(ptr, buf->surface[0].size);
- }
-+
+ 	return handle;
+@@ -41,36 +42,53 @@ static uint32_t batch_create(int fd)
  igt_main
  {
- 	data_t data = {0, };
- 	igt_fillfunc_t fill_fn = NULL;
-+	struct local_drm_i915_query_memory_regions *region_info;
-+	struct igt_collection *region_set;
+ 	const struct intel_execution_engine2 *e;
++	struct local_drm_i915_query_memory_regions *query_info;
++	struct igt_collection *regions, *set;
++	uint32_t batch_size;
+ 	int fd = -1;
  
  	igt_fixture {
- 		data.drm_fd = drm_open_driver_render(DRIVER_INTEL);
-@@ -138,12 +146,30 @@ igt_main
- 
- 		igt_require_f(fill_fn, "no gpgpu-fill function\n");
- 
-+		region_info = gem_get_query_memory_regions(data.drm_fd);
-+		igt_assert(region_info);
+ 		fd = drm_open_driver(DRIVER_INTEL);
+ 		/* igt_require_gem(fd); // test is mandatory */
+ 		igt_fork_hang_detector(fd);
 +
-+		region_set = get_memory_region_set(region_info,
-+						   I915_SYSTEM_MEMORY);
++		query_info = gem_get_query_memory_regions(fd);
++		igt_assert(query_info);
++
++		set = get_memory_region_set(query_info,
++					    I915_SYSTEM_MEMORY);
  	}
  
--	igt_subtest("basic")
--		gpgpu_fill(&data, fill_fn);
-+	igt_subtest_with_dynamic("basic") {
-+		struct igt_collection *region;
+ 	igt_subtest_with_dynamic("basic") {
+-		struct drm_i915_gem_exec_object2 exec = {
+-			.handle = batch_create(fd),
+-		};
++		for_each_combination(regions, 1, set) {
++			char *sub_name = memregion_dynamic_subtest_name(regions);
++			struct drm_i915_gem_exec_object2 exec;
++			uint32_t region = igt_collection_get_value(regions, 0);
+ 
+-		__for_each_physical_engine(fd, e) {
+-			igt_dynamic_f("%s", e->name) {
+-				struct drm_i915_gem_execbuffer2 execbuf = {
+-					.buffers_ptr = to_user_pointer(&exec),
+-					.buffer_count = 1,
+-					.flags = e->flags,
+-				};
++			batch_size = gem_get_batch_size(fd, MEMORY_TYPE_FROM_REGION(region));
++			memset(&exec, 0, sizeof(exec));
++			exec.handle = batch_create(fd, batch_size, region);
+ 
+-				gem_execbuf(fd, &execbuf);
++			__for_each_physical_engine(fd, e) {
++				igt_dynamic_f("%s-%s", e->name, sub_name) {
++					struct drm_i915_gem_execbuffer2 execbuf = {
++						.buffers_ptr = to_user_pointer(&exec),
++						.buffer_count = 1,
++						.flags = e->flags,
++					};
 +
-+		for_each_combination(region, 1, region_set) {
-+			char *name = memregion_dynamic_subtest_name(region);
-+			uint32_t id = igt_collection_get_value(region, 0);
-+
-+			igt_dynamic(name)
-+				gpgpu_fill(&data, fill_fn, id);
-+
-+			free(name);
-+		}
-+	}
++					gem_execbuf(fd, &execbuf);
++				}
+ 			}
++			gem_sync(fd, exec.handle); /* catch any GPU hang */
++			gem_close(fd, exec.handle);
++			free(sub_name);
+ 		}
+-
+-		gem_sync(fd, exec.handle); /* catch any GPU hang */
+-		gem_close(fd, exec.handle);
+ 	}
  
  	igt_fixture {
-+		igt_collection_destroy(region_set);
-+		free(region_info);
- 		buf_ops_destroy(data.bops);
++		free(query_info);
++		igt_collection_destroy(set);
+ 		igt_stop_hang_detector();
+ 		close(fd);
  	}
- }
 -- 
 2.26.3
 
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
