@@ -1,13 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41BAF6E0DE
- for <igt-dev@lists.freedesktop.org>; Wed, 12 May 2021 06:37:47 +0000 (UTC)
-From: Khaled Almahallawy <khaled.almahallawy@intel.com>
-Date: Tue, 11 May 2021 23:37:42 -0700
-Message-Id: <20210512063742.185593-1-khaled.almahallawy@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B8286E0DE
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 May 2021 06:38:14 +0000 (UTC)
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Date: Wed, 12 May 2021 06:37:51 +0000
+Message-ID: <SN6PR11MB3327671DA4B721C5E3C3A7DF8D529@SN6PR11MB3327.namprd11.prod.outlook.com>
+References: <20210508162303.8235-1-bhanuprakash.modem@intel.com>
+ <20210508162303.8235-3-bhanuprakash.modem@intel.com>
+ <f8092e5d-7b4f-222c-0d08-49fb222f9206@intel.com>
+In-Reply-To: <f8092e5d-7b4f-222c-0d08-49fb222f9206@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC PATCH i-g-t] tests/kms_invalid_dotclock: Test every
- mode
+Subject: Re: [igt-dev] [v5 i-g-t 02/14] tests/kms_frontbuffer_tracking: Fix
+ mode selection for 2x tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,107 +24,120 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: petri.latvala@intel.com
+To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Implementing:
+> From: Nautiyal, Ankit K <ankit.k.nautiyal@intel.com>
+> Sent: Tuesday, May 11, 2021 9:57 AM
+> To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; igt-
+> dev@lists.freedesktop.org
+> Cc: Deak, Imre <imre.deak@intel.com>; Daniel Vetter <daniel.vetter@ffwll.ch>
+> Subject: Re: [v5 i-g-t 02/14] tests/kms_frontbuffer_tracking: Fix mode
+> selection for 2x tests
+> 
+> 
+> On 5/8/2021 9:52 PM, Bhanuprakash Modem wrote:
+> > When two monitors connected through MST, the second monitor also
+> > tries to use the same mode. So two such modes may not fit into the
+> > link bandwidth.
+> >
+> > This patch will find a combination of modes that fit into the BW.
+> >
+> > V2:
+> > * Remove MST specific logic (Daniel)
+> > V3:
+> > * Add support for legacy commit (Ankit)
+> >
+> > Cc: Imre Deak <imre.deak@intel.com>
+> > Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+> > Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+> > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> > ---
+> >   tests/kms_frontbuffer_tracking.c | 40 ++++++++++++++++++++++++++++++++
+> >   1 file changed, 40 insertions(+)
+> >
+> > diff --git a/tests/kms_frontbuffer_tracking.c
+> b/tests/kms_frontbuffer_tracking.c
+> > index 2e74bec6f..65c2ddb5c 100644
+> > --- a/tests/kms_frontbuffer_tracking.c
+> > +++ b/tests/kms_frontbuffer_tracking.c
+> > @@ -1683,14 +1683,54 @@ static void enable_prim_screen_and_wait(const struct
+> test_mode *t)
+> >   	do_assertions(ASSERT_NO_ACTION_CHANGE);
+> >   }
+> >
+> > +static void update_modeset_cached_params(void)
+> > +{
+> > +	bool found = false;
+> > +
+> > +	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
+> > +	igt_output_set_pipe(scnd_mode_params.output, scnd_mode_params.pipe);
+> > +
+> > +	found = igt_override_all_active_output_modes_to_fit_bw(&drm.display);
+> > +	igt_require_f(found, "No valid mode combo found.\n");
+> > +
+> > +	prim_mode_params.mode_copy =
+> *igt_output_get_mode(prim_mode_params.output);
+> > +	prim_mode_params.mode = &prim_mode_params.mode_copy;
+> > +	prim_mode_params.primary.w = prim_mode_params.mode->hdisplay;
+> > +	prim_mode_params.primary.h = prim_mode_params.mode->vdisplay;
+> > +
+> > +	scnd_mode_params.mode_copy =
+> *igt_output_get_mode(scnd_mode_params.output);
+> > +	scnd_mode_params.mode = &scnd_mode_params.mode_copy;
+> > +	scnd_mode_params.primary.w = scnd_mode_params.mode->hdisplay;
+> > +	scnd_mode_params.primary.h = scnd_mode_params.mode->vdisplay;
+> > +
+> > +	fill_fb_region(&prim_mode_params.primary, COLOR_PRIM_BG);
+> > +	fill_fb_region(&scnd_mode_params.primary, COLOR_SCND_BG);
+> > +
+> > +	__set_mode_for_params(&prim_mode_params);
+> > +	__set_mode_for_params(&scnd_mode_params);
+> > +}
+> > +
+> >   static void enable_both_screens_and_wait(const struct test_mode *t)
+> >   {
+> > +	int ret;
+> > +
+> >   	fill_fb_region(&prim_mode_params.primary, COLOR_PRIM_BG);
+> >   	fill_fb_region(&scnd_mode_params.primary, COLOR_SCND_BG);
+> >
+> >   	__set_mode_for_params(&prim_mode_params);
+> >   	__set_mode_for_params(&scnd_mode_params);
+> >
+> > +	if (drm.display.is_atomic)
+> > +		ret = igt_display_try_commit_atomic(&drm.display,
+> > +				DRM_MODE_ATOMIC_TEST_ONLY |
+> > +				DRM_MODE_ATOMIC_ALLOW_MODESET,
+> > +				NULL);
+> > +	else
+> > +		ret = igt_display_try_commit2(&drm.display, COMMIT_LEGACY);
+> > +
+> > +	if (ret)
+> > +		update_modeset_cached_params();
+> > +
+> >   	igt_display_commit2(&drm.display, drm.display.is_atomic ? COMMIT_ATOMIC
+> : COMMIT_LEGACY);
+> 
+> I think this statement should now be the part of the above if-block.
 
-/*
- * FIXME test every mode we have to be more
- * sure everything is really getting rejected?
- */
+I think still we need this commit, since try_commit_atomic with the flag
+DRM_MODE_ATOMIC_TEST_ONLY will do atomic check only and it really won't commit.
+Also, we'll miss some display prop clean-up display_commit_changed() with both legacy
+and atomic try commit.
 
-Output of the test  will look like the following:
-...
-Checking pipe A connector DP-2 with mode  720x400 70 720 738 846 900 400 412 414 449 0x6 0x40 1305601
-Checking pipe B connector DP-2 with mode  720x400 70 720 738 846 900 400 412 414 449 0x6 0x40 1305601
-Checking pipe C connector DP-2 with mode  720x400 70 720 738 846 900 400 412 414 449 0x6 0x40 1305601
-Checking pipe D connector DP-2 with mode  720x400 70 720 738 846 900 400 412 414 449 0x6 0x40 1305601
-SUCCESS (0.743s)
-
-Signed-off-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
----
- tests/kms_invalid_dotclock.c | 54 +++++++++++++++++-------------------
- 1 file changed, 26 insertions(+), 28 deletions(-)
-
-diff --git a/tests/kms_invalid_dotclock.c b/tests/kms_invalid_dotclock.c
-index 402629ab097f..aab765136d0e 100644
---- a/tests/kms_invalid_dotclock.c
-+++ b/tests/kms_invalid_dotclock.c
-@@ -48,9 +48,10 @@ static int
- test_output(data_t *data)
- {
- 	igt_output_t *output = data->output;
--	drmModeModeInfo mode;
-+	drmModeConnector *connector = output->config.connector;
-+	drmModeModeInfo *mode;
- 	struct igt_fb fb;
--	int i;
-+	int i, j;
+This comment is applicable for all patches in this series.
  
- 	/*
- 	 * FIXME When we have a fixed mode, the kernel will ignore
-@@ -63,33 +64,30 @@ test_output(data_t *data)
- 	if (has_scaling_mode_prop(data))
- 		return 0;
- 
--	/*
--	 * FIXME test every mode we have to be more
--	 * sure everything is really getting rejected?
--	 */
--	mode = *igt_output_get_mode(output);
--	mode.clock = data->max_dotclock + 1;
--
--	igt_create_fb(data->drm_fd,
--		      mode.hdisplay, mode.vdisplay,
--		      DRM_FORMAT_XRGB8888,
--		      LOCAL_DRM_FORMAT_MOD_NONE,
--		      &fb);
--
--	for (i = 0; i < data->res->count_crtcs; i++) {
--		int ret;
--
--		igt_info("Checking pipe %c connector %s with mode %s\n",
--			 'A'+i, output->name, mode.name);
--
--		ret = drmModeSetCrtc(data->drm_fd, data->res->crtcs[i],
--				     fb.fb_id, 0, 0,
--				     &output->id, 1, &mode);
--		igt_assert_lt(ret, 0);
-+	for (j = 0; j < connector->count_modes; j++) {
-+		mode = &connector->modes[j];
-+		mode->clock = data->max_dotclock + 1;
-+
-+		igt_create_fb(data->drm_fd,
-+			mode->hdisplay, mode->vdisplay,
-+			DRM_FORMAT_XRGB8888,
-+			LOCAL_DRM_FORMAT_MOD_NONE,
-+			&fb);
-+
-+		for (i = 0; i < data->res->count_crtcs; i++) {
-+			int ret;
-+
-+			igt_info("Checking pipe %c connector %s with mode",
-+				'A'+i, output->name);
-+			kmstest_dump_mode(mode);
-+			ret = drmModeSetCrtc(data->drm_fd, data->res->crtcs[i],
-+					fb.fb_id, 0, 0,
-+					&output->id, 1, mode);
-+			igt_assert_lt(ret, 0);
-+		}
-+
-+		igt_remove_fb(data->drm_fd, &fb);
- 	}
--
--	igt_remove_fb(data->drm_fd, &fb);
--
- 	return 1;
- }
- 
--- 
-2.25.1
-
+> 
+> In case either of the try commit passes without need to call
+> update_modeset_chached_params(), igt_display_commit again will be redundant.
+> 
+> With that changed:
+> 
+> Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+> 
+> >
+> >   	wanted_crc = &blue_crcs[t->format].crc;
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
