@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C6896E81A
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1BD706E067
  for <igt-dev@lists.freedesktop.org>; Wed, 12 May 2021 09:16:09 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 12 May 2021 22:35:24 +0530
-Message-Id: <20210512170536.4778-3-bhanuprakash.modem@intel.com>
-In-Reply-To: <20210512170536.4778-1-bhanuprakash.modem@intel.com>
-References: <20210512170536.4778-1-bhanuprakash.modem@intel.com>
+Date: Wed, 12 May 2021 22:35:22 +0530
+Message-Id: <20210512170536.4778-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [v6 i-g-t 02/14] tests/kms_frontbuffer_tracking: Fix mode
- selection for 2x tests
+Subject: [igt-dev] [v6 i-g-t 00/14] Fix mode selection for 2x tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,92 +21,62 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will find the connector/mode combination that fits
-into the bandwidth when more than one monitor is connected.
+When two monitors connected through MST, the second monitor also
+tries to use the same mode. So two such modes may not fit into the
+link bandwidth.
 
-Example:
-  When two monitors connected through MST, the second monitor
-  also tries to use the same mode. So two such modes may not
-  fit into the link bandwidth. So, iterate through connected
-  outputs & modes and find a combination of modes those fit
-  into the link BW.
+This series will find a combination of modes that fit into the BW.
 
-V2:
-* Remove MST specific logic (Daniel)
-V3:
-* Add support for legacy commit (Ankit)
-V4:
-* Fix commit message (Ankit)
+IGT core helper would override the mode on all connectors that will
+be modeset by the next igt_display_commit() call in the test. These
+are all the connectors in igt_display_t that have a pending_pipe set
+by the test up to the point of calling this helper.
+
+For 1x tests, cleanup the state before exiting the test.
+
+Follow-up:
+As modeset will happen one by one, we can't apply this approach on
+tests/kms_flip.c & tests/kms_setmode.c
 
 Cc: Imre Deak <imre.deak@intel.com>
 Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
----
- tests/kms_frontbuffer_tracking.c | 40 ++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
 
-diff --git a/tests/kms_frontbuffer_tracking.c b/tests/kms_frontbuffer_tracking.c
-index 2e74bec6f..65c2ddb5c 100644
---- a/tests/kms_frontbuffer_tracking.c
-+++ b/tests/kms_frontbuffer_tracking.c
-@@ -1683,14 +1683,54 @@ static void enable_prim_screen_and_wait(const struct test_mode *t)
- 	do_assertions(ASSERT_NO_ACTION_CHANGE);
- }
- 
-+static void update_modeset_cached_params(void)
-+{
-+	bool found = false;
-+
-+	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
-+	igt_output_set_pipe(scnd_mode_params.output, scnd_mode_params.pipe);
-+
-+	found = igt_override_all_active_output_modes_to_fit_bw(&drm.display);
-+	igt_require_f(found, "No valid mode combo found.\n");
-+
-+	prim_mode_params.mode_copy = *igt_output_get_mode(prim_mode_params.output);
-+	prim_mode_params.mode = &prim_mode_params.mode_copy;
-+	prim_mode_params.primary.w = prim_mode_params.mode->hdisplay;
-+	prim_mode_params.primary.h = prim_mode_params.mode->vdisplay;
-+
-+	scnd_mode_params.mode_copy = *igt_output_get_mode(scnd_mode_params.output);
-+	scnd_mode_params.mode = &scnd_mode_params.mode_copy;
-+	scnd_mode_params.primary.w = scnd_mode_params.mode->hdisplay;
-+	scnd_mode_params.primary.h = scnd_mode_params.mode->vdisplay;
-+
-+	fill_fb_region(&prim_mode_params.primary, COLOR_PRIM_BG);
-+	fill_fb_region(&scnd_mode_params.primary, COLOR_SCND_BG);
-+
-+	__set_mode_for_params(&prim_mode_params);
-+	__set_mode_for_params(&scnd_mode_params);
-+}
-+
- static void enable_both_screens_and_wait(const struct test_mode *t)
- {
-+	int ret;
-+
- 	fill_fb_region(&prim_mode_params.primary, COLOR_PRIM_BG);
- 	fill_fb_region(&scnd_mode_params.primary, COLOR_SCND_BG);
- 
- 	__set_mode_for_params(&prim_mode_params);
- 	__set_mode_for_params(&scnd_mode_params);
- 
-+	if (drm.display.is_atomic)
-+		ret = igt_display_try_commit_atomic(&drm.display,
-+				DRM_MODE_ATOMIC_TEST_ONLY |
-+				DRM_MODE_ATOMIC_ALLOW_MODESET,
-+				NULL);
-+	else
-+		ret = igt_display_try_commit2(&drm.display, COMMIT_LEGACY);
-+
-+	if (ret)
-+		update_modeset_cached_params();
-+
- 	igt_display_commit2(&drm.display, drm.display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 
- 	wanted_crc = &blue_crcs[t->format].crc;
--- 
+Bhanuprakash Modem (14):
+  lib/igt_kms: helper to override the mode on all connectors
+  tests/kms_frontbuffer_tracking: Fix mode selection for 2x tests
+  tests/kms_cursor_legacy: Fix mode selection for 2x tests
+  tests/debugfs_test: Fix mode selection for 2x tests
+  tests/kms_content_protection: Fix mode selection for 2x tests
+  tests/kms_plane_scaling: Fix mode selection for 2x tests
+  tests/kms_atomic_transition: Fix mode selection for 2x tests
+  tests/kms_plane: Reset the state before exiting the test
+  tests/kms_plane_alpha_blend: Reset the state before exiting the test
+  tests/kms_cursor_edge_walk: Reset the state before exiting the test
+  tests/kms_plane_lowres: Reset the state before exiting the test
+  tests/kms_plane_cursor: Reset the state before exiting the test
+  tests/kms_flip_scaled_crc: Reset the state before exiting the test
+  tests/kms_vblank: Reset the state before exiting the test
+
+ lib/igt_kms.c                    | 79 ++++++++++++++++++++++++++++++++
+ lib/igt_kms.h                    |  1 +
+ tests/debugfs_test.c             | 21 +++++++++
+ tests/kms_atomic_transition.c    | 18 +++++++-
+ tests/kms_content_protection.c   | 41 +++++++----------
+ tests/kms_cursor_edge_walk.c     |  3 ++
+ tests/kms_cursor_legacy.c        | 50 ++++++++++++++++++--
+ tests/kms_flip_scaled_crc.c      |  5 ++
+ tests/kms_frontbuffer_tracking.c | 40 ++++++++++++++++
+ tests/kms_plane.c                | 15 ++++--
+ tests/kms_plane_alpha_blend.c    |  5 +-
+ tests/kms_plane_cursor.c         |  4 ++
+ tests/kms_plane_lowres.c         |  9 ++--
+ tests/kms_plane_scaling.c        | 15 ++++--
+ tests/kms_vblank.c               |  2 +
+ 15 files changed, 264 insertions(+), 44 deletions(-)
+
+--
 2.20.1
 
 _______________________________________________
