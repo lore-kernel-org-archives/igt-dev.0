@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14FF76E02D
- for <igt-dev@lists.freedesktop.org>; Wed, 12 May 2021 05:40:08 +0000 (UTC)
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Wed, 12 May 2021 05:38:22 +0000
-Message-ID: <SN6PR11MB332709E0AA5CEBE123BE34738D529@SN6PR11MB3327.namprd11.prod.outlook.com>
-References: <20210511103445.7383-1-venkata.sai.patnana@intel.com>
-In-Reply-To: <20210511103445.7383-1-venkata.sai.patnana@intel.com>
-Content-Language: en-US
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C4D146E02D
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 May 2021 05:40:26 +0000 (UTC)
+From: Andrzej Turko <andrzej.turko@linux.intel.com>
+Date: Wed, 12 May 2021 07:40:09 +0200
+Message-Id: <20210512054010.5756-2-andrzej.turko@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v5] tests/kms_plane: Restrict the test
- execution to two pipes
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/i915/gem_exec_gttfill: Support
+ gens without relocations
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,274 +15,121 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Patnana, Venkata Sai" <venkata.sai.patnana@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> From: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>
-> Sent: Tuesday, May 11, 2021 4:05 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: B S, Karthik <karthik.b.s@intel.com>; Shankar, Uma
-> <uma.shankar@intel.com>; Patnana, Venkata Sai <venkata.sai.patnana@intel.com>;
-> Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Latvala, Petri
-> <petri.latvala@intel.com>
-> Subject: [PATCH i-g-t v5] tests/kms_plane: Restrict the test execution to two
-> pipes
-> 
-> From: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
-> 
-> v2: Moved to igt tests to dynamic (petri)
-> v3: Implemented clamping in the tests directly
->     with an open-coded counting (petri)
-> v4: Updated subtest names as suggested(petri)
->     Updated Help string (Bhanu)
-> v5: Updated subtests names as suggested and
->     addressed other review comments. (Bhanu)
-> 
-> Cc: Uma Shankar <uma.shankar@intel.com>
-> Cc: Modem Bhanuprakash <bhanuprakash.modem@intel.com>
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> Signed-off-by: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
-> ---
->  tests/kms_plane.c | 132 +++++++++++++++++++++++++++++++++-------------
->  1 file changed, 96 insertions(+), 36 deletions(-)
-> 
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index 9fe253a8c3..3511efa760 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -39,6 +39,9 @@
->   */
->  #define LUT_MASK 0xf800
-> 
-> +/* restricted pipe count */
-> +#define CRTC_RESTRICT_CNT 2
-> +
->  typedef struct {
->  	float red;
->  	float green;
-> @@ -60,6 +63,8 @@ typedef struct {
->  	bool extended;
->  } data_t;
-> 
-> +static bool all_pipes;
-> +
->  static color_t red   = { 1.0f, 0.0f, 0.0f };
->  static color_t green = { 0.0f, 1.0f, 0.0f };
->  static color_t blue  = { 0.0f, 0.0f, 1.0f };
-> @@ -1057,62 +1062,115 @@ test_pixel_formats(data_t *data, enum pipe pipe)
->  	igt_assert_f(result, "At least one CRC mismatch happened\n");
->  }
-> 
-> +static bool is_pipe_limit_reached(int count) {
-> +	return count >= CRTC_RESTRICT_CNT && !all_pipes;
-> +}
-> +
->  static void
-> -run_tests_for_pipe_plane(data_t *data, enum pipe pipe)
-> +run_tests_for_pipe_plane(data_t *data)
->  {
-> +	enum pipe pipe;
-> +	int count;
->  	igt_fixture {
->  		igt_require_pipe(&data->display, pipe);
->  		igt_require(data->display.pipes[pipe].n_planes > 0);
->  	}
-> 
->  	igt_describe("verify the pixel formats for given plane and pipe");
-> -	igt_subtest_f("pixel-format-pipe-%s-planes",
-> -		      kmstest_pipe_name(pipe))
-> -		test_pixel_formats(data, pipe);
-> -
-> +	igt_subtest_with_dynamic_f("pixel-format") {
-> +		count = 0;
-> +		for_each_pipe(&data->display, pipe) {
-> +			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> +				test_pixel_formats(data, pipe);
-> +			if (is_pipe_limit_reached(++count))
-> +				break;
-> +		}
-> +	}
->  	igt_describe("verify the pixel formats for given plane and pipe with
-> source clamping");
-> -	igt_subtest_f("pixel-format-pipe-%s-planes-source-clamping",
-> -		      kmstest_pipe_name(pipe)) {
-> -		data->crop = 4;
-> -		test_pixel_formats(data, pipe);
-> +	igt_subtest_with_dynamic_f("pixel-format-source-clamping") {
-> +		count = 0;
-> +		for_each_pipe(&data->display, pipe) {
-> +			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe)) {
-> +				data->crop = 4;
-> +				test_pixel_formats(data, pipe);
-> +			}
-> +			if (is_pipe_limit_reached(++count))
-> +				break;
-> +		}
->  	}
-> 
->  	data->crop = 0;
->  	igt_describe("verify plane position using two planes to create a fully
-> covered screen");
-> -	igt_subtest_f("plane-position-covered-pipe-%s-planes",
-> -		      kmstest_pipe_name(pipe))
-> -		test_plane_position(data, pipe, 0);
-> +	igt_subtest_with_dynamic_f("plane-position-covered") {
-> +		count = 0;
-> +		for_each_pipe(&data->display, pipe) {
-> +			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> +				test_plane_position(data, pipe, 0);
-> +			if (is_pipe_limit_reached(++count))
-> +				break;
-> +		}
-> +	}
-> 
->  	igt_describe("verify plane position using two planes to create a
-> partially covered screen");
-> -	igt_subtest_f("plane-position-hole-pipe-%s-planes",
-> -		      kmstest_pipe_name(pipe))
-> -		test_plane_position(data, pipe,
-> -				    TEST_POSITION_PARTIALLY_COVERED);
-> +	igt_subtest_with_dynamic_f("plane-position-hole") {
-> +		count = 0;
-> +		for_each_pipe(&data->display, pipe) {
-> +			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> +				test_plane_position(data, pipe,
-> +				TEST_POSITION_PARTIALLY_COVERED);
-> +			if (is_pipe_limit_reached(++count))
-> +				break;
-> +		}
-> +	}
-> 
->  	igt_describe("verify plane position using two planes to create a
-> partially covered screen and"
->  		       "check for DPMS");
-> -	igt_subtest_f("plane-position-hole-dpms-pipe-%s-planes",
-> -		      kmstest_pipe_name(pipe))
-> -		test_plane_position(data, pipe,
-> -				    TEST_POSITION_PARTIALLY_COVERED |
-> -				    TEST_DPMS);
-> +	igt_subtest_with_dynamic_f("plane-position-hole-dpms") {
-> +		count = 0;
-> +		for_each_pipe(&data->display, pipe) {
-> +			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> +				test_plane_position(data, pipe,
-> +				TEST_POSITION_PARTIALLY_COVERED | TEST_DPMS);
-> +			if (is_pipe_limit_reached(++count))
-> +				break;
-> +		}
-> +	}
-> 
->  	igt_describe("verify plane panning at top-left position using primary
-> plane");
-> -	igt_subtest_f("plane-panning-top-left-pipe-%s-planes",
-> -		      kmstest_pipe_name(pipe))
-> -		test_plane_panning(data, pipe, TEST_PANNING_TOP_LEFT);
-> +	igt_subtest_with_dynamic_f("plane-panning-top-left") {
-> +		count = 0;
-> +		for_each_pipe(&data->display, pipe) {
-> +			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> +				test_plane_panning(data, pipe, TEST_PANNING_TOP_LEFT);
-> +			if (is_pipe_limit_reached(++count))
-> +				break;
-> +		}
-> +	}
-> 
->  	igt_describe("verify plane panning at bottom-right position using
-> primary plane");
-> -	igt_subtest_f("plane-panning-bottom-right-pipe-%s-planes",
-> -		      kmstest_pipe_name(pipe))
-> -		test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT);
-> +	igt_subtest_with_dynamic_f("plane-panning-bottom-right") {
-> +		count = 0;
-> +		for_each_pipe(&data->display, pipe) {
-> +			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> +				test_plane_panning(data, pipe,
-> TEST_PANNING_BOTTOM_RIGHT);
-> +			if (is_pipe_limit_reached(++count))
-> +				break;
-> +		}
-> +	}
-> 
->  	igt_describe("verify plane panning at bottom-right position using
-> primary plane and executes system"
->  		       "suspend cycles");
-> -	igt_subtest_f("plane-panning-bottom-right-suspend-pipe-%s-planes",
-> -		      kmstest_pipe_name(pipe))
-> -		test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT |
-> -					       TEST_SUSPEND_RESUME);
-> +	igt_subtest_with_dynamic_f("plane-panning-bottom-right-suspend") {
-> +		count = 0;
-> +		for_each_pipe(&data->display, pipe) {
-> +			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> +				test_plane_panning(data, pipe,
-> +				TEST_PANNING_BOTTOM_RIGHT |
-> +				TEST_SUSPEND_RESUME);
-> +			if (is_pipe_limit_reached(++count))
-> +				break;
-> +		}
-> +	}
->  }
-> 
->  static int opt_handler(int opt, int opt_index, void *_data)
-> @@ -1123,6 +1181,9 @@ static int opt_handler(int opt, int opt_index, void
-> *_data)
->  	case 'e':
->  		data->extended = true;
->  		break;
-> +	case 'p':
-> +		all_pipes = true;
-> +		break;
->  	}
-> 
->  	return IGT_OPT_HANDLER_SUCCESS;
-> @@ -1130,18 +1191,18 @@ static int opt_handler(int opt, int opt_index, void
-> *_data)
-> 
->  static const struct option long_opts[] = {
->  	{ .name = "extended", .has_arg = false, .val = 'e', },
-> +	{ .name = "all-pipes", .has_arg = false, .val = 'p', },
->  	{}
->  };
-> 
->  static const char help_str[] =
-> -	"  --extended\t\tRun the extended tests\n";
-> +	"  --extended\t\tRun the extended tests\n"
-> +	"  --all-pipes\t\tRun on all pipes.(Default it will Run only two
-> pipes)\n";
-> 
->  static data_t data;
-> 
->  igt_main_args("", long_opts, help_str, opt_handler, &data)
->  {
-> -	enum pipe pipe;
-> -
->  	igt_fixture {
->  		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> 
-> @@ -1151,8 +1212,7 @@ igt_main_args("", long_opts, help_str, opt_handler,
-> &data)
->  		igt_display_require(&data.display, data.drm_fd);
->  	}
-> 
-> -	for_each_pipe_static(pipe)
-> -		run_tests_for_pipe_plane(&data, pipe);
-> +	run_tests_for_pipe_plane(&data);
-
-LGTM
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
- 
->  	igt_fixture {
->  		igt_display_fini(&data.display);
-> --
-> 2.25.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+V2l0aCByZWxvY2F0aW9ucyBkaXNhYmxlZCBmb3IgbmV3ZXIgZ2VuZXJhdGlvbnMKYWRkcmVzc2Vz
+IG9mIG9iamVjdHMgbmVlZCB0byBiZSBhc3NpZ25lZCBieSB0aGUgdGVzdC4KQXMgYWxsIHRoZSBv
+YmplY3RzIHdvbid0IGZpdCBpbiB0aGUgZ3R0LCB1c2luZyB0aGUgYWxsb2NhdG9yCmRvZXMgbm90
+IGd1YXJhbnRlZSB0aGF0IHN1Ym1pdHRlZCBiYXRjaGVzIHdvbid0IG92ZXJsYXAuCkl0IG9ubHkg
+cmVkdWNlcyB0aGUgbnVtYmVyIG9mIG92ZXJsYXBwaW5nIG9iamVjdHMgd2hpbGUgZW5zdXJpbmcK
+dGhhdCBldmljdGlvbnMgaGFwcGVuIGF0IGRpZmZlcmVudCBvZmZzZXRzLgoKU2lnbmVkLW9mZi1i
+eTogQW5kcnplaiBUdXJrbyA8YW5kcnplai50dXJrb0BsaW51eC5pbnRlbC5jb20+CkNjOiBaYmln
+bmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KLS0tCiB0
+ZXN0cy9pOTE1L2dlbV9leGVjX2d0dGZpbGwuYyB8IDc1ICsrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKy0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgNjQgaW5zZXJ0aW9ucygrKSwgMTEgZGVsZXRp
+b25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fZXhlY19ndHRmaWxsLmMgYi90ZXN0
+cy9pOTE1L2dlbV9leGVjX2d0dGZpbGwuYwppbmRleCBjMGUyN2M5YmIuLjA5MWM3NGViYiAxMDA2
+NDQKLS0tIGEvdGVzdHMvaTkxNS9nZW1fZXhlY19ndHRmaWxsLmMKKysrIGIvdGVzdHMvaTkxNS9n
+ZW1fZXhlY19ndHRmaWxsLmMKQEAgLTI4LDYgKzI4LDggQEAKIElHVF9URVNUX0RFU0NSSVBUSU9O
+KCJGaWxsIHRoZSBHVFQgd2l0aCBiYXRjaGVzLiIpOwogCiAjZGVmaW5lIEJBVENIX1NJWkUgKDQw
+OTY8PDEwKQorLyogV2UgZG9uJ3QgaGF2ZSBhbGlnbm1lbnQgZGV0ZWN0aW9uIHlldCwgc28gYXNz
+dW1lIHRoZSB3b3JzdC1jYXNlIHNjZW5hcmlvLiAqLworI2RlZmluZSBCQVRDSF9BTElHTk1FTlQg
+KDEgPDwgMjEpCiAKIHN0cnVjdCBiYXRjaCB7CiAJdWludDMyX3QgaGFuZGxlOwpAQCAtNDcsMTUg
+KzQ5LDIxIEBAIHN0YXRpYyB2b2lkIHhjaGdfYmF0Y2godm9pZCAqYXJyYXksIHVuc2lnbmVkIGlu
+dCBpLCB1bnNpZ25lZCBpbnQgaikKIHN0YXRpYyB2b2lkIHN1Ym1pdChpbnQgZmQsIGludCBnZW4s
+CiAJCSAgIHN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY2J1ZmZlcjIgKmViLAogCQkgICBzdHJ1Y3Qg
+ZHJtX2k5MTVfZ2VtX3JlbG9jYXRpb25fZW50cnkgKnJlbG9jLAotCQkgICBzdHJ1Y3QgYmF0Y2gg
+KmJhdGNoZXMsIHVuc2lnbmVkIGludCBjb3VudCkKKwkJICAgc3RydWN0IGJhdGNoICpiYXRjaGVz
+LCB1bnNpZ25lZCBpbnQgY291bnQsCisJCSAgIHVpbnQ2NF90IGFobmQsIGJvb2wgZG9fcmVsb2Nz
+KQogewogCXN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY19vYmplY3QyIG9iajsKIAl1aW50MzJfdCBi
+YXRjaFsxNl07Ci0JdW5zaWduZWQgbjsKKwl1aW50NjRfdCBhZGRyZXNzLCB2YWx1ZTsKKwl1bnNp
+Z25lZCBuLCBqOwogCiAJbWVtc2V0KCZvYmosIDAsIHNpemVvZihvYmopKTsKLQlvYmoucmVsb2Nz
+X3B0ciA9IHRvX3VzZXJfcG9pbnRlcihyZWxvYyk7Ci0Jb2JqLnJlbG9jYXRpb25fY291bnQgPSAy
+OworCWlmIChkb19yZWxvY3MpIHsKKwkJb2JqLnJlbG9jc19wdHIgPSB0b191c2VyX3BvaW50ZXIo
+cmVsb2MpOworCQlvYmoucmVsb2NhdGlvbl9jb3VudCA9IDI7CisJfSBlbHNlIHsKKwkJb2JqLmZs
+YWdzIHw9IEVYRUNfT0JKRUNUX1BJTk5FRDsKKwl9CiAKIAltZW1zZXQocmVsb2MsIDAsIDIqc2l6
+ZW9mKCpyZWxvYykpOwogCXJlbG9jWzBdLm9mZnNldCA9IGViLT5iYXRjaF9zdGFydF9vZmZzZXQ7
+CkBAIC04NSwxNiArOTMsNDAgQEAgc3RhdGljIHZvaWQgc3VibWl0KGludCBmZCwgaW50IGdlbiwK
+IAliYXRjaFsrK25dID0gMDsgLyogbG93ZXJfMzJfYml0cyh2YWx1ZSkgKi8KIAliYXRjaFsrK25d
+ID0gMDsgLyogdXBwZXJfMzJfYml0cyh2YWx1ZSkgLyBub3AgKi8KIAliYXRjaFsrK25dID0gTUlf
+QkFUQ0hfQlVGRkVSX0VORDsKLQogCWViLT5idWZmZXJzX3B0ciA9IHRvX3VzZXJfcG9pbnRlcigm
+b2JqKTsKKwlqID0gMDsKIAlmb3IgKHVuc2lnbmVkIGkgPSAwOyBpIDwgY291bnQ7IGkrKykgewog
+CQlvYmouaGFuZGxlID0gYmF0Y2hlc1tpXS5oYW5kbGU7CiAJCXJlbG9jWzBdLnRhcmdldF9oYW5k
+bGUgPSBvYmouaGFuZGxlOwogCQlyZWxvY1sxXS50YXJnZXRfaGFuZGxlID0gb2JqLmhhbmRsZTsK
+IAotCQlvYmoub2Zmc2V0ID0gMDsKLQkJcmVsb2NbMF0ucHJlc3VtZWRfb2Zmc2V0ID0gb2JqLm9m
+ZnNldDsKLQkJcmVsb2NbMV0ucHJlc3VtZWRfb2Zmc2V0ID0gb2JqLm9mZnNldDsKKwkJaWYgKGRv
+X3JlbG9jcykgeworCQkJb2JqLm9mZnNldCA9IDA7CisJCX0gZWxzZSB7CisJCQlvYmoub2Zmc2V0
+ID0gX19pbnRlbF9hbGxvY2F0b3JfYWxsb2MoYWhuZCwgb2JqLmhhbmRsZSwKKwkJCQkJCQkgICAg
+IEJBVENIX1NJWkUsCisJCQkJCQkJICAgICBCQVRDSF9BTElHTk1FTlQsCisJCQkJCQkJICAgICBB
+TExPQ19TVFJBVEVHWV9ISUdIX1RPX0xPVyk7CisJCQlmb3IgKDsgb2JqLm9mZnNldCA9PSAtMTsg
+aiA9ICgoKytqKSA9PSBjb3VudCA/IDAgOiBqKSkgeworCQkJCWlmIChpICE9IGopCisJCQkJCWlu
+dGVsX2FsbG9jYXRvcl9mcmVlKGFobmQsIGJhdGNoZXNbal0uaGFuZGxlKTsKKwkJCQlvYmoub2Zm
+c2V0ID0gX19pbnRlbF9hbGxvY2F0b3JfYWxsb2MoYWhuZCwgb2JqLmhhbmRsZSwKKwkJCQkJCQkJ
+ICAgICBCQVRDSF9TSVpFLAorCQkJCQkJCQkgICAgIEJBVENIX0FMSUdOTUVOVCwKKwkJCQkJCQkJ
+ICAgICBBTExPQ19TVFJBVEVHWV9ISUdIX1RPX0xPVyk7CisJCQl9CisKKwkJCS8qIElmIHRoZXJl
+IGlzIG5vIHJlbG9jYXRpb24gc3VwcG9ydCwgd2UgYXNzdW1lIGdlbiA+PSA4LiAqLworCQkJcmVs
+b2NbMF0ucHJlc3VtZWRfb2Zmc2V0ID0gb2JqLm9mZnNldDsKKwkJCWFkZHJlc3MgPSBvYmoub2Zm
+c2V0ICsgcmVsb2NbMF0uZGVsdGE7CisJCQliYXRjaFsxXSA9IGFkZHJlc3M7CisJCQliYXRjaFsy
+XSA9IGFkZHJlc3MgPj4gMzI7CisKKwkJCXJlbG9jWzFdLnByZXN1bWVkX29mZnNldCA9IG9iai5v
+ZmZzZXQ7CisJCQl2YWx1ZSA9IG9iai5vZmZzZXQgKyByZWxvY1sxXS5kZWx0YTsKKwkJCWJhdGNo
+WzNdID0gdmFsdWU7CisJCQliYXRjaFs0XSA9IHZhbHVlID4+IDMyOworCQl9CiAKIAkJbWVtY3B5
+KGJhdGNoZXNbaV0ucHRyICsgZWItPmJhdGNoX3N0YXJ0X29mZnNldCwKIAkJICAgICAgIGJhdGNo
+LCBzaXplb2YoYmF0Y2gpKTsKQEAgLTExNiw3ICsxNDgsOCBAQCBzdGF0aWMgdm9pZCBmaWxsZ3R0
+KGludCBmZCwgdW5zaWduZWQgcmluZywgaW50IHRpbWVvdXQpCiAJc3RydWN0IGJhdGNoICpiYXRj
+aGVzOwogCXVuc2lnbmVkIG5lbmdpbmU7CiAJdW5zaWduZWQgY291bnQ7Ci0JdWludDY0X3Qgc2l6
+ZTsKKwl1aW50NjRfdCBzaXplLCBhaG5kOworCWJvb2wgZG9fcmVsb2NzID0gZ2VtX2hhc19yZWxv
+Y2F0aW9ucyhmZCk7CiAKIAlzaGFyZWQgPSBtbWFwKE5VTEwsIDQwOTYsIFBST1RfV1JJVEUsIE1B
+UF9TSEFSRUQgfCBNQVBfQU5PTiwgLTEsIDApOwogCWlndF9hc3NlcnQoc2hhcmVkICE9IE1BUF9G
+QUlMRUQpOwpAQCAtMTM4LDYgKzE3MSw4IEBAIHN0YXRpYyB2b2lkIGZpbGxndHQoaW50IGZkLCB1
+bnNpZ25lZCByaW5nLCBpbnQgdGltZW91dCkKIAlpZ3RfYXNzZXJ0KG5lbmdpbmUgKiA2NCA8PSBC
+QVRDSF9TSVpFKTsKIAogCXNpemUgPSBnZW1fYXBlcnR1cmVfc2l6ZShmZCk7CisJaWYgKCFnZW1f
+dXNlc19mdWxsX3BwZ3R0KGZkKSkKKwkJc2l6ZSAvPSAyOwogCWlmIChzaXplID4gMXVsbDw8MzIp
+IC8qIExpbWl0IHRvIDRHaUIgYXMgd2UgZG8gbm90IHVzZSBhbGxvdy00OGIgKi8KIAkJc2l6ZSA9
+IDF1bGwgPDwgMzI7CiAJaWd0X3JlcXVpcmUoc2l6ZSA8ICgxdWxsPDwzMikgKiBCQVRDSF9TSVpF
+KTsKQEAgLTE0NSw2ICsxODAsMTIgQEAgc3RhdGljIHZvaWQgZmlsbGd0dChpbnQgZmQsIHVuc2ln
+bmVkIHJpbmcsIGludCB0aW1lb3V0KQogCWNvdW50ID0gc2l6ZSAvIEJBVENIX1NJWkUgKyAxOwog
+CWlndF9kZWJ1ZygiVXNpbmcgJSdkIGJhdGNoZXMgdG8gZmlsbCAlJ2xsdSBhcGVydHVyZSBvbiAl
+ZCBlbmdpbmVzXG4iLAogCQkgIGNvdW50LCAobG9uZyBsb25nKXNpemUsIG5lbmdpbmUpOworCisJ
+aW50ZWxfYWxsb2NhdG9yX211bHRpcHJvY2Vzc19zdGFydCgpOworCS8qIEF2b2lkIGFsbG9jYXRp
+bmcgb24gdGhlIGxhc3QgcGFnZSAqLworCWFobmQgPSBpbnRlbF9hbGxvY2F0b3Jfb3Blbl9mdWxs
+KGZkLCAwLCAwLCBzaXplIC0gNDA5NiwKKwkJCQkJIElOVEVMX0FMTE9DQVRPUl9TSU1QTEUsCisJ
+CQkJCSBBTExPQ19TVFJBVEVHWV9ISUdIX1RPX0xPVyk7CiAJaW50ZWxfcmVxdWlyZV9tZW1vcnko
+Y291bnQsIEJBVENIX1NJWkUsIENIRUNLX1JBTSk7CiAJaW50ZWxfZGV0ZWN0X2FuZF9jbGVhcl9t
+aXNzZWRfaW50ZXJydXB0cyhmZCk7CiAKQEAgLTE2NSw3ICsyMDYsNyBAQCBzdGF0aWMgdm9pZCBm
+aWxsZ3R0KGludCBmZCwgdW5zaWduZWQgcmluZywgaW50IHRpbWVvdXQpCiAJfQogCiAJLyogRmx1
+c2ggYWxsIG1lbW9yeSBiZWZvcmUgd2Ugc3RhcnQgdGhlIHRpbWVyICovCi0Jc3VibWl0KGZkLCBn
+ZW4sICZleGVjYnVmLCByZWxvYywgYmF0Y2hlcywgY291bnQpOworCXN1Ym1pdChmZCwgZ2VuLCAm
+ZXhlY2J1ZiwgcmVsb2MsIGJhdGNoZXMsIGNvdW50LCBhaG5kLCBkb19yZWxvY3MpOwogCiAJaWd0
+X2luZm8oIlNldHVwICV1IGJhdGNoZXMgaW4gJS4yZm1zXG4iLAogCQkgY291bnQsIDFlLTYgKiBp
+Z3RfbnNlY19lbGFwc2VkKCZ0dikpOwpAQCAtMTc2LDggKzIxNywxNCBAQCBzdGF0aWMgdm9pZCBm
+aWxsZ3R0KGludCBmZCwgdW5zaWduZWQgcmluZywgaW50IHRpbWVvdXQpCiAJCWlndF9wZXJtdXRl
+X2FycmF5KGJhdGNoZXMsIGNvdW50LCB4Y2hnX2JhdGNoKTsKIAkJZXhlY2J1Zi5iYXRjaF9zdGFy
+dF9vZmZzZXQgPSBjaGlsZCo2NDsKIAkJZXhlY2J1Zi5mbGFncyB8PSBlbmdpbmVzW2NoaWxkXTsK
+KworCQkvKiBXZSBuZWVkIHRvIG9wZW4gdGhlIGFsbG9jYXRvciBhZ2FpbiBpbiB0aGUgbmV3IHBy
+b2Nlc3MgKi8KKwkJYWhuZCA9IGludGVsX2FsbG9jYXRvcl9vcGVuX2Z1bGwoZmQsIDAsIDAsIHNp
+emUgLSA0MDk2LAorCQkJCQkJIElOVEVMX0FMTE9DQVRPUl9TSU1QTEUsCisJCQkJCQkgQUxMT0Nf
+U1RSQVRFR1lfSElHSF9UT19MT1cpOworCiAJCWlndF91bnRpbF90aW1lb3V0KHRpbWVvdXQpIHsK
+LQkJCXN1Ym1pdChmZCwgZ2VuLCAmZXhlY2J1ZiwgcmVsb2MsIGJhdGNoZXMsIGNvdW50KTsKKwkJ
+CXN1Ym1pdChmZCwgZ2VuLCAmZXhlY2J1ZiwgcmVsb2MsIGJhdGNoZXMsIGNvdW50LCBhaG5kLCBk
+b19yZWxvY3MpOwogCQkJZm9yICh1bnNpZ25lZCBpID0gMDsgaSA8IGNvdW50OyBpKyspIHsKIAkJ
+CQl1aW50NjRfdCBvZmZzZXQsIGRlbHRhOwogCkBAIC0xODksMTMgKzIzNiwxOCBAQCBzdGF0aWMg
+dm9pZCBmaWxsZ3R0KGludCBmZCwgdW5zaWduZWQgcmluZywgaW50IHRpbWVvdXQpCiAJCX0KIAkJ
+c2hhcmVkW2NoaWxkXSA9IGN5Y2xlczsKIAkJaWd0X2luZm8oImVuZ2luZVslZF06ICVsbHUgY3lj
+bGVzXG4iLCBjaGlsZCwgKGxvbmcgbG9uZyljeWNsZXMpOworCQlpbnRlbF9hbGxvY2F0b3JfY2xv
+c2UoYWhuZCk7CiAJfQogCWlndF93YWl0Y2hpbGRyZW4oKTsKIAorCWludGVsX2FsbG9jYXRvcl9j
+bG9zZShhaG5kKTsKKwlpbnRlbF9hbGxvY2F0b3JfbXVsdGlwcm9jZXNzX3N0b3AoKTsKKwogCWZv
+ciAodW5zaWduZWQgaSA9IDA7IGkgPCBjb3VudDsgaSsrKSB7CiAJCW11bm1hcChiYXRjaGVzW2ld
+LnB0ciwgQkFUQ0hfU0laRSk7CiAJCWdlbV9jbG9zZShmZCwgYmF0Y2hlc1tpXS5oYW5kbGUpOwog
+CX0KKwlmcmVlKGJhdGNoZXMpOwogCiAJc2hhcmVkW25lbmdpbmVdID0gMDsKIAlmb3IgKHVuc2ln
+bmVkIGkgPSAwOyBpIDwgbmVuZ2luZTsgaSsrKQpAQCAtMjE2LDYgKzI2OCw3IEBAIGlndF9tYWlu
+CiAJCWlndF9mb3JrX2hhbmdfZGV0ZWN0b3IoaTkxNSk7CiAJfQogCisKIAlpZ3Rfc3VidGVzdCgi
+YmFzaWMiKSAvKiBqdXN0IGVub3VnaCB0byBydW4gYSBzaW5nbGUgcGFzcyAqLwogCQlmaWxsZ3R0
+KGk5MTUsIEFMTF9FTkdJTkVTLCAxKTsKIAotLSAKMi4yNS4xCgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2lndC1kZXYK
