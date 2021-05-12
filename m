@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C39C6EB6A
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B8F256EB6A
  for <igt-dev@lists.freedesktop.org>; Wed, 12 May 2021 09:16:17 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 12 May 2021 22:35:28 +0530
-Message-Id: <20210512170536.4778-7-bhanuprakash.modem@intel.com>
+Date: Wed, 12 May 2021 22:35:30 +0530
+Message-Id: <20210512170536.4778-9-bhanuprakash.modem@intel.com>
 In-Reply-To: <20210512170536.4778-1-bhanuprakash.modem@intel.com>
 References: <20210512170536.4778-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [v6 i-g-t 06/14] tests/kms_plane_scaling: Fix mode
- selection for 2x tests
+Subject: [igt-dev] [v6 i-g-t 08/14] tests/kms_plane: Reset the state before
+ exiting the test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,63 +24,66 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will find the connector/mode combination that fits
-into the bandwidth when more than one monitor is connected.
-
-Example:
-  When two monitors connected through MST, the second monitor
-  also tries to use the same mode. So two such modes may not
-  fit into the link bandwidth. So, iterate through connected
-  outputs & modes and find a combination of modes those fit
-  into the link BW.
-
-V2:
-* Fix commit message (Ankit)
+Before starting the next subtest, clean up the states to default
+values, those are assumed by other tests. This patch will also fix
+few typos & depricated macros.
 
 Cc: Imre Deak <imre.deak@intel.com>
 Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- tests/kms_plane_scaling.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ tests/kms_plane.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 34efc588e..7464b5bdf 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -630,9 +630,6 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
- 	d->plane3 = igt_output_get_plane(output2, 0);
- 	d->plane4 = get_num_scalers(d, pipe2) >= 2 ? igt_output_get_plane(output2, 1) : NULL;
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 9fe253a8c..8ed168647 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -251,7 +251,11 @@ test_plane_position_with_output(data_t *data,
+ 	igt_plane_set_fb(sprite, NULL);
  
--	mode1 = igt_output_get_mode(output1);
--	mode2 = igt_output_get_mode(output2);
--
- 	igt_skip_on(!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888,
- 						tiling));
+ 	/* reset the constraint on the pipe */
+-	igt_output_set_pipe(output, PIPE_ANY);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
++
++	igt_remove_fb(data->drm_fd, &primary_fb);
++	igt_remove_fb(data->drm_fd, &sprite_fb);
+ }
  
-@@ -658,8 +655,20 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
- 	igt_plane_set_fb(d->plane3, &d->fb[2]);
- 	if (d->plane4)
- 		igt_plane_set_fb(d->plane4, &d->fb[3]);
-+
-+	if (igt_display_try_commit_atomic(display,
-+				DRM_MODE_ATOMIC_TEST_ONLY |
-+				DRM_MODE_ATOMIC_ALLOW_MODESET,
-+				NULL) != 0) {
-+		bool found = igt_override_all_active_output_modes_to_fit_bw(display);
-+		igt_require_f(found, "No valid mode combo found.\n");
-+	}
-+
- 	igt_display_commit2(display, COMMIT_ATOMIC);
+ static void
+@@ -288,7 +292,7 @@ test_plane_position(data_t *data, enum pipe pipe, unsigned int flags)
+  *     (vdisplay, hdisplay) we do get the same CRC than the full blue fb.
+  */
+ static void
+-create_fb_for_mode__panning(data_t *data, drmModeModeInfo *mode,
++create_fb_for_mode_panning(data_t *data, drmModeModeInfo *mode,
+ 			    struct igt_fb *fb /* out */)
+ {
+ 	unsigned int fb_id;
+@@ -334,7 +338,7 @@ test_plane_panning_with_output(data_t *data,
+ 	mode = igt_output_get_mode(output);
+ 	primary = igt_output_get_plane(output, 0);
  
-+	mode1 = igt_output_get_mode(output1);
-+	mode2 = igt_output_get_mode(output2);
+-	create_fb_for_mode__panning(data, mode, &primary_fb);
++	create_fb_for_mode_panning(data, mode, &primary_fb);
+ 	igt_plane_set_fb(primary, &primary_fb);
+ 
+ 	if (flags & TEST_PANNING_TOP_LEFT)
+@@ -355,8 +359,11 @@ test_plane_panning_with_output(data_t *data,
+ 	igt_plane_set_fb(primary, NULL);
+ 
+ 	/* reset states to neutral values, assumed by other tests */
+-	igt_output_set_pipe(output, PIPE_ANY);
++	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_fb_set_position(&primary_fb, primary, 0, 0);
++	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
 +
- 	/* Upscaling Primary */
- 	igt_plane_set_size(d->plane1, mode1->hdisplay, mode1->vdisplay);
- 	igt_plane_set_size(d->plane3, mode2->hdisplay, mode2->vdisplay);
++	igt_remove_fb(data->drm_fd, &primary_fb);
+ }
+ 
+ static void
 -- 
 2.20.1
 
