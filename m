@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 74C4A6E2C8
- for <igt-dev@lists.freedesktop.org>; Fri, 14 May 2021 09:49:47 +0000 (UTC)
-Date: Fri, 14 May 2021 12:53:03 +0300
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0519E6E2C8
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 May 2021 09:50:17 +0000 (UTC)
+Date: Fri, 14 May 2021 12:53:35 +0300
 From: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
-Message-ID: <20210514095303.GD8652@intel.com>
+Message-ID: <20210514095335.GE8652@intel.com>
 References: <20210414022754.31710-1-ville.syrjala@linux.intel.com>
- <20210414022754.31710-5-ville.syrjala@linux.intel.com>
+ <20210414022754.31710-6-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210414022754.31710-5-ville.syrjala@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/8] tools/intel_watermark: Reduce the
- number of planes for rkl/adls/adlp
+In-Reply-To: <20210414022754.31710-6-ville.syrjala@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 5/8] tools/intel_watermark: TGL+ can
+ have 4 pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,11 +27,11 @@ To: Ville Syrjala <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Apr 14, 2021 at 05:27:50AM +0300, Ville Syrjala wrote:
+On Wed, Apr 14, 2021 at 05:27:51AM +0300, Ville Syrjala wrote:
 > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
 > =
 
-> Modern platforms have just 5 universal planes + cursor per pipe..
+> Decode pipe D watermark stuff too.
 
 Reviewed-by: Stanislav Lisovskiy <stanislav.lisovskiy@gmail.com>
 
@@ -39,38 +39,36 @@ Reviewed-by: Stanislav Lisovskiy <stanislav.lisovskiy@gmail.com>
 
 > Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
 > ---
->  tools/intel_watermark.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+>  tools/intel_watermark.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 > =
 
 > diff --git a/tools/intel_watermark.c b/tools/intel_watermark.c
-> index 4a5764b59677..ff373fdb0c6d 100644
+> index ff373fdb0c6d..657fff20ec7a 100644
 > --- a/tools/intel_watermark.c
 > +++ b/tools/intel_watermark.c
-> @@ -135,7 +135,9 @@ static int skl_num_planes(uint32_t d, int pipe)
->  {
->  	int gen =3D intel_gen(d);
+> @@ -131,6 +131,11 @@ static char endis_ast(bool enabled)
+>  	return enabled ? '*' : ' ';
+>  }
 >  =
 
-> -	if (gen >=3D 11)
-> +	if (gen >=3D 13 || IS_ALDERLAKE_S(d) || IS_ROCKETLAKE(d))
-> +		return 6;
-> +	else if (gen >=3D 11)
->  		return 8;
->  	else if (gen =3D=3D 10 || IS_GEMINILAKE(d))
->  		return 5;
-> @@ -149,7 +151,9 @@ static int skl_max_planes(uint32_t d)
+> +static int skl_num_pipes(uint32_t d)
+> +{
+> +	return intel_gen(d) >=3D 12 ? 4 : 3;
+> +}
+> +
+>  static int skl_num_planes(uint32_t d, int pipe)
 >  {
 >  	int gen =3D intel_gen(d);
->  =
-
-> -	if (gen >=3D 11)
-> +	if (gen >=3D 13 || IS_ALDERLAKE_S(d) || IS_ROCKETLAKE(d))
-> +		return 6;
-> +	else if (gen >=3D 11)
->  		return 8;
->  	else if (gen =3D=3D 10 || IS_GEMINILAKE(d) || IS_BROXTON(d))
->  		return 5;
+> @@ -269,7 +274,7 @@ static void skl_wm_dump(void)
+>  {
+>  	struct intel_mmio_data mmio_data;
+>  	int pipe, plane, level;
+> -	int num_pipes =3D 3;
+> +	int num_pipes =3D skl_num_pipes(devid);
+>  	int max_planes =3D skl_max_planes(devid);
+>  	int num_levels =3D 8;
+>  	uint32_t base_addr =3D 0x70000, addr, wm_offset;
 > -- =
 
 > 2.26.3
