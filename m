@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0519E6E2C8
- for <igt-dev@lists.freedesktop.org>; Fri, 14 May 2021 09:50:17 +0000 (UTC)
-Date: Fri, 14 May 2021 12:53:35 +0300
-From: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
-Message-ID: <20210514095335.GE8652@intel.com>
-References: <20210414022754.31710-1-ville.syrjala@linux.intel.com>
- <20210414022754.31710-6-ville.syrjala@linux.intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBE026EE7F
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 May 2021 13:26:52 +0000 (UTC)
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+Date: Fri, 14 May 2021 16:26:41 +0300
+Message-Id: <20210514132643.30709-3-ville.syrjala@linux.intel.com>
+In-Reply-To: <20210514132643.30709-1-ville.syrjala@linux.intel.com>
+References: <20210514132643.30709-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210414022754.31710-6-ville.syrjala@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 5/8] tools/intel_watermark: TGL+ can
- have 4 pipes
+Subject: [igt-dev] [PATCH i-g-t 2/4] tests/kms_color: Store r/g/b separately
+ for LUT color tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,66 +17,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Apr 14, 2021 at 05:27:51AM +0300, Ville Syrjala wrote:
-> From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> =
-
-> Decode pipe D watermark stuff too.
-
-Reviewed-by: Stanislav Lisovskiy <stanislav.lisovskiy@gmail.com>
-
-> =
-
-> Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> ---
->  tools/intel_watermark.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> =
-
-> diff --git a/tools/intel_watermark.c b/tools/intel_watermark.c
-> index ff373fdb0c6d..657fff20ec7a 100644
-> --- a/tools/intel_watermark.c
-> +++ b/tools/intel_watermark.c
-> @@ -131,6 +131,11 @@ static char endis_ast(bool enabled)
->  	return enabled ? '*' : ' ';
->  }
->  =
-
-> +static int skl_num_pipes(uint32_t d)
-> +{
-> +	return intel_gen(d) >=3D 12 ? 4 : 3;
-> +}
-> +
->  static int skl_num_planes(uint32_t d, int pipe)
->  {
->  	int gen =3D intel_gen(d);
-> @@ -269,7 +274,7 @@ static void skl_wm_dump(void)
->  {
->  	struct intel_mmio_data mmio_data;
->  	int pipe, plane, level;
-> -	int num_pipes =3D 3;
-> +	int num_pipes =3D skl_num_pipes(devid);
->  	int max_planes =3D skl_max_planes(devid);
->  	int num_levels =3D 8;
->  	uint32_t base_addr =3D 0x70000, addr, wm_offset;
-> -- =
-
-> 2.26.3
-> =
-
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KClN0
+b3JlIHRoZSByL2cvYiB2YWx1ZXMgc2VwYXJhdGVseSBmb3IgZWFjaCBMVVQuIEEgbG90IG9mIGh3
+CmhhcyBhIHNlcGFyYXRlIDFEIExVVCBmb3IgZWFjaCBjaGFubmVsLCBzbyB3aXRoIHRoaXMgd2Ug
+Y2FuCnBvdGVudGlhbGx5IGRvIG1vcmUgaW50ZXJlc3RpbmcgdGVzdHMuIEFsc28gbmVlZGVkIGZv
+ciAzRCBMVVRzCihpZiB3ZSBzaG91bGQgZXZlciBzdXBwb3J0IHRoZW0pLgoKU2lnbmVkLW9mZi1i
+eTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KLS0tCiB0
+ZXN0cy9rbXNfY29sb3JfaGVscGVyLmMgfCAyOSArKysrKysrKysrKysrKysrKysrLS0tLS0tLS0t
+LQogdGVzdHMva21zX2NvbG9yX2hlbHBlci5oIHwgIDIgKy0KIDIgZmlsZXMgY2hhbmdlZCwgMjAg
+aW5zZXJ0aW9ucygrKSwgMTEgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2Nv
+bG9yX2hlbHBlci5jIGIvdGVzdHMva21zX2NvbG9yX2hlbHBlci5jCmluZGV4IGY5ZmRlMzQwZjRi
+Ny4uN2Y5YTMwZTYyNWI2IDEwMDY0NAotLS0gYS90ZXN0cy9rbXNfY29sb3JfaGVscGVyLmMKKysr
+IGIvdGVzdHMva21zX2NvbG9yX2hlbHBlci5jCkBAIC0xMDMsMTQgKzEwMywxOSBAQCB2b2lkIGZy
+ZWVfbHV0KGdhbW1hX2x1dF90ICpnYW1tYSkKIAlmcmVlKGdhbW1hKTsKIH0KIAorc3RhdGljIHZv
+aWQgc2V0X3JnYihjb2xvcl90ICpjb2VmZiwgZG91YmxlIHZhbHVlKQoreworCWNvZWZmLT5yID0g
+Y29lZmYtPmcgPSBjb2VmZi0+YiA9IHZhbHVlOworfQorCiBnYW1tYV9sdXRfdCAqZ2VuZXJhdGVf
+dGFibGUoaW50IGx1dF9zaXplLCBkb3VibGUgZXhwKQogewogCWdhbW1hX2x1dF90ICpnYW1tYSA9
+IGFsbG9jX2x1dChsdXRfc2l6ZSk7CiAJaW50IGk7CiAKLQlnYW1tYS0+Y29lZmZzWzBdID0gMC4w
+OworCXNldF9yZ2IoJmdhbW1hLT5jb2VmZnNbMF0sIDAuMCk7CiAJZm9yIChpID0gMTsgaSA8IGx1
+dF9zaXplOyBpKyspCi0JCWdhbW1hLT5jb2VmZnNbaV0gPSBwb3coaSAqIDEuMCAvIChsdXRfc2l6
+ZSAtIDEpLCBleHApOworCQlzZXRfcmdiKCZnYW1tYS0+Y29lZmZzW2ldLCBwb3coaSAqIDEuMCAv
+IChsdXRfc2l6ZSAtIDEpLCBleHApKTsKIAogCXJldHVybiBnYW1tYTsKIH0KQEAgLTEyMCw5ICsx
+MjUsOSBAQCBnYW1tYV9sdXRfdCAqZ2VuZXJhdGVfdGFibGVfbWF4KGludCBsdXRfc2l6ZSkKIAln
+YW1tYV9sdXRfdCAqZ2FtbWEgPSBhbGxvY19sdXQobHV0X3NpemUpOwogCWludCBpOwogCi0JZ2Ft
+bWEtPmNvZWZmc1swXSA9IDAuMDsKKwlzZXRfcmdiKCZnYW1tYS0+Y29lZmZzWzBdLCAwLjApOwog
+CWZvciAoaSA9IDE7IGkgPCBsdXRfc2l6ZTsgaSsrKQotCQlnYW1tYS0+Y29lZmZzW2ldID0gMS4w
+OworCQlzZXRfcmdiKCZnYW1tYS0+Y29lZmZzW2ldLCAxLjApOwogCiAJcmV0dXJuIGdhbW1hOwog
+fQpAQCAtMTMzLDcgKzEzOCw3IEBAIGdhbW1hX2x1dF90ICpnZW5lcmF0ZV90YWJsZV96ZXJvKGlu
+dCBsdXRfc2l6ZSkKIAlpbnQgaTsKIAogCWZvciAoaSA9IDA7IGkgPCBsdXRfc2l6ZTsgaSsrKQot
+CQlnYW1tYS0+Y29lZmZzW2ldID0gMC4wOworCQlzZXRfcmdiKCZnYW1tYS0+Y29lZmZzW2ldLCAw
+LjApOwogCiAJcmV0dXJuIGdhbW1hOwogfQpAQCAtMTU4LDcgKzE2Myw5IEBAIHN0cnVjdCBkcm1f
+Y29sb3JfbHV0ICpjb2VmZnNfdG9fbHV0KGRhdGFfdCAqZGF0YSwKIAlpZiAoSVNfQ0hFUlJZVklF
+VyhkYXRhLT5kZXZpZCkpCiAJCWx1dF9zaXplIC09IDE7CiAJZm9yIChpID0gMDsgaSA8IGx1dF9z
+aXplOyBpKyspIHsKLQkJdWludDMyX3QgdiA9IChnYW1tYS0+Y29lZmZzW2ldICogbWF4X3ZhbHVl
+KTsKKwkJdWludDMyX3QgciA9IGdhbW1hLT5jb2VmZnNbaV0uciAqIG1heF92YWx1ZTsKKwkJdWlu
+dDMyX3QgZyA9IGdhbW1hLT5jb2VmZnNbaV0uZyAqIG1heF92YWx1ZTsKKwkJdWludDMyX3QgYiA9
+IGdhbW1hLT5jb2VmZnNbaV0uYiAqIG1heF92YWx1ZTsKIAogCQkvKgogCQkgKiBIYXJkd2FyZSBt
+aWdodCBlbmNvZGUgY29sb3JzIG9uIGEgZGlmZmVyZW50IG51bWJlciBvZiBiaXRzCkBAIC0xNjYs
+MTEgKzE3MywxMyBAQCBzdHJ1Y3QgZHJtX2NvbG9yX2x1dCAqY29lZmZzX3RvX2x1dChkYXRhX3Qg
+KmRhdGEsCiAJCSAqIE1hc2sgdGhlIGxvd2VyIGJpdHMgbm90IHByb3ZpZGVkIGJ5IHRoZSBmcmFt
+ZWJ1ZmZlciBzbyB3ZQogCQkgKiBjYW4gZG8gQ1JDIGNvbXBhcmlzb25zLgogCQkgKi8KLQkJdiAm
+PSBtYXNrOworCQlyICY9IG1hc2s7CisJCWcgJj0gbWFzazsKKwkJYiAmPSBtYXNrOwogCi0JCWx1
+dFtpXS5yZWQgPSB2OwotCQlsdXRbaV0uZ3JlZW4gPSB2OwotCQlsdXRbaV0uYmx1ZSA9IHY7CisJ
+CWx1dFtpXS5yZWQgPSByOworCQlsdXRbaV0uZ3JlZW4gPSBnOworCQlsdXRbaV0uYmx1ZSA9IGI7
+CiAJfQogCiAJaWYgKElTX0NIRVJSWVZJRVcoZGF0YS0+ZGV2aWQpKQpkaWZmIC0tZ2l0IGEvdGVz
+dHMva21zX2NvbG9yX2hlbHBlci5oIGIvdGVzdHMva21zX2NvbG9yX2hlbHBlci5oCmluZGV4IDg4
+ODkwNzI0YzJlNC4uM2Y0OWU3Y2FlNGMwIDEwMDY0NAotLS0gYS90ZXN0cy9rbXNfY29sb3JfaGVs
+cGVyLmgKKysrIGIvdGVzdHMva21zX2NvbG9yX2hlbHBlci5oCkBAIC02MSw3ICs2MSw3IEBAIHR5
+cGVkZWYgc3RydWN0IHsKIAogdHlwZWRlZiBzdHJ1Y3QgewogCWludCBzaXplOwotCWRvdWJsZSBj
+b2VmZnNbXTsKKwljb2xvcl90IGNvZWZmc1tdOwogfSBnYW1tYV9sdXRfdDsKIAogdm9pZCBwYWlu
+dF9ncmFkaWVudF9yZWN0YW5nbGVzKGRhdGFfdCAqZGF0YSwKLS0gCjIuMjYuMwoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxp
+c3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
+cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
