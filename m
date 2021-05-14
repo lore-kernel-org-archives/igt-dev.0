@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ACD9C6EE0E
- for <igt-dev@lists.freedesktop.org>; Fri, 14 May 2021 06:29:34 +0000 (UTC)
-Date: Fri, 14 May 2021 08:29:26 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210514062926.GA4837@zkempczy-mobl2>
-References: <20210423214853.876911-1-jason@jlekstrand.net>
- <20210423214853.876911-7-jason@jlekstrand.net>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DFAEE6EE18
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 May 2021 06:49:56 +0000 (UTC)
+From: Alan Previn <alan.previn.teres.alexis@intel.com>
+Date: Thu, 13 May 2021 23:49:37 -0700
+Message-Id: <20210514064953.1644250-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210423214853.876911-7-jason@jlekstrand.net>
-Subject: Re: [igt-dev] [PATCH i-g-t 06/89] docs: Add gem_engine_topology.h
- to the docs
+Subject: [igt-dev] [PATCH i-g-t 00/16] Introduce PXP Test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,74 +14,99 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jason Ekstrand <jason@jlekstrand.net>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBBcHIgMjMsIDIwMjEgYXQgMDQ6NDc6MzBQTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
-d3JvdGU6Cj4gQWxzbywgZG9jdW1lbnQgYSBjb3VwbGUgdGhpbmdzIHdoaWxlIHdlJ3JlIGhlcmUu
-ICBJdCdzIG5vd2hlcmUgY2xvc2UgdG8KPiBldmVyeXRoaW5nIGJ1dCBpdCdzIG1vcmUgdGhhbiBu
-b3RoaW5nLgoKTEdUTSBhbmQgZ2VuZXJhdGVzIGRvY3MgcHJvcGVybHk6CgpSZXZpZXdlZC1ieTog
-WmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Cgot
-LQpaYmlnbmlldwoKPiAtLS0KPiAgLi4uL2lndC1ncHUtdG9vbHMvaWd0LWdwdS10b29scy1kb2Nz
-LnhtbCAgICAgICAgIHwgIDEgKwo+ICBsaWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmMgICAg
-ICAgICAgICAgICAgICAgfCAxNiArKysrKysrKysrKysrKysrCj4gIGxpYi9pOTE1L2dlbV9lbmdp
-bmVfdG9wb2xvZ3kuaCAgICAgICAgICAgICAgICAgICB8IDE1ICsrKysrKysrKysrKysrKwo+ICAz
-IGZpbGVzIGNoYW5nZWQsIDMyIGluc2VydGlvbnMoKykKPiAKPiBkaWZmIC0tZ2l0IGEvZG9jcy9y
-ZWZlcmVuY2UvaWd0LWdwdS10b29scy9pZ3QtZ3B1LXRvb2xzLWRvY3MueG1sIGIvZG9jcy9yZWZl
-cmVuY2UvaWd0LWdwdS10b29scy9pZ3QtZ3B1LXRvb2xzLWRvY3MueG1sCj4gaW5kZXggMTkyZDFk
-ZjcuLjJlODVmMzYxIDEwMDY0NAo+IC0tLSBhL2RvY3MvcmVmZXJlbmNlL2lndC1ncHUtdG9vbHMv
-aWd0LWdwdS10b29scy1kb2NzLnhtbAo+ICsrKyBiL2RvY3MvcmVmZXJlbmNlL2lndC1ncHUtdG9v
-bHMvaWd0LWdwdS10b29scy1kb2NzLnhtbAo+IEBAIC01NSw2ICs1NSw3IEBACj4gICAgPGNoYXB0
-ZXI+Cj4gICAgICA8dGl0bGU+aWd0L2k5MTUgQVBJIFJlZmVyZW5jZTwvdGl0bGU+Cj4gICAgICA8
-eGk6aW5jbHVkZSBocmVmPSJ4bWwvZ2VtX2NvbnRleHQueG1sIi8+Cj4gKyAgICA8eGk6aW5jbHVk
-ZSBocmVmPSJ4bWwvZ2VtX2VuZ2luZV90b3BvbG9neS54bWwiLz4KPiAgICAgIDx4aTppbmNsdWRl
-IGhyZWY9InhtbC9nZW1fc2NoZWR1bGVyLnhtbCIvPgo+ICAgICAgPHhpOmluY2x1ZGUgaHJlZj0i
-eG1sL2dlbV9zdWJtaXNzaW9uLnhtbCIvPgo+ICAgIDwvY2hhcHRlcj4KPiBkaWZmIC0tZ2l0IGEv
-bGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5jIGIvbGliL2k5MTUvZ2VtX2VuZ2luZV90b3Bv
-bG9neS5jCj4gaW5kZXggYzEyY2Q5MjAuLjI5MWZiMDI4IDEwMDY0NAo+IC0tLSBhL2xpYi9pOTE1
-L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYwo+ICsrKyBiL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xv
-Z3kuYwo+IEBAIC0zMiw2ICszMiwxNCBAQAo+ICAjaW5jbHVkZSAiaW9jdGxfd3JhcHBlcnMuaCIK
-PiAgCj4gICNpbmNsdWRlICJpOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuaCIKPiArLyoqCj4gKyAq
-IFNFQ1RJT046Z2VtX2VuZ2luZV90b3BvbG9neQo+ICsgKiBAc2hvcnRfZGVzY3JpcHRpb246IEhl
-bHBlcnMgZm9yIGRlYWxpbmcgZW5naW5lIHRvcG9sb2d5Cj4gKyAqIEB0aXRsZTogR0VNIEVuZ2lu
-ZSBUb3BvbG9neQo+ICsgKgo+ICsgKiBUaGlzIGhlbHBlciBsaWJyYXJ5IGNvbnRhaW5zIGZ1bmN0
-aW9ucyB1c2VkIGZvciBxdWVyeWluZyBhbmQgZGVhbGluZwo+ICsgKiB3aXRoIGVuZ2luZXMgaW4g
-R0VNIGNvbnRleHRzLgo+ICsgKi8KPiAgCj4gIC8qCj4gICAqIExpbWl0IHdoYXQgd2Ugc3VwcG9y
-dCBmb3Igc2ltcGxpY2l0eSBkdWUgbGltaXRhdGlvbiBpbiBob3cgbXVjaCB3ZQo+IEBAIC0yNzYs
-NiArMjg0LDE0IEBAIGludCBnZW1fY29udGV4dF9sb29rdXBfZW5naW5lKGludCBmZCwgdWludDY0
-X3QgZW5naW5lLCB1aW50MzJfdCBjdHhfaWQsCj4gIAlyZXR1cm4gMDsKPiAgfQo+ICAKPiArLyoq
-Cj4gKyAqIGdlbV9oYXNfZW5naW5lX3RvcG9sb2d5Ogo+ICsgKiBAZmQ6IG9wZW4gaTkxNSBkcm0g
-ZmlsZSBkZXNjcmlwdG9yCj4gKyAqCj4gKyAqIFF1ZXJpZXMgd2hldGhlciB0aGUgZW5naW5lIHRv
-cG9sb2d5IEFQSSBpcyBzdXBwb3J0ZWQgb3Igbm90Lgo+ICsgKgo+ICsgKiBSZXR1cm5zOiBFbmdp
-bmUgdG9wb2xvZ3kgQVBJIGF2YWlsYWJpbGl0eS4KPiArICovCj4gIGJvb2wgZ2VtX2hhc19lbmdp
-bmVfdG9wb2xvZ3koaW50IGZkKQo+ICB7Cj4gIAlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2NvbnRleHRf
-cGFyYW0gcGFyYW0gPSB7Cj4gZGlmZiAtLWdpdCBhL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xv
-Z3kuaCBiL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuaAo+IGluZGV4IGY1ZWRjYjVkLi5h
-YzM3YjE5YSAxMDA2NDQKPiAtLS0gYS9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmgKPiAr
-KysgYi9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmgKPiBAQCAtMjksNiArMjksMTUgQEAK
-PiAgCj4gICNkZWZpbmUgR0VNX01BWF9FTkdJTkVTCQlJOTE1X0VYRUNfUklOR19NQVNLICsgMQo+
-ICAKPiArLyoqCj4gKyAqIGludGVsX2VuZ2luZV9kYXRhOgo+ICsgKiBAbmVuZ2luZXM6IE51bWJl
-ciBvZiBlbmdpbmVzCj4gKyAqIEBuOiBDdXJyZW50IGVuZ2luZSBpbmRleAo+ICsgKiBAY3VycmVu
-dF9lbmdpbmU6IEN1cnJlbnQgZW5naW5lCj4gKyAqIEBlbmdpbmVzOiBMaXN0IG9mIGFsbCBlbmdp
-bmVzCj4gKyAqCj4gKyAqIFRoaXMgc3RydWN0IGFjdHMgYXMgYW4gaW50ZXJhdG9yIGZvciB3YWxr
-aW5nIG92ZXIgYSBzZXQgb2YgZW5naW5lcy4KPiArICovCj4gIHN0cnVjdCBpbnRlbF9lbmdpbmVf
-ZGF0YSB7Cj4gIAl1aW50MzJfdCBuZW5naW5lczsKPiAgCXVpbnQzMl90IG47Cj4gQEAgLTU4LDYg
-KzY3LDEyIEBAIGJvb2wgZ2VtX2VuZ2luZV9pc19lcXVhbChjb25zdCBzdHJ1Y3QgaW50ZWxfZXhl
-Y3V0aW9uX2VuZ2luZTIgKmUxLAo+ICAKPiAgc3RydWN0IGludGVsX2V4ZWN1dGlvbl9lbmdpbmUy
-IGdlbV9lYl9mbGFnc190b19lbmdpbmUodW5zaWduZWQgaW50IGZsYWdzKTsKPiAgCj4gKy8qKgo+
-ICsgKiBfX2Zvcl9lYWNoX3N0YXRpY19lbmdpbmU6Cj4gKyAqIEBlX186IHN0cnVjdCBpbnRlbF9l
-eGVjdXRpb25fZW5naW5lMiBpdGVyYXRvcgo+ICsgKgo+ICsgKiBJdGVyYXRlcyBvdmVyIGVhY2gg
-b2YgdGhlIHN0YXRpY2FsbHkgZGVmaW5lZCAobGVnYWN5KSBlbmdpbmVzLgo+ICsgKi8KPiAgI2Rl
-ZmluZSBfX2Zvcl9lYWNoX3N0YXRpY19lbmdpbmUoZV9fKSBcCj4gIAlmb3IgKChlX18pID0gaW50
-ZWxfZXhlY3V0aW9uX2VuZ2luZXMyOyAoZV9fKS0+bmFtZVswXTsgKGVfXykrKykKPiAgCj4gLS0g
-Cj4gMi4zMS4xCj4gCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KPiBpZ3QtZGV2IG1haWxpbmcgbGlzdAo+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnCj4gaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3Qt
-ZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
-ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+This series adds gem_pxp tests for the new PXP subsystem currently
+being reviewed at https://patchwork.freedesktop.org/series/86798/ .
+This series currently includes 4 groups of tests addressing the
+features and restrictions described by Daniele's series :
+   1. test i915 interfaces for allocation of protected bo's
+      and contexts and enforcement of UAPI rule disallowing the
+      modification of parameters after it's been created.
+   2. verify PXP subsystem protected sessions generate encrypted
+      content on protected output buffers and decrypt protected
+      inputs buffers.
+   3. verify i915 PXP auto-teardown succeeds on suspend-resume
+      cycles and gem-exec of stale protected assets fail. Ensure
+      protected-contexts adhere to stricter invalidation
+      enforcement upon teardown event.
+   4. Ensure that display plane decryption works as expected with
+      protected buffers with and without HDCP.
+
+NOTE: Although this series is on a third revision, the feature
+has not been merged into the kernel yet. One final revision may
+be necesssary depending on whether additional UAPI changes are
+made on the kernel series. 
+
+Changes from prior rev1 to now:
+   v3:
+      - Addressed all rev2 review comments.
+      - In line with one of the rev2 comments, a thorough fixup
+        of all line-breaks in function calls was made for a more
+        consistent styling.
+      - Rebased on igt upstream repo and updated to latest kernel
+        UAPI that added GEM_CREATE_EXT.
+   v2: 
+      - Addressed all rev1 review comments except these:
+           1.Chris Wilson : "...have the caller do 1-3 once for its protected
+             context. Call it something like intel_bb_enable_pxp(),
+             intel_bb_set_pxp if it should be reversible.".
+             -  This couldn't be implemented because [1] HW needs different
+             instruction sequences for enabling/disabling PXP depending
+             on the engine class and [2] the pair of "pxp-enable" and "pxp-
+             disable" instructions need to be contained within the same batch
+             that is dispatched to the hardware. That said, implementing
+             internal intel_batchbuffer funtionality for this would conflict
+             with how rendercopy_gen9 uses batch buffer memory by repositioing
+             the pointer and consuming unused portions of the batch buffer as
+             3d state offsets that batchbuffer has no visibility.
+         
+      - Added these additional subtests:
+           1. verify that buffer sharing works across testing pxp context.
+           2. verify teardown bans contexts via DRM_IOCTL_I915_GET_RESET_STAT.
+           3. verify display plane decryption of protected buffers.
+
+Alan Previn (15):
+  Sync i915_drm.h UAPI from kernel
+  Add PXP UAPI support in i915_drm.h
+  Add basic PXP testing of buffer and context alloc
+  Perform a regular 3d copy as a control checkpoint
+  Add PXP attribute support in batchbuffer and buffer_ops libs
+  Add MI_SET_APPID instruction definition
+  Enable protected session cmd in gen12_render_copyfunc
+  Add subtest to copy raw source to protected dest
+  Add test where both src and dest are protected
+  Verify PXP teardown occured through suspend-resume
+  Verify execbuf fails with stale PXP context after teardown
+  Verify execbuf fails with stale PXP buffer after teardown
+  Verify execbuf ok with stale prot-buff and regular context
+  Ensure RESET_STAT reports invalidated protected context
+  Verify protected surfaces are dma buffer sharable
+
+Karthik B S (1):
+  tests/i915_pxp: CRC validation for display tests.
+
+ include/drm-uapi/i915_drm.h |  448 +++++++++++-
+ lib/intel_batchbuffer.c     |   23 +-
+ lib/intel_batchbuffer.h     |   31 +
+ lib/intel_bufops.h          |   15 +
+ lib/intel_reg.h             |    9 +
+ lib/rendercopy_gen9.c       |   72 +-
+ tests/i915/gem_pxp.c        | 1308 +++++++++++++++++++++++++++++++++++
+ tests/meson.build           |    1 +
+ 8 files changed, 1864 insertions(+), 43 deletions(-)
+ create mode 100644 tests/i915/gem_pxp.c
+
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
