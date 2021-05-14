@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 22D886E3F7
- for <igt-dev@lists.freedesktop.org>; Fri, 14 May 2021 09:28:29 +0000 (UTC)
-Date: Fri, 14 May 2021 12:31:39 +0300
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D8FF36EE41
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 May 2021 09:33:32 +0000 (UTC)
+Date: Fri, 14 May 2021 12:36:49 +0300
 From: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
-Message-ID: <20210514093139.GA8606@intel.com>
+Message-ID: <20210514093649.GB8606@intel.com>
 References: <20210414022754.31710-1-ville.syrjala@linux.intel.com>
- <20210414022754.31710-2-ville.syrjala@linux.intel.com>
+ <20210414022754.31710-3-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210414022754.31710-2-ville.syrjala@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/8] tools/intel_watermark: Parse WM_DBG
- to help diagnose watermark issues
+In-Reply-To: <20210414022754.31710-3-ville.syrjala@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/8] tools/intel_watermark: Use
+ WM_SR_CNT to observe SR residency
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,95 +27,133 @@ To: Ville Syrjala <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Apr 14, 2021 at 05:27:47AM +0300, Ville Syrjala wrote:
+On Wed, Apr 14, 2021 at 05:27:48AM +0300, Ville Syrjala wrote:
 > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
 > =
 
-> WM_DBG has some useful sticky bits which tell us whether the
-> hardware has entered specific LP1+ and/or maxfifo modes since
-> those bits were last cleared. Let's dump those out.
-> =
+> WM_SR_CNT (exists since HSW) has some kind of SR residency counter,
+> which is nice for checking whether the watermarks work decently.
+> Let's use it.
 
-> Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+As I understood this is just somekind of a counter which indicates,
+how long we kept memory awake. =
+
 
 Reviewed-by: Stanislav Lisovskiy <stanislav.lisovskiy@gmail.com>
 
+> =
+
+> Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
 > ---
->  tools/intel_watermark.c | 33 +++++++++++++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
+>  tools/intel_watermark.c | 53 ++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 52 insertions(+), 1 deletion(-)
 > =
 
 > diff --git a/tools/intel_watermark.c b/tools/intel_watermark.c
-> index 14d1ae0d80f7..bc2a46232772 100644
+> index bc2a46232772..39aaf9fbe055 100644
 > --- a/tools/intel_watermark.c
 > +++ b/tools/intel_watermark.c
-> @@ -41,6 +41,11 @@ static uint32_t read_reg(uint32_t addr)
->  	return INREG(display_base + addr);
+> @@ -35,6 +35,7 @@
+>  =
+
+>  static uint32_t display_base;
+>  static uint32_t devid;
+> +static unsigned int sr_sleep;
+>  =
+
+>  static uint32_t read_reg(uint32_t addr)
+>  {
+> @@ -240,6 +241,22 @@ static const char *skl_nv12_buf_cfg_reg_name(int pip=
+e, int plane)
+>  	return reg_name;
 >  }
 >  =
 
-> +static void write_reg(uint32_t addr, uint32_t val)
+> +static void hsw_wm_sr_cnt(void)
 > +{
-> +	OUTREG(display_base + addr, val);
+> +	if (sr_sleep) {
+> +		uint32_t pre, post;
+> +
+> +		pre =3D read_reg(0x45264);
+> +		sleep(sr_sleep);
+> +		post =3D read_reg(0x45264);
+> +
+> +		printf("WM_SR_CNT: 0x%08x->0x%08x\n", pre, post);
+> +		printf("SR residency: %u%%\n", ((post - pre) * 8 / (sr_sleep * 10000))=
+);
+> +	} else {
+> +		printf("WM_SR_CNT: 0x%08x\n", read_reg(0x45264));
+> +	}
 > +}
 > +
->  struct gmch_wm {
->  	int wm, wm1, dl, fifo, fbc, burst;
->  	bool dl_prec, valid;
-> @@ -249,6 +254,7 @@ static void skl_wm_dump(void)
->  	uint32_t nv12_buf_cfg[num_pipes][max_planes];
->  	uint32_t plane_ctl[num_pipes][max_planes];
->  	uint32_t wm_linetime[num_pipes];
-> +	uint32_t wm_dbg;
->  =
-
->  	intel_register_access_init(&mmio_data, intel_get_pci_device(), 0, -1);
->  =
-
-> @@ -455,6 +461,17 @@ static void skl_wm_dump(void)
->  =
-
+>  static void skl_wm_dump(void)
+>  {
+>  	struct intel_mmio_data mmio_data;
+> @@ -462,6 +479,8 @@ static void skl_wm_dump(void)
 >  	printf("* plane watermark enabled\n");
 >  	printf("(x) line watermark if enabled\n");
-> +
-> +	wm_dbg =3D read_reg(0x45280);
-> +	printf("WM_DBG: 0x%08x\n", wm_dbg);
-> +	printf(" LP used:");
-> +	for (level =3D 1; level < num_levels; level++) {
-> +		if (wm_dbg & (1 << (23 + level)))
-> +			printf(" LP%d", level);
-> +	}
-> +	printf("\n");
-> +	/* clear the sticky bits */
-> +	write_reg(0x45280, wm_dbg);
->  }
 >  =
 
->  static void ilk_wm_dump(void)
-> @@ -608,6 +625,22 @@ static void ilk_wm_dump(void)
->  	}
->  	printf("FBC watermark =3D %s\n",
+> +	hsw_wm_sr_cnt();
+> +
+>  	wm_dbg =3D read_reg(0x45280);
+>  	printf("WM_DBG: 0x%08x\n", wm_dbg);
+>  	printf(" LP used:");
+> @@ -627,7 +646,11 @@ static void ilk_wm_dump(void)
 >  	       endis(!REG_DECODE1(arb_ctl, 15, 1)));
+>  =
+
+>  	if (IS_BROADWELL(devid) || IS_HASWELL(devid)) {
+> -		uint32_t wm_dbg =3D read_reg(0x45280);
+> +		uint32_t wm_dbg;
 > +
-> +	if (IS_BROADWELL(devid) || IS_HASWELL(devid)) {
-> +		uint32_t wm_dbg =3D read_reg(0x45280);
-> +		printf("WM_DBG: 0x%08x\n", wm_dbg);
-> +		if (wm_dbg & (1 << 31))
-> +			printf(" Full maxfifo used\n");
-> +		if (wm_dbg & (1 << 30))
-> +			printf(" Sprite maxfifo used\n");
-> +		printf(" LP used:");
-> +		for (i =3D 1; i < 4; i++) {
-> +			if (wm_dbg & (1 << (23+i)))
-> +				printf(" LP%d", i);
-> +		}
-> +		/* clear the sticky bits */
-> +		write_reg(0x45280, wm_dbg);
-> +	}
+> +		hsw_wm_sr_cnt();
+> +
+> +		wm_dbg =3D read_reg(0x45280);
+>  		printf("WM_DBG: 0x%08x\n", wm_dbg);
+>  		if (wm_dbg & (1 << 31))
+>  			printf(" Full maxfifo used\n");
+> @@ -1265,10 +1288,38 @@ static void gen2_wm_dump(void)
+>  	}
 >  }
 >  =
 
->  static void vlv_wm_dump(void)
+> +static void __attribute__((noreturn)) usage(const char *name)
+> +{
+> +	fprintf(stderr, "Usage: %s [options]\n"
+> +		" -s,--sr-sleep <seconds>\n",
+> +		name);
+> +	exit(1);
+> +}
+> +
+>  int main(int argc, char *argv[])
+>  {
+>  	devid =3D intel_get_pci_device()->device_id;
+>  =
+
+> +	for (;;) {
+> +		static const struct option long_options[] =3D {
+> +			{ .name =3D "sr-sleep", .has_arg =3D required_argument, },
+> +			{}
+> +		};
+> +
+> +		int opt =3D getopt_long(argc, argv, "s:", long_options, NULL);
+> +		if (opt =3D=3D -1)
+> +			break;
+> +
+> +		switch (opt) {
+> +		case 's':
+> +			sr_sleep =3D atoi(optarg);
+> +			break;
+> +		default:
+> +			usage(argv[0]);
+> +			break;
+> +		}
+> +	}
+> +
+>  	if (intel_gen(devid) >=3D 9) {
+>  		skl_wm_dump();
+>  	} else if (IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid)) {
 > -- =
 
 > 2.26.3
