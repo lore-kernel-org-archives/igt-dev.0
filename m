@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78ED06E454
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BBBD86E45D
  for <igt-dev@lists.freedesktop.org>; Sat, 15 May 2021 23:01:47 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Sat, 15 May 2021 16:01:30 -0700
-Message-Id: <20210515230142.1816456-6-alan.previn.teres.alexis@intel.com>
+Date: Sat, 15 May 2021 16:01:36 -0700
+Message-Id: <20210515230142.1816456-12-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210515230142.1816456-1-alan.previn.teres.alexis@intel.com>
 References: <20210515230142.1816456-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 05/17] Perform a regular 3d copy as a
- control checkpoint
+Subject: [igt-dev] [PATCH i-g-t 11/17] Verify PXP teardown occured through
+ suspend-resume
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,203 +25,117 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As a control checkpoint, allocate buffers to be used
-as texture and render target in the 3d engine for a
-regular src to dest copy blit and verify buffer pixels.
+During a suspend-resume cycle, the hardware and driver shall
+ensure the PXP session and keys are torn down and re-
+established. Verify that key change did occur by repeating
+the 3d rendercopy operation before and after a suspend cycle
+and ensuring that the encrypted output is different.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 ---
- tests/i915/gem_pxp.c | 168 ++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 158 insertions(+), 10 deletions(-)
+ tests/i915/gem_pxp.c | 68 +++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 67 insertions(+), 1 deletion(-)
 
 diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index be7b2749..339d4347 100644
+index dd3297b3..e8b9d842 100644
 --- a/tests/i915/gem_pxp.c
 +++ b/tests/i915/gem_pxp.c
-@@ -250,6 +250,24 @@ static void test_ctx_alloc_recover_on_protect_on(int i915)
- 	igt_assert_eq(ret, -EPERM);
- }
+@@ -11,6 +11,12 @@
+ IGT_TEST_DESCRIPTION("Test PXP that manages protected content through arbitrated HW-PXP-session");
+ /* Note: PXP = "Protected Xe Path" */
  
-+static void test_ctx_mod_regular_to_all_valid(int i915)
-+{
-+	int ret;
-+	uint32_t ctx;
++/* Struct and defintions for power management. */
++struct powermgt_data {
++	int debugfsdir;
++	bool has_runtime_pm;
++};
 +
-+	ret = create_ctx_with_params(i915, false, false, false, false, &ctx);
-+	igt_assert_eq(ret, 0);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
-+	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 1);
-+	ret = modify_ctx_param(i915, ctx, CHANGE_PARAM_RECOVERY, false);
-+	igt_assert_eq(ret, 0);
-+	ret = modify_ctx_param(i915, ctx, CHANGE_PARAM_PROTECTED, true);
-+	igt_assert_eq(ret, -EPERM);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
-+	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-+	gem_context_destroy(i915, ctx);
-+}
-+
- static void test_ctx_mod_recover_off_to_on(int i915)
+ static bool is_pxp_hw_supported(int i915)
  {
- 	int ret;
-@@ -299,28 +317,145 @@ static void test_ctx_mod_protected_to_all_invalid(int i915)
- 	gem_context_destroy(i915, ctx);
+ 	uint32_t devid = intel_get_drm_devid(i915);
+@@ -493,7 +499,7 @@ static void test_render_baseline(int i915)
+ 	buf_ops_destroy(bops);
  }
  
--static void test_ctx_mod_regular_to_all_valid(int i915)
-+static void fill_bo_content(int i915, uint32_t bo, uint32_t size, uint32_t initcolor)
-+{
-+	uint32_t *ptr, *ptrtmp;
-+	int loop = 0;
-+
-+	ptr = gem_mmap__device_coherent(i915, bo, 0, size, PROT_WRITE);
-+	ptrtmp = ptr;
-+
-+	/* read and count all dword matches till size */
-+	while (loop++ < (size/4)) {
-+		*ptrtmp = initcolor;
-+		++ptrtmp;
-+	}
-+
-+	igt_assert(gem_munmap(ptr, size) == 0);
-+}
-+
-+#define COMPARE_COLOR_READIBLE     1
-+#define COMPARE_COLOR_UNREADIBLE   2
-+#define COMPARE_N_PIXELS_VERBOSELY 0
-+
-+static void assert_bo_content_check(int i915, uint32_t bo, int compare_op,
-+				    uint32_t size, uint32_t color)
-+{
-+	uint32_t *ptr, *ptrtmp;
-+	int loop = 0, num_matches = 0;
-+	uint32_t value;
-+	bool op_readible = (compare_op == COMPARE_COLOR_READIBLE);
-+
-+	ptr = gem_mmap__device_coherent(i915, bo, 0, size, PROT_READ);
-+	ptrtmp = ptr;
-+
-+	if (COMPARE_N_PIXELS_VERBOSELY) {
-+		igt_info("--------->>>\n");
-+		while (loop < COMPARE_N_PIXELS_VERBOSELY && loop < (size/4)) {
-+			value = *ptrtmp;
-+			igt_info("Color read = 0x%08x ", value);
-+			igt_info("expected %c= 0x%08x)\n", op_readible?'=':'!', color);
-+			++ptrtmp;
-+			++loop;
-+		}
-+		igt_info("<<<---------\n");
-+		ptrtmp = ptr;
-+		loop = 0;
-+	}
-+
-+	/* count all pixels for matches */
-+	while (loop++ < (size/4)) {
-+		value = *ptrtmp;
-+		if (value == color)
-+			++num_matches;
-+		++ptrtmp;
-+	}
-+
-+	if (op_readible)
-+		igt_assert_eq(num_matches, (size/4));
-+	else
-+		igt_assert_eq(num_matches, 0);
-+
-+	igt_assert(gem_munmap(ptr, size) == 0);
-+}
-+
-+static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size,
-+					 uint32_t init_color)
+-static void test_render_pxp_src_to_protdest(int i915)
++static void __test_render_pxp_src_to_protdest(int i915, uint32_t *outpixels, int outsize)
  {
-+	uint32_t bo;
- 	int ret;
--	uint32_t ctx;
+ 	uint32_t ctx, srcbo, dstbo;
+ 	struct intel_buf *srcbuf, *dstbuf;
+@@ -535,6 +541,10 @@ static void test_render_pxp_src_to_protdest(int i915)
+ 	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
+ 				TSTSURF_SIZE, TSTSURF_FILLCOLOR2, NULL, 0);
  
--	ret = create_ctx_with_params(i915, false, false, false, false, &ctx);
-+	ret = create_bo_ext(i915, size, protected, &bo);
- 	igt_assert_eq(ret, 0);
--	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
--	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 1);
--	ret = modify_ctx_param(i915, ctx, CHANGE_PARAM_RECOVERY, false);
-+	igt_assert(bo);
-+	fill_bo_content(i915, bo, size, init_color);
-+	assert_bo_content_check(i915, bo, COMPARE_COLOR_READIBLE, size, init_color);
++	if (outpixels)
++		assert_bo_content_check(i915, dstbo, COPY_BUFFER,
++					TSTSURF_SIZE, 0, outpixels, outsize);
 +
-+	return bo;
-+}
-+
-+/*
-+ * Rendering tests surface attributes, keep it simple:
-+ * page aligned width==stride, thus, and size
-+ */
-+#define TSTSURF_WIDTH       1024
-+#define TSTSURF_HEIGHT      128
-+#define TSTSURF_BYTESPP     4
-+#define TSTSURF_STRIDE      (TSTSURF_WIDTH*TSTSURF_BYTESPP)
-+#define TSTSURF_SIZE        (TSTSURF_STRIDE*TSTSURF_HEIGHT)
-+#define TSTSURF_FILLCOLOR1  0xfaceface
-+#define TSTSURF_INITCOLOR1  0x12341234
-+
-+static void test_render_baseline(int i915)
-+{
-+	uint32_t ctx, srcbo, dstbo;
-+	struct intel_buf *srcbuf, *dstbuf;
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb;
-+	uint32_t devid;
-+	int ret;
-+
-+	devid = intel_get_drm_devid(i915);
-+	igt_assert(devid);
-+
-+	bops = buf_ops_create(i915);
-+	igt_assert(bops);
-+
-+	/* Perform a regular 3d copy as a control checkpoint */
-+	ret = create_ctx_with_params(i915, false, false, false, false, &ctx);
- 	igt_assert_eq(ret, 0);
--	ret = modify_ctx_param(i915, ctx, CHANGE_PARAM_PROTECTED, true);
--	igt_assert_eq(ret, -EPERM);
--	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
--	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-+	ibb = intel_bb_create_with_context(i915, ctx, 4096);
-+	igt_assert(ibb);
-+
-+	dstbo = alloc_and_fill_dest_buff(i915, false, TSTSURF_SIZE, TSTSURF_INITCOLOR1);
-+	dstbuf = intel_buf_create_using_handle(bops, dstbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
-+					       TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
-+
-+	srcbo = alloc_and_fill_dest_buff(i915, false, TSTSURF_SIZE, TSTSURF_FILLCOLOR1);
-+	srcbuf = intel_buf_create_using_handle(bops, srcbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
-+					       TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
-+
-+	gen12_render_copyfunc(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
-+	gem_sync(i915, dstbo);
-+
-+	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_READIBLE,
-+				TSTSURF_SIZE, TSTSURF_FILLCOLOR1);
-+
-+	intel_bb_destroy(ibb);
-+	intel_buf_destroy(srcbuf);
-+	gem_close(i915, srcbo);
-+	intel_buf_destroy(dstbuf);
-+	gem_close(i915, dstbo);
- 	gem_context_destroy(i915, ctx);
-+	buf_ops_destroy(bops);
+ 	intel_bb_destroy(ibb);
+ 	intel_buf_destroy(srcbuf);
+ 	gem_close(i915, srcbo);
+@@ -544,6 +554,11 @@ static void test_render_pxp_src_to_protdest(int i915)
+ 	buf_ops_destroy(bops);
  }
  
++static void test_render_pxp_src_to_protdest(int i915)
++{
++	__test_render_pxp_src_to_protdest(i915, NULL, 0);
++}
++
+ static void test_render_pxp_protsrc_to_protdest(int i915)
+ {
+ 	uint32_t ctx, srcbo, dstbo, dstbo2;
+@@ -623,10 +638,47 @@ static void test_render_pxp_protsrc_to_protdest(int i915)
+ 	buf_ops_destroy(bops);
+ }
+ 
++static void init_powermgt_resources(int i915, struct powermgt_data *pm)
++{
++	pm->debugfsdir = igt_debugfs_dir(i915);
++	igt_require(pm->debugfsdir != -1);
++	pm->has_runtime_pm = igt_setup_runtime_pm(i915);
++	igt_require(pm->has_runtime_pm);
++}
++
++static void trigger_powermgt_suspend_cycle(int i915,
++	struct powermgt_data *pm)
++{
++	igt_pm_enable_sata_link_power_management();
++	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_DEVICES);
++	igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED);
++}
++
++static void test_pxp_pwrcycle_teardown_keychange(int i915, struct powermgt_data *pm)
++{
++	uint32_t encrypted_pixels_b4[TSTSURF_SIZE/TSTSURF_BYTESPP];
++	uint32_t encrypted_pixels_aft[TSTSURF_SIZE/TSTSURF_BYTESPP];
++	int matched_after_keychange = 0, loop = 0;
++
++	__test_render_pxp_src_to_protdest(i915, encrypted_pixels_b4, TSTSURF_SIZE);
++
++	trigger_powermgt_suspend_cycle(i915, pm);
++
++	__test_render_pxp_src_to_protdest(i915, encrypted_pixels_aft, TSTSURF_SIZE);
++
++	while (loop < (TSTSURF_SIZE/TSTSURF_BYTESPP)) {
++		if (encrypted_pixels_b4[loop] == encrypted_pixels_aft[loop])
++			++matched_after_keychange;
++		++loop;
++	}
++	igt_assert_eq(matched_after_keychange, 0);
++}
++
  igt_main
  {
  	int i915 = -1;
  	bool pxp_supported = false;
-+	igt_render_copyfunc_t rendercopy = NULL;
-+	uint32_t devid = 0;
++	struct powermgt_data pm = {0};
+ 	igt_render_copyfunc_t rendercopy = NULL;
+ 	uint32_t devid = 0;
  
- 	igt_fixture
- 	{
-@@ -374,6 +509,19 @@ igt_main
- 		igt_subtest("reject-modify-context-protection-off-3")
- 			test_ctx_mod_protected_to_all_invalid(i915);
+@@ -699,6 +751,20 @@ igt_main
+ 		igt_subtest("protected-encrypted-src-copy-not-readible")
+ 			test_render_pxp_protsrc_to_protdest(i915);
  	}
 +	igt_subtest_group {
 +		igt_fixture {
@@ -230,11 +144,12 @@ index be7b2749..339d4347 100644
 +			igt_assert(devid);
 +			rendercopy = igt_get_render_copyfunc(devid);
 +			igt_require(rendercopy);
++			init_powermgt_resources(i915, &pm);
 +		}
-+
-+		igt_describe("Verify protected render operations:");
-+		igt_subtest("regular-baseline-src-copy-readible")
-+			test_render_baseline(i915);
++		igt_describe("Verify suspend-resume teardown management:");
++		igt_subtest("verify-pxp-key-change-after-suspend-resume") {
++			test_pxp_pwrcycle_teardown_keychange(i915, &pm);
++		}
 +	}
  
  	igt_fixture {
