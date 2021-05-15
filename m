@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88ED36E459
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B68AF6E457
  for <igt-dev@lists.freedesktop.org>; Sat, 15 May 2021 23:01:47 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Sat, 15 May 2021 16:01:31 -0700
-Message-Id: <20210515230142.1816456-7-alan.previn.teres.alexis@intel.com>
+Date: Sat, 15 May 2021 16:01:33 -0700
+Message-Id: <20210515230142.1816456-9-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210515230142.1816456-1-alan.previn.teres.alexis@intel.com>
 References: <20210515230142.1816456-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 06/17] Add PXP attribute support in
- batchbuffer and buffer_ops libs
+Subject: [igt-dev] [PATCH i-g-t 08/17] Enable protected session cmd in
+ gen12_render_copyfunc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,140 +25,169 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Eventually when we get to testing PXP rendering capability,
-we shall reuse lib's rendercopy feature. Rendercopy libraries
-shall retrieve information about PXP-session-enablement and
-which buffers are protected from these new flags.
+1. In _gen9_render_op, check if the incoming batchbuffer
+   is marked with pxp enabled. If so, insert MI_SET_APPID
+   along with PIPE_CONTROL instructions at the start and
+   end of the rendering operation in the command buffer.
+
+2. The two PIPE_CONTROLs will enable protected memory
+   at the start of the batch and disabling protected
+   memory at the end of it. These PIPE_CONTROLs require a
+   Post-Sync operation with a write to memory for hardware
+   to accept.
+
+3. In order to satisfy #2, _gen9_render_op uses unused
+   regions of the ibb buffer for the PIPE_CONTROL PostSync
+   write to memory (no different from how other 3d states
+   are being referenced).
+
+4. _gen9_render_op shall check the incoming surface
+   buffers for "is_protected" flag and if its set, it
+   will mark the SURFACE_STATE's MOCS field accordingly.
+
+NOTE: _gen9_render_op needs to program the HW to enable
+the PXP session as part of the rendering batch buffer
+because the HW requires that enabling/disabling protected
+memory access must be programmed in pairs within the same
+"dispatch of rendering commands" to HW.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 ---
- lib/intel_batchbuffer.c | 21 +++++++++++++++++++++
- lib/intel_batchbuffer.h | 28 ++++++++++++++++++++++++++++
- lib/intel_bufops.h      | 15 +++++++++++++++
- 3 files changed, 64 insertions(+)
+ lib/rendercopy_gen9.c | 72 ++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 65 insertions(+), 7 deletions(-)
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 0b2c5b21..23957109 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -2357,6 +2357,27 @@ uint64_t intel_bb_offset_reloc_to_object(struct intel_bb *ibb,
- 				  delta, offset, presumed_offset);
+diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+index eecf73d3..bfcf311b 100644
+--- a/lib/rendercopy_gen9.c
++++ b/lib/rendercopy_gen9.c
+@@ -19,7 +19,8 @@
+ #include "intel_bufops.h"
+ #include "intel_batchbuffer.h"
+ #include "intel_io.h"
+-#include "rendercopy.h"
++#include "igt.h"
++#include "i915/gem.h"
+ #include "gen9_render.h"
+ #include "intel_reg.h"
+ #include "igt_aux.h"
+@@ -152,6 +153,8 @@ gen8_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst) {
+ 		ss->ss0.tiled_mode = 3;
+ 
+ 	ss->ss1.memory_object_control = I915_MOCS_PTE << 1;
++	if (intel_buf_pxp(buf))
++		ss->ss1.memory_object_control |= 1;
+ 
+ 	if (buf->tiling == I915_TILING_Yf)
+ 		ss->ss5.trmode = 1;
+@@ -873,6 +876,53 @@ static void gen8_emit_primitive(struct intel_bb *ibb, uint32_t offset)
+ 	intel_bb_out(ibb, 0);	/* index buffer offset, ignored */
  }
  
-+/*
-+ * @intel_bb_set_pxp:
-+ * @ibb: pointer to intel_bb
-+ * @new_state: enable or disable pxp session
-+ * @apptype: pxp session input identifies what type of session to enable
-+ * @appid: pxp session input provides which appid to use
-+ *
-+ * This function merely stores the pxp state and session information to
-+ * be retrieved and programmed later by supporting libraries such as
-+ * gen12_render_copy that must program the HW within the same dispatch
-+ */
-+void intel_bb_set_pxp(struct intel_bb *ibb, bool new_state,
-+		      uint32_t apptype, uint32_t appid)
++#define GFX_OP_PIPE_CONTROL    ((3 << 29) | (3 << 27) | (2 << 24))
++#define PIPE_CONTROL_CS_STALL	            (1 << 20)
++#define PIPE_CONTROL_RENDER_TARGET_FLUSH    (1 << 12)
++#define PIPE_CONTROL_FLUSH_ENABLE           (1 << 7)
++#define PIPE_CONTROL_DATA_CACHE_INVALIDATE  (1 << 5)
++#define PIPE_CONTROL_PROTECTEDPATH_DISABLE  (1 << 27)
++#define PIPE_CONTROL_PROTECTEDPATH_ENABLE   (1 << 22)
++#define PIPE_CONTROL_POST_SYNC_OP           (1 << 14)
++#define PIPE_CONTROL_POST_SYNC_OP_STORE_DW_IDX (1 << 21)
++#define PS_OP_TAG_START                     0x1234fed0
++#define PS_OP_TAG_END                       0x5678cbaf
++static void gen12_emit_pxp_state(struct intel_bb *ibb, bool enable,
++		 uint32_t pxp_write_op_offset)
 +{
-+	igt_assert(ibb);
++	uint32_t pipe_ctl_flags;
++	uint32_t set_app_id, ps_op_id;
 +
-+	ibb->pxp.enabled = new_state;
-+	ibb->pxp.apptype = new_state ? apptype : 0;
-+	ibb->pxp.appid   = new_state ? appid : 0;
++	if (enable) {
++		pipe_ctl_flags = PIPE_CONTROL_FLUSH_ENABLE;
++		intel_bb_out(ibb, GFX_OP_PIPE_CONTROL);
++		intel_bb_out(ibb, pipe_ctl_flags);
++
++		set_app_id =  MI_SET_APPID |
++			      APPTYPE(intel_bb_pxp_apptype(ibb)) |
++			      APPID(intel_bb_pxp_appid(ibb));
++		intel_bb_out(ibb, set_app_id);
++
++		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_ENABLE;
++		ps_op_id = PS_OP_TAG_START;
++	} else {
++		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_DISABLE;
++		ps_op_id = PS_OP_TAG_END;
++	}
++
++	pipe_ctl_flags |= (PIPE_CONTROL_CS_STALL |
++			   PIPE_CONTROL_RENDER_TARGET_FLUSH |
++			   PIPE_CONTROL_DATA_CACHE_INVALIDATE |
++			   PIPE_CONTROL_POST_SYNC_OP);
++	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL | 4);
++	intel_bb_out(ibb, pipe_ctl_flags);
++	intel_bb_emit_reloc(ibb, ibb->handle, 0, I915_GEM_DOMAIN_COMMAND,
++			    (enable ? pxp_write_op_offset : (pxp_write_op_offset+8)),
++			    ibb->batch_offset);
++	intel_bb_out(ibb, ps_op_id);
++	intel_bb_out(ibb, ps_op_id);
 +}
 +
- static void intel_bb_dump_execbuf(struct intel_bb *ibb,
- 				  struct drm_i915_gem_execbuffer2 *execbuf)
- {
-diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-index 6f148713..389da7b2 100644
---- a/lib/intel_batchbuffer.h
-+++ b/lib/intel_batchbuffer.h
-@@ -438,6 +438,11 @@ typedef void (*igt_media_spinfunc_t)(int i915,
+ /* The general rule is if it's named gen6 it is directly copied from
+  * gen6_render_copyfunc.
+  *
+@@ -922,6 +972,7 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 	uint32_t vertex_buffer;
+ 	uint32_t aux_pgtable_state;
+ 	bool fast_clear = !src;
++	uint32_t pxp_scratch_offset;
  
- igt_media_spinfunc_t igt_get_media_spinfunc(int devid);
+ 	if (!fast_clear)
+ 		igt_assert(src->bpp == dst->bpp);
+@@ -950,8 +1001,12 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 	aux_pgtable_state = gen12_create_aux_pgtable_state(ibb, aux_pgtable_buf);
  
-+struct igt_pxp {
-+	bool     enabled;
-+	uint32_t apptype;
-+	uint32_t appid;
-+};
+ 	/* TODO: there is other state which isn't setup */
++	pxp_scratch_offset = intel_bb_offset(ibb);
+ 	intel_bb_ptr_set(ibb, 0);
  
- /*
-  * Batchbuffer without libdrm dependency
-@@ -464,6 +469,7 @@ struct intel_bb {
- 	bool supports_48b_address;
- 	bool uses_full_ppgtt;
++	if (intel_bb_pxp_enabled(ibb))
++		gen12_emit_pxp_state(ibb, true, pxp_scratch_offset);
++
+ 	/* Start emitting the commands. The order roughly follows the mesa blorp
+ 	 * order */
+ 	intel_bb_out(ibb, G4X_PIPELINE_SELECT | PIPELINE_SELECT_3D |
+@@ -963,13 +1018,12 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 		for (int i = 0; i < 4; i++) {
+ 			intel_bb_out(ibb, MI_STORE_DWORD_IMM);
+ 			intel_bb_emit_reloc(ibb, dst->handle,
+-					    I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER,
+-                                            dst->cc.offset + i*sizeof(float),
+-					    dst->addr.offset);
++					I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER,
++					dst->cc.offset + i*sizeof(float),
++					dst->addr.offset);
+ 			intel_bb_out(ibb, *(uint32_t*)&clear_color[i]);
+-               }
+-       }
+-
++		}
++	}
  
-+	struct igt_pxp pxp;
- 	uint32_t ctx;
- 	uint32_t vm_id;
+ 	gen8_emit_sip(ibb);
  
-@@ -578,6 +584,27 @@ static inline void intel_bb_out(struct intel_bb *ibb, uint32_t dword)
- 	igt_assert(intel_bb_offset(ibb) <= ibb->size);
+@@ -1023,10 +1077,14 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 	gen8_emit_vf_topology(ibb);
+ 	gen8_emit_primitive(ibb, vertex_buffer);
+ 
++	if (intel_bb_pxp_enabled(ibb))
++		gen12_emit_pxp_state(ibb, false, pxp_scratch_offset);
++
+ 	intel_bb_emit_bbe(ibb);
+ 	intel_bb_exec(ibb, intel_bb_offset(ibb),
+ 		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, false);
+ 	dump_batch(ibb);
++
+ 	intel_bb_reset(ibb, false);
  }
  
-+void intel_bb_set_pxp(struct intel_bb *ibb, bool new_state,
-+		      uint32_t apptype, uint32_t appid);
-+
-+static inline bool intel_bb_pxp_enabled(struct intel_bb *ibb)
-+{
-+	igt_assert(ibb);
-+	return ibb->pxp.enabled;
-+}
-+
-+static inline uint32_t intel_bb_pxp_apptype(struct intel_bb *ibb)
-+{
-+	igt_assert(ibb);
-+	return ibb->pxp.apptype;
-+}
-+
-+static inline uint32_t intel_bb_pxp_appid(struct intel_bb *ibb)
-+{
-+	igt_assert(ibb);
-+	return ibb->pxp.appid;
-+}
-+
- struct drm_i915_gem_exec_object2 *
- intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
- 		    uint64_t offset, uint64_t alignment, bool write);
-@@ -691,3 +718,4 @@ typedef void (*igt_huc_copyfunc_t)(int fd,
- 
- igt_huc_copyfunc_t	igt_get_huc_copyfunc(int devid);
- #endif
-+
-diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-index 9e57d53e..bffeb1b0 100644
---- a/lib/intel_bufops.h
-+++ b/lib/intel_bufops.h
-@@ -50,6 +50,9 @@ struct intel_buf {
- 	uint32_t *ptr;
- 	bool cpu_write;
- 
-+	/* Content Protection*/
-+	bool is_protected;
-+
- 	/* For debugging purposes */
- 	char name[INTEL_BUF_NAME_MAXSIZE + 1];
- };
-@@ -155,6 +158,18 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
- 							 int stride);
- void intel_buf_destroy(struct intel_buf *buf);
- 
-+static inline void intel_buf_set_pxp(struct intel_buf *buf, bool new_pxp_state)
-+{
-+	igt_assert(buf);
-+	buf->is_protected = new_pxp_state;
-+}
-+
-+static inline bool intel_buf_pxp(const struct intel_buf *buf)
-+{
-+	igt_assert(buf);
-+	return buf->is_protected;
-+}
-+
- void *intel_buf_cpu_map(struct intel_buf *buf, bool write);
- void *intel_buf_device_map(struct intel_buf *buf, bool write);
- void intel_buf_unmap(struct intel_buf *buf);
 -- 
 2.25.1
 
