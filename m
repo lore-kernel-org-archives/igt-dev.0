@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF1B56E0E5
- for <igt-dev@lists.freedesktop.org>; Sat, 15 May 2021 23:01:46 +0000 (UTC)
-From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Sat, 15 May 2021 16:01:27 -0700
-Message-Id: <20210515230142.1816456-3-alan.previn.teres.alexis@intel.com>
-In-Reply-To: <20210515230142.1816456-1-alan.previn.teres.alexis@intel.com>
-References: <20210515230142.1816456-1-alan.previn.teres.alexis@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8484C6E439
+ for <igt-dev@lists.freedesktop.org>; Sat, 15 May 2021 19:50:23 +0000 (UTC)
+From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
+Date: Sat, 15 May 2021 19:50:20 +0000
+Message-ID: <35cd8e927903d3bbf74c96ecf7d86711ccd9fef3.camel@intel.com>
+References: <20210514064953.1644250-1-alan.previn.teres.alexis@intel.com>
+ <20210514064953.1644250-13-alan.previn.teres.alexis@intel.com>
+In-Reply-To: <20210514064953.1644250-13-alan.previn.teres.alexis@intel.com>
+Content-Language: en-US
+Content-ID: <011C2EA90D384F47AFC8EA9D0785B2FA@namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 02/17] Add PXP UAPI support in i915_drm.h
+Subject: Re: [igt-dev] [PATCH i-g-t 12/16] Verify execbuf fails with stale
+ PXP buffer after teardown
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,105 +24,154 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-At the time of this commit, PXP hasnt been merged into
-upstream kernel so this has no kernel tag reference yet
+On Thu, 2021-05-13 at 23:49 -0700, Alan Previn wrote:
+> Add a subtest to verify that reusing a stale protected buffer
+> in a gem_execbuff (with a protected context) after a teardown
+> (triggered by suspend-resume cycle) shall fail with -EIO error.
+> 
+> NOTE: The end-to-end architecture requirement includes that
+> any break in the links of the PXP sessions needs to trigger a
+> full teardown and the application needs to be made aware of that
+> allowing it to re-establish the end-to-end pipeline of buffers,
+> contexts and renders again if it chooses to. This stricter
+> behavior targets only contexts created with PXP enabled.
+> 
+> Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+> ---
+>  tests/i915/gem_pxp.c | 44 ++++++++++++++++++++++++++++++++++++----
+> ----
+>  1 file changed, 36 insertions(+), 8 deletions(-)
+> 
+> diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+> index 1952e230..605b6524 100644
+> --- a/tests/i915/gem_pxp.c
+> +++ b/tests/i915/gem_pxp.c
+> @@ -38,6 +38,7 @@ IGT_TEST_DESCRIPTION("Test PXP that manages
+> protected content through arbitrated
+>  /* test-configs for power-management triggered protected session
+> teardown */
+>  #define SESSION_PMSUSPEND_TEARDOWN_KEY_CHANGE 1
+>  #define SESSION_PMSUSPEND_STALEPROTCTX_BAN_EXEC 2
+> +#define SESSION_PMSUSPEND_STALEPROTBO_BAN_EXEC 3
+>  
+>  /* Struct and defintions for power management. */
+>  struct powermgt_data {
+> @@ -688,10 +689,10 @@ static void test_protected_session_teardown(int
+> i915, uint32_t test_cfg,
+>  	uint32_t encrypted_pixels_b4[TSTSURF_SIZE/TSTSURF_BYTESPP];
+>  	uint32_t encrypted_pixels_aft[TSTSURF_SIZE/TSTSURF_BYTESPP];
+>  	int matched_after_keychange = 0, loop = 0;
+> -	uint32_t ctx, fencebo;
+> +	uint32_t ctx, ctx2, fencebo;
+>  	struct intel_buf *fencebuf;
+>  	struct buf_ops *bops;
+> -	struct intel_bb *ibb;
+> +	struct intel_bb *ibb, *ibb2;
+>  
+>  	switch (test_cfg) {
+>  	case SESSION_PMSUSPEND_TEARDOWN_KEY_CHANGE:
+> @@ -712,14 +713,19 @@ static void test_protected_session_teardown(int
+> i915, uint32_t test_cfg,
+>  		break;
+>  
+>  	case SESSION_PMSUSPEND_STALEPROTCTX_BAN_EXEC:
+> +	case SESSION_PMSUSPEND_STALEPROTBO_BAN_EXEC:
+>  		ctx = create_protected_ctx(i915, true, true, true,
+> false, 0);
+>  		assert_ctx_protected_param(i915, ctx, true);
+>  
+> -		/* use normal buffers for testing for invalidation
+> -		 * of protected contexts to ensure kernel is catching
+> -		 * the invalidated context (not buffer)
+> -		 */
+> -		fencebo = alloc_and_fill_dest_buff(i915, false, 4096,
+> 0);
+> +		if (test_cfg ==
+> SESSION_PMSUSPEND_STALEPROTCTX_BAN_EXEC) {
+> +			/* use normal buffers for testing for
+> invalidation
+> +			 * of protected contexts to ensure kernel is
+> catching
+> +			 * the invalidated context
+> +			 */
+> +			fencebo = alloc_and_fill_dest_buff(i915, false,
+> 4096, 0);
+> +		} else {
+> +			fencebo = alloc_and_fill_dest_buff(i915, true,
+> 4096, 0);
+> +		}
+>  
+>  		ibb = intel_bb_create_with_context(i915, ctx, 4096);
+>  		igt_assert(ibb);
+> @@ -734,12 +740,31 @@ static void test_protected_session_teardown(int
+> i915, uint32_t test_cfg,
+>  		gem_execbuf_flush_store_dw(i915, ibb, ctx, fencebuf,
+> 0);
+>  		trigger_powermgt_suspend_cycle(i915, pm);
+>  
+> -		gem_execbuf_flush_store_dw(i915, ibb, ctx, fencebuf,
+> -EACCES);
+> +		if (test_cfg == SESSION_PMSUSPEND_STALEPROTBO_BAN_EXEC)
+> {
+> +			/* after teardown, alloc new assets for
+> everything
+> +			 * except the bo to ensure the kernel is
+> catching
+> +			 * the invalidated bo
+> +			 */
+> +			ctx2 = create_protected_ctx(i915, true, true,
+> true, false, 0);
+> +			assert_ctx_protected_param(i915, ctx2, true);
+> +			ibb2 = intel_bb_create_with_context(i915, ctx2,
+> 4096);
+> +			igt_assert(ibb2);
+> +
+> +			intel_bb_detach_intel_buf(ibb, fencebuf);
+> +			intel_bb_add_intel_buf(ibb2, fencebuf, true);
+> +			gem_execbuf_flush_store_dw(i915, ibb2, ctx2,
+> fencebuf, -ENOEXEC);
+> +		} else {
+> +			gem_execbuf_flush_store_dw(i915, ibb, ctx,
+> fencebuf, -EACCES);
+> +		}
+>  
+>  		intel_bb_destroy(ibb);
+>  		intel_buf_destroy(fencebuf);
+>  		gem_close(i915, fencebo);
+>  		gem_context_destroy(i915, ctx);
+> +		if (test_cfg == SESSION_PMSUSPEND_STALEPROTBO_BAN_EXEC)
+> {
+> +			intel_bb_destroy(ibb2);
+> +			gem_context_destroy(i915, ctx2);
+> +		}
+>  		buf_ops_destroy(bops);
+>  		break;
+>  
+> @@ -842,6 +867,9 @@ igt_main
+>  		igt_subtest("reject-old-prot-context-execution-after-
+> suspend-resume") {
+>  			test_protected_session_teardown(i915,
+> SESSION_PMSUSPEND_STALEPROTCTX_BAN_EXEC, &pm);
+>  		}
+> +		igt_subtest("reject-old-prot-buffer-execution-after-
+> suspend-resume") {
+> +			test_protected_session_teardown(i915,
+> SESSION_PMSUSPEND_STALEPROTBO_BAN_EXEC, &pm);
+> 
+Feedback from testing: combine this test together with
+test_protected_session_teardown because the total execution time of
+this IGT increases by ~15 seconds everytime we take a suspend-resume
+(required for this test).
 
-Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
----
- include/drm-uapi/i915_drm.h | 52 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
 
-diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-index d9fbf218..e67e3e5c 100644
---- a/include/drm-uapi/i915_drm.h
-+++ b/include/drm-uapi/i915_drm.h
-@@ -1743,6 +1743,26 @@ struct drm_i915_gem_context_param {
-  * Default is 16 KiB.
-  */
- #define I915_CONTEXT_PARAM_RINGSIZE	0xc
-+
-+/*
-+ * I915_CONTEXT_PARAM_PROTECTED_CONTENT:
-+ *
-+ * Mark that the context makes use of protected content, which will result
-+ * in the context being invalidated when the protected content session is.
-+ * This flag can only be set at context creation time and, when set to true,
-+ * must be preceded by an explicit setting of I915_CONTEXT_PARAM_RECOVERABLE
-+ * to false. This flag can't be set to true in conjunction with setting the
-+ * I915_CONTEXT_PARAM_BANNABLE flag to false.
-+ *
-+ * Given the numerous restriction on this flag, there are several unique
-+ * failure cases:
-+ *
-+ * -ENODEV: feature not available
-+ * -EEXIST: trying to modify an existing context
-+ * -EPERM: trying to mark a recoverable or not bannable context as protected
-+ * -EACCES: submitting an invalidated context for execution
-+ */
-+#define I915_CONTEXT_PARAM_PROTECTED_CONTENT    0xd
- /* Must be kept compact -- no holes and well documented */
- 
- 	__u64 value;
-@@ -1973,6 +1993,12 @@ struct drm_i915_reg_read {
- struct drm_i915_reset_stats {
- 	__u32 ctx_id;
- 	__u32 flags;
-+	/*
-+	 * contexts marked as using protected content are invalidated when the
-+	 * protected content session dies. Submission of invalidated contexts
-+	 * is rejected with -EACCES.
-+	 */
-+#define I915_CONTEXT_INVALIDATED 0x1
- 
- 	/* All resets since boot/module reload, for all contexts */
- 	__u32 reset_count;
-@@ -2645,6 +2671,7 @@ struct drm_i915_gem_create_ext {
- 	 * struct drm_i915_gem_create_ext_memory_regions.
- 	 */
- #define I915_GEM_CREATE_EXT_MEMORY_REGIONS 0
-+#define I915_GEM_CREATE_EXT_PROTECTED_CONTENT 1
- 	__u64 extensions;
- };
- 
-@@ -2702,6 +2729,31 @@ struct drm_i915_gem_create_ext_memory_regions {
- 	__u64 regions;
- };
- 
-+/*
-+ * I915_OBJECT_PARAM_PROTECTED_CONTENT:
-+ *
-+ * If set to true, buffer contents is expected to be protected by PXP
-+ * encryption and requires decryption for scan out and processing. This is
-+ * only possible on platforms that have PXP enabled, on all other scenarios
-+ * setting this flag will cause the ioctl to fail and return -ENODEV.
-+ *
-+ * The buffer contents are considered invalid after a PXP session teardown.
-+ * It is recommended to use protected buffers only with contexts created
-+ * using the I915_CONTEXT_PARAM_PROTECTED_CONTENT flag, as that will enable
-+ * extra checks at submission time on the validity of the objects involved,
-+ * which can lead to the following errors:
-+ *
-+ * -ENODEV: PXP session not currently active
-+ * -EIO: buffer has become invalid after a teardown event
-+ */
-+struct drm_i915_gem_create_ext_protected_content {
-+	struct i915_user_extension base;
-+	__u32 flags;
-+};
-+
-+/* ID of the protected content session managed by i915 when PXP is active */
-+#define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
-+
- #if defined(__cplusplus)
- }
- #endif
--- 
-2.25.1
 
+> +		}
+>  	}
+>  
+>  	igt_fixture {
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
