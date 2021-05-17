@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6678A6E135
- for <igt-dev@lists.freedesktop.org>; Mon, 17 May 2021 09:11:48 +0000 (UTC)
-Date: Mon, 17 May 2021 12:11:30 +0300
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F6D66E919
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 May 2021 09:16:42 +0000 (UTC)
+Date: Mon, 17 May 2021 12:18:09 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YKIzQtcWRBBqOqva@platvala-desk.ger.corp.intel.com>
-References: <20210419060928.671111-1-viswax.krishna.raveendra.talabattula@intel.com>
- <87sg3mpyfl.wl-ashutosh.dixit@intel.com>
- <87h7j7csnd.wl-ashutosh.dixit@intel.com>
+Message-ID: <YKI00StJlHbQCsPu@platvala-desk.ger.corp.intel.com>
+References: <20210507125039.2255568-1-arundhati.hagaragi@intel.com>
+ <20210513081832.3756730-1-arundhati.hagaragi@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <87h7j7csnd.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH] [i-g-t] tests/i915: Remove I915_CACHING_NONE
+In-Reply-To: <20210513081832.3756730-1-arundhati.hagaragi@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_lease: Add subtest
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,48 +23,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org, hariom.pandey@intel.com
+To: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, May 12, 2021 at 06:46:30PM -0700, Dixit, Ashutosh wrote:
-> On Sun, 18 Apr 2021 23:42:54 -0700, Dixit, Ashutosh wrote:
-> >
-> > On Sun, 18 Apr 2021 23:09:28 -0700, <viswax.krishna.raveendra.talabattula@intel.com> wrote:
-> > >
-> > > From: Viswa Krishna Raveendra Talabattula <viswax.krishna.raveendra.talabattula@intel.com>
-> > >
-> > > The userptr memory does not support I915_CACHING_NONE(no caching) level
-> > > as per the below commit related to i915 in the kernel
-> > >
-> > > drm/i915: Reject more ioctls for userptr, v2.
-> > >
-> > > Hence removing the cache level of I915_CACHING_NONE from the test case
-> >
-> > Instead of dropping the test should we check for -ENXIO return?
+On Thu, May 13, 2021 at 01:48:32PM +0530, Arundhati Hagaragi wrote:
+> Added description for subtest
 > 
-> Because setting I915_CACHING_NONE on a userptr is not an unreasonable
-> operation, if it is not supported IMO IGT should check for an -ENXIO return
-> if someone tries to set I915_CACHING_NONE.
+> Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+> Cc: B S Karthik <karthik.b.s@intel.com>
 > 
-> The only complication here is that this is a ABI change. So if IGT runs on
-> an older kernel set_caching() will return 0 whereas it will return -ENXIO
-> with a new kernel. There seems to be no way of determining a priori what
-> the expected return is.
+> v2: Modified & applied description to each tests seperately. (Petri)
+> ---
+>  tests/kms_lease.c | 35 +++++++++++++++++++++--------------
+>  1 file changed, 21 insertions(+), 14 deletions(-)
 > 
-> I am copying Petri too. Checking for both 0 and -ENXIO would sort of defeat
-> the purpose. Also, having the IGT fail on older kernels is also probably
-> unacceptable.
+> diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+> index 6397ef8f..0c019a46 100644
+> --- a/tests/kms_lease.c
+> +++ b/tests/kms_lease.c
+> @@ -1281,21 +1281,27 @@ igt_main
+>  	const struct {
+>  		const char *name;
+>  		void (*func)(data_t *);
+> +		const char *desc;
+>  	} funcs[] = {
+> -		{ "simple_lease", simple_lease },
+> -		{ "lessee_list", lessee_list },
+> -		{ "lease_get", lease_get },
+> -		{ "lease_unleased_connector", lease_unleased_connector },
+> -		{ "lease_unleased_crtc", lease_unleased_crtc },
+> -		{ "lease_revoke", lease_revoke },
+> -		{ "lease_again", lease_again },
+> -		{ "lease_invalid_connector", lease_invalid_connector },
+> -		{ "lease_invalid_crtc", lease_invalid_crtc },
+> -		{ "lease_invalid_plane", lease_invalid_plane },
+> -		{ "page_flip_implicit_plane", page_flip_implicit_plane },
+> -		{ "setcrtc_implicit_plane", setcrtc_implicit_plane },
+> -		{ "cursor_implicit_plane", cursor_implicit_plane },
+> -		{ "atomic_implicit_crtc", atomic_implicit_crtc },
+> +		{ "simple_lease", simple_lease, "Check if create lease ioctl call works correctly" },
+> +		{ "lessee_list", lessee_list, "Check if listed lease is same as corrected one" },
+> +		{ "lease_get", lease_get, "Tests getting the required contents of a lease" },
+> +		{ "lease_unleased_connector", lease_unleased_connector, "Check if func fails on an"
+> +			"unleased connector" },
+> +		{ "lease_unleased_crtc", lease_unleased_crtc, "Check if func fails on unleased crtc" },
+> +		{ "lease_revoke", lease_revoke, "Tests revocation of lease" },
+> +		{ "lease_again", lease_again, "Tests leasing objects more than once" },
+> +		{ "lease_invalid_connector", lease_invalid_connector, "Tests leasing an invalid connector" },
+> +		{ "lease_invalid_crtc", lease_invalid_crtc, "Tests leasing an invalid crtc" },
+> +		{ "lease_invalid_plane", lease_invalid_plane, "Tests leasing an invalid plane" },
+> +		{ "page_flip_implicit_plane", page_flip_implicit_plane, "Check that page-flip ioclt"
+> +			"fails correctly on implicit primary plane" },
+> +		{ "setcrtc_implicit_plane", setcrtc_implicit_plane, "Check that setcrtc ioctl fails"
+> +			"correctly on implicit primary plane" },
+> +		{ "cursor_implicit_plane", cursor_implicit_plane, "Check that setcursor ioctl fails"
+> +			"correctly on implicit primary plane" },
+> +		{ "atomic_implicit_crtc", atomic_implicit_crtc, "Check that atomic ioctl fails correctly"
+> +			"on crtc_id property" },
 
-There is some value in making sure the operation doesn't fail with
-something funky like ECONNREFUSED. How much value, that depends, up to
-you.
-
-Is it an option to have this mapping:
-
-ENXIO - pass
-0 - warn, with something like "kernel behaves in a deprecated way"
-anything else - fail
+When splitting strings to multiple lines, make sure you still add the
+space between words. For example cursor_implicit_plane will have
+"failscorrectly" with this.
 
 
 -- 
