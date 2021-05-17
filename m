@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E427B89FCC
- for <igt-dev@lists.freedesktop.org>; Mon, 17 May 2021 06:58:04 +0000 (UTC)
-References: <20210301203747.7177-1-manasi.d.navare@intel.com>
- <20210301203747.7177-7-manasi.d.navare@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-Message-ID: <34c4fba2-55ef-07fa-67ef-6bd3f5a94730@intel.com>
-Date: Mon, 17 May 2021 12:28:00 +0530
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E12846E8FC
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 May 2021 08:48:09 +0000 (UTC)
+Date: Mon, 17 May 2021 10:48:04 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210517084804.GA3994@zkempczy-mobl2>
+References: <20210423214853.876911-1-jason@jlekstrand.net>
+ <20210423214853.876911-10-jason@jlekstrand.net>
 MIME-Version: 1.0
-In-Reply-To: <20210301203747.7177-7-manasi.d.navare@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 06/14] tools/intel_display_poller: Add
- async flip test mode
+Content-Disposition: inline
+In-Reply-To: <20210423214853.876911-10-jason@jlekstrand.net>
+Subject: Re: [igt-dev] [PATCH i-g-t 09/89] lib: Add an intel_ctx wrapper
+ struct and helpers (v4)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,201 +19,518 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Navare, Manasi D" <manasi.d.navare@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+To: Jason Ekstrand <jason@jlekstrand.net>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMy8yLzIwMjEgMjowNyBBTSwgTmF2YXJlLCBNYW5hc2kgRCB3cm90ZToKPiBGcm9tOiBWaWxs
-ZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPgo+Cj4gVGVzdCB2YXJp
-b3VzIHRoaW5ncyB1c2luZyBtbWlvIGFzeW5jIGZsaXBzLiBUaGVzZSBhcmUgcHJlc2VudCBzaW5j
-ZQo+IGc0eCwgZXhjZXB0IGc0eCBkb2VzIG5vdCBzZWVtIHRvIGhhdmUgYSB3b3JraW5nIGZsaXBk
-b25lIGludGVycnVwdC4KPgo+IFNpZ25lZC1vZmYtYnk6IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUu
-c3lyamFsYUBsaW51eC5pbnRlbC5jb20+Cj4gLS0tCj4gICBsaWIvaW50ZWxfcmVnLmggICAgICAg
-ICAgICAgIHwgIDMgKysKPiAgIHRvb2xzL2ludGVsX2Rpc3BsYXlfcG9sbGVyLmMgfCA4MyArKysr
-KysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0KPiAgIDIgZmlsZXMgY2hhbmdlZCwgNjYg
-aW5zZXJ0aW9ucygrKSwgMjAgZGVsZXRpb25zKC0pCj4KPiBkaWZmIC0tZ2l0IGEvbGliL2ludGVs
-X3JlZy5oIGIvbGliL2ludGVsX3JlZy5oCj4gaW5kZXggYWMxZmM2Y2IuLjdiNTQzMTA5IDEwMDY0
-NAo+IC0tLSBhL2xpYi9pbnRlbF9yZWcuaAo+ICsrKyBiL2xpYi9pbnRlbF9yZWcuaAo+IEBAIC0y
-MzMwLDYgKzIzMzAsOSBAQCBTT0ZUV0FSRSBPUiBUSEUgVVNFIE9SIE9USEVSIERFQUxJTkdTIElO
-IFRIRSBTT0ZUV0FSRS4KPiAgIAo+ICAgI2RlZmluZSBQSVBFRURQQ09ORgkJMHg3RjAwOAo+ICAg
-Cj4gKyNkZWZpbmUgRFNQQUFERFJfVkxWCQkweDcwMTdDIC8qIHZsdi9jaHYgKi8KPiArI2RlZmlu
-ZSBEU1BCQUREUl9WTFYJCTB4NzExN0MgLyogdmx2L2NodiAqLwo+ICsjZGVmaW5lIERTUENBRERS
-X0NIVgkJMHg3NDE3QyAvKiBjaHYgKi8KPiAgICNkZWZpbmUgRFNQQUNOVFIJCTB4NzAxODAKPiAg
-ICNkZWZpbmUgRFNQQkNOVFIJCTB4NzExODAKPiAgICNkZWZpbmUgRFNQQ0NOVFIJCTB4NzIxODAK
-PiBkaWZmIC0tZ2l0IGEvdG9vbHMvaW50ZWxfZGlzcGxheV9wb2xsZXIuYyBiL3Rvb2xzL2ludGVs
-X2Rpc3BsYXlfcG9sbGVyLmMKPiBpbmRleCBiZTIzNzIyMS4uZDZhNzdkMzUgMTAwNjQ0Cj4gLS0t
-IGEvdG9vbHMvaW50ZWxfZGlzcGxheV9wb2xsZXIuYwo+ICsrKyBiL3Rvb2xzL2ludGVsX2Rpc3Bs
-YXlfcG9sbGVyLmMKPiBAQCAtMTQ0LDE2ICsxNDQsMzUgQEAgc3RhdGljIHVpbnQzMl90IGRzcG9m
-ZnNldF9yZWcodWludDMyX3QgZGV2aWQsIGludCBwaXBlKQo+ICAgCQlyZXR1cm4gUElQRV9SRUco
-cGxhbmUsIERTUEFCQVNFKTsKPiAgIH0KPiAgIAo+IC1zdGF0aWMgdWludDMyX3QgZHNwc3VyZl9y
-ZWcodWludDMyX3QgZGV2aWQsIGludCBwaXBlKQo+ICtzdGF0aWMgdWludDMyX3QgZHNwc3VyZl9y
-ZWcodWludDMyX3QgZGV2aWQsIGludCBwaXBlLCBib29sIGFzeW5jKQo+ICAgewo+ICAgCWludCBw
-bGFuZSA9IHBpcGVfdG9fcGxhbmUoZGV2aWQsIHBpcGUpOwo+ICAgCj4gKwlpZiAoYXN5bmMgJiYg
-KElTX1ZBTExFWVZJRVcoZGV2aWQpIHx8IElTX0NIRVJSWVZJRVcoZGV2aWQpKSkKPiArCQlyZXR1
-cm4gUElQRV9SRUcocGxhbmUsIERTUEFBRERSX1ZMVik7Cj4gKwoKSGksCgpXb3VsZCB0aGlzIGJl
-IGNvcnJlY3Qgd2hlbiB3ZSB0cnkgYXN5bmMgZmxpcCBvbiBQaXBlIEMgb24gQ0hWPyBJdCB3b3Vs
-ZCAKcmV0dXJuIDB4NzIxN0Mgd2hlcmVhcyB0aGUgcmVxdWlyZWQgcmV0dXJuIGlzIDB4NzQxN0M/
-IFBsZWFzZSBjb3JyZWN0IG1lIAppZiBJJ20gbWlzc2luZyBzb21ldGhpbmcgaGVyZS4KCk90aGVy
-IHRoYW4gdGhlIGFib3ZlIG1lbnRpb25lZCBvcGVuLCB0aGUgcGF0Y2ggbG9va3MgZ29vZCB0byBt
-ZS4KClRoYW5rcywKS2FydGhpay5CLlMKPiAgIAlpZiAoaW50ZWxfZ2VuKGRldmlkKSA8IDQpCj4g
-ICAJCXJldHVybiBQSVBFX1JFRyhwbGFuZSwgRFNQQUJBU0UpOwo+ICAgCWVsc2UKPiAgIAkJcmV0
-dXJuIFBJUEVfUkVHKHBsYW5lLCBEU1BBU1VSRik7Cj4gICB9Cj4gICAKPiArc3RhdGljIHZvaWQg
-ZW5hYmxlX2FzeW5jX2ZsaXAodWludDMyX3QgZGV2aWQsIGludCBwaXBlLCBib29sIGVuYWJsZSkK
-PiArewo+ICsJaW50IHBsYW5lID0gcGlwZV90b19wbGFuZShkZXZpZCwgcGlwZSk7Cj4gKwl1aW50
-MzJfdCB0bXA7Cj4gKwo+ICsJaWYgKElTX1ZBTExFWVZJRVcoZGV2aWQpIHx8IElTX0NIRVJSWVZJ
-RVcoZGV2aWQpKQo+ICsJCXJldHVybjsKPiArCj4gKwl0bXAgPSByZWFkX3JlZyhQSVBFX1JFRyhw
-bGFuZSwgRFNQQUNOVFIpKTsKPiArCWlmIChlbmFibGUpCj4gKwkJdG1wIHw9IDEgPDwgOTsKPiAr
-CWVsc2UKPiArCQl0bXAgJj0gfigxIDw8IDkpOwo+ICsJd3JpdGVfcmVnKFBJUEVfUkVHKHBsYW5l
-LCBEU1BBQ05UUiksIHRtcCk7Cj4gK30KPiArCj4gICBzdGF0aWMgdm9pZCBwb2xsX3BpeGVsX3Bp
-cGVzdGF0KGludCBwaXBlLCBpbnQgYml0LCB1aW50MzJfdCAqbWluLCB1aW50MzJfdCAqbWF4LCBj
-b25zdCBpbnQgY291bnQpCj4gICB7Cj4gICAJdWludDMyX3QgcGl4LCBwaXgxLCBwaXgyLCBpaXIs
-IGlpcjEsIGlpcjIsIGlpcl9iaXQsIGlpcl9tYXNrOwo+IEBAIC0zMDcsNyArMzI2LDcgQEAgc3Rh
-dGljIHZvaWQgcG9sbF9waXhlbF9mbGlwKHVpbnQzMl90IGRldmlkLCBpbnQgcGlwZSwgaW50IHRh
-cmdldF9waXhlbCwgaW50IHRhcmcKPiAgIAlpbnQgaSA9IDA7Cj4gICAKPiAgIAlwaXggPSBQSVBF
-X1JFRyhwaXBlLCBQSVBFQUZSQU1FUElYRUwpOwo+IC0Jc3VyZiA9IGRzcHN1cmZfcmVnKGRldmlk
-LCBwaXBlKTsKPiArCXN1cmYgPSBkc3BzdXJmX3JlZyhkZXZpZCwgcGlwZSwgZmFsc2UpOwo+ICAg
-Cj4gICAJc2F2ZWQgPSByZWFkX3JlZyhzdXJmKTsKPiAgIAo+IEBAIC0zMTgsNyArMzM3LDcgQEAg
-c3RhdGljIHZvaWQgcG9sbF9waXhlbF9mbGlwKHVpbnQzMl90IGRldmlkLCBpbnQgcGlwZSwgaW50
-IHRhcmdldF9waXhlbCwgaW50IHRhcmcKPiAgIAkJCQlicmVhazsKPiAgIAkJfQo+ICAgCj4gLQkJ
-d3JpdGVfcmVnKHN1cmYsIHNhdmVkKzEyOCoxMDI0KTsKPiArCQl3cml0ZV9yZWcoc3VyZiwgc2F2
-ZWQrMjU2KjEwMjQpOwo+ICAgCj4gICAJCXdoaWxlICghcXVpdCl7Cj4gICAJCQlwaXgyID0gcmVh
-ZF9yZWcocGl4KSAmIFBJUEVfUElYRUxfTUFTSzsKPiBAQCAtNjEzLDcgKzYzMiw3IEBAIHN0YXRp
-YyB2b2lkIHBvbGxfZHNsX2ZsaXBjb3VudF9nNHgodWludDMyX3QgZGV2aWQsIGludCBwaXBlLAo+
-ICAgCj4gICAJZmxwID0gUElQRV9SRUcocGlwZSwgUElQRUFGTElQQ09VTlRfRzRYKTsKPiAgIAlk
-c2wgPSBQSVBFX1JFRyhwaXBlLCBQSVBFQV9EU0wpOwo+IC0Jc3VyZiA9IGRzcHN1cmZfcmVnKGRl
-dmlkLCBwaXBlKTsKPiArCXN1cmYgPSBkc3BzdXJmX3JlZyhkZXZpZCwgcGlwZSwgZmFsc2UpOwo+
-ICAgCj4gICAJd2hpbGUgKCFxdWl0KSB7Cj4gICAJCXVzbGVlcCgxMCk7Cj4gQEAgLTc0Niw3ICs3
-NjUsNyBAQCBzdGF0aWMgdm9pZCBwb2xsX2RzbF9wYW4odWludDMyX3QgZGV2aWQsIGludCBwaXBl
-LCBpbnQgdGFyZ2V0X3NjYW5saW5lLCBpbnQgdGFyZwo+ICAgfQo+ICAgCj4gICBzdGF0aWMgdm9p
-ZCBwb2xsX2RzbF9mbGlwKHVpbnQzMl90IGRldmlkLCBpbnQgcGlwZSwgaW50IHRhcmdldF9zY2Fu
-bGluZSwgaW50IHRhcmdldF9mdXp6LAo+IC0JCQkgIHVpbnQzMl90ICptaW4sIHVpbnQzMl90ICpt
-YXgsIGNvbnN0IGludCBjb3VudCkKPiArCQkJICB1aW50MzJfdCAqbWluLCB1aW50MzJfdCAqbWF4
-LCBjb25zdCBpbnQgY291bnQsIGJvb2wgYXN5bmMpCj4gICB7Cj4gICAJdWludDMyX3QgZHNsLCBk
-c2wxID0gMCwgZHNsMiA9IDA7Cj4gICAJYm9vbCBmaWVsZDEgPSBmYWxzZSwgZmllbGQyID0gZmFs
-c2U7Cj4gQEAgLTc1NCwxMCArNzczLDEyIEBAIHN0YXRpYyB2b2lkIHBvbGxfZHNsX2ZsaXAodWlu
-dDMyX3QgZGV2aWQsIGludCBwaXBlLCBpbnQgdGFyZ2V0X3NjYW5saW5lLCBpbnQgdGFyCj4gICAJ
-aW50IGlbMl0gPSB7fTsKPiAgIAo+ICAgCWRzbCA9IFBJUEVfUkVHKHBpcGUsIFBJUEVBX0RTTCk7
-Cj4gLQlzdXJmID0gZHNwc3VyZl9yZWcoZGV2aWQsIHBpcGUpOwo+ICsJc3VyZiA9IGRzcHN1cmZf
-cmVnKGRldmlkLCBwaXBlLCBhc3luYyk7Cj4gICAKPiAgIAlzYXZlZCA9IHJlYWRfcmVnKHN1cmYp
-Owo+ICAgCj4gKwllbmFibGVfYXN5bmNfZmxpcChkZXZpZCwgcGlwZSwgYXN5bmMpOwo+ICsKPiAg
-IAl3aGlsZSAoIXF1aXQpIHsKPiAgIAkJd2hpbGUgKCFxdWl0KSB7Cj4gICAJCQlkc2wxID0gcmVh
-ZF9yZWcoZHNsKTsKPiBAQCAtNzY3LDcgKzc4OCw3IEBAIHN0YXRpYyB2b2lkIHBvbGxfZHNsX2Zs
-aXAodWludDMyX3QgZGV2aWQsIGludCBwaXBlLCBpbnQgdGFyZ2V0X3NjYW5saW5lLCBpbnQgdGFy
-Cj4gICAJCQkJYnJlYWs7Cj4gICAJCX0KPiAgIAo+IC0JCXdyaXRlX3JlZyhzdXJmLCBzYXZlZCsx
-MjgqMTAyNCk7Cj4gKwkJd3JpdGVfcmVnKHN1cmYsIHNhdmVkKzI1NioxMDI0KTsKPiAgIAo+ICAg
-CQl3aGlsZSAoIXF1aXQpIHsKPiAgIAkJCWRzbDIgPSByZWFkX3JlZyhkc2wpOwo+IEBAIC03ODks
-MTEgKzgxMCwxMiBAQCBzdGF0aWMgdm9pZCBwb2xsX2RzbF9mbGlwKHVpbnQzMl90IGRldmlkLCBp
-bnQgcGlwZSwgaW50IHRhcmdldF9zY2FubGluZSwgaW50IHRhcgo+ICAgCQkJYnJlYWs7Cj4gICAJ
-fQo+ICAgCj4gKwllbmFibGVfYXN5bmNfZmxpcChkZXZpZCwgcGlwZSwgZmFsc2UpOwo+ICAgCXdy
-aXRlX3JlZyhzdXJmLCBzYXZlZCk7Cj4gICB9Cj4gICAKPiAgIHN0YXRpYyB2b2lkIHBvbGxfZHNs
-X2ZsaXBkb25lX3BpcGVzdGF0KHVpbnQzMl90IGRldmlkLCBpbnQgcGlwZSwgaW50IHRhcmdldF9z
-Y2FubGluZSwgaW50IHRhcmdldF9mdXp6LAo+IC0JCQkJICAgICAgIHVpbnQzMl90ICptaW4sIHVp
-bnQzMl90ICptYXgsIGNvbnN0IGludCBjb3VudCkKPiArCQkJCSAgICAgICB1aW50MzJfdCAqbWlu
-LCB1aW50MzJfdCAqbWF4LCBjb25zdCBpbnQgY291bnQsIGJvb2wgYXN5bmMpCj4gICB7Cj4gICAJ
-dWludDMyX3QgZHNsLCBkc2wxID0gMCwgZHNsMiA9IDA7Cj4gICAJdWludDMyX3QgcGlwZXN0YXQs
-IHBpcGVzdGF0MSwgcGlwZXN0YXQyLCBwaXBlc3RhdF9zYXZlOwo+IEBAIC04MDMsNyArODI1LDcg
-QEAgc3RhdGljIHZvaWQgcG9sbF9kc2xfZmxpcGRvbmVfcGlwZXN0YXQodWludDMyX3QgZGV2aWQs
-IGludCBwaXBlLCBpbnQgdGFyZ2V0X3NjYW4KPiAgIAo+ICAgCWRzbCA9IFBJUEVfUkVHKHBpcGUs
-IFBJUEVBX0RTTCk7Cj4gICAJcGlwZXN0YXQgPSBQSVBFX1JFRyhwaXBlLCBQSVBFQVNUQVQpOwo+
-IC0Jc3VyZiA9IGRzcHN1cmZfcmVnKGRldmlkLCBwaXBlKTsKPiArCXN1cmYgPSBkc3BzdXJmX3Jl
-ZyhkZXZpZCwgcGlwZSwgYXN5bmMpOwo+ICAgCj4gICAJYml0ID0gMSA8PCAxMDsKPiAgIAo+IEBA
-IC04MTQsNiArODM2LDggQEAgc3RhdGljIHZvaWQgcG9sbF9kc2xfZmxpcGRvbmVfcGlwZXN0YXQo
-dWludDMyX3QgZGV2aWQsIGludCBwaXBlLCBpbnQgdGFyZ2V0X3NjYW4KPiAgIAlwaXBlc3RhdDEg
-PSBwaXBlc3RhdF9zYXZlICYgfigxIDw8IChiaXQ8PDE2KSk7Cj4gICAJd3JpdGVfcmVnKHBpcGVz
-dGF0LCBwaXBlc3RhdDEgfCBiaXQpOwo+ICAgCj4gKwllbmFibGVfYXN5bmNfZmxpcChkZXZpZCwg
-cGlwZSwgYXN5bmMpOwo+ICsKPiAgIAl3aGlsZSAoIXF1aXQpIHsKPiAgIAkJd2hpbGUgKCFxdWl0
-KSB7Cj4gICAJCQlkc2wxID0gcmVhZF9yZWcoZHNsKTsKPiBAQCAtODUzLDEyICs4NzcsMTMgQEAg
-c3RhdGljIHZvaWQgcG9sbF9kc2xfZmxpcGRvbmVfcGlwZXN0YXQodWludDMyX3QgZGV2aWQsIGlu
-dCBwaXBlLCBpbnQgdGFyZ2V0X3NjYW4KPiAgIAkJCWJyZWFrOwo+ICAgCX0KPiAgIAo+ICsJZW5h
-YmxlX2FzeW5jX2ZsaXAoZGV2aWQsIHBpcGUsIGZhbHNlKTsKPiAgIAl3cml0ZV9yZWcoc3VyZiwg
-c2F2ZWQpOwo+ICAgCXdyaXRlX3JlZyhwaXBlc3RhdCwgcGlwZXN0YXRfc2F2ZSk7Cj4gICB9Cj4g
-ICAKPiAgIHN0YXRpYyB2b2lkIHBvbGxfZHNsX2ZsaXBkb25lX2RlaWlyKHVpbnQzMl90IGRldmlk
-LCBpbnQgcGlwZSwgaW50IHRhcmdldF9zY2FubGluZSwgaW50IHRhcmdldF9mdXp6LAo+IC0JCQkJ
-ICAgIHVpbnQzMl90ICptaW4sIHVpbnQzMl90ICptYXgsIGNvbnN0IGludCBjb3VudCkKPiArCQkJ
-CSAgICB1aW50MzJfdCAqbWluLCB1aW50MzJfdCAqbWF4LCBjb25zdCBpbnQgY291bnQsIGJvb2wg
-YXN5bmMpCj4gICB7Cj4gICAJdWludDMyX3QgZHNsLCBkc2wxID0gMCwgZHNsMiA9IDA7Cj4gICAJ
-dWludDMyX3QgaWlyLCBpaXIyLCBpZXIsIGltcjsKPiBAQCAtODY4LDcgKzg5Myw3IEBAIHN0YXRp
-YyB2b2lkIHBvbGxfZHNsX2ZsaXBkb25lX2RlaWlyKHVpbnQzMl90IGRldmlkLCBpbnQgcGlwZSwg
-aW50IHRhcmdldF9zY2FubGluCj4gICAJaW50IGlbMl0gPSB7fTsKPiAgIAo+ICAgCWRzbCA9IFBJ
-UEVfUkVHKHBpcGUsIFBJUEVBX0RTTCk7Cj4gLQlzdXJmID0gZHNwc3VyZl9yZWcoZGV2aWQsIHBp
-cGUpOwo+ICsJc3VyZiA9IGRzcHN1cmZfcmVnKGRldmlkLCBwaXBlLCBhc3luYyk7Cj4gICAKPiAg
-IAlpZiAoaW50ZWxfZ2VuKGRldmlkKSA+PSA5KQo+ICAgCQliaXQgPSAzOwo+IEBAIC05MDAsNiAr
-OTI1LDggQEAgc3RhdGljIHZvaWQgcG9sbF9kc2xfZmxpcGRvbmVfZGVpaXIodWludDMyX3QgZGV2
-aWQsIGludCBwaXBlLCBpbnQgdGFyZ2V0X3NjYW5saW4KPiAgIAl3cml0ZV9yZWcoaWVyLCBpZXJf
-c2F2ZSAmIH5iaXQpOwo+ICAgCXdyaXRlX3JlZyhpbXIsIGltcl9zYXZlICYgfmJpdCk7Cj4gICAK
-PiArCWVuYWJsZV9hc3luY19mbGlwKGRldmlkLCBwaXBlLCBhc3luYyk7Cj4gKwo+ICAgCXdoaWxl
-ICghcXVpdCkgewo+ICAgCQl3aGlsZSAoIXF1aXQpIHsKPiAgIAkJCWRzbDEgPSByZWFkX3JlZyhk
-c2wpOwo+IEBAIC05MzksMTMgKzk2NiwxNCBAQCBzdGF0aWMgdm9pZCBwb2xsX2RzbF9mbGlwZG9u
-ZV9kZWlpcih1aW50MzJfdCBkZXZpZCwgaW50IHBpcGUsIGludCB0YXJnZXRfc2Nhbmxpbgo+ICAg
-CQkJYnJlYWs7Cj4gICAJfQo+ICAgCj4gKwllbmFibGVfYXN5bmNfZmxpcChkZXZpZCwgcGlwZSwg
-ZmFsc2UpOwo+ICAgCXdyaXRlX3JlZyhzdXJmLCBzYXZlZCk7Cj4gICAJd3JpdGVfcmVnKGltciwg
-aW1yX3NhdmUpOwo+ICAgCXdyaXRlX3JlZyhpZXIsIGllcl9zYXZlKTsKPiAgIH0KPiAgIAo+ICAg
-c3RhdGljIHZvaWQgcG9sbF9kc2xfc3VyZmxpdmUodWludDMyX3QgZGV2aWQsIGludCBwaXBlLAo+
-IC0JCQkgICAgICB1aW50MzJfdCAqbWluLCB1aW50MzJfdCAqbWF4LCBjb25zdCBpbnQgY291bnQp
-Cj4gKwkJCSAgICAgIHVpbnQzMl90ICptaW4sIHVpbnQzMl90ICptYXgsIGNvbnN0IGludCBjb3Vu
-dCwgYm9vbCBhc3luYykKPiAgIHsKPiAgIAl1aW50MzJfdCBkc2wsIGRzbDEgPSAwLCBkc2wyID0g
-MCwgc3VyZiwgc3VyZjEsIHN1cmYyLCBzdXJmbGl2ZSwgc3VyZmwxID0gMCwgc3VyZmwyLCBzYXZl
-ZCwgdG1wOwo+ICAgCWJvb2wgZmllbGQxID0gZmFsc2UsIGZpZWxkMiA9IGZhbHNlOwo+IEBAIC05
-NTMsMTIgKzk4MSwxNCBAQCBzdGF0aWMgdm9pZCBwb2xsX2RzbF9zdXJmbGl2ZSh1aW50MzJfdCBk
-ZXZpZCwgaW50IHBpcGUsCj4gICAKPiAgIAlzdXJmbGl2ZSA9IFBJUEVfUkVHKHBpcGUsIERTUEFT
-VVJGTElWRSk7Cj4gICAJZHNsID0gUElQRV9SRUcocGlwZSwgUElQRUFfRFNMKTsKPiAtCXN1cmYg
-PSBkc3BzdXJmX3JlZyhkZXZpZCwgcGlwZSk7Cj4gKwlzdXJmID0gZHNwc3VyZl9yZWcoZGV2aWQs
-IHBpcGUsIGFzeW5jKTsKPiAgIAo+ICAgCXNhdmVkID0gcmVhZF9yZWcoc3VyZik7Cj4gICAKPiAg
-IAlzdXJmMSA9IHNhdmVkICYgfjB4ZmZmOwo+IC0Jc3VyZjIgPSBzdXJmMSArIDEyOCoxMDI0Owo+
-ICsJc3VyZjIgPSBzdXJmMSArIDI1NioxMDI0Owo+ICsKPiArCWVuYWJsZV9hc3luY19mbGlwKGRl
-dmlkLCBwaXBlLCBhc3luYyk7Cj4gICAKPiAgIAl3aGlsZSAoIXF1aXQpIHsKPiAgIAkJd3JpdGVf
-cmVnKHN1cmYsIHN1cmYyKTsKPiBAQCAtOTk0LDYgKzEwMjQsNyBAQCBzdGF0aWMgdm9pZCBwb2xs
-X2RzbF9zdXJmbGl2ZSh1aW50MzJfdCBkZXZpZCwgaW50IHBpcGUsCj4gICAJCXN1cmYyID0gdG1w
-Owo+ICAgCX0KPiAgIAo+ICsJZW5hYmxlX2FzeW5jX2ZsaXAoZGV2aWQsIHBpcGUsIGZhbHNlKTsK
-PiAgIAl3cml0ZV9yZWcoc3VyZiwgc2F2ZWQpOwo+ICAgfQo+ICAgCj4gQEAgLTExMTYsNyArMTE0
-Nyw4IEBAIHN0YXRpYyB2b2lkIF9fYXR0cmlidXRlX18oKG5vcmV0dXJuKSkgdXNhZ2UoY29uc3Qg
-Y2hhciAqbmFtZSkKPiAgIAkJIiAtYiwtLWJpdCA8Yml0PlxuIgo+ICAgCQkiIC1sLC0tbGluZSA8
-dGFyZ2V0IHNjYW5saW5lL3BpeGVsPlxuIgo+ICAgCQkiIC1mLC0tZnV6eiA8dGFyZ2V0IGZ1eno+
-XG4iCj4gLQkJIiAteCwtLXBpeGVsXG4iLAo+ICsJCSIgLXgsLS1waXhlbFxuIgo+ICsJCSIgLWEs
-LS1hc3luY1xuIiwKPiAgIAkJbmFtZSk7Cj4gICAJZXhpdCgxKTsKPiAgIH0KPiBAQCAtMTEyNyw2
-ICsxMTU5LDcgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKPiAgIAlpbnQgaTsK
-PiAgIAlpbnQgcGlwZSA9IDAsIGJpdCA9IDAsIHRhcmdldF9zY2FubGluZSA9IDAsIHRhcmdldF9m
-dXp6ID0gMTsKPiAgIAlib29sIHRlc3RfcGl4ZWxjb3VudCA9IGZhbHNlOwo+ICsJYm9vbCB0ZXN0
-X2FzeW5jX2ZsaXAgPSBmYWxzZTsKPiAgIAl1aW50MzJfdCBkZXZpZDsKPiAgIAl1aW50MzJfdCBt
-aW5bMioxMjhdID0ge307Cj4gICAJdWludDMyX3QgbWF4WzIqMTI4XSA9IHt9Owo+IEBAIC0xMTQy
-LDEwICsxMTc1LDExIEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICphcmd2W10pCj4gICAJCQl7
-IC5uYW1lID0gImxpbmUiLCAuaGFzX2FyZyA9IHJlcXVpcmVkX2FyZ3VtZW50LCB9LAo+ICAgCQkJ
-eyAubmFtZSA9ICJmdXp6IiwgLmhhc19hcmcgPSByZXF1aXJlZF9hcmd1bWVudCwgfSwKPiAgIAkJ
-CXsgLm5hbWUgPSAicGl4ZWwiLCAuaGFzX2FyZyA9IG5vX2FyZ3VtZW50LCB9LAo+ICsJCQl7IC5u
-YW1lID0gImFzeW5jIiwgLmhhc19hcmcgPSBub19hcmd1bWVudCwgfSwKPiAgIAkJCXsgfSwKPiAg
-IAkJfTsKPiAgIAo+IC0JCWludCBvcHQgPSBnZXRvcHRfbG9uZyhhcmdjLCBhcmd2LCAidDpwOmI6
-bDpmOngiLCBsb25nX29wdGlvbnMsIE5VTEwpOwo+ICsJCWludCBvcHQgPSBnZXRvcHRfbG9uZyhh
-cmdjLCBhcmd2LCAidDpwOmI6bDpmOnhhIiwgbG9uZ19vcHRpb25zLCBOVUxMKTsKPiAgIAkJaWYg
-KG9wdCA9PSAtMSkKPiAgIAkJCWJyZWFrOwo+ICAgCj4gQEAgLTEyMDcsNiArMTI0MSw5IEBAIGlu
-dCBtYWluKGludCBhcmdjLCBjaGFyICphcmd2W10pCj4gICAJCWNhc2UgJ3gnOgo+ICAgCQkJdGVz
-dF9waXhlbGNvdW50ID0gdHJ1ZTsKPiAgIAkJCWJyZWFrOwo+ICsJCWNhc2UgJ2EnOgo+ICsJCQl0
-ZXN0X2FzeW5jX2ZsaXAgPSB0cnVlOwo+ICsJCQlicmVhazsKPiAgIAkJfQo+ICAgCX0KPiAgIAo+
-IEBAIC0xMjIzLDYgKzEyNjAsOSBAQCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqYXJndltdKQo+
-ICAgCQlpZiAodGVzdF9waXhlbGNvdW50KQo+ICAgCQkJdXNhZ2UoYXJndlswXSk7Cj4gICAKPiAr
-CQlpZiAodGVzdF9hc3luY19mbGlwKQo+ICsJCQl1c2FnZShhcmd2WzBdKTsKPiArCj4gICAJCXN3
-aXRjaCAodGVzdCkgewo+ICAgCQljYXNlIFRFU1RfSUlSOgo+ICAgCQkJdGVzdCA9IFRFU1RfSUlS
-X0dFTjI7Cj4gQEAgLTEyNDAsNiArMTI4MCw5IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICph
-cmd2W10pCj4gICAJCWlmIChwaXBlID4gMSkKPiAgIAkJCXVzYWdlKGFyZ3ZbMF0pOwo+ICAgCj4g
-KwkJaWYgKHRlc3RfYXN5bmNfZmxpcCkKPiArCQkJdXNhZ2UoYXJndlswXSk7Cj4gKwo+ICAgCQlz
-d2l0Y2ggKHRlc3QpIHsKPiAgIAkJY2FzZSBURVNUX0lJUjoKPiAgIAkJCXRlc3QgPSBURVNUX0lJ
-Ul9HRU4zOwo+IEBAIC0xNDAxLDE4ICsxNDQ0LDE4IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFy
-ICphcmd2W10pCj4gICAJCQkJCW1pbiwgbWF4LCBjb3VudCk7Cj4gICAJCWVsc2UKPiAgIAkJCXBv
-bGxfZHNsX2ZsaXAoZGV2aWQsIHBpcGUsIHRhcmdldF9zY2FubGluZSwgdGFyZ2V0X2Z1enosCj4g
-LQkJCQkgICAgICBtaW4sIG1heCwgY291bnQpOwo+ICsJCQkJICAgICAgbWluLCBtYXgsIGNvdW50
-LCB0ZXN0X2FzeW5jX2ZsaXApOwo+ICAgCQlicmVhazsKPiAgIAljYXNlIFRFU1RfRkxJUERPTkVf
-UElQRVNUQVQ6Cj4gICAJCXBvbGxfZHNsX2ZsaXBkb25lX3BpcGVzdGF0KGRldmlkLCBwaXBlLCB0
-YXJnZXRfc2NhbmxpbmUsIHRhcmdldF9mdXp6LAo+IC0JCQkJCSAgIG1pbiwgbWF4LCBjb3VudCk7
-Cj4gKwkJCQkJICAgbWluLCBtYXgsIGNvdW50LCB0ZXN0X2FzeW5jX2ZsaXApOwo+ICAgCQlicmVh
-azsKPiAgIAljYXNlIFRFU1RfRkxJUERPTkVfREVJSVI6Cj4gICAJCXBvbGxfZHNsX2ZsaXBkb25l
-X2RlaWlyKGRldmlkLCBwaXBlLCB0YXJnZXRfc2NhbmxpbmUsIHRhcmdldF9mdXp6LAo+IC0JCQkJ
-CW1pbiwgbWF4LCBjb3VudCk7Cj4gKwkJCQkJbWluLCBtYXgsIGNvdW50LCB0ZXN0X2FzeW5jX2Zs
-aXApOwo+ICAgCQlicmVhazsKPiAgIAljYXNlIFRFU1RfU1VSRkxJVkU6Cj4gLQkJcG9sbF9kc2xf
-c3VyZmxpdmUoZGV2aWQsIHBpcGUsIG1pbiwgbWF4LCBjb3VudCk7Cj4gKwkJcG9sbF9kc2xfc3Vy
-ZmxpdmUoZGV2aWQsIHBpcGUsIG1pbiwgbWF4LCBjb3VudCwgdGVzdF9hc3luY19mbGlwKTsKPiAg
-IAkJYnJlYWs7Cj4gICAJY2FzZSBURVNUX1dSQVA6Cj4gICAJCWlmICh0ZXN0X3BpeGVsY291bnQp
-CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRl
-diBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0
-cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On Fri, Apr 23, 2021 at 04:47:33PM -0500, Jason Ekstrand wrote:
+> We're trying to clean up some of our technical debt in the i915 API.  In
+> particular, context mutability and unnecessary getparam().  There's
+> quite a bit of the introspection stuff that's not used by any userspace
+> other than IGT.  Most drivers don't care about fetching the set of
+> engines, for instance, because they don't forget about what set of
+> engines they asked for int the first place.
+> =
+
+> Unfortunately, IGT relies heavily on context introspection for just
+> about everything when it comes to multi-engine testing.  It also likes
+> to use ctx0 as temporary storage for whatever the current test config
+> is.  While effective at keeping IGC simple in some ways, this means
+> we're making heavy use of context mutability.  Also, passing data around
+> with in tests isn't really what contexts are for.
+> =
+
+> This patch adds a new intel_ctx_t struct which wraps a context and
+> remembers the full context configuration.  This will provide similar
+> ease-of-use without having use ctx0 as temporary storage.
+> =
+
+> v2 (Jason Ekstrand):
+>  - Make all intel_ctx_t's const
+> =
+
+> v3 (Jason Ekstrand):
+>  - Fix up the docs so they build properly
+> =
+
+> v4 (Jason Ekstrand):
+>  - Add an intel_ctx_create_for_engine helper
+> =
+
+> Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+> ---
+>  .../igt-gpu-tools/igt-gpu-tools-docs.xml      |   1 +
+>  lib/intel_ctx.c                               | 272 ++++++++++++++++++
+>  lib/intel_ctx.h                               |  75 +++++
+>  lib/meson.build                               |   1 +
+>  4 files changed, 349 insertions(+)
+>  create mode 100644 lib/intel_ctx.c
+>  create mode 100644 lib/intel_ctx.h
+> =
+
+> diff --git a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml b/docs/r=
+eference/igt-gpu-tools/igt-gpu-tools-docs.xml
+> index 2e85f361..0f49b4a3 100644
+> --- a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+> +++ b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+> @@ -58,6 +58,7 @@
+>      <xi:include href=3D"xml/gem_engine_topology.xml"/>
+>      <xi:include href=3D"xml/gem_scheduler.xml"/>
+>      <xi:include href=3D"xml/gem_submission.xml"/>
+> +    <xi:include href=3D"xml/intel_ctx.xml"/>
+>    </chapter>
+>    <xi:include href=3D"xml/igt_test_programs.xml"/>
+>  =
+
+> diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
+> new file mode 100644
+> index 00000000..271bb812
+> --- /dev/null
+> +++ b/lib/intel_ctx.c
+> @@ -0,0 +1,272 @@
+> +/*
+> + * Copyright =A9 2021 Intel Corporation
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining=
+ a
+> + * copy of this software and associated documentation files (the "Softwa=
+re"),
+> + * to deal in the Software without restriction, including without limita=
+tion
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
+se,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the =
+next
+> + * paragraph) shall be included in all copies or substantial portions of=
+ the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
+SS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
+TY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
+ALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
+OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
+NG
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER D=
+EALINGS
+> + * IN THE SOFTWARE.
+> + */
+
+We likely should use SPDX here.
+
+> +
+> +#include <stddef.h>
+> +
+> +#include "intel_ctx.h"
+> +#include "ioctl_wrappers.h"
+> +#include "i915/gem_engine_topology.h"
+> +
+> +/**
+> + * SECTION:intel_ctx
+> + * @short_description: Wrapper structs for dealing with contexts
+> + * @title: Intel Context Wrapper
+> + *
+> + * This helper library contains a couple of wrapper structs for easier
+> + * dealing with GEM contexts.  This includes a context configuration str=
+uct
+> + * which represents important context construction parameters and a cont=
+ext
+> + * struct which contains the context ID and its configuration.  This mak=
+es
+> + * it easier to pass around a context without loosing the context create
+> + * information.
+> + */
+> +
+> +static void
+> +add_user_ext(uint64_t *root_ext_u64, struct i915_user_extension *ext)
+> +{
+> +	ext->next_extension =3D *root_ext_u64;
+> +	*root_ext_u64 =3D to_user_pointer(ext);
+> +}
+> +
+> +static size_t sizeof_param_engines(int count)
+> +{
+> +	return offsetof(struct i915_context_param_engines, engines[count]);
+> +}
+> +
+> +#define SIZEOF_QUERY		offsetof(struct drm_i915_query_engine_info, \
+> +					 engines[GEM_MAX_ENGINES])
+> +
+> +/**
+> + * intel_ctx_cfg_all_physical:
+> + * @fd: open i915 drm file descriptor
+> + *
+> + * Returns an intel_ctx_cfg_t containing all physical engines.  On kerne=
+ls
+> + * without the engines API, a default context configuration will be
+> + * returned.
+> + */
+> +intel_ctx_cfg_t intel_ctx_cfg_all_physical(int fd)
+> +{
+> +	uint8_t buff[SIZEOF_QUERY] =3D { };
+> +	struct drm_i915_query_engine_info *qei =3D (void *) buff;
+> +	intel_ctx_cfg_t cfg =3D {};
+> +	int i;
+> +
+> +	if (__gem_query_engines(fd, qei, SIZEOF_QUERY) =3D=3D 0) {
+> +		cfg.num_engines =3D qei->num_engines;
+> +		for (i =3D 0; i < qei->num_engines; i++)
+> +			cfg.engines[i] =3D qei->engines[i].engine;
+
+So we loose flags and capabilities here. I've walked through the code
+and caps are related to HEVC decoding and SFC. I don't think we will
+have some embedded test h265 stream soon in IGT so this is likely
+not a problem. Some doubts comes with SFC because we already have =
+
+copyfunc which is using VEBOX engine. I'm not sure how much effort
+do we need to scale / convert using SFC in this pipeline and do we
+really need to test this in IGT. If you think we need only engine
+class/instance I got no objections here.
+
+> +	}
+> +
+> +	return cfg;
+> +}
+> +
+> +/**
+> + * intel_ctx_cfg_for_engine:
+> + * @class: engine class
+> + * @inst: engine instance
+> + *
+> + * Returns an intel_ctx_cfg_t containing exactly one engine.
+> + */
+> +intel_ctx_cfg_t intel_ctx_cfg_for_engine(unsigned int class, unsigned in=
+t inst)
+> +{
+> +	return (intel_ctx_cfg_t) {
+> +		.num_engines =3D 1,
+> +		.engines =3D {
+> +			{ .engine_class =3D class, .engine_instance =3D inst },
+> +		},
+> +	};
+> +}
+> +
+> +static int
+> +__context_create_cfg(int fd, const intel_ctx_cfg_t *cfg, uint32_t *ctx_i=
+d)
+> +{
+> +	uint64_t ext_root =3D 0;
+> +	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, GEM_MAX_ENGINES);
+> +	struct drm_i915_gem_context_create_ext_setparam engines_param, vm_param;
+> +	uint32_t i;
+> +
+> +	if (cfg->vm) {
+> +		vm_param =3D (struct drm_i915_gem_context_create_ext_setparam) {
+> +			.base =3D {
+> +				.name =3D I915_CONTEXT_CREATE_EXT_SETPARAM,
+> +			},
+> +			.param =3D {
+> +				.param =3D I915_CONTEXT_PARAM_VM,
+> +				.value =3D cfg->vm,
+> +			},
+> +		};
+> +		add_user_ext(&ext_root, &vm_param.base);
+> +	}
+> +
+> +	if (cfg->num_engines) {
+> +		memset(&engines, 0, sizeof(engines));
+> +		for (i =3D 0; i < cfg->num_engines; i++)
+> +			engines.engines[i] =3D cfg->engines[i];
+> +
+> +		engines_param =3D (struct drm_i915_gem_context_create_ext_setparam) {
+> +			.base =3D {
+> +				.name =3D I915_CONTEXT_CREATE_EXT_SETPARAM,
+> +			},
+> +			.param =3D {
+> +				.param =3D I915_CONTEXT_PARAM_ENGINES,
+> +				.size =3D sizeof_param_engines(cfg->num_engines),
+> +				.value =3D to_user_pointer(&engines),
+> +			},
+> +		};
+> +		add_user_ext(&ext_root, &engines_param.base);
+> +	}
+> +
+> +	return __gem_context_create_ext(fd, cfg->flags, ext_root, ctx_id);
+> +}
+> +
+> +/**
+> + * __intel_ctx_create:
+> + * @fd: open i915 drm file descriptor
+> + * @cfg: configuration for the created context
+> + * @out_ctx: on success, the new intel_ctx_t pointer is written here
+> + *
+> + * Like intel_ctx_create but returns an error instead of asserting.
+> + */
+> +int __intel_ctx_create(int fd, const intel_ctx_cfg_t *cfg,
+> +		       const intel_ctx_t **out_ctx)
+> +{
+> +	uint32_t ctx_id;
+> +	intel_ctx_t *ctx;
+> +	int err;
+
+This is public and wouldn't assume cfg won't be NULL here. I would just
+add igt_assert() to avoid surprises.
+
+> +
+> +	if (cfg)
+> +		err =3D __context_create_cfg(fd, cfg, &ctx_id);
+> +	else
+> +		err =3D __gem_context_create(fd, &ctx_id);
+> +	if (err)
+> +		return err;
+> +
+> +	ctx =3D calloc(1, sizeof(*ctx));
+> +	igt_assert(ctx);
+> +
+> +	ctx->id =3D ctx_id;
+> +	if (cfg)
+> +		ctx->cfg =3D *cfg;
+> +
+> +	*out_ctx =3D ctx;
+> +	return 0;
+> +}
+> +
+> +/**
+> + * intel_ctx_create:
+> + * @fd: open i915 drm file descriptor
+> + * @cfg: configuration for the created context
+> + *
+> + * Creates a new intel_ctx_t with the given config
+> + */
+> +const intel_ctx_t *intel_ctx_create(int fd, const intel_ctx_cfg_t *cfg)
+> +{
+> +	const intel_ctx_t *ctx;
+> +	int err;
+> +
+> +	err =3D __intel_ctx_create(fd, cfg, &ctx);
+> +	igt_assert_eq(err, 0);
+> +
+> +	return ctx;
+> +}
+> +
+> +static const intel_ctx_t __intel_ctx_0 =3D {};
+> +
+> +/**
+> + * intel_ctx_0:
+> + * @fd: open i915 drm file descriptor
+> + *
+> + * Returns an intel_ctx_t representing the default context.
+> + */
+> +const intel_ctx_t *intel_ctx_0(int fd)
+> +{
+> +	(void)fd;
+> +	return &__intel_ctx_0;
+> +}
+> +
+> +/**
+> + * intel_ctx_create_for_engine:
+> + * @fd: open i915 drm file descriptor
+> + * @class: engine class
+> + * @inst: engine instance
+> + *
+> + * Returns an intel_ctx_t containing the specified engine.
+> + */
+> +const intel_ctx_t *
+> +intel_ctx_create_for_engine(int fd, unsigned int class, unsigned int ins=
+t)
+> +{
+> +	intel_ctx_cfg_t cfg =3D intel_ctx_cfg_for_engine(class, inst);
+> +	return intel_ctx_create(fd, &cfg);
+> +}
+> +
+> +/**
+> + * intel_ctx_create_all_physical:
+> + * @fd: open i915 drm file descriptor
+> + *
+> + * Creates an intel_ctx_t containing all physical engines.  On kernels
+> + * without the engines API, the created context will be the same as
+> + * intel_ctx_0() except that it will be a new GEM context.  On kernels or
+> + * hardware which do not support contexts, it is the same as intel_ctx_0=
+().
+> + */
+> +const intel_ctx_t *intel_ctx_create_all_physical(int fd)
+> +{
+> +	intel_ctx_cfg_t cfg;
+> +
+> +	if (!gem_has_contexts(fd))
+> +		return intel_ctx_0(fd);
+> +
+> +	cfg =3D intel_ctx_cfg_all_physical(fd);
+> +	return intel_ctx_create(fd, &cfg);
+> +}
+> +
+> +/**
+> + * intel_ctx_destroy:
+> + * @fd: open i915 drm file descriptor
+> + * @ctx: context to destroy, or NULL
+> + *
+> + * Destroys an intel_ctx_t.
+> + */
+> +void intel_ctx_destroy(int fd, const intel_ctx_t *ctx)
+> +{
+> +	if (!ctx || ctx->id =3D=3D 0)
+> +		return;
+
+Shouldn't we assert here instead of silence quit on !ctx?
+
+> +
+> +	gem_context_destroy(fd, ctx->id);
+> +	free((void *)ctx);
+> +}
+> +
+> +/**
+> + * intel_ctx_engine_class:
+> + * @ctx: an intel_ctx_t
+> + * @engine: an engine specifier
+> + *
+> + * Returns the class for the given engine.
+> + */
+> +unsigned int intel_ctx_engine_class(const intel_ctx_t *ctx, unsigned int=
+ engine)
+> +{
+> +	if (ctx->cfg.num_engines) {
+> +		igt_assert(engine < ctx->cfg.num_engines);
+> +		return ctx->cfg.engines[engine].engine_class;
+> +	} else {
+> +		return gem_execbuf_flags_to_engine_class(engine);
+> +	}
+> +}
+> diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
+> new file mode 100644
+> index 00000000..79bc1154
+> --- /dev/null
+> +++ b/lib/intel_ctx.h
+> @@ -0,0 +1,75 @@
+> +/*
+> + * Copyright =A9 2021 Intel Corporation
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining=
+ a
+> + * copy of this software and associated documentation files (the "Softwa=
+re"),
+> + * to deal in the Software without restriction, including without limita=
+tion
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
+se,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the =
+next
+> + * paragraph) shall be included in all copies or substantial portions of=
+ the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
+SS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
+TY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
+ALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
+OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
+NG
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER D=
+EALINGS
+> + * IN THE SOFTWARE.
+> + */
+
+Use SPDX.
+
+--
+Zbigniew
+
+> +
+> +#ifndef INTEL_CTX_H
+> +#define INTEL_CTX_H
+> +
+> +#include "igt_core.h"
+> +
+> +#include "i915_drm.h"
+> +
+> +#define GEM_MAX_ENGINES		I915_EXEC_RING_MASK + 1
+> +
+> +/**
+> + * intel_ctx_cfg_t:
+> + * @flags: Context create flags
+> + * @vm: VM to inherit or 0 for using a per-context VM
+> + * @num_engines: Number of client-specified engines or 0 for legacy mode
+> + * @engines: Client-specified engines
+> + *
+> + * Represents the full configuration of an intel_ctx.
+> + */
+> +typedef struct intel_ctx_cfg {
+> +	uint32_t flags;
+> +	uint32_t vm;
+> +	unsigned int num_engines;
+> +	struct i915_engine_class_instance engines[GEM_MAX_ENGINES];
+> +} intel_ctx_cfg_t;
+> +
+> +intel_ctx_cfg_t intel_ctx_cfg_for_engine(unsigned int class, unsigned in=
+t inst);
+> +intel_ctx_cfg_t intel_ctx_cfg_all_physical(int fd);
+> +
+> +/**
+> + * intel_ctx_t:
+> + * @id: the context id/handle
+> + * @cfg: the config used to create this context
+> + *
+> + * Represents the full configuration of an intel_ctx.
+> + */
+> +typedef struct intel_ctx {
+> +	uint32_t id;
+> +	intel_ctx_cfg_t cfg;
+> +} intel_ctx_t;
+> +
+> +int __intel_ctx_create(int fd, const intel_ctx_cfg_t *cfg,
+> +		       const intel_ctx_t **out_ctx);
+> +const intel_ctx_t *intel_ctx_create(int i915, const intel_ctx_cfg_t *cfg=
+);
+> +const intel_ctx_t *intel_ctx_0(int fd);
+> +const intel_ctx_t *intel_ctx_create_for_engine(int fd, unsigned int clas=
+s,
+> +					       unsigned int inst);
+> +const intel_ctx_t *intel_ctx_create_all_physical(int fd);
+> +void intel_ctx_destroy(int fd, const intel_ctx_t *ctx);
+> +
+> +unsigned int intel_ctx_engine_class(const intel_ctx_t *ctx, unsigned int=
+ engine);
+> +
+> +#endif
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 9929520e..d66748ad 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -42,6 +42,7 @@ lib_sources =3D [
+>  	'intel_batchbuffer.c',
+>  	'intel_bufops.c',
+>  	'intel_chipset.c',
+> +	'intel_ctx.c',
+>  	'intel_device_info.c',
+>  	'intel_os.c',
+>  	'intel_mmio.c',
+> -- =
+
+> 2.31.1
+> =
+
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
