@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3FDA56E06D
- for <igt-dev@lists.freedesktop.org>; Tue, 18 May 2021 07:00:33 +0000 (UTC)
-Date: Tue, 18 May 2021 10:01:54 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YKNmYmvFRE82i6b1@platvala-desk.ger.corp.intel.com>
-References: <20210513145352.2790280-1-markyacoub@chromium.org>
- <20210513211658.tkx23qdmqciptexx@outlook.office365.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4FF6F89343
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 May 2021 07:03:33 +0000 (UTC)
+Date: Tue, 18 May 2021 09:03:26 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210518070326.GB4341@zkempczy-mobl2>
+References: <20210423214853.876911-1-jason@jlekstrand.net>
+ <20210423214853.876911-12-jason@jlekstrand.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210513211658.tkx23qdmqciptexx@outlook.office365.com>
-Subject: Re: [igt-dev] [PATCH] tests/kms_panel_fitting: Move Intel GEN check
- under a is_i915_device
+In-Reply-To: <20210423214853.876911-12-jason@jlekstrand.net>
+Subject: Re: [igt-dev] [PATCH i-g-t 11/89] lib/i915/gem_engine_topology:
+ Factor out static engine listing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,138 +19,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: igt-dev@lists.freedesktop.org, seanpaul@chromium.org, hersenxs.wu@amd.com, Mark Yacoub <markyacoub@google.com>
+To: Jason Ekstrand <jason@jlekstrand.net>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, May 13, 2021 at 05:16:58PM -0400, Rodrigo Siqueira wrote:
-> On 05/13, Mark Yacoub wrote:
-> > From: Mark Yacoub <markyacoub@google.com>
-> > 
-> > Encapsulate intel-only operations such as intel_get_drm_devid under a is_i915_device check.
-> > 
-> > This allows the subtests to run on non-i915 devices.
-> > ---
-> >  tests/kms_panel_fitting.c | 61 +++++++++++++++++++++++----------------
-> >  1 file changed, 36 insertions(+), 25 deletions(-)
-> > 
-> > diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
-> > index 4f4c5608..0c028c69 100644
-> > --- a/tests/kms_panel_fitting.c
-> > +++ b/tests/kms_panel_fitting.c
-> > @@ -89,7 +89,7 @@ static void test_panel_fitting(data_t *d)
-> >  
-> >  	for_each_pipe_with_valid_output(display, pipe, output) {
-> >  		drmModeModeInfo *mode, native_mode;
-> > -		uint32_t devid = intel_get_drm_devid(display->drm_fd);
-> > +		bool is_plane_scaling_active = true;
-> >  
-> >  		/* Check that the "scaling mode" property has been set. */
-> >  		if (!igt_output_has_prop(output, IGT_CONNECTOR_SCALING_MODE))
-> > @@ -132,25 +132,26 @@ static void test_panel_fitting(data_t *d)
-> >  		igt_fb_set_size(&d->fb2, d->plane2, d->fb2.width-200, d->fb2.height-200);
-> >  		igt_plane_set_position(d->plane2, 100, 100);
-> >  
-> > -		/*
-> > -		 * Most of gen7 and all of gen8 doesn't support plane scaling
-> > -		 * at all.
-> > -		 *
-> > -		 * gen9 pipe C has only 1 scaler shared with the crtc, which
-> > -		 * means pipe scaling can't work simultaneously with panel
-> > -		 * fitting.
-> > -		 *
-> > -		 * Since this is the legacy path, userspace has to know about
-> > -		 * the HW limitations, whereas atomic can ask.
-> > -		 */
-> > -		if (IS_GEN8(devid) ||
-> > -		    (IS_GEN7(devid) && !IS_IVYBRIDGE(devid)) ||
-> > -		    (IS_GEN9(devid) && pipe == PIPE_C))
-> > -			/* same as visible area of fb => no scaling */
-> > -			igt_plane_set_size(d->plane2,
-> > -					   d->fb2.width-200,
-> > -					   d->fb2.height-200);
-> > -		else
-> > +		if (is_i915_device(display->drm_fd)) {
-> > +			uint32_t devid = intel_get_drm_devid(display->drm_fd);
-> > +			/*
-> > +			 * Most of gen7 and all of gen8 doesn't support plane scaling
-> > +			 * at all.
-> > +			 *
-> > +			 * gen9 pipe C has only 1 scaler shared with the crtc, which
-> > +			 * means pipe scaling can't work simultaneously with panel
-> > +			 * fitting.
-> > +			 *
-> > +			 * Since this is the legacy path, userspace has to know about
-> > +			 * the HW limitations, whereas atomic can ask.
-> > +			 */
-> > +			if (IS_GEN8(devid) ||
-> > +				(IS_GEN7(devid) && !IS_IVYBRIDGE(devid)) ||
-> > +				(IS_GEN9(devid) && pipe == PIPE_C)) {
-> > +				is_plane_scaling_active = false;
-> > +			}
-> > +		}
-> > +		if (is_plane_scaling_active) {
-> >  			/*
-> >  			 * different than visible area of fb => plane scaling
-> >  			 * active
-> > @@ -158,6 +159,13 @@ static void test_panel_fitting(data_t *d)
-> >  			igt_plane_set_size(d->plane2,
-> >  					   mode->hdisplay-200,
-> >  					   mode->vdisplay-200);
-> > +		}
-> > +		else {
-> > +			/* same as visible area of fb => no scaling */
-> > +			igt_plane_set_size(d->plane2,
-> > +				d->fb2.width - 200,
-> > +				d->fb2.height - 200);
-> > +		}
-> >  
-> >  		/* Plane scaling active (if possible), pfit off */
-> >  		igt_display_commit2(display, COMMIT_UNIVERSAL);
-> > @@ -229,13 +237,16 @@ static void test_atomic_fastset(data_t *data)
-> >  	int valid_tests = 0;
-> >  	struct stat sb;
-> >  
-> > -	/* Until this is force enabled, force modeset evasion. */
-> > -	if (stat("/sys/module/i915/parameters/fastboot", &sb) == 0)
-> > -		igt_set_module_param_int(data->drm_fd, "fastboot", 1);
-> >  
-> > -	igt_require(display->is_atomic);
-> > -	igt_require(intel_gen(intel_get_drm_devid(display->drm_fd)) >= 5);
-> > +	if (is_i915_device(display->drm_fd)) {
-> > +		/* Until this is force enabled, force modeset evasion. */
-> > +		if (stat("/sys/module/i915/parameters/fastboot", &sb) == 0)
-> > +			igt_set_module_param_int(data->drm_fd, "fastboot", 1);
-> >  
-> > +		igt_require(intel_gen(intel_get_drm_devid(display->drm_fd)) >= 5);
-> > +	}
-> > +
-> > +	igt_require(display->is_atomic);
-> >  	for_each_pipe_with_valid_output(display, pipe, output) {
-> >  		if (!igt_output_has_prop(output, IGT_CONNECTOR_SCALING_MODE))
-> >  			continue;
-> > -- 
-> > 2.31.1.607.g51e8a6a459-goog
-> > 
-> 
-> Hi Mark,
-> 
-> I tested it in a Raven system, and now I can see it failing in a good
-> way in my system. Nice patch, thanks.
-> 
-> Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-
-
-Merged now, thanks.
-
-
--- 
-Petri Latvala
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gRnJpLCBBcHIgMjMsIDIwMjEgYXQgMDQ6NDc6MzVQTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
+d3JvdGU6Cj4gU2lnbmVkLW9mZi1ieTogSmFzb24gRWtzdHJhbmQgPGphc29uQGpsZWtzdHJhbmQu
+bmV0Pgo+IEFja2VkLWJ5OiBEYW5pZWwgVmV0dGVyIDxkYW5pZWwudmV0dGVyQGZmd2xsLmNoPgo+
+IC0tLQo+ICBsaWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmMgfCA1MSArKysrKysrKysrKysr
+KysrKysrLS0tLS0tLS0tLS0tLS0tCj4gIDEgZmlsZSBjaGFuZ2VkLCAyOSBpbnNlcnRpb25zKCsp
+LCAyMiBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvbGliL2k5MTUvZ2VtX2VuZ2luZV90
+b3BvbG9neS5jIGIvbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5jCj4gaW5kZXggYWU4ZDJh
+MzMuLmQxZjk0NzYxIDEwMDY0NAo+IC0tLSBhL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3ku
+Ywo+ICsrKyBiL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYwo+IEBAIC0yMTIsNiArMjEy
+LDM0IEBAIGludGVsX2dldF9jdXJyZW50X3BoeXNpY2FsX2VuZ2luZShzdHJ1Y3QgaW50ZWxfZW5n
+aW5lX2RhdGEgKmVkKQo+ICAJcmV0dXJuIGU7Cj4gIH0KPiAgCj4gK3N0YXRpYyBzdHJ1Y3QgaW50
+ZWxfZW5naW5lX2RhdGEgaW50ZWxfZW5naW5lX2xpc3RfZm9yX3N0YXRpYyhpbnQgZmQpCj4gK3sK
+PiArCWNvbnN0IHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAqZTI7Cj4gKwlzdHJ1Y3Qg
+aW50ZWxfZW5naW5lX2RhdGEgZW5naW5lX2RhdGEgPSB7IH07Cj4gKwo+ICsJaWd0X2RlYnVnKCJ1
+c2luZyBwcmUtYWxsb2NhdGVkIGVuZ2luZSBsaXN0XG4iKTsKPiArCj4gKwlfX2Zvcl9lYWNoX3N0
+YXRpY19lbmdpbmUoZTIpIHsKPiArCQlpZiAoaWd0X29ubHlfbGlzdF9zdWJ0ZXN0cygpIHx8Cj4g
+KwkJICAgIChmZCA8IDApIHx8Cj4gKwkJICAgIGdlbV9oYXNfcmluZyhmZCwgZTItPmZsYWdzKSkg
+ewo+ICsJCQlzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKl9fZTIgPQo+ICsJCQkJJmVu
+Z2luZV9kYXRhLmVuZ2luZXNbCj4gKwkJCQllbmdpbmVfZGF0YS5uZW5naW5lc107Cj4gKwo+ICsJ
+CQlzdHJjcHkoX19lMi0+bmFtZSwgZTItPm5hbWUpOwo+ICsJCQlfX2UyLT5pbnN0YW5jZSAgID0g
+ZTItPmluc3RhbmNlOwo+ICsJCQlfX2UyLT5jbGFzcyAgICAgID0gZTItPmNsYXNzOwo+ICsJCQlf
+X2UyLT5mbGFncyAgICAgID0gZTItPmZsYWdzOwo+ICsJCQlfX2UyLT5pc192aXJ0dWFsID0gZmFs
+c2U7Cj4gKwo+ICsJCQllbmdpbmVfZGF0YS5uZW5naW5lcysrOwo+ICsgICAgICAgICAgICAgICAg
+fQo+ICsJfQo+ICsKPiArCXJldHVybiBlbmdpbmVfZGF0YTsKPiArfQo+ICsKCk9rLCBqdXN0IGEg
+ZnVuY3Rpb24gZXh0cmFjdGlvbi4KClJldmlld2VkLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kg
+PHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KCi0tClpiaWduaWV3CgoKCj4gIHN0YXRp
+YyBpbnQgZ2VtX3RvcG9sb2d5X2dldF9wYXJhbShpbnQgZmQsCj4gIAkJCQkgIHN0cnVjdCBkcm1f
+aTkxNV9nZW1fY29udGV4dF9wYXJhbSAqcCkKPiAgewo+IEBAIC0yMzIsMjggKzI2MCw3IEBAIHN0
+cnVjdCBpbnRlbF9lbmdpbmVfZGF0YSBpbnRlbF9pbml0X2VuZ2luZV9saXN0KGludCBmZCwgdWlu
+dDMyX3QgY3R4X2lkKQo+ICAKPiAgCWlmIChnZW1fdG9wb2xvZ3lfZ2V0X3BhcmFtKGZkLCAmcGFy
+YW0pKSB7Cj4gIAkJLyogaWYga2VybmVsIGRvZXMgbm90IHN1cHBvcnQgZW5naW5lL2NvbnRleHQg
+bWFwcGluZyAqLwo+IC0JCWNvbnN0IHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAqZTI7
+Cj4gLQo+IC0JCWlndF9kZWJ1ZygidXNpbmcgcHJlLWFsbG9jYXRlZCBlbmdpbmUgbGlzdFxuIik7
+Cj4gLQo+IC0JCV9fZm9yX2VhY2hfc3RhdGljX2VuZ2luZShlMikgewo+IC0JCQlpZiAoaWd0X29u
+bHlfbGlzdF9zdWJ0ZXN0cygpIHx8Cj4gLQkJCSAgICAoZmQgPCAwKSB8fAo+IC0JCQkgICAgZ2Vt
+X2hhc19yaW5nKGZkLCBlMi0+ZmxhZ3MpKSB7Cj4gLQkJCQlzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9u
+X2VuZ2luZTIgKl9fZTIgPQo+IC0JCQkJCSZlbmdpbmVfZGF0YS5lbmdpbmVzWwo+IC0JCQkJCWVu
+Z2luZV9kYXRhLm5lbmdpbmVzXTsKPiAtCj4gLQkJCQlzdHJjcHkoX19lMi0+bmFtZSwgZTItPm5h
+bWUpOwo+IC0JCQkJX19lMi0+aW5zdGFuY2UgICA9IGUyLT5pbnN0YW5jZTsKPiAtCQkJCV9fZTIt
+PmNsYXNzICAgICAgPSBlMi0+Y2xhc3M7Cj4gLQkJCQlfX2UyLT5mbGFncyAgICAgID0gZTItPmZs
+YWdzOwo+IC0JCQkJX19lMi0+aXNfdmlydHVhbCA9IGZhbHNlOwo+IC0KPiAtCQkJCWVuZ2luZV9k
+YXRhLm5lbmdpbmVzKys7Cj4gLSAgICAgICAgICAgICAgICAgICAgICAgIH0KPiAtCQl9Cj4gLQkJ
+cmV0dXJuIGVuZ2luZV9kYXRhOwo+ICsJCXJldHVybiBpbnRlbF9lbmdpbmVfbGlzdF9mb3Jfc3Rh
+dGljKGZkKTsKPiAgCX0KPiAgCj4gIAlpZiAoIXBhcmFtLnNpemUpIHsKPiAtLSAKPiAyLjMxLjEK
+PiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+IGln
+dC1kZXYgbWFpbGluZyBsaXN0Cj4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKPiBodHRw
+czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5n
+IGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
+a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
