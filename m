@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39F056EAB6
- for <igt-dev@lists.freedesktop.org>; Tue, 18 May 2021 08:21:29 +0000 (UTC)
-Date: Tue, 18 May 2021 10:21:23 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210518082123.GE4341@zkempczy-mobl2>
-References: <20210423214853.876911-1-jason@jlekstrand.net>
- <20210423214853.876911-15-jason@jlekstrand.net>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C97E96EADB
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 May 2021 09:00:01 +0000 (UTC)
+From: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Date: Tue, 18 May 2021 14:28:51 +0530
+Message-Id: <20210518085851.771874-1-arundhati.hagaragi@intel.com>
+In-Reply-To: <20210507125039.2255568-1-arundhati.hagaragi@intel.com>
+References: <20210507125039.2255568-1-arundhati.hagaragi@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210423214853.876911-15-jason@jlekstrand.net>
-Subject: Re: [igt-dev] [PATCH i-g-t 14/89] tests/i915/gem_exec_basic:
- Convert to intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t v4] tests/kms_lease: Add subtest description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,48 +16,84 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jason Ekstrand <jason@jlekstrand.net>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Gupta Nidhi1 <nidhi1.gupta@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBBcHIgMjMsIDIwMjEgYXQgMDQ6NDc6MzhQTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
-d3JvdGU6Cj4gVGhpcyBhY3RzIGFzIGEgdGVtcGxhdGUgZm9yIHRoZSByZXN0IG9mIHRoaXMgcGF0
-Y2ggc2VyaWVzLiAgVGhlIHJvdWdoCj4gaWRlYSBpcyB0aGF0IHdlIGNyZWF0ZSBhIG5ldyBjb250
-ZXh0IGlmIHRoZSBIVyBzdXBwb3J0cyBjb250ZXh0cyBhbmQKPiBvdGhlcndpc2Ugd2UgdXNlIGlu
-dGVsX2N0eF8wKCkuICBPbmNlIHdlIGhhdmUgYW4gaW50ZWxfY3R4X3QsIHdlIGNhbgo+IGl0ZXJh
-dGUgb3ZlciBhbGwgb2YgdGhlIGVuZ2luZXMgaW4gaXQgaW4gYSBjb25zaXN0ZW50IHdheS4KPiAK
-PiBTaWduZWQtb2ZmLWJ5OiBKYXNvbiBFa3N0cmFuZCA8amFzb25Aamxla3N0cmFuZC5uZXQ+Cj4g
-LS0tCj4gIHRlc3RzL2k5MTUvZ2VtX2V4ZWNfYmFzaWMuYyB8IDcgKysrKysrLQo+ICAxIGZpbGUg
-Y2hhbmdlZCwgNiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCj4gCj4gZGlmZiAtLWdpdCBh
-L3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfYmFzaWMuYyBiL3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfYmFzaWMu
-Ywo+IGluZGV4IDMxZjZhMjM0Li5lMjFmOWZmMSAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2dl
-bV9leGVjX2Jhc2ljLmMKPiArKysgYi90ZXN0cy9pOTE1L2dlbV9leGVjX2Jhc2ljLmMKPiBAQCAt
-NDEsMTAgKzQxLDEzIEBAIHN0YXRpYyB1aW50MzJfdCBiYXRjaF9jcmVhdGUoaW50IGZkKQo+ICBp
-Z3RfbWFpbgo+ICB7Cj4gIAljb25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmU7
-Cj4gKwljb25zdCBpbnRlbF9jdHhfdCAqY3R4ID0gTlVMTDsKCkluaXRpYWxpemF0aW9uIGlzIG5v
-dCBuZWNlc3NhcnkgaGVyZS4gT3RoZXIgdGhpbmdzIGFyZSBvazoKClJldmlld2VkLWJ5OiBaYmln
-bmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KCi0tClpi
-aWduaWV3Cgo+ICAJaW50IGZkID0gLTE7Cj4gIAo+ICAJaWd0X2ZpeHR1cmUgewo+ICAJCWZkID0g
-ZHJtX29wZW5fZHJpdmVyKERSSVZFUl9JTlRFTCk7Cj4gKwkJY3R4ID0gaW50ZWxfY3R4X2NyZWF0
-ZV9hbGxfcGh5c2ljYWwoZmQpOwo+ICsKPiAgCQkvKiBpZ3RfcmVxdWlyZV9nZW0oZmQpOyAvLyB0
-ZXN0IGlzIG1hbmRhdG9yeSAqLwo+ICAJCWlndF9mb3JrX2hhbmdfZGV0ZWN0b3IoZmQpOwo+ICAJ
-fQo+IEBAIC01NCwxMiArNTcsMTMgQEAgaWd0X21haW4KPiAgCQkJLmhhbmRsZSA9IGJhdGNoX2Ny
-ZWF0ZShmZCksCj4gIAkJfTsKPiAgCj4gLQkJX19mb3JfZWFjaF9waHlzaWNhbF9lbmdpbmUoZmQs
-IGUpIHsKPiArCQlmb3JfZWFjaF9jdHhfZW5naW5lKGZkLCBjdHgsIGUpIHsKPiAgCQkJaWd0X2R5
-bmFtaWNfZigiJXMiLCBlLT5uYW1lKSB7Cj4gIAkJCQlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNi
-dWZmZXIyIGV4ZWNidWYgPSB7Cj4gIAkJCQkJLmJ1ZmZlcnNfcHRyID0gdG9fdXNlcl9wb2ludGVy
-KCZleGVjKSwKPiAgCQkJCQkuYnVmZmVyX2NvdW50ID0gMSwKPiAgCQkJCQkuZmxhZ3MgPSBlLT5m
-bGFncywKPiArCQkJCQkucnN2ZDEgPSBjdHgtPmlkLAo+ICAJCQkJfTsKPiAgCj4gIAkJCQlnZW1f
-ZXhlY2J1ZihmZCwgJmV4ZWNidWYpOwo+IEBAIC03Miw2ICs3Niw3IEBAIGlndF9tYWluCj4gIAo+
-ICAJaWd0X2ZpeHR1cmUgewo+ICAJCWlndF9zdG9wX2hhbmdfZGV0ZWN0b3IoKTsKPiArCQlpbnRl
-bF9jdHhfZGVzdHJveShmZCwgY3R4KTsKPiAgCQljbG9zZShmZCk7Cj4gIAl9Cj4gIH0KPiAtLSAK
-PiAyLjMxLjEKPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwo+IGlndC1kZXYgbWFpbGluZyBsaXN0Cj4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
-cmcKPiBodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
-ZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRl
-diBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0
-cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Added description for subtest
+
+Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
+Cc: B S Karthik <karthik.b.s@intel.com>
+Cc: Gupta Nidhi1 <nidhi1.gupta@intel.com>
+
+v2: Modified & applied description to each tests seperately. (Petri)
+v3, v4: Modified description of subtests (Karthik)
+---
+ tests/kms_lease.c | 35 +++++++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
+
+diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+index 6397ef8f..0b7a560f 100644
+--- a/tests/kms_lease.c
++++ b/tests/kms_lease.c
+@@ -1281,21 +1281,27 @@ igt_main
+ 	const struct {
+ 		const char *name;
+ 		void (*func)(data_t *);
++		const char *desc;
+ 	} funcs[] = {
+-		{ "simple_lease", simple_lease },
+-		{ "lessee_list", lessee_list },
+-		{ "lease_get", lease_get },
+-		{ "lease_unleased_connector", lease_unleased_connector },
+-		{ "lease_unleased_crtc", lease_unleased_crtc },
+-		{ "lease_revoke", lease_revoke },
+-		{ "lease_again", lease_again },
+-		{ "lease_invalid_connector", lease_invalid_connector },
+-		{ "lease_invalid_crtc", lease_invalid_crtc },
+-		{ "lease_invalid_plane", lease_invalid_plane },
+-		{ "page_flip_implicit_plane", page_flip_implicit_plane },
+-		{ "setcrtc_implicit_plane", setcrtc_implicit_plane },
+-		{ "cursor_implicit_plane", cursor_implicit_plane },
+-		{ "atomic_implicit_crtc", atomic_implicit_crtc },
++		{ "simple_lease", simple_lease, "Check if create lease ioctl call works" },
++		{ "lessee_list", lessee_list, "Check if listed lease is same as created one" },
++		{ "lease_get", lease_get, "Tests getting the required contents of a lease" },
++		{ "lease_unleased_connector", lease_unleased_connector, "Negative test by trying to"
++			" use an unleased connector " },
++		{ "lease_unleased_crtc", lease_unleased_crtc, "Negative test by trying to use an unleased crtc" },
++		{ "lease_revoke", lease_revoke, "Tests revocation of lease" },
++		{ "lease_again", lease_again, "Tests leasing objects more than once" },
++		{ "lease_invalid_connector", lease_invalid_connector, "Tests leasing an invalid connector" },
++		{ "lease_invalid_crtc", lease_invalid_crtc, "Tests leasing an invalid crtc" },
++		{ "lease_invalid_plane", lease_invalid_plane, "Tests leasing an invalid plane" },
++		{ "page_flip_implicit_plane", page_flip_implicit_plane, "Negative test by using a "
++			"non-primary plane with the page flip ioctl" },
++		{ "setcrtc_implicit_plane", setcrtc_implicit_plane, "Negative test by using a "
++			"non-primary plane with the setcrtc ioctl" },
++		{ "cursor_implicit_plane", cursor_implicit_plane, "Negative test by using a non-primary"
++			" plane with setcursor ioctl" },
++		{ "atomic_implicit_crtc", atomic_implicit_crtc, "Negative test by using a crtc-id "
++			"property with atomic ioctl" },
+ 		{ }
+ 	}, *f;
+ 
+@@ -1307,6 +1313,7 @@ igt_main
+ 
+ 	for (f = funcs; f->name; f++) {
+ 
++		igt_describe(f->desc);
+ 		igt_subtest_f("%s", f->name) {
+ 			run_test(&data, f->func);
+ 		}
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
