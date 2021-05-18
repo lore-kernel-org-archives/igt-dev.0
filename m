@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA9976EB24
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C8246E869
  for <igt-dev@lists.freedesktop.org>; Tue, 18 May 2021 10:33:49 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue, 18 May 2021 03:33:42 -0700
-Message-Id: <20210518103344.2264397-16-alan.previn.teres.alexis@intel.com>
+Date: Tue, 18 May 2021 03:33:37 -0700
+Message-Id: <20210518103344.2264397-11-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
 References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 15/17] Ensure RESET_STATS reports
- invalidated protected context
+Subject: [igt-dev] [PATCH i-g-t 10/17] Add test where both src and dest are
+ protected
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,70 +25,243 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When protected contexts are created but get invalidated
-due to PXP session teardown (such as after a suspend-resume
-cycle), RESET_STATS ioctl for said context will report it
-as I915_CONTEXT_INVALIDATED.
+When both the source and destination surfaces are
+protected, the destination pixel result of the 3d
+copy operation would be the same as the source. By
+appending this test case to the end of the prior
+test (raw-src to protected-dest) and reusing the
+previous' test destination as the current source,
+we can prove that new-source was decrypted properly
+as we would see the difference in results: repeating
+the same render operation but with a src buffer
+that is protected in this case yields matching
+(but still encrypted) output rendered pixels.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 ---
- tests/i915/gem_pxp.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ tests/i915/gem_pxp.c | 144 +++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 133 insertions(+), 11 deletions(-)
 
 diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index e3c21c70..69a3143a 100644
+index 5a29024a..2f2d2716 100644
 --- a/tests/i915/gem_pxp.c
 +++ b/tests/i915/gem_pxp.c
-@@ -757,6 +757,22 @@ static void free_exec_assets(int i915, struct simple_exec_assets *data)
- 	buf_ops_destroy(data->bops);
- }
+@@ -308,29 +308,51 @@ static void fill_bo_content(int i915, uint32_t bo, uint32_t size, uint32_t initc
  
-+static bool is_context_valid(int i915, uint32_t ctx)
-+{
-+	struct drm_i915_reset_stats rs;
-+	int ret;
+ #define COMPARE_COLOR_READIBLE     1
+ #define COMPARE_COLOR_UNREADIBLE   2
++#define COMPARE_BUFFER_READIBLE    3
++#define COMPARE_BUFFER_UNREADIBLE  4
++#define COPY_BUFFER                5
+ #define COMPARE_N_PIXELS_VERBOSELY 0
+ 
+-static void assert_bo_content_check(int i915, uint32_t bo, int compare_op,
+-				    uint32_t size, uint32_t color)
++static void assert_bo_content_check(int i915, uint32_t bo, int compare_op, uint32_t size,
++				    uint32_t color, uint32_t *auxptr, int auxsize)
+ {
+-	uint32_t *ptr, *ptrtmp;
++	uint32_t *ptr, *ptrtmp, *auxtmp;
+ 	int loop = 0, num_matches = 0;
+ 	uint32_t value;
+-	bool op_readible = (compare_op == COMPARE_COLOR_READIBLE);
++	bool op_readible = ((compare_op == COMPARE_COLOR_READIBLE) ||
++		 (compare_op == COMPARE_BUFFER_READIBLE));
++	bool chk_buff = ((compare_op == COMPARE_BUFFER_READIBLE) ||
++		 (compare_op == COMPARE_BUFFER_UNREADIBLE));
++	bool copy_buff = (compare_op == COPY_BUFFER);
+ 
+ 	ptr = gem_mmap__device_coherent(i915, bo, 0, size, PROT_READ);
+ 	ptrtmp = ptr;
+ 
++	if (chk_buff || copy_buff) {
++		if (auxsize < size)
++			auxptr = NULL;
++		igt_assert(auxptr);
++		auxtmp = auxptr;
++	}
 +
-+	memset(&rs, 0, sizeof(rs));
-+	rs.ctx_id = ctx;
-+	ret = drmIoctl(i915, DRM_IOCTL_I915_GET_RESET_STATS, &rs);
-+	igt_assert(ret == 0);
+ 	if (COMPARE_N_PIXELS_VERBOSELY) {
+ 		igt_info("--------->>>\n");
+ 		while (loop < COMPARE_N_PIXELS_VERBOSELY && loop < (size/4)) {
+ 			value = *ptrtmp;
+-			igt_info("Color read = 0x%08x ", value);
+-			igt_info("expected %c= 0x%08x)\n", op_readible?'=':'!', color);
++			if (chk_buff)
++				color = *auxtmp;
++			if (copy_buff)
++				igt_info("Color copy = 0x%08x\n", value);
++			else {
++				igt_info("Color read = 0x%08x ", value);
++				igt_info("expected %c= 0x%08x)\n", op_readible?'=':'!', color);
++			}
++			++auxtmp;
+ 			++ptrtmp;
+ 			++loop;
+ 		}
+ 		igt_info("<<<---------\n");
++		auxtmp = auxptr;
+ 		ptrtmp = ptr;
+ 		loop = 0;
+ 	}
+@@ -338,8 +360,25 @@ static void assert_bo_content_check(int i915, uint32_t bo, int compare_op,
+ 	/* count all pixels for matches */
+ 	while (loop++ < (size/4)) {
+ 		value = *ptrtmp;
+-		if (value == color)
+-			++num_matches;
++		switch (compare_op) {
++		case COMPARE_COLOR_READIBLE:
++		case COMPARE_COLOR_UNREADIBLE:
++			if (value == color)
++				++num_matches;
++			break;
++		case COMPARE_BUFFER_READIBLE:
++		case COMPARE_BUFFER_UNREADIBLE:
++			if (value == (*auxtmp))
++				++num_matches;
++			++auxtmp;
++			break;
++		case COPY_BUFFER:
++			*auxtmp = value;
++			++auxtmp;
++			break;
++		default:
++			break;
++		}
+ 		++ptrtmp;
+ 	}
+ 
+@@ -361,7 +400,8 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size
+ 	igt_assert_eq(ret, 0);
+ 	igt_assert(bo);
+ 	fill_bo_content(i915, bo, size, init_color);
+-	assert_bo_content_check(i915, bo, COMPARE_COLOR_READIBLE, size, init_color);
++	assert_bo_content_check(i915, bo, COMPARE_COLOR_READIBLE,
++				size, init_color, NULL, 0);
+ 
+ 	return bo;
+ }
+@@ -379,6 +419,7 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size
+ #define TSTSURF_FILLCOLOR2  0xdeaddead
+ #define TSTSURF_INITCOLOR1  0x12341234
+ #define TSTSURF_INITCOLOR2  0x56785678
++#define TSTSURF_INITCOLOR3  0xabcdabcd
+ 
+ static void test_render_baseline(int i915)
+ {
+@@ -413,7 +454,7 @@ static void test_render_baseline(int i915)
+ 	gem_sync(i915, dstbo);
+ 
+ 	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_READIBLE,
+-				TSTSURF_SIZE, TSTSURF_FILLCOLOR1);
++				TSTSURF_SIZE, TSTSURF_FILLCOLOR1, NULL, 0);
+ 
+ 	intel_bb_destroy(ibb);
+ 	intel_buf_destroy(srcbuf);
+@@ -464,13 +505,92 @@ static void test_render_pxp_src_to_protdest(int i915)
+ 	gem_sync(i915, dstbo);
+ 
+ 	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
+-				TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
++				TSTSURF_SIZE, TSTSURF_FILLCOLOR2, NULL, 0);
 +
-+	if (rs.flags & I915_CONTEXT_INVALIDATED)
-+		return false;
-+
-+	return true;
++	intel_bb_destroy(ibb);
++	intel_buf_destroy(srcbuf);
++	gem_close(i915, srcbo);
++	intel_buf_destroy(dstbuf);
++	gem_close(i915, dstbo);
++	gem_context_destroy(i915, ctx);
++	buf_ops_destroy(bops);
 +}
 +
- static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_data *pm)
- {
- 	int ret;
-@@ -788,6 +804,8 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
++static void test_render_pxp_protsrc_to_protdest(int i915)
++{
++	uint32_t ctx, srcbo, dstbo, dstbo2;
++	struct intel_buf *srcbuf, *dstbuf, *dstbuf2;
++	struct buf_ops *bops;
++	struct intel_bb *ibb;
++	uint32_t devid;
++	int ret;
++	uint32_t encrypted[TSTSURF_SIZE/TSTSURF_BYTESPP];
++
++	devid = intel_get_drm_devid(i915);
++	igt_assert(devid);
++
++	bops = buf_ops_create(i915);
++	igt_assert(bops);
++
++	/*
++	 * Perform a protected render operation but only label
++	 * the dest as protected. After rendering, the content
++	 * should be encrypted
++	 */
++	ret = create_ctx_with_params(i915, true, true, true, false, &ctx);
++	igt_assert_eq(ret, 0);
++	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
++	ibb = intel_bb_create_with_context(i915, ctx, 4096);
++	igt_assert(ibb);
++	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
++
++	dstbo = alloc_and_fill_dest_buff(i915, true, TSTSURF_SIZE, TSTSURF_INITCOLOR2);
++	dstbuf = intel_buf_create_using_handle(bops, dstbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
++	intel_buf_set_pxp(dstbuf, true);
++
++	srcbo = alloc_and_fill_dest_buff(i915, false, TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
++	srcbuf = intel_buf_create_using_handle(bops, srcbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
++
++	gen12_render_copyfunc(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
++	gem_sync(i915, dstbo);
++
++	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
++				TSTSURF_SIZE, TSTSURF_FILLCOLOR2, NULL, 0);
++
++	/*
++	 * Reuse prior dst as the new-src and create dst2 as the new-dest.
++	 * Take a copy of encrypted content from new-src for comparison after render
++	 * operation. After the rendering, we should find no difference in content
++	 * since both new-src and new-dest are labelled as encrypted. HW should read
++	 * and decrypt new-src, perform the render and re-encrypt when going into
++	 * new-dest
++	 */
++	assert_bo_content_check(i915, dstbo, COPY_BUFFER,
++				TSTSURF_SIZE, 0, encrypted, TSTSURF_SIZE);
++
++	dstbo2 = alloc_and_fill_dest_buff(i915, false, TSTSURF_SIZE, TSTSURF_INITCOLOR3);
++	dstbuf2 = intel_buf_create_using_handle(bops, dstbo2, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
++	intel_buf_set_pxp(dstbuf2, true);
++	intel_buf_set_pxp(dstbuf, true);/*this time, src is protected*/
++
++	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
++
++	gen12_render_copyfunc(ibb, dstbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf2, 0, 0);
++	gem_sync(i915, dstbo2);
++
++	assert_bo_content_check(i915, dstbo2, COMPARE_BUFFER_READIBLE,
++				TSTSURF_SIZE, 0, encrypted, TSTSURF_SIZE);
  
- 	trigger_powermgt_suspend_cycle(i915, pm);
+ 	intel_bb_destroy(ibb);
+ 	intel_buf_destroy(srcbuf);
+ 	gem_close(i915, srcbo);
+ 	intel_buf_destroy(dstbuf);
+ 	gem_close(i915, dstbo);
++	intel_buf_destroy(dstbuf2);
++	gem_close(i915, dstbo2);
+ 	gem_context_destroy(i915, ctx);
+ 	buf_ops_destroy(bops);
+ }
+@@ -548,6 +668,8 @@ igt_main
+ 			test_render_baseline(i915);
+ 		igt_subtest("protected-raw-src-copy-not-readible")
+ 			test_render_pxp_src_to_protdest(i915);
++		igt_subtest("protected-encrypted-src-copy-not-readible")
++			test_render_pxp_protsrc_to_protdest(i915);
+ 	}
  
-+	igt_assert_f(!is_context_valid(i915, data[0].ctx),
-+				       "RESET_STATS missed INVAL bit on stale pxp context\n");
- 	ret = gem_execbuf_flush_store_dw(i915, data[0].ibb, data[0].ctx, data[0].fencebuf);
- 	igt_assert_f((ret == -EACCES), "Executing stale pxp context didn't fail with -EACCES\n");
- 
-@@ -796,6 +814,8 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
- 	 * reuse the bo to ensure the kernel is catching the
- 	 * invalidated bo (not context)
- 	 */
-+	igt_assert_f(!is_context_valid(i915, data[1].ctx),
-+				       "RESET_STATS missed INVAL bit on stale pxp context\n");
- 	ret = create_ctx_with_params(i915, true, true, true, false, &ctx2);
- 	igt_assert_eq(ret, 0);
- 	igt_assert_eq(get_ctx_protected_param(i915, ctx2), 1);
-@@ -806,6 +826,8 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
- 	ret = gem_execbuf_flush_store_dw(i915, ibb2, ctx2, data[1].fencebuf);
- 	igt_assert_f((ret == -ENOEXEC), "Executing stale pxp buffer didn't fail with -ENOEXEC\n");
- 
-+	igt_assert_f(is_context_valid(i915, data[2].ctx),
-+				       "RESET_STATS false-hit on opt-out context\n");
- 	ret = gem_execbuf_flush_store_dw(i915, data[2].ibb, data[2].ctx, data[2].fencebuf);
- 	igt_assert_f((ret == 0), "Opt-out-execution with stale pxp buffer didn't succeed\n");
- 
+ 	igt_fixture {
 -- 
 2.25.1
 
