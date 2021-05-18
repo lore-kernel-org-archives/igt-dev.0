@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 90C606E85E
- for <igt-dev@lists.freedesktop.org>; Tue, 18 May 2021 09:27:21 +0000 (UTC)
-References: <20210507125039.2255568-1-arundhati.hagaragi@intel.com>
- <20210518085851.771874-1-arundhati.hagaragi@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-Message-ID: <71253df8-b082-9206-2ec0-26d1f024cccc@intel.com>
-Date: Tue, 18 May 2021 14:57:11 +0530
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CAC76E869
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 May 2021 10:33:48 +0000 (UTC)
+From: Alan Previn <alan.previn.teres.alexis@intel.com>
+Date: Tue, 18 May 2021 03:33:29 -0700
+Message-Id: <20210518103344.2264397-3-alan.previn.teres.alexis@intel.com>
+In-Reply-To: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
+References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20210518085851.771874-1-arundhati.hagaragi@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v4] tests/kms_lease: Add subtest
- description
+Subject: [igt-dev] [PATCH i-g-t 02/17] Add PXP UAPI support in i915_drm.h
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,90 +16,108 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arundhati Hagaragi <arundhati.hagaragi@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Gupta Nidhi1 <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 5/18/2021 2:28 PM, Arundhati Hagaragi wrote:
-> Added description for subtest
->
-> Signed-off-by: Arundhati Hagaragi <arundhati.hagaragi@intel.com>
-> Cc: B S Karthik <karthik.b.s@intel.com>
-> Cc: Gupta Nidhi1 <nidhi1.gupta@intel.com>
->
-> v2: Modified & applied description to each tests seperately. (Petri)
-> v3, v4: Modified description of subtests (Karthik)
-> ---
->   tests/kms_lease.c | 35 +++++++++++++++++++++--------------
->   1 file changed, 21 insertions(+), 14 deletions(-)
->
-> diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-> index 6397ef8f..0b7a560f 100644
-> --- a/tests/kms_lease.c
-> +++ b/tests/kms_lease.c
-> @@ -1281,21 +1281,27 @@ igt_main
->   	const struct {
->   		const char *name;
->   		void (*func)(data_t *);
-> +		const char *desc;
->   	} funcs[] = {
-> -		{ "simple_lease", simple_lease },
-> -		{ "lessee_list", lessee_list },
-> -		{ "lease_get", lease_get },
-> -		{ "lease_unleased_connector", lease_unleased_connector },
-> -		{ "lease_unleased_crtc", lease_unleased_crtc },
-> -		{ "lease_revoke", lease_revoke },
-> -		{ "lease_again", lease_again },
-> -		{ "lease_invalid_connector", lease_invalid_connector },
-> -		{ "lease_invalid_crtc", lease_invalid_crtc },
-> -		{ "lease_invalid_plane", lease_invalid_plane },
-> -		{ "page_flip_implicit_plane", page_flip_implicit_plane },
-> -		{ "setcrtc_implicit_plane", setcrtc_implicit_plane },
-> -		{ "cursor_implicit_plane", cursor_implicit_plane },
-> -		{ "atomic_implicit_crtc", atomic_implicit_crtc },
-> +		{ "simple_lease", simple_lease, "Check if create lease ioctl call works" },
-> +		{ "lessee_list", lessee_list, "Check if listed lease is same as created one" },
-> +		{ "lease_get", lease_get, "Tests getting the required contents of a lease" },
-> +		{ "lease_unleased_connector", lease_unleased_connector, "Negative test by trying to"
-> +			" use an unleased connector " },
-> +		{ "lease_unleased_crtc", lease_unleased_crtc, "Negative test by trying to use an unleased crtc" },
-> +		{ "lease_revoke", lease_revoke, "Tests revocation of lease" },
-> +		{ "lease_again", lease_again, "Tests leasing objects more than once" },
-> +		{ "lease_invalid_connector", lease_invalid_connector, "Tests leasing an invalid connector" },
-> +		{ "lease_invalid_crtc", lease_invalid_crtc, "Tests leasing an invalid crtc" },
-> +		{ "lease_invalid_plane", lease_invalid_plane, "Tests leasing an invalid plane" },
-> +		{ "page_flip_implicit_plane", page_flip_implicit_plane, "Negative test by using a "
-> +			"non-primary plane with the page flip ioctl" },
-> +		{ "setcrtc_implicit_plane", setcrtc_implicit_plane, "Negative test by using a "
-> +			"non-primary plane with the setcrtc ioctl" },
-> +		{ "cursor_implicit_plane", cursor_implicit_plane, "Negative test by using a non-primary"
-> +			" plane with setcursor ioctl" },
-> +		{ "atomic_implicit_crtc", atomic_implicit_crtc, "Negative test by using a crtc-id "
-> +			"property with atomic ioctl" },
+At the time of this commit, PXP hasnt been merged into
+upstream kernel so this has no kernel tag reference yet
 
-Please change this to "Negative test by using a different crtc with 
-atomic ioctl".
+Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+---
+ include/drm-uapi/i915_drm.h | 52 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-With this fixed, the patch looks good to me.
-
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-
->   		{ }
->   	}, *f;
->   
-> @@ -1307,6 +1313,7 @@ igt_main
->   
->   	for (f = funcs; f->name; f++) {
->   
-> +		igt_describe(f->desc);
->   		igt_subtest_f("%s", f->name) {
->   			run_test(&data, f->func);
->   		}
-
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index d9fbf218..e67e3e5c 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -1743,6 +1743,26 @@ struct drm_i915_gem_context_param {
+  * Default is 16 KiB.
+  */
+ #define I915_CONTEXT_PARAM_RINGSIZE	0xc
++
++/*
++ * I915_CONTEXT_PARAM_PROTECTED_CONTENT:
++ *
++ * Mark that the context makes use of protected content, which will result
++ * in the context being invalidated when the protected content session is.
++ * This flag can only be set at context creation time and, when set to true,
++ * must be preceded by an explicit setting of I915_CONTEXT_PARAM_RECOVERABLE
++ * to false. This flag can't be set to true in conjunction with setting the
++ * I915_CONTEXT_PARAM_BANNABLE flag to false.
++ *
++ * Given the numerous restriction on this flag, there are several unique
++ * failure cases:
++ *
++ * -ENODEV: feature not available
++ * -EEXIST: trying to modify an existing context
++ * -EPERM: trying to mark a recoverable or not bannable context as protected
++ * -EACCES: submitting an invalidated context for execution
++ */
++#define I915_CONTEXT_PARAM_PROTECTED_CONTENT    0xd
+ /* Must be kept compact -- no holes and well documented */
+ 
+ 	__u64 value;
+@@ -1973,6 +1993,12 @@ struct drm_i915_reg_read {
+ struct drm_i915_reset_stats {
+ 	__u32 ctx_id;
+ 	__u32 flags;
++	/*
++	 * contexts marked as using protected content are invalidated when the
++	 * protected content session dies. Submission of invalidated contexts
++	 * is rejected with -EACCES.
++	 */
++#define I915_CONTEXT_INVALIDATED 0x1
+ 
+ 	/* All resets since boot/module reload, for all contexts */
+ 	__u32 reset_count;
+@@ -2645,6 +2671,7 @@ struct drm_i915_gem_create_ext {
+ 	 * struct drm_i915_gem_create_ext_memory_regions.
+ 	 */
+ #define I915_GEM_CREATE_EXT_MEMORY_REGIONS 0
++#define I915_GEM_CREATE_EXT_PROTECTED_CONTENT 1
+ 	__u64 extensions;
+ };
+ 
+@@ -2702,6 +2729,31 @@ struct drm_i915_gem_create_ext_memory_regions {
+ 	__u64 regions;
+ };
+ 
++/*
++ * I915_OBJECT_PARAM_PROTECTED_CONTENT:
++ *
++ * If set to true, buffer contents is expected to be protected by PXP
++ * encryption and requires decryption for scan out and processing. This is
++ * only possible on platforms that have PXP enabled, on all other scenarios
++ * setting this flag will cause the ioctl to fail and return -ENODEV.
++ *
++ * The buffer contents are considered invalid after a PXP session teardown.
++ * It is recommended to use protected buffers only with contexts created
++ * using the I915_CONTEXT_PARAM_PROTECTED_CONTENT flag, as that will enable
++ * extra checks at submission time on the validity of the objects involved,
++ * which can lead to the following errors:
++ *
++ * -ENODEV: PXP session not currently active
++ * -EIO: buffer has become invalid after a teardown event
++ */
++struct drm_i915_gem_create_ext_protected_content {
++	struct i915_user_extension base;
++	__u32 flags;
++};
++
++/* ID of the protected content session managed by i915 when PXP is active */
++#define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
++
+ #if defined(__cplusplus)
+ }
+ #endif
+-- 
+2.25.1
 
 _______________________________________________
 igt-dev mailing list
