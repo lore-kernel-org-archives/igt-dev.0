@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D54B76E86D
- for <igt-dev@lists.freedesktop.org>; Tue, 18 May 2021 10:33:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C5E3B6EB25
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 May 2021 10:33:49 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue, 18 May 2021 03:33:33 -0700
-Message-Id: <20210518103344.2264397-7-alan.previn.teres.alexis@intel.com>
+Date: Tue, 18 May 2021 03:33:43 -0700
+Message-Id: <20210518103344.2264397-17-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
 References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 06/17] Add PXP attribute support in
- batchbuffer and buffer_ops libs
+Subject: [igt-dev] [PATCH i-g-t 16/17] Verify protected surfaces are dma
+ buffer sharable
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,152 +17,92 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Eventually when we get to testing PXP rendering capability,
-we shall reuse lib's rendercopy feature. Rendercopy libraries
-shall retrieve information about PXP-session-enablement and
-which buffers are protected from these new flags.
-
-Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
----
- lib/intel_batchbuffer.c | 21 +++++++++++++++++++++
- lib/intel_batchbuffer.h | 28 ++++++++++++++++++++++++++++
- lib/intel_bufops.h      | 15 +++++++++++++++
- 3 files changed, 64 insertions(+)
-
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 0b2c5b21..23957109 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -2357,6 +2357,27 @@ uint64_t intel_bb_offset_reloc_to_object(struct intel_bb *ibb,
- 				  delta, offset, presumed_offset);
- }
- 
-+/*
-+ * @intel_bb_set_pxp:
-+ * @ibb: pointer to intel_bb
-+ * @new_state: enable or disable pxp session
-+ * @apptype: pxp session input identifies what type of session to enable
-+ * @appid: pxp session input provides which appid to use
-+ *
-+ * This function merely stores the pxp state and session information to
-+ * be retrieved and programmed later by supporting libraries such as
-+ * gen12_render_copy that must program the HW within the same dispatch
-+ */
-+void intel_bb_set_pxp(struct intel_bb *ibb, bool new_state,
-+		      uint32_t apptype, uint32_t appid)
-+{
-+	igt_assert(ibb);
-+
-+	ibb->pxp.enabled = new_state;
-+	ibb->pxp.apptype = new_state ? apptype : 0;
-+	ibb->pxp.appid   = new_state ? appid : 0;
-+}
-+
- static void intel_bb_dump_execbuf(struct intel_bb *ibb,
- 				  struct drm_i915_gem_execbuffer2 *execbuf)
- {
-diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-index 6f148713..389da7b2 100644
---- a/lib/intel_batchbuffer.h
-+++ b/lib/intel_batchbuffer.h
-@@ -438,6 +438,11 @@ typedef void (*igt_media_spinfunc_t)(int i915,
- 
- igt_media_spinfunc_t igt_get_media_spinfunc(int devid);
- 
-+struct igt_pxp {
-+	bool     enabled;
-+	uint32_t apptype;
-+	uint32_t appid;
-+};
- 
- /*
-  * Batchbuffer without libdrm dependency
-@@ -464,6 +469,7 @@ struct intel_bb {
- 	bool supports_48b_address;
- 	bool uses_full_ppgtt;
- 
-+	struct igt_pxp pxp;
- 	uint32_t ctx;
- 	uint32_t vm_id;
- 
-@@ -578,6 +584,27 @@ static inline void intel_bb_out(struct intel_bb *ibb, uint32_t dword)
- 	igt_assert(intel_bb_offset(ibb) <= ibb->size);
- }
- 
-+void intel_bb_set_pxp(struct intel_bb *ibb, bool new_state,
-+		      uint32_t apptype, uint32_t appid);
-+
-+static inline bool intel_bb_pxp_enabled(struct intel_bb *ibb)
-+{
-+	igt_assert(ibb);
-+	return ibb->pxp.enabled;
-+}
-+
-+static inline uint32_t intel_bb_pxp_apptype(struct intel_bb *ibb)
-+{
-+	igt_assert(ibb);
-+	return ibb->pxp.apptype;
-+}
-+
-+static inline uint32_t intel_bb_pxp_appid(struct intel_bb *ibb)
-+{
-+	igt_assert(ibb);
-+	return ibb->pxp.appid;
-+}
-+
- struct drm_i915_gem_exec_object2 *
- intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
- 		    uint64_t offset, uint64_t alignment, bool write);
-@@ -691,3 +718,4 @@ typedef void (*igt_huc_copyfunc_t)(int fd,
- 
- igt_huc_copyfunc_t	igt_get_huc_copyfunc(int devid);
- #endif
-+
-diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-index 9e57d53e..bffeb1b0 100644
---- a/lib/intel_bufops.h
-+++ b/lib/intel_bufops.h
-@@ -50,6 +50,9 @@ struct intel_buf {
- 	uint32_t *ptr;
- 	bool cpu_write;
- 
-+	/* Content Protection*/
-+	bool is_protected;
-+
- 	/* For debugging purposes */
- 	char name[INTEL_BUF_NAME_MAXSIZE + 1];
- };
-@@ -155,6 +158,18 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
- 							 int stride);
- void intel_buf_destroy(struct intel_buf *buf);
- 
-+static inline void intel_buf_set_pxp(struct intel_buf *buf, bool new_pxp_state)
-+{
-+	igt_assert(buf);
-+	buf->is_protected = new_pxp_state;
-+}
-+
-+static inline bool intel_buf_pxp(const struct intel_buf *buf)
-+{
-+	igt_assert(buf);
-+	return buf->is_protected;
-+}
-+
- void *intel_buf_cpu_map(struct intel_buf *buf, bool write);
- void *intel_buf_device_map(struct intel_buf *buf, bool write);
- void intel_buf_unmap(struct intel_buf *buf);
--- 
-2.25.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+VmVyaWZ5IHdlIGNhbiBleHBvcnQgYSBwcm90ZWN0ZWQgc3VyZmFjZSBmcm9tCnByb3RlY3RlZCBj
+b250ZXh0IEEgaW50byBwcm90ZWN0ZWQgY29udGV4dCBCICh3aXRoCmRpZmZlcmVudCBjbGllbnQg
+ZHJpdmVyIGhhbmRsZXMpIGFuZCBwcm90ZWN0ZWQKcmVuZGVyaW5nIGlzIHN1Y2Nlc3NmdWwgZXZl
+biBhZnRlciBwcmlvciBmaWxlCmhhbmRsZSBpcyBjbG9zZWQgKGkuZS4gcHhwIHNwZWNpZmljIHJl
+ZmNvdW50aW5nCndvcmtzKS4KClNpZ25lZC1vZmYtYnk6IEFsYW4gUHJldmluIDxhbGFuLnByZXZp
+bi50ZXJlcy5hbGV4aXNAaW50ZWwuY29tPgotLS0KIHRlc3RzL2k5MTUvZ2VtX3B4cC5jIHwgMTAz
+ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKIDEgZmlsZSBjaGFu
+Z2VkLCAxMDMgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvZ2VtX3B4cC5j
+IGIvdGVzdHMvaTkxNS9nZW1fcHhwLmMKaW5kZXggNjlhMzE0M2EuLjE3OWZiNzQyIDEwMDY0NAot
+LS0gYS90ZXN0cy9pOTE1L2dlbV9weHAuYworKysgYi90ZXN0cy9pOTE1L2dlbV9weHAuYwpAQCAt
+Myw2ICszLDcgQEAKICAqIENvcHlyaWdodCDCqSAyMDIxIEludGVsIENvcnBvcmF0aW9uCiAgKi8K
+IAorI2luY2x1ZGUgPGZjbnRsLmg+CiAjaW5jbHVkZSAiaWd0LmgiCiAjaW5jbHVkZSAiaTkxNS9n
+ZW0uaCIKIApAQCAtNjE4LDYgKzYxOSwxMDYgQEAgc3RhdGljIHZvaWQgdGVzdF9yZW5kZXJfcHhw
+X3Byb3RzcmNfdG9fcHJvdGRlc3QoaW50IGk5MTUpCiAJYnVmX29wc19kZXN0cm95KGJvcHMpOwog
+fQogCitzdGF0aWMgaW50IGV4cG9ydF9oYW5kbGUoaW50IGZkLCB1aW50MzJfdCBoYW5kbGUsIGlu
+dCAqb3V0ZmQpCit7CisJc3RydWN0IGRybV9wcmltZV9oYW5kbGUgYXJnczsKKwlpbnQgcmV0Owor
+CisJYXJncy5oYW5kbGUgPSBoYW5kbGU7CisJYXJncy5mbGFncyA9IERSTV9DTE9FWEVDOworCWFy
+Z3MuZmQgPSAtMTsKKworCXJldCA9IGRybUlvY3RsKGZkLCBEUk1fSU9DVExfUFJJTUVfSEFORExF
+X1RPX0ZELCAmYXJncyk7CisJaWYgKHJldCkKKwkJcmV0ID0gZXJybm87CisJKm91dGZkID0gYXJn
+cy5mZDsKKworCXJldHVybiByZXQ7Cit9CisKK3N0YXRpYyB2b2lkIHRlc3RfcHhwX2RtYWJ1ZmZz
+aGFyZV9yZWZjbnQodm9pZCkKK3sKKwl1aW50MzJfdCBjdHhbMl0sIHNib1syXSwgZGJvWzJdOwor
+CXN0cnVjdCBpbnRlbF9idWYgKnNidWZbMl0sICpkYnVmWzJdOworCXN0cnVjdCBidWZfb3BzICpi
+b3BzWzJdOworCXN0cnVjdCBpbnRlbF9iYiAqaWJiWzJdOworCWludCBmZFsyXSwgZG1hYnVmX2Zk
+ID0gMCwgcmV0LCBuLCBudW1fbWF0Y2hlcyA9IDA7CisJdWludDMyX3QgZW5jcnlwdGVkWzJdW1RT
+VFNVUkZfU0laRS9UU1RTVVJGX0JZVEVTUFBdOworCisJLyogRmlyc3QsIGNyZWF0ZSB0aGUgY2xp
+ZW50IGRyaXZlciBoYW5kbGVzIGFuZAorCSAqIHByb3RlY3RlZCBkZXN0IGJ1ZmZlciAoaXMgZXhw
+b3J0ZWQgdmlhIGRtYS1idWZmCisJICogZnJvbSBmaXJzdCBoYW5kbGUgYW5kIGltcG9ydGVkIHRv
+IHRoZSBzZWNvbmQpLgorCSAqLworCWZvciAobiA9IDA7IG4gPCAyOyArK24pIHsKKwkJZmRbbl0g
+PSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX0lOVEVMKTsKKwkJaWd0X3JlcXVpcmUoZmRbbl0pOwor
+CQlpZiAobiA9PSAwKSB7CisJCQlkYm9bMF0gPSBhbGxvY19hbmRfZmlsbF9kZXN0X2J1ZmYoZmRb
+MF0sIHRydWUsIFRTVFNVUkZfU0laRSwKKwkJCQkJCQkgIFRTVFNVUkZfSU5JVENPTE9SMSk7CisJ
+CX0gZWxzZSB7CisJCQlyZXQgPSBleHBvcnRfaGFuZGxlKGZkWzBdLCBkYm9bMF0sICZkbWFidWZf
+ZmQpOworCQkJaWd0X2Fzc2VydChyZXQgPT0gMCk7CisJCQlkYm9bMV0gPSBwcmltZV9mZF90b19o
+YW5kbGUoZmRbMV0sIGRtYWJ1Zl9mZCk7CisJCQlpZ3RfYXNzZXJ0KGRib1sxXSk7CisJCX0KKwl9
+CisJLyogUmVwZWF0IHR3aWNlOiBDcmVhdGUgYSBmdWxsIHNldCBvZiBhc3NldHMgdG8gcGVyZm9y
+bQorCSAqIGEgcHJvdGVjdGVkIDNEIHNlc3Npb24gYnV0IHVzaW5nIHRoZSBzYW1lIGRlc3QgYnVm
+ZmVyCisJICogZnJvbSBhYm92ZS4KKwkgKi8KKwlmb3IgKG4gPSAwOyBuIDwgMjsgKytuKSB7CisJ
+CXJldCA9IGNyZWF0ZV9jdHhfd2l0aF9wYXJhbXMoZmRbbl0sIHRydWUsIHRydWUsIHRydWUsIGZh
+bHNlLCAmY3R4W25dKTsKKwkJaWd0X2Fzc2VydF9lcShyZXQsIDApOworCQlpZ3RfYXNzZXJ0X2Vx
+KGdldF9jdHhfcHJvdGVjdGVkX3BhcmFtKGZkW25dLCBjdHhbbl0pLCAxKTsKKwkJaWJiW25dID0g
+aW50ZWxfYmJfY3JlYXRlX3dpdGhfY29udGV4dChmZFtuXSwgY3R4W25dLCA0MDk2KTsKKwkJaW50
+ZWxfYmJfc2V0X3B4cChpYmJbbl0sIHRydWUsIERJU1BMQVlfQVBQVFlQRSwKKwkJCQkgSTkxNV9Q
+Uk9URUNURURfQ09OVEVOVF9ERUZBVUxUX1NFU1NJT04pOworCisJCWJvcHNbbl0gPSBidWZfb3Bz
+X2NyZWF0ZShmZFtuXSk7CisJCWlmIChuID09IDEpCisJCQlmaWxsX2JvX2NvbnRlbnQoZmRbMV0s
+IGRib1sxXSwgVFNUU1VSRl9TSVpFLCBUU1RTVVJGX0lOSVRDT0xPUjIpOworCisJCWRidWZbbl0g
+PSBpbnRlbF9idWZfY3JlYXRlX3VzaW5nX2hhbmRsZShib3BzW25dLCBkYm9bbl0sIFRTVFNVUkZf
+V0lEVEgsCisJCQkJCQkJVFNUU1VSRl9IRUlHSFQsCVRTVFNVUkZfQllURVNQUCo4LCAwLAorCQkJ
+CQkJCUk5MTVfVElMSU5HX05PTkUsIDApOworCQlpbnRlbF9idWZfc2V0X3B4cChkYnVmW25dLCB0
+cnVlKTsKKworCQlzYm9bbl0gPSBhbGxvY19hbmRfZmlsbF9kZXN0X2J1ZmYoZmRbbl0sIGZhbHNl
+LCBUU1RTVVJGX1NJWkUsIFRTVFNVUkZfRklMTENPTE9SMSk7CisJCXNidWZbbl0gPSBpbnRlbF9i
+dWZfY3JlYXRlX3VzaW5nX2hhbmRsZShib3BzW25dLCBzYm9bbl0sIFRTVFNVUkZfV0lEVEgsCisJ
+CQkJCQkJVFNUU1VSRl9IRUlHSFQsIFRTVFNVUkZfQllURVNQUCo4LCAwLAorCQkJCQkJCUk5MTVf
+VElMSU5HX05PTkUsIDApOworCisJCWdlbjEyX3JlbmRlcl9jb3B5ZnVuYyhpYmJbbl0sIHNidWZb
+bl0sIDAsIDAsIFRTVFNVUkZfV0lEVEgsIFRTVFNVUkZfSEVJR0hULAorCQkJCSAgICAgIGRidWZb
+bl0sIDAsIDApOworCQlnZW1fc3luYyhmZFtuXSwgZGJvW25dKTsKKworCQlhc3NlcnRfYm9fY29u
+dGVudF9jaGVjayhmZFtuXSwgZGJvW25dLCBDT01QQVJFX0NPTE9SX1VOUkVBRElCTEUsIFRTVFNV
+UkZfU0laRSwKKwkJCQkJVFNUU1VSRl9GSUxMQ09MT1IxLCBOVUxMLCAwKTsKKwkJYXNzZXJ0X2Jv
+X2NvbnRlbnRfY2hlY2soZmRbbl0sIGRib1tuXSwgQ09QWV9CVUZGRVIsIFRTVFNVUkZfU0laRSwg
+MCwgZW5jcnlwdGVkW25dLAorCQkJCQlUU1RTVVJGX1NJWkUpOworCisJCS8qIGZyZWUgdXAgYWxs
+IGFzc2V0cyBleGNlcHQgdGhlIGRlc3QgYnVmZmVyIHRvCisJCSAqIHZlcmlmeSBkbWEgYnVmZiBy
+ZWZjb3VudGluZyBpcyBwZXJmb3JtZWQgb24KKwkJICogdGhlIHByb3RlY3RlZCBkZXN0IGJ1ZmZl
+ciBvbiB0aGUgMm5kIGxvb3Agd2l0aAorCQkgKiBzdWNjZXNzZnVsIHJldXNlIGluIGFub3RoZXIg
+cHJvdGVjdGVkIHJlbmRlci4KKwkJICovCisJCWludGVsX2JiX2Rlc3Ryb3koaWJiW25dKTsKKwkJ
+aW50ZWxfYnVmX2Rlc3Ryb3koc2J1ZltuXSk7CisJCWludGVsX2J1Zl9kZXN0cm95KGRidWZbbl0p
+OworCQlnZW1fY2xvc2UoZmRbbl0sIHNib1tuXSk7CisJCWdlbV9jbG9zZShmZFtuXSwgZGJvW25d
+KTsKKwkJZ2VtX2NvbnRleHRfZGVzdHJveShmZFtuXSwgY3R4W25dKTsKKwkJY2xvc2UoZmRbbl0p
+OworCX0KKworCS8qIFZlcmlmeSB0aGF0IGVuY3J5cHRlZCBvdXRwdXQgYWNyb3NzIGxvb3BzIHdl
+cmUgZXF1YWwgKi8KKwlmb3IgKG4gPSAwOyBuIDwgKFRTVFNVUkZfU0laRS80KTsgKytuKQorCQlp
+ZiAoZW5jcnlwdGVkWzBdW25dID09IGVuY3J5cHRlZFsxXVtuXSkKKwkJCSsrbnVtX21hdGNoZXM7
+CisJaWd0X2Fzc2VydChudW1fbWF0Y2hlcyA9PSAoVFNUU1VSRl9TSVpFLzQpKTsKK30KKworCiBz
+dGF0aWMgdm9pZCBpbml0X3Bvd2VybWd0X3Jlc291cmNlcyhpbnQgaTkxNSwgc3RydWN0IHBvd2Vy
+bWd0X2RhdGEgKnBtKQogewogCXBtLT5kZWJ1Z2ZzZGlyID0gaWd0X2RlYnVnZnNfZGlyKGk5MTUp
+OwpAQCAtOTEyLDYgKzEwMTMsOCBAQCBpZ3RfbWFpbgogCQkJdGVzdF9yZW5kZXJfcHhwX3NyY190
+b19wcm90ZGVzdChpOTE1KTsKIAkJaWd0X3N1YnRlc3QoInByb3RlY3RlZC1lbmNyeXB0ZWQtc3Jj
+LWNvcHktbm90LXJlYWRpYmxlIikKIAkJCXRlc3RfcmVuZGVyX3B4cF9wcm90c3JjX3RvX3Byb3Rk
+ZXN0KGk5MTUpOworCQlpZ3Rfc3VidGVzdCgiZG1hYnVmLXNoYXJlZC1wcm90ZWN0ZWQtZHN0LWlz
+LWNvbnRleHQtcmVmY291bnRlZCIpCisJCQl0ZXN0X3B4cF9kbWFidWZmc2hhcmVfcmVmY250KCk7
+CiAJfQogCWlndF9zdWJ0ZXN0X2dyb3VwIHsKIAkJaWd0X2ZpeHR1cmUgewotLSAKMi4yNS4xCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1h
+aWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZy
+ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
