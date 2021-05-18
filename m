@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5CAC76E869
- for <igt-dev@lists.freedesktop.org>; Tue, 18 May 2021 10:33:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 10BD66E869
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 May 2021 10:33:49 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue, 18 May 2021 03:33:29 -0700
-Message-Id: <20210518103344.2264397-3-alan.previn.teres.alexis@intel.com>
+Date: Tue, 18 May 2021 03:33:34 -0700
+Message-Id: <20210518103344.2264397-8-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
 References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 02/17] Add PXP UAPI support in i915_drm.h
+Subject: [igt-dev] [PATCH i-g-t 07/17] Add MI_SET_APPID instruction
+ definition
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,98 +25,33 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-At the time of this commit, PXP hasnt been merged into
-upstream kernel so this has no kernel tag reference yet
+Add MI_SET_APPID instruction and param definitions
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 ---
- include/drm-uapi/i915_drm.h | 52 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ lib/intel_reg.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-index d9fbf218..e67e3e5c 100644
---- a/include/drm-uapi/i915_drm.h
-+++ b/include/drm-uapi/i915_drm.h
-@@ -1743,6 +1743,26 @@ struct drm_i915_gem_context_param {
-  * Default is 16 KiB.
-  */
- #define I915_CONTEXT_PARAM_RINGSIZE	0xc
+diff --git a/lib/intel_reg.h b/lib/intel_reg.h
+index ac1fc6cb..46b5da20 100644
+--- a/lib/intel_reg.h
++++ b/lib/intel_reg.h
+@@ -2546,6 +2546,15 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ #define CTXT_PALETTE_SAVE_DISABLE	(1<<3)
+ #define CTXT_PALETTE_RESTORE_DISABLE	(1<<2)
+ 
++#define MI_SET_APPID                    (0x0E << 23)
++#define APPID_CTXSAVE_INHIBIT           (1 << 8)
++#define APPID_CTXREST_INHIBIT           (1 << 9)
++#define DISPLAY_APPTYPE                 (0)
++#define TRANSCODE_APPTYPE               (1)
++#define APPTYPE(n)                      (n << 7)
++#define APPID(n)                        (n & 0x7f)
 +
-+/*
-+ * I915_CONTEXT_PARAM_PROTECTED_CONTENT:
-+ *
-+ * Mark that the context makes use of protected content, which will result
-+ * in the context being invalidated when the protected content session is.
-+ * This flag can only be set at context creation time and, when set to true,
-+ * must be preceded by an explicit setting of I915_CONTEXT_PARAM_RECOVERABLE
-+ * to false. This flag can't be set to true in conjunction with setting the
-+ * I915_CONTEXT_PARAM_BANNABLE flag to false.
-+ *
-+ * Given the numerous restriction on this flag, there are several unique
-+ * failure cases:
-+ *
-+ * -ENODEV: feature not available
-+ * -EEXIST: trying to modify an existing context
-+ * -EPERM: trying to mark a recoverable or not bannable context as protected
-+ * -EACCES: submitting an invalidated context for execution
-+ */
-+#define I915_CONTEXT_PARAM_PROTECTED_CONTENT    0xd
- /* Must be kept compact -- no holes and well documented */
- 
- 	__u64 value;
-@@ -1973,6 +1993,12 @@ struct drm_i915_reg_read {
- struct drm_i915_reset_stats {
- 	__u32 ctx_id;
- 	__u32 flags;
-+	/*
-+	 * contexts marked as using protected content are invalidated when the
-+	 * protected content session dies. Submission of invalidated contexts
-+	 * is rejected with -EACCES.
-+	 */
-+#define I915_CONTEXT_INVALIDATED 0x1
- 
- 	/* All resets since boot/module reload, for all contexts */
- 	__u32 reset_count;
-@@ -2645,6 +2671,7 @@ struct drm_i915_gem_create_ext {
- 	 * struct drm_i915_gem_create_ext_memory_regions.
- 	 */
- #define I915_GEM_CREATE_EXT_MEMORY_REGIONS 0
-+#define I915_GEM_CREATE_EXT_PROTECTED_CONTENT 1
- 	__u64 extensions;
- };
- 
-@@ -2702,6 +2729,31 @@ struct drm_i915_gem_create_ext_memory_regions {
- 	__u64 regions;
- };
- 
-+/*
-+ * I915_OBJECT_PARAM_PROTECTED_CONTENT:
-+ *
-+ * If set to true, buffer contents is expected to be protected by PXP
-+ * encryption and requires decryption for scan out and processing. This is
-+ * only possible on platforms that have PXP enabled, on all other scenarios
-+ * setting this flag will cause the ioctl to fail and return -ENODEV.
-+ *
-+ * The buffer contents are considered invalid after a PXP session teardown.
-+ * It is recommended to use protected buffers only with contexts created
-+ * using the I915_CONTEXT_PARAM_PROTECTED_CONTENT flag, as that will enable
-+ * extra checks at submission time on the validity of the objects involved,
-+ * which can lead to the following errors:
-+ *
-+ * -ENODEV: PXP session not currently active
-+ * -EIO: buffer has become invalid after a teardown event
-+ */
-+struct drm_i915_gem_create_ext_protected_content {
-+	struct i915_user_extension base;
-+	__u32 flags;
-+};
 +
-+/* ID of the protected content session managed by i915 when PXP is active */
-+#define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
-+
- #if defined(__cplusplus)
- }
- #endif
+ /* Dword 0 */
+ #define MI_VERTEX_BUFFER		(0x17<<23)
+ #define MI_VERTEX_BUFFER_IDX(x)		(x<<20)
 -- 
 2.25.1
 
