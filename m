@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A22536E81B
- for <igt-dev@lists.freedesktop.org>; Tue, 18 May 2021 06:08:38 +0000 (UTC)
-Date: Tue, 18 May 2021 08:08:29 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210518060829.GA4341@zkempczy-mobl2>
-References: <20210423214853.876911-1-jason@jlekstrand.net>
- <20210423214853.876911-11-jason@jlekstrand.net>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3FDA56E06D
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 May 2021 07:00:33 +0000 (UTC)
+Date: Tue, 18 May 2021 10:01:54 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YKNmYmvFRE82i6b1@platvala-desk.ger.corp.intel.com>
+References: <20210513145352.2790280-1-markyacoub@chromium.org>
+ <20210513211658.tkx23qdmqciptexx@outlook.office365.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210423214853.876911-11-jason@jlekstrand.net>
-Subject: Re: [igt-dev] [PATCH i-g-t 10/89] lib/i915/gem_engine_topology:
- Rework query_engine_list()
+In-Reply-To: <20210513211658.tkx23qdmqciptexx@outlook.office365.com>
+Subject: Re: [igt-dev] [PATCH] tests/kms_panel_fitting: Move Intel GEN check
+ under a is_i915_device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,54 +19,138 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jason Ekstrand <jason@jlekstrand.net>
-Cc: igt-dev@lists.freedesktop.org
+To: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: igt-dev@lists.freedesktop.org, seanpaul@chromium.org, hersenxs.wu@amd.com, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBBcHIgMjMsIDIwMjEgYXQgMDQ6NDc6MzRQTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
-d3JvdGU6Cj4gVGhpcyBnaXZlcyB1cyBhIG5vLWFzc2VydCB2ZXJzaW9uLgoKTEdUTQoKUmV2aWV3
-ZWQtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwu
-Y29tPgoKLS0KWmJpZ25pZXcKCj4gCj4gU2lnbmVkLW9mZi1ieTogSmFzb24gRWtzdHJhbmQgPGph
-c29uQGpsZWtzdHJhbmQubmV0Pgo+IC0tLQo+ICBsaWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5
-LmMgfCAyMiArKysrKysrKysrKystLS0tLS0tLS0tCj4gIDEgZmlsZSBjaGFuZ2VkLCAxMiBpbnNl
-cnRpb25zKCspLCAxMCBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvbGliL2k5MTUvZ2Vt
-X2VuZ2luZV90b3BvbG9neS5jIGIvbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5jCj4gaW5k
-ZXggZWI3YTRjMjYuLmFlOGQyYTMzIDEwMDY0NAo+IC0tLSBhL2xpYi9pOTE1L2dlbV9lbmdpbmVf
-dG9wb2xvZ3kuYwo+ICsrKyBiL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYwo+IEBAIC05
-NSwxMyArOTUsNiBAQCBpbnQgX19nZW1fcXVlcnlfZW5naW5lcyhpbnQgZmQsCj4gIAlyZXR1cm4g
-X19nZW1fcXVlcnkoZmQsICZxdWVyeSk7Cj4gIH0KPiAgCj4gLXN0YXRpYyB2b2lkIHF1ZXJ5X2Vu
-Z2luZXMoaW50IGZkLAo+IC0JCQkgIHN0cnVjdCBkcm1faTkxNV9xdWVyeV9lbmdpbmVfaW5mbyAq
-cXVlcnlfZW5naW5lcywKPiAtCQkJICBpbnQgbGVuZ3RoKQo+IC17Cj4gLQlpZ3RfYXNzZXJ0X2Vx
-KF9fZ2VtX3F1ZXJ5X2VuZ2luZXMoZmQsIHF1ZXJ5X2VuZ2luZXMsIGxlbmd0aCksIDApOwo+IC19
-Cj4gLQo+ICBzdGF0aWMgdm9pZCBjdHhfbWFwX2VuZ2luZXMoaW50IGZkLCBzdHJ1Y3QgaW50ZWxf
-ZW5naW5lX2RhdGEgKmVkLAo+ICAJCQkgICAgc3RydWN0IGRybV9pOTE1X2dlbV9jb250ZXh0X3Bh
-cmFtICpwYXJhbSkKPiAgewo+IEBAIC0xNjAsMTQgKzE1MywxNiBAQCBzdGF0aWMgdm9pZCBpbml0
-X2VuZ2luZShzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmUyLAo+ICAJaWd0X2Fzc2Vy
-dChyZXQgPCBzaXplb2YoZTItPm5hbWUpKTsKPiAgfQo+ICAKPiAtc3RhdGljIHZvaWQgcXVlcnlf
-ZW5naW5lX2xpc3QoaW50IGZkLCBzdHJ1Y3QgaW50ZWxfZW5naW5lX2RhdGEgKmVkKQo+ICtzdGF0
-aWMgaW50IF9fcXVlcnlfZW5naW5lX2xpc3QoaW50IGZkLCBzdHJ1Y3QgaW50ZWxfZW5naW5lX2Rh
-dGEgKmVkKQo+ICB7Cj4gIAl1aW50OF90IGJ1ZmZbU0laRU9GX1FVRVJZXSA9IHsgfTsKPiAgCXN0
-cnVjdCBkcm1faTkxNV9xdWVyeV9lbmdpbmVfaW5mbyAqcXVlcnlfZW5naW5lID0KPiAgCQkJKHN0
-cnVjdCBkcm1faTkxNV9xdWVyeV9lbmdpbmVfaW5mbyAqKSBidWZmOwo+IC0JaW50IGk7Cj4gKwlp
-bnQgaSwgZXJyOwo+ICAKPiAtCXF1ZXJ5X2VuZ2luZXMoZmQsIHF1ZXJ5X2VuZ2luZSwgU0laRU9G
-X1FVRVJZKTsKPiArCWVyciA9IF9fZ2VtX3F1ZXJ5X2VuZ2luZXMoZmQsIHF1ZXJ5X2VuZ2luZSwg
-U0laRU9GX1FVRVJZKTsKPiArCWlmIChlcnIpCj4gKwkJcmV0dXJuIGVycjsKPiAgCj4gIAlmb3Ig
-KGkgPSAwOyBpIDwgcXVlcnlfZW5naW5lLT5udW1fZW5naW5lczsgaSsrKQo+ICAJCWluaXRfZW5n
-aW5lKCZlZC0+ZW5naW5lc1tpXSwKPiBAQCAtMTc1LDYgKzE3MCwxMyBAQCBzdGF0aWMgdm9pZCBx
-dWVyeV9lbmdpbmVfbGlzdChpbnQgZmQsIHN0cnVjdCBpbnRlbF9lbmdpbmVfZGF0YSAqZWQpCj4g
-IAkJCSAgICBxdWVyeV9lbmdpbmUtPmVuZ2luZXNbaV0uZW5naW5lLmVuZ2luZV9pbnN0YW5jZSwg
-aSk7Cj4gIAo+ICAJZWQtPm5lbmdpbmVzID0gcXVlcnlfZW5naW5lLT5udW1fZW5naW5lczsKPiAr
-Cj4gKwlyZXR1cm4gMDsKPiArfQo+ICsKPiArc3RhdGljIHZvaWQgcXVlcnlfZW5naW5lX2xpc3Qo
-aW50IGZkLCBzdHJ1Y3QgaW50ZWxfZW5naW5lX2RhdGEgKmVkKQo+ICt7Cj4gKwlpZ3RfYXNzZXJ0
-X2VxKF9fcXVlcnlfZW5naW5lX2xpc3QoZmQsIGVkKSwgMCk7Cj4gIH0KPiAgCj4gIHN0cnVjdCBp
-bnRlbF9leGVjdXRpb25fZW5naW5lMiAqCj4gLS0gCj4gMi4zMS4xCj4gCj4gX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBpZ3QtZGV2IG1haWxpbmcgbGlz
-dAo+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4gaHR0cHM6Ly9saXN0cy5mcmVlZGVz
-a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4v
-bGlzdGluZm8vaWd0LWRldgo=
+On Thu, May 13, 2021 at 05:16:58PM -0400, Rodrigo Siqueira wrote:
+> On 05/13, Mark Yacoub wrote:
+> > From: Mark Yacoub <markyacoub@google.com>
+> > 
+> > Encapsulate intel-only operations such as intel_get_drm_devid under a is_i915_device check.
+> > 
+> > This allows the subtests to run on non-i915 devices.
+> > ---
+> >  tests/kms_panel_fitting.c | 61 +++++++++++++++++++++++----------------
+> >  1 file changed, 36 insertions(+), 25 deletions(-)
+> > 
+> > diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
+> > index 4f4c5608..0c028c69 100644
+> > --- a/tests/kms_panel_fitting.c
+> > +++ b/tests/kms_panel_fitting.c
+> > @@ -89,7 +89,7 @@ static void test_panel_fitting(data_t *d)
+> >  
+> >  	for_each_pipe_with_valid_output(display, pipe, output) {
+> >  		drmModeModeInfo *mode, native_mode;
+> > -		uint32_t devid = intel_get_drm_devid(display->drm_fd);
+> > +		bool is_plane_scaling_active = true;
+> >  
+> >  		/* Check that the "scaling mode" property has been set. */
+> >  		if (!igt_output_has_prop(output, IGT_CONNECTOR_SCALING_MODE))
+> > @@ -132,25 +132,26 @@ static void test_panel_fitting(data_t *d)
+> >  		igt_fb_set_size(&d->fb2, d->plane2, d->fb2.width-200, d->fb2.height-200);
+> >  		igt_plane_set_position(d->plane2, 100, 100);
+> >  
+> > -		/*
+> > -		 * Most of gen7 and all of gen8 doesn't support plane scaling
+> > -		 * at all.
+> > -		 *
+> > -		 * gen9 pipe C has only 1 scaler shared with the crtc, which
+> > -		 * means pipe scaling can't work simultaneously with panel
+> > -		 * fitting.
+> > -		 *
+> > -		 * Since this is the legacy path, userspace has to know about
+> > -		 * the HW limitations, whereas atomic can ask.
+> > -		 */
+> > -		if (IS_GEN8(devid) ||
+> > -		    (IS_GEN7(devid) && !IS_IVYBRIDGE(devid)) ||
+> > -		    (IS_GEN9(devid) && pipe == PIPE_C))
+> > -			/* same as visible area of fb => no scaling */
+> > -			igt_plane_set_size(d->plane2,
+> > -					   d->fb2.width-200,
+> > -					   d->fb2.height-200);
+> > -		else
+> > +		if (is_i915_device(display->drm_fd)) {
+> > +			uint32_t devid = intel_get_drm_devid(display->drm_fd);
+> > +			/*
+> > +			 * Most of gen7 and all of gen8 doesn't support plane scaling
+> > +			 * at all.
+> > +			 *
+> > +			 * gen9 pipe C has only 1 scaler shared with the crtc, which
+> > +			 * means pipe scaling can't work simultaneously with panel
+> > +			 * fitting.
+> > +			 *
+> > +			 * Since this is the legacy path, userspace has to know about
+> > +			 * the HW limitations, whereas atomic can ask.
+> > +			 */
+> > +			if (IS_GEN8(devid) ||
+> > +				(IS_GEN7(devid) && !IS_IVYBRIDGE(devid)) ||
+> > +				(IS_GEN9(devid) && pipe == PIPE_C)) {
+> > +				is_plane_scaling_active = false;
+> > +			}
+> > +		}
+> > +		if (is_plane_scaling_active) {
+> >  			/*
+> >  			 * different than visible area of fb => plane scaling
+> >  			 * active
+> > @@ -158,6 +159,13 @@ static void test_panel_fitting(data_t *d)
+> >  			igt_plane_set_size(d->plane2,
+> >  					   mode->hdisplay-200,
+> >  					   mode->vdisplay-200);
+> > +		}
+> > +		else {
+> > +			/* same as visible area of fb => no scaling */
+> > +			igt_plane_set_size(d->plane2,
+> > +				d->fb2.width - 200,
+> > +				d->fb2.height - 200);
+> > +		}
+> >  
+> >  		/* Plane scaling active (if possible), pfit off */
+> >  		igt_display_commit2(display, COMMIT_UNIVERSAL);
+> > @@ -229,13 +237,16 @@ static void test_atomic_fastset(data_t *data)
+> >  	int valid_tests = 0;
+> >  	struct stat sb;
+> >  
+> > -	/* Until this is force enabled, force modeset evasion. */
+> > -	if (stat("/sys/module/i915/parameters/fastboot", &sb) == 0)
+> > -		igt_set_module_param_int(data->drm_fd, "fastboot", 1);
+> >  
+> > -	igt_require(display->is_atomic);
+> > -	igt_require(intel_gen(intel_get_drm_devid(display->drm_fd)) >= 5);
+> > +	if (is_i915_device(display->drm_fd)) {
+> > +		/* Until this is force enabled, force modeset evasion. */
+> > +		if (stat("/sys/module/i915/parameters/fastboot", &sb) == 0)
+> > +			igt_set_module_param_int(data->drm_fd, "fastboot", 1);
+> >  
+> > +		igt_require(intel_gen(intel_get_drm_devid(display->drm_fd)) >= 5);
+> > +	}
+> > +
+> > +	igt_require(display->is_atomic);
+> >  	for_each_pipe_with_valid_output(display, pipe, output) {
+> >  		if (!igt_output_has_prop(output, IGT_CONNECTOR_SCALING_MODE))
+> >  			continue;
+> > -- 
+> > 2.31.1.607.g51e8a6a459-goog
+> > 
+> 
+> Hi Mark,
+> 
+> I tested it in a Raven system, and now I can see it failing in a good
+> way in my system. Nice patch, thanks.
+> 
+> Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+
+
+Merged now, thanks.
+
+
+-- 
+Petri Latvala
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
