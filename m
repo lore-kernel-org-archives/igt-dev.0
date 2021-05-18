@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C5E3B6EB25
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9979F6E869
  for <igt-dev@lists.freedesktop.org>; Tue, 18 May 2021 10:33:49 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue, 18 May 2021 03:33:43 -0700
-Message-Id: <20210518103344.2264397-17-alan.previn.teres.alexis@intel.com>
+Date: Tue, 18 May 2021 03:33:41 -0700
+Message-Id: <20210518103344.2264397-15-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
 References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 16/17] Verify protected surfaces are dma
- buffer sharable
+Subject: [igt-dev] [PATCH i-g-t 14/17] Verify execbuf ok with stale
+ prot-buff and regular context
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,92 +17,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VmVyaWZ5IHdlIGNhbiBleHBvcnQgYSBwcm90ZWN0ZWQgc3VyZmFjZSBmcm9tCnByb3RlY3RlZCBj
-b250ZXh0IEEgaW50byBwcm90ZWN0ZWQgY29udGV4dCBCICh3aXRoCmRpZmZlcmVudCBjbGllbnQg
-ZHJpdmVyIGhhbmRsZXMpIGFuZCBwcm90ZWN0ZWQKcmVuZGVyaW5nIGlzIHN1Y2Nlc3NmdWwgZXZl
-biBhZnRlciBwcmlvciBmaWxlCmhhbmRsZSBpcyBjbG9zZWQgKGkuZS4gcHhwIHNwZWNpZmljIHJl
-ZmNvdW50aW5nCndvcmtzKS4KClNpZ25lZC1vZmYtYnk6IEFsYW4gUHJldmluIDxhbGFuLnByZXZp
-bi50ZXJlcy5hbGV4aXNAaW50ZWwuY29tPgotLS0KIHRlc3RzL2k5MTUvZ2VtX3B4cC5jIHwgMTAz
-ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKIDEgZmlsZSBjaGFu
-Z2VkLCAxMDMgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvZ2VtX3B4cC5j
-IGIvdGVzdHMvaTkxNS9nZW1fcHhwLmMKaW5kZXggNjlhMzE0M2EuLjE3OWZiNzQyIDEwMDY0NAot
-LS0gYS90ZXN0cy9pOTE1L2dlbV9weHAuYworKysgYi90ZXN0cy9pOTE1L2dlbV9weHAuYwpAQCAt
-Myw2ICszLDcgQEAKICAqIENvcHlyaWdodCDCqSAyMDIxIEludGVsIENvcnBvcmF0aW9uCiAgKi8K
-IAorI2luY2x1ZGUgPGZjbnRsLmg+CiAjaW5jbHVkZSAiaWd0LmgiCiAjaW5jbHVkZSAiaTkxNS9n
-ZW0uaCIKIApAQCAtNjE4LDYgKzYxOSwxMDYgQEAgc3RhdGljIHZvaWQgdGVzdF9yZW5kZXJfcHhw
-X3Byb3RzcmNfdG9fcHJvdGRlc3QoaW50IGk5MTUpCiAJYnVmX29wc19kZXN0cm95KGJvcHMpOwog
-fQogCitzdGF0aWMgaW50IGV4cG9ydF9oYW5kbGUoaW50IGZkLCB1aW50MzJfdCBoYW5kbGUsIGlu
-dCAqb3V0ZmQpCit7CisJc3RydWN0IGRybV9wcmltZV9oYW5kbGUgYXJnczsKKwlpbnQgcmV0Owor
-CisJYXJncy5oYW5kbGUgPSBoYW5kbGU7CisJYXJncy5mbGFncyA9IERSTV9DTE9FWEVDOworCWFy
-Z3MuZmQgPSAtMTsKKworCXJldCA9IGRybUlvY3RsKGZkLCBEUk1fSU9DVExfUFJJTUVfSEFORExF
-X1RPX0ZELCAmYXJncyk7CisJaWYgKHJldCkKKwkJcmV0ID0gZXJybm87CisJKm91dGZkID0gYXJn
-cy5mZDsKKworCXJldHVybiByZXQ7Cit9CisKK3N0YXRpYyB2b2lkIHRlc3RfcHhwX2RtYWJ1ZmZz
-aGFyZV9yZWZjbnQodm9pZCkKK3sKKwl1aW50MzJfdCBjdHhbMl0sIHNib1syXSwgZGJvWzJdOwor
-CXN0cnVjdCBpbnRlbF9idWYgKnNidWZbMl0sICpkYnVmWzJdOworCXN0cnVjdCBidWZfb3BzICpi
-b3BzWzJdOworCXN0cnVjdCBpbnRlbF9iYiAqaWJiWzJdOworCWludCBmZFsyXSwgZG1hYnVmX2Zk
-ID0gMCwgcmV0LCBuLCBudW1fbWF0Y2hlcyA9IDA7CisJdWludDMyX3QgZW5jcnlwdGVkWzJdW1RT
-VFNVUkZfU0laRS9UU1RTVVJGX0JZVEVTUFBdOworCisJLyogRmlyc3QsIGNyZWF0ZSB0aGUgY2xp
-ZW50IGRyaXZlciBoYW5kbGVzIGFuZAorCSAqIHByb3RlY3RlZCBkZXN0IGJ1ZmZlciAoaXMgZXhw
-b3J0ZWQgdmlhIGRtYS1idWZmCisJICogZnJvbSBmaXJzdCBoYW5kbGUgYW5kIGltcG9ydGVkIHRv
-IHRoZSBzZWNvbmQpLgorCSAqLworCWZvciAobiA9IDA7IG4gPCAyOyArK24pIHsKKwkJZmRbbl0g
-PSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX0lOVEVMKTsKKwkJaWd0X3JlcXVpcmUoZmRbbl0pOwor
-CQlpZiAobiA9PSAwKSB7CisJCQlkYm9bMF0gPSBhbGxvY19hbmRfZmlsbF9kZXN0X2J1ZmYoZmRb
-MF0sIHRydWUsIFRTVFNVUkZfU0laRSwKKwkJCQkJCQkgIFRTVFNVUkZfSU5JVENPTE9SMSk7CisJ
-CX0gZWxzZSB7CisJCQlyZXQgPSBleHBvcnRfaGFuZGxlKGZkWzBdLCBkYm9bMF0sICZkbWFidWZf
-ZmQpOworCQkJaWd0X2Fzc2VydChyZXQgPT0gMCk7CisJCQlkYm9bMV0gPSBwcmltZV9mZF90b19o
-YW5kbGUoZmRbMV0sIGRtYWJ1Zl9mZCk7CisJCQlpZ3RfYXNzZXJ0KGRib1sxXSk7CisJCX0KKwl9
-CisJLyogUmVwZWF0IHR3aWNlOiBDcmVhdGUgYSBmdWxsIHNldCBvZiBhc3NldHMgdG8gcGVyZm9y
-bQorCSAqIGEgcHJvdGVjdGVkIDNEIHNlc3Npb24gYnV0IHVzaW5nIHRoZSBzYW1lIGRlc3QgYnVm
-ZmVyCisJICogZnJvbSBhYm92ZS4KKwkgKi8KKwlmb3IgKG4gPSAwOyBuIDwgMjsgKytuKSB7CisJ
-CXJldCA9IGNyZWF0ZV9jdHhfd2l0aF9wYXJhbXMoZmRbbl0sIHRydWUsIHRydWUsIHRydWUsIGZh
-bHNlLCAmY3R4W25dKTsKKwkJaWd0X2Fzc2VydF9lcShyZXQsIDApOworCQlpZ3RfYXNzZXJ0X2Vx
-KGdldF9jdHhfcHJvdGVjdGVkX3BhcmFtKGZkW25dLCBjdHhbbl0pLCAxKTsKKwkJaWJiW25dID0g
-aW50ZWxfYmJfY3JlYXRlX3dpdGhfY29udGV4dChmZFtuXSwgY3R4W25dLCA0MDk2KTsKKwkJaW50
-ZWxfYmJfc2V0X3B4cChpYmJbbl0sIHRydWUsIERJU1BMQVlfQVBQVFlQRSwKKwkJCQkgSTkxNV9Q
-Uk9URUNURURfQ09OVEVOVF9ERUZBVUxUX1NFU1NJT04pOworCisJCWJvcHNbbl0gPSBidWZfb3Bz
-X2NyZWF0ZShmZFtuXSk7CisJCWlmIChuID09IDEpCisJCQlmaWxsX2JvX2NvbnRlbnQoZmRbMV0s
-IGRib1sxXSwgVFNUU1VSRl9TSVpFLCBUU1RTVVJGX0lOSVRDT0xPUjIpOworCisJCWRidWZbbl0g
-PSBpbnRlbF9idWZfY3JlYXRlX3VzaW5nX2hhbmRsZShib3BzW25dLCBkYm9bbl0sIFRTVFNVUkZf
-V0lEVEgsCisJCQkJCQkJVFNUU1VSRl9IRUlHSFQsCVRTVFNVUkZfQllURVNQUCo4LCAwLAorCQkJ
-CQkJCUk5MTVfVElMSU5HX05PTkUsIDApOworCQlpbnRlbF9idWZfc2V0X3B4cChkYnVmW25dLCB0
-cnVlKTsKKworCQlzYm9bbl0gPSBhbGxvY19hbmRfZmlsbF9kZXN0X2J1ZmYoZmRbbl0sIGZhbHNl
-LCBUU1RTVVJGX1NJWkUsIFRTVFNVUkZfRklMTENPTE9SMSk7CisJCXNidWZbbl0gPSBpbnRlbF9i
-dWZfY3JlYXRlX3VzaW5nX2hhbmRsZShib3BzW25dLCBzYm9bbl0sIFRTVFNVUkZfV0lEVEgsCisJ
-CQkJCQkJVFNUU1VSRl9IRUlHSFQsIFRTVFNVUkZfQllURVNQUCo4LCAwLAorCQkJCQkJCUk5MTVf
-VElMSU5HX05PTkUsIDApOworCisJCWdlbjEyX3JlbmRlcl9jb3B5ZnVuYyhpYmJbbl0sIHNidWZb
-bl0sIDAsIDAsIFRTVFNVUkZfV0lEVEgsIFRTVFNVUkZfSEVJR0hULAorCQkJCSAgICAgIGRidWZb
-bl0sIDAsIDApOworCQlnZW1fc3luYyhmZFtuXSwgZGJvW25dKTsKKworCQlhc3NlcnRfYm9fY29u
-dGVudF9jaGVjayhmZFtuXSwgZGJvW25dLCBDT01QQVJFX0NPTE9SX1VOUkVBRElCTEUsIFRTVFNV
-UkZfU0laRSwKKwkJCQkJVFNUU1VSRl9GSUxMQ09MT1IxLCBOVUxMLCAwKTsKKwkJYXNzZXJ0X2Jv
-X2NvbnRlbnRfY2hlY2soZmRbbl0sIGRib1tuXSwgQ09QWV9CVUZGRVIsIFRTVFNVUkZfU0laRSwg
-MCwgZW5jcnlwdGVkW25dLAorCQkJCQlUU1RTVVJGX1NJWkUpOworCisJCS8qIGZyZWUgdXAgYWxs
-IGFzc2V0cyBleGNlcHQgdGhlIGRlc3QgYnVmZmVyIHRvCisJCSAqIHZlcmlmeSBkbWEgYnVmZiBy
-ZWZjb3VudGluZyBpcyBwZXJmb3JtZWQgb24KKwkJICogdGhlIHByb3RlY3RlZCBkZXN0IGJ1ZmZl
-ciBvbiB0aGUgMm5kIGxvb3Agd2l0aAorCQkgKiBzdWNjZXNzZnVsIHJldXNlIGluIGFub3RoZXIg
-cHJvdGVjdGVkIHJlbmRlci4KKwkJICovCisJCWludGVsX2JiX2Rlc3Ryb3koaWJiW25dKTsKKwkJ
-aW50ZWxfYnVmX2Rlc3Ryb3koc2J1ZltuXSk7CisJCWludGVsX2J1Zl9kZXN0cm95KGRidWZbbl0p
-OworCQlnZW1fY2xvc2UoZmRbbl0sIHNib1tuXSk7CisJCWdlbV9jbG9zZShmZFtuXSwgZGJvW25d
-KTsKKwkJZ2VtX2NvbnRleHRfZGVzdHJveShmZFtuXSwgY3R4W25dKTsKKwkJY2xvc2UoZmRbbl0p
-OworCX0KKworCS8qIFZlcmlmeSB0aGF0IGVuY3J5cHRlZCBvdXRwdXQgYWNyb3NzIGxvb3BzIHdl
-cmUgZXF1YWwgKi8KKwlmb3IgKG4gPSAwOyBuIDwgKFRTVFNVUkZfU0laRS80KTsgKytuKQorCQlp
-ZiAoZW5jcnlwdGVkWzBdW25dID09IGVuY3J5cHRlZFsxXVtuXSkKKwkJCSsrbnVtX21hdGNoZXM7
-CisJaWd0X2Fzc2VydChudW1fbWF0Y2hlcyA9PSAoVFNUU1VSRl9TSVpFLzQpKTsKK30KKworCiBz
-dGF0aWMgdm9pZCBpbml0X3Bvd2VybWd0X3Jlc291cmNlcyhpbnQgaTkxNSwgc3RydWN0IHBvd2Vy
-bWd0X2RhdGEgKnBtKQogewogCXBtLT5kZWJ1Z2ZzZGlyID0gaWd0X2RlYnVnZnNfZGlyKGk5MTUp
-OwpAQCAtOTEyLDYgKzEwMTMsOCBAQCBpZ3RfbWFpbgogCQkJdGVzdF9yZW5kZXJfcHhwX3NyY190
-b19wcm90ZGVzdChpOTE1KTsKIAkJaWd0X3N1YnRlc3QoInByb3RlY3RlZC1lbmNyeXB0ZWQtc3Jj
-LWNvcHktbm90LXJlYWRpYmxlIikKIAkJCXRlc3RfcmVuZGVyX3B4cF9wcm90c3JjX3RvX3Byb3Rk
-ZXN0KGk5MTUpOworCQlpZ3Rfc3VidGVzdCgiZG1hYnVmLXNoYXJlZC1wcm90ZWN0ZWQtZHN0LWlz
-LWNvbnRleHQtcmVmY291bnRlZCIpCisJCQl0ZXN0X3B4cF9kbWFidWZmc2hhcmVfcmVmY250KCk7
-CiAJfQogCWlndF9zdWJ0ZXN0X2dyb3VwIHsKIAkJaWd0X2ZpeHR1cmUgewotLSAKMi4yNS4xCgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1h
-aWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZy
-ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+Add a check to verify that reusing a stale protected
+buffer in a gem_execbuff call, but using a regular (not-
+protcted) context will succeed despite after a teardown
+(triggered by suspend-resume cycle).
+
+This ensures that user space applications that choose
+not to opt-in for strict PXP teardown awareness (by
+using a regular context) won't suffer gem_execbuff
+failures if a protected buffer was among the assets
+used in any of its rendering operations.
+
+Reuse the existing subtest to minimize the number
+of suspend resume cycles we take.
+
+Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+---
+ tests/i915/gem_pxp.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+index b4f369ae..e3c21c70 100644
+--- a/tests/i915/gem_pxp.c
++++ b/tests/i915/gem_pxp.c
+@@ -760,7 +760,7 @@ static void free_exec_assets(int i915, struct simple_exec_assets *data)
+ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_data *pm)
+ {
+ 	int ret;
+-	struct simple_exec_assets data[2] = {{0}, {0}};
++	struct simple_exec_assets data[3] = {{0}, {0}, {0}};
+ 	uint32_t ctx2;
+ 	struct intel_bb *ibb2;
+ 
+@@ -777,6 +777,15 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
+ 	ret = gem_execbuf_flush_store_dw(i915, data[1].ibb, data[1].ctx, data[1].fencebuf);
+ 	igt_assert(ret == 0);
+ 
++	/*
++	 * For data[2]: Use non-pxp contexts but with protected buffers
++	 * to verify the "pxp-execution-opt-in" expectation where
++	 * execution will run without error (not buffer)
++	 */
++	prepare_exec_assets(i915, &data[2], false, true);
++	ret = gem_execbuf_flush_store_dw(i915, data[2].ibb, data[2].ctx, data[2].fencebuf);
++	igt_assert(ret == 0);
++
+ 	trigger_powermgt_suspend_cycle(i915, pm);
+ 
+ 	ret = gem_execbuf_flush_store_dw(i915, data[0].ibb, data[0].ctx, data[0].fencebuf);
+@@ -797,8 +806,12 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
+ 	ret = gem_execbuf_flush_store_dw(i915, ibb2, ctx2, data[1].fencebuf);
+ 	igt_assert_f((ret == -ENOEXEC), "Executing stale pxp buffer didn't fail with -ENOEXEC\n");
+ 
++	ret = gem_execbuf_flush_store_dw(i915, data[2].ibb, data[2].ctx, data[2].fencebuf);
++	igt_assert_f((ret == 0), "Opt-out-execution with stale pxp buffer didn't succeed\n");
++
+ 	free_exec_assets(i915, &data[0]);
+ 	free_exec_assets(i915, &data[1]);
++	free_exec_assets(i915, &data[2]);
+ }
+ 
+ igt_main
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
