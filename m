@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 889CA6E56D
- for <igt-dev@lists.freedesktop.org>; Wed, 19 May 2021 07:41:36 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3019D6ECD7
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 May 2021 07:47:33 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 19 May 2021 21:00:43 +0530
-Message-Id: <20210519153043.30492-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20210512170536.4778-14-bhanuprakash.modem@intel.com>
-References: <20210512170536.4778-14-bhanuprakash.modem@intel.com>
+Date: Wed, 19 May 2021 21:06:53 +0530
+Message-Id: <20210519153653.30791-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20210519153043.30492-1-bhanuprakash.modem@intel.com>
+References: <20210519153043.30492-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [v7 i-g-t 6/7] tests/kms_flip_scaled_crc: Reset the state
- before exiting the test
+Subject: [igt-dev] [v8 i-g-t 13/14] tests/kms_flip_scaled_crc: Reset the
+ state before exiting the test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -45,24 +45,24 @@ index 4923f1235..bb796cafb 100644
 +++ b/tests/kms_flip_scaled_crc.c
 @@ -156,6 +156,7 @@ static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
  	int ret;
- 
+
  	igt_display_reset(&data->display);
 +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
+
  	igt_debug("running on output %s pipe %s\n", output->name,
  		  kmstest_pipe_name(pipe));
 @@ -246,6 +247,10 @@ static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
  	data->pipe_crc = NULL;
- 
+
  	clear_lut(data, pipe);
 +
 +	igt_output_set_pipe(output, PIPE_NONE);
 +	igt_plane_set_fb(primary, NULL);
 +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
  }
- 
+
  igt_main
--- 
+--
 2.20.1
 
 _______________________________________________
