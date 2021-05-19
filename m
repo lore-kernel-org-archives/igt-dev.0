@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 278C96E1B1
- for <igt-dev@lists.freedesktop.org>; Wed, 19 May 2021 06:50:11 +0000 (UTC)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 51C9E6EC7F
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 May 2021 07:01:43 +0000 (UTC)
 References: <20210512170536.4778-1-bhanuprakash.modem@intel.com>
- <20210512170536.4778-10-bhanuprakash.modem@intel.com>
+ <20210512170536.4778-12-bhanuprakash.modem@intel.com>
 From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-Message-ID: <635a0162-e2b8-b5fb-edd7-8475b5a1eca7@intel.com>
-Date: Wed, 19 May 2021 12:20:06 +0530
+Message-ID: <544e3df9-a914-3172-98dc-3fb728a7ae06@intel.com>
+Date: Wed, 19 May 2021 12:31:38 +0530
 MIME-Version: 1.0
-In-Reply-To: <20210512170536.4778-10-bhanuprakash.modem@intel.com>
+In-Reply-To: <20210512170536.4778-12-bhanuprakash.modem@intel.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [v6 i-g-t 09/14] tests/kms_plane_alpha_blend: Reset
- the state before exiting the test
+Subject: Re: [igt-dev] [v6 i-g-t 11/14] tests/kms_plane_lowres: Reset the
+ state before exiting the test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,6 +26,9 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+LGTM.
+
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
 On 5/12/2021 10:35 PM, Bhanuprakash Modem wrote:
 > Before starting the next subtest, clean up the states to default
@@ -37,39 +40,33 @@ On 5/12/2021 10:35 PM, Bhanuprakash Modem wrote:
 > Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->   tests/kms_plane_alpha_blend.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+>   tests/kms_plane_lowres.c | 9 +++------
+>   1 file changed, 3 insertions(+), 6 deletions(-)
 >
-> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-> index 5e80ae36e..a37cb27c7 100644
-> --- a/tests/kms_plane_alpha_blend.c
-> +++ b/tests/kms_plane_alpha_blend.c
-> @@ -237,8 +237,6 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe)
->   	}
+> diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+> index 5cfe53c8b..95346e289 100644
+> --- a/tests/kms_plane_lowres.c
+> +++ b/tests/kms_plane_lowres.c
+> @@ -270,16 +270,13 @@ test_planes_on_pipe(data_t *data, uint64_t modifier)
+>   	igt_info("Testing connector %s using pipe %s\n",
+>   		 igt_output_name(data->output), kmstest_pipe_name(data->pipe));
 >   
->   	igt_plane_set_fb(primary, &data->black_fb);
-> -	/* reset alpha property to default */
-> -	reset_alpha(display, pipe);
-
-This is indeed redundant.
-
-LGTM
-
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-
+> -	for_each_plane_on_pipe(&data->display, data->pipe, plane) {
+> -		data->output = igt_get_single_output_for_pipe(&data->display, data->pipe);
+> -		igt_require(data->output);
+> -
+> +	for_each_plane_on_pipe(&data->display, data->pipe, plane)
+>   		tested += test_planes_on_pipe_with_output(data, plane, modifier);
+> -	}
+>   
+> -	igt_assert(tested > 0);
+>   	igt_output_set_pipe(data->output, PIPE_NONE);
+>   	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +
+> +	igt_assert(tested > 0);
 >   }
 >   
->   static void basic_alpha(data_t *data, enum pipe pipe, igt_plane_t *plane)
-> @@ -507,6 +505,9 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, bool blend,
->   		igt_plane_set_fb(plane, NULL);
->   	}
->   
-> +	igt_output_set_pipe(output, PIPE_NONE);
-> +	igt_display_commit2(display, COMMIT_ATOMIC);
-> +
->   	igt_require_f(found, "No planes with %s property found\n",
->   		      blend ? "pixel blending mode" : "alpha");
->   	igt_require_f(multiply, "Multiplied (plane x pixel) alpha not available\n");
+>   igt_main
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
