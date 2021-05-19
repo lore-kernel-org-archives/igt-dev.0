@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6AC036E29D
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 May 2021 10:21:00 +0000 (UTC)
+From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Wed, 19 May 2021 15:41:24 +0530
+Message-Id: <20210519101124.226616-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 19 May 2021 09:56:02 -0000
-Message-ID: <162141816268.17247.17106498829143410004@emeril.freedesktop.org>
-References: <20210512170536.4778-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20210512170536.4778-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgRml4IG1v?=
- =?utf-8?q?de_selection_for_2x_tests_=28rev8=29?=
+Subject: [igt-dev] [i-g-t] tests/i915/gem_bad_reloc: Check reloc support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,78 +14,38 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1236486519=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1236486519==
-Content-Type: multipart/alternative;
- boundary="===============7054503821088642459=="
+GEN12/12+ has no reloc support, thus need to check
+reloc support in the test.
 
---===============7054503821088642459==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+---
+ tests/i915/gem_bad_reloc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-== Series Details ==
-
-Series: Fix mode selection for 2x tests (rev8)
-URL   : https://patchwork.freedesktop.org/series/88902/
-State : failure
-
-== Summary ==
-
-Series 88902 revision 8 was fully merged or fully failed: no git log
-
-
-
---===============7054503821088642459==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Fix mode selection for 2x tests (rev8)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88902/">https://patchwork.freedesktop.org/series/88902/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-</table>
-
-
-    <p>Series 88902 revision 8 was fully merged or fully failed: no git log</p>
-
-</body>
-</html>
-
---===============7054503821088642459==--
-
---===============1236486519==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/tests/i915/gem_bad_reloc.c b/tests/i915/gem_bad_reloc.c
+index 6acc1724..3d4834bc 100644
+--- a/tests/i915/gem_bad_reloc.c
++++ b/tests/i915/gem_bad_reloc.c
+@@ -191,6 +191,8 @@ igt_main
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_INTEL);
+ 		igt_require_gem(fd);
++		/* Check if relocations supported by platform */
++		igt_require(gem_has_relocations(fd));
+ 		gem_require_blitter(fd);
+ 	}
+ 
+-- 
+2.31.1
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============1236486519==--
