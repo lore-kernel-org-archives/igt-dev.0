@@ -1,73 +1,91 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-Date: Wed, 19 May 2021 11:50:30 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YKTRVpuWOT/gsHdh@platvala-desk.ger.corp.intel.com>
-References: <20210511165117.428062-1-matthew.auld@intel.com>
- <CAM0jSHO6RD=w2TDAxRsr9=Hqabj=U4kya_bwEcC_MKw0t+hncA@mail.gmail.com>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAM0jSHO6RD=w2TDAxRsr9=Hqabj=U4kya_bwEcC_MKw0t+hncA@mail.gmail.com>
-Subject: Re: [Intel-gfx] [igt-dev] [PATCH i-g-t 00/12] DG1/LMEM uAPI basics
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Matthew Auld <matthew.william.auld@gmail.com>
-Cc: igt-dev@lists.freedesktop.org, Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>, Intel Graphics Development <intel-gfx@lists.freedesktop.org>, Matthew Auld <matthew.auld@intel.com>
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 19 May 2021 09:56:52 -0000
+Message-ID: <162141821213.17248.14612980807610257519@emeril.freedesktop.org>
+References: <20210512170536.4778-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20210512170536.4778-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgRml4IG1v?=
+ =?utf-8?q?de_selection_for_2x_tests_=28rev8=29?=
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0484130210=="
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, May 19, 2021 at 09:13:37AM +0100, Matthew Auld wrote:
-> On Tue, 11 May 2021 at 17:52, Matthew Auld <matthew.auld@intel.com> wrote:
-> >
-> > Just the really basic stuff, which unlocks adding more interesting testcases
-> > later, like gem_lmem_swapping.
-> >
-> > On the kernel side we landed the uAPI bits[1] behind CONFIG_BROKEN, which is
-> > already enabled in CI builds, so it should be possible to get some more BAT
-> > testing(outside of just the selftests) on DG1 to the point where we can start to
-> > exercise the LMEM paths with the new bits of uAPI.
-> >
-> > [1] https://patchwork.freedesktop.org/series/89648/
-> 
-> Petri, any thoughts on this series? As an initial step we just need
-> some way to start exercising the new bits of uAPI, and from that we
-> can add more interesting test cases.
+--===============0484130210==
+Content-Type: multipart/alternative;
+ boundary="===============1546188553189716126=="
 
-This series is in a confused state. First there's the addition of
-local definitions and ioctl tokens, then they are replaced with the
-proper stuff...
+--===============1546188553189716126==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-When this was starting to get developed the idea was to avoid icky
-cases that break _testing_. Not tests, testing. Remember when engine
-discovery was being developed and we had cases where for_each_engine
-loop didn't progress, causing stuff like
+== Series Details ==
 
-for_each_engine(...)
- igt_subtest(...)
+Series: Fix mode selection for 2x tests (rev8)
+URL   : https://patchwork.freedesktop.org/series/88902/
+State : failure
 
-to never enter a subtest?
+== Summary ==
 
-Pushing for stubbing memory regions ultimately wanted to avoid cases
-where for_each_combination(memregions) breaks test enumeration.
-
-It all boils down to: Can that break? Can we have cases where the
-query gives garbage? Can it give two million smem regions? Can it give
-0 regions, or -1 regions? And what happens then?
-
-Is it just gem_create_ext that's hiding behind CONFIG_BROKEN or also
-the querying?
+Series 88902 revision 8 was fully merged or fully failed: no git log
 
 
--- 
-Petri Latvala
+
+--===============1546188553189716126==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Fix mode selection for 2x tests (rev8)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88902/">https://patchwork.freedesktop.org/series/88902/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+</table>
+
+
+    <p>Series 88902 revision 8 was fully merged or fully failed: no git log</p>
+
+</body>
+</html>
+
+--===============1546188553189716126==--
+
+--===============0484130210==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0484130210==--
