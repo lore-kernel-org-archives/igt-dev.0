@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
- [IPv6:2607:f8b0:4864:20::62a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 71ABA6E8A2
- for <igt-dev@lists.freedesktop.org>; Fri, 21 May 2021 21:29:36 +0000 (UTC)
-Received: by mail-pl1-x62a.google.com with SMTP id p6so11651141plr.11
- for <igt-dev@lists.freedesktop.org>; Fri, 21 May 2021 14:29:36 -0700 (PDT)
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
+ [IPv6:2607:f8b0:4864:20::1035])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 383D06F920
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 May 2021 21:29:38 +0000 (UTC)
+Received: by mail-pj1-x1035.google.com with SMTP id
+ o17-20020a17090a9f91b029015cef5b3c50so8014239pjp.4
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 May 2021 14:29:38 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Fri, 21 May 2021 16:29:16 -0500
-Message-Id: <20210521212918.651509-2-jason@jlekstrand.net>
+Date: Fri, 21 May 2021 16:29:17 -0500
+Message-Id: <20210521212918.651509-3-jason@jlekstrand.net>
 In-Reply-To: <20210521212918.651509-1-jason@jlekstrand.net>
 References: <20210521212918.651509-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/dmabuf: Add tests for sync_file
- export (v2)
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/dmabuf: Add tests for sync_file
+ import (v2)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,136 +21,200 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-djIgKEphc29uIEVrc3RyYW5kKToKIC0gUmVuYW1lIHN1YnRlc3RzIHRvIGhhdmUgImV4cG9ydCIg
-aW4gdGhlIG5hbWUKClNpZ25lZC1vZmYtYnk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3Ry
-YW5kLm5ldD4KLS0tCiB0ZXN0cy9kbWFidWZfc3luY19maWxlLmMgfCAyMzIgKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrCiB0ZXN0cy9tZXNvbi5idWlsZCAgICAgICAgfCAg
-IDEgKwogMiBmaWxlcyBjaGFuZ2VkLCAyMzMgaW5zZXJ0aW9ucygrKQogY3JlYXRlIG1vZGUgMTAw
-NjQ0IHRlc3RzL2RtYWJ1Zl9zeW5jX2ZpbGUuYwoKZGlmZiAtLWdpdCBhL3Rlc3RzL2RtYWJ1Zl9z
-eW5jX2ZpbGUuYyBiL3Rlc3RzL2RtYWJ1Zl9zeW5jX2ZpbGUuYwpuZXcgZmlsZSBtb2RlIDEwMDY0
-NAppbmRleCAwMDAwMDAwMC4uZTczNTA5MDUKLS0tIC9kZXYvbnVsbAorKysgYi90ZXN0cy9kbWFi
-dWZfc3luY19maWxlLmMKQEAgLTAsMCArMSwyMzIgQEAKKy8qCisgKiBDb3B5cmlnaHQgwqkgMjAy
-MSBJbnRlbCBDb3Jwb3JhdGlvbgorICoKKyAqIFBlcm1pc3Npb24gaXMgaGVyZWJ5IGdyYW50ZWQs
-IGZyZWUgb2YgY2hhcmdlLCB0byBhbnkgcGVyc29uIG9idGFpbmluZyBhCisgKiBjb3B5IG9mIHRo
-aXMgc29mdHdhcmUgYW5kIGFzc29jaWF0ZWQgZG9jdW1lbnRhdGlvbiBmaWxlcyAodGhlICJTb2Z0
-d2FyZSIpLAorICogdG8gZGVhbCBpbiB0aGUgU29mdHdhcmUgd2l0aG91dCByZXN0cmljdGlvbiwg
-aW5jbHVkaW5nIHdpdGhvdXQgbGltaXRhdGlvbgorICogdGhlIHJpZ2h0cyB0byB1c2UsIGNvcHks
-IG1vZGlmeSwgbWVyZ2UsIHB1Ymxpc2gsIGRpc3RyaWJ1dGUsIHN1YmxpY2Vuc2UsCisgKiBhbmQv
-b3Igc2VsbCBjb3BpZXMgb2YgdGhlIFNvZnR3YXJlLCBhbmQgdG8gcGVybWl0IHBlcnNvbnMgdG8g
-d2hvbSB0aGUKKyAqIFNvZnR3YXJlIGlzIGZ1cm5pc2hlZCB0byBkbyBzbywgc3ViamVjdCB0byB0
-aGUgZm9sbG93aW5nIGNvbmRpdGlvbnM6CisgKgorICogVGhlIGFib3ZlIGNvcHlyaWdodCBub3Rp
-Y2UgYW5kIHRoaXMgcGVybWlzc2lvbiBub3RpY2UgKGluY2x1ZGluZyB0aGUgbmV4dAorICogcGFy
-YWdyYXBoKSBzaGFsbCBiZSBpbmNsdWRlZCBpbiBhbGwgY29waWVzIG9yIHN1YnN0YW50aWFsIHBv
-cnRpb25zIG9mIHRoZQorICogU29mdHdhcmUuCisgKgorICogVEhFIFNPRlRXQVJFIElTIFBST1ZJ
-REVEICJBUyBJUyIsIFdJVEhPVVQgV0FSUkFOVFkgT0YgQU5ZIEtJTkQsIEVYUFJFU1MgT1IKKyAq
-IElNUExJRUQsIElOQ0xVRElORyBCVVQgTk9UIExJTUlURUQgVE8gVEhFIFdBUlJBTlRJRVMgT0Yg
-TUVSQ0hBTlRBQklMSVRZLAorICogRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UgQU5E
-IE5PTklORlJJTkdFTUVOVC4gIElOIE5PIEVWRU5UIFNIQUxMCisgKiBUSEUgQVVUSE9SUyBPUiBD
-T1BZUklHSFQgSE9MREVSUyBCRSBMSUFCTEUgRk9SIEFOWSBDTEFJTSwgREFNQUdFUyBPUiBPVEhF
-UgorICogTElBQklMSVRZLCBXSEVUSEVSIElOIEFOIEFDVElPTiBPRiBDT05UUkFDVCwgVE9SVCBP
-UiBPVEhFUldJU0UsIEFSSVNJTkcKKyAqIEZST00sIE9VVCBPRiBPUiBJTiBDT05ORUNUSU9OIFdJ
-VEggVEhFIFNPRlRXQVJFIE9SIFRIRSBVU0UgT1IgT1RIRVIgREVBTElOR1MKKyAqIElOIFRIRSBT
-T0ZUV0FSRS4KKyAqLworCisjaW5jbHVkZSAiaWd0LmgiCisjaW5jbHVkZSAiaWd0X3ZnZW0uaCIK
-KworI2luY2x1ZGUgPGxpbnV4L2RtYS1idWYuaD4KKyNpbmNsdWRlIDxzeXMvcG9sbC5oPgorCitJ
-R1RfVEVTVF9ERVNDUklQVElPTigiVGVzdHMgZm9yIHN5bmNfZmlsZSBleHBvcnQgZnJvbSBkbWEt
-YnVmIik7CisKK3N0cnVjdCBpZ3RfZG1hX2J1Zl9zeW5jX2ZpbGUgeworCV9fdTMyIGZsYWdzOwor
-CV9fczMyIGZkOworfTsKKworI2RlZmluZSBJR1RfRE1BX0JVRl9JT0NUTF9FWFBPUlRfU1lOQ19G
-SUxFIF9JT1dSKERNQV9CVUZfQkFTRSwgMiwgc3RydWN0IGlndF9kbWFfYnVmX3N5bmNfZmlsZSkK
-Kworc3RhdGljIGJvb2wgaGFzX2RtYWJ1Zl9zeW5jX2ZpbGUoaW50IGZkKQoreworCXN0cnVjdCB2
-Z2VtX2JvIGJvOworCWludCBkbWFidWYsIHJldDsKKwlzdHJ1Y3QgaWd0X2RtYV9idWZfc3luY19m
-aWxlIGFyZzsKKworCWJvLndpZHRoID0gMTsKKwliby5oZWlnaHQgPSAxOworCWJvLmJwcCA9IDMy
-OworCXZnZW1fY3JlYXRlKGZkLCAmYm8pOworCisJZG1hYnVmID0gcHJpbWVfaGFuZGxlX3RvX2Zk
-KGZkLCBiby5oYW5kbGUpOworCWdlbV9jbG9zZShmZCwgYm8uaGFuZGxlKTsKKworCWFyZy5mbGFn
-cyA9IERNQV9CVUZfU1lOQ19XUklURTsKKwlhcmcuZmQgPSAtMTsKKworCXJldCA9IGlndF9pb2N0
-bChkbWFidWYsIElHVF9ETUFfQlVGX0lPQ1RMX0VYUE9SVF9TWU5DX0ZJTEUsICZhcmcpOworCWNs
-b3NlKGRtYWJ1Zik7CisJaWd0X2Fzc2VydChyZXQgPT0gMCB8fCBlcnJubyA9PSBFTk9UVFkpOwor
-CisJcmV0dXJuIHJldCA9PSAwOworfQorCitzdGF0aWMgaW50IGRtYWJ1Zl9leHBvcnRfc3luY19m
-aWxlKGludCBkbWFidWYsIHVpbnQzMl90IGZsYWdzKQoreworCXN0cnVjdCBpZ3RfZG1hX2J1Zl9z
-eW5jX2ZpbGUgYXJnOworCisJYXJnLmZsYWdzID0gZmxhZ3M7CisJYXJnLmZkID0gLTE7CisJZG9f
-aW9jdGwoZG1hYnVmLCBJR1RfRE1BX0JVRl9JT0NUTF9FWFBPUlRfU1lOQ19GSUxFLCAmYXJnKTsK
-KworCXJldHVybiBhcmcuZmQ7Cit9CisKK3N0YXRpYyBib29sIHN5bmNfZmlsZV9idXN5KGludCBz
-eW5jX2ZpbGUpCit7CisJc3RydWN0IHBvbGxmZCBwZmQgPSB7IC5mZCA9IHN5bmNfZmlsZSwgLmV2
-ZW50cyA9IFBPTExJTiB9OworCXJldHVybiBwb2xsKCZwZmQsIDEsIDApID09IDA7Cit9CisKK3N0
-YXRpYyBib29sIGRtYWJ1Zl9zeW5jX2ZpbGVfYnVzeShpbnQgZG1hYnVmLCB1aW50MzJfdCBmbGFn
-cykKK3sKKwlpbnQgc3luY19maWxlOworCWJvb2wgYnVzeTsKKworCXN5bmNfZmlsZSA9IGRtYWJ1
-Zl9leHBvcnRfc3luY19maWxlKGRtYWJ1ZiwgZmxhZ3MpOworCWJ1c3kgPSBzeW5jX2ZpbGVfYnVz
-eShzeW5jX2ZpbGUpOworCWNsb3NlKHN5bmNfZmlsZSk7CisKKwlyZXR1cm4gYnVzeTsKK30KKwor
-c3RhdGljIHZvaWQgdGVzdF9leHBvcnRfYmFzaWMoaW50IGZkKQoreworCXN0cnVjdCB2Z2VtX2Jv
-IGJvOworCWludCBkbWFidWY7CisJdWludDMyX3QgZmVuY2U7CisKKwliby53aWR0aCA9IDE7CisJ
-Ym8uaGVpZ2h0ID0gMTsKKwliby5icHAgPSAzMjsKKwl2Z2VtX2NyZWF0ZShmZCwgJmJvKTsKKwor
-CWRtYWJ1ZiA9IHByaW1lX2hhbmRsZV90b19mZChmZCwgYm8uaGFuZGxlKTsKKworCWlndF9hc3Nl
-cnQoIWRtYWJ1Zl9zeW5jX2ZpbGVfYnVzeShkbWFidWYsIERNQV9CVUZfU1lOQ19SRUFEKSk7CisJ
-aWd0X2Fzc2VydCghZG1hYnVmX3N5bmNfZmlsZV9idXN5KGRtYWJ1ZiwgRE1BX0JVRl9TWU5DX1dS
-SVRFKSk7CisKKwlmZW5jZSA9IHZnZW1fZmVuY2VfYXR0YWNoKGZkLCAmYm8sIDApOworCWlndF9h
-c3NlcnQoIWRtYWJ1Zl9zeW5jX2ZpbGVfYnVzeShkbWFidWYsIERNQV9CVUZfU1lOQ19SRUFEKSk7
-CisJaWd0X2Fzc2VydChkbWFidWZfc3luY19maWxlX2J1c3koZG1hYnVmLCBETUFfQlVGX1NZTkNf
-V1JJVEUpKTsKKworCXZnZW1fZmVuY2Vfc2lnbmFsKGZkLCBmZW5jZSk7CisJaWd0X2Fzc2VydCgh
-ZG1hYnVmX3N5bmNfZmlsZV9idXN5KGRtYWJ1ZiwgRE1BX0JVRl9TWU5DX1JFQUQpKTsKKwlpZ3Rf
-YXNzZXJ0KCFkbWFidWZfc3luY19maWxlX2J1c3koZG1hYnVmLCBETUFfQlVGX1NZTkNfV1JJVEUp
-KTsKKworCWZlbmNlID0gdmdlbV9mZW5jZV9hdHRhY2goZmQsICZibywgVkdFTV9GRU5DRV9XUklU
-RSk7CisJaWd0X2Fzc2VydChkbWFidWZfc3luY19maWxlX2J1c3koZG1hYnVmLCBETUFfQlVGX1NZ
-TkNfUkVBRCkpOworCWlndF9hc3NlcnQoZG1hYnVmX3N5bmNfZmlsZV9idXN5KGRtYWJ1ZiwgRE1B
-X0JVRl9TWU5DX1dSSVRFKSk7CisKKwl2Z2VtX2ZlbmNlX3NpZ25hbChmZCwgZmVuY2UpOworCWln
-dF9hc3NlcnQoIWRtYWJ1Zl9zeW5jX2ZpbGVfYnVzeShkbWFidWYsIERNQV9CVUZfU1lOQ19SRUFE
-KSk7CisJaWd0X2Fzc2VydCghZG1hYnVmX3N5bmNfZmlsZV9idXN5KGRtYWJ1ZiwgRE1BX0JVRl9T
-WU5DX1dSSVRFKSk7CisKKwljbG9zZShkbWFidWYpOworCWdlbV9jbG9zZShmZCwgYm8uaGFuZGxl
-KTsKK30KKworc3RhdGljIHZvaWQgdGVzdF9leHBvcnRfbXVsdGl3YWl0KGludCBmZCkKK3sKKwlz
-dHJ1Y3QgdmdlbV9ibyBibzsKKwlpbnQgZG1hYnVmLCBzeW5jX2ZpbGU7CisJdWludDMyX3QgZmVu
-Y2UxLCBmZW5jZTIsIGZlbmNlMzsKKworCWJvLndpZHRoID0gMTsKKwliby5oZWlnaHQgPSAxOwor
-CWJvLmJwcCA9IDMyOworCXZnZW1fY3JlYXRlKGZkLCAmYm8pOworCisJZG1hYnVmID0gcHJpbWVf
-aGFuZGxlX3RvX2ZkKGZkLCBiby5oYW5kbGUpOworCisJZmVuY2UxID0gdmdlbV9mZW5jZV9hdHRh
-Y2goZmQsICZibywgMCk7CisJZmVuY2UyID0gdmdlbV9mZW5jZV9hdHRhY2goZmQsICZibywgMCk7
-CisKKwlzeW5jX2ZpbGUgPSBkbWFidWZfZXhwb3J0X3N5bmNfZmlsZShkbWFidWYsIERNQV9CVUZf
-U1lOQ19XUklURSk7CisKKwlmZW5jZTMgPSB2Z2VtX2ZlbmNlX2F0dGFjaChmZCwgJmJvLCAwKTsK
-KworCWlndF9hc3NlcnQoc3luY19maWxlX2J1c3koc3luY19maWxlKSk7CisKKwl2Z2VtX2ZlbmNl
-X3NpZ25hbChmZCwgZmVuY2UxKTsKKworCWlndF9hc3NlcnQoc3luY19maWxlX2J1c3koc3luY19m
-aWxlKSk7CisKKwl2Z2VtX2ZlbmNlX3NpZ25hbChmZCwgZmVuY2UyKTsKKworCWlndF9hc3NlcnQo
-IXN5bmNfZmlsZV9idXN5KHN5bmNfZmlsZSkpOworCisJdmdlbV9mZW5jZV9zaWduYWwoZmQsIGZl
-bmNlMyk7CisKKwljbG9zZShzeW5jX2ZpbGUpOworCWNsb3NlKGRtYWJ1Zik7CisJZ2VtX2Nsb3Nl
-KGZkLCBiby5oYW5kbGUpOworfQorCitzdGF0aWMgdm9pZCB0ZXN0X2V4cG9ydF93YWl0X2FmdGVy
-X2F0dGFjaChpbnQgZmQpCit7CisJc3RydWN0IHZnZW1fYm8gYm87CisJaW50IGRtYWJ1ZiwgcmVh
-ZF9zeW5jX2ZpbGUsIHdyaXRlX3N5bmNfZmlsZTsKKwl1aW50MzJfdCBmZW5jZTEsIGZlbmNlMjsK
-KworCWJvLndpZHRoID0gMTsKKwliby5oZWlnaHQgPSAxOworCWJvLmJwcCA9IDMyOworCXZnZW1f
-Y3JlYXRlKGZkLCAmYm8pOworCisJZG1hYnVmID0gcHJpbWVfaGFuZGxlX3RvX2ZkKGZkLCBiby5o
-YW5kbGUpOworCisJcmVhZF9zeW5jX2ZpbGUgPSBkbWFidWZfZXhwb3J0X3N5bmNfZmlsZShkbWFi
-dWYsIERNQV9CVUZfU1lOQ19SRUFEKTsKKwl3cml0ZV9zeW5jX2ZpbGUgPSBkbWFidWZfZXhwb3J0
-X3N5bmNfZmlsZShkbWFidWYsIERNQV9CVUZfU1lOQ19XUklURSk7CisKKwlmZW5jZTEgPSB2Z2Vt
-X2ZlbmNlX2F0dGFjaChmZCwgJmJvLCBWR0VNX0ZFTkNFX1dSSVRFKTsKKworCWlndF9hc3NlcnQo
-IXN5bmNfZmlsZV9idXN5KHJlYWRfc3luY19maWxlKSk7CisJaWd0X2Fzc2VydCghc3luY19maWxl
-X2J1c3kod3JpdGVfc3luY19maWxlKSk7CisJY2xvc2UocmVhZF9zeW5jX2ZpbGUpOworCWNsb3Nl
-KHdyaXRlX3N5bmNfZmlsZSk7CisKKwkvKiBUaGVzZSB3YWl0IG9uIGZlbmNlMSAqLworCXJlYWRf
-c3luY19maWxlID0gZG1hYnVmX2V4cG9ydF9zeW5jX2ZpbGUoZG1hYnVmLCBETUFfQlVGX1NZTkNf
-UkVBRCk7CisJd3JpdGVfc3luY19maWxlID0gZG1hYnVmX2V4cG9ydF9zeW5jX2ZpbGUoZG1hYnVm
-LCBETUFfQlVGX1NZTkNfV1JJVEUpOworCisJaWd0X2Fzc2VydChzeW5jX2ZpbGVfYnVzeShyZWFk
-X3N5bmNfZmlsZSkpOworCWlndF9hc3NlcnQoc3luY19maWxlX2J1c3kod3JpdGVfc3luY19maWxl
-KSk7CisKKwl2Z2VtX2ZlbmNlX3NpZ25hbChmZCwgZmVuY2UxKTsKKwlmZW5jZTIgPSB2Z2VtX2Zl
-bmNlX2F0dGFjaChmZCwgJmJvLCBWR0VNX0ZFTkNFX1dSSVRFKTsKKworCS8qIGZlbmNlMSBoYXMg
-c2lnbmFsZWQgKi8KKwlpZ3RfYXNzZXJ0KCFzeW5jX2ZpbGVfYnVzeShyZWFkX3N5bmNfZmlsZSkp
-OworCWlndF9hc3NlcnQoIXN5bmNfZmlsZV9idXN5KHdyaXRlX3N5bmNfZmlsZSkpOworCisJLyog
-ZmVuY2UyIGhhcyBub3QgKi8KKwlpZ3RfYXNzZXJ0KGRtYWJ1Zl9zeW5jX2ZpbGVfYnVzeShkbWFi
-dWYsIERNQV9CVUZfU1lOQ19SRUFEKSk7CisJaWd0X2Fzc2VydChkbWFidWZfc3luY19maWxlX2J1
-c3koZG1hYnVmLCBETUFfQlVGX1NZTkNfV1JJVEUpKTsKKworCXZnZW1fZmVuY2Vfc2lnbmFsKGZk
-LCBmZW5jZTIpOworCWNsb3NlKHJlYWRfc3luY19maWxlKTsKKwljbG9zZSh3cml0ZV9zeW5jX2Zp
-bGUpOworCisJY2xvc2UoZG1hYnVmKTsKKwlnZW1fY2xvc2UoZmQsIGJvLmhhbmRsZSk7Cit9CisK
-K2lndF9tYWluCit7CisJaW50IGZkOworCisJaWd0X2ZpeHR1cmUgeworCQlmZCA9IGRybV9vcGVu
-X2RyaXZlcihEUklWRVJfVkdFTSk7CisJCWlndF9yZXF1aXJlKGhhc19kbWFidWZfc3luY19maWxl
-KGZkKSk7CisJfQorCisJaWd0X3N1YnRlc3RfZigiZXhwb3J0LWJhc2ljIikKKwkJdGVzdF9leHBv
-cnRfYmFzaWMoZmQpOworCisJaWd0X3N1YnRlc3RfZigiZXhwb3J0LW11bHRpd2FpdCIpCisJCXRl
-c3RfZXhwb3J0X211bHRpd2FpdChmZCk7CisKKwlpZ3Rfc3VidGVzdF9mKCJleHBvcnQtd2FpdC1h
-ZnRlci1hdHRhY2giKQorCQl0ZXN0X2V4cG9ydF93YWl0X2FmdGVyX2F0dGFjaChmZCk7CisKK30K
-ZGlmZiAtLWdpdCBhL3Rlc3RzL21lc29uLmJ1aWxkIGIvdGVzdHMvbWVzb24uYnVpbGQKaW5kZXgg
-MTljYzRlYmUuLmEwOTkyOTg5IDEwMDY0NAotLS0gYS90ZXN0cy9tZXNvbi5idWlsZAorKysgYi90
-ZXN0cy9tZXNvbi5idWlsZApAQCAtNyw2ICs3LDcgQEAgdGVzdF9wcm9ncyA9IFsKIAknY29yZV9z
-ZXRtYXN0ZXJfdnNfYXV0aCcsCiAJJ2RlYnVnZnNfdGVzdCcsCiAJJ2RtYWJ1ZicsCisJJ2RtYWJ1
-Zl9zeW5jX2ZpbGUnLAogCSdkZXZpY2VfcmVzZXQnLAogCSdkcm1faW1wb3J0X2V4cG9ydCcsCiAJ
-J2RybV9tbScsCi0tIAoyLjMxLjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0
-LWRldgo=
+v2 (Jason Ekstrand):
+ - Put the skip for igt_rwquire_sw_sync() in the subtests
+
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+---
+ tests/dmabuf_sync_file.c | 132 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 132 insertions(+)
+
+diff --git a/tests/dmabuf_sync_file.c b/tests/dmabuf_sync_file.c
+index e7350905..5f17574f 100644
+--- a/tests/dmabuf_sync_file.c
++++ b/tests/dmabuf_sync_file.c
+@@ -23,6 +23,7 @@
+ 
+ #include "igt.h"
+ #include "igt_vgem.h"
++#include "sw_sync.h"
+ 
+ #include <linux/dma-buf.h>
+ #include <sys/poll.h>
+@@ -35,6 +36,7 @@ struct igt_dma_buf_sync_file {
+ };
+ 
+ #define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE _IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
++#define IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE _IOW(DMA_BUF_BASE, 3, struct igt_dma_buf_sync_file)
+ 
+ static bool has_dmabuf_sync_file(int fd)
+ {
+@@ -71,6 +73,37 @@ static int dmabuf_export_sync_file(int dmabuf, uint32_t flags)
+ 	return arg.fd;
+ }
+ 
++static void dmabuf_import_sync_file(int dmabuf, int sync_fd)
++{
++	struct igt_dma_buf_sync_file arg;
++
++	arg.flags = DMA_BUF_SYNC_RW;
++	arg.fd = sync_fd;
++	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
++}
++
++static void
++dmabuf_import_timeline_fence(int dmabuf, int timeline, uint32_t seqno)
++{
++	int fence;
++
++	fence = sw_sync_timeline_create_fence(timeline, seqno);
++	dmabuf_import_sync_file(dmabuf, fence);
++	close(fence);
++}
++
++static bool dmabuf_busy(int dmabuf, uint32_t flags)
++{
++	struct pollfd pfd = { .fd = dmabuf };
++
++	if (flags & DMA_BUF_SYNC_READ)
++		pfd.events |= POLLIN;
++	if (flags & DMA_BUF_SYNC_WRITE)
++		pfd.events |= POLLOUT;
++
++	return poll(&pfd, 1, 0) == 0;
++}
++
+ static bool sync_file_busy(int sync_file)
+ {
+ 	struct pollfd pfd = { .fd = sync_file, .events = POLLIN };
+@@ -211,6 +244,91 @@ static void test_export_wait_after_attach(int fd)
+ 	gem_close(fd, bo.handle);
+ }
+ 
++static void test_import_existing_shared(int fd, int shared_count)
++{
++	struct vgem_bo bo;
++	int i, dmabuf, timeline;
++	uint32_t fences[32];
++
++	igt_require_sw_sync();
++
++	bo.width = 1;
++	bo.height = 1;
++	bo.bpp = 32;
++	vgem_create(fd, &bo);
++
++	dmabuf = prime_handle_to_fd(fd, bo.handle);
++
++	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
++	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
++
++	igt_assert(shared_count <= ARRAY_SIZE(fences));
++	for (i = 0; i < shared_count; i++)
++		fences[i] = vgem_fence_attach(fd, &bo, 0);
++
++	timeline = sw_sync_timeline_create();
++	dmabuf_import_timeline_fence(dmabuf, timeline, 1);
++
++	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
++	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
++
++	sw_sync_timeline_inc(timeline, 1);
++
++	for (i = shared_count - 1; i >= 0; i--) {
++		igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
++		igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
++
++		vgem_fence_signal(fd, fences[i]);
++	}
++
++	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
++	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
++
++	close(dmabuf);
++	gem_close(fd, bo.handle);
++}
++
++static void test_import_existing_exclusive(int fd)
++{
++	struct vgem_bo bo;
++	int dmabuf, timeline;
++	uint32_t fence;
++
++	igt_require_sw_sync();
++
++	bo.width = 1;
++	bo.height = 1;
++	bo.bpp = 32;
++	vgem_create(fd, &bo);
++
++	dmabuf = prime_handle_to_fd(fd, bo.handle);
++
++	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
++	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
++
++	fence = vgem_fence_attach(fd, &bo, VGEM_FENCE_WRITE);
++
++	timeline = sw_sync_timeline_create();
++	dmabuf_import_timeline_fence(dmabuf, timeline, 1);
++
++	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
++	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
++
++	sw_sync_timeline_inc(timeline, 1);
++
++	/* Still busy because we should have absorbed all the old fences */
++	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
++	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
++
++	vgem_fence_signal(fd, fence);
++
++	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
++	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
++
++	close(dmabuf);
++	gem_close(fd, bo.handle);
++}
++
+ igt_main
+ {
+ 	int fd;
+@@ -223,10 +341,24 @@ igt_main
+ 	igt_subtest_f("export-basic")
+ 		test_export_basic(fd);
+ 
++	igt_subtest_f("import-basic")
++		test_import_existing_shared(fd, 0);
++
+ 	igt_subtest_f("export-multiwait")
+ 		test_export_multiwait(fd);
+ 
+ 	igt_subtest_f("export-wait-after-attach")
+ 		test_export_wait_after_attach(fd);
+ 
++	igt_subtest_f("import-existing-shared-1")
++		test_import_existing_shared(fd, 1);
++
++	igt_subtest_f("import-existing-shared-5")
++		test_import_existing_shared(fd, 5);
++
++	igt_subtest_f("import-existing-shared-32")
++		test_import_existing_shared(fd, 32);
++
++	igt_subtest_f("import-existing-exclusive")
++		test_import_existing_exclusive(fd);
+ }
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
