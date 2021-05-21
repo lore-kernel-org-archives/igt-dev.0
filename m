@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 21 May 2021 11:34:41 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YKdwoTd+1DQlj9Ig@platvala-desk.ger.corp.intel.com>
-References: <20210519145337.255167-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210519145337.255167-1-matthew.auld@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 0/9] DG1/LMEM uAPI basics v2
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 21 May 2021 08:49:04 -0000
+Message-ID: <162158694437.6035.9351379765374680427@emeril.freedesktop.org>
+References: <20210521064906.775140-1-viswax.krishna.raveendra.talabattula@intel.com>
+In-Reply-To: <20210521064906.775140-1-viswax.krishna.raveendra.talabattula@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915=3A_test_pass_for_no_caching_case_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,206 +14,212 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1749445675=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Matthew Auld <matthew.auld@intel.com>
-Cc: igt-dev@lists.freedesktop.org, thomas.hellstrom@linux.intel.com, intel-gfx@lists.freedesktop.org, daniel@ffwll.ch
+To: viswax.krishna.raveendra.talabattula@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, May 19, 2021 at 03:53:28PM +0100, Matthew Auld wrote:
-> Just the really basic stuff, which unlocks adding more interesting testcases
-> later, like gem_lmem_swapping.
-> 
-> On the kernel side we landed the uAPI bits[1] behind CONFIG_BROKEN, which is
-> already enabled in CI builds, so it should be possible to get some more BAT
-> testing(outside of just the selftests) on DG1 to the point where we can start to
-> exercise the LMEM paths with the new bits of uAPI.
-> 
-> [1] https://patchwork.freedesktop.org/series/89648/
-> 
-> v2:(Petri)
->    - add missing kernel sha for i915_drm.h sync
->    - squash the various region lib patches together
->    - just directly use the uapi bits from the start, instead of adding a bunch
->      of locals, which then later get removed anyway
-> 
-> Andrzej Turko (5):
->   lib/i915/gem_create: Add gem_create_ext
->   lib/i915/intel_memory_region: Add new memory region lib
->   tests/i915/gem_exec_basic: Use memory region interface
->   tests/i915/gem_gpgpu_fill: Use memory region interface
->   tests/i915/gem_media_fill: Use memory region interface
-> 
-> Dominik Grzegorzek (1):
->   tests/gem_gpgpu_fill: Convert from simple to standard igt_main
-> 
-> Kalamarz, Lukasz (1):
->   tests/i915/gem_exec_basic: Iterate over all memory regions
-> 
-> Matthew Auld (2):
->   i915_drm.h sync
->   tests/i915/gem_create: exercise placements extension
-> 
->  benchmarks/gem_blt.c                    |   2 +-
->  benchmarks/gem_busy.c                   |   2 +-
->  benchmarks/gem_create.c                 |   2 +-
->  benchmarks/gem_exec_ctx.c               |   2 +-
->  benchmarks/gem_exec_fault.c             |   2 +-
->  benchmarks/gem_exec_nop.c               |   2 +-
->  benchmarks/gem_exec_reloc.c             |   2 +-
->  benchmarks/gem_exec_trace.c             |   2 +-
->  benchmarks/gem_latency.c                |   2 +-
->  benchmarks/gem_prw.c                    |   2 +-
->  benchmarks/gem_set_domain.c             |   2 +-
->  benchmarks/gem_syslatency.c             |   2 +-
->  benchmarks/gem_wsim.c                   |   2 +-
->  benchmarks/prime_lookup.c               |   2 +-
->  include/drm-uapi/i915_drm.h             | 394 +++++++++++++++++++--
->  lib/i915/gem.h                          |   3 -
->  lib/i915/gem_create.c                   |  43 ++-
->  lib/i915/gem_create.h                   |  19 +
->  lib/i915/gem_mman.c                     |   2 +-
->  lib/i915/gem_ring.c                     |   1 +
->  lib/i915/gem_submission.c               |   1 +
->  lib/i915/intel_memory_region.c          | 441 ++++++++++++++++++++++++
->  lib/i915/intel_memory_region.h          | 130 +++++++
->  lib/igt_draw.c                          |   2 +-
->  lib/igt_dummyload.c                     |   2 +-
->  lib/igt_fb.c                            |   2 +-
->  lib/intel_batchbuffer.c                 |   2 +-
->  lib/intel_bufops.c                      |   2 +-
->  lib/ioctl_wrappers.c                    |   2 +-
->  lib/ioctl_wrappers.h                    |   1 +
->  lib/meson.build                         |   1 +
->  tests/amdgpu/amd_prime.c                |   1 +
->  tests/core_hotunplug.c                  |   1 +
->  tests/i915/api_intel_allocator.c        |   1 +
->  tests/i915/api_intel_bb.c               |   1 +
->  tests/i915/gem_bad_reloc.c              |   1 +
->  tests/i915/gem_basic.c                  |   2 +-
->  tests/i915/gem_blits.c                  |   1 +
->  tests/i915/gem_busy.c                   |   1 +
->  tests/i915/gem_close.c                  |   1 +
->  tests/i915/gem_close_race.c             |   1 +
->  tests/i915/gem_concurrent_all.c         |   1 +
->  tests/i915/gem_create.c                 | 189 ++++++++++
->  tests/i915/gem_cs_tlb.c                 |   1 +
->  tests/i915/gem_ctx_clone.c              |   1 +
->  tests/i915/gem_ctx_create.c             |   1 +
->  tests/i915/gem_ctx_engines.c            |   1 +
->  tests/i915/gem_ctx_exec.c               |   1 +
->  tests/i915/gem_ctx_isolation.c          |   1 +
->  tests/i915/gem_ctx_param.c              |   1 +
->  tests/i915/gem_ctx_shared.c             |   1 +
->  tests/i915/gem_ctx_sseu.c               |   1 +
->  tests/i915/gem_ctx_switch.c             |   1 +
->  tests/i915/gem_eio.c                    |   1 +
->  tests/i915/gem_evict_alignment.c        |   1 +
->  tests/i915/gem_evict_everything.c       |   1 +
->  tests/i915/gem_exec_alignment.c         |   1 +
->  tests/i915/gem_exec_async.c             |   1 +
->  tests/i915/gem_exec_await.c             |   1 +
->  tests/i915/gem_exec_balancer.c          |   1 +
->  tests/i915/gem_exec_basic.c             |  53 ++-
->  tests/i915/gem_exec_big.c               |   1 +
->  tests/i915/gem_exec_capture.c           |   1 +
->  tests/i915/gem_exec_create.c            |   1 +
->  tests/i915/gem_exec_endless.c           |   1 +
->  tests/i915/gem_exec_fair.c              |   1 +
->  tests/i915/gem_exec_fence.c             |   1 +
->  tests/i915/gem_exec_flush.c             |   1 +
->  tests/i915/gem_exec_gttfill.c           |   1 +
->  tests/i915/gem_exec_latency.c           |   1 +
->  tests/i915/gem_exec_lut_handle.c        |   1 +
->  tests/i915/gem_exec_nop.c               |   1 +
->  tests/i915/gem_exec_parallel.c          |   1 +
->  tests/i915/gem_exec_params.c            |   1 +
->  tests/i915/gem_exec_reloc.c             |   1 +
->  tests/i915/gem_exec_schedule.c          |   1 +
->  tests/i915/gem_exec_store.c             |   1 +
->  tests/i915/gem_exec_suspend.c           |   1 +
->  tests/i915/gem_exec_whisper.c           |   1 +
->  tests/i915/gem_fd_exhaustion.c          |   2 +-
->  tests/i915/gem_fence_thrash.c           |   2 +-
->  tests/i915/gem_fence_upload.c           |   2 +-
->  tests/i915/gem_fenced_exec_thrash.c     |   1 +
->  tests/i915/gem_flink_race.c             |   2 +-
->  tests/i915/gem_gpgpu_fill.c             |  61 +++-
->  tests/i915/gem_gtt_cpu_tlb.c            |   2 +-
->  tests/i915/gem_gtt_hog.c                |   1 +
->  tests/i915/gem_gtt_speed.c              |   2 +-
->  tests/i915/gem_huc_copy.c               |   1 +
->  tests/i915/gem_linear_blits.c           |   1 +
->  tests/i915/gem_lut_handle.c             |   2 +-
->  tests/i915/gem_madvise.c                |   2 +-
->  tests/i915/gem_media_fill.c             |  57 ++-
->  tests/i915/gem_mmap.c                   |   2 +-
->  tests/i915/gem_mmap_gtt.c               |   1 +
->  tests/i915/gem_mmap_offset.c            |   1 +
->  tests/i915/gem_mmap_wc.c                |   2 +-
->  tests/i915/gem_ppgtt.c                  |   1 +
->  tests/i915/gem_pread.c                  |   2 +-
->  tests/i915/gem_pwrite.c                 |   2 +-
->  tests/i915/gem_readwrite.c              |   2 +-
->  tests/i915/gem_reset_stats.c            |   1 +
->  tests/i915/gem_ringfill.c               |   1 +
->  tests/i915/gem_set_tiling_vs_gtt.c      |   2 +-
->  tests/i915/gem_set_tiling_vs_pwrite.c   |   2 +-
->  tests/i915/gem_shrink.c                 |   1 +
->  tests/i915/gem_softpin.c                |   1 +
->  tests/i915/gem_streaming_writes.c       |   1 +
->  tests/i915/gem_sync.c                   |   1 +
->  tests/i915/gem_tiled_fence_blits.c      |   1 +
->  tests/i915/gem_tiled_pread_basic.c      |   2 +-
->  tests/i915/gem_tiled_pread_pwrite.c     |   2 +-
->  tests/i915/gem_tiled_swapping.c         |   2 +-
->  tests/i915/gem_tiled_wb.c               |   2 +-
->  tests/i915/gem_tiled_wc.c               |   2 +-
->  tests/i915/gem_tiling_max_stride.c      |   2 +-
->  tests/i915/gem_unfence_active_buffers.c |   1 +
->  tests/i915/gem_unref_active_buffers.c   |   1 +
->  tests/i915/gem_userptr_blits.c          |   1 +
->  tests/i915/gem_vm_create.c              |   1 +
->  tests/i915/gem_wait.c                   |   1 +
->  tests/i915/gem_watchdog.c               |   1 +
->  tests/i915/gem_workarounds.c            |   1 +
->  tests/i915/gen3_mixed_blits.c           |   1 +
->  tests/i915/gen3_render_linear_blits.c   |   1 +
->  tests/i915/gen3_render_mixed_blits.c    |   1 +
->  tests/i915/gen3_render_tiledx_blits.c   |   1 +
->  tests/i915/gen3_render_tiledy_blits.c   |   1 +
->  tests/i915/gen7_exec_parse.c            |   1 +
->  tests/i915/gen9_exec_parse.c            |   1 +
->  tests/i915/i915_hangman.c               |   1 +
->  tests/i915/i915_module_load.c           |   2 +-
->  tests/i915/i915_pm_rc6_residency.c      |   1 +
->  tests/i915/i915_pm_rpm.c                |   1 +
->  tests/i915/i915_suspend.c               |   1 +
->  tests/i915/perf_pmu.c                   |   1 +
->  tests/i915/sysfs_clients.c              |   1 +
->  tests/i915/sysfs_timeslice_duration.c   |   1 +
->  tests/kms_big_fb.c                      |   2 +-
->  tests/kms_ccs.c                         |   2 +-
->  tests/kms_flip.c                        |   2 +-
->  tests/kms_frontbuffer_tracking.c        |   1 +
->  tests/kms_getfb.c                       |   2 +-
->  tests/prime_busy.c                      |   1 +
->  tests/prime_mmap.c                      |   2 +-
->  tests/prime_mmap_kms.c                  |   2 +-
->  tests/prime_self_import.c               |   2 +-
->  tests/prime_vgem.c                      |   1 +
->  tools/intel_reg.c                       |   2 +-
->  149 files changed, 1447 insertions(+), 134 deletions(-)
->  create mode 100644 lib/i915/gem_create.h
->  create mode 100644 lib/i915/intel_memory_region.c
->  create mode 100644 lib/i915/intel_memory_region.h
+--===============1749445675==
+Content-Type: multipart/alternative;
+ boundary="===============0334837769021253447=="
+
+--===============0334837769021253447==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/i915: test pass for no caching case (rev4)
+URL   : https://patchwork.freedesktop.org/series/90346/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10119 -> IGTPW_5832
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5832 that come from known issues:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-icl-u2:          [DMESG-FAIL][1] ([i915#3462]) -> [INCOMPLETE][2] ([i915#2782] / [i915#3462])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10119/fi-icl-u2/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/fi-icl-u2/igt@i915_selftest@live@execlists.html
+    - fi-bsw-kefka:       [DMESG-FAIL][3] ([i915#3462]) -> [INCOMPLETE][4] ([i915#2782] / [i915#2940] / [i915#3462])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10119/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
+
+  * igt@runner@aborted:
+    - fi-bsw-kefka:       [FAIL][5] ([i915#1436]) -> [FAIL][6] ([i915#1436] / [i915#2722])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10119/fi-bsw-kefka/igt@runner@aborted.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/fi-bsw-kefka/igt@runner@aborted.html
+    - fi-icl-u2:          [FAIL][7] ([i915#2426] / [i915#2782] / [i915#3363]) -> [FAIL][8] ([i915#2782] / [i915#3363])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10119/fi-icl-u2/igt@runner@aborted.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/fi-icl-u2/igt@runner@aborted.html
+    - fi-glk-dsi:         [FAIL][9] ([i915#3363] / [k.org#202321]) -> [FAIL][10] ([i915#2426] / [i915#3363] / [k.org#202321])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10119/fi-glk-dsi/igt@runner@aborted.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/fi-glk-dsi/igt@runner@aborted.html
+    - fi-kbl-r:           [FAIL][11] ([i915#1436] / [i915#3363]) -> [FAIL][12] ([i915#1436] / [i915#2426] / [i915#3363])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10119/fi-kbl-r/igt@runner@aborted.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/fi-kbl-r/igt@runner@aborted.html
+    - fi-kbl-7567u:       [FAIL][13] ([i915#1436] / [i915#2426] / [i915#3363]) -> [FAIL][14] ([i915#1436] / [i915#3363])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10119/fi-kbl-7567u/igt@runner@aborted.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/fi-kbl-7567u/igt@runner@aborted.html
+    - fi-skl-6700k2:      [FAIL][15] ([i915#1436] / [i915#2426] / [i915#3363]) -> [FAIL][16] ([i915#1436] / [i915#3363])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10119/fi-skl-6700k2/igt@runner@aborted.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/fi-skl-6700k2/igt@runner@aborted.html
+
+  
+  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
+  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
+  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
+  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
+  [i915#3462]: https://gitlab.freedesktop.org/drm/intel/issues/3462
+  [k.org#202321]: https://bugzilla.kernel.org/show_bug.cgi?id=202321
 
 
-Series is
-Acked-by: Petri Latvala <petri.latvala@intel.com>
+Participating hosts (42 -> 37)
+------------------------------
+
+  Missing    (5): fi-bdw-5557u fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6090 -> IGTPW_5832
+
+  CI-20190529: 20190529
+  CI_DRM_10119: 1aa3a4edb0aa53e7a302c540f9b947cb55dbadc5 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5832: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/index.html
+  IGT_6090: 8eeb9c130e75d4063d0dc2ed69c8acde66b6b5d0 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/index.html
+
+--===============0334837769021253447==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915: test pass for no caching case (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/90346/">https://patchwork.freedesktop.org/series/90346/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10119 -&gt; IGTPW_5832</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5832 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>
+<p>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10119/fi-icl-u2/igt@i915_selftest@live@execlists.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/fi-icl-u2/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>)</p>
+</li>
+<li>
+<p>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10119/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10119/fi-bsw-kefka/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/fi-bsw-kefka/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a>)</p>
+</li>
+<li>
+<p>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10119/fi-icl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/fi-icl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
+</li>
+<li>
+<p>fi-glk-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10119/fi-glk-dsi/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://bugzilla.kernel.org/show_bug.cgi?id=202321">k.org#202321</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/fi-glk-dsi/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://bugzilla.kernel.org/show_bug.cgi?id=202321">k.org#202321</a>)</p>
+</li>
+<li>
+<p>fi-kbl-r:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10119/fi-kbl-r/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/fi-kbl-r/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
+</li>
+<li>
+<p>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10119/fi-kbl-7567u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/fi-kbl-7567u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
+</li>
+<li>
+<p>fi-skl-6700k2:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10119/fi-skl-6700k2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/fi-skl-6700k2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (42 -&gt; 37)</h2>
+<p>Missing    (5): fi-bdw-5557u fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6090 -&gt; IGTPW_5832</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10119: 1aa3a4edb0aa53e7a302c540f9b947cb55dbadc5 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5832: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5832/index.html<br />
+  IGT_6090: 8eeb9c130e75d4063d0dc2ed69c8acde66b6b5d0 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============0334837769021253447==--
+
+--===============1749445675==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1749445675==--
