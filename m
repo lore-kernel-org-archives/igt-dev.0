@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
- [IPv6:2607:f8b0:4864:20::1035])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 383D06F920
- for <igt-dev@lists.freedesktop.org>; Fri, 21 May 2021 21:29:38 +0000 (UTC)
-Received: by mail-pj1-x1035.google.com with SMTP id
- o17-20020a17090a9f91b029015cef5b3c50so8014239pjp.4
- for <igt-dev@lists.freedesktop.org>; Fri, 21 May 2021 14:29:38 -0700 (PDT)
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
+ [IPv6:2607:f8b0:4864:20::102a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D85136E87F
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 May 2021 21:29:39 +0000 (UTC)
+Received: by mail-pj1-x102a.google.com with SMTP id t11so11654485pjm.0
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 May 2021 14:29:39 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Fri, 21 May 2021 16:29:17 -0500
-Message-Id: <20210521212918.651509-3-jason@jlekstrand.net>
+Date: Fri, 21 May 2021 16:29:18 -0500
+Message-Id: <20210521212918.651509-4-jason@jlekstrand.net>
 In-Reply-To: <20210521212918.651509-1-jason@jlekstrand.net>
 References: <20210521212918.651509-1-jason@jlekstrand.net>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH i-g-t 2/2] tests/dmabuf: Add tests for sync_file
- import (v2)
+ import
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,10 +27,6 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-v2 (Jason Ekstrand):
- - Put the skip for igt_rwquire_sw_sync() in the subtests
-
-Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
  tests/dmabuf_sync_file.c | 132 +++++++++++++++++++++++++++++++++++++++
  1 file changed, 132 insertions(+)
