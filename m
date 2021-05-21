@@ -1,9 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Fri, 21 May 2021 09:38:51 +0530
-Message-Id: <1621570131-23943-1-git-send-email-vidya.srinivas@intel.com>
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Wait for vblank before
- collecting CRC
+Date: Fri, 21 May 2021 09:48:44 +0530
+Message-Id: <1621570724-24132-1-git-send-email-vidya.srinivas@intel.com>
+Subject: [igt-dev] [PATCH i-g-t] tests/drm_read: drm_read fails for subtest
+ invalid-buffer on chrome
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,47 +20,34 @@ To: intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, igt-dev@li
 Cc: Charlton.Lin@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Without wait for vblank, CRC mismatch is seen
-between big and small CRC on few systems
+Chrome platforms is unable to handle reading from -1.
+It terminates the test after reporting buffer overflow.
+Hence, changed the address for invalid buffer to NULL instead of -1.
+With this change, errno becomes EINTR when reading from NULL
+location. To accomodate, also changing the check of errno to EINTR
+instead of EFAULT
 
-Change-Id: I3bec931aa901130997e693ac1cacf389e2a8100f
+Change-Id: I5f844af087c9826fcbcfbe301f0df5f727cb013b
 Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 ---
- tests/kms_big_fb.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tests/drm_read.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
-index b2027b6b9d1b..7d78ff829d41 100644
---- a/tests/kms_big_fb.c
-+++ b/tests/kms_big_fb.c
-@@ -254,6 +254,7 @@ static void unset_lut(data_t *data)
- static bool test_plane(data_t *data)
- {
- 	igt_plane_t *plane = data->plane;
-+	igt_display_t *display = &data->display;
- 	struct igt_fb *small_fb = &data->small_fb;
- 	struct igt_fb *big_fb = &data->big_fb;
- 	int w = data->big_fb_width - small_fb->width;
-@@ -337,16 +338,17 @@ static bool test_plane(data_t *data)
- 		igt_display_commit2(&data->display, data->display.is_atomic ?
- 				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
+diff --git a/tests/drm_read.c b/tests/drm_read.c
+index ccf9d822fd8d..a8816bc1e587 100644
+--- a/tests/drm_read.c
++++ b/tests/drm_read.c
+@@ -106,8 +106,8 @@ static void test_invalid_buffer(int in)
  
--
-+		igt_wait_for_vblank(data->drm_fd, display->pipes[data->pipe].crtc_offset);
- 		igt_pipe_crc_collect_crc(data->pipe_crc, &small_crc);
+ 	alarm(1);
  
- 		igt_plane_set_fb(plane, big_fb);
- 		igt_fb_set_position(big_fb, plane, x, y);
- 		igt_fb_set_size(big_fb, plane, small_fb->width, small_fb->height);
-+
- 		igt_plane_set_size(plane, data->width, data->height);
- 		igt_display_commit2(&data->display, data->display.is_atomic ?
- 				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
--
-+		igt_wait_for_vblank(data->drm_fd, display->pipes[data->pipe].crtc_offset);
- 		igt_pipe_crc_collect_crc(data->pipe_crc, &big_crc);
+-	igt_assert_eq(read(fd, (void *)-1, 4096), -1);
+-	igt_assert_eq(errno, EFAULT);
++	igt_assert_eq(read(fd, (void *)NULL, 4096), -1);
++	igt_assert_eq(errno, EINTR);
  
- 		igt_plane_set_fb(plane, NULL);
+ 	teardown(fd);
+ }
 -- 
 2.7.4
 
