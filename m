@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
- [IPv6:2607:f8b0:4864:20::634])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 034356E953
- for <igt-dev@lists.freedesktop.org>; Mon, 24 May 2021 20:52:34 +0000 (UTC)
-Received: by mail-pl1-x634.google.com with SMTP id v13so15228461ple.9
- for <igt-dev@lists.freedesktop.org>; Mon, 24 May 2021 13:52:33 -0700 (PDT)
-From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 24 May 2021 15:52:25 -0500
-Message-Id: <20210524205225.872316-3-jason@jlekstrand.net>
-In-Reply-To: <20210524205225.872316-1-jason@jlekstrand.net>
-References: <20210524205225.872316-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] RFC: tests/dmabuf: Add tests for
- sync_file import (v3)
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 24 May 2021 22:25:35 -0000
+Message-ID: <162189513543.10902.15952920286399104354@emeril.freedesktop.org>
+References: <20210524205225.872316-1-jason@jlekstrand.net>
+In-Reply-To: <20210524205225.872316-1-jason@jlekstrand.net>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?dmabuf=3A_Add_tests_for_sync=5Ffile_import/export?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,229 +14,284 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1048120452=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Jason Ekstrand <jason@jlekstrand.net>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-v2 (Jason Ekstrand):
- - Put the skip for igt_rwquire_sw_sync() in the subtests
+--===============1048120452==
+Content-Type: multipart/alternative;
+ boundary="===============5242628109788275216=="
 
-v3 (Jason Ekstrand):
- - Use a separate igt_require(has_dmabuf_import_sync_file())
- - Tag as RFC because the kernel patches are RFC
+--===============5242628109788275216==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
----
- tests/dmabuf_sync_file.c | 163 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 163 insertions(+)
+== Series Details ==
 
-diff --git a/tests/dmabuf_sync_file.c b/tests/dmabuf_sync_file.c
-index afac5535..fe476885 100644
---- a/tests/dmabuf_sync_file.c
-+++ b/tests/dmabuf_sync_file.c
-@@ -23,6 +23,7 @@
- 
- #include "igt.h"
- #include "igt_vgem.h"
-+#include "sw_sync.h"
- 
- #include <linux/dma-buf.h>
- #include <sys/poll.h>
-@@ -35,6 +36,7 @@ struct igt_dma_buf_sync_file {
- };
- 
- #define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE _IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
-+#define IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE _IOW(DMA_BUF_BASE, 3, struct igt_dma_buf_sync_file)
- 
- static bool has_dmabuf_export_sync_file(int fd)
- {
-@@ -71,6 +73,66 @@ static int dmabuf_export_sync_file(int dmabuf, uint32_t flags)
- 	return arg.fd;
- }
- 
-+static bool has_dmabuf_import_sync_file(int fd)
-+{
-+	struct vgem_bo bo;
-+	int dmabuf, timeline, fence, ret;
-+	struct igt_dma_buf_sync_file arg;
-+
-+	bo.width = 1;
-+	bo.height = 1;
-+	bo.bpp = 32;
-+	vgem_create(fd, &bo);
-+
-+	dmabuf = prime_handle_to_fd(fd, bo.handle);
-+	gem_close(fd, bo.handle);
-+
-+	timeline = sw_sync_timeline_create();
-+	fence = sw_sync_timeline_create_fence(timeline, 1);
-+	sw_sync_timeline_inc(timeline, 1);
-+
-+	arg.flags = DMA_BUF_SYNC_RW;
-+	arg.fd = fence;
-+
-+	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
-+	close(dmabuf);
-+	close(fence);
-+	igt_assert(ret == 0 || errno == ENOTTY);
-+
-+	return ret == 0;
-+}
-+
-+static void dmabuf_import_sync_file(int dmabuf, int sync_fd)
-+{
-+	struct igt_dma_buf_sync_file arg;
-+
-+	arg.flags = DMA_BUF_SYNC_RW;
-+	arg.fd = sync_fd;
-+	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
-+}
-+
-+static void
-+dmabuf_import_timeline_fence(int dmabuf, int timeline, uint32_t seqno)
-+{
-+	int fence;
-+
-+	fence = sw_sync_timeline_create_fence(timeline, seqno);
-+	dmabuf_import_sync_file(dmabuf, fence);
-+	close(fence);
-+}
-+
-+static bool dmabuf_busy(int dmabuf, uint32_t flags)
-+{
-+	struct pollfd pfd = { .fd = dmabuf };
-+
-+	if (flags & DMA_BUF_SYNC_READ)
-+		pfd.events |= POLLIN;
-+	if (flags & DMA_BUF_SYNC_WRITE)
-+		pfd.events |= POLLOUT;
-+
-+	return poll(&pfd, 1, 0) == 0;
-+}
-+
- static bool sync_file_busy(int sync_file)
- {
- 	struct pollfd pfd = { .fd = sync_file, .events = POLLIN };
-@@ -271,6 +333,93 @@ static void test_export_wait_after_attach(int fd)
- 	gem_close(fd, bo.handle);
- }
- 
-+static void test_import_existing_shared(int fd, int shared_count)
-+{
-+	struct vgem_bo bo;
-+	int i, dmabuf, timeline;
-+	uint32_t fences[32];
-+
-+	igt_require_sw_sync();
-+	igt_require(has_dmabuf_import_sync_file(fd));
-+
-+	bo.width = 1;
-+	bo.height = 1;
-+	bo.bpp = 32;
-+	vgem_create(fd, &bo);
-+
-+	dmabuf = prime_handle_to_fd(fd, bo.handle);
-+
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+
-+	igt_assert(shared_count <= ARRAY_SIZE(fences));
-+	for (i = 0; i < shared_count; i++)
-+		fences[i] = vgem_fence_attach(fd, &bo, 0);
-+
-+	timeline = sw_sync_timeline_create();
-+	dmabuf_import_timeline_fence(dmabuf, timeline, 1);
-+
-+	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+
-+	sw_sync_timeline_inc(timeline, 1);
-+
-+	for (i = shared_count - 1; i >= 0; i--) {
-+		igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-+		igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+
-+		vgem_fence_signal(fd, fences[i]);
-+	}
-+
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+
-+	close(dmabuf);
-+	gem_close(fd, bo.handle);
-+}
-+
-+static void test_import_existing_exclusive(int fd)
-+{
-+	struct vgem_bo bo;
-+	int dmabuf, timeline;
-+	uint32_t fence;
-+
-+	igt_require_sw_sync();
-+	igt_require(has_dmabuf_import_sync_file(fd));
-+
-+	bo.width = 1;
-+	bo.height = 1;
-+	bo.bpp = 32;
-+	vgem_create(fd, &bo);
-+
-+	dmabuf = prime_handle_to_fd(fd, bo.handle);
-+
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+
-+	fence = vgem_fence_attach(fd, &bo, VGEM_FENCE_WRITE);
-+
-+	timeline = sw_sync_timeline_create();
-+	dmabuf_import_timeline_fence(dmabuf, timeline, 1);
-+
-+	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+
-+	sw_sync_timeline_inc(timeline, 1);
-+
-+	/* Still busy because we should have absorbed all the old fences */
-+	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+
-+	vgem_fence_signal(fd, fence);
-+
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+
-+	close(dmabuf);
-+	gem_close(fd, bo.handle);
-+}
-+
- igt_main
- {
- 	int fd;
-@@ -291,4 +440,18 @@ igt_main
- 	igt_subtest_f("export-wait-after-attach")
- 		test_export_wait_after_attach(fd);
- 
-+	igt_subtest_f("import-basic")
-+		test_import_existing_shared(fd, 0);
-+
-+	igt_subtest_f("import-existing-shared-1")
-+		test_import_existing_shared(fd, 1);
-+
-+	igt_subtest_f("import-existing-shared-5")
-+		test_import_existing_shared(fd, 5);
-+
-+	igt_subtest_f("import-existing-shared-32")
-+		test_import_existing_shared(fd, 32);
-+
-+	igt_subtest_f("import-existing-exclusive")
-+		test_import_existing_exclusive(fd);
- }
--- 
-2.31.1
+Series: tests/dmabuf: Add tests for sync_file import/export
+URL   : https://patchwork.freedesktop.org/series/90490/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10128 -> IGTPW_5846
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5846 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
+    - fi-snb-2600:        NOTRUN -> [SKIP][1] ([fdo#109271]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [INCOMPLETE][2] ([i915#2782]) -> [PASS][3]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10128/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-icl-u2:          [DMESG-FAIL][4] ([i915#3462]) -> [INCOMPLETE][5] ([i915#2782] / [i915#3462])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10128/fi-icl-u2/igt@i915_selftest@live@execlists.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-icl-u2/igt@i915_selftest@live@execlists.html
+
+  * igt@runner@aborted:
+    - fi-cfl-8700k:       [FAIL][6] ([i915#3363]) -> [FAIL][7] ([i915#2292] / [i915#2426] / [i915#3363] / [k.org#204565])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10128/fi-cfl-8700k/igt@runner@aborted.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-cfl-8700k/igt@runner@aborted.html
+    - fi-skl-6600u:       [FAIL][8] ([i915#1436] / [i915#2426] / [i915#3363]) -> [FAIL][9] ([i915#1436] / [i915#3363])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10128/fi-skl-6600u/igt@runner@aborted.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-skl-6600u/igt@runner@aborted.html
+    - fi-icl-u2:          [FAIL][10] ([i915#2426] / [i915#2782] / [i915#3363]) -> [FAIL][11] ([i915#2782] / [i915#3363])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10128/fi-icl-u2/igt@runner@aborted.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-icl-u2/igt@runner@aborted.html
+    - fi-glk-dsi:         [FAIL][12] ([i915#2426] / [i915#3363] / [k.org#202321]) -> [FAIL][13] ([i915#3363] / [k.org#202321])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10128/fi-glk-dsi/igt@runner@aborted.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-glk-dsi/igt@runner@aborted.html
+    - fi-kbl-r:           [FAIL][14] ([i915#1436] / [i915#2426] / [i915#3363]) -> [FAIL][15] ([i915#1436] / [i915#3363])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10128/fi-kbl-r/igt@runner@aborted.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-kbl-r/igt@runner@aborted.html
+    - fi-kbl-7567u:       [FAIL][16] ([i915#1436] / [i915#2426] / [i915#3363]) -> [FAIL][17] ([i915#1436] / [i915#3363])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10128/fi-kbl-7567u/igt@runner@aborted.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-kbl-7567u/igt@runner@aborted.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1222]: https://gitlab.freedesktop.org/drm/intel/issues/1222
+  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2283]: https://gitlab.freedesktop.org/drm/intel/issues/2283
+  [i915#2292]: https://gitlab.freedesktop.org/drm/intel/issues/2292
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
+  [i915#2932]: https://gitlab.freedesktop.org/drm/intel/issues/2932
+  [i915#2966]: https://gitlab.freedesktop.org/drm/intel/issues/2966
+  [i915#3004]: https://gitlab.freedesktop.org/drm/intel/issues/3004
+  [i915#3005]: https://gitlab.freedesktop.org/drm/intel/issues/3005
+  [i915#3011]: https://gitlab.freedesktop.org/drm/intel/issues/3011
+  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
+  [i915#3013]: https://gitlab.freedesktop.org/drm/intel/issues/3013
+  [i915#3014]: https://gitlab.freedesktop.org/drm/intel/issues/3014
+  [i915#3015]: https://gitlab.freedesktop.org/drm/intel/issues/3015
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
+  [i915#3462]: https://gitlab.freedesktop.org/drm/intel/issues/3462
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+  [k.org#202321]: https://bugzilla.kernel.org/show_bug.cgi?id=202321
+  [k.org#204565]: https://bugzilla.kernel.org/show_bug.cgi?id=204565
+
+
+Participating hosts (34 -> 32)
+------------------------------
+
+  Additional (2): fi-ehl-2 fi-hsw-gt1 
+  Missing    (4): fi-kbl-x1275 fi-dg1-1 fi-bsw-cyan fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6092 -> IGTPW_5846
+
+  CI-20190529: 20190529
+  CI_DRM_10128: a65996afe32761b9eef973bf230a566f38ac3340 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5846: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/index.html
+  IGT_6092: d87087c321da07035d4f96d98c34e451b3ccb809 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@dmabuf_sync_file@export-basic
++igt@dmabuf_sync_file@export-before-signal
++igt@dmabuf_sync_file@export-multiwait
++igt@dmabuf_sync_file@export-wait-after-attach
++igt@dmabuf_sync_file@import-basic
++igt@dmabuf_sync_file@import-existing-exclusive
++igt@dmabuf_sync_file@import-existing-shared-1
++igt@dmabuf_sync_file@import-existing-shared-5
++igt@dmabuf_sync_file@import-existing-shared-32
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/index.html
+
+--===============5242628109788275216==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/dmabuf: Add tests for sync_file import/export</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/90490/">https://patchwork.freedesktop.org/series/90490/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10128 -&gt; IGTPW_5846</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5846 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@amdgpu/amd_cs_nop@sync-fork-compute0:<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10128/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10128/fi-icl-u2/igt@i915_selftest@live@execlists.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-icl-u2/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10128/fi-cfl-8700k/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-cfl-8700k/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2292">i915#2292</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://bugzilla.kernel.org/show_bug.cgi?id=204565">k.org#204565</a>)</p>
+</li>
+<li>
+<p>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10128/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
+</li>
+<li>
+<p>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10128/fi-icl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-icl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
+</li>
+<li>
+<p>fi-glk-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10128/fi-glk-dsi/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://bugzilla.kernel.org/show_bug.cgi?id=202321">k.org#202321</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-glk-dsi/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://bugzilla.kernel.org/show_bug.cgi?id=202321">k.org#202321</a>)</p>
+</li>
+<li>
+<p>fi-kbl-r:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10128/fi-kbl-r/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-kbl-r/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
+</li>
+<li>
+<p>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10128/fi-kbl-7567u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/fi-kbl-7567u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (34 -&gt; 32)</h2>
+<p>Additional (2): fi-ehl-2 fi-hsw-gt1 <br />
+  Missing    (4): fi-kbl-x1275 fi-dg1-1 fi-bsw-cyan fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6092 -&gt; IGTPW_5846</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10128: a65996afe32761b9eef973bf230a566f38ac3340 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5846: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5846/index.html<br />
+  IGT_6092: d87087c321da07035d4f96d98c34e451b3ccb809 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@dmabuf_sync_file@export-basic<br />
++igt@dmabuf_sync_file@export-before-signal<br />
++igt@dmabuf_sync_file@export-multiwait<br />
++igt@dmabuf_sync_file@export-wait-after-attach<br />
++igt@dmabuf_sync_file@import-basic<br />
++igt@dmabuf_sync_file@import-existing-exclusive<br />
++igt@dmabuf_sync_file@import-existing-shared-1<br />
++igt@dmabuf_sync_file@import-existing-shared-5<br />
++igt@dmabuf_sync_file@import-existing-shared-32</p>
+
+</body>
+</html>
+
+--===============5242628109788275216==--
+
+--===============1048120452==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1048120452==--
