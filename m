@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ua1-x932.google.com (mail-ua1-x932.google.com
- [IPv6:2607:f8b0:4864:20::932])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4B9A6E901
- for <igt-dev@lists.freedesktop.org>; Mon, 24 May 2021 18:41:42 +0000 (UTC)
-Received: by mail-ua1-x932.google.com with SMTP id b1so415025uap.3
- for <igt-dev@lists.freedesktop.org>; Mon, 24 May 2021 11:41:42 -0700 (PDT)
+Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com
+ [IPv6:2607:f8b0:4864:20::92e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2AF7D6E903
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 May 2021 18:42:56 +0000 (UTC)
+Received: by mail-ua1-x92e.google.com with SMTP id 14so9646438uac.9
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 May 2021 11:42:56 -0700 (PDT)
 From: Mark Yacoub <markyacoub@chromium.org>
-Date: Mon, 24 May 2021 18:41:37 +0000
-Message-Id: <20210524184137.1319532-1-markyacoub@chromium.org>
+Date: Mon, 24 May 2021 18:42:52 +0000
+Message-Id: <20210524184252.1320366-1-markyacoub@chromium.org>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH] tests/kms_atomic: Match overlay size with primary
  plane on amdgpu
@@ -38,13 +38,12 @@ On amdgpu, force the overlay size and src to match the primary plane, but
 test with a smaller size on all other platforms.
 
 Signed-off-by: markyacoub@chromium.org
-Change-Id: I48204b467e03312a2fc9700d1a079ecc35d53670
 ---
  tests/kms_atomic.c | 26 ++++++++++++++++++++------
  1 file changed, 20 insertions(+), 6 deletions(-)
 
 diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-index df9c9df7..4ab8b207 100644
+index df9c9df7..d5bfd38c 100644
 --- a/tests/kms_atomic.c
 +++ b/tests/kms_atomic.c
 @@ -491,13 +491,27 @@ plane_immutable_zpos(igt_display_t *display, igt_pipe_t *pipe,
@@ -61,8 +60,8 @@ index df9c9df7..4ab8b207 100644
 -	uint32_t h = mode->vdisplay / 2;
 +	uint32_t w, h, x, y;
 +
-+	// On AMD, with hardware cursor, overlay plane must fully cover the primary plane.
-+	// Test with smaller overlays on all other platforms.
++	/* On AMD, with hardware cursor, overlay plane must fully cover the primary plane.
++	 * Test with smaller overlays on all other platforms. */
 +	if (is_amdgpu_device(drm_fd)) {
 +		w = mode->hdisplay;
 +		h = mode->vdisplay;
