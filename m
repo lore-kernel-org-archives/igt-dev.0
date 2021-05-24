@@ -1,297 +1,547 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 563E36E12B
- for <igt-dev@lists.freedesktop.org>; Mon, 24 May 2021 08:52:30 +0000 (UTC)
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Mon, 24 May 2021 08:52:22 +0000
-Message-ID: <SN6PR11MB3327CC9F029E449A2E33CB458D269@SN6PR11MB3327.namprd11.prod.outlook.com>
-References: <20210412165751.25441-1-bhanuprakash.modem@intel.com>
- <20210524045337.GB8620@intel.com>
-In-Reply-To: <20210524045337.GB8620@intel.com>
-Content-Language: en-US
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Date: Mon, 24 May 2021 11:51:34 +0100
+Message-Id: <20210524105134.1719853-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v5 i-g-t] tests/kms_busy: Limit the execution to two
- pipes
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Subject: [Intel-gfx] [RFC] intel-gpu-top: Adapt for fdinfo stats
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Gupta, Anshuman" <anshuman.gupta@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "Latvala,
- Petri" <petri.latvala@intel.com>, "Kunche, Kishore" <kishore.kunche@intel.com>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: Intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> From: Gupta, Anshuman <anshuman.gupta@intel.com>
-> Sent: Monday, May 24, 2021 10:24 AM
-> To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> Cc: igt-dev@lists.freedesktop.org; Joshi, Kunal1 <kunal1.joshi@intel.com>;
-> Latvala, Petri <petri.latvala@intel.com>; Kunche, Kishore
-> <kishore.kunche@intel.com>
-> Subject: Re: [igt-dev] [v5 i-g-t] tests/kms_busy: Limit the execution to two
-> pipes
-> 
-> On 2021-04-12 at 22:27:51 +0530, Bhanuprakash Modem wrote:
-> > As all pipes are symmetric, restrict the execution to two pipes
-> > can save lot of CI time.
-> Above statement is not correct, all pipes are not symmetric,
-> AFAIK PIPE_A has lower power capability with DMC save/restore
-> (low power single pipe)
-> Which is even extend to PIPE_B on XE_LPD, which adds DMC save/restore
-> even for PIPE_B as well (low power dual pipe).
-> 
-> please mention the property of each pipe in commit message,
-> so it can be known, we should not loose any validation coverage
-> in order to save CI time.
-> 
-> This patch doesn't choose distinct crtc's to run the test.
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Actually, we are not touching any crtc properties here, these tests
-will perform "page flip" (or) "modeset" by injecting the HANG.
+Quick implementation of how per client stats could be parsed if exported
+via drm fdinfo.
 
-I am not sure that pipe's power capabilities effects flip/modeset. If it
-effects, we must find a way to identify distinct CRTCs, else restricting
-the execution to pipe A & B seems fine to me.
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+---
+ tools/intel_gpu_top.c | 367 ++++++++++++++++++++++--------------------
+ 1 file changed, 196 insertions(+), 171 deletions(-)
 
-@Anshuman, Please suggest.
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 7311038a39f4..612ae3e268bc 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -43,6 +43,7 @@
+ #include <sys/types.h>
+ #include <unistd.h>
+ #include <termios.h>
++#include <sys/sysmacros.h>
+ 
+ #include "igt_perf.h"
+ 
+@@ -309,7 +310,8 @@ static int engine_cmp(const void *__a, const void *__b)
+ 		return a->instance - b->instance;
+ }
+ 
+-#define is_igpu_pci(x) (strcmp(x, "0000:00:02.0") == 0)
++#define IGPU_PCI "0000:00:02.0"
++#define is_igpu_pci(x) (strcmp(x, IGPU_PCI) == 0)
+ #define is_igpu(x) (strcmp(x, "i915") == 0)
+ 
+ static struct engines *discover_engines(char *device)
+@@ -639,8 +641,6 @@ struct client {
+ 	struct clients *clients;
+ 
+ 	enum client_status status;
+-	int sysfs_root;
+-	int busy_root;
+ 	unsigned int id;
+ 	unsigned int pid;
+ 	char name[24];
+@@ -660,7 +660,7 @@ struct clients {
+ 	unsigned int num_classes;
+ 	struct engine_class *class;
+ 
+-	char sysfs_root[128];
++	char pci_slot[64];
+ 
+ 	struct client *client;
+ };
+@@ -669,12 +669,9 @@ struct clients {
+ 	for ((tmp) = (clients)->num_clients, c = (clients)->client; \
+ 	     (tmp > 0); (tmp)--, (c)++)
+ 
+-static struct clients *init_clients(const char *drm_card)
++static struct clients *init_clients(const char *pci_slot)
+ {
+ 	struct clients *clients;
+-	const char *slash;
+-	ssize_t ret;
+-	int dir;
+ 
+ 	clients = malloc(sizeof(*clients));
+ 	if (!clients)
+@@ -682,107 +679,11 @@ static struct clients *init_clients(const char *drm_card)
+ 
+ 	memset(clients, 0, sizeof(*clients));
+ 
+-	if (drm_card) {
+-		slash = rindex(drm_card, '/');
+-		assert(slash);
+-	} else {
+-		slash = "card0";
+-	}
+-
+-	ret = snprintf(clients->sysfs_root, sizeof(clients->sysfs_root),
+-		       "/sys/class/drm/%s/clients/", slash);
+-	assert(ret > 0 && ret < sizeof(clients->sysfs_root));
+-
+-	dir = open(clients->sysfs_root, O_DIRECTORY | O_RDONLY);
+-	if (dir < 0) {
+-		free(clients);
+-		clients = NULL;
+-	} else {
+-		close(dir);
+-	}
++	strncpy(clients->pci_slot, pci_slot, sizeof(clients->pci_slot));
+ 
+ 	return clients;
+ }
+ 
+-static int __read_to_buf(int fd, char *buf, unsigned int bufsize)
+-{
+-	ssize_t ret;
+-	int err;
+-
+-	ret = read(fd, buf, bufsize - 1);
+-	err = errno;
+-	if (ret < 1) {
+-		errno = ret < 0 ? err : ENOMSG;
+-
+-		return -1;
+-	}
+-
+-	if (ret > 1 && buf[ret - 1] == '\n')
+-		buf[ret - 1] = '\0';
+-	else
+-		buf[ret] = '\0';
+-
+-	return 0;
+-}
+-
+-static int
+-__read_client_field(int root, const char *field, char *buf, unsigned int bufsize)
+-{
+-	int fd, ret;
+-
+-	fd = openat(root, field, O_RDONLY);
+-	if (fd < 0)
+-		return -1;
+-
+-	ret = __read_to_buf(fd, buf, bufsize);
+-
+-	close(fd);
+-
+-	return ret;
+-}
+-
+-static uint64_t
+-read_client_busy(struct client *client, unsigned int class)
+-{
+-	const char *class_str[] = { "0", "1", "2", "3", "4", "5", "6", "7" };
+-	char buf[256], *b;
+-	int ret;
+-
+-	assert(class < ARRAY_SIZE(class_str));
+-	if (class >= ARRAY_SIZE(class_str))
+-		return 0;
+-
+-	assert(client->sysfs_root >= 0);
+-	if (client->sysfs_root < 0)
+-		return 0;
+-
+-	if (client->busy_root < 0)
+-		client->busy_root = openat(client->sysfs_root, "busy",
+-					   O_RDONLY | O_DIRECTORY);
+-
+-	assert(client->busy_root);
+-	if (client->busy_root < 0)
+-		return 0;
+-
+-	ret = __read_client_field(client->busy_root, class_str[class], buf,
+-				  sizeof(buf));
+-	if (ret) {
+-		close(client->busy_root);
+-		client->busy_root = -1;
+-		return 0;
+-	}
+-
+-	/*
+-	 * Handle both single integer and key=value formats by skipping
+-	 * leading non-digits.
+-	 */
+-	b = buf;
+-	while (*b && !isdigit(*b))
+-		b++;
+-
+-	return strtoull(b, NULL, 10);
+-}
+-
+ static struct client *
+ find_client(struct clients *clients, enum client_status status, unsigned int id)
+ {
+@@ -803,9 +704,9 @@ find_client(struct clients *clients, enum client_status status, unsigned int id)
+ 	return NULL;
+ }
+ 
+-static void update_client(struct client *c, unsigned int pid, char *name)
++static void
++update_client(struct client *c, unsigned int pid, char *name, uint64_t val[16])
+ {
+-	uint64_t val[c->clients->num_classes];
+ 	unsigned int i;
+ 
+ 	if (c->pid != pid)
+@@ -825,9 +726,6 @@ static void update_client(struct client *c, unsigned int pid, char *name)
+ 		}
+ 	}
+ 
+-	for (i = 0; i < c->clients->num_classes; i++)
+-		val[i] = read_client_busy(c, c->clients->class[i].class);
+-
+ 	c->last_runtime = 0;
+ 	c->total_runtime = 0;
+ 
+@@ -847,7 +745,7 @@ static void update_client(struct client *c, unsigned int pid, char *name)
+ 
+ static void
+ add_client(struct clients *clients, unsigned int id, unsigned int pid,
+-	   char *name, int sysfs_root)
++	   char *name, uint64_t busy[16])
+ {
+ 	struct client *c;
+ 
+@@ -866,52 +764,22 @@ add_client(struct clients *clients, unsigned int id, unsigned int pid,
+ 		memset(c, 0, (clients->num_clients - idx) * sizeof(*c));
+ 	}
+ 
+-	c->sysfs_root = sysfs_root;
+-	c->busy_root = -1;
+ 	c->id = id;
+ 	c->clients = clients;
+ 	c->val = calloc(clients->num_classes, sizeof(c->val));
+ 	c->last = calloc(clients->num_classes, sizeof(c->last));
+ 	assert(c->val && c->last);
+ 
+-	update_client(c, pid, name);
++	update_client(c, pid, name, busy);
+ }
+ 
+ static void free_client(struct client *c)
+ {
+-	if (c->sysfs_root >= 0)
+-		close(c->sysfs_root);
+-	if (c->busy_root >= 0)
+-		close(c->busy_root);
+ 	free(c->val);
+ 	free(c->last);
+ 	memset(c, 0, sizeof(*c));
+ }
+ 
+-static int
+-read_client_sysfs(char *buf, int bufsize, const char *sysfs_root,
+-		  unsigned int id, const char *field, int *client_root)
+-{
+-	ssize_t ret;
+-
+-	if (*client_root < 0) {
+-		char namebuf[256];
+-
+-		ret = snprintf(namebuf, sizeof(namebuf), "%s/%u",
+-			       sysfs_root, id);
+-		assert(ret > 0 && ret < sizeof(namebuf));
+-		if (ret <= 0 || ret == sizeof(namebuf))
+-			return -1;
+-
+-		*client_root = open(namebuf, O_RDONLY | O_DIRECTORY);
+-	}
+-
+-	if (*client_root < 0)
+-		return -1;
+-
+-	return __read_client_field(*client_root, field, buf, bufsize);
+-}
+-
+ static int client_last_cmp(const void *_a, const void *_b)
+ {
+ 	const struct client *a = _a;
+@@ -1069,8 +937,6 @@ static struct clients *display_clients(struct clients *clients)
+ 			ac->status = ALIVE;
+ 			ac->id = -c->pid;
+ 			ac->pid = c->pid;
+-			ac->busy_root = -1;
+-			ac->sysfs_root = -1;
+ 			strcpy(ac->name, c->name);
+ 			strcpy(ac->print_name, c->print_name);
+ 			ac->engines = c->engines;
+@@ -1116,13 +982,24 @@ static void free_clients(struct clients *clients)
+ 	free(clients);
+ }
+ 
++static bool drm_fd(DIR *fd_dir, const char *name)
++{
++	struct stat stat;
++	int ret;
++
++	ret = fstatat(dirfd(fd_dir), name, &stat, 0);
++
++	return ret == 0 &&
++	       (stat.st_mode & S_IFMT) == S_IFCHR &&
++	       major(stat.st_rdev) == 226;
++}
++
+ static struct clients *scan_clients(struct clients *clients)
+ {
+-	struct dirent *dent;
++	struct dirent *proc_dent;
+ 	struct client *c;
+-	unsigned int id;
++	DIR *proc_dir;
+ 	int tmp;
+-	DIR *d;
+ 
+ 	if (!clients)
+ 		return clients;
+@@ -1135,43 +1012,190 @@ static struct clients *scan_clients(struct clients *clients)
+ 			break; /* Free block at the end of array. */
+ 	}
+ 
+-	d = opendir(clients->sysfs_root);
+-	if (!d)
++	proc_dir = opendir("/proc");
++	if (!proc_dir)
+ 		return clients;
+ 
+-	while ((dent = readdir(d)) != NULL) {
+-		char name[24], pid[24];
+-		int ret, root = -1, *pr;
++	while ((proc_dent = readdir(proc_dir)) != NULL) {
++		DIR *pid_dir, *fd_dir, *fdinfo_dir;
++		struct dirent *fdinfo_dent;
++		int fd;
+ 
+-		if (dent->d_type != DT_DIR)
++		if (proc_dent->d_type != DT_DIR)
+ 			continue;
+-		if (!isdigit(dent->d_name[0]))
++		if (!isdigit(proc_dent->d_name[0]))
+ 			continue;
+ 
+-		id = atoi(dent->d_name);
++		fd = openat(dirfd(proc_dir), proc_dent->d_name, O_DIRECTORY);
++		if (fd < 0)
++			continue;
+ 
+-		c = find_client(clients, PROBE, id);
++		pid_dir = fdopendir(fd);
++		if (!pid_dir) {
++			close(fd);
++			continue;
++		}
+ 
+-		if (c)
+-			pr = &c->sysfs_root;
+-		else
+-			pr = &root;
++		fd = openat(dirfd(pid_dir), "fd", O_DIRECTORY);
++		if (fd < 0) {
++			closedir(pid_dir);
++			continue;
++		}
++
++		fd_dir = fdopendir(fd);
++		if (!fd_dir) {
++			close(fd);
++			closedir(pid_dir);
++			continue;
++		}
++
++		fd = openat(dirfd(pid_dir), "fdinfo", O_DIRECTORY);
++		if (fd < 0) {
++			closedir(fd_dir);
++			closedir(pid_dir);
++			continue;
++		}
++
++		fdinfo_dir = fdopendir(fd);
++		if (!fdinfo_dir) {
++			close(fd);
++			closedir(fd_dir);
++			closedir(pid_dir);
++			continue;
++		}
++
++		while ((fdinfo_dent = readdir(fdinfo_dir)) != NULL) {
++			char buffer[4096], *line, *ctx, *buf;
++			unsigned int client_id, client_pid;
++			unsigned int is_client = 0;
++			char client_name[64] = { };
++			uint64_t busy[16] = { };
++			char driver[128] = { };
++			char pdev[128] = { };
++			size_t count;
++			FILE *f;
++
++			if (fdinfo_dent->d_type != DT_REG)
++				continue;
++			if (!isdigit(fdinfo_dent->d_name[0]))
++				continue;
++
++			if (!drm_fd(fd_dir, fdinfo_dent->d_name))
++				continue;
++
++			fd = openat(dirfd(fdinfo_dir), fdinfo_dent->d_name,
++				    O_RDONLY);
++			if (fd < 0)
++				continue;
++
++			f = fdopen(fd, "r");
++			if (!f) {
++				close(fd);
++				continue;
++			}
++
++			memset(buffer, 0, sizeof(buffer));
++			count = fread(buffer, 1, sizeof(buffer), f);
++			fclose(f);
++			if (!count)
++				continue;
++
++			ctx = NULL;
++			buf = buffer;
++			while ((line = strtok_r(buf, "\n", &ctx))) {
++				static const char *e2class[] = {
++					"render",
++					"copy",
++					"video",
++					"video-enhance",
++				};
++				char ename[256];
++				unsigned int i;
++				uint64_t val;
++
++				buf = NULL;
++
++				if (sscanf(line, "drm-driver:\t%s", driver)) {
++					is_client++;
++					continue;
++				}
++
++				if (sscanf(line, "drm-pdev:\t%s", pdev)) {
++					is_client++;
++					continue;
++				}
++
++				if (sscanf(line, "drm-client-id:\t%u",
++					   &client_id) == 1) {
++					is_client++;
++					continue;
++				}
++
++				if (sscanf(line, "drm-client-pid:\t%u",
++					   &client_pid) == 1) {
++					is_client++;
++					continue;
++				}
++
++				if (sscanf(line, "drm-client-name:\t%s",
++					   client_name) == 1) {
++					is_client++;
++					continue;
++				}
++
++				if (!strncmp(line, "drm-engine-", 11)) {
++					char *t;
++
++					/* FIXME horrible.. */
++
++					t = line;
++					while (!isdigit(*t))
++						t++;
++					val = strtoull(t, NULL, 10);
++
++					t = line;
++					while (*t != ':')
++						t++;
++					*t = 0;
++
++					if (sscanf(line, "drm-engine-%s",
++						   ename) != 1)
++						continue;
++
++					is_client++;
++					for (i = 0; i < ARRAY_SIZE(e2class);
++					     i++) {
++						if (!strcmp(ename, e2class[i])) {
++							busy[i] = val;
++							break;
++						}
++					}
++					continue;
++				}
++			}
++
++			if (is_client < 6)
++				continue; /* Not drm fd or other error. */
++			if (strcmp(driver, "i915"))
++				continue;
++			if (strcmp(pdev, clients->pci_slot))
++				continue;
++
++			c = find_client(clients, PROBE, client_id);
+ 
+-		ret = read_client_sysfs(name, sizeof(name), clients->sysfs_root,
+-					id, "name", pr);
+-		ret |= read_client_sysfs(pid, sizeof(pid), clients->sysfs_root,
+-					id, "pid", pr);
+-		if (!ret) {
+ 			if (!c)
+-				add_client(clients, id, atoi(pid), name, root);
++				add_client(clients, client_id, client_pid,
++					   client_name, busy);
+ 			else
+-				update_client(c, atoi(pid), name);
+-		} else if (c) {
+-			c->status = PROBE; /* Will be deleted below. */
++				update_client(c, client_pid, client_name, busy);
+ 		}
++
++		closedir(fdinfo_dir);
++		closedir(fd_dir);
++		closedir(pid_dir);
+ 	}
+ 
+-	closedir(d);
++	closedir(proc_dir);
+ 
+ 	for_each_client(clients, c, tmp) {
+ 		if (c->status == PROBE)
+@@ -2530,7 +2554,8 @@ int main(int argc, char **argv)
+ 
+ 	ret = EXIT_SUCCESS;
+ 
+-	clients = init_clients(card.pci_slot_name[0] ? card.card : NULL);
++	clients = init_clients(card.pci_slot_name[0] ?
++			       card.pci_slot_name : IGPU_PCI);
+ 	init_engine_classes(engines);
+ 	if (clients) {
+ 		clients->num_classes = engines->num_classes;
+-- 
+2.30.2
 
-And, sure I'll update the commit message in next rev.
-
-- Bhanu
-
-> 
-> Thanks,
-> Anshuman Gupta.
-> >
-> > If we want to execute on all pipes, we need to pass an extra
-> > argument "-e" indicates extended.
-> >
-> > Example: ./build/tests/kms_busy -e --r basic
-> >
-> > V2, V3:
-> > * Fix the typo in args handler (Petri)
-> > V4:
-> > * Handle clampling cleanly (Petri)
-> > * Restore lost test coverage in the previous version (Petri/Bhanu)
-> > V5:
-> > * Fix two subtest with the name "basic" (Petri)
-> >
-> > Cc: Karthik B S <karthik.b.s@intel.com>
-> > Cc: Latvala Petri <petri.latvala@intel.com>
-> > Cc: Kunche Kishore <kishore.kunche@intel.com>
-> > Cc: Uma Shankar <uma.shankar@intel.com>
-> > Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com> (V3)
-> > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> > ---
-> >  tests/kms_busy.c | 139 ++++++++++++++++++++++++++++++-----------------
-> >  1 file changed, 89 insertions(+), 50 deletions(-)
-> >
-> > diff --git a/tests/kms_busy.c b/tests/kms_busy.c
-> > index df1f8e11a..095896db5 100644
-> > --- a/tests/kms_busy.c
-> > +++ b/tests/kms_busy.c
-> > @@ -30,6 +30,11 @@
-> >
-> >  IGT_TEST_DESCRIPTION("Basic check of KMS ABI with busy framebuffers.");
-> >
-> > +/* restricted pipe count */
-> > +#define CRTC_RESTRICT_CNT 2
-> > +
-> > +static bool all_pipes = false;
-> > +
-> >  static igt_output_t *
-> >  set_fb_on_crtc(igt_display_t *dpy, int pipe, struct igt_fb *fb)
-> >  {
-> > @@ -287,10 +292,41 @@ static void test_pageflip_modeset_hang(igt_display_t
-> *dpy, enum pipe pipe)
-> >  	igt_remove_fb(dpy->drm_fd, &fb);
-> >  }
-> >
-> > -igt_main
-> > +static int opt_handler(int opt, int opt_index, void *data)
-> > +{
-> > +	switch (opt) {
-> > +		case 'e':
-> > +			all_pipes = true;
-> > +			break;
-> > +		default:
-> > +			return IGT_OPT_HANDLER_ERROR;
-> > +	}
-> > +
-> > +	return IGT_OPT_HANDLER_SUCCESS;
-> > +}
-> > +
-> > +const char *help_str =
-> > +	"  -e \tRun on all pipes. (By default subtests will run on two
-> pipes)\n";
-> > +
-> > +igt_main_args("e", NULL, help_str, opt_handler, NULL)
-> >  {
-> >  	igt_display_t display = { .drm_fd = -1, .n_pipes = IGT_MAX_PIPES };
-> > -	enum pipe n;
-> > +
-> > +	int crtc_count;
-> > +	int i;
-> > +	struct {
-> > +		const char *name;
-> > +		bool modeset;
-> > +		bool hang_newfb;
-> > +		bool reset;
-> > +	} tests[] = {
-> > +		{ "extended-pageflip-hang-oldfb", false, false, false },
-> > +		{ "extended-pageflip-hang-newfb", false, true, false },
-> > +		{ "extended-modeset-hang-oldfb", true, false, false },
-> > +		{ "extended-modeset-hang-newfb", true, true, false },
-> > +		{ "extended-modeset-hang-oldfb-with-reset", true, false, true },
-> > +		{ "extended-modeset-hang-newfb-with-reset", true, true, true },
-> > +	};
-> >
-> >  	igt_fixture {
-> >  		int fd = drm_open_driver_master(DRIVER_INTEL);
-> > @@ -318,70 +354,73 @@ igt_main
-> >  		}
-> >  	}
-> >
-> > -	for_each_pipe_static(n) igt_subtest_group {
-> > -		igt_hang_t hang;
-> > -
-> > +	igt_subtest_with_dynamic("basic-hang") {
-> > +		enum pipe pipe;
-> > +		igt_output_t *output;
-> > +		int count = 0;
-> > +		igt_hang_t hang = igt_allow_hang(display.drm_fd, 0, 0);
-> >  		errno = 0;
-> >
-> > -		igt_fixture {
-> > -			igt_display_require_output_on_pipe(&display, n);
-> > -		}
-> > -
-> > -		igt_subtest_f("basic-flip-pipe-%s", kmstest_pipe_name(n)) {
-> > -			test_flip(&display, n, false);
-> > -		}
-> > -		igt_subtest_f("basic-modeset-pipe-%s", kmstest_pipe_name(n)) {
-> > -
-> > -			test_flip(&display, n, true);
-> > -		}
-> > -
-> > -		igt_fixture {
-> > -			hang = igt_allow_hang(display.drm_fd, 0, 0);
-> > -		}
-> > +		crtc_count = (all_pipes)? display.n_pipes : CRTC_RESTRICT_CNT;
-> > +		for_each_pipe_with_valid_output(&display, pipe, output) {
-> > +			igt_dynamic_f("flip-pipe-%s", kmstest_pipe_name(pipe))
-> > +				test_flip(&display, pipe, false);
-> > +			igt_dynamic_f("modeset-pipe-%s", kmstest_pipe_name(pipe))
-> > +				test_flip(&display, pipe, true);
-> >
-> > -		igt_subtest_f("extended-pageflip-modeset-hang-oldfb-pipe-%s",
-> > -			      kmstest_pipe_name(n)) {
-> > -			test_pageflip_modeset_hang(&display, n);
-> > +			if (++count >= crtc_count)
-> > +				break;
-> >  		}
-> >
-> > -		igt_fixture
-> > -			igt_require(display.is_atomic);
-> > +		igt_disallow_hang(display.drm_fd, hang);
-> > +	}
-> >
-> > -		igt_subtest_f("extended-pageflip-hang-oldfb-pipe-%s",
-> > -			      kmstest_pipe_name(n))
-> > -			test_hang(&display, n, false, false);
-> > +	igt_subtest_with_dynamic("extended-pageflip-modeset-hang-oldfb") {
-> > +		enum pipe pipe;
-> > +		igt_output_t *output;
-> > +		int count = 0;
-> > +		igt_hang_t hang = igt_allow_hang(display.drm_fd, 0, 0);
-> > +		errno = 0;
-> >
-> > -		igt_subtest_f("extended-pageflip-hang-newfb-pipe-%s",
-> > -			      kmstest_pipe_name(n))
-> > -			test_hang(&display, n, false, true);
-> > +		crtc_count = (all_pipes)? display.n_pipes : CRTC_RESTRICT_CNT;
-> > +		for_each_pipe_with_valid_output(&display, pipe, output) {
-> > +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
-> > +				test_pageflip_modeset_hang(&display, pipe);
-> >
-> > -		igt_subtest_f("extended-modeset-hang-oldfb-pipe-%s",
-> > -			      kmstest_pipe_name(n))
-> > -			test_hang(&display, n, true, false);
-> > +			if (++count >= crtc_count)
-> > +				break;
-> > +		}
-> >
-> > -		igt_subtest_f("extended-modeset-hang-newfb-pipe-%s",
-> > -			      kmstest_pipe_name(n))
-> > -			test_hang(&display, n, true, true);
-> > +		igt_disallow_hang(display.drm_fd, hang);
-> > +	}
-> >
-> > -		igt_subtest_f("extended-modeset-hang-oldfb-with-reset-pipe-%s",
-> > -			      kmstest_pipe_name(n)) {
-> > -			igt_set_module_param_int(display.drm_fd,
-> "force_reset_modeset_test", 1);
-> > +	for (i = 0; i < sizeof(tests) / sizeof (tests[0]); i++) {
-> > +		igt_subtest_with_dynamic(tests[i].name) {
-> > +			enum pipe pipe;
-> > +			igt_output_t *output;
-> > +			int count = 0;
-> > +			igt_hang_t hang;
-> > +			errno = 0;
-> >
-> > -			test_hang(&display, n, true, false);
-> > +			igt_require(display.is_atomic);
-> > +			hang = igt_allow_hang(display.drm_fd, 0, 0);
-> >
-> > -			igt_set_module_param_int(display.drm_fd,
-> "force_reset_modeset_test", 0);
-> > -		}
-> > +			crtc_count = (all_pipes)? display.n_pipes :
-> CRTC_RESTRICT_CNT;
-> > +			for_each_pipe_with_valid_output(&display, pipe, output) {
-> > +				igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
-> > +					if (tests[i].reset)
-> > +						igt_set_module_param_int(display.drm_fd,
-> "force_reset_modeset_test", 1);
-> >
-> > -		igt_subtest_f("extended-modeset-hang-newfb-with-reset-pipe-%s",
-> > -			      kmstest_pipe_name(n)) {
-> > -			igt_set_module_param_int(display.drm_fd,
-> "force_reset_modeset_test", 1);
-> > +					test_hang(&display, pipe, tests[i].modeset,
-> tests[i].hang_newfb);
-> >
-> > -			test_hang(&display, n, true, true);
-> > +					if (tests[i].reset)
-> > +						igt_set_module_param_int(display.drm_fd,
-> "force_reset_modeset_test", 0);
-> > +				}
-> >
-> > -			igt_set_module_param_int(display.drm_fd,
-> "force_reset_modeset_test", 0);
-> > -		}
-> > +				if (++count >= crtc_count)
-> > +					break;
-> > +			}
-> >
-> > -		igt_fixture {
-> >  			igt_disallow_hang(display.drm_fd, hang);
-> >  		}
-> >  	}
-> > --
-> > 2.20.1
-> >
-> > _______________________________________________
-> > igt-dev mailing list
-> > igt-dev@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
