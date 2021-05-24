@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ua1-x92d.google.com (mail-ua1-x92d.google.com
- [IPv6:2607:f8b0:4864:20::92d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB6D46E8CD
- for <igt-dev@lists.freedesktop.org>; Mon, 24 May 2021 16:37:32 +0000 (UTC)
-Received: by mail-ua1-x92d.google.com with SMTP id n61so9533896uan.2
- for <igt-dev@lists.freedesktop.org>; Mon, 24 May 2021 09:37:32 -0700 (PDT)
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Mon, 24 May 2021 16:37:20 +0000
-Message-Id: <20210524163720.1019257-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] tests/kms_atomic: Match overlay size with primary
- plane on amdgpu
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 24 May 2021 17:31:58 -0000
+Message-ID: <162187751842.10905.11186793258701572113@emeril.freedesktop.org>
+References: <20210524163429.5658-1-andrzej.turko@linux.intel.com>
+In-Reply-To: <20210524163429.5658-1-andrzej.turko@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgRml4IHRo?=
+ =?utf-8?q?e_multiprocess_mode_of_intel_allocator?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,96 +14,201 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1303254644=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: seanpaul@chromium.org, petri.latvala@intel.com, Mark Yacoub <markyacoub@google.com>
+To: Andrzej Turko <andrzej.turko@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mark Yacoub <markyacoub@google.com>
+--===============1303254644==
+Content-Type: multipart/alternative;
+ boundary="===============5360284890594390459=="
 
-[Why]
-AMDGPU has a restriction of not allowing overlay planes that do
-not fully cover the primary plane when the cursor is enabled.
-Testing with an overlay smaller than primary fails the commit.
+--===============5360284890594390459==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-[How]
-On amdgpu, force the overlay size and src to match the primary plane, but
-test with a smaller size on all other platforms.
+== Series Details ==
 
-Signed-off-by: markyacoub@chromium.org
----
- tests/kms_atomic.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+Series: Fix the multiprocess mode of intel allocator
+URL   : https://patchwork.freedesktop.org/series/90481/
+State : failure
 
-diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-index df9c9df7..4ab8b207 100644
---- a/tests/kms_atomic.c
-+++ b/tests/kms_atomic.c
-@@ -491,13 +491,27 @@ plane_immutable_zpos(igt_display_t *display, igt_pipe_t *pipe,
- 	igt_remove_fb(display->drm_fd, &fb_upper);
- }
- 
--static void plane_overlay(igt_pipe_t *pipe, igt_output_t *output, igt_plane_t *plane)
-+static void plane_overlay(igt_pipe_t* pipe, igt_output_t* output, igt_plane_t* plane, int drm_fd)
- {
- 	drmModeModeInfo *mode = igt_output_get_mode(output);
- 	uint32_t format = plane_get_igt_format(plane);
- 	struct igt_fb fb;
--	uint32_t w = mode->hdisplay / 2;
--	uint32_t h = mode->vdisplay / 2;
-+	uint32_t w, h, x, y;
-+
-+	// On AMD, with hardware cursor, overlay plane must fully cover the primary plane.
-+	// Test with smaller overlays on all other platforms.
-+	if (is_amdgpu_device(drm_fd)) {
-+		w = mode->hdisplay;
-+		h = mode->vdisplay;
-+		x = 0;
-+		y = 0;
-+	}
-+	else {
-+		w = mode->hdisplay / 2;
-+		h = mode->vdisplay / 2;
-+		x = w / 2;
-+		y = h / 2;
-+	}
- 
- 	igt_require(format != 0);
- 
-@@ -505,7 +519,7 @@ static void plane_overlay(igt_pipe_t *pipe, igt_output_t *output, igt_plane_t *p
- 			      format, I915_TILING_NONE, &fb);
- 
- 	igt_plane_set_fb(plane, &fb);
--	igt_plane_set_position(plane, w/2, h/2);
-+	igt_plane_set_position(plane, x, y);
- 
- 	/* Enable the overlay plane using the atomic API, and double-check
- 	 * state is what we think it should be. */
-@@ -519,7 +533,7 @@ static void plane_overlay(igt_pipe_t *pipe, igt_output_t *output, igt_plane_t *p
- 	/* Re-enable the plane through the legacy plane API, and verify through
- 	 * atomic. */
- 	igt_plane_set_fb(plane, &fb);
--	igt_plane_set_position(plane, w/2, h/2);
-+	igt_plane_set_position(plane, x, y);
- 	plane_commit(plane, COMMIT_LEGACY, ATOMIC_RELAX_NONE);
- 
- 	/* Restore the plane to its original settings through the legacy plane
-@@ -1113,7 +1127,7 @@ igt_main
- 		igt_require(overlay);
- 
- 		atomic_setup(&display, pipe, output, primary, &fb);
--		plane_overlay(pipe_obj, output, overlay);
-+		plane_overlay(pipe_obj, output, overlay, display.drm_fd);
- 	}
- 
- 	igt_describe("Test for KMS atomic modesetting on primary plane and ensure coherency between "
--- 
-2.31.1.818.g46aad6cb9e-goog
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10127 -> IGTPW_5843
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_5843 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_5843, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5843/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_5843:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - {fi-tgl-dsi}:       [PASS][1] -> [FAIL][2] +3 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10127/fi-tgl-dsi/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5843/fi-tgl-dsi/igt@kms_frontbuffer_tracking@basic.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5843 that come from known issues:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-nick:        [DMESG-FAIL][3] ([i915#3462]) -> [INCOMPLETE][4] ([i915#2782] / [i915#2940] / [i915#3462])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10127/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5843/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
+  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
+  [i915#3462]: https://gitlab.freedesktop.org/drm/intel/issues/3462
+
+
+Participating hosts (41 -> 14)
+------------------------------
+
+  ERROR: It appears as if the changes made in IGTPW_5843 prevented too many machines from booting.
+
+  Missing    (27): fi-kbl-soraka fi-apl-guc fi-snb-2520m fi-skl-6600u fi-snb-2600 fi-cml-u2 fi-bdw-5557u fi-bsw-n3050 fi-glk-dsi fi-ilk-650 fi-hsw-4770 fi-ivb-3770 fi-skl-6700k2 fi-kbl-7567u fi-ehl-1 fi-cfl-8700k fi-dg1-1 fi-cml-drallion fi-ehl-2 fi-hsw-gt1 fi-rkl-11500t fi-bsw-cyan fi-cfl-guc fi-kbl-guc fi-kbl-x1275 fi-cfl-8109u fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6092 -> IGTPW_5843
+
+  CI-20190529: 20190529
+  CI_DRM_10127: d6d3a2a996af7a82e567e96a19410ac9d7246794 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5843: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5843/index.html
+  IGT_6092: d87087c321da07035d4f96d98c34e451b3ccb809 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5843/index.html
+
+--===============5360284890594390459==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Fix the multiprocess mode of intel allocator</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/90481/">https://patchwork.freedesktop.org/series/90481/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5843/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5843/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10127 -&gt; IGTPW_5843</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_5843 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_5843, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5843/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_5843:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10127/fi-tgl-dsi/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5843/fi-tgl-dsi/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> +3 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5843 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@execlists:<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10127/fi-bsw-nick/igt@i915_selftest@live@execlists.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5843/fi-bsw-nick/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (41 -&gt; 14)</h2>
+<p>ERROR: It appears as if the changes made in IGTPW_5843 prevented too many machines from booting.</p>
+<p>Missing    (27): fi-kbl-soraka fi-apl-guc fi-snb-2520m fi-skl-6600u fi-snb-2600 fi-cml-u2 fi-bdw-5557u fi-bsw-n3050 fi-glk-dsi fi-ilk-650 fi-hsw-4770 fi-ivb-3770 fi-skl-6700k2 fi-kbl-7567u fi-ehl-1 fi-cfl-8700k fi-dg1-1 fi-cml-drallion fi-ehl-2 fi-hsw-gt1 fi-rkl-11500t fi-bsw-cyan fi-cfl-guc fi-kbl-guc fi-kbl-x1275 fi-cfl-8109u fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6092 -&gt; IGTPW_5843</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10127: d6d3a2a996af7a82e567e96a19410ac9d7246794 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5843: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5843/index.html<br />
+  IGT_6092: d87087c321da07035d4f96d98c34e451b3ccb809 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============5360284890594390459==--
+
+--===============1303254644==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1303254644==--
