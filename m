@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B34546EC1A
- for <igt-dev@lists.freedesktop.org>; Wed, 26 May 2021 07:36:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6468A6EC1A
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 May 2021 07:36:33 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Wed, 26 May 2021 12:50:38 +0530
-Message-Id: <20210526072040.2286-4-anshuman.gupta@intel.com>
+Date: Wed, 26 May 2021 12:50:37 +0530
+Message-Id: <20210526072040.2286-3-anshuman.gupta@intel.com>
 In-Reply-To: <20210526072040.2286-1-anshuman.gupta@intel.com>
 References: <20210526072040.2286-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v4 3/5] i915/i915_pm_rpm: gem-execbuf-stress
- PC8 timeout
+Subject: [igt-dev] [PATCH i-g-t v4 2/5] i915/i915_pm_rpm: optimize
+ modeset-pc8-residency-stress test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,24 +24,46 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use a optimum PC8 timeout value for gem-execbuf-stress-pc8
-igt test.
+modeset-pc8-residency-stress checks PC8 residency with modeset
+stress. As the platforms followed by SKL can really enter to PC8
+with display-on, it is sufficient to validate PC8 while all displays
+being off with modeset stress.
+
+For older platforms like HASWELL/BROADWELL negative testing of PC8
+residency while display being "on" can be removed as it saves CI time
+and there is no ROI of such testing with modeset stress, wait_for_active()
+already covers such coverage.
+
+It will keep the code simpler without any platform checks.
+
+v2: Used optimum pc8 timeout value and commit log changes.
+
+v3: commit log improvements.
 
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- tests/i915/i915_pm_rpm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/i915/i915_pm_rpm.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 7a4c9291..2d6cdf05 100644
+index 9f5656bb..7a4c9291 100644
 --- a/tests/i915/i915_pm_rpm.c
 +++ b/tests/i915/i915_pm_rpm.c
-@@ -1402,7 +1402,7 @@ static void gem_execbuf_stress_subtest(int rounds, int wait_flags)
+@@ -874,7 +874,7 @@ static void modeset_subtest(enum screen_type type, int rounds, int wait_flags)
+ 		if (wait_flags & WAIT_STATUS)
  			igt_assert(wait_for_suspended());
- 		}
  		if (wait_flags & WAIT_PC8_RES)
 -			igt_assert(pc8_plus_residency_changed(30));
 +			igt_assert(pc8_plus_residency_changed(PC8_TIMEOUT));
+ 		if (wait_flags & WAIT_EXTRA)
+ 			sleep(5);
+ 
+@@ -883,8 +883,6 @@ static void modeset_subtest(enum screen_type type, int rounds, int wait_flags)
+ 		igt_require(enable_one_screen_with_type(&ms_data, type));
+ 		if (wait_flags & WAIT_STATUS)
+ 			igt_assert(wait_for_active());
+-		if (wait_flags & WAIT_PC8_RES)
+-			igt_assert(!pc8_plus_residency_changed(5));
  		if (wait_flags & WAIT_EXTRA)
  			sleep(5);
  	}
