@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 699666E49C
- for <igt-dev@lists.freedesktop.org>; Wed, 26 May 2021 09:00:30 +0000 (UTC)
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-References: <20210521164637.7306-1-zbigniew.kempczynski@intel.com>
- <e4b22a23-421e-cc77-fd0a-5a1b4354c206@linux.intel.com>
-Message-ID: <09a3cb87-a65e-b42c-771c-0ad2f8cf6f56@linux.intel.com>
-Date: Wed, 26 May 2021 10:00:26 +0100
 MIME-Version: 1.0
-In-Reply-To: <e4b22a23-421e-cc77-fd0a-5a1b4354c206@linux.intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] benchmarks/gem_userptr_benchmark:
- Remove tests with unsynchronized flag
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 26 May 2021 09:12:29 -0000
+Message-ID: <162202034937.13407.14627196885649764711@emeril.freedesktop.org>
+References: <20210526072040.2286-1-anshuman.gupta@intel.com>
+In-Reply-To: <20210526072040.2286-1-anshuman.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_P?=
+ =?utf-8?q?C_state_igt_test_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,92 +14,184 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Ck9uIDI2LzA1LzIwMjEgMDk6NTYsIFR2cnRrbyBVcnN1bGluIHdyb3RlOgo+IAo+IE9uIDIxLzA1
-LzIwMjEgMTc6NDYsIFpiaWduaWV3IEtlbXBjennFhHNraSB3cm90ZToKPj4gQXMgZmxhZyBJOTE1
-X1VTRVJQVFJfVU5TWU5DSFJPTklaRUQgaXMgbm90IHN1cHBvcnRlZCBieSB0aGUgaTkxNSBhbnlt
-b3JlCj4+IHJlbW92ZSB0ZXN0cyB3aGljaCB0cmllcyB0byB1c2UgaXQgaW4gdGhlIGJlbmNobWFy
-ay4KPj4KPj4gUmVtb3ZlIGJlbmNobWFyayBmcm9tIG1lc29uIGxpYmRybSBkZXBlbmRpbmcgY29k
-ZSBhcyBpdCBpcyBhIGxpdHRsZSBiaXQKPj4gY29uZnVzaW5nLgo+Pgo+PiBTaWduZWQtb2ZmLWJ5
-OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4K
-Pj4gQ2M6IFR2cnRrbyBVcnN1bGluIDx0dnJ0a28udXJzdWxpbkBpbnRlbC5jb20+Cj4+IENjOiBQ
-ZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4KPiAKPiBBY2tlZC1ieTogVHZy
-dGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KClJldmlld2VkLWJ5OiBUdnJ0
-a28gVXJzdWxpbiA8dHZydGtvLnVyc3VsaW4uY29tPgoKUmVnYXJkcywKClR2cnRrbwoKPiBSZWdh
-cmRzLAo+IAo+IFR2cnRrbwo+IAo+PiAtLS0KPj4gwqAgYmVuY2htYXJrcy9nZW1fdXNlcnB0cl9i
-ZW5jaG1hcmsuYyB8IDU0ICsrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+PiDCoCBiZW5j
-aG1hcmtzL21lc29uLmJ1aWxkwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAyICstCj4+IMKg
-IDIgZmlsZXMgY2hhbmdlZCwgMTQgaW5zZXJ0aW9ucygrKSwgNDIgZGVsZXRpb25zKC0pCj4+Cj4+
-IGRpZmYgLS1naXQgYS9iZW5jaG1hcmtzL2dlbV91c2VycHRyX2JlbmNobWFyay5jIAo+PiBiL2Jl
-bmNobWFya3MvZ2VtX3VzZXJwdHJfYmVuY2htYXJrLmMKPj4gaW5kZXggZDdhNDk1MjA5Li5hODU5
-OTdiODYgMTAwNjQ0Cj4+IC0tLSBhL2JlbmNobWFya3MvZ2VtX3VzZXJwdHJfYmVuY2htYXJrLmMK
-Pj4gKysrIGIvYmVuY2htYXJrcy9nZW1fdXNlcnB0cl9iZW5jaG1hcmsuYwo+PiBAQCAtNTcsMjAg
-KzU3LDEwIEBACj4+IMKgwqDCoCAjZGVmaW5lIFBBR0VfU0laRSA0MDk2Cj4+IMKgICNlbmRpZgo+
-PiAtc3RhdGljIHVpbnQzMl90IHVzZXJwdHJfZmxhZ3MgPSBJOTE1X1VTRVJQVFJfVU5TWU5DSFJP
-TklaRUQ7Cj4+ICtzdGF0aWMgdWludDMyX3QgdXNlcnB0cl9mbGFncyA9IDA7Cj4+IMKgICNkZWZp
-bmUgQk9fU0laRSAoNjU1MzYpCj4+IC1zdGF0aWMgdm9pZCBnZW1fdXNlcnB0cl90ZXN0X3Vuc3lu
-Y2hyb25pemVkKHZvaWQpCj4+IC17Cj4+IC3CoMKgwqAgdXNlcnB0cl9mbGFncyA9IEk5MTVfVVNF
-UlBUUl9VTlNZTkNIUk9OSVpFRDsKPj4gLX0KPj4gLQo+PiAtc3RhdGljIHZvaWQgZ2VtX3VzZXJw
-dHJfdGVzdF9zeW5jaHJvbml6ZWQodm9pZCkKPj4gLXsKPj4gLcKgwqDCoCB1c2VycHRyX2ZsYWdz
-ID0gMDsKPj4gLX0KPj4gLQo+PiDCoCBzdGF0aWMgdm9pZCAqKmhhbmRsZV9wdHJfbWFwOwo+PiDC
-oCBzdGF0aWMgdW5zaWduZWQgaW50IG51bV9oYW5kbGVfcHRyX21hcDsKPj4gQEAgLTEyNCwxNCAr
-MTE0LDEwIEBAIHN0YXRpYyBpbnQgaGFzX3VzZXJwdHIoaW50IGZkKQo+PiDCoCB7Cj4+IMKgwqDC
-oMKgwqAgdWludDMyX3QgaGFuZGxlID0gMDsKPj4gwqDCoMKgwqDCoCB2b2lkICpwdHI7Cj4+IC3C
-oMKgwqAgdWludDMyX3Qgb2xkZmxhZ3M7Cj4+IMKgwqDCoMKgwqAgaW50IHJldDsKPj4gwqDCoMKg
-wqDCoCBhc3NlcnQocG9zaXhfbWVtYWxpZ24oJnB0ciwgUEFHRV9TSVpFLCBQQUdFX1NJWkUpID09
-IDApOwo+PiAtwqDCoMKgIG9sZGZsYWdzID0gdXNlcnB0cl9mbGFnczsKPj4gLcKgwqDCoCBnZW1f
-dXNlcnB0cl90ZXN0X3Vuc3luY2hyb25pemVkKCk7Cj4+IC3CoMKgwqAgcmV0ID0gX19nZW1fdXNl
-cnB0cihmZCwgcHRyLCBQQUdFX1NJWkUsIDAsIHVzZXJwdHJfZmxhZ3MsICZoYW5kbGUpOwo+PiAt
-wqDCoMKgIHVzZXJwdHJfZmxhZ3MgPSBvbGRmbGFnczsKPj4gK8KgwqDCoCByZXQgPSBfX2dlbV91
-c2VycHRyKGZkLCBwdHIsIFBBR0VfU0laRSwgMCwgMCwgJmhhbmRsZSk7Cj4+IMKgwqDCoMKgwqAg
-aWYgKHJldCAhPSAwKSB7Cj4+IMKgwqDCoMKgwqDCoMKgwqDCoCBmcmVlKHB0cik7Cj4+IMKgwqDC
-oMKgwqDCoMKgwqDCoCByZXR1cm4gMDsKPj4gQEAgLTQ2NCwzMiArNDUwLDE4IEBAIHN0YXRpYyB2
-b2lkIHRlc3RfdXNlcnB0cihpbnQgZmQpCj4+IMKgwqDCoMKgwqAgdGVzdF9tdWx0aXBsZShmZCwg
-MTAwLCAxKTsKPj4gwqAgfQo+PiAtaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKiphcmd2KQo+PiAr
-aWd0X21haW4KPj4gwqAgewo+PiDCoMKgwqDCoMKgIGludCBmZCA9IC0xLCByZXQ7Cj4+IC3CoMKg
-wqAgaWd0X3N1YnRlc3RfaW5pdChhcmdjLCBhcmd2KTsKPj4gLQo+PiAtwqDCoMKgIGZkID0gZHJt
-X29wZW5fZHJpdmVyKERSSVZFUl9JTlRFTCk7Cj4+IC3CoMKgwqAgaWd0X2Fzc2VydChmZCA+PSAw
-KTsKPj4gLQo+PiAtwqDCoMKgIHJldCA9IGhhc191c2VycHRyKGZkKTsKPj4gLcKgwqDCoCBpZ3Rf
-c2tpcF9vbl9mKHJldCA9PSAwLCAiTm8gdXNlcnB0ciBzdXBwb3J0IC0gJXMgKCVkKVxuIiwKPj4g
-LcKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3RyZXJyb3IoZXJybm8pLCByZXQpOwo+PiAtCj4+ICvC
-oMKgwqAgaWd0X2ZpeHR1cmUgewo+PiArwqDCoMKgwqDCoMKgwqAgZmQgPSBkcm1fb3Blbl9kcml2
-ZXIoRFJJVkVSX0lOVEVMKTsKPj4gK8KgwqDCoMKgwqDCoMKgIGlndF9hc3NlcnQoZmQgPj0gMCk7
-Cj4+IC3CoMKgwqAgZ2VtX3VzZXJwdHJfdGVzdF91bnN5bmNocm9uaXplZCgpOwo+PiAtCj4+IC3C
-oMKgwqAgaWd0X3N1YnRlc3QoInVzZXJwdHItdW5zeW5jIikKPj4gLcKgwqDCoMKgwqDCoMKgIHRl
-c3RfdXNlcnB0cihmZCk7Cj4+IC0KPj4gLcKgwqDCoCBpZ3Rfc3VidGVzdCgidXNlcnB0ci1pbXBh
-Y3QtdW5zeW5jIikKPj4gLcKgwqDCoMKgwqDCoMKgIHRlc3RfaW1wYWN0KGZkLCAidW5zeW5jLSIp
-Owo+PiAtCj4+IC3CoMKgwqAgaWd0X3N1YnRlc3QoInVzZXJwdHItaW1wYWN0LXVuc3luYy1vdmVy
-bGFwIikKPj4gLcKgwqDCoMKgwqDCoMKgIHRlc3RfaW1wYWN0X292ZXJsYXAoZmQsICJ1bnN5bmMt
-Iik7Cj4+IC0KPj4gLcKgwqDCoCBnZW1fdXNlcnB0cl90ZXN0X3N5bmNocm9uaXplZCgpOwo+PiAr
-wqDCoMKgwqDCoMKgwqAgcmV0ID0gaGFzX3VzZXJwdHIoZmQpOwo+PiArwqDCoMKgwqDCoMKgwqAg
-aWd0X3NraXBfb25fZihyZXQgPT0gMCwgIk5vIHVzZXJwdHIgc3VwcG9ydCAtICVzICglZClcbiIs
-Cj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHN0cmVycm9yKGVycm5vKSwg
-cmV0KTsKPj4gK8KgwqDCoCB9Cj4+IMKgwqDCoMKgwqAgaWd0X3N1YnRlc3QoInVzZXJwdHItc3lu
-YyIpCj4+IMKgwqDCoMKgwqDCoMKgwqDCoCB0ZXN0X3VzZXJwdHIoZmQpOwo+PiBAQCAtNTAwLDcg
-KzQ3Miw3IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICoqYXJndikKPj4gwqDCoMKgwqDCoCBp
-Z3Rfc3VidGVzdCgidXNlcnB0ci1pbXBhY3Qtc3luYy1vdmVybGFwIikKPj4gwqDCoMKgwqDCoMKg
-wqDCoMKgIHRlc3RfaW1wYWN0X292ZXJsYXAoZmQsICJzeW5jLSIpOwo+PiAtwqDCoMKgIGlndF9l
-eGl0KCk7Cj4+IC0KPj4gLcKgwqDCoCByZXR1cm4gMDsKPj4gK8KgwqDCoCBpZ3RfZml4dHVyZSB7
-Cj4+ICvCoMKgwqDCoMKgwqDCoCBjbG9zZShmZCk7Cj4+ICvCoMKgwqAgfQo+PiDCoCB9Cj4+IGRp
-ZmYgLS1naXQgYS9iZW5jaG1hcmtzL21lc29uLmJ1aWxkIGIvYmVuY2htYXJrcy9tZXNvbi5idWls
-ZAo+PiBpbmRleCBiZWRlNTFkY2UuLjk4YTA4ZTI1YyAxMDA2NDQKPj4gLS0tIGEvYmVuY2htYXJr
-cy9tZXNvbi5idWlsZAo+PiArKysgYi9iZW5jaG1hcmtzL21lc29uLmJ1aWxkCj4+IEBAIC0xMSw2
-ICsxMSw3IEBAIGJlbmNobWFya19wcm9ncyA9IFsKPj4gwqDCoMKgwqDCoCAnZ2VtX3BydycsCj4+
-IMKgwqDCoMKgwqAgJ2dlbV9zZXRfZG9tYWluJywKPj4gwqDCoMKgwqDCoCAnZ2VtX3N5c2xhdGVu
-Y3knLAo+PiArwqDCoMKgICdnZW1fdXNlcnB0cl9iZW5jaG1hcmsnLAo+PiDCoMKgwqDCoMKgICdn
-ZW1fd3NpbScsCj4+IMKgwqDCoMKgwqAgJ2ttc192YmxhbmsnLAo+PiDCoMKgwqDCoMKgICdwcmlt
-ZV9sb29rdXAnLAo+PiBAQCAtMjMsNyArMjQsNiBAQCBpZiBsaWJkcm1faW50ZWwuZm91bmQoKQo+
-PiDCoMKgwqDCoMKgwqDCoMKgwqAgJ2ludGVsX3VwbG9hZF9ibGl0X2xhcmdlX2d0dCcsCj4+IMKg
-wqDCoMKgwqDCoMKgwqDCoCAnaW50ZWxfdXBsb2FkX2JsaXRfbGFyZ2VfbWFwJywKPj4gwqDCoMKg
-wqDCoMKgwqDCoMKgICdpbnRlbF91cGxvYWRfYmxpdF9zbWFsbCcsCj4+IC3CoMKgwqDCoMKgwqDC
-oCAnZ2VtX3VzZXJwdHJfYmVuY2htYXJrJywKPj4gwqDCoMKgwqDCoCBdCj4+IMKgIGVuZGlmCj4+
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYg
-bWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+== Series Details ==
+
+Series: PC state igt test (rev4)
+URL   : https://patchwork.freedesktop.org/series/84737/
+State : warning
+
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/326403 for the overview.
+
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10112464):
+  [1096/1097] Linking target runner/igt_results.
+  [1097/1097] Linking target runner/runner_test.
+  $ cp build/tests/test-list.txt meson-test-list.txt
+  section_end:1622019273:step_script
+  section_start:1622019273:upload_artifacts_on_success
+  Uploading artifacts for successful job
+  Uploading artifacts...
+  meson-test-list.txt: found 1 matching files and directories 
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112464 responseStatus=400 Bad Request status=400 token=DzV_TMSa
+  WARNING: Retrying...                                context=artifacts-uploader error=invalid argument
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112464 responseStatus=500 Internal Server Error status=500 token=DzV_TMSa
+  WARNING: Retrying...                                context=artifacts-uploader error=invalid argument
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112464 responseStatus=500 Internal Server Error status=500 token=DzV_TMSa
+  FATAL: invalid argument                            
+  section_end:1622019510:upload_artifacts_on_success
+  section_start:1622019510:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622019511:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10112467):
+  [1029/1031] Linking target tests/gem_exec_schedule.
+  [1030/1031] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  [1031/1031] Linking target runner/runner_test.
+  section_end:1622019332:step_script
+  section_start:1622019332:upload_artifacts_on_success
+  Uploading artifacts for successful job
+  Uploading artifacts...
+  build: found 1579 matching files and directories   
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112467 responseStatus=500 Internal Server Error status=500 token=14feHmpg
+  WARNING: Retrying...                                context=artifacts-uploader error=invalid argument
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112467 responseStatus=500 Internal Server Error status=500 token=14feHmpg
+  WARNING: Retrying...                                context=artifacts-uploader error=invalid argument
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112467 responseStatus=500 Internal Server Error status=500 token=14feHmpg
+  FATAL: invalid argument                            
+  section_end:1622019517:upload_artifacts_on_success
+  section_start:1622019517:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622019518:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10112466):
+  [1029/1031] Linking target tests/gem_exec_schedule.
+  [1030/1031] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  [1031/1031] Linking target runner/runner_test.
+  section_end:1622019314:step_script
+  section_start:1622019314:upload_artifacts_on_success
+  Uploading artifacts for successful job
+  Uploading artifacts...
+  build: found 1579 matching files and directories   
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112466 responseStatus=500 Internal Server Error status=500 token=o6ioFHy3
+  WARNING: Retrying...                                context=artifacts-uploader error=invalid argument
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112466 responseStatus=500 Internal Server Error status=500 token=o6ioFHy3
+  WARNING: Retrying...                                context=artifacts-uploader error=invalid argument
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112466 responseStatus=500 Internal Server Error status=500 token=o6ioFHy3
+  FATAL: invalid argument                            
+  section_end:1622019499:upload_artifacts_on_success
+  section_start:1622019499:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622019500:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10112468):
+  [1029/1031] Linking target tests/perf.
+  [1030/1031] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  [1031/1031] Linking target runner/runner_test.
+  section_end:1622019380:step_script
+  section_start:1622019380:upload_artifacts_on_success
+  Uploading artifacts for successful job
+  Uploading artifacts...
+  build: found 1579 matching files and directories   
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112468 responseStatus=500 Internal Server Error status=500 token=NUy6qnzp
+  WARNING: Retrying...                                context=artifacts-uploader error=invalid argument
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112468 responseStatus=500 Internal Server Error status=500 token=NUy6qnzp
+  WARNING: Retrying...                                context=artifacts-uploader error=invalid argument
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112468 responseStatus=500 Internal Server Error status=500 token=NUy6qnzp
+  FATAL: invalid argument                            
+  section_end:1622019683:upload_artifacts_on_success
+  section_start:1622019683:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622019684:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10112465):
+  [437/439] Linking target tools/i915-perf/i915-perf-configs.
+  [438/439] Linking target tools/i915-perf/i915-perf-reader.
+  [439/439] Linking target tools/i915-perf/i915-perf-recorder.
+  section_end:1622019304:step_script
+  section_start:1622019304:upload_artifacts_on_success
+  Uploading artifacts for successful job
+  Uploading artifacts...
+  build: found 680 matching files and directories    
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112465 responseStatus=500 Internal Server Error status=500 token=Ay86Fka_
+  WARNING: Retrying...                                context=artifacts-uploader error=invalid argument
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112465 responseStatus=500 Internal Server Error status=500 token=Ay86Fka_
+  WARNING: Retrying...                                context=artifacts-uploader error=invalid argument
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112465 responseStatus=500 Internal Server Error status=500 token=Ay86Fka_
+  FATAL: invalid argument                            
+  section_end:1622019503:upload_artifacts_on_success
+  section_start:1622019503:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622019504:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10112459):
+  html/igt-gpu-tools-debugfs.html:1600: warning: no link for: "rcu-barrier" -> (<code class="function">rcu_barrier()</code>).
+  
+  section_end:1622019111:step_script
+  section_start:1622019111:upload_artifacts_on_success
+  Uploading artifacts for successful job
+  Uploading artifacts...
+  build: found 1930 matching files and directories   
+  installdir: found 502 matching files and directories 
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112459 responseStatus=500 Internal Server Error status=500 token=Rcyovedu
+  WARNING: Retrying...                                context=artifacts-uploader error=invalid argument
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112459 responseStatus=502 Bad Gateway status=502 token=Rcyovedu
+  WARNING: Retrying...                                context=artifacts-uploader error=invalid argument
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112459 responseStatus=500 Internal Server Error status=500 token=Rcyovedu
+  FATAL: invalid argument                            
+  section_end:1622019714:upload_artifacts_on_success
+  section_start:1622019714:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622019715:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10112463):
+  [1095/1097] Linking target runner/runner_test.
+  [1096/1097] Compiling C object 'assembler/1ca89e8@@intel-gen4asm@exe/meson-generated_gram.c.o'.
+  [1097/1097] Linking target assembler/intel-gen4asm.
+  section_end:1622019290:step_script
+  section_start:1622019290:upload_artifacts_on_success
+  Uploading artifacts for successful job
+  Uploading artifacts...
+  build: found 1678 matching files and directories   
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112463 responseStatus=500 Internal Server Error status=500 token=zCTDUris
+  WARNING: Retrying...                                context=artifacts-uploader error=invalid argument
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112463 responseStatus=500 Internal Server Error status=500 token=zCTDUris
+  WARNING: Retrying...                                context=artifacts-uploader error=invalid argument
+  WARNING: Uploading artifacts as "archive" to coordinator... failed  id=10112463 responseStatus=500 Internal Server Error status=500 token=zCTDUris
+  FATAL: invalid argument                            
+  section_end:1622019470:upload_artifacts_on_success
+  section_start:1622019470:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622019471:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/326403
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
