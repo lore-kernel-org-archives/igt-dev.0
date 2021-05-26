@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 782E26E497
- for <igt-dev@lists.freedesktop.org>; Wed, 26 May 2021 08:05:31 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-Date: Wed, 26 May 2021 08:05:23 +0000
-Message-ID: <1fd2152361494a3394c868ef0b8efbf9@intel.com>
-References: <20210412165751.25441-1-bhanuprakash.modem@intel.com>
- <20210524045337.GB8620@intel.com>
- <SN6PR11MB3327CC9F029E449A2E33CB458D269@SN6PR11MB3327.namprd11.prod.outlook.com>
-In-Reply-To: <SN6PR11MB3327CC9F029E449A2E33CB458D269@SN6PR11MB3327.namprd11.prod.outlook.com>
-Content-Language: en-US
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E53386E4F4
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 May 2021 08:56:12 +0000 (UTC)
+References: <20210521164637.7306-1-zbigniew.kempczynski@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <e4b22a23-421e-cc77-fd0a-5a1b4354c206@linux.intel.com>
+Date: Wed, 26 May 2021 09:56:08 +0100
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v5 i-g-t] tests/kms_busy: Limit the execution to two
- pipes
+In-Reply-To: <20210521164637.7306-1-zbigniew.kempczynski@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] benchmarks/gem_userptr_benchmark:
+ Remove tests with unsynchronized flag
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,320 +18,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "Latvala,
- Petri" <petri.latvala@intel.com>, "Kunche, Kishore" <kishore.kunche@intel.com>
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-> -----Original Message-----
-> From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> Sent: Monday, May 24, 2021 2:22 PM
-> To: Gupta, Anshuman <anshuman.gupta@intel.com>; igt-
-> dev@lists.freedesktop.org
-> Cc: Joshi, Kunal1 <kunal1.joshi@intel.com>; Latvala, Petri
-> <petri.latvala@intel.com>; Kunche, Kishore <kishore.kunche@intel.com>;
-> Shankar, Uma <uma.shankar@intel.com>; B S, Karthik
-> <karthik.b.s@intel.com>
-> Subject: RE: [igt-dev] [v5 i-g-t] tests/kms_busy: Limit the execution to two
-> pipes
-> 
-> > From: Gupta, Anshuman <anshuman.gupta@intel.com>
-> > Sent: Monday, May 24, 2021 10:24 AM
-> > To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> > Cc: igt-dev@lists.freedesktop.org; Joshi, Kunal1
-> > <kunal1.joshi@intel.com>; Latvala, Petri <petri.latvala@intel.com>;
-> > Kunche, Kishore <kishore.kunche@intel.com>
-> > Subject: Re: [igt-dev] [v5 i-g-t] tests/kms_busy: Limit the execution
-> > to two pipes
-> >
-> > On 2021-04-12 at 22:27:51 +0530, Bhanuprakash Modem wrote:
-> > > As all pipes are symmetric, restrict the execution to two pipes can
-> > > save lot of CI time.
-> > Above statement is not correct, all pipes are not symmetric, AFAIK
-> > PIPE_A has lower power capability with DMC save/restore (low power
-> > single pipe) Which is even extend to PIPE_B on XE_LPD, which adds DMC
-> > save/restore even for PIPE_B as well (low power dual pipe).
-> >
-> > please mention the property of each pipe in commit message, so it can
-> > be known, we should not loose any validation coverage in order to save
-> > CI time.
-> >
-> > This patch doesn't choose distinct crtc's to run the test.
-> 
-> Actually, we are not touching any crtc properties here, these tests will
-> perform "page flip" (or) "modeset" by injecting the HANG.
-> 
-> I am not sure that pipe's power capabilities effects flip/modeset. If it effects,
-> we must find a way to identify distinct CRTCs, else restricting the execution
-> to pipe A & B seems fine to me.
-Above mentioned pipe properties related to power was known to me,
-There can be other distinct pipe properties as well.
-We can can't overlook any pipe power capabilities, and assume it won't impact flip or modeset. 
-We had observed underruns from flips/modeset related test in past.
-In my opinion there is no harm to execute these test on distinct crtc.
-
-Thanks,
-Anshuman.
-  
-> 
-> @Anshuman, Please suggest.
-> 
-> And, sure I'll update the commit message in next rev.
-> 
-> - Bhanu
-> 
-> >
-> > Thanks,
-> > Anshuman Gupta.
-> > >
-> > > If we want to execute on all pipes, we need to pass an extra
-> > > argument "-e" indicates extended.
-> > >
-> > > Example: ./build/tests/kms_busy -e --r basic
-> > >
-> > > V2, V3:
-> > > * Fix the typo in args handler (Petri)
-> > > V4:
-> > > * Handle clampling cleanly (Petri)
-> > > * Restore lost test coverage in the previous version (Petri/Bhanu)
-> > > V5:
-> > > * Fix two subtest with the name "basic" (Petri)
-> > >
-> > > Cc: Karthik B S <karthik.b.s@intel.com>
-> > > Cc: Latvala Petri <petri.latvala@intel.com>
-> > > Cc: Kunche Kishore <kishore.kunche@intel.com>
-> > > Cc: Uma Shankar <uma.shankar@intel.com>
-> > > Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com> (V3)
-> > > Signed-off-by: Bhanuprakash Modem
-> <bhanuprakash.modem@intel.com>
-> > > ---
-> > >  tests/kms_busy.c | 139
-> > > ++++++++++++++++++++++++++++++-----------------
-> > >  1 file changed, 89 insertions(+), 50 deletions(-)
-> > >
-> > > diff --git a/tests/kms_busy.c b/tests/kms_busy.c index
-> > > df1f8e11a..095896db5 100644
-> > > --- a/tests/kms_busy.c
-> > > +++ b/tests/kms_busy.c
-> > > @@ -30,6 +30,11 @@
-> > >
-> > >  IGT_TEST_DESCRIPTION("Basic check of KMS ABI with busy
-> > > framebuffers.");
-> > >
-> > > +/* restricted pipe count */
-> > > +#define CRTC_RESTRICT_CNT 2
-> > > +
-> > > +static bool all_pipes = false;
-> > > +
-> > >  static igt_output_t *
-> > >  set_fb_on_crtc(igt_display_t *dpy, int pipe, struct igt_fb *fb)  {
-> > > @@ -287,10 +292,41 @@ static void
-> > > test_pageflip_modeset_hang(igt_display_t
-> > *dpy, enum pipe pipe)
-> > >  	igt_remove_fb(dpy->drm_fd, &fb);
-> > >  }
-> > >
-> > > -igt_main
-> > > +static int opt_handler(int opt, int opt_index, void *data) {
-> > > +	switch (opt) {
-> > > +		case 'e':
-> > > +			all_pipes = true;
-> > > +			break;
-> > > +		default:
-> > > +			return IGT_OPT_HANDLER_ERROR;
-> > > +	}
-> > > +
-> > > +	return IGT_OPT_HANDLER_SUCCESS;
-> > > +}
-> > > +
-> > > +const char *help_str =
-> > > +	"  -e \tRun on all pipes. (By default subtests will run on two
-> > pipes)\n";
-> > > +
-> > > +igt_main_args("e", NULL, help_str, opt_handler, NULL)
-> > >  {
-> > >  	igt_display_t display = { .drm_fd = -1, .n_pipes = IGT_MAX_PIPES };
-> > > -	enum pipe n;
-> > > +
-> > > +	int crtc_count;
-> > > +	int i;
-> > > +	struct {
-> > > +		const char *name;
-> > > +		bool modeset;
-> > > +		bool hang_newfb;
-> > > +		bool reset;
-> > > +	} tests[] = {
-> > > +		{ "extended-pageflip-hang-oldfb", false, false, false },
-> > > +		{ "extended-pageflip-hang-newfb", false, true, false },
-> > > +		{ "extended-modeset-hang-oldfb", true, false, false },
-> > > +		{ "extended-modeset-hang-newfb", true, true, false },
-> > > +		{ "extended-modeset-hang-oldfb-with-reset", true, false, true
-> },
-> > > +		{ "extended-modeset-hang-newfb-with-reset", true, true,
-> true },
-> > > +	};
-> > >
-> > >  	igt_fixture {
-> > >  		int fd = drm_open_driver_master(DRIVER_INTEL);
-> > > @@ -318,70 +354,73 @@ igt_main
-> > >  		}
-> > >  	}
-> > >
-> > > -	for_each_pipe_static(n) igt_subtest_group {
-> > > -		igt_hang_t hang;
-> > > -
-> > > +	igt_subtest_with_dynamic("basic-hang") {
-> > > +		enum pipe pipe;
-> > > +		igt_output_t *output;
-> > > +		int count = 0;
-> > > +		igt_hang_t hang = igt_allow_hang(display.drm_fd, 0, 0);
-> > >  		errno = 0;
-> > >
-> > > -		igt_fixture {
-> > > -			igt_display_require_output_on_pipe(&display, n);
-> > > -		}
-> > > -
-> > > -		igt_subtest_f("basic-flip-pipe-%s", kmstest_pipe_name(n)) {
-> > > -			test_flip(&display, n, false);
-> > > -		}
-> > > -		igt_subtest_f("basic-modeset-pipe-%s",
-> kmstest_pipe_name(n)) {
-> > > -
-> > > -			test_flip(&display, n, true);
-> > > -		}
-> > > -
-> > > -		igt_fixture {
-> > > -			hang = igt_allow_hang(display.drm_fd, 0, 0);
-> > > -		}
-> > > +		crtc_count = (all_pipes)? display.n_pipes :
-> CRTC_RESTRICT_CNT;
-> > > +		for_each_pipe_with_valid_output(&display, pipe, output) {
-> > > +			igt_dynamic_f("flip-pipe-%s",
-> kmstest_pipe_name(pipe))
-> > > +				test_flip(&display, pipe, false);
-> > > +			igt_dynamic_f("modeset-pipe-%s",
-> kmstest_pipe_name(pipe))
-> > > +				test_flip(&display, pipe, true);
-> > >
-> > > -		igt_subtest_f("extended-pageflip-modeset-hang-oldfb-pipe-
-> %s",
-> > > -			      kmstest_pipe_name(n)) {
-> > > -			test_pageflip_modeset_hang(&display, n);
-> > > +			if (++count >= crtc_count)
-> > > +				break;
-> > >  		}
-> > >
-> > > -		igt_fixture
-> > > -			igt_require(display.is_atomic);
-> > > +		igt_disallow_hang(display.drm_fd, hang);
-> > > +	}
-> > >
-> > > -		igt_subtest_f("extended-pageflip-hang-oldfb-pipe-%s",
-> > > -			      kmstest_pipe_name(n))
-> > > -			test_hang(&display, n, false, false);
-> > > +	igt_subtest_with_dynamic("extended-pageflip-modeset-hang-oldfb")
-> {
-> > > +		enum pipe pipe;
-> > > +		igt_output_t *output;
-> > > +		int count = 0;
-> > > +		igt_hang_t hang = igt_allow_hang(display.drm_fd, 0, 0);
-> > > +		errno = 0;
-> > >
-> > > -		igt_subtest_f("extended-pageflip-hang-newfb-pipe-%s",
-> > > -			      kmstest_pipe_name(n))
-> > > -			test_hang(&display, n, false, true);
-> > > +		crtc_count = (all_pipes)? display.n_pipes :
-> CRTC_RESTRICT_CNT;
-> > > +		for_each_pipe_with_valid_output(&display, pipe, output) {
-> > > +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
-> > > +				test_pageflip_modeset_hang(&display, pipe);
-> > >
-> > > -		igt_subtest_f("extended-modeset-hang-oldfb-pipe-%s",
-> > > -			      kmstest_pipe_name(n))
-> > > -			test_hang(&display, n, true, false);
-> > > +			if (++count >= crtc_count)
-> > > +				break;
-> > > +		}
-> > >
-> > > -		igt_subtest_f("extended-modeset-hang-newfb-pipe-%s",
-> > > -			      kmstest_pipe_name(n))
-> > > -			test_hang(&display, n, true, true);
-> > > +		igt_disallow_hang(display.drm_fd, hang);
-> > > +	}
-> > >
-> > > -		igt_subtest_f("extended-modeset-hang-oldfb-with-reset-
-> pipe-%s",
-> > > -			      kmstest_pipe_name(n)) {
-> > > -			igt_set_module_param_int(display.drm_fd,
-> > "force_reset_modeset_test", 1);
-> > > +	for (i = 0; i < sizeof(tests) / sizeof (tests[0]); i++) {
-> > > +		igt_subtest_with_dynamic(tests[i].name) {
-> > > +			enum pipe pipe;
-> > > +			igt_output_t *output;
-> > > +			int count = 0;
-> > > +			igt_hang_t hang;
-> > > +			errno = 0;
-> > >
-> > > -			test_hang(&display, n, true, false);
-> > > +			igt_require(display.is_atomic);
-> > > +			hang = igt_allow_hang(display.drm_fd, 0, 0);
-> > >
-> > > -			igt_set_module_param_int(display.drm_fd,
-> > "force_reset_modeset_test", 0);
-> > > -		}
-> > > +			crtc_count = (all_pipes)? display.n_pipes :
-> > CRTC_RESTRICT_CNT;
-> > > +			for_each_pipe_with_valid_output(&display, pipe,
-> output) {
-> > > +				igt_dynamic_f("pipe-%s",
-> kmstest_pipe_name(pipe)) {
-> > > +					if (tests[i].reset)
-> > > +
-> 	igt_set_module_param_int(display.drm_fd,
-> > "force_reset_modeset_test", 1);
-> > >
-> > > -		igt_subtest_f("extended-modeset-hang-newfb-with-reset-
-> pipe-%s",
-> > > -			      kmstest_pipe_name(n)) {
-> > > -			igt_set_module_param_int(display.drm_fd,
-> > "force_reset_modeset_test", 1);
-> > > +					test_hang(&display, pipe,
-> tests[i].modeset,
-> > tests[i].hang_newfb);
-> > >
-> > > -			test_hang(&display, n, true, true);
-> > > +					if (tests[i].reset)
-> > > +
-> 	igt_set_module_param_int(display.drm_fd,
-> > "force_reset_modeset_test", 0);
-> > > +				}
-> > >
-> > > -			igt_set_module_param_int(display.drm_fd,
-> > "force_reset_modeset_test", 0);
-> > > -		}
-> > > +				if (++count >= crtc_count)
-> > > +					break;
-> > > +			}
-> > >
-> > > -		igt_fixture {
-> > >  			igt_disallow_hang(display.drm_fd, hang);
-> > >  		}
-> > >  	}
-> > > --
-> > > 2.20.1
-> > >
-> > > _______________________________________________
-> > > igt-dev mailing list
-> > > igt-dev@lists.freedesktop.org
-> > > https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Ck9uIDIxLzA1LzIwMjEgMTc6NDYsIFpiaWduaWV3IEtlbXBjennFhHNraSB3cm90ZToKPiBBcyBm
+bGFnIEk5MTVfVVNFUlBUUl9VTlNZTkNIUk9OSVpFRCBpcyBub3Qgc3VwcG9ydGVkIGJ5IHRoZSBp
+OTE1IGFueW1vcmUKPiByZW1vdmUgdGVzdHMgd2hpY2ggdHJpZXMgdG8gdXNlIGl0IGluIHRoZSBi
+ZW5jaG1hcmsuCj4gCj4gUmVtb3ZlIGJlbmNobWFyayBmcm9tIG1lc29uIGxpYmRybSBkZXBlbmRp
+bmcgY29kZSBhcyBpdCBpcyBhIGxpdHRsZSBiaXQKPiBjb25mdXNpbmcuCj4gCj4gU2lnbmVkLW9m
+Zi1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5j
+b20+Cj4gQ2M6IFR2cnRrbyBVcnN1bGluIDx0dnJ0a28udXJzdWxpbkBpbnRlbC5jb20+Cj4gQ2M6
+IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgoKQWNrZWQtYnk6IFR2cnRr
+byBVcnN1bGluIDx0dnJ0a28udXJzdWxpbkBpbnRlbC5jb20+CgpSZWdhcmRzLAoKVHZydGtvCgo+
+IC0tLQo+ICAgYmVuY2htYXJrcy9nZW1fdXNlcnB0cl9iZW5jaG1hcmsuYyB8IDU0ICsrKysrKyst
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+ICAgYmVuY2htYXJrcy9tZXNvbi5idWlsZCAgICAgICAg
+ICAgICB8ICAyICstCj4gICAyIGZpbGVzIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKyksIDQyIGRl
+bGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS9iZW5jaG1hcmtzL2dlbV91c2VycHRyX2JlbmNo
+bWFyay5jIGIvYmVuY2htYXJrcy9nZW1fdXNlcnB0cl9iZW5jaG1hcmsuYwo+IGluZGV4IGQ3YTQ5
+NTIwOS4uYTg1OTk3Yjg2IDEwMDY0NAo+IC0tLSBhL2JlbmNobWFya3MvZ2VtX3VzZXJwdHJfYmVu
+Y2htYXJrLmMKPiArKysgYi9iZW5jaG1hcmtzL2dlbV91c2VycHRyX2JlbmNobWFyay5jCj4gQEAg
+LTU3LDIwICs1NywxMCBAQAo+ICAgICAjZGVmaW5lIFBBR0VfU0laRSA0MDk2Cj4gICAjZW5kaWYK
+PiAgIAo+IC1zdGF0aWMgdWludDMyX3QgdXNlcnB0cl9mbGFncyA9IEk5MTVfVVNFUlBUUl9VTlNZ
+TkNIUk9OSVpFRDsKPiArc3RhdGljIHVpbnQzMl90IHVzZXJwdHJfZmxhZ3MgPSAwOwo+ICAgCj4g
+ICAjZGVmaW5lIEJPX1NJWkUgKDY1NTM2KQo+ICAgCj4gLXN0YXRpYyB2b2lkIGdlbV91c2VycHRy
+X3Rlc3RfdW5zeW5jaHJvbml6ZWQodm9pZCkKPiAtewo+IC0JdXNlcnB0cl9mbGFncyA9IEk5MTVf
+VVNFUlBUUl9VTlNZTkNIUk9OSVpFRDsKPiAtfQo+IC0KPiAtc3RhdGljIHZvaWQgZ2VtX3VzZXJw
+dHJfdGVzdF9zeW5jaHJvbml6ZWQodm9pZCkKPiAtewo+IC0JdXNlcnB0cl9mbGFncyA9IDA7Cj4g
+LX0KPiAtCj4gICBzdGF0aWMgdm9pZCAqKmhhbmRsZV9wdHJfbWFwOwo+ICAgc3RhdGljIHVuc2ln
+bmVkIGludCBudW1faGFuZGxlX3B0cl9tYXA7Cj4gICAKPiBAQCAtMTI0LDE0ICsxMTQsMTAgQEAg
+c3RhdGljIGludCBoYXNfdXNlcnB0cihpbnQgZmQpCj4gICB7Cj4gICAJdWludDMyX3QgaGFuZGxl
+ID0gMDsKPiAgIAl2b2lkICpwdHI7Cj4gLQl1aW50MzJfdCBvbGRmbGFnczsKPiAgIAlpbnQgcmV0
+Owo+ICAgCj4gICAJYXNzZXJ0KHBvc2l4X21lbWFsaWduKCZwdHIsIFBBR0VfU0laRSwgUEFHRV9T
+SVpFKSA9PSAwKTsKPiAtCW9sZGZsYWdzID0gdXNlcnB0cl9mbGFnczsKPiAtCWdlbV91c2VycHRy
+X3Rlc3RfdW5zeW5jaHJvbml6ZWQoKTsKPiAtCXJldCA9IF9fZ2VtX3VzZXJwdHIoZmQsIHB0ciwg
+UEFHRV9TSVpFLCAwLCB1c2VycHRyX2ZsYWdzLCAmaGFuZGxlKTsKPiAtCXVzZXJwdHJfZmxhZ3Mg
+PSBvbGRmbGFnczsKPiArCXJldCA9IF9fZ2VtX3VzZXJwdHIoZmQsIHB0ciwgUEFHRV9TSVpFLCAw
+LCAwLCAmaGFuZGxlKTsKPiAgIAlpZiAocmV0ICE9IDApIHsKPiAgIAkJZnJlZShwdHIpOwo+ICAg
+CQlyZXR1cm4gMDsKPiBAQCAtNDY0LDMyICs0NTAsMTggQEAgc3RhdGljIHZvaWQgdGVzdF91c2Vy
+cHRyKGludCBmZCkKPiAgIAl0ZXN0X211bHRpcGxlKGZkLCAxMDAsIDEpOwo+ICAgfQo+ICAgCj4g
+LWludCBtYWluKGludCBhcmdjLCBjaGFyICoqYXJndikKPiAraWd0X21haW4KPiAgIHsKPiAgIAlp
+bnQgZmQgPSAtMSwgcmV0Owo+ICAgCj4gLQlpZ3Rfc3VidGVzdF9pbml0KGFyZ2MsIGFyZ3YpOwo+
+IC0KPiAtCWZkID0gZHJtX29wZW5fZHJpdmVyKERSSVZFUl9JTlRFTCk7Cj4gLQlpZ3RfYXNzZXJ0
+KGZkID49IDApOwo+IC0KPiAtCXJldCA9IGhhc191c2VycHRyKGZkKTsKPiAtCWlndF9za2lwX29u
+X2YocmV0ID09IDAsICJObyB1c2VycHRyIHN1cHBvcnQgLSAlcyAoJWQpXG4iLAo+IC0JCQlzdHJl
+cnJvcihlcnJubyksIHJldCk7Cj4gLQo+ICsJaWd0X2ZpeHR1cmUgewo+ICsJCWZkID0gZHJtX29w
+ZW5fZHJpdmVyKERSSVZFUl9JTlRFTCk7Cj4gKwkJaWd0X2Fzc2VydChmZCA+PSAwKTsKPiAgIAo+
+IC0JZ2VtX3VzZXJwdHJfdGVzdF91bnN5bmNocm9uaXplZCgpOwo+IC0KPiAtCWlndF9zdWJ0ZXN0
+KCJ1c2VycHRyLXVuc3luYyIpCj4gLQkJdGVzdF91c2VycHRyKGZkKTsKPiAtCj4gLQlpZ3Rfc3Vi
+dGVzdCgidXNlcnB0ci1pbXBhY3QtdW5zeW5jIikKPiAtCQl0ZXN0X2ltcGFjdChmZCwgInVuc3lu
+Yy0iKTsKPiAtCj4gLQlpZ3Rfc3VidGVzdCgidXNlcnB0ci1pbXBhY3QtdW5zeW5jLW92ZXJsYXAi
+KQo+IC0JCXRlc3RfaW1wYWN0X292ZXJsYXAoZmQsICJ1bnN5bmMtIik7Cj4gLQo+IC0JZ2VtX3Vz
+ZXJwdHJfdGVzdF9zeW5jaHJvbml6ZWQoKTsKPiArCQlyZXQgPSBoYXNfdXNlcnB0cihmZCk7Cj4g
+KwkJaWd0X3NraXBfb25fZihyZXQgPT0gMCwgIk5vIHVzZXJwdHIgc3VwcG9ydCAtICVzICglZClc
+biIsCj4gKwkJCSAgICAgIHN0cmVycm9yKGVycm5vKSwgcmV0KTsKPiArCX0KPiAgIAo+ICAgCWln
+dF9zdWJ0ZXN0KCJ1c2VycHRyLXN5bmMiKQo+ICAgCQl0ZXN0X3VzZXJwdHIoZmQpOwo+IEBAIC01
+MDAsNyArNDcyLDcgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKiphcmd2KQo+ICAgCWlndF9z
+dWJ0ZXN0KCJ1c2VycHRyLWltcGFjdC1zeW5jLW92ZXJsYXAiKQo+ICAgCQl0ZXN0X2ltcGFjdF9v
+dmVybGFwKGZkLCAic3luYy0iKTsKPiAgIAo+IC0JaWd0X2V4aXQoKTsKPiAtCj4gLQlyZXR1cm4g
+MDsKPiArCWlndF9maXh0dXJlIHsKPiArCQljbG9zZShmZCk7Cj4gKwl9Cj4gICB9Cj4gZGlmZiAt
+LWdpdCBhL2JlbmNobWFya3MvbWVzb24uYnVpbGQgYi9iZW5jaG1hcmtzL21lc29uLmJ1aWxkCj4g
+aW5kZXggYmVkZTUxZGNlLi45OGEwOGUyNWMgMTAwNjQ0Cj4gLS0tIGEvYmVuY2htYXJrcy9tZXNv
+bi5idWlsZAo+ICsrKyBiL2JlbmNobWFya3MvbWVzb24uYnVpbGQKPiBAQCAtMTEsNiArMTEsNyBA
+QCBiZW5jaG1hcmtfcHJvZ3MgPSBbCj4gICAJJ2dlbV9wcncnLAo+ICAgCSdnZW1fc2V0X2RvbWFp
+bicsCj4gICAJJ2dlbV9zeXNsYXRlbmN5JywKPiArCSdnZW1fdXNlcnB0cl9iZW5jaG1hcmsnLAo+
+ICAgCSdnZW1fd3NpbScsCj4gICAJJ2ttc192YmxhbmsnLAo+ICAgCSdwcmltZV9sb29rdXAnLAo+
+IEBAIC0yMyw3ICsyNCw2IEBAIGlmIGxpYmRybV9pbnRlbC5mb3VuZCgpCj4gICAJCSdpbnRlbF91
+cGxvYWRfYmxpdF9sYXJnZV9ndHQnLAo+ICAgCQknaW50ZWxfdXBsb2FkX2JsaXRfbGFyZ2VfbWFw
+JywKPiAgIAkJJ2ludGVsX3VwbG9hZF9ibGl0X3NtYWxsJywKPiAtCQknZ2VtX3VzZXJwdHJfYmVu
+Y2htYXJrJywKPiAgIAldCj4gICBlbmRpZgo+ICAgCj4gCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4v
+bGlzdGluZm8vaWd0LWRldgo=
