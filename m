@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6468A6EC1A
- for <igt-dev@lists.freedesktop.org>; Wed, 26 May 2021 07:36:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A6996EC1F
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 May 2021 07:36:36 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Wed, 26 May 2021 12:50:37 +0530
-Message-Id: <20210526072040.2286-3-anshuman.gupta@intel.com>
+Date: Wed, 26 May 2021 12:50:39 +0530
+Message-Id: <20210526072040.2286-5-anshuman.gupta@intel.com>
 In-Reply-To: <20210526072040.2286-1-anshuman.gupta@intel.com>
 References: <20210526072040.2286-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v4 2/5] i915/i915_pm_rpm: optimize
- modeset-pc8-residency-stress test
+Subject: [igt-dev] [PATCH i-g-t v4 4/5] i915/i915_pm_rpm: Add PC10 display
+ off test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,49 +24,75 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-modeset-pc8-residency-stress checks PC8 residency with modeset
-stress. As the platforms followed by SKL can really enter to PC8
-with display-on, it is sufficient to validate PC8 while all displays
-being off with modeset stress.
+Add a test to validate PC10 residencies while all output's
+display is off.
 
-For older platforms like HASWELL/BROADWELL negative testing of PC8
-residency while display being "on" can be removed as it saves CI time
-and there is no ROI of such testing with modeset stress, wait_for_active()
-already covers such coverage.
+v2: used optimum pc10 timeout value.
 
-It will keep the code simpler without any platform checks.
-
-v2: Used optimum pc8 timeout value and commit log changes.
-
-v3: commit log improvements.
-
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- tests/i915/i915_pm_rpm.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ tests/i915/i915_pm_rpm.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 9f5656bb..7a4c9291 100644
+index 2d6cdf05..b7b6938c 100644
 --- a/tests/i915/i915_pm_rpm.c
 +++ b/tests/i915/i915_pm_rpm.c
-@@ -874,7 +874,7 @@ static void modeset_subtest(enum screen_type type, int rounds, int wait_flags)
- 		if (wait_flags & WAIT_STATUS)
- 			igt_assert(wait_for_suspended());
- 		if (wait_flags & WAIT_PC8_RES)
--			igt_assert(pc8_plus_residency_changed(30));
-+			igt_assert(pc8_plus_residency_changed(PC8_TIMEOUT));
- 		if (wait_flags & WAIT_EXTRA)
- 			sleep(5);
+@@ -93,6 +93,7 @@ enum plane_type {
+  * Let's keep 3 seconds timeout for PC8 and 5 seconds for PC10.
+  */
+ #define PC8_TIMEOUT 3
++#define PC10_TIMEOUT 5
  
-@@ -883,8 +883,6 @@ static void modeset_subtest(enum screen_type type, int rounds, int wait_flags)
- 		igt_require(enable_one_screen_with_type(&ms_data, type));
- 		if (wait_flags & WAIT_STATUS)
- 			igt_assert(wait_for_active());
--		if (wait_flags & WAIT_PC8_RES)
--			igt_assert(!pc8_plus_residency_changed(5));
- 		if (wait_flags & WAIT_EXTRA)
- 			sleep(5);
+ int drm_fd, msr_fd, pc8_status_fd;
+ int debugfs;
+@@ -178,6 +179,16 @@ static bool pc8_plus_residency_changed(unsigned int timeout_sec)
+ 			timeout_sec * 1000, 100);
+ }
+ 
++static bool pc10_residency_changed(unsigned int timeout_sec)
++{
++	uint64_t res_pc10;
++
++	res_pc10 = get_residency(MSR_PC10_RES);
++
++	return igt_wait(res_pc10 != get_residency(MSR_PC10_RES),
++			timeout_sec * 1000, 100);
++}
++
+ static enum pc8_status get_pc8_status(void)
+ {
+ 	ssize_t n_read;
+@@ -855,6 +866,19 @@ static void pc8_residency_subtest(bool display_on)
  	}
+ }
+ 
++static void pc10_residency_subtest(bool display_on)
++{
++	igt_require(has_pc8);
++	igt_require(AT_LEAST_GEN(ms_data.devid, 9));
++
++	if (!display_on) {
++		/* Make sure PC10 residencies move! */
++		disable_all_screens_and_wait(&ms_data);
++		igt_assert_f(pc10_residency_changed(PC10_TIMEOUT),
++			     "Machine is not reaching PC10 state with all screens disabled.\n");
++	}
++}
++
+ static void modeset_subtest(enum screen_type type, int rounds, int wait_flags)
+ {
+ 	int i;
+@@ -2089,6 +2113,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		pc8_residency_subtest(true);
+ 	igt_subtest("pc8-residency-display-off")
+ 		pc8_residency_subtest(false);
++	igt_subtest("pc10-residency-display-off")
++		pc10_residency_subtest(false);
+ 	igt_subtest("debugfs-read")
+ 		debugfs_read_subtest();
+ 	igt_subtest("debugfs-forcewake-user")
 -- 
 2.26.2
 
