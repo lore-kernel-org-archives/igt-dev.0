@@ -1,15 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Thu, 27 May 2021 15:13:23 +0000
-Message-ID: <BY5PR11MB4372257B0B11DB05E40EBF4D89239@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <1621570131-23943-1-git-send-email-vidya.srinivas@intel.com>
- <20210527143128.25366-1-vidya.srinivas@intel.com>
- <2960bd68-52c5-9129-5acb-4473007b84a6@gmail.com>
-In-Reply-To: <2960bd68-52c5-9129-5acb-4473007b84a6@gmail.com>
-Content-Language: en-US
+From: Vidya Srinivas <vidya.srinivas@intel.com>
+Date: Thu, 27 May 2021 20:35:51 +0530
+Message-Id: <20210527150551.18392-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 4/4] [RFC] tests/kms_big_fb: Wait for vblank
- before collecting CRC
+Subject: [igt-dev] [PATCH] [RFC] tests/kms_flip: Some Gen11 systems are not
+ able to get RTC WAKE work well. SUSPEND_TEST_NONE goes to RTC Wake. Instead
+ change it to SUSPEND_TEST_PLATFORM.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,94 +17,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Lin, Charlton" <charlton.lin@intel.com>
+To: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
+Cc: charlton.lin@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hello Juha-Pekka,
+Change-Id: I80930185a8799578bbec0123a389074af1edfb5d
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+---
+ tests/kms_flip.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I am sorry, this is not needed.
-Thank you so much.
-
-Regards
-Vidya
-
------Original Message-----
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com> 
-Sent: Thursday, May 27, 2021 8:40 PM
-To: Srinivas, Vidya <vidya.srinivas@intel.com>; intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
-Cc: Lin, Charlton <charlton.lin@intel.com>
-Subject: Re: [igt-dev] [PATCH 4/4] [RFC] tests/kms_big_fb: Wait for vblank before collecting CRC
-
-On 27.5.2021 17.31, Vidya Srinivas wrote:
-> Without wait for vblank, CRC mismatch is seen between big and small 
-> CRC on some intel Gen11 platforms.
-> 
-> Change-Id: I3bec931aa901130997e693ac1cacf389e2a8100f
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> ---
->   tests/kms_big_fb.c | 10 +++++++---
->   1 file changed, 7 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c index 
-> b2027b6b9d1b..da682593429b 100644
-> --- a/tests/kms_big_fb.c
-> +++ b/tests/kms_big_fb.c
-> @@ -254,6 +254,7 @@ static void unset_lut(data_t *data)
->   static bool test_plane(data_t *data)
->   {
->   	igt_plane_t *plane = data->plane;
-> +	igt_display_t *display = &data->display;
->   	struct igt_fb *small_fb = &data->small_fb;
->   	struct igt_fb *big_fb = &data->big_fb;
->   	int w = data->big_fb_width - small_fb->width; @@ -269,6 +270,7 @@ 
-> static bool test_plane(data_t *data)
->   		{ w / 3, h * 3 / 4, },
->   		{ w, h, },
->   	};
-> +	bool check_platform_intel = is_i915_device(data->drm_fd);
-
-You will not need to do this. This test start with
-
-drm_open_driver_master(DRIVER_INTEL)
-
-hence will always be only on intel device.
-
->   
->   	if (!igt_plane_has_format_mod(plane, data->format, data->modifier))
->   		return false;
-> @@ -336,17 +338,19 @@ static bool test_plane(data_t *data)
->   
->   		igt_display_commit2(&data->display, data->display.is_atomic ?
->   				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
-> -
-> -
-> +		if (check_platform_intel)
-> +			igt_wait_for_vblank(data->drm_fd, 
-> +display->pipes[data->pipe].crtc_offset);
-
-Above this line there's flip to different framebuffer and below this line there's restart of crc collection before get any crc. If there's need to wait a vblank at this place to get matching crcs the actual bug is somewhere else.
-
->   		igt_pipe_crc_collect_crc(data->pipe_crc, &small_crc);
->   
->   		igt_plane_set_fb(plane, big_fb);
->   		igt_fb_set_position(big_fb, plane, x, y);
->   		igt_fb_set_size(big_fb, plane, small_fb->width, small_fb->height);
-> +
->   		igt_plane_set_size(plane, data->width, data->height);
->   		igt_display_commit2(&data->display, data->display.is_atomic ?
->   				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
-> -
-> +		if (check_platform_intel)
-> +			igt_wait_for_vblank(data->drm_fd, 
-> +display->pipes[data->pipe].crtc_offset);
-
-Here it's the same story as above.
-
->   		igt_pipe_crc_collect_crc(data->pipe_crc, &big_crc);
->   
->   		igt_plane_set_fb(plane, NULL);
-> 
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index 64907c2c17a5..4d45dd77e9d9 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -835,7 +835,7 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
+ 
+ 	if (o->flags & TEST_SUSPEND)
+ 		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+-					      SUSPEND_TEST_NONE);
++					      SUSPEND_TEST_PLATFORM);
+ 
+ 	if (do_vblank && (o->flags & TEST_EINVAL) && o->vblank_state.count > 0)
+ 		igt_assert(do_wait_for_vblank(o, o->pipe, target_seq, &vbl_reply)
+-- 
+2.26.2
 
 _______________________________________________
 igt-dev mailing list
