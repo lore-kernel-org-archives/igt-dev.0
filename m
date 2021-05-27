@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com
- [IPv6:2a00:1450:4864:20::62b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A32696E11F
- for <igt-dev@lists.freedesktop.org>; Thu, 27 May 2021 14:07:40 +0000 (UTC)
-Received: by mail-ej1-x62b.google.com with SMTP id lg14so261243ejb.9
- for <igt-dev@lists.freedesktop.org>; Thu, 27 May 2021 07:07:40 -0700 (PDT)
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Thu, 27 May 2021 16:07:32 +0200
-Message-Id: <20210527140732.5762-1-daniel.vetter@ffwll.ch>
+From: Vidya Srinivas <vidya.srinivas@intel.com>
+Date: Thu, 27 May 2021 20:01:28 +0530
+Message-Id: <20210527143128.25366-1-vidya.srinivas@intel.com>
+In-Reply-To: <1621570131-23943-1-git-send-email-vidya.srinivas@intel.com>
+References: <1621570131-23943-1-git-send-email-vidya.srinivas@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/vgem_basic: Fix unload testcase
+Subject: [igt-dev] [PATCH 4/4] [RFC] tests/kms_big_fb: Wait for vblank
+ before collecting CRC
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,56 +18,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: IGT development <igt-dev@lists.freedesktop.org>
-Cc: Daniel Vetter <daniel.vetter@intel.com>
+To: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
+Cc: charlton.lin@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-An mmap _should_ keep the module alive.
+Without wait for vblank, CRC mismatch is seen
+between big and small CRC on some intel Gen11 platforms.
 
-This reverts
-
-commit 8abe91985b30f8a26cdcb6816d2393956f171ea5
-Author: Chris Wilson <chris@chris-wilson.co.uk>
-Date:   Wed Oct 5 14:40:16 2016 +0100
-
-    igt/vgem_basic: Allow mmap() to persist without the vgem module loaded
-
-With real drivers there is usually more than just shmem around, so
-encoding this as some kind of expectation just doesn't make sense at
-all.
-
-Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+Change-Id: I3bec931aa901130997e693ac1cacf389e2a8100f
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 ---
- tests/vgem_basic.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tests/kms_big_fb.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tests/vgem_basic.c b/tests/vgem_basic.c
-index 526636dd1772..57c575e2e51b 100644
---- a/tests/vgem_basic.c
-+++ b/tests/vgem_basic.c
-@@ -382,14 +382,18 @@ static void test_unload(void)
- 	close(dmabuf);
+diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
+index b2027b6b9d1b..da682593429b 100644
+--- a/tests/kms_big_fb.c
++++ b/tests/kms_big_fb.c
+@@ -254,6 +254,7 @@ static void unset_lut(data_t *data)
+ static bool test_plane(data_t *data)
+ {
+ 	igt_plane_t *plane = data->plane;
++	igt_display_t *display = &data->display;
+ 	struct igt_fb *small_fb = &data->small_fb;
+ 	struct igt_fb *big_fb = &data->big_fb;
+ 	int w = data->big_fb_width - small_fb->width;
+@@ -269,6 +270,7 @@ static bool test_plane(data_t *data)
+ 		{ w / 3, h * 3 / 4, },
+ 		{ w, h, },
+ 	};
++	bool check_platform_intel = is_i915_device(data->drm_fd);
  
- 	/* Although closed, the mmap should keep the dmabuf/module alive */
--	igt_assert_f(module_unload() == 0,
--		     "A mmap should not keep the module alive\n");
-+	igt_assert_f(module_unload() != 0,
-+		     "A mmap should keep the module alive\n");
+ 	if (!igt_plane_has_format_mod(plane, data->format, data->modifier))
+ 		return false;
+@@ -336,17 +338,19 @@ static bool test_plane(data_t *data)
  
- 	for (int page = 0; page < bo.size >> 12; page++)
- 		ptr[1024*page + page%1024] = page;
+ 		igt_display_commit2(&data->display, data->display.is_atomic ?
+ 				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
+-
+-
++		if (check_platform_intel)
++			igt_wait_for_vblank(data->drm_fd, display->pipes[data->pipe].crtc_offset);
+ 		igt_pipe_crc_collect_crc(data->pipe_crc, &small_crc);
  
- 	/* And finally we should have no more uses on the module. */
- 	munmap(ptr, bo.size);
+ 		igt_plane_set_fb(plane, big_fb);
+ 		igt_fb_set_position(big_fb, plane, x, y);
+ 		igt_fb_set_size(big_fb, plane, small_fb->width, small_fb->height);
 +
-+	igt_assert_f(module_unload() == 0,
-+		     "No mmap anymore, should be able to unload\n");
-+
- }
+ 		igt_plane_set_size(plane, data->width, data->height);
+ 		igt_display_commit2(&data->display, data->display.is_atomic ?
+ 				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
+-
++		if (check_platform_intel)
++			igt_wait_for_vblank(data->drm_fd, display->pipes[data->pipe].crtc_offset);
+ 		igt_pipe_crc_collect_crc(data->pipe_crc, &big_crc);
  
- static bool has_prime_export(int fd)
+ 		igt_plane_set_fb(plane, NULL);
 -- 
-2.24.1
+2.26.2
 
 _______________________________________________
 igt-dev mailing list
