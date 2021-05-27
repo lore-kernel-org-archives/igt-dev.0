@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Thu, 27 May 2021 20:39:24 +0530
-Message-Id: <20210527150924.18726-1-vidya.srinivas@intel.com>
-In-Reply-To: <20210527143128.25366-1-vidya.srinivas@intel.com>
-References: <20210527143128.25366-1-vidya.srinivas@intel.com>
-MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] [RFC] tests/kms_big_fb: Wait for vblank before
- collecting CRC
+Date: Thu, 27 May 2021 20:50:45 +0530
+Message-Id: <1622128845-6644-1-git-send-email-vidya.srinivas@intel.com>
+In-Reply-To: <20210527150551.18392-1-vidya.srinivas@intel.com>
+References: <20210527150551.18392-1-vidya.srinivas@intel.com>
+Subject: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_flip: Some Gen11 systems
+ are not able to get RTC WAKE work well. SUSPEND_TEST_NONE goes to RTC Wake.
+ Instead change it to SUSPEND_TEST_PLATFORM.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,6 +14,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
@@ -22,49 +23,28 @@ To: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
 Cc: charlton.lin@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Without wait for vblank, CRC mismatch is seen between
-big and small CRC on some Gen11 systems
-
-Change-Id: I3bec931aa901130997e693ac1cacf389e2a8100f
+Change-Id: I80930185a8799578bbec0123a389074af1edfb5d
 Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 ---
- tests/kms_big_fb.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tests/kms_flip.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
-index b2027b6b9d1b..7d78ff829d41 100644
---- a/tests/kms_big_fb.c
-+++ b/tests/kms_big_fb.c
-@@ -254,6 +254,7 @@ static void unset_lut(data_t *data)
- static bool test_plane(data_t *data)
- {
- 	igt_plane_t *plane = data->plane;
-+	igt_display_t *display = &data->display;
- 	struct igt_fb *small_fb = &data->small_fb;
- 	struct igt_fb *big_fb = &data->big_fb;
- 	int w = data->big_fb_width - small_fb->width;
-@@ -337,16 +338,17 @@ static bool test_plane(data_t *data)
- 		igt_display_commit2(&data->display, data->display.is_atomic ?
- 				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index 64907c2c17a5..42a3048cc11a 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -835,7 +835,8 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
  
--
-+		igt_wait_for_vblank(data->drm_fd, display->pipes[data->pipe].crtc_offset);
- 		igt_pipe_crc_collect_crc(data->pipe_crc, &small_crc);
+ 	if (o->flags & TEST_SUSPEND)
+ 		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+-					      SUSPEND_TEST_NONE);
++					      is_i915_device(drm_fd)?
++					      SUSPEND_TEST_PLATFORM:SUSPEND_TEST_NONE);
  
- 		igt_plane_set_fb(plane, big_fb);
- 		igt_fb_set_position(big_fb, plane, x, y);
- 		igt_fb_set_size(big_fb, plane, small_fb->width, small_fb->height);
-+
- 		igt_plane_set_size(plane, data->width, data->height);
- 		igt_display_commit2(&data->display, data->display.is_atomic ?
- 				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
--
-+		igt_wait_for_vblank(data->drm_fd, display->pipes[data->pipe].crtc_offset);
- 		igt_pipe_crc_collect_crc(data->pipe_crc, &big_crc);
- 
- 		igt_plane_set_fb(plane, NULL);
+ 	if (do_vblank && (o->flags & TEST_EINVAL) && o->vblank_state.count > 0)
+ 		igt_assert(do_wait_for_vblank(o, o->pipe, target_seq, &vbl_reply)
 -- 
-2.26.2
+2.7.4
 
 _______________________________________________
 igt-dev mailing list
