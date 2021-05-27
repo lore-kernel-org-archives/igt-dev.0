@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com
- [IPv6:2a00:1450:4864:20::42c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E6CA6E03B
- for <igt-dev@lists.freedesktop.org>; Thu, 27 May 2021 12:20:51 +0000 (UTC)
-Received: by mail-wr1-x42c.google.com with SMTP id z17so4535422wrq.7
- for <igt-dev@lists.freedesktop.org>; Thu, 27 May 2021 05:20:51 -0700 (PDT)
-References: <20210526101844.1033711-1-mika.kahola@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <022a72f2-39e7-6dbc-ff27-d95753f7c51f@gmail.com>
-Date: Thu, 27 May 2021 15:20:44 +0300
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com
+ [IPv6:2a00:1450:4864:20::62b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A32696E11F
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 May 2021 14:07:40 +0000 (UTC)
+Received: by mail-ej1-x62b.google.com with SMTP id lg14so261243ejb.9
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 May 2021 07:07:40 -0700 (PDT)
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
+Date: Thu, 27 May 2021 16:07:32 +0200
+Message-Id: <20210527140732.5762-1-daniel.vetter@ffwll.ch>
 MIME-Version: 1.0
-In-Reply-To: <20210526101844.1033711-1-mika.kahola@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_lowres: Use lowest mode
- for testing
+Subject: [igt-dev] [PATCH i-g-t] tests/vgem_basic: Fix unload testcase
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,76 +17,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mika Kahola <mika.kahola@intel.com>, igt-dev@lists.freedesktop.org
+To: IGT development <igt-dev@lists.freedesktop.org>
+Cc: Daniel Vetter <daniel.vetter@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+An mmap _should_ keep the module alive.
 
-On 26.5.2021 13.18, Mika Kahola wrote:
-> Search and use the lowest possible mode, when switching resolutions
-> from the default to the lowest mode and back.
-> 
-> While at it, reset display after each subtest run.
-> 
-> Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-> ---
->   tests/kms_plane_lowres.c | 23 ++++++++++-------------
->   1 file changed, 10 insertions(+), 13 deletions(-)
-> 
-> diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
-> index 43cc4250d..b876162b3 100644
-> --- a/tests/kms_plane_lowres.c
-> +++ b/tests/kms_plane_lowres.c
-> @@ -59,26 +59,21 @@ get_lowres_mode(int drmfd, igt_output_t *output,
->   		const drmModeModeInfo *mode_default)
->   {
->   	const drmModeModeInfo *mode;
-> -	bool found = false;
-> -	int limit = mode_default->vdisplay - SIZE;
-> +	const drmModeModeInfo *min;
->   	int j;
->   
-> +        /* search for lowest mode */
-> +        min = mode_default;
->   	for (j = 0; j < output->config.connector->count_modes; j++) {
->   		mode = &output->config.connector->modes[j];
-> -		if (mode->vdisplay < limit) {
-> -			found = true;
-> -			break;
-> -		}
-> +		if (mode->vdisplay < min->vdisplay)
-> +			min = mode;
->   	}
->   
-> -	if (!found) {
-> -		igt_require_f(mode_default->vdisplay - SIZE > 768,
-> -			      "Current mode not tall enough; plane would still be onscreen after switch to 10x7.\n");
-> +	igt_require_f(mode_default->vdisplay - min->vdisplay > 2 * SIZE,
-> +		      "Current mode not tall enough; plane would still be onscreen after switching to lowest mode.\n");
->   
-> -		return *igt_std_1024_mode_get();
-> -	}
-> -
-> -	return *mode;
-> +	return *min;
->   }
->   
->   static igt_plane_t *first_sdr_plane(igt_output_t *output, uint32_t devid)
-> @@ -250,6 +245,8 @@ test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane, uint64_t modif
->   	igt_remove_fb(data->drm_fd, &data->ref_hires.fb);
->   	igt_remove_fb(data->drm_fd, &data->ref_lowres.fb);
->   
-> +	igt_display_reset(&data->display);
-> +
->   	return tested;
->   }
->   
-> 
+This reverts
+
+commit 8abe91985b30f8a26cdcb6816d2393956f171ea5
+Author: Chris Wilson <chris@chris-wilson.co.uk>
+Date:   Wed Oct 5 14:40:16 2016 +0100
+
+    igt/vgem_basic: Allow mmap() to persist without the vgem module loaded
+
+With real drivers there is usually more than just shmem around, so
+encoding this as some kind of expectation just doesn't make sense at
+all.
+
+Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+---
+ tests/vgem_basic.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/tests/vgem_basic.c b/tests/vgem_basic.c
+index 526636dd1772..57c575e2e51b 100644
+--- a/tests/vgem_basic.c
++++ b/tests/vgem_basic.c
+@@ -382,14 +382,18 @@ static void test_unload(void)
+ 	close(dmabuf);
+ 
+ 	/* Although closed, the mmap should keep the dmabuf/module alive */
+-	igt_assert_f(module_unload() == 0,
+-		     "A mmap should not keep the module alive\n");
++	igt_assert_f(module_unload() != 0,
++		     "A mmap should keep the module alive\n");
+ 
+ 	for (int page = 0; page < bo.size >> 12; page++)
+ 		ptr[1024*page + page%1024] = page;
+ 
+ 	/* And finally we should have no more uses on the module. */
+ 	munmap(ptr, bo.size);
++
++	igt_assert_f(module_unload() == 0,
++		     "No mmap anymore, should be able to unload\n");
++
+ }
+ 
+ static bool has_prime_export(int fd)
+-- 
+2.24.1
 
 _______________________________________________
 igt-dev mailing list
