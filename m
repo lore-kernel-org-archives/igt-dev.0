@@ -1,83 +1,63 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Thu, 27 May 2021 20:01:28 +0530
-Message-Id: <20210527143128.25366-1-vidya.srinivas@intel.com>
-In-Reply-To: <1621570131-23943-1-git-send-email-vidya.srinivas@intel.com>
-References: <1621570131-23943-1-git-send-email-vidya.srinivas@intel.com>
+Date: Thu, 27 May 2021 20:02:14 +0530
+Message-Id: <20210527143214.25486-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 4/4] [RFC] tests/kms_big_fb: Wait for vblank
- before collecting CRC
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Subject: [Intel-gfx] [PATCH 1/4] [RFC] tests/drm_read: Fix subtest
+ invalid-buffer
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
 To: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
-Cc: charlton.lin@intel.com
+Cc: markyacoub@chromium.org, charlton.lin@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Without wait for vblank, CRC mismatch is seen
-between big and small CRC on some intel Gen11 platforms.
+Using (void *)-1 directly in read is aborting on chrome systems.
+Following message is seen.
 
-Change-Id: I3bec931aa901130997e693ac1cacf389e2a8100f
+Starting subtest: invalid-buffer
+*** buffer overflow detected ***: terminated
+Received signal SIGABRT.
+Stack trace:
+Aborted (core dumped)
+
+Patch just adds a pointer variable and uses it in read.
+
 Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+Change-Id: I97f129e586bf9212eb0a63a4cd4c91e0327dd550
 ---
- tests/kms_big_fb.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tests/drm_read.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
-index b2027b6b9d1b..da682593429b 100644
---- a/tests/kms_big_fb.c
-+++ b/tests/kms_big_fb.c
-@@ -254,6 +254,7 @@ static void unset_lut(data_t *data)
- static bool test_plane(data_t *data)
+diff --git a/tests/drm_read.c b/tests/drm_read.c
+index ccf9d822fd8d..2fdec5be4078 100644
+--- a/tests/drm_read.c
++++ b/tests/drm_read.c
+@@ -103,10 +103,11 @@ static void teardown(int fd)
+ static void test_invalid_buffer(int in)
  {
- 	igt_plane_t *plane = data->plane;
-+	igt_display_t *display = &data->display;
- 	struct igt_fb *small_fb = &data->small_fb;
- 	struct igt_fb *big_fb = &data->big_fb;
- 	int w = data->big_fb_width - small_fb->width;
-@@ -269,6 +270,7 @@ static bool test_plane(data_t *data)
- 		{ w / 3, h * 3 / 4, },
- 		{ w, h, },
- 	};
-+	bool check_platform_intel = is_i915_device(data->drm_fd);
+ 	int fd = setup(in, 0);
++	void *add = (void *)-1;
  
- 	if (!igt_plane_has_format_mod(plane, data->format, data->modifier))
- 		return false;
-@@ -336,17 +338,19 @@ static bool test_plane(data_t *data)
+ 	alarm(1);
  
- 		igt_display_commit2(&data->display, data->display.is_atomic ?
- 				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
--
--
-+		if (check_platform_intel)
-+			igt_wait_for_vblank(data->drm_fd, display->pipes[data->pipe].crtc_offset);
- 		igt_pipe_crc_collect_crc(data->pipe_crc, &small_crc);
+-	igt_assert_eq(read(fd, (void *)-1, 4096), -1);
++	igt_assert_eq(read(fd, add, 4096), -1);
+ 	igt_assert_eq(errno, EFAULT);
  
- 		igt_plane_set_fb(plane, big_fb);
- 		igt_fb_set_position(big_fb, plane, x, y);
- 		igt_fb_set_size(big_fb, plane, small_fb->width, small_fb->height);
-+
- 		igt_plane_set_size(plane, data->width, data->height);
- 		igt_display_commit2(&data->display, data->display.is_atomic ?
- 				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
--
-+		if (check_platform_intel)
-+			igt_wait_for_vblank(data->drm_fd, display->pipes[data->pipe].crtc_offset);
- 		igt_pipe_crc_collect_crc(data->pipe_crc, &big_crc);
- 
- 		igt_plane_set_fb(plane, NULL);
+ 	teardown(fd);
 -- 
 2.26.2
 
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
