@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Date: Thu, 27 May 2021 15:13:23 +0000
+Message-ID: <BY5PR11MB4372257B0B11DB05E40EBF4D89239@BY5PR11MB4372.namprd11.prod.outlook.com>
 References: <1621570131-23943-1-git-send-email-vidya.srinivas@intel.com>
  <20210527143128.25366-1-vidya.srinivas@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <2960bd68-52c5-9129-5acb-4473007b84a6@gmail.com>
-Date: Thu, 27 May 2021 18:09:53 +0300
-MIME-Version: 1.0
-In-Reply-To: <20210527143128.25366-1-vidya.srinivas@intel.com>
+ <2960bd68-52c5-9129-5acb-4473007b84a6@gmail.com>
+In-Reply-To: <2960bd68-52c5-9129-5acb-4473007b84a6@gmail.com>
 Content-Language: en-US
+MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH 4/4] [RFC] tests/kms_big_fb: Wait for vblank
  before collecting CRC
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -16,18 +17,32 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Vidya Srinivas <vidya.srinivas@intel.com>, intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
-Cc: charlton.lin@intel.com
+To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Lin, Charlton" <charlton.lin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hello Juha-Pekka,
+
+I am sorry, this is not needed.
+Thank you so much.
+
+Regards
+Vidya
+
+-----Original Message-----
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com> 
+Sent: Thursday, May 27, 2021 8:40 PM
+To: Srinivas, Vidya <vidya.srinivas@intel.com>; intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
+Cc: Lin, Charlton <charlton.lin@intel.com>
+Subject: Re: [igt-dev] [PATCH 4/4] [RFC] tests/kms_big_fb: Wait for vblank before collecting CRC
+
 On 27.5.2021 17.31, Vidya Srinivas wrote:
-> Without wait for vblank, CRC mismatch is seen
-> between big and small CRC on some intel Gen11 platforms.
+> Without wait for vblank, CRC mismatch is seen between big and small 
+> CRC on some intel Gen11 platforms.
 > 
 > Change-Id: I3bec931aa901130997e693ac1cacf389e2a8100f
 > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
@@ -35,8 +50,8 @@ On 27.5.2021 17.31, Vidya Srinivas wrote:
 >   tests/kms_big_fb.c | 10 +++++++---
 >   1 file changed, 7 insertions(+), 3 deletions(-)
 > 
-> diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
-> index b2027b6b9d1b..da682593429b 100644
+> diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c index 
+> b2027b6b9d1b..da682593429b 100644
 > --- a/tests/kms_big_fb.c
 > +++ b/tests/kms_big_fb.c
 > @@ -254,6 +254,7 @@ static void unset_lut(data_t *data)
@@ -46,8 +61,8 @@ On 27.5.2021 17.31, Vidya Srinivas wrote:
 > +	igt_display_t *display = &data->display;
 >   	struct igt_fb *small_fb = &data->small_fb;
 >   	struct igt_fb *big_fb = &data->big_fb;
->   	int w = data->big_fb_width - small_fb->width;
-> @@ -269,6 +270,7 @@ static bool test_plane(data_t *data)
+>   	int w = data->big_fb_width - small_fb->width; @@ -269,6 +270,7 @@ 
+> static bool test_plane(data_t *data)
 >   		{ w / 3, h * 3 / 4, },
 >   		{ w, h, },
 >   	};
@@ -69,12 +84,10 @@ hence will always be only on intel device.
 > -
 > -
 > +		if (check_platform_intel)
-> +			igt_wait_for_vblank(data->drm_fd, display->pipes[data->pipe].crtc_offset);
+> +			igt_wait_for_vblank(data->drm_fd, 
+> +display->pipes[data->pipe].crtc_offset);
 
-Above this line there's flip to different framebuffer and below this 
-line there's restart of crc collection before get any crc. If there's 
-need to wait a vblank at this place to get matching crcs the actual bug 
-is somewhere else.
+Above this line there's flip to different framebuffer and below this line there's restart of crc collection before get any crc. If there's need to wait a vblank at this place to get matching crcs the actual bug is somewhere else.
 
 >   		igt_pipe_crc_collect_crc(data->pipe_crc, &small_crc);
 >   
@@ -87,7 +100,8 @@ is somewhere else.
 >   				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
 > -
 > +		if (check_platform_intel)
-> +			igt_wait_for_vblank(data->drm_fd, display->pipes[data->pipe].crtc_offset);
+> +			igt_wait_for_vblank(data->drm_fd, 
+> +display->pipes[data->pipe].crtc_offset);
 
 Here it's the same story as above.
 
