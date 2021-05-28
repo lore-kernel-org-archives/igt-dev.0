@@ -1,9 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Fri, 28 May 2021 10:04:03 +0530
-Message-Id: <1622176443-12682-1-git-send-email-vidya.srinivas@intel.com>
-Subject: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_prime: Aligned pitch to 64
- byte for Intel platforms
+Date: Fri, 28 May 2021 10:05:43 +0530
+Message-Id: <1622176543-12759-1-git-send-email-vidya.srinivas@intel.com>
+Subject: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_color: Fix pipe degamma
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,48 +20,70 @@ To: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
 Cc: charlton.lin@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For Intel platforms, pitch needs to be 64 byte aligned.
-Kernel code vgem_gem_dumb_create which is platform generic code
-doesnt do the alignment. This causes frame buffer creation to fail
-on Intel platforms where the pitch is not 64 byte aligned.
-
-tests: test run on Intel platforms with panel resolution 1366x768
+We need to collect CRC with no degamma transformation
+and after drawing gradient with degamma LUT.
+This patch makes subtest pipe degamma code
+similar to pipe gamma is written.
 
 Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 ---
- tests/kms_prime.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tests/kms_color.c | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-index 8cb2ca2a9dc3..fdc941fe8100 100644
---- a/tests/kms_prime.c
-+++ b/tests/kms_prime.c
-@@ -51,6 +51,8 @@ static struct {
- 	{ .r = 1.0, .g = 0.0, .b = 0.0, .color = 0xffff0000 },
- };
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 3a42532a5c27..2d55f2611e72 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -31,8 +31,7 @@ static void test_pipe_degamma(data_t *data,
+ {
+ 	igt_output_t *output;
+ 	igt_display_t *display = &data->display;
+-	gamma_lut_t *degamma_linear, *degamma_full;
+-	gamma_lut_t *gamma_linear;
++	gamma_lut_t *degamma_full;
+ 	color_t red_green_blue[] = {
+ 		{ 1.0, 0.0, 0.0 },
+ 		{ 0.0, 1.0, 0.0 },
+@@ -42,11 +41,8 @@ static void test_pipe_degamma(data_t *data,
+ 	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT));
+ 	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
  
-+bool check_platform;
-+
- IGT_TEST_DESCRIPTION("Prime tests, focusing on KMS side");
+-	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+ 	degamma_full = generate_table_max(data->degamma_lut_size);
  
- static bool has_prime_import(int fd)
-@@ -101,7 +103,7 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
- 	scratch->bpp = 32;
+-	gamma_linear = generate_table(data->gamma_lut_size, 1.0);
+-
+ 	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe, output) {
+ 		drmModeModeInfo *mode;
+ 		struct igt_fb fb_modeset, fb;
+@@ -75,8 +71,7 @@ static void test_pipe_degamma(data_t *data,
  
- 	scratch->handle = kmstest_dumb_create(exporter_fd,
--			scratch->width,
-+			check_platform? ALIGN(scratch->width, 64): scratch->width,
- 			scratch->height,
- 			scratch->bpp,
- 			&scratch->pitch,
-@@ -262,6 +264,7 @@ igt_main
+ 		igt_plane_set_fb(primary, &fb_modeset);
+ 		disable_ctm(primary->pipe);
+-		disable_degamma(primary->pipe);
+-		set_gamma(data, primary->pipe, gamma_linear);
++		set_degamma(data, primary->pipe, degamma_full);
+ 		igt_display_commit(&data->display);
  
- 		/* ANY = anything that is not VGEM */
- 		first_fd = __drm_open_driver_another(0, DRIVER_ANY | DRIVER_VGEM);
-+		check_platform = is_i915_device(first_fd);
- 		igt_require(first_fd >= 0);
+ 		/* Draw solid colors with no degamma transformation. */
+@@ -92,7 +87,6 @@ static void test_pipe_degamma(data_t *data,
+ 		 */
+ 		paint_gradient_rectangles(data, mode, red_green_blue, &fb);
+ 		igt_plane_set_fb(primary, &fb);
+-		set_degamma(data, primary->pipe, degamma_full);
+ 		igt_display_commit(&data->display);
+ 		igt_wait_for_vblank(data->drm_fd,
+ 				display->pipes[primary->pipe->pipe].crtc_offset);
+@@ -109,9 +103,7 @@ static void test_pipe_degamma(data_t *data,
+ 		igt_remove_fb(data->drm_fd, &fb_modeset);
+ 	}
  
- 		second_fd = __drm_open_driver_another(1, DRIVER_ANY | DRIVER_VGEM);
+-	free_lut(degamma_linear);
+ 	free_lut(degamma_full);
+-	free_lut(gamma_linear);
+ }
+ 
+ /*
 -- 
 2.7.4
 
