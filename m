@@ -1,9 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Fri, 28 May 2021 09:57:05 +0530
-Message-Id: <1622176025-12499-1-git-send-email-vidya.srinivas@intel.com>
-Subject: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_big_fb: Wait for vblank
- before collecting CRC
+Date: Fri, 28 May 2021 10:02:47 +0530
+Message-Id: <1622176367-12608-1-git-send-email-vidya.srinivas@intel.com>
+Subject: [igt-dev] [PATCH i-g-t] [RFC] tests/drm_read: Fix subtest
+ invalid-buffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,46 +20,39 @@ To: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
 Cc: charlton.lin@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Without wait for vblank, CRC mismatch is seen
-between big and small CRC on few Gen11 systems.
+Using (void *)-1 directly in read is aborting on chrome systems.
+Following message is seen.
+
+Starting subtest: invalid-buffer
+*** buffer overflow detected ***: terminated
+Received signal SIGABRT.
+Stack trace:
+Aborted (core dumped)
+
+Patch just adds a pointer variable and uses it in read.
 
 Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 ---
- tests/kms_big_fb.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tests/drm_read.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
-index b35727a09bd0..f90363c3beb2 100644
---- a/tests/kms_big_fb.c
-+++ b/tests/kms_big_fb.c
-@@ -254,6 +254,7 @@ static void unset_lut(data_t *data)
- static bool test_plane(data_t *data)
+diff --git a/tests/drm_read.c b/tests/drm_read.c
+index ccf9d822fd8d..2fdec5be4078 100644
+--- a/tests/drm_read.c
++++ b/tests/drm_read.c
+@@ -103,10 +103,11 @@ static void teardown(int fd)
+ static void test_invalid_buffer(int in)
  {
- 	igt_plane_t *plane = data->plane;
-+	igt_display_t *display = &data->display;
- 	struct igt_fb *small_fb = &data->small_fb;
- 	struct igt_fb *big_fb = &data->big_fb;
- 	int w = data->big_fb_width - small_fb->width;
-@@ -337,16 +338,17 @@ static bool test_plane(data_t *data)
- 		igt_display_commit2(&data->display, data->display.is_atomic ?
- 				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
+ 	int fd = setup(in, 0);
++	void *add = (void *)-1;
  
--
-+		igt_wait_for_vblank(data->drm_fd, display->pipes[data->pipe].crtc_offset);
- 		igt_pipe_crc_collect_crc(data->pipe_crc, &small_crc);
+ 	alarm(1);
  
- 		igt_plane_set_fb(plane, big_fb);
- 		igt_fb_set_position(big_fb, plane, x, y);
- 		igt_fb_set_size(big_fb, plane, small_fb->width, small_fb->height);
-+
- 		igt_plane_set_size(plane, data->width, data->height);
- 		igt_display_commit2(&data->display, data->display.is_atomic ?
- 				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
--
-+		igt_wait_for_vblank(data->drm_fd, display->pipes[data->pipe].crtc_offset);
- 		igt_pipe_crc_collect_crc(data->pipe_crc, &big_crc);
+-	igt_assert_eq(read(fd, (void *)-1, 4096), -1);
++	igt_assert_eq(read(fd, add, 4096), -1);
+ 	igt_assert_eq(errno, EFAULT);
  
- 		igt_plane_set_fb(plane, NULL);
+ 	teardown(fd);
 -- 
 2.7.4
 
