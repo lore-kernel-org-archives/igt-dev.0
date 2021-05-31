@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2064.outbound.protection.outlook.com [40.107.237.64])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 716E36E432
- for <igt-dev@lists.freedesktop.org>; Mon, 31 May 2021 18:57:37 +0000 (UTC)
-References: <20210520193402.2297833-1-markyacoub@chromium.org>
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12on2058.outbound.protection.outlook.com [40.107.243.58])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0091C6E083
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 May 2021 20:03:31 +0000 (UTC)
+References: <20210524184252.1320366-1-markyacoub@chromium.org>
 From: Rodrigo Siqueira Jordao <Rodrigo.Siqueira@amd.com>
-Message-ID: <8ce2d8e7-b2fc-4ed9-524c-6621776de3da@amd.com>
-Date: Mon, 31 May 2021 14:57:31 -0400
-In-Reply-To: <20210520193402.2297833-1-markyacoub@chromium.org>
+Message-ID: <016acc5c-c171-28eb-2e88-e735ca1647d7@amd.com>
+Date: Mon, 31 May 2021 16:03:28 -0400
+In-Reply-To: <20210524184252.1320366-1-markyacoub@chromium.org>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] tests/kms_vblank: Turn on hardware before
- testing invalid vblank.
+Subject: Re: [igt-dev] [PATCH] tests/kms_atomic: Match overlay size with
+ primary plane on amdgpu
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,77 +24,101 @@ Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Mark Yacoub <markyacoub@chromium.org>, igt-dev@lists.freedesktop.org
-Cc: petri.latvala@intel.com, chris@chris-wilson.co.uk, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
+Cc: seanpaul@chromium.org, petri.latvala@intel.com, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mark,
 
-See my comments inline.
 
-On 2021-05-20 3:34 p.m., Mark Yacoub wrote:
+On 2021-05-24 2:42 p.m., Mark Yacoub wrote:
 > From: Mark Yacoub <markyacoub@google.com>
 > 
 > [Why]
-> Before any hardware is on, the vblank is off and its ref counter is in
-> an initialized state as each driver handles toggling it differently.
-> Ioctl DRM_IOCTL_WAIT_VBLANK could return 0 or invalid depending on the
-> hardware, without necessarily meaning anything.
-
-Maybe you can add some hardware examples here.
-
-> [How]
-> For invalid_subtest(), active the CRTCs to turn the hardware on so
-> DRM_IOCTL_WAIT_VBLANK returns something meaningful.
-
-You forgot the `Signed-off-by`.
-
-> ---
->   tests/kms_vblank.c | 11 ++++++++++-
->   1 file changed, 10 insertions(+), 1 deletion(-)
+> AMDGPU has a restriction of not allowing overlay planes that do
+> not fully cover the primary plane when the cursor is enabled.
+> Testing with an overlay smaller than primary fails the commit.
 > 
-> diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-> index 93b01eba..cb68a2f8 100644
-> --- a/tests/kms_vblank.c
-> +++ b/tests/kms_vblank.c
-> @@ -475,8 +475,14 @@ static void invalid_subtest(data_t *data, int fd)
->   {
->   	union drm_wait_vblank vbl;
->   	unsigned long valid_flags;
-> +	igt_display_t* display = &data->display;
+> [How]
+> On amdgpu, force the overlay size and src to match the primary plane, but
+> test with a smaller size on all other platforms.
 
-Why add this variable instead of just use `&data->display`?
+Hi Mark,
 
-> +	enum pipe p = 0;
+That's a nice patch, and I understand the background behind it. However, 
+I don't think we need to change kms_atomic, mainly because we are not 
+enabling cursor in this test. Also, I recently applied a patch for 
+dealing with cursors in this situation; this test does not fail in the 
+latest amd-staging-drm-next.
 
-Why did you add this variable? Improve the readability? If so, I'm not 
-sure that p is better than have 0 here. Or did I miss something?
+Thanks
+Siqueira
 
-> +	igt_output_t* output;
->   
-> -	igt_display_require_output_on_pipe(&data->display, 0);
-> +	igt_display_require_output_on_pipe(display, p);
-> +	data->pipe = p;
-> +	for_each_valid_output_on_pipe(display, p, output)
-> +		prepare_crtc(data, fd, output);
->   
->   	/* First check all is well with a simple query */
->   	memset(&vbl, 0, sizeof(vbl));
-> @@ -511,6 +517,9 @@ static void invalid_subtest(data_t *data, int fd)
->   	vbl.request.type |= _DRM_VBLANK_SECONDARY;
->   	vbl.request.type |= _DRM_VBLANK_FLAGS_MASK;
->   	igt_assert_eq(wait_vblank(fd, &vbl), -EINVAL);
-> +
-> +	for_each_valid_output_on_pipe(display, p, output)
-> +		cleanup_crtc(data, fd, output);
+> Signed-off-by: markyacoub@chromium.org
+> ---
+>   tests/kms_atomic.c | 26 ++++++++++++++++++++------
+>   1 file changed, 20 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+> index df9c9df7..d5bfd38c 100644
+> --- a/tests/kms_atomic.c
+> +++ b/tests/kms_atomic.c
+> @@ -491,13 +491,27 @@ plane_immutable_zpos(igt_display_t *display, igt_pipe_t *pipe,
+>   	igt_remove_fb(display->drm_fd, &fb_upper);
 >   }
-
-This patch makes sense to me. I tested it in a Raven system (DCN1.0), 
-and everything looks fine to me; however, even without your patch, I see 
-the same result.
-
-Btw, thanks a lot for your patch.
-
->   igt_main
+>   
+> -static void plane_overlay(igt_pipe_t *pipe, igt_output_t *output, igt_plane_t *plane)
+> +static void plane_overlay(igt_pipe_t* pipe, igt_output_t* output, igt_plane_t* plane, int drm_fd)
+>   {
+>   	drmModeModeInfo *mode = igt_output_get_mode(output);
+>   	uint32_t format = plane_get_igt_format(plane);
+>   	struct igt_fb fb;
+> -	uint32_t w = mode->hdisplay / 2;
+> -	uint32_t h = mode->vdisplay / 2;
+> +	uint32_t w, h, x, y;
+> +
+> +	/* On AMD, with hardware cursor, overlay plane must fully cover the primary plane.
+> +	 * Test with smaller overlays on all other platforms. */
+> +	if (is_amdgpu_device(drm_fd)) {
+> +		w = mode->hdisplay;
+> +		h = mode->vdisplay;
+> +		x = 0;
+> +		y = 0;
+> +	}
+> +	else {
+> +		w = mode->hdisplay / 2;
+> +		h = mode->vdisplay / 2;
+> +		x = w / 2;
+> +		y = h / 2;
+> +	}
+>   
+>   	igt_require(format != 0);
+>   
+> @@ -505,7 +519,7 @@ static void plane_overlay(igt_pipe_t *pipe, igt_output_t *output, igt_plane_t *p
+>   			      format, I915_TILING_NONE, &fb);
+>   
+>   	igt_plane_set_fb(plane, &fb);
+> -	igt_plane_set_position(plane, w/2, h/2);
+> +	igt_plane_set_position(plane, x, y);
+>   
+>   	/* Enable the overlay plane using the atomic API, and double-check
+>   	 * state is what we think it should be. */
+> @@ -519,7 +533,7 @@ static void plane_overlay(igt_pipe_t *pipe, igt_output_t *output, igt_plane_t *p
+>   	/* Re-enable the plane through the legacy plane API, and verify through
+>   	 * atomic. */
+>   	igt_plane_set_fb(plane, &fb);
+> -	igt_plane_set_position(plane, w/2, h/2);
+> +	igt_plane_set_position(plane, x, y);
+>   	plane_commit(plane, COMMIT_LEGACY, ATOMIC_RELAX_NONE);
+>   
+>   	/* Restore the plane to its original settings through the legacy plane
+> @@ -1113,7 +1127,7 @@ igt_main
+>   		igt_require(overlay);
+>   
+>   		atomic_setup(&display, pipe, output, primary, &fb);
+> -		plane_overlay(pipe_obj, output, overlay);
+> +		plane_overlay(pipe_obj, output, overlay, display.drm_fd);
+>   	}
+>   
+>   	igt_describe("Test for KMS atomic modesetting on primary plane and ensure coherency between "
 > 
 
 _______________________________________________
