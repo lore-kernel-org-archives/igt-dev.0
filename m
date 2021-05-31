@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA7AF6E8E1
- for <igt-dev@lists.freedesktop.org>; Mon, 31 May 2021 11:15:29 +0000 (UTC)
-Date: Mon, 31 May 2021 14:17:11 +0300
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F025F6E8DE
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 May 2021 11:18:43 +0000 (UTC)
+Date: Mon, 31 May 2021 14:20:23 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YLTFtxka3CyIrIH4@platvala-desk.ger.corp.intel.com>
-References: <20210531105138.169530-1-maarten.lankhorst@linux.intel.com>
+Message-ID: <YLTGdyqQ1eiiCuBn@platvala-desk.ger.corp.intel.com>
+References: <20210528055536.343744-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+ <20210528055536.343744-2-tejaskumarx.surendrakumar.upadhyay@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210531105138.169530-1-maarten.lankhorst@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] Fixup clang compiler warnings.
+In-Reply-To: <20210528055536.343744-2-tejaskumarx.surendrakumar.upadhyay@intel.com>
+Subject: Re: [igt-dev] [i-g-t V2 1/2] lib/i915: find scheduler caps for
+ timeslicing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,72 +23,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Cc: igt-dev@lists.freedesktop.org, mahesh.meena@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, May 31, 2021 at 12:51:38PM +0200, Maarten Lankhorst wrote:
-> Allows building cleanly with clang again. It complains about using
-> invalid initialisers like char[][] = { 0 }.
+On Fri, May 28, 2021 at 11:25:35AM +0530, Tejas Upadhyay wrote:
+> Check scheduler capability for timeslicing in appropriate
+> way, which requires wrappers to be created for IGT.
 > 
-> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> V2: has_timeslice = has_semaphore && has_preemption || has_guc_submission
+> 
+> Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
 > ---
->  lib/igt_kms.c               | 2 +-
->  lib/igt_nouveau.c           | 2 +-
->  tests/i915/gem_exec_fence.c | 4 ++--
->  3 files changed, 4 insertions(+), 4 deletions(-)
+>  lib/i915/gem_scheduler.c | 21 +++++++++++++++++++++
+>  lib/i915/gem_scheduler.h |  1 +
+>  2 files changed, 22 insertions(+)
 > 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 28fb9c094eb2..fb7a14f940ea 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -292,7 +292,7 @@ struct edid **igt_kms_get_tiled_edid(uint8_t htile, uint8_t vtile)
->  {
->  	uint8_t top[2];
->  	int edids, i;
-> -	static  char raw_edid[MAX_EDID][256] = {0};
-> +	static  char raw_edid[MAX_EDID][256] = {{0}};
+> diff --git a/lib/i915/gem_scheduler.c b/lib/i915/gem_scheduler.c
+> index 184da843..ddfba08b 100644
+> --- a/lib/i915/gem_scheduler.c
+> +++ b/lib/i915/gem_scheduler.c
+> @@ -29,6 +29,7 @@
+>  #include "ioctl_wrappers.h"
+>  
+>  #include "i915/gem_scheduler.h"
+> +#include "i915/gem_submission.h"
+>  
+>  /**
+>   * SECTION:gem_scheduler
+> @@ -129,6 +130,22 @@ bool gem_scheduler_has_engine_busy_stats(int fd)
+>  		I915_SCHEDULER_CAP_ENGINE_BUSY_STATS;
+>  }
+>  
+> +/**
+> + * gem_scheduler_has_timeslicing:
+> + * @fd: open i915 drm file descriptor
+> + *
+> + * Feature test macro to query whether the driver supports using HW preemption
+> + * to implement timeslicing of userspace batches. This allows userspace to
+> + * implement micro-level scheduling within their own batches.
+> + */
+> +bool gem_scheduler_has_timeslicing(int fd)
+> +{
+> +	return gem_scheduler_capability(fd) &
+> +	       ((I915_SCHEDULER_CAP_PREEMPTION
+> +		 && I915_SCHEDULER_CAP_SEMAPHORES)
+> +		|| gem_has_guc_submission(fd));
 
-Can't this be {} ?
-
+This mix of bitwise and logical and/ors looks incorrect.
 
 -- 
 Petri Latvala
 
 
->  	static struct edid *edid[MAX_EDID];
+
+> +}
+> +
+>  /**
+>   * gem_scheduler_print_capability:
+>   * @fd: open i915 drm file descriptor
+> @@ -151,4 +168,8 @@ void gem_scheduler_print_capability(int fd)
+>  		igt_info(" - With HW semaphores enabled\n");
+>  	if (caps & I915_SCHEDULER_CAP_ENGINE_BUSY_STATS)
+>  		igt_info(" - With engine busy statistics\n");
+> +	if (caps & ((I915_SCHEDULER_CAP_PREEMPTION
+> +		     && I915_SCHEDULER_CAP_SEMAPHORES)
+> +		    || gem_has_guc_submission(fd)))
+> +		igt_info(" - With user timeslicing enabled\n");
+>  }
+> diff --git a/lib/i915/gem_scheduler.h b/lib/i915/gem_scheduler.h
+> index 14bd4cac..d43e84bd 100644
+> --- a/lib/i915/gem_scheduler.h
+> +++ b/lib/i915/gem_scheduler.h
+> @@ -32,6 +32,7 @@ bool gem_scheduler_has_ctx_priority(int fd);
+>  bool gem_scheduler_has_preemption(int fd);
+>  bool gem_scheduler_has_semaphores(int fd);
+>  bool gem_scheduler_has_engine_busy_stats(int fd);
+> +bool gem_scheduler_has_timeslicing(int fd);
+>  void gem_scheduler_print_capability(int fd);
 >  
->  	top[0] = 0x00;
-> diff --git a/lib/igt_nouveau.c b/lib/igt_nouveau.c
-> index ae6104e332f1..fdf6020a35af 100644
-> --- a/lib/igt_nouveau.c
-> +++ b/lib/igt_nouveau.c
-> @@ -118,7 +118,7 @@ int igt_nouveau_create_bo(int drm_fd, bool sysmem, igt_fb_t *fb)
->  {
->  	struct igt_nouveau_dev *dev = get_nouveau_dev(drm_fd);
->  	struct nouveau_device *nvdev = dev->dev;
-> -	union nouveau_bo_config config = {0};
-> +	union nouveau_bo_config config = { };
->  	struct igt_nouveau_fb_priv *priv;
->  	uint32_t flags = sysmem ? NOUVEAU_BO_GART : NOUVEAU_BO_VRAM;
->  
-> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-> index 70bb00113a97..c3a650d89861 100644
-> --- a/tests/i915/gem_exec_fence.c
-> +++ b/tests/i915/gem_exec_fence.c
-> @@ -2382,8 +2382,8 @@ static void submit_timeline_execbuf(struct inter_engine_context *context,
->  				    uint32_t signal_syncobj,
->  				    uint64_t signal_value)
->  {
-> -	uint64_t values[2] = { 0, };
-> -	struct drm_i915_gem_exec_fence fences[2] = { 0, };
-> +	uint64_t values[2] = { };
-> +	struct drm_i915_gem_exec_fence fences[2] = { };
->  	struct drm_i915_gem_execbuffer_ext_timeline_fences fence_list = {
->  		.base = {
->  			.name = DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES,
+>  #endif /* GEM_SCHEDULER_H */
 > -- 
-> 2.31.0
+> 2.31.1
 > 
 > _______________________________________________
 > igt-dev mailing list
