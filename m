@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D09196E918
- for <igt-dev@lists.freedesktop.org>; Mon, 31 May 2021 12:32:56 +0000 (UTC)
-References: <20210531105138.169530-1-maarten.lankhorst@linux.intel.com>
- <YLTFtxka3CyIrIH4@platvala-desk.ger.corp.intel.com>
- <d0d6b74b-fb74-57bb-5cd2-ec1bb52eedcf@linux.intel.com>
- <YLTV2awY6g7y6C37@platvala-desk.ger.corp.intel.com>
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Message-ID: <12bdebeb-aa42-6dfd-a8c9-6d25cea70548@linux.intel.com>
-Date: Mon, 31 May 2021 14:32:46 +0200
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 93A466E4B1
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 May 2021 13:51:04 +0000 (UTC)
+From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Mon, 31 May 2021 19:11:37 +0530
+Message-Id: <20210531134139.359240-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <YLTV2awY6g7y6C37@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] Fixup clang compiler warnings.
+Subject: [igt-dev] [i-g-t V3 0/2] gem_exec_schedule: Report and check for
+ timeslicing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,45 +19,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Op 31-05-2021 om 14:26 schreef Petri Latvala:
-> On Mon, May 31, 2021 at 02:18:24PM +0200, Maarten Lankhorst wrote:
->> Op 31-05-2021 om 13:17 schreef Petri Latvala:
->>> On Mon, May 31, 2021 at 12:51:38PM +0200, Maarten Lankhorst wrote:
->>>> Allows building cleanly with clang again. It complains about using
->>>> invalid initialisers like char[][] = { 0 }.
->>>>
->>>> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
->>>> ---
->>>>  lib/igt_kms.c               | 2 +-
->>>>  lib/igt_nouveau.c           | 2 +-
->>>>  tests/i915/gem_exec_fence.c | 4 ++--
->>>>  3 files changed, 4 insertions(+), 4 deletions(-)
->>>>
->>>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
->>>> index 28fb9c094eb2..fb7a14f940ea 100644
->>>> --- a/lib/igt_kms.c
->>>> +++ b/lib/igt_kms.c
->>>> @@ -292,7 +292,7 @@ struct edid **igt_kms_get_tiled_edid(uint8_t htile, uint8_t vtile)
->>>>  {
->>>>  	uint8_t top[2];
->>>>  	int edids, i;
->>>> -	static  char raw_edid[MAX_EDID][256] = {0};
->>>> +	static  char raw_edid[MAX_EDID][256] = {{0}};
->>> Can't this be {} ?
->>>
->>>
->> If you make this a r-b. Sure!
->>
-> If clang (and gcc of course) likes it,
-> Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+lib/i915: find timeslicing cap
+tests/gem_exec_schedule: Check for timeslicing as kernel explicitely
+reports timeslicing
 
-They do, thank you.
+Tejas Upadhyay (2):
+  lib/i915: find scheduler caps for timeslicing
+  i915/gem_exec_schedule: Check for timeslicing
 
-Pushed!
+ lib/i915/gem_scheduler.c       | 21 +++++++++++++++++++++
+ lib/i915/gem_scheduler.h       |  1 +
+ tests/i915/gem_exec_schedule.c | 17 ++++++-----------
+ 3 files changed, 28 insertions(+), 11 deletions(-)
+
+-- 
+2.31.1
 
 _______________________________________________
 igt-dev mailing list
