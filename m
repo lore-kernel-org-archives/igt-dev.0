@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Mon, 31 May 2021 14:47:51 +0000
-Message-ID: <BY5PR11MB4372AB95A5AC6DE9AC0FA552893F9@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <1622176443-12682-1-git-send-email-vidya.srinivas@intel.com>
- <YLTv/Z8j9rCf2koN@intel.com>
-In-Reply-To: <YLTv/Z8j9rCf2koN@intel.com>
-Content-Language: en-US
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B94D6E40C
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 May 2021 15:08:27 +0000 (UTC)
+Date: Mon, 31 May 2021 18:10:07 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YLT8TzLLUy9LVLaU@platvala-desk.ger.corp.intel.com>
+References: <20210531134139.359240-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_prime: Aligned pitch to
- 64 byte for Intel platforms
+Content-Disposition: inline
+In-Reply-To: <20210531134139.359240-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+Subject: Re: [igt-dev] [i-g-t V3 0/2] gem_exec_schedule: Report and check
+ for timeslicing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,112 +18,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "Lin,
- Charlton" <charlton.lin@intel.com>
+To: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hello Ville,
+On Mon, May 31, 2021 at 07:11:37PM +0530, Tejas Upadhyay wrote:
+> lib/i915: find timeslicing cap
+> tests/gem_exec_schedule: Check for timeslicing as kernel explicitely
+> reports timeslicing
+> 
+> Tejas Upadhyay (2):
+>   lib/i915: find scheduler caps for timeslicing
+>   i915/gem_exec_schedule: Check for timeslicing
+> 
+>  lib/i915/gem_scheduler.c       | 21 +++++++++++++++++++++
+>  lib/i915/gem_scheduler.h       |  1 +
+>  tests/i915/gem_exec_schedule.c | 17 ++++++-----------
+>  3 files changed, 28 insertions(+), 11 deletions(-)
 
-Thank you very much.
-Before reaching our i915's i915_gem_dumb_create, it goes to vgem_gem_dumb_c=
-reate for kms_prime.
+The series does what it says on the tin so
+Acked-by: Petri Latvala <petri.latvala@intel.com>
 
-The pitch gets calculated there and it is not 64 byte aligned. Due to this,=
- intel_framebuffer_init reports "pitch must be 64 byte aligned"
-and framebuffer creation fails. I tried submitting vgem patch where 64 byte=
- alignment can be done in vgem_gem_dumb_create and that also
-passes. But we did not get approval yet as few of them felt, vgem is generi=
-c and other platforms might fail if we do 64 byte alignment there.
-
-Kindly suggest. Thanks a lot.
-
-Regards
-Vidya
-
------Original Message-----
-From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com> =
-
-Sent: Monday, May 31, 2021 7:48 PM
-To: Srinivas, Vidya <vidya.srinivas@intel.com>
-Cc: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org; Lin, Ch=
-arlton <charlton.lin@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_prime: Aligned pitch t=
-o 64 byte for Intel platforms
-
-On Fri, May 28, 2021 at 10:04:03AM +0530, Vidya Srinivas wrote:
-> For Intel platforms, pitch needs to be 64 byte aligned.
-> Kernel code vgem_gem_dumb_create which is platform generic code doesnt =
-
-> do the alignment. This causes frame buffer creation to fail on Intel =
-
-> platforms where the pitch is not 64 byte aligned.
-> =
-
-> tests: test run on Intel platforms with panel resolution 1366x768
-> =
-
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> ---
->  tests/kms_prime.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> =
-
-> diff --git a/tests/kms_prime.c b/tests/kms_prime.c index =
-
-> 8cb2ca2a9dc3..fdc941fe8100 100644
-> --- a/tests/kms_prime.c
-> +++ b/tests/kms_prime.c
-> @@ -51,6 +51,8 @@ static struct {
->  	{ .r =3D 1.0, .g =3D 0.0, .b =3D 0.0, .color =3D 0xffff0000 },  };
->  =
-
-> +bool check_platform;
-> +
->  IGT_TEST_DESCRIPTION("Prime tests, focusing on KMS side");
->  =
-
->  static bool has_prime_import(int fd)
-> @@ -101,7 +103,7 @@ static void prepare_scratch(int exporter_fd, struct d=
-umb_bo *scratch,
->  	scratch->bpp =3D 32;
->  =
-
->  	scratch->handle =3D kmstest_dumb_create(exporter_fd,
-> -			scratch->width,
-> +			check_platform? ALIGN(scratch->width, 64): scratch->width,
-
-The dumb_create ioctl already does this for us.
-
->  			scratch->height,
->  			scratch->bpp,
->  			&scratch->pitch,
-> @@ -262,6 +264,7 @@ igt_main
->  =
-
->  		/* ANY =3D anything that is not VGEM */
->  		first_fd =3D __drm_open_driver_another(0, DRIVER_ANY | DRIVER_VGEM);
-> +		check_platform =3D is_i915_device(first_fd);
->  		igt_require(first_fd >=3D 0);
->  =
-
->  		second_fd =3D __drm_open_driver_another(1, DRIVER_ANY | DRIVER_VGEM);
-> --
-> 2.7.4
-> =
-
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---
-Ville Syrj=E4l=E4
-Intel
+Tvrtko, can you give an additional pair of eyes on this to verify this
+matches what kernel side wants to do, I lost track of that
+conversation?
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
