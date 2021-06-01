@@ -1,14 +1,11 @@
 Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Tue, 1 Jun 2021 14:12:34 +0000
-Message-ID: <BY5PR11MB437204DFEDF1D8226D2D1A84893E9@BY5PR11MB4372.namprd11.prod.outlook.com>
+From: Vidya Srinivas <vidya.srinivas@intel.com>
+Date: Tue,  1 Jun 2021 19:38:05 +0530
+Message-Id: <1622556485-9375-1-git-send-email-vidya.srinivas@intel.com>
+In-Reply-To: <1622547939-8157-1-git-send-email-vidya.srinivas@intel.com>
 References: <1622547939-8157-1-git-send-email-vidya.srinivas@intel.com>
- <YLY5CH3OxmkI1/Qw@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YLY5CH3OxmkI1/Qw@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
-MIME-Version: 1.0
-Subject: Re: [Intel-gfx] [igt-dev] [PATCH i-g-t] [RFC]
- tests/kms_plane_alpha_blend: Fix coverage-vs-premult-vs-constant tests
+Subject: [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_plane_alpha_blend: Don't
+ set primary fb color in coverage-vs-premult-vs-constant
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
@@ -16,54 +13,42 @@ List-Post: <mailto:intel-gfx@lists.freedesktop.org>
 List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: intel-gfx-bounces@lists.freedesktop.org
 Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
+To: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thank you so much Petri. Apologies for the incorrect commit message.
-I will submit the patch with the clear commit message.
+Patch removes setting primary fb color in coverage-vs-premult-vs-constant
+as this is causing CRC mismatch on few Gen11 systems.
+Similar change has already been done in tests constant_alpha_min and basic_alpha
+where the test runs on all planes but dont set the primary fb color.
 
-Regards
-Vidya
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+---
+ tests/kms_plane_alpha_blend.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
------Original Message-----
-From: Latvala, Petri <petri.latvala@intel.com> 
-Sent: Tuesday, June 1, 2021 7:11 PM
-To: Srinivas, Vidya <vidya.srinivas@intel.com>
-Cc: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
-Subject: Re: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_plane_alpha_blend: Fix coverage-vs-premult-vs-constant tests
+diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+index a37cb27c7d62..224d79bd1749 100644
+--- a/tests/kms_plane_alpha_blend.c
++++ b/tests/kms_plane_alpha_blend.c
+@@ -447,10 +447,6 @@ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t
+ 	igt_display_t *display = &data->display;
+ 	igt_crc_t ref_crc = {}, crc = {};
+ 
+-	/* Set a background color on the primary fb for testing */
+-	if (plane->type != DRM_PLANE_TYPE_PRIMARY)
+-		igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY), &data->gray_fb);
+-
+ 	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage");
+ 	igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+-- 
+2.7.4
 
-On Tue, Jun 01, 2021 at 05:15:39PM +0530, Vidya Srinivas wrote:
-> tests/kms_plane_alpha_blend: Fix coverage-vs-premult-vs-constant tests
->
-> Few Gen11 systems show CRC mismatch. Make 
-> coverage-vs-premult-vs-constant code similar to constant_alpha_min or 
-> basic_alpha
-> 
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-
-
-Please make the first line of the commit message a statement that tells what change you're making, and in the full text block state why that's done. "Fix a-b-c tests" is useless later when browsing oneliner git logs. It doesn't even tell which problem is fixed.
-
-Meaning, something like:
-
-
-==
-tests/kms_plane_alpha_blend: Don't set primary fb color in coverage-vs-premult-vs-constant
-
-Similar change has already been done in tests xxx and yyy.
-This fixes CRC mismatches seen with some Gen11 systems.
-
-Signed-off-by etc
-==
-
-
---
-Petri Latvala
 _______________________________________________
 Intel-gfx mailing list
 Intel-gfx@lists.freedesktop.org
