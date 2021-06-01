@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C54736E9C3
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Jun 2021 10:06:19 +0000 (UTC)
-Date: Tue, 1 Jun 2021 12:06:15 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210601100615.GC83056@zkempczy-mobl2>
-References: <20210423214853.876911-1-jason@jlekstrand.net>
- <20210423215252.877174-7-jason@jlekstrand.net>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65C696E9C3
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Jun 2021 10:07:36 +0000 (UTC)
+References: <20210531134139.359240-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+ <20210531134139.359240-2-tejaskumarx.surendrakumar.upadhyay@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <a9be772c-8ece-ee64-e1e2-aa7773345118@linux.intel.com>
+Date: Tue, 1 Jun 2021 11:07:32 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210423215252.877174-7-jason@jlekstrand.net>
-Subject: Re: [igt-dev] [PATCH i-g-t 85/89] igt/dummyload: Require an
- intel_ctx_t for POLL_RUN and !ALL_ENGINES
+In-Reply-To: <20210531134139.359240-2-tejaskumarx.surendrakumar.upadhyay@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [i-g-t V3 1/2] lib/i915: find scheduler caps for
+ timeslicing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,75 +19,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jason Ekstrand <jason@jlekstrand.net>
-Cc: igt-dev@lists.freedesktop.org
+To: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBBcHIgMjMsIDIwMjEgYXQgMDQ6NTI6NDhQTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
-d3JvdGU6Cj4gVGhpcyBsZXRzIHVzIGRyb3AgZ2VtX2NvbnRleHRfbG9va3VwX2VuZ2luZXMKPiAK
-PiBTaWduZWQtb2ZmLWJ5OiBKYXNvbiBFa3N0cmFuZCA8amFzb25Aamxla3N0cmFuZC5uZXQ+Cj4g
-LS0tCj4gIGxpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYyB8IDI5IC0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tCj4gIGxpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuaCB8ICAzIC0t
-LQo+ICBsaWIvaWd0X2R1bW15bG9hZC5jICAgICAgICAgICAgfCAyMCArKysrKy0tLS0tLS0tLS0t
-LS0tLQo+ICAzIGZpbGVzIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgNDcgZGVsZXRpb25zKC0p
-Cj4gCj4gZGlmZiAtLWdpdCBhL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYyBiL2xpYi9p
-OTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYwo+IGluZGV4IDFiNmFjNmQyLi42MTI1MTllYyAxMDA2
-NDQKPiAtLS0gYS9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmMKPiArKysgYi9saWIvaTkx
-NS9nZW1fZW5naW5lX3RvcG9sb2d5LmMKPiBAQCAtMzE2LDM1ICszMTYsNiBAQCBpbnRlbF9lbmdp
-bmVfbGlzdF9mb3JfY3R4X2NmZyhpbnQgZmQsIGNvbnN0IGludGVsX2N0eF9jZmdfdCAqY2ZnKQo+
-ICAJfQo+ICB9Cj4gIAo+IC1zdGF0aWMgaW50IGdlbV90b3BvbG9neV9nZXRfcGFyYW0oaW50IGZk
-LAo+IC0JCQkJICBzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2NvbnRleHRfcGFyYW0gKnApCj4gLXsKPiAt
-CWlmIChpZ3Rfb25seV9saXN0X3N1YnRlc3RzKCkpCj4gLQkJcmV0dXJuIC1FTk9ERVY7Cj4gLQo+
-IC0JaWYgKF9fZ2VtX2NvbnRleHRfZ2V0X3BhcmFtKGZkLCBwKSkKPiAtCQlyZXR1cm4gLTE7IC8q
-IHVzaW5nIGRlZmF1bHQgZW5naW5lIG1hcCAqLwo+IC0KPiAtCXJldHVybiAwOwo+IC19Cj4gLQo+
-IC1pbnQgZ2VtX2NvbnRleHRfbG9va3VwX2VuZ2luZShpbnQgZmQsIHVpbnQ2NF90IGVuZ2luZSwg
-dWludDMyX3QgY3R4X2lkLAo+IC0JCQkgICAgICBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2lu
-ZTIgKmUpCj4gLXsKPiAtCURFRklORV9DT05URVhUX0VOR0lORVNfUEFSQU0oZW5naW5lcywgcGFy
-YW0sIGN0eF9pZCwgR0VNX01BWF9FTkdJTkVTKTsKPiAtCj4gLQkvKiBhIGJpdCBwYXJhbm9pYyAq
-Lwo+IC0JaWd0X2Fzc2VydChlKTsKPiAtCj4gLQlpZiAoZ2VtX3RvcG9sb2d5X2dldF9wYXJhbShm
-ZCwgJnBhcmFtKSB8fCAhcGFyYW0uc2l6ZSkKPiAtCQlyZXR1cm4gLUVJTlZBTDsKPiAtCj4gLQll
-LT5jbGFzcyA9IGVuZ2luZXMuZW5naW5lc1tlbmdpbmVdLmVuZ2luZV9jbGFzczsKPiAtCWUtPmlu
-c3RhbmNlID0gZW5naW5lcy5lbmdpbmVzW2VuZ2luZV0uZW5naW5lX2luc3RhbmNlOwo+IC0KPiAt
-CXJldHVybiAwOwo+IC19Cj4gLQo+ICAvKioKPiAgICogZ2VtX2hhc19lbmdpbmVfdG9wb2xvZ3k6
-Cj4gICAqIEBmZDogb3BlbiBpOTE1IGRybSBmaWxlIGRlc2NyaXB0b3IKPiBkaWZmIC0tZ2l0IGEv
-bGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5oIGIvbGliL2k5MTUvZ2VtX2VuZ2luZV90b3Bv
-bG9neS5oCj4gaW5kZXggOGY1OTg3ZjYuLjk5MWQwZmY4IDEwMDY0NAo+IC0tLSBhL2xpYi9pOTE1
-L2dlbV9lbmdpbmVfdG9wb2xvZ3kuaAo+ICsrKyBiL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xv
-Z3kuaAo+IEBAIC02MSw5ICs2MSw2IEBAIGludGVsX2dldF9jdXJyZW50X3BoeXNpY2FsX2VuZ2lu
-ZShzdHJ1Y3QgaW50ZWxfZW5naW5lX2RhdGEgKmVkKTsKPiAgCj4gIHZvaWQgaW50ZWxfbmV4dF9l
-bmdpbmUoc3RydWN0IGludGVsX2VuZ2luZV9kYXRhICplZCk7Cj4gIAo+IC1pbnQgZ2VtX2NvbnRl
-eHRfbG9va3VwX2VuZ2luZShpbnQgZmQsIHVpbnQ2NF90IGVuZ2luZSwgdWludDMyX3QgY3R4X2lk
-LAo+IC0JCQkgICAgICBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmUpOwo+IC0KPiAg
-Ym9vbCBnZW1fY29udGV4dF9oYXNfZW5naW5lX21hcChpbnQgZmQsIHVpbnQzMl90IGN0eCk7Cj4g
-IAo+ICBib29sIGdlbV9lbmdpbmVfaXNfZXF1YWwoY29uc3Qgc3RydWN0IGludGVsX2V4ZWN1dGlv
-bl9lbmdpbmUyICplMSwKPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9kdW1teWxvYWQuYyBiL2xpYi9p
-Z3RfZHVtbXlsb2FkLmMKPiBpbmRleCBhZTZjOTU0Mi4uYmFhMmFjNTUgMTAwNjQ0Cj4gLS0tIGEv
-bGliL2lndF9kdW1teWxvYWQuYwo+ICsrKyBiL2xpYi9pZ3RfZHVtbXlsb2FkLmMKPiBAQCAtNDIx
-LDIyICs0MjEsMTIgQEAgaWd0X3NwaW5fZmFjdG9yeShpbnQgZmQsIGNvbnN0IHN0cnVjdCBpZ3Rf
-c3Bpbl9mYWN0b3J5ICpvcHRzKQo+ICB7Cj4gIAlpZ3Rfc3Bpbl90ICpzcGluOwo+ICAKPiAtCWlm
-IChvcHRzLT5lbmdpbmUgIT0gQUxMX0VOR0lORVMpIHsKPiAtCQlzdHJ1Y3QgaW50ZWxfZXhlY3V0
-aW9uX2VuZ2luZTIgZTsKPiAtCQlpbnQgY2xhc3M7Cj4gLQo+IC0JCWlmIChvcHRzLT5jdHgpIHsK
-PiAtCQkJY2xhc3MgPSBvcHRzLT5jdHgtPmNmZy5lbmdpbmVzW29wdHMtPmVuZ2luZV0uZW5naW5l
-X2NsYXNzOwo+IC0JCX0gZWxzZSBpZiAoIWdlbV9jb250ZXh0X2xvb2t1cF9lbmdpbmUoZmQsIG9w
-dHMtPmVuZ2luZSwKPiAtCQkJCQkJICAgICAgb3B0cy0+Y3R4X2lkLCAmZSkpIHsKPiAtCQkJY2xh
-c3MgPSBlLmNsYXNzOwo+IC0JCX0gZWxzZSB7Cj4gLQkJCWdlbV9yZXF1aXJlX3JpbmcoZmQsIG9w
-dHMtPmVuZ2luZSk7Cj4gLQkJCWNsYXNzID0gZ2VtX2V4ZWNidWZfZmxhZ3NfdG9fZW5naW5lX2Ns
-YXNzKG9wdHMtPmVuZ2luZSk7Cj4gLQkJfQo+ICsJaWYgKChvcHRzLT5mbGFncyAmIElHVF9TUElO
-X1BPTExfUlVOKSAmJiBvcHRzLT5lbmdpbmUgIT0gQUxMX0VOR0lORVMpIHsKPiArCQl1bnNpZ25l
-ZCBpbnQgY2xhc3M7Cj4gIAo+IC0JCWlmIChvcHRzLT5mbGFncyAmIElHVF9TUElOX1BPTExfUlVO
-KQo+IC0JCQlpZ3RfcmVxdWlyZShnZW1fY2xhc3NfY2FuX3N0b3JlX2R3b3JkKGZkLCBjbGFzcykp
-Owo+ICsJCWlndF9hc3NlcnQob3B0cy0+Y3R4KTsKPiArCQljbGFzcyA9IGludGVsX2N0eF9lbmdp
-bmVfY2xhc3Mob3B0cy0+Y3R4LCBvcHRzLT5lbmdpbmUpOwo+ICsJCWlndF9yZXF1aXJlKGdlbV9j
-bGFzc19jYW5fc3RvcmVfZHdvcmQoZmQsIGNsYXNzKSk7Cj4gIAl9Cj4gIAo+ICAJaWYgKG9wdHMt
-PmZsYWdzICYgSUdUX1NQSU5fSU5WQUxJRF9DUykKPiAtLSAKPiAyLjMxLjEKCkxHVE0uCgpSZXZp
-ZXdlZC1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRl
-bC5jb20+CgotLQpaYmlnbmlldwoKCj4gCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KPiBpZ3QtZGV2IG1haWxpbmcgbGlzdAo+IGlndC1kZXZAbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnCj4gaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9pZ3QtZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-Cmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+
+On 31/05/2021 14:41, Tejas Upadhyay wrote:
+> Check scheduler capability for timeslicing in appropriate
+> way, which requires wrappers to be created for IGT.
+> 
+> V3:
+>      removed conditional error - petri
+> V2: has_timeslice = has_semaphore && has_preemption ||
+>      has_guc_submission - Tvrtko
+> 
+> Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+> ---
+>   lib/i915/gem_scheduler.c | 21 +++++++++++++++++++++
+>   lib/i915/gem_scheduler.h |  1 +
+>   2 files changed, 22 insertions(+)
+> 
+> diff --git a/lib/i915/gem_scheduler.c b/lib/i915/gem_scheduler.c
+> index 184da843..f59c451f 100644
+> --- a/lib/i915/gem_scheduler.c
+> +++ b/lib/i915/gem_scheduler.c
+> @@ -29,6 +29,7 @@
+>   #include "ioctl_wrappers.h"
+>   
+>   #include "i915/gem_scheduler.h"
+> +#include "i915/gem_submission.h"
+>   
+>   /**
+>    * SECTION:gem_scheduler
+> @@ -129,6 +130,22 @@ bool gem_scheduler_has_engine_busy_stats(int fd)
+>   		I915_SCHEDULER_CAP_ENGINE_BUSY_STATS;
+>   }
+>   
+> +/**
+> + * gem_scheduler_has_timeslicing:
+> + * @fd: open i915 drm file descriptor
+> + *
+> + * Feature test macro to query whether the driver supports using HW preemption
+> + * to implement timeslicing of userspace batches. This allows userspace to
+> + * implement micro-level scheduling within their own batches.
+> + */
+> +bool gem_scheduler_has_timeslicing(int fd)
+> +{
+> +	return ((gem_scheduler_capability(fd) &
+> +	        (I915_SCHEDULER_CAP_PREEMPTION |
+> +		 I915_SCHEDULER_CAP_SEMAPHORES))
+> +		|| gem_has_guc_submission(fd));
+> +}
+> +
+>   /**
+>    * gem_scheduler_print_capability:
+>    * @fd: open i915 drm file descriptor
+> @@ -151,4 +168,8 @@ void gem_scheduler_print_capability(int fd)
+>   		igt_info(" - With HW semaphores enabled\n");
+>   	if (caps & I915_SCHEDULER_CAP_ENGINE_BUSY_STATS)
+>   		igt_info(" - With engine busy statistics\n");
+> +	if ((caps & (I915_SCHEDULER_CAP_PREEMPTION
+> +		  | I915_SCHEDULER_CAP_SEMAPHORES))
+> +		|| gem_has_guc_submission(fd))
+> +		igt_info(" - With user timeslicing enabled\n");
+
+I don't think it's "user timeslicing" but just timeslicing. Otherwise 
+looks okay.
+
+Regards,
+
+Tvrtko
+
+>   }
+> diff --git a/lib/i915/gem_scheduler.h b/lib/i915/gem_scheduler.h
+> index 14bd4cac..d43e84bd 100644
+> --- a/lib/i915/gem_scheduler.h
+> +++ b/lib/i915/gem_scheduler.h
+> @@ -32,6 +32,7 @@ bool gem_scheduler_has_ctx_priority(int fd);
+>   bool gem_scheduler_has_preemption(int fd);
+>   bool gem_scheduler_has_semaphores(int fd);
+>   bool gem_scheduler_has_engine_busy_stats(int fd);
+> +bool gem_scheduler_has_timeslicing(int fd);
+>   void gem_scheduler_print_capability(int fd);
+>   
+>   #endif /* GEM_SCHEDULER_H */
+> 
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
