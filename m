@@ -1,15 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9DD336F618
- for <igt-dev@lists.freedesktop.org>; Sat,  1 May 2021 01:50:50 +0000 (UTC)
-From: Imre Deak <imre.deak@intel.com>
-Date: Sat,  1 May 2021 04:50:43 +0300
-Message-Id: <20210501015044.4139096-2-imre.deak@intel.com>
-In-Reply-To: <20210501015044.4139096-1-imre.deak@intel.com>
-References: <20210501015044.4139096-1-imre.deak@intel.com>
-MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/3] lib/veboxcopy_gen12: Add support for
- MC_CCS/XYUV8888 conversions
+From: Lee Shawn C <shawn.c.lee@intel.com>
+Date: Tue,  1 Jun 2021 11:41:16 +0800
+Message-Id: <20210601034116.8396-1-shawn.c.lee@intel.com>
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_dp_dsc: Transmit correct DRM
+ connector structure.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,83 +11,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
+Cc: charlton.lin@intel.com, Lee Shawn C <shawn.c.lee@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use the AYUV encodings for both the surface format and the AUX page
-table tag. This matches the layout of XYUV8888, except for the missing
-alpha channel, and this is the closest format I found in bspec.
+1. Pass one more parameter (current drmModeConnector) when
+   call "run_test()". Use it to retrieve proper connector_type.
+2. SIGSEGV fault would happen due to "igt_output" did not
+   store properly in "data->output". Main funciton already
+   pass "igt_output" pointer into "run_test()" function.
+   Use this pointer instead of "data->output" to get display mode.
 
-Tested by igt/kms_plane and kms_ccs.
+Fixes: a1772be7dede ("tests/kms_dp_dsc: Bug fix for DP on Pipe A")
 
-Signed-off-by: Imre Deak <imre.deak@intel.com>
+Signed-off-by: Lee Shawn C <shawn.c.lee@intel.com>
 ---
- lib/intel_aux_pgtable.c | 5 +++++
- lib/veboxcopy_gen12.c   | 8 +++++---
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ tests/kms_dp_dsc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
-index f29a30916..d89b0575a 100644
---- a/lib/intel_aux_pgtable.c
-+++ b/lib/intel_aux_pgtable.c
-@@ -34,6 +34,7 @@
- #define AUX_FORMAT_YCRCB	0x03
- #define AUX_FORMAT_P010		0x07
- #define AUX_FORMAT_P016		0x08
-+#define AUX_FORMAT_AYUV		0x09
- #define AUX_FORMAT_ARGB_8B	0x0A
- #define AUX_FORMAT_NV12_21	0x0F
+diff --git a/tests/kms_dp_dsc.c b/tests/kms_dp_dsc.c
+index ea7c9f4f72ce..e434384da369 100644
+--- a/tests/kms_dp_dsc.c
++++ b/tests/kms_dp_dsc.c
+@@ -224,11 +224,11 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+ }
  
-@@ -305,6 +306,10 @@ static uint64_t pgt_get_l1_flags(const struct intel_buf *buf, int surface_idx)
- 			entry.e.format = AUX_FORMAT_YCRCB;
- 			entry.e.depth = DEPTH_VAL_RESERVED;
- 			break;
-+		case 32:
-+			entry.e.format = AUX_FORMAT_AYUV;
-+			entry.e.depth = DEPTH_VAL_RESERVED;
-+			break;
- 		default:
- 			igt_assert(0);
- 		}
-diff --git a/lib/veboxcopy_gen12.c b/lib/veboxcopy_gen12.c
-index b4cd7bddb..175644938 100644
---- a/lib/veboxcopy_gen12.c
-+++ b/lib/veboxcopy_gen12.c
-@@ -28,6 +28,7 @@
- 
- #define YCRCB_NORMAL	0
- #define PLANAR_420_8	4
-+#define PACKED_444A_8	5
- #define R8G8B8A8_UNORM	8
- #define PLANAR_420_16	12
- 
-@@ -136,6 +137,7 @@ static bool format_is_interleaved_yuv(int format)
+ static void run_test(data_t *data, igt_output_t *output,
+-		     enum dsc_test_type test_type)
++		     drmModeConnector *connector, enum dsc_test_type test_type)
  {
- 	switch (format) {
- 	case YCRCB_NORMAL:
-+	case PACKED_444A_8:
- 	case PLANAR_420_8:
- 	case PLANAR_420_16:
- 		return true;
-@@ -279,9 +281,9 @@ void gen12_vebox_copyfunc(struct intel_bb *ibb,
- 							 YCRCB_NORMAL;
- 		break;
- 	case 32:
--		igt_assert(!src->format_is_yuv &&
--			   !src->format_is_yuv_semiplanar);
--		format = R8G8B8A8_UNORM;
-+		igt_assert(!src->format_is_yuv_semiplanar);
-+		format = src->format_is_yuv ? PACKED_444A_8 :
-+					      R8G8B8A8_UNORM;
- 		break;
- 	default:
- 		igt_assert_f(0, "Unsupported bpp: %u\n", src->bpp);
+ 	enum pipe pipe;
+ 
+-	data->mode = igt_output_get_mode(data->output);
++	data->mode = igt_output_get_mode(output);
+ 	igt_create_pattern_fb(data->drm_fd, data->mode->hdisplay,
+ 			      data->mode->vdisplay,
+ 			      DRM_FORMAT_XRGB8888,
+@@ -239,7 +239,7 @@ static void run_test(data_t *data, igt_output_t *output,
+ 		if (is_i915_device(data->drm_fd)) {
+ 			uint32_t devid = intel_get_drm_devid(data->drm_fd);
+ 
+-			if (data->connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
++			if (connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
+ 			    data->pipe == PIPE_A && IS_GEN11(devid)) {
+ 				igt_debug("DSC not supported on Pipe A on external DP in Gen11 platforms\n");
+ 				continue;
+@@ -304,7 +304,7 @@ igt_main
+ 					continue;
+ 				}
+ 				test_conn_cnt++;
+-				run_test(&data, output, test_basic_dsc_enable);
++				run_test(&data, output, connector, test_basic_dsc_enable);
+ 			}
+ 			igt_skip_on(test_conn_cnt == 0);
+ 		}
 -- 
-2.27.0
+2.17.1
 
 _______________________________________________
 igt-dev mailing list
