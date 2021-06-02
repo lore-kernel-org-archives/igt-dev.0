@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8AE656E3C1
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Jun 2021 10:45:41 +0000 (UTC)
-Date: Wed, 2 Jun 2021 12:45:33 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210602104533.GC3702@zkempczy-mobl2>
-References: <20210423214853.876911-1-jason@jlekstrand.net>
- <20210423214853.876911-23-jason@jlekstrand.net>
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com
+ [IPv6:2a00:1450:4864:20::631])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 80A9C89ED6
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Jun 2021 11:18:40 +0000 (UTC)
+Received: by mail-ej1-x631.google.com with SMTP id jt22so3276239ejb.7
+ for <igt-dev@lists.freedesktop.org>; Wed, 02 Jun 2021 04:18:40 -0700 (PDT)
+References: <20210601162827.16058-1-ville.syrjala@linux.intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Message-ID: <d1b6126e-79d9-4e2e-f1cc-2c36af337a03@gmail.com>
+Date: Wed, 2 Jun 2021 14:18:32 +0300
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210423214853.876911-23-jason@jlekstrand.net>
-Subject: Re: [igt-dev] [PATCH i-g-t 22/89] tests/i915/gem_exec_nop: Convert
- to intel_ctx_t
+In-Reply-To: <20210601162827.16058-1-ville.syrjala@linux.intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: Use solid colors for
+ the cropping tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,601 +21,113 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: juhapekka.heikkila@gmail.com
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jason Ekstrand <jason@jlekstrand.net>
-Cc: igt-dev@lists.freedesktop.org
+To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Apr 23, 2021 at 04:47:46PM -0500, Jason Ekstrand wrote:
-> Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
-> ---
->  tests/i915/gem_exec_nop.c | 156 ++++++++++++++++++++++----------------
->  1 file changed, 92 insertions(+), 64 deletions(-)
-> 
-> diff --git a/tests/i915/gem_exec_nop.c b/tests/i915/gem_exec_nop.c
-> index f24ff88f..98c308d7 100644
-> --- a/tests/i915/gem_exec_nop.c
-> +++ b/tests/i915/gem_exec_nop.c
-> @@ -45,6 +45,7 @@
->  #include "igt_device.h"
->  #include "igt_rand.h"
->  #include "igt_sysfs.h"
-> +#include "intel_ctx.h"
->  
->  
->  #define ENGINE_FLAGS  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
-> @@ -62,7 +63,7 @@ static double elapsed(const struct timespec *start, const struct timespec *end)
->  		(end->tv_nsec - start->tv_nsec)*1e-9);
->  }
->  
-> -static double nop_on_ring(int fd, uint32_t handle,
-> +static double nop_on_ring(int fd, uint32_t handle, const intel_ctx_t *ctx,
->  			  const struct intel_execution_engine2 *e,
->  			  int timeout_ms,
->  			  unsigned long *out)
-
-When I started to looking at this test I realized we unnecessary have
-to use newly created context instead using default one. This enforces
-changes everywhere but we really don't need this imo.
-
-Shouldn't we provide intel_ctx_0 filled with cfg/engines if query 
-engines exists instead of returning pointer to statically defined
-zeroed structure? Destroy path can diverge the situation - if we 
-allocate intel_ctx_t structure instead of returning pointer to 
-predefined one pointer comparison get us know we should free it.
-
-In both cases - engines queried or statically returned for_each_ctx_*()
-should work. 
-
---
-Zbigniew
-
-
-> @@ -81,6 +82,7 @@ static double nop_on_ring(int fd, uint32_t handle,
->  	execbuf.flags = e->flags;
->  	execbuf.flags |= I915_EXEC_HANDLE_LUT;
->  	execbuf.flags |= I915_EXEC_NO_RELOC;
-> +	execbuf.rsvd1 = ctx->id;
->  	if (__gem_execbuf(fd, &execbuf)) {
->  		execbuf.flags = e->flags;
->  		gem_execbuf(fd, &execbuf);
-> @@ -101,7 +103,8 @@ static double nop_on_ring(int fd, uint32_t handle,
->  	return elapsed(&start, &now);
->  }
->  
-> -static void poll_ring(int fd, const struct intel_execution_engine2 *e,
-> +static void poll_ring(int fd, const intel_ctx_t *ctx,
-> +		      const struct intel_execution_engine2 *e,
->  		      int timeout)
->  {
->  	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
-> @@ -185,6 +188,7 @@ static void poll_ring(int fd, const struct intel_execution_engine2 *e,
->  	execbuf.buffers_ptr = to_user_pointer(&obj);
->  	execbuf.buffer_count = 1;
->  	execbuf.flags = e->flags | flags;
-> +	execbuf.rsvd1 = ctx->id;
->  
->  	cycles = 0;
->  	do {
-> @@ -212,7 +216,8 @@ static void poll_ring(int fd, const struct intel_execution_engine2 *e,
->  	gem_close(fd, obj.handle);
->  }
->  
-> -static void poll_sequential(int fd, const char *name, int timeout)
-> +static void poll_sequential(int fd, const intel_ctx_t *ctx,
-> +			    const char *name, int timeout)
->  {
->  	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
->  	const struct intel_execution_engine2 *e;
-> @@ -232,7 +237,7 @@ static void poll_sequential(int fd, const char *name, int timeout)
->  		flags |= I915_EXEC_SECURE;
->  
->  	nengine = 0;
-> -	__for_each_physical_engine(fd, e) {
-> +	for_each_ctx_engine(fd, ctx, e) {
->  		if (!gem_class_can_store_dword(fd, e->class) ||
->  		    !gem_class_has_mutable_submission(fd, e->class))
->  			continue;
-> @@ -312,6 +317,7 @@ static void poll_sequential(int fd, const char *name, int timeout)
->  	memset(&execbuf, 0, sizeof(execbuf));
->  	execbuf.buffers_ptr = to_user_pointer(obj);
->  	execbuf.buffer_count = ARRAY_SIZE(obj);
-> +	execbuf.rsvd1 = ctx->id;
->  
->  	cycles = 0;
->  	do {
-> @@ -342,19 +348,19 @@ static void poll_sequential(int fd, const char *name, int timeout)
->  	gem_close(fd, obj[0].handle);
->  }
->  
-> -static void single(int fd, uint32_t handle,
-> +static void single(int fd, uint32_t handle, const intel_ctx_t *ctx,
->  		   const struct intel_execution_engine2 *e)
->  {
->  	double time;
->  	unsigned long count;
->  
-> -	time = nop_on_ring(fd, handle, e, 20000, &count);
-> +	time = nop_on_ring(fd, handle, ctx, e, 20000, &count);
->  	igt_info("%s: %'lu cycles: %.3fus\n",
->  		  e->name, count, time*1e6 / count);
->  }
->  
->  static double
-> -stable_nop_on_ring(int fd, uint32_t handle,
-> +stable_nop_on_ring(int fd, uint32_t handle, const intel_ctx_t *ctx,
->  		   const struct intel_execution_engine2 *e,
->  		   int timeout_ms,
->  		   int reps)
-> @@ -371,7 +377,7 @@ stable_nop_on_ring(int fd, uint32_t handle,
->  		unsigned long count;
->  		double time;
->  
-> -		time = nop_on_ring(fd, handle, e, timeout_ms, &count);
-> +		time = nop_on_ring(fd, handle, ctx, e, timeout_ms, &count);
->  		igt_stats_push_float(&s, time / count);
->  	}
->  
-> @@ -387,7 +393,7 @@ stable_nop_on_ring(int fd, uint32_t handle,
->                       "'%s' != '%s' (%f not within %f%% tolerance of %f)\n",\
->                       #x, #ref, x, tolerance * 100.0, ref)
->  
-> -static void headless(int fd, uint32_t handle,
-> +static void headless(int fd, uint32_t handle, const intel_ctx_t *ctx,
->  		     const struct intel_execution_engine2 *e)
->  {
->  	unsigned int nr_connected = 0;
-> @@ -411,11 +417,11 @@ static void headless(int fd, uint32_t handle,
->  	/* set graphics mode to prevent blanking */
->  	kmstest_set_vt_graphics_mode();
->  
-> -	nop_on_ring(fd, handle, e, 10, &count);
-> +	nop_on_ring(fd, handle, ctx, e, 10, &count);
->  	igt_require_f(count > 100, "submillisecond precision required\n");
->  
->  	/* benchmark nops */
-> -	n_display = stable_nop_on_ring(fd, handle, e, 500, 5);
-> +	n_display = stable_nop_on_ring(fd, handle, ctx, e, 500, 5);
->  	igt_info("With one display connected: %.2fus\n",
->  		 n_display * 1e6);
->  
-> @@ -423,7 +429,7 @@ static void headless(int fd, uint32_t handle,
->  	kmstest_unset_all_crtcs(fd, res);
->  
->  	/* benchmark nops again */
-> -	n_headless = stable_nop_on_ring(fd, handle, e, 500, 5);
-> +	n_headless = stable_nop_on_ring(fd, handle, ctx, e, 500, 5);
->  	igt_info("Without a display connected (headless): %.2fus\n",
->  		 n_headless * 1e6);
->  
-> @@ -431,7 +437,8 @@ static void headless(int fd, uint32_t handle,
->  	assert_within_epsilon(n_headless, n_display, 0.1f);
->  }
->  
-> -static void parallel(int fd, uint32_t handle, int timeout)
-> +static void parallel(int fd, uint32_t handle,
-> +		     const intel_ctx_t *ctx, int timeout)
->  {
->  	const struct intel_execution_engine2 *e;
->  	struct drm_i915_gem_execbuffer2 execbuf;
-> @@ -445,11 +452,11 @@ static void parallel(int fd, uint32_t handle, int timeout)
->  	sum = 0;
->  	nengine = 0;
->  
-> -	__for_each_physical_engine(fd, e) {
-> +	for_each_ctx_engine(fd, ctx, e) {
->  		engines[nengine] = e->flags;
->  		names[nengine++] = strdup(e->name);
->  
-> -		time = nop_on_ring(fd, handle, e, 250, &count) / count;
-> +		time = nop_on_ring(fd, handle, ctx, e, 250, &count) / count;
->  		sum += time;
->  		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
->  	}
-> @@ -464,6 +471,7 @@ static void parallel(int fd, uint32_t handle, int timeout)
->  	execbuf.buffer_count = 1;
->  	execbuf.flags |= I915_EXEC_HANDLE_LUT;
->  	execbuf.flags |= I915_EXEC_NO_RELOC;
-> +	execbuf.rsvd1 = ctx->id;
->  	if (__gem_execbuf(fd, &execbuf)) {
->  		execbuf.flags = 0;
->  		gem_execbuf(fd, &execbuf);
-> @@ -494,7 +502,8 @@ static void parallel(int fd, uint32_t handle, int timeout)
->  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
->  }
->  
-> -static void independent(int fd, uint32_t handle, int timeout)
-> +static void independent(int fd, uint32_t handle,
-> +			const intel_ctx_t *ctx, int timeout)
->  {
->  	const struct intel_execution_engine2 *e;
->  	struct drm_i915_gem_execbuffer2 execbuf;
-> @@ -507,11 +516,11 @@ static void independent(int fd, uint32_t handle, int timeout)
->  
->  	sum = 0;
->  	nengine = 0;
-> -	__for_each_physical_engine(fd, e) {
-> +	for_each_ctx_engine(fd, ctx, e) {
->  		engines[nengine] = e->flags;
->  		names[nengine++] = strdup(e->name);
->  
-> -		time = nop_on_ring(fd, handle, e, 250, &count) / count;
-> +		time = nop_on_ring(fd, handle, ctx, e, 250, &count) / count;
->  		sum += time;
->  		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
->  	}
-> @@ -526,6 +535,7 @@ static void independent(int fd, uint32_t handle, int timeout)
->  	execbuf.buffer_count = 1;
->  	execbuf.flags |= I915_EXEC_HANDLE_LUT;
->  	execbuf.flags |= I915_EXEC_NO_RELOC;
-> +	execbuf.rsvd1 = ctx->id;
->  	if (__gem_execbuf(fd, &execbuf)) {
->  		execbuf.flags = 0;
->  		gem_execbuf(fd, &execbuf);
-> @@ -562,7 +572,7 @@ static void independent(int fd, uint32_t handle, int timeout)
->  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
->  }
->  
-> -static void multiple(int fd,
-> +static void multiple(int fd, const intel_ctx_t *ctx,
->  		     const struct intel_execution_engine2 *e,
->  		     int timeout)
->  {
-> @@ -581,6 +591,7 @@ static void multiple(int fd,
->  	execbuf.flags = e->flags;
->  	execbuf.flags |= I915_EXEC_HANDLE_LUT;
->  	execbuf.flags |= I915_EXEC_NO_RELOC;
-> +	execbuf.rsvd1 = ctx->id;
->  	if (__gem_execbuf(fd, &execbuf)) {
->  		execbuf.flags = e->flags;
->  		gem_execbuf(fd, &execbuf);
-> @@ -592,9 +603,11 @@ static void multiple(int fd,
->  		unsigned long count;
->  		double time;
->  		int i915;
-> +		const intel_ctx_t *child_ctx;
->  
->  		i915 = gem_reopen_driver(fd);
-> -		gem_context_copy_engines(fd, 0, i915, 0);
-> +		child_ctx = intel_ctx_create(i915, &ctx->cfg);
-> +		execbuf.rsvd1 = child_ctx->id;
->  
->  		obj.handle = gem_create(i915, 4096);
->  		gem_write(i915, obj.handle, 0, &bbe, sizeof(bbe));
-> @@ -609,6 +622,7 @@ static void multiple(int fd,
->  		} while (elapsed(&start, &now) < timeout);
->  		time = elapsed(&start, &now) / count;
->  		igt_info("%d: %ld cycles, %.3fus\n", child, count, 1e6*time);
-> +		intel_ctx_destroy(i915, child_ctx);
->  	}
->  
->  	igt_waitchildren();
-> @@ -617,7 +631,8 @@ static void multiple(int fd,
->  	gem_close(fd, obj.handle);
->  }
->  
-> -static void series(int fd, uint32_t handle, int timeout)
-> +static void series(int fd, uint32_t handle,
-> +		   const intel_ctx_t *ctx, int timeout)
->  {
->  	const struct intel_execution_engine2 *e;
->  	struct drm_i915_gem_execbuffer2 execbuf;
-> @@ -630,8 +645,8 @@ static void series(int fd, uint32_t handle, int timeout)
->  	const char *name;
->  
->  	nengine = 0;
-> -	__for_each_physical_engine(fd, e) {
-> -		time = nop_on_ring(fd, handle, e, 250, &count) / count;
-> +	for_each_ctx_engine(fd, ctx, e) {
-> +		time = nop_on_ring(fd, handle, ctx, e, 250, &count) / count;
->  		if (time > max) {
->  			name = e->name;
->  			max = time;
-> @@ -653,6 +668,7 @@ static void series(int fd, uint32_t handle, int timeout)
->  	execbuf.buffer_count = 1;
->  	execbuf.flags |= I915_EXEC_HANDLE_LUT;
->  	execbuf.flags |= I915_EXEC_NO_RELOC;
-> +	execbuf.rsvd1 = ctx->id;
->  	if (__gem_execbuf(fd, &execbuf)) {
->  		execbuf.flags = 0;
->  		gem_execbuf(fd, &execbuf);
-> @@ -688,9 +704,11 @@ static void xchg(void *array, unsigned i, unsigned j)
->  	u[j] = tmp;
->  }
->  
-> -static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
-> +static void sequential(int fd, uint32_t handle,
-> +		       const intel_ctx_t *ctx, unsigned flags, int timeout)
->  {
->  	const int ncpus = flags & FORKED ? sysconf(_SC_NPROCESSORS_ONLN) : 1;
-> +	const intel_ctx_t *tmp_ctx = NULL, *child_ctx = NULL;
->  	const struct intel_execution_engine2 *e;
->  	struct drm_i915_gem_execbuffer2 execbuf;
->  	struct drm_i915_gem_exec_object2 obj[2];
-> @@ -707,10 +725,10 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
->  
->  	nengine = 0;
->  	sum = 0;
-> -	__for_each_physical_engine(fd, e) {
-> +	for_each_ctx_engine(fd, ctx, e) {
->  		unsigned long count;
->  
-> -		time = nop_on_ring(fd, handle, e, 250, &count) / count;
-> +		time = nop_on_ring(fd, handle, ctx, e, 250, &count) / count;
->  		sum += time;
->  		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
->  
-> @@ -734,7 +752,8 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
->  
->  	if (flags & CONTEXT) {
->  		gem_require_contexts(fd);
-> -		execbuf.rsvd1 = gem_context_clone_with_engines(fd, 0);
-> +		tmp_ctx = intel_ctx_create(fd, &ctx->cfg);
-> +		execbuf.rsvd1 = tmp_ctx->id;
->  	}
->  
->  	for (n = 0; n < nengine; n++) {
-> @@ -754,7 +773,8 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
->  
->  		if (flags & CONTEXT) {
->  			gem_require_contexts(fd);
-> -			execbuf.rsvd1 = gem_context_clone_with_engines(fd, 0);
-> +			child_ctx = intel_ctx_create(fd, &ctx->cfg);
-> +			execbuf.rsvd1 = child_ctx->id;
->  		}
->  
->  		hars_petruska_f54_1_random_perturb(child);
-> @@ -777,7 +797,7 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
->  		results[child] = elapsed(&start, &now) / count;
->  
->  		if (flags & CONTEXT)
-> -			gem_context_destroy(fd, execbuf.rsvd1);
-> +			intel_ctx_destroy(fd, child_ctx);
->  
->  		gem_close(fd, obj[0].handle);
->  	}
-> @@ -793,7 +813,7 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
->  		 nengine, ncpus, 1e6*results[ncpus], 1e6*sum*ncpus);
->  
->  	if (flags & CONTEXT)
-> -		gem_context_destroy(fd, execbuf.rsvd1);
-> +		intel_ctx_destroy(fd, tmp_ctx);
->  
->  	gem_close(fd, obj[0].handle);
->  	munmap(results, 4096);
-> @@ -810,6 +830,7 @@ static bool fence_wait(int fence)
->  }
->  
->  static void fence_signal(int fd, uint32_t handle,
-> +			 const intel_ctx_t *ctx,
->  			 const struct intel_execution_engine2 *ring_id,
->  			 const char *ring_name, int timeout)
->  {
-> @@ -827,7 +848,7 @@ static void fence_signal(int fd, uint32_t handle,
->  
->  	nengine = 0;
->  	if (!ring_id) {
-> -		__for_each_physical_engine(fd, __e)
-> +		for_each_ctx_engine(fd, ctx, __e)
->  			engines[nengine++] = __e->flags;
->  	} else {
->  		engines[nengine++] = ring_id->flags;
-> @@ -845,6 +866,7 @@ static void fence_signal(int fd, uint32_t handle,
->  	execbuf.buffers_ptr = to_user_pointer(&obj);
->  	execbuf.buffer_count = 1;
->  	execbuf.flags = I915_EXEC_FENCE_OUT;
-> +	execbuf.rsvd1 = ctx->id;
->  
->  	n = 0;
->  	count = 0;
-> @@ -885,20 +907,21 @@ static void fence_signal(int fd, uint32_t handle,
->  }
->  
->  static void preempt(int fd, uint32_t handle,
-> +		    const intel_ctx_t *ctx,
->  		    const struct intel_execution_engine2 *e)
->  {
->  	struct drm_i915_gem_execbuffer2 execbuf;
->  	struct drm_i915_gem_exec_object2 obj;
->  	struct timespec start, now;
->  	unsigned long count;
-> -	uint32_t ctx[2];
-> +	const intel_ctx_t *tmp_ctx[2];
->  	igt_spin_t *spin;
->  
-> -	ctx[0] = gem_context_clone_with_engines(fd, 0);
-> -	gem_context_set_priority(fd, ctx[0], MIN_PRIO);
-> +	tmp_ctx[0] = intel_ctx_create(fd, &ctx->cfg);
-> +	gem_context_set_priority(fd, tmp_ctx[0]->id, MIN_PRIO);
->  
-> -	ctx[1] = gem_context_clone_with_engines(fd, 0);
-> -	gem_context_set_priority(fd, ctx[1], MAX_PRIO);
-> +	tmp_ctx[1] = intel_ctx_create(fd, &ctx->cfg);
-> +	gem_context_set_priority(fd, tmp_ctx[1]->id, MAX_PRIO);
->  
->  	memset(&obj, 0, sizeof(obj));
->  	obj.handle = handle;
-> @@ -909,15 +932,16 @@ static void preempt(int fd, uint32_t handle,
->  	execbuf.flags = e->flags;
->  	execbuf.flags |= I915_EXEC_HANDLE_LUT;
->  	execbuf.flags |= I915_EXEC_NO_RELOC;
-> +	execbuf.rsvd1 = ctx->id;
->  	if (__gem_execbuf(fd, &execbuf)) {
->  		execbuf.flags = e->flags;
->  		gem_execbuf(fd, &execbuf);
->  	}
-> -	execbuf.rsvd1 = ctx[1];
-> +	execbuf.rsvd1 = tmp_ctx[1]->id;
->  	intel_detect_and_clear_missed_interrupts(fd);
->  
->  	count = 0;
-> -	spin = __igt_spin_new(fd, .ctx_id = ctx[0], .engine = e->flags);
-> +	spin = __igt_spin_new(fd, .ctx = tmp_ctx[0], .engine = e->flags);
->  	clock_gettime(CLOCK_MONOTONIC, &start);
->  	do {
->  		gem_execbuf(fd, &execbuf);
-> @@ -927,8 +951,8 @@ static void preempt(int fd, uint32_t handle,
->  	igt_spin_free(fd, spin);
->  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
->  
-> -	gem_context_destroy(fd, ctx[1]);
-> -	gem_context_destroy(fd, ctx[0]);
-> +	intel_ctx_destroy(fd, tmp_ctx[1]);
-> +	intel_ctx_destroy(fd, tmp_ctx[0]);
->  
->  	igt_info("%s: %'lu cycles: %.3fus\n",
->  		 e->name, count, elapsed(&start, &now)*1e6 / count);
-> @@ -937,6 +961,7 @@ static void preempt(int fd, uint32_t handle,
->  igt_main
->  {
->  	const struct intel_execution_engine2 *e;
-> +	const intel_ctx_t *ctx = NULL;
->  	uint32_t handle = 0;
->  	int device = -1;
->  
-> @@ -948,6 +973,8 @@ igt_main
->  		gem_submission_print_method(device);
->  		gem_scheduler_print_capability(device);
->  
-> +		ctx = intel_ctx_create_all_physical(device);
-> +
->  		handle = gem_create(device, 4096);
->  		gem_write(device, handle, 0, &bbe, sizeof(bbe));
->  
-> @@ -955,57 +982,57 @@ igt_main
->  	}
->  
->  	igt_subtest("basic-series")
-> -		series(device, handle, 2);
-> +		series(device, handle, ctx, 2);
->  
->  	igt_subtest("basic-parallel")
-> -		parallel(device, handle, 2);
-> +		parallel(device, handle, ctx, 2);
->  
->  	igt_subtest("basic-sequential")
-> -		sequential(device, handle, 0, 2);
-> +		sequential(device, handle, ctx, 0, 2);
->  
->  	igt_subtest_with_dynamic("single") {
-> -		__for_each_physical_engine(device, e) {
-> +		for_each_ctx_engine(device, ctx, e) {
->  			igt_dynamic_f("%s", e->name)
-> -				single(device, handle, e);
-> +				single(device, handle, ctx, e);
->  		}
->  	}
->  
->  	igt_subtest_with_dynamic("signal") {
-> -		__for_each_physical_engine(device, e) {
-> +		for_each_ctx_engine(device, ctx, e) {
->  			igt_dynamic_f("%s", e->name)
-> -				fence_signal(device, handle, e,
-> -					     e->name, 2);
-> +				fence_signal(device, handle, ctx,
-> +					     e, e->name, 2);
->  		}
->  	}
->  
->  	igt_subtest("signal-all")
->  		/* NULL value means all engines */
-> -		fence_signal(device, handle, NULL, "all", 20);
-> +		fence_signal(device, handle, ctx, NULL, "all", 20);
->  
->  	igt_subtest("series")
-> -		series(device, handle, 20);
-> +		series(device, handle, ctx, 20);
->  
->  	igt_subtest("parallel")
-> -		parallel(device, handle, 20);
-> +		parallel(device, handle, ctx, 20);
->  
->  	igt_subtest("independent")
-> -		independent(device, handle, 20);
-> +		independent(device, handle, ctx, 20);
->  
->  	igt_subtest_with_dynamic("multiple") {
-> -		__for_each_physical_engine(device, e) {
-> +		for_each_ctx_engine(device, ctx, e) {
->  			igt_dynamic_f("%s", e->name)
-> -				multiple(device, e, 20);
-> +				multiple(device, ctx, e, 20);
->  		}
->  	}
->  
->  	igt_subtest("sequential")
-> -		sequential(device, handle, 0, 20);
-> +		sequential(device, handle, ctx, 0, 20);
->  
->  	igt_subtest("forked-sequential")
-> -		sequential(device, handle, FORKED, 20);
-> +		sequential(device, handle, ctx, FORKED, 20);
->  
->  	igt_subtest("context-sequential")
-> -		sequential(device, handle, FORKED | CONTEXT, 20);
-> +		sequential(device, handle, ctx, FORKED | CONTEXT, 20);
->  
->  	igt_subtest_group {
->  		igt_fixture {
-> @@ -1014,9 +1041,9 @@ igt_main
->  			igt_require(gem_scheduler_has_preemption(device));
->  		}
->  		igt_subtest_with_dynamic("preempt") {
-> -			__for_each_physical_engine(device, e) {
-> +			for_each_ctx_engine(device, ctx, e) {
->  				igt_dynamic_f("%s", e->name)
-> -					preempt(device, handle, e);
-> +					preempt(device, handle, ctx, e);
->  			}
->  		}
->  	}
-> @@ -1027,29 +1054,30 @@ igt_main
->  		}
->  
->  		igt_subtest_with_dynamic("poll") {
-> -			__for_each_physical_engine(device, e) {
-> +			for_each_ctx_engine(device, ctx, e) {
->  				/* Requires master for STORE_DWORD on gen4/5 */
->  				igt_dynamic_f("%s", e->name)
-> -					poll_ring(device, e, 20);
-> +					poll_ring(device, ctx, e, 20);
->  			}
->  		}
->  
->  		igt_subtest_with_dynamic("headless") {
-> -			__for_each_physical_engine(device, e) {
-> +			for_each_ctx_engine(device, ctx, e) {
->  				igt_dynamic_f("%s", e->name)
->  				/* Requires master for changing display modes */
-> -					headless(device, handle, e);
-> +					headless(device, handle, ctx, e);
->  			}
->  		}
->  
->  		igt_subtest("poll-sequential")
-> -			poll_sequential(device, "Sequential", 20);
-> +			poll_sequential(device, ctx, "Sequential", 20);
->  
->  	}
->  
->  	igt_fixture {
->  		igt_stop_hang_detector();
->  		gem_close(device, handle);
-> +		intel_ctx_destroy(device, ctx);
->  		close(device);
->  	}
->  }
-> -- 
-> 2.31.1
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gMS42LjIwMjEgMTkuMjgsIFZpbGxlIFN5cmphbGEgd3JvdGU6Cj4gRnJvbTogVmlsbGUgU3ly
+asOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KPiAKPiBTb21ldGhpbmcgaXMg
+d3Jvbmcgd2l0aCB0aGUgd2F5IHdlIHJlbmRlciBzdHVmZiBpbiB0aGUgY3JvcCB0ZXN0cy4KPiBU
+aGUgcmVucmVkZWQgaW1hZ2UgY2FuIGJlIGRpZmZlcmVudCBmb3IgZGlmZmVyZW50IHBpeGVsIGZv
+cm1hdHMsCj4gYXQgbGVhc3Qgd2hlbiB1c2luZyBmdWxsc2NyZWVuIHBsYW5lcyAobWF5YmUgcmVz
+b2x1dGlvbiBkZXBlbmRlbnQpLgo+IEdvIGJhY2sgdG8gdXNpbmcganVzdCBzb2xpZCBjb2xvcnMg
+dW50aWwgc29tZW9uZSBmaWd1cmVzIG91dCB3aGF0J3MKPiB3cm9uZyB3aXRoIHRoZSByZW5kZXJp
+bmcuCgpJcyB0aGVyZSBzb21lIGNpIHJlcG9ydCB3aGVyZSB0aGlzIGNvdWxkIGJlIHNlZW4/IEkg
+Z3Vlc3MgaXQgd2lsbCBmYWlsIAppbmNvcnJlY3RseT8KCi9KdWhhLVBla2thCgo+IAo+IFNpZ25l
+ZC1vZmYtYnk6IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+
+Cj4gLS0tCj4gICB0ZXN0cy9rbXNfcGxhbmUuYyB8IDYxICsrKysrKysrKysrKysrKysrKysrKysr
+KysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tCj4gICAxIGZpbGUgY2hhbmdlZCwgMzQgaW5zZXJ0aW9u
+cygrKSwgMjcgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19wbGFuZS5j
+IGIvdGVzdHMva21zX3BsYW5lLmMKPiBpbmRleCBkN2NiZTg5MjVjZDkuLmVhMTExOGMyMzc2OSAx
+MDA2NDQKPiAtLS0gYS90ZXN0cy9rbXNfcGxhbmUuYwo+ICsrKyBiL3Rlc3RzL2ttc19wbGFuZS5j
+Cj4gQEAgLTU2Nyw3ICs1NjcsNyBAQCBzdGF0aWMgdm9pZCBjYXB0dXJlX2NyYyhkYXRhX3QgKmRh
+dGEsIHVuc2lnbmVkIGludCB2YmxhbmssIGlndF9jcmNfdCAqY3JjKQo+ICAgCQkgICAgICBjcmMt
+PmZyYW1lLCB2YmxhbmspOwo+ICAgfQo+ICAgCj4gLXN0YXRpYyB2b2lkIGNhcHR1cmVfZm9ybWF0
+X2NyY3NfcGFja2VkKGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUsCj4gK3N0YXRpYyB2b2lk
+IGNhcHR1cmVfZm9ybWF0X2NyY3Nfc2luZ2xlKGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUs
+Cj4gICAJCQkJICAgICAgIGlndF9wbGFuZV90ICpwbGFuZSwKPiAgIAkJCQkgICAgICAgdWludDMy
+X3QgZm9ybWF0LCB1aW50NjRfdCBtb2RpZmllciwKPiAgIAkJCQkgICAgICAgaW50IHdpZHRoLCBp
+bnQgaGVpZ2h0LAo+IEBAIC01ODksMTMgKzU4OSwxMyBAQCBzdGF0aWMgdm9pZCBjYXB0dXJlX2Zv
+cm1hdF9jcmNzX3BhY2tlZChkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlLAo+ICAgCWlndF9w
+aXBlX2NyY19nZXRfY3VycmVudChkYXRhLT5kcm1fZmQsIGRhdGEtPnBpcGVfY3JjLCAmY3JjWzBd
+KTsKPiAgIH0KPiAgIAo+IC1zdGF0aWMgdm9pZCBjYXB0dXJlX2Zvcm1hdF9jcmNzX3BsYW5hcihk
+YXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlLAo+IC0JCQkJICAgICAgIGlndF9wbGFuZV90ICpw
+bGFuZSwKPiAtCQkJCSAgICAgICB1aW50MzJfdCBmb3JtYXQsIHVpbnQ2NF90IG1vZGlmaWVyLAo+
+IC0JCQkJICAgICAgIGludCB3aWR0aCwgaW50IGhlaWdodCwKPiAtCQkJCSAgICAgICBlbnVtIGln
+dF9jb2xvcl9lbmNvZGluZyBlbmNvZGluZywKPiAtCQkJCSAgICAgICBlbnVtIGlndF9jb2xvcl9y
+YW5nZSByYW5nZSwKPiAtCQkJCSAgICAgICBpZ3RfY3JjX3QgY3JjW10sIHN0cnVjdCBpZ3RfZmIg
+KmZiKQo+ICtzdGF0aWMgdm9pZCBjYXB0dXJlX2Zvcm1hdF9jcmNzX211bHRpcGxlKGRhdGFfdCAq
+ZGF0YSwgZW51bSBwaXBlIHBpcGUsCj4gKwkJCQkJIGlndF9wbGFuZV90ICpwbGFuZSwKPiArCQkJ
+CQkgdWludDMyX3QgZm9ybWF0LCB1aW50NjRfdCBtb2RpZmllciwKPiArCQkJCQkgaW50IHdpZHRo
+LCBpbnQgaGVpZ2h0LAo+ICsJCQkJCSBlbnVtIGlndF9jb2xvcl9lbmNvZGluZyBlbmNvZGluZywK
+PiArCQkJCQkgZW51bSBpZ3RfY29sb3JfcmFuZ2UgcmFuZ2UsCj4gKwkJCQkJIGlndF9jcmNfdCBj
+cmNbXSwgc3RydWN0IGlndF9mYiAqZmIpCj4gICB7Cj4gICAJdW5zaWduZWQgaW50IHZibGFua1tB
+UlJBWV9TSVpFKGNvbG9yc19leHRlbmRlZCldOwo+ICAgCXN0cnVjdCBkcm1fZXZlbnRfdmJsYW5r
+IGV2Owo+IEBAIC03MTIsNiArNzEyLDExIEBAIHJlc3RhcnRfcm91bmQ6Cj4gICAJY2FwdHVyZV9j
+cmMoZGF0YSwgdmJsYW5rW2kgLSAxXSwgJmNyY1tpIC0gMV0pOwo+ICAgfQo+ICAgCj4gK3N0YXRp
+YyBib29sIHVzZV9tdWx0aXBsZV9jb2xvcnMoZGF0YV90ICpkYXRhLCB1aW50MzJfdCBmb3JtYXQp
+Cj4gK3sKPiArCXJldHVybiBkYXRhLT5jcm9wICE9IDAgfHwgaWd0X2Zvcm1hdF9pc195dXZfc2Vt
+aXBsYW5hcihmb3JtYXQpOwo+ICt9Cj4gKwo+ICAgc3RhdGljIGJvb2wgdGVzdF9mb3JtYXRfcGxh
+bmVfY29sb3JzKGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUsCj4gICAJCQkJICAgICBpZ3Rf
+cGxhbmVfdCAqcGxhbmUsCj4gICAJCQkJICAgICB1aW50MzJfdCBmb3JtYXQsIHVpbnQ2NF90IG1v
+ZGlmaWVyLAo+IEBAIC03MjYsMTcgKzczMSwxNyBAQCBzdGF0aWMgYm9vbCB0ZXN0X2Zvcm1hdF9w
+bGFuZV9jb2xvcnMoZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSwKPiAgIAlpbnQgY3JjX21p
+c21hdGNoX2NvdW50ID0gMDsKPiAgIAlib29sIHJlc3VsdCA9IHRydWU7Cj4gICAJaW50IGksIHRv
+dGFsX2NyY3MgPSAxOwo+IC0JYm9vbCBwbGFuYXIgPSBpZ3RfZm9ybWF0X2lzX3l1dl9zZW1pcGxh
+bmFyKGZvcm1hdCk7Cj4gICAKPiAtCWlmIChwbGFuYXIpIHsKPiAtCQljYXB0dXJlX2Zvcm1hdF9j
+cmNzX3BsYW5hcihkYXRhLCBwaXBlLCBwbGFuZSwgZm9ybWF0LCBtb2RpZmllciwKPiAtCQkJCQkg
+ICB3aWR0aCwgaGVpZ2h0LCBlbmNvZGluZywgcmFuZ2UsIGNyYywKPiAtCQkJCQkgICBmYik7Cj4g
+KwlpZiAodXNlX211bHRpcGxlX2NvbG9ycyhkYXRhLCBmb3JtYXQpKSB7Cj4gKwkJY2FwdHVyZV9m
+b3JtYXRfY3Jjc19tdWx0aXBsZShkYXRhLCBwaXBlLCBwbGFuZSwgZm9ybWF0LCBtb2RpZmllciwK
+PiArCQkJCQkgICAgIHdpZHRoLCBoZWlnaHQsIGVuY29kaW5nLCByYW5nZSwgY3JjLAo+ICsJCQkJ
+CSAgICAgZmIpOwo+ICAgCQl0b3RhbF9jcmNzID0gZGF0YS0+bnVtX2NvbG9yczsKPiAtCX0gZWxz
+ZQo+IC0JCWNhcHR1cmVfZm9ybWF0X2NyY3NfcGFja2VkKGRhdGEsIHBpcGUsIHBsYW5lLCBmb3Jt
+YXQsIG1vZGlmaWVyLAo+ICsJfSBlbHNlIHsKPiArCQljYXB0dXJlX2Zvcm1hdF9jcmNzX3Npbmds
+ZShkYXRhLCBwaXBlLCBwbGFuZSwgZm9ybWF0LCBtb2RpZmllciwKPiAgIAkJCQkJICAgd2lkdGgs
+IGhlaWdodCwgZW5jb2RpbmcsIHJhbmdlLCBjcmMsCj4gICAJCQkJCSAgIGZiKTsKPiArCX0KPiAg
+IAo+ICAgCWZvciAoaSA9IDA7IGkgPCB0b3RhbF9jcmNzOyBpKyspIHsKPiAgIAkJaWYgKCFpZ3Rf
+Y2hlY2tfY3JjX2VxdWFsKCZjcmNbaV0sICZyZWZfY3JjW2ldKSkgewo+IEBAIC04MjYsOSArODMx
+LDExIEBAIHN0YXRpYyBib29sIHRlc3RfZm9ybWF0X3BsYW5lX3l1dihkYXRhX3QgKmRhdGEsIGVu
+dW0gcGlwZSBwaXBlLAo+ICAgCXJldHVybiByZXN1bHQ7Cj4gICB9Cj4gICAKPiAtZW51bSBjcmNf
+c2V0IHsgUEFDS0VEX0NSQ19TRVQsCj4gLQkgICAgICAgUExBTkFSX0NSQ19TRVQsCj4gLQkgICAg
+ICAgTUFYX0NSQ19TRVQgfTsKPiArZW51bSBjcmNfc2V0IHsKPiArCVNJTkdMRV9DUkNfU0VULAo+
+ICsJTVVMVElQTEVfQ1JDX1NFVCwKPiArCU1BWF9DUkNfU0VULAo+ICt9Owo+ICAgCj4gICBzdHJ1
+Y3QgZm9ybWF0X21vZCB7Cj4gICAJdWludDY0X3QgbW9kaWZpZXI7Cj4gQEAgLTkwNiwyMiArOTEz
+LDIyIEBAIHN0YXRpYyBib29sIHRlc3RfZm9ybWF0X3BsYW5lKGRhdGFfdCAqZGF0YSwgZW51bSBw
+aXBlIHBpcGUsCj4gICAJCWlndF9yZW1vdmVfZmIoZGF0YS0+ZHJtX2ZkLCAmdGVzdF9mYik7Cj4g
+ICAJfQo+ICAgCj4gLQljYXB0dXJlX2Zvcm1hdF9jcmNzX3BhY2tlZChkYXRhLCBwaXBlLCBwbGFu
+ZSwgcmVmLmZvcm1hdCwgcmVmLm1vZGlmaWVyLAo+ICsJY2FwdHVyZV9mb3JtYXRfY3Jjc19zaW5n
+bGUoZGF0YSwgcGlwZSwgcGxhbmUsIHJlZi5mb3JtYXQsIHJlZi5tb2RpZmllciwKPiAgIAkJCQkg
+ICB3aWR0aCwgaGVpZ2h0LCBJR1RfQ09MT1JfWUNCQ1JfQlQ3MDksCj4gICAJCQkJICAgSUdUX0NP
+TE9SX1lDQkNSX0xJTUlURURfUkFOR0UsCj4gLQkJCQkgICByZWZfY3JjW1BBQ0tFRF9DUkNfU0VU
+XSwgJmZiKTsKPiArCQkJCSAgIHJlZl9jcmNbU0lOR0xFX0NSQ19TRVRdLCAmZmIpOwo+ICAgCj4g
+LQljYXB0dXJlX2Zvcm1hdF9jcmNzX3BsYW5hcihkYXRhLCBwaXBlLCBwbGFuZSwgcmVmLmZvcm1h
+dCwgcmVmLm1vZGlmaWVyLAo+IC0JCQkJICAgd2lkdGgsIGhlaWdodCwgSUdUX0NPTE9SX1lDQkNS
+X0JUNzA5LAo+IC0JCQkJICAgSUdUX0NPTE9SX1lDQkNSX0xJTUlURURfUkFOR0UsCj4gLQkJCQkg
+ICByZWZfY3JjW1BMQU5BUl9DUkNfU0VUXSwgJmZiKTsKPiArCWNhcHR1cmVfZm9ybWF0X2NyY3Nf
+bXVsdGlwbGUoZGF0YSwgcGlwZSwgcGxhbmUsIHJlZi5mb3JtYXQsIHJlZi5tb2RpZmllciwKPiAr
+CQkJCSAgICAgd2lkdGgsIGhlaWdodCwgSUdUX0NPTE9SX1lDQkNSX0JUNzA5LAo+ICsJCQkJICAg
+ICBJR1RfQ09MT1JfWUNCQ1JfTElNSVRFRF9SQU5HRSwKPiArCQkJCSAgICAgcmVmX2NyY1tNVUxU
+SVBMRV9DUkNfU0VUXSwgJmZiKTsKPiAgIAo+ICAgCS8qCj4gICAJICogTWFrZSBzdXJlIHdlIGhh
+dmUgc29tZSBkaWZmZXJlbmNlIGJldHdlZW4gdGhlIGNvbG9ycy4gVGhpcwo+ICAgCSAqIGF0IGxl
+YXN0IGF2b2lkcyBjbGFpbWluZyBzdWNjZXNzIHdoZW4gZXZlcnl0aGluZyBpcyBqdXN0Cj4gICAJ
+ICogYmxhY2sgYWxsIHRoZSB0aW1lIChlZy4gaWYgdGhlIHBsYW5lIGlzIG5ldmVyIGV2ZW4gb24p
+Lgo+ICAgCSAqLwo+IC0JaWd0X3JlcXVpcmUobnVtX3VuaXF1ZV9jcmNzKHJlZl9jcmNbUExBTkFS
+X0NSQ19TRVRdLCBkYXRhLT5udW1fY29sb3JzKSA+IDEpOwo+ICsJaWd0X3JlcXVpcmUobnVtX3Vu
+aXF1ZV9jcmNzKHJlZl9jcmNbTVVMVElQTEVfQ1JDX1NFVF0sIGRhdGEtPm51bV9jb2xvcnMpID4g
+MSk7Cj4gICAKPiAgIAlmb3IgKGludCBpID0gMDsgaSA8IHBsYW5lLT5mb3JtYXRfbW9kX2NvdW50
+OyBpKyspIHsKPiAgIAkJc3RydWN0IGZvcm1hdF9tb2QgZiA9IHsKPiBAQCAtOTU4LDggKzk2NSw4
+IEBAIHN0YXRpYyBib29sIHRlc3RfZm9ybWF0X3BsYW5lKGRhdGFfdCAqZGF0YSwgZW51bSBwaXBl
+IHBpcGUsCj4gICAJCQkJY29udGludWU7Cj4gICAJCX0KPiAgIAo+IC0JCWNyY3NldCA9IHJlZl9j
+cmNbKGlndF9mb3JtYXRfaXNfeXV2X3NlbWlwbGFuYXIoZi5mb3JtYXQpCj4gLQkJCQkgPyBQTEFO
+QVJfQ1JDX1NFVCA6IFBBQ0tFRF9DUkNfU0VUKV07Cj4gKwkJY3Jjc2V0ID0gcmVmX2NyY1t1c2Vf
+bXVsdGlwbGVfY29sb3JzKGRhdGEsIGYuZm9ybWF0KSA/Cj4gKwkJCQkgTVVMVElQTEVfQ1JDX1NF
+VCA6IFNJTkdMRV9DUkNfU0VUXTsKPiAgIAo+ICAgCQlpZiAoaWd0X2Zvcm1hdF9pc195dXYoZi5m
+b3JtYXQpKQo+ICAgCQkJcmVzdWx0ICY9IHRlc3RfZm9ybWF0X3BsYW5lX3l1dihkYXRhLCBwaXBl
+LCBwbGFuZSwKPiAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0
+dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
