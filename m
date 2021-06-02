@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE3446EB69
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Jun 2021 07:00:27 +0000 (UTC)
-References: <20210601034608.11735-1-karthik.b.s@intel.com>
- <20210601192953.GA3791@labuser-Z97X-UD5H>
-From: Karthik B S <karthik.b.s@intel.com>
-Message-ID: <ec573d16-fcd0-5380-e49c-0a1ec3ae1113@intel.com>
-Date: Wed, 2 Jun 2021 12:30:15 +0530
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8AE656E3C1
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Jun 2021 10:45:41 +0000 (UTC)
+Date: Wed, 2 Jun 2021 12:45:33 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210602104533.GC3702@zkempczy-mobl2>
+References: <20210423214853.876911-1-jason@jlekstrand.net>
+ <20210423214853.876911-23-jason@jlekstrand.net>
 MIME-Version: 1.0
-In-Reply-To: <20210601192953.GA3791@labuser-Z97X-UD5H>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_big_joiner: Add dual display
- subtest
+Content-Disposition: inline
+In-Reply-To: <20210423214853.876911-23-jason@jlekstrand.net>
+Subject: Re: [igt-dev] [PATCH i-g-t 22/89] tests/i915/gem_exec_nop: Convert
+ to intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,287 +19,600 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Navare, Manasi" <manasi.d.navare@intel.com>
+To: Jason Ekstrand <jason@jlekstrand.net>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 6/2/2021 12:59 AM, Navare, Manasi wrote:
-> On Tue, Jun 01, 2021 at 09:16:08AM +0530, Karthik B S wrote:
->> Add subtest to verify modeset on 2 big joiner outputs simultaneously.
->>
->> Also, create fb only once and use it across all the subtests to optimize
->> the timings.
->>
->> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> So here since you are creating a single frame buffer and sending that across 2 connected outputs,
-> you are basically simulating the clone case across 2 display outputs right?
->
-> So in case 1st output is 8K that uses bigjoiner and 2nd output is 10K hypothetically it will create
-> a fb of 10K size but since you set the fb size differently based on the mode on each connected display
-> it will reconfigure the fb and plane size per display output.
->
-> Is that correct? It will work with the above scenario right even with single fb?
-Thanks for the review. Yes, this is correct. It will work as expected 
-for the above scenario you've mentioned.
+On Fri, Apr 23, 2021 at 04:47:46PM -0500, Jason Ekstrand wrote:
+> Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+> ---
+>  tests/i915/gem_exec_nop.c | 156 ++++++++++++++++++++++----------------
+>  1 file changed, 92 insertions(+), 64 deletions(-)
+> 
+> diff --git a/tests/i915/gem_exec_nop.c b/tests/i915/gem_exec_nop.c
+> index f24ff88f..98c308d7 100644
+> --- a/tests/i915/gem_exec_nop.c
+> +++ b/tests/i915/gem_exec_nop.c
+> @@ -45,6 +45,7 @@
+>  #include "igt_device.h"
+>  #include "igt_rand.h"
+>  #include "igt_sysfs.h"
+> +#include "intel_ctx.h"
+>  
+>  
+>  #define ENGINE_FLAGS  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
+> @@ -62,7 +63,7 @@ static double elapsed(const struct timespec *start, const struct timespec *end)
+>  		(end->tv_nsec - start->tv_nsec)*1e-9);
+>  }
+>  
+> -static double nop_on_ring(int fd, uint32_t handle,
+> +static double nop_on_ring(int fd, uint32_t handle, const intel_ctx_t *ctx,
+>  			  const struct intel_execution_engine2 *e,
+>  			  int timeout_ms,
+>  			  unsigned long *out)
 
-Since we are not using any CRC validation here, I felt it will be better 
-to use a single fb across all the subtests.
+When I started to looking at this test I realized we unnecessary have
+to use newly created context instead using default one. This enforces
+changes everywhere but we really don't need this imo.
 
->
-> If the above is true, rest of the logic looks good.
-> With that:
->
-> Reviewed-by: Manasi Navare <manasi.d.navare@intel.com>
+Shouldn't we provide intel_ctx_0 filled with cfg/engines if query 
+engines exists instead of returning pointer to statically defined
+zeroed structure? Destroy path can diverge the situation - if we 
+allocate intel_ctx_t structure instead of returning pointer to 
+predefined one pointer comparison get us know we should free it.
 
-Thank you for the rb.
+In both cases - engines queried or statically returned for_each_ctx_*()
+should work. 
 
-Thanks,
+--
+Zbigniew
 
-Karthik.B.S
 
->
-> Manasi
->
->
->> ---
->>   tests/kms_big_joiner.c | 120 +++++++++++++++++++++++++++++------------
->>   1 file changed, 87 insertions(+), 33 deletions(-)
->>
->> diff --git a/tests/kms_big_joiner.c b/tests/kms_big_joiner.c
->> index 31397202..98a6fc77 100644
->> --- a/tests/kms_big_joiner.c
->> +++ b/tests/kms_big_joiner.c
->> @@ -34,9 +34,11 @@ typedef struct {
->>   	int drm_fd;
->>   	igt_display_t display;
->>   	struct igt_fb fb;
->> -	int mode_number;
->>   	int n_pipes;
->> -	uint32_t big_joiner_output_id;
->> +	struct output_data {
->> +		uint32_t id;
->> +		int mode_number;
->> +	} big_joiner_output[2];
->>   } data_t;
->>   
->>   static void test_invalid_modeset(data_t *data)
->> @@ -44,32 +46,25 @@ static void test_invalid_modeset(data_t *data)
->>   	drmModeModeInfo *mode;
->>   	igt_display_t *display = &data->display;
->>   	igt_output_t *output, *big_joiner_output = NULL, *second_output = NULL;
->> -	int width = 0, height = 0, i, ret;
->> +	int i, ret;
->>   	igt_pipe_t *pipe;
->>   	igt_plane_t *plane;
->>   
->>   	for_each_connected_output(display, output) {
->>   		mode = &output->config.connector->modes[0];
->>   
->> -		if (data->big_joiner_output_id == output->id) {
->> -			mode = &output->config.connector->modes[data->mode_number];
->> +		if (data->big_joiner_output[0].id == output->id) {
->>   			big_joiner_output = output;
->>   		} else if (second_output == NULL) {
->>   			second_output = output;
->>   		}
->> -
->> -		width = max(width, mode->hdisplay);
->> -		height = max(height, mode->vdisplay);
->>   	}
->>   
->> -	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
->> -			      LOCAL_DRM_FORMAT_MOD_NONE, &data->fb);
->> -
->>   	for_each_pipe(display, i) {
->>   		if (i < (data->n_pipes - 1)) {
->>   			igt_output_set_pipe(big_joiner_output, i);
->>   
->> -			mode = &big_joiner_output->config.connector->modes[data->mode_number];
->> +			mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
->>   			igt_output_override_mode(big_joiner_output, mode);
->>   
->>   			pipe = &display->pipes[i];
->> @@ -131,7 +126,7 @@ static void test_invalid_modeset(data_t *data)
->>   
->>   			igt_output_set_pipe(big_joiner_output, i);
->>   
->> -			mode = &big_joiner_output->config.connector->modes[data->mode_number];
->> +			mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
->>   			igt_output_override_mode(big_joiner_output, mode);
->>   
->>   			pipe = &display->pipes[i];
->> @@ -159,8 +154,6 @@ static void test_invalid_modeset(data_t *data)
->>   			igt_output_override_mode(big_joiner_output, NULL);
->>   		}
->>   	}
->> -
->> -	igt_remove_fb(data->drm_fd, &data->fb);
->>   }
->>   
->>   static void test_basic_modeset(data_t *data)
->> @@ -168,28 +161,22 @@ static void test_basic_modeset(data_t *data)
->>   	drmModeModeInfo *mode;
->>   	igt_output_t *output, *big_joiner_output = NULL;
->>   	igt_display_t *display = &data->display;
->> -	int width = 0, height = 0, i;
->> +	int i;
->>   	igt_pipe_t *pipe;
->>   	igt_plane_t *plane;
->>   
->>   	for_each_connected_output(display, output) {
->> -		if (data->big_joiner_output_id == output->id) {
->> -			mode = &output->config.connector->modes[data->mode_number];
->> +		if (data->big_joiner_output[0].id == output->id) {
->>   			big_joiner_output = output;
->> -			width = mode->hdisplay;
->> -			height = mode->vdisplay;
->>   			break;
->>   		}
->>   	}
->>   
->> -	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
->> -			      LOCAL_DRM_FORMAT_MOD_NONE, &data->fb);
->> -
->>   	for_each_pipe(display, i) {
->>   		if (i < (data->n_pipes - 1)) {
->>   			igt_output_set_pipe(big_joiner_output, i);
->>   
->> -			mode = &big_joiner_output->config.connector->modes[data->mode_number];
->> +			mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
->>   			igt_output_override_mode(big_joiner_output, mode);
->>   
->>   			pipe = &display->pipes[i];
->> @@ -206,17 +193,69 @@ static void test_basic_modeset(data_t *data)
->>   			igt_display_commit2(display, COMMIT_ATOMIC);
->>   		}
->>   	}
->> +}
->> +
->> +static void test_dual_display(data_t *data)
->> +{
->> +	drmModeModeInfo *mode;
->> +	igt_output_t *output, *big_joiner_output[2];
->> +	igt_display_t *display = &data->display;
->> +	igt_pipe_t *pipe;
->> +	igt_plane_t *plane;
->> +	int count = 0;
->> +
->> +	for_each_connected_output(display, output) {
->> +		if (data->big_joiner_output[count].id == output->id) {
->> +			big_joiner_output[count] = output;
->> +			count++;
->> +		}
->>   
->> -	igt_remove_fb(data->drm_fd, &data->fb);
->> +		if (count > 1)
->> +			break;
->> +	}
->> +
->> +	igt_output_set_pipe(big_joiner_output[0], PIPE_A);
->> +	igt_output_set_pipe(big_joiner_output[1], PIPE_C);
->> +
->> +	/* Set up first big joiner output on Pipe A*/
->> +	mode = &big_joiner_output[0]->config.connector->modes[data->big_joiner_output[0].mode_number];
->> +	igt_output_override_mode(big_joiner_output[0], mode);
->> +
->> +	pipe = &display->pipes[PIPE_A];
->> +	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
->> +
->> +	igt_plane_set_fb(plane, &data->fb);
->> +	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
->> +	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
->> +
->> +	/* Set up second big joiner output on Pipe C*/
->> +	mode = &big_joiner_output[1]->config.connector->modes[data->big_joiner_output[1].mode_number];
->> +	igt_output_override_mode(big_joiner_output[1], mode);
->> +
->> +	pipe = &display->pipes[PIPE_C];
->> +	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
->> +
->> +	igt_plane_set_fb(plane, &data->fb);
->> +	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
->> +	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
->> +
->> +	igt_display_commit2(display, COMMIT_ATOMIC);
->> +
->> +	/* Clean up */
->> +	igt_output_set_pipe(big_joiner_output[0], PIPE_NONE);
->> +	igt_output_set_pipe(big_joiner_output[1], PIPE_NONE);
->> +	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[PIPE_A], DRM_PLANE_TYPE_PRIMARY), NULL);
->> +	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[PIPE_C], DRM_PLANE_TYPE_PRIMARY), NULL);
->> +	igt_display_commit2(display, COMMIT_ATOMIC);
->>   }
->>   
->>   igt_main
->>   {
->>   	data_t data;
->> -	bool big_joiner_mode_found = false;
->>   	igt_output_t *output;
->>   	drmModeModeInfo *mode;
->> -	int valid_output = 0, i;
->> +	int valid_output = 0, i, count = 0;
->> +	uint16_t width = 0, height = 0;
->>   
->>   	igt_fixture {
->>   		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
->> @@ -225,13 +264,16 @@ igt_main
->>   		igt_display_require(&data.display, data.drm_fd);
->>   
->>   		for_each_connected_output(&data.display, output) {
->> -			if (!big_joiner_mode_found) {
->> +			if (count < 2) {
->>   				for (i = 0; i < output->config.connector->count_modes; i++) {
->>   					mode = &output->config.connector->modes[i];
->>   					if (mode->hdisplay > MAX_HDISPLAY_PER_PIPE) {
->> -						big_joiner_mode_found = true;
->> -						data.mode_number = i;
->> -						data.big_joiner_output_id = output->id;
->> +						data.big_joiner_output[count].mode_number = i;
->> +						data.big_joiner_output[count].id = output->id;
->> +						count++;
->> +
->> +						width = max(width, mode->hdisplay);
->> +						height = max(height, mode->vdisplay);
->>   						break;
->>   					}
->>   				}
->> @@ -243,7 +285,10 @@ igt_main
->>   		for_each_pipe(&data.display, i)
->>   			data.n_pipes++;
->>   
->> -		igt_require_f(big_joiner_mode_found, "No output with 5k+ mode found\n");
->> +		igt_require_f(count > 0, "No output with 5k+ mode found\n");
->> +
->> +		igt_create_pattern_fb(data.drm_fd, width, height, DRM_FORMAT_XRGB8888,
->> +				      LOCAL_DRM_FORMAT_MOD_NONE, &data.fb);
->>   	}
->>   
->>   	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
->> @@ -257,6 +302,15 @@ igt_main
->>   		test_invalid_modeset(&data);
->>   	}
->>   
->> -	igt_fixture
->> +	igt_describe("Verify simultaneous modeset on 2 big joiner outputs");
->> +	igt_subtest("2x-modeset") {
->> +		igt_require_f(count > 1, "2 outputs with big joiner modes are required\n");
->> +		igt_require_f(data.n_pipes > 3, "Minumum of 4 pipes are required\n");
->> +		test_dual_display(&data);
->> +	}
->> +
->> +	igt_fixture {
->> +		igt_remove_fb(data.drm_fd, &data.fb);
->>   		igt_display_fini(&data.display);
->> +	}
->>   }
->> -- 
->> 2.22.0
->>
-
+> @@ -81,6 +82,7 @@ static double nop_on_ring(int fd, uint32_t handle,
+>  	execbuf.flags = e->flags;
+>  	execbuf.flags |= I915_EXEC_HANDLE_LUT;
+>  	execbuf.flags |= I915_EXEC_NO_RELOC;
+> +	execbuf.rsvd1 = ctx->id;
+>  	if (__gem_execbuf(fd, &execbuf)) {
+>  		execbuf.flags = e->flags;
+>  		gem_execbuf(fd, &execbuf);
+> @@ -101,7 +103,8 @@ static double nop_on_ring(int fd, uint32_t handle,
+>  	return elapsed(&start, &now);
+>  }
+>  
+> -static void poll_ring(int fd, const struct intel_execution_engine2 *e,
+> +static void poll_ring(int fd, const intel_ctx_t *ctx,
+> +		      const struct intel_execution_engine2 *e,
+>  		      int timeout)
+>  {
+>  	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+> @@ -185,6 +188,7 @@ static void poll_ring(int fd, const struct intel_execution_engine2 *e,
+>  	execbuf.buffers_ptr = to_user_pointer(&obj);
+>  	execbuf.buffer_count = 1;
+>  	execbuf.flags = e->flags | flags;
+> +	execbuf.rsvd1 = ctx->id;
+>  
+>  	cycles = 0;
+>  	do {
+> @@ -212,7 +216,8 @@ static void poll_ring(int fd, const struct intel_execution_engine2 *e,
+>  	gem_close(fd, obj.handle);
+>  }
+>  
+> -static void poll_sequential(int fd, const char *name, int timeout)
+> +static void poll_sequential(int fd, const intel_ctx_t *ctx,
+> +			    const char *name, int timeout)
+>  {
+>  	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+>  	const struct intel_execution_engine2 *e;
+> @@ -232,7 +237,7 @@ static void poll_sequential(int fd, const char *name, int timeout)
+>  		flags |= I915_EXEC_SECURE;
+>  
+>  	nengine = 0;
+> -	__for_each_physical_engine(fd, e) {
+> +	for_each_ctx_engine(fd, ctx, e) {
+>  		if (!gem_class_can_store_dword(fd, e->class) ||
+>  		    !gem_class_has_mutable_submission(fd, e->class))
+>  			continue;
+> @@ -312,6 +317,7 @@ static void poll_sequential(int fd, const char *name, int timeout)
+>  	memset(&execbuf, 0, sizeof(execbuf));
+>  	execbuf.buffers_ptr = to_user_pointer(obj);
+>  	execbuf.buffer_count = ARRAY_SIZE(obj);
+> +	execbuf.rsvd1 = ctx->id;
+>  
+>  	cycles = 0;
+>  	do {
+> @@ -342,19 +348,19 @@ static void poll_sequential(int fd, const char *name, int timeout)
+>  	gem_close(fd, obj[0].handle);
+>  }
+>  
+> -static void single(int fd, uint32_t handle,
+> +static void single(int fd, uint32_t handle, const intel_ctx_t *ctx,
+>  		   const struct intel_execution_engine2 *e)
+>  {
+>  	double time;
+>  	unsigned long count;
+>  
+> -	time = nop_on_ring(fd, handle, e, 20000, &count);
+> +	time = nop_on_ring(fd, handle, ctx, e, 20000, &count);
+>  	igt_info("%s: %'lu cycles: %.3fus\n",
+>  		  e->name, count, time*1e6 / count);
+>  }
+>  
+>  static double
+> -stable_nop_on_ring(int fd, uint32_t handle,
+> +stable_nop_on_ring(int fd, uint32_t handle, const intel_ctx_t *ctx,
+>  		   const struct intel_execution_engine2 *e,
+>  		   int timeout_ms,
+>  		   int reps)
+> @@ -371,7 +377,7 @@ stable_nop_on_ring(int fd, uint32_t handle,
+>  		unsigned long count;
+>  		double time;
+>  
+> -		time = nop_on_ring(fd, handle, e, timeout_ms, &count);
+> +		time = nop_on_ring(fd, handle, ctx, e, timeout_ms, &count);
+>  		igt_stats_push_float(&s, time / count);
+>  	}
+>  
+> @@ -387,7 +393,7 @@ stable_nop_on_ring(int fd, uint32_t handle,
+>                       "'%s' != '%s' (%f not within %f%% tolerance of %f)\n",\
+>                       #x, #ref, x, tolerance * 100.0, ref)
+>  
+> -static void headless(int fd, uint32_t handle,
+> +static void headless(int fd, uint32_t handle, const intel_ctx_t *ctx,
+>  		     const struct intel_execution_engine2 *e)
+>  {
+>  	unsigned int nr_connected = 0;
+> @@ -411,11 +417,11 @@ static void headless(int fd, uint32_t handle,
+>  	/* set graphics mode to prevent blanking */
+>  	kmstest_set_vt_graphics_mode();
+>  
+> -	nop_on_ring(fd, handle, e, 10, &count);
+> +	nop_on_ring(fd, handle, ctx, e, 10, &count);
+>  	igt_require_f(count > 100, "submillisecond precision required\n");
+>  
+>  	/* benchmark nops */
+> -	n_display = stable_nop_on_ring(fd, handle, e, 500, 5);
+> +	n_display = stable_nop_on_ring(fd, handle, ctx, e, 500, 5);
+>  	igt_info("With one display connected: %.2fus\n",
+>  		 n_display * 1e6);
+>  
+> @@ -423,7 +429,7 @@ static void headless(int fd, uint32_t handle,
+>  	kmstest_unset_all_crtcs(fd, res);
+>  
+>  	/* benchmark nops again */
+> -	n_headless = stable_nop_on_ring(fd, handle, e, 500, 5);
+> +	n_headless = stable_nop_on_ring(fd, handle, ctx, e, 500, 5);
+>  	igt_info("Without a display connected (headless): %.2fus\n",
+>  		 n_headless * 1e6);
+>  
+> @@ -431,7 +437,8 @@ static void headless(int fd, uint32_t handle,
+>  	assert_within_epsilon(n_headless, n_display, 0.1f);
+>  }
+>  
+> -static void parallel(int fd, uint32_t handle, int timeout)
+> +static void parallel(int fd, uint32_t handle,
+> +		     const intel_ctx_t *ctx, int timeout)
+>  {
+>  	const struct intel_execution_engine2 *e;
+>  	struct drm_i915_gem_execbuffer2 execbuf;
+> @@ -445,11 +452,11 @@ static void parallel(int fd, uint32_t handle, int timeout)
+>  	sum = 0;
+>  	nengine = 0;
+>  
+> -	__for_each_physical_engine(fd, e) {
+> +	for_each_ctx_engine(fd, ctx, e) {
+>  		engines[nengine] = e->flags;
+>  		names[nengine++] = strdup(e->name);
+>  
+> -		time = nop_on_ring(fd, handle, e, 250, &count) / count;
+> +		time = nop_on_ring(fd, handle, ctx, e, 250, &count) / count;
+>  		sum += time;
+>  		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
+>  	}
+> @@ -464,6 +471,7 @@ static void parallel(int fd, uint32_t handle, int timeout)
+>  	execbuf.buffer_count = 1;
+>  	execbuf.flags |= I915_EXEC_HANDLE_LUT;
+>  	execbuf.flags |= I915_EXEC_NO_RELOC;
+> +	execbuf.rsvd1 = ctx->id;
+>  	if (__gem_execbuf(fd, &execbuf)) {
+>  		execbuf.flags = 0;
+>  		gem_execbuf(fd, &execbuf);
+> @@ -494,7 +502,8 @@ static void parallel(int fd, uint32_t handle, int timeout)
+>  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
+>  }
+>  
+> -static void independent(int fd, uint32_t handle, int timeout)
+> +static void independent(int fd, uint32_t handle,
+> +			const intel_ctx_t *ctx, int timeout)
+>  {
+>  	const struct intel_execution_engine2 *e;
+>  	struct drm_i915_gem_execbuffer2 execbuf;
+> @@ -507,11 +516,11 @@ static void independent(int fd, uint32_t handle, int timeout)
+>  
+>  	sum = 0;
+>  	nengine = 0;
+> -	__for_each_physical_engine(fd, e) {
+> +	for_each_ctx_engine(fd, ctx, e) {
+>  		engines[nengine] = e->flags;
+>  		names[nengine++] = strdup(e->name);
+>  
+> -		time = nop_on_ring(fd, handle, e, 250, &count) / count;
+> +		time = nop_on_ring(fd, handle, ctx, e, 250, &count) / count;
+>  		sum += time;
+>  		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
+>  	}
+> @@ -526,6 +535,7 @@ static void independent(int fd, uint32_t handle, int timeout)
+>  	execbuf.buffer_count = 1;
+>  	execbuf.flags |= I915_EXEC_HANDLE_LUT;
+>  	execbuf.flags |= I915_EXEC_NO_RELOC;
+> +	execbuf.rsvd1 = ctx->id;
+>  	if (__gem_execbuf(fd, &execbuf)) {
+>  		execbuf.flags = 0;
+>  		gem_execbuf(fd, &execbuf);
+> @@ -562,7 +572,7 @@ static void independent(int fd, uint32_t handle, int timeout)
+>  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
+>  }
+>  
+> -static void multiple(int fd,
+> +static void multiple(int fd, const intel_ctx_t *ctx,
+>  		     const struct intel_execution_engine2 *e,
+>  		     int timeout)
+>  {
+> @@ -581,6 +591,7 @@ static void multiple(int fd,
+>  	execbuf.flags = e->flags;
+>  	execbuf.flags |= I915_EXEC_HANDLE_LUT;
+>  	execbuf.flags |= I915_EXEC_NO_RELOC;
+> +	execbuf.rsvd1 = ctx->id;
+>  	if (__gem_execbuf(fd, &execbuf)) {
+>  		execbuf.flags = e->flags;
+>  		gem_execbuf(fd, &execbuf);
+> @@ -592,9 +603,11 @@ static void multiple(int fd,
+>  		unsigned long count;
+>  		double time;
+>  		int i915;
+> +		const intel_ctx_t *child_ctx;
+>  
+>  		i915 = gem_reopen_driver(fd);
+> -		gem_context_copy_engines(fd, 0, i915, 0);
+> +		child_ctx = intel_ctx_create(i915, &ctx->cfg);
+> +		execbuf.rsvd1 = child_ctx->id;
+>  
+>  		obj.handle = gem_create(i915, 4096);
+>  		gem_write(i915, obj.handle, 0, &bbe, sizeof(bbe));
+> @@ -609,6 +622,7 @@ static void multiple(int fd,
+>  		} while (elapsed(&start, &now) < timeout);
+>  		time = elapsed(&start, &now) / count;
+>  		igt_info("%d: %ld cycles, %.3fus\n", child, count, 1e6*time);
+> +		intel_ctx_destroy(i915, child_ctx);
+>  	}
+>  
+>  	igt_waitchildren();
+> @@ -617,7 +631,8 @@ static void multiple(int fd,
+>  	gem_close(fd, obj.handle);
+>  }
+>  
+> -static void series(int fd, uint32_t handle, int timeout)
+> +static void series(int fd, uint32_t handle,
+> +		   const intel_ctx_t *ctx, int timeout)
+>  {
+>  	const struct intel_execution_engine2 *e;
+>  	struct drm_i915_gem_execbuffer2 execbuf;
+> @@ -630,8 +645,8 @@ static void series(int fd, uint32_t handle, int timeout)
+>  	const char *name;
+>  
+>  	nengine = 0;
+> -	__for_each_physical_engine(fd, e) {
+> -		time = nop_on_ring(fd, handle, e, 250, &count) / count;
+> +	for_each_ctx_engine(fd, ctx, e) {
+> +		time = nop_on_ring(fd, handle, ctx, e, 250, &count) / count;
+>  		if (time > max) {
+>  			name = e->name;
+>  			max = time;
+> @@ -653,6 +668,7 @@ static void series(int fd, uint32_t handle, int timeout)
+>  	execbuf.buffer_count = 1;
+>  	execbuf.flags |= I915_EXEC_HANDLE_LUT;
+>  	execbuf.flags |= I915_EXEC_NO_RELOC;
+> +	execbuf.rsvd1 = ctx->id;
+>  	if (__gem_execbuf(fd, &execbuf)) {
+>  		execbuf.flags = 0;
+>  		gem_execbuf(fd, &execbuf);
+> @@ -688,9 +704,11 @@ static void xchg(void *array, unsigned i, unsigned j)
+>  	u[j] = tmp;
+>  }
+>  
+> -static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+> +static void sequential(int fd, uint32_t handle,
+> +		       const intel_ctx_t *ctx, unsigned flags, int timeout)
+>  {
+>  	const int ncpus = flags & FORKED ? sysconf(_SC_NPROCESSORS_ONLN) : 1;
+> +	const intel_ctx_t *tmp_ctx = NULL, *child_ctx = NULL;
+>  	const struct intel_execution_engine2 *e;
+>  	struct drm_i915_gem_execbuffer2 execbuf;
+>  	struct drm_i915_gem_exec_object2 obj[2];
+> @@ -707,10 +725,10 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+>  
+>  	nengine = 0;
+>  	sum = 0;
+> -	__for_each_physical_engine(fd, e) {
+> +	for_each_ctx_engine(fd, ctx, e) {
+>  		unsigned long count;
+>  
+> -		time = nop_on_ring(fd, handle, e, 250, &count) / count;
+> +		time = nop_on_ring(fd, handle, ctx, e, 250, &count) / count;
+>  		sum += time;
+>  		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
+>  
+> @@ -734,7 +752,8 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+>  
+>  	if (flags & CONTEXT) {
+>  		gem_require_contexts(fd);
+> -		execbuf.rsvd1 = gem_context_clone_with_engines(fd, 0);
+> +		tmp_ctx = intel_ctx_create(fd, &ctx->cfg);
+> +		execbuf.rsvd1 = tmp_ctx->id;
+>  	}
+>  
+>  	for (n = 0; n < nengine; n++) {
+> @@ -754,7 +773,8 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+>  
+>  		if (flags & CONTEXT) {
+>  			gem_require_contexts(fd);
+> -			execbuf.rsvd1 = gem_context_clone_with_engines(fd, 0);
+> +			child_ctx = intel_ctx_create(fd, &ctx->cfg);
+> +			execbuf.rsvd1 = child_ctx->id;
+>  		}
+>  
+>  		hars_petruska_f54_1_random_perturb(child);
+> @@ -777,7 +797,7 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+>  		results[child] = elapsed(&start, &now) / count;
+>  
+>  		if (flags & CONTEXT)
+> -			gem_context_destroy(fd, execbuf.rsvd1);
+> +			intel_ctx_destroy(fd, child_ctx);
+>  
+>  		gem_close(fd, obj[0].handle);
+>  	}
+> @@ -793,7 +813,7 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+>  		 nengine, ncpus, 1e6*results[ncpus], 1e6*sum*ncpus);
+>  
+>  	if (flags & CONTEXT)
+> -		gem_context_destroy(fd, execbuf.rsvd1);
+> +		intel_ctx_destroy(fd, tmp_ctx);
+>  
+>  	gem_close(fd, obj[0].handle);
+>  	munmap(results, 4096);
+> @@ -810,6 +830,7 @@ static bool fence_wait(int fence)
+>  }
+>  
+>  static void fence_signal(int fd, uint32_t handle,
+> +			 const intel_ctx_t *ctx,
+>  			 const struct intel_execution_engine2 *ring_id,
+>  			 const char *ring_name, int timeout)
+>  {
+> @@ -827,7 +848,7 @@ static void fence_signal(int fd, uint32_t handle,
+>  
+>  	nengine = 0;
+>  	if (!ring_id) {
+> -		__for_each_physical_engine(fd, __e)
+> +		for_each_ctx_engine(fd, ctx, __e)
+>  			engines[nengine++] = __e->flags;
+>  	} else {
+>  		engines[nengine++] = ring_id->flags;
+> @@ -845,6 +866,7 @@ static void fence_signal(int fd, uint32_t handle,
+>  	execbuf.buffers_ptr = to_user_pointer(&obj);
+>  	execbuf.buffer_count = 1;
+>  	execbuf.flags = I915_EXEC_FENCE_OUT;
+> +	execbuf.rsvd1 = ctx->id;
+>  
+>  	n = 0;
+>  	count = 0;
+> @@ -885,20 +907,21 @@ static void fence_signal(int fd, uint32_t handle,
+>  }
+>  
+>  static void preempt(int fd, uint32_t handle,
+> +		    const intel_ctx_t *ctx,
+>  		    const struct intel_execution_engine2 *e)
+>  {
+>  	struct drm_i915_gem_execbuffer2 execbuf;
+>  	struct drm_i915_gem_exec_object2 obj;
+>  	struct timespec start, now;
+>  	unsigned long count;
+> -	uint32_t ctx[2];
+> +	const intel_ctx_t *tmp_ctx[2];
+>  	igt_spin_t *spin;
+>  
+> -	ctx[0] = gem_context_clone_with_engines(fd, 0);
+> -	gem_context_set_priority(fd, ctx[0], MIN_PRIO);
+> +	tmp_ctx[0] = intel_ctx_create(fd, &ctx->cfg);
+> +	gem_context_set_priority(fd, tmp_ctx[0]->id, MIN_PRIO);
+>  
+> -	ctx[1] = gem_context_clone_with_engines(fd, 0);
+> -	gem_context_set_priority(fd, ctx[1], MAX_PRIO);
+> +	tmp_ctx[1] = intel_ctx_create(fd, &ctx->cfg);
+> +	gem_context_set_priority(fd, tmp_ctx[1]->id, MAX_PRIO);
+>  
+>  	memset(&obj, 0, sizeof(obj));
+>  	obj.handle = handle;
+> @@ -909,15 +932,16 @@ static void preempt(int fd, uint32_t handle,
+>  	execbuf.flags = e->flags;
+>  	execbuf.flags |= I915_EXEC_HANDLE_LUT;
+>  	execbuf.flags |= I915_EXEC_NO_RELOC;
+> +	execbuf.rsvd1 = ctx->id;
+>  	if (__gem_execbuf(fd, &execbuf)) {
+>  		execbuf.flags = e->flags;
+>  		gem_execbuf(fd, &execbuf);
+>  	}
+> -	execbuf.rsvd1 = ctx[1];
+> +	execbuf.rsvd1 = tmp_ctx[1]->id;
+>  	intel_detect_and_clear_missed_interrupts(fd);
+>  
+>  	count = 0;
+> -	spin = __igt_spin_new(fd, .ctx_id = ctx[0], .engine = e->flags);
+> +	spin = __igt_spin_new(fd, .ctx = tmp_ctx[0], .engine = e->flags);
+>  	clock_gettime(CLOCK_MONOTONIC, &start);
+>  	do {
+>  		gem_execbuf(fd, &execbuf);
+> @@ -927,8 +951,8 @@ static void preempt(int fd, uint32_t handle,
+>  	igt_spin_free(fd, spin);
+>  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
+>  
+> -	gem_context_destroy(fd, ctx[1]);
+> -	gem_context_destroy(fd, ctx[0]);
+> +	intel_ctx_destroy(fd, tmp_ctx[1]);
+> +	intel_ctx_destroy(fd, tmp_ctx[0]);
+>  
+>  	igt_info("%s: %'lu cycles: %.3fus\n",
+>  		 e->name, count, elapsed(&start, &now)*1e6 / count);
+> @@ -937,6 +961,7 @@ static void preempt(int fd, uint32_t handle,
+>  igt_main
+>  {
+>  	const struct intel_execution_engine2 *e;
+> +	const intel_ctx_t *ctx = NULL;
+>  	uint32_t handle = 0;
+>  	int device = -1;
+>  
+> @@ -948,6 +973,8 @@ igt_main
+>  		gem_submission_print_method(device);
+>  		gem_scheduler_print_capability(device);
+>  
+> +		ctx = intel_ctx_create_all_physical(device);
+> +
+>  		handle = gem_create(device, 4096);
+>  		gem_write(device, handle, 0, &bbe, sizeof(bbe));
+>  
+> @@ -955,57 +982,57 @@ igt_main
+>  	}
+>  
+>  	igt_subtest("basic-series")
+> -		series(device, handle, 2);
+> +		series(device, handle, ctx, 2);
+>  
+>  	igt_subtest("basic-parallel")
+> -		parallel(device, handle, 2);
+> +		parallel(device, handle, ctx, 2);
+>  
+>  	igt_subtest("basic-sequential")
+> -		sequential(device, handle, 0, 2);
+> +		sequential(device, handle, ctx, 0, 2);
+>  
+>  	igt_subtest_with_dynamic("single") {
+> -		__for_each_physical_engine(device, e) {
+> +		for_each_ctx_engine(device, ctx, e) {
+>  			igt_dynamic_f("%s", e->name)
+> -				single(device, handle, e);
+> +				single(device, handle, ctx, e);
+>  		}
+>  	}
+>  
+>  	igt_subtest_with_dynamic("signal") {
+> -		__for_each_physical_engine(device, e) {
+> +		for_each_ctx_engine(device, ctx, e) {
+>  			igt_dynamic_f("%s", e->name)
+> -				fence_signal(device, handle, e,
+> -					     e->name, 2);
+> +				fence_signal(device, handle, ctx,
+> +					     e, e->name, 2);
+>  		}
+>  	}
+>  
+>  	igt_subtest("signal-all")
+>  		/* NULL value means all engines */
+> -		fence_signal(device, handle, NULL, "all", 20);
+> +		fence_signal(device, handle, ctx, NULL, "all", 20);
+>  
+>  	igt_subtest("series")
+> -		series(device, handle, 20);
+> +		series(device, handle, ctx, 20);
+>  
+>  	igt_subtest("parallel")
+> -		parallel(device, handle, 20);
+> +		parallel(device, handle, ctx, 20);
+>  
+>  	igt_subtest("independent")
+> -		independent(device, handle, 20);
+> +		independent(device, handle, ctx, 20);
+>  
+>  	igt_subtest_with_dynamic("multiple") {
+> -		__for_each_physical_engine(device, e) {
+> +		for_each_ctx_engine(device, ctx, e) {
+>  			igt_dynamic_f("%s", e->name)
+> -				multiple(device, e, 20);
+> +				multiple(device, ctx, e, 20);
+>  		}
+>  	}
+>  
+>  	igt_subtest("sequential")
+> -		sequential(device, handle, 0, 20);
+> +		sequential(device, handle, ctx, 0, 20);
+>  
+>  	igt_subtest("forked-sequential")
+> -		sequential(device, handle, FORKED, 20);
+> +		sequential(device, handle, ctx, FORKED, 20);
+>  
+>  	igt_subtest("context-sequential")
+> -		sequential(device, handle, FORKED | CONTEXT, 20);
+> +		sequential(device, handle, ctx, FORKED | CONTEXT, 20);
+>  
+>  	igt_subtest_group {
+>  		igt_fixture {
+> @@ -1014,9 +1041,9 @@ igt_main
+>  			igt_require(gem_scheduler_has_preemption(device));
+>  		}
+>  		igt_subtest_with_dynamic("preempt") {
+> -			__for_each_physical_engine(device, e) {
+> +			for_each_ctx_engine(device, ctx, e) {
+>  				igt_dynamic_f("%s", e->name)
+> -					preempt(device, handle, e);
+> +					preempt(device, handle, ctx, e);
+>  			}
+>  		}
+>  	}
+> @@ -1027,29 +1054,30 @@ igt_main
+>  		}
+>  
+>  		igt_subtest_with_dynamic("poll") {
+> -			__for_each_physical_engine(device, e) {
+> +			for_each_ctx_engine(device, ctx, e) {
+>  				/* Requires master for STORE_DWORD on gen4/5 */
+>  				igt_dynamic_f("%s", e->name)
+> -					poll_ring(device, e, 20);
+> +					poll_ring(device, ctx, e, 20);
+>  			}
+>  		}
+>  
+>  		igt_subtest_with_dynamic("headless") {
+> -			__for_each_physical_engine(device, e) {
+> +			for_each_ctx_engine(device, ctx, e) {
+>  				igt_dynamic_f("%s", e->name)
+>  				/* Requires master for changing display modes */
+> -					headless(device, handle, e);
+> +					headless(device, handle, ctx, e);
+>  			}
+>  		}
+>  
+>  		igt_subtest("poll-sequential")
+> -			poll_sequential(device, "Sequential", 20);
+> +			poll_sequential(device, ctx, "Sequential", 20);
+>  
+>  	}
+>  
+>  	igt_fixture {
+>  		igt_stop_hang_detector();
+>  		gem_close(device, handle);
+> +		intel_ctx_destroy(device, ctx);
+>  		close(device);
+>  	}
+>  }
+> -- 
+> 2.31.1
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
