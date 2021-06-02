@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01B2F6EE5B
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Jun 2021 20:10:14 +0000 (UTC)
-Date: Wed, 2 Jun 2021 16:10:12 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8213D6EE5D
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Jun 2021 20:11:03 +0000 (UTC)
+Date: Wed, 2 Jun 2021 16:10:59 -0400
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Message-ID: <YLflpM76+ji7eyzL@intel.com>
+Message-ID: <YLfl04+bas0t2r4Q@intel.com>
 References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
- <20210518103344.2264397-4-alan.previn.teres.alexis@intel.com>
+ <20210518103344.2264397-3-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210518103344.2264397-4-alan.previn.teres.alexis@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 03/17] Update IOCTL wrapper with
- DRM_IOCTL_I915_GEM_CONTEXT_CREATE_EXT
+In-Reply-To: <20210518103344.2264397-3-alan.previn.teres.alexis@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 02/17] Add PXP UAPI support in i915_drm.h
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,79 +26,103 @@ To: Alan Previn <alan.previn.teres.alexis@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, May 18, 2021 at 03:33:30AM -0700, Alan Previn wrote:
-> Update IOCTL wrapper with DRM_IOCTL_I915_GEM_CONTEXT_CREATE_EXT
+On Tue, May 18, 2021 at 03:33:29AM -0700, Alan Previn wrote:
+> At the time of this commit, PXP hasnt been merged into
+> upstream kernel so this has no kernel tag reference yet
 
-assuming nothing will change there
-
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-
+chicken egg issue right, but probably better to kill this patch
+and sync directly when merging, right after the kernel merged.
 
 > 
 > Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 > ---
->  lib/ioctl_wrappers.c | 34 ++++++++++++++++++++++++++++++++++
->  lib/ioctl_wrappers.h |  2 ++
->  2 files changed, 36 insertions(+)
+>  include/drm-uapi/i915_drm.h | 52 +++++++++++++++++++++++++++++++++++++
+>  1 file changed, 52 insertions(+)
 > 
-> diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-> index 4440004c..c8e01911 100644
-> --- a/lib/ioctl_wrappers.c
-> +++ b/lib/ioctl_wrappers.c
-> @@ -657,6 +657,40 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf)
->  	igt_assert_eq(__gem_execbuf_wr(fd, execbuf), 0);
+> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+> index d9fbf218..e67e3e5c 100644
+> --- a/include/drm-uapi/i915_drm.h
+> +++ b/include/drm-uapi/i915_drm.h
+> @@ -1743,6 +1743,26 @@ struct drm_i915_gem_context_param {
+>   * Default is 16 KiB.
+>   */
+>  #define I915_CONTEXT_PARAM_RINGSIZE	0xc
+> +
+> +/*
+> + * I915_CONTEXT_PARAM_PROTECTED_CONTENT:
+> + *
+> + * Mark that the context makes use of protected content, which will result
+> + * in the context being invalidated when the protected content session is.
+> + * This flag can only be set at context creation time and, when set to true,
+> + * must be preceded by an explicit setting of I915_CONTEXT_PARAM_RECOVERABLE
+> + * to false. This flag can't be set to true in conjunction with setting the
+> + * I915_CONTEXT_PARAM_BANNABLE flag to false.
+> + *
+> + * Given the numerous restriction on this flag, there are several unique
+> + * failure cases:
+> + *
+> + * -ENODEV: feature not available
+> + * -EEXIST: trying to modify an existing context
+> + * -EPERM: trying to mark a recoverable or not bannable context as protected
+> + * -EACCES: submitting an invalidated context for execution
+> + */
+> +#define I915_CONTEXT_PARAM_PROTECTED_CONTENT    0xd
+>  /* Must be kept compact -- no holes and well documented */
+>  
+>  	__u64 value;
+> @@ -1973,6 +1993,12 @@ struct drm_i915_reg_read {
+>  struct drm_i915_reset_stats {
+>  	__u32 ctx_id;
+>  	__u32 flags;
+> +	/*
+> +	 * contexts marked as using protected content are invalidated when the
+> +	 * protected content session dies. Submission of invalidated contexts
+> +	 * is rejected with -EACCES.
+> +	 */
+> +#define I915_CONTEXT_INVALIDATED 0x1
+>  
+>  	/* All resets since boot/module reload, for all contexts */
+>  	__u32 reset_count;
+> @@ -2645,6 +2671,7 @@ struct drm_i915_gem_create_ext {
+>  	 * struct drm_i915_gem_create_ext_memory_regions.
+>  	 */
+>  #define I915_GEM_CREATE_EXT_MEMORY_REGIONS 0
+> +#define I915_GEM_CREATE_EXT_PROTECTED_CONTENT 1
+>  	__u64 extensions;
+>  };
+>  
+> @@ -2702,6 +2729,31 @@ struct drm_i915_gem_create_ext_memory_regions {
+>  	__u64 regions;
+>  };
+>  
+> +/*
+> + * I915_OBJECT_PARAM_PROTECTED_CONTENT:
+> + *
+> + * If set to true, buffer contents is expected to be protected by PXP
+> + * encryption and requires decryption for scan out and processing. This is
+> + * only possible on platforms that have PXP enabled, on all other scenarios
+> + * setting this flag will cause the ioctl to fail and return -ENODEV.
+> + *
+> + * The buffer contents are considered invalid after a PXP session teardown.
+> + * It is recommended to use protected buffers only with contexts created
+> + * using the I915_CONTEXT_PARAM_PROTECTED_CONTENT flag, as that will enable
+> + * extra checks at submission time on the validity of the objects involved,
+> + * which can lead to the following errors:
+> + *
+> + * -ENODEV: PXP session not currently active
+> + * -EIO: buffer has become invalid after a teardown event
+> + */
+> +struct drm_i915_gem_create_ext_protected_content {
+> +	struct i915_user_extension base;
+> +	__u32 flags;
+> +};
+> +
+> +/* ID of the protected content session managed by i915 when PXP is active */
+> +#define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
+> +
+>  #if defined(__cplusplus)
 >  }
->  
-> +/**
-> + * __gem_ctx_create_ext:
-> + * @fd: open i915 drm file descriptor
-> + * @ctx_ext: context_create_ext data structure
-> + *
-> + * This wraps the GEM_CONTEXT_CREATE_EXT ioctl, which allocates gem context based on
-> + * additional drm_i915_gem_context_create_ext_setparam input extensions. This is
-> + * allowed to fail, with -errno returned
-> + */
-> +int __gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext *ctx_ext)
-> +{
-> +	int err = 0;
-> +
-> +	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_CONTEXT_CREATE_EXT, ctx_ext)) {
-> +		err = -errno;
-> +		igt_assume(err != 0);
-> +	}
-> +	errno = 0;
-> +	return err;
-> +}
-> +
-> +/**
-> + * gem_ctx_create_ext:
-> + * @fd: open i915 drm file descriptor
-> + * @ctx_ext: context_create_ext data structure
-> + *
-> + * This wraps the GEM_CONTEXT_CREATE_EXT ioctl, which allocates gem context based on
-> + * additional drm_i915_gem_context_create_ext_setparam input extensions.
-> + */
-> +void gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext *ctx_ext)
-> +{
-> +	igt_assert_eq(__gem_ctx_create_ext(fd, ctx_ext), 0);
-> +}
-> +
->  /**
->   * gem_madvise:
->   * @fd: open i915 drm file descriptor
-> diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-> index 9ea67365..8288c8d7 100644
-> --- a/lib/ioctl_wrappers.h
-> +++ b/lib/ioctl_wrappers.h
-> @@ -82,6 +82,8 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
->  int __gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
->  void gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
->  int __gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
-> +int __gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext *ctx_ext);
-> +void gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext *ctx_ext);
->  
->  #ifndef I915_GEM_DOMAIN_WC
->  #define I915_GEM_DOMAIN_WC 0x80
+>  #endif
 > -- 
 > 2.25.1
 > 
