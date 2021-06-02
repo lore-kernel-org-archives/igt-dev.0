@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B9716EE68
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Jun 2021 20:10:38 +0000 (UTC)
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Wed,  2 Jun 2021 13:10:28 -0700
-Message-Id: <20210602201028.12494-1-ashutosh.dixit@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 01B2F6EE5B
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Jun 2021 20:10:14 +0000 (UTC)
+Date: Wed, 2 Jun 2021 16:10:12 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Message-ID: <YLflpM76+ji7eyzL@intel.com>
+References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
+ <20210518103344.2264397-4-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib/i915/intel_memory_region: free
- query_info in gem_get_lmem_region_count
+Content-Disposition: inline
+In-Reply-To: <20210518103344.2264397-4-alan.previn.teres.alexis@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 03/17] Update IOCTL wrapper with
+ DRM_IOCTL_I915_GEM_CONTEXT_CREATE_EXT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,37 +23,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Matthew Auld <matthew.auld@intel.com>
+To: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-query_info calloc'd in gem_get_query_memory_regions should be freed in
-gem_get_lmem_region_count.
+On Tue, May 18, 2021 at 03:33:30AM -0700, Alan Previn wrote:
+> Update IOCTL wrapper with DRM_IOCTL_I915_GEM_CONTEXT_CREATE_EXT
 
-Cc: Andrzej Turko <andrzej.turko@linux.intel.com>
-Cc: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Fixes: f32993a2ed ("lib/i915/intel_memory_region: Add new memory region lib")
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- lib/i915/intel_memory_region.c | 1 +
- 1 file changed, 1 insertion(+)
+assuming nothing will change there
 
-diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-index 983ac4df07..144ae12ca7 100644
---- a/lib/i915/intel_memory_region.c
-+++ b/lib/i915/intel_memory_region.c
-@@ -149,6 +149,7 @@ uint8_t gem_get_lmem_region_count(int fd)
- 		if (query_info->regions[i].region.memory_class == I915_MEMORY_CLASS_DEVICE)
- 			lmem_regions += 1;
- 	}
-+	free(query_info);
- 
- 	return lmem_regions;
- }
--- 
-2.31.1
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
+
+> 
+> Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+> ---
+>  lib/ioctl_wrappers.c | 34 ++++++++++++++++++++++++++++++++++
+>  lib/ioctl_wrappers.h |  2 ++
+>  2 files changed, 36 insertions(+)
+> 
+> diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+> index 4440004c..c8e01911 100644
+> --- a/lib/ioctl_wrappers.c
+> +++ b/lib/ioctl_wrappers.c
+> @@ -657,6 +657,40 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf)
+>  	igt_assert_eq(__gem_execbuf_wr(fd, execbuf), 0);
+>  }
+>  
+> +/**
+> + * __gem_ctx_create_ext:
+> + * @fd: open i915 drm file descriptor
+> + * @ctx_ext: context_create_ext data structure
+> + *
+> + * This wraps the GEM_CONTEXT_CREATE_EXT ioctl, which allocates gem context based on
+> + * additional drm_i915_gem_context_create_ext_setparam input extensions. This is
+> + * allowed to fail, with -errno returned
+> + */
+> +int __gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext *ctx_ext)
+> +{
+> +	int err = 0;
+> +
+> +	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_CONTEXT_CREATE_EXT, ctx_ext)) {
+> +		err = -errno;
+> +		igt_assume(err != 0);
+> +	}
+> +	errno = 0;
+> +	return err;
+> +}
+> +
+> +/**
+> + * gem_ctx_create_ext:
+> + * @fd: open i915 drm file descriptor
+> + * @ctx_ext: context_create_ext data structure
+> + *
+> + * This wraps the GEM_CONTEXT_CREATE_EXT ioctl, which allocates gem context based on
+> + * additional drm_i915_gem_context_create_ext_setparam input extensions.
+> + */
+> +void gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext *ctx_ext)
+> +{
+> +	igt_assert_eq(__gem_ctx_create_ext(fd, ctx_ext), 0);
+> +}
+> +
+>  /**
+>   * gem_madvise:
+>   * @fd: open i915 drm file descriptor
+> diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+> index 9ea67365..8288c8d7 100644
+> --- a/lib/ioctl_wrappers.h
+> +++ b/lib/ioctl_wrappers.h
+> @@ -82,6 +82,8 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
+>  int __gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
+>  void gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
+>  int __gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
+> +int __gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext *ctx_ext);
+> +void gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext *ctx_ext);
+>  
+>  #ifndef I915_GEM_DOMAIN_WC
+>  #define I915_GEM_DOMAIN_WC 0x80
+> -- 
+> 2.25.1
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
