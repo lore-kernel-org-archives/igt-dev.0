@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A9D06EE62
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Jun 2021 20:23:48 +0000 (UTC)
-Date: Wed, 2 Jun 2021 16:23:35 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Message-ID: <YLfox8RJtwE2JNYw@intel.com>
-References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
- <20210518103344.2264397-5-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210518103344.2264397-5-alan.previn.teres.alexis@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 04/17] Add basic PXP testing of buffer
- and context alloc
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 02 Jun 2021 20:47:46 -0000
+Message-ID: <162266686663.11228.6037986490629627624@emeril.freedesktop.org>
+References: <20210602201028.12494-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20210602201028.12494-1-ashutosh.dixit@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2k5?=
+ =?utf-8?q?15/intel=5Fmemory=5Fregion=3A_free_query=5Finfo_in_gem=5Fget=5F?=
+ =?utf-8?q?lmem=5Fregion=5Fcount_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,443 +15,255 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0980676344=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Alan Previn <alan.previn.teres.alexis@intel.com>
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, May 18, 2021 at 03:33:31AM -0700, Alan Previn wrote:
-> Test PXP capability support as well as the allocation of protected
-> buffers and protected contexts.
-> =
+--===============0980676344==
+Content-Type: multipart/alternative;
+ boundary="===============4137870658267590321=="
 
-> Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-> ---
->  tests/i915/gem_pxp.c | 353 +++++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build    |   1 +
->  2 files changed, 354 insertions(+)
->  create mode 100644 tests/i915/gem_pxp.c
+--===============4137870658267590321==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I'm not sure gem_pxp is the best name for this. Specially when we start
-adding display cases.
+== Series Details ==
 
-Could we go with pxp.c only?
+Series: lib/i915/intel_memory_region: free query_info in gem_get_lmem_region_count (rev2)
+URL   : https://patchwork.freedesktop.org/series/90903/
+State : success
 
-anyway, the content is great.
+== Summary ==
 
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+CI Bug Log - changes from CI_DRM_10161 -> IGTPW_5876
+====================================================
 
-> =
+Summary
+-------
 
-> diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-> new file mode 100644
-> index 00000000..8779dddc
-> --- /dev/null
-> +++ b/tests/i915/gem_pxp.c
-> @@ -0,0 +1,353 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright =A9 2021 Intel Corporation
-> + */
-> +
-> +#include "igt.h"
-> +#include "i915/gem.h"
-> +
-> +IGT_TEST_DESCRIPTION("Test PXP that manages protected content through ar=
-bitrated HW-PXP-session");
-> +/* Note: PXP =3D "Protected Xe Path" */
-> +
-> +static bool is_pxp_hw_supported(int i915)
-> +{
-> +	uint32_t devid =3D intel_get_drm_devid(i915);
-> +
-> +	if (IS_TIGERLAKE(devid) || IS_ROCKETLAKE(devid) || IS_ALDERLAKE_S(devid=
-))
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
-> +static int create_bo_ext(int i915, uint32_t size, bool protected_is_true=
-, uint32_t *bo_out)
-> +{
-> +	int ret;
-> +
-> +	struct drm_i915_gem_create_ext_protected_content protected_ext =3D {
-> +		.base =3D { .name =3D I915_GEM_CREATE_EXT_PROTECTED_CONTENT },
-> +		.flags =3D 0,
-> +	};
-> +
-> +	struct drm_i915_gem_create_ext create_ext =3D {
-> +		.size =3D size,
-> +		.extensions =3D 0,
-> +	};
-> +
-> +	if (protected_is_true)
-> +		create_ext.extensions =3D (uintptr_t)&protected_ext;
-> +
-> +	ret =3D igt_ioctl(i915, DRM_IOCTL_I915_GEM_CREATE_EXT, &create_ext);
-> +	if (!ret)
-> +		*bo_out =3D create_ext.handle;
-> +
-> +	return ret;
-> +}
-> +
-> +static void test_bo_alloc_pxp_nohw(int i915)
-> +{
-> +	int ret;
-> +	uint32_t bo;
-> +
-> +	ret =3D create_bo_ext(i915, 4096, false, &bo);
-> +	igt_assert_eq(ret, 0);
-> +	gem_close(i915, bo);
-> +
-> +	ret =3D create_bo_ext(i915, 4096, true, &bo);
-> +	igt_assert_eq(ret, -ENODEV);
-> +	igt_assert_eq(bo, 0);
-> +}
-> +
-> +static void test_bo_alloc_pxp_off(int i915)
-> +{
-> +	int ret;
-> +	uint32_t bo;
-> +
-> +	ret =3D create_bo_ext(i915, 4096, false, &bo);
-> +	igt_assert_eq(ret, 0);
-> +	gem_close(i915, bo);
-> +}
-> +
-> +static void test_bo_alloc_pxp_on(int i915)
-> +{
-> +	int ret;
-> +	uint32_t bo;
-> +
-> +	ret =3D create_bo_ext(i915, 4096, true, &bo);
-> +	igt_assert_eq(ret, 0);
-> +	gem_close(i915, bo);
-> +}
-> +
-> +static int create_ctx_with_params(int i915, bool with_protected_param, b=
-ool protected_is_true,
-> +				  bool with_recoverable_param, bool recoverable_is_true,
-> +				  uint32_t *ctx_out)
-> +{
-> +	int ret;
-> +
-> +	struct drm_i915_gem_context_create_ext_setparam p_prot =3D {
-> +		.base =3D {
-> +			.name =3D I915_CONTEXT_CREATE_EXT_SETPARAM,
-> +			.next_extension =3D 0,
-> +		},
-> +		.param =3D {
-> +			.param =3D I915_CONTEXT_PARAM_PROTECTED_CONTENT,
-> +			.value =3D 0,
-> +		}
-> +	};
-> +	struct drm_i915_gem_context_create_ext_setparam p_norecover =3D {
-> +		.base =3D {
-> +			.name =3D I915_CONTEXT_CREATE_EXT_SETPARAM,
-> +			.next_extension =3D 0,
-> +		},
-> +		.param =3D {
-> +			.param =3D I915_CONTEXT_PARAM_RECOVERABLE,
-> +			.value =3D 0,
-> +		}
-> +	};
-> +	struct drm_i915_gem_context_create_ext create =3D {
-> +		.flags =3D I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
-> +		.extensions =3D 0,
-> +	};
-> +
-> +	p_prot.param.value =3D protected_is_true;
-> +	p_norecover.param.value =3D recoverable_is_true;
-> +
-> +	if (with_protected_param && with_recoverable_param) {
-> +		create.extensions =3D to_user_pointer(&(p_norecover.base));
-> +		p_norecover.base.next_extension =3D to_user_pointer(&(p_prot.base));
-> +	} else if (!with_protected_param && with_recoverable_param) {
-> +		create.extensions =3D to_user_pointer(&(p_norecover.base));
-> +		p_norecover.base.next_extension =3D 0;
-> +	} else if (with_protected_param && !with_recoverable_param) {
-> +		create.extensions =3D to_user_pointer(&(p_prot.base));
-> +		p_prot.base.next_extension =3D 0;
-> +	} else if (!with_protected_param && !with_recoverable_param) {
-> +		create.flags =3D 0;
-> +	}
-> +
-> +	ret =3D __gem_ctx_create_ext(i915, &create);
-> +	if (!ret)
-> +		*ctx_out =3D create.ctx_id;
-> +
-> +	return ret;
-> +}
-> +
-> +#define CHANGE_PARAM_PROTECTED 0x0001
-> +#define CHANGE_PARAM_RECOVERY 0x0002
-> +
-> +static int modify_ctx_param(int i915, uint32_t ctx_id, uint32_t param_ma=
-sk, bool param_value)
-> +{
-> +	int ret;
-> +
-> +	struct drm_i915_gem_context_param ctx_param =3D {
-> +		.ctx_id =3D ctx_id,
-> +		.param =3D 0,
-> +		.value =3D 0,
-> +	};
-> +
-> +	if (param_mask =3D=3D CHANGE_PARAM_PROTECTED) {
-> +		ctx_param.param =3D I915_CONTEXT_PARAM_PROTECTED_CONTENT;
-> +		ctx_param.value =3D (int)param_value;
-> +	} else if (param_mask =3D=3D CHANGE_PARAM_RECOVERY) {
-> +		ctx_param.param =3D I915_CONTEXT_PARAM_RECOVERABLE;
-> +		ctx_param.value =3D (int)param_value;
-> +	}
-> +
-> +	ret =3D igt_ioctl(i915, DRM_IOCTL_I915_GEM_CONTEXT_SETPARAM, &ctx_param=
-);
-> +
-> +	return ret;
-> +}
-> +
-> +static int get_ctx_protected_param(int i915, uint32_t ctx_id)
-> +{
-> +	int ret;
-> +
-> +	struct drm_i915_gem_context_param ctx_param =3D {
-> +		.ctx_id =3D ctx_id,
-> +		.param =3D I915_CONTEXT_PARAM_PROTECTED_CONTENT,
-> +	};
-> +
-> +	ret =3D igt_ioctl(i915, DRM_IOCTL_I915_GEM_CONTEXT_GETPARAM, &ctx_param=
-);
-> +	igt_assert_eq(ret, 0);
-> +
-> +	return ctx_param.value;
-> +}
-> +
-> +static int get_ctx_recovery_param(int i915, uint32_t ctx_id)
-> +{
-> +	int ret;
-> +
-> +	struct drm_i915_gem_context_param ctx_param =3D {
-> +		.ctx_id =3D ctx_id,
-> +		.param =3D I915_CONTEXT_PARAM_RECOVERABLE,
-> +	};
-> +
-> +	ret =3D igt_ioctl(i915, DRM_IOCTL_I915_GEM_CONTEXT_GETPARAM, &ctx_param=
-);
-> +	igt_assert_eq(ret, 0);
-> +
-> +	return ctx_param.value;
-> +}
-> +
-> +static void test_ctx_alloc_pxp_nohw(int i915)
-> +{
-> +	uint32_t ctx;
-> +
-> +	igt_assert_eq(create_ctx_with_params(i915, true, true, true, false, &ct=
-x), -ENODEV);
-> +	igt_assert_eq(create_ctx_with_params(i915, true, false, true, false, &c=
-tx), 0);
-> +	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
-> +	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-> +	gem_context_destroy(i915, ctx);
-> +}
-> +
-> +static void test_ctx_alloc_recover_off_protect_off(int i915)
-> +{
-> +	uint32_t ctx;
-> +
-> +	igt_assert_eq(create_ctx_with_params(i915, true, false, true, false, &c=
-tx), 0);
-> +	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
-> +	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-> +	gem_context_destroy(i915, ctx);
-> +}
-> +
-> +static void test_ctx_alloc_recover_off_protect_on(int i915)
-> +{
-> +	uint32_t ctx;
-> +
-> +	igt_assert_eq(create_ctx_with_params(i915, true, true, true, false, &ct=
-x), 0);
-> +	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
-> +	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-> +	gem_context_destroy(i915, ctx);
-> +}
-> +
-> +static void test_ctx_alloc_recover_on_protect_off(int i915)
-> +{
-> +	uint32_t ctx;
-> +
-> +	igt_assert_eq(create_ctx_with_params(i915, true, false, true, true, &ct=
-x), 0);
-> +	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
-> +	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 1);
-> +	gem_context_destroy(i915, ctx);
-> +}
-> +
-> +static void test_ctx_alloc_recover_on_protect_on(int i915)
-> +{
-> +	uint32_t ctx;
-> +
-> +	igt_assert_eq(create_ctx_with_params(i915, true, true, true, true, &ctx=
-), -EPERM);
-> +	igt_assert_eq(create_ctx_with_params(i915, true, true, false, false, &c=
-tx), -EPERM);
-> +}
-> +
-> +static void test_ctx_mod_recover_off_to_on(int i915)
-> +{
-> +	uint32_t ctx;
-> +
-> +	igt_assert_eq(create_ctx_with_params(i915, true, true, true, false, &ct=
-x), 0);
-> +	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
-> +	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-> +	igt_assert_eq(modify_ctx_param(i915, ctx, CHANGE_PARAM_RECOVERY, true),=
- -EPERM);
-> +	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-> +	gem_context_destroy(i915, ctx);
-> +}
-> +
-> +static void test_ctx_mod_protected_on_to_off(int i915)
-> +{
-> +	uint32_t ctx;
-> +
-> +	igt_assert_eq(create_ctx_with_params(i915, true, true, true, false, &ct=
-x), 0);
-> +	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
-> +	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-> +	igt_assert_eq(modify_ctx_param(i915, ctx, CHANGE_PARAM_PROTECTED, false=
-), -EPERM);
-> +	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
-> +	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-> +	gem_context_destroy(i915, ctx);
-> +}
-> +
-> +static void test_ctx_mod_protected_to_all_invalid(int i915)
-> +{
-> +	uint32_t ctx;
-> +
-> +	igt_assert_eq(create_ctx_with_params(i915, true, true, true, false, &ct=
-x), 0);
-> +	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
-> +	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-> +	igt_assert_eq(modify_ctx_param(i915, ctx, CHANGE_PARAM_RECOVERY, true),=
- -EPERM);
-> +	igt_assert_eq(modify_ctx_param(i915, ctx, CHANGE_PARAM_PROTECTED, false=
-), -EPERM);
-> +	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
-> +	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-> +	gem_context_destroy(i915, ctx);
-> +}
-> +
-> +static void test_ctx_mod_regular_to_all_valid(int i915)
-> +{
-> +	uint32_t ctx;
-> +
-> +	igt_assert_eq(create_ctx_with_params(i915, false, false, false, false, =
-&ctx), 0);
-> +	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
-> +	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 1);
-> +	igt_assert_eq(modify_ctx_param(i915, ctx, CHANGE_PARAM_RECOVERY, false)=
-, 0);
-> +	igt_assert_eq(modify_ctx_param(i915, ctx, CHANGE_PARAM_PROTECTED, true)=
-, -EPERM);
-> +	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
-> +	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-> +	gem_context_destroy(i915, ctx);
-> +}
-> +
-> +igt_main
-> +{
-> +	int i915 =3D -1;
-> +	bool pxp_supported =3D false;
-> +
-> +	igt_fixture
-> +	{
-> +		i915 =3D drm_open_driver(DRIVER_INTEL);
-> +		igt_require(i915);
-> +		igt_require_gem(i915);
-> +		pxp_supported =3D is_pxp_hw_supported(i915);
-> +	}
-> +
-> +	igt_subtest_group {
-> +		igt_fixture {
-> +			igt_require((pxp_supported =3D=3D 0));
-> +		}
-> +
-> +		igt_describe("Verify protected buffer on unsupported hw:");
-> +		igt_subtest("hw-rejects-pxp-buffer")
-> +			test_bo_alloc_pxp_nohw(i915);
-> +		igt_describe("Verify protected context on unsupported hw:");
-> +		igt_subtest("hw-rejects-pxp-context")
-> +			test_ctx_alloc_pxp_nohw(i915);
-> +	}
-> +
-> +	igt_subtest_group {
-> +		igt_fixture {
-> +			igt_require(pxp_supported);
-> +		}
-> +
-> +		igt_describe("Verify protected buffer on supported hw:");
-> +		igt_subtest("create-regular-buffer")
-> +			test_bo_alloc_pxp_off(i915);
-> +		igt_subtest("create-protected-buffer")
-> +			test_bo_alloc_pxp_on(i915);
-> +
-> +		igt_describe("Verify protected context on supported hw:");
-> +		igt_subtest("create-regular-context-1")
-> +			test_ctx_alloc_recover_off_protect_off(i915);
-> +		igt_subtest("create-regular-context-2")
-> +			test_ctx_alloc_recover_on_protect_off(i915);
-> +		igt_subtest("fail-invalid-protected-context")
-> +			test_ctx_alloc_recover_on_protect_on(i915);
-> +		igt_subtest("create-valid-protected-context")
-> +			test_ctx_alloc_recover_off_protect_on(i915);
-> +
-> +		igt_describe("Verify protected context integrity:");
-> +		igt_subtest("reject-modify-context-protection-on")
-> +			test_ctx_mod_regular_to_all_valid(i915);
-> +		igt_subtest("reject-modify-context-protection-off-1")
-> +			test_ctx_mod_recover_off_to_on(i915);
-> +		igt_subtest("reject-modify-context-protection-off-2")
-> +			test_ctx_mod_protected_on_to_off(i915);
-> +		igt_subtest("reject-modify-context-protection-off-3")
-> +			test_ctx_mod_protected_to_all_invalid(i915);
-> +	}
-> +
-> +	igt_fixture {
-> +		close(i915);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 19cc4ebe..e0bff4d1 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -187,6 +187,7 @@ i915_progs =3D [
->  	'gem_pread_after_blit',
->  	'gem_pwrite',
->  	'gem_pwrite_snooped',
-> +	'gem_pxp',
->  	'gem_read_read_speed',
->  	'gem_readwrite',
->  	'gem_reg_read',
-> -- =
+  **SUCCESS**
 
-> 2.25.1
-> =
+  No regressions found.
 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5876 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-guc:         [PASS][1] -> [FAIL][2] ([i915#2203])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a:
+    - fi-tgl-u2:          [PASS][3] -> [FAIL][4] ([i915#3487])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-tgl-u2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-tgl-u2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a.html
+
+  
+#### Possible fixes ####
+
+  * igt@core_auth@basic-auth:
+    - fi-kbl-soraka:      [DMESG-WARN][5] ([i915#1982]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-kbl-soraka/igt@core_auth@basic-auth.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-kbl-soraka/igt@core_auth@basic-auth.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-icl-u2:          [DMESG-FAIL][7] ([i915#3462]) -> [INCOMPLETE][8] ([i915#2782] / [i915#3462])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-icl-u2/igt@i915_selftest@live@execlists.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-icl-u2/igt@i915_selftest@live@execlists.html
+    - fi-kbl-soraka:      [INCOMPLETE][9] ([i915#2782] / [i915#3462] / [i915#794]) -> [INCOMPLETE][10] ([i915#794])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
+
+  * igt@runner@aborted:
+    - fi-icl-u2:          [FAIL][11] ([i915#2426] / [i915#2782] / [i915#3363]) -> [FAIL][12] ([i915#2782] / [i915#3363])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-icl-u2/igt@runner@aborted.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-icl-u2/igt@runner@aborted.html
+    - fi-cml-u2:          [FAIL][13] ([i915#3363] / [i915#3462]) -> [FAIL][14] ([i915#2082] / [i915#2426] / [i915#3363] / [i915#3462])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-cml-u2/igt@runner@aborted.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-cml-u2/igt@runner@aborted.html
+    - fi-cfl-guc:         [FAIL][15] ([i915#2426] / [i915#3363]) -> [FAIL][16] ([i915#3363])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-cfl-guc/igt@runner@aborted.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-cfl-guc/igt@runner@aborted.html
+    - fi-kbl-7567u:       [FAIL][17] ([i915#1436] / [i915#2426] / [i915#3363]) -> [FAIL][18] ([i915#1436] / [i915#3363])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-kbl-7567u/igt@runner@aborted.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-kbl-7567u/igt@runner@aborted.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2082]: https://gitlab.freedesktop.org/drm/intel/issues/2082
+  [i915#2203]: https://gitlab.freedesktop.org/drm/intel/issues/2203
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
+  [i915#3277]: https://gitlab.freedesktop.org/drm/intel/issues/3277
+  [i915#3283]: https://gitlab.freedesktop.org/drm/intel/issues/3283
+  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
+  [i915#3462]: https://gitlab.freedesktop.org/drm/intel/issues/3462
+  [i915#3487]: https://gitlab.freedesktop.org/drm/intel/issues/3487
+  [i915#3537]: https://gitlab.freedesktop.org/drm/intel/issues/3537
+  [i915#794]: https://gitlab.freedesktop.org/drm/intel/issues/794
+
+
+Participating hosts (46 -> 41)
+------------------------------
+
+  Additional (1): fi-tgl-1115g4 
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan bat-adlp-4 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6098 -> IGTPW_5876
+
+  CI-20190529: 20190529
+  CI_DRM_10161: 6ce32fba8fd6caa0cd3ea578b35f76d188ebb155 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5876: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/index.html
+  IGT_6098: 1fbc1e7d602f96a7f4e2b95057eef994656b8e74 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/index.html
+
+--===============4137870658267590321==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/i915/intel_memory_region: free query_info in gem_get_lmem_region_count (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/90903/">https://patchwork.freedesktop.org/series/90903/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10161 -&gt; IGTPW_5876</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5876 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a:</p>
+<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-tgl-u2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-tgl-u2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3487">i915#3487</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@core_auth@basic-auth:<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-kbl-soraka/igt@core_auth@basic-auth.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-kbl-soraka/igt@core_auth@basic-auth.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>
+<p>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-icl-u2/igt@i915_selftest@live@execlists.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-icl-u2/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>)</p>
+</li>
+<li>
+<p>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/794">i915#794</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/794">i915#794</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-icl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-icl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
+</li>
+<li>
+<p>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-cml-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-cml-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2082">i915#2082</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>)</p>
+</li>
+<li>
+<p>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-cfl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-cfl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
+</li>
+<li>
+<p>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10161/fi-kbl-7567u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/fi-kbl-7567u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (46 -&gt; 41)</h2>
+<p>Additional (1): fi-tgl-1115g4 <br />
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan bat-adlp-4 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6098 -&gt; IGTPW_5876</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10161: 6ce32fba8fd6caa0cd3ea578b35f76d188ebb155 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5876: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5876/index.html<br />
+  IGT_6098: 1fbc1e7d602f96a7f4e2b95057eef994656b8e74 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============4137870658267590321==--
+
+--===============0980676344==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0980676344==--
