@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B07E96EE56
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D9B186EE57
  for <igt-dev@lists.freedesktop.org>; Wed,  2 Jun 2021 19:54:17 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Wed,  2 Jun 2021 12:53:59 -0700
-Message-Id: <20210602195400.11982-1-ashutosh.dixit@intel.com>
+Date: Wed,  2 Jun 2021 12:54:00 -0700
+Message-Id: <20210602195400.11982-2-ashutosh.dixit@intel.com>
+In-Reply-To: <20210602195400.11982-1-ashutosh.dixit@intel.com>
+References: <20210602195400.11982-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib/i915/intel_memory_region: free
- query_info in gem_get_lmem_region_count
+Subject: [igt-dev] [PATCH i-g-t] lib: Use fast WC reads for gem_pread
+ fallback
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,33 +22,41 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-query_info calloc'd in gem_get_query_memory_regions should be freed in
-gem_get_lmem_region_count.
+From: Chris Wilson <chris@chris-wilson.co.uk>
 
-Cc: Andrzej Turko <andrzej.turko@linux.intel.com>
-Cc: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Fixes: f32993a2ed ("lib/i915/intel_memory_region: Add new memory region lib")
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Replacing pread with an uncached read is abysmmally slow. Replacing
+pread with a streaming read is still slow, but at least faster than not.
+
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/i915/intel_memory_region.c | 1 +
- 1 file changed, 1 insertion(+)
+ lib/ioctl_wrappers.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-index 983ac4df07..144ae12ca7 100644
---- a/lib/i915/intel_memory_region.c
-+++ b/lib/i915/intel_memory_region.c
-@@ -149,6 +149,7 @@ uint8_t gem_get_lmem_region_count(int fd)
- 		if (query_info->regions[i].region.memory_class == I915_MEMORY_CLASS_DEVICE)
- 			lmem_regions += 1;
- 	}
-+	free(query_info);
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index 0c1b5e3230..619d288a8a 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -55,6 +55,7 @@
+ #include "intel_io.h"
+ #include "igt_debugfs.h"
+ #include "igt_sysfs.h"
++#include "igt_x86.h"
+ #include "config.h"
+ #include "i915/gem_mman.h"
  
- 	return lmem_regions;
+@@ -385,7 +386,7 @@ static void mmap_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint6
+ 		gem_set_domain(fd, handle, I915_GEM_DOMAIN_WC, 0);
+ 	}
+ 
+-	memcpy(buf, map + offset, length);
++	igt_memcpy_from_wc(buf, map + offset, length);
+ 	munmap(map, offset + length);
  }
+ 
 -- 
 2.31.1
 
