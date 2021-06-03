@@ -1,21 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com
- [IPv6:2a00:1450:4864:20::52a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 498086EDCA
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Jun 2021 11:47:07 +0000 (UTC)
-Received: by mail-ed1-x52a.google.com with SMTP id cb9so6772917edb.1
- for <igt-dev@lists.freedesktop.org>; Thu, 03 Jun 2021 04:47:07 -0700 (PDT)
-Date: Thu, 3 Jun 2021 13:47:03 +0200
-From: Daniel Vetter <daniel@ffwll.ch>
-Message-ID: <YLjBN0P146kxsKQZ@phenom.ffwll.local>
-References: <20210428202143.1388452-1-jason@jlekstrand.net>
- <20210428202143.1388452-5-jason@jlekstrand.net>
- <YLjBAdcwngkAuF3e@phenom.ffwll.local>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 018826F3F5
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Jun 2021 12:31:32 +0000 (UTC)
+From: venkata.sai.patnana@intel.com
+Date: Thu,  3 Jun 2021 17:50:04 +0530
+Message-Id: <20210603122027.27330-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <YLjBAdcwngkAuF3e@phenom.ffwll.local>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/i915/gem_exec_balancer: Add a
- test for combind balancing and bonding
+Subject: [igt-dev] [PATCH i-g-t 01/24] lib/igt_kms: Add plane color mgmt
+ properties
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,93 +19,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jason Ekstrand <jason@jlekstrand.net>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jun 03, 2021 at 01:46:09PM +0200, Daniel Vetter wrote:
-> On Wed, Apr 28, 2021 at 03:21:43PM -0500, Jason Ekstrand wrote:
-> 
-> In the subject of this one: s/combind/combined/
-> 
-> I think that's fairly complete sanity check. On the series:
-> 
-> Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-> 
-> I think best if you include this in your overall igt set (can't be CI'ed
-> otherwise) and the Test-With: check this together with your kernel set.
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-Oh and sobs missing.
--Daniel
+Add support for Plane color management properties.
 
-> 
-> Cheers, Daniel
-> 
-> > ---
-> >  tests/i915/gem_exec_balancer.c | 26 ++++++++++++++++++++++++++
-> >  1 file changed, 26 insertions(+)
-> > 
-> > diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-> > index 4f1fa390..b594e2e1 100644
-> > --- a/tests/i915/gem_exec_balancer.c
-> > +++ b/tests/i915/gem_exec_balancer.c
-> > @@ -167,6 +167,7 @@ static uint32_t batch_create(int i915)
-> >  static void invalid_balancer(int i915)
-> >  {
-> >  	I915_DEFINE_CONTEXT_ENGINES_LOAD_BALANCE(balancer, 64);
-> > +	I915_DEFINE_CONTEXT_ENGINES_BOND(bond, 1);
-> >  	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 64);
-> >  	struct drm_i915_gem_context_param p = {
-> >  		.param = I915_CONTEXT_PARAM_ENGINES,
-> > @@ -283,6 +284,31 @@ static void invalid_balancer(int i915)
-> >  
-> >  		munmap(ptr + 4096, 4096);
-> >  
-> > +		if (count >= 2) {
-> > +			/* You can't bond to a balanced engine */
-> > +			memset(&bond, 0, sizeof(bond));
-> > +			bond.base.name = I915_CONTEXT_ENGINES_EXT_BOND;
-> > +			bond.master = ci[0];
-> > +			bond.virtual_index = 0;
-> > +			bond.num_bonds = 1;
-> > +			bond.engines[0] = ci[1];
-> > +
-> > +			balancer.base.next_extension = to_user_pointer(&bond);
-> > +			balancer.engine_index = 0;
-> > +			balancer.num_siblings = count;
-> > +			memcpy(balancer.engines, ci, count * sizeof(*ci));
-> > +
-> > +			memset(&engines, 0, sizeof(engines));
-> > +			engines.engines[0].engine_class = I915_ENGINE_CLASS_INVALID;
-> > +			engines.engines[0].engine_instance = I915_ENGINE_CLASS_INVALID_NONE;
-> > +			engines.extensions = to_user_pointer(&balancer);
-> > +
-> > +			p.size = (sizeof(struct i915_context_param_engines) +
-> > +				  sizeof(*engines.engines));
-> > +
-> > +			igt_assert_eq(__gem_context_set_param(i915, &p), -EINVAL);
-> > +		}
-> > +
-> >  		gem_context_destroy(i915, p.ctx_id);
-> >  		free(ci);
-> >  	}
-> > -- 
-> > 2.31.1
-> > 
-> > _______________________________________________
-> > igt-dev mailing list
-> > igt-dev@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
-> 
-> -- 
-> Daniel Vetter
-> Software Engineer, Intel Corporation
-> http://blog.ffwll.ch
+Cc: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Mukunda Pramodh Kumar <mukunda.pramodh.kumar@intel.com>
+(cherry picked from commit 51099f0939ca28f15fdd99143ca38e0fc52e38fe)
+---
+ lib/igt_kms.c | 5 +++++
+ lib/igt_kms.h | 5 +++++
+ 2 files changed, 10 insertions(+)
 
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index c7c69b6ea0..ae183e822c 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -581,6 +581,11 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
+ 	[IGT_PLANE_ALPHA] = "alpha",
+ 	[IGT_PLANE_ZPOS] = "zpos",
+ 	[IGT_PLANE_FB_DAMAGE_CLIPS] = "FB_DAMAGE_CLIPS",
++	[IGT_PLANE_CTM] = "PLANE_CTM",
++	[IGT_PLANE_GAMMA_MODE] = "PLANE_GAMMA_MODE",
++	[IGT_PLANE_GAMMA_LUT] = "PLANE_GAMMA_LUT",
++	[IGT_PLANE_DEGAMMA_MODE] = "PLANE_DEGAMMA_MODE",
++	[IGT_PLANE_DEGAMMA_LUT] = "PLANE_DEGAMMA_LUT",
+ };
+ 
+ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 8cde24b791..41967bf28a 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -301,6 +301,11 @@ enum igt_atomic_plane_properties {
+        IGT_PLANE_ALPHA,
+        IGT_PLANE_ZPOS,
+        IGT_PLANE_FB_DAMAGE_CLIPS,
++       IGT_PLANE_CTM,
++       IGT_PLANE_GAMMA_MODE,
++       IGT_PLANE_GAMMA_LUT,
++       IGT_PLANE_DEGAMMA_MODE,
++       IGT_PLANE_DEGAMMA_LUT,
+        IGT_NUM_PLANE_PROPS
+ };
+ 
 -- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+2.25.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
