@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2DD186F47E
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Jun 2021 12:31:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8109F6F474
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Jun 2021 12:31:35 +0000 (UTC)
 From: venkata.sai.patnana@intel.com
-Date: Thu,  3 Jun 2021 17:50:22 +0530
-Message-Id: <20210603122027.27330-19-venkata.sai.patnana@intel.com>
+Date: Thu,  3 Jun 2021 17:50:10 +0530
+Message-Id: <20210603122027.27330-7-venkata.sai.patnana@intel.com>
 In-Reply-To: <20210603122027.27330-1-venkata.sai.patnana@intel.com>
 References: <20210603122027.27330-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 19/24] tests/core_hotunplug: Unload snd
- driver before i915 unbind
+Subject: [igt-dev] [PATCH i-g-t 07/24] tests/kms_color_chamelium: New
+ subtests for Plane degamma
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,164 +24,175 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Uma Shankar <uma.shankar@intel.com>
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-Unload the snd module before unbinding i915. Audio holds a wakeref
-which triggers a warning otherwise, resulting in below warning and
-test failure. Currently HSW/BDW and DG1 are the platforms affected,
-can be extended to other platforms as well.
+To verify Plane degamma, draw 3 gradient rectangles in red, green and blue,
+with a maxed out degamma LUT and verify we have the same frame dump as
+drawing solid color rectangles with linear gamma LUT.
 
-<4> [137.001006] ------------[ cut here ]------------
-<4> [137.001010] i915 0000:00:02.0: i915 raw-wakerefs=1 wakelocks=1 on cleanup
-<4> [137.001076] WARNING: CPU: 0 PID: 1417 at drivers/gpu/drm/i915/intel_runtime_pm.c:619 intel_runtime_pm_driver_release+0x56/0x60 [i915]
-<4> [137.001078] Modules linked in: snd_hda_intel i915 snd_hda_codec_hdmi mei_hdcp intel_pmt_telemetry intel_pmt_core x86_pkg_temp_thermal coretemp smsc75xx crct10dif_pclmul usbnet crc32_pclmul mii ghash_clmulni_intel kvm_intel e1000e snd_intel_dspcfg snd_hda_codec snd_hwdep snd_hda_core ptp pps_core mei_me snd_pcm mei prime_numbers intel_pmt [last unloaded: i915]
-<4> [137.001095] CPU: 0 PID: 1417 Comm: kworker/u16:7 Tainted: G U 5.9.0-g79478e23b1878-DII_3204+ #1
-<4> [137.001097] Hardware name: Intel Corporation Tiger Lake Client Platform/TigerLake U DDR4 SODIMM RVP, BIOS TGLSFWI1.R00.3197.A00.2005110542 05/11/2020
-<4> [137.001102] Workqueue: events_unbound async_run_entry_fn
-<4> [137.001140] RIP: 0010:intel_runtime_pm_driver_release+0x56/0x60 [i915]
-<4> [137.001142] Code: fd 10 4c 8b 67 50 4d 85 e4 75 03 4c 8b 27 e8 91 59 58 e1 45 89 e8 89 e9 4c 89 e2 48 89 c6 48 c7 c7 b0 f3 48 a0 e8 55 25 ef e0 <0f> 0b eb b5 66 0f 1f 44 00 00 48 8b 87 88 45 ff ff b9 02 00 00 00
-<4> [137.001144] RSP: 0018:ffffc900007dbd68 EFLAGS: 00010286
-<4> [137.001147] RAX: 0000000000000000 RBX: ffff88847338bea8 RCX: 0000000000000001
-<4> [137.001148] RDX: 0000000080000001 RSI: ffffffff823efa86 RDI: 00000000ffffffff
-<4> [137.001150] RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000001
-<4> [137.001152] R10: 000000009bda34df R11: 00000000e2a8a89a R12: ffff88849b209880
-<4> [137.001153] R13: 0000000000000001 R14: ffff88847338bea8 R15: ffff88847338fcc0
-<4> [137.001155] FS: 0000000000000000(0000) GS:ffff8884a0600000(0000) knlGS:0000000000000000
-<4> [137.001157] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-<4> [137.001159] CR2: 00007fc03597dd88 CR3: 0000000006610005 CR4: 0000000000770ef0
-<4> [137.001160] PKRU: 55555554
-<4> [137.001162] Call Trace:
-<4> [137.001199] i915_drm_suspend_late+0x102/0x120 [i915]
-<4> [137.001204] ? pci_pm_poweroff_late+0x30/0x30
-<4> [137.001209] dpm_run_callback+0x61/0x270
-<4> [137.001214] __device_suspend_late+0x8b/0x180
-<4> [137.001217] async_suspend_late+0x15/0x90
-<4> [137.001220] async_run_entry_fn+0x34/0x160
-<4> [137.001224] process_one_work+0x26c/0x5c0
-<4> [137.001231] worker_thread+0x37/0x380
-<4> [137.001235] ? process_one_work+0x5c0/0x5c0
-<4> [137.001238] kthread+0x149/0x170
-<4> [137.001241] ? kthread_park+0x80/0x80
-<4> [137.001246] ret_from_fork+0x1f/0x30
-<4> [137.001256] irq event stamp: 2329
+v2:
+* Ignore "no degamma" from enum list (Bhanu)
+v3:
+* Search for the enum name, instead of assuming value as 0 (Uma)
 
-v2: Extended the WA to HSW/BDW, added an igt warning on unload to keep
-visibility on the issue as suggested by Janusz
-
-v3: Merged the revert of earlier WA within this patch and added
-a flag to track the WA, as suggested by Janusz.
-
-Cc: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Signed-off-by: Uma Shankar <uma.shankar@intel.com>
-(cherry picked from commit 2a8468ac0132281d2fb9727112e6855c9622d0a5)
+Cc: Uma Shankar <uma.shankar@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+(cherry picked from commit d8ba24e8dd1407a068e5301d62ae1117588e02f9)
 ---
- tests/core_hotunplug.c | 53 +++++++++++++++++++++++++++++++-----------
- 1 file changed, 40 insertions(+), 13 deletions(-)
+ tests/kms_color_chamelium.c | 132 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 132 insertions(+)
 
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index a639cfb4b4..878efcc7bf 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -29,6 +29,7 @@
- #include <sys/stat.h>
- #include <sys/types.h>
- #include <unistd.h>
-+#include <signal.h>
- 
- #include "i915/gem.h"
- #include "i915/gem_create.h"
-@@ -53,6 +54,7 @@ struct hotunplug {
- 	const char *failure;
- 	bool need_healthcheck;
- 	bool has_intel_perf;
-+	bool snd_unload;
- };
- 
- /* Helpers */
-@@ -138,6 +140,34 @@ static void prepare(struct hotunplug *priv)
- static void driver_unbind(struct hotunplug *priv, const char *prefix,
- 			  int timeout)
- {
-+	/**
-+	 * FIXME: Unbinding the i915 driver on affected platforms with
-+	 * audio results in a kernel WARN on "i915 raw-wakerefs=1
-+	 * wakelocks=1 on cleanup". The below CI friendly user level
-+	 * workaround to unload and de-couple audio from IGT testing,
-+	 * prevents the warning from appearing. Drop this hack as soon
-+	 * as this is fixed in the kernel. unbind/re-bind validation
-+	 * on audio side is not robust and we could have potential
-+	 * failures blocking display CI, currently this seems to the
-+	 * safest and easiest way out.
-+	 */
-+	if (priv->snd_unload) {
-+		igt_terminate_process(SIGTERM, "alsactl");
-+
-+		/* unbind snd_hda_intel */
-+		kick_snd_hda_intel();
-+
-+		if (igt_kmod_unload("snd_hda_intel", 0)) {
-+			priv->snd_unload = false;
-+			igt_warn("Could not unload snd_hda_intel\n");
-+			igt_kmod_list_loaded();
-+			igt_lsof("/dev/snd");
-+			igt_skip("Audio is in use, skipping\n");
-+		} else {
-+			igt_warn("Preventively unloaded snd_hda_intel\n");
-+		}
-+	}
-+
- 	local_debug("%sunbinding the driver from the device\n", prefix);
- 	priv->failure = "Driver unbind failure!";
- 
-@@ -166,6 +196,9 @@ static void driver_bind(struct hotunplug *priv, int timeout)
- 	igt_fail_on_f(faccessat(priv->fd.sysfs_drv, priv->dev_bus_addr,
- 				F_OK, 0),
- 		      "Rebound device not present!\n");
-+
-+	if (priv->snd_unload)
-+		igt_kmod_load("snd_hda_intel", NULL);
+diff --git a/tests/kms_color_chamelium.c b/tests/kms_color_chamelium.c
+index 59afaf0f43..17a7baa9a2 100644
+--- a/tests/kms_color_chamelium.c
++++ b/tests/kms_color_chamelium.c
+@@ -873,6 +873,133 @@ static bool plane_gamma_test(data_t *data, igt_plane_t *plane)
+ 	return ret;
  }
  
- /* Remove (virtually unplug) the device from its bus */
-@@ -574,6 +607,7 @@ igt_main
- 		.failure	= NULL,
- 		.need_healthcheck = true,
- 		.has_intel_perf = false,
-+		.snd_unload	= false,
- 	};
- 
- 	igt_fixture {
-@@ -585,23 +619,16 @@ igt_main
- 		if (is_i915_device(fd_drm)) {
- 			uint32_t devid = intel_get_drm_devid(fd_drm);
- 
-+			if ((IS_HASWELL(devid) || IS_BROADWELL(devid) ||
-+			     IS_DG1(devid)) && (igt_kmod_is_loaded("snd_hda_intel"))) {
-+				igt_debug("Enable WA to unload snd driver\n");
-+				priv.snd_unload = true;
++static bool plane_degamma_test(data_t *data, igt_plane_t *plane)
++{
++	igt_output_t *output;
++	igt_display_t *display = &data->display;
++	drmModeModeInfo *mode;
++	drmModePropertyPtr degamma_mode;
++	struct igt_fb fb, fbref;
++	struct chamelium_port *port;
++	struct chamelium_frame_dump *frame_fullcolors;
++	uint32_t i;
++	bool ret = true;
++	color_t red_green_blue[] = {
++		{ 1.0, 0.0, 0.0 },
++		{ 0.0, 1.0, 0.0 },
++		{ 0.0, 0.0, 1.0 }
++	};
++
++	igt_info("Plane degamma test is running on pipe-%s plane-%s(%s)\n",
++			kmstest_pipe_name(plane->pipe->pipe),
++			kmstest_plane_type_name(plane->type),
++			is_hdr_plane(plane) ? "hdr":"sdr");
++
++	igt_require(igt_plane_has_prop(plane, IGT_PLANE_DEGAMMA_MODE));
++	igt_require(igt_plane_has_prop(plane, IGT_PLANE_DEGAMMA_LUT));
++
++	for_each_valid_output_on_pipe(display, plane->pipe->pipe, output) {
++		for (i = 0; i < data->port_count; i++)
++			if (strcmp(output->name, chamelium_port_get_name(data->ports[i])) == 0) {
++				port = data->ports[i];
++				break;
 +			}
 +
- 			gem_quiescent_gpu(fd_drm);
- 			igt_require_gem(fd_drm);
++		if (port)
++			break;
++	}
++	igt_require(port);
++	igt_assert(output);
++
++	igt_output_set_pipe(output, plane->pipe->pipe);
++	mode = igt_output_get_mode(output);
++
++	/* Create a framebuffer at the size of the output. */
++	igt_assert(igt_create_fb(data->drm_fd,
++			      mode->hdisplay,
++			      mode->vdisplay,
++			      DRM_FORMAT_XRGB8888,
++			      LOCAL_DRM_FORMAT_MOD_NONE,
++			      &fb));
++
++	igt_assert(igt_create_fb(data->drm_fd,
++			      mode->hdisplay,
++			      mode->vdisplay,
++			      DRM_FORMAT_XRGB8888,
++			      LOCAL_DRM_FORMAT_MOD_NONE,
++			      &fbref));
++
++	disable_degamma(plane->pipe);
++	disable_ctm(plane->pipe);
++	disable_gamma(plane->pipe);
++
++	disable_plane_degamma(plane);
++	disable_plane_ctm(plane);
++	disable_plane_gamma(plane);
++
++	igt_plane_set_fb(plane, &fbref);
++	igt_display_commit2(display, display->is_atomic ?
++					COMMIT_ATOMIC : COMMIT_LEGACY);
++
++	degamma_mode = get_plane_gamma_degamma_mode(plane, IGT_PLANE_DEGAMMA_MODE);
++
++	/* Draw solid colors with no degamma. */
++	paint_rectangles(data, mode, red_green_blue, &fbref);
++
++	/* Iterate all supported degamma modes. */
++	for (i = 0; i < degamma_mode->count_enums; i++) {
++		segment_data_t *degamma_segment_info = NULL;
++		struct drm_color_lut_ext *degamma_lut = NULL;
++		uint32_t degamma_lut_size = 0;
++
++		/* Ignore 'no degamma' from enum list. */
++		if (!strcmp(degamma_mode->enums[i].name, "no degamma"))
++			continue;
++
++		degamma_segment_info = get_segment_data(data, degamma_mode->enums[i].value,
++						degamma_mode->enums[i].name);
++		degamma_lut_size = sizeof(struct drm_color_lut_ext) * degamma_segment_info->entries_count;
++		degamma_lut = create_max_lut(degamma_segment_info);
++
++		igt_info("Trying to use degamma mode: \'%s\'\n", degamma_mode->enums[i].name);
++
++		/* Draw a gradient with degamma LUT to remap all
++		 * values to max red/green/blue.
++		 */
++		paint_gradient_rectangles(data, mode, red_green_blue, &fb);
++		igt_plane_set_fb(plane, &fb);
++		set_plane_degamma(plane, degamma_mode->enums[i].name,
++				degamma_lut, degamma_lut_size);
++		igt_display_commit2(display, display->is_atomic ?
++				COMMIT_ATOMIC : COMMIT_LEGACY);
++
++		chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
++		frame_fullcolors =
++			chamelium_read_captured_frame(data->chamelium, 0);
++
++		/* Verify that the framebuffer reference of the software computed
++		 * output is equal to the frame dump of the gamma LUT
++		 * transformation output.
++		 */
++		ret &= chamelium_frame_match_or_dump(data->chamelium, port,
++				frame_fullcolors, &fbref,
++				CHAMELIUM_CHECK_ANALOG);
++
++		free(degamma_lut);
++		clear_segment_data(degamma_segment_info);
++	}
++
++	disable_plane_degamma(plane);
++	igt_plane_set_fb(plane, NULL);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(display, display->is_atomic ?
++					COMMIT_ATOMIC : COMMIT_LEGACY);
++
++	drmModeFreeProperty(degamma_mode);
++
++	return ret;
++}
++
+ static void run_plane_color_test(data_t *data, enum pipe pipe, test_t test)
+ {
+ 	igt_plane_t *plane;
+@@ -903,6 +1030,11 @@ static void run_tests_for_plane(data_t *data, enum pipe pipe)
+ 	igt_subtest_f("pipe-%s-plane-gamma",
+ 			kmstest_pipe_name(pipe))
+ 		run_plane_color_test(data, pipe, plane_gamma_test);
++
++	igt_describe("Compare maxed out plane degamma LUT and solid color linear LUT");
++	igt_subtest_f("pipe-%s-plane-degamma",
++			kmstest_pipe_name(pipe))
++		run_plane_color_test(data, pipe, plane_degamma_test);
+ }
  
- 			priv.has_intel_perf = local_i915_perf_healthcheck(fd_drm);
--
--			/**
--			 * FIXME: Unbinding the i915 driver on some Haswell
--			 * platforms with Azalia audio results in a kernel WARN
--			 * on "i915 raw-wakerefs=1 wakelocks=1 on cleanup".  The
--			 * below CI friendly user level workaround prevents the
--			 * warning from appearing.  Drop this hack as soon as
--			 * this is fixed in the kernel.
--			 */
--			if (igt_warn_on_f(IS_HASWELL(devid) ||
--					  IS_BROADWELL(devid),
--			    "Manually enabling audio PM to work around a kernel WARN\n"))
--				igt_pm_enable_audio_runtime_pm();
- 		}
- 
- 		/* Make sure subtests always reopen the same device */
+ igt_main
 -- 
 2.25.1
 
