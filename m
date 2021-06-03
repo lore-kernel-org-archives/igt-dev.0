@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 026036E7FE
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Jun 2021 21:40:32 +0000 (UTC)
-Date: Thu, 3 Jun 2021 17:40:27 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 14AAE6E7FE
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Jun 2021 21:44:05 +0000 (UTC)
+Date: Thu, 3 Jun 2021 17:43:54 -0400
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Message-ID: <YLlMS3/3LP8KdQrk@intel.com>
+Message-ID: <YLlNGnC4HwfWC9Lw@intel.com>
 References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
- <20210518103344.2264397-12-alan.previn.teres.alexis@intel.com>
+ <20210518103344.2264397-16-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210518103344.2264397-12-alan.previn.teres.alexis@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 11/17] Verify PXP teardown occurred
- through suspend-resume
+In-Reply-To: <20210518103344.2264397-16-alan.previn.teres.alexis@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 15/17] Ensure RESET_STATS reports
+ invalidated protected context
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,138 +27,74 @@ To: Alan Previn <alan.previn.teres.alexis@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, May 18, 2021 at 03:33:38AM -0700, Alan Previn wrote:
-> During a suspend-resume cycle, the hardware and driver shall
-> ensure the PXP session and keys are torn down and re-
-> established. Verify that key change did occur by repeating
-> the 3d rendercopy operation before and after a suspend cycle
-> and ensuring that the encrypted output is different.
+On Tue, May 18, 2021 at 03:33:42AM -0700, Alan Previn wrote:
+> When protected contexts are created but get invalidated
+> due to PXP session teardown (such as after a suspend-resume
+> cycle), RESET_STATS ioctl for said context will report it
+> as I915_CONTEXT_INVALIDATED.
 > 
 > Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
 > ---
->  tests/i915/gem_pxp.c | 67 +++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 66 insertions(+), 1 deletion(-)
+>  tests/i915/gem_pxp.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
 > 
 > diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-> index 2f2d2716..10134604 100644
+> index e3c21c70..69a3143a 100644
 > --- a/tests/i915/gem_pxp.c
 > +++ b/tests/i915/gem_pxp.c
-> @@ -9,6 +9,12 @@
->  IGT_TEST_DESCRIPTION("Test PXP that manages protected content through arbitrated HW-PXP-session");
->  /* Note: PXP = "Protected Xe Path" */
->  
-> +/* Struct and definitions for power management. */
-> +struct powermgt_data {
-> +	int debugfsdir;
-> +	bool has_runtime_pm;
-> +};
-> +
->  static bool is_pxp_hw_supported(int i915)
->  {
->  	uint32_t devid = intel_get_drm_devid(i915);
-> @@ -465,7 +471,7 @@ static void test_render_baseline(int i915)
->  	buf_ops_destroy(bops);
+> @@ -757,6 +757,22 @@ static void free_exec_assets(int i915, struct simple_exec_assets *data)
+>  	buf_ops_destroy(data->bops);
 >  }
 >  
-> -static void test_render_pxp_src_to_protdest(int i915)
-> +static void __test_render_pxp_src_to_protdest(int i915, uint32_t *outpixels, int outsize)
+> +static bool is_context_valid(int i915, uint32_t ctx)
+> +{
+> +	struct drm_i915_reset_stats rs;
+> +	int ret;
+> +
+> +	memset(&rs, 0, sizeof(rs));
+> +	rs.ctx_id = ctx;
+> +	ret = drmIoctl(i915, DRM_IOCTL_I915_GET_RESET_STATS, &rs);
+> +	igt_assert(ret == 0);
+> +
+> +	if (rs.flags & I915_CONTEXT_INVALIDATED)
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+>  static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_data *pm)
 >  {
->  	uint32_t ctx, srcbo, dstbo;
->  	struct intel_buf *srcbuf, *dstbuf;
-> @@ -507,6 +513,10 @@ static void test_render_pxp_src_to_protdest(int i915)
->  	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
->  				TSTSURF_SIZE, TSTSURF_FILLCOLOR2, NULL, 0);
+>  	int ret;
+> @@ -788,6 +804,8 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
 >  
-> +	if (outpixels)
-> +		assert_bo_content_check(i915, dstbo, COPY_BUFFER,
-> +					TSTSURF_SIZE, 0, outpixels, outsize);
-> +
->  	intel_bb_destroy(ibb);
->  	intel_buf_destroy(srcbuf);
->  	gem_close(i915, srcbo);
-> @@ -516,6 +526,11 @@ static void test_render_pxp_src_to_protdest(int i915)
->  	buf_ops_destroy(bops);
->  }
+>  	trigger_powermgt_suspend_cycle(i915, pm);
 >  
-> +static void test_render_pxp_src_to_protdest(int i915)
-> +{
-> +	__test_render_pxp_src_to_protdest(i915, NULL, 0);
-> +}
-> +
->  static void test_render_pxp_protsrc_to_protdest(int i915)
->  {
->  	uint32_t ctx, srcbo, dstbo, dstbo2;
-> @@ -595,10 +610,47 @@ static void test_render_pxp_protsrc_to_protdest(int i915)
->  	buf_ops_destroy(bops);
->  }
+> +	igt_assert_f(!is_context_valid(i915, data[0].ctx),
+> +				       "RESET_STATS missed INVAL bit on stale pxp context\n");
+>  	ret = gem_execbuf_flush_store_dw(i915, data[0].ibb, data[0].ctx, data[0].fencebuf);
+>  	igt_assert_f((ret == -EACCES), "Executing stale pxp context didn't fail with -EACCES\n");
 >  
-> +static void init_powermgt_resources(int i915, struct powermgt_data *pm)
-> +{
-> +	pm->debugfsdir = igt_debugfs_dir(i915);
-> +	igt_require(pm->debugfsdir != -1);
-> +	pm->has_runtime_pm = igt_setup_runtime_pm(i915);
-> +	igt_require(pm->has_runtime_pm);
-> +}
-> +
-> +static void trigger_powermgt_suspend_cycle(int i915,
-> +	struct powermgt_data *pm)
-> +{
-> +	igt_pm_enable_sata_link_power_management();
-> +	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_DEVICES);
-> +	igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED);
-> +}
-> +
-> +static void test_pxp_pwrcycle_teardown_keychange(int i915, struct powermgt_data *pm)
-> +{
-> +	uint32_t encrypted_pixels_b4[TSTSURF_SIZE/TSTSURF_BYTESPP];
-> +	uint32_t encrypted_pixels_aft[TSTSURF_SIZE/TSTSURF_BYTESPP];
-> +	int matched_after_keychange = 0, loop = 0;
-> +
-> +	__test_render_pxp_src_to_protdest(i915, encrypted_pixels_b4, TSTSURF_SIZE);
-> +
-> +	trigger_powermgt_suspend_cycle(i915, pm);
-> +
-> +	__test_render_pxp_src_to_protdest(i915, encrypted_pixels_aft, TSTSURF_SIZE);
-> +
-> +	while (loop < (TSTSURF_SIZE/TSTSURF_BYTESPP)) {
-> +		if (encrypted_pixels_b4[loop] == encrypted_pixels_aft[loop])
-> +			++matched_after_keychange;
-> +		++loop;
-> +	}
-> +	igt_assert_eq(matched_after_keychange, 0);
-> +}
-> +
->  igt_main
->  {
->  	int i915 = -1;
->  	bool pxp_supported = false;
-> +	struct powermgt_data pm = {0};
->  	igt_render_copyfunc_t rendercopy = NULL;
->  	uint32_t devid = 0;
+> @@ -796,6 +814,8 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
+>  	 * reuse the bo to ensure the kernel is catching the
+>  	 * invalidated bo (not context)
+>  	 */
+> +	igt_assert_f(!is_context_valid(i915, data[1].ctx),
+> +				       "RESET_STATS missed INVAL bit on stale pxp context\n");
+>  	ret = create_ctx_with_params(i915, true, true, true, false, &ctx2);
+>  	igt_assert_eq(ret, 0);
+>  	igt_assert_eq(get_ctx_protected_param(i915, ctx2), 1);
+> @@ -806,6 +826,8 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
+>  	ret = gem_execbuf_flush_store_dw(i915, ibb2, ctx2, data[1].fencebuf);
+>  	igt_assert_f((ret == -ENOEXEC), "Executing stale pxp buffer didn't fail with -ENOEXEC\n");
 >  
-> @@ -671,6 +723,19 @@ igt_main
->  		igt_subtest("protected-encrypted-src-copy-not-readible")
->  			test_render_pxp_protsrc_to_protdest(i915);
->  	}
-> +	igt_subtest_group {
-> +		igt_fixture {
-> +			igt_require(pxp_supported);
-> +			devid = intel_get_drm_devid(i915);
-> +			igt_assert(devid);
-> +			rendercopy = igt_get_render_copyfunc(devid);
-> +			igt_require(rendercopy);
-> +			init_powermgt_resources(i915, &pm);
-> +		}
-> +		igt_describe("Verify suspend-resume teardown management:");
-> +		igt_subtest("verify-pxp-key-change-after-suspend-resume")
-> +			test_pxp_pwrcycle_teardown_keychange(i915, &pm);
-> +	}
+> +	igt_assert_f(is_context_valid(i915, data[2].ctx),
+> +				       "RESET_STATS false-hit on opt-out context\n");
+>  	ret = gem_execbuf_flush_store_dw(i915, data[2].ibb, data[2].ctx, data[2].fencebuf);
+>  	igt_assert_f((ret == 0), "Opt-out-execution with stale pxp buffer didn't succeed\n");
 >  
->  	igt_fixture {
->  		close(i915);
 > -- 
 > 2.25.1
 > 
