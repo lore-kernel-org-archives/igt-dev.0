@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com
- (mail-bn1nam07on2050.outbound.protection.outlook.com [40.107.212.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFA4A6F49D
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Jun 2021 15:08:24 +0000 (UTC)
-From: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
-Date: Thu,  3 Jun 2021 11:08:00 -0400
-Message-Id: <20210603150800.157685-4-andrey.grodzovsky@amd.com>
-In-Reply-To: <20210603150800.157685-1-andrey.grodzovsky@amd.com>
-References: <20210603150800.157685-1-andrey.grodzovsky@amd.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 3/3] tests/core_hotunplug: Add hotunplug with
- exported sync obj test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 03 Jun 2021 15:20:52 -0000
+Message-ID: <162273365220.8034.9602551769579948321@emeril.freedesktop.org>
+References: <20210603144022.28176-1-venkata.sai.patnana@intel.com>
+In-Reply-To: <20210603144022.28176-1-venkata.sai.patnana@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBzZXJp?=
+ =?utf-8?q?es_starting_with_=5Bv2=2Ci-g-t=2C01/23=5D_lib/igt=5Fkms=3A_Add_?=
+ =?utf-8?q?plane_color_mgmt_properties?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,146 +15,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Andrey Grodzovsky <andrey.grodzovsky@amd.com>, daniel@ffwll.ch
+To: venkata.sai.patnana@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Unplug a device while an exported sync_obj and it's fence
-are  is still around.
-
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
----
- tests/core_hotunplug.c | 102 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 102 insertions(+)
-
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 7cde0157..16bbbf44 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -735,6 +735,99 @@ static void hotunplug_with_exported_bo_rescan(struct hotunplug *priv)
- 	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
- }
- 
-+static void hotunplug_with_exported_fence_rescan(struct hotunplug *priv)
-+{
-+	amdgpu_bo_handle ib_result_handle;
-+	void *ib_result_cpu;
-+	uint64_t ib_result_mc_address;
-+	uint32_t *ptr, sync_obj_handle, sync_obj_handle2;
-+	int i, r;
-+	amdgpu_bo_list_handle bo_list;
-+	amdgpu_va_handle va_handle;
-+	uint32_t major, minor, major2, minor2;
-+	amdgpu_device_handle device, device2;
-+	amdgpu_context_handle context;
-+	struct amdgpu_cs_request ibs_request;
-+	struct amdgpu_cs_ib_info ib_info;
-+	struct amdgpu_cs_fence fence_status = {0};
-+	int shared_fd, second_fd = -1;
-+
-+	pre_check(priv);
-+
-+	priv->fd.drm = __drm_open_driver_another(0, DRIVER_AMDGPU);
-+	igt_require(priv->fd.drm >= 0);
-+	second_fd = __drm_open_driver_another(1, DRIVER_AMDGPU);
-+	igt_require(second_fd >= 0);
-+
-+	r = amdgpu_device_initialize(priv->fd.drm, &major, &minor, &device);
-+	igt_require(r == 0);
-+
-+	r = amdgpu_device_initialize(second_fd, &major2, &minor2, &device2);
-+	igt_require(r == 0);
-+
-+	r = amdgpu_cs_ctx_create(device, &context);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
-+				    AMDGPU_GEM_DOMAIN_GTT, 0,
-+				    &ib_result_handle, &ib_result_cpu,
-+				    &ib_result_mc_address, &va_handle);
-+	igt_assert_eq(r, 0);
-+
-+	ptr = ib_result_cpu;
-+	for (i = 0; i < 16; ++i)
-+		ptr[i] = GFX_COMPUTE_NOP;
-+
-+	r = amdgpu_bo_list_create(device, 1, &ib_result_handle, NULL, &bo_list);
-+	igt_assert_eq(r, 0);
-+
-+	memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
-+	ib_info.ib_mc_address = ib_result_mc_address;
-+	ib_info.size = 16;
-+
-+	memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
-+	ibs_request.ip_type = AMDGPU_HW_IP_GFX;
-+	ibs_request.ring = 0;
-+	ibs_request.number_of_ibs = 1;
-+	ibs_request.ibs = &ib_info;
-+	ibs_request.resources = bo_list;
-+
-+	igt_assert_eq(amdgpu_cs_submit(context, 0, &ibs_request, 1), 0);
-+
-+	fence_status.context = context;
-+	fence_status.ip_type = AMDGPU_HW_IP_GFX;
-+	fence_status.ip_instance = 0;
-+	fence_status.fence = ibs_request.seq_no;
-+
-+	igt_assert_eq(amdgpu_cs_fence_to_handle(device, &fence_status,
-+						AMDGPU_FENCE_TO_HANDLE_GET_SYNCOBJ,
-+						&sync_obj_handle),
-+						0);
-+
-+	igt_assert_eq(amdgpu_cs_export_syncobj(device, sync_obj_handle, &shared_fd), 0);
-+
-+	igt_assert_eq(amdgpu_cs_import_syncobj(device2, shared_fd, &sync_obj_handle2), 0);
-+
-+	igt_assert_eq(amdgpu_cs_destroy_syncobj(device, sync_obj_handle), 0);
-+	amdgpu_bo_list_destroy(bo_list);
-+	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
-+				 ib_result_mc_address, 4096);
-+	amdgpu_cs_ctx_free(context);
-+	amdgpu_device_deinitialize(device);
-+	priv->fd.drm = close_device(priv->fd.drm, "late ", "removed ");
-+	igt_assert_eq(priv->fd.drm, -1);
-+
-+	device_unplug(priv, "hot ", 0);
-+
-+	igt_assert_eq(amdgpu_cs_syncobj_wait(device2, &sync_obj_handle2, 1, 100000000, 0, NULL),
-+		      0);
-+
-+	igt_assert_eq(amdgpu_cs_destroy_syncobj(device2, sync_obj_handle2), 0);
-+	amdgpu_device_deinitialize(device2);
-+	close_device(second_fd, "late ", "removed ");
-+
-+}
-+
- 
- 
- static void hotrebind(struct hotunplug *priv)
-@@ -894,6 +987,15 @@ igt_main
- 				recover(&priv);
- 	}
- 
-+	igt_subtest_group {
-+			igt_describe("Check if device with exported dma fence can be cleanly unplugged, then released and restored");
-+			igt_subtest("hotunplug-with-exported-fence-rescan")
-+			hotunplug_with_exported_fence_rescan(&priv);
-+
-+			igt_fixture
-+				recover(&priv);
-+	}
-+
- 	igt_fixture
- 		post_healthcheck(&priv);
- 
--- 
-2.25.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggW3YyLGkt
+Zy10LDAxLzIzXSBsaWIvaWd0X2ttczogQWRkIHBsYW5lIGNvbG9yIG1nbXQgcHJvcGVydGllcwpV
+UkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvOTA5NDUvClN0
+YXRlIDogZmFpbHVyZQoKPT0gU3VtbWFyeSA9PQoKSUdUIHBhdGNoc2V0IGJ1aWxkIGZhaWxlZCBv
+biBsYXRlc3Qgc3VjY2Vzc2Z1bCBidWlsZAoxZmJjMWU3ZDYwMmY5NmE3ZjRlMmI5NTA1N2VlZjk5
+NDY1NmI4ZTc0IGk5MTUvZ2VtX2V4ZWNfc2NoZWR1bGU6IENoZWNrIGZvciB0aW1lc2xpY2luZwoK
+WzkzLzgxMF0gTGlua2luZyB0YXJnZXQgbGliL3Rlc3RzL2lndF9mb3JrLgpbOTQvODEwXSBMaW5r
+aW5nIHRhcmdldCBsaWIvdGVzdHMvaWd0X2xpc3Rfb25seS4KWzk1LzgxMF0gTGlua2luZyB0YXJn
+ZXQgbGliL3Rlc3RzL2lndF9pbnZhbGlkX3N1YnRlc3RfbmFtZS4KWzk2LzgxMF0gTGlua2luZyB0
+YXJnZXQgbGliL3Rlc3RzL2lndF9ub19leGl0LgpbOTcvODEwXSBMaW5raW5nIHRhcmdldCBsaWIv
+dGVzdHMvaWd0X25lc3RpbmcuCls5OC84MTBdIExpbmtpbmcgdGFyZ2V0IGxpYi90ZXN0cy9pZ3Rf
+c2VnZmF1bHQuCls5OS84MTBdIExpbmtpbmcgdGFyZ2V0IGxpYi90ZXN0cy9pZ3Rfc2ltdWxhdGlv
+bi4KWzEwMC84MTBdIExpbmtpbmcgdGFyZ2V0IGxpYi90ZXN0cy9pZ3Rfc3RhdHMuClsxMDEvODEw
+XSBMaW5raW5nIHRhcmdldCBsaWIvdGVzdHMvaWd0X3N1YnRlc3RfZ3JvdXAuClsxMDIvODEwXSBM
+aW5raW5nIHRhcmdldCBsaWIvdGVzdHMvaWd0X3RocmVhZC4KWzEwMy84MTBdIExpbmtpbmcgdGFy
+Z2V0IGxpYi90ZXN0cy9pOTE1X3BlcmZfZGF0YV9hbGlnbm1lbnQuClsxMDQvODEwXSBMaW5raW5n
+IHRhcmdldCBsaWIvdGVzdHMvaWd0X2F1ZGlvLgpbMTA1LzgxMF0gTGlua2luZyB0YXJnZXQgbGli
+L3Rlc3RzL2lndF9ub19zdWJ0ZXN0LgpbMTA2LzgxMF0gTGlua2luZyB0YXJnZXQgbGliL3Rlc3Rz
+L2lndF9zaW1wbGVfdGVzdF9zdWJ0ZXN0cy4KWzEwNy84MTBdIExpbmtpbmcgdGFyZ2V0IHRlc3Rz
+L2NvcmVfZ2V0c3RhdHMuClsxMDgvODEwXSBMaW5raW5nIHRhcmdldCBsaWIvdGVzdHMvaWd0X3Rp
+bWVvdXQuClsxMDkvODEwXSBMaW5raW5nIHRhcmdldCB0ZXN0cy9jb3JlX2F1dGguClsxMTAvODEw
+XSBMaW5raW5nIHRhcmdldCB0ZXN0cy9jb3JlX2dldGNsaWVudC4KWzExMS84MTBdIExpbmtpbmcg
+dGFyZ2V0IHRlc3RzL2NvcmVfZ2V0dmVyc2lvbi4KWzExMi84MTBdIExpbmtpbmcgdGFyZ2V0IHRl
+c3RzL2NvcmVfc2V0bWFzdGVyLgpbMTEzLzgxMF0gTGlua2luZyB0YXJnZXQgdGVzdHMvY29yZV9z
+ZXRtYXN0ZXJfdnNfYXV0aC4KWzExNC84MTBdIExpbmtpbmcgdGFyZ2V0IHRlc3RzL2RtYWJ1Zi4K
+WzExNS84MTBdIExpbmtpbmcgdGFyZ2V0IHRlc3RzL2RlYnVnZnNfdGVzdC4KWzExNi84MTBdIExp
+bmtpbmcgdGFyZ2V0IHRlc3RzL2RybV9tbS4KWzExNy84MTBdIExpbmtpbmcgdGFyZ2V0IHRlc3Rz
+L2RldmljZV9yZXNldC4KWzExOC84MTBdIExpbmtpbmcgdGFyZ2V0IHRlc3RzL2RybV9pbXBvcnRf
+ZXhwb3J0LgpbMTE5LzgxMF0gTGlua2luZyB0YXJnZXQgdGVzdHMvZmJkZXYuClsxMjAvODEwXSBM
+aW5raW5nIHRhcmdldCB0ZXN0cy9mZWF0dXJlX2Rpc2NvdmVyeS4KWzEyMS84MTBdIExpbmtpbmcg
+dGFyZ2V0IHRlc3RzL2RybV9yZWFkLgpbMTIyLzgxMF0gQ29tcGlsaW5nIEMgb2JqZWN0ICd0ZXN0
+cy90ZXN0c0BAa21zX2FkZGZiX2Jhc2ljQGV4ZS9rbXNfYWRkZmJfYmFzaWMuYy5vJy4KRkFJTEVE
+OiB0ZXN0cy90ZXN0c0BAa21zX2FkZGZiX2Jhc2ljQGV4ZS9rbXNfYWRkZmJfYmFzaWMuYy5vIApj
+Y2FjaGUgY2MgLUl0ZXN0cy90ZXN0c0BAa21zX2FkZGZiX2Jhc2ljQGV4ZSAtSXRlc3RzIC1JLi4v
+dGVzdHMgLUkuLi9pbmNsdWRlL2RybS11YXBpIC1JbGliIC1JLi4vbGliIC1JLi4vbGliL3N0dWJz
+L3N5c2NhbGxzIC1JLiAtSS4uLyAtSS91c3IvaW5jbHVkZS9jYWlybyAtSS91c3IvaW5jbHVkZS9n
+bGliLTIuMCAtSS91c3IvbGliL3g4Nl82NC1saW51eC1nbnUvZ2xpYi0yLjAvaW5jbHVkZSAtSS91
+c3IvaW5jbHVkZS9waXhtYW4tMSAtSS91c3IvaW5jbHVkZS9saWJwbmcxNiAtSS91c3IvaW5jbHVk
+ZS9mcmVldHlwZTIgLUkvdXNyL2luY2x1ZGUvbGlicG5nMTIgLUkvdXNyL2luY2x1ZGUvbGliZHJt
+IC1JL3Vzci9pbmNsdWRlL2xpYmRybS9ub3V2ZWF1IC1JL3Vzci9pbmNsdWRlL3g4Nl82NC1saW51
+eC1nbnUgLUkvdXNyL2luY2x1ZGUvYWxzYSAtSS91c3IvaW5jbHVkZSAtSS9ob21lL2NpZHJtL2tl
+cm5lbF9oZWFkZXJzL2luY2x1ZGUgLWZkaWFnbm9zdGljcy1jb2xvcj1hbHdheXMgLXBpcGUgLURf
+RklMRV9PRkZTRVRfQklUUz02NCAtV2FsbCAtV2ludmFsaWQtcGNoIC1XZXh0cmEgLXN0ZD1nbnUx
+MSAtTzIgLWcgLURfR05VX1NPVVJDRSAtaW5jbHVkZSBjb25maWcuaCAtRF9GT1JUSUZZX1NPVVJD
+RT0yIC1XYmFkLWZ1bmN0aW9uLWNhc3QgLVdkZWNsYXJhdGlvbi1hZnRlci1zdGF0ZW1lbnQgLVdm
+b3JtYXQ9MiAtV2ltcGxpY2l0LWZhbGx0aHJvdWdoPTAgLVdsb2dpY2FsLW9wIC1XbWlzc2luZy1k
+ZWNsYXJhdGlvbnMgLVdtaXNzaW5nLWZvcm1hdC1hdHRyaWJ1dGUgLVdtaXNzaW5nLW5vcmV0dXJu
+IC1XbWlzc2luZy1wcm90b3R5cGVzIC1XbmVzdGVkLWV4dGVybnMgLVdvbGQtc3R5bGUtZGVmaW5p
+dGlvbiAtV3BvaW50ZXItYXJpdGggLVdyZWR1bmRhbnQtZGVjbHMgLVdzaGFkb3cgLVdzdHJpY3Qt
+cHJvdG90eXBlcyAtV3VuaW5pdGlhbGl6ZWQgLVd1bnVzZWQgLVduby1jbG9iYmVyZWQgLVduby1t
+YXliZS11bmluaXRpYWxpemVkIC1Xbm8tbWlzc2luZy1maWVsZC1pbml0aWFsaXplcnMgLVduby1w
+b2ludGVyLWFyaXRoIC1Xbm8tc2lnbi1jb21wYXJlIC1Xbm8tdHlwZS1saW1pdHMgLVduby11bnVz
+ZWQtcGFyYW1ldGVyIC1Xbm8tdW51c2VkLXJlc3VsdCAtV2Vycm9yPWFkZHJlc3MgLVdlcnJvcj1h
+cnJheS1ib3VuZHMgLVdlcnJvcj1pbXBsaWNpdCAtV2Vycm9yPWluaXQtc2VsZiAtV2Vycm9yPWlu
+dC10by1wb2ludGVyLWNhc3QgLVdlcnJvcj1tYWluIC1XZXJyb3I9bWlzc2luZy1icmFjZXMgLVdl
+cnJvcj1ub25udWxsIC1XZXJyb3I9cG9pbnRlci10by1pbnQtY2FzdCAtV2Vycm9yPXJldHVybi10
+eXBlIC1XZXJyb3I9c2VxdWVuY2UtcG9pbnQgLVdlcnJvcj10cmlncmFwaHMgLVdlcnJvcj13cml0
+ZS1zdHJpbmdzIC1mbm8tYnVpbHRpbi1tYWxsb2MgLWZuby1idWlsdGluLWNhbGxvYyAtZmNvbW1v
+biAtcHRocmVhZCAgLU1EIC1NUSAndGVzdHMvdGVzdHNAQGttc19hZGRmYl9iYXNpY0BleGUva21z
+X2FkZGZiX2Jhc2ljLmMubycgLU1GICd0ZXN0cy90ZXN0c0BAa21zX2FkZGZiX2Jhc2ljQGV4ZS9r
+bXNfYWRkZmJfYmFzaWMuYy5vLmQnIC1vICd0ZXN0cy90ZXN0c0BAa21zX2FkZGZiX2Jhc2ljQGV4
+ZS9rbXNfYWRkZmJfYmFzaWMuYy5vJyAtYyAuLi90ZXN0cy9rbXNfYWRkZmJfYmFzaWMuYwpJbiBm
+aWxlIGluY2x1ZGVkIGZyb20gLi4vbGliL2RybXRlc3QuaDozOSwKICAgICAgICAgICAgICAgICBm
+cm9tIC4uL2xpYi9pZ3QuaDoyNywKICAgICAgICAgICAgICAgICBmcm9tIC4uL3Rlc3RzL2ttc19h
+ZGRmYl9iYXNpYy5jOjI4OgouLi90ZXN0cy9rbXNfYWRkZmJfYmFzaWMuYzogSW4gZnVuY3Rpb24g
+4oCYaW52YWxpZF90ZXN0c+KAmToKLi4vdGVzdHMva21zX2FkZGZiX2Jhc2ljLmM6MTU3OjE1OiBl
+cnJvcjogaW1wbGljaXQgZGVjbGFyYXRpb24gb2YgZnVuY3Rpb24g4oCYSEFTX0xNRU3igJk7IGRp
+ZCB5b3UgbWVhbiDigJhIQVNfTFBU4oCZPyBbLVdlcnJvcj1pbXBsaWNpdC1mdW5jdGlvbi1kZWNs
+YXJhdGlvbl0KICAgaWd0X3JlcXVpcmUoSEFTX0xNRU0oZGV2aWQpKTsKICAgICAgICAgICAgICAg
+Xn5+fn5+fn4KLi4vbGliL2lndF9jb3JlLmg6OTg3Ojg6IG5vdGU6IGluIGRlZmluaXRpb24gb2Yg
+bWFjcm8g4oCYaWd0X3JlcXVpcmXigJkKICBpZiAoIShleHByKSkgaWd0X3NraXBfY2hlY2soI2V4
+cHIgLCBOVUxMKTsgXAogICAgICAgIF5+fn4KLi4vdGVzdHMva21zX2FkZGZiX2Jhc2ljLmM6MTU3
+OjE1OiB3YXJuaW5nOiBuZXN0ZWQgZXh0ZXJuIGRlY2xhcmF0aW9uIG9mIOKAmEhBU19MTUVN4oCZ
+IFstV25lc3RlZC1leHRlcm5zXQogICBpZ3RfcmVxdWlyZShIQVNfTE1FTShkZXZpZCkpOwogICAg
+ICAgICAgICAgICBefn5+fn5+fgouLi9saWIvaWd0X2NvcmUuaDo5ODc6ODogbm90ZTogaW4gZGVm
+aW5pdGlvbiBvZiBtYWNybyDigJhpZ3RfcmVxdWlyZeKAmQogIGlmICghKGV4cHIpKSBpZ3Rfc2tp
+cF9jaGVjaygjZXhwciAsIE5VTEwpOyBcCiAgICAgICAgXn5+fgpjYzE6IHNvbWUgd2FybmluZ3Mg
+YmVpbmcgdHJlYXRlZCBhcyBlcnJvcnMKbmluamE6IGJ1aWxkIHN0b3BwZWQ6IHN1YmNvbW1hbmQg
+ZmFpbGVkLgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBz
+Oi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
