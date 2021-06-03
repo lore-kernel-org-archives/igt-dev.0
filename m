@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C4DE26F495
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Jun 2021 14:52:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 36CF36F48E
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Jun 2021 14:52:43 +0000 (UTC)
 From: venkata.sai.patnana@intel.com
-Date: Thu,  3 Jun 2021 20:10:20 +0530
-Message-Id: <20210603144022.28176-21-venkata.sai.patnana@intel.com>
+Date: Thu,  3 Jun 2021 20:10:21 +0530
+Message-Id: <20210603144022.28176-22-venkata.sai.patnana@intel.com>
 In-Reply-To: <20210603144022.28176-1-venkata.sai.patnana@intel.com>
 References: <20210603144022.28176-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v2 i-g-t 21/23] tests/kms: Create buffer object
- from LMEM for discrete
+Subject: [igt-dev] [PATCH v2 i-g-t 22/23] tests/kms_addfb_basic: Add invalid
+ buffer object test for discrete
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,121 +22,64 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+Cc: Mohammed Khajapasha <mohammed.khajapasha@intel.com>, Petri <petri.latvala@intel.com>, Latvala@freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 
-Create framebuffer object from lmem for discrete file descriptor
-The framebuffer backing object should be from local memory for discrete.
+Add invalid buffer object test case for discrete, to validate
+IOCTL_MODE_ADDFB2 ioctl for LMEM, the framebuffer backing
+gem objects should be from local memory for discrete.
 
-v1: Allocate framebuffer objects from lmem for discrete
-v2: Removed duplication code <Ruhl, Michael J>
-v3: correction in parameter passing
-v4: Moved gem_buffer_create() to lib,
-    updated kms_getfb with gem_buffer_create() fn
-v5: rename gem_buffer_create() to
-    gem_buffer_create_fb_obj (Ruhl Michael J, Petri)
+v1: Add invalid-bo test case for LMEM framebuffer object
+v2: Correcting error value comparing
+v3: Addressed review comments <Petri>
+v4: Using do_ioctl_err() for addfb2 ioctl <Petri>
+v5: Addressed review comments <Modem, Bhanuprakash>
+v6: Using size to allocate buffer object
+v7: Updated error check value for testcase
 
+Cc: Latvala, Petri <petri.latvala@intel.com>
 Cc: Michael J. Ruhl <michael.j.ruhl@intel.com>
 Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 ---
- lib/ioctl_wrappers.c | 22 ++++++++++++++++++++++
- lib/ioctl_wrappers.h |  1 +
- tests/kms_big_fb.c   |  7 ++++---
- tests/kms_getfb.c    |  2 +-
- 4 files changed, 28 insertions(+), 4 deletions(-)
+ tests/kms_addfb_basic.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index 0c1b5e3230..274ab0a3e5 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -593,6 +593,28 @@ void gem_sync(int fd, uint32_t handle)
- 	errno = 0;
- }
+diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+index 1fb18d668f..c2afa0703e 100644
+--- a/tests/kms_addfb_basic.c
++++ b/tests/kms_addfb_basic.c
+@@ -40,6 +40,7 @@
  
-+/**
-+ * gem_buffer_create_fb_obj:
-+ * @fd: open i915 drm file descriptor
-+ * @size: desired size of the buffer
-+ *
-+ * This wraps the GEM_CREATE ioctl, which allocates a new gem buffer object of
-+ * @size from file descriptor specific region
-+ *
-+ * Returns: The file-private handle of the created buffer object
-+ */
-+uint32_t gem_buffer_create_fb_obj(int fd, uint64_t size)
-+{
-+	uint32_t handle;
-+
-+	if (gem_has_lmem(fd))
-+		handle = gem_create_in_memory_regions(fd, size, REGION_LMEM(0));
-+	else
-+		handle = gem_create(fd, size);
-+
-+	return handle;
-+}
-+
- /**
-  * __gem_execbuf:
-  * @fd: open i915 drm file descriptor
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-index 36640e302f..a8274a3f48 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -79,6 +79,7 @@ int __gem_set_domain(int fd, uint32_t handle, uint32_t read, uint32_t write);
- void gem_set_domain(int fd, uint32_t handle, uint32_t read, uint32_t write);
- int gem_wait(int fd, uint32_t handle, int64_t *timeout_ns);
- void gem_sync(int fd, uint32_t handle);
-+uint32_t gem_buffer_create_fb_obj(int fd, uint64_t size);
- void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
- int __gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
- void gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
-diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
-index b35727a09b..039a62d1d9 100644
---- a/tests/kms_big_fb.c
-+++ b/tests/kms_big_fb.c
-@@ -470,7 +470,8 @@ test_size_overflow(data_t *data)
- 	igt_require(data->max_fb_width >= 16383 &&
- 		    data->max_fb_height >= 16383);
+ #include "igt_rand.h"
+ #include "igt_device.h"
++#include "i915/intel_memory_region.h"
  
--	bo = gem_create(data->drm_fd, (1ULL << 32) - 4096);
-+	bo = gem_buffer_create_fb_obj(data->drm_fd, (1ULL << 32) - 4096);
-+
- 	igt_require(bo);
- 
- 	ret = __kms_addfb(data->drm_fd, bo,
-@@ -508,7 +509,7 @@ test_size_offset_overflow(data_t *data)
- 					       DRM_FORMAT_NV12,
- 					       data->modifier));
- 
--	bo = gem_create(data->drm_fd, (1ULL << 32) - 4096);
-+	bo = gem_buffer_create_fb_obj(data->drm_fd, (1ULL << 32) - 4096);
- 	igt_require(bo);
- 
- 	offsets[0] = 0;
-@@ -567,7 +568,7 @@ test_addfb(data_t *data)
- 			 format, data->modifier,
- 			 &size, &strides[0]);
- 
--	bo = gem_create(data->drm_fd, size);
-+	bo = gem_buffer_create_fb_obj(data->drm_fd, size);
- 	igt_require(bo);
- 
- 	if (intel_gen(data->devid) < 4)
-diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
-index 917b57bb98..8b6c4c1caa 100644
---- a/tests/kms_getfb.c
-+++ b/tests/kms_getfb.c
-@@ -128,7 +128,7 @@ static void get_ccs_fb(int fd, struct drm_mode_fb_cmd2 *ret)
- 		size += add.pitches[1] * ALIGN(ALIGN(add.height, 16) / 16, 32);
+ uint32_t gem_bo;
+ uint32_t gem_bo_small;
+@@ -146,6 +147,21 @@ static void invalid_tests(int fd)
+ 		igt_assert(f.modifier[0] == 0);
  	}
  
--	add.handles[0] = gem_create(fd, size);
-+	add.handles[0] = gem_buffer_create_fb_obj(fd, size);
- 	igt_require(add.handles[0] != 0);
- 	add.handles[1] = add.handles[0];
- 
++	igt_subtest("invalid-smem-bo-on-discrete") {
++		int devid;
++		uint32_t handle, stride;
++		uint64_t size;
++
++		igt_require_intel(fd);
++		devid = intel_get_drm_devid(fd);
++		igt_require(HAS_LMEM(devid));
++		igt_calc_fb_size(fd, f.width, f.height,
++				DRM_FORMAT_XRGB8888, 0, &size, &stride);
++		handle = gem_create_in_memory_regions(fd, size, REGION_SMEM);
++		f.handles[0] = handle;
++		do_ioctl_err(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f, EREMOTE);
++	}
++
+ 	igt_describe("Check if addfb2 call works for legacy formats");
+ 	igt_subtest("legacy-format") {
+ 		struct {
 -- 
 2.25.1
 
