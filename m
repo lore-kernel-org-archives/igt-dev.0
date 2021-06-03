@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5BDA26F492
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Jun 2021 14:51:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8553E6F48B
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Jun 2021 14:52:00 +0000 (UTC)
 From: venkata.sai.patnana@intel.com
-Date: Thu,  3 Jun 2021 20:10:08 +0530
-Message-Id: <20210603144022.28176-9-venkata.sai.patnana@intel.com>
+Date: Thu,  3 Jun 2021 20:10:10 +0530
+Message-Id: <20210603144022.28176-11-venkata.sai.patnana@intel.com>
 In-Reply-To: <20210603144022.28176-1-venkata.sai.patnana@intel.com>
 References: <20210603144022.28176-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v2 i-g-t 09/23] lib/igt_kms: Add pipe color mgmt
- properties
+Subject: [igt-dev] [PATCH v2 i-g-t 11/23] tests/kms_color: Extended IGT
+ tests to support logarithmic gamma mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,39 +27,109 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mukunda Pramodh Kumar <mukunda.pramodh.kumar@intel.com>
 
-Add support for Pipe color management properties.
+Extended IGT tests to support logarithmic gamma mode on pipe
+
+v5: Move all compute/set logic to advance gamma mode function
+v4: Make the changes more genreric
+    Reset the Client caps once done.
+v3: Refactor the changes.
+    Keep the wrappers remain same.
+    Added Client caps support(Uma)
+v4: Disable gamma in ctm tests (Bhanu)
+    Remove unused variables (Bhanu)
+v5: Disable gamma before starting gamma tests.
 
 Cc: Uma Shankar <uma.shankar@intel.com>
 Signed-off-by: Mukunda Pramodh Kumar <mukunda.pramodh.kumar@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Uma Shankar <uma.shankar@intel.com>
 ---
- lib/igt_kms.c | 1 +
- lib/igt_kms.h | 1 +
- 2 files changed, 2 insertions(+)
+ tests/kms_color.c | 33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index ae183e822c..b11c8c27a6 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -592,6 +592,7 @@ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
- 	[IGT_CRTC_CTM] = "CTM",
- 	[IGT_CRTC_GAMMA_LUT] = "GAMMA_LUT",
- 	[IGT_CRTC_GAMMA_LUT_SIZE] = "GAMMA_LUT_SIZE",
-+	[IGT_CRTC_GAMMA_MODE] = "GAMMA_MODE",
- 	[IGT_CRTC_DEGAMMA_LUT] = "DEGAMMA_LUT",
- 	[IGT_CRTC_DEGAMMA_LUT_SIZE] = "DEGAMMA_LUT_SIZE",
- 	[IGT_CRTC_MODE_ID] = "MODE_ID",
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 41967bf28a..b54f2baf7d 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -119,6 +119,7 @@ enum igt_atomic_crtc_properties {
-        IGT_CRTC_CTM = 0,
-        IGT_CRTC_GAMMA_LUT,
-        IGT_CRTC_GAMMA_LUT_SIZE,
-+       IGT_CRTC_GAMMA_MODE,
-        IGT_CRTC_DEGAMMA_LUT,
-        IGT_CRTC_DEGAMMA_LUT_SIZE,
-        IGT_CRTC_MODE_ID,
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 0387c9192a..f8e0485f75 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -129,7 +129,7 @@ static void test_pipe_degamma(data_t *data,
+ {
+ 	igt_output_t *output;
+ 	igt_display_t *display = &data->display;
+-	gamma_lut_t *degamma_linear, *degamma_full;
++	gamma_lut_t *degamma_full;
+ 	gamma_lut_t *gamma_linear;
+ 	color_t red_green_blue[] = {
+ 		{ 1.0, 0.0, 0.0 },
+@@ -140,9 +140,7 @@ static void test_pipe_degamma(data_t *data,
+ 	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT));
+ 	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
+ 
+-	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+ 	degamma_full = generate_table_max(data->degamma_lut_size);
+-
+ 	gamma_linear = generate_table(data->gamma_lut_size, 1.0);
+ 
+ 	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe, output) {
+@@ -174,8 +172,13 @@ static void test_pipe_degamma(data_t *data,
+ 		igt_plane_set_fb(primary, &fb_modeset);
+ 		disable_ctm(primary->pipe);
+ 		disable_degamma(primary->pipe);
+-		set_gamma(data, primary->pipe, gamma_linear);
+-		igt_display_commit(&data->display);
++		if (igt_pipe_obj_has_prop(primary->pipe,
++					  IGT_CRTC_GAMMA_MODE)) {
++			set_advance_gamma(data, primary->pipe, LINEAR_GAMMA);
++		} else {
++			set_gamma(data, primary->pipe, gamma_linear);
++			igt_display_commit(&data->display);
++		}
+ 
+ 		/* Draw solid colors with no degamma transformation. */
+ 		paint_rectangles(data, mode, red_green_blue, &fb);
+@@ -207,7 +210,6 @@ static void test_pipe_degamma(data_t *data,
+ 		igt_remove_fb(data->drm_fd, &fb_modeset);
+ 	}
+ 
+-	free_lut(degamma_linear);
+ 	free_lut(degamma_full);
+ 	free_lut(gamma_linear);
+ }
+@@ -259,10 +261,22 @@ static void test_pipe_gamma(data_t *data,
+ 		igt_assert(fb_modeset_id);
+ 
+ 		igt_plane_set_fb(primary, &fb_modeset);
++
++		/* Reset Color properties */
+ 		disable_ctm(primary->pipe);
+ 		disable_degamma(primary->pipe);
+-		set_gamma(data, primary->pipe, gamma_full);
++		disable_gamma(primary->pipe);
+ 		igt_display_commit(&data->display);
++		igt_wait_for_vblank(data->drm_fd,
++				    display->pipes[primary->pipe->pipe].crtc_offset);
++
++		if (igt_pipe_obj_has_prop(primary->pipe,
++					  IGT_CRTC_GAMMA_MODE)) {
++			set_advance_gamma(data, primary->pipe, MAX_GAMMA);
++		} else {
++			set_gamma(data, primary->pipe, gamma_full);
++			igt_display_commit(&data->display);
++		}
+ 
+ 		/* Draw solid colors with no gamma transformation. */
+ 		paint_rectangles(data, mode, red_green_blue, &fb);
+@@ -580,7 +594,10 @@ static bool test_pipe_ctm(data_t *data,
+ 		 */
+ 		if (memcmp(before, after, sizeof(color_t))) {
+ 			set_degamma(data, primary->pipe, degamma_linear);
+-			set_gamma(data, primary->pipe, gamma_linear);
++			if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_MODE))
++				disable_gamma(primary->pipe);
++			else
++				set_gamma(data, primary->pipe, gamma_linear);
+ 		} else {
+ 			/* Disable Degamma and Gamma for ctm max test */
+ 			disable_degamma(primary->pipe);
 -- 
 2.25.1
 
