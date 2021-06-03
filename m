@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB1636EB60
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Jun 2021 05:01:22 +0000 (UTC)
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Fri, 4 Jun 2021 05:01:17 +0000
-Message-ID: <CO6PR11MB55691A8FB70D6EA5233CA46F8D3B9@CO6PR11MB5569.namprd11.prod.outlook.com>
-References: <20210603144022.28176-1-venkata.sai.patnana@intel.com>
- <20210603144022.28176-14-venkata.sai.patnana@intel.com>
-In-Reply-To: <20210603144022.28176-14-venkata.sai.patnana@intel.com>
-Content-Language: en-US
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B9136F48B
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Jun 2021 14:50:38 +0000 (UTC)
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 i-g-t 14/23] tests/kms_color_chamelium:
- Optimize plane ctm test
+In-Reply-To: <af525429-803a-ae46-ed1c-47223afa4c52@linux.intel.com>
+References: <20210531134139.359240-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+ <20210531134139.359240-2-tejaskumarx.surendrakumar.upadhyay@intel.com>
+ <a9be772c-8ece-ee64-e1e2-aa7773345118@linux.intel.com>
+ <SN6PR11MB34212A492A43A9C2B00C7CEADF3E9@SN6PR11MB3421.namprd11.prod.outlook.com>
+ <af525429-803a-ae46-ed1c-47223afa4c52@linux.intel.com>
+From: Chris Wilson <chris.p.wilson@intel.com>
+Date: Thu, 03 Jun 2021 15:50:32 +0100
+Message-ID: <162273183238.31652.14624257692001935012@build.alporthouse.com>
+Subject: Re: [igt-dev] [i-g-t V3 1/2] lib/i915: find scheduler caps for
+ timeslicing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,49 +25,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Patnana, Venkata Sai" <venkata.sai.patnana@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+To: "Surendrakumar Upadhyay,
+ TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> From: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>
-> Sent: Thursday, June 3, 2021 8:10 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>; Joshi, Kunal1
-> <kunal1.joshi@intel.com>; Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> Subject: [PATCH v2 i-g-t 14/23] tests/kms_color_chamelium: Optimize plane ctm
-> test
+Quoting Tvrtko Ursulin (2021-06-01 11:24:00)
 > 
-> From: Kunal Joshi <kunal1.joshi@intel.com>
-> 
-> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> ---
->  tests/kms_color_chamelium.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/tests/kms_color_chamelium.c b/tests/kms_color_chamelium.c
-> index 38c7169737..52eef8a66f 100644
-> --- a/tests/kms_color_chamelium.c
-> +++ b/tests/kms_color_chamelium.c
-> @@ -1265,6 +1265,8 @@ static void run_plane_ctm_test(data_t *data,
->  			result |= test_plane_ctm(data, plane,
->  					red_green_blue,	expected,
->  					ctm);
-> +			if (result)
-> +				break;
+> On 01/06/2021 11:10, Surendrakumar Upadhyay, TejaskumarX wrote:
+> >> -----Original Message-----
+> >> From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+> >> Sent: 01 June 2021 15:38
+> >> To: Surendrakumar Upadhyay, TejaskumarX
+> >> <tejaskumarx.surendrakumar.upadhyay@intel.com>; igt-
+> >> dev@lists.freedesktop.org
+> >> Subject: Re: [igt-dev] [i-g-t V3 1/2] lib/i915: find scheduler caps for timeslicing
+> >>
+> >>
+> >> On 31/05/2021 14:41, Tejas Upadhyay wrote:
+> >>> Check scheduler capability for timeslicing in appropriate way, which
+> >>> requires wrappers to be created for IGT.
+> >>>
+> >>> V3:
+> >>>       removed conditional error - petri
+> >>> V2: has_timeslice = has_semaphore && has_preemption ||
+> >>>       has_guc_submission - Tvrtko
+> >>>
+> >>> Signed-off-by: Tejas Upadhyay
+> >>> <tejaskumarx.surendrakumar.upadhyay@intel.com>
+> >>> ---
+> >>>    lib/i915/gem_scheduler.c | 21 +++++++++++++++++++++
+> >>>    lib/i915/gem_scheduler.h |  1 +
+> >>>    2 files changed, 22 insertions(+)
+> >>>
+> >>> diff --git a/lib/i915/gem_scheduler.c b/lib/i915/gem_scheduler.c index
+> >>> 184da843..f59c451f 100644
+> >>> --- a/lib/i915/gem_scheduler.c
+> >>> +++ b/lib/i915/gem_scheduler.c
+> >>> @@ -29,6 +29,7 @@
+> >>>    #include "ioctl_wrappers.h"
+> >>>
+> >>>    #include "i915/gem_scheduler.h"
+> >>> +#include "i915/gem_submission.h"
+> >>>
+> >>>    /**
+> >>>     * SECTION:gem_scheduler
+> >>> @@ -129,6 +130,22 @@ bool gem_scheduler_has_engine_busy_stats(int
+> >> fd)
+> >>>             I915_SCHEDULER_CAP_ENGINE_BUSY_STATS;
+> >>>    }
+> >>>
+> >>> +/**
+> >>> + * gem_scheduler_has_timeslicing:
+> >>> + * @fd: open i915 drm file descriptor
+> >>> + *
+> >>> + * Feature test macro to query whether the driver supports using HW
+> >>> +preemption
+> >>> + * to implement timeslicing of userspace batches. This allows
+> >>> +userspace to
+> >>> + * implement micro-level scheduling within their own batches.
+> >>> + */
+> >>> +bool gem_scheduler_has_timeslicing(int fd) {
+> >>> +   return ((gem_scheduler_capability(fd) &
+> >>> +           (I915_SCHEDULER_CAP_PREEMPTION |
+> >>> +            I915_SCHEDULER_CAP_SEMAPHORES))
 
-I think we need to squash this commit to 
-[v2,i-g-t] tests/kms_color: New subtests for Plane CTM
-and add Kunal's Signed-off-by
+This bitwise or is incorrect, both are required.
 
-Acked-by: Bhanuprakash Modem <Bhanuprakash.modem@intel.com>
+> >>> +           || gem_has_guc_submission(fd));
 
->  		}
-> 
->  		igt_assert(result);
-> --
-> 2.25.1
+This is not always true.
 
+And it removes the clarity of being a simple wrapper.
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
