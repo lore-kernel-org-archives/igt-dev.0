@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5AA5B6F46D
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Jun 2021 12:39:49 +0000 (UTC)
-Date: Thu, 3 Jun 2021 15:41:29 +0300
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9EC836F471
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Jun 2021 12:45:03 +0000 (UTC)
+Date: Thu, 3 Jun 2021 15:46:45 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YLjN+fPeu+g4kq3n@platvala-desk.ger.corp.intel.com>
+Message-ID: <YLjPNQHH1Ic1xJ8c@platvala-desk.ger.corp.intel.com>
 References: <20210603122027.27330-1-venkata.sai.patnana@intel.com>
+ <20210603122027.27330-21-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210603122027.27330-1-venkata.sai.patnana@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 01/24] lib/igt_kms: Add plane color mgmt
- properties
+In-Reply-To: <20210603122027.27330-21-venkata.sai.patnana@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 21/24] lib/igt_debugfs: Add suppress
+ wakeup hpds enable for display
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,60 +27,91 @@ To: venkata.sai.patnana@intel.com
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jun 03, 2021 at 05:50:04PM +0530, venkata.sai.patnana@intel.com wrote:
-> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+On Thu, Jun 03, 2021 at 05:50:24PM +0530, venkata.sai.patnana@intel.com wrote:
+> From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 > 
-> Add support for Plane color management properties.
+> Enable suppress wakeup hpds for display, monitors like
+> LG 27UL650-W, 27UK850 goes into power sleep state and
+> generates long duration hotplug events even the monitor
+> connected for display, hence enabling suppress wakeup using
+> debugfs.
 > 
-> Cc: Uma Shankar <uma.shankar@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Mukunda Pramodh Kumar <mukunda.pramodh.kumar@intel.com>
-> (cherry picked from commit 51099f0939ca28f15fdd99143ca38e0fc52e38fe)
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Imre Deak <imre.deak@intel.com>
+> Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+> (cherry picked from commit 46879c55ea49ecc9cefe7051358e647964085253)
+> ---
+>  lib/igt_debugfs.c | 22 ++++++++++++++++++++++
+>  lib/igt_debugfs.h |  1 +
+>  lib/igt_kms.c     |  3 +++
+>  3 files changed, 26 insertions(+)
+> 
+> diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+> index 2f58519a2b..503ae7f905 100644
+> --- a/lib/igt_debugfs.c
+> +++ b/lib/igt_debugfs.c
+> @@ -675,6 +675,28 @@ void igt_require_hpd_storm_ctl(int drm_fd)
+>  	close(fd);
+>  }
+>  
+> +/**
+> + * igt_suppress_wake_hpd:
+> + *
+> + * Enable/disable suppress wakeup hpds for power state connectors
+> + * Monitors like LG 27UL650-W, 27UK850 goes into power sleep state
+> + * and generates long duration hotplug events even the monitor
+> + * connected for display.
+> + */
+> +void igt_suppress_wakeup_hpd(int drm_fd, bool enable)
+> +{
+> +	int fd = igt_debugfs_open(drm_fd, "i915_suppress_wakeup_hpd", O_WRONLY);
 
-Remove these cherry pick lines from all these commits.
+This file is not in upstream kernel yet. What's the status of that?
 
 -- 
 Petri Latvala
 
 
-
-> ---
->  lib/igt_kms.c | 5 +++++
->  lib/igt_kms.h | 5 +++++
->  2 files changed, 10 insertions(+)
-> 
+> +
+> +	if (fd < 0) {
+> +		igt_debug("couldn't open suppress wakeup hpd file\n");
+> +		return;
+> +	}
+> +
+> +	igt_assert_eq(write(fd, enable ? "1" : "0", 1), 1);
+> +
+> +	close(fd);
+> +}
+> +
+>  static igt_pipe_crc_t *
+>  pipe_crc_new(int fd, enum pipe pipe, const char *source, int flags)
+>  {
+> diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
+> index d43ba6c6c7..ac97876b85 100644
+> --- a/lib/igt_debugfs.h
+> +++ b/lib/igt_debugfs.h
+> @@ -115,6 +115,7 @@ void igt_hpd_storm_set_threshold(int fd, unsigned int threshold);
+>  void igt_hpd_storm_reset(int fd);
+>  bool igt_hpd_storm_detected(int fd);
+>  void igt_require_hpd_storm_ctl(int fd);
+> +void igt_suppress_wakeup_hpd(int fd, bool enable);
+>  
+>  /*
+>   * Drop caches
 > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index c7c69b6ea0..ae183e822c 100644
+> index b11c8c27a6..1e3505e1b0 100644
 > --- a/lib/igt_kms.c
 > +++ b/lib/igt_kms.c
-> @@ -581,6 +581,11 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
->  	[IGT_PLANE_ALPHA] = "alpha",
->  	[IGT_PLANE_ZPOS] = "zpos",
->  	[IGT_PLANE_FB_DAMAGE_CLIPS] = "FB_DAMAGE_CLIPS",
-> +	[IGT_PLANE_CTM] = "PLANE_CTM",
-> +	[IGT_PLANE_GAMMA_MODE] = "PLANE_GAMMA_MODE",
-> +	[IGT_PLANE_GAMMA_LUT] = "PLANE_GAMMA_LUT",
-> +	[IGT_PLANE_DEGAMMA_MODE] = "PLANE_DEGAMMA_MODE",
-> +	[IGT_PLANE_DEGAMMA_LUT] = "PLANE_DEGAMMA_LUT",
->  };
+> @@ -2140,6 +2140,9 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>  	display->drm_fd = drm_fd;
+>  	is_i915_dev = is_i915_device(drm_fd);
 >  
->  const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 8cde24b791..41967bf28a 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -301,6 +301,11 @@ enum igt_atomic_plane_properties {
->         IGT_PLANE_ALPHA,
->         IGT_PLANE_ZPOS,
->         IGT_PLANE_FB_DAMAGE_CLIPS,
-> +       IGT_PLANE_CTM,
-> +       IGT_PLANE_GAMMA_MODE,
-> +       IGT_PLANE_GAMMA_LUT,
-> +       IGT_PLANE_DEGAMMA_MODE,
-> +       IGT_PLANE_DEGAMMA_LUT,
->         IGT_NUM_PLANE_PROPS
->  };
+> +	/* enable suppress wakeup hpds */
+> +	igt_suppress_wakeup_hpd(display->drm_fd, true);
+> +
+>  	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1);
 >  
+>  	resources = drmModeGetResources(display->drm_fd);
 > -- 
 > 2.25.1
 > 
