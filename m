@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01B326EB1F
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Jun 2021 20:51:58 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Fri, 4 Jun 2021 20:51:51 +0000
-Message-ID: <cd08f3fe7e870b9adb68f5d036d642178463d88b.camel@intel.com>
-References: <20210604203927.494340-1-matthew.d.roper@intel.com>
- <20210604203927.494340-6-matthew.d.roper@intel.com>
-In-Reply-To: <20210604203927.494340-6-matthew.d.roper@intel.com>
-Content-Language: en-US
-Content-ID: <CB38D5FE959381449E510B42E77A5DE8@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 5/6] lib/i915: Add ADL-P stride
- restrictions for non-linear buffers
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 04 Jun 2021 20:53:16 -0000
+Message-ID: <162283999695.4695.17292687929465364853@emeril.freedesktop.org>
+References: <20210604203927.494340-1-matthew.d.roper@intel.com>
+In-Reply-To: <20210604203927.494340-1-matthew.d.roper@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_S?=
+ =?utf-8?q?plit_display/graphics_versions_and_add_ADL-P?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,67 +14,250 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Roper,
- Matthew D" <matthew.d.roper@intel.com>
-Cc: "Taylor, Clinton A" <clinton.a.taylor@intel.com>, "Heikkila,
- Juha-pekka" <juha-pekka.heikkila@intel.com>
+To: Matt Roper <matthew.d.roper@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SHVtIHdlIGNhbiBkcm9wIHRoaXMgY2hhbmdlLCBJbXJlIGxhbmRlZCBjaGFuZ2VzIHRvIG1ha2Ug
-ZnJhbWVidWZmZXJzIHN0cmlkZXMgcG93ZXIgb2YgdHdvIGZvciBhZGxfcCwgc28gZm9yIHVzZXJz
-cGFjZSBpdCBzaG91bGQgYmUgdHJhbnNwYXJlbnQuDQoNCk9uIEZyaSwgMjAyMS0wNi0wNCBhdCAx
-MzozOSAtMDcwMCwgTWF0dCBSb3BlciB3cm90ZToNCj4gRnJvbTogSm9zw6kgUm9iZXJ0byBkZSBT
-b3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+DQo+IA0KPiBBREwtUCB0aWxlZCBmcmFtZWJ1ZmZl
-ciBzdHJpZGVzIG11c3QgYmUgcG93ZXItb2YtdHdvIGFsaWduZWQgYW5kIGhhcyBhDQo+IG1pbmlt
-dW0gb2YgOCB0aWxlcy4gRm9yIG5vbi1DQ1MgZnJhbWVidWZmZXJzIHRoZSBkcml2ZXIgc3VwcG9y
-dHMgRkJzIG5vdA0KPiBtZWV0aW5nIHRoaXMgcmVxdWlyZW1lbnQgYnkgcmVtYXBwaW5nIHRoZSBm
-cmFtZWJ1ZmZlciBhbmQgcGFkZGluZyB0aGUNCj4gc3RyaWRlIGFzIHJlcXVpcmVkLCBidXQgZm9y
-IENDUyBGQnMgdXNlcnNwYWNlIG11c3QgZW5zdXJlIHRoZSBhbGlnbm1lbnQuDQo+IEFkZGluZyBy
-ZW1hcCBzdXBwb3J0IGZvciBDQ1MgRkJzIHRvIHRoZSBkcml2ZXIgaXMgdG8gYmUgZG9uZSBhcyBh
-DQo+IGZvbGxvdy11cC4NCj4gDQo+IENjOiBKdWhhLVBla2thIEhlaWtraWzDpCA8anVoYS1wZWtr
-YS5oZWlra2lsYUBpbnRlbC5jb20+DQo+IENjOiBBbnVzaGEgU3JpdmF0c2EgPGFudXNoYS5zcml2
-YXRzYUBpbnRlbC5jb20+DQo+IENjOiBDbGludG9uIFRheWxvciA8Q2xpbnRvbi5BLlRheWxvckBp
-bnRlbC5jb20+DQo+IENjOiBTdGFuaXNsYXYgTGlzb3Zza2l5IDxzdGFuaXNsYXYubGlzb3Zza2l5
-QGludGVsLmNvbT4NCj4gQ2M6IEltcmUgRGVhayA8aW1yZS5kZWFrQGludGVsLmNvbT4NCj4gU2ln
-bmVkLW9mZi1ieTogSm9zw6kgUm9iZXJ0byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+
-DQo+IFNpZ25lZC1vZmYtYnk6IE1hdHQgUm9wZXIgPG1hdHRoZXcuZC5yb3BlckBpbnRlbC5jb20+
-DQo+IC0tLQ0KPiAgbGliL2lndF9mYi5jIHwgMjYgKysrKysrKysrKysrKysrKysrKysrLS0tLS0N
-Cj4gIDEgZmlsZSBjaGFuZ2VkLCAyMSBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQ0KPiAN
-Cj4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZmIuYyBiL2xpYi9pZ3RfZmIuYw0KPiBpbmRleCA1ODVl
-ZGUzOC4uY2UyYWE2Y2UgMTAwNjQ0DQo+IC0tLSBhL2xpYi9pZ3RfZmIuYw0KPiArKysgYi9saWIv
-aWd0X2ZiLmMNCj4gQEAgLTcyOSw4ICs3MjksMTYgQEAgc3RhdGljIHVpbnQzMl90IGNhbGNfcGxh
-bmVfc3RyaWRlKHN0cnVjdCBpZ3RfZmIgKmZiLCBpbnQgcGxhbmUpDQo+ICAJCS8qIGNsZWFyIGNv
-bG9yIGFsd2F5cyBmaXhlZCB0byA2NCBieXRlcyAqLw0KPiAgCQlyZXR1cm4gNjQ7DQo+ICAJfSBl
-bHNlIGlmIChpc19nZW4xMl9jY3NfcGxhbmUoZmIsIHBsYW5lKSkgew0KPiAtCQkvKiBBIG1haW4g
-c3VyZmFjZSB1c2luZyBhIENDUyBBVVggc3VyZmFjZSBtdXN0IGJlIDR4NCB0aWxlcyBhbGlnbmVk
-LiAqLw0KPiAtCQlyZXR1cm4gQUxJR04obWluX3N0cmlkZSwgNjQpOw0KPiArCQkvKg0KPiArCQkg
-KiBBIG1haW4gc3VyZmFjZSB1c2luZyBhIENDUyBBVVggc3VyZmFjZSBtdXN0IGJlIDR4NCB0aWxl
-cw0KPiArCQkgKiBhbGlnbmVkLiAgT24gQURMX1AgdGhlIG1pbmltdW0gbWFpbiBzdXJmYWNlIHN0
-cmlkZSBpcyA4DQo+ICsJCSAqIHRpbGVzICgyICogNjQgYnl0ZSBvbiBDQ1Mgc3VyZmFjZSkgYW5k
-IGl0IGhhcyB0byBiZSBQT1QNCj4gKwkJICogYWxpZ25lZC4NCj4gKwkJICovDQo+ICsJCWlmIChJ
-U19BTERFUkxBS0VfUChpbnRlbF9nZXRfZHJtX2RldmlkKGZiLT5mZCkpKQ0KPiArCQkJcmV0dXJu
-IHJvdW5kdXBfcG93ZXJfb2ZfdHdvKG1heChtaW5fc3RyaWRlLCAxMjh1KSk7DQo+ICsJCWVsc2UN
-Cj4gKwkJCXJldHVybiBBTElHTihtaW5fc3RyaWRlLCA2NCk7DQo+ICAJfSBlbHNlIGlmICghZmIt
-Pm1vZGlmaWVyICYmIGlzX25vdXZlYXVfZGV2aWNlKGZiLT5mZCkpIHsNCj4gIAkJaW50IGFsaWdu
-Ow0KPiAgDQo+IEBAIC03NDMsMTQgKzc1MSwyMiBAQCBzdGF0aWMgdWludDMyX3QgY2FsY19wbGFu
-ZV9zdHJpZGUoc3RydWN0IGlndF9mYiAqZmIsIGludCBwbGFuZSkNCj4gIAkJcmV0dXJuIEFMSUdO
-KG1pbl9zdHJpZGUsIGFsaWduKTsNCj4gIAl9IGVsc2Ugew0KPiAgCQl1bnNpZ25lZCBpbnQgdGls
-ZV93aWR0aCwgdGlsZV9oZWlnaHQ7DQo+ICsJCXVpbnQzMl90IHN0cmlkZTsNCj4gIA0KPiAgCQlp
-Z3RfZ2V0X2ZiX3RpbGVfc2l6ZShmYi0+ZmQsIGZiLT5tb2RpZmllciwgZmItPnBsYW5lX2JwcFtw
-bGFuZV0sDQo+ICAJCQkJICAgICAmdGlsZV93aWR0aCwgJnRpbGVfaGVpZ2h0KTsNCj4gIA0KPiAt
-CQlpZiAoaXNfZ2VuMTJfY2NzX21vZGlmaWVyKGZiLT5tb2RpZmllcikpDQo+IC0JCQl0aWxlX3dp
-ZHRoICo9IDQ7DQo+ICsJCWlmIChpc19nZW4xMl9jY3NfbW9kaWZpZXIoZmItPm1vZGlmaWVyKSkg
-ew0KPiArCQkJc3RyaWRlID0gQUxJR04obWluX3N0cmlkZSwgdGlsZV93aWR0aCAqIDQpOw0KPiAg
-DQo+IC0JCXJldHVybiBBTElHTihtaW5fc3RyaWRlLCB0aWxlX3dpZHRoKTsNCj4gKwkJCS8qIFRP
-RE86IGFkZCBzdXBwb3J0IHRvIGtlcm5lbCB0byBQT1QgYWxpZ24gQ0NTIGZvcm1hdCBzdHJpZGVz
-ICovDQo+ICsJCQlpZiAoSVNfQUxERVJMQUtFX1AoaW50ZWxfZ2V0X2RybV9kZXZpZChmYi0+ZmQp
-KSkNCj4gKwkJCQlzdHJpZGUgPSByb3VuZHVwX3Bvd2VyX29mX3R3byhtYXgoc3RyaWRlLCB0aWxl
-X3dpZHRoICogOCkpOw0KPiArCQl9IGVsc2Ugew0KPiArCQkJc3RyaWRlID0gQUxJR04obWluX3N0
-cmlkZSwgdGlsZV93aWR0aCk7DQo+ICsJCX0NCj4gKw0KPiArCQlyZXR1cm4gc3RyaWRlOw0KPiAg
-CX0NCj4gIH0NCj4gIA0KDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
-ZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+== Series Details ==
+
+Series: Split display/graphics versions and add ADL-P
+URL   : https://patchwork.freedesktop.org/series/91040/
+State : warning
+
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/332789 for the overview.
+
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10487472):
+  ../lib/intel_device_info.c:497:2:
+    INTEL_ADLP_IDS(&intel_alderlake_p_info),
+    {
+  ../lib/intel_device_info.c:406:57: error: missing braces around initializer [-Werror=missing-braces]
+   static const struct pci_id_match intel_device_match[] = {
+                                                           ^
+  ../lib/intel_device_info.c:497:2:
+    INTEL_ADLP_IDS(&intel_alderlake_p_info),
+    {
+  ../lib/intel_device_info.c:500:1:
+   };
+   }
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1622839898:step_script
+  section_start:1622839898:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622839899:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10487475):
+  ../lib/intel_device_info.c:497:2:
+    INTEL_ADLP_IDS(&intel_alderlake_p_info),
+    {
+  ../lib/intel_device_info.c:406:57: error: missing braces around initializer [-Werror=missing-braces]
+   static const struct pci_id_match intel_device_match[] = {
+                                                           ^
+  ../lib/intel_device_info.c:497:2:
+    INTEL_ADLP_IDS(&intel_alderlake_p_info),
+    {
+  ../lib/intel_device_info.c:500:1:
+   };
+   }
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1622839902:step_script
+  section_start:1622839902:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622839903:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10487474):
+  ../lib/intel_device_info.c:497:2:
+    INTEL_ADLP_IDS(&intel_alderlake_p_info),
+    {
+  ../lib/intel_device_info.c:406:57: error: missing braces around initializer [-Werror=missing-braces]
+   static const struct pci_id_match intel_device_match[] = {
+                                                           ^
+  ../lib/intel_device_info.c:497:2:
+    INTEL_ADLP_IDS(&intel_alderlake_p_info),
+    {
+  ../lib/intel_device_info.c:500:1:
+   };
+   }
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1622839900:step_script
+  section_start:1622839900:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622839900:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10487476):
+  ../lib/intel_device_info.c:497:2:
+    INTEL_ADLP_IDS(&intel_alderlake_p_info),
+    {
+  ../lib/intel_device_info.c:406:57: error: missing braces around initializer [-Werror=missing-braces]
+   static const struct pci_id_match intel_device_match[] = {
+                                                           ^
+  ../lib/intel_device_info.c:497:2:
+    INTEL_ADLP_IDS(&intel_alderlake_p_info),
+    {
+  ../lib/intel_device_info.c:500:1:
+   };
+   }
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1622839904:step_script
+  section_start:1622839904:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622839905:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10487473):
+  ../lib/intel_device_info.c:497:2:
+    INTEL_ADLP_IDS(&intel_alderlake_p_info),
+    {
+  ../lib/intel_device_info.c:406:57: error: missing braces around initializer [-Werror=missing-braces]
+   static const struct pci_id_match intel_device_match[] = {
+                                                           ^
+  ../lib/intel_device_info.c:497:2:
+    INTEL_ADLP_IDS(&intel_alderlake_p_info),
+    {
+  ../lib/intel_device_info.c:500:1:
+   };
+   }
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1622839899:step_script
+  section_start:1622839899:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622839900:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10487467):
+  ......
+    497 |  INTEL_ADLP_IDS(&intel_alderlake_p_info),
+        |  {
+  ../lib/intel_device_info.c:406:57: error: missing braces around initializer [-Werror=missing-braces]
+    406 | static const struct pci_id_match intel_device_match[] = {
+        |                                                         ^
+  ......
+    497 |  INTEL_ADLP_IDS(&intel_alderlake_p_info),
+        |  {
+  ......
+    500 | };
+        | }
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1622839900:step_script
+  section_start:1622839900:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622839902:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10487471):
+  #define PCI_MATCH_ANY  (~0U)
+                         ^~~~~
+  ../lib/i915_pciids.h:39:10: note: expanded from macro 'INTEL_VGA_DEVICE'
+          0x8086, id,                             \
+                  ^~
+  ../lib/intel_device_info.c:497:2: error: suggest braces around initialization of subobject [-Werror,-Wmissing-braces]
+          INTEL_ADLP_IDS(&intel_alderlake_p_info),
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          {
+  ../lib/intel_device_info.c:497:2: error: initializer element is not a compile-time constant
+          INTEL_ADLP_IDS(&intel_alderlake_p_info),
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  1 warning and 3 errors generated.
+  ninja: build stopped: subcommand failed.
+  section_end:1622839908:step_script
+  section_start:1622839908:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622839908:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10487470):
+  ......
+    497 |  INTEL_ADLP_IDS(&intel_alderlake_p_info),
+        |  {
+  ../lib/intel_device_info.c:406:57: error: missing braces around initializer [-Werror=missing-braces]
+    406 | static const struct pci_id_match intel_device_match[] = {
+        |                                                         ^
+  ......
+    497 |  INTEL_ADLP_IDS(&intel_alderlake_p_info),
+        |  {
+  ......
+    500 | };
+        | }
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1622839899:step_script
+  section_start:1622839899:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622839901:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10487468):
+  ......
+    497 |  INTEL_ADLP_IDS(&intel_alderlake_p_info),
+        |  {
+  ../lib/intel_device_info.c:406:57: error: missing braces around initializer [-Werror=missing-braces]
+    406 | static const struct pci_id_match intel_device_match[] = {
+        |                                                         ^
+  ......
+    497 |  INTEL_ADLP_IDS(&intel_alderlake_p_info),
+        |  {
+  ......
+    500 | };
+        | }
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1622839900:step_script
+  section_start:1622839900:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622839901:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10487469):
+  ......
+    497 |  INTEL_ADLP_IDS(&intel_alderlake_p_info),
+        |  {
+  ../lib/intel_device_info.c:406:57: error: missing braces around initializer [-Werror=missing-braces]
+    406 | static const struct pci_id_match intel_device_match[] = {
+        |                                                         ^
+  ......
+    497 |  INTEL_ADLP_IDS(&intel_alderlake_p_info),
+        |  {
+  ......
+    500 | };
+        | }
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1622839902:step_script
+  section_start:1622839902:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1622839903:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/332789
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
