@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF22A6E405
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Jun 2021 20:39:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1553A6E406
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Jun 2021 20:39:46 +0000 (UTC)
 From: Matt Roper <matthew.d.roper@intel.com>
-Date: Fri,  4 Jun 2021 13:39:22 -0700
-Message-Id: <20210604203927.494340-2-matthew.d.roper@intel.com>
+Date: Fri,  4 Jun 2021 13:39:23 -0700
+Message-Id: <20210604203927.494340-3-matthew.d.roper@intel.com>
 In-Reply-To: <20210604203927.494340-1-matthew.d.roper@intel.com>
 References: <20210604203927.494340-1-matthew.d.roper@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/6] lib/i915: Split 'gen' into graphics
- version and display version
+Subject: [igt-dev] [PATCH i-g-t 2/6] lib/i915: Add intel_display_ver() and
+ use it in display tests/libs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,621 +24,468 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Going forward, platforms may have separate architecture versions for
-graphics and display and should no longer utilize a single 'gen'
-version.
-
-While doing this, let's change the versions to raw version values rather
-than BIT(v) as we were doing in the past.  It looks like some of the
-existing uses of devinfo->gen were already misinterpreting this field
-and failing to pass the value through ffs(), so this change may also fix
-some bugs.
+Display code should check the display version of the platform rather
+than the graphics version; on some platforms these versions won't be the
+same.
 
 Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
 ---
- lib/i915/perf.c                      |   4 +-
- lib/i915/perf.h                      |   2 +-
- lib/i915/perf_data_reader.c          |   6 +-
- lib/igt_device_scan.c                |   2 +-
- lib/igt_gt.c                         |  10 +-
- lib/intel_chipset.h                  |   7 +-
- lib/intel_device_info.c              | 131 ++++++++++++++++++---------
- tests/i915/gem_exec_store.c          |   4 +-
- tests/i915/i915_pciid.c              |   4 +-
- tools/i915-perf/i915_perf_configs.c  |   2 +-
- tools/i915-perf/i915_perf_reader.c   |   5 +-
- tools/i915-perf/i915_perf_recorder.c |   6 +-
- 12 files changed, 114 insertions(+), 69 deletions(-)
+ lib/igt_draw.c                   | 12 ++++++------
+ lib/igt_fb.c                     | 14 +++++++-------
+ lib/intel_chipset.h              |  1 +
+ lib/intel_device_info.c          | 14 ++++++++++++++
+ tests/kms_atomic_transition.c    |  2 +-
+ tests/kms_big_fb.c               | 10 +++++-----
+ tests/kms_ccs.c                  |  2 +-
+ tests/kms_draw_crc.c             |  2 +-
+ tests/kms_flip_scaled_crc.c      |  2 +-
+ tests/kms_flip_tiling.c          |  2 +-
+ tests/kms_frontbuffer_tracking.c |  4 ++--
+ tests/kms_getfb.c                |  2 +-
+ tests/kms_hdmi_inject.c          |  2 +-
+ tests/kms_panel_fitting.c        |  2 +-
+ tests/kms_plane.c                |  2 +-
+ tests/kms_plane_lowres.c         |  4 ++--
+ tests/kms_plane_scaling.c        |  8 ++++----
+ tests/kms_rotation_crc.c         |  8 ++++----
+ tests/kms_universal_plane.c      |  2 +-
+ 19 files changed, 55 insertions(+), 40 deletions(-)
 
-diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index 5644a346..9d5ab7a5 100644
---- a/lib/i915/perf.c
-+++ b/lib/i915/perf.c
-@@ -169,7 +169,7 @@ intel_perf_for_devinfo(uint32_t device_id,
- 	 * 2x6 does not have 2 samplers).
- 	 */
- 	perf->devinfo.devid = device_id;
--	perf->devinfo.gen = devinfo->gen;
-+	perf->devinfo.graphics_ver = devinfo->graphics_ver;
- 	perf->devinfo.revision = revision;
- 	perf->devinfo.timestamp_frequency = timestamp_frequency;
- 	perf->devinfo.gt_min_freq = gt_min_freq;
-@@ -183,7 +183,7 @@ intel_perf_for_devinfo(uint32_t device_id,
- 	/* On Gen11+ the equations from the xml files expect an 8bits
- 	 * mask per subslice, versus only 3bits on prior Gens.
- 	 */
--	bits_per_subslice = devinfo->gen >= 11 ? 8 : 3;
-+	bits_per_subslice = devinfo->graphics_ver >= 11 ? 8 : 3;
- 	for (uint32_t s = 0; s < topology->max_slices; s++) {
- 		if (!slice_available(topology, s))
- 			continue;
-diff --git a/lib/i915/perf.h b/lib/i915/perf.h
-index 6a39be92..d2429c47 100644
---- a/lib/i915/perf.h
-+++ b/lib/i915/perf.h
-@@ -50,7 +50,7 @@ struct intel_perf_devinfo {
- 	 * Their values are build up from the topology fields.
- 	 */
- 	uint32_t devid;
--	uint32_t gen;
-+	uint32_t graphics_ver;
- 	uint32_t revision;
- 	uint64_t timestamp_frequency;
- 	uint64_t gt_min_freq;
-diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
-index 79cb50f4..e69189ac 100644
---- a/lib/i915/perf_data_reader.c
-+++ b/lib/i915/perf_data_reader.c
-@@ -45,11 +45,11 @@ oa_report_ctx_is_valid(const struct intel_perf_devinfo *devinfo,
- {
- 	const uint32_t *report = (const uint32_t *) _report;
+diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+index a3144b50..295de022 100644
+--- a/lib/igt_draw.c
++++ b/lib/igt_draw.c
+@@ -339,7 +339,7 @@ static void draw_rect_mmap_cpu(int fd, struct buf_data *buf, struct rect *rect,
  
--	if (devinfo->gen < 8) {
-+	if (devinfo->graphics_ver < 8) {
- 		return false; /* TODO */
--	} else if (devinfo->gen == 8) {
-+	} else if (devinfo->graphics_ver == 8) {
- 		return report[0] & (1ul << 25);
--	} else if (devinfo->gen > 8) {
-+	} else if (devinfo->graphics_ver > 8) {
- 		return report[0] & (1ul << 16);
+ 	/* We didn't implement suport for the older tiling methods yet. */
+ 	if (tiling != I915_TILING_NONE)
+-		igt_require(intel_gen(intel_get_drm_devid(fd)) >= 5);
++		igt_require(intel_display_ver(intel_get_drm_devid(fd)) >= 5);
+ 
+ 	ptr = gem_mmap__cpu(fd, buf->handle, 0, PAGE_ALIGN(buf->size),
+ 			    PROT_READ | PROT_WRITE);
+@@ -389,7 +389,7 @@ static void draw_rect_mmap_wc(int fd, struct buf_data *buf, struct rect *rect,
+ 
+ 	/* We didn't implement suport for the older tiling methods yet. */
+ 	if (tiling != I915_TILING_NONE)
+-		igt_require(intel_gen(intel_get_drm_devid(fd)) >= 5);
++		igt_require(intel_display_ver(intel_get_drm_devid(fd)) >= 5);
+ 
+ 	ptr = gem_mmap__wc(fd, buf->handle, 0, PAGE_ALIGN(buf->size),
+ 			   PROT_READ | PROT_WRITE);
+@@ -440,7 +440,7 @@ static void draw_rect_pwrite_tiled(int fd, struct buf_data *buf,
+ 	int pixels_written = 0;
+ 
+ 	/* We didn't implement suport for the older tiling methods yet. */
+-	igt_require(intel_gen(intel_get_drm_devid(fd)) >= 5);
++	igt_require(intel_display_ver(intel_get_drm_devid(fd)) >= 5);
+ 
+ 	pixel_size = buf->bpp / 8;
+ 	tmp_size = sizeof(tmp) / pixel_size;
+@@ -536,7 +536,7 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+ 	struct intel_buf *dst;
+ 	int blt_cmd_len, blt_cmd_tiling, blt_cmd_depth;
+ 	uint32_t devid = intel_get_drm_devid(fd);
+-	int gen = intel_gen(devid);
++	int ver = intel_display_ver(devid);
+ 	int pitch;
+ 
+ 	dst = create_buf(fd, cmd_data->bops, buf, tiling);
+@@ -557,9 +557,9 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+ 		igt_assert(false);
  	}
  
-diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-index 2b7d9a3a..3c23fe0e 100644
---- a/lib/igt_device_scan.c
-+++ b/lib/igt_device_scan.c
-@@ -208,7 +208,7 @@ static char *devname_intel(uint16_t vendor, uint16_t device)
- 		if (devname) {
- 			devname[0] = toupper(devname[0]);
- 			igt_assert(asprintf(&s, "Intel %s (Gen%u)", devname,
--					    ffs(info->gen)) != -1);
-+					    info->graphics_ver) != -1);
- 			free(devname);
- 		}
- 	}
-diff --git a/lib/igt_gt.c b/lib/igt_gt.c
-index f601d726..b1415178 100644
---- a/lib/igt_gt.c
-+++ b/lib/igt_gt.c
-@@ -552,18 +552,18 @@ bool gem_class_can_store_dword(int fd, int class)
- {
- 	uint16_t devid = intel_get_drm_devid(fd);
- 	const struct intel_device_info *info = intel_get_device_info(devid);
--	const int gen = ffs(info->gen);
-+	const int ver = info->graphics_ver;
+-	blt_cmd_len = (gen >= 8) ?  0x5 : 0x4;
++	blt_cmd_len = (ver >= 8) ?  0x5 : 0x4;
+ 	blt_cmd_tiling = (tiling) ? XY_COLOR_BLT_TILED : 0;
+-	pitch = (gen >= 4 && tiling) ? buf->stride / 4 : buf->stride;
++	pitch = (ver >= 4 && tiling) ? buf->stride / 4 : buf->stride;
  
--	if (info->gen == 0) /* unknown, assume it just works */
-+	if (ver == 0) /* unknown, assume it just works */
+ 	switch_blt_tiling(ibb, tiling, true);
+ 
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 3e6841fd..585ede38 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -408,7 +408,7 @@ void igt_get_fb_tile_size(int fd, uint64_t modifier, int fb_bpp,
+ 		break;
+ 	case LOCAL_I915_FORMAT_MOD_X_TILED:
+ 		igt_require_intel(fd);
+-		if (intel_gen(intel_get_drm_devid(fd)) == 2) {
++		if (intel_display_ver(intel_get_drm_devid(fd)) == 2) {
+ 			*width_ret = 128;
+ 			*height_ret = 16;
+ 		} else {
+@@ -422,7 +422,7 @@ void igt_get_fb_tile_size(int fd, uint64_t modifier, int fb_bpp,
+ 	case LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC:
+ 	case LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS:
+ 		igt_require_intel(fd);
+-		if (intel_gen(intel_get_drm_devid(fd)) == 2) {
++		if (intel_display_ver(intel_get_drm_devid(fd)) == 2) {
+ 			*width_ret = 128;
+ 			*height_ret = 16;
+ 		} else if (IS_915(intel_get_drm_devid(fd))) {
+@@ -693,7 +693,7 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
+ 
+ 	if (fb->modifier != LOCAL_DRM_FORMAT_MOD_NONE &&
+ 	    is_i915_device(fb->fd) &&
+-	    intel_gen(intel_get_drm_devid(fb->fd)) <= 3) {
++	    intel_display_ver(intel_get_drm_devid(fb->fd)) <= 3) {
+ 		uint32_t stride;
+ 
+ 		/* Round the tiling up to the next power-of-two and the region
+@@ -758,7 +758,7 @@ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
+ {
+ 	if (fb->modifier != LOCAL_DRM_FORMAT_MOD_NONE &&
+ 	    is_i915_device(fb->fd) &&
+-	    intel_gen(intel_get_drm_devid(fb->fd)) <= 3) {
++	    intel_display_ver(intel_get_drm_devid(fb->fd)) <= 3) {
+ 		uint64_t min_size = (uint64_t) fb->strides[plane] *
+ 			fb->plane_height[plane];
+ 		uint64_t size;
+@@ -2118,12 +2118,12 @@ struct fb_blit_upload {
+ 
+ static bool fast_blit_ok(const struct igt_fb *fb)
+ {
+-	int gen = intel_gen(intel_get_drm_devid(fb->fd));
++	int ver = intel_display_ver(intel_get_drm_devid(fb->fd));
+ 
+-	if (gen < 9)
++	if (ver < 9)
+ 		return false;
+ 
+-	if (gen < 12)
++	if (ver < 12)
  		return true;
  
--	if (gen <= 2) /* requires physical addresses */
-+	if (ver <= 2) /* requires physical addresses */
- 		return false;
- 
--	if (gen == 3 && (info->is_grantsdale || info->is_alviso))
-+	if (ver == 3 && (info->is_grantsdale || info->is_alviso))
- 		return false; /* only supports physical addresses */
- 
--	if (gen == 6 && class == I915_ENGINE_CLASS_VIDEO)
-+	if (ver == 6 && class == I915_ENGINE_CLASS_VIDEO)
- 		return false; /* broken, unbelievably broken */
- 
- 	if (info->is_broadwater)
+ 	return fb->modifier != I915_FORMAT_MOD_X_TILED;
 diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-index f766021e..8e81ffa9 100644
+index 8e81ffa9..87b3bbc4 100644
 --- a/lib/intel_chipset.h
 +++ b/lib/intel_chipset.h
-@@ -37,7 +37,8 @@ struct pci_device *intel_get_pci_device(void);
- uint32_t intel_get_drm_devid(int fd);
+@@ -84,6 +84,7 @@ struct intel_device_info {
+ const struct intel_device_info *intel_get_device_info(uint16_t devid) __attribute__((pure));
  
- struct intel_device_info {
--	unsigned gen;
-+	unsigned graphics_ver;
-+	unsigned display_ver;
- 	unsigned gt; /* 0 if unknown */
- 	bool is_mobile : 1;
- 	bool is_whitney : 1;
-@@ -179,8 +180,8 @@ void intel_check_pch(void);
- #define IS_DG1(devid)		(intel_get_device_info(devid)->is_dg1)
- #define IS_ALDERLAKE_S(devid)	(intel_get_device_info(devid)->is_alderlake_s)
+ unsigned intel_gen(uint16_t devid) __attribute__((pure));
++unsigned intel_display_ver(uint16_t devid) __attribute__((pure));
  
--#define IS_GEN(devid, x)	(intel_get_device_info(devid)->gen & (1u << ((x)-1)))
--#define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->gen & -(1u << ((x)-1)))
-+#define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
-+#define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver >= x)
+ extern enum pch_type intel_pch;
  
- #define IS_GEN2(devid)		IS_GEN(devid, 2)
- #define IS_GEN3(devid)		IS_GEN(devid, 3)
 diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index e07fdf6f..4ab236e4 100644
+index 4ab236e4..0c09f5cd 100644
 --- a/lib/intel_device_info.c
 +++ b/lib/intel_device_info.c
-@@ -4,154 +4,180 @@
- #include <strings.h> /* ffs() */
- 
- static const struct intel_device_info intel_generic_info = {
--	.gen = 0,
-+	.graphics_ver = 0,
-+	.display_ver = 0,
- };
- 
- static const struct intel_device_info intel_i810_info = {
--	.gen = BIT(0),
-+	.graphics_ver = 1,
-+	.display_ver = 1,
- 	.is_whitney = true,
- 	.codename = "solano" /* 815 == "whitney" ? or vice versa? */
- };
- 
- static const struct intel_device_info intel_i815_info = {
--	.gen = BIT(0),
-+	.graphics_ver = 1,
-+	.display_ver = 1,
- 	.is_whitney = true,
- 	.codename = "whitney"
- };
- 
- static const struct intel_device_info intel_i830_info = {
--	.gen = BIT(1),
-+	.graphics_ver = 2,
-+	.display_ver = 2,
- 	.is_almador = true,
- 	.codename = "almador"
- };
- static const struct intel_device_info intel_i845_info = {
--	.gen = BIT(1),
-+	.graphics_ver = 2,
-+	.display_ver = 2,
- 	.is_brookdale = true,
- 	.codename = "brookdale"
- };
- static const struct intel_device_info intel_i855_info = {
--	.gen = BIT(1),
-+	.graphics_ver = 2,
-+	.display_ver = 2,
- 	.is_mobile = true,
- 	.is_montara = true,
- 	.codename = "montara"
- };
- static const struct intel_device_info intel_i865_info = {
--	.gen = BIT(1),
-+	.graphics_ver = 2,
-+	.display_ver = 2,
- 	.is_springdale = true,
- 	.codename = "spingdale"
- };
- 
- static const struct intel_device_info intel_i915_info = {
--	.gen = BIT(2),
-+	.graphics_ver = 3,
-+	.display_ver = 3,
- 	.is_grantsdale = true,
- 	.codename = "grantsdale"
- };
- static const struct intel_device_info intel_i915m_info = {
--	.gen = BIT(2),
-+	.graphics_ver = 3,
-+	.display_ver = 3,
- 	.is_mobile = true,
- 	.is_alviso = true,
- 	.codename = "alviso"
- };
- static const struct intel_device_info intel_i945_info = {
--	.gen = BIT(2),
-+	.graphics_ver = 3,
-+	.display_ver = 3,
- 	.is_lakeport = true,
- 	.codename = "lakeport"
- };
- static const struct intel_device_info intel_i945m_info = {
--	.gen = BIT(2),
-+	.graphics_ver = 3,
-+	.display_ver = 3,
- 	.is_mobile = true,
- 	.is_calistoga = true,
- 	.codename = "calistoga"
- };
- 
- static const struct intel_device_info intel_g33_info = {
--	.gen = BIT(2),
-+	.graphics_ver = 3,
-+	.display_ver = 3,
- 	.is_bearlake = true,
- 	.codename = "bearlake"
- };
- 
- static const struct intel_device_info intel_pineview_g_info = {
--	.gen = BIT(2),
-+	.graphics_ver = 3,
-+	.display_ver = 3,
- 	.is_pineview = true,
- 	.codename = "pineview"
- };
- 
- static const struct intel_device_info intel_pineview_m_info = {
--	.gen = BIT(2),
-+	.graphics_ver = 3,
-+	.display_ver = 3,
- 	.is_mobile = true,
- 	.is_pineview = true,
- 	.codename = "pineview"
- };
- 
- static const struct intel_device_info intel_i965_info = {
--	.gen = BIT(3),
-+	.graphics_ver = 4,
-+	.display_ver = 4,
- 	.is_broadwater = true,
- 	.codename = "broadwater"
- };
- 
- static const struct intel_device_info intel_i965m_info = {
--	.gen = BIT(3),
-+	.graphics_ver = 4,
-+	.display_ver = 4,
- 	.is_mobile = true,
- 	.is_crestline = true,
- 	.codename = "crestline"
- };
- 
- static const struct intel_device_info intel_g45_info = {
--	.gen = BIT(3),
-+	.graphics_ver = 4,
-+	.display_ver = 4,
- 	.is_eaglelake = true,
- 	.codename = "eaglelake"
- };
- static const struct intel_device_info intel_gm45_info = {
--	.gen = BIT(3),
-+	.graphics_ver = 4,
-+	.display_ver = 4,
- 	.is_mobile = true,
- 	.is_cantiga = true,
- 	.codename = "cantiga"
- };
- 
- static const struct intel_device_info intel_ironlake_info = {
--	.gen = BIT(4),
-+	.graphics_ver = 5,
-+	.display_ver = 5,
- 	.is_ironlake = true,
- 	.codename = "ironlake" /* clarkdale? */
- };
- static const struct intel_device_info intel_ironlake_m_info = {
--	.gen = BIT(4),
-+	.graphics_ver = 5,
-+	.display_ver = 5,
- 	.is_mobile = true,
- 	.is_arrandale = true,
- 	.codename = "arrandale"
- };
- 
- static const struct intel_device_info intel_sandybridge_info = {
--	.gen = BIT(5),
-+	.graphics_ver = 6,
-+	.display_ver = 6,
- 	.is_sandybridge = true,
- 	.codename = "sandybridge"
- };
- static const struct intel_device_info intel_sandybridge_m_info = {
--	.gen = BIT(5),
-+	.graphics_ver = 6,
-+	.display_ver = 6,
- 	.is_mobile = true,
- 	.is_sandybridge = true,
- 	.codename = "sandybridge"
- };
- 
- static const struct intel_device_info intel_ivybridge_info = {
--	.gen = BIT(6),
-+	.graphics_ver = 7,
-+	.display_ver = 7,
- 	.is_ivybridge = true,
- 	.codename = "ivybridge"
- };
- static const struct intel_device_info intel_ivybridge_m_info = {
--	.gen = BIT(6),
-+	.graphics_ver = 7,
-+	.display_ver = 7,
- 	.is_mobile = true,
- 	.is_ivybridge = true,
- 	.codename = "ivybridge"
- };
- 
- static const struct intel_device_info intel_valleyview_info = {
--	.gen = BIT(6),
-+	.graphics_ver = 7,
-+	.display_ver = 7,
- 	.is_valleyview = true,
- 	.codename = "valleyview"
- };
- 
- #define HASWELL_FIELDS \
--	.gen = BIT(6), \
-+	.graphics_ver = 7, \
-+	.display_ver = 7, \
- 	.is_haswell = true, \
- 	.codename = "haswell"
- 
-@@ -171,7 +197,8 @@ static const struct intel_device_info intel_haswell_gt3_info = {
- };
- 
- #define BROADWELL_FIELDS \
--	.gen = BIT(7), \
-+	.graphics_ver = 8, \
-+	.display_ver = 8, \
- 	.is_broadwell = true, \
- 	.codename = "broadwell"
- 
-@@ -195,13 +222,15 @@ static const struct intel_device_info intel_broadwell_unknown_info = {
- };
- 
- static const struct intel_device_info intel_cherryview_info = {
--	.gen = BIT(7),
-+	.graphics_ver = 8,
-+	.display_ver = 8,
- 	.is_cherryview = true,
- 	.codename = "cherryview"
- };
- 
- #define SKYLAKE_FIELDS \
--	.gen = BIT(8), \
-+	.graphics_ver = 9, \
-+	.display_ver = 9, \
- 	.codename = "skylake", \
- 	.is_skylake = true
- 
-@@ -226,13 +255,15 @@ static const struct intel_device_info intel_skylake_gt4_info = {
- };
- 
- static const struct intel_device_info intel_broxton_info = {
--	.gen = BIT(8),
-+	.graphics_ver = 9,
-+	.display_ver = 9,
- 	.is_broxton = true,
- 	.codename = "broxton"
- };
- 
- #define KABYLAKE_FIELDS \
--	.gen = BIT(8), \
-+	.graphics_ver = 9, \
-+	.display_ver = 9, \
- 	.is_kabylake = true, \
- 	.codename = "kabylake"
- 
-@@ -257,13 +288,15 @@ static const struct intel_device_info intel_kabylake_gt4_info = {
- };
- 
- static const struct intel_device_info intel_geminilake_info = {
--	.gen = BIT(8),
-+	.graphics_ver = 9,
-+	.display_ver = 9,
- 	.is_geminilake = true,
- 	.codename = "geminilake"
- };
- 
- #define COFFEELAKE_FIELDS \
--	.gen = BIT(8), \
-+	.graphics_ver = 9, \
-+	.display_ver = 9, \
- 	.is_coffeelake = true, \
- 	.codename = "coffeelake"
- 
-@@ -283,7 +316,8 @@ static const struct intel_device_info intel_coffeelake_gt3_info = {
- };
- 
- #define COMETLAKE_FIELDS \
--	.gen = BIT(8), \
-+	.graphics_ver = 9, \
-+	.display_ver = 9, \
- 	.is_cometlake = true, \
- 	.codename = "cometlake"
- 
-@@ -298,57 +332,66 @@ static const struct intel_device_info intel_cometlake_gt2_info = {
- };
- 
- static const struct intel_device_info intel_cannonlake_info = {
--	.gen = BIT(9),
-+	.graphics_ver = 10,
-+	.display_ver = 10,
- 	.is_cannonlake = true,
- 	.codename = "cannonlake"
- };
- 
- static const struct intel_device_info intel_icelake_info = {
--	.gen = BIT(10),
-+	.graphics_ver = 11,
-+	.display_ver = 11,
- 	.is_icelake = true,
- 	.codename = "icelake"
- };
- 
- static const struct intel_device_info intel_elkhartlake_info = {
--	.gen = BIT(10),
-+	.graphics_ver = 11,
-+	.display_ver = 11,
- 	.is_elkhartlake = true,
- 	.codename = "elkhartlake"
- };
- 
- static const struct intel_device_info intel_jasperlake_info = {
--	.gen = BIT(10),
-+	.graphics_ver = 11,
-+	.display_ver = 11,
- 	.is_jasperlake = true,
- 	.codename = "jasperlake"
- };
- 
- static const struct intel_device_info intel_tigerlake_gt1_info = {
--	.gen = BIT(11),
-+	.graphics_ver = 12,
-+	.display_ver = 12,
- 	.is_tigerlake = true,
- 	.codename = "tigerlake",
- 	.gt = 1,
- };
- 
- static const struct intel_device_info intel_tigerlake_gt2_info = {
--	.gen = BIT(11),
-+	.graphics_ver = 12,
-+	.display_ver = 12,
- 	.is_tigerlake = true,
- 	.codename = "tigerlake",
- 	.gt = 2,
- };
- 
- static const struct intel_device_info intel_rocketlake_info = {
--	.gen = BIT(11),
-+	.graphics_ver = 12,
-+	.display_ver = 12,
- 	.is_rocketlake = true,
- 	.codename = "rocketlake"
- };
- 
- static const struct intel_device_info intel_dg1_info = {
--	.gen = BIT(11),
-+	.graphics_ver = 12,
-+	.display_ver = 12,
- 	.is_dg1 = true,
- 	.codename = "dg1"
- };
- 
- static const struct intel_device_info intel_alderlake_s_info = {
--	.gen = BIT(11),
-+	.graphics_ver = 12,
-+	.display_ver = 12,
- 	.is_alderlake_s = true,
- 	.codename = "alderlake_s"
- };
-@@ -490,5 +533,5 @@ out:
-  */
- unsigned intel_gen(uint16_t devid)
+@@ -535,3 +535,17 @@ unsigned intel_gen(uint16_t devid)
  {
--	return ffs(intel_get_device_info(devid)->gen) ?: -1u;
-+	return intel_get_device_info(devid)->graphics_ver ?: -1u;
+ 	return intel_get_device_info(devid)->graphics_ver ?: -1u;
  }
-diff --git a/tests/i915/gem_exec_store.c b/tests/i915/gem_exec_store.c
-index 99ffc9ab..2df0b27f 100644
---- a/tests/i915/gem_exec_store.c
-+++ b/tests/i915/gem_exec_store.c
-@@ -310,7 +310,7 @@ static int print_welcome(int fd)
- 	int err;
- 
- 	igt_info("Running on %s (pci-id %04x, gen %d)\n",
--		 info->codename, devid, ffs(info->gen));
-+		 info->codename, devid, info->graphics_ver);
- 	igt_info("Can use MI_STORE_DWORD(virtual)? %s\n",
- 		 gem_can_store_dword(fd, 0) ? "yes" : "no");
- 
-@@ -320,7 +320,7 @@ static int print_welcome(int fd)
- 	igt_info("GPU operation? %s [errno=%d]\n",
- 		 err == 0 ? "yes" : "no", err);
- 
--	return ffs(info->gen);
-+	return info->graphics_ver;
- }
- 
- #define test_each_engine(T, i915, e)  \
-diff --git a/tests/i915/i915_pciid.c b/tests/i915/i915_pciid.c
-index fe4db405..7de44ff2 100644
---- a/tests/i915/i915_pciid.c
-+++ b/tests/i915/i915_pciid.c
-@@ -49,13 +49,13 @@ static bool has_known_intel_chipset(int fd)
++
++/**
++ * intel_display_ver:
++ * @devid: pci device id
++ *
++ * Computes the Intel GFX display version for the given device id.
++ *
++ * Returns:
++ * The display version on successful lookup, -1u on failure.
++ */
++unsigned intel_display_ver(uint16_t devid)
++{
++	return intel_get_device_info(devid)->display_ver ?: -1u;
++}
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index d8085ef3..f4131071 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -141,7 +141,7 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
+ 	if (plane->type == DRM_PLANE_TYPE_CURSOR)
  		return false;
- 	}
  
--	if (!info->gen) {
-+	if (!info->graphics_ver) {
- 		igt_warn("Unknown PCI-ID: %04x\n", devid);
+-	if (intel_gen(intel_get_drm_devid(data->drm_fd)) < 11)
++	if (intel_display_ver(intel_get_drm_devid(data->drm_fd)) < 11)
  		return false;
+ 
+ 	/*
+diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
+index b35727a0..81bf0542 100644
+--- a/tests/kms_big_fb.c
++++ b/tests/kms_big_fb.c
+@@ -153,7 +153,7 @@ static bool size_ok(data_t *data, uint64_t size)
+ 	 * The kernel limits scanout to the
+ 	 * mappable portion of ggtt on gmch platforms.
+ 	 */
+-	if ((intel_gen(data->devid) < 5 ||
++	if ((intel_display_ver(data->devid) < 5 ||
+ 	     IS_VALLEYVIEW(data->devid) ||
+ 	     IS_CHERRYVIEW(data->devid)) &&
+ 	    size > data->mappable_size / 2)
+@@ -182,7 +182,7 @@ static void max_fb_size(data_t *data, int *width, int *height,
+ 	*height = data->max_fb_height;
+ 
+ 	/* max fence stride is only 8k bytes on gen3 */
+-	if (intel_gen(data->devid) < 4 &&
++	if (intel_display_ver(data->devid) < 4 &&
+ 	    format == DRM_FORMAT_XRGB8888)
+ 		*width = min(*width, 8192 / 4);
+ 
+@@ -553,7 +553,7 @@ test_addfb(data_t *data)
+ 	 * max fb size of 4k pixels, hence we can't test
+ 	 * with 32bpp and must use 16bpp instead.
+ 	 */
+-	if (intel_gen(data->devid) == 3)
++	if (intel_display_ver(data->devid) == 3)
+ 		format = DRM_FORMAT_RGB565;
+ 	else
+ 		format = DRM_FORMAT_XRGB8888;
+@@ -570,7 +570,7 @@ test_addfb(data_t *data)
+ 	bo = gem_create(data->drm_fd, size);
+ 	igt_require(bo);
+ 
+-	if (intel_gen(data->devid) < 4)
++	if (intel_display_ver(data->devid) < 4)
+ 		gem_set_tiling(data->drm_fd, bo,
+ 			       igt_fb_mod_to_tiling(data->modifier), strides[0]);
+ 
+@@ -660,7 +660,7 @@ igt_main
+ 		 * On gen2 we could use either, but let's go for the
+ 		 * blitter there as well.
+ 		 */
+-		if (intel_gen(data.devid) >= 4)
++		if (intel_display_ver(data.devid) >= 4)
+ 			data.render_copy = igt_get_render_copyfunc(data.devid);
+ 
+ 		data.bops = buf_ops_create(data.drm_fd);
+diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
+index 01e3b979..a3eac1f8 100644
+--- a/tests/kms_ccs.c
++++ b/tests/kms_ccs.c
+@@ -573,7 +573,7 @@ igt_main_args("cs:", NULL, help_str, opt_handler, &data)
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+ 
+-		igt_require(intel_gen(intel_get_drm_devid(data.drm_fd)) >= 9);
++		igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 9);
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_require_pipe_crc(data.drm_fd);
+ 
+diff --git a/tests/kms_draw_crc.c b/tests/kms_draw_crc.c
+index e1fdcef6..dcda2e04 100644
+--- a/tests/kms_draw_crc.c
++++ b/tests/kms_draw_crc.c
+@@ -245,7 +245,7 @@ static void fill_fb_subtest(void)
+ 	get_fill_crc(LOCAL_I915_FORMAT_MOD_X_TILED, &crc);
+ 	igt_assert_crc_equal(&crc, &base_crc);
+ 
+-	if (intel_gen(intel_get_drm_devid(drm_fd)) >= 9) {
++	if (intel_display_ver(intel_get_drm_devid(drm_fd)) >= 9) {
+ 		get_fill_crc(LOCAL_I915_FORMAT_MOD_Y_TILED, &crc);
+ 		igt_assert_crc_equal(&crc, &base_crc);
+ 	}
+diff --git a/tests/kms_flip_scaled_crc.c b/tests/kms_flip_scaled_crc.c
+index bb796caf..d81ad352 100644
+--- a/tests/kms_flip_scaled_crc.c
++++ b/tests/kms_flip_scaled_crc.c
+@@ -261,7 +261,7 @@ igt_main
+ 
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+-		data.gen = intel_gen(intel_get_drm_devid(data.drm_fd));
++		data.gen = intel_display_ver(intel_get_drm_devid(data.drm_fd));
+ 		igt_require(data.gen >= 9);
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_require(data.display.is_atomic);
+diff --git a/tests/kms_flip_tiling.c b/tests/kms_flip_tiling.c
+index 09e99580..573cc337 100644
+--- a/tests/kms_flip_tiling.c
++++ b/tests/kms_flip_tiling.c
+@@ -155,7 +155,7 @@ igt_main
+ {
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+-		data.gen = intel_gen(intel_get_drm_devid(data.drm_fd));
++		data.gen = intel_display_ver(intel_get_drm_devid(data.drm_fd));
+ 
+ 		data.testformat = DRM_FORMAT_XRGB8888;
+ 
+diff --git a/tests/kms_frontbuffer_tracking.c b/tests/kms_frontbuffer_tracking.c
+index 906caa4c..97902c08 100644
+--- a/tests/kms_frontbuffer_tracking.c
++++ b/tests/kms_frontbuffer_tracking.c
+@@ -2647,7 +2647,7 @@ static void scaledprimary_subtest(const struct test_mode *t)
+ 	struct igt_fb new_fb, *old_fb;
+ 	struct modeset_params *params = pick_params(t);
+ 	struct fb_region *reg = &params->primary;
+-	int gen = intel_gen(intel_get_drm_devid(drm.fd));
++	int gen = intel_display_ver(intel_get_drm_devid(drm.fd));
+ 	int src_y_upscale = ALIGN(reg->h / 4, 4);
+ 
+ 	igt_require_f(gen >= 9,
+@@ -2831,7 +2831,7 @@ static void farfromfence_subtest(const struct test_mode *t)
+ 	struct draw_pattern_info *pattern = &pattern1;
+ 	struct fb_region *target;
+ 	int max_height, assertions = 0;
+-	int gen = intel_gen(intel_get_drm_devid(drm.fd));
++	int gen = intel_display_ver(intel_get_drm_devid(drm.fd));
+ 
+ 	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
+ 		    !gem_has_mappable_ggtt(drm.fd));
+diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
+index 917b57bb..14be74d6 100644
+--- a/tests/kms_getfb.c
++++ b/tests/kms_getfb.c
+@@ -92,7 +92,7 @@ static void get_ccs_fb(int fd, struct drm_mode_fb_cmd2 *ret)
+ 	igt_require(has_addfb2_iface(fd));
+ 	igt_require_intel(fd);
+ 
+-	if ((intel_gen(intel_get_drm_devid(fd))) >= 12) {
++	if ((intel_display_ver(intel_get_drm_devid(fd))) >= 12) {
+ 		add.modifier[0] = I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS;
+ 		add.modifier[1] = I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS;
+ 
+diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c
+index 1769df08..b47b8a39 100644
+--- a/tests/kms_hdmi_inject.c
++++ b/tests/kms_hdmi_inject.c
+@@ -87,7 +87,7 @@ hdmi_inject_4k(int drm_fd, drmModeConnector *connector)
+ 	devid = intel_get_drm_devid(drm_fd);
+ 
+ 	/* 4K requires at least HSW */
+-	igt_require(IS_HASWELL(devid) || intel_gen(devid) >= 8);
++	igt_require(IS_HASWELL(devid) || intel_display_ver(devid) >= 8);
+ 
+ 	edid = igt_kms_get_4k_edid();
+ 	kmstest_force_edid(drm_fd, connector, edid);
+diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
+index 1623f34e..3e42d148 100644
+--- a/tests/kms_panel_fitting.c
++++ b/tests/kms_panel_fitting.c
+@@ -243,7 +243,7 @@ static void test_atomic_fastset(data_t *data)
+ 		if (stat("/sys/module/i915/parameters/fastboot", &sb) == 0)
+ 			igt_set_module_param_int(data->drm_fd, "fastboot", 1);
+ 
+-		igt_require(intel_gen(intel_get_drm_devid(display->drm_fd)) >= 5);
++		igt_require(intel_display_ver(intel_get_drm_devid(display->drm_fd)) >= 5);
  	}
  
- 	igt_info("PCI-ID: %#04x, gen %d, %s\n",
--		 devid, ffs(info->gen), info->codename);
-+		 devid, info->graphics_ver, info->codename);
- 	return true;
+ 	igt_require(display->is_atomic);
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index d7cbe892..ba419bbd 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -999,7 +999,7 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
+ 	if (plane->type == DRM_PLANE_TYPE_CURSOR)
+ 		return false;
+ 
+-	if (intel_gen(intel_get_drm_devid(data->drm_fd)) < 11)
++	if (intel_display_ver(intel_get_drm_devid(data->drm_fd)) < 11)
+ 		return false;
+ 
+ 	/*
+diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+index a4def89f..7fd02180 100644
+--- a/tests/kms_plane_lowres.c
++++ b/tests/kms_plane_lowres.c
+@@ -80,14 +80,14 @@ static igt_plane_t *first_sdr_plane(igt_output_t *output, uint32_t devid)
+ {
+         int index;
+ 
+-        index = intel_gen(devid) <= 9 ? 0 : SDR_PLANE_BASE;
++        index = intel_display_ver(devid) <= 9 ? 0 : SDR_PLANE_BASE;
+ 
+         return igt_output_get_plane(output, index);
  }
  
-diff --git a/tools/i915-perf/i915_perf_configs.c b/tools/i915-perf/i915_perf_configs.c
-index 2a0283c9..bce3bd0f 100644
---- a/tools/i915-perf/i915_perf_configs.c
-+++ b/tools/i915-perf/i915_perf_configs.c
-@@ -228,7 +228,7 @@ main(int argc, char *argv[])
- 		return EXIT_FAILURE;
- 	}
+ static bool is_sdr_plane(const igt_plane_t *plane, uint32_t devid)
+ {
+-        if (intel_gen(devid) <= 9)
++        if (intel_display_ver(devid) <= 9)
+                 return true;
  
--	fprintf(stdout, "Device gen=%i gt=%i\n", devinfo->gen, devinfo->gt);
-+	fprintf(stdout, "Device graphics_ver=%i gt=%i\n", devinfo->graphics_ver, devinfo->gt);
+         return plane->index >= SDR_PLANE_BASE;
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 7464b5bd..2aa46ac8 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -52,9 +52,9 @@ static int get_num_scalers(data_t* d, enum pipe pipe)
+ 	if (!is_i915_device(d->drm_fd))
+ 		return 1;
  
- 	perf = intel_perf_for_fd(drm_fd);
- 	if (!perf) {
-diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
-index 3e4a6530..e51f5a5d 100644
---- a/tools/i915-perf/i915_perf_reader.c
-+++ b/tools/i915-perf/i915_perf_reader.c
-@@ -220,8 +220,9 @@ main(int argc, char *argv[])
+-	igt_require(intel_gen(d->devid) >= 9);
++	igt_require(intel_display_ver(d->devid) >= 9);
  
- 	devinfo = intel_get_device_info(reader.devinfo.devid);
+-	if (intel_gen(d->devid) >= 10)
++	if (intel_display_ver(d->devid) >= 10)
+ 		return 2;
+ 	else if (pipe != PIPE_C)
+ 		return 2;
+@@ -167,7 +167,7 @@ static bool can_rotate(data_t *d, unsigned format, uint64_t tiling,
  
--	fprintf(stdout, "Recorded on device=0x%x(%s) gen=%i\n",
--		reader.devinfo.devid, devinfo->codename, reader.devinfo.gen);
-+	fprintf(stdout, "Recorded on device=0x%x(%s) graphics_ver=%i\n",
-+		reader.devinfo.devid, devinfo->codename,
-+		reader.devinfo.graphics_ver);
- 	fprintf(stdout, "Metric used : %s (%s) uuid=%s\n",
- 		reader.metric_set->symbol_name, reader.metric_set->name,
- 		reader.metric_set->hw_config_guid);
-diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
-index 3a8ee46a..00195290 100644
---- a/tools/i915-perf/i915_perf_recorder.c
-+++ b/tools/i915-perf/i915_perf_recorder.c
-@@ -317,14 +317,14 @@ get_device_timestamp_frequency(const struct intel_device_info *devinfo, int drm_
- 	if (perf_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp) == 0)
- 		return timestamp_frequency;
+ 	switch (format) {
+ 	case DRM_FORMAT_RGB565:
+-		if (intel_gen(d->devid) >= 11)
++		if (intel_display_ver(d->devid) >= 11)
+ 			break;
+ 		/* fall through */
+ 	case DRM_FORMAT_C8:
+@@ -198,7 +198,7 @@ static bool can_scale(data_t *d, unsigned format)
+ 	case DRM_FORMAT_XBGR16161616F:
+ 	case DRM_FORMAT_ARGB16161616F:
+ 	case DRM_FORMAT_ABGR16161616F:
+-		if (intel_gen(d->devid) >= 11)
++		if (intel_display_ver(d->devid) >= 11)
+ 			return true;
+ 		/* fall through */
+ 	case DRM_FORMAT_C8:
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index bcbb9bdc..20556c82 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -517,7 +517,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 			/* Only support partial covering primary plane on gen9+ */
+ 			if (is_amdgpu_device(data->gfx_fd) ||
+ 				(plane_type == DRM_PLANE_TYPE_PRIMARY &&
+-			    intel_gen(intel_get_drm_devid(data->gfx_fd)) < 9)) {
++			    intel_display_ver(intel_get_drm_devid(data->gfx_fd)) < 9)) {
+ 				if (i != rectangle)
+ 					continue;
+ 				else
+@@ -730,12 +730,12 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+ 						 */
+ 						if (p[0].format == DRM_FORMAT_RGB565 &&
+ 						     (planeconfigs[i].rotation & (IGT_ROTATION_90 | IGT_ROTATION_270))
+-						     && intel_gen(data->devid) < 11)
++						     && intel_display_ver(data->devid) < 11)
+ 							continue;
  
--	if (devinfo->gen > 9) {
-+	if (devinfo->graphics_ver > 9) {
- 		fprintf(stderr, "Unable to query timestamp frequency from i915, please update kernel.\n");
- 		return 0;
- 	}
+ 						if (p[1].format == DRM_FORMAT_RGB565 &&
+ 						     (planeconfigs[j].rotation & (IGT_ROTATION_90 | IGT_ROTATION_270))
+-						     && intel_gen(data->devid) < 11)
++						     && intel_display_ver(data->devid) < 11)
+ 							continue;
+ 						/*
+ 						 * if using packed formats crc's will be
+@@ -1024,7 +1024,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		data.gfx_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_AMDGPU);
+ 		if (is_i915_device(data.gfx_fd)) {
+ 			data.devid = intel_get_drm_devid(data.gfx_fd);
+-			gen = intel_gen(data.devid);
++			gen = intel_display_ver(data.devid);
+ 		}
  
- 	fprintf(stderr, "Warning: unable to query timestamp frequency from i915, guessing values...\n");
+ 		kmstest_set_vt_graphics_mode();
+diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+index aae3fc52..26e5e8eb 100644
+--- a/tests/kms_universal_plane.c
++++ b/tests/kms_universal_plane.c
+@@ -798,7 +798,7 @@ igt_main
  
--	if (devinfo->gen <= 8)
-+	if (devinfo->graphics_ver <= 8)
- 		return 12500000;
- 	if (devinfo->is_broxton)
- 		return 19200000;
-@@ -878,7 +878,7 @@ main(int argc, char *argv[])
- 	}
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+-		data.gen = intel_gen(intel_get_drm_devid(data.drm_fd));
++		data.gen = intel_display_ver(intel_get_drm_devid(data.drm_fd));
  
- 	fprintf(stdout, "Device name=%s gen=%i gt=%i id=0x%x\n",
--		ctx.devinfo->codename, ctx.devinfo->gen, ctx.devinfo->gt, ctx.devid);
-+		ctx.devinfo->codename, ctx.devinfo->graphics_ver, ctx.devinfo->gt, ctx.devid);
+ 		kmstest_set_vt_graphics_mode();
  
- 	ctx.topology = get_topology(ctx.drm_fd, &ctx.topology_size);
- 	if (!ctx.topology) {
 -- 
 2.25.4
 
