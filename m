@@ -1,17 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F0F906E3D8
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Jun 2021 13:16:20 +0000 (UTC)
-Date: Fri, 4 Jun 2021 09:16:11 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Message-ID: <YLonm/ledRfwelqV@intel.com>
-References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
- <20210518103344.2264397-9-alan.previn.teres.alexis@intel.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210518103344.2264397-9-alan.previn.teres.alexis@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 08/17] Enable protected session cmd in
- gen12_render_copyfunc
+From: Vidya Srinivas <vidya.srinivas@intel.com>
+Date: Fri,  4 Jun 2021 18:41:02 +0530
+Message-Id: <1622812262-16592-1-git-send-email-vidya.srinivas@intel.com>
+In-Reply-To: <1622176543-12759-1-git-send-email-vidya.srinivas@intel.com>
+References: <1622176543-12759-1-git-send-email-vidya.srinivas@intel.com>
+Subject: [igt-dev] [PATCH] tests/kms_color: Disable gamma in degamma tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,204 +12,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Alan Previn <alan.previn.teres.alexis@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com, charlton.lin@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, May 18, 2021 at 03:33:35AM -0700, Alan Previn wrote:
-> 1. In _gen9_render_op, check if the incoming batchbuffer
->    is marked with pxp enabled. If so, insert MI_SET_APPID
->    along with PIPE_CONTROL instructions at the start and
->    end of the rendering operation in the command buffer.
-> 
-> 2. The two PIPE_CONTROLs will enable protected memory
->    at the start of the batch and disabling protected
->    memory at the end of it. These PIPE_CONTROLs require a
->    Post-Sync operation with a write to memory for hardware
->    to accept.
-> 
-> 3. In order to satisfy #2, _gen9_render_op uses unused
->    regions of the ibb buffer for the PIPE_CONTROL PostSync
->    write to memory (no different from how other 3d states
->    are being referenced).
-> 
-> 4. _gen9_render_op shall check the incoming surface
->    buffers for "is_protected" flag and if its set, it
->    will mark the SURFACE_STATE's MOCS field accordingly.
-> 
-> NOTE: _gen9_render_op needs to program the HW to enable
-> the PXP session as part of the rendering batch buffer
-> because the HW requires that enabling/disabling protected
-> memory access must be programmed in pairs within the same
-> "dispatch of rendering commands" to HW.
-> 
-> Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-> ---
->  lib/rendercopy_gen9.c | 72 ++++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 65 insertions(+), 7 deletions(-)
-> 
-> diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-> index eecf73d3..bfcf311b 100644
-> --- a/lib/rendercopy_gen9.c
-> +++ b/lib/rendercopy_gen9.c
-> @@ -19,7 +19,8 @@
->  #include "intel_bufops.h"
->  #include "intel_batchbuffer.h"
->  #include "intel_io.h"
-> -#include "rendercopy.h"
-> +#include "igt.h"
-> +#include "i915/gem.h"
->  #include "gen9_render.h"
->  #include "intel_reg.h"
->  #include "igt_aux.h"
-> @@ -152,6 +153,8 @@ gen8_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst) {
->  		ss->ss0.tiled_mode = 3;
->  
->  	ss->ss1.memory_object_control = I915_MOCS_PTE << 1;
-> +	if (intel_buf_pxp(buf))
-> +		ss->ss1.memory_object_control |= 1;
->  
->  	if (buf->tiling == I915_TILING_Yf)
->  		ss->ss5.trmode = 1;
-> @@ -873,6 +876,53 @@ static void gen8_emit_primitive(struct intel_bb *ibb, uint32_t offset)
->  	intel_bb_out(ibb, 0);	/* index buffer offset, ignored */
->  }
->  
-> +#define GFX_OP_PIPE_CONTROL    ((3 << 29) | (3 << 27) | (2 << 24))
+This patch disables gamma in degamma subtest which is missing.
+It compares CRC between (linear degamma + solid colors) and (max
+degamma + gradient colors).
 
-there's no len defined here...
+v2 - Addressed review comments from Bhanuprakash Modem
 
-> +#define PIPE_CONTROL_CS_STALL	            (1 << 20)
-> +#define PIPE_CONTROL_RENDER_TARGET_FLUSH    (1 << 12)
-> +#define PIPE_CONTROL_FLUSH_ENABLE           (1 << 7)
-> +#define PIPE_CONTROL_DATA_CACHE_INVALIDATE  (1 << 5)
-> +#define PIPE_CONTROL_PROTECTEDPATH_DISABLE  (1 << 27)
-> +#define PIPE_CONTROL_PROTECTEDPATH_ENABLE   (1 << 22)
-> +#define PIPE_CONTROL_POST_SYNC_OP           (1 << 14)
-> +#define PIPE_CONTROL_POST_SYNC_OP_STORE_DW_IDX (1 << 21)
-> +#define PS_OP_TAG_START                     0x1234fed0
-> +#define PS_OP_TAG_END                       0x5678cbaf
-> +static void gen12_emit_pxp_state(struct intel_bb *ibb, bool enable,
-> +		 uint32_t pxp_write_op_offset)
-> +{
-> +	uint32_t pipe_ctl_flags;
-> +	uint32_t set_app_id, ps_op_id;
-> +
-> +	if (enable) {
-> +		pipe_ctl_flags = PIPE_CONTROL_FLUSH_ENABLE;
-> +		intel_bb_out(ibb, GFX_OP_PIPE_CONTROL);
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+Change-Id: Ibdb91b603e2e4024d170727d24c6a5425441e2e1
+---
+ tests/kms_color.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-... so, I believe this one should be GFX_OP_PIPE_CONTROL | 1
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 3a42532a5c27..41720dcdd90f 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -32,7 +32,6 @@ static void test_pipe_degamma(data_t *data,
+ 	igt_output_t *output;
+ 	igt_display_t *display = &data->display;
+ 	gamma_lut_t *degamma_linear, *degamma_full;
+-	gamma_lut_t *gamma_linear;
+ 	color_t red_green_blue[] = {
+ 		{ 1.0, 0.0, 0.0 },
+ 		{ 0.0, 1.0, 0.0 },
+@@ -45,8 +44,6 @@ static void test_pipe_degamma(data_t *data,
+ 	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+ 	degamma_full = generate_table_max(data->degamma_lut_size);
+ 
+-	gamma_linear = generate_table(data->gamma_lut_size, 1.0);
+-
+ 	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe, output) {
+ 		drmModeModeInfo *mode;
+ 		struct igt_fb fb_modeset, fb;
+@@ -75,8 +72,8 @@ static void test_pipe_degamma(data_t *data,
+ 
+ 		igt_plane_set_fb(primary, &fb_modeset);
+ 		disable_ctm(primary->pipe);
+-		disable_degamma(primary->pipe);
+-		set_gamma(data, primary->pipe, gamma_linear);
++		disable_gamma(primary->pipe);
++		set_degamma(data, primary->pipe, degamma_linear);
+ 		igt_display_commit(&data->display);
+ 
+ 		/* Draw solid colors with no degamma transformation. */
+@@ -103,15 +100,17 @@ static void test_pipe_degamma(data_t *data,
+ 		 */
+ 		igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
+ 
++		disable_degamma(primary->pipe);
+ 		igt_plane_set_fb(primary, NULL);
+ 		igt_output_set_pipe(output, PIPE_NONE);
++		igt_display_commit2(&data->display, data->display.is_atomic ?
++							COMMIT_ATOMIC : COMMIT_LEGACY);
+ 		igt_remove_fb(data->drm_fd, &fb);
+ 		igt_remove_fb(data->drm_fd, &fb_modeset);
+ 	}
+ 
+ 	free_lut(degamma_linear);
+ 	free_lut(degamma_full);
+-	free_lut(gamma_linear);
+ }
+ 
+ /*
+@@ -189,8 +188,11 @@ static void test_pipe_gamma(data_t *data,
+ 		 */
+ 		igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
+ 
++		disable_gamma(primary->pipe);
+ 		igt_plane_set_fb(primary, NULL);
+ 		igt_output_set_pipe(output, PIPE_NONE);
++		igt_display_commit2(&data->display, data->display.is_atomic ?
++							COMMIT_ATOMIC : COMMIT_LEGACY);
+ 		igt_remove_fb(data->drm_fd, &fb);
+ 		igt_remove_fb(data->drm_fd, &fb_modeset);
+ 	}
+-- 
+2.26.2
 
-(len - 2) = (3 - 2) = 1
-
-> +		intel_bb_out(ibb, pipe_ctl_flags);
-> +
-> +		set_app_id =  MI_SET_APPID |
-> +			      APPTYPE(intel_bb_pxp_apptype(ibb)) |
-> +			      APPID(intel_bb_pxp_appid(ibb));
-> +		intel_bb_out(ibb, set_app_id);
-> +
-> +		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_ENABLE;
-> +		ps_op_id = PS_OP_TAG_START;
-> +	} else {
-> +		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_DISABLE;
-> +		ps_op_id = PS_OP_TAG_END;
-> +	}
-> +
-> +	pipe_ctl_flags |= (PIPE_CONTROL_CS_STALL |
-> +			   PIPE_CONTROL_RENDER_TARGET_FLUSH |
-> +			   PIPE_CONTROL_DATA_CACHE_INVALIDATE |
-> +			   PIPE_CONTROL_POST_SYNC_OP);
-> +	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL | 4);
-
-and this one should be GFX_OP_PIPE_CONTROL | 2
-
-(len - 2) = (4 - 2) = 2
-
-but to be honest, I always get lost and confused with these pipe_control len...
-specially looking IGT tests, many of them don't make sense to me.
-
-However I see, at least, some inconsistency here between these 2 pipe_control
-emissions. What am I missing?
-
-> +	intel_bb_out(ibb, pipe_ctl_flags);
-> +	intel_bb_emit_reloc(ibb, ibb->handle, 0, I915_GEM_DOMAIN_COMMAND,
-> +			    (enable ? pxp_write_op_offset : (pxp_write_op_offset+8)),
-> +			    ibb->batch_offset);
-> +	intel_bb_out(ibb, ps_op_id);
-> +	intel_bb_out(ibb, ps_op_id);
-> +}
-> +
->  /* The general rule is if it's named gen6 it is directly copied from
->   * gen6_render_copyfunc.
->   *
-> @@ -922,6 +972,7 @@ void _gen9_render_op(struct intel_bb *ibb,
->  	uint32_t vertex_buffer;
->  	uint32_t aux_pgtable_state;
->  	bool fast_clear = !src;
-> +	uint32_t pxp_scratch_offset;
->  
->  	if (!fast_clear)
->  		igt_assert(src->bpp == dst->bpp);
-> @@ -950,8 +1001,12 @@ void _gen9_render_op(struct intel_bb *ibb,
->  	aux_pgtable_state = gen12_create_aux_pgtable_state(ibb, aux_pgtable_buf);
->  
->  	/* TODO: there is other state which isn't setup */
-> +	pxp_scratch_offset = intel_bb_offset(ibb);
->  	intel_bb_ptr_set(ibb, 0);
->  
-> +	if (intel_bb_pxp_enabled(ibb))
-> +		gen12_emit_pxp_state(ibb, true, pxp_scratch_offset);
-> +
->  	/* Start emitting the commands. The order roughly follows the mesa blorp
->  	 * order */
->  	intel_bb_out(ibb, G4X_PIPELINE_SELECT | PIPELINE_SELECT_3D |
-> @@ -963,13 +1018,12 @@ void _gen9_render_op(struct intel_bb *ibb,
->  		for (int i = 0; i < 4; i++) {
->  			intel_bb_out(ibb, MI_STORE_DWORD_IMM);
->  			intel_bb_emit_reloc(ibb, dst->handle,
-> -					    I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER,
-> -                                            dst->cc.offset + i*sizeof(float),
-> -					    dst->addr.offset);
-> +					I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER,
-> +					dst->cc.offset + i*sizeof(float),
-> +					dst->addr.offset);
->  			intel_bb_out(ibb, *(uint32_t*)&clear_color[i]);
-> -               }
-> -       }
-> -
-> +		}
-> +	}
->  
->  	gen8_emit_sip(ibb);
->  
-> @@ -1023,10 +1077,14 @@ void _gen9_render_op(struct intel_bb *ibb,
->  	gen8_emit_vf_topology(ibb);
->  	gen8_emit_primitive(ibb, vertex_buffer);
->  
-> +	if (intel_bb_pxp_enabled(ibb))
-> +		gen12_emit_pxp_state(ibb, false, pxp_scratch_offset);
-> +
->  	intel_bb_emit_bbe(ibb);
->  	intel_bb_exec(ibb, intel_bb_offset(ibb),
->  		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, false);
->  	dump_batch(ibb);
-> +
->  	intel_bb_reset(ibb, false);
->  }
->  
-> -- 
-> 2.25.1
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
