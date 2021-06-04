@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com
- [IPv6:2a00:1450:4864:20::134])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFEA76F8A1
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Jun 2021 18:47:58 +0000 (UTC)
-Received: by mail-lf1-x134.google.com with SMTP id r198so12171029lff.11
- for <igt-dev@lists.freedesktop.org>; Fri, 04 Jun 2021 11:47:58 -0700 (PDT)
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com
+ [IPv6:2a00:1450:4864:20::22d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 68E156F8A1
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Jun 2021 18:48:50 +0000 (UTC)
+Received: by mail-lj1-x22d.google.com with SMTP id e11so12781568ljn.13
+ for <igt-dev@lists.freedesktop.org>; Fri, 04 Jun 2021 11:48:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210601034116.8396-1-shawn.c.lee@intel.com>
-In-Reply-To: <20210601034116.8396-1-shawn.c.lee@intel.com>
+References: <20210531153922.4683-1-shawn.c.lee@intel.com>
+In-Reply-To: <20210531153922.4683-1-shawn.c.lee@intel.com>
 From: Mark Yacoub <markyacoub@chromium.org>
-Date: Fri, 4 Jun 2021 14:47:46 -0400
-Message-ID: <CAJUqKUpehfv4ua6MDdX4B-vThOhMZP+7WcZqEbppiYrN9dUdzw@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_dp_dsc: Transmit correct DRM
- connector structure.
+Date: Fri, 4 Jun 2021 14:48:38 -0400
+Message-ID: <CAJUqKUo+ZK_rVCxHfuGD+xQN6DbJUz-qM4n6jD5co0WuFk1Nhg@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_dp_dsc: Avoid SIGSEGV when
+ release DRM connector.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,60 +28,45 @@ To: Lee Shawn C <shawn.c.lee@intel.com>
 Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, charlton.lin@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, May 31, 2021 at 11:36 PM Lee Shawn C <shawn.c.lee@intel.com> wrote:
+On Mon, May 31, 2021 at 11:34 AM Lee Shawn C <shawn.c.lee@intel.com> wrote:
 >
-> 1. Pass one more parameter (current drmModeConnector) when
->    call "run_test()". Use it to retrieve proper connector_type.
-> 2. SIGSEGV fault would happen due to "igt_output" did not
->    store properly in "data->output". Main funciton already
->    pass "igt_output" pointer into "run_test()" function.
->    Use this pointer instead of "data->output" to get display mode.
+> Got SIGSEGV fault while running kms_dp_dsc test but did not
+> connect DP DSC capable monitor on eDP/DP port. This test daemon
+> should "SKIP" test without any problem. We found kms_dp_dsc
+> can't get proper drmModeConnector and caused this SIGSEGV fault
+> when release it. Make sure drmModeConnector is available before
+> free it can avoid this issue.
 >
-> Fixes: a1772be7dede ("tests/kms_dp_dsc: Bug fix for DP on Pipe A")
->
-Tested on ChromeOS on TGL (Delbin) and JSL (Drawlat)
+Tested on ChromeOS on TGL (Delbin) and JSL (Drawlat).
 Tested-by: Mark Yacoub <markyacoub@chromium.org>
 > Signed-off-by: Lee Shawn C <shawn.c.lee@intel.com>
 > ---
->  tests/kms_dp_dsc.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  tests/kms_dp_dsc.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 >
 > diff --git a/tests/kms_dp_dsc.c b/tests/kms_dp_dsc.c
-> index ea7c9f4f72ce..e434384da369 100644
+> index 2446fd82bba3..ea7c9f4f72ce 100644
 > --- a/tests/kms_dp_dsc.c
 > +++ b/tests/kms_dp_dsc.c
-> @@ -224,11 +224,11 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
->  }
+> @@ -262,7 +262,7 @@ igt_main
+>         data_t data = {};
+>         igt_output_t *output;
+>         drmModeRes *res;
+> -       drmModeConnector *connector;
+> +       drmModeConnector *connector = NULL;
+>         int i, test_conn_cnt, test_cnt;
+>         int tests[] = {DRM_MODE_CONNECTOR_eDP, DRM_MODE_CONNECTOR_DisplayPort};
 >
->  static void run_test(data_t *data, igt_output_t *output,
-> -                    enum dsc_test_type test_type)
-> +                    drmModeConnector *connector, enum dsc_test_type test_type)
->  {
->         enum pipe pipe;
+> @@ -311,7 +311,8 @@ igt_main
+>         }
 >
-> -       data->mode = igt_output_get_mode(data->output);
-> +       data->mode = igt_output_get_mode(output);
->         igt_create_pattern_fb(data->drm_fd, data->mode->hdisplay,
->                               data->mode->vdisplay,
->                               DRM_FORMAT_XRGB8888,
-> @@ -239,7 +239,7 @@ static void run_test(data_t *data, igt_output_t *output,
->                 if (is_i915_device(data->drm_fd)) {
->                         uint32_t devid = intel_get_drm_devid(data->drm_fd);
->
-> -                       if (data->connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
-> +                       if (connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
->                             data->pipe == PIPE_A && IS_GEN11(devid)) {
->                                 igt_debug("DSC not supported on Pipe A on external DP in Gen11 platforms\n");
->                                 continue;
-> @@ -304,7 +304,7 @@ igt_main
->                                         continue;
->                                 }
->                                 test_conn_cnt++;
-> -                               run_test(&data, output, test_basic_dsc_enable);
-> +                               run_test(&data, output, connector, test_basic_dsc_enable);
->                         }
->                         igt_skip_on(test_conn_cnt == 0);
->                 }
+>         igt_fixture {
+> -               drmModeFreeConnector(connector);
+> +               if (connector)
+> +                       drmModeFreeConnector(connector);
+>                 drmModeFreeResources(res);
+>                 close(data.debugfs_fd);
+>                 close(data.drm_fd);
 > --
 > 2.17.1
 >
