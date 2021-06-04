@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E62FA6EB1F
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Jun 2021 20:39:48 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3ED586EB8E
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Jun 2021 20:39:49 +0000 (UTC)
 From: Matt Roper <matthew.d.roper@intel.com>
-Date: Fri,  4 Jun 2021 13:39:26 -0700
-Message-Id: <20210604203927.494340-6-matthew.d.roper@intel.com>
+Date: Fri,  4 Jun 2021 13:39:27 -0700
+Message-Id: <20210604203927.494340-7-matthew.d.roper@intel.com>
 In-Reply-To: <20210604203927.494340-1-matthew.d.roper@intel.com>
 References: <20210604203927.494340-1-matthew.d.roper@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 5/6] lib/i915: Add ADL-P stride restrictions
- for non-linear buffers
+Subject: [igt-dev] [PATCH i-g-t 6/6] lib/i915: Add ADL-P plane offset
+ restriction for CCS framebuffers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,58 +17,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Clinton Taylor <Clinton.A.Taylor@intel.com>, =?UTF-8?q?Juha-Pekka=20Heikkil=C3=A4?= <juha-pekka.heikkila@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogSm9zw6kgUm9iZXJ0byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+CgpBREwt
-UCB0aWxlZCBmcmFtZWJ1ZmZlciBzdHJpZGVzIG11c3QgYmUgcG93ZXItb2YtdHdvIGFsaWduZWQg
-YW5kIGhhcyBhCm1pbmltdW0gb2YgOCB0aWxlcy4gRm9yIG5vbi1DQ1MgZnJhbWVidWZmZXJzIHRo
-ZSBkcml2ZXIgc3VwcG9ydHMgRkJzIG5vdAptZWV0aW5nIHRoaXMgcmVxdWlyZW1lbnQgYnkgcmVt
-YXBwaW5nIHRoZSBmcmFtZWJ1ZmZlciBhbmQgcGFkZGluZyB0aGUKc3RyaWRlIGFzIHJlcXVpcmVk
-LCBidXQgZm9yIENDUyBGQnMgdXNlcnNwYWNlIG11c3QgZW5zdXJlIHRoZSBhbGlnbm1lbnQuCkFk
-ZGluZyByZW1hcCBzdXBwb3J0IGZvciBDQ1MgRkJzIHRvIHRoZSBkcml2ZXIgaXMgdG8gYmUgZG9u
-ZSBhcyBhCmZvbGxvdy11cC4KCkNjOiBKdWhhLVBla2thIEhlaWtraWzDpCA8anVoYS1wZWtrYS5o
-ZWlra2lsYUBpbnRlbC5jb20+CkNjOiBBbnVzaGEgU3JpdmF0c2EgPGFudXNoYS5zcml2YXRzYUBp
-bnRlbC5jb20+CkNjOiBDbGludG9uIFRheWxvciA8Q2xpbnRvbi5BLlRheWxvckBpbnRlbC5jb20+
-CkNjOiBTdGFuaXNsYXYgTGlzb3Zza2l5IDxzdGFuaXNsYXYubGlzb3Zza2l5QGludGVsLmNvbT4K
-Q2M6IEltcmUgRGVhayA8aW1yZS5kZWFrQGludGVsLmNvbT4KU2lnbmVkLW9mZi1ieTogSm9zw6kg
-Um9iZXJ0byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IE1h
-dHQgUm9wZXIgPG1hdHRoZXcuZC5yb3BlckBpbnRlbC5jb20+Ci0tLQogbGliL2lndF9mYi5jIHwg
-MjYgKysrKysrKysrKysrKysrKysrKysrLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAyMSBpbnNlcnRp
-b25zKCspLCA1IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZmIuYyBiL2xpYi9p
-Z3RfZmIuYwppbmRleCA1ODVlZGUzOC4uY2UyYWE2Y2UgMTAwNjQ0Ci0tLSBhL2xpYi9pZ3RfZmIu
-YworKysgYi9saWIvaWd0X2ZiLmMKQEAgLTcyOSw4ICs3MjksMTYgQEAgc3RhdGljIHVpbnQzMl90
-IGNhbGNfcGxhbmVfc3RyaWRlKHN0cnVjdCBpZ3RfZmIgKmZiLCBpbnQgcGxhbmUpCiAJCS8qIGNs
-ZWFyIGNvbG9yIGFsd2F5cyBmaXhlZCB0byA2NCBieXRlcyAqLwogCQlyZXR1cm4gNjQ7CiAJfSBl
-bHNlIGlmIChpc19nZW4xMl9jY3NfcGxhbmUoZmIsIHBsYW5lKSkgewotCQkvKiBBIG1haW4gc3Vy
-ZmFjZSB1c2luZyBhIENDUyBBVVggc3VyZmFjZSBtdXN0IGJlIDR4NCB0aWxlcyBhbGlnbmVkLiAq
-LwotCQlyZXR1cm4gQUxJR04obWluX3N0cmlkZSwgNjQpOworCQkvKgorCQkgKiBBIG1haW4gc3Vy
-ZmFjZSB1c2luZyBhIENDUyBBVVggc3VyZmFjZSBtdXN0IGJlIDR4NCB0aWxlcworCQkgKiBhbGln
-bmVkLiAgT24gQURMX1AgdGhlIG1pbmltdW0gbWFpbiBzdXJmYWNlIHN0cmlkZSBpcyA4CisJCSAq
-IHRpbGVzICgyICogNjQgYnl0ZSBvbiBDQ1Mgc3VyZmFjZSkgYW5kIGl0IGhhcyB0byBiZSBQT1QK
-KwkJICogYWxpZ25lZC4KKwkJICovCisJCWlmIChJU19BTERFUkxBS0VfUChpbnRlbF9nZXRfZHJt
-X2RldmlkKGZiLT5mZCkpKQorCQkJcmV0dXJuIHJvdW5kdXBfcG93ZXJfb2ZfdHdvKG1heChtaW5f
-c3RyaWRlLCAxMjh1KSk7CisJCWVsc2UKKwkJCXJldHVybiBBTElHTihtaW5fc3RyaWRlLCA2NCk7
-CiAJfSBlbHNlIGlmICghZmItPm1vZGlmaWVyICYmIGlzX25vdXZlYXVfZGV2aWNlKGZiLT5mZCkp
-IHsKIAkJaW50IGFsaWduOwogCkBAIC03NDMsMTQgKzc1MSwyMiBAQCBzdGF0aWMgdWludDMyX3Qg
-Y2FsY19wbGFuZV9zdHJpZGUoc3RydWN0IGlndF9mYiAqZmIsIGludCBwbGFuZSkKIAkJcmV0dXJu
-IEFMSUdOKG1pbl9zdHJpZGUsIGFsaWduKTsKIAl9IGVsc2UgewogCQl1bnNpZ25lZCBpbnQgdGls
-ZV93aWR0aCwgdGlsZV9oZWlnaHQ7CisJCXVpbnQzMl90IHN0cmlkZTsKIAogCQlpZ3RfZ2V0X2Zi
-X3RpbGVfc2l6ZShmYi0+ZmQsIGZiLT5tb2RpZmllciwgZmItPnBsYW5lX2JwcFtwbGFuZV0sCiAJ
-CQkJICAgICAmdGlsZV93aWR0aCwgJnRpbGVfaGVpZ2h0KTsKIAotCQlpZiAoaXNfZ2VuMTJfY2Nz
-X21vZGlmaWVyKGZiLT5tb2RpZmllcikpCi0JCQl0aWxlX3dpZHRoICo9IDQ7CisJCWlmIChpc19n
-ZW4xMl9jY3NfbW9kaWZpZXIoZmItPm1vZGlmaWVyKSkgeworCQkJc3RyaWRlID0gQUxJR04obWlu
-X3N0cmlkZSwgdGlsZV93aWR0aCAqIDQpOwogCi0JCXJldHVybiBBTElHTihtaW5fc3RyaWRlLCB0
-aWxlX3dpZHRoKTsKKwkJCS8qIFRPRE86IGFkZCBzdXBwb3J0IHRvIGtlcm5lbCB0byBQT1QgYWxp
-Z24gQ0NTIGZvcm1hdCBzdHJpZGVzICovCisJCQlpZiAoSVNfQUxERVJMQUtFX1AoaW50ZWxfZ2V0
-X2RybV9kZXZpZChmYi0+ZmQpKSkKKwkJCQlzdHJpZGUgPSByb3VuZHVwX3Bvd2VyX29mX3R3byht
-YXgoc3RyaWRlLCB0aWxlX3dpZHRoICogOCkpOworCQl9IGVsc2UgeworCQkJc3RyaWRlID0gQUxJ
-R04obWluX3N0cmlkZSwgdGlsZV93aWR0aCk7CisJCX0KKworCQlyZXR1cm4gc3RyaWRlOwogCX0K
-IH0KIAotLSAKMi4yNS40CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
-ZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+From: Imre Deak <imre.deak@intel.com>
+
+All DPT FB plane offsets must be 2MB-aligned. The kernel takes care of
+aligning the offset for non-CCS framebuffers.  Make sure that the
+allocated CCS FB layout meets the alignment requirement.
+
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+---
+ lib/igt_fb.c | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
+
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index ce2aa6ce..ab52ea9f 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -804,11 +804,23 @@ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
+ 		return (uint64_t) fb->strides[plane] *
+ 			ALIGN(fb->plane_height[plane], tile_height);
+ 	} else if (is_gen12_ccs_plane(fb, plane)) {
++		uint64_t size;
++
+ 		/* The AUX CCS surface must be page aligned */
+-		return (uint64_t)fb->strides[plane] *
++		size = (uint64_t)fb->strides[plane] *
+ 			ALIGN(fb->plane_height[plane], 64);
++
++		/*
++		 * On ADL_P CCS color planes must be 2MB aligned, until remapping
++		 * support is added for CCS FBs.
++		 */
++		if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)))
++			size = ALIGN(size, 2 * 1024 * 1024);
++
++		return size;
+ 	} else {
+ 		unsigned int tile_width, tile_height;
++		uint64_t size;
+ 
+ 		igt_get_fb_tile_size(fb->fd, fb->modifier, fb->plane_bpp[plane],
+ 				     &tile_width, &tile_height);
+@@ -817,8 +829,18 @@ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
+ 		if (is_gen12_ccs_modifier(fb->modifier))
+ 			tile_height *= 4;
+ 
+-		return (uint64_t) fb->strides[plane] *
++		size = (uint64_t)fb->strides[plane] *
+ 			ALIGN(fb->plane_height[plane], tile_height);
++
++		/*
++		 * On ADL_P CCS color planes must be 2MB aligned, until remapping
++		 * support is added for CCS FBs.
++		 */
++		if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)) &&
++		    is_ccs_modifier(fb->modifier))
++			size = ALIGN(size, 2 * 1024 * 1024);
++
++		return size;
+ 	}
+ }
+ 
+-- 
+2.25.4
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
