@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 35C2C6E434
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Jun 2021 13:23:38 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Fri, 4 Jun 2021 13:23:31 +0000
-Message-ID: <BY5PR11MB437255D907715EC3015493DC893B9@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <1622176543-12759-1-git-send-email-vidya.srinivas@intel.com>
- <1622739294-14346-1-git-send-email-vidya.srinivas@intel.com>
- <CO6PR11MB55697A244AF4A8C34D0B278B8D3B9@CO6PR11MB5569.namprd11.prod.outlook.com>
-In-Reply-To: <CO6PR11MB55697A244AF4A8C34D0B278B8D3B9@CO6PR11MB5569.namprd11.prod.outlook.com>
-Content-Language: en-US
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43D896E47A
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Jun 2021 13:31:56 +0000 (UTC)
+Date: Fri, 4 Jun 2021 09:31:42 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Message-ID: <YLorPkfLZ9D+V+RJ@intel.com>
+References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
+ <20210518103344.2264397-11-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_color: Remove gamma code from
- degamma tests
+Content-Disposition: inline
+In-Reply-To: <20210518103344.2264397-11-alan.previn.teres.alexis@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 10/17] Add test where both src and dest
+ are protected
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,133 +23,261 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Shankar,
- Uma" <uma.shankar@intel.com>
-Cc: "Lin, Charlton" <charlton.lin@intel.com>, "Latvala,
- Petri" <petri.latvala@intel.com>
+To: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thank you very much Bhanu. I have addressed your review comments and re-submitted the patch.
-I have kept (degamma linear + solid colors) vs (max degamma + gradient colors) now as suggested by you.
-(No degamma + solid colors) vs (max degamma + gradient colors) gives CRC mismatch on both tigerlake and jasperlake.
-
-Kindly check rev 3 https://patchwork.freedesktop.org/patch/437193/?series=90719&rev=3 submitted.
-
-Regards
-Vidya
-
------Original Message-----
-From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com> 
-Sent: Friday, June 4, 2021 4:42 PM
-To: Srinivas, Vidya <vidya.srinivas@intel.com>; igt-dev@lists.freedesktop.org; Shankar, Uma <uma.shankar@intel.com>
-Cc: Lin, Charlton <charlton.lin@intel.com>; Latvala, Petri <petri.latvala@intel.com>
-Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_color: Remove gamma code from degamma tests
-
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of 
-> Vidya Srinivas
-> Sent: Thursday, June 3, 2021 10:25 PM
-> To: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
-> Cc: Lin, Charlton <charlton.lin@intel.com>; Latvala, Petri 
-> <petri.latvala@intel.com>
-> Subject: [igt-dev] [PATCH i-g-t] tests/kms_color: Remove gamma code 
-> from degamma tests
+On Tue, May 18, 2021 at 03:33:37AM -0700, Alan Previn wrote:
+> When both the source and destination surfaces are
+> protected, the destination pixel result of the 3d
+> copy operation would be the same as the source. By
+> appending this test case to the end of the prior
+> test (raw-src to protected-dest) and reusing the
+> previous' test destination as the current source,
+> we can prove that new-source was decrypted properly
+> as we would see the difference in results: repeating
+> the same render operation but with a src buffer
+> that is protected in this case yields matching
+> (but still encrypted) output rendered pixels.
 > 
-> CRC should be collected without degamma transformation and after 
-> drawing gradient with degamma LUT.
-> This patch removes things which are not related to degamma and makes 
-> it similar to pipe gamma test.
-> 
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+> Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 > ---
->  tests/kms_color.c | 16 ++++++----------
->  1 file changed, 6 insertions(+), 10 deletions(-)
+>  tests/i915/gem_pxp.c | 144 +++++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 133 insertions(+), 11 deletions(-)
 > 
-> diff --git a/tests/kms_color.c b/tests/kms_color.c index 
-> 3a42532a5c27..2c9821cdecce 100644
-> --- a/tests/kms_color.c
-> +++ b/tests/kms_color.c
-> @@ -31,8 +31,7 @@ static void test_pipe_degamma(data_t *data,  {
->  	igt_output_t *output;
->  	igt_display_t *display = &data->display;
-> -	gamma_lut_t *degamma_linear, *degamma_full;
-> -	gamma_lut_t *gamma_linear;
-> +	gamma_lut_t *degamma_full;
->  	color_t red_green_blue[] = {
->  		{ 1.0, 0.0, 0.0 },
->  		{ 0.0, 1.0, 0.0 },
-> @@ -42,11 +41,8 @@ static void test_pipe_degamma(data_t *data,
->  	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT));
->  	igt_require(igt_pipe_obj_has_prop(primary->pipe, 
-> IGT_CRTC_GAMMA_LUT));
-> 
-> -	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
->  	degamma_full = generate_table_max(data->degamma_lut_size);
-> 
-> -	gamma_linear = generate_table(data->gamma_lut_size, 1.0);
-> -
->  	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe,
-> output) {
->  		drmModeModeInfo *mode;
->  		struct igt_fb fb_modeset, fb;
-> @@ -75,8 +71,7 @@ static void test_pipe_degamma(data_t *data,
-> 
->  		igt_plane_set_fb(primary, &fb_modeset);
->  		disable_ctm(primary->pipe);
-> -		disable_degamma(primary->pipe);
-> -		set_gamma(data, primary->pipe, gamma_linear);
+> diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+> index 5a29024a..2f2d2716 100644
+> --- a/tests/i915/gem_pxp.c
+> +++ b/tests/i915/gem_pxp.c
+> @@ -308,29 +308,51 @@ static void fill_bo_content(int i915, uint32_t bo, uint32_t size, uint32_t initc
+>  
+>  #define COMPARE_COLOR_READIBLE     1
+>  #define COMPARE_COLOR_UNREADIBLE   2
+> +#define COMPARE_BUFFER_READIBLE    3
+> +#define COMPARE_BUFFER_UNREADIBLE  4
+> +#define COPY_BUFFER                5
+>  #define COMPARE_N_PIXELS_VERBOSELY 0
+>  
+> -static void assert_bo_content_check(int i915, uint32_t bo, int compare_op,
+> -				    uint32_t size, uint32_t color)
+> +static void assert_bo_content_check(int i915, uint32_t bo, int compare_op, uint32_t size,
+> +				    uint32_t color, uint32_t *auxptr, int auxsize)
+>  {
+> -	uint32_t *ptr, *ptrtmp;
+> +	uint32_t *ptr, *ptrtmp, *auxtmp;
+>  	int loop = 0, num_matches = 0;
+>  	uint32_t value;
+> -	bool op_readible = (compare_op == COMPARE_COLOR_READIBLE);
+> +	bool op_readible = ((compare_op == COMPARE_COLOR_READIBLE) ||
+> +		 (compare_op == COMPARE_BUFFER_READIBLE));
+> +	bool chk_buff = ((compare_op == COMPARE_BUFFER_READIBLE) ||
+> +		 (compare_op == COMPARE_BUFFER_UNREADIBLE));
 
-Please Disable the gamma here.
+why do we need to differentiate between color and buffer if they
+are doing the same thing everywhere?
 
-> +		set_degamma(data, primary->pipe, degamma_full);
->  		igt_display_commit(&data->display);
-> 
->  		/* Draw solid colors with no degamma transformation. */
+well, I'm assuming this is a future case, so anyway:
 
-This comment is misleading. In this patch, we are applying max degamma and comparing the CRCs b/w solid colors & gradient colors.
 
-But, I can see CRC comparison between
-(linear/no degamma  + solid colors) and (max degamma + gradient colors) is the best option. 
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-> @@ -92,7 +87,6 @@ static void test_pipe_degamma(data_t *data,
->  		 */
->  		paint_gradient_rectangles(data, mode, red_green_blue, &fb);
->  		igt_plane_set_fb(primary, &fb);
-> -		set_degamma(data, primary->pipe, degamma_full);
->  		igt_display_commit(&data->display);
->  		igt_wait_for_vblank(data->drm_fd,
->  				display->pipes[primary->pipe->pipe].crtc_offset);
-> @@ -105,13 +99,13 @@ static void test_pipe_degamma(data_t *data,
-> 
->  		igt_plane_set_fb(primary, NULL);
->  		igt_output_set_pipe(output, PIPE_NONE);
 
-We must reset (disable) the degamma before exiting the test.
 
-- Bhanu
-
-> +		igt_display_commit2(&data->display, data->display.is_atomic ?
-> +							COMMIT_ATOMIC : COMMIT_LEGACY);
->  		igt_remove_fb(data->drm_fd, &fb);
->  		igt_remove_fb(data->drm_fd, &fb_modeset);
+> +	bool copy_buff = (compare_op == COPY_BUFFER);
+>  
+>  	ptr = gem_mmap__device_coherent(i915, bo, 0, size, PROT_READ);
+>  	ptrtmp = ptr;
+>  
+> +	if (chk_buff || copy_buff) {
+> +		if (auxsize < size)
+> +			auxptr = NULL;
+> +		igt_assert(auxptr);
+> +		auxtmp = auxptr;
+> +	}
+> +
+>  	if (COMPARE_N_PIXELS_VERBOSELY) {
+>  		igt_info("--------->>>\n");
+>  		while (loop < COMPARE_N_PIXELS_VERBOSELY && loop < (size/4)) {
+>  			value = *ptrtmp;
+> -			igt_info("Color read = 0x%08x ", value);
+> -			igt_info("expected %c= 0x%08x)\n", op_readible?'=':'!', color);
+> +			if (chk_buff)
+> +				color = *auxtmp;
+> +			if (copy_buff)
+> +				igt_info("Color copy = 0x%08x\n", value);
+> +			else {
+> +				igt_info("Color read = 0x%08x ", value);
+> +				igt_info("expected %c= 0x%08x)\n", op_readible?'=':'!', color);
+> +			}
+> +			++auxtmp;
+>  			++ptrtmp;
+>  			++loop;
+>  		}
+>  		igt_info("<<<---------\n");
+> +		auxtmp = auxptr;
+>  		ptrtmp = ptr;
+>  		loop = 0;
 >  	}
-> 
-> -	free_lut(degamma_linear);
->  	free_lut(degamma_full);
-> -	free_lut(gamma_linear);
+> @@ -338,8 +360,25 @@ static void assert_bo_content_check(int i915, uint32_t bo, int compare_op,
+>  	/* count all pixels for matches */
+>  	while (loop++ < (size/4)) {
+>  		value = *ptrtmp;
+> -		if (value == color)
+> -			++num_matches;
+> +		switch (compare_op) {
+> +		case COMPARE_COLOR_READIBLE:
+> +		case COMPARE_COLOR_UNREADIBLE:
+> +			if (value == color)
+> +				++num_matches;
+> +			break;
+> +		case COMPARE_BUFFER_READIBLE:
+> +		case COMPARE_BUFFER_UNREADIBLE:
+> +			if (value == (*auxtmp))
+> +				++num_matches;
+> +			++auxtmp;
+> +			break;
+> +		case COPY_BUFFER:
+> +			*auxtmp = value;
+> +			++auxtmp;
+> +			break;
+> +		default:
+> +			break;
+> +		}
+>  		++ptrtmp;
+>  	}
+>  
+> @@ -361,7 +400,8 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size
+>  	igt_assert_eq(ret, 0);
+>  	igt_assert(bo);
+>  	fill_bo_content(i915, bo, size, init_color);
+> -	assert_bo_content_check(i915, bo, COMPARE_COLOR_READIBLE, size, init_color);
+> +	assert_bo_content_check(i915, bo, COMPARE_COLOR_READIBLE,
+> +				size, init_color, NULL, 0);
+>  
+>  	return bo;
 >  }
-> 
->  /*
-> @@ -191,6 +185,8 @@ static void test_pipe_gamma(data_t *data,
-> 
->  		igt_plane_set_fb(primary, NULL);
->  		igt_output_set_pipe(output, PIPE_NONE);
-> +		igt_display_commit2(&data->display, data->display.is_atomic ?
-> +							COMMIT_ATOMIC : COMMIT_LEGACY);
->  		igt_remove_fb(data->drm_fd, &fb);
->  		igt_remove_fb(data->drm_fd, &fb_modeset);
+> @@ -379,6 +419,7 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size
+>  #define TSTSURF_FILLCOLOR2  0xdeaddead
+>  #define TSTSURF_INITCOLOR1  0x12341234
+>  #define TSTSURF_INITCOLOR2  0x56785678
+> +#define TSTSURF_INITCOLOR3  0xabcdabcd
+>  
+>  static void test_render_baseline(int i915)
+>  {
+> @@ -413,7 +454,7 @@ static void test_render_baseline(int i915)
+>  	gem_sync(i915, dstbo);
+>  
+>  	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_READIBLE,
+> -				TSTSURF_SIZE, TSTSURF_FILLCOLOR1);
+> +				TSTSURF_SIZE, TSTSURF_FILLCOLOR1, NULL, 0);
+>  
+>  	intel_bb_destroy(ibb);
+>  	intel_buf_destroy(srcbuf);
+> @@ -464,13 +505,92 @@ static void test_render_pxp_src_to_protdest(int i915)
+>  	gem_sync(i915, dstbo);
+>  
+>  	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
+> -				TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
+> +				TSTSURF_SIZE, TSTSURF_FILLCOLOR2, NULL, 0);
+> +
+> +	intel_bb_destroy(ibb);
+> +	intel_buf_destroy(srcbuf);
+> +	gem_close(i915, srcbo);
+> +	intel_buf_destroy(dstbuf);
+> +	gem_close(i915, dstbo);
+> +	gem_context_destroy(i915, ctx);
+> +	buf_ops_destroy(bops);
+> +}
+> +
+> +static void test_render_pxp_protsrc_to_protdest(int i915)
+> +{
+> +	uint32_t ctx, srcbo, dstbo, dstbo2;
+> +	struct intel_buf *srcbuf, *dstbuf, *dstbuf2;
+> +	struct buf_ops *bops;
+> +	struct intel_bb *ibb;
+> +	uint32_t devid;
+> +	int ret;
+> +	uint32_t encrypted[TSTSURF_SIZE/TSTSURF_BYTESPP];
+> +
+> +	devid = intel_get_drm_devid(i915);
+> +	igt_assert(devid);
+> +
+> +	bops = buf_ops_create(i915);
+> +	igt_assert(bops);
+> +
+> +	/*
+> +	 * Perform a protected render operation but only label
+> +	 * the dest as protected. After rendering, the content
+> +	 * should be encrypted
+> +	 */
+> +	ret = create_ctx_with_params(i915, true, true, true, false, &ctx);
+> +	igt_assert_eq(ret, 0);
+> +	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
+> +	ibb = intel_bb_create_with_context(i915, ctx, 4096);
+> +	igt_assert(ibb);
+> +	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
+> +
+> +	dstbo = alloc_and_fill_dest_buff(i915, true, TSTSURF_SIZE, TSTSURF_INITCOLOR2);
+> +	dstbuf = intel_buf_create_using_handle(bops, dstbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
+> +						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
+> +	intel_buf_set_pxp(dstbuf, true);
+> +
+> +	srcbo = alloc_and_fill_dest_buff(i915, false, TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
+> +	srcbuf = intel_buf_create_using_handle(bops, srcbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
+> +						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
+> +
+> +	gen12_render_copyfunc(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
+> +	gem_sync(i915, dstbo);
+> +
+> +	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
+> +				TSTSURF_SIZE, TSTSURF_FILLCOLOR2, NULL, 0);
+> +
+> +	/*
+> +	 * Reuse prior dst as the new-src and create dst2 as the new-dest.
+> +	 * Take a copy of encrypted content from new-src for comparison after render
+> +	 * operation. After the rendering, we should find no difference in content
+> +	 * since both new-src and new-dest are labelled as encrypted. HW should read
+> +	 * and decrypt new-src, perform the render and re-encrypt when going into
+> +	 * new-dest
+> +	 */
+> +	assert_bo_content_check(i915, dstbo, COPY_BUFFER,
+> +				TSTSURF_SIZE, 0, encrypted, TSTSURF_SIZE);
+> +
+> +	dstbo2 = alloc_and_fill_dest_buff(i915, false, TSTSURF_SIZE, TSTSURF_INITCOLOR3);
+> +	dstbuf2 = intel_buf_create_using_handle(bops, dstbo2, TSTSURF_WIDTH, TSTSURF_HEIGHT,
+> +						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
+> +	intel_buf_set_pxp(dstbuf2, true);
+> +	intel_buf_set_pxp(dstbuf, true);/*this time, src is protected*/
+> +
+> +	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
+> +
+> +	gen12_render_copyfunc(ibb, dstbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf2, 0, 0);
+> +	gem_sync(i915, dstbo2);
+> +
+> +	assert_bo_content_check(i915, dstbo2, COMPARE_BUFFER_READIBLE,
+> +				TSTSURF_SIZE, 0, encrypted, TSTSURF_SIZE);
+>  
+>  	intel_bb_destroy(ibb);
+>  	intel_buf_destroy(srcbuf);
+>  	gem_close(i915, srcbo);
+>  	intel_buf_destroy(dstbuf);
+>  	gem_close(i915, dstbo);
+> +	intel_buf_destroy(dstbuf2);
+> +	gem_close(i915, dstbo2);
+>  	gem_context_destroy(i915, ctx);
+>  	buf_ops_destroy(bops);
+>  }
+> @@ -548,6 +668,8 @@ igt_main
+>  			test_render_baseline(i915);
+>  		igt_subtest("protected-raw-src-copy-not-readible")
+>  			test_render_pxp_src_to_protdest(i915);
+> +		igt_subtest("protected-encrypted-src-copy-not-readible")
+> +			test_render_pxp_protsrc_to_protdest(i915);
 >  	}
-> --
-> 2.7.4
+>  
+>  	igt_fixture {
+> -- 
+> 2.25.1
 > 
 > _______________________________________________
 > igt-dev mailing list
