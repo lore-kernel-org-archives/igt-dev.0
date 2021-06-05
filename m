@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5CFC26E43C
- for <igt-dev@lists.freedesktop.org>; Sat,  5 Jun 2021 01:08:00 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A29236E81E
+ for <igt-dev@lists.freedesktop.org>; Sat,  5 Jun 2021 01:30:22 +0000 (UTC)
 From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
-Date: Sat, 5 Jun 2021 01:07:56 +0000
-Message-ID: <256530184ff5c6a18dc46b3d7c6deca13a386874.camel@intel.com>
+Date: Sat, 5 Jun 2021 01:30:15 +0000
+Message-ID: <e08cdb24f070450b7de247bc98d74e35997cf739.camel@intel.com>
 References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
- <20210518103344.2264397-18-alan.previn.teres.alexis@intel.com>
- <YLo7d2H3IM7ioEcq@intel.com>
-In-Reply-To: <YLo7d2H3IM7ioEcq@intel.com>
+ <20210518103344.2264397-10-alan.previn.teres.alexis@intel.com>
+ <YLopEQeWZ40kV59k@intel.com>
+In-Reply-To: <YLopEQeWZ40kV59k@intel.com>
 Content-Language: en-US
-Content-ID: <436D15285AB59F43B6A14DFB58D6FF33@namprd11.prod.outlook.com>
+Content-ID: <64502EA2410B8E48A982B9518BE6D2CA@namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 17/17] tests/i915_pxp: CRC validation
- for display tests.
+Subject: Re: [igt-dev] [PATCH i-g-t 09/17] Add subtest to copy raw source to
+ protected dest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,79 +25,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Shankar, Uma" <uma.shankar@intel.com>, "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
 Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, 2021-06-04 at 10:40 -0400, Rodrigo Vivi wrote:
-> On Tue, May 18, 2021 at 03:33:44AM -0700, Alan Previn wrote:
-> > From: Karthik B S <karthik.b.s@intel.com>
+On Fri, 2021-06-04 at 09:22 -0400, Rodrigo Vivi wrote:
+> On Tue, May 18, 2021 at 03:33:36AM -0700, Alan Previn wrote:
+> > Add subtest to 3d-copy raw source buffer (with
+> > known readible content) to a destination buffer
+> > marked as protected with a protected session using
+> > default session keys. The destination buffer is
+> > verified to be different from the source (when
+> > read via CPU) because its encrypted.
 > > 
-> > Added subtests to validate pxp using CRC validation.
-> > 
-> > Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> Cc: Uma Shankar <uma.shankar@intel.com>
-> 
+> > Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 > > ---
-> >  tests/i915/gem_pxp.c | 286
-> > ++++++++++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 283 insertions(+), 3 deletions(-)
+> >  tests/i915/gem_pxp.c | 55
+> > ++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 55 insertions(+)
 > > 
 > > diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-> > index 179fb742..728c925a 100644
-> > +		if (hdcp) {
-> > +			/* Disable HDCP and collect CRC */
-> > +			igt_output_set_prop_value(hdcp_output[0],
-> > IGT_CONNECTOR_CONTENT_PROTECTION,
-> > +						  CP_UNDESIRED);
-> > +			igt_display_commit2(display, COMMIT_ATOMIC);
-> > +			ret = wait_for_prop_value(hdcp_output[0],
-> > CP_UNDESIRED,
-> > +						  KERNEL_DISABLE_TIME_A
-> > LLOWED_MSEC);
-> > +			igt_assert_f(ret, "Content Protection not
-> > cleared\n");
-> > +
-> > +			igt_plane_set_fb(plane, &protected_fb);
-> > +			igt_fb_set_size(&protected_fb, plane, mode-
-> > >hdisplay, mode->vdisplay);
-> > +			igt_plane_set_size(plane, mode->hdisplay, mode-
-> > >vdisplay);
-> > +
-> > +			igt_display_commit2(display, COMMIT_ATOMIC);
-> > +			igt_pipe_crc_collect_crc(pipe_crc, &new_crc);
-> > +			igt_assert_f(!igt_check_crc_equal(&ref_crc,
-> > &new_crc),
-> > +				    "CRC's expected to be different
-> > after HDCP is disabled\n");
+> > index b1415efc..5a29024a 100644
+> > --- a/tests/i915/gem_pxp.c
+> > +++ b/tests/i915/gem_pxp.c
+> > @@ -376,7 +376,9 @@ static uint32_t alloc_and_fill_dest_buff(int
+> > i915, bool protected, uint32_t size
+> >  #define TSTSURF_STRIDE      (TSTSURF_WIDTH*TSTSURF_BYTESPP)
+> >  #define TSTSURF_SIZE        (TSTSURF_STRIDE*TSTSURF_HEIGHT)
+> >  #define TSTSURF_FILLCOLOR1  0xfaceface
+> > +#define TSTSURF_FILLCOLOR2  0xdeaddead
+> >  #define TSTSURF_INITCOLOR1  0x12341234
+> > +#define TSTSURF_INITCOLOR2  0x56785678
 > 
-> The CRC is at the pipe level, but I believe it is right to expect
-> that
-> after disabling the HDCP we will get different CRC.
-> 
-> +Uma to help me to confirm this.
-> 
-> But also, I'm asking myself if this test case here is really bringing
-> any value to PXP itself. To me, it looks like it is only testing
-> HDCP disable scenario... nothing to do with the PXP flow.
-> 
-> With the HDCP removed, or with Uma confirming my assumption is right
-> and that I'm wrong about the value-added, feel free to use:
+> I couldn't understand why we can't simply reuse the ones who were
+> there
+> already, but anyway:
 > 
 
-If i recall our earlier conversations on test requirements, we wanted
-to ensure that the HW had indeed changed the key or completely disabled
-plane decryption in response to the teardown (i.e. disabling hdcp).
-With that in mind, I thought pipe crc is not a reflection of hdcp
-encryption state - i thought that was the transcoder CRC. So Pipe CRC
-really does reflect the content (and, as such, plane decryption) unless
-the plane is disabled or occluded by another plane (which is never the
-case in this controlled IGT environment). But lets hear from Uma - i
-maybe crc input-signal.
+Since this operation required me to start with a raw-src, then encrypt
+it once to a dest-buf and then reuse that dest-buf as another source in
+a second render operation, i wanted to ensure that none of the initial
+color values of that second operation happenned to be the same as the
+first operation. This is to avoid the event of stale data from re-used
+memory not cleared properly (a bug we want to catch?) and missing it as
+we setup the buffers for the second render.
 
+We could perhaps forgo FILLCOLOR2 but since you gave the rv-b, I'm
+assuming i can skip this.
+
+Thanks again btw.
+
+> 
 > Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > 
-> > 
+> 
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
