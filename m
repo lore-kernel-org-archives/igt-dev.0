@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E4416E43B
- for <igt-dev@lists.freedesktop.org>; Sat,  5 Jun 2021 00:46:16 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Sat, 5 Jun 2021 00:46:14 +0000
-Message-ID: <676543733e4f1266bc381e276963b6f6478542ad.camel@intel.com>
-References: <20210604203927.494340-1-matthew.d.roper@intel.com>
- <20210604203927.494340-7-matthew.d.roper@intel.com>
-In-Reply-To: <20210604203927.494340-7-matthew.d.roper@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CFC26E43C
+ for <igt-dev@lists.freedesktop.org>; Sat,  5 Jun 2021 01:08:00 +0000 (UTC)
+From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
+Date: Sat, 5 Jun 2021 01:07:56 +0000
+Message-ID: <256530184ff5c6a18dc46b3d7c6deca13a386874.camel@intel.com>
+References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
+ <20210518103344.2264397-18-alan.previn.teres.alexis@intel.com>
+ <YLo7d2H3IM7ioEcq@intel.com>
+In-Reply-To: <YLo7d2H3IM7ioEcq@intel.com>
 Content-Language: en-US
-Content-ID: <5D645CA9FD07F144BE6BB290CA6A57EB@intel.com>
+Content-ID: <436D15285AB59F43B6A14DFB58D6FF33@namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 6/6] lib/i915: Add ADL-P plane offset
- restriction for CCS framebuffers
+Subject: Re: [igt-dev] [PATCH i-g-t 17/17] tests/i915_pxp: CRC validation
+ for display tests.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,53 +21,84 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Roper,
- Matthew D" <matthew.d.roper@intel.com>
+To: "Shankar, Uma" <uma.shankar@intel.com>, "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCAyMDIxLTA2LTA0IGF0IDEzOjM5IC0wNzAwLCBNYXR0IFJvcGVyIHdyb3RlOg0KPiBG
-cm9tOiBJbXJlIERlYWsgPGltcmUuZGVha0BpbnRlbC5jb20+DQo+IA0KPiBBbGwgRFBUIEZCIHBs
-YW5lIG9mZnNldHMgbXVzdCBiZSAyTUItYWxpZ25lZC4gVGhlIGtlcm5lbCB0YWtlcyBjYXJlIG9m
-DQo+IGFsaWduaW5nIHRoZSBvZmZzZXQgZm9yIG5vbi1DQ1MgZnJhbWVidWZmZXJzLiAgTWFrZSBz
-dXJlIHRoYXQgdGhlDQo+IGFsbG9jYXRlZCBDQ1MgRkIgbGF5b3V0IG1lZXRzIHRoZSBhbGlnbm1l
-bnQgcmVxdWlyZW1lbnQuDQo+IA0KDQpSZXZpZXdlZC1ieTogSm9zw6kgUm9iZXJ0byBkZSBTb3V6
-YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+DQoNCj4gU2lnbmVkLW9mZi1ieTogSW1yZSBEZWFrIDxp
-bXJlLmRlYWtAaW50ZWwuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBNYXR0IFJvcGVyIDxtYXR0aGV3
-LmQucm9wZXJAaW50ZWwuY29tPg0KPiAtLS0NCj4gIGxpYi9pZ3RfZmIuYyB8IDI2ICsrKysrKysr
-KysrKysrKysrKysrKysrKy0tDQo+ICAxIGZpbGUgY2hhbmdlZCwgMjQgaW5zZXJ0aW9ucygrKSwg
-MiBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9saWIvaWd0X2ZiLmMgYi9saWIvaWd0
-X2ZiLmMNCj4gaW5kZXggY2UyYWE2Y2UuLmFiNTJlYTlmIDEwMDY0NA0KPiAtLS0gYS9saWIvaWd0
-X2ZiLmMNCj4gKysrIGIvbGliL2lndF9mYi5jDQo+IEBAIC04MDQsMTEgKzgwNCwyMyBAQCBzdGF0
-aWMgdWludDY0X3QgY2FsY19wbGFuZV9zaXplKHN0cnVjdCBpZ3RfZmIgKmZiLCBpbnQgcGxhbmUp
-DQo+ICAJCXJldHVybiAodWludDY0X3QpIGZiLT5zdHJpZGVzW3BsYW5lXSAqDQo+ICAJCQlBTElH
-TihmYi0+cGxhbmVfaGVpZ2h0W3BsYW5lXSwgdGlsZV9oZWlnaHQpOw0KPiAgCX0gZWxzZSBpZiAo
-aXNfZ2VuMTJfY2NzX3BsYW5lKGZiLCBwbGFuZSkpIHsNCj4gKwkJdWludDY0X3Qgc2l6ZTsNCj4g
-Kw0KPiAgCQkvKiBUaGUgQVVYIENDUyBzdXJmYWNlIG11c3QgYmUgcGFnZSBhbGlnbmVkICovDQo+
-IC0JCXJldHVybiAodWludDY0X3QpZmItPnN0cmlkZXNbcGxhbmVdICoNCj4gKwkJc2l6ZSA9ICh1
-aW50NjRfdClmYi0+c3RyaWRlc1twbGFuZV0gKg0KPiAgCQkJQUxJR04oZmItPnBsYW5lX2hlaWdo
-dFtwbGFuZV0sIDY0KTsNCj4gKw0KPiArCQkvKg0KPiArCQkgKiBPbiBBRExfUCBDQ1MgY29sb3Ig
-cGxhbmVzIG11c3QgYmUgMk1CIGFsaWduZWQsIHVudGlsIHJlbWFwcGluZw0KPiArCQkgKiBzdXBw
-b3J0IGlzIGFkZGVkIGZvciBDQ1MgRkJzLg0KPiArCQkgKi8NCj4gKwkJaWYgKElTX0FMREVSTEFL
-RV9QKGludGVsX2dldF9kcm1fZGV2aWQoZmItPmZkKSkpDQo+ICsJCQlzaXplID0gQUxJR04oc2l6
-ZSwgMiAqIDEwMjQgKiAxMDI0KTsNCj4gKw0KPiArCQlyZXR1cm4gc2l6ZTsNCj4gIAl9IGVsc2Ug
-ew0KPiAgCQl1bnNpZ25lZCBpbnQgdGlsZV93aWR0aCwgdGlsZV9oZWlnaHQ7DQo+ICsJCXVpbnQ2
-NF90IHNpemU7DQo+ICANCj4gIAkJaWd0X2dldF9mYl90aWxlX3NpemUoZmItPmZkLCBmYi0+bW9k
-aWZpZXIsIGZiLT5wbGFuZV9icHBbcGxhbmVdLA0KPiAgCQkJCSAgICAgJnRpbGVfd2lkdGgsICZ0
-aWxlX2hlaWdodCk7DQo+IEBAIC04MTcsOCArODI5LDE4IEBAIHN0YXRpYyB1aW50NjRfdCBjYWxj
-X3BsYW5lX3NpemUoc3RydWN0IGlndF9mYiAqZmIsIGludCBwbGFuZSkNCj4gIAkJaWYgKGlzX2dl
-bjEyX2Njc19tb2RpZmllcihmYi0+bW9kaWZpZXIpKQ0KPiAgCQkJdGlsZV9oZWlnaHQgKj0gNDsN
-Cj4gIA0KPiAtCQlyZXR1cm4gKHVpbnQ2NF90KSBmYi0+c3RyaWRlc1twbGFuZV0gKg0KPiArCQlz
-aXplID0gKHVpbnQ2NF90KWZiLT5zdHJpZGVzW3BsYW5lXSAqDQo+ICAJCQlBTElHTihmYi0+cGxh
-bmVfaGVpZ2h0W3BsYW5lXSwgdGlsZV9oZWlnaHQpOw0KPiArDQo+ICsJCS8qDQo+ICsJCSAqIE9u
-IEFETF9QIENDUyBjb2xvciBwbGFuZXMgbXVzdCBiZSAyTUIgYWxpZ25lZCwgdW50aWwgcmVtYXBw
-aW5nDQo+ICsJCSAqIHN1cHBvcnQgaXMgYWRkZWQgZm9yIENDUyBGQnMuDQo+ICsJCSAqLw0KPiAr
-CQlpZiAoSVNfQUxERVJMQUtFX1AoaW50ZWxfZ2V0X2RybV9kZXZpZChmYi0+ZmQpKSAmJg0KPiAr
-CQkgICAgaXNfY2NzX21vZGlmaWVyKGZiLT5tb2RpZmllcikpDQo+ICsJCQlzaXplID0gQUxJR04o
-c2l6ZSwgMiAqIDEwMjQgKiAxMDI0KTsNCj4gKw0KPiArCQlyZXR1cm4gc2l6ZTsNCj4gIAl9DQo+
-ICB9DQo+ICANCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
-cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On Fri, 2021-06-04 at 10:40 -0400, Rodrigo Vivi wrote:
+> On Tue, May 18, 2021 at 03:33:44AM -0700, Alan Previn wrote:
+> > From: Karthik B S <karthik.b.s@intel.com>
+> > 
+> > Added subtests to validate pxp using CRC validation.
+> > 
+> > Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> Cc: Uma Shankar <uma.shankar@intel.com>
+> 
+> > ---
+> >  tests/i915/gem_pxp.c | 286
+> > ++++++++++++++++++++++++++++++++++++++++++-
+> >  1 file changed, 283 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+> > index 179fb742..728c925a 100644
+> > +		if (hdcp) {
+> > +			/* Disable HDCP and collect CRC */
+> > +			igt_output_set_prop_value(hdcp_output[0],
+> > IGT_CONNECTOR_CONTENT_PROTECTION,
+> > +						  CP_UNDESIRED);
+> > +			igt_display_commit2(display, COMMIT_ATOMIC);
+> > +			ret = wait_for_prop_value(hdcp_output[0],
+> > CP_UNDESIRED,
+> > +						  KERNEL_DISABLE_TIME_A
+> > LLOWED_MSEC);
+> > +			igt_assert_f(ret, "Content Protection not
+> > cleared\n");
+> > +
+> > +			igt_plane_set_fb(plane, &protected_fb);
+> > +			igt_fb_set_size(&protected_fb, plane, mode-
+> > >hdisplay, mode->vdisplay);
+> > +			igt_plane_set_size(plane, mode->hdisplay, mode-
+> > >vdisplay);
+> > +
+> > +			igt_display_commit2(display, COMMIT_ATOMIC);
+> > +			igt_pipe_crc_collect_crc(pipe_crc, &new_crc);
+> > +			igt_assert_f(!igt_check_crc_equal(&ref_crc,
+> > &new_crc),
+> > +				    "CRC's expected to be different
+> > after HDCP is disabled\n");
+> 
+> The CRC is at the pipe level, but I believe it is right to expect
+> that
+> after disabling the HDCP we will get different CRC.
+> 
+> +Uma to help me to confirm this.
+> 
+> But also, I'm asking myself if this test case here is really bringing
+> any value to PXP itself. To me, it looks like it is only testing
+> HDCP disable scenario... nothing to do with the PXP flow.
+> 
+> With the HDCP removed, or with Uma confirming my assumption is right
+> and that I'm wrong about the value-added, feel free to use:
+> 
+
+If i recall our earlier conversations on test requirements, we wanted
+to ensure that the HW had indeed changed the key or completely disabled
+plane decryption in response to the teardown (i.e. disabling hdcp).
+With that in mind, I thought pipe crc is not a reflection of hdcp
+encryption state - i thought that was the transcoder CRC. So Pipe CRC
+really does reflect the content (and, as such, plane decryption) unless
+the plane is disabled or occluded by another plane (which is never the
+case in this controlled IGT environment). But lets hear from Uma - i
+maybe crc input-signal.
+
+> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> 
+> > 
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
