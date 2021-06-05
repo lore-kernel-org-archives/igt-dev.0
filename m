@@ -1,14 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Sat, 5 Jun 2021 05:47:07 +0000
-Message-ID: <BY5PR11MB43726B16E7B6A404C9FFC4FF893A9@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <1622547939-8157-1-git-send-email-vidya.srinivas@intel.com>
- <CAJUqKUokxsKTRF0v4A-Oi5=n0wZJGQkLg94m0njESHQNcXcWew@mail.gmail.com>
-In-Reply-To: <CAJUqKUokxsKTRF0v4A-Oi5=n0wZJGQkLg94m0njESHQNcXcWew@mail.gmail.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_plane_alpha_blend: Fix
- coverage-vs-premult-vs-constant tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Sat, 05 Jun 2021 18:53:18 -0000
+Message-ID: <162291919881.31068.11356322738099324498@emeril.freedesktop.org>
+References: <20210604203927.494340-1-matthew.d.roper@intel.com>
+In-Reply-To: <20210604203927.494340-1-matthew.d.roper@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBTcGxp?=
+ =?utf-8?q?t_display/graphics_versions_and_add_ADL-P_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,63 +14,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
+To: Matt Roper <matthew.d.roper@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thank you very much Mark, for testing the patch and providing the "Tested-by" tag.
-
-Regards
-Vidya
-
------Original Message-----
-From: Mark Yacoub <markyacoub@chromium.org> 
-Sent: Saturday, June 5, 2021 12:12 AM
-To: Srinivas, Vidya <vidya.srinivas@intel.com>
-Cc: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
-Subject: Re: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_plane_alpha_blend: Fix coverage-vs-premult-vs-constant tests
-
-On Tue, Jun 1, 2021 at 7:54 AM Vidya Srinivas <vidya.srinivas@intel.com> wrote:
->
-> Few Gen11 systems show CRC mismatch. Make 
-> coverage-vs-premult-vs-constant code similar to constant_alpha_min or 
-> basic_alpha
->
-Tested on ChromeOS on JSL (Drawlat)
-Tested-by: Mark Yacoub <markyacoub@chromium.org>
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> ---
->  tests/kms_plane_alpha_blend.c | 4 ----
->  1 file changed, 4 deletions(-)
->
-> diff --git a/tests/kms_plane_alpha_blend.c 
-> b/tests/kms_plane_alpha_blend.c index a37cb27c7d62..224d79bd1749 
-> 100644
-> --- a/tests/kms_plane_alpha_blend.c
-> +++ b/tests/kms_plane_alpha_blend.c
-> @@ -447,10 +447,6 @@ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t
->         igt_display_t *display = &data->display;
->         igt_crc_t ref_crc = {}, crc = {};
->
-> -       /* Set a background color on the primary fb for testing */
-> -       if (plane->type != DRM_PLANE_TYPE_PRIMARY)
-> -               igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY), &data->gray_fb);
-> -
->         igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage");
->         igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
->         igt_display_commit2(display, COMMIT_ATOMIC);
-> --
-> 2.7.4
->
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogU3BsaXQgZGlzcGxheS9ncmFwaGljcyB2ZXJz
+aW9ucyBhbmQgYWRkIEFETC1QIChyZXYzKQpVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVk
+ZXNrdG9wLm9yZy9zZXJpZXMvOTEwNDAvClN0YXRlIDogZmFpbHVyZQoKPT0gU3VtbWFyeSA9PQoK
+SUdUIHBhdGNoc2V0IGJ1aWxkIGZhaWxlZCBvbiBsYXRlc3Qgc3VjY2Vzc2Z1bCBidWlsZAoxZmJj
+MWU3ZDYwMmY5NmE3ZjRlMmI5NTA1N2VlZjk5NDY1NmI4ZTc0IGk5MTUvZ2VtX2V4ZWNfc2NoZWR1
+bGU6IENoZWNrIGZvciB0aW1lc2xpY2luZwoKLi4vbGliL2ludGVsX2RldmljZV9pbmZvLmM6NDk5
+OjI6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyDigJhJTlRFTF9WR0FfREVWSUNF4oCZCiAg
+SU5URUxfVkdBX0RFVklDRShQQ0lfTUFUQ0hfQU5ZLCAmaW50ZWxfZ2VuZXJpY19pbmZvKSwKICBe
+fn5+fn5+fn5+fn5+fn5+Ci4uL2xpYi9pOTE1X3BjaWlkcy5oOjQxOjI6IG5vdGU6IChuZWFyIGlu
+aXRpYWxpemF0aW9uIGZvciDigJhpbnRlbF9kZXZpY2VfbWF0Y2hbMzAxXS5kZXZpY2VfaWTigJkp
+CiAgMHgwMzAwMDAsIDB4ZmYwMDAwLCAgIFwKICBefn5+fn5+fgouLi9saWIvaW50ZWxfZGV2aWNl
+X2luZm8uYzo0OTk6Mjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmElOVEVMX1ZHQV9E
+RVZJQ0XigJkKICBJTlRFTF9WR0FfREVWSUNFKFBDSV9NQVRDSF9BTlksICZpbnRlbF9nZW5lcmlj
+X2luZm8pLAogIF5+fn5+fn5+fn5+fn5+fn4KLi4vbGliL2k5MTVfcGNpaWRzLmg6NDE6MTI6IHdh
+cm5pbmc6IGV4Y2VzcyBlbGVtZW50cyBpbiBzY2FsYXIgaW5pdGlhbGl6ZXIKICAweDAzMDAwMCwg
+MHhmZjAwMDAsICAgXAogICAgICAgICAgICBefn5+fn5+fgouLi9saWIvaW50ZWxfZGV2aWNlX2lu
+Zm8uYzo0OTk6Mjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmElOVEVMX1ZHQV9ERVZJ
+Q0XigJkKICBJTlRFTF9WR0FfREVWSUNFKFBDSV9NQVRDSF9BTlksICZpbnRlbF9nZW5lcmljX2lu
+Zm8pLAogIF5+fn5+fn5+fn5+fn5+fn4KLi4vbGliL2k5MTVfcGNpaWRzLmg6NDE6MTI6IG5vdGU6
+IChuZWFyIGluaXRpYWxpemF0aW9uIGZvciDigJhpbnRlbF9kZXZpY2VfbWF0Y2hbMzAxXS5kZXZp
+Y2VfaWTigJkpCiAgMHgwMzAwMDAsIDB4ZmYwMDAwLCAgIFwKICAgICAgICAgICAgXn5+fn5+fn4K
+Li4vbGliL2ludGVsX2RldmljZV9pbmZvLmM6NDk5OjI6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBt
+YWNybyDigJhJTlRFTF9WR0FfREVWSUNF4oCZCiAgSU5URUxfVkdBX0RFVklDRShQQ0lfTUFUQ0hf
+QU5ZLCAmaW50ZWxfZ2VuZXJpY19pbmZvKSwKICBefn5+fn5+fn5+fn5+fn5+Ci4uL2xpYi9pOTE1
+X3BjaWlkcy5oOjQyOjI6IHdhcm5pbmc6IGV4Y2VzcyBlbGVtZW50cyBpbiBzY2FsYXIgaW5pdGlh
+bGl6ZXIKICAodW5zaWduZWQgbG9uZykgaW5mbyB9CiAgXgouLi9saWIvaW50ZWxfZGV2aWNlX2lu
+Zm8uYzo0OTk6Mjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmElOVEVMX1ZHQV9ERVZJ
+Q0XigJkKICBJTlRFTF9WR0FfREVWSUNFKFBDSV9NQVRDSF9BTlksICZpbnRlbF9nZW5lcmljX2lu
+Zm8pLAogIF5+fn5+fn5+fn5+fn5+fn4KLi4vbGliL2k5MTVfcGNpaWRzLmg6NDI6Mjogbm90ZTog
+KG5lYXIgaW5pdGlhbGl6YXRpb24gZm9yIOKAmGludGVsX2RldmljZV9tYXRjaFszMDFdLmRldmlj
+ZV9pZOKAmSkKICAodW5zaWduZWQgbG9uZykgaW5mbyB9CiAgXgouLi9saWIvaW50ZWxfZGV2aWNl
+X2luZm8uYzo0OTk6Mjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmElOVEVMX1ZHQV9E
+RVZJQ0XigJkKICBJTlRFTF9WR0FfREVWSUNFKFBDSV9NQVRDSF9BTlksICZpbnRlbF9nZW5lcmlj
+X2luZm8pLAogIF5+fn5+fn5+fn5+fn5+fn4KLi4vbGliL2ludGVsX2RldmljZV9pbmZvLmM6NDA2
+OjU3OiBlcnJvcjogbWlzc2luZyBicmFjZXMgYXJvdW5kIGluaXRpYWxpemVyIFstV2Vycm9yPW1p
+c3NpbmctYnJhY2VzXQogc3RhdGljIGNvbnN0IHN0cnVjdCBwY2lfaWRfbWF0Y2ggaW50ZWxfZGV2
+aWNlX21hdGNoW10gPSB7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIF4KLi4vbGliL2ludGVsX2RldmljZV9pbmZvLmM6NDk3OjI6CiAgSU5U
+RUxfQURMUF9JRFMoJmludGVsX2FsZGVybGFrZV9wX2luZm8pLAogIHsKLi4vbGliL2ludGVsX2Rl
+dmljZV9pbmZvLmM6NDA2OjU3OiBlcnJvcjogbWlzc2luZyBicmFjZXMgYXJvdW5kIGluaXRpYWxp
+emVyIFstV2Vycm9yPW1pc3NpbmctYnJhY2VzXQogc3RhdGljIGNvbnN0IHN0cnVjdCBwY2lfaWRf
+bWF0Y2ggaW50ZWxfZGV2aWNlX21hdGNoW10gPSB7CiAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF4KLi4vbGliL2ludGVsX2RldmljZV9pbmZv
+LmM6NDk3OjI6CiAgSU5URUxfQURMUF9JRFMoJmludGVsX2FsZGVybGFrZV9wX2luZm8pLAogIHsK
+Li4vbGliL2ludGVsX2RldmljZV9pbmZvLmM6NTAwOjE6CiB9OwogfQpjYzE6IHNvbWUgd2Fybmlu
+Z3MgYmVpbmcgdHJlYXRlZCBhcyBlcnJvcnMKbmluamE6IGJ1aWxkIHN0b3BwZWQ6IHN1YmNvbW1h
+bmQgZmFpbGVkLgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0
+dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
