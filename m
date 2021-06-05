@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DFB406E43B
- for <igt-dev@lists.freedesktop.org>; Sat,  5 Jun 2021 00:45:28 +0000 (UTC)
-From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
-Date: Sat, 5 Jun 2021 00:45:22 +0000
-Message-ID: <BYAPR11MB37842B9F40728102C508A9F48A3A9@BYAPR11MB3784.namprd11.prod.outlook.com>
-References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
- <20210518103344.2264397-17-alan.previn.teres.alexis@intel.com>
- <YLo2IPieki6cFs1Y@intel.com>
-In-Reply-To: <YLo2IPieki6cFs1Y@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E4416E43B
+ for <igt-dev@lists.freedesktop.org>; Sat,  5 Jun 2021 00:46:16 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Sat, 5 Jun 2021 00:46:14 +0000
+Message-ID: <676543733e4f1266bc381e276963b6f6478542ad.camel@intel.com>
+References: <20210604203927.494340-1-matthew.d.roper@intel.com>
+ <20210604203927.494340-7-matthew.d.roper@intel.com>
+In-Reply-To: <20210604203927.494340-7-matthew.d.roper@intel.com>
 Content-Language: en-US
+Content-ID: <5D645CA9FD07F144BE6BB290CA6A57EB@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 16/17] Verify protected surfaces are dma
- buffer sharable
+Subject: Re: [igt-dev] [PATCH i-g-t 6/6] lib/i915: Add ADL-P plane offset
+ restriction for CCS framebuffers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,172 +20,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Roper,
+ Matthew D" <matthew.d.roper@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thanks! :)
-
------Original Message-----
-From: Vivi, Rodrigo <rodrigo.vivi@intel.com> 
-Sent: Friday, June 4, 2021 7:18 AM
-To: Teres Alexis, Alan Previn <alan.previn.teres.alexis@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [igt-dev] [PATCH i-g-t 16/17] Verify protected surfaces are dma buffer sharable
-
-On Tue, May 18, 2021 at 03:33:43AM -0700, Alan Previn wrote:
-> Verify we can export a protected surface from protected context A into 
-> protected context B (with different client driver handles) and 
-> protected rendering is successful even after prior file handle is 
-> closed (i.e. pxp specific refcounting works).
-> 
-> Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-
-> ---
->  tests/i915/gem_pxp.c | 103 
-> +++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 103 insertions(+)
-> 
-> diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c index 
-> 69a3143a..179fb742 100644
-> --- a/tests/i915/gem_pxp.c
-> +++ b/tests/i915/gem_pxp.c
-> @@ -3,6 +3,7 @@
->   * Copyright (c) 2021 Intel Corporation
->   */
->  
-> +#include <fcntl.h>
->  #include "igt.h"
->  #include "i915/gem.h"
->  
-> @@ -618,6 +619,106 @@ static void test_render_pxp_protsrc_to_protdest(int i915)
->  	buf_ops_destroy(bops);
->  }
->  
-> +static int export_handle(int fd, uint32_t handle, int *outfd) {
-> +	struct drm_prime_handle args;
-> +	int ret;
-> +
-> +	args.handle = handle;
-> +	args.flags = DRM_CLOEXEC;
-> +	args.fd = -1;
-> +
-> +	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
-> +	if (ret)
-> +		ret = errno;
-> +	*outfd = args.fd;
-> +
-> +	return ret;
-> +}
-> +
-> +static void test_pxp_dmabuffshare_refcnt(void)
-> +{
-> +	uint32_t ctx[2], sbo[2], dbo[2];
-> +	struct intel_buf *sbuf[2], *dbuf[2];
-> +	struct buf_ops *bops[2];
-> +	struct intel_bb *ibb[2];
-> +	int fd[2], dmabuf_fd = 0, ret, n, num_matches = 0;
-> +	uint32_t encrypted[2][TSTSURF_SIZE/TSTSURF_BYTESPP];
-> +
-> +	/* First, create the client driver handles and
-> +	 * protected dest buffer (is exported via dma-buff
-> +	 * from first handle and imported to the second).
-> +	 */
-> +	for (n = 0; n < 2; ++n) {
-> +		fd[n] = drm_open_driver(DRIVER_INTEL);
-> +		igt_require(fd[n]);
-> +		if (n == 0) {
-> +			dbo[0] = alloc_and_fill_dest_buff(fd[0], true, TSTSURF_SIZE,
-> +							  TSTSURF_INITCOLOR1);
-> +		} else {
-> +			ret = export_handle(fd[0], dbo[0], &dmabuf_fd);
-> +			igt_assert(ret == 0);
-> +			dbo[1] = prime_fd_to_handle(fd[1], dmabuf_fd);
-> +			igt_assert(dbo[1]);
-> +		}
-> +	}
-> +	/* Repeat twice: Create a full set of assets to perform
-> +	 * a protected 3D session but using the same dest buffer
-> +	 * from above.
-> +	 */
-> +	for (n = 0; n < 2; ++n) {
-> +		ret = create_ctx_with_params(fd[n], true, true, true, false, &ctx[n]);
-> +		igt_assert_eq(ret, 0);
-> +		igt_assert_eq(get_ctx_protected_param(fd[n], ctx[n]), 1);
-> +		ibb[n] = intel_bb_create_with_context(fd[n], ctx[n], 4096);
-> +		intel_bb_set_pxp(ibb[n], true, DISPLAY_APPTYPE,
-> +				 I915_PROTECTED_CONTENT_DEFAULT_SESSION);
-> +
-> +		bops[n] = buf_ops_create(fd[n]);
-> +		if (n == 1)
-> +			fill_bo_content(fd[1], dbo[1], TSTSURF_SIZE, TSTSURF_INITCOLOR2);
-> +
-> +		dbuf[n] = intel_buf_create_using_handle(bops[n], dbo[n], TSTSURF_WIDTH,
-> +							TSTSURF_HEIGHT,	TSTSURF_BYTESPP*8, 0,
-> +							I915_TILING_NONE, 0);
-> +		intel_buf_set_pxp(dbuf[n], true);
-> +
-> +		sbo[n] = alloc_and_fill_dest_buff(fd[n], false, TSTSURF_SIZE, TSTSURF_FILLCOLOR1);
-> +		sbuf[n] = intel_buf_create_using_handle(bops[n], sbo[n], TSTSURF_WIDTH,
-> +							TSTSURF_HEIGHT, TSTSURF_BYTESPP*8, 0,
-> +							I915_TILING_NONE, 0);
-> +
-> +		gen12_render_copyfunc(ibb[n], sbuf[n], 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT,
-> +				      dbuf[n], 0, 0);
-> +		gem_sync(fd[n], dbo[n]);
-> +
-> +		assert_bo_content_check(fd[n], dbo[n], COMPARE_COLOR_UNREADIBLE, TSTSURF_SIZE,
-> +					TSTSURF_FILLCOLOR1, NULL, 0);
-> +		assert_bo_content_check(fd[n], dbo[n], COPY_BUFFER, TSTSURF_SIZE, 0, encrypted[n],
-> +					TSTSURF_SIZE);
-> +
-> +		/* free up all assets except the dest buffer to
-> +		 * verify dma buff refcounting is performed on
-> +		 * the protected dest buffer on the 2nd loop with
-> +		 * successful reuse in another protected render.
-> +		 */
-> +		intel_bb_destroy(ibb[n]);
-> +		intel_buf_destroy(sbuf[n]);
-> +		intel_buf_destroy(dbuf[n]);
-> +		gem_close(fd[n], sbo[n]);
-> +		gem_close(fd[n], dbo[n]);
-> +		gem_context_destroy(fd[n], ctx[n]);
-> +		close(fd[n]);
-> +	}
-> +
-> +	/* Verify that encrypted output across loops were equal */
-> +	for (n = 0; n < (TSTSURF_SIZE/4); ++n)
-> +		if (encrypted[0][n] == encrypted[1][n])
-> +			++num_matches;
-> +	igt_assert(num_matches == (TSTSURF_SIZE/4)); }
-> +
-> +
->  static void init_powermgt_resources(int i915, struct powermgt_data 
-> *pm)  {
->  	pm->debugfsdir = igt_debugfs_dir(i915); @@ -912,6 +1013,8 @@ 
-> igt_main
->  			test_render_pxp_src_to_protdest(i915);
->  		igt_subtest("protected-encrypted-src-copy-not-readible")
->  			test_render_pxp_protsrc_to_protdest(i915);
-> +		igt_subtest("dmabuf-shared-protected-dst-is-context-refcounted")
-> +			test_pxp_dmabuffshare_refcnt();
->  	}
->  	igt_subtest_group {
->  		igt_fixture {
-> --
-> 2.25.1
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gRnJpLCAyMDIxLTA2LTA0IGF0IDEzOjM5IC0wNzAwLCBNYXR0IFJvcGVyIHdyb3RlOg0KPiBG
+cm9tOiBJbXJlIERlYWsgPGltcmUuZGVha0BpbnRlbC5jb20+DQo+IA0KPiBBbGwgRFBUIEZCIHBs
+YW5lIG9mZnNldHMgbXVzdCBiZSAyTUItYWxpZ25lZC4gVGhlIGtlcm5lbCB0YWtlcyBjYXJlIG9m
+DQo+IGFsaWduaW5nIHRoZSBvZmZzZXQgZm9yIG5vbi1DQ1MgZnJhbWVidWZmZXJzLiAgTWFrZSBz
+dXJlIHRoYXQgdGhlDQo+IGFsbG9jYXRlZCBDQ1MgRkIgbGF5b3V0IG1lZXRzIHRoZSBhbGlnbm1l
+bnQgcmVxdWlyZW1lbnQuDQo+IA0KDQpSZXZpZXdlZC1ieTogSm9zw6kgUm9iZXJ0byBkZSBTb3V6
+YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+DQoNCj4gU2lnbmVkLW9mZi1ieTogSW1yZSBEZWFrIDxp
+bXJlLmRlYWtAaW50ZWwuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBNYXR0IFJvcGVyIDxtYXR0aGV3
+LmQucm9wZXJAaW50ZWwuY29tPg0KPiAtLS0NCj4gIGxpYi9pZ3RfZmIuYyB8IDI2ICsrKysrKysr
+KysrKysrKysrKysrKysrKy0tDQo+ICAxIGZpbGUgY2hhbmdlZCwgMjQgaW5zZXJ0aW9ucygrKSwg
+MiBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9saWIvaWd0X2ZiLmMgYi9saWIvaWd0
+X2ZiLmMNCj4gaW5kZXggY2UyYWE2Y2UuLmFiNTJlYTlmIDEwMDY0NA0KPiAtLS0gYS9saWIvaWd0
+X2ZiLmMNCj4gKysrIGIvbGliL2lndF9mYi5jDQo+IEBAIC04MDQsMTEgKzgwNCwyMyBAQCBzdGF0
+aWMgdWludDY0X3QgY2FsY19wbGFuZV9zaXplKHN0cnVjdCBpZ3RfZmIgKmZiLCBpbnQgcGxhbmUp
+DQo+ICAJCXJldHVybiAodWludDY0X3QpIGZiLT5zdHJpZGVzW3BsYW5lXSAqDQo+ICAJCQlBTElH
+TihmYi0+cGxhbmVfaGVpZ2h0W3BsYW5lXSwgdGlsZV9oZWlnaHQpOw0KPiAgCX0gZWxzZSBpZiAo
+aXNfZ2VuMTJfY2NzX3BsYW5lKGZiLCBwbGFuZSkpIHsNCj4gKwkJdWludDY0X3Qgc2l6ZTsNCj4g
+Kw0KPiAgCQkvKiBUaGUgQVVYIENDUyBzdXJmYWNlIG11c3QgYmUgcGFnZSBhbGlnbmVkICovDQo+
+IC0JCXJldHVybiAodWludDY0X3QpZmItPnN0cmlkZXNbcGxhbmVdICoNCj4gKwkJc2l6ZSA9ICh1
+aW50NjRfdClmYi0+c3RyaWRlc1twbGFuZV0gKg0KPiAgCQkJQUxJR04oZmItPnBsYW5lX2hlaWdo
+dFtwbGFuZV0sIDY0KTsNCj4gKw0KPiArCQkvKg0KPiArCQkgKiBPbiBBRExfUCBDQ1MgY29sb3Ig
+cGxhbmVzIG11c3QgYmUgMk1CIGFsaWduZWQsIHVudGlsIHJlbWFwcGluZw0KPiArCQkgKiBzdXBw
+b3J0IGlzIGFkZGVkIGZvciBDQ1MgRkJzLg0KPiArCQkgKi8NCj4gKwkJaWYgKElTX0FMREVSTEFL
+RV9QKGludGVsX2dldF9kcm1fZGV2aWQoZmItPmZkKSkpDQo+ICsJCQlzaXplID0gQUxJR04oc2l6
+ZSwgMiAqIDEwMjQgKiAxMDI0KTsNCj4gKw0KPiArCQlyZXR1cm4gc2l6ZTsNCj4gIAl9IGVsc2Ug
+ew0KPiAgCQl1bnNpZ25lZCBpbnQgdGlsZV93aWR0aCwgdGlsZV9oZWlnaHQ7DQo+ICsJCXVpbnQ2
+NF90IHNpemU7DQo+ICANCj4gIAkJaWd0X2dldF9mYl90aWxlX3NpemUoZmItPmZkLCBmYi0+bW9k
+aWZpZXIsIGZiLT5wbGFuZV9icHBbcGxhbmVdLA0KPiAgCQkJCSAgICAgJnRpbGVfd2lkdGgsICZ0
+aWxlX2hlaWdodCk7DQo+IEBAIC04MTcsOCArODI5LDE4IEBAIHN0YXRpYyB1aW50NjRfdCBjYWxj
+X3BsYW5lX3NpemUoc3RydWN0IGlndF9mYiAqZmIsIGludCBwbGFuZSkNCj4gIAkJaWYgKGlzX2dl
+bjEyX2Njc19tb2RpZmllcihmYi0+bW9kaWZpZXIpKQ0KPiAgCQkJdGlsZV9oZWlnaHQgKj0gNDsN
+Cj4gIA0KPiAtCQlyZXR1cm4gKHVpbnQ2NF90KSBmYi0+c3RyaWRlc1twbGFuZV0gKg0KPiArCQlz
+aXplID0gKHVpbnQ2NF90KWZiLT5zdHJpZGVzW3BsYW5lXSAqDQo+ICAJCQlBTElHTihmYi0+cGxh
+bmVfaGVpZ2h0W3BsYW5lXSwgdGlsZV9oZWlnaHQpOw0KPiArDQo+ICsJCS8qDQo+ICsJCSAqIE9u
+IEFETF9QIENDUyBjb2xvciBwbGFuZXMgbXVzdCBiZSAyTUIgYWxpZ25lZCwgdW50aWwgcmVtYXBw
+aW5nDQo+ICsJCSAqIHN1cHBvcnQgaXMgYWRkZWQgZm9yIENDUyBGQnMuDQo+ICsJCSAqLw0KPiAr
+CQlpZiAoSVNfQUxERVJMQUtFX1AoaW50ZWxfZ2V0X2RybV9kZXZpZChmYi0+ZmQpKSAmJg0KPiAr
+CQkgICAgaXNfY2NzX21vZGlmaWVyKGZiLT5tb2RpZmllcikpDQo+ICsJCQlzaXplID0gQUxJR04o
+c2l6ZSwgMiAqIDEwMjQgKiAxMDI0KTsNCj4gKw0KPiArCQlyZXR1cm4gc2l6ZTsNCj4gIAl9DQo+
+ICB9DQo+ICANCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
+cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
