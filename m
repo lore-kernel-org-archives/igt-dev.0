@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Sat, 5 Jun 2021 05:41:28 +0000
-Message-ID: <BY5PR11MB437201E1906C58CC0876C9BD893A9@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <1622176543-12759-1-git-send-email-vidya.srinivas@intel.com>
- <1622739294-14346-1-git-send-email-vidya.srinivas@intel.com>
- <CAJUqKUqu7QdTszSdDeNMRgVo3LfBd=qjYKb7rWsyVE60YwWYiw@mail.gmail.com>
-In-Reply-To: <CAJUqKUqu7QdTszSdDeNMRgVo3LfBd=qjYKb7rWsyVE60YwWYiw@mail.gmail.com>
+Date: Sat, 5 Jun 2021 05:44:20 +0000
+Message-ID: <BY5PR11MB43729A75936150CB989EBBE5893A9@BY5PR11MB4372.namprd11.prod.outlook.com>
+References: <1622176443-12682-1-git-send-email-vidya.srinivas@intel.com>
+ <YLTv/Z8j9rCf2koN@intel.com>
+ <BY5PR11MB4372AB95A5AC6DE9AC0FA552893F9@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <CAJUqKUr7VAmDwtouJ27Cc+VJZsXcpVYdCzqS3q7nVg6g3Vum1w@mail.gmail.com>
+In-Reply-To: <CAJUqKUr7VAmDwtouJ27Cc+VJZsXcpVYdCzqS3q7nVg6g3Vum1w@mail.gmail.com>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_color: Remove gamma code from
- degamma tests
+Subject: Re: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_prime: Aligned pitch to
+ 64 byte for Intel platforms
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,117 +18,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Mark Yacoub <markyacoub@chromium.org>
 Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "Lin,
- Charlton" <charlton.lin@intel.com>, "Latvala, Petri" <petri.latvala@intel.com>
+ Charlton" <charlton.lin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thank you very much Mark, for testing the patch and providing the "Tested-by" tag.
-
-Regards
-Vidya
-
------Original Message-----
-From: Mark Yacoub <markyacoub@chromium.org> 
-Sent: Friday, June 4, 2021 11:58 PM
-To: Srinivas, Vidya <vidya.srinivas@intel.com>
-Cc: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org; Almahallawy, Khaled <khaled.almahallawy@intel.com>; Lin, Charlton <charlton.lin@intel.com>; Latvala, Petri <petri.latvala@intel.com>
-Subject: Re: [PATCH i-g-t] tests/kms_color: Remove gamma code from degamma tests
-
-On Thu, Jun 3, 2021 at 1:04 PM Vidya Srinivas <vidya.srinivas@intel.com> wrote:
->
-> CRC should be collected without degamma transformation and after 
-> drawing gradient with degamma LUT.
-> This patch removes things which are not related to degamma and makes 
-> it similar to pipe gamma test.
->
-Tested on ChromeOS on TGL (Delbin) and JSL (Drawlat)
-Tested-by: Mark Yacoub <markyacoub@chromium.org>
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> ---
->  tests/kms_color.c | 16 ++++++----------
->  1 file changed, 6 insertions(+), 10 deletions(-)
->
-> diff --git a/tests/kms_color.c b/tests/kms_color.c index 
-> 3a42532a5c27..2c9821cdecce 100644
-> --- a/tests/kms_color.c
-> +++ b/tests/kms_color.c
-> @@ -31,8 +31,7 @@ static void test_pipe_degamma(data_t *data,  {
->         igt_output_t *output;
->         igt_display_t *display = &data->display;
-> -       gamma_lut_t *degamma_linear, *degamma_full;
-> -       gamma_lut_t *gamma_linear;
-> +       gamma_lut_t *degamma_full;
->         color_t red_green_blue[] = {
->                 { 1.0, 0.0, 0.0 },
->                 { 0.0, 1.0, 0.0 },
-> @@ -42,11 +41,8 @@ static void test_pipe_degamma(data_t *data,
->         igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT));
->         igt_require(igt_pipe_obj_has_prop(primary->pipe, 
-> IGT_CRTC_GAMMA_LUT));
->
-> -       degamma_linear = generate_table(data->degamma_lut_size, 1.0);
->         degamma_full = generate_table_max(data->degamma_lut_size);
->
-> -       gamma_linear = generate_table(data->gamma_lut_size, 1.0);
-> -
->         for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe, output) {
->                 drmModeModeInfo *mode;
->                 struct igt_fb fb_modeset, fb; @@ -75,8 +71,7 @@ static 
-> void test_pipe_degamma(data_t *data,
->
->                 igt_plane_set_fb(primary, &fb_modeset);
->                 disable_ctm(primary->pipe);
-> -               disable_degamma(primary->pipe);
-> -               set_gamma(data, primary->pipe, gamma_linear);
-> +               set_degamma(data, primary->pipe, degamma_full);
->                 igt_display_commit(&data->display);
->
->                 /* Draw solid colors with no degamma transformation. 
-> */ @@ -92,7 +87,6 @@ static void test_pipe_degamma(data_t *data,
->                  */
->                 paint_gradient_rectangles(data, mode, red_green_blue, &fb);
->                 igt_plane_set_fb(primary, &fb);
-> -               set_degamma(data, primary->pipe, degamma_full);
->                 igt_display_commit(&data->display);
->                 igt_wait_for_vblank(data->drm_fd,
->                                 
-> display->pipes[primary->pipe->pipe].crtc_offset);
-> @@ -105,13 +99,13 @@ static void test_pipe_degamma(data_t *data,
->
->                 igt_plane_set_fb(primary, NULL);
->                 igt_output_set_pipe(output, PIPE_NONE);
-> +               igt_display_commit2(&data->display, data->display.is_atomic ?
-> +                                                       COMMIT_ATOMIC 
-> + : COMMIT_LEGACY);
->                 igt_remove_fb(data->drm_fd, &fb);
->                 igt_remove_fb(data->drm_fd, &fb_modeset);
->         }
->
-> -       free_lut(degamma_linear);
->         free_lut(degamma_full);
-> -       free_lut(gamma_linear);
->  }
->
->  /*
-> @@ -191,6 +185,8 @@ static void test_pipe_gamma(data_t *data,
->
->                 igt_plane_set_fb(primary, NULL);
->                 igt_output_set_pipe(output, PIPE_NONE);
-> +               igt_display_commit2(&data->display, data->display.is_atomic ?
-> +                                                       COMMIT_ATOMIC 
-> + : COMMIT_LEGACY);
->                 igt_remove_fb(data->drm_fd, &fb);
->                 igt_remove_fb(data->drm_fd, &fb_modeset);
->         }
-> --
-> 2.7.4
->
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+VGhhbmsgeW91IHZlcnkgbXVjaCBNYXJrLCBmb3IgdGVzdGluZyB0aGUgcGF0Y2ggYW5kIHByb3Zp
+ZGluZyB0aGUgIlRlc3RlZC1ieSIgdGFnLg0KSSBzaGFsbCBpbmNvcnBvcmF0ZSB5b3UgcmV2aWV3
+IGNvbW1lbnRzIGFuZCBzdWJtaXQgdGhlIHBhdGNoLg0KDQpBZGRpdGlvbmFsbHksIHdlIGhhdmUg
+c3VibWl0dGVkIHRoZSBrZXJuZWwgYWx0ZXJuYXRpdmUgaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRl
+c2t0b3Aub3JnL3BhdGNoLzQzNjE5OS8NCg0KUmVnYXJkcw0KVmlkeWENCg0KLS0tLS1PcmlnaW5h
+bCBNZXNzYWdlLS0tLS0NCkZyb206IE1hcmsgWWFjb3ViIDxtYXJreWFjb3ViQGNocm9taXVtLm9y
+Zz4gDQpTZW50OiBTYXR1cmRheSwgSnVuZSA1LCAyMDIxIDEyOjI0IEFNDQpUbzogU3Jpbml2YXMs
+IFZpZHlhIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+DQpDYzogVmlsbGUgU3lyasOkbMOkIDx2
+aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnOyBpbnRlbC1nZnhAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBMaW4sIENoYXJsdG9uIDxjaGFy
+bHRvbi5saW5AaW50ZWwuY29tPg0KU3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXRd
+IFtSRkNdIHRlc3RzL2ttc19wcmltZTogQWxpZ25lZCBwaXRjaCB0byA2NCBieXRlIGZvciBJbnRl
+bCBwbGF0Zm9ybXMNCg0KT24gTW9uLCBNYXkgMzEsIDIwMjEgYXQgMTA6NDcgQU0gU3Jpbml2YXMs
+IFZpZHlhIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+IHdyb3RlOg0KPg0KPiBIZWxsbyBWaWxs
+ZSwNCj4NCj4gVGhhbmsgeW91IHZlcnkgbXVjaC4NCj4gQmVmb3JlIHJlYWNoaW5nIG91ciBpOTE1
+J3MgaTkxNV9nZW1fZHVtYl9jcmVhdGUsIGl0IGdvZXMgdG8gdmdlbV9nZW1fZHVtYl9jcmVhdGUg
+Zm9yIGttc19wcmltZS4NCj4NCj4gVGhlIHBpdGNoIGdldHMgY2FsY3VsYXRlZCB0aGVyZSBhbmQg
+aXQgaXMgbm90IDY0IGJ5dGUgYWxpZ25lZC4gRHVlIHRvIHRoaXMsIGludGVsX2ZyYW1lYnVmZmVy
+X2luaXQgcmVwb3J0cyAicGl0Y2ggbXVzdCBiZSA2NCBieXRlIGFsaWduZWQiDQo+IGFuZCBmcmFt
+ZWJ1ZmZlciBjcmVhdGlvbiBmYWlscy4gSSB0cmllZCBzdWJtaXR0aW5nIHZnZW0gcGF0Y2ggd2hl
+cmUgNjQgDQo+IGJ5dGUgYWxpZ25tZW50IGNhbiBiZSBkb25lIGluIHZnZW1fZ2VtX2R1bWJfY3Jl
+YXRlIGFuZCB0aGF0IGFsc28gcGFzc2VzLiBCdXQgd2UgZGlkIG5vdCBnZXQgYXBwcm92YWwgeWV0
+IGFzIGZldyBvZiB0aGVtIGZlbHQsIHZnZW0gaXMgZ2VuZXJpYyBhbmQgb3RoZXIgcGxhdGZvcm1z
+IG1pZ2h0IGZhaWwgaWYgd2UgZG8gNjQgYnl0ZSBhbGlnbm1lbnQgdGhlcmUuDQo+DQo+IEtpbmRs
+eSBzdWdnZXN0LiBUaGFua3MgYSBsb3QuDQo+DQo+IFJlZ2FyZHMNCj4gVmlkeWENCj4NCj4gLS0t
+LS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5z
+eXJqYWxhQGxpbnV4LmludGVsLmNvbT4NCj4gU2VudDogTW9uZGF5LCBNYXkgMzEsIDIwMjEgNzo0
+OCBQTQ0KPiBUbzogU3Jpbml2YXMsIFZpZHlhIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+DQo+
+IENjOiBpbnRlbC1nZnhAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBpZ3QtZGV2QGxpc3RzLmZyZWVk
+ZXNrdG9wLm9yZzsgDQo+IExpbiwgQ2hhcmx0b24gPGNoYXJsdG9uLmxpbkBpbnRlbC5jb20+DQo+
+IFN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW1BBVENIIGktZy10XSBbUkZDXSB0ZXN0cy9rbXNfcHJp
+bWU6IEFsaWduZWQgDQo+IHBpdGNoIHRvIDY0IGJ5dGUgZm9yIEludGVsIHBsYXRmb3Jtcw0KPg0K
+PiBPbiBGcmksIE1heSAyOCwgMjAyMSBhdCAxMDowNDowM0FNICswNTMwLCBWaWR5YSBTcmluaXZh
+cyB3cm90ZToNCj4gPiBGb3IgSW50ZWwgcGxhdGZvcm1zLCBwaXRjaCBuZWVkcyB0byBiZSA2NCBi
+eXRlIGFsaWduZWQuDQo+ID4gS2VybmVsIGNvZGUgdmdlbV9nZW1fZHVtYl9jcmVhdGUgd2hpY2gg
+aXMgcGxhdGZvcm0gZ2VuZXJpYyBjb2RlIA0KPiA+IGRvZXNudCBkbyB0aGUgYWxpZ25tZW50LiBU
+aGlzIGNhdXNlcyBmcmFtZSBidWZmZXIgY3JlYXRpb24gdG8gZmFpbCANCj4gPiBvbiBJbnRlbCBw
+bGF0Zm9ybXMgd2hlcmUgdGhlIHBpdGNoIGlzIG5vdCA2NCBieXRlIGFsaWduZWQuDQo+ID4NCj4g
+PiB0ZXN0czogdGVzdCBydW4gb24gSW50ZWwgcGxhdGZvcm1zIHdpdGggcGFuZWwgcmVzb2x1dGlv
+biAxMzY2eDc2OA0KPiA+DQpUZXN0ZWQgb24gQ2hyb21lT1Mgb24gSlNMIChEcmF3bGF0KS4NClRl
+c3RlZC1ieTogTWFyayBZYWNvdWIgPG1hcmt5YWNvdWJAY2hyb21pdW0ub3JnPg0KPiA+IFNpZ25l
+ZC1vZmYtYnk6IFZpZHlhIFNyaW5pdmFzIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+DQo+ID4g
+LS0tDQo+ID4gIHRlc3RzL2ttc19wcmltZS5jIHwgNSArKysrLQ0KPiA+ICAxIGZpbGUgY2hhbmdl
+ZCwgNCBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEv
+dGVzdHMva21zX3ByaW1lLmMgYi90ZXN0cy9rbXNfcHJpbWUuYyBpbmRleA0KPiA+IDhjYjJjYTJh
+OWRjMy4uZmRjOTQxZmU4MTAwIDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL2ttc19wcmltZS5jDQo+
+ID4gKysrIGIvdGVzdHMva21zX3ByaW1lLmMNCj4gPiBAQCAtNTEsNiArNTEsOCBAQCBzdGF0aWMg
+c3RydWN0IHsNCj4gPiAgICAgICB7IC5yID0gMS4wLCAuZyA9IDAuMCwgLmIgPSAwLjAsIC5jb2xv
+ciA9IDB4ZmZmZjAwMDAgfSwgIH07DQo+ID4NCj4gPiArYm9vbCBjaGVja19wbGF0Zm9ybTsNCkkg
+dGhpbmsgd2UgY2FuIGRvIGEgbW9yZSBwcmVjaXNlIG5hbWUgdG8gaW5kaWNhdGUgd2hpY2ggcGxh
+dGZvcm0uDQpTb21ldGhpbmcgbGlrZSBpc19pbnRlbF9kZXZpY2Ugb3IgaXNfaTkxNSB3b3VsZCBi
+ZSBtb3JlIGFwcHJvcHJpYXRlLg0KYWx0ZXJuYXRpdmVseSwgd2UgY2FuIGRyb3AgdGhlIGJvb2xl
+YW4gYW5kIGp1c3QgZG8gdGhlIGNoZWNrIHdoZW4gbmVlZGVkLg0KU28gaXQgd291bGQgbG9vayBz
+b21ldGhpbmcgbGlrZQ0KKyBpc19pOTE1X2RldmljZShmZCkgPyBBTElHTihzY3JhdGNoLT53aWR0
+aCwgNjQpIDogc2NyYXRjaC0+d2lkdGgsDQoNCj4gPiArDQo+ID4gIElHVF9URVNUX0RFU0NSSVBU
+SU9OKCJQcmltZSB0ZXN0cywgZm9jdXNpbmcgb24gS01TIHNpZGUiKTsNCj4gPg0KPiA+ICBzdGF0
+aWMgYm9vbCBoYXNfcHJpbWVfaW1wb3J0KGludCBmZCkgQEAgLTEwMSw3ICsxMDMsNyBAQCBzdGF0
+aWMgDQo+ID4gdm9pZCBwcmVwYXJlX3NjcmF0Y2goaW50IGV4cG9ydGVyX2ZkLCBzdHJ1Y3QgZHVt
+Yl9ibyAqc2NyYXRjaCwNCj4gPiAgICAgICBzY3JhdGNoLT5icHAgPSAzMjsNCj4gPg0KPiA+ICAg
+ICAgIHNjcmF0Y2gtPmhhbmRsZSA9IGttc3Rlc3RfZHVtYl9jcmVhdGUoZXhwb3J0ZXJfZmQsDQo+
+ID4gLSAgICAgICAgICAgICAgICAgICAgIHNjcmF0Y2gtPndpZHRoLA0KPiA+ICsgICAgICAgICAg
+ICAgICAgICAgICBjaGVja19wbGF0Zm9ybT8gQUxJR04oc2NyYXRjaC0+d2lkdGgsIDY0KTogDQo+
+ID4gKyBzY3JhdGNoLT53aWR0aCwNCj4NCj4gVGhlIGR1bWJfY3JlYXRlIGlvY3RsIGFscmVhZHkg
+ZG9lcyB0aGlzIGZvciB1cy4NCj4NCj4gPiAgICAgICAgICAgICAgICAgICAgICAgc2NyYXRjaC0+
+aGVpZ2h0LA0KPiA+ICAgICAgICAgICAgICAgICAgICAgICBzY3JhdGNoLT5icHAsDQo+ID4gICAg
+ICAgICAgICAgICAgICAgICAgICZzY3JhdGNoLT5waXRjaCwgQEAgLTI2Miw2ICsyNjQsNyBAQCBp
+Z3RfbWFpbg0KPiA+DQo+ID4gICAgICAgICAgICAgICAvKiBBTlkgPSBhbnl0aGluZyB0aGF0IGlz
+IG5vdCBWR0VNICovDQo+ID4gICAgICAgICAgICAgICBmaXJzdF9mZCA9IF9fZHJtX29wZW5fZHJp
+dmVyX2Fub3RoZXIoMCwgRFJJVkVSX0FOWSB8IA0KPiA+IERSSVZFUl9WR0VNKTsNCj4gPiArICAg
+ICAgICAgICAgIGNoZWNrX3BsYXRmb3JtID0gaXNfaTkxNV9kZXZpY2UoZmlyc3RfZmQpOw0KPiA+
+ICAgICAgICAgICAgICAgaWd0X3JlcXVpcmUoZmlyc3RfZmQgPj0gMCk7DQo+ID4NCj4gPiAgICAg
+ICAgICAgICAgIHNlY29uZF9mZCA9IF9fZHJtX29wZW5fZHJpdmVyX2Fub3RoZXIoMSwgRFJJVkVS
+X0FOWSB8IA0KPiA+IERSSVZFUl9WR0VNKTsNCj4gPiAtLQ0KPiA+IDIuNy40DQo+ID4NCj4gPiBf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0KPiA+IGlndC1k
+ZXYgbWFpbGluZyBsaXN0DQo+ID4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gPiBo
+dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYNCj4N
+Cj4gLS0NCj4gVmlsbGUgU3lyasOkbMOkDQo+IEludGVsDQo+IF9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fDQo+IGlndC1kZXYgbWFpbGluZyBsaXN0DQo+IGln
+dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IGh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg0KX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5m
+cmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9pZ3QtZGV2Cg==
