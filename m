@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7A45B6E435
- for <igt-dev@lists.freedesktop.org>; Sat,  5 Jun 2021 00:24:18 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Sat, 5 Jun 2021 00:24:15 +0000
-Message-ID: <b24231ec842a42547b10c1f09793f418e0e37c40.camel@intel.com>
-References: <20210604203927.494340-1-matthew.d.roper@intel.com>
- <20210604203927.494340-4-matthew.d.roper@intel.com>
-In-Reply-To: <20210604203927.494340-4-matthew.d.roper@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DFA906E435
+ for <igt-dev@lists.freedesktop.org>; Sat,  5 Jun 2021 00:27:08 +0000 (UTC)
+From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
+Date: Sat, 5 Jun 2021 00:27:05 +0000
+Message-ID: <BYAPR11MB3784368A2F9596E6C851F2668A3A9@BYAPR11MB3784.namprd11.prod.outlook.com>
+References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
+ <20210518103344.2264397-15-alan.previn.teres.alexis@intel.com>
+ <YLow/eRBdRCNgwD7@intel.com>
+In-Reply-To: <YLow/eRBdRCNgwD7@intel.com>
 Content-Language: en-US
-Content-ID: <6677C93C42508A4B9F4259B0A1BFB99B@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/6] lib/i915/adl-p: Basic ADL-P enabling
+Subject: Re: [igt-dev] [PATCH i-g-t 14/17] Verify execbuf ok with stale
+ prot-buff and regular context
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,58 +20,99 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Roper,
- Matthew D" <matthew.d.roper@intel.com>
-Cc: "Taylor, Clinton A" <clinton.a.taylor@intel.com>, "Heikkila,
- Juha-pekka" <juha-pekka.heikkila@intel.com>
+To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCAyMDIxLTA2LTA0IGF0IDEzOjM5IC0wNzAwLCBNYXR0IFJvcGVyIHdyb3RlOg0KPiBG
-cm9tOiBDbGludCBUYXlsb3IgPGNsaW50b24uYS50YXlsb3JAaW50ZWwuY29tPg0KPiANCg0KUmV2
-aWV3ZWQtYnk6IEpvc8OpIFJvYmVydG8gZGUgU291emEgPGpvc2Uuc291emFAaW50ZWwuY29tPg0K
-DQo+IENjOiBDYXogWW9rb3lhbWEgPGNhei55b2tveWFtYUBpbnRlbC5jb20+DQo+IENjOiBNaWth
-IEthaG9sYSA8bWlrYS5rYWhvbGFAaW50ZWwuY29tPg0KPiBDYzogU3dhdGkgU2hhcm1hIDxzd2F0
-aTIuc2hhcm1hQGludGVsLmNvbT4NCj4gQ2M6IEp1aGEtUGVra2EgSGVpa2tpbMOkIDxqdWhhLXBl
-a2thLmhlaWtraWxhQGludGVsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogQ2xpbnQgVGF5bG9yIDxj
-bGludG9uLmEudGF5bG9yQGludGVsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogTWF0dCBSb3BlciA8
-bWF0dGhldy5kLnJvcGVyQGludGVsLmNvbT4NCj4gLS0tDQo+ICBsaWIvaW50ZWxfY2hpcHNldC5o
-ICAgICB8IDIgKysNCj4gIGxpYi9pbnRlbF9kZXZpY2VfaW5mby5jIHwgOCArKysrKysrKw0KPiAg
-MiBmaWxlcyBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGli
-L2ludGVsX2NoaXBzZXQuaCBiL2xpYi9pbnRlbF9jaGlwc2V0LmgNCj4gaW5kZXggODdiM2JiYzQu
-LjJiNzk1NTI3IDEwMDY0NA0KPiAtLS0gYS9saWIvaW50ZWxfY2hpcHNldC5oDQo+ICsrKyBiL2xp
-Yi9pbnRlbF9jaGlwc2V0LmgNCj4gQEAgLTc4LDYgKzc4LDcgQEAgc3RydWN0IGludGVsX2Rldmlj
-ZV9pbmZvIHsNCj4gIAlib29sIGlzX3JvY2tldGxha2UgOiAxOw0KPiAgCWJvb2wgaXNfZGcxIDog
-MTsNCj4gIAlib29sIGlzX2FsZGVybGFrZV9zIDogMTsNCj4gKwlib29sIGlzX2FsZGVybGFrZV9w
-IDogMTsNCj4gIAljb25zdCBjaGFyICpjb2RlbmFtZTsNCj4gIH07DQo+ICANCj4gQEAgLTE4MCw2
-ICsxODEsNyBAQCB2b2lkIGludGVsX2NoZWNrX3BjaCh2b2lkKTsNCj4gICNkZWZpbmUgSVNfUk9D
-S0VUTEFLRShkZXZpZCkJKGludGVsX2dldF9kZXZpY2VfaW5mbyhkZXZpZCktPmlzX3JvY2tldGxh
-a2UpDQo+ICAjZGVmaW5lIElTX0RHMShkZXZpZCkJCShpbnRlbF9nZXRfZGV2aWNlX2luZm8oZGV2
-aWQpLT5pc19kZzEpDQo+ICAjZGVmaW5lIElTX0FMREVSTEFLRV9TKGRldmlkKQkoaW50ZWxfZ2V0
-X2RldmljZV9pbmZvKGRldmlkKS0+aXNfYWxkZXJsYWtlX3MpDQo+ICsjZGVmaW5lIElTX0FMREVS
-TEFLRV9QKGRldmlkKQkoaW50ZWxfZ2V0X2RldmljZV9pbmZvKGRldmlkKS0+aXNfYWxkZXJsYWtl
-X3ApDQo+ICANCj4gICNkZWZpbmUgSVNfR0VOKGRldmlkLCB4KQkoaW50ZWxfZ2V0X2RldmljZV9p
-bmZvKGRldmlkKS0+Z3JhcGhpY3NfdmVyID09IHgpDQo+ICAjZGVmaW5lIEFUX0xFQVNUX0dFTihk
-ZXZpZCwgeCkJKGludGVsX2dldF9kZXZpY2VfaW5mbyhkZXZpZCktPmdyYXBoaWNzX3ZlciA+PSB4
-KQ0KPiBkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2RldmljZV9pbmZvLmMgYi9saWIvaW50ZWxfZGV2
-aWNlX2luZm8uYw0KPiBpbmRleCAwYzA5ZjVjZC4uMDczMzg5NTcgMTAwNjQ0DQo+IC0tLSBhL2xp
-Yi9pbnRlbF9kZXZpY2VfaW5mby5jDQo+ICsrKyBiL2xpYi9pbnRlbF9kZXZpY2VfaW5mby5jDQo+
-IEBAIC0zOTYsNiArMzk2LDEzIEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3QgaW50ZWxfZGV2aWNlX2lu
-Zm8gaW50ZWxfYWxkZXJsYWtlX3NfaW5mbyA9IHsNCj4gIAkuY29kZW5hbWUgPSAiYWxkZXJsYWtl
-X3MiDQo+ICB9Ow0KPiAgDQo+ICtzdGF0aWMgY29uc3Qgc3RydWN0IGludGVsX2RldmljZV9pbmZv
-IGludGVsX2FsZGVybGFrZV9wX2luZm8gPSB7DQo+ICsJLmdyYXBoaWNzX3ZlciA9IDEyLA0KPiAr
-CS5kaXNwbGF5X3ZlciA9IDEzLA0KPiArCS5pc19hbGRlcmxha2VfcCA9IHRydWUsDQo+ICsJLmNv
-ZGVuYW1lID0gImFsZGVybGFrZV9wIg0KPiArfTsNCj4gKw0KPiAgc3RhdGljIGNvbnN0IHN0cnVj
-dCBwY2lfaWRfbWF0Y2ggaW50ZWxfZGV2aWNlX21hdGNoW10gPSB7DQo+ICAJSU5URUxfSTgxMF9J
-RFMoJmludGVsX2k4MTBfaW5mbyksDQo+ICAJSU5URUxfSTgxNV9JRFMoJmludGVsX2k4MTVfaW5m
-byksDQo+IEBAIC00ODcsNiArNDk0LDcgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBwY2lfaWRfbWF0
-Y2ggaW50ZWxfZGV2aWNlX21hdGNoW10gPSB7DQo+ICAJSU5URUxfREcxX0lEUygmaW50ZWxfZGcx
-X2luZm8pLA0KPiAgDQo+ICAJSU5URUxfQURMU19JRFMoJmludGVsX2FsZGVybGFrZV9zX2luZm8p
-LA0KPiArCUlOVEVMX0FETFBfSURTKCZpbnRlbF9hbGRlcmxha2VfcF9pbmZvKSwNCj4gIA0KPiAg
-CUlOVEVMX1ZHQV9ERVZJQ0UoUENJX01BVENIX0FOWSwgJmludGVsX2dlbmVyaWNfaW5mbyksDQo+
-ICB9Ow0KDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpp
-Z3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczov
-L2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+Will do - thanks.
+
+-----Original Message-----
+From: Vivi, Rodrigo <rodrigo.vivi@intel.com> 
+Sent: Friday, June 4, 2021 6:56 AM
+To: Teres Alexis, Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [igt-dev] [PATCH i-g-t 14/17] Verify execbuf ok with stale prot-buff and regular context
+
+On Tue, May 18, 2021 at 03:33:41AM -0700, Alan Previn wrote:
+> Add a check to verify that reusing a stale protected buffer in a 
+> gem_execbuff call, but using a regular (not-
+> protcted) context will succeed despite after a teardown
+       ^ typo
+
+with this fixed:
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+
+> (triggered by suspend-resume cycle).
+> 
+> This ensures that user space applications that choose not to opt-in 
+> for strict PXP teardown awareness (by using a regular context) won't 
+> suffer gem_execbuff failures if a protected buffer was among the 
+> assets used in any of its rendering operations.
+> 
+> Reuse the existing subtest to minimize the number of suspend resume 
+> cycles we take.
+> 
+> Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+> ---
+>  tests/i915/gem_pxp.c | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c index 
+> b4f369ae..e3c21c70 100644
+> --- a/tests/i915/gem_pxp.c
+> +++ b/tests/i915/gem_pxp.c
+> @@ -760,7 +760,7 @@ static void free_exec_assets(int i915, struct 
+> simple_exec_assets *data)  static void 
+> test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_data *pm)  {
+>  	int ret;
+> -	struct simple_exec_assets data[2] = {{0}, {0}};
+> +	struct simple_exec_assets data[3] = {{0}, {0}, {0}};
+>  	uint32_t ctx2;
+>  	struct intel_bb *ibb2;
+>  
+> @@ -777,6 +777,15 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
+>  	ret = gem_execbuf_flush_store_dw(i915, data[1].ibb, data[1].ctx, data[1].fencebuf);
+>  	igt_assert(ret == 0);
+>  
+> +	/*
+> +	 * For data[2]: Use non-pxp contexts but with protected buffers
+> +	 * to verify the "pxp-execution-opt-in" expectation where
+> +	 * execution will run without error (not buffer)
+> +	 */
+> +	prepare_exec_assets(i915, &data[2], false, true);
+> +	ret = gem_execbuf_flush_store_dw(i915, data[2].ibb, data[2].ctx, data[2].fencebuf);
+> +	igt_assert(ret == 0);
+> +
+>  	trigger_powermgt_suspend_cycle(i915, pm);
+>  
+>  	ret = gem_execbuf_flush_store_dw(i915, data[0].ibb, data[0].ctx, 
+> data[0].fencebuf); @@ -797,8 +806,12 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
+>  	ret = gem_execbuf_flush_store_dw(i915, ibb2, ctx2, data[1].fencebuf);
+>  	igt_assert_f((ret == -ENOEXEC), "Executing stale pxp buffer didn't 
+> fail with -ENOEXEC\n");
+>  
+> +	ret = gem_execbuf_flush_store_dw(i915, data[2].ibb, data[2].ctx, data[2].fencebuf);
+> +	igt_assert_f((ret == 0), "Opt-out-execution with stale pxp buffer 
+> +didn't succeed\n");
+> +
+>  	free_exec_assets(i915, &data[0]);
+>  	free_exec_assets(i915, &data[1]);
+> +	free_exec_assets(i915, &data[2]);
+>  }
+>  
+>  igt_main
+> --
+> 2.25.1
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
