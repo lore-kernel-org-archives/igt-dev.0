@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Sat, 5 Jun 2021 05:39:19 +0000
-Message-ID: <BY5PR11MB43724C64D119079A29374E2F893A9@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <1622175883-12405-1-git-send-email-vidya.srinivas@intel.com>
- <CAJUqKUojeh3fv2KA7=xwOWtaF+axW0EuNk3PJ0iEqft_cFXTxg@mail.gmail.com>
-In-Reply-To: <CAJUqKUojeh3fv2KA7=xwOWtaF+axW0EuNk3PJ0iEqft_cFXTxg@mail.gmail.com>
+Date: Sat, 5 Jun 2021 05:41:28 +0000
+Message-ID: <BY5PR11MB437201E1906C58CC0876C9BD893A9@BY5PR11MB4372.namprd11.prod.outlook.com>
+References: <1622176543-12759-1-git-send-email-vidya.srinivas@intel.com>
+ <1622739294-14346-1-git-send-email-vidya.srinivas@intel.com>
+ <CAJUqKUqu7QdTszSdDeNMRgVo3LfBd=qjYKb7rWsyVE60YwWYiw@mail.gmail.com>
+In-Reply-To: <CAJUqKUqu7QdTszSdDeNMRgVo3LfBd=qjYKb7rWsyVE60YwWYiw@mail.gmail.com>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_flip.c: Fix subtests
- flip-vs-suspend
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_color: Remove gamma code from
+ degamma tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,55 +23,107 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Mark Yacoub <markyacoub@chromium.org>
 Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "Lin,
- Charlton" <charlton.lin@intel.com>
+ Charlton" <charlton.lin@intel.com>, "Latvala, Petri" <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thank you so much Mark. This patch is not required. I have abandoned it.
-We needed to stop tlsdate daemon which was holding the RTC lock (initctl stop tlsdated).
-
-Apologies for the same.
+Thank you very much Mark, for testing the patch and providing the "Tested-by" tag.
 
 Regards
 Vidya
 
 -----Original Message-----
 From: Mark Yacoub <markyacoub@chromium.org> 
-Sent: Saturday, June 5, 2021 12:17 AM
+Sent: Friday, June 4, 2021 11:58 PM
 To: Srinivas, Vidya <vidya.srinivas@intel.com>
-Cc: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org; Almahallawy, Khaled <khaled.almahallawy@intel.com>; Lin, Charlton <charlton.lin@intel.com>
-Subject: Re: [PATCH i-g-t] [RFC] tests/kms_flip.c: Fix subtests flip-vs-suspend
+Cc: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org; Almahallawy, Khaled <khaled.almahallawy@intel.com>; Lin, Charlton <charlton.lin@intel.com>; Latvala, Petri <petri.latvala@intel.com>
+Subject: Re: [PATCH i-g-t] tests/kms_color: Remove gamma code from degamma tests
 
-Tested it on ChromeOS and it runs well. But I think we should fix the root cause instead.
-
-On Fri, May 28, 2021 at 12:33 AM Vidya Srinivas <vidya.srinivas@intel.com> wrote:
+On Thu, Jun 3, 2021 at 1:04 PM Vidya Srinivas <vidya.srinivas@intel.com> wrote:
 >
-> Some Intel Gen11 systems are not able to do a RTC wake.
-> Instead change the default SUSPEND_TEST_NONE to SUSPEND_TEST_PLATFORM.
+> CRC should be collected without degamma transformation and after 
+> drawing gradient with degamma LUT.
+> This patch removes things which are not related to degamma and makes 
+> it similar to pipe gamma test.
 >
 Tested on ChromeOS on TGL (Delbin) and JSL (Drawlat)
 Tested-by: Mark Yacoub <markyacoub@chromium.org>
 > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 > ---
->  tests/kms_flip.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  tests/kms_color.c | 16 ++++++----------
+>  1 file changed, 6 insertions(+), 10 deletions(-)
 >
-> diff --git a/tests/kms_flip.c b/tests/kms_flip.c index 
-> 8f736652be90..8afac88c9b15 100755
-> --- a/tests/kms_flip.c
-> +++ b/tests/kms_flip.c
-> @@ -835,7 +835,8 @@ static bool run_test_step(struct test_output *o, 
-> unsigned int *events)
+> diff --git a/tests/kms_color.c b/tests/kms_color.c index 
+> 3a42532a5c27..2c9821cdecce 100644
+> --- a/tests/kms_color.c
+> +++ b/tests/kms_color.c
+> @@ -31,8 +31,7 @@ static void test_pipe_degamma(data_t *data,  {
+>         igt_output_t *output;
+>         igt_display_t *display = &data->display;
+> -       gamma_lut_t *degamma_linear, *degamma_full;
+> -       gamma_lut_t *gamma_linear;
+> +       gamma_lut_t *degamma_full;
+>         color_t red_green_blue[] = {
+>                 { 1.0, 0.0, 0.0 },
+>                 { 0.0, 1.0, 0.0 },
+> @@ -42,11 +41,8 @@ static void test_pipe_degamma(data_t *data,
+>         igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT));
+>         igt_require(igt_pipe_obj_has_prop(primary->pipe, 
+> IGT_CRTC_GAMMA_LUT));
 >
->         if (o->flags & TEST_SUSPEND)
->                 igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-> -                                             SUSPEND_TEST_NONE);
-> +                                             is_i915_device(drm_fd)?
-> +                                             
-> + SUSPEND_TEST_PLATFORM:SUSPEND_TEST_NONE);
+> -       degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+>         degamma_full = generate_table_max(data->degamma_lut_size);
 >
->         if (do_vblank && (o->flags & TEST_EINVAL) && o->vblank_state.count > 0)
->                 igt_assert(do_wait_for_vblank(o, o->pipe, target_seq, 
-> &vbl_reply)
+> -       gamma_linear = generate_table(data->gamma_lut_size, 1.0);
+> -
+>         for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe, output) {
+>                 drmModeModeInfo *mode;
+>                 struct igt_fb fb_modeset, fb; @@ -75,8 +71,7 @@ static 
+> void test_pipe_degamma(data_t *data,
+>
+>                 igt_plane_set_fb(primary, &fb_modeset);
+>                 disable_ctm(primary->pipe);
+> -               disable_degamma(primary->pipe);
+> -               set_gamma(data, primary->pipe, gamma_linear);
+> +               set_degamma(data, primary->pipe, degamma_full);
+>                 igt_display_commit(&data->display);
+>
+>                 /* Draw solid colors with no degamma transformation. 
+> */ @@ -92,7 +87,6 @@ static void test_pipe_degamma(data_t *data,
+>                  */
+>                 paint_gradient_rectangles(data, mode, red_green_blue, &fb);
+>                 igt_plane_set_fb(primary, &fb);
+> -               set_degamma(data, primary->pipe, degamma_full);
+>                 igt_display_commit(&data->display);
+>                 igt_wait_for_vblank(data->drm_fd,
+>                                 
+> display->pipes[primary->pipe->pipe].crtc_offset);
+> @@ -105,13 +99,13 @@ static void test_pipe_degamma(data_t *data,
+>
+>                 igt_plane_set_fb(primary, NULL);
+>                 igt_output_set_pipe(output, PIPE_NONE);
+> +               igt_display_commit2(&data->display, data->display.is_atomic ?
+> +                                                       COMMIT_ATOMIC 
+> + : COMMIT_LEGACY);
+>                 igt_remove_fb(data->drm_fd, &fb);
+>                 igt_remove_fb(data->drm_fd, &fb_modeset);
+>         }
+>
+> -       free_lut(degamma_linear);
+>         free_lut(degamma_full);
+> -       free_lut(gamma_linear);
+>  }
+>
+>  /*
+> @@ -191,6 +185,8 @@ static void test_pipe_gamma(data_t *data,
+>
+>                 igt_plane_set_fb(primary, NULL);
+>                 igt_output_set_pipe(output, PIPE_NONE);
+> +               igt_display_commit2(&data->display, data->display.is_atomic ?
+> +                                                       COMMIT_ATOMIC 
+> + : COMMIT_LEGACY);
+>                 igt_remove_fb(data->drm_fd, &fb);
+>                 igt_remove_fb(data->drm_fd, &fb_modeset);
+>         }
 > --
 > 2.7.4
 >
