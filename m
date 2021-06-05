@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A1E96E3BB
- for <igt-dev@lists.freedesktop.org>; Sat,  5 Jun 2021 19:29:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D7236E4CF
+ for <igt-dev@lists.freedesktop.org>; Sat,  5 Jun 2021 19:29:01 +0000 (UTC)
 From: Matt Roper <matthew.d.roper@intel.com>
-Date: Sat,  5 Jun 2021 12:28:49 -0700
-Message-Id: <20210605192853.555213-2-matthew.d.roper@intel.com>
+Date: Sat,  5 Jun 2021 12:28:52 -0700
+Message-Id: <20210605192853.555213-5-matthew.d.roper@intel.com>
 In-Reply-To: <20210605192853.555213-1-matthew.d.roper@intel.com>
 References: <20210605192853.555213-1-matthew.d.roper@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [CI 1/5] lib: sync i915_pciids.h with kernel
+Subject: [igt-dev] [CI 4/5] lib/i915/adl-p: Basic ADL-P enabling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,66 +16,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This synchronizes with kernel commit
-
-        760759f2cf71 ("drm/i915/adl_p: Add PCI Devices IDs")
-
-to bring in ADL-P PCI IDs as well as a couple more ADL-S IDs.
-
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Anusha Srivatsa <anusha.srivatsa@intel.com>
----
- lib/i915_pciids.h | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
-
-diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
-index ebd0dd1c..eee18fa5 100644
---- a/lib/i915_pciids.h
-+++ b/lib/i915_pciids.h
-@@ -640,9 +640,32 @@
- 	INTEL_VGA_DEVICE(0x4681, info), \
- 	INTEL_VGA_DEVICE(0x4682, info), \
- 	INTEL_VGA_DEVICE(0x4683, info), \
-+	INTEL_VGA_DEVICE(0x4688, info), \
-+	INTEL_VGA_DEVICE(0x4689, info), \
- 	INTEL_VGA_DEVICE(0x4690, info), \
- 	INTEL_VGA_DEVICE(0x4691, info), \
- 	INTEL_VGA_DEVICE(0x4692, info), \
- 	INTEL_VGA_DEVICE(0x4693, info)
- 
-+/* ADL-P */
-+#define INTEL_ADLP_IDS(info) \
-+	INTEL_VGA_DEVICE(0x46A0, info), \
-+	INTEL_VGA_DEVICE(0x46A1, info), \
-+	INTEL_VGA_DEVICE(0x46A2, info), \
-+	INTEL_VGA_DEVICE(0x46A3, info), \
-+	INTEL_VGA_DEVICE(0x46A6, info), \
-+	INTEL_VGA_DEVICE(0x46A8, info), \
-+	INTEL_VGA_DEVICE(0x46AA, info), \
-+	INTEL_VGA_DEVICE(0x462A, info), \
-+	INTEL_VGA_DEVICE(0x4626, info), \
-+	INTEL_VGA_DEVICE(0x4628, info), \
-+	INTEL_VGA_DEVICE(0x46B0, info), \
-+	INTEL_VGA_DEVICE(0x46B1, info), \
-+	INTEL_VGA_DEVICE(0x46B2, info), \
-+	INTEL_VGA_DEVICE(0x46B3, info), \
-+	INTEL_VGA_DEVICE(0x46C0, info), \
-+	INTEL_VGA_DEVICE(0x46C1, info), \
-+	INTEL_VGA_DEVICE(0x46C2, info), \
-+	INTEL_VGA_DEVICE(0x46C3, info)
-+
- #endif /* _I915_PCIIDS_H */
--- 
-2.25.4
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RnJvbTogQ2xpbnQgVGF5bG9yIDxjbGludG9uLmEudGF5bG9yQGludGVsLmNvbT4KCkNjOiBDYXog
+WW9rb3lhbWEgPGNhei55b2tveWFtYUBpbnRlbC5jb20+CkNjOiBNaWthIEthaG9sYSA8bWlrYS5r
+YWhvbGFAaW50ZWwuY29tPgpDYzogU3dhdGkgU2hhcm1hIDxzd2F0aTIuc2hhcm1hQGludGVsLmNv
+bT4KQ2M6IEp1aGEtUGVra2EgSGVpa2tpbMOkIDxqdWhhLXBla2thLmhlaWtraWxhQGludGVsLmNv
+bT4KU2lnbmVkLW9mZi1ieTogQ2xpbnQgVGF5bG9yIDxjbGludG9uLmEudGF5bG9yQGludGVsLmNv
+bT4KU2lnbmVkLW9mZi1ieTogTWF0dCBSb3BlciA8bWF0dGhldy5kLnJvcGVyQGludGVsLmNvbT4K
+UmV2aWV3ZWQtYnk6IEpvc8OpIFJvYmVydG8gZGUgU291emEgPGpvc2Uuc291emFAaW50ZWwuY29t
+PgotLS0KIGxpYi9pbnRlbF9jaGlwc2V0LmggICAgIHwgMiArKwogbGliL2ludGVsX2RldmljZV9p
+bmZvLmMgfCA4ICsrKysrKysrCiAyIGZpbGVzIGNoYW5nZWQsIDEwIGluc2VydGlvbnMoKykKCmRp
+ZmYgLS1naXQgYS9saWIvaW50ZWxfY2hpcHNldC5oIGIvbGliL2ludGVsX2NoaXBzZXQuaAppbmRl
+eCA4N2IzYmJjNC4uMmI3OTU1MjcgMTAwNjQ0Ci0tLSBhL2xpYi9pbnRlbF9jaGlwc2V0LmgKKysr
+IGIvbGliL2ludGVsX2NoaXBzZXQuaApAQCAtNzgsNiArNzgsNyBAQCBzdHJ1Y3QgaW50ZWxfZGV2
+aWNlX2luZm8gewogCWJvb2wgaXNfcm9ja2V0bGFrZSA6IDE7CiAJYm9vbCBpc19kZzEgOiAxOwog
+CWJvb2wgaXNfYWxkZXJsYWtlX3MgOiAxOworCWJvb2wgaXNfYWxkZXJsYWtlX3AgOiAxOwogCWNv
+bnN0IGNoYXIgKmNvZGVuYW1lOwogfTsKIApAQCAtMTgwLDYgKzE4MSw3IEBAIHZvaWQgaW50ZWxf
+Y2hlY2tfcGNoKHZvaWQpOwogI2RlZmluZSBJU19ST0NLRVRMQUtFKGRldmlkKQkoaW50ZWxfZ2V0
+X2RldmljZV9pbmZvKGRldmlkKS0+aXNfcm9ja2V0bGFrZSkKICNkZWZpbmUgSVNfREcxKGRldmlk
+KQkJKGludGVsX2dldF9kZXZpY2VfaW5mbyhkZXZpZCktPmlzX2RnMSkKICNkZWZpbmUgSVNfQUxE
+RVJMQUtFX1MoZGV2aWQpCShpbnRlbF9nZXRfZGV2aWNlX2luZm8oZGV2aWQpLT5pc19hbGRlcmxh
+a2VfcykKKyNkZWZpbmUgSVNfQUxERVJMQUtFX1AoZGV2aWQpCShpbnRlbF9nZXRfZGV2aWNlX2lu
+Zm8oZGV2aWQpLT5pc19hbGRlcmxha2VfcCkKIAogI2RlZmluZSBJU19HRU4oZGV2aWQsIHgpCShp
+bnRlbF9nZXRfZGV2aWNlX2luZm8oZGV2aWQpLT5ncmFwaGljc192ZXIgPT0geCkKICNkZWZpbmUg
+QVRfTEVBU1RfR0VOKGRldmlkLCB4KQkoaW50ZWxfZ2V0X2RldmljZV9pbmZvKGRldmlkKS0+Z3Jh
+cGhpY3NfdmVyID49IHgpCmRpZmYgLS1naXQgYS9saWIvaW50ZWxfZGV2aWNlX2luZm8uYyBiL2xp
+Yi9pbnRlbF9kZXZpY2VfaW5mby5jCmluZGV4IDBjMDlmNWNkLi4wNzMzODk1NyAxMDA2NDQKLS0t
+IGEvbGliL2ludGVsX2RldmljZV9pbmZvLmMKKysrIGIvbGliL2ludGVsX2RldmljZV9pbmZvLmMK
+QEAgLTM5Niw2ICszOTYsMTMgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBpbnRlbF9kZXZpY2VfaW5m
+byBpbnRlbF9hbGRlcmxha2Vfc19pbmZvID0gewogCS5jb2RlbmFtZSA9ICJhbGRlcmxha2VfcyIK
+IH07CiAKK3N0YXRpYyBjb25zdCBzdHJ1Y3QgaW50ZWxfZGV2aWNlX2luZm8gaW50ZWxfYWxkZXJs
+YWtlX3BfaW5mbyA9IHsKKwkuZ3JhcGhpY3NfdmVyID0gMTIsCisJLmRpc3BsYXlfdmVyID0gMTMs
+CisJLmlzX2FsZGVybGFrZV9wID0gdHJ1ZSwKKwkuY29kZW5hbWUgPSAiYWxkZXJsYWtlX3AiCit9
+OworCiBzdGF0aWMgY29uc3Qgc3RydWN0IHBjaV9pZF9tYXRjaCBpbnRlbF9kZXZpY2VfbWF0Y2hb
+XSA9IHsKIAlJTlRFTF9JODEwX0lEUygmaW50ZWxfaTgxMF9pbmZvKSwKIAlJTlRFTF9JODE1X0lE
+UygmaW50ZWxfaTgxNV9pbmZvKSwKQEAgLTQ4Nyw2ICs0OTQsNyBAQCBzdGF0aWMgY29uc3Qgc3Ry
+dWN0IHBjaV9pZF9tYXRjaCBpbnRlbF9kZXZpY2VfbWF0Y2hbXSA9IHsKIAlJTlRFTF9ERzFfSURT
+KCZpbnRlbF9kZzFfaW5mbyksCiAKIAlJTlRFTF9BRExTX0lEUygmaW50ZWxfYWxkZXJsYWtlX3Nf
+aW5mbyksCisJSU5URUxfQURMUF9JRFMoJmludGVsX2FsZGVybGFrZV9wX2luZm8pLAogCiAJSU5U
+RUxfVkdBX0RFVklDRShQQ0lfTUFUQ0hfQU5ZLCAmaW50ZWxfZ2VuZXJpY19pbmZvKSwKIH07Ci0t
+IAoyLjI1LjQKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBz
+Oi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
