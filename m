@@ -1,19 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EBE806E82F
- for <igt-dev@lists.freedesktop.org>; Sat,  5 Jun 2021 01:38:18 +0000 (UTC)
-From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
-Date: Sat, 5 Jun 2021 01:38:15 +0000
-Message-ID: <43b5bcf241ea2c2ca73b311c8a1a0c245fc87436.camel@intel.com>
-References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
- <20210518103344.2264397-11-alan.previn.teres.alexis@intel.com>
- <YLorPkfLZ9D+V+RJ@intel.com>
-In-Reply-To: <YLorPkfLZ9D+V+RJ@intel.com>
-Content-Language: en-US
-Content-ID: <A296C122939ABF44BFDAC26CA9285FA8@namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 10/17] Add test where both src and dest
- are protected
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Sat, 05 Jun 2021 05:13:04 -0000
+Message-ID: <162286998407.31069.16053528904101691603@emeril.freedesktop.org>
+References: <20210604203927.494340-1-matthew.d.roper@intel.com>
+In-Reply-To: <20210604203927.494340-1-matthew.d.roper@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBTcGxp?=
+ =?utf-8?q?t_display/graphics_versions_and_add_ADL-P_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,51 +14,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Matt Roper <matthew.d.roper@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, 2021-06-04 at 09:31 -0400, Rodrigo Vivi wrote:
-> On Tue, May 18, 2021 at 03:33:37AM -0700, Alan Previn wrote:
-> > -static void assert_bo_content_check(int i915, uint32_t bo, int
-> > compare_op,
-> > -				    uint32_t size, uint32_t color)
-> > +static void assert_bo_content_check(int i915, uint32_t bo, int
-> > compare_op, uint32_t size,
-> > +				    uint32_t color, uint32_t *auxptr,
-> > int auxsize)
-> >  {
-> > -	uint32_t *ptr, *ptrtmp;
-> > +	uint32_t *ptr, *ptrtmp, *auxtmp;
-> >  	int loop = 0, num_matches = 0;
-> >  	uint32_t value;
-> > -	bool op_readible = (compare_op == COMPARE_COLOR_READIBLE);
-> > +	bool op_readible = ((compare_op == COMPARE_COLOR_READIBLE) ||
-> > +		 (compare_op == COMPARE_BUFFER_READIBLE));
-> > +	bool chk_buff = ((compare_op == COMPARE_BUFFER_READIBLE) ||
-> > +		 (compare_op == COMPARE_BUFFER_UNREADIBLE));
-> 
-> why do we need to differentiate between color and buffer if they
-> are doing the same thing everywhere?
-> 
-> well, I'm assuming this is a future case, so anyway:
-> 
-Yes, depending on the subtest, we're comparing rendered buffers against
-a constant color value or we're comparing rendered buffers against an
-auxiliary buffer to compare against. In some subtests, they need to
-match and in other subtests they need to fail. that's why mirrored op
-definitions. Thanks.
-
-> 
-> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> 
-> 
-> 
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogU3BsaXQgZGlzcGxheS9ncmFwaGljcyB2ZXJz
+aW9ucyBhbmQgYWRkIEFETC1QIChyZXYyKQpVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVk
+ZXNrdG9wLm9yZy9zZXJpZXMvOTEwNDAvClN0YXRlIDogZmFpbHVyZQoKPT0gU3VtbWFyeSA9PQoK
+SUdUIHBhdGNoc2V0IGJ1aWxkIGZhaWxlZCBvbiBsYXRlc3Qgc3VjY2Vzc2Z1bCBidWlsZAoxZmJj
+MWU3ZDYwMmY5NmE3ZjRlMmI5NTA1N2VlZjk5NDY1NmI4ZTc0IGk5MTUvZ2VtX2V4ZWNfc2NoZWR1
+bGU6IENoZWNrIGZvciB0aW1lc2xpY2luZwoKLi4vbGliL2ludGVsX2RldmljZV9pbmZvLmM6NDk5
+OjI6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyDigJhJTlRFTF9WR0FfREVWSUNF4oCZCiAg
+SU5URUxfVkdBX0RFVklDRShQQ0lfTUFUQ0hfQU5ZLCAmaW50ZWxfZ2VuZXJpY19pbmZvKSwKICBe
+fn5+fn5+fn5+fn5+fn5+Ci4uL2xpYi9pOTE1X3BjaWlkcy5oOjQxOjI6IG5vdGU6IChuZWFyIGlu
+aXRpYWxpemF0aW9uIGZvciDigJhpbnRlbF9kZXZpY2VfbWF0Y2hbMzAxXS5kZXZpY2VfaWTigJkp
+CiAgMHgwMzAwMDAsIDB4ZmYwMDAwLCAgIFwKICBefn5+fn5+fgouLi9saWIvaW50ZWxfZGV2aWNl
+X2luZm8uYzo0OTk6Mjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmElOVEVMX1ZHQV9E
+RVZJQ0XigJkKICBJTlRFTF9WR0FfREVWSUNFKFBDSV9NQVRDSF9BTlksICZpbnRlbF9nZW5lcmlj
+X2luZm8pLAogIF5+fn5+fn5+fn5+fn5+fn4KLi4vbGliL2k5MTVfcGNpaWRzLmg6NDE6MTI6IHdh
+cm5pbmc6IGV4Y2VzcyBlbGVtZW50cyBpbiBzY2FsYXIgaW5pdGlhbGl6ZXIKICAweDAzMDAwMCwg
+MHhmZjAwMDAsICAgXAogICAgICAgICAgICBefn5+fn5+fgouLi9saWIvaW50ZWxfZGV2aWNlX2lu
+Zm8uYzo0OTk6Mjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmElOVEVMX1ZHQV9ERVZJ
+Q0XigJkKICBJTlRFTF9WR0FfREVWSUNFKFBDSV9NQVRDSF9BTlksICZpbnRlbF9nZW5lcmljX2lu
+Zm8pLAogIF5+fn5+fn5+fn5+fn5+fn4KLi4vbGliL2k5MTVfcGNpaWRzLmg6NDE6MTI6IG5vdGU6
+IChuZWFyIGluaXRpYWxpemF0aW9uIGZvciDigJhpbnRlbF9kZXZpY2VfbWF0Y2hbMzAxXS5kZXZp
+Y2VfaWTigJkpCiAgMHgwMzAwMDAsIDB4ZmYwMDAwLCAgIFwKICAgICAgICAgICAgXn5+fn5+fn4K
+Li4vbGliL2ludGVsX2RldmljZV9pbmZvLmM6NDk5OjI6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBt
+YWNybyDigJhJTlRFTF9WR0FfREVWSUNF4oCZCiAgSU5URUxfVkdBX0RFVklDRShQQ0lfTUFUQ0hf
+QU5ZLCAmaW50ZWxfZ2VuZXJpY19pbmZvKSwKICBefn5+fn5+fn5+fn5+fn5+Ci4uL2xpYi9pOTE1
+X3BjaWlkcy5oOjQyOjI6IHdhcm5pbmc6IGV4Y2VzcyBlbGVtZW50cyBpbiBzY2FsYXIgaW5pdGlh
+bGl6ZXIKICAodW5zaWduZWQgbG9uZykgaW5mbyB9CiAgXgouLi9saWIvaW50ZWxfZGV2aWNlX2lu
+Zm8uYzo0OTk6Mjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmElOVEVMX1ZHQV9ERVZJ
+Q0XigJkKICBJTlRFTF9WR0FfREVWSUNFKFBDSV9NQVRDSF9BTlksICZpbnRlbF9nZW5lcmljX2lu
+Zm8pLAogIF5+fn5+fn5+fn5+fn5+fn4KLi4vbGliL2k5MTVfcGNpaWRzLmg6NDI6Mjogbm90ZTog
+KG5lYXIgaW5pdGlhbGl6YXRpb24gZm9yIOKAmGludGVsX2RldmljZV9tYXRjaFszMDFdLmRldmlj
+ZV9pZOKAmSkKICAodW5zaWduZWQgbG9uZykgaW5mbyB9CiAgXgouLi9saWIvaW50ZWxfZGV2aWNl
+X2luZm8uYzo0OTk6Mjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmElOVEVMX1ZHQV9E
+RVZJQ0XigJkKICBJTlRFTF9WR0FfREVWSUNFKFBDSV9NQVRDSF9BTlksICZpbnRlbF9nZW5lcmlj
+X2luZm8pLAogIF5+fn5+fn5+fn5+fn5+fn4KLi4vbGliL2ludGVsX2RldmljZV9pbmZvLmM6NDA2
+OjU3OiBlcnJvcjogbWlzc2luZyBicmFjZXMgYXJvdW5kIGluaXRpYWxpemVyIFstV2Vycm9yPW1p
+c3NpbmctYnJhY2VzXQogc3RhdGljIGNvbnN0IHN0cnVjdCBwY2lfaWRfbWF0Y2ggaW50ZWxfZGV2
+aWNlX21hdGNoW10gPSB7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIF4KLi4vbGliL2ludGVsX2RldmljZV9pbmZvLmM6NDk3OjI6CiAgSU5U
+RUxfQURMUF9JRFMoJmludGVsX2FsZGVybGFrZV9wX2luZm8pLAogIHsKLi4vbGliL2ludGVsX2Rl
+dmljZV9pbmZvLmM6NDA2OjU3OiBlcnJvcjogbWlzc2luZyBicmFjZXMgYXJvdW5kIGluaXRpYWxp
+emVyIFstV2Vycm9yPW1pc3NpbmctYnJhY2VzXQogc3RhdGljIGNvbnN0IHN0cnVjdCBwY2lfaWRf
+bWF0Y2ggaW50ZWxfZGV2aWNlX21hdGNoW10gPSB7CiAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF4KLi4vbGliL2ludGVsX2RldmljZV9pbmZv
+LmM6NDk3OjI6CiAgSU5URUxfQURMUF9JRFMoJmludGVsX2FsZGVybGFrZV9wX2luZm8pLAogIHsK
+Li4vbGliL2ludGVsX2RldmljZV9pbmZvLmM6NTAwOjE6CiB9OwogfQpjYzE6IHNvbWUgd2Fybmlu
+Z3MgYmVpbmcgdHJlYXRlZCBhcyBlcnJvcnMKbmluamE6IGJ1aWxkIHN0b3BwZWQ6IHN1YmNvbW1h
+bmQgZmFpbGVkLgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0
+dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
