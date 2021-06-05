@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E99A46E1F9
- for <igt-dev@lists.freedesktop.org>; Sat,  5 Jun 2021 19:28:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A1E96E3BB
+ for <igt-dev@lists.freedesktop.org>; Sat,  5 Jun 2021 19:29:00 +0000 (UTC)
 From: Matt Roper <matthew.d.roper@intel.com>
-Date: Sat,  5 Jun 2021 12:28:53 -0700
-Message-Id: <20210605192853.555213-6-matthew.d.roper@intel.com>
+Date: Sat,  5 Jun 2021 12:28:49 -0700
+Message-Id: <20210605192853.555213-2-matthew.d.roper@intel.com>
 In-Reply-To: <20210605192853.555213-1-matthew.d.roper@intel.com>
 References: <20210605192853.555213-1-matthew.d.roper@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [CI 5/5] lib/i915: Add ADL-P plane offset restriction for
- CCS framebuffers
+Subject: [igt-dev] [CI 1/5] lib: sync i915_pciids.h with kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,48 +16,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogSW1yZSBEZWFrIDxpbXJlLmRlYWtAaW50ZWwuY29tPgoKQWxsIERQVCBGQiBwbGFuZSBv
-ZmZzZXRzIG11c3QgYmUgMk1CLWFsaWduZWQuIFRoZSBrZXJuZWwgdGFrZXMgY2FyZSBvZgphbGln
-bmluZyB0aGUgb2Zmc2V0IGZvciBub24tQ0NTIGZyYW1lYnVmZmVycy4gIE1ha2Ugc3VyZSB0aGF0
-IHRoZQphbGxvY2F0ZWQgQ0NTIEZCIGxheW91dCBtZWV0cyB0aGUgYWxpZ25tZW50IHJlcXVpcmVt
-ZW50LgoKU2lnbmVkLW9mZi1ieTogSW1yZSBEZWFrIDxpbXJlLmRlYWtAaW50ZWwuY29tPgpTaWdu
-ZWQtb2ZmLWJ5OiBNYXR0IFJvcGVyIDxtYXR0aGV3LmQucm9wZXJAaW50ZWwuY29tPgpSZXZpZXdl
-ZC1ieTogSm9zw6kgUm9iZXJ0byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+Ci0tLQog
-bGliL2lndF9mYi5jIHwgMjYgKysrKysrKysrKysrKysrKysrKysrKysrLS0KIDEgZmlsZSBjaGFu
-Z2VkLCAyNCBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xpYi9p
-Z3RfZmIuYyBiL2xpYi9pZ3RfZmIuYwppbmRleCA1ODVlZGUzOC4uOTRkZjAzMTQgMTAwNjQ0Ci0t
-LSBhL2xpYi9pZ3RfZmIuYworKysgYi9saWIvaWd0X2ZiLmMKQEAgLTc4OCwxMSArNzg4LDIzIEBA
-IHN0YXRpYyB1aW50NjRfdCBjYWxjX3BsYW5lX3NpemUoc3RydWN0IGlndF9mYiAqZmIsIGludCBw
-bGFuZSkKIAkJcmV0dXJuICh1aW50NjRfdCkgZmItPnN0cmlkZXNbcGxhbmVdICoKIAkJCUFMSUdO
-KGZiLT5wbGFuZV9oZWlnaHRbcGxhbmVdLCB0aWxlX2hlaWdodCk7CiAJfSBlbHNlIGlmIChpc19n
-ZW4xMl9jY3NfcGxhbmUoZmIsIHBsYW5lKSkgeworCQl1aW50NjRfdCBzaXplOworCiAJCS8qIFRo
-ZSBBVVggQ0NTIHN1cmZhY2UgbXVzdCBiZSBwYWdlIGFsaWduZWQgKi8KLQkJcmV0dXJuICh1aW50
-NjRfdClmYi0+c3RyaWRlc1twbGFuZV0gKgorCQlzaXplID0gKHVpbnQ2NF90KWZiLT5zdHJpZGVz
-W3BsYW5lXSAqCiAJCQlBTElHTihmYi0+cGxhbmVfaGVpZ2h0W3BsYW5lXSwgNjQpOworCisJCS8q
-CisJCSAqIE9uIEFETF9QIENDUyBjb2xvciBwbGFuZXMgbXVzdCBiZSAyTUIgYWxpZ25lZCwgdW50
-aWwgcmVtYXBwaW5nCisJCSAqIHN1cHBvcnQgaXMgYWRkZWQgZm9yIENDUyBGQnMuCisJCSAqLwor
-CQlpZiAoSVNfQUxERVJMQUtFX1AoaW50ZWxfZ2V0X2RybV9kZXZpZChmYi0+ZmQpKSkKKwkJCXNp
-emUgPSBBTElHTihzaXplLCAyICogMTAyNCAqIDEwMjQpOworCisJCXJldHVybiBzaXplOwogCX0g
-ZWxzZSB7CiAJCXVuc2lnbmVkIGludCB0aWxlX3dpZHRoLCB0aWxlX2hlaWdodDsKKwkJdWludDY0
-X3Qgc2l6ZTsKIAogCQlpZ3RfZ2V0X2ZiX3RpbGVfc2l6ZShmYi0+ZmQsIGZiLT5tb2RpZmllciwg
-ZmItPnBsYW5lX2JwcFtwbGFuZV0sCiAJCQkJICAgICAmdGlsZV93aWR0aCwgJnRpbGVfaGVpZ2h0
-KTsKQEAgLTgwMSw4ICs4MTMsMTggQEAgc3RhdGljIHVpbnQ2NF90IGNhbGNfcGxhbmVfc2l6ZShz
-dHJ1Y3QgaWd0X2ZiICpmYiwgaW50IHBsYW5lKQogCQlpZiAoaXNfZ2VuMTJfY2NzX21vZGlmaWVy
-KGZiLT5tb2RpZmllcikpCiAJCQl0aWxlX2hlaWdodCAqPSA0OwogCi0JCXJldHVybiAodWludDY0
-X3QpIGZiLT5zdHJpZGVzW3BsYW5lXSAqCisJCXNpemUgPSAodWludDY0X3QpZmItPnN0cmlkZXNb
-cGxhbmVdICoKIAkJCUFMSUdOKGZiLT5wbGFuZV9oZWlnaHRbcGxhbmVdLCB0aWxlX2hlaWdodCk7
-CisKKwkJLyoKKwkJICogT24gQURMX1AgQ0NTIGNvbG9yIHBsYW5lcyBtdXN0IGJlIDJNQiBhbGln
-bmVkLCB1bnRpbCByZW1hcHBpbmcKKwkJICogc3VwcG9ydCBpcyBhZGRlZCBmb3IgQ0NTIEZCcy4K
-KwkJICovCisJCWlmIChJU19BTERFUkxBS0VfUChpbnRlbF9nZXRfZHJtX2RldmlkKGZiLT5mZCkp
-ICYmCisJCSAgICBpc19jY3NfbW9kaWZpZXIoZmItPm1vZGlmaWVyKSkKKwkJCXNpemUgPSBBTElH
-TihzaXplLCAyICogMTAyNCAqIDEwMjQpOworCisJCXJldHVybiBzaXplOwogCX0KIH0KIAotLSAK
-Mi4yNS40CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpp
-Z3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczov
-L2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+This synchronizes with kernel commit
+
+        760759f2cf71 ("drm/i915/adl_p: Add PCI Devices IDs")
+
+to bring in ADL-P PCI IDs as well as a couple more ADL-S IDs.
+
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Anusha Srivatsa <anusha.srivatsa@intel.com>
+---
+ lib/i915_pciids.h | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
+index ebd0dd1c..eee18fa5 100644
+--- a/lib/i915_pciids.h
++++ b/lib/i915_pciids.h
+@@ -640,9 +640,32 @@
+ 	INTEL_VGA_DEVICE(0x4681, info), \
+ 	INTEL_VGA_DEVICE(0x4682, info), \
+ 	INTEL_VGA_DEVICE(0x4683, info), \
++	INTEL_VGA_DEVICE(0x4688, info), \
++	INTEL_VGA_DEVICE(0x4689, info), \
+ 	INTEL_VGA_DEVICE(0x4690, info), \
+ 	INTEL_VGA_DEVICE(0x4691, info), \
+ 	INTEL_VGA_DEVICE(0x4692, info), \
+ 	INTEL_VGA_DEVICE(0x4693, info)
+ 
++/* ADL-P */
++#define INTEL_ADLP_IDS(info) \
++	INTEL_VGA_DEVICE(0x46A0, info), \
++	INTEL_VGA_DEVICE(0x46A1, info), \
++	INTEL_VGA_DEVICE(0x46A2, info), \
++	INTEL_VGA_DEVICE(0x46A3, info), \
++	INTEL_VGA_DEVICE(0x46A6, info), \
++	INTEL_VGA_DEVICE(0x46A8, info), \
++	INTEL_VGA_DEVICE(0x46AA, info), \
++	INTEL_VGA_DEVICE(0x462A, info), \
++	INTEL_VGA_DEVICE(0x4626, info), \
++	INTEL_VGA_DEVICE(0x4628, info), \
++	INTEL_VGA_DEVICE(0x46B0, info), \
++	INTEL_VGA_DEVICE(0x46B1, info), \
++	INTEL_VGA_DEVICE(0x46B2, info), \
++	INTEL_VGA_DEVICE(0x46B3, info), \
++	INTEL_VGA_DEVICE(0x46C0, info), \
++	INTEL_VGA_DEVICE(0x46C1, info), \
++	INTEL_VGA_DEVICE(0x46C2, info), \
++	INTEL_VGA_DEVICE(0x46C3, info)
++
+ #endif /* _I915_PCIIDS_H */
+-- 
+2.25.4
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
