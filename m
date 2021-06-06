@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Date: Sun, 6 Jun 2021 09:09:23 +0000
+Message-ID: <CO6PR11MB5569C381A87795F5D6B369498D399@CO6PR11MB5569.namprd11.prod.outlook.com>
+References: <1622176543-12759-1-git-send-email-vidya.srinivas@intel.com>
+ <1622812262-16592-1-git-send-email-vidya.srinivas@intel.com>
+In-Reply-To: <1622812262-16592-1-git-send-email-vidya.srinivas@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Sat, 05 Jun 2021 20:15:11 -0000
-Message-ID: <162292411160.31069.5204005478752267272@emeril.freedesktop.org>
-References: <20210605192853.555213-1-matthew.d.roper@intel.com>
-In-Reply-To: <20210605192853.555213-1-matthew.d.roper@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgUmV2aWV3?=
- =?utf-8?q?ed_ADL-P_patches?=
+Subject: Re: [igt-dev] [PATCH] tests/kms_color: Disable gamma in degamma
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,308 +16,117 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0326510678=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Matt Roper <matthew.d.roper@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Srinivas, Vidya" <vidya.srinivas@intel.com>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Lin, Charlton" <charlton.lin@intel.com>, "Latvala,
+ Petri" <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0326510678==
-Content-Type: multipart/alternative;
- boundary="===============0488243895079732879=="
+> From: Srinivas, Vidya <vidya.srinivas@intel.com>
+> Sent: Friday, June 4, 2021 6:41 PM
+> To: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
+> Cc: markyacoub@chromium.org; Almahallawy, Khaled
+> <khaled.almahallawy@intel.com>; Lin, Charlton <charlton.lin@intel.com>;
+> Latvala, Petri <petri.latvala@intel.com>; Modem, Bhanuprakash
+> <bhanuprakash.modem@intel.com>; Shankar, Uma <uma.shankar@intel.com>;
+> Srinivas, Vidya <vidya.srinivas@intel.com>
+> Subject: [PATCH] tests/kms_color: Disable gamma in degamma tests
+> 
+> This patch disables gamma in degamma subtest which is missing.
+> It compares CRC between (linear degamma + solid colors) and (max
+> degamma + gradient colors).
+> 
+> v2 - Addressed review comments from Bhanuprakash Modem
+> 
+> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+> Change-Id: Ibdb91b603e2e4024d170727d24c6a5425441e2e1
+> ---
+>  tests/kms_color.c | 14 ++++++++------
+>  1 file changed, 8 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tests/kms_color.c b/tests/kms_color.c
+> index 3a42532a5c27..41720dcdd90f 100644
+> --- a/tests/kms_color.c
+> +++ b/tests/kms_color.c
+> @@ -32,7 +32,6 @@ static void test_pipe_degamma(data_t *data,
+>  	igt_output_t *output;
+>  	igt_display_t *display = &data->display;
+>  	gamma_lut_t *degamma_linear, *degamma_full;
+> -	gamma_lut_t *gamma_linear;
+>  	color_t red_green_blue[] = {
+>  		{ 1.0, 0.0, 0.0 },
+>  		{ 0.0, 1.0, 0.0 },
+> @@ -45,8 +44,6 @@ static void test_pipe_degamma(data_t *data,
+>  	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+>  	degamma_full = generate_table_max(data->degamma_lut_size);
+> 
+> -	gamma_linear = generate_table(data->gamma_lut_size, 1.0);
+> -
+>  	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe,
+> output) {
+>  		drmModeModeInfo *mode;
+>  		struct igt_fb fb_modeset, fb;
+> @@ -75,8 +72,8 @@ static void test_pipe_degamma(data_t *data,
+> 
+>  		igt_plane_set_fb(primary, &fb_modeset);
+>  		disable_ctm(primary->pipe);
+> -		disable_degamma(primary->pipe);
+> -		set_gamma(data, primary->pipe, gamma_linear);
+> +		disable_gamma(primary->pipe);
+> +		set_degamma(data, primary->pipe, degamma_linear);
+>  		igt_display_commit(&data->display);
+> 
+>  		/* Draw solid colors with no degamma transformation. */
 
---===============0488243895079732879==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Please fix the comment s/"no degamma"/"linear degamma"/.
+Also, we need to port this patch on "kms_color_chamelium".
 
-== Series Details ==
+> @@ -103,15 +100,17 @@ static void test_pipe_degamma(data_t *data,
+>  		 */
+>  		igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
+> 
+> +		disable_degamma(primary->pipe);
+>  		igt_plane_set_fb(primary, NULL);
+>  		igt_output_set_pipe(output, PIPE_NONE);
+> +		igt_display_commit2(&data->display, data->display.is_atomic ?
+> +							COMMIT_ATOMIC : COMMIT_LEGACY);
+>  		igt_remove_fb(data->drm_fd, &fb);
+>  		igt_remove_fb(data->drm_fd, &fb_modeset);
+>  	}
+> 
+>  	free_lut(degamma_linear);
+>  	free_lut(degamma_full);
+> -	free_lut(gamma_linear);
+>  }
+> 
+>  /*
+> @@ -189,8 +188,11 @@ static void test_pipe_gamma(data_t *data,
+>  		 */
+>  		igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
+> 
+> +		disable_gamma(primary->pipe);
+>  		igt_plane_set_fb(primary, NULL);
+>  		igt_output_set_pipe(output, PIPE_NONE);
+> +		igt_display_commit2(&data->display, data->display.is_atomic ?
+> +							COMMIT_ATOMIC : COMMIT_LEGACY);
+ 
+These changes are not relevant to the degamma, but still we need these changes.
+It would be good if we mention this in commit message.
 
-Series: Reviewed ADL-P patches
-URL   : https://patchwork.freedesktop.org/series/91063/
-State : failure
+With above changes, this patch is
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_10178 -> IGTPW_5888
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_5888 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_5888, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_5888:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@evict:
-    - fi-kbl-soraka:      [PASS][1] -> [DMESG-WARN][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10178/fi-kbl-soraka/igt@i915_selftest@live@evict.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-kbl-soraka/igt@i915_selftest@live@evict.html
-
-  
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_selftest@live@requests:
-    - {fi-tgl-dsi}:       [PASS][3] -> [DMESG-WARN][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10178/fi-tgl-dsi/igt@i915_selftest@live@requests.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-tgl-dsi/igt@i915_selftest@live@requests.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5888 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-bdw-5557u:       NOTRUN -> [WARN][5] ([i915#2283])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bdw-5557u:       NOTRUN -> [DMESG-FAIL][6] ([i915#3462])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-bdw-5557u/igt@i915_selftest@live@execlists.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-bdw-5557u:       NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-icl-u2:          [PASS][8] -> [FAIL][9] ([i915#49])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10178/fi-icl-u2/igt@kms_frontbuffer_tracking@basic.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-icl-u2/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_psr@cursor_plane_move:
-    - fi-bdw-5557u:       NOTRUN -> [SKIP][10] ([fdo#109271]) +9 similar issues
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-bdw-5557u/igt@kms_psr@cursor_plane_move.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-nick:        [INCOMPLETE][11] ([i915#2782] / [i915#2940] / [i915#3462]) -> [DMESG-FAIL][12] ([i915#3462])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10178/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-
-  * igt@runner@aborted:
-    - fi-skl-6600u:       [FAIL][13] ([i915#1436] / [i915#3363]) -> [FAIL][14] ([i915#1436] / [i915#2426] / [i915#3363])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10178/fi-skl-6600u/igt@runner@aborted.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-skl-6600u/igt@runner@aborted.html
-    - fi-glk-dsi:         [FAIL][15] ([i915#3363] / [k.org#202321]) -> [FAIL][16] ([i915#2426] / [i915#3363] / [k.org#202321])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10178/fi-glk-dsi/igt@runner@aborted.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-glk-dsi/igt@runner@aborted.html
-    - fi-bdw-5557u:       [FAIL][17] ([i915#1602] / [i915#2029]) -> [FAIL][18] ([i915#2426] / [i915#3462])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10178/fi-bdw-5557u/igt@runner@aborted.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-bdw-5557u/igt@runner@aborted.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
-  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
-  [i915#2029]: https://gitlab.freedesktop.org/drm/intel/issues/2029
-  [i915#2283]: https://gitlab.freedesktop.org/drm/intel/issues/2283
-  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
-  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
-  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
-  [i915#3462]: https://gitlab.freedesktop.org/drm/intel/issues/3462
-  [i915#49]: https://gitlab.freedesktop.org/drm/intel/issues/49
-  [k.org#202321]: https://bugzilla.kernel.org/show_bug.cgi?id=202321
-
-
-Participating hosts (46 -> 39)
-------------------------------
-
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan bat-adlp-4 fi-dg1-1 fi-bdw-samus bat-jsl-1 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6098 -> IGTPW_5888
-
-  CI-20190529: 20190529
-  CI_DRM_10178: 12b3209e2fec5f9bf3851955f1cd397851ef122b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5888: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/index.html
-  IGT_6098: 1fbc1e7d602f96a7f4e2b95057eef994656b8e74 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/index.html
-
---===============0488243895079732879==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Reviewed ADL-P patches</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/91063/">https://patchwork.freedesktop.org/series/91063/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10178 -&gt; IGTPW_5888</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_5888 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_5888, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/index.html</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_5888:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@evict:<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10178/fi-kbl-soraka/igt@i915_selftest@live@evict.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-kbl-soraka/igt@i915_selftest@live@evict.html">DMESG-WARN</a></li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@i915_selftest@live@requests:<ul>
-<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10178/fi-tgl-dsi/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-tgl-dsi/igt@i915_selftest@live@requests.html">DMESG-WARN</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5888 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2283">i915#2283</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-bdw-5557u/igt@i915_selftest@live@execlists.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10178/fi-icl-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-icl-u2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/49">i915#49</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@cursor_plane_move:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-bdw-5557u/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10178/fi-bsw-nick/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-bsw-nick/igt@i915_selftest@live@execlists.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10178/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
-</li>
-<li>
-<p>fi-glk-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10178/fi-glk-dsi/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://bugzilla.kernel.org/show_bug.cgi?id=202321">k.org#202321</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-glk-dsi/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://bugzilla.kernel.org/show_bug.cgi?id=202321">k.org#202321</a>)</p>
-</li>
-<li>
-<p>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10178/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2029">i915#2029</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (46 -&gt; 39)</h2>
-<p>Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan bat-adlp-4 fi-dg1-1 fi-bdw-samus bat-jsl-1 </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6098 -&gt; IGTPW_5888</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10178: 12b3209e2fec5f9bf3851955f1cd397851ef122b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5888: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5888/index.html<br />
-  IGT_6098: 1fbc1e7d602f96a7f4e2b95057eef994656b8e74 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============0488243895079732879==--
-
---===============0326510678==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+- Bhanu
+>  		igt_remove_fb(data->drm_fd, &fb);
+>  		igt_remove_fb(data->drm_fd, &fb_modeset);
+>  	}
+> --
+> 2.26.2
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0326510678==--
