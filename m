@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com
- [IPv6:2a00:1450:4864:20::432])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 94A166E897
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Jun 2021 09:29:54 +0000 (UTC)
-Received: by mail-wr1-x432.google.com with SMTP id c9so8082089wrt.5
- for <igt-dev@lists.freedesktop.org>; Mon, 07 Jun 2021 02:29:54 -0700 (PDT)
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com
+ [IPv6:2a00:1450:4864:20::434])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 25B2E6E898
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Jun 2021 09:29:56 +0000 (UTC)
+Received: by mail-wr1-x434.google.com with SMTP id i94so11720930wri.4
+ for <igt-dev@lists.freedesktop.org>; Mon, 07 Jun 2021 02:29:56 -0700 (PDT)
 From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Mon,  7 Jun 2021 11:29:36 +0200
-Message-Id: <20210607092940.4853-3-daniel.vetter@ffwll.ch>
+Date: Mon,  7 Jun 2021 11:29:38 +0200
+Message-Id: <20210607092940.4853-5-daniel.vetter@ffwll.ch>
 In-Reply-To: <20210607092940.4853-1-daniel.vetter@ffwll.ch>
 References: <20210607092940.4853-1-daniel.vetter@ffwll.ch>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/7] Revert "i915/gem_exec_reloc: Verify
- engine isolation"
+Subject: [igt-dev] [PATCH i-g-t 5/7] Revert "i915/gem_exec_reloc: Flood the
+ ring with GPU relocs"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,7 +28,7 @@ To: IGT development <igt-dev@lists.freedesktop.org>
 Cc: Daniel Vetter <daniel.vetter@intel.com>, Dave Airlie <airlied@redhat.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This reverts commit 9fe244cb751c9d3be0581a943bb9baa8651d8d29.
+This reverts commit 57ee41f12b7a53283fd812c5f72fcb39e6ad2197.
 
 This validates gpu relocations, which we're about to delete.
 
@@ -37,100 +37,116 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 Cc: Dave Airlie <airlied@redhat.com>
 Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
 ---
- tests/i915/gem_exec_reloc.c | 73 -------------------------------------
- 1 file changed, 73 deletions(-)
+ tests/i915/gem_exec_reloc.c | 89 -------------------------------------
+ 1 file changed, 89 deletions(-)
 
 diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
-index efe6e2e02c52..3b200f557b2c 100644
+index c3f42aff9c9a..cbd40962c610 100644
 --- a/tests/i915/gem_exec_reloc.c
 +++ b/tests/i915/gem_exec_reloc.c
-@@ -471,72 +471,6 @@ static void active_spin(int fd, unsigned engine)
- 	igt_spin_free(fd, spin);
+@@ -344,88 +344,6 @@ static void active(int fd, unsigned engine)
+ 	gem_close(fd, obj[0].handle);
  }
  
--static void others_spin(int i915, unsigned engine)
+-static uint64_t many_relocs(unsigned long count, unsigned long *out)
 -{
--	struct drm_i915_gem_relocation_entry reloc = {};
--	struct drm_i915_gem_exec_object2 obj = {
--		.relocs_ptr = to_user_pointer(&reloc),
--		.relocation_count = 1,
--	};
--	struct drm_i915_gem_execbuffer2 execbuf = {
--		.buffers_ptr = to_user_pointer(&obj),
--		.buffer_count = 1,
--		.flags = engine,
--	};
--	const struct intel_execution_engine2 *e;
--	igt_spin_t *spin = NULL;
--	uint64_t addr;
--	int fence;
+-	struct drm_i915_gem_relocation_entry *reloc;
+-	unsigned long sz;
+-	int i;
 -
--	__for_each_physical_engine(i915, e) {
--		if (e->flags == engine)
--			continue;
+-	sz = count * sizeof(*reloc);
+-	sz = ALIGN(sz, 4096);
 -
--		if (!spin) {
--			spin = igt_spin_new(i915,
--					    .engine = e->flags,
--					    .flags = IGT_SPIN_FENCE_OUT);
--			fence = dup(spin->out_fence);
--		} else {
--			int old_fence;
--
--			spin->execbuf.flags &= ~I915_EXEC_RING_MASK;
--			spin->execbuf.flags |= e->flags;
--			gem_execbuf_wr(i915, &spin->execbuf);
--
--			old_fence = fence;
--			fence = sync_fence_merge(old_fence,
--						 spin->execbuf.rsvd2 >> 32);
--			close(spin->execbuf.rsvd2 >> 32);
--			close(old_fence);
--		}
+-	reloc = mmap(0, sz, PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+-	igt_assert(reloc != MAP_FAILED);
+-	for (i = 0; i < count; i++) {
+-		reloc[i].target_handle = 0;
+-		reloc[i].presumed_offset = ~0ull;
+-		reloc[i].offset = 8 * i;
+-		reloc[i].delta = 8 * i;
 -	}
--	igt_require(spin);
+-	mprotect(reloc, sz, PROT_READ);
 -
--	/* All other engines are busy, let's relocate! */
--	obj.handle = batch_create(i915);
--	reloc.target_handle = obj.handle;
--	reloc.presumed_offset = -1;
--	reloc.offset = 64;
--	gem_execbuf(i915, &execbuf);
--
--	/* Verify the relocation took place */
--	gem_read(i915, obj.handle, 64, &addr, sizeof(addr));
--	igt_assert_eq_u64(addr, obj.offset);
--	gem_close(i915, obj.handle);
--
--	/* Even if the spinner was harmed in the process */
--	igt_spin_end(spin);
--	igt_assert_eq(sync_fence_wait(fence, 200), 0);
--	igt_assert_neq(sync_fence_status(fence), 0);
--	if (sync_fence_status(fence) < 0)
--		igt_warn("Spinner was cancelled, %s\n",
--			 strerror(-sync_fence_status(fence)));
--	close(fence);
--
--	igt_spin_free(i915, spin);
+-	*out = sz;
+-	return to_user_pointer(reloc);
 -}
 -
- static bool has_64b_reloc(int fd)
+-static void __many_active(int i915, unsigned engine, unsigned long count)
+-{
+-	unsigned long reloc_sz;
+-	struct drm_i915_gem_exec_object2 obj[2] = {{
+-		.handle = gem_create(i915, count * sizeof(uint64_t)),
+-		.relocs_ptr = many_relocs(count, &reloc_sz),
+-		.relocation_count = count,
+-	}};
+-	struct drm_i915_gem_execbuffer2 execbuf = {
+-		.buffers_ptr = to_user_pointer(obj),
+-		.buffer_count = ARRAY_SIZE(obj),
+-		.flags = engine | I915_EXEC_HANDLE_LUT,
+-	};
+-	igt_spin_t *spin;
+-
+-	spin = __igt_spin_new(i915,
+-			      .engine = engine,
+-			      .dependency = obj[0].handle,
+-			      .flags = (IGT_SPIN_FENCE_OUT |
+-					IGT_SPIN_NO_PREEMPTION));
+-	obj[1] = spin->obj[1];
+-	gem_execbuf(i915, &execbuf);
+-	igt_assert_eq(sync_fence_status(spin->out_fence), 0);
+-	igt_spin_free(i915, spin);
+-
+-	for (unsigned long i = 0; i < count; i++) {
+-		uint64_t addr;
+-
+-		gem_read(i915, obj[0].handle, i * sizeof(addr),
+-			 &addr, sizeof(addr));
+-
+-		igt_assert_eq_u64(addr, obj[0].offset + i * sizeof(addr));
+-	}
+-
+-	munmap(from_user_pointer(obj[0].relocs_ptr), reloc_sz);
+-	gem_close(i915, obj[0].handle);
+-}
+-
+-static void many_active(int i915, unsigned engine)
+-{
+-	const uint64_t max = 2048;
+-	unsigned long count = 256;
+-
+-	igt_until_timeout(2) {
+-		uint64_t required, total;
+-
+-		if (!__intel_check_memory(1, 8 * count, CHECK_RAM,
+-					  &required, &total))
+-			break;
+-
+-		igt_debug("Testing count:%lu\n", count);
+-		__many_active(i915, engine, count);
+-
+-		count <<= 1;
+-		if (count >= max)
+-			break;
+-	}
+-}
+-
+ static unsigned int offset_in_page(void *addr)
  {
- 	return intel_gen(intel_get_drm_devid(fd)) >= 8;
-@@ -1329,13 +1263,6 @@ igt_main
+ 	return (uintptr_t)addr & 4095;
+@@ -1053,13 +971,6 @@ igt_main
  		}
  	}
  
--	igt_subtest_with_dynamic("basic-spin-others") {
+-	igt_subtest_with_dynamic("basic-many-active") {
 -		__for_each_physical_engine(fd, e) {
 -			igt_dynamic_f("%s", e->name)
--				others_spin(fd, e->flags);
+-				many_active(fd, e->flags);
 -		}
 -	}
 -
- 	igt_subtest_with_dynamic("basic-many-active") {
- 		__for_each_physical_engine(fd, e) {
- 			igt_dynamic_f("%s", e->name)
+ 	igt_subtest("invalid-domains")
+ 		invalid_domains(fd);
+ 
 -- 
 2.24.1
 
