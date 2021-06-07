@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com
- [IPv6:2a00:1450:4864:20::42c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E16396E899
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Jun 2021 09:29:56 +0000 (UTC)
-Received: by mail-wr1-x42c.google.com with SMTP id l2so16795554wrw.6
- for <igt-dev@lists.freedesktop.org>; Mon, 07 Jun 2021 02:29:56 -0700 (PDT)
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Mon,  7 Jun 2021 11:29:39 +0200
-Message-Id: <20210607092940.4853-6-daniel.vetter@ffwll.ch>
-In-Reply-To: <20210607092940.4853-1-daniel.vetter@ffwll.ch>
-References: <20210607092940.4853-1-daniel.vetter@ffwll.ch>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA6EE89E9E
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Jun 2021 10:31:40 +0000 (UTC)
+Date: Mon, 7 Jun 2021 13:33:28 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YL31+I5TOyXFP9Rj@platvala-desk.ger.corp.intel.com>
+References: <20210604203927.494340-1-matthew.d.roper@intel.com>
+ <162283984941.4702.14729353878969234439@emeril.freedesktop.org>
+ <20210604210334.GX6936@mdroper-desk1.amr.corp.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 6/7] Revert "i915/gem_exec_reloc: Check that
- relocations do not block"
+Content-Disposition: inline
+In-Reply-To: <20210604210334.GX6936@mdroper-desk1.amr.corp.intel.com>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBTcGxp?=
+ =?utf-8?q?t_display/graphics_versions_and_add_ADL-P?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,95 +25,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: IGT development <igt-dev@lists.freedesktop.org>
-Cc: Daniel Vetter <daniel.vetter@intel.com>, Dave Airlie <airlied@redhat.com>
+To: Matt Roper <matthew.d.roper@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This reverts commit 5343ca6ad8fac39fe4d468f771af72c968404bea.
+On Fri, Jun 04, 2021 at 02:03:34PM -0700, Matt Roper wrote:
+> On Fri, Jun 04, 2021 at 08:50:49PM +0000, Patchwork wrote:
+> > == Series Details ==
+> > 
+> > Series: Split display/graphics versions and add ADL-P
+> > URL   : https://patchwork.freedesktop.org/series/91040/
+> > State : failure
+> > 
+> > == Summary ==
+> > 
+> > IGT patchset build failed on latest successful build
+> > 1fbc1e7d602f96a7f4e2b95057eef994656b8e74 i915/gem_exec_schedule: Check for timeslicing
+> 
+> Why is this series applying/building on top of this commit instead of
+> the latest from the master branch?  The master branch has three
+> additional commits, one of which contains the device ID's necessary to build
+> this series...
 
-This validates gpu relocations, which we're about to delete.
 
-Cc: Jason Ekstrand <jason@jlekstrand.net>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
----
- tests/i915/gem_exec_reloc.c | 52 -------------------------------------
- 1 file changed, 52 deletions(-)
+Shouldn't happen again. CI was mistakenly left using anongit.fdo as
+the IGT repository url and that had hiccups in its mirroring last
+week. Now changed to use gitlab.
 
-diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
-index cbd40962c610..5b15bcdc3a1f 100644
---- a/tests/i915/gem_exec_reloc.c
-+++ b/tests/i915/gem_exec_reloc.c
-@@ -344,51 +344,6 @@ static void active(int fd, unsigned engine)
- 	gem_close(fd, obj[0].handle);
- }
- 
--static unsigned int offset_in_page(void *addr)
--{
--	return (uintptr_t)addr & 4095;
--}
--
--static void active_spin(int fd, unsigned engine)
--{
--	const uint32_t bbe = MI_BATCH_BUFFER_END;
--	struct drm_i915_gem_relocation_entry reloc;
--	struct drm_i915_gem_exec_object2 obj[2];
--	struct drm_i915_gem_execbuffer2 execbuf;
--	igt_spin_t *spin;
--
--	spin = igt_spin_new(fd,
--			    .engine = engine,
--			    .flags = IGT_SPIN_NO_PREEMPTION);
--
--	memset(obj, 0, sizeof(obj));
--	obj[0] = spin->obj[IGT_SPIN_BATCH];
--	obj[0].relocs_ptr = to_user_pointer(&reloc);
--	obj[0].relocation_count = 1;
--	obj[1].handle = gem_create(fd, 4096);
--	gem_write(fd, obj[1].handle, 0, &bbe, sizeof(bbe));
--
--	memset(&reloc, 0, sizeof(reloc));
--	reloc.presumed_offset = -1;
--	reloc.offset = offset_in_page(spin->condition);
--	reloc.target_handle = obj[0].handle;
--
--	memset(&execbuf, 0, sizeof(execbuf));
--	execbuf.buffers_ptr = to_user_pointer(obj);
--	execbuf.buffer_count = 2;
--	execbuf.flags = engine;
--
--	gem_execbuf(fd, &execbuf);
--	gem_close(fd, obj[1].handle);
--	igt_assert_eq(*spin->condition, spin->cmd_precondition);
--
--	igt_spin_end(spin);
--	gem_sync(fd, spin->handle);
--
--	igt_assert_eq(*spin->condition, obj[0].offset);
--	igt_spin_free(fd, spin);
--}
--
- static bool has_64b_reloc(int fd)
- {
- 	return intel_gen(intel_get_drm_devid(fd)) >= 8;
-@@ -964,13 +919,6 @@ igt_main
- 		}
- 	}
- 
--	igt_subtest_with_dynamic("basic-spin") {
--		__for_each_physical_engine(fd, e) {
--			igt_dynamic_f("%s", e->name)
--				active_spin(fd, e->flags);
--		}
--	}
--
- 	igt_subtest("invalid-domains")
- 		invalid_domains(fd);
- 
+
 -- 
-2.24.1
-
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
