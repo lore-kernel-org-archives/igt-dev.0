@@ -1,8 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Tue,  8 Jun 2021 12:36:45 +0530
-Message-Id: <1623136006-14276-1-git-send-email-vidya.srinivas@intel.com>
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_color: Disable gamma in
+Date: Tue,  8 Jun 2021 12:36:46 +0530
+Message-Id: <1623136006-14276-2-git-send-email-vidya.srinivas@intel.com>
+In-Reply-To: <1623136006-14276-1-git-send-email-vidya.srinivas@intel.com>
+References: <1623136006-14276-1-git-send-email-vidya.srinivas@intel.com>
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_color_chamelium: Disable gamma in
  degamma tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -26,41 +28,33 @@ degamma + gradient colors). Patch also cleans up degamma before
 exiting degamma test and cleans up gamma before exiting gamma
 test.
 
-v2 - Addressed review comments from Bhanuprakash Modem
-Changed full degamma for reference CRC to linear degamma
-Added clean up of degamma end of degamma test.
-
-v3 - Addressed review comments from Bhanuprakash Modem
-Fixed comments
-
-Change-Id: Ibdb91b603e2e4024d170727d24c6a5425441e2e1
 Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 ---
- tests/kms_color.c | 14 +++++++-------
+ tests/kms_color_chamelium.c | 14 +++++++-------
  1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 3a42532a5c27..1b021ac3ce0c 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -32,7 +32,6 @@ static void test_pipe_degamma(data_t *data,
+diff --git a/tests/kms_color_chamelium.c b/tests/kms_color_chamelium.c
+index 30b38b82e306..11e5286912d7 100644
+--- a/tests/kms_color_chamelium.c
++++ b/tests/kms_color_chamelium.c
+@@ -36,7 +36,6 @@ static void test_pipe_degamma(data_t *data,
+ {
  	igt_output_t *output;
- 	igt_display_t *display = &data->display;
  	gamma_lut_t *degamma_linear, *degamma_full;
 -	gamma_lut_t *gamma_linear;
  	color_t red_green_blue[] = {
  		{ 1.0, 0.0, 0.0 },
  		{ 0.0, 1.0, 0.0 },
-@@ -45,8 +44,6 @@ static void test_pipe_degamma(data_t *data,
+@@ -57,8 +56,6 @@ static void test_pipe_degamma(data_t *data,
  	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
  	degamma_full = generate_table_max(data->degamma_lut_size);
  
 -	gamma_linear = generate_table(data->gamma_lut_size, 1.0);
 -
- 	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe, output) {
- 		drmModeModeInfo *mode;
- 		struct igt_fb fb_modeset, fb;
-@@ -75,11 +72,11 @@ static void test_pipe_degamma(data_t *data,
+ 	for_each_valid_output_on_pipe(&data->display,
+ 				      primary->pipe->pipe,
+ 				      output) {
+@@ -109,11 +106,11 @@ static void test_pipe_degamma(data_t *data,
  
  		igt_plane_set_fb(primary, &fb_modeset);
  		disable_ctm(primary->pipe);
@@ -72,19 +66,17 @@ index 3a42532a5c27..1b021ac3ce0c 100644
  
 -		/* Draw solid colors with no degamma transformation. */
 +		/* Draw solid colors with linear degamma transformation. */
- 		paint_rectangles(data, mode, red_green_blue, &fb);
- 		igt_plane_set_fb(primary, &fb);
- 		igt_display_commit(&data->display);
-@@ -103,15 +100,16 @@ static void test_pipe_degamma(data_t *data,
- 		 */
- 		igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
+ 		paint_rectangles(data, mode, red_green_blue, &fbref);
+ 
+ 		/* Draw a gradient with degamma LUT to remap all
+@@ -135,13 +132,14 @@ static void test_pipe_degamma(data_t *data,
+ 					      frame_fullcolors, &fbref,
+ 					      CHAMELIUM_CHECK_ANALOG);
  
 +		disable_degamma(primary->pipe);
  		igt_plane_set_fb(primary, NULL);
  		igt_output_set_pipe(output, PIPE_NONE);
 +		igt_display_commit(&data->display);
- 		igt_remove_fb(data->drm_fd, &fb);
- 		igt_remove_fb(data->drm_fd, &fb_modeset);
  	}
  
  	free_lut(degamma_linear);
@@ -93,17 +85,17 @@ index 3a42532a5c27..1b021ac3ce0c 100644
  }
  
  /*
-@@ -189,8 +187,10 @@ static void test_pipe_gamma(data_t *data,
- 		 */
- 		igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
+@@ -247,8 +245,10 @@ static void test_pipe_gamma(data_t *data,
+ 					      frame_fullcolors, &fbref,
+ 					      CHAMELIUM_CHECK_ANALOG);
  
 +		disable_gamma(primary->pipe);
  		igt_plane_set_fb(primary, NULL);
  		igt_output_set_pipe(output, PIPE_NONE);
 +		igt_display_commit(&data->display);
- 		igt_remove_fb(data->drm_fd, &fb);
- 		igt_remove_fb(data->drm_fd, &fb_modeset);
  	}
+ 
+ 	free_lut(gamma_full);
 -- 
 2.7.4
 
