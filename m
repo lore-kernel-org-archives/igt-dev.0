@@ -1,121 +1,45 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-References: <1622176025-12499-1-git-send-email-vidya.srinivas@intel.com>
- <CO6PR11MB55693230CBD2262DDCF5A0C18D379@CO6PR11MB5569.namprd11.prod.outlook.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <80bed39a-e899-f211-ae2f-279312b52084@gmail.com>
-Date: Tue, 8 Jun 2021 10:34:09 +0300
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 96FEB6EAD3
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Jun 2021 07:34:32 +0000 (UTC)
+From: Vidya Srinivas <vidya.srinivas@intel.com>
+Date: Tue,  8 Jun 2021 12:55:16 +0530
+Message-Id: <1623137118-16598-1-git-send-email-vidya.srinivas@intel.com>
+Subject: [igt-dev] [PATCH i-g-t 0/2] Disable gamma in degamma subtests
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 MIME-Version: 1.0
-In-Reply-To: <CO6PR11MB55693230CBD2262DDCF5A0C18D379@CO6PR11MB5569.namprd11.prod.outlook.com>
-Content-Language: en-US
-Subject: Re: [Intel-gfx] [igt-dev] [PATCH i-g-t] [RFC] tests/kms_big_fb:
- Wait for vblank before collecting CRC
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "Srinivas, Vidya" <vidya.srinivas@intel.com>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Lin, Charlton" <charlton.lin@intel.com>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com, charlton.lin@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 8.6.2021 10.01, Modem, Bhanuprakash wrote:
->> From: Intel-gfx <intel-gfx-bounces@lists.freedesktop.org> On Behalf Of Vidya
->> Srinivas
->> Sent: Friday, May 28, 2021 9:57 AM
->> To: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
->> Cc: markyacoub@chromium.org; Lin, Charlton <charlton.lin@intel.com>
->> Subject: [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_big_fb: Wait for vblank
->> before collecting CRC
->>
->> Without wait for vblank, CRC mismatch is seen
->> between big and small CRC on few Gen11 systems.
->>
->> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
->> ---
->>   tests/kms_big_fb.c | 6 ++++--
->>   1 file changed, 4 insertions(+), 2 deletions(-)
->>
->> diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
->> index b35727a09bd0..f90363c3beb2 100644
->> --- a/tests/kms_big_fb.c
->> +++ b/tests/kms_big_fb.c
->> @@ -254,6 +254,7 @@ static void unset_lut(data_t *data)
->>   static bool test_plane(data_t *data)
->>   {
->>   	igt_plane_t *plane = data->plane;
->> +	igt_display_t *display = &data->display;
-> 
-> For code readability purpose, I think we need to update to use this variable
-> wherever we are using "&data->display" in this function.
-> s/"&data->display"/"display"/
-> 
-> With above change, this patch LGTM
-> Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> 
+This patch series disables gamma in degamma subtest which is missing.
+It compares CRC between (linear degamma + solid colors) and (max
+degamma + gradient colors). Patch also cleans up degamma before
+exiting degamma test and cleans up gamma before exiting gamma
+test. Changes are done for both kms_color and kms_color_chamelium.
 
-I still don't see benefit in this patch. For now all this look like is 
-doing is slow down the test and if this actually helps there's a real 
-bug somewhere which is not here. My earlier review comments were not 
-addressed hence repeat here, see below.
+Vidya Srinivas (2):
+  tests/kms_color: Disable gamma in degamma tests
+  tests/kms_color_chamelium: Disable gamma in degamma tests
 
+ tests/kms_color.c           | 14 +++++++-------
+ tests/kms_color_chamelium.c | 14 +++++++-------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
->>   	struct igt_fb *small_fb = &data->small_fb;
->>   	struct igt_fb *big_fb = &data->big_fb;
->>   	int w = data->big_fb_width - small_fb->width;
->> @@ -337,16 +338,17 @@ static bool test_plane(data_t *data)
->>   		igt_display_commit2(&data->display, data->display.is_atomic ?
->>   				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
->>
->> -
->> +		igt_wait_for_vblank(data->drm_fd, display->pipes[data->pipe].crtc_offset);
-
-Above this line there's flip to different fb. Below this line crc 
-calculation is restarted, get one crc and stop crc. There's several 
-vblanks already spent here, if now adding one more somehow helps it 
-sound like there's problems in crc calculation on some platform or 
-kernel is saying too early framebuffer is ready to be shown. Am I 
-missing something here?
-
-/Juha-Pekka
-
->>   		igt_pipe_crc_collect_crc(data->pipe_crc, &small_crc);
->>
->>   		igt_plane_set_fb(plane, big_fb);
->>   		igt_fb_set_position(big_fb, plane, x, y);
->>   		igt_fb_set_size(big_fb, plane, small_fb->width, small_fb->height);
->> +
-
-spurious empty line need to be removed.
-
->>   		igt_plane_set_size(plane, data->width, data->height);
->>   		igt_display_commit2(&data->display, data->display.is_atomic ?
->>   				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
->> -
->> +		igt_wait_for_vblank(data->drm_fd, display->pipes[data->pipe].crtc_offset);
->>   		igt_pipe_crc_collect_crc(data->pipe_crc, &big_crc);
->>
->>   		igt_plane_set_fb(plane, NULL);
->> --
->> 2.7.4
->>
->> _______________________________________________
->> Intel-gfx mailing list
->> Intel-gfx@lists.freedesktop.org
->> https://lists.freedesktop.org/mailman/listinfo/intel-gfx
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-> 
+-- 
+2.7.4
 
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
