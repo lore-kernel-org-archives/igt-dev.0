@@ -1,25 +1,25 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Tue,  8 Jun 2021 12:24:17 +0530
-Message-Id: <1623135258-11372-1-git-send-email-vidya.srinivas@intel.com>
+Date: Tue,  8 Jun 2021 12:28:07 +0530
+Message-Id: <1623135488-11505-1-git-send-email-vidya.srinivas@intel.com>
 In-Reply-To: <1622812262-16592-1-git-send-email-vidya.srinivas@intel.com>
 References: <1622812262-16592-1-git-send-email-vidya.srinivas@intel.com>
-Subject: [Intel-gfx] [PATCH i-g-t 1/2] tests/kms_color: Disable gamma in
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_color: Disable gamma in
  degamma tests
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
-Cc: markyacoub@chromium.org, charlton.lin@intel.com
+Cc: petri.latvala@intel.com, charlton.lin@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
 This patch disables gamma in degamma subtest which is missing.
@@ -110,6 +110,6 @@ index 3a42532a5c27..1b021ac3ce0c 100644
 2.7.4
 
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
