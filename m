@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com
- [IPv6:2a00:1450:4864:20::42b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 147F76E1A2
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Jun 2021 19:25:48 +0000 (UTC)
-Received: by mail-wr1-x42b.google.com with SMTP id m18so22808447wrv.2
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 12:25:47 -0700 (PDT)
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Tue,  8 Jun 2021 21:25:33 +0200
-Message-Id: <20210608192533.28684-1-daniel.vetter@ffwll.ch>
-In-Reply-To: <20210608094020.21598-1-daniel.vetter@ffwll.ch>
-References: <20210608094020.21598-1-daniel.vetter@ffwll.ch>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/gem_exec_reloc: Remove banned tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 08 Jun 2021 19:44:13 -0000
+Message-ID: <162318145343.419.11763516430576471603@emeril.freedesktop.org>
+References: <20210608094020.21598-1-daniel.vetter@ffwll.ch>
+In-Reply-To: <20210608094020.21598-1-daniel.vetter@ffwll.ch>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
+ =?utf-8?q?eries_starting_with_=5Bi-g-t=5D_tests/gem=5Fexec=5Freloc=3A_Rem?=
+ =?utf-8?q?ove_banned_tests_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,136 +15,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: IGT development <igt-dev@lists.freedesktop.org>
-Cc: Petri Latvala <petri.latvala@intel.com>, Daniel Vetter <daniel.vetter@intel.com>
+To: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-These have been banned across all CI for over 2 years, realistically
-that's not going to change and they're just in the way.
+== Series Details ==
 
-v2: Keep the !HANG parts (CI)
+Series: series starting with [i-g-t] tests/gem_exec_reloc: Remove banned tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/91160/
+State : warning
 
-Cc: Jason Ekstrand <jason@jlekstrand.net>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
----
- tests/i915/gem_exec_reloc.c  | 33 +++++++--------------------------
- tests/intel-ci/blacklist.txt |  1 -
- 2 files changed, 7 insertions(+), 27 deletions(-)
+== Summary ==
 
-diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
-index 397c335e4d3c..0e75a5e52cc4 100644
---- a/tests/i915/gem_exec_reloc.c
-+++ b/tests/i915/gem_exec_reloc.c
-@@ -614,8 +614,6 @@ static bool has_64b_reloc(int fd)
- 
- #define NORELOC 1
- #define ACTIVE 2
--#define INTERRUPTIBLE 4
--#define HANG 8
- static void basic_reloc(int fd, unsigned before, unsigned after, unsigned flags)
- {
- #define OBJSZ 8192
-@@ -678,8 +676,7 @@ static void basic_reloc(int fd, unsigned before, unsigned after, unsigned flags)
- 			spin = igt_spin_new(fd,
- 					    .engine = I915_EXEC_DEFAULT,
- 					    .dependency = obj.handle);
--			if (!(flags & HANG))
--				igt_spin_set_timeout(spin, NSEC_PER_SEC/100);
-+			igt_spin_set_timeout(spin, NSEC_PER_SEC/100);
- 			igt_assert(gem_bo_busy(fd, obj.handle));
- 		}
- 
-@@ -746,8 +743,7 @@ static void basic_reloc(int fd, unsigned before, unsigned after, unsigned flags)
- 			spin = igt_spin_new(fd,
- 					    .engine = I915_EXEC_DEFAULT,
- 					    .dependency = obj.handle);
--			if (!(flags & HANG))
--				igt_spin_set_timeout(spin, NSEC_PER_SEC/100);
-+			igt_spin_set_timeout(spin, NSEC_PER_SEC/100);
- 			igt_assert(gem_bo_busy(fd, obj.handle));
- 		}
- 
-@@ -873,8 +869,7 @@ static void basic_range(int fd, unsigned flags)
- 
- 	if (flags & ACTIVE) {
- 		spin = igt_spin_new(fd, .dependency = obj[n].handle);
--		if (!(flags & HANG))
--			igt_spin_set_timeout(spin, NSEC_PER_SEC/100);
-+		igt_spin_set_timeout(spin, NSEC_PER_SEC/100);
- 		igt_assert(gem_bo_busy(fd, obj[n].handle));
- 	}
- 
-@@ -1468,8 +1463,6 @@ igt_main
- 		{ "", 0 , true},
- 		{ "-noreloc", NORELOC, true },
- 		{ "-active", ACTIVE, true },
--		{ "-interruptible", ACTIVE | INTERRUPTIBLE },
--		{ "-hang", ACTIVE | HANG },
- 		{ },
- 	}, *f;
- 	uint64_t size;
-@@ -1483,14 +1476,7 @@ igt_main
- 	}
- 
- 	for (f = flags; f->name; f++) {
--		igt_hang_t hang;
--
- 		igt_subtest_group {
--			igt_fixture {
--				if (f->flags & HANG)
--					hang = igt_allow_hang(fd, 0, 0);
--			}
--
- 			for (m = modes; m->name; m++) {
- 				igt_subtest_f("%s%s%s",
- 					      f->basic ? "basic-" : "",
-@@ -1498,22 +1484,17 @@ igt_main
- 					      f->name) {
- 					if ((m->before | m->after) & I915_GEM_DOMAIN_WC)
- 						igt_require(gem_mmap__has_wc(fd));
--					igt_while_interruptible(f->flags & INTERRUPTIBLE)
--						basic_reloc(fd, m->before, m->after, f->flags);
-+
-+					basic_reloc(fd, m->before, m->after, f->flags);
- 				}
- 			}
- 
- 			if (!(f->flags & NORELOC)) {
- 				igt_subtest_f("%srange%s",
- 					      f->basic ? "basic-" : "", f->name) {
--					igt_while_interruptible(f->flags & INTERRUPTIBLE)
--						basic_range(fd, f->flags);
--				}
--			}
- 
--			igt_fixture {
--				if (f->flags & HANG)
--					igt_disallow_hang(fd, hang);
-+					basic_range(fd, f->flags);
-+				}
- 			}
- 		}
- 	}
-diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
-index 33f92e37f602..4d2555f8adb3 100644
---- a/tests/intel-ci/blacklist.txt
-+++ b/tests/intel-ci/blacklist.txt
-@@ -30,7 +30,6 @@ igt@gem_exec_flush@(?!.*basic).*
- igt@gem_exec_latency(@.*)?
- igt@gem_exec_lut_handle(@.*)?
- igt@gem_exec_nop@(?!.*basic).*
--igt@gem_exec_reloc@(?!.*basic).*
- igt@gem_exec_suspend@(?!.*basic).*
- igt@gem_exec_whisper@(?!basic).*
- igt@gem_fd_exhaustion(@.*)?
--- 
-2.24.1
+Pipeline status: FAILED.
 
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/334795 for the overview.
+
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/10607484):
+  Running with gitlab-runner 13.12.0 (7a6612da)
+    on gst-htz-2 thys1kA2
+  section_start:1623180981:prepare_executor
+  Preparing the "docker" executor
+  Using Docker executor with image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
+  section_end:1623181067:prepare_executor
+  section_start:1623181067:prepare_script
+  Preparing environment
+  section_end:1623181187:prepare_script
+  ERROR: Failed to cleanup volumes
+  ERROR: Job failed (system failure): prepare environment: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running? (docker.go:640:120s). Check https://docs.gitlab.com/runner/shells/index.html#shell-profile-loading for more information
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/334795
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
