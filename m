@@ -1,53 +1,66 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Date: Tue, 8 Jun 2021 11:54:01 +0000
+Message-ID: <BY5PR11MB4372799C65B0777B7FC9268D89379@BY5PR11MB4372.namprd11.prod.outlook.com>
 References: <1622176025-12499-1-git-send-email-vidya.srinivas@intel.com>
  <CO6PR11MB55693230CBD2262DDCF5A0C18D379@CO6PR11MB5569.namprd11.prod.outlook.com>
  <80bed39a-e899-f211-ae2f-279312b52084@gmail.com>
  <BY5PR11MB4372F22C0AF1AEC2CD3A20D089379@BY5PR11MB4372.namprd11.prod.outlook.com>
  <BY5PR11MB437298B9B622322E6663495E89379@BY5PR11MB4372.namprd11.prod.outlook.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <dc3df242-57b9-13f9-c5ab-42acadc39c86@gmail.com>
-Date: Tue, 8 Jun 2021 14:50:45 +0300
-MIME-Version: 1.0
-In-Reply-To: <BY5PR11MB437298B9B622322E6663495E89379@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <dc3df242-57b9-13f9-c5ab-42acadc39c86@gmail.com>
+In-Reply-To: <dc3df242-57b9-13f9-c5ab-42acadc39c86@gmail.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_big_fb:
+MIME-Version: 1.0
+Subject: Re: [Intel-gfx] [igt-dev] [PATCH i-g-t] [RFC] tests/kms_big_fb:
  Wait for vblank before collecting CRC
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Srinivas, Vidya" <vidya.srinivas@intel.com>, "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "Modem,
+ Bhanuprakash" <bhanuprakash.modem@intel.com>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Cc: "Lin, Charlton" <charlton.lin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
+
+Thank you so much Juha-Pekka.
+
+Regards
+Vidya
+
+-----Original Message-----
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com> 
+Sent: Tuesday, June 8, 2021 5:21 PM
+To: Srinivas, Vidya <vidya.srinivas@intel.com>; Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
+Cc: Lin, Charlton <charlton.lin@intel.com>
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_big_fb: Wait for vblank before collecting CRC
 
 On 8.6.2021 12.19, Srinivas, Vidya wrote:
 > Hello Juha-Pekka
 > 
-> Instead of wait for vblank, this also works
-> igt_pipe_crc_start-> igt_pipe_crc_get_current for small fb after commit -> then igt_pipe_crc_get_current For big fb -> compare -> igt_pipe_crc_stop
+> Instead of wait for vblank, this also works igt_pipe_crc_start-> 
+> igt_pipe_crc_get_current for small fb after commit -> then 
+> igt_pipe_crc_get_current For big fb -> compare -> igt_pipe_crc_stop
 > 
-> Would this change be okay? Kindly suggest. igt_pipe_crc_collect_crc is not working. It gives CRC mismatch for few subtests like subtest y-tiled-32bpp-rotate-0
+> Would this change be okay? Kindly suggest. igt_pipe_crc_collect_crc is 
+> not working. It gives CRC mismatch for few subtests like subtest 
+> y-tiled-32bpp-rotate-0
 
-This change is ok. It kind of implies there maybe is some problem on 
-your platform with starting of crc calculation but if this is only place 
-where it will show I'm ok with that since crc will not affect normal 
-users in any way.
+This change is ok. It kind of implies there maybe is some problem on your platform with starting of crc calculation but if this is only place where it will show I'm ok with that since crc will not affect normal users in any way.
 
-I noticed your new patch, lets see how all ci machines behave on that 
-before doing anything else.
+I noticed your new patch, lets see how all ci machines behave on that before doing anything else.
 
 /Juha-Pekka
 
 > 
-> Have submitted the change here https://patchwork.freedesktop.org/patch/437657/?series=90389&rev=6
+> Have submitted the change here 
+> https://patchwork.freedesktop.org/patch/437657/?series=90389&rev=6
 > 
 > Thank you so much.
 > 
@@ -57,9 +70,12 @@ before doing anything else.
 > -----Original Message-----
 > From: Srinivas, Vidya
 > Sent: Tuesday, June 8, 2021 1:19 PM
-> To: juhapekka.heikkila@gmail.com; Modem, Bhanuprakash <Bhanuprakash.Modem@intel.com>; intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
+> To: juhapekka.heikkila@gmail.com; Modem, Bhanuprakash 
+> <Bhanuprakash.Modem@intel.com>; intel-gfx@lists.freedesktop.org; 
+> igt-dev@lists.freedesktop.org
 > Cc: Lin, Charlton <Charlton.Lin@intel.com>
-> Subject: RE: [igt-dev] [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_big_fb: Wait for vblank before collecting CRC
+> Subject: RE: [igt-dev] [Intel-gfx] [PATCH i-g-t] [RFC] 
+> tests/kms_big_fb: Wait for vblank before collecting CRC
 > 
 > Hello Juha-Pekka and Bhanu
 > 
@@ -72,20 +88,23 @@ before doing anything else.
 > -----Original Message-----
 > From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 > Sent: Tuesday, June 8, 2021 1:04 PM
-> To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Srinivas, Vidya <vidya.srinivas@intel.com>; intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
+> To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Srinivas, 
+> Vidya <vidya.srinivas@intel.com>; intel-gfx@lists.freedesktop.org; 
+> igt-dev@lists.freedesktop.org
 > Cc: Lin, Charlton <charlton.lin@intel.com>
-> Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_big_fb: Wait for vblank before collecting CRC
+> Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] [RFC] 
+> tests/kms_big_fb: Wait for vblank before collecting CRC
 > 
 > On 8.6.2021 10.01, Modem, Bhanuprakash wrote:
->>> From: Intel-gfx <intel-gfx-bounces@lists.freedesktop.org> On Behalf
+>>> From: Intel-gfx <intel-gfx-bounces@lists.freedesktop.org> On Behalf 
 >>> Of Vidya Srinivas
 >>> Sent: Friday, May 28, 2021 9:57 AM
 >>> To: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
 >>> Cc: markyacoub@chromium.org; Lin, Charlton <charlton.lin@intel.com>
->>> Subject: [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_big_fb: Wait for
+>>> Subject: [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_big_fb: Wait for 
 >>> vblank before collecting CRC
 >>>
->>> Without wait for vblank, CRC mismatch is seen between big and small
+>>> Without wait for vblank, CRC mismatch is seen between big and small 
 >>> CRC on few Gen11 systems.
 >>>
 >>> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
@@ -103,7 +122,7 @@ before doing anything else.
 >>>    	igt_plane_t *plane = data->plane;
 >>> +	igt_display_t *display = &data->display;
 >>
->> For code readability purpose, I think we need to update to use this
+>> For code readability purpose, I think we need to update to use this 
 >> variable wherever we are using "&data->display" in this function.
 >> s/"&data->display"/"display"/
 >>
@@ -116,7 +135,7 @@ before doing anything else.
 > 
 >>>    	struct igt_fb *small_fb = &data->small_fb;
 >>>    	struct igt_fb *big_fb = &data->big_fb;
->>>    	int w = data->big_fb_width - small_fb->width; @@ -337,16 +338,17
+>>>    	int w = data->big_fb_width - small_fb->width; @@ -337,16 +338,17 
 >>> @@ static bool test_plane(data_t *data)
 >>>    		igt_display_commit2(&data->display, data->display.is_atomic ?
 >>>    				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
@@ -133,7 +152,7 @@ before doing anything else.
 >>>
 >>>    		igt_plane_set_fb(plane, big_fb);
 >>>    		igt_fb_set_position(big_fb, plane, x, y);
->>>    		igt_fb_set_size(big_fb, plane, small_fb->width,
+>>>    		igt_fb_set_size(big_fb, plane, small_fb->width, 
 >>> small_fb->height);
 >>> +
 > 
@@ -163,6 +182,6 @@ before doing anything else.
 > 
 
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
