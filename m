@@ -1,13 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2DA956E040
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Jun 2021 03:34:49 +0000 (UTC)
+Date: Mon, 7 Jun 2021 20:34:45 -0700
+From: Matt Roper <matthew.d.roper@intel.com>
+Message-ID: <20210608033445.GF6936@mdroper-desk1.amr.corp.intel.com>
+References: <20210604203927.494340-1-matthew.d.roper@intel.com>
+ <20210604203927.494340-6-matthew.d.roper@intel.com>
+ <cd08f3fe7e870b9adb68f5d036d642178463d88b.camel@intel.com>
+ <20210607075821.GA3783533@ideak-desk.fi.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 08 Jun 2021 01:08:42 -0000
-Message-ID: <162311452277.421.3340242144940392744@emeril.freedesktop.org>
-References: <20210608003217.83582-1-khaled.almahallawy@intel.com>
-In-Reply-To: <20210608003217.83582-1-khaled.almahallawy@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fcontent=5Fprotection=3A_Skip_if_not_able_to_create_displa?=
- =?utf-8?q?y=5Fhdcp=5Fsrm=2Ebin?=
+Content-Disposition: inline
+In-Reply-To: <20210607075821.GA3783533@ideak-desk.fi.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 5/6] lib/i915: Add ADL-P stride
+ restrictions for non-linear buffers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,231 +21,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1234504315=="
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Khaled Almahallawy <khaled.almahallawy@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Imre Deak <imre.deak@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Heikkila,
+ Juha-pekka" <juha-pekka.heikkila@intel.com>, "Taylor,
+ Clinton A" <clinton.a.taylor@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1234504315==
-Content-Type: multipart/alternative;
- boundary="===============1996616410916176459=="
+On Mon, Jun 07, 2021 at 10:58:21AM +0300, Imre Deak wrote:
+> On Fri, Jun 04, 2021 at 11:51:51PM +0300, Souza, Jose wrote:
+> > Hum we can drop this change, Imre landed changes to make framebuffers
+> > strides power of two for adl_p, so for userspace it should be
+> > transparent.
+> =
 
---===============1996616410916176459==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+> Yes, it should be transparent for CCS framebuffers too, however that's a
+> TODO item. I suspect that kernel would need to recreate the CCS plane if
+> the main surface stride changes (since the layout of each CCS page would
+> change, so we can't just remap the CCS pages), hence left this part for
+> a follow-up.
+> =
 
-== Series Details ==
+> So this patch is needed.
 
-Series: tests/kms_content_protection: Skip if not able to create display_hdcp_srm.bin
-URL   : https://patchwork.freedesktop.org/series/91128/
-State : success
+Are there any changes required, or can we consider this r-b?
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_10188 -> IGTPW_5893
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5893 that come from known issues:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-nick:        [INCOMPLETE][1] ([i915#2782] / [i915#2940] / [i915#3462]) -> [DMESG-FAIL][2] ([i915#3462])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10188/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-
-  * igt@runner@aborted:
-    - fi-skl-6600u:       [FAIL][3] ([i915#1436] / [i915#3363]) -> [FAIL][4] ([i915#1436] / [i915#2426] / [i915#3363])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10188/fi-skl-6600u/igt@runner@aborted.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/fi-skl-6600u/igt@runner@aborted.html
-    - fi-kbl-7500u:       [FAIL][5] ([i915#1436] / [i915#3363]) -> [FAIL][6] ([i915#1436] / [i915#2426] / [i915#3363])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10188/fi-kbl-7500u/igt@runner@aborted.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/fi-kbl-7500u/igt@runner@aborted.html
-    - fi-kbl-guc:         [FAIL][7] ([i915#1436] / [i915#3363]) -> [FAIL][8] ([i915#1436] / [i915#2426] / [i915#3363])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10188/fi-kbl-guc/igt@runner@aborted.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/fi-kbl-guc/igt@runner@aborted.html
-    - fi-bxt-dsi:         [FAIL][9] ([i915#3363]) -> [FAIL][10] ([i915#2426] / [i915#3363])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10188/fi-bxt-dsi/igt@runner@aborted.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/fi-bxt-dsi/igt@runner@aborted.html
-    - fi-cfl-guc:         [FAIL][11] ([i915#3363]) -> [FAIL][12] ([i915#2426] / [i915#3363])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10188/fi-cfl-guc/igt@runner@aborted.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/fi-cfl-guc/igt@runner@aborted.html
-    - fi-skl-guc:         [FAIL][13] ([i915#1436] / [i915#3363]) -> [FAIL][14] ([i915#1436] / [i915#2426] / [i915#3363])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10188/fi-skl-guc/igt@runner@aborted.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/fi-skl-guc/igt@runner@aborted.html
-    - fi-skl-6700k2:      [FAIL][15] ([i915#1436] / [i915#3363]) -> [FAIL][16] ([i915#1436] / [i915#2426] / [i915#3363])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10188/fi-skl-6700k2/igt@runner@aborted.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/fi-skl-6700k2/igt@runner@aborted.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1222]: https://gitlab.freedesktop.org/drm/intel/issues/1222
-  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
-  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
-  [i915#2932]: https://gitlab.freedesktop.org/drm/intel/issues/2932
-  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
-  [i915#2966]: https://gitlab.freedesktop.org/drm/intel/issues/2966
-  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
-  [i915#3276]: https://gitlab.freedesktop.org/drm/intel/issues/3276
-  [i915#3277]: https://gitlab.freedesktop.org/drm/intel/issues/3277
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3283]: https://gitlab.freedesktop.org/drm/intel/issues/3283
-  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
-  [i915#3462]: https://gitlab.freedesktop.org/drm/intel/issues/3462
-  [i915#3539]: https://gitlab.freedesktop.org/drm/intel/issues/3539
-  [i915#3542]: https://gitlab.freedesktop.org/drm/intel/issues/3542
-  [i915#3544]: https://gitlab.freedesktop.org/drm/intel/issues/3544
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+Thanks.
 
 
-Participating hosts (46 -> 40)
-------------------------------
+Matt
 
-  Additional (1): fi-rkl-11500t 
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-n3050 fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+> =
+
+> > On Fri, 2021-06-04 at 13:39 -0700, Matt Roper wrote:
+> > > From: Jos=E9 Roberto de Souza <jose.souza@intel.com>
+> > > =
+
+> > > ADL-P tiled framebuffer strides must be power-of-two aligned and has a
+> > > minimum of 8 tiles. For non-CCS framebuffers the driver supports FBs =
+not
+> > > meeting this requirement by remapping the framebuffer and padding the
+> > > stride as required, but for CCS FBs userspace must ensure the alignme=
+nt.
+> > > Adding remap support for CCS FBs to the driver is to be done as a
+> > > follow-up.
+> > > =
+
+> > > Cc: Juha-Pekka Heikkil=E4 <juha-pekka.heikkila@intel.com>
+> > > Cc: Anusha Srivatsa <anusha.srivatsa@intel.com>
+> > > Cc: Clinton Taylor <Clinton.A.Taylor@intel.com>
+> > > Cc: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+> > > Cc: Imre Deak <imre.deak@intel.com>
+> > > Signed-off-by: Jos=E9 Roberto de Souza <jose.souza@intel.com>
+> > > Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+> > > ---
+> > >  lib/igt_fb.c | 26 +++++++++++++++++++++-----
+> > >  1 file changed, 21 insertions(+), 5 deletions(-)
+> > > =
+
+> > > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> > > index 585ede38..ce2aa6ce 100644
+> > > --- a/lib/igt_fb.c
+> > > +++ b/lib/igt_fb.c
+> > > @@ -729,8 +729,16 @@ static uint32_t calc_plane_stride(struct igt_fb =
+*fb, int plane)
+> > >  		/* clear color always fixed to 64 bytes */
+> > >  		return 64;
+> > >  	} else if (is_gen12_ccs_plane(fb, plane)) {
+> > > -		/* A main surface using a CCS AUX surface must be 4x4 tiles aligne=
+d. */
+> > > -		return ALIGN(min_stride, 64);
+> > > +		/*
+> > > +		 * A main surface using a CCS AUX surface must be 4x4 tiles
+> > > +		 * aligned.  On ADL_P the minimum main surface stride is 8
+> > > +		 * tiles (2 * 64 byte on CCS surface) and it has to be POT
+> > > +		 * aligned.
+> > > +		 */
+> > > +		if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)))
+> > > +			return roundup_power_of_two(max(min_stride, 128u));
+> > > +		else
+> > > +			return ALIGN(min_stride, 64);
+> > >  	} else if (!fb->modifier && is_nouveau_device(fb->fd)) {
+> > >  		int align;
+> > >  =
+
+> > > @@ -743,14 +751,22 @@ static uint32_t calc_plane_stride(struct igt_fb=
+ *fb, int plane)
+> > >  		return ALIGN(min_stride, align);
+> > >  	} else {
+> > >  		unsigned int tile_width, tile_height;
+> > > +		uint32_t stride;
+> > >  =
+
+> > >  		igt_get_fb_tile_size(fb->fd, fb->modifier, fb->plane_bpp[plane],
+> > >  				     &tile_width, &tile_height);
+> > >  =
+
+> > > -		if (is_gen12_ccs_modifier(fb->modifier))
+> > > -			tile_width *=3D 4;
+> > > +		if (is_gen12_ccs_modifier(fb->modifier)) {
+> > > +			stride =3D ALIGN(min_stride, tile_width * 4);
+> > >  =
+
+> > > -		return ALIGN(min_stride, tile_width);
+> > > +			/* TODO: add support to kernel to POT align CCS format strides */
+> > > +			if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)))
+> > > +				stride =3D roundup_power_of_two(max(stride, tile_width * 8));
+> > > +		} else {
+> > > +			stride =3D ALIGN(min_stride, tile_width);
+> > > +		}
+> > > +
+> > > +		return stride;
+> > >  	}
+> > >  }
+> > >  =
+
+> > =
 
 
-Build changes
--------------
+-- =
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6099 -> IGTPW_5893
-
-  CI-20190529: 20190529
-  CI_DRM_10188: 8663aa75dada3153f7d48c8bc727da0444f98de2 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5893: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/index.html
-  IGT_6099: adb9ee4ed7206725cfe3589bf49f47f9dcf661f2 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/index.html
-
---===============1996616410916176459==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_content_protection: Skip if not able to create display_hdcp_srm.bin</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/91128/">https://patchwork.freedesktop.org/series/91128/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10188 -&gt; IGTPW_5893</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5893 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10188/fi-bsw-nick/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/fi-bsw-nick/igt@i915_selftest@live@execlists.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10188/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
-</li>
-<li>
-<p>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10188/fi-kbl-7500u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/fi-kbl-7500u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
-</li>
-<li>
-<p>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10188/fi-kbl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/fi-kbl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
-</li>
-<li>
-<p>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10188/fi-bxt-dsi/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/fi-bxt-dsi/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
-</li>
-<li>
-<p>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10188/fi-cfl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/fi-cfl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
-</li>
-<li>
-<p>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10188/fi-skl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/fi-skl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
-</li>
-<li>
-<p>fi-skl-6700k2:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10188/fi-skl-6700k2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/fi-skl-6700k2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (46 -&gt; 40)</h2>
-<p>Additional (1): fi-rkl-11500t <br />
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-n3050 fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6099 -&gt; IGTPW_5893</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10188: 8663aa75dada3153f7d48c8bc727da0444f98de2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5893: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5893/index.html<br />
-  IGT_6099: adb9ee4ed7206725cfe3589bf49f47f9dcf661f2 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============1996616410916176459==--
-
---===============1234504315==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+Matt Roper
+Graphics Software Engineer
+VTT-OSGC Platform Enablement
+Intel Corporation
+(916) 356-2795
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============1234504315==--
