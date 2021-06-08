@@ -1,19 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2DA956E040
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Jun 2021 03:34:49 +0000 (UTC)
-Date: Mon, 7 Jun 2021 20:34:45 -0700
-From: Matt Roper <matthew.d.roper@intel.com>
-Message-ID: <20210608033445.GF6936@mdroper-desk1.amr.corp.intel.com>
-References: <20210604203927.494340-1-matthew.d.roper@intel.com>
- <20210604203927.494340-6-matthew.d.roper@intel.com>
- <cd08f3fe7e870b9adb68f5d036d642178463d88b.camel@intel.com>
- <20210607075821.GA3783533@ideak-desk.fi.intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C0706EAAD
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Jun 2021 06:16:36 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
+Date: Tue,  8 Jun 2021 11:48:29 +0530
+Message-Id: <20210608061829.3774-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210607075821.GA3783533@ideak-desk.fi.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 5/6] lib/i915: Add ADL-P stride
- restrictions for non-linear buffers
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_flip_tiling: Fix clean up when
+ subtest fails
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,134 +15,181 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Imre Deak <imre.deak@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Heikkila,
- Juha-pekka" <juha-pekka.heikkila@intel.com>, "Taylor,
- Clinton A" <clinton.a.taylor@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Jun 07, 2021 at 10:58:21AM +0300, Imre Deak wrote:
-> On Fri, Jun 04, 2021 at 11:51:51PM +0300, Souza, Jose wrote:
-> > Hum we can drop this change, Imre landed changes to make framebuffers
-> > strides power of two for adl_p, so for userspace it should be
-> > transparent.
-> =
+If a subtest fails during commit for some reason on the first connector,
+all the subsequent subtests on the same pipe fails.
+This is because the pipe is still connected to the previous connector
+as the cleanup part will have been skipped during the failed subtest.
 
-> Yes, it should be transparent for CCS framebuffers too, however that's a
-> TODO item. I suspect that kernel would need to recreate the CCS plane if
-> the main surface stride changes (since the layout of each CCS page would
-> change, so we can't just remap the CCS pages), hence left this part for
-> a follow-up.
-> =
+To fix this, moved the cleanup part to a separate function and calling it
+outside the subtest scope.
 
-> So this patch is needed.
+v2: Fix indentation.
 
-Are there any changes required, or can we consider this r-b?
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+---
+ tests/kms_flip_tiling.c | 31 +++++++++++++++++++++++--------
+ 1 file changed, 23 insertions(+), 8 deletions(-)
 
-Thanks.
+diff --git a/tests/kms_flip_tiling.c b/tests/kms_flip_tiling.c
+index 573cc337..211117f3 100644
+--- a/tests/kms_flip_tiling.c
++++ b/tests/kms_flip_tiling.c
+@@ -39,6 +39,7 @@ typedef struct {
+ 	igt_display_t display;
+ 	int gen;
+ 	uint32_t testformat;
++	struct igt_fb fb[2];
+ } data_t;
+ 
+ static igt_pipe_crc_t *_pipe_crc;
+@@ -69,7 +70,6 @@ test_flip_tiling(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t ti
+ {
+ 	drmModeModeInfo *mode;
+ 	igt_plane_t *primary;
+-	struct igt_fb fb[2];
+ 	igt_pipe_crc_t *pipe_crc;
+ 	igt_crc_t reference_crc, crc;
+ 	int fb_id, ret, width;
+@@ -105,27 +105,27 @@ test_flip_tiling(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t ti
+ 
+ 	fb_id = igt_create_pattern_fb(data->drm_fd, width, mode->vdisplay,
+ 				      data->testformat, tiling[0],
+-				      &fb[0]);
++				      &data->fb[0]);
+ 	igt_assert(fb_id);
+ 
+ 	/* Second fb has different background so CRC does not match. */
+ 	fb_id = igt_create_color_pattern_fb(data->drm_fd, width, mode->vdisplay,
+ 				      data->testformat, tiling[1],
+-				      0.5, 0.5, 0.5, &fb[1]);
++				      0.5, 0.5, 0.5, &data->fb[1]);
+ 	igt_assert(fb_id);
+ 
+ 	/* Set the crtc and generate a reference CRC. */
+-	igt_plane_set_fb(primary, &fb[1]);
++	igt_plane_set_fb(primary, &data->fb[1]);
+ 	igt_display_commit(&data->display);
+ 	igt_pipe_crc_collect_crc(pipe_crc, &reference_crc);
+ 
+ 	/* Commit the first fb. */
+-	igt_plane_set_fb(primary, &fb[0]);
++	igt_plane_set_fb(primary, &data->fb[0]);
+ 	igt_display_commit(&data->display);
+ 
+ 	/* Flip to the second fb. */
+ 	ret = drmModePageFlip(data->drm_fd, output->config.crtc->crtc_id,
+-			      fb[1].fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
++			      data->fb[1].fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
+ 	/*
+ 	 * Page flip should work but some transitions may be temporarily
+ 	 * on some kernels.
+@@ -137,6 +137,12 @@ test_flip_tiling(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t ti
+ 	/* Get a crc and compare with the reference. */
+ 	igt_pipe_crc_collect_crc(pipe_crc, &crc);
+ 	igt_assert_crc_equal(&reference_crc, &crc);
++}
++
++static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
++{
++	igt_plane_t *primary;
++	primary = igt_output_get_plane(output, 0);
+ 
+ 	/* Clean up. */
+ 	igt_plane_set_fb(primary, NULL);
+@@ -144,8 +150,8 @@ test_flip_tiling(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t ti
+ 	igt_output_set_pipe(output, PIPE_ANY);
+ 	igt_display_commit(&data->display);
+ 
+-	igt_remove_fb(data->drm_fd, &fb[0]);
+-	igt_remove_fb(data->drm_fd, &fb[1]);
++	igt_remove_fb(data->drm_fd, &data->fb[0]);
++	igt_remove_fb(data->drm_fd, &data->fb[1]);
+ }
+ 
+ static data_t data;
+@@ -185,6 +191,7 @@ igt_main
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+ 				test_flip_tiling(&data, pipe, output, tiling);
++			test_cleanup(&data, pipe, output);
+ 		}
+ 	}
+ 
+@@ -204,6 +211,7 @@ igt_main
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+ 				test_flip_tiling(&data, pipe, output, tiling);
++			test_cleanup(&data, pipe, output);
+ 		}
+ 	}
+ 
+@@ -223,6 +231,7 @@ igt_main
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+ 				test_flip_tiling(&data, pipe, output, tiling);
++			test_cleanup(&data, pipe, output);
+ 		}
+ 	}
+ 
+@@ -246,6 +255,7 @@ igt_main
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+ 				test_flip_tiling(&data, pipe, output, tiling);
++			test_cleanup(&data, pipe, output);
+ 		}
+ 	}
+ 
+@@ -265,6 +275,7 @@ igt_main
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+ 				test_flip_tiling(&data, pipe, output, tiling);
++			test_cleanup(&data, pipe, output);
+ 		}
+ 	}
+ 
+@@ -284,6 +295,7 @@ igt_main
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+ 				test_flip_tiling(&data, pipe, output, tiling);
++			test_cleanup(&data, pipe, output);
+ 		}
+ 	}
+ 
+@@ -307,6 +319,7 @@ igt_main
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+ 				test_flip_tiling(&data, pipe, output, tiling);
++			test_cleanup(&data, pipe, output);
+ 		}
+ 	}
+ 
+@@ -326,6 +339,7 @@ igt_main
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+ 				test_flip_tiling(&data, pipe, output, tiling);
++			test_cleanup(&data, pipe, output);
+ 		}
+ 	}
+ 
+@@ -345,6 +359,7 @@ igt_main
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+ 				test_flip_tiling(&data, pipe, output, tiling);
++			test_cleanup(&data, pipe, output);
+ 		}
+ 	}
+ 
+-- 
+2.19.1
 
-
-Matt
-
-> =
-
-> > On Fri, 2021-06-04 at 13:39 -0700, Matt Roper wrote:
-> > > From: Jos=E9 Roberto de Souza <jose.souza@intel.com>
-> > > =
-
-> > > ADL-P tiled framebuffer strides must be power-of-two aligned and has a
-> > > minimum of 8 tiles. For non-CCS framebuffers the driver supports FBs =
-not
-> > > meeting this requirement by remapping the framebuffer and padding the
-> > > stride as required, but for CCS FBs userspace must ensure the alignme=
-nt.
-> > > Adding remap support for CCS FBs to the driver is to be done as a
-> > > follow-up.
-> > > =
-
-> > > Cc: Juha-Pekka Heikkil=E4 <juha-pekka.heikkila@intel.com>
-> > > Cc: Anusha Srivatsa <anusha.srivatsa@intel.com>
-> > > Cc: Clinton Taylor <Clinton.A.Taylor@intel.com>
-> > > Cc: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-> > > Cc: Imre Deak <imre.deak@intel.com>
-> > > Signed-off-by: Jos=E9 Roberto de Souza <jose.souza@intel.com>
-> > > Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-> > > ---
-> > >  lib/igt_fb.c | 26 +++++++++++++++++++++-----
-> > >  1 file changed, 21 insertions(+), 5 deletions(-)
-> > > =
-
-> > > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> > > index 585ede38..ce2aa6ce 100644
-> > > --- a/lib/igt_fb.c
-> > > +++ b/lib/igt_fb.c
-> > > @@ -729,8 +729,16 @@ static uint32_t calc_plane_stride(struct igt_fb =
-*fb, int plane)
-> > >  		/* clear color always fixed to 64 bytes */
-> > >  		return 64;
-> > >  	} else if (is_gen12_ccs_plane(fb, plane)) {
-> > > -		/* A main surface using a CCS AUX surface must be 4x4 tiles aligne=
-d. */
-> > > -		return ALIGN(min_stride, 64);
-> > > +		/*
-> > > +		 * A main surface using a CCS AUX surface must be 4x4 tiles
-> > > +		 * aligned.  On ADL_P the minimum main surface stride is 8
-> > > +		 * tiles (2 * 64 byte on CCS surface) and it has to be POT
-> > > +		 * aligned.
-> > > +		 */
-> > > +		if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)))
-> > > +			return roundup_power_of_two(max(min_stride, 128u));
-> > > +		else
-> > > +			return ALIGN(min_stride, 64);
-> > >  	} else if (!fb->modifier && is_nouveau_device(fb->fd)) {
-> > >  		int align;
-> > >  =
-
-> > > @@ -743,14 +751,22 @@ static uint32_t calc_plane_stride(struct igt_fb=
- *fb, int plane)
-> > >  		return ALIGN(min_stride, align);
-> > >  	} else {
-> > >  		unsigned int tile_width, tile_height;
-> > > +		uint32_t stride;
-> > >  =
-
-> > >  		igt_get_fb_tile_size(fb->fd, fb->modifier, fb->plane_bpp[plane],
-> > >  				     &tile_width, &tile_height);
-> > >  =
-
-> > > -		if (is_gen12_ccs_modifier(fb->modifier))
-> > > -			tile_width *=3D 4;
-> > > +		if (is_gen12_ccs_modifier(fb->modifier)) {
-> > > +			stride =3D ALIGN(min_stride, tile_width * 4);
-> > >  =
-
-> > > -		return ALIGN(min_stride, tile_width);
-> > > +			/* TODO: add support to kernel to POT align CCS format strides */
-> > > +			if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)))
-> > > +				stride =3D roundup_power_of_two(max(stride, tile_width * 8));
-> > > +		} else {
-> > > +			stride =3D ALIGN(min_stride, tile_width);
-> > > +		}
-> > > +
-> > > +		return stride;
-> > >  	}
-> > >  }
-> > >  =
-
-> > =
-
-
--- =
-
-Matt Roper
-Graphics Software Engineer
-VTT-OSGC Platform Enablement
-Intel Corporation
-(916) 356-2795
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
