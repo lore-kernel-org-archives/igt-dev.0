@@ -1,132 +1,229 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Tue, 8 Jun 2021 07:48:48 +0000
-Message-ID: <BY5PR11MB4372F22C0AF1AEC2CD3A20D089379@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <1622176025-12499-1-git-send-email-vidya.srinivas@intel.com>
- <CO6PR11MB55693230CBD2262DDCF5A0C18D379@CO6PR11MB5569.namprd11.prod.outlook.com>
- <80bed39a-e899-f211-ae2f-279312b52084@gmail.com>
-In-Reply-To: <80bed39a-e899-f211-ae2f-279312b52084@gmail.com>
-Content-Language: en-US
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-Subject: Re: [Intel-gfx] [igt-dev] [PATCH i-g-t] [RFC] tests/kms_big_fb:
- Wait for vblank before collecting CRC
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "Modem,
- Bhanuprakash" <bhanuprakash.modem@intel.com>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Lin, Charlton" <charlton.lin@intel.com>
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 08 Jun 2021 08:12:40 -0000
+Message-ID: <162313996088.418.10844254603338617008@emeril.freedesktop.org>
+References: <1623137118-16598-1-git-send-email-vidya.srinivas@intel.com>
+In-Reply-To: <1623137118-16598-1-git-send-email-vidya.srinivas@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgRGlzYWJs?=
+ =?utf-8?q?e_gamma_in_degamma_subtests?=
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1224666962=="
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hello Juha-Pekka and Bhanu
+--===============1224666962==
+Content-Type: multipart/alternative;
+ boundary="===============5454226611040560239=="
 
-Thank you for the review comments. Apologies Juha-Pekka, I will incorporate your review comments and try out.
+--===============5454226611040560239==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Regards
-Vidya
+== Series Details ==
+
+Series: Disable gamma in degamma subtests
+URL   : https://patchwork.freedesktop.org/series/91145/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6100 -> IGTPW_5895
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5895 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
+    - fi-snb-2600:        NOTRUN -> [SKIP][1] ([fdo#109271]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-icl-u2:          [PASS][2] -> [DMESG-WARN][3] ([i915#2868])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6100/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [INCOMPLETE][4] ([i915#2782]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6100/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  
+#### Warnings ####
+
+  * igt@runner@aborted:
+    - fi-glk-dsi:         [FAIL][6] ([i915#3363] / [k.org#202321]) -> [FAIL][7] ([i915#2426] / [i915#3363] / [k.org#202321])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6100/fi-glk-dsi/igt@runner@aborted.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/fi-glk-dsi/igt@runner@aborted.html
+    - fi-kbl-soraka:      [FAIL][8] ([i915#1436] / [i915#3363]) -> [FAIL][9] ([i915#1436] / [i915#2426] / [i915#3363])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6100/fi-kbl-soraka/igt@runner@aborted.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/fi-kbl-soraka/igt@runner@aborted.html
+    - fi-kbl-7500u:       [FAIL][10] ([i915#1436] / [i915#3363]) -> [FAIL][11] ([i915#1436] / [i915#2426] / [i915#3363])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6100/fi-kbl-7500u/igt@runner@aborted.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/fi-kbl-7500u/igt@runner@aborted.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
+  [i915#2868]: https://gitlab.freedesktop.org/drm/intel/issues/2868
+  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
+  [k.org#202321]: https://bugzilla.kernel.org/show_bug.cgi?id=202321
 
 
------Original Message-----
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com> 
-Sent: Tuesday, June 8, 2021 1:04 PM
-To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Srinivas, Vidya <vidya.srinivas@intel.com>; intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
-Cc: Lin, Charlton <charlton.lin@intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_big_fb: Wait for vblank before collecting CRC
+Participating hosts (47 -> 41)
+------------------------------
 
-On 8.6.2021 10.01, Modem, Bhanuprakash wrote:
->> From: Intel-gfx <intel-gfx-bounces@lists.freedesktop.org> On Behalf 
->> Of Vidya Srinivas
->> Sent: Friday, May 28, 2021 9:57 AM
->> To: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
->> Cc: markyacoub@chromium.org; Lin, Charlton <charlton.lin@intel.com>
->> Subject: [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_big_fb: Wait for 
->> vblank before collecting CRC
->>
->> Without wait for vblank, CRC mismatch is seen between big and small 
->> CRC on few Gen11 systems.
->>
->> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
->> ---
->>   tests/kms_big_fb.c | 6 ++++--
->>   1 file changed, 4 insertions(+), 2 deletions(-)
->>
->> diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c index 
->> b35727a09bd0..f90363c3beb2 100644
->> --- a/tests/kms_big_fb.c
->> +++ b/tests/kms_big_fb.c
->> @@ -254,6 +254,7 @@ static void unset_lut(data_t *data)
->>   static bool test_plane(data_t *data)
->>   {
->>   	igt_plane_t *plane = data->plane;
->> +	igt_display_t *display = &data->display;
-> 
-> For code readability purpose, I think we need to update to use this 
-> variable wherever we are using "&data->display" in this function.
-> s/"&data->display"/"display"/
-> 
-> With above change, this patch LGTM
-> Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> 
-
-I still don't see benefit in this patch. For now all this look like is doing is slow down the test and if this actually helps there's a real bug somewhere which is not here. My earlier review comments were not addressed hence repeat here, see below.
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
 
 
->>   	struct igt_fb *small_fb = &data->small_fb;
->>   	struct igt_fb *big_fb = &data->big_fb;
->>   	int w = data->big_fb_width - small_fb->width; @@ -337,16 +338,17 
->> @@ static bool test_plane(data_t *data)
->>   		igt_display_commit2(&data->display, data->display.is_atomic ?
->>   				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
->>
->> -
->> +		igt_wait_for_vblank(data->drm_fd, 
->> +display->pipes[data->pipe].crtc_offset);
+Build changes
+-------------
 
-Above this line there's flip to different fb. Below this line crc calculation is restarted, get one crc and stop crc. There's several vblanks already spent here, if now adding one more somehow helps it sound like there's problems in crc calculation on some platform or kernel is saying too early framebuffer is ready to be shown. Am I missing something here?
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6100 -> IGTPW_5895
 
-/Juha-Pekka
+  CI-20190529: 20190529
+  CI_DRM_10188: 8663aa75dada3153f7d48c8bc727da0444f98de2 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5895: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/index.html
+  IGT_6100: 801309d0c245cbf8115c03978d0819f484b477c0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
->>   		igt_pipe_crc_collect_crc(data->pipe_crc, &small_crc);
->>
->>   		igt_plane_set_fb(plane, big_fb);
->>   		igt_fb_set_position(big_fb, plane, x, y);
->>   		igt_fb_set_size(big_fb, plane, small_fb->width, 
->> small_fb->height);
->> +
+== Logs ==
 
-spurious empty line need to be removed.
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/index.html
 
->>   		igt_plane_set_size(plane, data->width, data->height);
->>   		igt_display_commit2(&data->display, data->display.is_atomic ?
->>   				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
->> -
->> +		igt_wait_for_vblank(data->drm_fd, 
->> +display->pipes[data->pipe].crtc_offset);
->>   		igt_pipe_crc_collect_crc(data->pipe_crc, &big_crc);
->>
->>   		igt_plane_set_fb(plane, NULL);
->> --
->> 2.7.4
->>
->> _______________________________________________
->> Intel-gfx mailing list
->> Intel-gfx@lists.freedesktop.org
->> https://lists.freedesktop.org/mailman/listinfo/intel-gfx
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-> 
+--===============5454226611040560239==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Disable gamma in degamma subtests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/91145/">https://patchwork.freedesktop.org/series/91145/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6100 -&gt; IGTPW_5895</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5895 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-fork-compute0:</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6100/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2868">i915#2868</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6100/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-glk-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6100/fi-glk-dsi/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://bugzilla.kernel.org/show_bug.cgi?id=202321">k.org#202321</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/fi-glk-dsi/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://bugzilla.kernel.org/show_bug.cgi?id=202321">k.org#202321</a>)</p>
+</li>
+<li>
+<p>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6100/fi-kbl-soraka/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/fi-kbl-soraka/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
+</li>
+<li>
+<p>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6100/fi-kbl-7500u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/fi-kbl-7500u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (47 -&gt; 41)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6100 -&gt; IGTPW_5895</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10188: 8663aa75dada3153f7d48c8bc727da0444f98de2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5895: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5895/index.html<br />
+  IGT_6100: 801309d0c245cbf8115c03978d0819f484b477c0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5454226611040560239==--
+
+--===============1224666962==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1224666962==--
