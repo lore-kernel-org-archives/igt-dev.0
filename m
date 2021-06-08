@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com
- [IPv6:2a00:1450:4864:20::335])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A592E6EB7E
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Jun 2021 09:40:31 +0000 (UTC)
-Received: by mail-wm1-x335.google.com with SMTP id
- l7-20020a05600c1d07b02901b0e2ebd6deso1394361wms.1
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 02:40:31 -0700 (PDT)
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com
+ [IPv6:2a00:1450:4864:20::42d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 66B006EB80
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Jun 2021 09:40:33 +0000 (UTC)
+Received: by mail-wr1-x42d.google.com with SMTP id z8so20782532wrp.12
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 02:40:33 -0700 (PDT)
 From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Tue,  8 Jun 2021 11:40:18 +0200
-Message-Id: <20210608094020.21598-5-daniel.vetter@ffwll.ch>
+Date: Tue,  8 Jun 2021 11:40:20 +0200
+Message-Id: <20210608094020.21598-7-daniel.vetter@ffwll.ch>
 In-Reply-To: <20210608094020.21598-1-daniel.vetter@ffwll.ch>
 References: <20210608094020.21598-1-daniel.vetter@ffwll.ch>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 5/7] Revert "i915/gem_exec_reloc: Flood the
- ring with GPU relocs"
+Subject: [igt-dev] [PATCH i-g-t 7/7] tests/gem_exec_schedule: Use
+ store_dword_plug again
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,137 +20,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: IGT development <igt-dev@lists.freedesktop.org>
 Cc: Daniel Vetter <daniel.vetter@intel.com>, Dave Airlie <airlied@redhat.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This reverts commit 57ee41f12b7a53283fd812c5f72fcb39e6ad2197.
-
-This validates gpu relocations, which we're about to delete.
-
-Cc: Jason Ekstrand <jason@jlekstrand.net>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
----
- tests/i915/gem_exec_reloc.c | 89 -------------------------------------
- 1 file changed, 89 deletions(-)
-
-diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
-index c3f42aff9c9a..cbd40962c610 100644
---- a/tests/i915/gem_exec_reloc.c
-+++ b/tests/i915/gem_exec_reloc.c
-@@ -344,88 +344,6 @@ static void active(int fd, unsigned engine)
- 	gem_close(fd, obj[0].handle);
- }
- 
--static uint64_t many_relocs(unsigned long count, unsigned long *out)
--{
--	struct drm_i915_gem_relocation_entry *reloc;
--	unsigned long sz;
--	int i;
--
--	sz = count * sizeof(*reloc);
--	sz = ALIGN(sz, 4096);
--
--	reloc = mmap(0, sz, PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
--	igt_assert(reloc != MAP_FAILED);
--	for (i = 0; i < count; i++) {
--		reloc[i].target_handle = 0;
--		reloc[i].presumed_offset = ~0ull;
--		reloc[i].offset = 8 * i;
--		reloc[i].delta = 8 * i;
--	}
--	mprotect(reloc, sz, PROT_READ);
--
--	*out = sz;
--	return to_user_pointer(reloc);
--}
--
--static void __many_active(int i915, unsigned engine, unsigned long count)
--{
--	unsigned long reloc_sz;
--	struct drm_i915_gem_exec_object2 obj[2] = {{
--		.handle = gem_create(i915, count * sizeof(uint64_t)),
--		.relocs_ptr = many_relocs(count, &reloc_sz),
--		.relocation_count = count,
--	}};
--	struct drm_i915_gem_execbuffer2 execbuf = {
--		.buffers_ptr = to_user_pointer(obj),
--		.buffer_count = ARRAY_SIZE(obj),
--		.flags = engine | I915_EXEC_HANDLE_LUT,
--	};
--	igt_spin_t *spin;
--
--	spin = __igt_spin_new(i915,
--			      .engine = engine,
--			      .dependency = obj[0].handle,
--			      .flags = (IGT_SPIN_FENCE_OUT |
--					IGT_SPIN_NO_PREEMPTION));
--	obj[1] = spin->obj[1];
--	gem_execbuf(i915, &execbuf);
--	igt_assert_eq(sync_fence_status(spin->out_fence), 0);
--	igt_spin_free(i915, spin);
--
--	for (unsigned long i = 0; i < count; i++) {
--		uint64_t addr;
--
--		gem_read(i915, obj[0].handle, i * sizeof(addr),
--			 &addr, sizeof(addr));
--
--		igt_assert_eq_u64(addr, obj[0].offset + i * sizeof(addr));
--	}
--
--	munmap(from_user_pointer(obj[0].relocs_ptr), reloc_sz);
--	gem_close(i915, obj[0].handle);
--}
--
--static void many_active(int i915, unsigned engine)
--{
--	const uint64_t max = 2048;
--	unsigned long count = 256;
--
--	igt_until_timeout(2) {
--		uint64_t required, total;
--
--		if (!__intel_check_memory(1, 8 * count, CHECK_RAM,
--					  &required, &total))
--			break;
--
--		igt_debug("Testing count:%lu\n", count);
--		__many_active(i915, engine, count);
--
--		count <<= 1;
--		if (count >= max)
--			break;
--	}
--}
--
- static unsigned int offset_in_page(void *addr)
- {
- 	return (uintptr_t)addr & 4095;
-@@ -1053,13 +971,6 @@ igt_main
- 		}
- 	}
- 
--	igt_subtest_with_dynamic("basic-many-active") {
--		__for_each_physical_engine(fd, e) {
--			igt_dynamic_f("%s", e->name)
--				many_active(fd, e->flags);
--		}
--	}
--
- 	igt_subtest("invalid-domains")
- 		invalid_domains(fd);
- 
--- 
-2.24.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SW4KCmNvbW1pdCAyODg0ZjkxZGQ2ZDc2ODJlYTczOGVmNmYwOTQzY2M1OTE2NDNkZGEyCkF1dGhv
+cjogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+CkRhdGU6ICAgRnJpIEp1
+bCAyMCAxMjoyOTozMCAyMDE4ICswMTAwCgogICAgaWd0L2dlbV9leGVjX3NjaGVkdWxlOiBUcmlt
+IGRlZXAgcnVudGltZQoKdGhpcyB3YXMgb3Blbi1jb2RlZCwgSSBndWVzcyB0byBhdm9pZCBoYXZp
+bmcgdG8gYWxsb2NhdGUgYSB0b24gb2YKYmF0Y2hidWZmZXJzLiBVbmZvcnR1bmF0ZWx5IHRoaXMg
+cmVsaWVzIG9uIGJlaW5nIGFibGUgdG8gcmV3cml0ZQpiYXRjaGJ1ZmZlciByZWxvY2F0aW9ucyB3
+aGlsZSB0aGUgYmF0Y2ggaXMgaW4tZmxpZ2h0IChvdGhlcndpc2UKZXZlcnl0aGluZyBzdGFsbHMg
+YW5kIG91ciBzZXR1cCBpcyBmb3Igbm90aGluZyksIGFuZCB3ZSdyZSByZW1vdmluZwpncHUgcmVs
+b2NhdGlvbnMgZnJvbSB1cHN0cmVhbS4KClRoaXMgcHJvYmxlbSB3YXMgcmVhbGl6ZWQgZm9yIHRo
+ZSB0ZXN0Y2FzZSBpbiBnZW5lcmFsIGluCgpjb21taXQgZjFlNjJlMzMwYTZlMmRlN2IzY2JmN2Nm
+MDJkNzFhZTAwY2M2YWRjYwpBdXRob3I6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29u
+LmNvLnVrPgpEYXRlOiAgIFR1ZSBNYXkgMjYgMTU6MjI6MzggMjAyMCArMDEwMAoKICAgIGk5MTUv
+Z2VtX2V4ZWNfc2NoZWR1bGU6IFJlZHVjZSByZWxvY2F0aW9uIHJpc2sgZm9yIHN0b3JlLWR3b3Jk
+CgpidXQgdGhlIGZpeCBpbiB0aGVyZSBpcyBvbmx5IHN0b2NoYXN0aWMsIHRoZXJlJ3Mgc3RpbGwg
+YSBjaGFuY2Ugb2YKZmFpbHVyZSBhbmQgaGVuY2UgdW5zaWdodGx5IG5vaXNlIGluIENJLiBUaGUg
+cHJvcGVyIGZpeCBpcyB0byB1c2UKc29mdHBpbiBmb3IgdGhpcyB0ZXN0Y2FzZSB1bmNvbmRpdGlv
+bmFsbHkgKG5vdCBqdXN0IHdoZW4gcmVsb2NhdGlvbnMKYXJlbid0IGF2YWlsYWJsZSksIHNvIHRo
+YXQgd2UgY2xlYXJseSBkaXNlbnRhbmdsZSB0aGUgY29uY2VybnMgaGVyZQphbmQgcmVhbGx5IG9u
+bHkgdGVzdCB0aGUgc2NoZWR1bGVyLiBBbmQgbm90IHNvbWUgbGVnYWN5IGZlYXR1cmVzIHRoYXQK
+YXJlIG9uIHRoZSB3YXkgb3V0IHRvIHRoZWlyIGRlc2VydmVkIHJldGlyZW1lbnQgbGlrZSByZWxv
+Y2F0aW9ucy4KClpieXNjZWsgYW5kIEFzaG90dXNoIGNjJ2VkIHNvIHRoZXkncmUgYXdhcmUgdGhh
+dCB0aGlzIHRlc3RjYXNlIG11c3QgYmUKc3dpdGNoZWQgb3ZlciB0byBzb2Z0cGluZyB1bmNvbmR0
+aW9uYWxseSwgZm9yIGNvcnJlY3RuZXNzIHJlYXNvbnMuCgpCdXQgdGhhdCdzIGEgcGlsZSBtb3Jl
+IHdvcmssIHNvIGFzIGFuIGludGVyaW0gc29sdXRpb24gZ28gYmFjayB0bwpfX3N0b3JlX2R3b3Jk
+IGhlbHBlci4KCkNjOiBKYXNvbiBFa3N0cmFuZCA8amFzb25Aamxla3N0cmFuZC5uZXQ+CkNjOiBE
+aXhpdCBBc2h1dG9zaCA8YXNodXRvc2guZGl4aXRAaW50ZWwuY29tPgpDYzogWmJpZ25pZXcgS2Vt
+cGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+CkNjOiBNYWFydGVuIExh
+bmtob3JzdCA8bWFhcnRlbi5sYW5raG9yc3RAbGludXguaW50ZWwuY29tPgpDYzogRGF2ZSBBaXJs
+aWUgPGFpcmxpZWRAcmVkaGF0LmNvbT4KU2lnbmVkLW9mZi1ieTogRGFuaWVsIFZldHRlciA8ZGFu
+aWVsLnZldHRlckBpbnRlbC5jb20+Ci0tLQogdGVzdHMvaTkxNS9nZW1fZXhlY19zY2hlZHVsZS5j
+IHwgNTIgKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQs
+IDQgaW5zZXJ0aW9ucygrKSwgNDggZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvaTkx
+NS9nZW1fZXhlY19zY2hlZHVsZS5jIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19zY2hlZHVsZS5jCmlu
+ZGV4IDk1ODUwNTlkOGRlZC4uYjVkZTFhYjRlZWFlIDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2dl
+bV9leGVjX3NjaGVkdWxlLmMKKysrIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19zY2hlZHVsZS5jCkBA
+IC0xODQ2LDU1ICsxODQ2LDExIEBAIHN0YXRpYyB2b2lkIGRlZXAoaW50IGZkLCB1bnNpZ25lZCBy
+aW5nKQogCiAJLyogQ3JlYXRlIGEgZGVlcCBkZXBlbmRlbmN5IGNoYWluLCB3aXRoIGEgZmV3IGJy
+YW5jaGVzICovCiAJZm9yIChuID0gMDsgbiA8IG5yZXEgJiYgaWd0X3NlY29uZHNfZWxhcHNlZCgm
+dHYpIDwgMjsgbisrKSB7Ci0JCWNvbnN0IHVuc2lnbmVkIGludCBnZW4gPSBpbnRlbF9nZW4oaW50
+ZWxfZ2V0X2RybV9kZXZpZChmZCkpOwotCQlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2JqZWN0
+MiBvYmpbM107Ci0JCXN0cnVjdCBkcm1faTkxNV9nZW1fcmVsb2NhdGlvbl9lbnRyeSByZWxvYzsK
+LQkJc3RydWN0IGRybV9pOTE1X2dlbV9leGVjYnVmZmVyMiBlYiA9IHsKLQkJCS5idWZmZXJzX3B0
+ciA9IHRvX3VzZXJfcG9pbnRlcihvYmopLAotCQkJLmJ1ZmZlcl9jb3VudCA9IDMsCi0JCQkuZmxh
+Z3MgPSByaW5nIHwgKGdlbiA8IDYgPyBJOTE1X0VYRUNfU0VDVVJFIDogMCksCi0JCQkucnN2ZDEg
+PSBjdHhbbiAlIE1BWF9DT05URVhUU10sCi0JCX07Ci0JCXVpbnQzMl90IGJhdGNoWzE2XTsKLQkJ
+aW50IGk7Ci0KLQkJbWVtc2V0KG9iaiwgMCwgc2l6ZW9mKG9iaikpOwotCQlvYmpbMF0uaGFuZGxl
+ID0gcGx1ZzsKLQotCQltZW1zZXQoJnJlbG9jLCAwLCBzaXplb2YocmVsb2MpKTsKLQkJcmVsb2Mu
+cHJlc3VtZWRfb2Zmc2V0ID0gMDsKLQkJcmVsb2Mub2Zmc2V0ID0gc2l6ZW9mKHVpbnQzMl90KTsK
+LQkJcmVsb2MuZGVsdGEgPSBzaXplb2YodWludDMyX3QpICogbjsKLQkJcmVsb2MucmVhZF9kb21h
+aW5zID0gSTkxNV9HRU1fRE9NQUlOX1JFTkRFUjsKLQkJcmVsb2Mud3JpdGVfZG9tYWluID0gSTkx
+NV9HRU1fRE9NQUlOX1JFTkRFUjsKLQkJb2JqWzJdLmhhbmRsZSA9IGdlbV9jcmVhdGUoZmQsIDQw
+OTYpOwotCQlvYmpbMl0ucmVsb2NzX3B0ciA9IHRvX3VzZXJfcG9pbnRlcigmcmVsb2MpOwotCQlv
+YmpbMl0ucmVsb2NhdGlvbl9jb3VudCA9IDE7Ci0KLQkJaSA9IDA7Ci0JCWJhdGNoW2ldID0gTUlf
+U1RPUkVfRFdPUkRfSU1NIHwgKGdlbiA8IDYgPyAxIDw8IDIyIDogMCk7Ci0JCWlmIChnZW4gPj0g
+OCkgewotCQkJYmF0Y2hbKytpXSA9IHJlbG9jLmRlbHRhOwotCQkJYmF0Y2hbKytpXSA9IDA7Ci0J
+CX0gZWxzZSBpZiAoZ2VuID49IDQpIHsKLQkJCWJhdGNoWysraV0gPSAwOwotCQkJYmF0Y2hbKytp
+XSA9IHJlbG9jLmRlbHRhOwotCQkJcmVsb2Mub2Zmc2V0ICs9IHNpemVvZih1aW50MzJfdCk7Ci0J
+CX0gZWxzZSB7Ci0JCQliYXRjaFtpXS0tOwotCQkJYmF0Y2hbKytpXSA9IHJlbG9jLmRlbHRhOwot
+CQl9Ci0JCWJhdGNoWysraV0gPSBlYi5yc3ZkMTsKLQkJYmF0Y2hbKytpXSA9IE1JX0JBVENIX0JV
+RkZFUl9FTkQ7Ci0JCWdlbV93cml0ZShmZCwgb2JqWzJdLmhhbmRsZSwgMCwgYmF0Y2gsIHNpemVv
+ZihiYXRjaCkpOworCQl1aW50MzJfdCBjb250ZXh0ID0gY3R4W24gJSBNQVhfQ09OVEVYVFNdOwor
+CQlnZW1fY29udGV4dF9zZXRfcHJpb3JpdHkoZmQsIGNvbnRleHQsIE1BWF9QUklPIC0gbnJlcSAr
+IG4pOwogCi0JCWdlbV9jb250ZXh0X3NldF9wcmlvcml0eShmZCwgZWIucnN2ZDEsIE1BWF9QUklP
+IC0gbnJlcSArIG4pOwotCQlmb3IgKGludCBtID0gMDsgbSA8IFhTOyBtKyspIHsKLQkJCW9ialsx
+XS5oYW5kbGUgPSBkZXBbbV07Ci0JCQlyZWxvYy50YXJnZXRfaGFuZGxlID0gb2JqWzFdLmhhbmRs
+ZTsKLQkJCWdlbV9leGVjYnVmKGZkLCAmZWIpOwotCQl9Ci0JCWdlbV9jbG9zZShmZCwgb2JqWzJd
+LmhhbmRsZSk7CisJCWZvciAoaW50IG0gPSAwOyBtIDwgWFM7IG0rKykKKwkJCXN0b3JlX2R3b3Jk
+X3BsdWcoZmQsIGNvbnRleHQsIHJpbmcsIGRlcFttXSwgNCpuLCBjb250ZXh0LCBwbHVnLCBJOTE1
+X0dFTV9ET01BSU5fSU5TVFJVQ1RJT04pOwogCX0KIAlpZ3RfaW5mbygiRmlyc3QgZGVwdHJlZTog
+JWQgcmVxdWVzdHMgWyUuM2ZzXVxuIiwKIAkJIG4gKiBYUywgMWUtOSppZ3RfbnNlY19lbGFwc2Vk
+KCZ0dikpOwotLSAKMi4yNC4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
+Lm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
+ZXYK
