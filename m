@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com
- [IPv6:2a00:1450:4864:20::42c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3FBEB6EB7E
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Jun 2021 09:38:47 +0000 (UTC)
-Received: by mail-wr1-x42c.google.com with SMTP id l2so20845955wrw.6
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com
+ [IPv6:2a00:1450:4864:20::435])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C6F66EB7E
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Jun 2021 09:38:48 +0000 (UTC)
+Received: by mail-wr1-x435.google.com with SMTP id m18so20827130wrv.2
  for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 02:38:47 -0700 (PDT)
 From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Tue,  8 Jun 2021 11:38:30 +0200
-Message-Id: <20210608093832.21267-5-daniel.vetter@ffwll.ch>
+Date: Tue,  8 Jun 2021 11:38:31 +0200
+Message-Id: <20210608093832.21267-6-daniel.vetter@ffwll.ch>
 In-Reply-To: <20210608093832.21267-1-daniel.vetter@ffwll.ch>
 References: <20210608093832.21267-1-daniel.vetter@ffwll.ch>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 5/7] Revert "i915/gem_exec_reloc: Flood the
- ring with GPU relocs"
+Subject: [igt-dev] [PATCH i-g-t 6/7] Revert "i915/gem_exec_reloc: Check that
+ relocations do not block"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,7 +28,7 @@ To: IGT development <igt-dev@lists.freedesktop.org>
 Cc: Daniel Vetter <daniel.vetter@intel.com>, Dave Airlie <airlied@redhat.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This reverts commit 57ee41f12b7a53283fd812c5f72fcb39e6ad2197.
+This reverts commit 5343ca6ad8fac39fe4d468f771af72c968404bea.
 
 This validates gpu relocations, which we're about to delete.
 
@@ -37,110 +37,73 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 Cc: Dave Airlie <airlied@redhat.com>
 Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
 ---
- tests/i915/gem_exec_reloc.c | 89 -------------------------------------
- 1 file changed, 89 deletions(-)
+ tests/i915/gem_exec_reloc.c | 52 -------------------------------------
+ 1 file changed, 52 deletions(-)
 
 diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
-index c3f42aff9c9a..cbd40962c610 100644
+index cbd40962c610..5b15bcdc3a1f 100644
 --- a/tests/i915/gem_exec_reloc.c
 +++ b/tests/i915/gem_exec_reloc.c
-@@ -344,88 +344,6 @@ static void active(int fd, unsigned engine)
+@@ -344,51 +344,6 @@ static void active(int fd, unsigned engine)
  	gem_close(fd, obj[0].handle);
  }
  
--static uint64_t many_relocs(unsigned long count, unsigned long *out)
+-static unsigned int offset_in_page(void *addr)
 -{
--	struct drm_i915_gem_relocation_entry *reloc;
--	unsigned long sz;
--	int i;
--
--	sz = count * sizeof(*reloc);
--	sz = ALIGN(sz, 4096);
--
--	reloc = mmap(0, sz, PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
--	igt_assert(reloc != MAP_FAILED);
--	for (i = 0; i < count; i++) {
--		reloc[i].target_handle = 0;
--		reloc[i].presumed_offset = ~0ull;
--		reloc[i].offset = 8 * i;
--		reloc[i].delta = 8 * i;
--	}
--	mprotect(reloc, sz, PROT_READ);
--
--	*out = sz;
--	return to_user_pointer(reloc);
+-	return (uintptr_t)addr & 4095;
 -}
 -
--static void __many_active(int i915, unsigned engine, unsigned long count)
+-static void active_spin(int fd, unsigned engine)
 -{
--	unsigned long reloc_sz;
--	struct drm_i915_gem_exec_object2 obj[2] = {{
--		.handle = gem_create(i915, count * sizeof(uint64_t)),
--		.relocs_ptr = many_relocs(count, &reloc_sz),
--		.relocation_count = count,
--	}};
--	struct drm_i915_gem_execbuffer2 execbuf = {
--		.buffers_ptr = to_user_pointer(obj),
--		.buffer_count = ARRAY_SIZE(obj),
--		.flags = engine | I915_EXEC_HANDLE_LUT,
--	};
+-	const uint32_t bbe = MI_BATCH_BUFFER_END;
+-	struct drm_i915_gem_relocation_entry reloc;
+-	struct drm_i915_gem_exec_object2 obj[2];
+-	struct drm_i915_gem_execbuffer2 execbuf;
 -	igt_spin_t *spin;
 -
--	spin = __igt_spin_new(i915,
--			      .engine = engine,
--			      .dependency = obj[0].handle,
--			      .flags = (IGT_SPIN_FENCE_OUT |
--					IGT_SPIN_NO_PREEMPTION));
--	obj[1] = spin->obj[1];
--	gem_execbuf(i915, &execbuf);
--	igt_assert_eq(sync_fence_status(spin->out_fence), 0);
--	igt_spin_free(i915, spin);
+-	spin = igt_spin_new(fd,
+-			    .engine = engine,
+-			    .flags = IGT_SPIN_NO_PREEMPTION);
 -
--	for (unsigned long i = 0; i < count; i++) {
--		uint64_t addr;
+-	memset(obj, 0, sizeof(obj));
+-	obj[0] = spin->obj[IGT_SPIN_BATCH];
+-	obj[0].relocs_ptr = to_user_pointer(&reloc);
+-	obj[0].relocation_count = 1;
+-	obj[1].handle = gem_create(fd, 4096);
+-	gem_write(fd, obj[1].handle, 0, &bbe, sizeof(bbe));
 -
--		gem_read(i915, obj[0].handle, i * sizeof(addr),
--			 &addr, sizeof(addr));
+-	memset(&reloc, 0, sizeof(reloc));
+-	reloc.presumed_offset = -1;
+-	reloc.offset = offset_in_page(spin->condition);
+-	reloc.target_handle = obj[0].handle;
 -
--		igt_assert_eq_u64(addr, obj[0].offset + i * sizeof(addr));
--	}
+-	memset(&execbuf, 0, sizeof(execbuf));
+-	execbuf.buffers_ptr = to_user_pointer(obj);
+-	execbuf.buffer_count = 2;
+-	execbuf.flags = engine;
 -
--	munmap(from_user_pointer(obj[0].relocs_ptr), reloc_sz);
--	gem_close(i915, obj[0].handle);
+-	gem_execbuf(fd, &execbuf);
+-	gem_close(fd, obj[1].handle);
+-	igt_assert_eq(*spin->condition, spin->cmd_precondition);
+-
+-	igt_spin_end(spin);
+-	gem_sync(fd, spin->handle);
+-
+-	igt_assert_eq(*spin->condition, obj[0].offset);
+-	igt_spin_free(fd, spin);
 -}
 -
--static void many_active(int i915, unsigned engine)
--{
--	const uint64_t max = 2048;
--	unsigned long count = 256;
--
--	igt_until_timeout(2) {
--		uint64_t required, total;
--
--		if (!__intel_check_memory(1, 8 * count, CHECK_RAM,
--					  &required, &total))
--			break;
--
--		igt_debug("Testing count:%lu\n", count);
--		__many_active(i915, engine, count);
--
--		count <<= 1;
--		if (count >= max)
--			break;
--	}
--}
--
- static unsigned int offset_in_page(void *addr)
+ static bool has_64b_reloc(int fd)
  {
- 	return (uintptr_t)addr & 4095;
-@@ -1053,13 +971,6 @@ igt_main
+ 	return intel_gen(intel_get_drm_devid(fd)) >= 8;
+@@ -964,13 +919,6 @@ igt_main
  		}
  	}
  
--	igt_subtest_with_dynamic("basic-many-active") {
+-	igt_subtest_with_dynamic("basic-spin") {
 -		__for_each_physical_engine(fd, e) {
 -			igt_dynamic_f("%s", e->name)
--				many_active(fd, e->flags);
+-				active_spin(fd, e->flags);
 -		}
 -	}
 -
