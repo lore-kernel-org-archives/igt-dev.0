@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com
- [IPv6:2a00:1450:4864:20::330])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A7346E045
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Jun 2021 09:39:44 +0000 (UTC)
-Received: by mail-wm1-x330.google.com with SMTP id
- f16-20020a05600c1550b02901b00c1be4abso1474692wmg.2
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 02:39:43 -0700 (PDT)
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com
+ [IPv6:2a00:1450:4864:20::332])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2FE7F6E045
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Jun 2021 09:40:28 +0000 (UTC)
+Received: by mail-wm1-x332.google.com with SMTP id
+ l11-20020a05600c4f0bb029017a7cd488f5so1422978wmq.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 02:40:28 -0700 (PDT)
 From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Tue,  8 Jun 2021 11:39:35 +0200
-Message-Id: <20210608093935.21463-1-daniel.vetter@ffwll.ch>
+Date: Tue,  8 Jun 2021 11:40:14 +0200
+Message-Id: <20210608094020.21598-1-daniel.vetter@ffwll.ch>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 7/7] tests/gem_exec_schedule: Use
- store_dword_plug again
+Subject: [igt-dev] [PATCH i-g-t 1/7] tests/gem_exec_reloc: Remove banned
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,85 +19,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: IGT development <igt-dev@lists.freedesktop.org>
-Cc: Daniel Vetter <daniel.vetter@intel.com>, Dave Airlie <airlied@redhat.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, Daniel Vetter <daniel.vetter@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SW4KCmNvbW1pdCAyODg0ZjkxZGQ2ZDc2ODJlYTczOGVmNmYwOTQzY2M1OTE2NDNkZGEyCkF1dGhv
-cjogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+CkRhdGU6ICAgRnJpIEp1
-bCAyMCAxMjoyOTozMCAyMDE4ICswMTAwCgogICAgaWd0L2dlbV9leGVjX3NjaGVkdWxlOiBUcmlt
-IGRlZXAgcnVudGltZQoKdGhpcyB3YXMgb3Blbi1jb2RlZCwgSSBndWVzcyB0byBhdm9pZCBoYXZp
-bmcgdG8gYWxsb2NhdGUgYSB0b24gb2YKYmF0Y2hidWZmZXJzLiBVbmZvcnR1bmF0ZWx5IHRoaXMg
-cmVsaWVzIG9uIGJlaW5nIGFibGUgdG8gcmV3cml0ZQpiYXRjaGJ1ZmZlciByZWxvY2F0aW9ucyB3
-aGlsZSB0aGUgYmF0Y2ggaXMgaW4tZmxpZ2h0IChvdGhlcndpc2UKZXZlcnl0aGluZyBzdGFsbHMg
-YW5kIG91ciBzZXR1cCBpcyBmb3Igbm90aGluZyksIGFuZCB3ZSdyZSByZW1vdmluZwpncHUgcmVs
-b2NhdGlvbnMgZnJvbSB1cHN0cmVhbS4KClRoaXMgcHJvYmxlbSB3YXMgcmVhbGl6ZWQgZm9yIHRo
-ZSB0ZXN0Y2FzZSBpbiBnZW5lcmFsIGluCgpjb21taXQgZjFlNjJlMzMwYTZlMmRlN2IzY2JmN2Nm
-MDJkNzFhZTAwY2M2YWRjYwpBdXRob3I6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29u
-LmNvLnVrPgpEYXRlOiAgIFR1ZSBNYXkgMjYgMTU6MjI6MzggMjAyMCArMDEwMAoKICAgIGk5MTUv
-Z2VtX2V4ZWNfc2NoZWR1bGU6IFJlZHVjZSByZWxvY2F0aW9uIHJpc2sgZm9yIHN0b3JlLWR3b3Jk
-CgpidXQgdGhlIGZpeCBpbiB0aGVyZSBpcyBvbmx5IHN0b2NoYXN0aWMsIHRoZXJlJ3Mgc3RpbGwg
-YSBjaGFuY2Ugb2YKZmFpbHVyZSBhbmQgaGVuY2UgdW5zaWdodGx5IG5vaXNlIGluIENJLiBUaGUg
-cHJvcGVyIGZpeCBpcyB0byB1c2UKc29mdHBpbiBmb3IgdGhpcyB0ZXN0Y2FzZSB1bmNvbmRpdGlv
-bmFsbHkgKG5vdCBqdXN0IHdoZW4gcmVsb2NhdGlvbnMKYXJlbid0IGF2YWlsYWJsZSksIHNvIHRo
-YXQgd2UgY2xlYXJseSBkaXNlbnRhbmdsZSB0aGUgY29uY2VybnMgaGVyZQphbmQgcmVhbGx5IG9u
-bHkgdGVzdCB0aGUgc2NoZWR1bGVyLiBBbmQgbm90IHNvbWUgbGVnYWN5IGZlYXR1cmVzIHRoYXQK
-YXJlIG9uIHRoZSB3YXkgb3V0IHRvIHRoZWlyIGRlc2VydmVkIHJldGlyZW1lbnQgbGlrZSByZWxv
-Y2F0aW9ucy4KClpieXNjZWsgYW5kIEFzaG90dXNoIGNjJ2VkIHNvIHRoZXkncmUgYXdhcmUgdGhh
-dCB0aGlzIHRlc3RjYXNlIG11c3QgYmUKc3dpdGNoZWQgb3ZlciB0byBzb2Z0cGluZyB1bmNvbmR0
-aW9uYWxseSwgZm9yIGNvcnJlY3RuZXNzIHJlYXNvbnMuCgpCdXQgdGhhdCdzIGEgcGlsZSBtb3Jl
-IHdvcmssIHNvIGFzIGFuIGludGVyaW0gc29sdXRpb24gZ28gYmFjayB0bwpfX3N0b3JlX2R3b3Jk
-IGhlbHBlci4KCkNjOiBKYXNvbiBFa3N0cmFuZCA8amFzb25Aamxla3N0cmFuZC5uZXQ+CkNjOiBE
-aXhpdCBBc2h1dG9zaCA8YXNodXRvc2guZGl4aXRAaW50ZWwuY29tPgpDYzogWmJpZ25pZXcgS2Vt
-cGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+CkNjOiBNYWFydGVuIExh
-bmtob3JzdCA8bWFhcnRlbi5sYW5raG9yc3RAbGludXguaW50ZWwuY29tPgpDYzogRGF2ZSBBaXJs
-aWUgPGFpcmxpZWRAcmVkaGF0LmNvbT4KU2lnbmVkLW9mZi1ieTogRGFuaWVsIFZldHRlciA8ZGFu
-aWVsLnZldHRlckBpbnRlbC5jb20+Ci0tLQogdGVzdHMvaTkxNS9nZW1fZXhlY19zY2hlZHVsZS5j
-IHwgNTIgKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQs
-IDQgaW5zZXJ0aW9ucygrKSwgNDggZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvaTkx
-NS9nZW1fZXhlY19zY2hlZHVsZS5jIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19zY2hlZHVsZS5jCmlu
-ZGV4IDk1ODUwNTlkOGRlZC4uYjVkZTFhYjRlZWFlIDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2dl
-bV9leGVjX3NjaGVkdWxlLmMKKysrIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19zY2hlZHVsZS5jCkBA
-IC0xODQ2LDU1ICsxODQ2LDExIEBAIHN0YXRpYyB2b2lkIGRlZXAoaW50IGZkLCB1bnNpZ25lZCBy
-aW5nKQogCiAJLyogQ3JlYXRlIGEgZGVlcCBkZXBlbmRlbmN5IGNoYWluLCB3aXRoIGEgZmV3IGJy
-YW5jaGVzICovCiAJZm9yIChuID0gMDsgbiA8IG5yZXEgJiYgaWd0X3NlY29uZHNfZWxhcHNlZCgm
-dHYpIDwgMjsgbisrKSB7Ci0JCWNvbnN0IHVuc2lnbmVkIGludCBnZW4gPSBpbnRlbF9nZW4oaW50
-ZWxfZ2V0X2RybV9kZXZpZChmZCkpOwotCQlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2JqZWN0
-MiBvYmpbM107Ci0JCXN0cnVjdCBkcm1faTkxNV9nZW1fcmVsb2NhdGlvbl9lbnRyeSByZWxvYzsK
-LQkJc3RydWN0IGRybV9pOTE1X2dlbV9leGVjYnVmZmVyMiBlYiA9IHsKLQkJCS5idWZmZXJzX3B0
-ciA9IHRvX3VzZXJfcG9pbnRlcihvYmopLAotCQkJLmJ1ZmZlcl9jb3VudCA9IDMsCi0JCQkuZmxh
-Z3MgPSByaW5nIHwgKGdlbiA8IDYgPyBJOTE1X0VYRUNfU0VDVVJFIDogMCksCi0JCQkucnN2ZDEg
-PSBjdHhbbiAlIE1BWF9DT05URVhUU10sCi0JCX07Ci0JCXVpbnQzMl90IGJhdGNoWzE2XTsKLQkJ
-aW50IGk7Ci0KLQkJbWVtc2V0KG9iaiwgMCwgc2l6ZW9mKG9iaikpOwotCQlvYmpbMF0uaGFuZGxl
-ID0gcGx1ZzsKLQotCQltZW1zZXQoJnJlbG9jLCAwLCBzaXplb2YocmVsb2MpKTsKLQkJcmVsb2Mu
-cHJlc3VtZWRfb2Zmc2V0ID0gMDsKLQkJcmVsb2Mub2Zmc2V0ID0gc2l6ZW9mKHVpbnQzMl90KTsK
-LQkJcmVsb2MuZGVsdGEgPSBzaXplb2YodWludDMyX3QpICogbjsKLQkJcmVsb2MucmVhZF9kb21h
-aW5zID0gSTkxNV9HRU1fRE9NQUlOX1JFTkRFUjsKLQkJcmVsb2Mud3JpdGVfZG9tYWluID0gSTkx
-NV9HRU1fRE9NQUlOX1JFTkRFUjsKLQkJb2JqWzJdLmhhbmRsZSA9IGdlbV9jcmVhdGUoZmQsIDQw
-OTYpOwotCQlvYmpbMl0ucmVsb2NzX3B0ciA9IHRvX3VzZXJfcG9pbnRlcigmcmVsb2MpOwotCQlv
-YmpbMl0ucmVsb2NhdGlvbl9jb3VudCA9IDE7Ci0KLQkJaSA9IDA7Ci0JCWJhdGNoW2ldID0gTUlf
-U1RPUkVfRFdPUkRfSU1NIHwgKGdlbiA8IDYgPyAxIDw8IDIyIDogMCk7Ci0JCWlmIChnZW4gPj0g
-OCkgewotCQkJYmF0Y2hbKytpXSA9IHJlbG9jLmRlbHRhOwotCQkJYmF0Y2hbKytpXSA9IDA7Ci0J
-CX0gZWxzZSBpZiAoZ2VuID49IDQpIHsKLQkJCWJhdGNoWysraV0gPSAwOwotCQkJYmF0Y2hbKytp
-XSA9IHJlbG9jLmRlbHRhOwotCQkJcmVsb2Mub2Zmc2V0ICs9IHNpemVvZih1aW50MzJfdCk7Ci0J
-CX0gZWxzZSB7Ci0JCQliYXRjaFtpXS0tOwotCQkJYmF0Y2hbKytpXSA9IHJlbG9jLmRlbHRhOwot
-CQl9Ci0JCWJhdGNoWysraV0gPSBlYi5yc3ZkMTsKLQkJYmF0Y2hbKytpXSA9IE1JX0JBVENIX0JV
-RkZFUl9FTkQ7Ci0JCWdlbV93cml0ZShmZCwgb2JqWzJdLmhhbmRsZSwgMCwgYmF0Y2gsIHNpemVv
-ZihiYXRjaCkpOworCQl1aW50MzJfdCBjb250ZXh0ID0gY3R4W24gJSBNQVhfQ09OVEVYVFNdOwor
-CQlnZW1fY29udGV4dF9zZXRfcHJpb3JpdHkoZmQsIGNvbnRleHQsIE1BWF9QUklPIC0gbnJlcSAr
-IG4pOwogCi0JCWdlbV9jb250ZXh0X3NldF9wcmlvcml0eShmZCwgZWIucnN2ZDEsIE1BWF9QUklP
-IC0gbnJlcSArIG4pOwotCQlmb3IgKGludCBtID0gMDsgbSA8IFhTOyBtKyspIHsKLQkJCW9ialsx
-XS5oYW5kbGUgPSBkZXBbbV07Ci0JCQlyZWxvYy50YXJnZXRfaGFuZGxlID0gb2JqWzFdLmhhbmRs
-ZTsKLQkJCWdlbV9leGVjYnVmKGZkLCAmZWIpOwotCQl9Ci0JCWdlbV9jbG9zZShmZCwgb2JqWzJd
-LmhhbmRsZSk7CisJCWZvciAoaW50IG0gPSAwOyBtIDwgWFM7IG0rKykKKwkJCXN0b3JlX2R3b3Jk
-X3BsdWcoZmQsIGNvbnRleHQsIHJpbmcsIGRlcFttXSwgNCpuLCBjb250ZXh0LCBwbHVnLCBJOTE1
-X0dFTV9ET01BSU5fSU5TVFJVQ1RJT04pOwogCX0KIAlpZ3RfaW5mbygiRmlyc3QgZGVwdHJlZTog
-JWQgcmVxdWVzdHMgWyUuM2ZzXVxuIiwKIAkJIG4gKiBYUywgMWUtOSppZ3RfbnNlY19lbGFwc2Vk
-KCZ0dikpOwotLSAKMi4yNC4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
-Lm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
-ZXYK
+These have been banned across all CI for over 2 years, realistically
+that's not going to change and they're just in the way.
+
+Cc: Jason Ekstrand <jason@jlekstrand.net>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+---
+ tests/i915/gem_exec_reloc.c  | 31 +++++--------------------------
+ tests/intel-ci/blacklist.txt |  1 -
+ 2 files changed, 5 insertions(+), 27 deletions(-)
+
+diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
+index 397c335e4d3c..cb4899fe6e1e 100644
+--- a/tests/i915/gem_exec_reloc.c
++++ b/tests/i915/gem_exec_reloc.c
+@@ -614,8 +614,6 @@ static bool has_64b_reloc(int fd)
+ 
+ #define NORELOC 1
+ #define ACTIVE 2
+-#define INTERRUPTIBLE 4
+-#define HANG 8
+ static void basic_reloc(int fd, unsigned before, unsigned after, unsigned flags)
+ {
+ #define OBJSZ 8192
+@@ -678,8 +676,7 @@ static void basic_reloc(int fd, unsigned before, unsigned after, unsigned flags)
+ 			spin = igt_spin_new(fd,
+ 					    .engine = I915_EXEC_DEFAULT,
+ 					    .dependency = obj.handle);
+-			if (!(flags & HANG))
+-				igt_spin_set_timeout(spin, NSEC_PER_SEC/100);
++
+ 			igt_assert(gem_bo_busy(fd, obj.handle));
+ 		}
+ 
+@@ -746,8 +743,6 @@ static void basic_reloc(int fd, unsigned before, unsigned after, unsigned flags)
+ 			spin = igt_spin_new(fd,
+ 					    .engine = I915_EXEC_DEFAULT,
+ 					    .dependency = obj.handle);
+-			if (!(flags & HANG))
+-				igt_spin_set_timeout(spin, NSEC_PER_SEC/100);
+ 			igt_assert(gem_bo_busy(fd, obj.handle));
+ 		}
+ 
+@@ -873,8 +868,6 @@ static void basic_range(int fd, unsigned flags)
+ 
+ 	if (flags & ACTIVE) {
+ 		spin = igt_spin_new(fd, .dependency = obj[n].handle);
+-		if (!(flags & HANG))
+-			igt_spin_set_timeout(spin, NSEC_PER_SEC/100);
+ 		igt_assert(gem_bo_busy(fd, obj[n].handle));
+ 	}
+ 
+@@ -1468,8 +1461,6 @@ igt_main
+ 		{ "", 0 , true},
+ 		{ "-noreloc", NORELOC, true },
+ 		{ "-active", ACTIVE, true },
+-		{ "-interruptible", ACTIVE | INTERRUPTIBLE },
+-		{ "-hang", ACTIVE | HANG },
+ 		{ },
+ 	}, *f;
+ 	uint64_t size;
+@@ -1483,14 +1474,7 @@ igt_main
+ 	}
+ 
+ 	for (f = flags; f->name; f++) {
+-		igt_hang_t hang;
+-
+ 		igt_subtest_group {
+-			igt_fixture {
+-				if (f->flags & HANG)
+-					hang = igt_allow_hang(fd, 0, 0);
+-			}
+-
+ 			for (m = modes; m->name; m++) {
+ 				igt_subtest_f("%s%s%s",
+ 					      f->basic ? "basic-" : "",
+@@ -1498,22 +1482,17 @@ igt_main
+ 					      f->name) {
+ 					if ((m->before | m->after) & I915_GEM_DOMAIN_WC)
+ 						igt_require(gem_mmap__has_wc(fd));
+-					igt_while_interruptible(f->flags & INTERRUPTIBLE)
+-						basic_reloc(fd, m->before, m->after, f->flags);
++
++					basic_reloc(fd, m->before, m->after, f->flags);
+ 				}
+ 			}
+ 
+ 			if (!(f->flags & NORELOC)) {
+ 				igt_subtest_f("%srange%s",
+ 					      f->basic ? "basic-" : "", f->name) {
+-					igt_while_interruptible(f->flags & INTERRUPTIBLE)
+-						basic_range(fd, f->flags);
+-				}
+-			}
+ 
+-			igt_fixture {
+-				if (f->flags & HANG)
+-					igt_disallow_hang(fd, hang);
++					basic_range(fd, f->flags);
++				}
+ 			}
+ 		}
+ 	}
+diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+index 33f92e37f602..4d2555f8adb3 100644
+--- a/tests/intel-ci/blacklist.txt
++++ b/tests/intel-ci/blacklist.txt
+@@ -30,7 +30,6 @@ igt@gem_exec_flush@(?!.*basic).*
+ igt@gem_exec_latency(@.*)?
+ igt@gem_exec_lut_handle(@.*)?
+ igt@gem_exec_nop@(?!.*basic).*
+-igt@gem_exec_reloc@(?!.*basic).*
+ igt@gem_exec_suspend@(?!.*basic).*
+ igt@gem_exec_whisper@(?!basic).*
+ igt@gem_fd_exhaustion(@.*)?
+-- 
+2.24.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
