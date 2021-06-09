@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 60C1C6E1B6
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 05:39:22 +0000 (UTC)
-Date: Wed, 9 Jun 2021 07:39:16 +0200
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D95BC6E04A
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 06:02:02 +0000 (UTC)
+Date: Wed, 9 Jun 2021 08:01:56 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210609053916.GA6228@zkempczy-mobl2>
+Message-ID: <20210609060156.GB6228@zkempczy-mobl2>
 References: <20210609043035.102359-1-jason@jlekstrand.net>
- <20210609043035.102359-7-jason@jlekstrand.net>
+ <20210609043035.102359-10-jason@jlekstrand.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210609043035.102359-7-jason@jlekstrand.net>
-Subject: Re: [igt-dev] [PATCH i-g-t 06/93] docs: Add gem_engine_topology.h
- to the docs
+In-Reply-To: <20210609043035.102359-10-jason@jlekstrand.net>
+Subject: Re: [igt-dev] [PATCH i-g-t 09/93] lib: Add an intel_ctx wrapper
+ struct and helpers (v4)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,75 +19,503 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Jason Ekstrand <jason@jlekstrand.net>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBKdW4gMDgsIDIwMjEgYXQgMTE6Mjk6NTJQTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
-d3JvdGU6Cj4gQWxzbywgZG9jdW1lbnQgYSBjb3VwbGUgdGhpbmdzIHdoaWxlIHdlJ3JlIGhlcmUu
-ICBJdCdzIG5vd2hlcmUgY2xvc2UgdG8KPiBldmVyeXRoaW5nIGJ1dCBpdCdzIG1vcmUgdGhhbiBu
-b3RoaW5nLgo+IAo+IFNpZ25lZC1vZmYtYnk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3Ry
-YW5kLm5ldD4KCllvdSd2ZSBtaXNzZWQgbXkgci1iIGZyb20gdjQuIAoKUmV2aWV3ZWQtYnk6IFpi
-aWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgoKLS0K
-WmJpZ25pZXcKCj4gLS0tCj4gIC4uLi9pZ3QtZ3B1LXRvb2xzL2lndC1ncHUtdG9vbHMtZG9jcy54
-bWwgICAgICAgICB8ICAxICsKPiAgbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5jICAgICAg
-ICAgICAgICAgICAgIHwgMTYgKysrKysrKysrKysrKysrKwo+ICBsaWIvaTkxNS9nZW1fZW5naW5l
-X3RvcG9sb2d5LmggICAgICAgICAgICAgICAgICAgfCAxNSArKysrKysrKysrKysrKysKPiAgMyBm
-aWxlcyBjaGFuZ2VkLCAzMiBpbnNlcnRpb25zKCspCj4gCj4gZGlmZiAtLWdpdCBhL2RvY3MvcmVm
-ZXJlbmNlL2lndC1ncHUtdG9vbHMvaWd0LWdwdS10b29scy1kb2NzLnhtbCBiL2RvY3MvcmVmZXJl
-bmNlL2lndC1ncHUtdG9vbHMvaWd0LWdwdS10b29scy1kb2NzLnhtbAo+IGluZGV4IDE5MmQxZGY3
-Li4yZTg1ZjM2MSAxMDA2NDQKPiAtLS0gYS9kb2NzL3JlZmVyZW5jZS9pZ3QtZ3B1LXRvb2xzL2ln
-dC1ncHUtdG9vbHMtZG9jcy54bWwKPiArKysgYi9kb2NzL3JlZmVyZW5jZS9pZ3QtZ3B1LXRvb2xz
-L2lndC1ncHUtdG9vbHMtZG9jcy54bWwKPiBAQCAtNTUsNiArNTUsNyBAQAo+ICAgIDxjaGFwdGVy
-Pgo+ICAgICAgPHRpdGxlPmlndC9pOTE1IEFQSSBSZWZlcmVuY2U8L3RpdGxlPgo+ICAgICAgPHhp
-OmluY2x1ZGUgaHJlZj0ieG1sL2dlbV9jb250ZXh0LnhtbCIvPgo+ICsgICAgPHhpOmluY2x1ZGUg
-aHJlZj0ieG1sL2dlbV9lbmdpbmVfdG9wb2xvZ3kueG1sIi8+Cj4gICAgICA8eGk6aW5jbHVkZSBo
-cmVmPSJ4bWwvZ2VtX3NjaGVkdWxlci54bWwiLz4KPiAgICAgIDx4aTppbmNsdWRlIGhyZWY9Inht
-bC9nZW1fc3VibWlzc2lvbi54bWwiLz4KPiAgICA8L2NoYXB0ZXI+Cj4gZGlmZiAtLWdpdCBhL2xp
-Yi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYyBiL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xv
-Z3kuYwo+IGluZGV4IGMxMmNkOTIwLi4yOTFmYjAyOCAxMDA2NDQKPiAtLS0gYS9saWIvaTkxNS9n
-ZW1fZW5naW5lX3RvcG9sb2d5LmMKPiArKysgYi9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5
-LmMKPiBAQCAtMzIsNiArMzIsMTQgQEAKPiAgI2luY2x1ZGUgImlvY3RsX3dyYXBwZXJzLmgiCj4g
-IAo+ICAjaW5jbHVkZSAiaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmgiCj4gKy8qKgo+ICsgKiBT
-RUNUSU9OOmdlbV9lbmdpbmVfdG9wb2xvZ3kKPiArICogQHNob3J0X2Rlc2NyaXB0aW9uOiBIZWxw
-ZXJzIGZvciBkZWFsaW5nIGVuZ2luZSB0b3BvbG9neQo+ICsgKiBAdGl0bGU6IEdFTSBFbmdpbmUg
-VG9wb2xvZ3kKPiArICoKPiArICogVGhpcyBoZWxwZXIgbGlicmFyeSBjb250YWlucyBmdW5jdGlv
-bnMgdXNlZCBmb3IgcXVlcnlpbmcgYW5kIGRlYWxpbmcKPiArICogd2l0aCBlbmdpbmVzIGluIEdF
-TSBjb250ZXh0cy4KPiArICovCj4gIAo+ICAvKgo+ICAgKiBMaW1pdCB3aGF0IHdlIHN1cHBvcnQg
-Zm9yIHNpbXBsaWNpdHkgZHVlIGxpbWl0YXRpb24gaW4gaG93IG11Y2ggd2UKPiBAQCAtMjc2LDYg
-KzI4NCwxNCBAQCBpbnQgZ2VtX2NvbnRleHRfbG9va3VwX2VuZ2luZShpbnQgZmQsIHVpbnQ2NF90
-IGVuZ2luZSwgdWludDMyX3QgY3R4X2lkLAo+ICAJcmV0dXJuIDA7Cj4gIH0KPiAgCj4gKy8qKgo+
-ICsgKiBnZW1faGFzX2VuZ2luZV90b3BvbG9neToKPiArICogQGZkOiBvcGVuIGk5MTUgZHJtIGZp
-bGUgZGVzY3JpcHRvcgo+ICsgKgo+ICsgKiBRdWVyaWVzIHdoZXRoZXIgdGhlIGVuZ2luZSB0b3Bv
-bG9neSBBUEkgaXMgc3VwcG9ydGVkIG9yIG5vdC4KPiArICoKPiArICogUmV0dXJuczogRW5naW5l
-IHRvcG9sb2d5IEFQSSBhdmFpbGFiaWxpdHkuCj4gKyAqLwo+ICBib29sIGdlbV9oYXNfZW5naW5l
-X3RvcG9sb2d5KGludCBmZCkKPiAgewo+ICAJc3RydWN0IGRybV9pOTE1X2dlbV9jb250ZXh0X3Bh
-cmFtIHBhcmFtID0gewo+IGRpZmYgLS1naXQgYS9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5
-LmggYi9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmgKPiBpbmRleCBmNWVkY2I1ZC4uYWMz
-N2IxOWEgMTAwNjQ0Cj4gLS0tIGEvbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5oCj4gKysr
-IGIvbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5oCj4gQEAgLTI5LDYgKzI5LDE1IEBACj4g
-IAo+ICAjZGVmaW5lIEdFTV9NQVhfRU5HSU5FUwkJSTkxNV9FWEVDX1JJTkdfTUFTSyArIDEKPiAg
-Cj4gKy8qKgo+ICsgKiBpbnRlbF9lbmdpbmVfZGF0YToKPiArICogQG5lbmdpbmVzOiBOdW1iZXIg
-b2YgZW5naW5lcwo+ICsgKiBAbjogQ3VycmVudCBlbmdpbmUgaW5kZXgKPiArICogQGN1cnJlbnRf
-ZW5naW5lOiBDdXJyZW50IGVuZ2luZQo+ICsgKiBAZW5naW5lczogTGlzdCBvZiBhbGwgZW5naW5l
-cwo+ICsgKgo+ICsgKiBUaGlzIHN0cnVjdCBhY3RzIGFzIGFuIGludGVyYXRvciBmb3Igd2Fsa2lu
-ZyBvdmVyIGEgc2V0IG9mIGVuZ2luZXMuCj4gKyAqLwo+ICBzdHJ1Y3QgaW50ZWxfZW5naW5lX2Rh
-dGEgewo+ICAJdWludDMyX3QgbmVuZ2luZXM7Cj4gIAl1aW50MzJfdCBuOwo+IEBAIC01OCw2ICs2
-NywxMiBAQCBib29sIGdlbV9lbmdpbmVfaXNfZXF1YWwoY29uc3Qgc3RydWN0IGludGVsX2V4ZWN1
-dGlvbl9lbmdpbmUyICplMSwKPiAgCj4gIHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiBn
-ZW1fZWJfZmxhZ3NfdG9fZW5naW5lKHVuc2lnbmVkIGludCBmbGFncyk7Cj4gIAo+ICsvKioKPiAr
-ICogX19mb3JfZWFjaF9zdGF0aWNfZW5naW5lOgo+ICsgKiBAZV9fOiBzdHJ1Y3QgaW50ZWxfZXhl
-Y3V0aW9uX2VuZ2luZTIgaXRlcmF0b3IKPiArICoKPiArICogSXRlcmF0ZXMgb3ZlciBlYWNoIG9m
-IHRoZSBzdGF0aWNhbGx5IGRlZmluZWQgKGxlZ2FjeSkgZW5naW5lcy4KPiArICovCj4gICNkZWZp
-bmUgX19mb3JfZWFjaF9zdGF0aWNfZW5naW5lKGVfXykgXAo+ICAJZm9yICgoZV9fKSA9IGludGVs
-X2V4ZWN1dGlvbl9lbmdpbmVzMjsgKGVfXyktPm5hbWVbMF07IChlX18pKyspCj4gIAo+IC0tIAo+
-IDIuMzEuMQo+IAo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCj4gaWd0LWRldiBtYWlsaW5nIGxpc3QKPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
-Zwo+IGh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRl
-dgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
-IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
-LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+On Tue, Jun 08, 2021 at 11:29:55PM -0500, Jason Ekstrand wrote:
+> We're trying to clean up some of our technical debt in the i915 API.  In
+> particular, context mutability and unnecessary getparam().  There's
+> quite a bit of the introspection stuff that's not used by any userspace
+> other than IGT.  Most drivers don't care about fetching the set of
+> engines, for instance, because they don't forget about what set of
+> engines they asked for int the first place.
+> =
+
+> Unfortunately, IGT relies heavily on context introspection for just
+> about everything when it comes to multi-engine testing.  It also likes
+> to use ctx0 as temporary storage for whatever the current test config
+> is.  While effective at keeping IGC simple in some ways, this means
+> we're making heavy use of context mutability.  Also, passing data around
+> with in tests isn't really what contexts are for.
+> =
+
+> This patch adds a new intel_ctx_t struct which wraps a context and
+> remembers the full context configuration.  This will provide similar
+> ease-of-use without having use ctx0 as temporary storage.
+> =
+
+> v2 (Jason Ekstrand):
+>  - Make all intel_ctx_t's const
+> =
+
+> v3 (Jason Ekstrand):
+>  - Fix up the docs so they build properly
+> =
+
+> v4 (Jason Ekstrand):
+>  - Add an intel_ctx_create_for_engine helper
+> =
+
+> Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+
+Please read my first comment in v4: =
+
+
+https://patchwork.freedesktop.org/patch/430799/?series=3D88986&rev=3D4
+
+It is ok for me, but use SPDX + igt_assert in public functions for input
+pointers to avoid null-dereference.
+
+--
+Zbigniew
+
+> ---
+>  .../igt-gpu-tools/igt-gpu-tools-docs.xml      |   1 +
+>  lib/intel_ctx.c                               | 272 ++++++++++++++++++
+>  lib/intel_ctx.h                               |  75 +++++
+>  lib/meson.build                               |   1 +
+>  4 files changed, 349 insertions(+)
+>  create mode 100644 lib/intel_ctx.c
+>  create mode 100644 lib/intel_ctx.h
+> =
+
+> diff --git a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml b/docs/r=
+eference/igt-gpu-tools/igt-gpu-tools-docs.xml
+> index 2e85f361..0f49b4a3 100644
+> --- a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+> +++ b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+> @@ -58,6 +58,7 @@
+>      <xi:include href=3D"xml/gem_engine_topology.xml"/>
+>      <xi:include href=3D"xml/gem_scheduler.xml"/>
+>      <xi:include href=3D"xml/gem_submission.xml"/>
+> +    <xi:include href=3D"xml/intel_ctx.xml"/>
+>    </chapter>
+>    <xi:include href=3D"xml/igt_test_programs.xml"/>
+>  =
+
+> diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
+> new file mode 100644
+> index 00000000..271bb812
+> --- /dev/null
+> +++ b/lib/intel_ctx.c
+> @@ -0,0 +1,272 @@
+> +/*
+> + * Copyright =A9 2021 Intel Corporation
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining=
+ a
+> + * copy of this software and associated documentation files (the "Softwa=
+re"),
+> + * to deal in the Software without restriction, including without limita=
+tion
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
+se,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the =
+next
+> + * paragraph) shall be included in all copies or substantial portions of=
+ the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
+SS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
+TY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
+ALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
+OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
+NG
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER D=
+EALINGS
+> + * IN THE SOFTWARE.
+> + */
+> +
+> +#include <stddef.h>
+> +
+> +#include "intel_ctx.h"
+> +#include "ioctl_wrappers.h"
+> +#include "i915/gem_engine_topology.h"
+> +
+> +/**
+> + * SECTION:intel_ctx
+> + * @short_description: Wrapper structs for dealing with contexts
+> + * @title: Intel Context Wrapper
+> + *
+> + * This helper library contains a couple of wrapper structs for easier
+> + * dealing with GEM contexts.  This includes a context configuration str=
+uct
+> + * which represents important context construction parameters and a cont=
+ext
+> + * struct which contains the context ID and its configuration.  This mak=
+es
+> + * it easier to pass around a context without loosing the context create
+> + * information.
+> + */
+> +
+> +static void
+> +add_user_ext(uint64_t *root_ext_u64, struct i915_user_extension *ext)
+> +{
+> +	ext->next_extension =3D *root_ext_u64;
+> +	*root_ext_u64 =3D to_user_pointer(ext);
+> +}
+> +
+> +static size_t sizeof_param_engines(int count)
+> +{
+> +	return offsetof(struct i915_context_param_engines, engines[count]);
+> +}
+> +
+> +#define SIZEOF_QUERY		offsetof(struct drm_i915_query_engine_info, \
+> +					 engines[GEM_MAX_ENGINES])
+> +
+> +/**
+> + * intel_ctx_cfg_all_physical:
+> + * @fd: open i915 drm file descriptor
+> + *
+> + * Returns an intel_ctx_cfg_t containing all physical engines.  On kerne=
+ls
+> + * without the engines API, a default context configuration will be
+> + * returned.
+> + */
+> +intel_ctx_cfg_t intel_ctx_cfg_all_physical(int fd)
+> +{
+> +	uint8_t buff[SIZEOF_QUERY] =3D { };
+> +	struct drm_i915_query_engine_info *qei =3D (void *) buff;
+> +	intel_ctx_cfg_t cfg =3D {};
+> +	int i;
+> +
+> +	if (__gem_query_engines(fd, qei, SIZEOF_QUERY) =3D=3D 0) {
+> +		cfg.num_engines =3D qei->num_engines;
+> +		for (i =3D 0; i < qei->num_engines; i++)
+> +			cfg.engines[i] =3D qei->engines[i].engine;
+> +	}
+> +
+> +	return cfg;
+> +}
+> +
+> +/**
+> + * intel_ctx_cfg_for_engine:
+> + * @class: engine class
+> + * @inst: engine instance
+> + *
+> + * Returns an intel_ctx_cfg_t containing exactly one engine.
+> + */
+> +intel_ctx_cfg_t intel_ctx_cfg_for_engine(unsigned int class, unsigned in=
+t inst)
+> +{
+> +	return (intel_ctx_cfg_t) {
+> +		.num_engines =3D 1,
+> +		.engines =3D {
+> +			{ .engine_class =3D class, .engine_instance =3D inst },
+> +		},
+> +	};
+> +}
+> +
+> +static int
+> +__context_create_cfg(int fd, const intel_ctx_cfg_t *cfg, uint32_t *ctx_i=
+d)
+> +{
+> +	uint64_t ext_root =3D 0;
+> +	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, GEM_MAX_ENGINES);
+> +	struct drm_i915_gem_context_create_ext_setparam engines_param, vm_param;
+> +	uint32_t i;
+> +
+> +	if (cfg->vm) {
+> +		vm_param =3D (struct drm_i915_gem_context_create_ext_setparam) {
+> +			.base =3D {
+> +				.name =3D I915_CONTEXT_CREATE_EXT_SETPARAM,
+> +			},
+> +			.param =3D {
+> +				.param =3D I915_CONTEXT_PARAM_VM,
+> +				.value =3D cfg->vm,
+> +			},
+> +		};
+> +		add_user_ext(&ext_root, &vm_param.base);
+> +	}
+> +
+> +	if (cfg->num_engines) {
+> +		memset(&engines, 0, sizeof(engines));
+> +		for (i =3D 0; i < cfg->num_engines; i++)
+> +			engines.engines[i] =3D cfg->engines[i];
+> +
+> +		engines_param =3D (struct drm_i915_gem_context_create_ext_setparam) {
+> +			.base =3D {
+> +				.name =3D I915_CONTEXT_CREATE_EXT_SETPARAM,
+> +			},
+> +			.param =3D {
+> +				.param =3D I915_CONTEXT_PARAM_ENGINES,
+> +				.size =3D sizeof_param_engines(cfg->num_engines),
+> +				.value =3D to_user_pointer(&engines),
+> +			},
+> +		};
+> +		add_user_ext(&ext_root, &engines_param.base);
+> +	}
+> +
+> +	return __gem_context_create_ext(fd, cfg->flags, ext_root, ctx_id);
+> +}
+> +
+> +/**
+> + * __intel_ctx_create:
+> + * @fd: open i915 drm file descriptor
+> + * @cfg: configuration for the created context
+> + * @out_ctx: on success, the new intel_ctx_t pointer is written here
+> + *
+> + * Like intel_ctx_create but returns an error instead of asserting.
+> + */
+> +int __intel_ctx_create(int fd, const intel_ctx_cfg_t *cfg,
+> +		       const intel_ctx_t **out_ctx)
+> +{
+> +	uint32_t ctx_id;
+> +	intel_ctx_t *ctx;
+> +	int err;
+> +
+> +	if (cfg)
+> +		err =3D __context_create_cfg(fd, cfg, &ctx_id);
+> +	else
+> +		err =3D __gem_context_create(fd, &ctx_id);
+> +	if (err)
+> +		return err;
+> +
+> +	ctx =3D calloc(1, sizeof(*ctx));
+> +	igt_assert(ctx);
+> +
+> +	ctx->id =3D ctx_id;
+> +	if (cfg)
+> +		ctx->cfg =3D *cfg;
+> +
+> +	*out_ctx =3D ctx;
+> +	return 0;
+> +}
+> +
+> +/**
+> + * intel_ctx_create:
+> + * @fd: open i915 drm file descriptor
+> + * @cfg: configuration for the created context
+> + *
+> + * Creates a new intel_ctx_t with the given config
+> + */
+> +const intel_ctx_t *intel_ctx_create(int fd, const intel_ctx_cfg_t *cfg)
+> +{
+> +	const intel_ctx_t *ctx;
+> +	int err;
+> +
+> +	err =3D __intel_ctx_create(fd, cfg, &ctx);
+> +	igt_assert_eq(err, 0);
+> +
+> +	return ctx;
+> +}
+> +
+> +static const intel_ctx_t __intel_ctx_0 =3D {};
+> +
+> +/**
+> + * intel_ctx_0:
+> + * @fd: open i915 drm file descriptor
+> + *
+> + * Returns an intel_ctx_t representing the default context.
+> + */
+> +const intel_ctx_t *intel_ctx_0(int fd)
+> +{
+> +	(void)fd;
+> +	return &__intel_ctx_0;
+> +}
+> +
+> +/**
+> + * intel_ctx_create_for_engine:
+> + * @fd: open i915 drm file descriptor
+> + * @class: engine class
+> + * @inst: engine instance
+> + *
+> + * Returns an intel_ctx_t containing the specified engine.
+> + */
+> +const intel_ctx_t *
+> +intel_ctx_create_for_engine(int fd, unsigned int class, unsigned int ins=
+t)
+> +{
+> +	intel_ctx_cfg_t cfg =3D intel_ctx_cfg_for_engine(class, inst);
+> +	return intel_ctx_create(fd, &cfg);
+> +}
+> +
+> +/**
+> + * intel_ctx_create_all_physical:
+> + * @fd: open i915 drm file descriptor
+> + *
+> + * Creates an intel_ctx_t containing all physical engines.  On kernels
+> + * without the engines API, the created context will be the same as
+> + * intel_ctx_0() except that it will be a new GEM context.  On kernels or
+> + * hardware which do not support contexts, it is the same as intel_ctx_0=
+().
+> + */
+> +const intel_ctx_t *intel_ctx_create_all_physical(int fd)
+> +{
+> +	intel_ctx_cfg_t cfg;
+> +
+> +	if (!gem_has_contexts(fd))
+> +		return intel_ctx_0(fd);
+> +
+> +	cfg =3D intel_ctx_cfg_all_physical(fd);
+> +	return intel_ctx_create(fd, &cfg);
+> +}
+> +
+> +/**
+> + * intel_ctx_destroy:
+> + * @fd: open i915 drm file descriptor
+> + * @ctx: context to destroy, or NULL
+> + *
+> + * Destroys an intel_ctx_t.
+> + */
+> +void intel_ctx_destroy(int fd, const intel_ctx_t *ctx)
+> +{
+> +	if (!ctx || ctx->id =3D=3D 0)
+> +		return;
+> +
+> +	gem_context_destroy(fd, ctx->id);
+> +	free((void *)ctx);
+> +}
+> +
+> +/**
+> + * intel_ctx_engine_class:
+> + * @ctx: an intel_ctx_t
+> + * @engine: an engine specifier
+> + *
+> + * Returns the class for the given engine.
+> + */
+> +unsigned int intel_ctx_engine_class(const intel_ctx_t *ctx, unsigned int=
+ engine)
+> +{
+> +	if (ctx->cfg.num_engines) {
+> +		igt_assert(engine < ctx->cfg.num_engines);
+> +		return ctx->cfg.engines[engine].engine_class;
+> +	} else {
+> +		return gem_execbuf_flags_to_engine_class(engine);
+> +	}
+> +}
+> diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
+> new file mode 100644
+> index 00000000..79bc1154
+> --- /dev/null
+> +++ b/lib/intel_ctx.h
+> @@ -0,0 +1,75 @@
+> +/*
+> + * Copyright =A9 2021 Intel Corporation
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining=
+ a
+> + * copy of this software and associated documentation files (the "Softwa=
+re"),
+> + * to deal in the Software without restriction, including without limita=
+tion
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
+se,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the =
+next
+> + * paragraph) shall be included in all copies or substantial portions of=
+ the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
+SS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
+TY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
+ALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
+OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
+NG
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER D=
+EALINGS
+> + * IN THE SOFTWARE.
+> + */
+> +
+> +#ifndef INTEL_CTX_H
+> +#define INTEL_CTX_H
+> +
+> +#include "igt_core.h"
+> +
+> +#include "i915_drm.h"
+> +
+> +#define GEM_MAX_ENGINES		I915_EXEC_RING_MASK + 1
+> +
+> +/**
+> + * intel_ctx_cfg_t:
+> + * @flags: Context create flags
+> + * @vm: VM to inherit or 0 for using a per-context VM
+> + * @num_engines: Number of client-specified engines or 0 for legacy mode
+> + * @engines: Client-specified engines
+> + *
+> + * Represents the full configuration of an intel_ctx.
+> + */
+> +typedef struct intel_ctx_cfg {
+> +	uint32_t flags;
+> +	uint32_t vm;
+> +	unsigned int num_engines;
+> +	struct i915_engine_class_instance engines[GEM_MAX_ENGINES];
+> +} intel_ctx_cfg_t;
+> +
+> +intel_ctx_cfg_t intel_ctx_cfg_for_engine(unsigned int class, unsigned in=
+t inst);
+> +intel_ctx_cfg_t intel_ctx_cfg_all_physical(int fd);
+> +
+> +/**
+> + * intel_ctx_t:
+> + * @id: the context id/handle
+> + * @cfg: the config used to create this context
+> + *
+> + * Represents the full configuration of an intel_ctx.
+> + */
+> +typedef struct intel_ctx {
+> +	uint32_t id;
+> +	intel_ctx_cfg_t cfg;
+> +} intel_ctx_t;
+> +
+> +int __intel_ctx_create(int fd, const intel_ctx_cfg_t *cfg,
+> +		       const intel_ctx_t **out_ctx);
+> +const intel_ctx_t *intel_ctx_create(int i915, const intel_ctx_cfg_t *cfg=
+);
+> +const intel_ctx_t *intel_ctx_0(int fd);
+> +const intel_ctx_t *intel_ctx_create_for_engine(int fd, unsigned int clas=
+s,
+> +					       unsigned int inst);
+> +const intel_ctx_t *intel_ctx_create_all_physical(int fd);
+> +void intel_ctx_destroy(int fd, const intel_ctx_t *ctx);
+> +
+> +unsigned int intel_ctx_engine_class(const intel_ctx_t *ctx, unsigned int=
+ engine);
+> +
+> +#endif
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 078a357b..67d40512 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -43,6 +43,7 @@ lib_sources =3D [
+>  	'intel_batchbuffer.c',
+>  	'intel_bufops.c',
+>  	'intel_chipset.c',
+> +	'intel_ctx.c',
+>  	'intel_device_info.c',
+>  	'intel_os.c',
+>  	'intel_mmio.c',
+> -- =
+
+> 2.31.1
+> =
+
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
