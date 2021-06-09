@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com
- [IPv6:2607:f8b0:4864:20::b2b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4FDED6EAE1
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 18:03:21 +0000 (UTC)
-Received: by mail-yb1-xb2b.google.com with SMTP id f84so36815376ybg.0
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 11:03:21 -0700 (PDT)
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com
+ [IPv6:2607:f8b0:4864:20::b2f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C2A76EA55
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 18:06:00 +0000 (UTC)
+Received: by mail-yb1-xb2f.google.com with SMTP id g142so17426673ybf.9
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 11:06:00 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210608094020.21598-1-daniel.vetter@ffwll.ch>
- <20210608094020.21598-6-daniel.vetter@ffwll.ch>
-In-Reply-To: <20210608094020.21598-6-daniel.vetter@ffwll.ch>
+ <20210608094020.21598-5-daniel.vetter@ffwll.ch>
+In-Reply-To: <20210608094020.21598-5-daniel.vetter@ffwll.ch>
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed, 9 Jun 2021 13:03:09 -0500
-Message-ID: <CAOFGe94-29FqdQ6QOb5LRJhS8wbh6n+nnjZFru=Zj838x8VCcg@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 6/7] Revert "i915/gem_exec_reloc: Check
- that relocations do not block"
+Date: Wed, 9 Jun 2021 13:05:48 -0500
+Message-ID: <CAOFGe968p2wSctUUp3PPCMRonNYG_YUYWObOvDLffcan-bY+4Q@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 5/7] Revert "i915/gem_exec_reloc: Flood
+ the ring with GPU relocs"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,13 +29,11 @@ To: Daniel Vetter <daniel.vetter@ffwll.ch>
 Cc: IGT development <igt-dev@lists.freedesktop.org>, Dave Airlie <airlied@redhat.com>, Daniel Vetter <daniel.vetter@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Very much
-
 Reviewed-by: Jason Ekstrand <jason@jlekstrand.net>
 
 On Tue, Jun 8, 2021 at 4:40 AM Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
 >
-> This reverts commit 5343ca6ad8fac39fe4d468f771af72c968404bea.
+> This reverts commit 57ee41f12b7a53283fd812c5f72fcb39e6ad2197.
 >
 > This validates gpu relocations, which we're about to delete.
 >
@@ -44,73 +42,110 @@ On Tue, Jun 8, 2021 at 4:40 AM Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
 > Cc: Dave Airlie <airlied@redhat.com>
 > Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
 > ---
->  tests/i915/gem_exec_reloc.c | 52 -------------------------------------
->  1 file changed, 52 deletions(-)
+>  tests/i915/gem_exec_reloc.c | 89 -------------------------------------
+>  1 file changed, 89 deletions(-)
 >
 > diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
-> index cbd40962c610..5b15bcdc3a1f 100644
+> index c3f42aff9c9a..cbd40962c610 100644
 > --- a/tests/i915/gem_exec_reloc.c
 > +++ b/tests/i915/gem_exec_reloc.c
-> @@ -344,51 +344,6 @@ static void active(int fd, unsigned engine)
+> @@ -344,88 +344,6 @@ static void active(int fd, unsigned engine)
 >         gem_close(fd, obj[0].handle);
 >  }
 >
-> -static unsigned int offset_in_page(void *addr)
+> -static uint64_t many_relocs(unsigned long count, unsigned long *out)
 > -{
-> -       return (uintptr_t)addr & 4095;
+> -       struct drm_i915_gem_relocation_entry *reloc;
+> -       unsigned long sz;
+> -       int i;
+> -
+> -       sz = count * sizeof(*reloc);
+> -       sz = ALIGN(sz, 4096);
+> -
+> -       reloc = mmap(0, sz, PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+> -       igt_assert(reloc != MAP_FAILED);
+> -       for (i = 0; i < count; i++) {
+> -               reloc[i].target_handle = 0;
+> -               reloc[i].presumed_offset = ~0ull;
+> -               reloc[i].offset = 8 * i;
+> -               reloc[i].delta = 8 * i;
+> -       }
+> -       mprotect(reloc, sz, PROT_READ);
+> -
+> -       *out = sz;
+> -       return to_user_pointer(reloc);
 > -}
 > -
-> -static void active_spin(int fd, unsigned engine)
+> -static void __many_active(int i915, unsigned engine, unsigned long count)
 > -{
-> -       const uint32_t bbe = MI_BATCH_BUFFER_END;
-> -       struct drm_i915_gem_relocation_entry reloc;
-> -       struct drm_i915_gem_exec_object2 obj[2];
-> -       struct drm_i915_gem_execbuffer2 execbuf;
+> -       unsigned long reloc_sz;
+> -       struct drm_i915_gem_exec_object2 obj[2] = {{
+> -               .handle = gem_create(i915, count * sizeof(uint64_t)),
+> -               .relocs_ptr = many_relocs(count, &reloc_sz),
+> -               .relocation_count = count,
+> -       }};
+> -       struct drm_i915_gem_execbuffer2 execbuf = {
+> -               .buffers_ptr = to_user_pointer(obj),
+> -               .buffer_count = ARRAY_SIZE(obj),
+> -               .flags = engine | I915_EXEC_HANDLE_LUT,
+> -       };
 > -       igt_spin_t *spin;
 > -
-> -       spin = igt_spin_new(fd,
-> -                           .engine = engine,
-> -                           .flags = IGT_SPIN_NO_PREEMPTION);
+> -       spin = __igt_spin_new(i915,
+> -                             .engine = engine,
+> -                             .dependency = obj[0].handle,
+> -                             .flags = (IGT_SPIN_FENCE_OUT |
+> -                                       IGT_SPIN_NO_PREEMPTION));
+> -       obj[1] = spin->obj[1];
+> -       gem_execbuf(i915, &execbuf);
+> -       igt_assert_eq(sync_fence_status(spin->out_fence), 0);
+> -       igt_spin_free(i915, spin);
 > -
-> -       memset(obj, 0, sizeof(obj));
-> -       obj[0] = spin->obj[IGT_SPIN_BATCH];
-> -       obj[0].relocs_ptr = to_user_pointer(&reloc);
-> -       obj[0].relocation_count = 1;
-> -       obj[1].handle = gem_create(fd, 4096);
-> -       gem_write(fd, obj[1].handle, 0, &bbe, sizeof(bbe));
+> -       for (unsigned long i = 0; i < count; i++) {
+> -               uint64_t addr;
 > -
-> -       memset(&reloc, 0, sizeof(reloc));
-> -       reloc.presumed_offset = -1;
-> -       reloc.offset = offset_in_page(spin->condition);
-> -       reloc.target_handle = obj[0].handle;
+> -               gem_read(i915, obj[0].handle, i * sizeof(addr),
+> -                        &addr, sizeof(addr));
 > -
-> -       memset(&execbuf, 0, sizeof(execbuf));
-> -       execbuf.buffers_ptr = to_user_pointer(obj);
-> -       execbuf.buffer_count = 2;
-> -       execbuf.flags = engine;
+> -               igt_assert_eq_u64(addr, obj[0].offset + i * sizeof(addr));
+> -       }
 > -
-> -       gem_execbuf(fd, &execbuf);
-> -       gem_close(fd, obj[1].handle);
-> -       igt_assert_eq(*spin->condition, spin->cmd_precondition);
-> -
-> -       igt_spin_end(spin);
-> -       gem_sync(fd, spin->handle);
-> -
-> -       igt_assert_eq(*spin->condition, obj[0].offset);
-> -       igt_spin_free(fd, spin);
+> -       munmap(from_user_pointer(obj[0].relocs_ptr), reloc_sz);
+> -       gem_close(i915, obj[0].handle);
 > -}
 > -
->  static bool has_64b_reloc(int fd)
+> -static void many_active(int i915, unsigned engine)
+> -{
+> -       const uint64_t max = 2048;
+> -       unsigned long count = 256;
+> -
+> -       igt_until_timeout(2) {
+> -               uint64_t required, total;
+> -
+> -               if (!__intel_check_memory(1, 8 * count, CHECK_RAM,
+> -                                         &required, &total))
+> -                       break;
+> -
+> -               igt_debug("Testing count:%lu\n", count);
+> -               __many_active(i915, engine, count);
+> -
+> -               count <<= 1;
+> -               if (count >= max)
+> -                       break;
+> -       }
+> -}
+> -
+>  static unsigned int offset_in_page(void *addr)
 >  {
->         return intel_gen(intel_get_drm_devid(fd)) >= 8;
-> @@ -964,13 +919,6 @@ igt_main
+>         return (uintptr_t)addr & 4095;
+> @@ -1053,13 +971,6 @@ igt_main
 >                 }
 >         }
 >
-> -       igt_subtest_with_dynamic("basic-spin") {
+> -       igt_subtest_with_dynamic("basic-many-active") {
 > -               __for_each_physical_engine(fd, e) {
 > -                       igt_dynamic_f("%s", e->name)
-> -                               active_spin(fd, e->flags);
+> -                               many_active(fd, e->flags);
 > -               }
 > -       }
 > -
