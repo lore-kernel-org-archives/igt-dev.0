@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com
- [IPv6:2607:f8b0:4864:20::42c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C18106EA29
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:39:14 +0000 (UTC)
-Received: by mail-pf1-x42c.google.com with SMTP id m7so6039436pfa.10
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:39:14 -0700 (PDT)
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
+ [IPv6:2607:f8b0:4864:20::52b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3DB6E6EA19
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:39:20 +0000 (UTC)
+Received: by mail-pg1-x52b.google.com with SMTP id o9so17296837pgd.2
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:39:20 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  9 Jun 2021 12:38:24 -0500
-Message-Id: <20210609173903.249112-5-jason@jlekstrand.net>
+Date: Wed,  9 Jun 2021 12:38:28 -0500
+Message-Id: <20210609173903.249112-9-jason@jlekstrand.net>
 In-Reply-To: <20210609173632.248880-1-jason@jlekstrand.net>
 References: <20210609173632.248880-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 54/93] tests/i915/gem_exec_capture: Convert
- to intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 58/93] tests/i915/gem_ctx_persistence: Drop
+ the engine replace subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,124 +27,243 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+We're going to start disallowing non-trivial uses of setparam for
+engines precisely to make races like this impossible.  It'll also make
+these test cases invalid.
+
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/i915/gem_exec_capture.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ tests/i915/gem_ctx_persistence.c | 210 -------------------------------
+ 1 file changed, 210 deletions(-)
 
-diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-index a6b3d987..edad62a9 100644
---- a/tests/i915/gem_exec_capture.c
-+++ b/tests/i915/gem_exec_capture.c
-@@ -61,7 +61,8 @@ static void check_error_state(int dir, struct drm_i915_gem_exec_object2 *obj)
- 	igt_assert(found);
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index 91c30176..59077cc0 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -1085,191 +1085,6 @@ static void many_contexts(int i915)
+ 	gem_quiescent_gpu(i915);
  }
  
--static void __capture1(int fd, int dir, unsigned ring, uint32_t target)
-+static void __capture1(int fd, int dir, const intel_ctx_t *ctx,
-+		       unsigned ring, uint32_t target)
- {
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
- 	struct drm_i915_gem_exec_object2 obj[4];
-@@ -148,6 +149,7 @@ static void __capture1(int fd, int dir, unsigned ring, uint32_t target)
- 	execbuf.flags = ring;
- 	if (gen > 3 && gen < 6)
- 		execbuf.flags |= I915_EXEC_SECURE;
-+	execbuf.rsvd1 = ctx->id;
- 
- 	igt_assert(!READ_ONCE(*seqno));
- 	gem_execbuf(fd, &execbuf);
-@@ -168,12 +170,12 @@ static void __capture1(int fd, int dir, unsigned ring, uint32_t target)
- 	gem_close(fd, obj[SCRATCH].handle);
- }
- 
--static void capture(int fd, int dir, unsigned ring)
-+static void capture(int fd, int dir, const intel_ctx_t *ctx, unsigned ring)
- {
- 	uint32_t handle;
- 
- 	handle = gem_create(fd, 4096);
--	__capture1(fd, dir, ring, handle);
-+	__capture1(fd, dir, ctx, ring, handle);
- 	gem_close(fd, handle);
- }
- 
-@@ -496,7 +498,8 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
- 	free(offsets);
- }
- 
--static void prioinv(int fd, int dir, unsigned ring, const char *name)
-+static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
-+		    unsigned ring, const char *name)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	struct drm_i915_gem_exec_object2 obj = {
-@@ -506,6 +509,7 @@ static void prioinv(int fd, int dir, unsigned ring, const char *name)
- 		.buffers_ptr = to_user_pointer(&obj),
- 		.buffer_count = 1,
- 		.flags = ring,
-+		.rsvd1 = ctx->id,
- 	};
- 	int64_t timeout = NSEC_PER_SEC; /* 1s, feeling generous, blame debug */
- 	uint64_t ram, gtt, size = 4 << 20;
-@@ -573,7 +577,7 @@ static void userptr(int fd, int dir)
- 	igt_assert(posix_memalign(&ptr, 4096, 4096) == 0);
- 	igt_require(__gem_userptr(fd, ptr, 4096, 0, 0, &handle) == 0);
- 
--	__capture1(fd, dir, 0, handle);
-+	__capture1(fd, dir, intel_ctx_0(fd), 0, handle);
- 
- 	gem_close(fd, handle);
- 	free(ptr);
-@@ -596,14 +600,15 @@ static size_t safer_strlen(const char *s)
- 	return s ? strlen(s) : 0;
- }
- 
--#define test_each_engine(T, i915, e) \
--	igt_subtest_with_dynamic(T) __for_each_physical_engine(i915, e) \
-+#define test_each_engine(T, i915, ctx, e) \
-+	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
- 		for_each_if(gem_class_can_store_dword(i915, (e)->class)) \
- 			igt_dynamic_f("%s", (e)->name)
- 
- igt_main
- {
- 	const struct intel_execution_engine2 *e;
-+	const intel_ctx_t *ctx = NULL;
- 	igt_hang_t hang;
- 	int fd = -1;
- 	int dir = -1;
-@@ -620,15 +625,16 @@ igt_main
- 		igt_require_gem(fd);
- 		gem_require_mmap_wc(fd);
- 		igt_require(has_capture(fd));
--		igt_allow_hang(fd, 0, HANG_ALLOW_CAPTURE);
-+		ctx = intel_ctx_create_all_physical(fd);
-+		igt_allow_hang(fd, ctx->id, HANG_ALLOW_CAPTURE);
- 
- 		dir = igt_sysfs_open(fd);
- 		igt_require(igt_sysfs_set(dir, "error", "Begone!"));
- 		igt_require(safer_strlen(igt_sysfs_get(dir, "error")) > 0);
+-static void replace_engines(int i915, const struct intel_execution_engine2 *e)
+-{
+-	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 1) = {
+-		.engines = {{ e->class, e->instance }}
+-	};
+-	struct drm_i915_gem_context_param param = {
+-		.ctx_id = gem_context_create(i915),
+-		.param = I915_CONTEXT_PARAM_ENGINES,
+-		.value = to_user_pointer(&engines),
+-		.size = sizeof(engines),
+-	};
+-	igt_spin_t *spin[2];
+-	int64_t timeout;
+-
+-	/*
+-	 * Suppose the user tries to hide a hanging batch by replacing
+-	 * the set of engines on the context so that it's not visible
+-	 * at the time of closure? Then we must act when they replace
+-	 * the engines!
+-	 */
+-
+-	gem_context_set_persistence(i915, param.ctx_id, false);
+-
+-	gem_context_set_param(i915, &param);
+-	spin[0] = igt_spin_new(i915, param.ctx_id);
+-
+-	gem_context_set_param(i915, &param);
+-	spin[1] = igt_spin_new(i915, param.ctx_id);
+-
+-	gem_context_destroy(i915, param.ctx_id);
+-
+-	timeout = reset_timeout_ms * NSEC_PER_MSEC;
+-	igt_assert_eq(gem_wait(i915, spin[1]->handle, &timeout), 0);
+-
+-	timeout = reset_timeout_ms * NSEC_PER_MSEC;
+-	igt_assert_eq(gem_wait(i915, spin[0]->handle, &timeout), 0);
+-
+-	igt_spin_free(i915, spin[1]);
+-	igt_spin_free(i915, spin[0]);
+-	gem_quiescent_gpu(i915);
+-}
+-
+-static void race_set_engines(int i915, int in, int out)
+-{
+-	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 1) = {
+-		.engines = {}
+-	};
+-	struct drm_i915_gem_context_param param = {
+-		.param = I915_CONTEXT_PARAM_ENGINES,
+-		.value = to_user_pointer(&engines),
+-		.size = sizeof(engines),
+-	};
+-	igt_spin_t *spin;
+-
+-	spin = igt_spin_new(i915);
+-	igt_spin_end(spin);
+-
+-	while (read(in, &param.ctx_id, sizeof(param.ctx_id)) > 0) {
+-		if (!param.ctx_id)
+-			break;
+-
+-		__gem_context_set_param(i915, &param);
+-
+-		spin->execbuf.rsvd1 = param.ctx_id;
+-		__gem_execbuf(i915, &spin->execbuf);
+-
+-		write(out, &param.ctx_id, sizeof(param.ctx_id));
+-	}
+-
+-	igt_spin_free(i915, spin);
+-}
+-
+-static void close_replace_race(int i915)
+-{
+-	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+-	int fence = -1;
+-	int out[2], in[2];
+-
+-	cleanup(i915);
+-
+-	/*
+-	 * If we time the submission of a hanging batch to one set of engines
+-	 * and then simultaneously replace the engines in one thread, and
+-	 * close the context in another, it might be possible for the kernel
+-	 * to lose track of the old engines believing that the non-persisten
+-	 * context is already closed and the hanging requests cancelled.
+-	 *
+-	 * Our challenge is try and expose any such race condition.
+-	 */
+-
+-	igt_assert(pipe(out) == 0);
+-	igt_assert(pipe(in) == 0);
+-	igt_fork(child, ncpus) {
+-		close(out[1]);
+-		close(in[0]);
+-		race_set_engines(i915, out[0], in[1]);
+-	}
+-	for (int i = 0; i < ncpus; i++)
+-		close(out[0]);
+-
+-	igt_until_timeout(5) {
+-		igt_spin_t *spin;
+-		uint32_t ctx;
+-
+-		ctx = gem_context_clone_with_engines(i915, 0);
+-		gem_context_set_persistence(i915, ctx, false);
+-
+-		spin = igt_spin_new(i915, ctx, .flags = IGT_SPIN_FENCE_OUT);
+-		for (int i = 0; i < ncpus; i++)
+-			write(out[1], &ctx, sizeof(ctx));
+-
+-		gem_context_destroy(i915, ctx);
+-		for (int i = 0; i < ncpus; i++)
+-			read(in[0], &ctx, sizeof(ctx));
+-
+-		if (fence < 0) {
+-			fence = spin->out_fence;
+-		} else {
+-			int tmp;
+-
+-			tmp = sync_fence_merge(fence, spin->out_fence);
+-			close(fence);
+-			close(spin->out_fence);
+-
+-			fence = tmp;
+-		}
+-		spin->out_fence = -1;
+-	}
+-	close(in[0]);
+-
+-	for (int i = 0; i < ncpus; i++) {
+-		uint32_t end = 0;
+-
+-		write(out[1], &end, sizeof(end));
+-	}
+-	close(out[1]);
+-
+-	if (sync_fence_wait(fence, MSEC_PER_SEC / 2)) {
+-		igt_debugfs_dump(i915, "i915_engine_info");
+-		igt_assert(sync_fence_wait(fence, MSEC_PER_SEC / 2) == 0);
+-	}
+-	close(fence);
+-
+-	igt_waitchildren();
+-	gem_quiescent_gpu(i915);
+-}
+-
+-static void replace_engines_hostile(int i915,
+-				    const struct intel_execution_engine2 *e)
+-{
+-	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 1) = {
+-		.engines = {{ e->class, e->instance }}
+-	};
+-	struct drm_i915_gem_context_param param = {
+-		.ctx_id = gem_context_create(i915),
+-		.param = I915_CONTEXT_PARAM_ENGINES,
+-		.value = to_user_pointer(&engines),
+-		.size = sizeof(engines),
+-	};
+-	int64_t timeout = reset_timeout_ms * NSEC_PER_MSEC;
+-	igt_spin_t *spin;
+-
+-	/*
+-	 * Suppose the user tries to hide a hanging batch by replacing
+-	 * the set of engines on the context so that it's not visible
+-	 * at the time of closure? Then we must act when they replace
+-	 * the engines!
+-	 */
+-
+-	gem_context_set_persistence(i915, param.ctx_id, false);
+-
+-	gem_context_set_param(i915, &param);
+-	spin = igt_spin_new(i915, param.ctx_id,
+-			    .flags = IGT_SPIN_NO_PREEMPTION);
+-
+-	param.size = 8;
+-	gem_context_set_param(i915, &param);
+-	gem_context_destroy(i915, param.ctx_id);
+-
+-	igt_assert_eq(gem_wait(i915, spin->handle, &timeout), 0);
+-
+-	igt_spin_free(i915, spin);
+-	gem_quiescent_gpu(i915);
+-}
+-
+ static void do_test(void (*test)(int i915, unsigned int engine),
+ 		    int i915, unsigned int engine,
+ 		    const char *name)
+@@ -1422,31 +1237,6 @@ igt_main
+ 			smoketest(i915);
  	}
  
--	test_each_engine("capture", fd, e)
--		capture(fd, dir, e->flags);
-+	test_each_engine("capture", fd, ctx, e)
-+		capture(fd, dir, ctx, e->flags);
- 
- 	igt_subtest_f("many-4K-zero") {
- 		igt_require(gem_can_store_dword(fd, 0));
-@@ -662,8 +668,8 @@ igt_main
- 		userptr(fd, dir);
- 	}
- 
--	test_each_engine("pi", fd, e)
--		prioinv(fd, dir, e->flags, e->name);
-+	test_each_engine("pi", fd, ctx, e)
-+		prioinv(fd, dir, ctx, e->flags, e->name);
- 
+-	/* Check interactions with set-engines */
+-	igt_subtest_group {
+-		const struct intel_execution_engine2 *e;
+-
+-		igt_fixture
+-			gem_require_contexts(i915);
+-
+-		igt_subtest_with_dynamic("replace") {
+-			__for_each_physical_engine(i915, e) {
+-				igt_dynamic_f("%s", e->name)
+-					replace_engines(i915, e);
+-			}
+-		}
+-
+-		igt_subtest_with_dynamic("replace-hostile") {
+-			__for_each_physical_engine(i915, e) {
+-				igt_dynamic_f("%s", e->name)
+-					replace_engines_hostile(i915, e);
+-			}
+-		}
+-
+-		igt_subtest("close-replace-race")
+-			close_replace_race(i915);
+-	}
+-
  	igt_fixture {
- 		close(dir);
+ 		close(i915);
+ 	}
 -- 
 2.31.1
 
