@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
- [IPv6:2607:f8b0:4864:20::42f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 449CE6EA29
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:39:16 +0000 (UTC)
-Received: by mail-pf1-x42f.google.com with SMTP id k15so18963850pfp.6
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:39:16 -0700 (PDT)
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com
+ [IPv6:2607:f8b0:4864:20::429])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 64C826EA29
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:39:17 +0000 (UTC)
+Received: by mail-pf1-x429.google.com with SMTP id q25so18973617pfh.7
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:39:17 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  9 Jun 2021 12:38:25 -0500
-Message-Id: <20210609173903.249112-6-jason@jlekstrand.net>
+Date: Wed,  9 Jun 2021 12:38:26 -0500
+Message-Id: <20210609173903.249112-7-jason@jlekstrand.net>
 In-Reply-To: <20210609173632.248880-1-jason@jlekstrand.net>
 References: <20210609173632.248880-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 55/93] tests/i915/gem_exec_create: Convert
- to intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 56/93] tests/i915/gem_exec_await: Convert to
+ intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,52 +29,84 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/i915/gem_exec_create.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ tests/i915/gem_exec_await.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/tests/i915/gem_exec_create.c b/tests/i915/gem_exec_create.c
-index 8556cb21..612eb032 100644
---- a/tests/i915/gem_exec_create.c
-+++ b/tests/i915/gem_exec_create.c
-@@ -61,16 +61,21 @@ static void all(int fd, unsigned flags, int timeout, int ncpus)
+diff --git a/tests/i915/gem_exec_await.c b/tests/i915/gem_exec_await.c
+index 6db30695..5270b4cd 100644
+--- a/tests/i915/gem_exec_await.c
++++ b/tests/i915/gem_exec_await.c
+@@ -63,16 +63,19 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
+ 		struct drm_i915_gem_exec_object2 exec[2];
+ 		struct drm_i915_gem_relocation_entry reloc;
+ 		struct drm_i915_gem_execbuffer2 execbuf;
++		const intel_ctx_t *ctx;
+ 		uint32_t *cmd;
+ 	} *exec;
+ 	struct drm_i915_gem_exec_object2 *obj;
  	struct drm_i915_gem_execbuffer2 execbuf;
- 	struct drm_i915_gem_exec_object2 obj;
- 	unsigned engines[I915_EXEC_RING_MASK + 1], nengine;
 +	const intel_ctx_t *ctx;
+ 	unsigned engines[I915_EXEC_RING_MASK + 1], nengine;
+ 	unsigned long count;
+ 	double time;
  
++	ctx = intel_ctx_create_all_physical(fd);
  	nengine = 0;
- 	if (flags & ENGINES) { /* Modern API to iterate over *all* engines */
- 		const struct intel_execution_engine2 *e;
+-	__for_each_physical_engine(fd, engine) {
++	for_each_ctx_engine(fd, ctx, engine) {
+ 		if (!gem_class_has_mutable_submission(fd, engine->class))
+ 			continue;
  
--		__for_each_physical_engine(fd, e)
-+		ctx = intel_ctx_create_all_physical(fd);
-+
-+		for_each_ctx_engine(fd, ctx, e)
- 			engines[nengine++] = e->flags;
+@@ -106,7 +109,10 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
+ 					 I915_EXEC_HANDLE_LUT);
  
- 		/* Note: modifies engine map on context 0 */
- 	} else {
-+		ctx = intel_ctx_0(fd);
-+
- 		for_each_physical_ring(e, fd)
- 			engines[nengine++] = eb_ring(e);
+ 		if (flags & CONTEXTS) {
+-			exec[e].execbuf.rsvd1 = gem_context_create(fd);
++			exec[e].ctx = intel_ctx_create(fd, &ctx->cfg);
++			exec[e].execbuf.rsvd1 = exec[e].ctx->id;
++		} else {
++			exec[e].execbuf.rsvd1 = ctx->id;
+ 		}
+ 
+ 		exec[e].exec[0].handle = gem_create(fd, 4096);
+@@ -151,9 +157,9 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
+ 			int i;
+ 
+ 			if (flags & CONTEXTS) {
+-				gem_context_destroy(fd, exec[e].execbuf.rsvd1);
+-				exec[e].execbuf.rsvd1 =
+-					gem_context_clone_with_engines(fd, 0);
++				intel_ctx_destroy(fd, exec[e].ctx);
++				exec[e].ctx = intel_ctx_create(fd, &ctx->cfg);
++				exec[e].execbuf.rsvd1 = exec[e].ctx->id;
+ 			}
+ 
+ 			exec[e].reloc.presumed_offset = exec[e].exec[1].offset;
+@@ -193,6 +199,7 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
+ 			execbuf.flags = (engines[e] |
+ 					 I915_EXEC_NO_RELOC |
+ 					 I915_EXEC_HANDLE_LUT);
++			execbuf.rsvd1 = ctx->id;
+ 			gem_execbuf(fd, &execbuf);
+ 		}
+ 		clock_gettime(CLOCK_MONOTONIC, &now);
+@@ -214,7 +221,7 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
+ 
+ 	for (unsigned e = 0; e < nengine; e++) {
+ 		if (flags & CONTEXTS)
+-			gem_context_destroy(fd, exec[e].execbuf.rsvd1);
++			intel_ctx_destroy(fd, exec[e].ctx);
+ 
+ 		for (unsigned n = 0; n < ring_size; n++)
+ 			gem_close(fd, exec[e].obj[n].handle);
+@@ -223,6 +230,7 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
+ 		munmap(exec[e].cmd, 4096);
+ 		gem_close(fd, exec[e].exec[1].handle);
  	}
-@@ -85,6 +90,7 @@ static void all(int fd, unsigned flags, int timeout, int ncpus)
- 	execbuf.buffer_count = 1;
- 	execbuf.flags |= I915_EXEC_HANDLE_LUT;
- 	execbuf.flags |= I915_EXEC_NO_RELOC;
-+	execbuf.rsvd1 = ctx->id;
- 	if (__gem_execbuf(fd, &execbuf)) {
- 		execbuf.flags = 0;
- 		gem_execbuf(fd, &execbuf);
-@@ -132,6 +138,7 @@ static void all(int fd, unsigned flags, int timeout, int ncpus)
- 	}
- 	igt_waitchildren();
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
 +	intel_ctx_destroy(fd, ctx);
+ 	free(exec);
  }
  
- igt_main
 -- 
 2.31.1
 
