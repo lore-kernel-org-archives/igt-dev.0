@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
- [IPv6:2607:f8b0:4864:20::533])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F55F6EA17
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:39:49 +0000 (UTC)
-Received: by mail-pg1-x533.google.com with SMTP id l184so4593453pgd.8
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:39:49 -0700 (PDT)
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com
+ [IPv6:2607:f8b0:4864:20::42a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 92DC46EA1B
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:39:53 +0000 (UTC)
+Received: by mail-pf1-x42a.google.com with SMTP id d16so18943521pfn.12
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:39:53 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  9 Jun 2021 12:38:46 -0500
-Message-Id: <20210609173903.249112-27-jason@jlekstrand.net>
+Date: Wed,  9 Jun 2021 12:38:49 -0500
+Message-Id: <20210609173903.249112-30-jason@jlekstrand.net>
 In-Reply-To: <20210609173632.248880-1-jason@jlekstrand.net>
 References: <20210609173632.248880-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 76/93] tests/i915/gem_vm_create: Delete
- destroy racing tests
+Subject: [igt-dev] [PATCH i-g-t 79/93] tests/i915/gem_workarounds: Convert
+ to intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,136 +27,66 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The races these tests attempt to exercise won't exist once we rework the
-context creation to make the VM immutable state.
-
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/i915/gem_vm_create.c | 104 -------------------------------------
- 1 file changed, 104 deletions(-)
+ tests/i915/gem_workarounds.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/tests/i915/gem_vm_create.c b/tests/i915/gem_vm_create.c
-index 70b43dc6..4b77920b 100644
---- a/tests/i915/gem_vm_create.c
-+++ b/tests/i915/gem_vm_create.c
-@@ -353,104 +353,6 @@ static void isolation(int i915)
- 	gem_vm_destroy(i915, vm[0]);
- }
+diff --git a/tests/i915/gem_workarounds.c b/tests/i915/gem_workarounds.c
+index 9cdc2437..e240901c 100644
+--- a/tests/i915/gem_workarounds.c
++++ b/tests/i915/gem_workarounds.c
+@@ -85,7 +85,7 @@ static bool write_only(const uint32_t addr)
  
--static void async_destroy(int i915)
--{
--	struct drm_i915_gem_context_param arg = {
--		.ctx_id = gem_context_create(i915),
--		.value = gem_vm_create(i915),
--		.param = I915_CONTEXT_PARAM_VM,
--	};
--	igt_spin_t *spin[2];
--	int err;
--
--	spin[0] = igt_spin_new(i915,
--			       .ctx_id = arg.ctx_id,
--			       .flags = IGT_SPIN_POLL_RUN);
--	igt_spin_busywait_until_started(spin[0]);
--
--	err = __gem_context_set_param(i915, &arg);
--	if (err == -EBUSY) /* update while busy may be verboten, let it ride. */
--		err = 0;
--	igt_assert_eq(err, 0);
--
--	spin[1] = __igt_spin_new(i915, .ctx_id = arg.ctx_id);
--
--	igt_spin_end(spin[0]);
--	gem_sync(i915, spin[0]->handle);
--
--	gem_vm_destroy(i915, arg.value);
--	gem_context_destroy(i915, arg.ctx_id);
--
--	igt_spin_end(spin[1]);
--	gem_sync(i915, spin[1]->handle);
--
--	for (int i = 0; i < ARRAY_SIZE(spin); i++)
--		igt_spin_free(i915, spin[i]);
--}
--
--static void destroy_race(int i915)
--{
--	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
--	uint32_t *vm;
--
--	/* Check we can execute a polling spinner */
--	igt_spin_free(i915, igt_spin_new(i915, .flags = IGT_SPIN_POLL_RUN));
--
--	vm = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
--	igt_assert(vm != MAP_FAILED);
--
--	for (int child = 0; child < ncpus; child++)
--		vm[child] = gem_vm_create(i915);
--
--	igt_fork(child, ncpus) {
--		uint32_t ctx = gem_context_create(i915);
--		igt_spin_t *spin;
--
--		spin = __igt_spin_new(i915, ctx, .flags = IGT_SPIN_POLL_RUN);
--		while (!READ_ONCE(vm[ncpus])) {
--			struct drm_i915_gem_context_param arg = {
--				.ctx_id = ctx,
--				.param = I915_CONTEXT_PARAM_VM,
--				.value = READ_ONCE(vm[child]),
--			};
--			igt_spin_t *nxt;
--
--			if (__gem_context_set_param(i915, &arg))
--				continue;
--
--			nxt = __igt_spin_new(i915, ctx,
--					     .flags = IGT_SPIN_POLL_RUN);
--
--			igt_spin_end(spin);
--			gem_sync(i915, spin->handle);
--			igt_spin_free(i915, spin);
--
--			usleep(1000 + hars_petruska_f54_1_random_unsafe() % 2000);
--
--			spin = nxt;
--		}
--
--		igt_spin_free(i915, spin);
--		gem_context_destroy(i915, ctx);
--	}
--
--	igt_until_timeout(5) {
--		for (int child = 0; child < ncpus; child++) {
--			gem_vm_destroy(i915, vm[child]);
--			vm[child] = gem_vm_create(i915);
--		}
--		usleep(1000 + hars_petruska_f54_1_random_unsafe() % 2000);
--	}
--
--	vm[ncpus] = 1;
--	igt_waitchildren();
--
--	for (int child = 0; child < ncpus; child++)
--		gem_vm_destroy(i915, vm[child]);
--
--	munmap(vm, 4096);
--}
--
- igt_main
+ #define MI_STORE_REGISTER_MEM (0x24 << 23)
+ 
+-static int workaround_fail_count(int i915, uint32_t ctx)
++static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
  {
- 	int i915 = -1;
-@@ -480,12 +382,6 @@ igt_main
+ 	struct drm_i915_gem_exec_object2 obj[2];
+ 	struct drm_i915_gem_relocation_entry *reloc;
+@@ -131,12 +131,12 @@ static int workaround_fail_count(int i915, uint32_t ctx)
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(obj);
+ 	execbuf.buffer_count = 2;
+-	execbuf.rsvd1 = ctx;
++	execbuf.rsvd1 = ctx->id;
+ 	gem_execbuf(i915, &execbuf);
  
- 		igt_subtest("create-ext")
- 			create_ext(i915);
--
--		igt_subtest("async-destroy")
--			async_destroy(i915);
--
--		igt_subtest("destroy-race")
--			destroy_race(i915);
+ 	gem_set_domain(i915, obj[0].handle, I915_GEM_DOMAIN_CPU, 0);
+ 
+-	spin = igt_spin_new(i915, .ctx_id = ctx, .flags = IGT_SPIN_POLL_RUN);
++	spin = igt_spin_new(i915, .ctx = ctx, .flags = IGT_SPIN_POLL_RUN);
+ 	igt_spin_busywait_until_started(spin);
+ 
+ 	fw = igt_open_forcewake_handle(i915);
+@@ -184,14 +184,15 @@ static int workaround_fail_count(int i915, uint32_t ctx)
+ #define FD 0x2
+ static void check_workarounds(int fd, enum operation op, unsigned int flags)
+ {
+-	uint32_t ctx = 0;
++	const intel_ctx_t *ctx;
+ 
+ 	if (flags & FD)
+ 		fd = gem_reopen_driver(fd);
+ 
++	ctx = intel_ctx_0(fd);
+ 	if (flags & CONTEXT) {
+ 		gem_require_contexts(fd);
+-		ctx = gem_context_create(fd);
++		ctx = intel_ctx_create(fd, NULL);
  	}
  
- 	igt_fixture {
+ 	igt_assert_eq(workaround_fail_count(fd, ctx), 0);
+@@ -221,7 +222,7 @@ static void check_workarounds(int fd, enum operation op, unsigned int flags)
+ 	igt_assert_eq(workaround_fail_count(fd, ctx), 0);
+ 
+ 	if (flags & CONTEXT)
+-		gem_context_destroy(fd, ctx);
++		intel_ctx_destroy(fd, ctx);
+ 	if (flags & FD)
+ 		close(fd);
+ }
 -- 
 2.31.1
 
