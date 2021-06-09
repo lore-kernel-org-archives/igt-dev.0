@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com
- [IPv6:2607:f8b0:4864:20::b33])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8EB5F6EA94
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 18:08:48 +0000 (UTC)
-Received: by mail-yb1-xb33.google.com with SMTP id p184so36758233yba.11
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 11:08:48 -0700 (PDT)
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com
+ [IPv6:2607:f8b0:4864:20::b2b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B92946EAB2
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 18:13:04 +0000 (UTC)
+Received: by mail-yb1-xb2b.google.com with SMTP id c14so7750802ybk.3
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 11:13:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210608093935.21463-1-daniel.vetter@ffwll.ch>
-In-Reply-To: <20210608093935.21463-1-daniel.vetter@ffwll.ch>
+References: <20210608094020.21598-1-daniel.vetter@ffwll.ch>
+ <20210608094020.21598-4-daniel.vetter@ffwll.ch>
+In-Reply-To: <20210608094020.21598-4-daniel.vetter@ffwll.ch>
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed, 9 Jun 2021 13:08:36 -0500
-Message-ID: <CAOFGe94HCGmoTHQS3Mz2LThTAMReaZ9b39HpCMx5f4GMtfJ+XA@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 7/7] tests/gem_exec_schedule: Use
- store_dword_plug again
+Date: Wed, 9 Jun 2021 13:12:51 -0500
+Message-ID: <CAOFGe96RBSV6c4CnVZ62hFzANEx9T9LwHxajm_cq7RAv17Yg0w@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 4/7] Revert "i915/gem_exec_reloc:
+ Exercise concurrent relocations"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,104 +21,272 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Daniel Vetter <daniel.vetter@ffwll.ch>
 Cc: IGT development <igt-dev@lists.freedesktop.org>, Dave Airlie <airlied@redhat.com>, Daniel Vetter <daniel.vetter@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UmV2aWV3ZWQtYnk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3RyYW5kLm5ldD4KCk9uIFR1
-ZSwgSnVuIDgsIDIwMjEgYXQgNDozOSBBTSBEYW5pZWwgVmV0dGVyIDxkYW5pZWwudmV0dGVyQGZm
-d2xsLmNoPiB3cm90ZToKPgo+IEluCj4KPiBjb21taXQgMjg4NGY5MWRkNmQ3NjgyZWE3MzhlZjZm
-MDk0M2NjNTkxNjQzZGRhMgo+IEF1dGhvcjogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxz
-b24uY28udWs+Cj4gRGF0ZTogICBGcmkgSnVsIDIwIDEyOjI5OjMwIDIwMTggKzAxMDAKPgo+ICAg
-ICBpZ3QvZ2VtX2V4ZWNfc2NoZWR1bGU6IFRyaW0gZGVlcCBydW50aW1lCj4KPiB0aGlzIHdhcyBv
-cGVuLWNvZGVkLCBJIGd1ZXNzIHRvIGF2b2lkIGhhdmluZyB0byBhbGxvY2F0ZSBhIHRvbiBvZgo+
-IGJhdGNoYnVmZmVycy4gVW5mb3J0dW5hdGVseSB0aGlzIHJlbGllcyBvbiBiZWluZyBhYmxlIHRv
-IHJld3JpdGUKPiBiYXRjaGJ1ZmZlciByZWxvY2F0aW9ucyB3aGlsZSB0aGUgYmF0Y2ggaXMgaW4t
-ZmxpZ2h0IChvdGhlcndpc2UKPiBldmVyeXRoaW5nIHN0YWxscyBhbmQgb3VyIHNldHVwIGlzIGZv
-ciBub3RoaW5nKSwgYW5kIHdlJ3JlIHJlbW92aW5nCj4gZ3B1IHJlbG9jYXRpb25zIGZyb20gdXBz
-dHJlYW0uCj4KPiBUaGlzIHByb2JsZW0gd2FzIHJlYWxpemVkIGZvciB0aGUgdGVzdGNhc2UgaW4g
-Z2VuZXJhbCBpbgo+Cj4gY29tbWl0IGYxZTYyZTMzMGE2ZTJkZTdiM2NiZjdjZjAyZDcxYWUwMGNj
-NmFkY2MKPiBBdXRob3I6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+
-IERhdGU6ICAgVHVlIE1heSAyNiAxNToyMjozOCAyMDIwICswMTAwCj4KPiAgICAgaTkxNS9nZW1f
-ZXhlY19zY2hlZHVsZTogUmVkdWNlIHJlbG9jYXRpb24gcmlzayBmb3Igc3RvcmUtZHdvcmQKPgo+
-IGJ1dCB0aGUgZml4IGluIHRoZXJlIGlzIG9ubHkgc3RvY2hhc3RpYywgdGhlcmUncyBzdGlsbCBh
-IGNoYW5jZSBvZgo+IGZhaWx1cmUgYW5kIGhlbmNlIHVuc2lnaHRseSBub2lzZSBpbiBDSS4gVGhl
-IHByb3BlciBmaXggaXMgdG8gdXNlCj4gc29mdHBpbiBmb3IgdGhpcyB0ZXN0Y2FzZSB1bmNvbmRp
-dGlvbmFsbHkgKG5vdCBqdXN0IHdoZW4gcmVsb2NhdGlvbnMKPiBhcmVuJ3QgYXZhaWxhYmxlKSwg
-c28gdGhhdCB3ZSBjbGVhcmx5IGRpc2VudGFuZ2xlIHRoZSBjb25jZXJucyBoZXJlCj4gYW5kIHJl
-YWxseSBvbmx5IHRlc3QgdGhlIHNjaGVkdWxlci4gQW5kIG5vdCBzb21lIGxlZ2FjeSBmZWF0dXJl
-cyB0aGF0Cj4gYXJlIG9uIHRoZSB3YXkgb3V0IHRvIHRoZWlyIGRlc2VydmVkIHJldGlyZW1lbnQg
-bGlrZSByZWxvY2F0aW9ucy4KPgo+IFpieXNjZWsgYW5kIEFzaG90dXNoIGNjJ2VkIHNvIHRoZXkn
-cmUgYXdhcmUgdGhhdCB0aGlzIHRlc3RjYXNlIG11c3QgYmUKPiBzd2l0Y2hlZCBvdmVyIHRvIHNv
-ZnRwaW5nIHVuY29uZHRpb25hbGx5LCBmb3IgY29ycmVjdG5lc3MgcmVhc29ucy4KPgo+IEJ1dCB0
-aGF0J3MgYSBwaWxlIG1vcmUgd29yaywgc28gYXMgYW4gaW50ZXJpbSBzb2x1dGlvbiBnbyBiYWNr
-IHRvCj4gX19zdG9yZV9kd29yZCBoZWxwZXIuCj4KPiBDYzogSmFzb24gRWtzdHJhbmQgPGphc29u
-QGpsZWtzdHJhbmQubmV0Pgo+IENjOiBEaXhpdCBBc2h1dG9zaCA8YXNodXRvc2guZGl4aXRAaW50
-ZWwuY29tPgo+IENjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tp
-QGludGVsLmNvbT4KPiBDYzogTWFhcnRlbiBMYW5raG9yc3QgPG1hYXJ0ZW4ubGFua2hvcnN0QGxp
-bnV4LmludGVsLmNvbT4KPiBDYzogRGF2ZSBBaXJsaWUgPGFpcmxpZWRAcmVkaGF0LmNvbT4KPiBT
-aWduZWQtb2ZmLWJ5OiBEYW5pZWwgVmV0dGVyIDxkYW5pZWwudmV0dGVyQGludGVsLmNvbT4KPiAt
-LS0KPiAgdGVzdHMvaTkxNS9nZW1fZXhlY19zY2hlZHVsZS5jIHwgNTIgKysrLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLQo+ICAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCA0
-OCBkZWxldGlvbnMoLSkKPgo+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9leGVjX3NjaGVk
-dWxlLmMgYi90ZXN0cy9pOTE1L2dlbV9leGVjX3NjaGVkdWxlLmMKPiBpbmRleCA5NTg1MDU5ZDhk
-ZWQuLmI1ZGUxYWI0ZWVhZSAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2dlbV9leGVjX3NjaGVk
-dWxlLmMKPiArKysgYi90ZXN0cy9pOTE1L2dlbV9leGVjX3NjaGVkdWxlLmMKPiBAQCAtMTg0Niw1
-NSArMTg0NiwxMSBAQCBzdGF0aWMgdm9pZCBkZWVwKGludCBmZCwgdW5zaWduZWQgcmluZykKPgo+
-ICAgICAgICAgLyogQ3JlYXRlIGEgZGVlcCBkZXBlbmRlbmN5IGNoYWluLCB3aXRoIGEgZmV3IGJy
-YW5jaGVzICovCj4gICAgICAgICBmb3IgKG4gPSAwOyBuIDwgbnJlcSAmJiBpZ3Rfc2Vjb25kc19l
-bGFwc2VkKCZ0dikgPCAyOyBuKyspIHsKPiAtICAgICAgICAgICAgICAgY29uc3QgdW5zaWduZWQg
-aW50IGdlbiA9IGludGVsX2dlbihpbnRlbF9nZXRfZHJtX2RldmlkKGZkKSk7Cj4gLSAgICAgICAg
-ICAgICAgIHN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY19vYmplY3QyIG9ialszXTsKPiAtICAgICAg
-ICAgICAgICAgc3RydWN0IGRybV9pOTE1X2dlbV9yZWxvY2F0aW9uX2VudHJ5IHJlbG9jOwo+IC0g
-ICAgICAgICAgICAgICBzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNidWZmZXIyIGViID0gewo+IC0g
-ICAgICAgICAgICAgICAgICAgICAgIC5idWZmZXJzX3B0ciA9IHRvX3VzZXJfcG9pbnRlcihvYmop
-LAo+IC0gICAgICAgICAgICAgICAgICAgICAgIC5idWZmZXJfY291bnQgPSAzLAo+IC0gICAgICAg
-ICAgICAgICAgICAgICAgIC5mbGFncyA9IHJpbmcgfCAoZ2VuIDwgNiA/IEk5MTVfRVhFQ19TRUNV
-UkUgOiAwKSwKPiAtICAgICAgICAgICAgICAgICAgICAgICAucnN2ZDEgPSBjdHhbbiAlIE1BWF9D
-T05URVhUU10sCj4gLSAgICAgICAgICAgICAgIH07Cj4gLSAgICAgICAgICAgICAgIHVpbnQzMl90
-IGJhdGNoWzE2XTsKPiAtICAgICAgICAgICAgICAgaW50IGk7Cj4gLQo+IC0gICAgICAgICAgICAg
-ICBtZW1zZXQob2JqLCAwLCBzaXplb2Yob2JqKSk7Cj4gLSAgICAgICAgICAgICAgIG9ialswXS5o
-YW5kbGUgPSBwbHVnOwo+IC0KPiAtICAgICAgICAgICAgICAgbWVtc2V0KCZyZWxvYywgMCwgc2l6
-ZW9mKHJlbG9jKSk7Cj4gLSAgICAgICAgICAgICAgIHJlbG9jLnByZXN1bWVkX29mZnNldCA9IDA7
-Cj4gLSAgICAgICAgICAgICAgIHJlbG9jLm9mZnNldCA9IHNpemVvZih1aW50MzJfdCk7Cj4gLSAg
-ICAgICAgICAgICAgIHJlbG9jLmRlbHRhID0gc2l6ZW9mKHVpbnQzMl90KSAqIG47Cj4gLSAgICAg
-ICAgICAgICAgIHJlbG9jLnJlYWRfZG9tYWlucyA9IEk5MTVfR0VNX0RPTUFJTl9SRU5ERVI7Cj4g
-LSAgICAgICAgICAgICAgIHJlbG9jLndyaXRlX2RvbWFpbiA9IEk5MTVfR0VNX0RPTUFJTl9SRU5E
-RVI7Cj4gLSAgICAgICAgICAgICAgIG9ialsyXS5oYW5kbGUgPSBnZW1fY3JlYXRlKGZkLCA0MDk2
-KTsKPiAtICAgICAgICAgICAgICAgb2JqWzJdLnJlbG9jc19wdHIgPSB0b191c2VyX3BvaW50ZXIo
-JnJlbG9jKTsKPiAtICAgICAgICAgICAgICAgb2JqWzJdLnJlbG9jYXRpb25fY291bnQgPSAxOwo+
-IC0KPiAtICAgICAgICAgICAgICAgaSA9IDA7Cj4gLSAgICAgICAgICAgICAgIGJhdGNoW2ldID0g
-TUlfU1RPUkVfRFdPUkRfSU1NIHwgKGdlbiA8IDYgPyAxIDw8IDIyIDogMCk7Cj4gLSAgICAgICAg
-ICAgICAgIGlmIChnZW4gPj0gOCkgewo+IC0gICAgICAgICAgICAgICAgICAgICAgIGJhdGNoWysr
-aV0gPSByZWxvYy5kZWx0YTsKPiAtICAgICAgICAgICAgICAgICAgICAgICBiYXRjaFsrK2ldID0g
-MDsKPiAtICAgICAgICAgICAgICAgfSBlbHNlIGlmIChnZW4gPj0gNCkgewo+IC0gICAgICAgICAg
-ICAgICAgICAgICAgIGJhdGNoWysraV0gPSAwOwo+IC0gICAgICAgICAgICAgICAgICAgICAgIGJh
-dGNoWysraV0gPSByZWxvYy5kZWx0YTsKPiAtICAgICAgICAgICAgICAgICAgICAgICByZWxvYy5v
-ZmZzZXQgKz0gc2l6ZW9mKHVpbnQzMl90KTsKPiAtICAgICAgICAgICAgICAgfSBlbHNlIHsKPiAt
-ICAgICAgICAgICAgICAgICAgICAgICBiYXRjaFtpXS0tOwo+IC0gICAgICAgICAgICAgICAgICAg
-ICAgIGJhdGNoWysraV0gPSByZWxvYy5kZWx0YTsKPiAtICAgICAgICAgICAgICAgfQo+IC0gICAg
-ICAgICAgICAgICBiYXRjaFsrK2ldID0gZWIucnN2ZDE7Cj4gLSAgICAgICAgICAgICAgIGJhdGNo
-WysraV0gPSBNSV9CQVRDSF9CVUZGRVJfRU5EOwo+IC0gICAgICAgICAgICAgICBnZW1fd3JpdGUo
-ZmQsIG9ialsyXS5oYW5kbGUsIDAsIGJhdGNoLCBzaXplb2YoYmF0Y2gpKTsKPiArICAgICAgICAg
-ICAgICAgdWludDMyX3QgY29udGV4dCA9IGN0eFtuICUgTUFYX0NPTlRFWFRTXTsKPiArICAgICAg
-ICAgICAgICAgZ2VtX2NvbnRleHRfc2V0X3ByaW9yaXR5KGZkLCBjb250ZXh0LCBNQVhfUFJJTyAt
-IG5yZXEgKyBuKTsKPgo+IC0gICAgICAgICAgICAgICBnZW1fY29udGV4dF9zZXRfcHJpb3JpdHko
-ZmQsIGViLnJzdmQxLCBNQVhfUFJJTyAtIG5yZXEgKyBuKTsKPiAtICAgICAgICAgICAgICAgZm9y
-IChpbnQgbSA9IDA7IG0gPCBYUzsgbSsrKSB7Cj4gLSAgICAgICAgICAgICAgICAgICAgICAgb2Jq
-WzFdLmhhbmRsZSA9IGRlcFttXTsKPiAtICAgICAgICAgICAgICAgICAgICAgICByZWxvYy50YXJn
-ZXRfaGFuZGxlID0gb2JqWzFdLmhhbmRsZTsKPiAtICAgICAgICAgICAgICAgICAgICAgICBnZW1f
-ZXhlY2J1ZihmZCwgJmViKTsKPiAtICAgICAgICAgICAgICAgfQo+IC0gICAgICAgICAgICAgICBn
-ZW1fY2xvc2UoZmQsIG9ialsyXS5oYW5kbGUpOwo+ICsgICAgICAgICAgICAgICBmb3IgKGludCBt
-ID0gMDsgbSA8IFhTOyBtKyspCj4gKyAgICAgICAgICAgICAgICAgICAgICAgc3RvcmVfZHdvcmRf
-cGx1ZyhmZCwgY29udGV4dCwgcmluZywgZGVwW21dLCA0Km4sIGNvbnRleHQsIHBsdWcsIEk5MTVf
-R0VNX0RPTUFJTl9JTlNUUlVDVElPTik7Cj4gICAgICAgICB9Cj4gICAgICAgICBpZ3RfaW5mbygi
-Rmlyc3QgZGVwdHJlZTogJWQgcmVxdWVzdHMgWyUuM2ZzXVxuIiwKPiAgICAgICAgICAgICAgICAg
-IG4gKiBYUywgMWUtOSppZ3RfbnNlY19lbGFwc2VkKCZ0dikpOwo+IC0tCj4gMi4yNC4xCj4KX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
-aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
-ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On Tue, Jun 8, 2021 at 4:40 AM Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
+>
+> This reverts commit c1f30ee09ac2e7eb3e8e90245239731a169a6050.
+>
+> This validates gpu relocations, which we're about to delete.
+>
+> Cc: Jason Ekstrand <jason@jlekstrand.net>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Dave Airlie <airlied@redhat.com>
+> Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+> ---
+>  tests/i915/gem_exec_reloc.c | 215 ------------------------------------
+>  1 file changed, 215 deletions(-)
+>
+> diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
+> index 3b200f557b2c..c3f42aff9c9a 100644
+> --- a/tests/i915/gem_exec_reloc.c
+> +++ b/tests/i915/gem_exec_reloc.c
+> @@ -796,216 +796,6 @@ static void basic_softpin(int fd)
+>         gem_close(fd, obj[1].handle);
+>  }
+>
+> -#define CONCURRENT 1024
+> -
+> -static uint64_t concurrent_relocs(int i915, int idx, int count)
+> -{
+> -       struct drm_i915_gem_relocation_entry *reloc;
+> -       const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
+> -       unsigned long sz;
+> -       int offset;
+> -
+> -       sz = count * sizeof(*reloc);
+> -       sz = ALIGN(sz, 4096);
+> -
+> -       reloc = mmap(0, sz, PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+> -       igt_assert(reloc != MAP_FAILED);
+> -
+> -       offset = 1;
+> -       if (gen >= 4 && gen < 8)
+> -               offset += 1;
+> -
+> -       for (int n = 0; n < count; n++) {
+> -               reloc[n].presumed_offset = ~0ull;
+> -               reloc[n].offset = (4 * n + offset) * sizeof(uint32_t);
+> -               reloc[n].delta = (count * idx + n) * sizeof(uint32_t);
+> -       }
+> -       mprotect(reloc, sz, PROT_READ);
+> -
+> -       return to_user_pointer(reloc);
+> -}
+> -
+> -static int flags_to_index(const struct intel_execution_engine2 *e)
+> -{
+> -       return (e->flags & 63) | ((e->flags >> 13) & 3) << 4;
+> -}
+> -
+> -static void xchg_u32(void *array, unsigned i, unsigned j)
+> -{
+> -       uint32_t *u32 = array;
+> -       uint32_t tmp = u32[i];
+> -       u32[i] = u32[j];
+> -       u32[j] = tmp;
+> -}
+> -
+> -static void concurrent_child(int i915,
+> -                            const struct intel_execution_engine2 *e,
+> -                            uint32_t *common, int num_common,
+> -                            int in, int out)
+> -{
+> -       const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
+> -       int idx = flags_to_index(e);
+> -       uint64_t relocs = concurrent_relocs(i915, idx, CONCURRENT);
+> -       struct drm_i915_gem_exec_object2 obj[num_common + 2];
+> -       struct drm_i915_gem_execbuffer2 execbuf = {
+> -               .buffers_ptr = to_user_pointer(obj),
+> -               .buffer_count = ARRAY_SIZE(obj),
+> -               .flags = e->flags | I915_EXEC_HANDLE_LUT | (gen < 6 ? I915_EXEC_SECURE : 0),
+> -       };
+> -       uint32_t *batch = &obj[num_common + 1].handle;
+> -       unsigned long count = 0;
+> -       uint32_t *x;
+> -       int err = 0;
+> -
+> -       memset(obj, 0, sizeof(obj));
+> -       obj[0].handle = gem_create(i915, 64 * CONCURRENT * 4);
+> -
+> -       igt_permute_array(common, num_common, xchg_u32);
+> -       for (int n = 1; n <= num_common; n++) {
+> -               obj[n].handle = common[n - 1];
+> -               obj[n].relocation_count = CONCURRENT;
+> -               obj[n].relocs_ptr = relocs;
+> -       }
+> -
+> -       obj[num_common + 1].relocation_count = CONCURRENT;
+> -       obj[num_common + 1].relocs_ptr = relocs;
+> -
+> -       x = gem_mmap__device_coherent(i915, obj[0].handle,
+> -                                     0, 64 * CONCURRENT * 4, PROT_READ);
+> -       x += idx * CONCURRENT;
+> -
+> -       do {
+> -               read(in, batch, sizeof(*batch));
+> -               if (!*batch)
+> -                       break;
+> -
+> -               gem_execbuf(i915, &execbuf);
+> -               gem_sync(i915, *batch); /* write hazards lies */
+> -
+> -               for (int n = 0; n < CONCURRENT; n++) {
+> -                       if (x[n] != *batch) {
+> -                               igt_warn("%s: Invalid store [bad reloc] found:%08x at index %d, expected %08x\n",
+> -                                        e->name, x[n], n, *batch);
+> -                               err = -EINVAL;
+> -                               break;
+> -                       }
+> -               }
+> -
+> -               write(out, &err, sizeof(err));
+> -               count++;
+> -       } while (err == 0);
+> -
+> -       gem_close(i915, obj[0].handle);
+> -       igt_info("%s: completed %ld cycles\n", e->name, count);
+> -}
+> -
+> -static uint32_t create_concurrent_batch(int i915, unsigned int count)
+> -{
+> -       const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
+> -       size_t sz = ALIGN(4 * (1 + 4 * count), 4096);
+> -       uint32_t handle = gem_create(i915, sz);
+> -       uint32_t *map, *cs;
+> -       uint32_t cmd;
+> -
+> -       cmd = MI_STORE_DWORD_IMM;
+> -       if (gen < 6)
+> -               cmd |= 1 << 22;
+> -       if (gen < 4)
+> -               cmd--;
+> -
+> -       cs = map = gem_mmap__device_coherent(i915, handle, 0, sz, PROT_WRITE);
+> -       for (int n = 0; n < count; n++) {
+> -               *cs++ = cmd;
+> -               *cs++ = 0;
+> -               if (gen >= 4) {
+> -                       *cs++ = 0;
+> -                       *cs++ = handle;
+> -               } else {
+> -                       *cs++ = handle;
+> -                       *cs++ = 0;
+> -               }
+> -       }
+> -       *cs++ = MI_BATCH_BUFFER_END;
+> -       munmap(map, sz);
+> -
+> -       return handle;
+> -}
+> -
+> -static void concurrent(int i915, int num_common)
+> -{
+> -       const struct intel_execution_engine2 *e;
+> -       int in[2], out[2];
+> -       uint32_t common[16];
+> -       int result = -1;
+> -       uint32_t batch;
+> -       int nchild;
+> -
+> -       /*
+> -        * Exercise a few clients all trying to submit the same batch
+> -        * buffer writing to different locations. This exercises that the
+> -        * relocation handling within the gem_execbuf() ioctl is atomic
+> -        * with respect to the batch -- that is this call to execbuf only
+> -        * uses the relocations as supplied with the ioctl and does not
+> -        * use any of the conflicting relocations from the concurrent
+> -        * submissions.
+
+I'm less sure about this one.  Is it really testing concurrent
+relocations or just relocation atomicity?  If the later, then that's
+coverage we may want to keep.  It's hard to tell, unfortunately. :-(
+
+--Jason
+
+> -        */
+> -
+> -       pipe(in);
+> -       pipe(out);
+> -
+> -       for (int n = 0; n < num_common; n++)
+> -               common[n] = gem_create(i915, 4 * 4 * CONCURRENT);
+> -
+> -       nchild = 0;
+> -       __for_each_physical_engine(i915, e) {
+> -               if (!gem_class_can_store_dword(i915, e->class))
+> -                       continue;
+> -
+> -               igt_fork(child, 1)
+> -                       concurrent_child(i915, e,
+> -                                        common, num_common,
+> -                                        in[0], out[1]);
+> -
+> -               if (++nchild == 64)
+> -                       break;
+> -       }
+> -       close(in[0]);
+> -       close(out[1]);
+> -       igt_require(nchild > 1);
+> -
+> -       igt_until_timeout(5) {
+> -               batch = create_concurrent_batch(i915, CONCURRENT);
+> -
+> -               for (int n = 0; n < nchild; n++)
+> -                       write(in[1], &batch, sizeof(batch));
+> -
+> -               for (int n = 0; n < nchild; n++) {
+> -                       result = -1;
+> -                       read(out[0], &result, sizeof(result));
+> -                       if (result < 0)
+> -                               break;
+> -               }
+> -
+> -               gem_close(i915, batch);
+> -               if (result < 0)
+> -                       break;
+> -       }
+> -
+> -       batch = 0;
+> -       for (int n = 0; n < nchild; n++)
+> -               write(in[1], &batch, sizeof(batch));
+> -
+> -       close(in[1]);
+> -       close(out[0]);
+> -
+> -       igt_waitchildren();
+> -
+> -       for (int n = 0; n < num_common; n++)
+> -               gem_close(i915, common[n]);
+> -
+> -       igt_assert_eq(result, 0);
+> -}
+> -
+>  static uint32_t
+>  pin_scanout(igt_display_t *dpy, igt_output_t *output, struct igt_fb *fb)
+>  {
+> @@ -1270,11 +1060,6 @@ igt_main
+>                 }
+>         }
+>
+> -       igt_subtest("basic-concurrent0")
+> -               concurrent(fd, 0);
+> -       igt_subtest("basic-concurrent16")
+> -               concurrent(fd, 16);
+> -
+>         igt_subtest("invalid-domains")
+>                 invalid_domains(fd);
+>
+> --
+> 2.24.1
+>
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
