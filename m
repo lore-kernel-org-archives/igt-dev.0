@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
- [IPv6:2607:f8b0:4864:20::529])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F5776EA1B
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:36:47 +0000 (UTC)
-Received: by mail-pg1-x529.google.com with SMTP id t9so20116431pgn.4
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:36:47 -0700 (PDT)
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com
+ [IPv6:2607:f8b0:4864:20::429])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0642C6EA4D
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:36:51 +0000 (UTC)
+Received: by mail-pf1-x429.google.com with SMTP id g6so18975254pfq.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:36:51 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  9 Jun 2021 12:35:46 -0500
-Message-Id: <20210609173632.248880-4-jason@jlekstrand.net>
+Date: Wed,  9 Jun 2021 12:35:49 -0500
+Message-Id: <20210609173632.248880-7-jason@jlekstrand.net>
 In-Reply-To: <20210609173632.248880-1-jason@jlekstrand.net>
 References: <20210609173632.248880-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 03/93] tests/i915/gem_exec_endless: Stop
- setting the ring size
+Subject: [igt-dev] [PATCH i-g-t 06/93] docs: Add gem_engine_topology.h to
+ the docs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,56 +20,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-I915_CONTEXT_PARAM_RINGSIZE is being removed from upstream i915 because
-it's never been used by any userspace other than IGT.
-
-Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
----
- tests/i915/gem_exec_endless.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
-
-diff --git a/tests/i915/gem_exec_endless.c b/tests/i915/gem_exec_endless.c
-index e7d4b56c..c3c80654 100644
---- a/tests/i915/gem_exec_endless.c
-+++ b/tests/i915/gem_exec_endless.c
-@@ -68,16 +68,6 @@ static unsigned int offset_in_page(void *addr)
- static uint32_t __supervisor_create_context(int i915,
- 					    const struct intel_execution_engine2 *e)
- {
--	struct drm_i915_gem_context_create_ext_setparam p_ring = {
--		{
--			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
--			.next_extension = 0
--		},
--		{
--			.param = I915_CONTEXT_PARAM_RINGSIZE,
--			.value = 4096,
--		},
--	};
- 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 2) = {
- 		.engines = {
- 			{ e->class, e->instance },
-@@ -87,7 +77,7 @@ static uint32_t __supervisor_create_context(int i915,
- 	struct drm_i915_gem_context_create_ext_setparam p_engines = {
- 		{
- 			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
--			.next_extension = to_user_pointer(&p_ring)
-+			.next_extension = 0,
- 		},
- 		{
- 			.param = I915_CONTEXT_PARAM_ENGINES,
--- 
-2.31.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+QWxzbywgZG9jdW1lbnQgYSBjb3VwbGUgdGhpbmdzIHdoaWxlIHdlJ3JlIGhlcmUuICBJdCdzIG5v
+d2hlcmUgY2xvc2UgdG8KZXZlcnl0aGluZyBidXQgaXQncyBtb3JlIHRoYW4gbm90aGluZy4KClNp
+Z25lZC1vZmYtYnk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3RyYW5kLm5ldD4KUmV2aWV3
+ZWQtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwu
+Y29tPgotLS0KIC4uLi9pZ3QtZ3B1LXRvb2xzL2lndC1ncHUtdG9vbHMtZG9jcy54bWwgICAgICAg
+ICB8ICAxICsKIGxpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYyAgICAgICAgICAgICAgICAg
+ICB8IDE2ICsrKysrKysrKysrKysrKysKIGxpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuaCAg
+ICAgICAgICAgICAgICAgICB8IDE1ICsrKysrKysrKysrKysrKwogMyBmaWxlcyBjaGFuZ2VkLCAz
+MiBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvZG9jcy9yZWZlcmVuY2UvaWd0LWdwdS10b29s
+cy9pZ3QtZ3B1LXRvb2xzLWRvY3MueG1sIGIvZG9jcy9yZWZlcmVuY2UvaWd0LWdwdS10b29scy9p
+Z3QtZ3B1LXRvb2xzLWRvY3MueG1sCmluZGV4IDE5MmQxZGY3Li4yZTg1ZjM2MSAxMDA2NDQKLS0t
+IGEvZG9jcy9yZWZlcmVuY2UvaWd0LWdwdS10b29scy9pZ3QtZ3B1LXRvb2xzLWRvY3MueG1sCisr
+KyBiL2RvY3MvcmVmZXJlbmNlL2lndC1ncHUtdG9vbHMvaWd0LWdwdS10b29scy1kb2NzLnhtbApA
+QCAtNTUsNiArNTUsNyBAQAogICA8Y2hhcHRlcj4KICAgICA8dGl0bGU+aWd0L2k5MTUgQVBJIFJl
+ZmVyZW5jZTwvdGl0bGU+CiAgICAgPHhpOmluY2x1ZGUgaHJlZj0ieG1sL2dlbV9jb250ZXh0Lnht
+bCIvPgorICAgIDx4aTppbmNsdWRlIGhyZWY9InhtbC9nZW1fZW5naW5lX3RvcG9sb2d5LnhtbCIv
+PgogICAgIDx4aTppbmNsdWRlIGhyZWY9InhtbC9nZW1fc2NoZWR1bGVyLnhtbCIvPgogICAgIDx4
+aTppbmNsdWRlIGhyZWY9InhtbC9nZW1fc3VibWlzc2lvbi54bWwiLz4KICAgPC9jaGFwdGVyPgpk
+aWZmIC0tZ2l0IGEvbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5jIGIvbGliL2k5MTUvZ2Vt
+X2VuZ2luZV90b3BvbG9neS5jCmluZGV4IGMxMmNkOTIwLi4yOTFmYjAyOCAxMDA2NDQKLS0tIGEv
+bGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5jCisrKyBiL2xpYi9pOTE1L2dlbV9lbmdpbmVf
+dG9wb2xvZ3kuYwpAQCAtMzIsNiArMzIsMTQgQEAKICNpbmNsdWRlICJpb2N0bF93cmFwcGVycy5o
+IgogCiAjaW5jbHVkZSAiaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmgiCisvKioKKyAqIFNFQ1RJ
+T046Z2VtX2VuZ2luZV90b3BvbG9neQorICogQHNob3J0X2Rlc2NyaXB0aW9uOiBIZWxwZXJzIGZv
+ciBkZWFsaW5nIGVuZ2luZSB0b3BvbG9neQorICogQHRpdGxlOiBHRU0gRW5naW5lIFRvcG9sb2d5
+CisgKgorICogVGhpcyBoZWxwZXIgbGlicmFyeSBjb250YWlucyBmdW5jdGlvbnMgdXNlZCBmb3Ig
+cXVlcnlpbmcgYW5kIGRlYWxpbmcKKyAqIHdpdGggZW5naW5lcyBpbiBHRU0gY29udGV4dHMuCisg
+Ki8KIAogLyoKICAqIExpbWl0IHdoYXQgd2Ugc3VwcG9ydCBmb3Igc2ltcGxpY2l0eSBkdWUgbGlt
+aXRhdGlvbiBpbiBob3cgbXVjaCB3ZQpAQCAtMjc2LDYgKzI4NCwxNCBAQCBpbnQgZ2VtX2NvbnRl
+eHRfbG9va3VwX2VuZ2luZShpbnQgZmQsIHVpbnQ2NF90IGVuZ2luZSwgdWludDMyX3QgY3R4X2lk
+LAogCXJldHVybiAwOwogfQogCisvKioKKyAqIGdlbV9oYXNfZW5naW5lX3RvcG9sb2d5OgorICog
+QGZkOiBvcGVuIGk5MTUgZHJtIGZpbGUgZGVzY3JpcHRvcgorICoKKyAqIFF1ZXJpZXMgd2hldGhl
+ciB0aGUgZW5naW5lIHRvcG9sb2d5IEFQSSBpcyBzdXBwb3J0ZWQgb3Igbm90LgorICoKKyAqIFJl
+dHVybnM6IEVuZ2luZSB0b3BvbG9neSBBUEkgYXZhaWxhYmlsaXR5LgorICovCiBib29sIGdlbV9o
+YXNfZW5naW5lX3RvcG9sb2d5KGludCBmZCkKIHsKIAlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2NvbnRl
+eHRfcGFyYW0gcGFyYW0gPSB7CmRpZmYgLS1naXQgYS9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9s
+b2d5LmggYi9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmgKaW5kZXggZjVlZGNiNWQuLmFj
+MzdiMTlhIDEwMDY0NAotLS0gYS9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmgKKysrIGIv
+bGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5oCkBAIC0yOSw2ICsyOSwxNSBAQAogCiAjZGVm
+aW5lIEdFTV9NQVhfRU5HSU5FUwkJSTkxNV9FWEVDX1JJTkdfTUFTSyArIDEKIAorLyoqCisgKiBp
+bnRlbF9lbmdpbmVfZGF0YToKKyAqIEBuZW5naW5lczogTnVtYmVyIG9mIGVuZ2luZXMKKyAqIEBu
+OiBDdXJyZW50IGVuZ2luZSBpbmRleAorICogQGN1cnJlbnRfZW5naW5lOiBDdXJyZW50IGVuZ2lu
+ZQorICogQGVuZ2luZXM6IExpc3Qgb2YgYWxsIGVuZ2luZXMKKyAqCisgKiBUaGlzIHN0cnVjdCBh
+Y3RzIGFzIGFuIGludGVyYXRvciBmb3Igd2Fsa2luZyBvdmVyIGEgc2V0IG9mIGVuZ2luZXMuCisg
+Ki8KIHN0cnVjdCBpbnRlbF9lbmdpbmVfZGF0YSB7CiAJdWludDMyX3QgbmVuZ2luZXM7CiAJdWlu
+dDMyX3QgbjsKQEAgLTU4LDYgKzY3LDEyIEBAIGJvb2wgZ2VtX2VuZ2luZV9pc19lcXVhbChjb25z
+dCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmUxLAogCiBzdHJ1Y3QgaW50ZWxfZXhl
+Y3V0aW9uX2VuZ2luZTIgZ2VtX2ViX2ZsYWdzX3RvX2VuZ2luZSh1bnNpZ25lZCBpbnQgZmxhZ3Mp
+OwogCisvKioKKyAqIF9fZm9yX2VhY2hfc3RhdGljX2VuZ2luZToKKyAqIEBlX186IHN0cnVjdCBp
+bnRlbF9leGVjdXRpb25fZW5naW5lMiBpdGVyYXRvcgorICoKKyAqIEl0ZXJhdGVzIG92ZXIgZWFj
+aCBvZiB0aGUgc3RhdGljYWxseSBkZWZpbmVkIChsZWdhY3kpIGVuZ2luZXMuCisgKi8KICNkZWZp
+bmUgX19mb3JfZWFjaF9zdGF0aWNfZW5naW5lKGVfXykgXAogCWZvciAoKGVfXykgPSBpbnRlbF9l
+eGVjdXRpb25fZW5naW5lczI7IChlX18pLT5uYW1lWzBdOyAoZV9fKSsrKQogCi0tIAoyLjMxLjEK
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYg
+bWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMu
+ZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
