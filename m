@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
- [IPv6:2607:f8b0:4864:20::434])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E4106EC9F
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:34:05 +0000 (UTC)
-Received: by mail-pf1-x434.google.com with SMTP id z26so17434245pfj.5
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:34:05 -0700 (PDT)
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
+ [IPv6:2607:f8b0:4864:20::102a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA6A96EC9C
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:34:03 +0000 (UTC)
+Received: by mail-pj1-x102a.google.com with SMTP id
+ x21-20020a17090aa395b029016e25313bfcso631007pjp.2
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:34:03 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Tue,  8 Jun 2021 23:32:57 -0500
-Message-Id: <20210609043259.102581-42-jason@jlekstrand.net>
+Date: Tue,  8 Jun 2021 23:32:56 -0500
+Message-Id: <20210609043259.102581-41-jason@jlekstrand.net>
 In-Reply-To: <20210609043035.102359-1-jason@jlekstrand.net>
 References: <20210609043035.102359-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 91/93] tests/i915/gem_ctx_param: Add a
- couple invalid PARAM_VM cases
+Subject: [igt-dev] [PATCH i-g-t 90/93] tests/i915/gem_ctx_param: Add tests
+ for recently removed params
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,37 +29,71 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 ---
- tests/i915/gem_ctx_param.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ tests/i915/gem_ctx_param.c | 44 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
 diff --git a/tests/i915/gem_ctx_param.c b/tests/i915/gem_ctx_param.c
-index 7fba37cb..c795f1b4 100644
+index 54bf0cc9..7fba37cb 100644
 --- a/tests/i915/gem_ctx_param.c
 +++ b/tests/i915/gem_ctx_param.c
-@@ -181,6 +181,23 @@ static void test_vm(int i915)
- 	gem_context_destroy(i915, arg.ctx_id);
- 	igt_require(err == -ENOENT);
+@@ -244,6 +244,35 @@ static void test_vm(int i915)
+ 	gem_close(i915, batch.handle);
+ }
  
-+	/* Test that we can't set the VM on ctx0 */
-+	arg.ctx_id = 0;
-+	arg.value = gem_vm_create(i915);
-+	err = __gem_context_set_param(i915, &arg);
-+	gem_vm_destroy(i915, arg.value);
-+	igt_assert_eq(err, -EINVAL);
++static void test_set_invalid_param(int fd, uint64_t param, uint64_t value)
++{
++	/* Create a fresh context */
++	struct drm_i915_gem_context_param arg = {
++		.ctx_id = gem_context_create(fd),
++		.param = param,
++		.value = value,
++	};
++	int err;
 +
-+	/* Test that we can't set the VM after we've done an execbuf */
-+	arg.ctx_id = gem_context_create(i915);
-+	spin = igt_spin_new(i915, .ctx_id = arg.ctx_id);
-+	igt_spin_free(i915, spin);
-+	arg.value = gem_vm_create(i915);
-+	err = __gem_context_set_param(i915, &arg);
-+	gem_context_destroy(i915, arg.ctx_id);
-+	gem_vm_destroy(i915, arg.value);
++	err = __gem_context_set_param(fd, &arg);
++	gem_context_destroy(fd, arg.ctx_id);
 +	igt_assert_eq(err, -EINVAL);
++}
 +
- 	parent = gem_context_create(i915);
- 	child = gem_context_create(i915);
++static void test_get_invalid_param(int fd, uint64_t param)
++{
++	/* Create a fresh context */
++	struct drm_i915_gem_context_param arg = {
++		.ctx_id = gem_context_create(fd),
++		.param = param,
++	};
++	int err;
++
++	err = __gem_context_get_param(fd, &arg);
++	gem_context_destroy(fd, arg.ctx_id);
++	igt_assert_eq(err, -EINVAL);
++}
++
+ igt_main
+ {
+ 	struct drm_i915_gem_context_param arg;
+@@ -406,6 +435,21 @@ igt_main
+ 		igt_assert_eq(__gem_context_set_param(fd, &arg), -EINVAL);
+ 	}
  
++	igt_subtest("invalid-set-ringsize")
++		test_set_invalid_param(fd, I915_CONTEXT_PARAM_RINGSIZE, 8192);
++
++	igt_subtest("invalid-get-ringsize")
++		test_get_invalid_param(fd, I915_CONTEXT_PARAM_RINGSIZE);
++
++	igt_subtest("invalid-set-no-zeromap")
++		test_set_invalid_param(fd, I915_CONTEXT_PARAM_NO_ZEROMAP, 1);
++
++	igt_subtest("invalid-get-no-zeromap")
++		test_get_invalid_param(fd, I915_CONTEXT_PARAM_NO_ZEROMAP);
++
++	igt_subtest("invalid-get-engines")
++		test_get_invalid_param(fd, I915_CONTEXT_PARAM_ENGINES);
++
+ 	igt_fixture
+ 		close(fd);
+ }
 -- 
 2.31.1
 
