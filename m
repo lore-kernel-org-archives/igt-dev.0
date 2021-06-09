@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A3DB89FD1
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 06:24:38 +0000 (UTC)
-Date: Wed, 9 Jun 2021 08:24:32 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210609062432.GH6228@zkempczy-mobl2>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B38346E0DF
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 06:27:09 +0000 (UTC)
+Date: Wed, 9 Jun 2021 09:28:58 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YMBfqle9oJwjHvBr@platvala-desk.ger.corp.intel.com>
 References: <20210609043035.102359-1-jason@jlekstrand.net>
- <20210609043035.102359-16-jason@jlekstrand.net>
+ <20210609043035.102359-10-jason@jlekstrand.net>
+ <87r1hbvc4l.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210609043035.102359-16-jason@jlekstrand.net>
-Subject: Re: [igt-dev] [PATCH i-g-t 15/93] lib/dummyload: Better document
- igt_spin_factory
+In-Reply-To: <87r1hbvc4l.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 09/93] lib: Add an intel_ctx wrapper
+ struct and helpers (v4)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,53 +20,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jason Ekstrand <jason@jlekstrand.net>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBKdW4gMDgsIDIwMjEgYXQgMTE6MzA6MDFQTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
-d3JvdGU6Cj4gU2lnbmVkLW9mZi1ieTogSmFzb24gRWtzdHJhbmQgPGphc29uQGpsZWtzdHJhbmQu
-bmV0Pgo+IC0tLQo+ICBsaWIvaWd0X2R1bW15bG9hZC5oIHwgMjIgKysrKysrKysrKysrKysrKy0t
-LS0tLQo+ICAxIGZpbGUgY2hhbmdlZCwgMTYgaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMoLSkK
-PiAKPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9kdW1teWxvYWQuaCBiL2xpYi9pZ3RfZHVtbXlsb2Fk
-LmgKPiBpbmRleCBhNzVmY2RlYi4uZjNkN2MxMjggMTAwNjQ0Cj4gLS0tIGEvbGliL2lndF9kdW1t
-eWxvYWQuaAo+ICsrKyBiL2xpYi9pZ3RfZHVtbXlsb2FkLmgKPiBAQCAtNTksMTMgKzU5LDIzIEBA
-IHR5cGVkZWYgc3RydWN0IGlndF9zcGluIHsKPiAgI2RlZmluZSBTUElOX0NMRkxVU0ggKDEgPDwg
-MCkKPiAgfSBpZ3Rfc3Bpbl90Owo+ICAKPiAtc3RydWN0IGlndF9zcGluX2ZhY3Rvcnkgewo+ICsv
-KioKPiArICogaWd0X3NwaW5fZmFjdG9yeV90Ogo+ICsgKiBAY3R4OiBHRU0gY29udGV4dCBoYW5k
-bGUKPiArICogQGRlcGVuZGVuY3k6IEdFTSBvYmplY3QgdG8gZGVwZW5kIG9uCj4gKyAqIEBlbmdp
-bmU6IEZsYWdzIGRlc2NyaWJpbmcgdGhlIGVuZ2luZSB0byBleGVjdXRlIG9uCj4gKyAqIEBmbGFn
-czogU2V0IG9mIElHVF9TUElOXyogZmxhZ3MKPiArICogQGZlbmNlOiBJbi1mZW5jZSB0byB3YWl0
-IG9uCj4gKyAqCj4gKyAqIEEgZmFjdG9yeSBzdHJ1Y3Qgd2hpY2ggY29udGFpbnMgY3JlYXRpb24g
-cGFyYW1ldGVycyBmb3IgYW4gaWd0X3NwaW5fdC4KPiArICovCj4gK3R5cGVkZWYgc3RydWN0IGln
-dF9zcGluX2ZhY3Rvcnkgewo+ICAJdWludDMyX3QgY3R4Owo+ICAJdWludDMyX3QgZGVwZW5kZW5j
-eTsKPiAgCXVuc2lnbmVkIGludCBlbmdpbmU7Cj4gIAl1bnNpZ25lZCBpbnQgZmxhZ3M7Cj4gIAlp
-bnQgZmVuY2U7Cj4gLX07Cj4gK30gaWd0X3NwaW5fZmFjdG9yeV90Owo+ICAKPiAgI2RlZmluZSBJ
-R1RfU1BJTl9GRU5DRV9JTiAgICAgICgxIDw8IDApCj4gICNkZWZpbmUgSUdUX1NQSU5fRkVOQ0Vf
-U1VCTUlUICAoMSA8PCAxKQo+IEBAIC03OCwxNCArODgsMTQgQEAgc3RydWN0IGlndF9zcGluX2Zh
-Y3Rvcnkgewo+ICAjZGVmaW5lIElHVF9TUElOX1NPRlRERVAgICAgICAgKDEgPDwgOCkKPiAgCj4g
-IGlndF9zcGluX3QgKgo+IC1fX2lndF9zcGluX2ZhY3RvcnkoaW50IGZkLCBjb25zdCBzdHJ1Y3Qg
-aWd0X3NwaW5fZmFjdG9yeSAqb3B0cyk7Cj4gK19faWd0X3NwaW5fZmFjdG9yeShpbnQgZmQsIGNv
-bnN0IGlndF9zcGluX2ZhY3RvcnlfdCAqb3B0cyk7Cj4gIGlndF9zcGluX3QgKgo+IC1pZ3Rfc3Bp
-bl9mYWN0b3J5KGludCBmZCwgY29uc3Qgc3RydWN0IGlndF9zcGluX2ZhY3RvcnkgKm9wdHMpOwo+
-ICtpZ3Rfc3Bpbl9mYWN0b3J5KGludCBmZCwgY29uc3QgaWd0X3NwaW5fZmFjdG9yeV90ICpvcHRz
-KTsKPiAgCj4gICNkZWZpbmUgX19pZ3Rfc3Bpbl9uZXcoZmQsIC4uLikgXAo+IC0JX19pZ3Rfc3Bp
-bl9mYWN0b3J5KGZkLCAmKChzdHJ1Y3QgaWd0X3NwaW5fZmFjdG9yeSl7X19WQV9BUkdTX199KSkK
-PiArCV9faWd0X3NwaW5fZmFjdG9yeShmZCwgJigoaWd0X3NwaW5fZmFjdG9yeV90KXtfX1ZBX0FS
-R1NfX30pKQo+ICAjZGVmaW5lIGlndF9zcGluX25ldyhmZCwgLi4uKSBcCj4gLQlpZ3Rfc3Bpbl9m
-YWN0b3J5KGZkLCAmKChzdHJ1Y3QgaWd0X3NwaW5fZmFjdG9yeSl7X19WQV9BUkdTX199KSkKPiAr
-CWlndF9zcGluX2ZhY3RvcnkoZmQsICYoKGlndF9zcGluX2ZhY3RvcnlfdCl7X19WQV9BUkdTX199
-KSkKPiAgCj4gIHZvaWQgaWd0X3NwaW5fc2V0X3RpbWVvdXQoaWd0X3NwaW5fdCAqc3BpbiwgaW50
-NjRfdCBucyk7Cj4gIHZvaWQgaWd0X3NwaW5fcmVzZXQoaWd0X3NwaW5fdCAqc3Bpbik7CgpPaywg
-anVzdCB0eXBlZGVmICsgZG9jLgoKUmV2aWV3ZWQtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8
-emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgoKLS0KWmJpZ25pZXcKCgo+IC0tIAo+IDIu
-MzEuMQo+IAo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-Cj4gaWd0LWRldiBtYWlsaW5nIGxpc3QKPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwo+
-IGh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1h
-aWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZy
-ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+On Tue, Jun 08, 2021 at 10:30:02PM -0700, Dixit, Ashutosh wrote:
+> On Tue, 08 Jun 2021 21:29:55 -0700, Jason Ekstrand wrote:
+> > diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
+> > new file mode 100644
+> > index 00000000..79bc1154
+> > --- /dev/null
+> > +++ b/lib/intel_ctx.h
+> > @@ -0,0 +1,75 @@
+> 
+> /snip/
+> 
+> > +/**
+> > + * intel_ctx_cfg_t:
+> > + * @flags: Context create flags
+> > + * @vm: VM to inherit or 0 for using a per-context VM
+> > + * @num_engines: Number of client-specified engines or 0 for legacy mode
+> > + * @engines: Client-specified engines
+> > + *
+> > + * Represents the full configuration of an intel_ctx.
+> > + */
+> > +typedef struct intel_ctx_cfg {
+> > +	uint32_t flags;
+> > +	uint32_t vm;
+> > +	unsigned int num_engines;
+> > +	struct i915_engine_class_instance engines[GEM_MAX_ENGINES];
+> > +} intel_ctx_cfg_t;
+> > +
+> > +intel_ctx_cfg_t intel_ctx_cfg_for_engine(unsigned int class, unsigned int inst);
+> > +intel_ctx_cfg_t intel_ctx_cfg_all_physical(int fd);
+> > +
+> > +/**
+> > + * intel_ctx_t:
+> > + * @id: the context id/handle
+> > + * @cfg: the config used to create this context
+> > + *
+> > + * Represents the full configuration of an intel_ctx.
+> > + */
+> > +typedef struct intel_ctx {
+> > +	uint32_t id;
+> > +	intel_ctx_cfg_t cfg;
+> > +} intel_ctx_t;
+> 
+> Just a comment about cosmetics. I am ok either way but I believe in the
+> linux kernel (and in IGT which follows the kernel coding style) such
+> typedefs are supposedly only to be used for "opaque" types and are
+> generally avoided. E.g.
+> 
+> https://yarchive.net/comp/linux/typedefs.html
+> 
+> There are not very many instances of such typedef's in IGT, certainly not
+> those which are this widely used.
+> 
+> I copying Petri about this to see what he prefers, whether we should keep
+> these typedefs or replace intel_ctx_cfg_t and intel_ctx_t with 'struct
+> intel_ctx_cfg' and 'struct intel_ctx'.
+
+I have no hard preferences for this. Mostly it's a question of what
+makes the most sense to the author, and whether gtk-doc eats it
+without choking.
+
+
+-- 
+Petri Latvala
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
