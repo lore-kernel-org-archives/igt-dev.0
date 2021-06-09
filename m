@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
- [IPv6:2607:f8b0:4864:20::434])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 44A8D6EC81
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:30:48 +0000 (UTC)
-Received: by mail-pf1-x434.google.com with SMTP id g6so17452737pfq.1
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:30:48 -0700 (PDT)
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
+ [IPv6:2607:f8b0:4864:20::102a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A31196EC81
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:30:50 +0000 (UTC)
+Received: by mail-pj1-x102a.google.com with SMTP id
+ h12-20020a17090aa88cb029016400fd8ad8so624642pjq.3
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:30:50 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Tue,  8 Jun 2021 23:29:50 -0500
-Message-Id: <20210609043035.102359-5-jason@jlekstrand.net>
+Date: Tue,  8 Jun 2021 23:29:52 -0500
+Message-Id: <20210609043035.102359-7-jason@jlekstrand.net>
 In-Reply-To: <20210609043035.102359-1-jason@jlekstrand.net>
 References: <20210609043035.102359-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 04/93] tests/i915/gem_ctx_param: Drop the
- zeromap subtests
+Subject: [igt-dev] [PATCH i-g-t 06/93] docs: Add gem_engine_topology.h to
+ the docs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,71 +28,95 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The idea behind this param is to support OpenCL drivers with relocations
-because OpenCL reserves 0x0 for NULL and, if we placed memory there, it
-would confuse CL kernels.  It was originally sent out as part of a patch
-series including libdrm [1] and Beignet [2] support.  However, the
-libdrm and Beignet patches never landed in their respective upstream
-projects so this API has never been used.  It's never been used in Mesa
-or any other driver, either.
-
-This means that these IGT tests are the only userspace for NO_ZEROMAP
-which has ever really existed.  Let's drop them and drop support from
-i915 as well.
-
-[1]: https://lists.freedesktop.org/archives/intel-gfx/2015-May/067030.html
-[2]: https://lists.freedesktop.org/archives/intel-gfx/2015-May/067031.html
+Also, document a couple things while we're here.  It's nowhere close to
+everything but it's more than nothing.
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 ---
- tests/i915/gem_ctx_param.c | 33 ---------------------------------
- 1 file changed, 33 deletions(-)
+ .../igt-gpu-tools/igt-gpu-tools-docs.xml         |  1 +
+ lib/i915/gem_engine_topology.c                   | 16 ++++++++++++++++
+ lib/i915/gem_engine_topology.h                   | 15 +++++++++++++++
+ 3 files changed, 32 insertions(+)
 
-diff --git a/tests/i915/gem_ctx_param.c b/tests/i915/gem_ctx_param.c
-index c024fe60..c1b46a16 100644
---- a/tests/i915/gem_ctx_param.c
-+++ b/tests/i915/gem_ctx_param.c
-@@ -336,39 +336,6 @@ igt_main
- 		gem_context_set_param(fd, &arg);
- 	}
+diff --git a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+index 192d1df7..2e85f361 100644
+--- a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
++++ b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+@@ -55,6 +55,7 @@
+   <chapter>
+     <title>igt/i915 API Reference</title>
+     <xi:include href="xml/gem_context.xml"/>
++    <xi:include href="xml/gem_engine_topology.xml"/>
+     <xi:include href="xml/gem_scheduler.xml"/>
+     <xi:include href="xml/gem_submission.xml"/>
+   </chapter>
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index c12cd920..291fb028 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -32,6 +32,14 @@
+ #include "ioctl_wrappers.h"
  
--	arg.param = I915_CONTEXT_PARAM_NO_ZEROMAP;
--
--	igt_describe("Validates context set param ioctl in non root mode with param "
--	       "set to no zeromap");
--	igt_subtest("non-root-set-no-zeromap") {
--		igt_fork(child, 1) {
--			igt_drop_root();
--
--			arg.ctx_id = ctx;
--			gem_context_get_param(fd, &arg);
--			arg.value--;
--			gem_context_set_param(fd, &arg);
--		}
--
--		igt_waitchildren();
--	}
--
--	igt_describe("Tests the context set param ioctl with no zeromap enabled in root mode");
--	igt_subtest("root-set-no-zeromap-enabled") {
--		arg.ctx_id = ctx;
--		gem_context_get_param(fd, &arg);
--		arg.value = 1;
--		gem_context_set_param(fd, &arg);
--	}
--
--	igt_describe("Tests the context set param ioctl with no zeromap disabled in root mode");
--	igt_subtest("root-set-no-zeromap-disabled") {
--		arg.ctx_id = ctx;
--		gem_context_get_param(fd, &arg);
--		arg.value = 0;
--		gem_context_set_param(fd, &arg);
--	}
--
- 	igt_describe("Tests that multiple contexts can share the same VMA");
- 	igt_subtest("vm")
- 		test_vm(fd);
+ #include "i915/gem_engine_topology.h"
++/**
++ * SECTION:gem_engine_topology
++ * @short_description: Helpers for dealing engine topology
++ * @title: GEM Engine Topology
++ *
++ * This helper library contains functions used for querying and dealing
++ * with engines in GEM contexts.
++ */
+ 
+ /*
+  * Limit what we support for simplicity due limitation in how much we
+@@ -276,6 +284,14 @@ int gem_context_lookup_engine(int fd, uint64_t engine, uint32_t ctx_id,
+ 	return 0;
+ }
+ 
++/**
++ * gem_has_engine_topology:
++ * @fd: open i915 drm file descriptor
++ *
++ * Queries whether the engine topology API is supported or not.
++ *
++ * Returns: Engine topology API availability.
++ */
+ bool gem_has_engine_topology(int fd)
+ {
+ 	struct drm_i915_gem_context_param param = {
+diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+index f5edcb5d..ac37b19a 100644
+--- a/lib/i915/gem_engine_topology.h
++++ b/lib/i915/gem_engine_topology.h
+@@ -29,6 +29,15 @@
+ 
+ #define GEM_MAX_ENGINES		I915_EXEC_RING_MASK + 1
+ 
++/**
++ * intel_engine_data:
++ * @nengines: Number of engines
++ * @n: Current engine index
++ * @current_engine: Current engine
++ * @engines: List of all engines
++ *
++ * This struct acts as an interator for walking over a set of engines.
++ */
+ struct intel_engine_data {
+ 	uint32_t nengines;
+ 	uint32_t n;
+@@ -58,6 +67,12 @@ bool gem_engine_is_equal(const struct intel_execution_engine2 *e1,
+ 
+ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags);
+ 
++/**
++ * __for_each_static_engine:
++ * @e__: struct intel_execution_engine2 iterator
++ *
++ * Iterates over each of the statically defined (legacy) engines.
++ */
+ #define __for_each_static_engine(e__) \
+ 	for ((e__) = intel_execution_engines2; (e__)->name[0]; (e__)++)
+ 
 -- 
 2.31.1
 
