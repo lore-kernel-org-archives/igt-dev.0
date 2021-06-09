@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
- [IPv6:2607:f8b0:4864:20::1029])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B1AD6EC9F
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:34:08 +0000 (UTC)
-Received: by mail-pj1-x1029.google.com with SMTP id ei4so617259pjb.3
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:34:08 -0700 (PDT)
-From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Tue,  8 Jun 2021 23:32:59 -0500
-Message-Id: <20210609043259.102581-44-jason@jlekstrand.net>
-In-Reply-To: <20210609043035.102359-1-jason@jlekstrand.net>
-References: <20210609043035.102359-1-jason@jlekstrand.net>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 354E56E0BE
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:46:50 +0000 (UTC)
+Date: Wed, 9 Jun 2021 07:48:38 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YMBIJhSdGal5c3e5@platvala-desk.ger.corp.intel.com>
+References: <20210608151552.15095-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 93/93] tests/i915/gem_exec_balancer: Add a
- test for combind balancing and bonding
+Content-Disposition: inline
+In-Reply-To: <20210608151552.15095-1-venkata.sai.patnana@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci: Remove
+ pixel-format-source-clamping@* from the pre-merge blacklist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,60 +22,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: venkata.sai.patnana@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
----
- tests/i915/gem_exec_balancer.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+On Tue, Jun 08, 2021 at 08:45:52PM +0530, venkata.sai.patnana@intel.com wrote:
+> From: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+> 
+> This subtest currently taking less time ~20s. So removing this
+> subtest from pre-merge ci blacklist file.
+> 
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Signed-off-by: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+> ---
+>  tests/intel-ci/blacklist-pre-merge.txt | 20 --------------------
+>  1 file changed, 20 deletions(-)
+> 
+> diff --git a/tests/intel-ci/blacklist-pre-merge.txt b/tests/intel-ci/blacklist-pre-merge.txt
+> index 6363a7ac86..115474d987 100644
+> --- a/tests/intel-ci/blacklist-pre-merge.txt
+> +++ b/tests/intel-ci/blacklist-pre-merge.txt
+> @@ -153,26 +153,6 @@ igt@gem_tiled_blits@normal
+>  igt@gem_tiled_wc
+>  
+>  
+> -###############################################################################
+> -# This is a useful test, but it mostly tests the HW rather than the driver.
+> -# Very few regressions should be caught by this test as the driver code should
+> -# be relatively left untouched. Hopefully, it will get optimized to be made
+> -# useful in pre-merge as well:
+> -#
+> -# - shard-skl: 1% (~2.5 minutes)
+> -# - shard-kbl: 1.5% (~2 minutes)
+> -# - shard-apl: 1.4% (~2.5 minutes)
+> -# - shard-glk: 2% (~4.5 minutes)
+> -# - shard-icl: 2.7% (~5.5 minutes)
+> -# - shard-tgl: 2.3% (~4.5 minutes)
+> -#
+> -# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1287
+> -#
+> -# Data acquired on 2020-02-20 by Martin Peres
+> -###############################################################################
+> -igt@kms_plane@pixel-format-pipe-[b-d]-planes(-source-clamping)?
+> -
+> -
 
-diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index 39180258..325f0ab2 100644
---- a/tests/i915/gem_exec_balancer.c
-+++ b/tests/i915/gem_exec_balancer.c
-@@ -168,6 +168,7 @@ static uint32_t batch_create(int i915)
- static void invalid_balancer(int i915)
- {
- 	I915_DEFINE_CONTEXT_ENGINES_LOAD_BALANCE(balancer, 64);
-+	I915_DEFINE_CONTEXT_ENGINES_BOND(bond, 1);
- 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 64);
- 	struct drm_i915_gem_context_param p = {
- 		.param = I915_CONTEXT_PARAM_ENGINES,
-@@ -284,6 +285,31 @@ static void invalid_balancer(int i915)
- 
- 		munmap(ptr + 4096, 4096);
- 
-+		if (count >= 2) {
-+			/* You can't bond to a balanced engine */
-+			memset(&bond, 0, sizeof(bond));
-+			bond.base.name = I915_CONTEXT_ENGINES_EXT_BOND;
-+			bond.master = ci[0];
-+			bond.virtual_index = 0;
-+			bond.num_bonds = 1;
-+			bond.engines[0] = ci[1];
-+
-+			balancer.base.next_extension = to_user_pointer(&bond);
-+			balancer.engine_index = 0;
-+			balancer.num_siblings = count;
-+			memcpy(balancer.engines, ci, count * sizeof(*ci));
-+
-+			memset(&engines, 0, sizeof(engines));
-+			engines.engines[0].engine_class = I915_ENGINE_CLASS_INVALID;
-+			engines.engines[0].engine_instance = I915_ENGINE_CLASS_INVALID_NONE;
-+			engines.extensions = to_user_pointer(&balancer);
-+
-+			p.size = (sizeof(struct i915_context_param_engines) +
-+				  sizeof(*engines.engines));
-+
-+			igt_assert_eq(__gem_context_set_param(i915, &p), -EINVAL);
-+		}
-+
- 		gem_context_destroy(i915, p.ctx_id);
- 		free(ci);
- 	}
+
+Well now.
+
+The change itself is
+
+Acked-by: Petri Latvala <petri.latvala@intel.com>
+
+But the commit message needs changing to something like
+
+===
+After commit d28aee5c5f52 ("tests/kms_plane: Restrict the test
+execution to two pipes") these subtests got renamed, and along with
+the rename no longer takes entire minutes to execute. Enable their
+execution on premerge.
+===
+
+
 -- 
-2.31.1
-
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
