@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
- [IPv6:2607:f8b0:4864:20::52f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9C4496EA17
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:37:29 +0000 (UTC)
-Received: by mail-pg1-x52f.google.com with SMTP id l184so4585207pgd.8
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:37:29 -0700 (PDT)
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
+ [IPv6:2607:f8b0:4864:20::533])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 634CC6EA25
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:37:28 +0000 (UTC)
+Received: by mail-pg1-x533.google.com with SMTP id e20so8175120pgg.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:37:28 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  9 Jun 2021 12:36:18 -0500
-Message-Id: <20210609173632.248880-36-jason@jlekstrand.net>
+Date: Wed,  9 Jun 2021 12:36:17 -0500
+Message-Id: <20210609173632.248880-35-jason@jlekstrand.net>
 In-Reply-To: <20210609173632.248880-1-jason@jlekstrand.net>
 References: <20210609173632.248880-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 35/93] tests/prime_vgem: Convert to
+Subject: [igt-dev] [PATCH i-g-t 34/93] tests/prime_busy: Convert to
  intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -29,153 +29,90 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/prime_vgem.c | 35 +++++++++++++++++++++--------------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+ tests/prime_busy.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-index aeff282b..3023fd68 100644
---- a/tests/prime_vgem.c
-+++ b/tests/prime_vgem.c
-@@ -559,7 +559,7 @@ static bool prime_busy(int fd, bool excl)
- 	return poll(&pfd, 1, 0) == 0;
- }
+diff --git a/tests/prime_busy.c b/tests/prime_busy.c
+index 8bf50eaf..e2684837 100644
+--- a/tests/prime_busy.c
++++ b/tests/prime_busy.c
+@@ -40,7 +40,7 @@ static bool prime_busy(struct pollfd *pfd, bool excl)
+ #define HANG 0x4
+ #define POLL 0x8
  
--static void work(int i915, int dmabuf, unsigned ring)
-+static void work(int i915, int dmabuf, const intel_ctx_t *ctx, unsigned ring)
+-static void busy(int fd, unsigned ring, unsigned flags)
++static void busy(int fd, const intel_ctx_t *ctx, unsigned ring, unsigned flags)
  {
- 	const int SCRATCH = 0;
- 	const int BATCH = 1;
-@@ -578,6 +578,7 @@ static void work(int i915, int dmabuf, unsigned ring)
+ 	const int gen = intel_gen(intel_get_drm_devid(fd));
+ 	const uint32_t _bbe = MI_BATCH_BUFFER_END;
+@@ -63,6 +63,7 @@ static void busy(int fd, unsigned ring, unsigned flags)
  	execbuf.flags = ring;
  	if (gen < 6)
  		execbuf.flags |= I915_EXEC_SECURE;
 +	execbuf.rsvd1 = ctx->id;
  
  	memset(obj, 0, sizeof(obj));
- 	obj[SCRATCH].handle = prime_fd_to_handle(i915, dmabuf);
-@@ -654,7 +655,7 @@ static void work(int i915, int dmabuf, unsigned ring)
- 	igt_assert(read_busy && write_busy);
+ 	obj[SCRATCH].handle = gem_create(fd, 4096);
+@@ -186,7 +187,7 @@ static void busy(int fd, unsigned ring, unsigned flags)
+ 	close(pfd[SCRATCH].fd);
  }
  
--static void test_busy(int i915, int vgem, unsigned ring)
-+static void test_busy(int i915, int vgem, const intel_ctx_t *ctx, unsigned ring)
- {
- 	struct vgem_bo scratch;
- 	struct timespec tv;
-@@ -668,7 +669,7 @@ static void test_busy(int i915, int vgem, unsigned ring)
- 	vgem_create(vgem, &scratch);
- 	dmabuf = prime_handle_to_fd(vgem, scratch.handle);
- 
--	work(i915, dmabuf, ring);
-+	work(i915, dmabuf, ctx, ring);
- 
- 	/* Calling busy in a loop should be enough to flush the rendering */
- 	memset(&tv, 0, sizeof(tv));
-@@ -684,7 +685,7 @@ static void test_busy(int i915, int vgem, unsigned ring)
- 	close(dmabuf);
- }
- 
--static void test_wait(int i915, int vgem, unsigned ring)
-+static void test_wait(int i915, int vgem, const intel_ctx_t *ctx, unsigned ring)
- {
- 	struct vgem_bo scratch;
- 	struct pollfd pfd;
-@@ -697,7 +698,7 @@ static void test_wait(int i915, int vgem, unsigned ring)
- 	vgem_create(vgem, &scratch);
- 	pfd.fd = prime_handle_to_fd(vgem, scratch.handle);
- 
--	work(i915, pfd.fd, ring);
-+	work(i915, pfd.fd, ctx, ring);
- 
- 	pfd.events = POLLIN;
- 	igt_assert_eq(poll(&pfd, 1, 10000), 1);
-@@ -711,7 +712,7 @@ static void test_wait(int i915, int vgem, unsigned ring)
- 	close(pfd.fd);
- }
- 
--static void test_sync(int i915, int vgem, unsigned ring)
-+static void test_sync(int i915, int vgem, const intel_ctx_t *ctx, unsigned ring)
- {
- 	struct vgem_bo scratch;
- 	uint32_t *ptr;
-@@ -728,7 +729,7 @@ static void test_sync(int i915, int vgem, unsigned ring)
- 	igt_assert(ptr != MAP_FAILED);
- 	gem_close(vgem, scratch.handle);
- 
--	work(i915, dmabuf, ring);
-+	work(i915, dmabuf, ctx, ring);
- 
- 	prime_sync_start(dmabuf, false);
- 	for (i = 0; i < 1024; i++)
-@@ -739,7 +740,7 @@ static void test_sync(int i915, int vgem, unsigned ring)
- 	munmap(ptr, scratch.size);
- }
- 
--static void test_fence_wait(int i915, int vgem, unsigned ring)
-+static void test_fence_wait(int i915, int vgem, const intel_ctx_t *ctx, unsigned ring)
- {
- 	struct vgem_bo scratch;
- 	uint32_t fence;
-@@ -760,7 +761,7 @@ static void test_fence_wait(int i915, int vgem, unsigned ring)
- 	igt_assert(ptr != MAP_FAILED);
- 
- 	igt_fork(child, 1)
--		work(i915, dmabuf, ring);
-+		work(i915, dmabuf, ctx, ring);
- 
- 	sleep(1);
- 
-@@ -800,7 +801,7 @@ static void test_fence_hang(int i915, int vgem, unsigned flags)
- 	igt_assert(ptr != MAP_FAILED);
- 	gem_close(vgem, scratch.handle);
- 
--	work(i915, dmabuf, 0);
-+	work(i915, dmabuf, 0, 0);
- 
- 	/* The work should have been cancelled */
- 
-@@ -1042,12 +1043,15 @@ static void test_flip(int i915, int vgem, unsigned hang)
- }
- 
- static void test_each_engine(const char *name, int vgem, int i915,
--			     void (*fn)(int i915, int vgem, unsigned int flags))
-+			     void (*fn)(int i915, int vgem,
-+					const intel_ctx_t *ctx,
-+					unsigned int flags))
+-static void test_mode(int fd, unsigned int flags)
++static void test_mode(int fd, const intel_ctx_t *ctx, unsigned int flags)
  {
  	const struct intel_execution_engine2 *e;
-+	const intel_ctx_t *ctx = intel_ctx_create_all_physical(i915);
+ 	igt_hang_t hang = {};
+@@ -196,7 +197,7 @@ static void test_mode(int fd, unsigned int flags)
+ 	else
+ 		hang = igt_allow_hang(fd, 0, 0);
  
- 	igt_subtest_with_dynamic(name) {
--		__for_each_physical_engine(i915, e) {
-+		for_each_ctx_engine(i915, ctx, e) {
- 			if (!gem_class_can_store_dword(i915, e->class))
- 				continue;
+-	__for_each_physical_engine(fd, e) {
++	for_each_ctx_engine(fd, ctx, e) {
+ 		if (!gem_class_can_store_dword(fd, e->class))
+ 			continue;
  
-@@ -1056,10 +1060,12 @@ static void test_each_engine(const char *name, int vgem, int i915,
+@@ -204,7 +205,7 @@ static void test_mode(int fd, unsigned int flags)
+ 			continue;
  
- 			igt_dynamic_f("%s", e->name) {
- 				gem_quiescent_gpu(i915);
--				fn(i915, vgem, e->flags);
-+				fn(i915, vgem, ctx, e->flags);
- 			}
- 		}
+ 		igt_dynamic_f("%s", e->name)
+-			busy(fd, e->flags, flags);
++			busy(fd, ctx, e->flags, flags);
  	}
-+
-+	intel_ctx_destroy(i915, ctx);
- }
+ 
+ 	if ((flags & HANG) == 0)
+@@ -215,11 +216,13 @@ static void test_mode(int fd, unsigned int flags)
  
  igt_main
-@@ -1110,7 +1116,8 @@ igt_main
- 	{
- 		static const struct {
- 			const char *name;
--			void (*fn)(int i915, int vgem, unsigned int engine);
-+			void (*fn)(int i915, int vgem, const intel_ctx_t *ctx,
-+				   unsigned int engine);
- 		} tests[] = {
- 			{ "sync", test_sync },
- 			{ "busy", test_busy },
+ {
++	const intel_ctx_t *ctx;
+ 	int fd = -1;
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver_master(DRIVER_INTEL);
+ 		igt_require_gem(fd);
++		ctx = intel_ctx_create_all_physical(fd);
+ 	}
+ 
+ 	igt_subtest_group {
+@@ -238,13 +241,15 @@ igt_main
+ 
+ 		for (const struct mode *m = modes; m->name; m++) {
+ 			igt_subtest_with_dynamic(m->name)
+-				test_mode(fd, m->flags);
++				test_mode(fd, ctx, m->flags);
+ 
+ 			igt_subtest_with_dynamic_f("%s-wait", m->name)
+-				test_mode(fd, m->flags | POLL);
++				test_mode(fd, ctx, m->flags | POLL);
+ 		}
+ 	}
+ 
+-	igt_fixture
++	igt_fixture {
++		intel_ctx_destroy(fd, ctx);
+ 		close(fd);
++	}
+ }
 -- 
 2.31.1
 
