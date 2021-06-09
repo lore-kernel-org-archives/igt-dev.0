@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
- [IPv6:2607:f8b0:4864:20::42e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 42D146EA19
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:37:42 +0000 (UTC)
-Received: by mail-pf1-x42e.google.com with SMTP id u126so14982090pfu.13
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:37:42 -0700 (PDT)
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
+ [IPv6:2607:f8b0:4864:20::102d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BEB2C6EA17
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:37:44 +0000 (UTC)
+Received: by mail-pj1-x102d.google.com with SMTP id g4so1843603pjk.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:37:44 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  9 Jun 2021 12:36:28 -0500
-Message-Id: <20210609173632.248880-46-jason@jlekstrand.net>
+Date: Wed,  9 Jun 2021 12:36:30 -0500
+Message-Id: <20210609173632.248880-48-jason@jlekstrand.net>
 In-Reply-To: <20210609173632.248880-1-jason@jlekstrand.net>
 References: <20210609173632.248880-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 45/93] tests/i915/gem_ctx_shared: Stop
- cloning contexts
+Subject: [igt-dev] [PATCH i-g-t 47/93] tests/i915/gem_ctx_switch: Convert to
+ intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,148 +27,328 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead use either GET/SET_CONTEXT_PARAM or a create ext.
-
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/i915/gem_ctx_shared.c | 77 ++++++++++++++++++++++++++++++-------
- 1 file changed, 63 insertions(+), 14 deletions(-)
+ tests/i915/gem_ctx_switch.c | 115 ++++++++++++++++++++----------------
+ 1 file changed, 64 insertions(+), 51 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
-index b78d9550..e79134bd 100644
---- a/tests/i915/gem_ctx_shared.c
-+++ b/tests/i915/gem_ctx_shared.c
-@@ -63,6 +63,48 @@ static int priorities[] = {
+diff --git a/tests/i915/gem_ctx_switch.c b/tests/i915/gem_ctx_switch.c
+index 44c659f0..e860e011 100644
+--- a/tests/i915/gem_ctx_switch.c
++++ b/tests/i915/gem_ctx_switch.c
+@@ -43,6 +43,7 @@
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+ #include "i915/gem_ring.h"
++#include "i915/gem_vm.h"
+ #include "igt.h"
  
- IGT_TEST_DESCRIPTION("Test shared contexts.");
+ #define INTERRUPTIBLE 0x1
+@@ -54,18 +55,18 @@ static double elapsed(const struct timespec *start, const struct timespec *end)
+ 		(end->tv_nsec - start->tv_nsec)*1e-9);
+ }
  
-+static int __get_vm(int i915, uint32_t ctx, uint32_t *vm)
-+{
-+	struct drm_i915_gem_context_param p = {
-+		.ctx_id = ctx,
-+		.param = I915_CONTEXT_PARAM_VM,
-+	};
-+	int err = __gem_context_get_param(i915, &p);
-+	if (err)
-+		return err;
-+
-+	igt_assert(p.value > 0 && p.value < UINT32_MAX);
-+	*vm = p.value;
-+
-+	return 0;
-+}
-+
-+static uint32_t get_vm(int i915, uint32_t ctx)
-+{
-+	uint32_t vm;
-+	igt_assert_eq(__get_vm(i915, ctx, &vm), 0);
-+	return vm;
-+}
-+
-+static void set_vm(int i915, uint32_t ctx, uint32_t vm)
-+{
-+	struct drm_i915_gem_context_param p = {
-+		.ctx_id = ctx,
-+		.param = I915_CONTEXT_PARAM_VM,
-+		.value = vm
-+	};
-+	gem_context_set_param(i915, &p);
-+}
-+
-+static void copy_vm(int i915, uint32_t dst, uint32_t src)
-+{
-+	uint32_t vm = get_vm(i915, src);
-+	set_vm(i915, dst, vm);
-+
-+	/* GETPARAM gets a reference to the VM which we have to drop */
-+	gem_vm_destroy(i915, vm);
-+}
-+
- static void create_shared_gtt(int i915, unsigned int flags)
- #define DETACHED 0x1
+-static int measure_qlen(int fd,
++static int measure_qlen(int fd, const intel_ctx_cfg_t *cfg,
+ 			struct drm_i915_gem_execbuffer2 *execbuf,
+ 			const struct intel_engine_data *engines,
+ 			int timeout)
  {
-@@ -83,9 +125,9 @@ static void create_shared_gtt(int i915, unsigned int flags)
- 	child = flags & DETACHED ? gem_context_create(i915) : 0;
- 	igt_until_timeout(2) {
- 		parent = flags & DETACHED ? child : 0;
--		child = gem_context_clone(i915,
--					  parent, I915_CONTEXT_CLONE_VM,
--					  0);
-+		child = gem_context_create(i915);
-+		copy_vm(i915, child, parent);
-+
- 		execbuf.rsvd1 = child;
- 		gem_execbuf(i915, &execbuf);
+ 	const struct drm_i915_gem_exec_object2 * const obj =
+ 		(struct drm_i915_gem_exec_object2 *)(uintptr_t)execbuf->buffers_ptr;
+-	uint32_t ctx[64];
++	const intel_ctx_t *ctx[64];
+ 	int min = INT_MAX, max = 0;
  
-@@ -99,9 +141,7 @@ static void create_shared_gtt(int i915, unsigned int flags)
+ 	for (int i = 0; i < ARRAY_SIZE(ctx); i++)
+-		ctx[i] = gem_context_clone_with_engines(fd, 0);
++		ctx[i] = intel_ctx_create(fd, cfg);
  
- 		execbuf.rsvd1 = parent;
- 		igt_assert_eq(__gem_execbuf(i915, &execbuf), -ENOENT);
--		igt_assert_eq(__gem_context_clone(i915,
--						  parent, I915_CONTEXT_CLONE_VM,
--						  0, &parent), -ENOENT);
-+		igt_assert_eq(__get_vm(i915, parent, &parent), -ENOENT);
+ 	for (unsigned int n = 0; n < engines->nengines; n++) {
+ 		uint64_t saved = execbuf->flags;
+@@ -75,14 +76,14 @@ static int measure_qlen(int fd,
+ 		execbuf->flags |= engines->engines[n].flags;
+ 
+ 		for (int i = 0; i < ARRAY_SIZE(ctx); i++) {
+-			execbuf->rsvd1 = ctx[i];
++			execbuf->rsvd1 = ctx[i]->id;
+ 			gem_execbuf(fd, execbuf);
+ 		}
+ 		gem_sync(fd, obj->handle);
+ 
+ 		igt_nsec_elapsed(&tv);
+ 		for (int i = 0; i < ARRAY_SIZE(ctx); i++) {
+-			execbuf->rsvd1 = ctx[i];
++			execbuf->rsvd1 = ctx[i]->id;
+ 			gem_execbuf(fd, execbuf);
+ 		}
+ 		gem_sync(fd, obj->handle);
+@@ -102,13 +103,14 @@ static int measure_qlen(int fd,
  	}
- 	if (flags & DETACHED)
- 		gem_context_destroy(i915, child);
-@@ -152,8 +192,19 @@ static void disjoint_timelines(int i915, const intel_ctx_cfg_t *cfg)
- static void exhaust_shared_gtt(int i915, unsigned int flags)
- #define EXHAUST_LRC 0x1
+ 
+ 	for (int i = 0; i < ARRAY_SIZE(ctx); i++)
+-		gem_context_destroy(fd, ctx[i]);
++		intel_ctx_destroy(fd, ctx[i]);
+ 
+ 	igt_debug("Estimated qlen: {min:%d, max:%d}\n", min, max);
+ 	return min;
+ }
+ 
+ static void single(int fd, uint32_t handle,
++		   const intel_ctx_cfg_t *base_cfg,
+ 		   const struct intel_execution_engine2 *e2,
+ 		   unsigned flags,
+ 		   const int ncpus,
+@@ -117,7 +119,8 @@ static void single(int fd, uint32_t handle,
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
+ 	struct drm_i915_gem_relocation_entry reloc;
+-	uint32_t contexts[64];
++	intel_ctx_cfg_t cfg;
++	const intel_ctx_t *contexts[64];
+ 	struct {
+ 		double elapsed;
+ 		unsigned long count;
+@@ -127,12 +130,12 @@ static void single(int fd, uint32_t handle,
+ 	shared = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+ 	igt_assert(shared != MAP_FAILED);
+ 
+-	for (n = 0; n < 64; n++) {
+-		if (flags & QUEUE)
+-			contexts[n] = gem_queue_clone_with_engines(fd, 0);
+-		else
+-			contexts[n] = gem_context_clone_with_engines(fd, 0);
+-	}
++	cfg = *base_cfg;
++	if (flags & QUEUE)
++		cfg.vm = gem_vm_create(fd);
++
++	for (n = 0; n < 64; n++)
++		contexts[n] = intel_ctx_create(fd, &cfg);
+ 
+ 	memset(&obj, 0, sizeof(obj));
+ 	obj.handle = handle;
+@@ -151,7 +154,7 @@ static void single(int fd, uint32_t handle,
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(&obj);
+ 	execbuf.buffer_count = 1;
+-	execbuf.rsvd1 = contexts[0];
++	execbuf.rsvd1 = contexts[0]->id;
+ 	execbuf.flags = e2->flags;
+ 	execbuf.flags |= I915_EXEC_HANDLE_LUT;
+ 	execbuf.flags |= I915_EXEC_NO_RELOC;
+@@ -169,7 +172,7 @@ static void single(int fd, uint32_t handle,
+ 
+ 		/* Warmup to bind all objects into each ctx before we begin */
+ 		for (int i = 0; i < ARRAY_SIZE(contexts); i++) {
+-			execbuf.rsvd1 = contexts[i];
++			execbuf.rsvd1 = contexts[i]->id;
+ 			gem_execbuf(fd, &execbuf);
+ 		}
+ 		gem_sync(fd, handle);
+@@ -178,7 +181,7 @@ static void single(int fd, uint32_t handle,
+ 		do {
+ 			igt_while_interruptible(flags & INTERRUPTIBLE) {
+ 				for (int loop = 0; loop < 64; loop++) {
+-					execbuf.rsvd1 = contexts[loop % 64];
++					execbuf.rsvd1 = contexts[loop % 64]->id;
+ 					reloc.presumed_offset = -1;
+ 					gem_execbuf(fd, &execbuf);
+ 				}
+@@ -215,28 +218,30 @@ static void single(int fd, uint32_t handle,
+ 	}
+ 
+ 	for (n = 0; n < 64; n++)
+-		gem_context_destroy(fd, contexts[n]);
++		intel_ctx_destroy(fd, contexts[n]);
+ 
+ 	munmap(shared, 4096);
+ }
+ 
+-static void all(int fd, uint32_t handle, unsigned flags, int timeout)
++static void all(int fd, uint32_t handle, const intel_ctx_cfg_t *base_cfg,
++		unsigned flags, int timeout)
  {
-+	struct drm_i915_gem_context_create_ext_setparam vm_create_ext = {
-+		.base = {
-+			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
-+		},
-+		.param = {
-+			.param = I915_CONTEXT_PARAM_VM,
-+		},
-+	};
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj[2];
+ 	struct intel_engine_data engines = { };
+-	uint32_t contexts[65];
++	intel_ctx_cfg_t cfg;
++	const intel_ctx_t *contexts[65];
+ 	int n, qlen;
+ 
+-	engines = intel_init_engine_list(fd, 0);
++	engines = intel_engine_list_for_ctx_cfg(fd, base_cfg);
+ 	igt_require(engines.nengines);
+ 
+-	for (n = 0; n < ARRAY_SIZE(contexts); n++) {
+-		if (flags & QUEUE)
+-			contexts[n] = gem_queue_clone_with_engines(fd, 0);
+-		else
+-			contexts[n] = gem_context_clone_with_engines(fd, 0);
+-	}
++	cfg = *base_cfg;
++	if (flags & QUEUE)
++		cfg.vm = gem_vm_create(fd);
 +
- 	i915 = gem_reopen_driver(i915);
++	for (n = 0; n < 64; n++)
++		contexts[n] = intel_ctx_create(fd, &cfg);
  
-+	vm_create_ext.param.value = gem_vm_create(i915);
+ 	memset(obj, 0, sizeof(obj));
+ 	obj[1].handle = handle;
+@@ -244,13 +249,13 @@ static void all(int fd, uint32_t handle, unsigned flags, int timeout)
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(obj + 1);
+ 	execbuf.buffer_count = 1;
+-	execbuf.rsvd1 = contexts[0];
++	execbuf.rsvd1 = contexts[0]->id;
+ 	execbuf.flags |= I915_EXEC_HANDLE_LUT;
+ 	execbuf.flags |= I915_EXEC_NO_RELOC;
+ 	igt_require(__gem_execbuf(fd, &execbuf) == 0);
+ 	gem_sync(fd, handle);
+ 
+-	qlen = measure_qlen(fd, &execbuf, &engines, timeout);
++	qlen = measure_qlen(fd, base_cfg, &execbuf, &engines, timeout);
+ 	igt_info("Using timing depth of %d batches\n", qlen);
+ 
+ 	execbuf.buffers_ptr = to_user_pointer(obj);
+@@ -267,7 +272,7 @@ static void all(int fd, uint32_t handle, unsigned flags, int timeout)
+ 				for (int loop = 0;
+ 				     loop < ARRAY_SIZE(contexts);
+ 				     loop++) {
+-					execbuf.rsvd1 = contexts[loop];
++					execbuf.rsvd1 = contexts[loop]->id;
+ 					gem_execbuf(fd, &execbuf);
+ 				}
+ 				gem_sync(fd, obj[0].handle);
+@@ -276,7 +281,7 @@ static void all(int fd, uint32_t handle, unsigned flags, int timeout)
+ 				do {
+ 					for (int loop = 0; loop < qlen; loop++) {
+ 						execbuf.rsvd1 =
+-							contexts[loop % nctx];
++							contexts[loop % nctx]->id;
+ 						gem_execbuf(fd, &execbuf);
+ 					}
+ 					count += qlen;
+@@ -300,7 +305,7 @@ static void all(int fd, uint32_t handle, unsigned flags, int timeout)
+ 	}
+ 
+ 	for (n = 0; n < ARRAY_SIZE(contexts); n++)
+-		gem_context_destroy(fd, contexts[n]);
++		intel_ctx_destroy(fd, contexts[n]);
+ }
+ 
+ igt_main
+@@ -308,6 +313,8 @@ igt_main
+ 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+ 	const struct intel_execution_engine2 *e2;
+ 	const struct intel_execution_ring *e;
++	const intel_ctx_cfg_t legacy_cfg = {};
++	intel_ctx_cfg_t engines_cfg;
+ 	static const struct {
+ 		const char *name;
+ 		unsigned int flags;
+@@ -315,8 +322,8 @@ igt_main
+ 	} phases[] = {
+ 		{ "", 0, NULL },
+ 		{ "-interruptible", INTERRUPTIBLE, NULL },
+-		{ "-queue", QUEUE, gem_has_queues },
+-		{ "-queue-interruptible", QUEUE | INTERRUPTIBLE, gem_has_queues },
++		{ "-queue", QUEUE, gem_has_vm },
++		{ "-queue-interruptible", QUEUE | INTERRUPTIBLE, gem_has_vm },
+ 		{ }
+ 	};
+ 	uint32_t light = 0, heavy;
+@@ -330,6 +337,8 @@ igt_main
+ 
+ 		gem_require_contexts(fd);
+ 
++		engines_cfg = intel_ctx_cfg_all_physical(fd);
 +
- 	igt_fork(pid, 1) {
- 		const uint32_t bbe = MI_BATCH_BUFFER_END;
- 		struct drm_i915_gem_exec_object2 obj = {
-@@ -163,23 +214,21 @@ static void exhaust_shared_gtt(int i915, unsigned int flags)
- 			.buffers_ptr = to_user_pointer(&obj),
- 			.buffer_count = 1,
- 		};
--		uint32_t parent, child;
- 		unsigned long count = 0;
- 		int err;
+ 		light = gem_create(fd, 4096);
+ 		gem_write(fd, light, 0, &bbe, sizeof(bbe));
  
- 		gem_write(i915, obj.handle, 0, &bbe, sizeof(bbe));
+@@ -358,24 +367,26 @@ igt_main
+ 				}
  
--		child = 0;
- 		for (;;) {
--			parent = child;
--			err = __gem_context_clone(i915,
--						  parent, I915_CONTEXT_CLONE_VM,
--						  0, &child);
-+			uint32_t ctx;
-+			err = __gem_context_create_ext(i915, 0,
-+						       to_user_pointer(&vm_create_ext),
-+						       &ctx);
- 			if (err)
- 				break;
+ 				igt_subtest_f("legacy-%s%s", e->name, p->name)
+-					single(fd, light, e2, p->flags, 1, 2);
++					single(fd, light, &legacy_cfg, e2,
++					       p->flags, 1, 2);
+ 				igt_subtest_f("legacy-%s-heavy%s",
+ 					      e->name, p->name)
+-					single(fd, heavy, e2, p->flags, 1, 2);
++					single(fd, heavy, &legacy_cfg, e2,
++					       p->flags, 1, 2);
+ 				igt_subtest_f("legacy-%s-forked%s",
+ 					      e->name, p->name)
+-					single(fd, light, e2, p->flags, ncpus,
+-					       20);
++					single(fd, light, &legacy_cfg, e2,
++					       p->flags, ncpus, 20);
+ 				igt_subtest_f("legacy-%s-forked-heavy%s",
+ 					      e->name, p->name)
+-					single(fd, heavy, e2, p->flags, ncpus,
+-					       20);
++					single(fd, heavy, &legacy_cfg, e2,
++					       p->flags, ncpus, 20);
+ 			}
+ 		}
+ 	}
  
- 			if (flags & EXHAUST_LRC) {
--				execbuf.rsvd1 = child;
-+				execbuf.rsvd1 = ctx;
- 				err = __gem_execbuf(i915, &execbuf);
- 				if (err)
- 					break;
-@@ -849,7 +898,7 @@ igt_main
+ 	/* Must come after legacy subtests. */
+-	__for_each_physical_engine(fd, e2) {
++	for_each_ctx_cfg_engine(fd, &engines_cfg, e2) {
+ 		for (typeof(*phases) *p = phases; p->name; p++) {
+ 			igt_subtest_group {
+ 				igt_fixture {
+@@ -384,33 +395,35 @@ igt_main
+ 				}
+ 
+ 				igt_subtest_f("%s%s", e2->name, p->name)
+-					single(fd, light, e2, p->flags, 1, 2);
++					single(fd, light, &engines_cfg, e2,
++					       p->flags, 1, 2);
+ 				igt_subtest_f("%s-heavy%s", e2->name, p->name)
+-					single(fd, heavy, e2, p->flags, 1, 2);
++					single(fd, heavy, &engines_cfg, e2,
++					       p->flags, 1, 2);
+ 				igt_subtest_f("%s-forked%s", e2->name, p->name)
+-					single(fd, light, e2, p->flags, ncpus,
+-					       20);
++					single(fd, light, &engines_cfg, e2,
++					       p->flags, ncpus, 20);
+ 				igt_subtest_f("%s-forked-heavy%s",
+ 					      e2->name, p->name)
+-					single(fd, heavy, e2, p->flags, ncpus,
+-					       20);
++					single(fd, heavy, &engines_cfg, e2,
++					       p->flags, ncpus, 20);
+ 			}
+ 		}
+ 	}
+ 
+ 	igt_subtest("all-light")
+-		all(fd, light, 0, 2);
++		all(fd, light, &engines_cfg, 0, 2);
+ 	igt_subtest("all-heavy")
+-		all(fd, heavy, 0, 2);
++		all(fd, heavy, &engines_cfg, 0, 2);
  
  	igt_subtest_group {
  		igt_fixture {
--			igt_require(gem_contexts_has_shared_gtt(i915));
-+			igt_require(gem_has_vm(i915));
- 			igt_fork_hang_detector(i915);
+-			igt_require(gem_has_queues(fd));
++			gem_require_vm(fd);
  		}
+ 		igt_subtest("queue-light")
+-			all(fd, light, QUEUE, 2);
++			all(fd, light, &engines_cfg, QUEUE, 2);
+ 		igt_subtest("queue-heavy")
+-			all(fd, heavy, QUEUE, 2);
++			all(fd, heavy, &engines_cfg, QUEUE, 2);
+ 	}
  
+ 	igt_fixture {
 -- 
 2.31.1
 
