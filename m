@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com
- [IPv6:2607:f8b0:4864:20::435])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BC77E6EA19
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:39:28 +0000 (UTC)
-Received: by mail-pf1-x435.google.com with SMTP id d16so18942402pfn.12
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:39:28 -0700 (PDT)
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
+ [IPv6:2607:f8b0:4864:20::102a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1FA3C6EA25
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:39:30 +0000 (UTC)
+Received: by mail-pj1-x102a.google.com with SMTP id k7so1817135pjf.5
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:39:30 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  9 Jun 2021 12:38:32 -0500
-Message-Id: <20210609173903.249112-13-jason@jlekstrand.net>
+Date: Wed,  9 Jun 2021 12:38:33 -0500
+Message-Id: <20210609173903.249112-14-jason@jlekstrand.net>
 In-Reply-To: <20210609173632.248880-1-jason@jlekstrand.net>
 References: <20210609173632.248880-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 62/93] tests/i915/gem_cs_tlb: Convert to
+Subject: [igt-dev] [PATCH i-g-t 63/93] tests/core_hotplug: Convert to
  intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -29,53 +29,40 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/i915/gem_cs_tlb.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tests/core_hotunplug.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_cs_tlb.c b/tests/i915/gem_cs_tlb.c
-index dec9c107..7682dae6 100644
---- a/tests/i915/gem_cs_tlb.c
-+++ b/tests/i915/gem_cs_tlb.c
-@@ -91,7 +91,8 @@ mmap_coherent(int fd, uint32_t handle, int size)
- 	return ptr;
- }
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index a639cfb4..c90be622 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -259,6 +259,7 @@ static int local_i915_healthcheck(int i915, const char *prefix)
+ 		.buffer_count = 1,
+ 	};
+ 	const struct intel_execution_engine2 *engine;
++	const intel_ctx_t *ctx;
+ 	int fence = -1, err = 0, status = 1;
  
--static void run_on_ring(int fd, unsigned ring_id, const char *ring_name)
-+static void run_on_ring(int fd, const intel_ctx_t *ctx,
-+			unsigned ring_id, const char *ring_name)
- {
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	struct drm_i915_gem_exec_object2 execobj;
-@@ -117,6 +118,7 @@ static void run_on_ring(int fd, unsigned ring_id, const char *ring_name)
- 	memset(&execbuf, 0, sizeof(execbuf));
- 	execbuf.buffers_ptr = to_user_pointer(&execobj);
- 	execbuf.buffer_count = 1;
-+	execbuf.rsvd1 = ctx->id;
- 	execbuf.flags = ring_id;
+ 	local_debug("%s%s\n", prefix, "running i915 GPU healthcheck");
+@@ -270,7 +271,9 @@ static int local_i915_healthcheck(int i915, const char *prefix)
+ 	gem_write(i915, obj.handle, 0, &bbe, sizeof(bbe));
  
- 	/* Execute once to allocate a gtt-offset */
-@@ -144,17 +146,19 @@ static void run_on_ring(int fd, unsigned ring_id, const char *ring_name)
- igt_main
- {
- 	const struct intel_execution_engine2 *e;
-+	const intel_ctx_t *ctx = NULL;
- 	int fd = -1;
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_INTEL);
- 		igt_require_gem(fd);
-+		ctx = intel_ctx_create_all_physical(fd);
- 	}
- 
- 	igt_subtest_with_dynamic("engines") {
--		__for_each_physical_engine(fd, e) {
-+		for_each_ctx_engine(fd, ctx, e) {
- 			igt_dynamic_f("%s", e->name)
--				run_on_ring(fd, e->flags, e->name);
-+				run_on_ring(fd, ctx, e->flags, e->name);
+ 	/* As soon as a fence is open, don't fail before closing it */
+-	__for_each_physical_engine(i915, engine) {
++	ctx = intel_ctx_create_all_physical(i915);
++	for_each_ctx_engine(i915, ctx, engine) {
++		execbuf.rsvd1 = ctx->id;
+ 		execbuf.flags = engine->flags | I915_EXEC_FENCE_OUT;
+ 		err = __gem_execbuf_wr(i915, &execbuf);
+ 		if (igt_warn_on_f(err < 0, "__gem_execbuf_wr() returned %d\n",
+@@ -284,6 +287,7 @@ static int local_i915_healthcheck(int i915, const char *prefix)
+ 			break;
  		}
  	}
- 
++	intel_ctx_destroy(i915, ctx);
+ 	if (fence >= 0) {
+ 		status = sync_fence_wait(fence, -1);
+ 		if (igt_warn_on_f(status < 0, "sync_fence_wait() returned %d\n",
 -- 
 2.31.1
 
