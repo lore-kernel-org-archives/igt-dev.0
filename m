@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com
- [IPv6:2607:f8b0:4864:20::631])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C61B06EC81
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:31:31 +0000 (UTC)
-Received: by mail-pl1-x631.google.com with SMTP id v11so3401150ply.6
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:31:31 -0700 (PDT)
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
+ [IPv6:2607:f8b0:4864:20::1031])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 24BF96EC82
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:31:34 +0000 (UTC)
+Received: by mail-pj1-x1031.google.com with SMTP id g24so613669pji.4
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:31:34 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Tue,  8 Jun 2021 23:30:25 -0500
-Message-Id: <20210609043035.102359-40-jason@jlekstrand.net>
+Date: Tue,  8 Jun 2021 23:30:27 -0500
+Message-Id: <20210609043035.102359-42-jason@jlekstrand.net>
 In-Reply-To: <20210609043035.102359-1-jason@jlekstrand.net>
 References: <20210609043035.102359-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 39/93] tests/i915/gem_exec_suspend: Convert
+Subject: [igt-dev] [PATCH i-g-t 41/93] tests/i915/gem_userptr_blits: Convert
  to intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -29,171 +29,112 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/i915/gem_exec_suspend.c | 52 +++++++++++++++++++----------------
- 1 file changed, 29 insertions(+), 23 deletions(-)
+ tests/i915/gem_userptr_blits.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
-index d13c443e..9b557d7f 100644
---- a/tests/i915/gem_exec_suspend.c
-+++ b/tests/i915/gem_exec_suspend.c
-@@ -51,7 +51,8 @@
- #define CACHED (1<<8)
- #define HANG (2<<8)
- 
--static void run_test(int fd, unsigned engine, unsigned flags);
-+static void run_test(int fd, const intel_ctx_t *ctx,
-+		     unsigned engine, unsigned flags);
- 
- static void check_bo(int fd, uint32_t handle)
+diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
+index e0e202c5..0616a937 100644
+--- a/tests/i915/gem_userptr_blits.c
++++ b/tests/i915/gem_userptr_blits.c
+@@ -584,7 +584,7 @@ static void test_nohangcheck_hostile(int i915)
  {
-@@ -66,12 +67,13 @@ static void check_bo(int fd, uint32_t handle)
- 	munmap(map, 4096);
- }
- 
--static void test_all(int fd, unsigned flags)
-+static void test_all(int fd, const intel_ctx_t *ctx, unsigned flags)
- {
--	run_test(fd, ALL_ENGINES, flags & ~0xff);
-+	run_test(fd, ctx, ALL_ENGINES, flags & ~0xff);
- }
- 
--static void run_test(int fd, unsigned engine, unsigned flags)
-+static void run_test(int fd, const intel_ctx_t *ctx,
-+		     unsigned engine, unsigned flags)
- {
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
-@@ -86,7 +88,7 @@ static void run_test(int fd, unsigned engine, unsigned flags)
- 	if (engine == ALL_ENGINES) {
- 		const struct intel_execution_engine2 *e;
- 
--		__for_each_physical_engine(fd, e) {
-+		for_each_ctx_engine(fd, ctx, e) {
- 			if (gem_class_can_store_dword(fd, e->class))
- 				engines[nengine++] = e->flags;
- 		}
-@@ -97,7 +99,7 @@ static void run_test(int fd, unsigned engine, unsigned flags)
- 
- 	/* Before suspending, check normal operation */
- 	if (mode(flags) != NOSLEEP)
--		test_all(fd, flags);
-+		test_all(fd, ctx, flags);
- 
- 	gem_quiescent_gpu(fd);
- 
-@@ -107,6 +109,7 @@ static void run_test(int fd, unsigned engine, unsigned flags)
- 	execbuf.flags = 1 << 11;
- 	if (gen < 6)
- 		execbuf.flags |= I915_EXEC_SECURE;
-+	execbuf.rsvd1 = ctx->id;
- 
- 	memset(obj, 0, sizeof(obj));
- 	obj[0].handle = gem_create(fd, 4096);
-@@ -203,7 +206,7 @@ static void run_test(int fd, unsigned engine, unsigned flags)
- 
- 	/* After resume, make sure it still works */
- 	if (mode(flags) != NOSLEEP)
--		test_all(fd, flags);
-+		test_all(fd, ctx, flags);
- }
- 
- struct battery_sample {
-@@ -230,7 +233,8 @@ static double d_time(const struct battery_sample *after,
- 		(after->tv.tv_nsec - before->tv.tv_nsec) * 1e-9); /* s */
- }
- 
--static void power_test(int i915, unsigned engine, unsigned flags)
-+static void power_test(int i915, const intel_ctx_t *ctx,
-+		       unsigned engine, unsigned flags)
- {
- 	struct battery_sample before, after;
- 	char *status;
-@@ -250,7 +254,7 @@ static void power_test(int i915, unsigned engine, unsigned flags)
- 	igt_set_autoresume_delay(5 * 60); /* 5 minutes; longer == more stable */
- 
- 	igt_assert(get_power(dir, &before));
--	run_test(i915, engine, flags);
-+	run_test(i915, ctx, engine, flags);
- 	igt_assert(get_power(dir, &after));
- 
- 	igt_set_autoresume_delay(0);
-@@ -274,45 +278,47 @@ igt_main
- 	}, *m;
  	const struct intel_execution_engine2 *e;
  	igt_hang_t hang;
+-	uint32_t ctx;
 +	const intel_ctx_t *ctx;
- 	int fd;
+ 	int fence = -1;
+ 	int err = 0;
+ 	int dir;
+@@ -599,11 +599,11 @@ static void test_nohangcheck_hostile(int i915)
+ 	dir = igt_params_open(i915);
+ 	igt_require(dir != -1);
  
- 	igt_fixture {
- 		fd = drm_open_driver_master(DRIVER_INTEL);
- 		igt_require_gem(fd);
- 		igt_require(gem_can_store_dword(fd, 0));
-+		ctx = intel_ctx_create_all_physical(fd);
+-	ctx = gem_context_create(i915);
+-	hang = igt_allow_hang(i915, ctx, 0);
++	ctx = intel_ctx_create_all_physical(i915);
++	hang = igt_allow_hang(i915, ctx->id, 0);
+ 	igt_require(__enable_hangcheck(dir, false));
  
- 		igt_fork_hang_detector(fd);
- 	}
+-	____for_each_physical_engine(i915, ctx, e) {
++	for_each_ctx_engine(i915, ctx, e) {
+ 		igt_spin_t *spin;
+ 		int new;
  
- 	igt_subtest("basic")
--		run_test(fd, ALL_ENGINES, NOSLEEP);
-+		run_test(fd, ctx, ALL_ENGINES, NOSLEEP);
- 	igt_subtest("basic-S0")
--		run_test(fd, ALL_ENGINES, IDLE);
-+		run_test(fd, ctx, ALL_ENGINES, IDLE);
- 	igt_subtest("basic-S3-devices")
--		run_test(fd, ALL_ENGINES, SUSPEND_DEVICES);
-+		run_test(fd, ctx, ALL_ENGINES, SUSPEND_DEVICES);
- 	igt_subtest("basic-S3")
--		run_test(fd, ALL_ENGINES, SUSPEND);
-+		run_test(fd, ctx, ALL_ENGINES, SUSPEND);
- 	igt_subtest("basic-S4-devices")
--		run_test(fd, ALL_ENGINES, HIBERNATE_DEVICES);
-+		run_test(fd, ctx, ALL_ENGINES, HIBERNATE_DEVICES);
- 	igt_subtest("basic-S4")
--		run_test(fd, ALL_ENGINES, HIBERNATE);
-+		run_test(fd, ctx, ALL_ENGINES, HIBERNATE);
+@@ -611,7 +611,7 @@ static void test_nohangcheck_hostile(int i915)
+ 		gem_engine_property_printf(i915, e->name,
+ 					   "preempt_timeout_ms", "%d", 50);
  
- 	for (m = modes; m->suffix; m++) {
- 		igt_subtest_with_dynamic_f("uncached%s", m->suffix) {
--			__for_each_physical_engine(fd, e) {
-+			for_each_ctx_engine(fd, ctx, e) {
- 				if (!gem_class_can_store_dword(fd, e->class))
- 					continue;
- 				igt_dynamic_f("%s", e->name)
--					run_test(fd, e->flags, m->mode | UNCACHED);
-+					run_test(fd, ctx, e->flags, m->mode | UNCACHED);
- 			}
- 		}
- 
- 		igt_subtest_with_dynamic_f("cached%s", m->suffix) {
--			__for_each_physical_engine(fd, e) {
-+			for_each_ctx_engine(fd, ctx, e) {
- 				if (!gem_class_can_store_dword(fd, e->class))
- 					continue;
- 				igt_dynamic_f("%s", e->name)
--					run_test(fd, e->flags, m->mode | CACHED);
-+					run_test(fd, ctx, e->flags, m->mode | CACHED);
- 			}
+-		spin = __igt_spin_new(i915, ctx,
++		spin = __igt_spin_new(i915, .ctx = ctx,
+ 				      .engine = e->flags,
+ 				      .flags = (IGT_SPIN_NO_PREEMPTION |
+ 						IGT_SPIN_USERPTR |
+@@ -633,7 +633,7 @@ static void test_nohangcheck_hostile(int i915)
+ 			fence = tmp;
  		}
  	}
-@@ -323,14 +329,14 @@ igt_main
- 	}
+-	gem_context_destroy(i915, ctx);
++	intel_ctx_destroy(i915, ctx);
+ 	igt_assert(fence != -1);
  
- 	igt_subtest("hang-S3")
--		run_test(fd, 0, SUSPEND | HANG);
-+		run_test(fd, intel_ctx_0(fd), 0, SUSPEND | HANG);
- 	igt_subtest("hang-S4")
--		run_test(fd, 0, HIBERNATE | HANG);
-+		run_test(fd, intel_ctx_0(fd), 0, HIBERNATE | HANG);
+ 	if (sync_fence_wait(fence, MSEC_PER_SEC)) { /* 640ms preempt-timeout */
+@@ -1210,7 +1210,8 @@ static int test_dmabuf(void)
+ 	return 0;
+ }
  
- 	igt_subtest("power-S0")
--		power_test(fd, 0, IDLE);
-+		power_test(fd, intel_ctx_0(fd), 0, IDLE);
- 	igt_subtest("power-S3")
--		power_test(fd, 0, SUSPEND);
-+		power_test(fd, intel_ctx_0(fd), 0, SUSPEND);
+-static void store_dword_rand(int i915, unsigned int engine,
++static void store_dword_rand(int i915, const intel_ctx_t *ctx,
++			     unsigned int engine,
+ 			     uint32_t target, uint64_t sz,
+ 			     int count)
+ {
+@@ -1242,6 +1243,7 @@ static void store_dword_rand(int i915, unsigned int engine,
+ 	exec.flags = engine;
+ 	if (gen < 6)
+ 		exec.flags |= I915_EXEC_SECURE;
++	exec.rsvd1 = ctx->id;
  
- 	igt_fixture {
- 		igt_disallow_hang(fd, hang);
+ 	i = 0;
+ 	for (int n = 0; n < count; n++) {
+@@ -1359,17 +1361,19 @@ static void test_readonly(int i915)
+ 
+ 	igt_fork(child, 1) {
+ 		const struct intel_execution_engine2 *e;
++		const intel_ctx_t *ctx;
+ 		char *orig;
+ 
+ 		orig = g_compute_checksum_for_data(G_CHECKSUM_SHA1, pages, sz);
+ 
+ 		gem_userptr(i915, space, total, true, userptr_flags, &rhandle);
+ 
+-		__for_each_physical_engine(i915, e) {
++		ctx = intel_ctx_create_all_physical(i915);
++		for_each_ctx_engine(i915, ctx, e) {
+ 			char *ref, *result;
+ 
+ 			/* First tweak the backing store through the write */
+-			store_dword_rand(i915, e->flags, whandle, sz, 64);
++			store_dword_rand(i915, ctx, e->flags, whandle, sz, 64);
+ 			gem_sync(i915, whandle);
+ 			ref = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
+ 							  pages, sz);
+@@ -1378,7 +1382,7 @@ static void test_readonly(int i915)
+ 			igt_assert(strcmp(ref, orig));
+ 
+ 			/* Now try the same through the read-only handle */
+-			store_dword_rand(i915, e->flags, rhandle, total, 64);
++			store_dword_rand(i915, ctx, e->flags, rhandle, total, 64);
+ 			gem_sync(i915, rhandle);
+ 			result = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
+ 							     pages, sz);
+@@ -1394,6 +1398,7 @@ static void test_readonly(int i915)
+ 			g_free(orig);
+ 			orig = ref;
+ 		}
++		intel_ctx_destroy(i915, ctx);
+ 
+ 		gem_close(i915, rhandle);
+ 
 -- 
 2.31.1
 
