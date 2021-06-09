@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com
- [IPv6:2607:f8b0:4864:20::52c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 07CFA6EA29
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:39:42 +0000 (UTC)
-Received: by mail-pg1-x52c.google.com with SMTP id i34so13688522pgl.9
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:39:42 -0700 (PDT)
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
+ [IPv6:2607:f8b0:4864:20::42f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7677F6EA47
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:39:46 +0000 (UTC)
+Received: by mail-pf1-x42f.google.com with SMTP id s14so18076819pfd.9
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:39:46 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  9 Jun 2021 12:38:41 -0500
-Message-Id: <20210609173903.249112-22-jason@jlekstrand.net>
+Date: Wed,  9 Jun 2021 12:38:44 -0500
+Message-Id: <20210609173903.249112-25-jason@jlekstrand.net>
 In-Reply-To: <20210609173632.248880-1-jason@jlekstrand.net>
 References: <20210609173632.248880-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 71/93] lib/i915: Use for_each_physical_ring
- for submission tests
+Subject: [igt-dev] [PATCH i-g-t 74/93] tests/i915/gem_ctx_engines: Drop the
+ idempotent subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,54 +27,111 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This does make the assumption that ctx0 has the default set of engines
-but, now that we've converted everything to intel_ctx_t, this assumption
-should be ok.
+This just tests the engines CONTEXT_GETPARAM which we're going to be
+dropping from i915.
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- lib/i915/gem_submission.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ tests/i915/gem_ctx_engines.c | 79 ------------------------------------
+ 1 file changed, 79 deletions(-)
 
-diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
-index bd4bbb3e..1abc73ec 100644
---- a/lib/i915/gem_submission.c
-+++ b/lib/i915/gem_submission.c
-@@ -33,6 +33,7 @@
- #include "i915/gem.h"
- #include "i915/gem_create.h"
- #include "i915/gem_engine_topology.h"
-+#include "i915/gem_ring.h"
- #include "i915/gem_submission.h"
+diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
+index 531495c3..ffed9659 100644
+--- a/tests/i915/gem_ctx_engines.c
++++ b/tests/i915/gem_ctx_engines.c
+@@ -174,82 +174,6 @@ out:
+ 	gem_context_destroy(i915, param.ctx_id);
+ }
  
- #include "igt_core.h"
-@@ -200,10 +201,8 @@ void gem_test_engine(int i915, unsigned int engine)
- 	gem_write(i915, obj.handle, 0, &bbe, sizeof(bbe));
- 
- 	if (engine == ALL_ENGINES) {
--		const struct intel_execution_engine2 *e2;
+-static void idempotent(int i915)
+-{
+-	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, I915_EXEC_RING_MASK + 1);
+-	I915_DEFINE_CONTEXT_PARAM_ENGINES(expected, I915_EXEC_RING_MASK + 1);
+-	struct drm_i915_gem_context_param p = {
+-		.ctx_id = gem_context_create(i915),
+-		.param = I915_CONTEXT_PARAM_ENGINES,
+-		.value = to_user_pointer(&engines),
+-		.size = sizeof(engines),
+-	};
+-	const size_t base = sizeof(struct i915_context_param_engines);
+-	const struct intel_execution_engine2 *e;
+-	int idx;
 -
--		__for_each_physical_engine(i915, e2) {
--			execbuf.flags = e2->flags;
-+		for_each_physical_ring(e, i915) {
-+			execbuf.flags = eb_ring(e);
- 			gem_execbuf(i915, &execbuf);
- 		}
- 	} else {
-@@ -382,11 +381,9 @@ unsigned int gem_submission_measure(int i915, unsigned int engine)
- 		fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) | O_NONBLOCK);
- 
- 	if (engine == ALL_ENGINES) {
--		struct intel_execution_engine2 *e;
+-	/* What goes in, must come out. And what comes out, must go in */
 -
- 		size = -1;
--		__for_each_physical_engine(i915, e) {
--			unsigned int this =  __measure_ringsize(i915, e->flags);
-+		for_each_physical_ring(e, i915) {
-+			unsigned int this =  __measure_ringsize(i915, eb_ring(e));
- 			if (this < size)
- 				size = this;
- 		}
+-	gem_context_get_param(i915, &p);
+-	igt_assert_eq(p.size, 0); /* atm default is to use legacy ring mask */
+-
+-	idx = 0;
+-	memset(&engines, 0, sizeof(engines));
+-	__for_each_physical_engine(i915, e) {
+-		engines.engines[idx].engine_class = e->class;
+-		engines.engines[idx].engine_instance = e->instance;
+-		idx++;
+-	}
+-	idx *= sizeof(*engines.engines);
+-	p.size = base + idx;
+-	gem_context_set_param(i915, &p);
+-
+-	memcpy(&expected, &engines, sizeof(expected));
+-
+-	gem_context_get_param(i915, &p);
+-	igt_assert_eq(p.size, base + idx);
+-	igt_assert(!memcmp(&expected, &engines, idx));
+-
+-	p.size = base;
+-	gem_context_set_param(i915, &p);
+-	gem_context_get_param(i915, &p);
+-	igt_assert_eq(p.size, base);
+-
+-	/* and it should not have overwritten the previous contents */
+-	igt_assert(!memcmp(&expected, &engines, idx));
+-
+-	memset(&engines, 0, sizeof(engines));
+-	engines.engines[0].engine_class = I915_ENGINE_CLASS_INVALID;
+-	engines.engines[0].engine_instance = I915_ENGINE_CLASS_INVALID_NONE;
+-	idx = sizeof(*engines.engines);
+-	p.size = base + idx;
+-	gem_context_set_param(i915, &p);
+-
+-	memcpy(&expected, &engines, sizeof(expected));
+-
+-	gem_context_get_param(i915, &p);
+-	igt_assert_eq(p.size, base + idx);
+-	igt_assert(!memcmp(&expected, &engines, idx));
+-
+-	p.size = sizeof(engines);
+-	__for_each_physical_engine(i915, e) {
+-		memset(&engines, 0, sizeof(engines));
+-		for (int n = 0; n < I915_EXEC_RING_MASK + 1; n++) {
+-			engine_class(&engines, n) = e->class;
+-			engine_instance(&engines, n) = e->instance;
+-		}
+-		gem_context_set_param(i915, &p);
+-
+-		memcpy(&expected, &engines, sizeof(expected));
+-
+-		gem_context_get_param(i915, &p);
+-		igt_assert_eq(p.size, sizeof(engines));
+-		igt_assert(!memcmp(&expected, &engines, p.size));
+-	}
+-
+-	gem_context_destroy(i915, p.ctx_id);
+-}
+-
+ static uint32_t batch_create(int i915)
+ {
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+@@ -713,9 +637,6 @@ igt_main
+ 	igt_subtest("invalid-engines")
+ 		invalid_engines(i915);
+ 
+-	igt_subtest("idempotent")
+-		idempotent(i915);
+-
+ 	igt_subtest("none")
+ 		none(i915);
+ 
 -- 
 2.31.1
 
