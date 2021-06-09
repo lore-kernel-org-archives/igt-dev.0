@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
- [IPv6:2607:f8b0:4864:20::533])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 634CC6EA25
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:37:28 +0000 (UTC)
-Received: by mail-pg1-x533.google.com with SMTP id e20so8175120pgg.0
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:37:28 -0700 (PDT)
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
+ [IPv6:2607:f8b0:4864:20::1036])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A5C36EA29
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:37:32 +0000 (UTC)
+Received: by mail-pj1-x1036.google.com with SMTP id
+ h12-20020a17090aa88cb029016400fd8ad8so1861208pjq.3
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:37:32 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  9 Jun 2021 12:36:17 -0500
-Message-Id: <20210609173632.248880-35-jason@jlekstrand.net>
+Date: Wed,  9 Jun 2021 12:36:20 -0500
+Message-Id: <20210609173632.248880-38-jason@jlekstrand.net>
 In-Reply-To: <20210609173632.248880-1-jason@jlekstrand.net>
 References: <20210609173632.248880-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 34/93] tests/prime_busy: Convert to
- intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 37/93] tests/i915/gem_ctx_exec: Stop cloning
+ contexts in close_race
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,92 +28,37 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Nothing in this subtest sets the set of engines on ctx0 so there's no
+point in cloning them.
+
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/prime_busy.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ tests/i915/gem_ctx_exec.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/tests/prime_busy.c b/tests/prime_busy.c
-index 8bf50eaf..e2684837 100644
---- a/tests/prime_busy.c
-+++ b/tests/prime_busy.c
-@@ -40,7 +40,7 @@ static bool prime_busy(struct pollfd *pfd, bool excl)
- #define HANG 0x4
- #define POLL 0x8
+diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
+index a8616f95..6db2d598 100644
+--- a/tests/i915/gem_ctx_exec.c
++++ b/tests/i915/gem_ctx_exec.c
+@@ -351,7 +351,7 @@ static void close_race(int i915)
+ 	igt_assert(contexts != MAP_FAILED);
  
--static void busy(int fd, unsigned ring, unsigned flags)
-+static void busy(int fd, const intel_ctx_t *ctx, unsigned ring, unsigned flags)
- {
- 	const int gen = intel_gen(intel_get_drm_devid(fd));
- 	const uint32_t _bbe = MI_BATCH_BUFFER_END;
-@@ -63,6 +63,7 @@ static void busy(int fd, unsigned ring, unsigned flags)
- 	execbuf.flags = ring;
- 	if (gen < 6)
- 		execbuf.flags |= I915_EXEC_SECURE;
-+	execbuf.rsvd1 = ctx->id;
+ 	for (int child = 0; child < ncpus; child++)
+-		contexts[child] = gem_context_clone_with_engines(i915, 0);
++		contexts[child] = gem_context_create(i915);
  
- 	memset(obj, 0, sizeof(obj));
- 	obj[SCRATCH].handle = gem_create(fd, 4096);
-@@ -186,7 +187,7 @@ static void busy(int fd, unsigned ring, unsigned flags)
- 	close(pfd[SCRATCH].fd);
- }
- 
--static void test_mode(int fd, unsigned int flags)
-+static void test_mode(int fd, const intel_ctx_t *ctx, unsigned int flags)
- {
- 	const struct intel_execution_engine2 *e;
- 	igt_hang_t hang = {};
-@@ -196,7 +197,7 @@ static void test_mode(int fd, unsigned int flags)
- 	else
- 		hang = igt_allow_hang(fd, 0, 0);
- 
--	__for_each_physical_engine(fd, e) {
-+	for_each_ctx_engine(fd, ctx, e) {
- 		if (!gem_class_can_store_dword(fd, e->class))
- 			continue;
- 
-@@ -204,7 +205,7 @@ static void test_mode(int fd, unsigned int flags)
- 			continue;
- 
- 		igt_dynamic_f("%s", e->name)
--			busy(fd, e->flags, flags);
-+			busy(fd, ctx, e->flags, flags);
- 	}
- 
- 	if ((flags & HANG) == 0)
-@@ -215,11 +216,13 @@ static void test_mode(int fd, unsigned int flags)
- 
- igt_main
- {
-+	const intel_ctx_t *ctx;
- 	int fd = -1;
- 
- 	igt_fixture {
- 		fd = drm_open_driver_master(DRIVER_INTEL);
- 		igt_require_gem(fd);
-+		ctx = intel_ctx_create_all_physical(fd);
- 	}
- 
- 	igt_subtest_group {
-@@ -238,13 +241,15 @@ igt_main
- 
- 		for (const struct mode *m = modes; m->name; m++) {
- 			igt_subtest_with_dynamic(m->name)
--				test_mode(fd, m->flags);
-+				test_mode(fd, ctx, m->flags);
- 
- 			igt_subtest_with_dynamic_f("%s-wait", m->name)
--				test_mode(fd, m->flags | POLL);
-+				test_mode(fd, ctx, m->flags | POLL);
+ 	igt_fork(child, ncpus) {
+ 		spin = __igt_spin_new(i915, .flags = IGT_SPIN_POLL_RUN);
+@@ -405,8 +405,7 @@ static void close_race(int i915)
+ 		 */
+ 		for (int child = 0; child < ncpus; child++) {
+ 			gem_context_destroy(i915, contexts[child]);
+-			contexts[child] =
+-				gem_context_clone_with_engines(i915, 0);
++			contexts[child] = gem_context_create(i915);
  		}
+ 		usleep(1000 + hars_petruska_f54_1_random_unsafe() % 2000);
  	}
- 
--	igt_fixture
-+	igt_fixture {
-+		intel_ctx_destroy(fd, ctx);
- 		close(fd);
-+	}
- }
 -- 
 2.31.1
 
