@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
- [IPv6:2607:f8b0:4864:20::52a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 417D86EC83
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:30:58 +0000 (UTC)
-Received: by mail-pg1-x52a.google.com with SMTP id n12so18339221pgs.13
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:30:58 -0700 (PDT)
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
+ [IPv6:2607:f8b0:4864:20::52b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D3486EC82
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:31:00 +0000 (UTC)
+Received: by mail-pg1-x52b.google.com with SMTP id 27so18392945pgy.3
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:31:00 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Tue,  8 Jun 2021 23:29:58 -0500
-Message-Id: <20210609043035.102359-13-jason@jlekstrand.net>
+Date: Tue,  8 Jun 2021 23:30:00 -0500
+Message-Id: <20210609043035.102359-15-jason@jlekstrand.net>
 In-Reply-To: <20210609043035.102359-1-jason@jlekstrand.net>
 References: <20210609043035.102359-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 12/93] lib/i915/gem_engine_topology: Add an
- iterator which doesn't munge contexts (v2)
+Subject: [igt-dev] [PATCH i-g-t 14/93] tests/i915/gem_exec_basic: Convert to
+ intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,81 +27,57 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-the current for_each_physical_engine iterators smash the set of engines
-on the context (or ctx0 for the __ version).  This new one just gets the
-list of engines from i915 and iterates over them.
-
-v2 (Jason Ekstrand):
- - Add docs
+This acts as a template for the rest of this patch series.  The rough
+idea is that we create a new context if the HW supports contexts and
+otherwise we use intel_ctx_0().  Once we have an intel_ctx_t, we can
+iterate over all of the engines in it in a consistent way.
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 ---
- lib/i915/gem_engine_topology.c | 16 ++++++++++++++++
- lib/i915/gem_engine_topology.h | 16 ++++++++++++++++
- 2 files changed, 32 insertions(+)
+ tests/i915/gem_exec_basic.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-index d1f94761..6bceb909 100644
---- a/lib/i915/gem_engine_topology.c
-+++ b/lib/i915/gem_engine_topology.c
-@@ -240,6 +240,22 @@ static struct intel_engine_data intel_engine_list_for_static(int fd)
- 	return engine_data;
+diff --git a/tests/i915/gem_exec_basic.c b/tests/i915/gem_exec_basic.c
+index 872b1d3b..ae7c275d 100644
+--- a/tests/i915/gem_exec_basic.c
++++ b/tests/i915/gem_exec_basic.c
+@@ -45,10 +45,13 @@ igt_main
+ 	struct drm_i915_query_memory_regions *query_info;
+ 	struct igt_collection *regions, *set;
+ 	uint32_t batch_size;
++	const intel_ctx_t *ctx = NULL;
+ 	int fd = -1;
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_INTEL);
++		ctx = intel_ctx_create_all_physical(fd);
++
+ 		/* igt_require_gem(fd); // test is mandatory */
+ 		igt_fork_hang_detector(fd);
+ 
+@@ -70,12 +73,13 @@ igt_main
+ 			memset(&exec, 0, sizeof(exec));
+ 			exec.handle = batch_create(fd, batch_size, region);
+ 
+-			__for_each_physical_engine(fd, e) {
++			for_each_ctx_engine(fd, ctx, e) {
+ 				igt_dynamic_f("%s-%s", e->name, sub_name) {
+ 					struct drm_i915_gem_execbuffer2 execbuf = {
+ 						.buffers_ptr = to_user_pointer(&exec),
+ 						.buffer_count = 1,
+ 						.flags = e->flags,
++						.rsvd1 = ctx->id,
+ 					};
+ 
+ 					gem_execbuf(fd, &execbuf);
+@@ -91,6 +95,7 @@ igt_main
+ 		free(query_info);
+ 		igt_collection_destroy(set);
+ 		igt_stop_hang_detector();
++		intel_ctx_destroy(fd, ctx);
+ 		close(fd);
+ 	}
  }
- 
-+/**
-+ * intel_engine_list_of_physical:
-+ * @fd: open i915 drm file descriptor
-+ *
-+ * Returns the list of all physical engines in the device
-+ */
-+struct intel_engine_data intel_engine_list_of_physical(int fd)
-+{
-+	struct intel_engine_data engine_data = { };
-+
-+	if (__query_engine_list(fd, &engine_data) == 0)
-+		return engine_data;
-+
-+	return intel_engine_list_for_static(fd);
-+}
-+
- static int gem_topology_get_param(int fd,
- 				  struct drm_i915_gem_context_param *p)
- {
-diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
-index 26a7af18..bd93e410 100644
---- a/lib/i915/gem_engine_topology.h
-+++ b/lib/i915/gem_engine_topology.h
-@@ -50,6 +50,7 @@ struct intel_engine_data {
- };
- 
- bool gem_has_engine_topology(int fd);
-+struct intel_engine_data intel_engine_list_of_physical(int fd);
- struct intel_engine_data intel_init_engine_list(int fd, uint32_t ctx_id);
- 
- /* iteration functions */
-@@ -85,6 +86,21 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags);
- 	     ((e__) = intel_get_current_engine(&i__)); \
- 	     intel_next_engine(&i__))
- 
-+/**
-+ * for_each_physical_engine
-+ * @fd__: open i915 drm file descriptor
-+ * @e__: struct intel_execution_engine2 iterator
-+ *
-+ * Iterates over each physical engine in device.  Be careful when using
-+ * this iterator as your context may not have all of these engines and the
-+ * intel_execution_engine2::flags field in the iterator may not match your
-+ * context configuration.
-+ */
-+#define for_each_physical_engine(fd__, e__) \
-+	for (struct intel_engine_data i__##e__ = intel_engine_list_of_physical(fd__); \
-+	     ((e__) = intel_get_current_physical_engine(&i__##e__)); \
-+	     intel_next_engine(&i__##e__))
-+
- /* needs to replace "for_each_physical_engine" when conflicts are fixed */
- #define ____for_each_physical_engine(fd__, ctx__, e__) \
- 	for (struct intel_engine_data i__##e__ = intel_init_engine_list(fd__, ctx__); \
 -- 
 2.31.1
 
