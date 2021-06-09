@@ -1,19 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com
- [IPv6:2607:f8b0:4864:20::b2b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B92946EAB2
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 18:13:04 +0000 (UTC)
-Received: by mail-yb1-xb2b.google.com with SMTP id c14so7750802ybk.3
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 11:13:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210608094020.21598-1-daniel.vetter@ffwll.ch>
- <20210608094020.21598-4-daniel.vetter@ffwll.ch>
-In-Reply-To: <20210608094020.21598-4-daniel.vetter@ffwll.ch>
-From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed, 9 Jun 2021 13:12:51 -0500
-Message-ID: <CAOFGe96RBSV6c4CnVZ62hFzANEx9T9LwHxajm_cq7RAv17Yg0w@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/7] Revert "i915/gem_exec_reloc:
- Exercise concurrent relocations"
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 09 Jun 2021 19:03:06 -0000
+Message-ID: <162326538624.27475.13564149235850209007@emeril.freedesktop.org>
+References: <20210609173632.248880-1-jason@jlekstrand.net>
+In-Reply-To: <20210609173632.248880-1-jason@jlekstrand.net>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgU3RvcCBk?=
+ =?utf-8?q?epending_on_context_mutation_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,272 +14,351 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0511673358=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: IGT development <igt-dev@lists.freedesktop.org>, Dave Airlie <airlied@redhat.com>, Daniel Vetter <daniel.vetter@intel.com>
+To: Jason Ekstrand <jason@jlekstrand.net>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jun 8, 2021 at 4:40 AM Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
->
-> This reverts commit c1f30ee09ac2e7eb3e8e90245239731a169a6050.
->
-> This validates gpu relocations, which we're about to delete.
->
-> Cc: Jason Ekstrand <jason@jlekstrand.net>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Dave Airlie <airlied@redhat.com>
-> Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-> ---
->  tests/i915/gem_exec_reloc.c | 215 ------------------------------------
->  1 file changed, 215 deletions(-)
->
-> diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
-> index 3b200f557b2c..c3f42aff9c9a 100644
-> --- a/tests/i915/gem_exec_reloc.c
-> +++ b/tests/i915/gem_exec_reloc.c
-> @@ -796,216 +796,6 @@ static void basic_softpin(int fd)
->         gem_close(fd, obj[1].handle);
->  }
->
-> -#define CONCURRENT 1024
-> -
-> -static uint64_t concurrent_relocs(int i915, int idx, int count)
-> -{
-> -       struct drm_i915_gem_relocation_entry *reloc;
-> -       const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
-> -       unsigned long sz;
-> -       int offset;
-> -
-> -       sz = count * sizeof(*reloc);
-> -       sz = ALIGN(sz, 4096);
-> -
-> -       reloc = mmap(0, sz, PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
-> -       igt_assert(reloc != MAP_FAILED);
-> -
-> -       offset = 1;
-> -       if (gen >= 4 && gen < 8)
-> -               offset += 1;
-> -
-> -       for (int n = 0; n < count; n++) {
-> -               reloc[n].presumed_offset = ~0ull;
-> -               reloc[n].offset = (4 * n + offset) * sizeof(uint32_t);
-> -               reloc[n].delta = (count * idx + n) * sizeof(uint32_t);
-> -       }
-> -       mprotect(reloc, sz, PROT_READ);
-> -
-> -       return to_user_pointer(reloc);
-> -}
-> -
-> -static int flags_to_index(const struct intel_execution_engine2 *e)
-> -{
-> -       return (e->flags & 63) | ((e->flags >> 13) & 3) << 4;
-> -}
-> -
-> -static void xchg_u32(void *array, unsigned i, unsigned j)
-> -{
-> -       uint32_t *u32 = array;
-> -       uint32_t tmp = u32[i];
-> -       u32[i] = u32[j];
-> -       u32[j] = tmp;
-> -}
-> -
-> -static void concurrent_child(int i915,
-> -                            const struct intel_execution_engine2 *e,
-> -                            uint32_t *common, int num_common,
-> -                            int in, int out)
-> -{
-> -       const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
-> -       int idx = flags_to_index(e);
-> -       uint64_t relocs = concurrent_relocs(i915, idx, CONCURRENT);
-> -       struct drm_i915_gem_exec_object2 obj[num_common + 2];
-> -       struct drm_i915_gem_execbuffer2 execbuf = {
-> -               .buffers_ptr = to_user_pointer(obj),
-> -               .buffer_count = ARRAY_SIZE(obj),
-> -               .flags = e->flags | I915_EXEC_HANDLE_LUT | (gen < 6 ? I915_EXEC_SECURE : 0),
-> -       };
-> -       uint32_t *batch = &obj[num_common + 1].handle;
-> -       unsigned long count = 0;
-> -       uint32_t *x;
-> -       int err = 0;
-> -
-> -       memset(obj, 0, sizeof(obj));
-> -       obj[0].handle = gem_create(i915, 64 * CONCURRENT * 4);
-> -
-> -       igt_permute_array(common, num_common, xchg_u32);
-> -       for (int n = 1; n <= num_common; n++) {
-> -               obj[n].handle = common[n - 1];
-> -               obj[n].relocation_count = CONCURRENT;
-> -               obj[n].relocs_ptr = relocs;
-> -       }
-> -
-> -       obj[num_common + 1].relocation_count = CONCURRENT;
-> -       obj[num_common + 1].relocs_ptr = relocs;
-> -
-> -       x = gem_mmap__device_coherent(i915, obj[0].handle,
-> -                                     0, 64 * CONCURRENT * 4, PROT_READ);
-> -       x += idx * CONCURRENT;
-> -
-> -       do {
-> -               read(in, batch, sizeof(*batch));
-> -               if (!*batch)
-> -                       break;
-> -
-> -               gem_execbuf(i915, &execbuf);
-> -               gem_sync(i915, *batch); /* write hazards lies */
-> -
-> -               for (int n = 0; n < CONCURRENT; n++) {
-> -                       if (x[n] != *batch) {
-> -                               igt_warn("%s: Invalid store [bad reloc] found:%08x at index %d, expected %08x\n",
-> -                                        e->name, x[n], n, *batch);
-> -                               err = -EINVAL;
-> -                               break;
-> -                       }
-> -               }
-> -
-> -               write(out, &err, sizeof(err));
-> -               count++;
-> -       } while (err == 0);
-> -
-> -       gem_close(i915, obj[0].handle);
-> -       igt_info("%s: completed %ld cycles\n", e->name, count);
-> -}
-> -
-> -static uint32_t create_concurrent_batch(int i915, unsigned int count)
-> -{
-> -       const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
-> -       size_t sz = ALIGN(4 * (1 + 4 * count), 4096);
-> -       uint32_t handle = gem_create(i915, sz);
-> -       uint32_t *map, *cs;
-> -       uint32_t cmd;
-> -
-> -       cmd = MI_STORE_DWORD_IMM;
-> -       if (gen < 6)
-> -               cmd |= 1 << 22;
-> -       if (gen < 4)
-> -               cmd--;
-> -
-> -       cs = map = gem_mmap__device_coherent(i915, handle, 0, sz, PROT_WRITE);
-> -       for (int n = 0; n < count; n++) {
-> -               *cs++ = cmd;
-> -               *cs++ = 0;
-> -               if (gen >= 4) {
-> -                       *cs++ = 0;
-> -                       *cs++ = handle;
-> -               } else {
-> -                       *cs++ = handle;
-> -                       *cs++ = 0;
-> -               }
-> -       }
-> -       *cs++ = MI_BATCH_BUFFER_END;
-> -       munmap(map, sz);
-> -
-> -       return handle;
-> -}
-> -
-> -static void concurrent(int i915, int num_common)
-> -{
-> -       const struct intel_execution_engine2 *e;
-> -       int in[2], out[2];
-> -       uint32_t common[16];
-> -       int result = -1;
-> -       uint32_t batch;
-> -       int nchild;
-> -
-> -       /*
-> -        * Exercise a few clients all trying to submit the same batch
-> -        * buffer writing to different locations. This exercises that the
-> -        * relocation handling within the gem_execbuf() ioctl is atomic
-> -        * with respect to the batch -- that is this call to execbuf only
-> -        * uses the relocations as supplied with the ioctl and does not
-> -        * use any of the conflicting relocations from the concurrent
-> -        * submissions.
+--===============0511673358==
+Content-Type: multipart/alternative;
+ boundary="===============7443585560903019164=="
 
-I'm less sure about this one.  Is it really testing concurrent
-relocations or just relocation atomicity?  If the later, then that's
-coverage we may want to keep.  It's hard to tell, unfortunately. :-(
+--===============7443585560903019164==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
---Jason
+== Series Details ==
 
-> -        */
-> -
-> -       pipe(in);
-> -       pipe(out);
-> -
-> -       for (int n = 0; n < num_common; n++)
-> -               common[n] = gem_create(i915, 4 * 4 * CONCURRENT);
-> -
-> -       nchild = 0;
-> -       __for_each_physical_engine(i915, e) {
-> -               if (!gem_class_can_store_dword(i915, e->class))
-> -                       continue;
-> -
-> -               igt_fork(child, 1)
-> -                       concurrent_child(i915, e,
-> -                                        common, num_common,
-> -                                        in[0], out[1]);
-> -
-> -               if (++nchild == 64)
-> -                       break;
-> -       }
-> -       close(in[0]);
-> -       close(out[1]);
-> -       igt_require(nchild > 1);
-> -
-> -       igt_until_timeout(5) {
-> -               batch = create_concurrent_batch(i915, CONCURRENT);
-> -
-> -               for (int n = 0; n < nchild; n++)
-> -                       write(in[1], &batch, sizeof(batch));
-> -
-> -               for (int n = 0; n < nchild; n++) {
-> -                       result = -1;
-> -                       read(out[0], &result, sizeof(result));
-> -                       if (result < 0)
-> -                               break;
-> -               }
-> -
-> -               gem_close(i915, batch);
-> -               if (result < 0)
-> -                       break;
-> -       }
-> -
-> -       batch = 0;
-> -       for (int n = 0; n < nchild; n++)
-> -               write(in[1], &batch, sizeof(batch));
-> -
-> -       close(in[1]);
-> -       close(out[0]);
-> -
-> -       igt_waitchildren();
-> -
-> -       for (int n = 0; n < num_common; n++)
-> -               gem_close(i915, common[n]);
-> -
-> -       igt_assert_eq(result, 0);
-> -}
-> -
->  static uint32_t
->  pin_scanout(igt_display_t *dpy, igt_output_t *output, struct igt_fb *fb)
->  {
-> @@ -1270,11 +1060,6 @@ igt_main
->                 }
->         }
->
-> -       igt_subtest("basic-concurrent0")
-> -               concurrent(fd, 0);
-> -       igt_subtest("basic-concurrent16")
-> -               concurrent(fd, 16);
-> -
->         igt_subtest("invalid-domains")
->                 invalid_domains(fd);
->
-> --
-> 2.24.1
->
+Series: Stop depending on context mutation (rev6)
+URL   : https://patchwork.freedesktop.org/series/88986/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10198 -> IGTPW_5906
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_5906:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@gem_exec_fence@nb-await:
+    - {fi-rkl-11500t}:    [SKIP][1] ([i915#3539]) -> [FAIL][2] +3 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-rkl-11500t/igt@gem_exec_fence@nb-await.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-rkl-11500t/igt@gem_exec_fence@nb-await.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5906 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-icl-y:           [PASS][3] -> [INCOMPLETE][4] ([i915#2782])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-icl-y/igt@i915_selftest@live@hangcheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-icl-y/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-icl-u2:          [PASS][5] -> [DMESG-WARN][6] ([i915#2203] / [i915#2868])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-icl-u2:          [INCOMPLETE][7] ([i915#2782] / [i915#3462]) -> [DMESG-FAIL][8] ([i915#3462])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-icl-u2/igt@i915_selftest@live@execlists.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-icl-u2/igt@i915_selftest@live@execlists.html
+    - fi-bsw-kefka:       [INCOMPLETE][9] ([i915#2782] / [i915#2940] / [i915#3462]) -> [DMESG-FAIL][10] ([i915#3462])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
+    - fi-tgl-u2:          [DMESG-FAIL][11] ([i915#3462]) -> [INCOMPLETE][12] ([i915#3462])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-tgl-u2/igt@i915_selftest@live@execlists.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-tgl-u2/igt@i915_selftest@live@execlists.html
+
+  * igt@runner@aborted:
+    - fi-icl-u2:          [FAIL][13] ([i915#2782] / [i915#3363]) -> [FAIL][14] ([i915#2426] / [i915#2782] / [i915#3363])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-icl-u2/igt@runner@aborted.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-icl-u2/igt@runner@aborted.html
+    - fi-bdw-5557u:       [FAIL][15] ([i915#3462]) -> [FAIL][16] ([i915#1602] / [i915#2029])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-bdw-5557u/igt@runner@aborted.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-bdw-5557u/igt@runner@aborted.html
+    - fi-bxt-dsi:         [FAIL][17] ([i915#2426] / [i915#3363]) -> [FAIL][18] ([i915#3363])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-bxt-dsi/igt@runner@aborted.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-bxt-dsi/igt@runner@aborted.html
+    - fi-cml-s:           [FAIL][19] ([i915#3363] / [i915#3462]) -> [FAIL][20] ([i915#2082] / [i915#2426] / [i915#3363] / [i915#3462])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-cml-s/igt@runner@aborted.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-cml-s/igt@runner@aborted.html
+    - fi-kbl-7567u:       [FAIL][21] ([i915#1436] / [i915#2426] / [i915#3363]) -> [FAIL][22] ([i915#1436] / [i915#3363])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-kbl-7567u/igt@runner@aborted.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-kbl-7567u/igt@runner@aborted.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
+  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
+  [i915#2029]: https://gitlab.freedesktop.org/drm/intel/issues/2029
+  [i915#2082]: https://gitlab.freedesktop.org/drm/intel/issues/2082
+  [i915#2203]: https://gitlab.freedesktop.org/drm/intel/issues/2203
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
+  [i915#2868]: https://gitlab.freedesktop.org/drm/intel/issues/2868
+  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
+  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
+  [i915#3462]: https://gitlab.freedesktop.org/drm/intel/issues/3462
+  [i915#3539]: https://gitlab.freedesktop.org/drm/intel/issues/3539
+
+
+Participating hosts (46 -> 39)
+------------------------------
+
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan bat-adlp-4 fi-dg1-1 fi-bdw-samus bat-jsl-1 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6103 -> IGTPW_5906
+
+  CI-20190529: 20190529
+  CI_DRM_10198: c50f36ae2f61278b857abe46b8e226191bc13f7b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5906: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/index.html
+  IGT_6103: 3aa79e55e73d4a49a5222e5dfde486b800a29fe7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@gem_ctx_param@invalid-get-engines
++igt@gem_ctx_param@invalid-get-no-zeromap
++igt@gem_ctx_param@invalid-get-ringsize
++igt@gem_ctx_param@invalid-set-no-zeromap
++igt@gem_ctx_param@invalid-set-ringsize
+-igt@api_intel_bb@bb-with-vm
+-igt@gem_ctx_clone@engines
+-igt@gem_ctx_clone@flags
+-igt@gem_ctx_clone@invalid
+-igt@gem_ctx_clone@scheduler
+-igt@gem_ctx_clone@vm
+-igt@gem_ctx_engines@idempotent
+-igt@gem_ctx_engines@libapi
+-igt@gem_ctx_param@non-root-set-no-zeromap
+-igt@gem_ctx_param@root-set-no-zeromap-disabled
+-igt@gem_ctx_param@root-set-no-zeromap-enabled
+-igt@gem_ctx_persistence@clone
+-igt@gem_ctx_persistence@close-replace-race
+-igt@gem_ctx_persistence@replace
+-igt@gem_ctx_persistence@replace-hostile
+-igt@gem_ctx_ringsize@active
+-igt@gem_ctx_ringsize@clone
+-igt@gem_ctx_ringsize@create
+-igt@gem_ctx_ringsize@idempotent
+-igt@gem_ctx_ringsize@idle
+-igt@gem_ctx_ringsize@invalid
+-igt@gem_ctx_ringsize@plugged
+-igt@gem_exec_balancer@bonded-cork
+-igt@gem_exec_balancer@bonded-early
+-igt@gem_exec_balancer@bonded-imm
+-igt@gem_exec_balancer@ringsize
+-igt@gem_vm_create@async-destroy
+-igt@gem_vm_create@destroy-race
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/index.html
+
+--===============7443585560903019164==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Stop depending on context mutation (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88986/">https://patchwork.freedesktop.org/series/88986/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10198 -&gt; IGTPW_5906</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_5906:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@gem_exec_fence@nb-await:<ul>
+<li>{fi-rkl-11500t}:    <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-rkl-11500t/igt@gem_exec_fence@nb-await.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3539">i915#3539</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-rkl-11500t/igt@gem_exec_fence@nb-await.html">FAIL</a> +3 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5906 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-icl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-icl-y/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-icl-y/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2868">i915#2868</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>
+<p>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-icl-u2/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-icl-u2/igt@i915_selftest@live@execlists.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>)</p>
+</li>
+<li>
+<p>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>)</p>
+</li>
+<li>
+<p>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-tgl-u2/igt@i915_selftest@live@execlists.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-tgl-u2/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-icl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-icl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
+</li>
+<li>
+<p>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2029">i915#2029</a>)</p>
+</li>
+<li>
+<p>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-bxt-dsi/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-bxt-dsi/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
+</li>
+<li>
+<p>fi-cml-s:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-cml-s/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-cml-s/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2082">i915#2082</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3462">i915#3462</a>)</p>
+</li>
+<li>
+<p>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10198/fi-kbl-7567u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/fi-kbl-7567u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (46 -&gt; 39)</h2>
+<p>Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan bat-adlp-4 fi-dg1-1 fi-bdw-samus bat-jsl-1 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6103 -&gt; IGTPW_5906</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10198: c50f36ae2f61278b857abe46b8e226191bc13f7b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5906: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5906/index.html<br />
+  IGT_6103: 3aa79e55e73d4a49a5222e5dfde486b800a29fe7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@gem_ctx_param@invalid-get-engines<br />
++igt@gem_ctx_param@invalid-get-no-zeromap<br />
++igt@gem_ctx_param@invalid-get-ringsize<br />
++igt@gem_ctx_param@invalid-set-no-zeromap<br />
++igt@gem_ctx_param@invalid-set-ringsize<br />
+-igt@api_intel_bb@bb-with-vm<br />
+-igt@gem_ctx_clone@engines<br />
+-igt@gem_ctx_clone@flags<br />
+-igt@gem_ctx_clone@invalid<br />
+-igt@gem_ctx_clone@scheduler<br />
+-igt@gem_ctx_clone@vm<br />
+-igt@gem_ctx_engines@idempotent<br />
+-igt@gem_ctx_engines@libapi<br />
+-igt@gem_ctx_param@non-root-set-no-zeromap<br />
+-igt@gem_ctx_param@root-set-no-zeromap-disabled<br />
+-igt@gem_ctx_param@root-set-no-zeromap-enabled<br />
+-igt@gem_ctx_persistence@clone<br />
+-igt@gem_ctx_persistence@close-replace-race<br />
+-igt@gem_ctx_persistence@replace<br />
+-igt@gem_ctx_persistence@replace-hostile<br />
+-igt@gem_ctx_ringsize@active<br />
+-igt@gem_ctx_ringsize@clone<br />
+-igt@gem_ctx_ringsize@create<br />
+-igt@gem_ctx_ringsize@idempotent<br />
+-igt@gem_ctx_ringsize@idle<br />
+-igt@gem_ctx_ringsize@invalid<br />
+-igt@gem_ctx_ringsize@plugged<br />
+-igt@gem_exec_balancer@bonded-cork<br />
+-igt@gem_exec_balancer@bonded-early<br />
+-igt@gem_exec_balancer@bonded-imm<br />
+-igt@gem_exec_balancer@ringsize<br />
+-igt@gem_vm_create@async-destroy<br />
+-igt@gem_vm_create@destroy-race</p>
+
+</body>
+</html>
+
+--===============7443585560903019164==--
+
+--===============0511673358==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0511673358==--
