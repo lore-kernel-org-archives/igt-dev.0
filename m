@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98E766E039
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 06:20:31 +0000 (UTC)
-Date: Wed, 9 Jun 2021 08:20:25 +0200
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1751489E8C
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 06:24:13 +0000 (UTC)
+Date: Wed, 9 Jun 2021 08:24:08 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210609062025.GF6228@zkempczy-mobl2>
+Message-ID: <20210609062408.GG6228@zkempczy-mobl2>
 References: <20210609043035.102359-1-jason@jlekstrand.net>
- <20210609043035.102359-14-jason@jlekstrand.net>
+ <20210609043035.102359-15-jason@jlekstrand.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210609043035.102359-14-jason@jlekstrand.net>
-Subject: Re: [igt-dev] [PATCH i-g-t 13/93] lib/i915/gem_engine_topology: Add
- an iterator for intel_ctx_t (v2)
+In-Reply-To: <20210609043035.102359-15-jason@jlekstrand.net>
+Subject: Re: [igt-dev] [PATCH i-g-t 14/93] tests/i915/gem_exec_basic:
+ Convert to intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,182 +19,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Jason Ekstrand <jason@jlekstrand.net>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jun 08, 2021 at 11:29:59PM -0500, Jason Ekstrand wrote:
-> v2 (Jason Ekstrand):
->  - Add documentation
-> 
-> Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
-> Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-
-Please read my comments from: 
-
-https://patchwork.freedesktop.org/patch/430802/?series=88986&rev=4
-
---
-Zbigniew
-
-> ---
->  lib/i915/gem_engine_topology.c | 69 ++++++++++++++++++++++++++++++++++
->  lib/i915/gem_engine_topology.h | 29 +++++++++++++-
->  2 files changed, 96 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-> index 6bceb909..ac707cb3 100644
-> --- a/lib/i915/gem_engine_topology.c
-> +++ b/lib/i915/gem_engine_topology.c
-> @@ -39,6 +39,47 @@
->   *
->   * This helper library contains functions used for querying and dealing
->   * with engines in GEM contexts.
-> + *
-> + * Combined with intel_ctx_t, these helpers give a pretty standard pattern
-> + * for testing every engine in a device:
-> + * |[<!-- language="C" -->
-> + *	const struct intel_execution_engine2 *e;
-> + *	const intel_ctx_t *ctx = intel_ctx_create_all_physical(fd);
-> + *
-> + *	igt_subtest_with_dynamic("basic") {
-> + *		for_each_ctx_engine(fd, ctx, e) {
-> + *			igt_dynamic_f("%s", e->name)
-> + *			run_ctx_test(fd, ctx, e);
-> + *		}
-> + *	}
-> + * ]|
-> + * This pattern works regardless of whether or not the engines topology API
-> + * is available and regardless of whether or not your platform supports
-> + * contexts.  If engines are unavailable, it falls back to a legacy context
-> + * and if contexts are unavailable, intel_ctx_create_all_physial() will
-> + * return a wrapper around ctx0.
-> + *
-> + * If, for some reason, you want to create a second identical context to
-> + * use with your engine iterator, duplicating the context is easy:
-> + * |[<!-- language="C" -->
-> + *	const intel_ctx_t *ctx2 = intel_ctx_create(fd, &ctx->cfg);
-> + * ]|
-> + *
-> + * If you want each subtest to always create its own contexts, there are
-> + * also iterators which work only on a context config.  As long as all
-> + * contexts are created from that config, or from one with an identical set
-> + * of engines, the iterator will be valid for those contexts.
-> + * |[<!-- language="C" -->
-> + *	const struct intel_execution_engine2 *e;
-> + *	intel_ctx_cfg_t cfg = intel_ctx_cfg_all_physical(fd);
-> + *
-> + *	igt_subtest_with_dynamic("basic") {
-> + *		for_each_ctx_cfg_engine(fd, &cfg, e) {
-> + *			igt_dynamic_f("%s", e->name)
-> + *			run_ctx_cfg_test(fd, &cfg, e);
-> + *		}
-> + *	}
-> + * ]|
->   */
->  
->  /*
-> @@ -256,6 +297,34 @@ struct intel_engine_data intel_engine_list_of_physical(int fd)
->  	return intel_engine_list_for_static(fd);
->  }
->  
-> +/**
-> + * intel_engine_list_for_ctx_cfg:
-> + * @fd: open i915 drm file descriptor
-> + * @cfg: Context config
-> + *
-> + * Returns the list of all engines in the context config
-> + */
-> +struct intel_engine_data
-> +intel_engine_list_for_ctx_cfg(int fd, const intel_ctx_cfg_t *cfg)
-> +{
-> +	if (fd >= 0 && cfg->num_engines) {
-> +		struct intel_engine_data engine_data = { };
-> +		int i;
-> +
-> +		engine_data.nengines = cfg->num_engines;
-> +		for (i = 0; i < cfg->num_engines; i++)
-> +			init_engine(&engine_data.engines[i],
-> +				    cfg->engines[i].engine_class,
-> +				    cfg->engines[i].engine_instance,
-> +				    i);
-> +
-> +		return engine_data;
-> +	} else {
-> +		/* This is a legacy context */
-> +		return intel_engine_list_for_static(fd);
-> +	}
-> +}
-> +
->  static int gem_topology_get_param(int fd,
->  				  struct drm_i915_gem_context_param *p)
->  {
-> diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
-> index bd93e410..92d9a479 100644
-> --- a/lib/i915/gem_engine_topology.h
-> +++ b/lib/i915/gem_engine_topology.h
-> @@ -26,8 +26,7 @@
->  
->  #include "igt_gt.h"
->  #include "i915_drm.h"
-> -
-> -#define GEM_MAX_ENGINES		I915_EXEC_RING_MASK + 1
-> +#include "intel_ctx.h"
->  
->  int __gem_query_engines(int fd,
->  			struct drm_i915_query_engine_info *query_engines,
-> @@ -51,6 +50,7 @@ struct intel_engine_data {
->  
->  bool gem_has_engine_topology(int fd);
->  struct intel_engine_data intel_engine_list_of_physical(int fd);
-> +struct intel_engine_data intel_engine_list_for_ctx_cfg(int fd, const intel_ctx_cfg_t *cfg);
->  struct intel_engine_data intel_init_engine_list(int fd, uint32_t ctx_id);
->  
->  /* iteration functions */
-> @@ -81,6 +81,31 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags);
->  #define __for_each_static_engine(e__) \
->  	for ((e__) = intel_execution_engines2; (e__)->name[0]; (e__)++)
->  
-> +/**
-> + * for_each_ctx_cfg_engine
-> + * @fd__: open i915 drm file descriptor
-> + * @ctx_cfg__: Intel context config
-> + * @e__: struct intel_execution_engine2 iterator
-> + *
-> + * Iterates over each physical engine in the context config
-> + */
-> +#define for_each_ctx_cfg_engine(fd__, ctx_cfg__, e__) \
-> +	for (struct intel_engine_data i__##e__ = \
-> +			intel_engine_list_for_ctx_cfg(fd__, ctx_cfg__); \
-> +	     ((e__) = intel_get_current_engine(&i__##e__)); \
-> +	     intel_next_engine(&i__##e__))
-> +
-> +/**
-> + * for_each_ctx_engine
-> + * @fd__: open i915 drm file descriptor
-> + * @ctx__: Intel context wrapper
-> + * @e__: struct intel_execution_engine2 iterator
-> + *
-> + * Iterates over each physical engine in the context
-> + */
-> +#define for_each_ctx_engine(fd__, ctx__, e__) \
-> +	for_each_ctx_cfg_engine(fd__, &(ctx__)->cfg, e__)
-> +
->  #define for_each_context_engine(fd__, ctx__, e__) \
->  	for (struct intel_engine_data i__ = intel_init_engine_list(fd__, ctx__); \
->  	     ((e__) = intel_get_current_engine(&i__)); \
-> -- 
-> 2.31.1
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gVHVlLCBKdW4gMDgsIDIwMjEgYXQgMTE6MzA6MDBQTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
+d3JvdGU6Cj4gVGhpcyBhY3RzIGFzIGEgdGVtcGxhdGUgZm9yIHRoZSByZXN0IG9mIHRoaXMgcGF0
+Y2ggc2VyaWVzLiAgVGhlIHJvdWdoCj4gaWRlYSBpcyB0aGF0IHdlIGNyZWF0ZSBhIG5ldyBjb250
+ZXh0IGlmIHRoZSBIVyBzdXBwb3J0cyBjb250ZXh0cyBhbmQKPiBvdGhlcndpc2Ugd2UgdXNlIGlu
+dGVsX2N0eF8wKCkuICBPbmNlIHdlIGhhdmUgYW4gaW50ZWxfY3R4X3QsIHdlIGNhbgo+IGl0ZXJh
+dGUgb3ZlciBhbGwgb2YgdGhlIGVuZ2luZXMgaW4gaXQgaW4gYSBjb25zaXN0ZW50IHdheS4KPiAK
+PiBTaWduZWQtb2ZmLWJ5OiBKYXNvbiBFa3N0cmFuZCA8amFzb25Aamxla3N0cmFuZC5uZXQ+Cj4g
+LS0tCj4gIHRlc3RzL2k5MTUvZ2VtX2V4ZWNfYmFzaWMuYyB8IDcgKysrKysrLQo+ICAxIGZpbGUg
+Y2hhbmdlZCwgNiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCj4gCj4gZGlmZiAtLWdpdCBh
+L3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfYmFzaWMuYyBiL3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfYmFzaWMu
+Ywo+IGluZGV4IDg3MmIxZDNiLi5hZTdjMjc1ZCAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2dl
+bV9leGVjX2Jhc2ljLmMKPiArKysgYi90ZXN0cy9pOTE1L2dlbV9leGVjX2Jhc2ljLmMKPiBAQCAt
+NDUsMTAgKzQ1LDEzIEBAIGlndF9tYWluCj4gIAlzdHJ1Y3QgZHJtX2k5MTVfcXVlcnlfbWVtb3J5
+X3JlZ2lvbnMgKnF1ZXJ5X2luZm87Cj4gIAlzdHJ1Y3QgaWd0X2NvbGxlY3Rpb24gKnJlZ2lvbnMs
+ICpzZXQ7Cj4gIAl1aW50MzJfdCBiYXRjaF9zaXplOwo+ICsJY29uc3QgaW50ZWxfY3R4X3QgKmN0
+eCA9IE5VTEw7CgpJbml0aWFsaXphdGlvbiBpcyBub3QgbmVjZXNzYXJ5IGhlcmUuIE90aGVyIHRo
+aW5ncyBhcmUgb2s6CgpSZXZpZXdlZC1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmll
+dy5rZW1wY3p5bnNraUBpbnRlbC5jb20+CgotLQpaYmlnbmlldwoKPiAgCWludCBmZCA9IC0xOwo+
+ICAKPiAgCWlndF9maXh0dXJlIHsKPiAgCQlmZCA9IGRybV9vcGVuX2RyaXZlcihEUklWRVJfSU5U
+RUwpOwo+ICsJCWN0eCA9IGludGVsX2N0eF9jcmVhdGVfYWxsX3BoeXNpY2FsKGZkKTsKPiArCj4g
+IAkJLyogaWd0X3JlcXVpcmVfZ2VtKGZkKTsgLy8gdGVzdCBpcyBtYW5kYXRvcnkgKi8KPiAgCQlp
+Z3RfZm9ya19oYW5nX2RldGVjdG9yKGZkKTsKPiAgCj4gQEAgLTcwLDEyICs3MywxMyBAQCBpZ3Rf
+bWFpbgo+ICAJCQltZW1zZXQoJmV4ZWMsIDAsIHNpemVvZihleGVjKSk7Cj4gIAkJCWV4ZWMuaGFu
+ZGxlID0gYmF0Y2hfY3JlYXRlKGZkLCBiYXRjaF9zaXplLCByZWdpb24pOwo+ICAKPiAtCQkJX19m
+b3JfZWFjaF9waHlzaWNhbF9lbmdpbmUoZmQsIGUpIHsKPiArCQkJZm9yX2VhY2hfY3R4X2VuZ2lu
+ZShmZCwgY3R4LCBlKSB7Cj4gIAkJCQlpZ3RfZHluYW1pY19mKCIlcy0lcyIsIGUtPm5hbWUsIHN1
+Yl9uYW1lKSB7Cj4gIAkJCQkJc3RydWN0IGRybV9pOTE1X2dlbV9leGVjYnVmZmVyMiBleGVjYnVm
+ID0gewo+ICAJCQkJCQkuYnVmZmVyc19wdHIgPSB0b191c2VyX3BvaW50ZXIoJmV4ZWMpLAo+ICAJ
+CQkJCQkuYnVmZmVyX2NvdW50ID0gMSwKPiAgCQkJCQkJLmZsYWdzID0gZS0+ZmxhZ3MsCj4gKwkJ
+CQkJCS5yc3ZkMSA9IGN0eC0+aWQsCj4gIAkJCQkJfTsKPiAgCj4gIAkJCQkJZ2VtX2V4ZWNidWYo
+ZmQsICZleGVjYnVmKTsKPiBAQCAtOTEsNiArOTUsNyBAQCBpZ3RfbWFpbgo+ICAJCWZyZWUocXVl
+cnlfaW5mbyk7Cj4gIAkJaWd0X2NvbGxlY3Rpb25fZGVzdHJveShzZXQpOwo+ICAJCWlndF9zdG9w
+X2hhbmdfZGV0ZWN0b3IoKTsKPiArCQlpbnRlbF9jdHhfZGVzdHJveShmZCwgY3R4KTsKPiAgCQlj
+bG9zZShmZCk7Cj4gIAl9Cj4gIH0KPiAtLSAKPiAyLjMxLjEKPiAKPiBfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+IGlndC1kZXYgbWFpbGluZyBsaXN0Cj4g
+aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKPiBodHRwczovL2xpc3RzLmZyZWVkZXNrdG9w
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5m
+cmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9pZ3QtZGV2Cg==
