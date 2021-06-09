@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 09D256EC7E
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:33:10 +0000 (UTC)
-Received: by mail-pl1-x632.google.com with SMTP id h12so530971plf.4
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:33:10 -0700 (PDT)
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 082C56EC7B
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:33:07 +0000 (UTC)
+Received: by mail-pj1-x102b.google.com with SMTP id g24so615183pji.4
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:33:07 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Tue,  8 Jun 2021 23:32:19 -0500
-Message-Id: <20210609043259.102581-4-jason@jlekstrand.net>
+Date: Tue,  8 Jun 2021 23:32:17 -0500
+Message-Id: <20210609043259.102581-2-jason@jlekstrand.net>
 In-Reply-To: <20210609043035.102359-1-jason@jlekstrand.net>
 References: <20210609043035.102359-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 53/93] tests/i915/gem_exec_gttfill: Convert
- to intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 51/93] tests/i915/gem_shrink: Convert to
+ intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,77 +27,99 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Only one subtest actually needs to iterate over engines.
+
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/i915/gem_exec_gttfill.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ tests/i915/gem_shrink.c | 37 ++++++++++++++++++++-----------------
+ 1 file changed, 20 insertions(+), 17 deletions(-)
 
-diff --git a/tests/i915/gem_exec_gttfill.c b/tests/i915/gem_exec_gttfill.c
-index e711576f..a3c054e4 100644
---- a/tests/i915/gem_exec_gttfill.c
-+++ b/tests/i915/gem_exec_gttfill.c
-@@ -106,7 +106,7 @@ static void submit(int fd, int gen,
- 	gem_sync(fd, obj.handle);
+diff --git a/tests/i915/gem_shrink.c b/tests/i915/gem_shrink.c
+index b6450a6f..be1125dd 100644
+--- a/tests/i915/gem_shrink.c
++++ b/tests/i915/gem_shrink.c
+@@ -38,8 +38,6 @@
+ #define MADV_FREE 8
+ #endif
+ 
+-static unsigned int engines[I915_EXEC_RING_MASK + 1], nengine;
+-
+ static void get_pages(int fd, uint64_t alloc)
+ {
+ 	uint32_t handle = gem_create(fd, alloc);
+@@ -164,8 +162,10 @@ static void execbufN(int fd, uint64_t alloc)
+ static void execbufX(int fd, uint64_t alloc)
+ {
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	const struct intel_execution_engine2 *e;
+ 	struct drm_i915_gem_exec_object2 *obj;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
++	const intel_ctx_t *ctx;
+ 	int count = alloc >> 20;
+ 	uint64_t obj_size;
+ 
+@@ -175,23 +175,32 @@ static void execbufX(int fd, uint64_t alloc)
+ 	obj[count].handle = gem_create(fd, 4096);
+ 	gem_write(fd, obj[count].handle, 0, &bbe, sizeof(bbe));
+ 
+-	for (int i = 1; i <= count; i++) {
+-		int j = count - i;
++	ctx = intel_ctx_create_all_physical(fd);
+ 
+-		obj[j+1].flags = 0;
++	for (int i = 1; i <= count;) {
++		for_each_ctx_engine(fd, ctx, e) {
++			int j = count - i;
+ 
+-		obj[j].handle = gem_create(fd, 1 << 20);
+-		obj[j].flags = EXEC_OBJECT_WRITE;
++			obj[j+1].flags = 0;
+ 
+-		execbuf.buffers_ptr = to_user_pointer(&obj[j]);
+-		execbuf.buffer_count = i + 1;
+-		execbuf.flags = engines[j % nengine];
+-		gem_execbuf(fd, &execbuf);
++			obj[j].handle = gem_create(fd, 1 << 20);
++			obj[j].flags = EXEC_OBJECT_WRITE;
++
++			execbuf.buffers_ptr = to_user_pointer(&obj[j]);
++			execbuf.buffer_count = i + 1;
++			execbuf.flags = e->flags;
++			execbuf.rsvd1 = ctx->id;
++			gem_execbuf(fd, &execbuf);
++
++			i++;
++		}
+ 	}
+ 
+ 	for (int i = 0; i <= count; i++)
+ 		gem_madvise(fd, obj[i].handle, I915_MADV_DONTNEED);
+ 	munmap(obj, obj_size);
++
++	intel_ctx_destroy(fd, ctx);
  }
  
--static void fillgtt(int fd, unsigned ring, int timeout)
-+static void fillgtt(int fd, const intel_ctx_t *ctx, unsigned ring, int timeout)
- {
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
- 	struct drm_i915_gem_execbuffer2 execbuf;
-@@ -126,7 +126,7 @@ static void fillgtt(int fd, unsigned ring, int timeout)
- 	if (ring == ALL_ENGINES) {
- 		struct intel_execution_engine2 *e;
- 
--		__for_each_physical_engine(fd, e) {
-+		for_each_ctx_engine(fd, ctx, e) {
- 			if (!gem_class_can_store_dword(fd, e->class))
- 				continue;
- 
-@@ -155,6 +155,7 @@ static void fillgtt(int fd, unsigned ring, int timeout)
- 	execbuf.buffer_count = 1;
- 	if (gen < 6)
- 		execbuf.flags |= I915_EXEC_SECURE;
-+	execbuf.rsvd1 = ctx->id;
- 
- 	batches = calloc(count, sizeof(*batches));
- 	igt_assert(batches);
-@@ -209,29 +210,31 @@ static void fillgtt(int fd, unsigned ring, int timeout)
- igt_main
- {
- 	const struct intel_execution_engine2 *e;
-+	const intel_ctx_t *ctx = NULL;
- 	int i915 = -1;
- 
+ static void hang(int fd, uint64_t alloc)
+@@ -429,7 +438,6 @@ igt_main
  	igt_fixture {
- 		i915 = drm_open_driver(DRIVER_INTEL);
- 		igt_require_gem(i915);
-+		ctx = intel_ctx_create_all_physical(i915);
- 		igt_fork_hang_detector(i915);
+ 		const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+ 		uint64_t mem_size = intel_get_total_ram_mb();
+-		const struct intel_execution_engine2 *e;
+ 		int fd;
+ 
+ 		fd = drm_open_driver(DRIVER_INTEL);
+@@ -451,11 +459,6 @@ igt_main
+ 		intel_require_memory(num_processes, alloc_size,
+ 				     CHECK_SWAP | CHECK_RAM);
+ 
+-		nengine = 0;
+-		__for_each_physical_engine(fd, e)
+-			engines[nengine++] = e->flags;
+-		igt_require(nengine);
+-
+ 		close(fd);
  	}
  
- 	igt_subtest("basic") /* just enough to run a single pass */
--		fillgtt(i915, ALL_ENGINES, 1);
-+		fillgtt(i915, ctx, ALL_ENGINES, 1);
- 
- 	igt_subtest_with_dynamic("engines") {
--		__for_each_physical_engine(i915, e) {
-+		for_each_ctx_engine(i915, ctx, e) {
- 			if (!gem_class_can_store_dword(i915, e->class))
- 				continue;
- 
- 			igt_dynamic_f("%s", e->name)
--				fillgtt(i915, e->flags, 20);
-+				fillgtt(i915, ctx, e->flags, 20);
- 		}
- 	}
- 
- 	igt_subtest("all")
--		fillgtt(i915, ALL_ENGINES, 20);
-+		fillgtt(i915, ctx, ALL_ENGINES, 20);
- 
- 	igt_fixture {
- 		igt_stop_hang_detector();
 -- 
 2.31.1
 
