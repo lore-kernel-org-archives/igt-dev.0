@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com
- [IPv6:2607:f8b0:4864:20::52d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 430676EC7C
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:31:23 +0000 (UTC)
-Received: by mail-pg1-x52d.google.com with SMTP id e20so6436095pgg.0
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:31:23 -0700 (PDT)
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com
+ [IPv6:2607:f8b0:4864:20::536])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A4CDF6EC7B
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:31:25 +0000 (UTC)
+Received: by mail-pg1-x536.google.com with SMTP id t9so18380116pgn.4
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:31:25 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Tue,  8 Jun 2021 23:30:18 -0500
-Message-Id: <20210609043035.102359-33-jason@jlekstrand.net>
+Date: Tue,  8 Jun 2021 23:30:20 -0500
+Message-Id: <20210609043035.102359-35-jason@jlekstrand.net>
 In-Reply-To: <20210609043035.102359-1-jason@jlekstrand.net>
 References: <20210609043035.102359-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 32/93] tests/i915/i915_hangman: Convert to
+Subject: [igt-dev] [PATCH i-g-t 34/93] tests/prime_busy: Convert to
  intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -29,133 +29,89 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/i915/i915_hangman.c | 37 ++++++++++++++++++++++---------------
- 1 file changed, 22 insertions(+), 15 deletions(-)
+ tests/prime_busy.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index f6fac283..08f0ebb3 100644
---- a/tests/i915/i915_hangman.c
-+++ b/tests/i915/i915_hangman.c
-@@ -205,7 +205,7 @@ static void check_error_state(const char *expected_ring_name,
- 	igt_assert(found);
+diff --git a/tests/prime_busy.c b/tests/prime_busy.c
+index 8bf50eaf..e2684837 100644
+--- a/tests/prime_busy.c
++++ b/tests/prime_busy.c
+@@ -40,7 +40,7 @@ static bool prime_busy(struct pollfd *pfd, bool excl)
+ #define HANG 0x4
+ #define POLL 0x8
+ 
+-static void busy(int fd, unsigned ring, unsigned flags)
++static void busy(int fd, const intel_ctx_t *ctx, unsigned ring, unsigned flags)
+ {
+ 	const int gen = intel_gen(intel_get_drm_devid(fd));
+ 	const uint32_t _bbe = MI_BATCH_BUFFER_END;
+@@ -63,6 +63,7 @@ static void busy(int fd, unsigned ring, unsigned flags)
+ 	execbuf.flags = ring;
+ 	if (gen < 6)
+ 		execbuf.flags |= I915_EXEC_SECURE;
++	execbuf.rsvd1 = ctx->id;
+ 
+ 	memset(obj, 0, sizeof(obj));
+ 	obj[SCRATCH].handle = gem_create(fd, 4096);
+@@ -186,7 +187,7 @@ static void busy(int fd, unsigned ring, unsigned flags)
+ 	close(pfd[SCRATCH].fd);
  }
  
--static void test_error_state_capture(unsigned ring_id,
-+static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
- 				     const char *ring_name)
- {
- 	uint32_t *batch;
-@@ -214,7 +214,7 @@ static void test_error_state_capture(unsigned ring_id,
- 
- 	clear_error_state();
- 
--	hang = igt_hang_ctx(device, 0, ring_id, HANG_ALLOW_CAPTURE);
-+	hang = igt_hang_ctx(device, ctx->id, ring_id, HANG_ALLOW_CAPTURE);
- 	offset = hang.spin->obj[IGT_SPIN_BATCH].offset;
- 
- 	batch = gem_mmap__cpu(device, hang.spin->handle, 0, 4096, PROT_READ);
-@@ -227,32 +227,34 @@ static void test_error_state_capture(unsigned ring_id,
- }
- 
- static void
--test_engine_hang(const struct intel_execution_engine2 *e, unsigned int flags)
-+test_engine_hang(const intel_ctx_t *ctx,
-+		 const struct intel_execution_engine2 *e, unsigned int flags)
- {
- 	const struct intel_execution_engine2 *other;
-+	const intel_ctx_t *tmp_ctx;
- 	igt_spin_t *spin, *next;
- 	IGT_LIST_HEAD(list);
--	uint32_t ctx;
- 
- 	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
- 		    gem_has_cmdparser(device, e->flags));
- 
- 	/* Fill all the other engines with background load */
--	__for_each_physical_engine(device, other) {
-+	for_each_ctx_engine(device, ctx, other) {
- 		if (other->flags == e->flags)
- 			continue;
- 
--		ctx = gem_context_clone_with_engines(device, 0);
--		spin = __igt_spin_new(device, ctx,
-+		tmp_ctx = intel_ctx_create(device, &ctx->cfg);
-+		spin = __igt_spin_new(device, .ctx = tmp_ctx,
- 				      .engine = other->flags,
- 				      .flags = IGT_SPIN_FENCE_OUT);
--		gem_context_destroy(device, ctx);
-+		intel_ctx_destroy(device, tmp_ctx);
- 
- 		igt_list_move(&spin->link, &list);
- 	}
- 
- 	/* And on the target engine, we hang */
- 	spin = igt_spin_new(device,
-+			    .ctx = ctx,
- 			    .engine = e->flags,
- 			    .flags = (IGT_SPIN_FENCE_OUT |
- 				      IGT_SPIN_NO_PREEMPTION |
-@@ -311,13 +313,16 @@ static void hangcheck_unterminated(void)
- igt_main
+-static void test_mode(int fd, unsigned int flags)
++static void test_mode(int fd, const intel_ctx_t *ctx, unsigned int flags)
  {
  	const struct intel_execution_engine2 *e;
-+	const intel_ctx_t *ctx = NULL;
  	igt_hang_t hang = {};
+@@ -196,7 +197,7 @@ static void test_mode(int fd, unsigned int flags)
+ 	else
+ 		hang = igt_allow_hang(fd, 0, 0);
+ 
+-	__for_each_physical_engine(fd, e) {
++	for_each_ctx_engine(fd, ctx, e) {
+ 		if (!gem_class_can_store_dword(fd, e->class))
+ 			continue;
+ 
+@@ -204,7 +205,7 @@ static void test_mode(int fd, unsigned int flags)
+ 			continue;
+ 
+ 		igt_dynamic_f("%s", e->name)
+-			busy(fd, e->flags, flags);
++			busy(fd, ctx, e->flags, flags);
+ 	}
+ 
+ 	if ((flags & HANG) == 0)
+@@ -215,11 +216,13 @@ static void test_mode(int fd, unsigned int flags)
+ 
+ igt_main
+ {
++	const intel_ctx_t *ctx;
+ 	int fd = -1;
  
  	igt_fixture {
- 		device = drm_open_driver(DRIVER_INTEL);
- 		igt_require_gem(device);
+ 		fd = drm_open_driver_master(DRIVER_INTEL);
+ 		igt_require_gem(fd);
++		ctx = intel_ctx_create_all_physical(fd);
+ 	}
  
--		hang = igt_allow_hang(device, 0, HANG_ALLOW_CAPTURE);
-+		ctx = intel_ctx_create_all_physical(device);
-+
-+		hang = igt_allow_hang(device, ctx->id, HANG_ALLOW_CAPTURE);
+ 	igt_subtest_group {
+@@ -238,13 +241,15 @@ igt_main
  
- 		sysfs = igt_sysfs_open(device);
- 		igt_assert(sysfs != -1);
-@@ -329,9 +334,9 @@ igt_main
- 		test_error_state_basic();
+ 		for (const struct mode *m = modes; m->name; m++) {
+ 			igt_subtest_with_dynamic(m->name)
+-				test_mode(fd, m->flags);
++				test_mode(fd, ctx, m->flags);
  
- 	igt_subtest_with_dynamic("error-state-capture") {
--		__for_each_physical_engine(device, e) {
-+		for_each_ctx_engine(device, ctx, e) {
- 			igt_dynamic_f("%s", e->name)
--				test_error_state_capture(e->flags, e->name);
-+				test_error_state_capture(ctx, e->flags, e->name);
+ 			igt_subtest_with_dynamic_f("%s-wait", m->name)
+-				test_mode(fd, m->flags | POLL);
++				test_mode(fd, ctx, m->flags | POLL);
  		}
  	}
  
-@@ -347,9 +352,9 @@ igt_main
-                 ioctl(device, DRM_IOCTL_I915_GETPARAM, &gp);
- 		igt_require(has_gpu_reset > 1);
- 
--		__for_each_physical_engine(device, e) {
-+		for_each_ctx_engine(device, ctx, e) {
- 			igt_dynamic_f("%s", e->name)
--				test_engine_hang(e, 0);
-+				test_engine_hang(ctx, e, 0);
- 		}
- 	}
- 
-@@ -364,9 +369,9 @@ igt_main
- 		ioctl(device, DRM_IOCTL_I915_GETPARAM, &gp);
- 		igt_require(has_gpu_reset > 1);
- 
--		__for_each_physical_engine(device, e) {
-+		for_each_ctx_engine(device, ctx, e) {
- 			igt_dynamic_f("%s", e->name)
--				test_engine_hang(e, IGT_SPIN_INVALID_CS);
-+				test_engine_hang(ctx, e, IGT_SPIN_INVALID_CS);
- 		}
- 	}
- 
-@@ -375,5 +380,7 @@ igt_main
- 
- 	igt_fixture {
- 		igt_disallow_hang(device, hang);
-+		intel_ctx_destroy(device, ctx);
-+		close(device);
- 	}
+-	igt_fixture
++	igt_fixture {
++		intel_ctx_destroy(fd, ctx);
+ 		close(fd);
++	}
  }
 -- 
 2.31.1
