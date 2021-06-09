@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com
- [IPv6:2607:f8b0:4864:20::b2f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ADD4D6E059
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 14:37:15 +0000 (UTC)
-Received: by mail-yb1-xb2f.google.com with SMTP id g38so35776181ybi.12
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 07:37:15 -0700 (PDT)
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com
+ [IPv6:2607:f8b0:4864:20::b36])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 08476899AB
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 14:41:26 +0000 (UTC)
+Received: by mail-yb1-xb36.google.com with SMTP id i4so35860965ybe.2
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 07:41:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210423214853.876911-1-jason@jlekstrand.net>
- <20210423214853.876911-14-jason@jlekstrand.net>
- <20210518081222.GD4341@zkempczy-mobl2>
-In-Reply-To: <20210518081222.GD4341@zkempczy-mobl2>
+References: <20210609043035.102359-1-jason@jlekstrand.net>
+ <20210609043035.102359-10-jason@jlekstrand.net>
+ <87r1hbvc4l.wl-ashutosh.dixit@intel.com>
+ <YMBfqle9oJwjHvBr@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <YMBfqle9oJwjHvBr@platvala-desk.ger.corp.intel.com>
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed, 9 Jun 2021 09:37:03 -0500
-Message-ID: <CAOFGe95S1CzPioFBRFuZQaOkmsy++cFvzX2-g3eXyAMb1_K+nA@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 13/89] lib/i915/gem_engine_topology: Add
- an iterator for intel_ctx_t (v2)
+Date: Wed, 9 Jun 2021 09:41:14 -0500
+Message-ID: <CAOFGe95Ux67OOc7=mSV4yvJYYDotyuf0HYHFpKvaqKZCUB_GtQ@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 09/93] lib: Add an intel_ctx wrapper
+ struct and helpers (v4)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,138 +23,81 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBNYXkgMTgsIDIwMjEgYXQgMzoxMiBBTSBaYmlnbmlldyBLZW1wY3p5xYRza2kKPHpi
-aWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4gd3JvdGU6Cj4KPiBPbiBGcmksIEFwciAyMywg
-MjAyMSBhdCAwNDo0NzozN1BNIC0wNTAwLCBKYXNvbiBFa3N0cmFuZCB3cm90ZToKPiA+IHYyIChK
-YXNvbiBFa3N0cmFuZCk6Cj4gPiAgLSBBZGQgZG9jdW1lbnRhdGlvbgo+ID4KPiA+IFNpZ25lZC1v
-ZmYtYnk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3RyYW5kLm5ldD4KPiA+IFJldmlld2Vk
-LWJ5OiBEYW5pZWwgVmV0dGVyIDxkYW5pZWwudmV0dGVyQGZmd2xsLmNoPgo+ID4gLS0tCj4gPiAg
-bGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5jIHwgNjkgKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKwo+ID4gIGxpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuaCB8IDI5ICsr
-KysrKysrKysrKystCj4gPiAgMiBmaWxlcyBjaGFuZ2VkLCA5NiBpbnNlcnRpb25zKCspLCAyIGRl
-bGV0aW9ucygtKQo+ID4KPiA+IGRpZmYgLS1naXQgYS9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9s
-b2d5LmMgYi9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmMKPiA+IGluZGV4IDZiY2ViOTA5
-Li5hYzcwN2NiMyAxMDA2NDQKPiA+IC0tLSBhL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3ku
-Ywo+ID4gKysrIGIvbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5jCj4gPiBAQCAtMzksNiAr
-MzksNDcgQEAKPiA+ICAgKgo+ID4gICAqIFRoaXMgaGVscGVyIGxpYnJhcnkgY29udGFpbnMgZnVu
-Y3Rpb25zIHVzZWQgZm9yIHF1ZXJ5aW5nIGFuZCBkZWFsaW5nCj4gPiAgICogd2l0aCBlbmdpbmVz
-IGluIEdFTSBjb250ZXh0cy4KPiA+ICsgKgo+ID4gKyAqIENvbWJpbmVkIHdpdGggaW50ZWxfY3R4
-X3QsIHRoZXNlIGhlbHBlcnMgZ2l2ZSBhIHByZXR0eSBzdGFuZGFyZCBwYXR0ZXJuCj4gPiArICog
-Zm9yIHRlc3RpbmcgZXZlcnkgZW5naW5lIGluIGEgZGV2aWNlOgo+ID4gKyAqIHxbPCEtLSBsYW5n
-dWFnZT0iQyIgLS0+Cj4gPiArICogICBjb25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2lu
-ZTIgKmU7Cj4gPiArICogICBjb25zdCBpbnRlbF9jdHhfdCAqY3R4ID0gaW50ZWxfY3R4X2NyZWF0
-ZV9hbGxfcGh5c2ljYWwoZmQpOwo+ID4gKyAqCj4gPiArICogICBpZ3Rfc3VidGVzdF93aXRoX2R5
-bmFtaWMoImJhc2ljIikgewo+ID4gKyAqICAgICAgICAgICBmb3JfZWFjaF9jdHhfZW5naW5lKGZk
-LCBjdHgsIGUpIHsKPiA+ICsgKiAgICAgICAgICAgICAgICAgICBpZ3RfZHluYW1pY19mKCIlcyIs
-IGUtPm5hbWUpCj4gPiArICogICAgICAgICAgICAgICAgICAgcnVuX2N0eF90ZXN0KGZkLCBjdHgs
-IGUpOwo+ID4gKyAqICAgICAgICAgICB9Cj4gPiArICogICB9Cj4gPiArICogXXwKPiA+ICsgKiBU
-aGlzIHBhdHRlcm4gd29ya3MgcmVnYXJkbGVzcyBvZiB3aGV0aGVyIG9yIG5vdCB0aGUgZW5naW5l
-cyB0b3BvbG9neSBBUEkKPiA+ICsgKiBpcyBhdmFpbGFibGUgYW5kIHJlZ2FyZGxlc3Mgb2Ygd2hl
-dGhlciBvciBub3QgeW91ciBwbGF0Zm9ybSBzdXBwb3J0cwo+ID4gKyAqIGNvbnRleHRzLiAgSWYg
-ZW5naW5lcyBhcmUgdW5hdmFpbGFibGUsIGl0IGZhbGxzIGJhY2sgdG8gYSBsZWdhY3kgY29udGV4
-dAo+ID4gKyAqIGFuZCBpZiBjb250ZXh0cyBhcmUgdW5hdmFpbGFibGUsIGludGVsX2N0eF9jcmVh
-dGVfYWxsX3BoeXNpYWwoKSB3aWxsCj4KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBeXl5eXl5eIC0gdHlwbwoKRml4ZWQuCgo+ID4g
-KyAqIHJldHVybiBhIHdyYXBwZXIgYXJvdW5kIGN0eDAuCj4gPiArICoKPiA+ICsgKiBJZiwgZm9y
-IHNvbWUgcmVhc29uLCB5b3Ugd2FudCB0byBjcmVhdGUgYSBzZWNvbmQgaWRlbnRpY2FsIGNvbnRl
-eHQgdG8KPiA+ICsgKiB1c2Ugd2l0aCB5b3VyIGVuZ2luZSBpdGVyYXRvciwgZHVwbGljYXRpbmcg
-dGhlIGNvbnRleHQgaXMgZWFzeToKPiA+ICsgKiB8WzwhLS0gbGFuZ3VhZ2U9IkMiIC0tPgo+ID4g
-KyAqICAgY29uc3QgaW50ZWxfY3R4X3QgKmN0eDIgPSBpbnRlbF9jdHhfY3JlYXRlKGZkLCAmY3R4
-LT5jZmcpOwo+ID4gKyAqIF18Cj4gPiArICoKPiA+ICsgKiBJZiB5b3Ugd2FudCBlYWNoIHN1YnRl
-c3QgdG8gYWx3YXlzIGNyZWF0ZSBpdHMgb3duIGNvbnRleHRzLCB0aGVyZSBhcmUKPiA+ICsgKiBh
-bHNvIGl0ZXJhdG9ycyB3aGljaCB3b3JrIG9ubHkgb24gYSBjb250ZXh0IGNvbmZpZy4gIEFzIGxv
-bmcgYXMgYWxsCj4gPiArICogY29udGV4dHMgYXJlIGNyZWF0ZWQgZnJvbSB0aGF0IGNvbmZpZywg
-b3IgZnJvbSBvbmUgd2l0aCBhbiBpZGVudGljYWwgc2V0Cj4gPiArICogb2YgZW5naW5lcywgdGhl
-IGl0ZXJhdG9yIHdpbGwgYmUgdmFsaWQgZm9yIHRob3NlIGNvbnRleHRzLgo+ID4gKyAqIHxbPCEt
-LSBsYW5ndWFnZT0iQyIgLS0+Cj4gPiArICogICBjb25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9u
-X2VuZ2luZTIgKmU7Cj4gPiArICogICBpbnRlbF9jdHhfY2ZnX3QgY2ZnID0gaW50ZWxfY3R4X2Nm
-Z19hbGxfcGh5c2ljYWwoZmQpOwo+ID4gKyAqCj4gPiArICogICBpZ3Rfc3VidGVzdF93aXRoX2R5
-bmFtaWMoImJhc2ljIikgewo+ID4gKyAqICAgICAgICAgICBmb3JfZWFjaF9jdHhfY2ZnX2VuZ2lu
-ZShmZCwgJmNmZywgZSkgewo+ID4gKyAqICAgICAgICAgICAgICAgICAgIGlndF9keW5hbWljX2Yo
-IiVzIiwgZS0+bmFtZSkKPiA+ICsgKiAgICAgICAgICAgICAgICAgICBydW5fY3R4X2NmZ190ZXN0
-KGZkLCAmY2ZnLCBlKTsKPiA+ICsgKiAgICAgICAgICAgfQo+ID4gKyAqICAgfQo+ID4gKyAqIF18
-Cj4gPiAgICovCj4gPgo+ID4gIC8qCj4gPiBAQCAtMjU2LDYgKzI5NywzNCBAQCBzdHJ1Y3QgaW50
-ZWxfZW5naW5lX2RhdGEgaW50ZWxfZW5naW5lX2xpc3Rfb2ZfcGh5c2ljYWwoaW50IGZkKQo+ID4g
-ICAgICAgcmV0dXJuIGludGVsX2VuZ2luZV9saXN0X2Zvcl9zdGF0aWMoZmQpOwo+ID4gIH0KPiA+
-Cj4gPiArLyoqCj4gPiArICogaW50ZWxfZW5naW5lX2xpc3RfZm9yX2N0eF9jZmc6Cj4gPiArICog
-QGZkOiBvcGVuIGk5MTUgZHJtIGZpbGUgZGVzY3JpcHRvcgo+ID4gKyAqIEBjZmc6IENvbnRleHQg
-Y29uZmlnCj4gPiArICoKPiA+ICsgKiBSZXR1cm5zIHRoZSBsaXN0IG9mIGFsbCBlbmdpbmVzIGlu
-IHRoZSBjb250ZXh0IGNvbmZpZwo+ID4gKyAqLwo+ID4gK3N0cnVjdCBpbnRlbF9lbmdpbmVfZGF0
-YQo+ID4gK2ludGVsX2VuZ2luZV9saXN0X2Zvcl9jdHhfY2ZnKGludCBmZCwgY29uc3QgaW50ZWxf
-Y3R4X2NmZ190ICpjZmcpCj4gPiArewo+Cj4gSSB3b3VsZCBhZGQgaWd0X2Fzc2VydChjZmcpIGhl
-cmUgZXNwZWNpYWxseSB3ZSBleHBlY3Qgbm90LW51bGwKPiBjZmcgcG9pbnRlciBoZXJlLgoKRG9u
-ZS4KCj4gPiArICAgICBpZiAoZmQgPj0gMCAmJiBjZmctPm51bV9lbmdpbmVzKSB7Cj4gPiArICAg
-ICAgICAgICAgIHN0cnVjdCBpbnRlbF9lbmdpbmVfZGF0YSBlbmdpbmVfZGF0YSA9IHsgfTsKPiA+
-ICsgICAgICAgICAgICAgaW50IGk7Cj4gPiArCj4gPiArICAgICAgICAgICAgIGVuZ2luZV9kYXRh
-Lm5lbmdpbmVzID0gY2ZnLT5udW1fZW5naW5lczsKPiA+ICsgICAgICAgICAgICAgZm9yIChpID0g
-MDsgaSA8IGNmZy0+bnVtX2VuZ2luZXM7IGkrKykKPiA+ICsgICAgICAgICAgICAgICAgICAgICBp
-bml0X2VuZ2luZSgmZW5naW5lX2RhdGEuZW5naW5lc1tpXSwKPiA+ICsgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICBjZmctPmVuZ2luZXNbaV0uZW5naW5lX2NsYXNzLAo+ID4gKyAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNmZy0+ZW5naW5lc1tpXS5lbmdpbmVfaW5zdGFu
-Y2UsCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaSk7Cj4KPiBXaGF0J3Mg
-dGhlIHJlYXNvbiBvZiBwYXNzaW5nIGluY3JlbWVudGluZyB2YWx1ZSBoZXJlPyBJdCdzIGNvbmZ1
-c2luZwo+IGVzcGVjaWFsbHkgaXQgaXMgbm90IGNvcnJlc3BvbmQgdG8gbGVnYWN5IGVuZ2luZSBp
-ZHMuCgpUaGUgZmluYWwgcGFyYW1ldGVyIHRvIGluaXRfZW5naW5lKCkgaXMgdGhlICJmbGFncyIg
-cGFyYW1ldGVyIHRvIHVzZQp3aXRoIGl0LiAgRm9yIHVzZXJzcGFjZS1zcGVjaWZpZWQgZW5naW5l
-cywgdGhlIGZsYWdzIHBhcmFtZXRlciBpcyBhbgplbmdpbmUgaW5kZXgsIGhlbmNlIGkuICBGb3Ig
-bGVnYWN5IGNvbnRleHRzIGl0J3Mgc29tZXRoaW5nIGxpa2UKSTkxNV9FWEVDX1JFTkRFUiBvciBJ
-OTE1X0VYRUNfQkxULgoKLS1KYXNvbgoKPiAtLQo+IFpiaWduaWV3Cj4KPiA+ICsKPiA+ICsgICAg
-ICAgICAgICAgcmV0dXJuIGVuZ2luZV9kYXRhOwo+ID4gKyAgICAgfSBlbHNlIHsKPiA+ICsgICAg
-ICAgICAgICAgLyogVGhpcyBpcyBhIGxlZ2FjeSBjb250ZXh0ICovCj4gPiArICAgICAgICAgICAg
-IHJldHVybiBpbnRlbF9lbmdpbmVfbGlzdF9mb3Jfc3RhdGljKGZkKTsKPiA+ICsgICAgIH0KPiA+
-ICt9Cj4gPiArCj4gPiAgc3RhdGljIGludCBnZW1fdG9wb2xvZ3lfZ2V0X3BhcmFtKGludCBmZCwK
-PiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc3RydWN0IGRybV9pOTE1X2dlbV9j
-b250ZXh0X3BhcmFtICpwKQo+ID4gIHsKPiA+IGRpZmYgLS1naXQgYS9saWIvaTkxNS9nZW1fZW5n
-aW5lX3RvcG9sb2d5LmggYi9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmgKPiA+IGluZGV4
-IGJkOTNlNDEwLi45MmQ5YTQ3OSAxMDA2NDQKPiA+IC0tLSBhL2xpYi9pOTE1L2dlbV9lbmdpbmVf
-dG9wb2xvZ3kuaAo+ID4gKysrIGIvbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5oCj4gPiBA
-QCAtMjYsOCArMjYsNyBAQAo+ID4KPiA+ICAjaW5jbHVkZSAiaWd0X2d0LmgiCj4gPiAgI2luY2x1
-ZGUgImk5MTVfZHJtLmgiCj4gPiAtCj4gPiAtI2RlZmluZSBHRU1fTUFYX0VOR0lORVMgICAgICAg
-ICAgICAgIEk5MTVfRVhFQ19SSU5HX01BU0sgKyAxCj4gPiArI2luY2x1ZGUgImludGVsX2N0eC5o
-Igo+ID4KPiA+ICBpbnQgX19nZW1fcXVlcnlfZW5naW5lcyhpbnQgZmQsCj4gPiAgICAgICAgICAg
-ICAgICAgICAgICAgc3RydWN0IGRybV9pOTE1X3F1ZXJ5X2VuZ2luZV9pbmZvICpxdWVyeV9lbmdp
-bmVzLAo+ID4gQEAgLTUxLDYgKzUwLDcgQEAgc3RydWN0IGludGVsX2VuZ2luZV9kYXRhIHsKPiA+
-Cj4gPiAgYm9vbCBnZW1faGFzX2VuZ2luZV90b3BvbG9neShpbnQgZmQpOwo+ID4gIHN0cnVjdCBp
-bnRlbF9lbmdpbmVfZGF0YSBpbnRlbF9lbmdpbmVfbGlzdF9vZl9waHlzaWNhbChpbnQgZmQpOwo+
-ID4gK3N0cnVjdCBpbnRlbF9lbmdpbmVfZGF0YSBpbnRlbF9lbmdpbmVfbGlzdF9mb3JfY3R4X2Nm
-ZyhpbnQgZmQsIGNvbnN0IGludGVsX2N0eF9jZmdfdCAqY2ZnKTsKPiA+ICBzdHJ1Y3QgaW50ZWxf
-ZW5naW5lX2RhdGEgaW50ZWxfaW5pdF9lbmdpbmVfbGlzdChpbnQgZmQsIHVpbnQzMl90IGN0eF9p
-ZCk7Cj4gPgo+ID4gIC8qIGl0ZXJhdGlvbiBmdW5jdGlvbnMgKi8KPiA+IEBAIC04MSw2ICs4MSwz
-MSBAQCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgZ2VtX2ViX2ZsYWdzX3RvX2VuZ2lu
-ZSh1bnNpZ25lZCBpbnQgZmxhZ3MpOwo+ID4gICNkZWZpbmUgX19mb3JfZWFjaF9zdGF0aWNfZW5n
-aW5lKGVfXykgXAo+ID4gICAgICAgZm9yICgoZV9fKSA9IGludGVsX2V4ZWN1dGlvbl9lbmdpbmVz
-MjsgKGVfXyktPm5hbWVbMF07IChlX18pKyspCj4gPgo+ID4gKy8qKgo+ID4gKyAqIGZvcl9lYWNo
-X2N0eF9jZmdfZW5naW5lCj4gPiArICogQGZkX186IG9wZW4gaTkxNSBkcm0gZmlsZSBkZXNjcmlw
-dG9yCj4gPiArICogQGN0eF9jZmdfXzogSW50ZWwgY29udGV4dCBjb25maWcKPiA+ICsgKiBAZV9f
-OiBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgaXRlcmF0b3IKPiA+ICsgKgo+ID4gKyAq
-IEl0ZXJhdGVzIG92ZXIgZWFjaCBwaHlzaWNhbCBlbmdpbmUgaW4gdGhlIGNvbnRleHQgY29uZmln
-Cj4gPiArICovCj4gPiArI2RlZmluZSBmb3JfZWFjaF9jdHhfY2ZnX2VuZ2luZShmZF9fLCBjdHhf
-Y2ZnX18sIGVfXykgXAo+ID4gKyAgICAgZm9yIChzdHJ1Y3QgaW50ZWxfZW5naW5lX2RhdGEgaV9f
-IyNlX18gPSBcCj4gPiArICAgICAgICAgICAgICAgICAgICAgaW50ZWxfZW5naW5lX2xpc3RfZm9y
-X2N0eF9jZmcoZmRfXywgY3R4X2NmZ19fKTsgXAo+ID4gKyAgICAgICAgICAoKGVfXykgPSBpbnRl
-bF9nZXRfY3VycmVudF9lbmdpbmUoJmlfXyMjZV9fKSk7IFwKPiA+ICsgICAgICAgICAgaW50ZWxf
-bmV4dF9lbmdpbmUoJmlfXyMjZV9fKSkKPiA+ICsKPiA+ICsvKioKPiA+ICsgKiBmb3JfZWFjaF9j
-dHhfZW5naW5lCj4gPiArICogQGZkX186IG9wZW4gaTkxNSBkcm0gZmlsZSBkZXNjcmlwdG9yCj4g
-PiArICogQGN0eF9fOiBJbnRlbCBjb250ZXh0IHdyYXBwZXIKPiA+ICsgKiBAZV9fOiBzdHJ1Y3Qg
-aW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgaXRlcmF0b3IKPiA+ICsgKgo+ID4gKyAqIEl0ZXJhdGVz
-IG92ZXIgZWFjaCBwaHlzaWNhbCBlbmdpbmUgaW4gdGhlIGNvbnRleHQKPiA+ICsgKi8KPiA+ICsj
-ZGVmaW5lIGZvcl9lYWNoX2N0eF9lbmdpbmUoZmRfXywgY3R4X18sIGVfXykgXAo+ID4gKyAgICAg
-Zm9yX2VhY2hfY3R4X2NmZ19lbmdpbmUoZmRfXywgJihjdHhfXyktPmNmZywgZV9fKQo+ID4gKwo+
-ID4gICNkZWZpbmUgZm9yX2VhY2hfY29udGV4dF9lbmdpbmUoZmRfXywgY3R4X18sIGVfXykgXAo+
-ID4gICAgICAgZm9yIChzdHJ1Y3QgaW50ZWxfZW5naW5lX2RhdGEgaV9fID0gaW50ZWxfaW5pdF9l
-bmdpbmVfbGlzdChmZF9fLCBjdHhfXyk7IFwKPiA+ICAgICAgICAgICAgKChlX18pID0gaW50ZWxf
-Z2V0X2N1cnJlbnRfZW5naW5lKCZpX18pKTsgXAo+ID4gLS0KPiA+IDIuMzEuMQo+ID4KPiA+IF9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gPiBpZ3QtZGV2
-IG1haWxpbmcgbGlzdAo+ID4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKPiA+IGh0dHBz
-Oi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcg
-bGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNr
-dG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+On Wed, Jun 9, 2021 at 1:27 AM Petri Latvala <petri.latvala@intel.com> wrote:
+>
+> On Tue, Jun 08, 2021 at 10:30:02PM -0700, Dixit, Ashutosh wrote:
+> > On Tue, 08 Jun 2021 21:29:55 -0700, Jason Ekstrand wrote:
+> > > diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
+> > > new file mode 100644
+> > > index 00000000..79bc1154
+> > > --- /dev/null
+> > > +++ b/lib/intel_ctx.h
+> > > @@ -0,0 +1,75 @@
+> >
+> > /snip/
+> >
+> > > +/**
+> > > + * intel_ctx_cfg_t:
+> > > + * @flags: Context create flags
+> > > + * @vm: VM to inherit or 0 for using a per-context VM
+> > > + * @num_engines: Number of client-specified engines or 0 for legacy mode
+> > > + * @engines: Client-specified engines
+> > > + *
+> > > + * Represents the full configuration of an intel_ctx.
+> > > + */
+> > > +typedef struct intel_ctx_cfg {
+> > > +   uint32_t flags;
+> > > +   uint32_t vm;
+> > > +   unsigned int num_engines;
+> > > +   struct i915_engine_class_instance engines[GEM_MAX_ENGINES];
+> > > +} intel_ctx_cfg_t;
+> > > +
+> > > +intel_ctx_cfg_t intel_ctx_cfg_for_engine(unsigned int class, unsigned int inst);
+> > > +intel_ctx_cfg_t intel_ctx_cfg_all_physical(int fd);
+> > > +
+> > > +/**
+> > > + * intel_ctx_t:
+> > > + * @id: the context id/handle
+> > > + * @cfg: the config used to create this context
+> > > + *
+> > > + * Represents the full configuration of an intel_ctx.
+> > > + */
+> > > +typedef struct intel_ctx {
+> > > +   uint32_t id;
+> > > +   intel_ctx_cfg_t cfg;
+> > > +} intel_ctx_t;
+> >
+> > Just a comment about cosmetics. I am ok either way but I believe in the
+> > linux kernel (and in IGT which follows the kernel coding style) such
+> > typedefs are supposedly only to be used for "opaque" types and are
+> > generally avoided. E.g.
+> >
+> > https://yarchive.net/comp/linux/typedefs.html
+> >
+> > There are not very many instances of such typedef's in IGT, certainly not
+> > those which are this widely used.
+> >
+> > I copying Petri about this to see what he prefers, whether we should keep
+> > these typedefs or replace intel_ctx_cfg_t and intel_ctx_t with 'struct
+> > intel_ctx_cfg' and 'struct intel_ctx'.
+>
+> I have no hard preferences for this. Mostly it's a question of what
+> makes the most sense to the author, and whether gtk-doc eats it
+> without choking.
+
+I did typedefs partly for less typing and partly because gtk-doc
+didn't like me when I was doing struct intel_ctx_cfg
+
+--Jason
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
