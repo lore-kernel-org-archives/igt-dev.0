@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
  [IPv6:2607:f8b0:4864:20::52b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9D3486EC82
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:31:00 +0000 (UTC)
-Received: by mail-pg1-x52b.google.com with SMTP id 27so18392945pgy.3
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:31:00 -0700 (PDT)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 64BD36EC82
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:30:59 +0000 (UTC)
+Received: by mail-pg1-x52b.google.com with SMTP id t9so18379243pgn.4
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:30:59 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Tue,  8 Jun 2021 23:30:00 -0500
-Message-Id: <20210609043035.102359-15-jason@jlekstrand.net>
+Date: Tue,  8 Jun 2021 23:29:59 -0500
+Message-Id: <20210609043035.102359-14-jason@jlekstrand.net>
 In-Reply-To: <20210609043035.102359-1-jason@jlekstrand.net>
 References: <20210609043035.102359-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 14/93] tests/i915/gem_exec_basic: Convert to
- intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 13/93] lib/i915/gem_engine_topology: Add an
+ iterator for intel_ctx_t (v2)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,57 +27,157 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This acts as a template for the rest of this patch series.  The rough
-idea is that we create a new context if the HW supports contexts and
-otherwise we use intel_ctx_0().  Once we have an intel_ctx_t, we can
-iterate over all of the engines in it in a consistent way.
+v2 (Jason Ekstrand):
+ - Add documentation
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 ---
- tests/i915/gem_exec_basic.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ lib/i915/gem_engine_topology.c | 69 ++++++++++++++++++++++++++++++++++
+ lib/i915/gem_engine_topology.h | 29 +++++++++++++-
+ 2 files changed, 96 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/gem_exec_basic.c b/tests/i915/gem_exec_basic.c
-index 872b1d3b..ae7c275d 100644
---- a/tests/i915/gem_exec_basic.c
-+++ b/tests/i915/gem_exec_basic.c
-@@ -45,10 +45,13 @@ igt_main
- 	struct drm_i915_query_memory_regions *query_info;
- 	struct igt_collection *regions, *set;
- 	uint32_t batch_size;
-+	const intel_ctx_t *ctx = NULL;
- 	int fd = -1;
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index 6bceb909..ac707cb3 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -39,6 +39,47 @@
+  *
+  * This helper library contains functions used for querying and dealing
+  * with engines in GEM contexts.
++ *
++ * Combined with intel_ctx_t, these helpers give a pretty standard pattern
++ * for testing every engine in a device:
++ * |[<!-- language="C" -->
++ *	const struct intel_execution_engine2 *e;
++ *	const intel_ctx_t *ctx = intel_ctx_create_all_physical(fd);
++ *
++ *	igt_subtest_with_dynamic("basic") {
++ *		for_each_ctx_engine(fd, ctx, e) {
++ *			igt_dynamic_f("%s", e->name)
++ *			run_ctx_test(fd, ctx, e);
++ *		}
++ *	}
++ * ]|
++ * This pattern works regardless of whether or not the engines topology API
++ * is available and regardless of whether or not your platform supports
++ * contexts.  If engines are unavailable, it falls back to a legacy context
++ * and if contexts are unavailable, intel_ctx_create_all_physial() will
++ * return a wrapper around ctx0.
++ *
++ * If, for some reason, you want to create a second identical context to
++ * use with your engine iterator, duplicating the context is easy:
++ * |[<!-- language="C" -->
++ *	const intel_ctx_t *ctx2 = intel_ctx_create(fd, &ctx->cfg);
++ * ]|
++ *
++ * If you want each subtest to always create its own contexts, there are
++ * also iterators which work only on a context config.  As long as all
++ * contexts are created from that config, or from one with an identical set
++ * of engines, the iterator will be valid for those contexts.
++ * |[<!-- language="C" -->
++ *	const struct intel_execution_engine2 *e;
++ *	intel_ctx_cfg_t cfg = intel_ctx_cfg_all_physical(fd);
++ *
++ *	igt_subtest_with_dynamic("basic") {
++ *		for_each_ctx_cfg_engine(fd, &cfg, e) {
++ *			igt_dynamic_f("%s", e->name)
++ *			run_ctx_cfg_test(fd, &cfg, e);
++ *		}
++ *	}
++ * ]|
+  */
  
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_INTEL);
-+		ctx = intel_ctx_create_all_physical(fd);
-+
- 		/* igt_require_gem(fd); // test is mandatory */
- 		igt_fork_hang_detector(fd);
- 
-@@ -70,12 +73,13 @@ igt_main
- 			memset(&exec, 0, sizeof(exec));
- 			exec.handle = batch_create(fd, batch_size, region);
- 
--			__for_each_physical_engine(fd, e) {
-+			for_each_ctx_engine(fd, ctx, e) {
- 				igt_dynamic_f("%s-%s", e->name, sub_name) {
- 					struct drm_i915_gem_execbuffer2 execbuf = {
- 						.buffers_ptr = to_user_pointer(&exec),
- 						.buffer_count = 1,
- 						.flags = e->flags,
-+						.rsvd1 = ctx->id,
- 					};
- 
- 					gem_execbuf(fd, &execbuf);
-@@ -91,6 +95,7 @@ igt_main
- 		free(query_info);
- 		igt_collection_destroy(set);
- 		igt_stop_hang_detector();
-+		intel_ctx_destroy(fd, ctx);
- 		close(fd);
- 	}
+ /*
+@@ -256,6 +297,34 @@ struct intel_engine_data intel_engine_list_of_physical(int fd)
+ 	return intel_engine_list_for_static(fd);
  }
+ 
++/**
++ * intel_engine_list_for_ctx_cfg:
++ * @fd: open i915 drm file descriptor
++ * @cfg: Context config
++ *
++ * Returns the list of all engines in the context config
++ */
++struct intel_engine_data
++intel_engine_list_for_ctx_cfg(int fd, const intel_ctx_cfg_t *cfg)
++{
++	if (fd >= 0 && cfg->num_engines) {
++		struct intel_engine_data engine_data = { };
++		int i;
++
++		engine_data.nengines = cfg->num_engines;
++		for (i = 0; i < cfg->num_engines; i++)
++			init_engine(&engine_data.engines[i],
++				    cfg->engines[i].engine_class,
++				    cfg->engines[i].engine_instance,
++				    i);
++
++		return engine_data;
++	} else {
++		/* This is a legacy context */
++		return intel_engine_list_for_static(fd);
++	}
++}
++
+ static int gem_topology_get_param(int fd,
+ 				  struct drm_i915_gem_context_param *p)
+ {
+diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+index bd93e410..92d9a479 100644
+--- a/lib/i915/gem_engine_topology.h
++++ b/lib/i915/gem_engine_topology.h
+@@ -26,8 +26,7 @@
+ 
+ #include "igt_gt.h"
+ #include "i915_drm.h"
+-
+-#define GEM_MAX_ENGINES		I915_EXEC_RING_MASK + 1
++#include "intel_ctx.h"
+ 
+ int __gem_query_engines(int fd,
+ 			struct drm_i915_query_engine_info *query_engines,
+@@ -51,6 +50,7 @@ struct intel_engine_data {
+ 
+ bool gem_has_engine_topology(int fd);
+ struct intel_engine_data intel_engine_list_of_physical(int fd);
++struct intel_engine_data intel_engine_list_for_ctx_cfg(int fd, const intel_ctx_cfg_t *cfg);
+ struct intel_engine_data intel_init_engine_list(int fd, uint32_t ctx_id);
+ 
+ /* iteration functions */
+@@ -81,6 +81,31 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags);
+ #define __for_each_static_engine(e__) \
+ 	for ((e__) = intel_execution_engines2; (e__)->name[0]; (e__)++)
+ 
++/**
++ * for_each_ctx_cfg_engine
++ * @fd__: open i915 drm file descriptor
++ * @ctx_cfg__: Intel context config
++ * @e__: struct intel_execution_engine2 iterator
++ *
++ * Iterates over each physical engine in the context config
++ */
++#define for_each_ctx_cfg_engine(fd__, ctx_cfg__, e__) \
++	for (struct intel_engine_data i__##e__ = \
++			intel_engine_list_for_ctx_cfg(fd__, ctx_cfg__); \
++	     ((e__) = intel_get_current_engine(&i__##e__)); \
++	     intel_next_engine(&i__##e__))
++
++/**
++ * for_each_ctx_engine
++ * @fd__: open i915 drm file descriptor
++ * @ctx__: Intel context wrapper
++ * @e__: struct intel_execution_engine2 iterator
++ *
++ * Iterates over each physical engine in the context
++ */
++#define for_each_ctx_engine(fd__, ctx__, e__) \
++	for_each_ctx_cfg_engine(fd__, &(ctx__)->cfg, e__)
++
+ #define for_each_context_engine(fd__, ctx__, e__) \
+ 	for (struct intel_engine_data i__ = intel_init_engine_list(fd__, ctx__); \
+ 	     ((e__) = intel_get_current_engine(&i__)); \
 -- 
 2.31.1
 
