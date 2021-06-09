@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
- [IPv6:2607:f8b0:4864:20::102f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3AE586EC7B
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:30:53 +0000 (UTC)
-Received: by mail-pj1-x102f.google.com with SMTP id k5so625336pjj.1
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:30:53 -0700 (PDT)
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
+ [IPv6:2607:f8b0:4864:20::1034])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 801156EC7D
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:30:55 +0000 (UTC)
+Received: by mail-pj1-x1034.google.com with SMTP id h16so622955pjv.2
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:30:55 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Tue,  8 Jun 2021 23:29:54 -0500
-Message-Id: <20210609043035.102359-9-jason@jlekstrand.net>
+Date: Tue,  8 Jun 2021 23:29:56 -0500
+Message-Id: <20210609043035.102359-11-jason@jlekstrand.net>
 In-Reply-To: <20210609043035.102359-1-jason@jlekstrand.net>
 References: <20210609043035.102359-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 08/93] lib/i915/gem_context: Add
- gem_context_create_ext helpers
+Subject: [igt-dev] [PATCH i-g-t 10/93] lib/i915/gem_engine_topology: Rework
+ query_engine_list()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,102 +27,65 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
----
- lib/i915/gem_context.c | 56 ++++++++++++++++++++++++++++++++++++++++++
- lib/i915/gem_context.h |  3 +++
- 2 files changed, 59 insertions(+)
+This gives us a no-assert version.
 
-diff --git a/lib/i915/gem_context.c b/lib/i915/gem_context.c
-index 79411e10..1dda0924 100644
---- a/lib/i915/gem_context.c
-+++ b/lib/i915/gem_context.c
-@@ -107,6 +107,40 @@ int __gem_context_create(int fd, uint32_t *ctx_id)
-        return err;
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+---
+ lib/i915/gem_engine_topology.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
+
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index eb7a4c26..ae8d2a33 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -95,13 +95,6 @@ int __gem_query_engines(int fd,
+ 	return __gem_query(fd, &query);
  }
  
-+/**
-+ * __gem_context_create_ext:
-+ * @fd: open i915 drm file descriptor
-+ * @flags: context create flags
-+ * @extensions: first extension struct, or 0 for no extensions
-+ * @ctx_id: on success, the context ID is written here
-+ *
-+ * Creates a new GEM context with flags and extensions.  If no flags or
-+ * extensions are required, it's the same as __gem_context_create and works
-+ * on older kernels.
-+ */
-+int __gem_context_create_ext(int fd, uint32_t flags, uint64_t extensions,
-+			     uint32_t *ctx_id)
-+{
-+	struct drm_i915_gem_context_create_ext ctx_create;
-+	int err = 0;
-+
-+	if (!flags && !extensions)
-+		return __gem_context_create(fd, ctx_id);
-+
-+	memset(&ctx_create, 0, sizeof(ctx_create));
-+	ctx_create.flags = flags;
-+	if (extensions) {
-+		ctx_create.flags |= I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS;
-+		ctx_create.extensions = extensions;
-+	}
-+
-+	err = create_ext_ioctl(fd, &ctx_create);
-+	if (!err)
-+		*ctx_id = ctx_create.ctx_id;
-+
-+	return err;
-+}
-+
- /**
-  * gem_context_create:
-  * @fd: open i915 drm file descriptor
-@@ -127,6 +161,28 @@ uint32_t gem_context_create(int fd)
- 	return ctx_id;
- }
- 
-+/**
-+ * gem_context_create_ext:
-+ * @fd: open i915 drm file descriptor
-+ * @flags: context create flags
-+ * @extensions: first extension struct, or 0 for no extensions
-+ *
-+ * Creates a new GEM context with flags and extensions.  If no flags or
-+ * extensions are required, it's the same as gem_context_create and works
-+ * on older kernels.
-+ *
-+ * Returns: The id of the allocated context.
-+ */
-+uint32_t gem_context_create_ext(int fd, uint32_t flags, uint64_t extensions)
-+{
-+	uint32_t ctx_id;
-+
-+	igt_assert_eq(__gem_context_create_ext(fd, flags, extensions, &ctx_id), 0);
-+	igt_assert(ctx_id != 0);
-+
-+	return ctx_id;
-+}
-+
- int __gem_context_destroy(int fd, uint32_t ctx_id)
+-static void query_engines(int fd,
+-			  struct drm_i915_query_engine_info *query_engines,
+-			  int length)
+-{
+-	igt_assert_eq(__gem_query_engines(fd, query_engines, length), 0);
+-}
+-
+ static void ctx_map_engines(int fd, struct intel_engine_data *ed,
+ 			    struct drm_i915_gem_context_param *param)
  {
- 	struct drm_i915_gem_context_destroy destroy = { ctx_id };
-diff --git a/lib/i915/gem_context.h b/lib/i915/gem_context.h
-index c2c2b827..91bb9e7f 100644
---- a/lib/i915/gem_context.h
-+++ b/lib/i915/gem_context.h
-@@ -30,7 +30,10 @@
- struct drm_i915_gem_context_param;
+@@ -160,14 +153,16 @@ static void init_engine(struct intel_execution_engine2 *e2,
+ 	igt_assert(ret < sizeof(e2->name));
+ }
  
- uint32_t gem_context_create(int fd);
-+uint32_t gem_context_create_ext(int fd, uint32_t flags, uint64_t extensions);
- int __gem_context_create(int fd, uint32_t *ctx_id);
-+int __gem_context_create_ext(int fd, uint32_t flags, uint64_t extensions,
-+			     uint32_t *ctx_id);
- void gem_context_destroy(int fd, uint32_t ctx_id);
- int __gem_context_destroy(int fd, uint32_t ctx_id);
+-static void query_engine_list(int fd, struct intel_engine_data *ed)
++static int __query_engine_list(int fd, struct intel_engine_data *ed)
+ {
+ 	uint8_t buff[SIZEOF_QUERY] = { };
+ 	struct drm_i915_query_engine_info *query_engine =
+ 			(struct drm_i915_query_engine_info *) buff;
+-	int i;
++	int i, err;
  
+-	query_engines(fd, query_engine, SIZEOF_QUERY);
++	err = __gem_query_engines(fd, query_engine, SIZEOF_QUERY);
++	if (err)
++		return err;
+ 
+ 	for (i = 0; i < query_engine->num_engines; i++)
+ 		init_engine(&ed->engines[i],
+@@ -175,6 +170,13 @@ static void query_engine_list(int fd, struct intel_engine_data *ed)
+ 			    query_engine->engines[i].engine.engine_instance, i);
+ 
+ 	ed->nengines = query_engine->num_engines;
++
++	return 0;
++}
++
++static void query_engine_list(int fd, struct intel_engine_data *ed)
++{
++	igt_assert_eq(__query_engine_list(fd, ed), 0);
+ }
+ 
+ struct intel_execution_engine2 *
 -- 
 2.31.1
 
