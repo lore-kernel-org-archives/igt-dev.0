@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
- [IPv6:2607:f8b0:4864:20::102c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 09A5C6EC84
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:33:20 +0000 (UTC)
-Received: by mail-pj1-x102c.google.com with SMTP id
- md2-20020a17090b23c2b029016de4440381so632528pjb.1
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:33:20 -0700 (PDT)
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com
+ [IPv6:2607:f8b0:4864:20::42a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A33D189D00
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:33:22 +0000 (UTC)
+Received: by mail-pf1-x42a.google.com with SMTP id x73so17449584pfc.8
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:33:22 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Tue,  8 Jun 2021 23:32:26 -0500
-Message-Id: <20210609043259.102581-11-jason@jlekstrand.net>
+Date: Tue,  8 Jun 2021 23:32:28 -0500
+Message-Id: <20210609043259.102581-13-jason@jlekstrand.net>
 In-Reply-To: <20210609043035.102359-1-jason@jlekstrand.net>
 References: <20210609043035.102359-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 60/93] tests/i915/module_load: Convert to
+Subject: [igt-dev] [PATCH i-g-t 62/93] tests/i915/gem_cs_tlb: Convert to
  intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -30,48 +29,53 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/i915/i915_module_load.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tests/i915/gem_cs_tlb.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-index 281454a5..98ceb5d8 100644
---- a/tests/i915/i915_module_load.c
-+++ b/tests/i915/i915_module_load.c
-@@ -64,6 +64,7 @@ static void store_all(int i915)
- 		.buffer_count = 2,
- 	};
+diff --git a/tests/i915/gem_cs_tlb.c b/tests/i915/gem_cs_tlb.c
+index dec9c107..7682dae6 100644
+--- a/tests/i915/gem_cs_tlb.c
++++ b/tests/i915/gem_cs_tlb.c
+@@ -91,7 +91,8 @@ mmap_coherent(int fd, uint32_t handle, int size)
+ 	return ptr;
+ }
+ 
+-static void run_on_ring(int fd, unsigned ring_id, const char *ring_name)
++static void run_on_ring(int fd, const intel_ctx_t *ctx,
++			unsigned ring_id, const char *ring_name)
+ {
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 execobj;
+@@ -117,6 +118,7 @@ static void run_on_ring(int fd, unsigned ring_id, const char *ring_name)
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(&execobj);
+ 	execbuf.buffer_count = 1;
++	execbuf.rsvd1 = ctx->id;
+ 	execbuf.flags = ring_id;
+ 
+ 	/* Execute once to allocate a gtt-offset */
+@@ -144,17 +146,19 @@ static void run_on_ring(int fd, unsigned ring_id, const char *ring_name)
+ igt_main
+ {
  	const struct intel_execution_engine2 *e;
-+	const intel_ctx_t *ctx;
- 	int reloc_sz = sizeof(uint32_t);
- 	unsigned int nengine, value;
- 	void *cs;
-@@ -88,7 +89,9 @@ static void store_all(int i915)
++	const intel_ctx_t *ctx = NULL;
+ 	int fd = -1;
  
- 	nengine = 0;
- 	cs = gem_mmap__device_coherent(i915, obj[1].handle, 0, sz, PROT_WRITE);
--	__for_each_physical_engine(i915, e) {
-+
-+	ctx = intel_ctx_create_all_physical(i915);
-+	for_each_ctx_engine(i915, ctx, e) {
- 		uint64_t addr;
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_INTEL);
+ 		igt_require_gem(fd);
++		ctx = intel_ctx_create_all_physical(fd);
+ 	}
  
- 		igt_assert(reloc.presumed_offset != -1);
-@@ -103,6 +106,7 @@ static void store_all(int i915)
- 		if (gen < 6)
- 			execbuf.flags |= I915_EXEC_SECURE;
- 		execbuf.flags |= I915_EXEC_NO_RELOC | I915_EXEC_HANDLE_LUT;
-+		execbuf.rsvd1 = ctx->id;
+ 	igt_subtest_with_dynamic("engines") {
+-		__for_each_physical_engine(fd, e) {
++		for_each_ctx_engine(fd, ctx, e) {
+ 			igt_dynamic_f("%s", e->name)
+-				run_on_ring(fd, e->flags, e->name);
++				run_on_ring(fd, ctx, e->flags, e->name);
+ 		}
+ 	}
  
- 		memcpy(cs + execbuf.batch_start_offset, batch, sizeof(batch));
- 		memcpy(cs + reloc.offset, &addr, reloc_sz);
-@@ -121,6 +125,7 @@ static void store_all(int i915)
- 	memset(engines, 0xdeadbeef, sizeof(engines));
- 	gem_read(i915, obj[0].handle, 0, engines, nengine * sizeof(engines[0]));
- 	gem_close(i915, obj[0].handle);
-+	intel_ctx_destroy(i915, ctx);
- 
- 	for (i = 0; i < nengine; i++)
- 		igt_assert_eq_u32(engines[i], i);
 -- 
 2.31.1
 
