@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com
- [IPv6:2607:f8b0:4864:20::429])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 64C826EA29
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:39:17 +0000 (UTC)
-Received: by mail-pf1-x429.google.com with SMTP id q25so18973617pfh.7
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:39:17 -0700 (PDT)
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com
+ [IPv6:2607:f8b0:4864:20::435])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B54BB6EA29
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 17:39:18 +0000 (UTC)
+Received: by mail-pf1-x435.google.com with SMTP id k15so18963957pfp.6
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 10:39:18 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  9 Jun 2021 12:38:26 -0500
-Message-Id: <20210609173903.249112-7-jason@jlekstrand.net>
+Date: Wed,  9 Jun 2021 12:38:27 -0500
+Message-Id: <20210609173903.249112-8-jason@jlekstrand.net>
 In-Reply-To: <20210609173632.248880-1-jason@jlekstrand.net>
 References: <20210609173632.248880-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 56/93] tests/i915/gem_exec_await: Convert to
- intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 57/93] tests/i915/gem_ctx_persistence: Drop
+ the clone subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,83 +29,56 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/i915/gem_exec_await.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ tests/i915/gem_ctx_persistence.c | 30 ------------------------------
+ 1 file changed, 30 deletions(-)
 
-diff --git a/tests/i915/gem_exec_await.c b/tests/i915/gem_exec_await.c
-index 6db30695..5270b4cd 100644
---- a/tests/i915/gem_exec_await.c
-+++ b/tests/i915/gem_exec_await.c
-@@ -63,16 +63,19 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
- 		struct drm_i915_gem_exec_object2 exec[2];
- 		struct drm_i915_gem_relocation_entry reloc;
- 		struct drm_i915_gem_execbuffer2 execbuf;
-+		const intel_ctx_t *ctx;
- 		uint32_t *cmd;
- 	} *exec;
- 	struct drm_i915_gem_exec_object2 *obj;
- 	struct drm_i915_gem_execbuffer2 execbuf;
-+	const intel_ctx_t *ctx;
- 	unsigned engines[I915_EXEC_RING_MASK + 1], nengine;
- 	unsigned long count;
- 	double time;
- 
-+	ctx = intel_ctx_create_all_physical(fd);
- 	nengine = 0;
--	__for_each_physical_engine(fd, engine) {
-+	for_each_ctx_engine(fd, ctx, engine) {
- 		if (!gem_class_has_mutable_submission(fd, engine->class))
- 			continue;
- 
-@@ -106,7 +109,10 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
- 					 I915_EXEC_HANDLE_LUT);
- 
- 		if (flags & CONTEXTS) {
--			exec[e].execbuf.rsvd1 = gem_context_create(fd);
-+			exec[e].ctx = intel_ctx_create(fd, &ctx->cfg);
-+			exec[e].execbuf.rsvd1 = exec[e].ctx->id;
-+		} else {
-+			exec[e].execbuf.rsvd1 = ctx->id;
- 		}
- 
- 		exec[e].exec[0].handle = gem_create(fd, 4096);
-@@ -151,9 +157,9 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
- 			int i;
- 
- 			if (flags & CONTEXTS) {
--				gem_context_destroy(fd, exec[e].execbuf.rsvd1);
--				exec[e].execbuf.rsvd1 =
--					gem_context_clone_with_engines(fd, 0);
-+				intel_ctx_destroy(fd, exec[e].ctx);
-+				exec[e].ctx = intel_ctx_create(fd, &ctx->cfg);
-+				exec[e].execbuf.rsvd1 = exec[e].ctx->id;
- 			}
- 
- 			exec[e].reloc.presumed_offset = exec[e].exec[1].offset;
-@@ -193,6 +199,7 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
- 			execbuf.flags = (engines[e] |
- 					 I915_EXEC_NO_RELOC |
- 					 I915_EXEC_HANDLE_LUT);
-+			execbuf.rsvd1 = ctx->id;
- 			gem_execbuf(fd, &execbuf);
- 		}
- 		clock_gettime(CLOCK_MONOTONIC, &now);
-@@ -214,7 +221,7 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
- 
- 	for (unsigned e = 0; e < nengine; e++) {
- 		if (flags & CONTEXTS)
--			gem_context_destroy(fd, exec[e].execbuf.rsvd1);
-+			intel_ctx_destroy(fd, exec[e].ctx);
- 
- 		for (unsigned n = 0; n < ring_size; n++)
- 			gem_close(fd, exec[e].obj[n].handle);
-@@ -223,6 +230,7 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
- 		munmap(exec[e].cmd, 4096);
- 		gem_close(fd, exec[e].exec[1].handle);
- 	}
-+	intel_ctx_destroy(fd, ctx);
- 	free(exec);
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index 10d057f1..91c30176 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -147,33 +147,6 @@ static void test_idempotent(int i915)
+ 	igt_assert_eq(p.value, expected);
  }
+ 
+-static void test_clone(int i915)
+-{
+-	struct drm_i915_gem_context_param p = {
+-		.param = I915_CONTEXT_PARAM_PERSISTENCE,
+-	};
+-	uint32_t ctx, clone;
+-
+-	/*
+-	 * Check that persistence is inherited across a clone.
+-	 */
+-	igt_require( __gem_context_create(i915, &ctx) == 0);
+-
+-	p.ctx_id = ctx;
+-	p.value = 0;
+-	gem_context_set_param(i915, &p);
+-
+-	clone = gem_context_clone(i915, ctx, I915_CONTEXT_CLONE_FLAGS, 0);
+-	gem_context_destroy(i915, ctx);
+-
+-	p.ctx_id = clone;
+-	p.value = -1;
+-	gem_context_get_param(i915, &p);
+-	igt_assert_eq(p.value, 0);
+-
+-	gem_context_destroy(i915, clone);
+-}
+-
+ static void test_persistence(int i915, unsigned int engine)
+ {
+ 	igt_spin_t *spin;
+@@ -1366,9 +1339,6 @@ igt_main
+ 	igt_subtest("idempotent")
+ 		test_idempotent(i915);
+ 
+-	igt_subtest("clone")
+-		test_clone(i915);
+-
+ 	igt_subtest("file")
+ 		test_nonpersistent_file(i915);
  
 -- 
 2.31.1
