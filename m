@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
- [IPv6:2607:f8b0:4864:20::102a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C42366EC7B
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:31:01 +0000 (UTC)
-Received: by mail-pj1-x102a.google.com with SMTP id
- pi6-20020a17090b1e46b029015cec51d7cdso618971pjb.5
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:31:01 -0700 (PDT)
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com
+ [IPv6:2607:f8b0:4864:20::42a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 508C56EC7D
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:31:04 +0000 (UTC)
+Received: by mail-pf1-x42a.google.com with SMTP id m7so4509878pfa.10
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:31:04 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Tue,  8 Jun 2021 23:30:01 -0500
-Message-Id: <20210609043035.102359-16-jason@jlekstrand.net>
+Date: Tue,  8 Jun 2021 23:30:03 -0500
+Message-Id: <20210609043035.102359-18-jason@jlekstrand.net>
 In-Reply-To: <20210609043035.102359-1-jason@jlekstrand.net>
 References: <20210609043035.102359-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 15/93] lib/dummyload: Better document
- igt_spin_factory
+Subject: [igt-dev] [PATCH i-g-t 17/93] lib/dummyload: Support intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,58 +28,103 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- lib/igt_dummyload.h | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ lib/igt_dummyload.c | 30 ++++++++++++++++++++++--------
+ lib/igt_dummyload.h |  4 ++++
+ 2 files changed, 26 insertions(+), 8 deletions(-)
 
+diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+index 784714d6..c7c685b8 100644
+--- a/lib/igt_dummyload.c
++++ b/lib/igt_dummyload.c
+@@ -123,16 +123,28 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	addr += random() % addr / 2;
+ 	addr &= -4096;
+ 
++	assert(!(opts->ctx && opts->ctx_id));
++
+ 	nengine = 0;
+ 	if (opts->engine == ALL_ENGINES) {
+ 		struct intel_execution_engine2 *engine;
+ 
+-		for_each_context_engine(fd, opts->ctx_id, engine) {
+-			if (opts->flags & IGT_SPIN_POLL_RUN &&
+-			    !gem_class_can_store_dword(fd, engine->class))
+-				continue;
++		if (opts->ctx) {
++			for_each_ctx_engine(fd, opts->ctx, engine) {
++				if (opts->flags & IGT_SPIN_POLL_RUN &&
++				    !gem_class_can_store_dword(fd, engine->class))
++					continue;
+ 
+-			flags[nengine++] = engine->flags;
++				flags[nengine++] = engine->flags;
++			}
++		} else {
++			for_each_context_engine(fd, opts->ctx_id, engine) {
++				if (opts->flags & IGT_SPIN_POLL_RUN &&
++				    !gem_class_can_store_dword(fd, engine->class))
++					continue;
++
++				flags[nengine++] = engine->flags;
++			}
+ 		}
+ 	} else {
+ 		flags[nengine++] = opts->engine;
+@@ -325,7 +337,7 @@ emit_recursive_batch(igt_spin_t *spin,
+ 
+ 	execbuf->buffers_ptr =
+ 	       	to_user_pointer(obj + (2 - execbuf->buffer_count));
+-	execbuf->rsvd1 = opts->ctx_id;
++	execbuf->rsvd1 = opts->ctx ? opts->ctx->id : opts->ctx_id;
+ 
+ 	if (opts->flags & IGT_SPIN_FENCE_OUT)
+ 		execbuf->flags |= I915_EXEC_FENCE_OUT;
+@@ -422,8 +434,10 @@ igt_spin_factory(int fd, const struct igt_spin_factory *opts)
+ 		struct intel_execution_engine2 e;
+ 		int class;
+ 
+-		if (!gem_context_lookup_engine(fd, opts->engine,
+-					       opts->ctx_id, &e)) {
++		if (opts->ctx) {
++			class = opts->ctx->cfg.engines[opts->engine].engine_class;
++		} else if (!gem_context_lookup_engine(fd, opts->engine,
++						      opts->ctx_id, &e)) {
+ 			class = e.class;
+ 		} else {
+ 			gem_require_ring(fd, opts->engine);
 diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
-index a75fcdeb..f3d7c128 100644
+index ad1ce28c..4534d2ca 100644
 --- a/lib/igt_dummyload.h
 +++ b/lib/igt_dummyload.h
-@@ -59,13 +59,23 @@ typedef struct igt_spin {
- #define SPIN_CLFLUSH (1 << 0)
- } igt_spin_t;
+@@ -31,10 +31,12 @@
+ #include "igt_core.h"
+ #include "igt_list.h"
+ #include "i915_drm.h"
++#include "intel_ctx.h"
  
--struct igt_spin_factory {
-+/**
-+ * igt_spin_factory_t:
-+ * @ctx: GEM context handle
-+ * @dependency: GEM object to depend on
-+ * @engine: Flags describing the engine to execute on
-+ * @flags: Set of IGT_SPIN_* flags
-+ * @fence: In-fence to wait on
-+ *
-+ * A factory struct which contains creation parameters for an igt_spin_t.
-+ */
-+typedef struct igt_spin_factory {
- 	uint32_t ctx;
+ typedef struct igt_spin {
+ 	struct igt_list_head link;
+ 
++
+ 	uint32_t handle;
+ 	uint32_t poll_handle;
+ 
+@@ -62,6 +64,7 @@ typedef struct igt_spin {
+ /**
+  * igt_spin_factory_t:
+  * @ctx_id: GEM context handle
++ * @ctx: intel_ctx_t context wrapper
+  * @dependency: GEM object to depend on
+  * @engine: Flags describing the engine to execute on
+  * @flags: Set of IGT_SPIN_* flags
+@@ -71,6 +74,7 @@ typedef struct igt_spin {
+  */
+ typedef struct igt_spin_factory {
+ 	uint32_t ctx_id;
++	const intel_ctx_t *ctx;
  	uint32_t dependency;
  	unsigned int engine;
  	unsigned int flags;
- 	int fence;
--};
-+} igt_spin_factory_t;
- 
- #define IGT_SPIN_FENCE_IN      (1 << 0)
- #define IGT_SPIN_FENCE_SUBMIT  (1 << 1)
-@@ -78,14 +88,14 @@ struct igt_spin_factory {
- #define IGT_SPIN_SOFTDEP       (1 << 8)
- 
- igt_spin_t *
--__igt_spin_factory(int fd, const struct igt_spin_factory *opts);
-+__igt_spin_factory(int fd, const igt_spin_factory_t *opts);
- igt_spin_t *
--igt_spin_factory(int fd, const struct igt_spin_factory *opts);
-+igt_spin_factory(int fd, const igt_spin_factory_t *opts);
- 
- #define __igt_spin_new(fd, ...) \
--	__igt_spin_factory(fd, &((struct igt_spin_factory){__VA_ARGS__}))
-+	__igt_spin_factory(fd, &((igt_spin_factory_t){__VA_ARGS__}))
- #define igt_spin_new(fd, ...) \
--	igt_spin_factory(fd, &((struct igt_spin_factory){__VA_ARGS__}))
-+	igt_spin_factory(fd, &((igt_spin_factory_t){__VA_ARGS__}))
- 
- void igt_spin_set_timeout(igt_spin_t *spin, int64_t ns);
- void igt_spin_reset(igt_spin_t *spin);
 -- 
 2.31.1
 
