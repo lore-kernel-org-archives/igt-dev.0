@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
- [IPv6:2607:f8b0:4864:20::532])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD9026EC8E
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:33:35 +0000 (UTC)
-Received: by mail-pg1-x532.google.com with SMTP id 27so18397551pgy.3
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:33:35 -0700 (PDT)
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
+ [IPv6:2607:f8b0:4864:20::102f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 368F16EC8F
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 04:33:37 +0000 (UTC)
+Received: by mail-pj1-x102f.google.com with SMTP id h16so625772pjv.2
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Jun 2021 21:33:37 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Tue,  8 Jun 2021 23:32:36 -0500
-Message-Id: <20210609043259.102581-21-jason@jlekstrand.net>
+Date: Tue,  8 Jun 2021 23:32:37 -0500
+Message-Id: <20210609043259.102581-22-jason@jlekstrand.net>
 In-Reply-To: <20210609043035.102359-1-jason@jlekstrand.net>
 References: <20210609043035.102359-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 70/93] tests/i915/gem_exec_endless: Stop
- munging ctx0 engines
+Subject: [igt-dev] [PATCH i-g-t 71/93] lib/i915: Use for_each_physical_ring
+ for submission tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,24 +27,54 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+This does make the assumption that ctx0 has the default set of engines
+but, now that we've converted everything to intel_ctx_t, this assumption
+should be ok.
+
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/i915/gem_exec_endless.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/i915/gem_submission.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/tests/i915/gem_exec_endless.c b/tests/i915/gem_exec_endless.c
-index c3c80654..b83d5a2c 100644
---- a/tests/i915/gem_exec_endless.c
-+++ b/tests/i915/gem_exec_endless.c
-@@ -309,7 +309,7 @@ static void endless_dispatch(int i915, const struct intel_execution_engine2 *e)
- }
+diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
+index bd4bbb3e..1abc73ec 100644
+--- a/lib/i915/gem_submission.c
++++ b/lib/i915/gem_submission.c
+@@ -33,6 +33,7 @@
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+ #include "i915/gem_engine_topology.h"
++#include "i915/gem_ring.h"
+ #include "i915/gem_submission.h"
  
- #define test_each_engine(T, i915, e) \
--	igt_subtest_with_dynamic(T) __for_each_physical_engine(i915, e) \
-+	igt_subtest_with_dynamic(T) for_each_physical_engine(i915, e) \
- 		for_each_if(gem_class_can_store_dword(i915, (e)->class)) \
- 			igt_dynamic_f("%s", (e)->name)
+ #include "igt_core.h"
+@@ -200,10 +201,8 @@ void gem_test_engine(int i915, unsigned int engine)
+ 	gem_write(i915, obj.handle, 0, &bbe, sizeof(bbe));
  
+ 	if (engine == ALL_ENGINES) {
+-		const struct intel_execution_engine2 *e2;
+-
+-		__for_each_physical_engine(i915, e2) {
+-			execbuf.flags = e2->flags;
++		for_each_physical_ring(e, i915) {
++			execbuf.flags = eb_ring(e);
+ 			gem_execbuf(i915, &execbuf);
+ 		}
+ 	} else {
+@@ -382,11 +381,9 @@ unsigned int gem_submission_measure(int i915, unsigned int engine)
+ 		fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) | O_NONBLOCK);
+ 
+ 	if (engine == ALL_ENGINES) {
+-		struct intel_execution_engine2 *e;
+-
+ 		size = -1;
+-		__for_each_physical_engine(i915, e) {
+-			unsigned int this =  __measure_ringsize(i915, e->flags);
++		for_each_physical_ring(e, i915) {
++			unsigned int this =  __measure_ringsize(i915, eb_ring(e));
+ 			if (this < size)
+ 				size = this;
+ 		}
 -- 
 2.31.1
 
