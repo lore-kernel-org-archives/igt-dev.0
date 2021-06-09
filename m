@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com
- [IPv6:2607:f8b0:4864:20::b2f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C2A76EA55
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 18:06:00 +0000 (UTC)
-Received: by mail-yb1-xb2f.google.com with SMTP id g142so17426673ybf.9
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 11:06:00 -0700 (PDT)
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com
+ [IPv6:2607:f8b0:4864:20::b33])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8EB5F6EA94
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jun 2021 18:08:48 +0000 (UTC)
+Received: by mail-yb1-xb33.google.com with SMTP id p184so36758233yba.11
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Jun 2021 11:08:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210608094020.21598-1-daniel.vetter@ffwll.ch>
- <20210608094020.21598-5-daniel.vetter@ffwll.ch>
-In-Reply-To: <20210608094020.21598-5-daniel.vetter@ffwll.ch>
+References: <20210608093935.21463-1-daniel.vetter@ffwll.ch>
+In-Reply-To: <20210608093935.21463-1-daniel.vetter@ffwll.ch>
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed, 9 Jun 2021 13:05:48 -0500
-Message-ID: <CAOFGe968p2wSctUUp3PPCMRonNYG_YUYWObOvDLffcan-bY+4Q@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 5/7] Revert "i915/gem_exec_reloc: Flood
- the ring with GPU relocs"
+Date: Wed, 9 Jun 2021 13:08:36 -0500
+Message-ID: <CAOFGe94HCGmoTHQS3Mz2LThTAMReaZ9b39HpCMx5f4GMtfJ+XA@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 7/7] tests/gem_exec_schedule: Use
+ store_dword_plug again
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,141 +20,104 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Daniel Vetter <daniel.vetter@ffwll.ch>
 Cc: IGT development <igt-dev@lists.freedesktop.org>, Dave Airlie <airlied@redhat.com>, Daniel Vetter <daniel.vetter@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reviewed-by: Jason Ekstrand <jason@jlekstrand.net>
-
-On Tue, Jun 8, 2021 at 4:40 AM Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
->
-> This reverts commit 57ee41f12b7a53283fd812c5f72fcb39e6ad2197.
->
-> This validates gpu relocations, which we're about to delete.
->
-> Cc: Jason Ekstrand <jason@jlekstrand.net>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Dave Airlie <airlied@redhat.com>
-> Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-> ---
->  tests/i915/gem_exec_reloc.c | 89 -------------------------------------
->  1 file changed, 89 deletions(-)
->
-> diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
-> index c3f42aff9c9a..cbd40962c610 100644
-> --- a/tests/i915/gem_exec_reloc.c
-> +++ b/tests/i915/gem_exec_reloc.c
-> @@ -344,88 +344,6 @@ static void active(int fd, unsigned engine)
->         gem_close(fd, obj[0].handle);
->  }
->
-> -static uint64_t many_relocs(unsigned long count, unsigned long *out)
-> -{
-> -       struct drm_i915_gem_relocation_entry *reloc;
-> -       unsigned long sz;
-> -       int i;
-> -
-> -       sz = count * sizeof(*reloc);
-> -       sz = ALIGN(sz, 4096);
-> -
-> -       reloc = mmap(0, sz, PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
-> -       igt_assert(reloc != MAP_FAILED);
-> -       for (i = 0; i < count; i++) {
-> -               reloc[i].target_handle = 0;
-> -               reloc[i].presumed_offset = ~0ull;
-> -               reloc[i].offset = 8 * i;
-> -               reloc[i].delta = 8 * i;
-> -       }
-> -       mprotect(reloc, sz, PROT_READ);
-> -
-> -       *out = sz;
-> -       return to_user_pointer(reloc);
-> -}
-> -
-> -static void __many_active(int i915, unsigned engine, unsigned long count)
-> -{
-> -       unsigned long reloc_sz;
-> -       struct drm_i915_gem_exec_object2 obj[2] = {{
-> -               .handle = gem_create(i915, count * sizeof(uint64_t)),
-> -               .relocs_ptr = many_relocs(count, &reloc_sz),
-> -               .relocation_count = count,
-> -       }};
-> -       struct drm_i915_gem_execbuffer2 execbuf = {
-> -               .buffers_ptr = to_user_pointer(obj),
-> -               .buffer_count = ARRAY_SIZE(obj),
-> -               .flags = engine | I915_EXEC_HANDLE_LUT,
-> -       };
-> -       igt_spin_t *spin;
-> -
-> -       spin = __igt_spin_new(i915,
-> -                             .engine = engine,
-> -                             .dependency = obj[0].handle,
-> -                             .flags = (IGT_SPIN_FENCE_OUT |
-> -                                       IGT_SPIN_NO_PREEMPTION));
-> -       obj[1] = spin->obj[1];
-> -       gem_execbuf(i915, &execbuf);
-> -       igt_assert_eq(sync_fence_status(spin->out_fence), 0);
-> -       igt_spin_free(i915, spin);
-> -
-> -       for (unsigned long i = 0; i < count; i++) {
-> -               uint64_t addr;
-> -
-> -               gem_read(i915, obj[0].handle, i * sizeof(addr),
-> -                        &addr, sizeof(addr));
-> -
-> -               igt_assert_eq_u64(addr, obj[0].offset + i * sizeof(addr));
-> -       }
-> -
-> -       munmap(from_user_pointer(obj[0].relocs_ptr), reloc_sz);
-> -       gem_close(i915, obj[0].handle);
-> -}
-> -
-> -static void many_active(int i915, unsigned engine)
-> -{
-> -       const uint64_t max = 2048;
-> -       unsigned long count = 256;
-> -
-> -       igt_until_timeout(2) {
-> -               uint64_t required, total;
-> -
-> -               if (!__intel_check_memory(1, 8 * count, CHECK_RAM,
-> -                                         &required, &total))
-> -                       break;
-> -
-> -               igt_debug("Testing count:%lu\n", count);
-> -               __many_active(i915, engine, count);
-> -
-> -               count <<= 1;
-> -               if (count >= max)
-> -                       break;
-> -       }
-> -}
-> -
->  static unsigned int offset_in_page(void *addr)
->  {
->         return (uintptr_t)addr & 4095;
-> @@ -1053,13 +971,6 @@ igt_main
->                 }
->         }
->
-> -       igt_subtest_with_dynamic("basic-many-active") {
-> -               __for_each_physical_engine(fd, e) {
-> -                       igt_dynamic_f("%s", e->name)
-> -                               many_active(fd, e->flags);
-> -               }
-> -       }
-> -
->         igt_subtest("invalid-domains")
->                 invalid_domains(fd);
->
-> --
-> 2.24.1
->
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+UmV2aWV3ZWQtYnk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3RyYW5kLm5ldD4KCk9uIFR1
+ZSwgSnVuIDgsIDIwMjEgYXQgNDozOSBBTSBEYW5pZWwgVmV0dGVyIDxkYW5pZWwudmV0dGVyQGZm
+d2xsLmNoPiB3cm90ZToKPgo+IEluCj4KPiBjb21taXQgMjg4NGY5MWRkNmQ3NjgyZWE3MzhlZjZm
+MDk0M2NjNTkxNjQzZGRhMgo+IEF1dGhvcjogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxz
+b24uY28udWs+Cj4gRGF0ZTogICBGcmkgSnVsIDIwIDEyOjI5OjMwIDIwMTggKzAxMDAKPgo+ICAg
+ICBpZ3QvZ2VtX2V4ZWNfc2NoZWR1bGU6IFRyaW0gZGVlcCBydW50aW1lCj4KPiB0aGlzIHdhcyBv
+cGVuLWNvZGVkLCBJIGd1ZXNzIHRvIGF2b2lkIGhhdmluZyB0byBhbGxvY2F0ZSBhIHRvbiBvZgo+
+IGJhdGNoYnVmZmVycy4gVW5mb3J0dW5hdGVseSB0aGlzIHJlbGllcyBvbiBiZWluZyBhYmxlIHRv
+IHJld3JpdGUKPiBiYXRjaGJ1ZmZlciByZWxvY2F0aW9ucyB3aGlsZSB0aGUgYmF0Y2ggaXMgaW4t
+ZmxpZ2h0IChvdGhlcndpc2UKPiBldmVyeXRoaW5nIHN0YWxscyBhbmQgb3VyIHNldHVwIGlzIGZv
+ciBub3RoaW5nKSwgYW5kIHdlJ3JlIHJlbW92aW5nCj4gZ3B1IHJlbG9jYXRpb25zIGZyb20gdXBz
+dHJlYW0uCj4KPiBUaGlzIHByb2JsZW0gd2FzIHJlYWxpemVkIGZvciB0aGUgdGVzdGNhc2UgaW4g
+Z2VuZXJhbCBpbgo+Cj4gY29tbWl0IGYxZTYyZTMzMGE2ZTJkZTdiM2NiZjdjZjAyZDcxYWUwMGNj
+NmFkY2MKPiBBdXRob3I6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+
+IERhdGU6ICAgVHVlIE1heSAyNiAxNToyMjozOCAyMDIwICswMTAwCj4KPiAgICAgaTkxNS9nZW1f
+ZXhlY19zY2hlZHVsZTogUmVkdWNlIHJlbG9jYXRpb24gcmlzayBmb3Igc3RvcmUtZHdvcmQKPgo+
+IGJ1dCB0aGUgZml4IGluIHRoZXJlIGlzIG9ubHkgc3RvY2hhc3RpYywgdGhlcmUncyBzdGlsbCBh
+IGNoYW5jZSBvZgo+IGZhaWx1cmUgYW5kIGhlbmNlIHVuc2lnaHRseSBub2lzZSBpbiBDSS4gVGhl
+IHByb3BlciBmaXggaXMgdG8gdXNlCj4gc29mdHBpbiBmb3IgdGhpcyB0ZXN0Y2FzZSB1bmNvbmRp
+dGlvbmFsbHkgKG5vdCBqdXN0IHdoZW4gcmVsb2NhdGlvbnMKPiBhcmVuJ3QgYXZhaWxhYmxlKSwg
+c28gdGhhdCB3ZSBjbGVhcmx5IGRpc2VudGFuZ2xlIHRoZSBjb25jZXJucyBoZXJlCj4gYW5kIHJl
+YWxseSBvbmx5IHRlc3QgdGhlIHNjaGVkdWxlci4gQW5kIG5vdCBzb21lIGxlZ2FjeSBmZWF0dXJl
+cyB0aGF0Cj4gYXJlIG9uIHRoZSB3YXkgb3V0IHRvIHRoZWlyIGRlc2VydmVkIHJldGlyZW1lbnQg
+bGlrZSByZWxvY2F0aW9ucy4KPgo+IFpieXNjZWsgYW5kIEFzaG90dXNoIGNjJ2VkIHNvIHRoZXkn
+cmUgYXdhcmUgdGhhdCB0aGlzIHRlc3RjYXNlIG11c3QgYmUKPiBzd2l0Y2hlZCBvdmVyIHRvIHNv
+ZnRwaW5nIHVuY29uZHRpb25hbGx5LCBmb3IgY29ycmVjdG5lc3MgcmVhc29ucy4KPgo+IEJ1dCB0
+aGF0J3MgYSBwaWxlIG1vcmUgd29yaywgc28gYXMgYW4gaW50ZXJpbSBzb2x1dGlvbiBnbyBiYWNr
+IHRvCj4gX19zdG9yZV9kd29yZCBoZWxwZXIuCj4KPiBDYzogSmFzb24gRWtzdHJhbmQgPGphc29u
+QGpsZWtzdHJhbmQubmV0Pgo+IENjOiBEaXhpdCBBc2h1dG9zaCA8YXNodXRvc2guZGl4aXRAaW50
+ZWwuY29tPgo+IENjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tp
+QGludGVsLmNvbT4KPiBDYzogTWFhcnRlbiBMYW5raG9yc3QgPG1hYXJ0ZW4ubGFua2hvcnN0QGxp
+bnV4LmludGVsLmNvbT4KPiBDYzogRGF2ZSBBaXJsaWUgPGFpcmxpZWRAcmVkaGF0LmNvbT4KPiBT
+aWduZWQtb2ZmLWJ5OiBEYW5pZWwgVmV0dGVyIDxkYW5pZWwudmV0dGVyQGludGVsLmNvbT4KPiAt
+LS0KPiAgdGVzdHMvaTkxNS9nZW1fZXhlY19zY2hlZHVsZS5jIHwgNTIgKysrLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLQo+ICAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCA0
+OCBkZWxldGlvbnMoLSkKPgo+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9leGVjX3NjaGVk
+dWxlLmMgYi90ZXN0cy9pOTE1L2dlbV9leGVjX3NjaGVkdWxlLmMKPiBpbmRleCA5NTg1MDU5ZDhk
+ZWQuLmI1ZGUxYWI0ZWVhZSAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2dlbV9leGVjX3NjaGVk
+dWxlLmMKPiArKysgYi90ZXN0cy9pOTE1L2dlbV9leGVjX3NjaGVkdWxlLmMKPiBAQCAtMTg0Niw1
+NSArMTg0NiwxMSBAQCBzdGF0aWMgdm9pZCBkZWVwKGludCBmZCwgdW5zaWduZWQgcmluZykKPgo+
+ICAgICAgICAgLyogQ3JlYXRlIGEgZGVlcCBkZXBlbmRlbmN5IGNoYWluLCB3aXRoIGEgZmV3IGJy
+YW5jaGVzICovCj4gICAgICAgICBmb3IgKG4gPSAwOyBuIDwgbnJlcSAmJiBpZ3Rfc2Vjb25kc19l
+bGFwc2VkKCZ0dikgPCAyOyBuKyspIHsKPiAtICAgICAgICAgICAgICAgY29uc3QgdW5zaWduZWQg
+aW50IGdlbiA9IGludGVsX2dlbihpbnRlbF9nZXRfZHJtX2RldmlkKGZkKSk7Cj4gLSAgICAgICAg
+ICAgICAgIHN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY19vYmplY3QyIG9ialszXTsKPiAtICAgICAg
+ICAgICAgICAgc3RydWN0IGRybV9pOTE1X2dlbV9yZWxvY2F0aW9uX2VudHJ5IHJlbG9jOwo+IC0g
+ICAgICAgICAgICAgICBzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNidWZmZXIyIGViID0gewo+IC0g
+ICAgICAgICAgICAgICAgICAgICAgIC5idWZmZXJzX3B0ciA9IHRvX3VzZXJfcG9pbnRlcihvYmop
+LAo+IC0gICAgICAgICAgICAgICAgICAgICAgIC5idWZmZXJfY291bnQgPSAzLAo+IC0gICAgICAg
+ICAgICAgICAgICAgICAgIC5mbGFncyA9IHJpbmcgfCAoZ2VuIDwgNiA/IEk5MTVfRVhFQ19TRUNV
+UkUgOiAwKSwKPiAtICAgICAgICAgICAgICAgICAgICAgICAucnN2ZDEgPSBjdHhbbiAlIE1BWF9D
+T05URVhUU10sCj4gLSAgICAgICAgICAgICAgIH07Cj4gLSAgICAgICAgICAgICAgIHVpbnQzMl90
+IGJhdGNoWzE2XTsKPiAtICAgICAgICAgICAgICAgaW50IGk7Cj4gLQo+IC0gICAgICAgICAgICAg
+ICBtZW1zZXQob2JqLCAwLCBzaXplb2Yob2JqKSk7Cj4gLSAgICAgICAgICAgICAgIG9ialswXS5o
+YW5kbGUgPSBwbHVnOwo+IC0KPiAtICAgICAgICAgICAgICAgbWVtc2V0KCZyZWxvYywgMCwgc2l6
+ZW9mKHJlbG9jKSk7Cj4gLSAgICAgICAgICAgICAgIHJlbG9jLnByZXN1bWVkX29mZnNldCA9IDA7
+Cj4gLSAgICAgICAgICAgICAgIHJlbG9jLm9mZnNldCA9IHNpemVvZih1aW50MzJfdCk7Cj4gLSAg
+ICAgICAgICAgICAgIHJlbG9jLmRlbHRhID0gc2l6ZW9mKHVpbnQzMl90KSAqIG47Cj4gLSAgICAg
+ICAgICAgICAgIHJlbG9jLnJlYWRfZG9tYWlucyA9IEk5MTVfR0VNX0RPTUFJTl9SRU5ERVI7Cj4g
+LSAgICAgICAgICAgICAgIHJlbG9jLndyaXRlX2RvbWFpbiA9IEk5MTVfR0VNX0RPTUFJTl9SRU5E
+RVI7Cj4gLSAgICAgICAgICAgICAgIG9ialsyXS5oYW5kbGUgPSBnZW1fY3JlYXRlKGZkLCA0MDk2
+KTsKPiAtICAgICAgICAgICAgICAgb2JqWzJdLnJlbG9jc19wdHIgPSB0b191c2VyX3BvaW50ZXIo
+JnJlbG9jKTsKPiAtICAgICAgICAgICAgICAgb2JqWzJdLnJlbG9jYXRpb25fY291bnQgPSAxOwo+
+IC0KPiAtICAgICAgICAgICAgICAgaSA9IDA7Cj4gLSAgICAgICAgICAgICAgIGJhdGNoW2ldID0g
+TUlfU1RPUkVfRFdPUkRfSU1NIHwgKGdlbiA8IDYgPyAxIDw8IDIyIDogMCk7Cj4gLSAgICAgICAg
+ICAgICAgIGlmIChnZW4gPj0gOCkgewo+IC0gICAgICAgICAgICAgICAgICAgICAgIGJhdGNoWysr
+aV0gPSByZWxvYy5kZWx0YTsKPiAtICAgICAgICAgICAgICAgICAgICAgICBiYXRjaFsrK2ldID0g
+MDsKPiAtICAgICAgICAgICAgICAgfSBlbHNlIGlmIChnZW4gPj0gNCkgewo+IC0gICAgICAgICAg
+ICAgICAgICAgICAgIGJhdGNoWysraV0gPSAwOwo+IC0gICAgICAgICAgICAgICAgICAgICAgIGJh
+dGNoWysraV0gPSByZWxvYy5kZWx0YTsKPiAtICAgICAgICAgICAgICAgICAgICAgICByZWxvYy5v
+ZmZzZXQgKz0gc2l6ZW9mKHVpbnQzMl90KTsKPiAtICAgICAgICAgICAgICAgfSBlbHNlIHsKPiAt
+ICAgICAgICAgICAgICAgICAgICAgICBiYXRjaFtpXS0tOwo+IC0gICAgICAgICAgICAgICAgICAg
+ICAgIGJhdGNoWysraV0gPSByZWxvYy5kZWx0YTsKPiAtICAgICAgICAgICAgICAgfQo+IC0gICAg
+ICAgICAgICAgICBiYXRjaFsrK2ldID0gZWIucnN2ZDE7Cj4gLSAgICAgICAgICAgICAgIGJhdGNo
+WysraV0gPSBNSV9CQVRDSF9CVUZGRVJfRU5EOwo+IC0gICAgICAgICAgICAgICBnZW1fd3JpdGUo
+ZmQsIG9ialsyXS5oYW5kbGUsIDAsIGJhdGNoLCBzaXplb2YoYmF0Y2gpKTsKPiArICAgICAgICAg
+ICAgICAgdWludDMyX3QgY29udGV4dCA9IGN0eFtuICUgTUFYX0NPTlRFWFRTXTsKPiArICAgICAg
+ICAgICAgICAgZ2VtX2NvbnRleHRfc2V0X3ByaW9yaXR5KGZkLCBjb250ZXh0LCBNQVhfUFJJTyAt
+IG5yZXEgKyBuKTsKPgo+IC0gICAgICAgICAgICAgICBnZW1fY29udGV4dF9zZXRfcHJpb3JpdHko
+ZmQsIGViLnJzdmQxLCBNQVhfUFJJTyAtIG5yZXEgKyBuKTsKPiAtICAgICAgICAgICAgICAgZm9y
+IChpbnQgbSA9IDA7IG0gPCBYUzsgbSsrKSB7Cj4gLSAgICAgICAgICAgICAgICAgICAgICAgb2Jq
+WzFdLmhhbmRsZSA9IGRlcFttXTsKPiAtICAgICAgICAgICAgICAgICAgICAgICByZWxvYy50YXJn
+ZXRfaGFuZGxlID0gb2JqWzFdLmhhbmRsZTsKPiAtICAgICAgICAgICAgICAgICAgICAgICBnZW1f
+ZXhlY2J1ZihmZCwgJmViKTsKPiAtICAgICAgICAgICAgICAgfQo+IC0gICAgICAgICAgICAgICBn
+ZW1fY2xvc2UoZmQsIG9ialsyXS5oYW5kbGUpOwo+ICsgICAgICAgICAgICAgICBmb3IgKGludCBt
+ID0gMDsgbSA8IFhTOyBtKyspCj4gKyAgICAgICAgICAgICAgICAgICAgICAgc3RvcmVfZHdvcmRf
+cGx1ZyhmZCwgY29udGV4dCwgcmluZywgZGVwW21dLCA0Km4sIGNvbnRleHQsIHBsdWcsIEk5MTVf
+R0VNX0RPTUFJTl9JTlNUUlVDVElPTik7Cj4gICAgICAgICB9Cj4gICAgICAgICBpZ3RfaW5mbygi
+Rmlyc3QgZGVwdHJlZTogJWQgcmVxdWVzdHMgWyUuM2ZzXVxuIiwKPiAgICAgICAgICAgICAgICAg
+IG4gKiBYUywgMWUtOSppZ3RfbnNlY19lbGFwc2VkKCZ0dikpOwo+IC0tCj4gMi4yNC4xCj4KX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
+aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
+ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
