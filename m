@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com
- [IPv6:2607:f8b0:4864:20::b2f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE6506ED64
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Jun 2021 15:51:38 +0000 (UTC)
-Received: by mail-yb1-xb2f.google.com with SMTP id g38so41445346ybi.12
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Jun 2021 08:51:38 -0700 (PDT)
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com
+ [IPv6:2607:f8b0:4864:20::b35])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E4F096ED83
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Jun 2021 16:02:10 +0000 (UTC)
+Received: by mail-yb1-xb35.google.com with SMTP id h15so11689957ybm.13
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Jun 2021 09:02:10 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210609173632.248880-1-jason@jlekstrand.net>
- <20210609173632.248880-36-jason@jlekstrand.net>
- <20210610142904.GO3926@zkempczy-mobl2>
-In-Reply-To: <20210610142904.GO3926@zkempczy-mobl2>
+ <20210609173632.248880-10-jason@jlekstrand.net>
+ <877dj2nvzj.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <877dj2nvzj.wl-ashutosh.dixit@intel.com>
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 10 Jun 2021 10:51:26 -0500
-Message-ID: <CAOFGe97H=hwWa4HYR0=QE7xgPBhabb-q3u=dqTV57ixoKHi-pA@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 35/93] tests/prime_vgem: Convert to
- intel_ctx_t
+Date: Thu, 10 Jun 2021 11:01:59 -0500
+Message-ID: <CAOFGe963eZO7ObtegmqR9NjFzHwt5RJp_-ajysWi_VwUbd03xw@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 09/93] lib: Add an intel_ctx wrapper
+ struct and helpers (v5)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,127 +22,107 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBKdW4gMTAsIDIwMjEgYXQgOToyOSBBTSBaYmlnbmlldyBLZW1wY3p5xYRza2kKPHpi
-aWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4gd3JvdGU6Cj4KPiBPbiBXZWQsIEp1biAwOSwg
-MjAyMSBhdCAxMjozNjoxOFBNIC0wNTAwLCBKYXNvbiBFa3N0cmFuZCB3cm90ZToKPiA+IFNpZ25l
-ZC1vZmYtYnk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3RyYW5kLm5ldD4KPiA+IC0tLQo+
-ID4gIHRlc3RzL3ByaW1lX3ZnZW0uYyB8IDM1ICsrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0t
-LS0tLS0tCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDIxIGluc2VydGlvbnMoKyksIDE0IGRlbGV0aW9u
-cygtKQo+ID4KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9wcmltZV92Z2VtLmMgYi90ZXN0cy9wcmlt
-ZV92Z2VtLmMKPiA+IGluZGV4IGFlZmYyODJiLi4zMDIzZmQ2OCAxMDA2NDQKPiA+IC0tLSBhL3Rl
-c3RzL3ByaW1lX3ZnZW0uYwo+ID4gKysrIGIvdGVzdHMvcHJpbWVfdmdlbS5jCj4gPiBAQCAtNTU5
-LDcgKzU1OSw3IEBAIHN0YXRpYyBib29sIHByaW1lX2J1c3koaW50IGZkLCBib29sIGV4Y2wpCj4g
-PiAgICAgICByZXR1cm4gcG9sbCgmcGZkLCAxLCAwKSA9PSAwOwo+ID4gIH0KPiA+Cj4gPiAtc3Rh
-dGljIHZvaWQgd29yayhpbnQgaTkxNSwgaW50IGRtYWJ1ZiwgdW5zaWduZWQgcmluZykKPiA+ICtz
-dGF0aWMgdm9pZCB3b3JrKGludCBpOTE1LCBpbnQgZG1hYnVmLCBjb25zdCBpbnRlbF9jdHhfdCAq
-Y3R4LCB1bnNpZ25lZCByaW5nKQo+ID4gIHsKPiA+ICAgICAgIGNvbnN0IGludCBTQ1JBVENIID0g
-MDsKPiA+ICAgICAgIGNvbnN0IGludCBCQVRDSCA9IDE7Cj4gPiBAQCAtNTc4LDYgKzU3OCw3IEBA
-IHN0YXRpYyB2b2lkIHdvcmsoaW50IGk5MTUsIGludCBkbWFidWYsIHVuc2lnbmVkIHJpbmcpCj4g
-PiAgICAgICBleGVjYnVmLmZsYWdzID0gcmluZzsKPiA+ICAgICAgIGlmIChnZW4gPCA2KQo+ID4g
-ICAgICAgICAgICAgICBleGVjYnVmLmZsYWdzIHw9IEk5MTVfRVhFQ19TRUNVUkU7Cj4gPiArICAg
-ICBleGVjYnVmLnJzdmQxID0gY3R4LT5pZDsKPgo+IExpa2VseToKPgo+IGV4ZWNidWYucnN2ZDEg
-PSBjdHggPyBjdHgtPmlkIDogMDsgIC8vc2VlIGJlbG93Cj4KPiA+Cj4gPiAgICAgICBtZW1zZXQo
-b2JqLCAwLCBzaXplb2Yob2JqKSk7Cj4gPiAgICAgICBvYmpbU0NSQVRDSF0uaGFuZGxlID0gcHJp
-bWVfZmRfdG9faGFuZGxlKGk5MTUsIGRtYWJ1Zik7Cj4gPiBAQCAtNjU0LDcgKzY1NSw3IEBAIHN0
-YXRpYyB2b2lkIHdvcmsoaW50IGk5MTUsIGludCBkbWFidWYsIHVuc2lnbmVkIHJpbmcpCj4gPiAg
-ICAgICBpZ3RfYXNzZXJ0KHJlYWRfYnVzeSAmJiB3cml0ZV9idXN5KTsKPiA+ICB9Cj4gPgo+ID4g
-LXN0YXRpYyB2b2lkIHRlc3RfYnVzeShpbnQgaTkxNSwgaW50IHZnZW0sIHVuc2lnbmVkIHJpbmcp
-Cj4gPiArc3RhdGljIHZvaWQgdGVzdF9idXN5KGludCBpOTE1LCBpbnQgdmdlbSwgY29uc3QgaW50
-ZWxfY3R4X3QgKmN0eCwgdW5zaWduZWQgcmluZykKPiA+ICB7Cj4gPiAgICAgICBzdHJ1Y3Qgdmdl
-bV9ibyBzY3JhdGNoOwo+ID4gICAgICAgc3RydWN0IHRpbWVzcGVjIHR2Owo+ID4gQEAgLTY2OCw3
-ICs2NjksNyBAQCBzdGF0aWMgdm9pZCB0ZXN0X2J1c3koaW50IGk5MTUsIGludCB2Z2VtLCB1bnNp
-Z25lZCByaW5nKQo+ID4gICAgICAgdmdlbV9jcmVhdGUodmdlbSwgJnNjcmF0Y2gpOwo+ID4gICAg
-ICAgZG1hYnVmID0gcHJpbWVfaGFuZGxlX3RvX2ZkKHZnZW0sIHNjcmF0Y2guaGFuZGxlKTsKPiA+
-Cj4gPiAtICAgICB3b3JrKGk5MTUsIGRtYWJ1ZiwgcmluZyk7Cj4gPiArICAgICB3b3JrKGk5MTUs
-IGRtYWJ1ZiwgY3R4LCByaW5nKTsKPiA+Cj4gPiAgICAgICAvKiBDYWxsaW5nIGJ1c3kgaW4gYSBs
-b29wIHNob3VsZCBiZSBlbm91Z2ggdG8gZmx1c2ggdGhlIHJlbmRlcmluZyAqLwo+ID4gICAgICAg
-bWVtc2V0KCZ0diwgMCwgc2l6ZW9mKHR2KSk7Cj4gPiBAQCAtNjg0LDcgKzY4NSw3IEBAIHN0YXRp
-YyB2b2lkIHRlc3RfYnVzeShpbnQgaTkxNSwgaW50IHZnZW0sIHVuc2lnbmVkIHJpbmcpCj4gPiAg
-ICAgICBjbG9zZShkbWFidWYpOwo+ID4gIH0KPiA+Cj4gPiAtc3RhdGljIHZvaWQgdGVzdF93YWl0
-KGludCBpOTE1LCBpbnQgdmdlbSwgdW5zaWduZWQgcmluZykKPiA+ICtzdGF0aWMgdm9pZCB0ZXN0
-X3dhaXQoaW50IGk5MTUsIGludCB2Z2VtLCBjb25zdCBpbnRlbF9jdHhfdCAqY3R4LCB1bnNpZ25l
-ZCByaW5nKQo+ID4gIHsKPiA+ICAgICAgIHN0cnVjdCB2Z2VtX2JvIHNjcmF0Y2g7Cj4gPiAgICAg
-ICBzdHJ1Y3QgcG9sbGZkIHBmZDsKPiA+IEBAIC02OTcsNyArNjk4LDcgQEAgc3RhdGljIHZvaWQg
-dGVzdF93YWl0KGludCBpOTE1LCBpbnQgdmdlbSwgdW5zaWduZWQgcmluZykKPiA+ICAgICAgIHZn
-ZW1fY3JlYXRlKHZnZW0sICZzY3JhdGNoKTsKPiA+ICAgICAgIHBmZC5mZCA9IHByaW1lX2hhbmRs
-ZV90b19mZCh2Z2VtLCBzY3JhdGNoLmhhbmRsZSk7Cj4gPgo+ID4gLSAgICAgd29yayhpOTE1LCBw
-ZmQuZmQsIHJpbmcpOwo+ID4gKyAgICAgd29yayhpOTE1LCBwZmQuZmQsIGN0eCwgcmluZyk7Cj4g
-Pgo+ID4gICAgICAgcGZkLmV2ZW50cyA9IFBPTExJTjsKPiA+ICAgICAgIGlndF9hc3NlcnRfZXEo
-cG9sbCgmcGZkLCAxLCAxMDAwMCksIDEpOwo+ID4gQEAgLTcxMSw3ICs3MTIsNyBAQCBzdGF0aWMg
-dm9pZCB0ZXN0X3dhaXQoaW50IGk5MTUsIGludCB2Z2VtLCB1bnNpZ25lZCByaW5nKQo+ID4gICAg
-ICAgY2xvc2UocGZkLmZkKTsKPiA+ICB9Cj4gPgo+ID4gLXN0YXRpYyB2b2lkIHRlc3Rfc3luYyhp
-bnQgaTkxNSwgaW50IHZnZW0sIHVuc2lnbmVkIHJpbmcpCj4gPiArc3RhdGljIHZvaWQgdGVzdF9z
-eW5jKGludCBpOTE1LCBpbnQgdmdlbSwgY29uc3QgaW50ZWxfY3R4X3QgKmN0eCwgdW5zaWduZWQg
-cmluZykKPiA+ICB7Cj4gPiAgICAgICBzdHJ1Y3QgdmdlbV9ibyBzY3JhdGNoOwo+ID4gICAgICAg
-dWludDMyX3QgKnB0cjsKPiA+IEBAIC03MjgsNyArNzI5LDcgQEAgc3RhdGljIHZvaWQgdGVzdF9z
-eW5jKGludCBpOTE1LCBpbnQgdmdlbSwgdW5zaWduZWQgcmluZykKPiA+ICAgICAgIGlndF9hc3Nl
-cnQocHRyICE9IE1BUF9GQUlMRUQpOwo+ID4gICAgICAgZ2VtX2Nsb3NlKHZnZW0sIHNjcmF0Y2gu
-aGFuZGxlKTsKPiA+Cj4gPiAtICAgICB3b3JrKGk5MTUsIGRtYWJ1ZiwgcmluZyk7Cj4gPiArICAg
-ICB3b3JrKGk5MTUsIGRtYWJ1ZiwgY3R4LCByaW5nKTsKPiA+Cj4gPiAgICAgICBwcmltZV9zeW5j
-X3N0YXJ0KGRtYWJ1ZiwgZmFsc2UpOwo+ID4gICAgICAgZm9yIChpID0gMDsgaSA8IDEwMjQ7IGkr
-KykKPiA+IEBAIC03MzksNyArNzQwLDcgQEAgc3RhdGljIHZvaWQgdGVzdF9zeW5jKGludCBpOTE1
-LCBpbnQgdmdlbSwgdW5zaWduZWQgcmluZykKPiA+ICAgICAgIG11bm1hcChwdHIsIHNjcmF0Y2gu
-c2l6ZSk7Cj4gPiAgfQo+ID4KPiA+IC1zdGF0aWMgdm9pZCB0ZXN0X2ZlbmNlX3dhaXQoaW50IGk5
-MTUsIGludCB2Z2VtLCB1bnNpZ25lZCByaW5nKQo+ID4gK3N0YXRpYyB2b2lkIHRlc3RfZmVuY2Vf
-d2FpdChpbnQgaTkxNSwgaW50IHZnZW0sIGNvbnN0IGludGVsX2N0eF90ICpjdHgsIHVuc2lnbmVk
-IHJpbmcpCj4gPiAgewo+ID4gICAgICAgc3RydWN0IHZnZW1fYm8gc2NyYXRjaDsKPiA+ICAgICAg
-IHVpbnQzMl90IGZlbmNlOwo+ID4gQEAgLTc2MCw3ICs3NjEsNyBAQCBzdGF0aWMgdm9pZCB0ZXN0
-X2ZlbmNlX3dhaXQoaW50IGk5MTUsIGludCB2Z2VtLCB1bnNpZ25lZCByaW5nKQo+ID4gICAgICAg
-aWd0X2Fzc2VydChwdHIgIT0gTUFQX0ZBSUxFRCk7Cj4gPgo+ID4gICAgICAgaWd0X2ZvcmsoY2hp
-bGQsIDEpCj4gPiAtICAgICAgICAgICAgIHdvcmsoaTkxNSwgZG1hYnVmLCByaW5nKTsKPiA+ICsg
-ICAgICAgICAgICAgd29yayhpOTE1LCBkbWFidWYsIGN0eCwgcmluZyk7Cj4gPgo+ID4gICAgICAg
-c2xlZXAoMSk7Cj4gPgo+ID4gQEAgLTgwMCw3ICs4MDEsNyBAQCBzdGF0aWMgdm9pZCB0ZXN0X2Zl
-bmNlX2hhbmcoaW50IGk5MTUsIGludCB2Z2VtLCB1bnNpZ25lZCBmbGFncykKPiA+ICAgICAgIGln
-dF9hc3NlcnQocHRyICE9IE1BUF9GQUlMRUQpOwo+ID4gICAgICAgZ2VtX2Nsb3NlKHZnZW0sIHNj
-cmF0Y2guaGFuZGxlKTsKPiA+Cj4gPiAtICAgICB3b3JrKGk5MTUsIGRtYWJ1ZiwgMCk7Cj4gPiAr
-ICAgICB3b3JrKGk5MTUsIGRtYWJ1ZiwgMCwgMCk7Cj4KPiBQYXNzaW5nIE5VTEwgY3R4IHdpdGhv
-dXQgYWJvdmUgY2hhbmdlIHdpbGwgbGVhZCB0byBjYXRhc3Ryb3BoaWMgcmVzdWx0LgoKSG93IGFi
-b3V0IHRoaXM/Cgp3b3JrKGk5MTUsIGRtYWJ1ZiwgaW50ZWxfY3R4XzAoaTkxNSksIDApOwoKLS1K
-YXNvbgoKPiAtLQo+IFpiaWduaWV3Cj4KPiA+Cj4gPiAgICAgICAvKiBUaGUgd29yayBzaG91bGQg
-aGF2ZSBiZWVuIGNhbmNlbGxlZCAqLwo+ID4KPiA+IEBAIC0xMDQyLDEyICsxMDQzLDE1IEBAIHN0
-YXRpYyB2b2lkIHRlc3RfZmxpcChpbnQgaTkxNSwgaW50IHZnZW0sIHVuc2lnbmVkIGhhbmcpCj4g
-PiAgfQo+ID4KPiA+ICBzdGF0aWMgdm9pZCB0ZXN0X2VhY2hfZW5naW5lKGNvbnN0IGNoYXIgKm5h
-bWUsIGludCB2Z2VtLCBpbnQgaTkxNSwKPiA+IC0gICAgICAgICAgICAgICAgICAgICAgICAgIHZv
-aWQgKCpmbikoaW50IGk5MTUsIGludCB2Z2VtLCB1bnNpZ25lZCBpbnQgZmxhZ3MpKQo+ID4gKyAg
-ICAgICAgICAgICAgICAgICAgICAgICAgdm9pZCAoKmZuKShpbnQgaTkxNSwgaW50IHZnZW0sCj4g
-PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvbnN0IGludGVsX2N0eF90
-ICpjdHgsCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVuc2lnbmVk
-IGludCBmbGFncykpCj4gPiAgewo+ID4gICAgICAgY29uc3Qgc3RydWN0IGludGVsX2V4ZWN1dGlv
-bl9lbmdpbmUyICplOwo+ID4gKyAgICAgY29uc3QgaW50ZWxfY3R4X3QgKmN0eCA9IGludGVsX2N0
-eF9jcmVhdGVfYWxsX3BoeXNpY2FsKGk5MTUpOwo+ID4KPiA+ICAgICAgIGlndF9zdWJ0ZXN0X3dp
-dGhfZHluYW1pYyhuYW1lKSB7Cj4gPiAtICAgICAgICAgICAgIF9fZm9yX2VhY2hfcGh5c2ljYWxf
-ZW5naW5lKGk5MTUsIGUpIHsKPiA+ICsgICAgICAgICAgICAgZm9yX2VhY2hfY3R4X2VuZ2luZShp
-OTE1LCBjdHgsIGUpIHsKPiA+ICAgICAgICAgICAgICAgICAgICAgICBpZiAoIWdlbV9jbGFzc19j
-YW5fc3RvcmVfZHdvcmQoaTkxNSwgZS0+Y2xhc3MpKQo+ID4gICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgY29udGludWU7Cj4gPgo+ID4gQEAgLTEwNTYsMTAgKzEwNjAsMTIgQEAgc3RhdGlj
-IHZvaWQgdGVzdF9lYWNoX2VuZ2luZShjb25zdCBjaGFyICpuYW1lLCBpbnQgdmdlbSwgaW50IGk5
-MTUsCj4gPgo+ID4gICAgICAgICAgICAgICAgICAgICAgIGlndF9keW5hbWljX2YoIiVzIiwgZS0+
-bmFtZSkgewo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZ2VtX3F1aWVzY2VudF9n
-cHUoaTkxNSk7Cj4gPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICBmbihpOTE1LCB2Z2Vt
-LCBlLT5mbGFncyk7Cj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICBmbihpOTE1LCB2
-Z2VtLCBjdHgsIGUtPmZsYWdzKTsKPiA+ICAgICAgICAgICAgICAgICAgICAgICB9Cj4gPiAgICAg
-ICAgICAgICAgIH0KPiA+ICAgICAgIH0KPiA+ICsKPiA+ICsgICAgIGludGVsX2N0eF9kZXN0cm95
-KGk5MTUsIGN0eCk7Cj4gPiAgfQo+ID4KPiA+ICBpZ3RfbWFpbgo+ID4gQEAgLTExMTAsNyArMTEx
-Niw4IEBAIGlndF9tYWluCj4gPiAgICAgICB7Cj4gPiAgICAgICAgICAgICAgIHN0YXRpYyBjb25z
-dCBzdHJ1Y3Qgewo+ID4gICAgICAgICAgICAgICAgICAgICAgIGNvbnN0IGNoYXIgKm5hbWU7Cj4g
-PiAtICAgICAgICAgICAgICAgICAgICAgdm9pZCAoKmZuKShpbnQgaTkxNSwgaW50IHZnZW0sIHVu
-c2lnbmVkIGludCBlbmdpbmUpOwo+ID4gKyAgICAgICAgICAgICAgICAgICAgIHZvaWQgKCpmbiko
-aW50IGk5MTUsIGludCB2Z2VtLCBjb25zdCBpbnRlbF9jdHhfdCAqY3R4LAo+ID4gKyAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgdW5zaWduZWQgaW50IGVuZ2luZSk7Cj4gPiAgICAgICAg
-ICAgICAgIH0gdGVzdHNbXSA9IHsKPiA+ICAgICAgICAgICAgICAgICAgICAgICB7ICJzeW5jIiwg
-dGVzdF9zeW5jIH0sCj4gPiAgICAgICAgICAgICAgICAgICAgICAgeyAiYnVzeSIsIHRlc3RfYnVz
-eSB9LAo+ID4gLS0KPiA+IDIuMzEuMQo+ID4KPiA+IF9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCj4gPiBpZ3QtZGV2IG1haWxpbmcgbGlzdAo+ID4gaWd0LWRl
-dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKPiA+IGh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVk
-ZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2lndC1kZXYK
+On Thu, Jun 10, 2021 at 12:18 AM Dixit, Ashutosh
+<ashutosh.dixit@intel.com> wrote:
+>
+> On Wed, 09 Jun 2021 10:35:52 -0700, Jason Ekstrand wrote:
+> >
+> > diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
+> >
+> > +/**
+> > + * SECTION:intel_ctx
+> > + * @short_description: Wrapper structs for dealing with contexts
+> > + * @title: Intel Context Wrapper
+> > + *
+> > + * This helper library contains a couple of wrapper structs for easier
+> > + * dealing with GEM contexts.  This includes a context configuration struct
+> > + * which represents important context construction parameters and a context
+> > + * struct which contains the context ID and its configuration.  This makes
+> > + * it easier to pass around a context without loosing the context create
+>
+> losing
+
+Thanks
+
+> Running kernel checkpatch on IGT patches shows interesting things including
+> a free spell-check :)
+
+My text editor spell-checks too, it's just that there's often enough
+noise from weird things like "ctx" that stuff gets lost. :-(
+
+> > +static const intel_ctx_t __intel_ctx_0 = {};
+> > +
+> > +/**
+> > + * intel_ctx_0:
+> > + * @fd: open i915 drm file descriptor
+> > + *
+> > + * Returns an intel_ctx_t representing the default context.
+> > + */
+> > +const intel_ctx_t *intel_ctx_0(int fd)
+> > +{
+> > +     (void)fd;
+> > +     return &__intel_ctx_0;
+> > +}
+>
+> OK, so this really is just a "representation" of ctx 0 since num_engines
+> etc. are not what they are for the actual ctx 0 (even with just the legacy
+> engines).
+
+ctx0 is always in legacy mode, hence num_engines == 0.  If num_engines
+> 0 that implies a userspace-specified engine set which ctx0 does not
+have.  I feel like I've typed this explanation a couple times before
+but I'm not sure you were on those e-mails so here it goes again:
+
+With the new engine APIs, a context can have one of two different
+modes with respect to engines:
+
+ 1. legacy mode.  This is the default.  In this mode, there is a fixed
+set of engines and they're specified using the I915_EXEC_RENDER,
+I915_EXEC_BLT, and friends flags.  This doesn't work well for new
+hardware with 4 media engines or 8 copy engines or whatever.
+
+ 2. Userspace specified engines mode.  This is what you get if you use
+CONTEXT_PARAM_ENGINES to specify an engine set.  In this mode, the
+client specifies whatever set of engines they want as an array of
+class+instance pairs.  When they execbuf, they put an integer index
+(at most 63) in the flags field instead of I915_EXEC_BLT or whatever.
+
+So when you set CONTEXT_PARAM_ENGINES, you're not just changing the
+engine set, you're also changing how those engines are referenced in
+execbuf.  In intel_ctx_t, we make the distinction by num_engines == 0
+means legacy mode and num_engines > 0 means we're using the new
+engines API.
+
+Maybe I should add some of the above to the documentation for
+intel_ctx_cfg_t?  I'll do that.
+
+--Jason
+
+> > diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
+> > new file mode 100644
+> > index 00000000..3e059478
+> > --- /dev/null
+> > +++ b/lib/intel_ctx.h
+> > @@ -0,0 +1,57 @@
+> > +// SPDX-License-Identifier: MIT
+>
+> Annoyingly the comment style for source and header files are actually a bit
+> different:
+>
+> https://www.kernel.org/doc/html/v4.18/process/license-rules.html#license-identifier-syntax
+
+Well, that is annoying.  Fixed the .h.
+
+--Jason
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
