@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E00FB6E87D
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Jun 2021 12:31:40 +0000 (UTC)
-From: "Ruhl, Michael J" <michael.j.ruhl@intel.com>
-Date: Thu, 10 Jun 2021 12:31:24 +0000
-Message-ID: <54465bde38f141c386b5aa7f37b8a3cd@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 444466E062
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Jun 2021 12:44:44 +0000 (UTC)
+Date: Thu, 10 Jun 2021 15:46:33 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YMIJqcUpIenSJE+r@platvala-desk.ger.corp.intel.com>
 References: <20210609121733.16461-1-venkata.sai.patnana@intel.com>
- <20210609121733.16461-7-venkata.sai.patnana@intel.com>
-In-Reply-To: <20210609121733.16461-7-venkata.sai.patnana@intel.com>
-Content-Language: en-US
+ <20210609121733.16461-8-venkata.sai.patnana@intel.com>
+ <1bc6690fee52407c9ed683b0c0cecb48@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 07/11] tests/kms: Create buffer object
- from LMEM for discrete
+Content-Disposition: inline
+In-Reply-To: <1bc6690fee52407c9ed683b0c0cecb48@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 08/11] tests/kms_addfb_basic: Add
+ invalid buffer object test for discrete
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,137 +24,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Patnana, Venkata Sai" <venkata.sai.patnana@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+To: "Ruhl, Michael J" <michael.j.ruhl@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
->-----Original Message-----
->From: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>
->Sent: Wednesday, June 9, 2021 8:17 AM
->To: igt-dev@lists.freedesktop.org
->Cc: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>; Mohammed
->Khajapasha <mohammed.khajapasha@intel.com>; Ruhl, Michael J
-><michael.j.ruhl@intel.com>
->Subject: [PATCH i-g-t 07/11] tests/kms: Create buffer object from LMEM for
->discrete
->
->From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
->
->Create framebuffer object from lmem for discrete file descriptor
->The framebuffer backing object should be from local memory for discrete.
+On Thu, Jun 10, 2021 at 03:30:46PM +0300, Ruhl, Michael J wrote:
+> >-----Original Message-----
+> >From: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>
+> >Sent: Wednesday, June 9, 2021 8:18 AM
+> >To: igt-dev@lists.freedesktop.org
+> >Cc: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>; Mohammed
+> >Khajapasha <mohammed.khajapasha@intel.com>; Latvala; Latvala, Petri
+> ><petri.latvala@intel.com>; Ruhl, Michael J <michael.j.ruhl@intel.com>
+> >Subject: [PATCH i-g-t 08/11] tests/kms_addfb_basic: Add invalid buffer object
+> >test for discrete
+> >
+> >From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+> >
+> >Add invalid buffer object test case for discrete, to validate
+> >IOCTL_MODE_ADDFB2 ioctl for LMEM, the framebuffer backing
+> >gem objects should be from local memory for discrete.
+> >
+> >Cc: Latvala, Petri <petri.latvala@intel.com>
+> >Cc: Michael J. Ruhl <michael.j.ruhl@intel.com>
+> >Signed-off-by: Mohammed Khajapasha
+> ><mohammed.khajapasha@intel.com>
+> >---
+> > tests/kms_addfb_basic.c | 16 ++++++++++++++++
+> > 1 file changed, 16 insertions(+)
+> >
+> >diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+> >index 1fb18d668f..aac74a7568 100644
+> >--- a/tests/kms_addfb_basic.c
+> >+++ b/tests/kms_addfb_basic.c
+> >@@ -40,6 +40,7 @@
+> >
+> > #include "igt_rand.h"
+> > #include "igt_device.h"
+> >+#include "i915/intel_memory_region.h"
+> >
+> > uint32_t gem_bo;
+> > uint32_t gem_bo_small;
+> >@@ -146,6 +147,21 @@ static void invalid_tests(int fd)
+> > 		igt_assert(f.modifier[0] == 0);
+> > 	}
+> >
+> >+	igt_subtest("invalid-smem-bo-on-discrete") {
+> >+		int devid;
+> >+		uint32_t handle, stride;
+> >+		uint64_t size;
+> >+
+> >+		igt_require_intel(fd);
+> >+		devid = intel_get_drm_devid(fd);
+> 
+> This will only work on if the discrete card is the only card on the system.
+> 
+> Is there a better way to:
+> 
+> 1) identify discrete cards and/or
+> 2) specifically select a discrete card for testing?
 
-Acked-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+The test does not select the device to use. The admin _running_ the
+test does that, with IGT_DEVICE.
 
-m
+With that done, mapping of results will be
 
->Cc: Michael J. Ruhl <michael.j.ruhl@intel.com>
->Signed-off-by: Mohammed Khajapasha
-><mohammed.khajapasha@intel.com>
->---
-> lib/ioctl_wrappers.c | 22 ++++++++++++++++++++++
-> lib/ioctl_wrappers.h |  1 +
-> tests/kms_big_fb.c   |  7 ++++---
-> tests/kms_getfb.c    |  2 +-
-> 4 files changed, 28 insertions(+), 4 deletions(-)
->
->diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
->index 619d288a8a..48526d29cf 100644
->--- a/lib/ioctl_wrappers.c
->+++ b/lib/ioctl_wrappers.c
->@@ -594,6 +594,28 @@ void gem_sync(int fd, uint32_t handle)
-> 	errno = 0;
-> }
->
->+/**
->+ * gem_buffer_create_fb_obj:
->+ * @fd: open i915 drm file descriptor
->+ * @size: desired size of the buffer
->+ *
->+ * This wraps the GEM_CREATE ioctl, which allocates a new gem buffer
->object of
->+ * @size from file descriptor specific region
->+ *
->+ * Returns: The file-private handle of the created buffer object
->+ */
->+uint32_t gem_buffer_create_fb_obj(int fd, uint64_t size)
->+{
->+	uint32_t handle;
->+
->+	if (gem_has_lmem(fd))
->+		handle = gem_create_in_memory_regions(fd, size,
->REGION_LMEM(0));
->+	else
->+		handle = gem_create(fd, size);
->+
->+	return handle;
->+}
->+
-> /**
->  * __gem_execbuf:
->  * @fd: open i915 drm file descriptor
->diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
->index 36640e302f..a8274a3f48 100644
->--- a/lib/ioctl_wrappers.h
->+++ b/lib/ioctl_wrappers.h
->@@ -79,6 +79,7 @@ int __gem_set_domain(int fd, uint32_t handle, uint32_t
->read, uint32_t write);
-> void gem_set_domain(int fd, uint32_t handle, uint32_t read, uint32_t write);
-> int gem_wait(int fd, uint32_t handle, int64_t *timeout_ns);
-> void gem_sync(int fd, uint32_t handle);
->+uint32_t gem_buffer_create_fb_obj(int fd, uint64_t size);
-> void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
-> int __gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
-> void gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
->diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
->index 81bf054299..0ea076706f 100644
->--- a/tests/kms_big_fb.c
->+++ b/tests/kms_big_fb.c
->@@ -470,7 +470,8 @@ test_size_overflow(data_t *data)
-> 	igt_require(data->max_fb_width >= 16383 &&
-> 		    data->max_fb_height >= 16383);
->
->-	bo = gem_create(data->drm_fd, (1ULL << 32) - 4096);
->+	bo = gem_buffer_create_fb_obj(data->drm_fd, (1ULL << 32) - 4096);
->+
-> 	igt_require(bo);
->
-> 	ret = __kms_addfb(data->drm_fd, bo,
->@@ -508,7 +509,7 @@ test_size_offset_overflow(data_t *data)
-> 					       DRM_FORMAT_NV12,
-> 					       data->modifier));
->
->-	bo = gem_create(data->drm_fd, (1ULL << 32) - 4096);
->+	bo = gem_buffer_create_fb_obj(data->drm_fd, (1ULL << 32) - 4096);
-> 	igt_require(bo);
->
-> 	offsets[0] = 0;
->@@ -567,7 +568,7 @@ test_addfb(data_t *data)
-> 			 format, data->modifier,
-> 			 &size, &strides[0]);
->
->-	bo = gem_create(data->drm_fd, size);
->+	bo = gem_buffer_create_fb_obj(data->drm_fd, size);
-> 	igt_require(bo);
->
-> 	if (intel_display_ver(data->devid) < 4)
->diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
->index 14be74d6e8..75f5f30c88 100644
->--- a/tests/kms_getfb.c
->+++ b/tests/kms_getfb.c
->@@ -128,7 +128,7 @@ static void get_ccs_fb(int fd, struct
->drm_mode_fb_cmd2 *ret)
-> 		size += add.pitches[1] * ALIGN(ALIGN(add.height, 16) / 16,
->32);
-> 	}
->
->-	add.handles[0] = gem_create(fd, size);
->+	add.handles[0] = gem_buffer_create_fb_obj(fd, size);
-> 	igt_require(add.handles[0] != 0);
-> 	add.handles[1] = add.handles[0];
->
->--
->2.25.1
+non-intel: skip
+intel integrated: skip
+intel discrete: actually tested
 
+which looks correct. We're trying to test what happens specifically
+if the used device is intel discrete, skip otherwise.
+
+
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
