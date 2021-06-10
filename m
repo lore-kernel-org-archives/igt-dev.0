@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DBB566E063
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Jun 2021 12:50:36 +0000 (UTC)
-From: "Ruhl, Michael J" <michael.j.ruhl@intel.com>
-Date: Thu, 10 Jun 2021 12:50:32 +0000
-Message-ID: <ecc9e9ed02054e1d8ab2f82557e34a5f@intel.com>
-References: <20210609121733.16461-1-venkata.sai.patnana@intel.com>
- <20210609121733.16461-8-venkata.sai.patnana@intel.com>
- <1bc6690fee52407c9ed683b0c0cecb48@intel.com>
- <YMIJqcUpIenSJE+r@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YMIJqcUpIenSJE+r@platvala-desk.ger.corp.intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A02776E07D
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Jun 2021 13:00:16 +0000 (UTC)
+From: "Shankar, Uma" <uma.shankar@intel.com>
+Date: Thu, 10 Jun 2021 13:00:06 +0000
+Message-ID: <752e0f7a330d43deae47e9ea94c12c3b@intel.com>
+References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
+ <20210518103344.2264397-18-alan.previn.teres.alexis@intel.com>
+ <YLo7d2H3IM7ioEcq@intel.com>
+ <256530184ff5c6a18dc46b3d7c6deca13a386874.camel@intel.com>
+In-Reply-To: <256530184ff5c6a18dc46b3d7c6deca13a386874.camel@intel.com>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 08/11] tests/kms_addfb_basic: Add
- invalid buffer object test for discrete
+Subject: Re: [igt-dev] [PATCH i-g-t 17/17] tests/i915_pxp: CRC validation
+ for display tests.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,99 +25,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+To: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>, "Vivi,
+ Rodrigo" <rodrigo.vivi@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
->-----Original Message-----
->From: Latvala, Petri <petri.latvala@intel.com>
->Sent: Thursday, June 10, 2021 8:47 AM
->To: Ruhl, Michael J <michael.j.ruhl@intel.com>
->Cc: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>; igt-
->dev@lists.freedesktop.org; Mohammed Khajapasha
-><mohammed.khajapasha@intel.com>
->Subject: Re: [PATCH i-g-t 08/11] tests/kms_addfb_basic: Add invalid buffer
->object test for discrete
->
->On Thu, Jun 10, 2021 at 03:30:46PM +0300, Ruhl, Michael J wrote:
->> >-----Original Message-----
->> >From: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>
->> >Sent: Wednesday, June 9, 2021 8:18 AM
->> >To: igt-dev@lists.freedesktop.org
->> >Cc: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>; Mohammed
->> >Khajapasha <mohammed.khajapasha@intel.com>; Latvala; Latvala, Petri
->> ><petri.latvala@intel.com>; Ruhl, Michael J <michael.j.ruhl@intel.com>
->> >Subject: [PATCH i-g-t 08/11] tests/kms_addfb_basic: Add invalid buffer
->object
->> >test for discrete
->> >
->> >From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
->> >
->> >Add invalid buffer object test case for discrete, to validate
->> >IOCTL_MODE_ADDFB2 ioctl for LMEM, the framebuffer backing
->> >gem objects should be from local memory for discrete.
->> >
->> >Cc: Latvala, Petri <petri.latvala@intel.com>
->> >Cc: Michael J. Ruhl <michael.j.ruhl@intel.com>
->> >Signed-off-by: Mohammed Khajapasha
->> ><mohammed.khajapasha@intel.com>
->> >---
->> > tests/kms_addfb_basic.c | 16 ++++++++++++++++
->> > 1 file changed, 16 insertions(+)
->> >
->> >diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
->> >index 1fb18d668f..aac74a7568 100644
->> >--- a/tests/kms_addfb_basic.c
->> >+++ b/tests/kms_addfb_basic.c
->> >@@ -40,6 +40,7 @@
->> >
->> > #include "igt_rand.h"
->> > #include "igt_device.h"
->> >+#include "i915/intel_memory_region.h"
->> >
->> > uint32_t gem_bo;
->> > uint32_t gem_bo_small;
->> >@@ -146,6 +147,21 @@ static void invalid_tests(int fd)
->> > 		igt_assert(f.modifier[0] == 0);
->> > 	}
->> >
->> >+	igt_subtest("invalid-smem-bo-on-discrete") {
->> >+		int devid;
->> >+		uint32_t handle, stride;
->> >+		uint64_t size;
->> >+
->> >+		igt_require_intel(fd);
->> >+		devid = intel_get_drm_devid(fd);
->>
->> This will only work on if the discrete card is the only card on the system.
->>
->> Is there a better way to:
->>
->> 1) identify discrete cards and/or
->> 2) specifically select a discrete card for testing?
->
->The test does not select the device to use. The admin _running_ the
->test does that, with IGT_DEVICE.
 
-Ok, that makes sense.
 
-I believe you (Petri) had a comment that should be addressed,
-but from my perspective
+> -----Original Message-----
+> From: Teres Alexis, Alan Previn <alan.previn.teres.alexis@intel.com>
+> Sent: Saturday, June 5, 2021 6:38 AM
+> To: Shankar, Uma <uma.shankar@intel.com>; Vivi, Rodrigo
+> <rodrigo.vivi@intel.com>
+> Cc: igt-dev@lists.freedesktop.org
+> Subject: Re: [igt-dev] [PATCH i-g-t 17/17] tests/i915_pxp: CRC validation for display
+> tests.
+> 
+> On Fri, 2021-06-04 at 10:40 -0400, Rodrigo Vivi wrote:
+> > On Tue, May 18, 2021 at 03:33:44AM -0700, Alan Previn wrote:
+> > > From: Karthik B S <karthik.b.s@intel.com>
+> > >
+> > > Added subtests to validate pxp using CRC validation.
+> > >
+> > > Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> > Cc: Uma Shankar <uma.shankar@intel.com>
+> >
+> > > ---
+> > >  tests/i915/gem_pxp.c | 286
+> > > ++++++++++++++++++++++++++++++++++++++++++-
+> > >  1 file changed, 283 insertions(+), 3 deletions(-)
+> > >
+> > > diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c index
+> > > 179fb742..728c925a 100644
+> > > +		if (hdcp) {
+> > > +			/* Disable HDCP and collect CRC */
+> > > +			igt_output_set_prop_value(hdcp_output[0],
+> > > IGT_CONNECTOR_CONTENT_PROTECTION,
+> > > +						  CP_UNDESIRED);
+> > > +			igt_display_commit2(display, COMMIT_ATOMIC);
+> > > +			ret = wait_for_prop_value(hdcp_output[0],
+> > > CP_UNDESIRED,
+> > > +						  KERNEL_DISABLE_TIME_A
+> > > LLOWED_MSEC);
+> > > +			igt_assert_f(ret, "Content Protection not
+> > > cleared\n");
+> > > +
+> > > +			igt_plane_set_fb(plane, &protected_fb);
+> > > +			igt_fb_set_size(&protected_fb, plane, mode-
+> > > >hdisplay, mode->vdisplay);
+> > > +			igt_plane_set_size(plane, mode->hdisplay, mode-
+> > > >vdisplay);
+> > > +
+> > > +			igt_display_commit2(display, COMMIT_ATOMIC);
+> > > +			igt_pipe_crc_collect_crc(pipe_crc, &new_crc);
+> > > +			igt_assert_f(!igt_check_crc_equal(&ref_crc,
+> > > &new_crc),
+> > > +				    "CRC's expected to be different
+> > > after HDCP is disabled\n");
+> >
+> > The CRC is at the pipe level, but I believe it is right to expect that
+> > after disabling the HDCP we will get different CRC.
+> >
+> > +Uma to help me to confirm this.
+> >
+> > But also, I'm asking myself if this test case here is really bringing
+> > any value to PXP itself. To me, it looks like it is only testing HDCP
+> > disable scenario... nothing to do with the PXP flow.
+> >
+> > With the HDCP removed, or with Uma confirming my assumption is right
+> > and that I'm wrong about the value-added, feel free to use:
+> >
+> 
+> If i recall our earlier conversations on test requirements, we wanted to ensure that
+> the HW had indeed changed the key or completely disabled plane decryption in
+> response to the teardown (i.e. disabling hdcp).
+> With that in mind, I thought pipe crc is not a reflection of hdcp encryption state - i
+> thought that was the transcoder CRC. So Pipe CRC really does reflect the content
+> (and, as such, plane decryption) unless the plane is disabled or occluded by another
+> plane (which is never the case in this controlled IGT environment). But lets hear from
+> Uma - i maybe crc input-signal.
 
-Acked-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+Sorry for a late response, somehow missed this mail.
 
->With that done, mapping of results will be
->
->non-intel: skip
->intel integrated: skip
->intel discrete: actually tested
->
->which looks correct. We're trying to test what happens specifically
->if the used device is intel discrete, skip otherwise.
+We have crc's at both pipe and at port level but it appears in the test here we are relying on pipe crc.
+So pipe crc will not be dependent on any HDCP state change as that happens at port. But if we expect
+that as part of HDCP teardown we will also disable plane decryption then surely we will get a different
+crc. But is it really the case here. Are we expecting both Plane decryption which is a PAVP usecase and
+HDCP to be operating together.  My understanding is we will have PAVP only for internal LFP's and go with
+HDCP when we operate with external sync.
 
->
->--
->Petri Latvala
+Regards,
+Uma Shankar
+
+> > Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> >
+> > >
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
