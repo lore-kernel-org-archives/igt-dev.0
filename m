@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com
- [IPv6:2607:f8b0:4864:20::b35])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4F096ED83
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Jun 2021 16:02:10 +0000 (UTC)
-Received: by mail-yb1-xb35.google.com with SMTP id h15so11689957ybm.13
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Jun 2021 09:02:10 -0700 (PDT)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AFB1C6E15E
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Jun 2021 17:37:02 +0000 (UTC)
+From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
+Date: Thu, 10 Jun 2021 17:36:57 +0000
+Message-ID: <32458786c3f94959e45731bcd1d4f0277ece63e8.camel@intel.com>
+References: <20210518103344.2264397-1-alan.previn.teres.alexis@intel.com>
+ <20210518103344.2264397-9-alan.previn.teres.alexis@intel.com>
+ <YLonm/ledRfwelqV@intel.com>
+In-Reply-To: <YLonm/ledRfwelqV@intel.com>
+Content-Language: en-US
+Content-ID: <A2DC45DD0449FE4E9C99B6B8E96A4B2A@namprd11.prod.outlook.com>
 MIME-Version: 1.0
-References: <20210609173632.248880-1-jason@jlekstrand.net>
- <20210609173632.248880-10-jason@jlekstrand.net>
- <877dj2nvzj.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <877dj2nvzj.wl-ashutosh.dixit@intel.com>
-From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 10 Jun 2021 11:01:59 -0500
-Message-ID: <CAOFGe963eZO7ObtegmqR9NjFzHwt5RJp_-ajysWi_VwUbd03xw@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 09/93] lib: Add an intel_ctx wrapper
- struct and helpers (v5)
+Subject: Re: [igt-dev] [PATCH i-g-t 08/17] Enable protected session cmd in
+ gen12_render_copyfunc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,102 +25,263 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
+To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jun 10, 2021 at 12:18 AM Dixit, Ashutosh
-<ashutosh.dixit@intel.com> wrote:
->
-> On Wed, 09 Jun 2021 10:35:52 -0700, Jason Ekstrand wrote:
-> >
-> > diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
-> >
-> > +/**
-> > + * SECTION:intel_ctx
-> > + * @short_description: Wrapper structs for dealing with contexts
-> > + * @title: Intel Context Wrapper
-> > + *
-> > + * This helper library contains a couple of wrapper structs for easier
-> > + * dealing with GEM contexts.  This includes a context configuration struct
-> > + * which represents important context construction parameters and a context
-> > + * struct which contains the context ID and its configuration.  This makes
-> > + * it easier to pass around a context without loosing the context create
->
-> losing
+On Fri, 2021-06-04 at 09:16 -0400, Rodrigo Vivi wrote:
+> On Tue, May 18, 2021 at 03:33:35AM -0700, Alan Previn wrote:
+> > 1. In _gen9_render_op, check if the incoming batchbuffer
+> >    is marked with pxp enabled. If so, insert MI_SET_APPID
+> >    along with PIPE_CONTROL instructions at the start and
+> >    end of the rendering operation in the command buffer.
+> > 
+> > 2. The two PIPE_CONTROLs will enable protected memory
+> >    at the start of the batch and disabling protected
+> >    memory at the end of it. These PIPE_CONTROLs require a
+> >    Post-Sync operation with a write to memory for hardware
+> >    to accept.
+> > 
+> > 3. In order to satisfy #2, _gen9_render_op uses unused
+> >    regions of the ibb buffer for the PIPE_CONTROL PostSync
+> >    write to memory (no different from how other 3d states
+> >    are being referenced).
+> > 
+> > 4. _gen9_render_op shall check the incoming surface
+> >    buffers for "is_protected" flag and if its set, it
+> >    will mark the SURFACE_STATE's MOCS field accordingly.
+> > 
+> > NOTE: _gen9_render_op needs to program the HW to enable
+> > the PXP session as part of the rendering batch buffer
+> > because the HW requires that enabling/disabling protected
+> > memory access must be programmed in pairs within the same
+> > "dispatch of rendering commands" to HW.
+> > 
+> > Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+> > ---
+> >  lib/rendercopy_gen9.c | 72 ++++++++++++++++++++++++++++++++++++++-
+> > ----
+> >  1 file changed, 65 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+> > index eecf73d3..bfcf311b 100644
+> > --- a/lib/rendercopy_gen9.c
+> > +++ b/lib/rendercopy_gen9.c
+> > @@ -19,7 +19,8 @@
+> >  #include "intel_bufops.h"
+> >  #include "intel_batchbuffer.h"
+> >  #include "intel_io.h"
+> > -#include "rendercopy.h"
+> > +#include "igt.h"
+> > +#include "i915/gem.h"
+> >  #include "gen9_render.h"
+> >  #include "intel_reg.h"
+> >  #include "igt_aux.h"
+> > @@ -152,6 +153,8 @@ gen8_bind_buf(struct intel_bb *ibb, const
+> > struct intel_buf *buf, int is_dst) {
+> >  		ss->ss0.tiled_mode = 3;
+> >  
+> >  	ss->ss1.memory_object_control = I915_MOCS_PTE << 1;
+> > +	if (intel_buf_pxp(buf))
+> > +		ss->ss1.memory_object_control |= 1;
+> >  
+> >  	if (buf->tiling == I915_TILING_Yf)
+> >  		ss->ss5.trmode = 1;
+> > @@ -873,6 +876,53 @@ static void gen8_emit_primitive(struct
+> > intel_bb *ibb, uint32_t offset)
+> >  	intel_bb_out(ibb, 0);	/* index buffer offset, ignored */
+> >  }
+> >  
+> +#define GFX_OP_PIPE_CONTROL    ((3 << 29) | (3 << 27) | (2 << 24))
+> 
+> there's no len defined here...
 
-Thanks
+The calling function (gen12_emit_pxp_state) uses this CMD in 2 ways
+where each of them have different lengths. 
 
-> Running kernel checkpatch on IGT patches shows interesting things including
-> a free spell-check :)
+Method A : When setting the APP_ID (done before enabling PXP), we call
+PIPE_CONTROL with just a FLUSH_ENABLE which has a len == 0 (2 DWORDS). 
 
-My text editor spell-checks too, it's just that there's often enough
-noise from weird things like "ctx" that stuff gets lost. :-(
+Method B : Subsequently, when enabling or disabling PXP, we need to
+ensure PIPE_CONTROL op a memory write invalidation + flush which
+requires additional post sync up to dest buffer offset.
 
-> > +static const intel_ctx_t __intel_ctx_0 = {};
-> > +
-> > +/**
-> > + * intel_ctx_0:
-> > + * @fd: open i915 drm file descriptor
-> > + *
-> > + * Returns an intel_ctx_t representing the default context.
-> > + */
-> > +const intel_ctx_t *intel_ctx_0(int fd)
+I didn't want to create two macro's for each usage which is why I didnt
+include the length into the macro - which i have seen in other IGT
+tests (so i assumed there wasnt a hard rule).
+
+> 
+> > +#define PIPE_CONTROL_CS_STALL	            (1 << 20)
+> > +#define PIPE_CONTROL_RENDER_TARGET_FLUSH    (1 << 12)
+> > +#define PIPE_CONTROL_FLUSH_ENABLE           (1 << 7)
+> > +#define PIPE_CONTROL_DATA_CACHE_INVALIDATE  (1 << 5)
+> > +#define PIPE_CONTROL_PROTECTEDPATH_DISABLE  (1 << 27)
+> > +#define PIPE_CONTROL_PROTECTEDPATH_ENABLE   (1 << 22)
+> > +#define PIPE_CONTROL_POST_SYNC_OP           (1 << 14)
+> > +#define PIPE_CONTROL_POST_SYNC_OP_STORE_DW_IDX (1 << 21)
+> > +#define PS_OP_TAG_START                     0x1234fed0
+> > +#define PS_OP_TAG_END                       0x5678cbaf
+> > +static void gen12_emit_pxp_state(struct intel_bb *ibb, bool
+> > enable,
+> > +		 uint32_t pxp_write_op_offset)
 > > +{
-> > +     (void)fd;
-> > +     return &__intel_ctx_0;
+> > +	uint32_t pipe_ctl_flags;
+> > +	uint32_t set_app_id, ps_op_id;
+> > +
+> > +	if (enable) {
+> > +		pipe_ctl_flags = PIPE_CONTROL_FLUSH_ENABLE;
+> > +		intel_bb_out(ibb, GFX_OP_PIPE_CONTROL);
+> 
+> ... so, I believe this one should be GFX_OP_PIPE_CONTROL | 1
+> 
+> (len - 2) = (3 - 2) = 1
+No, this is Method A - see intel_bb_out is being called only twice:
+	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL);
+	intel_bb_out(ibb, pipe_ctl_flags);
+So "len - 2" = "2 - 2" = 0;
+
+> 
+> > +		intel_bb_out(ibb, pipe_ctl_flags);
+> > +
+> > +		set_app_id =  MI_SET_APPID |
+> > +			      APPTYPE(intel_bb_pxp_apptype(ibb)) |
+> > +			      APPID(intel_bb_pxp_appid(ibb));
+> > +		intel_bb_out(ibb, set_app_id);
+> > +
+> > +		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_ENABLE;
+> > +		ps_op_id = PS_OP_TAG_START;
+> > +	} else {
+> > +		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_DISABLE;
+> > +		ps_op_id = PS_OP_TAG_END;
+> > +	}
+> > +
+> > +	pipe_ctl_flags |= (PIPE_CONTROL_CS_STALL |
+> > +			   PIPE_CONTROL_RENDER_TARGET_FLUSH |
+> > +			   PIPE_CONTROL_DATA_CACHE_INVALIDATE |
+> > +			   PIPE_CONTROL_POST_SYNC_OP);
+> > +	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL | 4);
+> 
+> and this one should be GFX_OP_PIPE_CONTROL | 2
+> 
+> (len - 2) = (4 - 2) = 2
+> 
+> but to be honest, I always get lost and confused with these
+> pipe_control len...
+> specially looking IGT tests, many of them don't make sense to me.
+> 
+> However I see, at least, some inconsistency here between these 2
+> pipe_control
+> emissions. What am I missing?
+> 
+
+This case uses Method B (where we require a PIPE_CONTROL with write
+invalidation + flush), I am using a Post-Sync-Op as to a inline gfx
+offset but the Post-Sync-Op also needs the inline "Immediate Data" to
+be written. Both the gfx-offset and the immediate data are 64-bits
+totaling 4 DWORDS.
+
+The first 2-DWs (gfx offset) are populated as part of the
+"intel_bb_emit_reloc" call (this function automatically uses 64 bit for
+Gen12). The second 2-DWs (immediate data) are populated via the
+intel_bb_out(ibb, ps_op_id) calls - i am repeating the same signature
+twice (but different signatures for enabling vs disabling - see #define
+with suffix '_TAG' above).
+
+Therefore a total of 6 dwords are being populated (2=cmds, 2=gfx-
+offsets, 2=immediate-data). So "len - 2" = "6 - 2" = 4;
+
+That said, i dont see anything wrong with this patch - unless you
+prefer me to replace the GFX_OP_PIPE_CONTROL macro with 2 distinct
+ones:
+GFX_OP_PIPE_CONTROL_SIMPLEFLUSH //where len==0
+GFX_OP_PIPE_CONTROL_PSO_WRITE2OFFSET //where len==4 
+
+NOTE: I have seen at least one other test define the macro without the
+size and populate the size based on usage like like what is currently
+done here.
+
+> > +	intel_bb_out(ibb, pipe_ctl_flags);
+> > +	intel_bb_emit_reloc(ibb, ibb->handle, 0,
+> > I915_GEM_DOMAIN_COMMAND,
+> > +			    (enable ? pxp_write_op_offset :
+> > (pxp_write_op_offset+8)),
+> > +			    ibb->batch_offset);
+> > +	intel_bb_out(ibb, ps_op_id);
+> > +	intel_bb_out(ibb, ps_op_id);
 > > +}
->
-> OK, so this really is just a "representation" of ctx 0 since num_engines
-> etc. are not what they are for the actual ctx 0 (even with just the legacy
-> engines).
-
-ctx0 is always in legacy mode, hence num_engines == 0.  If num_engines
-> 0 that implies a userspace-specified engine set which ctx0 does not
-have.  I feel like I've typed this explanation a couple times before
-but I'm not sure you were on those e-mails so here it goes again:
-
-With the new engine APIs, a context can have one of two different
-modes with respect to engines:
-
- 1. legacy mode.  This is the default.  In this mode, there is a fixed
-set of engines and they're specified using the I915_EXEC_RENDER,
-I915_EXEC_BLT, and friends flags.  This doesn't work well for new
-hardware with 4 media engines or 8 copy engines or whatever.
-
- 2. Userspace specified engines mode.  This is what you get if you use
-CONTEXT_PARAM_ENGINES to specify an engine set.  In this mode, the
-client specifies whatever set of engines they want as an array of
-class+instance pairs.  When they execbuf, they put an integer index
-(at most 63) in the flags field instead of I915_EXEC_BLT or whatever.
-
-So when you set CONTEXT_PARAM_ENGINES, you're not just changing the
-engine set, you're also changing how those engines are referenced in
-execbuf.  In intel_ctx_t, we make the distinction by num_engines == 0
-means legacy mode and num_engines > 0 means we're using the new
-engines API.
-
-Maybe I should add some of the above to the documentation for
-intel_ctx_cfg_t?  I'll do that.
-
---Jason
-
-> > diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
-> > new file mode 100644
-> > index 00000000..3e059478
-> > --- /dev/null
-> > +++ b/lib/intel_ctx.h
-> > @@ -0,0 +1,57 @@
-> > +// SPDX-License-Identifier: MIT
->
-> Annoyingly the comment style for source and header files are actually a bit
-> different:
->
-> https://www.kernel.org/doc/html/v4.18/process/license-rules.html#license-identifier-syntax
-
-Well, that is annoying.  Fixed the .h.
-
---Jason
+> > +
+> >  /* The general rule is if it's named gen6 it is directly copied
+> > from
+> >   * gen6_render_copyfunc.
+> >   *
+> > @@ -922,6 +972,7 @@ void _gen9_render_op(struct intel_bb *ibb,
+> >  	uint32_t vertex_buffer;
+> >  	uint32_t aux_pgtable_state;
+> >  	bool fast_clear = !src;
+> > +	uint32_t pxp_scratch_offset;
+> >  
+> >  	if (!fast_clear)
+> >  		igt_assert(src->bpp == dst->bpp);
+> > @@ -950,8 +1001,12 @@ void _gen9_render_op(struct intel_bb *ibb,
+> >  	aux_pgtable_state = gen12_create_aux_pgtable_state(ibb,
+> > aux_pgtable_buf);
+> >  
+> >  	/* TODO: there is other state which isn't setup */
+> > +	pxp_scratch_offset = intel_bb_offset(ibb);
+> >  	intel_bb_ptr_set(ibb, 0);
+> >  
+> > +	if (intel_bb_pxp_enabled(ibb))
+> > +		gen12_emit_pxp_state(ibb, true, pxp_scratch_offset);
+> > +
+> >  	/* Start emitting the commands. The order roughly follows the
+> > mesa blorp
+> >  	 * order */
+> >  	intel_bb_out(ibb, G4X_PIPELINE_SELECT | PIPELINE_SELECT_3D |
+> > @@ -963,13 +1018,12 @@ void _gen9_render_op(struct intel_bb *ibb,
+> >  		for (int i = 0; i < 4; i++) {
+> >  			intel_bb_out(ibb, MI_STORE_DWORD_IMM);
+> >  			intel_bb_emit_reloc(ibb, dst->handle,
+> > -					    I915_GEM_DOMAIN_RENDER,
+> > I915_GEM_DOMAIN_RENDER,
+> > -                                            dst->cc.offset +
+> > i*sizeof(float),
+> > -					    dst->addr.offset);
+> > +					I915_GEM_DOMAIN_RENDER,
+> > I915_GEM_DOMAIN_RENDER,
+> > +					dst->cc.offset +
+> > i*sizeof(float),
+> > +					dst->addr.offset);
+> >  			intel_bb_out(ibb, *(uint32_t*)&clear_color[i]);
+> > -               }
+> > -       }
+> > -
+> > +		}
+> > +	}
+> >  
+> >  	gen8_emit_sip(ibb);
+> >  
+> > @@ -1023,10 +1077,14 @@ void _gen9_render_op(struct intel_bb *ibb,
+> >  	gen8_emit_vf_topology(ibb);
+> >  	gen8_emit_primitive(ibb, vertex_buffer);
+> >  
+> > +	if (intel_bb_pxp_enabled(ibb))
+> > +		gen12_emit_pxp_state(ibb, false, pxp_scratch_offset);
+> > +
+> >  	intel_bb_emit_bbe(ibb);
+> >  	intel_bb_exec(ibb, intel_bb_offset(ibb),
+> >  		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, false);
+> >  	dump_batch(ibb);
+> > +
+> >  	intel_bb_reset(ibb, false);
+> >  }
+> >  
+> > -- 
+> > 2.25.1
+> > 
+> > _______________________________________________
+> > igt-dev mailing list
+> > igt-dev@lists.freedesktop.org
+> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
