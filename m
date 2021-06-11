@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Fri, 11 Jun 2021 07:30:29 +0000
-Message-ID: <BY5PR11MB437213735019658A601D098D89349@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <1622547939-8157-1-git-send-email-vidya.srinivas@intel.com>
- <1622556485-9375-1-git-send-email-vidya.srinivas@intel.com>
- <CO6PR11MB556976C4EC81D88FC86D1C768D349@CO6PR11MB5569.namprd11.prod.outlook.com>
-In-Reply-To: <CO6PR11MB556976C4EC81D88FC86D1C768D349@CO6PR11MB5569.namprd11.prod.outlook.com>
+Date: Fri, 11 Jun 2021 07:35:50 +0000
+Message-ID: <BY5PR11MB437286165E0F03D39B5D146689349@BY5PR11MB4372.namprd11.prod.outlook.com>
+References: <1622176443-12682-1-git-send-email-vidya.srinivas@intel.com>
+ <YLTv/Z8j9rCf2koN@intel.com>
+ <BY5PR11MB4372AB95A5AC6DE9AC0FA552893F9@BY5PR11MB4372.namprd11.prod.outlook.com>
+In-Reply-To: <BY5PR11MB4372AB95A5AC6DE9AC0FA552893F9@BY5PR11MB4372.namprd11.prod.outlook.com>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] [RFC]
- tests/kms_plane_alpha_blend: Don't set primary fb color in
- coverage-vs-premult-vs-constant
+Subject: Re: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_prime: Aligned pitch to
+ 64 byte for Intel platforms
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,75 +17,144 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "Lin,
+ Charlton" <charlton.lin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thank you Bhanu. This test is failing on all planes > 0. Only plane 0 passes.
-If I skip plane 1, it fails on 2 and so on.
-Changing the way CRC is being collected also is not helping. Adding vblank is also not helping.
+Hello Ville,
+
+Apologies for bothering you.
+Kms_prime goes through vgem_gem_dumb_create where the pitch gets calculated=
+ which is not 64 byte aligned.
+
+kms_prime->vgem_gem_dumb_create->intel_framebuffer_init which reports plane=
+ 0 pitch (5464) must be at least 64 byte aligned.
+
+We have submitted this patch for kernel https://patchwork.freedesktop.org/p=
+atch/436199/ also for the same.
+If we try to align stride in IGT after it gets back from vgem_gem_dumb_ioct=
+l, Kernel gives error - [drm:intel_fill_fb_info] fb too big for bo (need 42=
+27072 bytes, have 4198400 bytes).
+
+As a workaround (if the above kernel patch does not go through) we submitte=
+d this https://patchwork.freedesktop.org/patch/435794/.
+
+Can you kindly help suggest which is the better way? If not both - kindly g=
+uide us how we can address this issue. Thank you so much.
 
 Regards
 Vidya
 
 -----Original Message-----
-From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com> 
-Sent: Friday, June 11, 2021 9:11 AM
-To: Srinivas, Vidya <vidya.srinivas@intel.com>; intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
-Subject: RE: [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_plane_alpha_blend: Don't set primary fb color in coverage-vs-premult-vs-constant
+From: Srinivas, Vidya =
 
-> From: Intel-gfx <intel-gfx-bounces@lists.freedesktop.org> On Behalf Of 
-> Vidya Srinivas
-> Sent: Tuesday, June 1, 2021 7:38 PM
-> To: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
-> Subject: [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_plane_alpha_blend: 
-> Don't set primary fb color in coverage-vs-premult-vs-constant
-> 
-> Patch removes setting primary fb color in 
-> coverage-vs-premult-vs-constant as this is causing CRC mismatch on few Gen11 systems.
+Sent: Monday, May 31, 2021 8:18 PM
+To: 'Ville Syrj=E4l=E4' <ville.syrjala@linux.intel.com>
+Cc: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org; Lin, Ch=
+arlton <Charlton.Lin@intel.com>
+Subject: RE: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_prime: Aligned pitch t=
+o 64 byte for Intel platforms
 
-I am not sure how Primary plane's bg color causing CRC mismatch.
-Also, as this test runs on all planes (those are having the props "alpha" and "pixel blend mode"), is this test failing on a particular plane?
+Hello Ville,
 
-- Bhanu
+Thank you very much.
+Before reaching our i915's i915_gem_dumb_create, it goes to vgem_gem_dumb_c=
+reate for kms_prime.
 
-> Similar change has already been done in tests constant_alpha_min and 
-> basic_alpha where the test runs on all planes but dont set the primary 
-> fb color.
-> 
+The pitch gets calculated there and it is not 64 byte aligned. Due to this,=
+ intel_framebuffer_init reports "pitch must be 64 byte aligned"
+and framebuffer creation fails. I tried submitting vgem patch where 64 byte=
+ alignment can be done in vgem_gem_dumb_create and that also passes. But we=
+ did not get approval yet as few of them felt, vgem is generic and other pl=
+atforms might fail if we do 64 byte alignment there.
+
+Kindly suggest. Thanks a lot.
+
+Regards
+Vidya
+
+-----Original Message-----
+From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+Sent: Monday, May 31, 2021 7:48 PM
+To: Srinivas, Vidya <vidya.srinivas@intel.com>
+Cc: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org; Lin, Ch=
+arlton <charlton.lin@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_prime: Aligned pitch t=
+o 64 byte for Intel platforms
+
+On Fri, May 28, 2021 at 10:04:03AM +0530, Vidya Srinivas wrote:
+> For Intel platforms, pitch needs to be 64 byte aligned.
+> Kernel code vgem_gem_dumb_create which is platform generic code doesnt =
+
+> do the alignment. This causes frame buffer creation to fail on Intel =
+
+> platforms where the pitch is not 64 byte aligned.
+> =
+
+> tests: test run on Intel platforms with panel resolution 1366x768
+> =
+
 > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 > ---
->  tests/kms_plane_alpha_blend.c | 4 ----
->  1 file changed, 4 deletions(-)
-> 
-> diff --git a/tests/kms_plane_alpha_blend.c 
-> b/tests/kms_plane_alpha_blend.c index a37cb27c7d62..224d79bd1749 
-> 100644
-> --- a/tests/kms_plane_alpha_blend.c
-> +++ b/tests/kms_plane_alpha_blend.c
-> @@ -447,10 +447,6 @@ static void coverage_premult_constant(data_t 
-> *data, enum pipe pipe, igt_plane_t
->  	igt_display_t *display = &data->display;
->  	igt_crc_t ref_crc = {}, crc = {};
-> 
-> -	/* Set a background color on the primary fb for testing */
-> -	if (plane->type != DRM_PLANE_TYPE_PRIMARY)
-> -		igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe],
-> DRM_PLANE_TYPE_PRIMARY), &data->gray_fb);
-> -
->  	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage");
->  	igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
->  	igt_display_commit2(display, COMMIT_ATOMIC);
+>  tests/kms_prime.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> =
+
+> diff --git a/tests/kms_prime.c b/tests/kms_prime.c index
+> 8cb2ca2a9dc3..fdc941fe8100 100644
+> --- a/tests/kms_prime.c
+> +++ b/tests/kms_prime.c
+> @@ -51,6 +51,8 @@ static struct {
+>  	{ .r =3D 1.0, .g =3D 0.0, .b =3D 0.0, .color =3D 0xffff0000 },  };
+>  =
+
+> +bool check_platform;
+> +
+>  IGT_TEST_DESCRIPTION("Prime tests, focusing on KMS side");
+>  =
+
+>  static bool has_prime_import(int fd)
+> @@ -101,7 +103,7 @@ static void prepare_scratch(int exporter_fd, struct d=
+umb_bo *scratch,
+>  	scratch->bpp =3D 32;
+>  =
+
+>  	scratch->handle =3D kmstest_dumb_create(exporter_fd,
+> -			scratch->width,
+> +			check_platform? ALIGN(scratch->width, 64): scratch->width,
+
+The dumb_create ioctl already does this for us.
+
+>  			scratch->height,
+>  			scratch->bpp,
+>  			&scratch->pitch,
+> @@ -262,6 +264,7 @@ igt_main
+>  =
+
+>  		/* ANY =3D anything that is not VGEM */
+>  		first_fd =3D __drm_open_driver_another(0, DRIVER_ANY | DRIVER_VGEM);
+> +		check_platform =3D is_i915_device(first_fd);
+>  		igt_require(first_fd >=3D 0);
+>  =
+
+>  		second_fd =3D __drm_open_driver_another(1, DRIVER_ANY | DRIVER_VGEM);
 > --
 > 2.7.4
-> 
+> =
+
 > _______________________________________________
-> Intel-gfx mailing list
-> Intel-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--
+Ville Syrj=E4l=E4
+Intel
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
