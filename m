@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Fri, 11 Jun 2021 07:35:50 +0000
-Message-ID: <BY5PR11MB437286165E0F03D39B5D146689349@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <1622176443-12682-1-git-send-email-vidya.srinivas@intel.com>
- <YLTv/Z8j9rCf2koN@intel.com>
- <BY5PR11MB4372AB95A5AC6DE9AC0FA552893F9@BY5PR11MB4372.namprd11.prod.outlook.com>
-In-Reply-To: <BY5PR11MB4372AB95A5AC6DE9AC0FA552893F9@BY5PR11MB4372.namprd11.prod.outlook.com>
-Content-Language: en-US
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C2AB6EE4B
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Jun 2021 08:15:35 +0000 (UTC)
+Date: Fri, 11 Jun 2021 10:15:24 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210611081524.GC3298@zkempczy-mobl2>
+References: <20210609131522.1794-1-andrzej.turko@linux.intel.com>
+ <20210609131522.1794-2-andrzej.turko@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_prime: Aligned pitch to
- 64 byte for Intel platforms
+Content-Disposition: inline
+In-Reply-To: <20210609131522.1794-2-andrzej.turko@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/i915/api_intel_allocator:
+ Exercise allocator in multiprocess mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,145 +19,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "Lin,
- Charlton" <charlton.lin@intel.com>
+To: Andrzej Turko <andrzej.turko@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hello Ville,
-
-Apologies for bothering you.
-Kms_prime goes through vgem_gem_dumb_create where the pitch gets calculated=
- which is not 64 byte aligned.
-
-kms_prime->vgem_gem_dumb_create->intel_framebuffer_init which reports plane=
- 0 pitch (5464) must be at least 64 byte aligned.
-
-We have submitted this patch for kernel https://patchwork.freedesktop.org/p=
-atch/436199/ also for the same.
-If we try to align stride in IGT after it gets back from vgem_gem_dumb_ioct=
-l, Kernel gives error - [drm:intel_fill_fb_info] fb too big for bo (need 42=
-27072 bytes, have 4198400 bytes).
-
-As a workaround (if the above kernel patch does not go through) we submitte=
-d this https://patchwork.freedesktop.org/patch/435794/.
-
-Can you kindly help suggest which is the better way? If not both - kindly g=
-uide us how we can address this issue. Thank you so much.
-
-Regards
-Vidya
-
------Original Message-----
-From: Srinivas, Vidya =
-
-Sent: Monday, May 31, 2021 8:18 PM
-To: 'Ville Syrj=E4l=E4' <ville.syrjala@linux.intel.com>
-Cc: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org; Lin, Ch=
-arlton <Charlton.Lin@intel.com>
-Subject: RE: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_prime: Aligned pitch t=
-o 64 byte for Intel platforms
-
-Hello Ville,
-
-Thank you very much.
-Before reaching our i915's i915_gem_dumb_create, it goes to vgem_gem_dumb_c=
-reate for kms_prime.
-
-The pitch gets calculated there and it is not 64 byte aligned. Due to this,=
- intel_framebuffer_init reports "pitch must be 64 byte aligned"
-and framebuffer creation fails. I tried submitting vgem patch where 64 byte=
- alignment can be done in vgem_gem_dumb_create and that also passes. But we=
- did not get approval yet as few of them felt, vgem is generic and other pl=
-atforms might fail if we do 64 byte alignment there.
-
-Kindly suggest. Thanks a lot.
-
-Regards
-Vidya
-
------Original Message-----
-From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-Sent: Monday, May 31, 2021 7:48 PM
-To: Srinivas, Vidya <vidya.srinivas@intel.com>
-Cc: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org; Lin, Ch=
-arlton <charlton.lin@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_prime: Aligned pitch t=
-o 64 byte for Intel platforms
-
-On Fri, May 28, 2021 at 10:04:03AM +0530, Vidya Srinivas wrote:
-> For Intel platforms, pitch needs to be 64 byte aligned.
-> Kernel code vgem_gem_dumb_create which is platform generic code doesnt =
-
-> do the alignment. This causes frame buffer creation to fail on Intel =
-
-> platforms where the pitch is not 64 byte aligned.
-> =
-
-> tests: test run on Intel platforms with panel resolution 1366x768
-> =
-
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> ---
->  tests/kms_prime.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> =
-
-> diff --git a/tests/kms_prime.c b/tests/kms_prime.c index
-> 8cb2ca2a9dc3..fdc941fe8100 100644
-> --- a/tests/kms_prime.c
-> +++ b/tests/kms_prime.c
-> @@ -51,6 +51,8 @@ static struct {
->  	{ .r =3D 1.0, .g =3D 0.0, .b =3D 0.0, .color =3D 0xffff0000 },  };
->  =
-
-> +bool check_platform;
-> +
->  IGT_TEST_DESCRIPTION("Prime tests, focusing on KMS side");
->  =
-
->  static bool has_prime_import(int fd)
-> @@ -101,7 +103,7 @@ static void prepare_scratch(int exporter_fd, struct d=
-umb_bo *scratch,
->  	scratch->bpp =3D 32;
->  =
-
->  	scratch->handle =3D kmstest_dumb_create(exporter_fd,
-> -			scratch->width,
-> +			check_platform? ALIGN(scratch->width, 64): scratch->width,
-
-The dumb_create ioctl already does this for us.
-
->  			scratch->height,
->  			scratch->bpp,
->  			&scratch->pitch,
-> @@ -262,6 +264,7 @@ igt_main
->  =
-
->  		/* ANY =3D anything that is not VGEM */
->  		first_fd =3D __drm_open_driver_another(0, DRIVER_ANY | DRIVER_VGEM);
-> +		check_platform =3D is_i915_device(first_fd);
->  		igt_require(first_fd >=3D 0);
->  =
-
->  		second_fd =3D __drm_open_driver_another(1, DRIVER_ANY | DRIVER_VGEM);
-> --
-> 2.7.4
-> =
-
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---
-Ville Syrj=E4l=E4
-Intel
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gV2VkLCBKdW4gMDksIDIwMjEgYXQgMDM6MTU6MjBQTSArMDIwMCwgQW5kcnplaiBUdXJrbyB3
+cm90ZToKPiBUZXN0IGNyZWF0aW9uIGFuZCB1c2FnZSBvZiBhbGxvY2F0b3JzIGluIG11bHRpcHJv
+Y2VzcyBtb2RlCj4gZm9yIGNvbnRleHRzIHNoYXJlZCB3aXRoIHRoZSBwYXJlbnQgcHJvY2VzcyBh
+cyB3ZWxsIGFzCj4gcHJpdmF0ZSBmb3IgdGhlIGNoaWxkLgo+IAo+IFRoaXMgbmV3IHRlc3QgZGlz
+Y292ZXJzIGEgYnVnIGluIHRoZSBhbGxvY2F0b3IgaW1wbGVtZW50YXRpb246Cj4gYWxsb2NhdG9y
+IGlzIG5vdCBjb3JyZWN0bHkgaW5pdGlhbGl6ZWQgaWYgaXQgaXMgb3BlbmVkIGJ5Cj4gYSBjaGls
+ZCBwcm9jZXNzIHVzaW5nIGl0cyBwcml2YXRlIGZpbGUgZGVzY3JpcHRvci4KPiAKPiBTaWduZWQt
+b2ZmLWJ5OiBBbmRyemVqIFR1cmtvIDxhbmRyemVqLnR1cmtvQGxpbnV4LmludGVsLmNvbT4KPiBD
+YzogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+
+Cj4gLS0tCj4gIHRlc3RzL2k5MTUvYXBpX2ludGVsX2FsbG9jYXRvci5jIHwgNDcgKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysKPiAgMSBmaWxlIGNoYW5nZWQsIDQ3IGluc2VydGlvbnMo
+KykKPiAKPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9hcGlfaW50ZWxfYWxsb2NhdG9yLmMgYi90
+ZXN0cy9pOTE1L2FwaV9pbnRlbF9hbGxvY2F0b3IuYwo+IGluZGV4IGVhNGJhOGJiMS4uYjQzNDY3
+YTMzIDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2k5MTUvYXBpX2ludGVsX2FsbG9jYXRvci5jCj4gKysr
+IGIvdGVzdHMvaTkxNS9hcGlfaW50ZWxfYWxsb2NhdG9yLmMKPiBAQCAtNjIxLDYgKzYyMSw1MCBA
+QCBzdGF0aWMgdm9pZCBleGVjYnVmX3dpdGhfYWxsb2NhdG9yKGludCBmZCkKPiAgCWlndF9hc3Nl
+cnQoaW50ZWxfYWxsb2NhdG9yX2Nsb3NlKGFobmQpID09IHRydWUpOwo+ICB9Cj4gIAo+ICtzdGF0
+aWMgdm9pZCBtdWx0aXByb2Nlc3MoaW50IGZkLCB1aW50OF90IHR5cGUpIHsKCkNhbGwgdGhpcyB0
+ZXN0IGZvcmstcmVvcGVuLiBJdCB3aWxsIHN1Z2dlc3Qgd2hhdCB0ZXN0IGlzIHJlYWxseSBkb2lu
+Zy4KCj4gKwl1aW50NjRfdCBwX2FobmQsIHNoX2FobmQsIGZkX2FobmQsIGN0eF9haG5kOwo+ICsJ
+dWludDY0X3Qgc2hfbGVmdCwgc2hfcmlnaHQsIGZkX2xlZnQsIGZkX3JpZ2h0Owo+ICsJdWludDY0
+X3Qgb2Zmc2V0Owo+ICsKPiArCWludGVsX2FsbG9jYXRvcl9tdWx0aXByb2Nlc3Nfc3RhcnQoKTsK
+PiArCj4gKwlwX2FobmQgPSBpbnRlbF9hbGxvY2F0b3Jfb3BlbihmZCwgMCwgdHlwZSk7Cj4gKwlv
+ZmZzZXQgPSBpbnRlbF9hbGxvY2F0b3JfYWxsb2MocF9haG5kLCAxLCAxMjMsIDApOwo+ICsJaWYg
+KHR5cGUgPT0gSU5URUxfQUxMT0NBVE9SX1NJTVBMRSkKPiArCQlpZ3RfYXNzZXJ0KGludGVsX2Fs
+bG9jYXRvcl9pc19hbGxvY2F0ZWQocF9haG5kLCAxLCAxMjMsIG9mZnNldCkpOwo+ICsKPiArCWln
+dF9mb3JrKGNoaWxkLCAxKSB7Cj4gKwoKVW5uZWNlc3NhcnkgZW1wdHkgbGluZS4KCj4gKwkJc2hf
+YWhuZCA9IGludGVsX2FsbG9jYXRvcl9vcGVuKGZkLCAwLCB0eXBlKTsKPiArCQlpZiAodHlwZSA9
+PSBJTlRFTF9BTExPQ0FUT1JfU0lNUExFKQo+ICsJCQlpZ3RfYXNzZXJ0KGludGVsX2FsbG9jYXRv
+cl9pc19hbGxvY2F0ZWQoc2hfYWhuZCwgMSwgMTIzLCBvZmZzZXQpKTsKPiArCj4gKwkJY3R4X2Fo
+bmQgPSBpbnRlbF9hbGxvY2F0b3Jfb3BlbihmZCwgMSwgdHlwZSk7Cj4gKwkJaWd0X2Fzc2VydCgh
+aW50ZWxfYWxsb2NhdG9yX2lzX2FsbG9jYXRlZChjdHhfYWhuZCwgMSwgMTIzLCBvZmZzZXQpKTsK
+PiArCQlpbnRlbF9hbGxvY2F0b3JfYWxsb2MoY3R4X2FobmQsIDIsIDEyMywgMCk7Cj4gKwo+ICsJ
+CWZkID0gZ2VtX3Jlb3Blbl9kcml2ZXIoZmQpOwo+ICsJCWZkX2FobmQgPSBpbnRlbF9hbGxvY2F0
+b3Jfb3BlbihmZCwgMCwgdHlwZSk7Cj4gKwkJaWd0X2Fzc2VydCghaW50ZWxfYWxsb2NhdG9yX2lz
+X2FsbG9jYXRlZChmZF9haG5kLCAxLCAxMjMsIG9mZnNldCkpOwo+ICsJCWludGVsX2FsbG9jYXRv
+cl9hbGxvYyhmZF9haG5kLCAyLCAxMjMsIDApOwo+ICsKPiArCgpTYW1lLgoKPiArCQlpbnRlbF9h
+bGxvY2F0b3JfZ2V0X2FkZHJlc3NfcmFuZ2Uoc2hfYWhuZCwgJnNoX2xlZnQsICZzaF9yaWdodCk7
+Cj4gKwkJaW50ZWxfYWxsb2NhdG9yX2dldF9hZGRyZXNzX3JhbmdlKGZkX2FobmQsICZmZF9sZWZ0
+LCAmZmRfcmlnaHQpOwo+ICsJCWlndF9hc3NlcnQoc2hfbGVmdCA9PSBmZF9sZWZ0ICYmIHNoX3Jp
+Z2h0ID09IGZkX3JpZ2h0KTsKCk9uIHRoZSBiZWdpbm5pbmcgSSB3b25kZXJlZCB3aHkgd2UganVz
+dCBoYXZlbid0IGNyYXNoZWQgb24gYWxsb2NhdG9yIHRocmVhZApidXQgcXVpY2sgZGlnIHNob3dz
+IGdlbV9hcGVydHVyZV9zaXplKCkgYWxsb3dzIHJ1bm5pbmcgb24gbm90IG9wZW5lZCBpOTE1IGZk
+LgoKV2UgZGVmaW5pdGVseSB3YW50IHRvIGJsb3cgYWxsb2NhdG9yIHRocmVhZCBpZiB1bmRlcmx5
+aW5nIGZkIGlzIG5vdCB2YWxpZCBvcGVuZWQKaTkxNS4gU28gc2VyaWVzIHNob3VsZCBiZSBwcmVw
+ZW5kZWQgd2l0aCBwYXRjaCB3aGljaCBjaGVja3Mgb24gaW50ZWxfYWxsb2NhdG9yX29wZW4KZG8g
+ZmQgaXMgdmFsaWQgb3Igbm90LiBGb3Igbm90IHZhbGlkIGp1c3QgYXNzZXJ0cyBhbmQgc2VlIGhv
+dyBpdCBleHBsb2Rlcy4KCkluIHRoaXMgY2FzZSBhYm92ZSAzIGxpbmVzIHdvbid0IGJlIG5lY2Vz
+c2FyeSwgd2UgZ290IGFuIGFzc2VydCBvbiBvcGVuLgoKLS0KWmJpZ25pZXcKCj4gKwo+ICsJCWlu
+dGVsX2FsbG9jYXRvcl9jbG9zZShzaF9haG5kKTsKPiArCQlpbnRlbF9hbGxvY2F0b3JfY2xvc2Uo
+Y3R4X2FobmQpOwo+ICsJCWludGVsX2FsbG9jYXRvcl9jbG9zZShmZF9haG5kKTsKPiArCj4gKwl9
+Cj4gKwo+ICsJaWd0X3dhaXRjaGlsZHJlbigpOwo+ICsJaW50ZWxfYWxsb2NhdG9yX2Nsb3NlKHBf
+YWhuZCk7Cj4gKwo+ICsJaW50ZWxfYWxsb2NhdG9yX211bHRpcHJvY2Vzc19zdG9wKCk7Cj4gK30K
+PiArCj4gIHN0cnVjdCBhbGxvY2F0b3JzIHsKPiAgCWNvbnN0IGNoYXIgKm5hbWU7Cj4gIAl1aW50
+OF90IHR5cGU7Cj4gQEAgLTY3Miw2ICs3MTYsOSBAQCBpZ3RfbWFpbgo+ICAJCQkJaWd0X2R5bmFt
+aWMoInJlc2VydmUiKQo+ICAJCQkJCXJlc2VydmUoZmQsIGEtPnR5cGUpOwo+ICAJCQl9Cj4gKwo+
+ICsJCQlpZ3RfZHluYW1pYygibXVsdGlwcm9jZXNzIikKPiArCQkJCQltdWx0aXByb2Nlc3MoZmQs
+IGEtPnR5cGUpOwo+ICAJCX0KPiAgCX0KPiAgCj4gLS0gCj4gMi4yNS4xCj4gCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0
+CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
