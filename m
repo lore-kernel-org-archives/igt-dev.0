@@ -1,19 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 853AD6EE75
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Jun 2021 12:40:45 +0000 (UTC)
-Date: Fri, 11 Jun 2021 14:40:40 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210611124040.GB49802@zkempczy-mobl2>
-References: <20210609173632.248880-1-jason@jlekstrand.net>
- <20210609173632.248880-36-jason@jlekstrand.net>
- <20210610142904.GO3926@zkempczy-mobl2>
- <CAOFGe97H=hwWa4HYR0=QE7xgPBhabb-q3u=dqTV57ixoKHi-pA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAOFGe97H=hwWa4HYR0=QE7xgPBhabb-q3u=dqTV57ixoKHi-pA@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 35/93] tests/prime_vgem: Convert to
- intel_ctx_t
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBEA46E7FE
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Jun 2021 12:53:29 +0000 (UTC)
+From: Vidya Srinivas <vidya.srinivas@intel.com>
+Date: Fri, 11 Jun 2021 18:14:11 +0530
+Message-Id: <1623415451-776-1-git-send-email-vidya.srinivas@intel.com>
+In-Reply-To: <1622547939-8157-1-git-send-email-vidya.srinivas@intel.com>
+References: <1622547939-8157-1-git-send-email-vidya.srinivas@intel.com>
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Fix alpha in
+ coverage-vs-premult-vs-constant
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,136 +16,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jason Ekstrand <jason@jlekstrand.net>
-Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com, charlton.lin@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBKdW4gMTAsIDIwMjEgYXQgMTA6NTE6MjZBTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
-d3JvdGU6Cj4gT24gVGh1LCBKdW4gMTAsIDIwMjEgYXQgOToyOSBBTSBaYmlnbmlldyBLZW1wY3p5
-xYRza2kKPiA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPiB3cm90ZToKPiA+Cj4gPiBP
-biBXZWQsIEp1biAwOSwgMjAyMSBhdCAxMjozNjoxOFBNIC0wNTAwLCBKYXNvbiBFa3N0cmFuZCB3
-cm90ZToKPiA+ID4gU2lnbmVkLW9mZi1ieTogSmFzb24gRWtzdHJhbmQgPGphc29uQGpsZWtzdHJh
-bmQubmV0Pgo+ID4gPiAtLS0KPiA+ID4gIHRlc3RzL3ByaW1lX3ZnZW0uYyB8IDM1ICsrKysrKysr
-KysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tCj4gPiA+ICAxIGZpbGUgY2hhbmdlZCwgMjEgaW5z
-ZXJ0aW9ucygrKSwgMTQgZGVsZXRpb25zKC0pCj4gPiA+Cj4gPiA+IGRpZmYgLS1naXQgYS90ZXN0
-cy9wcmltZV92Z2VtLmMgYi90ZXN0cy9wcmltZV92Z2VtLmMKPiA+ID4gaW5kZXggYWVmZjI4MmIu
-LjMwMjNmZDY4IDEwMDY0NAo+ID4gPiAtLS0gYS90ZXN0cy9wcmltZV92Z2VtLmMKPiA+ID4gKysr
-IGIvdGVzdHMvcHJpbWVfdmdlbS5jCj4gPiA+IEBAIC01NTksNyArNTU5LDcgQEAgc3RhdGljIGJv
-b2wgcHJpbWVfYnVzeShpbnQgZmQsIGJvb2wgZXhjbCkKPiA+ID4gICAgICAgcmV0dXJuIHBvbGwo
-JnBmZCwgMSwgMCkgPT0gMDsKPiA+ID4gIH0KPiA+ID4KPiA+ID4gLXN0YXRpYyB2b2lkIHdvcmso
-aW50IGk5MTUsIGludCBkbWFidWYsIHVuc2lnbmVkIHJpbmcpCj4gPiA+ICtzdGF0aWMgdm9pZCB3
-b3JrKGludCBpOTE1LCBpbnQgZG1hYnVmLCBjb25zdCBpbnRlbF9jdHhfdCAqY3R4LCB1bnNpZ25l
-ZCByaW5nKQo+ID4gPiAgewo+ID4gPiAgICAgICBjb25zdCBpbnQgU0NSQVRDSCA9IDA7Cj4gPiA+
-ICAgICAgIGNvbnN0IGludCBCQVRDSCA9IDE7Cj4gPiA+IEBAIC01NzgsNiArNTc4LDcgQEAgc3Rh
-dGljIHZvaWQgd29yayhpbnQgaTkxNSwgaW50IGRtYWJ1ZiwgdW5zaWduZWQgcmluZykKPiA+ID4g
-ICAgICAgZXhlY2J1Zi5mbGFncyA9IHJpbmc7Cj4gPiA+ICAgICAgIGlmIChnZW4gPCA2KQo+ID4g
-PiAgICAgICAgICAgICAgIGV4ZWNidWYuZmxhZ3MgfD0gSTkxNV9FWEVDX1NFQ1VSRTsKPiA+ID4g
-KyAgICAgZXhlY2J1Zi5yc3ZkMSA9IGN0eC0+aWQ7Cj4gPgo+ID4gTGlrZWx5Ogo+ID4KPiA+IGV4
-ZWNidWYucnN2ZDEgPSBjdHggPyBjdHgtPmlkIDogMDsgIC8vc2VlIGJlbG93Cj4gPgo+ID4gPgo+
-ID4gPiAgICAgICBtZW1zZXQob2JqLCAwLCBzaXplb2Yob2JqKSk7Cj4gPiA+ICAgICAgIG9ialtT
-Q1JBVENIXS5oYW5kbGUgPSBwcmltZV9mZF90b19oYW5kbGUoaTkxNSwgZG1hYnVmKTsKPiA+ID4g
-QEAgLTY1NCw3ICs2NTUsNyBAQCBzdGF0aWMgdm9pZCB3b3JrKGludCBpOTE1LCBpbnQgZG1hYnVm
-LCB1bnNpZ25lZCByaW5nKQo+ID4gPiAgICAgICBpZ3RfYXNzZXJ0KHJlYWRfYnVzeSAmJiB3cml0
-ZV9idXN5KTsKPiA+ID4gIH0KPiA+ID4KPiA+ID4gLXN0YXRpYyB2b2lkIHRlc3RfYnVzeShpbnQg
-aTkxNSwgaW50IHZnZW0sIHVuc2lnbmVkIHJpbmcpCj4gPiA+ICtzdGF0aWMgdm9pZCB0ZXN0X2J1
-c3koaW50IGk5MTUsIGludCB2Z2VtLCBjb25zdCBpbnRlbF9jdHhfdCAqY3R4LCB1bnNpZ25lZCBy
-aW5nKQo+ID4gPiAgewo+ID4gPiAgICAgICBzdHJ1Y3QgdmdlbV9ibyBzY3JhdGNoOwo+ID4gPiAg
-ICAgICBzdHJ1Y3QgdGltZXNwZWMgdHY7Cj4gPiA+IEBAIC02NjgsNyArNjY5LDcgQEAgc3RhdGlj
-IHZvaWQgdGVzdF9idXN5KGludCBpOTE1LCBpbnQgdmdlbSwgdW5zaWduZWQgcmluZykKPiA+ID4g
-ICAgICAgdmdlbV9jcmVhdGUodmdlbSwgJnNjcmF0Y2gpOwo+ID4gPiAgICAgICBkbWFidWYgPSBw
-cmltZV9oYW5kbGVfdG9fZmQodmdlbSwgc2NyYXRjaC5oYW5kbGUpOwo+ID4gPgo+ID4gPiAtICAg
-ICB3b3JrKGk5MTUsIGRtYWJ1ZiwgcmluZyk7Cj4gPiA+ICsgICAgIHdvcmsoaTkxNSwgZG1hYnVm
-LCBjdHgsIHJpbmcpOwo+ID4gPgo+ID4gPiAgICAgICAvKiBDYWxsaW5nIGJ1c3kgaW4gYSBsb29w
-IHNob3VsZCBiZSBlbm91Z2ggdG8gZmx1c2ggdGhlIHJlbmRlcmluZyAqLwo+ID4gPiAgICAgICBt
-ZW1zZXQoJnR2LCAwLCBzaXplb2YodHYpKTsKPiA+ID4gQEAgLTY4NCw3ICs2ODUsNyBAQCBzdGF0
-aWMgdm9pZCB0ZXN0X2J1c3koaW50IGk5MTUsIGludCB2Z2VtLCB1bnNpZ25lZCByaW5nKQo+ID4g
-PiAgICAgICBjbG9zZShkbWFidWYpOwo+ID4gPiAgfQo+ID4gPgo+ID4gPiAtc3RhdGljIHZvaWQg
-dGVzdF93YWl0KGludCBpOTE1LCBpbnQgdmdlbSwgdW5zaWduZWQgcmluZykKPiA+ID4gK3N0YXRp
-YyB2b2lkIHRlc3Rfd2FpdChpbnQgaTkxNSwgaW50IHZnZW0sIGNvbnN0IGludGVsX2N0eF90ICpj
-dHgsIHVuc2lnbmVkIHJpbmcpCj4gPiA+ICB7Cj4gPiA+ICAgICAgIHN0cnVjdCB2Z2VtX2JvIHNj
-cmF0Y2g7Cj4gPiA+ICAgICAgIHN0cnVjdCBwb2xsZmQgcGZkOwo+ID4gPiBAQCAtNjk3LDcgKzY5
-OCw3IEBAIHN0YXRpYyB2b2lkIHRlc3Rfd2FpdChpbnQgaTkxNSwgaW50IHZnZW0sIHVuc2lnbmVk
-IHJpbmcpCj4gPiA+ICAgICAgIHZnZW1fY3JlYXRlKHZnZW0sICZzY3JhdGNoKTsKPiA+ID4gICAg
-ICAgcGZkLmZkID0gcHJpbWVfaGFuZGxlX3RvX2ZkKHZnZW0sIHNjcmF0Y2guaGFuZGxlKTsKPiA+
-ID4KPiA+ID4gLSAgICAgd29yayhpOTE1LCBwZmQuZmQsIHJpbmcpOwo+ID4gPiArICAgICB3b3Jr
-KGk5MTUsIHBmZC5mZCwgY3R4LCByaW5nKTsKPiA+ID4KPiA+ID4gICAgICAgcGZkLmV2ZW50cyA9
-IFBPTExJTjsKPiA+ID4gICAgICAgaWd0X2Fzc2VydF9lcShwb2xsKCZwZmQsIDEsIDEwMDAwKSwg
-MSk7Cj4gPiA+IEBAIC03MTEsNyArNzEyLDcgQEAgc3RhdGljIHZvaWQgdGVzdF93YWl0KGludCBp
-OTE1LCBpbnQgdmdlbSwgdW5zaWduZWQgcmluZykKPiA+ID4gICAgICAgY2xvc2UocGZkLmZkKTsK
-PiA+ID4gIH0KPiA+ID4KPiA+ID4gLXN0YXRpYyB2b2lkIHRlc3Rfc3luYyhpbnQgaTkxNSwgaW50
-IHZnZW0sIHVuc2lnbmVkIHJpbmcpCj4gPiA+ICtzdGF0aWMgdm9pZCB0ZXN0X3N5bmMoaW50IGk5
-MTUsIGludCB2Z2VtLCBjb25zdCBpbnRlbF9jdHhfdCAqY3R4LCB1bnNpZ25lZCByaW5nKQo+ID4g
-PiAgewo+ID4gPiAgICAgICBzdHJ1Y3QgdmdlbV9ibyBzY3JhdGNoOwo+ID4gPiAgICAgICB1aW50
-MzJfdCAqcHRyOwo+ID4gPiBAQCAtNzI4LDcgKzcyOSw3IEBAIHN0YXRpYyB2b2lkIHRlc3Rfc3lu
-YyhpbnQgaTkxNSwgaW50IHZnZW0sIHVuc2lnbmVkIHJpbmcpCj4gPiA+ICAgICAgIGlndF9hc3Nl
-cnQocHRyICE9IE1BUF9GQUlMRUQpOwo+ID4gPiAgICAgICBnZW1fY2xvc2UodmdlbSwgc2NyYXRj
-aC5oYW5kbGUpOwo+ID4gPgo+ID4gPiAtICAgICB3b3JrKGk5MTUsIGRtYWJ1ZiwgcmluZyk7Cj4g
-PiA+ICsgICAgIHdvcmsoaTkxNSwgZG1hYnVmLCBjdHgsIHJpbmcpOwo+ID4gPgo+ID4gPiAgICAg
-ICBwcmltZV9zeW5jX3N0YXJ0KGRtYWJ1ZiwgZmFsc2UpOwo+ID4gPiAgICAgICBmb3IgKGkgPSAw
-OyBpIDwgMTAyNDsgaSsrKQo+ID4gPiBAQCAtNzM5LDcgKzc0MCw3IEBAIHN0YXRpYyB2b2lkIHRl
-c3Rfc3luYyhpbnQgaTkxNSwgaW50IHZnZW0sIHVuc2lnbmVkIHJpbmcpCj4gPiA+ICAgICAgIG11
-bm1hcChwdHIsIHNjcmF0Y2guc2l6ZSk7Cj4gPiA+ICB9Cj4gPiA+Cj4gPiA+IC1zdGF0aWMgdm9p
-ZCB0ZXN0X2ZlbmNlX3dhaXQoaW50IGk5MTUsIGludCB2Z2VtLCB1bnNpZ25lZCByaW5nKQo+ID4g
-PiArc3RhdGljIHZvaWQgdGVzdF9mZW5jZV93YWl0KGludCBpOTE1LCBpbnQgdmdlbSwgY29uc3Qg
-aW50ZWxfY3R4X3QgKmN0eCwgdW5zaWduZWQgcmluZykKPiA+ID4gIHsKPiA+ID4gICAgICAgc3Ry
-dWN0IHZnZW1fYm8gc2NyYXRjaDsKPiA+ID4gICAgICAgdWludDMyX3QgZmVuY2U7Cj4gPiA+IEBA
-IC03NjAsNyArNzYxLDcgQEAgc3RhdGljIHZvaWQgdGVzdF9mZW5jZV93YWl0KGludCBpOTE1LCBp
-bnQgdmdlbSwgdW5zaWduZWQgcmluZykKPiA+ID4gICAgICAgaWd0X2Fzc2VydChwdHIgIT0gTUFQ
-X0ZBSUxFRCk7Cj4gPiA+Cj4gPiA+ICAgICAgIGlndF9mb3JrKGNoaWxkLCAxKQo+ID4gPiAtICAg
-ICAgICAgICAgIHdvcmsoaTkxNSwgZG1hYnVmLCByaW5nKTsKPiA+ID4gKyAgICAgICAgICAgICB3
-b3JrKGk5MTUsIGRtYWJ1ZiwgY3R4LCByaW5nKTsKPiA+ID4KPiA+ID4gICAgICAgc2xlZXAoMSk7
-Cj4gPiA+Cj4gPiA+IEBAIC04MDAsNyArODAxLDcgQEAgc3RhdGljIHZvaWQgdGVzdF9mZW5jZV9o
-YW5nKGludCBpOTE1LCBpbnQgdmdlbSwgdW5zaWduZWQgZmxhZ3MpCj4gPiA+ICAgICAgIGlndF9h
-c3NlcnQocHRyICE9IE1BUF9GQUlMRUQpOwo+ID4gPiAgICAgICBnZW1fY2xvc2UodmdlbSwgc2Ny
-YXRjaC5oYW5kbGUpOwo+ID4gPgo+ID4gPiAtICAgICB3b3JrKGk5MTUsIGRtYWJ1ZiwgMCk7Cj4g
-PiA+ICsgICAgIHdvcmsoaTkxNSwgZG1hYnVmLCAwLCAwKTsKPiA+Cj4gPiBQYXNzaW5nIE5VTEwg
-Y3R4IHdpdGhvdXQgYWJvdmUgY2hhbmdlIHdpbGwgbGVhZCB0byBjYXRhc3Ryb3BoaWMgcmVzdWx0
-Lgo+IAo+IEhvdyBhYm91dCB0aGlzPwo+IAo+IHdvcmsoaTkxNSwgZG1hYnVmLCBpbnRlbF9jdHhf
-MChpOTE1KSwgMCk7CgpXaWxsIHdvcmsgZWl0aGVyLCB3aXRoIHRoYXQ6CgpSZXZpZXdlZC1ieTog
-WmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Cgot
-LQpaYmlnbmlldwoKPiAKPiAtLUphc29uCj4gCj4gPiAtLQo+ID4gWmJpZ25pZXcKPiA+Cj4gPiA+
-Cj4gPiA+ICAgICAgIC8qIFRoZSB3b3JrIHNob3VsZCBoYXZlIGJlZW4gY2FuY2VsbGVkICovCj4g
-PiA+Cj4gPiA+IEBAIC0xMDQyLDEyICsxMDQzLDE1IEBAIHN0YXRpYyB2b2lkIHRlc3RfZmxpcChp
-bnQgaTkxNSwgaW50IHZnZW0sIHVuc2lnbmVkIGhhbmcpCj4gPiA+ICB9Cj4gPiA+Cj4gPiA+ICBz
-dGF0aWMgdm9pZCB0ZXN0X2VhY2hfZW5naW5lKGNvbnN0IGNoYXIgKm5hbWUsIGludCB2Z2VtLCBp
-bnQgaTkxNSwKPiA+ID4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgdm9pZCAoKmZuKShpbnQg
-aTkxNSwgaW50IHZnZW0sIHVuc2lnbmVkIGludCBmbGFncykpCj4gPiA+ICsgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHZvaWQgKCpmbikoaW50IGk5MTUsIGludCB2Z2VtLAo+ID4gPiArICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvbnN0IGludGVsX2N0eF90ICpjdHgsCj4g
-PiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdW5zaWduZWQgaW50IGZs
-YWdzKSkKPiA+ID4gIHsKPiA+ID4gICAgICAgY29uc3Qgc3RydWN0IGludGVsX2V4ZWN1dGlvbl9l
-bmdpbmUyICplOwo+ID4gPiArICAgICBjb25zdCBpbnRlbF9jdHhfdCAqY3R4ID0gaW50ZWxfY3R4
-X2NyZWF0ZV9hbGxfcGh5c2ljYWwoaTkxNSk7Cj4gPiA+Cj4gPiA+ICAgICAgIGlndF9zdWJ0ZXN0
-X3dpdGhfZHluYW1pYyhuYW1lKSB7Cj4gPiA+IC0gICAgICAgICAgICAgX19mb3JfZWFjaF9waHlz
-aWNhbF9lbmdpbmUoaTkxNSwgZSkgewo+ID4gPiArICAgICAgICAgICAgIGZvcl9lYWNoX2N0eF9l
-bmdpbmUoaTkxNSwgY3R4LCBlKSB7Cj4gPiA+ICAgICAgICAgICAgICAgICAgICAgICBpZiAoIWdl
-bV9jbGFzc19jYW5fc3RvcmVfZHdvcmQoaTkxNSwgZS0+Y2xhc3MpKQo+ID4gPiAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICBjb250aW51ZTsKPiA+ID4KPiA+ID4gQEAgLTEwNTYsMTAgKzEw
-NjAsMTIgQEAgc3RhdGljIHZvaWQgdGVzdF9lYWNoX2VuZ2luZShjb25zdCBjaGFyICpuYW1lLCBp
-bnQgdmdlbSwgaW50IGk5MTUsCj4gPiA+Cj4gPiA+ICAgICAgICAgICAgICAgICAgICAgICBpZ3Rf
-ZHluYW1pY19mKCIlcyIsIGUtPm5hbWUpIHsKPiA+ID4gICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgZ2VtX3F1aWVzY2VudF9ncHUoaTkxNSk7Cj4gPiA+IC0gICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIGZuKGk5MTUsIHZnZW0sIGUtPmZsYWdzKTsKPiA+ID4gKyAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgZm4oaTkxNSwgdmdlbSwgY3R4LCBlLT5mbGFncyk7Cj4gPiA+ICAgICAg
-ICAgICAgICAgICAgICAgICB9Cj4gPiA+ICAgICAgICAgICAgICAgfQo+ID4gPiAgICAgICB9Cj4g
-PiA+ICsKPiA+ID4gKyAgICAgaW50ZWxfY3R4X2Rlc3Ryb3koaTkxNSwgY3R4KTsKPiA+ID4gIH0K
-PiA+ID4KPiA+ID4gIGlndF9tYWluCj4gPiA+IEBAIC0xMTEwLDcgKzExMTYsOCBAQCBpZ3RfbWFp
-bgo+ID4gPiAgICAgICB7Cj4gPiA+ICAgICAgICAgICAgICAgc3RhdGljIGNvbnN0IHN0cnVjdCB7
-Cj4gPiA+ICAgICAgICAgICAgICAgICAgICAgICBjb25zdCBjaGFyICpuYW1lOwo+ID4gPiAtICAg
-ICAgICAgICAgICAgICAgICAgdm9pZCAoKmZuKShpbnQgaTkxNSwgaW50IHZnZW0sIHVuc2lnbmVk
-IGludCBlbmdpbmUpOwo+ID4gPiArICAgICAgICAgICAgICAgICAgICAgdm9pZCAoKmZuKShpbnQg
-aTkxNSwgaW50IHZnZW0sIGNvbnN0IGludGVsX2N0eF90ICpjdHgsCj4gPiA+ICsgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHVuc2lnbmVkIGludCBlbmdpbmUpOwo+ID4gPiAgICAgICAg
-ICAgICAgIH0gdGVzdHNbXSA9IHsKPiA+ID4gICAgICAgICAgICAgICAgICAgICAgIHsgInN5bmMi
-LCB0ZXN0X3N5bmMgfSwKPiA+ID4gICAgICAgICAgICAgICAgICAgICAgIHsgImJ1c3kiLCB0ZXN0
-X2J1c3kgfSwKPiA+ID4gLS0KPiA+ID4gMi4zMS4xCj4gPiA+Cj4gPiA+IF9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gPiA+IGlndC1kZXYgbWFpbGluZyBs
-aXN0Cj4gPiA+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4gPiA+IGh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdApp
-Z3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+Patch sets alpha to 0x7e for coverage, Pre-multiplied and constant as
+per the buffer being created initially in prepare_crtc. Patch also
+add commit after setting fb on primary plane. Without this change
+CRC mismatch is seen on few Gen11 systems.
+
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+---
+ tests/kms_plane_alpha_blend.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+index a37cb27c7d62..d3a73cf43fcd 100644
+--- a/tests/kms_plane_alpha_blend.c
++++ b/tests/kms_plane_alpha_blend.c
+@@ -448,29 +448,34 @@ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t
+ 	igt_crc_t ref_crc = {}, crc = {};
+ 
+ 	/* Set a background color on the primary fb for testing */
+-	if (plane->type != DRM_PLANE_TYPE_PRIMARY)
++	if (plane->type != DRM_PLANE_TYPE_PRIMARY) {
+ 		igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY), &data->gray_fb);
++		igt_display_commit2(display, COMMIT_ATOMIC);
++	}
+ 
+ 	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage");
++	igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0x7e);
+ 	igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ 	igt_pipe_crc_start(data->pipe_crc);
+ 	igt_pipe_crc_get_single(data->pipe_crc, &ref_crc);
+ 
+ 	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Pre-multiplied");
++	igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0x7e);
+ 	igt_plane_set_fb(plane, &data->argb_fb_7e);
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ 	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc);
+ 	igt_assert_crc_equal(&ref_crc, &crc);
+ 
+ 	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "None");
+-	igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0x7e7e);
++	igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0x7e);
+ 	igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ 	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc);
+ 	igt_assert_crc_equal(&ref_crc, &crc);
+ 
+ 	igt_pipe_crc_stop(data->pipe_crc);
++
+ }
+ 
+ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, bool blend,
+-- 
+2.7.4
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
