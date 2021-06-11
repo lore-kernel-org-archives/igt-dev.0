@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 316AB6E1B5
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Jun 2021 05:30:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E6446E503
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Jun 2021 05:30:36 +0000 (UTC)
 From: venkata.sai.patnana@intel.com
-Date: Fri, 11 Jun 2021 10:49:58 +0530
-Message-Id: <20210611052005.303-10-venkata.sai.patnana@intel.com>
+Date: Fri, 11 Jun 2021 10:49:51 +0530
+Message-Id: <20210611052005.303-3-venkata.sai.patnana@intel.com>
 In-Reply-To: <20210611052005.303-1-venkata.sai.patnana@intel.com>
 References: <20210611052005.303-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 10/17] tests/kms_big_fb: Add max hw stride
- lenght async flip test
+Subject: [igt-dev] [PATCH i-g-t 03/17] tests/device_reset: Unload snd driver
+ before i915 unbind
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,156 +17,195 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Juha-Pekka=20Heikkil=C3=A4?= <juha-pekka.heikkila@intel.com>
+Cc: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogSnVoYS1QZWtrYSBIZWlra2lsw6QgPGp1aGEtcGVra2EuaGVpa2tpbGFAaW50ZWwuY29t
-PgoKdGVzdCBhc3luYyBmbGlwIHdpdGggZmJzIHdoaWNoIGFyZSB1c2luZyBtYXhpbXVtIGh3IHN1
-cHBvcnRlZCBzdHJpZGUKbGVuZ2h0cy4gRG8gY3JjIHRlc3QgZmxpcHBpbmcgYmV0d2VlbiBmYnMg
-d2hpY2ggYXJlIGhhdmluZyBzYW1lIGNvbnRlbnQKYW5kIHRoZW4gYXN5bmMgZmxpcCBmYnMgd2l0
-aCBkaWZmZXJlbnQgY29udGVudC4KCkNjOiBLYXJ0aGlrIEIgUyA8a2FydGhpay5iLnNAaW50ZWwu
-Y29tPgpTaWduZWQtb2ZmLWJ5OiBKdWhhLVBla2thIEhlaWtraWzDpCA8anVoYS1wZWtrYS5oZWlr
-a2lsYUBpbnRlbC5jb20+ClJldmlld2VkLWJ5OiBLYXJ0aGlrIEIgUyA8a2FydGhpay5iLnNAaW50
-ZWwuY29tPgotLS0KIHRlc3RzL2ttc19iaWdfZmIuYyB8IDE0NyArKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKystLS0KIDEgZmlsZSBjaGFuZ2VkLCAxNDAgaW5zZXJ0aW9u
-cygrKSwgNyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS90ZXN0cy9rbXNfYmlnX2ZiLmMgYi90
-ZXN0cy9rbXNfYmlnX2ZiLmMKaW5kZXggNjU1NjUxMjdmZC4uODllYTBmMjNlMiAxMDA2NDQKLS0t
-IGEvdGVzdHMva21zX2JpZ19mYi5jCisrKyBiL3Rlc3RzL2ttc19iaWdfZmIuYwpAQCAtMzksNyAr
-MzksNyBAQCB0eXBlZGVmIHN0cnVjdCB7CiAJaWd0X291dHB1dF90ICpvdXRwdXQ7CiAJaWd0X3Bs
-YW5lX3QgKnBsYW5lOwogCWlndF9waXBlX2NyY190ICpwaXBlX2NyYzsKLQlzdHJ1Y3QgaWd0X2Zi
-IHNtYWxsX2ZiLCBiaWdfZmI7CisJc3RydWN0IGlndF9mYiBzbWFsbF9mYiwgYmlnX2ZiLCBiaWdf
-ZmJfZmxpcFsyXTsKIAl1aW50MzJfdCBmb3JtYXQ7CiAJdWludDY0X3QgbW9kaWZpZXI7CiAJaW50
-IHdpZHRoLCBoZWlnaHQ7CkBAIC01MSwxMCArNTEsMTMgQEAgdHlwZWRlZiBzdHJ1Y3QgewogCXN0
-cnVjdCBidWZfb3BzICpib3BzOwogCXN0cnVjdCBpbnRlbF9iYiAqaWJiOwogCWJvb2wgbWF4X2h3
-X3N0cmlkZV90ZXN0OworCWJvb2wgYXN5bmNfZmxpcF90ZXN0OwogCWludCBod19zdHJpZGU7CiAJ
-aW50IG1heF9od19mYl93aWR0aDsKKwlkb3VibGUgcGxhbmVjbGVhcnJnYlszXTsKIAl1aW50MzJf
-dCBmb3JtYXRfb3ZlcnJpZGU7CiAJdWludDMyX3Qgc3RyaWRlX292ZXJyaWRlOworCXVpbnQzMl90
-IGFzeW5jX2ZsaXBfc3VwcG9ydDsKIH0gZGF0YV90OwogCiBzdGF0aWMgc3RydWN0IGludGVsX2J1
-ZiAqaW5pdF9idWYoZGF0YV90ICpkYXRhLApAQCAtMTEzLDcgKzExNiwxMCBAQCBzdGF0aWMgdm9p
-ZCBzZXR1cF9mYihkYXRhX3QgKmRhdGEsIHN0cnVjdCBpZ3RfZmIgKm5ld2ZiLCB1aW50MzJfdCB3
-aWR0aCwKIAl9CiAKIAljciA9IGlndF9nZXRfY2Fpcm9fY3R4KGRhdGEtPmRybV9mZCwgbmV3ZmIp
-OwotCWlndF9wYWludF9jb2xvcihjciwgMCwgMCwgbmV3ZmItPndpZHRoLCBuZXdmYi0+aGVpZ2h0
-LCAwLCAwLCAwKTsKKwlpZ3RfcGFpbnRfY29sb3IoY3IsIDAsIDAsIG5ld2ZiLT53aWR0aCwgbmV3
-ZmItPmhlaWdodCwKKwkJCWRhdGEtPnBsYW5lY2xlYXJyZ2JbMF0sCisJCQlkYXRhLT5wbGFuZWNs
-ZWFycmdiWzFdLAorCQkJZGF0YS0+cGxhbmVjbGVhcnJnYlsyXSk7CiAJaWd0X3B1dF9jYWlyb19j
-dHgoY3IpOwogCiAJaWd0X2Fzc2VydChkcm1Jb2N0bChkYXRhLT5kcm1fZmQsIExPQ0FMX0RSTV9J
-T0NUTF9NT0RFX0FEREZCMiwgJmYpID09IDApOwpAQCAtMjQzLDcgKzI0OSw3IEBAIHN0YXRpYyB2
-b2lkIHByZXBfZmIoZGF0YV90ICpkYXRhKQogCWlmIChkYXRhLT5iaWdfZmIuZmJfaWQpCiAJCXJl
-dHVybjsKIAotCWlmIChkYXRhLT5od19zdHJpZGUgPT0gMCkgeworCWlmICghZGF0YS0+bWF4X2h3
-X3N0cmlkZV90ZXN0KSB7CiAJCWlndF9jcmVhdGVfZmIoZGF0YS0+ZHJtX2ZkLAogCQkJZGF0YS0+
-YmlnX2ZiX3dpZHRoLCBkYXRhLT5iaWdfZmJfaGVpZ2h0LAogCQkJZGF0YS0+Zm9ybWF0LCBkYXRh
-LT5tb2RpZmllciwKQEAgLTI1Miw3ICsyNTgsNyBAQCBzdGF0aWMgdm9pZCBwcmVwX2ZiKGRhdGFf
-dCAqZGF0YSkKIAkJc2V0dXBfZmIoZGF0YSwgJmRhdGEtPmJpZ19mYiwgZGF0YS0+YmlnX2ZiX3dp
-ZHRoLAogCQkJIGRhdGEtPmJpZ19mYl9oZWlnaHQsIGRhdGEtPmZvcm1hdCwgZGF0YS0+bW9kaWZp
-ZXIsCiAJCQkgZGF0YS0+aHdfc3RyaWRlKTsKLQkJaWd0X2luZm8oInVzaW5nIHN0cmlkZSBsZW5n
-dGggJWRcbiIsIGRhdGEtPmh3X3N0cmlkZSk7CisJCWlndF9kZWJ1ZygidXNpbmcgc3RyaWRlIGxl
-bmd0aCAlZFxuIiwgZGF0YS0+aHdfc3RyaWRlKTsKIAl9CiAKIAlnZW5lcmF0ZV9wYXR0ZXJuKGRh
-dGEsICZkYXRhLT5iaWdfZmIsIDY0MCwgNDgwKTsKQEAgLTQ3NCwxMSArNDgwLDEwNyBAQCBzdGF0
-aWMgYm9vbCB0ZXN0X3BpcGUoZGF0YV90ICpkYXRhKQogCXJldHVybiByZXQ7CiB9CiAKK3N0YXRp
-YyBib29sCittYXhfaHdfc3RyaWRlX2FzeW5jX2ZsaXBfdGVzdChkYXRhX3QgKmRhdGEpCit7CisJ
-dWludDMyX3QgcmV0LCBzdGFydGZyYW1lOworCWNvbnN0IHVpbnQzMl90IHcgPSBkYXRhLT5vdXRw
-dXQtPmNvbmZpZy5kZWZhdWx0X21vZGUuaGRpc3BsYXksCisJCSAgICAgICBoID0gZGF0YS0+b3V0
-cHV0LT5jb25maWcuZGVmYXVsdF9tb2RlLnZkaXNwbGF5OworCWlndF9wbGFuZV90ICpwcmltYXJ5
-OworCWlndF9jcmNfdCBjb21wYXJlX2NyYywgYXN5bmNfY3JjOworCisJaWd0X3JlcXVpcmUoZGF0
-YS0+ZGlzcGxheS5pc19hdG9taWMpOworCWlndF9vdXRwdXRfc2V0X3BpcGUoZGF0YS0+b3V0cHV0
-LCBkYXRhLT5waXBlKTsKKworCXByaW1hcnkgPSBpZ3Rfb3V0cHV0X2dldF9wbGFuZV90eXBlKGRh
-dGEtPm91dHB1dCwgRFJNX1BMQU5FX1RZUEVfUFJJTUFSWSk7CisKKwlpZiAoaWd0X3BsYW5lX2hh
-c19wcm9wKHByaW1hcnksIElHVF9QTEFORV9ST1RBVElPTikpCisJCWlndF9wbGFuZV9zZXRfcm90
-YXRpb24ocHJpbWFyeSwgZGF0YS0+cm90YXRpb24pOworCisJaWd0X2Rpc3BsYXlfY29tbWl0Migm
-ZGF0YS0+ZGlzcGxheSwgQ09NTUlUX0FUT01JQyk7CisKKwlzZXR1cF9mYihkYXRhLCAmZGF0YS0+
-YmlnX2ZiLCBkYXRhLT5iaWdfZmJfd2lkdGgsIGRhdGEtPmJpZ19mYl9oZWlnaHQsCisJCSBkYXRh
-LT5mb3JtYXQsIGRhdGEtPm1vZGlmaWVyLCBkYXRhLT5od19zdHJpZGUpOworCWdlbmVyYXRlX3Bh
-dHRlcm4oZGF0YSwgJmRhdGEtPmJpZ19mYiwgNjQwLCA0ODApOworCisJZGF0YS0+cGxhbmVjbGVh
-cnJnYlsxXSA9IDEuMDsKKworCXNldHVwX2ZiKGRhdGEsICZkYXRhLT5iaWdfZmJfZmxpcFswXSwg
-ZGF0YS0+YmlnX2ZiX3dpZHRoLAorCQkgZGF0YS0+YmlnX2ZiX2hlaWdodCwgZGF0YS0+Zm9ybWF0
-LCBkYXRhLT5tb2RpZmllciwKKwkJIGRhdGEtPmh3X3N0cmlkZSk7CisKKwlkYXRhLT5wbGFuZWNs
-ZWFycmdiWzFdID0gMC4wOworCisJc2V0dXBfZmIoZGF0YSwgJmRhdGEtPmJpZ19mYl9mbGlwWzFd
-LCBkYXRhLT5iaWdfZmJfd2lkdGgsCisJCSBkYXRhLT5iaWdfZmJfaGVpZ2h0LCBkYXRhLT5mb3Jt
-YXQsIGRhdGEtPm1vZGlmaWVyLAorCQkgZGF0YS0+aHdfc3RyaWRlKTsKKwlnZW5lcmF0ZV9wYXR0
-ZXJuKGRhdGEsICZkYXRhLT5iaWdfZmJfZmxpcFsxXSwgNjQwLCA0ODApOworCisJZGF0YS0+cGlw
-ZV9jcmMgPSBpZ3RfcGlwZV9jcmNfbmV3KGRhdGEtPmRybV9mZCwgZGF0YS0+cGlwZSwKKwkJCQkJ
-ICBJTlRFTF9QSVBFX0NSQ19TT1VSQ0VfQVVUTyk7CisJaWd0X3BpcGVfY3JjX3N0YXJ0KGRhdGEt
-PnBpcGVfY3JjKTsKKworCWlndF9zZXRfdGltZW91dCg1LCAiQXN5bmMgcGFnZWZsaXBwaW5nIGxv
-b3AgZ290IHN0dWNrIVxuIik7CisJZm9yIChpbnQgaSA9IDA7IGkgPCAyOyBpKyspIHsKKwkJaWd0
-X3BsYW5lX3NldF9mYihwcmltYXJ5LCAmZGF0YS0+YmlnX2ZiKTsKKwkJaWd0X2ZiX3NldF9zaXpl
-KCZkYXRhLT5iaWdfZmIsIHByaW1hcnksIHcsIGgpOworCQlpZ3RfcGxhbmVfc2V0X3NpemUocHJp
-bWFyeSwgdywgaCk7CisJCWlndF9kaXNwbGF5X2NvbW1pdF9hdG9taWMoJmRhdGEtPmRpc3BsYXks
-CisJCQkJCSAgRFJNX01PREVfQVRPTUlDX0FMTE9XX01PREVTRVQsIE5VTEwpOworCisJCWlndF93
-YWl0X2Zvcl92YmxhbmsoZGF0YS0+ZHJtX2ZkLCBkYXRhLT5kaXNwbGF5LnBpcGVzW3ByaW1hcnkt
-PnBpcGUtPnBpcGVdLmNydGNfb2Zmc2V0KTsKKwkJc3RhcnRmcmFtZSA9IGttc3Rlc3RfZ2V0X3Zi
-bGFuayhkYXRhLT5kcm1fZmQsIGRhdGEtPnBpcGUsIDApICsgMTsKKworCQlmb3IgKGludCBqID0g
-MDsgaiA8IDI7IGorKykgeworCQkJZG8geworCQkJCXJldCA9IGRybU1vZGVQYWdlRmxpcChkYXRh
-LT5kcm1fZmQsIGRhdGEtPm91dHB1dC0+Y29uZmlnLmNydGMtPmNydGNfaWQsCisJCQkJCQkgICAg
-ICBkYXRhLT5iaWdfZmJfZmxpcFtpXS5mYl9pZCwKKwkJCQkJCSAgICAgIERSTV9NT0RFX1BBR0Vf
-RkxJUF9BU1lOQywgTlVMTCk7CisJCQl9IHdoaWxlIChyZXQgPT0gLUVCVVNZKTsKKwkJCWlndF9h
-c3NlcnQocmV0ID09IDApOworCisJCQlkbyB7CisJCQkJcmV0ID0gZHJtTW9kZVBhZ2VGbGlwKGRh
-dGEtPmRybV9mZCwgZGF0YS0+b3V0cHV0LT5jb25maWcuY3J0Yy0+Y3J0Y19pZCwKKwkJCQkJCSAg
-ICAgIGRhdGEtPmJpZ19mYi5mYl9pZCwKKwkJCQkJCSAgICAgIERSTV9NT0RFX1BBR0VfRkxJUF9B
-U1lOQywgTlVMTCk7CisJCQl9IHdoaWxlIChyZXQgPT0gLUVCVVNZKTsKKwkJCWlndF9hc3NlcnQo
-cmV0ID09IDApOworCQl9CisKKwkJaWd0X3BpcGVfY3JjX2dldF9mb3JfZnJhbWUoZGF0YS0+ZHJt
-X2ZkLCBkYXRhLT5waXBlX2NyYywKKwkJCQkJICAgc3RhcnRmcmFtZSwgJmNvbXBhcmVfY3JjKTsK
-KwkJaWd0X3BpcGVfY3JjX2dldF9mb3JfZnJhbWUoZGF0YS0+ZHJtX2ZkLCBkYXRhLT5waXBlX2Ny
-YywKKwkJCQkJICAgc3RhcnRmcmFtZSArIDEsICZhc3luY19jcmMpOworCisJCWlndF9hc3NlcnRf
-ZihrbXN0ZXN0X2dldF92YmxhbmsoZGF0YS0+ZHJtX2ZkLCBkYXRhLT5waXBlLCAwKSAtCisJCQkg
-ICAgIHN0YXJ0ZnJhbWUgPT0gMSwgImxvc3QgZnJhbWVzXG4iKTsKKworCQlpZ3RfYXNzZXJ0X2Yo
-aWd0X2NoZWNrX2NyY19lcXVhbCgmY29tcGFyZV9jcmMsICZhc3luY19jcmMpXihpXjEpLAorCQkJ
-ICAgICAiQ1JDIGZhaWx1cmUgd2l0aCBhc3luYyBmbGlwLCBjcmMgJXMgbWF0Y2ggZm9yIGNoZWNr
-ZWQgcm91bmRcbiIsCisJCQkgICAgIGk/InNob3VsZCI6InNob3VsZG4ndCIpOworCX0KKwlpZ3Rf
-cmVzZXRfdGltZW91dCgpOworCisJaWd0X3BpcGVfY3JjX2ZyZWUoZGF0YS0+cGlwZV9jcmMpOwor
-CWlndF9vdXRwdXRfc2V0X3BpcGUoZGF0YS0+b3V0cHV0LCBQSVBFX05PTkUpOworCWlndF9yZW1v
-dmVfZmIoZGF0YS0+ZHJtX2ZkLCAmZGF0YS0+YmlnX2ZiKTsKKwlpZ3RfcmVtb3ZlX2ZiKGRhdGEt
-PmRybV9mZCwgJmRhdGEtPmJpZ19mYl9mbGlwWzBdKTsKKwlpZ3RfcmVtb3ZlX2ZiKGRhdGEtPmRy
-bV9mZCwgJmRhdGEtPmJpZ19mYl9mbGlwWzFdKTsKKwlyZXR1cm4gdHJ1ZTsKK30KKwogc3RhdGlj
-IHZvaWQgdGVzdF9zY2Fub3V0KGRhdGFfdCAqZGF0YSkKIHsKKwlpZ3Rfb3V0cHV0X3QgKm91dHB1
-dDsKKwogCWlmIChkYXRhLT5tYXhfaHdfc3RyaWRlX3Rlc3QpIHsKIAkJZGF0YS0+YmlnX2ZiX3dp
-ZHRoID0gZGF0YS0+bWF4X2h3X2ZiX3dpZHRoOwotCQlkYXRhLT5iaWdfZmJfaGVpZ2h0ID0gZGF0
-YS0+bWF4X2h3X2ZiX3dpZHRoOworCQlkYXRhLT5iaWdfZmJfaGVpZ2h0ID0gMDsKKworCQlmb3Jf
-ZWFjaF9jb25uZWN0ZWRfb3V0cHV0KCZkYXRhLT5kaXNwbGF5LCBvdXRwdXQpIHsKKwkJCWlmIChk
-YXRhLT5iaWdfZmJfaGVpZ2h0IDwgb3V0cHV0LT5jb25maWcuZGVmYXVsdF9tb2RlLnZkaXNwbGF5
-ICogMikKKwkJCQlkYXRhLT5iaWdfZmJfaGVpZ2h0ID0gb3V0cHV0LT5jb25maWcuZGVmYXVsdF9t
-b2RlLnZkaXNwbGF5ICogMjsKKwkJfQogCX0gZWxzZSB7CiAJCWRhdGEtPmJpZ19mYl93aWR0aCA9
-IGRhdGEtPm1heF9mYl93aWR0aDsKIAkJZGF0YS0+YmlnX2ZiX2hlaWdodCA9IGRhdGEtPm1heF9m
-Yl9oZWlnaHQ7CkBAIC00ODgsOCArNTkwLDEzIEBAIHN0YXRpYyB2b2lkIHRlc3Rfc2Nhbm91dChk
-YXRhX3QgKmRhdGEpCiAJCSAgICBkYXRhLT5mb3JtYXQsIGRhdGEtPm1vZGlmaWVyKTsKIAogCWZv
-cl9lYWNoX3BpcGVfd2l0aF92YWxpZF9vdXRwdXQoJmRhdGEtPmRpc3BsYXksIGRhdGEtPnBpcGUs
-IGRhdGEtPm91dHB1dCkgewotCQlpZiAodGVzdF9waXBlKGRhdGEpKQotCQkJcmV0dXJuOworCQlp
-ZiAoZGF0YS0+YXN5bmNfZmxpcF90ZXN0KSB7CisJCQlpZiAobWF4X2h3X3N0cmlkZV9hc3luY19m
-bGlwX3Rlc3QoZGF0YSkpCisJCQkJcmV0dXJuOworCQl9IGVsc2UgeworCQkJaWYgKHRlc3RfcGlw
-ZShkYXRhKSkKKwkJCQlyZXR1cm47CisJCX0KIAkJYnJlYWs7CiAJfQogCkBAIC02OTksNiArODA2
-LDcgQEAgaWd0X21haW4KIHsKIAlpZ3RfZml4dHVyZSB7CiAJCWRybU1vZGVSZXNQdHIgcmVzOwor
-CQlzdHJ1Y3QgZHJtX2dldF9jYXAgY2FwID0geyAuY2FwYWJpbGl0eSA9IERSTV9DQVBfQVNZTkNf
-UEFHRV9GTElQIH07CiAKIAkJZGF0YS5kcm1fZmQgPSBkcm1fb3Blbl9kcml2ZXJfbWFzdGVyKERS
-SVZFUl9JTlRFTCk7CiAKQEAgLTc0Myw3ICs4NTEsMTUgQEAgaWd0X21haW4KIAkJZGF0YS5ib3Bz
-ID0gYnVmX29wc19jcmVhdGUoZGF0YS5kcm1fZmQpOwogCQlkYXRhLmliYiA9IGludGVsX2JiX2Ny
-ZWF0ZShkYXRhLmRybV9mZCwgNDA5Nik7CiAKKwkJZGF0YS5wbGFuZWNsZWFycmdiWzBdID0gMC4w
-OworCQlkYXRhLnBsYW5lY2xlYXJyZ2JbMV0gPSAwLjA7CisJCWRhdGEucGxhbmVjbGVhcnJnYlsy
-XSA9IDAuMDsKKwogCQlkYXRhLm1heF9od19zdHJpZGVfdGVzdCA9IGZhbHNlOworCQlkYXRhLmFz
-eW5jX2ZsaXBfdGVzdCA9IGZhbHNlOworCisJCWlndF9pb2N0bChkYXRhLmRybV9mZCwgRFJNX0lP
-Q1RMX0dFVF9DQVAsICZjYXApOworCQlkYXRhLmFzeW5jX2ZsaXBfc3VwcG9ydCA9IGNhcC52YWx1
-ZTsKIAl9CiAKIAkvKgpAQCAtODYxLDYgKzk3NywyMyBAQCBpZ3RfbWFpbgogCQkJCQkJaWd0X3Jl
-cXVpcmUoaWd0X2Rpc3BsYXlfaGFzX2Zvcm1hdF9tb2QoJmRhdGEuZGlzcGxheSwgZGF0YS5mb3Jt
-YXQsIGRhdGEubW9kaWZpZXIpKTsKIAkJCQkJCXRlc3Rfc2Nhbm91dCgmZGF0YSk7CiAJCQkJCX0K
-KworCQkJCQkvLyBhc3luYyBmbGlwIGRvZXNuJ3Qgc3VwcG9ydCBsaW5lYXIgZmJzLgorCQkJCQlp
-ZiAobW9kaWZpZXJzW2ldLm1vZGlmaWVyID09IERSTV9GT1JNQVRfTU9EX0xJTkVBUikKKwkJCQkJ
-CWNvbnRpbnVlOworCisJCQkJCWRhdGEuYXN5bmNfZmxpcF90ZXN0ID0gdHJ1ZTsKKwkJCQkJaWd0
-X2Rlc2NyaWJlKCJ0ZXN0IGFzeW5jIGZsaXAgb24gbWF4aW11bSBoYXJkd2FyZSBzdXBwb3J0ZWQg
-c3RyaWRlIGxlbmd0aCBmb3IgZ2l2ZW4gYnBwIGFuZCBtb2RpZmllcnMuIik7CisJCQkJCWlndF9z
-dWJ0ZXN0X2YoIiVzLW1heC1ody1zdHJpZGUtJWRicHAtcm90YXRlLSVkJXMtYXN5bmMtZmxpcCIs
-IG1vZGlmaWVyc1tpXS5uYW1lLAorCQkJCQkJZm9ybWF0c1tqXS5icHAsIHJvdGF0aW9uc1trXS5h
-bmdsZSwgZmxpcHRhYltsXS5mbGlwbmFtZSkgeworCQkJCQkJCWlndF9yZXF1aXJlKGRhdGEuZm9y
-bWF0ID09IERSTV9GT1JNQVRfQzggfHwKKwkJCQkJCQkJaWd0X2ZiX3N1cHBvcnRlZF9mb3JtYXQo
-ZGF0YS5mb3JtYXQpKTsKKwkJCQkJCQlpZ3RfcmVxdWlyZShpZ3RfZGlzcGxheV9oYXNfZm9ybWF0
-X21vZCgmZGF0YS5kaXNwbGF5LCBkYXRhLmZvcm1hdCwgZGF0YS5tb2RpZmllcikpOworCQkJCQkJ
-CWlndF9yZXF1aXJlX2YoZGF0YS5hc3luY19mbGlwX3N1cHBvcnQsICJBc3luYyBGbGlwIGlzIG5v
-dCBzdXBwb3J0ZWRcbiIpOworCQkJCQkJCWRhdGEubWF4X2h3X2ZiX3dpZHRoID0gbWluKGRhdGEu
-aHdfc3RyaWRlIC8gKGZvcm1hdHNbal0uYnBwID4+IDMpLCBkYXRhLm1heF9mYl93aWR0aCk7CisJ
-CQkJCQkJdGVzdF9zY2Fub3V0KCZkYXRhKTsKKwkJCQkJfQorCQkJCQlkYXRhLmFzeW5jX2ZsaXBf
-dGVzdCA9IGZhbHNlOwogCQkJCX0KIAogCQkJCWlndF9maXh0dXJlCi0tIAoyLjI1LjEKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGlu
-ZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+From: Uma Shankar <uma.shankar@intel.com>
+
+Unload the snd module before unbinding i915. Audio holds a wakeref which
+triggers a warning otherwise, resulting in below warning and test failure.
+Currently HSW/BDW and DG1 are the platforms affected, can be extended to
+other platforms as well.
+
+<4> [137.001006] ------------[ cut here ]------------
+<4> [137.001010] i915 0000:00:02.0: i915 raw-wakerefs=1 wakelocks=1 on cleanup
+<4> [137.001076] WARNING: CPU: 0 PID: 1417 at drivers/gpu/drm/i915/intel_runtime_pm.c:619 intel_runtime_pm_driver_release+0x56/0x60 [i915]
+<4> [137.001078] Modules linked in: snd_hda_intel i915 snd_hda_codec_hdmi mei_hdcp intel_pmt_telemetry intel_pmt_core x86_pkg_temp_thermal coretemp smsc75xx crct10dif_pclmul usbnet crc32_pclmul mii ghash_clmulni_intel kvm_intel e1000e snd_intel_dspcfg snd_hda_codec snd_hwdep snd_hda_core ptp pps_core mei_me snd_pcm mei prime_numbers intel_pmt [last unloaded: i915]
+<4> [137.001095] CPU: 0 PID: 1417 Comm: kworker/u16:7 Tainted: G U 5.9.0-g79478e23b1878-DII_3204+ #1
+<4> [137.001097] Hardware name: Intel Corporation Tiger Lake Client Platform/TigerLake U DDR4 SODIMM RVP, BIOS TGLSFWI1.R00.3197.A00.2005110542 05/11/2020
+<4> [137.001102] Workqueue: events_unbound async_run_entry_fn
+<4> [137.001140] RIP: 0010:intel_runtime_pm_driver_release+0x56/0x60 [i915]
+<4> [137.001142] Code: fd 10 4c 8b 67 50 4d 85 e4 75 03 4c 8b 27 e8 91 59 58 e1 45 89 e8 89 e9 4c 89 e2 48 89 c6 48 c7 c7 b0 f3 48 a0 e8 55 25 ef e0 <0f> 0b eb b5 66 0f 1f 44 00 00 48 8b 87 88 45 ff ff b9 02 00 00 00
+<4> [137.001144] RSP: 0018:ffffc900007dbd68 EFLAGS: 00010286
+<4> [137.001147] RAX: 0000000000000000 RBX: ffff88847338bea8 RCX: 0000000000000001
+<4> [137.001148] RDX: 0000000080000001 RSI: ffffffff823efa86 RDI: 00000000ffffffff
+<4> [137.001150] RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000001
+<4> [137.001152] R10: 000000009bda34df R11: 00000000e2a8a89a R12: ffff88849b209880
+<4> [137.001153] R13: 0000000000000001 R14: ffff88847338bea8 R15: ffff88847338fcc0
+<4> [137.001155] FS: 0000000000000000(0000) GS:ffff8884a0600000(0000) knlGS:0000000000000000
+<4> [137.001157] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+<4> [137.001159] CR2: 00007fc03597dd88 CR3: 0000000006610005 CR4: 0000000000770ef0
+<4> [137.001160] PKRU: 55555554
+<4> [137.001162] Call Trace:
+<4> [137.001199] i915_drm_suspend_late+0x102/0x120 [i915]
+<4> [137.001204] ? pci_pm_poweroff_late+0x30/0x30
+<4> [137.001209] dpm_run_callback+0x61/0x270
+<4> [137.001214] __device_suspend_late+0x8b/0x180
+<4> [137.001217] async_suspend_late+0x15/0x90
+<4> [137.001220] async_run_entry_fn+0x34/0x160
+<4> [137.001224] process_one_work+0x26c/0x5c0
+<4> [137.001231] worker_thread+0x37/0x380
+<4> [137.001235] ? process_one_work+0x5c0/0x5c0
+<4> [137.001238] kthread+0x149/0x170
+<4> [137.001241] ? kthread_park+0x80/0x80
+<4> [137.001246] ret_from_fork+0x1f/0x30
+<4> [137.001256] irq event stamp: 2329
+
+Cc: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Signed-off-by: Uma Shankar <uma.shankar@intel.com>
+Acked-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ tests/device_reset.c | 61 +++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 46 insertions(+), 15 deletions(-)
+
+diff --git a/tests/device_reset.c b/tests/device_reset.c
+index eef707330c..e6a468e6fa 100644
+--- a/tests/device_reset.c
++++ b/tests/device_reset.c
+@@ -5,11 +5,13 @@
+ #include <fcntl.h>
+ #include <sys/ioctl.h>
+ #include <sys/stat.h>
++#include <signal.h>
+ 
+ #include "i915/gem.h"
+ #include "igt.h"
+ #include "igt_device_scan.h"
+ #include "igt_sysfs.h"
++#include "igt_kmod.h"
+ 
+ IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
+ 
+@@ -28,6 +30,7 @@ struct device_fds {
+ 		int drv_dir;
+ 	} fds;
+ 	char dev_bus_addr[DEV_BUS_ADDR_LEN];
++	bool snd_unload;
+ };
+ 
+ static int __open_sysfs_dir(int fd, const char* path)
+@@ -82,6 +85,7 @@ static void init_device_fds(struct device_fds *dev)
+ {
+ 	char dev_path[PATH_MAX];
+ 	char *addr_pos;
++	uint32_t devid;
+ 
+ 	igt_debug("open device\n");
+ 	/**
+@@ -91,9 +95,18 @@ static void init_device_fds(struct device_fds *dev)
+ 	 */
+ 	dev->fds.dev = __drm_open_driver(DRIVER_ANY);
+ 	igt_assert_fd(dev->fds.dev);
+-	if (is_i915_device(dev->fds.dev))
++	if (is_i915_device(dev->fds.dev)) {
+ 		igt_require_gem(dev->fds.dev);
+ 
++		devid = intel_get_drm_devid(dev->fds.dev);
++		if ((IS_HASWELL(devid) || IS_BROADWELL(devid) ||
++		     IS_DG1(devid)) &&
++		     (igt_kmod_is_loaded("snd_hda_intel"))) {
++			igt_debug("Enable WA to unload snd driver\n");
++			dev->snd_unload = true;
++		}
++	}
++
+ 	igt_assert(device_sysfs_path(dev->fds.dev, dev_path));
+ 	addr_pos = strrchr(dev_path, '/');
+ 	igt_assert(addr_pos);
+@@ -164,6 +177,34 @@ static bool is_sysfs_reset_supported(int fd)
+ /* Unbind the driver from the device */
+ static void driver_unbind(struct device_fds *dev)
+ {
++	/**
++	 * FIXME: Unbinding the i915 driver on affected platforms with
++	 * audio results in a kernel WARN on "i915 raw-wakerefs=1
++	 * wakelocks=1 on cleanup". The below CI friendly user level
++	 * workaround to unload and de-couple audio from IGT testing,
++	 * prevents the warning from appearing. Drop this hack as soon
++	 * as this is fixed in the kernel. unbind/re-bind validation
++	 * on audio side is not robust and we could have potential
++	 * failures blocking display CI, currently this seems to the
++	 * safest and easiest way out.
++	 */
++	if (dev->snd_unload) {
++		igt_terminate_process(SIGTERM, "alsactl");
++
++		/* unbind snd_hda_intel */
++		kick_snd_hda_intel();
++
++		if (igt_kmod_unload("snd_hda_intel", 0)) {
++			dev->snd_unload = false;
++			igt_warn("Could not unload snd_hda_intel\n");
++			igt_kmod_list_loaded();
++			igt_lsof("/dev/snd");
++			igt_skip("Audio is in use, skipping\n");
++		} else {
++			igt_warn("Preventively unloaded snd_hda_intel\n");
++		}
++	}
++
+ 	igt_debug("unbind the driver from the device\n");
+ 	igt_assert(igt_sysfs_set(dev->fds.drv_dir, "unbind",
+ 		   dev->dev_bus_addr));
+@@ -175,6 +216,9 @@ static void driver_bind(struct device_fds *dev)
+ 	igt_debug("rebind the driver to the device\n");
+ 	igt_abort_on_f(!igt_sysfs_set(dev->fds.drv_dir, "bind",
+ 		       dev->dev_bus_addr), "driver rebind failed");
++
++	if (dev->snd_unload)
++		igt_kmod_load("snd_hda_intel", NULL);
+ }
+ 
+ /* Initiate device reset */
+@@ -235,19 +279,6 @@ static void unbind_reset_rebind(struct device_fds *dev)
+ 	igt_debug("close the device\n");
+ 	close_if_opened(&dev->fds.dev);
+ 
+-	/**
+-	 * FIXME: Unbinding the i915 driver on some platforms with Azalia audio
+-	 * results in a kernel WARN on "i915 raw-wakerefs=1 wakelocks=1 on cleanup".
+-	 * The below CI friendly user level workaround prevents the warning from
+-	 * appearing. Drop this hack as soon as this is fixed in the kernel.
+-	 */
+-	if (is_i915_device(dev->fds.dev)) {
+-		uint32_t devid = intel_get_drm_devid(dev->fds.dev);
+-		if (igt_warn_on_f(IS_HASWELL(devid) || IS_BROADWELL(devid),
+-		    "Manually enabling audio PM to work around a kernel WARN\n"))
+-			igt_pm_enable_audio_runtime_pm();
+-	}
+-
+ 	driver_unbind(dev);
+ 
+ 	initiate_device_reset(dev);
+@@ -257,7 +288,7 @@ static void unbind_reset_rebind(struct device_fds *dev)
+ 
+ igt_main
+ {
+-	struct device_fds dev = { .fds = {-1, -1, -1}, .dev_bus_addr = {0}};
++	struct device_fds dev = { .fds = {-1, -1, -1}, .dev_bus_addr = {0}, };
+ 
+ 	igt_fixture {
+ 		char dev_path[PATH_MAX];
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
