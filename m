@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C57E6E509
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Jun 2021 05:31:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 438116E511
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Jun 2021 05:31:10 +0000 (UTC)
 From: venkata.sai.patnana@intel.com
-Date: Fri, 11 Jun 2021 10:50:03 +0530
-Message-Id: <20210611052005.303-15-venkata.sai.patnana@intel.com>
+Date: Fri, 11 Jun 2021 10:50:04 +0530
+Message-Id: <20210611052005.303-16-venkata.sai.patnana@intel.com>
 In-Reply-To: <20210611052005.303-1-venkata.sai.patnana@intel.com>
 References: <20210611052005.303-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 15/17] tests/kms_dp_dsc: Use helper
- functions to read/write dsc debugfs
+Subject: [igt-dev] [PATCH i-g-t 16/17] tests/kms_invalid_dotclock: Modify
+ the test for bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,186 +17,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: =?UTF-8?q?Juha-Pekka=20Heikkil=C3=A4?= <juha-pekka.heikkila@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-
-Remove funtions for reading different dsc parameters from dsc debugfs.
-Use the helper functions for reading and writing dsc debugfs.
-
-Cc: Petri Latvala <petri.latvala@intel.com> (v3)
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
----
- tests/kms_dp_dsc.c | 87 ++++++++--------------------------------------
- 1 file changed, 15 insertions(+), 72 deletions(-)
-
-diff --git a/tests/kms_dp_dsc.c b/tests/kms_dp_dsc.c
-index eecb9e45da..f87112e6e7 100644
---- a/tests/kms_dp_dsc.c
-+++ b/tests/kms_dp_dsc.c
-@@ -55,7 +55,6 @@ enum dsc_test_type
- 
- typedef struct {
- 	int drm_fd;
--	int debugfs_fd;
- 	uint32_t devid;
- 	igt_display_t display;
- 	struct igt_fb fb_test_pattern;
-@@ -77,91 +76,36 @@ static inline void manual(const char *expected)
- 	igt_debug_manual_check("all", expected);
- }
- 
--static bool is_dp_dsc_supported(data_t *data)
--{
--	char file_name[128] = {0};
--	char buf[512];
--
--	strcpy(file_name, data->conn_name);
--	strcat(file_name, "/i915_dsc_fec_support");
--	igt_debugfs_read(data->drm_fd, file_name, buf);
--
--	return strstr(buf, "DSC_Sink_Support: yes");
--}
--
--static bool is_dp_fec_supported(data_t *data)
--{
--	char file_name[128] = {0};
--	char buf[512];
--
--	strcpy(file_name, data->conn_name);
--	strcat(file_name, "/i915_dsc_fec_support");
--	igt_debugfs_read(data->drm_fd, file_name, buf);
--
--	return strstr(buf, "FEC_Sink_Support: yes");
--}
--
--static bool is_dp_dsc_enabled(data_t *data)
--{
--	char file_name[128] = {0};
--	char buf[512];
--
--	strcpy(file_name, data->conn_name);
--	strcat(file_name, "/i915_dsc_fec_support");
--	igt_debugfs_read(data->drm_fd, file_name, buf);
--
--	return strstr(buf, "DSC_Enabled: yes");
--}
--
- static void force_dp_dsc_enable(data_t *data)
- {
--	char file_name[128] = {0};
- 	int ret;
- 
--	strcpy(file_name, data->conn_name);
--	strcat(file_name, "/i915_dsc_fec_support");
- 	igt_debug ("Forcing DSC enable on %s\n", data->conn_name);
--	ret = igt_sysfs_write(data->debugfs_fd, file_name, "1", 1);
-+	ret = igt_force_dp_dsc_enable(data->drm_fd,
-+				      data->output->config.connector);
- 	igt_assert_f(ret > 0, "debugfs_write failed");
- }
- 
- static void force_dp_dsc_enable_bpp(data_t *data)
- {
- 	int ret;
--	char file_name[128] = {0};
--	char buffer[20];
- 
--	sprintf(buffer, "%d", data->compression_bpp);
--	strcpy(file_name, data->conn_name);
--	strcat(file_name, "/i915_dsc_bpp_support");
- 	igt_debug("Forcing DSC BPP to %d on %s\n",
- 		  data->compression_bpp, data->conn_name);
--	ret = igt_sysfs_write(data->debugfs_fd, file_name,
--			      buffer, sizeof(buffer));
-+	ret = igt_force_dp_dsc_enable_bpp(data->drm_fd,
-+					  data->output->config.connector,
-+					  data->compression_bpp);
- 	igt_assert_f(ret > 0, "debugfs_write failed");
- }
- 
--static bool is_force_dsc_enabled(data_t *data)
--{
--	char file_name[128] = {0};
--	char buf[512];
--
--	strcpy(file_name, data->conn_name);
--	strcat(file_name, "/i915_dsc_fec_support");
--	igt_debugfs_read(data->drm_fd, file_name, buf);
--
--	return strstr(buf, "Force_DSC_Enable: yes");
--}
--
- static void save_force_dsc_en(data_t *data)
- {
--	char file_name[128] = {0};
--
--	force_dsc_en_orig = is_force_dsc_enabled(data);
--	strcpy(file_name, data->conn_name);
--	strcat(file_name, "/i915_dsc_fec_support");
--	force_dsc_restore_fd = openat(igt_debugfs_dir(data->drm_fd),
--				      file_name, O_WRONLY);
-+	force_dsc_en_orig =
-+		igt_is_force_dsc_enabled(data->drm_fd,
-+					 data->output->config.connector);
-+	force_dsc_restore_fd =
-+		igt_get_dp_dsc_debugfs_fd(data->drm_fd,
-+					  data->output->config.connector);
- 	igt_assert(force_dsc_restore_fd >= 0);
- }
- 
-@@ -211,13 +155,13 @@ static bool check_dsc_on_connector(data_t *data, uint32_t drmConnector)
- 		kmstest_connector_type_str(connector->connector_type),
- 		connector->connector_type_id);
- 
--	if (!is_dp_dsc_supported(data)) {
-+	if (!igt_is_dp_dsc_supported(data->drm_fd, connector)) {
- 		igt_debug("DSC not supported on connector %s\n",
- 			  data->conn_name);
- 		return false;
- 	}
- 	if (connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
--	    !is_dp_fec_supported(data)) {
-+	    !igt_is_dp_fec_supported(data->drm_fd, connector)) {
- 		igt_debug("DSC cannot be enabled without FEC on %s\n",
- 			  data->conn_name);
- 		return false;
-@@ -263,7 +207,8 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
- 	 */
- 	manual("RGB test pattern without corruption");
- 
--	enabled = is_dp_dsc_enabled(data);
-+	enabled = igt_is_dp_dsc_enabled(data->drm_fd,
-+					data->output->config.connector);
- 	restore_force_dsc_en();
- 
- 	igt_assert_f(enabled,
-@@ -320,7 +265,6 @@ igt_main
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 		igt_require_intel(data.drm_fd);
- 		data.devid = intel_get_drm_devid(data.drm_fd);
--		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
- 		kmstest_set_vt_graphics_mode();
- 		igt_install_exit_handler(kms_dp_dsc_exit_handler);
- 		igt_display_require(&data.display, data.drm_fd);
-@@ -356,7 +300,6 @@ igt_main
- 		test_cleanup(&data);
- 		drmModeFreeConnector(connector);
- 		drmModeFreeResources(res);
--		close(data.debugfs_fd);
- 		close(data.drm_fd);
- 		igt_display_fini(&data.display);
- 	}
--- 
-2.25.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RnJvbTogQW5raXQgTmF1dGl5YWwgPGFua2l0LmsubmF1dGl5YWxAaW50ZWwuY29tPgoKQ3VycmVu
+dGx5IHRoZSB0ZXN0IGFzc3VtZXMgdGhhdCB0aGUgbW9kZXMgd2l0aCBjbG9jayBtb3JlIHRoYW4g
+dGhlCm1heGltdW0gZG90IGNsb2NrIHdpbGwgYmUgcmVqZWN0ZWQuIFRoaXMgZmFpbHMgaW4gY2Fz
+ZSBvZgpwbGF0Zm9ybXMgdGhhdCBjb21iaW5lIG11bHRpcGxlIHBpcGVzIGFuZCBtb2RlcyBoaWdo
+ZXIgdGhhbiB0aGUKbWF4aW11bSBkb3RjbG9jayBjYW4gc3RpbGwgYmUgc3VwcG9ydGVkLgoKVGhp
+cyBwYXRjaCBtb2RpZmllcyB0aGUgdGVzdCB0byBidW1wIHRoZSBjbG9jayBmb3IgdGhlIGdpdmVu
+IG1vZGUKYnkgdHdpY2UgaWYgYmlnam9pbmVyIGlzIHN1cHBvcnRlZC4KCkNjOiBNYW5hc2kgTmF2
+YXJlIDxtYW5hc2kuZC5uYXZhcmVAaW50ZWwuY29tPgpTaWduZWQtb2ZmLWJ5OiBBbmtpdCBOYXV0
+aXlhbCA8YW5raXQuay5uYXV0aXlhbEBpbnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IEp1aGEtUGVr
+a2EgSGVpa2tpbMOkIDxqdWhhLXBla2thLmhlaWtraWxhQGludGVsLmNvbT4KLS0tCiB0ZXN0cy9r
+bXNfaW52YWxpZF9kb3RjbG9jay5jIHwgMzQgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KystLQogMSBmaWxlIGNoYW5nZWQsIDMyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpk
+aWZmIC0tZ2l0IGEvdGVzdHMva21zX2ludmFsaWRfZG90Y2xvY2suYyBiL3Rlc3RzL2ttc19pbnZh
+bGlkX2RvdGNsb2NrLmMKaW5kZXggNDAyNjI5YWIwOS4uYmQ4MjJmZTc2MCAxMDA2NDQKLS0tIGEv
+dGVzdHMva21zX2ludmFsaWRfZG90Y2xvY2suYworKysgYi90ZXN0cy9rbXNfaW52YWxpZF9kb3Rj
+bG9jay5jCkBAIC00Myw2ICs0MywyNSBAQCBzdGF0aWMgYm9vbCBoYXNfc2NhbGluZ19tb2RlX3By
+b3AoZGF0YV90ICpkYXRhKQogCQkJCSAgICAic2NhbGluZyBtb2RlIiwKIAkJCQkgICAgTlVMTCwg
+TlVMTCwgTlVMTCk7CiB9CitzdGF0aWMgYm9vbAorY2FuX2JpZ2pvaW5lcihkYXRhX3QgKmRhdGEp
+Cit7CisJZHJtTW9kZUNvbm5lY3RvciAqY29ubmVjdG9yID0gZGF0YS0+b3V0cHV0LT5jb25maWcu
+Y29ubmVjdG9yOworCXVpbnQzMl90IGRldmlkID0gaW50ZWxfZ2V0X2RybV9kZXZpZChkYXRhLT5k
+cm1fZmQpOworCisJLyoKKwkgKiBHRU4xMSBhbmQgR0VOMTIgcmVxdWlyZSBEU0MgdG8gc3VwcG9y
+dCBiaWdqb2luZXIuCisJICogWEVMUEQgYW5kIGxhdGVyIEdFTiBzdXBwb3J0IHVuY29tcHJlc3Nl
+ZCBiaWdqb2luZXIuCisJICovCisJaWYgKGludGVsX2Rpc3BsYXlfdmVyKGRldmlkKSkgeworCQlp
+Z3RfZGVidWcoIlBsYXRmb3JtIHN1cHBvcnRzIHVuY29tcHJlc3NlZCBiaWdqb2luZXJcbiIpOwor
+CQlyZXR1cm4gdHJ1ZTsKKwl9IGVsc2UgaWYgKGludGVsX2Rpc3BsYXlfdmVyKGRldmlkKSA+PSAx
+MSkgeworCQlyZXR1cm4gaWd0X2lzX2RwX2RzY19zdXBwb3J0ZWQoZGF0YS0+ZHJtX2ZkLCBjb25u
+ZWN0b3IpOworCX0KKworCXJldHVybiBmYWxzZTsKK30KIAogc3RhdGljIGludAogdGVzdF9vdXRw
+dXQoZGF0YV90ICpkYXRhKQpAQCAtNzAsMTIgKzg5LDI1IEBAIHRlc3Rfb3V0cHV0KGRhdGFfdCAq
+ZGF0YSkKIAltb2RlID0gKmlndF9vdXRwdXRfZ2V0X21vZGUob3V0cHV0KTsKIAltb2RlLmNsb2Nr
+ID0gZGF0YS0+bWF4X2RvdGNsb2NrICsgMTsKIAorCS8qCisJICogTmV3ZXIgcGxhdGZvcm1zIGNh
+biBzdXBwb3J0IG1vZGVzIGhpZ2hlciB0aGFuIHRoZSBtYXhpbXVtIGRvdCBjbG9jaworCSAqIGJ5
+IHVzaW5nIHBpcGUgam9pbmVyLCBzbyBzZXQgdGhlIG1vZGUgY2xvY2sgdHdpY2UgdGhhdCBvZiBt
+YXhpbXVtCisJICogZG90IGNsb2NrOworCSAqLworCWlmIChjYW5fYmlnam9pbmVyKGRhdGEpKSB7
+CisJCWlndF9pbmZvKCJQbGF0Zm9ybSBzdXBwb3J0cyBiaWdqb2luZXIgd2l0aCAlc1xuIiwKKwkJ
+CSAgb3V0cHV0LT5uYW1lKTsKKwkJbW9kZS5jbG9jayAqPSAyOworCX0KKwogCWlndF9jcmVhdGVf
+ZmIoZGF0YS0+ZHJtX2ZkLAogCQkgICAgICBtb2RlLmhkaXNwbGF5LCBtb2RlLnZkaXNwbGF5LAog
+CQkgICAgICBEUk1fRk9STUFUX1hSR0I4ODg4LAogCQkgICAgICBMT0NBTF9EUk1fRk9STUFUX01P
+RF9OT05FLAogCQkgICAgICAmZmIpOwogCisJa21zdGVzdF91bnNldF9hbGxfY3J0Y3MoZGF0YS0+
+ZHJtX2ZkLCBkYXRhLT5yZXMpOworCiAJZm9yIChpID0gMDsgaSA8IGRhdGEtPnJlcy0+Y291bnRf
+Y3J0Y3M7IGkrKykgewogCQlpbnQgcmV0OwogCkBAIC0xMzUsOCArMTY3LDYgQEAgaWd0X3NpbXBs
+ZV9tYWluCiAJZGF0YS5yZXMgPSBkcm1Nb2RlR2V0UmVzb3VyY2VzKGRhdGEuZHJtX2ZkKTsKIAlp
+Z3RfYXNzZXJ0KGRhdGEucmVzKTsKIAotCWttc3Rlc3RfdW5zZXRfYWxsX2NydGNzKGRhdGEuZHJt
+X2ZkLCBkYXRhLnJlcyk7Ci0KIAlkYXRhLm1heF9kb3RjbG9jayA9IGk5MTVfbWF4X2RvdGNsb2Nr
+KCZkYXRhKTsKIAlpZ3RfaW5mbygiTWF4IGRvdGNsb2NrOiAlZCBrSHpcbiIsIGRhdGEubWF4X2Rv
+dGNsb2NrKTsKIAotLSAKMi4yNS4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
+dG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2ln
+dC1kZXYK
