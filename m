@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E6446E503
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Jun 2021 05:30:36 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 08B066E1B5
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Jun 2021 05:31:02 +0000 (UTC)
 From: venkata.sai.patnana@intel.com
-Date: Fri, 11 Jun 2021 10:49:51 +0530
-Message-Id: <20210611052005.303-3-venkata.sai.patnana@intel.com>
+Date: Fri, 11 Jun 2021 10:50:00 +0530
+Message-Id: <20210611052005.303-12-venkata.sai.patnana@intel.com>
 In-Reply-To: <20210611052005.303-1-venkata.sai.patnana@intel.com>
 References: <20210611052005.303-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 03/17] tests/device_reset: Unload snd driver
- before i915 unbind
+Subject: [igt-dev] [PATCH i-g-t 12/17] tests/kms_dp_dsc: Add a subtest to
+ force DSC output BPP
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,186 +22,296 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Uma Shankar <uma.shankar@intel.com>
+From: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
 
-Unload the snd module before unbinding i915. Audio holds a wakeref which
-triggers a warning otherwise, resulting in below warning and test failure.
-Currently HSW/BDW and DG1 are the platforms affected, can be extended to
-other platforms as well.
+This subtest uses the accepted DSC BPPs and tries to
+force a modeset by setting a certain BPP as the output
+BPP for a connector.
 
-<4> [137.001006] ------------[ cut here ]------------
-<4> [137.001010] i915 0000:00:02.0: i915 raw-wakerefs=1 wakelocks=1 on cleanup
-<4> [137.001076] WARNING: CPU: 0 PID: 1417 at drivers/gpu/drm/i915/intel_runtime_pm.c:619 intel_runtime_pm_driver_release+0x56/0x60 [i915]
-<4> [137.001078] Modules linked in: snd_hda_intel i915 snd_hda_codec_hdmi mei_hdcp intel_pmt_telemetry intel_pmt_core x86_pkg_temp_thermal coretemp smsc75xx crct10dif_pclmul usbnet crc32_pclmul mii ghash_clmulni_intel kvm_intel e1000e snd_intel_dspcfg snd_hda_codec snd_hwdep snd_hda_core ptp pps_core mei_me snd_pcm mei prime_numbers intel_pmt [last unloaded: i915]
-<4> [137.001095] CPU: 0 PID: 1417 Comm: kworker/u16:7 Tainted: G U 5.9.0-g79478e23b1878-DII_3204+ #1
-<4> [137.001097] Hardware name: Intel Corporation Tiger Lake Client Platform/TigerLake U DDR4 SODIMM RVP, BIOS TGLSFWI1.R00.3197.A00.2005110542 05/11/2020
-<4> [137.001102] Workqueue: events_unbound async_run_entry_fn
-<4> [137.001140] RIP: 0010:intel_runtime_pm_driver_release+0x56/0x60 [i915]
-<4> [137.001142] Code: fd 10 4c 8b 67 50 4d 85 e4 75 03 4c 8b 27 e8 91 59 58 e1 45 89 e8 89 e9 4c 89 e2 48 89 c6 48 c7 c7 b0 f3 48 a0 e8 55 25 ef e0 <0f> 0b eb b5 66 0f 1f 44 00 00 48 8b 87 88 45 ff ff b9 02 00 00 00
-<4> [137.001144] RSP: 0018:ffffc900007dbd68 EFLAGS: 00010286
-<4> [137.001147] RAX: 0000000000000000 RBX: ffff88847338bea8 RCX: 0000000000000001
-<4> [137.001148] RDX: 0000000080000001 RSI: ffffffff823efa86 RDI: 00000000ffffffff
-<4> [137.001150] RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000001
-<4> [137.001152] R10: 000000009bda34df R11: 00000000e2a8a89a R12: ffff88849b209880
-<4> [137.001153] R13: 0000000000000001 R14: ffff88847338bea8 R15: ffff88847338fcc0
-<4> [137.001155] FS: 0000000000000000(0000) GS:ffff8884a0600000(0000) knlGS:0000000000000000
-<4> [137.001157] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-<4> [137.001159] CR2: 00007fc03597dd88 CR3: 0000000006610005 CR4: 0000000000770ef0
-<4> [137.001160] PKRU: 55555554
-<4> [137.001162] Call Trace:
-<4> [137.001199] i915_drm_suspend_late+0x102/0x120 [i915]
-<4> [137.001204] ? pci_pm_poweroff_late+0x30/0x30
-<4> [137.001209] dpm_run_callback+0x61/0x270
-<4> [137.001214] __device_suspend_late+0x8b/0x180
-<4> [137.001217] async_suspend_late+0x15/0x90
-<4> [137.001220] async_run_entry_fn+0x34/0x160
-<4> [137.001224] process_one_work+0x26c/0x5c0
-<4> [137.001231] worker_thread+0x37/0x380
-<4> [137.001235] ? process_one_work+0x5c0/0x5c0
-<4> [137.001238] kthread+0x149/0x170
-<4> [137.001241] ? kthread_park+0x80/0x80
-<4> [137.001246] ret_from_fork+0x1f/0x30
-<4> [137.001256] irq event stamp: 2329
-
-Cc: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Signed-off-by: Uma Shankar <uma.shankar@intel.com>
-Acked-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Signed-off-by: Anusha Srivatsa <anusha.srivatsa@intel.com>
+Signed-off-by: Karthik B S <karthik.b.s@intel.com> (v7)
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Vandita Kulkarni <vandita.kulkarni@intel.com>
+Cc: Navare Manasi D <manasi.d.navare@intel.com>
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
 ---
- tests/device_reset.c | 61 +++++++++++++++++++++++++++++++++-----------
- 1 file changed, 46 insertions(+), 15 deletions(-)
+ tests/kms_dp_dsc.c | 181 ++++++++++++++++++++++++++++-----------------
+ 1 file changed, 113 insertions(+), 68 deletions(-)
 
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-index eef707330c..e6a468e6fa 100644
---- a/tests/device_reset.c
-+++ b/tests/device_reset.c
-@@ -5,11 +5,13 @@
+diff --git a/tests/kms_dp_dsc.c b/tests/kms_dp_dsc.c
+index 8bd2102447..71d655af70 100644
+--- a/tests/kms_dp_dsc.c
++++ b/tests/kms_dp_dsc.c
+@@ -44,15 +44,19 @@
  #include <fcntl.h>
- #include <sys/ioctl.h>
- #include <sys/stat.h>
-+#include <signal.h>
+ #include <termios.h>
  
- #include "i915/gem.h"
- #include "igt.h"
- #include "igt_device_scan.h"
- #include "igt_sysfs.h"
-+#include "igt_kmod.h"
- 
- IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
- 
-@@ -28,6 +30,7 @@ struct device_fds {
- 		int drv_dir;
- 	} fds;
- 	char dev_bus_addr[DEV_BUS_ADDR_LEN];
-+	bool snd_unload;
++/* currently dsc compression is verifying on 8bpc frame only */
++#define DRM_FORMAT_BPC	8
++
+ enum dsc_test_type
+ {
+-	test_basic_dsc_enable
++	test_basic_dsc_enable,
++	test_dsc_compression_bpp
  };
  
- static int __open_sysfs_dir(int fd, const char* path)
-@@ -82,6 +85,7 @@ static void init_device_fds(struct device_fds *dev)
- {
- 	char dev_path[PATH_MAX];
- 	char *addr_pos;
+ typedef struct {
+ 	int drm_fd;
+ 	int debugfs_fd;
+-	uint32_t id;
 +	uint32_t devid;
- 
- 	igt_debug("open device\n");
- 	/**
-@@ -91,9 +95,18 @@ static void init_device_fds(struct device_fds *dev)
- 	 */
- 	dev->fds.dev = __drm_open_driver(DRIVER_ANY);
- 	igt_assert_fd(dev->fds.dev);
--	if (is_i915_device(dev->fds.dev))
-+	if (is_i915_device(dev->fds.dev)) {
- 		igt_require_gem(dev->fds.dev);
- 
-+		devid = intel_get_drm_devid(dev->fds.dev);
-+		if ((IS_HASWELL(devid) || IS_BROADWELL(devid) ||
-+		     IS_DG1(devid)) &&
-+		     (igt_kmod_is_loaded("snd_hda_intel"))) {
-+			igt_debug("Enable WA to unload snd driver\n");
-+			dev->snd_unload = true;
-+		}
-+	}
-+
- 	igt_assert(device_sysfs_path(dev->fds.dev, dev_path));
- 	addr_pos = strrchr(dev_path, '/');
- 	igt_assert(addr_pos);
-@@ -164,6 +177,34 @@ static bool is_sysfs_reset_supported(int fd)
- /* Unbind the driver from the device */
- static void driver_unbind(struct device_fds *dev)
- {
-+	/**
-+	 * FIXME: Unbinding the i915 driver on affected platforms with
-+	 * audio results in a kernel WARN on "i915 raw-wakerefs=1
-+	 * wakelocks=1 on cleanup". The below CI friendly user level
-+	 * workaround to unload and de-couple audio from IGT testing,
-+	 * prevents the warning from appearing. Drop this hack as soon
-+	 * as this is fixed in the kernel. unbind/re-bind validation
-+	 * on audio side is not robust and we could have potential
-+	 * failures blocking display CI, currently this seems to the
-+	 * safest and easiest way out.
-+	 */
-+	if (dev->snd_unload) {
-+		igt_terminate_process(SIGTERM, "alsactl");
-+
-+		/* unbind snd_hda_intel */
-+		kick_snd_hda_intel();
-+
-+		if (igt_kmod_unload("snd_hda_intel", 0)) {
-+			dev->snd_unload = false;
-+			igt_warn("Could not unload snd_hda_intel\n");
-+			igt_kmod_list_loaded();
-+			igt_lsof("/dev/snd");
-+			igt_skip("Audio is in use, skipping\n");
-+		} else {
-+			igt_warn("Preventively unloaded snd_hda_intel\n");
-+		}
-+	}
-+
- 	igt_debug("unbind the driver from the device\n");
- 	igt_assert(igt_sysfs_set(dev->fds.drv_dir, "unbind",
- 		   dev->dev_bus_addr));
-@@ -175,6 +216,9 @@ static void driver_bind(struct device_fds *dev)
- 	igt_debug("rebind the driver to the device\n");
- 	igt_abort_on_f(!igt_sysfs_set(dev->fds.drv_dir, "bind",
- 		       dev->dev_bus_addr), "driver rebind failed");
-+
-+	if (dev->snd_unload)
-+		igt_kmod_load("snd_hda_intel", NULL);
+ 	igt_display_t display;
+ 	struct igt_fb fb_test_pattern;
+ 	igt_output_t *output;
+@@ -61,6 +65,7 @@ typedef struct {
+ 	drmModeConnector *connector;
+ 	drmModeEncoder *encoder;
+ 	int crtc;
++	int compression_bpp;
+ 	enum pipe pipe;
+ 	char conn_name[128];
+ } data_t;
+@@ -121,6 +126,22 @@ static void force_dp_dsc_enable(data_t *data)
+ 	igt_assert_f(ret > 0, "debugfs_write failed");
  }
  
- /* Initiate device reset */
-@@ -235,19 +279,6 @@ static void unbind_reset_rebind(struct device_fds *dev)
- 	igt_debug("close the device\n");
- 	close_if_opened(&dev->fds.dev);
++static void force_dp_dsc_enable_bpp(data_t *data)
++{
++	int ret;
++	char file_name[128] = {0};
++	char buffer[20];
++
++	sprintf(buffer, "%d", data->compression_bpp);
++	strcpy(file_name, data->conn_name);
++	strcat(file_name, "/i915_dsc_bpp_support");
++	igt_debug("Forcing DSC BPP to %d on %s\n",
++		  data->compression_bpp, data->conn_name);
++	ret = igt_sysfs_write(data->debugfs_fd, file_name,
++			      buffer, sizeof(buffer));
++	igt_assert_f(ret > 0, "debugfs_write failed");
++}
++
+ static bool is_force_dsc_enabled(data_t *data)
+ {
+ 	char file_name[128] = {0};
+@@ -174,6 +195,37 @@ static void kms_dp_dsc_exit_handler(int sig)
+ 	restore_force_dsc_en();
+ }
  
--	/**
--	 * FIXME: Unbinding the i915 driver on some platforms with Azalia audio
--	 * results in a kernel WARN on "i915 raw-wakerefs=1 wakelocks=1 on cleanup".
--	 * The below CI friendly user level workaround prevents the warning from
--	 * appearing. Drop this hack as soon as this is fixed in the kernel.
--	 */
--	if (is_i915_device(dev->fds.dev)) {
--		uint32_t devid = intel_get_drm_devid(dev->fds.dev);
--		if (igt_warn_on_f(IS_HASWELL(devid) || IS_BROADWELL(devid),
--		    "Manually enabling audio PM to work around a kernel WARN\n"))
--			igt_pm_enable_audio_runtime_pm();
--	}
++static bool check_dsc_on_connector(data_t *data, uint32_t drmConnector)
++{
++	drmModeConnector *connector;
++	igt_output_t *output;
++
++	connector = drmModeGetConnectorCurrent(data->drm_fd,
++					       drmConnector);
++	if (connector->connection != DRM_MODE_CONNECTED ||
++	    ((connector->connector_type != DRM_MODE_CONNECTOR_eDP) &&
++	    (connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort)))
++		return false;
++
++	output = igt_output_from_connector(&data->display, connector);
++	sprintf(data->conn_name, "%s-%d",
++		kmstest_connector_type_str(connector->connector_type),
++		connector->connector_type_id);
++
++	if (!is_dp_dsc_supported(data)) {
++		igt_debug("DSC not supported on connector %s\n",
++			  data->conn_name);
++		return false;
++	}
++	if (connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
++	    !is_dp_fec_supported(data)) {
++		igt_debug("DSC cannot be enabled without FEC on %s\n",
++			  data->conn_name);
++		return false;
++	}
++	data->output = output;
++	return true;
++}
+ 
+ /*
+  * Re-probe connectors and do a modeset with DSC
+@@ -181,6 +233,7 @@ static void kms_dp_dsc_exit_handler(int sig)
+  */
+ static void update_display(data_t *data, enum dsc_test_type test_type)
+ {
++	bool enabled;
+ 	igt_plane_t *primary;
+ 	data->connector = data->output->config.connector;
+ 
+@@ -188,37 +241,35 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+ 	igt_output_set_pipe(data->output, PIPE_NONE);
+ 	igt_display_commit(&data->display);
+ 
+-	if (test_type == test_basic_dsc_enable) {
+-		bool enabled;
++	igt_debug("DSC is supported on %s\n", data->conn_name);
++	save_force_dsc_en(data);
++	force_dp_dsc_enable(data);
++	if (test_type == test_dsc_compression_bpp) {
++		igt_debug("Trying to set BPP to %d\n", data->compression_bpp);
++		force_dp_dsc_enable_bpp(data);
++	}
+ 
+-		igt_debug("DSC is supported on %s\n", data->conn_name);
+-		save_force_dsc_en(data);
+-		force_dp_dsc_enable(data);
++	igt_output_set_pipe(data->output, data->pipe);
++	primary = igt_output_get_plane_type(data->output,
++					    DRM_PLANE_TYPE_PRIMARY);
+ 
+-		igt_output_set_pipe(data->output, data->pipe);
+-		primary = igt_output_get_plane_type(data->output,
+-						    DRM_PLANE_TYPE_PRIMARY);
++	/* Now set the output to the desired mode */
++	igt_plane_set_fb(primary, &data->fb_test_pattern);
++	igt_display_commit(&data->display);
+ 
+-		/* Now set the output to the desired mode */
+-		igt_plane_set_fb(primary, &data->fb_test_pattern);
+-		igt_display_commit(&data->display);
++	/*
++	 * Until we have CRC check support, manually check if RGB test
++	 * pattern has no corruption.
++	 */
++	manual("RGB test pattern without corruption");
+ 
+-		/*
+-		 * Until we have CRC check support, manually check if RGB test
+-		 * pattern has no corruption.
+-		 */
+-		manual("RGB test pattern without corruption");
 -
- 	driver_unbind(dev);
+-		enabled = is_dp_dsc_enabled(data);
+-		restore_force_dsc_en();
+-
+-		igt_assert_f(enabled,
+-			     "Default DSC enable failed on Connector: %s Pipe: %s\n",
+-			     data->conn_name,
+-			     kmstest_pipe_name(data->pipe));
+-	} else {
+-		igt_assert(!"Unknown test type\n");
+-	}
++	enabled = is_dp_dsc_enabled(data);
++	restore_force_dsc_en();
++
++	igt_assert_f(enabled,
++		     "Default DSC enable failed on Connector: %s Pipe: %s\n",
++		     data->conn_name,
++		     kmstest_pipe_name(data->pipe));
+ }
  
- 	initiate_device_reset(dev);
-@@ -257,7 +288,7 @@ static void unbind_reset_rebind(struct device_fds *dev)
+ static void run_test(data_t *data, igt_output_t *output,
+@@ -244,12 +295,16 @@ static void run_test(data_t *data, igt_output_t *output,
+ 			}
+ 		}
  
+-		if (igt_pipe_connector_valid(pipe, output)) {
+-			data->pipe = pipe;
+-			data->output = output;
+-			update_display(data, test_type);
+-			test_cleanup(data);
+-		}
++		igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe))
++			if (igt_pipe_connector_valid(pipe, output)) {
++				data->pipe = pipe;
++				data->output = output;
++				update_display(data, test_type);
++				test_cleanup(data);
++			}
++
++		if (test_type == test_dsc_compression_bpp)
++			break;
+ 	}
+ 
+ 	igt_remove_fb(data->drm_fd, &data->fb_test_pattern);
+@@ -258,57 +313,47 @@ static void run_test(data_t *data, igt_output_t *output,
  igt_main
  {
--	struct device_fds dev = { .fds = {-1, -1, -1}, .dev_bus_addr = {0}};
-+	struct device_fds dev = { .fds = {-1, -1, -1}, .dev_bus_addr = {0}, };
+ 	data_t data = {};
+-	igt_output_t *output;
+ 	drmModeRes *res;
+ 	drmModeConnector *connector;
+-	int i, test_conn_cnt, test_cnt;
+-	int tests[] = {DRM_MODE_CONNECTOR_eDP, DRM_MODE_CONNECTOR_DisplayPort};
+-
++	int i, j, test_conn_cnt;
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
++		igt_require_intel(data.drm_fd);
++		data.devid = intel_get_drm_devid(data.drm_fd);
+ 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_install_exit_handler(kms_dp_dsc_exit_handler);
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_require(res = drmModeGetResources(data.drm_fd));
+ 	}
+-
+-	for (test_cnt = 0; test_cnt < ARRAY_SIZE(tests); test_cnt++) {
+-		igt_describe("Validate display stream compression functionality if supported on "
+-			       "DP/eDP connector");
+-		igt_subtest_f("basic-dsc-enable-%s",
+-			      kmstest_connector_type_str(tests[test_cnt])) {
++	igt_subtest_with_dynamic("basic-dsc-enable") {
++		test_conn_cnt = 0;
++		for (j = 0; j < res->count_connectors; j++) {
++			if (!check_dsc_on_connector(&data, res->connectors[j]))
++				continue;
++			test_conn_cnt++;
++			run_test(&data, data.output, test_basic_dsc_enable);
++		}
++		igt_skip_on_f(test_conn_cnt == 0, "DSC not supported on any connector\n");
++	}
++	/* currently we are validating compression bpp on XRGB8888 format only */
++	for (i = DRM_FORMAT_BPC; i <= ((DRM_FORMAT_BPC*3)-1); i++) {
++		igt_subtest_with_dynamic_f("dsc-%dbpp-compression-XRGB8888", i) {
+ 			test_conn_cnt = 0;
+-			for (i = 0; i < res->count_connectors; i++) {
+-				connector = drmModeGetConnectorCurrent(data.drm_fd,
+-								       res->connectors[i]);
+-				if (connector->connection != DRM_MODE_CONNECTED ||
+-				    connector->connector_type !=
+-				    tests[test_cnt])
+-					continue;
+-				output = igt_output_from_connector(&data.display, connector);
+-				sprintf(data.conn_name, "%s-%d",
+-					kmstest_connector_type_str(connector->connector_type),
+-					connector->connector_type_id);
+-				if(!is_dp_dsc_supported(&data)) {
+-					igt_debug("DSC not supported on connector %s \n",
+-						  data.conn_name);
+-					continue;
+-				}
+-				if (connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
+-				    !is_dp_fec_supported(&data)) {
+-					igt_debug("DSC cannot be enabled without FEC on %s\n",
+-						  data.conn_name);
++			data.compression_bpp = i;
++			igt_require(intel_display_ver(data.devid) >= 13);
++			for (j = 0; j < res->count_connectors; j++) {
++				if (!check_dsc_on_connector(&data, res->connectors[j]))
+ 					continue;
+-				}
+ 				test_conn_cnt++;
+-				run_test(&data, output, test_basic_dsc_enable);
++				run_test(&data, data.output, test_dsc_compression_bpp);
+ 			}
+-			igt_skip_on(test_conn_cnt == 0);
++			igt_skip_on_f(test_conn_cnt == 0, "DSC not supported on any connector\n");
+ 		}
+ 	}
  
  	igt_fixture {
- 		char dev_path[PATH_MAX];
++		test_cleanup(&data);
+ 		drmModeFreeConnector(connector);
+ 		drmModeFreeResources(res);
+ 		close(data.debugfs_fd);
 -- 
 2.25.1
 
