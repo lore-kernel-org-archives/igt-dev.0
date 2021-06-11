@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 100FD6EE74
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Jun 2021 11:32:06 +0000 (UTC)
-References: <20210611052005.303-11-venkata.sai.patnana@intel.com>
- <20210611095916.7158-1-venkata.sai.patnana@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-Message-ID: <e5ccf802-1d31-5400-6ac7-82b41d7f0380@intel.com>
-Date: Fri, 11 Jun 2021 17:02:00 +0530
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE2456E145
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Jun 2021 11:38:58 +0000 (UTC)
+Date: Fri, 11 Jun 2021 14:40:49 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YMNLwfpULLwJd27t@platvala-desk.ger.corp.intel.com>
+References: <20210611052005.303-1-venkata.sai.patnana@intel.com>
+ <20210611052005.303-7-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20210611095916.7158-1-venkata.sai.patnana@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v2 11/17] tests/kms_big_fb: Optimize
- setup_fb function
+Content-Disposition: inline
+In-Reply-To: <20210611052005.303-7-venkata.sai.patnana@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 07/17] tests/kms_addfb_basic: Add
+ invalid buffer object test for discrete
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,47 +19,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: venkata.sai.patnana@intel.com, igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>, =?UTF-8?Q?Juha-Pekka_Heikkil=c3=a4?= <juha-pekka.heikkila@intel.com>
+To: venkata.sai.patnana@intel.com
+Cc: igt-dev@lists.freedesktop.org, Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gNi8xMS8yMDIxIDM6MjkgUE0sIHZlbmthdGEuc2FpLnBhdG5hbmFAaW50ZWwuY29tIHdyb3Rl
-Ogo+IEZyb206IEt1bmFsIEpvc2hpIDxrdW5hbDEuam9zaGlAaW50ZWwuY29tPgo+Cj4gbGliY2Fy
-aW8gdGFrZXMgYSBsb3Qgb2YgdGltZSBjb252ZXJ0aW5nIDMyYnBwIGZiIHRvIDY0YnBwIGZiLAo+
-IFdoZW4gZmIgbWVtb3J5IGlzIGdpdmVuIGJ5IGtlcm5lbCBpdHMgemVyb2VkLCBoZXJlIHR3byBk
-aWZmZXJlbnQgY29sb3IgZmJzLAo+IGJsYWNrIGFuZCBncmVlbiBhcmUgY3JlYXRlZCBoZW5jZSBp
-ZiBrZXJuZWwgZ2l2ZSB6ZXJvZWQgZmJzIHRoZXJlJ3MKPiBwb3NzaWJpbGl0eSB0byBza2lwIHpl
-cm9pbmcgaXQgYWdhaW4gdGh1cyBzYXZpbmcgc29tZSB0aW1lCj4KPiBDYzogS2FydGhpayBCIFMg
-PGthcnRoaWsuYi5zQGludGVsLmNvbT4KPiBDYzogQmhhbnVwcmFrYXNoIE1vZGVtIDxiaGFudXBy
-YWthc2gubW9kZW1AaW50ZWwuY29tPgo+IFNpZ25lZC1vZmYtYnk6IEp1aGEtUGVra2EgSGVpa2tp
-bMOkIDxqdWhhLXBla2thLmhlaWtraWxhQGludGVsLmNvbT4KPiBTaWduZWQtb2ZmLWJ5OiBLdW5h
-bCBKb3NoaSA8a3VuYWwxLmpvc2hpQGludGVsLmNvbT4KUmV2aWV3ZWQtYnk6IEthcnRoaWsgQiBT
-IDxrYXJ0aGlrLmIuc0BpbnRlbC5jb20+Cj4gLS0tCj4gICB0ZXN0cy9rbXNfYmlnX2ZiLmMgfCAx
-NSArKysrKysrKystLS0tLS0KPiAgIDEgZmlsZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyksIDYg
-ZGVsZXRpb25zKC0pCj4KPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2JpZ19mYi5jIGIvdGVzdHMv
-a21zX2JpZ19mYi5jCj4gaW5kZXggODllYTBmMjNlMi4uM2UxOTQ1MGE0MiAxMDA2NDQKPiAtLS0g
-YS90ZXN0cy9rbXNfYmlnX2ZiLmMKPiArKysgYi90ZXN0cy9rbXNfYmlnX2ZiLmMKPiBAQCAtMTE1
-LDEyICsxMTUsMTUgQEAgc3RhdGljIHZvaWQgc2V0dXBfZmIoZGF0YV90ICpkYXRhLCBzdHJ1Y3Qg
-aWd0X2ZiICpuZXdmYiwgdWludDMyX3Qgd2lkdGgsCj4gICAJCWYub2Zmc2V0c1tuXSA9IG5ld2Zi
-LT5vZmZzZXRzW25dOwo+ICAgCX0KPiAgIAo+IC0JY3IgPSBpZ3RfZ2V0X2NhaXJvX2N0eChkYXRh
-LT5kcm1fZmQsIG5ld2ZiKTsKPiAtCWlndF9wYWludF9jb2xvcihjciwgMCwgMCwgbmV3ZmItPndp
-ZHRoLCBuZXdmYi0+aGVpZ2h0LAo+IC0JCQlkYXRhLT5wbGFuZWNsZWFycmdiWzBdLAo+IC0JCQlk
-YXRhLT5wbGFuZWNsZWFycmdiWzFdLAo+IC0JCQlkYXRhLT5wbGFuZWNsZWFycmdiWzJdKTsKPiAt
-CWlndF9wdXRfY2Fpcm9fY3R4KGNyKTsKPiArICAgICAgIGlmIChkYXRhLT5wbGFuZWNsZWFycmdi
-WzBdICE9IDAuMCB8fCBkYXRhLT5wbGFuZWNsZWFycmdiWzFdICE9IDAuMCB8fAo+ICsgICAgICAg
-ICAgIGRhdGEtPnBsYW5lY2xlYXJyZ2JbMl0gIT0gMC4wKSB7Cj4gKyAgICAgICAgICAgICAgIGNy
-ID0gaWd0X2dldF9jYWlyb19jdHgoZGF0YS0+ZHJtX2ZkLCBuZXdmYik7Cj4gKyAgICAgICAgICAg
-ICAgIGlndF9wYWludF9jb2xvcihjciwgMCwgMCwgbmV3ZmItPndpZHRoLCBuZXdmYi0+aGVpZ2h0
-LAo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YS0+cGxhbmVjbGVhcnJnYlsw
-XSwKPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGEtPnBsYW5lY2xlYXJyZ2Jb
-MV0sCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhLT5wbGFuZWNsZWFycmdi
-WzJdKTsKPiArICAgICAgICAgICAgICAgaWd0X3B1dF9jYWlyb19jdHgoY3IpOwo+ICsgICAgICAg
-fQo+ICAgCj4gICAJaWd0X2Fzc2VydChkcm1Jb2N0bChkYXRhLT5kcm1fZmQsIExPQ0FMX0RSTV9J
-T0NUTF9NT0RFX0FEREZCMiwgJmYpID09IDApOwo+ICAgCW5ld2ZiLT5mYl9pZCA9IGYuZmJfaWQ7
-CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRl
-diBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0
-cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On Fri, Jun 11, 2021 at 10:49:55AM +0530, venkata.sai.patnana@intel.com wrote:
+> From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+> 
+> Add invalid buffer object test case for discrete, to validate
+> IOCTL_MODE_ADDFB2 ioctl for LMEM, the framebuffer backing
+> gem objects should be from local memory for discrete.
+> 
+> Cc: Latvala Petri <petri.latvala@intel.com>
+> Cc: Michael J. Ruhl <michael.j.ruhl@intel.com>
+> Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+> Acked-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+> ---
+>  tests/kms_addfb_basic.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+> 
+> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+> index 1fb18d668f..a67a12c97e 100644
+> --- a/tests/kms_addfb_basic.c
+> +++ b/tests/kms_addfb_basic.c
+> @@ -40,6 +40,7 @@
+>  
+>  #include "igt_rand.h"
+>  #include "igt_device.h"
+> +#include "i915/intel_memory_region.h"
+>  
+>  uint32_t gem_bo;
+>  uint32_t gem_bo_small;
+> @@ -146,6 +147,22 @@ static void invalid_tests(int fd)
+>  		igt_assert(f.modifier[0] == 0);
+>  	}
+>  
+> +	igt_describe("Check if addfb2 call works for LMEM");
+
+Shouldn't this rather be "Check that addfb2 with a system memory gem
+object fails correctly if device requires local memory framebuffers"
+or something along those lines, right?
+
+
+-- 
+Petri Latvala
+
+
+> +	igt_subtest("invalid-smem-bo-on-discrete") {
+> +		int devid;
+> +		uint32_t handle, stride;
+> +		uint64_t size;
+> +
+> +		igt_require_intel(fd);
+> +		devid = intel_get_drm_devid(fd);
+> +		igt_require(gem_has_lmem(devid));
+> +		igt_calc_fb_size(fd, f.width, f.height,
+> +				DRM_FORMAT_XRGB8888, 0, &size, &stride);
+> +		handle = gem_create_in_memory_regions(fd, size, REGION_SMEM);
+> +		f.handles[0] = handle;
+> +		do_ioctl_err(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f, EREMOTE);
+> +	}
+> +
+>  	igt_describe("Check if addfb2 call works for legacy formats");
+>  	igt_subtest("legacy-format") {
+>  		struct {
+> -- 
+> 2.25.1
+> 
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
