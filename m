@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 14 Jun 2021 12:44:52 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-Message-ID: <20210614194450.GA29647@sdutt-i7>
-References: <20210610215247.2996757-1-John.C.Harrison@Intel.com>
- <20210610215247.2996757-3-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210610215247.2996757-3-John.C.Harrison@Intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 2/2] tests/i915/query: Add
- test for L3 bank count
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 14 Jun 2021 20:17:54 -0000
+Message-ID: <162370187405.10187.17520910423021036033@emeril.freedesktop.org>
+References: <20210614193614.2650-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20210614193614.2650-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fflip=5Fscaled=5Fcrc=3A_parameterize_test_sizes_and_fix_te?=
+ =?utf-8?q?st_to_try_other_connectors_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,108 +15,172 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0985264554=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: John.C.Harrison@Intel.com
-Cc: IGT-Dev@Lists.FreeDesktop.Org, Intel-GFX@Lists.FreeDesktop.Org
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jun 10, 2021 at 02:52:47PM -0700, John.C.Harrison@Intel.com wrote:
-> From: John Harrison <John.C.Harrison@Intel.com>
-> 
-> Various UMDs need to know the L3 bank count. So a query API has been
-> added for it. Test that query.
-> 
-> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-> ---
->  include/drm-uapi/i915_drm.h |  1 +
->  tests/i915/i915_query.c     | 35 +++++++++++++++++++++++++++++++++++
->  2 files changed, 36 insertions(+)
-> 
-> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-> index 5c34ab759..191820532 100644
-> --- a/include/drm-uapi/i915_drm.h
-> +++ b/include/drm-uapi/i915_drm.h
-> @@ -2234,6 +2234,7 @@ struct drm_i915_query_item {
->  #define DRM_I915_QUERY_PERF_CONFIG      3
->  #define DRM_I915_QUERY_MEMORY_REGIONS   4
->  #define DRM_I915_QUERY_HWCONFIG_TABLE   5
-> +#define DRM_I915_QUERY_L3_BANK_COUNT    6
->  /* Must be kept compact -- no holes and well documented */
->  
->  	/**
-> diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
-> index eef4afb05..17948e0d8 100644
-> --- a/tests/i915/i915_query.c
-> +++ b/tests/i915/i915_query.c
-> @@ -849,6 +849,38 @@ static void query_parse_and_validate_hwconfig_table(int i915)
->  	free(data);
->  }
->  
-> +static int query_engine_l3_bank_count(int fd)
-> +{
-> +	uint32_t *banks;
-> +	struct drm_i915_query_item size = {
-> +		.query_id = DRM_I915_QUERY_L3_BANK_COUNT,
-> +	};
-> +	struct drm_i915_query_item query = {
-> +		.query_id = DRM_I915_QUERY_L3_BANK_COUNT,
-> +	};
+--===============0985264554==
+Content-Type: multipart/alternative;
+ boundary="===============2828184614737129436=="
 
-I believe you could just one of the local variables, right? I see the
-comparison for 'query.length == size.length' but you store the length a
-u32 rather than a struct.
+--===============2828184614737129436==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Just a suggestion but not a blocker, with that:
+== Series Details ==
 
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Series: tests/kms_flip_scaled_crc: parameterize test sizes and fix test to try other connectors (rev2)
+URL   : https://patchwork.freedesktop.org/series/91475/
+State : success
 
-> +	int num_counts, i;
-> +
-> +	i915_query_items(fd, &size, 1);
-> +	igt_require(size.length > 0);
-> +
-> +	num_counts = size.length / sizeof(*banks);
-> +	igt_info("size = %d, count = %d => %ld\n", size.length, num_counts, num_counts * sizeof(*banks));
-> +	igt_assert(size.length == (num_counts * sizeof(*banks)));
-> +
-> +	banks = malloc(size.length);
-> +	igt_assert(banks);
-> +	query.data_ptr = to_user_pointer(banks);
-> +	query.length = size.length;
-> +
-> +	i915_query_items(fd, &query, 1);
-> +	igt_assert(query.length == size.length);
-> +	for (i = 0; i < num_counts; i++)
-> +		igt_info("Bank count #%d: %d\n", i, banks[i]);
-> +
-> +	free(banks);
-> +	return 0;
-> +}
-> +
->  igt_main
->  {
->  	int fd = -1;
-> @@ -911,6 +943,9 @@ igt_main
->  	igt_subtest("hwconfig_table")
->  		query_parse_and_validate_hwconfig_table(fd);
->  
-> +	igt_subtest("l3_banks")
-> +		query_engine_l3_bank_count(fd);
-> +
->  	igt_fixture {
->  		close(fd);
->  	}
-> -- 
-> 2.25.1
-> 
-> _______________________________________________
-> Intel-gfx mailing list
-> Intel-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10220 -> IGTPW_5923
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5923/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5923 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@cs-gfx:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271]) +3 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5923/fi-kbl-soraka/igt@amdgpu/amd_basic@cs-gfx.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - {fi-tgl-dsi}:       [DMESG-FAIL][2] -> [PASS][3]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10220/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5923/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+
+
+Participating hosts (44 -> 38)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-skl-guc fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6105 -> IGTPW_5923
+
+  CI-20190529: 20190529
+  CI_DRM_10220: 1b77783fab8d920a675a3f6c8ee7de1eb206a19a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5923: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5923/index.html
+  IGT_6105: 598a154680374e7875ae9ffc98425abc57398b2f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5923/index.html
+
+--===============2828184614737129436==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_flip_scaled_crc: parameterize test sizes and fix test to try other connectors (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/91475/">https://patchwork.freedesktop.org/series/91475/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5923/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5923/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10220 -&gt; IGTPW_5923</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5923/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5923 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@amdgpu/amd_basic@cs-gfx:<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5923/fi-kbl-soraka/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_heartbeat:<ul>
+<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10220/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5923/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (44 -&gt; 38)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-skl-guc fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6105 -&gt; IGTPW_5923</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10220: 1b77783fab8d920a675a3f6c8ee7de1eb206a19a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5923: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5923/index.html<br />
+  IGT_6105: 598a154680374e7875ae9ffc98425abc57398b2f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2828184614737129436==--
+
+--===============0985264554==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0985264554==--
