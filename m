@@ -1,20 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com
- [IPv6:2607:f8b0:4864:20::b2e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D12BA89B55
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 15:17:17 +0000 (UTC)
-Received: by mail-yb1-xb2e.google.com with SMTP id h15so15893300ybm.13
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 08:17:17 -0700 (PDT)
 MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 14 Jun 2021 15:32:05 -0000
+Message-ID: <162368472552.10186.10283838893474495468@emeril.freedesktop.org>
 References: <20210609173632.248880-1-jason@jlekstrand.net>
- <20210609173632.248880-39-jason@jlekstrand.net>
- <20210614123405.GA20637@zkempczy-mobl2>
-In-Reply-To: <20210614123405.GA20637@zkempczy-mobl2>
-From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 14 Jun 2021 10:17:05 -0500
-Message-ID: <CAOFGe96GgDG2NR+cH=mQ4RWrq7HXE3dwPmdSKdPq0wEe8ApXxA@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 38/93] tests/i915/gem_ctx_exec: Convert
- to intel_ctx_t
+In-Reply-To: <20210609173632.248880-1-jason@jlekstrand.net>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBTdG9w?=
+ =?utf-8?q?_depending_on_context_mutation_=28rev7=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,126 +14,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
+To: Jason Ekstrand <jason@jlekstrand.net>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCBKdW4gMTQsIDIwMjEgYXQgNzozNCBBTSBaYmlnbmlldyBLZW1wY3p5xYRza2kKPHpi
-aWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4gd3JvdGU6Cj4KPiBPbiBXZWQsIEp1biAwOSwg
-MjAyMSBhdCAxMjozNjoyMVBNIC0wNTAwLCBKYXNvbiBFa3N0cmFuZCB3cm90ZToKPiA+IFNpZ25l
-ZC1vZmYtYnk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3RyYW5kLm5ldD4KPiA+IC0tLQo+
-ID4gIHRlc3RzL2k5MTUvZ2VtX2N0eF9leGVjLmMgfCA1MSArKysrKysrKysrKysrKysrKysrKysr
-KystLS0tLS0tLS0tLS0tLS0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgMzEgaW5zZXJ0aW9ucygrKSwg
-MjAgZGVsZXRpb25zKC0pCj4gPgo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvZ2VtX2N0eF9l
-eGVjLmMgYi90ZXN0cy9pOTE1L2dlbV9jdHhfZXhlYy5jCj4gPiBpbmRleCA2ZGIyZDU5OC4uZmIx
-OGJiMDEgMTAwNjQ0Cj4gPiAtLS0gYS90ZXN0cy9pOTE1L2dlbV9jdHhfZXhlYy5jCj4gPiArKysg
-Yi90ZXN0cy9pOTE1L2dlbV9jdHhfZXhlYy5jCj4gPiBAQCAtMjY4LDcgKzI2OCw3IEBAIHN0YXRp
-YyB2b2lkIG5vaGFuZ2NoZWNrX2hvc3RpbGUoaW50IGk5MTUpCj4gPiAgICAgICBjb25zdCBzdHJ1
-Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmU7Cj4gPiAgICAgICBpZ3RfaGFuZ190IGhhbmc7
-Cj4gPiAgICAgICBpbnQgZmVuY2UgPSAtMTsKPiA+IC0gICAgIHVpbnQzMl90IGN0eDsKPiA+ICsg
-ICAgIGNvbnN0IGludGVsX2N0eF90ICpjdHg7Cj4gPiAgICAgICBpbnQgZXJyID0gMDsKPiA+ICAg
-ICAgIGludCBkaXI7Cj4gPgo+ID4gQEAgLTI4MiwxMiArMjgyLDEyIEBAIHN0YXRpYyB2b2lkIG5v
-aGFuZ2NoZWNrX2hvc3RpbGUoaW50IGk5MTUpCj4gPiAgICAgICBkaXIgPSBpZ3RfcGFyYW1zX29w
-ZW4oaTkxNSk7Cj4gPiAgICAgICBpZ3RfcmVxdWlyZShkaXIgIT0gLTEpOwo+ID4KPiA+IC0gICAg
-IGN0eCA9IGdlbV9jb250ZXh0X2NyZWF0ZShpOTE1KTsKPiA+IC0gICAgIGhhbmcgPSBpZ3RfYWxs
-b3dfaGFuZyhpOTE1LCBjdHgsIDApOwo+ID4gKyAgICAgY3R4ID0gaW50ZWxfY3R4X2NyZWF0ZV9h
-bGxfcGh5c2ljYWwoaTkxNSk7Cj4gPiArICAgICBoYW5nID0gaWd0X2FsbG93X2hhbmcoaTkxNSwg
-Y3R4LT5pZCwgMCk7Cj4gPgo+ID4gICAgICAgaWd0X3JlcXVpcmUoX19lbmFibGVfaGFuZ2NoZWNr
-KGRpciwgZmFsc2UpKTsKPiA+Cj4gPiAtICAgICBfX19fZm9yX2VhY2hfcGh5c2ljYWxfZW5naW5l
-KGk5MTUsIGN0eCwgZSkgewo+ID4gKyAgICAgZm9yX2VhY2hfY3R4X2VuZ2luZShpOTE1LCBjdHgs
-IGUpIHsKPiA+ICAgICAgICAgICAgICAgaWd0X3NwaW5fdCAqc3BpbjsKPiA+ICAgICAgICAgICAg
-ICAgaW50IG5ldzsKPiA+Cj4gPiBAQCAtMjk1LDcgKzI5NSw3IEBAIHN0YXRpYyB2b2lkIG5vaGFu
-Z2NoZWNrX2hvc3RpbGUoaW50IGk5MTUpCj4gPiAgICAgICAgICAgICAgIGdlbV9lbmdpbmVfcHJv
-cGVydHlfcHJpbnRmKGk5MTUsIGUtPm5hbWUsCj4gPiAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICJwcmVlbXB0X3RpbWVvdXRfbXMiLCAiJWQiLCA1MCk7Cj4gPgo+ID4g
-LSAgICAgICAgICAgICBzcGluID0gX19pZ3Rfc3Bpbl9uZXcoaTkxNSwgY3R4LAo+ID4gKyAgICAg
-ICAgICAgICBzcGluID0gX19pZ3Rfc3Bpbl9uZXcoaTkxNSwgLmN0eCA9IGN0eCwKPiA+ICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC5lbmdpbmUgPSBlLT5mbGFncywKPiA+ICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC5mbGFncyA9IChJR1RfU1BJTl9OT19Q
-UkVFTVBUSU9OIHwKPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICBJR1RfU1BJTl9GRU5DRV9PVVQpKTsKPiA+IEBAIC0zMTYsNyArMzE2LDcgQEAgc3RhdGlj
-IHZvaWQgbm9oYW5nY2hlY2tfaG9zdGlsZShpbnQgaTkxNSkKPiA+ICAgICAgICAgICAgICAgICAg
-ICAgICBmZW5jZSA9IHRtcDsKPiA+ICAgICAgICAgICAgICAgfQo+ID4gICAgICAgfQo+ID4gLSAg
-ICAgZ2VtX2NvbnRleHRfZGVzdHJveShpOTE1LCBjdHgpOwo+ID4gKyAgICAgaW50ZWxfY3R4X2Rl
-c3Ryb3koaTkxNSwgY3R4KTsKPiA+ICAgICAgIGlndF9hc3NlcnQoZmVuY2UgIT0gLTEpOwo+Cj4g
-SGVyZSBJIGdvdCBubyBvYmplY3Rpb25zLgo+Cj4gPgo+ID4gICAgICAgaWYgKHN5bmNfZmVuY2Vf
-d2FpdChmZW5jZSwgTVNFQ19QRVJfU0VDKSkgeyAvKiA2NDBtcyBwcmVlbXB0LXRpbWVvdXQgKi8K
-PiA+IEBAIC0zNDEsMzAgKzM0MSwzOCBAQCBzdGF0aWMgdm9pZCBub2hhbmdjaGVja19ob3N0aWxl
-KGludCBpOTE1KQo+ID4gIHN0YXRpYyB2b2lkIGNsb3NlX3JhY2UoaW50IGk5MTUpCj4gPiAgewo+
-ID4gICAgICAgY29uc3QgaW50IG5jcHVzID0gc3lzY29uZihfU0NfTlBST0NFU1NPUlNfT05MTik7
-Cj4gPiAtICAgICB1aW50MzJfdCAqY29udGV4dHM7Cj4gPiArICAgICBjb25zdCBpbnRlbF9jdHhf
-dCAqYmFzZV9jdHg7Cj4gPiArICAgICBjb25zdCBpbnRlbF9jdHhfdCAqKmN0eDsKPiA+ICsgICAg
-IHVpbnQzMl90ICpjdHhfaWQ7Cj4gPiAgICAgICBpZ3Rfc3Bpbl90ICpzcGluOwo+ID4KPiA+ICAg
-ICAgIC8qIENoZWNrIHdlIGNhbiBleGVjdXRlIGEgcG9sbGluZyBzcGlubmVyICovCj4gPiAtICAg
-ICBpZ3Rfc3Bpbl9mcmVlKGk5MTUsIGlndF9zcGluX25ldyhpOTE1LCAuZmxhZ3MgPSBJR1RfU1BJ
-Tl9QT0xMX1JVTikpOwo+ID4gKyAgICAgYmFzZV9jdHggPSBpbnRlbF9jdHhfY3JlYXRlKGk5MTUs
-IE5VTEwpOwo+ID4gKyAgICAgaWd0X3NwaW5fZnJlZShpOTE1LCBpZ3Rfc3Bpbl9uZXcoaTkxNSwg
-LmN0eCA9IGJhc2VfY3R4LAo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgLmZsYWdzID0gSUdUX1NQSU5fUE9MTF9SVU4pKTsKPiA+Cj4gPiAtICAgICBjb250ZXh0cyA9
-IG1tYXAoTlVMTCwgNDA5NiwgUFJPVF9XUklURSwgTUFQX1NIQVJFRCB8IE1BUF9BTk9OLCAtMSwg
-MCk7Cj4gPiAtICAgICBpZ3RfYXNzZXJ0KGNvbnRleHRzICE9IE1BUF9GQUlMRUQpOwo+ID4gKyAg
-ICAgY3R4ID0gY2FsbG9jKG5jcHVzLCBzaXplb2YoKmN0eCkpOwo+ID4gKyAgICAgY3R4X2lkID0g
-bW1hcChOVUxMLCA0MDk2LCBQUk9UX1dSSVRFLCBNQVBfU0hBUkVEIHwgTUFQX0FOT04sIC0xLCAw
-KTsKPiA+ICsgICAgIGlndF9hc3NlcnQoY3R4X2lkICE9IE1BUF9GQUlMRUQpOwo+ID4KPiA+IC0g
-ICAgIGZvciAoaW50IGNoaWxkID0gMDsgY2hpbGQgPCBuY3B1czsgY2hpbGQrKykKPiA+IC0gICAg
-ICAgICAgICAgY29udGV4dHNbY2hpbGRdID0gZ2VtX2NvbnRleHRfY3JlYXRlKGk5MTUpOwo+ID4g
-KyAgICAgZm9yIChpbnQgY2hpbGQgPSAwOyBjaGlsZCA8IG5jcHVzOyBjaGlsZCsrKSB7Cj4gPiAr
-ICAgICAgICAgICAgIGN0eFtjaGlsZF0gPSBpbnRlbF9jdHhfY3JlYXRlKGk5MTUsIE5VTEwpOwo+
-ID4gKyAgICAgICAgICAgICBjdHhfaWRbY2hpbGRdID0gY3R4W2NoaWxkXS0+aWQ7Cj4gPiArICAg
-ICB9Cj4gPgo+ID4gICAgICAgaWd0X2ZvcmsoY2hpbGQsIG5jcHVzKSB7Cj4gPiAtICAgICAgICAg
-ICAgIHNwaW4gPSBfX2lndF9zcGluX25ldyhpOTE1LCAuZmxhZ3MgPSBJR1RfU1BJTl9QT0xMX1JV
-Tik7Cj4gPiArICAgICAgICAgICAgIHNwaW4gPSBfX2lndF9zcGluX25ldyhpOTE1LCAuY3R4ID0g
-YmFzZV9jdHgsCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAuZmxhZ3Mg
-PSBJR1RfU1BJTl9QT0xMX1JVTik7Cj4gPiAgICAgICAgICAgICAgIGlndF9zcGluX2VuZChzcGlu
-KTsKPiA+ICAgICAgICAgICAgICAgZ2VtX3N5bmMoaTkxNSwgc3Bpbi0+aGFuZGxlKTsKPiA+Cj4g
-PiAtICAgICAgICAgICAgIHdoaWxlICghUkVBRF9PTkNFKGNvbnRleHRzW25jcHVzXSkpIHsKPiA+
-ICsgICAgICAgICAgICAgd2hpbGUgKCFSRUFEX09OQ0UoY3R4X2lkW25jcHVzXSkpIHsKPiA+ICAg
-ICAgICAgICAgICAgICAgICAgICBpbnQ2NF90IHRpbWVvdXQgPSAxOwo+ID4KPiA+ICAgICAgICAg
-ICAgICAgICAgICAgICBpZ3Rfc3Bpbl9yZXNldChzcGluKTsKPiA+ICAgICAgICAgICAgICAgICAg
-ICAgICBpZ3RfYXNzZXJ0KCFpZ3Rfc3Bpbl9oYXNfc3RhcnRlZChzcGluKSk7Cj4gPgo+ID4gLSAg
-ICAgICAgICAgICAgICAgICAgIHNwaW4tPmV4ZWNidWYucnN2ZDEgPSBSRUFEX09OQ0UoY29udGV4
-dHNbY2hpbGRdKTsKPiA+ICsgICAgICAgICAgICAgICAgICAgICBzcGluLT5leGVjYnVmLnJzdmQx
-ID0gUkVBRF9PTkNFKGN0eF9pZFtjaGlsZF0pOwo+ID4gICAgICAgICAgICAgICAgICAgICAgIGlm
-IChfX2dlbV9leGVjYnVmKGk5MTUsICZzcGluLT5leGVjYnVmKSkKPiA+ICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIGNvbnRpbnVlOwo+ID4KPiA+IEBAIC00MDQsMTkgKzQxMiwyMiBAQCBz
-dGF0aWMgdm9pZCBjbG9zZV9yYWNlKGludCBpOTE1KQo+ID4gICAgICAgICAgICAgICAgKiBhbmQg
-dGhlIGtlcm5lbCdzIGNvbnRleHQvcmVxdWVzdCBoYW5kbGluZy4KPiA+ICAgICAgICAgICAgICAg
-ICovCj4gPiAgICAgICAgICAgICAgIGZvciAoaW50IGNoaWxkID0gMDsgY2hpbGQgPCBuY3B1czsg
-Y2hpbGQrKykgewo+ID4gLSAgICAgICAgICAgICAgICAgICAgIGdlbV9jb250ZXh0X2Rlc3Ryb3ko
-aTkxNSwgY29udGV4dHNbY2hpbGRdKTsKPiA+IC0gICAgICAgICAgICAgICAgICAgICBjb250ZXh0
-c1tjaGlsZF0gPSBnZW1fY29udGV4dF9jcmVhdGUoaTkxNSk7Cj4gPiArICAgICAgICAgICAgICAg
-ICAgICAgaW50ZWxfY3R4X2Rlc3Ryb3koaTkxNSwgY3R4W2NoaWxkXSk7Cj4gPiArICAgICAgICAg
-ICAgICAgICAgICAgY3R4W2NoaWxkXSA9IGludGVsX2N0eF9jcmVhdGUoaTkxNSwgTlVMTCk7Cj4g
-PiArICAgICAgICAgICAgICAgICAgICAgY3R4X2lkW2NoaWxkXSA9IGN0eFtjaGlsZF0tPmlkOwo+
-ID4gICAgICAgICAgICAgICB9Cj4gPiAgICAgICAgICAgICAgIHVzbGVlcCgxMDAwICsgaGFyc19w
-ZXRydXNrYV9mNTRfMV9yYW5kb21fdW5zYWZlKCkgJSAyMDAwKTsKPiA+ICAgICAgIH0KPiA+Cj4g
-PiAtICAgICBjb250ZXh0c1tuY3B1c10gPSAxOwo+ID4gKyAgICAgY3R4X2lkW25jcHVzXSA9IDE7
-Cj4gPiAgICAgICBpZ3Rfd2FpdGNoaWxkcmVuKCk7Cj4gPgo+ID4gKyAgICAgaW50ZWxfY3R4X2Rl
-c3Ryb3koaTkxNSwgYmFzZV9jdHgpOwo+ID4gICAgICAgZm9yIChpbnQgY2hpbGQgPSAwOyBjaGls
-ZCA8IG5jcHVzOyBjaGlsZCsrKQo+ID4gLSAgICAgICAgICAgICBnZW1fY29udGV4dF9kZXN0cm95
-KGk5MTUsIGNvbnRleHRzW2NoaWxkXSk7Cj4gPiArICAgICAgICAgICAgIGludGVsX2N0eF9kZXN0
-cm95KGk5MTUsIGN0eFtjaGlsZF0pOwo+ID4KPiA+IC0gICAgIG11bm1hcChjb250ZXh0cywgNDA5
-Nik7Cj4gPiArICAgICBmcmVlKGN0eCk7Cj4gPiArICAgICBtdW5tYXAoY3R4X2lkLCA0MDk2KTsK
-PiA+ICB9Cj4KPiBCdXQgaGVyZSBJIGdvdC4gV2hhdCBmb3IgaXMgYWxsIGludGVsX2N0eF90IHVz
-YWdlIGlmIHdlIGp1c3QgbmVlZAo+IHRvIGNyZWF0ZSBjb250ZXh0cyBhbmQgdXNlIGluIHRoZSBj
-b2RlPyBUaGVyZSdzIG5vIG5lY2Vzc2l0eSB0bwo+IHdhbGsgdGhyb3VnaCBlbmdpbmVzIGhlcmUg
-c28gSSB3b3VsZCBzdGF5IG9uIG9yZGluYXJ5IGdlbV9jb250ZXh0X2NyZWF0ZSgpLwo+IGdlbV9j
-b250ZXh0X2Rlc3Ryb3koKS4gU3Bpbm5lciBjYW4gcnVuIGhlcmUgaW4gY3R4MCBjb250ZXh0Lgo+
-IE9yIEknbSBtaXNzZWQgc29tZXRoaW5nPwoKSXQncyBiZWNhdXNlLCBhdCB0aGUgZW5kIG9mIHRo
-ZSBzZXJpZXMsIEkgc3RhcnQgcmVxdWlyaW5nIGFuCmludGVsX2N0eF90IGluIHRoZSBzcGlubmVy
-IGZvciBQT0xMX1JVTi4gIFRoaXMgaXMgdG8gbGV0IHVzIGF2b2lkIHNvbWUKY29udGV4dCBpbnRy
-b3NwZWN0aW9uLiAgQXMgZm9yIHRoZSBvdGhlciBjb250ZXh0cyB0aGF0IGFyZW4ndCB0aGUgb25l
-CndlJ3JlIHNwaW5uaW5nIG9uLiAgSSB0aGluayB0aGF0IHdhcyBtb3N0bHkgZm9yIGNvbnNpc3Rl
-bmN5LiAgSSBjYW4gZ28KYmFjayB0byB1c2luZyB1aW50MzJfdCBjb250ZXh0IElEcyBpZiB5b3Un
-ZCBsaWtlLgoKLS1KYXNvbgoKCj4gLS0KPiBaYmlnbmlldwo+Cj4KPiA+Cj4gPiAgaWd0X21haW4K
-PiA+IC0tCj4gPiAyLjMxLjEKPiA+Cj4gPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwo+ID4gaWd0LWRldiBtYWlsaW5nIGxpc3QKPiA+IGlndC1kZXZAbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnCj4gPiBodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2lndC1kZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3Rv
-cC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3Qt
-ZGV2Cg==
+== Series Details ==
+
+Series: Stop depending on context mutation (rev7)
+URL   : https://patchwork.freedesktop.org/series/88986/
+State : failure
+
+== Summary ==
+
+Applying: tests/i915: Drop gem_ctx_ringsize
+Using index info to reconstruct a base tree...
+A	tests/i915/gem_ctx_ringsize.c
+M	tests/meson.build
+Falling back to patching base and 3-way merge...
+Auto-merging tests/meson.build
+No changes -- Patch already applied.
+Applying: tests/i915/gem_exec_balancer: Drop the ringsize subtest
+Using index info to reconstruct a base tree...
+M	tests/i915/gem_exec_balancer.c
+Falling back to patching base and 3-way merge...
+Auto-merging tests/i915/gem_exec_balancer.c
+No changes -- Patch already applied.
+Applying: tests/i915/gem_exec_endless: Stop setting the ring size
+Using index info to reconstruct a base tree...
+M	tests/i915/gem_exec_endless.c
+Falling back to patching base and 3-way merge...
+No changes -- Patch already applied.
+Applying: tests/i915/gem_ctx_param: Drop the zeromap subtests
+Using index info to reconstruct a base tree...
+M	tests/i915/gem_ctx_param.c
+Falling back to patching base and 3-way merge...
+No changes -- Patch already applied.
+Applying: tests/i915: Drop gem_ctx_clone
+Using index info to reconstruct a base tree...
+A	tests/i915/gem_ctx_clone.c
+M	tests/meson.build
+Falling back to patching base and 3-way merge...
+No changes -- Patch already applied.
+Applying: docs: Add gem_engine_topology.h to the docs
+Using index info to reconstruct a base tree...
+M	docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+M	lib/i915/gem_engine_topology.c
+M	lib/i915/gem_engine_topology.h
+Falling back to patching base and 3-way merge...
+Auto-merging lib/i915/gem_engine_topology.h
+CONFLICT (content): Merge conflict in lib/i915/gem_engine_topology.h
+Auto-merging lib/i915/gem_engine_topology.c
+CONFLICT (content): Merge conflict in lib/i915/gem_engine_topology.c
+Auto-merging docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+Patch failed at 0006 docs: Add gem_engine_topology.h to the docs
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
