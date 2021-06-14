@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com
- [IPv6:2a00:1450:4864:20::235])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F54C6E0AD
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 19:36:28 +0000 (UTC)
-Received: by mail-lj1-x235.google.com with SMTP id k8so4795609lja.4
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 12:36:28 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Mon, 14 Jun 2021 22:36:14 +0300
-Message-Id: <20210614193614.2650-1-juhapekka.heikkila@gmail.com>
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com
+ (mail-co1nam11on2075.outbound.protection.outlook.com [40.107.220.75])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4576189243
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 19:38:23 +0000 (UTC)
+Date: Mon, 14 Jun 2021 15:38:18 -0400
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Message-ID: <20210614193818.xago7unmdbqk4gfk@outlook.office365.com>
+References: <20210614153557.19934-1-Anson.Jacob@amd.com>
+In-Reply-To: <20210614153557.19934-1-Anson.Jacob@amd.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_flip_scaled_crc: parameterize
- test sizes and fix test to try other connectors
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/amdgpu: Introduced new amdgpu
+ module reload test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,248 +18,283 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============1433877762=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Anson Jacob <Anson.Jacob@amd.com>
+Cc: igt-dev@lists.freedesktop.org, Victor Lu <victorchengchi.lu@amd.com>, markyacoub@google.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-here parameterized first/second fb sizes making it possible to easily
-add down/upscaled fb tests for both first and second fb. While at it
-fixed test to try other available connectors for pipe if wanted mode
-is not found on connector and test fails on cdcdlk.
+--===============1433877762==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="7fad3ka4bii5qte4"
+Content-Disposition: inline
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/kms_flip_scaled_crc.c | 111 +++++++++++++++++++++++++++---------
- 1 file changed, 83 insertions(+), 28 deletions(-)
+--7fad3ka4bii5qte4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/tests/kms_flip_scaled_crc.c b/tests/kms_flip_scaled_crc.c
-index d81ad352d..d3206ea23 100644
---- a/tests/kms_flip_scaled_crc.c
-+++ b/tests/kms_flip_scaled_crc.c
-@@ -46,51 +46,69 @@ const struct {
- 	const uint32_t firstformat;
- 	const uint64_t secondmodifier;
- 	const uint32_t secondformat;
-+	const double firstmultiplier;
-+	const double secondmultiplier;
- } flip_scenario_test[] = {
- 	{
- 		"flip-32bpp-ytile-to-64bpp-ytile",
- 		"Flip from 32bpp non scaled fb to 64bpp downscaled fb to stress CD clock programming",
- 		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888,
--		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F
-+		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F,
-+		1.0,
-+		2.0,
- 	},
- 	{
- 		"flip-64bpp-ytile-to-32bpp-ytile",
- 		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
- 		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F,
--		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888
-+		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888,
-+		1.0,
-+		2.0,
- 	},
- 	{
- 		"flip-64bpp-ytile-to-16bpp-ytile",
- 		"Flip from 64bpp non scaled fb to 16bpp downscaled fb to stress CD clock programming",
- 		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F,
--		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_RGB565
-+		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_RGB565,
-+		1.0,
-+		2.0,
- 	},
- 	{
- 		"flip-32bpp-ytileccs-to-64bpp-ytile",
- 		"Flip from 32bpp non scaled fb to 64bpp downscaled fb to stress CD clock programming",
- 		LOCAL_I915_FORMAT_MOD_Y_TILED_CCS, DRM_FORMAT_XRGB8888,
--		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F
-+		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F,
-+		1.0,
-+		2.0,
- 	},
- 	{
- 		"flip-32bpp-ytile-to-32bpp-ytilegen12rcccs",
- 		"Flip from 32bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
- 		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888,
--		LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, DRM_FORMAT_XRGB8888
-+		LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, DRM_FORMAT_XRGB8888,
-+		1.0,
-+		2.0,
- 	},
- 	{
- 		"flip-32bpp-ytile-to-32bpp-ytileccs",
- 		"Flip from 32bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
- 		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888,
--		LOCAL_I915_FORMAT_MOD_Y_TILED_CCS, DRM_FORMAT_XRGB8888
-+		LOCAL_I915_FORMAT_MOD_Y_TILED_CCS, DRM_FORMAT_XRGB8888,
-+		1.0,
-+		2.0,
- 	},
- 	{
- 		"flip-64bpp-ytile-to-32bpp-ytilercccs",
- 		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
- 		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F,
--		LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, DRM_FORMAT_XRGB8888
-+		LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, DRM_FORMAT_XRGB8888,
-+		1.0,
-+		2.0,
- 	},
- };
- 
-+enum subrval {CONNECTORFAIL, CONNECTORSUCCESS, TESTSKIP};
-+
- static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
- 		     uint32_t height, uint64_t format, uint64_t modifier)
- {
-@@ -146,8 +164,8 @@ static void clear_lut(data_t *data, enum pipe pipe)
- 	igt_pipe_obj_set_prop_value(pipe_obj, IGT_CRTC_GAMMA_LUT, 0);
- }
- 
--static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
--				igt_output_t *output)
-+static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
-+					enum pipe pipe, igt_output_t *output)
- {
- 	igt_plane_t *primary;
- 	igt_crc_t small_crc, big_crc;
-@@ -163,14 +181,14 @@ static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
- 
- 	if (data->big_fb.fb_id == 0) {
- 		setup_fb(data, &data->small_fb,
--				data->attemptmodewidth,
--				data->attemptmodeheight,
-+				data->attemptmodewidth * flip_scenario_test[index].firstmultiplier,
-+				data->attemptmodeheight * flip_scenario_test[index].firstmultiplier,
- 				flip_scenario_test[index].firstformat,
- 				flip_scenario_test[index].firstmodifier);
- 
- 		setup_fb(data, &data->big_fb,
--				data->attemptmodewidth * 2,
--				data->attemptmodeheight * 2,
-+				data->attemptmodewidth * flip_scenario_test[index].secondmultiplier,
-+				data->attemptmodeheight * flip_scenario_test[index].secondmultiplier,
- 				flip_scenario_test[index].secondformat,
- 				flip_scenario_test[index].secondmodifier);
- 
-@@ -187,7 +205,7 @@ static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
- 				      data->small_fb.modifier) ||
- 	    !igt_plane_has_format_mod(primary, data->big_fb.drm_format,
- 				      data->big_fb.modifier))
--		return;
-+		return TESTSKIP;
- 
- 	set_lut(data, pipe);
- 	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
-@@ -211,31 +229,55 @@ static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
- 	}
- 
- 	if (!modetoset)
--		igt_debug("%dp mode was not found from connector, will continue with default. This may cause cdclk to fail this test.\n",
-+		igt_debug("%dp mode was not found from connector, will try with default. This may cause cdclk to fail this test on this connector.\n",
- 			  data->attemptmodeheight);
- 	else
- 		igt_output_override_mode(output, modetoset);
- 
- 	igt_plane_set_position(primary, 0, 0);
- 	igt_plane_set_fb(primary, &data->small_fb);
--	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	igt_plane_set_size(primary, data->attemptmodewidth,
-+			   data->attemptmodeheight);
-+	ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	switch (ret) {
-+	case -ERANGE:
-+		igt_debug("Platform scaling limits exceeded, skipping.\n");
-+		return TESTSKIP;
-+	case -EINVAL:
-+		if (!modetoset) {
-+			igt_debug("No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
-+				  data->attemptmodeheight);
-+			return CONNECTORFAIL;
-+		}
-+		/* fallthrough */
-+	default:
-+		igt_assert_eq(ret, 0);
-+	}
- 
- 	igt_pipe_crc_start(data->pipe_crc);
- 	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &small_crc);
- 
- 	igt_plane_set_fb(primary, &data->big_fb);
--	igt_plane_set_size(primary, data->small_fb.width,
--			   data->small_fb.height);
-+	igt_plane_set_size(primary, data->attemptmodewidth,
-+			   data->attemptmodeheight);
- 	ret = igt_display_try_commit_atomic(&data->display,
- 					    DRM_MODE_ATOMIC_ALLOW_MODESET  |
- 					    DRM_MODE_PAGE_FLIP_EVENT, NULL);
- 
--	igt_require_f(ret != -ERANGE,
--		      "Platform scaling limits exceeded, skipping.\n");
--	igt_require_f(!(ret == -EINVAL && !modetoset),
--		      "No %dp and default mode too big, cdclk limits exceeded. Skipping.\n",
--		      data->attemptmodeheight);
--	igt_assert_eq(ret, 0);
-+	switch (ret) {
-+	case -ERANGE:
-+		igt_debug("Platform scaling limits exceeded, skipping.\n");
-+		return TESTSKIP;
-+	case -EINVAL:
-+		if (!modetoset) {
-+			igt_debug("No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
-+				  data->attemptmodeheight);
-+			return CONNECTORFAIL;
-+		}
-+		/* fallthrough */
-+	default:
-+		igt_assert_eq(ret, 0);
-+	}
- 
- 	igt_assert(read(data->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
- 
-@@ -251,6 +293,8 @@ static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
- 	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_plane_set_fb(primary, NULL);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	return CONNECTORSUCCESS;
- }
- 
- igt_main
-@@ -281,10 +325,21 @@ igt_main
- 		igt_describe(flip_scenario_test[index].describe);
- 		igt_subtest(flip_scenario_test[index].name) {
- 			free_fbs(&data);
--			for_each_pipe_with_single_output(&data.display, pipe,
--							 output)
--				test_flip_to_scaled(&data, index, pipe, output);
--
-+			for_each_pipe_static(pipe) {
-+				enum subrval rval = CONNECTORSUCCESS;
-+				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+					rval = test_flip_to_scaled(&data, index, pipe, output);
-+
-+					igt_require(rval != TESTSKIP);
-+
-+					// break out to test next pipe
-+					if (rval == CONNECTORSUCCESS)
-+						break;
-+				}
-+				igt_require_f(rval == CONNECTORSUCCESS,
-+					      "No connector with %dp mode and default modes cause cdclk exceed limites. Skipping",
-+					      data.attemptmodeheight);
-+			}
- 		}
- 	}
- 	igt_fixture {
--- 
-2.28.0
+Hi Anson and Victor,
+
+First of all, thanks for sending this patch. See my comments inline.
+
+On 06/14, Anson Jacob wrote:
+> From: Victor Lu <victorchengchi.lu@amd.com>
+>=20
+> Based off of i915/i915_module_load, unloads and loads the
+> amdgpu module.
+
+Maybe expand this commit message to describe better why and how we test
+our load and unload. Consider highlighting which ASIC you tested this
+patch.
+=20
+> Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
+> Acked-by: Anson Jacob <Anson.Jacob@amd.com>
+
+Anson, since you're working in this test, I think it make sense that you
+add the tag "Co-developed-by: YOUR NAME <YOUR@EMAIL>" and your Sob.
+
+> ---
+>  lib/igt_kmod.c                 | 41 ++++++++++++++++++
+>  lib/igt_kmod.h                 |  3 ++
+>  tests/amdgpu/amd_module_load.c | 77 ++++++++++++++++++++++++++++++++++
+>  tests/amdgpu/meson.build       |  1 +
+>  4 files changed, 122 insertions(+)
+>  create mode 100644 tests/amdgpu/amd_module_load.c
+>=20
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index 55295fa5..69bdc810 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -433,6 +433,47 @@ igt_i915_driver_unload(void)
+>  	return IGT_EXIT_SUCCESS;
+>  }
+> =20
+> +int
+> +igt_amdgpu_driver_load(const char *opts)
+> +{
+> +	if (opts)
+> +		igt_info("Reloading amdgpu with %s\n\n", opts);
+> +
+> +	if (igt_kmod_load("amdgpu", opts)) {
+> +		igt_warn("Could not load amdgpu\n");
+> +		return IGT_EXIT_FAILURE;
+> +	}
+> +
+> +	bind_fbcon(true);
+> +
+> +	return IGT_EXIT_SUCCESS;
+> +}
+> +
+> +int
+> +igt_amdgpu_driver_unload(void)
+> +{
+> +	bind_fbcon(false);
+> +
+> +	if (igt_kmod_is_loaded("amdgpu")) {
+> +		if (igt_kmod_unload("amdgpu", 0)) {
+> +			igt_warn("Could not unload amdgpu\n");
+> +			igt_kmod_list_loaded();
+> +			igt_lsof("/dev/dri");
+> +			return IGT_EXIT_SKIP;
+> +		}
+> +	}
+> +
+> +	igt_kmod_unload("drm_kms_helper", 0);
+> +	igt_kmod_unload("drm", 0);
+> +
+> +	if (igt_kmod_is_loaded("amdgpu")) {
+> +		igt_warn("amdgpu.ko still loaded!\n");
+> +		return IGT_EXIT_FAILURE;
+> +	}
+> +
+> +	return IGT_EXIT_SUCCESS;
+> +}
+> +
+>  static void kmsg_dump(int fd)
+>  {
+>  	char record[4096 + 1];
+> diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
+> index c71ec147..04c87516 100644
+> --- a/lib/igt_kmod.h
+> +++ b/lib/igt_kmod.h
+> @@ -39,6 +39,9 @@ int igt_kmod_unload(const char *mod_name, unsigned int =
+flags);
+>  int igt_i915_driver_load(const char *opts);
+>  int igt_i915_driver_unload(void);
+> =20
+> +int igt_amdgpu_driver_load(const char *opts);
+> +int igt_amdgpu_driver_unload(void);
+> +
+>  void igt_kselftests(const char *module_name,
+>  		    const char *module_options,
+>  		    const char *result_option,
+> diff --git a/tests/amdgpu/amd_module_load.c b/tests/amdgpu/amd_module_loa=
+d.c
+> new file mode 100644
+> index 00000000..e682d2c5
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_module_load.c
+> @@ -0,0 +1,77 @@
+> +/*
+> + * Copyright 2020 Advanced Micro Devices, Inc.
+
+s/2020/2021/
+
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining=
+ a
+> + * copy of this software and associated documentation files (the "Softwa=
+re"),
+> + * to deal in the Software without restriction, including without limita=
+tion
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
+se,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice shall be includ=
+ed in
+> + * all copies or substantial portions of the Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
+SS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
+TY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
+ALL
+> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES=
+ OR
+> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+> + * OTHER DEALINGS IN THE SOFTWARE.
+> + *
+> + */
+> +
+> +#include "igt.h"
+> +#include "igt_kmod.h"
+> +
+> +#include <amdgpu.h>
+> +#include <amdgpu_drm.h>
+> +#include <sys/ioctl.h>
+> +
+> +/**
+> + * Adapted from /tests/i915/i915_module_load.c
+> + */
+
+Consider describing our way to run this sanity check instead of
+referencing another file.
+
+> +static void
+> +sanity_check(void)
+
+In this patch, I noticed that you declared functions with two and one
+lines. How about keeping all functions declared in a single line (when
+it is possible, ofc) to keep things consistent?
+
+> +{
+> +	int err =3D 0;
+> +	int fd;
+> +	int arg_ret;
+> +	struct drm_amdgpu_info args =3D {0};
+
+Add a new line to separate the declaration from the utilization.
+
+> +	args.return_pointer =3D (uintptr_t) &arg_ret;
+> +	args.return_size =3D sizeof(int);
+> +	args.query =3D AMDGPU_INFO_HW_IP_INFO;
+> +
+> +	fd =3D drm_open_driver(DRIVER_AMDGPU);
+> +	igt_set_timeout(1, "Module reload timeout!");
+> +
+> +	if (ioctl(fd, DRM_IOCTL_AMDGPU_INFO, &args) < 0)
+> +		err =3D -errno;
+> +
+> +	igt_set_timeout(0, NULL);
+> +	close(fd);
+> +
+> +	igt_assert_f(err, 0);
+> +}
+> +
+> +igt_main
+> +{
+> +	igt_subtest("reload") {
+
+Add an igt_describe.
+
+Best Regards
+Siqueira
+
+> +		int err;
+> +		igt_amdgpu_driver_unload();
+> +
+> +		err =3D igt_amdgpu_driver_load(NULL);
+> +
+> +		igt_assert_eq(err, 0);
+> +
+> +		sanity_check();
+> +
+> +		igt_amdgpu_driver_unload();
+> +	}
+> +
+> +	igt_fixture
+> +	{
+> +		/* load the module back in */
+> +		igt_amdgpu_driver_load(NULL);
+> +	}
+> +}
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index b92aa22b..84179410 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -9,6 +9,7 @@ if libdrm_amdgpu.found()
+>  			  'amd_cs_nop',
+>  			  'amd_info',
+>  			  'amd_prime',
+> +			  'amd_module_load',
+>  			]
+>  	amdgpu_deps +=3D libdrm_amdgpu
+>  endif
+> --=20
+> 2.25.1
+>=20
+
+--=20
+Rodrigo Siqueira
+https://siqueira.tech
+
+--7fad3ka4bii5qte4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAmDHsCoACgkQWJzP/com
+vP//xhAAq9EcW4vDhGIpeF2JI1YFlD1y0zi65e67IL4gLw559EVQJlouHiQ2EVO7
+YhFa+f1fLBqOmDZgdEc8LLDB2PCfk6xye6S89u3sLLF2L+hezbhIZUp0NNxJrsOa
+DPjFmBFSX5FuolLRJMjxfpsCBx8do5INcGZZxfbUZnkJB40Oy03sseoOGWiCLq1S
+G1jwQH9yNYFidTg7cCo/VKR7cYYBINzKIEMJ95WhwmFGHFs8CEl3L4cR8FYYGYcy
+Ld1r92wwkMfDCMnzLwZcZj3EEzDJQU5n8ar0a+jr2INmzC4f4c2iLBnuketf2toN
+JTzwlkmkhvUHrcTNb4ua5uhmz9+KJHlO5jONrU4YjWfMswTzoLnVZ2OKGvLghrZi
+LeppMz5Dzfw+yxpREU9r88HhwCCgxnGmre13X4MF69RQS5WlVb1DkOfEZPyJtZ3q
+FdK7Dz+lMVjsdLJSV/V3iy+WzoLh2mWODMhqlUCIgoJAn9AOsAIuGBrSQz9Yfmxf
+S+CUupUtpYFTS+L37a9lSNMVcP3LjlMrCvGiLpS5HmfgV7+S414UiJ4i7LNwYA0y
+de3omyzkZHIO8VBBbLC7SxT/za2h/FDJdBsjeu+EkzylVmldPsTzKuMfHrodkv44
+KkbbS0cmiQXr8wAo/sykn7P/MYrGqC1H4BvPLr3Vs1Fl+pxftt4=
+=iJbY
+-----END PGP SIGNATURE-----
+
+--7fad3ka4bii5qte4--
+
+--===============1433877762==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1433877762==--
