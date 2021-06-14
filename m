@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04A736E0C2
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 17:39:55 +0000 (UTC)
-Date: Mon, 14 Jun 2021 19:39:51 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210614173951.GJ20637@zkempczy-mobl2>
-References: <20210614163704.365989-1-jason@jlekstrand.net>
- <20210614163704.365989-30-jason@jlekstrand.net>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210614163704.365989-30-jason@jlekstrand.net>
-Subject: Re: [igt-dev] [PATCH i-g-t 29/77] tests/i915/gem_create: Convert to
- intel_ctx_t
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 14 Jun 2021 17:45:26 -0000
+Message-ID: <162369272678.10187.8982915936767156158@emeril.freedesktop.org>
+References: <20210614163704.365989-1-jason@jlekstrand.net>
+In-Reply-To: <20210614163704.365989-1-jason@jlekstrand.net>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgU3RvcCBk?=
+ =?utf-8?q?epending_on_context_mutation_=28rev8=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,47 +14,267 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1835209488=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Jason Ekstrand <jason@jlekstrand.net>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCBKdW4gMTQsIDIwMjEgYXQgMTE6MzY6NDRBTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
-d3JvdGU6Cj4gU2lnbmVkLW9mZi1ieTogSmFzb24gRWtzdHJhbmQgPGphc29uQGpsZWtzdHJhbmQu
-bmV0Pgo+IC0tLQo+ICB0ZXN0cy9pOTE1L2dlbV9jcmVhdGUuYyB8IDE0ICsrKysrKysrKystLS0t
-Cj4gIDEgZmlsZSBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQo+IAo+
-IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9jcmVhdGUuYyBiL3Rlc3RzL2k5MTUvZ2VtX2Ny
-ZWF0ZS5jCj4gaW5kZXggMTY3ZDdkMjhhLi4xYWNmOGVlNmEgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMv
-aTkxNS9nZW1fY3JlYXRlLmMKPiArKysgYi90ZXN0cy9pOTE1L2dlbV9jcmVhdGUuYwo+IEBAIC0y
-NDYsMjAgKzI0NiwyNCBAQCBzdGF0aWMgdm9pZCBhbHdheXNfY2xlYXIoaW50IGk5MTUsIGludCB0
-aW1lb3V0KQo+ICBzdGF0aWMgdm9pZCBidXN5X2NyZWF0ZShpbnQgaTkxNSwgaW50IHRpbWVvdXQp
-Cj4gIHsKPiAgCXN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAqZTsKPiArCWNvbnN0IGlu
-dGVsX2N0eF90ICpjdHg7Cj4gIAlpZ3Rfc3Bpbl90ICpzcGluW0k5MTVfRVhFQ19SSU5HX01BU0sg
-KyAxXTsKPiAgCXVuc2lnbmVkIGxvbmcgY291bnQgPSAwOwo+ICAKPiArCWN0eCA9IGludGVsX2N0
-eF9jcmVhdGVfYWxsX3BoeXNpY2FsKGk5MTUpOwo+ICsKPiAgCWlndF9mb3JrX2hhbmdfZGV0ZWN0
-b3IoaTkxNSk7Cj4gLQlfX2Zvcl9lYWNoX3BoeXNpY2FsX2VuZ2luZShpOTE1LCBlKQo+IC0JCXNw
-aW5bZS0+ZmxhZ3NdID0gaWd0X3NwaW5fbmV3KGk5MTUsIC5lbmdpbmUgPSBlLT5mbGFncyk7Cj4g
-Kwlmb3JfZWFjaF9jdHhfZW5naW5lKGk5MTUsIGN0eCwgZSkKPiArCQlzcGluW2UtPmZsYWdzXSA9
-IGlndF9zcGluX25ldyhpOTE1LCAuY3R4ID0gY3R4LAo+ICsJCQkJCSAgICAgIC5lbmdpbmUgPSBl
-LT5mbGFncyk7Cj4gIAo+ICAJaWd0X3VudGlsX3RpbWVvdXQodGltZW91dCkgewo+IC0JCV9fZm9y
-X2VhY2hfcGh5c2ljYWxfZW5naW5lKGk5MTUsIGUpIHsKPiArCQlmb3JfZWFjaF9jdHhfZW5naW5l
-KGk5MTUsIGN0eCwgZSkgewo+ICAJCQl1aW50MzJfdCBoYW5kbGU7Cj4gIAkJCWlndF9zcGluX3Qg
-Km5leHQ7Cj4gIAo+ICAJCQloYW5kbGUgPSBnZW1fY3JlYXRlKGk5MTUsIDQwOTYpOwo+IC0JCQlu
-ZXh0ID0gaWd0X3NwaW5fbmV3KGk5MTUsCj4gKwkJCW5leHQgPSBpZ3Rfc3Bpbl9uZXcoaTkxNSwg
-LmN0eCA9IGN0eCwKPiAgCQkJCQkgICAgLmVuZ2luZSA9IGUtPmZsYWdzLAo+ICAJCQkJCSAgICAu
-ZGVwZW5kZW5jeSA9IGhhbmRsZSwKPiAgCQkJCQkgICAgLmZsYWdzID0gSUdUX1NQSU5fU09GVERF
-UCk7Cj4gQEAgLTI3Miw2ICsyNzYsOCBAQCBzdGF0aWMgdm9pZCBidXN5X2NyZWF0ZShpbnQgaTkx
-NSwgaW50IHRpbWVvdXQpCj4gIAkJfQo+ICAJfQo+ICAKPiArCWludGVsX2N0eF9kZXN0cm95KGk5
-MTUsIGN0eCk7Cj4gKwo+ICAJaWd0X2luZm8oIkNyZWF0ZWQgJWxkIG9iamVjdHMgd2hpbGUgYnVz
-eVxuIiwgY291bnQpOwo+ICAKPiAgCWdlbV9xdWllc2NlbnRfZ3B1KGk5MTUpOwoKUmV2aWV3ZWQt
-Ynk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29t
-PgoKLS0KWmJpZ25pZXcKCj4gLS0gCj4gMi4zMS4xCj4gCj4gX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KPiBpZ3QtZGV2IG1haWxpbmcgbGlzdAo+IGlndC1k
-ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4gaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8v
-aWd0LWRldgo=
+--===============1835209488==
+Content-Type: multipart/alternative;
+ boundary="===============8124596387020113351=="
+
+--===============8124596387020113351==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: Stop depending on context mutation (rev8)
+URL   : https://patchwork.freedesktop.org/series/88986/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6105 -> IGTPW_5919
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_5919:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@gem_exec_fence@nb-await:
+    - {fi-rkl-11500t}:    [SKIP][1] ([i915#3539]) -> [FAIL][2] +3 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6105/fi-rkl-11500t/igt@gem_exec_fence@nb-await.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/fi-rkl-11500t/igt@gem_exec_fence@nb-await.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5919 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-apl-guc:         NOTRUN -> [SKIP][3] ([fdo#109271]) +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/fi-apl-guc/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@i915_hangman@error-state-basic:
+    - fi-apl-guc:         NOTRUN -> [DMESG-WARN][4] ([i915#1610])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/fi-apl-guc/igt@i915_hangman@error-state-basic.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-icl-u2:          [PASS][5] -> [DMESG-WARN][6] ([i915#2868])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6105/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@runner@aborted:
+    - fi-apl-guc:         NOTRUN -> [FAIL][7] ([i915#2426] / [i915#3363])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/fi-apl-guc/igt@runner@aborted.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1610]: https://gitlab.freedesktop.org/drm/intel/issues/1610
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#2868]: https://gitlab.freedesktop.org/drm/intel/issues/2868
+  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
+  [i915#3539]: https://gitlab.freedesktop.org/drm/intel/issues/3539
+
+
+Participating hosts (43 -> 39)
+------------------------------
+
+  Additional (1): fi-apl-guc 
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6105 -> IGTPW_5919
+
+  CI-20190529: 20190529
+  CI_DRM_10219: 75a3dafbc374d49f0762a19e3aa83cc321ae0e62 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5919: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/index.html
+  IGT_6105: 598a154680374e7875ae9ffc98425abc57398b2f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@gem_ctx_param@invalid-get-engines
++igt@gem_ctx_param@invalid-get-no-zeromap
++igt@gem_ctx_param@invalid-get-ringsize
++igt@gem_ctx_param@invalid-set-no-zeromap
++igt@gem_ctx_param@invalid-set-ringsize
+-igt@api_intel_bb@bb-with-vm
+-igt@gem_ctx_engines@idempotent
+-igt@gem_ctx_engines@libapi
+-igt@gem_ctx_persistence@clone
+-igt@gem_ctx_persistence@close-replace-race
+-igt@gem_ctx_persistence@replace
+-igt@gem_ctx_persistence@replace-hostile
+-igt@gem_exec_balancer@bonded-cork
+-igt@gem_exec_balancer@bonded-early
+-igt@gem_exec_balancer@bonded-imm
+-igt@gem_vm_create@async-destroy
+-igt@gem_vm_create@destroy-race
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/index.html
+
+--===============8124596387020113351==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Stop depending on context mutation (rev8)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/88986/">https://patchwork.freedesktop.org/series/88986/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6105 -&gt; IGTPW_5919</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_5919:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@gem_exec_fence@nb-await:<ul>
+<li>{fi-rkl-11500t}:    <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6105/fi-rkl-11500t/igt@gem_exec_fence@nb-await.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3539">i915#3539</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/fi-rkl-11500t/igt@gem_exec_fence@nb-await.html">FAIL</a> +3 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5919 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/fi-apl-guc/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_hangman@error-state-basic:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/fi-apl-guc/igt@i915_hangman@error-state-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1610">i915#1610</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6105/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2868">i915#2868</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/fi-apl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (43 -&gt; 39)</h2>
+<p>Additional (1): fi-apl-guc <br />
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6105 -&gt; IGTPW_5919</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10219: 75a3dafbc374d49f0762a19e3aa83cc321ae0e62 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5919: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5919/index.html<br />
+  IGT_6105: 598a154680374e7875ae9ffc98425abc57398b2f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@gem_ctx_param@invalid-get-engines<br />
++igt@gem_ctx_param@invalid-get-no-zeromap<br />
++igt@gem_ctx_param@invalid-get-ringsize<br />
++igt@gem_ctx_param@invalid-set-no-zeromap<br />
++igt@gem_ctx_param@invalid-set-ringsize<br />
+-igt@api_intel_bb@bb-with-vm<br />
+-igt@gem_ctx_engines@idempotent<br />
+-igt@gem_ctx_engines@libapi<br />
+-igt@gem_ctx_persistence@clone<br />
+-igt@gem_ctx_persistence@close-replace-race<br />
+-igt@gem_ctx_persistence@replace<br />
+-igt@gem_ctx_persistence@replace-hostile<br />
+-igt@gem_exec_balancer@bonded-cork<br />
+-igt@gem_exec_balancer@bonded-early<br />
+-igt@gem_exec_balancer@bonded-imm<br />
+-igt@gem_vm_create@async-destroy<br />
+-igt@gem_vm_create@destroy-race</p>
+
+</body>
+</html>
+
+--===============8124596387020113351==--
+
+--===============1835209488==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1835209488==--
