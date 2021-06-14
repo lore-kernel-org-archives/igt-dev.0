@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com
- [IPv6:2607:f8b0:4864:20::102e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4CF8E89F99
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 16:39:39 +0000 (UTC)
-Received: by mail-pj1-x102e.google.com with SMTP id
- h12-20020a17090aa88cb029016400fd8ad8so343458pjq.3
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 09:39:39 -0700 (PDT)
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com
+ [IPv6:2607:f8b0:4864:20::42b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 027DA89FA5
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 16:39:41 +0000 (UTC)
+Received: by mail-pf1-x42b.google.com with SMTP id s14so10935315pfd.9
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 09:39:41 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 14 Jun 2021 11:38:55 -0500
-Message-Id: <20210614163902.366168-21-jason@jlekstrand.net>
+Date: Mon, 14 Jun 2021 11:38:57 -0500
+Message-Id: <20210614163902.366168-23-jason@jlekstrand.net>
 In-Reply-To: <20210614163704.365989-1-jason@jlekstrand.net>
 References: <20210614163704.365989-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 70/77] lib/intel_bb: Remove
- intel_bb_assign_vm and tests (v2)
+Subject: [igt-dev] [PATCH i-g-t 72/77] tests/i915/gen9_exec_parse: Convert
+ to intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,155 +20,336 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SXQncyBub3QgdXNlZCBieSBhbnl0aGluZyBvdGhlciB0aGFuIHRoZSB0ZXN0cyBmb3IgdGhhdCBm
-dW5jdGlvbmFsaXR5CmFuZCBpdCByZWxpZXMgb24gc2V0dGluZyB0aGUgVk0gdmlhIFNFVF9DT05U
-RVhUX1BBUkFNIHdoaWNoIGlzCmRlcHJlY2F0ZWQuICBEZWxldGUgaXQgZm9yIG5vdy4gIFdlIGNh
-biBhZGQgaXQgYmFjayBpbiBsYXRlciBpZiBpdCdzCmFjdHVhbGx5IHVzZWZ1bCBhbmQgZG8gaXQg
-cHJvcGVybHkgdGhlbi4KCnYyIChaYmlnbmlldyBLZW1wY3p5xYRza2kpOgogLSBBbHNvIHJlbW92
-ZSBpbnRlbF9iYl9kZXRhY2hfaW50ZWxfYnVmKCkKClNpZ25lZC1vZmYtYnk6IEphc29uIEVrc3Ry
-YW5kIDxqYXNvbkBqbGVrc3RyYW5kLm5ldD4KUmV2aWV3ZWQtYnk6IFpiaWduaWV3IEtlbXBjennF
-hHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgotLS0KIGxpYi9pbnRlbF9iYXRj
-aGJ1ZmZlci5jICAgfCAgNjUgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBsaWIvaW50ZWxfYmF0
-Y2hidWZmZXIuaCAgIHwgICA0IC0tCiB0ZXN0cy9pOTE1L2FwaV9pbnRlbF9iYi5jIHwgMTA0IC0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAzIGZpbGVzIGNoYW5nZWQsIDE3
-MyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9saWIvaW50ZWxfYmF0Y2hidWZmZXIuYyBiL2xp
-Yi9pbnRlbF9iYXRjaGJ1ZmZlci5jCmluZGV4IGNjOTc2YTYyNC4uMmI4YjkwM2UyIDEwMDY0NAot
-LS0gYS9saWIvaW50ZWxfYmF0Y2hidWZmZXIuYworKysgYi9saWIvaW50ZWxfYmF0Y2hidWZmZXIu
-YwpAQCAtMTUxMywxNCArMTUxMyw2IEBAIHN0YXRpYyB2b2lkIF9faW50ZWxfYmJfZGVzdHJveV9j
-YWNoZShzdHJ1Y3QgaW50ZWxfYmIgKmliYikKIAlpYmItPnJvb3QgPSBOVUxMOwogfQogCi1zdGF0
-aWMgdm9pZCBfX2ludGVsX2JiX2RldGFjaF9pbnRlbF9idWZzKHN0cnVjdCBpbnRlbF9iYiAqaWJi
-KQotewotCXN0cnVjdCBpbnRlbF9idWYgKmVudHJ5LCAqdG1wOwotCi0JaWd0X2xpc3RfZm9yX2Vh
-Y2hfZW50cnlfc2FmZShlbnRyeSwgdG1wLCAmaWJiLT5pbnRlbF9idWZzLCBsaW5rKQotCQlpbnRl
-bF9iYl9kZXRhY2hfaW50ZWxfYnVmKGliYiwgZW50cnkpOwotfQotCiBzdGF0aWMgdm9pZCBfX2lu
-dGVsX2JiX3JlbW92ZV9pbnRlbF9idWZzKHN0cnVjdCBpbnRlbF9iYiAqaWJiKQogewogCXN0cnVj
-dCBpbnRlbF9idWYgKmVudHJ5LCAqdG1wOwpAQCAtMTY0OSw1MCArMTY0MSw2IEBAIGludCBpbnRl
-bF9iYl9zeW5jKHN0cnVjdCBpbnRlbF9iYiAqaWJiKQogCXJldHVybiByZXQ7CiB9CiAKLXVpbnQ2
-NF90IGludGVsX2JiX2Fzc2lnbl92bShzdHJ1Y3QgaW50ZWxfYmIgKmliYiwgdWludDY0X3QgYWxs
-b2NhdG9yLAotCQkJICAgIHVpbnQzMl90IHZtX2lkKQotewotCXN0cnVjdCBkcm1faTkxNV9nZW1f
-Y29udGV4dF9wYXJhbSBhcmcgPSB7Ci0JCS5wYXJhbSA9IEk5MTVfQ09OVEVYVF9QQVJBTV9WTSwK
-LQl9OwotCXVpbnQ2NF90IHByZXZfYWxsb2NhdG9yID0gaWJiLT5hbGxvY2F0b3JfaGFuZGxlOwot
-CWJvb2wgY2xvc2VkID0gZmFsc2U7Ci0KLQlpZiAoaWJiLT52bV9pZCA9PSB2bV9pZCkgewotCQlp
-Z3RfZGVidWcoIlNraXBwaW5nIHRvIGFzc2lnbiBzYW1lIHZtX2lkOiAldVxuIiwgdm1faWQpOwot
-CQlyZXR1cm4gMDsKLQl9Ci0KLQkvKiBDYW5ub3Qgc3dpdGNoIGlmIHNvbWVvbmUga2VlcHMgYmIg
-cmVmY291bnQgKi8KLQlpZ3RfYXNzZXJ0KGliYi0+cmVmY291bnQgPT0gMSk7Ci0KLQkvKiBEZXRh
-Y2ggaW50ZWxfYnVmcyBhbmQgcmVtb3ZlIGJiIGhhbmRsZSAqLwotCV9faW50ZWxfYmJfZGV0YWNo
-X2ludGVsX2J1ZnMoaWJiKTsKLQlpbnRlbF9iYl9yZW1vdmVfb2JqZWN0KGliYiwgaWJiLT5oYW5k
-bGUsIGliYi0+YmF0Y2hfb2Zmc2V0LCBpYmItPnNpemUpOwotCi0JLyogQ2FjaGUgKyBvYmplY3Rz
-IGFyZSBub3QgdmFsaWQgYWZ0ZXIgY2hhbmdlIGFueW1vcmUgKi8KLQlfX2ludGVsX2JiX2Rlc3Ry
-b3lfb2JqZWN0cyhpYmIpOwotCV9faW50ZWxfYmJfZGVzdHJveV9jYWNoZShpYmIpOwotCi0JLyog
-QXR0YWNoIG5ldyBhbGxvY2F0b3IgKi8KLQlpYmItPmFsbG9jYXRvcl9oYW5kbGUgPSBhbGxvY2F0
-b3I7Ci0KLQkvKiBTZXRwYXJhbSAqLwotCWliYi0+dm1faWQgPSB2bV9pZDsKLQotCS8qIFNraXAg
-c2V0IHBhcmFtLCB3ZSBsaWtlbHkgcmV0dXJuIHRvIGRlZmF1bHQgdm0gKi8KLQlpZiAodm1faWQp
-IHsKLQkJYXJnLmN0eF9pZCA9IGliYi0+Y3R4OwotCQlhcmcudmFsdWUgPSB2bV9pZDsKLQkJZ2Vt
-X2NvbnRleHRfc2V0X3BhcmFtKGliYi0+aTkxNSwgJmFyZyk7Ci0JfQotCi0JLyogUmVjcmVhdGUg
-YmIgKi8KLQlpbnRlbF9iYl9yZXNldChpYmIsIGZhbHNlKTsKLQotCXJldHVybiBjbG9zZWQgPyAw
-IDogcHJldl9hbGxvY2F0b3I7Ci19Ci0KIC8qCiAgKiBpbnRlbF9iYl9wcmludDoKICAqIEBpYmI6
-IHBvaW50ZXIgdG8gaW50ZWxfYmIKQEAgLTIwNDAsMTkgKzE5ODgsNiBAQCBpbnRlbF9iYl9hZGRf
-aW50ZWxfYnVmX3dpdGhfYWxpZ25tZW50KHN0cnVjdCBpbnRlbF9iYiAqaWJiLCBzdHJ1Y3QgaW50
-ZWxfYnVmICpidQogCXJldHVybiBfX2ludGVsX2JiX2FkZF9pbnRlbF9idWYoaWJiLCBidWYsIGFs
-aWdubWVudCwgd3JpdGUpOwogfQogCi12b2lkIGludGVsX2JiX2RldGFjaF9pbnRlbF9idWYoc3Ry
-dWN0IGludGVsX2JiICppYmIsIHN0cnVjdCBpbnRlbF9idWYgKmJ1ZikKLXsKLQlpZ3RfYXNzZXJ0
-KGliYik7Ci0JaWd0X2Fzc2VydChidWYpOwotCWlndF9hc3NlcnQoIWJ1Zi0+aWJiIHx8IGJ1Zi0+
-aWJiID09IGliYik7Ci0KLQlpZiAoIWlndF9saXN0X2VtcHR5KCZidWYtPmxpbmspKSB7Ci0JCWJ1
-Zi0+YWRkci5vZmZzZXQgPSBJTlRFTF9CVUZfSU5WQUxJRF9BRERSRVNTOwotCQlidWYtPmliYiA9
-IE5VTEw7Ci0JCWlndF9saXN0X2RlbF9pbml0KCZidWYtPmxpbmspOwotCX0KLX0KLQogYm9vbCBp
-bnRlbF9iYl9yZW1vdmVfaW50ZWxfYnVmKHN0cnVjdCBpbnRlbF9iYiAqaWJiLCBzdHJ1Y3QgaW50
-ZWxfYnVmICpidWYpCiB7CiAJYm9vbCByZW1vdmVkOwpkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2Jh
-dGNoYnVmZmVyLmggYi9saWIvaW50ZWxfYmF0Y2hidWZmZXIuaAppbmRleCA2ZjE0ODcxM2IuLmJk
-NDE3ZTk5OCAxMDA2NDQKLS0tIGEvbGliL2ludGVsX2JhdGNoYnVmZmVyLmgKKysrIGIvbGliL2lu
-dGVsX2JhdGNoYnVmZmVyLmgKQEAgLTUyMyw5ICs1MjMsNiBAQCBzdGF0aWMgaW5saW5lIHZvaWQg
-aW50ZWxfYmJfdW5yZWYoc3RydWN0IGludGVsX2JiICppYmIpCiB2b2lkIGludGVsX2JiX3Jlc2V0
-KHN0cnVjdCBpbnRlbF9iYiAqaWJiLCBib29sIHB1cmdlX29iamVjdHNfY2FjaGUpOwogaW50IGlu
-dGVsX2JiX3N5bmMoc3RydWN0IGludGVsX2JiICppYmIpOwogCi11aW50NjRfdCBpbnRlbF9iYl9h
-c3NpZ25fdm0oc3RydWN0IGludGVsX2JiICppYmIsIHVpbnQ2NF90IGFsbG9jYXRvciwKLQkJCSAg
-ICB1aW50MzJfdCB2bV9pZCk7Ci0KIHZvaWQgaW50ZWxfYmJfcHJpbnQoc3RydWN0IGludGVsX2Ji
-ICppYmIpOwogdm9pZCBpbnRlbF9iYl9kdW1wKHN0cnVjdCBpbnRlbF9iYiAqaWJiLCBjb25zdCBj
-aGFyICpmaWxlbmFtZSk7CiB2b2lkIGludGVsX2JiX3NldF9kZWJ1ZyhzdHJ1Y3QgaW50ZWxfYmIg
-KmliYiwgYm9vbCBkZWJ1Zyk7CkBAIC01ODgsNyArNTg1LDYgQEAgaW50ZWxfYmJfYWRkX2ludGVs
-X2J1ZihzdHJ1Y3QgaW50ZWxfYmIgKmliYiwgc3RydWN0IGludGVsX2J1ZiAqYnVmLCBib29sIHdy
-aXRlKTsKIHN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY19vYmplY3QyICoKIGludGVsX2JiX2FkZF9p
-bnRlbF9idWZfd2l0aF9hbGlnbm1lbnQoc3RydWN0IGludGVsX2JiICppYmIsIHN0cnVjdCBpbnRl
-bF9idWYgKmJ1ZiwKIAkJCQkgICAgICB1aW50NjRfdCBhbGlnbm1lbnQsIGJvb2wgd3JpdGUpOwot
-dm9pZCBpbnRlbF9iYl9kZXRhY2hfaW50ZWxfYnVmKHN0cnVjdCBpbnRlbF9iYiAqaWJiLCBzdHJ1
-Y3QgaW50ZWxfYnVmICpidWYpOwogYm9vbCBpbnRlbF9iYl9yZW1vdmVfaW50ZWxfYnVmKHN0cnVj
-dCBpbnRlbF9iYiAqaWJiLCBzdHJ1Y3QgaW50ZWxfYnVmICpidWYpOwogdm9pZCBpbnRlbF9iYl9w
-cmludF9pbnRlbF9idWZzKHN0cnVjdCBpbnRlbF9iYiAqaWJiKTsKIHN0cnVjdCBkcm1faTkxNV9n
-ZW1fZXhlY19vYmplY3QyICoKZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvYXBpX2ludGVsX2JiLmMg
-Yi90ZXN0cy9pOTE1L2FwaV9pbnRlbF9iYi5jCmluZGV4IDdmZmU2NGZjNS4uNzRjYjE4NDE3IDEw
-MDY0NAotLS0gYS90ZXN0cy9pOTE1L2FwaV9pbnRlbF9iYi5jCisrKyBiL3Rlc3RzL2k5MTUvYXBp
-X2ludGVsX2JiLmMKQEAgLTI0MSwxMDcgKzI0MSw2IEBAIHN0YXRpYyB2b2lkIGJiX3dpdGhfYWxs
-b2NhdG9yKHN0cnVjdCBidWZfb3BzICpib3BzKQogCWludGVsX2JiX2Rlc3Ryb3koaWJiKTsKIH0K
-IAotc3RhdGljIHZvaWQgYmJfd2l0aF92bShzdHJ1Y3QgYnVmX29wcyAqYm9wcykKLXsKLQlpbnQg
-aTkxNSA9IGJ1Zl9vcHNfZ2V0X2ZkKGJvcHMpOwotCXN0cnVjdCBkcm1faTkxNV9nZW1fY29udGV4
-dF9wYXJhbSBhcmcgPSB7Ci0JCS5wYXJhbSA9IEk5MTVfQ09OVEVYVF9QQVJBTV9WTSwKLQl9Owot
-CXN0cnVjdCBpbnRlbF9iYiAqaWJiOwotCXN0cnVjdCBpbnRlbF9idWYgKnNyYywgKmRzdCwgKmdh
-cDsKLQl1aW50MzJfdCBjdHggPSAwLCB2bV9pZDEsIHZtX2lkMjsKLQl1aW50NjRfdCBwcmV2X3Zt
-LCB2bTsKLQl1aW50NjRfdCBzcmNfYWRkcls1XSwgZHN0X2FkZHJbNV07Ci0KLQlpZ3RfcmVxdWly
-ZShnZW1fdXNlc19mdWxsX3BwZ3R0KGk5MTUpKTsKLQotCWliYiA9IGludGVsX2JiX2NyZWF0ZV93
-aXRoX2FsbG9jYXRvcihpOTE1LCBjdHgsIFBBR0VfU0laRSwKLQkJCQkJICAgICBJTlRFTF9BTExP
-Q0FUT1JfU0lNUExFKTsKLQlpZiAoZGVidWdfYmIpCi0JCWludGVsX2JiX3NldF9kZWJ1ZyhpYmIs
-IHRydWUpOwotCi0Jc3JjID0gaW50ZWxfYnVmX2NyZWF0ZShib3BzLCA0MDk2LzMyLCAzMiwgOCwg
-MCwgSTkxNV9USUxJTkdfTk9ORSwKLQkJCSAgICAgICBJOTE1X0NPTVBSRVNTSU9OX05PTkUpOwot
-CWRzdCA9IGludGVsX2J1Zl9jcmVhdGUoYm9wcywgNDA5Ni8zMiwgMzIsIDgsIDAsIEk5MTVfVElM
-SU5HX05PTkUsCi0JCQkgICAgICAgSTkxNV9DT01QUkVTU0lPTl9OT05FKTsKLQlnYXAgPSBpbnRl
-bF9idWZfY3JlYXRlKGJvcHMsIDQwOTYsIDEyOCwgOCwgMCwgSTkxNV9USUxJTkdfTk9ORSwKLQkJ
-CSAgICAgICBJOTE1X0NPTVBSRVNTSU9OX05PTkUpOwotCi0JLyogdm0gZm9yIHNlY29uZCBibGl0
-ICovCi0Jdm1faWQxID0gZ2VtX3ZtX2NyZWF0ZShpOTE1KTsKLQotCS8qIEdldCB2bV9pZCBmb3Ig
-ZGVmYXVsdCB2bSAqLwotCWFyZy5jdHhfaWQgPSBjdHg7Ci0JZ2VtX2NvbnRleHRfZ2V0X3BhcmFt
-KGk5MTUsICZhcmcpOwotCXZtX2lkMiA9IGFyZy52YWx1ZTsKLQotCWlndF9kZWJ1ZygiVm1faWQx
-OiAldVxuIiwgdm1faWQxKTsKLQlpZ3RfZGVidWcoIlZtX2lkMjogJXVcbiIsIHZtX2lkMik7Ci0K
-LQkvKiBGaXJzdCBibGl0IHdpdGhvdXQgc2V0IGNhbGxpbmcgc2V0cGFyYW0gKi8KLQlpbnRlbF9i
-Yl9jb3B5X2ludGVsX2J1ZihpYmIsIGRzdCwgc3JjLCA0MDk2KTsKLQlzcmNfYWRkclswXSA9IHNy
-Yy0+YWRkci5vZmZzZXQ7Ci0JZHN0X2FkZHJbMF0gPSBkc3QtPmFkZHIub2Zmc2V0OwotCWlndF9k
-ZWJ1Zygic3RlcDE6IHNyYzogMHglbGx4LCBkc3Q6IDB4JWxseFxuIiwKLQkJICAobG9uZyBsb25n
-KSBzcmNfYWRkclswXSwgKGxvbmcgbG9uZykgZHN0X2FkZHJbMF0pOwotCi0JLyogT3BlbiBuZXcg
-YWxsb2NhdG9yIHdpdGggdm1faWQgKi8KLQl2bSA9IGludGVsX2FsbG9jYXRvcl9vcGVuX3ZtKGk5
-MTUsIHZtX2lkMSwgSU5URUxfQUxMT0NBVE9SX1NJTVBMRSk7Ci0JcHJldl92bSA9IGludGVsX2Ji
-X2Fzc2lnbl92bShpYmIsIHZtLCB2bV9pZDEpOwotCi0JaW50ZWxfYmJfYWRkX2ludGVsX2J1Zihp
-YmIsIGdhcCwgZmFsc2UpOwotCWludGVsX2JiX2NvcHlfaW50ZWxfYnVmKGliYiwgZHN0LCBzcmMs
-IDQwOTYpOwotCXNyY19hZGRyWzFdID0gc3JjLT5hZGRyLm9mZnNldDsKLQlkc3RfYWRkclsxXSA9
-IGRzdC0+YWRkci5vZmZzZXQ7Ci0JaWd0X2RlYnVnKCJzdGVwMjogc3JjOiAweCVsbHgsIGRzdDog
-MHglbGx4XG4iLAotCQkgIChsb25nIGxvbmcpIHNyY19hZGRyWzFdLCAobG9uZyBsb25nKSBkc3Rf
-YWRkclsxXSk7Ci0KLQkvKiBCYWNrIHdpdGggZGVmYXVsdCB2bSAqLwotCWludGVsX2JiX2Fzc2ln
-bl92bShpYmIsIHByZXZfdm0sIHZtX2lkMik7Ci0JaW50ZWxfYmJfYWRkX2ludGVsX2J1ZihpYmIs
-IGdhcCwgZmFsc2UpOwotCWludGVsX2JiX2NvcHlfaW50ZWxfYnVmKGliYiwgZHN0LCBzcmMsIDQw
-OTYpOwotCXNyY19hZGRyWzJdID0gc3JjLT5hZGRyLm9mZnNldDsKLQlkc3RfYWRkclsyXSA9IGRz
-dC0+YWRkci5vZmZzZXQ7Ci0JaWd0X2RlYnVnKCJzdGVwMzogc3JjOiAweCVsbHgsIGRzdDogMHgl
-bGx4XG4iLAotCQkgIChsb25nIGxvbmcpIHNyY19hZGRyWzJdLCAobG9uZyBsb25nKSBkc3RfYWRk
-clsyXSk7Ci0KLQkvKiBBbmQgZXhjaGFuZ2Ugb25lIG1vcmUgdGltZSAqLwotCWludGVsX2JiX2Fz
-c2lnbl92bShpYmIsIHZtLCB2bV9pZDEpOwotCWludGVsX2JiX2NvcHlfaW50ZWxfYnVmKGliYiwg
-ZHN0LCBzcmMsIDQwOTYpOwotCXNyY19hZGRyWzNdID0gc3JjLT5hZGRyLm9mZnNldDsKLQlkc3Rf
-YWRkclszXSA9IGRzdC0+YWRkci5vZmZzZXQ7Ci0JaWd0X2RlYnVnKCJzdGVwNDogc3JjOiAweCVs
-bHgsIGRzdDogMHglbGx4XG4iLAotCQkgIChsb25nIGxvbmcpIHNyY19hZGRyWzNdLCAobG9uZyBs
-b25nKSBkc3RfYWRkclszXSk7Ci0KLQkvKiBCYWNrIHdpdGggZGVmYXVsdCB2bSAqLwotCWdlbV92
-bV9kZXN0cm95KGk5MTUsIHZtX2lkMSk7Ci0JZ2VtX3ZtX2Rlc3Ryb3koaTkxNSwgdm1faWQyKTsK
-LQlpbnRlbF9iYl9hc3NpZ25fdm0oaWJiLCBwcmV2X3ZtLCAwKTsKLQotCS8qIFdlIGNhbiBjbG9z
-ZSBpdCBhZnRlciBhc3NpZ24gcHJldmlvdXMgdm0gdG8gaWJiICovCi0JaW50ZWxfYWxsb2NhdG9y
-X2Nsb3NlKHZtKTsKLQotCS8qIFRyeSBkZWZhdWx0IHZtIHN0aWxsIHdvcmtzICovCi0JaW50ZWxf
-YmJfY29weV9pbnRlbF9idWYoaWJiLCBkc3QsIHNyYywgNDA5Nik7Ci0Jc3JjX2FkZHJbNF0gPSBz
-cmMtPmFkZHIub2Zmc2V0OwotCWRzdF9hZGRyWzRdID0gZHN0LT5hZGRyLm9mZnNldDsKLQlpZ3Rf
-ZGVidWcoInN0ZXA1OiBzcmM6IDB4JWxseCwgZHN0OiAweCVsbHhcbiIsCi0JCSAgKGxvbmcgbG9u
-Zykgc3JjX2FkZHJbNF0sIChsb25nIGxvbmcpIGRzdF9hZGRyWzRdKTsKLQotCS8qIEFkZHJlc3Nl
-cyBzaG91bGQgbWF0Y2ggZm9yIHZtIGFuZCBwcmV2X3ZtIGJsaXRzICovCi0JaWd0X2Fzc2VydF9l
-cShzcmNfYWRkclswXSwgc3JjX2FkZHJbMl0pOwotCWlndF9hc3NlcnRfZXEoZHN0X2FkZHJbMF0s
-IGRzdF9hZGRyWzJdKTsKLQlpZ3RfYXNzZXJ0X2VxKHNyY19hZGRyWzFdLCBzcmNfYWRkclszXSk7
-Ci0JaWd0X2Fzc2VydF9lcShkc3RfYWRkclsxXSwgZHN0X2FkZHJbM10pOwotCWlndF9hc3NlcnRf
-ZXEoc3JjX2FkZHJbMl0sIHNyY19hZGRyWzRdKTsKLQlpZ3RfYXNzZXJ0X2VxKGRzdF9hZGRyWzJd
-LCBkc3RfYWRkcls0XSk7Ci0KLQlpbnRlbF9idWZfZGVzdHJveShzcmMpOwotCWludGVsX2J1Zl9k
-ZXN0cm95KGRzdCk7Ci0JaW50ZWxfYnVmX2Rlc3Ryb3koZ2FwKTsKLQlpbnRlbF9iYl9kZXN0cm95
-KGliYik7Ci19Ci0KIC8qCiAgKiBNYWtlIHN1cmUgd2UgbGVhZCB0byByZWFsbG9jIGluIHRoZSBp
-bnRlbF9iYi4KICAqLwpAQCAtMTU1OCw5ICsxNDU3LDYgQEAgaWd0X21haW5fYXJncygiZHBpYiIs
-IE5VTEwsIGhlbHBfc3RyLCBvcHRfaGFuZGxlciwgTlVMTCkKIAlpZ3Rfc3VidGVzdCgiYmItd2l0
-aC1hbGxvY2F0b3IiKQogCQliYl93aXRoX2FsbG9jYXRvcihib3BzKTsKIAotCWlndF9zdWJ0ZXN0
-KCJiYi13aXRoLXZtIikKLQkJYmJfd2l0aF92bShib3BzKTsKLQogCWlndF9zdWJ0ZXN0KCJsb3Qt
-b2YtYnVmZmVycyIpCiAJCWxvdF9vZl9idWZmZXJzKGJvcHMpOwogCi0tIAoyLjMxLjEKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGlu
-ZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+---
+ tests/i915/gen9_exec_parse.c | 106 +++++++++++++++++------------------
+ 1 file changed, 53 insertions(+), 53 deletions(-)
+
+diff --git a/tests/i915/gen9_exec_parse.c b/tests/i915/gen9_exec_parse.c
+index e10c6ce9f..6e6ee3af7 100644
+--- a/tests/i915/gen9_exec_parse.c
++++ b/tests/i915/gen9_exec_parse.c
+@@ -81,7 +81,7 @@ __checked_execbuf(int i915, struct drm_i915_gem_execbuffer2 *eb)
+ }
+ 
+ static int
+-__exec_batch_patched(int i915, int engine,
++__exec_batch_patched(int i915, const intel_ctx_t *ctx, int engine,
+ 		     uint32_t cmd_bo, const uint32_t *cmds, int size,
+ 		     uint32_t target_bo, uint64_t target_offset, uint64_t target_delta)
+ {
+@@ -110,12 +110,13 @@ __exec_batch_patched(int i915, int engine,
+ 	execbuf.buffers_ptr = to_user_pointer(obj);
+ 	execbuf.buffer_count = 2;
+ 	execbuf.batch_len = size;
++	execbuf.rsvd1 = ctx->id;
+ 	execbuf.flags = engine;
+ 
+ 	return __checked_execbuf(i915, &execbuf);
+ }
+ 
+-static void exec_batch_patched(int i915, int engine,
++static void exec_batch_patched(int i915, const intel_ctx_t *ctx, int engine,
+ 			       uint32_t cmd_bo, const uint32_t *cmds,
+ 			       int size, int patch_offset,
+ 			       long int expected_value)
+@@ -124,7 +125,8 @@ static void exec_batch_patched(int i915, int engine,
+ 	uint64_t actual_value = 0;
+ 	long int ret;
+ 
+-	ret = __exec_batch_patched(i915, engine, cmd_bo, cmds, size, target_bo, patch_offset, 0);
++	ret = __exec_batch_patched(i915, ctx, engine, cmd_bo, cmds, size,
++				   target_bo, patch_offset, 0);
+ 	if (ret) {
+ 		igt_assert_lt(ret, 0);
+ 		gem_close(i915, target_bo);
+@@ -139,8 +141,8 @@ static void exec_batch_patched(int i915, int engine,
+ 	igt_assert_eq(actual_value, expected_value);
+ }
+ 
+-static int __exec_batch(int i915, int engine, uint32_t cmd_bo,
+-			const uint32_t *cmds, int size)
++static int __exec_batch(int i915, const intel_ctx_t *ctx, int engine,
++			uint32_t cmd_bo, const uint32_t *cmds, int size)
+ {
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj[1];
+@@ -154,6 +156,7 @@ static int __exec_batch(int i915, int engine, uint32_t cmd_bo,
+ 	execbuf.buffers_ptr = to_user_pointer(obj);
+ 	execbuf.buffer_count = 1;
+ 	execbuf.batch_len = size;
++	execbuf.rsvd1 = ctx->id;
+ 	execbuf.flags = engine;
+ 
+ 	return  __checked_execbuf(i915, &execbuf);
+@@ -173,12 +176,12 @@ static void print_batch(const uint32_t *cmds, const uint32_t sz)
+ #define print_batch(cmds, size)
+ #endif
+ 
+-#define exec_batch(i915, engine, bo, cmds, sz, expected)	\
++#define exec_batch(i915, ctx, engine, bo, cmds, sz, expected)	\
+ 	print_batch(cmds, sz); \
+-	igt_assert_eq(__exec_batch(i915, engine, bo, cmds, sz), expected)
++	igt_assert_eq(__exec_batch(i915, ctx, engine, bo, cmds, sz), expected)
+ 
+-static void exec_split_batch(int i915, int engine, const uint32_t *cmds,
+-			     int size, int expected_ret)
++static void exec_split_batch(int i915, const intel_ctx_t *ctx, int engine,
++			     const uint32_t *cmds, int size, int expected_ret)
+ {
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj[1];
+@@ -213,6 +216,7 @@ static void exec_split_batch(int i915, int engine, const uint32_t *cmds,
+ 	execbuf.batch_len =
+ 		ALIGN(size + actual_start_offset - execbuf.batch_start_offset,
+ 		      0x8);
++	execbuf.rsvd1 = ctx->id;
+ 	execbuf.flags = engine;
+ 
+ 	igt_assert_eq(__checked_execbuf(i915, &execbuf), expected_ret);
+@@ -220,7 +224,7 @@ static void exec_split_batch(int i915, int engine, const uint32_t *cmds,
+ 	gem_close(i915, cmd_bo);
+ }
+ 
+-static void exec_batch_chained(int i915, int engine,
++static void exec_batch_chained(int i915, const intel_ctx_t *ctx, int engine,
+ 			       uint32_t cmd_bo, const uint32_t *cmds,
+ 			       int size, int patch_offset,
+ 			       uint64_t expected_value,
+@@ -276,6 +280,7 @@ static void exec_batch_chained(int i915, int engine,
+ 	execbuf.buffers_ptr = to_user_pointer(obj);
+ 	execbuf.buffer_count = 3;
+ 	execbuf.batch_len = sizeof(first_level_cmds);
++	execbuf.rsvd1 = ctx->id;
+ 	execbuf.flags = engine;
+ 
+ 	ret = __checked_execbuf(i915, &execbuf);
+@@ -371,7 +376,8 @@ static void test_allowed_all(const int i915, const uint32_t handle)
+ 
+ 	b = inject_cmd(b, MI_BATCH_BUFFER_END, 1);
+ 
+-	exec_batch(i915, I915_EXEC_BLT, handle, batch, batch_bytes(batch, b), 0);
++	exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT,
++		   handle, batch, batch_bytes(batch, b), 0);
+ }
+ 
+ static void test_allowed_single(const int i915, const uint32_t handle)
+@@ -386,7 +392,8 @@ static void test_allowed_single(const int i915, const uint32_t handle)
+ 
+ 		b = inject_cmd(b, MI_BATCH_BUFFER_END, 1);
+ 
+-		igt_assert_eq(__exec_batch(i915, I915_EXEC_BLT, handle,
++		igt_assert_eq(__exec_batch(i915, intel_ctx_0(i915),
++					   I915_EXEC_BLT, handle,
+ 					   batch, batch_bytes(batch, b)),
+ 			      0);
+ 	};
+@@ -658,14 +665,14 @@ static void test_bb_chained(const int i915, const uint32_t handle)
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 
+-	exec_batch_chained(i915, I915_EXEC_RENDER,
++	exec_batch_chained(i915, intel_ctx_0(i915), I915_EXEC_RENDER,
+ 			   handle,
+ 			   batch, sizeof(batch),
+ 			   4,
+ 			   0xbaadf00d,
+ 			   0);
+ 
+-	exec_batch_chained(i915, I915_EXEC_BLT,
++	exec_batch_chained(i915, intel_ctx_0(i915), I915_EXEC_BLT,
+ 			   handle,
+ 			   batch, sizeof(batch),
+ 			   4,
+@@ -690,11 +697,11 @@ static void test_cmd_crossing_page(const int i915, const uint32_t handle)
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 
+-	exec_split_batch(i915, I915_EXEC_BLT,
++	exec_split_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT,
+ 			 lri_ok, sizeof(lri_ok),
+ 			 0);
+ 
+-	exec_batch_patched(i915, I915_EXEC_BLT, handle,
++	exec_batch_patched(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 			   store_reg, sizeof(store_reg),
+ 			   2 * sizeof(uint32_t), /* reloc */
+ 			   0xbaadf00d);
+@@ -729,25 +736,25 @@ static void test_invalid_length(const int i915, const uint32_t handle)
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 
+-	exec_batch(i915, I915_EXEC_BLT, handle,
++	exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 		   lri_ok, sizeof(lri_ok),
+ 		   0);
+ 
+-	exec_batch_patched(i915, I915_EXEC_BLT, handle,
++	exec_batch_patched(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 			   store_reg, sizeof(store_reg),
+ 			   2 * sizeof(uint32_t), /* reloc */
+ 			   ok_val);
+ 
+-	exec_batch(i915, I915_EXEC_BLT, handle,
++	exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 		   lri_bad, 0,
+ 		   0);
+ 
+-	exec_batch_patched(i915, I915_EXEC_BLT, handle,
++	exec_batch_patched(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 			   store_reg, sizeof(store_reg),
+ 			   2 * sizeof(uint32_t), /* reloc */
+ 			   ok_val);
+ 
+-	exec_batch(i915, I915_EXEC_BLT, handle,
++	exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 		   lri_ok, 4096,
+ 		   0);
+ 
+@@ -842,20 +849,20 @@ static void test_register(const int i915, const uint32_t handle,
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 
+-	exec_batch(i915, I915_EXEC_BLT, handle,
++	exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 		   lri_mask, sizeof(lri_mask),
+ 		   r->privileged ? -EACCES : 0);
+ 
+-	exec_batch_patched(i915, I915_EXEC_BLT, handle,
++	exec_batch_patched(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 			   store_reg, sizeof(store_reg),
+ 			   2 * sizeof(uint32_t), /* reloc */
+ 			   r->privileged ? -EACCES : r->mask);
+ 
+-	exec_batch(i915, I915_EXEC_BLT, handle,
++	exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 		   lri_zero, sizeof(lri_zero),
+ 		   r->privileged ? -EACCES : 0);
+ 
+-	exec_batch_patched(i915, I915_EXEC_BLT, handle,
++	exec_batch_patched(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 			   store_reg, sizeof(store_reg),
+ 			   2 * sizeof(uint32_t), /* reloc */
+ 			   r->privileged ? -EACCES : 0);
+@@ -886,8 +893,8 @@ static long int read_reg(const int i915, const uint32_t handle,
+ 
+ 	target_bo = gem_create(i915, HANDLE_SIZE);
+ 
+-	ret = __exec_batch_patched(i915, I915_EXEC_BLT, handle,
+-				   store_reg, sizeof(store_reg),
++	ret = __exec_batch_patched(i915, intel_ctx_0(i915), I915_EXEC_BLT,
++				   handle, store_reg, sizeof(store_reg),
+ 				   target_bo, 2 * sizeof(uint32_t), 0);
+ 
+ 	if (ret) {
+@@ -913,7 +920,7 @@ static int write_reg(const int i915, const uint32_t handle,
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 
+-	return __exec_batch(i915, I915_EXEC_BLT, handle,
++	return __exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 			    lri, sizeof(lri));
+ }
+ 
+@@ -999,7 +1006,8 @@ static void test_unaligned_jump(const int i915, const uint32_t handle)
+ }
+ 
+ static void
+-test_reject_on_engine(int i915, uint32_t handle, unsigned int engine)
++test_reject_on_engine(int i915, const intel_ctx_t *ctx, unsigned int engine,
++		      uint32_t handle)
+ {
+ 	const uint32_t invalid_cmd[] = {
+ 		INSTR_INVALID_CLIENT << INSTR_CLIENT_SHIFT,
+@@ -1010,45 +1018,37 @@ test_reject_on_engine(int i915, uint32_t handle, unsigned int engine)
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 
+-	exec_batch(i915, engine, handle,
++	exec_batch(i915, ctx, engine, handle,
+ 		   invalid_cmd, sizeof(invalid_cmd),
+ 		   -EINVAL);
+ 
+-	exec_batch(i915, engine, handle,
++	exec_batch(i915, ctx, engine, handle,
+ 		   invalid_set_context, sizeof(invalid_set_context),
+ 		   -EINVAL);
+ }
+ 
+ static void test_rejected(int i915, uint32_t handle, bool ctx_param)
+ {
+-#define engine_class(e, n) ((e)->engines[(n)].engine_class)
+-#define engine_instance(e, n) ((e)->engines[(n)].engine_instance)
+-
+ 	if (ctx_param) {
++		intel_ctx_cfg_t cfg = {};
++		const intel_ctx_t *ctx;
+ 		int i;
+ 
+-		I915_DEFINE_CONTEXT_PARAM_ENGINES(engines , I915_EXEC_RING_MASK + 1);
+-		struct drm_i915_gem_context_param param = {
+-			.ctx_id = 0,
+-			.param = I915_CONTEXT_PARAM_ENGINES,
+-			.value = to_user_pointer(&engines),
+-			.size = sizeof(engines),
+-		};
+-
+-		memset(&engines, 0, sizeof(engines));
+-		for (i = 0; i <= I915_EXEC_RING_MASK; i++) {
+-			engine_class(&engines, i) = I915_ENGINE_CLASS_COPY;
+-			engine_instance(&engines, i) = 0;
++		for (i = 0; i < GEM_MAX_ENGINES; i++) {
++			cfg.engines[i].engine_class = I915_ENGINE_CLASS_COPY;
++			cfg.engines[i].engine_instance = 0;
+ 		}
+-		gem_context_set_param(i915, &param);
++		cfg.num_engines = GEM_MAX_ENGINES;
++
++		ctx = intel_ctx_create(i915, &cfg);
+ 
+ 		for (i = 0; i <= I915_EXEC_RING_MASK; i++)
+-			test_reject_on_engine(i915, handle, i);
++			test_reject_on_engine(i915, ctx, i, handle);
+ 
+-		param.size = 0;
+-		gem_context_set_param(i915, &param);
++		intel_ctx_destroy(i915, ctx);
+ 	} else {
+-		test_reject_on_engine(i915, handle, I915_EXEC_BLT);
++		test_reject_on_engine(i915, intel_ctx_0(i915),
++				      I915_EXEC_BLT, handle);
+ 	}
+ }
+ 
+@@ -1223,7 +1223,7 @@ igt_main
+ 	igt_subtest("batch-without-end") {
+ 		const uint32_t noop[1024] = { 0 };
+ 
+-		exec_batch(i915, I915_EXEC_BLT, handle,
++		exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 			   noop, sizeof(noop),
+ 			   -EINVAL);
+ 	}
+@@ -1231,7 +1231,7 @@ igt_main
+ 	igt_subtest("batch-zero-length") {
+ 		const uint32_t noop[] = { 0, MI_BATCH_BUFFER_END };
+ 
+-		exec_batch(i915, I915_EXEC_BLT, handle,
++		exec_batch(i915, intel_ctx_0(i915), I915_EXEC_BLT, handle,
+ 			   noop, 0,
+ 			   -EINVAL);
+ 	}
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
