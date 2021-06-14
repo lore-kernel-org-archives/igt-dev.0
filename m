@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com
- [IPv6:2607:f8b0:4864:20::436])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 68B7889FAC
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 16:39:48 +0000 (UTC)
-Received: by mail-pf1-x436.google.com with SMTP id s14so10935512pfd.9
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 09:39:48 -0700 (PDT)
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com
+ [IPv6:2607:f8b0:4864:20::633])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D323A89FBC
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 16:39:49 +0000 (UTC)
+Received: by mail-pl1-x633.google.com with SMTP id 11so6863554plk.12
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 09:39:49 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 14 Jun 2021 11:39:01 -0500
-Message-Id: <20210614163902.366168-27-jason@jlekstrand.net>
+Date: Mon, 14 Jun 2021 11:39:02 -0500
+Message-Id: <20210614163902.366168-28-jason@jlekstrand.net>
 In-Reply-To: <20210614163704.365989-1-jason@jlekstrand.net>
 References: <20210614163704.365989-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 76/77] tests/i915/gem_exec_balancer: Fix
- invalid-balancer for the set-once rule
+Subject: [igt-dev] [PATCH i-g-t 77/77] tests/i915/gem_exec_balancer: Add a
+ test for combind balancing and bonding (v2)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,147 +27,54 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Upstream i915 is going to start only allowing CONTEXT_PARAM_ENGINES to
-be set once on any given context.  This means we need to create a new
-context for every setparam in the test.
+v2 (Jason Ekstrand):
+ - Use __set_param_fresh_context
 ---
- tests/i915/gem_exec_balancer.c | 56 ++++++++++++++++++++--------------
- 1 file changed, 33 insertions(+), 23 deletions(-)
+ tests/i915/gem_exec_balancer.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
 diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index 46cc53cce..0abd20a37 100644
+index 0abd20a37..4c9b670f9 100644
 --- a/tests/i915/gem_exec_balancer.c
 +++ b/tests/i915/gem_exec_balancer.c
-@@ -165,6 +165,19 @@ static uint32_t batch_create(int i915)
- 	return __batch_create(i915, 0);
- }
- 
-+static int
-+__set_param_fresh_context(int i915, struct drm_i915_gem_context_param param)
-+{
-+	int err;
-+
-+	igt_assert_eq(param.ctx_id, 0);
-+	param.ctx_id = gem_context_create(i915);
-+	err = __gem_context_set_param(i915, &param);
-+	gem_context_destroy(i915, param.ctx_id);
-+
-+	return err;
-+}
-+
+@@ -181,6 +181,7 @@ __set_param_fresh_context(int i915, struct drm_i915_gem_context_param param)
  static void invalid_balancer(int i915)
  {
  	I915_DEFINE_CONTEXT_ENGINES_LOAD_BALANCE(balancer, 64);
-@@ -192,7 +205,6 @@ static void invalid_balancer(int i915)
- 
- 		igt_assert_lte(count, 64);
- 
--		p.ctx_id = gem_context_create(i915);
- 		p.size = (sizeof(struct i915_context_param_engines) +
- 			  (count + 1) * sizeof(*engines.engines));
- 
-@@ -200,13 +212,13 @@ static void invalid_balancer(int i915)
- 		engines.engines[0].engine_class = I915_ENGINE_CLASS_INVALID;
- 		engines.engines[0].engine_instance = I915_ENGINE_CLASS_INVALID_NONE;
- 		memcpy(engines.engines + 1, ci, count * sizeof(*ci));
--		gem_context_set_param(i915, &p);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), 0);
- 
- 		engines.extensions = -1ull;
--		igt_assert_eq(__gem_context_set_param(i915, &p), -EFAULT);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), -EFAULT);
- 
- 		engines.extensions = 1ull;
--		igt_assert_eq(__gem_context_set_param(i915, &p), -EFAULT);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), -EFAULT);
- 
- 		memset(&balancer, 0, sizeof(balancer));
- 		balancer.base.name = I915_CONTEXT_ENGINES_EXT_LOAD_BALANCE;
-@@ -214,25 +226,25 @@ static void invalid_balancer(int i915)
- 		memcpy(balancer.engines, ci, count * sizeof(*ci));
- 
- 		engines.extensions = to_user_pointer(&balancer);
--		gem_context_set_param(i915, &p);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), 0);
- 
- 		balancer.engine_index = 1;
--		igt_assert_eq(__gem_context_set_param(i915, &p), -EEXIST);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), -EEXIST);
- 
- 		balancer.engine_index = count;
--		igt_assert_eq(__gem_context_set_param(i915, &p), -EEXIST);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), -EEXIST);
- 
- 		balancer.engine_index = count + 1;
--		igt_assert_eq(__gem_context_set_param(i915, &p), -EINVAL);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), -EINVAL);
- 
- 		balancer.engine_index = 0;
--		gem_context_set_param(i915, &p);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), 0);
- 
- 		balancer.base.next_extension = to_user_pointer(&balancer);
--		igt_assert_eq(__gem_context_set_param(i915, &p), -EEXIST);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), -EEXIST);
- 
- 		balancer.base.next_extension = -1ull;
--		igt_assert_eq(__gem_context_set_param(i915, &p), -EFAULT);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), -EFAULT);
- 
- 		handle = gem_create(i915, 4096 * 3);
- 		ptr = gem_mmap__device_coherent(i915, handle, 0, 4096 * 3,
-@@ -247,44 +259,42 @@ static void invalid_balancer(int i915)
- 		memcpy(engines.engines + 2, ci, count * sizeof(ci));
- 		p.size = (sizeof(struct i915_context_param_engines) +
- 			  (count + 2) * sizeof(*engines.engines));
--		gem_context_set_param(i915, &p);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), 0);
- 
- 		balancer.base.next_extension = 0;
- 		balancer.engine_index = 1;
- 		engines.extensions = to_user_pointer(&balancer);
--		gem_context_set_param(i915, &p);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), 0);
- 
- 		memcpy(ptr + 4096 - 8, &balancer, sizeof(balancer));
- 		memcpy(ptr + 8192 - 8, &balancer, sizeof(balancer));
- 		balancer.engine_index = 0;
- 
- 		engines.extensions = to_user_pointer(ptr) + 4096 - 8;
--		gem_context_set_param(i915, &p);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), 0);
- 
- 		balancer.base.next_extension = engines.extensions;
- 		engines.extensions = to_user_pointer(&balancer);
--		gem_context_set_param(i915, &p);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), 0);
- 
- 		munmap(ptr, 4096);
--		igt_assert_eq(__gem_context_set_param(i915, &p), -EFAULT);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), -EFAULT);
- 		engines.extensions = to_user_pointer(ptr) + 4096 - 8;
--		igt_assert_eq(__gem_context_set_param(i915, &p), -EFAULT);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), -EFAULT);
- 
- 		engines.extensions = to_user_pointer(ptr) + 8192 - 8;
--		gem_context_set_param(i915, &p);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), 0);
- 
- 		balancer.base.next_extension = engines.extensions;
- 		engines.extensions = to_user_pointer(&balancer);
--		gem_context_set_param(i915, &p);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), 0);
- 
- 		munmap(ptr + 8192, 4096);
--		igt_assert_eq(__gem_context_set_param(i915, &p), -EFAULT);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), -EFAULT);
- 		engines.extensions = to_user_pointer(ptr) + 8192 - 8;
--		igt_assert_eq(__gem_context_set_param(i915, &p), -EFAULT);
-+		igt_assert_eq(__set_param_fresh_context(i915, p), -EFAULT);
++	I915_DEFINE_CONTEXT_ENGINES_BOND(bond, 1);
+ 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 64);
+ 	struct drm_i915_gem_context_param p = {
+ 		.param = I915_CONTEXT_PARAM_ENGINES,
+@@ -295,6 +296,32 @@ static void invalid_balancer(int i915)
+ 		igt_assert_eq(__set_param_fresh_context(i915, p), -EFAULT);
  
  		munmap(ptr + 4096, 4096);
--
--		gem_context_destroy(i915, p.ctx_id);
++
++		if (count >= 2) {
++			/* You can't bond to a balanced engine */
++			memset(&bond, 0, sizeof(bond));
++			bond.base.name = I915_CONTEXT_ENGINES_EXT_BOND;
++			bond.master = ci[0];
++			bond.virtual_index = 0;
++			bond.num_bonds = 1;
++			bond.engines[0] = ci[1];
++
++			balancer.base.next_extension = to_user_pointer(&bond);
++			balancer.engine_index = 0;
++			balancer.num_siblings = count;
++			memcpy(balancer.engines, ci, count * sizeof(*ci));
++
++			memset(&engines, 0, sizeof(engines));
++			engines.engines[0].engine_class = I915_ENGINE_CLASS_INVALID;
++			engines.engines[0].engine_instance = I915_ENGINE_CLASS_INVALID_NONE;
++			engines.extensions = to_user_pointer(&balancer);
++
++			p.size = (sizeof(struct i915_context_param_engines) +
++				  sizeof(*engines.engines));
++
++			igt_assert_eq(__set_param_fresh_context(i915, p), -EINVAL);
++		}
++
  		free(ci);
  	}
  }
