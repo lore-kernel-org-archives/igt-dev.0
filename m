@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
- [IPv6:2607:f8b0:4864:20::1034])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 910DE89F8E
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 16:39:37 +0000 (UTC)
-Received: by mail-pj1-x1034.google.com with SMTP id
- mp5-20020a17090b1905b029016dd057935fso10428129pjb.5
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 09:39:37 -0700 (PDT)
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com
+ [IPv6:2607:f8b0:4864:20::52c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B7D089F99
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 16:39:40 +0000 (UTC)
+Received: by mail-pg1-x52c.google.com with SMTP id q15so9075461pgg.12
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 09:39:40 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 14 Jun 2021 11:38:54 -0500
-Message-Id: <20210614163902.366168-20-jason@jlekstrand.net>
+Date: Mon, 14 Jun 2021 11:38:56 -0500
+Message-Id: <20210614163902.366168-22-jason@jlekstrand.net>
 In-Reply-To: <20210614163704.365989-1-jason@jlekstrand.net>
 References: <20210614163704.365989-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 69/77] lib/i915: Rework engine API
- availability checks (v2)
+Subject: [igt-dev] [PATCH i-g-t 71/77] tests/i915/gem_ctx_param: Stop
+ setting VMs on old contexts
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,209 +27,63 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of relying on the context param, check for the device query or
-attempt to set engines as a create param.
-
-v2 (Jason Ekstrand):
- - Add a common gem_has_context_engines helper
-
-v3 (Jason Ekstrand):
- - Drop gem_has_context_engines and always check I915_QUERY_ENGINE_INFO
+We can still test all the same basic functionality, we just have to
+re-create the context more often.
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- lib/i915/gem_context.c         |  7 ++++---
- lib/i915/gem_engine_topology.c | 35 ++--------------------------------
- lib/i915/gem_engine_topology.h |  2 --
- tests/i915/gem_ctx_engines.c   | 11 +----------
- tests/i915/gem_exec_balancer.c | 11 +----------
- tests/i915/gem_exec_schedule.c | 11 +----------
- 6 files changed, 9 insertions(+), 68 deletions(-)
+ tests/i915/gem_ctx_param.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/lib/i915/gem_context.c b/lib/i915/gem_context.c
-index 7029f4f07..7cac66178 100644
---- a/lib/i915/gem_context.c
-+++ b/lib/i915/gem_context.c
-@@ -70,12 +70,13 @@ static int create_ext_ioctl(int i915,
- bool gem_has_contexts(int fd)
- {
- 	uint32_t ctx_id = 0;
+diff --git a/tests/i915/gem_ctx_param.c b/tests/i915/gem_ctx_param.c
+index c1b46a16c..54bf0cc96 100644
+--- a/tests/i915/gem_ctx_param.c
++++ b/tests/i915/gem_ctx_param.c
+@@ -162,6 +162,7 @@ static void test_vm(int i915)
+ 	struct drm_i915_gem_context_param arg = {
+ 		.param = I915_CONTEXT_PARAM_VM,
+ 	};
 +	int err;
+ 	uint32_t parent, child;
+ 	igt_spin_t *spin;
  
--	__gem_context_create(fd, &ctx_id);
--	if (ctx_id)
-+	err = __gem_context_create(fd, &ctx_id);
-+	if (!err)
- 		gem_context_destroy(fd, ctx_id);
- 
--	return ctx_id;
-+	return !err;
- }
- 
- /**
-diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-index 7c60daf07..969a8d2e3 100644
---- a/lib/i915/gem_engine_topology.c
-+++ b/lib/i915/gem_engine_topology.c
-@@ -86,20 +86,9 @@
-  * Limit what we support for simplicity due limitation in how much we
-  * can address via execbuf2.
-  */
--#define SIZEOF_CTX_PARAM	offsetof(struct i915_context_param_engines, \
--					 engines[GEM_MAX_ENGINES])
- #define SIZEOF_QUERY		offsetof(struct drm_i915_query_engine_info, \
- 					 engines[GEM_MAX_ENGINES])
- 
--#define DEFINE_CONTEXT_ENGINES_PARAM(e__, p__, c__, N__) \
--		I915_DEFINE_CONTEXT_PARAM_ENGINES(e__, N__); \
--		struct drm_i915_gem_context_param p__ = { \
--			.param = I915_CONTEXT_PARAM_ENGINES, \
--			.ctx_id = c__, \
--			.size = SIZEOF_CTX_PARAM, \
--			.value = to_user_pointer(memset(&e__, 0, sizeof(e__))), \
--		}
--
- static int __gem_query(int fd, struct drm_i915_query *q)
- {
- 	int err = 0;
-@@ -327,11 +316,8 @@ intel_engine_list_for_ctx_cfg(int fd, const intel_ctx_cfg_t *cfg)
-  */
- bool gem_has_engine_topology(int fd)
- {
--	struct drm_i915_gem_context_param param = {
--		.param = I915_CONTEXT_PARAM_ENGINES,
--	};
--
--	return !__gem_context_get_param(fd, &param);
-+	struct intel_engine_data ed;
-+	return !__query_engine_list(fd, &ed);
- }
- 
- struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags)
-@@ -360,23 +346,6 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags)
- 	return e2__;
- }
- 
--bool gem_context_has_engine_map(int fd, uint32_t ctx)
--{
--	struct drm_i915_gem_context_param param = {
--		.param = I915_CONTEXT_PARAM_ENGINES,
--		.ctx_id = ctx
--	};
--
--	/*
--	 * If the kernel is too old to support PARAM_ENGINES,
--	 * then naturally the context has no engine map.
--	 */
--	if (__gem_context_get_param(fd, &param))
--		return false;
--
--	return param.size;
--}
--
- bool gem_engine_is_equal(const struct intel_execution_engine2 *e1,
- 			 const struct intel_execution_engine2 *e2)
- {
-diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
-index 991d0ff85..4cfab560b 100644
---- a/lib/i915/gem_engine_topology.h
-+++ b/lib/i915/gem_engine_topology.h
-@@ -61,8 +61,6 @@ intel_get_current_physical_engine(struct intel_engine_data *ed);
- 
- void intel_next_engine(struct intel_engine_data *ed);
- 
--bool gem_context_has_engine_map(int fd, uint32_t ctx);
--
- bool gem_engine_is_equal(const struct intel_execution_engine2 *e1,
- 			 const struct intel_execution_engine2 *e2);
- 
-diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
-index caa97774c..bd622b0e5 100644
---- a/tests/i915/gem_ctx_engines.c
-+++ b/tests/i915/gem_ctx_engines.c
-@@ -46,15 +46,6 @@
- #define engine_class(e, n) ((e)->engines[(n)].engine_class)
- #define engine_instance(e, n) ((e)->engines[(n)].engine_instance)
- 
--static bool has_context_engines(int i915)
--{
--	struct drm_i915_gem_context_param param = {
--		.ctx_id = 0,
--		.param = I915_CONTEXT_PARAM_ENGINES,
--	};
--	return __gem_context_set_param(i915, &param) == 0;
--}
--
- static void invalid_engines(int i915)
- {
- 	struct i915_context_param_engines stack = {}, *engines;
-@@ -561,7 +552,7 @@ igt_main
- 		igt_require_gem(i915);
- 
- 		gem_require_contexts(i915);
--		igt_require(has_context_engines(i915));
-+		igt_require(gem_has_engine_topology(i915));
- 
- 		igt_fork_hang_detector(i915);
- 	}
-diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index 4b4cfdea0..46cc53cce 100644
---- a/tests/i915/gem_exec_balancer.c
-+++ b/tests/i915/gem_exec_balancer.c
-@@ -2779,15 +2779,6 @@ static bool has_persistence(int i915)
- 	return __gem_context_set_param(i915, &p) == 0;
- }
- 
--static bool has_context_engines(int i915)
--{
--	struct drm_i915_gem_context_param p = {
--		.param = I915_CONTEXT_PARAM_ENGINES,
--	};
--
--	return __gem_context_set_param(i915, &p) == 0;
--}
--
- static bool has_load_balancer(int i915)
- {
- 	const intel_ctx_cfg_t cfg = {
-@@ -2812,7 +2803,7 @@ igt_main
- 		igt_require_gem(i915);
- 
- 		gem_require_contexts(i915);
--		igt_require(has_context_engines(i915));
-+		igt_require(gem_has_engine_topology(i915));
- 		igt_require(has_load_balancer(i915));
- 		igt_require(has_perf_engines(i915));
- 
-diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-index d8397aeab..b38b98597 100644
---- a/tests/i915/gem_exec_schedule.c
-+++ b/tests/i915/gem_exec_schedule.c
-@@ -1661,15 +1661,6 @@ static void preempt_queue(int fd, const intel_ctx_cfg_t *cfg,
- 	}
- }
- 
--static bool has_context_engines(int i915)
--{
--	struct drm_i915_gem_context_param param = {
--		.ctx_id = 0,
--		.param = I915_CONTEXT_PARAM_ENGINES,
--	};
--	return __gem_context_set_param(i915, &param) == 0;
--}
--
- static void preempt_engines(int i915,
- 			    const struct intel_execution_engine2 *e,
- 			    unsigned int flags)
-@@ -1690,7 +1681,7 @@ static void preempt_engines(int i915,
- 	 * timeline that we can reprioritise and shuffle amongst themselves.
+@@ -174,8 +175,11 @@ static void test_vm(int i915)
+ 	 * in the next context that shared the VM.
  	 */
  
--	igt_require(has_context_engines(i915));
-+	igt_require(gem_has_engine_topology(i915));
++	arg.ctx_id = gem_context_create(i915);
+ 	arg.value = -1ull;
+-	igt_require(__gem_context_set_param(i915, &arg) == -ENOENT);
++	err = __gem_context_set_param(i915, &arg);
++	gem_context_destroy(i915, arg.ctx_id);
++	igt_require(err == -ENOENT);
  
- 	for (int n = 0; n < GEM_MAX_ENGINES; n++) {
- 		cfg.engines[n].engine_class = e->class;
+ 	parent = gem_context_create(i915);
+ 	child = gem_context_create(i915);
+@@ -199,6 +203,7 @@ static void test_vm(int i915)
+ 	batch.offset = 0;
+ 	gem_execbuf(i915, &eb);
+ 	igt_assert_eq_u64(batch.offset, 0);
++	gem_context_destroy(i915, child);
+ 
+ 	eb.rsvd1 = parent;
+ 	gem_execbuf(i915, &eb);
+@@ -206,14 +211,9 @@ static void test_vm(int i915)
+ 
+ 	arg.ctx_id = parent;
+ 	gem_context_get_param(i915, &arg);
+-	gem_context_set_param(i915, &arg);
+-
+-	/* Still the same VM, so expect the old VMA again */
+-	batch.offset = 0;
+-	gem_execbuf(i915, &eb);
+-	igt_assert_eq_u64(batch.offset, nonzero_offset);
+ 
+ 	/* Note: changing an active ctx->vm may be verboten */
++	child = gem_context_create(i915);
+ 	arg.ctx_id = child;
+ 	if (__gem_context_set_param(i915, &arg) != -EBUSY) {
+ 		eb.rsvd1 = child;
 -- 
 2.31.1
 
