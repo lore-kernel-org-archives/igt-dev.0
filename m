@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
- [IPv6:2607:f8b0:4864:20::102a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A118C89EB1
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 16:39:07 +0000 (UTC)
-Received: by mail-pj1-x102a.google.com with SMTP id h16so10043789pjv.2
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 09:39:07 -0700 (PDT)
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
+ [IPv6:2607:f8b0:4864:20::434])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC4DD89ED3
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 16:39:09 +0000 (UTC)
+Received: by mail-pf1-x434.google.com with SMTP id c12so10959031pfl.3
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 09:39:09 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 14 Jun 2021 11:38:35 -0500
-Message-Id: <20210614163902.366168-1-jason@jlekstrand.net>
+Date: Mon, 14 Jun 2021 11:38:36 -0500
+Message-Id: <20210614163902.366168-2-jason@jlekstrand.net>
 In-Reply-To: <20210614163704.365989-1-jason@jlekstrand.net>
 References: <20210614163704.365989-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 50/77] tests/i915/gem_exec_balancer: Drop
- bonded tests
+Subject: [igt-dev] [PATCH i-g-t 51/77] lib/intel_ctx: Add load balancing
+ support (v2)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,399 +20,113 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Support for combining bonding and balancing is being removed from i915
-because it's not used by media.
----
- tests/i915/gem_exec_balancer.c | 330 ---------------------------------
- 1 file changed, 330 deletions(-)
-
-diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index b928c1b32..2f198e89c 100644
---- a/tests/i915/gem_exec_balancer.c
-+++ b/tests/i915/gem_exec_balancer.c
-@@ -124,21 +124,6 @@ static bool has_perf_engines(int i915)
- 	return i915_perf_type_id(i915);
- }
- 
--static int __set_vm(int i915, uint32_t ctx, uint32_t vm)
--{
--	struct drm_i915_gem_context_param p = {
--		.ctx_id = ctx,
--		.param = I915_CONTEXT_PARAM_VM,
--		.value = vm
--	};
--	return __gem_context_set_param(i915, &p);
--}
--
--static void set_vm(int i915, uint32_t ctx, uint32_t vm)
--{
--	igt_assert_eq(__set_vm(i915, ctx, vm), 0);
--}
--
- static int __set_engines(int i915, uint32_t ctx,
- 			 const struct i915_engine_class_instance *ci,
- 			 unsigned int count)
-@@ -485,31 +470,6 @@ static double measure_min_load(int pmu, unsigned int num, int period_us)
- 	return min / (double)d_t;
- }
- 
--static void measure_all_load(int pmu, double *v, unsigned int num, int period_us)
--{
--	uint64_t data[2 + num];
--	uint64_t d_t, d_v[num];
--
--	kick_kthreads();
--
--	igt_assert_eq(read(pmu, data, sizeof(data)), sizeof(data));
--	for (unsigned int n = 0; n < num; n++)
--		d_v[n] = -data[2 + n];
--	d_t = -data[1];
--
--	usleep(period_us);
--
--	igt_assert_eq(read(pmu, data, sizeof(data)), sizeof(data));
--
--	d_t += data[1];
--	for (unsigned int n = 0; n < num; n++) {
--		d_v[n] += data[2 + n];
--		igt_debug("engine[%d]: %.1f%%\n",
--			  n, d_v[n] / (double)d_t * 100);
--		v[n] = d_v[n] / (double)d_t;
--	}
--}
--
- static int
- add_pmu(int i915, int pmu, const struct i915_engine_class_instance *ci)
- {
-@@ -594,147 +554,6 @@ static void individual(int i915)
- 	gem_quiescent_gpu(i915);
- }
- 
--static void bonded(int i915, unsigned int flags)
--#define CORK 0x1
--{
--	I915_DEFINE_CONTEXT_ENGINES_BOND(bonds[16], 1);
--	struct i915_engine_class_instance *master_engines;
--	uint32_t vm;
--
--	/*
--	 * I915_CONTEXT_PARAM_ENGINE provides an extension that allows us
--	 * to specify which engine(s) to pair with a parallel (EXEC_SUBMIT)
--	 * request submitted to another engine.
--	 */
--
--	vm = gem_vm_create(i915);
--
--	memset(bonds, 0, sizeof(bonds));
--	for (int n = 0; n < ARRAY_SIZE(bonds); n++) {
--		bonds[n].base.name = I915_CONTEXT_ENGINES_EXT_BOND;
--		bonds[n].base.next_extension =
--			n ? to_user_pointer(&bonds[n - 1]) : 0;
--		bonds[n].num_bonds = 1;
--	}
--
--	for (int class = 0; class < 32; class++) {
--		struct i915_engine_class_instance *siblings;
--		unsigned int count, limit, *order;
--		uint32_t master, ctx;
--		int n;
--
--		siblings = list_engines(i915, 1u << class, &count);
--		if (!siblings)
--			continue;
--
--		if (count < 2) {
--			free(siblings);
--			continue;
--		}
--
--		master_engines = list_engines(i915, ~(1u << class), &limit);
--		master = gem_context_create_ext(i915, I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE, 0);
--		set_vm(i915, master, vm);
--		set_engines(i915, master, master_engines, limit);
--
--		limit = min(count, limit);
--		igt_assert(limit <= ARRAY_SIZE(bonds));
--		for (n = 0; n < limit; n++) {
--			bonds[n].master = master_engines[n];
--			bonds[n].engines[0] = siblings[n];
--		}
--
--		ctx = gem_context_create_ext(i915, I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE, 0);
--		set_vm(i915, master, vm);
--		set_engines(i915, master, master_engines, limit);
--		set_load_balancer(i915, ctx, siblings, count, &bonds[limit - 1]);
--
--		order = malloc(sizeof(*order) * 8 * limit);
--		igt_assert(order);
--		for (n = 0; n < limit; n++)
--			order[2 * limit - n - 1] = order[n] = n % limit;
--		memcpy(order + 2 * limit, order, 2 * limit * sizeof(*order));
--		memcpy(order + 4 * limit, order, 4 * limit * sizeof(*order));
--		igt_permute_array(order + 2 * limit, 6 * limit, igt_exchange_int);
--
--		for (n = 0; n < 8 * limit; n++) {
--			struct drm_i915_gem_execbuffer2 eb;
--			igt_spin_t *spin, *plug;
--			IGT_CORK_HANDLE(cork);
--			double v[limit];
--			int pmu[limit + 1];
--			int bond = order[n];
--
--			pmu[0] = -1;
--			for (int i = 0; i < limit; i++)
--				pmu[i] = add_pmu(i915, pmu[0], &siblings[i]);
--			pmu[limit] = add_pmu(i915,
--					     pmu[0], &master_engines[bond]);
--
--			igt_assert(siblings[bond].engine_class !=
--				   master_engines[bond].engine_class);
--
--			plug = NULL;
--			if (flags & CORK) {
--				plug = __igt_spin_new(i915,
--						      .ctx_id = master,
--						      .engine = bond,
--						      .dependency = igt_cork_plug(&cork, i915));
--			}
--
--			spin = __igt_spin_new(i915,
--					      .ctx_id = master,
--					      .engine = bond,
--					      .flags = IGT_SPIN_FENCE_OUT);
--
--			eb = spin->execbuf;
--			eb.rsvd1 = ctx;
--			eb.rsvd2 = spin->out_fence;
--			eb.flags = I915_EXEC_FENCE_SUBMIT;
--			gem_execbuf(i915, &eb);
--
--			if (plug) {
--				igt_cork_unplug(&cork);
--				igt_spin_free(i915, plug);
--			}
--
--			measure_all_load(pmu[0], v, limit + 1, 10000);
--			igt_spin_free(i915, spin);
--
--			igt_assert_f(v[bond] > 0.90,
--				     "engine %d (class:instance %s:%d) was found to be only %.1f%% busy\n",
--				     bond,
--				     class_to_str(siblings[bond].engine_class),
--				     siblings[bond].engine_instance,
--				     100 * v[bond]);
--			for (int other = 0; other < limit; other++) {
--				if (other == bond)
--					continue;
--
--				igt_assert_f(v[other] == 0,
--					     "engine %d (class:instance %s:%d) was not idle, and actually %.1f%% busy\n",
--					     other,
--					     class_to_str(siblings[other].engine_class),
--					     siblings[other].engine_instance,
--					     100 * v[other]);
--			}
--			igt_assert_f(v[limit] > 0.90,
--				     "master (class:instance %s:%d) was found to be only %.1f%% busy\n",
--				     class_to_str(master_engines[bond].engine_class),
--				     master_engines[bond].engine_instance,
--				     100 * v[limit]);
--
--			close(pmu[0]);
--		}
--
--		free(order);
--		gem_context_destroy(i915, master);
--		gem_context_destroy(i915, ctx);
--		free(master_engines);
--		free(siblings);
--	}
--}
--
- #define VIRTUAL_ENGINE (1u << 0)
- 
- static unsigned int offset_in_page(void *addr)
-@@ -1811,126 +1630,6 @@ static void indices(int i915)
- 	gem_quiescent_gpu(i915);
- }
- 
--static void __bonded_early(int i915,
--			   const struct i915_engine_class_instance *siblings,
--			   unsigned int count,
--			   unsigned int flags)
--{
--	I915_DEFINE_CONTEXT_ENGINES_BOND(bonds[count], 1);
--	uint32_t handle = batch_create(i915);
--	struct drm_i915_gem_exec_object2 batch = {
--		.handle = handle,
--	};
--	struct drm_i915_gem_execbuffer2 execbuf = {
--		.buffers_ptr = to_user_pointer(&batch),
--		.buffer_count = 1,
--	};
--	uint32_t vm, ctx;
--	igt_spin_t *spin;
--
--	memset(bonds, 0, sizeof(bonds));
--	for (int n = 0; n < ARRAY_SIZE(bonds); n++) {
--		bonds[n].base.name = I915_CONTEXT_ENGINES_EXT_BOND;
--		bonds[n].base.next_extension =
--			n ? to_user_pointer(&bonds[n - 1]) : 0;
--
--		bonds[n].master = siblings[n];
--		bonds[n].num_bonds = 1;
--		bonds[n].engines[0] = siblings[(n + 1) % count];
--	}
--
--	/* We share a VM so that the spin cancel will work without a reloc */
--	vm = gem_vm_create(i915);
--
--	ctx = gem_context_create(i915);
--	set_vm(i915, ctx, vm);
--	set_load_balancer(i915, ctx, siblings, count,
--			  flags & VIRTUAL_ENGINE ? &bonds : NULL);
--
--	/* A: spin forever on engine 1 */
--	spin = igt_spin_new(i915,
--			    .ctx_id = ctx,
--			    .engine = (flags & VIRTUAL_ENGINE) ? 0 : 1,
--			    .flags = IGT_SPIN_NO_PREEMPTION);
--
--	/* B: runs after A on engine 1 */
--	execbuf.rsvd1 = ctx;
--	execbuf.flags = I915_EXEC_FENCE_OUT;
--	execbuf.flags |= spin->execbuf.flags & 63;
--	gem_execbuf_wr(i915, &execbuf);
--
--	/* B': run in parallel with B on engine 2, i.e. not before A! */
--	execbuf.flags = I915_EXEC_FENCE_SUBMIT | I915_EXEC_FENCE_OUT;
--	if(!(flags & VIRTUAL_ENGINE))
--		execbuf.flags |= 2;
--	execbuf.rsvd2 >>= 32;
--	gem_execbuf_wr(i915, &execbuf);
--
--	/* C: prevent anything running on engine 2 after B' */
--	spin->execbuf.flags = execbuf.flags & 63;
--	gem_execbuf(i915, &spin->execbuf);
--
--	igt_debugfs_dump(i915, "i915_engine_info");
--
--	/* D: cancel the spinner from engine 2 (new context) */
--	gem_context_destroy(i915, ctx);
--	ctx = gem_context_create(i915);
--	set_vm(i915, ctx, vm);
--	set_load_balancer(i915, ctx, siblings, count,
--			  flags & VIRTUAL_ENGINE ? &bonds : NULL);
--	batch.handle = create_semaphore_to_spinner(i915, spin);
--	execbuf.rsvd1 = ctx;
--	execbuf.flags = 0;
--	if(!(flags & VIRTUAL_ENGINE))
--		execbuf.flags |= 2;
--	gem_execbuf(i915, &execbuf);
--	gem_close(i915, batch.handle);
--
--	/* If C runs before D, we never cancel the spinner and so hang */
--	gem_sync(i915, handle);
--
--	/* Check the bonded pair completed successfully */
--	igt_assert_eq(sync_fence_status(execbuf.rsvd2 & 0xffffffff), 1);
--	igt_assert_eq(sync_fence_status(execbuf.rsvd2 >> 32), 1);
--
--	close(execbuf.rsvd2);
--	close(execbuf.rsvd2 >> 32);
--
--	gem_context_destroy(i915, ctx);
--	gem_close(i915, handle);
--	igt_spin_free(i915, spin);
--}
--
--static void bonded_early(int i915)
--{
--	/*
--	 * Our goal is to start the bonded payloads at roughly the same time.
--	 * We do not want to start the secondary batch too early as it will
--	 * do nothing but hog the GPU until the first has a chance to execute.
--	 * So if we were to arbitrary delay the first by running it after a
--	 * spinner...
--	 *
--	 * By using a pair of spinners, we can create a bonded hog that when
--	 * set in motion will fully utilize both engines [if the scheduling is
--	 * incorrect]. We then use a third party submitted after the bonded
--	 * pair to cancel the spinner from the GPU -- if it is unable to run,
--	 * the spinner is never cancelled, and the bonded pair will cause a GPU
--	 * hang.
--	 */
--
--	for (int class = 0; class < 32; class++) {
--		struct i915_engine_class_instance *siblings;
--		unsigned int count;
--
--		siblings = list_engines(i915, 1u << class, &count);
--		if (count > 1) {
--			__bonded_early(i915, siblings, count, 0);
--			__bonded_early(i915, siblings, count, VIRTUAL_ENGINE);
--		}
--		free(siblings);
--	}
--}
--
- static void busy(int i915)
- {
- 	uint32_t scratch = gem_create(i915, 4096);
-@@ -3171,22 +2870,6 @@ static bool has_load_balancer(int i915)
- 	return err == 0;
- }
- 
--static bool has_bonding(int i915)
--{
--	I915_DEFINE_CONTEXT_ENGINES_BOND(bonds, 0) = {
--		.base.name = I915_CONTEXT_ENGINES_EXT_BOND,
--	};
--	struct i915_engine_class_instance ci = {};
--	uint32_t ctx;
--	int err;
--
--	ctx = gem_context_create(i915);
--	err = __set_load_balancer(i915, ctx, &ci, 1, &bonds);
--	gem_context_destroy(i915, ctx);
--
--	return err == 0;
--}
--
- igt_main
- {
- 	int i915 = -1;
-@@ -3258,19 +2941,6 @@ igt_main
- 	igt_subtest("smoke")
- 		smoketest(i915, 20);
- 
--	igt_subtest_group {
--		igt_fixture igt_require(has_bonding(i915));
--
--		igt_subtest("bonded-imm")
--			bonded(i915, 0);
--
--		igt_subtest("bonded-cork")
--			bonded(i915, CORK);
--
--		igt_subtest("bonded-early")
--			bonded_early(i915);
--	}
--
- 	igt_subtest("bonded-slice")
- 		bonded_slice(i915);
- 
--- 
-2.31.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+V2UgdXNlIHRoZSBzYW1lIGNvbnZlbnRpb24gYXMgdGhlIGxvYWQgYmFsYW5jaW5nIHRlc3RzIGFu
+ZCwgd2hlbgpiYWxhbmNpbmcgaXMgcmVxdWVzdGVkLCB3ZSBtYWtlIGEgY29udGV4dCB3aXRoIE4r
+MSBlbmdpbmVzIHdoZXJlIHRoZQpmaXJzdCBvbmUgaXMgdGhlIGJhbGFuY2VkIGVuZ2luZSBhbmQg
+dGhlIG90aGVycyBhcmUgcGh5c2ljYWwgZW5naW5lcy4KCnYyIChaYmlnbmlldyBLZW1wY3p5xYRz
+a2kpOgogLSBEb24ndCBpbml0aWFsaXplIG51bV9sb2dpY2FsX2VuZ2luZXMKIC0gVXNlIGlndF9h
+c3NlcnQoKSBpbnN0ZWFkIG9mIGFzc2VydCgpCgpTaWduZWQtb2ZmLWJ5OiBKYXNvbiBFa3N0cmFu
+ZCA8amFzb25Aamxla3N0cmFuZC5uZXQ+ClJldmlld2VkLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRz
+a2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KLS0tCiBsaWIvaTkxNS9nZW1fZW5n
+aW5lX3RvcG9sb2d5LmMgfCAyNyArKysrKysrKysrKysrKy0tLS0KIGxpYi9pbnRlbF9jdHguYyAg
+ICAgICAgICAgICAgICB8IDUwICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0KIGxp
+Yi9pbnRlbF9jdHguaCAgICAgICAgICAgICAgICB8ICAyICsrCiAzIGZpbGVzIGNoYW5nZWQsIDY5
+IGluc2VydGlvbnMoKyksIDEwIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xpYi9pOTE1L2dl
+bV9lbmdpbmVfdG9wb2xvZ3kuYyBiL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYwppbmRl
+eCA1MGY0YmRlNzEuLjRiYjdkMjFmNiAxMDA2NDQKLS0tIGEvbGliL2k5MTUvZ2VtX2VuZ2luZV90
+b3BvbG9neS5jCisrKyBiL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYwpAQCAtMzEyLDEy
+ICszMTIsMjcgQEAgaW50ZWxfZW5naW5lX2xpc3RfZm9yX2N0eF9jZmcoaW50IGZkLCBjb25zdCBp
+bnRlbF9jdHhfY2ZnX3QgKmNmZykKIAkJc3RydWN0IGludGVsX2VuZ2luZV9kYXRhIGVuZ2luZV9k
+YXRhID0geyB9OwogCQlpbnQgaTsKIAotCQllbmdpbmVfZGF0YS5uZW5naW5lcyA9IGNmZy0+bnVt
+X2VuZ2luZXM7Ci0JCWZvciAoaSA9IDA7IGkgPCBjZmctPm51bV9lbmdpbmVzOyBpKyspCi0JCQlp
+bml0X2VuZ2luZSgmZW5naW5lX2RhdGEuZW5naW5lc1tpXSwKLQkJCQkgICAgY2ZnLT5lbmdpbmVz
+W2ldLmVuZ2luZV9jbGFzcywKLQkJCQkgICAgY2ZnLT5lbmdpbmVzW2ldLmVuZ2luZV9pbnN0YW5j
+ZSwKLQkJCQkgICAgaSk7CisJCWlmIChjZmctPmxvYWRfYmFsYW5jZSkgeworCQkJZW5naW5lX2Rh
+dGEubmVuZ2luZXMgPSBjZmctPm51bV9lbmdpbmVzICsgMTsKKworCQkJaW5pdF9lbmdpbmUoJmVu
+Z2luZV9kYXRhLmVuZ2luZXNbMF0sCisJCQkJICAgIEk5MTVfRU5HSU5FX0NMQVNTX0lOVkFMSUQs
+CisJCQkJICAgIEk5MTVfRU5HSU5FX0NMQVNTX0lOVkFMSURfTk9ORSwKKwkJCQkgICAgMCk7CisK
+KwkJCWZvciAoaSA9IDA7IGkgPCBjZmctPm51bV9lbmdpbmVzOyBpKyspCisJCQkJaW5pdF9lbmdp
+bmUoJmVuZ2luZV9kYXRhLmVuZ2luZXNbaSArIDFdLAorCQkJCQkgICAgY2ZnLT5lbmdpbmVzW2ld
+LmVuZ2luZV9jbGFzcywKKwkJCQkJICAgIGNmZy0+ZW5naW5lc1tpXS5lbmdpbmVfaW5zdGFuY2Us
+CisJCQkJCSAgICBpICsgMSk7CisJCX0gZWxzZSB7CisJCQllbmdpbmVfZGF0YS5uZW5naW5lcyA9
+IGNmZy0+bnVtX2VuZ2luZXM7CisJCQlmb3IgKGkgPSAwOyBpIDwgY2ZnLT5udW1fZW5naW5lczsg
+aSsrKQorCQkJCWluaXRfZW5naW5lKCZlbmdpbmVfZGF0YS5lbmdpbmVzW2ldLAorCQkJCQkgICAg
+Y2ZnLT5lbmdpbmVzW2ldLmVuZ2luZV9jbGFzcywKKwkJCQkJICAgIGNmZy0+ZW5naW5lc1tpXS5l
+bmdpbmVfaW5zdGFuY2UsCisJCQkJCSAgICBpKTsKKwkJfQogCiAJCXJldHVybiBlbmdpbmVfZGF0
+YTsKIAl9IGVsc2UgewpkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2N0eC5jIGIvbGliL2ludGVsX2N0
+eC5jCmluZGV4IDVjYThiNDUzNC4uNTQ5NWZhNzY0IDEwMDY0NAotLS0gYS9saWIvaW50ZWxfY3R4
+LmMKKysrIGIvbGliL2ludGVsX2N0eC5jCkBAIC04Miw2ICs4Miw3IEBAIHN0YXRpYyBpbnQKIF9f
+Y29udGV4dF9jcmVhdGVfY2ZnKGludCBmZCwgY29uc3QgaW50ZWxfY3R4X2NmZ190ICpjZmcsIHVp
+bnQzMl90ICpjdHhfaWQpCiB7CiAJdWludDY0X3QgZXh0X3Jvb3QgPSAwOworCUk5MTVfREVGSU5F
+X0NPTlRFWFRfRU5HSU5FU19MT0FEX0JBTEFOQ0UoYmFsYW5jZSwgR0VNX01BWF9FTkdJTkVTKTsK
+IAlJOTE1X0RFRklORV9DT05URVhUX1BBUkFNX0VOR0lORVMoZW5naW5lcywgR0VNX01BWF9FTkdJ
+TkVTKTsKIAlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2NvbnRleHRfY3JlYXRlX2V4dF9zZXRwYXJhbSBl
+bmdpbmVzX3BhcmFtLCB2bV9wYXJhbTsKIAlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2NvbnRleHRfY3Jl
+YXRlX2V4dF9zZXRwYXJhbSBwZXJzaXN0X3BhcmFtOwpAQCAtMTEzLDkgKzExNCwzOSBAQCBfX2Nv
+bnRleHRfY3JlYXRlX2NmZyhpbnQgZmQsIGNvbnN0IGludGVsX2N0eF9jZmdfdCAqY2ZnLCB1aW50
+MzJfdCAqY3R4X2lkKQogCX0KIAogCWlmIChjZmctPm51bV9lbmdpbmVzKSB7CisJCXVuc2lnbmVk
+IG51bV9sb2dpY2FsX2VuZ2luZXM7CiAJCW1lbXNldCgmZW5naW5lcywgMCwgc2l6ZW9mKGVuZ2lu
+ZXMpKTsKLQkJZm9yIChpID0gMDsgaSA8IGNmZy0+bnVtX2VuZ2luZXM7IGkrKykKLQkJCWVuZ2lu
+ZXMuZW5naW5lc1tpXSA9IGNmZy0+ZW5naW5lc1tpXTsKKworCQlpZiAoY2ZnLT5sb2FkX2JhbGFu
+Y2UpIHsKKwkJCW1lbXNldCgmYmFsYW5jZSwgMCwgc2l6ZW9mKGJhbGFuY2UpKTsKKworCQkJLyog
+SW4gdGhpcyBjYXNlLCB0aGUgZmlyc3QgZW5naW5lIGlzIHRoZSB2aXJ0dWFsCisJCQkgKiBiYWxh
+bmNlZCBlbmdpbmUgYW5kIHRoZSBzdWJzZXF1ZW50IGVuZ2luZXMgYXJlCisJCQkgKiB0aGUgYWN0
+dWFsIHJlcXVlc3RlZCBlbmdpbmVzLgorCQkJICovCisJCQlpZ3RfYXNzZXJ0KGNmZy0+bnVtX2Vu
+Z2luZXMgKyAxIDw9IEdFTV9NQVhfRU5HSU5FUyk7CisJCQludW1fbG9naWNhbF9lbmdpbmVzID0g
+Y2ZnLT5udW1fZW5naW5lcyArIDE7CisKKwkJCWVuZ2luZXMuZW5naW5lc1swXS5lbmdpbmVfY2xh
+c3MgPQorCQkJCUk5MTVfRU5HSU5FX0NMQVNTX0lOVkFMSUQ7CisJCQllbmdpbmVzLmVuZ2luZXNb
+MF0uZW5naW5lX2luc3RhbmNlID0KKwkJCQlJOTE1X0VOR0lORV9DTEFTU19JTlZBTElEX05PTkU7
+CisKKwkJCWJhbGFuY2UubnVtX3NpYmxpbmdzID0gY2ZnLT5udW1fZW5naW5lczsKKwkJCWZvciAo
+aSA9IDA7IGkgPCBjZmctPm51bV9lbmdpbmVzOyBpKyspIHsKKwkJCQlpZ3RfYXNzZXJ0X2VxKGNm
+Zy0+ZW5naW5lc1swXS5lbmdpbmVfY2xhc3MsCisJCQkJCSAgICAgIGNmZy0+ZW5naW5lc1tpXS5l
+bmdpbmVfY2xhc3MpOworCQkJCWJhbGFuY2UuZW5naW5lc1tpXSA9IGNmZy0+ZW5naW5lc1tpXTsK
+KwkJCQllbmdpbmVzLmVuZ2luZXNbaSArIDFdID0gY2ZnLT5lbmdpbmVzW2ldOworCQkJfQorCisJ
+CQllbmdpbmVzLmV4dGVuc2lvbnMgPSB0b191c2VyX3BvaW50ZXIoJmJhbGFuY2UpOworCQl9IGVs
+c2UgeworCQkJaWd0X2Fzc2VydChjZmctPm51bV9lbmdpbmVzIDw9IEdFTV9NQVhfRU5HSU5FUyk7
+CisJCQludW1fbG9naWNhbF9lbmdpbmVzID0gY2ZnLT5udW1fZW5naW5lczsKKwkJCWZvciAoaSA9
+IDA7IGkgPCBjZmctPm51bV9lbmdpbmVzOyBpKyspCisJCQkJZW5naW5lcy5lbmdpbmVzW2ldID0g
+Y2ZnLT5lbmdpbmVzW2ldOworCQl9CiAKIAkJZW5naW5lc19wYXJhbSA9IChzdHJ1Y3QgZHJtX2k5
+MTVfZ2VtX2NvbnRleHRfY3JlYXRlX2V4dF9zZXRwYXJhbSkgewogCQkJLmJhc2UgPSB7CkBAIC0x
+MjMsMTEgKzE1NCwxMyBAQCBfX2NvbnRleHRfY3JlYXRlX2NmZyhpbnQgZmQsIGNvbnN0IGludGVs
+X2N0eF9jZmdfdCAqY2ZnLCB1aW50MzJfdCAqY3R4X2lkKQogCQkJfSwKIAkJCS5wYXJhbSA9IHsK
+IAkJCQkucGFyYW0gPSBJOTE1X0NPTlRFWFRfUEFSQU1fRU5HSU5FUywKLQkJCQkuc2l6ZSA9IHNp
+emVvZl9wYXJhbV9lbmdpbmVzKGNmZy0+bnVtX2VuZ2luZXMpLAorCQkJCS5zaXplID0gc2l6ZW9m
+X3BhcmFtX2VuZ2luZXMobnVtX2xvZ2ljYWxfZW5naW5lcyksCiAJCQkJLnZhbHVlID0gdG9fdXNl
+cl9wb2ludGVyKCZlbmdpbmVzKSwKIAkJCX0sCiAJCX07CiAJCWFkZF91c2VyX2V4dCgmZXh0X3Jv
+b3QsICZlbmdpbmVzX3BhcmFtLmJhc2UpOworCX0gZWxzZSB7CisJCWlndF9hc3NlcnQoIWNmZy0+
+bG9hZF9iYWxhbmNlKTsKIAl9CiAKIAlyZXR1cm4gX19nZW1fY29udGV4dF9jcmVhdGVfZXh0KGZk
+LCBjZmctPmZsYWdzLCBleHRfcm9vdCwgY3R4X2lkKTsKQEAgLTI1OSw3ICsyOTIsMTYgQEAgdm9p
+ZCBpbnRlbF9jdHhfZGVzdHJveShpbnQgZmQsIGNvbnN0IGludGVsX2N0eF90ICpjdHgpCiAgKi8K
+IHVuc2lnbmVkIGludCBpbnRlbF9jdHhfZW5naW5lX2NsYXNzKGNvbnN0IGludGVsX2N0eF90ICpj
+dHgsIHVuc2lnbmVkIGludCBlbmdpbmUpCiB7Ci0JaWYgKGN0eC0+Y2ZnLm51bV9lbmdpbmVzKSB7
+CisJaWYgKGN0eC0+Y2ZnLmxvYWRfYmFsYW5jZSkgeworCQlpZiAoZW5naW5lID09IDApIHsKKwkJ
+CS8qIFRoaXMgaXMgb3VyIHZpcnR1YWwgZW5naW5lICovCisJCQlyZXR1cm4gY3R4LT5jZmcuZW5n
+aW5lc1swXS5lbmdpbmVfY2xhc3M7CisJCX0gZWxzZSB7CisJCQkvKiBUaGlzIGlzIGEgcGh5c2lj
+YWwgZW5naW5lICovCisJCQlpZ3RfYXNzZXJ0KGVuZ2luZSAtIDEgPCBjdHgtPmNmZy5udW1fZW5n
+aW5lcyk7CisJCQlyZXR1cm4gY3R4LT5jZmcuZW5naW5lc1tlbmdpbmUgLSAxXS5lbmdpbmVfY2xh
+c3M7CisJCX0KKwl9IGVsc2UgaWYgKGN0eC0+Y2ZnLm51bV9lbmdpbmVzKSB7CiAJCWlndF9hc3Nl
+cnQoZW5naW5lIDwgY3R4LT5jZmcubnVtX2VuZ2luZXMpOwogCQlyZXR1cm4gY3R4LT5jZmcuZW5n
+aW5lc1tlbmdpbmVdLmVuZ2luZV9jbGFzczsKIAl9IGVsc2UgewpkaWZmIC0tZ2l0IGEvbGliL2lu
+dGVsX2N0eC5oIGIvbGliL2ludGVsX2N0eC5oCmluZGV4IGUzNGNlZmMxNC4uZDRjYjQzNWE3IDEw
+MDY0NAotLS0gYS9saWIvaW50ZWxfY3R4LmgKKysrIGIvbGliL2ludGVsX2N0eC5oCkBAIC0xNyw2
+ICsxNyw3IEBACiAgKiBAZmxhZ3M6IENvbnRleHQgY3JlYXRlIGZsYWdzCiAgKiBAdm06IFZNIHRv
+IGluaGVyaXQgb3IgMCBmb3IgdXNpbmcgYSBwZXItY29udGV4dCBWTQogICogQG5vcGVyc2lzdDog
+c2V0IEk5MTVfQ09OVEVYVF9QQVJBTV9QRVJTSVNURU5DRSB0byAwCisgKiBAbG9hZF9iYWxhbmNl
+OiBUcnVlIGlmIHRoZSBmaXJzdCBlbmdpbmUgc2hvdWxkIGJlIGEgbG9hZCBiYWxhbmNpbmcgZW5n
+aW5lCiAgKiBAbnVtX2VuZ2luZXM6IE51bWJlciBvZiBjbGllbnQtc3BlY2lmaWVkIGVuZ2luZXMg
+b3IgMCBmb3IgbGVnYWN5IG1vZGUKICAqIEBlbmdpbmVzOiBDbGllbnQtc3BlY2lmaWVkIGVuZ2lu
+ZXMKICAqCkBAIC00NCw2ICs0NSw3IEBAIHR5cGVkZWYgc3RydWN0IGludGVsX2N0eF9jZmcgewog
+CXVpbnQzMl90IGZsYWdzOwogCXVpbnQzMl90IHZtOwogCWJvb2wgbm9wZXJzaXN0OworCWJvb2wg
+bG9hZF9iYWxhbmNlOwogCXVuc2lnbmVkIGludCBudW1fZW5naW5lczsKIAlzdHJ1Y3QgaTkxNV9l
+bmdpbmVfY2xhc3NfaW5zdGFuY2UgZW5naW5lc1tHRU1fTUFYX0VOR0lORVNdOwogfSBpbnRlbF9j
+dHhfY2ZnX3Q7Ci0tIAoyLjMxLjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0
+LWRldgo=
