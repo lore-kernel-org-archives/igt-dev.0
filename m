@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
- [IPv6:2607:f8b0:4864:20::1031])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8391A89F6E
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 16:37:39 +0000 (UTC)
-Received: by mail-pj1-x1031.google.com with SMTP id
- m13-20020a17090b068db02901656cc93a75so10434743pjz.3
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 09:37:39 -0700 (PDT)
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
+ [IPv6:2607:f8b0:4864:20::62a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D57089F4F
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 16:37:38 +0000 (UTC)
+Received: by mail-pl1-x62a.google.com with SMTP id e7so6872911plj.7
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 09:37:38 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 14 Jun 2021 11:36:32 -0500
-Message-Id: <20210614163704.365989-18-jason@jlekstrand.net>
+Date: Mon, 14 Jun 2021 11:36:31 -0500
+Message-Id: <20210614163704.365989-17-jason@jlekstrand.net>
 In-Reply-To: <20210614163704.365989-1-jason@jlekstrand.net>
 References: <20210614163704.365989-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 17/77] tests/prime_busy: Convert to
+Subject: [igt-dev] [PATCH i-g-t 16/77] tests/i915/gem_ringfill: Convert to
  intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -21,56 +20,179 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-U2lnbmVkLW9mZi1ieTogSmFzb24gRWtzdHJhbmQgPGphc29uQGpsZWtzdHJhbmQubmV0PgpSZXZp
-ZXdlZC1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRl
-bC5jb20+Ci0tLQogdGVzdHMvcHJpbWVfYnVzeS5jIHwgMTkgKysrKysrKysrKysrLS0tLS0tLQog
-MSBmaWxlIGNoYW5nZWQsIDEyIGluc2VydGlvbnMoKyksIDcgZGVsZXRpb25zKC0pCgpkaWZmIC0t
-Z2l0IGEvdGVzdHMvcHJpbWVfYnVzeS5jIGIvdGVzdHMvcHJpbWVfYnVzeS5jCmluZGV4IDhiZjUw
-ZWFmZS4uZTI2ODQ4Mzc1IDEwMDY0NAotLS0gYS90ZXN0cy9wcmltZV9idXN5LmMKKysrIGIvdGVz
-dHMvcHJpbWVfYnVzeS5jCkBAIC00MCw3ICs0MCw3IEBAIHN0YXRpYyBib29sIHByaW1lX2J1c3ko
-c3RydWN0IHBvbGxmZCAqcGZkLCBib29sIGV4Y2wpCiAjZGVmaW5lIEhBTkcgMHg0CiAjZGVmaW5l
-IFBPTEwgMHg4CiAKLXN0YXRpYyB2b2lkIGJ1c3koaW50IGZkLCB1bnNpZ25lZCByaW5nLCB1bnNp
-Z25lZCBmbGFncykKK3N0YXRpYyB2b2lkIGJ1c3koaW50IGZkLCBjb25zdCBpbnRlbF9jdHhfdCAq
-Y3R4LCB1bnNpZ25lZCByaW5nLCB1bnNpZ25lZCBmbGFncykKIHsKIAljb25zdCBpbnQgZ2VuID0g
-aW50ZWxfZ2VuKGludGVsX2dldF9kcm1fZGV2aWQoZmQpKTsKIAljb25zdCB1aW50MzJfdCBfYmJl
-ID0gTUlfQkFUQ0hfQlVGRkVSX0VORDsKQEAgLTYzLDYgKzYzLDcgQEAgc3RhdGljIHZvaWQgYnVz
-eShpbnQgZmQsIHVuc2lnbmVkIHJpbmcsIHVuc2lnbmVkIGZsYWdzKQogCWV4ZWNidWYuZmxhZ3Mg
-PSByaW5nOwogCWlmIChnZW4gPCA2KQogCQlleGVjYnVmLmZsYWdzIHw9IEk5MTVfRVhFQ19TRUNV
-UkU7CisJZXhlY2J1Zi5yc3ZkMSA9IGN0eC0+aWQ7CiAKIAltZW1zZXQob2JqLCAwLCBzaXplb2Yo
-b2JqKSk7CiAJb2JqW1NDUkFUQ0hdLmhhbmRsZSA9IGdlbV9jcmVhdGUoZmQsIDQwOTYpOwpAQCAt
-MTg2LDcgKzE4Nyw3IEBAIHN0YXRpYyB2b2lkIGJ1c3koaW50IGZkLCB1bnNpZ25lZCByaW5nLCB1
-bnNpZ25lZCBmbGFncykKIAljbG9zZShwZmRbU0NSQVRDSF0uZmQpOwogfQogCi1zdGF0aWMgdm9p
-ZCB0ZXN0X21vZGUoaW50IGZkLCB1bnNpZ25lZCBpbnQgZmxhZ3MpCitzdGF0aWMgdm9pZCB0ZXN0
-X21vZGUoaW50IGZkLCBjb25zdCBpbnRlbF9jdHhfdCAqY3R4LCB1bnNpZ25lZCBpbnQgZmxhZ3Mp
-CiB7CiAJY29uc3Qgc3RydWN0IGludGVsX2V4ZWN1dGlvbl9lbmdpbmUyICplOwogCWlndF9oYW5n
-X3QgaGFuZyA9IHt9OwpAQCAtMTk2LDcgKzE5Nyw3IEBAIHN0YXRpYyB2b2lkIHRlc3RfbW9kZShp
-bnQgZmQsIHVuc2lnbmVkIGludCBmbGFncykKIAllbHNlCiAJCWhhbmcgPSBpZ3RfYWxsb3dfaGFu
-ZyhmZCwgMCwgMCk7CiAKLQlfX2Zvcl9lYWNoX3BoeXNpY2FsX2VuZ2luZShmZCwgZSkgeworCWZv
-cl9lYWNoX2N0eF9lbmdpbmUoZmQsIGN0eCwgZSkgewogCQlpZiAoIWdlbV9jbGFzc19jYW5fc3Rv
-cmVfZHdvcmQoZmQsIGUtPmNsYXNzKSkKIAkJCWNvbnRpbnVlOwogCkBAIC0yMDQsNyArMjA1LDcg
-QEAgc3RhdGljIHZvaWQgdGVzdF9tb2RlKGludCBmZCwgdW5zaWduZWQgaW50IGZsYWdzKQogCQkJ
-Y29udGludWU7CiAKIAkJaWd0X2R5bmFtaWNfZigiJXMiLCBlLT5uYW1lKQotCQkJYnVzeShmZCwg
-ZS0+ZmxhZ3MsIGZsYWdzKTsKKwkJCWJ1c3koZmQsIGN0eCwgZS0+ZmxhZ3MsIGZsYWdzKTsKIAl9
-CiAKIAlpZiAoKGZsYWdzICYgSEFORykgPT0gMCkKQEAgLTIxNSwxMSArMjE2LDEzIEBAIHN0YXRp
-YyB2b2lkIHRlc3RfbW9kZShpbnQgZmQsIHVuc2lnbmVkIGludCBmbGFncykKIAogaWd0X21haW4K
-IHsKKwljb25zdCBpbnRlbF9jdHhfdCAqY3R4OwogCWludCBmZCA9IC0xOwogCiAJaWd0X2ZpeHR1
-cmUgewogCQlmZCA9IGRybV9vcGVuX2RyaXZlcl9tYXN0ZXIoRFJJVkVSX0lOVEVMKTsKIAkJaWd0
-X3JlcXVpcmVfZ2VtKGZkKTsKKwkJY3R4ID0gaW50ZWxfY3R4X2NyZWF0ZV9hbGxfcGh5c2ljYWwo
-ZmQpOwogCX0KIAogCWlndF9zdWJ0ZXN0X2dyb3VwIHsKQEAgLTIzOCwxMyArMjQxLDE1IEBAIGln
-dF9tYWluCiAKIAkJZm9yIChjb25zdCBzdHJ1Y3QgbW9kZSAqbSA9IG1vZGVzOyBtLT5uYW1lOyBt
-KyspIHsKIAkJCWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYyhtLT5uYW1lKQotCQkJCXRlc3RfbW9k
-ZShmZCwgbS0+ZmxhZ3MpOworCQkJCXRlc3RfbW9kZShmZCwgY3R4LCBtLT5mbGFncyk7CiAKIAkJ
-CWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pY19mKCIlcy13YWl0IiwgbS0+bmFtZSkKLQkJCQl0ZXN0
-X21vZGUoZmQsIG0tPmZsYWdzIHwgUE9MTCk7CisJCQkJdGVzdF9tb2RlKGZkLCBjdHgsIG0tPmZs
-YWdzIHwgUE9MTCk7CiAJCX0KIAl9CiAKLQlpZ3RfZml4dHVyZQorCWlndF9maXh0dXJlIHsKKwkJ
-aW50ZWxfY3R4X2Rlc3Ryb3koZmQsIGN0eCk7CiAJCWNsb3NlKGZkKTsKKwl9CiB9Ci0tIAoyLjMx
-LjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
-ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+---
+ tests/i915/gem_ringfill.c | 48 +++++++++++++++++++++++----------------
+ 1 file changed, 28 insertions(+), 20 deletions(-)
+
+diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
+index 9ad97532f..5d2169d65 100644
+--- a/tests/i915/gem_ringfill.c
++++ b/tests/i915/gem_ringfill.c
+@@ -94,7 +94,7 @@ static void fill_ring(int fd,
+ 	}
+ }
+ 
+-static void setup_execbuf(int fd,
++static void setup_execbuf(int fd, const intel_ctx_t *ctx,
+ 			  struct drm_i915_gem_execbuffer2 *execbuf,
+ 			  struct drm_i915_gem_exec_object2 *obj,
+ 			  struct drm_i915_gem_relocation_entry *reloc,
+@@ -115,6 +115,8 @@ static void setup_execbuf(int fd,
+ 	if (gen > 3 && gen < 6)
+ 		execbuf->flags |= I915_EXEC_SECURE;
+ 
++	execbuf->rsvd1 = ctx->id;
++
+ 	obj[0].handle = gem_create(fd, 4096);
+ 	gem_write(fd, obj[0].handle, 0, &bbe, sizeof(bbe));
+ 	execbuf->buffer_count = 1;
+@@ -168,7 +170,8 @@ static void setup_execbuf(int fd,
+ 	check_bo(fd, obj[0].handle);
+ }
+ 
+-static void run_test(int fd, unsigned ring, unsigned flags, unsigned timeout)
++static void run_test(int fd, const intel_ctx_t *ctx, unsigned ring,
++		     unsigned flags, unsigned timeout)
+ {
+ 	struct drm_i915_gem_exec_object2 obj[2];
+ 	struct drm_i915_gem_relocation_entry reloc[1024];
+@@ -176,15 +179,15 @@ static void run_test(int fd, unsigned ring, unsigned flags, unsigned timeout)
+ 	igt_hang_t hang;
+ 
+ 	if (flags & (SUSPEND | HIBERNATE)) {
+-		run_test(fd, ring, 0, 0);
++		run_test(fd, ctx, ring, 0, 0);
+ 		gem_quiescent_gpu(fd);
+ 	}
+ 
+-	setup_execbuf(fd, &execbuf, obj, reloc, ring);
++	setup_execbuf(fd, ctx, &execbuf, obj, reloc, ring);
+ 
+ 	memset(&hang, 0, sizeof(hang));
+ 	if (flags & HANG)
+-		hang = igt_hang_ring(fd, ring & ~(3<<13));
++		hang = igt_hang_ctx(fd, ctx->id, ring & ~(3<<13), 0);
+ 
+ 	if (flags & (CHILD | FORKED | BOMB)) {
+ 		int nchild;
+@@ -198,16 +201,19 @@ static void run_test(int fd, unsigned ring, unsigned flags, unsigned timeout)
+ 
+ 		igt_debug("Forking %d children\n", nchild);
+ 		igt_fork(child, nchild) {
++			const intel_ctx_t *child_ctx = NULL;
+ 			if (flags & NEWFD) {
+ 				int this;
+ 
+ 				this = gem_reopen_driver(fd);
+-				gem_context_copy_engines(fd, 0, this, 0);
++				child_ctx = intel_ctx_create(fd, &ctx->cfg);
+ 				fd = this;
+ 
+-				setup_execbuf(fd, &execbuf, obj, reloc, ring);
++				setup_execbuf(fd, child_ctx, &execbuf, obj, reloc, ring);
+ 			}
+ 			fill_ring(fd, &execbuf, flags, timeout);
++			if (child_ctx)
++				intel_ctx_destroy(fd, child_ctx);
+ 		}
+ 
+ 		if (flags & SUSPEND)
+@@ -235,7 +241,7 @@ static void run_test(int fd, unsigned ring, unsigned flags, unsigned timeout)
+ 
+ 	if (flags & (SUSPEND | HIBERNATE)) {
+ 		gem_quiescent_gpu(fd);
+-		run_test(fd, ring, 0, 0);
++		run_test(fd, ctx, ring, 0, 0);
+ 	}
+ }
+ 
+@@ -286,6 +292,7 @@ igt_main
+ 		{ NULL }
+ 	}, *m;
+ 	bool master = false;
++	const intel_ctx_t *ctx;
+ 	int fd = -1;
+ 
+ 	igt_fixture {
+@@ -305,22 +312,20 @@ igt_main
+ 		ring_size = gem_measure_ring_inflight(fd, ALL_ENGINES, 0);
+ 		igt_info("Ring size: %d batches\n", ring_size);
+ 		igt_require(ring_size);
++
++		ctx = intel_ctx_create_all_physical(fd);
+ 	}
+ 
+ 	/* Legacy path for selecting "rings". */
+ 	for (m = modes; m->suffix; m++) {
+ 		igt_subtest_with_dynamic_f("legacy-%s", m->suffix) {
+-			const struct intel_execution_ring *e;
+-
+ 			igt_skip_on(m->flags & NEWFD && master);
+ 
+-			for (e = intel_execution_rings; e->name; e++) {
+-				if (!gem_has_ring(fd, eb_ring(e)))
+-					continue;
+-
++			for_each_ring(e, fd) {
+ 				igt_dynamic_f("%s", e->name) {
+ 					igt_require(gem_can_store_dword(fd, eb_ring(e)));
+-					run_test(fd, eb_ring(e),
++					run_test(fd, intel_ctx_0(fd),
++						 eb_ring(e),
+ 						 m->flags,
+ 						 m->timeout);
+ 					gem_quiescent_gpu(fd);
+@@ -335,12 +340,13 @@ igt_main
+ 			const struct intel_execution_engine2 *e;
+ 
+ 			igt_skip_on(m->flags & NEWFD && master);
+-			__for_each_physical_engine(fd, e) {
++			for_each_ctx_engine(fd, ctx, e) {
+ 				if (!gem_class_can_store_dword(fd, e->class))
+ 					continue;
+ 
+ 				igt_dynamic_f("%s", e->name) {
+-					run_test(fd, e->flags,
++					run_test(fd, ctx,
++						 e->flags,
+ 						 m->flags,
+ 						 m->timeout);
+ 					gem_quiescent_gpu(fd);
+@@ -352,17 +358,19 @@ igt_main
+ 	igt_subtest("basic-all") {
+ 		const struct intel_execution_engine2 *e;
+ 
+-		__for_each_physical_engine(fd, e) {
++		for_each_ctx_engine(fd, ctx, e) {
+ 			if (!gem_class_can_store_dword(fd, e->class))
+ 				continue;
+ 
+ 			igt_fork(child, 1)
+-				run_test(fd, e->flags, 0, 1);
++				run_test(fd, ctx, e->flags, 0, 1);
+ 		}
+ 
+ 		igt_waitchildren();
+ 	}
+ 
+-	igt_fixture
++	igt_fixture {
++		intel_ctx_destroy(fd, ctx);
+ 		close(fd);
++	}
+ }
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
