@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2078.outbound.protection.outlook.com [40.107.220.78])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9AC1A8977A
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 19:39:35 +0000 (UTC)
-Date: Mon, 14 Jun 2021 15:39:31 -0400
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Message-ID: <20210614193931.opnayynsdxsboogg@outlook.office365.com>
-References: <20210614153557.19934-1-Anson.Jacob@amd.com>
- <20210614153557.19934-2-Anson.Jacob@amd.com>
-In-Reply-To: <20210614153557.19934-2-Anson.Jacob@amd.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/amdgpu: Fix typo in
- amd_module_load
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 14 Jun 2021 19:49:49 -0000
+Message-ID: <162370018926.10187.14855671327284639401@emeril.freedesktop.org>
+References: <20210614190906.30440-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20210614190906.30440-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fflip=5Fscaled=5Fcrc=3A_parameterize_test_sizes_and_fix_te?=
+ =?utf-8?q?st_to_try_other_connectors?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,99 +15,220 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0247774170=="
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0125364769=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Anson Jacob <Anson.Jacob@amd.com>
-Cc: igt-dev@lists.freedesktop.org, Victor Lu <victorchengchi.lu@amd.com>, markyacoub@google.com
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0247774170==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ddblbijkx2kruiwu"
-Content-Disposition: inline
+--===============0125364769==
+Content-Type: multipart/alternative;
+ boundary="===============3779621312266315386=="
 
---ddblbijkx2kruiwu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+--===============3779621312266315386==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Hi Anson,
+== Series Details ==
 
-Let's squash this patch with the previous one.
+Series: tests/kms_flip_scaled_crc: parameterize test sizes and fix test to try other connectors
+URL   : https://patchwork.freedesktop.org/series/91475/
+State : success
 
-Thanks
+== Summary ==
 
-On 06/14, Anson Jacob wrote:
-> From: Victor Lu <victorchengchi.lu@amd.com>
->=20
-> A typo in amd_module_load was causing the test to fail.
-> igt_assert_f(err, 0) should have been igt_assert_eq(err, 0),
-> to check err =3D=3D 0. Also added drm_fd >=3D 0 check and made
-> ioctl query more explicit.
->=20
-> Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
-> Acked-by: Anson Jacob <Anson.Jacob@amd.com>
-> ---
->  tests/amdgpu/amd_module_load.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->=20
-> diff --git a/tests/amdgpu/amd_module_load.c b/tests/amdgpu/amd_module_loa=
-d.c
-> index e682d2c5..8762b2a2 100644
-> --- a/tests/amdgpu/amd_module_load.c
-> +++ b/tests/amdgpu/amd_module_load.c
-> @@ -41,8 +41,10 @@ sanity_check(void)
->  	args.return_pointer =3D (uintptr_t) &arg_ret;
->  	args.return_size =3D sizeof(int);
->  	args.query =3D AMDGPU_INFO_HW_IP_INFO;
-> +	args.query_hw_ip.type =3D AMDGPU_HW_IP_COMPUTE;
-> =20
->  	fd =3D drm_open_driver(DRIVER_AMDGPU);
-> +	igt_assert_f(fd >=3D 0, "Module failed to load\n");
->  	igt_set_timeout(1, "Module reload timeout!");
-> =20
->  	if (ioctl(fd, DRM_IOCTL_AMDGPU_INFO, &args) < 0)
-> @@ -51,7 +53,7 @@ sanity_check(void)
->  	igt_set_timeout(0, NULL);
->  	close(fd);
-> =20
-> -	igt_assert_f(err, 0);
-> +	igt_assert_eq(err, 0);
->  }
-> =20
->  igt_main
-> --=20
-> 2.25.1
->=20
+CI Bug Log - changes from CI_DRM_10220 -> IGTPW_5922
+====================================================
 
---=20
-Rodrigo Siqueira
-https://siqueira.tech
+Summary
+-------
 
---ddblbijkx2kruiwu
-Content-Type: application/pgp-signature; name="signature.asc"
+  **SUCCESS**
 
------BEGIN PGP SIGNATURE-----
+  No regressions found.
 
-iQIzBAABCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAmDHsHIACgkQWJzP/com
-vP/4EhAAwcUgLjN/E2DrS7KAd7gtQXdfrX4yD1RvyYSOsewq7rv0O6fguBcojG9Z
-u8usYg3s6VaZqCx6xCEoiVedOSD1f3AT58FsAmc5KJmuK58REVGkKGNL2pctZ8wL
-E+q01ORO0bnwDFnEG94NIwZ3o4rlfNeZgb5M9cabvRZJZgMwXuaj49DpTeg81Kls
-7nf72rovMWehkeVNwlJ1uy8ykT+SNwMyNeIQbMIoyOg0UPf5KSSwgeCV5SKtcmsh
-EtiYoOFw7f6oHH36jbAzZPyh/fcEFrmHIW2NONGEI3ioQ4KsWuX3oOMkvRruQzjY
-WEPXNvQaoLLNpbi1Dn5VI+x8Lm00397BVjFhWN1oAydhDqzCZr6gSMNXO3gKQt+l
-l2/HHT7wIURCTZQ5Pnpbz4MKXVXvVVQ0WxdBtSanYaJwWtXdneGBOTn6uCZKOzpd
-PhvweL5D7GnClJ15wLkyv/qsA0Pn2JvN3VQYSxbNmC1c50ayXLXASC457nMjYkVV
-o9vREB57CXjLzAtuISmfkpMSAb1lh0NaAuDrC3ylOOy/VFSkwLXAN6UkiMyQF68D
-VvfNfYw5xgXUsReQYG31loFAtTwOswMVAyTLvGYQRdhoQhPH0HILb/GCusoAUwij
-H0NNN7lW1TyetNOeuqGYKYRGiNO4pjvUiCHhsZkFK9Zalo/ANrw=
-=RXDQ
------END PGP SIGNATURE-----
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/index.html
 
---ddblbijkx2kruiwu--
+Possible new issues
+-------------------
 
---===============0247774170==
+  Here are the unknown changes that may have been introduced in IGTPW_5922:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_selftest@live@objects:
+    - {fi-tgl-dsi}:       [PASS][1] -> [DMESG-WARN][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10220/fi-tgl-dsi/igt@i915_selftest@live@objects.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/fi-tgl-dsi/igt@i915_selftest@live@objects.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5922 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@cs-gfx:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271]) +11 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/fi-kbl-soraka/igt@amdgpu/amd_basic@cs-gfx.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-kefka:       [PASS][4] -> [INCOMPLETE][5] ([i915#2782] / [i915#2940])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10220/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
+
+  * igt@runner@aborted:
+    - fi-bsw-kefka:       NOTRUN -> [FAIL][6] ([fdo#109271] / [i915#1436])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/fi-bsw-kefka/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - {fi-tgl-dsi}:       [DMESG-FAIL][7] -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10220/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
+  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
+
+
+Participating hosts (44 -> 38)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-skl-guc fi-bsw-cyan fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6105 -> IGTPW_5922
+
+  CI-20190529: 20190529
+  CI_DRM_10220: 1b77783fab8d920a675a3f6c8ee7de1eb206a19a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5922: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/index.html
+  IGT_6105: 598a154680374e7875ae9ffc98425abc57398b2f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/index.html
+
+--===============3779621312266315386==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_flip_scaled_crc: parameterize test sizes and fix test to try other connectors</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/91475/">https://patchwork.freedesktop.org/series/91475/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10220 -&gt; IGTPW_5922</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_5922:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_selftest@live@objects:<ul>
+<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10220/fi-tgl-dsi/igt@i915_selftest@live@objects.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/fi-tgl-dsi/igt@i915_selftest@live@objects.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5922 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@cs-gfx:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/fi-kbl-soraka/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +11 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10220/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/fi-bsw-kefka/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_heartbeat:<ul>
+<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10220/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (44 -&gt; 38)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-skl-guc fi-bsw-cyan fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6105 -&gt; IGTPW_5922</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10220: 1b77783fab8d920a675a3f6c8ee7de1eb206a19a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5922: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5922/index.html<br />
+  IGT_6105: 598a154680374e7875ae9ffc98425abc57398b2f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3779621312266315386==--
+
+--===============0125364769==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -122,4 +239,4 @@ igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
---===============0247774170==--
+--===============0125364769==--
