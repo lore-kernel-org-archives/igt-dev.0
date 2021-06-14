@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
- [IPv6:2607:f8b0:4864:20::42f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B8DB589F92
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 16:38:15 +0000 (UTC)
-Received: by mail-pf1-x42f.google.com with SMTP id y15so10949975pfl.4
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 09:38:15 -0700 (PDT)
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
+ [IPv6:2607:f8b0:4864:20::634])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 500E089F97
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 16:38:20 +0000 (UTC)
+Received: by mail-pl1-x634.google.com with SMTP id e7so6874074plj.7
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 09:38:20 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 14 Jun 2021 11:37:00 -0500
-Message-Id: <20210614163704.365989-46-jason@jlekstrand.net>
+Date: Mon, 14 Jun 2021 11:37:04 -0500
+Message-Id: <20210614163704.365989-50-jason@jlekstrand.net>
 In-Reply-To: <20210614163704.365989-1-jason@jlekstrand.net>
 References: <20210614163704.365989-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 45/77] tests/i915/gem_cs_tlb: Convert to
- intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 49/77] tests/i915/gem_exec_balancer: Stop
+ munging ctx0 engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,53 +29,22 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/i915/gem_cs_tlb.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tests/i915/gem_exec_balancer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_cs_tlb.c b/tests/i915/gem_cs_tlb.c
-index dec9c107e..7682dae69 100644
---- a/tests/i915/gem_cs_tlb.c
-+++ b/tests/i915/gem_cs_tlb.c
-@@ -91,7 +91,8 @@ mmap_coherent(int fd, uint32_t handle, int size)
- 	return ptr;
- }
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index 9c36c147a..b928c1b32 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -3081,7 +3081,7 @@ static void noheartbeat(int i915)
+ 	 * heartbeat has already been disabled.
+ 	 */
  
--static void run_on_ring(int fd, unsigned ring_id, const char *ring_name)
-+static void run_on_ring(int fd, const intel_ctx_t *ctx,
-+			unsigned ring_id, const char *ring_name)
- {
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	struct drm_i915_gem_exec_object2 execobj;
-@@ -117,6 +118,7 @@ static void run_on_ring(int fd, unsigned ring_id, const char *ring_name)
- 	memset(&execbuf, 0, sizeof(execbuf));
- 	execbuf.buffers_ptr = to_user_pointer(&execobj);
- 	execbuf.buffer_count = 1;
-+	execbuf.rsvd1 = ctx->id;
- 	execbuf.flags = ring_id;
+-	__for_each_physical_engine(i915, e)
++	for_each_physical_engine(i915, e)
+ 		set_heartbeat(i915, e->name, 0);
  
- 	/* Execute once to allocate a gtt-offset */
-@@ -144,17 +146,19 @@ static void run_on_ring(int fd, unsigned ring_id, const char *ring_name)
- igt_main
- {
- 	const struct intel_execution_engine2 *e;
-+	const intel_ctx_t *ctx = NULL;
- 	int fd = -1;
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_INTEL);
- 		igt_require_gem(fd);
-+		ctx = intel_ctx_create_all_physical(fd);
- 	}
- 
- 	igt_subtest_with_dynamic("engines") {
--		__for_each_physical_engine(fd, e) {
-+		for_each_ctx_engine(fd, ctx, e) {
- 			igt_dynamic_f("%s", e->name)
--				run_on_ring(fd, e->flags, e->name);
-+				run_on_ring(fd, ctx, e->flags, e->name);
- 		}
- 	}
- 
+ 	for (int class = 0; class < 32; class++) {
 -- 
 2.31.1
 
