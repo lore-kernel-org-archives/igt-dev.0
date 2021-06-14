@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
- [IPv6:2607:f8b0:4864:20::62b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E91C589F77
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 16:39:34 +0000 (UTC)
-Received: by mail-pl1-x62b.google.com with SMTP id v11so6871074ply.6
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 09:39:34 -0700 (PDT)
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
+ [IPv6:2607:f8b0:4864:20::62e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A07289F92
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 16:39:36 +0000 (UTC)
+Received: by mail-pl1-x62e.google.com with SMTP id v13so6874210ple.9
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 09:39:36 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 14 Jun 2021 11:38:52 -0500
-Message-Id: <20210614163902.366168-18-jason@jlekstrand.net>
+Date: Mon, 14 Jun 2021 11:38:53 -0500
+Message-Id: <20210614163902.366168-19-jason@jlekstrand.net>
 In-Reply-To: <20210614163704.365989-1-jason@jlekstrand.net>
 References: <20210614163704.365989-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 67/77] tests/i915/gem_mmap_gtt: Convert to
- intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 68/77] igt/dummyload: Require an intel_ctx_t
+ for POLL_RUN and !ALL_ENGINES
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,125 +20,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
----
- tests/i915/gem_mmap_gtt.c | 18 ++++++++++++++----
- tests/i915/i915_query.c   | 17 +++++------------
- 2 files changed, 19 insertions(+), 16 deletions(-)
-
-diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
-index cbfa222a6..60282699e 100644
---- a/tests/i915/gem_mmap_gtt.c
-+++ b/tests/i915/gem_mmap_gtt.c
-@@ -737,14 +737,18 @@ static void
- test_hang_busy(int i915)
- {
- 	uint32_t *ptr, *tile, *x;
-+	const intel_ctx_t *ctx = intel_ctx_create(i915, NULL);
- 	igt_spin_t *spin;
- 	igt_hang_t hang;
- 	uint32_t handle;
- 
--	hang = igt_allow_hang(i915, 0, 0);
-+	hang = igt_allow_hang(i915, ctx->id, 0);
- 	igt_require(igt_params_set(i915, "reset", "1")); /* global */
- 
--	spin = igt_spin_new(i915, .flags = IGT_SPIN_POLL_RUN | IGT_SPIN_FENCE_OUT | IGT_SPIN_NO_PREEMPTION);
-+	spin = igt_spin_new(i915, .ctx = ctx,
-+			    .flags = IGT_SPIN_POLL_RUN |
-+				     IGT_SPIN_FENCE_OUT |
-+				     IGT_SPIN_NO_PREEMPTION);
- 	igt_spin_busywait_until_started(spin);
- 	igt_assert(spin->execbuf.buffer_count == 2);
- 
-@@ -785,20 +789,25 @@ test_hang_busy(int i915)
- 
- 	igt_spin_free(i915, spin);
- 	igt_disallow_hang(i915, hang);
-+	intel_ctx_destroy(i915, ctx);
- }
- 
- static void
- test_hang_user(int i915)
- {
-+	const intel_ctx_t *ctx = intel_ctx_create(i915, NULL);
- 	uint32_t *ptr, *mem, *x;
- 	igt_spin_t *spin;
- 	igt_hang_t hang;
- 	uint32_t handle;
- 
--	hang = igt_allow_hang(i915, 0, 0);
-+	hang = igt_allow_hang(i915, ctx->id, 0);
- 	igt_require(igt_params_set(i915, "reset", "1")); /* global */
- 
--	spin = igt_spin_new(i915, .flags = IGT_SPIN_POLL_RUN | IGT_SPIN_FENCE_OUT | IGT_SPIN_NO_PREEMPTION);
-+	spin = igt_spin_new(i915, .ctx = ctx,
-+			    .flags = IGT_SPIN_POLL_RUN |
-+				     IGT_SPIN_FENCE_OUT |
-+				     IGT_SPIN_NO_PREEMPTION);
- 	igt_spin_busywait_until_started(spin);
- 	igt_assert(spin->execbuf.buffer_count == 2);
- 
-@@ -835,6 +844,7 @@ test_hang_user(int i915)
- 
- 	igt_spin_free(i915, spin);
- 	igt_disallow_hang(i915, hang);
-+	intel_ctx_destroy(i915, ctx);
- }
- 
- static int min_tile_width(uint32_t devid, int tiling)
-diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
-index 29b938e9c..0add3401b 100644
---- a/tests/i915/i915_query.c
-+++ b/tests/i915/i915_query.c
-@@ -682,19 +682,14 @@ static void engines(int fd)
- 	for (i = 0; i < engines->num_engines; i++) {
- 		struct drm_i915_engine_info *engine =
- 			(struct drm_i915_engine_info *)&engines->engines[i];
--		I915_DEFINE_CONTEXT_PARAM_ENGINES(p_engines, 1) = {
--			.engines = { engine->engine }
--		};
--		struct drm_i915_gem_context_param param = {
--			.param = I915_CONTEXT_PARAM_ENGINES,
--			.value = to_user_pointer(&p_engines),
--			.size = sizeof(p_engines),
--		};
--
-+		const intel_ctx_t *ctx =
-+			intel_ctx_create_for_engine(fd, engine->engine.engine_class,
-+						    engine->engine.engine_instance);
- 		struct drm_i915_gem_exec_object2 obj = {};
- 		struct drm_i915_gem_execbuffer2 execbuf = {
- 			.buffers_ptr = to_user_pointer(&obj),
- 			.buffer_count = 1,
-+			.rsvd1 = ctx->id,
- 		};
- 
- 		igt_debug("%u: class=%u instance=%u flags=%llx capabilities=%llx\n",
-@@ -703,11 +698,9 @@ static void engines(int fd)
- 			  engine->engine.engine_instance,
- 			  engine->flags,
- 			  engine->capabilities);
--		gem_context_set_param(fd, &param);
- 		igt_assert_eq(__gem_execbuf(fd, &execbuf), -ENOENT);
- 
--		param.size = 0; /* reset context engine map to defaults */
--		gem_context_set_param(fd, &param);
-+		intel_ctx_destroy(fd, ctx);
- 	}
- 
- 	/* Check results match the legacy GET_PARAM (where we can). */
--- 
-2.31.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+VGhpcyBsZXRzIHVzIGRyb3AgZ2VtX2NvbnRleHRfbG9va3VwX2VuZ2luZXMKClNpZ25lZC1vZmYt
+Ynk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3RyYW5kLm5ldD4KUmV2aWV3ZWQtYnk6IFpi
+aWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgotLS0K
+IGxpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYyB8IDI5IC0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tCiBsaWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmggfCAgMyAtLS0KIGxpYi9p
+Z3RfZHVtbXlsb2FkLmMgICAgICAgICAgICB8IDIwICsrKysrLS0tLS0tLS0tLS0tLS0tCiAzIGZp
+bGVzIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgNDcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0
+IGEvbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5jIGIvbGliL2k5MTUvZ2VtX2VuZ2luZV90
+b3BvbG9neS5jCmluZGV4IGY5Yzg4MTQ1Ny4uN2M2MGRhZjA3IDEwMDY0NAotLS0gYS9saWIvaTkx
+NS9nZW1fZW5naW5lX3RvcG9sb2d5LmMKKysrIGIvbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9n
+eS5jCkBAIC0zMTcsMzUgKzMxNyw2IEBAIGludGVsX2VuZ2luZV9saXN0X2Zvcl9jdHhfY2ZnKGlu
+dCBmZCwgY29uc3QgaW50ZWxfY3R4X2NmZ190ICpjZmcpCiAJfQogfQogCi1zdGF0aWMgaW50IGdl
+bV90b3BvbG9neV9nZXRfcGFyYW0oaW50IGZkLAotCQkJCSAgc3RydWN0IGRybV9pOTE1X2dlbV9j
+b250ZXh0X3BhcmFtICpwKQotewotCWlmIChpZ3Rfb25seV9saXN0X3N1YnRlc3RzKCkpCi0JCXJl
+dHVybiAtRU5PREVWOwotCi0JaWYgKF9fZ2VtX2NvbnRleHRfZ2V0X3BhcmFtKGZkLCBwKSkKLQkJ
+cmV0dXJuIC0xOyAvKiB1c2luZyBkZWZhdWx0IGVuZ2luZSBtYXAgKi8KLQotCXJldHVybiAwOwot
+fQotCi1pbnQgZ2VtX2NvbnRleHRfbG9va3VwX2VuZ2luZShpbnQgZmQsIHVpbnQ2NF90IGVuZ2lu
+ZSwgdWludDMyX3QgY3R4X2lkLAotCQkJICAgICAgc3RydWN0IGludGVsX2V4ZWN1dGlvbl9lbmdp
+bmUyICplKQotewotCURFRklORV9DT05URVhUX0VOR0lORVNfUEFSQU0oZW5naW5lcywgcGFyYW0s
+IGN0eF9pZCwgR0VNX01BWF9FTkdJTkVTKTsKLQotCS8qIGEgYml0IHBhcmFub2ljICovCi0JaWd0
+X2Fzc2VydChlKTsKLQotCWlmIChnZW1fdG9wb2xvZ3lfZ2V0X3BhcmFtKGZkLCAmcGFyYW0pIHx8
+ICFwYXJhbS5zaXplKQotCQlyZXR1cm4gLUVJTlZBTDsKLQotCWUtPmNsYXNzID0gZW5naW5lcy5l
+bmdpbmVzW2VuZ2luZV0uZW5naW5lX2NsYXNzOwotCWUtPmluc3RhbmNlID0gZW5naW5lcy5lbmdp
+bmVzW2VuZ2luZV0uZW5naW5lX2luc3RhbmNlOwotCi0JcmV0dXJuIDA7Ci19Ci0KIC8qKgogICog
+Z2VtX2hhc19lbmdpbmVfdG9wb2xvZ3k6CiAgKiBAZmQ6IG9wZW4gaTkxNSBkcm0gZmlsZSBkZXNj
+cmlwdG9yCmRpZmYgLS1naXQgYS9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmggYi9saWIv
+aTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmgKaW5kZXggOGY1OTg3ZjZhLi45OTFkMGZmODUgMTAw
+NjQ0Ci0tLSBhL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuaAorKysgYi9saWIvaTkxNS9n
+ZW1fZW5naW5lX3RvcG9sb2d5LmgKQEAgLTYxLDkgKzYxLDYgQEAgaW50ZWxfZ2V0X2N1cnJlbnRf
+cGh5c2ljYWxfZW5naW5lKHN0cnVjdCBpbnRlbF9lbmdpbmVfZGF0YSAqZWQpOwogCiB2b2lkIGlu
+dGVsX25leHRfZW5naW5lKHN0cnVjdCBpbnRlbF9lbmdpbmVfZGF0YSAqZWQpOwogCi1pbnQgZ2Vt
+X2NvbnRleHRfbG9va3VwX2VuZ2luZShpbnQgZmQsIHVpbnQ2NF90IGVuZ2luZSwgdWludDMyX3Qg
+Y3R4X2lkLAotCQkJICAgICAgc3RydWN0IGludGVsX2V4ZWN1dGlvbl9lbmdpbmUyICplKTsKLQog
+Ym9vbCBnZW1fY29udGV4dF9oYXNfZW5naW5lX21hcChpbnQgZmQsIHVpbnQzMl90IGN0eCk7CiAK
+IGJvb2wgZ2VtX2VuZ2luZV9pc19lcXVhbChjb25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2Vu
+Z2luZTIgKmUxLApkaWZmIC0tZ2l0IGEvbGliL2lndF9kdW1teWxvYWQuYyBiL2xpYi9pZ3RfZHVt
+bXlsb2FkLmMKaW5kZXggYjBhN2IzNjFjLi4yNWU0OWRlNDcgMTAwNjQ0Ci0tLSBhL2xpYi9pZ3Rf
+ZHVtbXlsb2FkLmMKKysrIGIvbGliL2lndF9kdW1teWxvYWQuYwpAQCAtNDIxLDIyICs0MjEsMTIg
+QEAgaWd0X3NwaW5fZmFjdG9yeShpbnQgZmQsIGNvbnN0IHN0cnVjdCBpZ3Rfc3Bpbl9mYWN0b3J5
+ICpvcHRzKQogewogCWlndF9zcGluX3QgKnNwaW47CiAKLQlpZiAob3B0cy0+ZW5naW5lICE9IEFM
+TF9FTkdJTkVTKSB7Ci0JCXN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiBlOwotCQlpbnQg
+Y2xhc3M7Ci0KLQkJaWYgKG9wdHMtPmN0eCkgewotCQkJY2xhc3MgPSBvcHRzLT5jdHgtPmNmZy5l
+bmdpbmVzW29wdHMtPmVuZ2luZV0uZW5naW5lX2NsYXNzOwotCQl9IGVsc2UgaWYgKCFnZW1fY29u
+dGV4dF9sb29rdXBfZW5naW5lKGZkLCBvcHRzLT5lbmdpbmUsCi0JCQkJCQkgICAgICBvcHRzLT5j
+dHhfaWQsICZlKSkgewotCQkJY2xhc3MgPSBlLmNsYXNzOwotCQl9IGVsc2UgewotCQkJZ2VtX3Jl
+cXVpcmVfcmluZyhmZCwgb3B0cy0+ZW5naW5lKTsKLQkJCWNsYXNzID0gZ2VtX2V4ZWNidWZfZmxh
+Z3NfdG9fZW5naW5lX2NsYXNzKG9wdHMtPmVuZ2luZSk7Ci0JCX0KKwlpZiAoKG9wdHMtPmZsYWdz
+ICYgSUdUX1NQSU5fUE9MTF9SVU4pICYmIG9wdHMtPmVuZ2luZSAhPSBBTExfRU5HSU5FUykgewor
+CQl1bnNpZ25lZCBpbnQgY2xhc3M7CiAKLQkJaWYgKG9wdHMtPmZsYWdzICYgSUdUX1NQSU5fUE9M
+TF9SVU4pCi0JCQlpZ3RfcmVxdWlyZShnZW1fY2xhc3NfY2FuX3N0b3JlX2R3b3JkKGZkLCBjbGFz
+cykpOworCQlpZ3RfYXNzZXJ0KG9wdHMtPmN0eCk7CisJCWNsYXNzID0gaW50ZWxfY3R4X2VuZ2lu
+ZV9jbGFzcyhvcHRzLT5jdHgsIG9wdHMtPmVuZ2luZSk7CisJCWlndF9yZXF1aXJlKGdlbV9jbGFz
+c19jYW5fc3RvcmVfZHdvcmQoZmQsIGNsYXNzKSk7CiAJfQogCiAJaWYgKG9wdHMtPmZsYWdzICYg
+SUdUX1NQSU5fSU5WQUxJRF9DUykKLS0gCjIuMzEuMQoKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0
+cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9pZ3QtZGV2Cg==
