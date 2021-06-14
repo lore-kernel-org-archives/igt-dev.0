@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1EB1789C8D
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 15:34:20 +0000 (UTC)
-Date: Mon, 14 Jun 2021 18:33:59 +0300
-From: Arkadiusz Hiler <arek@hiler.eu>
-Message-ID: <20210614153343.yd62qzjjna4dksfp@hatecraft.localdomain>
-References: <20210505083958.25105-1-petri.latvala@intel.com>
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com
+ (mail-co1nam11on2042.outbound.protection.outlook.com [40.107.220.42])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDB7189C9A
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 15:36:26 +0000 (UTC)
+From: Anson Jacob <Anson.Jacob@amd.com>
+Date: Mon, 14 Jun 2021 11:35:57 -0400
+Message-ID: <20210614153557.19934-2-Anson.Jacob@amd.com>
+In-Reply-To: <20210614153557.19934-1-Anson.Jacob@amd.com>
+References: <20210614153557.19934-1-Anson.Jacob@amd.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210505083958.25105-1-petri.latvala@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] prime_udl: Add test description
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/amdgpu: Fix typo in
+ amd_module_load
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,30 +22,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, Harry.Wentland@amd.com, Rodrigo.Siqueira@amd.com, markyacoub@google.com
+Cc: Anson Jacob <Anson.Jacob@amd.com>, Victor Lu <victorchengchi.lu@amd.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, May 05, 2021 at 11:39:58AM +0300, Petri Latvala wrote:
-> Add a test description line, and remove the misleading comment
-> entirely. The comment has been copied from prime_nv_test.c and
-> mistakenly says the test is using nouveau.
-> 
-> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> Cc: Arkadiusz Hiler <arek@hiler.eu>
-> ---
+From: Victor Lu <victorchengchi.lu@amd.com>
 
-Reviewed-by: Arkadiusz Hiler <arek@hiler.eu>
+A typo in amd_module_load was causing the test to fail.
+igt_assert_f(err, 0) should have been igt_assert_eq(err, 0),
+to check err == 0. Also added drm_fd >= 0 check and made
+ioctl query more explicit.
 
-> The test is also out of date in various ways and should probably
-> rather be removed in favor of more general prime tests...
+Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
+Acked-by: Anson Jacob <Anson.Jacob@amd.com>
+---
+ tests/amdgpu/amd_module_load.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Yes. I don't think kms_prime will cover this exact scenarion though, so
-we would need more, generic tests.
-
+diff --git a/tests/amdgpu/amd_module_load.c b/tests/amdgpu/amd_module_load.c
+index e682d2c5..8762b2a2 100644
+--- a/tests/amdgpu/amd_module_load.c
++++ b/tests/amdgpu/amd_module_load.c
+@@ -41,8 +41,10 @@ sanity_check(void)
+ 	args.return_pointer = (uintptr_t) &arg_ret;
+ 	args.return_size = sizeof(int);
+ 	args.query = AMDGPU_INFO_HW_IP_INFO;
++	args.query_hw_ip.type = AMDGPU_HW_IP_COMPUTE;
+ 
+ 	fd = drm_open_driver(DRIVER_AMDGPU);
++	igt_assert_f(fd >= 0, "Module failed to load\n");
+ 	igt_set_timeout(1, "Module reload timeout!");
+ 
+ 	if (ioctl(fd, DRM_IOCTL_AMDGPU_INFO, &args) < 0)
+@@ -51,7 +53,7 @@ sanity_check(void)
+ 	igt_set_timeout(0, NULL);
+ 	close(fd);
+ 
+-	igt_assert_f(err, 0);
++	igt_assert_eq(err, 0);
+ }
+ 
+ igt_main
 -- 
-Cheers,
-Arek
+2.25.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
