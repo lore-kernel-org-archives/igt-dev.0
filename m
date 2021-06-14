@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
- [IPv6:2607:f8b0:4864:20::62b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E3FD89F4F
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 16:39:24 +0000 (UTC)
-Received: by mail-pl1-x62b.google.com with SMTP id e1so6865288plh.8
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 09:39:24 -0700 (PDT)
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com
+ [IPv6:2607:f8b0:4864:20::42a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3FD8C89F55
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 16:39:23 +0000 (UTC)
+Received: by mail-pf1-x42a.google.com with SMTP id q25so10956246pfh.7
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jun 2021 09:39:23 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 14 Jun 2021 11:38:45 -0500
-Message-Id: <20210614163902.366168-11-jason@jlekstrand.net>
+Date: Mon, 14 Jun 2021 11:38:44 -0500
+Message-Id: <20210614163902.366168-10-jason@jlekstrand.net>
 In-Reply-To: <20210614163704.365989-1-jason@jlekstrand.net>
 References: <20210614163704.365989-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 60/77] tests/i915/gem_vm_create: Use
- intel_ctx_t in the execbuf test
+Subject: [igt-dev] [PATCH i-g-t 59/77] tests/i915/gem_vm_create: Delete
+ destroy racing tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,58 +27,136 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+The races these tests attempt to exercise won't exist once we rework the
+context creation to make the VM immutable state.
+
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- tests/i915/gem_vm_create.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ tests/i915/gem_vm_create.c | 104 -------------------------------------
+ 1 file changed, 104 deletions(-)
 
 diff --git a/tests/i915/gem_vm_create.c b/tests/i915/gem_vm_create.c
-index 4b77920bc..3005d347c 100644
+index 70b43dc6d..4b77920bc 100644
 --- a/tests/i915/gem_vm_create.c
 +++ b/tests/i915/gem_vm_create.c
-@@ -220,9 +220,8 @@ static void execbuf(int i915)
- 		.buffers_ptr = to_user_pointer(&batch),
- 		.buffer_count = 1,
- 	};
+@@ -353,104 +353,6 @@ static void isolation(int i915)
+ 	gem_vm_destroy(i915, vm[0]);
+ }
+ 
+-static void async_destroy(int i915)
+-{
 -	struct drm_i915_gem_context_param arg = {
+-		.ctx_id = gem_context_create(i915),
+-		.value = gem_vm_create(i915),
 -		.param = I915_CONTEXT_PARAM_VM,
 -	};
-+	intel_ctx_cfg_t cfg = {};
-+	const intel_ctx_t *ctx;
- 
- 	/* First verify that we try to use "softpinning" by default */
- 	batch.offset = 48 << 20;
-@@ -230,20 +229,24 @@ static void execbuf(int i915)
- 	igt_assert_eq_u64(batch.offset, 48 << 20);
- 	gem_sync(i915, batch.handle);
- 
--	arg.value = gem_vm_create(i915);
--	gem_context_set_param(i915, &arg);
-+	cfg.vm = gem_vm_create(i915);
-+	ctx = intel_ctx_create(i915, &cfg);
-+	eb.rsvd1 = ctx->id;
- 	gem_execbuf(i915, &eb);
- 	igt_assert_eq_u64(batch.offset, 48 << 20);
+-	igt_spin_t *spin[2];
+-	int err;
+-
+-	spin[0] = igt_spin_new(i915,
+-			       .ctx_id = arg.ctx_id,
+-			       .flags = IGT_SPIN_POLL_RUN);
+-	igt_spin_busywait_until_started(spin[0]);
+-
+-	err = __gem_context_set_param(i915, &arg);
+-	if (err == -EBUSY) /* update while busy may be verboten, let it ride. */
+-		err = 0;
+-	igt_assert_eq(err, 0);
+-
+-	spin[1] = __igt_spin_new(i915, .ctx_id = arg.ctx_id);
+-
+-	igt_spin_end(spin[0]);
+-	gem_sync(i915, spin[0]->handle);
+-
 -	gem_vm_destroy(i915, arg.value);
-+	gem_vm_destroy(i915, cfg.vm);
-+	intel_ctx_destroy(i915, ctx);
+-	gem_context_destroy(i915, arg.ctx_id);
+-
+-	igt_spin_end(spin[1]);
+-	gem_sync(i915, spin[1]->handle);
+-
+-	for (int i = 0; i < ARRAY_SIZE(spin); i++)
+-		igt_spin_free(i915, spin[i]);
+-}
+-
+-static void destroy_race(int i915)
+-{
+-	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+-	uint32_t *vm;
+-
+-	/* Check we can execute a polling spinner */
+-	igt_spin_free(i915, igt_spin_new(i915, .flags = IGT_SPIN_POLL_RUN));
+-
+-	vm = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+-	igt_assert(vm != MAP_FAILED);
+-
+-	for (int child = 0; child < ncpus; child++)
+-		vm[child] = gem_vm_create(i915);
+-
+-	igt_fork(child, ncpus) {
+-		uint32_t ctx = gem_context_create(i915);
+-		igt_spin_t *spin;
+-
+-		spin = __igt_spin_new(i915, ctx, .flags = IGT_SPIN_POLL_RUN);
+-		while (!READ_ONCE(vm[ncpus])) {
+-			struct drm_i915_gem_context_param arg = {
+-				.ctx_id = ctx,
+-				.param = I915_CONTEXT_PARAM_VM,
+-				.value = READ_ONCE(vm[child]),
+-			};
+-			igt_spin_t *nxt;
+-
+-			if (__gem_context_set_param(i915, &arg))
+-				continue;
+-
+-			nxt = __igt_spin_new(i915, ctx,
+-					     .flags = IGT_SPIN_POLL_RUN);
+-
+-			igt_spin_end(spin);
+-			gem_sync(i915, spin->handle);
+-			igt_spin_free(i915, spin);
+-
+-			usleep(1000 + hars_petruska_f54_1_random_unsafe() % 2000);
+-
+-			spin = nxt;
+-		}
+-
+-		igt_spin_free(i915, spin);
+-		gem_context_destroy(i915, ctx);
+-	}
+-
+-	igt_until_timeout(5) {
+-		for (int child = 0; child < ncpus; child++) {
+-			gem_vm_destroy(i915, vm[child]);
+-			vm[child] = gem_vm_create(i915);
+-		}
+-		usleep(1000 + hars_petruska_f54_1_random_unsafe() % 2000);
+-	}
+-
+-	vm[ncpus] = 1;
+-	igt_waitchildren();
+-
+-	for (int child = 0; child < ncpus; child++)
+-		gem_vm_destroy(i915, vm[child]);
+-
+-	munmap(vm, 4096);
+-}
+-
+ igt_main
+ {
+ 	int i915 = -1;
+@@ -480,12 +382,6 @@ igt_main
  
- 	gem_sync(i915, batch.handle); /* be idle! */
+ 		igt_subtest("create-ext")
+ 			create_ext(i915);
+-
+-		igt_subtest("async-destroy")
+-			async_destroy(i915);
+-
+-		igt_subtest("destroy-race")
+-			destroy_race(i915);
+ 	}
  
--	arg.value = gem_vm_create(i915);
--	gem_context_set_param(i915, &arg);
-+	cfg.vm = gem_vm_create(i915);
-+	ctx = intel_ctx_create(i915, &cfg);
- 	batch.offset = 0;
-+	eb.rsvd1 = ctx->id;
- 	gem_execbuf(i915, &eb);
- 	igt_assert_eq_u64(batch.offset, 0);
--	gem_vm_destroy(i915, arg.value);
-+	gem_vm_destroy(i915, cfg.vm);
-+	intel_ctx_destroy(i915, ctx);
- 
- 	gem_sync(i915, batch.handle);
- 	gem_close(i915, batch.handle);
+ 	igt_fixture {
 -- 
 2.31.1
 
