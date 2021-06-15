@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-sn1anam02on2089.outbound.protection.outlook.com [40.107.96.89])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 74C796E332
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 14:51:10 +0000 (UTC)
-References: <20210614164135.1519746-1-markyacoub@chromium.org>
- <YMhtSFZCpdrKFGqk@platvala-desk.ger.corp.intel.com>
- <CAJUqKUpSUevANSt1ddWyTDQKrQsk5dy7J58gKJkY2xXW_qEiiA@mail.gmail.com>
-From: =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
-Message-ID: <57a3e34e-218c-0e5f-d0ad-256aaef51948@amd.com>
-Date: Tue, 15 Jun 2021 16:51:01 +0200
-In-Reply-To: <CAJUqKUpSUevANSt1ddWyTDQKrQsk5dy7J58gKJkY2xXW_qEiiA@mail.gmail.com>
-Content-Language: en-US
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com
+ [IPv6:2a00:1450:4864:20::136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9DF916E3AC
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 14:49:38 +0000 (UTC)
+Received: by mail-lf1-x136.google.com with SMTP id h4so12621676lfu.8
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 07:49:38 -0700 (PDT)
 MIME-Version: 1.0
+References: <20210614164135.1519746-1-markyacoub@chromium.org>
+ <20210615131254.5x5u2fjyy7p3uctf@outlook.office365.com>
+ <e89fb09e-40c2-3b55-ae27-ed13c234bad7@amd.com>
+In-Reply-To: <e89fb09e-40c2-3b55-ae27-ed13c234bad7@amd.com>
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Tue, 15 Jun 2021 10:49:26 -0400
+Message-ID: <CAJUqKUrDjKFf_yx9w=1TQViJr8C6QfPrYCsEqQO-1Nxou5eH9A@mail.gmail.com>
 Subject: Re: [igt-dev] [PATCH] tests/kms_prime: Filter out devices that
  can't import buffers.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -21,76 +22,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>, Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Anson Jacob <Anson.Jacob@amd.com>, Sean Paul <seanpaul@chromium.org>, "Deucher,
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, Anson Jacob <Anson.Jacob@amd.com>, igt-dev@lists.freedesktop.org, Sean Paul <seanpaul@chromium.org>, "Deucher,
  Alexander" <Alexander.Deucher@amd.com>, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Petri,
-
-Am 15.06.21 um 16:46 schrieb Mark Yacoub:
-> On Tue, Jun 15, 2021 at 5:03 AM Petri Latvala <petri.latvala@intel.com> wrote:
->> On Mon, Jun 14, 2021 at 12:41:34PM -0400, Mark Yacoub wrote:
->>> Some devices such as amdgpu do not support imported buffers.
->>> Filter out those devices.
->>> Tested on Zork with chromeos-kernel-5_4.
->>>
->>> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
->>> ---
->>>   tests/kms_prime.c | 14 ++++++++++++--
->>>   1 file changed, 12 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/tests/kms_prime.c b/tests/kms_prime.c
->>> index 8cb2ca2a..480c7eb4 100644
->>> --- a/tests/kms_prime.c
->>> +++ b/tests/kms_prime.c
->>> @@ -249,6 +249,16 @@ static void test_crc(int exporter_fd, int importer_fd)
->>>        igt_display_fini(&display);
->>>   }
->>>
->>> +/* The test attempts to import the buffer object from one device to another.
->>> + * Filter out devices that aren't capable of doing this.
->>> + */
->>> +bool does_device_support_dmabuf_import(int fd) {
->>> +     /* AMDGPU uses VRAM. Any use of the fb will migrate it to VRAM, which is not sensible for
->>> +      * an imported dma-buf.
->>> +      */
->>> +     return !is_amdgpu_device(fd);
->>> +}
->> How is real (aka non-IGT) userspace supposed to handle this? Will they
->> need to check if the device is an AMD device before deciding whether
->> to import?
->>
->> What happens in this test without this patch?
-> amdgpu fails to create a framebuffer if the drm_gem_object has a valid
-> `import_attach` property.
->> +Cc Arek. My initial impression for this is that the kernel should
->> take care of the idiosyncracies but I'm lacking the big picture.
-
-Using DMA-buf imported buffer objects as scanout is in general vendor 
-specific.
-
-In other words failing to create a framebuffer is the normal reaction here.
-
-Only AMD GPUs in some hardware variants, probably some ARM SOCs and 
-maybe i915 can handle that. All other drivers should fail here.
-
-The general approach should be to try to create a framebuffer and if 
-that doesn't work use a fallback mechanism.
-
-Regards,
-Christian.
-
->>
->>
->> --
->> Petri Latvala
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gVHVlLCBKdW4gMTUsIDIwMjEgYXQgOTo0MyBBTSBDaHJpc3RpYW4gS8O2bmlnCjxjaHJpc3Rp
+YW4ua29lbmlnQGFtZC5jb20+IHdyb3RlOgo+Cj4gSGkgZ3V5cywKPgo+IGZpcnN0IG9mIGFsbCB0
+aGFua3MgUm9kcmlnbyBmb3IgYnJpbmdpbmcgdGhpcyB0byBteSBhdHRlbnRpb24uCj4KPiBNYXJr
+LCBhcyB0aGUgRE1BLWJ1ZiBtYWludGFpbmVyIEkgdW5mb3J0dW5hdGVseSBoYXZlIHRvIHJlamVj
+dCB0aGlzIHBhdGNoLgpUaGlzIHRlc3QgaXMgY3VycmVudGx5IHJ1bm5pbmcgb24gaTkxNSwgYnV0
+IGZhaWxzIG9uIGFtZGdwdSBkdWUgdG8gdGhlCmNoZWNrIG9mIGBpbXBvcnRfYXR0YWNoYCAodGhp
+cyBpcyB0aGUgY29tbWl0IHRoYXQgaW50cm9kdWNlZCB0aGUKY2hhbmdlOiBodHRwczovL2dpdGxh
+Yi5mcmVlZGVza3RvcC5vcmcvYWdkNWYvbGludXgvLS9jb21taXQvMTc2OTE1MmFjNjRiMGIwNzU4
+M2Y2OTZiNjIxNjI0ZGYyY2E0Yzg0MCkKV2hhdCBkbyB5b3UgcmVjb21tZW5kIGluc3RlYWQ/Cj4K
+PiBEaXJlY3Qgc2Nhbm91dCBmcm9tIGltcG9ydGVkIHN1cmZhY2VzIGlzIG5vdCBzb21ldGhpbmcg
+c3VwcG9ydGVkIHdpdGgKPiBETUEtYnVmIGluIGdlbmVyYWwgYXQgdGhlIG1vbWVudC4KRG8geW91
+IG1lYW4gdGhlIHByb2JsZW0gaXMgaW4gdGhlIHRlc3QgaXRzZWxmPwo+Cj4gV2UgZG8gaGF2ZSBz
+b21lIHN1cHBvcnQgZm9yIHRoaXMgYmV0d2VlbiBBTUQgR1BVcyBpbiBBK0EgbGFwdG9wcywgYW5k
+IGl0Cj4gbWlnaHQgd29yayB3aXRoIGk5MTUgYW5kIHNvbWUgb2YgdGhlIGRyaXZlcnMgdXNlZCBv
+biBBUk0uCj4KPiBCdXQgYWxsIG9mIHRoaXMgaXMgY29tcGxldGVseSB2ZW5kb3Igc3BlY2lmaWMg
+c2luY2UgdGhlcmUgYXJlIHNvbWUgdmVyeQo+IGxvdyBsZXZlbCBhbmQgaGFyZHdhcmUgc3BlY2lm
+aWMgbGltaXRhdGlvbnMgdG8gdGFrZSBhY2NvdW50IGludG8uCj4KPiBSZWdhcmRzLAo+IENocmlz
+dGlhbi4KPgo+IEFtIDE1LjA2LjIxIHVtIDE1OjEyIHNjaHJpZWIgUm9kcmlnbyBTaXF1ZWlyYToK
+PiA+IEhpIEFsZXggYW5kIENocmlzdGlhbiwKPiA+Cj4gPiBUaGlzIHBhdGNoIGlzIHJlbGF0ZWQg
+dG8gcHJpbWUsIGJ1dCBJJ20gbm90IGZhbWlsaWFyIHdpdGggdGhpcyBwYXJ0IG9mCj4gPiBvdXIg
+ZHJpdmVyLiBDb3VsZCB5b3UgdGFrZSBhIGxvb2sgYXQgdGhhdD8KPiA+Cj4gPiBUaGFua3MKPiA+
+Cj4gPiBPbiAwNi8xNCwgTWFyayBZYWNvdWIgd3JvdGU6Cj4gPj4gU29tZSBkZXZpY2VzIHN1Y2gg
+YXMgYW1kZ3B1IGRvIG5vdCBzdXBwb3J0IGltcG9ydGVkIGJ1ZmZlcnMuCj4gPj4gRmlsdGVyIG91
+dCB0aG9zZSBkZXZpY2VzLgo+ID4+IFRlc3RlZCBvbiBab3JrIHdpdGggY2hyb21lb3Mta2VybmVs
+LTVfNC4KPiA+Pgo+ID4+IFNpZ25lZC1vZmYtYnk6IE1hcmsgWWFjb3ViIDxtYXJreWFjb3ViQGNo
+cm9taXVtLm9yZz4KPiA+PiAtLS0KPiA+PiAgIHRlc3RzL2ttc19wcmltZS5jIHwgMTQgKysrKysr
+KysrKysrLS0KPiA+PiAgIDEgZmlsZSBjaGFuZ2VkLCAxMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0
+aW9ucygtKQo+ID4+Cj4gPj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19wcmltZS5jIGIvdGVzdHMv
+a21zX3ByaW1lLmMKPiA+PiBpbmRleCA4Y2IyY2EyYS4uNDgwYzdlYjQgMTAwNjQ0Cj4gPj4gLS0t
+IGEvdGVzdHMva21zX3ByaW1lLmMKPiA+PiArKysgYi90ZXN0cy9rbXNfcHJpbWUuYwo+ID4+IEBA
+IC0yNDksNiArMjQ5LDE2IEBAIHN0YXRpYyB2b2lkIHRlc3RfY3JjKGludCBleHBvcnRlcl9mZCwg
+aW50IGltcG9ydGVyX2ZkKQo+ID4+ICAgICAgaWd0X2Rpc3BsYXlfZmluaSgmZGlzcGxheSk7Cj4g
+Pj4gICB9Cj4gPj4KPiA+PiArLyogVGhlIHRlc3QgYXR0ZW1wdHMgdG8gaW1wb3J0IHRoZSBidWZm
+ZXIgb2JqZWN0IGZyb20gb25lIGRldmljZSB0byBhbm90aGVyLgo+ID4+ICsgKiBGaWx0ZXIgb3V0
+IGRldmljZXMgdGhhdCBhcmVuJ3QgY2FwYWJsZSBvZiBkb2luZyB0aGlzLgo+ID4+ICsgKi8KPiA+
+PiArYm9vbCBkb2VzX2RldmljZV9zdXBwb3J0X2RtYWJ1Zl9pbXBvcnQoaW50IGZkKSB7Cj4gPj4g
+KyAgICAvKiBBTURHUFUgdXNlcyBWUkFNLiBBbnkgdXNlIG9mIHRoZSBmYiB3aWxsIG1pZ3JhdGUg
+aXQgdG8gVlJBTSwgd2hpY2ggaXMgbm90IHNlbnNpYmxlIGZvcgo+ID4+ICsgICAgICogYW4gaW1w
+b3J0ZWQgZG1hLWJ1Zi4KPiA+PiArICAgICAqLwo+ID4+ICsgICAgcmV0dXJuICFpc19hbWRncHVf
+ZGV2aWNlKGZkKTsKPiA+PiArfQo+ID4+ICsKPiA+PiAgIGlndF9tYWluCj4gPj4gICB7Cj4gPj4g
+ICAgICBpZ3RfZml4dHVyZQo+ID4+IEBAIC0yNjIsMTAgKzI3MiwxMCBAQCBpZ3RfbWFpbgo+ID4+
+Cj4gPj4gICAgICAgICAgICAgIC8qIEFOWSA9IGFueXRoaW5nIHRoYXQgaXMgbm90IFZHRU0gKi8K
+PiA+PiAgICAgICAgICAgICAgZmlyc3RfZmQgPSBfX2RybV9vcGVuX2RyaXZlcl9hbm90aGVyKDAs
+IERSSVZFUl9BTlkgfCBEUklWRVJfVkdFTSk7Cj4gPj4gLSAgICAgICAgICAgIGlndF9yZXF1aXJl
+KGZpcnN0X2ZkID49IDApOwo+ID4+ICsgICAgICAgICAgICBpZ3RfcmVxdWlyZShmaXJzdF9mZCA+
+PSAwICYmIGRvZXNfZGV2aWNlX3N1cHBvcnRfZG1hYnVmX2ltcG9ydChmaXJzdF9mZCkpOwo+ID4+
+Cj4gPj4gICAgICAgICAgICAgIHNlY29uZF9mZCA9IF9fZHJtX29wZW5fZHJpdmVyX2Fub3RoZXIo
+MSwgRFJJVkVSX0FOWSB8IERSSVZFUl9WR0VNKTsKPiA+PiAtICAgICAgICAgICAgaWd0X3JlcXVp
+cmUoc2Vjb25kX2ZkID49IDApOwo+ID4+ICsgICAgICAgICAgICBpZ3RfcmVxdWlyZShzZWNvbmRf
+ZmQgPj0gMCAmJiBkb2VzX2RldmljZV9zdXBwb3J0X2RtYWJ1Zl9pbXBvcnQoc2Vjb25kX2ZkKSk7
+Cj4gPj4KPiA+PiAgICAgICAgICAgICAgaWYgKGhhc19wcmltZV9leHBvcnQoZmlyc3RfZmQpICYm
+Cj4gPj4gICAgICAgICAgICAgICAgICBoYXNfcHJpbWVfaW1wb3J0KHNlY29uZF9mZCkpCj4gPj4g
+LS0KPiA+PiAyLjMyLjAuMjcyLmc5MzVlNTkzMzY4LWdvb2cKPiA+Pgo+Cl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
+dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
