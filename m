@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 346AA890EF
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 07:59:02 +0000 (UTC)
-Date: Tue, 15 Jun 2021 09:58:53 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210615075853.GI4738@zkempczy-mobl2>
-References: <20210614163704.365989-1-jason@jlekstrand.net>
- <20210614163704.365989-47-jason@jlekstrand.net>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7543989ADC
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 05:16:59 +0000 (UTC)
+From: sai.krishna.kuchi@intel.com
+Date: Tue, 15 Jun 2021 10:46:55 +0530
+Message-Id: <20210615051655.6348-1-sai.krishna.kuchi@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210614163704.365989-47-jason@jlekstrand.net>
-Subject: Re: [igt-dev] [PATCH i-g-t 46/77] tests/core_hotplug: Convert to
- intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_caching: Added description for all
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,45 +15,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jason Ekstrand <jason@jlekstrand.net>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCBKdW4gMTQsIDIwMjEgYXQgMTE6Mzc6MDFBTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
-d3JvdGU6Cj4gU2lnbmVkLW9mZi1ieTogSmFzb24gRWtzdHJhbmQgPGphc29uQGpsZWtzdHJhbmQu
-bmV0Pgo+IC0tLQo+ICB0ZXN0cy9jb3JlX2hvdHVucGx1Zy5jIHwgNiArKysrKy0KPiAgMSBmaWxl
-IGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQo+IAo+IGRpZmYgLS1naXQg
-YS90ZXN0cy9jb3JlX2hvdHVucGx1Zy5jIGIvdGVzdHMvY29yZV9ob3R1bnBsdWcuYwo+IGluZGV4
-IGE2MzljZmI0Yi4uYzkwYmU2MjJjIDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2NvcmVfaG90dW5wbHVn
-LmMKPiArKysgYi90ZXN0cy9jb3JlX2hvdHVucGx1Zy5jCj4gQEAgLTI1OSw2ICsyNTksNyBAQCBz
-dGF0aWMgaW50IGxvY2FsX2k5MTVfaGVhbHRoY2hlY2soaW50IGk5MTUsIGNvbnN0IGNoYXIgKnBy
-ZWZpeCkKPiAgCQkuYnVmZmVyX2NvdW50ID0gMSwKPiAgCX07Cj4gIAljb25zdCBzdHJ1Y3QgaW50
-ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmVuZ2luZTsKPiArCWNvbnN0IGludGVsX2N0eF90ICpjdHg7
-Cj4gIAlpbnQgZmVuY2UgPSAtMSwgZXJyID0gMCwgc3RhdHVzID0gMTsKPiAgCj4gIAlsb2NhbF9k
-ZWJ1ZygiJXMlc1xuIiwgcHJlZml4LCAicnVubmluZyBpOTE1IEdQVSBoZWFsdGhjaGVjayIpOwo+
-IEBAIC0yNzAsNyArMjcxLDkgQEAgc3RhdGljIGludCBsb2NhbF9pOTE1X2hlYWx0aGNoZWNrKGlu
-dCBpOTE1LCBjb25zdCBjaGFyICpwcmVmaXgpCj4gIAlnZW1fd3JpdGUoaTkxNSwgb2JqLmhhbmRs
-ZSwgMCwgJmJiZSwgc2l6ZW9mKGJiZSkpOwo+ICAKPiAgCS8qIEFzIHNvb24gYXMgYSBmZW5jZSBp
-cyBvcGVuLCBkb24ndCBmYWlsIGJlZm9yZSBjbG9zaW5nIGl0ICovCj4gLQlfX2Zvcl9lYWNoX3Bo
-eXNpY2FsX2VuZ2luZShpOTE1LCBlbmdpbmUpIHsKPiArCWN0eCA9IGludGVsX2N0eF9jcmVhdGVf
-YWxsX3BoeXNpY2FsKGk5MTUpOwo+ICsJZm9yX2VhY2hfY3R4X2VuZ2luZShpOTE1LCBjdHgsIGVu
-Z2luZSkgewo+ICsJCWV4ZWNidWYucnN2ZDEgPSBjdHgtPmlkOwo+ICAJCWV4ZWNidWYuZmxhZ3Mg
-PSBlbmdpbmUtPmZsYWdzIHwgSTkxNV9FWEVDX0ZFTkNFX09VVDsKPiAgCQllcnIgPSBfX2dlbV9l
-eGVjYnVmX3dyKGk5MTUsICZleGVjYnVmKTsKPiAgCQlpZiAoaWd0X3dhcm5fb25fZihlcnIgPCAw
-LCAiX19nZW1fZXhlY2J1Zl93cigpIHJldHVybmVkICVkXG4iLAo+IEBAIC0yODQsNiArMjg3LDcg
-QEAgc3RhdGljIGludCBsb2NhbF9pOTE1X2hlYWx0aGNoZWNrKGludCBpOTE1LCBjb25zdCBjaGFy
-ICpwcmVmaXgpCj4gIAkJCWJyZWFrOwo+ICAJCX0KPiAgCX0KPiArCWludGVsX2N0eF9kZXN0cm95
-KGk5MTUsIGN0eCk7Cj4gIAlpZiAoZmVuY2UgPj0gMCkgewo+ICAJCXN0YXR1cyA9IHN5bmNfZmVu
-Y2Vfd2FpdChmZW5jZSwgLTEpOwo+ICAJCWlmIChpZ3Rfd2Fybl9vbl9mKHN0YXR1cyA8IDAsICJz
-eW5jX2ZlbmNlX3dhaXQoKSByZXR1cm5lZCAlZFxuIiwKCk9rLAoKUmV2aWV3ZWQtYnk6IFpiaWdu
-aWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgoKLS0KWmJp
-Z25pZXcKCj4gLS0gCj4gMi4zMS4xCj4gCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KPiBpZ3QtZGV2IG1haWxpbmcgbGlzdAo+IGlndC1kZXZAbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnCj4gaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9pZ3QtZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-Cmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+From: Kuchi, Sai Krishna <sai.krishna.kuchi@intel.com>
+
+Added description for all subtests
+
+Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+
+Signed-off-by: Kuchi, Sai Krishna <sai.krishna.kuchi@intel.com>
+---
+ tests/i915/gem_caching.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/tests/i915/gem_caching.c b/tests/i915/gem_caching.c
+index d5d15f387..6959e2d07 100644
+--- a/tests/i915/gem_caching.c
++++ b/tests/i915/gem_caching.c
+@@ -173,6 +173,7 @@ igt_main
+ 					       32, 0, I915_TILING_NONE, 0);
+ 	}
+ 
++	igt_describe("Checking the reads for random size of buffer");
+ 	igt_subtest("reads") {
+ 		igt_require(flags & TEST_READ);
+ 
+@@ -201,6 +202,7 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_describe("Checking the writes for random size of buffer");
+ 	igt_subtest("writes") {
+ 		igt_require(flags & TEST_WRITE);
+ 
+@@ -246,6 +248,7 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_describe("Checking the writes after reads for random size of buffer");
+ 	igt_subtest("read-writes") {
+ 		igt_require((flags & TEST_BOTH) == TEST_BOTH);
+ 
+-- 
+2.28.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
