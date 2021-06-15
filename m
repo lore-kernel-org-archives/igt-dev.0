@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 089D389CF6
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 08:18:14 +0000 (UTC)
-Date: Tue, 15 Jun 2021 11:20:05 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YMhitdRrLoT0PqhJ@platvala-desk.ger.corp.intel.com>
-References: <20210614153557.19934-2-Anson.Jacob@amd.com>
+From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Date: Tue, 15 Jun 2021 08:25:21 +0000
+Message-ID: <BY5PR11MB437250EA6AD698B6D28D9D1089309@BY5PR11MB4372.namprd11.prod.outlook.com>
+References: <1622547939-8157-1-git-send-email-vidya.srinivas@intel.com>
+ <1622556485-9375-1-git-send-email-vidya.srinivas@intel.com>
+ <CO6PR11MB556976C4EC81D88FC86D1C768D349@CO6PR11MB5569.namprd11.prod.outlook.com>
+ <BY5PR11MB437213735019658A601D098D89349@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <BY5PR11MB4372B0A65DA52560451EAA5289349@BY5PR11MB4372.namprd11.prod.outlook.com>
+In-Reply-To: <BY5PR11MB4372B0A65DA52560451EAA5289349@BY5PR11MB4372.namprd11.prod.outlook.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210614153557.19934-2-Anson.Jacob@amd.com>
-Subject: Re: [igt-dev] [i-g-t, 2/2] tests/amdgpu: Fix typo in amd_module_load
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] [RFC]
+ tests/kms_plane_alpha_blend: Don't set primary fb color in
+ coverage-vs-premult-vs-constant
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,57 +24,103 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Anson Jacob <Anson.Jacob@amd.com>
-Cc: igt-dev@lists.freedesktop.org, Victor Lu <victorchengchi.lu@amd.com>, markyacoub@google.com
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Jun 14, 2021 at 11:35:57AM -0400, Anson Jacob wrote:
-> From: Victor Lu <victorchengchi.lu@amd.com>
+Hello Bhanu,
+
+Sorry for the trouble. Kindly can you check if rev 3 is okay? Thanks a lot.
+
+Regards
+Vidya
+
+-----Original Message-----
+From: Srinivas, Vidya 
+Sent: Friday, June 11, 2021 6:28 PM
+To: Modem, Bhanuprakash <Bhanuprakash.Modem@intel.com>; intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
+Subject: RE: [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_plane_alpha_blend: Don't set primary fb color in coverage-vs-premult-vs-constant
+
+Hello Bhanu,
+
+I have uploaded version 3 where I have not removed primary plane.
+Instead I have added a commit of the primary plane and I have changed alpha.
+This passes on Gen11 systems.
+
+Kindly check https://patchwork.freedesktop.org/patch/438831/?series=90828&rev=3 and suggest.
+
+Thank you so much.
+
+Regards
+Vidya
+
+-----Original Message-----
+From: Srinivas, Vidya
+Sent: Friday, June 11, 2021 1:00 PM
+To: Modem, Bhanuprakash <Bhanuprakash.Modem@intel.com>; intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
+Subject: RE: [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_plane_alpha_blend: Don't set primary fb color in coverage-vs-premult-vs-constant
+
+Thank you Bhanu. This test is failing on all planes > 0. Only plane 0 passes.
+If I skip plane 1, it fails on 2 and so on.
+Changing the way CRC is being collected also is not helping. Adding vblank is also not helping.
+
+Regards
+Vidya
+
+-----Original Message-----
+From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+Sent: Friday, June 11, 2021 9:11 AM
+To: Srinivas, Vidya <vidya.srinivas@intel.com>; intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
+Subject: RE: [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_plane_alpha_blend: Don't set primary fb color in coverage-vs-premult-vs-constant
+
+> From: Intel-gfx <intel-gfx-bounces@lists.freedesktop.org> On Behalf Of 
+> Vidya Srinivas
+> Sent: Tuesday, June 1, 2021 7:38 PM
+> To: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
+> Subject: [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_plane_alpha_blend: 
+> Don't set primary fb color in coverage-vs-premult-vs-constant
 > 
-> A typo in amd_module_load was causing the test to fail.
-> igt_assert_f(err, 0) should have been igt_assert_eq(err, 0),
-> to check err == 0. Also added drm_fd >= 0 check and made
-> ioctl query more explicit.
+> Patch removes setting primary fb color in 
+> coverage-vs-premult-vs-constant as this is causing CRC mismatch on few Gen11 systems.
+
+I am not sure how Primary plane's bg color causing CRC mismatch.
+Also, as this test runs on all planes (those are having the props "alpha" and "pixel blend mode"), is this test failing on a particular plane?
+
+- Bhanu
+
+> Similar change has already been done in tests constant_alpha_min and 
+> basic_alpha where the test runs on all planes but dont set the primary 
+> fb color.
 > 
-> Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
-> Acked-by: Anson Jacob <Anson.Jacob@amd.com>
+> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 > ---
->  tests/amdgpu/amd_module_load.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  tests/kms_plane_alpha_blend.c | 4 ----
+>  1 file changed, 4 deletions(-)
 > 
-> diff --git a/tests/amdgpu/amd_module_load.c b/tests/amdgpu/amd_module_load.c
-> index e682d2c5..8762b2a2 100644
-> --- a/tests/amdgpu/amd_module_load.c
-> +++ b/tests/amdgpu/amd_module_load.c
-> @@ -41,8 +41,10 @@ sanity_check(void)
->  	args.return_pointer = (uintptr_t) &arg_ret;
->  	args.return_size = sizeof(int);
->  	args.query = AMDGPU_INFO_HW_IP_INFO;
-> +	args.query_hw_ip.type = AMDGPU_HW_IP_COMPUTE;
->  
->  	fd = drm_open_driver(DRIVER_AMDGPU);
-> +	igt_assert_f(fd >= 0, "Module failed to load\n");
-
-drm_open_driver() already asserts that it's able to give you a proper
-fd.
-
-
--- 
-Petri Latvala
-
-
->  	igt_set_timeout(1, "Module reload timeout!");
->  
->  	if (ioctl(fd, DRM_IOCTL_AMDGPU_INFO, &args) < 0)
-> @@ -51,7 +53,7 @@ sanity_check(void)
->  	igt_set_timeout(0, NULL);
->  	close(fd);
->  
-> -	igt_assert_f(err, 0);
-> +	igt_assert_eq(err, 0);
->  }
->  
->  igt_main
+> diff --git a/tests/kms_plane_alpha_blend.c 
+> b/tests/kms_plane_alpha_blend.c index a37cb27c7d62..224d79bd1749
+> 100644
+> --- a/tests/kms_plane_alpha_blend.c
+> +++ b/tests/kms_plane_alpha_blend.c
+> @@ -447,10 +447,6 @@ static void coverage_premult_constant(data_t 
+> *data, enum pipe pipe, igt_plane_t
+>  	igt_display_t *display = &data->display;
+>  	igt_crc_t ref_crc = {}, crc = {};
+> 
+> -	/* Set a background color on the primary fb for testing */
+> -	if (plane->type != DRM_PLANE_TYPE_PRIMARY)
+> -		igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe],
+> DRM_PLANE_TYPE_PRIMARY), &data->gray_fb);
+> -
+>  	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage");
+>  	igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
+>  	igt_display_commit2(display, COMMIT_ATOMIC);
+> --
+> 2.7.4
+> 
+> _______________________________________________
+> Intel-gfx mailing list
+> Intel-gfx@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/intel-gfx
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
