@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com
- [IPv6:2a00:1450:4864:20::230])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF1756E42E
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 16:00:31 +0000 (UTC)
-Received: by mail-lj1-x230.google.com with SMTP id k8so8854530lja.4
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 09:00:31 -0700 (PDT)
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com
+ [IPv6:2a00:1450:4864:20::12d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 70D716E40A
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 16:00:30 +0000 (UTC)
+Received: by mail-lf1-x12d.google.com with SMTP id p7so27907447lfg.4
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 09:00:30 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Tue, 15 Jun 2021 19:00:20 +0300
-Message-Id: <20210615160022.31610-2-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20210615160022.31610-1-juhapekka.heikkila@gmail.com>
-References: <20210615160022.31610-1-juhapekka.heikkila@gmail.com>
+Date: Tue, 15 Jun 2021 19:00:19 +0300
+Message-Id: <20210615160022.31610-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/4] tests/kms_ccs: separate ccs modifiers
- to separate subtests
+Subject: [igt-dev] [PATCH i-g-t 1/4] tests/kms_cursor_crc: use flipping
+ instead of frontbuffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,220 +25,330 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Current kms_ccs test is not revealing if some ccs modifier fails
-as long as there's at least one modifier not failing. Separate all
-ccs modifiers onto their own tests making testing individual ccs
-modifiers easier and not hiding failures.
+take out frontbuffer usage from this test as it may fail this test
+on frontbuffer related issues instead of cursor issues
+
+v2(vsyrjala): fix cursor size change test to run only one loop
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- tests/kms_ccs.c | 156 +++++++++++++++++++++---------------------------
- 1 file changed, 67 insertions(+), 89 deletions(-)
+ tests/kms_cursor_crc.c | 136 +++++++++++++++++++++--------------------
+ 1 file changed, 71 insertions(+), 65 deletions(-)
 
-diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
-index a3eac1f8f..62850c1b2 100644
---- a/tests/kms_ccs.c
-+++ b/tests/kms_ccs.c
-@@ -41,6 +41,7 @@ enum test_flags {
- 	TEST_BAD_CCS_HANDLE		= 1 << 6,
- 	TEST_BAD_AUX_STRIDE		= 1 << 7,
- 	TEST_RANDOM			= 1 << 8,
-+	TEST_ALL_PLANES			= 1 << 9,
- };
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index 1463c5b3f..ee8912dc1 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -64,14 +64,14 @@ typedef struct {
+ 	igt_plane_t *cursor;
+ 	cairo_surface_t *surface;
+ 	uint32_t devid;
+-
++	bool hwimageistestimage;
+ } data_t;
  
- #define TEST_FAIL_ON_ADDFB2 \
-@@ -92,11 +93,11 @@ static const struct {
- 	uint64_t modifier;
- 	const char *str;
- } ccs_modifiers[] = {
--	{LOCAL_I915_FORMAT_MOD_Y_TILED_CCS, "LOCAL_I915_FORMAT_MOD_Y_TILED_CCS"},
--	{LOCAL_I915_FORMAT_MOD_Yf_TILED_CCS, "LOCAL_I915_FORMAT_MOD_Yf_TILED_CCS"},
--	{LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, "LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS"},
--	{LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC, "LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC"},
--	{LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS, "LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS"},
-+	{LOCAL_I915_FORMAT_MOD_Y_TILED_CCS, "y_tiled_ccs"},
-+	{LOCAL_I915_FORMAT_MOD_Yf_TILED_CCS, "yf_tiled_ccs"},
-+	{LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, "y_tiled_gen12_rc_ccs"},
-+	{LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC, "y_tiled_gen12_rc_ccs_cc"},
-+	{LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS, "y_tiled_gen12_mc_ccs"},
- };
+ #define TEST_DPMS (1<<0)
+ #define TEST_SUSPEND (1<<1)
  
- static bool check_ccs_planes;
-@@ -507,37 +508,53 @@ static int test_ccs(data_t *data)
- 	return valid_tests;
+-#define FRONTBUFFER 0
+-#define RESTOREBUFFER 1
++#define HWCURSORBUFFER 0
++#define SWCOMPARISONBUFFER 1
+ 
+ static void draw_cursor(cairo_t *cr, int x, int y, int cw, int ch, double a)
+ {
+@@ -144,22 +144,16 @@ static bool cursor_visible(data_t *data, int x, int y)
+ 	return true;
  }
  
--static int __test_output(data_t *data)
-+static void test_output(data_t *data, const char* testformatstring)
+-static void restore_image(data_t *data)
++static void restore_image(data_t *data, uint32_t buffer)
  {
+ 	cairo_t *cr;
 -	igt_display_t *display = &data->display;
--	int i, valid_tests = 0;
--
--	data->output = igt_get_single_output_for_pipe(display, data->pipe);
--	igt_require(data->output);
--
--	igt_output_set_pipe(data->output, data->pipe);
--
--	for (i = 0; i < ARRAY_SIZE(ccs_modifiers); i++) {
--		int j;
-+	igt_fixture {
-+		data->output = igt_get_single_output_for_pipe(&data->display,
-+							      data->pipe);
-+		igt_output_set_pipe(data->output, data->pipe);
-+	}
  
-+	for (int i = 0; i < ARRAY_SIZE(ccs_modifiers); i++) {
- 		data->ccs_modifier = ccs_modifiers[i].modifier;
--		igt_debug("Modifier in use: %s\n", ccs_modifiers[i].str);
--		for (j = 0; j < ARRAY_SIZE(formats); j++) {
--			data->format = formats[j];
--			valid_tests += test_ccs(data);
-+
-+		igt_subtest_f("pipe-%s-%s-%s", kmstest_pipe_name(data->pipe),
-+			      testformatstring, ccs_modifiers[i].str ) {
-+			int valid_tests = 0;
-+			igt_require(data->output);
-+
-+			if (data->flags == TEST_RANDOM)
-+				igt_info("Testing with seed %d\n", data->seed);
-+
-+			if (data->flags & TEST_ALL_PLANES) {
-+				igt_display_require_output_on_pipe(&data->display, data->pipe);
-+
-+				for_each_plane_on_pipe(&data->display, data->pipe, data->plane) {
-+					for (int j = 0; j < ARRAY_SIZE(formats); j++) {
-+						data->format = formats[j];
-+						valid_tests += test_ccs(data);
-+					}
-+				}
-+			} else {
-+				for (int j = 0; j < ARRAY_SIZE(formats); j++) {
-+					data->format = formats[j];
-+					valid_tests += test_ccs(data);
-+				}
-+			}
-+			igt_require_f(valid_tests > 0,
-+				      "no valid tests for %s on pipe %s\n",
-+				      ccs_modifiers[i].str,
-+				      kmstest_pipe_name(data->pipe));
- 		}
- 	}
- 
--	igt_output_set_pipe(data->output, PIPE_NONE);
--	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
--
--	return valid_tests;
--}
--
--static void test_output(data_t *data)
--{
--	int valid_tests = __test_output(data);
--	igt_require_f(valid_tests > 0, "CCS not supported, skipping\n");
-+	igt_fixture {
-+		igt_output_set_pipe(data->output, PIPE_NONE);
-+		igt_display_commit2(&data->display, data->display.is_atomic ?
-+				    COMMIT_ATOMIC : COMMIT_LEGACY);
-+		data->plane = NULL;
-+	}
+-	/* rendercopy stripped in igt using cairo */
+-	cr = igt_get_cairo_ctx(data->drm_fd,
+-			       &data->primary_fb[FRONTBUFFER]);
++	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[buffer]);
+ 	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
+ 	cairo_set_source_surface(cr, data->surface, 0, 0);
+ 	cairo_rectangle(cr, 0, 0, data->screenw, data->screenh);
+ 	cairo_fill(cr);
+ 	igt_put_cairo_ctx(cr);
+-	igt_dirty_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
+-	igt_wait_for_vblank(data->drm_fd,
+-			    display->pipes[data->pipe].crtc_offset);
  }
  
- static int opt_handler(int opt, int opt_index, void *opt_data)
-@@ -570,6 +587,22 @@ igt_main_args("cs:", NULL, help_str, opt_handler, &data)
- {
- 	enum pipe pipe;
+ static void do_single_test(data_t *data, int x, int y)
+@@ -173,8 +167,6 @@ static void do_single_test(data_t *data, int x, int y)
+ 	igt_print_activity();
  
-+	const struct {
-+		const enum test_flags	flags;
-+		const char		*testname;
-+		const char		*description;
-+	} tests[] = {
-+		{TEST_BAD_PIXEL_FORMAT, "bad-pixel-format", "Test bad pixel format with given CCS modifier"},
-+		{TEST_BAD_ROTATION_90, "bad-rotation-90", "Test 90 degree rotation with given CCS modifier"},
-+		{TEST_CRC, "crc-primary-basic", "Test primary plane CRC compatibility with given CCS modifier"},
-+		{TEST_CRC | TEST_ROTATE_180, "crc-primary-rotation-180", "Test 180 degree rotation with given CCS modifier"},
-+		{TEST_RANDOM, "random-ccs-data", "Test random CCS data"},
-+		{TEST_NO_AUX_BUFFER, "missing-ccs-buffer", "Test missing CCS buffer with given CCS modifier"},
-+		{TEST_BAD_CCS_HANDLE, "ccs-on-another-bo", "Test CCS with different BO with given modifier"},
-+		{TEST_BAD_AUX_STRIDE, "bad-aux-stride", "Test with bad AUX stride with given CCS modifier"},
-+		{TEST_CRC | TEST_ALL_PLANES, "crc-sprite-planes-basic", "Test sprite plane CRC compatibility with given CCS modifier"},
-+	};
+ 	/* Hardware test */
+-	restore_image(data);
+-
+ 	igt_plane_set_position(data->cursor, x, y);
+ 	cursor_enable(data);
+ 
+@@ -182,16 +174,18 @@ static void do_single_test(data_t *data, int x, int y)
+ 		ret = igt_display_try_commit2(display, COMMIT_LEGACY);
+ 		igt_assert_eq(ret, -EINVAL);
+ 		igt_plane_set_position(data->cursor, 0, y);
+-
+ 		return;
+ 	}
+ 
++	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
+ 	igt_display_commit(display);
+ 
+ 	/* Extra vblank wait is because nonblocking cursor ioctl */
+ 	igt_wait_for_vblank(data->drm_fd,
+-			display->pipes[data->pipe].crtc_offset);
++			    display->pipes[data->pipe].crtc_offset);
 +
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+ 	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
++	restore_image(data, SWCOMPARISONBUFFER);
  
-@@ -584,68 +617,13 @@ igt_main_args("cs:", NULL, help_str, opt_handler, &data)
+ 	if (data->flags & (TEST_DPMS | TEST_SUSPEND)) {
+ 		igt_crc_t crc_after;
+@@ -220,15 +214,14 @@ static void do_single_test(data_t *data, int x, int y)
+ 		igt_assert_crc_equal(&crc, &crc_after);
  	}
  
- 	for_each_pipe_static(pipe) {
--		const char *pipe_name = kmstest_pipe_name(pipe);
+-	cursor_disable(data);
 -
- 		data.pipe = pipe;
+ 	/* Now render the same in software and collect crc */
+-	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
++	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
+ 	draw_cursor(cr, x, y, data->curw, data->curh, 1.0);
+ 	igt_put_cairo_ctx(cr);
++	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
++	cursor_disable(data);
+ 	igt_display_commit(display);
+-	igt_dirty_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
+-	/* Extra vblank wait is because nonblocking cursor ioctl */
++
+ 	igt_wait_for_vblank(data->drm_fd,
+ 			display->pipes[data->pipe].crtc_offset);
  
--		data.flags = TEST_BAD_PIXEL_FORMAT;
--		igt_describe("Test bad pixel format with given CCS modifier");
--		igt_subtest_f("pipe-%s-bad-pixel-format", pipe_name)
--			test_output(&data);
+@@ -244,8 +237,6 @@ static void do_fail_test(data_t *data, int x, int y, int expect)
+ 	igt_print_activity();
+ 
+ 	/* Hardware test */
+-	restore_image(data);
 -
--		data.flags = TEST_BAD_ROTATION_90;
--		igt_describe("Test 90 degree rotation with given CCS modifier");
--		igt_subtest_f("pipe-%s-bad-rotation-90", pipe_name)
--			test_output(&data);
+ 	cursor_enable(data);
+ 	igt_plane_set_position(data->cursor, x, y);
+ 	ret = igt_display_try_commit2(display, COMMIT_LEGACY);
+@@ -362,13 +353,16 @@ static void cleanup_crtc(data_t *data)
+ 	igt_pipe_crc_free(data->pipe_crc);
+ 	data->pipe_crc = NULL;
+ 
+-	cairo_surface_destroy(data->surface);
++	if (data->hwimageistestimage) {
++		cairo_surface_destroy(data->surface);
++		data->surface = NULL;
++	}
+ 
+ 	igt_plane_set_fb(data->primary, NULL);
+ 	igt_display_commit(display);
+ 
+-	igt_remove_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
+-	igt_remove_fb(data->drm_fd, &data->primary_fb[RESTOREBUFFER]);
++	igt_remove_fb(data->drm_fd, &data->primary_fb[HWCURSORBUFFER]);
++	igt_remove_fb(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
+ 
+ 	igt_display_reset(display);
+ }
+@@ -389,18 +383,18 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
+ 			    DRM_FORMAT_XRGB8888,
+ 			    LOCAL_DRM_FORMAT_MOD_NONE,
+ 			    0.0, 0.0, 0.0,
+-			    &data->primary_fb[FRONTBUFFER]);
++			    &data->primary_fb[HWCURSORBUFFER]);
+ 
+ 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+ 			    LOCAL_DRM_FORMAT_MOD_NONE,
+ 			    0.0, 0.0, 0.0,
+-			    &data->primary_fb[RESTOREBUFFER]);
++			    &data->primary_fb[SWCOMPARISONBUFFER]);
+ 
+ 	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	data->cursor = igt_output_get_plane_type(output, DRM_PLANE_TYPE_CURSOR);
+ 
+-	igt_plane_set_fb(data->primary, &data->primary_fb[FRONTBUFFER]);
++	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
+ 
+ 	igt_display_commit(display);
+ 
+@@ -421,13 +415,22 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
+ 	data->curh = cursor_h;
+ 	data->refresh = mode->vrefresh;
+ 
+-	data->surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24, data->screenw, data->screenh);
++	if (data->hwimageistestimage) {
++		data->surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24,
++							   data->screenw,
++							   data->screenh);
++
++		/* store test image as cairo surface */
++		cr = cairo_create(data->surface);
++		cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
++		igt_paint_test_pattern(cr, data->screenw, data->screenh);
++		cairo_destroy(cr);
++
++		/* Set HW cursor buffer in place */
++			restore_image(data, HWCURSORBUFFER);
++	} else
++		data->surface = NULL;
+ 
+-	/* store test image as cairo surface */
+-	cr = cairo_create(data->surface);
+-	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
+-	igt_paint_test_pattern(cr, data->screenw, data->screenh);
+-	cairo_destroy(cr);
+ 	igt_pipe_crc_start(data->pipe_crc);
+ }
+ 
+@@ -447,6 +450,10 @@ static void test_cursor_alpha(data_t *data, double a)
+ 				    LOCAL_DRM_FORMAT_MOD_NONE,
+ 				    &data->fb);
+ 	igt_assert(fb_id);
++
++	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
++	igt_display_commit(display);
++
+ 	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb);
+ 	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
+ 	igt_put_cairo_ctx(cr);
+@@ -462,10 +469,10 @@ static void test_cursor_alpha(data_t *data, double a)
+ 	igt_remove_fb(data->drm_fd, &data->fb);
+ 
+ 	/* Software Test - render cursor in software, drawn it directly on PF */
+-	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
++	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
+ 	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
+ 	igt_put_cairo_ctx(cr);
 -
--		data.flags = TEST_CRC;
--		igt_describe("Test primary plane CRC compatibility with given CCS modifier");
--		igt_subtest_f("pipe-%s-crc-primary-basic", pipe_name)
--			test_output(&data);
++	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
+ 	igt_display_commit(display);
+ 	igt_wait_for_vblank(data->drm_fd,
+ 			display->pipes[data->pipe].crtc_offset);
+@@ -473,12 +480,6 @@ static void test_cursor_alpha(data_t *data, double a)
+ 
+ 	/* Compare CRC from Hardware/Software tests */
+ 	igt_assert_crc_equal(&crc, &ref_crc);
 -
--		data.flags = TEST_CRC | TEST_ROTATE_180;
--		igt_describe("Test 180 degree rotation with given CCS modifier");
--		igt_subtest_f("pipe-%s-crc-primary-rotation-180", pipe_name)
--			test_output(&data);
+-	/*Clear Screen*/
+-	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
+-	igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
+-			0.0, 0.0, 0.0);
+-	igt_put_cairo_ctx(cr);
+ }
+ 
+ static void test_cursor_transparent(data_t *data)
+@@ -574,10 +575,10 @@ static void test_cursor_size(data_t *data)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_pipe_crc_t *pipe_crc = data->pipe_crc;
+-	igt_crc_t crc[10], ref_crc;
++	igt_crc_t crc, ref_crc;
+ 	cairo_t *cr;
+ 	uint32_t fb_id;
+-	int i, size;
++	int i, size, prevsize = 0;
+ 	int cursor_max_size = data->cursor_max_w;
+ 
+ 	/* Create a maximum size cursor, then change the size in flight to
+@@ -594,37 +595,38 @@ static void test_cursor_size(data_t *data)
+ 	igt_put_cairo_ctx(cr);
+ 
+ 	/* Hardware test loop */
+-	cursor_enable(data);
+ 	for (i = 0, size = cursor_max_size; size >= 64; size /= 2, i++) {
++		cursor_enable(data);
+ 		/* Change size in flight: */
+ 		igt_plane_set_size(data->cursor, size, size);
+ 		igt_fb_set_size(&data->fb, data->cursor, size, size);
+ 		igt_display_commit(display);
+-		igt_wait_for_vblank(data->drm_fd,
+-				display->pipes[data->pipe].crtc_offset);
+-		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc[i]);
+-	}
+-	cursor_disable(data);
+-	igt_display_commit(display);
+-	igt_remove_fb(data->drm_fd, &data->fb);
+-	/* Software test loop */
+-	for (i = 0, size = cursor_max_size; size >= 64; size /= 2, i++) {
++		igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
++		igt_display_commit(display);
++
++		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
++
++		cursor_disable(data);
++		igt_display_commit(display);
++
+ 		/* Now render the same in software and collect crc */
+-		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
++		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
++
++		/* remove previous cursor sw image */
++		if (prevsize > 0)
++			igt_paint_color(cr, 0, 0, prevsize, prevsize, 0.0, 0.0, 0.0);
++		prevsize = size;
++
+ 		igt_paint_color_alpha(cr, 0, 0, size, size, 1.0, 1.0, 1.0, 1.0);
+ 		igt_put_cairo_ctx(cr);
 -
--		data.flags = TEST_CRC;
--		igt_describe("Test sprite plane CRC compatibility with given CCS modifier");
--		igt_subtest_f("pipe-%s-crc-sprite-planes-basic", pipe_name) {
--			int valid_tests = 0;
--
--			igt_display_require_output_on_pipe(&data.display, data.pipe);
--
--			for_each_plane_on_pipe(&data.display, data.pipe, data.plane) {
--				valid_tests += __test_output(&data);
--			}
--
--			igt_require_f(valid_tests > 0,
--				      "CCS not supported, skipping\n");
--		}
--
--		data.plane = NULL;
--
--		data.flags = TEST_RANDOM;
--		igt_describe("Test random CCS data");
--		igt_subtest_f("pipe-%s-random-ccs-data", pipe_name) {
--			igt_info("Testing with seed %d\n", data.seed);
--			test_output(&data);
-+		for (int c = 0; c < ARRAY_SIZE(tests); c++) {
-+			data.flags = tests[c].flags;
-+			igt_describe(tests[c].description);
-+			test_output(&data, tests[c].testname);
++		igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
+ 		igt_display_commit(display);
+-		igt_wait_for_vblank(data->drm_fd,
+-				display->pipes[data->pipe].crtc_offset);
+ 		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
+-		/* Clear screen afterwards */
+-		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
+-		igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
+-				0.0, 0.0, 0.0);
+-		igt_put_cairo_ctx(cr);
+-		igt_assert_crc_equal(&crc[i], &ref_crc);
++
++		igt_assert_crc_equal(&crc, &ref_crc);
+ 	}
++
++	igt_remove_fb(data->drm_fd, &data->fb);
+ }
+ 
+ static void test_rapid_movement(data_t *data)
+@@ -690,6 +692,7 @@ static void run_size_tests(data_t *data, enum pipe pipe,
+ 				      w, h);
  		}
--
--		data.flags = TEST_NO_AUX_BUFFER;
--		igt_describe("Test missing CCS buffer with given CCS modifier");
--		igt_subtest_f("pipe-%s-missing-ccs-buffer", pipe_name)
--			test_output(&data);
--
--		data.flags = TEST_BAD_CCS_HANDLE;
--		igt_describe("Test CCS with different BO with given modifier");
--		igt_subtest_f("pipe-%s-ccs-on-another-bo", pipe_name)
--			test_output(&data);
--
--		data.flags = TEST_BAD_AUX_STRIDE;
--		igt_describe("Test with bad AUX stride with given CCS modifier");
--		igt_subtest_f("pipe-%s-bad-aux-stride", pipe_name)
--			test_output(&data);
+ 		create_cursor_fb(data, w, h);
++		data->hwimageistestimage = true;
  	}
  
- 	igt_fixture
+ 	/* Using created cursor FBs to test cursor support */
+@@ -727,6 +730,7 @@ static void run_tests_on_pipe(data_t *data, enum pipe pipe)
+ 		data->pipe = pipe;
+ 		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
+ 		igt_require(data->output);
++		data->hwimageistestimage = false;
+ 	}
+ 
+ 	igt_describe("Create a maximum size cursor, then change the size in "
+@@ -746,8 +750,10 @@ static void run_tests_on_pipe(data_t *data, enum pipe pipe)
+ 	igt_subtest_f("pipe-%s-cursor-alpha-transparent", kmstest_pipe_name(pipe))
+ 		run_test(data, test_cursor_transparent, data->cursor_max_w, data->cursor_max_h);
+ 
+-	igt_fixture
++	igt_fixture {
+ 		create_cursor_fb(data, data->cursor_max_w, data->cursor_max_h);
++		data->hwimageistestimage = true;
++	}
+ 
+ 	igt_subtest_f("pipe-%s-cursor-dpms", kmstest_pipe_name(pipe)) {
+ 		data->flags = TEST_DPMS;
 -- 
 2.28.0
 
