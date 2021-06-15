@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6024F898CC
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 09:11:16 +0000 (UTC)
-Date: Tue, 15 Jun 2021 12:13:10 +0300
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 08AEE6E226
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 09:13:16 +0000 (UTC)
+Date: Tue, 15 Jun 2021 12:15:09 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YMhvJvCJBtrWWKnu@platvala-desk.ger.corp.intel.com>
+Message-ID: <YMhvnUhuPnGIDTQw@platvala-desk.ger.corp.intel.com>
 References: <20210611052005.303-1-venkata.sai.patnana@intel.com>
- <20210611052005.303-13-venkata.sai.patnana@intel.com>
+ <20210611052005.303-15-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210611052005.303-13-venkata.sai.patnana@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 13/17] lib: Add helper functions to
- read/write dsc debugfs
+In-Reply-To: <20210611052005.303-15-venkata.sai.patnana@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 15/17] tests/kms_dp_dsc: Use helper
+ functions to read/write dsc debugfs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,188 +27,179 @@ To: venkata.sai.patnana@intel.com
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jun 11, 2021 at 10:50:01AM +0530, venkata.sai.patnana@intel.com wrote:
+On Fri, Jun 11, 2021 at 10:50:03AM +0530, venkata.sai.patnana@intel.com wrote:
 > From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 > 
-> Reuse code for reading and writing dsc debugfs and provide helper
-> functions to get dsc related parameters in lib igt_kms.
+> Remove funtions for reading different dsc parameters from dsc debugfs.
+> Use the helper functions for reading and writing dsc debugfs.
 > 
-> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com> (v3)
 > Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> ---
->  lib/igt_kms.c | 135 ++++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_kms.h |   9 ++++
->  2 files changed, 144 insertions(+)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index c7c69b6ea0..1520b2d16c 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -5183,3 +5183,138 @@ void igt_dump_crtcs_fd(int drmfd)
->  
->  	drmModeFreeResources(mode_resources);
->  }
-> +
-> +static
-> +bool check_dsc_debugfs(int drmfd, drmModeConnector *connector,
-> +		       const char *check_str)
-> +{
-> +	char file_name[128] = {0};
-> +	char buf[512];
-> +
-> +	sprintf(file_name, "%s-%d/i915_dsc_fec_support",
-> +		kmstest_connector_type_str(connector->connector_type),
-> +		connector->connector_type_id);
-> +
-> +	igt_debugfs_read(drmfd, file_name, buf);
-> +
-> +	return strstr(buf, check_str);
-> +}
-> +
-> +static
-> +int write_dsc_debugfs(int drmfd, drmModeConnector *connector,
-> +		      const char *file_name,
-> +		      const char *write_buf)
-> +{
-> +	int debugfs_fd = igt_debugfs_dir(drmfd);
-> +	int len = strlen(write_buf);
-> +	int ret;
-> +	char file_path[128] = {0};
-> +
-> +	sprintf(file_path, "%s-%d/%s",
-> +		kmstest_connector_type_str(connector->connector_type),
-> +		connector->connector_type_id,
-> +		file_name);
-> +
-> +	ret = igt_sysfs_write(debugfs_fd, file_path, write_buf, len);
-> +
-> +	close(debugfs_fd);
-> +
-> +	return ret;
-> +}
-> +
-> +/*
-> + * igt_is_dp_dsc_supported:
-> + * @drmfd: A drm file descriptor
-> + * @connector: Pointer to libdrm connector
-> + *
-> + * Returns: True if DSC is supported for the given connector, false otherwise.
-> + */
-> +bool igt_is_dp_dsc_supported(int drmfd, drmModeConnector *connector)
-> +{
-> +	return check_dsc_debugfs(drmfd, connector, "DSC_Sink_Support: yes");
-> +}
-> +
-> +/*
-> + * igt_is_dp_fec_supported:
-> + * @drmfd: A drm file descriptor
-> + * @connector: Pointer to libdrm connector
-> + *
-> + * Returns: True if FEC is supported for the given connector, false otherwise.
-> + */
-> +bool igt_is_dp_fec_supported(int drmfd, drmModeConnector *connector)
-> +{
-> +
-> +	return check_dsc_debugfs(drmfd, connector, "FEC_Sink_Support: yes");
 
-There's an extra newline here.
-
-Otherwise,
 Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
 
-
-> +}
-> +
-> +/*
-> + * igt_is_dp_dsc_enabled:
-> + * @drmfd: A drm file descriptor
-> + * @connector: Pointer to libdrm connector
-> + *
-> + * Returns: True if DSC is enabled for the given connector, false otherwise.
-> + */
-> +bool igt_is_dp_dsc_enabled(int drmfd, drmModeConnector *connector)
-> +{
-> +	return check_dsc_debugfs(drmfd, connector, "DSC_Enabled: yes");
-> +}
-> +
-> +/*
-> + * igt_is_force_dsc_enabled:
-> + * @drmfd: A drm file descriptor
-> + * @connector: Pointer to libdrm connector
-> + *
-> + * Returns: True if DSC is force enabled (via debugfs) for the given connector,
-> + * false otherwise.
-> + */
-> +bool igt_is_force_dsc_enabled(int drmfd, drmModeConnector *connector)
-> +{
-> +	return check_dsc_debugfs(drmfd, connector, "Force_DSC_Enable: yes");
-> +}
-> +
-> +/*
-> + * igt_force_dp_dsc_enable:
-> + * @drmfd: A drm file descriptor
-> + * @connector: Pointer to libdrm connector
-> + *
-> + * Returns: 1 on success or negative error code, in case of failure.
-> + */
-> +int igt_force_dp_dsc_enable(int drmfd, drmModeConnector *connector)
-> +{
-> +	return write_dsc_debugfs(drmfd, connector, "i915_dsc_fec_support", "1");
-> +}
-> +
-> +/*
-> + * igt_force_dp_dsc_enable:
-> + * @drmfd: A drm file descriptor
-> + * @connector: Pointer to libdrm connector
-> + * @bpp: Compressed bpp to be used with DSC
-> + *
-> + * Returns: No. of bytes written or negative error code, in case of failure.
-> + */
-> +int igt_force_dp_dsc_enable_bpp(int drmfd, drmModeConnector *connector, int bpp)
-> +{
-> +	char buf[20] = {0};
-> +
-> +	sprintf(buf, "%d", bpp);
-> +
-> +	return write_dsc_debugfs(drmfd, connector, "i915_dsc_bpp_support", buf);
-> +}
-> +
-> +/*
-> + * igt_get_dp_dsc_debugfs_fd:
-> + * @drmfd: A drm file descriptor
-> + * @connector: Pointer to libdrm connector
-> + *
-> + * Returns: fd of the DSC debugfs for the given connector, else returns -1.
-> + */
-> +int igt_get_dp_dsc_debugfs_fd(int drmfd, drmModeConnector *connector)
-> +{
-> +	char file_name[128] = {0};
-> +
-> +	sprintf(file_name, "%s-%d/i915_dsc_fec_support",
-> +		kmstest_connector_type_str(connector->connector_type),
-> +		connector->connector_type_id);
-> +
-> +	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
-> +}
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 8cde24b791..e87d1913e5 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -917,4 +917,13 @@ void igt_dump_connectors_fd(int drmfd);
->  void igt_dump_crtcs_fd(int drmfd);
->  bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display);
+> ---
+>  tests/kms_dp_dsc.c | 87 ++++++++--------------------------------------
+>  1 file changed, 15 insertions(+), 72 deletions(-)
+> 
+> diff --git a/tests/kms_dp_dsc.c b/tests/kms_dp_dsc.c
+> index eecb9e45da..f87112e6e7 100644
+> --- a/tests/kms_dp_dsc.c
+> +++ b/tests/kms_dp_dsc.c
+> @@ -55,7 +55,6 @@ enum dsc_test_type
 >  
-> +bool igt_is_dp_dsc_supported(int drmfd, drmModeConnector *connector);
-> +bool igt_is_dp_fec_supported(int drmfd, drmModeConnector *connector);
-> +bool igt_is_dp_dsc_enabled(int drmfd, drmModeConnector *connector);
-> +bool igt_is_force_dsc_enabled(int drmfd, drmModeConnector *connector);
-> +int igt_force_dp_dsc_enable(int drmfd, drmModeConnector *connector);
-> +int igt_force_dp_dsc_enable_bpp(int drmfd, drmModeConnector *connector,
-> +				int bpp);
-> +int igt_get_dp_dsc_debugfs_fd(int drmfd, drmModeConnector *connector);
-> +
->  #endif /* __IGT_KMS_H__ */
+>  typedef struct {
+>  	int drm_fd;
+> -	int debugfs_fd;
+>  	uint32_t devid;
+>  	igt_display_t display;
+>  	struct igt_fb fb_test_pattern;
+> @@ -77,91 +76,36 @@ static inline void manual(const char *expected)
+>  	igt_debug_manual_check("all", expected);
+>  }
+>  
+> -static bool is_dp_dsc_supported(data_t *data)
+> -{
+> -	char file_name[128] = {0};
+> -	char buf[512];
+> -
+> -	strcpy(file_name, data->conn_name);
+> -	strcat(file_name, "/i915_dsc_fec_support");
+> -	igt_debugfs_read(data->drm_fd, file_name, buf);
+> -
+> -	return strstr(buf, "DSC_Sink_Support: yes");
+> -}
+> -
+> -static bool is_dp_fec_supported(data_t *data)
+> -{
+> -	char file_name[128] = {0};
+> -	char buf[512];
+> -
+> -	strcpy(file_name, data->conn_name);
+> -	strcat(file_name, "/i915_dsc_fec_support");
+> -	igt_debugfs_read(data->drm_fd, file_name, buf);
+> -
+> -	return strstr(buf, "FEC_Sink_Support: yes");
+> -}
+> -
+> -static bool is_dp_dsc_enabled(data_t *data)
+> -{
+> -	char file_name[128] = {0};
+> -	char buf[512];
+> -
+> -	strcpy(file_name, data->conn_name);
+> -	strcat(file_name, "/i915_dsc_fec_support");
+> -	igt_debugfs_read(data->drm_fd, file_name, buf);
+> -
+> -	return strstr(buf, "DSC_Enabled: yes");
+> -}
+> -
+>  static void force_dp_dsc_enable(data_t *data)
+>  {
+> -	char file_name[128] = {0};
+>  	int ret;
+>  
+> -	strcpy(file_name, data->conn_name);
+> -	strcat(file_name, "/i915_dsc_fec_support");
+>  	igt_debug ("Forcing DSC enable on %s\n", data->conn_name);
+> -	ret = igt_sysfs_write(data->debugfs_fd, file_name, "1", 1);
+> +	ret = igt_force_dp_dsc_enable(data->drm_fd,
+> +				      data->output->config.connector);
+>  	igt_assert_f(ret > 0, "debugfs_write failed");
+>  }
+>  
+>  static void force_dp_dsc_enable_bpp(data_t *data)
+>  {
+>  	int ret;
+> -	char file_name[128] = {0};
+> -	char buffer[20];
+>  
+> -	sprintf(buffer, "%d", data->compression_bpp);
+> -	strcpy(file_name, data->conn_name);
+> -	strcat(file_name, "/i915_dsc_bpp_support");
+>  	igt_debug("Forcing DSC BPP to %d on %s\n",
+>  		  data->compression_bpp, data->conn_name);
+> -	ret = igt_sysfs_write(data->debugfs_fd, file_name,
+> -			      buffer, sizeof(buffer));
+> +	ret = igt_force_dp_dsc_enable_bpp(data->drm_fd,
+> +					  data->output->config.connector,
+> +					  data->compression_bpp);
+>  	igt_assert_f(ret > 0, "debugfs_write failed");
+>  }
+>  
+> -static bool is_force_dsc_enabled(data_t *data)
+> -{
+> -	char file_name[128] = {0};
+> -	char buf[512];
+> -
+> -	strcpy(file_name, data->conn_name);
+> -	strcat(file_name, "/i915_dsc_fec_support");
+> -	igt_debugfs_read(data->drm_fd, file_name, buf);
+> -
+> -	return strstr(buf, "Force_DSC_Enable: yes");
+> -}
+> -
+>  static void save_force_dsc_en(data_t *data)
+>  {
+> -	char file_name[128] = {0};
+> -
+> -	force_dsc_en_orig = is_force_dsc_enabled(data);
+> -	strcpy(file_name, data->conn_name);
+> -	strcat(file_name, "/i915_dsc_fec_support");
+> -	force_dsc_restore_fd = openat(igt_debugfs_dir(data->drm_fd),
+> -				      file_name, O_WRONLY);
+> +	force_dsc_en_orig =
+> +		igt_is_force_dsc_enabled(data->drm_fd,
+> +					 data->output->config.connector);
+> +	force_dsc_restore_fd =
+> +		igt_get_dp_dsc_debugfs_fd(data->drm_fd,
+> +					  data->output->config.connector);
+>  	igt_assert(force_dsc_restore_fd >= 0);
+>  }
+>  
+> @@ -211,13 +155,13 @@ static bool check_dsc_on_connector(data_t *data, uint32_t drmConnector)
+>  		kmstest_connector_type_str(connector->connector_type),
+>  		connector->connector_type_id);
+>  
+> -	if (!is_dp_dsc_supported(data)) {
+> +	if (!igt_is_dp_dsc_supported(data->drm_fd, connector)) {
+>  		igt_debug("DSC not supported on connector %s\n",
+>  			  data->conn_name);
+>  		return false;
+>  	}
+>  	if (connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
+> -	    !is_dp_fec_supported(data)) {
+> +	    !igt_is_dp_fec_supported(data->drm_fd, connector)) {
+>  		igt_debug("DSC cannot be enabled without FEC on %s\n",
+>  			  data->conn_name);
+>  		return false;
+> @@ -263,7 +207,8 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+>  	 */
+>  	manual("RGB test pattern without corruption");
+>  
+> -	enabled = is_dp_dsc_enabled(data);
+> +	enabled = igt_is_dp_dsc_enabled(data->drm_fd,
+> +					data->output->config.connector);
+>  	restore_force_dsc_en();
+>  
+>  	igt_assert_f(enabled,
+> @@ -320,7 +265,6 @@ igt_main
+>  		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>  		igt_require_intel(data.drm_fd);
+>  		data.devid = intel_get_drm_devid(data.drm_fd);
+> -		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+>  		kmstest_set_vt_graphics_mode();
+>  		igt_install_exit_handler(kms_dp_dsc_exit_handler);
+>  		igt_display_require(&data.display, data.drm_fd);
+> @@ -356,7 +300,6 @@ igt_main
+>  		test_cleanup(&data);
+>  		drmModeFreeConnector(connector);
+>  		drmModeFreeResources(res);
+> -		close(data.debugfs_fd);
+>  		close(data.drm_fd);
+>  		igt_display_fini(&data.display);
+>  	}
 > -- 
 > 2.25.1
 > 
