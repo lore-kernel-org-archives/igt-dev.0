@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F1BF489FC8
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 08:40:35 +0000 (UTC)
-Date: Tue, 15 Jun 2021 10:40:29 +0200
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 70FBE6E213
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 08:44:34 +0000 (UTC)
+Date: Tue, 15 Jun 2021 10:44:28 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210615084029.GJ4738@zkempczy-mobl2>
+Message-ID: <20210615084428.GK4738@zkempczy-mobl2>
 References: <20210614163704.365989-1-jason@jlekstrand.net>
- <20210614163902.366168-4-jason@jlekstrand.net>
+ <20210614163902.366168-5-jason@jlekstrand.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210614163902.366168-4-jason@jlekstrand.net>
-Subject: Re: [igt-dev] [PATCH i-g-t 53/77] tests/i915/gem_exec_endless: Stop
- munging ctx0 engines
+In-Reply-To: <20210614163902.366168-5-jason@jlekstrand.net>
+Subject: Re: [igt-dev] [PATCH i-g-t 54/77] lib/i915: Use
+ for_each_physical_ring for submission tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,33 +19,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Jason Ekstrand <jason@jlekstrand.net>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCBKdW4gMTQsIDIwMjEgYXQgMTE6Mzg6MzhBTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
-d3JvdGU6Cj4gU2lnbmVkLW9mZi1ieTogSmFzb24gRWtzdHJhbmQgPGphc29uQGpsZWtzdHJhbmQu
-bmV0Pgo+IC0tLQo+ICB0ZXN0cy9pOTE1L2dlbV9leGVjX2VuZGxlc3MuYyB8IDIgKy0KPiAgMSBm
-aWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCj4gCj4gZGlmZiAtLWdp
-dCBhL3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfZW5kbGVzcy5jIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19l
-bmRsZXNzLmMKPiBpbmRleCBjM2M4MDY1NDMuLmI4M2Q1YTJjMSAxMDA2NDQKPiAtLS0gYS90ZXN0
-cy9pOTE1L2dlbV9leGVjX2VuZGxlc3MuYwo+ICsrKyBiL3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfZW5k
-bGVzcy5jCj4gQEAgLTMwOSw3ICszMDksNyBAQCBzdGF0aWMgdm9pZCBlbmRsZXNzX2Rpc3BhdGNo
-KGludCBpOTE1LCBjb25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmUpCj4gIH0K
-PiAgCj4gICNkZWZpbmUgdGVzdF9lYWNoX2VuZ2luZShULCBpOTE1LCBlKSBcCj4gLQlpZ3Rfc3Vi
-dGVzdF93aXRoX2R5bmFtaWMoVCkgX19mb3JfZWFjaF9waHlzaWNhbF9lbmdpbmUoaTkxNSwgZSkg
-XAo+ICsJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKFQpIGZvcl9lYWNoX3BoeXNpY2FsX2VuZ2lu
-ZShpOTE1LCBlKSBcCj4gIAkJZm9yX2VhY2hfaWYoZ2VtX2NsYXNzX2Nhbl9zdG9yZV9kd29yZChp
-OTE1LCAoZSktPmNsYXNzKSkgXAo+ICAJCQlpZ3RfZHluYW1pY19mKCIlcyIsIChlKS0+bmFtZSkK
-PgoKUmV2aWV3ZWQtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5z
-a2lAaW50ZWwuY29tPgoKLS0KWmJpZ25pZXcKICAKPiAtLSAKPiAyLjMxLjEKPiAKPiBfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+IGlndC1kZXYgbWFpbGlu
-ZyBsaXN0Cj4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKPiBodHRwczovL2xpc3RzLmZy
-ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRl
-dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On Mon, Jun 14, 2021 at 11:38:39AM -0500, Jason Ekstrand wrote:
+> This does make the assumption that ctx0 has the default set of engines
+> but, now that we've converted everything to intel_ctx_t, this assumption
+> should be ok.
+> 
+> Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+> ---
+>  lib/i915/gem_submission.c | 13 +++++--------
+>  1 file changed, 5 insertions(+), 8 deletions(-)
+> 
+> diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
+> index bd4bbb3ef..1abc73ec7 100644
+> --- a/lib/i915/gem_submission.c
+> +++ b/lib/i915/gem_submission.c
+> @@ -33,6 +33,7 @@
+>  #include "i915/gem.h"
+>  #include "i915/gem_create.h"
+>  #include "i915/gem_engine_topology.h"
+> +#include "i915/gem_ring.h"
+>  #include "i915/gem_submission.h"
+>  
+>  #include "igt_core.h"
+> @@ -200,10 +201,8 @@ void gem_test_engine(int i915, unsigned int engine)
+>  	gem_write(i915, obj.handle, 0, &bbe, sizeof(bbe));
+>  
+>  	if (engine == ALL_ENGINES) {
+> -		const struct intel_execution_engine2 *e2;
+> -
+> -		__for_each_physical_engine(i915, e2) {
+> -			execbuf.flags = e2->flags;
+> +		for_each_physical_ring(e, i915) {
+> +			execbuf.flags = eb_ring(e);
+>  			gem_execbuf(i915, &execbuf);
+
+Why not to use for_each_ctx_engine() with intel intel_ctx_0 here? 
+
+--
+Zbigniew
+
+>  		}
+>  	} else {
+> @@ -382,11 +381,9 @@ unsigned int gem_submission_measure(int i915, unsigned int engine)
+>  		fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) | O_NONBLOCK);
+>  
+>  	if (engine == ALL_ENGINES) {
+> -		struct intel_execution_engine2 *e;
+> -
+>  		size = -1;
+> -		__for_each_physical_engine(i915, e) {
+> -			unsigned int this =  __measure_ringsize(i915, e->flags);
+> +		for_each_physical_ring(e, i915) {
+> +			unsigned int this =  __measure_ringsize(i915, eb_ring(e));
+>  			if (this < size)
+>  				size = this;
+>  		}
+> -- 
+> 2.31.1
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
