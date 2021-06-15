@@ -1,22 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com
- [IPv6:2a00:1450:4864:20::133])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CEBBB6E3B7
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 15:47:07 +0000 (UTC)
-Received: by mail-lf1-x133.google.com with SMTP id p7so27841239lfg.4
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 08:47:07 -0700 (PDT)
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com
+ [IPv6:2a00:1450:4864:20::12a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3056D6E42D
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 16:00:37 +0000 (UTC)
+Received: by mail-lf1-x12a.google.com with SMTP id p17so27851922lfc.6
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 09:00:37 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Tue, 15 Jun 2021 19:00:22 +0300
+Message-Id: <20210615160022.31610-4-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20210615160022.31610-1-juhapekka.heikkila@gmail.com>
+References: <20210615160022.31610-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-References: <20210614164135.1519746-1-markyacoub@chromium.org>
- <20210615131254.5x5u2fjyy7p3uctf@outlook.office365.com>
- <e89fb09e-40c2-3b55-ae27-ed13c234bad7@amd.com>
- <CAJUqKUrDjKFf_yx9w=1TQViJr8C6QfPrYCsEqQO-1Nxou5eH9A@mail.gmail.com>
- <8f717975-4852-fb81-028a-e4c709b50014@amd.com>
-In-Reply-To: <8f717975-4852-fb81-028a-e4c709b50014@amd.com>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Tue, 15 Jun 2021 11:46:55 -0400
-Message-ID: <CAJUqKUqVZb-GatjkGXChFYPXrYLCqwCe9Uu0epEASn8SMrzEfw@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH] tests/kms_prime: Filter out devices that
- can't import buffers.
+Subject: [igt-dev] [PATCH i-g-t 4/4] tests/kms_flip_scaled_crc: parameterize
+ test sizes and fix test to try other connectors
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,93 +20,252 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Petri Latvala <petri.latvala@intel.com>, Anson Jacob <Anson.Jacob@amd.com>, igt-dev@lists.freedesktop.org, Sean Paul <seanpaul@chromium.org>, "Deucher,
- Alexander" <Alexander.Deucher@amd.com>, Mark Yacoub <markyacoub@google.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QFBldHJpIExhdHZhbGEgd291bGQgaXQgbWFrZSBzZW5zZSB0aGF0IEkgZ28gYWhlYWQgYW5kIG1v
-dmUgdGhpcyB0ZXN0IHRvIGk5MTU/CgpPbiBUdWUsIEp1biAxNSwgMjAyMSBhdCAxMDo1NSBBTSBD
-aHJpc3RpYW4gS8O2bmlnCjxjaHJpc3RpYW4ua29lbmlnQGFtZC5jb20+IHdyb3RlOgo+Cj4gQW0g
-MTUuMDYuMjEgdW0gMTY6NDkgc2NocmllYiBNYXJrIFlhY291YjoKPiA+IE9uIFR1ZSwgSnVuIDE1
-LCAyMDIxIGF0IDk6NDMgQU0gQ2hyaXN0aWFuIEvDtm5pZwo+ID4gPGNocmlzdGlhbi5rb2VuaWdA
-YW1kLmNvbT4gd3JvdGU6Cj4gPj4gSGkgZ3V5cywKPiA+Pgo+ID4+IGZpcnN0IG9mIGFsbCB0aGFu
-a3MgUm9kcmlnbyBmb3IgYnJpbmdpbmcgdGhpcyB0byBteSBhdHRlbnRpb24uCj4gPj4KPiA+PiBN
-YXJrLCBhcyB0aGUgRE1BLWJ1ZiBtYWludGFpbmVyIEkgdW5mb3J0dW5hdGVseSBoYXZlIHRvIHJl
-amVjdCB0aGlzIHBhdGNoLgo+ID4gVGhpcyB0ZXN0IGlzIGN1cnJlbnRseSBydW5uaW5nIG9uIGk5
-MTUsIGJ1dCBmYWlscyBvbiBhbWRncHUgZHVlIHRvIHRoZQo+ID4gY2hlY2sgb2YgYGltcG9ydF9h
-dHRhY2hgICh0aGlzIGlzIHRoZSBjb21taXQgdGhhdCBpbnRyb2R1Y2VkIHRoZQo+ID4gY2hhbmdl
-OiBodHRwczovL25hbTExLnNhZmVsaW5rcy5wcm90ZWN0aW9uLm91dGxvb2suY29tLz91cmw9aHR0
-cHMlM0ElMkYlMkZnaXRsYWIuZnJlZWRlc2t0b3Aub3JnJTJGYWdkNWYlMkZsaW51eCUyRi0lMkZj
-b21taXQlMkYxNzY5MTUyYWM2NGIwYjA3NTgzZjY5NmI2MjE2MjRkZjJjYTRjODQwJmFtcDtkYXRh
-PTA0JTdDMDElN0NjaHJpc3RpYW4ua29lbmlnJTQwYW1kLmNvbSU3Q2JkYzdiNjcxNjg4NzQ3YjVi
-Mjg4MDhkOTMwMGNjY2U3JTdDM2RkODk2MWZlNDg4NGU2MDhlMTFhODJkOTk0ZTE4M2QlN0MwJTdD
-MCU3QzYzNzU5MzY1MzgxOTUwNDA3OSU3Q1Vua25vd24lN0NUV0ZwYkdac2IzZDhleUpXSWpvaU1D
-NHdMakF3TURBaUxDSlFJam9pVjJsdU16SWlMQ0pCVGlJNklrMWhhV3dpTENKWFZDSTZNbjAlM0Ql
-N0MxMDAwJmFtcDtzZGF0YT1Od2RzdDJVTnJBWlhWaVFvWG93Y3h6SnhIR3owa3R1WDNPSUZMRVNv
-RW9vJTNEJmFtcDtyZXNlcnZlZD0wKQo+ID4gV2hhdCBkbyB5b3UgcmVjb21tZW5kIGluc3RlYWQ/
-Cj4KPiBEcm9wcGluZyB0aGUgdGVzdCBmcm9tIHRoZSBnZW5lcmFsIEtNUyB0ZXN0cy4gU2Nhbm5p
-bmcgb3V0IGZyb20gaW1wb3J0ZWQKPiBETUEtYnVmcyBpcyBjb21wbGV0ZWx5IHZlbmRvciBzcGVj
-aWZpYy4KPgo+ID4+IERpcmVjdCBzY2Fub3V0IGZyb20gaW1wb3J0ZWQgc3VyZmFjZXMgaXMgbm90
-IHNvbWV0aGluZyBzdXBwb3J0ZWQgd2l0aAo+ID4+IERNQS1idWYgaW4gZ2VuZXJhbCBhdCB0aGUg
-bW9tZW50Lgo+ID4gRG8geW91IG1lYW4gdGhlIHByb2JsZW0gaXMgaW4gdGhlIHRlc3QgaXRzZWxm
-Pwo+Cj4gWWVzLCBleGFjdGx5LiBUZXN0aW5nIHRoYXQgd2l0aG91dCBjaGVja2luZyBmb3IgdmVu
-ZG9yIHNwZWNpZmljIHN1cHBvcnQKPiBpcyB1dHRlcmx5IG5vbnNlbnNlLgo+Cj4gSSdtIHByZXR0
-eSBzdXJlIHRoYXQgdGhpcyBpcyBub3QgZXZlbiBmdWxseSBzdXBwb3J0ZWQgYnkgaTkxNS4gRGFu
-aWVsCj4gVmV0dGVyIGFuZCBJIGNoYXR0ZWQgYWJvdXQgc3R1ZmYgbGlrZSB0aGF0IGEgd2hpbGUg
-YWdvIGFuZCBoZSBtZW50aW9uZWQKPiB0aGF0IGk5MTUgc2ltaWxhciB0byBBTUQgR1BVcyBoYXZl
-IHNvbWUgcmF0aGVyIHN0cmljdCBoYXJkd2FyZQo+IHJlcXVpcmVtZW50cyB3aGljaCBhcmUgY3Vy
-cmVudGx5IG5vdCBleHByZXNzaWJsZSB3aXRoIERNQS1idWYuCj4KPiBJJ20gbm90IHN1cmUgYWJv
-dXQgb3RoZXIgZHJpdmVycywgYnV0IG15IGd1ZXNzIGlzIHRoYXQgbm9uZSBvZiB0aGVtIHdpbGwK
-PiBhY3R1YWxseSBzdXBwb3J0IHRoaXMuCj4KPiBSZWdhcmRzLAo+IENocmlzdGlhbi4KPgo+ID4+
-IFdlIGRvIGhhdmUgc29tZSBzdXBwb3J0IGZvciB0aGlzIGJldHdlZW4gQU1EIEdQVXMgaW4gQStB
-IGxhcHRvcHMsIGFuZCBpdAo+ID4+IG1pZ2h0IHdvcmsgd2l0aCBpOTE1IGFuZCBzb21lIG9mIHRo
-ZSBkcml2ZXJzIHVzZWQgb24gQVJNLgo+ID4+Cj4gPj4gQnV0IGFsbCBvZiB0aGlzIGlzIGNvbXBs
-ZXRlbHkgdmVuZG9yIHNwZWNpZmljIHNpbmNlIHRoZXJlIGFyZSBzb21lIHZlcnkKPiA+PiBsb3cg
-bGV2ZWwgYW5kIGhhcmR3YXJlIHNwZWNpZmljIGxpbWl0YXRpb25zIHRvIHRha2UgYWNjb3VudCBp
-bnRvLgo+ID4+Cj4gPj4gUmVnYXJkcywKPiA+PiBDaHJpc3RpYW4uCj4gPj4KPiA+PiBBbSAxNS4w
-Ni4yMSB1bSAxNToxMiBzY2hyaWViIFJvZHJpZ28gU2lxdWVpcmE6Cj4gPj4+IEhpIEFsZXggYW5k
-IENocmlzdGlhbiwKPiA+Pj4KPiA+Pj4gVGhpcyBwYXRjaCBpcyByZWxhdGVkIHRvIHByaW1lLCBi
-dXQgSSdtIG5vdCBmYW1pbGlhciB3aXRoIHRoaXMgcGFydCBvZgo+ID4+PiBvdXIgZHJpdmVyLiBD
-b3VsZCB5b3UgdGFrZSBhIGxvb2sgYXQgdGhhdD8KPiA+Pj4KPiA+Pj4gVGhhbmtzCj4gPj4+Cj4g
-Pj4+IE9uIDA2LzE0LCBNYXJrIFlhY291YiB3cm90ZToKPiA+Pj4+IFNvbWUgZGV2aWNlcyBzdWNo
-IGFzIGFtZGdwdSBkbyBub3Qgc3VwcG9ydCBpbXBvcnRlZCBidWZmZXJzLgo+ID4+Pj4gRmlsdGVy
-IG91dCB0aG9zZSBkZXZpY2VzLgo+ID4+Pj4gVGVzdGVkIG9uIFpvcmsgd2l0aCBjaHJvbWVvcy1r
-ZXJuZWwtNV80Lgo+ID4+Pj4KPiA+Pj4+IFNpZ25lZC1vZmYtYnk6IE1hcmsgWWFjb3ViIDxtYXJr
-eWFjb3ViQGNocm9taXVtLm9yZz4KPiA+Pj4+IC0tLQo+ID4+Pj4gICAgdGVzdHMva21zX3ByaW1l
-LmMgfCAxNCArKysrKysrKysrKystLQo+ID4+Pj4gICAgMSBmaWxlIGNoYW5nZWQsIDEyIGluc2Vy
-dGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCj4gPj4+Pgo+ID4+Pj4gZGlmZiAtLWdpdCBhL3Rlc3Rz
-L2ttc19wcmltZS5jIGIvdGVzdHMva21zX3ByaW1lLmMKPiA+Pj4+IGluZGV4IDhjYjJjYTJhLi40
-ODBjN2ViNCAxMDA2NDQKPiA+Pj4+IC0tLSBhL3Rlc3RzL2ttc19wcmltZS5jCj4gPj4+PiArKysg
-Yi90ZXN0cy9rbXNfcHJpbWUuYwo+ID4+Pj4gQEAgLTI0OSw2ICsyNDksMTYgQEAgc3RhdGljIHZv
-aWQgdGVzdF9jcmMoaW50IGV4cG9ydGVyX2ZkLCBpbnQgaW1wb3J0ZXJfZmQpCj4gPj4+PiAgICAg
-ICBpZ3RfZGlzcGxheV9maW5pKCZkaXNwbGF5KTsKPiA+Pj4+ICAgIH0KPiA+Pj4+Cj4gPj4+PiAr
-LyogVGhlIHRlc3QgYXR0ZW1wdHMgdG8gaW1wb3J0IHRoZSBidWZmZXIgb2JqZWN0IGZyb20gb25l
-IGRldmljZSB0byBhbm90aGVyLgo+ID4+Pj4gKyAqIEZpbHRlciBvdXQgZGV2aWNlcyB0aGF0IGFy
-ZW4ndCBjYXBhYmxlIG9mIGRvaW5nIHRoaXMuCj4gPj4+PiArICovCj4gPj4+PiArYm9vbCBkb2Vz
-X2RldmljZV9zdXBwb3J0X2RtYWJ1Zl9pbXBvcnQoaW50IGZkKSB7Cj4gPj4+PiArICAgIC8qIEFN
-REdQVSB1c2VzIFZSQU0uIEFueSB1c2Ugb2YgdGhlIGZiIHdpbGwgbWlncmF0ZSBpdCB0byBWUkFN
-LCB3aGljaCBpcyBub3Qgc2Vuc2libGUgZm9yCj4gPj4+PiArICAgICAqIGFuIGltcG9ydGVkIGRt
-YS1idWYuCj4gPj4+PiArICAgICAqLwo+ID4+Pj4gKyAgICByZXR1cm4gIWlzX2FtZGdwdV9kZXZp
-Y2UoZmQpOwo+ID4+Pj4gK30KPiA+Pj4+ICsKPiA+Pj4+ICAgIGlndF9tYWluCj4gPj4+PiAgICB7
-Cj4gPj4+PiAgICAgICBpZ3RfZml4dHVyZQo+ID4+Pj4gQEAgLTI2MiwxMCArMjcyLDEwIEBAIGln
-dF9tYWluCj4gPj4+Pgo+ID4+Pj4gICAgICAgICAgICAgICAvKiBBTlkgPSBhbnl0aGluZyB0aGF0
-IGlzIG5vdCBWR0VNICovCj4gPj4+PiAgICAgICAgICAgICAgIGZpcnN0X2ZkID0gX19kcm1fb3Bl
-bl9kcml2ZXJfYW5vdGhlcigwLCBEUklWRVJfQU5ZIHwgRFJJVkVSX1ZHRU0pOwo+ID4+Pj4gLSAg
-ICAgICAgICAgIGlndF9yZXF1aXJlKGZpcnN0X2ZkID49IDApOwo+ID4+Pj4gKyAgICAgICAgICAg
-IGlndF9yZXF1aXJlKGZpcnN0X2ZkID49IDAgJiYgZG9lc19kZXZpY2Vfc3VwcG9ydF9kbWFidWZf
-aW1wb3J0KGZpcnN0X2ZkKSk7Cj4gPj4+Pgo+ID4+Pj4gICAgICAgICAgICAgICBzZWNvbmRfZmQg
-PSBfX2RybV9vcGVuX2RyaXZlcl9hbm90aGVyKDEsIERSSVZFUl9BTlkgfCBEUklWRVJfVkdFTSk7
-Cj4gPj4+PiAtICAgICAgICAgICAgaWd0X3JlcXVpcmUoc2Vjb25kX2ZkID49IDApOwo+ID4+Pj4g
-KyAgICAgICAgICAgIGlndF9yZXF1aXJlKHNlY29uZF9mZCA+PSAwICYmIGRvZXNfZGV2aWNlX3N1
-cHBvcnRfZG1hYnVmX2ltcG9ydChzZWNvbmRfZmQpKTsKPiA+Pj4+Cj4gPj4+PiAgICAgICAgICAg
-ICAgIGlmIChoYXNfcHJpbWVfZXhwb3J0KGZpcnN0X2ZkKSAmJgo+ID4+Pj4gICAgICAgICAgICAg
-ICAgICAgaGFzX3ByaW1lX2ltcG9ydChzZWNvbmRfZmQpKQo+ID4+Pj4gLS0KPiA+Pj4+IDIuMzIu
-MC4yNzIuZzkzNWU1OTMzNjgtZ29vZwo+ID4+Pj4KPgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3Rz
-LmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2lndC1kZXYK
+here parameterized first/second fb sizes making it possible to easily
+add down/upscaled fb tests for both first and second fb. While at it
+fixed test to try other available connectors for pipe if wanted mode
+is not found on connector and test fails on cdcdlk.
+
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ tests/kms_flip_scaled_crc.c | 114 +++++++++++++++++++++++++++---------
+ 1 file changed, 86 insertions(+), 28 deletions(-)
+
+diff --git a/tests/kms_flip_scaled_crc.c b/tests/kms_flip_scaled_crc.c
+index d81ad352d..19c879fe1 100644
+--- a/tests/kms_flip_scaled_crc.c
++++ b/tests/kms_flip_scaled_crc.c
+@@ -46,51 +46,69 @@ const struct {
+ 	const uint32_t firstformat;
+ 	const uint64_t secondmodifier;
+ 	const uint32_t secondformat;
++	const double firstmultiplier;
++	const double secondmultiplier;
+ } flip_scenario_test[] = {
+ 	{
+ 		"flip-32bpp-ytile-to-64bpp-ytile",
+ 		"Flip from 32bpp non scaled fb to 64bpp downscaled fb to stress CD clock programming",
+ 		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888,
+-		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F
++		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F,
++		1.0,
++		2.0,
+ 	},
+ 	{
+ 		"flip-64bpp-ytile-to-32bpp-ytile",
+ 		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+ 		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F,
+-		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888
++		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888,
++		1.0,
++		2.0,
+ 	},
+ 	{
+ 		"flip-64bpp-ytile-to-16bpp-ytile",
+ 		"Flip from 64bpp non scaled fb to 16bpp downscaled fb to stress CD clock programming",
+ 		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F,
+-		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_RGB565
++		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_RGB565,
++		1.0,
++		2.0,
+ 	},
+ 	{
+ 		"flip-32bpp-ytileccs-to-64bpp-ytile",
+ 		"Flip from 32bpp non scaled fb to 64bpp downscaled fb to stress CD clock programming",
+ 		LOCAL_I915_FORMAT_MOD_Y_TILED_CCS, DRM_FORMAT_XRGB8888,
+-		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F
++		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F,
++		1.0,
++		2.0,
+ 	},
+ 	{
+ 		"flip-32bpp-ytile-to-32bpp-ytilegen12rcccs",
+ 		"Flip from 32bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+ 		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888,
+-		LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, DRM_FORMAT_XRGB8888
++		LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, DRM_FORMAT_XRGB8888,
++		1.0,
++		2.0,
+ 	},
+ 	{
+ 		"flip-32bpp-ytile-to-32bpp-ytileccs",
+ 		"Flip from 32bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+ 		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888,
+-		LOCAL_I915_FORMAT_MOD_Y_TILED_CCS, DRM_FORMAT_XRGB8888
++		LOCAL_I915_FORMAT_MOD_Y_TILED_CCS, DRM_FORMAT_XRGB8888,
++		1.0,
++		2.0,
+ 	},
+ 	{
+ 		"flip-64bpp-ytile-to-32bpp-ytilercccs",
+ 		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+ 		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F,
+-		LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, DRM_FORMAT_XRGB8888
++		LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, DRM_FORMAT_XRGB8888,
++		1.0,
++		2.0,
+ 	},
+ };
+ 
++enum subrval {CONNECTORFAIL, CONNECTORSUCCESS, TESTSKIP, NOREQUESTEDFORMATONPIPE};
++
+ static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
+ 		     uint32_t height, uint64_t format, uint64_t modifier)
+ {
+@@ -146,8 +164,8 @@ static void clear_lut(data_t *data, enum pipe pipe)
+ 	igt_pipe_obj_set_prop_value(pipe_obj, IGT_CRTC_GAMMA_LUT, 0);
+ }
+ 
+-static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
+-				igt_output_t *output)
++static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
++					enum pipe pipe, igt_output_t *output)
+ {
+ 	igt_plane_t *primary;
+ 	igt_crc_t small_crc, big_crc;
+@@ -163,14 +181,14 @@ static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
+ 
+ 	if (data->big_fb.fb_id == 0) {
+ 		setup_fb(data, &data->small_fb,
+-				data->attemptmodewidth,
+-				data->attemptmodeheight,
++				data->attemptmodewidth * flip_scenario_test[index].firstmultiplier,
++				data->attemptmodeheight * flip_scenario_test[index].firstmultiplier,
+ 				flip_scenario_test[index].firstformat,
+ 				flip_scenario_test[index].firstmodifier);
+ 
+ 		setup_fb(data, &data->big_fb,
+-				data->attemptmodewidth * 2,
+-				data->attemptmodeheight * 2,
++				data->attemptmodewidth * flip_scenario_test[index].secondmultiplier,
++				data->attemptmodeheight * flip_scenario_test[index].secondmultiplier,
+ 				flip_scenario_test[index].secondformat,
+ 				flip_scenario_test[index].secondmodifier);
+ 
+@@ -187,7 +205,7 @@ static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
+ 				      data->small_fb.modifier) ||
+ 	    !igt_plane_has_format_mod(primary, data->big_fb.drm_format,
+ 				      data->big_fb.modifier))
+-		return;
++		return NOREQUESTEDFORMATONPIPE;
+ 
+ 	set_lut(data, pipe);
+ 	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
+@@ -211,31 +229,55 @@ static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
+ 	}
+ 
+ 	if (!modetoset)
+-		igt_debug("%dp mode was not found from connector, will continue with default. This may cause cdclk to fail this test.\n",
++		igt_debug("%dp mode was not found from connector, will try with default. This may cause cdclk to fail this test on this connector.\n",
+ 			  data->attemptmodeheight);
+ 	else
+ 		igt_output_override_mode(output, modetoset);
+ 
+ 	igt_plane_set_position(primary, 0, 0);
+ 	igt_plane_set_fb(primary, &data->small_fb);
+-	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	igt_plane_set_size(primary, data->attemptmodewidth,
++			   data->attemptmodeheight);
++	ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	switch (ret) {
++	case -ERANGE:
++		igt_debug("Platform scaling limits exceeded, skipping.\n");
++		return TESTSKIP;
++	case -EINVAL:
++		if (!modetoset) {
++			igt_debug("No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
++				  data->attemptmodeheight);
++			return CONNECTORFAIL;
++		}
++		/* fallthrough */
++	default:
++		igt_assert_eq(ret, 0);
++	}
+ 
+ 	igt_pipe_crc_start(data->pipe_crc);
+ 	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &small_crc);
+ 
+ 	igt_plane_set_fb(primary, &data->big_fb);
+-	igt_plane_set_size(primary, data->small_fb.width,
+-			   data->small_fb.height);
++	igt_plane_set_size(primary, data->attemptmodewidth,
++			   data->attemptmodeheight);
+ 	ret = igt_display_try_commit_atomic(&data->display,
+ 					    DRM_MODE_ATOMIC_ALLOW_MODESET  |
+ 					    DRM_MODE_PAGE_FLIP_EVENT, NULL);
+ 
+-	igt_require_f(ret != -ERANGE,
+-		      "Platform scaling limits exceeded, skipping.\n");
+-	igt_require_f(!(ret == -EINVAL && !modetoset),
+-		      "No %dp and default mode too big, cdclk limits exceeded. Skipping.\n",
+-		      data->attemptmodeheight);
+-	igt_assert_eq(ret, 0);
++	switch (ret) {
++	case -ERANGE:
++		igt_debug("Platform scaling limits exceeded, skipping.\n");
++		return TESTSKIP;
++	case -EINVAL:
++		if (!modetoset) {
++			igt_debug("No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
++				  data->attemptmodeheight);
++			return CONNECTORFAIL;
++		}
++		/* fallthrough */
++	default:
++		igt_assert_eq(ret, 0);
++	}
+ 
+ 	igt_assert(read(data->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
+ 
+@@ -251,6 +293,8 @@ static void test_flip_to_scaled(data_t *data, uint32_t index, enum pipe pipe,
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_plane_set_fb(primary, NULL);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	return CONNECTORSUCCESS;
+ }
+ 
+ igt_main
+@@ -280,11 +324,25 @@ igt_main
+ 	for (int index = 0; index < ARRAY_SIZE(flip_scenario_test); index++) {
+ 		igt_describe(flip_scenario_test[index].describe);
+ 		igt_subtest(flip_scenario_test[index].name) {
++			int validtests = 0;
+ 			free_fbs(&data);
+-			for_each_pipe_with_single_output(&data.display, pipe,
+-							 output)
+-				test_flip_to_scaled(&data, index, pipe, output);
+-
++			for_each_pipe_static(pipe) {
++				enum subrval rval = CONNECTORSUCCESS;
++				for_each_valid_output_on_pipe(&data.display, pipe, output) {
++					rval = test_flip_to_scaled(&data, index, pipe, output);
++
++					igt_require(rval != TESTSKIP);
++
++					// break out to test next pipe
++					if (rval == CONNECTORSUCCESS) {
++						validtests++;
++						break;
++					}
++				}
++				if (rval == NOREQUESTEDFORMATONPIPE)
++					igt_debug("No requested format/modifier on pipe %s\n", kmstest_pipe_name(pipe));
++			}
++			igt_require_f(validtests > 0, "No valid pipe/connector/format/mod combination found");
+ 		}
+ 	}
+ 	igt_fixture {
+-- 
+2.28.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
