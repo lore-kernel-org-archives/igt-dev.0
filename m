@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F391896FA
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 08:28:31 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Tue, 15 Jun 2021 08:28:26 +0000
-Message-ID: <BY5PR11MB43726A95B6BB9E0A0EBCA14A89309@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <80bed39a-e899-f211-ae2f-279312b52084@gmail.com>
- <1623143106-8423-1-git-send-email-vidya.srinivas@intel.com>
- <5bd96874-ec95-e560-9793-e3bdcbd9beec@gmail.com>
- <BY5PR11MB437223C6D52194553D9CEE1589359@BY5PR11MB4372.namprd11.prod.outlook.com>
-In-Reply-To: <BY5PR11MB437223C6D52194553D9CEE1589359@BY5PR11MB4372.namprd11.prod.outlook.com>
-Content-Language: en-US
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F1BF489FC8
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 08:40:35 +0000 (UTC)
+Date: Tue, 15 Jun 2021 10:40:29 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210615084029.GJ4738@zkempczy-mobl2>
+References: <20210614163704.365989-1-jason@jlekstrand.net>
+ <20210614163902.366168-4-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Use
- igt_pipe_crc_get_current instead of igt_pipe_crc_collect_crc
+Content-Disposition: inline
+In-Reply-To: <20210614163902.366168-4-jason@jlekstrand.net>
+Subject: Re: [igt-dev] [PATCH i-g-t 53/77] tests/i915/gem_exec_endless: Stop
+ munging ctx0 engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,104 +19,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Lin,
- Charlton" <charlton.lin@intel.com>
+To: Jason Ekstrand <jason@jlekstrand.net>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hello Petri,
-
-The https://patchwork.freedesktop.org/series/90389/ rev 7 has been reviewed by Juha-Pekka.
-Please let me know if I need to re upload the patch by adding the Reviewed-by.
-
-Kindly consider it for merge.
-
-Thank you so much.
-
-Regards
-Vidya
-
------Original Message-----
-From: Srinivas, Vidya 
-Sent: Thursday, June 10, 2021 2:24 PM
-To: juhapekka.heikkila@gmail.com; igt-dev@lists.freedesktop.org
-Cc: markyacoub@chromium.org; Almahallawy, Khaled <khaled.almahallawy@intel.com>; Lin, Charlton <Charlton.Lin@intel.com>; Latvala, Petri <petri.latvala@intel.com>; Modem, Bhanuprakash <Bhanuprakash.Modem@intel.com>; Shankar, Uma <uma.shankar@intel.com>
-Subject: RE: [PATCH i-g-t] tests/kms_big_fb: Use igt_pipe_crc_get_current instead of igt_pipe_crc_collect_crc
-
-Hello Juha-Pekka,
-
-Thank you so much.
-
-Regards
-Vidya
-
------Original Message-----
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Sent: Thursday, June 10, 2021 2:22 PM
-To: Srinivas, Vidya <vidya.srinivas@intel.com>; igt-dev@lists.freedesktop.org
-Cc: markyacoub@chromium.org; Almahallawy, Khaled <khaled.almahallawy@intel.com>; Lin, Charlton <charlton.lin@intel.com>; Latvala, Petri <petri.latvala@intel.com>; Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Shankar, Uma <uma.shankar@intel.com>
-Subject: Re: [PATCH i-g-t] tests/kms_big_fb: Use igt_pipe_crc_get_current instead of igt_pipe_crc_collect_crc
-
-Results look ok, there show one new fifo underrun on glk but I don't think it is caused by your change.
-
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-
-On 8.6.2021 12.05, Vidya Srinivas wrote:
-> CRC mismatch is seen between big and small CRC on
-> Gen11 systems for subtest y-tiled-32bpp-rotate-0.
-> Patch changes igt_pipe_crc_collect_crc to igt_pipe_crc_get_current for 
-> collecting CRC for big and small fb to compare.
-> 
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> Change-Id: Ie913127f149f577ab0a034dcbbd4314af17cad52
-> ---
->   tests/kms_big_fb.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c index
-> b35727a09bd0..ea12a34157f2 100644
-> --- a/tests/kms_big_fb.c
-> +++ b/tests/kms_big_fb.c
-> @@ -331,14 +331,13 @@ static bool test_plane(data_t *data)
->   		 * rendering pipeline introduces slight differences into
->   		 * the result if we try that, and so the crc will not match.
->   		 */
-> +		igt_pipe_crc_start(data->pipe_crc);
->   		copy_pattern(data, small_fb, 0, 0, big_fb, x, y,
->   			     small_fb->width, small_fb->height);
->   
->   		igt_display_commit2(&data->display, data->display.is_atomic ?
->   				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
-> -
-> -
-> -		igt_pipe_crc_collect_crc(data->pipe_crc, &small_crc);
-> +		igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc, 
-> +&small_crc);
->   
->   		igt_plane_set_fb(plane, big_fb);
->   		igt_fb_set_position(big_fb, plane, x, y); @@ -347,11 +346,12 @@ 
-> static bool test_plane(data_t *data)
->   		igt_display_commit2(&data->display, data->display.is_atomic ?
->   				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
->   
-> -		igt_pipe_crc_collect_crc(data->pipe_crc, &big_crc);
-> +		igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc, 
-> +&big_crc);
->   
->   		igt_plane_set_fb(plane, NULL);
->   
->   		igt_assert_crc_equal(&big_crc, &small_crc);
-> +		igt_pipe_crc_stop(data->pipe_crc);
->   	}
->   
->   	return true;
-> 
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gTW9uLCBKdW4gMTQsIDIwMjEgYXQgMTE6Mzg6MzhBTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
+d3JvdGU6Cj4gU2lnbmVkLW9mZi1ieTogSmFzb24gRWtzdHJhbmQgPGphc29uQGpsZWtzdHJhbmQu
+bmV0Pgo+IC0tLQo+ICB0ZXN0cy9pOTE1L2dlbV9leGVjX2VuZGxlc3MuYyB8IDIgKy0KPiAgMSBm
+aWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCj4gCj4gZGlmZiAtLWdp
+dCBhL3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfZW5kbGVzcy5jIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19l
+bmRsZXNzLmMKPiBpbmRleCBjM2M4MDY1NDMuLmI4M2Q1YTJjMSAxMDA2NDQKPiAtLS0gYS90ZXN0
+cy9pOTE1L2dlbV9leGVjX2VuZGxlc3MuYwo+ICsrKyBiL3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfZW5k
+bGVzcy5jCj4gQEAgLTMwOSw3ICszMDksNyBAQCBzdGF0aWMgdm9pZCBlbmRsZXNzX2Rpc3BhdGNo
+KGludCBpOTE1LCBjb25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmUpCj4gIH0K
+PiAgCj4gICNkZWZpbmUgdGVzdF9lYWNoX2VuZ2luZShULCBpOTE1LCBlKSBcCj4gLQlpZ3Rfc3Vi
+dGVzdF93aXRoX2R5bmFtaWMoVCkgX19mb3JfZWFjaF9waHlzaWNhbF9lbmdpbmUoaTkxNSwgZSkg
+XAo+ICsJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKFQpIGZvcl9lYWNoX3BoeXNpY2FsX2VuZ2lu
+ZShpOTE1LCBlKSBcCj4gIAkJZm9yX2VhY2hfaWYoZ2VtX2NsYXNzX2Nhbl9zdG9yZV9kd29yZChp
+OTE1LCAoZSktPmNsYXNzKSkgXAo+ICAJCQlpZ3RfZHluYW1pY19mKCIlcyIsIChlKS0+bmFtZSkK
+PgoKUmV2aWV3ZWQtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5z
+a2lAaW50ZWwuY29tPgoKLS0KWmJpZ25pZXcKICAKPiAtLSAKPiAyLjMxLjEKPiAKPiBfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+IGlndC1kZXYgbWFpbGlu
+ZyBsaXN0Cj4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKPiBodHRwczovL2xpc3RzLmZy
+ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
