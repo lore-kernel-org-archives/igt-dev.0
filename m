@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com
- [IPv6:2a00:1450:4864:20::12d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 70D716E40A
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 16:00:30 +0000 (UTC)
-Received: by mail-lf1-x12d.google.com with SMTP id p7so27907447lfg.4
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jun 2021 09:00:30 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Tue, 15 Jun 2021 19:00:19 +0300
-Message-Id: <20210615160022.31610-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/4] tests/kms_cursor_crc: use flipping
- instead of frontbuffer
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 15 Jun 2021 16:18:44 -0000
+Message-ID: <162377392430.8817.16815167725377512624@emeril.freedesktop.org>
+References: <20210611052005.303-1-venkata.sai.patnana@intel.com>
+In-Reply-To: <20210611052005.303-1-venkata.sai.patnana@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C01/17=5D_tests/kms=5Fdither=3A_New_IG?=
+ =?utf-8?q?T_to_validate_crtc_Dithering_=28rev8=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,341 +15,384 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1789295596=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: venkata.sai.patnana@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-take out frontbuffer usage from this test as it may fail this test
-on frontbuffer related issues instead of cursor issues
+--===============1789295596==
+Content-Type: multipart/alternative;
+ boundary="===============0141708943193679130=="
 
-v2(vsyrjala): fix cursor size change test to run only one loop
+--===============0141708943193679130==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/kms_cursor_crc.c | 136 +++++++++++++++++++++--------------------
- 1 file changed, 71 insertions(+), 65 deletions(-)
+== Series Details ==
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 1463c5b3f..ee8912dc1 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -64,14 +64,14 @@ typedef struct {
- 	igt_plane_t *cursor;
- 	cairo_surface_t *surface;
- 	uint32_t devid;
--
-+	bool hwimageistestimage;
- } data_t;
- 
- #define TEST_DPMS (1<<0)
- #define TEST_SUSPEND (1<<1)
- 
--#define FRONTBUFFER 0
--#define RESTOREBUFFER 1
-+#define HWCURSORBUFFER 0
-+#define SWCOMPARISONBUFFER 1
- 
- static void draw_cursor(cairo_t *cr, int x, int y, int cw, int ch, double a)
- {
-@@ -144,22 +144,16 @@ static bool cursor_visible(data_t *data, int x, int y)
- 	return true;
- }
- 
--static void restore_image(data_t *data)
-+static void restore_image(data_t *data, uint32_t buffer)
- {
- 	cairo_t *cr;
--	igt_display_t *display = &data->display;
- 
--	/* rendercopy stripped in igt using cairo */
--	cr = igt_get_cairo_ctx(data->drm_fd,
--			       &data->primary_fb[FRONTBUFFER]);
-+	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[buffer]);
- 	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
- 	cairo_set_source_surface(cr, data->surface, 0, 0);
- 	cairo_rectangle(cr, 0, 0, data->screenw, data->screenh);
- 	cairo_fill(cr);
- 	igt_put_cairo_ctx(cr);
--	igt_dirty_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
--	igt_wait_for_vblank(data->drm_fd,
--			    display->pipes[data->pipe].crtc_offset);
- }
- 
- static void do_single_test(data_t *data, int x, int y)
-@@ -173,8 +167,6 @@ static void do_single_test(data_t *data, int x, int y)
- 	igt_print_activity();
- 
- 	/* Hardware test */
--	restore_image(data);
--
- 	igt_plane_set_position(data->cursor, x, y);
- 	cursor_enable(data);
- 
-@@ -182,16 +174,18 @@ static void do_single_test(data_t *data, int x, int y)
- 		ret = igt_display_try_commit2(display, COMMIT_LEGACY);
- 		igt_assert_eq(ret, -EINVAL);
- 		igt_plane_set_position(data->cursor, 0, y);
--
- 		return;
- 	}
- 
-+	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
- 	igt_display_commit(display);
- 
- 	/* Extra vblank wait is because nonblocking cursor ioctl */
- 	igt_wait_for_vblank(data->drm_fd,
--			display->pipes[data->pipe].crtc_offset);
-+			    display->pipes[data->pipe].crtc_offset);
-+
- 	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
-+	restore_image(data, SWCOMPARISONBUFFER);
- 
- 	if (data->flags & (TEST_DPMS | TEST_SUSPEND)) {
- 		igt_crc_t crc_after;
-@@ -220,15 +214,14 @@ static void do_single_test(data_t *data, int x, int y)
- 		igt_assert_crc_equal(&crc, &crc_after);
- 	}
- 
--	cursor_disable(data);
--
- 	/* Now render the same in software and collect crc */
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-+	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
- 	draw_cursor(cr, x, y, data->curw, data->curh, 1.0);
- 	igt_put_cairo_ctx(cr);
-+	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
-+	cursor_disable(data);
- 	igt_display_commit(display);
--	igt_dirty_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
--	/* Extra vblank wait is because nonblocking cursor ioctl */
-+
- 	igt_wait_for_vblank(data->drm_fd,
- 			display->pipes[data->pipe].crtc_offset);
- 
-@@ -244,8 +237,6 @@ static void do_fail_test(data_t *data, int x, int y, int expect)
- 	igt_print_activity();
- 
- 	/* Hardware test */
--	restore_image(data);
--
- 	cursor_enable(data);
- 	igt_plane_set_position(data->cursor, x, y);
- 	ret = igt_display_try_commit2(display, COMMIT_LEGACY);
-@@ -362,13 +353,16 @@ static void cleanup_crtc(data_t *data)
- 	igt_pipe_crc_free(data->pipe_crc);
- 	data->pipe_crc = NULL;
- 
--	cairo_surface_destroy(data->surface);
-+	if (data->hwimageistestimage) {
-+		cairo_surface_destroy(data->surface);
-+		data->surface = NULL;
-+	}
- 
- 	igt_plane_set_fb(data->primary, NULL);
- 	igt_display_commit(display);
- 
--	igt_remove_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
--	igt_remove_fb(data->drm_fd, &data->primary_fb[RESTOREBUFFER]);
-+	igt_remove_fb(data->drm_fd, &data->primary_fb[HWCURSORBUFFER]);
-+	igt_remove_fb(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
- 
- 	igt_display_reset(display);
- }
-@@ -389,18 +383,18 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
- 			    DRM_FORMAT_XRGB8888,
- 			    LOCAL_DRM_FORMAT_MOD_NONE,
- 			    0.0, 0.0, 0.0,
--			    &data->primary_fb[FRONTBUFFER]);
-+			    &data->primary_fb[HWCURSORBUFFER]);
- 
- 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
- 			    DRM_FORMAT_XRGB8888,
- 			    LOCAL_DRM_FORMAT_MOD_NONE,
- 			    0.0, 0.0, 0.0,
--			    &data->primary_fb[RESTOREBUFFER]);
-+			    &data->primary_fb[SWCOMPARISONBUFFER]);
- 
- 	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	data->cursor = igt_output_get_plane_type(output, DRM_PLANE_TYPE_CURSOR);
- 
--	igt_plane_set_fb(data->primary, &data->primary_fb[FRONTBUFFER]);
-+	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
- 
- 	igt_display_commit(display);
- 
-@@ -421,13 +415,22 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
- 	data->curh = cursor_h;
- 	data->refresh = mode->vrefresh;
- 
--	data->surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24, data->screenw, data->screenh);
-+	if (data->hwimageistestimage) {
-+		data->surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24,
-+							   data->screenw,
-+							   data->screenh);
-+
-+		/* store test image as cairo surface */
-+		cr = cairo_create(data->surface);
-+		cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-+		igt_paint_test_pattern(cr, data->screenw, data->screenh);
-+		cairo_destroy(cr);
-+
-+		/* Set HW cursor buffer in place */
-+			restore_image(data, HWCURSORBUFFER);
-+	} else
-+		data->surface = NULL;
- 
--	/* store test image as cairo surface */
--	cr = cairo_create(data->surface);
--	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
--	igt_paint_test_pattern(cr, data->screenw, data->screenh);
--	cairo_destroy(cr);
- 	igt_pipe_crc_start(data->pipe_crc);
- }
- 
-@@ -447,6 +450,10 @@ static void test_cursor_alpha(data_t *data, double a)
- 				    LOCAL_DRM_FORMAT_MOD_NONE,
- 				    &data->fb);
- 	igt_assert(fb_id);
-+
-+	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
-+	igt_display_commit(display);
-+
- 	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb);
- 	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
- 	igt_put_cairo_ctx(cr);
-@@ -462,10 +469,10 @@ static void test_cursor_alpha(data_t *data, double a)
- 	igt_remove_fb(data->drm_fd, &data->fb);
- 
- 	/* Software Test - render cursor in software, drawn it directly on PF */
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-+	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
- 	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
- 	igt_put_cairo_ctx(cr);
--
-+	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
- 	igt_display_commit(display);
- 	igt_wait_for_vblank(data->drm_fd,
- 			display->pipes[data->pipe].crtc_offset);
-@@ -473,12 +480,6 @@ static void test_cursor_alpha(data_t *data, double a)
- 
- 	/* Compare CRC from Hardware/Software tests */
- 	igt_assert_crc_equal(&crc, &ref_crc);
--
--	/*Clear Screen*/
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
--	igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
--			0.0, 0.0, 0.0);
--	igt_put_cairo_ctx(cr);
- }
- 
- static void test_cursor_transparent(data_t *data)
-@@ -574,10 +575,10 @@ static void test_cursor_size(data_t *data)
- {
- 	igt_display_t *display = &data->display;
- 	igt_pipe_crc_t *pipe_crc = data->pipe_crc;
--	igt_crc_t crc[10], ref_crc;
-+	igt_crc_t crc, ref_crc;
- 	cairo_t *cr;
- 	uint32_t fb_id;
--	int i, size;
-+	int i, size, prevsize = 0;
- 	int cursor_max_size = data->cursor_max_w;
- 
- 	/* Create a maximum size cursor, then change the size in flight to
-@@ -594,37 +595,38 @@ static void test_cursor_size(data_t *data)
- 	igt_put_cairo_ctx(cr);
- 
- 	/* Hardware test loop */
--	cursor_enable(data);
- 	for (i = 0, size = cursor_max_size; size >= 64; size /= 2, i++) {
-+		cursor_enable(data);
- 		/* Change size in flight: */
- 		igt_plane_set_size(data->cursor, size, size);
- 		igt_fb_set_size(&data->fb, data->cursor, size, size);
- 		igt_display_commit(display);
--		igt_wait_for_vblank(data->drm_fd,
--				display->pipes[data->pipe].crtc_offset);
--		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc[i]);
--	}
--	cursor_disable(data);
--	igt_display_commit(display);
--	igt_remove_fb(data->drm_fd, &data->fb);
--	/* Software test loop */
--	for (i = 0, size = cursor_max_size; size >= 64; size /= 2, i++) {
-+		igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
-+		igt_display_commit(display);
-+
-+		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
-+
-+		cursor_disable(data);
-+		igt_display_commit(display);
-+
- 		/* Now render the same in software and collect crc */
--		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-+		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
-+
-+		/* remove previous cursor sw image */
-+		if (prevsize > 0)
-+			igt_paint_color(cr, 0, 0, prevsize, prevsize, 0.0, 0.0, 0.0);
-+		prevsize = size;
-+
- 		igt_paint_color_alpha(cr, 0, 0, size, size, 1.0, 1.0, 1.0, 1.0);
- 		igt_put_cairo_ctx(cr);
--
-+		igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
- 		igt_display_commit(display);
--		igt_wait_for_vblank(data->drm_fd,
--				display->pipes[data->pipe].crtc_offset);
- 		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
--		/* Clear screen afterwards */
--		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
--		igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
--				0.0, 0.0, 0.0);
--		igt_put_cairo_ctx(cr);
--		igt_assert_crc_equal(&crc[i], &ref_crc);
-+
-+		igt_assert_crc_equal(&crc, &ref_crc);
- 	}
-+
-+	igt_remove_fb(data->drm_fd, &data->fb);
- }
- 
- static void test_rapid_movement(data_t *data)
-@@ -690,6 +692,7 @@ static void run_size_tests(data_t *data, enum pipe pipe,
- 				      w, h);
- 		}
- 		create_cursor_fb(data, w, h);
-+		data->hwimageistestimage = true;
- 	}
- 
- 	/* Using created cursor FBs to test cursor support */
-@@ -727,6 +730,7 @@ static void run_tests_on_pipe(data_t *data, enum pipe pipe)
- 		data->pipe = pipe;
- 		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
- 		igt_require(data->output);
-+		data->hwimageistestimage = false;
- 	}
- 
- 	igt_describe("Create a maximum size cursor, then change the size in "
-@@ -746,8 +750,10 @@ static void run_tests_on_pipe(data_t *data, enum pipe pipe)
- 	igt_subtest_f("pipe-%s-cursor-alpha-transparent", kmstest_pipe_name(pipe))
- 		run_test(data, test_cursor_transparent, data->cursor_max_w, data->cursor_max_h);
- 
--	igt_fixture
-+	igt_fixture {
- 		create_cursor_fb(data, data->cursor_max_w, data->cursor_max_h);
-+		data->hwimageistestimage = true;
-+	}
- 
- 	igt_subtest_f("pipe-%s-cursor-dpms", kmstest_pipe_name(pipe)) {
- 		data->flags = TEST_DPMS;
--- 
-2.28.0
+Series: series starting with [i-g-t,01/17] tests/kms_dither: New IGT to validate crtc Dithering (rev8)
+URL   : https://patchwork.freedesktop.org/series/91371/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10225 -> IGTPW_5927
+====================================================
+
+Summary
+-------
+
+  **WARNING**
+
+  Minor unknown changes coming with IGTPW_5927 need to be verified
+  manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_5927, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5927/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_5927:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-hsw-4770:        [WARN][1] ([i915#2283]) -> [WARN][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10225/fi-hsw-4770/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5927/fi-hsw-4770/igt@core_hotunplug@unbind-rebind.html
+    - fi-bdw-5557u:       [WARN][3] ([i915#2283]) -> [WARN][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10225/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5927/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@core_hotunplug@unbind-rebind:
+    - {fi-hsw-gt1}:       [WARN][5] ([i915#2283]) -> [WARN][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10225/fi-hsw-gt1/igt@core_hotunplug@unbind-rebind.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5927/fi-hsw-gt1/igt@core_hotunplug@unbind-rebind.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5927 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - {fi-hsw-gt1}:       [DMESG-WARN][7] ([i915#3303]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10225/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5927/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#2283]: https://gitlab.freedesktop.org/drm/intel/issues/2283
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+
+
+Participating hosts (48 -> 38)
+------------------------------
+
+  Missing    (10): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan bat-adlp-4 bat-adls-4 fi-ctg-p8600 bat-adls-3 fi-dg1-1 fi-bdw-samus bat-jsl-1 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6107 -> IGTPW_5927
+
+  CI-20190529: 20190529
+  CI_DRM_10225: 52beaf52657f49ffda64af3c46548fb0907cf66d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5927: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5927/index.html
+  IGT_6107: 2bec4e7619f04d2ca86006917acd3b5c86fb73a0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@kms_addfb_basic@invalid-smem-bo-on-discrete
++igt@kms_big_fb@linear-max-hw-stride-32bpp-rotate-0
++igt@kms_big_fb@linear-max-hw-stride-32bpp-rotate-180
++igt@kms_big_fb@linear-max-hw-stride-64bpp-rotate-0
++igt@kms_big_fb@linear-max-hw-stride-64bpp-rotate-180
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0-async-flip
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0-hflip
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-180
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-180-async-flip
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-180-hflip
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-180-hflip-async-flip
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-0
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-0-async-flip
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-0-hflip
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-0-hflip-async-flip
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-180
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-180-async-flip
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-180-hflip
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-180-hflip-async-flip
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-0
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-0-async-flip
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-0-hflip
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-180
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-180-async-flip
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-180-hflip
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-180-hflip-async-flip
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0-async-flip
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0-hflip
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0-hflip-async-flip
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180-async-flip
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180-hflip
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180-hflip-async-flip
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-async-flip
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-hflip
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180-async-flip
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180-hflip
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180-hflip-async-flip
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0-async-flip
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0-hflip
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0-hflip-async-flip
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180-async-flip
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180-hflip
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180-hflip-async-flip
++igt@kms_cdclk@basic
++igt@kms_cdclk@mode-transition
++igt@kms_cdclk@plane-scaling
++igt@kms_dither@fb-8bpc-vs-panel-6bpc
++igt@kms_dither@fb-8bpc-vs-panel-8bpc
++igt@kms_dither@fb-16bpc-vs-panel-12bpc
++igt@kms_dp_dsc@basic-dsc-enable
++igt@kms_dp_dsc@dsc-8bpp-compression-xrgb8888
++igt@kms_dp_dsc@dsc-9bpp-compression-xrgb8888
++igt@kms_dp_dsc@dsc-10bpp-compression-xrgb8888
++igt@kms_dp_dsc@dsc-11bpp-compression-xrgb8888
++igt@kms_dp_dsc@dsc-12bpp-compression-xrgb8888
++igt@kms_dp_dsc@dsc-13bpp-compression-xrgb8888
++igt@kms_dp_dsc@dsc-14bpp-compression-xrgb8888
++igt@kms_dp_dsc@dsc-15bpp-compression-xrgb8888
++igt@kms_dp_dsc@dsc-16bpp-compression-xrgb8888
++igt@kms_dp_dsc@dsc-17bpp-compression-xrgb8888
++igt@kms_dp_dsc@dsc-18bpp-compression-xrgb8888
++igt@kms_dp_dsc@dsc-19bpp-compression-xrgb8888
++igt@kms_dp_dsc@dsc-20bpp-compression-xrgb8888
++igt@kms_dp_dsc@dsc-21bpp-compression-xrgb8888
++igt@kms_dp_dsc@dsc-22bpp-compression-xrgb8888
++igt@kms_dp_dsc@dsc-23bpp-compression-xrgb8888
+-igt@kms_dp_dsc@basic-dsc-enable-dp
+-igt@kms_dp_dsc@basic-dsc-enable-edp
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5927/index.html
+
+--===============0141708943193679130==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,01/17] tests/kms_dither: New IGT to validate crtc Dithering (rev8)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/91371/">https://patchwork.freedesktop.org/series/91371/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5927/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5927/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10225 -&gt; IGTPW_5927</h1>
+<h2>Summary</h2>
+<p><strong>WARNING</strong></p>
+<p>Minor unknown changes coming with IGTPW_5927 need to be verified<br />
+  manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_5927, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5927/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_5927:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>
+<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10225/fi-hsw-4770/igt@core_hotunplug@unbind-rebind.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2283">i915#2283</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5927/fi-hsw-4770/igt@core_hotunplug@unbind-rebind.html">WARN</a></p>
+</li>
+<li>
+<p>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10225/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2283">i915#2283</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5927/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html">WARN</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>{fi-hsw-gt1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10225/fi-hsw-gt1/igt@core_hotunplug@unbind-rebind.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2283">i915#2283</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5927/fi-hsw-gt1/igt@core_hotunplug@unbind-rebind.html">WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5927 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>{fi-hsw-gt1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10225/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5927/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (48 -&gt; 38)</h2>
+<p>Missing    (10): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan bat-adlp-4 bat-adls-4 fi-ctg-p8600 bat-adls-3 fi-dg1-1 fi-bdw-samus bat-jsl-1 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6107 -&gt; IGTPW_5927</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10225: 52beaf52657f49ffda64af3c46548fb0907cf66d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5927: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5927/index.html<br />
+  IGT_6107: 2bec4e7619f04d2ca86006917acd3b5c86fb73a0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_addfb_basic@invalid-smem-bo-on-discrete<br />
++igt@kms_big_fb@linear-max-hw-stride-32bpp-rotate-0<br />
++igt@kms_big_fb@linear-max-hw-stride-32bpp-rotate-180<br />
++igt@kms_big_fb@linear-max-hw-stride-64bpp-rotate-0<br />
++igt@kms_big_fb@linear-max-hw-stride-64bpp-rotate-180<br />
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0<br />
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0-async-flip<br />
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0-hflip<br />
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip<br />
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-180<br />
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-180-async-flip<br />
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-180-hflip<br />
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-180-hflip-async-flip<br />
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-0<br />
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-0-async-flip<br />
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-0-hflip<br />
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-0-hflip-async-flip<br />
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-180<br />
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-180-async-flip<br />
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-180-hflip<br />
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-180-hflip-async-flip<br />
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-0<br />
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-0-async-flip<br />
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-0-hflip<br />
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip<br />
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-180<br />
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-180-async-flip<br />
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-180-hflip<br />
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-180-hflip-async-flip<br />
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0<br />
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0-async-flip<br />
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0-hflip<br />
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0-hflip-async-flip<br />
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180<br />
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180-async-flip<br />
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180-hflip<br />
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180-hflip-async-flip<br />
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0<br />
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-async-flip<br />
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-hflip<br />
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip<br />
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180<br />
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180-async-flip<br />
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180-hflip<br />
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180-hflip-async-flip<br />
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0<br />
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0-async-flip<br />
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0-hflip<br />
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0-hflip-async-flip<br />
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180<br />
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180-async-flip<br />
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180-hflip<br />
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180-hflip-async-flip<br />
++igt@kms_cdclk@basic<br />
++igt@kms_cdclk@mode-transition<br />
++igt@kms_cdclk@plane-scaling<br />
++igt@kms_dither@fb-8bpc-vs-panel-6bpc<br />
++igt@kms_dither@fb-8bpc-vs-panel-8bpc<br />
++igt@kms_dither@fb-16bpc-vs-panel-12bpc<br />
++igt@kms_dp_dsc@basic-dsc-enable<br />
++igt@kms_dp_dsc@dsc-8bpp-compression-xrgb8888<br />
++igt@kms_dp_dsc@dsc-9bpp-compression-xrgb8888<br />
++igt@kms_dp_dsc@dsc-10bpp-compression-xrgb8888<br />
++igt@kms_dp_dsc@dsc-11bpp-compression-xrgb8888<br />
++igt@kms_dp_dsc@dsc-12bpp-compression-xrgb8888<br />
++igt@kms_dp_dsc@dsc-13bpp-compression-xrgb8888<br />
++igt@kms_dp_dsc@dsc-14bpp-compression-xrgb8888<br />
++igt@kms_dp_dsc@dsc-15bpp-compression-xrgb8888<br />
++igt@kms_dp_dsc@dsc-16bpp-compression-xrgb8888<br />
++igt@kms_dp_dsc@dsc-17bpp-compression-xrgb8888<br />
++igt@kms_dp_dsc@dsc-18bpp-compression-xrgb8888<br />
++igt@kms_dp_dsc@dsc-19bpp-compression-xrgb8888<br />
++igt@kms_dp_dsc@dsc-20bpp-compression-xrgb8888<br />
++igt@kms_dp_dsc@dsc-21bpp-compression-xrgb8888<br />
++igt@kms_dp_dsc@dsc-22bpp-compression-xrgb8888<br />
++igt@kms_dp_dsc@dsc-23bpp-compression-xrgb8888<br />
+-igt@kms_dp_dsc@basic-dsc-enable-dp<br />
+-igt@kms_dp_dsc@basic-dsc-enable-edp</p>
+
+</body>
+</html>
+
+--===============0141708943193679130==--
+
+--===============1789295596==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1789295596==--
