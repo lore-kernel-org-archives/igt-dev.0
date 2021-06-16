@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 60B956E511
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jun 2021 07:32:12 +0000 (UTC)
-Date: Wed, 16 Jun 2021 10:34:04 +0300
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C18789C1E
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jun 2021 07:42:21 +0000 (UTC)
+Date: Wed, 16 Jun 2021 10:44:15 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YMmpbOtT+CMFxbzI@platvala-desk.ger.corp.intel.com>
-References: <20210614164135.1519746-1-markyacoub@chromium.org>
- <20210615131254.5x5u2fjyy7p3uctf@outlook.office365.com>
- <e89fb09e-40c2-3b55-ae27-ed13c234bad7@amd.com>
- <CAJUqKUrDjKFf_yx9w=1TQViJr8C6QfPrYCsEqQO-1Nxou5eH9A@mail.gmail.com>
- <8f717975-4852-fb81-028a-e4c709b50014@amd.com>
- <CAJUqKUqVZb-GatjkGXChFYPXrYLCqwCe9Uu0epEASn8SMrzEfw@mail.gmail.com>
- <ae4be25c-c50d-56bb-6699-5ab6210f80bf@amd.com>
+Message-ID: <YMmrz92g9DonLk0U@platvala-desk.ger.corp.intel.com>
+References: <20210614224041.5271-1-Anson.Jacob@amd.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <ae4be25c-c50d-56bb-6699-5ab6210f80bf@amd.com>
-Subject: Re: [igt-dev] [PATCH] tests/kms_prime: Filter out devices that
- can't import buffers.
+In-Reply-To: <20210614224041.5271-1-Anson.Jacob@amd.com>
+Subject: Re: [igt-dev] [i-g-t] lib/igt_fb: Add checks for intel device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,33 +17,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Cc: Anson Jacob <Anson.Jacob@amd.com>, igt-dev@lists.freedesktop.org, Sean Paul <seanpaul@chromium.org>, "Deucher,
- Alexander" <Alexander.Deucher@amd.com>, Mark Yacoub <markyacoub@google.com>
+To: Anson Jacob <Anson.Jacob@amd.com>
+Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jun 15, 2021 at 06:20:23PM +0200, Christian K=F6nig wrote:
-> The alternative would be to try to create a framebuffer, but don't take it
-> as a failure when that fails with the correct return code.
+On Mon, Jun 14, 2021 at 06:40:41PM -0400, Anson Jacob wrote:
+> Certain tests (eg: kms_plane_multiple) are failing on amdgpu due to
+> an assert in intel_get_drm_devid which checks for an i915 device.
+> 
+> Add check for intel device before calling intel_get_drm_devid.
+> 
+> Fixes: 801309d0c245 ("lib/i915: Add ADL-P plane offset restriction for CCS framebuffers")
+> 
+> Signed-off-by: Anson Jacob <Anson.Jacob@amd.com>
+> Cc: Imre Deak <imre.deak@intel.com>
 
-This.
-
-If the importing can fail for documented reasons, we should just add
-code that checks that the error is the documented one and then
-igt_skip(), fail the test if it's something it shouldn't.
-
-As a general rule the tests goes to hardware specific subdirs if the
-interface tested is hardware-specific. This interface is not, just the
-behaviour.
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
 
--- =
-
-Petri Latvala
+> ---
+>  lib/igt_fb.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index ab52ea9f7cf2..71b8985529a6 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -760,7 +760,8 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
+>  			stride = ALIGN(min_stride, tile_width * 4);
+>  
+>  			/* TODO: add support to kernel to POT align CCS format strides */
+> -			if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)))
+> +			if (is_i915_device(fb->fd) &&
+> +			    IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)))
+>  				stride = roundup_power_of_two(max(stride, tile_width * 8));
+>  		} else {
+>  			stride = ALIGN(min_stride, tile_width);
+> @@ -836,7 +837,8 @@ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
+>  		 * On ADL_P CCS color planes must be 2MB aligned, until remapping
+>  		 * support is added for CCS FBs.
+>  		 */
+> -		if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)) &&
+> +		if (is_i915_device(fb->fd) &&
+> +		    IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)) &&
+>  		    is_ccs_modifier(fb->modifier))
+>  			size = ALIGN(size, 2 * 1024 * 1024);
+>  
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
