@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 43B4D6E55C
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jun 2021 14:03:12 +0000 (UTC)
-From: Andrzej Turko <andrzej.turko@linux.intel.com>
-Date: Wed, 16 Jun 2021 16:01:58 +0200
-Message-Id: <20210616140158.7441-4-andrzej.turko@linux.intel.com>
-In-Reply-To: <20210616140158.7441-1-andrzej.turko@linux.intel.com>
-References: <20210616140158.7441-1-andrzej.turko@linux.intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F7BB6E5B0
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jun 2021 14:23:10 +0000 (UTC)
+Date: Wed, 16 Jun 2021 17:25:03 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YMoJvxtHeGb2tdiX@platvala-desk.ger.corp.intel.com>
+References: <20210616135547.154645-1-Anson.Jacob@amd.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/3] lib/intel_allocator: Move ioctl calls
- to client processes
+Content-Disposition: inline
+In-Reply-To: <20210616135547.154645-1-Anson.Jacob@amd.com>
+Subject: Re: [igt-dev] [PATCH V2] tests/amdgpu: Add amdgpu module reload test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,237 +17,228 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Anson Jacob <Anson.Jacob@amd.com>
+Cc: igt-dev@lists.freedesktop.org, Mark Yacoub <markyacoub@google.com>, Victor Lu <victorchengchi.lu@amd.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-V2hlbiBhbGxvY2F0b3IgaXMgcnVubmluZyBpbiBtdWx0aXByb2Nlc3MgbW9kZSwgYWxsIHF1ZXJp
-ZXMKYXJlIHByb2Nlc3NlZCBpbiBhIGRlc2lnbmF0ZWQgdGhyZWFkIGluIHRoZSBwYXJlbnQgcHJv
-Y2Vzcy4KSG93ZXZlciwgYSBjaGlsZCBwcm9jZXNzIG1heSByZXF1ZXN0IG9wZW5pbmcgdGhlIGFs
-bG9jYXRvcgpmb3IgYSBncHUgdXNpbmcgYSBmaWxlIGRlc2NyaXB0b3IgYWJzZW50IGluIHRoZSBw
-YXJlbnQgcHJvY2Vzcy4KSGVuY2UsIHF1ZXJ5aW5nIGF2YWlsYWJsZSBndHQgc2l6ZSBtdXN0IGJl
-IGRvbmUgaW4gdGhlIGNoaWxkCmluc3RlYWQgb2YgdGhlIHBhcmVudCBwcm9jZXNzLgoKQXMgYSBj
-b25zZXF1ZW5jZSBvZiB0aGlzIGNoYW5nZSBjcmVhdGluZyBhbGxvY2F0b3JzIG1hbmFnaW5nCm9u
-bHkgYSBnaXZlbiBpbnRlcnZhbCBvZiBhdmFpbGFibGUgZ3R0IGlzIG5vdyBlbmFibGVkIGZvciBh
-bGwKYWxsb2NhdG9yIGltcGxlbWVudGF0aW9ucy4gQWRkaXRpb25hbGx5LCB0aGlzIGNvbW1pdCBz
-ZXRzIGEKdW5pdmVyc2FsIGxvd2VyIGJvdW5kIG9uIGFsaWdubWVudCB0byA0MDk2LgoKU2lnbmVk
-LW9mZi1ieTogQW5kcnplaiBUdXJrbyA8YW5kcnplai50dXJrb0BsaW51eC5pbnRlbC5jb20+CkNj
-OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4K
-LS0tCiBsaWIvaW50ZWxfYWxsb2NhdG9yLmMgICAgICAgIHwgNTEgKysrKysrKysrKysrKysrKysr
-KysrKysrKy0tLS0tLS0tLS0tCiBsaWIvaW50ZWxfYWxsb2NhdG9yX3JhbmRvbS5jIHwgNDkgKysr
-KysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLQogbGliL2ludGVsX2FsbG9jYXRvcl9yZWxv
-Yy5jICB8IDM1ICsrKysrKysrKysrLS0tLS0tLS0tLS0tLS0KIGxpYi9pbnRlbF9hbGxvY2F0b3Jf
-c2ltcGxlLmMgfCA0NSArKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiA0IGZpbGVzIGNo
-YW5nZWQsIDgxIGluc2VydGlvbnMoKyksIDk5IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xp
-Yi9pbnRlbF9hbGxvY2F0b3IuYyBiL2xpYi9pbnRlbF9hbGxvY2F0b3IuYwppbmRleCBjMDYwZTEw
-YzMuLjEzMzE3NmVkNCAxMDA2NDQKLS0tIGEvbGliL2ludGVsX2FsbG9jYXRvci5jCisrKyBiL2xp
-Yi9pbnRlbF9hbGxvY2F0b3IuYwpAQCAtNDUsNiArNDUsMTIgQEAgc3RhdGljIGlubGluZSBjb25z
-dCBjaGFyICpyZXFzdHIoZW51bSByZXF0eXBlIHJlcXVlc3RfdHlwZSkKICNkZWZpbmUgYWxsb2Nf
-ZGVidWcoLi4uKSB7fQogI2VuZGlmCiAKKy8qCisgKiBXZSBsaW1pdCBhbGxvY2F0b3Igc3BhY2Ug
-dG8gYXZvaWQgaGFuZyB3aGVuIGJhdGNoIHdvdWxkIGJlCisgKiBwaW5uZWQgaW4gdGhlIGxhc3Qg
-cGFnZS4KKyAqLworI2RlZmluZSBSRVNFUlZFRCA0MDk2CisKIHN0cnVjdCBhbGxvY2F0b3Igewog
-CWludCBmZDsKIAl1aW50MzJfdCBjdHg7CkBAIC01OCwxMiArNjQsMTMgQEAgc3RydWN0IGhhbmRs
-ZV9lbnRyeSB7CiAJc3RydWN0IGFsbG9jYXRvciAqYWw7CiB9OwogCi1zdHJ1Y3QgaW50ZWxfYWxs
-b2NhdG9yICppbnRlbF9hbGxvY2F0b3JfcmVsb2NfY3JlYXRlKGludCBmZCk7Ci1zdHJ1Y3QgaW50
-ZWxfYWxsb2NhdG9yICppbnRlbF9hbGxvY2F0b3JfcmFuZG9tX2NyZWF0ZShpbnQgZmQpOwotc3Ry
-dWN0IGludGVsX2FsbG9jYXRvciAqaW50ZWxfYWxsb2NhdG9yX3NpbXBsZV9jcmVhdGUoaW50IGZk
-KTsKIHN0cnVjdCBpbnRlbF9hbGxvY2F0b3IgKgotaW50ZWxfYWxsb2NhdG9yX3NpbXBsZV9jcmVh
-dGVfZnVsbChpbnQgZmQsIHVpbnQ2NF90IHN0YXJ0LCB1aW50NjRfdCBlbmQsCi0JCQkJICAgZW51
-bSBhbGxvY2F0b3Jfc3RyYXRlZ3kgc3RyYXRlZ3kpOworaW50ZWxfYWxsb2NhdG9yX3JlbG9jX2Ny
-ZWF0ZShpbnQgZmQsIHVpbnQ2NF90IHN0YXJ0LCB1aW50NjRfdCBlbmQpOworc3RydWN0IGludGVs
-X2FsbG9jYXRvciAqCitpbnRlbF9hbGxvY2F0b3JfcmFuZG9tX2NyZWF0ZShpbnQgZmQsIHVpbnQ2
-NF90IHN0YXJ0LCB1aW50NjRfdCBlbmQpOworc3RydWN0IGludGVsX2FsbG9jYXRvciAqCitpbnRl
-bF9hbGxvY2F0b3Jfc2ltcGxlX2NyZWF0ZShpbnQgZmQsIHVpbnQ2NF90IHN0YXJ0LCB1aW50NjRf
-dCBlbmQsCisJCQkgICAgICBlbnVtIGFsbG9jYXRvcl9zdHJhdGVneSBzdHJhdGVneSk7CiAKIC8q
-CiAgKiBJbnN0ZWFkIG9mIHRyeWluZyB0byBmaW5kIGZpcnN0IGVtcHR5IGhhbmRsZSBqdXN0IGdl
-dCBuZXcgb25lLiBBc3N1bWluZwpAQCAtMjgwLDggKzI4Nyw2IEBAIHN0YXRpYyBzdHJ1Y3QgaW50
-ZWxfYWxsb2NhdG9yICppbnRlbF9hbGxvY2F0b3JfY3JlYXRlKGludCBmZCwKIHsKIAlzdHJ1Y3Qg
-aW50ZWxfYWxsb2NhdG9yICppYWwgPSBOVUxMOwogCi0JaWd0X2Fzc2VydChjYW5fcmVwb3J0X2d0
-dF9zaXplKGZkKSk7Ci0KIAlzd2l0Y2ggKGFsbG9jYXRvcl90eXBlKSB7CiAJLyoKIAkgKiBGZXcg
-d29yZHMgb2YgZXhwbGFuYXRpb24gaXMgcmVxdWlyZWQgaGVyZS4KQEAgLTI5NywxNyArMzAyLDE0
-IEBAIHN0YXRpYyBzdHJ1Y3QgaW50ZWxfYWxsb2NhdG9yICppbnRlbF9hbGxvY2F0b3JfY3JlYXRl
-KGludCBmZCwKIAkJCSAgICAgIldlIGNhbm5vdCB1c2UgTk9ORSBhbGxvY2F0b3JcbiIpOwogCQli
-cmVhazsKIAljYXNlIElOVEVMX0FMTE9DQVRPUl9SRUxPQzoKLQkJaWFsID0gaW50ZWxfYWxsb2Nh
-dG9yX3JlbG9jX2NyZWF0ZShmZCk7CisJCWlhbCA9IGludGVsX2FsbG9jYXRvcl9yZWxvY19jcmVh
-dGUoZmQsIHN0YXJ0LCBlbmQpOwogCQlicmVhazsKIAljYXNlIElOVEVMX0FMTE9DQVRPUl9SQU5E
-T006Ci0JCWlhbCA9IGludGVsX2FsbG9jYXRvcl9yYW5kb21fY3JlYXRlKGZkKTsKKwkJaWFsID0g
-aW50ZWxfYWxsb2NhdG9yX3JhbmRvbV9jcmVhdGUoZmQsIHN0YXJ0LCBlbmQpOwogCQlicmVhazsK
-IAljYXNlIElOVEVMX0FMTE9DQVRPUl9TSU1QTEU6Ci0JCWlmICghc3RhcnQgJiYgIWVuZCkKLQkJ
-CWlhbCA9IGludGVsX2FsbG9jYXRvcl9zaW1wbGVfY3JlYXRlKGZkKTsKLQkJZWxzZQotCQkJaWFs
-ID0gaW50ZWxfYWxsb2NhdG9yX3NpbXBsZV9jcmVhdGVfZnVsbChmZCwgc3RhcnQsIGVuZCwKLQkJ
-CQkJCQkJIGFsbG9jYXRvcl9zdHJhdGVneSk7CisJCWlhbCA9IGludGVsX2FsbG9jYXRvcl9zaW1w
-bGVfY3JlYXRlKGZkLCBzdGFydCwgZW5kLAorCQkJCQkJICAgIGFsbG9jYXRvcl9zdHJhdGVneSk7
-CiAJCWJyZWFrOwogCWRlZmF1bHQ6CiAJCWlndF9hc3NlcnRfZihpYWwsICJBbGxvY2F0b3IgdHlw
-ZSAlZCBub3QgaW1wbGVtZW50ZWRcbiIsCkBAIC04ODgsNiArODkwLDE4IEBAIHN0YXRpYyB1aW50
-NjRfdCBfX2ludGVsX2FsbG9jYXRvcl9vcGVuX2Z1bGwoaW50IGZkLCB1aW50MzJfdCBjdHgsCiAJ
-CQkJIC5vcGVuLmFsbG9jYXRvcl90eXBlID0gYWxsb2NhdG9yX3R5cGUsCiAJCQkJIC5vcGVuLmFs
-bG9jYXRvcl9zdHJhdGVneSA9IHN0cmF0ZWd5IH07CiAJc3RydWN0IGFsbG9jX3Jlc3AgcmVzcDsK
-Kwl1aW50NjRfdCBndHRfc2l6ZTsKKworCWlmICghc3RhcnQgJiYgIWVuZCkgeworCQlpZ3RfYXNz
-ZXJ0X2YoY2FuX3JlcG9ydF9ndHRfc2l6ZShmZCksICJJbnZhbGlkIGZkXG4iKTsKKwkJZ3R0X3Np
-emUgPSBnZW1fYXBlcnR1cmVfc2l6ZShmZCk7CisJCWlmICghZ2VtX3VzZXNfZnVsbF9wcGd0dChm
-ZCkpCisJCQlndHRfc2l6ZSAvPSAyOworCQllbHNlCisJCQlndHRfc2l6ZSAtPSBSRVNFUlZFRDsK
-KworCQlyZXEub3Blbi5lbmQgPSBndHRfc2l6ZTsKKwl9CiAKIAkvKiBHZXQgY2hpbGRfdGlkIG9u
-bHkgb25jZSBhdCBvcGVuKCkgKi8KIAlpZiAoY2hpbGRfdGlkID09IC0xKQpAQCAtOTE4LDYgKzkz
-Miw5IEBAIHN0YXRpYyB1aW50NjRfdCBfX2ludGVsX2FsbG9jYXRvcl9vcGVuX2Z1bGwoaW50IGZk
-LCB1aW50MzJfdCBjdHgsCiAgKiBSZXR1cm5zOiB1bmlxdWUgaGFuZGxlIHRvIHRoZSBjdXJyZW50
-bHkgb3BlbmVkIGFsbG9jYXRvci4KICAqCiAgKiBOb3RlczoKKyAqCisgKiBJZiBzdGFydCA9IGVu
-ZCA9IDAsIHRoZSBhbGxvY2F0b3IgaXMgb3BlbmVkIGZvciB0aGUgd2hvbGUgYXZhaWxhYmxlIGd0
-dC4KKyAqCiAgKiBTdHJhdGVneSBpcyBnZW5lcmFsbHkgdXNlZCBpbnRlcm5hbGx5IGJ5IHRoZSB1
-bmRlcmx5aW5nIGFsbG9jYXRvcjoKICAqCiAgKiBGb3IgU0lNUExFIGFsbG9jYXRvcjoKQEAgLTky
-Niw3ICs5NDMsNyBAQCBzdGF0aWMgdWludDY0X3QgX19pbnRlbF9hbGxvY2F0b3Jfb3Blbl9mdWxs
-KGludCBmZCwgdWludDMyX3QgY3R4LAogICogICBhZGRyZXNzZXMuCiAgKgogICogRm9yIFJBTkRP
-TSBhbGxvY2F0b3I6Ci0gKiAtIG5vbmUgb2Ygc3RyYXRlZ3kgaXMgY3VycmVudGx5IGltcGxlbWVu
-dGVkLgorICogLSBubyBzdHJhdGVneSBpcyBjdXJyZW50bHkgaW1wbGVtZW50ZWQuCiAgKi8KIHVp
-bnQ2NF90IGludGVsX2FsbG9jYXRvcl9vcGVuX2Z1bGwoaW50IGZkLCB1aW50MzJfdCBjdHgsCiAJ
-CQkJICAgdWludDY0X3Qgc3RhcnQsIHVpbnQ2NF90IGVuZCwKQEAgLTEwNjcsMTAgKzEwODQsMTIg
-QEAgdWludDY0X3QgX19pbnRlbF9hbGxvY2F0b3JfYWxsb2ModWludDY0X3QgYWxsb2NhdG9yX2hh
-bmRsZSwgdWludDMyX3QgaGFuZGxlLAogCQkJCSAuYWxsb2NhdG9yX2hhbmRsZSA9IGFsbG9jYXRv
-cl9oYW5kbGUsCiAJCQkJIC5hbGxvYy5oYW5kbGUgPSBoYW5kbGUsCiAJCQkJIC5hbGxvYy5zaXpl
-ID0gc2l6ZSwKLQkJCQkgLmFsbG9jLmFsaWdubWVudCA9IGFsaWdubWVudCwKIAkJCQkgLmFsbG9j
-LnN0cmF0ZWd5ID0gc3RyYXRlZ3kgfTsKIAlzdHJ1Y3QgYWxsb2NfcmVzcCByZXNwOwogCisJaWd0
-X2Fzc2VydCgoYWxpZ25tZW50ICYgKGFsaWdubWVudC0xKSkgPT0gMCk7CisJcmVxLmFsbG9jLmFs
-aWdubWVudCA9IG1heChhbGlnbm1lbnQsIDEgPDwgMTIpOworCiAJaWd0X2Fzc2VydChoYW5kbGVf
-cmVxdWVzdCgmcmVxLCAmcmVzcCkgPT0gMCk7CiAJaWd0X2Fzc2VydChyZXNwLnJlc3BvbnNlX3R5
-cGUgPT0gUkVTUF9BTExPQyk7CiAKZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9hbGxvY2F0b3JfcmFu
-ZG9tLmMgYi9saWIvaW50ZWxfYWxsb2NhdG9yX3JhbmRvbS5jCmluZGV4IDNkOWE3OGYxNy4uODc4
-NzM0M2VmIDEwMDY0NAotLS0gYS9saWIvaW50ZWxfYWxsb2NhdG9yX3JhbmRvbS5jCisrKyBiL2xp
-Yi9pbnRlbF9hbGxvY2F0b3JfcmFuZG9tLmMKQEAgLTEwLDEyICsxMCwxMiBAQAogI2luY2x1ZGUg
-ImlndF9yYW5kLmgiCiAjaW5jbHVkZSAiaW50ZWxfYWxsb2NhdG9yLmgiCiAKLXN0cnVjdCBpbnRl
-bF9hbGxvY2F0b3IgKmludGVsX2FsbG9jYXRvcl9yYW5kb21fY3JlYXRlKGludCBmZCk7CitzdHJ1
-Y3QgaW50ZWxfYWxsb2NhdG9yICoKK2ludGVsX2FsbG9jYXRvcl9yYW5kb21fY3JlYXRlKGludCBm
-ZCwgdWludDY0X3Qgc3RhcnQsIHVpbnQ2NF90IGVuZCk7CiAKIHN0cnVjdCBpbnRlbF9hbGxvY2F0
-b3JfcmFuZG9tIHsKLQl1aW50NjRfdCBiaWFzOwogCXVpbnQzMl90IHBybmc7Ci0JdWludDY0X3Qg
-Z3R0X3NpemU7CisJdWludDY0X3Qgc2l6ZV9tYXNrOwogCXVpbnQ2NF90IHN0YXJ0OwogCXVpbnQ2
-NF90IGVuZDsKIApAQCAtMjMsMTIgKzIzLDkgQEAgc3RydWN0IGludGVsX2FsbG9jYXRvcl9yYW5k
-b20gewogCXVpbnQ2NF90IGFsbG9jYXRlZF9vYmplY3RzOwogfTsKIAotc3RhdGljIHVpbnQ2NF90
-IGdldF9iaWFzKGludCBmZCkKLXsKLQkodm9pZCkgZmQ7Ci0KLQlyZXR1cm4gMjU2IDw8IDEwOwot
-fQorLyogS2VlcCB0aGUgbG93IDI1NmsgY2xlYXIsIGZvciBuZWdhdGl2ZSBkZWx0YXMgKi8KKyNk
-ZWZpbmUgQklBUyAoMjU2IDw8IDEwKQorI2RlZmluZSBSRVRSSUVTIDgKIAogc3RhdGljIHZvaWQg
-aW50ZWxfYWxsb2NhdG9yX3JhbmRvbV9nZXRfYWRkcmVzc19yYW5nZShzdHJ1Y3QgaW50ZWxfYWxs
-b2NhdG9yICppYWwsCiAJCQkJCQkgICAgIHVpbnQ2NF90ICpzdGFydHAsCkBAIC01MCw2ICs0Nyw3
-IEBAIHN0YXRpYyB1aW50NjRfdCBpbnRlbF9hbGxvY2F0b3JfcmFuZG9tX2FsbG9jKHN0cnVjdCBp
-bnRlbF9hbGxvY2F0b3IgKmlhbCwKIHsKIAlzdHJ1Y3QgaW50ZWxfYWxsb2NhdG9yX3JhbmRvbSAq
-aWFsciA9IGlhbC0+cHJpdjsKIAl1aW50NjRfdCBvZmZzZXQ7CisJaW50IGNudCA9IFJFVFJJRVM7
-CiAKIAkodm9pZCkgaGFuZGxlOwogCSh2b2lkKSBzdHJhdGVneTsKQEAgLTU3LDEwICs1NSwxNyBA
-QCBzdGF0aWMgdWludDY0X3QgaW50ZWxfYWxsb2NhdG9yX3JhbmRvbV9hbGxvYyhzdHJ1Y3QgaW50
-ZWxfYWxsb2NhdG9yICppYWwsCiAJLyogcmFuZG9taXplIHRoZSBhZGRyZXNzLCB3ZSB0cnkgdG8g
-YXZvaWQgcmVsb2NhdGlvbnMgKi8KIAlkbyB7CiAJCW9mZnNldCA9IGhhcnNfcGV0cnVza2FfZjU0
-XzFfcmFuZG9tNjQoJmlhbHItPnBybmcpOwotCQlvZmZzZXQgKz0gaWFsci0+YmlhczsgLyogS2Vl
-cCB0aGUgbG93IDI1NmsgY2xlYXIsIGZvciBuZWdhdGl2ZSBkZWx0YXMgKi8KLQkJb2Zmc2V0ICY9
-IGlhbHItPmd0dF9zaXplIC0gMTsKLQkJb2Zmc2V0ICY9IH4oYWxpZ25tZW50IC0gMSk7Ci0JfSB3
-aGlsZSAob2Zmc2V0ICsgc2l6ZSA+IGlhbHItPmVuZCk7CisJCS8qIG1heGltaXplIHRoZSBjaGFu
-Y2VzIG9mIGZpdHRpbmcgaW4gdGhlIGxhc3QgaXRlcmF0aW9uICovCisJCWlmIChjbnQgPT0gMSkK
-KwkJCW9mZnNldCA9IDA7CisKKwkJb2Zmc2V0ICY9IGlhbHItPnNpemVfbWFzazsKKwkJb2Zmc2V0
-ICs9IGlhbHItPnN0YXJ0OworCQlvZmZzZXQgPSBBTElHTihvZmZzZXQsIGFsaWdubWVudCk7CisJ
-fSB3aGlsZSAob2Zmc2V0ICsgc2l6ZSA+IGlhbHItPmVuZCAmJiAtLWNudCk7CisKKwlpZiAoIWNu
-dCkKKwkJcmV0dXJuIEFMTE9DX0lOVkFMSURfQUREUkVTUzsKIAogCWlhbHItPmFsbG9jYXRlZF9v
-YmplY3RzKys7CiAKQEAgLTE1MCw4ICsxNTUsOCBAQCBzdGF0aWMgYm9vbCBpbnRlbF9hbGxvY2F0
-b3JfcmFuZG9tX2lzX2VtcHR5KHN0cnVjdCBpbnRlbF9hbGxvY2F0b3IgKmlhbCkKIAlyZXR1cm4g
-IWlhbHItPmFsbG9jYXRlZF9vYmplY3RzOwogfQogCi0jZGVmaW5lIFJFU0VSVkVEIDQwOTYKLXN0
-cnVjdCBpbnRlbF9hbGxvY2F0b3IgKmludGVsX2FsbG9jYXRvcl9yYW5kb21fY3JlYXRlKGludCBm
-ZCkKK3N0cnVjdCBpbnRlbF9hbGxvY2F0b3IgKgoraW50ZWxfYWxsb2NhdG9yX3JhbmRvbV9jcmVh
-dGUoaW50IGZkLCB1aW50NjRfdCBzdGFydCwgdWludDY0X3QgZW5kKQogewogCXN0cnVjdCBpbnRl
-bF9hbGxvY2F0b3IgKmlhbDsKIAlzdHJ1Y3QgaW50ZWxfYWxsb2NhdG9yX3JhbmRvbSAqaWFscjsK
-QEAgLTE3NSwxNCArMTgwLDEyIEBAIHN0cnVjdCBpbnRlbF9hbGxvY2F0b3IgKmludGVsX2FsbG9j
-YXRvcl9yYW5kb21fY3JlYXRlKGludCBmZCkKIAlpYWxyID0gaWFsLT5wcml2ID0gY2FsbG9jKDEs
-IHNpemVvZigqaWFscikpOwogCWlndF9hc3NlcnQoaWFsLT5wcml2KTsKIAlpYWxyLT5wcm5nID0g
-KHVpbnQzMl90KSB0b191c2VyX3BvaW50ZXIoaWFsKTsKLQlpYWxyLT5ndHRfc2l6ZSA9IGdlbV9h
-cGVydHVyZV9zaXplKGZkKTsKLQlpZ3RfZGVidWcoIkd0dCBzaXplOiAlIiBQUklkNjQgIlxuIiwg
-aWFsci0+Z3R0X3NpemUpOwotCWlmICghZ2VtX3VzZXNfZnVsbF9wcGd0dChmZCkpCi0JCWlhbHIt
-Pmd0dF9zaXplIC89IDI7Ci0KLQlpYWxyLT5iaWFzID0gZ2V0X2JpYXMoZmQpOwotCWlhbHItPnN0
-YXJ0ID0gaWFsci0+YmlhczsKLQlpYWxyLT5lbmQgPSBpYWxyLT5ndHRfc2l6ZSAtIFJFU0VSVkVE
-OworCisJc3RhcnQgPSBtYXgoc3RhcnQsIEJJQVMpOworCWlndF9hc3NlcnQoc3RhcnQgPCBlbmQp
-OworCWlhbHItPnNpemVfbWFzayA9ICgxVUxMIDw8IGlndF9mbHMoZW5kIC0gc3RhcnQpKSAtIDE7
-CisJaWFsci0+c3RhcnQgPSBzdGFydDsKKwlpYWxyLT5lbmQgPSBlbmQ7CiAKIAlpYWxyLT5hbGxv
-Y2F0ZWRfb2JqZWN0cyA9IDA7CiAKZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9hbGxvY2F0b3JfcmVs
-b2MuYyBiL2xpYi9pbnRlbF9hbGxvY2F0b3JfcmVsb2MuYwppbmRleCBlOGFmNzg3YjAuLjE3OTBl
-NmM3OSAxMDA2NDQKLS0tIGEvbGliL2ludGVsX2FsbG9jYXRvcl9yZWxvYy5jCisrKyBiL2xpYi9p
-bnRlbF9hbGxvY2F0b3JfcmVsb2MuYwpAQCAtMTAsMTIgKzEwLDExIEBACiAjaW5jbHVkZSAiaWd0
-X3JhbmQuaCIKICNpbmNsdWRlICJpbnRlbF9hbGxvY2F0b3IuaCIKIAotc3RydWN0IGludGVsX2Fs
-bG9jYXRvciAqaW50ZWxfYWxsb2NhdG9yX3JlbG9jX2NyZWF0ZShpbnQgZmQpOworc3RydWN0IGlu
-dGVsX2FsbG9jYXRvciAqCitpbnRlbF9hbGxvY2F0b3JfcmVsb2NfY3JlYXRlKGludCBmZCwgdWlu
-dDY0X3Qgc3RhcnQsIHVpbnQ2NF90IGVuZCk7CiAKIHN0cnVjdCBpbnRlbF9hbGxvY2F0b3JfcmVs
-b2MgewotCXVpbnQ2NF90IGJpYXM7CiAJdWludDMyX3QgcHJuZzsKLQl1aW50NjRfdCBndHRfc2l6
-ZTsKIAl1aW50NjRfdCBzdGFydDsKIAl1aW50NjRfdCBlbmQ7CiAJdWludDY0X3Qgb2Zmc2V0OwpA
-QCAtMjQsMTIgKzIzLDggQEAgc3RydWN0IGludGVsX2FsbG9jYXRvcl9yZWxvYyB7CiAJdWludDY0
-X3QgYWxsb2NhdGVkX29iamVjdHM7CiB9OwogCi1zdGF0aWMgdWludDY0X3QgZ2V0X2JpYXMoaW50
-IGZkKQotewotCSh2b2lkKSBmZDsKLQotCXJldHVybiAyNTYgPDwgMTA7Ci19CisvKiBLZWVwIHRo
-ZSBsb3cgMjU2ayBjbGVhciwgZm9yIG5lZ2F0aXZlIGRlbHRhcyAqLworI2RlZmluZSBCSUFTICgy
-NTYgPDwgMTApCiAKIHN0YXRpYyB2b2lkIGludGVsX2FsbG9jYXRvcl9yZWxvY19nZXRfYWRkcmVz
-c19yYW5nZShzdHJ1Y3QgaW50ZWxfYWxsb2NhdG9yICppYWwsCiAJCQkJCQkgICAgdWludDY0X3Qg
-KnN0YXJ0cCwKQEAgLTU1LDEzICs1MCwxNiBAQCBzdGF0aWMgdWludDY0X3QgaW50ZWxfYWxsb2Nh
-dG9yX3JlbG9jX2FsbG9jKHN0cnVjdCBpbnRlbF9hbGxvY2F0b3IgKmlhbCwKIAkodm9pZCkgaGFu
-ZGxlOwogCSh2b2lkKSBzdHJhdGVneTsKIAotCWFsaWdubWVudCA9IG1heChhbGlnbm1lbnQsIDQw
-OTYpOwogCWFsaWduZWRfb2Zmc2V0ID0gQUxJR04oaWFsci0+b2Zmc2V0LCBhbGlnbm1lbnQpOwog
-CiAJLyogQ2hlY2sgd2Ugd29uJ3QgZXhjZWVkIGVuZCAqLwogCWlmIChhbGlnbmVkX29mZnNldCAr
-IHNpemUgPiBpYWxyLT5lbmQpCiAJCWFsaWduZWRfb2Zmc2V0ID0gQUxJR04oaWFsci0+c3RhcnQs
-IGFsaWdubWVudCk7CiAKKwkvKiBDaGVjayB0aGF0IHRoZSBvYmplY3QgZml0cyBpbiB0aGUgYWRk
-cmVzcyByYW5nZSAqLworCWlmIChhbGlnbmVkX29mZnNldCArIHNpemUgPiBpYWxyLT5lbmQpCisJ
-CXJldHVybiBBTExPQ19JTlZBTElEX0FERFJFU1M7CisKIAlvZmZzZXQgPSBhbGlnbmVkX29mZnNl
-dDsKIAlpYWxyLT5vZmZzZXQgPSBvZmZzZXQgKyBzaXplOwogCWlhbHItPmFsbG9jYXRlZF9vYmpl
-Y3RzKys7CkBAIC0xNTIsOCArMTUwLDggQEAgc3RhdGljIGJvb2wgaW50ZWxfYWxsb2NhdG9yX3Jl
-bG9jX2lzX2VtcHR5KHN0cnVjdCBpbnRlbF9hbGxvY2F0b3IgKmlhbCkKIAlyZXR1cm4gIWlhbHIt
-PmFsbG9jYXRlZF9vYmplY3RzOwogfQogCi0jZGVmaW5lIFJFU0VSVkVEIDQwOTYKLXN0cnVjdCBp
-bnRlbF9hbGxvY2F0b3IgKmludGVsX2FsbG9jYXRvcl9yZWxvY19jcmVhdGUoaW50IGZkKQorc3Ry
-dWN0IGludGVsX2FsbG9jYXRvciAqCitpbnRlbF9hbGxvY2F0b3JfcmVsb2NfY3JlYXRlKGludCBm
-ZCwgdWludDY0X3Qgc3RhcnQsIHVpbnQ2NF90IGVuZCkKIHsKIAlzdHJ1Y3QgaW50ZWxfYWxsb2Nh
-dG9yICppYWw7CiAJc3RydWN0IGludGVsX2FsbG9jYXRvcl9yZWxvYyAqaWFscjsKQEAgLTE3Nywx
-NCArMTc1LDExIEBAIHN0cnVjdCBpbnRlbF9hbGxvY2F0b3IgKmludGVsX2FsbG9jYXRvcl9yZWxv
-Y19jcmVhdGUoaW50IGZkKQogCWlhbHIgPSBpYWwtPnByaXYgPSBjYWxsb2MoMSwgc2l6ZW9mKCpp
-YWxyKSk7CiAJaWd0X2Fzc2VydChpYWwtPnByaXYpOwogCWlhbHItPnBybmcgPSAodWludDMyX3Qp
-IHRvX3VzZXJfcG9pbnRlcihpYWwpOwotCWlhbHItPmd0dF9zaXplID0gZ2VtX2FwZXJ0dXJlX3Np
-emUoZmQpOwotCWlndF9kZWJ1ZygiR3R0IHNpemU6ICUiIFBSSWQ2NCAiXG4iLCBpYWxyLT5ndHRf
-c2l6ZSk7Ci0JaWYgKCFnZW1fdXNlc19mdWxsX3BwZ3R0KGZkKSkKLQkJaWFsci0+Z3R0X3NpemUg
-Lz0gMjsKLQotCWlhbHItPmJpYXMgPSBpYWxyLT5vZmZzZXQgPSBnZXRfYmlhcyhmZCk7Ci0JaWFs
-ci0+c3RhcnQgPSBpYWxyLT5iaWFzOwotCWlhbHItPmVuZCA9IGlhbHItPmd0dF9zaXplIC0gUkVT
-RVJWRUQ7CisKKwlzdGFydCA9IG1heChzdGFydCwgQklBUyk7CisJaWd0X2Fzc2VydChzdGFydCA8
-IGVuZCk7CisJaWFsci0+b2Zmc2V0ID0gaWFsci0+c3RhcnQgPSBzdGFydDsKKwlpYWxyLT5lbmQg
-PSBlbmQ7CiAKIAlpYWxyLT5hbGxvY2F0ZWRfb2JqZWN0cyA9IDA7CiAKZGlmZiAtLWdpdCBhL2xp
-Yi9pbnRlbF9hbGxvY2F0b3Jfc2ltcGxlLmMgYi9saWIvaW50ZWxfYWxsb2NhdG9yX3NpbXBsZS5j
-CmluZGV4IDk2M2Q4ZDI1Ny4uMGU2NzYzOTY0IDEwMDY0NAotLS0gYS9saWIvaW50ZWxfYWxsb2Nh
-dG9yX3NpbXBsZS5jCisrKyBiL2xpYi9pbnRlbF9hbGxvY2F0b3Jfc2ltcGxlLmMKQEAgLTExLDE3
-ICsxMSwxMSBAQAogI2luY2x1ZGUgImludGVsX2J1Zm9wcy5oIgogI2luY2x1ZGUgImlndF9tYXAu
-aCIKIAotLyoKLSAqIFdlIGxpbWl0IGFsbG9jYXRvciBzcGFjZSB0byBhdm9pZCBoYW5nIHdoZW4g
-YmF0Y2ggd291bGQgYmUKLSAqIHBpbm5lZCBpbiB0aGUgbGFzdCBwYWdlLgotICovCi0jZGVmaW5l
-IFJFU0VSVkVEIDQwOTYKIAogLyogQXZvaWQgY29tcGlsYXRpb24gd2FybmluZyAqLwotc3RydWN0
-IGludGVsX2FsbG9jYXRvciAqaW50ZWxfYWxsb2NhdG9yX3NpbXBsZV9jcmVhdGUoaW50IGZkKTsK
-IHN0cnVjdCBpbnRlbF9hbGxvY2F0b3IgKgotaW50ZWxfYWxsb2NhdG9yX3NpbXBsZV9jcmVhdGVf
-ZnVsbChpbnQgZmQsIHVpbnQ2NF90IHN0YXJ0LCB1aW50NjRfdCBlbmQsCi0JCQkJICAgZW51bSBh
-bGxvY2F0b3Jfc3RyYXRlZ3kgc3RyYXRlZ3kpOworaW50ZWxfYWxsb2NhdG9yX3NpbXBsZV9jcmVh
-dGUoaW50IGZkLCB1aW50NjRfdCBzdGFydCwgdWludDY0X3QgZW5kLAorCQkJICAgICAgZW51bSBh
-bGxvY2F0b3Jfc3RyYXRlZ3kgc3RyYXRlZ3kpOwogCiBzdHJ1Y3Qgc2ltcGxlX3ZtYV9oZWFwIHsK
-IAlzdHJ1Y3QgaWd0X2xpc3RfaGVhZCBob2xlczsKQEAgLTQyNSw3ICs0MTksNiBAQCBzdGF0aWMg
-dWludDY0X3QgaW50ZWxfYWxsb2NhdG9yX3NpbXBsZV9hbGxvYyhzdHJ1Y3QgaW50ZWxfYWxsb2Nh
-dG9yICppYWwsCiAJaWFscyA9IChzdHJ1Y3QgaW50ZWxfYWxsb2NhdG9yX3NpbXBsZSAqKSBpYWwt
-PnByaXY7CiAJaWd0X2Fzc2VydChpYWxzKTsKIAlpZ3RfYXNzZXJ0KGhhbmRsZSk7Ci0JYWxpZ25t
-ZW50ID0gYWxpZ25tZW50ID4gMCA/IGFsaWdubWVudCA6IDE7CiAKIAlyZWMgPSBpZ3RfbWFwX3Nl
-YXJjaChpYWxzLT5vYmplY3RzLCAmaGFuZGxlKTsKIAlpZiAocmVjKSB7CkBAIC03MzQsOSArNzI3
-LDkgQEAgc3RhdGljIHZvaWQgaW50ZWxfYWxsb2NhdG9yX3NpbXBsZV9wcmludChzdHJ1Y3QgaW50
-ZWxfYWxsb2NhdG9yICppYWwsIGJvb2wgZnVsbCkKIAkJIGlhbHMtPmFsbG9jYXRlZF9vYmplY3Rz
-LCBpYWxzLT5yZXNlcnZlZF9hcmVhcyk7CiB9CiAKLXN0YXRpYyBzdHJ1Y3QgaW50ZWxfYWxsb2Nh
-dG9yICoKLV9faW50ZWxfYWxsb2NhdG9yX3NpbXBsZV9jcmVhdGUoaW50IGZkLCB1aW50NjRfdCBz
-dGFydCwgdWludDY0X3QgZW5kLAotCQkJCWVudW0gYWxsb2NhdG9yX3N0cmF0ZWd5IHN0cmF0ZWd5
-KQorc3RydWN0IGludGVsX2FsbG9jYXRvciAqCitpbnRlbF9hbGxvY2F0b3Jfc2ltcGxlX2NyZWF0
-ZShpbnQgZmQsIHVpbnQ2NF90IHN0YXJ0LCB1aW50NjRfdCBlbmQsCisJCQkgICAgICBlbnVtIGFs
-bG9jYXRvcl9zdHJhdGVneSBzdHJhdGVneSkKIHsKIAlzdHJ1Y3QgaW50ZWxfYWxsb2NhdG9yICpp
-YWw7CiAJc3RydWN0IGludGVsX2FsbG9jYXRvcl9zaW1wbGUgKmlhbHM7CkBAIC03NzcsMzEgKzc3
-MCwzIEBAIF9faW50ZWxfYWxsb2NhdG9yX3NpbXBsZV9jcmVhdGUoaW50IGZkLCB1aW50NjRfdCBz
-dGFydCwgdWludDY0X3QgZW5kLAogCiAJcmV0dXJuIGlhbDsKIH0KLQotc3RydWN0IGludGVsX2Fs
-bG9jYXRvciAqCi1pbnRlbF9hbGxvY2F0b3Jfc2ltcGxlX2NyZWF0ZShpbnQgZmQpCi17Ci0JdWlu
-dDY0X3QgZ3R0X3NpemUgPSBnZW1fYXBlcnR1cmVfc2l6ZShmZCk7Ci0KLQlpZiAoIWdlbV91c2Vz
-X2Z1bGxfcHBndHQoZmQpKQotCQlndHRfc2l6ZSAvPSAyOwotCWVsc2UKLQkJZ3R0X3NpemUgLT0g
-UkVTRVJWRUQ7Ci0KLQlyZXR1cm4gX19pbnRlbF9hbGxvY2F0b3Jfc2ltcGxlX2NyZWF0ZShmZCwg
-MCwgZ3R0X3NpemUsCi0JCQkJCSAgICAgICBBTExPQ19TVFJBVEVHWV9ISUdIX1RPX0xPVyk7Ci19
-Ci0KLXN0cnVjdCBpbnRlbF9hbGxvY2F0b3IgKgotaW50ZWxfYWxsb2NhdG9yX3NpbXBsZV9jcmVh
-dGVfZnVsbChpbnQgZmQsIHVpbnQ2NF90IHN0YXJ0LCB1aW50NjRfdCBlbmQsCi0JCQkJICAgZW51
-bSBhbGxvY2F0b3Jfc3RyYXRlZ3kgc3RyYXRlZ3kpCi17Ci0JdWludDY0X3QgZ3R0X3NpemUgPSBn
-ZW1fYXBlcnR1cmVfc2l6ZShmZCk7Ci0KLQlpZ3RfYXNzZXJ0KGVuZCA8PSBndHRfc2l6ZSk7Ci0J
-aWYgKCFnZW1fdXNlc19mdWxsX3BwZ3R0KGZkKSkKLQkJZ3R0X3NpemUgLz0gMjsKLQlpZ3RfYXNz
-ZXJ0KGVuZCAtIHN0YXJ0IDw9IGd0dF9zaXplKTsKLQotCXJldHVybiBfX2ludGVsX2FsbG9jYXRv
-cl9zaW1wbGVfY3JlYXRlKGZkLCBzdGFydCwgZW5kLCBzdHJhdGVneSk7Ci19Ci0tIAoyLjI1LjEK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYg
-bWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+On Wed, Jun 16, 2021 at 09:55:47AM -0400, Anson Jacob wrote:
+> From: Victor Lu <victorchengchi.lu@amd.com>
+> 
+> Test to ensure unloading and loading of amdgpu driver works
+> 
+> Tested on:
+> ASIC: NAVI14
+> 
+> Changes since v1:
+> * Added documentaion
+> * Updated commit message
+> 
+> Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
+> Co-developed-by: Anson Jacob <Anson.Jacob@amd.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Mark Yacoub <markyacoub@google.com>
+> ---
+>  lib/igt_kmod.c                 | 59 ++++++++++++++++++++++++
+>  lib/igt_kmod.h                 |  3 ++
+>  tests/amdgpu/amd_module_load.c | 83 ++++++++++++++++++++++++++++++++++
+>  tests/amdgpu/meson.build       |  1 +
+>  4 files changed, 146 insertions(+)
+>  create mode 100644 tests/amdgpu/amd_module_load.c
+> 
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index 55295fa5d09d..10e983844066 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -433,6 +433,65 @@ igt_i915_driver_unload(void)
+>  	return IGT_EXIT_SUCCESS;
+>  }
+>  
+> +/**
+> + * igt_amdgpu_driver_load:
+> + * @opts: options to pass to amdgpu driver
+> + *
+> + * Returns: IGT_EXIT_SUCCESS or IGT_EXIT_FAILURE.
+> + *
+> + * Loads the amdgpu driver and its dependencies.
+> + *
+> + */
+> +int
+> +igt_amdgpu_driver_load(const char *opts)
+> +{
+> +	if (opts)
+> +		igt_info("Reloading amdgpu with %s\n\n", opts);
+> +
+> +	if (igt_kmod_load("amdgpu", opts)) {
+> +		igt_warn("Could not load amdgpu\n");
+> +		return IGT_EXIT_FAILURE;
+> +	}
+> +
+> +	bind_fbcon(true);
+> +
+> +	return IGT_EXIT_SUCCESS;
+> +}
+> +
+> +/**
+> + * igt_amdgpu_driver_unload:
+> + *
+> + * Returns: IGT_EXIT_SUCCESS on success, IGT_EXIT_FAILURE on failure
+> + * and IGT_EXIT_SKIP if amdgpu could not be unloaded.
+> + *
+> + * Unloads the amdgpu driver and its dependencies.
+> + *
+> + */
+> +int
+> +igt_amdgpu_driver_unload(void)
+> +{
+> +	bind_fbcon(false);
+> +
+> +	if (igt_kmod_is_loaded("amdgpu")) {
+> +		if (igt_kmod_unload("amdgpu", 0)) {
+> +			igt_warn("Could not unload amdgpu\n");
+> +			igt_kmod_list_loaded();
+> +			igt_lsof("/dev/dri");
+> +			return IGT_EXIT_SKIP;
+> +		}
+> +	}
+> +
+> +	igt_kmod_unload("drm_kms_helper", 0);
+> +	igt_kmod_unload("drm", 0);
+> +
+> +	if (igt_kmod_is_loaded("amdgpu")) {
+> +		igt_warn("amdgpu.ko still loaded!\n");
+> +		return IGT_EXIT_FAILURE;
+> +	}
+> +
+> +	return IGT_EXIT_SUCCESS;
+> +}
+> +
+>  static void kmsg_dump(int fd)
+>  {
+>  	char record[4096 + 1];
+> diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
+> index c71ec147621a..04c87516f1e6 100644
+> --- a/lib/igt_kmod.h
+> +++ b/lib/igt_kmod.h
+> @@ -39,6 +39,9 @@ int igt_kmod_unload(const char *mod_name, unsigned int flags);
+>  int igt_i915_driver_load(const char *opts);
+>  int igt_i915_driver_unload(void);
+>  
+> +int igt_amdgpu_driver_load(const char *opts);
+> +int igt_amdgpu_driver_unload(void);
+> +
+>  void igt_kselftests(const char *module_name,
+>  		    const char *module_options,
+>  		    const char *result_option,
+> diff --git a/tests/amdgpu/amd_module_load.c b/tests/amdgpu/amd_module_load.c
+> new file mode 100644
+> index 000000000000..77df96d50bb6
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_module_load.c
+> @@ -0,0 +1,83 @@
+> +/*
+> + * Copyright 2021 Advanced Micro Devices, Inc.
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice shall be included in
+> + * all copies or substantial portions of the Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
+> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+> + * OTHER DEALINGS IN THE SOFTWARE.
+> + *
+> + */
+> +
+> +#include "igt.h"
+> +#include "igt_kmod.h"
+> +
+> +#include <amdgpu.h>
+> +#include <amdgpu_drm.h>
+> +#include <sys/ioctl.h>
+> +
+> +/**
+> + * sanity_check:
+> + *
+> + * Ensures the driver is able to respond to DRM_IOCTL_AMDGPU_INFO ioctl
+> + * with a timeout.
+> + *
+> + */
+> +static void sanity_check(void)
+> +{
+> +	int err = 0;
+> +	int fd;
+> +	int arg_ret;
+> +	struct drm_amdgpu_info args = {0};
+> +
+> +	args.return_pointer = (uintptr_t) &arg_ret;
+> +	args.return_size = sizeof(int);
+> +	args.query = AMDGPU_INFO_HW_IP_INFO;
+> +	args.query_hw_ip.type = AMDGPU_HW_IP_COMPUTE;
+> +
+> +	fd = drm_open_driver(DRIVER_AMDGPU);
+> +	igt_set_timeout(1, "Module reload timeout!");
+> +
+> +	if (ioctl(fd, DRM_IOCTL_AMDGPU_INFO, &args) < 0)
+> +		err = -errno;
+> +
+> +	igt_set_timeout(0, NULL);
+> +	close(fd);
+> +
+> +	igt_assert_eq(err, 0);
+> +}
+> +
+> +igt_main
+> +{
+> +	igt_describe("Make sure reloading amdgpu drivers works");
+> +	igt_subtest("reload") {
+> +		int err;
+> +		igt_amdgpu_driver_unload();
+> +
+> +		err = igt_amdgpu_driver_load(NULL);
+> +
+> +		igt_assert_eq(err, 0);
+> +
+> +		sanity_check();
+> +
+> +		igt_amdgpu_driver_unload();
+> +	}
+> +
+> +	igt_fixture
+> +	{
+> +		/* load the module back in */
+> +		igt_amdgpu_driver_load(NULL);
+> +	}
+
+For i915 we have the convention that tests must either leave the
+driver loaded with default params, or leave it unloaded. Most of
+i915_driver_load tests leave the module unloaded to avoid the extra
+roundtrip of load-unload if running multiple driver-loading tests
+back-to-back. Lockdep especially doesn't quite like reloading too many
+times.
+
+Not an objection, just a comment to maybe consider in the future.
+
+My earlier comments are addressed so
+
+Acked-by: Petri Latvala <petri.latvala@intel.com>
+
+on that front. I'll leave it to amdgpu guys to review the test itself.
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
