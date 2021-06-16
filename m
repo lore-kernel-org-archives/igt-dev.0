@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F7BB6E5B0
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jun 2021 14:23:10 +0000 (UTC)
-Date: Wed, 16 Jun 2021 17:25:03 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YMoJvxtHeGb2tdiX@platvala-desk.ger.corp.intel.com>
-References: <20210616135547.154645-1-Anson.Jacob@amd.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210616135547.154645-1-Anson.Jacob@amd.com>
-Subject: Re: [igt-dev] [PATCH V2] tests/amdgpu: Add amdgpu module reload test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 16 Jun 2021 15:25:01 -0000
+Message-ID: <162385710160.8275.7269485512330261094@emeril.freedesktop.org>
+References: <20210616113714.5766-1-andrzej.turko@linux.intel.com>
+In-Reply-To: <20210616113714.5766-1-andrzej.turko@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQ2hlY2sg?=
+ =?utf-8?q?the_file_descriptor_while_opening_intel_allocator?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,228 +14,165 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1034726900=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Anson Jacob <Anson.Jacob@amd.com>
-Cc: igt-dev@lists.freedesktop.org, Mark Yacoub <markyacoub@google.com>, Victor Lu <victorchengchi.lu@amd.com>
+To: Andrzej Turko <andrzej.turko@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jun 16, 2021 at 09:55:47AM -0400, Anson Jacob wrote:
-> From: Victor Lu <victorchengchi.lu@amd.com>
-> 
-> Test to ensure unloading and loading of amdgpu driver works
-> 
-> Tested on:
-> ASIC: NAVI14
-> 
-> Changes since v1:
-> * Added documentaion
-> * Updated commit message
-> 
-> Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
-> Co-developed-by: Anson Jacob <Anson.Jacob@amd.com>
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-> Cc: Harry Wentland <harry.wentland@amd.com>
-> Cc: Mark Yacoub <markyacoub@google.com>
-> ---
->  lib/igt_kmod.c                 | 59 ++++++++++++++++++++++++
->  lib/igt_kmod.h                 |  3 ++
->  tests/amdgpu/amd_module_load.c | 83 ++++++++++++++++++++++++++++++++++
->  tests/amdgpu/meson.build       |  1 +
->  4 files changed, 146 insertions(+)
->  create mode 100644 tests/amdgpu/amd_module_load.c
-> 
-> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index 55295fa5d09d..10e983844066 100644
-> --- a/lib/igt_kmod.c
-> +++ b/lib/igt_kmod.c
-> @@ -433,6 +433,65 @@ igt_i915_driver_unload(void)
->  	return IGT_EXIT_SUCCESS;
->  }
->  
-> +/**
-> + * igt_amdgpu_driver_load:
-> + * @opts: options to pass to amdgpu driver
-> + *
-> + * Returns: IGT_EXIT_SUCCESS or IGT_EXIT_FAILURE.
-> + *
-> + * Loads the amdgpu driver and its dependencies.
-> + *
-> + */
-> +int
-> +igt_amdgpu_driver_load(const char *opts)
-> +{
-> +	if (opts)
-> +		igt_info("Reloading amdgpu with %s\n\n", opts);
-> +
-> +	if (igt_kmod_load("amdgpu", opts)) {
-> +		igt_warn("Could not load amdgpu\n");
-> +		return IGT_EXIT_FAILURE;
-> +	}
-> +
-> +	bind_fbcon(true);
-> +
-> +	return IGT_EXIT_SUCCESS;
-> +}
-> +
-> +/**
-> + * igt_amdgpu_driver_unload:
-> + *
-> + * Returns: IGT_EXIT_SUCCESS on success, IGT_EXIT_FAILURE on failure
-> + * and IGT_EXIT_SKIP if amdgpu could not be unloaded.
-> + *
-> + * Unloads the amdgpu driver and its dependencies.
-> + *
-> + */
-> +int
-> +igt_amdgpu_driver_unload(void)
-> +{
-> +	bind_fbcon(false);
-> +
-> +	if (igt_kmod_is_loaded("amdgpu")) {
-> +		if (igt_kmod_unload("amdgpu", 0)) {
-> +			igt_warn("Could not unload amdgpu\n");
-> +			igt_kmod_list_loaded();
-> +			igt_lsof("/dev/dri");
-> +			return IGT_EXIT_SKIP;
-> +		}
-> +	}
-> +
-> +	igt_kmod_unload("drm_kms_helper", 0);
-> +	igt_kmod_unload("drm", 0);
-> +
-> +	if (igt_kmod_is_loaded("amdgpu")) {
-> +		igt_warn("amdgpu.ko still loaded!\n");
-> +		return IGT_EXIT_FAILURE;
-> +	}
-> +
-> +	return IGT_EXIT_SUCCESS;
-> +}
-> +
->  static void kmsg_dump(int fd)
->  {
->  	char record[4096 + 1];
-> diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-> index c71ec147621a..04c87516f1e6 100644
-> --- a/lib/igt_kmod.h
-> +++ b/lib/igt_kmod.h
-> @@ -39,6 +39,9 @@ int igt_kmod_unload(const char *mod_name, unsigned int flags);
->  int igt_i915_driver_load(const char *opts);
->  int igt_i915_driver_unload(void);
->  
-> +int igt_amdgpu_driver_load(const char *opts);
-> +int igt_amdgpu_driver_unload(void);
-> +
->  void igt_kselftests(const char *module_name,
->  		    const char *module_options,
->  		    const char *result_option,
-> diff --git a/tests/amdgpu/amd_module_load.c b/tests/amdgpu/amd_module_load.c
-> new file mode 100644
-> index 000000000000..77df96d50bb6
-> --- /dev/null
-> +++ b/tests/amdgpu/amd_module_load.c
-> @@ -0,0 +1,83 @@
-> +/*
-> + * Copyright 2021 Advanced Micro Devices, Inc.
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-> + * OTHER DEALINGS IN THE SOFTWARE.
-> + *
-> + */
-> +
-> +#include "igt.h"
-> +#include "igt_kmod.h"
-> +
-> +#include <amdgpu.h>
-> +#include <amdgpu_drm.h>
-> +#include <sys/ioctl.h>
-> +
-> +/**
-> + * sanity_check:
-> + *
-> + * Ensures the driver is able to respond to DRM_IOCTL_AMDGPU_INFO ioctl
-> + * with a timeout.
-> + *
-> + */
-> +static void sanity_check(void)
-> +{
-> +	int err = 0;
-> +	int fd;
-> +	int arg_ret;
-> +	struct drm_amdgpu_info args = {0};
-> +
-> +	args.return_pointer = (uintptr_t) &arg_ret;
-> +	args.return_size = sizeof(int);
-> +	args.query = AMDGPU_INFO_HW_IP_INFO;
-> +	args.query_hw_ip.type = AMDGPU_HW_IP_COMPUTE;
-> +
-> +	fd = drm_open_driver(DRIVER_AMDGPU);
-> +	igt_set_timeout(1, "Module reload timeout!");
-> +
-> +	if (ioctl(fd, DRM_IOCTL_AMDGPU_INFO, &args) < 0)
-> +		err = -errno;
-> +
-> +	igt_set_timeout(0, NULL);
-> +	close(fd);
-> +
-> +	igt_assert_eq(err, 0);
-> +}
-> +
-> +igt_main
-> +{
-> +	igt_describe("Make sure reloading amdgpu drivers works");
-> +	igt_subtest("reload") {
-> +		int err;
-> +		igt_amdgpu_driver_unload();
-> +
-> +		err = igt_amdgpu_driver_load(NULL);
-> +
-> +		igt_assert_eq(err, 0);
-> +
-> +		sanity_check();
-> +
-> +		igt_amdgpu_driver_unload();
-> +	}
-> +
-> +	igt_fixture
-> +	{
-> +		/* load the module back in */
-> +		igt_amdgpu_driver_load(NULL);
-> +	}
+--===============1034726900==
+Content-Type: multipart/alternative;
+ boundary="===============6010254380942250484=="
 
-For i915 we have the convention that tests must either leave the
-driver loaded with default params, or leave it unloaded. Most of
-i915_driver_load tests leave the module unloaded to avoid the extra
-roundtrip of load-unload if running multiple driver-loading tests
-back-to-back. Lockdep especially doesn't quite like reloading too many
-times.
+--===============6010254380942250484==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Not an objection, just a comment to maybe consider in the future.
+== Series Details ==
 
-My earlier comments are addressed so
+Series: Check the file descriptor while opening intel allocator
+URL   : https://patchwork.freedesktop.org/series/91568/
+State : success
 
-Acked-by: Petri Latvala <petri.latvala@intel.com>
+== Summary ==
 
-on that front. I'll leave it to amdgpu guys to review the test itself.
+CI Bug Log - changes from CI_DRM_10229 -> IGTPW_5930
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5930/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5930 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271]) +8 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5930/fi-kbl-soraka/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
+
+  * igt@runner@aborted:
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][2] ([i915#1602] / [i915#2029])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5930/fi-bdw-5557u/igt@runner@aborted.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
+  [i915#2029]: https://gitlab.freedesktop.org/drm/intel/issues/2029
+
+
+Participating hosts (43 -> 37)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6109 -> IGTPW_5930
+
+  CI-20190529: 20190529
+  CI_DRM_10229: 4c226c5bfb5fb04f774d9978412f7f5ff6a178ab @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5930: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5930/index.html
+  IGT_6109: 61ba2ed489540e6a8a649be38abb075b3ab4d28a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5930/index.html
+
+--===============6010254380942250484==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Check the file descriptor while opening intel allocator</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/91568/">https://patchwork.freedesktop.org/series/91568/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5930/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5930/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10229 -&gt; IGTPW_5930</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5930/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5930 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-fork-compute0:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5930/fi-kbl-soraka/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5930/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2029">i915#2029</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (43 -&gt; 37)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6109 -&gt; IGTPW_5930</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10229: 4c226c5bfb5fb04f774d9978412f7f5ff6a178ab @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5930: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5930/index.html<br />
+  IGT_6109: 61ba2ed489540e6a8a649be38abb075b3ab4d28a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6010254380942250484==--
+
+--===============1034726900==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1034726900==--
