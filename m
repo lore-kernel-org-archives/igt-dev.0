@@ -1,10 +1,8 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3244A6E530
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jun 2021 08:44:15 +0000 (UTC)
-Date: Wed, 16 Jun 2021 11:46:09 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YMm6UQr4qHp/knOD@platvala-desk.ger.corp.intel.com>
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2066.outbound.protection.outlook.com [40.107.93.66])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EAD006E542
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jun 2021 09:08:01 +0000 (UTC)
 References: <20210614164135.1519746-1-markyacoub@chromium.org>
  <20210615131254.5x5u2fjyy7p3uctf@outlook.office365.com>
  <e89fb09e-40c2-3b55-ae27-ed13c234bad7@amd.com>
@@ -14,9 +12,13 @@ References: <20210614164135.1519746-1-markyacoub@chromium.org>
  <ae4be25c-c50d-56bb-6699-5ab6210f80bf@amd.com>
  <YMmpbOtT+CMFxbzI@platvala-desk.ger.corp.intel.com>
  <8077ffe8-8ee5-1d58-1797-69848d11d27a@amd.com>
+ <YMm6UQr4qHp/knOD@platvala-desk.ger.corp.intel.com>
+From: =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
+Message-ID: <3bc3c4ce-1798-5d80-82d1-9facc8b1ce20@amd.com>
+Date: Wed, 16 Jun 2021 11:07:53 +0200
+In-Reply-To: <YMm6UQr4qHp/knOD@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <8077ffe8-8ee5-1d58-1797-69848d11d27a@amd.com>
 Subject: Re: [igt-dev] [PATCH] tests/kms_prime: Filter out devices that
  can't import buffers.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -26,56 +28,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: Anson Jacob <Anson.Jacob@amd.com>, igt-dev@lists.freedesktop.org, Sean Paul <seanpaul@chromium.org>, "Deucher,
  Alexander" <Alexander.Deucher@amd.com>, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jun 16, 2021 at 10:07:18AM +0200, Christian K=F6nig wrote:
-> =
-
-> =
-
-> Am 16.06.21 um 09:34 schrieb Petri Latvala:
-> > On Tue, Jun 15, 2021 at 06:20:23PM +0200, Christian K=F6nig wrote:
-> > > The alternative would be to try to create a framebuffer, but don't ta=
-ke it
-> > > as a failure when that fails with the correct return code.
-> > This.
-> > =
-
-> > If the importing can fail for documented reasons, we should just add
-> > code that checks that the error is the documented one and then
-> > igt_skip(), fail the test if it's something it shouldn't.
-> =
-
-> Good point, but I don't think that this behavior is well documented
-> anywhere.
-> =
-
-> I'm also pretty sure that most drivers don't correctly reject an imported
-> DMA-buf for scanout when the hardware can't do this. Resulting in either
-> just garbage on the screen or a lockup.
-> =
-
-> Exercising this in an unit tests is probably a good idea, but only after
-> auditing all drivers for correct behavior.
-
-The thing is, having a test for it is the best method of auditing and
-being _sure_.
-
-Being able to lockup devices with an operation that doesn't even
-require root (?) sounds... slightly bad.
-
-
--- =
-
-Petri Latvala
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+QW0gMTYuMDYuMjEgdW0gMTA6NDYgc2NocmllYiBQZXRyaSBMYXR2YWxhOgo+IE9uIFdlZCwgSnVu
+IDE2LCAyMDIxIGF0IDEwOjA3OjE4QU0gKzAyMDAsIENocmlzdGlhbiBLw7ZuaWcgd3JvdGU6Cj4+
+Cj4+IEFtIDE2LjA2LjIxIHVtIDA5OjM0IHNjaHJpZWIgUGV0cmkgTGF0dmFsYToKPj4+IE9uIFR1
+ZSwgSnVuIDE1LCAyMDIxIGF0IDA2OjIwOjIzUE0gKzAyMDAsIENocmlzdGlhbiBLw7ZuaWcgd3Jv
+dGU6Cj4+Pj4gVGhlIGFsdGVybmF0aXZlIHdvdWxkIGJlIHRvIHRyeSB0byBjcmVhdGUgYSBmcmFt
+ZWJ1ZmZlciwgYnV0IGRvbid0IHRha2UgaXQKPj4+PiBhcyBhIGZhaWx1cmUgd2hlbiB0aGF0IGZh
+aWxzIHdpdGggdGhlIGNvcnJlY3QgcmV0dXJuIGNvZGUuCj4+PiBUaGlzLgo+Pj4KPj4+IElmIHRo
+ZSBpbXBvcnRpbmcgY2FuIGZhaWwgZm9yIGRvY3VtZW50ZWQgcmVhc29ucywgd2Ugc2hvdWxkIGp1
+c3QgYWRkCj4+PiBjb2RlIHRoYXQgY2hlY2tzIHRoYXQgdGhlIGVycm9yIGlzIHRoZSBkb2N1bWVu
+dGVkIG9uZSBhbmQgdGhlbgo+Pj4gaWd0X3NraXAoKSwgZmFpbCB0aGUgdGVzdCBpZiBpdCdzIHNv
+bWV0aGluZyBpdCBzaG91bGRuJ3QuCj4+IEdvb2QgcG9pbnQsIGJ1dCBJIGRvbid0IHRoaW5rIHRo
+YXQgdGhpcyBiZWhhdmlvciBpcyB3ZWxsIGRvY3VtZW50ZWQKPj4gYW55d2hlcmUuCj4+Cj4+IEkn
+bSBhbHNvIHByZXR0eSBzdXJlIHRoYXQgbW9zdCBkcml2ZXJzIGRvbid0IGNvcnJlY3RseSByZWpl
+Y3QgYW4gaW1wb3J0ZWQKPj4gRE1BLWJ1ZiBmb3Igc2Nhbm91dCB3aGVuIHRoZSBoYXJkd2FyZSBj
+YW4ndCBkbyB0aGlzLiBSZXN1bHRpbmcgaW4gZWl0aGVyCj4+IGp1c3QgZ2FyYmFnZSBvbiB0aGUg
+c2NyZWVuIG9yIGEgbG9ja3VwLgo+Pgo+PiBFeGVyY2lzaW5nIHRoaXMgaW4gYW4gdW5pdCB0ZXN0
+cyBpcyBwcm9iYWJseSBhIGdvb2QgaWRlYSwgYnV0IG9ubHkgYWZ0ZXIKPj4gYXVkaXRpbmcgYWxs
+IGRyaXZlcnMgZm9yIGNvcnJlY3QgYmVoYXZpb3IuCj4gVGhlIHRoaW5nIGlzLCBoYXZpbmcgYSB0
+ZXN0IGZvciBpdCBpcyB0aGUgYmVzdCBtZXRob2Qgb2YgYXVkaXRpbmcgYW5kCj4gYmVpbmcgX3N1
+cmVfLgoKT2ssIHllYWggdGhhdCBpcyBhIHJlYWxseSBnb29kIGFyZ3VtZW50IGFzIHdlbGwuCgo+
+IEJlaW5nIGFibGUgdG8gbG9ja3VwIGRldmljZXMgd2l0aCBhbiBvcGVyYXRpb24gdGhhdCBkb2Vz
+bid0IGV2ZW4KPiByZXF1aXJlIHJvb3QgKD8pIHNvdW5kcy4uLiBzbGlnaHRseSBiYWQuCgpXZWxs
+IGEgYml0IG1vcmUgdGhhbiBzbGlnaHRseSBiYWQgSSB3b3VsZCBzYXkgOikKCkZpcnN0IHdlIGFk
+ZGVkIHRoZSBleHRyYSBjaGVjayB0byBhbWRncHUgYmVjYXVzZSB3ZSBmb3VuZCBzY3JlZW4gZ2Fy
+YmFnZSAKb24gZEdQVXMuIFdoZW4gd2UgdGhlbiBsYXRlciBpbXBsZW1lbnRlZCBzY2Fub3V0IGZy
+b20gaW1wb3J0ZWQgRE1BLWJ1ZnMgCmZvciBBUFVzIHdlIGZvdW5kIHRoYXQgYSBjZXJ0YWluIGNv
+bWJpbmF0aW9uIG9mIElPTU1VIGVuYWJsZWQsIApyZXNvbHV0aW9uIGFuZCByZWZyZXNoIHJhdGUg
+Y291bGQgaGFyZCBsb2NrIHRoZSBQQ0llIHJvb3QgY29tcGxleC4KCkl0J3MgYWJzb2x1dGVseSBu
+b3QgbmljZSBpZiBldmVuIHNlcmlhbCBjb25zb2xlcyBvciBuZXR3b3JrIGNvbnNvbGVzIApkb24n
+dCBnaXZlIHlvdSBhbnkgaGludCBvbiB3aGF0J3MgZ29pbmcgd3JvbmcuCgpJIGFsc28gdGhpbmsg
+d2Ugc2hvdWxkIGtlZXAgdGhpcyB0ZXN0IGNhc2UgYXJvdW5kLCBqdXN0IGRvbid0IGJlIApzdXJw
+cmlzZWQgaWYgcGVvcGxlIHN0YXJ0IHRvIHNjcmVhbSBiZWNhdXNlIGl0IGhhcmQgbG9jayB0aGVp
+ciBzeXN0ZW1zLgoKUmVnYXJkcywKQ2hyaXN0aWFuLgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3Rz
+LmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xp
+c3RpbmZvL2lndC1kZXYK
