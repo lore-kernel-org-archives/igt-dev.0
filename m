@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com
- [IPv6:2607:f8b0:4864:20::b2e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B2366E2BC
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jun 2021 16:46:14 +0000 (UTC)
-Received: by mail-yb1-xb2e.google.com with SMTP id h15so3904053ybm.13
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jun 2021 09:46:14 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210614163704.365989-1-jason@jlekstrand.net>
- <20210614163704.365989-4-jason@jlekstrand.net>
- <87bl86u3vt.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <87bl86u3vt.wl-ashutosh.dixit@intel.com>
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
+ [IPv6:2607:f8b0:4864:20::1034])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 15A826E53E
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jun 2021 16:57:32 +0000 (UTC)
+Received: by mail-pj1-x1034.google.com with SMTP id
+ s17-20020a17090a8811b029016e89654f93so4379486pjn.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jun 2021 09:57:32 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed, 16 Jun 2021 11:46:02 -0500
-Message-ID: <CAOFGe94yjH4=0_N=gxoLPArieDRJfTo-xDUCRZQdFE+XhA+siw@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 03/77] tests/i915/gem_exec_schedule:
- Convert to intel_ctx_t
+Date: Wed, 16 Jun 2021 11:57:24 -0500
+Message-Id: <20210616165724.480899-1-jason@jlekstrand.net>
+In-Reply-To: <20210614163704.365989-4-jason@jlekstrand.net>
+References: <20210614163704.365989-4-jason@jlekstrand.net>
+MIME-Version: 1.0
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_shrink: Convert to
+ intel_ctx_t (v3)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,112 +21,81 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jun 15, 2021 at 6:03 PM Dixit, Ashutosh
-<ashutosh.dixit@intel.com> wrote:
->
-> On Mon, 14 Jun 2021 09:36:18 -0700, Jason Ekstrand wrote:
-> >
-> > @@ -1166,24 +1188,24 @@ noreorder(int i915, unsigned int engine, int prio, unsigned int flags)
-> >               .buffers_ptr = to_user_pointer(&obj),
-> >               .buffer_count = 1,
-> >               .flags = engine,
-> > -             .rsvd1 = gem_context_clone_with_engines(i915, 0),
-> >       };
-> > +     intel_ctx_cfg_t vm_cfg = *cfg;
-> > +     const intel_ctx_t *ctx;
-> >       IGT_CORK_FENCE(cork);
-> >       uint32_t *map, *cs;
-> >       igt_spin_t *slice;
-> >       igt_spin_t *spin;
-> >       int fence = -1;
-> >       uint64_t addr;
-> > -     uint32_t ctx;
-> >
-> >       if (flags & CORKED)
-> >               fence = igt_cork_plug(&cork, i915);
-> >
-> > -     ctx = gem_context_clone(i915, execbuf.rsvd1,
-> > -                           I915_CONTEXT_CLONE_ENGINES |
-> > -                           I915_CONTEXT_CLONE_VM,
-> > -                           0);
-> > -     spin = igt_spin_new(i915, ctx,
-> > +     vm_cfg.vm = gem_vm_create(i915);
->
-> I don't know a lot about this but anyway here goes: Not sure what the
-> purpose of the origin I915_CONTEXT_CLONE_VM was but if we are creating a
-> new VM and adding to the context that is probably not equivalent to cloning
-> the VM.
-
-I'm not 100% sure what the shared VM is for either, TBH.  I think it's
-to prevent weird inter-dependencies caused by relocations.  In
-particular, if a BO shared between two cotexts ends up with different
-addresses in the two VMs, relocating back and forth between the two
-addresses can cause serialization that we don't want.
-
-As far as this vs. cloning goes, they're roughly the same.
-
-> Also, i915_gem_vm_create_ioctl() in i915 has this:
->
->         if (!HAS_FULL_PPGTT(i915))
->                 return -ENODEV;
->
-> Considering all this, I'm wondering if we are better off just skipping the
-> gem_vm_create() above (and just use the default VM for the new context)?
-
-There isn't a single "default VM" which is the problem, at least not
-with HAS_FULL_PPGTT.  By default, if HAS_FULL_PPGTT, there is one VM
-per context.  We clone to ensure they're all using the same one.  If
-we don't HAS_FULL_PPGTT, then there is a single VM and we don't need
-to do anything in the test.  We do have a gem_uses_full_ppgtt() helper
-in IGT which we can predicate all the VM stuff on.  I'll do that.
-
-> Since in the new API there will no way to clone a VM, correct?
-
-You can't clone directly but you can assign the same one to both which
-is what this does.
-
-> gem_vm_destroy() is also missing at the end of the function.
-
-Yup.  I'll fix that.
-
-> > @@ -2455,8 +2491,10 @@ static void *iova_high(void *arg)
-> >       return iova_thread(arg, MAX_PRIO);
-> >  }
-> >
-> > -static void test_pi_iova(int i915, unsigned int engine, unsigned int flags)
-> > +static void test_pi_iova(int i915, const intel_ctx_cfg_t *cfg,
-> > +                      unsigned int engine, unsigned int flags)
-> >  {
-> > +     intel_ctx_cfg_t ufd_cfg = *cfg;
-> >       struct uffdio_api api = { .api = UFFD_API };
-> >       struct uffdio_register reg;
-> >       struct uffdio_copy copy;
-> > @@ -2490,9 +2528,12 @@ static void test_pi_iova(int i915, unsigned int engine, unsigned int flags)
-> >       igt_require_f(ioctl(ufd, UFFDIO_API, &api) == 0 && api.api == UFFD_API,
-> >                     "userfaultfd API v%lld:%lld\n", UFFD_API, api.api);
-> >
-> > +     if (flags & SHARED)
-> > +             ufd_cfg.vm = gem_vm_create(i915);
->
-> This once again is the same vm create/clone issue described above.
-
-Yup.  Will rework.
-
-> Apart from this, everything else seems good afaict and I can give a R-b
-> after we close on the vm_create/clone issue. Thanks!
-
-Thanks for your attention to detail!
-
---Jason
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T25seSBvbmUgc3VidGVzdCBhY3R1YWxseSBuZWVkcyB0byBpdGVyYXRlIG92ZXIgZW5naW5lcy4K
+CnYyIChaYmlnbmlldyBLZW1wY3p5xYRza2kpOgogLSBSZXdvcmsgdGhlIGV4ZWNidWZYIGxvb3Ag
+dG8gYmUgbW9yZSByb2J1c3QKCnYzIChBc2h1dG9zaCBEaXhpdCk6CiAtIERvbid0IGV4cGxpY2l0
+bHkgY3JlYXRlIFZNcyBpZiB3ZSBkb24ndCBoYXZlIGZ1bGwgUFBHVFQKClNpZ25lZC1vZmYtYnk6
+IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3RyYW5kLm5ldD4KLS0tCiB0ZXN0cy9pOTE1L2dl
+bV9leGVjX3NjaGVkdWxlLmMgfCAxMCArKysrKysrLS0tCiB0ZXN0cy9pOTE1L2dlbV9zaHJpbmsu
+YyAgICAgICAgfCAxOCArKysrKysrKystLS0tLS0tLS0KIDIgZmlsZXMgY2hhbmdlZCwgMTYgaW5z
+ZXJ0aW9ucygrKSwgMTIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1f
+ZXhlY19zY2hlZHVsZS5jIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19zY2hlZHVsZS5jCmluZGV4IGQ4
+Mzk3YWVhYi4uY2Y0YjQwN2Y1IDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2dlbV9leGVjX3NjaGVk
+dWxlLmMKKysrIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19zY2hlZHVsZS5jCkBAIC0xMjAxLDcgKzEy
+MDEsOCBAQCBub3Jlb3JkZXIoaW50IGk5MTUsIGNvbnN0IGludGVsX2N0eF9jZmdfdCAqY2ZnLAog
+CWlmIChmbGFncyAmIENPUktFRCkKIAkJZmVuY2UgPSBpZ3RfY29ya19wbHVnKCZjb3JrLCBpOTE1
+KTsKIAotCXZtX2NmZy52bSA9IGdlbV92bV9jcmVhdGUoaTkxNSk7CisJaWYgKGdlbV91c2VzX2Z1
+bGxfcHBndHQoaTkxNSkpCisJCXZtX2NmZy52bSA9IGdlbV92bV9jcmVhdGUoaTkxNSk7CiAKIAlj
+dHggPSBpbnRlbF9jdHhfY3JlYXRlKGk5MTUsICZ2bV9jZmcpOwogCkBAIC0xMjkxLDYgKzEyOTIs
+OSBAQCBub3Jlb3JkZXIoaW50IGk5MTUsIGNvbnN0IGludGVsX2N0eF9jZmdfdCAqY2ZnLAogCWln
+dF9zcGluX2ZyZWUoaTkxNSwgc2xpY2UpOwogCWludGVsX2N0eF9kZXN0cm95KGk5MTUsIGN0eCk7
+CiAKKwlpZiAodm1fY2ZnLnZtKQorCQlnZW1fdm1fZGVzdHJveShpOTE1LCB2bV9jZmcudm0pOwor
+CiAJLyogQ2hlY2sgdGhlIHN0b3JlIGRpZCBub3QgcnVuIGJlZm9yZSB0aGUgc3Bpbm5lciAqLwog
+CWlndF9hc3NlcnRfZXEoc3luY19mZW5jZV9zdGF0dXMoc3Bpbi0+b3V0X2ZlbmNlKSwgMCk7CiAJ
+aWd0X3NwaW5fZnJlZShpOTE1LCBzcGluKTsKQEAgLTI1MjgsNyArMjUzMiw3IEBAIHN0YXRpYyB2
+b2lkIHRlc3RfcGlfaW92YShpbnQgaTkxNSwgY29uc3QgaW50ZWxfY3R4X2NmZ190ICpjZmcsCiAJ
+aWd0X3JlcXVpcmVfZihpb2N0bCh1ZmQsIFVGRkRJT19BUEksICZhcGkpID09IDAgJiYgYXBpLmFw
+aSA9PSBVRkZEX0FQSSwKIAkJICAgICAgInVzZXJmYXVsdGZkIEFQSSB2JWxsZDolbGxkXG4iLCBV
+RkZEX0FQSSwgYXBpLmFwaSk7CiAKLQlpZiAoZmxhZ3MgJiBTSEFSRUQpCisJaWYgKChmbGFncyAm
+IFNIQVJFRCkgJiYgZ2VtX3VzZXNfZnVsbF9wcGd0dChpOTE1KSkKIAkJdWZkX2NmZy52bSA9IGdl
+bV92bV9jcmVhdGUoaTkxNSk7CiAKIAl0Lmk5MTUgPSBpOTE1OwpAQCAtMjYxMyw3ICsyNjE3LDcg
+QEAgc3RhdGljIHZvaWQgdGVzdF9waV9pb3ZhKGludCBpOTE1LCBjb25zdCBpbnRlbF9jdHhfY2Zn
+X3QgKmNmZywKIAogCW11bm1hcCh0LnBhZ2UsIDQwOTYpOwogCi0JaWYgKGZsYWdzICYgU0hBUkVE
+KQorCWlmICh1ZmRfY2ZnLnZtKQogCQlnZW1fdm1fZGVzdHJveShpOTE1LCB1ZmRfY2ZnLnZtKTsK
+IAogCWNsb3NlKHVmZCk7CmRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9zaHJpbmsuYyBiL3Rl
+c3RzL2k5MTUvZ2VtX3Nocmluay5jCmluZGV4IGI2NDUwYTZmYi4uMjMzYzBhNzM5IDEwMDY0NAot
+LS0gYS90ZXN0cy9pOTE1L2dlbV9zaHJpbmsuYworKysgYi90ZXN0cy9pOTE1L2dlbV9zaHJpbmsu
+YwpAQCAtMzgsOCArMzgsNiBAQAogI2RlZmluZSBNQURWX0ZSRUUgOAogI2VuZGlmCiAKLXN0YXRp
+YyB1bnNpZ25lZCBpbnQgZW5naW5lc1tJOTE1X0VYRUNfUklOR19NQVNLICsgMV0sIG5lbmdpbmU7
+Ci0KIHN0YXRpYyB2b2lkIGdldF9wYWdlcyhpbnQgZmQsIHVpbnQ2NF90IGFsbG9jKQogewogCXVp
+bnQzMl90IGhhbmRsZSA9IGdlbV9jcmVhdGUoZmQsIGFsbG9jKTsKQEAgLTE2NCw4ICsxNjIsMTAg
+QEAgc3RhdGljIHZvaWQgZXhlY2J1Zk4oaW50IGZkLCB1aW50NjRfdCBhbGxvYykKIHN0YXRpYyB2
+b2lkIGV4ZWNidWZYKGludCBmZCwgdWludDY0X3QgYWxsb2MpCiB7CiAJY29uc3QgdWludDMyX3Qg
+YmJlID0gTUlfQkFUQ0hfQlVGRkVSX0VORDsKKwlzdHJ1Y3QgaW50ZWxfZW5naW5lX2RhdGEgZW5n
+aW5lczsKIAlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2JqZWN0MiAqb2JqOwogCXN0cnVjdCBk
+cm1faTkxNV9nZW1fZXhlY2J1ZmZlcjIgZXhlY2J1ZjsKKwljb25zdCBpbnRlbF9jdHhfdCAqY3R4
+OwogCWludCBjb3VudCA9IGFsbG9jID4+IDIwOwogCXVpbnQ2NF90IG9ial9zaXplOwogCkBAIC0x
+NzUsNiArMTc1LDkgQEAgc3RhdGljIHZvaWQgZXhlY2J1ZlgoaW50IGZkLCB1aW50NjRfdCBhbGxv
+YykKIAlvYmpbY291bnRdLmhhbmRsZSA9IGdlbV9jcmVhdGUoZmQsIDQwOTYpOwogCWdlbV93cml0
+ZShmZCwgb2JqW2NvdW50XS5oYW5kbGUsIDAsICZiYmUsIHNpemVvZihiYmUpKTsKIAorCWN0eCA9
+IGludGVsX2N0eF9jcmVhdGVfYWxsX3BoeXNpY2FsKGZkKTsKKwllbmdpbmVzID0gaW50ZWxfZW5n
+aW5lX2xpc3RfZm9yX2N0eF9jZmcoZmQsICZjdHgtPmNmZyk7CisKIAlmb3IgKGludCBpID0gMTsg
+aSA8PSBjb3VudDsgaSsrKSB7CiAJCWludCBqID0gY291bnQgLSBpOwogCkBAIC0xODUsMTMgKzE4
+OCwxNiBAQCBzdGF0aWMgdm9pZCBleGVjYnVmWChpbnQgZmQsIHVpbnQ2NF90IGFsbG9jKQogCiAJ
+CWV4ZWNidWYuYnVmZmVyc19wdHIgPSB0b191c2VyX3BvaW50ZXIoJm9ialtqXSk7CiAJCWV4ZWNi
+dWYuYnVmZmVyX2NvdW50ID0gaSArIDE7Ci0JCWV4ZWNidWYuZmxhZ3MgPSBlbmdpbmVzW2ogJSBu
+ZW5naW5lXTsKKwkJZXhlY2J1Zi5mbGFncyA9IGVuZ2luZXMuZW5naW5lc1tpICUgZW5naW5lcy5u
+ZW5naW5lc10uZmxhZ3M7CisJCWV4ZWNidWYucnN2ZDEgPSBjdHgtPmlkOwogCQlnZW1fZXhlY2J1
+ZihmZCwgJmV4ZWNidWYpOwogCX0KIAogCWZvciAoaW50IGkgPSAwOyBpIDw9IGNvdW50OyBpKysp
+CiAJCWdlbV9tYWR2aXNlKGZkLCBvYmpbaV0uaGFuZGxlLCBJOTE1X01BRFZfRE9OVE5FRUQpOwog
+CW11bm1hcChvYmosIG9ial9zaXplKTsKKworCWludGVsX2N0eF9kZXN0cm95KGZkLCBjdHgpOwog
+fQogCiBzdGF0aWMgdm9pZCBoYW5nKGludCBmZCwgdWludDY0X3QgYWxsb2MpCkBAIC00MjksNyAr
+NDM1LDYgQEAgaWd0X21haW4KIAlpZ3RfZml4dHVyZSB7CiAJCWNvbnN0IGludCBuY3B1cyA9IHN5
+c2NvbmYoX1NDX05QUk9DRVNTT1JTX09OTE4pOwogCQl1aW50NjRfdCBtZW1fc2l6ZSA9IGludGVs
+X2dldF90b3RhbF9yYW1fbWIoKTsKLQkJY29uc3Qgc3RydWN0IGludGVsX2V4ZWN1dGlvbl9lbmdp
+bmUyICplOwogCQlpbnQgZmQ7CiAKIAkJZmQgPSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX0lOVEVM
+KTsKQEAgLTQ1MSwxMSArNDU2LDYgQEAgaWd0X21haW4KIAkJaW50ZWxfcmVxdWlyZV9tZW1vcnko
+bnVtX3Byb2Nlc3NlcywgYWxsb2Nfc2l6ZSwKIAkJCQkgICAgIENIRUNLX1NXQVAgfCBDSEVDS19S
+QU0pOwogCi0JCW5lbmdpbmUgPSAwOwotCQlfX2Zvcl9lYWNoX3BoeXNpY2FsX2VuZ2luZShmZCwg
+ZSkKLQkJCWVuZ2luZXNbbmVuZ2luZSsrXSA9IGUtPmZsYWdzOwotCQlpZ3RfcmVxdWlyZShuZW5n
+aW5lKTsKLQogCQljbG9zZShmZCk7CiAJfQogCi0tIAoyLjMxLjEKCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
+aWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
