@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 10CA6897FB
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jun 2021 04:56:05 +0000 (UTC)
-Date: Wed, 16 Jun 2021 06:55:59 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210616045559.GB3598@zkempczy-mobl2>
-References: <20210614163704.365989-1-jason@jlekstrand.net>
- <20210614163902.366168-5-jason@jlekstrand.net>
- <20210615084428.GK4738@zkempczy-mobl2>
- <CAOFGe94F_EoBo2t7ZkYOeWSkn6BPbimK8V7vdMcyPuUbG6C7GQ@mail.gmail.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60B956E511
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jun 2021 07:32:12 +0000 (UTC)
+Date: Wed, 16 Jun 2021 10:34:04 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YMmpbOtT+CMFxbzI@platvala-desk.ger.corp.intel.com>
+References: <20210614164135.1519746-1-markyacoub@chromium.org>
+ <20210615131254.5x5u2fjyy7p3uctf@outlook.office365.com>
+ <e89fb09e-40c2-3b55-ae27-ed13c234bad7@amd.com>
+ <CAJUqKUrDjKFf_yx9w=1TQViJr8C6QfPrYCsEqQO-1Nxou5eH9A@mail.gmail.com>
+ <8f717975-4852-fb81-028a-e4c709b50014@amd.com>
+ <CAJUqKUqVZb-GatjkGXChFYPXrYLCqwCe9Uu0epEASn8SMrzEfw@mail.gmail.com>
+ <ae4be25c-c50d-56bb-6699-5ab6210f80bf@amd.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAOFGe94F_EoBo2t7ZkYOeWSkn6BPbimK8V7vdMcyPuUbG6C7GQ@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 54/77] lib/i915: Use
- for_each_physical_ring for submission tests
+In-Reply-To: <ae4be25c-c50d-56bb-6699-5ab6210f80bf@amd.com>
+Subject: Re: [igt-dev] [PATCH] tests/kms_prime: Filter out devices that
+ can't import buffers.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,55 +24,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jason Ekstrand <jason@jlekstrand.net>
-Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
+To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+Cc: Anson Jacob <Anson.Jacob@amd.com>, igt-dev@lists.freedesktop.org, Sean Paul <seanpaul@chromium.org>, "Deucher,
+ Alexander" <Alexander.Deucher@amd.com>, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBKdW4gMTUsIDIwMjEgYXQgMDE6MjM6MTlQTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
-d3JvdGU6Cj4gT24gVHVlLCBKdW4gMTUsIDIwMjEgYXQgMzo0NCBBTSBaYmlnbmlldyBLZW1wY3p5
-xYRza2kKPiA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPiB3cm90ZToKPiA+Cj4gPiBP
-biBNb24sIEp1biAxNCwgMjAyMSBhdCAxMTozODozOUFNIC0wNTAwLCBKYXNvbiBFa3N0cmFuZCB3
-cm90ZToKPiA+ID4gVGhpcyBkb2VzIG1ha2UgdGhlIGFzc3VtcHRpb24gdGhhdCBjdHgwIGhhcyB0
-aGUgZGVmYXVsdCBzZXQgb2YgZW5naW5lcwo+ID4gPiBidXQsIG5vdyB0aGF0IHdlJ3ZlIGNvbnZl
-cnRlZCBldmVyeXRoaW5nIHRvIGludGVsX2N0eF90LCB0aGlzIGFzc3VtcHRpb24KPiA+ID4gc2hv
-dWxkIGJlIG9rLgo+ID4gPgo+ID4gPiBTaWduZWQtb2ZmLWJ5OiBKYXNvbiBFa3N0cmFuZCA8amFz
-b25Aamxla3N0cmFuZC5uZXQ+Cj4gPiA+IC0tLQo+ID4gPiAgbGliL2k5MTUvZ2VtX3N1Ym1pc3Np
-b24uYyB8IDEzICsrKysrLS0tLS0tLS0KPiA+ID4gIDEgZmlsZSBjaGFuZ2VkLCA1IGluc2VydGlv
-bnMoKyksIDggZGVsZXRpb25zKC0pCj4gPiA+Cj4gPiA+IGRpZmYgLS1naXQgYS9saWIvaTkxNS9n
-ZW1fc3VibWlzc2lvbi5jIGIvbGliL2k5MTUvZ2VtX3N1Ym1pc3Npb24uYwo+ID4gPiBpbmRleCBi
-ZDRiYmIzZWYuLjFhYmM3M2VjNyAxMDA2NDQKPiA+ID4gLS0tIGEvbGliL2k5MTUvZ2VtX3N1Ym1p
-c3Npb24uYwo+ID4gPiArKysgYi9saWIvaTkxNS9nZW1fc3VibWlzc2lvbi5jCj4gPiA+IEBAIC0z
-Myw2ICszMyw3IEBACj4gPiA+ICAjaW5jbHVkZSAiaTkxNS9nZW0uaCIKPiA+ID4gICNpbmNsdWRl
-ICJpOTE1L2dlbV9jcmVhdGUuaCIKPiA+ID4gICNpbmNsdWRlICJpOTE1L2dlbV9lbmdpbmVfdG9w
-b2xvZ3kuaCIKPiA+ID4gKyNpbmNsdWRlICJpOTE1L2dlbV9yaW5nLmgiCj4gPiA+ICAjaW5jbHVk
-ZSAiaTkxNS9nZW1fc3VibWlzc2lvbi5oIgo+ID4gPgo+ID4gPiAgI2luY2x1ZGUgImlndF9jb3Jl
-LmgiCj4gPiA+IEBAIC0yMDAsMTAgKzIwMSw4IEBAIHZvaWQgZ2VtX3Rlc3RfZW5naW5lKGludCBp
-OTE1LCB1bnNpZ25lZCBpbnQgZW5naW5lKQo+ID4gPiAgICAgICBnZW1fd3JpdGUoaTkxNSwgb2Jq
-LmhhbmRsZSwgMCwgJmJiZSwgc2l6ZW9mKGJiZSkpOwo+ID4gPgo+ID4gPiAgICAgICBpZiAoZW5n
-aW5lID09IEFMTF9FTkdJTkVTKSB7Cj4gPiA+IC0gICAgICAgICAgICAgY29uc3Qgc3RydWN0IGlu
-dGVsX2V4ZWN1dGlvbl9lbmdpbmUyICplMjsKPiA+ID4gLQo+ID4gPiAtICAgICAgICAgICAgIF9f
-Zm9yX2VhY2hfcGh5c2ljYWxfZW5naW5lKGk5MTUsIGUyKSB7Cj4gPiA+IC0gICAgICAgICAgICAg
-ICAgICAgICBleGVjYnVmLmZsYWdzID0gZTItPmZsYWdzOwo+ID4gPiArICAgICAgICAgICAgIGZv
-cl9lYWNoX3BoeXNpY2FsX3JpbmcoZSwgaTkxNSkgewo+ID4gPiArICAgICAgICAgICAgICAgICAg
-ICAgZXhlY2J1Zi5mbGFncyA9IGViX3JpbmcoZSk7Cj4gPiA+ICAgICAgICAgICAgICAgICAgICAg
-ICBnZW1fZXhlY2J1ZihpOTE1LCAmZXhlY2J1Zik7Cj4gPgo+ID4gV2h5IG5vdCB0byB1c2UgZm9y
-X2VhY2hfY3R4X2VuZ2luZSgpIHdpdGggaW50ZWwgaW50ZWxfY3R4XzAgaGVyZT8KPiAKPiBXZSBj
-b3VsZC4gIEkgZG8ga2luZC1vZiBsaWtlIHRoZSBmYWN0IHRoYXQgaXQncyBvYnZpb3VzIGFuZCBj
-bGVhciB0aGF0Cj4gaXQncyB0ZXN0aW5nIHBoeXNpY2FsIHJpbmdzIGluc3RlYWQgb2YgZ29pbmcg
-dGhyb3VnaCB0aGUgZW5naW5lcyBBUEkuCj4gSXQgZG9lcyBzYXkgZXhwbGljaXRseSBpbiB0aGUg
-ZG9jcyB0aGF0IGl0IHRha2VzIGFuIEk5MTVfRVhFQ19SSU5HCj4gZW51bS4gIEJ1dCBJJ2QgYmUg
-aGFwcHkgdG8gY2hhbmdlIGlmIHlvdSB0aGluayBpdCdkIGJlIG1vcmUgY2xlYXIgdGhhdAo+IHdh
-eS4KCkJvdGggaW50ZXJmYWNlcyByZXR1cm5zIHNhbWUgZW5naW5lIHNldCB3aXRoIHRoZSByZXNw
-ZWN0IG9mIHRoZSBvcmRlcgp3aGF0IHNob3VsZG4ndCBiZSB0aGUgcHJvYmxlbSBhdCBhbGwuIFNB
-cyB3ZSBzdGFydGVkIHRvIGJlIG1vcmUgZmFtaWxpYXIKd2l0aCB5b3VyIGNvZGUgZm9yX2VhY2hf
-Y3R4X2VuZ2luZShmZCwgJmludGVsX2N0eF8wKCksIGUpIGxvb2tzIGdvb2QgCmZvciBtZSBhbmQg
-SSBrbm93IHdoYXQgdG8gZXhwZWN0IG9uIHRoYXQgY29udGV4dC4gUGxlYXNlIGNoYW5nZSB0byB0
-aGF0Ci0gZGlmZiB3aWxsIGJlIHNpbWlsYXIgdG8gb3RoZXJzIHdoZXJlIHlvdSdkIHJlcGxhY2Vk
-IApfX2Zvcl9lYWNoX3BoeXNpY2FsX2VuZ2luZSB0byBmb3JfZWFjaF9jdHhfZW5naW5lKCkuCgot
-LQpaYmlnbmlldwoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
-cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On Tue, Jun 15, 2021 at 06:20:23PM +0200, Christian K=F6nig wrote:
+> The alternative would be to try to create a framebuffer, but don't take it
+> as a failure when that fails with the correct return code.
+
+This.
+
+If the importing can fail for documented reasons, we should just add
+code that checks that the error is the documented one and then
+igt_skip(), fail the test if it's something it shouldn't.
+
+As a general rule the tests goes to hardware specific subdirs if the
+interface tested is hardware-specific. This interface is not, just the
+behaviour.
+
+
+-- =
+
+Petri Latvala
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
