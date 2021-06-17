@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
- [IPv6:2607:f8b0:4864:20::630])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5898B6E98B
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 19:15:42 +0000 (UTC)
-Received: by mail-pl1-x630.google.com with SMTP id o21so3449183pll.6
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 12:15:42 -0700 (PDT)
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
+ [IPv6:2607:f8b0:4864:20::1034])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ADDEB6E988
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 19:15:45 +0000 (UTC)
+Received: by mail-pj1-x1034.google.com with SMTP id bb20so180186pjb.3
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 12:15:45 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 17 Jun 2021 14:14:59 -0500
-Message-Id: <20210617191516.577394-13-jason@jlekstrand.net>
+Date: Thu, 17 Jun 2021 14:15:01 -0500
+Message-Id: <20210617191516.577394-15-jason@jlekstrand.net>
 In-Reply-To: <20210617191256.577244-1-jason@jlekstrand.net>
 References: <20210617191256.577244-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 62/79] tests/i915/gem_vm_create: Use
- intel_ctx_t in the execbuf test
+Subject: [igt-dev] [PATCH i-g-t 64/79] tests/i915/gem_workarounds: Convert
+ to intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,57 +28,66 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_vm_create.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ tests/i915/gem_workarounds.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/tests/i915/gem_vm_create.c b/tests/i915/gem_vm_create.c
-index 4b77920bc..3005d347c 100644
---- a/tests/i915/gem_vm_create.c
-+++ b/tests/i915/gem_vm_create.c
-@@ -220,9 +220,8 @@ static void execbuf(int i915)
- 		.buffers_ptr = to_user_pointer(&batch),
- 		.buffer_count = 1,
- 	};
--	struct drm_i915_gem_context_param arg = {
--		.param = I915_CONTEXT_PARAM_VM,
--	};
-+	intel_ctx_cfg_t cfg = {};
+diff --git a/tests/i915/gem_workarounds.c b/tests/i915/gem_workarounds.c
+index 9cdc24374..e240901c4 100644
+--- a/tests/i915/gem_workarounds.c
++++ b/tests/i915/gem_workarounds.c
+@@ -85,7 +85,7 @@ static bool write_only(const uint32_t addr)
+ 
+ #define MI_STORE_REGISTER_MEM (0x24 << 23)
+ 
+-static int workaround_fail_count(int i915, uint32_t ctx)
++static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
+ {
+ 	struct drm_i915_gem_exec_object2 obj[2];
+ 	struct drm_i915_gem_relocation_entry *reloc;
+@@ -131,12 +131,12 @@ static int workaround_fail_count(int i915, uint32_t ctx)
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(obj);
+ 	execbuf.buffer_count = 2;
+-	execbuf.rsvd1 = ctx;
++	execbuf.rsvd1 = ctx->id;
+ 	gem_execbuf(i915, &execbuf);
+ 
+ 	gem_set_domain(i915, obj[0].handle, I915_GEM_DOMAIN_CPU, 0);
+ 
+-	spin = igt_spin_new(i915, .ctx_id = ctx, .flags = IGT_SPIN_POLL_RUN);
++	spin = igt_spin_new(i915, .ctx = ctx, .flags = IGT_SPIN_POLL_RUN);
+ 	igt_spin_busywait_until_started(spin);
+ 
+ 	fw = igt_open_forcewake_handle(i915);
+@@ -184,14 +184,15 @@ static int workaround_fail_count(int i915, uint32_t ctx)
+ #define FD 0x2
+ static void check_workarounds(int fd, enum operation op, unsigned int flags)
+ {
+-	uint32_t ctx = 0;
 +	const intel_ctx_t *ctx;
  
- 	/* First verify that we try to use "softpinning" by default */
- 	batch.offset = 48 << 20;
-@@ -230,20 +229,24 @@ static void execbuf(int i915)
- 	igt_assert_eq_u64(batch.offset, 48 << 20);
- 	gem_sync(i915, batch.handle);
+ 	if (flags & FD)
+ 		fd = gem_reopen_driver(fd);
  
--	arg.value = gem_vm_create(i915);
--	gem_context_set_param(i915, &arg);
-+	cfg.vm = gem_vm_create(i915);
-+	ctx = intel_ctx_create(i915, &cfg);
-+	eb.rsvd1 = ctx->id;
- 	gem_execbuf(i915, &eb);
- 	igt_assert_eq_u64(batch.offset, 48 << 20);
--	gem_vm_destroy(i915, arg.value);
-+	gem_vm_destroy(i915, cfg.vm);
-+	intel_ctx_destroy(i915, ctx);
++	ctx = intel_ctx_0(fd);
+ 	if (flags & CONTEXT) {
+ 		gem_require_contexts(fd);
+-		ctx = gem_context_create(fd);
++		ctx = intel_ctx_create(fd, NULL);
+ 	}
  
- 	gem_sync(i915, batch.handle); /* be idle! */
+ 	igt_assert_eq(workaround_fail_count(fd, ctx), 0);
+@@ -221,7 +222,7 @@ static void check_workarounds(int fd, enum operation op, unsigned int flags)
+ 	igt_assert_eq(workaround_fail_count(fd, ctx), 0);
  
--	arg.value = gem_vm_create(i915);
--	gem_context_set_param(i915, &arg);
-+	cfg.vm = gem_vm_create(i915);
-+	ctx = intel_ctx_create(i915, &cfg);
- 	batch.offset = 0;
-+	eb.rsvd1 = ctx->id;
- 	gem_execbuf(i915, &eb);
- 	igt_assert_eq_u64(batch.offset, 0);
--	gem_vm_destroy(i915, arg.value);
-+	gem_vm_destroy(i915, cfg.vm);
-+	intel_ctx_destroy(i915, ctx);
- 
- 	gem_sync(i915, batch.handle);
- 	gem_close(i915, batch.handle);
+ 	if (flags & CONTEXT)
+-		gem_context_destroy(fd, ctx);
++		intel_ctx_destroy(fd, ctx);
+ 	if (flags & FD)
+ 		close(fd);
+ }
 -- 
 2.31.1
 
