@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
- [IPv6:2607:f8b0:4864:20::1036])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53D6989BFF
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 19:14:01 +0000 (UTC)
-Received: by mail-pj1-x1036.google.com with SMTP id
- p4-20020a17090a9304b029016f3020d867so2357855pjo.3
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 12:14:01 -0700 (PDT)
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com
+ [IPv6:2607:f8b0:4864:20::430])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49BB96E2E6
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 19:13:56 +0000 (UTC)
+Received: by mail-pf1-x430.google.com with SMTP id z26so5790028pfj.5
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 12:13:56 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 17 Jun 2021 14:12:39 -0500
-Message-Id: <20210617191256.577244-33-jason@jlekstrand.net>
+Date: Thu, 17 Jun 2021 14:12:36 -0500
+Message-Id: <20210617191256.577244-30-jason@jlekstrand.net>
 In-Reply-To: <20210617191256.577244-1-jason@jlekstrand.net>
 References: <20210617191256.577244-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 32/79] tests/i915/gem_exec_parallel: Convert
- to intel_ctx_t (v2)
+Subject: [igt-dev] [PATCH i-g-t 29/79] tests/i915/gem_ctx_shared: Stop
+ cloning contexts
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,80 +20,160 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-djIgKFpiaWduaWV3IEtlbXBjennFhHNraSk6CiAtIERvbid0IE5VTEwtaW5pdCBjdHgKClNpZ25l
-ZC1vZmYtYnk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3RyYW5kLm5ldD4KUmV2aWV3ZWQt
-Ynk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29t
-PgotLS0KIHRlc3RzL2k5MTUvZ2VtX2V4ZWNfcGFyYWxsZWwuYyB8IDI5ICsrKysrKysrKysrKysr
-KysrKystLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMTkgaW5zZXJ0aW9ucygrKSwgMTAgZGVs
-ZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fZXhlY19wYXJhbGxlbC5jIGIv
-dGVzdHMvaTkxNS9nZW1fZXhlY19wYXJhbGxlbC5jCmluZGV4IDExY2VhNWQ3ZC4uNTkyMGFjNzMw
-IDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2dlbV9leGVjX3BhcmFsbGVsLmMKKysrIGIvdGVzdHMv
-aTkxNS9nZW1fZXhlY19wYXJhbGxlbC5jCkBAIC01Nyw2ICs1Nyw3IEBAIHN0cnVjdCB0aHJlYWQg
-ewogCXVuc2lnbmVkIGZsYWdzOwogCXVpbnQzMl90ICpzY3JhdGNoOwogCXVuc2lnbmVkIGlkOwor
-CWNvbnN0IGludGVsX2N0eF90ICpjdHg7CiAJdW5zaWduZWQgZW5naW5lOwogCXVpbnQzMl90IHVz
-ZWQ7CiAJaW50IGZkLCBnZW4sICpnbzsKQEAgLTY4LDYgKzY5LDcgQEAgc3RhdGljIHZvaWQgKnRo
-cmVhZCh2b2lkICpkYXRhKQogCXN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY19vYmplY3QyIG9ialsy
-XTsKIAlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX3JlbG9jYXRpb25fZW50cnkgcmVsb2M7CiAJc3RydWN0
-IGRybV9pOTE1X2dlbV9leGVjYnVmZmVyMiBleGVjYnVmOworCWNvbnN0IGludGVsX2N0eF90ICp0
-bXBfY3R4ID0gTlVMTDsKIAl1aW50MzJfdCBiYXRjaFsxNl07CiAJdWludDE2X3QgdXNlZDsKIAlp
-bnQgZmQsIGk7CkBAIC03OSw3ICs4MSw2IEBAIHN0YXRpYyB2b2lkICp0aHJlYWQodm9pZCAqZGF0
-YSkKIAogCWlmICh0LT5mbGFncyAmIEZEUykgewogCQlmZCA9IGdlbV9yZW9wZW5fZHJpdmVyKHQt
-PmZkKTsKLQkJZ2VtX2NvbnRleHRfY29weV9lbmdpbmVzKHQtPmZkLCAwLCBmZCwgMCk7CiAJfSBl
-bHNlIHsKIAkJZmQgPSB0LT5mZDsKIAl9CkBAIC0xMjIsOCArMTIzLDExIEBAIHN0YXRpYyB2b2lk
-ICp0aHJlYWQodm9pZCAqZGF0YSkKIAlleGVjYnVmLmZsYWdzIHw9IEk5MTVfRVhFQ19OT19SRUxP
-QzsKIAlpZiAodC0+Z2VuIDwgNikKIAkJZXhlY2J1Zi5mbGFncyB8PSBJOTE1X0VYRUNfU0VDVVJF
-OwotCWlmICh0LT5mbGFncyAmIENPTlRFWFRTKSB7Ci0JCWV4ZWNidWYucnN2ZDEgPSBnZW1fY29u
-dGV4dF9jbG9uZV93aXRoX2VuZ2luZXMoZmQsIDApOworCWlmICh0LT5mbGFncyAmIChDT05URVhU
-UyB8IEZEUykpIHsKKwkJdG1wX2N0eCA9IGludGVsX2N0eF9jcmVhdGUoZmQsICZ0LT5jdHgtPmNm
-Zyk7CisJCWV4ZWNidWYucnN2ZDEgPSB0bXBfY3R4LT5pZDsKKwl9IGVsc2UgeworCQlleGVjYnVm
-LnJzdmQxID0gdC0+Y3R4LT5pZDsKIAl9CiAKIAl1c2VkID0gMDsKQEAgLTE0Miw4ICsxNDYsOCBA
-QCBzdGF0aWMgdm9pZCAqdGhyZWFkKHZvaWQgKmRhdGEpCiAJCQlnZW1fY2xvc2UoZmQsIG9ialsw
-XS5oYW5kbGUpOwogCX0KIAotCWlmICh0LT5mbGFncyAmIENPTlRFWFRTKQotCQlnZW1fY29udGV4
-dF9kZXN0cm95KGZkLCBleGVjYnVmLnJzdmQxKTsKKwlpZiAodC0+ZmxhZ3MgJiAoQ09OVEVYVFMg
-fCBGRFMpKQorCQlpbnRlbF9jdHhfZGVzdHJveShmZCwgdG1wX2N0eCk7CiAJZ2VtX2Nsb3NlKGZk
-LCBvYmpbMV0uaGFuZGxlKTsKIAlpZiAodC0+ZmxhZ3MgJiBGRFMpCiAJCWNsb3NlKGZkKTsKQEAg
-LTE5Nyw3ICsyMDEsOCBAQCBzdGF0aWMgdm9pZCBoYW5kbGVfY2xvc2UoaW50IGZkLCB1bnNpZ25l
-ZCBpbnQgZmxhZ3MsIHVpbnQzMl90IGhhbmRsZSwgdm9pZCAqZGF0YQogCWdlbV9jbG9zZShmZCwg
-aGFuZGxlKTsKIH0KIAotc3RhdGljIHZvaWQgYWxsKGludCBmZCwgc3RydWN0IGludGVsX2V4ZWN1
-dGlvbl9lbmdpbmUyICplbmdpbmUsIHVuc2lnbmVkIGZsYWdzKQorc3RhdGljIHZvaWQgYWxsKGlu
-dCBmZCwgY29uc3QgaW50ZWxfY3R4X3QgKmN0eCwKKwkJc3RydWN0IGludGVsX2V4ZWN1dGlvbl9l
-bmdpbmUyICplbmdpbmUsIHVuc2lnbmVkIGZsYWdzKQogewogCWNvbnN0IHVuc2lnbmVkIGludCBn
-ZW4gPSBpbnRlbF9nZW4oaW50ZWxfZ2V0X2RybV9kZXZpZChmZCkpOwogCXVuc2lnbmVkIGVuZ2lu
-ZXNbSTkxNV9FWEVDX1JJTkdfTUFTSyArIDFdLCBuZW5naW5lOwpAQCAtMjIwLDcgKzIyNSw3IEBA
-IHN0YXRpYyB2b2lkIGFsbChpbnQgZmQsIHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAq
-ZW5naW5lLCB1bnNpZ25lZCBmbGFncykKIAluZW5naW5lID0gMDsKIAlpZiAoIWVuZ2luZSkgewog
-CQlzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmU7Ci0JCV9fZm9yX2VhY2hfcGh5c2lj
-YWxfZW5naW5lKGZkLCBlKSB7CisJCWZvcl9lYWNoX2N0eF9lbmdpbmUoZmQsIGN0eCwgZSkgewog
-CQkJaWYgKGdlbV9jbGFzc19jYW5fc3RvcmVfZHdvcmQoZmQsIGUtPmNsYXNzKSkKIAkJCQllbmdp
-bmVzW25lbmdpbmUrK10gPSBlLT5mbGFnczsKIAkJfQpAQCAtMjQ3LDYgKzI1Miw3IEBAIHN0YXRp
-YyB2b2lkIGFsbChpbnQgZmQsIHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAqZW5naW5l
-LCB1bnNpZ25lZCBmbGFncykKIAkJdGhyZWFkc1tpXS5pZCA9IGk7CiAJCXRocmVhZHNbaV0uZmQg
-PSBmZDsKIAkJdGhyZWFkc1tpXS5nZW4gPSBnZW47CisJCXRocmVhZHNbaV0uY3R4ID0gY3R4Owog
-CQl0aHJlYWRzW2ldLmVuZ2luZSA9IGVuZ2luZXNbaSAlIG5lbmdpbmVdOwogCQl0aHJlYWRzW2ld
-LmZsYWdzID0gZmxhZ3M7CiAJCXRocmVhZHNbaV0uc2NyYXRjaCA9IHNjcmF0Y2g7CkBAIC0yODgs
-MTEgKzI5NCwxMyBAQCBpZ3RfbWFpbgogCQl7ICJ1c2VycHRyIiwgVVNFUlBUUiB9LAogCQl7IE5V
-TEwgfQogCX07CisJY29uc3QgaW50ZWxfY3R4X3QgKmN0eDsKIAlpbnQgZmQ7CiAKIAlpZ3RfZml4
-dHVyZSB7CiAJCWZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfSU5URUwpOwogCQlp
-Z3RfcmVxdWlyZV9nZW0oZmQpOworCQljdHggPSBpbnRlbF9jdHhfY3JlYXRlX2FsbF9waHlzaWNh
-bChmZCk7CiAKIAkJaWd0X2ZvcmtfaGFuZ19kZXRlY3RvcihmZCk7CiAJfQpAQCAtMzAxLDIxICsz
-MDksMjIgQEAgaWd0X21haW4KIAkJZm9yIChjb25zdCBzdHJ1Y3QgbW9kZSAqbSA9IG1vZGVzOyBt
-LT5uYW1lOyBtKyspCiAJCQlpZ3RfZHluYW1pYyhtLT5uYW1lKQogCQkJCS8qIE5VTEwgdmFsdWUg
-bWVhbnMgYWxsIGVuZ2luZXMgKi8KLQkJCQlhbGwoZmQsIE5VTEwsIG0tPmZsYWdzKTsKKwkJCQlh
-bGwoZmQsIGN0eCwgTlVMTCwgbS0+ZmxhZ3MpOwogCX0KIAogCWZvciAoY29uc3Qgc3RydWN0IG1v
-ZGUgKm0gPSBtb2RlczsgbS0+bmFtZTsgbSsrKSB7CiAJCWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1p
-YyhtLT5uYW1lKSB7Ci0JCQlfX2Zvcl9lYWNoX3BoeXNpY2FsX2VuZ2luZShmZCwgZSkgeworCQkJ
-Zm9yX2VhY2hfY3R4X2VuZ2luZShmZCwgY3R4LCBlKSB7CiAJCQkJaWYgKGdlbV9jbGFzc19jYW5f
-c3RvcmVfZHdvcmQoZmQsIGUtPmNsYXNzKSkKIAkJCQkJaWd0X2R5bmFtaWMoZS0+bmFtZSkKLQkJ
-CQkJCWFsbChmZCwgZSwgbS0+ZmxhZ3MpOworCQkJCQkJYWxsKGZkLCBjdHgsIGUsIG0tPmZsYWdz
-KTsKIAkJCX0KIAkJfQogCX0KIAogCWlndF9maXh0dXJlIHsKIAkJaWd0X3N0b3BfaGFuZ19kZXRl
-Y3RvcigpOworCQlpbnRlbF9jdHhfZGVzdHJveShmZCwgY3R4KTsKIAkJY2xvc2UoZmQpOwogCX0K
-IH0KLS0gCjIuMzEuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
-aHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Instead use either GET/SET_CONTEXT_PARAM or a create ext.
+
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/gem_ctx_shared.c | 77 ++++++++++++++++++++++++++++++-------
+ 1 file changed, 63 insertions(+), 14 deletions(-)
+
+diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
+index 97a8dd771..4441e6eb7 100644
+--- a/tests/i915/gem_ctx_shared.c
++++ b/tests/i915/gem_ctx_shared.c
+@@ -63,6 +63,48 @@ static int priorities[] = {
+ 
+ IGT_TEST_DESCRIPTION("Test shared contexts.");
+ 
++static int __get_vm(int i915, uint32_t ctx, uint32_t *vm)
++{
++	struct drm_i915_gem_context_param p = {
++		.ctx_id = ctx,
++		.param = I915_CONTEXT_PARAM_VM,
++	};
++	int err = __gem_context_get_param(i915, &p);
++	if (err)
++		return err;
++
++	igt_assert(p.value > 0 && p.value < UINT32_MAX);
++	*vm = p.value;
++
++	return 0;
++}
++
++static uint32_t get_vm(int i915, uint32_t ctx)
++{
++	uint32_t vm;
++	igt_assert_eq(__get_vm(i915, ctx, &vm), 0);
++	return vm;
++}
++
++static void set_vm(int i915, uint32_t ctx, uint32_t vm)
++{
++	struct drm_i915_gem_context_param p = {
++		.ctx_id = ctx,
++		.param = I915_CONTEXT_PARAM_VM,
++		.value = vm
++	};
++	gem_context_set_param(i915, &p);
++}
++
++static void copy_vm(int i915, uint32_t dst, uint32_t src)
++{
++	uint32_t vm = get_vm(i915, src);
++	set_vm(i915, dst, vm);
++
++	/* GETPARAM gets a reference to the VM which we have to drop */
++	gem_vm_destroy(i915, vm);
++}
++
+ static void create_shared_gtt(int i915, unsigned int flags)
+ #define DETACHED 0x1
+ {
+@@ -83,9 +125,9 @@ static void create_shared_gtt(int i915, unsigned int flags)
+ 	child = flags & DETACHED ? gem_context_create(i915) : 0;
+ 	igt_until_timeout(2) {
+ 		parent = flags & DETACHED ? child : 0;
+-		child = gem_context_clone(i915,
+-					  parent, I915_CONTEXT_CLONE_VM,
+-					  0);
++		child = gem_context_create(i915);
++		copy_vm(i915, child, parent);
++
+ 		execbuf.rsvd1 = child;
+ 		gem_execbuf(i915, &execbuf);
+ 
+@@ -99,9 +141,7 @@ static void create_shared_gtt(int i915, unsigned int flags)
+ 
+ 		execbuf.rsvd1 = parent;
+ 		igt_assert_eq(__gem_execbuf(i915, &execbuf), -ENOENT);
+-		igt_assert_eq(__gem_context_clone(i915,
+-						  parent, I915_CONTEXT_CLONE_VM,
+-						  0, &parent), -ENOENT);
++		igt_assert_eq(__get_vm(i915, parent, &parent), -ENOENT);
+ 	}
+ 	if (flags & DETACHED)
+ 		gem_context_destroy(i915, child);
+@@ -152,8 +192,19 @@ static void disjoint_timelines(int i915, const intel_ctx_cfg_t *cfg)
+ static void exhaust_shared_gtt(int i915, unsigned int flags)
+ #define EXHAUST_LRC 0x1
+ {
++	struct drm_i915_gem_context_create_ext_setparam vm_create_ext = {
++		.base = {
++			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
++		},
++		.param = {
++			.param = I915_CONTEXT_PARAM_VM,
++		},
++	};
++
+ 	i915 = gem_reopen_driver(i915);
+ 
++	vm_create_ext.param.value = gem_vm_create(i915);
++
+ 	igt_fork(pid, 1) {
+ 		const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 		struct drm_i915_gem_exec_object2 obj = {
+@@ -163,23 +214,21 @@ static void exhaust_shared_gtt(int i915, unsigned int flags)
+ 			.buffers_ptr = to_user_pointer(&obj),
+ 			.buffer_count = 1,
+ 		};
+-		uint32_t parent, child;
+ 		unsigned long count = 0;
+ 		int err;
+ 
+ 		gem_write(i915, obj.handle, 0, &bbe, sizeof(bbe));
+ 
+-		child = 0;
+ 		for (;;) {
+-			parent = child;
+-			err = __gem_context_clone(i915,
+-						  parent, I915_CONTEXT_CLONE_VM,
+-						  0, &child);
++			uint32_t ctx;
++			err = __gem_context_create_ext(i915, 0,
++						       to_user_pointer(&vm_create_ext),
++						       &ctx);
+ 			if (err)
+ 				break;
+ 
+ 			if (flags & EXHAUST_LRC) {
+-				execbuf.rsvd1 = child;
++				execbuf.rsvd1 = ctx;
+ 				err = __gem_execbuf(i915, &execbuf);
+ 				if (err)
+ 					break;
+@@ -864,7 +913,7 @@ igt_main
+ 
+ 	igt_subtest_group {
+ 		igt_fixture {
+-			igt_require(gem_contexts_has_shared_gtt(i915));
++			igt_require(gem_has_vm(i915));
+ 			igt_fork_hang_detector(i915);
+ 		}
+ 
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
