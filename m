@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
- [IPv6:2607:f8b0:4864:20::102a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 915CD6E994
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 19:15:55 +0000 (UTC)
-Received: by mail-pj1-x102a.google.com with SMTP id
- m15-20020a17090a5a4fb029016f385ffad0so1618537pji.0
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 12:15:55 -0700 (PDT)
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
+ [IPv6:2607:f8b0:4864:20::529])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D2C46E994
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 19:15:57 +0000 (UTC)
+Received: by mail-pg1-x529.google.com with SMTP id q15so5713530pgg.12
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 12:15:57 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 17 Jun 2021 14:15:07 -0500
-Message-Id: <20210617191516.577394-21-jason@jlekstrand.net>
+Date: Thu, 17 Jun 2021 14:15:08 -0500
+Message-Id: <20210617191516.577394-22-jason@jlekstrand.net>
 In-Reply-To: <20210617191256.577244-1-jason@jlekstrand.net>
 References: <20210617191256.577244-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 70/79] igt/dummyload: Require an intel_ctx_t
- for POLL_RUN and !ALL_ENGINES
+Subject: [igt-dev] [PATCH i-g-t 71/79] lib/i915: Rework engine API
+ availability checks (v2)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,68 +20,220 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhpcyBsZXRzIHVzIGRyb3AgZ2VtX2NvbnRleHRfbG9va3VwX2VuZ2luZXMKClNpZ25lZC1vZmYt
-Ynk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3RyYW5kLm5ldD4KUmV2aWV3ZWQtYnk6IFpi
-aWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgpSZXZp
-ZXdlZC1ieTogQXNodXRvc2ggRGl4aXQgPGFzaHV0b3NoLmRpeGl0QGludGVsLmNvbT4KLS0tCiBs
-aWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmMgfCAyOSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLQogbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5oIHwgIDMgLS0tCiBsaWIvaWd0
-X2R1bW15bG9hZC5jICAgICAgICAgICAgfCAyMCArKysrKy0tLS0tLS0tLS0tLS0tLQogMyBmaWxl
-cyBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKyksIDQ3IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBh
-L2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYyBiL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9w
-b2xvZ3kuYwppbmRleCBmOWM4ODE0NTcuLjdjNjBkYWYwNyAxMDA2NDQKLS0tIGEvbGliL2k5MTUv
-Z2VtX2VuZ2luZV90b3BvbG9neS5jCisrKyBiL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3ku
-YwpAQCAtMzE3LDM1ICszMTcsNiBAQCBpbnRlbF9lbmdpbmVfbGlzdF9mb3JfY3R4X2NmZyhpbnQg
-ZmQsIGNvbnN0IGludGVsX2N0eF9jZmdfdCAqY2ZnKQogCX0KIH0KIAotc3RhdGljIGludCBnZW1f
-dG9wb2xvZ3lfZ2V0X3BhcmFtKGludCBmZCwKLQkJCQkgIHN0cnVjdCBkcm1faTkxNV9nZW1fY29u
-dGV4dF9wYXJhbSAqcCkKLXsKLQlpZiAoaWd0X29ubHlfbGlzdF9zdWJ0ZXN0cygpKQotCQlyZXR1
-cm4gLUVOT0RFVjsKLQotCWlmIChfX2dlbV9jb250ZXh0X2dldF9wYXJhbShmZCwgcCkpCi0JCXJl
-dHVybiAtMTsgLyogdXNpbmcgZGVmYXVsdCBlbmdpbmUgbWFwICovCi0KLQlyZXR1cm4gMDsKLX0K
-LQotaW50IGdlbV9jb250ZXh0X2xvb2t1cF9lbmdpbmUoaW50IGZkLCB1aW50NjRfdCBlbmdpbmUs
-IHVpbnQzMl90IGN0eF9pZCwKLQkJCSAgICAgIHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5l
-MiAqZSkKLXsKLQlERUZJTkVfQ09OVEVYVF9FTkdJTkVTX1BBUkFNKGVuZ2luZXMsIHBhcmFtLCBj
-dHhfaWQsIEdFTV9NQVhfRU5HSU5FUyk7Ci0KLQkvKiBhIGJpdCBwYXJhbm9pYyAqLwotCWlndF9h
-c3NlcnQoZSk7Ci0KLQlpZiAoZ2VtX3RvcG9sb2d5X2dldF9wYXJhbShmZCwgJnBhcmFtKSB8fCAh
-cGFyYW0uc2l6ZSkKLQkJcmV0dXJuIC1FSU5WQUw7Ci0KLQllLT5jbGFzcyA9IGVuZ2luZXMuZW5n
-aW5lc1tlbmdpbmVdLmVuZ2luZV9jbGFzczsKLQllLT5pbnN0YW5jZSA9IGVuZ2luZXMuZW5naW5l
-c1tlbmdpbmVdLmVuZ2luZV9pbnN0YW5jZTsKLQotCXJldHVybiAwOwotfQotCiAvKioKICAqIGdl
-bV9oYXNfZW5naW5lX3RvcG9sb2d5OgogICogQGZkOiBvcGVuIGk5MTUgZHJtIGZpbGUgZGVzY3Jp
-cHRvcgpkaWZmIC0tZ2l0IGEvbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5oIGIvbGliL2k5
-MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5oCmluZGV4IDhmNTk4N2Y2YS4uOTkxZDBmZjg1IDEwMDY0
-NAotLS0gYS9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmgKKysrIGIvbGliL2k5MTUvZ2Vt
-X2VuZ2luZV90b3BvbG9neS5oCkBAIC02MSw5ICs2MSw2IEBAIGludGVsX2dldF9jdXJyZW50X3Bo
-eXNpY2FsX2VuZ2luZShzdHJ1Y3QgaW50ZWxfZW5naW5lX2RhdGEgKmVkKTsKIAogdm9pZCBpbnRl
-bF9uZXh0X2VuZ2luZShzdHJ1Y3QgaW50ZWxfZW5naW5lX2RhdGEgKmVkKTsKIAotaW50IGdlbV9j
-b250ZXh0X2xvb2t1cF9lbmdpbmUoaW50IGZkLCB1aW50NjRfdCBlbmdpbmUsIHVpbnQzMl90IGN0
-eF9pZCwKLQkJCSAgICAgIHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAqZSk7Ci0KIGJv
-b2wgZ2VtX2NvbnRleHRfaGFzX2VuZ2luZV9tYXAoaW50IGZkLCB1aW50MzJfdCBjdHgpOwogCiBi
-b29sIGdlbV9lbmdpbmVfaXNfZXF1YWwoY29uc3Qgc3RydWN0IGludGVsX2V4ZWN1dGlvbl9lbmdp
-bmUyICplMSwKZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZHVtbXlsb2FkLmMgYi9saWIvaWd0X2R1bW15
-bG9hZC5jCmluZGV4IGIwYTdiMzYxYy4uMjVlNDlkZTQ3IDEwMDY0NAotLS0gYS9saWIvaWd0X2R1
-bW15bG9hZC5jCisrKyBiL2xpYi9pZ3RfZHVtbXlsb2FkLmMKQEAgLTQyMSwyMiArNDIxLDEyIEBA
-IGlndF9zcGluX2ZhY3RvcnkoaW50IGZkLCBjb25zdCBzdHJ1Y3QgaWd0X3NwaW5fZmFjdG9yeSAq
-b3B0cykKIHsKIAlpZ3Rfc3Bpbl90ICpzcGluOwogCi0JaWYgKG9wdHMtPmVuZ2luZSAhPSBBTExf
-RU5HSU5FUykgewotCQlzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgZTsKLQkJaW50IGNs
-YXNzOwotCi0JCWlmIChvcHRzLT5jdHgpIHsKLQkJCWNsYXNzID0gb3B0cy0+Y3R4LT5jZmcuZW5n
-aW5lc1tvcHRzLT5lbmdpbmVdLmVuZ2luZV9jbGFzczsKLQkJfSBlbHNlIGlmICghZ2VtX2NvbnRl
-eHRfbG9va3VwX2VuZ2luZShmZCwgb3B0cy0+ZW5naW5lLAotCQkJCQkJICAgICAgb3B0cy0+Y3R4
-X2lkLCAmZSkpIHsKLQkJCWNsYXNzID0gZS5jbGFzczsKLQkJfSBlbHNlIHsKLQkJCWdlbV9yZXF1
-aXJlX3JpbmcoZmQsIG9wdHMtPmVuZ2luZSk7Ci0JCQljbGFzcyA9IGdlbV9leGVjYnVmX2ZsYWdz
-X3RvX2VuZ2luZV9jbGFzcyhvcHRzLT5lbmdpbmUpOwotCQl9CisJaWYgKChvcHRzLT5mbGFncyAm
-IElHVF9TUElOX1BPTExfUlVOKSAmJiBvcHRzLT5lbmdpbmUgIT0gQUxMX0VOR0lORVMpIHsKKwkJ
-dW5zaWduZWQgaW50IGNsYXNzOwogCi0JCWlmIChvcHRzLT5mbGFncyAmIElHVF9TUElOX1BPTExf
-UlVOKQotCQkJaWd0X3JlcXVpcmUoZ2VtX2NsYXNzX2Nhbl9zdG9yZV9kd29yZChmZCwgY2xhc3Mp
-KTsKKwkJaWd0X2Fzc2VydChvcHRzLT5jdHgpOworCQljbGFzcyA9IGludGVsX2N0eF9lbmdpbmVf
-Y2xhc3Mob3B0cy0+Y3R4LCBvcHRzLT5lbmdpbmUpOworCQlpZ3RfcmVxdWlyZShnZW1fY2xhc3Nf
-Y2FuX3N0b3JlX2R3b3JkKGZkLCBjbGFzcykpOwogCX0KIAogCWlmIChvcHRzLT5mbGFncyAmIElH
-VF9TUElOX0lOVkFMSURfQ1MpCi0tIAoyLjMxLjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlz
-dGluZm8vaWd0LWRldgo=
+Instead of relying on the context param, check for the device query or
+attempt to set engines as a create param.
+
+v2 (Jason Ekstrand):
+ - Add a common gem_has_context_engines helper
+
+v3 (Jason Ekstrand):
+ - Drop gem_has_context_engines and always check I915_QUERY_ENGINE_INFO
+
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+---
+ lib/i915/gem_context.c         |  7 ++++---
+ lib/i915/gem_engine_topology.c | 35 ++--------------------------------
+ lib/i915/gem_engine_topology.h |  2 --
+ tests/i915/gem_ctx_engines.c   | 11 +----------
+ tests/i915/gem_exec_balancer.c | 11 +----------
+ tests/i915/gem_exec_schedule.c | 11 +----------
+ 6 files changed, 9 insertions(+), 68 deletions(-)
+
+diff --git a/lib/i915/gem_context.c b/lib/i915/gem_context.c
+index 06cf74a5a..197d4ca68 100644
+--- a/lib/i915/gem_context.c
++++ b/lib/i915/gem_context.c
+@@ -70,12 +70,13 @@ static int create_ext_ioctl(int i915,
+ bool gem_has_contexts(int fd)
+ {
+ 	uint32_t ctx_id = 0;
++	int err;
+ 
+-	__gem_context_create(fd, &ctx_id);
+-	if (ctx_id)
++	err = __gem_context_create(fd, &ctx_id);
++	if (!err)
+ 		gem_context_destroy(fd, ctx_id);
+ 
+-	return ctx_id;
++	return !err;
+ }
+ 
+ /**
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index 7c60daf07..969a8d2e3 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -86,20 +86,9 @@
+  * Limit what we support for simplicity due limitation in how much we
+  * can address via execbuf2.
+  */
+-#define SIZEOF_CTX_PARAM	offsetof(struct i915_context_param_engines, \
+-					 engines[GEM_MAX_ENGINES])
+ #define SIZEOF_QUERY		offsetof(struct drm_i915_query_engine_info, \
+ 					 engines[GEM_MAX_ENGINES])
+ 
+-#define DEFINE_CONTEXT_ENGINES_PARAM(e__, p__, c__, N__) \
+-		I915_DEFINE_CONTEXT_PARAM_ENGINES(e__, N__); \
+-		struct drm_i915_gem_context_param p__ = { \
+-			.param = I915_CONTEXT_PARAM_ENGINES, \
+-			.ctx_id = c__, \
+-			.size = SIZEOF_CTX_PARAM, \
+-			.value = to_user_pointer(memset(&e__, 0, sizeof(e__))), \
+-		}
+-
+ static int __gem_query(int fd, struct drm_i915_query *q)
+ {
+ 	int err = 0;
+@@ -327,11 +316,8 @@ intel_engine_list_for_ctx_cfg(int fd, const intel_ctx_cfg_t *cfg)
+  */
+ bool gem_has_engine_topology(int fd)
+ {
+-	struct drm_i915_gem_context_param param = {
+-		.param = I915_CONTEXT_PARAM_ENGINES,
+-	};
+-
+-	return !__gem_context_get_param(fd, &param);
++	struct intel_engine_data ed;
++	return !__query_engine_list(fd, &ed);
+ }
+ 
+ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags)
+@@ -360,23 +346,6 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags)
+ 	return e2__;
+ }
+ 
+-bool gem_context_has_engine_map(int fd, uint32_t ctx)
+-{
+-	struct drm_i915_gem_context_param param = {
+-		.param = I915_CONTEXT_PARAM_ENGINES,
+-		.ctx_id = ctx
+-	};
+-
+-	/*
+-	 * If the kernel is too old to support PARAM_ENGINES,
+-	 * then naturally the context has no engine map.
+-	 */
+-	if (__gem_context_get_param(fd, &param))
+-		return false;
+-
+-	return param.size;
+-}
+-
+ bool gem_engine_is_equal(const struct intel_execution_engine2 *e1,
+ 			 const struct intel_execution_engine2 *e2)
+ {
+diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+index 991d0ff85..4cfab560b 100644
+--- a/lib/i915/gem_engine_topology.h
++++ b/lib/i915/gem_engine_topology.h
+@@ -61,8 +61,6 @@ intel_get_current_physical_engine(struct intel_engine_data *ed);
+ 
+ void intel_next_engine(struct intel_engine_data *ed);
+ 
+-bool gem_context_has_engine_map(int fd, uint32_t ctx);
+-
+ bool gem_engine_is_equal(const struct intel_execution_engine2 *e1,
+ 			 const struct intel_execution_engine2 *e2);
+ 
+diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
+index caa97774c..bd622b0e5 100644
+--- a/tests/i915/gem_ctx_engines.c
++++ b/tests/i915/gem_ctx_engines.c
+@@ -46,15 +46,6 @@
+ #define engine_class(e, n) ((e)->engines[(n)].engine_class)
+ #define engine_instance(e, n) ((e)->engines[(n)].engine_instance)
+ 
+-static bool has_context_engines(int i915)
+-{
+-	struct drm_i915_gem_context_param param = {
+-		.ctx_id = 0,
+-		.param = I915_CONTEXT_PARAM_ENGINES,
+-	};
+-	return __gem_context_set_param(i915, &param) == 0;
+-}
+-
+ static void invalid_engines(int i915)
+ {
+ 	struct i915_context_param_engines stack = {}, *engines;
+@@ -561,7 +552,7 @@ igt_main
+ 		igt_require_gem(i915);
+ 
+ 		gem_require_contexts(i915);
+-		igt_require(has_context_engines(i915));
++		igt_require(gem_has_engine_topology(i915));
+ 
+ 		igt_fork_hang_detector(i915);
+ 	}
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index 4b4cfdea0..46cc53cce 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -2779,15 +2779,6 @@ static bool has_persistence(int i915)
+ 	return __gem_context_set_param(i915, &p) == 0;
+ }
+ 
+-static bool has_context_engines(int i915)
+-{
+-	struct drm_i915_gem_context_param p = {
+-		.param = I915_CONTEXT_PARAM_ENGINES,
+-	};
+-
+-	return __gem_context_set_param(i915, &p) == 0;
+-}
+-
+ static bool has_load_balancer(int i915)
+ {
+ 	const intel_ctx_cfg_t cfg = {
+@@ -2812,7 +2803,7 @@ igt_main
+ 		igt_require_gem(i915);
+ 
+ 		gem_require_contexts(i915);
+-		igt_require(has_context_engines(i915));
++		igt_require(gem_has_engine_topology(i915));
+ 		igt_require(has_load_balancer(i915));
+ 		igt_require(has_perf_engines(i915));
+ 
+diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
+index 3a51b51da..a75faeb68 100644
+--- a/tests/i915/gem_exec_schedule.c
++++ b/tests/i915/gem_exec_schedule.c
+@@ -1665,15 +1665,6 @@ static void preempt_queue(int fd, const intel_ctx_cfg_t *cfg,
+ 	}
+ }
+ 
+-static bool has_context_engines(int i915)
+-{
+-	struct drm_i915_gem_context_param param = {
+-		.ctx_id = 0,
+-		.param = I915_CONTEXT_PARAM_ENGINES,
+-	};
+-	return __gem_context_set_param(i915, &param) == 0;
+-}
+-
+ static void preempt_engines(int i915,
+ 			    const struct intel_execution_engine2 *e,
+ 			    unsigned int flags)
+@@ -1694,7 +1685,7 @@ static void preempt_engines(int i915,
+ 	 * timeline that we can reprioritise and shuffle amongst themselves.
+ 	 */
+ 
+-	igt_require(has_context_engines(i915));
++	igt_require(gem_has_engine_topology(i915));
+ 
+ 	for (int n = 0; n < GEM_MAX_ENGINES; n++) {
+ 		cfg.engines[n].engine_class = e->class;
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
