@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
- [IPv6:2607:f8b0:4864:20::62b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3DF346E98C
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 19:14:25 +0000 (UTC)
-Received: by mail-pl1-x62b.google.com with SMTP id x10so3458897plg.3
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 12:14:25 -0700 (PDT)
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
+ [IPv6:2607:f8b0:4864:20::62e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99B406E98C
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 19:14:28 +0000 (UTC)
+Received: by mail-pl1-x62e.google.com with SMTP id m17so272554plx.7
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 12:14:28 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 17 Jun 2021 14:12:53 -0500
-Message-Id: <20210617191256.577244-47-jason@jlekstrand.net>
+Date: Thu, 17 Jun 2021 14:12:55 -0500
+Message-Id: <20210617191256.577244-49-jason@jlekstrand.net>
 In-Reply-To: <20210617191256.577244-1-jason@jlekstrand.net>
 References: <20210617191256.577244-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 46/79] tests/i915/gem_cs_tlb: Convert to
- intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 48/79] tests/i915/gem_exec_balancer: Stop
+ cloning engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,43 +20,103 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-djIgKFpiaWduaWV3IEtlbXBjennFhHNraSk6CiAtIERvbid0IE5VTEwtaW5pdCBjdHgKClNpZ25l
-ZC1vZmYtYnk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3RyYW5kLm5ldD4KUmV2aWV3ZWQt
-Ynk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29t
-PgotLS0KIHRlc3RzL2k5MTUvZ2VtX2NzX3RsYi5jIHwgMTAgKysrKysrKy0tLQogMSBmaWxlIGNo
-YW5nZWQsIDcgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS90ZXN0
-cy9pOTE1L2dlbV9jc190bGIuYyBiL3Rlc3RzL2k5MTUvZ2VtX2NzX3RsYi5jCmluZGV4IGRlYzlj
-MTA3ZS4uN2E4ODg2NjUwIDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2dlbV9jc190bGIuYworKysg
-Yi90ZXN0cy9pOTE1L2dlbV9jc190bGIuYwpAQCAtOTEsNyArOTEsOCBAQCBtbWFwX2NvaGVyZW50
-KGludCBmZCwgdWludDMyX3QgaGFuZGxlLCBpbnQgc2l6ZSkKIAlyZXR1cm4gcHRyOwogfQogCi1z
-dGF0aWMgdm9pZCBydW5fb25fcmluZyhpbnQgZmQsIHVuc2lnbmVkIHJpbmdfaWQsIGNvbnN0IGNo
-YXIgKnJpbmdfbmFtZSkKK3N0YXRpYyB2b2lkIHJ1bl9vbl9yaW5nKGludCBmZCwgY29uc3QgaW50
-ZWxfY3R4X3QgKmN0eCwKKwkJCXVuc2lnbmVkIHJpbmdfaWQsIGNvbnN0IGNoYXIgKnJpbmdfbmFt
-ZSkKIHsKIAlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNidWZmZXIyIGV4ZWNidWY7CiAJc3RydWN0
-IGRybV9pOTE1X2dlbV9leGVjX29iamVjdDIgZXhlY29iajsKQEAgLTExNyw2ICsxMTgsNyBAQCBz
-dGF0aWMgdm9pZCBydW5fb25fcmluZyhpbnQgZmQsIHVuc2lnbmVkIHJpbmdfaWQsIGNvbnN0IGNo
-YXIgKnJpbmdfbmFtZSkKIAltZW1zZXQoJmV4ZWNidWYsIDAsIHNpemVvZihleGVjYnVmKSk7CiAJ
-ZXhlY2J1Zi5idWZmZXJzX3B0ciA9IHRvX3VzZXJfcG9pbnRlcigmZXhlY29iaik7CiAJZXhlY2J1
-Zi5idWZmZXJfY291bnQgPSAxOworCWV4ZWNidWYucnN2ZDEgPSBjdHgtPmlkOwogCWV4ZWNidWYu
-ZmxhZ3MgPSByaW5nX2lkOwogCiAJLyogRXhlY3V0ZSBvbmNlIHRvIGFsbG9jYXRlIGEgZ3R0LW9m
-ZnNldCAqLwpAQCAtMTQ0LDE3ICsxNDYsMTkgQEAgc3RhdGljIHZvaWQgcnVuX29uX3JpbmcoaW50
-IGZkLCB1bnNpZ25lZCByaW5nX2lkLCBjb25zdCBjaGFyICpyaW5nX25hbWUpCiBpZ3RfbWFpbgog
-ewogCWNvbnN0IHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAqZTsKKwljb25zdCBpbnRl
-bF9jdHhfdCAqY3R4OwogCWludCBmZCA9IC0xOwogCiAJaWd0X2ZpeHR1cmUgewogCQlmZCA9IGRy
-bV9vcGVuX2RyaXZlcihEUklWRVJfSU5URUwpOwogCQlpZ3RfcmVxdWlyZV9nZW0oZmQpOworCQlj
-dHggPSBpbnRlbF9jdHhfY3JlYXRlX2FsbF9waHlzaWNhbChmZCk7CiAJfQogCiAJaWd0X3N1YnRl
-c3Rfd2l0aF9keW5hbWljKCJlbmdpbmVzIikgewotCQlfX2Zvcl9lYWNoX3BoeXNpY2FsX2VuZ2lu
-ZShmZCwgZSkgeworCQlmb3JfZWFjaF9jdHhfZW5naW5lKGZkLCBjdHgsIGUpIHsKIAkJCWlndF9k
-eW5hbWljX2YoIiVzIiwgZS0+bmFtZSkKLQkJCQlydW5fb25fcmluZyhmZCwgZS0+ZmxhZ3MsIGUt
-Pm5hbWUpOworCQkJCXJ1bl9vbl9yaW5nKGZkLCBjdHgsIGUtPmZsYWdzLCBlLT5uYW1lKTsKIAkJ
-fQogCX0KIAotLSAKMi4zMS4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
-Lm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
-ZXYK
+We have the list of engines and bonding info in each case.  Using clone
+is just being lazy for no good reason.
+
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+---
+ tests/i915/gem_exec_balancer.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index 286c11d50..2452fe93e 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -827,8 +827,7 @@ static void bonded_slice(int i915)
+ 		igt_fork(child, count + 1) { /* C: arbitrary background load */
+ 			igt_list_del(&spin->link);
+ 
+-			ctx = gem_context_clone(i915, ctx,
+-						I915_CONTEXT_CLONE_ENGINES, 0);
++			ctx = load_balancer_create(i915, siblings, count);
+ 
+ 			while (!READ_ONCE(*stop)) {
+ 				spin = igt_spin_new(i915,
+@@ -2280,7 +2279,8 @@ static int __execbuf(int i915, struct drm_i915_gem_execbuffer2 *execbuf)
+ 	return err;
+ }
+ 
+-static uint32_t *sema(int i915, uint32_t ctx)
++static uint32_t *sema(int i915, struct i915_engine_class_instance *ci,
++		      unsigned int count)
+ {
+ 	uint32_t *ctl;
+ 	struct drm_i915_gem_exec_object2 batch = {
+@@ -2291,7 +2291,7 @@ static uint32_t *sema(int i915, uint32_t ctx)
+ 	struct drm_i915_gem_execbuffer2 execbuf = {
+ 		.buffers_ptr = to_user_pointer(&batch),
+ 		.buffer_count = 1,
+-		.rsvd1 = gem_context_clone_with_engines(i915, ctx),
++		.rsvd1 = load_balancer_create(i915, ci, count),
+ 	};
+ 
+ 	for (int n = 1; n <= 32; n++) {
+@@ -2313,12 +2313,14 @@ static uint32_t *sema(int i915, uint32_t ctx)
+ 	return ctl;
+ }
+ 
+-static void __waits(int i915, int timeout, uint32_t ctx, unsigned int count)
++static void __waits(int i915, int timeout,
++		    struct i915_engine_class_instance *ci,
++		    unsigned int count)
+ {
+ 	uint32_t *semaphores[count + 1];
+ 
+ 	for (int i = 0; i <= count; i++)
+-		semaphores[i] = sema(i915, ctx);
++		semaphores[i] = sema(i915, ci, count);
+ 
+ 	igt_until_timeout(timeout) {
+ 		int i = rand() % (count + 1);
+@@ -2330,7 +2332,7 @@ static void __waits(int i915, int timeout, uint32_t ctx, unsigned int count)
+ 		if ((*semaphores[i] += rand() % 32) >= 32) {
+ 			*semaphores[i] = 0xffffffff;
+ 			munmap(semaphores[i], 4096);
+-			semaphores[i] = sema(i915, ctx);
++			semaphores[i] = sema(i915, ci, count);
+ 		}
+ 	}
+ 
+@@ -2359,7 +2361,7 @@ static void waits(int i915, int timeout)
+ 		if (count > 1) {
+ 			uint32_t ctx = load_balancer_create(i915, ci, count);
+ 
+-			__waits(i915, timeout, ctx, count);
++			__waits(i915, timeout, ci, count);
+ 
+ 			gem_context_destroy(i915, ctx);
+ 		}
+@@ -2443,8 +2445,7 @@ static void nop(int i915)
+ 				.buffers_ptr = to_user_pointer(&batch),
+ 				.buffer_count = 1,
+ 				.flags = child + 1,
+-				.rsvd1 = gem_context_clone(i915, ctx,
+-							   I915_CONTEXT_CLONE_ENGINES, 0),
++				.rsvd1 = load_balancer_create(i915, ci, count),
+ 			};
+ 			struct timespec tv = {};
+ 			unsigned long nops;
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
