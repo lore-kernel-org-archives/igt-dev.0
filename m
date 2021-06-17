@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com
- [IPv6:2607:f8b0:4864:20::42d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 328B26E2A3
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 19:14:03 +0000 (UTC)
-Received: by mail-pf1-x42d.google.com with SMTP id t8so1113935pfe.3
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 12:14:03 -0700 (PDT)
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
+ [IPv6:2607:f8b0:4864:20::532])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A689B6E2A3
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 19:14:04 +0000 (UTC)
+Received: by mail-pg1-x532.google.com with SMTP id t13so5715322pgu.11
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 12:14:04 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 17 Jun 2021 14:12:40 -0500
-Message-Id: <20210617191256.577244-34-jason@jlekstrand.net>
+Date: Thu, 17 Jun 2021 14:12:41 -0500
+Message-Id: <20210617191256.577244-35-jason@jlekstrand.net>
 In-Reply-To: <20210617191256.577244-1-jason@jlekstrand.net>
 References: <20210617191256.577244-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 33/79] tests/i915/gem_exec_latency: Convert
- to intel_ctx_t (v3)
+Subject: [igt-dev] [PATCH i-g-t 34/79] tests/i915/gem_watchdog: Convert to
+ intel_ctx_t (v2)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,216 +20,359 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-djIgKFpiaWduaWV3IEtlbXBjennFhHNraSk6CiAtIERvbid0IE5VTEwtaW5pdCBjdHgKCnYzIChK
-YXNvbiBFa3N0cmFuZCk6CiAtIFBhc3MgdGhlIGNvbnRleHQgY29uZmlnIHRvIGdlbV9zdWJtaXNz
-aW9uX21lYXN1cmUoKQoKU2lnbmVkLW9mZi1ieTogSmFzb24gRWtzdHJhbmQgPGphc29uQGpsZWtz
-dHJhbmQubmV0PgpSZXZpZXdlZC1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5r
-ZW1wY3p5bnNraUBpbnRlbC5jb20+Ci0tLQogdGVzdHMvaTkxNS9nZW1fZXhlY19sYXRlbmN5LmMg
-fCAxMjIgKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQs
-IDY3IGluc2VydGlvbnMoKyksIDU1IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2k5
-MTUvZ2VtX2V4ZWNfbGF0ZW5jeS5jIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19sYXRlbmN5LmMKaW5k
-ZXggNjJiYWQ2MTcxLi5mY2RmNzc4N2IgMTAwNjQ0Ci0tLSBhL3Rlc3RzL2k5MTUvZ2VtX2V4ZWNf
-bGF0ZW5jeS5jCisrKyBiL3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfbGF0ZW5jeS5jCkBAIC01OSw5ICs1
-OSwxMSBAQCBzdGF0aWMgdW5zaWduZWQgaW50IHJpbmdfc2l6ZTsKIHN0YXRpYyBkb3VibGUgcmNz
-X2Nsb2NrOwogc3RhdGljIHN0cnVjdCBpbnRlbF9tbWlvX2RhdGEgbW1pb19kYXRhOwogCi1zdGF0
-aWMgdm9pZCBwb2xsX3JpbmcoaW50IGZkLCBjb25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2Vu
-Z2luZTIgKmUpCitzdGF0aWMgdm9pZCBwb2xsX3JpbmcoaW50IGZkLCBjb25zdCBpbnRlbF9jdHhf
-dCAqY3R4LAorCQkgICAgICBjb25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmUp
-CiB7CiAJY29uc3Qgc3RydWN0IGlndF9zcGluX2ZhY3Rvcnkgb3B0cyA9IHsKKwkJLmN0eCA9IGN0
-eCwKIAkJLmVuZ2luZSA9IGUtPmZsYWdzLAogCQkuZmxhZ3MgPSBJR1RfU1BJTl9QT0xMX1JVTiB8
-IElHVF9TUElOX0ZBU1QsCiAJfTsKQEAgLTEwMSw3ICsxMDMsNyBAQCBzdGF0aWMgdm9pZCBwb2xs
-X3JpbmcoaW50IGZkLCBjb25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmUpCiB9
-CiAKICNkZWZpbmUgVElNRVNUQU1QICgweDM1OCkKLXN0YXRpYyB2b2lkIGxhdGVuY3lfb25fcmlu
-ZyhpbnQgZmQsCitzdGF0aWMgdm9pZCBsYXRlbmN5X29uX3JpbmcoaW50IGZkLCBjb25zdCBpbnRl
-bF9jdHhfdCAqY3R4LAogCQkJICAgIGNvbnN0IHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5l
-MiAqZSwKIAkJCSAgICB1bnNpZ25lZCBmbGFncykKIHsKQEAgLTEyOCw2ICsxMzAsNyBAQCBzdGF0
-aWMgdm9pZCBsYXRlbmN5X29uX3JpbmcoaW50IGZkLAogCWV4ZWNidWYuYnVmZmVyX2NvdW50ID0g
-MjsKIAlleGVjYnVmLmZsYWdzID0gZS0+ZmxhZ3M7CiAJZXhlY2J1Zi5mbGFncyB8PSBJOTE1X0VY
-RUNfTk9fUkVMT0MgfCBJOTE1X0VYRUNfSEFORExFX0xVVDsKKwlleGVjYnVmLnJzdmQxID0gY3R4
-LT5pZDsKIAogCW1lbXNldChvYmosIDAsIHNpemVvZihvYmopKTsKIAlvYmpbMV0uaGFuZGxlID0g
-Z2VtX2NyZWF0ZShmZCwgNDA5Nik7CkBAIC0yNTAsNyArMjUzLDcgQEAgc3RhdGljIHZvaWQgbGF0
-ZW5jeV9vbl9yaW5nKGludCBmZCwKIAlnZW1fY2xvc2UoZmQsIG9ialsyXS5oYW5kbGUpOwogfQog
-Ci1zdGF0aWMgdm9pZCBsYXRlbmN5X2Zyb21fcmluZyhpbnQgZmQsCitzdGF0aWMgdm9pZCBsYXRl
-bmN5X2Zyb21fcmluZyhpbnQgZmQsIGNvbnN0IGludGVsX2N0eF90ICpiYXNlX2N0eCwKIAkJCSAg
-ICAgIGNvbnN0IHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAqZSwKIAkJCSAgICAgIHVu
-c2lnbmVkIGZsYWdzKQogewpAQCAtMjYzLDE3ICsyNjYsMTcgQEAgc3RhdGljIHZvaWQgbGF0ZW5j
-eV9mcm9tX3JpbmcoaW50IGZkLAogCWNvbnN0IHVuc2lnbmVkIGludCByZXBlYXRzID0gcmluZ19z
-aXplIC8gMjsKIAljb25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKm90aGVyOwog
-CXVpbnQzMl90ICptYXAsICpyZXN1bHRzOwotCXVpbnQzMl90IGN0eFsyXSA9IHt9OworCWNvbnN0
-IGludGVsX2N0eF90ICpjdHhbMl0gPSB7YmFzZV9jdHgsIGJhc2VfY3R4fTsKIAlpbnQgaSwgajsK
-IAogCWlndF9yZXF1aXJlKG1taW9fYmFzZSk7CiAKIAlpZiAoZmxhZ3MgJiBQUkVFTVBUKSB7Ci0J
-CWN0eFswXSA9IGdlbV9jb250ZXh0X2Nsb25lX3dpdGhfZW5naW5lcyhmZCwgMCk7Ci0JCWdlbV9j
-b250ZXh0X3NldF9wcmlvcml0eShmZCwgY3R4WzBdLCAtMTAyMyk7CisJCWN0eFswXSA9IGludGVs
-X2N0eF9jcmVhdGUoZmQsICZiYXNlX2N0eC0+Y2ZnKTsKKwkJZ2VtX2NvbnRleHRfc2V0X3ByaW9y
-aXR5KGZkLCBjdHhbMF0tPmlkLCAtMTAyMyk7CiAKLQkJY3R4WzFdID0gZ2VtX2NvbnRleHRfY2xv
-bmVfd2l0aF9lbmdpbmVzKGZkLCAwKTsKLQkJZ2VtX2NvbnRleHRfc2V0X3ByaW9yaXR5KGZkLCBj
-dHhbMV0sIDEwMjMpOworCQljdHhbMV0gPSBpbnRlbF9jdHhfY3JlYXRlKGZkLCAmYmFzZV9jdHgt
-PmNmZyk7CisJCWdlbV9jb250ZXh0X3NldF9wcmlvcml0eShmZCwgY3R4WzFdLT5pZCwgMTAyMyk7
-CiAJfQogCiAJbWVtc2V0KCZleGVjYnVmLCAwLCBzaXplb2YoZXhlY2J1ZikpOwpAQCAtMjgxLDcg
-KzI4NCw3IEBAIHN0YXRpYyB2b2lkIGxhdGVuY3lfZnJvbV9yaW5nKGludCBmZCwKIAlleGVjYnVm
-LmJ1ZmZlcl9jb3VudCA9IDI7CiAJZXhlY2J1Zi5mbGFncyA9IGUtPmZsYWdzOwogCWV4ZWNidWYu
-ZmxhZ3MgfD0gSTkxNV9FWEVDX05PX1JFTE9DIHwgSTkxNV9FWEVDX0hBTkRMRV9MVVQ7Ci0JZXhl
-Y2J1Zi5yc3ZkMSA9IGN0eFsxXTsKKwlleGVjYnVmLnJzdmQxID0gY3R4WzFdLT5pZDsKIAogCW1l
-bXNldChvYmosIDAsIHNpemVvZihvYmopKTsKIAlvYmpbMV0uaGFuZGxlID0gZ2VtX2NyZWF0ZShm
-ZCwgNDA5Nik7CkBAIC0zMDksNyArMzEyLDcgQEAgc3RhdGljIHZvaWQgbGF0ZW5jeV9mcm9tX3Jp
-bmcoaW50IGZkLAogCXJlbG9jLnByZXN1bWVkX29mZnNldCA9IG9ialsxXS5vZmZzZXQ7CiAJcmVs
-b2MudGFyZ2V0X2hhbmRsZSA9IGZsYWdzICYgQ09SSyA/IDEgOiAwOwogCi0JX19mb3JfZWFjaF9w
-aHlzaWNhbF9lbmdpbmUoZmQsIG90aGVyKSB7CisJZm9yX2VhY2hfY3R4X2VuZ2luZShmZCwgYmFz
-ZV9jdHgsIG90aGVyKSB7CiAJCWlndF9zcGluX3QgKnNwaW4gPSBOVUxMOwogCQlJR1RfQ09SS19I
-QU5ETEUoYyk7CiAKQEAgLTMxOSw3ICszMjIsNyBAQCBzdGF0aWMgdm9pZCBsYXRlbmN5X2Zyb21f
-cmluZyhpbnQgZmQsCiAKIAkJaWYgKGZsYWdzICYgUFJFRU1QVCkKIAkJCXNwaW4gPSBfX2lndF9z
-cGluX25ldyhmZCwKLQkJCQkJICAgICAgLmN0eF9pZCA9IGN0eFswXSwKKwkJCQkJICAgICAgLmN0
-eCA9IGN0eFswXSwKIAkJCQkJICAgICAgLmVuZ2luZSA9IGUtPmZsYWdzKTsKIAogCQlpZiAoZmxh
-Z3MgJiBDT1JLKSB7CkBAIC00MDMsMTIgKzQwNiwxMyBAQCBzdGF0aWMgdm9pZCBsYXRlbmN5X2Zy
-b21fcmluZyhpbnQgZmQsCiAJZ2VtX2Nsb3NlKGZkLCBvYmpbMl0uaGFuZGxlKTsKIAogCWlmIChm
-bGFncyAmIFBSRUVNUFQpIHsKLQkJZ2VtX2NvbnRleHRfZGVzdHJveShmZCwgY3R4WzFdKTsKLQkJ
-Z2VtX2NvbnRleHRfZGVzdHJveShmZCwgY3R4WzBdKTsKKwkJaW50ZWxfY3R4X2Rlc3Ryb3koZmQs
-IGN0eFsxXSk7CisJCWludGVsX2N0eF9kZXN0cm95KGZkLCBjdHhbMF0pOwogCX0KIH0KIAotc3Rh
-dGljIHZvaWQgZXhlY3V0aW9uX2xhdGVuY3koaW50IGk5MTUsIGNvbnN0IHN0cnVjdCBpbnRlbF9l
-eGVjdXRpb25fZW5naW5lMiAqZSkKK3N0YXRpYyB2b2lkIGV4ZWN1dGlvbl9sYXRlbmN5KGludCBp
-OTE1LCBjb25zdCBpbnRlbF9jdHhfdCAqY3R4LAorCQkJICAgICAgY29uc3Qgc3RydWN0IGludGVs
-X2V4ZWN1dGlvbl9lbmdpbmUyICplKQogewogCXN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY19vYmpl
-Y3QyIG9iaiA9IHsKIAkJLmhhbmRsZSA9IGdlbV9jcmVhdGUoaTkxNSwgNDA5NSksCkBAIC00MTcs
-NiArNDIxLDcgQEAgc3RhdGljIHZvaWQgZXhlY3V0aW9uX2xhdGVuY3koaW50IGk5MTUsIGNvbnN0
-IHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAqZSkKIAkJLmJ1ZmZlcnNfcHRyID0gdG9f
-dXNlcl9wb2ludGVyKCZvYmopLAogCQkuYnVmZmVyX2NvdW50ID0gMSwKIAkJLmZsYWdzID0gZS0+
-ZmxhZ3MgfCBJOTE1X0VYRUNfTk9fUkVMT0MgfCBJOTE1X0VYRUNfSEFORExFX0xVVCwKKwkJLnJz
-dmQxID0gY3R4LT5pZCwKIAl9OwogCWNvbnN0IHVpbnQzMl90IG1taW9fYmFzZSA9IGdlbV9lbmdp
-bmVfbW1pb19iYXNlKGk5MTUsIGUtPm5hbWUpOwogCWNvbnN0IHVuc2lnbmVkIGludCBjc190aW1l
-c3RhbXAgPSBtbWlvX2Jhc2UgKyAweDM1ODsKQEAgLTQ4OSw3ICs0OTQsOCBAQCBzdGF0aWMgdm9p
-ZCBleGVjdXRpb25fbGF0ZW5jeShpbnQgaTkxNSwgY29uc3Qgc3RydWN0IGludGVsX2V4ZWN1dGlv
-bl9lbmdpbmUyICplKQogCWdlbV9jbG9zZShpOTE1LCBvYmouaGFuZGxlKTsKIH0KIAotc3RhdGlj
-IHZvaWQgd2FrZXVwX2xhdGVuY3koaW50IGk5MTUsIGNvbnN0IHN0cnVjdCBpbnRlbF9leGVjdXRp
-b25fZW5naW5lMiAqZSkKK3N0YXRpYyB2b2lkIHdha2V1cF9sYXRlbmN5KGludCBpOTE1LCBjb25z
-dCBpbnRlbF9jdHhfdCAqY3R4LAorCQkJICAgY29uc3Qgc3RydWN0IGludGVsX2V4ZWN1dGlvbl9l
-bmdpbmUyICplKQogewogCXN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY19vYmplY3QyIG9iaiA9IHsK
-IAkJLmhhbmRsZSA9IGdlbV9jcmVhdGUoaTkxNSwgNDA5NSksCkBAIC00OTgsNiArNTA0LDcgQEAg
-c3RhdGljIHZvaWQgd2FrZXVwX2xhdGVuY3koaW50IGk5MTUsIGNvbnN0IHN0cnVjdCBpbnRlbF9l
-eGVjdXRpb25fZW5naW5lMiAqZSkKIAkJLmJ1ZmZlcnNfcHRyID0gdG9fdXNlcl9wb2ludGVyKCZv
-YmopLAogCQkuYnVmZmVyX2NvdW50ID0gMSwKIAkJLmZsYWdzID0gZS0+ZmxhZ3MgfCBJOTE1X0VY
-RUNfTk9fUkVMT0MgfCBJOTE1X0VYRUNfSEFORExFX0xVVCwKKwkJLnJzdmQxID0gY3R4LT5pZCwK
-IAl9OwogCWNvbnN0IHVpbnQzMl90IG1taW9fYmFzZSA9IGdlbV9lbmdpbmVfbW1pb19iYXNlKGk5
-MTUsIGUtPm5hbWUpOwogCWNvbnN0IHVuc2lnbmVkIGludCBjc190aW1lc3RhbXAgPSBtbWlvX2Jh
-c2UgKyAweDM1ODsKQEAgLTU5OCw3ICs2MDUsOCBAQCBzdGF0aWMgYm9vbCBfX3NwaW5fd2FpdChp
-bnQgZmQsIGlndF9zcGluX3QgKnNwaW4pCiAgKiBUZXN0IHdoZXRoZXIgUlQgdGhyZWFkIHdoaWNo
-IGhvZ3MgdGhlIENQVSBhIGxvdCBjYW4gc3VibWl0IHdvcmsgd2l0aAogICogcmVhc29uYWJsZSBs
-YXRlbmN5LgogICovCi1zdGF0aWMgdm9pZCBydGhvZ19sYXRlbmN5X29uX3JpbmcoaW50IGZkLCBj
-b25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmUpCitzdGF0aWMgdm9pZCBydGhv
-Z19sYXRlbmN5X29uX3JpbmcoaW50IGZkLCBjb25zdCBpbnRlbF9jdHhfdCAqY3R4LAorCQkJCSAg
-Y29uc3Qgc3RydWN0IGludGVsX2V4ZWN1dGlvbl9lbmdpbmUyICplKQogewogCWNvbnN0IGNoYXIg
-KnBhc3NuYW1lW10gPSB7CiAJCSJ3YXJtdXAiLApAQCAtNjE0LDYgKzYyMiw3IEBAIHN0YXRpYyB2
-b2lkIHJ0aG9nX2xhdGVuY3lfb25fcmluZyhpbnQgZmQsIGNvbnN0IHN0cnVjdCBpbnRlbF9leGVj
-dXRpb25fZW5naW5lMiAqCiAjZGVmaW5lIE5QQVNTIEFSUkFZX1NJWkUocGFzc25hbWUpCiAjZGVm
-aW5lIE1NQVBfU1ogKDY0IDw8IDEwKQogCWNvbnN0IHN0cnVjdCBpZ3Rfc3Bpbl9mYWN0b3J5IG9w
-dHMgPSB7CisJCS5jdHggPSBjdHgsCiAJCS5lbmdpbmUgPSBlLT5mbGFncywKIAkJLmZsYWdzID0g
-SUdUX1NQSU5fUE9MTF9SVU4gfCBJR1RfU1BJTl9GQVNULAogCX07CkBAIC03MzYsNyArNzQ1LDcg
-QEAgc3RhdGljIHZvaWQgcnRob2dfbGF0ZW5jeV9vbl9yaW5nKGludCBmZCwgY29uc3Qgc3RydWN0
-IGludGVsX2V4ZWN1dGlvbl9lbmdpbmUyICoKIAltdW5tYXAocmVzdWx0cywgTU1BUF9TWik7CiB9
-CiAKLXN0YXRpYyB2b2lkIGNvbnRleHRfc3dpdGNoKGludCBpOTE1LAorc3RhdGljIHZvaWQgY29u
-dGV4dF9zd2l0Y2goaW50IGk5MTUsIGNvbnN0IGludGVsX2N0eF90ICpjdHgsCiAJCQkgICBjb25z
-dCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmUsCiAJCQkgICB1bnNpZ25lZCBpbnQg
-ZmxhZ3MpCiB7CkBAIC03NDYsMTcgKzc1NSwxNyBAQCBzdGF0aWMgdm9pZCBjb250ZXh0X3N3aXRj
-aChpbnQgaTkxNSwKIAl1aW50MzJfdCAqY3MsICpiYmUsICpyZXN1bHRzLCB2OwogCWNvbnN0IHVp
-bnQzMl90IG1taW9fYmFzZSA9IGdlbV9lbmdpbmVfbW1pb19iYXNlKGk5MTUsIGUtPm5hbWUpOwog
-CXN0cnVjdCBpZ3RfbWVhbiBtZWFuOwotCXVpbnQzMl90IGN0eFsyXTsKKwljb25zdCBpbnRlbF9j
-dHhfdCAqdG1wX2N0eFsyXTsKIAogCWlndF9yZXF1aXJlKG1taW9fYmFzZSk7CiAJaWd0X3JlcXVp
-cmUoZ2VtX2NsYXNzX2hhc19tdXRhYmxlX3N1Ym1pc3Npb24oaTkxNSwgZS0+Y2xhc3MpKTsKIAot
-CWZvciAoaW50IGkgPSAwOyBpIDwgQVJSQVlfU0laRShjdHgpOyBpKyspCi0JCWN0eFtpXSA9IGdl
-bV9jb250ZXh0X2Nsb25lX3dpdGhfZW5naW5lcyhpOTE1LCAwKTsKKwlmb3IgKGludCBpID0gMDsg
-aSA8IEFSUkFZX1NJWkUodG1wX2N0eCk7IGkrKykKKwkJdG1wX2N0eFtpXSA9IGludGVsX2N0eF9j
-cmVhdGUoaTkxNSwgJmN0eC0+Y2ZnKTsKIAogCWlmIChmbGFncyAmIFBSRUVNUFQpIHsKLQkJZ2Vt
-X2NvbnRleHRfc2V0X3ByaW9yaXR5KGk5MTUsIGN0eFswXSwgLTEwMjMpOwotCQlnZW1fY29udGV4
-dF9zZXRfcHJpb3JpdHkoaTkxNSwgY3R4WzFdLCArMTAyMyk7CisJCWdlbV9jb250ZXh0X3NldF9w
-cmlvcml0eShpOTE1LCB0bXBfY3R4WzBdLT5pZCwgLTEwMjMpOworCQlnZW1fY29udGV4dF9zZXRf
-cHJpb3JpdHkoaTkxNSwgdG1wX2N0eFsxXS0+aWQsICsxMDIzKTsKIAl9CiAKIAltZW1zZXQob2Jq
-LCAwLCBzaXplb2Yob2JqKSk7CkBAIC04MTYsMTQgKzgyNSwxNCBAQCBzdGF0aWMgdm9pZCBjb250
-ZXh0X3N3aXRjaChpbnQgaTkxNSwKIAl2ID0gMDsKIAlpZ3RfbWVhbl9pbml0KCZtZWFuKTsKIAlp
-Z3RfdW50aWxfdGltZW91dCg1KSB7Ci0JCWViLnJzdmQxID0gY3R4WzBdOworCQllYi5yc3ZkMSA9
-IHRtcF9jdHhbMF0tPmlkOwogCQllYi5iYXRjaF9zdGFydF9vZmZzZXQgPSAwOwogCQlnZW1fZXhl
-Y2J1ZihpOTE1LCAmZWIpOwogCiAJCXdoaWxlIChyZXN1bHRzWzBdID09IHYpCiAJCQlpZ3RfYXNz
-ZXJ0KGdlbV9ib19idXN5KGk5MTUsIG9ialsxXS5oYW5kbGUpKTsKIAotCQllYi5yc3ZkMSA9IGN0
-eFsxXTsKKwkJZWIucnN2ZDEgPSB0bXBfY3R4WzFdLT5pZDsKIAkJZWIuYmF0Y2hfc3RhcnRfb2Zm
-c2V0ID0gNjQgKiBzaXplb2YoKmNzKTsKIAkJZ2VtX2V4ZWNidWYoaTkxNSwgJmViKTsKIApAQCAt
-ODQ0LDggKzg1Myw4IEBAIHN0YXRpYyB2b2lkIGNvbnRleHRfc3dpdGNoKGludCBpOTE1LAogCWZv
-ciAoaW50IGkgPSAwOyBpIDwgQVJSQVlfU0laRShvYmopOyBpKyspCiAJCWdlbV9jbG9zZShpOTE1
-LCBvYmpbaV0uaGFuZGxlKTsKIAotCWZvciAoaW50IGkgPSAwOyBpIDwgQVJSQVlfU0laRShjdHgp
-OyBpKyspCi0JCWdlbV9jb250ZXh0X2Rlc3Ryb3koaTkxNSwgY3R4W2ldKTsKKwlmb3IgKGludCBp
-ID0gMDsgaSA8IEFSUkFZX1NJWkUodG1wX2N0eCk7IGkrKykKKwkJaW50ZWxfY3R4X2Rlc3Ryb3ko
-aTkxNSwgdG1wX2N0eFtpXSk7CiB9CiAKIHN0YXRpYyBkb3VibGUgY2xvY2tyYXRlKGludCBpOTE1
-LCBpbnQgcmVnKQpAQCAtODgwLDI0ICs4ODksMjYgQEAgc3RhdGljIGRvdWJsZSBjbG9ja3JhdGUo
-aW50IGk5MTUsIGludCByZWcpCiAJcmV0dXJuIChyX2VuZCAtIHJfc3RhcnQpICogMWU5IC8gZWxh
-cHNlZDsKIH0KIAotI2RlZmluZSB0ZXN0X2VhY2hfZW5naW5lKFQsIGk5MTUsIGUpIFwKLQlpZ3Rf
-c3VidGVzdF93aXRoX2R5bmFtaWMoVCkgX19mb3JfZWFjaF9waHlzaWNhbF9lbmdpbmUoaTkxNSwg
-ZSkgXAorI2RlZmluZSB0ZXN0X2VhY2hfZW5naW5lKFQsIGk5MTUsIGN0eCwgZSkgXAorCWlndF9z
-dWJ0ZXN0X3dpdGhfZHluYW1pYyhUKSBmb3JfZWFjaF9jdHhfZW5naW5lKGk5MTUsIGN0eCwgZSkg
-XAogCQlmb3JfZWFjaF9pZihnZW1fY2xhc3NfY2FuX3N0b3JlX2R3b3JkKGk5MTUsIChlKS0+Y2xh
-c3MpKSBcCiAJCQlpZ3RfZHluYW1pY19mKCIlcyIsIChlKS0+bmFtZSkKIAogaWd0X21haW4KIHsK
-IAljb25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmU7CisJY29uc3QgaW50ZWxf
-Y3R4X3QgKmN0eDsKIAlpbnQgZGV2aWNlID0gLTE7CiAKIAlpZ3RfZml4dHVyZSB7CiAJCWRldmlj
-ZSA9IGRybV9vcGVuX2RyaXZlcihEUklWRVJfSU5URUwpOwogCQlpZ3RfcmVxdWlyZV9nZW0oZGV2
-aWNlKTsKIAkJZ2VtX3JlcXVpcmVfbW1hcF93YyhkZXZpY2UpOworCQljdHggPSBpbnRlbF9jdHhf
-Y3JlYXRlX2FsbF9waHlzaWNhbChkZXZpY2UpOwogCiAJCWdlbV9zdWJtaXNzaW9uX3ByaW50X21l
-dGhvZChkZXZpY2UpOwogCi0JCXJpbmdfc2l6ZSA9IGdlbV9zdWJtaXNzaW9uX21lYXN1cmUoZGV2
-aWNlLCBOVUxMLCBBTExfRU5HSU5FUyk7CisJCXJpbmdfc2l6ZSA9IGdlbV9zdWJtaXNzaW9uX21l
-YXN1cmUoZGV2aWNlLCAmY3R4LT5jZmcsIEFMTF9FTkdJTkVTKTsKIAkJaWd0X2luZm8oIlJpbmcg
-c2l6ZTogJWQgYmF0Y2hlc1xuIiwgcmluZ19zaXplKTsKIAkJaWd0X3JlcXVpcmUocmluZ19zaXpl
-ID4gOCk7CiAJCXJpbmdfc2l6ZSAtPSA4OyAvKiBsZWF2ZSBzb21lIHNwYXJlICovCkBAIC05MTUs
-MzEgKzkyNiwzMSBAQCBpZ3RfbWFpbgogCQlpZ3RfZml4dHVyZQogCQkJaWd0X3JlcXVpcmUoaW50
-ZWxfZ2VuKGludGVsX2dldF9kcm1fZGV2aWQoZGV2aWNlKSkgPj0gNyk7CiAKLQkJdGVzdF9lYWNo
-X2VuZ2luZSgicnRob2ctc3VibWl0IiwgZGV2aWNlLCBlKQotCQkJcnRob2dfbGF0ZW5jeV9vbl9y
-aW5nKGRldmljZSwgZSk7CisJCXRlc3RfZWFjaF9lbmdpbmUoInJ0aG9nLXN1Ym1pdCIsIGRldmlj
-ZSwgY3R4LCBlKQorCQkJcnRob2dfbGF0ZW5jeV9vbl9yaW5nKGRldmljZSwgY3R4LCBlKTsKIAot
-CQl0ZXN0X2VhY2hfZW5naW5lKCJkaXNwYXRjaCIsIGRldmljZSwgZSkKLQkJCWxhdGVuY3lfb25f
-cmluZyhkZXZpY2UsIGUsIDApOwotCQl0ZXN0X2VhY2hfZW5naW5lKCJkaXNwYXRjaC1xdWV1ZWQi
-LCBkZXZpY2UsIGUpCi0JCQlsYXRlbmN5X29uX3JpbmcoZGV2aWNlLCBlLCBDT1JLKTsKKwkJdGVz
-dF9lYWNoX2VuZ2luZSgiZGlzcGF0Y2giLCBkZXZpY2UsIGN0eCwgZSkKKwkJCWxhdGVuY3lfb25f
-cmluZyhkZXZpY2UsIGN0eCwgZSwgMCk7CisJCXRlc3RfZWFjaF9lbmdpbmUoImRpc3BhdGNoLXF1
-ZXVlZCIsIGRldmljZSwgY3R4LCBlKQorCQkJbGF0ZW5jeV9vbl9yaW5nKGRldmljZSwgY3R4LCBl
-LCBDT1JLKTsKIAotCQl0ZXN0X2VhY2hfZW5naW5lKCJsaXZlLWRpc3BhdGNoIiwgZGV2aWNlLCBl
-KQotCQkJbGF0ZW5jeV9vbl9yaW5nKGRldmljZSwgZSwgTElWRSk7Ci0JCXRlc3RfZWFjaF9lbmdp
-bmUoImxpdmUtZGlzcGF0Y2gtcXVldWVkIiwgZGV2aWNlLCBlKQotCQkJbGF0ZW5jeV9vbl9yaW5n
-KGRldmljZSwgZSwgTElWRSB8IENPUkspOworCQl0ZXN0X2VhY2hfZW5naW5lKCJsaXZlLWRpc3Bh
-dGNoIiwgZGV2aWNlLCBjdHgsIGUpCisJCQlsYXRlbmN5X29uX3JpbmcoZGV2aWNlLCBjdHgsIGUs
-IExJVkUpOworCQl0ZXN0X2VhY2hfZW5naW5lKCJsaXZlLWRpc3BhdGNoLXF1ZXVlZCIsIGRldmlj
-ZSwgY3R4LCBlKQorCQkJbGF0ZW5jeV9vbl9yaW5nKGRldmljZSwgY3R4LCBlLCBMSVZFIHwgQ09S
-Syk7CiAKLQkJdGVzdF9lYWNoX2VuZ2luZSgicG9sbCIsIGRldmljZSwgZSkKLQkJCXBvbGxfcmlu
-ZyhkZXZpY2UsIGUpOworCQl0ZXN0X2VhY2hfZW5naW5lKCJwb2xsIiwgZGV2aWNlLCBjdHgsIGUp
-CisJCQlwb2xsX3JpbmcoZGV2aWNlLCBjdHgsIGUpOwogCi0JCXRlc3RfZWFjaF9lbmdpbmUoInN5
-bmNocm9uaXNhdGlvbiIsIGRldmljZSwgZSkKLQkJCWxhdGVuY3lfZnJvbV9yaW5nKGRldmljZSwg
-ZSwgMCk7Ci0JCXRlc3RfZWFjaF9lbmdpbmUoInN5bmNocm9uaXNhdGlvbi1xdWV1ZWQiLCBkZXZp
-Y2UsIGUpCi0JCQlsYXRlbmN5X2Zyb21fcmluZyhkZXZpY2UsIGUsIENPUkspOworCQl0ZXN0X2Vh
-Y2hfZW5naW5lKCJzeW5jaHJvbmlzYXRpb24iLCBkZXZpY2UsIGN0eCwgZSkKKwkJCWxhdGVuY3lf
-ZnJvbV9yaW5nKGRldmljZSwgY3R4LCBlLCAwKTsKKwkJdGVzdF9lYWNoX2VuZ2luZSgic3luY2hy
-b25pc2F0aW9uLXF1ZXVlZCIsIGRldmljZSwgY3R4LCBlKQorCQkJbGF0ZW5jeV9mcm9tX3Jpbmco
-ZGV2aWNlLCBjdHgsIGUsIENPUkspOwogCi0JCXRlc3RfZWFjaF9lbmdpbmUoImV4ZWN1dGlvbi1s
-YXRlbmN5IiwgZGV2aWNlLCBlKQotCQkJZXhlY3V0aW9uX2xhdGVuY3koZGV2aWNlLCBlKTsKLQkJ
-dGVzdF9lYWNoX2VuZ2luZSgid2FrZXVwLWxhdGVuY3kiLCBkZXZpY2UsIGUpCi0JCQl3YWtldXBf
-bGF0ZW5jeShkZXZpY2UsIGUpOworCQl0ZXN0X2VhY2hfZW5naW5lKCJleGVjdXRpb24tbGF0ZW5j
-eSIsIGRldmljZSwgY3R4LCBlKQorCQkJZXhlY3V0aW9uX2xhdGVuY3koZGV2aWNlLCBjdHgsIGUp
-OworCQl0ZXN0X2VhY2hfZW5naW5lKCJ3YWtldXAtbGF0ZW5jeSIsIGRldmljZSwgY3R4LCBlKQor
-CQkJd2FrZXVwX2xhdGVuY3koZGV2aWNlLCBjdHgsIGUpOwogCiAJCWlndF9zdWJ0ZXN0X2dyb3Vw
-IHsKIAkJCWlndF9maXh0dXJlIHsKQEAgLTk0NywxNyArOTU4LDE4IEBAIGlndF9tYWluCiAJCQkJ
-aWd0X3JlcXVpcmUoZ2VtX3NjaGVkdWxlcl9oYXNfcHJlZW1wdGlvbihkZXZpY2UpKTsKIAkJCX0K
-IAotCQkJdGVzdF9lYWNoX2VuZ2luZSgicHJlZW1wdGlvbiIsIGRldmljZSwgZSkKLQkJCQlsYXRl
-bmN5X2Zyb21fcmluZyhkZXZpY2UsIGUsIFBSRUVNUFQpOwotCQkJdGVzdF9lYWNoX2VuZ2luZSgi
-Y29udGV4dC1zd2l0Y2giLCBkZXZpY2UsIGUpCi0JCQkJY29udGV4dF9zd2l0Y2goZGV2aWNlLCBl
-LCAwKTsKLQkJCXRlc3RfZWFjaF9lbmdpbmUoImNvbnRleHQtcHJlZW1wdCIsIGRldmljZSwgZSkK
-LQkJCQljb250ZXh0X3N3aXRjaChkZXZpY2UsIGUsIFBSRUVNUFQpOworCQkJdGVzdF9lYWNoX2Vu
-Z2luZSgicHJlZW1wdGlvbiIsIGRldmljZSwgY3R4LCBlKQorCQkJCWxhdGVuY3lfZnJvbV9yaW5n
-KGRldmljZSwgY3R4LCBlLCBQUkVFTVBUKTsKKwkJCXRlc3RfZWFjaF9lbmdpbmUoImNvbnRleHQt
-c3dpdGNoIiwgZGV2aWNlLCBjdHgsIGUpCisJCQkJY29udGV4dF9zd2l0Y2goZGV2aWNlLCBjdHgs
-IGUsIDApOworCQkJdGVzdF9lYWNoX2VuZ2luZSgiY29udGV4dC1wcmVlbXB0IiwgZGV2aWNlLCBj
-dHgsIGUpCisJCQkJY29udGV4dF9zd2l0Y2goZGV2aWNlLCBjdHgsIGUsIFBSRUVNUFQpOwogCQl9
-CiAJfQogCiAJaWd0X2ZpeHR1cmUgewogCQlpbnRlbF9yZWdpc3Rlcl9hY2Nlc3NfZmluaSgmbW1p
-b19kYXRhKTsKKwkJaW50ZWxfY3R4X2Rlc3Ryb3koZGV2aWNlLCBjdHgpOwogCQljbG9zZShkZXZp
-Y2UpOwogCX0KIH0KLS0gCjIuMzEuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVz
-a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9p
-Z3QtZGV2Cg==
+v2 (Jason Ekstrand):
+ - Rebase on Tvrtko's changes
+ - Fix an issue in default-virtual with the set-once rule for engines
+
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+---
+ tests/i915/gem_watchdog.c | 169 +++++++++++---------------------------
+ 1 file changed, 46 insertions(+), 123 deletions(-)
+
+diff --git a/tests/i915/gem_watchdog.c b/tests/i915/gem_watchdog.c
+index 2443d5c52..c403dff10 100644
+--- a/tests/i915/gem_watchdog.c
++++ b/tests/i915/gem_watchdog.c
+@@ -31,36 +31,13 @@
+ 
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
++#include "i915/gem_vm.h"
+ #include "igt.h"
+ #include "igt_params.h"
+ #include "sw_sync.h"
+ 
+ #define EWATCHDOG EINTR
+ 
+-static struct drm_i915_query_engine_info *__engines__;
+-
+-static int __i915_query(int fd, struct drm_i915_query *q)
+-{
+-	if (igt_ioctl(fd, DRM_IOCTL_I915_QUERY, q))
+-		return -errno;
+-	return 0;
+-}
+-
+-static int
+-__i915_query_items(int fd, struct drm_i915_query_item *items, uint32_t n_items)
+-{
+-	struct drm_i915_query q = {
+-		.num_items = n_items,
+-		.items_ptr = to_user_pointer(items),
+-	};
+-	return __i915_query(fd, &q);
+-}
+-
+-#define i915_query_items(fd, items, n_items) do { \
+-		igt_assert_eq(__i915_query_items(fd, items, n_items), 0); \
+-		errno = 0; \
+-	} while (0)
+-
+ static unsigned int default_timeout_wait_s;
+ static const unsigned int watchdog_us = 500 * 1000;
+ 
+@@ -128,56 +105,43 @@ static unsigned int spin_flags(void)
+ 	return IGT_SPIN_POLL_RUN | IGT_SPIN_FENCE_OUT;
+ }
+ 
+-static void physical(int i915)
++static void physical(int i915, const intel_ctx_t *ctx)
+ {
+ 	const unsigned int wait_us = default_timeout_wait_s * USEC_PER_SEC;
+-	unsigned int num_engines = __engines__->num_engines, i, count;
++	unsigned int num_engines, i, count;
+ 	const struct intel_execution_engine2 *e;
+-	unsigned int expect = num_engines;
+-	igt_spin_t *spin[num_engines];
++	igt_spin_t *spin[GEM_MAX_ENGINES];
+ 
+ 	i = 0;
+-	__for_each_physical_engine(i915, e) {
+-		spin[i] = igt_spin_new(i915,
++	for_each_ctx_engine(i915, ctx, e) {
++		spin[i] = igt_spin_new(i915, .ctx = ctx,
+ 				       .engine = e->flags,
+ 				       .flags = spin_flags());
+ 		i++;
+ 	}
++	num_engines = i;
+ 
+-	count = wait_timeout(i915, spin, num_engines, wait_us, expect);
++	count = wait_timeout(i915, spin, num_engines, wait_us, num_engines);
+ 
+ 	for (i = 0; i < num_engines; i++)
+ 		igt_spin_free(i915, spin[i]);
+ 
+-	igt_assert_eq(count, expect);
++	igt_assert_eq(count, num_engines);
+ }
+ 
+ static struct i915_engine_class_instance *
+-list_engines(unsigned int class, unsigned int *out)
++list_engines(const intel_ctx_cfg_t *cfg,
++	     unsigned int class, unsigned int *out)
+ {
+ 	struct i915_engine_class_instance *ci;
+-	unsigned int count = 0, size = 64, i;
++	unsigned int count = 0, i;
+ 
+-	ci = malloc(size * sizeof(*ci));
++	ci = malloc(cfg->num_engines * sizeof(*ci));
+ 	igt_assert(ci);
+ 
+-	for (i = 0; i < __engines__->num_engines; i++) {
+-		struct drm_i915_engine_info *engine =
+-			(struct drm_i915_engine_info *)&__engines__->engines[i];
+-
+-		if (class != engine->engine.engine_class)
+-			continue;
+-
+-		if (count == size) {
+-			size *= 2;
+-			ci = realloc(ci, size * sizeof(*ci));
+-			igt_assert(ci);
+-		}
+-
+-		ci[count++] = (struct i915_engine_class_instance){
+-			.engine_class = class,
+-			.engine_instance = engine->engine.engine_instance,
+-		};
++	for (i = 0; i < cfg->num_engines; i++) {
++		if (class == cfg->engines[i].engine_class)
++			ci[count++] = cfg->engines[i];
+ 	}
+ 
+ 	if (!count) {
+@@ -244,49 +208,27 @@ static void set_load_balancer(int i915, uint32_t ctx,
+ 	igt_assert_eq(__set_load_balancer(i915, ctx, ci, count, ext), 0);
+ }
+ 
+-static void ctx_set_vm(int i915, uint32_t ctx, uint32_t vm)
+-{
+-	struct drm_i915_gem_context_param arg = {
+-		.param = I915_CONTEXT_PARAM_VM,
+-		.ctx_id = ctx,
+-		.value = vm,
+-	};
+-
+-	gem_context_set_param(i915, &arg);
+-}
+-
+-static uint32_t ctx_get_vm(int i915, uint32_t ctx)
+-{
+-        struct drm_i915_gem_context_param arg;
+-
+-        memset(&arg, 0, sizeof(arg));
+-        arg.param = I915_CONTEXT_PARAM_VM;
+-        arg.ctx_id = ctx;
+-        gem_context_get_param(i915, &arg);
+-        igt_assert(arg.value);
+-
+-        return arg.value;
+-}
+-
+-static void virtual(int i915)
++static void virtual(int i915, const intel_ctx_cfg_t *base_cfg)
+ {
+ 	const unsigned int wait_us = default_timeout_wait_s * USEC_PER_SEC;
+-	unsigned int num_engines = __engines__->num_engines, i, count;
++	unsigned int num_engines = base_cfg->num_engines, i, count;
+ 	igt_spin_t *spin[num_engines];
+ 	unsigned int expect = num_engines;
+-	uint32_t ctx[num_engines];
+-	uint32_t vm;
++	intel_ctx_cfg_t cfg = {};
++	const intel_ctx_t *ctx[num_engines];
+ 
+ 	igt_require(gem_has_execlists(i915));
+ 
+ 	igt_debug("%u virtual engines\n", num_engines);
+ 	igt_require(num_engines);
+ 
++	cfg.vm = gem_vm_create(i915);
++
+ 	i = 0;
+ 	for (int class = 0; class < 32; class++) {
+ 		struct i915_engine_class_instance *ci;
+ 
+-		ci = list_engines(class, &count);
++		ci = list_engines(base_cfg, class, &count);
+ 		if (!ci)
+ 			continue;
+ 
+@@ -296,17 +238,12 @@ static void virtual(int i915)
+ 
+ 			igt_assert(i < num_engines);
+ 
+-			ctx[i] = gem_context_create(i915);
++			ctx[i] = intel_ctx_create(i915, &cfg);
+ 
+-			if (!i)
+-				vm = ctx_get_vm(i915, ctx[i]);
+-			else
+-				ctx_set_vm(i915, ctx[i], vm);
+-
+-			set_load_balancer(i915, ctx[i], ci, count, NULL);
++			set_load_balancer(i915, ctx[i]->id, ci, count, NULL);
+ 
+ 			spin[i] = igt_spin_new(i915,
+-					       .ctx_id = ctx[i],
++					       .ctx = ctx[i],
+ 					       .flags = spin_flags());
+ 			i++;
+ 		}
+@@ -317,8 +254,8 @@ static void virtual(int i915)
+ 	count = wait_timeout(i915, spin, num_engines, wait_us, expect);
+ 
+ 	for (i = 0; i < num_engines && spin[i]; i++) {
+-		gem_context_destroy(i915, ctx[i]);
+ 		igt_spin_free(i915, spin[i]);
++		intel_ctx_destroy(i915, ctx[i]);
+ 	}
+ 
+ 	igt_assert_eq(count, expect);
+@@ -499,17 +436,6 @@ delay_create(int i915, uint32_t ctx,
+ 	return obj;
+ }
+ 
+-static uint32_t vm_clone(int i915)
+-{
+-	uint32_t ctx = 0;
+-	__gem_context_clone(i915, 0,
+-			    I915_CONTEXT_CLONE_VM |
+-			    I915_CONTEXT_CLONE_ENGINES,
+-			    I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE,
+-			    &ctx);
+-	return ctx;
+-}
+-
+ static int __execbuf(int i915, struct drm_i915_gem_execbuffer2 *execbuf)
+ {
+ 	int err;
+@@ -526,6 +452,7 @@ static int __execbuf(int i915, struct drm_i915_gem_execbuffer2 *execbuf)
+ 
+ static uint32_t
+ far_delay(int i915, unsigned long delay, unsigned int target,
++	  const intel_ctx_t *ctx,
+ 	  const struct intel_execution_engine2 *e, int *fence)
+ {
+ 	struct drm_i915_gem_exec_object2 obj = delay_create(i915, 0, e, delay);
+@@ -540,6 +467,7 @@ far_delay(int i915, unsigned long delay, unsigned int target,
+ 		.buffer_count = 2,
+ 		.flags = e->flags,
+ 	};
++	intel_ctx_cfg_t cfg = ctx->cfg;
+ 	uint32_t handle = gem_create(i915, 4096);
+ 	unsigned long count, submit;
+ 
+@@ -552,23 +480,27 @@ far_delay(int i915, unsigned long delay, unsigned int target,
+ 	submit *= NSEC_PER_SEC;
+ 	submit /= 2 * delay;
+ 
++	if (gem_has_vm(i915))
++		cfg.vm = gem_vm_create(i915);
++
+ 	/*
+ 	 * Submit a few long chains of individually short pieces of work
+ 	 * against a shared object.
+ 	 */
+ 	for (count = 0; count < submit;) {
+-		execbuf.rsvd1 = vm_clone(i915);
++		const intel_ctx_t *tmp_ctx = intel_ctx_create(i915, &cfg);
++		execbuf.rsvd1 = tmp_ctx->id;
+ 		if (!execbuf.rsvd1)
+ 			break;
+ 
+ 		batch[1] = obj;
+ 		while (__execbuf(i915, &execbuf) == 0)
+ 			count++;
+-		gem_context_destroy(i915, execbuf.rsvd1);
++		intel_ctx_destroy(i915, tmp_ctx);
+ 	}
+ 
+ 	execbuf.flags |= I915_EXEC_FENCE_OUT;
+-	execbuf.rsvd1 = 0;
++	execbuf.rsvd1 = ctx->id;
+ 	batch[1] = batch[0];
+ 	batch[1].flags &= ~EXEC_OBJECT_WRITE;
+ 	batch[0].handle = handle;
+@@ -584,11 +516,12 @@ far_delay(int i915, unsigned long delay, unsigned int target,
+ }
+ 
+ static void
+-far_fence(int i915, int timeout, const struct intel_execution_engine2 *e)
++far_fence(int i915, int timeout, const intel_ctx_t *ctx,
++	  const struct intel_execution_engine2 *e)
+ {
+ 	int fence = -1;
+ 	uint32_t handle =
+-		far_delay(i915, NSEC_PER_SEC / 250, timeout, e, &fence);
++		far_delay(i915, NSEC_PER_SEC / 250, timeout, ctx, e, &fence);
+ 
+ 	gem_close(i915, handle);
+ 
+@@ -627,10 +560,10 @@ far_fence(int i915, int timeout, const struct intel_execution_engine2 *e)
+ igt_main
+ {
+ 	const struct intel_execution_engine2 *e;
++	const intel_ctx_t *ctx;
+ 	int i915 = -1;
+ 
+ 	igt_fixture {
+-		struct drm_i915_query_item item;
+ 		char *tmp;
+ 
+ 		i915 = drm_open_driver_master(DRIVER_INTEL);
+@@ -652,32 +585,22 @@ igt_main
+ 		}
+ 
+ 		i915 = gem_reopen_driver(i915); /* Apply modparam. */
+-
+-		__engines__ = malloc(4096);
+-		igt_assert(__engines__);
+-		memset(__engines__, 0, 4096);
+-		memset(&item, 0, sizeof(item));
+-		item.query_id = DRM_I915_QUERY_ENGINE_INFO;
+-		item.data_ptr = to_user_pointer(__engines__);
+-		item.length = 4096;
+-		i915_query_items(i915, &item, 1);
+-		igt_assert(item.length >= 0);
+-		igt_assert(item.length <= 4096);
+-		igt_assert(__engines__->num_engines > 0);
++		ctx = intel_ctx_create_all_physical(i915);
+ 	}
+ 
+ 	igt_subtest_group {
+ 		igt_subtest("default-physical")
+-			physical(i915);
++			physical(i915, ctx);
+ 
+ 		igt_subtest("default-virtual")
+-			virtual(i915);
++			virtual(i915, &ctx->cfg);
+ 	}
+ 
+ 	igt_subtest_with_dynamic("far-fence") {
+-		__for_each_physical_engine(i915, e) {
++		for_each_ctx_engine(i915, ctx, e) {
+ 			igt_dynamic_f("%s", e->name)
+-				far_fence(i915, default_timeout_wait_s * 3, e);
++				far_fence(i915, default_timeout_wait_s * 3,
++					  ctx, e);
+ 		}
+ 	}
+ 
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
