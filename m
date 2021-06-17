@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com
- [IPv6:2607:f8b0:4864:20::72d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 03BF96E25B
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 19:08:14 +0000 (UTC)
-Received: by mail-qk1-x72d.google.com with SMTP id q190so2194481qkd.2
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 12:08:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210614163704.365989-1-jason@jlekstrand.net>
- <20210614163704.365989-28-jason@jlekstrand.net>
- <87a6np2hhj.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <87a6np2hhj.wl-ashutosh.dixit@intel.com>
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
+ [IPv6:2607:f8b0:4864:20::42e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7BDCA6E25B
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 19:13:04 +0000 (UTC)
+Received: by mail-pf1-x42e.google.com with SMTP id k15so615399pfp.6
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 12:13:04 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 17 Jun 2021 14:08:01 -0500
-Message-ID: <CAOFGe94XiYL=vp_H1jn6BHv_z3sj_4Kv-+XvVdF3i7nQgppk1A@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 27/77] tests/i915/gem_ctx_shared:
- Convert to intel_ctx_t
+Date: Thu, 17 Jun 2021 14:12:07 -0500
+Message-Id: <20210617191256.577244-1-jason@jlekstrand.net>
+MIME-Version: 1.0
+Subject: [igt-dev] [PATCH i-g-t 00/79] Stop depending on context mutation
+ (v4)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,164 +22,282 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jun 17, 2021 at 12:22 AM Dixit, Ashutosh
-<ashutosh.dixit@intel.com> wrote:
->
-> On Mon, 14 Jun 2021 09:36:42 -0700, Jason Ekstrand wrote:
-> >
-> > @@ -347,11 +368,12 @@ static void single_timeline(int i915)
-> >        * to, it reports the same timeline name and fence context. However,
-> >        * the fence context is not reported through the sync_fence_info.
-> >        */
-> > -     spin->execbuf.rsvd1 =
-> > -             gem_context_clone(i915, 0, 0,
-> > -                               I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
-> > +     st_cfg = *cfg;
-> > +     st_cfg.flags |= I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE;
-> > +     ctx = intel_ctx_create(i915, &st_cfg);
-> > +     spin->execbuf.rsvd1 = ctx->id;
->
-> It's probably the same but could've passed ctx into igt_spin_new just above.
+I'm trying to clean up some of our uAPI technical debt in i915.  One of the
+biggest areas we have right now is context mutability.  There's no good
+reason why things like the set of engines or the VM should be able to be
+changed on the fly and no "real" userspace actually relies on this
+functionality.  It does, however, make for a good excuse for tests and lots
+of bug reports as things like swapping out the set of engines under load
+break randomly.  The solution here is to stop allowing that behavior and
+simplify the i915 internals.
 
-Not quite.  The spinner is left running on a separate context.
+In particular, we'd like to remove the following from the i915 API:
 
-> > @@ -403,27 +428,29 @@ static void exec_single_timeline(int i915, unsigned int engine)
-> >       igt_require(spin);
-> >       igt_assert_eq(nop_sync(i915, ctx, engine, NSEC_PER_SEC), 0);
-> >       igt_spin_free(i915, spin);
-> > +     intel_ctx_destroy(i915, ctx);
-> >
-> >       /*
-> >        * But if we create a context with just a single shared timeline,
-> >        * then it will block waiting for the earlier requests on the
-> >        * other engines.
-> >        */
-> > -     ctx = gem_context_clone(i915, 0, 0,
-> > -                             I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
-> > +     st_cfg = *cfg;
-> > +     st_cfg.flags |= I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE;
-> > +     ctx = intel_ctx_create(i915, &st_cfg);
-> >       spin = NULL;
-> > -     __for_each_physical_engine(i915, e) {
-> > +     for_each_ctx_cfg_engine(i915, cfg, e) {
->
-> Preferably &st_cfg, ok otherwise too.
+ 1. I915_CONTEXT_CLONE_*.  These are only used by IGT and have never been
+    used by any "real" userspace.
 
-Done.
+ 2. Changing the VM or set of engines via SETPARAM after they've been
+    "used" by an execbuf or similar.  This would effectively make those
+    parameters create params rather than mutable state.  We can't drop
+    setparam entirely for those because media does use it but we can
+    enforce some rules.
 
-> > @@ -592,22 +620,19 @@ static void independent(int i915,
-> >       igt_require_f(mmio_base, "mmio base not known\n");
-> >
-> >       for (int n = 0; n < ARRAY_SIZE(spin); n++) {
-> > -             const struct igt_spin_factory opts = {
-> > -                     .ctx_id = create_highest_priority(i915),
-> > -                     .engine = e->flags,
-> > -             };
-> > -             spin[n] = __igt_spin_factory(i915, &opts);
-> > -             gem_context_destroy(i915, opts.ctx_id);
-> > +             const intel_ctx_t *ctx = create_highest_priority(i915, cfg);
-> > +             spin[n] = __igt_spin_new(i915, .ctx = ctx, .engine = e->flags);
-> > +             intel_ctx_destroy(i915, ctx);
-> >       }
-> >
-> >       fence = igt_cork_plug(&cork, i915);
-> >       for (int i = 0; i < ARRAY_SIZE(priorities); i++) {
-> > -             uint32_t ctx = gem_queue_create(i915);
-> > -             gem_context_set_priority(i915, ctx, priorities[i]);
-> > +             const intel_ctx_t *ctx = create_highest_priority(i915, cfg);
->
-> Don't we need gem_queue_create equivalent here (I915_CONTEXT_CLONE_VM and
-> I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE)?
+ 3. Unused (by non-IGT userspace) GETPARAM for things like engines.
 
-Each of these contexts is only used for the one spinner and will
-execute exactly one batch before being destroyed.  Having
-SINGLE_TIMELINE in there does us nothing.
+As much as we'd love to do that, we have a bit of a problem in IGT.  The
+way we handle multi-engine testing today relies heavily on this soon-to-be-
+deprecated functionality.  In particular, the standard flow is usually
+something like this:
 
-> > -static void reorder(int i915, unsigned ring, unsigned flags)
-> > +static void reorder(int i915, const intel_ctx_cfg_t *cfg,
-> > +                 unsigned ring, unsigned flags)
-> >  #define EQUAL 1
-> >  {
-> >       IGT_CORK_HANDLE(cork);
-> >       uint32_t scratch;
-> >       uint32_t *ptr;
-> > -     uint32_t ctx[2];
-> > +     const intel_ctx_t *ctx[2];
-> >       uint32_t plug;
-> >
-> > -     ctx[LO] = gem_queue_create(i915);
-> > -     gem_context_set_priority(i915, ctx[LO], MIN_PRIO);
-> > +     ctx[LO] = intel_ctx_create(i915, cfg);
-> > +     gem_context_set_priority(i915, ctx[LO]->id, MIN_PRIO);
-> >
-> > -     ctx[HI] = gem_queue_create(i915);
-> > -     gem_context_set_priority(i915, ctx[HI], flags & EQUAL ? MIN_PRIO : 0);
-> > +     ctx[HI] = intel_ctx_create(i915, cfg);
-> > +     gem_context_set_priority(i915, ctx[HI]->id, flags & EQUAL ? MIN_PRIO : 0);
->
-> Again, don't we need gem_queue_create equivalent here?
+    static void run_test1(int fd, uint32_t engine)
+    {
+        igt_spin_t *spin;
 
-Again, they're only used for a single store_dword(), single_timeline
-doesn't do anything.
+        ctx = = gem_context_clone_with_engines(fd, 0);
+        __igt_spin_new(fd, ctx, .engine = engine);
 
-It's important to note that SINGLE_TIMELINE only applies to within a
-context.  You only get timelines shared across context if you do
-CLONE_TIMELINE which gem_queue_create() does NOT set.
+        /* do some testing with ctx */
 
-> > -static void promotion(int i915, unsigned ring)
-> > +static void promotion(int i915, const intel_ctx_cfg_t *cfg, unsigned ring)
-> >  {
-> >       IGT_CORK_HANDLE(cork);
-> >       uint32_t result, dep;
-> >       uint32_t *ptr;
-> > -     uint32_t ctx[3];
-> > +     const intel_ctx_t *ctx[3];
-> >       uint32_t plug;
-> >
-> > -     ctx[LO] = gem_queue_create(i915);
-> > -     gem_context_set_priority(i915, ctx[LO], MIN_PRIO);
-> > +     ctx[LO] = intel_ctx_create(i915, cfg);
-> > +     gem_context_set_priority(i915, ctx[LO]->id, MIN_PRIO);
-> >
-> > -     ctx[HI] = gem_queue_create(i915);
-> > -     gem_context_set_priority(i915, ctx[HI], 0);
-> > +     ctx[HI] = intel_ctx_create(i915, cfg);
-> > +     gem_context_set_priority(i915, ctx[HI]->id, 0);
-> >
-> > -     ctx[NOISE] = gem_queue_create(i915);
-> > -     gem_context_set_priority(i915, ctx[NOISE], MIN_PRIO/2);
-> > +     ctx[NOISE] = intel_ctx_create(i915, cfg);
-> > +     gem_context_set_priority(i915, ctx[NOISE]->id, MIN_PRIO/2);
->
-> Again, don't we need gem_queue_create equivalent here?
+        igt_spin_free(fd, spin);
+        gem_destroy_context(fd, ctx);
+    }
 
-Same.  The only engine used is the one specified by the ring parameter.
+    igt_main
+    {
+        struct intel_execution_engine2 *e;
 
-Except I just realized we have a potential problem here if we don't
-share a VM.  In particular, if anything has to relocate, it's going to
-force an ordering other than the one we're trying to test.  We really
-should convert these tests to always use softpin but that's a task for
-another day.  I've fixed them all and the fixes will be in v2.
+        /* Usual fixture code */
+
+        __for_each_physical_engine(fd, e)
+            run_test1(fd, e->flags);
+
+        __for_each_physical_engine(fd, e)
+            run_test2(fd, e->flags);
+    }
+
+Let's walk through what this does:
+
+ 1. __for_each_physical_engine calls intel_init_engine_list() which resets
+    the set of engines on ctx0 to the full set of engines available as per
+    the engine query.  On older kernels/hardware where we don't have the
+    engines query, it leaves the set alone.
+
+ 2. intel_init_engine_list() also returns a set of engines for iteration
+    and __for_each_physical_engine() sets up a for loop to walk the set.
+
+ 3. gem_context_clone_with_engines() creates a new context using
+    I915_CONTEXT_CONTEXT_CLONE_ENGINES (not used by anything other than
+    IGT) to ask that the newly created context has the same set of engines
+    as ctx0.  Remember we changed that at the start of loop iteration!
+
+ 4. When the context is passed to __igt_spin_new(), it calls
+    gem_context_lookup_engine which does a GETPARAM to introspet the set of
+    engines on the context and figure out the engine class.
+
+If you've been keeping track, this trivial and extremely common example
+uses every single one of these soon-to-be-deprecated APIs even though the
+test author may be completely obvious to it.  It also means that getting
+rid of IGT's use of them is going to require some fairly deep surgery.
+
+The approach proposed and partially implemented here is to add a new
+wrapper struct intel_ctx_t which wraps a GEM context handle as well as the
+full set of parameters used to create it, represented by intel_ctx_cfg_t.
+We can then use the context anywhere we would regularly use a context, we
+just have to do ctx->id.  If we want to clone it, we can do so by re-using
+the create parameters by calling intel_ctx_create(fd, &old_ctx->cfg);
+
+Along with the above rework (which got long, sorry) I've got a few other
+patches in here which delete tests which exist expressly to test APIs that
+are on the chopping block.
+
+v2 (Jason Ekstrand):
+ - Better documentation
+ - Two more patches at the end to clean up query APIs even more
+
+v3 (Jason Ekstrand):
+ - Improved intel_ctx interface
+ - More tests converted to intel_ctx_t
+ - Misc. bug fixes
+
+v4 (Jason Ekstrand):
+ - Rebased
+ - Add tests for new error conditions
+
+v5 (Jason Ekstrand):
+ - Apply review feedback from Zbigniew
+ - Fix some issues caused by updates to the kernel series
+
+v6 (Jason Ekstrand):
+ - First 17 patches from the original have been merged
+ - Apply review feedback from Ashutosh and Zbigniew
+ - Fix some tests for the set-once rule for CONTEXT_PARAM_ENGINES
+
+v7 (Jason Ekstrand):
+ - Rebased on master
+ - Apply review feedback from Ashutosh and Zbigniew
 
 --Jason
 
-> > @@ -761,16 +788,16 @@ static void smoketest(int i915, unsigned ring, unsigned timeout)
-> >       scratch = gem_create(i915, 4096);
-> >       igt_fork(child, ncpus) {
-> >               unsigned long count = 0;
-> > -             uint32_t ctx;
-> > +             const intel_ctx_t *ctx;
-> >
-> >               hars_petruska_f54_1_random_perturb(child);
-> >
-> > -             ctx = gem_queue_create(i915);
-> > +             ctx = intel_ctx_create(i915, cfg);
->
-> Again, don't we need gem_queue_create equivalent here?
+Jason Ekstrand (79):
+  lib/i915/gem_submission_measure: Take an optional intel_ctx_cfg_t
+  tests/i915/gem_exec_fence: Move the engine data into
+    inter_engine_context (v3)
+  tests/i915/gem_exec_fence: Convert to intel_ctx_t (v2)
+  tests/i915/gem_exec_schedule: Convert to intel_ctx_t (v2)
+  tests/i915/perf_pmu: Convert to intel_ctx_t (v3)
+  tests/i915/gem_exec_nop: Convert to intel_ctx_t
+  tests/i915/gem_exec_reloc: Convert to intel_ctx_t (v3)
+  tests/i915/gem_busy: Convert to intel_ctx_t (v3)
+  tests/i915/gem_ctx_isolation: Convert to intel_ctx_t (v2)
+  tests/i915/gem_exec_async: Convert to intel_ctx_t (v2)
+  tests/i915/sysfs_clients: Convert to intel_ctx_t
+  tests/i915/gem_exec_fair: Convert to intel_ctx_t
+  tests/i915/gem_spin_batch: Convert to intel_ctx_t (v2)
+  tests/i915/gem_exec_store: Convert to intel_ctx_t (v2)
+  tests/amdgpu/amd_prime: Convert to intel_ctx_t
+  tests/i915/i915_hangman: Convert to intel_ctx_t (v2)
+  tests/i915/gem_ringfill: Convert to intel_ctx_t
+  tests/prime_busy: Convert to intel_ctx_t
+  tests/prime_vgem: Convert to intel_ctx_t (v2)
+  tests/gem_exec_whisper: Convert to intel_ctx_t (v2)
+  tests/i915/gem_ctx_exec: Stop cloning contexts in close_race
+  tests/i915/gem_ctx_exec: Convert to intel_ctx_t
+  tests/i915/gem_exec_suspend: Convert to intel_ctx_t (v2)
+  tests/i915/gem_sync: Convert to intel_ctx_t (v2)
+  tests/i915/gem_userptr_blits: Convert to intel_ctx_t
+  tests/i915/gem_wait: Convert to intel_ctx_t (v2)
+  tests/i915/gem_request_retire: Convert to intel_ctx_t
+  tests/i915/gem_ctx_shared: Convert to intel_ctx_t (v2)
+  tests/i915/gem_ctx_shared: Stop cloning contexts
+  tests/i915/gem_create: Convert to intel_ctx_t
+  tests/i915/gem_ctx_switch: Convert to intel_ctx_t
+  tests/i915/gem_exec_parallel: Convert to intel_ctx_t (v2)
+  tests/i915/gem_exec_latency: Convert to intel_ctx_t (v3)
+  tests/i915/gem_watchdog: Convert to intel_ctx_t (v2)
+  tests/i915/gem_shrink: Convert to intel_ctx_t (v4)
+  tests/i915/gem_exec_params: Convert to intel_ctx_t
+  tests/i915/gem_exec_gttfill: Convert to intel_ctx_t (v2)
+  tests/i915/gem_exec_capture: Convert to intel_ctx_t (v2)
+  tests/i915/gem_exec_create: Convert to intel_ctx_t
+  tests/i915/gem_exec_await: Convert to intel_ctx_t (v2)
+  tests/i915/gem_ctx_persistence: Drop the clone subtest
+  tests/i915/gem_ctx_persistence: Drop the engine replace subtests
+  tests/i915/gem_ctx_persistence: Convert to intel_ctx_t
+  tests/i915/module_load: Convert to intel_ctx_t
+  tests/i915/pm_rc6_residency: Convert to intel_ctx_t
+  tests/i915/gem_cs_tlb: Convert to intel_ctx_t
+  tests/core_hotplug: Convert to intel_ctx_t
+  tests/i915/gem_exec_balancer: Stop cloning engines
+  tests/i915/gem_exec_balancer: Don't reset engines on a context
+  tests/i915/gem_exec_balancer: Stop munging ctx0 engines
+  tests/i915/gem_exec_balancer: Drop bonded tests
+  lib/intel_ctx: Add load balancing support (v2)
+  tests/i915/gem_exec_balancer: Convert to intel_ctx_t
+  tests/i915/gem_exec_endless: Stop munging ctx0 engines
+  lib/i915/submission: Rework gem_test_all_engines to use intel_ctx_t
+  lib/i915: Require a context config in gem_submission_measure
+  tests/i915/gem_ctx_engines: Rework execute-one*
+  tests/i915/gem_ctx_engines: Use better engine iteration
+  tests/i915/gem_ctx_engines: Drop the idempotent subtest
+  tests/i915/gem_ctx_create: Convert benchmarks to intel_ctx_t
+  tests/i915/gem_vm_create: Delete destroy racing tests
+  tests/i915/gem_vm_create: Use intel_ctx_t in the execbuf test
+  tests/i915/sysfs: Convert to intel_ctx_t
+  tests/i915/gem_workarounds: Convert to intel_ctx_t
+  lib/i915/gem_context: Delete all the context clone/copy stuff
+  tests/i915/gem_ctx_engines: Delete the libapi subtest
+  lib/igt_dummyload: Stop supporting ALL_ENGINES without an intel_ctx_t
+  lib/i915/gem_engine_topology: Delete the old physical engine iterators
+  tests/i915/gem_mmap_gtt: Convert to intel_ctx_t
+  igt/dummyload: Require an intel_ctx_t for POLL_RUN and !ALL_ENGINES
+  lib/i915: Rework engine API availability checks (v2)
+  lib/intel_bb: Remove intel_bb_assign_vm and tests (v2)
+  tests/i915/gem_ctx_param: Stop setting VMs on old contexts
+  tests/i915/gen9_exec_parse: Convert to intel_ctx_t
+  tests/i915/gem_ctx_param: Add tests for recently removed params
+  tests/i915/gem_ctx_param: Add a couple invalid PARAM_VM cases
+  tests/i915/gem_ctx_engines: Fix the invalid subtest for the new rules
+  tests/i915/gem_exec_balancer: Fix invalid-balancer for the set-once
+    rule
+  tests/i915/gem_exec_balancer: Add a test for combind balancing and
+    bonding (v2)
+
+ lib/i915/gem_context.c                | 199 +-----
+ lib/i915/gem_context.h                |  18 +-
+ lib/i915/gem_engine_topology.c        | 149 +----
+ lib/i915/gem_engine_topology.h        |  20 -
+ lib/i915/gem_submission.c             |  40 +-
+ lib/i915/gem_submission.h             |   7 +-
+ lib/igt_dummyload.c                   |  41 +-
+ lib/intel_batchbuffer.c               |  65 --
+ lib/intel_batchbuffer.h               |   4 -
+ lib/intel_ctx.c                       |  63 +-
+ lib/intel_ctx.h                       |   4 +
+ tests/amdgpu/amd_prime.c              |  10 +-
+ tests/core_hotunplug.c                |   6 +-
+ tests/i915/api_intel_bb.c             | 104 ---
+ tests/i915/gem_busy.c                 |  80 ++-
+ tests/i915/gem_create.c               |  14 +-
+ tests/i915/gem_cs_tlb.c               |  10 +-
+ tests/i915/gem_ctx_create.c           |  76 ++-
+ tests/i915/gem_ctx_engines.c          | 352 +++-------
+ tests/i915/gem_ctx_exec.c             |  60 +-
+ tests/i915/gem_ctx_isolation.c        | 127 ++--
+ tests/i915/gem_ctx_param.c            |  75 ++-
+ tests/i915/gem_ctx_persistence.c      | 457 ++++---------
+ tests/i915/gem_ctx_shared.c           | 380 +++++++----
+ tests/i915/gem_ctx_switch.c           | 115 ++--
+ tests/i915/gem_eio.c                  |   2 +-
+ tests/i915/gem_exec_async.c           |  32 +-
+ tests/i915/gem_exec_await.c           |  29 +-
+ tests/i915/gem_exec_balancer.c        | 907 ++++++++-----------------
+ tests/i915/gem_exec_capture.c         |  31 +-
+ tests/i915/gem_exec_create.c          |   9 +-
+ tests/i915/gem_exec_endless.c         |   2 +-
+ tests/i915/gem_exec_fair.c            | 112 ++--
+ tests/i915/gem_exec_fence.c           | 306 +++++----
+ tests/i915/gem_exec_gttfill.c         |  16 +-
+ tests/i915/gem_exec_latency.c         | 122 ++--
+ tests/i915/gem_exec_nop.c             | 156 +++--
+ tests/i915/gem_exec_parallel.c        |  29 +-
+ tests/i915/gem_exec_params.c          |   4 +-
+ tests/i915/gem_exec_reloc.c           |  98 +--
+ tests/i915/gem_exec_schedule.c        | 913 ++++++++++++++------------
+ tests/i915/gem_exec_store.c           |  36 +-
+ tests/i915/gem_exec_suspend.c         |  53 +-
+ tests/i915/gem_exec_whisper.c         |  88 ++-
+ tests/i915/gem_mmap_gtt.c             |  18 +-
+ tests/i915/gem_request_retire.c       |  17 +-
+ tests/i915/gem_ringfill.c             |  48 +-
+ tests/i915/gem_shrink.c               |  18 +-
+ tests/i915/gem_spin_batch.c           |  81 ++-
+ tests/i915/gem_sync.c                 | 158 +++--
+ tests/i915/gem_userptr_blits.c        |  25 +-
+ tests/i915/gem_vm_create.c            | 125 +---
+ tests/i915/gem_wait.c                 |  20 +-
+ tests/i915/gem_watchdog.c             | 169 ++---
+ tests/i915/gem_workarounds.c          |  13 +-
+ tests/i915/gen9_exec_parse.c          | 106 +--
+ tests/i915/i915_hangman.c             |  37 +-
+ tests/i915/i915_module_load.c         |   7 +-
+ tests/i915/i915_pm_rc6_residency.c    |   7 +-
+ tests/i915/i915_pm_rpm.c              |   2 +-
+ tests/i915/i915_query.c               |  17 +-
+ tests/i915/perf_pmu.c                 | 243 ++++---
+ tests/i915/sysfs_clients.c            |  87 +--
+ tests/i915/sysfs_heartbeat_interval.c |  40 +-
+ tests/i915/sysfs_preempt_timeout.c    |  39 +-
+ tests/i915/sysfs_timeslice_duration.c |  51 +-
+ tests/prime_busy.c                    |  19 +-
+ tests/prime_vgem.c                    |  35 +-
+ 68 files changed, 3028 insertions(+), 3775 deletions(-)
+
+-- 
+2.31.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
