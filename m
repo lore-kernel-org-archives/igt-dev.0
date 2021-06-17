@@ -1,13 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com
+ [IPv6:2607:f8b0:4864:20::b2e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B7E86E93C
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 16:16:59 +0000 (UTC)
+Received: by mail-yb1-xb2e.google.com with SMTP id c14so9046052ybk.3
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 09:16:59 -0700 (PDT)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 17 Jun 2021 16:02:19 -0000
-Message-ID: <162394573995.3754.11298709405945504373@emeril.freedesktop.org>
-References: <20210617152032.431594-1-markyacoub@chromium.org>
-In-Reply-To: <20210617152032.431594-1-markyacoub@chromium.org>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/kms=5Fvblank=3A_Turn_on_hardware_before_testing_invalid_vb?=
- =?utf-8?b?bGFuay4gKHJldjMp?=
+References: <20210614163902.366168-5-jason@jlekstrand.net>
+ <20210616170839.484410-1-jason@jlekstrand.net>
+ <87k0mt367i.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <87k0mt367i.wl-ashutosh.dixit@intel.com>
+From: Jason Ekstrand <jason@jlekstrand.net>
+Date: Thu, 17 Jun 2021 11:16:47 -0500
+Message-ID: <CAOFGe974ORP5ACbF_njfBg37fqrHqM0oqvLh+CsZO+JdBV7ETQ@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/i915: Use intel_ctx_0() for
+ submission tests (v2)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,74 +22,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>
-Cc: igt-dev@lists.freedesktop.org
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: tests/kms_vblank: Turn on hardware before testing invalid vblank. (rev3)
-URL   : https://patchwork.freedesktop.org/series/90382/
-State : warning
-
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/341723 for the overview.
-
-test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/11002462):
-  [7447940.955795] Test exited with IGT_EXIT_ABORT, aborting.
-  [7447942.102058] Test exited with IGT_EXIT_ABORT, aborting.
-  -------
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1623945545:step_script
-  section_start:1623945545:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1615 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... ok  id=11002462 responseStatus=201 Created token=LrUrJB_K
-  section_end:1623945557:upload_artifacts_on_failure
-  section_start:1623945557:cleanup_file_variables
-  Cleaning up file based variables
-  section_end:1623945559:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/11002463):
-  [7447945.994431] Test exited with IGT_EXIT_ABORT, aborting.
-  [7447947.867827] Test exited with IGT_EXIT_ABORT, aborting.
-  -------
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1623945550:step_script
-  section_start:1623945550:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1618 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... ok  id=11002463 responseStatus=201 Created token=DbpQq_sw
-  section_end:1623945562:upload_artifacts_on_failure
-  section_start:1623945562:cleanup_file_variables
-  Cleaning up file based variables
-  section_end:1623945563:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/341723
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gV2VkLCBKdW4gMTYsIDIwMjEgYXQgMzoyOCBQTSBEaXhpdCwgQXNodXRvc2gKPGFzaHV0b3No
+LmRpeGl0QGludGVsLmNvbT4gd3JvdGU6Cj4KPiBPbiBXZWQsIDE2IEp1biAyMDIxIDEwOjA4OjM5
+IC0wNzAwLCBKYXNvbiBFa3N0cmFuZCB3cm90ZToKPiA+Cj4gPiBUaGlzIGRvZXMgbWFrZSB0aGUg
+YXNzdW1wdGlvbiB0aGF0IGN0eDAgaGFzIHRoZSBkZWZhdWx0IHNldCBvZiBlbmdpbmVzCj4gPiBi
+dXQsIG5vdyB0aGF0IHdlJ3ZlIGNvbnZlcnRlZCBldmVyeXRoaW5nIHRvIGludGVsX2N0eF90LCB0
+aGlzIGFzc3VtcHRpb24KPiA+IHNob3VsZCBiZSBvay4KPiA+Cj4gPiB2MiAoWmJpZ25pZXcgS2Vt
+cGN6ecWEc2tpKToKPiA+ICAtIFVzZSBmb3JfZWFjaF9jdHhfZW5naW5lIHdpdGggaW50ZWxfY3R4
+XzAoKSBpbnN0ZWFkIG9mCj4gPiAgICBmb3JfZWFjaF9waHlzaWNhbF9yaW5nKCkKPiA+Cj4gPiBT
+aWduZWQtb2ZmLWJ5OiBKYXNvbiBFa3N0cmFuZCA8amFzb25Aamxla3N0cmFuZC5uZXQ+Cj4gPiAt
+LS0KPiA+ICBsaWIvaTkxNS9nZW1fc3VibWlzc2lvbi5jIHwgNCArKy0tCj4gPiAgMSBmaWxlIGNo
+YW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKPiA+Cj4gPiBkaWZmIC0tZ2l0
+IGEvbGliL2k5MTUvZ2VtX3N1Ym1pc3Npb24uYyBiL2xpYi9pOTE1L2dlbV9zdWJtaXNzaW9uLmMK
+PiA+IGluZGV4IGJkNGJiYjNlZi4uMWFmMDA5ZmIxIDEwMDY0NAo+ID4gLS0tIGEvbGliL2k5MTUv
+Z2VtX3N1Ym1pc3Npb24uYwo+ID4gKysrIGIvbGliL2k5MTUvZ2VtX3N1Ym1pc3Npb24uYwo+ID4g
+QEAgLTIwMiw3ICsyMDIsNyBAQCB2b2lkIGdlbV90ZXN0X2VuZ2luZShpbnQgaTkxNSwgdW5zaWdu
+ZWQgaW50IGVuZ2luZSkKPiA+ICAgICAgIGlmIChlbmdpbmUgPT0gQUxMX0VOR0lORVMpIHsKPiA+
+ICAgICAgICAgICAgICAgY29uc3Qgc3RydWN0IGludGVsX2V4ZWN1dGlvbl9lbmdpbmUyICplMjsK
+PiA+Cj4gPiAtICAgICAgICAgICAgIF9fZm9yX2VhY2hfcGh5c2ljYWxfZW5naW5lKGk5MTUsIGUy
+KSB7Cj4gPiArICAgICAgICAgICAgIGZvcl9lYWNoX2N0eF9lbmdpbmUoaTkxNSwgaW50ZWxfY3R4
+XzAoaTkxNSksIGUyKSB7Cj4gPiAgICAgICAgICAgICAgICAgICAgICAgZXhlY2J1Zi5mbGFncyA9
+IGUyLT5mbGFnczsKPiA+ICAgICAgICAgICAgICAgICAgICAgICBnZW1fZXhlY2J1ZihpOTE1LCAm
+ZXhlY2J1Zik7Cj4gPiAgICAgICAgICAgICAgIH0KPiA+IEBAIC0zODUsNyArMzg1LDcgQEAgdW5z
+aWduZWQgaW50IGdlbV9zdWJtaXNzaW9uX21lYXN1cmUoaW50IGk5MTUsIHVuc2lnbmVkIGludCBl
+bmdpbmUpCj4gPiAgICAgICAgICAgICAgIHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAq
+ZTsKPiA+Cj4gPiAgICAgICAgICAgICAgIHNpemUgPSAtMTsKPiA+IC0gICAgICAgICAgICAgX19m
+b3JfZWFjaF9waHlzaWNhbF9lbmdpbmUoaTkxNSwgZSkgewo+ID4gKyAgICAgICAgICAgICBmb3Jf
+ZWFjaF9jdHhfZW5naW5lKGk5MTUsIGludGVsX2N0eF8wKGk5MTUpLCBlKSB7Cj4KPiBNYXliZSBJ
+IGFtIG1pc3Npbmcgc29tZXRoaW5nIGJ1dCBJIHJlYWxseSBhbSBub3QgZm9sbG93aW5nIHdoeSB3
+ZSBhcmUKPiBjaGFuZ2luZyB0aGVzZSBsb29wcyB0byBpdGVyYXRlIG9ubHkgb24gbGVnYWN5L3N0
+YXRpYyBlbmdpbmVzIHdoZW4KPiBwcmV2aW91c2x5IF9fZm9yX2VhY2hfcGh5c2ljYWxfZW5naW5l
+IGl0ZXJhdGVzIG9uIGFsbCBwcmVzZW50IGVuZ2luZXM/CgpXZWxsLCB0aGlzIGlzIGFubm95aW5n
+LiAgRm9yIGdlbV90ZXN0X2VuZ2luZSwgd2UgYWx3YXlzIGNhbGwgaXQgd2l0aApBTExfRU5HSU5F
+Uy4gIEknbSBnb2luZyB0byByZW5hbWUgdGhhdCBvbmUgdG8gZ2VtX3Rlc3RfYWxsX2VuZ2luZXMo
+KQphbmQgbWFrZSBpdCBjcmVhdGUgaXRzIG93biBjb250ZXh0LiAgRm9yIGdlbV9zdWJtaXNzaW9u
+X21lYXN1cmUsIEknbQpsZXNzIHN1cmUgd2hhdCB0byBkby4gIEknZCBsaWtlIHRvIGtlZXAgYm90
+aCBzaWRlcyBjb25zaXN0ZW50LiAgTWF5YmUKdGhlIGFuc3dlciBpcyB0aGF0IGl0IG5lZWRzIHRv
+IHRha2UgYW4gaW50ZWxfY3R4X3Q/ICBJJ2xsIGxvb2sgZGVlcGVyLgoKLS1KYXNvbgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcg
+bGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNr
+dG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
