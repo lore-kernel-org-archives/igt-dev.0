@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com
- [IPv6:2607:f8b0:4864:20::b36])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD16C6E92F
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 15:56:52 +0000 (UTC)
-Received: by mail-yb1-xb36.google.com with SMTP id e10so8925316ybb.7
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 08:56:52 -0700 (PDT)
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com
+ [IPv6:2607:f8b0:4864:20::b31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 815A36E92F
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 15:59:27 +0000 (UTC)
+Received: by mail-yb1-xb31.google.com with SMTP id f84so9002446ybg.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jun 2021 08:59:27 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210614163704.365989-4-jason@jlekstrand.net>
- <20210616165724.480899-1-jason@jlekstrand.net>
- <87fsxh2y4l.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <87fsxh2y4l.wl-ashutosh.dixit@intel.com>
+References: <20210614163704.365989-1-jason@jlekstrand.net>
+ <20210614163902.366168-13-jason@jlekstrand.net>
+ <87czsl2v2q.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <87czsl2v2q.wl-ashutosh.dixit@intel.com>
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Thu, 17 Jun 2021 10:56:40 -0500
-Message-ID: <CAOFGe94v7D3bkAgmDiC=qooEkVVLTeWFRvr+MkOCxxB7iWLz7A@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_shrink: Convert to
- intel_ctx_t (v3)
+Date: Thu, 17 Jun 2021 10:59:15 -0500
+Message-ID: <CAOFGe97tBGJqpY4D1AVuxwjqpTxvTYERi70kYKnUNx0UxTZr6w@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 62/77] tests/i915/gem_workarounds:
+ Convert to intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,27 +30,26 @@ To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jun 16, 2021 at 6:22 PM Dixit, Ashutosh
+On Wed, Jun 16, 2021 at 7:28 PM Dixit, Ashutosh
 <ashutosh.dixit@intel.com> wrote:
 >
-> On Wed, 16 Jun 2021 09:57:24 -0700, Jason Ekstrand wrote:
+> On Mon, 14 Jun 2021 09:38:47 -0700, Jason Ekstrand wrote:
 > >
-> > @@ -185,13 +188,16 @@ static void execbufX(int fd, uint64_t alloc)
-> >
-> >               execbuf.buffers_ptr = to_user_pointer(&obj[j]);
-> >               execbuf.buffer_count = i + 1;
-> > -             execbuf.flags = engines[j % nengine];
-> > +             execbuf.flags = engines.engines[i % engines.nengines].flags;
+> > Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 >
-> Should this be [j % engines.nengines]?
+> Just to make sure, this would have worked with the previous code too
+> (i.e. without this patch), correct, using .ctx_id for igt_spin_new? What
+> then is the reason for this patch, is it that intel_ctx_0 is preferred?
 
-Yup.  Good catch.
+A context is required for SPIN_POLL_RUN.  We could, in theory, make
+NULL work by just subbing in intel_ctx_0() but it's nicer to be
+explicit when we can, IMO.
 
-> Apart from this, this is:
+--Jason
+
+> Anyway the patch is fine so:
 >
 > Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-
-Thanks!
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
