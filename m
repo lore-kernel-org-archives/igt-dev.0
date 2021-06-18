@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 377BA6EA09
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Jun 2021 13:20:17 +0000 (UTC)
-Date: Fri, 18 Jun 2021 16:20:11 +0300
-From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20210618132011.GC1319857@ideak-desk.fi.intel.com>
-References: <20210615160022.31610-1-juhapekka.heikkila@gmail.com>
- <20210615160022.31610-2-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210615160022.31610-2-juhapekka.heikkila@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/4] tests/kms_ccs: separate ccs
- modifiers to separate subtests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 18 Jun 2021 13:45:02 -0000
+Message-ID: <162402390256.1294.6183932109467690053@emeril.freedesktop.org>
+References: <20210511090000.1521342-1-maarten.lankhorst@linux.intel.com>
+In-Reply-To: <20210511090000.1521342-1-maarten.lankhorst@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNTog?=
+ =?utf-8?q?Handle_the_case_where_legacy_mmap_is_not_available_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,245 +14,212 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0839863367=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jun 15, 2021 at 07:00:20PM +0300, Juha-Pekka Heikkila wrote:
-> Current kms_ccs test is not revealing if some ccs modifier fails
-> as long as there's at least one modifier not failing. Separate all
-> ccs modifiers onto their own tests making testing individual ccs
-> modifiers easier and not hiding failures.
-> 
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+--===============0839863367==
+Content-Type: multipart/alternative;
+ boundary="===============0567417485955094735=="
 
-Reviewed-by: Imre Deak <imre.deak@intel.com>
+--===============0567417485955094735==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-One nit below:
+== Series Details ==
 
-> ---
->  tests/kms_ccs.c | 156 +++++++++++++++++++++---------------------------
->  1 file changed, 67 insertions(+), 89 deletions(-)
-> 
-> diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
-> index a3eac1f8f..62850c1b2 100644
-> --- a/tests/kms_ccs.c
-> +++ b/tests/kms_ccs.c
-> @@ -41,6 +41,7 @@ enum test_flags {
->  	TEST_BAD_CCS_HANDLE		= 1 << 6,
->  	TEST_BAD_AUX_STRIDE		= 1 << 7,
->  	TEST_RANDOM			= 1 << 8,
-> +	TEST_ALL_PLANES			= 1 << 9,
->  };
->  
->  #define TEST_FAIL_ON_ADDFB2 \
-> @@ -92,11 +93,11 @@ static const struct {
->  	uint64_t modifier;
->  	const char *str;
->  } ccs_modifiers[] = {
-> -	{LOCAL_I915_FORMAT_MOD_Y_TILED_CCS, "LOCAL_I915_FORMAT_MOD_Y_TILED_CCS"},
-> -	{LOCAL_I915_FORMAT_MOD_Yf_TILED_CCS, "LOCAL_I915_FORMAT_MOD_Yf_TILED_CCS"},
-> -	{LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, "LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS"},
-> -	{LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC, "LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC"},
-> -	{LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS, "LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS"},
-> +	{LOCAL_I915_FORMAT_MOD_Y_TILED_CCS, "y_tiled_ccs"},
-> +	{LOCAL_I915_FORMAT_MOD_Yf_TILED_CCS, "yf_tiled_ccs"},
-> +	{LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, "y_tiled_gen12_rc_ccs"},
-> +	{LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC, "y_tiled_gen12_rc_ccs_cc"},
-> +	{LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS, "y_tiled_gen12_mc_ccs"},
->  };
->  
->  static bool check_ccs_planes;
-> @@ -507,37 +508,53 @@ static int test_ccs(data_t *data)
->  	return valid_tests;
->  }
->  
-> -static int __test_output(data_t *data)
-> +static void test_output(data_t *data, const char* testformatstring)
+Series: i915: Handle the case where legacy mmap is not available (rev3)
+URL   : https://patchwork.freedesktop.org/series/90001/
+State : success
 
-Just const char *test_name ?
+== Summary ==
 
->  {
-> -	igt_display_t *display = &data->display;
-> -	int i, valid_tests = 0;
-> -
-> -	data->output = igt_get_single_output_for_pipe(display, data->pipe);
-> -	igt_require(data->output);
-> -
-> -	igt_output_set_pipe(data->output, data->pipe);
-> -
-> -	for (i = 0; i < ARRAY_SIZE(ccs_modifiers); i++) {
-> -		int j;
-> +	igt_fixture {
-> +		data->output = igt_get_single_output_for_pipe(&data->display,
-> +							      data->pipe);
-> +		igt_output_set_pipe(data->output, data->pipe);
-> +	}
->  
-> +	for (int i = 0; i < ARRAY_SIZE(ccs_modifiers); i++) {
->  		data->ccs_modifier = ccs_modifiers[i].modifier;
-> -		igt_debug("Modifier in use: %s\n", ccs_modifiers[i].str);
-> -		for (j = 0; j < ARRAY_SIZE(formats); j++) {
-> -			data->format = formats[j];
-> -			valid_tests += test_ccs(data);
-> +
-> +		igt_subtest_f("pipe-%s-%s-%s", kmstest_pipe_name(data->pipe),
-> +			      testformatstring, ccs_modifiers[i].str ) {
-> +			int valid_tests = 0;
-> +			igt_require(data->output);
-> +
-> +			if (data->flags == TEST_RANDOM)
-> +				igt_info("Testing with seed %d\n", data->seed);
-> +
-> +			if (data->flags & TEST_ALL_PLANES) {
-> +				igt_display_require_output_on_pipe(&data->display, data->pipe);
-> +
-> +				for_each_plane_on_pipe(&data->display, data->pipe, data->plane) {
-> +					for (int j = 0; j < ARRAY_SIZE(formats); j++) {
-> +						data->format = formats[j];
-> +						valid_tests += test_ccs(data);
-> +					}
-> +				}
-> +			} else {
-> +				for (int j = 0; j < ARRAY_SIZE(formats); j++) {
-> +					data->format = formats[j];
-> +					valid_tests += test_ccs(data);
-> +				}
-> +			}
-> +			igt_require_f(valid_tests > 0,
-> +				      "no valid tests for %s on pipe %s\n",
-> +				      ccs_modifiers[i].str,
-> +				      kmstest_pipe_name(data->pipe));
->  		}
->  	}
->  
-> -	igt_output_set_pipe(data->output, PIPE_NONE);
-> -	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> -
-> -	return valid_tests;
-> -}
-> -
-> -static void test_output(data_t *data)
-> -{
-> -	int valid_tests = __test_output(data);
-> -	igt_require_f(valid_tests > 0, "CCS not supported, skipping\n");
-> +	igt_fixture {
-> +		igt_output_set_pipe(data->output, PIPE_NONE);
-> +		igt_display_commit2(&data->display, data->display.is_atomic ?
-> +				    COMMIT_ATOMIC : COMMIT_LEGACY);
-> +		data->plane = NULL;
-> +	}
->  }
->  
->  static int opt_handler(int opt, int opt_index, void *opt_data)
-> @@ -570,6 +587,22 @@ igt_main_args("cs:", NULL, help_str, opt_handler, &data)
->  {
->  	enum pipe pipe;
->  
-> +	const struct {
-> +		const enum test_flags	flags;
-> +		const char		*testname;
-> +		const char		*description;
-> +	} tests[] = {
-> +		{TEST_BAD_PIXEL_FORMAT, "bad-pixel-format", "Test bad pixel format with given CCS modifier"},
-> +		{TEST_BAD_ROTATION_90, "bad-rotation-90", "Test 90 degree rotation with given CCS modifier"},
-> +		{TEST_CRC, "crc-primary-basic", "Test primary plane CRC compatibility with given CCS modifier"},
-> +		{TEST_CRC | TEST_ROTATE_180, "crc-primary-rotation-180", "Test 180 degree rotation with given CCS modifier"},
-> +		{TEST_RANDOM, "random-ccs-data", "Test random CCS data"},
-> +		{TEST_NO_AUX_BUFFER, "missing-ccs-buffer", "Test missing CCS buffer with given CCS modifier"},
-> +		{TEST_BAD_CCS_HANDLE, "ccs-on-another-bo", "Test CCS with different BO with given modifier"},
-> +		{TEST_BAD_AUX_STRIDE, "bad-aux-stride", "Test with bad AUX stride with given CCS modifier"},
-> +		{TEST_CRC | TEST_ALL_PLANES, "crc-sprite-planes-basic", "Test sprite plane CRC compatibility with given CCS modifier"},
-> +	};
-> +
->  	igt_fixture {
->  		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
->  
-> @@ -584,68 +617,13 @@ igt_main_args("cs:", NULL, help_str, opt_handler, &data)
->  	}
->  
->  	for_each_pipe_static(pipe) {
-> -		const char *pipe_name = kmstest_pipe_name(pipe);
-> -
->  		data.pipe = pipe;
->  
-> -		data.flags = TEST_BAD_PIXEL_FORMAT;
-> -		igt_describe("Test bad pixel format with given CCS modifier");
-> -		igt_subtest_f("pipe-%s-bad-pixel-format", pipe_name)
-> -			test_output(&data);
-> -
-> -		data.flags = TEST_BAD_ROTATION_90;
-> -		igt_describe("Test 90 degree rotation with given CCS modifier");
-> -		igt_subtest_f("pipe-%s-bad-rotation-90", pipe_name)
-> -			test_output(&data);
-> -
-> -		data.flags = TEST_CRC;
-> -		igt_describe("Test primary plane CRC compatibility with given CCS modifier");
-> -		igt_subtest_f("pipe-%s-crc-primary-basic", pipe_name)
-> -			test_output(&data);
-> -
-> -		data.flags = TEST_CRC | TEST_ROTATE_180;
-> -		igt_describe("Test 180 degree rotation with given CCS modifier");
-> -		igt_subtest_f("pipe-%s-crc-primary-rotation-180", pipe_name)
-> -			test_output(&data);
-> -
-> -		data.flags = TEST_CRC;
-> -		igt_describe("Test sprite plane CRC compatibility with given CCS modifier");
-> -		igt_subtest_f("pipe-%s-crc-sprite-planes-basic", pipe_name) {
-> -			int valid_tests = 0;
-> -
-> -			igt_display_require_output_on_pipe(&data.display, data.pipe);
-> -
-> -			for_each_plane_on_pipe(&data.display, data.pipe, data.plane) {
-> -				valid_tests += __test_output(&data);
-> -			}
-> -
-> -			igt_require_f(valid_tests > 0,
-> -				      "CCS not supported, skipping\n");
-> -		}
-> -
-> -		data.plane = NULL;
-> -
-> -		data.flags = TEST_RANDOM;
-> -		igt_describe("Test random CCS data");
-> -		igt_subtest_f("pipe-%s-random-ccs-data", pipe_name) {
-> -			igt_info("Testing with seed %d\n", data.seed);
-> -			test_output(&data);
-> +		for (int c = 0; c < ARRAY_SIZE(tests); c++) {
-> +			data.flags = tests[c].flags;
-> +			igt_describe(tests[c].description);
-> +			test_output(&data, tests[c].testname);
->  		}
-> -
-> -		data.flags = TEST_NO_AUX_BUFFER;
-> -		igt_describe("Test missing CCS buffer with given CCS modifier");
-> -		igt_subtest_f("pipe-%s-missing-ccs-buffer", pipe_name)
-> -			test_output(&data);
-> -
-> -		data.flags = TEST_BAD_CCS_HANDLE;
-> -		igt_describe("Test CCS with different BO with given modifier");
-> -		igt_subtest_f("pipe-%s-ccs-on-another-bo", pipe_name)
-> -			test_output(&data);
-> -
-> -		data.flags = TEST_BAD_AUX_STRIDE;
-> -		igt_describe("Test with bad AUX stride with given CCS modifier");
-> -		igt_subtest_f("pipe-%s-bad-aux-stride", pipe_name)
-> -			test_output(&data);
->  	}
->  
->  	igt_fixture
-> -- 
-> 2.28.0
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+CI Bug Log - changes from IGT_6113 -> IGTPW_5940
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5940 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271]) +10 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#2190])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][3] ([i915#1886] / [i915#2291])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-kbl-7500u:       [PASS][5] -> [FAIL][6] ([i915#1372])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6113/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#533])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1372]: https://gitlab.freedesktop.org/drm/intel/issues/1372
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Participating hosts (41 -> 36)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6113 -> IGTPW_5940
+
+  CI-20190529: 20190529
+  CI_DRM_10242: a31069c62e8586aa92907539ab948412c1d5f5a0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5940: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/index.html
+  IGT_6113: 138a29e30277b1039e9934fca5c782dc1e7a9f99 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/index.html
+
+--===============0567417485955094735==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915: Handle the case where legacy mmap is not available (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/90001/">https://patchwork.freedesktop.org/series/90001/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6113 -&gt; IGTPW_5940</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5940 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +10 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6113/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1372">i915#1372</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (41 -&gt; 36)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6113 -&gt; IGTPW_5940</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10242: a31069c62e8586aa92907539ab948412c1d5f5a0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5940: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5940/index.html<br />
+  IGT_6113: 138a29e30277b1039e9934fca5c782dc1e7a9f99 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0567417485955094735==--
+
+--===============0839863367==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0839863367==--
