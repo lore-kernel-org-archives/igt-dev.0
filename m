@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com
- [IPv6:2607:f8b0:4864:20::72b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 51EE76E123
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Jun 2021 16:35:22 +0000 (UTC)
-Received: by mail-qk1-x72b.google.com with SMTP id q64so6032496qke.7
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Jun 2021 09:35:22 -0700 (PDT)
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com
+ [IPv6:2a00:1450:4864:20::12a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DAC956EA42
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Jun 2021 16:45:48 +0000 (UTC)
+Received: by mail-lf1-x12a.google.com with SMTP id r5so17703154lfr.5
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Jun 2021 09:45:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210617191256.577244-1-jason@jlekstrand.net>
- <20210617191256.577244-32-jason@jlekstrand.net>
- <87h7hvepqu.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <87h7hvepqu.wl-ashutosh.dixit@intel.com>
-From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Fri, 18 Jun 2021 11:35:09 -0500
-Message-ID: <CAOFGe96uzYUAg+EXo-MOMcqS7k-xLht+rLvJ6+P1s-qf1VvGVg@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 31/79] tests/i915/gem_ctx_switch:
- Convert to intel_ctx_t
+References: <20210618142855.5750-1-Anson.Jacob@amd.com>
+ <20210618142855.5750-5-Anson.Jacob@amd.com>
+In-Reply-To: <20210618142855.5750-5-Anson.Jacob@amd.com>
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Fri, 18 Jun 2021 12:45:36 -0400
+Message-ID: <CAJUqKUo_VHrYWZwQ=6NOWs=uNRt43PmJF9AchXu6uqfvc5-1QA@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/kms_plane_multiple: Disable
+ CRTC if no planes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,118 +25,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
+To: Anson Jacob <Anson.Jacob@amd.com>
+Cc: igt-dev@lists.freedesktop.org, Mark Yacoub <markyacoub@google.com>, Petri Latvala <petri.latvala@intel.com>, Victor Lu <victorchengchi.lu@amd.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jun 17, 2021 at 11:55 PM Dixit, Ashutosh
-<ashutosh.dixit@intel.com> wrote:
+On Fri, Jun 18, 2021 at 10:29 AM Anson Jacob <Anson.Jacob@amd.com> wrote:
 >
-> On Thu, 17 Jun 2021 12:12:38 -0700, Jason Ekstrand wrote:
-> >
-> > @@ -127,12 +130,12 @@ static void single(int fd, uint32_t handle,
-> >       shared = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-> >       igt_assert(shared != MAP_FAILED);
-> >
-> > -     for (n = 0; n < 64; n++) {
-> > -             if (flags & QUEUE)
-> > -                     contexts[n] = gem_queue_clone_with_engines(fd, 0);
-> > -             else
-> > -                     contexts[n] = gem_context_clone_with_engines(fd, 0);
-> > -     }
-> > +     cfg = *base_cfg;
-> > +     if (flags & QUEUE)
-> > +             cfg.vm = gem_vm_create(fd);
+> From: Victor Lu <victorchengchi.lu@amd.com>
 >
-> As we did in gem_exec_whisper.c and gem_ctx_shared.c, do we also need to
-> handle I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE here?
-
-Sure
-
-> > +static void all(int fd, uint32_t handle, const intel_ctx_cfg_t *base_cfg,
-> > +             unsigned flags, int timeout)
-> >  {
-> >       struct drm_i915_gem_execbuffer2 execbuf;
-> >       struct drm_i915_gem_exec_object2 obj[2];
-> >       struct intel_engine_data engines = { };
-> > -     uint32_t contexts[65];
-> > +     intel_ctx_cfg_t cfg;
-> > +     const intel_ctx_t *contexts[65];
-> >       int n, qlen;
-> >
-> > -     engines = intel_init_engine_list(fd, 0);
-> > +     engines = intel_engine_list_for_ctx_cfg(fd, base_cfg);
-> >       igt_require(engines.nengines);
-> >
-> > -     for (n = 0; n < ARRAY_SIZE(contexts); n++) {
-> > -             if (flags & QUEUE)
-> > -                     contexts[n] = gem_queue_clone_with_engines(fd, 0);
-> > -             else
-> > -                     contexts[n] = gem_context_clone_with_engines(fd, 0);
-> > -     }
-> > +     cfg = *base_cfg;
-> > +     if (flags & QUEUE)
-> > +             cfg.vm = gem_vm_create(fd);
+> [why]
+> amdgpu will reject commits where the CRTC is enabled and there are no
+> active planes.
 >
-> I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE?
-
-Sure
-
-> > @@ -244,13 +249,13 @@ static void all(int fd, uint32_t handle, unsigned flags, int timeout)
-> >       memset(&execbuf, 0, sizeof(execbuf));
-> >       execbuf.buffers_ptr = to_user_pointer(obj + 1);
-> >       execbuf.buffer_count = 1;
-> > -     execbuf.rsvd1 = contexts[0];
-> > +     execbuf.rsvd1 = contexts[0]->id;
-> >       execbuf.flags |= I915_EXEC_HANDLE_LUT;
-> >       execbuf.flags |= I915_EXEC_NO_RELOC;
-> >       igt_require(__gem_execbuf(fd, &execbuf) == 0);
-> >       gem_sync(fd, handle);
-> >
-> > -     qlen = measure_qlen(fd, &execbuf, &engines, timeout);
-> > +     qlen = measure_qlen(fd, base_cfg, &execbuf, &engines, timeout);
+> [how]
+> Disable the CRTC when committing with no active planes.
+Have we decided that this is the way moving forward?
+I got no strong opinion, just wondering.
 >
-> Because the cfg in the QUEUE case is different, should we just pass cfg
-> instead of base_cfg here?
-
-Sure.  I kind-of don't think it matters but, In the original, it used
-gem_context_clone_with_engines(fd, 0) which is identical
-gem_queue_create().  Let's go ahead and keep the VM sharing even
-though I don't know why it's useful.
-
-> > @@ -315,8 +322,8 @@ igt_main
-> >       } phases[] = {
-> >               { "", 0, NULL },
-> >               { "-interruptible", INTERRUPTIBLE, NULL },
-> > -             { "-queue", QUEUE, gem_has_queues },
-> > -             { "-queue-interruptible", QUEUE | INTERRUPTIBLE, gem_has_queues },
-> > +             { "-queue", QUEUE, gem_has_vm },
-> > +             { "-queue-interruptible", QUEUE | INTERRUPTIBLE, gem_has_vm },
+> Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
+> Acked-by: Anson Jacob <Anson.Jacob@amd.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Mark Yacoub <markyacoub@google.com>
+For posterity, please use markyacoub@chromium.org. thanks!
+> ---
+>  tests/kms_plane_multiple.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 >
-> My suggestion would be to resurrect gem_has_queues() here where
-> gem_has_queues == gem_has_vm && gem_context_has_single_timeline.
+> diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
+> index 4424b864b2d6..805c2a2130d7 100644
+> --- a/tests/kms_plane_multiple.c
+> +++ b/tests/kms_plane_multiple.c
+> @@ -315,6 +315,8 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
+>                 for_each_plane_on_pipe(&data->display, pipe, plane)
+>                         igt_plane_set_fb(plane, NULL);
 >
-> (In general maybe we can see if we can reinstate the queue concept itself
-> where a queue is a context with a shared VM and shared timeline, though not
-> sure about this because we now have context configs and flags. Anyway this
-> is a general observation, nothing specifically needed in this patch.)
-
-Yeah, I've thought about that.  One option would be to make a helper
-that copies cfg and sets cfg.vm to get_context_param(ctx=0,
-CONTEXT_PARAM_VM).  It's not a great solution and depends on the VM
-getparam which may go away in future.
-
-I think the real answer to a lot of these is actually softpin.  Most
-of the tests where VM sharing really matters are tests for parallel
-execution with the execlist scheduler which means they likely don't
-apply on older hardware anyway.  If we fix a few addresses, then
-there's no need for VM sharing because there won't be any
-serialization due to relocations to begin with.
-
-In any case, I can add VMs to contexts and smash SINGLE_TIMELINE to
-keep behavior the same for now.
-
---Jason
+> +               /* Disable CRTC if no active planes */
+> +               igt_output_set_pipe(output, PIPE_NONE);
+>                 igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>
+>                 for (int x = 0; x < c; x++)
+> @@ -344,6 +346,8 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
+>                 for_each_plane_on_pipe(&data->display, pipe, plane)
+>                         igt_plane_set_fb(plane, NULL);
+>
+> +               /* Disable CRTC if no active planes */
+> +               igt_output_set_pipe(output, PIPE_NONE);
+>                 igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>
+>                 for (int x = 0; x < c; x++)
+> --
+> 2.25.1
+>
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
