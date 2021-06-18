@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D29FF6E402
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Jun 2021 08:19:17 +0000 (UTC)
-Date: Fri, 18 Jun 2021 10:19:12 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210618081912.GA10919@zkempczy-mobl2>
-References: <20210617071643.5802-1-andrzej.turko@linux.intel.com>
- <20210617071643.5802-2-andrzej.turko@linux.intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 968E76E402
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Jun 2021 08:19:43 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+Date: Fri, 18 Jun 2021 08:19:40 +0000
+Message-ID: <608f458c5e4040b3833ac3247f2760e3@intel.com>
+References: <20210615160022.31610-1-juhapekka.heikkila@gmail.com>
+ <20210615160022.31610-3-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20210615160022.31610-3-juhapekka.heikkila@gmail.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210617071643.5802-2-andrzej.turko@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/api_intel_allocator:
- Exercise allocator in multiprocess mode
+Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tests/kms_plane: fix rounding error
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,61 +18,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Andrzej Turko <andrzej.turko@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBKdW4gMTcsIDIwMjEgYXQgMDk6MTY6NDJBTSArMDIwMCwgQW5kcnplaiBUdXJrbyB3
-cm90ZToKPiBUZXN0IGNyZWF0aW9uIGFuZCB1c2FnZSBvZiBhbGxvY2F0b3JzIGluIG11bHRpcHJv
-Y2VzcyBtb2RlCj4gZm9yIGNvbnRleHRzIHNoYXJlZCB3aXRoIHRoZSBwYXJlbnQgcHJvY2VzcyBh
-cyB3ZWxsIGFzCj4gcHJpdmF0ZSBmb3IgdGhlIGNoaWxkLgo+IAo+IFRoaXMgbmV3IHRlc3QgZGlz
-Y292ZXJzIGEgYnVnIGluIHRoZSBhbGxvY2F0b3IgaW1wbGVtZW50YXRpb246Cj4gYWxsb2NhdG9y
-IGlzIG5vdCBjb3JyZWN0bHkgaW5pdGlhbGl6ZWQgaWYgaXQgaXMgb3BlbmVkIGJ5Cj4gYSBjaGls
-ZCBwcm9jZXNzIHVzaW5nIGl0cyBwcml2YXRlIGZpbGUgZGVzY3JpcHRvci4KPiAKPiBTaWduZWQt
-b2ZmLWJ5OiBBbmRyemVqIFR1cmtvIDxhbmRyemVqLnR1cmtvQGxpbnV4LmludGVsLmNvbT4KPiBD
-YzogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+
-CgpUaGlzIGV4cG9zZXMgc29tZSBhbGxvY2F0b3IgdGhyZWFkIHdlYWsgcG9pbnQgLSBhc3NlcnRp
-bmcgYW5kIGJsb2NraW5nIGlwYy4KSSdtIGVucXVpbmcgd29yayB0byBpbXByb3ZlIHRoaXMuIEJ1
-dCB0ZXN0IGlzIG9rOgoKUmV2aWV3ZWQtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25p
-ZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgoKLS0KWmJpZ25pZXcKCgo+IC0tLQo+ICB0ZXN0cy9p
-OTE1L2FwaV9pbnRlbF9hbGxvY2F0b3IuYyB8IDQwICsrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrCj4gIDEgZmlsZSBjaGFuZ2VkLCA0MCBpbnNlcnRpb25zKCspCj4gCj4gZGlmZiAtLWdp
-dCBhL3Rlc3RzL2k5MTUvYXBpX2ludGVsX2FsbG9jYXRvci5jIGIvdGVzdHMvaTkxNS9hcGlfaW50
-ZWxfYWxsb2NhdG9yLmMKPiBpbmRleCBlYTRiYThiYjEuLmZkZmJkYmE4MiAxMDA2NDQKPiAtLS0g
-YS90ZXN0cy9pOTE1L2FwaV9pbnRlbF9hbGxvY2F0b3IuYwo+ICsrKyBiL3Rlc3RzL2k5MTUvYXBp
-X2ludGVsX2FsbG9jYXRvci5jCj4gQEAgLTYyMSw2ICs2MjEsNDMgQEAgc3RhdGljIHZvaWQgZXhl
-Y2J1Zl93aXRoX2FsbG9jYXRvcihpbnQgZmQpCj4gIAlpZ3RfYXNzZXJ0KGludGVsX2FsbG9jYXRv
-cl9jbG9zZShhaG5kKSA9PSB0cnVlKTsKPiAgfQo+ICAKPiArc3RhdGljIHZvaWQgZm9ya19yZW9w
-ZW5fYWxsb2NhdG9yKGludCBmZCwgdWludDhfdCB0eXBlKQo+ICt7Cj4gKwl1aW50NjRfdCBwX2Fo
-bmQsIHNoX2FobmQsIGZkX2FobmQsIGN0eF9haG5kOwo+ICsJdWludDY0X3Qgb2Zmc2V0Owo+ICsK
-PiArCWludGVsX2FsbG9jYXRvcl9tdWx0aXByb2Nlc3Nfc3RhcnQoKTsKPiArCj4gKwlwX2FobmQg
-PSBpbnRlbF9hbGxvY2F0b3Jfb3BlbihmZCwgMCwgdHlwZSk7Cj4gKwlvZmZzZXQgPSBpbnRlbF9h
-bGxvY2F0b3JfYWxsb2MocF9haG5kLCAxLCAxMjMsIDApOwo+ICsJaWYgKHR5cGUgPT0gSU5URUxf
-QUxMT0NBVE9SX1NJTVBMRSkKPiArCQlpZ3RfYXNzZXJ0KGludGVsX2FsbG9jYXRvcl9pc19hbGxv
-Y2F0ZWQocF9haG5kLCAxLCAxMjMsIG9mZnNldCkpOwo+ICsKPiArCWlndF9mb3JrKGNoaWxkLCAx
-KSB7Cj4gKwkJc2hfYWhuZCA9IGludGVsX2FsbG9jYXRvcl9vcGVuKGZkLCAwLCB0eXBlKTsKPiAr
-CQlpZiAodHlwZSA9PSBJTlRFTF9BTExPQ0FUT1JfU0lNUExFKQo+ICsJCQlpZ3RfYXNzZXJ0KGlu
-dGVsX2FsbG9jYXRvcl9pc19hbGxvY2F0ZWQoc2hfYWhuZCwgMSwgMTIzLCBvZmZzZXQpKTsKPiAr
-Cj4gKwkJY3R4X2FobmQgPSBpbnRlbF9hbGxvY2F0b3Jfb3BlbihmZCwgMSwgdHlwZSk7Cj4gKwkJ
-aWd0X2Fzc2VydCghaW50ZWxfYWxsb2NhdG9yX2lzX2FsbG9jYXRlZChjdHhfYWhuZCwgMSwgMTIz
-LCBvZmZzZXQpKTsKPiArCQlpbnRlbF9hbGxvY2F0b3JfYWxsb2MoY3R4X2FobmQsIDIsIDEyMywg
-MCk7Cj4gKwo+ICsJCWZkID0gZ2VtX3Jlb3Blbl9kcml2ZXIoZmQpOwo+ICsJCWZkX2FobmQgPSBp
-bnRlbF9hbGxvY2F0b3Jfb3BlbihmZCwgMCwgdHlwZSk7Cj4gKwkJaWd0X2Fzc2VydCghaW50ZWxf
-YWxsb2NhdG9yX2lzX2FsbG9jYXRlZChmZF9haG5kLCAxLCAxMjMsIG9mZnNldCkpOwo+ICsJCWlu
-dGVsX2FsbG9jYXRvcl9hbGxvYyhmZF9haG5kLCAyLCAxMjMsIDApOwo+ICsKPiArCQlpbnRlbF9h
-bGxvY2F0b3JfY2xvc2Uoc2hfYWhuZCk7Cj4gKwkJaW50ZWxfYWxsb2NhdG9yX2Nsb3NlKGN0eF9h
-aG5kKTsKPiArCQlpbnRlbF9hbGxvY2F0b3JfY2xvc2UoZmRfYWhuZCk7Cj4gKwl9Cj4gKwo+ICsJ
-aWd0X3dhaXRjaGlsZHJlbigpOwo+ICsJaW50ZWxfYWxsb2NhdG9yX2Nsb3NlKHBfYWhuZCk7Cj4g
-Kwo+ICsJaW50ZWxfYWxsb2NhdG9yX211bHRpcHJvY2Vzc19zdG9wKCk7Cj4gK30KPiArCj4gIHN0
-cnVjdCBhbGxvY2F0b3JzIHsKPiAgCWNvbnN0IGNoYXIgKm5hbWU7Cj4gIAl1aW50OF90IHR5cGU7
-Cj4gQEAgLTY3Miw2ICs3MDksOSBAQCBpZ3RfbWFpbgo+ICAJCQkJaWd0X2R5bmFtaWMoInJlc2Vy
-dmUiKQo+ICAJCQkJCXJlc2VydmUoZmQsIGEtPnR5cGUpOwo+ICAJCQl9Cj4gKwo+ICsJCQlpZ3Rf
-ZHluYW1pYygiZm9yay1yZW9wZW4tYWxsb2NhdG9yIikKPiArCQkJCQlmb3JrX3Jlb3Blbl9hbGxv
-Y2F0b3IoZmQsIGEtPnR5cGUpOwo+ICAJCX0KPiAgCX0KPiAgCj4gLS0gCj4gMi4yNS4xCj4gCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFp
-bGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Juha-
+> Pekka Heikkila
+> Sent: Tuesday, June 15, 2021 7:00 PM
+> To: igt-dev@lists.freedesktop.org
+> Subject: [igt-dev] [PATCH i-g-t 3/4] tests/kms_plane: fix rounding error
+> 
+> On some screen sizes with legacy hw there was possible to get rounding
+> error on source clamping test which would incorrectly fail clamping tests.
+> 
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+
+Looks solid.
+
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+
+> ---
+>  tests/kms_plane.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c index
+> ba419bbde..f22c045d8 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -473,12 +473,19 @@ static void draw_entire_color_array(data_t *data,
+> cairo_t *cr, uint32_t format,
+>  	const int color_amount = ARRAY_SIZE(colors_extended);
+>  	const int x = format == DRM_FORMAT_XRGB8888 ? 0 : data->crop;
+> 
+> +	if (format != DRM_FORMAT_XRGB8888) {
+> +		cairo_rectangle(cr, data->crop, data->crop,
+> +				fb->width - data->crop * 2,
+> +				fb->height - data->crop * 2);
+> +	}
+> +
+> +
+>  	for (int n = 0; n < color_amount; n++) {
+>  		int y = (fb->height - x * 2) * n / color_amount + x;
+> 
+>  		igt_paint_color(cr, x, y,
+>  				fb->width - x * 2,
+> -				(fb->height - x * 2) / color_amount,
+> +				(fb->height - x * 2) / color_amount + 1,
+>  				colors_extended[n].red,
+>  				colors_extended[n].green,
+>  				colors_extended[n].blue);
+> --
+> 2.28.0
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
