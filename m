@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 122526E9E9
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Jun 2021 10:47:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 153B26E9EB
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Jun 2021 10:47:49 +0000 (UTC)
 From: venkata.sai.patnana@intel.com
-Date: Fri, 18 Jun 2021 16:14:51 +0530
-Message-Id: <20210618104457.19969-1-venkata.sai.patnana@intel.com>
+Date: Fri, 18 Jun 2021 16:14:52 +0530
+Message-Id: <20210618104457.19969-2-venkata.sai.patnana@intel.com>
+In-Reply-To: <20210618104457.19969-1-venkata.sai.patnana@intel.com>
+References: <20210618104457.19969-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/7] tests/device_reset: Unload snd driver
+Subject: [igt-dev] [PATCH i-g-t 2/7] tests/core_hotunplug: Unload snd driver
  before i915 unbind
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -24,10 +26,10 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Uma Shankar <uma.shankar@intel.com>
 
-Unload the snd module before unbinding i915. Audio holds a wakeref which
-triggers a warning otherwise, resulting in below warning and test failure.
-Currently HSW/BDW and DG1 are the platforms affected, can be extended to
-other platforms as well.
+Unload the snd module before unbinding i915. Audio holds a wakeref
+which triggers a warning otherwise, resulting in below warning and
+test failure. Currently HSW/BDW and DG1 are the platforms affected,
+can be extended to other platforms as well.
 
 <4> [137.001006] ------------[ cut here ]------------
 <4> [137.001010] i915 0000:00:02.0: i915 raw-wakerefs=1 wakelocks=1 on cleanup
@@ -69,66 +71,32 @@ Signed-off-by: Uma Shankar <uma.shankar@intel.com>
 Acked-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 ---
- tests/device_reset.c | 61 +++++++++++++++++++++++++++++++++-----------
- 1 file changed, 46 insertions(+), 15 deletions(-)
+ tests/core_hotunplug.c | 53 +++++++++++++++++++++++++++++++-----------
+ 1 file changed, 40 insertions(+), 13 deletions(-)
 
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-index eef70733..e6a468e6 100644
---- a/tests/device_reset.c
-+++ b/tests/device_reset.c
-@@ -5,11 +5,13 @@
- #include <fcntl.h>
- #include <sys/ioctl.h>
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index a639cfb4..878efcc7 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -29,6 +29,7 @@
  #include <sys/stat.h>
+ #include <sys/types.h>
+ #include <unistd.h>
 +#include <signal.h>
  
  #include "i915/gem.h"
- #include "igt.h"
- #include "igt_device_scan.h"
- #include "igt_sysfs.h"
-+#include "igt_kmod.h"
- 
- IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
- 
-@@ -28,6 +30,7 @@ struct device_fds {
- 		int drv_dir;
- 	} fds;
- 	char dev_bus_addr[DEV_BUS_ADDR_LEN];
+ #include "i915/gem_create.h"
+@@ -53,6 +54,7 @@ struct hotunplug {
+ 	const char *failure;
+ 	bool need_healthcheck;
+ 	bool has_intel_perf;
 +	bool snd_unload;
  };
  
- static int __open_sysfs_dir(int fd, const char* path)
-@@ -82,6 +85,7 @@ static void init_device_fds(struct device_fds *dev)
- {
- 	char dev_path[PATH_MAX];
- 	char *addr_pos;
-+	uint32_t devid;
- 
- 	igt_debug("open device\n");
- 	/**
-@@ -91,9 +95,18 @@ static void init_device_fds(struct device_fds *dev)
- 	 */
- 	dev->fds.dev = __drm_open_driver(DRIVER_ANY);
- 	igt_assert_fd(dev->fds.dev);
--	if (is_i915_device(dev->fds.dev))
-+	if (is_i915_device(dev->fds.dev)) {
- 		igt_require_gem(dev->fds.dev);
- 
-+		devid = intel_get_drm_devid(dev->fds.dev);
-+		if ((IS_HASWELL(devid) || IS_BROADWELL(devid) ||
-+		     IS_DG1(devid)) &&
-+		     (igt_kmod_is_loaded("snd_hda_intel"))) {
-+			igt_debug("Enable WA to unload snd driver\n");
-+			dev->snd_unload = true;
-+		}
-+	}
-+
- 	igt_assert(device_sysfs_path(dev->fds.dev, dev_path));
- 	addr_pos = strrchr(dev_path, '/');
- 	igt_assert(addr_pos);
-@@ -164,6 +177,34 @@ static bool is_sysfs_reset_supported(int fd)
- /* Unbind the driver from the device */
- static void driver_unbind(struct device_fds *dev)
+ /* Helpers */
+@@ -138,6 +140,34 @@ static void prepare(struct hotunplug *priv)
+ static void driver_unbind(struct hotunplug *priv, const char *prefix,
+ 			  int timeout)
  {
 +	/**
 +	 * FIXME: Unbinding the i915 driver on affected platforms with
@@ -141,14 +109,14 @@ index eef70733..e6a468e6 100644
 +	 * failures blocking display CI, currently this seems to the
 +	 * safest and easiest way out.
 +	 */
-+	if (dev->snd_unload) {
++	if (priv->snd_unload) {
 +		igt_terminate_process(SIGTERM, "alsactl");
 +
 +		/* unbind snd_hda_intel */
 +		kick_snd_hda_intel();
 +
 +		if (igt_kmod_unload("snd_hda_intel", 0)) {
-+			dev->snd_unload = false;
++			priv->snd_unload = false;
 +			igt_warn("Could not unload snd_hda_intel\n");
 +			igt_kmod_list_loaded();
 +			igt_lsof("/dev/snd");
@@ -158,48 +126,57 @@ index eef70733..e6a468e6 100644
 +		}
 +	}
 +
- 	igt_debug("unbind the driver from the device\n");
- 	igt_assert(igt_sysfs_set(dev->fds.drv_dir, "unbind",
- 		   dev->dev_bus_addr));
-@@ -175,6 +216,9 @@ static void driver_bind(struct device_fds *dev)
- 	igt_debug("rebind the driver to the device\n");
- 	igt_abort_on_f(!igt_sysfs_set(dev->fds.drv_dir, "bind",
- 		       dev->dev_bus_addr), "driver rebind failed");
+ 	local_debug("%sunbinding the driver from the device\n", prefix);
+ 	priv->failure = "Driver unbind failure!";
+ 
+@@ -166,6 +196,9 @@ static void driver_bind(struct hotunplug *priv, int timeout)
+ 	igt_fail_on_f(faccessat(priv->fd.sysfs_drv, priv->dev_bus_addr,
+ 				F_OK, 0),
+ 		      "Rebound device not present!\n");
 +
-+	if (dev->snd_unload)
++	if (priv->snd_unload)
 +		igt_kmod_load("snd_hda_intel", NULL);
  }
  
- /* Initiate device reset */
-@@ -235,19 +279,6 @@ static void unbind_reset_rebind(struct device_fds *dev)
- 	igt_debug("close the device\n");
- 	close_if_opened(&dev->fds.dev);
- 
--	/**
--	 * FIXME: Unbinding the i915 driver on some platforms with Azalia audio
--	 * results in a kernel WARN on "i915 raw-wakerefs=1 wakelocks=1 on cleanup".
--	 * The below CI friendly user level workaround prevents the warning from
--	 * appearing. Drop this hack as soon as this is fixed in the kernel.
--	 */
--	if (is_i915_device(dev->fds.dev)) {
--		uint32_t devid = intel_get_drm_devid(dev->fds.dev);
--		if (igt_warn_on_f(IS_HASWELL(devid) || IS_BROADWELL(devid),
--		    "Manually enabling audio PM to work around a kernel WARN\n"))
--			igt_pm_enable_audio_runtime_pm();
--	}
--
- 	driver_unbind(dev);
- 
- 	initiate_device_reset(dev);
-@@ -257,7 +288,7 @@ static void unbind_reset_rebind(struct device_fds *dev)
- 
- igt_main
- {
--	struct device_fds dev = { .fds = {-1, -1, -1}, .dev_bus_addr = {0}};
-+	struct device_fds dev = { .fds = {-1, -1, -1}, .dev_bus_addr = {0}, };
+ /* Remove (virtually unplug) the device from its bus */
+@@ -574,6 +607,7 @@ igt_main
+ 		.failure	= NULL,
+ 		.need_healthcheck = true,
+ 		.has_intel_perf = false,
++		.snd_unload	= false,
+ 	};
  
  	igt_fixture {
- 		char dev_path[PATH_MAX];
+@@ -585,23 +619,16 @@ igt_main
+ 		if (is_i915_device(fd_drm)) {
+ 			uint32_t devid = intel_get_drm_devid(fd_drm);
+ 
++			if ((IS_HASWELL(devid) || IS_BROADWELL(devid) ||
++			     IS_DG1(devid)) && (igt_kmod_is_loaded("snd_hda_intel"))) {
++				igt_debug("Enable WA to unload snd driver\n");
++				priv.snd_unload = true;
++			}
++
+ 			gem_quiescent_gpu(fd_drm);
+ 			igt_require_gem(fd_drm);
+ 
+ 			priv.has_intel_perf = local_i915_perf_healthcheck(fd_drm);
+-
+-			/**
+-			 * FIXME: Unbinding the i915 driver on some Haswell
+-			 * platforms with Azalia audio results in a kernel WARN
+-			 * on "i915 raw-wakerefs=1 wakelocks=1 on cleanup".  The
+-			 * below CI friendly user level workaround prevents the
+-			 * warning from appearing.  Drop this hack as soon as
+-			 * this is fixed in the kernel.
+-			 */
+-			if (igt_warn_on_f(IS_HASWELL(devid) ||
+-					  IS_BROADWELL(devid),
+-			    "Manually enabling audio PM to work around a kernel WARN\n"))
+-				igt_pm_enable_audio_runtime_pm();
+ 		}
+ 
+ 		/* Make sure subtests always reopen the same device */
 -- 
 2.32.0
 
