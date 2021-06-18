@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D48376E858
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Jun 2021 06:04:34 +0000 (UTC)
-Date: Fri, 18 Jun 2021 08:04:21 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210618060421.GB3677@zkempczy-mobl2>
-References: <20210617191256.577244-1-jason@jlekstrand.net>
- <20210617191256.577244-36-jason@jlekstrand.net>
+From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Date: Fri, 18 Jun 2021 06:24:32 +0000
+Message-ID: <BY5PR11MB4372A68B06BFFF1D3C11B294890D9@BY5PR11MB4372.namprd11.prod.outlook.com>
+References: <1622547939-8157-1-git-send-email-vidya.srinivas@intel.com>
+ <1622556485-9375-1-git-send-email-vidya.srinivas@intel.com>
+ <CO6PR11MB556976C4EC81D88FC86D1C768D349@CO6PR11MB5569.namprd11.prod.outlook.com>
+ <BY5PR11MB437213735019658A601D098D89349@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <BY5PR11MB4372B0A65DA52560451EAA5289349@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <BY5PR11MB437250EA6AD698B6D28D9D1089309@BY5PR11MB4372.namprd11.prod.outlook.com>
+In-Reply-To: <BY5PR11MB437250EA6AD698B6D28D9D1089309@BY5PR11MB4372.namprd11.prod.outlook.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210617191256.577244-36-jason@jlekstrand.net>
-Subject: Re: [igt-dev] [PATCH i-g-t 35/79] tests/i915/gem_shrink: Convert to
- intel_ctx_t (v4)
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] [RFC]
+ tests/kms_plane_alpha_blend: Don't set primary fb color in
+ coverage-vs-premult-vs-constant
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,95 +21,126 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jason Ekstrand <jason@jlekstrand.net>
-Cc: igt-dev@lists.freedesktop.org
+To: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Latvala, Petri" <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBKdW4gMTcsIDIwMjEgYXQgMDI6MTI6NDJQTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
-d3JvdGU6Cj4gT25seSBvbmUgc3VidGVzdCBhY3R1YWxseSBuZWVkcyB0byBpdGVyYXRlIG92ZXIg
-ZW5naW5lcy4KPiAKPiB2MiAoWmJpZ25pZXcgS2VtcGN6ecWEc2tpKToKPiAgLSBSZXdvcmsgdGhl
-IGV4ZWNidWZYIGxvb3AgdG8gYmUgbW9yZSByb2J1c3QKPiAKPiB2MyAoQXNodXRvc2ggRGl4aXQp
-Ogo+ICAtIERvbid0IGV4cGxpY2l0bHkgY3JlYXRlIFZNcyBpZiB3ZSBkb24ndCBoYXZlIGZ1bGwg
-UFBHVFQKPiAKPiB2NCAoQXNodXRvc2ggRGl4aXQpOgo+ICAtIEZpeCBhIGogLT4gaSB0eXBvCj4g
-Cj4gU2lnbmVkLW9mZi1ieTogSmFzb24gRWtzdHJhbmQgPGphc29uQGpsZWtzdHJhbmQubmV0Pgo+
-IFJldmlld2VkLWJ5OiBBc2h1dG9zaCBEaXhpdCA8YXNodXRvc2guZGl4aXRAaW50ZWwuY29tPgo+
-IC0tLQo+ICB0ZXN0cy9pOTE1L2dlbV9leGVjX3NjaGVkdWxlLmMgfCAxMCArKysrKysrLS0tCj4g
-IHRlc3RzL2k5MTUvZ2VtX3Nocmluay5jICAgICAgICB8IDE4ICsrKysrKysrKy0tLS0tLS0tLQo+
-ICAyIGZpbGVzIGNoYW5nZWQsIDE2IGluc2VydGlvbnMoKyksIDEyIGRlbGV0aW9ucygtKQoKVGhh
-dCdzIGxpa2VseSBub3QgZXhwZWN0ZWQuIFBsZWFzZSBzZXBhcmF0ZSBjaGFuZ2VzLgogCj4gCj4g
-ZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfc2NoZWR1bGUuYyBiL3Rlc3RzL2k5MTUv
-Z2VtX2V4ZWNfc2NoZWR1bGUuYwo+IGluZGV4IDE3NjM2OTVjZC4uM2E1MWI1MWRhIDEwMDY0NAo+
-IC0tLSBhL3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfc2NoZWR1bGUuYwo+ICsrKyBiL3Rlc3RzL2k5MTUv
-Z2VtX2V4ZWNfc2NoZWR1bGUuYwo+IEBAIC0xMjAxLDcgKzEyMDEsOCBAQCBub3Jlb3JkZXIoaW50
-IGk5MTUsIGNvbnN0IGludGVsX2N0eF9jZmdfdCAqY2ZnLAo+ICAJaWYgKGZsYWdzICYgQ09SS0VE
-KQo+ICAJCWZlbmNlID0gaWd0X2NvcmtfcGx1ZygmY29yaywgaTkxNSk7Cj4gIAo+IC0Jdm1fY2Zn
-LnZtID0gZ2VtX3ZtX2NyZWF0ZShpOTE1KTsKPiArCWlmIChnZW1fdXNlc19mdWxsX3BwZ3R0KGk5
-MTUpKQo+ICsJCXZtX2NmZy52bSA9IGdlbV92bV9jcmVhdGUoaTkxNSk7Cj4gIAo+ICAJY3R4ID0g
-aW50ZWxfY3R4X2NyZWF0ZShpOTE1LCAmdm1fY2ZnKTsKPiAgCj4gQEAgLTEyOTEsNiArMTI5Miw5
-IEBAIG5vcmVvcmRlcihpbnQgaTkxNSwgY29uc3QgaW50ZWxfY3R4X2NmZ190ICpjZmcsCj4gIAlp
-Z3Rfc3Bpbl9mcmVlKGk5MTUsIHNsaWNlKTsKPiAgCWludGVsX2N0eF9kZXN0cm95KGk5MTUsIGN0
-eCk7Cj4gIAo+ICsJaWYgKHZtX2NmZy52bSkKPiArCQlnZW1fdm1fZGVzdHJveShpOTE1LCB2bV9j
-Zmcudm0pOwo+ICsKPiAgCS8qIENoZWNrIHRoZSBzdG9yZSBkaWQgbm90IHJ1biBiZWZvcmUgdGhl
-IHNwaW5uZXIgKi8KPiAgCWlndF9hc3NlcnRfZXEoc3luY19mZW5jZV9zdGF0dXMoc3Bpbi0+b3V0
-X2ZlbmNlKSwgMCk7Cj4gIAlpZ3Rfc3Bpbl9mcmVlKGk5MTUsIHNwaW4pOwo+IEBAIC0yNTI4LDcg
-KzI1MzIsNyBAQCBzdGF0aWMgdm9pZCB0ZXN0X3BpX2lvdmEoaW50IGk5MTUsIGNvbnN0IGludGVs
-X2N0eF9jZmdfdCAqY2ZnLAo+ICAJaWd0X3JlcXVpcmVfZihpb2N0bCh1ZmQsIFVGRkRJT19BUEks
-ICZhcGkpID09IDAgJiYgYXBpLmFwaSA9PSBVRkZEX0FQSSwKPiAgCQkgICAgICAidXNlcmZhdWx0
-ZmQgQVBJIHYlbGxkOiVsbGRcbiIsIFVGRkRfQVBJLCBhcGkuYXBpKTsKPiAgCj4gLQlpZiAoZmxh
-Z3MgJiBTSEFSRUQpCj4gKwlpZiAoKGZsYWdzICYgU0hBUkVEKSAmJiBnZW1fdXNlc19mdWxsX3Bw
-Z3R0KGk5MTUpKQo+ICAJCXVmZF9jZmcudm0gPSBnZW1fdm1fY3JlYXRlKGk5MTUpOwo+ICAKPiAg
-CXQuaTkxNSA9IGk5MTU7Cj4gQEAgLTI2MTMsNyArMjYxNyw3IEBAIHN0YXRpYyB2b2lkIHRlc3Rf
-cGlfaW92YShpbnQgaTkxNSwgY29uc3QgaW50ZWxfY3R4X2NmZ190ICpjZmcsCj4gIAo+ICAJbXVu
-bWFwKHQucGFnZSwgNDA5Nik7Cj4gIAo+IC0JaWYgKGZsYWdzICYgU0hBUkVEKQo+ICsJaWYgKHVm
-ZF9jZmcudm0pCj4gIAkJZ2VtX3ZtX2Rlc3Ryb3koaTkxNSwgdWZkX2NmZy52bSk7Cj4gIAo+ICAJ
-Y2xvc2UodWZkKTsKPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fc2hyaW5rLmMgYi90ZXN0
-cy9pOTE1L2dlbV9zaHJpbmsuYwo+IGluZGV4IGI2NDUwYTZmYi4uYWU2MWQwNzU5IDEwMDY0NAo+
-IC0tLSBhL3Rlc3RzL2k5MTUvZ2VtX3Nocmluay5jCj4gKysrIGIvdGVzdHMvaTkxNS9nZW1fc2hy
-aW5rLmMKPiBAQCAtMzgsOCArMzgsNiBAQAo+ICAjZGVmaW5lIE1BRFZfRlJFRSA4Cj4gICNlbmRp
-Zgo+ICAKPiAtc3RhdGljIHVuc2lnbmVkIGludCBlbmdpbmVzW0k5MTVfRVhFQ19SSU5HX01BU0sg
-KyAxXSwgbmVuZ2luZTsKPiAtCj4gIHN0YXRpYyB2b2lkIGdldF9wYWdlcyhpbnQgZmQsIHVpbnQ2
-NF90IGFsbG9jKQo+ICB7Cj4gIAl1aW50MzJfdCBoYW5kbGUgPSBnZW1fY3JlYXRlKGZkLCBhbGxv
-Yyk7Cj4gQEAgLTE2NCw4ICsxNjIsMTAgQEAgc3RhdGljIHZvaWQgZXhlY2J1Zk4oaW50IGZkLCB1
-aW50NjRfdCBhbGxvYykKPiAgc3RhdGljIHZvaWQgZXhlY2J1ZlgoaW50IGZkLCB1aW50NjRfdCBh
-bGxvYykKPiAgewo+ICAJY29uc3QgdWludDMyX3QgYmJlID0gTUlfQkFUQ0hfQlVGRkVSX0VORDsK
-PiArCXN0cnVjdCBpbnRlbF9lbmdpbmVfZGF0YSBlbmdpbmVzOwo+ICAJc3RydWN0IGRybV9pOTE1
-X2dlbV9leGVjX29iamVjdDIgKm9iajsKPiAgCXN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY2J1ZmZl
-cjIgZXhlY2J1ZjsKPiArCWNvbnN0IGludGVsX2N0eF90ICpjdHg7Cj4gIAlpbnQgY291bnQgPSBh
-bGxvYyA+PiAyMDsKPiAgCXVpbnQ2NF90IG9ial9zaXplOwo+ICAKPiBAQCAtMTc1LDYgKzE3NSw5
-IEBAIHN0YXRpYyB2b2lkIGV4ZWNidWZYKGludCBmZCwgdWludDY0X3QgYWxsb2MpCj4gIAlvYmpb
-Y291bnRdLmhhbmRsZSA9IGdlbV9jcmVhdGUoZmQsIDQwOTYpOwo+ICAJZ2VtX3dyaXRlKGZkLCBv
-YmpbY291bnRdLmhhbmRsZSwgMCwgJmJiZSwgc2l6ZW9mKGJiZSkpOwo+ICAKPiArCWN0eCA9IGlu
-dGVsX2N0eF9jcmVhdGVfYWxsX3BoeXNpY2FsKGZkKTsKPiArCWVuZ2luZXMgPSBpbnRlbF9lbmdp
-bmVfbGlzdF9mb3JfY3R4X2NmZyhmZCwgJmN0eC0+Y2ZnKTsKPiArCj4gIAlmb3IgKGludCBpID0g
-MTsgaSA8PSBjb3VudDsgaSsrKSB7Cj4gIAkJaW50IGogPSBjb3VudCAtIGk7Cj4gIAo+IEBAIC0x
-ODUsMTMgKzE4OCwxNiBAQCBzdGF0aWMgdm9pZCBleGVjYnVmWChpbnQgZmQsIHVpbnQ2NF90IGFs
-bG9jKQo+ICAKPiAgCQlleGVjYnVmLmJ1ZmZlcnNfcHRyID0gdG9fdXNlcl9wb2ludGVyKCZvYmpb
-al0pOwo+ICAJCWV4ZWNidWYuYnVmZmVyX2NvdW50ID0gaSArIDE7Cj4gLQkJZXhlY2J1Zi5mbGFn
-cyA9IGVuZ2luZXNbaiAlIG5lbmdpbmVdOwo+ICsJCWV4ZWNidWYuZmxhZ3MgPSBlbmdpbmVzLmVu
-Z2luZXNbaiAlIGVuZ2luZXMubmVuZ2luZXNdLmZsYWdzOwo+ICsJCWV4ZWNidWYucnN2ZDEgPSBj
-dHgtPmlkOwo+ICAJCWdlbV9leGVjYnVmKGZkLCAmZXhlY2J1Zik7Cj4gIAl9Cj4gIAo+ICAJZm9y
-IChpbnQgaSA9IDA7IGkgPD0gY291bnQ7IGkrKykKPiAgCQlnZW1fbWFkdmlzZShmZCwgb2JqW2ld
-LmhhbmRsZSwgSTkxNV9NQURWX0RPTlRORUVEKTsKPiAgCW11bm1hcChvYmosIG9ial9zaXplKTsK
-PiArCj4gKwlpbnRlbF9jdHhfZGVzdHJveShmZCwgY3R4KTsKPiAgfQo+ICAKPiAgc3RhdGljIHZv
-aWQgaGFuZyhpbnQgZmQsIHVpbnQ2NF90IGFsbG9jKQo+IEBAIC00MjksNyArNDM1LDYgQEAgaWd0
-X21haW4KPiAgCWlndF9maXh0dXJlIHsKPiAgCQljb25zdCBpbnQgbmNwdXMgPSBzeXNjb25mKF9T
-Q19OUFJPQ0VTU09SU19PTkxOKTsKPiAgCQl1aW50NjRfdCBtZW1fc2l6ZSA9IGludGVsX2dldF90
-b3RhbF9yYW1fbWIoKTsKPiAtCQljb25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIg
-KmU7Cj4gIAkJaW50IGZkOwo+ICAKPiAgCQlmZCA9IGRybV9vcGVuX2RyaXZlcihEUklWRVJfSU5U
-RUwpOwo+IEBAIC00NTEsMTEgKzQ1Niw2IEBAIGlndF9tYWluCj4gIAkJaW50ZWxfcmVxdWlyZV9t
-ZW1vcnkobnVtX3Byb2Nlc3NlcywgYWxsb2Nfc2l6ZSwKPiAgCQkJCSAgICAgQ0hFQ0tfU1dBUCB8
-IENIRUNLX1JBTSk7Cj4gIAo+IC0JCW5lbmdpbmUgPSAwOwo+IC0JCV9fZm9yX2VhY2hfcGh5c2lj
-YWxfZW5naW5lKGZkLCBlKQo+IC0JCQllbmdpbmVzW25lbmdpbmUrK10gPSBlLT5mbGFnczsKPiAt
-CQlpZ3RfcmVxdWlyZShuZW5naW5lKTsKPiAtCj4gIAkJY2xvc2UoZmQpOwo+ICAJfQoKZ2VtX3No
-cmluayBsb29rcyBjb3JyZWN0IGltbyBub3cuIFlvdSBjYW4gcHV0IG15IHJiIG9uIGl0IGFmdGVy
-IHNwbGl0LgoKLS0KWmJpZ25pZXcKCj4gIAo+IC0tIAo+IDIuMzEuMQo+IAo+IF9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gaWd0LWRldiBtYWlsaW5nIGxp
-c3QKPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwo+IGh0dHBzOi8vbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxp
-c3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2lndC1kZXYK
+Hello,
+
+Humble request for review of this please https://patchwork.freedesktop.org/series/90828/
+Can anyone kindly help review this so we can request for merge?
+
+Thank you so much.
+
+Regards
+Vidya
+
+-----Original Message-----
+From: Srinivas, Vidya 
+Sent: Tuesday, June 15, 2021 1:55 PM
+To: Modem, Bhanuprakash <Bhanuprakash.Modem@intel.com>; intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
+Cc: Shankar, Uma <uma.shankar@intel.com>
+Subject: RE: [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_plane_alpha_blend: Don't set primary fb color in coverage-vs-premult-vs-constant
+
+Hello Bhanu,
+
+Sorry for the trouble. Kindly can you check if rev 3 is okay? Thanks a lot.
+
+Regards
+Vidya
+
+-----Original Message-----
+From: Srinivas, Vidya
+Sent: Friday, June 11, 2021 6:28 PM
+To: Modem, Bhanuprakash <Bhanuprakash.Modem@intel.com>; intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
+Subject: RE: [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_plane_alpha_blend: Don't set primary fb color in coverage-vs-premult-vs-constant
+
+Hello Bhanu,
+
+I have uploaded version 3 where I have not removed primary plane.
+Instead I have added a commit of the primary plane and I have changed alpha.
+This passes on Gen11 systems.
+
+Kindly check https://patchwork.freedesktop.org/patch/438831/?series=90828&rev=3 and suggest.
+
+Thank you so much.
+
+Regards
+Vidya
+
+-----Original Message-----
+From: Srinivas, Vidya
+Sent: Friday, June 11, 2021 1:00 PM
+To: Modem, Bhanuprakash <Bhanuprakash.Modem@intel.com>; intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
+Subject: RE: [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_plane_alpha_blend: Don't set primary fb color in coverage-vs-premult-vs-constant
+
+Thank you Bhanu. This test is failing on all planes > 0. Only plane 0 passes.
+If I skip plane 1, it fails on 2 and so on.
+Changing the way CRC is being collected also is not helping. Adding vblank is also not helping.
+
+Regards
+Vidya
+
+-----Original Message-----
+From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+Sent: Friday, June 11, 2021 9:11 AM
+To: Srinivas, Vidya <vidya.srinivas@intel.com>; intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
+Subject: RE: [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_plane_alpha_blend: Don't set primary fb color in coverage-vs-premult-vs-constant
+
+> From: Intel-gfx <intel-gfx-bounces@lists.freedesktop.org> On Behalf Of 
+> Vidya Srinivas
+> Sent: Tuesday, June 1, 2021 7:38 PM
+> To: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
+> Subject: [Intel-gfx] [PATCH i-g-t] [RFC] tests/kms_plane_alpha_blend: 
+> Don't set primary fb color in coverage-vs-premult-vs-constant
+> 
+> Patch removes setting primary fb color in 
+> coverage-vs-premult-vs-constant as this is causing CRC mismatch on few Gen11 systems.
+
+I am not sure how Primary plane's bg color causing CRC mismatch.
+Also, as this test runs on all planes (those are having the props "alpha" and "pixel blend mode"), is this test failing on a particular plane?
+
+- Bhanu
+
+> Similar change has already been done in tests constant_alpha_min and 
+> basic_alpha where the test runs on all planes but dont set the primary 
+> fb color.
+> 
+> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+> ---
+>  tests/kms_plane_alpha_blend.c | 4 ----
+>  1 file changed, 4 deletions(-)
+> 
+> diff --git a/tests/kms_plane_alpha_blend.c 
+> b/tests/kms_plane_alpha_blend.c index a37cb27c7d62..224d79bd1749
+> 100644
+> --- a/tests/kms_plane_alpha_blend.c
+> +++ b/tests/kms_plane_alpha_blend.c
+> @@ -447,10 +447,6 @@ static void coverage_premult_constant(data_t 
+> *data, enum pipe pipe, igt_plane_t
+>  	igt_display_t *display = &data->display;
+>  	igt_crc_t ref_crc = {}, crc = {};
+> 
+> -	/* Set a background color on the primary fb for testing */
+> -	if (plane->type != DRM_PLANE_TYPE_PRIMARY)
+> -		igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe],
+> DRM_PLANE_TYPE_PRIMARY), &data->gray_fb);
+> -
+>  	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage");
+>  	igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
+>  	igt_display_commit2(display, COMMIT_ATOMIC);
+> --
+> 2.7.4
+> 
+> _______________________________________________
+> Intel-gfx mailing list
+> Intel-gfx@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
