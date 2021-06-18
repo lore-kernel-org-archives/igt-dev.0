@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com
- [IPv6:2607:f8b0:4864:20::733])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73DCB6EA3F
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Jun 2021 16:22:42 +0000 (UTC)
-Received: by mail-qk1-x733.google.com with SMTP id g4so11035478qkl.1
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Jun 2021 09:22:42 -0700 (PDT)
+Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com
+ [IPv6:2607:f8b0:4864:20::72b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 51EE76E123
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Jun 2021 16:35:22 +0000 (UTC)
+Received: by mail-qk1-x72b.google.com with SMTP id q64so6032496qke.7
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Jun 2021 09:35:22 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210617191256.577244-1-jason@jlekstrand.net>
- <20210617191256.577244-35-jason@jlekstrand.net>
- <87fsxfej59.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <87fsxfej59.wl-ashutosh.dixit@intel.com>
+ <20210617191256.577244-32-jason@jlekstrand.net>
+ <87h7hvepqu.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <87h7hvepqu.wl-ashutosh.dixit@intel.com>
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Fri, 18 Jun 2021 11:22:30 -0500
-Message-ID: <CAOFGe95OB6Xig+w-WaRxP+m9EFjOuG-qta21-geF-h1vVu4iuA@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 34/79] tests/i915/gem_watchdog: Convert
- to intel_ctx_t (v2)
+Date: Fri, 18 Jun 2021 11:35:09 -0500
+Message-ID: <CAOFGe96uzYUAg+EXo-MOMcqS7k-xLht+rLvJ6+P1s-qf1VvGVg@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 31/79] tests/i915/gem_ctx_switch:
+ Convert to intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,220 +30,114 @@ To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jun 18, 2021 at 2:17 AM Dixit, Ashutosh
+On Thu, Jun 17, 2021 at 11:55 PM Dixit, Ashutosh
 <ashutosh.dixit@intel.com> wrote:
 >
-> On Thu, 17 Jun 2021 12:12:41 -0700, Jason Ekstrand wrote:
+> On Thu, 17 Jun 2021 12:12:38 -0700, Jason Ekstrand wrote:
 > >
-> > v2 (Jason Ekstrand):
-> >  - Rebase on Tvrtko's changes
-> >  - Fix an issue in default-virtual with the set-once rule for engines
+> > @@ -127,12 +130,12 @@ static void single(int fd, uint32_t handle,
+> >       shared = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> >       igt_assert(shared != MAP_FAILED);
 > >
-> > Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+> > -     for (n = 0; n < 64; n++) {
+> > -             if (flags & QUEUE)
+> > -                     contexts[n] = gem_queue_clone_with_engines(fd, 0);
+> > -             else
+> > -                     contexts[n] = gem_context_clone_with_engines(fd, 0);
+> > -     }
+> > +     cfg = *base_cfg;
+> > +     if (flags & QUEUE)
+> > +             cfg.vm = gem_vm_create(fd);
 >
-> A few comments below. Please fix as needed, after fixing this is:
->
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
->
-> > -static void physical(int i915)
-> > +static void physical(int i915, const intel_ctx_t *ctx)
+> As we did in gem_exec_whisper.c and gem_ctx_shared.c, do we also need to
+> handle I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE here?
+
+Sure
+
+> > +static void all(int fd, uint32_t handle, const intel_ctx_cfg_t *base_cfg,
+> > +             unsigned flags, int timeout)
 > >  {
-> >       const unsigned int wait_us = default_timeout_wait_s * USEC_PER_SEC;
-> > -     unsigned int num_engines = __engines__->num_engines, i, count;
-> > +     unsigned int num_engines, i, count;
-> >       const struct intel_execution_engine2 *e;
-> > -     unsigned int expect = num_engines;
-> > -     igt_spin_t *spin[num_engines];
-> > +     igt_spin_t *spin[GEM_MAX_ENGINES];
+> >       struct drm_i915_gem_execbuffer2 execbuf;
+> >       struct drm_i915_gem_exec_object2 obj[2];
+> >       struct intel_engine_data engines = { };
+> > -     uint32_t contexts[65];
+> > +     intel_ctx_cfg_t cfg;
+> > +     const intel_ctx_t *contexts[65];
+> >       int n, qlen;
 > >
-> >       i = 0;
-> > -     __for_each_physical_engine(i915, e) {
-> > -             spin[i] = igt_spin_new(i915,
-> > +     for_each_ctx_engine(i915, ctx, e) {
-> > +             spin[i] = igt_spin_new(i915, .ctx = ctx,
-> >                                      .engine = e->flags,
-> >                                      .flags = spin_flags());
-> >               i++;
-> >       }
-> > +     num_engines = i;
+> > -     engines = intel_init_engine_list(fd, 0);
+> > +     engines = intel_engine_list_for_ctx_cfg(fd, base_cfg);
+> >       igt_require(engines.nengines);
+> >
+> > -     for (n = 0; n < ARRAY_SIZE(contexts); n++) {
+> > -             if (flags & QUEUE)
+> > -                     contexts[n] = gem_queue_clone_with_engines(fd, 0);
+> > -             else
+> > -                     contexts[n] = gem_context_clone_with_engines(fd, 0);
+> > -     }
+> > +     cfg = *base_cfg;
+> > +     if (flags & QUEUE)
+> > +             cfg.vm = gem_vm_create(fd);
 >
-> Don't even need this, num_engines = ctx->cfg->num_engines.
+> I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE?
 
-It isn't if we're using the old ring API.
+Sure
 
-> > -static void virtual(int i915)
-> > +static void virtual(int i915, const intel_ctx_cfg_t *base_cfg)
-> >  {
-> >       const unsigned int wait_us = default_timeout_wait_s * USEC_PER_SEC;
-> > -     unsigned int num_engines = __engines__->num_engines, i, count;
-> > +     unsigned int num_engines = base_cfg->num_engines, i, count;
-> >       igt_spin_t *spin[num_engines];
-> >       unsigned int expect = num_engines;
-> > -     uint32_t ctx[num_engines];
-> > -     uint32_t vm;
-> > +     intel_ctx_cfg_t cfg = {};
-> > +     const intel_ctx_t *ctx[num_engines];
+> > @@ -244,13 +249,13 @@ static void all(int fd, uint32_t handle, unsigned flags, int timeout)
+> >       memset(&execbuf, 0, sizeof(execbuf));
+> >       execbuf.buffers_ptr = to_user_pointer(obj + 1);
+> >       execbuf.buffer_count = 1;
+> > -     execbuf.rsvd1 = contexts[0];
+> > +     execbuf.rsvd1 = contexts[0]->id;
+> >       execbuf.flags |= I915_EXEC_HANDLE_LUT;
+> >       execbuf.flags |= I915_EXEC_NO_RELOC;
+> >       igt_require(__gem_execbuf(fd, &execbuf) == 0);
+> >       gem_sync(fd, handle);
 > >
-> >       igt_require(gem_has_execlists(i915));
-> >
-> >       igt_debug("%u virtual engines\n", num_engines);
-> >       igt_require(num_engines);
-> >
-> > +     cfg.vm = gem_vm_create(i915);
-> > +
-> >       i = 0;
-> >       for (int class = 0; class < 32; class++) {
-> >               struct i915_engine_class_instance *ci;
-> >
-> > -             ci = list_engines(class, &count);
-> > +             ci = list_engines(base_cfg, class, &count);
-> >               if (!ci)
-> >                       continue;
-> >
-> > @@ -296,17 +238,12 @@ static void virtual(int i915)
-> >
-> >                       igt_assert(i < num_engines);
-> >
-> > -                     ctx[i] = gem_context_create(i915);
-> > +                     ctx[i] = intel_ctx_create(i915, &cfg);
+> > -     qlen = measure_qlen(fd, &execbuf, &engines, timeout);
+> > +     qlen = measure_qlen(fd, base_cfg, &execbuf, &engines, timeout);
 >
-> I would have expected this to be base_cfg, since cfg only has legacy
-> engines. But even the original code has only legacy engines for the load
-> balancer so this "somehow works" in a manner unknown to me :-/
+> Because the cfg in the QUEUE case is different, should we just pass cfg
+> instead of base_cfg here?
 
-That's because set_load_balancer sets a whole new engine set. :-(
-Eventually, we'll probably want to add load balancing to the context
-config but this works for now and keeps this test using roughly the
-same pattern as the media driver.
+Sure.  I kind-of don't think it matters but, In the original, it used
+gem_context_clone_with_engines(fd, 0) which is identical
+gem_queue_create().  Let's go ahead and keep the VM sharing even
+though I don't know why it's useful.
 
-> >
-> > -                     if (!i)
-> > -                             vm = ctx_get_vm(i915, ctx[i]);
-> > -                     else
-> > -                             ctx_set_vm(i915, ctx[i], vm);
-> > -
-> > -                     set_load_balancer(i915, ctx[i], ci, count, NULL);
-> > +                     set_load_balancer(i915, ctx[i]->id, ci, count, NULL);
-> >
-> >                       spin[i] = igt_spin_new(i915,
-> > -                                            .ctx_id = ctx[i],
-> > +                                            .ctx = ctx[i],
-> >                                              .flags = spin_flags());
-> >                       i++;
-> >               }
-> > @@ -317,8 +254,8 @@ static void virtual(int i915)
-> >       count = wait_timeout(i915, spin, num_engines, wait_us, expect);
-> >
-> >       for (i = 0; i < num_engines && spin[i]; i++) {
-> > -             gem_context_destroy(i915, ctx[i]);
-> >               igt_spin_free(i915, spin[i]);
-> > +             intel_ctx_destroy(i915, ctx[i]);
-> >       }
-> >
-> >       igt_assert_eq(count, expect);
-> > @@ -499,17 +436,6 @@ delay_create(int i915, uint32_t ctx,
-> >       return obj;
-> >  }
-> >
-> > -static uint32_t vm_clone(int i915)
-> > -{
-> > -     uint32_t ctx = 0;
-> > -     __gem_context_clone(i915, 0,
-> > -                         I915_CONTEXT_CLONE_VM |
-> > -                         I915_CONTEXT_CLONE_ENGINES,
-> > -                         I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE,
-> > -                         &ctx);
-> > -     return ctx;
-> > -}
-> > -
-> >  static int __execbuf(int i915, struct drm_i915_gem_execbuffer2 *execbuf)
-> >  {
-> >       int err;
-> > @@ -526,6 +452,7 @@ static int __execbuf(int i915, struct drm_i915_gem_execbuffer2 *execbuf)
-> >
-> >  static uint32_t
-> >  far_delay(int i915, unsigned long delay, unsigned int target,
-> > +       const intel_ctx_t *ctx,
-> >         const struct intel_execution_engine2 *e, int *fence)
-> >  {
-> >       struct drm_i915_gem_exec_object2 obj = delay_create(i915, 0, e, delay);
-> > @@ -540,6 +467,7 @@ far_delay(int i915, unsigned long delay, unsigned int target,
-> >               .buffer_count = 2,
-> >               .flags = e->flags,
-> >       };
-> > +     intel_ctx_cfg_t cfg = ctx->cfg;
-> >       uint32_t handle = gem_create(i915, 4096);
-> >       unsigned long count, submit;
-> >
-> > @@ -552,23 +480,27 @@ far_delay(int i915, unsigned long delay, unsigned int target,
-> >       submit *= NSEC_PER_SEC;
-> >       submit /= 2 * delay;
-> >
-> > +     if (gem_has_vm(i915))
-> > +             cfg.vm = gem_vm_create(i915);
+> > @@ -315,8 +322,8 @@ igt_main
+> >       } phases[] = {
+> >               { "", 0, NULL },
+> >               { "-interruptible", INTERRUPTIBLE, NULL },
+> > -             { "-queue", QUEUE, gem_has_queues },
+> > -             { "-queue-interruptible", QUEUE | INTERRUPTIBLE, gem_has_queues },
+> > +             { "-queue", QUEUE, gem_has_vm },
+> > +             { "-queue-interruptible", QUEUE | INTERRUPTIBLE, gem_has_vm },
 >
-> Might as well add I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE too if needed?
-
-Sure.  Why not?  Keeps it closer to the original.
-
-> > +
-> >       /*
-> >        * Submit a few long chains of individually short pieces of work
-> >        * against a shared object.
-> >        */
-> >       for (count = 0; count < submit;) {
-> > -             execbuf.rsvd1 = vm_clone(i915);
-> > +             const intel_ctx_t *tmp_ctx = intel_ctx_create(i915, &cfg);
-> > +             execbuf.rsvd1 = tmp_ctx->id;
-> >               if (!execbuf.rsvd1)
+> My suggestion would be to resurrect gem_has_queues() here where
+> gem_has_queues == gem_has_vm && gem_context_has_single_timeline.
 >
-> This check is always false now (intel_ctx_create will assert on error).
+> (In general maybe we can see if we can reinstate the queue concept itself
+> where a queue is a context with a shared VM and shared timeline, though not
+> sure about this because we now have context configs and flags. Anyway this
+> is a general observation, nothing specifically needed in this patch.)
 
-Yes, but only because this test requires gen 8+ and therefore real
-context support.  I've added an igt_assert(tmp_ctx->id);
+Yeah, I've thought about that.  One option would be to make a helper
+that copies cfg and sets cfg.vm to get_context_param(ctx=0,
+CONTEXT_PARAM_VM).  It's not a great solution and depends on the VM
+getparam which may go away in future.
 
-> > @@ -652,32 +585,22 @@ igt_main
-> >               }
-> >
-> >               i915 = gem_reopen_driver(i915); /* Apply modparam. */
-> > -
-> > -             __engines__ = malloc(4096);
-> > -             igt_assert(__engines__);
-> > -             memset(__engines__, 0, 4096);
-> > -             memset(&item, 0, sizeof(item));
-> > -             item.query_id = DRM_I915_QUERY_ENGINE_INFO;
-> > -             item.data_ptr = to_user_pointer(__engines__);
-> > -             item.length = 4096;
-> > -             i915_query_items(i915, &item, 1);
-> > -             igt_assert(item.length >= 0);
-> > -             igt_assert(item.length <= 4096);
-> > -             igt_assert(__engines__->num_engines > 0);
-> > +             ctx = intel_ctx_create_all_physical(i915);
-> >       }
-> >
-> >       igt_subtest_group {
-> >               igt_subtest("default-physical")
-> > -                     physical(i915);
-> > +                     physical(i915, ctx);
-> >
-> >               igt_subtest("default-virtual")
-> > -                     virtual(i915);
-> > +                     virtual(i915, &ctx->cfg);
-> >       }
-> >
-> >       igt_subtest_with_dynamic("far-fence") {
-> > -             __for_each_physical_engine(i915, e) {
-> > +             for_each_ctx_engine(i915, ctx, e) {
-> >                       igt_dynamic_f("%s", e->name)
-> > -                             far_fence(i915, default_timeout_wait_s * 3, e);
-> > +                             far_fence(i915, default_timeout_wait_s * 3,
-> > +                                       ctx, e);
-> >               }
-> >       }
->
-> Missing intel_ctx_destroy.
+I think the real answer to a lot of these is actually softpin.  Most
+of the tests where VM sharing really matters are tests for parallel
+execution with the execlist scheduler which means they likely don't
+apply on older hardware anyway.  If we fix a few addresses, then
+there's no need for VM sharing because there won't be any
+serialization due to relocations to begin with.
 
-Fixed.
+In any case, I can add VMs to contexts and smash SINGLE_TIMELINE to
+keep behavior the same for now.
+
+--Jason
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
