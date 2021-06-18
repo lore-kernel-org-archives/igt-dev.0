@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-sn1anam02on2058.outbound.protection.outlook.com [40.107.96.58])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 85ED36EA25
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Jun 2021 14:29:08 +0000 (UTC)
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2065.outbound.protection.outlook.com [40.107.92.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 08AA86E0A1
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Jun 2021 14:29:14 +0000 (UTC)
 From: Anson Jacob <Anson.Jacob@amd.com>
-Date: Fri, 18 Jun 2021 10:28:54 -0400
-Message-ID: <20210618142855.5750-4-Anson.Jacob@amd.com>
+Date: Fri, 18 Jun 2021 10:28:55 -0400
+Message-ID: <20210618142855.5750-5-Anson.Jacob@amd.com>
 In-Reply-To: <20210618142855.5750-1-Anson.Jacob@amd.com>
 References: <20210618142855.5750-1-Anson.Jacob@amd.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/4] tests/kms_plane_multiple: Start
- continuous CRC capture after commit
+Subject: [igt-dev] [PATCH i-g-t 4/4] tests/kms_plane_multiple: Disable CRTC
+ if no planes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,9 +28,12 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Victor Lu <victorchengchi.lu@amd.com>
 
-atomic-pipe-a-tiling-none fails on Raven because it fails to read the
-CRC when there is no CRC generated (zeroed framebuffer). Move
-igt_pipe_crc_start to be after the first nonzero FB commit.
+[why]
+amdgpu will reject commits where the CRTC is enabled and there are no
+active planes.
+
+[how]
+Disable the CRTC when committing with no active planes.
 
 Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
 Acked-by: Anson Jacob <Anson.Jacob@amd.com>
@@ -39,40 +42,31 @@ Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 Cc: Harry Wentland <harry.wentland@amd.com>
 Cc: Mark Yacoub <markyacoub@google.com>
 ---
- tests/kms_plane_multiple.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tests/kms_plane_multiple.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 93c6ea7d269d..4424b864b2d6 100644
+index 4424b864b2d6..805c2a2130d7 100644
 --- a/tests/kms_plane_multiple.c
 +++ b/tests/kms_plane_multiple.c
-@@ -288,6 +288,7 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
- 	igt_plane_t *plane;
- 	int i;
- 	int err, c = 0;
-+	int crc_enabled = 0;
- 	int iterations = opt.iterations < 1 ? 1 : opt.iterations;
- 	bool loop_forever;
- 	char info[256];
-@@ -327,14 +328,16 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
- 		 igt_output_name(output), kmstest_pipe_name(pipe), c,
- 		 info, opt.seed);
+@@ -315,6 +315,8 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
+ 		for_each_plane_on_pipe(&data->display, pipe, plane)
+ 			igt_plane_set_fb(plane, NULL);
  
--	igt_pipe_crc_start(data->pipe_crc);
--
- 	i = 0;
- 	while (i < iterations || loop_forever) {
- 		/* randomize planes and set up the holes */
- 		prepare_planes(data, pipe, &blue, tiling, c, output);
- 
++		/* Disable CRTC if no active planes */
++		igt_output_set_pipe(output, PIPE_NONE);
  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+		if (!crc_enabled) {
-+			igt_pipe_crc_start(data->pipe_crc);
-+			crc_enabled = 1;
-+		}
  
- 		igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc, &crc);
+ 		for (int x = 0; x < c; x++)
+@@ -344,6 +346,8 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
+ 		for_each_plane_on_pipe(&data->display, pipe, plane)
+ 			igt_plane_set_fb(plane, NULL);
  
++		/* Disable CRTC if no active planes */
++		igt_output_set_pipe(output, PIPE_NONE);
+ 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+ 		for (int x = 0; x < c; x++)
 -- 
 2.25.1
 
