@@ -1,23 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CAE036EB0B
- for <igt-dev@lists.freedesktop.org>; Sat, 19 Jun 2021 03:10:10 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Sat, 19 Jun 2021 03:10:03 +0000
-Message-ID: <BY5PR11MB437202D9DCEE43BDC107128F890C9@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <1622547939-8157-1-git-send-email-vidya.srinivas@intel.com>
- <1623415451-776-1-git-send-email-vidya.srinivas@intel.com>
- <32c63e75-2a7c-69fa-c92f-5b54180a02ad@gmail.com>
- <BY5PR11MB4372D9FE109E779806C31E42890D9@BY5PR11MB4372.namprd11.prod.outlook.com>
- <0186ab1e-311f-5b0b-1f46-8092f7eb42fd@gmail.com>
- <BY5PR11MB43726004EEBC3E25A6FF7670890D9@BY5PR11MB4372.namprd11.prod.outlook.com>
- <BY5PR11MB4372DA5C2001525368BBC5AA890D9@BY5PR11MB4372.namprd11.prod.outlook.com>
- <a771b3ce-80ab-2a20-3f98-2e522cd673df@gmail.com>
-In-Reply-To: <a771b3ce-80ab-2a20-3f98-2e522cd673df@gmail.com>
-Content-Language: en-US
-MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Fix alpha
- in coverage-vs-premult-vs-constant
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 554FB6EA8C
+ for <igt-dev@lists.freedesktop.org>; Sat, 19 Jun 2021 08:18:27 +0000 (UTC)
+From: Vidya Srinivas <vidya.srinivas@intel.com>
+Date: Sat, 19 Jun 2021 13:38:55 +0530
+Message-Id: <1624090135-437-1-git-send-email-vidya.srinivas@intel.com>
+In-Reply-To: <1623415451-776-1-git-send-email-vidya.srinivas@intel.com>
+References: <1623415451-776-1-git-send-email-vidya.srinivas@intel.com>
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Limit pipe
+ output to 8bpc for coverage-vs-premult-vs-constant
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,146 +16,96 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?B?SnVoYS1QZWtrYSBIZWlra2lsw6Q=?= <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Lin, Charlton" <charlton.lin@intel.com>, "Latvala,
- Petri" <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhhbmsgeW91IHNvIG11Y2ggSnVoYS1QZWtrYS4gSSB3aWxsIHRyeSBvdXQgdGhlIGdhbW1hIHRo
-aW5nIHlvdSBtZW50aW9uZWQgYW5kIHVwZGF0ZSBmdXJ0aGVyLg0KDQpSZWdhcmRzDQpWaWR5YQ0K
-DQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogSnVoYS1QZWtrYSBIZWlra2lsw6Qg
-PGp1aGFwZWtrYS5oZWlra2lsYUBnbWFpbC5jb20+IA0KU2VudDogU2F0dXJkYXksIEp1bmUgMTks
-IDIwMjEgMTo1NCBBTQ0KVG86IFNyaW5pdmFzLCBWaWR5YSA8dmlkeWEuc3Jpbml2YXNAaW50ZWwu
-Y29tPjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCkNjOiBMYXR2YWxhLCBQZXRyaSA8
-cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+OyBMaW4sIENoYXJsdG9uIDxjaGFybHRvbi5saW5AaW50
-ZWwuY29tPg0KU3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19w
-bGFuZV9hbHBoYV9ibGVuZDogRml4IGFscGhhIGluIGNvdmVyYWdlLXZzLXByZW11bHQtdnMtY29u
-c3RhbnQNCg0KSGkgVmlkeWEsDQoNCkkgZG9uJ3Qgbm93IGhhdmUgYWNjZXNzIHRvIHNwZWNzIHNv
-IEkgY2FuJ3Qgc2F5IGlmIHRoZXJlIHdvdWxkIGJlIHNvbWV0aGluZyBzcGVjaWFsIGZvciBKU0wg
-b24gdGhpcyBjYXNlLiBPVE9IIGlmIGNoYW5naW5nIGdyYXkgYnVmZmVyIHRvIHNvbGlkIHdoaXRl
-IGZpeGVzIHRoYXQgbWF5YmUgZ29vZCBzb2x1dGlvbiwgSSdtIHRyeWluZyB0byB0aGluayBob3cg
-dGhlIHNjcmVlbiB3aWxsIGJlIGluIHRoaXMgY2FzZSBhbmQgSSBhc3N1bWUgdGVzdCBpbWFnZSB3
-aWxsIHJlbWFpbiBvbiBzY3JlZW4oPykuIElmIGp1c3QgY2hhbmdpbmcgZ3JheSBidWZmZXIgdG8g
-c29saWQgd2hpdGUgbWFrZSB0ZXN0IHBhc3MgdGhlcmUgbWF5YmUgYWxzbyAwLjI1IGdyYXkgYW5k
-IDAuNzUgZ3JheSB3aGljaCB3aWxsIHdvcmsuIEl0IHdvdWxkbid0IGJlIHRoZSBmaXJzdCB0aW1l
-IHRoZXJlIGlzIGZvdW5kIGNhc2Ugd2l0aCBzcGVjaWZpYyBjb2xvciB3aGljaCBjYXVzZXMgcm91
-bmRpbmcgZXJyb3Igd2l0aCBjcmMgd2hlcmUgaXQncyBqdXN0IG1vcmUgY29udmVuaWVudCB0byBj
-aGFuZ2UgdGhhdCBjb2xvci4NCg0KSSBkb24ndCBrbm93IGNhbiBpdCBiZSB1c2VkIGluIHRoaXMg
-Y2FzZSBidXQgdGhlcmUgbWlnaHQgYmUgcG9zc2liaWxpdHkgdG8gZG8gZ2FtbWEgdGFibGUgdHJp
-Y2sgaWYgbm90aGluZyBlbHNlIHdvcmtzLiBUaGlzIGlzIHVzZWQgaW4ga21zX3BsYW5lIGFuZCBr
-bXNfZmxpcF9zY2FsZWRfY3JjIHRoYXQgY29tZSB0byBteSBtaW5kLCBpbiB0ZXN0cy9rbXNfZmxp
-cF9zY2FsZWRfY3JjLmMgbG9vayBmb3Igc2V0X2x1dCguLikgZnVuY3Rpb24gYW5kIGhvdyBpdCBp
-cyB1c2VkLg0KDQpJJ2QgYXZvaWQgY3JlYXRpbmcgc3BlY2lhbCBjYXNlcyBmb3Igc29tZSBodyB2
-ZXJzaW9ucywgaXQgd2lsbCBsZWFkIHRvIGJpZyBtZXNzIGluIHRoZSBlbmQuDQoNCi9KdWhhLVBl
-a2thDQoNClNyaW5pdmFzLCBWaWR5YSBraXJqb2l0dGkgMTguNi4yMDIxIGtsbyAyMS41NDoNCj4g
-SGVsbG8gSnVoYS1QZWtrYSwNCj4gDQo+IEFzIHlvdSBzYWlkLCBJIGd1ZXNzIHRoYXQgbWlnaHQg
-YmUgdGhlIHByb2JsZW0uIEJ1dCB0aGUgY2hhbmdlcyBvZiBXQSBhcmUgYWxyZWFkeSBwcmVzZW50
-IGluIGtlcm5lbC4gSSB0cmllZCByZXZlcnRpbmcgdGhlbSBqdXN0IHRvIGNoZWNrLCBidXQgZGlk
-IG5vdCBzZWUgYW55IGNoYW5nZS4NCj4gSWYgSSBjaGFuZ2UgdGhlIGdyYXkgYnVmZmVyICgwLjUg
-dG8gMSwxLDEpIGl0IHdvcmtzLiBJZiBJIGNvbW1lbnQgZmlyc3QgcHJpbWFyeSBjb21taXQgaXQg
-d29ya3MuIElmIEkganVzdCBjb21tZW50ICJQcmUtbXVsdGlwbGllZCIgaXQgd29ya3MsIGVsc2Ug
-bG93ZXIgYWxwaGEgd29ya3MuDQo+IENvdWxkbuKAmXQgZmluZCBhbnkgb3RoZXIgY2hhbmdlcyB5
-ZXQgaW4gZHJpdmVyLiBXb3VsZCBpdCBiZSBva2F5IGlmIEkgY2FuIGFkZCBhIHBhdGNoIHRvIGRp
-c2FibGUgcHJpbWFyeSBjb21taXQgaWYgSkFTUEVSTEFLRT8NCj4gDQo+IFRoYW5rIHlvdSBzbyBt
-dWNoLg0KPiANCj4gUmVnYXJkcw0KPiBWaWR5YQ0KPiANCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdl
-LS0tLS0NCj4gRnJvbTogU3Jpbml2YXMsIFZpZHlhDQo+IFNlbnQ6IEZyaWRheSwgSnVuZSAxOCwg
-MjAyMSA0OjAxIFBNDQo+IFRvOiBqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29tOyBpZ3QtZGV2
-QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogTGF0dmFsYSwgUGV0cmkgPHBldHJpLmxhdHZh
-bGFAaW50ZWwuY29tPjsgTGluLCBDaGFybHRvbiANCj4gPENoYXJsdG9uLkxpbkBpbnRlbC5jb20+
-DQo+IFN1YmplY3Q6IFJFOiBbaWd0LWRldl0gW1BBVENIIGktZy10XSB0ZXN0cy9rbXNfcGxhbmVf
-YWxwaGFfYmxlbmQ6IEZpeCANCj4gYWxwaGEgaW4gY292ZXJhZ2UtdnMtcHJlbXVsdC12cy1jb25z
-dGFudA0KPiANCj4gVGhhbmsgeW91IHNvIG11Y2ggSnVoYS1QZWtrYS4gSSB3aWxsIGNoZWNrIG9u
-IHRoZSBzYW1lIGFuZCB1cGRhdGUuDQo+IA0KPiBSZWdhcmRzDQo+IFZpZHlhDQo+IA0KPiAtLS0t
-LU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBKdWhhLVBla2thIEhlaWtraWxhIDxqdWhh
-cGVra2EuaGVpa2tpbGFAZ21haWwuY29tPg0KPiBTZW50OiBGcmlkYXksIEp1bmUgMTgsIDIwMjEg
-Mzo1NiBQTQ0KPiBUbzogU3Jpbml2YXMsIFZpZHlhIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+
-OyANCj4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gQ2M6IExhdHZhbGEsIFBldHJp
-IDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT47IExpbiwgQ2hhcmx0b24gDQo+IDxjaGFybHRvbi5s
-aW5AaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW2lndC1kZXZdIFtQQVRDSCBpLWctdF0gdGVz
-dHMva21zX3BsYW5lX2FscGhhX2JsZW5kOiBGaXggDQo+IGFscGhhIGluIGNvdmVyYWdlLXZzLXBy
-ZW11bHQtdnMtY29uc3RhbnQNCj4gDQo+IEhhdmUgeW91IHRyaWVkIGxvb2tpbmcgaWYgb24ga2Vy
-bmVsIHNpZGUgaW4gaW50ZWxfZGlzcGxheS5jDQo+IGljbF9zZXRfcGlwZV9jaGlja2VuKC4uKSB0
-aG9zZSBpY2wgcmVsYXRlZCBXQXMgaGF2ZSBlZmZlY3Qgb24geW91ciBjcmMgcHJvYmxlbS4gU291
-bmQgbGlrZSBzZXR0aW5nIFBFUl9QSVhFTF9BTFBIQV9CWVBBU1NfRU4gYW5kIFBJWEVMX1JPVU5E
-SU5HX1RSVU5DX0ZCX1BBU1NUSFJVIHRvdWNoIGV4YWN0bHkgdGhlIHByb2JsZW0geW91IGFyZSBz
-ZWVpbmcuIE1heWJlIGRpZmZlcmVudCBodyByZXZpc2lvbiBiZWhhdmUgZGlmZmVyZW50bHk/IFRy
-eSBzZWUgaWYgdGhlcmUncyBvbiBzcGVjIHNvbWUgbm90ZSBmb3IgeW91ciBIVyByZXZpc2lvbiBm
-b3IgdGhlc2UgV0FzLg0KPiANCj4gL0p1aGEtUGVra2ENCj4gDQo+IE9uIDE4LjYuMjAyMSAxMS41
-OCwgU3Jpbml2YXMsIFZpZHlhIHdyb3RlOg0KPj4gVGhhbmsgeW91IHNvIG11Y2ggSnVoYS1QZWtr
-YS4NCj4+DQo+PiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvcGF0Y2gvNDM2MTk0
-Lz9zZXJpZXM9OTA4MjgmcmV2PTINCj4+IGp1c3QgcmVtb3ZlcyB0aGUgRFJNX1BMQU5FX1RZUEVf
-UFJJTUFSWSBmYiBzZXR0aW5nIGZyb20gc3VidGVzdCBUaGF0IHdvcmtzLiBXb3VsZCB0aGF0IGJl
-IGFuIG9rYXkgY2hhbmdlPw0KPj4NCj4+IEJlY2F1c2Ugd2l0aG91dCB0aGUgY29tbWl0IGFmdGVy
-IFBSSU1BUlkgYW5kIGFscGhhIHZhbHVlIDB4N2UsIEpTTCBpcyBmYWlsaW5nLiBJZiB3ZSBqdXN0
-IGRvbuKAmXQgZG8gdGhlIFBSSU1BUlkgZmIgc2V0dGluZyBhdCBzdGFydCwgdGVzdCB3b3JrcyBh
-cyBpcy4NCj4+DQo+PiBLaW5kbHkgc3VnZ2VzdC4gVGhhbmsgeW91IHZlcnkgbXVjaCBvbmNlIGFn
-YWluLg0KPj4NCj4+IFJlZ2FyZHMNCj4+IFZpZHlhDQo+Pg0KPj4gLS0tLS1PcmlnaW5hbCBNZXNz
-YWdlLS0tLS0NCj4+IEZyb206IEp1aGEtUGVra2EgSGVpa2tpbGEgPGp1aGFwZWtrYS5oZWlra2ls
-YUBnbWFpbC5jb20+DQo+PiBTZW50OiBGcmlkYXksIEp1bmUgMTgsIDIwMjEgMjoyMyBQTQ0KPj4g
-VG86IFNyaW5pdmFzLCBWaWR5YSA8dmlkeWEuc3Jpbml2YXNAaW50ZWwuY29tPjsgDQo+PiBpZ3Qt
-ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPj4gQ2M6IExhdHZhbGEsIFBldHJpIDxwZXRyaS5s
-YXR2YWxhQGludGVsLmNvbT47IExpbiwgQ2hhcmx0b24gDQo+PiA8Y2hhcmx0b24ubGluQGludGVs
-LmNvbT4NCj4+IFN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW1BBVENIIGktZy10XSB0ZXN0cy9rbXNf
-cGxhbmVfYWxwaGFfYmxlbmQ6IEZpeCANCj4+IGFscGhhIGluIGNvdmVyYWdlLXZzLXByZW11bHQt
-dnMtY29uc3RhbnQNCj4+DQo+PiBPbiAxMS42LjIwMjEgMTUuNDQsIFZpZHlhIFNyaW5pdmFzIHdy
-b3RlOg0KPj4+IFBhdGNoIHNldHMgYWxwaGEgdG8gMHg3ZSBmb3IgY292ZXJhZ2UsIFByZS1tdWx0
-aXBsaWVkIGFuZCBjb25zdGFudCANCj4+PiBhcyBwZXIgdGhlIGJ1ZmZlciBiZWluZyBjcmVhdGVk
-IGluaXRpYWxseSBpbiBwcmVwYXJlX2NydGMuIFBhdGNoIA0KPj4+IGFsc28gYWRkIGNvbW1pdCBh
-ZnRlciBzZXR0aW5nIGZiIG9uIHByaW1hcnkgcGxhbmUuIFdpdGhvdXQgdGhpcyANCj4+PiBjaGFu
-Z2UgQ1JDIG1pc21hdGNoIGlzIHNlZW4gb24gZmV3IEdlbjExIHN5c3RlbXMuDQo+Pj4NCj4+PiBT
-aWduZWQtb2ZmLWJ5OiBWaWR5YSBTcmluaXZhcyA8dmlkeWEuc3Jpbml2YXNAaW50ZWwuY29tPg0K
-Pj4+IC0tLQ0KPj4+ICAgICB0ZXN0cy9rbXNfcGxhbmVfYWxwaGFfYmxlbmQuYyB8IDkgKysrKysr
-Ky0tDQo+Pj4gICAgIDEgZmlsZSBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25z
-KC0pDQo+Pj4NCj4+PiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX3BsYW5lX2FscGhhX2JsZW5kLmMg
-DQo+Pj4gYi90ZXN0cy9rbXNfcGxhbmVfYWxwaGFfYmxlbmQuYyBpbmRleCBhMzdjYjI3YzdkNjIu
-LmQzYTczY2Y0M2ZjZA0KPj4+IDEwMDY0NA0KPj4+IC0tLSBhL3Rlc3RzL2ttc19wbGFuZV9hbHBo
-YV9ibGVuZC5jDQo+Pj4gKysrIGIvdGVzdHMva21zX3BsYW5lX2FscGhhX2JsZW5kLmMNCj4+PiBA
-QCAtNDQ4LDI5ICs0NDgsMzQgQEAgc3RhdGljIHZvaWQgY292ZXJhZ2VfcHJlbXVsdF9jb25zdGFu
-dChkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlLCBpZ3RfcGxhbmVfdA0KPj4+ICAgICAJaWd0
-X2NyY190IHJlZl9jcmMgPSB7fSwgY3JjID0ge307DQo+Pj4gICAgIA0KPj4+ICAgICAJLyogU2V0
-IGEgYmFja2dyb3VuZCBjb2xvciBvbiB0aGUgcHJpbWFyeSBmYiBmb3IgdGVzdGluZyAqLw0KPj4+
-IC0JaWYgKHBsYW5lLT50eXBlICE9IERSTV9QTEFORV9UWVBFX1BSSU1BUlkpDQo+Pj4gKwlpZiAo
-cGxhbmUtPnR5cGUgIT0gRFJNX1BMQU5FX1RZUEVfUFJJTUFSWSkgew0KPj4+ICAgICAJCQ0KPj4+
-IGlndF9wbGFuZV9zZXRfZmIoaWd0X3BpcGVfZ2V0X3BsYW5lX3R5cGUoJmRpc3BsYXktPnBpcGVz
-W3BpcGVdLA0KPj4+IERSTV9QTEFORV9UWVBFX1BSSU1BUlkpLCAmZGF0YS0+Z3JheV9mYik7DQo+
-Pj4gKwkJaWd0X2Rpc3BsYXlfY29tbWl0MihkaXNwbGF5LCBDT01NSVRfQVRPTUlDKTsNCj4+DQo+
-PiBXaHkgdGhpcyBleHRyYSBjb21taXQgbmVlZGVkPyBUaGVyZSdzIGp1c3QgYmVsb3cgY29tbWl0
-IGJlZm9yZSBjcmMgaXMgDQo+PiBzdGFydGVkDQo+Pg0KPj4+ICsJfQ0KPj4+ICAgICANCj4+PiAg
-ICAgCWlndF9wbGFuZV9zZXRfcHJvcF9lbnVtKHBsYW5lLCBJR1RfUExBTkVfUElYRUxfQkxFTkRf
-TU9ERSwgDQo+Pj4gIkNvdmVyYWdlIik7DQo+Pj4gKwlpZ3RfcGxhbmVfc2V0X3Byb3BfdmFsdWUo
-cGxhbmUsIElHVF9QTEFORV9BTFBIQSwgMHg3ZSk7DQo+Pg0KPj4gT24gdGhpcyB0ZXN0IHRoZXJl
-J3MgYWxyZWFkeSBwZXIgcGl4ZWwgYWxwaGEsIHNldHRpbmcgcGxhbmUgYWxwaGEgdmFsdWVzIHNv
-IGxvdyB3aWxsIHByb2JhYmx5IGluIHRoaXMgY2FzZSBpbiBmaW5hbCByb3VuZGluZyBtYWtlIHRo
-ZXNlIHBsYW5lcyBjb21wbGV0ZWx5IGludmlzaWJsZS4gSSdkIHN1c3BlY3QgeW91IGNhbiBnZXQg
-YW55IGltYWdlIHBhc3MgY3JjIGRvaW5nIGl0IGxpa2UgdGhpcy4gTGlrZWx5IHdoYXQgeW91IHNl
-ZSBvbiBzY3JlZW4gd2l0aCB0aGVzZSB2YWx1ZXMgaXMganVzdCBwdXJlIGdyZXkgaW5zdGVhZCBv
-ZiBpbnRlbmRlZCB0ZXN0IGltYWdlLg0KPj4NCj4+DQo+Pj4gICAgIAlpZ3RfcGxhbmVfc2V0X2Zi
-KHBsYW5lLCAmZGF0YS0+YXJnYl9mYl9jb3ZfN2UpOw0KPj4+ICAgICAJaWd0X2Rpc3BsYXlfY29t
-bWl0MihkaXNwbGF5LCBDT01NSVRfQVRPTUlDKTsNCj4+PiAgICAgCWlndF9waXBlX2NyY19zdGFy
-dChkYXRhLT5waXBlX2NyYyk7DQo+Pj4gICAgIAlpZ3RfcGlwZV9jcmNfZ2V0X3NpbmdsZShkYXRh
-LT5waXBlX2NyYywgJnJlZl9jcmMpOw0KPj4+ICAgICANCj4+PiAgICAgCWlndF9wbGFuZV9zZXRf
-cHJvcF9lbnVtKHBsYW5lLCBJR1RfUExBTkVfUElYRUxfQkxFTkRfTU9ERSwgDQo+Pj4gIlByZS1t
-dWx0aXBsaWVkIik7DQo+Pj4gKwlpZ3RfcGxhbmVfc2V0X3Byb3BfdmFsdWUocGxhbmUsIElHVF9Q
-TEFORV9BTFBIQSwgMHg3ZSk7DQo+Pj4gICAgIAlpZ3RfcGxhbmVfc2V0X2ZiKHBsYW5lLCAmZGF0
-YS0+YXJnYl9mYl83ZSk7DQo+Pj4gICAgIAlpZ3RfZGlzcGxheV9jb21taXQyKGRpc3BsYXksIENP
-TU1JVF9BVE9NSUMpOw0KPj4+ICAgICAJaWd0X3BpcGVfY3JjX2dldF9jdXJyZW50KGRpc3BsYXkt
-PmRybV9mZCwgZGF0YS0+cGlwZV9jcmMsICZjcmMpOw0KPj4+ICAgICAJaWd0X2Fzc2VydF9jcmNf
-ZXF1YWwoJnJlZl9jcmMsICZjcmMpOw0KPj4+ICAgICANCj4+PiAgICAgCWlndF9wbGFuZV9zZXRf
-cHJvcF9lbnVtKHBsYW5lLCBJR1RfUExBTkVfUElYRUxfQkxFTkRfTU9ERSwgIk5vbmUiKTsNCj4+
-PiAtCWlndF9wbGFuZV9zZXRfcHJvcF92YWx1ZShwbGFuZSwgSUdUX1BMQU5FX0FMUEhBLCAweDdl
-N2UpOw0KPj4+ICsJaWd0X3BsYW5lX3NldF9wcm9wX3ZhbHVlKHBsYW5lLCBJR1RfUExBTkVfQUxQ
-SEEsIDB4N2UpOw0KPj4+ICAgICAJaWd0X3BsYW5lX3NldF9mYihwbGFuZSwgJmRhdGEtPmFyZ2Jf
-ZmJfY292XzdlKTsNCj4+PiAgICAgCWlndF9kaXNwbGF5X2NvbW1pdDIoZGlzcGxheSwgQ09NTUlU
-X0FUT01JQyk7DQo+Pj4gICAgIAlpZ3RfcGlwZV9jcmNfZ2V0X2N1cnJlbnQoZGlzcGxheS0+ZHJt
-X2ZkLCBkYXRhLT5waXBlX2NyYywgJmNyYyk7DQo+Pj4gICAgIAlpZ3RfYXNzZXJ0X2NyY19lcXVh
-bCgmcmVmX2NyYywgJmNyYyk7DQo+Pj4gICAgIA0KPj4+ICAgICAJaWd0X3BpcGVfY3JjX3N0b3Ao
-ZGF0YS0+cGlwZV9jcmMpOw0KPj4+ICsNCj4+DQo+PiBzdHJheSBuZXcgbGluZQ0KPj4NCj4+PiAg
-ICAgfQ0KPj4+ICAgICANCj4+PiAgICAgc3RhdGljIHZvaWQgcnVuX3Rlc3Rfb25fcGlwZV9wbGFu
-ZXMoZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgDQo+Pj4gcGlwZSwgYm9vbCBibGVuZCwNCj4+Pg0K
-Pj4NCj4gDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpp
-Z3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczov
-L2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+Few Gen11 systems report CRC mismatch with higher alpha values if
+primary plane is enabled. So in order to get the coverage vs. premult vs. constant
+crc to match use legacy LUT to limit pipe output to 8bpc for subtest
+coverage-vs-premult-vs-constant. Similar thing is done in kms_flip_scaled_crc.
+
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+---
+ tests/kms_plane_alpha_blend.c | 39 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 36 insertions(+), 3 deletions(-)
+
+diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+index a37cb27c7d62..1e20d9b0778c 100644
+--- a/tests/kms_plane_alpha_blend.c
++++ b/tests/kms_plane_alpha_blend.c
+@@ -442,20 +442,52 @@ static void coverage_7efc(data_t *data, enum pipe pipe, igt_plane_t *plane)
+ 	igt_pipe_crc_stop(data->pipe_crc);
+ }
+ 
++static void set_lut(data_t *data, enum pipe pipe)
++{
++	igt_pipe_t *pipe_obj = &data->display.pipes[pipe];
++	struct drm_color_lut *lut;
++	drmModeCrtc *crtc;
++	int i, lut_size;
++
++	crtc = drmModeGetCrtc(data->gfx_fd, pipe_obj->crtc_id);
++	lut_size = crtc->gamma_size;
++	drmModeFreeCrtc(crtc);
++	lut = malloc(sizeof(lut[0]) * lut_size);
++	for (i = 0; i < lut_size; i++) {
++		uint16_t v  = (i * 0xffff / (lut_size - 1)) & 0xff00;
++		lut[i].red = v;
++		lut[i].green = v;
++		lut[i].blue = v;
++	}
++	igt_pipe_obj_replace_prop_blob(pipe_obj, IGT_CRTC_GAMMA_LUT,
++				       lut, sizeof(lut[0]) * lut_size);
++	free(lut);
++}
++
++static void clear_lut(data_t *data, enum pipe pipe)
++{
++	igt_pipe_t *pipe_obj = &data->display.pipes[pipe];
++
++	igt_pipe_obj_set_prop_value(pipe_obj, IGT_CRTC_GAMMA_LUT, 0);
++}
++
+ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t *plane)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_crc_t ref_crc = {}, crc = {};
++	int i;
+ 
+ 	/* Set a background color on the primary fb for testing */
+-	if (plane->type != DRM_PLANE_TYPE_PRIMARY)
+-		igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY), &data->gray_fb);
++	if (plane->type != DRM_PLANE_TYPE_PRIMARY) {
++		set_lut(data, pipe);
++		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	}
+ 
+ 	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage");
+ 	igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ 	igt_pipe_crc_start(data->pipe_crc);
+-	igt_pipe_crc_get_single(data->pipe_crc, &ref_crc);
++	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &ref_crc);
+ 
+ 	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Pre-multiplied");
+ 	igt_plane_set_fb(plane, &data->argb_fb_7e);
+@@ -470,6 +502,7 @@ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t
+ 	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc);
+ 	igt_assert_crc_equal(&ref_crc, &crc);
+ 
++	clear_lut(data, pipe);
+ 	igt_pipe_crc_stop(data->pipe_crc);
+ }
+ 
+-- 
+2.7.4
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
