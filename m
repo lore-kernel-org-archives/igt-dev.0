@@ -1,13 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com
+ [IPv6:2a00:1450:4864:20::42a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2EBE96EA90
+ for <igt-dev@lists.freedesktop.org>; Sat, 19 Jun 2021 09:21:10 +0000 (UTC)
+Received: by mail-wr1-x42a.google.com with SMTP id r9so13527821wrz.10
+ for <igt-dev@lists.freedesktop.org>; Sat, 19 Jun 2021 02:21:10 -0700 (PDT)
+References: <1623415451-776-1-git-send-email-vidya.srinivas@intel.com>
+ <1624090135-437-1-git-send-email-vidya.srinivas@intel.com>
+From: =?UTF-8?Q?Juha-Pekka_Heikkil=c3=a4?= <juhapekka.heikkila@gmail.com>
+Message-ID: <4ceeab52-7037-ceab-7677-552db3751674@gmail.com>
+Date: Sat, 19 Jun 2021 12:21:07 +0300
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Sat, 19 Jun 2021 08:56:41 -0000
-Message-ID: <162409300133.29205.11494530965660499172@emeril.freedesktop.org>
-References: <1622547939-8157-1-git-send-email-vidya.srinivas@intel.com>
-In-Reply-To: <1622547939-8157-1-git-send-email-vidya.srinivas@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fplane=5Falpha=5Fblend=3A_Fix_coverage-vs-premult-vs-const?=
- =?utf-8?q?ant_tests_=28rev4=29?=
+In-Reply-To: <1624090135-437-1-git-send-email-vidya.srinivas@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Limit pipe
+ output to 8bpc for coverage-vs-premult-vs-constant
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,238 +21,105 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0328462798=="
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Vidya Srinivas <vidya.srinivas@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0328462798==
-Content-Type: multipart/alternative;
- boundary="===============0317712665673479158=="
+Hi Vidya
 
---===============0317712665673479158==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Vidya Srinivas kirjoitti 19.6.2021 klo 11.08:
+> Few Gen11 systems report CRC mismatch with higher alpha values if
+> primary plane is enabled. So in order to get the coverage vs. premult vs. constant
+> crc to match use legacy LUT to limit pipe output to 8bpc for subtest
+> coverage-vs-premult-vs-constant. Similar thing is done in kms_flip_scaled_crc.
+> 
+> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+> ---
+>   tests/kms_plane_alpha_blend.c | 39 ++++++++++++++++++++++++++++++++++++---
+>   1 file changed, 36 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+> index a37cb27c7d62..1e20d9b0778c 100644
+> --- a/tests/kms_plane_alpha_blend.c
+> +++ b/tests/kms_plane_alpha_blend.c
+> @@ -442,20 +442,52 @@ static void coverage_7efc(data_t *data, enum pipe pipe, igt_plane_t *plane)
+>   	igt_pipe_crc_stop(data->pipe_crc);
+>   }
+>   
+> +static void set_lut(data_t *data, enum pipe pipe)
+> +{
+> +	igt_pipe_t *pipe_obj = &data->display.pipes[pipe];
+> +	struct drm_color_lut *lut;
+> +	drmModeCrtc *crtc;
+> +	int i, lut_size;
+> +
+> +	crtc = drmModeGetCrtc(data->gfx_fd, pipe_obj->crtc_id);
+> +	lut_size = crtc->gamma_size;
+> +	drmModeFreeCrtc(crtc);
+> +	lut = malloc(sizeof(lut[0]) * lut_size);
+> +	for (i = 0; i < lut_size; i++) {
+> +		uint16_t v  = (i * 0xffff / (lut_size - 1)) & 0xff00;
+> +		lut[i].red = v;
+> +		lut[i].green = v;
+> +		lut[i].blue = v;
+> +	}
+> +	igt_pipe_obj_replace_prop_blob(pipe_obj, IGT_CRTC_GAMMA_LUT,
+> +				       lut, sizeof(lut[0]) * lut_size);
+> +	free(lut);
+> +}
+> +
+> +static void clear_lut(data_t *data, enum pipe pipe)
+> +{
+> +	igt_pipe_t *pipe_obj = &data->display.pipes[pipe];
+> +
+> +	igt_pipe_obj_set_prop_value(pipe_obj, IGT_CRTC_GAMMA_LUT, 0);
+> +}
+> +
+>   static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t *plane)
+>   {
+>   	igt_display_t *display = &data->display;
+>   	igt_crc_t ref_crc = {}, crc = {};
+> +	int i;
 
-== Series Details ==
+I didn't notice i variable being used
 
-Series: tests/kms_plane_alpha_blend: Fix coverage-vs-premult-vs-constant tests (rev4)
-URL   : https://patchwork.freedesktop.org/series/90828/
-State : success
+>   
+>   	/* Set a background color on the primary fb for testing */
+> -	if (plane->type != DRM_PLANE_TYPE_PRIMARY)
+> -		igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY), &data->gray_fb);
+^^
+now gray fb background is missing from the test.
 
-== Summary ==
+> +	if (plane->type != DRM_PLANE_TYPE_PRIMARY) {
+> +		set_lut(data, pipe); > +		igt_display_commit_atomic(&data->display, 
+DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +	}
+>   
+>   	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage");
+>   	igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
+>   	igt_display_commit2(display, COMMIT_ATOMIC);
+>   	igt_pipe_crc_start(data->pipe_crc);
+> -	igt_pipe_crc_get_single(data->pipe_crc, &ref_crc);
+> +	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &ref_crc);
+>   
+>   	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Pre-multiplied");
+>   	igt_plane_set_fb(plane, &data->argb_fb_7e);
+> @@ -470,6 +502,7 @@ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t
+>   	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc);
+>   	igt_assert_crc_equal(&ref_crc, &crc);
+>   
+> +	clear_lut(data, pipe);
 
-CI Bug Log - changes from CI_DRM_10246 -> IGTPW_5943
-====================================================
+You'll need to do commit clearing gamma lut.
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5943 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@semaphore:
-    - fi-bdw-5557u:       NOTRUN -> [SKIP][1] ([fdo#109271]) +27 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271]) +1 similar issue
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/fi-kbl-soraka/igt@amdgpu/amd_basic@semaphore.html
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-bdw-5557u:       NOTRUN -> [WARN][3] ([i915#2283])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@gem_exec_parallel@engines@userptr:
-    - fi-pnv-d510:        [PASS][4] -> [INCOMPLETE][5] ([i915#299])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10246/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-bdw-5557u:       NOTRUN -> [SKIP][6] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html
-
-  * igt@runner@aborted:
-    - fi-pnv-d510:        NOTRUN -> [FAIL][7] ([i915#2403] / [i915#2505] / [i915#2722])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/fi-pnv-d510/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-cml-s:           [DMESG-FAIL][8] ([i915#2291] / [i915#541]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10246/fi-cml-s/igt@i915_selftest@live@gt_heartbeat.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/fi-cml-s/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-kbl-7500u:       [FAIL][10] ([i915#1372]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10246/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1372]: https://gitlab.freedesktop.org/drm/intel/issues/1372
-  [i915#2283]: https://gitlab.freedesktop.org/drm/intel/issues/2283
-  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
-  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
-  [i915#2505]: https://gitlab.freedesktop.org/drm/intel/issues/2505
-  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
-  [i915#299]: https://gitlab.freedesktop.org/drm/intel/issues/299
-  [i915#541]: https://gitlab.freedesktop.org/drm/intel/issues/541
-
-
-Participating hosts (42 -> 36)
-------------------------------
-
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6113 -> IGTPW_5943
-
-  CI-20190529: 20190529
-  CI_DRM_10246: 3c00434f0d7ff138a7b56d5a901586d4473e10a7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5943: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/index.html
-  IGT_6113: 138a29e30277b1039e9934fca5c782dc1e7a9f99 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/index.html
-
---===============0317712665673479158==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane_alpha_blend: Fix coverage-vs-premult-vs-constant tests (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/90828/">https://patchwork.freedesktop.org/series/90828/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10246 -&gt; IGTPW_5943</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5943 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@semaphore:</p>
-<ul>
-<li>
-<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +27 similar issues</p>
-</li>
-<li>
-<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/fi-kbl-soraka/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2283">i915#2283</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_parallel@engines@userptr:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10246/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/299">i915#299</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/fi-pnv-d510/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2505">i915#2505</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-cml-s:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10246/fi-cml-s/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/541">i915#541</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/fi-cml-s/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10246/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1372">i915#1372</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (42 -&gt; 36)</h2>
-<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-dg1-1 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6113 -&gt; IGTPW_5943</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10246: 3c00434f0d7ff138a7b56d5a901586d4473e10a7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5943: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5943/index.html<br />
-  IGT_6113: 138a29e30277b1039e9934fca5c782dc1e7a9f99 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============0317712665673479158==--
-
---===============0328462798==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+>   	igt_pipe_crc_stop(data->pipe_crc);
+>   }
+>   
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0328462798==--
