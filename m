@@ -1,14 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D17F16E042
- for <igt-dev@lists.freedesktop.org>; Sat, 19 Jun 2021 17:17:13 +0000 (UTC)
-From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Sat, 19 Jun 2021 22:37:41 +0530
-Message-Id: <1624122461-19827-1-git-send-email-vidya.srinivas@intel.com>
-In-Reply-To: <1624090135-437-1-git-send-email-vidya.srinivas@intel.com>
-References: <1624090135-437-1-git-send-email-vidya.srinivas@intel.com>
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Use alpha for
- primary plane for coverage-vs-premult-vs-constant
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C408F6E02E
+ for <igt-dev@lists.freedesktop.org>; Sat, 19 Jun 2021 17:21:22 +0000 (UTC)
+From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Date: Sat, 19 Jun 2021 17:21:08 +0000
+Message-ID: <BY5PR11MB43725BD1497AFBDF932342D2890C9@BY5PR11MB4372.namprd11.prod.outlook.com>
+References: <1623415451-776-1-git-send-email-vidya.srinivas@intel.com>
+ <1624090135-437-1-git-send-email-vidya.srinivas@intel.com>
+ <4ceeab52-7037-ceab-7677-552db3751674@gmail.com>
+ <BY5PR11MB437247A237706AADE3C8C772890C9@BY5PR11MB4372.namprd11.prod.outlook.com>
+In-Reply-To: <BY5PR11MB437247A237706AADE3C8C772890C9@BY5PR11MB4372.namprd11.prod.outlook.com>
+Content-Language: en-US
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Limit pipe
+ output to 8bpc for coverage-vs-premult-vs-constant
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,40 +21,92 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: =?utf-8?B?SnVoYS1QZWtrYSBIZWlra2lsw6Q=?= <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Few Gen11 systems report CRC mismatch with higher alpha values if
-primary plane with gray is enabled. So in order to get the coverage vs. premult vs. constant
-crc to match use alpha buffer for primary plane as well in coverage-vs-premult-vs-constant.
-
-Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
----
- tests/kms_plane_alpha_blend.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-index a37cb27c7d62..52c273c71dad 100644
---- a/tests/kms_plane_alpha_blend.c
-+++ b/tests/kms_plane_alpha_blend.c
-@@ -449,7 +449,7 @@ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t
- 
- 	/* Set a background color on the primary fb for testing */
- 	if (plane->type != DRM_PLANE_TYPE_PRIMARY)
--		igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY), &data->gray_fb);
-+		igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY), &data->argb_fb_cov_7e);
- 
- 	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage");
- 	igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
--- 
-2.7.4
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SGVsbG8gSnVoYS1QZWtrYSwNCg0KRXZlbiBpZiBJIHVzZSBzZXRfbHV0LCB3aXRoIGdyYXkgaXQg
+Z2l2ZXMgQ1JDIG1pc21hdGNoIGZvciBwcmUtbXVsdGlwbGllZC4NCg0KSWYgSSB1c2Ugc2FtZSBh
+bHBoYSBidWZmZXIgKGFyZ2JfZmJfY292XzdlKSBpbiBwcmltYXJ5LCBpdCB3b3Jrcy4NCkkgaGF2
+ZSB1cGxvYWRlZCBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvcGF0Y2gvNDQwMTU3
+Lz9zZXJpZXM9OTA4MjgmcmV2PTUNCktpbmRseSBoYXZlIGEgY2hlY2suIFRoYW5rIHlvdSBzbyBt
+dWNoLg0KDQpSZWdhcmRzDQpWaWR5YQ0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJv
+bTogU3Jpbml2YXMsIFZpZHlhIA0KU2VudDogU2F0dXJkYXksIEp1bmUgMTksIDIwMjEgNToxMSBQ
+TQ0KVG86IEp1aGEtUGVra2EgSGVpa2tpbMOkIDxqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29t
+PjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCkNjOiBTaGFua2FyLCBVbWEgPHVtYS5z
+aGFua2FyQGludGVsLmNvbT4NClN1YmplY3Q6IFJFOiBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19w
+bGFuZV9hbHBoYV9ibGVuZDogTGltaXQgcGlwZSBvdXRwdXQgdG8gOGJwYyBmb3IgY292ZXJhZ2Ut
+dnMtcHJlbXVsdC12cy1jb25zdGFudA0KDQpUaGFuayB5b3Ugc28gbXVjaCBKdWhhLVBla2thLiBU
+aGUgbW9tZW50IEkgYWRkIGJhY2sgZ3JheSBmYiwgQ1JDIGFnYWluIGZhaWxzIDooDQoNClJlZ2Fy
+ZHMNClZpZHlhDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBKdWhhLVBla2th
+IEhlaWtraWzDpCA8anVoYXBla2thLmhlaWtraWxhQGdtYWlsLmNvbT4NClNlbnQ6IFNhdHVyZGF5
+LCBKdW5lIDE5LCAyMDIxIDI6NTEgUE0NClRvOiBTcmluaXZhcywgVmlkeWEgPHZpZHlhLnNyaW5p
+dmFzQGludGVsLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQpDYzogU2hhbmth
+ciwgVW1hIDx1bWEuc2hhbmthckBpbnRlbC5jb20+DQpTdWJqZWN0OiBSZTogW1BBVENIIGktZy10
+XSB0ZXN0cy9rbXNfcGxhbmVfYWxwaGFfYmxlbmQ6IExpbWl0IHBpcGUgb3V0cHV0IHRvIDhicGMg
+Zm9yIGNvdmVyYWdlLXZzLXByZW11bHQtdnMtY29uc3RhbnQNCg0KSGkgVmlkeWENCg0KVmlkeWEg
+U3Jpbml2YXMga2lyam9pdHRpIDE5LjYuMjAyMSBrbG8gMTEuMDg6DQo+IEZldyBHZW4xMSBzeXN0
+ZW1zIHJlcG9ydCBDUkMgbWlzbWF0Y2ggd2l0aCBoaWdoZXIgYWxwaGEgdmFsdWVzIGlmIA0KPiBw
+cmltYXJ5IHBsYW5lIGlzIGVuYWJsZWQuIFNvIGluIG9yZGVyIHRvIGdldCB0aGUgY292ZXJhZ2Ug
+dnMuIHByZW11bHQgDQo+IHZzLiBjb25zdGFudCBjcmMgdG8gbWF0Y2ggdXNlIGxlZ2FjeSBMVVQg
+dG8gbGltaXQgcGlwZSBvdXRwdXQgdG8gOGJwYyANCj4gZm9yIHN1YnRlc3QgY292ZXJhZ2UtdnMt
+cHJlbXVsdC12cy1jb25zdGFudC4gU2ltaWxhciB0aGluZyBpcyBkb25lIGluIGttc19mbGlwX3Nj
+YWxlZF9jcmMuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBWaWR5YSBTcmluaXZhcyA8dmlkeWEuc3Jp
+bml2YXNAaW50ZWwuY29tPg0KPiAtLS0NCj4gICB0ZXN0cy9rbXNfcGxhbmVfYWxwaGFfYmxlbmQu
+YyB8IDM5ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLQ0KPiAgIDEgZmls
+ZSBjaGFuZ2VkLCAzNiBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAt
+LWdpdCBhL3Rlc3RzL2ttc19wbGFuZV9hbHBoYV9ibGVuZC5jIA0KPiBiL3Rlc3RzL2ttc19wbGFu
+ZV9hbHBoYV9ibGVuZC5jIGluZGV4IGEzN2NiMjdjN2Q2Mi4uMWUyMGQ5YjA3NzhjDQo+IDEwMDY0
+NA0KPiAtLS0gYS90ZXN0cy9rbXNfcGxhbmVfYWxwaGFfYmxlbmQuYw0KPiArKysgYi90ZXN0cy9r
+bXNfcGxhbmVfYWxwaGFfYmxlbmQuYw0KPiBAQCAtNDQyLDIwICs0NDIsNTIgQEAgc3RhdGljIHZv
+aWQgY292ZXJhZ2VfN2VmYyhkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlLCBpZ3RfcGxhbmVf
+dCAqcGxhbmUpDQo+ICAgCWlndF9waXBlX2NyY19zdG9wKGRhdGEtPnBpcGVfY3JjKTsNCj4gICB9
+DQo+ICAgDQo+ICtzdGF0aWMgdm9pZCBzZXRfbHV0KGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBp
+cGUpIHsNCj4gKwlpZ3RfcGlwZV90ICpwaXBlX29iaiA9ICZkYXRhLT5kaXNwbGF5LnBpcGVzW3Bp
+cGVdOw0KPiArCXN0cnVjdCBkcm1fY29sb3JfbHV0ICpsdXQ7DQo+ICsJZHJtTW9kZUNydGMgKmNy
+dGM7DQo+ICsJaW50IGksIGx1dF9zaXplOw0KPiArDQo+ICsJY3J0YyA9IGRybU1vZGVHZXRDcnRj
+KGRhdGEtPmdmeF9mZCwgcGlwZV9vYmotPmNydGNfaWQpOw0KPiArCWx1dF9zaXplID0gY3J0Yy0+
+Z2FtbWFfc2l6ZTsNCj4gKwlkcm1Nb2RlRnJlZUNydGMoY3J0Yyk7DQo+ICsJbHV0ID0gbWFsbG9j
+KHNpemVvZihsdXRbMF0pICogbHV0X3NpemUpOw0KPiArCWZvciAoaSA9IDA7IGkgPCBsdXRfc2l6
+ZTsgaSsrKSB7DQo+ICsJCXVpbnQxNl90IHYgID0gKGkgKiAweGZmZmYgLyAobHV0X3NpemUgLSAx
+KSkgJiAweGZmMDA7DQo+ICsJCWx1dFtpXS5yZWQgPSB2Ow0KPiArCQlsdXRbaV0uZ3JlZW4gPSB2
+Ow0KPiArCQlsdXRbaV0uYmx1ZSA9IHY7DQo+ICsJfQ0KPiArCWlndF9waXBlX29ial9yZXBsYWNl
+X3Byb3BfYmxvYihwaXBlX29iaiwgSUdUX0NSVENfR0FNTUFfTFVULA0KPiArCQkJCSAgICAgICBs
+dXQsIHNpemVvZihsdXRbMF0pICogbHV0X3NpemUpOw0KPiArCWZyZWUobHV0KTsNCj4gK30NCj4g
+Kw0KPiArc3RhdGljIHZvaWQgY2xlYXJfbHV0KGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUp
+IHsNCj4gKwlpZ3RfcGlwZV90ICpwaXBlX29iaiA9ICZkYXRhLT5kaXNwbGF5LnBpcGVzW3BpcGVd
+Ow0KPiArDQo+ICsJaWd0X3BpcGVfb2JqX3NldF9wcm9wX3ZhbHVlKHBpcGVfb2JqLCBJR1RfQ1JU
+Q19HQU1NQV9MVVQsIDApOyB9DQo+ICsNCj4gICBzdGF0aWMgdm9pZCBjb3ZlcmFnZV9wcmVtdWx0
+X2NvbnN0YW50KGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUsIGlndF9wbGFuZV90ICpwbGFu
+ZSkNCj4gICB7DQo+ICAgCWlndF9kaXNwbGF5X3QgKmRpc3BsYXkgPSAmZGF0YS0+ZGlzcGxheTsN
+Cj4gICAJaWd0X2NyY190IHJlZl9jcmMgPSB7fSwgY3JjID0ge307DQo+ICsJaW50IGk7DQoNCkkg
+ZGlkbid0IG5vdGljZSBpIHZhcmlhYmxlIGJlaW5nIHVzZWQNCg0KPiAgIA0KPiAgIAkvKiBTZXQg
+YSBiYWNrZ3JvdW5kIGNvbG9yIG9uIHRoZSBwcmltYXJ5IGZiIGZvciB0ZXN0aW5nICovDQo+IC0J
+aWYgKHBsYW5lLT50eXBlICE9IERSTV9QTEFORV9UWVBFX1BSSU1BUlkpDQo+IC0JCWlndF9wbGFu
+ZV9zZXRfZmIoaWd0X3BpcGVfZ2V0X3BsYW5lX3R5cGUoJmRpc3BsYXktPnBpcGVzW3BpcGVdLCBE
+Uk1fUExBTkVfVFlQRV9QUklNQVJZKSwgJmRhdGEtPmdyYXlfZmIpOw0KXl4NCm5vdyBncmF5IGZi
+IGJhY2tncm91bmQgaXMgbWlzc2luZyBmcm9tIHRoZSB0ZXN0Lg0KDQo+ICsJaWYgKHBsYW5lLT50
+eXBlICE9IERSTV9QTEFORV9UWVBFX1BSSU1BUlkpIHsNCj4gKwkJc2V0X2x1dChkYXRhLCBwaXBl
+KTsgPiArCQlpZ3RfZGlzcGxheV9jb21taXRfYXRvbWljKCZkYXRhLT5kaXNwbGF5LCANCkRSTV9N
+T0RFX0FUT01JQ19BTExPV19NT0RFU0VULCBOVUxMKTsNCj4gKwl9DQo+ICAgDQo+ICAgCWlndF9w
+bGFuZV9zZXRfcHJvcF9lbnVtKHBsYW5lLCBJR1RfUExBTkVfUElYRUxfQkxFTkRfTU9ERSwgIkNv
+dmVyYWdlIik7DQo+ICAgCWlndF9wbGFuZV9zZXRfZmIocGxhbmUsICZkYXRhLT5hcmdiX2ZiX2Nv
+dl83ZSk7DQo+ICAgCWlndF9kaXNwbGF5X2NvbW1pdDIoZGlzcGxheSwgQ09NTUlUX0FUT01JQyk7
+DQo+ICAgCWlndF9waXBlX2NyY19zdGFydChkYXRhLT5waXBlX2NyYyk7DQo+IC0JaWd0X3BpcGVf
+Y3JjX2dldF9zaW5nbGUoZGF0YS0+cGlwZV9jcmMsICZyZWZfY3JjKTsNCj4gKwlpZ3RfcGlwZV9j
+cmNfZ2V0X2N1cnJlbnQoZGlzcGxheS0+ZHJtX2ZkLCBkYXRhLT5waXBlX2NyYywgJnJlZl9jcmMp
+Ow0KPiAgIA0KPiAgIAlpZ3RfcGxhbmVfc2V0X3Byb3BfZW51bShwbGFuZSwgSUdUX1BMQU5FX1BJ
+WEVMX0JMRU5EX01PREUsICJQcmUtbXVsdGlwbGllZCIpOw0KPiAgIAlpZ3RfcGxhbmVfc2V0X2Zi
+KHBsYW5lLCAmZGF0YS0+YXJnYl9mYl83ZSk7IEBAIC00NzAsNiArNTAyLDcgQEAgDQo+IHN0YXRp
+YyB2b2lkIGNvdmVyYWdlX3ByZW11bHRfY29uc3RhbnQoZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUg
+cGlwZSwgaWd0X3BsYW5lX3QNCj4gICAJaWd0X3BpcGVfY3JjX2dldF9jdXJyZW50KGRpc3BsYXkt
+PmRybV9mZCwgZGF0YS0+cGlwZV9jcmMsICZjcmMpOw0KPiAgIAlpZ3RfYXNzZXJ0X2NyY19lcXVh
+bCgmcmVmX2NyYywgJmNyYyk7DQo+ICAgDQo+ICsJY2xlYXJfbHV0KGRhdGEsIHBpcGUpOw0KDQpZ
+b3UnbGwgbmVlZCB0byBkbyBjb21taXQgY2xlYXJpbmcgZ2FtbWEgbHV0Lg0KDQo+ICAgCWlndF9w
+aXBlX2NyY19zdG9wKGRhdGEtPnBpcGVfY3JjKTsNCj4gICB9DQo+ICAgDQo+IA0KX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxp
+c3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
+cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
