@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk
  [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C1EBA89CA2
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Jun 2021 06:52:49 +0000 (UTC)
-Date: Tue, 22 Jun 2021 08:52:45 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-Message-ID: <20210622085245.6a0ed125@collabora.com>
-In-Reply-To: <YNDFsW3JsJCmYuXA@platvala-desk.ger.corp.intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A496B898C8
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 16:02:29 +0000 (UTC)
+Date: Mon, 21 Jun 2021 12:02:20 -0400
+From: Alyssa Rosenzweig <alyssa@collabora.com>
+Message-ID: <YNC4DGRWMwNh3e20@maud>
 References: <20210621125724.1592104-1-boris.brezillon@collabora.com>
- <20210621125724.1592104-2-boris.brezillon@collabora.com>
- <YNDFsW3JsJCmYuXA@platvala-desk.ger.corp.intel.com>
+ <20210621125724.1592104-4-boris.brezillon@collabora.com>
+ <YNCVh22DQoj6DHnh@maud> <20210621161814.0cd82704@collabora.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 1/7] tests/panfrost: Make sure we open a DUMB
- capable node for prime tests
+Content-Disposition: inline
+In-Reply-To: <20210621161814.0cd82704@collabora.com>
+Subject: Re: [igt-dev] [PATCH 3/7] lib/panfrost: Add a helper to create a
+ job loop
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,86 +25,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
+To: Boris Brezillon <boris.brezillon@collabora.com>
 Cc: Tomeu Vizoso <tomeu.vizoso@collabora.com>, Steven Price <steven.price@arm.com>, igt-dev@lists.freedesktop.org, Rob Herring <robh+dt@kernel.org>, Alyssa Rosenzweig <alyssa.rosenzweig@collabora.com>, Robin Murphy <robin.murphy@arm.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Petri,
+> Nope, I'm writing 0 to the next job ->exception_status field, which is
+> needed if we want the loop to be effective (as soon as the GPU sees a
+> job that has a non-zero exception_status it triggers an INVALID_DATA
+> fault).
 
-On Mon, 21 Jun 2021 20:00:33 +0300
-Petri Latvala <petri.latvala@intel.com> wrote:
-
-> On Mon, Jun 21, 2021 at 02:57:18PM +0200, Boris Brezillon wrote:
-> > Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-> > ---
-> >  tests/panfrost_prime.c | 26 +++++++++++++++++++++++++-
-> >  1 file changed, 25 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/tests/panfrost_prime.c b/tests/panfrost_prime.c
-> > index 351d46f2f7e6..f9818108a662 100644
-> > --- a/tests/panfrost_prime.c
-> > +++ b/tests/panfrost_prime.c
-> > @@ -35,12 +35,36 @@
-> >  #include <sys/ioctl.h>
-> >  #include "panfrost_drm.h"
-> >  
-> > +static int igt_panfrost_open_kms_driver(void)
-> > +{
-> > +	for (unsigned i = 0; i < 2; i++) {
-> > +		uint64_t cap_dumb_buf = 0, cap_prime = 0;
-> > +		char path[32];
-> > +		int fd;
-> > +
-> > +		snprintf(path, sizeof(path), "/dev/dri/card%d", i);
-> > +
-> > +		fd = open(path, O_RDWR);
-> > +		if (fd < 0)
-> > +			continue;
-> > +
-> > +		drmGetCap(fd, DRM_CAP_DUMB_BUFFER, &cap_dumb_buf);
-> > +		drmGetCap(fd, DRM_CAP_PRIME, &cap_prime);
-> > +		if (cap_dumb_buf && (cap_prime & DRM_PRIME_CAP_EXPORT))
-> > +			return fd;
-> > +
-> > +		close(fd);
-> > +	}
-> > +
-> > +	return -1;
-> > +}
-> > +
-> >  igt_main
-> >  {
-> >  	int fd, kms_fd;
-> >  
-> >  	igt_fixture {
-> > -		kms_fd = drm_open_driver_master(DRIVER_ANY);
-> > +		kms_fd = igt_panfrost_open_kms_driver();  
-> 
-> 
-> How we've done this kind of thing elsewhere is
-> 
-> 1) use drm_open_driver_another(0, DRIVER_foobar) +
-> drm_open_driver_another(1, DRIVER_something) to open the two driver
-> fds. The _another variants make sure the fds are from different
-> devices. Then, check that the fds meet the requirements for testing
-> with igt_require et al, don't go looking for additional devices. Let
-> the test produce a 'skip' result if requirements are not met.
-> 
-> 2) use device filters when executing the tests to control what devices
-> get chosen. Docs at
-> https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Device-selection.html
-> 
-> 
-> That way someone who has, say, vkms + vgem + panfrost drivers present
-> is able to run tests and specify that they don't want you to touch
-> vkms.
-> 
-
-Thanks for the tip. I'll use drm_open_driver_another() in v2.
-
-Regards,
-
-Boris
+Ah-ha, sorry, misunderstood where out pointed. Would it be possible to
+express the intent a bit more clearly, or at least add some comments
+explaining what's happening? Thanks.
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
