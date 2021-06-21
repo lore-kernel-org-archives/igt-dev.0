@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com
- [IPv6:2607:f8b0:4864:20::934])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B08666E3AC
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 18:30:42 +0000 (UTC)
-Received: by mail-ua1-x934.google.com with SMTP id r4so5795712uap.8
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 11:30:42 -0700 (PDT)
+Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com
+ [IPv6:2607:f8b0:4864:20::e35])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D9E3E6E3F0
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 18:33:01 +0000 (UTC)
+Received: by mail-vs1-xe35.google.com with SMTP id x12so2685198vsp.4
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 11:33:01 -0700 (PDT)
 From: Mark Yacoub <markyacoub@chromium.org>
-Date: Mon, 21 Jun 2021 18:30:38 +0000
-Message-Id: <20210621183038.1030733-1-markyacoub@chromium.org>
+Date: Mon, 21 Jun 2021 18:32:57 +0000
+Message-Id: <20210621183257.1030915-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v3] tests/kms_vblank: Turn on hardware before
+Subject: [igt-dev] [PATCH v4] tests/kms_vblank: Turn on hardware before
  testing invalid vblank.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -51,6 +51,7 @@ Changes since v1:
 2. Rename variable p to pipe_number
 
 Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+Change-Id: Id70072ea797a74d3e9563ef8feb5901daa6b511a
 ---
  tests/kms_vblank.c | 9 ++++++++-
  1 file changed, 8 insertions(+), 1 deletion(-)
