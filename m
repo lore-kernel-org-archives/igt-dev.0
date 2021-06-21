@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk
- [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BECD6E027
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 12:57:37 +0000 (UTC)
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 548CC6E027
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 12:57:38 +0000 (UTC)
 From: Boris Brezillon <boris.brezillon@collabora.com>
-Date: Mon, 21 Jun 2021 14:57:17 +0200
-Message-Id: <20210621125724.1592104-1-boris.brezillon@collabora.com>
+Date: Mon, 21 Jun 2021 14:57:19 +0200
+Message-Id: <20210621125724.1592104-3-boris.brezillon@collabora.com>
+In-Reply-To: <20210621125724.1592104-1-boris.brezillon@collabora.com>
+References: <20210621125724.1592104-1-boris.brezillon@collabora.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 0/7] tests/panfrost: Misc fixes/improvements
+Subject: [igt-dev] [PATCH 2/7] lib/panfrost: Handle the NULL case in
+ igt_panfrost_free_bo()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,35 +25,28 @@ To: Rob Herring <robh+dt@kernel.org>, Tomeu Vizoso <tomeu.vizoso@collabora.com>,
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hello,
+So we don't have to bother checking the value before calling this
+function.
 
-This is a collection of fixes for the panfrost testsuite:
- * submit tests are now passing on Bifrost
- * the prime test is fixed to handle the case where the KMS device is
-   assigned card1
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+---
+ lib/igt_panfrost.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-There's also an extra test to make sure we don't crash the kernel
-when closing the DRM FD while jobs are still in-flight.
-
-Regards,
-
-Boris
-
-Boris Brezillon (7):
-  tests/panfrost: Make sure we open a DUMB capable node for prime tests
-  lib/panfrost: Handle the NULL case in igt_panfrost_free_bo()
-  lib/panfrost: Add a helper to create a job loop
-  lib/panfrost: Add a helper to create a NULL job
-  tests/panfrost: Simplify submit tests
-  lib/panfrost: Get rid of igt_panfrost_trivial_job()
-  tests/panfrost: Test FD-close while jobs are still in-flight
-
- lib/igt_panfrost.c      | 159 +++++++++++++---------------------------
- lib/igt_panfrost.h      |   3 +-
- tests/panfrost_prime.c  |  26 ++++++-
- tests/panfrost_submit.c | 101 ++++++++++++-------------
- 4 files changed, 126 insertions(+), 163 deletions(-)
-
+diff --git a/lib/igt_panfrost.c b/lib/igt_panfrost.c
+index 8b0c2b7743ea..4bbb5ddf4076 100644
+--- a/lib/igt_panfrost.c
++++ b/lib/igt_panfrost.c
+@@ -72,6 +72,9 @@ igt_panfrost_gem_new(int fd, size_t size)
+ void
+ igt_panfrost_free_bo(int fd, struct panfrost_bo *bo)
+ {
++        if (!bo)
++                return;
++
+         if (bo->map)
+                 munmap(bo->map, bo->size);
+         gem_close(fd, bo->handle);
 -- 
 2.31.1
 
