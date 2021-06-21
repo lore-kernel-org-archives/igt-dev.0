@@ -1,26 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED3C789CFA
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 08:24:23 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Mon, 21 Jun 2021 08:24:16 +0000
-Message-ID: <BY5PR11MB4372BA9327BC03C13C2B0EF4890A9@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <1622547939-8157-1-git-send-email-vidya.srinivas@intel.com>
- <1623415451-776-1-git-send-email-vidya.srinivas@intel.com>
- <32c63e75-2a7c-69fa-c92f-5b54180a02ad@gmail.com>
- <BY5PR11MB4372D9FE109E779806C31E42890D9@BY5PR11MB4372.namprd11.prod.outlook.com>
- <0186ab1e-311f-5b0b-1f46-8092f7eb42fd@gmail.com>
- <BY5PR11MB43726004EEBC3E25A6FF7670890D9@BY5PR11MB4372.namprd11.prod.outlook.com>
- <BY5PR11MB4372DA5C2001525368BBC5AA890D9@BY5PR11MB4372.namprd11.prod.outlook.com>
- <a771b3ce-80ab-2a20-3f98-2e522cd673df@gmail.com>
- <BY5PR11MB437202D9DCEE43BDC107128F890C9@BY5PR11MB4372.namprd11.prod.outlook.com>
- <BY5PR11MB437275CF675A1863C4B36A6B890C9@BY5PR11MB4372.namprd11.prod.outlook.com>
- <3b2a44ff-d244-05aa-a22e-ec6707992967@gmail.com>
-In-Reply-To: <3b2a44ff-d244-05aa-a22e-ec6707992967@gmail.com>
-Content-Language: en-US
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2EE288997E
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 08:39:37 +0000 (UTC)
+Date: Mon, 21 Jun 2021 11:41:35 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YNBQv/jOJspSW/4B@platvala-desk.ger.corp.intel.com>
+References: <20210618142855.5750-1-Anson.Jacob@amd.com>
+ <20210618142855.5750-2-Anson.Jacob@amd.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Fix alpha
- in coverage-vs-premult-vs-constant
+Content-Disposition: inline
+In-Reply-To: <20210618142855.5750-2-Anson.Jacob@amd.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/4] lib/igt_kms: Fix test_init() crash
+ when <6 pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,179 +19,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Lin, Charlton" <charlton.lin@intel.com>, "Latvala,
- Petri" <petri.latvala@intel.com>
+To: Anson Jacob <Anson.Jacob@amd.com>
+Cc: igt-dev@lists.freedesktop.org, Mark Yacoub <markyacoub@google.com>, Victor Lu <victorchengchi.lu@amd.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhhbmsgeW91IHNvIG11Y2ggSnVoYS1QZWtrYS4gSSB3aWxsIHRyeSB0aGUgc2FtZSBhbmQgdXBk
-YXRlLg0KDQpSZWdhcmRzDQpWaWR5YQ0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJv
-bTogSnVoYS1QZWtrYSBIZWlra2lsYSA8anVoYXBla2thLmhlaWtraWxhQGdtYWlsLmNvbT4gDQpT
-ZW50OiBNb25kYXksIEp1bmUgMjEsIDIwMjEgMTozNSBQTQ0KVG86IFNyaW5pdmFzLCBWaWR5YSA8
-dmlkeWEuc3Jpbml2YXNAaW50ZWwuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcN
-CkNjOiBMYXR2YWxhLCBQZXRyaSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+OyBMaW4sIENoYXJs
-dG9uIDxjaGFybHRvbi5saW5AaW50ZWwuY29tPg0KU3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbUEFU
-Q0ggaS1nLXRdIHRlc3RzL2ttc19wbGFuZV9hbHBoYV9ibGVuZDogRml4IGFscGhhIGluIGNvdmVy
-YWdlLXZzLXByZW11bHQtdnMtY29uc3RhbnQNCg0KVGhhdCBpc3N1ZSB3aGVyZSBzb2xpZCB3aGl0
-ZSBpcyBhbHNvIGZhaWxpbmcgKnNvbWV0aW1lcyogc291bmQgbGlrZSB0aGVyZSBtYXliZSB0d28g
-c2VwYXJhdGUgaXNzdWVzLg0KDQpJJ2Qgc3VnZ2VzdCBmb3IgZXhwZXJpbWVudGluZyB0cnkgdXNp
-bmcgc29saWQgd2hpdGUsIG1vdmUgc3RhcnRpbmcgb2YgY3JjIGNvdW50aW5nIGF0IHRoZSB2ZXJ5
-IGJlZ2lubmluZyBvZiB0aGUgdGVzdCBmdW5jdGlvbiBhbmQgcGxhY2Ugd2FpdCBmb3IgdmJsYW5r
-IGFsd2F5cyBiZWZvcmUgcmVhZGluZyBjcmNzLiBJZiB0aGlzIHdpbGwgaGVscCB0aGVuIHRoZSBz
-YW1lIGNyYyBpc3N1ZSB3aGljaCB3YXMgZWFybGllciBvbiBrbXNfYmlnX2ZiIHRlc3QgaXMgYWxz
-byBjYXVzaW5nIHByb2JsZW0gaGVyZS4NCg0KL0p1aGEtUGVra2ENCg0KT24gMTkuNi4yMDIxIDEx
-LjI0LCBTcmluaXZhcywgVmlkeWEgd3JvdGU6DQo+IEhlbGxvIEp1aGEtUGVra2EsDQo+IA0KPiBU
-aGFuayB5b3Ugc28gbXVjaC4gSSB0cmllZCB0aGUgTFVUIHRhYmxlIHlvdSBzdWdnZXN0ZWQgYW5k
-IGl0IHdvcmtlZCANCj4gaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3BhdGNoLzQ0
-MDE0NS8/c2VyaWVzPTkwODI4JnJldj00DQo+IENvdWxkIHlvdSBraW5kbHkgY2hlY2sgaWYgaXQg
-aXMgcmlnaHQ/IDAuMjUgYW5kIDAuNzUgZGlkIG5vdCB3b3JrLiAxLDEsMSB0b28gaXMgZmFpbGlu
-ZyBvbmNlIGluIGEgd2hpbGUuDQo+IA0KPiBSZWdhcmRzDQo+IFZpZHlhDQo+IA0KPiAtLS0tLU9y
-aWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBTcmluaXZhcywgVmlkeWENCj4gU2VudDogU2F0
-dXJkYXksIEp1bmUgMTksIDIwMjEgODo0MCBBTQ0KPiBUbzogSnVoYS1QZWtrYSBIZWlra2lsw6Qg
-PGp1aGFwZWtrYS5oZWlra2lsYUBnbWFpbC5jb20+OyANCj4gaWd0LWRldkBsaXN0cy5mcmVlZGVz
-a3RvcC5vcmcNCj4gQ2M6IExhdHZhbGEsIFBldHJpIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT47
-IExpbiwgQ2hhcmx0b24gDQo+IDxDaGFybHRvbi5MaW5AaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBS
-RTogW2lndC1kZXZdIFtQQVRDSCBpLWctdF0gdGVzdHMva21zX3BsYW5lX2FscGhhX2JsZW5kOiBG
-aXggDQo+IGFscGhhIGluIGNvdmVyYWdlLXZzLXByZW11bHQtdnMtY29uc3RhbnQNCj4gDQo+IFRo
-YW5rIHlvdSBzbyBtdWNoIEp1aGEtUGVra2EuIEkgd2lsbCB0cnkgb3V0IHRoZSBnYW1tYSB0aGlu
-ZyB5b3UgbWVudGlvbmVkIGFuZCB1cGRhdGUgZnVydGhlci4NCj4gDQo+IFJlZ2FyZHMNCj4gVmlk
-eWENCj4gDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEp1aGEtUGVra2Eg
-SGVpa2tpbMOkIDxqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29tPg0KPiBTZW50OiBTYXR1cmRh
-eSwgSnVuZSAxOSwgMjAyMSAxOjU0IEFNDQo+IFRvOiBTcmluaXZhcywgVmlkeWEgPHZpZHlhLnNy
-aW5pdmFzQGludGVsLmNvbT47IA0KPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBD
-YzogTGF0dmFsYSwgUGV0cmkgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPjsgTGluLCBDaGFybHRv
-biANCj4gPGNoYXJsdG9uLmxpbkBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbaWd0LWRldl0g
-W1BBVENIIGktZy10XSB0ZXN0cy9rbXNfcGxhbmVfYWxwaGFfYmxlbmQ6IEZpeCANCj4gYWxwaGEg
-aW4gY292ZXJhZ2UtdnMtcHJlbXVsdC12cy1jb25zdGFudA0KPiANCj4gSGkgVmlkeWEsDQo+IA0K
-PiBJIGRvbid0IG5vdyBoYXZlIGFjY2VzcyB0byBzcGVjcyBzbyBJIGNhbid0IHNheSBpZiB0aGVy
-ZSB3b3VsZCBiZSBzb21ldGhpbmcgc3BlY2lhbCBmb3IgSlNMIG9uIHRoaXMgY2FzZS4gT1RPSCBp
-ZiBjaGFuZ2luZyBncmF5IGJ1ZmZlciB0byBzb2xpZCB3aGl0ZSBmaXhlcyB0aGF0IG1heWJlIGdv
-b2Qgc29sdXRpb24sIEknbSB0cnlpbmcgdG8gdGhpbmsgaG93IHRoZSBzY3JlZW4gd2lsbCBiZSBp
-biB0aGlzIGNhc2UgYW5kIEkgYXNzdW1lIHRlc3QgaW1hZ2Ugd2lsbCByZW1haW4gb24gc2NyZWVu
-KD8pLiBJZiBqdXN0IGNoYW5naW5nIGdyYXkgYnVmZmVyIHRvIHNvbGlkIHdoaXRlIG1ha2UgdGVz
-dCBwYXNzIHRoZXJlIG1heWJlIGFsc28gMC4yNSBncmF5IGFuZCAwLjc1IGdyYXkgd2hpY2ggd2ls
-bCB3b3JrLiBJdCB3b3VsZG4ndCBiZSB0aGUgZmlyc3QgdGltZSB0aGVyZSBpcyBmb3VuZCBjYXNl
-IHdpdGggc3BlY2lmaWMgY29sb3Igd2hpY2ggY2F1c2VzIHJvdW5kaW5nIGVycm9yIHdpdGggY3Jj
-IHdoZXJlIGl0J3MganVzdCBtb3JlIGNvbnZlbmllbnQgdG8gY2hhbmdlIHRoYXQgY29sb3IuDQo+
-IA0KPiBJIGRvbid0IGtub3cgY2FuIGl0IGJlIHVzZWQgaW4gdGhpcyBjYXNlIGJ1dCB0aGVyZSBt
-aWdodCBiZSBwb3NzaWJpbGl0eSB0byBkbyBnYW1tYSB0YWJsZSB0cmljayBpZiBub3RoaW5nIGVs
-c2Ugd29ya3MuIFRoaXMgaXMgdXNlZCBpbiBrbXNfcGxhbmUgYW5kIGttc19mbGlwX3NjYWxlZF9j
-cmMgdGhhdCBjb21lIHRvIG15IG1pbmQsIGluIHRlc3RzL2ttc19mbGlwX3NjYWxlZF9jcmMuYyBs
-b29rIGZvciBzZXRfbHV0KC4uKSBmdW5jdGlvbiBhbmQgaG93IGl0IGlzIHVzZWQuDQo+IA0KPiBJ
-J2QgYXZvaWQgY3JlYXRpbmcgc3BlY2lhbCBjYXNlcyBmb3Igc29tZSBodyB2ZXJzaW9ucywgaXQg
-d2lsbCBsZWFkIHRvIGJpZyBtZXNzIGluIHRoZSBlbmQuDQo+IA0KPiAvSnVoYS1QZWtrYQ0KPiAN
-Cj4gU3Jpbml2YXMsIFZpZHlhIGtpcmpvaXR0aSAxOC42LjIwMjEga2xvIDIxLjU0Og0KPj4gSGVs
-bG8gSnVoYS1QZWtrYSwNCj4+DQo+PiBBcyB5b3Ugc2FpZCwgSSBndWVzcyB0aGF0IG1pZ2h0IGJl
-IHRoZSBwcm9ibGVtLiBCdXQgdGhlIGNoYW5nZXMgb2YgV0EgYXJlIGFscmVhZHkgcHJlc2VudCBp
-biBrZXJuZWwuIEkgdHJpZWQgcmV2ZXJ0aW5nIHRoZW0ganVzdCB0byBjaGVjaywgYnV0IGRpZCBu
-b3Qgc2VlIGFueSBjaGFuZ2UuDQo+PiBJZiBJIGNoYW5nZSB0aGUgZ3JheSBidWZmZXIgKDAuNSB0
-byAxLDEsMSkgaXQgd29ya3MuIElmIEkgY29tbWVudCBmaXJzdCBwcmltYXJ5IGNvbW1pdCBpdCB3
-b3Jrcy4gSWYgSSBqdXN0IGNvbW1lbnQgIlByZS1tdWx0aXBsaWVkIiBpdCB3b3JrcywgZWxzZSBs
-b3dlciBhbHBoYSB3b3Jrcy4NCj4+IENvdWxkbuKAmXQgZmluZCBhbnkgb3RoZXIgY2hhbmdlcyB5
-ZXQgaW4gZHJpdmVyLiBXb3VsZCBpdCBiZSBva2F5IGlmIEkgY2FuIGFkZCBhIHBhdGNoIHRvIGRp
-c2FibGUgcHJpbWFyeSBjb21taXQgaWYgSkFTUEVSTEFLRT8NCj4+DQo+PiBUaGFuayB5b3Ugc28g
-bXVjaC4NCj4+DQo+PiBSZWdhcmRzDQo+PiBWaWR5YQ0KPj4NCj4+IC0tLS0tT3JpZ2luYWwgTWVz
-c2FnZS0tLS0tDQo+PiBGcm9tOiBTcmluaXZhcywgVmlkeWENCj4+IFNlbnQ6IEZyaWRheSwgSnVu
-ZSAxOCwgMjAyMSA0OjAxIFBNDQo+PiBUbzoganVoYXBla2thLmhlaWtraWxhQGdtYWlsLmNvbTsg
-aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4+IENjOiBMYXR2YWxhLCBQZXRyaSA8cGV0
-cmkubGF0dmFsYUBpbnRlbC5jb20+OyBMaW4sIENoYXJsdG9uIA0KPj4gPENoYXJsdG9uLkxpbkBp
-bnRlbC5jb20+DQo+PiBTdWJqZWN0OiBSRTogW2lndC1kZXZdIFtQQVRDSCBpLWctdF0gdGVzdHMv
-a21zX3BsYW5lX2FscGhhX2JsZW5kOiBGaXggDQo+PiBhbHBoYSBpbiBjb3ZlcmFnZS12cy1wcmVt
-dWx0LXZzLWNvbnN0YW50DQo+Pg0KPj4gVGhhbmsgeW91IHNvIG11Y2ggSnVoYS1QZWtrYS4gSSB3
-aWxsIGNoZWNrIG9uIHRoZSBzYW1lIGFuZCB1cGRhdGUuDQo+Pg0KPj4gUmVnYXJkcw0KPj4gVmlk
-eWENCj4+DQo+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPj4gRnJvbTogSnVoYS1QZWtr
-YSBIZWlra2lsYSA8anVoYXBla2thLmhlaWtraWxhQGdtYWlsLmNvbT4NCj4+IFNlbnQ6IEZyaWRh
-eSwgSnVuZSAxOCwgMjAyMSAzOjU2IFBNDQo+PiBUbzogU3Jpbml2YXMsIFZpZHlhIDx2aWR5YS5z
-cmluaXZhc0BpbnRlbC5jb20+OyANCj4+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+
-PiBDYzogTGF0dmFsYSwgUGV0cmkgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPjsgTGluLCBDaGFy
-bHRvbiANCj4+IDxjaGFybHRvbi5saW5AaW50ZWwuY29tPg0KPj4gU3ViamVjdDogUmU6IFtpZ3Qt
-ZGV2XSBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19wbGFuZV9hbHBoYV9ibGVuZDogRml4IA0KPj4g
-YWxwaGEgaW4gY292ZXJhZ2UtdnMtcHJlbXVsdC12cy1jb25zdGFudA0KPj4NCj4+IEhhdmUgeW91
-IHRyaWVkIGxvb2tpbmcgaWYgb24ga2VybmVsIHNpZGUgaW4gaW50ZWxfZGlzcGxheS5jDQo+PiBp
-Y2xfc2V0X3BpcGVfY2hpY2tlbiguLikgdGhvc2UgaWNsIHJlbGF0ZWQgV0FzIGhhdmUgZWZmZWN0
-IG9uIHlvdXIgY3JjIHByb2JsZW0uIFNvdW5kIGxpa2Ugc2V0dGluZyBQRVJfUElYRUxfQUxQSEFf
-QllQQVNTX0VOIGFuZCBQSVhFTF9ST1VORElOR19UUlVOQ19GQl9QQVNTVEhSVSB0b3VjaCBleGFj
-dGx5IHRoZSBwcm9ibGVtIHlvdSBhcmUgc2VlaW5nLiBNYXliZSBkaWZmZXJlbnQgaHcgcmV2aXNp
-b24gYmVoYXZlIGRpZmZlcmVudGx5PyBUcnkgc2VlIGlmIHRoZXJlJ3Mgb24gc3BlYyBzb21lIG5v
-dGUgZm9yIHlvdXIgSFcgcmV2aXNpb24gZm9yIHRoZXNlIFdBcy4NCj4+DQo+PiAvSnVoYS1QZWtr
-YQ0KPj4NCj4+IE9uIDE4LjYuMjAyMSAxMS41OCwgU3Jpbml2YXMsIFZpZHlhIHdyb3RlOg0KPj4+
-IFRoYW5rIHlvdSBzbyBtdWNoIEp1aGEtUGVra2EuDQo+Pj4NCj4+PiBodHRwczovL3BhdGNod29y
-ay5mcmVlZGVza3RvcC5vcmcvcGF0Y2gvNDM2MTk0Lz9zZXJpZXM9OTA4MjgmcmV2PTINCj4+PiBq
-dXN0IHJlbW92ZXMgdGhlIERSTV9QTEFORV9UWVBFX1BSSU1BUlkgZmIgc2V0dGluZyBmcm9tIHN1
-YnRlc3QgVGhhdCB3b3Jrcy4gV291bGQgdGhhdCBiZSBhbiBva2F5IGNoYW5nZT8NCj4+Pg0KPj4+
-IEJlY2F1c2Ugd2l0aG91dCB0aGUgY29tbWl0IGFmdGVyIFBSSU1BUlkgYW5kIGFscGhhIHZhbHVl
-IDB4N2UsIEpTTCBpcyBmYWlsaW5nLiBJZiB3ZSBqdXN0IGRvbuKAmXQgZG8gdGhlIFBSSU1BUlkg
-ZmIgc2V0dGluZyBhdCBzdGFydCwgdGVzdCB3b3JrcyBhcyBpcy4NCj4+Pg0KPj4+IEtpbmRseSBz
-dWdnZXN0LiBUaGFuayB5b3UgdmVyeSBtdWNoIG9uY2UgYWdhaW4uDQo+Pj4NCj4+PiBSZWdhcmRz
-DQo+Pj4gVmlkeWENCj4+Pg0KPj4+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+Pj4gRnJv
-bTogSnVoYS1QZWtrYSBIZWlra2lsYSA8anVoYXBla2thLmhlaWtraWxhQGdtYWlsLmNvbT4NCj4+
-PiBTZW50OiBGcmlkYXksIEp1bmUgMTgsIDIwMjEgMjoyMyBQTQ0KPj4+IFRvOiBTcmluaXZhcywg
-VmlkeWEgPHZpZHlhLnNyaW5pdmFzQGludGVsLmNvbT47IA0KPj4+IGlndC1kZXZAbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnDQo+Pj4gQ2M6IExhdHZhbGEsIFBldHJpIDxwZXRyaS5sYXR2YWxhQGludGVs
-LmNvbT47IExpbiwgQ2hhcmx0b24gDQo+Pj4gPGNoYXJsdG9uLmxpbkBpbnRlbC5jb20+DQo+Pj4g
-U3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19wbGFuZV9hbHBo
-YV9ibGVuZDogDQo+Pj4gRml4IGFscGhhIGluIGNvdmVyYWdlLXZzLXByZW11bHQtdnMtY29uc3Rh
-bnQNCj4+Pg0KPj4+IE9uIDExLjYuMjAyMSAxNS40NCwgVmlkeWEgU3Jpbml2YXMgd3JvdGU6DQo+
-Pj4+IFBhdGNoIHNldHMgYWxwaGEgdG8gMHg3ZSBmb3IgY292ZXJhZ2UsIFByZS1tdWx0aXBsaWVk
-IGFuZCBjb25zdGFudCANCj4+Pj4gYXMgcGVyIHRoZSBidWZmZXIgYmVpbmcgY3JlYXRlZCBpbml0
-aWFsbHkgaW4gcHJlcGFyZV9jcnRjLiBQYXRjaCANCj4+Pj4gYWxzbyBhZGQgY29tbWl0IGFmdGVy
-IHNldHRpbmcgZmIgb24gcHJpbWFyeSBwbGFuZS4gV2l0aG91dCB0aGlzIA0KPj4+PiBjaGFuZ2Ug
-Q1JDIG1pc21hdGNoIGlzIHNlZW4gb24gZmV3IEdlbjExIHN5c3RlbXMuDQo+Pj4+DQo+Pj4+IFNp
-Z25lZC1vZmYtYnk6IFZpZHlhIFNyaW5pdmFzIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+DQo+
-Pj4+IC0tLQ0KPj4+PiAgICAgIHRlc3RzL2ttc19wbGFuZV9hbHBoYV9ibGVuZC5jIHwgOSArKysr
-KysrLS0NCj4+Pj4gICAgICAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspLCAyIGRlbGV0
-aW9ucygtKQ0KPj4+Pg0KPj4+PiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX3BsYW5lX2FscGhhX2Js
-ZW5kLmMgDQo+Pj4+IGIvdGVzdHMva21zX3BsYW5lX2FscGhhX2JsZW5kLmMgaW5kZXggYTM3Y2Iy
-N2M3ZDYyLi5kM2E3M2NmNDNmY2QNCj4+Pj4gMTAwNjQ0DQo+Pj4+IC0tLSBhL3Rlc3RzL2ttc19w
-bGFuZV9hbHBoYV9ibGVuZC5jDQo+Pj4+ICsrKyBiL3Rlc3RzL2ttc19wbGFuZV9hbHBoYV9ibGVu
-ZC5jDQo+Pj4+IEBAIC00NDgsMjkgKzQ0OCwzNCBAQCBzdGF0aWMgdm9pZCBjb3ZlcmFnZV9wcmVt
-dWx0X2NvbnN0YW50KGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUsIGlndF9wbGFuZV90DQo+
-Pj4+ICAgICAgCWlndF9jcmNfdCByZWZfY3JjID0ge30sIGNyYyA9IHt9Ow0KPj4+PiAgICAgIA0K
-Pj4+PiAgICAgIAkvKiBTZXQgYSBiYWNrZ3JvdW5kIGNvbG9yIG9uIHRoZSBwcmltYXJ5IGZiIGZv
-ciB0ZXN0aW5nICovDQo+Pj4+IC0JaWYgKHBsYW5lLT50eXBlICE9IERSTV9QTEFORV9UWVBFX1BS
-SU1BUlkpDQo+Pj4+ICsJaWYgKHBsYW5lLT50eXBlICE9IERSTV9QTEFORV9UWVBFX1BSSU1BUlkp
-IHsNCj4+Pj4gICAgICAJCQ0KPj4+PiBpZ3RfcGxhbmVfc2V0X2ZiKGlndF9waXBlX2dldF9wbGFu
-ZV90eXBlKCZkaXNwbGF5LT5waXBlc1twaXBlXSwNCj4+Pj4gRFJNX1BMQU5FX1RZUEVfUFJJTUFS
-WSksICZkYXRhLT5ncmF5X2ZiKTsNCj4+Pj4gKwkJaWd0X2Rpc3BsYXlfY29tbWl0MihkaXNwbGF5
-LCBDT01NSVRfQVRPTUlDKTsNCj4+Pg0KPj4+IFdoeSB0aGlzIGV4dHJhIGNvbW1pdCBuZWVkZWQ/
-IFRoZXJlJ3MganVzdCBiZWxvdyBjb21taXQgYmVmb3JlIGNyYyANCj4+PiBpcyBzdGFydGVkDQo+
-Pj4NCj4+Pj4gKwl9DQo+Pj4+ICAgICAgDQo+Pj4+ICAgICAgCWlndF9wbGFuZV9zZXRfcHJvcF9l
-bnVtKHBsYW5lLCBJR1RfUExBTkVfUElYRUxfQkxFTkRfTU9ERSwgDQo+Pj4+ICJDb3ZlcmFnZSIp
-Ow0KPj4+PiArCWlndF9wbGFuZV9zZXRfcHJvcF92YWx1ZShwbGFuZSwgSUdUX1BMQU5FX0FMUEhB
-LCAweDdlKTsNCj4+Pg0KPj4+IE9uIHRoaXMgdGVzdCB0aGVyZSdzIGFscmVhZHkgcGVyIHBpeGVs
-IGFscGhhLCBzZXR0aW5nIHBsYW5lIGFscGhhIHZhbHVlcyBzbyBsb3cgd2lsbCBwcm9iYWJseSBp
-biB0aGlzIGNhc2UgaW4gZmluYWwgcm91bmRpbmcgbWFrZSB0aGVzZSBwbGFuZXMgY29tcGxldGVs
-eSBpbnZpc2libGUuIEknZCBzdXNwZWN0IHlvdSBjYW4gZ2V0IGFueSBpbWFnZSBwYXNzIGNyYyBk
-b2luZyBpdCBsaWtlIHRoaXMuIExpa2VseSB3aGF0IHlvdSBzZWUgb24gc2NyZWVuIHdpdGggdGhl
-c2UgdmFsdWVzIGlzIGp1c3QgcHVyZSBncmV5IGluc3RlYWQgb2YgaW50ZW5kZWQgdGVzdCBpbWFn
-ZS4NCj4+Pg0KPj4+DQo+Pj4+ICAgICAgCWlndF9wbGFuZV9zZXRfZmIocGxhbmUsICZkYXRhLT5h
-cmdiX2ZiX2Nvdl83ZSk7DQo+Pj4+ICAgICAgCWlndF9kaXNwbGF5X2NvbW1pdDIoZGlzcGxheSwg
-Q09NTUlUX0FUT01JQyk7DQo+Pj4+ICAgICAgCWlndF9waXBlX2NyY19zdGFydChkYXRhLT5waXBl
-X2NyYyk7DQo+Pj4+ICAgICAgCWlndF9waXBlX2NyY19nZXRfc2luZ2xlKGRhdGEtPnBpcGVfY3Jj
-LCAmcmVmX2NyYyk7DQo+Pj4+ICAgICAgDQo+Pj4+ICAgICAgCWlndF9wbGFuZV9zZXRfcHJvcF9l
-bnVtKHBsYW5lLCBJR1RfUExBTkVfUElYRUxfQkxFTkRfTU9ERSwgDQo+Pj4+ICJQcmUtbXVsdGlw
-bGllZCIpOw0KPj4+PiArCWlndF9wbGFuZV9zZXRfcHJvcF92YWx1ZShwbGFuZSwgSUdUX1BMQU5F
-X0FMUEhBLCAweDdlKTsNCj4+Pj4gICAgICAJaWd0X3BsYW5lX3NldF9mYihwbGFuZSwgJmRhdGEt
-PmFyZ2JfZmJfN2UpOw0KPj4+PiAgICAgIAlpZ3RfZGlzcGxheV9jb21taXQyKGRpc3BsYXksIENP
-TU1JVF9BVE9NSUMpOw0KPj4+PiAgICAgIAlpZ3RfcGlwZV9jcmNfZ2V0X2N1cnJlbnQoZGlzcGxh
-eS0+ZHJtX2ZkLCBkYXRhLT5waXBlX2NyYywgJmNyYyk7DQo+Pj4+ICAgICAgCWlndF9hc3NlcnRf
-Y3JjX2VxdWFsKCZyZWZfY3JjLCAmY3JjKTsNCj4+Pj4gICAgICANCj4+Pj4gICAgICAJaWd0X3Bs
-YW5lX3NldF9wcm9wX2VudW0ocGxhbmUsIElHVF9QTEFORV9QSVhFTF9CTEVORF9NT0RFLCAiTm9u
-ZSIpOw0KPj4+PiAtCWlndF9wbGFuZV9zZXRfcHJvcF92YWx1ZShwbGFuZSwgSUdUX1BMQU5FX0FM
-UEhBLCAweDdlN2UpOw0KPj4+PiArCWlndF9wbGFuZV9zZXRfcHJvcF92YWx1ZShwbGFuZSwgSUdU
-X1BMQU5FX0FMUEhBLCAweDdlKTsNCj4+Pj4gICAgICAJaWd0X3BsYW5lX3NldF9mYihwbGFuZSwg
-JmRhdGEtPmFyZ2JfZmJfY292XzdlKTsNCj4+Pj4gICAgICAJaWd0X2Rpc3BsYXlfY29tbWl0Mihk
-aXNwbGF5LCBDT01NSVRfQVRPTUlDKTsNCj4+Pj4gICAgICAJaWd0X3BpcGVfY3JjX2dldF9jdXJy
-ZW50KGRpc3BsYXktPmRybV9mZCwgZGF0YS0+cGlwZV9jcmMsICZjcmMpOw0KPj4+PiAgICAgIAlp
-Z3RfYXNzZXJ0X2NyY19lcXVhbCgmcmVmX2NyYywgJmNyYyk7DQo+Pj4+ICAgICAgDQo+Pj4+ICAg
-ICAgCWlndF9waXBlX2NyY19zdG9wKGRhdGEtPnBpcGVfY3JjKTsNCj4+Pj4gKw0KPj4+DQo+Pj4g
-c3RyYXkgbmV3IGxpbmUNCj4+Pg0KPj4+PiAgICAgIH0NCj4+Pj4gICAgICANCj4+Pj4gICAgICBz
-dGF0aWMgdm9pZCBydW5fdGVzdF9vbl9waXBlX3BsYW5lcyhkYXRhX3QgKmRhdGEsIGVudW0gcGlw
-ZSANCj4+Pj4gcGlwZSwgYm9vbCBibGVuZCwNCj4+Pj4NCj4+Pg0KPj4NCg0KX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QK
-aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5v
-cmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On Fri, Jun 18, 2021 at 10:28:52AM -0400, Anson Jacob wrote:
+> From: Victor Lu <victorchengchi.lu@amd.com>
+> 
+> [why & how]
+> An upstream change is causing the common amdgpu test_init() to crash on
+> ASICs with <6 pipes.
+> 
+> Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
+> Acked-by: Anson Jacob <Anson.Jacob@amd.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Mark Yacoub <markyacoub@google.com>
+> ---
+>  lib/igt_kms.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index c7c69b6ea0eb..26c51a384918 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -2164,8 +2164,8 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>  	 * pipe display and reading pipe enum for a crtc using GET_PIPE_FROM_CRTC_ID ioctl
+>  	 * for a pipe to do pipe ordering with respect to crtc list.
+>  	 */
+> -	display->n_pipes = IGT_MAX_PIPES;
+> -	display->pipes = calloc(sizeof(igt_pipe_t), display->n_pipes);
+> +	display->n_pipes = resources->count_crtcs;
+> +	display->pipes = calloc(sizeof(igt_pipe_t), IGT_MAX_PIPES);
+>  	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", display->n_pipes);
+
+
+NAK on this, this will break i915 testing.
+
+A little background: The IGT interface for CRTCs has been changed to
+accomodate Intel HW change where some pipes are disabled leaving
+holes. The resources->crtcs array still has the crtcs that actually
+exist, but it could be for example
+
+count_crtcs = 2
+crtcs[0] with PIPE_A
+crtcs[1] with PIPE_C
+
+Not all pipes are created equal so we need to track which one is which
+so we know which pipe is broken when failures happen.
+
+Now, the IGT interface should be fairly invisible except in
+cornercases. Every access to a pipe needs to check pipe->enabled
+before doing anything to it, and that's done automatically with things
+like for_each_pipe(). Directly selecting a pipe should be the only
+case where one needs to do the pipe->enabled check themselves.
+
+Where does it crash for you? I tried to look at the test_init()
+functions in tests/amdgpu/*.c but couldn't spot anything that touches
+n_pipes. Or even uses anything other than PIPE_A.
+
+I wonder if fixing this for you is as simple as doing
+
+ if (!i915_device) display->n_pipes = i;
+
+after the for loop you're changing here...
+
+
+-- 
+Petri Latvala
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
