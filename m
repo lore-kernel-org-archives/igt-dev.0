@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 100076E027
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 12:57:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 073C96E02B
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 12:57:39 +0000 (UTC)
 From: Boris Brezillon <boris.brezillon@collabora.com>
-Date: Mon, 21 Jun 2021 14:57:18 +0200
-Message-Id: <20210621125724.1592104-2-boris.brezillon@collabora.com>
+Date: Mon, 21 Jun 2021 14:57:21 +0200
+Message-Id: <20210621125724.1592104-5-boris.brezillon@collabora.com>
 In-Reply-To: <20210621125724.1592104-1-boris.brezillon@collabora.com>
 References: <20210621125724.1592104-1-boris.brezillon@collabora.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 1/7] tests/panfrost: Make sure we open a DUMB
- capable node for prime tests
+Subject: [igt-dev] [PATCH 4/7] lib/panfrost: Add a helper to create a NULL
+ job
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,53 +25,71 @@ To: Rob Herring <robh+dt@kernel.org>, Tomeu Vizoso <tomeu.vizoso@collabora.com>,
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Useful when we just want to make sure the scheduler has executed a
+job (way simpler than creating actual jobs).
+
 Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 ---
- tests/panfrost_prime.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ lib/igt_panfrost.c | 33 +++++++++++++++++++++++++++++++++
+ lib/igt_panfrost.h |  1 +
+ 2 files changed, 34 insertions(+)
 
-diff --git a/tests/panfrost_prime.c b/tests/panfrost_prime.c
-index 351d46f2f7e6..f9818108a662 100644
---- a/tests/panfrost_prime.c
-+++ b/tests/panfrost_prime.c
-@@ -35,12 +35,36 @@
- #include <sys/ioctl.h>
- #include "panfrost_drm.h"
+diff --git a/lib/igt_panfrost.c b/lib/igt_panfrost.c
+index 988cd757c055..60995f4ed18d 100644
+--- a/lib/igt_panfrost.c
++++ b/lib/igt_panfrost.c
+@@ -173,6 +173,39 @@ struct panfrost_submit *igt_panfrost_job_loop(int fd)
+         return submit;
+ }
  
-+static int igt_panfrost_open_kms_driver(void)
++struct panfrost_submit *igt_panfrost_null_job(int fd)
 +{
-+	for (unsigned i = 0; i < 2; i++) {
-+		uint64_t cap_dumb_buf = 0, cap_prime = 0;
-+		char path[32];
-+		int fd;
++        struct panfrost_submit *submit;
++        struct mali_job_descriptor_header header = {
++                .job_type = JOB_TYPE_NULL,
++                .job_index = 1,
++                .job_descriptor_size = 1,
++        };
++        uint32_t *bos;
 +
-+		snprintf(path, sizeof(path), "/dev/dri/card%d", i);
++        submit = malloc(sizeof(*submit));
++	memset(submit, 0, sizeof(*submit));
 +
-+		fd = open(path, O_RDWR);
-+		if (fd < 0)
-+			continue;
++        submit->submit_bo = igt_panfrost_gem_new(fd, sizeof(header));
++        igt_panfrost_bo_mmap(fd, submit->submit_bo);
 +
-+		drmGetCap(fd, DRM_CAP_DUMB_BUFFER, &cap_dumb_buf);
-+		drmGetCap(fd, DRM_CAP_PRIME, &cap_prime);
-+		if (cap_dumb_buf && (cap_prime & DRM_PRIME_CAP_EXPORT))
-+			return fd;
++        memcpy(submit->submit_bo->map, &header, sizeof(header));
 +
-+		close(fd);
-+	}
++        submit->args = malloc(sizeof(*submit->args));
++        memset(submit->args, 0, sizeof(*submit->args));
++        submit->args->jc = submit->submit_bo->offset;
 +
-+	return -1;
++        bos = malloc(sizeof(*bos) * 1);
++        bos[0] = submit->submit_bo->handle;
++
++        submit->args->bo_handles = to_user_pointer(bos);
++        submit->args->bo_handle_count = 1;
++
++        igt_assert_eq(drmSyncobjCreate(fd, DRM_SYNCOBJ_CREATE_SIGNALED, &submit->args->out_sync), 0);
++
++        return submit;
 +}
 +
- igt_main
+ struct panfrost_submit *igt_panfrost_trivial_job(int fd, bool do_crash, int width, int height, uint32_t color)
  {
- 	int fd, kms_fd;
+         struct panfrost_submit *submit;
+diff --git a/lib/igt_panfrost.h b/lib/igt_panfrost.h
+index 22bf4c7bad9d..953dd4b7dd47 100644
+--- a/lib/igt_panfrost.h
++++ b/lib/igt_panfrost.h
+@@ -49,6 +49,7 @@ void igt_panfrost_free_bo(int fd, struct panfrost_bo *bo);
  
- 	igt_fixture {
--		kms_fd = drm_open_driver_master(DRIVER_ANY);
-+		kms_fd = igt_panfrost_open_kms_driver();
- 		fd = drm_open_driver(DRIVER_PANFROST);
- 	}
+ struct panfrost_submit *igt_panfrost_trivial_job(int fd, bool do_crash, int width, int height, uint32_t color);
+ struct panfrost_submit *igt_panfrost_job_loop(int fd);
++struct panfrost_submit *igt_panfrost_null_job(int fd);
+ void igt_panfrost_free_job(int fd, struct panfrost_submit *submit);
  
+ /* IOCTL wrappers */
 -- 
 2.31.1
 
