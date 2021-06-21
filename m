@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com
- [IPv6:2607:f8b0:4864:20::e36])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CFD726E3AC
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 18:28:19 +0000 (UTC)
-Received: by mail-vs1-xe36.google.com with SMTP id z7so9802528vso.3
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 11:28:19 -0700 (PDT)
+Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com
+ [IPv6:2607:f8b0:4864:20::934])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B08666E3AC
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 18:30:42 +0000 (UTC)
+Received: by mail-ua1-x934.google.com with SMTP id r4so5795712uap.8
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 11:30:42 -0700 (PDT)
 From: Mark Yacoub <markyacoub@chromium.org>
-Date: Mon, 21 Jun 2021 18:28:15 +0000
-Message-Id: <20210621182815.1029852-1-markyacoub@chromium.org>
+Date: Mon, 21 Jun 2021 18:30:38 +0000
+Message-Id: <20210621183038.1030733-1-markyacoub@chromium.org>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH v3] tests/kms_vblank: Turn on hardware before
  testing invalid vblank.
@@ -51,13 +51,12 @@ Changes since v1:
 2. Rename variable p to pipe_number
 
 Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
-Change-Id: Id70072ea797a74d3e9563ef8feb5901daa6b511a
 ---
- tests/kms_vblank.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ tests/kms_vblank.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index 93b01eba..5e87610f 100644
+index 93b01eba..19284257 100644
 --- a/tests/kms_vblank.c
 +++ b/tests/kms_vblank.c
 @@ -475,8 +475,13 @@ static void invalid_subtest(data_t *data, int fd)
@@ -84,24 +83,6 @@ index 93b01eba..5e87610f 100644
  }
  
  igt_main
-@@ -529,11 +536,11 @@ igt_main
- 	igt_subtest("invalid")
- 		invalid_subtest(&data, fd);
- 
--	igt_describe("check the Vblank and flip events works with given crtc id");
--	igt_subtest("crtc-id")
--		crtc_id_subtest(&data, fd);
-+	// igt_describe("check the Vblank and flip events works with given crtc id");
-+	// igt_subtest("crtc-id")
-+	// 	crtc_id_subtest(&data, fd);
- 
--	for_each_pipe_static(data.pipe)
--		igt_subtest_group
--			run_subtests_for_pipe(&data);
-+	// for_each_pipe_static(data.pipe)
-+	// 	igt_subtest_group
-+	// 		run_subtests_for_pipe(&data);
- }
 -- 
 2.32.0.288.g62a8d224e6-goog
 
