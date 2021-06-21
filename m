@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 21 Jun 2021 13:49:23 -0000
-Message-ID: <162428336393.19769.14562645172726637377@emeril.freedesktop.org>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 83C056E160
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 14:09:31 +0000 (UTC)
 References: <20210621125724.1592104-1-boris.brezillon@collabora.com>
-In-Reply-To: <20210621125724.1592104-1-boris.brezillon@collabora.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?panfrost=3A_Misc_fixes/improvements?=
+ <20210621125724.1592104-4-boris.brezillon@collabora.com>
+ <YNCVh22DQoj6DHnh@maud>
+From: Steven Price <steven.price@arm.com>
+Message-ID: <7e6257fc-a29a-c0d1-58c8-da518a127861@arm.com>
+Date: Mon, 21 Jun 2021 15:09:28 +0100
+MIME-Version: 1.0
+In-Reply-To: <YNCVh22DQoj6DHnh@maud>
+Content-Language: en-GB
+Subject: Re: [igt-dev] [PATCH 3/7] lib/panfrost: Add a helper to create a
+ job loop
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,196 +20,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0830971974=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Alyssa Rosenzweig <alyssa@collabora.com>, Boris Brezillon <boris.brezillon@collabora.com>
+Cc: igt-dev@lists.freedesktop.org, Rob Herring <robh+dt@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Alyssa Rosenzweig <alyssa.rosenzweig@collabora.com>, Tomeu Vizoso <tomeu.vizoso@collabora.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0830971974==
-Content-Type: multipart/alternative;
- boundary="===============1449091793064957343=="
+On 21/06/2021 14:35, Alyssa Rosenzweig wrote:
+> I don't see how this test works.
+> 
+>> +        struct mali_payload_set_value payload = {
+>> +                .unknown = 3,
+>> +        };
+> 
+> 0x3 is the selector for "zero".
+> 
+>> +        payload.out = header.next_job_64 = submit->submit_bo->offset + ALIGN(sizeof(header) + sizeof(payload), 64);
+> 
+> So you are writing 0 to the next_job_64 field, which ends the job chain
+> prematurely.
+> 
+> Perhaps you meant to use an "immediate 64" selector to write the address
+> to jump to? If so, that will be Bifrost only, since the "immediate 64"
+> selector is new in Midgard. 
+> 
+> Upon a second reading, maybe the idea is to ping-pong the jobs
+> statically? I.e. two jobs that have next_job pointed to one another,
+> a job barrier and prefetching disabled, with the content irrelevant. If
+> so, the `out` value can be the same for both and allocate upfront with
+> the payload so the logic is clearer. Even better, I think you could use
+> NULL jobs for the same purpose.
+> 
 
---===============1449091793064957343==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+I think this is overwriting the status field on the next job. The
+hardware checks that job header to make sure the status field is zero
+before executing (precisely to avoid such a loop happening by accident).
+So two (or more) jobs where the next-job pointers are in a loop works as
+long as you clear the status fields.
 
-== Series Details ==
+As a side-note: this is very much in the not-really-supported area of
+the hardware. The architecture doesn't prevent the GPU from reading
+ahead in the job chain and rejecting a job before the write-value
+happens. But AFAIK this does work on existing GPUs.
 
-Series: tests/panfrost: Misc fixes/improvements
-URL   : https://patchwork.freedesktop.org/series/91726/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_6115 -> IGTPW_5947
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5947/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5947 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@cs-gfx:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271]) +9 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5947/fi-kbl-soraka/igt@amdgpu/amd_basic@cs-gfx.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_module_load@reload:
-    - fi-kbl-soraka:      [DMESG-WARN][2] ([i915#1982]) -> [PASS][3]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6115/fi-kbl-soraka/igt@i915_module_load@reload.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5947/fi-kbl-soraka/igt@i915_module_load@reload.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-cml-u2:          [DMESG-FAIL][4] ([i915#2291] / [i915#541]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6115/fi-cml-u2/igt@i915_selftest@live@gt_heartbeat.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5947/fi-cml-u2/igt@i915_selftest@live@gt_heartbeat.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
-  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
-  [i915#541]: https://gitlab.freedesktop.org/drm/intel/issues/541
-
-
-Participating hosts (43 -> 36)
-------------------------------
-
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-tgl-1115g4 fi-bsw-cyan fi-ctg-p8600 fi-kbl-x1275 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6115 -> IGTPW_5947
-
-  CI-20190529: 20190529
-  CI_DRM_10252: b6c631d4b0b55b47b95763da2df57e40ba55f283 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5947: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5947/index.html
-  IGT_6115: 4ef420186b82f1a6d9c9b69d2f8de4fd100a2af3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-
-== Testlist changes ==
-
-+igt@panfrost_submit@pan-submit-and-close
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5947/index.html
-
---===============1449091793064957343==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/panfrost: Misc fixes/improvements</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/91726/">https://patchwork.freedesktop.org/series/91726/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5947/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5947/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6115 -&gt; IGTPW_5947</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5947/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5947 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@amdgpu/amd_basic@cs-gfx:<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5947/fi-kbl-soraka/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6115/fi-kbl-soraka/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5947/fi-kbl-soraka/igt@i915_module_load@reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6115/fi-cml-u2/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/541">i915#541</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5947/fi-cml-u2/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (43 -&gt; 36)</h2>
-<p>Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-tgl-1115g4 fi-bsw-cyan fi-ctg-p8600 fi-kbl-x1275 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6115 -&gt; IGTPW_5947</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10252: b6c631d4b0b55b47b95763da2df57e40ba55f283 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5947: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5947/index.html<br />
-  IGT_6115: 4ef420186b82f1a6d9c9b69d2f8de4fd100a2af3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<p>== Testlist changes ==</p>
-<p>+igt@panfrost_submit@pan-submit-and-close</p>
-
-</body>
-</html>
-
---===============1449091793064957343==--
-
---===============0830971974==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+Steve
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0830971974==--
