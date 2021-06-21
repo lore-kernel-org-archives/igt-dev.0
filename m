@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com
+ [IPv6:2607:f8b0:4864:20::e36])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFD726E3AC
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 18:28:19 +0000 (UTC)
+Received: by mail-vs1-xe36.google.com with SMTP id z7so9802528vso.3
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 11:28:19 -0700 (PDT)
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Mon, 21 Jun 2021 18:28:15 +0000
+Message-Id: <20210621182815.1029852-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 21 Jun 2021 18:02:35 -0000
-Message-ID: <162429855504.19770.6984179901261501539@emeril.freedesktop.org>
-References: <20210621172146.4130875-1-markyacoub@chromium.org>
-In-Reply-To: <20210621172146.4130875-1-markyacoub@chromium.org>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
- =?utf-8?q?t=5Ffb=3A_Support_Tile_Size_for_AMD_non_linear_modifiers=2E_=28?=
- =?utf-8?q?rev3=29?=
+Subject: [igt-dev] [PATCH v3] tests/kms_vblank: Turn on hardware before
+ testing invalid vblank.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,133 +18,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0267844352=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: seanpaul@chromium.org, petri.latvala@intel.com, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0267844352==
-Content-Type: multipart/alternative;
- boundary="===============8724705033747069755=="
+From: Mark Yacoub <markyacoub@google.com>
 
---===============8724705033747069755==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+[Why]
+Before any hardware is on, the vblank is off and its ref counter is in
+an initialized state as each driver handles toggling it differently.
+Ioctl DRM_IOCTL_WAIT_VBLANK could return 0 such as on i915, or an invalid
+integer that doesn't mean much, such as on Zork running Kernel 5.4 due
+to the kernel workaround that increments the vblank ref count to prevent
+a get from enabling the interrupt.
 
-== Series Details ==
+[How]
+For invalid_subtest(), active the CRTCs to turn the hardware on so
+DRM_IOCTL_WAIT_VBLANK returns something meaningful.
 
-Series: lib/igt_fb: Support Tile Size for AMD non linear modifiers. (rev3)
-URL   : https://patchwork.freedesktop.org/series/89017/
-State : success
+Changes since v3:
+Turn on only 1 output instead of all.
 
-== Summary ==
+Changes since v2:
+1. Updated Signed-off-by.
 
-CI Bug Log - changes from CI_DRM_10255 -> IGTPW_5950
-====================================================
+Changes since v1:
+1. Update Commit message
+2. Rename variable p to pipe_number
 
-Summary
--------
+Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+Change-Id: Id70072ea797a74d3e9563ef8feb5901daa6b511a
+---
+ tests/kms_vblank.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5950/index.html
-
-
-Changes
--------
-
-  No changes found
-
-
-Participating hosts (44 -> 39)
-------------------------------
-
-  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6115 -> IGTPW_5950
-
-  CI-20190529: 20190529
-  CI_DRM_10255: 33910d77746495afd054c12d50f158be8039bac0 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5950: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5950/index.html
-  IGT_6115: 4ef420186b82f1a6d9c9b69d2f8de4fd100a2af3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5950/index.html
-
---===============8724705033747069755==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_fb: Support Tile Size for AMD non linear modifiers. (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/89017/">https://patchwork.freedesktop.org/series/89017/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5950/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5950/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10255 -&gt; IGTPW_5950</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5950/index.html</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Participating hosts (44 -&gt; 39)</h2>
-<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6115 -&gt; IGTPW_5950</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10255: 33910d77746495afd054c12d50f158be8039bac0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5950: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5950/index.html<br />
-  IGT_6115: 4ef420186b82f1a6d9c9b69d2f8de4fd100a2af3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8724705033747069755==--
-
---===============0267844352==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+index 93b01eba..5e87610f 100644
+--- a/tests/kms_vblank.c
++++ b/tests/kms_vblank.c
+@@ -475,8 +475,13 @@ static void invalid_subtest(data_t *data, int fd)
+ {
+ 	union drm_wait_vblank vbl;
+ 	unsigned long valid_flags;
++	igt_display_t* display = &data->display;
++	igt_output_t* output;
+ 
+-	igt_display_require_output_on_pipe(&data->display, 0);
++	igt_display_require_output_on_pipe(display, 0);
++	igt_require(display->n_outputs);
++	output = &display->outputs[0];
++	prepare_crtc(data, fd, output);
+ 
+ 	/* First check all is well with a simple query */
+ 	memset(&vbl, 0, sizeof(vbl));
+@@ -511,6 +516,8 @@ static void invalid_subtest(data_t *data, int fd)
+ 	vbl.request.type |= _DRM_VBLANK_SECONDARY;
+ 	vbl.request.type |= _DRM_VBLANK_FLAGS_MASK;
+ 	igt_assert_eq(wait_vblank(fd, &vbl), -EINVAL);
++
++	cleanup_crtc(data, fd, output);
+ }
+ 
+ igt_main
+@@ -529,11 +536,11 @@ igt_main
+ 	igt_subtest("invalid")
+ 		invalid_subtest(&data, fd);
+ 
+-	igt_describe("check the Vblank and flip events works with given crtc id");
+-	igt_subtest("crtc-id")
+-		crtc_id_subtest(&data, fd);
++	// igt_describe("check the Vblank and flip events works with given crtc id");
++	// igt_subtest("crtc-id")
++	// 	crtc_id_subtest(&data, fd);
+ 
+-	for_each_pipe_static(data.pipe)
+-		igt_subtest_group
+-			run_subtests_for_pipe(&data);
++	// for_each_pipe_static(data.pipe)
++	// 	igt_subtest_group
++	// 		run_subtests_for_pipe(&data);
+ }
+-- 
+2.32.0.288.g62a8d224e6-goog
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0267844352==--
