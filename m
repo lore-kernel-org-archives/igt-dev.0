@@ -1,79 +1,61 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Mon, 21 Jun 2021 12:12:29 +0000
-Message-ID: <BY5PR11MB4372F9795905F5681A318847890A9@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <1622176367-12608-1-git-send-email-vidya.srinivas@intel.com>
- <YNBp1bQ3YucQAnIs@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YNBp1bQ3YucQAnIs@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk
+ [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BECD6E027
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 12:57:37 +0000 (UTC)
+From: Boris Brezillon <boris.brezillon@collabora.com>
+Date: Mon, 21 Jun 2021 14:57:17 +0200
+Message-Id: <20210621125724.1592104-1-boris.brezillon@collabora.com>
 MIME-Version: 1.0
-Subject: Re: [Intel-gfx] [PATCH i-g-t] [RFC] tests/drm_read: Fix subtest
- invalid-buffer
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Subject: [igt-dev] [PATCH 0/7] tests/panfrost: Misc fixes/improvements
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "markyacoub@chromium.org" <markyacoub@chromium.org>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "Lin,
- Charlton" <charlton.lin@intel.com>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Rob Herring <robh+dt@kernel.org>, Tomeu Vizoso <tomeu.vizoso@collabora.com>, Alyssa Rosenzweig <alyssa.rosenzweig@collabora.com>, Steven Price <steven.price@arm.com>, Robin Murphy <robin.murphy@arm.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thank you so much Petri.
+Hello,
 
-Regards
-Vidya
+This is a collection of fixes for the panfrost testsuite:
+ * submit tests are now passing on Bifrost
+ * the prime test is fixed to handle the case where the KMS device is
+   assigned card1
 
------Original Message-----
-From: Latvala, Petri <petri.latvala@intel.com> 
-Sent: Monday, June 21, 2021 3:59 PM
-To: Srinivas, Vidya <vidya.srinivas@intel.com>
-Cc: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org; markyacoub@chromium.org; Lin, Charlton <charlton.lin@intel.com>
-Subject: Re: [Intel-gfx] [PATCH i-g-t] [RFC] tests/drm_read: Fix subtest invalid-buffer
+There's also an extra test to make sure we don't crash the kernel
+when closing the DRM FD while jobs are still in-flight.
 
-On Fri, May 28, 2021 at 10:02:47AM +0530, Vidya Srinivas wrote:
-> Using (void *)-1 directly in read is aborting on chrome systems.
-> Following message is seen.
-> 
-> Starting subtest: invalid-buffer
-> *** buffer overflow detected ***: terminated Received signal SIGABRT.
-> Stack trace:
-> Aborted (core dumped)
-> 
-> Patch just adds a pointer variable and uses it in read.
-> 
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> ---
->  tests/drm_read.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/drm_read.c b/tests/drm_read.c index 
-> ccf9d822fd8d..2fdec5be4078 100644
-> --- a/tests/drm_read.c
-> +++ b/tests/drm_read.c
-> @@ -103,10 +103,11 @@ static void teardown(int fd)  static void 
-> test_invalid_buffer(int in)  {
->  	int fd = setup(in, 0);
-> +	void *add = (void *)-1;
->  
->  	alarm(1);
->  
-> -	igt_assert_eq(read(fd, (void *)-1, 4096), -1);
-> +	igt_assert_eq(read(fd, add, 4096), -1);
->  	igt_assert_eq(errno, EFAULT);
->  
->  	teardown(fd);
+Regards,
 
-This looked weird but then I checked what glibc is actually doing. This is FORTIFY_SOURCE in action, and read() checks the buffer with __builtin_object_size() that it has room for the read. Which it can only do here if the address is a literal.
+Boris
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+Boris Brezillon (7):
+  tests/panfrost: Make sure we open a DUMB capable node for prime tests
+  lib/panfrost: Handle the NULL case in igt_panfrost_free_bo()
+  lib/panfrost: Add a helper to create a job loop
+  lib/panfrost: Add a helper to create a NULL job
+  tests/panfrost: Simplify submit tests
+  lib/panfrost: Get rid of igt_panfrost_trivial_job()
+  tests/panfrost: Test FD-close while jobs are still in-flight
+
+ lib/igt_panfrost.c      | 159 +++++++++++++---------------------------
+ lib/igt_panfrost.h      |   3 +-
+ tests/panfrost_prime.c  |  26 ++++++-
+ tests/panfrost_submit.c | 101 ++++++++++++-------------
+ 4 files changed, 126 insertions(+), 163 deletions(-)
+
+-- 
+2.31.1
+
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
