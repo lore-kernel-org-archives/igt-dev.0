@@ -1,19 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com
- [IPv6:2a00:1450:4864:20::134])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C7916E06E
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 18:54:46 +0000 (UTC)
-Received: by mail-lf1-x134.google.com with SMTP id f30so31938147lfj.1
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Jun 2021 11:54:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210617152032.431594-1-markyacoub@chromium.org>
- <YNBwJ6potaWQYa/V@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YNBwJ6potaWQYa/V@platvala-desk.ger.corp.intel.com>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Mon, 21 Jun 2021 14:54:31 -0400
-Message-ID: <CAJUqKUqG-jULf3a+BU9QXhaOzEgYDoq7brS+mHrwwn1OX6G1Yw@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH v3] tests/kms_vblank: Turn on hardware before
- testing invalid vblank.
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 21 Jun 2021 19:32:45 -0000
+Message-ID: <162430396555.19766.3606374560252862100@emeril.freedesktop.org>
+References: <20210621183257.1030915-1-markyacoub@chromium.org>
+In-Reply-To: <20210621183257.1030915-1-markyacoub@chromium.org>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fvblank=3A_Turn_on_hardware_before_testing_invalid_vblank?=
+ =?utf-8?b?LiAocmV2Nik=?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,74 +15,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1845438663=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
+To: Mark Yacoub <markyacoub@chromium.org>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thanks!
-I was trying to find a neater way to grab the output that I wanna turn
-on. Let me know if this is good or there is a better solution.
-I pushed the change:
-https://patchwork.freedesktop.org/patch/440342/?series=90382&rev=6
+--===============1845438663==
+Content-Type: multipart/alternative;
+ boundary="===============8328742247754405869=="
 
-On Mon, Jun 21, 2021 at 6:53 AM Petri Latvala <petri.latvala@intel.com> wrote:
->
-> On Thu, Jun 17, 2021 at 03:20:32PM +0000, Mark Yacoub wrote:
-> > From: Mark Yacoub <markyacoub@google.com>
-> >
-> > [Why]
-> > Before any hardware is on, the vblank is off and its ref counter is in
-> > an initialized state as each driver handles toggling it differently.
-> > Ioctl DRM_IOCTL_WAIT_VBLANK could return 0 such as on i915, or an invalid
-> > integer that doesn't mean much, such as on Zork running Kernel 5.4 due
-> > to the kernel workaround that increments the vblank ref count to prevent
-> > a get from enabling the interrupt.
-> >
-> > [How]
-> > For invalid_subtest(), active the CRTCs to turn the hardware on so
-> > DRM_IOCTL_WAIT_VBLANK returns something meaningful.
-> >
-> > Changes since v2:
-> > 1. Updated Signed-off-by.
-> >
-> > Changes since v1:
-> > 1. Update Commit message
-> > 2. Rename variable p to pipe_number
-> >
-> > Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
-> > ---
-> >  tests/kms_vblank.c | 11 ++++++++++-
-> >  1 file changed, 10 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-> > index 93b01eba..988794c0 100644
-> > --- a/tests/kms_vblank.c
-> > +++ b/tests/kms_vblank.c
-> > @@ -475,8 +475,14 @@ static void invalid_subtest(data_t *data, int fd)
-> >  {
-> >       union drm_wait_vblank vbl;
-> >       unsigned long valid_flags;
-> > +     igt_display_t* display = &data->display;
-> > +     enum pipe pipe_number = 0;
-> > +     igt_output_t* output;
-> >
-> > -     igt_display_require_output_on_pipe(&data->display, 0);
-> > +     igt_display_require_output_on_pipe(display, pipe_number);
-> > +     data->pipe = pipe_number;
-> > +     for_each_valid_output_on_pipe(display, pipe_number, output)
-> > +             prepare_crtc(data, fd, output);
->
-> Do you really need to fire up and reset all the outputs that pipe can
-> drive? As opposed to just one.
->
->
-> --
-> Petri Latvala
+--===============8328742247754405869==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/kms_vblank: Turn on hardware before testing invalid vblank. (rev6)
+URL   : https://patchwork.freedesktop.org/series/90382/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10256 -> IGTPW_5951
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5951/index.html
+
+
+Changes
+-------
+
+  No changes found
+
+
+Participating hosts (44 -> 39)
+------------------------------
+
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6115 -> IGTPW_5951
+
+  CI-20190529: 20190529
+  CI_DRM_10256: 2a5df66b6597af17e2c3e3fff1a2271a6079412b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5951: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5951/index.html
+  IGT_6115: 4ef420186b82f1a6d9c9b69d2f8de4fd100a2af3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5951/index.html
+
+--===============8328742247754405869==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_vblank: Turn on hardware before testing invalid vblank. (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/90382/">https://patchwork.freedesktop.org/series/90382/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5951/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5951/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10256 -&gt; IGTPW_5951</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5951/index.html</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Participating hosts (44 -&gt; 39)</h2>
+<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6115 -&gt; IGTPW_5951</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10256: 2a5df66b6597af17e2c3e3fff1a2271a6079412b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5951: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5951/index.html<br />
+  IGT_6115: 4ef420186b82f1a6d9c9b69d2f8de4fd100a2af3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8328742247754405869==--
+
+--===============1845438663==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1845438663==--
