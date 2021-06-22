@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 28B7F6E0D1
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Jun 2021 10:28:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 286D46E48E
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Jun 2021 10:28:09 +0000 (UTC)
 From: venkata.sai.patnana@intel.com
-Date: Tue, 22 Jun 2021 15:54:53 +0530
-Message-Id: <20210622102454.8922-4-venkata.sai.patnana@intel.com>
+Date: Tue, 22 Jun 2021 15:54:54 +0530
+Message-Id: <20210622102454.8922-5-venkata.sai.patnana@intel.com>
 In-Reply-To: <20210622102454.8922-1-venkata.sai.patnana@intel.com>
 References: <20210622102454.8922-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 4/5] tests/kms_invalid_dotclock: Modify the
- test for bigjoiner
+Subject: [igt-dev] [PATCH i-g-t 5/5] tests/kms_dp_dsc: Assign all data
+ realted members together
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,60 +17,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Juha-Pekka=20Heikkil=C3=A4?= <juha-pekka.heikkila@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogQW5raXQgTmF1dGl5YWwgPGFua2l0LmsubmF1dGl5YWxAaW50ZWwuY29tPgoKQ3VycmVu
-dGx5IHRoZSB0ZXN0IGFzc3VtZXMgdGhhdCB0aGUgbW9kZXMgd2l0aCBjbG9jayBtb3JlIHRoYW4g
-dGhlCm1heGltdW0gZG90IGNsb2NrIHdpbGwgYmUgcmVqZWN0ZWQuIFRoaXMgZmFpbHMgaW4gY2Fz
-ZSBvZgpwbGF0Zm9ybXMgdGhhdCBjb21iaW5lIG11bHRpcGxlIHBpcGVzIGFuZCBtb2RlcyBoaWdo
-ZXIgdGhhbiB0aGUKbWF4aW11bSBkb3RjbG9jayBjYW4gc3RpbGwgYmUgc3VwcG9ydGVkLgoKVGhp
-cyBwYXRjaCBtb2RpZmllcyB0aGUgdGVzdCB0byBidW1wIHRoZSBjbG9jayBmb3IgdGhlIGdpdmVu
-IG1vZGUKYnkgdHdpY2UgaWYgYmlnam9pbmVyIGlzIHN1cHBvcnRlZC4KCkNjOiBNYW5hc2kgTmF2
-YXJlIDxtYW5hc2kuZC5uYXZhcmVAaW50ZWwuY29tPgpTaWduZWQtb2ZmLWJ5OiBBbmtpdCBOYXV0
-aXlhbCA8YW5raXQuay5uYXV0aXlhbEBpbnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IEp1aGEtUGVr
-a2EgSGVpa2tpbMOkIDxqdWhhLXBla2thLmhlaWtraWxhQGludGVsLmNvbT4KU2lnbmVkLW9mZi1i
-eTogUGF0bmFuYSBWZW5rYXRhIFNhaSA8dmVua2F0YS5zYWkucGF0bmFuYUBpbnRlbC5jb20+Ci0t
-LQogdGVzdHMva21zX2ludmFsaWRfZG90Y2xvY2suYyB8IDM0ICsrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrLS0KIDEgZmlsZSBjaGFuZ2VkLCAzMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0
-aW9ucygtKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19pbnZhbGlkX2RvdGNsb2NrLmMgYi90ZXN0
-cy9rbXNfaW52YWxpZF9kb3RjbG9jay5jCmluZGV4IDQwMjYyOWFiLi5iZDgyMmZlNyAxMDA2NDQK
-LS0tIGEvdGVzdHMva21zX2ludmFsaWRfZG90Y2xvY2suYworKysgYi90ZXN0cy9rbXNfaW52YWxp
-ZF9kb3RjbG9jay5jCkBAIC00Myw2ICs0MywyNSBAQCBzdGF0aWMgYm9vbCBoYXNfc2NhbGluZ19t
-b2RlX3Byb3AoZGF0YV90ICpkYXRhKQogCQkJCSAgICAic2NhbGluZyBtb2RlIiwKIAkJCQkgICAg
-TlVMTCwgTlVMTCwgTlVMTCk7CiB9CitzdGF0aWMgYm9vbAorY2FuX2JpZ2pvaW5lcihkYXRhX3Qg
-KmRhdGEpCit7CisJZHJtTW9kZUNvbm5lY3RvciAqY29ubmVjdG9yID0gZGF0YS0+b3V0cHV0LT5j
-b25maWcuY29ubmVjdG9yOworCXVpbnQzMl90IGRldmlkID0gaW50ZWxfZ2V0X2RybV9kZXZpZChk
-YXRhLT5kcm1fZmQpOworCisJLyoKKwkgKiBHRU4xMSBhbmQgR0VOMTIgcmVxdWlyZSBEU0MgdG8g
-c3VwcG9ydCBiaWdqb2luZXIuCisJICogWEVMUEQgYW5kIGxhdGVyIEdFTiBzdXBwb3J0IHVuY29t
-cHJlc3NlZCBiaWdqb2luZXIuCisJICovCisJaWYgKGludGVsX2Rpc3BsYXlfdmVyKGRldmlkKSkg
-eworCQlpZ3RfZGVidWcoIlBsYXRmb3JtIHN1cHBvcnRzIHVuY29tcHJlc3NlZCBiaWdqb2luZXJc
-biIpOworCQlyZXR1cm4gdHJ1ZTsKKwl9IGVsc2UgaWYgKGludGVsX2Rpc3BsYXlfdmVyKGRldmlk
-KSA+PSAxMSkgeworCQlyZXR1cm4gaWd0X2lzX2RwX2RzY19zdXBwb3J0ZWQoZGF0YS0+ZHJtX2Zk
-LCBjb25uZWN0b3IpOworCX0KKworCXJldHVybiBmYWxzZTsKK30KIAogc3RhdGljIGludAogdGVz
-dF9vdXRwdXQoZGF0YV90ICpkYXRhKQpAQCAtNzAsMTIgKzg5LDI1IEBAIHRlc3Rfb3V0cHV0KGRh
-dGFfdCAqZGF0YSkKIAltb2RlID0gKmlndF9vdXRwdXRfZ2V0X21vZGUob3V0cHV0KTsKIAltb2Rl
-LmNsb2NrID0gZGF0YS0+bWF4X2RvdGNsb2NrICsgMTsKIAorCS8qCisJICogTmV3ZXIgcGxhdGZv
-cm1zIGNhbiBzdXBwb3J0IG1vZGVzIGhpZ2hlciB0aGFuIHRoZSBtYXhpbXVtIGRvdCBjbG9jawor
-CSAqIGJ5IHVzaW5nIHBpcGUgam9pbmVyLCBzbyBzZXQgdGhlIG1vZGUgY2xvY2sgdHdpY2UgdGhh
-dCBvZiBtYXhpbXVtCisJICogZG90IGNsb2NrOworCSAqLworCWlmIChjYW5fYmlnam9pbmVyKGRh
-dGEpKSB7CisJCWlndF9pbmZvKCJQbGF0Zm9ybSBzdXBwb3J0cyBiaWdqb2luZXIgd2l0aCAlc1xu
-IiwKKwkJCSAgb3V0cHV0LT5uYW1lKTsKKwkJbW9kZS5jbG9jayAqPSAyOworCX0KKwogCWlndF9j
-cmVhdGVfZmIoZGF0YS0+ZHJtX2ZkLAogCQkgICAgICBtb2RlLmhkaXNwbGF5LCBtb2RlLnZkaXNw
-bGF5LAogCQkgICAgICBEUk1fRk9STUFUX1hSR0I4ODg4LAogCQkgICAgICBMT0NBTF9EUk1fRk9S
-TUFUX01PRF9OT05FLAogCQkgICAgICAmZmIpOwogCisJa21zdGVzdF91bnNldF9hbGxfY3J0Y3Mo
-ZGF0YS0+ZHJtX2ZkLCBkYXRhLT5yZXMpOworCiAJZm9yIChpID0gMDsgaSA8IGRhdGEtPnJlcy0+
-Y291bnRfY3J0Y3M7IGkrKykgewogCQlpbnQgcmV0OwogCkBAIC0xMzUsOCArMTY3LDYgQEAgaWd0
-X3NpbXBsZV9tYWluCiAJZGF0YS5yZXMgPSBkcm1Nb2RlR2V0UmVzb3VyY2VzKGRhdGEuZHJtX2Zk
-KTsKIAlpZ3RfYXNzZXJ0KGRhdGEucmVzKTsKIAotCWttc3Rlc3RfdW5zZXRfYWxsX2NydGNzKGRh
-dGEuZHJtX2ZkLCBkYXRhLnJlcyk7Ci0KIAlkYXRhLm1heF9kb3RjbG9jayA9IGk5MTVfbWF4X2Rv
-dGNsb2NrKCZkYXRhKTsKIAlpZ3RfaW5mbygiTWF4IGRvdGNsb2NrOiAlZCBrSHpcbiIsIGRhdGEu
-bWF4X2RvdGNsb2NrKTsKIAotLSAKMi4zMi4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZy
-ZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2lndC1kZXYK
+From: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+
+Currently, members connector and output mode of the data are set separately,
+than the other data related members like conn_name and output.
+Move these assignments together and cleanup unused variables.
+
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+---
+ tests/kms_dp_dsc.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
+
+diff --git a/tests/kms_dp_dsc.c b/tests/kms_dp_dsc.c
+index 462a7b51..47f0bdf0 100644
+--- a/tests/kms_dp_dsc.c
++++ b/tests/kms_dp_dsc.c
+@@ -61,7 +61,6 @@ typedef struct {
+ 	igt_output_t *output;
+ 	int mode_valid;
+ 	drmModeModeInfo *mode;
+-	drmModeConnector *connector;
+ 	drmModeEncoder *encoder;
+ 	int crtc;
+ 	int compression_bpp;
+@@ -142,7 +141,6 @@ static void kms_dp_dsc_exit_handler(int sig)
+ static bool check_dsc_on_connector(data_t *data, uint32_t drmConnector)
+ {
+ 	drmModeConnector *connector;
+-	igt_output_t *output;
+ 
+ 	connector = drmModeGetConnectorCurrent(data->drm_fd,
+ 					       drmConnector);
+@@ -151,7 +149,7 @@ static bool check_dsc_on_connector(data_t *data, uint32_t drmConnector)
+ 	    (connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort)))
+ 		return false;
+ 
+-	output = igt_output_from_connector(&data->display, connector);
++	data->output = igt_output_from_connector(&data->display, connector);
+ 	sprintf(data->conn_name, "%s-%d",
+ 		kmstest_connector_type_str(connector->connector_type),
+ 		connector->connector_type_id);
+@@ -167,7 +165,7 @@ static bool check_dsc_on_connector(data_t *data, uint32_t drmConnector)
+ 			  data->conn_name);
+ 		return false;
+ 	}
+-	data->output = output;
++	data->mode = igt_output_get_mode(data->output);
+ 	return true;
+ }
+ 
+@@ -179,7 +177,6 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+ {
+ 	bool enabled;
+ 	igt_plane_t *primary;
+-	data->connector = data->output->config.connector;
+ 
+ 	/* Disable the output first */
+ 	igt_output_set_pipe(data->output, PIPE_NONE);
+@@ -217,12 +214,11 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+ 		     kmstest_pipe_name(data->pipe));
+ }
+ 
+-static void run_test(data_t *data, igt_output_t *output,
+-		     enum dsc_test_type test_type)
++static void run_test(data_t *data, enum dsc_test_type test_type)
+ {
+ 	enum pipe pipe;
+ 
+-	data->mode = igt_output_get_mode(output);
++	data->mode = igt_output_get_mode(data->output);
+ 	igt_create_pattern_fb(data->drm_fd, data->mode->hdisplay,
+ 			      data->mode->vdisplay,
+ 			      DRM_FORMAT_XRGB8888,
+@@ -233,17 +229,16 @@ static void run_test(data_t *data, igt_output_t *output,
+ 		if (is_i915_device(data->drm_fd)) {
+ 			uint32_t devid = intel_get_drm_devid(data->drm_fd);
+ 
+-			if (output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
++			if (data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
+ 			    pipe == PIPE_A && IS_GEN11(devid)) {
+ 				igt_debug("DSC not supported on Pipe A on external DP in Gen11 platforms\n");
+ 				continue;
+ 			}
+ 		}
+ 
+-		igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe))
+-			if (igt_pipe_connector_valid(pipe, output)) {
++		igt_dynamic_f("%s-pipe-%s", data->output->name, kmstest_pipe_name(pipe))
++			if (igt_pipe_connector_valid(pipe, data->output)) {
+ 				data->pipe = pipe;
+-				data->output = output;
+ 				update_display(data, test_type);
+ 				test_cleanup(data);
+ 			}
+@@ -276,7 +271,7 @@ igt_main
+ 			if (!check_dsc_on_connector(&data, res->connectors[j]))
+ 				continue;
+ 			test_conn_cnt++;
+-			run_test(&data, data.output, test_basic_dsc_enable);
++			run_test(&data, test_basic_dsc_enable);
+ 		}
+ 		igt_skip_on_f(test_conn_cnt == 0, "DSC not supported on any connector\n");
+ 	}
+@@ -290,7 +285,7 @@ igt_main
+ 				if (!check_dsc_on_connector(&data, res->connectors[j]))
+ 					continue;
+ 				test_conn_cnt++;
+-				run_test(&data, data.output, test_dsc_compression_bpp);
++				run_test(&data, test_dsc_compression_bpp);
+ 			}
+ 			igt_skip_on_f(test_conn_cnt == 0, "DSC not supported on any connector\n");
+ 		}
+-- 
+2.32.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
