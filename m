@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com
- [IPv6:2607:f8b0:4864:20::733])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 43B9888F0A
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Jun 2021 05:43:27 +0000 (UTC)
-Received: by mail-qk1-x733.google.com with SMTP id q64so2241499qke.7
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Jun 2021 22:43:27 -0700 (PDT)
+Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com
+ [IPv6:2607:f8b0:4864:20::734])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41EC06E047
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Jun 2021 06:10:03 +0000 (UTC)
+Received: by mail-qk1-x734.google.com with SMTP id i68so2418521qke.3
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Jun 2021 23:10:03 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210617191256.577244-1-jason@jlekstrand.net>
- <20210617191516.577394-13-jason@jlekstrand.net>
- <87a6ni8wxz.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <87a6ni8wxz.wl-ashutosh.dixit@intel.com>
+ <20210617191516.577394-11-jason@jlekstrand.net>
+ <874kdq8tjv.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <874kdq8tjv.wl-ashutosh.dixit@intel.com>
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed, 23 Jun 2021 00:43:15 -0500
-Message-ID: <CAOFGe94hnZYWASU7dAOKWXkhuZ+CizBBhjkB9jke+7GuhPRmBg@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 62/79] tests/i915/gem_vm_create: Use
- intel_ctx_t in the execbuf test
+Date: Wed, 23 Jun 2021 01:09:51 -0500
+Message-ID: <CAOFGe95gw+b_NhFrbfSuLx=1CyKNwBknOOVzryrubm5h75shBw@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 60/79] tests/i915/gem_ctx_create:
+ Convert benchmarks to intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,25 +30,72 @@ To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Jun 21, 2021 at 9:17 PM Dixit, Ashutosh
+On Mon, Jun 21, 2021 at 10:30 PM Dixit, Ashutosh
 <ashutosh.dixit@intel.com> wrote:
 >
-> On Thu, 17 Jun 2021 12:14:59 -0700, Jason Ekstrand wrote:
+> On Thu, 17 Jun 2021 12:14:57 -0700, Jason Ekstrand wrote:
 > >
-> > Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+> > -static void maximum(int fd, int ncpus, unsigned mode)
+> > +static void maximum(int fd, const intel_ctx_cfg_t *cfg,
+> > +                 int ncpus, unsigned mode)
+> >  {
+> >       const uint32_t bbe = MI_BATCH_BUFFER_END;
+> >       struct drm_i915_gem_execbuffer2 execbuf;
+> > @@ -300,9 +302,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
+> >
+> >               err = -ENOMEM;
+> >               if (avail_mem > (count + 1) * ctx_size)
+> > -                     err =  __gem_context_clone(fd, 0,
+> > -                                                I915_CONTEXT_CLONE_ENGINES,
+> > -                                                0, &ctx_id);
+> > +                     err =  __gem_context_create(fd, &ctx_id);
+> >               if (err) {
+> >                       igt_info("Created %lu contexts, before failing with '%s' [%d]\n",
+> >                                count, strerror(-err), -err);
+> > @@ -323,6 +323,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
+> >
+> >       igt_fork(child, ncpus) {
+> >               struct timespec start, end;
+> > +             const intel_ctx_t *ctx;
+> >               int i915;
+> >
+> >               i915 = gem_reopen_driver(fd);
 >
-> What is the reason for this patch? If it is to avoid
-> gem_context_set_param(), that is also being done in the isolation
-> gem_vm_create test. In any case the patch is fine so:
+> Just a minor nit here. I'm thinking if we should remove the i915 variable
+> and the gem_reopen_driver() here and just use fd? Because it seems we have
+> exhausted the memory creating contexts earlier on, and now the previous
+> code was creating one additional context using gem_reopen_driver() whereas
+> we are creating two, one with gem_reopen_driver() and a second with
+> intel_ctx_create(). Not sure if it matters or not but just in case it does
+> we can get rid of gem_reopen_driver() and i915.
 
-We need to re-create the context every time we try with a new VM
-anyway.  I guess I could have just sprinkled
-gem_context_create/destroy around.  This didn't seem like a bigger
-change.
+Wait a second... I'm not sure how this was expected to ever work.  In
+the first loop, the test creates a bunch of contexts with fd.  Then,
+it forks off children.  Each of those children re-open the driver and
+then try to execute using said contexts on i915.  But those contexts
+don't exist on the newly opened DRM device.  I don't see how this ever
+worked.
 
 --Jason
 
+> Apart from this, this is:
+>
 > Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>
+> > @@ -331,7 +332,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
+> >                * a nop execbuf and stalling for it.
+> >                */
+> >               gem_quiescent_gpu(i915);
+> > -             gem_context_copy_engines(fd, 0, i915, 0);
+> > +             ctx = intel_ctx_create(i915, cfg);
+> >
+> >               hars_petruska_f54_1_random_perturb(child);
+> >               obj[0].handle = gem_create(i915, 4096);
+> > @@ -352,6 +353,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
+> >               gem_sync(i915, obj[0].handle);
+> >               clock_gettime(CLOCK_MONOTONIC, &end);
+> >               gem_close(i915, obj[0].handle);
+> > +             intel_ctx_destroy(i915, ctx);
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
