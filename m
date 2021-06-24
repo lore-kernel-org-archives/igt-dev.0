@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4751C6E9E5
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Jun 2021 08:27:06 +0000 (UTC)
-Date: Thu, 24 Jun 2021 11:30:43 +0300
-From: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
-Message-ID: <20210624083043.GA4981@intel.com>
-References: <20210618104927.20061-1-venkata.sai.patnana@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C79B6EB23
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Jun 2021 09:02:09 +0000 (UTC)
+References: <20210511090000.1521342-1-maarten.lankhorst@linux.intel.com>
+ <87r1gsjbh3.wl-ashutosh.dixit@intel.com>
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Message-ID: <ae91867b-546c-ce56-5b32-e293236e6f9b@linux.intel.com>
+Date: Thu, 24 Jun 2021 11:02:04 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210618104927.20061-1-venkata.sai.patnana@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cdclk : Add test to validate
- cdclk crawling
+In-Reply-To: <87r1gsjbh3.wl-ashutosh.dixit@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] i915: Handle the case where legacy mmap
+ is not available
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,409 +19,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: venkata.sai.patnana@intel.com
-Cc: igt-dev@lists.freedesktop.org, Juha-Pekka =?iso-8859-1?Q?Heikkil=E4?= <juha-pekka.heikkila@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jun 18, 2021 at 04:19:27PM +0530, venkata.sai.patnana@intel.com wro=
-te:
-> From: Swati Sharma <swati2.sharma@intel.com>
-> =
-
-> Added test to validate cdclk crawling
-> =
-
-> * created new IGT
-> * added 3 test scenarios (basic, scalar and mode-transition)
-> * used existing i915_freq_info debugfs API to validate change in cdclk
-
-Should note that in reality, we are still validating here not CDCLK crawlin=
-g,
-but just that CDCLK changes actually, if we change resolution or do scaling.
-We can have CDCLK being changed, even without CDCLK crawling.
-
-CDCLK crawl should allow to do CDCLK change, without doing a full modeset,
-however due to some driver limitations, currently we are unable to test tha=
-t. =
-
-
-Reviewed-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-
-> =
-
-> Cc: Mika Kahola <mika.kahola@intel.com>
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> Cc: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> Signed-off-by: Juha-Pekka Heikkil=E4 <juha-pekka.heikkila@intel.com>
-> Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-> ---
->  tests/kms_cdclk.c | 307 ++++++++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build |   1 +
->  2 files changed, 308 insertions(+)
->  create mode 100644 tests/kms_cdclk.c
-> =
-
-> diff --git a/tests/kms_cdclk.c b/tests/kms_cdclk.c
-> new file mode 100644
-> index 00000000..d002be83
-> --- /dev/null
-> +++ b/tests/kms_cdclk.c
-> @@ -0,0 +1,307 @@
-> +/*
-> + * Copyright =A9 2020 Intel Corporation
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining=
- a
-> + * copy of this software and associated documentation files (the "Softwa=
-re"),
-> + * to deal in the Software without restriction, including without limita=
-tion
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
-se,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the =
-next
-> + * paragraph) shall be included in all copies or substantial portions of=
- the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
-SS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
-TY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
-ALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
-OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
-NG
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER D=
-EALINGS
-> + * IN THE SOFTWARE.
-> + *
-> + * Author:
-> + *  Swati Sharma <swati2.sharma@intel.com>
-> + */
-> +
-> +#include "igt.h"
-> +
-> +IGT_TEST_DESCRIPTION("Test cdclk features : crawling");
-> +
-> +/* Test flags */
-> +enum {
-> +	TEST_BASIC =3D 1 << 0,
-> +	TEST_PLANESCALING =3D 1 << 1,
-> +	TEST_MODETRANSITION =3D 1 << 2,
-> +};
-> +
-> +typedef struct {
-> +	int drm_fd;
-> +	int debugfs_fd;
-> +	uint32_t devid;
-> +	igt_display_t display;
-> +} data_t;
-> +
-> +static bool hardware_supported(data_t *data)
-> +{
-> +        if (intel_display_ver(data->devid) >=3D 13)
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
-> +static int get_current_cdclk_freq(int debugfs_fd)
-> +{
-> +	int cdclk_freq_current;
-> +	char buf[1024];
-> +	char *start_loc;
-> +	int res;
-> +
-> +	res =3D igt_debugfs_simple_read(debugfs_fd, "i915_frequency_info",
-> +				      buf, sizeof(buf));
-> +	igt_require(res > 0);
-> +
-> +	igt_assert(start_loc =3D strstr(buf, "Current CD clock frequency: "));
-> +	igt_assert_eq(sscanf(start_loc, "Current CD clock frequency: %d", &cdcl=
-k_freq_current), 1);
-> +	igt_info("Current CD clock frequency: %d\n", cdclk_freq_current);
-> +
-> +	return cdclk_freq_current;
-> +}
-> +
-> +static __u64 get_mode_data_rate(drmModeModeInfo *mode)
-> +{
-> +	__u64 data_rate =3D (__u64)mode->hdisplay * (__u64)mode->vdisplay * (__=
-u64)mode->vrefresh;
-> +	return data_rate;
-> +}
-> +
-> +static drmModeModeInfo *get_highres_mode(igt_output_t *output)
-> +{
-> +	drmModeModeInfo *highest_mode =3D NULL;
-> +	drmModeConnector *connector =3D output->config.connector;
-> +	int j;
-> +
-> +	for (j =3D 0; j < connector->count_modes; j++) {
-> +		if (!highest_mode) {
-> +			highest_mode =3D &connector->modes[j];
-> +		} else if (connector->modes[j].vdisplay && connector->modes[j].hdispla=
-y) {
-> +			__u64 highest_data_rate =3D get_mode_data_rate(highest_mode);
-> +			__u64 data_rate =3D get_mode_data_rate(&connector->modes[j]);
-> +
-> +			if (highest_data_rate < data_rate)
-> +				highest_mode =3D &connector->modes[j];
-> +		}
-> +	}
-> +
-> +	return highest_mode;
-> +}
-> +
-> +static drmModeModeInfo *get_lowres_mode(igt_output_t *output)
-> +{
-> +	drmModeModeInfo *lowest_mode =3D NULL;
-> +	drmModeConnector *connector =3D output->config.connector;
-> +	int j;
-> +
-> +	for (j =3D 0; j < connector->count_modes; j++) {
-> +		if (!lowest_mode) {
-> +			lowest_mode =3D &connector->modes[j];
-> +		} else if (connector->modes[j].vdisplay && connector->modes[j].hdispla=
-y) {
-> +			__u64 lowest_data_rate =3D get_mode_data_rate(lowest_mode);
-> +			__u64 data_rate =3D get_mode_data_rate(&output->config.connector->mod=
-es[j]);
-> +
-> +			if (lowest_data_rate > data_rate)
-> +				lowest_mode =3D &connector->modes[j];
-> +		}
-> +	}
-> +
-> +	return lowest_mode;
-> +}
-> +
-> +static void do_cleanup_display(igt_display_t *dpy)
-> +{
-> +	enum pipe pipe;
-> +	igt_output_t *output;
-> +	igt_plane_t *plane;
-> +
-> +	for_each_pipe(dpy, pipe)
-> +		for_each_plane_on_pipe(dpy, pipe, plane)
-> +			igt_plane_set_fb(plane, NULL);
-> +
-> +	for_each_connected_output(dpy, output)
-> +		igt_output_set_pipe(output, PIPE_NONE);
-> +
-> +	igt_display_commit2(dpy, dpy->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY=
-);
-> +}
-> +
-> +static void test_basic(data_t *data, enum pipe pipe, igt_output_t *outpu=
-t)
-> +{
-> +	igt_display_t *display =3D &data->display;
-> +	int debugfs_fd =3D data->debugfs_fd;
-> +	int cdclk_ref, cdclk_new;
-> +	struct igt_fb fb;
-> +	igt_plane_t *primary;
-> +	drmModeModeInfo *mode;
-> +
-> +	do_cleanup_display(display);
-> +	igt_display_reset(display);
-> +
-> +	igt_output_set_pipe(output, pipe);
-> +	mode =3D igt_output_get_mode(output);
-> +	primary =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +	igt_create_color_pattern_fb(display->drm_fd,
-> +				    mode->hdisplay, mode->vdisplay,
-> +				    DRM_FORMAT_XRGB8888,
-> +				    I915_TILING_NONE,
-> +				    0.0, 0.0, 0.0, &fb);
-> +
-> +	igt_plane_set_fb(primary, &fb);
-> +	cdclk_ref =3D get_current_cdclk_freq(debugfs_fd);
-> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +	cdclk_new =3D get_current_cdclk_freq(debugfs_fd);
-> +
-> +	/* cdclk should bump */
-> +	igt_assert_lt(cdclk_ref, cdclk_new);
-> +
-> +	/* cleanup */
-> +	do_cleanup_display(display);
-> +	igt_remove_fb(display->drm_fd, &fb);
-> +}
-> +
-> +static void test_plane_scaling(data_t *data, enum pipe pipe, igt_output_=
-t *output)
-> +{
-> +	igt_display_t *display =3D &data->display;
-> +	int debugfs_fd =3D data->debugfs_fd;
-> +	int cdclk_ref, cdclk_new;
-> +	struct igt_fb fb;
-> +	igt_plane_t *primary;
-> +	drmModeModeInfo *mode;
-> +	int scaling =3D 60;
-> +
-> +	do_cleanup_display(display);
-> +	igt_display_reset(display);
-> +
-> +	igt_output_set_pipe(output, pipe);
-> +	mode =3D igt_output_get_mode(output);
-> +
-> +	primary =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +	igt_create_color_pattern_fb(display->drm_fd,
-> +				    mode->hdisplay, mode->vdisplay,
-> +				    DRM_FORMAT_XRGB8888,
-> +				    I915_TILING_NONE,
-> +				    0.0, 0.0, 0.0, &fb);
-> +	igt_plane_set_fb(primary, &fb);
-> +
-> +	/* downscaling */
-> +	igt_plane_set_size(primary, ((fb.width * scaling) / 100), ((fb.height *=
- scaling) / 100));
-> +	cdclk_ref =3D get_current_cdclk_freq(debugfs_fd);
-> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +	cdclk_new =3D get_current_cdclk_freq(debugfs_fd);
-> +
-> +	/* cdclk should bump */
-> +	igt_assert_lt(cdclk_ref, cdclk_new);
-> +
-> +	/* cleanup */
-> +	do_cleanup_display(display);
-> +	igt_remove_fb(display->drm_fd, &fb);
-> +}
-> +
-> +static void test_mode_transition(data_t *data, enum pipe pipe, igt_outpu=
-t_t *output)
-> +{
-> +	igt_display_t *display =3D &data->display;
-> +	int debugfs_fd =3D data->debugfs_fd;
-> +	int cdclk_ref, cdclk_new;
-> +	struct igt_fb fb;
-> +	igt_plane_t *primary;
-> +	drmModeModeInfo *mode_hi, *mode_lo, *mode;
-> +
-> +	do_cleanup_display(display);
-> +	igt_display_reset(display);
-> +
-> +	igt_output_set_pipe(output, pipe);
-> +	mode =3D igt_output_get_mode(output);
-> +	mode_lo =3D get_lowres_mode(output);
-> +	mode_hi =3D get_highres_mode(output);
-> +
-> +	if (mode_hi->hdisplay =3D=3D mode_lo->hdisplay &&
-> +	    mode_hi->vdisplay =3D=3D mode_lo->vdisplay)
-> +		igt_skip("Highest and lowest mode resolutions are same; no transition\=
-n");
-> +
-> +	primary =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +	igt_create_color_pattern_fb(display->drm_fd,
-> +				    mode->hdisplay, mode->vdisplay,
-> +				    DRM_FORMAT_XRGB8888,
-> +				    I915_TILING_NONE,
-> +				    0.0, 0.0, 0.0, &fb);
-> +
-> +	/* switch to lower resolution */
-> +	igt_output_override_mode(output, mode_lo);
-> +	igt_plane_set_fb(primary, &fb);
-> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +	cdclk_ref =3D get_current_cdclk_freq(debugfs_fd);
-> +
-> +	/* switch to higher resolution */
-> +	igt_output_override_mode(output, mode_hi);
-> +	igt_plane_set_fb(primary, &fb);
-> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +	cdclk_new =3D get_current_cdclk_freq(debugfs_fd);
-> +
-> +	/* cdclk should bump */
-> +	igt_assert_lt(cdclk_ref, cdclk_new);
-> +
-> +	/* cleanup */
-> +	do_cleanup_display(display);
-> +	igt_remove_fb(display->drm_fd, &fb);
-> +}
-> +
-> +static void run_cdclk_test(data_t *data, uint32_t flags)
-> +{
-> +	igt_display_t *display =3D &data->display;
-> +	igt_output_t *output;
-> +	enum pipe pipe;
-> +
-> +	for_each_pipe_with_valid_output(display, pipe, output) {
-> +		igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe))
-> +			if (igt_pipe_connector_valid(pipe, output)) {
-> +				if (flags & TEST_BASIC)
-> +					test_basic(data, pipe, output);
-> +				if (flags & TEST_PLANESCALING)
-> +					test_plane_scaling(data, pipe, output);
-> +				if (flags & TEST_MODETRANSITION)
-> +					test_mode_transition(data, pipe, output);
-> +			}
-> +	}
-> +}
-> +
-> +igt_main
-> +{
-> +	data_t data =3D {};
-> +
-> +	igt_fixture {
-> +		data.drm_fd =3D drm_open_driver_master(DRIVER_INTEL);
-> +		igt_require(data.drm_fd >=3D 0);
-> +		data.debugfs_fd =3D igt_debugfs_dir(data.drm_fd);
-> +		igt_require(data.debugfs_fd);
-> +		kmstest_set_vt_graphics_mode();
-> +		data.devid =3D intel_get_drm_devid(data.drm_fd);
-> +		igt_require_f(hardware_supported(&data),
-> +			      "Hardware doesn't support crawling.\n");
-> +		igt_display_require(&data.display, data.drm_fd);
-> +		igt_display_require_output(&data.display);
-> +	}
-> +
-> +	igt_describe("Basic test to validate cdclk frequency change");
-> +	igt_subtest_with_dynamic("basic")
-> +		run_cdclk_test(&data, TEST_BASIC);
-> +	igt_describe("Plane scaling test to validate cdclk frequency change");
-> +	igt_subtest_with_dynamic("plane-scaling")
-> +		run_cdclk_test(&data, TEST_PLANESCALING);
-> +	igt_describe("Mode transition (low to high) test to validate cdclk freq=
-uency");
-> +	igt_subtest_with_dynamic("mode-transition")
-> +		run_cdclk_test(&data, TEST_MODETRANSITION);
-> +
-> +	igt_fixture {
-> +		igt_display_fini(&data.display);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 2351b3d3..01911c45 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -23,6 +23,7 @@ test_progs =3D [
->  	'kms_big_joiner' ,
->  	'kms_busy',
->  	'kms_ccs',
-> +	'kms_cdclk',
->  	'kms_concurrent',
->  	'kms_content_protection',
->  	'kms_cursor_crc',
-> -- =
-
-> 2.32.0
-> =
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T3AgMjQtMDYtMjAyMSBvbSAwMzozMCBzY2hyZWVmIERpeGl0LCBBc2h1dG9zaDoKPiBPbiBUdWUs
+IDExIE1heSAyMDIxIDAyOjAwOjAwIC0wNzAwLCBNYWFydGVuIExhbmtob3JzdCB3cm90ZToKPj4g
+QEAgLTg0LDEwICs5MywxNCBAQCB2b2lkICpfX2dlbV9tbWFwX19ndHQoaW50IGZkLCB1aW50MzJf
+dCBoYW5kbGUsIHVpbnQ2NF90IHNpemUsIHVuc2lnbmVkIHByb3QpCj4+ICB7Cj4+IAlzdHJ1Y3Qg
+ZHJtX2k5MTVfZ2VtX21tYXBfZ3R0IG1tYXBfYXJnOwo+PiAJdm9pZCAqcHRyOwo+PiArCWludCBy
+ZXQ7Cj4+Cj4+IAltZW1zZXQoJm1tYXBfYXJnLCAwLCBzaXplb2YobW1hcF9hcmcpKTsKPj4gCW1t
+YXBfYXJnLmhhbmRsZSA9IGhhbmRsZTsKPj4gLQlpZiAoaWd0X2lvY3RsKGZkLCBEUk1fSU9DVExf
+STkxNV9HRU1fTU1BUF9HVFQsICZtbWFwX2FyZykpCj4+ICsJcmV0ID0gaWd0X2lvY3RsKGZkLCBE
+Uk1fSU9DVExfSTkxNV9HRU1fTU1BUF9HVFQsICZtbWFwX2FyZyk7Cj4+ICsJaWYgKHJldCA9PSAt
+MSAmJiBlcnJubyA9PSBFT1BOT1RTVVBQKQo+IFdoYXQgaXMgdGhlIGhhbmRsZXIgZm9yIERSTV9J
+T0NUTF9JOTE1X0dFTV9NTUFQX0dUVCBpb2N0bCBpbiBpOTE1IChpbiB0aGUKPiBrZXJuZWwpPyBJ
+IGFtIHVuYWJsZSB0byBmaW5kIGl0IHNvIGZvciBub3cgSSBhbSBqdXN0IGFzc3VtaW5nIHRoYXQg
+aXQgd2lsbAo+IGp1c3QgZ2V0IHJvdXRlZCB0byB0aGUgaGFuZGxlciBmb3IgRFJNX0lPQ1RMX0k5
+MTVfR0VNX01NQVAgYW5kIHJldHVybgo+IEVPUE5PVFNVUFAgZm9yIEdlbjEyKyB3aGljaCBpcyB3
+aGF0IHRoZSBjb2RlIGFib3ZlIHNlZW1zIHRvIGJlIGFzc3VtaW5nLgoKdG9vbHMvaW5jbHVkZS91
+YXBpL2RybS9pOTE1X2RybS5oOiNkZWZpbmUgRFJNX0lPQ1RMX0k5MTVfR0VNX01NQVDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgIERSTV9JT1dSKERSTV9DT01NQU5EX0JBU0UgKyBEUk1fSTkx
+NV9HRU1fTU1BUCwgc3RydWN0IGRybV9pOTE1X2dlbV9tbWFwKQp0b29scy9pbmNsdWRlL3VhcGkv
+ZHJtL2k5MTVfZHJtLmg6I2RlZmluZSBEUk1fSU9DVExfSTkxNV9HRU1fTU1BUF9HVFTCoMKgIERS
+TV9JT1dSKERSTV9DT01NQU5EX0JBU0UgKyBEUk1fSTkxNV9HRU1fTU1BUF9HVFQsIHN0cnVjdCBk
+cm1faTkxNV9nZW1fbW1hcF9ndHQpCnRvb2xzL2luY2x1ZGUvdWFwaS9kcm0vaTkxNV9kcm0uaDoj
+ZGVmaW5lIERSTV9JT0NUTF9JOTE1X0dFTV9NTUFQX09GRlNFVMKgwqDCoMKgwqDCoMKgIERSTV9J
+T1dSKERSTV9DT01NQU5EX0JBU0UgKyBEUk1fSTkxNV9HRU1fTU1BUF9HVFQsIHN0cnVjdCBkcm1f
+aTkxNV9nZW1fbW1hcF9vZmZzZXQpCgpJIHdhc24ndCBhd2FyZSBvZiB0aGF0LCBldmVuLi4KCk1N
+QVBfR1RUIGlzIE1NQVBfT0ZGU0VUIHdpdGggZmxhZ3MgYW5kIGV4dGVuc2lvbnMgc2V0IHRvIDAu
+IFdoaWNoIG1lYW5zIGZsYWdzID0gSTkxNV9NTUFQX09GRlNFVF9HVFQuCgo+PiBkaWZmIC0tZ2l0
+IGEvdGVzdHMvaTkxNS9nZW1fbW1hcC5jIGIvdGVzdHMvaTkxNS9nZW1fbW1hcC5jCj4+IGluZGV4
+IDdjMzY1NzFjOWJhZC4uZmRkZGQzMDZhY2I1IDEwMDY0NAo+PiAtLS0gYS90ZXN0cy9pOTE1L2dl
+bV9tbWFwLmMKPj4gKysrIGIvdGVzdHMvaTkxNS9nZW1fbW1hcC5jCj4+IEBAIC0xNTQsOCArMTU0
+LDEwIEBAIGlndF9tYWluCj4+IAl1aW50OF90IGJ1ZltPQkpFQ1RfU0laRV07Cj4+IAl1aW50OF90
+ICphZGRyOwo+Pgo+PiAtCWlndF9maXh0dXJlCj4+ICsJaWd0X2ZpeHR1cmUgewo+PiAJCWZkID0g
+ZHJtX29wZW5fZHJpdmVyKERSSVZFUl9JTlRFTCk7Cj4+ICsJCWlndF9yZXF1aXJlKGdlbV9oYXNf
+bGVnYWN5X21tYXAoZmQpKTsKPj4gKwl9Cj4+Cj4+IAlpZ3Rfc3VidGVzdCgiYmFkLW9iamVjdCIp
+IHsKPj4gCQl1aW50MzJfdCByZWFsX2hhbmRsZSA9IGdlbV9jcmVhdGUoZmQsIDQwOTYpOwo+PiBk
+aWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fbW1hcF93Yy5jIGIvdGVzdHMvaTkxNS9nZW1fbW1h
+cF93Yy5jCj4+IGluZGV4IDRhMjE5MmIzMDY4OS4uYWQyZDUxMGZjZjA5IDEwMDY0NAo+PiAtLS0g
+YS90ZXN0cy9pOTE1L2dlbV9tbWFwX3djLmMKPj4gKysrIGIvdGVzdHMvaTkxNS9nZW1fbW1hcF93
+Yy5jCj4+IEBAIC01MDQsNiArNTA0LDcgQEAgaWd0X21haW4KPj4KPj4gCWlndF9maXh0dXJlIHsK
+Pj4gCQlmZCA9IGRybV9vcGVuX2RyaXZlcihEUklWRVJfSU5URUwpOwo+PiArCQlpZ3RfcmVxdWly
+ZShnZW1faGFzX2xlZ2FjeV9tbWFwKGZkKSk7Cj4gSSBiZWxpZXZlIHdlIGFsc28gbmVlZCB0byBh
+ZGQgdGhpcyBpZ3RfcmVxdWlyZSBpbiBvdGhlciBwbGFjZXMgd2hlcmUKPiBEUk1fSU9DVExfSTkx
+NV9HRU1fTU1BUCBhbmQgRFJNX0lPQ1RMX0k5MTVfR0VNX01NQVBfR1RUIGlvY3RscyBhcmUgYmVp
+bmcKPiBjYWxsZCBkaXJlY3RseSB3aXRob3V0IGNhbGxpbmcgdGhlIGZ1bmN0aW9ucyBpbiBnZW1f
+bW1hbi4qLiBMb29rcyBsaWtlIHdlCj4gc2hvdWxkIGF0IGxlYXN0IGFkZCB0aGlzIGlndF9yZXF1
+aXJlIHRvOgo+Cj4gKiB0ZXN0cy9pOTE1L2dlbV90aWxlZF93Yy5jLCBhbmQKPiAqIHRlc3QvaTkx
+NS9nZW1fbW1hcF9ndHQuYwo+Cj4gVGhlIHJlbWFpbmluZyByZWZlcmVuY2VzIGFyZSBpbiBvdmVy
+bGF5LyBhbmQgdG9vbHMvIHNvIG1heWJlIHdlIGNhbiBmaWd1cmUKPiBvdXQgd2hhdCB0byBkbyBm
+b3IgdGhlc2UgbGF0ZXI/Cj4KPiBXaXRoIHRoZSBhYm92ZSBpZ3RfcmVxdWlyZSBhZGRlZCB0byB0
+aGUgdHdvIGZpbGVzIGFib3ZlLCB0aGlzIGlzOgo+Cj4gUmV2aWV3ZWQtYnk6IEFzaHV0b3NoIERp
+eGl0IDxhc2h1dG9zaC5kaXhpdEBpbnRlbC5jb20+CgpZZWFoIGxvb2tzIGxpa2UgeW91J3JlIHJp
+Z2h0LiBJIGFzc3VtZWQgdGhhdCBvbiBnZW4xMisgaXQgd291bGQgd29yaywgYmVjYXVzZSBtbWFw
+X2d0dCB3YXMgbm90IHdvcmtpbmcuIEkgZGlkbid0IHNlZSBpdCB3YXMgYWN0dWFsbHkgc3RpbGwg
+aW1wbGVtZW50ZWQsIGJlY2F1c2UgREcxIGxhY2tzIEdUVC4gOi0pCgpJJ2xsIGFkZCB0aGUgZXh0
+cmEgY2hlY2suCgp+TWFhcnRlbgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3Rv
+cC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3Qt
+ZGV2Cg==
