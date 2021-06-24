@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 040CC6EA3C
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Jun 2021 09:55:02 +0000 (UTC)
-References: <20210623101635.379278-1-lionel.g.landwerlin@intel.com>
- <20210623102853.GA52740@zkempczy-mobl2>
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <b9058ec1-9a3c-4a3b-fda7-358fb38e467b@intel.com>
-Date: Thu, 24 Jun 2021 12:54:59 +0300
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C07BA6EB04
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Jun 2021 12:23:48 +0000 (UTC)
+Date: Thu, 24 Jun 2021 15:25:48 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YNR5zK8uETCRu4qZ@platvala-desk.ger.corp.intel.com>
+References: <20210621183257.1030915-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-In-Reply-To: <20210623102853.GA52740@zkempczy-mobl2>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] tools/i915-perf-recorder: add ability
- to select device
+Content-Disposition: inline
+In-Reply-To: <20210621183257.1030915-1-markyacoub@chromium.org>
+Subject: Re: [igt-dev] [PATCH v4] tests/kms_vblank: Turn on hardware before
+ testing invalid vblank.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,99 +18,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Mark Yacoub <markyacoub@chromium.org>
+Cc: igt-dev@lists.freedesktop.org, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMjMvMDYvMjAyMSAxMzoyOCwgWmJpZ25pZXcgS2VtcGN6ecWEc2tpIHdyb3RlOgo+IE9uIFdl
-ZCwgSnVuIDIzLCAyMDIxIGF0IDAxOjE2OjM1UE0gKzAzMDAsIExpb25lbCBMYW5kd2VybGluIHdy
-b3RlOgo+PiBXZSdyZSBzdGFydGluZyB0byBoYXZlIHN5c3RlbSB3aXRoIG11bHRpcGxlIEludGVs
-IEdQVXMuCj4+Cj4+ICAgICQgaTkxNS1wZXJmLXJlY29yZGVyIC0tZGV2aWNlIGxpc3QKPj4gICAg
-QXZhaWxhYmxlIGRldmljZXM6Cj4+ICAgICAgIDA6IHRpZ2VybGFrZSAoMHg5YTQ5KQo+Pgo+PiAg
-ICAkIGk5MTUtcGVyZi1yZWNvcmRlciAtLWRldmljZSAwCj4gV2h5IG5vdCB0byBpbmNvcnBvcmF0
-ZSBvdXIgY3VycmVudCBkZXZpY2Ugc2VsZWN0aW9uPyBJZiB5b3UncmUgYWZyYWlkCj4gb2YgbGlu
-a2luZyBqdXN0IHRha2UgYSBsb29rIGhvdyBpbnRlbF9ncHVfdG9wIGRvZXMuCj4KPiAtLQo+IFpi
-aWduaWV3CgoKR29vZCBwb2ludCwgd2lsbCB1cGRhdGUuCgpUaGFua3MsCgoKLUxpb25lbAoKCj4K
-Pj4gU2lnbmVkLW9mZi1ieTogTGlvbmVsIExhbmR3ZXJsaW4gPGxpb25lbC5nLmxhbmR3ZXJsaW5A
-aW50ZWwuY29tPgo+PiAtLS0KPj4gICB0b29scy9pOTE1LXBlcmYvaTkxNV9wZXJmX3JlY29yZGVy
-LmMgfCA1MCArKysrKysrKysrKysrKysrKysrKysrKystLS0tCj4+ICAgMSBmaWxlIGNoYW5nZWQs
-IDQzIGluc2VydGlvbnMoKyksIDcgZGVsZXRpb25zKC0pCj4+Cj4+IGRpZmYgLS1naXQgYS90b29s
-cy9pOTE1LXBlcmYvaTkxNV9wZXJmX3JlY29yZGVyLmMgYi90b29scy9pOTE1LXBlcmYvaTkxNV9w
-ZXJmX3JlY29yZGVyLmMKPj4gaW5kZXggMDAxOTUyOTBiLi4zYmY2ZGQ2OTMgMTAwNjQ0Cj4+IC0t
-LSBhL3Rvb2xzL2k5MTUtcGVyZi9pOTE1X3BlcmZfcmVjb3JkZXIuYwo+PiArKysgYi90b29scy9p
-OTE1LXBlcmYvaTkxNV9wZXJmX3JlY29yZGVyLmMKPj4gQEAgLTI1MCwxNiArMjUwLDM3IEBAIGZp
-bmRfaW50ZWxfcmVuZGVyX25vZGUodm9pZCkKPj4gICAJcmV0dXJuIC0xOwo+PiAgIH0KPj4gICAK
-Pj4gK3N0YXRpYyB2b2lkCj4+ICtwcmludF9pbnRlbF9kZXZpY2VzKHZvaWQpCj4+ICt7Cj4+ICsJ
-ZnByaW50ZihzdGRvdXQsICJBdmFpbGFibGUgZGV2aWNlczpcbiIpOwo+PiArCWZvciAoaW50IGkg
-PSAwOyBpIDwgMTI4OyBpKyspIHsKPj4gKwkJaWYgKHJlYWRfZGV2aWNlX3BhcmFtKCJjYXJkIiwg
-aSwgInZlbmRvciIpID09IDB4ODA4Nikgewo+PiArCQkJdWludDMyX3QgZGV2aWQgPSByZWFkX2Rl
-dmljZV9wYXJhbSgiY2FyZCIsIGksICJkZXZpY2UiKTsKPj4gKwkJCWNvbnN0IHN0cnVjdCBpbnRl
-bF9kZXZpY2VfaW5mbyAqZGV2aW5mbyA9Cj4+ICsJCQkJaW50ZWxfZ2V0X2RldmljZV9pbmZvKGRl
-dmlkKTsKPj4gKwkJCWZwcmludGYoc3Rkb3V0LCAiICAgJWk6ICVzICgweCUwNGh4KVxuIiwgaSwK
-Pj4gKwkJCQlkZXZpbmZvID8gZGV2aW5mby0+Y29kZW5hbWUgOiAidW5rbndvbiIsCj4gICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IF5eXl5eXl4gdHlwZSBidHcKPj4gKwkJCQlkZXZpZCk7Cj4+ICsJCX0KPj4gKwl9Cj4+ICt9Cj4+
-ICsKPj4gICBzdGF0aWMgaW50Cj4+IC1vcGVuX3JlbmRlcl9ub2RlKHVpbnQzMl90ICpkZXZpZCkK
-Pj4gK29wZW5fcmVuZGVyX25vZGUodWludDMyX3QgKmRldmlkLCBpbnQgbm9kZV9vZmZzZXQpCj4+
-ICAgewo+PiAgIAljaGFyICpuYW1lOwo+PiAgIAlpbnQgcmV0Owo+PiAgIAlpbnQgZmQ7Cj4+ICsg
-ICAgICAgIGludCByZW5kZXI7Cj4+ICAgCj4+IC0JaW50IHJlbmRlciA9IGZpbmRfaW50ZWxfcmVu
-ZGVyX25vZGUoKTsKPj4gLQlpZiAocmVuZGVyIDwgMCkKPj4gLQkJcmV0dXJuIC0xOwo+PiArICAg
-ICAgICBpZiAobm9kZV9vZmZzZXQgPCAwKSB7Cj4+ICsgICAgICAgICAgICAgICAgcmVuZGVyID0g
-ZmluZF9pbnRlbF9yZW5kZXJfbm9kZSgpOwo+PiArICAgICAgICAgICAgICAgIGlmIChyZW5kZXIg
-PCAwKQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuIC0xOwo+PiArCX0gZWxzZSB7
-Cj4+ICsgICAgICAgICAgICAgICAgcmVuZGVyID0gMTI4ICsgbm9kZV9vZmZzZXQ7Cj4+ICsgICAg
-ICAgIH0KPj4gICAKPj4gICAJcmV0ID0gYXNwcmludGYoJm5hbWUsICIvZGV2L2RyaS9yZW5kZXJE
-JXUiLCByZW5kZXIpOwo+PiAgIAlhc3NlcnQocmV0ICE9IC0xKTsKPj4gQEAgLTcyMiw2ICs3NDMs
-OSBAQCB1c2FnZShjb25zdCBjaGFyICpuYW1lKQo+PiAgIAkJIlJlY29yZGluZyB0b29sIGZvciBp
-OTE1LXBlcmYuXG4iCj4+ICAgCQkiXG4iCj4+ICAgCQkiICAgICAtLWhlbHAsICAgICAgICAgICAg
-ICAgLWggICAgICAgICAgUHJpbnQgdGhpcyBzY3JlZW5cbiIKPj4gKwkJIiAgICAgLS1kZXZpY2Us
-ICAgICAgICAgICAgIC1kIDx2YWx1ZT4gIERldmljZSB0byB1c2VcbiIKPj4gKwkJIiAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICh2YWx1ZT1saXN0IHRvIGxpc3QgZGV2aWNl
-c1xuIgo+PiArCQkiICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZhbHVl
-PTEgdG8gdXNlIC9kZXYvZHJpL2NhcmQxKVxuIgo+PiAgIAkJIiAgICAgLS1jb3JyZWxhdGlvbi1w
-ZXJpb2QsIC1jIDx2YWx1ZT4gIFRpbWUgcGVyaW9kIG9mIHRpbWVzdGFtcCBjb3JyZWxhdGlvbiBp
-biBzZWNvbmRzXG4iCj4+ICAgCQkiICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgKGRlZmF1bHQgPSAxLjApXG4iCj4+ICAgCQkiICAgICAtLXBlcmYtcGVyaW9kLCAgICAgICAg
-LXAgPHZhbHVlPiAgVGltZSBwZXJpb2Qgb2YgaTkxNS1wZXJmIHJlcG9ydHMgaW4gc2Vjb25kc1xu
-Igo+PiBAQCAtNzcyLDYgKzc5Niw3IEBAIG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKPj4g
-ICB7Cj4+ICAgCWNvbnN0IHN0cnVjdCBvcHRpb24gbG9uZ19vcHRpb25zW10gPSB7Cj4+ICAgCQl7
-ImhlbHAiLCAgICAgICAgICAgICAgICAgICAgICAgbm9fYXJndW1lbnQsIDAsICdoJ30sCj4+ICsJ
-CXsiZGV2aWNlIiwgICAgICAgICAgICAgICByZXF1aXJlZF9hcmd1bWVudCwgMCwgJ2QnfSwKPj4g
-ICAJCXsiY29ycmVsYXRpb24tcGVyaW9kIiwgICByZXF1aXJlZF9hcmd1bWVudCwgMCwgJ2MnfSwK
-Pj4gICAJCXsicGVyZi1wZXJpb2QiLCAgICAgICAgICByZXF1aXJlZF9hcmd1bWVudCwgMCwgJ3An
-fSwKPj4gICAJCXsibWV0cmljIiwgICAgICAgICAgICAgICByZXF1aXJlZF9hcmd1bWVudCwgMCwg
-J20nfSwKPj4gQEAgLTc5OCw3ICs4MjMsNyBAQCBtYWluKGludCBhcmdjLCBjaGFyICphcmd2W10p
-Cj4+ICAgCXN0cnVjdCB0aW1lc3BlYyBub3c7Cj4+ICAgCXVpbnQ2NF90IGNvcnJfcGVyaW9kX25z
-LCBwb2xsX3RpbWVfbnM7Cj4+ICAgCXVpbnQzMl90IGNpcmN1bGFyX3NpemUgPSAwOwo+PiAtCWlu
-dCBvcHQ7Cj4+ICsJaW50IG9wdCwgZGV2X25vZGVfb2Zmc2V0ID0gLTE7Cj4+ICAgCWJvb2wgbGlz
-dF9jb3VudGVycyA9IGZhbHNlOwo+PiAgIAlGSUxFICpvdXRwdXQgPSBOVUxMOwo+PiAgIAlzdHJ1
-Y3QgcmVjb3JkaW5nX2NvbnRleHQgY3R4ID0gewo+PiBAQCAtODEyLDcgKzgzNyw3IEBAIG1haW4o
-aW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKPj4gICAJCS5wb2xsX3BlcmlvZCA9IDUgKiAxMDAwICog
-MTAwMCwKPj4gICAJfTsKPj4gICAKPj4gLQl3aGlsZSAoKG9wdCA9IGdldG9wdF9sb25nKGFyZ2Ms
-IGFyZ3YsICJoYzpwOm06Q286czpmOms6UDoiLCBsb25nX29wdGlvbnMsIE5VTEwpKSAhPSAtMSkg
-ewo+PiArCXdoaWxlICgob3B0ID0gZ2V0b3B0X2xvbmcoYXJnYywgYXJndiwgImhjOmQ6cDptOkNv
-OnM6ZjprOlA6IiwgbG9uZ19vcHRpb25zLCBOVUxMKSkgIT0gLTEpIHsKPj4gICAJCXN3aXRjaCAo
-b3B0KSB7Cj4+ICAgCQljYXNlICdoJzoKPj4gICAJCQl1c2FnZShhcmd2WzBdKTsKPj4gQEAgLTgy
-MCw2ICs4NDUsMTIgQEAgbWFpbihpbnQgYXJnYywgY2hhciAqYXJndltdKQo+PiAgIAkJY2FzZSAn
-Yyc6Cj4+ICAgCQkJY29ycl9wZXJpb2QgPSBhdG9mKG9wdGFyZyk7Cj4+ICAgCQkJYnJlYWs7Cj4+
-ICsJCWNhc2UgJ2QnOgo+PiArCQkJaWYgKCFzdHJjbXAob3B0YXJnLCAibGlzdCIpKQo+PiArCQkJ
-CWRldl9ub2RlX29mZnNldCA9IC0yOwo+PiArCQkJZWxzZQo+PiArCQkJCWRldl9ub2RlX29mZnNl
-dCA9IGF0b2kob3B0YXJnKTsKPj4gKwkJCWJyZWFrOwo+PiAgIAkJY2FzZSAncCc6Cj4+ICAgCQkJ
-cGVyZl9wZXJpb2QgPSBhdG9mKG9wdGFyZyk7Cj4+ICAgCQkJYnJlYWs7Cj4+IEBAIC04NjUsNyAr
-ODk2LDEyIEBAIG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKPj4gICAJCX0KPj4gICAJfQo+
-PiAgIAo+PiAtCWN0eC5kcm1fZmQgPSBvcGVuX3JlbmRlcl9ub2RlKCZjdHguZGV2aWQpOwo+PiAr
-CWlmIChkZXZfbm9kZV9vZmZzZXQgPT0gLTIpIHsKPj4gKwkJcHJpbnRfaW50ZWxfZGV2aWNlcygp
-Owo+PiArCQlyZXR1cm4gRVhJVF9TVUNDRVNTOwo+PiArCX0KPj4gKwo+PiArCWN0eC5kcm1fZmQg
-PSBvcGVuX3JlbmRlcl9ub2RlKCZjdHguZGV2aWQsIGRldl9ub2RlX29mZnNldCk7Cj4+ICAgCWlm
-IChjdHguZHJtX2ZkIDwgMCkgewo+PiAgIAkJZnByaW50ZihzdGRlcnIsICJVbmFibGUgdG8gb3Bl
-biBkZXZpY2UuXG4iKTsKPj4gICAJCXJldHVybiBFWElUX0ZBSUxVUkU7Cj4+IC0tIAo+PiAyLjMw
-LjIKPj4KPj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-Pj4gaWd0LWRldiBtYWlsaW5nIGxpc3QKPj4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
-Pj4gaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRl
-diBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0
-cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On Mon, Jun 21, 2021 at 06:32:57PM +0000, Mark Yacoub wrote:
+> From: Mark Yacoub <markyacoub@google.com>
+> 
+> [Why]
+> Before any hardware is on, the vblank is off and its ref counter is in
+> an initialized state as each driver handles toggling it differently.
+> Ioctl DRM_IOCTL_WAIT_VBLANK could return 0 such as on i915, or an invalid
+> integer that doesn't mean much, such as on Zork running Kernel 5.4 due
+> to the kernel workaround that increments the vblank ref count to prevent
+> a get from enabling the interrupt.
+> 
+> [How]
+> For invalid_subtest(), active the CRTCs to turn the hardware on so
+> DRM_IOCTL_WAIT_VBLANK returns something meaningful.
+> 
+> Changes since v3:
+> Turn on only 1 output instead of all.
+> 
+> Changes since v2:
+> 1. Updated Signed-off-by.
+> 
+> Changes since v1:
+> 1. Update Commit message
+> 2. Rename variable p to pipe_number
+> 
+> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+> Change-Id: Id70072ea797a74d3e9563ef8feb5901daa6b511a
+> ---
+>  tests/kms_vblank.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+> index 93b01eba..19284257 100644
+> --- a/tests/kms_vblank.c
+> +++ b/tests/kms_vblank.c
+> @@ -475,8 +475,13 @@ static void invalid_subtest(data_t *data, int fd)
+>  {
+>  	union drm_wait_vblank vbl;
+>  	unsigned long valid_flags;
+> +	igt_display_t* display = &data->display;
+> +	igt_output_t* output;
+>  
+> -	igt_display_require_output_on_pipe(&data->display, 0);
+> +	igt_display_require_output_on_pipe(display, 0);
+> +	igt_require(display->n_outputs);
+> +	output = &display->outputs[0];
+> +	prepare_crtc(data, fd, output);
+
+prepare_crtc uses the pipe in data->pipe which is still left
+uninitialized at this point.
+
+And you can't be sure that the first output is valid for that
+pipe. igt_get_single_output_for_pipe() can get you that.
+
+
+-- 
+Petri Latvala
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
