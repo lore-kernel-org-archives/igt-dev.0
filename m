@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C79B6EB23
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Jun 2021 09:02:09 +0000 (UTC)
-References: <20210511090000.1521342-1-maarten.lankhorst@linux.intel.com>
- <87r1gsjbh3.wl-ashutosh.dixit@intel.com>
+Received: from mblankhorst.nl (mblankhorst.nl
+ [IPv6:2a02:2308::216:3eff:fe92:dfa3])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 706DC6EA8C
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Jun 2021 09:14:27 +0000 (UTC)
 From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Message-ID: <ae91867b-546c-ce56-5b32-e293236e6f9b@linux.intel.com>
-Date: Thu, 24 Jun 2021 11:02:04 +0200
+Date: Thu, 24 Jun 2021 11:14:14 +0200
+Message-Id: <20210624091414.3287487-1-maarten.lankhorst@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <87r1gsjbh3.wl-ashutosh.dixit@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] i915: Handle the case where legacy mmap
- is not available
+Subject: [igt-dev] [PATCH i-g-t] i915: Handle the case where legacy mmap is
+ not available, v2.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,68 +16,149 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T3AgMjQtMDYtMjAyMSBvbSAwMzozMCBzY2hyZWVmIERpeGl0LCBBc2h1dG9zaDoKPiBPbiBUdWUs
-IDExIE1heSAyMDIxIDAyOjAwOjAwIC0wNzAwLCBNYWFydGVuIExhbmtob3JzdCB3cm90ZToKPj4g
-QEAgLTg0LDEwICs5MywxNCBAQCB2b2lkICpfX2dlbV9tbWFwX19ndHQoaW50IGZkLCB1aW50MzJf
-dCBoYW5kbGUsIHVpbnQ2NF90IHNpemUsIHVuc2lnbmVkIHByb3QpCj4+ICB7Cj4+IAlzdHJ1Y3Qg
-ZHJtX2k5MTVfZ2VtX21tYXBfZ3R0IG1tYXBfYXJnOwo+PiAJdm9pZCAqcHRyOwo+PiArCWludCBy
-ZXQ7Cj4+Cj4+IAltZW1zZXQoJm1tYXBfYXJnLCAwLCBzaXplb2YobW1hcF9hcmcpKTsKPj4gCW1t
-YXBfYXJnLmhhbmRsZSA9IGhhbmRsZTsKPj4gLQlpZiAoaWd0X2lvY3RsKGZkLCBEUk1fSU9DVExf
-STkxNV9HRU1fTU1BUF9HVFQsICZtbWFwX2FyZykpCj4+ICsJcmV0ID0gaWd0X2lvY3RsKGZkLCBE
-Uk1fSU9DVExfSTkxNV9HRU1fTU1BUF9HVFQsICZtbWFwX2FyZyk7Cj4+ICsJaWYgKHJldCA9PSAt
-MSAmJiBlcnJubyA9PSBFT1BOT1RTVVBQKQo+IFdoYXQgaXMgdGhlIGhhbmRsZXIgZm9yIERSTV9J
-T0NUTF9JOTE1X0dFTV9NTUFQX0dUVCBpb2N0bCBpbiBpOTE1IChpbiB0aGUKPiBrZXJuZWwpPyBJ
-IGFtIHVuYWJsZSB0byBmaW5kIGl0IHNvIGZvciBub3cgSSBhbSBqdXN0IGFzc3VtaW5nIHRoYXQg
-aXQgd2lsbAo+IGp1c3QgZ2V0IHJvdXRlZCB0byB0aGUgaGFuZGxlciBmb3IgRFJNX0lPQ1RMX0k5
-MTVfR0VNX01NQVAgYW5kIHJldHVybgo+IEVPUE5PVFNVUFAgZm9yIEdlbjEyKyB3aGljaCBpcyB3
-aGF0IHRoZSBjb2RlIGFib3ZlIHNlZW1zIHRvIGJlIGFzc3VtaW5nLgoKdG9vbHMvaW5jbHVkZS91
-YXBpL2RybS9pOTE1X2RybS5oOiNkZWZpbmUgRFJNX0lPQ1RMX0k5MTVfR0VNX01NQVDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgIERSTV9JT1dSKERSTV9DT01NQU5EX0JBU0UgKyBEUk1fSTkx
-NV9HRU1fTU1BUCwgc3RydWN0IGRybV9pOTE1X2dlbV9tbWFwKQp0b29scy9pbmNsdWRlL3VhcGkv
-ZHJtL2k5MTVfZHJtLmg6I2RlZmluZSBEUk1fSU9DVExfSTkxNV9HRU1fTU1BUF9HVFTCoMKgIERS
-TV9JT1dSKERSTV9DT01NQU5EX0JBU0UgKyBEUk1fSTkxNV9HRU1fTU1BUF9HVFQsIHN0cnVjdCBk
-cm1faTkxNV9nZW1fbW1hcF9ndHQpCnRvb2xzL2luY2x1ZGUvdWFwaS9kcm0vaTkxNV9kcm0uaDoj
-ZGVmaW5lIERSTV9JT0NUTF9JOTE1X0dFTV9NTUFQX09GRlNFVMKgwqDCoMKgwqDCoMKgIERSTV9J
-T1dSKERSTV9DT01NQU5EX0JBU0UgKyBEUk1fSTkxNV9HRU1fTU1BUF9HVFQsIHN0cnVjdCBkcm1f
-aTkxNV9nZW1fbW1hcF9vZmZzZXQpCgpJIHdhc24ndCBhd2FyZSBvZiB0aGF0LCBldmVuLi4KCk1N
-QVBfR1RUIGlzIE1NQVBfT0ZGU0VUIHdpdGggZmxhZ3MgYW5kIGV4dGVuc2lvbnMgc2V0IHRvIDAu
-IFdoaWNoIG1lYW5zIGZsYWdzID0gSTkxNV9NTUFQX09GRlNFVF9HVFQuCgo+PiBkaWZmIC0tZ2l0
-IGEvdGVzdHMvaTkxNS9nZW1fbW1hcC5jIGIvdGVzdHMvaTkxNS9nZW1fbW1hcC5jCj4+IGluZGV4
-IDdjMzY1NzFjOWJhZC4uZmRkZGQzMDZhY2I1IDEwMDY0NAo+PiAtLS0gYS90ZXN0cy9pOTE1L2dl
-bV9tbWFwLmMKPj4gKysrIGIvdGVzdHMvaTkxNS9nZW1fbW1hcC5jCj4+IEBAIC0xNTQsOCArMTU0
-LDEwIEBAIGlndF9tYWluCj4+IAl1aW50OF90IGJ1ZltPQkpFQ1RfU0laRV07Cj4+IAl1aW50OF90
-ICphZGRyOwo+Pgo+PiAtCWlndF9maXh0dXJlCj4+ICsJaWd0X2ZpeHR1cmUgewo+PiAJCWZkID0g
-ZHJtX29wZW5fZHJpdmVyKERSSVZFUl9JTlRFTCk7Cj4+ICsJCWlndF9yZXF1aXJlKGdlbV9oYXNf
-bGVnYWN5X21tYXAoZmQpKTsKPj4gKwl9Cj4+Cj4+IAlpZ3Rfc3VidGVzdCgiYmFkLW9iamVjdCIp
-IHsKPj4gCQl1aW50MzJfdCByZWFsX2hhbmRsZSA9IGdlbV9jcmVhdGUoZmQsIDQwOTYpOwo+PiBk
-aWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fbW1hcF93Yy5jIGIvdGVzdHMvaTkxNS9nZW1fbW1h
-cF93Yy5jCj4+IGluZGV4IDRhMjE5MmIzMDY4OS4uYWQyZDUxMGZjZjA5IDEwMDY0NAo+PiAtLS0g
-YS90ZXN0cy9pOTE1L2dlbV9tbWFwX3djLmMKPj4gKysrIGIvdGVzdHMvaTkxNS9nZW1fbW1hcF93
-Yy5jCj4+IEBAIC01MDQsNiArNTA0LDcgQEAgaWd0X21haW4KPj4KPj4gCWlndF9maXh0dXJlIHsK
-Pj4gCQlmZCA9IGRybV9vcGVuX2RyaXZlcihEUklWRVJfSU5URUwpOwo+PiArCQlpZ3RfcmVxdWly
-ZShnZW1faGFzX2xlZ2FjeV9tbWFwKGZkKSk7Cj4gSSBiZWxpZXZlIHdlIGFsc28gbmVlZCB0byBh
-ZGQgdGhpcyBpZ3RfcmVxdWlyZSBpbiBvdGhlciBwbGFjZXMgd2hlcmUKPiBEUk1fSU9DVExfSTkx
-NV9HRU1fTU1BUCBhbmQgRFJNX0lPQ1RMX0k5MTVfR0VNX01NQVBfR1RUIGlvY3RscyBhcmUgYmVp
-bmcKPiBjYWxsZCBkaXJlY3RseSB3aXRob3V0IGNhbGxpbmcgdGhlIGZ1bmN0aW9ucyBpbiBnZW1f
-bW1hbi4qLiBMb29rcyBsaWtlIHdlCj4gc2hvdWxkIGF0IGxlYXN0IGFkZCB0aGlzIGlndF9yZXF1
-aXJlIHRvOgo+Cj4gKiB0ZXN0cy9pOTE1L2dlbV90aWxlZF93Yy5jLCBhbmQKPiAqIHRlc3QvaTkx
-NS9nZW1fbW1hcF9ndHQuYwo+Cj4gVGhlIHJlbWFpbmluZyByZWZlcmVuY2VzIGFyZSBpbiBvdmVy
-bGF5LyBhbmQgdG9vbHMvIHNvIG1heWJlIHdlIGNhbiBmaWd1cmUKPiBvdXQgd2hhdCB0byBkbyBm
-b3IgdGhlc2UgbGF0ZXI/Cj4KPiBXaXRoIHRoZSBhYm92ZSBpZ3RfcmVxdWlyZSBhZGRlZCB0byB0
-aGUgdHdvIGZpbGVzIGFib3ZlLCB0aGlzIGlzOgo+Cj4gUmV2aWV3ZWQtYnk6IEFzaHV0b3NoIERp
-eGl0IDxhc2h1dG9zaC5kaXhpdEBpbnRlbC5jb20+CgpZZWFoIGxvb2tzIGxpa2UgeW91J3JlIHJp
-Z2h0LiBJIGFzc3VtZWQgdGhhdCBvbiBnZW4xMisgaXQgd291bGQgd29yaywgYmVjYXVzZSBtbWFw
-X2d0dCB3YXMgbm90IHdvcmtpbmcuIEkgZGlkbid0IHNlZSBpdCB3YXMgYWN0dWFsbHkgc3RpbGwg
-aW1wbGVtZW50ZWQsIGJlY2F1c2UgREcxIGxhY2tzIEdUVC4gOi0pCgpJJ2xsIGFkZCB0aGUgZXh0
-cmEgY2hlY2suCgp+TWFhcnRlbgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3Rv
-cC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3Qt
-ZGV2Cg==
+We will remove support for the legacy mmap ioctl, so handle that
+case without rewriting all tests.
+
+When the gem_mmap ioctl is not available, transparently fallback to mmap_offset.
+
+Changes since v1:
+- Skip gem_tiled_wc too, as it requires on legacy mmap behavior. (Ashutosh)
+- Remove fallback for __gem_mmap__gtt, it's already mmap_offset. (Ashutosh)
+
+Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/i915/gem_mman.c       | 22 +++++++++++++++++++++-
+ lib/i915/gem_mman.h       |  1 +
+ tests/i915/gem_mmap.c     |  4 +++-
+ tests/i915/gem_mmap_wc.c  |  1 +
+ tests/i915/gem_tiled_wc.c |  1 +
+ 5 files changed, 27 insertions(+), 2 deletions(-)
+
+diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
+index 300ca13d3b30..9a422a6a329f 100644
+--- a/lib/i915/gem_mman.c
++++ b/lib/i915/gem_mman.c
+@@ -63,6 +63,15 @@ bool gem_has_mmap_offset(int fd)
+ 	return gtt_version >= 4;
+ }
+ 
++bool gem_has_legacy_mmap(int fd)
++{
++	struct drm_i915_gem_mmap arg = { .handle = ~0U };
++
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP, &arg), -1);
++
++	return errno != EOPNOTSUPP;
++}
++
+ bool gem_has_mmap_offset_type(int fd, const struct mmap_offset *t)
+ {
+ 	return gem_has_mmap_offset(fd) || t->type == I915_MMAP_OFFSET_GTT;
+@@ -84,6 +93,7 @@ void *__gem_mmap__gtt(int fd, uint32_t handle, uint64_t size, unsigned prot)
+ {
+ 	struct drm_i915_gem_mmap_gtt mmap_arg;
+ 	void *ptr;
++	int ret;
+ 
+ 	memset(&mmap_arg, 0, sizeof(mmap_arg));
+ 	mmap_arg.handle = handle;
+@@ -136,6 +146,9 @@ bool gem_mmap__has_wc(int fd)
+ 	struct drm_i915_getparam gp;
+ 	int mmap_version = -1;
+ 
++	if (gem_mmap_offset__has_wc(fd))
++		return true;
++
+ 	memset(&gp, 0, sizeof(gp));
+ 	gp.param = I915_PARAM_MMAP_VERSION;
+ 	gp.value = &mmap_version;
+@@ -204,6 +217,7 @@ static void *__gem_mmap(int fd, uint32_t handle, uint64_t offset, uint64_t size,
+ 			unsigned int prot, uint64_t flags)
+ {
+ 	struct drm_i915_gem_mmap arg;
++	int ret;
+ 
+ 	memset(&arg, 0, sizeof(arg));
+ 	arg.handle = handle;
+@@ -211,7 +225,13 @@ static void *__gem_mmap(int fd, uint32_t handle, uint64_t offset, uint64_t size,
+ 	arg.size = size;
+ 	arg.flags = flags;
+ 
+-	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP, &arg))
++	ret = igt_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP, &arg);
++	if (ret == -1 && errno == EOPNOTSUPP)
++		return __gem_mmap_offset(fd, handle, offset, size, prot,
++					 flags == I915_MMAP_WC ?
++						I915_MMAP_OFFSET_WC :
++						I915_MMAP_OFFSET_WB);
++	else if (ret)
+ 		return NULL;
+ 
+ 	VG(VALGRIND_MAKE_MEM_DEFINED(from_user_pointer(arg.addr_ptr), arg.size));
+diff --git a/lib/i915/gem_mman.h b/lib/i915/gem_mman.h
+index 4a69b25954a7..5695d2ad8736 100644
+--- a/lib/i915/gem_mman.h
++++ b/lib/i915/gem_mman.h
+@@ -45,6 +45,7 @@ void *gem_mmap__cpu_coherent(int fd, uint32_t handle, uint64_t offset,
+ bool gem_has_mappable_ggtt(int i915);
+ void gem_require_mappable_ggtt(int i915);
+ bool gem_has_mmap_offset(int fd);
++bool gem_has_legacy_mmap(int fd);
+ 
+ void *__gem_mmap__gtt(int fd, uint32_t handle, uint64_t size, unsigned prot);
+ void *__gem_mmap__cpu(int fd, uint32_t handle, uint64_t offset, uint64_t size, unsigned prot);
+diff --git a/tests/i915/gem_mmap.c b/tests/i915/gem_mmap.c
+index d12a4c0bac6b..a77c0ad60bf3 100644
+--- a/tests/i915/gem_mmap.c
++++ b/tests/i915/gem_mmap.c
+@@ -154,8 +154,10 @@ igt_main
+ 	uint8_t buf[OBJECT_SIZE];
+ 	uint8_t *addr;
+ 
+-	igt_fixture
++	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_INTEL);
++		igt_require(gem_has_legacy_mmap(fd));
++	}
+ 
+ 	igt_subtest("bad-object") {
+ 		uint32_t real_handle = gem_create(fd, 4096);
+diff --git a/tests/i915/gem_mmap_wc.c b/tests/i915/gem_mmap_wc.c
+index 7130a51044a0..4fcf547859b1 100644
+--- a/tests/i915/gem_mmap_wc.c
++++ b/tests/i915/gem_mmap_wc.c
+@@ -504,6 +504,7 @@ igt_main
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_INTEL);
++		igt_require(gem_has_legacy_mmap(fd));
+ 		gem_require_mmap_wc(fd);
+ 	}
+ 
+diff --git a/tests/i915/gem_tiled_wc.c b/tests/i915/gem_tiled_wc.c
+index 29ea700e34a3..1f245eb7d605 100644
+--- a/tests/i915/gem_tiled_wc.c
++++ b/tests/i915/gem_tiled_wc.c
+@@ -147,6 +147,7 @@ igt_simple_main
+ 	fd = drm_open_driver(DRIVER_INTEL);
+ 	gem_require_mmap_wc(fd);
+ 	gem_require_mappable_ggtt(fd);
++	igt_require(gem_has_legacy_mmap(fd));
+ 	igt_require(gem_available_fences(fd) > 0);
+ 
+ 	handle = create_bo(fd);
+-- 
+2.31.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
