@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ua1-x930.google.com (mail-ua1-x930.google.com
- [IPv6:2607:f8b0:4864:20::930])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3849E6EC69
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Jun 2021 17:24:56 +0000 (UTC)
-Received: by mail-ua1-x930.google.com with SMTP id c47so1789639uad.1
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Jun 2021 10:24:56 -0700 (PDT)
+Received: from mail-ua1-x932.google.com (mail-ua1-x932.google.com
+ [IPv6:2607:f8b0:4864:20::932])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 510DC6EC6D
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Jun 2021 17:35:30 +0000 (UTC)
+Received: by mail-ua1-x932.google.com with SMTP id n61so2505477uan.2
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Jun 2021 10:35:30 -0700 (PDT)
 From: Mark Yacoub <markyacoub@chromium.org>
-Date: Thu, 24 Jun 2021 17:24:36 +0000
-Message-Id: <20210624172436.1467489-1-markyacoub@chromium.org>
+Date: Thu, 24 Jun 2021 17:35:25 +0000
+Message-Id: <20210624173525.1526215-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] Add .vscode to gitignore
+Subject: [igt-dev] [PATCH v5] tests/kms_vblank: Turn on hardware before
+ testing invalid vblank.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,29 +23,68 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
+Cc: petri.latvala@intel.com, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mark Yacoub <markyacoub@google.com>
 
-Given the popularity of vscode, .vscode is a directory that holds
-the personal vscode preferences.
+[Why]
+Before any hardware is on, the vblank is off and its ref counter is in
+an initialized state as each driver handles toggling it differently.
+Ioctl DRM_IOCTL_WAIT_VBLANK could return 0 such as on i915, or an invalid
+integer that doesn't mean much, such as on Zork running Kernel 5.4 due
+to the kernel workaround that increments the vblank ref count to prevent
+a get from enabling the interrupt.
 
+[How]
+For invalid_subtest(), active the CRTCs to turn the hardware on so
+DRM_IOCTL_WAIT_VBLANK returns something meaningful.
+
+Changes since v4:
+Use igt_get_single_output_for_pipe to get igt_output_t.
+
+Changes since v3:
+Turn on only 1 output instead of all.
+
+Changes since v2:
+1. Updated Signed-off-by.
+
+Changes since v1:
+1. Update Commit message
+2. Rename variable p to pipe_number
+
+Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
 ---
- .gitignore | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/kms_vblank.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/.gitignore b/.gitignore
-index 88dd0338..119c80ba 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -50,3 +50,5 @@ results
- build
- patches
- Makefile
+diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+index 93b01eba..b709ef69 100644
+--- a/tests/kms_vblank.c
++++ b/tests/kms_vblank.c
+@@ -475,8 +475,12 @@ static void invalid_subtest(data_t *data, int fd)
+ {
+ 	union drm_wait_vblank vbl;
+ 	unsigned long valid_flags;
++	igt_display_t* display = &data->display;
++	enum pipe pipe = 0;
++	igt_output_t* output = igt_get_single_output_for_pipe(display, pipe);
+ 
+-	igt_display_require_output_on_pipe(&data->display, 0);
++	igt_display_require_output_on_pipe(display, pipe);
++	prepare_crtc(data, fd, output);
+ 
+ 	/* First check all is well with a simple query */
+ 	memset(&vbl, 0, sizeof(vbl));
+@@ -511,6 +515,8 @@ static void invalid_subtest(data_t *data, int fd)
+ 	vbl.request.type |= _DRM_VBLANK_SECONDARY;
+ 	vbl.request.type |= _DRM_VBLANK_FLAGS_MASK;
+ 	igt_assert_eq(wait_vblank(fd, &vbl), -EINVAL);
 +
-+.vscode
-\ No newline at end of file
++	cleanup_crtc(data, fd, output);
+ }
+ 
+ igt_main
 -- 
 2.32.0.93.g670b81a890-goog
 
