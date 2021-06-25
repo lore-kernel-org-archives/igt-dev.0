@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFC866E111
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Jun 2021 14:01:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 254FF6EDEF
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Jun 2021 14:01:29 +0000 (UTC)
 From: Boris Brezillon <boris.brezillon@collabora.com>
-Date: Fri, 25 Jun 2021 16:01:15 +0200
-Message-Id: <20210625140118.2600731-8-boris.brezillon@collabora.com>
+Date: Fri, 25 Jun 2021 16:01:16 +0200
+Message-Id: <20210625140118.2600731-9-boris.brezillon@collabora.com>
 In-Reply-To: <20210625140118.2600731-1-boris.brezillon@collabora.com>
 References: <20210625140118.2600731-1-boris.brezillon@collabora.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v3 07/10] lib/panfrost: Get rid of
- igt_panfrost_trivial_job()
+Subject: [igt-dev] [PATCH v3 08/10] tests/panfrost: Test FD-close while jobs
+ are still in-flight
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,13 +25,10 @@ To: Rob Herring <robh+dt@kernel.org>, Tomeu Vizoso <tomeu.vizoso@collabora.com>,
 Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Alyssa Rosenzweig <alyssa@collabora.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We no longer use fragment jobs to test job submission, let's get rid
-of igt_panfrost_trivial_job(). If we ever need to issue fragment
-jobs again, we'll probably have to pull the pan_pack() infra from
-mesa and make the helper deal with Bifrost specificities.
-
-v3:
-* Remove igt_panfrost_trivial_job() prototype
+We had use-after-free faults in the past because the MMU context
+while released while jobs were still in flight, and the job cleanup
+path assumed the context was still present. Add a test to make sure this
+won't happen again.
 
 v2:
 * Add R-b
@@ -39,169 +36,31 @@ v2:
 Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Reviewed-by: Alyssa Rosenzweig <alyssa@collabora.com>
 ---
- lib/igt_panfrost.c | 136 ---------------------------------------------
- lib/igt_panfrost.h |   1 -
- 2 files changed, 137 deletions(-)
+ tests/panfrost_submit.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/lib/igt_panfrost.c b/lib/igt_panfrost.c
-index 1026454f7cab..7651f0f6c8a3 100644
---- a/lib/igt_panfrost.c
-+++ b/lib/igt_panfrost.c
-@@ -240,142 +240,6 @@ struct panfrost_submit *igt_panfrost_null_job(int fd)
-         return submit;
- }
+diff --git a/tests/panfrost_submit.c b/tests/panfrost_submit.c
+index 6c47d1f2d3e9..070d78625ebf 100644
+--- a/tests/panfrost_submit.c
++++ b/tests/panfrost_submit.c
+@@ -157,6 +157,17 @@ igt_main
+                 close(tmpfd);
+         }
  
--struct panfrost_submit *igt_panfrost_trivial_job(int fd, bool do_crash, int width, int height, uint32_t color)
--{
--        struct panfrost_submit *submit;
--        struct mali_job_descriptor_header header = {
--                .job_type = JOB_TYPE_FRAGMENT,
--                .job_index = 1,
--                .job_descriptor_size = 1,
--        };
--        struct mali_payload_fragment payload = {
--                .min_tile_coord = MALI_COORDINATE_TO_TILE_MIN(0, 0),
--                .max_tile_coord = MALI_COORDINATE_TO_TILE_MAX(ALIGN(width, 16), height),
--        };
--        struct bifrost_framebuffer mfbd_framebuffer = {
--            .unk0 = 0x0,
--            .unknown1 = 0x0,
--            .tiler_meta = 0xff00000000,
--            .width1 = MALI_POSITIVE(ALIGN(width, 16)),
--            .height1 = MALI_POSITIVE(height),
--            .width2 = MALI_POSITIVE(ALIGN(width, 16)),
--            .height2 = MALI_POSITIVE(height),
--            .unk1 = 0x1080,
--            .unk2 = 0x0,
--            .rt_count_1 = MALI_POSITIVE(1),
--            .rt_count_2 = 1,
--            .unk3 = 0x100,
--            .clear_stencil = 0x0,
--            .clear_depth = 0.000000,
--            .unknown2 = 0x1f,
--        };
--        struct mali_single_framebuffer sfbd_framebuffer = {
--            .unknown2 = 0x1f,
--            .width = MALI_POSITIVE(width),
--            .height = MALI_POSITIVE(height),
--            .stride = width * 4,
--            .resolution_check = ((width + height) / 3) << 4,
--            .tiler_flags = 0xfff,
--            .clear_color_1 = color,
--            .clear_color_2 = color,
--            .clear_color_3 = color,
--            .clear_color_4 = color,
--            .clear_flags = 0x101100 | MALI_CLEAR_SLOW,
--            .format = 0xb84e0281,
--        };
--        struct mali_rt_format fmt = {
--                .unk1 = 0x4000000,
--                .unk2 = 0x1,
--                .nr_channels = MALI_POSITIVE(4),
--                .flags = do_crash ? 0x444 | (1 << 8) : 0x444,
--                .swizzle = MALI_CHANNEL_BLUE | (MALI_CHANNEL_GREEN << 3) | (MALI_CHANNEL_RED << 6) | (MALI_CHANNEL_ONE << 9),
--                .unk4 = 0x8,
--        };
--        struct bifrost_render_target rts = {
--                .format = fmt,
--                .chunknown = {
--                    .unk = 0x0,
--                    .pointer = 0x0,
--                },
--                .framebuffer_stride = ALIGN(width, 16) * 4 / 16,
--                .clear_color_1 = color,
--                .clear_color_2 = color,
--                .clear_color_3 = color,
--                .clear_color_4 = color,
--        };
--        int gpu_prod_id = igt_panfrost_get_param(fd, DRM_PANFROST_PARAM_GPU_PROD_ID);
--        uint32_t *known_unknown;
--        uint32_t *bos;
--
--        submit = malloc(sizeof(*submit));
--
--        submit->fbo = igt_panfrost_gem_new(fd, ALIGN(width, 16) * height * 4);
--        rts.framebuffer = submit->fbo->offset;
--        sfbd_framebuffer.framebuffer = submit->fbo->offset;
--
--        submit->tiler_heap_bo = igt_panfrost_gem_new(fd, 32768 * 128);
--        mfbd_framebuffer.tiler_heap_start = submit->tiler_heap_bo->offset;
--        mfbd_framebuffer.tiler_heap_end = submit->tiler_heap_bo->offset + 32768 * 128;
--        sfbd_framebuffer.tiler_heap_free = mfbd_framebuffer.tiler_heap_start;
--        sfbd_framebuffer.tiler_heap_end = mfbd_framebuffer.tiler_heap_end;
--
--        submit->tiler_scratch_bo = igt_panfrost_gem_new(fd, 128 * 128 * 128);
--        mfbd_framebuffer.tiler_scratch_start = submit->tiler_scratch_bo->offset;
--        mfbd_framebuffer.tiler_scratch_middle = submit->tiler_scratch_bo->offset + 0xf0000;
--        sfbd_framebuffer.unknown_address_0 = mfbd_framebuffer.tiler_scratch_start;
--
--        submit->scratchpad_bo = igt_panfrost_gem_new(fd, 64 * 4096);
--        igt_panfrost_bo_mmap(fd, submit->scratchpad_bo);
--        mfbd_framebuffer.scratchpad = submit->scratchpad_bo->offset;
--        sfbd_framebuffer.unknown_address_1 = submit->scratchpad_bo->offset;
--        sfbd_framebuffer.unknown_address_2 = submit->scratchpad_bo->offset + 512;
--
--        known_unknown = ((void*)submit->scratchpad_bo->map) + 512;
--        *known_unknown = 0xa0000000;
--
--        if (gpu_prod_id >= 0x0750) {
--            submit->fb_bo = igt_panfrost_gem_new(fd, sizeof(mfbd_framebuffer) + sizeof(struct bifrost_render_target));
--            igt_panfrost_bo_mmap(fd, submit->fb_bo);
--            memcpy(submit->fb_bo->map, &mfbd_framebuffer, sizeof(mfbd_framebuffer));
--            memcpy(submit->fb_bo->map + sizeof(mfbd_framebuffer), &rts, sizeof(struct bifrost_render_target));
--            payload.framebuffer = submit->fb_bo->offset | MALI_MFBD;
--        } else {
--            // We don't know yet how to cause a hang on <=T720
--            // Should probably use an infinite loop to hang the GPU
--            igt_require(!do_crash);
--            submit->fb_bo = igt_panfrost_gem_new(fd, sizeof(sfbd_framebuffer));
--            igt_panfrost_bo_mmap(fd, submit->fb_bo);
--            memcpy(submit->fb_bo->map, &sfbd_framebuffer, sizeof(sfbd_framebuffer));
--            payload.framebuffer = submit->fb_bo->offset | MALI_SFBD;
--        }
--
--        submit->submit_bo = igt_panfrost_gem_new(fd, sizeof(header) + sizeof(payload) + 1024000);
--        igt_panfrost_bo_mmap(fd, submit->submit_bo);
--
--        memcpy(submit->submit_bo->map, &header, sizeof(header));
--        memcpy(submit->submit_bo->map + sizeof(header), &payload, sizeof(payload));
--
--        submit->args = malloc(sizeof(*submit->args));
--        memset(submit->args, 0, sizeof(*submit->args));
--        submit->args->jc = submit->submit_bo->offset;
--        submit->args->requirements = PANFROST_JD_REQ_FS;
--
--        bos = malloc(sizeof(*bos) * 6);
--        bos[0] = submit->fbo->handle;
--        bos[1] = submit->tiler_heap_bo->handle;
--        bos[2] = submit->tiler_scratch_bo->handle;
--        bos[3] = submit->scratchpad_bo->handle;
--        bos[4] = submit->fb_bo->handle;
--        bos[5] = submit->submit_bo->handle;
--
--        submit->args->bo_handles = to_user_pointer(bos);
--        submit->args->bo_handle_count = 6;
--
--        igt_assert_eq(drmSyncobjCreate(fd, DRM_SYNCOBJ_CREATE_SIGNALED, &submit->args->out_sync), 0);
--
--        return submit;
--}
--
- void igt_panfrost_free_job(int fd, struct panfrost_submit *submit)
- {
-         free(from_user_pointer(submit->args->bo_handles));
-diff --git a/lib/igt_panfrost.h b/lib/igt_panfrost.h
-index 3f69bcbefb75..d2ddca392d4b 100644
---- a/lib/igt_panfrost.h
-+++ b/lib/igt_panfrost.h
-@@ -50,7 +50,6 @@ void igt_panfrost_free_bo(int fd, struct panfrost_bo *bo);
- struct mali_job_descriptor_header *
- igt_panfrost_job_loop_get_job_header(struct panfrost_submit *submit,
-                                      unsigned job_idx);
--struct panfrost_submit *igt_panfrost_trivial_job(int fd, bool do_crash, int width, int height, uint32_t color);
- struct panfrost_submit *igt_panfrost_job_loop(int fd);
- struct panfrost_submit *igt_panfrost_null_job(int fd);
- void igt_panfrost_free_job(int fd, struct panfrost_submit *submit);
++        igt_subtest("pan-submit-and-close") {
++                /* We need our own FD because we close it right after the job submission */
++                int tmpfd = drm_open_driver(DRIVER_PANFROST);
++                struct panfrost_submit *submit;
++
++                submit = igt_panfrost_job_loop(tmpfd);
++                do_ioctl(tmpfd, DRM_IOCTL_PANFROST_SUBMIT, submit->args);
++                igt_panfrost_free_job(tmpfd, submit);
++                close(tmpfd);
++        }
++
+         igt_fixture {
+                 close(fd);
+         }
 -- 
 2.31.1
 
