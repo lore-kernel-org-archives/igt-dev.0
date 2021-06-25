@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 254FF6EDEF
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Jun 2021 14:01:29 +0000 (UTC)
-From: Boris Brezillon <boris.brezillon@collabora.com>
-Date: Fri, 25 Jun 2021 16:01:16 +0200
-Message-Id: <20210625140118.2600731-9-boris.brezillon@collabora.com>
-In-Reply-To: <20210625140118.2600731-1-boris.brezillon@collabora.com>
-References: <20210625140118.2600731-1-boris.brezillon@collabora.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A98296E061
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Jun 2021 14:03:24 +0000 (UTC)
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+References: <20210624122248.903530-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+ <00fe482b-75fc-35da-9e37-254f8c2f5aa3@linux.intel.com>
+Message-ID: <043a541a-5a22-5f5e-bc11-e7787a33bd70@linux.intel.com>
+Date: Fri, 25 Jun 2021 15:02:56 +0100
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v3 08/10] tests/panfrost: Test FD-close while jobs
- are still in-flight
+In-Reply-To: <00fe482b-75fc-35da-9e37-254f8c2f5aa3@linux.intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [i-g-t] i915/gem_exec_fair: Extend icl ctx timestamp
+ w/a to gen11
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,54 +19,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rob Herring <robh+dt@kernel.org>, Tomeu Vizoso <tomeu.vizoso@collabora.com>, Alyssa Rosenzweig <alyssa.rosenzweig@collabora.com>, Steven Price <steven.price@arm.com>, Robin Murphy <robin.murphy@arm.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Alyssa Rosenzweig <alyssa@collabora.com>
+To: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We had use-after-free faults in the past because the MMU context
-while released while jobs were still in flight, and the job cleanup
-path assumed the context was still present. Add a test to make sure this
-won't happen again.
-
-v2:
-* Add R-b
-
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Alyssa Rosenzweig <alyssa@collabora.com>
----
- tests/panfrost_submit.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/tests/panfrost_submit.c b/tests/panfrost_submit.c
-index 6c47d1f2d3e9..070d78625ebf 100644
---- a/tests/panfrost_submit.c
-+++ b/tests/panfrost_submit.c
-@@ -157,6 +157,17 @@ igt_main
-                 close(tmpfd);
-         }
- 
-+        igt_subtest("pan-submit-and-close") {
-+                /* We need our own FD because we close it right after the job submission */
-+                int tmpfd = drm_open_driver(DRIVER_PANFROST);
-+                struct panfrost_submit *submit;
-+
-+                submit = igt_panfrost_job_loop(tmpfd);
-+                do_ioctl(tmpfd, DRM_IOCTL_PANFROST_SUBMIT, submit->args);
-+                igt_panfrost_free_job(tmpfd, submit);
-+                close(tmpfd);
-+        }
-+
-         igt_fixture {
-                 close(fd);
-         }
--- 
-2.31.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Ck9uIDI1LzA2LzIwMjEgMTQ6MDMsIFR2cnRrbyBVcnN1bGluIHdyb3RlOgo+IAo+IE9uIDI0LzA2
+LzIwMjEgMTM6MjIsIFRlamFzIFVwYWRoeWF5IHdyb3RlOgo+PiA4MG5zIHRpbWVzdGFtcCBpbnRl
+cnZhbCBpZGVudGlmaWVkIGZvciBpY2wgYWxzbyBhcHBsaWVzIHRvCj4+IGdlbjExIHBsYXRmb3Jt
+cy4gaWd0QGdlbV9leGVjX2ZhaXJAYmFzaWMtZGVhZGxpbmUgaXMKPj4gcGFzc2luZyB3aXRoIHRo
+ZSBjaGFuZ2Ugb24gZWhsIGFuZCBqc2wuCj4+Cj4+IFNpZ25lZC1vZmYtYnk6IFRlamFzIFVwYWRo
+eWF5IAo+PiA8dGVqYXNrdW1hcnguc3VyZW5kcmFrdW1hci51cGFkaHlheUBpbnRlbC5jb20+Cj4+
+IC0tLQo+PiDCoCB0ZXN0cy9pOTE1L2dlbV9leGVjX2ZhaXIuYyB8IDkgKystLS0tLS0tCj4+IMKg
+IDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDcgZGVsZXRpb25zKC0pCj4+Cj4+IGRp
+ZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9leGVjX2ZhaXIuYyBiL3Rlc3RzL2k5MTUvZ2VtX2V4
+ZWNfZmFpci5jCj4+IGluZGV4IDYyOGY0ZGYyLi40NTIzNzU3NCAxMDA2NDQKPj4gLS0tIGEvdGVz
+dHMvaTkxNS9nZW1fZXhlY19mYWlyLmMKPj4gKysrIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19mYWly
+LmMKPj4gQEAgLTk4LDE2ICs5OCwxMSBAQCBzdGF0aWMgdWludDY0X3QgZGl2NjRfdTY0X3JvdW5k
+X3VwKHVpbnQ2NF90IHgsIAo+PiB1aW50NjRfdCB5KQo+PiDCoMKgwqDCoMKgIHJldHVybiAoeCAr
+IHkgLSAxKSAvIHk7Cj4+IMKgIH0KPj4gLXN0YXRpYyBib29sIGlzX2ljZWxha2UoaW50IGk5MTUp
+Cj4+IC17Cj4+IC3CoMKgwqAgcmV0dXJuIGludGVsX2dldF9kZXZpY2VfaW5mbyhpbnRlbF9nZXRf
+ZHJtX2RldmlkKGk5MTUpKS0+aXNfaWNlbGFrZTsKPj4gLX0KPj4gLQo+PiDCoCBzdGF0aWMgdWlu
+dDY0X3QgbnNfdG9fY3R4X3RpY2tzKGludCBpOTE1LCB1aW50NjRfdCBucykKPj4gwqAgewo+PiDC
+oMKgwqDCoMKgIGludCBmID0gcmVhZF90aW1lc3RhbXBfZnJlcXVlbmN5KGk5MTUpOwo+PiAtwqDC
+oMKgIGlmIChpc19pY2VsYWtlKGk5MTUpKQo+PiAtwqDCoMKgwqDCoMKgwqAgZiA9IDEyNTAwMDAw
+OyAvKiBpY2whISEgYXJlIHlvdSBmZWVsaW5nIGFscmlnaHQ/IENUWCB2cyBDUyAqLwo+PiArwqDC
+oMKgIGlmIChpbnRlbF9nZW4oaW50ZWxfZ2V0X2RybV9kZXZpZChpOTE1KSkgPT0gMTEpCj4+ICvC
+oMKgwqDCoMKgwqDCoCBmID0gMTI1MDAwMDA7IC8qIGdlbjExISEhIGFyZSB5b3UgZmVlbGluZyBh
+bHJpZ2h0PyBDVFggdnMgQ1MgKi8KPj4gwqDCoMKgwqDCoCByZXR1cm4gZGl2NjRfdTY0X3JvdW5k
+X3VwKG5zICogZiwgTlNFQzY0KTsKPj4gwqAgfQo+Pgo+IAo+IFNhbWUgYXMgdGhlIGtlcm5lbCBw
+YXRjaCwgb2theSwgSSBjYW4gcHVzaCB0aGlzIG9uZSBhcyB3ZWxsLgoKT2theSBDSSByZXN1bHRz
+IGFyZSBub3QgeWV0IGluLi4gcGxlYXNlIHBpbmcgbWUgb3Igc29tZW9uZSB3aGVuIHRoZXkgYXJy
+aXZlLgoKUmVnYXJkcywKClR2cnRrbwoKPiBSZXZpZXdlZC1ieTogVHZydGtvIFVyc3VsaW4gPHR2
+cnRrby51cnN1bGluQGludGVsLmNvbT4KPiAKPiBSZWdhcmRzLAo+IAo+IFR2cnRrbwo+IF9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gaWd0LWRldiBtYWls
+aW5nIGxpc3QKPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwo+IGh0dHBzOi8vbGlzdHMu
+ZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3Qt
+ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
