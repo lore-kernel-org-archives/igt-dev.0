@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 03EF16E111
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Jun 2021 14:01:30 +0000 (UTC)
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk
+ [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ECE6A6E061
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Jun 2021 14:01:25 +0000 (UTC)
 From: Boris Brezillon <boris.brezillon@collabora.com>
-Date: Fri, 25 Jun 2021 16:01:18 +0200
-Message-Id: <20210625140118.2600731-11-boris.brezillon@collabora.com>
+Date: Fri, 25 Jun 2021 16:01:10 +0200
+Message-Id: <20210625140118.2600731-3-boris.brezillon@collabora.com>
 In-Reply-To: <20210625140118.2600731-1-boris.brezillon@collabora.com>
 References: <20210625140118.2600731-1-boris.brezillon@collabora.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v3 10/10] tests/panfrost: Add a test to validate
- unhandled pagefault handling
+Subject: [igt-dev] [PATCH v3 02/10] lib/panfrost: Handle the NULL case in
+ igt_panfrost_free_bo()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,60 +23,35 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Rob Herring <robh+dt@kernel.org>, Tomeu Vizoso <tomeu.vizoso@collabora.com>, Alyssa Rosenzweig <alyssa.rosenzweig@collabora.com>, Steven Price <steven.price@arm.com>, Robin Murphy <robin.murphy@arm.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Alyssa Rosenzweig <alyssa@collabora.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We want to make sure jobs that trigger unhandled page fault get killed
-immediately, and jobs queued to the same context after the pagefault
-occured get executed properly.
+So we don't have to bother checking the value before calling this
+function.
 
-v3:
-* New patch
+v2:
+* No changes
 
 Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Alyssa Rosenzweig <alyssa@collabora.com>
 ---
- tests/panfrost_submit.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ lib/igt_panfrost.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/panfrost_submit.c b/tests/panfrost_submit.c
-index 070d78625ebf..4747d295724e 100644
---- a/tests/panfrost_submit.c
-+++ b/tests/panfrost_submit.c
-@@ -168,6 +168,34 @@ igt_main
-                 close(tmpfd);
-         }
- 
-+        igt_subtest("pan-unhandled-pagefault") {
-+                struct mali_job_descriptor_header *header;
-+                struct panfrost_submit *submit;
+diff --git a/lib/igt_panfrost.c b/lib/igt_panfrost.c
+index 8b0c2b7743ea..4bbb5ddf4076 100644
+--- a/lib/igt_panfrost.c
++++ b/lib/igt_panfrost.c
+@@ -72,6 +72,9 @@ igt_panfrost_gem_new(int fd, size_t size)
+ void
+ igt_panfrost_free_bo(int fd, struct panfrost_bo *bo)
+ {
++        if (!bo)
++                return;
 +
-+                submit = igt_panfrost_write_value_job(fd, true);
-+                do_ioctl(fd, DRM_IOCTL_PANFROST_SUBMIT, submit->args);
-+                header = submit->submit_bo->map;
-+                igt_assert(syncobj_wait(fd, &submit->args->out_sync, 1,
-+                                        abs_timeout(SHORT_TIME_NSEC), 0, NULL));
-+
-+                /* The job should get a JOB_BUS_FAULT, but it's not reflected
-+                 * in the job header because the MMU mapping is disabled (to kill
-+                 * the job immediately) before the job manager has a chance to
-+                 * update the exception status.
-+                 */
-+                igt_assert(header->exception_status != 1);
-+                igt_panfrost_free_job(fd, submit);
-+
-+                /* Now make sure new jobs on this context get executed properly */
-+                submit = igt_panfrost_write_value_job(fd, false);
-+                do_ioctl(fd, DRM_IOCTL_PANFROST_SUBMIT, submit->args);
-+                header = submit->submit_bo->map;
-+                igt_assert(syncobj_wait(fd, &submit->args->out_sync, 1,
-+                                        abs_timeout(SHORT_TIME_NSEC), 0, NULL));
-+                check_done(header);
-+                igt_panfrost_free_job(fd, submit);
-+        }
-+
-         igt_fixture {
-                 close(fd);
-         }
+         if (bo->map)
+                 munmap(bo->map, bo->size);
+         gem_close(fd, bo->handle);
 -- 
 2.31.1
 
