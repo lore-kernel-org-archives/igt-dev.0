@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk
  [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41FAA6E111
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Jun 2021 14:01:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6247E6E061
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Jun 2021 14:01:25 +0000 (UTC)
 From: Boris Brezillon <boris.brezillon@collabora.com>
-Date: Fri, 25 Jun 2021 16:01:14 +0200
-Message-Id: <20210625140118.2600731-7-boris.brezillon@collabora.com>
+Date: Fri, 25 Jun 2021 16:01:09 +0200
+Message-Id: <20210625140118.2600731-2-boris.brezillon@collabora.com>
 In-Reply-To: <20210625140118.2600731-1-boris.brezillon@collabora.com>
 References: <20210625140118.2600731-1-boris.brezillon@collabora.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v3 06/10] tests/panfrost: Extend the pan-reset test
+Subject: [igt-dev] [PATCH v3 01/10] tests/panfrost: Make sure we open a DUMB
+ capable node for prime tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,71 +23,70 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Rob Herring <robh+dt@kernel.org>, Tomeu Vizoso <tomeu.vizoso@collabora.com>, Alyssa Rosenzweig <alyssa.rosenzweig@collabora.com>, Steven Price <steven.price@arm.com>, Robin Murphy <robin.murphy@arm.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Alyssa Rosenzweig <alyssa@collabora.com>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Extend the pan-reset test to make sure jobs from other context get
-resumed after a reset.
+v3:
+* Check capabilities separately
 
 v2:
-* New patch
+* Use __drm_open_driver_another()
 
 Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Alyssa Rosenzweig <alyssa@collabora.com>
+Acked-by: Petri Latvala <petri.latvala@intel.com>
 ---
- tests/panfrost_submit.c | 33 +++++++++++++++++++--------------
- 1 file changed, 19 insertions(+), 14 deletions(-)
+ tests/panfrost_prime.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/tests/panfrost_submit.c b/tests/panfrost_submit.c
-index abc274921f2b..6c47d1f2d3e9 100644
---- a/tests/panfrost_submit.c
-+++ b/tests/panfrost_submit.c
-@@ -130,26 +130,31 @@ igt_main
-         }
+diff --git a/tests/panfrost_prime.c b/tests/panfrost_prime.c
+index 351d46f2f7e6..40ba036b2d47 100644
+--- a/tests/panfrost_prime.c
++++ b/tests/panfrost_prime.c
+@@ -35,13 +35,33 @@
+ #include <sys/ioctl.h>
+ #include "panfrost_drm.h"
  
-         igt_subtest("pan-reset") {
--                struct panfrost_submit *submit;
--                struct mali_job_descriptor_header *headers[2];
-+                int tmpfd = drm_open_driver(DRIVER_PANFROST);
-+                struct panfrost_submit *submit[2];
-+                struct mali_job_descriptor_header *headers[3];
++static bool igt_has_dumb(int fd)
++{
++	uint64_t value = 0;
++	int ret;
++
++	ret = drmGetCap(fd, DRM_CAP_DUMB_BUFFER, &value);
++	igt_assert(ret == 0 || errno == EINVAL || errno == EOPNOTSUPP);
++	return value == 1;
++}
++
++static bool igt_has_prime(int fd, uint64_t flags)
++{
++	uint64_t value = 0;
++	int ret;
++
++	ret = drmGetCap(fd, DRM_CAP_PRIME, &value);
++	igt_assert(ret == 0 || errno == EINVAL || errno == EOPNOTSUPP);
++	return (value & flags) == flags;
++}
++
+ igt_main
+ {
+ 	int fd, kms_fd;
  
--                submit = igt_panfrost_job_loop(fd);
--                headers[0] = igt_panfrost_job_loop_get_job_header(submit, 0);
--                headers[1] = igt_panfrost_job_loop_get_job_header(submit, 1);
--                do_ioctl(fd, DRM_IOCTL_PANFROST_SUBMIT, submit->args);
--
--                /* The job should stay active for BAD_JOB_TIME_NSEC until the
--                 * scheduler consider it as a GPU hang and reset the GPU.
--                 * After the reset, the job fence is signaled.
--                 */
--                igt_assert(!syncobj_wait(fd, &submit->args->out_sync, 1,
-+                submit[0] = igt_panfrost_job_loop(fd);
-+                submit[1] = igt_panfrost_null_job(tmpfd);
-+                headers[0] = igt_panfrost_job_loop_get_job_header(submit[0], 0);
-+                headers[1] = igt_panfrost_job_loop_get_job_header(submit[0], 1);
-+                headers[2] = submit[1]->submit_bo->map;
-+                do_ioctl(fd, DRM_IOCTL_PANFROST_SUBMIT, submit[0]->args);
-+                do_ioctl(tmpfd, DRM_IOCTL_PANFROST_SUBMIT, submit[1]->args);
-+                /* First job should timeout, second job should complete right after the timeout */
-+                igt_assert(!syncobj_wait(fd, &submit[0]->args->out_sync, 1,
-                                          abs_timeout(SHORT_TIME_NSEC), 0, NULL));
--                igt_assert(syncobj_wait(fd, &submit->args->out_sync, 1,
-+                igt_assert(syncobj_wait(fd, &submit[0]->args->out_sync, 1,
-                                         abs_timeout(BAD_JOB_TIME_NSEC), 0, NULL));
-+                igt_assert(syncobj_wait(tmpfd, &submit[1]->args->out_sync, 1,
-+                                        abs_timeout(SHORT_TIME_NSEC), 0, NULL));
+ 	igt_fixture {
+-		kms_fd = drm_open_driver_master(DRIVER_ANY);
+ 		fd = drm_open_driver(DRIVER_PANFROST);
++		kms_fd = __drm_open_driver_another(1, DRIVER_ANY);
+ 	}
  
-                 /* At least one job header of the job loop should have its exception status set to 0 */
-                 igt_assert(headers[0]->exception_status != 1 || headers[1]->exception_status != 1);
--                igt_panfrost_free_job(fd, submit);
-+                check_done(headers[2]);
-+                igt_panfrost_free_job(fd, submit[0]);
-+                igt_panfrost_free_job(tmpfd, submit[1]);
-+                close(tmpfd);
-         }
+ 	igt_subtest("gem-prime-import") {
+@@ -50,6 +70,9 @@ igt_main
+ 	        struct drm_panfrost_get_bo_offset get_bo_offset = {0,};
+ 		int dmabuf_fd;
  
-         igt_fixture {
++		igt_skip_on(!igt_has_dumb(kms_fd));
++		igt_skip_on(!igt_has_prime(kms_fd, DRM_PRIME_CAP_EXPORT));
++
+ 		/* Just to be sure that when we import the dumb buffer it has
+ 		 * a non-NULL address.
+ 		 */
 -- 
 2.31.1
 
