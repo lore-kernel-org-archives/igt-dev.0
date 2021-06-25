@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5736C6E10D
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Jun 2021 14:01:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 907B86E111
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Jun 2021 14:01:29 +0000 (UTC)
 From: Boris Brezillon <boris.brezillon@collabora.com>
-Date: Fri, 25 Jun 2021 16:01:11 +0200
-Message-Id: <20210625140118.2600731-4-boris.brezillon@collabora.com>
+Date: Fri, 25 Jun 2021 16:01:17 +0200
+Message-Id: <20210625140118.2600731-10-boris.brezillon@collabora.com>
 In-Reply-To: <20210625140118.2600731-1-boris.brezillon@collabora.com>
 References: <20210625140118.2600731-1-boris.brezillon@collabora.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v3 03/10] lib/panfrost: Add a helper to create a
- job loop
+Subject: [igt-dev] [PATCH v3 09/10] lib/panfrost: Add a helper to create
+ dummy write value jobs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,57 +22,32 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Rob Herring <robh+dt@kernel.org>, Tomeu Vizoso <tomeu.vizoso@collabora.com>, Alyssa Rosenzweig <alyssa.rosenzweig@collabora.com>, Steven Price <steven.price@arm.com>, Robin Murphy <robin.murphy@arm.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Alyssa Rosenzweig <alyssa@collabora.com>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Useful to trigger job timeouts and test the kernel driver timeout
-handling logic.
-
-v2:
-* Add comments explaining how the job loop is formed
-* Add a helper to retrieve job headers
+v3:
+* New patch
 
 Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Alyssa Rosenzweig <alyssa@collabora.com>
 ---
- lib/igt_panfrost.c | 77 ++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_panfrost.h |  4 +++
- 2 files changed, 81 insertions(+)
+ lib/igt_panfrost.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_panfrost.h |  1 +
+ 2 files changed, 47 insertions(+)
 
 diff --git a/lib/igt_panfrost.c b/lib/igt_panfrost.c
-index 4bbb5ddf4076..5b65537b7ced 100644
+index 7651f0f6c8a3..f63611b9be3c 100644
 --- a/lib/igt_panfrost.c
 +++ b/lib/igt_panfrost.c
-@@ -130,6 +130,83 @@ void igt_panfrost_bo_mmap(int fd, struct panfrost_bo *bo)
-         igt_assert(bo->map);
+@@ -240,6 +240,52 @@ struct panfrost_submit *igt_panfrost_null_job(int fd)
+         return submit;
  }
  
-+struct mali_job_descriptor_header *
-+igt_panfrost_job_loop_get_job_header(struct panfrost_submit *submit,
-+                                     unsigned job_idx)
++struct panfrost_submit *
++igt_panfrost_write_value_job(int fd, bool trigger_page_fault)
 +{
-+        unsigned job_offset = ALIGN(sizeof(struct mali_job_descriptor_header) +
-+                                    sizeof(struct mali_payload_set_value),
-+                                    64) *
-+                              job_idx;
-+
-+        igt_assert(job_idx <= 1);
-+
-+        return submit->submit_bo->map + job_offset;
-+}
-+
-+struct panfrost_submit *igt_panfrost_job_loop(int fd)
-+{
-+        /* We create 2 WRITE_VALUE jobs pointing to each other to form a loop.
-+         * Each WRITE_VALUE job resets the ->exception_status field of the
-+         * other job to allow re-execution (if we don't do that we end up with
-+         * an INVALID_DATA fault on the second execution).
-+         */
 +        struct panfrost_submit *submit;
 +        struct mali_job_descriptor_header header = {
 +                .job_type = JOB_TYPE_SET_VALUE,
-+                .job_barrier = 1,
-+                .unknown_flags = 5,
 +                .job_index = 1,
 +                .job_descriptor_size = 1,
 +        };
@@ -82,32 +57,21 @@ index 4bbb5ddf4076..5b65537b7ced 100644
 +                .unknown = 3,
 +        };
 +        uint32_t *bos;
-+        unsigned job1_offset = ALIGN(sizeof(header) + sizeof(payload), 64);
-+        unsigned job0_offset = 0;
++        unsigned write_ptr_offset = sizeof(header) + sizeof(payload);
 +
 +        submit = malloc(sizeof(*submit));
-+	memset(submit, 0, sizeof(*submit));
++        memset(submit, 0, sizeof(*submit));
 +
-+        submit->submit_bo = igt_panfrost_gem_new(fd, ALIGN(sizeof(header) + sizeof(payload), 64) * 2);
++        submit->submit_bo = igt_panfrost_gem_new(fd, sizeof(header) + sizeof(payload) + sizeof(uint64_t));
 +        igt_panfrost_bo_mmap(fd, submit->submit_bo);
 +
-+        /* Job 0 points to job 1 and has its WRITE_VALUE pointer pointing to
-+         * job 1 execption_status field.
-+         */
-+        header.next_job_64 = submit->submit_bo->offset + job1_offset;
-+        payload.out = submit->submit_bo->offset + job1_offset +
-+                      offsetof(struct mali_job_descriptor_header, exception_status);
-+        memcpy(submit->submit_bo->map + job0_offset, &header, sizeof(header));
-+        memcpy(submit->submit_bo->map + job0_offset + sizeof(header), &payload, sizeof(payload));
++        payload.out = trigger_page_fault ?
++                      0x0000deadbeef0000 :
++                      submit->submit_bo->offset + write_ptr_offset;
 +
-+        /* Job 1 points to job 0 and has its WRITE_VALUE pointer pointing to
-+         * job 0 execption_status field.
-+         */
-+        header.next_job_64 = submit->submit_bo->offset + job0_offset;
-+        payload.out = submit->submit_bo->offset + job0_offset +
-+                      offsetof(struct mali_job_descriptor_header, exception_status);
-+        memcpy(submit->submit_bo->map + job1_offset, &header, sizeof(header));
-+        memcpy(submit->submit_bo->map + job1_offset + sizeof(header), &payload, sizeof(payload));
++        memcpy(submit->submit_bo->map, &header, sizeof(header));
++        memcpy(submit->submit_bo->map + sizeof(header), &payload, sizeof(payload));
++        memset(submit->submit_bo->map + write_ptr_offset, 0xff, sizeof(uint32_t));
 +
 +        submit->args = malloc(sizeof(*submit->args));
 +        memset(submit->args, 0, sizeof(*submit->args));
@@ -124,22 +88,18 @@ index 4bbb5ddf4076..5b65537b7ced 100644
 +        return submit;
 +}
 +
- struct panfrost_submit *igt_panfrost_trivial_job(int fd, bool do_crash, int width, int height, uint32_t color)
+ void igt_panfrost_free_job(int fd, struct panfrost_submit *submit)
  {
-         struct panfrost_submit *submit;
+         free(from_user_pointer(submit->args->bo_handles));
 diff --git a/lib/igt_panfrost.h b/lib/igt_panfrost.h
-index cc7998dcb4bf..3ab4baf892f3 100644
+index d2ddca392d4b..d67947572e25 100644
 --- a/lib/igt_panfrost.h
 +++ b/lib/igt_panfrost.h
-@@ -47,7 +47,11 @@ struct panfrost_submit {
- struct panfrost_bo *igt_panfrost_gem_new(int fd, size_t size);
- void igt_panfrost_free_bo(int fd, struct panfrost_bo *bo);
- 
-+struct mali_job_descriptor_header *
-+igt_panfrost_job_loop_get_job_header(struct panfrost_submit *submit,
-+                                     unsigned job_idx);
- struct panfrost_submit *igt_panfrost_trivial_job(int fd, bool do_crash, int width, int height, uint32_t color);
-+struct panfrost_submit *igt_panfrost_job_loop(int fd);
+@@ -52,6 +52,7 @@ igt_panfrost_job_loop_get_job_header(struct panfrost_submit *submit,
+                                      unsigned job_idx);
+ struct panfrost_submit *igt_panfrost_job_loop(int fd);
+ struct panfrost_submit *igt_panfrost_null_job(int fd);
++struct panfrost_submit *igt_panfrost_write_value_job(int fd, bool trigger_page_fault);
  void igt_panfrost_free_job(int fd, struct panfrost_submit *submit);
  
  /* IOCTL wrappers */
