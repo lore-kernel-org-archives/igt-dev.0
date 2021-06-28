@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2085.outbound.protection.outlook.com [40.107.92.85])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 303256E461
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Jun 2021 13:50:50 +0000 (UTC)
-References: <20210628131435.1070725-1-Anson.Jacob@amd.com>
-From: Harry Wentland <harry.wentland@amd.com>
-Message-ID: <3b6b2164-7eb9-7f7c-76ee-50c8509ddd49@amd.com>
-Date: Mon, 28 Jun 2021 09:50:44 -0400
-In-Reply-To: <20210628131435.1070725-1-Anson.Jacob@amd.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t V2] tests/kms_plane_multiple: Start
- continuous CRC capture after commit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 28 Jun 2021 14:42:08 -0000
+Message-ID: <162489132864.2575.3857099823081218806@emeril.freedesktop.org>
+References: <20210608003217.83582-1-khaled.almahallawy@intel.com>
+In-Reply-To: <20210608003217.83582-1-khaled.almahallawy@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fcontent=5Fprotection=3A_Skip_if_not_able_to_create_displa?=
+ =?utf-8?b?eV9oZGNwX3NybS5iaW4gKHJldjIp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,70 +15,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1076181849=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Anson Jacob <Anson.Jacob@amd.com>, igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>, Victor Lu <victorchengchi.lu@amd.com>
+To: Khaled Almahallawy <khaled.almahallawy@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2021-06-28 9:14 a.m., Anson Jacob wrote:
-> From: Victor Lu <victorchengchi.lu@amd.com>
-> 
-> atomic-pipe-a-tiling-none fails on amdgpu(Raven) because it fails to read the
-> CRC when there is no CRC generated (zeroed framebuffer). Move
-> igt_pipe_crc_start to be called after the first nonzero FB commit.
-> 
-> Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
-> Acked-by: Anson Jacob <Anson.Jacob@amd.com>
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-> Cc: Harry Wentland <harry.wentland@amd.com>
-> Cc: Mark Yacoub <markyacoub@chromium.org>
+--===============1076181849==
+Content-Type: multipart/alternative;
+ boundary="===============0216514487159561668=="
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+--===============0216514487159561668==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Harry
+== Series Details ==
 
-> ---
->  tests/kms_plane_multiple.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-> index 93c6ea7d269d..4424b864b2d6 100644
-> --- a/tests/kms_plane_multiple.c
-> +++ b/tests/kms_plane_multiple.c
-> @@ -288,6 +288,7 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
->  	igt_plane_t *plane;
->  	int i;
->  	int err, c = 0;
-> +	int crc_enabled = 0;
->  	int iterations = opt.iterations < 1 ? 1 : opt.iterations;
->  	bool loop_forever;
->  	char info[256];
-> @@ -327,14 +328,16 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
->  		 igt_output_name(output), kmstest_pipe_name(pipe), c,
->  		 info, opt.seed);
->  
-> -	igt_pipe_crc_start(data->pipe_crc);
-> -
->  	i = 0;
->  	while (i < iterations || loop_forever) {
->  		/* randomize planes and set up the holes */
->  		prepare_planes(data, pipe, &blue, tiling, c, output);
->  
->  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +		if (!crc_enabled) {
-> +			igt_pipe_crc_start(data->pipe_crc);
-> +			crc_enabled = 1;
-> +		}
->  
->  		igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc, &crc);
->  
-> 
+Series: tests/kms_content_protection: Skip if not able to create display_hdcp_srm.bin (rev2)
+URL   : https://patchwork.freedesktop.org/series/91128/
+State : failure
+
+== Summary ==
+
+Series 91128 revision 2 was fully merged or fully failed: no git log
+
+
+
+--===============0216514487159561668==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_content_protection: Skip if not able to create display_hdcp_srm.bin (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/91128/">https://patchwork.freedesktop.org/series/91128/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+</table>
+
+
+    <p>Series 91128 revision 2 was fully merged or fully failed: no git log</p>
+
+</body>
+</html>
+
+--===============0216514487159561668==--
+
+--===============1076181849==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1076181849==--
