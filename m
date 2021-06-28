@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 28 Jun 2021 14:42:08 -0000
-Message-ID: <162489132864.2575.3857099823081218806@emeril.freedesktop.org>
-References: <20210608003217.83582-1-khaled.almahallawy@intel.com>
-In-Reply-To: <20210608003217.83582-1-khaled.almahallawy@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fcontent=5Fprotection=3A_Skip_if_not_able_to_create_displa?=
- =?utf-8?b?eV9oZGNwX3NybS5iaW4gKHJldjIp?=
+Date: Mon, 28 Jun 2021 14:42:59 -0000
+Message-ID: <162489137951.2575.1258777090559777394@emeril.freedesktop.org>
+References: <20210625140118.2600731-1-boris.brezillon@collabora.com>
+In-Reply-To: <20210625140118.2600731-1-boris.brezillon@collabora.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/panfrost=3A_Misc_fixes/improvements_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,77 +15,49 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============1076181849=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Khaled Almahallawy <khaled.almahallawy@intel.com>
+To: Boris Brezillon <boris.brezillon@collabora.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1076181849==
-Content-Type: multipart/alternative;
- boundary="===============0216514487159561668=="
-
---===============0216514487159561668==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: tests/kms_content_protection: Skip if not able to create display_hdcp_srm.bin (rev2)
-URL   : https://patchwork.freedesktop.org/series/91128/
+Series: tests/panfrost: Misc fixes/improvements (rev3)
+URL   : https://patchwork.freedesktop.org/series/91726/
 State : failure
 
 == Summary ==
 
-Series 91128 revision 2 was fully merged or fully failed: no git log
+Applying: tests/panfrost: Make sure we open a DUMB capable node for prime tests
+Using index info to reconstruct a base tree...
+M	tests/panfrost_prime.c
+Falling back to patching base and 3-way merge...
+No changes -- Patch already applied.
+Applying: lib/panfrost: Handle the NULL case in igt_panfrost_free_bo()
+Using index info to reconstruct a base tree...
+M	lib/igt_panfrost.c
+Falling back to patching base and 3-way merge...
+Auto-merging lib/igt_panfrost.c
+No changes -- Patch already applied.
+Applying: lib/panfrost: Add a helper to create a job loop
+Using index info to reconstruct a base tree...
+M	lib/igt_panfrost.c
+M	lib/igt_panfrost.h
+Falling back to patching base and 3-way merge...
+Auto-merging lib/igt_panfrost.h
+CONFLICT (content): Merge conflict in lib/igt_panfrost.h
+Auto-merging lib/igt_panfrost.c
+CONFLICT (content): Merge conflict in lib/igt_panfrost.c
+Patch failed at 0003 lib/panfrost: Add a helper to create a job loop
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
-
-
---===============0216514487159561668==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_content_protection: Skip if not able to create display_hdcp_srm.bin (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/91128/">https://patchwork.freedesktop.org/series/91128/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-</table>
-
-
-    <p>Series 91128 revision 2 was fully merged or fully failed: no git log</p>
-
-</body>
-</html>
-
---===============0216514487159561668==--
-
---===============1076181849==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============1076181849==--
