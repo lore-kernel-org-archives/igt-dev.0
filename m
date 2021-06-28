@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2041.outbound.protection.outlook.com [40.107.94.41])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A0716E461
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Jun 2021 13:46:49 +0000 (UTC)
-References: <20210628132104.1071786-1-Anson.Jacob@amd.com>
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2085.outbound.protection.outlook.com [40.107.92.85])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 303256E461
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Jun 2021 13:50:50 +0000 (UTC)
+References: <20210628131435.1070725-1-Anson.Jacob@amd.com>
 From: Harry Wentland <harry.wentland@amd.com>
-Message-ID: <d0caf390-4ba9-b951-9678-06e9e0dd0d9a@amd.com>
-Date: Mon, 28 Jun 2021 09:46:43 -0400
-In-Reply-To: <20210628132104.1071786-1-Anson.Jacob@amd.com>
+Message-ID: <3b6b2164-7eb9-7f7c-76ee-50c8509ddd49@amd.com>
+Date: Mon, 28 Jun 2021 09:50:44 -0400
+In-Reply-To: <20210628131435.1070725-1-Anson.Jacob@amd.com>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t V2] tests/kms_content_protection: Enable
- Primary plane for CRTC.
+Subject: Re: [igt-dev] [PATCH i-g-t V2] tests/kms_plane_multiple: Start
+ continuous CRC capture after commit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,19 +24,17 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Anson Jacob <Anson.Jacob@amd.com>, igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>, Bindu Ramamurthy <bindu.r@amd.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, Victor Lu <victorchengchi.lu@amd.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2021-06-28 9:21 a.m., Anson Jacob wrote:
-> From: Bindu Ramamurthy <bindu.r@amd.com>
+On 2021-06-28 9:14 a.m., Anson Jacob wrote:
+> From: Victor Lu <victorchengchi.lu@amd.com>
 > 
-> [Why]
-> Atomic driver check fails for crtc, when there is no primary plane.
+> atomic-pipe-a-tiling-none fails on amdgpu(Raven) because it fails to read the
+> CRC when there is no CRC generated (zeroed framebuffer). Move
+> igt_pipe_crc_start to be called after the first nonzero FB commit.
 > 
-> [How]
-> Enable primary plane before committing the streams.
-> 
-> Signed-off-by: Bindu Ramamurthy <bindu.r@amd.com>
+> Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
 > Acked-by: Anson Jacob <Anson.Jacob@amd.com>
 > Cc: Petri Latvala <petri.latvala@intel.com>
 > Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
@@ -48,28 +46,40 @@ Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 Harry
 
 > ---
->  tests/kms_content_protection.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  tests/kms_plane_multiple.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 > 
-> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-> index bab61817bcc1..04b9ab30334a 100644
-> --- a/tests/kms_content_protection.c
-> +++ b/tests/kms_content_protection.c
-> @@ -180,10 +180,13 @@ static void modeset_with_fb(const enum pipe pipe, igt_output_t *output,
->  	igt_output_set_pipe(output, pipe);
+> diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
+> index 93c6ea7d269d..4424b864b2d6 100644
+> --- a/tests/kms_plane_multiple.c
+> +++ b/tests/kms_plane_multiple.c
+> @@ -288,6 +288,7 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
+>  	igt_plane_t *plane;
+>  	int i;
+>  	int err, c = 0;
+> +	int crc_enabled = 0;
+>  	int iterations = opt.iterations < 1 ? 1 : opt.iterations;
+>  	bool loop_forever;
+>  	char info[256];
+> @@ -327,14 +328,16 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
+>  		 igt_output_name(output), kmstest_pipe_name(pipe), c,
+>  		 info, opt.seed);
 >  
->  	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> -	igt_display_commit2(display, s);
->  	igt_plane_set_fb(primary, &data.red);
->  	igt_fb_set_size(&data.red, primary, mode.hdisplay, mode.vdisplay);
+> -	igt_pipe_crc_start(data->pipe_crc);
+> -
+>  	i = 0;
+>  	while (i < iterations || loop_forever) {
+>  		/* randomize planes and set up the holes */
+>  		prepare_planes(data, pipe, &blue, tiling, c, output);
 >  
-> +	igt_display_commit2(display, s);
-> +
-> +	igt_plane_set_fb(primary, &data.green);
-> +
->  	/* Wait for Flip completion before starting the HDCP authentication */
->  	commit_display_and_wait_for_flip(s);
->  }
+>  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +		if (!crc_enabled) {
+> +			igt_pipe_crc_start(data->pipe_crc);
+> +			crc_enabled = 1;
+> +		}
+>  
+>  		igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc, &crc);
+>  
 > 
 
 _______________________________________________
