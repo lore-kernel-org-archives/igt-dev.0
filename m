@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2069.outbound.protection.outlook.com [40.107.92.69])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F0546E49F
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Jun 2021 15:51:48 +0000 (UTC)
-Date: Mon, 28 Jun 2021 11:51:42 -0400
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Message-ID: <20210628155142.3cbidunxv3umpzwt@outlook.office365.com>
-References: <20210624173525.1526215-1-markyacoub@chromium.org>
-Content-Disposition: inline
-In-Reply-To: <20210624173525.1526215-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v5] tests/kms_vblank: Turn on hardware before
- testing invalid vblank.
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 28 Jun 2021 16:13:05 -0000
+Message-ID: <162489678533.2575.15175800312394661069@emeril.freedesktop.org>
+References: <20210628132104.1071786-1-Anson.Jacob@amd.com>
+In-Reply-To: <20210628132104.1071786-1-Anson.Jacob@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fcontent=5Fprotection=3A_Enable_Primary_plane_for_CRTC=2E?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,86 +14,174 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1736520393=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>
-Cc: igt-dev@lists.freedesktop.org, seanpaul@chromium.org, petri.latvala@intel.com, Mark Yacoub <markyacoub@google.com>
+To: Anson Jacob <anson.jacob@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 06/24, Mark Yacoub wrote:
-> From: Mark Yacoub <markyacoub@google.com>
-> 
-> [Why]
-> Before any hardware is on, the vblank is off and its ref counter is in
-> an initialized state as each driver handles toggling it differently.
-> Ioctl DRM_IOCTL_WAIT_VBLANK could return 0 such as on i915, or an invalid
-> integer that doesn't mean much, such as on Zork running Kernel 5.4 due
-> to the kernel workaround that increments the vblank ref count to prevent
-> a get from enabling the interrupt.
-> 
-> [How]
-> For invalid_subtest(), active the CRTCs to turn the hardware on so
-> DRM_IOCTL_WAIT_VBLANK returns something meaningful.
-> 
-> Changes since v4:
-> Use igt_get_single_output_for_pipe to get igt_output_t.
-> 
-> Changes since v3:
-> Turn on only 1 output instead of all.
-> 
-> Changes since v2:
-> 1. Updated Signed-off-by.
-> 
-> Changes since v1:
-> 1. Update Commit message
-> 2. Rename variable p to pipe_number
-> 
-> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
-> ---
->  tests/kms_vblank.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-> index 93b01eba..b709ef69 100644
-> --- a/tests/kms_vblank.c
-> +++ b/tests/kms_vblank.c
-> @@ -475,8 +475,12 @@ static void invalid_subtest(data_t *data, int fd)
->  {
->  	union drm_wait_vblank vbl;
->  	unsigned long valid_flags;
-> +	igt_display_t* display = &data->display;
-> +	enum pipe pipe = 0;
-> +	igt_output_t* output = igt_get_single_output_for_pipe(display, pipe);
->  
-> -	igt_display_require_output_on_pipe(&data->display, 0);
-> +	igt_display_require_output_on_pipe(display, pipe);
-> +	prepare_crtc(data, fd, output);
->  
->  	/* First check all is well with a simple query */
->  	memset(&vbl, 0, sizeof(vbl));
-> @@ -511,6 +515,8 @@ static void invalid_subtest(data_t *data, int fd)
->  	vbl.request.type |= _DRM_VBLANK_SECONDARY;
->  	vbl.request.type |= _DRM_VBLANK_FLAGS_MASK;
->  	igt_assert_eq(wait_vblank(fd, &vbl), -EINVAL);
-> +
-> +	cleanup_crtc(data, fd, output);
->  }
->  
->  igt_main
-> -- 
-> 2.32.0.93.g670b81a890-goog
-> 
+--===============1736520393==
+Content-Type: multipart/alternative;
+ boundary="===============3341168187456101334=="
 
-lgtm,
+--===============3341168187456101334==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+== Series Details ==
 
--- 
-Rodrigo Siqueira
-https://siqueira.tech
+Series: tests/kms_content_protection: Enable Primary plane for CRTC.
+URL   : https://patchwork.freedesktop.org/series/91975/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6121 -> IGTPW_5964
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5964/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5964 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@runner@aborted:
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][1] ([i915#1602] / [i915#2029])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5964/fi-bdw-5557u/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-kbl-7500u:       [DMESG-WARN][2] ([i915#2868]) -> [PASS][3]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6121/fi-kbl-7500u/igt@kms_chamelium@common-hpd-after-suspend.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5964/fi-kbl-7500u/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#2029]: https://gitlab.freedesktop.org/drm/intel/issues/2029
+  [i915#2868]: https://gitlab.freedesktop.org/drm/intel/issues/2868
+
+
+Participating hosts (40 -> 35)
+------------------------------
+
+  Missing    (5): fi-kbl-soraka fi-hsw-4200u fi-bsw-n3050 fi-bsw-cyan fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6121 -> IGTPW_5964
+
+  CI-20190529: 20190529
+  CI_DRM_10284: c4cc46175b38e554eab7ac3d1b95a85c79963d4a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5964: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5964/index.html
+  IGT_6121: a63ceb48e6c3e733d04156b32fba3b4f4d5ad794 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5964/index.html
+
+--===============3341168187456101334==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_content_protection: Enable Primary plane for CRTC.</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/91975/">https://patchwork.freedesktop.org/series/91975/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5964/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5964/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6121 -&gt; IGTPW_5964</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5964/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5964 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@runner@aborted:<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5964/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2029">i915#2029</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_chamelium@common-hpd-after-suspend:<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6121/fi-kbl-7500u/igt@kms_chamelium@common-hpd-after-suspend.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2868">i915#2868</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5964/fi-kbl-7500u/igt@kms_chamelium@common-hpd-after-suspend.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (40 -&gt; 35)</h2>
+<p>Missing    (5): fi-kbl-soraka fi-hsw-4200u fi-bsw-n3050 fi-bsw-cyan fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6121 -&gt; IGTPW_5964</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10284: c4cc46175b38e554eab7ac3d1b95a85c79963d4a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5964: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5964/index.html<br />
+  IGT_6121: a63ceb48e6c3e733d04156b32fba3b4f4d5ad794 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3341168187456101334==--
+
+--===============1736520393==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1736520393==--
