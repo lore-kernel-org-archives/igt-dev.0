@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B38FF6E10D
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Jun 2021 15:39:29 +0000 (UTC)
+From: venkata.sai.patnana@intel.com
+Date: Wed, 30 Jun 2021 20:58:41 +0530
+Message-Id: <20210630152841.10527-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 30 Jun 2021 15:31:55 -0000
-Message-ID: <162506711505.10374.14905383604206048678@emeril.freedesktop.org>
-References: <20210630094304.1230608-1-mika.kahola@intel.com>
-In-Reply-To: <20210630094304.1230608-1-mika.kahola@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fplane=5Fscaling=3A_Skip_90/270_rotation_for_ADL-P?=
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_rotation_crc: Skip 90/270
+ rotation for xelpd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,78 +15,82 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0062542449=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mika Kahola <mika.kahola@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Juha-Pekka=20Heikkil=C3=A4?= <juha-pekka.heikkila@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0062542449==
-Content-Type: multipart/alternative;
- boundary="===============7607221453688624392=="
-
---===============7607221453688624392==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/kms_plane_scaling: Skip 90/270 rotation for ADL-P
-URL   : https://patchwork.freedesktop.org/series/92060/
-State : failure
-
-== Summary ==
-
-Series 92060 revision 1 was fully merged or fully failed: no git log
-
-
-
---===============7607221453688624392==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane_scaling: Skip 90/270 rotation for ADL-P</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/92060/">https://patchwork.freedesktop.org/series/92060/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-</table>
-
-
-    <p>Series 92060 revision 1 was fully merged or fully failed: no git log</p>
-
-</body>
-</html>
-
---===============7607221453688624392==--
-
---===============0062542449==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0062542449==--
+RnJvbTogUGF0bmFuYSBWZW5rYXRhIFNhaSA8dmVua2F0YS5zYWkucGF0bmFuYUBpbnRlbC5jb20+
+Cgp4ZWxwZCBwbGF0Zm9ybSBkb2Vzbid0IHN1cHBvcnQgOTAvMjcwIHJvdGF0aW9uLiBMZXQncyBz
+a2lwIHRvIHRlc3QKd2l0aCB0aGVzZSByb3RhdGlvbnMuCgpDYzogSnVoYS1QZWtrYSBIZWlra2ls
+w6QgPGp1aGEtcGVra2EuaGVpa2tpbGFAaW50ZWwuY29tPgpDYzogS2FydGhpayBCIFMgPGthcnRo
+aWsuYi5zQGludGVsLmNvbT4KU2lnbmVkLW9mZi1ieTogUGF0bmFuYSBWZW5rYXRhIFNhaSA8dmVu
+a2F0YS5zYWkucGF0bmFuYUBpbnRlbC5jb20+Ci0tLQogdGVzdHMva21zX3JvdGF0aW9uX2NyYy5j
+IHwgMjMgKysrKysrKysrKysrKysrKystLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAxNyBpbnNlcnRp
+b25zKCspLCA2IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19yb3RhdGlvbl9j
+cmMuYyBiL3Rlc3RzL2ttc19yb3RhdGlvbl9jcmMuYwppbmRleCAyMDU1NmM4MjVhLi44MTFmMjk1
+ZTljIDEwMDY0NAotLS0gYS90ZXN0cy9rbXNfcm90YXRpb25fY3JjLmMKKysrIGIvdGVzdHMva21z
+X3JvdGF0aW9uX2NyYy5jCkBAIC03MzcsNiArNzM3LDE0IEBAIHN0YXRpYyB2b2lkIHRlc3RfbXVs
+dGlfcGxhbmVfcm90YXRpb24oZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSkKIAkJCQkJCSAg
+ICAgKHBsYW5lY29uZmlnc1tqXS5yb3RhdGlvbiAmIChJR1RfUk9UQVRJT05fOTAgfCBJR1RfUk9U
+QVRJT05fMjcwKSkKIAkJCQkJCSAgICAgJiYgaW50ZWxfZGlzcGxheV92ZXIoZGF0YS0+ZGV2aWQp
+IDwgMTEpCiAJCQkJCQkJY29udGludWU7CisKKwkJCQkJCWlmICgocGxhbmVjb25maWdzW2ldLnJv
+dGF0aW9uICYgKElHVF9ST1RBVElPTl85MCB8IElHVF9ST1RBVElPTl8yNzApKQorCQkJCQkJICAg
+ICYmIGludGVsX2Rpc3BsYXlfdmVyKGRhdGEtPmRldmlkKSA+PSAxMykKKwkJCQkJCQljb250aW51
+ZTsKKworCQkJCQkJaWYgKChwbGFuZWNvbmZpZ3Nbal0ucm90YXRpb24gJiAoSUdUX1JPVEFUSU9O
+XzkwIHwgSUdUX1JPVEFUSU9OXzI3MCkpCisJCQkJCQkgICAgJiYgaW50ZWxfZGlzcGxheV92ZXIo
+ZGF0YS0+ZGV2aWQpID49IDEzKQorCQkJCQkJCWNvbnRpbnVlOwogCQkJCQkJLyoKIAkJCQkJCSAq
+IGlmIHVzaW5nIHBhY2tlZCBmb3JtYXRzIGNyYydzIHdpbGwgYmUKIAkJCQkJCSAqIHNhbWUgYW5k
+IGNhbiBzdG9yZSB0aGVtIHNvIHRoZXJlJ3MKQEAgLTEwNDIsOCArMTA1MCw4IEBAIGlndF9tYWlu
+X2FyZ3MoIiIsIGxvbmdfb3B0cywgaGVscF9zdHIsIG9wdF9oYW5kbGVyLCAmZGF0YSkKIAkJCSAg
+ICAgIHJvdF90ZXN0X3N0cihzdWJ0ZXN0LT5yb3QpKSB7CiAJCQlpZiAoaXNfaTkxNV9kZXZpY2Uo
+ZGF0YS5nZnhfZmQpKSB7CiAJCQkJaWd0X3JlcXVpcmUoIShzdWJ0ZXN0LT5yb3QgJgotCQkJCQkg
+ICAgKElHVF9ST1RBVElPTl85MCB8IElHVF9ST1RBVElPTl8yNzApKSB8fAotCQkJCQkgICAgZ2Vu
+ID49IDkpOworICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoSUdU
+X1JPVEFUSU9OXzkwIHwgSUdUX1JPVEFUSU9OXzI3MCkpIHx8CisgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIChnZW4gPj0gOSAmJiBnZW4gPCAxMykpOwogCQkJfSBl
+bHNlIGlmIChpc19hbWRncHVfZGV2aWNlKGRhdGEuZ2Z4X2ZkKSkgewogCQkJCWRhdGEub3ZlcnJp
+ZGVfZm10ID0gRFJNX0ZPUk1BVF9YUkdCODg4ODsKIAkJCQlpZiAoc3VidGVzdC0+cm90ICYgKElH
+VF9ST1RBVElPTl85MCB8IElHVF9ST1RBVElPTl8yNzApKQpAQCAtMTA2MCw3ICsxMDY4LDcgQEAg
+aWd0X21haW5fYXJncygiIiwgbG9uZ19vcHRzLCBoZWxwX3N0ciwgb3B0X2hhbmRsZXIsICZkYXRh
+KQogCiAJaWd0X2Rlc2NyaWJlKCJSb3RhdGlvbiB0ZXN0IHdpdGggOTAgZGVncmVlIGZvciBhIHBs
+YW5lIG9mIGdlbjkrIHdpdGggZ2l2ZW4gcG9zaXRpb24iKTsKIAlpZ3Rfc3VidGVzdF9mKCJzcHJp
+dGUtcm90YXRpb24tOTAtcG9zLTEwMC0wIikgewotCQlpZ3RfcmVxdWlyZShnZW4gPj0gOSk7CisJ
+CWlndF9yZXF1aXJlKGdlbiA+PTkgJiYgZ2VuIDwgMTMpOwogCQlkYXRhLnJvdGF0aW9uID0gSUdU
+X1JPVEFUSU9OXzkwOwogCQlkYXRhLnBvc194ID0gMTAwLAogCQlkYXRhLnBvc195ID0gMDsKQEAg
+LTEwNzUsNyArMTA4Myw3IEBAIGlndF9tYWluX2FyZ3MoIiIsIGxvbmdfb3B0cywgaGVscF9zdHIs
+IG9wdF9oYW5kbGVyLCAmZGF0YSkKIAkJICAqIHNvIGFwYXJ0IGZyb20gdGhpcywgYW55IG90aGVy
+IGdlbjExKyBwaXhlbCBmb3JtYXQKIAkJICAqIGNhbiBiZSB1c2VkIHdoaWNoIGRvZXNuJ3Qgc3Vw
+cG9ydCA5MC8yNzAgZGVncmVlCiAJCSAgKiByb3RhdGlvbiAqLwotCQlpZ3RfcmVxdWlyZShnZW4g
+Pj0gOSk7CisJCWlndF9yZXF1aXJlKGdlbiA+PTkgJiYgZ2VuIDwgMTMpOwogCQlkYXRhLnJvdGF0
+aW9uID0gSUdUX1JPVEFUSU9OXzkwOwogCQlkYXRhLm92ZXJyaWRlX2ZtdCA9IGdlbiA8IDExID8g
+RFJNX0ZPUk1BVF9SR0I1NjUgOiBEUk1fRk9STUFUX1kyMTI7CiAJCXRlc3RfcGxhbmVfcm90YXRp
+b24oJmRhdGEsIERSTV9QTEFORV9UWVBFX1BSSU1BUlksIHRydWUpOwpAQCAtMTA4NCw3ICsxMDky
+LDcgQEAgaWd0X21haW5fYXJncygiIiwgbG9uZ19vcHRzLCBoZWxwX3N0ciwgb3B0X2hhbmRsZXIs
+ICZkYXRhKQogCiAJaWd0X2Rlc2NyaWJlKCJDaGVja2luZyB1bnN1cHBvcnRlZCB0aWxpbmcgZm9y
+IGdlbjkrIHdpdGggOTAgZGVncmVlIG9mIHJvdGF0aW9uIik7CiAJaWd0X3N1YnRlc3RfZigiYmFk
+LXRpbGluZyIpIHsKLQkJaWd0X3JlcXVpcmUoZ2VuID49IDkpOworCQlpZ3RfcmVxdWlyZShnZW4g
+Pj05ICYmIGdlbiA8IDEzKTsKIAkJZGF0YS5yb3RhdGlvbiA9IElHVF9ST1RBVElPTl85MDsKIAkJ
+ZGF0YS5vdmVycmlkZV90aWxpbmcgPSBMT0NBTF9JOTE1X0ZPUk1BVF9NT0RfWF9USUxFRDsKIAkJ
+dGVzdF9wbGFuZV9yb3RhdGlvbigmZGF0YSwgRFJNX1BMQU5FX1RZUEVfUFJJTUFSWSwgdHJ1ZSk7
+CkBAIC0xMTAwLDYgKzExMDgsOSBAQCBpZ3RfbWFpbl9hcmdzKCIiLCBsb25nX29wdHMsIGhlbHBf
+c3RyLCBvcHRfaGFuZGxlciwgJmRhdGEpCiAJCQkJICAgIChJU19DSEVSUllWSUVXKGRhdGEuZGV2
+aWQpICYmIHJlZmxlY3RfeC0+cm90ID09IElHVF9ST1RBVElPTl8wCiAJCQkJICAgICAmJiByZWZs
+ZWN0X3gtPnRpbGluZyA9PSBMT0NBTF9JOTE1X0ZPUk1BVF9NT0RfWF9USUxFRCkpOwogCQkJZGF0
+YS5yb3RhdGlvbiA9IChJR1RfUkVGTEVDVF9YIHwgcmVmbGVjdF94LT5yb3QpOworCQkJaWd0X3Jl
+cXVpcmUoIShnZW4gPj0gMTMgJiYgKGRhdGEucm90YXRpb24gJgorCQkJCQkJICAgIChJR1RfUk9U
+QVRJT05fOTAgfAorCQkJCQkJICAgICBJR1RfUk9UQVRJT05fMjcwKSkpKTsKIAkJCWRhdGEub3Zl
+cnJpZGVfdGlsaW5nID0gcmVmbGVjdF94LT50aWxpbmc7CiAJCQl0ZXN0X3BsYW5lX3JvdGF0aW9u
+KCZkYXRhLCBEUk1fUExBTkVfVFlQRV9QUklNQVJZLCBmYWxzZSk7CiAJCX0KQEAgLTExNTUsNyAr
+MTE2Niw3IEBAIGlndF9tYWluX2FyZ3MoIiIsIGxvbmdfb3B0cywgaGVscF9zdHIsIG9wdF9oYW5k
+bGVyLCAmZGF0YSkKIAkJZW51bSBwaXBlIHBpcGU7CiAJCWlndF9vdXRwdXRfdCAqb3V0cHV0Owog
+Ci0JCWlndF9yZXF1aXJlKGdlbiA+PSA5KTsKKwkJaWd0X3JlcXVpcmUoZ2VuID49IDkgJiYgZ2Vu
+IDwgMTMpOwogCQlpZ3RfZGlzcGxheV9yZXF1aXJlX291dHB1dCgmZGF0YS5kaXNwbGF5KTsKIAog
+CQlmb3JfZWFjaF9waXBlX3dpdGhfdmFsaWRfb3V0cHV0KCZkYXRhLmRpc3BsYXksIHBpcGUsIG91
+dHB1dCkgewotLSAKMi4yNS4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
+Lm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
+ZXYK
