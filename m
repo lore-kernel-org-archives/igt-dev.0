@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com
- [IPv6:2a00:1450:4864:20::332])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ABF326E0EE
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Jun 2021 11:10:05 +0000 (UTC)
-Received: by mail-wm1-x332.google.com with SMTP id
- m41-20020a05600c3b29b02901dcd3733f24so4139335wms.1
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Jun 2021 04:10:05 -0700 (PDT)
-References: <20210630094304.1230608-1-mika.kahola@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <bf7acdfd-b7dd-f259-421b-66dffdca43e8@gmail.com>
-Date: Wed, 30 Jun 2021 14:09:57 +0300
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B435789F01
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Jun 2021 12:53:14 +0000 (UTC)
+From: venkata.sai.patnana@intel.com
+Date: Wed, 30 Jun 2021 18:12:24 +0530
+Message-Id: <20210630124224.4491-1-venkata.sai.patnana@intel.com>
+In-Reply-To: <20210622102454.8922-3-venkata.sai.patnana@intel.com>
+References: <20210622102454.8922-3-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20210630094304.1230608-1-mika.kahola@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: Skip 90/270
- rotation for ADL-P
+Subject: [igt-dev] [PATCH i-g-t v2 3/5] tests/kms_dp_dsc: Use helper
+ functions to read/write dsc debugfs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,41 +17,185 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mika Kahola <mika.kahola@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-On 30.6.2021 12.43, Mika Kahola wrote:
-> ADL-P platform doesn't support 90/270 rotation. Let's skip to test
-> with these rotations.
-> 
-> Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-> ---
->   tests/kms_plane_scaling.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-> index 2aa46ac8..1dad2e60 100644
-> --- a/tests/kms_plane_scaling.c
-> +++ b/tests/kms_plane_scaling.c
-> @@ -165,6 +165,10 @@ static bool can_rotate(data_t *d, unsigned format, uint64_t tiling,
->   	if (!is_i915_device(d->drm_fd))
->   		return true;
->   
-> +	if (intel_display_ver(d->devid) >= 13 &&
-> +		(rot == IGT_ROTATION_90 || rot == IGT_ROTATION_270))
-> +		return false;
-> +
->   	switch (format) {
->   	case DRM_FORMAT_RGB565:
->   		if (intel_display_ver(d->devid) >= 11)
-> 
+Remove funtions for reading different dsc parameters from dsc debugfs.
+Use the helper functions for reading and writing dsc debugfs.
+
+Cc: Petri Latvala <petri.latvala@intel.com>
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+---
+ tests/kms_dp_dsc.c | 87 ++++++++--------------------------------------
+ 1 file changed, 15 insertions(+), 72 deletions(-)
+
+diff --git a/tests/kms_dp_dsc.c b/tests/kms_dp_dsc.c
+index 2bf1d5bb7e..462a7b51a7 100644
+--- a/tests/kms_dp_dsc.c
++++ b/tests/kms_dp_dsc.c
+@@ -55,7 +55,6 @@ enum dsc_test_type
+ 
+ typedef struct {
+ 	int drm_fd;
+-	int debugfs_fd;
+ 	uint32_t devid;
+ 	igt_display_t display;
+ 	struct igt_fb fb_test_pattern;
+@@ -78,91 +77,36 @@ static inline void manual(const char *expected)
+ 	igt_debug_manual_check("all", expected);
+ }
+ 
+-static bool is_dp_dsc_supported(data_t *data)
+-{
+-	char file_name[128] = {0};
+-	char buf[512];
+-
+-	strcpy(file_name, data->conn_name);
+-	strcat(file_name, "/i915_dsc_fec_support");
+-	igt_debugfs_read(data->drm_fd, file_name, buf);
+-
+-	return strstr(buf, "DSC_Sink_Support: yes");
+-}
+-
+-static bool is_dp_fec_supported(data_t *data)
+-{
+-	char file_name[128] = {0};
+-	char buf[512];
+-
+-	strcpy(file_name, data->conn_name);
+-	strcat(file_name, "/i915_dsc_fec_support");
+-	igt_debugfs_read(data->drm_fd, file_name, buf);
+-
+-	return strstr(buf, "FEC_Sink_Support: yes");
+-}
+-
+-static bool is_dp_dsc_enabled(data_t *data)
+-{
+-	char file_name[128] = {0};
+-	char buf[512];
+-
+-	strcpy(file_name, data->conn_name);
+-	strcat(file_name, "/i915_dsc_fec_support");
+-	igt_debugfs_read(data->drm_fd, file_name, buf);
+-
+-	return strstr(buf, "DSC_Enabled: yes");
+-}
+-
+ static void force_dp_dsc_enable(data_t *data)
+ {
+-	char file_name[128] = {0};
+ 	int ret;
+ 
+-	strcpy(file_name, data->conn_name);
+-	strcat(file_name, "/i915_dsc_fec_support");
+ 	igt_debug ("Forcing DSC enable on %s\n", data->conn_name);
+-	ret = igt_sysfs_write(data->debugfs_fd, file_name, "1", 1);
++	ret = igt_force_dp_dsc_enable(data->drm_fd,
++				      data->output->config.connector);
+ 	igt_assert_f(ret > 0, "debugfs_write failed");
+ }
+ 
+ static void force_dp_dsc_enable_bpp(data_t *data)
+ {
+ 	int ret;
+-	char file_name[128] = {0};
+-	char buffer[20];
+ 
+-	sprintf(buffer, "%d", data->compression_bpp);
+-	strcpy(file_name, data->conn_name);
+-	strcat(file_name, "/i915_dsc_bpp_support");
+ 	igt_debug("Forcing DSC BPP to %d on %s\n",
+ 		  data->compression_bpp, data->conn_name);
+-	ret = igt_sysfs_write(data->debugfs_fd, file_name,
+-			      buffer, sizeof(buffer));
++	ret = igt_force_dp_dsc_enable_bpp(data->drm_fd,
++					  data->output->config.connector,
++					  data->compression_bpp);
+ 	igt_assert_f(ret > 0, "debugfs_write failed");
+ }
+ 
+-static bool is_force_dsc_enabled(data_t *data)
+-{
+-	char file_name[128] = {0};
+-	char buf[512];
+-
+-	strcpy(file_name, data->conn_name);
+-	strcat(file_name, "/i915_dsc_fec_support");
+-	igt_debugfs_read(data->drm_fd, file_name, buf);
+-
+-	return strstr(buf, "Force_DSC_Enable: yes");
+-}
+-
+ static void save_force_dsc_en(data_t *data)
+ {
+-	char file_name[128] = {0};
+-
+-	force_dsc_en_orig = is_force_dsc_enabled(data);
+-	strcpy(file_name, data->conn_name);
+-	strcat(file_name, "/i915_dsc_fec_support");
+-	force_dsc_restore_fd = openat(igt_debugfs_dir(data->drm_fd),
+-				      file_name, O_WRONLY);
++	force_dsc_en_orig =
++		igt_is_force_dsc_enabled(data->drm_fd,
++					 data->output->config.connector);
++	force_dsc_restore_fd =
++		igt_get_dp_dsc_debugfs_fd(data->drm_fd,
++					  data->output->config.connector);
+ 	igt_assert(force_dsc_restore_fd >= 0);
+ }
+ 
+@@ -212,13 +156,13 @@ static bool check_dsc_on_connector(data_t *data, uint32_t drmConnector)
+ 		kmstest_connector_type_str(connector->connector_type),
+ 		connector->connector_type_id);
+ 
+-	if (!is_dp_dsc_supported(data)) {
++	if (!igt_is_dp_dsc_supported(data->drm_fd, connector)) {
+ 		igt_debug("DSC not supported on connector %s\n",
+ 			  data->conn_name);
+ 		return false;
+ 	}
+ 	if (connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
+-	    !is_dp_fec_supported(data)) {
++	    !igt_is_dp_fec_supported(data->drm_fd, connector)) {
+ 		igt_debug("DSC cannot be enabled without FEC on %s\n",
+ 			  data->conn_name);
+ 		return false;
+@@ -263,7 +207,8 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+ 	 */
+ 	manual("RGB test pattern without corruption");
+ 
+-	enabled = is_dp_dsc_enabled(data);
++	enabled = igt_is_dp_dsc_enabled(data->drm_fd,
++					data->output->config.connector);
+ 	restore_force_dsc_en();
+ 
+ 	igt_assert_f(enabled,
+@@ -320,7 +265,6 @@ igt_main
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 		igt_require_intel(data.drm_fd);
+ 		data.devid = intel_get_drm_devid(data.drm_fd);
+-		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_install_exit_handler(kms_dp_dsc_exit_handler);
+ 		igt_display_require(&data.display, data.drm_fd);
+@@ -357,7 +301,6 @@ igt_main
+ 			drmModeFreeConnector(connector);
+ 		test_cleanup(&data);
+ 		drmModeFreeResources(res);
+-		close(data.debugfs_fd);
+ 		close(data.drm_fd);
+ 		igt_display_fini(&data.display);
+ 	}
+-- 
+2.25.1
 
 _______________________________________________
 igt-dev mailing list
