@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B435789F01
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Jun 2021 12:53:14 +0000 (UTC)
-From: venkata.sai.patnana@intel.com
-Date: Wed, 30 Jun 2021 18:12:24 +0530
-Message-Id: <20210630124224.4491-1-venkata.sai.patnana@intel.com>
-In-Reply-To: <20210622102454.8922-3-venkata.sai.patnana@intel.com>
-References: <20210622102454.8922-3-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 3/5] tests/kms_dp_dsc: Use helper
- functions to read/write dsc debugfs
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 30 Jun 2021 13:03:26 -0000
+Message-ID: <162505820682.10374.14982407145710435076@emeril.freedesktop.org>
+References: <20210629123303.1950-1-sai.krishna.kuchi@intel.com>
+In-Reply-To: <20210629123303.1950-1-sai.krishna.kuchi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
+ =?utf-8?q?em=5Fblits=3A_Added_description_to_all_subtests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,187 +14,152 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1520854272=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: sai.krishna.kuchi@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+--===============1520854272==
+Content-Type: multipart/alternative;
+ boundary="===============2161410794059601737=="
 
-Remove funtions for reading different dsc parameters from dsc debugfs.
-Use the helper functions for reading and writing dsc debugfs.
+--===============2161410794059601737==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Petri Latvala <petri.latvala@intel.com>
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
----
- tests/kms_dp_dsc.c | 87 ++++++++--------------------------------------
- 1 file changed, 15 insertions(+), 72 deletions(-)
+== Series Details ==
 
-diff --git a/tests/kms_dp_dsc.c b/tests/kms_dp_dsc.c
-index 2bf1d5bb7e..462a7b51a7 100644
---- a/tests/kms_dp_dsc.c
-+++ b/tests/kms_dp_dsc.c
-@@ -55,7 +55,6 @@ enum dsc_test_type
- 
- typedef struct {
- 	int drm_fd;
--	int debugfs_fd;
- 	uint32_t devid;
- 	igt_display_t display;
- 	struct igt_fb fb_test_pattern;
-@@ -78,91 +77,36 @@ static inline void manual(const char *expected)
- 	igt_debug_manual_check("all", expected);
- }
- 
--static bool is_dp_dsc_supported(data_t *data)
--{
--	char file_name[128] = {0};
--	char buf[512];
--
--	strcpy(file_name, data->conn_name);
--	strcat(file_name, "/i915_dsc_fec_support");
--	igt_debugfs_read(data->drm_fd, file_name, buf);
--
--	return strstr(buf, "DSC_Sink_Support: yes");
--}
--
--static bool is_dp_fec_supported(data_t *data)
--{
--	char file_name[128] = {0};
--	char buf[512];
--
--	strcpy(file_name, data->conn_name);
--	strcat(file_name, "/i915_dsc_fec_support");
--	igt_debugfs_read(data->drm_fd, file_name, buf);
--
--	return strstr(buf, "FEC_Sink_Support: yes");
--}
--
--static bool is_dp_dsc_enabled(data_t *data)
--{
--	char file_name[128] = {0};
--	char buf[512];
--
--	strcpy(file_name, data->conn_name);
--	strcat(file_name, "/i915_dsc_fec_support");
--	igt_debugfs_read(data->drm_fd, file_name, buf);
--
--	return strstr(buf, "DSC_Enabled: yes");
--}
--
- static void force_dp_dsc_enable(data_t *data)
- {
--	char file_name[128] = {0};
- 	int ret;
- 
--	strcpy(file_name, data->conn_name);
--	strcat(file_name, "/i915_dsc_fec_support");
- 	igt_debug ("Forcing DSC enable on %s\n", data->conn_name);
--	ret = igt_sysfs_write(data->debugfs_fd, file_name, "1", 1);
-+	ret = igt_force_dp_dsc_enable(data->drm_fd,
-+				      data->output->config.connector);
- 	igt_assert_f(ret > 0, "debugfs_write failed");
- }
- 
- static void force_dp_dsc_enable_bpp(data_t *data)
- {
- 	int ret;
--	char file_name[128] = {0};
--	char buffer[20];
- 
--	sprintf(buffer, "%d", data->compression_bpp);
--	strcpy(file_name, data->conn_name);
--	strcat(file_name, "/i915_dsc_bpp_support");
- 	igt_debug("Forcing DSC BPP to %d on %s\n",
- 		  data->compression_bpp, data->conn_name);
--	ret = igt_sysfs_write(data->debugfs_fd, file_name,
--			      buffer, sizeof(buffer));
-+	ret = igt_force_dp_dsc_enable_bpp(data->drm_fd,
-+					  data->output->config.connector,
-+					  data->compression_bpp);
- 	igt_assert_f(ret > 0, "debugfs_write failed");
- }
- 
--static bool is_force_dsc_enabled(data_t *data)
--{
--	char file_name[128] = {0};
--	char buf[512];
--
--	strcpy(file_name, data->conn_name);
--	strcat(file_name, "/i915_dsc_fec_support");
--	igt_debugfs_read(data->drm_fd, file_name, buf);
--
--	return strstr(buf, "Force_DSC_Enable: yes");
--}
--
- static void save_force_dsc_en(data_t *data)
- {
--	char file_name[128] = {0};
--
--	force_dsc_en_orig = is_force_dsc_enabled(data);
--	strcpy(file_name, data->conn_name);
--	strcat(file_name, "/i915_dsc_fec_support");
--	force_dsc_restore_fd = openat(igt_debugfs_dir(data->drm_fd),
--				      file_name, O_WRONLY);
-+	force_dsc_en_orig =
-+		igt_is_force_dsc_enabled(data->drm_fd,
-+					 data->output->config.connector);
-+	force_dsc_restore_fd =
-+		igt_get_dp_dsc_debugfs_fd(data->drm_fd,
-+					  data->output->config.connector);
- 	igt_assert(force_dsc_restore_fd >= 0);
- }
- 
-@@ -212,13 +156,13 @@ static bool check_dsc_on_connector(data_t *data, uint32_t drmConnector)
- 		kmstest_connector_type_str(connector->connector_type),
- 		connector->connector_type_id);
- 
--	if (!is_dp_dsc_supported(data)) {
-+	if (!igt_is_dp_dsc_supported(data->drm_fd, connector)) {
- 		igt_debug("DSC not supported on connector %s\n",
- 			  data->conn_name);
- 		return false;
- 	}
- 	if (connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
--	    !is_dp_fec_supported(data)) {
-+	    !igt_is_dp_fec_supported(data->drm_fd, connector)) {
- 		igt_debug("DSC cannot be enabled without FEC on %s\n",
- 			  data->conn_name);
- 		return false;
-@@ -263,7 +207,8 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
- 	 */
- 	manual("RGB test pattern without corruption");
- 
--	enabled = is_dp_dsc_enabled(data);
-+	enabled = igt_is_dp_dsc_enabled(data->drm_fd,
-+					data->output->config.connector);
- 	restore_force_dsc_en();
- 
- 	igt_assert_f(enabled,
-@@ -320,7 +265,6 @@ igt_main
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 		igt_require_intel(data.drm_fd);
- 		data.devid = intel_get_drm_devid(data.drm_fd);
--		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
- 		kmstest_set_vt_graphics_mode();
- 		igt_install_exit_handler(kms_dp_dsc_exit_handler);
- 		igt_display_require(&data.display, data.drm_fd);
-@@ -357,7 +301,6 @@ igt_main
- 			drmModeFreeConnector(connector);
- 		test_cleanup(&data);
- 		drmModeFreeResources(res);
--		close(data.debugfs_fd);
- 		close(data.drm_fd);
- 		igt_display_fini(&data.display);
- 	}
--- 
-2.25.1
+Series: i915/gem_blits: Added description to all subtests
+URL   : https://patchwork.freedesktop.org/series/92057/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6124 -> IGTPW_5967
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5967/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5967 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [PASS][1] -> [INCOMPLETE][2] ([i915#2782])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6124/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5967/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  
+  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
+
+
+Participating hosts (39 -> 36)
+------------------------------
+
+  Missing    (3): fi-ilk-m540 fi-bsw-cyan fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6124 -> IGTPW_5967
+
+  CI-20190529: 20190529
+  CI_DRM_10294: a3c91707db332db43ce4d5c5a52b85482832b675 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5967: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5967/index.html
+  IGT_6124: 357d5477c93f2bdd3354afe91b89ccfd4ee4fd56 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5967/index.html
+
+--===============2161410794059601737==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915/gem_blits: Added description to all subtests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/92057/">https://patchwork.freedesktop.org/series/92057/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5967/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5967/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6124 -&gt; IGTPW_5967</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5967/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5967 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6124/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5967/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (39 -&gt; 36)</h2>
+<p>Missing    (3): fi-ilk-m540 fi-bsw-cyan fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6124 -&gt; IGTPW_5967</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10294: a3c91707db332db43ce4d5c5a52b85482832b675 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5967: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5967/index.html<br />
+  IGT_6124: 357d5477c93f2bdd3354afe91b89ccfd4ee4fd56 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2161410794059601737==--
+
+--===============1520854272==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1520854272==--
