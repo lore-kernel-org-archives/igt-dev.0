@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B38FF6E10D
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Jun 2021 15:39:29 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 946306EA35
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Jun 2021 15:58:20 +0000 (UTC)
 From: venkata.sai.patnana@intel.com
-Date: Wed, 30 Jun 2021 20:58:41 +0530
-Message-Id: <20210630152841.10527-1-venkata.sai.patnana@intel.com>
+Date: Wed, 30 Jun 2021 21:15:40 +0530
+Message-Id: <20210630154540.14496-1-venkata.sai.patnana@intel.com>
+In-Reply-To: <20210630152841.10527-1-venkata.sai.patnana@intel.com>
+References: <20210630152841.10527-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH i-g-t] tests/kms_rotation_crc: Skip 90/270
- rotation for xelpd
+ rotation for ADL-P
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,7 +26,7 @@ Cc: =?UTF-8?q?Juha-Pekka=20Heikkil=C3=A4?= <juha-pekka.heikkila@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 RnJvbTogUGF0bmFuYSBWZW5rYXRhIFNhaSA8dmVua2F0YS5zYWkucGF0bmFuYUBpbnRlbC5jb20+
-Cgp4ZWxwZCBwbGF0Zm9ybSBkb2Vzbid0IHN1cHBvcnQgOTAvMjcwIHJvdGF0aW9uLiBMZXQncyBz
+CgpBREwtUCBwbGF0Zm9ybSBkb2Vzbid0IHN1cHBvcnQgOTAvMjcwIHJvdGF0aW9uLiBMZXQncyBz
 a2lwIHRvIHRlc3QKd2l0aCB0aGVzZSByb3RhdGlvbnMuCgpDYzogSnVoYS1QZWtrYSBIZWlra2ls
 w6QgPGp1aGEtcGVra2EuaGVpa2tpbGFAaW50ZWwuY29tPgpDYzogS2FydGhpayBCIFMgPGthcnRo
 aWsuYi5zQGludGVsLmNvbT4KU2lnbmVkLW9mZi1ieTogUGF0bmFuYSBWZW5rYXRhIFNhaSA8dmVu
