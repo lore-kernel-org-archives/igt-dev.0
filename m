@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE4416EAA6
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B50F16E9C3
  for <igt-dev@lists.freedesktop.org>; Thu,  1 Jul 2021 04:12:14 +0000 (UTC)
 From: venkata.sai.patnana@intel.com
-Date: Thu,  1 Jul 2021 09:31:14 +0530
-Message-Id: <20210701040115.20186-1-venkata.sai.patnana@intel.com>
-In-Reply-To: <20210630152841.10527-1-venkata.sai.patnana@intel.com>
+Date: Thu,  1 Jul 2021 09:31:15 +0530
+Message-Id: <20210701040115.20186-2-venkata.sai.patnana@intel.com>
+In-Reply-To: <20210701040115.20186-1-venkata.sai.patnana@intel.com>
 References: <20210630152841.10527-1-venkata.sai.patnana@intel.com>
+ <20210701040115.20186-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v3 1/2] tests/kms_rotation_crc: Skip 90/270
- rotation for ADL-P
+Subject: [igt-dev] [PATCH i-g-t 2/2] HAX remove kms_rotatation_crc from
+ premerge blacklistHAX remove kms_rotatation_crc from premerge blacklist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,82 +18,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Juha-Pekka=20Heikkil=C3=A4?= <juha-pekka.heikkila@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogUGF0bmFuYSBWZW5rYXRhIFNhaSA8dmVua2F0YS5zYWkucGF0bmFuYUBpbnRlbC5jb20+
-CgpBREwtUCBwbGF0Zm9ybSBkb2Vzbid0IHN1cHBvcnQgOTAvMjcwIHJvdGF0aW9uLiBMZXQncyBz
-a2lwIHRvIHRlc3QKd2l0aCB0aGVzZSByb3RhdGlvbnMuCgpDYzogSnVoYS1QZWtrYSBIZWlra2ls
-w6QgPGp1aGEtcGVra2EuaGVpa2tpbGFAaW50ZWwuY29tPgpDYzogS2FydGhpayBCIFMgPGthcnRo
-aWsuYi5zQGludGVsLmNvbT4KUmV2aWV3ZWQtYnk6IEthcnRoaWsgQiBTIDxrYXJ0aGlrLmIuc0Bp
-bnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IFBhdG5hbmEgVmVua2F0YSBTYWkgPHZlbmthdGEuc2Fp
-LnBhdG5hbmFAaW50ZWwuY29tPgotLS0KIHRlc3RzL2ttc19yb3RhdGlvbl9jcmMuYyB8IDIzICsr
-KysrKysrKysrKysrKysrLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMTcgaW5zZXJ0aW9ucygrKSwg
-NiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS90ZXN0cy9rbXNfcm90YXRpb25fY3JjLmMgYi90
-ZXN0cy9rbXNfcm90YXRpb25fY3JjLmMKaW5kZXggMjA1NTZjODI1YS4uODExZjI5NWU5YyAxMDA2
-NDQKLS0tIGEvdGVzdHMva21zX3JvdGF0aW9uX2NyYy5jCisrKyBiL3Rlc3RzL2ttc19yb3RhdGlv
-bl9jcmMuYwpAQCAtNzM3LDYgKzczNywxNCBAQCBzdGF0aWMgdm9pZCB0ZXN0X211bHRpX3BsYW5l
-X3JvdGF0aW9uKGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUpCiAJCQkJCQkgICAgIChwbGFu
-ZWNvbmZpZ3Nbal0ucm90YXRpb24gJiAoSUdUX1JPVEFUSU9OXzkwIHwgSUdUX1JPVEFUSU9OXzI3
-MCkpCiAJCQkJCQkgICAgICYmIGludGVsX2Rpc3BsYXlfdmVyKGRhdGEtPmRldmlkKSA8IDExKQog
-CQkJCQkJCWNvbnRpbnVlOworCisJCQkJCQlpZiAoKHBsYW5lY29uZmlnc1tpXS5yb3RhdGlvbiAm
-IChJR1RfUk9UQVRJT05fOTAgfCBJR1RfUk9UQVRJT05fMjcwKSkKKwkJCQkJCSAgICAmJiBpbnRl
-bF9kaXNwbGF5X3ZlcihkYXRhLT5kZXZpZCkgPj0gMTMpCisJCQkJCQkJY29udGludWU7CisKKwkJ
-CQkJCWlmICgocGxhbmVjb25maWdzW2pdLnJvdGF0aW9uICYgKElHVF9ST1RBVElPTl85MCB8IElH
-VF9ST1RBVElPTl8yNzApKQorCQkJCQkJICAgICYmIGludGVsX2Rpc3BsYXlfdmVyKGRhdGEtPmRl
-dmlkKSA+PSAxMykKKwkJCQkJCQljb250aW51ZTsKIAkJCQkJCS8qCiAJCQkJCQkgKiBpZiB1c2lu
-ZyBwYWNrZWQgZm9ybWF0cyBjcmMncyB3aWxsIGJlCiAJCQkJCQkgKiBzYW1lIGFuZCBjYW4gc3Rv
-cmUgdGhlbSBzbyB0aGVyZSdzCkBAIC0xMDQyLDggKzEwNTAsOCBAQCBpZ3RfbWFpbl9hcmdzKCIi
-LCBsb25nX29wdHMsIGhlbHBfc3RyLCBvcHRfaGFuZGxlciwgJmRhdGEpCiAJCQkgICAgICByb3Rf
-dGVzdF9zdHIoc3VidGVzdC0+cm90KSkgewogCQkJaWYgKGlzX2k5MTVfZGV2aWNlKGRhdGEuZ2Z4
-X2ZkKSkgewogCQkJCWlndF9yZXF1aXJlKCEoc3VidGVzdC0+cm90ICYKLQkJCQkJICAgIChJR1Rf
-Uk9UQVRJT05fOTAgfCBJR1RfUk9UQVRJT05fMjcwKSkgfHwKLQkJCQkJICAgIGdlbiA+PSA5KTsK
-KyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKElHVF9ST1RBVElP
-Tl85MCB8IElHVF9ST1RBVElPTl8yNzApKSB8fAorICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAoZ2VuID49IDkgJiYgZ2VuIDwgMTMpKTsKIAkJCX0gZWxzZSBpZiAo
-aXNfYW1kZ3B1X2RldmljZShkYXRhLmdmeF9mZCkpIHsKIAkJCQlkYXRhLm92ZXJyaWRlX2ZtdCA9
-IERSTV9GT1JNQVRfWFJHQjg4ODg7CiAJCQkJaWYgKHN1YnRlc3QtPnJvdCAmIChJR1RfUk9UQVRJ
-T05fOTAgfCBJR1RfUk9UQVRJT05fMjcwKSkKQEAgLTEwNjAsNyArMTA2OCw3IEBAIGlndF9tYWlu
-X2FyZ3MoIiIsIGxvbmdfb3B0cywgaGVscF9zdHIsIG9wdF9oYW5kbGVyLCAmZGF0YSkKIAogCWln
-dF9kZXNjcmliZSgiUm90YXRpb24gdGVzdCB3aXRoIDkwIGRlZ3JlZSBmb3IgYSBwbGFuZSBvZiBn
-ZW45KyB3aXRoIGdpdmVuIHBvc2l0aW9uIik7CiAJaWd0X3N1YnRlc3RfZigic3ByaXRlLXJvdGF0
-aW9uLTkwLXBvcy0xMDAtMCIpIHsKLQkJaWd0X3JlcXVpcmUoZ2VuID49IDkpOworCQlpZ3RfcmVx
-dWlyZShnZW4gPj05ICYmIGdlbiA8IDEzKTsKIAkJZGF0YS5yb3RhdGlvbiA9IElHVF9ST1RBVElP
-Tl85MDsKIAkJZGF0YS5wb3NfeCA9IDEwMCwKIAkJZGF0YS5wb3NfeSA9IDA7CkBAIC0xMDc1LDcg
-KzEwODMsNyBAQCBpZ3RfbWFpbl9hcmdzKCIiLCBsb25nX29wdHMsIGhlbHBfc3RyLCBvcHRfaGFu
-ZGxlciwgJmRhdGEpCiAJCSAgKiBzbyBhcGFydCBmcm9tIHRoaXMsIGFueSBvdGhlciBnZW4xMSsg
-cGl4ZWwgZm9ybWF0CiAJCSAgKiBjYW4gYmUgdXNlZCB3aGljaCBkb2Vzbid0IHN1cHBvcnQgOTAv
-MjcwIGRlZ3JlZQogCQkgICogcm90YXRpb24gKi8KLQkJaWd0X3JlcXVpcmUoZ2VuID49IDkpOwor
-CQlpZ3RfcmVxdWlyZShnZW4gPj05ICYmIGdlbiA8IDEzKTsKIAkJZGF0YS5yb3RhdGlvbiA9IElH
-VF9ST1RBVElPTl85MDsKIAkJZGF0YS5vdmVycmlkZV9mbXQgPSBnZW4gPCAxMSA/IERSTV9GT1JN
-QVRfUkdCNTY1IDogRFJNX0ZPUk1BVF9ZMjEyOwogCQl0ZXN0X3BsYW5lX3JvdGF0aW9uKCZkYXRh
-LCBEUk1fUExBTkVfVFlQRV9QUklNQVJZLCB0cnVlKTsKQEAgLTEwODQsNyArMTA5Miw3IEBAIGln
-dF9tYWluX2FyZ3MoIiIsIGxvbmdfb3B0cywgaGVscF9zdHIsIG9wdF9oYW5kbGVyLCAmZGF0YSkK
-IAogCWlndF9kZXNjcmliZSgiQ2hlY2tpbmcgdW5zdXBwb3J0ZWQgdGlsaW5nIGZvciBnZW45KyB3
-aXRoIDkwIGRlZ3JlZSBvZiByb3RhdGlvbiIpOwogCWlndF9zdWJ0ZXN0X2YoImJhZC10aWxpbmci
-KSB7Ci0JCWlndF9yZXF1aXJlKGdlbiA+PSA5KTsKKwkJaWd0X3JlcXVpcmUoZ2VuID49OSAmJiBn
-ZW4gPCAxMyk7CiAJCWRhdGEucm90YXRpb24gPSBJR1RfUk9UQVRJT05fOTA7CiAJCWRhdGEub3Zl
-cnJpZGVfdGlsaW5nID0gTE9DQUxfSTkxNV9GT1JNQVRfTU9EX1hfVElMRUQ7CiAJCXRlc3RfcGxh
-bmVfcm90YXRpb24oJmRhdGEsIERSTV9QTEFORV9UWVBFX1BSSU1BUlksIHRydWUpOwpAQCAtMTEw
-MCw2ICsxMTA4LDkgQEAgaWd0X21haW5fYXJncygiIiwgbG9uZ19vcHRzLCBoZWxwX3N0ciwgb3B0
-X2hhbmRsZXIsICZkYXRhKQogCQkJCSAgICAoSVNfQ0hFUlJZVklFVyhkYXRhLmRldmlkKSAmJiBy
-ZWZsZWN0X3gtPnJvdCA9PSBJR1RfUk9UQVRJT05fMAogCQkJCSAgICAgJiYgcmVmbGVjdF94LT50
-aWxpbmcgPT0gTE9DQUxfSTkxNV9GT1JNQVRfTU9EX1hfVElMRUQpKTsKIAkJCWRhdGEucm90YXRp
-b24gPSAoSUdUX1JFRkxFQ1RfWCB8IHJlZmxlY3RfeC0+cm90KTsKKwkJCWlndF9yZXF1aXJlKCEo
-Z2VuID49IDEzICYmIChkYXRhLnJvdGF0aW9uICYKKwkJCQkJCSAgICAoSUdUX1JPVEFUSU9OXzkw
-IHwKKwkJCQkJCSAgICAgSUdUX1JPVEFUSU9OXzI3MCkpKSk7CiAJCQlkYXRhLm92ZXJyaWRlX3Rp
-bGluZyA9IHJlZmxlY3RfeC0+dGlsaW5nOwogCQkJdGVzdF9wbGFuZV9yb3RhdGlvbigmZGF0YSwg
-RFJNX1BMQU5FX1RZUEVfUFJJTUFSWSwgZmFsc2UpOwogCQl9CkBAIC0xMTU1LDcgKzExNjYsNyBA
-QCBpZ3RfbWFpbl9hcmdzKCIiLCBsb25nX29wdHMsIGhlbHBfc3RyLCBvcHRfaGFuZGxlciwgJmRh
-dGEpCiAJCWVudW0gcGlwZSBwaXBlOwogCQlpZ3Rfb3V0cHV0X3QgKm91dHB1dDsKIAotCQlpZ3Rf
-cmVxdWlyZShnZW4gPj0gOSk7CisJCWlndF9yZXF1aXJlKGdlbiA+PSA5ICYmIGdlbiA8IDEzKTsK
-IAkJaWd0X2Rpc3BsYXlfcmVxdWlyZV9vdXRwdXQoJmRhdGEuZGlzcGxheSk7CiAKIAkJZm9yX2Vh
-Y2hfcGlwZV93aXRoX3ZhbGlkX291dHB1dCgmZGF0YS5kaXNwbGF5LCBwaXBlLCBvdXRwdXQpIHsK
-LS0gCjIuMjUuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
-cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+From: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+
+Signed-off-by: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+---
+ tests/intel-ci/blacklist-pre-merge.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/intel-ci/blacklist-pre-merge.txt b/tests/intel-ci/blacklist-pre-merge.txt
+index 115474d987..710cf8c8c4 100644
+--- a/tests/intel-ci/blacklist-pre-merge.txt
++++ b/tests/intel-ci/blacklist-pre-merge.txt
+@@ -17,7 +17,7 @@
+ #
+ # Data acquired on 2020-02-19 by Martin Peres
+ ###############################################################################
+-igt@kms_rotation_crc@.*
++#igt@kms_rotation_crc@.*
+ 
+ 
+ ###############################################################################
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
