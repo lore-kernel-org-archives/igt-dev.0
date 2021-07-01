@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com
- [IPv6:2607:f8b0:4864:20::72d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C2606EB71
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Jul 2021 17:26:36 +0000 (UTC)
-Received: by mail-qk1-x72d.google.com with SMTP id bj15so6727511qkb.11
- for <igt-dev@lists.freedesktop.org>; Thu, 01 Jul 2021 10:26:36 -0700 (PDT)
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com
+ [IPv6:2607:f8b0:4864:20::82d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DEC116E0D9
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Jul 2021 17:44:35 +0000 (UTC)
+Received: by mail-qt1-x82d.google.com with SMTP id f13so4681398qtb.6
+ for <igt-dev@lists.freedesktop.org>; Thu, 01 Jul 2021 10:44:35 -0700 (PDT)
 From: Mark Yacoub <markyacoub@chromium.org>
-Date: Thu,  1 Jul 2021 13:26:17 -0400
-Message-Id: <20210701172617.2257508-2-markyacoub@chromium.org>
-In-Reply-To: <20210701172617.2257508-1-markyacoub@chromium.org>
-References: <20210701172617.2257508-1-markyacoub@chromium.org>
+Date: Thu,  1 Jul 2021 13:44:24 -0400
+Message-Id: <20210701174424.2261499-2-markyacoub@chromium.org>
+In-Reply-To: <20210701174424.2261499-1-markyacoub@chromium.org>
+References: <20210701174424.2261499-1-markyacoub@chromium.org>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH 2/2] kms_addfb_basic: Check for AMDGPU and MSM bad
  pitch.
