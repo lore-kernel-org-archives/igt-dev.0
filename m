@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com
- [IPv6:2607:f8b0:4864:20::82d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DEC116E0D9
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Jul 2021 17:44:35 +0000 (UTC)
-Received: by mail-qt1-x82d.google.com with SMTP id f13so4681398qtb.6
- for <igt-dev@lists.freedesktop.org>; Thu, 01 Jul 2021 10:44:35 -0700 (PDT)
+Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com
+ [IPv6:2607:f8b0:4864:20::733])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A36A56E055
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Jul 2021 17:44:33 +0000 (UTC)
+Received: by mail-qk1-x733.google.com with SMTP id q190so6839462qkd.2
+ for <igt-dev@lists.freedesktop.org>; Thu, 01 Jul 2021 10:44:33 -0700 (PDT)
 From: Mark Yacoub <markyacoub@chromium.org>
-Date: Thu,  1 Jul 2021 13:44:24 -0400
-Message-Id: <20210701174424.2261499-2-markyacoub@chromium.org>
-In-Reply-To: <20210701174424.2261499-1-markyacoub@chromium.org>
-References: <20210701174424.2261499-1-markyacoub@chromium.org>
+Date: Thu,  1 Jul 2021 13:44:23 -0400
+Message-Id: <20210701174424.2261499-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 2/2] kms_addfb_basic: Check for AMDGPU and MSM bad
- pitch.
+Subject: [igt-dev] [PATCH 1/2] drmtest: Add is_msm_device check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,31 +27,42 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mark Yacoub <markyacoub@google.com>
 
-[Why]
-AMDGPU and MSM devices have a known errno when it fails coorectly for
-bad pitches.
-
-[How]
-Assert `errno` to `EINVAL` for both AMDGPU and MSM as well.
+Add support for MSM drivers.
 
 Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
 ---
- tests/kms_addfb_basic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/drmtest.c | 5 +++++
+ lib/drmtest.h | 1 +
+ 2 files changed, 6 insertions(+)
 
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index 85c14be5..91fb6ac9 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -310,7 +310,7 @@ static void pitch_tests(int fd)
- 			f.pitches[0] = bad_pitches[i];
- 			igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f), -1);
- 			igt_assert(errno != 0);
--			if (is_i915_device(fd)) {
-+			if (is_i915_device(fd) || is_amdgpu_device(fd) || is_msm_device(fd)) {
- 				igt_assert_eq(errno, EINVAL);
- 			} else if (is_nouveau_device(fd)) {
- 				if (bad_pitches[i] > 4 * 1024)
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index a8ba6e11..e1f9b115 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -114,6 +114,11 @@ bool is_i915_device(int fd)
+ 	return __is_device(fd, "i915");
+ }
+ 
++bool is_msm_device(int fd)
++{
++	return __is_device(fd, "msm");
++}
++
+ bool is_nouveau_device(int fd)
+ {
+ 	/* Currently all nouveau-specific codepaths require libdrm */
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index d393dbf1..7d17a0f9 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -102,6 +102,7 @@ void igt_require_vc4(int fd);
+ 
+ bool is_amdgpu_device(int fd);
+ bool is_i915_device(int fd);
++bool is_msm_device(int fd);
+ bool is_nouveau_device(int fd);
+ bool is_vc4_device(int fd);
+ 
 -- 
 2.32.0.93.g670b81a890-goog
 
