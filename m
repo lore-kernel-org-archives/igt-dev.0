@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7702E6E9CA
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Jul 2021 09:17:34 +0000 (UTC)
-References: <20210608061829.3774-1-jeevan.b@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-Message-ID: <475ff3cb-c5fb-dac4-de8b-97922c58f330@intel.com>
-Date: Thu, 1 Jul 2021 14:47:25 +0530
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com
+ [IPv6:2a00:1450:4864:20::635])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 59B3A6EB50
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Jul 2021 16:13:26 +0000 (UTC)
+Received: by mail-ej1-x635.google.com with SMTP id v20so11275132eji.10
+ for <igt-dev@lists.freedesktop.org>; Thu, 01 Jul 2021 09:13:26 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210608061829.3774-1-jeevan.b@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_flip_tiling: Fix clean up
- when subtest fails
+References: <20210611042123.25282-1-mario.kleiner.de@gmail.com>
+In-Reply-To: <20210611042123.25282-1-mario.kleiner.de@gmail.com>
+From: Mario Kleiner <mario.kleiner.de@gmail.com>
+Date: Thu, 1 Jul 2021 18:13:12 +0200
+Message-ID: <CAEsyxygzoxkYEAQW=+tOD-JVCNJXnc_jcJku7bS6cUpc0JyAwA@mail.gmail.com>
+Subject: Re: [igt-dev] Add support for testing of 16 bpc fixed point
+ framebuffers. II.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,188 +20,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 6/8/2021 11:48 AM, Jeevan B wrote:
-> If a subtest fails during commit for some reason on the first connector,
-> all the subsequent subtests on the same pipe fails.
-> This is because the pipe is still connected to the previous connector
-> as the cleanup part will have been skipped during the failed subtest.
+Ping. Can somebody merge this series please?
+
+Thanks,
+-mario
+
+On Fri, Jun 11, 2021 at 6:21 AM Mario Kleiner
+<mario.kleiner.de@gmail.com> wrote:
 >
-> To fix this, moved the cleanup part to a separate function and calling it
-> outside the subtest scope.
+> Now with the R-b by Ville added to patch 2/2, and drm_fourcc.h
+> synchronized from the current drm-next branch's drm_fourcc.h,
+> to provide the new 16 bpc fixed point fourcc's.
 >
-> v2: Fix indentation.
+> Thanks,
+> -mario
 >
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-
-Also since this issue is seen on a dual display setup and in a specific 
-scenario, verified this locally.
-
-Tested-by: Karthik B S <karthik.b.s@intel.com>
-
-> ---
->   tests/kms_flip_tiling.c | 31 +++++++++++++++++++++++--------
->   1 file changed, 23 insertions(+), 8 deletions(-)
 >
-> diff --git a/tests/kms_flip_tiling.c b/tests/kms_flip_tiling.c
-> index 573cc337..211117f3 100644
-> --- a/tests/kms_flip_tiling.c
-> +++ b/tests/kms_flip_tiling.c
-> @@ -39,6 +39,7 @@ typedef struct {
->   	igt_display_t display;
->   	int gen;
->   	uint32_t testformat;
-> +	struct igt_fb fb[2];
->   } data_t;
->   
->   static igt_pipe_crc_t *_pipe_crc;
-> @@ -69,7 +70,6 @@ test_flip_tiling(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t ti
->   {
->   	drmModeModeInfo *mode;
->   	igt_plane_t *primary;
-> -	struct igt_fb fb[2];
->   	igt_pipe_crc_t *pipe_crc;
->   	igt_crc_t reference_crc, crc;
->   	int fb_id, ret, width;
-> @@ -105,27 +105,27 @@ test_flip_tiling(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t ti
->   
->   	fb_id = igt_create_pattern_fb(data->drm_fd, width, mode->vdisplay,
->   				      data->testformat, tiling[0],
-> -				      &fb[0]);
-> +				      &data->fb[0]);
->   	igt_assert(fb_id);
->   
->   	/* Second fb has different background so CRC does not match. */
->   	fb_id = igt_create_color_pattern_fb(data->drm_fd, width, mode->vdisplay,
->   				      data->testformat, tiling[1],
-> -				      0.5, 0.5, 0.5, &fb[1]);
-> +				      0.5, 0.5, 0.5, &data->fb[1]);
->   	igt_assert(fb_id);
->   
->   	/* Set the crtc and generate a reference CRC. */
-> -	igt_plane_set_fb(primary, &fb[1]);
-> +	igt_plane_set_fb(primary, &data->fb[1]);
->   	igt_display_commit(&data->display);
->   	igt_pipe_crc_collect_crc(pipe_crc, &reference_crc);
->   
->   	/* Commit the first fb. */
-> -	igt_plane_set_fb(primary, &fb[0]);
-> +	igt_plane_set_fb(primary, &data->fb[0]);
->   	igt_display_commit(&data->display);
->   
->   	/* Flip to the second fb. */
->   	ret = drmModePageFlip(data->drm_fd, output->config.crtc->crtc_id,
-> -			      fb[1].fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
-> +			      data->fb[1].fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
->   	/*
->   	 * Page flip should work but some transitions may be temporarily
->   	 * on some kernels.
-> @@ -137,6 +137,12 @@ test_flip_tiling(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t ti
->   	/* Get a crc and compare with the reference. */
->   	igt_pipe_crc_collect_crc(pipe_crc, &crc);
->   	igt_assert_crc_equal(&reference_crc, &crc);
-> +}
-> +
-> +static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
-> +{
-> +	igt_plane_t *primary;
-> +	primary = igt_output_get_plane(output, 0);
->   
->   	/* Clean up. */
->   	igt_plane_set_fb(primary, NULL);
-> @@ -144,8 +150,8 @@ test_flip_tiling(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t ti
->   	igt_output_set_pipe(output, PIPE_ANY);
->   	igt_display_commit(&data->display);
->   
-> -	igt_remove_fb(data->drm_fd, &fb[0]);
-> -	igt_remove_fb(data->drm_fd, &fb[1]);
-> +	igt_remove_fb(data->drm_fd, &data->fb[0]);
-> +	igt_remove_fb(data->drm_fd, &data->fb[1]);
->   }
->   
->   static data_t data;
-> @@ -185,6 +191,7 @@ igt_main
->   		for_each_pipe_with_valid_output(&data.display, pipe, output) {
->   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
->   				test_flip_tiling(&data, pipe, output, tiling);
-> +			test_cleanup(&data, pipe, output);
->   		}
->   	}
->   
-> @@ -204,6 +211,7 @@ igt_main
->   		for_each_pipe_with_valid_output(&data.display, pipe, output) {
->   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
->   				test_flip_tiling(&data, pipe, output, tiling);
-> +			test_cleanup(&data, pipe, output);
->   		}
->   	}
->   
-> @@ -223,6 +231,7 @@ igt_main
->   		for_each_pipe_with_valid_output(&data.display, pipe, output) {
->   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
->   				test_flip_tiling(&data, pipe, output, tiling);
-> +			test_cleanup(&data, pipe, output);
->   		}
->   	}
->   
-> @@ -246,6 +255,7 @@ igt_main
->   		for_each_pipe_with_valid_output(&data.display, pipe, output) {
->   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
->   				test_flip_tiling(&data, pipe, output, tiling);
-> +			test_cleanup(&data, pipe, output);
->   		}
->   	}
->   
-> @@ -265,6 +275,7 @@ igt_main
->   		for_each_pipe_with_valid_output(&data.display, pipe, output) {
->   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
->   				test_flip_tiling(&data, pipe, output, tiling);
-> +			test_cleanup(&data, pipe, output);
->   		}
->   	}
->   
-> @@ -284,6 +295,7 @@ igt_main
->   		for_each_pipe_with_valid_output(&data.display, pipe, output) {
->   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
->   				test_flip_tiling(&data, pipe, output, tiling);
-> +			test_cleanup(&data, pipe, output);
->   		}
->   	}
->   
-> @@ -307,6 +319,7 @@ igt_main
->   		for_each_pipe_with_valid_output(&data.display, pipe, output) {
->   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
->   				test_flip_tiling(&data, pipe, output, tiling);
-> +			test_cleanup(&data, pipe, output);
->   		}
->   	}
->   
-> @@ -326,6 +339,7 @@ igt_main
->   		for_each_pipe_with_valid_output(&data.display, pipe, output) {
->   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
->   				test_flip_tiling(&data, pipe, output, tiling);
-> +			test_cleanup(&data, pipe, output);
->   		}
->   	}
->   
-> @@ -345,6 +359,7 @@ igt_main
->   		for_each_pipe_with_valid_output(&data.display, pipe, output) {
->   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
->   				test_flip_tiling(&data, pipe, output, tiling);
-> +			test_cleanup(&data, pipe, output);
->   		}
->   	}
->   
-
-
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
