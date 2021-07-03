@@ -1,29 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-oo1-xc2a.google.com (mail-oo1-xc2a.google.com
- [IPv6:2607:f8b0:4864:20::c2a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3460B6E1F2
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Jul 2021 19:45:49 +0000 (UTC)
-Received: by mail-oo1-xc2a.google.com with SMTP id
- s10-20020a4aeaca0000b029024c2acf6eecso2747600ooh.9
- for <igt-dev@lists.freedesktop.org>; Fri, 02 Jul 2021 12:45:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210614164135.1519746-1-markyacoub@chromium.org>
- <20210615131254.5x5u2fjyy7p3uctf@outlook.office365.com>
- <e89fb09e-40c2-3b55-ae27-ed13c234bad7@amd.com>
- <CAJUqKUrDjKFf_yx9w=1TQViJr8C6QfPrYCsEqQO-1Nxou5eH9A@mail.gmail.com>
- <8f717975-4852-fb81-028a-e4c709b50014@amd.com>
- <CAJUqKUqVZb-GatjkGXChFYPXrYLCqwCe9Uu0epEASn8SMrzEfw@mail.gmail.com>
- <ae4be25c-c50d-56bb-6699-5ab6210f80bf@amd.com>
- <YMmpbOtT+CMFxbzI@platvala-desk.ger.corp.intel.com>
- <8077ffe8-8ee5-1d58-1797-69848d11d27a@amd.com>
- <YMm6UQr4qHp/knOD@platvala-desk.ger.corp.intel.com>
- <3bc3c4ce-1798-5d80-82d1-9facc8b1ce20@amd.com>
-In-Reply-To: <3bc3c4ce-1798-5d80-82d1-9facc8b1ce20@amd.com>
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Fri, 2 Jul 2021 21:45:37 +0200
-Message-ID: <CAKMK7uFMm7JfyDKrrjc3RXmp2doFTcjCOGtwtphG+_E0oW-q8g@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH] tests/kms_prime: Filter out devices that
- can't import buffers.
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6FF2189BD5
+ for <igt-dev@lists.freedesktop.org>; Sat,  3 Jul 2021 16:02:53 +0000 (UTC)
+From: Vidya Srinivas <vidya.srinivas@intel.com>
+Date: Sat,  3 Jul 2021 21:22:59 +0530
+Message-Id: <1625327579-28710-1-git-send-email-vidya.srinivas@intel.com>
+In-Reply-To: <1624898838-23193-1-git-send-email-vidya.srinivas@intel.com>
+References: <1624898838-23193-1-git-send-email-vidya.srinivas@intel.com>
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Dont commit
+ primary for 6bpc display in coverage-vs-premult-vs-none
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,72 +16,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Petri Latvala <petri.latvala@intel.com>, Anson Jacob <Anson.Jacob@amd.com>, IGT development <igt-dev@lists.freedesktop.org>, Sean Paul <seanpaul@chromium.org>, "Deucher,
- Alexander" <Alexander.Deucher@amd.com>, Mark Yacoub <markyacoub@google.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCBKdW4gMTYsIDIwMjEgYXQgMTE6MDggQU0gQ2hyaXN0aWFuIEvDtm5pZwo8Y2hyaXN0
-aWFuLmtvZW5pZ0BhbWQuY29tPiB3cm90ZToKPgo+IEFtIDE2LjA2LjIxIHVtIDEwOjQ2IHNjaHJp
-ZWIgUGV0cmkgTGF0dmFsYToKPiA+IE9uIFdlZCwgSnVuIDE2LCAyMDIxIGF0IDEwOjA3OjE4QU0g
-KzAyMDAsIENocmlzdGlhbiBLw7ZuaWcgd3JvdGU6Cj4gPj4KPiA+PiBBbSAxNi4wNi4yMSB1bSAw
-OTozNCBzY2hyaWViIFBldHJpIExhdHZhbGE6Cj4gPj4+IE9uIFR1ZSwgSnVuIDE1LCAyMDIxIGF0
-IDA2OjIwOjIzUE0gKzAyMDAsIENocmlzdGlhbiBLw7ZuaWcgd3JvdGU6Cj4gPj4+PiBUaGUgYWx0
-ZXJuYXRpdmUgd291bGQgYmUgdG8gdHJ5IHRvIGNyZWF0ZSBhIGZyYW1lYnVmZmVyLCBidXQgZG9u
-J3QgdGFrZSBpdAo+ID4+Pj4gYXMgYSBmYWlsdXJlIHdoZW4gdGhhdCBmYWlscyB3aXRoIHRoZSBj
-b3JyZWN0IHJldHVybiBjb2RlLgo+ID4+PiBUaGlzLgo+ID4+Pgo+ID4+PiBJZiB0aGUgaW1wb3J0
-aW5nIGNhbiBmYWlsIGZvciBkb2N1bWVudGVkIHJlYXNvbnMsIHdlIHNob3VsZCBqdXN0IGFkZAo+
-ID4+PiBjb2RlIHRoYXQgY2hlY2tzIHRoYXQgdGhlIGVycm9yIGlzIHRoZSBkb2N1bWVudGVkIG9u
-ZSBhbmQgdGhlbgo+ID4+PiBpZ3Rfc2tpcCgpLCBmYWlsIHRoZSB0ZXN0IGlmIGl0J3Mgc29tZXRo
-aW5nIGl0IHNob3VsZG4ndC4KPiA+PiBHb29kIHBvaW50LCBidXQgSSBkb24ndCB0aGluayB0aGF0
-IHRoaXMgYmVoYXZpb3IgaXMgd2VsbCBkb2N1bWVudGVkCj4gPj4gYW55d2hlcmUuCj4gPj4KPiA+
-PiBJJ20gYWxzbyBwcmV0dHkgc3VyZSB0aGF0IG1vc3QgZHJpdmVycyBkb24ndCBjb3JyZWN0bHkg
-cmVqZWN0IGFuIGltcG9ydGVkCj4gPj4gRE1BLWJ1ZiBmb3Igc2Nhbm91dCB3aGVuIHRoZSBoYXJk
-d2FyZSBjYW4ndCBkbyB0aGlzLiBSZXN1bHRpbmcgaW4gZWl0aGVyCj4gPj4ganVzdCBnYXJiYWdl
-IG9uIHRoZSBzY3JlZW4gb3IgYSBsb2NrdXAuCj4gPj4KPiA+PiBFeGVyY2lzaW5nIHRoaXMgaW4g
-YW4gdW5pdCB0ZXN0cyBpcyBwcm9iYWJseSBhIGdvb2QgaWRlYSwgYnV0IG9ubHkgYWZ0ZXIKPiA+
-PiBhdWRpdGluZyBhbGwgZHJpdmVycyBmb3IgY29ycmVjdCBiZWhhdmlvci4KPiA+IFRoZSB0aGlu
-ZyBpcywgaGF2aW5nIGEgdGVzdCBmb3IgaXQgaXMgdGhlIGJlc3QgbWV0aG9kIG9mIGF1ZGl0aW5n
-IGFuZAo+ID4gYmVpbmcgX3N1cmVfLgo+Cj4gT2ssIHllYWggdGhhdCBpcyBhIHJlYWxseSBnb29k
-IGFyZ3VtZW50IGFzIHdlbGwuCgpBbHNvIGlkZWFsbHkgd2UgcHVsbCBpbiBhIGZldyBtb3JlIGNv
-bXBvc2l0b3IgZm9sa3MgaW50byB0aGUKZGlzY3Vzc2lvbiwgYW5kIHRoZW4gbWFrZSBzdXJlIHRo
-YXQgdGhlIEFEREZCIGtlcm5lbCBkb2N1bWVudGF0aW9uIGlzCnVwZGF0ZWQgYWNjb3JkaW5nbHku
-IEF0bSBpdCBkb2Vzbid0IGV2ZW4gcmVhbGx5IGV4aXN0LCBvdXIgdWFwaSBkb2NzCmFyZSBhIGJp
-dCBiYXJlLWJvbmVzLCBidXQgd2UgZ290IHRvIHN0YXJ0IHNvbWV3aGVyZS4KCkFsc28gdGhpcyBj
-b3VsZCBhbHJlYWR5IGZhaWwgYXQgdGhlIEZEMkhBTkRMRSBzdGFnZSBpbiBtYW55IGNhc2VzLgpF
-LmcuIGttcy1vbmx5IGRyaXZlcnMgZ2VuZXJhbGx5IGhhdmUgdGhlaXIgImNhbiBJIHNjYW4gdGhp
-cyBvdXQiIHRlc3RzCnRoZXJlLCBidXQgZHJpdmVycyB3aXRoIGttcytyZW5kZXIgY2FuIG9ubHkg
-Y2hlY2sgZm9yICJjYW4gSSB1c2UgdGhpcwphdCBhbGwiIGluIEZEMkhBTkRMRSwgYW5kIG5lZWQg
-dG8gZGVsZWdhdGUgImNhbiBJIHNjYW4gdGhpcyBvdXQiIHRvCkFEREZCLgoKV2hlbiB3ZSd2ZSBu
-YWlsZWQgYWxsIHRoYXQsIGkuZS4gaWd0IHRlc3RzIHRoYXQgd2UgYWdyZWUgb24gYW5kCmRvY3Vt
-ZW50ZWQga2VybmVsIGJlaGF2aW91ciwgdGhlbiBJIHRoaW5rIHRoaXMga2luZCBvZiBzdHVmZiBz
-aG91bGQgYmUKYSBnZW5lcmljIHRlc3QuCgo+ID4gQmVpbmcgYWJsZSB0byBsb2NrdXAgZGV2aWNl
-cyB3aXRoIGFuIG9wZXJhdGlvbiB0aGF0IGRvZXNuJ3QgZXZlbgo+ID4gcmVxdWlyZSByb290ICg/
-KSBzb3VuZHMuLi4gc2xpZ2h0bHkgYmFkLgo+Cj4gV2VsbCBhIGJpdCBtb3JlIHRoYW4gc2xpZ2h0
-bHkgYmFkIEkgd291bGQgc2F5IDopCj4KPiBGaXJzdCB3ZSBhZGRlZCB0aGUgZXh0cmEgY2hlY2sg
-dG8gYW1kZ3B1IGJlY2F1c2Ugd2UgZm91bmQgc2NyZWVuIGdhcmJhZ2UKPiBvbiBkR1BVcy4gV2hl
-biB3ZSB0aGVuIGxhdGVyIGltcGxlbWVudGVkIHNjYW5vdXQgZnJvbSBpbXBvcnRlZCBETUEtYnVm
-cwo+IGZvciBBUFVzIHdlIGZvdW5kIHRoYXQgYSBjZXJ0YWluIGNvbWJpbmF0aW9uIG9mIElPTU1V
-IGVuYWJsZWQsCj4gcmVzb2x1dGlvbiBhbmQgcmVmcmVzaCByYXRlIGNvdWxkIGhhcmQgbG9jayB0
-aGUgUENJZSByb290IGNvbXBsZXguCj4KPiBJdCdzIGFic29sdXRlbHkgbm90IG5pY2UgaWYgZXZl
-biBzZXJpYWwgY29uc29sZXMgb3IgbmV0d29yayBjb25zb2xlcwo+IGRvbid0IGdpdmUgeW91IGFu
-eSBoaW50IG9uIHdoYXQncyBnb2luZyB3cm9uZy4KPgo+IEkgYWxzbyB0aGluayB3ZSBzaG91bGQg
-a2VlcCB0aGlzIHRlc3QgY2FzZSBhcm91bmQsIGp1c3QgZG9uJ3QgYmUKPiBzdXJwcmlzZWQgaWYg
-cGVvcGxlIHN0YXJ0IHRvIHNjcmVhbSBiZWNhdXNlIGl0IGhhcmQgbG9jayB0aGVpciBzeXN0ZW1z
-LgoKVGhhdCBzb3VuZHMgbGlrZSBkcml2ZXIgYnVncyB0byBtZSwgYnV0IGFsc28gZG9uJ3QgZ2V0
-IG1lIHN0YXJ0ZWQgb24KaGFyZGxvY2tpbmcgdGhlIGJveCBiZWNhdXNlIHRoZSBzY2Fub3V0IGJs
-b2NrIGhvZ3MgdGhlIG1lbW9yeQpjb250cm9sbGVyIDotKQoKYnR3IHRoZSBzcGVjaWFsIGRyaXZl
-cnMgYXJlIG5vdCBpOTE1LCBpOTE1IGNhbiBwcmV0dHkgbXVjaCBzY2FuIG91dAphbnl0aGluZyB0
-aGF0J3MgaW4gc3lzdGVtIG1lbW9yeSBhcyBhIGlncHUgKGlmIGl0J3MgdGhlIHJpZ2h0IGZvcm1h
-dAphbmQgYWxpZ25tZW50IG9mYykuIGRncHUgbmVlZHMgdnJhbS4gYnV0IHRoZXJlJ3MgZGVmaW5p
-dGVseSBhIGxvdCBvZgppZ3B1IHRoYXQgaGF2ZSB2ZXJ5IHNwZWNpYWwgbmVlZHMgaW5kZWVkIGFu
-ZCBjYW4gYm90aCBmYWlsIGFkCkZEMkhBTkRMRSBhbmQgQURERkIgc3RhZ2UgZm9yIGEgZ2l2ZW4g
-YnVmZmVyIHNpbXBseSBkdWUgdG8gdGhlIGJhY2tpbmcKc3RvcmFnZS4KLURhbmllbAotLSAKRGFu
-aWVsIFZldHRlcgpTb2Z0d2FyZSBFbmdpbmVlciwgSW50ZWwgQ29ycG9yYXRpb24KaHR0cDovL2Js
-b2cuZmZ3bGwuY2gKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
-cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Intel Gen11 6bpc panels are giving CRC mismatch in coverage-vs-premult-vs-none
+if primary gray fb is commited before starting alpha tests. Patch removes primar plane
+commit if device is intel and 6bpc.
+
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+---
+ tests/kms_plane_alpha_blend.c | 36 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 34 insertions(+), 2 deletions(-)
+
+diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+index a37cb27c7d62..5f0a8cb070dd 100644
+--- a/tests/kms_plane_alpha_blend.c
++++ b/tests/kms_plane_alpha_blend.c
+@@ -25,6 +25,7 @@
+  */
+ 
+ #include "igt.h"
++#include <string.h>
+ 
+ IGT_TEST_DESCRIPTION("Test plane alpha and blending mode properties");
+ 
+@@ -442,14 +443,45 @@ static void coverage_7efc(data_t *data, enum pipe pipe, igt_plane_t *plane)
+ 	igt_pipe_crc_stop(data->pipe_crc);
+ }
+ 
++static bool is_6bpc(igt_display_t *display)
++{
++	char buf[4096];
++	char *str;
++	bool ret;
++	int debugfs_fd;
++
++	if (!is_i915_device(display->drm_fd))
++		return false;
++
++	debugfs_fd = igt_debugfs_dir(display->drm_fd);
++
++	if (debugfs_fd < 0)
++		return false;
++
++	igt_debugfs_simple_read(debugfs_fd, "i915_display_info", buf, sizeof(buf));
++
++	str = strstr(buf, "bpp=");
++	if (strncmp(str, "bpp=18", 6) == 0)
++		ret = true;
++	else
++		ret = false;
++
++	close(debugfs_fd);
++	return ret;
++}
++
+ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t *plane)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_crc_t ref_crc = {}, crc = {};
+ 
++
+ 	/* Set a background color on the primary fb for testing */
+-	if (plane->type != DRM_PLANE_TYPE_PRIMARY)
+-		igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY), &data->gray_fb);
++	if (plane->type != DRM_PLANE_TYPE_PRIMARY) {
++		if (!is_6bpc(display))
++			igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe],
++						DRM_PLANE_TYPE_PRIMARY), &data->gray_fb);
++	}
+ 
+ 	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage");
+ 	igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
+-- 
+2.7.4
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
