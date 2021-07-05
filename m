@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7017189870
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Jul 2021 14:07:22 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-Date: Mon,  5 Jul 2021 19:48:02 +0530
-Message-Id: <20210705141802.16979-1-swati2.sharma@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E681A89ADC
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Jul 2021 14:11:52 +0000 (UTC)
+From: Andrzej Turko <andrzej.turko@linux.intel.com>
+Date: Mon,  5 Jul 2021 16:11:28 +0200
+Message-Id: <20210705141133.10329-1-andrzej.turko@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_cdclk: Drop basic subtest
+Subject: [igt-dev] [PATCH i-g-t v5 0/5] Keep tests working without
+ relocations
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,132 +15,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This drops basic subtest since use case is already
-getting covered by mode transition subtest.
-
-Cc: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/kms_cdclk.c | 61 +++++------------------------------------------
- 1 file changed, 6 insertions(+), 55 deletions(-)
-
-diff --git a/tests/kms_cdclk.c b/tests/kms_cdclk.c
-index b2e32d25..d2a9fa5f 100644
---- a/tests/kms_cdclk.c
-+++ b/tests/kms_cdclk.c
-@@ -26,7 +26,7 @@
- 
- #include "igt.h"
- 
--IGT_TEST_DESCRIPTION("Test cdclk features : squasher and crawling");
-+IGT_TEST_DESCRIPTION("Test cdclk features : crawling");
- 
- #define HDISPLAY_4K     3840
- #define VDISPLAY_4K     2160
-@@ -34,9 +34,8 @@ IGT_TEST_DESCRIPTION("Test cdclk features : squasher and crawling");
- 
- /* Test flags */
- enum {
--	TEST_BASIC = 1 << 0,
--	TEST_PLANESCALING = 1 << 1,
--	TEST_MODETRANSITION = 1 << 2,
-+	TEST_PLANESCALING = 1 << 0,
-+	TEST_MODETRANSITION = 1 << 1,
- };
- 
- typedef struct {
-@@ -132,45 +131,6 @@ static void do_cleanup_display(igt_display_t *dpy)
- 	igt_display_commit2(dpy, dpy->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- }
- 
--static void test_basic(data_t *data, enum pipe pipe, igt_output_t *output)
--{
--	igt_display_t *display = &data->display;
--	int debugfs_fd = data->debugfs_fd;
--	int cdclk_ref, cdclk_new;
--	struct igt_fb fb;
--	igt_plane_t *primary;
--	drmModeModeInfo *mode;
--
--	do_cleanup_display(display);
--	igt_display_reset(display);
--
--	igt_output_set_pipe(output, pipe);
--	mode = get_highres_mode(output);
--	igt_require(mode != NULL);
--	igt_output_override_mode(output, mode);
--
--	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
--
--	igt_create_color_pattern_fb(display->drm_fd,
--				    mode->hdisplay, mode->vdisplay,
--				    DRM_FORMAT_XRGB8888,
--				    I915_TILING_NONE,
--				    0.0, 0.0, 0.0, &fb);
--
--	igt_plane_set_fb(primary, &fb);
--	cdclk_ref = get_current_cdclk_freq(debugfs_fd);
--	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
--	cdclk_new = get_current_cdclk_freq(debugfs_fd);
--	igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
--
--	/* cdclk should bump */
--	igt_assert_lt(cdclk_ref, cdclk_new);
--
--	/* cleanup */
--	do_cleanup_display(display);
--	igt_remove_fb(display->drm_fd, &fb);
--}
--
- static void test_plane_scaling(data_t *data, enum pipe pipe, igt_output_t *output)
- {
- 	igt_display_t *display = &data->display;
-@@ -284,8 +244,6 @@ static void run_cdclk_test(data_t *data, uint32_t flags)
- 	for_each_pipe_with_valid_output(display, pipe, output) {
- 		igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe))
- 			if (igt_pipe_connector_valid(pipe, output)) {
--				if (flags & TEST_BASIC)
--					test_basic(data, pipe, output);
- 				if (flags & TEST_PLANESCALING)
- 					test_plane_scaling(data, pipe, output);
- 				if (flags & TEST_MODETRANSITION)
-@@ -306,22 +264,15 @@ igt_main
- 		kmstest_set_vt_graphics_mode();
- 		data.devid = intel_get_drm_devid(data.drm_fd);
- 		igt_require_f(hardware_supported(&data),
--			      "Hardware doesn't support either squashing "\
--			      "or crawling.\n");
-+			      "Hardware doesn't support crawling.\n");
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_display_require_output(&data.display);
- 	}
- 
--	igt_describe("Basic test to validate cdclk frequency change w/o "\
--		     "requiring full modeset.");
--	igt_subtest_with_dynamic("basic")
--		run_cdclk_test(&data, TEST_BASIC);
--	igt_describe("Plane scaling test to validate cdclk frequency change w/o "\
--		     "requiring full modeset.");
-+	igt_describe("Plane scaling test to validate cdclk frequency change");
- 	igt_subtest_with_dynamic("plane-scaling")
- 		run_cdclk_test(&data, TEST_PLANESCALING);
--	igt_describe("Mode transition (low to high) test to validate cdclk frequency "\
--		     "change w/o requiring full modeset.");
-+	igt_describe("Mode transition (low to high) test to validate cdclk frequency change");
- 	igt_subtest_with_dynamic("mode-transition")
- 		run_cdclk_test(&data, TEST_MODETRANSITION);
- 
--- 
-2.25.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+V2l0aCByZWxvY2F0aW9ucyBkaXNhYmxlZCBmb3IgbmV3ZXIgZ2VuZXJhdGlvbnMKdGhlIGFkZHJl
+c3NlcyBvZiBidWZmZXIgb2JqZWN0cyBpbiBtZW1vcnkgbmVlZAp0byBiZSBrbm93biBpbiBhZHZh
+bmNlIGFuZCwgaGVuY2UsIGFzc2lnbmVkIGluCnVzZXJzcGFjZS4KSWYgcmVsb2NhdGlvbnMgYXJl
+IG5vdCBzdXBwb3J0ZWQsIHRoZSB0ZXN0cyBub3cKdXNlIHRoZSBpbnRlbCBhbGxvY2F0b3IgdG8g
+ZmluZCBvZmZzZXRzIGFuZAp1cGRhdGUgdGhlIGNvbnRlbnRzIG9mIGJhdGNoZXMgY29ycmVzcG9u
+ZGluZ2x5LgoKQ2M6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lA
+aW50ZWwuY29tPgoKCkFuZHJ6ZWogVHVya28gKDUpOgogIHRlc3RzL2k5MTUvZ2VtX2V4ZWNfc3Rv
+cmU6IFN1cHBvcnQgZ2VucyB3aXRob3V0IHJlbG9jYXRpb25zCiAgdGVzdHMvaTkxNS9nZW1fZXhl
+Y19ndHRmaWxsOiBSZXF1aXJlIHJlbG9jYXRpb24gc3VwcG9ydAogIHRlc3RzL2k5MTUvZ2VtX2V4
+ZWNfY2FwdHVyZTogU3VwcG9ydCBnZW5zIHdpdGhvdXQgcmVsb2NhdGlvbnMKICB0ZXN0cy9pOTE1
+L2dlbV9zb2Z0cGluOiBFeGVyY2lzZSBldmljdGlvbiB3aXRoIHNvZnRwaW5uaW5nCiAgdGVzdHMv
+aTkxNS9nZW1fZXhlY19iaWc6IFJlcXVpcmUgcmVsb2NhdGlvbiBzdXBwb3J0CgogdGVzdHMvaTkx
+NS9nZW1fZXhlY19iaWcuYyAgICAgfCAgIDEgKwogdGVzdHMvaTkxNS9nZW1fZXhlY19jYXB0dXJl
+LmMgfCAyMTMgKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tCiB0ZXN0cy9pOTE1L2dl
+bV9leGVjX2d0dGZpbGwuYyB8ICAgMSArCiB0ZXN0cy9pOTE1L2dlbV9leGVjX3N0b3JlLmMgICB8
+IDE5NCArKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0KIHRlc3RzL2k5MTUvZ2VtX3NvZnRw
+aW4uYyAgICAgIHwgMjE1ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKIDUgZmls
+ZXMgY2hhbmdlZCwgNTIwIGluc2VydGlvbnMoKyksIDEwNCBkZWxldGlvbnMoLSkKCi0tIAoyLjI1
+LjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
+ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
