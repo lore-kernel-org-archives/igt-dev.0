@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F0E38946E
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Jul 2021 07:24:08 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Tue, 6 Jul 2021 07:23:58 +0000
-Message-ID: <BY5PR11MB4372107D7A06EB5AE0A03790891B9@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <1624898838-23193-1-git-send-email-vidya.srinivas@intel.com>
- <1625327579-28710-1-git-send-email-vidya.srinivas@intel.com>
- <BY5PR11MB43724083986443507595F916891C9@BY5PR11MB4372.namprd11.prod.outlook.com>
- <d5e9373203704351986527154155006c@intel.com>
-In-Reply-To: <d5e9373203704351986527154155006c@intel.com>
-Content-Language: en-US
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2076.outbound.protection.outlook.com [40.107.237.76])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 00B406E489
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Jul 2021 12:35:58 +0000 (UTC)
+Date: Tue, 6 Jul 2021 08:35:53 -0400
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Message-ID: <20210706123553.m2eumbrdpcnytjcy@outlook.office365.com>
+References: <20210621172146.4130875-1-markyacoub@chromium.org>
+ <20210622181152.3ihjwqrurd27lwvd@outlook.office365.com>
+ <YNLRnYcVTsTF1kZC@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <YNLRnYcVTsTF1kZC@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Dont
- commit primary for 6bpc display in coverage-vs-premult-vs-none
+Subject: Re: [igt-dev] [PATCH v2] lib/igt_fb: Support Tile Size for AMD non
+ linear modifiers.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,150 +20,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============1466801790=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Shankar, Uma" <uma.shankar@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Lin, Charlton" <charlton.lin@intel.com>, "Heikkila,
- Juha-pekka" <juha-pekka.heikkila@intel.com>, "Latvala,
- Petri" <petri.latvala@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Mark Yacoub <markyacoub@google.com>, seanpaul@chromium.org, bas@basnieuwenhuizen.nl
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thank you so much Uma. This was very helpful. I shall do the same.
+--===============1466801790==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="5mr35dqlf3t4kehy"
+Content-Disposition: inline
 
-Regards
-Vidya
+--5mr35dqlf3t4kehy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
------Original Message-----
-From: Shankar, Uma <uma.shankar@intel.com> 
-Sent: Tuesday, July 6, 2021 12:37 PM
-To: Srinivas, Vidya <vidya.srinivas@intel.com>; igt-dev@lists.freedesktop.org
-Cc: Heikkila, Juha-pekka <juha-pekka.heikkila@intel.com>; markyacoub@chromium.org; Latvala, Petri <petri.latvala@intel.com>; Almahallawy, Khaled <khaled.almahallawy@intel.com>; Lin, Charlton <charlton.lin@intel.com>
-Subject: RE: [PATCH i-g-t] tests/kms_plane_alpha_blend: Dont commit primary for 6bpc display in coverage-vs-premult-vs-none
+On 06/23, Petri Latvala wrote:
+> On Tue, Jun 22, 2021 at 02:11:52PM -0400, Rodrigo Siqueira wrote:
+> > On 06/21, Mark Yacoub wrote:
+> > > From: Mark Yacoub <markyacoub@google.com>
+> > >=20
+> > > Calculate the width and height of the tile on amdgpu when the modifier
+> > > is not linear.
+> > >=20
+> > > v1:
+> > > Change width_ret to bytes not pixels.
+> > >=20
+> > > Cc: bas@basnieuwenhuizen.nl
+> > > Cc: daniel.vetter@ffwll.ch
+> > > Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+> > > Change-Id: I30849ee1368fc626d1ce2826fb726cd76565a449
+> > > ---
+> > >  lib/igt_fb.c | 13 +++++++++++++
+> > >  1 file changed, 13 insertions(+)
+> > >=20
+> > > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> > > index 71b89855..a3926dc9 100644
+> > > --- a/lib/igt_fb.c
+> > > +++ b/lib/igt_fb.c
+> > > @@ -396,6 +396,19 @@ void igt_get_fb_tile_size(int fd, uint64_t modif=
+ier, int fb_bpp,
+> > >  		vc4_modifier_param =3D fourcc_mod_broadcom_param(modifier);
+> > >  		modifier =3D fourcc_mod_broadcom_mod(modifier);
+> > >  	}
+> > > +	// For all non-linear modifiers, AMD uses 64 KiB tiles
+> > > +	else if (IS_AMD_FMT_MOD(modifier)) {
+> > > +		igt_require_amdgpu(fd);
+> > > +		const int bytes_per_pixel =3D fb_bpp / 8;
+> > > +		const int format_log2 =3D log2(bytes_per_pixel);
+> > > +		const int pixel_log2 =3D log2(64 * 1024) - format_log2;
+> > > +		const int width_log2 =3D (pixel_log2 + 1) / 2;
+> > > +		const int height_log2 =3D pixel_log2 - width_log2;
+> > > +
+> > > +		*width_ret =3D bytes_per_pixel << width_log2;
+> > > +		*height_ret =3D 1 << height_log2;
+> > > +		return;
+> > > +	}
+> >=20
+> > Hi Mark,
+> >=20
+> > This patch lgtm,
+> >=20
+> > Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+> >=20
+> > However, let's check if Bas has any comment about it.
+> >=20
+> > Btw, is the CI failure a false positive?
+>=20
+> Looks like those results are caused by the regression in the kernel we
+> had for a bit. I queued this patch for a re-test.
 
+Hi Petri,
 
+Thanks a lot for queued the path for re-test. I can see that everything
+is looks good now:
 
-> -----Original Message-----
-> From: Srinivas, Vidya <vidya.srinivas@intel.com>
-> Sent: Monday, July 5, 2021 8:08 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Shankar, Uma <uma.shankar@intel.com>; Heikkila, Juha-pekka <juha- 
-> pekka.heikkila@intel.com>; markyacoub@chromium.org; Latvala, Petri 
-> <petri.latvala@intel.com>; Almahallawy, Khaled 
-> <khaled.almahallawy@intel.com>; Lin, Charlton <charlton.lin@intel.com>
-> Subject: RE: [PATCH i-g-t] tests/kms_plane_alpha_blend: Dont commit 
-> primary for 6bpc display in coverage-vs-premult-vs-none
-> 
-> Hello,
-> 
-> We checked that the same test works on a different Jasperlake system 
-> which has 8bpc. Our device has 6bpc panel and dithering is ON.
-> Can we use this patch as solution? If any one has a 6bpc panel, can 
-> you kindly let us know if its working for you? Thank you so much.
-> 
-> The same test works on HDMI connected to the system, just fails on the 
-> eDP which is 6bpc.
+https://patchwork.freedesktop.org/series/89017/
 
-Hi Vidya,
-Doing a crc based test with dithering is not a great idea as pixels will change due to the 8bit to 6bits truncation with dithering. So let's have this test skip on 6bpc panels instead of relying on this empirical result.
+I'm going to apply it.
 
-Just have a test condition igt_require in the beginning (see reference usage of that in IGT).
+Thanks
+Siqueira
+=20
+>=20
+> --=20
+> Petri Latvala
 
-Regards,
-Uma Shankar
+--=20
+Rodrigo Siqueira
+https://siqueira.tech
 
-> https://patchwork.freedesktop.org/patch/442435/?series=90828&rev=8
-> 
-> Regards
-> Vidya
-> 
-> -----Original Message-----
-> From: Srinivas, Vidya <vidya.srinivas@intel.com>
-> Sent: Saturday, July 3, 2021 9:23 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Srinivas, Vidya <vidya.srinivas@intel.com>
-> Subject: [PATCH i-g-t] tests/kms_plane_alpha_blend: Dont commit 
-> primary for 6bpc display in coverage-vs-premult-vs-none
-> 
-> Intel Gen11 6bpc panels are giving CRC mismatch in 
-> coverage-vs-premult-vs-none if primary gray fb is commited before 
-> starting alpha tests. Patch removes primar plane commit if device is intel and 6bpc.
-> 
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> ---
->  tests/kms_plane_alpha_blend.c | 36 
-> ++++++++++++++++++++++++++++++++++--
->  1 file changed, 34 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/kms_plane_alpha_blend.c 
-> b/tests/kms_plane_alpha_blend.c index a37cb27c7d62..5f0a8cb070dd 
-> 100644
-> --- a/tests/kms_plane_alpha_blend.c
-> +++ b/tests/kms_plane_alpha_blend.c
-> @@ -25,6 +25,7 @@
->   */
-> 
->  #include "igt.h"
-> +#include <string.h>
-> 
->  IGT_TEST_DESCRIPTION("Test plane alpha and blending mode 
-> properties");
-> 
-> @@ -442,14 +443,45 @@ static void coverage_7efc(data_t *data, enum 
-> pipe pipe, igt_plane_t *plane)  igt_pipe_crc_stop(data->pipe_crc);
->  }
-> 
-> +static bool is_6bpc(igt_display_t *display) { char buf[4096]; char 
-> +*str; bool ret; int debugfs_fd;
-> +
-> +if (!is_i915_device(display->drm_fd))
-> +return false;
-> +
-> +debugfs_fd = igt_debugfs_dir(display->drm_fd);
-> +
-> +if (debugfs_fd < 0)
-> +return false;
-> +
-> +igt_debugfs_simple_read(debugfs_fd, "i915_display_info", buf, 
-> +sizeof(buf));
-> +
-> +str = strstr(buf, "bpp=");
-> +if (strncmp(str, "bpp=18", 6) == 0)
-> +ret = true;
-> +else
-> +ret = false;
-> +
-> +close(debugfs_fd);
-> +return ret;
-> +}
-> +
->  static void coverage_premult_constant(data_t *data, enum pipe pipe, 
-> igt_plane_t
-> *plane)  {
->  igt_display_t *display = &data->display;  igt_crc_t ref_crc = {}, crc 
-> = {};
-> 
-> +
->  /* Set a background color on the primary fb for testing */ -if 
-> (plane->type != DRM_PLANE_TYPE_PRIMARY) 
-> -igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe],
-> DRM_PLANE_TYPE_PRIMARY), &data->gray_fb);
-> +if (plane->type != DRM_PLANE_TYPE_PRIMARY) { if (!is_6bpc(display))
-> +igt_plane_set_fb(igt_pipe_get_plane_type(&display-
-> >pipes[pipe],
-> +DRM_PLANE_TYPE_PRIMARY),
-> &data->gray_fb);
-> +}
-> 
->  igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, 
-> "Coverage");  igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
-> --
-> 2.7.4
-> 
+--5mr35dqlf3t4kehy
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAmDkTiUACgkQWJzP/com
+vP9LnBAAhEYN6VSjyGxJ3qc6EE2EO3EefOVz2Zb7xZBnJjN8ZRzKr7iA/YwNcw8G
+DIQuz86cwfwxMW5v9Ckk/BdD/tI/KzL2UKTPMkQNqHd7L3XdTuKkP3rAHpa1O2XN
+9TGyDdvfWeS8NtELT31cdItLhE7DKrjVh5UeoOK4RuTRgpyNsxx8VfsL+3aSRU6J
+JMLAsh59rT13TbNogmPNkwQIYld4Qg1R1WQ8T5srjqnySappQFw4D5g8nVmGXvhg
+Y05a5Ak+Zv3MMwks4hYrSzlI+SL7FMwdBC0yPHZEJmkHCWWWYiKEL0k/MKNcomSx
+dHoYc+hEKRilrith2uCh/iCp6/46Uj4yccvKVPwub8GpXx4wpSU7yCj8WGj699ZG
+03Tdy1nRtKnBGbTL34lAAVRdDRpElkfMDZK1BIFPt2yvOV2a+96zNpbgX+jSwPCN
+hJiv29oOILph1fTvdDYnQiRIMMH+X67CzfJcmlBi7R2cnZus8RHpUQHL//qp8uw3
+FKxmjlgar+Nv05LEOyu1POQqzNPUW2ZgvS8/CYvPtDQLXqpld4cg55wzUpwnc8mi
+qby4QMbGzftzG9j9uJ4vE/Oa4QdbYhwo5SreyedKR09ri59+D95sHfsJ5Gx1bHFj
+XMHwDcVzBim1ggkLOg4EiHG2fAES7xGRq7DGy7IXpysJD6+czN4=
+=4NFD
+-----END PGP SIGNATURE-----
+
+--5mr35dqlf3t4kehy--
+
+--===============1466801790==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1466801790==--
