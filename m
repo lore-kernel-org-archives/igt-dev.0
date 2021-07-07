@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
- [IPv6:2607:f8b0:4864:20::629])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 44C716E17E
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:44:30 +0000 (UTC)
-Received: by mail-pl1-x629.google.com with SMTP id v13so1179441ple.9
- for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:44:30 -0700 (PDT)
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
+ [IPv6:2607:f8b0:4864:20::1034])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 260EF6E17F
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:44:32 +0000 (UTC)
+Received: by mail-pj1-x1034.google.com with SMTP id
+ cs1-20020a17090af501b0290170856e1a8aso3857126pjb.3
+ for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:44:32 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  7 Jul 2021 09:43:07 -0500
-Message-Id: <20210707144337.180693-20-jason@jlekstrand.net>
+Date: Wed,  7 Jul 2021 09:43:08 -0500
+Message-Id: <20210707144337.180693-21-jason@jlekstrand.net>
 In-Reply-To: <20210707144337.180693-1-jason@jlekstrand.net>
 References: <20210707144337.180693-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 19/81] tests/prime_vgem: Convert to
+Subject: [igt-dev] [PATCH i-g-t 20/81] tests/gem_exec_whisper: Convert to
  intel_ctx_t (v2)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -20,97 +21,317 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-djIgKEphc29uIEVrc3RyYW5kKToKIC0gUGFzcyBpbnRlbF9jdHhfMCgpIHRvIHdvcmsoKSBpbnN0
-ZWFkIG9mIDAKClNpZ25lZC1vZmYtYnk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3RyYW5k
-Lm5ldD4KUmV2aWV3ZWQtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6
-eW5za2lAaW50ZWwuY29tPgotLS0KIHRlc3RzL3ByaW1lX3ZnZW0uYyB8IDM1ICsrKysrKysrKysr
-KysrKysrKysrKy0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMjEgaW5zZXJ0aW9ucygr
-KSwgMTQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvcHJpbWVfdmdlbS5jIGIvdGVz
-dHMvcHJpbWVfdmdlbS5jCmluZGV4IGFlZmYyODJiNS4uYTFjM2VkMzhlIDEwMDY0NAotLS0gYS90
-ZXN0cy9wcmltZV92Z2VtLmMKKysrIGIvdGVzdHMvcHJpbWVfdmdlbS5jCkBAIC01NTksNyArNTU5
-LDcgQEAgc3RhdGljIGJvb2wgcHJpbWVfYnVzeShpbnQgZmQsIGJvb2wgZXhjbCkKIAlyZXR1cm4g
-cG9sbCgmcGZkLCAxLCAwKSA9PSAwOwogfQogCi1zdGF0aWMgdm9pZCB3b3JrKGludCBpOTE1LCBp
-bnQgZG1hYnVmLCB1bnNpZ25lZCByaW5nKQorc3RhdGljIHZvaWQgd29yayhpbnQgaTkxNSwgaW50
-IGRtYWJ1ZiwgY29uc3QgaW50ZWxfY3R4X3QgKmN0eCwgdW5zaWduZWQgcmluZykKIHsKIAljb25z
-dCBpbnQgU0NSQVRDSCA9IDA7CiAJY29uc3QgaW50IEJBVENIID0gMTsKQEAgLTU3OCw2ICs1Nzgs
-NyBAQCBzdGF0aWMgdm9pZCB3b3JrKGludCBpOTE1LCBpbnQgZG1hYnVmLCB1bnNpZ25lZCByaW5n
-KQogCWV4ZWNidWYuZmxhZ3MgPSByaW5nOwogCWlmIChnZW4gPCA2KQogCQlleGVjYnVmLmZsYWdz
-IHw9IEk5MTVfRVhFQ19TRUNVUkU7CisJZXhlY2J1Zi5yc3ZkMSA9IGN0eC0+aWQ7CiAKIAltZW1z
-ZXQob2JqLCAwLCBzaXplb2Yob2JqKSk7CiAJb2JqW1NDUkFUQ0hdLmhhbmRsZSA9IHByaW1lX2Zk
-X3RvX2hhbmRsZShpOTE1LCBkbWFidWYpOwpAQCAtNjU0LDcgKzY1NSw3IEBAIHN0YXRpYyB2b2lk
-IHdvcmsoaW50IGk5MTUsIGludCBkbWFidWYsIHVuc2lnbmVkIHJpbmcpCiAJaWd0X2Fzc2VydChy
-ZWFkX2J1c3kgJiYgd3JpdGVfYnVzeSk7CiB9CiAKLXN0YXRpYyB2b2lkIHRlc3RfYnVzeShpbnQg
-aTkxNSwgaW50IHZnZW0sIHVuc2lnbmVkIHJpbmcpCitzdGF0aWMgdm9pZCB0ZXN0X2J1c3koaW50
-IGk5MTUsIGludCB2Z2VtLCBjb25zdCBpbnRlbF9jdHhfdCAqY3R4LCB1bnNpZ25lZCByaW5nKQog
-ewogCXN0cnVjdCB2Z2VtX2JvIHNjcmF0Y2g7CiAJc3RydWN0IHRpbWVzcGVjIHR2OwpAQCAtNjY4
-LDcgKzY2OSw3IEBAIHN0YXRpYyB2b2lkIHRlc3RfYnVzeShpbnQgaTkxNSwgaW50IHZnZW0sIHVu
-c2lnbmVkIHJpbmcpCiAJdmdlbV9jcmVhdGUodmdlbSwgJnNjcmF0Y2gpOwogCWRtYWJ1ZiA9IHBy
-aW1lX2hhbmRsZV90b19mZCh2Z2VtLCBzY3JhdGNoLmhhbmRsZSk7CiAKLQl3b3JrKGk5MTUsIGRt
-YWJ1ZiwgcmluZyk7CisJd29yayhpOTE1LCBkbWFidWYsIGN0eCwgcmluZyk7CiAKIAkvKiBDYWxs
-aW5nIGJ1c3kgaW4gYSBsb29wIHNob3VsZCBiZSBlbm91Z2ggdG8gZmx1c2ggdGhlIHJlbmRlcmlu
-ZyAqLwogCW1lbXNldCgmdHYsIDAsIHNpemVvZih0dikpOwpAQCAtNjg0LDcgKzY4NSw3IEBAIHN0
-YXRpYyB2b2lkIHRlc3RfYnVzeShpbnQgaTkxNSwgaW50IHZnZW0sIHVuc2lnbmVkIHJpbmcpCiAJ
-Y2xvc2UoZG1hYnVmKTsKIH0KIAotc3RhdGljIHZvaWQgdGVzdF93YWl0KGludCBpOTE1LCBpbnQg
-dmdlbSwgdW5zaWduZWQgcmluZykKK3N0YXRpYyB2b2lkIHRlc3Rfd2FpdChpbnQgaTkxNSwgaW50
-IHZnZW0sIGNvbnN0IGludGVsX2N0eF90ICpjdHgsIHVuc2lnbmVkIHJpbmcpCiB7CiAJc3RydWN0
-IHZnZW1fYm8gc2NyYXRjaDsKIAlzdHJ1Y3QgcG9sbGZkIHBmZDsKQEAgLTY5Nyw3ICs2OTgsNyBA
-QCBzdGF0aWMgdm9pZCB0ZXN0X3dhaXQoaW50IGk5MTUsIGludCB2Z2VtLCB1bnNpZ25lZCByaW5n
-KQogCXZnZW1fY3JlYXRlKHZnZW0sICZzY3JhdGNoKTsKIAlwZmQuZmQgPSBwcmltZV9oYW5kbGVf
-dG9fZmQodmdlbSwgc2NyYXRjaC5oYW5kbGUpOwogCi0Jd29yayhpOTE1LCBwZmQuZmQsIHJpbmcp
-OworCXdvcmsoaTkxNSwgcGZkLmZkLCBjdHgsIHJpbmcpOwogCiAJcGZkLmV2ZW50cyA9IFBPTExJ
-TjsKIAlpZ3RfYXNzZXJ0X2VxKHBvbGwoJnBmZCwgMSwgMTAwMDApLCAxKTsKQEAgLTcxMSw3ICs3
-MTIsNyBAQCBzdGF0aWMgdm9pZCB0ZXN0X3dhaXQoaW50IGk5MTUsIGludCB2Z2VtLCB1bnNpZ25l
-ZCByaW5nKQogCWNsb3NlKHBmZC5mZCk7CiB9CiAKLXN0YXRpYyB2b2lkIHRlc3Rfc3luYyhpbnQg
-aTkxNSwgaW50IHZnZW0sIHVuc2lnbmVkIHJpbmcpCitzdGF0aWMgdm9pZCB0ZXN0X3N5bmMoaW50
-IGk5MTUsIGludCB2Z2VtLCBjb25zdCBpbnRlbF9jdHhfdCAqY3R4LCB1bnNpZ25lZCByaW5nKQog
-ewogCXN0cnVjdCB2Z2VtX2JvIHNjcmF0Y2g7CiAJdWludDMyX3QgKnB0cjsKQEAgLTcyOCw3ICs3
-MjksNyBAQCBzdGF0aWMgdm9pZCB0ZXN0X3N5bmMoaW50IGk5MTUsIGludCB2Z2VtLCB1bnNpZ25l
-ZCByaW5nKQogCWlndF9hc3NlcnQocHRyICE9IE1BUF9GQUlMRUQpOwogCWdlbV9jbG9zZSh2Z2Vt
-LCBzY3JhdGNoLmhhbmRsZSk7CiAKLQl3b3JrKGk5MTUsIGRtYWJ1ZiwgcmluZyk7CisJd29yayhp
-OTE1LCBkbWFidWYsIGN0eCwgcmluZyk7CiAKIAlwcmltZV9zeW5jX3N0YXJ0KGRtYWJ1ZiwgZmFs
-c2UpOwogCWZvciAoaSA9IDA7IGkgPCAxMDI0OyBpKyspCkBAIC03MzksNyArNzQwLDcgQEAgc3Rh
-dGljIHZvaWQgdGVzdF9zeW5jKGludCBpOTE1LCBpbnQgdmdlbSwgdW5zaWduZWQgcmluZykKIAlt
-dW5tYXAocHRyLCBzY3JhdGNoLnNpemUpOwogfQogCi1zdGF0aWMgdm9pZCB0ZXN0X2ZlbmNlX3dh
-aXQoaW50IGk5MTUsIGludCB2Z2VtLCB1bnNpZ25lZCByaW5nKQorc3RhdGljIHZvaWQgdGVzdF9m
-ZW5jZV93YWl0KGludCBpOTE1LCBpbnQgdmdlbSwgY29uc3QgaW50ZWxfY3R4X3QgKmN0eCwgdW5z
-aWduZWQgcmluZykKIHsKIAlzdHJ1Y3QgdmdlbV9ibyBzY3JhdGNoOwogCXVpbnQzMl90IGZlbmNl
-OwpAQCAtNzYwLDcgKzc2MSw3IEBAIHN0YXRpYyB2b2lkIHRlc3RfZmVuY2Vfd2FpdChpbnQgaTkx
-NSwgaW50IHZnZW0sIHVuc2lnbmVkIHJpbmcpCiAJaWd0X2Fzc2VydChwdHIgIT0gTUFQX0ZBSUxF
-RCk7CiAKIAlpZ3RfZm9yayhjaGlsZCwgMSkKLQkJd29yayhpOTE1LCBkbWFidWYsIHJpbmcpOwor
-CQl3b3JrKGk5MTUsIGRtYWJ1ZiwgY3R4LCByaW5nKTsKIAogCXNsZWVwKDEpOwogCkBAIC04MDAs
-NyArODAxLDcgQEAgc3RhdGljIHZvaWQgdGVzdF9mZW5jZV9oYW5nKGludCBpOTE1LCBpbnQgdmdl
-bSwgdW5zaWduZWQgZmxhZ3MpCiAJaWd0X2Fzc2VydChwdHIgIT0gTUFQX0ZBSUxFRCk7CiAJZ2Vt
-X2Nsb3NlKHZnZW0sIHNjcmF0Y2guaGFuZGxlKTsKIAotCXdvcmsoaTkxNSwgZG1hYnVmLCAwKTsK
-Kwl3b3JrKGk5MTUsIGRtYWJ1ZiwgaW50ZWxfY3R4XzAoaTkxNSksIDApOwogCiAJLyogVGhlIHdv
-cmsgc2hvdWxkIGhhdmUgYmVlbiBjYW5jZWxsZWQgKi8KIApAQCAtMTA0MiwxMiArMTA0MywxNSBA
-QCBzdGF0aWMgdm9pZCB0ZXN0X2ZsaXAoaW50IGk5MTUsIGludCB2Z2VtLCB1bnNpZ25lZCBoYW5n
-KQogfQogCiBzdGF0aWMgdm9pZCB0ZXN0X2VhY2hfZW5naW5lKGNvbnN0IGNoYXIgKm5hbWUsIGlu
-dCB2Z2VtLCBpbnQgaTkxNSwKLQkJCSAgICAgdm9pZCAoKmZuKShpbnQgaTkxNSwgaW50IHZnZW0s
-IHVuc2lnbmVkIGludCBmbGFncykpCisJCQkgICAgIHZvaWQgKCpmbikoaW50IGk5MTUsIGludCB2
-Z2VtLAorCQkJCQljb25zdCBpbnRlbF9jdHhfdCAqY3R4LAorCQkJCQl1bnNpZ25lZCBpbnQgZmxh
-Z3MpKQogewogCWNvbnN0IHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAqZTsKKwljb25z
-dCBpbnRlbF9jdHhfdCAqY3R4ID0gaW50ZWxfY3R4X2NyZWF0ZV9hbGxfcGh5c2ljYWwoaTkxNSk7
-CiAKIAlpZ3Rfc3VidGVzdF93aXRoX2R5bmFtaWMobmFtZSkgewotCQlfX2Zvcl9lYWNoX3BoeXNp
-Y2FsX2VuZ2luZShpOTE1LCBlKSB7CisJCWZvcl9lYWNoX2N0eF9lbmdpbmUoaTkxNSwgY3R4LCBl
-KSB7CiAJCQlpZiAoIWdlbV9jbGFzc19jYW5fc3RvcmVfZHdvcmQoaTkxNSwgZS0+Y2xhc3MpKQog
-CQkJCWNvbnRpbnVlOwogCkBAIC0xMDU2LDEwICsxMDYwLDEyIEBAIHN0YXRpYyB2b2lkIHRlc3Rf
-ZWFjaF9lbmdpbmUoY29uc3QgY2hhciAqbmFtZSwgaW50IHZnZW0sIGludCBpOTE1LAogCiAJCQlp
-Z3RfZHluYW1pY19mKCIlcyIsIGUtPm5hbWUpIHsKIAkJCQlnZW1fcXVpZXNjZW50X2dwdShpOTE1
-KTsKLQkJCQlmbihpOTE1LCB2Z2VtLCBlLT5mbGFncyk7CisJCQkJZm4oaTkxNSwgdmdlbSwgY3R4
-LCBlLT5mbGFncyk7CiAJCQl9CiAJCX0KIAl9CisKKwlpbnRlbF9jdHhfZGVzdHJveShpOTE1LCBj
-dHgpOwogfQogCiBpZ3RfbWFpbgpAQCAtMTExMCw3ICsxMTE2LDggQEAgaWd0X21haW4KIAl7CiAJ
-CXN0YXRpYyBjb25zdCBzdHJ1Y3QgewogCQkJY29uc3QgY2hhciAqbmFtZTsKLQkJCXZvaWQgKCpm
-bikoaW50IGk5MTUsIGludCB2Z2VtLCB1bnNpZ25lZCBpbnQgZW5naW5lKTsKKwkJCXZvaWQgKCpm
-bikoaW50IGk5MTUsIGludCB2Z2VtLCBjb25zdCBpbnRlbF9jdHhfdCAqY3R4LAorCQkJCSAgIHVu
-c2lnbmVkIGludCBlbmdpbmUpOwogCQl9IHRlc3RzW10gPSB7CiAJCQl7ICJzeW5jIiwgdGVzdF9z
-eW5jIH0sCiAJCQl7ICJidXN5IiwgdGVzdF9idXN5IH0sCi0tIAoyLjMxLjEKCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0
-CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+v2 (Ashutosh Dixit):
+ - Restore CREATE_FLAGS_SINGLE_TIMELINE for queues
+
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/i915/gem_context.c        | 17 +++++++
+ lib/i915/gem_context.h        |  1 +
+ tests/i915/gem_exec_whisper.c | 88 +++++++++++++++++++++++------------
+ 3 files changed, 76 insertions(+), 30 deletions(-)
+
+diff --git a/lib/i915/gem_context.c b/lib/i915/gem_context.c
+index 1dda09243..87dcbc6e8 100644
+--- a/lib/i915/gem_context.c
++++ b/lib/i915/gem_context.c
+@@ -209,6 +209,23 @@ void gem_context_destroy(int fd, uint32_t ctx_id)
+ 	igt_assert_eq(__gem_context_destroy(fd, ctx_id), 0);
+ }
+ 
++static bool __gem_context_has_flag(int i915, unsigned int flags)
++{
++	uint32_t ctx = 0;
++
++	__gem_context_create_ext(i915, flags, 0, &ctx);
++	if (ctx)
++		gem_context_destroy(i915, ctx);
++
++	errno = 0;
++	return ctx;
++}
++
++bool gem_context_has_single_timeline(int i915)
++{
++	return __gem_context_has_flag(i915, I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
++}
++
+ int __gem_context_get_param(int fd, struct drm_i915_gem_context_param *p)
+ {
+ 	int err = 0;
+diff --git a/lib/i915/gem_context.h b/lib/i915/gem_context.h
+index 91bb9e7f2..6e2226d27 100644
+--- a/lib/i915/gem_context.h
++++ b/lib/i915/gem_context.h
+@@ -59,6 +59,7 @@ bool gem_has_queues(int i915);
+ 
+ bool gem_has_contexts(int fd);
+ void gem_require_contexts(int fd);
++bool gem_context_has_single_timeline(int i915);
+ void gem_context_require_bannable(int fd);
+ void gem_context_require_param(int fd, uint64_t param);
+ 
+diff --git a/tests/i915/gem_exec_whisper.c b/tests/i915/gem_exec_whisper.c
+index a9d3fa05e..d16409203 100644
+--- a/tests/i915/gem_exec_whisper.c
++++ b/tests/i915/gem_exec_whisper.c
+@@ -29,12 +29,14 @@
+ 
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
++#include "i915/gem_vm.h"
+ #include "igt.h"
+ #include "igt_debugfs.h"
+ #include "igt_rapl.h"
+ #include "igt_gt.h"
+ #include "igt_rand.h"
+ #include "igt_sysfs.h"
++#include "intel_ctx.h"
+ 
+ #define ENGINE_MASK  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
+ 
+@@ -82,13 +84,14 @@ static void verify_reloc(int fd, uint32_t handle,
+ #define BASIC 0x400
+ 
+ struct hang {
++	const intel_ctx_t *ctx;
+ 	struct drm_i915_gem_exec_object2 obj;
+ 	struct drm_i915_gem_relocation_entry reloc;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	int fd;
+ };
+ 
+-static void init_hang(struct hang *h, int fd)
++static void init_hang(struct hang *h, int fd, const intel_ctx_cfg_t *cfg)
+ {
+ 	uint32_t *batch;
+ 	int i, gen;
+@@ -98,6 +101,13 @@ static void init_hang(struct hang *h, int fd)
+ 
+ 	gen = intel_gen(intel_get_drm_devid(h->fd));
+ 
++	if (gem_has_contexts(fd)) {
++		h->ctx = intel_ctx_create(h->fd, cfg);
++		h->execbuf.rsvd1 = h->ctx->id;
++	} else {
++		h->ctx = NULL;
++	}
++
+ 	memset(&h->execbuf, 0, sizeof(h->execbuf));
+ 	h->execbuf.buffers_ptr = to_user_pointer(&h->obj);
+ 	h->execbuf.buffer_count = 1;
+@@ -157,6 +167,7 @@ static void submit_hang(struct hang *h, unsigned *engines, int nengine, unsigned
+ 
+ static void fini_hang(struct hang *h)
+ {
++	intel_ctx_destroy(h->fd, h->ctx);
+ 	close(h->fd);
+ }
+ 
+@@ -166,7 +177,8 @@ static void ctx_set_random_priority(int fd, uint32_t ctx)
+ 	gem_context_set_priority(fd, ctx, prio);
+ }
+ 
+-static void whisper(int fd, unsigned engine, unsigned flags)
++static void whisper(int fd, const intel_ctx_t *ctx,
++		    unsigned engine, unsigned flags)
+ {
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+@@ -180,7 +192,8 @@ static void whisper(int fd, unsigned engine, unsigned flags)
+ 	const struct intel_execution_engine2 *e;
+ 	struct hang hang;
+ 	int fds[64];
+-	uint32_t contexts[64];
++	intel_ctx_cfg_t local_cfg;
++	const intel_ctx_t *contexts[64];
+ 	unsigned nengine;
+ 	uint32_t batch[16];
+ 	unsigned int relocations = 0;
+@@ -204,7 +217,7 @@ static void whisper(int fd, unsigned engine, unsigned flags)
+ 
+ 	nengine = 0;
+ 	if (engine == ALL_ENGINES) {
+-		__for_each_physical_engine(fd, e) {
++		for_each_ctx_engine(fd, ctx, e) {
+ 			if (gem_class_can_store_dword(fd, e->class))
+ 				engines[nengine++] = e->flags;
+ 		}
+@@ -220,11 +233,13 @@ static void whisper(int fd, unsigned engine, unsigned flags)
+ 	if (flags & CONTEXTS)
+ 		gem_require_contexts(fd);
+ 
+-	if (flags & QUEUES)
+-		igt_require(gem_has_queues(fd));
++	if (flags & QUEUES) {
++		igt_require(gem_has_vm(fd));
++		igt_require(gem_context_has_single_timeline(fd));
++	}
+ 
+ 	if (flags & HANG)
+-		init_hang(&hang, fd);
++		init_hang(&hang, fd, &ctx->cfg);
+ 
+ 	nchild = 1;
+ 	if (flags & FORKED)
+@@ -273,6 +288,7 @@ static void whisper(int fd, unsigned engine, unsigned flags)
+ 			execbuf.flags |= I915_EXEC_NO_RELOC;
+ 			if (gen < 6)
+ 				execbuf.flags |= I915_EXEC_SECURE;
++			execbuf.rsvd1 = ctx->id;
+ 			igt_require(__gem_execbuf(fd, &execbuf) == 0);
+ 			scratch = tmp[0];
+ 			store = tmp[1];
+@@ -294,18 +310,21 @@ static void whisper(int fd, unsigned engine, unsigned flags)
+ 		igt_assert(loc == sizeof(uint32_t) * i);
+ 		batch[++i] = MI_BATCH_BUFFER_END;
+ 
+-		if (flags & CONTEXTS) {
+-			for (n = 0; n < 64; n++)
+-				contexts[n] = gem_context_clone_with_engines(fd, 0);
+-		}
+-		if (flags & QUEUES) {
+-			for (n = 0; n < 64; n++)
+-				contexts[n] = gem_queue_create(fd);
+-		}
+ 		if (flags & FDS) {
+ 			for (n = 0; n < 64; n++) {
+ 				fds[n] = gem_reopen_driver(fd);
+-				gem_context_copy_engines(fd, 0, fds[n], 0);
++			}
++		}
++		if (flags & (CONTEXTS | QUEUES | FDS)) {
++			local_cfg = ctx->cfg;
++			if (flags & QUEUES) {
++				igt_assert(!(flags & FDS));
++				local_cfg.vm = gem_vm_create(fd);
++				local_cfg.flags |= I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE;
++			}
++			for (n = 0; n < 64; n++) {
++				int this_fd = (flags & FDS) ? fds[n] : fd;
++				contexts[n] = intel_ctx_create(this_fd, &local_cfg);
+ 			}
+ 		}
+ 
+@@ -414,8 +433,8 @@ static void whisper(int fd, unsigned engine, unsigned flags)
+ 						execbuf.flags &= ~ENGINE_MASK;
+ 						execbuf.flags |= engines[rand() % nengine];
+ 					}
+-					if (flags & (CONTEXTS | QUEUES)) {
+-						execbuf.rsvd1 = contexts[rand() % 64];
++					if (flags & (CONTEXTS | QUEUES | FDS)) {
++						execbuf.rsvd1 = contexts[rand() % 64]->id;
+ 						if (flags & PRIORITY)
+ 							ctx_set_random_priority(this_fd, execbuf.rsvd1);
+ 					}
+@@ -443,7 +462,7 @@ static void whisper(int fd, unsigned engine, unsigned flags)
+ 					}
+ 				}
+ 				execbuf.flags &= ~ENGINE_MASK;
+-				execbuf.rsvd1 = 0;
++				execbuf.rsvd1 = ctx->id;
+ 				execbuf.buffers_ptr = to_user_pointer(&tmp);
+ 
+ 				tmp[0] = tmp[1];
+@@ -493,16 +512,22 @@ static void whisper(int fd, unsigned engine, unsigned flags)
+ 		gem_close(fd, scratch.handle);
+ 		gem_close(fd, store.handle);
+ 
++		if (flags & (CONTEXTS | QUEUES | FDS)) {
++			for (n = 0; n < 64; n++) {
++				int this_fd = (flags & FDS) ? fds[n] : fd;
++				intel_ctx_destroy(this_fd, contexts[n]);
++			}
++			if (local_cfg.vm) {
++				igt_assert(!(flags & FDS));
++				gem_vm_destroy(fd, local_cfg.vm);
++			}
++		}
++		for (n = 0; n < QLEN; n++)
++			gem_close(fd, batches[n].handle);
+ 		if (flags & FDS) {
+ 			for (n = 0; n < 64; n++)
+ 				close(fds[n]);
+ 		}
+-		if (flags & (CONTEXTS | QUEUES)) {
+-			for (n = 0; n < 64; n++)
+-				gem_context_destroy(fd, contexts[n]);
+-		}
+-		for (n = 0; n < QLEN; n++)
+-			gem_close(fd, batches[n].handle);
+ 	}
+ 
+ 	igt_waitchildren();
+@@ -555,6 +580,7 @@ igt_main
+ 		{ NULL }
+ 	};
+ 	const struct intel_execution_engine2 *e;
++	const intel_ctx_t *ctx;
+ 	int fd = -1;
+ 
+ 	igt_fixture {
+@@ -562,6 +588,7 @@ igt_main
+ 		igt_require_gem(fd);
+ 		igt_require(gem_can_store_dword(fd, 0));
+ 		gem_submission_print_method(fd);
++		ctx = intel_ctx_create_all_physical(fd);
+ 
+ 		igt_fork_hang_detector(fd);
+ 	}
+@@ -569,10 +596,10 @@ igt_main
+ 	for (const struct mode *m = modes; m->name; m++) {
+ 		igt_subtest_f("%s%s",
+ 			      m->flags & BASIC ? "basic-" : "", m->name)
+-			whisper(fd, ALL_ENGINES, m->flags);
++			whisper(fd, ctx, ALL_ENGINES, m->flags);
+ 		igt_subtest_f("%s%s-all",
+ 			      m->flags & BASIC ? "basic-" : "", m->name)
+-			whisper(fd, ALL_ENGINES, m->flags | ALL);
++			whisper(fd, ctx, ALL_ENGINES, m->flags | ALL);
+ 	}
+ 
+ 	for (const struct mode *m = modes; m->name; m++) {
+@@ -580,12 +607,12 @@ igt_main
+ 			continue;
+ 
+ 		igt_subtest_with_dynamic_f("%s", m->name) {
+-			__for_each_physical_engine(fd, e) {
++			for_each_ctx_engine(fd, ctx, e) {
+ 				if (!gem_class_can_store_dword(fd, e->class))
+ 					continue;
+ 
+ 				igt_dynamic_f("%s", e->name)
+-					whisper(fd, e->flags, m->flags);
++					whisper(fd, ctx, e->flags, m->flags);
+ 			}
+ 		}
+ 	}
+@@ -599,11 +626,12 @@ igt_main
+ 			if (m->flags & INTERRUPTIBLE)
+ 				continue;
+ 			igt_subtest_f("hang-%s", m->name)
+-				whisper(fd, ALL_ENGINES, m->flags | HANG);
++				whisper(fd, ctx, ALL_ENGINES, m->flags | HANG);
+ 		}
+ 	}
+ 
+ 	igt_fixture {
++		intel_ctx_destroy(fd, ctx);
+ 		close(fd);
+ 	}
+ }
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
