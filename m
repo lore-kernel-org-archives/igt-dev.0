@@ -1,22 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com
- [IPv6:2607:f8b0:4864:20::b2a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A74E6E170
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:27:55 +0000 (UTC)
-Received: by mail-yb1-xb2a.google.com with SMTP id o139so3400287ybg.9
- for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:27:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210617191256.577244-1-jason@jlekstrand.net>
- <20210617191516.577394-22-jason@jlekstrand.net>
- <871r8l930c.wl-ashutosh.dixit@intel.com>
- <CAOFGe95_rNdOksDeT7KpbtiM3q0MwjiU5izsWDT-N=26=kug5A@mail.gmail.com>
- <87eecjavk1.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <87eecjavk1.wl-ashutosh.dixit@intel.com>
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
+ [IPv6:2607:f8b0:4864:20::1034])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 334FA6E176
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:43:51 +0000 (UTC)
+Received: by mail-pj1-x1034.google.com with SMTP id
+ d9-20020a17090ae289b0290172f971883bso3263297pjz.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:43:51 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed, 7 Jul 2021 09:27:43 -0500
-Message-ID: <CAOFGe95PrM0OwDHQruJg7=9JruJ7Qx1nHmKqTXiP+Z_6RQVHag@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 71/79] lib/i915: Rework engine API
- availability checks (v2)
+Date: Wed,  7 Jul 2021 09:42:49 -0500
+Message-Id: <20210707144337.180693-2-jason@jlekstrand.net>
+In-Reply-To: <20210707144337.180693-1-jason@jlekstrand.net>
+References: <20210707144337.180693-1-jason@jlekstrand.net>
+MIME-Version: 1.0
+Subject: [igt-dev] [PATCH i-g-t 01/81] lib/i915/gem_submission_measure: Take
+ an optional intel_ctx_cfg_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,76 +25,228 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jun 30, 2021 at 4:31 PM Dixit, Ashutosh
-<ashutosh.dixit@intel.com> wrote:
->
-> On Wed, 30 Jun 2021 10:57:07 -0700, Jason Ekstrand wrote:
-> >
-> > On Mon, Jun 28, 2021 at 2:56 PM Dixit, Ashutosh
-> > <ashutosh.dixit@intel.com> wrote:
-> > >
-> > > On Thu, 17 Jun 2021 12:15:08 -0700, Jason Ekstrand wrote:
-> > > >
-> > > >  bool gem_has_engine_topology(int fd)
-> > > >  {
-> > > > -     struct drm_i915_gem_context_param param = {
-> > > > -             .param = I915_CONTEXT_PARAM_ENGINES,
-> > > > -     };
-> > > > -
-> > > > -     return !__gem_context_get_param(fd, &param);
-> > > > +     struct intel_engine_data ed;
-> > > > +     return !__query_engine_list(fd, &ed);
-> > >
-> > > Is this correct? Isn't this actually a check for the presence of
-> > > I915_CONTEXT_PARAM_ENGINES (seems so looking from which this is called)?
-> >
-> > You're right that the check here is slightly different.  The old check
-> > queried the engine set on ctx0 but the new check queries the global
-> > engine set.  The three callers are gem_ctx_engines, gem_exec_balancer,
-> > and gem_exec_schedule, all of which really want "is the engines API
-> > available?"  I don't think it matters which one we query from a kernel
-> > support POV.  Every kernel that has the global engines query should
-> > have the CONTEXT_PARAM_ENGINES and vice versa.
->
-> Can we add a comment to the function about this since it is not obvious.
+If provided, the engine (or ALL_ENGINES) is relative to the given
+context config.  This is intended to be transitional.  We'll get rid of
+all the __for_each_physical_engine stuff later.
 
-Yup.  I've added it to the function's docs.
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/i915/gem_submission.c      | 39 ++++++++++++++++++++++++++++------
+ lib/i915/gem_submission.h      |  5 ++++-
+ tests/i915/gem_busy.c          |  2 +-
+ tests/i915/gem_exec_await.c    |  2 +-
+ tests/i915/gem_exec_fence.c    |  2 +-
+ tests/i915/gem_exec_latency.c  |  2 +-
+ tests/i915/gem_exec_schedule.c |  6 +++---
+ tests/i915/perf_pmu.c          |  2 +-
+ 8 files changed, 44 insertions(+), 16 deletions(-)
 
-> >
-> > > So we could probably just create a new context and do a set_engines on it and
-> > > return true if that succeeded?
-> >
-> > Yes, we could do that.  It's just a lot more annoying to get right
-> > because we first have to query the engine set to get a valid engine to
-> > attempt to set.  I'm not sure there's a point.
-> >
-> > Or do that in addition to
-> > > __query_engine_list? Maybe intel_ctx_create_all_physical() will do both?
-> >
-> > Not sure what you mean by this.
->
-> I was saying if we did a intel_ctx_create_all_physical() it would exercise
-> and validate that all required uapi's are present in the kernel. However if
-> you are saying that "Every kernel that has the global engines query should
-> have the CONTEXT_PARAM_ENGINES and vice versa." then it's not needed and it
-> seems there are no further changes to this needed (execpt maybe the comment
-> I suggested above).
->
-> Therefore this is:
->
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
+index bd4bbb3ef..7c305d6d6 100644
+--- a/lib/i915/gem_submission.c
++++ b/lib/i915/gem_submission.c
+@@ -306,7 +306,7 @@ static void alarm_handler(int sig)
+ }
+ 
+ static unsigned int
+-__measure_ringsize(int i915, unsigned int engine)
++__measure_ringsize(int i915, uint32_t ctx_id, unsigned int engine)
+ {
+ 	struct sigaction old_sa, sa = { .sa_handler = alarm_handler };
+ 	struct drm_i915_gem_exec_object2 obj[2];
+@@ -323,6 +323,7 @@ __measure_ringsize(int i915, unsigned int engine)
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(&obj[1]);
+ 	execbuf.buffer_count = 1;
++	execbuf.rsvd1 = ctx_id;
+ 	execbuf.flags = engine;
+ 	gem_execbuf(i915, &execbuf);
+ 
+@@ -372,8 +373,10 @@ __measure_ringsize(int i915, unsigned int engine)
+ 	return count / 2 - 2;
+ }
+ 
+-unsigned int gem_submission_measure(int i915, unsigned int engine)
++unsigned int gem_submission_measure(int i915, const intel_ctx_cfg_t *cfg,
++				    unsigned int engine)
+ {
++	const intel_ctx_t *ctx = NULL;
+ 	unsigned int size;
+ 	bool nonblock;
+ 
+@@ -381,19 +384,41 @@ unsigned int gem_submission_measure(int i915, unsigned int engine)
+ 	if (!nonblock)
+ 		fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) | O_NONBLOCK);
+ 
++	if (cfg) {
++		if (gem_has_contexts(i915))
++			ctx = intel_ctx_create(i915, cfg);
++		else
++			ctx = intel_ctx_0(i915);
++	}
++
+ 	if (engine == ALL_ENGINES) {
+ 		struct intel_execution_engine2 *e;
+ 
+ 		size = -1;
+-		__for_each_physical_engine(i915, e) {
+-			unsigned int this =  __measure_ringsize(i915, e->flags);
+-			if (this < size)
+-				size = this;
++		if (ctx) {
++			for_each_ctx_engine(i915, ctx, e) {
++				unsigned int this =  __measure_ringsize(i915, ctx->id, e->flags);
++				if (this < size)
++					size = this;
++			}
++		} else {
++			__for_each_physical_engine(i915, e) {
++				unsigned int this =  __measure_ringsize(i915, 0, e->flags);
++				if (this < size)
++					size = this;
++			}
+ 		}
+ 	} else {
+-		size =  __measure_ringsize(i915, engine);
++		if (ctx)
++			size =  __measure_ringsize(i915, ctx->id, engine);
++		else
++			size =  __measure_ringsize(i915, 0, engine);
+ 	}
+ 
++	if (ctx)
++		intel_ctx_destroy(i915, ctx);
++
++
+ 	if (!nonblock)
+ 		fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) & ~O_NONBLOCK);
+ 
+diff --git a/lib/i915/gem_submission.h b/lib/i915/gem_submission.h
+index 0faba6a3e..a5497a5e2 100644
+--- a/lib/i915/gem_submission.h
++++ b/lib/i915/gem_submission.h
+@@ -26,6 +26,8 @@
+ 
+ #include <stdint.h>
+ 
++#include "intel_ctx.h"
++
+ #define GEM_SUBMISSION_SEMAPHORES	(1 << 0)
+ #define GEM_SUBMISSION_EXECLISTS	(1 << 1)
+ #define GEM_SUBMISSION_GUC		(1 << 2)
+@@ -46,7 +48,8 @@ static inline bool gem_has_cmdparser(int i915, uint32_t engine)
+ bool gem_has_blitter(int i915);
+ void gem_require_blitter(int i915);
+ 
+-unsigned int gem_submission_measure(int i915, unsigned int engine);
++unsigned int gem_submission_measure(int i915, const intel_ctx_cfg_t *cfg,
++				    unsigned int engine);
+ 
+ void gem_test_engine(int fd, unsigned int engine);
+ bool gem_has_relocations(int fd);
+diff --git a/tests/i915/gem_busy.c b/tests/i915/gem_busy.c
+index dc481f3c5..7e2b220aa 100644
+--- a/tests/i915/gem_busy.c
++++ b/tests/i915/gem_busy.c
+@@ -232,7 +232,7 @@ static void xchg_u32(void *array, unsigned i, unsigned j)
+ static void close_race(int fd)
+ {
+ 	const unsigned int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+-	const unsigned int nhandles = gem_submission_measure(fd, ALL_ENGINES);
++	const unsigned int nhandles = gem_submission_measure(fd, NULL, ALL_ENGINES);
+ 	unsigned int engines[I915_EXEC_RING_MASK + 1], nengine;
+ 	const struct intel_execution_engine2 *e;
+ 	unsigned long *control;
+diff --git a/tests/i915/gem_exec_await.c b/tests/i915/gem_exec_await.c
+index 6db30695f..ba8325ce3 100644
+--- a/tests/i915/gem_exec_await.c
++++ b/tests/i915/gem_exec_await.c
+@@ -237,7 +237,7 @@ igt_main
+ 		igt_require_gem(device);
+ 		gem_submission_print_method(device);
+ 
+-		ring_size = gem_submission_measure(device, ALL_ENGINES);
++		ring_size = gem_submission_measure(device, NULL, ALL_ENGINES);
+ 
+ 		igt_info("Ring size: %d batches\n", ring_size);
+ 		igt_require(ring_size > 0);
+diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+index c3a650d89..6c4d3035f 100644
+--- a/tests/i915/gem_exec_fence.c
++++ b/tests/i915/gem_exec_fence.c
+@@ -3103,7 +3103,7 @@ igt_main
+ 		long ring_size = 0;
+ 
+ 		igt_fixture {
+-			ring_size = gem_submission_measure(i915, ALL_ENGINES);
++			ring_size = gem_submission_measure(i915, NULL, ALL_ENGINES);
+ 			igt_info("Ring size: %ld batches\n", ring_size);
+ 			igt_require(ring_size);
+ 
+diff --git a/tests/i915/gem_exec_latency.c b/tests/i915/gem_exec_latency.c
+index d31e82bc1..62bad6171 100644
+--- a/tests/i915/gem_exec_latency.c
++++ b/tests/i915/gem_exec_latency.c
+@@ -897,7 +897,7 @@ igt_main
+ 
+ 		gem_submission_print_method(device);
+ 
+-		ring_size = gem_submission_measure(device, ALL_ENGINES);
++		ring_size = gem_submission_measure(device, NULL, ALL_ENGINES);
+ 		igt_info("Ring size: %d batches\n", ring_size);
+ 		igt_require(ring_size > 8);
+ 		ring_size -= 8; /* leave some spare */
+diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
+index fe3b8d29b..64a693ba5 100644
+--- a/tests/i915/gem_exec_schedule.c
++++ b/tests/i915/gem_exec_schedule.c
+@@ -1805,7 +1805,7 @@ static void deep(int fd, unsigned ring)
+ 		ctx[n] = gem_context_clone_with_engines(fd, 0);
+ 	}
+ 
+-	nreq = gem_submission_measure(fd, ring) / (3 * XS) * MAX_CONTEXTS;
++	nreq = gem_submission_measure(fd, NULL, ring) / (3 * XS) * MAX_CONTEXTS;
+ 	if (nreq > max_req)
+ 		nreq = max_req;
+ 	igt_info("Using %d requests (prio range %d)\n", nreq, max_req);
+@@ -1950,7 +1950,7 @@ static int __execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf)
+ 
+ static void wide(int fd, unsigned ring)
+ {
+-	const unsigned int ring_size = gem_submission_measure(fd, ring);
++	const unsigned int ring_size = gem_submission_measure(fd, NULL, ring);
+ 	struct timespec tv = {};
+ 	IGT_CORK_FENCE(cork);
+ 	uint32_t result;
+@@ -1995,7 +1995,7 @@ static void wide(int fd, unsigned ring)
+ 
+ static void reorder_wide(int fd, unsigned ring)
+ {
+-	const unsigned int ring_size = gem_submission_measure(fd, ring);
++	const unsigned int ring_size = gem_submission_measure(fd, NULL, ring);
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+ 	const int priorities[] = { MIN_PRIO, MAX_PRIO };
+ 	struct drm_i915_gem_relocation_entry reloc;
+diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+index aa297bf19..f92f73919 100644
+--- a/tests/i915/perf_pmu.c
++++ b/tests/i915/perf_pmu.c
+@@ -1341,7 +1341,7 @@ static void cpu_hotplug(int gem_fd)
+ 
+ static int target_num_interrupts(int i915)
+ {
+-	return min(gem_submission_measure(i915, I915_EXEC_DEFAULT), 30);
++	return min(gem_submission_measure(i915, NULL, I915_EXEC_DEFAULT), 30);
+ }
+ 
+ static void
+-- 
+2.31.1
 
-Thanks!
-
->
-> >
-> > --Jason
-> >
-> > > Thanks.
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
