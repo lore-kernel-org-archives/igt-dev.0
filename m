@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
- [IPv6:2607:f8b0:4864:20::634])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF5446E17E
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:44:48 +0000 (UTC)
-Received: by mail-pl1-x634.google.com with SMTP id y2so1183705plc.8
- for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:44:48 -0700 (PDT)
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
+ [IPv6:2607:f8b0:4864:20::1030])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 933C66E17F
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:44:50 +0000 (UTC)
+Received: by mail-pj1-x1030.google.com with SMTP id
+ g6-20020a17090adac6b029015d1a9a6f1aso3560861pjx.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:44:50 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  7 Jul 2021 09:43:17 -0500
-Message-Id: <20210707144337.180693-30-jason@jlekstrand.net>
+Date: Wed,  7 Jul 2021 09:43:18 -0500
+Message-Id: <20210707144337.180693-31-jason@jlekstrand.net>
 In-Reply-To: <20210707144337.180693-1-jason@jlekstrand.net>
 References: <20210707144337.180693-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 29/81] tests/i915/gem_ctx_shared: Stop
- cloning contexts
+Subject: [igt-dev] [PATCH i-g-t 30/81] tests/i915/gem_create: Convert to
+ intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,160 +21,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead use either GET/SET_CONTEXT_PARAM or a create ext.
-
-Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/i915/gem_ctx_shared.c | 77 ++++++++++++++++++++++++++++++-------
- 1 file changed, 63 insertions(+), 14 deletions(-)
-
-diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
-index 97a8dd771..4441e6eb7 100644
---- a/tests/i915/gem_ctx_shared.c
-+++ b/tests/i915/gem_ctx_shared.c
-@@ -63,6 +63,48 @@ static int priorities[] = {
- 
- IGT_TEST_DESCRIPTION("Test shared contexts.");
- 
-+static int __get_vm(int i915, uint32_t ctx, uint32_t *vm)
-+{
-+	struct drm_i915_gem_context_param p = {
-+		.ctx_id = ctx,
-+		.param = I915_CONTEXT_PARAM_VM,
-+	};
-+	int err = __gem_context_get_param(i915, &p);
-+	if (err)
-+		return err;
-+
-+	igt_assert(p.value > 0 && p.value < UINT32_MAX);
-+	*vm = p.value;
-+
-+	return 0;
-+}
-+
-+static uint32_t get_vm(int i915, uint32_t ctx)
-+{
-+	uint32_t vm;
-+	igt_assert_eq(__get_vm(i915, ctx, &vm), 0);
-+	return vm;
-+}
-+
-+static void set_vm(int i915, uint32_t ctx, uint32_t vm)
-+{
-+	struct drm_i915_gem_context_param p = {
-+		.ctx_id = ctx,
-+		.param = I915_CONTEXT_PARAM_VM,
-+		.value = vm
-+	};
-+	gem_context_set_param(i915, &p);
-+}
-+
-+static void copy_vm(int i915, uint32_t dst, uint32_t src)
-+{
-+	uint32_t vm = get_vm(i915, src);
-+	set_vm(i915, dst, vm);
-+
-+	/* GETPARAM gets a reference to the VM which we have to drop */
-+	gem_vm_destroy(i915, vm);
-+}
-+
- static void create_shared_gtt(int i915, unsigned int flags)
- #define DETACHED 0x1
- {
-@@ -83,9 +125,9 @@ static void create_shared_gtt(int i915, unsigned int flags)
- 	child = flags & DETACHED ? gem_context_create(i915) : 0;
- 	igt_until_timeout(2) {
- 		parent = flags & DETACHED ? child : 0;
--		child = gem_context_clone(i915,
--					  parent, I915_CONTEXT_CLONE_VM,
--					  0);
-+		child = gem_context_create(i915);
-+		copy_vm(i915, child, parent);
-+
- 		execbuf.rsvd1 = child;
- 		gem_execbuf(i915, &execbuf);
- 
-@@ -99,9 +141,7 @@ static void create_shared_gtt(int i915, unsigned int flags)
- 
- 		execbuf.rsvd1 = parent;
- 		igt_assert_eq(__gem_execbuf(i915, &execbuf), -ENOENT);
--		igt_assert_eq(__gem_context_clone(i915,
--						  parent, I915_CONTEXT_CLONE_VM,
--						  0, &parent), -ENOENT);
-+		igt_assert_eq(__get_vm(i915, parent, &parent), -ENOENT);
- 	}
- 	if (flags & DETACHED)
- 		gem_context_destroy(i915, child);
-@@ -152,8 +192,19 @@ static void disjoint_timelines(int i915, const intel_ctx_cfg_t *cfg)
- static void exhaust_shared_gtt(int i915, unsigned int flags)
- #define EXHAUST_LRC 0x1
- {
-+	struct drm_i915_gem_context_create_ext_setparam vm_create_ext = {
-+		.base = {
-+			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
-+		},
-+		.param = {
-+			.param = I915_CONTEXT_PARAM_VM,
-+		},
-+	};
-+
- 	i915 = gem_reopen_driver(i915);
- 
-+	vm_create_ext.param.value = gem_vm_create(i915);
-+
- 	igt_fork(pid, 1) {
- 		const uint32_t bbe = MI_BATCH_BUFFER_END;
- 		struct drm_i915_gem_exec_object2 obj = {
-@@ -163,23 +214,21 @@ static void exhaust_shared_gtt(int i915, unsigned int flags)
- 			.buffers_ptr = to_user_pointer(&obj),
- 			.buffer_count = 1,
- 		};
--		uint32_t parent, child;
- 		unsigned long count = 0;
- 		int err;
- 
- 		gem_write(i915, obj.handle, 0, &bbe, sizeof(bbe));
- 
--		child = 0;
- 		for (;;) {
--			parent = child;
--			err = __gem_context_clone(i915,
--						  parent, I915_CONTEXT_CLONE_VM,
--						  0, &child);
-+			uint32_t ctx;
-+			err = __gem_context_create_ext(i915, 0,
-+						       to_user_pointer(&vm_create_ext),
-+						       &ctx);
- 			if (err)
- 				break;
- 
- 			if (flags & EXHAUST_LRC) {
--				execbuf.rsvd1 = child;
-+				execbuf.rsvd1 = ctx;
- 				err = __gem_execbuf(i915, &execbuf);
- 				if (err)
- 					break;
-@@ -864,7 +913,7 @@ igt_main
- 
- 	igt_subtest_group {
- 		igt_fixture {
--			igt_require(gem_contexts_has_shared_gtt(i915));
-+			igt_require(gem_has_vm(i915));
- 			igt_fork_hang_detector(i915);
- 		}
- 
--- 
-2.31.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+U2lnbmVkLW9mZi1ieTogSmFzb24gRWtzdHJhbmQgPGphc29uQGpsZWtzdHJhbmQubmV0PgpSZXZp
+ZXdlZC1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRl
+bC5jb20+Ci0tLQogdGVzdHMvaTkxNS9nZW1fY3JlYXRlLmMgfCAxNCArKysrKysrKysrLS0tLQog
+MSBmaWxlIGNoYW5nZWQsIDEwIGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCgpkaWZmIC0t
+Z2l0IGEvdGVzdHMvaTkxNS9nZW1fY3JlYXRlLmMgYi90ZXN0cy9pOTE1L2dlbV9jcmVhdGUuYwpp
+bmRleCAxNjdkN2QyOGEuLjFhY2Y4ZWU2YSAxMDA2NDQKLS0tIGEvdGVzdHMvaTkxNS9nZW1fY3Jl
+YXRlLmMKKysrIGIvdGVzdHMvaTkxNS9nZW1fY3JlYXRlLmMKQEAgLTI0NiwyMCArMjQ2LDI0IEBA
+IHN0YXRpYyB2b2lkIGFsd2F5c19jbGVhcihpbnQgaTkxNSwgaW50IHRpbWVvdXQpCiBzdGF0aWMg
+dm9pZCBidXN5X2NyZWF0ZShpbnQgaTkxNSwgaW50IHRpbWVvdXQpCiB7CiAJc3RydWN0IGludGVs
+X2V4ZWN1dGlvbl9lbmdpbmUyICplOworCWNvbnN0IGludGVsX2N0eF90ICpjdHg7CiAJaWd0X3Nw
+aW5fdCAqc3BpbltJOTE1X0VYRUNfUklOR19NQVNLICsgMV07CiAJdW5zaWduZWQgbG9uZyBjb3Vu
+dCA9IDA7CiAKKwljdHggPSBpbnRlbF9jdHhfY3JlYXRlX2FsbF9waHlzaWNhbChpOTE1KTsKKwog
+CWlndF9mb3JrX2hhbmdfZGV0ZWN0b3IoaTkxNSk7Ci0JX19mb3JfZWFjaF9waHlzaWNhbF9lbmdp
+bmUoaTkxNSwgZSkKLQkJc3BpbltlLT5mbGFnc10gPSBpZ3Rfc3Bpbl9uZXcoaTkxNSwgLmVuZ2lu
+ZSA9IGUtPmZsYWdzKTsKKwlmb3JfZWFjaF9jdHhfZW5naW5lKGk5MTUsIGN0eCwgZSkKKwkJc3Bp
+bltlLT5mbGFnc10gPSBpZ3Rfc3Bpbl9uZXcoaTkxNSwgLmN0eCA9IGN0eCwKKwkJCQkJICAgICAg
+LmVuZ2luZSA9IGUtPmZsYWdzKTsKIAogCWlndF91bnRpbF90aW1lb3V0KHRpbWVvdXQpIHsKLQkJ
+X19mb3JfZWFjaF9waHlzaWNhbF9lbmdpbmUoaTkxNSwgZSkgeworCQlmb3JfZWFjaF9jdHhfZW5n
+aW5lKGk5MTUsIGN0eCwgZSkgewogCQkJdWludDMyX3QgaGFuZGxlOwogCQkJaWd0X3NwaW5fdCAq
+bmV4dDsKIAogCQkJaGFuZGxlID0gZ2VtX2NyZWF0ZShpOTE1LCA0MDk2KTsKLQkJCW5leHQgPSBp
+Z3Rfc3Bpbl9uZXcoaTkxNSwKKwkJCW5leHQgPSBpZ3Rfc3Bpbl9uZXcoaTkxNSwgLmN0eCA9IGN0
+eCwKIAkJCQkJICAgIC5lbmdpbmUgPSBlLT5mbGFncywKIAkJCQkJICAgIC5kZXBlbmRlbmN5ID0g
+aGFuZGxlLAogCQkJCQkgICAgLmZsYWdzID0gSUdUX1NQSU5fU09GVERFUCk7CkBAIC0yNzIsNiAr
+Mjc2LDggQEAgc3RhdGljIHZvaWQgYnVzeV9jcmVhdGUoaW50IGk5MTUsIGludCB0aW1lb3V0KQog
+CQl9CiAJfQogCisJaW50ZWxfY3R4X2Rlc3Ryb3koaTkxNSwgY3R4KTsKKwogCWlndF9pbmZvKCJD
+cmVhdGVkICVsZCBvYmplY3RzIHdoaWxlIGJ1c3lcbiIsIGNvdW50KTsKIAogCWdlbV9xdWllc2Nl
+bnRfZ3B1KGk5MTUpOwotLSAKMi4zMS4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVk
+ZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2lndC1kZXYK
