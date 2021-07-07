@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A3416E80B
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 05:08:44 +0000 (UTC)
-From: "Shankar, Uma" <uma.shankar@intel.com>
-Date: Wed, 7 Jul 2021 05:08:38 +0000
-Message-ID: <5214e95a11c1437a96d3d0f67159ff81@intel.com>
-References: <20210706212749.27996-1-swati2.sharma@intel.com>
- <68956fef62aa4191a9ae077da11a6820@intel.com>
-In-Reply-To: <68956fef62aa4191a9ae077da11a6820@intel.com>
-Content-Language: en-US
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 91C0C6E824
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 06:24:45 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+Date: Wed,  7 Jul 2021 12:05:22 +0530
+Message-Id: <20210707063523.30233-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cdclk: Minor fix
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_cdclk: Fix CDCLK failure condition
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,68 +18,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Driver still works in a such way that we never reduce CDCLK, but always
+only increase it. That was done in order to avoid continuous CDCLK switching,
 
+So, in case if new CDCLK is 307200 and there is no change in CDCLK beacuse
+of above stated driver optimization; pass the test else check lt condition.
 
-> > -----Original Message-----
-> > From: Sharma, Swati2 <swati2.sharma@intel.com>
-> > Sent: Wednesday, July 7, 2021 2:58 AM
-> > To: igt-dev@lists.freedesktop.org
-> > Cc: Sharma, Swati2 <swati2.sharma@intel.com>; Shankar, Uma
-> > <uma.shankar@intel.com>
-> > Subject: [igt-dev][PATCH i-g-t] tests/kms_cdclk: Minor fix
+TODO: Enhance this test to lower modes for all connectors in order to lower
+      CDCLK and get a proper DVFS behavior, along with the above mentioned
+      kernel change.
 
-Missed to call out earlier, Please rename the patch header with what is the
-minor fix.  Something like: "Fix cdclock failure condition" or something similar.
+Cc: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+---
+ tests/kms_cdclk.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-> > Driver still works in a such way that we never reduce CDCLK, but
-> > always only increase it. That was done in order to avoid continuous
-> > CDCLK switching,
-> >
-> > So, in case if new CDCLK is 307200 and there is no change in CDCLK
-> > beacuse of above stated driver optimization; pass the test else check lt condition.
-> 
-> As discussed on offline chats, enhance this test to lower modes for all connectors in
-> order to lower cd clock and get a proper DVFS behavior, along with the above
-> mentioned kernel change.
-> 
-> But for now, this change helps avoid getting false failure reports, so:
-> Reviewed-by: Uma Shankar <uma.shakar@intel.com>
-> 
-> >
-> > Cc: Uma Shankar <uma.shankar@intel.com>
-> > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> > ---
-> >  tests/kms_cdclk.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/tests/kms_cdclk.c b/tests/kms_cdclk.c index
-> > d2a9fa5f..818cbfd5 100644
-> > --- a/tests/kms_cdclk.c
-> > +++ b/tests/kms_cdclk.c
-> > @@ -31,6 +31,7 @@ IGT_TEST_DESCRIPTION("Test cdclk features : crawling");
-> >  #define HDISPLAY_4K     3840
-> >  #define VDISPLAY_4K     2160
-> >  #define VREFRESH	60
-> > +#define MAX_CDCLK_4K    307200
-> >
-> >  /* Test flags */
-> >  enum {
-> > @@ -228,7 +229,8 @@ static void test_mode_transition(data_t *data,
-> > enum pipe pipe, igt_output_t *out
-> >  	igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
-> >
-> >  	/* cdclk should bump */
-> > -	igt_assert_lt(cdclk_ref, cdclk_new);
-> > +	if (cdclk_new != MAX_CDCLK_4K)
-> > +		igt_assert_lt(cdclk_ref, cdclk_new);
-> >
-> >  	/* cleanup */
-> >  	do_cleanup_display(display);
-> > --
-> > 2.25.1
+diff --git a/tests/kms_cdclk.c b/tests/kms_cdclk.c
+index d2a9fa5f..818cbfd5 100644
+--- a/tests/kms_cdclk.c
++++ b/tests/kms_cdclk.c
+@@ -31,6 +31,7 @@ IGT_TEST_DESCRIPTION("Test cdclk features : crawling");
+ #define HDISPLAY_4K     3840
+ #define VDISPLAY_4K     2160
+ #define VREFRESH	60
++#define MAX_CDCLK_4K    307200
+ 
+ /* Test flags */
+ enum {
+@@ -228,7 +229,8 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
+ 	igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
+ 
+ 	/* cdclk should bump */
+-	igt_assert_lt(cdclk_ref, cdclk_new);
++	if (cdclk_new != MAX_CDCLK_4K)
++		igt_assert_lt(cdclk_ref, cdclk_new);
+ 
+ 	/* cleanup */
+ 	do_cleanup_display(display);
+-- 
+2.25.1
 
 _______________________________________________
 igt-dev mailing list
