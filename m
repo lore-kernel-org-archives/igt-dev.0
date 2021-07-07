@@ -1,10 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Matthew Auld <matthew.auld@intel.com>
-Date: Wed,  7 Jul 2021 11:52:38 +0100
-Message-Id: <20210707105238.1694091-1-matthew.auld@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 26A126E0ED
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 11:26:59 +0000 (UTC)
+From: Andrzej Turko <andrzej.turko@linux.intel.com>
+Date: Wed,  7 Jul 2021 13:26:39 +0200
+Message-Id: <20210707112644.10956-1-andrzej.turko@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_addfb_basic: pass the actual fd
- to gem_has_lmem
+Subject: [igt-dev] [PATCH i-g-t v7 0/5] Keep tests working without
+ relocations
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -12,47 +15,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Khajapasha <mohammed.khajapasha@intel.com>, intel-gfx@lists.freedesktop.org, Latvala Petri <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Currently we pass the devid as if it were the fd, which doesn't work.
-
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Cc: Latvala Petri <petri.latvala@intel.com>
-Cc: Michael J. Ruhl <michael.j.ruhl@intel.com>
----
- tests/kms_addfb_basic.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index 91fb6ac9..eff1d9b2 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -150,13 +150,11 @@ static void invalid_tests(int fd)
- 	igt_describe("Check if addfb2 with a system memory gem object "
- 		     "fails correctly if device requires local memory framebuffers");
- 	igt_subtest("invalid-smem-bo-on-discrete") {
--		int devid;
- 		uint32_t handle, stride;
- 		uint64_t size;
- 
- 		igt_require_intel(fd);
--		devid = intel_get_drm_devid(fd);
--		igt_require(gem_has_lmem(devid));
-+		igt_require(gem_has_lmem(fd));
- 		igt_calc_fb_size(fd, f.width, f.height,
- 				DRM_FORMAT_XRGB8888, 0, &size, &stride);
- 		handle = gem_create_in_memory_regions(fd, size, REGION_SMEM);
--- 
-2.26.3
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+V2l0aCByZWxvY2F0aW9ucyBkaXNhYmxlZCBmb3IgbmV3ZXIgZ2VuZXJhdGlvbnMKdGhlIGFkZHJl
+c3NlcyBvZiBidWZmZXIgb2JqZWN0cyBpbiBtZW1vcnkgbmVlZAp0byBiZSBrbm93biBpbiBhZHZh
+bmNlIGFuZCwgaGVuY2UsIGFzc2lnbmVkIGluCnVzZXJzcGFjZS4KSWYgcmVsb2NhdGlvbnMgYXJl
+IG5vdCBzdXBwb3J0ZWQsIHRoZSB0ZXN0cyBub3cKdXNlIHRoZSBpbnRlbCBhbGxvY2F0b3IgdG8g
+ZmluZCBvZmZzZXRzIGFuZAp1cGRhdGUgdGhlIGNvbnRlbnRzIG9mIGJhdGNoZXMgY29ycmVzcG9u
+ZGluZ2x5LgoKQ2M6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lA
+aW50ZWwuY29tPgoKCkFuZHJ6ZWogVHVya28gKDUpOgogIHRlc3RzL2k5MTUvZ2VtX2V4ZWNfc3Rv
+cmU6IFN1cHBvcnQgZ2VucyB3aXRob3V0IHJlbG9jYXRpb25zCiAgdGVzdHMvaTkxNS9nZW1fZXhl
+Y19ndHRmaWxsOiBSZXF1aXJlIHJlbG9jYXRpb24gc3VwcG9ydAogIHRlc3RzL2k5MTUvZ2VtX2V4
+ZWNfY2FwdHVyZTogU3VwcG9ydCBnZW5zIHdpdGhvdXQgcmVsb2NhdGlvbnMKICB0ZXN0cy9pOTE1
+L2dlbV9zb2Z0cGluOiBFeGVyY2lzZSBldmljdGlvbiB3aXRoIHNvZnRwaW5uaW5nCiAgdGVzdHMv
+aTkxNS9nZW1fZXhlY19iaWc6IFJlcXVpcmUgcmVsb2NhdGlvbiBzdXBwb3J0CgogdGVzdHMvaTkx
+NS9nZW1fZXhlY19iaWcuYyAgICAgfCAgIDEgKwogdGVzdHMvaTkxNS9nZW1fZXhlY19jYXB0dXJl
+LmMgfCAxMzMgKysrKysrKysrKysrKysrKy0tLS0tCiB0ZXN0cy9pOTE1L2dlbV9leGVjX2d0dGZp
+bGwuYyB8ICAgMSArCiB0ZXN0cy9pOTE1L2dlbV9leGVjX3N0b3JlLmMgICB8IDE0MiArKysrKysr
+KysrKysrKysrKy0tLS0tCiB0ZXN0cy9pOTE1L2dlbV9zb2Z0cGluLmMgICAgICB8IDIxNSArKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCiA1IGZpbGVzIGNoYW5nZWQsIDQzMSBpbnNl
+cnRpb25zKCspLCA2MSBkZWxldGlvbnMoLSkKCi0tIAoyLjI1LjEKCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
+aWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
