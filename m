@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
- [IPv6:2607:f8b0:4864:20::630])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 712D26E193
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:47:29 +0000 (UTC)
-Received: by mail-pl1-x630.google.com with SMTP id c15so1174566pls.13
- for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:47:29 -0700 (PDT)
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com
+ [IPv6:2607:f8b0:4864:20::62d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD1DD6E17F
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:47:06 +0000 (UTC)
+Received: by mail-pl1-x62d.google.com with SMTP id p17so663844plf.12
+ for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:47:06 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  7 Jul 2021 09:46:34 -0500
-Message-Id: <20210707144643.181001-23-jason@jlekstrand.net>
+Date: Wed,  7 Jul 2021 09:46:21 -0500
+Message-Id: <20210707144643.181001-10-jason@jlekstrand.net>
 In-Reply-To: <20210707144337.180693-1-jason@jlekstrand.net>
 References: <20210707144337.180693-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 72/81] igt/dummyload: Require an intel_ctx_t
- for POLL_RUN and !ALL_ENGINES
+Subject: [igt-dev] [PATCH i-g-t 59/81] tests/i915/gem_ctx_engines: Drop the
+ idempotent subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,68 +20,123 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhpcyBsZXRzIHVzIGRyb3AgZ2VtX2NvbnRleHRfbG9va3VwX2VuZ2luZXMKClNpZ25lZC1vZmYt
-Ynk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3RyYW5kLm5ldD4KUmV2aWV3ZWQtYnk6IFpi
-aWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgpSZXZp
-ZXdlZC1ieTogQXNodXRvc2ggRGl4aXQgPGFzaHV0b3NoLmRpeGl0QGludGVsLmNvbT4KLS0tCiBs
-aWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmMgfCAyOSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLQogbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5oIHwgIDMgLS0tCiBsaWIvaWd0
-X2R1bW15bG9hZC5jICAgICAgICAgICAgfCAyMCArKysrKy0tLS0tLS0tLS0tLS0tLQogMyBmaWxl
-cyBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKyksIDQ3IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBh
-L2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYyBiL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9w
-b2xvZ3kuYwppbmRleCBmOWM4ODE0NTcuLjdjNjBkYWYwNyAxMDA2NDQKLS0tIGEvbGliL2k5MTUv
-Z2VtX2VuZ2luZV90b3BvbG9neS5jCisrKyBiL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3ku
-YwpAQCAtMzE3LDM1ICszMTcsNiBAQCBpbnRlbF9lbmdpbmVfbGlzdF9mb3JfY3R4X2NmZyhpbnQg
-ZmQsIGNvbnN0IGludGVsX2N0eF9jZmdfdCAqY2ZnKQogCX0KIH0KIAotc3RhdGljIGludCBnZW1f
-dG9wb2xvZ3lfZ2V0X3BhcmFtKGludCBmZCwKLQkJCQkgIHN0cnVjdCBkcm1faTkxNV9nZW1fY29u
-dGV4dF9wYXJhbSAqcCkKLXsKLQlpZiAoaWd0X29ubHlfbGlzdF9zdWJ0ZXN0cygpKQotCQlyZXR1
-cm4gLUVOT0RFVjsKLQotCWlmIChfX2dlbV9jb250ZXh0X2dldF9wYXJhbShmZCwgcCkpCi0JCXJl
-dHVybiAtMTsgLyogdXNpbmcgZGVmYXVsdCBlbmdpbmUgbWFwICovCi0KLQlyZXR1cm4gMDsKLX0K
-LQotaW50IGdlbV9jb250ZXh0X2xvb2t1cF9lbmdpbmUoaW50IGZkLCB1aW50NjRfdCBlbmdpbmUs
-IHVpbnQzMl90IGN0eF9pZCwKLQkJCSAgICAgIHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5l
-MiAqZSkKLXsKLQlERUZJTkVfQ09OVEVYVF9FTkdJTkVTX1BBUkFNKGVuZ2luZXMsIHBhcmFtLCBj
-dHhfaWQsIEdFTV9NQVhfRU5HSU5FUyk7Ci0KLQkvKiBhIGJpdCBwYXJhbm9pYyAqLwotCWlndF9h
-c3NlcnQoZSk7Ci0KLQlpZiAoZ2VtX3RvcG9sb2d5X2dldF9wYXJhbShmZCwgJnBhcmFtKSB8fCAh
-cGFyYW0uc2l6ZSkKLQkJcmV0dXJuIC1FSU5WQUw7Ci0KLQllLT5jbGFzcyA9IGVuZ2luZXMuZW5n
-aW5lc1tlbmdpbmVdLmVuZ2luZV9jbGFzczsKLQllLT5pbnN0YW5jZSA9IGVuZ2luZXMuZW5naW5l
-c1tlbmdpbmVdLmVuZ2luZV9pbnN0YW5jZTsKLQotCXJldHVybiAwOwotfQotCiAvKioKICAqIGdl
-bV9oYXNfZW5naW5lX3RvcG9sb2d5OgogICogQGZkOiBvcGVuIGk5MTUgZHJtIGZpbGUgZGVzY3Jp
-cHRvcgpkaWZmIC0tZ2l0IGEvbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5oIGIvbGliL2k5
-MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5oCmluZGV4IDhmNTk4N2Y2YS4uOTkxZDBmZjg1IDEwMDY0
-NAotLS0gYS9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmgKKysrIGIvbGliL2k5MTUvZ2Vt
-X2VuZ2luZV90b3BvbG9neS5oCkBAIC02MSw5ICs2MSw2IEBAIGludGVsX2dldF9jdXJyZW50X3Bo
-eXNpY2FsX2VuZ2luZShzdHJ1Y3QgaW50ZWxfZW5naW5lX2RhdGEgKmVkKTsKIAogdm9pZCBpbnRl
-bF9uZXh0X2VuZ2luZShzdHJ1Y3QgaW50ZWxfZW5naW5lX2RhdGEgKmVkKTsKIAotaW50IGdlbV9j
-b250ZXh0X2xvb2t1cF9lbmdpbmUoaW50IGZkLCB1aW50NjRfdCBlbmdpbmUsIHVpbnQzMl90IGN0
-eF9pZCwKLQkJCSAgICAgIHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAqZSk7Ci0KIGJv
-b2wgZ2VtX2NvbnRleHRfaGFzX2VuZ2luZV9tYXAoaW50IGZkLCB1aW50MzJfdCBjdHgpOwogCiBi
-b29sIGdlbV9lbmdpbmVfaXNfZXF1YWwoY29uc3Qgc3RydWN0IGludGVsX2V4ZWN1dGlvbl9lbmdp
-bmUyICplMSwKZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZHVtbXlsb2FkLmMgYi9saWIvaWd0X2R1bW15
-bG9hZC5jCmluZGV4IDdjYzI0Mjg3Mi4uNTM1NGI5YzJiIDEwMDY0NAotLS0gYS9saWIvaWd0X2R1
-bW15bG9hZC5jCisrKyBiL2xpYi9pZ3RfZHVtbXlsb2FkLmMKQEAgLTQyNCwyMiArNDI0LDEyIEBA
-IGlndF9zcGluX2ZhY3RvcnkoaW50IGZkLCBjb25zdCBzdHJ1Y3QgaWd0X3NwaW5fZmFjdG9yeSAq
-b3B0cykKIHsKIAlpZ3Rfc3Bpbl90ICpzcGluOwogCi0JaWYgKG9wdHMtPmVuZ2luZSAhPSBBTExf
-RU5HSU5FUykgewotCQlzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgZTsKLQkJaW50IGNs
-YXNzOwotCi0JCWlmIChvcHRzLT5jdHgpIHsKLQkJCWNsYXNzID0gb3B0cy0+Y3R4LT5jZmcuZW5n
-aW5lc1tvcHRzLT5lbmdpbmVdLmVuZ2luZV9jbGFzczsKLQkJfSBlbHNlIGlmICghZ2VtX2NvbnRl
-eHRfbG9va3VwX2VuZ2luZShmZCwgb3B0cy0+ZW5naW5lLAotCQkJCQkJICAgICAgb3B0cy0+Y3R4
-X2lkLCAmZSkpIHsKLQkJCWNsYXNzID0gZS5jbGFzczsKLQkJfSBlbHNlIHsKLQkJCWdlbV9yZXF1
-aXJlX3JpbmcoZmQsIG9wdHMtPmVuZ2luZSk7Ci0JCQljbGFzcyA9IGdlbV9leGVjYnVmX2ZsYWdz
-X3RvX2VuZ2luZV9jbGFzcyhvcHRzLT5lbmdpbmUpOwotCQl9CisJaWYgKChvcHRzLT5mbGFncyAm
-IElHVF9TUElOX1BPTExfUlVOKSAmJiBvcHRzLT5lbmdpbmUgIT0gQUxMX0VOR0lORVMpIHsKKwkJ
-dW5zaWduZWQgaW50IGNsYXNzOwogCi0JCWlmIChvcHRzLT5mbGFncyAmIElHVF9TUElOX1BPTExf
-UlVOKQotCQkJaWd0X3JlcXVpcmUoZ2VtX2NsYXNzX2Nhbl9zdG9yZV9kd29yZChmZCwgY2xhc3Mp
-KTsKKwkJaWd0X2Fzc2VydChvcHRzLT5jdHgpOworCQljbGFzcyA9IGludGVsX2N0eF9lbmdpbmVf
-Y2xhc3Mob3B0cy0+Y3R4LCBvcHRzLT5lbmdpbmUpOworCQlpZ3RfcmVxdWlyZShnZW1fY2xhc3Nf
-Y2FuX3N0b3JlX2R3b3JkKGZkLCBjbGFzcykpOwogCX0KIAogCWlmIChvcHRzLT5mbGFncyAmIElH
-VF9TUElOX0lOVkFMSURfQ1MpCi0tIAoyLjMxLjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlz
-dGluZm8vaWd0LWRldgo=
+This just tests the engines CONTEXT_GETPARAM which we're going to be
+dropping from i915.
+
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/gem_ctx_engines.c | 79 ------------------------------------
+ 1 file changed, 79 deletions(-)
+
+diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
+index 531495c39..ffed96592 100644
+--- a/tests/i915/gem_ctx_engines.c
++++ b/tests/i915/gem_ctx_engines.c
+@@ -174,82 +174,6 @@ out:
+ 	gem_context_destroy(i915, param.ctx_id);
+ }
+ 
+-static void idempotent(int i915)
+-{
+-	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, I915_EXEC_RING_MASK + 1);
+-	I915_DEFINE_CONTEXT_PARAM_ENGINES(expected, I915_EXEC_RING_MASK + 1);
+-	struct drm_i915_gem_context_param p = {
+-		.ctx_id = gem_context_create(i915),
+-		.param = I915_CONTEXT_PARAM_ENGINES,
+-		.value = to_user_pointer(&engines),
+-		.size = sizeof(engines),
+-	};
+-	const size_t base = sizeof(struct i915_context_param_engines);
+-	const struct intel_execution_engine2 *e;
+-	int idx;
+-
+-	/* What goes in, must come out. And what comes out, must go in */
+-
+-	gem_context_get_param(i915, &p);
+-	igt_assert_eq(p.size, 0); /* atm default is to use legacy ring mask */
+-
+-	idx = 0;
+-	memset(&engines, 0, sizeof(engines));
+-	__for_each_physical_engine(i915, e) {
+-		engines.engines[idx].engine_class = e->class;
+-		engines.engines[idx].engine_instance = e->instance;
+-		idx++;
+-	}
+-	idx *= sizeof(*engines.engines);
+-	p.size = base + idx;
+-	gem_context_set_param(i915, &p);
+-
+-	memcpy(&expected, &engines, sizeof(expected));
+-
+-	gem_context_get_param(i915, &p);
+-	igt_assert_eq(p.size, base + idx);
+-	igt_assert(!memcmp(&expected, &engines, idx));
+-
+-	p.size = base;
+-	gem_context_set_param(i915, &p);
+-	gem_context_get_param(i915, &p);
+-	igt_assert_eq(p.size, base);
+-
+-	/* and it should not have overwritten the previous contents */
+-	igt_assert(!memcmp(&expected, &engines, idx));
+-
+-	memset(&engines, 0, sizeof(engines));
+-	engines.engines[0].engine_class = I915_ENGINE_CLASS_INVALID;
+-	engines.engines[0].engine_instance = I915_ENGINE_CLASS_INVALID_NONE;
+-	idx = sizeof(*engines.engines);
+-	p.size = base + idx;
+-	gem_context_set_param(i915, &p);
+-
+-	memcpy(&expected, &engines, sizeof(expected));
+-
+-	gem_context_get_param(i915, &p);
+-	igt_assert_eq(p.size, base + idx);
+-	igt_assert(!memcmp(&expected, &engines, idx));
+-
+-	p.size = sizeof(engines);
+-	__for_each_physical_engine(i915, e) {
+-		memset(&engines, 0, sizeof(engines));
+-		for (int n = 0; n < I915_EXEC_RING_MASK + 1; n++) {
+-			engine_class(&engines, n) = e->class;
+-			engine_instance(&engines, n) = e->instance;
+-		}
+-		gem_context_set_param(i915, &p);
+-
+-		memcpy(&expected, &engines, sizeof(expected));
+-
+-		gem_context_get_param(i915, &p);
+-		igt_assert_eq(p.size, sizeof(engines));
+-		igt_assert(!memcmp(&expected, &engines, p.size));
+-	}
+-
+-	gem_context_destroy(i915, p.ctx_id);
+-}
+-
+ static uint32_t batch_create(int i915)
+ {
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+@@ -713,9 +637,6 @@ igt_main
+ 	igt_subtest("invalid-engines")
+ 		invalid_engines(i915);
+ 
+-	igt_subtest("idempotent")
+-		idempotent(i915);
+-
+ 	igt_subtest("none")
+ 		none(i915);
+ 
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
