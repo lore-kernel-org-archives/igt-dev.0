@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
- [IPv6:2607:f8b0:4864:20::533])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDCD16E170
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:45:06 +0000 (UTC)
-Received: by mail-pg1-x533.google.com with SMTP id v7so2497583pgl.2
- for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:45:06 -0700 (PDT)
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
+ [IPv6:2607:f8b0:4864:20::1032])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE5106E17F
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:45:09 +0000 (UTC)
+Received: by mail-pj1-x1032.google.com with SMTP id
+ oj10-20020a17090b4d8ab0290172f77377ebso1820423pjb.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:45:09 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  7 Jul 2021 09:43:26 -0500
-Message-Id: <20210707144337.180693-39-jason@jlekstrand.net>
+Date: Wed,  7 Jul 2021 09:43:28 -0500
+Message-Id: <20210707144337.180693-41-jason@jlekstrand.net>
 In-Reply-To: <20210707144337.180693-1-jason@jlekstrand.net>
 References: <20210707144337.180693-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 38/81] tests/i915/gem_exec_capture: Convert
- to intel_ctx_t (v2)
+Subject: [igt-dev] [PATCH i-g-t 40/81] tests/i915/gem_exec_await: Convert to
+ intel_ctx_t (v2)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,86 +21,138 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-djIgKFpiaWduaWV3IEtlbXBjennFhHNraSk6CiAtIERvbid0IE5VTEwtaW5pdCBjdHgKIC0gRGVz
-dHJveSBjdHggYXQgdGhlIGVuZAoKU2lnbmVkLW9mZi1ieTogSmFzb24gRWtzdHJhbmQgPGphc29u
-QGpsZWtzdHJhbmQubmV0PgpSZXZpZXdlZC1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymln
-bmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Ci0tLQogdGVzdHMvaTkxNS9nZW1fZXhlY19jYXB0
-dXJlLmMgfCAzMSArKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdl
-ZCwgMTkgaW5zZXJ0aW9ucygrKSwgMTIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMv
-aTkxNS9nZW1fZXhlY19jYXB0dXJlLmMgYi90ZXN0cy9pOTE1L2dlbV9leGVjX2NhcHR1cmUuYwpp
-bmRleCBhNmIzZDk4N2YuLmY1OWNiMDlkYSAxMDA2NDQKLS0tIGEvdGVzdHMvaTkxNS9nZW1fZXhl
-Y19jYXB0dXJlLmMKKysrIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19jYXB0dXJlLmMKQEAgLTYxLDcg
-KzYxLDggQEAgc3RhdGljIHZvaWQgY2hlY2tfZXJyb3Jfc3RhdGUoaW50IGRpciwgc3RydWN0IGRy
-bV9pOTE1X2dlbV9leGVjX29iamVjdDIgKm9iaikKIAlpZ3RfYXNzZXJ0KGZvdW5kKTsKIH0KIAot
-c3RhdGljIHZvaWQgX19jYXB0dXJlMShpbnQgZmQsIGludCBkaXIsIHVuc2lnbmVkIHJpbmcsIHVp
-bnQzMl90IHRhcmdldCkKK3N0YXRpYyB2b2lkIF9fY2FwdHVyZTEoaW50IGZkLCBpbnQgZGlyLCBj
-b25zdCBpbnRlbF9jdHhfdCAqY3R4LAorCQkgICAgICAgdW5zaWduZWQgcmluZywgdWludDMyX3Qg
-dGFyZ2V0KQogewogCWNvbnN0IHVuc2lnbmVkIGludCBnZW4gPSBpbnRlbF9nZW4oaW50ZWxfZ2V0
-X2RybV9kZXZpZChmZCkpOwogCXN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY19vYmplY3QyIG9ials0
-XTsKQEAgLTE0OCw2ICsxNDksNyBAQCBzdGF0aWMgdm9pZCBfX2NhcHR1cmUxKGludCBmZCwgaW50
-IGRpciwgdW5zaWduZWQgcmluZywgdWludDMyX3QgdGFyZ2V0KQogCWV4ZWNidWYuZmxhZ3MgPSBy
-aW5nOwogCWlmIChnZW4gPiAzICYmIGdlbiA8IDYpCiAJCWV4ZWNidWYuZmxhZ3MgfD0gSTkxNV9F
-WEVDX1NFQ1VSRTsKKwlleGVjYnVmLnJzdmQxID0gY3R4LT5pZDsKIAogCWlndF9hc3NlcnQoIVJF
-QURfT05DRSgqc2Vxbm8pKTsKIAlnZW1fZXhlY2J1ZihmZCwgJmV4ZWNidWYpOwpAQCAtMTY4LDEy
-ICsxNzAsMTIgQEAgc3RhdGljIHZvaWQgX19jYXB0dXJlMShpbnQgZmQsIGludCBkaXIsIHVuc2ln
-bmVkIHJpbmcsIHVpbnQzMl90IHRhcmdldCkKIAlnZW1fY2xvc2UoZmQsIG9ialtTQ1JBVENIXS5o
-YW5kbGUpOwogfQogCi1zdGF0aWMgdm9pZCBjYXB0dXJlKGludCBmZCwgaW50IGRpciwgdW5zaWdu
-ZWQgcmluZykKK3N0YXRpYyB2b2lkIGNhcHR1cmUoaW50IGZkLCBpbnQgZGlyLCBjb25zdCBpbnRl
-bF9jdHhfdCAqY3R4LCB1bnNpZ25lZCByaW5nKQogewogCXVpbnQzMl90IGhhbmRsZTsKIAogCWhh
-bmRsZSA9IGdlbV9jcmVhdGUoZmQsIDQwOTYpOwotCV9fY2FwdHVyZTEoZmQsIGRpciwgcmluZywg
-aGFuZGxlKTsKKwlfX2NhcHR1cmUxKGZkLCBkaXIsIGN0eCwgcmluZywgaGFuZGxlKTsKIAlnZW1f
-Y2xvc2UoZmQsIGhhbmRsZSk7CiB9CiAKQEAgLTQ5Niw3ICs0OTgsOCBAQCBzdGF0aWMgdm9pZCBt
-YW55KGludCBmZCwgaW50IGRpciwgdWludDY0X3Qgc2l6ZSwgdW5zaWduZWQgaW50IGZsYWdzKQog
-CWZyZWUob2Zmc2V0cyk7CiB9CiAKLXN0YXRpYyB2b2lkIHByaW9pbnYoaW50IGZkLCBpbnQgZGly
-LCB1bnNpZ25lZCByaW5nLCBjb25zdCBjaGFyICpuYW1lKQorc3RhdGljIHZvaWQgcHJpb2ludihp
-bnQgZmQsIGludCBkaXIsIGNvbnN0IGludGVsX2N0eF90ICpjdHgsCisJCSAgICB1bnNpZ25lZCBy
-aW5nLCBjb25zdCBjaGFyICpuYW1lKQogewogCWNvbnN0IHVpbnQzMl90IGJiZSA9IE1JX0JBVENI
-X0JVRkZFUl9FTkQ7CiAJc3RydWN0IGRybV9pOTE1X2dlbV9leGVjX29iamVjdDIgb2JqID0gewpA
-QCAtNTA2LDYgKzUwOSw3IEBAIHN0YXRpYyB2b2lkIHByaW9pbnYoaW50IGZkLCBpbnQgZGlyLCB1
-bnNpZ25lZCByaW5nLCBjb25zdCBjaGFyICpuYW1lKQogCQkuYnVmZmVyc19wdHIgPSB0b191c2Vy
-X3BvaW50ZXIoJm9iaiksCiAJCS5idWZmZXJfY291bnQgPSAxLAogCQkuZmxhZ3MgPSByaW5nLAor
-CQkucnN2ZDEgPSBjdHgtPmlkLAogCX07CiAJaW50NjRfdCB0aW1lb3V0ID0gTlNFQ19QRVJfU0VD
-OyAvKiAxcywgZmVlbGluZyBnZW5lcm91cywgYmxhbWUgZGVidWcgKi8KIAl1aW50NjRfdCByYW0s
-IGd0dCwgc2l6ZSA9IDQgPDwgMjA7CkBAIC01NzMsNyArNTc3LDcgQEAgc3RhdGljIHZvaWQgdXNl
-cnB0cihpbnQgZmQsIGludCBkaXIpCiAJaWd0X2Fzc2VydChwb3NpeF9tZW1hbGlnbigmcHRyLCA0
-MDk2LCA0MDk2KSA9PSAwKTsKIAlpZ3RfcmVxdWlyZShfX2dlbV91c2VycHRyKGZkLCBwdHIsIDQw
-OTYsIDAsIDAsICZoYW5kbGUpID09IDApOwogCi0JX19jYXB0dXJlMShmZCwgZGlyLCAwLCBoYW5k
-bGUpOworCV9fY2FwdHVyZTEoZmQsIGRpciwgaW50ZWxfY3R4XzAoZmQpLCAwLCBoYW5kbGUpOwog
-CiAJZ2VtX2Nsb3NlKGZkLCBoYW5kbGUpOwogCWZyZWUocHRyKTsKQEAgLTU5NiwxNCArNjAwLDE1
-IEBAIHN0YXRpYyBzaXplX3Qgc2FmZXJfc3RybGVuKGNvbnN0IGNoYXIgKnMpCiAJcmV0dXJuIHMg
-PyBzdHJsZW4ocykgOiAwOwogfQogCi0jZGVmaW5lIHRlc3RfZWFjaF9lbmdpbmUoVCwgaTkxNSwg
-ZSkgXAotCWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYyhUKSBfX2Zvcl9lYWNoX3BoeXNpY2FsX2Vu
-Z2luZShpOTE1LCBlKSBcCisjZGVmaW5lIHRlc3RfZWFjaF9lbmdpbmUoVCwgaTkxNSwgY3R4LCBl
-KSBcCisJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKFQpIGZvcl9lYWNoX2N0eF9lbmdpbmUoaTkx
-NSwgY3R4LCBlKSBcCiAJCWZvcl9lYWNoX2lmKGdlbV9jbGFzc19jYW5fc3RvcmVfZHdvcmQoaTkx
-NSwgKGUpLT5jbGFzcykpIFwKIAkJCWlndF9keW5hbWljX2YoIiVzIiwgKGUpLT5uYW1lKQogCiBp
-Z3RfbWFpbgogewogCWNvbnN0IHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAqZTsKKwlj
-b25zdCBpbnRlbF9jdHhfdCAqY3R4OwogCWlndF9oYW5nX3QgaGFuZzsKIAlpbnQgZmQgPSAtMTsK
-IAlpbnQgZGlyID0gLTE7CkBAIC02MjAsMTUgKzYyNSwxNiBAQCBpZ3RfbWFpbgogCQlpZ3RfcmVx
-dWlyZV9nZW0oZmQpOwogCQlnZW1fcmVxdWlyZV9tbWFwX3djKGZkKTsKIAkJaWd0X3JlcXVpcmUo
-aGFzX2NhcHR1cmUoZmQpKTsKLQkJaWd0X2FsbG93X2hhbmcoZmQsIDAsIEhBTkdfQUxMT1dfQ0FQ
-VFVSRSk7CisJCWN0eCA9IGludGVsX2N0eF9jcmVhdGVfYWxsX3BoeXNpY2FsKGZkKTsKKwkJaWd0
-X2FsbG93X2hhbmcoZmQsIGN0eC0+aWQsIEhBTkdfQUxMT1dfQ0FQVFVSRSk7CiAKIAkJZGlyID0g
-aWd0X3N5c2ZzX29wZW4oZmQpOwogCQlpZ3RfcmVxdWlyZShpZ3Rfc3lzZnNfc2V0KGRpciwgImVy
-cm9yIiwgIkJlZ29uZSEiKSk7CiAJCWlndF9yZXF1aXJlKHNhZmVyX3N0cmxlbihpZ3Rfc3lzZnNf
-Z2V0KGRpciwgImVycm9yIikpID4gMCk7CiAJfQogCi0JdGVzdF9lYWNoX2VuZ2luZSgiY2FwdHVy
-ZSIsIGZkLCBlKQotCQljYXB0dXJlKGZkLCBkaXIsIGUtPmZsYWdzKTsKKwl0ZXN0X2VhY2hfZW5n
-aW5lKCJjYXB0dXJlIiwgZmQsIGN0eCwgZSkKKwkJY2FwdHVyZShmZCwgZGlyLCBjdHgsIGUtPmZs
-YWdzKTsKIAogCWlndF9zdWJ0ZXN0X2YoIm1hbnktNEstemVybyIpIHsKIAkJaWd0X3JlcXVpcmUo
-Z2VtX2Nhbl9zdG9yZV9kd29yZChmZCwgMCkpOwpAQCAtNjYyLDEyICs2NjgsMTMgQEAgaWd0X21h
-aW4KIAkJdXNlcnB0cihmZCwgZGlyKTsKIAl9CiAKLQl0ZXN0X2VhY2hfZW5naW5lKCJwaSIsIGZk
-LCBlKQotCQlwcmlvaW52KGZkLCBkaXIsIGUtPmZsYWdzLCBlLT5uYW1lKTsKKwl0ZXN0X2VhY2hf
-ZW5naW5lKCJwaSIsIGZkLCBjdHgsIGUpCisJCXByaW9pbnYoZmQsIGRpciwgY3R4LCBlLT5mbGFn
-cywgZS0+bmFtZSk7CiAKIAlpZ3RfZml4dHVyZSB7CiAJCWNsb3NlKGRpcik7CiAJCWlndF9kaXNh
-bGxvd19oYW5nKGZkLCBoYW5nKTsKKwkJaW50ZWxfY3R4X2Rlc3Ryb3koZmQsIGN0eCk7CiAJCWNs
-b3NlKGZkKTsKIAl9CiB9Ci0tIAoyLjMxLjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
-Zm8vaWd0LWRldgo=
+v2 (Jason Ekstrand):
+ - Create the context in the fixture
+ - Pass the context config to gem_submission_measure()
+ - Drop Zbigniew's review since it's close to a rewrite
+
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/gem_exec_await.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
+
+diff --git a/tests/i915/gem_exec_await.c b/tests/i915/gem_exec_await.c
+index ba8325ce3..bea57c61b 100644
+--- a/tests/i915/gem_exec_await.c
++++ b/tests/i915/gem_exec_await.c
+@@ -53,7 +53,8 @@ static void xchg_obj(void *array, unsigned i, unsigned j)
+ }
+ 
+ #define CONTEXTS 0x1
+-static void wide(int fd, int ring_size, int timeout, unsigned int flags)
++static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
++		 int timeout, unsigned int flags)
+ {
+ 	const struct intel_execution_engine2 *engine;
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+@@ -63,6 +64,7 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
+ 		struct drm_i915_gem_exec_object2 exec[2];
+ 		struct drm_i915_gem_relocation_entry reloc;
+ 		struct drm_i915_gem_execbuffer2 execbuf;
++		const intel_ctx_t *ctx;
+ 		uint32_t *cmd;
+ 	} *exec;
+ 	struct drm_i915_gem_exec_object2 *obj;
+@@ -72,7 +74,7 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
+ 	double time;
+ 
+ 	nengine = 0;
+-	__for_each_physical_engine(fd, engine) {
++	for_each_ctx_engine(fd, ctx, engine) {
+ 		if (!gem_class_has_mutable_submission(fd, engine->class))
+ 			continue;
+ 
+@@ -106,7 +108,10 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
+ 					 I915_EXEC_HANDLE_LUT);
+ 
+ 		if (flags & CONTEXTS) {
+-			exec[e].execbuf.rsvd1 = gem_context_create(fd);
++			exec[e].ctx = intel_ctx_create(fd, &ctx->cfg);
++			exec[e].execbuf.rsvd1 = exec[e].ctx->id;
++		} else {
++			exec[e].execbuf.rsvd1 = ctx->id;
+ 		}
+ 
+ 		exec[e].exec[0].handle = gem_create(fd, 4096);
+@@ -151,9 +156,9 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
+ 			int i;
+ 
+ 			if (flags & CONTEXTS) {
+-				gem_context_destroy(fd, exec[e].execbuf.rsvd1);
+-				exec[e].execbuf.rsvd1 =
+-					gem_context_clone_with_engines(fd, 0);
++				intel_ctx_destroy(fd, exec[e].ctx);
++				exec[e].ctx = intel_ctx_create(fd, &ctx->cfg);
++				exec[e].execbuf.rsvd1 = exec[e].ctx->id;
+ 			}
+ 
+ 			exec[e].reloc.presumed_offset = exec[e].exec[1].offset;
+@@ -193,6 +198,7 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
+ 			execbuf.flags = (engines[e] |
+ 					 I915_EXEC_NO_RELOC |
+ 					 I915_EXEC_HANDLE_LUT);
++			execbuf.rsvd1 = ctx->id;
+ 			gem_execbuf(fd, &execbuf);
+ 		}
+ 		clock_gettime(CLOCK_MONOTONIC, &now);
+@@ -214,7 +220,7 @@ static void wide(int fd, int ring_size, int timeout, unsigned int flags)
+ 
+ 	for (unsigned e = 0; e < nengine; e++) {
+ 		if (flags & CONTEXTS)
+-			gem_context_destroy(fd, exec[e].execbuf.rsvd1);
++			intel_ctx_destroy(fd, exec[e].ctx);
+ 
+ 		for (unsigned n = 0; n < ring_size; n++)
+ 			gem_close(fd, exec[e].obj[n].handle);
+@@ -230,14 +236,16 @@ igt_main
+ {
+ 	int ring_size = 0;
+ 	int device = -1;
++	const intel_ctx_t *ctx;
+ 
+ 	igt_fixture {
+ 
+ 		device = drm_open_driver(DRIVER_INTEL);
+ 		igt_require_gem(device);
+ 		gem_submission_print_method(device);
++		ctx = intel_ctx_create_all_physical(device);
+ 
+-		ring_size = gem_submission_measure(device, NULL, ALL_ENGINES);
++		ring_size = gem_submission_measure(device, &ctx->cfg, ALL_ENGINES);
+ 
+ 		igt_info("Ring size: %d batches\n", ring_size);
+ 		igt_require(ring_size > 0);
+@@ -246,15 +254,16 @@ igt_main
+ 	}
+ 
+ 	igt_subtest("wide-all")
+-		wide(device, ring_size, 20, 0);
++		wide(device, ctx, ring_size, 20, 0);
+ 
+ 	igt_subtest("wide-contexts") {
+ 		gem_require_contexts(device);
+-		wide(device, ring_size, 20, CONTEXTS);
++		wide(device, ctx, ring_size, 20, CONTEXTS);
+ 	}
+ 
+ 	igt_fixture {
+ 		igt_stop_hang_detector();
++		intel_ctx_destroy(device, ctx);
+ 		close(device);
+ 	}
+ }
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
