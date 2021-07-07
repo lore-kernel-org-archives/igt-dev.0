@@ -1,22 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com
- [IPv6:2607:f8b0:4864:20::b32])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 549636E170
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 13:51:29 +0000 (UTC)
-Received: by mail-yb1-xb32.google.com with SMTP id y38so3263497ybi.1
- for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 06:51:29 -0700 (PDT)
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com
+ [IPv6:2607:f8b0:4864:20::b35])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F3DA06E170
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:24:26 +0000 (UTC)
+Received: by mail-yb1-xb35.google.com with SMTP id b13so3426481ybk.4
+ for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:24:26 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210617191256.577244-1-jason@jlekstrand.net>
- <20210617191516.577394-11-jason@jlekstrand.net>
- <874kdq8tjv.wl-ashutosh.dixit@intel.com>
- <CAOFGe95gw+b_NhFrbfSuLx=1CyKNwBknOOVzryrubm5h75shBw@mail.gmail.com>
- <87mtrgj9qy.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <87mtrgj9qy.wl-ashutosh.dixit@intel.com>
+ <20210617191256.577244-50-jason@jlekstrand.net>
+ <87sg1172cr.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <87sg1172cr.wl-ashutosh.dixit@intel.com>
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed, 7 Jul 2021 08:51:16 -0500
-Message-ID: <CAOFGe94X2D7i2G1h=B9fQif_AVdC51J4U5qQBLzUSBpMWkycUw@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 60/79] tests/i915/gem_ctx_create:
- Convert benchmarks to intel_ctx_t
+Date: Wed, 7 Jul 2021 09:24:14 -0500
+Message-ID: <CAOFGe964k-iwppRyJXaPuq-gSyO5aY0y7CiFiuPQHeF=HQXXxg@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 49/79] tests/i915/gem_exec_balancer:
+ Don't reset engines on a context
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,86 +30,91 @@ To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jun 23, 2021 at 9:07 PM Dixit, Ashutosh
+On Mon, Jun 28, 2021 at 10:53 PM Dixit, Ashutosh
 <ashutosh.dixit@intel.com> wrote:
 >
-> On Tue, 22 Jun 2021 23:09:51 -0700, Jason Ekstrand wrote:
+> On Thu, 17 Jun 2021 12:12:56 -0700, Jason Ekstrand wrote:
 > >
-> > On Mon, Jun 21, 2021 at 10:30 PM Dixit, Ashutosh
-> > <ashutosh.dixit@intel.com> wrote:
-> > >
-> > > On Thu, 17 Jun 2021 12:14:57 -0700, Jason Ekstrand wrote:
-> > > >
-> > > > -static void maximum(int fd, int ncpus, unsigned mode)
-> > > > +static void maximum(int fd, const intel_ctx_cfg_t *cfg,
-> > > > +                 int ncpus, unsigned mode)
-> > > >  {
-> > > >       const uint32_t bbe = MI_BATCH_BUFFER_END;
-> > > >       struct drm_i915_gem_execbuffer2 execbuf;
-> > > > @@ -300,9 +302,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
-> > > >
-> > > >               err = -ENOMEM;
-> > > >               if (avail_mem > (count + 1) * ctx_size)
-> > > > -                     err =  __gem_context_clone(fd, 0,
-> > > > -                                                I915_CONTEXT_CLONE_ENGINES,
-> > > > -                                                0, &ctx_id);
-> > > > +                     err =  __gem_context_create(fd, &ctx_id);
-> > > >               if (err) {
-> > > >                       igt_info("Created %lu contexts, before failing with '%s' [%d]\n",
-> > > >                                count, strerror(-err), -err);
-> > > > @@ -323,6 +323,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
-> > > >
-> > > >       igt_fork(child, ncpus) {
-> > > >               struct timespec start, end;
-> > > > +             const intel_ctx_t *ctx;
-> > > >               int i915;
-> > > >
-> > > >               i915 = gem_reopen_driver(fd);
-> > >
-> > > Just a minor nit here. I'm thinking if we should remove the i915 variable
-> > > and the gem_reopen_driver() here and just use fd? Because it seems we have
-> > > exhausted the memory creating contexts earlier on, and now the previous
-> > > code was creating one additional context using gem_reopen_driver() whereas
-> > > we are creating two, one with gem_reopen_driver() and a second with
-> > > intel_ctx_create(). Not sure if it matters or not but just in case it does
-> > > we can get rid of gem_reopen_driver() and i915.
-> >
-> > Wait a second... I'm not sure how this was expected to ever work.  In
-> > the first loop, the test creates a bunch of contexts with fd.  Then,
-> > it forks off children.  Each of those children re-open the driver and
-> > then try to execute using said contexts on i915.  But those contexts
-> > don't exist on the newly opened DRM device.  I don't see how this ever
-> > worked.
+> > Instead the set of engines to break implicit dependencies,
+> > just use a new context.  This does drop a theoretical bit of test
+> > coverage in the bonded chain tests because we can't drop the timeline
+> > easily.
 >
-> Yes you are right, the older code seems to have this bug. But with your
-> changes shall we remove i915 and just use fd and that should fix it,
-> correct?
+> I don't know enough to comment on the seriousness of this. If this scenario
+> is of interest would you know if this is being tested elsewhere?
 
-I've added a patch before this one which fixes the bug.  This patch is
-mostly the same, obvious changes so I'm leaving your RB.
+Actually, I've convinced myself that we're not really losing coverage.
+Basically everything gets thrown away when you replace the engine set
+with the old API so creating a new context should be the same.
+
+> I guess the original code could "drop the timeline easily" through a
+> set_load_balancer() call on the context which we cannot do after this
+> series. Or is the timeline being replaced/dropped a different way?
+
+I'm re-creating the context.  I'll leave the old comment with a couple tweaks.
+
+> > However, those tests also use the FENCE_SUBMIT pattern in a way that the
+> > set of engines is swapped out between the first and second half of the
+> > bonded pair.  That seems pretty sketchy.
+>
+> I did not understand this comment either. As I mention above I thought this
+> is the way to replace/drop the timeline but maybe I am wrong.
+>
+> The patch itself is fine. If you think the above issues are ok, I can give
+> a R-b after I hear from you. Thanks.
+
+I'm going to drop that commentary from the commit message and replace
+it with something better.  I'm now convinced there are no interesting
+changes.
+
+> > @@ -1067,11 +1072,12 @@ static void __bonded_sema(int i915, uint32_t ctx,
+> >       struct drm_i915_gem_execbuffer2 execbuf = {
+> >               .buffers_ptr = to_user_pointer(&batch),
+> >               .buffer_count = 1,
+> > -             .rsvd1 = ctx,
+> >       };
+> >       igt_spin_t *spin;
+> >
+> >       for (int i = 0; i < ARRAY_SIZE(priorities); i++) {
+> > +             uint32_t ctx;
+> > +
+> >               /* A: spin forever on seperate render engine */
+> >               spin = igt_spin_new(i915,
+> >                                   .flags = (IGT_SPIN_POLL_RUN |
+> > @@ -1086,16 +1092,21 @@ static void __bonded_sema(int i915, uint32_t ctx,
+> >                */
+>
+> We should probably delete the comment above here in the code similar to
+> __bonded_chain* since we are not replacing/dropping the timeline here
+> anymore?
+
+I've done the same update to both now to talk about replacing contexts
+and their timelines instead of just timelines.
+
+> > @@ -1818,8 +1824,8 @@ static void __bonded_early(int i915, uint32_t ctx,
+> >       struct drm_i915_gem_execbuffer2 execbuf = {
+> >               .buffers_ptr = to_user_pointer(&batch),
+> >               .buffer_count = 1,
+> > -             .rsvd1 = ctx,
+> >       };
+> > +     uint32_t vm, ctx;
+> >       igt_spin_t *spin;
+> >
+> >       memset(bonds, 0, sizeof(bonds));
+> > @@ -1833,6 +1839,11 @@ static void __bonded_early(int i915, uint32_t ctx,
+> >               bonds[n].engines[0] = siblings[(n + 1) % count];
+> >       }
+> >
+> > +     /* We share a VM so that the spin cancel will work without a reloc */
+>
+> Didn't understand this comment either. Though both __bonded_early() and
+> bonded() are deleted later on in the series so if had reordered the patches
+> we could have avoided changing these functions. Anyway, leave as is, no
+> need to change.
+
+Sounds good.
 
 --Jason
-
-> > --Jason
-> >
-> > > Apart from this, this is:
-> > >
-> > > Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > >
-> > > > @@ -331,7 +332,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
-> > > >                * a nop execbuf and stalling for it.
-> > > >                */
-> > > >               gem_quiescent_gpu(i915);
-> > > > -             gem_context_copy_engines(fd, 0, i915, 0);
-> > > > +             ctx = intel_ctx_create(i915, cfg);
-> > > >
-> > > >               hars_petruska_f54_1_random_perturb(child);
-> > > >               obj[0].handle = gem_create(i915, 4096);
-> > > > @@ -352,6 +353,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
-> > > >               gem_sync(i915, obj[0].handle);
-> > > >               clock_gettime(CLOCK_MONOTONIC, &end);
-> > > >               gem_close(i915, obj[0].handle);
-> > > > +             intel_ctx_destroy(i915, ctx);
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
