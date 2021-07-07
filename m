@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com
- [IPv6:2607:f8b0:4864:20::436])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F9BF6E194
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:45:13 +0000 (UTC)
-Received: by mail-pf1-x436.google.com with SMTP id 145so2388277pfv.0
- for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:45:13 -0700 (PDT)
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
+ [IPv6:2607:f8b0:4864:20::102c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41D456E185
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:45:15 +0000 (UTC)
+Received: by mail-pj1-x102c.google.com with SMTP id
+ d9-20020a17090ae289b0290172f971883bso3266039pjz.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:45:15 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  7 Jul 2021 09:43:30 -0500
-Message-Id: <20210707144337.180693-43-jason@jlekstrand.net>
+Date: Wed,  7 Jul 2021 09:43:31 -0500
+Message-Id: <20210707144337.180693-44-jason@jlekstrand.net>
 In-Reply-To: <20210707144337.180693-1-jason@jlekstrand.net>
 References: <20210707144337.180693-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 42/81] tests/i915/gem_ctx_persistence: Drop
- the engine replace subtests
+Subject: [igt-dev] [PATCH i-g-t 43/81] tests/i915/gem_ctx_persistence:
+ Convert to intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,124 +21,661 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-V2UncmUgZ29pbmcgdG8gc3RhcnQgZGlzYWxsb3dpbmcgbm9uLXRyaXZpYWwgdXNlcyBvZiBzZXRw
-YXJhbSBmb3IKZW5naW5lcyBwcmVjaXNlbHkgdG8gbWFrZSByYWNlcyBsaWtlIHRoaXMgaW1wb3Nz
-aWJsZS4gIEl0J2xsIGFsc28gbWFrZQp0aGVzZSB0ZXN0IGNhc2VzIGludmFsaWQuCgpTaWduZWQt
-b2ZmLWJ5OiBKYXNvbiBFa3N0cmFuZCA8amFzb25Aamxla3N0cmFuZC5uZXQ+ClJldmlld2VkLWJ5
-OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4K
-LS0tCiB0ZXN0cy9pOTE1L2dlbV9jdHhfcGVyc2lzdGVuY2UuYyB8IDIxMCAtLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMjEwIGRlbGV0aW9ucygtKQoKZGlm
-ZiAtLWdpdCBhL3Rlc3RzL2k5MTUvZ2VtX2N0eF9wZXJzaXN0ZW5jZS5jIGIvdGVzdHMvaTkxNS9n
-ZW1fY3R4X3BlcnNpc3RlbmNlLmMKaW5kZXggOTFjMzAxNzY5Li41OTA3N2NjMDEgMTAwNjQ0Ci0t
-LSBhL3Rlc3RzL2k5MTUvZ2VtX2N0eF9wZXJzaXN0ZW5jZS5jCisrKyBiL3Rlc3RzL2k5MTUvZ2Vt
-X2N0eF9wZXJzaXN0ZW5jZS5jCkBAIC0xMDg1LDE5MSArMTA4NSw2IEBAIHN0YXRpYyB2b2lkIG1h
-bnlfY29udGV4dHMoaW50IGk5MTUpCiAJZ2VtX3F1aWVzY2VudF9ncHUoaTkxNSk7CiB9CiAKLXN0
-YXRpYyB2b2lkIHJlcGxhY2VfZW5naW5lcyhpbnQgaTkxNSwgY29uc3Qgc3RydWN0IGludGVsX2V4
-ZWN1dGlvbl9lbmdpbmUyICplKQotewotCUk5MTVfREVGSU5FX0NPTlRFWFRfUEFSQU1fRU5HSU5F
-UyhlbmdpbmVzLCAxKSA9IHsKLQkJLmVuZ2luZXMgPSB7eyBlLT5jbGFzcywgZS0+aW5zdGFuY2Ug
-fX0KLQl9OwotCXN0cnVjdCBkcm1faTkxNV9nZW1fY29udGV4dF9wYXJhbSBwYXJhbSA9IHsKLQkJ
-LmN0eF9pZCA9IGdlbV9jb250ZXh0X2NyZWF0ZShpOTE1KSwKLQkJLnBhcmFtID0gSTkxNV9DT05U
-RVhUX1BBUkFNX0VOR0lORVMsCi0JCS52YWx1ZSA9IHRvX3VzZXJfcG9pbnRlcigmZW5naW5lcyks
-Ci0JCS5zaXplID0gc2l6ZW9mKGVuZ2luZXMpLAotCX07Ci0JaWd0X3NwaW5fdCAqc3BpblsyXTsK
-LQlpbnQ2NF90IHRpbWVvdXQ7Ci0KLQkvKgotCSAqIFN1cHBvc2UgdGhlIHVzZXIgdHJpZXMgdG8g
-aGlkZSBhIGhhbmdpbmcgYmF0Y2ggYnkgcmVwbGFjaW5nCi0JICogdGhlIHNldCBvZiBlbmdpbmVz
-IG9uIHRoZSBjb250ZXh0IHNvIHRoYXQgaXQncyBub3QgdmlzaWJsZQotCSAqIGF0IHRoZSB0aW1l
-IG9mIGNsb3N1cmU/IFRoZW4gd2UgbXVzdCBhY3Qgd2hlbiB0aGV5IHJlcGxhY2UKLQkgKiB0aGUg
-ZW5naW5lcyEKLQkgKi8KLQotCWdlbV9jb250ZXh0X3NldF9wZXJzaXN0ZW5jZShpOTE1LCBwYXJh
-bS5jdHhfaWQsIGZhbHNlKTsKLQotCWdlbV9jb250ZXh0X3NldF9wYXJhbShpOTE1LCAmcGFyYW0p
-OwotCXNwaW5bMF0gPSBpZ3Rfc3Bpbl9uZXcoaTkxNSwgcGFyYW0uY3R4X2lkKTsKLQotCWdlbV9j
-b250ZXh0X3NldF9wYXJhbShpOTE1LCAmcGFyYW0pOwotCXNwaW5bMV0gPSBpZ3Rfc3Bpbl9uZXco
-aTkxNSwgcGFyYW0uY3R4X2lkKTsKLQotCWdlbV9jb250ZXh0X2Rlc3Ryb3koaTkxNSwgcGFyYW0u
-Y3R4X2lkKTsKLQotCXRpbWVvdXQgPSByZXNldF90aW1lb3V0X21zICogTlNFQ19QRVJfTVNFQzsK
-LQlpZ3RfYXNzZXJ0X2VxKGdlbV93YWl0KGk5MTUsIHNwaW5bMV0tPmhhbmRsZSwgJnRpbWVvdXQp
-LCAwKTsKLQotCXRpbWVvdXQgPSByZXNldF90aW1lb3V0X21zICogTlNFQ19QRVJfTVNFQzsKLQlp
-Z3RfYXNzZXJ0X2VxKGdlbV93YWl0KGk5MTUsIHNwaW5bMF0tPmhhbmRsZSwgJnRpbWVvdXQpLCAw
-KTsKLQotCWlndF9zcGluX2ZyZWUoaTkxNSwgc3BpblsxXSk7Ci0JaWd0X3NwaW5fZnJlZShpOTE1
-LCBzcGluWzBdKTsKLQlnZW1fcXVpZXNjZW50X2dwdShpOTE1KTsKLX0KLQotc3RhdGljIHZvaWQg
-cmFjZV9zZXRfZW5naW5lcyhpbnQgaTkxNSwgaW50IGluLCBpbnQgb3V0KQotewotCUk5MTVfREVG
-SU5FX0NPTlRFWFRfUEFSQU1fRU5HSU5FUyhlbmdpbmVzLCAxKSA9IHsKLQkJLmVuZ2luZXMgPSB7
-fQotCX07Ci0Jc3RydWN0IGRybV9pOTE1X2dlbV9jb250ZXh0X3BhcmFtIHBhcmFtID0gewotCQku
-cGFyYW0gPSBJOTE1X0NPTlRFWFRfUEFSQU1fRU5HSU5FUywKLQkJLnZhbHVlID0gdG9fdXNlcl9w
-b2ludGVyKCZlbmdpbmVzKSwKLQkJLnNpemUgPSBzaXplb2YoZW5naW5lcyksCi0JfTsKLQlpZ3Rf
-c3Bpbl90ICpzcGluOwotCi0Jc3BpbiA9IGlndF9zcGluX25ldyhpOTE1KTsKLQlpZ3Rfc3Bpbl9l
-bmQoc3Bpbik7Ci0KLQl3aGlsZSAocmVhZChpbiwgJnBhcmFtLmN0eF9pZCwgc2l6ZW9mKHBhcmFt
-LmN0eF9pZCkpID4gMCkgewotCQlpZiAoIXBhcmFtLmN0eF9pZCkKLQkJCWJyZWFrOwotCi0JCV9f
-Z2VtX2NvbnRleHRfc2V0X3BhcmFtKGk5MTUsICZwYXJhbSk7Ci0KLQkJc3Bpbi0+ZXhlY2J1Zi5y
-c3ZkMSA9IHBhcmFtLmN0eF9pZDsKLQkJX19nZW1fZXhlY2J1ZihpOTE1LCAmc3Bpbi0+ZXhlY2J1
-Zik7Ci0KLQkJd3JpdGUob3V0LCAmcGFyYW0uY3R4X2lkLCBzaXplb2YocGFyYW0uY3R4X2lkKSk7
-Ci0JfQotCi0JaWd0X3NwaW5fZnJlZShpOTE1LCBzcGluKTsKLX0KLQotc3RhdGljIHZvaWQgY2xv
-c2VfcmVwbGFjZV9yYWNlKGludCBpOTE1KQotewotCWNvbnN0IGludCBuY3B1cyA9IHN5c2NvbmYo
-X1NDX05QUk9DRVNTT1JTX09OTE4pOwotCWludCBmZW5jZSA9IC0xOwotCWludCBvdXRbMl0sIGlu
-WzJdOwotCi0JY2xlYW51cChpOTE1KTsKLQotCS8qCi0JICogSWYgd2UgdGltZSB0aGUgc3VibWlz
-c2lvbiBvZiBhIGhhbmdpbmcgYmF0Y2ggdG8gb25lIHNldCBvZiBlbmdpbmVzCi0JICogYW5kIHRo
-ZW4gc2ltdWx0YW5lb3VzbHkgcmVwbGFjZSB0aGUgZW5naW5lcyBpbiBvbmUgdGhyZWFkLCBhbmQK
-LQkgKiBjbG9zZSB0aGUgY29udGV4dCBpbiBhbm90aGVyLCBpdCBtaWdodCBiZSBwb3NzaWJsZSBm
-b3IgdGhlIGtlcm5lbAotCSAqIHRvIGxvc2UgdHJhY2sgb2YgdGhlIG9sZCBlbmdpbmVzIGJlbGll
-dmluZyB0aGF0IHRoZSBub24tcGVyc2lzdGVuCi0JICogY29udGV4dCBpcyBhbHJlYWR5IGNsb3Nl
-ZCBhbmQgdGhlIGhhbmdpbmcgcmVxdWVzdHMgY2FuY2VsbGVkLgotCSAqCi0JICogT3VyIGNoYWxs
-ZW5nZSBpcyB0cnkgYW5kIGV4cG9zZSBhbnkgc3VjaCByYWNlIGNvbmRpdGlvbi4KLQkgKi8KLQot
-CWlndF9hc3NlcnQocGlwZShvdXQpID09IDApOwotCWlndF9hc3NlcnQocGlwZShpbikgPT0gMCk7
-Ci0JaWd0X2ZvcmsoY2hpbGQsIG5jcHVzKSB7Ci0JCWNsb3NlKG91dFsxXSk7Ci0JCWNsb3NlKGlu
-WzBdKTsKLQkJcmFjZV9zZXRfZW5naW5lcyhpOTE1LCBvdXRbMF0sIGluWzFdKTsKLQl9Ci0JZm9y
-IChpbnQgaSA9IDA7IGkgPCBuY3B1czsgaSsrKQotCQljbG9zZShvdXRbMF0pOwotCi0JaWd0X3Vu
-dGlsX3RpbWVvdXQoNSkgewotCQlpZ3Rfc3Bpbl90ICpzcGluOwotCQl1aW50MzJfdCBjdHg7Ci0K
-LQkJY3R4ID0gZ2VtX2NvbnRleHRfY2xvbmVfd2l0aF9lbmdpbmVzKGk5MTUsIDApOwotCQlnZW1f
-Y29udGV4dF9zZXRfcGVyc2lzdGVuY2UoaTkxNSwgY3R4LCBmYWxzZSk7Ci0KLQkJc3BpbiA9IGln
-dF9zcGluX25ldyhpOTE1LCBjdHgsIC5mbGFncyA9IElHVF9TUElOX0ZFTkNFX09VVCk7Ci0JCWZv
-ciAoaW50IGkgPSAwOyBpIDwgbmNwdXM7IGkrKykKLQkJCXdyaXRlKG91dFsxXSwgJmN0eCwgc2l6
-ZW9mKGN0eCkpOwotCi0JCWdlbV9jb250ZXh0X2Rlc3Ryb3koaTkxNSwgY3R4KTsKLQkJZm9yIChp
-bnQgaSA9IDA7IGkgPCBuY3B1czsgaSsrKQotCQkJcmVhZChpblswXSwgJmN0eCwgc2l6ZW9mKGN0
-eCkpOwotCi0JCWlmIChmZW5jZSA8IDApIHsKLQkJCWZlbmNlID0gc3Bpbi0+b3V0X2ZlbmNlOwot
-CQl9IGVsc2UgewotCQkJaW50IHRtcDsKLQotCQkJdG1wID0gc3luY19mZW5jZV9tZXJnZShmZW5j
-ZSwgc3Bpbi0+b3V0X2ZlbmNlKTsKLQkJCWNsb3NlKGZlbmNlKTsKLQkJCWNsb3NlKHNwaW4tPm91
-dF9mZW5jZSk7Ci0KLQkJCWZlbmNlID0gdG1wOwotCQl9Ci0JCXNwaW4tPm91dF9mZW5jZSA9IC0x
-OwotCX0KLQljbG9zZShpblswXSk7Ci0KLQlmb3IgKGludCBpID0gMDsgaSA8IG5jcHVzOyBpKysp
-IHsKLQkJdWludDMyX3QgZW5kID0gMDsKLQotCQl3cml0ZShvdXRbMV0sICZlbmQsIHNpemVvZihl
-bmQpKTsKLQl9Ci0JY2xvc2Uob3V0WzFdKTsKLQotCWlmIChzeW5jX2ZlbmNlX3dhaXQoZmVuY2Us
-IE1TRUNfUEVSX1NFQyAvIDIpKSB7Ci0JCWlndF9kZWJ1Z2ZzX2R1bXAoaTkxNSwgImk5MTVfZW5n
-aW5lX2luZm8iKTsKLQkJaWd0X2Fzc2VydChzeW5jX2ZlbmNlX3dhaXQoZmVuY2UsIE1TRUNfUEVS
-X1NFQyAvIDIpID09IDApOwotCX0KLQljbG9zZShmZW5jZSk7Ci0KLQlpZ3Rfd2FpdGNoaWxkcmVu
-KCk7Ci0JZ2VtX3F1aWVzY2VudF9ncHUoaTkxNSk7Ci19Ci0KLXN0YXRpYyB2b2lkIHJlcGxhY2Vf
-ZW5naW5lc19ob3N0aWxlKGludCBpOTE1LAotCQkJCSAgICBjb25zdCBzdHJ1Y3QgaW50ZWxfZXhl
-Y3V0aW9uX2VuZ2luZTIgKmUpCi17Ci0JSTkxNV9ERUZJTkVfQ09OVEVYVF9QQVJBTV9FTkdJTkVT
-KGVuZ2luZXMsIDEpID0gewotCQkuZW5naW5lcyA9IHt7IGUtPmNsYXNzLCBlLT5pbnN0YW5jZSB9
-fQotCX07Ci0Jc3RydWN0IGRybV9pOTE1X2dlbV9jb250ZXh0X3BhcmFtIHBhcmFtID0gewotCQku
-Y3R4X2lkID0gZ2VtX2NvbnRleHRfY3JlYXRlKGk5MTUpLAotCQkucGFyYW0gPSBJOTE1X0NPTlRF
-WFRfUEFSQU1fRU5HSU5FUywKLQkJLnZhbHVlID0gdG9fdXNlcl9wb2ludGVyKCZlbmdpbmVzKSwK
-LQkJLnNpemUgPSBzaXplb2YoZW5naW5lcyksCi0JfTsKLQlpbnQ2NF90IHRpbWVvdXQgPSByZXNl
-dF90aW1lb3V0X21zICogTlNFQ19QRVJfTVNFQzsKLQlpZ3Rfc3Bpbl90ICpzcGluOwotCi0JLyoK
-LQkgKiBTdXBwb3NlIHRoZSB1c2VyIHRyaWVzIHRvIGhpZGUgYSBoYW5naW5nIGJhdGNoIGJ5IHJl
-cGxhY2luZwotCSAqIHRoZSBzZXQgb2YgZW5naW5lcyBvbiB0aGUgY29udGV4dCBzbyB0aGF0IGl0
-J3Mgbm90IHZpc2libGUKLQkgKiBhdCB0aGUgdGltZSBvZiBjbG9zdXJlPyBUaGVuIHdlIG11c3Qg
-YWN0IHdoZW4gdGhleSByZXBsYWNlCi0JICogdGhlIGVuZ2luZXMhCi0JICovCi0KLQlnZW1fY29u
-dGV4dF9zZXRfcGVyc2lzdGVuY2UoaTkxNSwgcGFyYW0uY3R4X2lkLCBmYWxzZSk7Ci0KLQlnZW1f
-Y29udGV4dF9zZXRfcGFyYW0oaTkxNSwgJnBhcmFtKTsKLQlzcGluID0gaWd0X3NwaW5fbmV3KGk5
-MTUsIHBhcmFtLmN0eF9pZCwKLQkJCSAgICAuZmxhZ3MgPSBJR1RfU1BJTl9OT19QUkVFTVBUSU9O
-KTsKLQotCXBhcmFtLnNpemUgPSA4OwotCWdlbV9jb250ZXh0X3NldF9wYXJhbShpOTE1LCAmcGFy
-YW0pOwotCWdlbV9jb250ZXh0X2Rlc3Ryb3koaTkxNSwgcGFyYW0uY3R4X2lkKTsKLQotCWlndF9h
-c3NlcnRfZXEoZ2VtX3dhaXQoaTkxNSwgc3Bpbi0+aGFuZGxlLCAmdGltZW91dCksIDApOwotCi0J
-aWd0X3NwaW5fZnJlZShpOTE1LCBzcGluKTsKLQlnZW1fcXVpZXNjZW50X2dwdShpOTE1KTsKLX0K
-LQogc3RhdGljIHZvaWQgZG9fdGVzdCh2b2lkICgqdGVzdCkoaW50IGk5MTUsIHVuc2lnbmVkIGlu
-dCBlbmdpbmUpLAogCQkgICAgaW50IGk5MTUsIHVuc2lnbmVkIGludCBlbmdpbmUsCiAJCSAgICBj
-b25zdCBjaGFyICpuYW1lKQpAQCAtMTQyMiwzMSArMTIzNyw2IEBAIGlndF9tYWluCiAJCQlzbW9r
-ZXRlc3QoaTkxNSk7CiAJfQogCi0JLyogQ2hlY2sgaW50ZXJhY3Rpb25zIHdpdGggc2V0LWVuZ2lu
-ZXMgKi8KLQlpZ3Rfc3VidGVzdF9ncm91cCB7Ci0JCWNvbnN0IHN0cnVjdCBpbnRlbF9leGVjdXRp
-b25fZW5naW5lMiAqZTsKLQotCQlpZ3RfZml4dHVyZQotCQkJZ2VtX3JlcXVpcmVfY29udGV4dHMo
-aTkxNSk7Ci0KLQkJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJyZXBsYWNlIikgewotCQkJX19m
-b3JfZWFjaF9waHlzaWNhbF9lbmdpbmUoaTkxNSwgZSkgewotCQkJCWlndF9keW5hbWljX2YoIiVz
-IiwgZS0+bmFtZSkKLQkJCQkJcmVwbGFjZV9lbmdpbmVzKGk5MTUsIGUpOwotCQkJfQotCQl9Ci0K
-LQkJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJyZXBsYWNlLWhvc3RpbGUiKSB7Ci0JCQlfX2Zv
-cl9lYWNoX3BoeXNpY2FsX2VuZ2luZShpOTE1LCBlKSB7Ci0JCQkJaWd0X2R5bmFtaWNfZigiJXMi
-LCBlLT5uYW1lKQotCQkJCQlyZXBsYWNlX2VuZ2luZXNfaG9zdGlsZShpOTE1LCBlKTsKLQkJCX0K
-LQkJfQotCi0JCWlndF9zdWJ0ZXN0KCJjbG9zZS1yZXBsYWNlLXJhY2UiKQotCQkJY2xvc2VfcmVw
-bGFjZV9yYWNlKGk5MTUpOwotCX0KLQogCWlndF9maXh0dXJlIHsKIAkJY2xvc2UoaTkxNSk7CiAJ
-fQotLSAKMi4zMS4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
-dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/intel_ctx.c                  |  13 ++
+ lib/intel_ctx.h                  |   2 +
+ tests/i915/gem_ctx_persistence.c | 223 ++++++++++++++++---------------
+ 3 files changed, 133 insertions(+), 105 deletions(-)
+
+diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
+index 4ababda8a..5ca8b4534 100644
+--- a/lib/intel_ctx.c
++++ b/lib/intel_ctx.c
+@@ -84,6 +84,7 @@ __context_create_cfg(int fd, const intel_ctx_cfg_t *cfg, uint32_t *ctx_id)
+ 	uint64_t ext_root = 0;
+ 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, GEM_MAX_ENGINES);
+ 	struct drm_i915_gem_context_create_ext_setparam engines_param, vm_param;
++	struct drm_i915_gem_context_create_ext_setparam persist_param;
+ 	uint32_t i;
+ 
+ 	if (cfg->vm) {
+@@ -99,6 +100,18 @@ __context_create_cfg(int fd, const intel_ctx_cfg_t *cfg, uint32_t *ctx_id)
+ 		add_user_ext(&ext_root, &vm_param.base);
+ 	}
+ 
++	if (cfg->nopersist) {
++		persist_param = (struct drm_i915_gem_context_create_ext_setparam) {
++			.base = {
++				.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
++			},
++			.param = {
++				.param = I915_CONTEXT_PARAM_PERSISTENCE,
++			},
++		};
++		add_user_ext(&ext_root, &persist_param.base);
++	}
++
+ 	if (cfg->num_engines) {
+ 		memset(&engines, 0, sizeof(engines));
+ 		for (i = 0; i < cfg->num_engines; i++)
+diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
+index 054fecc4a..e34cefc14 100644
+--- a/lib/intel_ctx.h
++++ b/lib/intel_ctx.h
+@@ -16,6 +16,7 @@
+  * intel_ctx_cfg_t:
+  * @flags: Context create flags
+  * @vm: VM to inherit or 0 for using a per-context VM
++ * @nopersist: set I915_CONTEXT_PARAM_PERSISTENCE to 0
+  * @num_engines: Number of client-specified engines or 0 for legacy mode
+  * @engines: Client-specified engines
+  *
+@@ -42,6 +43,7 @@
+ typedef struct intel_ctx_cfg {
+ 	uint32_t flags;
+ 	uint32_t vm;
++	bool nopersist;
+ 	unsigned int num_engines;
+ 	struct i915_engine_class_instance engines[GEM_MAX_ENGINES];
+ } intel_ctx_cfg_t;
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index 59077cc01..142bac28e 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -147,24 +147,32 @@ static void test_idempotent(int i915)
+ 	igt_assert_eq(p.value, expected);
+ }
+ 
+-static void test_persistence(int i915, unsigned int engine)
++static const intel_ctx_t *
++ctx_create_persistence(int i915, const intel_ctx_cfg_t *base_cfg, bool persist)
++{
++	intel_ctx_cfg_t cfg = *base_cfg;
++	cfg.nopersist = !persist;
++	return intel_ctx_create(i915, &cfg);
++}
++
++static void test_persistence(int i915, const intel_ctx_cfg_t *cfg,
++			     unsigned int engine)
+ {
+ 	igt_spin_t *spin;
+ 	int64_t timeout;
+-	uint32_t ctx;
++	const intel_ctx_t *ctx;
+ 
+ 	/*
+ 	 * Default behaviour are contexts remain alive until their last active
+ 	 * request is retired -- no early termination.
+ 	 */
+ 
+-	ctx = gem_context_clone_with_engines(i915, 0);
+-	gem_context_set_persistence(i915, ctx, true);
++	ctx = ctx_create_persistence(i915, cfg, true);
+ 
+-	spin = igt_spin_new(i915, ctx,
++	spin = igt_spin_new(i915, .ctx = ctx,
+ 			    .engine = engine,
+ 			    .flags = IGT_SPIN_FENCE_OUT);
+-	gem_context_destroy(i915, ctx);
++	intel_ctx_destroy(i915, ctx);
+ 
+ 	timeout = reset_timeout_ms * NSEC_PER_MSEC;
+ 	igt_assert_eq(gem_wait(i915, spin->handle, &timeout), -ETIME);
+@@ -178,24 +186,24 @@ static void test_persistence(int i915, unsigned int engine)
+ 	igt_spin_free(i915, spin);
+ }
+ 
+-static void test_nonpersistent_cleanup(int i915, unsigned int engine)
++static void test_nonpersistent_cleanup(int i915, const intel_ctx_cfg_t *cfg,
++				       unsigned int engine)
+ {
+ 	int64_t timeout = reset_timeout_ms * NSEC_PER_MSEC;
+ 	igt_spin_t *spin;
+-	uint32_t ctx;
++	const intel_ctx_t *ctx;
+ 
+ 	/*
+ 	 * A nonpersistent context is terminated immediately upon closure,
+ 	 * any inflight request is cancelled.
+ 	 */
+ 
+-	ctx = gem_context_clone_with_engines(i915, 0);
+-	gem_context_set_persistence(i915, ctx, false);
++	ctx = ctx_create_persistence(i915, cfg, false);
+ 
+-	spin = igt_spin_new(i915, ctx,
++	spin = igt_spin_new(i915, .ctx = ctx,
+ 			    .engine = engine,
+ 			    .flags = IGT_SPIN_FENCE_OUT);
+-	gem_context_destroy(i915, ctx);
++	intel_ctx_destroy(i915, ctx);
+ 
+ 	igt_assert_eq(gem_wait(i915, spin->handle, &timeout), 0);
+ 	igt_assert_eq(sync_fence_status(spin->out_fence), -EIO);
+@@ -203,7 +211,8 @@ static void test_nonpersistent_cleanup(int i915, unsigned int engine)
+ 	igt_spin_free(i915, spin);
+ }
+ 
+-static void test_nonpersistent_mixed(int i915, unsigned int engine)
++static void test_nonpersistent_mixed(int i915, const intel_ctx_cfg_t *cfg,
++				     unsigned int engine)
+ {
+ 	int fence[3];
+ 
+@@ -215,15 +224,14 @@ static void test_nonpersistent_mixed(int i915, unsigned int engine)
+ 
+ 	for (int i = 0; i < ARRAY_SIZE(fence); i++) {
+ 		igt_spin_t *spin;
+-		uint32_t ctx;
++		const intel_ctx_t *ctx;
+ 
+-		ctx = gem_context_clone_with_engines(i915, 0);
+-		gem_context_set_persistence(i915, ctx, i & 1);
++		ctx = ctx_create_persistence(i915, cfg, i & 1);
+ 
+-		spin = igt_spin_new(i915, ctx,
++		spin = igt_spin_new(i915, .ctx = ctx,
+ 				    .engine = engine,
+ 				    .flags = IGT_SPIN_FENCE_OUT);
+-		gem_context_destroy(i915, ctx);
++		intel_ctx_destroy(i915, ctx);
+ 
+ 		fence[i] = spin->out_fence;
+ 	}
+@@ -236,11 +244,12 @@ static void test_nonpersistent_mixed(int i915, unsigned int engine)
+ 	igt_assert_eq(sync_fence_wait(fence[1], 0), -ETIME);
+ }
+ 
+-static void test_nonpersistent_hostile(int i915, unsigned int engine)
++static void test_nonpersistent_hostile(int i915, const intel_ctx_cfg_t *cfg,
++				       unsigned int engine)
+ {
+ 	int64_t timeout = reset_timeout_ms * NSEC_PER_MSEC;
+ 	igt_spin_t *spin;
+-	uint32_t ctx;
++	const intel_ctx_t *ctx;
+ 
+ 	/*
+ 	 * If we cannot cleanly cancel the non-persistent context on closure,
+@@ -248,24 +257,24 @@ static void test_nonpersistent_hostile(int i915, unsigned int engine)
+ 	 * the requests and cleanup the context.
+ 	 */
+ 
+-	ctx = gem_context_clone_with_engines(i915, 0);
+-	gem_context_set_persistence(i915, ctx, false);
++	ctx = ctx_create_persistence(i915, cfg, false);
+ 
+-	spin = igt_spin_new(i915, ctx,
++	spin = igt_spin_new(i915, .ctx = ctx,
+ 			    .engine = engine,
+ 			    .flags = IGT_SPIN_NO_PREEMPTION);
+-	gem_context_destroy(i915, ctx);
++	intel_ctx_destroy(i915, ctx);
+ 
+ 	igt_assert_eq(gem_wait(i915, spin->handle, &timeout), 0);
+ 
+ 	igt_spin_free(i915, spin);
+ }
+ 
+-static void test_nonpersistent_hostile_preempt(int i915, unsigned int engine)
++static void test_nonpersistent_hostile_preempt(int i915, const intel_ctx_cfg_t *cfg,
++					       unsigned int engine)
+ {
+ 	int64_t timeout = reset_timeout_ms * NSEC_PER_MSEC;
+ 	igt_spin_t *spin[2];
+-	uint32_t ctx;
++	const intel_ctx_t *ctx;
+ 
+ 	/*
+ 	 * Double plus ungood.
+@@ -278,24 +287,22 @@ static void test_nonpersistent_hostile_preempt(int i915, unsigned int engine)
+ 
+ 	igt_require(gem_scheduler_has_preemption(i915));
+ 
+-	ctx = gem_context_clone_with_engines(i915, 0);
+-	gem_context_set_persistence(i915, ctx, true);
+-	gem_context_set_priority(i915, ctx, 0);
+-	spin[0] = igt_spin_new(i915, ctx,
++	ctx = ctx_create_persistence(i915, cfg, true);
++	gem_context_set_priority(i915, ctx->id, 0);
++	spin[0] = igt_spin_new(i915, .ctx = ctx,
+ 			       .engine = engine,
+ 			       .flags = (IGT_SPIN_NO_PREEMPTION |
+ 					 IGT_SPIN_POLL_RUN));
+-	gem_context_destroy(i915, ctx);
++	intel_ctx_destroy(i915, ctx);
+ 
+ 	igt_spin_busywait_until_started(spin[0]);
+ 
+-	ctx = gem_context_clone_with_engines(i915, 0);
+-	gem_context_set_persistence(i915, ctx, false);
+-	gem_context_set_priority(i915, ctx, 1); /* higher priority than 0 */
+-	spin[1] = igt_spin_new(i915, ctx,
++	ctx = ctx_create_persistence(i915, cfg, false);
++	gem_context_set_priority(i915, ctx->id, 1); /* higher priority than 0 */
++	spin[1] = igt_spin_new(i915, .ctx = ctx,
+ 			       .engine = engine,
+ 			       .flags = IGT_SPIN_NO_PREEMPTION);
+-	gem_context_destroy(i915, ctx);
++	intel_ctx_destroy(i915, ctx);
+ 
+ 	igt_assert_eq(gem_wait(i915, spin[1]->handle, &timeout), 0);
+ 
+@@ -303,24 +310,24 @@ static void test_nonpersistent_hostile_preempt(int i915, unsigned int engine)
+ 	igt_spin_free(i915, spin[0]);
+ }
+ 
+-static void test_nonpersistent_hang(int i915, unsigned int engine)
++static void test_nonpersistent_hang(int i915, const intel_ctx_cfg_t *cfg,
++				    unsigned int engine)
+ {
+ 	int64_t timeout = reset_timeout_ms * NSEC_PER_MSEC;
+ 	igt_spin_t *spin;
+-	uint32_t ctx;
++	const intel_ctx_t *ctx;
+ 
+ 	/*
+ 	 * The user made a simple mistake and submitted an invalid batch,
+ 	 * but fortunately under a nonpersistent context. Do we detect it?
+ 	 */
+ 
+-	ctx = gem_context_clone_with_engines(i915, 0);
+-	gem_context_set_persistence(i915, ctx, false);
++	ctx = ctx_create_persistence(i915, cfg, false);
+ 
+-	spin = igt_spin_new(i915, ctx,
++	spin = igt_spin_new(i915, .ctx = ctx,
+ 			    .engine = engine,
+ 			    .flags = IGT_SPIN_INVALID_CS);
+-	gem_context_destroy(i915, ctx);
++	intel_ctx_destroy(i915, ctx);
+ 
+ 	igt_assert_eq(gem_wait(i915, spin->handle, &timeout), 0);
+ 
+@@ -460,14 +467,16 @@ static void test_noheartbeat_many(int i915, int count, unsigned int flags)
+ 		igt_assert(set_heartbeat(i915, e->full_name, 500));
+ 
+ 		for (int n = 0; n < ARRAY_SIZE(spin); n++) {
+-			uint32_t ctx;
++			const intel_ctx_t *ctx;
++
++			ctx = intel_ctx_create(i915, NULL);
+ 
+-			ctx = gem_context_create(i915);
+-			spin[n] = igt_spin_new(i915, ctx, .engine = eb_ring(e),
++			spin[n] = igt_spin_new(i915, .ctx = ctx,
++					       .engine = eb_ring(e),
+ 					       .flags = (IGT_SPIN_FENCE_OUT |
+ 							 IGT_SPIN_POLL_RUN |
+ 							 flags));
+-			gem_context_destroy(i915, ctx);
++			intel_ctx_destroy(i915, ctx);
+ 		}
+ 		igt_spin_busywait_until_started(spin[0]);
+ 
+@@ -504,7 +513,7 @@ static void test_noheartbeat_close(int i915, unsigned int flags)
+ 
+ 	for_each_physical_ring(e, i915) {
+ 		igt_spin_t *spin;
+-		uint32_t ctx;
++		const intel_ctx_t *ctx;
+ 		int err;
+ 
+ 		if (!set_preempt_timeout(i915, e->full_name, 250))
+@@ -513,15 +522,16 @@ static void test_noheartbeat_close(int i915, unsigned int flags)
+ 		if (!set_heartbeat(i915, e->full_name, 0))
+ 			continue;
+ 
+-		ctx = gem_context_create(i915);
+-		spin = igt_spin_new(i915, ctx, .engine = eb_ring(e),
++		ctx = intel_ctx_create(i915, NULL);
++		spin = igt_spin_new(i915, .ctx = ctx,
++				    .engine = eb_ring(e),
+ 				    .flags = (IGT_SPIN_FENCE_OUT |
+ 					      IGT_SPIN_POLL_RUN |
+ 					      flags));
+ 		igt_spin_busywait_until_started(spin);
+ 
+ 		igt_debug("Testing %s\n", e->full_name);
+-		gem_context_destroy(i915, ctx);
++		intel_ctx_destroy(i915, ctx);
+ 		err = wait_for_status(spin->out_fence, reset_timeout_ms);
+ 
+ 		set_heartbeat(i915, e->full_name, 2500);
+@@ -578,22 +588,22 @@ static void alarm_handler(int sig)
+ {
+ }
+ 
+-static void test_nonpersistent_queued(int i915, unsigned int engine)
++static void test_nonpersistent_queued(int i915, const intel_ctx_cfg_t *cfg,
++				      unsigned int engine)
+ {
+ 	struct sigaction old_sa, sa = { .sa_handler = alarm_handler };
+ 	struct itimerval itv;
+ 	igt_spin_t *spin;
+ 	int fence = -1;
+-	uint32_t ctx;
++	const intel_ctx_t *ctx;
+ 
+ 	/*
+ 	 * Not only must the immediate batch be cancelled, but
+ 	 * all pending batches in the context.
+ 	 */
+ 
+-	ctx = gem_context_clone_with_engines(i915, 0);
+-	gem_context_set_persistence(i915, ctx, false);
+-	spin = igt_spin_new(i915, ctx,
++	ctx = ctx_create_persistence(i915, cfg, false);
++	spin = igt_spin_new(i915, .ctx = ctx,
+ 			    .engine = engine,
+ 			    .flags = IGT_SPIN_FENCE_OUT);
+ 
+@@ -621,7 +631,7 @@ static void test_nonpersistent_queued(int i915, unsigned int engine)
+ 	setitimer(ITIMER_REAL, &itv, NULL);
+ 	sigaction(SIGALRM, &old_sa, NULL);
+ 
+-	gem_context_destroy(i915, ctx);
++	intel_ctx_destroy(i915, ctx);
+ 
+ 	igt_assert_eq(wait_for_status(spin->out_fence, reset_timeout_ms), -EIO);
+ 	igt_assert_eq(wait_for_status(fence, reset_timeout_ms), -EIO);
+@@ -752,7 +762,8 @@ static void test_userptr(int i915)
+ 	gem_quiescent_gpu(i915);
+ }
+ 
+-static void test_process_mixed(int pfd, unsigned int engine)
++static void test_process_mixed(int pfd, const intel_ctx_cfg_t *cfg,
++			       unsigned int engine)
+ {
+ 	int fence[2], sv[2];
+ 
+@@ -772,13 +783,10 @@ static void test_process_mixed(int pfd, unsigned int engine)
+ 
+ 		for (int persists = 0; persists <= 1; persists++) {
+ 			igt_spin_t *spin;
+-			uint32_t ctx;
+-
+-			ctx = gem_context_create(i915);
+-			gem_context_copy_engines(pfd, 0, i915, ctx);
+-			gem_context_set_persistence(i915, ctx, persists);
++			const intel_ctx_t *ctx;
+ 
+-			spin = igt_spin_new(i915, ctx,
++			ctx = ctx_create_persistence(i915, cfg, persists);
++			spin = igt_spin_new(i915, .ctx = ctx,
+ 					    .engine = engine,
+ 					    .flags = IGT_SPIN_FENCE_OUT);
+ 
+@@ -810,11 +818,12 @@ static void test_process_mixed(int pfd, unsigned int engine)
+ }
+ 
+ static void
+-test_saturated_hostile(int i915, const struct intel_execution_engine2 *engine)
++test_saturated_hostile(int i915, const intel_ctx_t *base_ctx,
++		       const struct intel_execution_engine2 *engine)
+ {
+ 	const struct intel_execution_engine2 *other;
+ 	igt_spin_t *spin;
+-	uint32_t ctx;
++	const intel_ctx_t *ctx;
+ 	int fence = -1;
+ 
+ 	cleanup(i915);
+@@ -831,11 +840,11 @@ test_saturated_hostile(int i915, const struct intel_execution_engine2 *engine)
+ 	 * reset other users whenever they chose.]
+ 	 */
+ 
+-	__for_each_physical_engine(i915, other) {
++	for_each_ctx_engine(i915, base_ctx, other) {
+ 		if (other->flags == engine->flags)
+ 			continue;
+ 
+-		spin = igt_spin_new(i915,
++		spin = igt_spin_new(i915, .ctx = base_ctx,
+ 				   .engine = other->flags,
+ 				   .flags = (IGT_SPIN_NO_PREEMPTION |
+ 					     IGT_SPIN_FENCE_OUT));
+@@ -855,15 +864,14 @@ test_saturated_hostile(int i915, const struct intel_execution_engine2 *engine)
+ 	}
+ 	igt_require(fence != -1);
+ 
+-	ctx = gem_context_clone_with_engines(i915, 0);
+-	gem_context_set_persistence(i915, ctx, false);
+-	spin = igt_spin_new(i915, ctx,
++	ctx = ctx_create_persistence(i915, &base_ctx->cfg, false);
++	spin = igt_spin_new(i915, .ctx = ctx,
+ 			    .engine = engine->flags,
+ 			    .flags = (IGT_SPIN_NO_PREEMPTION |
+ 				      IGT_SPIN_POLL_RUN |
+ 				      IGT_SPIN_FENCE_OUT));
+ 	igt_spin_busywait_until_started(spin);
+-	gem_context_destroy(i915, ctx);
++	intel_ctx_destroy(i915, ctx);
+ 
+ 	/* Hostile request requires a GPU reset to terminate */
+ 	igt_assert_eq(wait_for_status(spin->out_fence, reset_timeout_ms), -EIO);
+@@ -950,7 +958,7 @@ static void test_processes(int i915)
+ 	gem_quiescent_gpu(i915);
+ }
+ 
+-static void __smoker(int i915,
++static void __smoker(int i915, const intel_ctx_cfg_t *cfg,
+ 		     unsigned int engine,
+ 		     unsigned int timeout,
+ 		     int expected)
+@@ -958,11 +966,12 @@ static void __smoker(int i915,
+ 	igt_spin_t *spin;
+ 	int fence = -1;
+ 	int fd, extra;
++	const intel_ctx_t *ctx;
+ 
+ 	fd = gem_reopen_driver(i915);
+-	gem_context_copy_engines(i915, 0, fd, 0);
+-	gem_context_set_persistence(fd, 0, expected > 0);
+-	spin = igt_spin_new(fd, .engine = engine, .flags = IGT_SPIN_FENCE_OUT);
++	ctx = ctx_create_persistence(fd, cfg, expected > 0);
++	spin = igt_spin_new(fd, .ctx = ctx, .engine = engine,
++			    .flags = IGT_SPIN_FENCE_OUT);
+ 
+ 	extra = rand() % 8;
+ 	while (extra--) {
+@@ -974,6 +983,8 @@ static void __smoker(int i915,
+ 		fence = spin->execbuf.rsvd2 >> 32;
+ 	}
+ 
++	intel_ctx_destroy(fd, ctx);
++
+ 	close(fd);
+ 	flush_delayed_fput(i915);
+ 
+@@ -990,18 +1001,18 @@ static void __smoker(int i915,
+ 	igt_spin_free(fd, spin);
+ }
+ 
+-static void smoker(int i915,
++static void smoker(int i915, const intel_ctx_cfg_t *cfg,
+ 		   unsigned int engine,
+ 		   unsigned int timeout,
+ 		   unsigned int *ctl)
+ {
+ 	while (!READ_ONCE(*ctl)) {
+-		__smoker(i915, engine, timeout, -EIO);
+-		__smoker(i915, engine, timeout, 1);
++		__smoker(i915, cfg, engine, timeout, -EIO);
++		__smoker(i915, cfg, engine, timeout, 1);
+ 	}
+ }
+ 
+-static void smoketest(int i915)
++static void smoketest(int i915, const intel_ctx_cfg_t *cfg)
+ {
+ 	const int SMOKE_LOAD_FACTOR = 4;
+ 	const struct intel_execution_engine2 *e;
+@@ -1021,9 +1032,9 @@ static void smoketest(int i915)
+ 		*ctl = 0;
+ 
+ 		igt_debug("Applying load factor: %d\n", i);
+-		__for_each_physical_engine(i915, e) {
++		for_each_ctx_cfg_engine(i915, cfg, e) {
+ 			igt_fork(child, i)
+-				smoker(i915,
++				smoker(i915, cfg,
+ 				       e->flags,
+ 				       i * reset_timeout_ms,
+ 				       ctl);
+@@ -1038,7 +1049,7 @@ static void smoketest(int i915)
+ 	gem_quiescent_gpu(i915);
+ }
+ 
+-static void many_contexts(int i915)
++static void many_contexts(int i915, const intel_ctx_cfg_t *cfg)
+ {
+ 	const struct intel_execution_engine2 *e;
+ 	int64_t timeout = NSEC_PER_SEC;
+@@ -1059,17 +1070,16 @@ static void many_contexts(int i915)
+ 	igt_spin_reset(spin);
+ 
+ 	igt_until_timeout(30) {
+-		__for_each_physical_engine(i915, e) {
+-			uint32_t ctx;
++		for_each_ctx_cfg_engine(i915, cfg, e) {
++			const intel_ctx_t *ctx;
+ 
+-			ctx = gem_context_clone_with_engines(i915, 0);
+-			gem_context_set_persistence(i915, ctx, false);
++			ctx = ctx_create_persistence(i915, cfg, false);
+ 
+-			spin->execbuf.rsvd1 = ctx;
++			spin->execbuf.rsvd1 = ctx->id;
+ 			spin->execbuf.flags &= ~63;
+ 			spin->execbuf.flags |= e->flags;
+ 			gem_execbuf(i915, &spin->execbuf);
+-			gem_context_destroy(i915, ctx);
++			intel_ctx_destroy(i915, ctx);
+ 		}
+ 	}
+ 	igt_debugfs_dump(i915, "i915_engine_info");
+@@ -1085,9 +1095,10 @@ static void many_contexts(int i915)
+ 	gem_quiescent_gpu(i915);
+ }
+ 
+-static void do_test(void (*test)(int i915, unsigned int engine),
+-		    int i915, unsigned int engine,
+-		    const char *name)
++static void do_test(void (*test)(int i915, const intel_ctx_cfg_t *cfg,
++				 unsigned int engine),
++		    int i915, const intel_ctx_cfg_t *cfg,
++		    unsigned int engine, const char *name)
+ {
+ #define ATTR "preempt_timeout_ms"
+ 	int timeout = -1;
+@@ -1101,7 +1112,7 @@ static void do_test(void (*test)(int i915, unsigned int engine),
+ 		reset_timeout_ms = 200;
+ 	}
+ 
+-	test(i915, engine);
++	test(i915, cfg, engine);
+ 
+ 	if (timeout != -1) {
+ 		gem_engine_property_printf(i915, name, ATTR, "%d", timeout);
+@@ -1122,7 +1133,8 @@ igt_main
+ {
+ 	struct {
+ 		const char *name;
+-		void (*func)(int fd, unsigned int engine);
++		void (*func)(int fd, const intel_ctx_cfg_t *cfg,
++			     unsigned int engine);
+ 	} *test, tests[] = {
+ 		{ "persistence", test_persistence },
+ 		{ "cleanup", test_nonpersistent_cleanup },
+@@ -1134,6 +1146,7 @@ igt_main
+ 		{ "hang", test_nonpersistent_hang },
+ 		{ NULL, NULL },
+ 	};
++	const intel_ctx_t *ctx;
+ 
+ 	igt_fixture {
+ 		i915 = drm_open_driver(DRIVER_INTEL);
+@@ -1145,6 +1158,8 @@ igt_main
+ 		enable_hangcheck(i915);
+ 		igt_install_exit_handler(exit_handler);
+ 
++		ctx = intel_ctx_create_all_physical(i915);
++
+ 		igt_require(has_persistence(i915));
+ 		igt_allow_hang(i915, 0, 0);
+ 	}
+@@ -1189,18 +1204,16 @@ igt_main
+ 		for (test = tests; test->name; test++) {
+ 			igt_subtest_with_dynamic_f("legacy-engines-%s",
+ 						   test->name) {
++				const intel_ctx_cfg_t empty_cfg = {};
+ 				for_each_physical_ring(e, i915) {
+ 					igt_dynamic_f("%s", e->name) {
+-						do_test(test->func,
+-							i915, eb_ring(e),
++						do_test(test->func, i915,
++							&empty_cfg, eb_ring(e),
+ 							e->full_name);
+ 					}
+ 				}
+ 			}
+ 		}
+-
+-		/* Assert things are under control. */
+-		igt_assert(!gem_context_has_engine_map(i915, 0));
+ 	}
+ 
+ 	/* New way of selecting engines. */
+@@ -1213,10 +1226,10 @@ igt_main
+ 
+ 		for (test = tests; test->name; test++) {
+ 			igt_subtest_with_dynamic_f("engines-%s", test->name) {
+-				__for_each_physical_engine(i915, e) {
++				for_each_ctx_engine(i915, ctx, e) {
+ 					igt_dynamic_f("%s", e->name) {
+-						do_test(test->func,
+-							i915, e->flags,
++						do_test(test->func, i915,
++							&ctx->cfg, e->flags,
+ 							e->name);
+ 					}
+ 				}
+@@ -1224,17 +1237,17 @@ igt_main
+ 		}
+ 
+ 		igt_subtest_with_dynamic_f("saturated-hostile") {
+-			__for_each_physical_engine(i915, e) {
++			for_each_ctx_engine(i915, ctx, e) {
+ 				igt_dynamic_f("%s", e->name)
+-					test_saturated_hostile(i915, e);
++					test_saturated_hostile(i915, ctx, e);
+ 			}
+ 		}
+ 
+ 		igt_subtest("many-contexts")
+-			many_contexts(i915);
++			many_contexts(i915, &ctx->cfg);
+ 
+ 		igt_subtest("smoketest")
+-			smoketest(i915);
++			smoketest(i915, &ctx->cfg);
+ 	}
+ 
+ 	igt_fixture {
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
