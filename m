@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com
- [IPv6:2607:f8b0:4864:20::536])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4BA516E194
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:47:08 +0000 (UTC)
-Received: by mail-pg1-x536.google.com with SMTP id 37so2530449pgq.0
- for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:47:08 -0700 (PDT)
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
+ [IPv6:2607:f8b0:4864:20::1036])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC1876E17E
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:47:01 +0000 (UTC)
+Received: by mail-pj1-x1036.google.com with SMTP id
+ g6-20020a17090adac6b029015d1a9a6f1aso3563951pjx.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:47:01 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  7 Jul 2021 09:46:22 -0500
-Message-Id: <20210707144643.181001-11-jason@jlekstrand.net>
+Date: Wed,  7 Jul 2021 09:46:18 -0500
+Message-Id: <20210707144643.181001-7-jason@jlekstrand.net>
 In-Reply-To: <20210707144337.180693-1-jason@jlekstrand.net>
 References: <20210707144337.180693-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 60/81] tests/i915/gem_ctx_create: Don't
- re-open the device in maximum()
+Subject: [igt-dev] [PATCH i-g-t 56/81] lib/i915: Require a context config in
+ gem_submission_measure
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,48 +21,92 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SW4gMDBhNjQwOThhYWFlICgidGVzdHMvaTkxNS9nZW1fY3R4X2NyZWF0ZTogVXNlCl9fZm9yX2Vh
-Y2hfcGh5c2ljYWxfZW5naW5lIHRvIHV0aWxpemUgYWxsIGF2YWlsYWJsZSBlbmdpbmVzIiksIHRo
-ZQptYXhpbXVtIHRlc3RzIHdlcmUgbW9kaWZpZWQgdG8gcmUtb3BlbiB0aGUgZGV2aWNlLiAgSG93
-ZXZlciwgdGhpcyBpcwpib3RoIHVubmVjZXNzYXJ5IGFuZCBicm9rZW4gYmVjYXVzZSB0aGUgZXhl
-Y3V0aW9uIGxvb3AgcmUtdXNlcyB0aGUKY29udGV4dHMgY3JlYXRlZCBhYm92ZSBpdCB3aGljaCBk
-byBub3QgZXhpc3Qgb24gdGhlIG5ld2x5IHJlLW9wZW5lZCBEUk0KZmlsZS4KClNpZ25lZC1vZmYt
-Ynk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3RyYW5kLm5ldD4KRml4ZXM6IDAwYTY0MDk4
-YWFhZSAoInRlc3RzL2k5MTUvZ2VtX2N0eF9jcmVhdGU6IFVzZSBfX2Zvcl9lYWNoX3BoeXNpY2Fs
-X2VuZ2luZSB0byB1dGlsaXplIGFsbCBhdmFpbGFibGUgZW5naW5lcyIpCkNjOiBaYmlnbmlldyBL
-ZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KLS0tCiB0ZXN0cy9p
-OTE1L2dlbV9jdHhfY3JlYXRlLmMgfCAxNyArKysrLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5n
-ZWQsIDQgaW5zZXJ0aW9ucygrKSwgMTMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMv
-aTkxNS9nZW1fY3R4X2NyZWF0ZS5jIGIvdGVzdHMvaTkxNS9nZW1fY3R4X2NyZWF0ZS5jCmluZGV4
-IDViMTRmN2FmZC4uMzcwNjFlYmM1IDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2dlbV9jdHhfY3Jl
-YXRlLmMKKysrIGIvdGVzdHMvaTkxNS9nZW1fY3R4X2NyZWF0ZS5jCkBAIC0zMjMsMTggKzMyMyw5
-IEBAIHN0YXRpYyB2b2lkIG1heGltdW0oaW50IGZkLCBpbnQgbmNwdXMsIHVuc2lnbmVkIG1vZGUp
-CiAKIAlpZ3RfZm9yayhjaGlsZCwgbmNwdXMpIHsKIAkJc3RydWN0IHRpbWVzcGVjIHN0YXJ0LCBl
-bmQ7Ci0JCWludCBpOTE1OwotCi0JCWk5MTUgPSBnZW1fcmVvcGVuX2RyaXZlcihmZCk7Ci0JCS8q
-Ci0JCSAqIEVuc3VyZSB0aGUgZ3B1IGlzIGlkbGUgYnkgbGF1bmNoaW5nCi0JCSAqIGEgbm9wIGV4
-ZWNidWYgYW5kIHN0YWxsaW5nIGZvciBpdC4KLQkJICovCi0JCWdlbV9xdWllc2NlbnRfZ3B1KGk5
-MTUpOwotCQlnZW1fY29udGV4dF9jb3B5X2VuZ2luZXMoZmQsIDAsIGk5MTUsIDApOwogCiAJCWhh
-cnNfcGV0cnVza2FfZjU0XzFfcmFuZG9tX3BlcnR1cmIoY2hpbGQpOwotCQlvYmpbMF0uaGFuZGxl
-ID0gZ2VtX2NyZWF0ZShpOTE1LCA0MDk2KTsKKwkJb2JqWzBdLmhhbmRsZSA9IGdlbV9jcmVhdGUo
-ZmQsIDQwOTYpOwogCiAJCWNsb2NrX2dldHRpbWUoQ0xPQ0tfTU9OT1RPTklDLCAmc3RhcnQpOwog
-CQlmb3IgKGludCByZXBlYXQgPSAwOyByZXBlYXQgPCAzOyByZXBlYXQrKykgewpAQCAtMzQ1LDEz
-ICszMzYsMTMgQEAgc3RhdGljIHZvaWQgbWF4aW11bShpbnQgZmQsIGludCBuY3B1cywgdW5zaWdu
-ZWQgbW9kZSkKIAkJCQlleGVjYnVmLnJzdmQxID0gY29udGV4dHNbaV07CiAJCQkJZm9yICh1bnNp
-Z25lZCBsb25nIGogPSAwOyBqIDwgYWxsX25lbmdpbmU7IGorKykgewogCQkJCQlleGVjYnVmLmZs
-YWdzID0gYWxsX2VuZ2luZXNbal07Ci0JCQkJCWdlbV9leGVjYnVmKGk5MTUsICZleGVjYnVmKTsK
-KwkJCQkJZ2VtX2V4ZWNidWYoZmQsICZleGVjYnVmKTsKIAkJCQl9CiAJCQl9CiAJCX0KLQkJZ2Vt
-X3N5bmMoaTkxNSwgb2JqWzBdLmhhbmRsZSk7CisJCWdlbV9zeW5jKGZkLCBvYmpbMF0uaGFuZGxl
-KTsKIAkJY2xvY2tfZ2V0dGltZShDTE9DS19NT05PVE9OSUMsICZlbmQpOwotCQlnZW1fY2xvc2Uo
-aTkxNSwgb2JqWzBdLmhhbmRsZSk7CisJCWdlbV9jbG9zZShmZCwgb2JqWzBdLmhhbmRsZSk7CiAK
-IAkJaWd0X2luZm8oIlslZF0gQ29udGV4dCBleGVjdXRpb246ICUuM2YgdXNcbiIsIGNoaWxkLAog
-CQkJIGVsYXBzZWQoJnN0YXJ0LCAmZW5kKSAvICgzICogY291bnQgKiBhbGxfbmVuZ2luZSkgKiAx
-ZTYpOwotLSAKMi4zMS4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
-ZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+Now all tests are converted to provide a context config to
+gem_submission_measure so we can require it.  This gets rid of its use
+of __for_each_physical_engine().
+
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/i915/gem_submission.c | 38 ++++++++++++--------------------------
+ 1 file changed, 12 insertions(+), 26 deletions(-)
+
+diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
+index 9c6cc8146..69cf1f16a 100644
+--- a/lib/i915/gem_submission.c
++++ b/lib/i915/gem_submission.c
+@@ -372,7 +372,7 @@ __measure_ringsize(int i915, uint32_t ctx_id, unsigned int engine)
+ unsigned int gem_submission_measure(int i915, const intel_ctx_cfg_t *cfg,
+ 				    unsigned int engine)
+ {
+-	const intel_ctx_t *ctx = NULL;
++	const intel_ctx_t *ctx;
+ 	unsigned int size;
+ 	bool nonblock;
+ 
+@@ -380,40 +380,26 @@ unsigned int gem_submission_measure(int i915, const intel_ctx_cfg_t *cfg,
+ 	if (!nonblock)
+ 		fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) | O_NONBLOCK);
+ 
+-	if (cfg) {
+-		if (gem_has_contexts(i915))
+-			ctx = intel_ctx_create(i915, cfg);
+-		else
+-			ctx = intel_ctx_0(i915);
+-	}
++	igt_assert(cfg);
++	if (gem_has_contexts(i915))
++		ctx = intel_ctx_create(i915, cfg);
++	else
++		ctx = intel_ctx_0(i915);
+ 
+ 	if (engine == ALL_ENGINES) {
+ 		struct intel_execution_engine2 *e;
+ 
+ 		size = -1;
+-		if (ctx) {
+-			for_each_ctx_engine(i915, ctx, e) {
+-				unsigned int this =  __measure_ringsize(i915, ctx->id, e->flags);
+-				if (this < size)
+-					size = this;
+-			}
+-		} else {
+-			__for_each_physical_engine(i915, e) {
+-				unsigned int this =  __measure_ringsize(i915, 0, e->flags);
+-				if (this < size)
+-					size = this;
+-			}
++		for_each_ctx_engine(i915, ctx, e) {
++			unsigned int this =  __measure_ringsize(i915, ctx->id, e->flags);
++			if (this < size)
++				size = this;
+ 		}
+ 	} else {
+-		if (ctx)
+-			size =  __measure_ringsize(i915, ctx->id, engine);
+-		else
+-			size =  __measure_ringsize(i915, 0, engine);
++		size =  __measure_ringsize(i915, ctx->id, engine);
+ 	}
+ 
+-	if (ctx)
+-		intel_ctx_destroy(i915, ctx);
+-
++	intel_ctx_destroy(i915, ctx);
+ 
+ 	if (!nonblock)
+ 		fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) & ~O_NONBLOCK);
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
