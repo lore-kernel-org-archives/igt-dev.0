@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
- [IPv6:2607:f8b0:4864:20::52a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1EA116E195
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:47:15 +0000 (UTC)
-Received: by mail-pg1-x52a.google.com with SMTP id a2so2486803pgi.6
- for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:47:15 -0700 (PDT)
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
+ [IPv6:2607:f8b0:4864:20::62c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 943F96E198
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:47:18 +0000 (UTC)
+Received: by mail-pl1-x62c.google.com with SMTP id b5so1199372plg.2
+ for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:47:18 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  7 Jul 2021 09:46:26 -0500
-Message-Id: <20210707144643.181001-15-jason@jlekstrand.net>
+Date: Wed,  7 Jul 2021 09:46:28 -0500
+Message-Id: <20210707144643.181001-17-jason@jlekstrand.net>
 In-Reply-To: <20210707144337.180693-1-jason@jlekstrand.net>
 References: <20210707144337.180693-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 64/81] tests/i915/sysfs: Convert to
- intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 66/81] lib/i915/gem_context: Delete all the
+ context clone/copy stuff
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,382 +30,211 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/sysfs_heartbeat_interval.c | 40 ++++++++++-----------
- tests/i915/sysfs_preempt_timeout.c    | 39 ++++++++++----------
- tests/i915/sysfs_timeslice_duration.c | 51 +++++++++++++--------------
- 3 files changed, 64 insertions(+), 66 deletions(-)
+ lib/i915/gem_context.c | 149 -----------------------------------------
+ lib/i915/gem_context.h |  16 -----
+ 2 files changed, 165 deletions(-)
 
-diff --git a/tests/i915/sysfs_heartbeat_interval.c b/tests/i915/sysfs_heartbeat_interval.c
-index b8aba2416..b70b653b1 100644
---- a/tests/i915/sysfs_heartbeat_interval.c
-+++ b/tests/i915/sysfs_heartbeat_interval.c
-@@ -132,13 +132,12 @@ static void set_unbannable(int i915, uint32_t ctx)
- 	gem_context_set_param(i915, &p);
+diff --git a/lib/i915/gem_context.c b/lib/i915/gem_context.c
+index 87dcbc6e8..3428cf7a3 100644
+--- a/lib/i915/gem_context.c
++++ b/lib/i915/gem_context.c
+@@ -407,125 +407,6 @@ bool gem_context_has_persistence(int i915)
+ 	return __gem_context_get_param(i915, &param) == 0;
  }
  
--static uint32_t create_context(int i915, unsigned int class, unsigned int inst, int prio)
-+static const intel_ctx_t *
-+create_ctx(int i915, unsigned int class, unsigned int inst, int prio)
- {
+-int
+-__gem_context_clone(int i915,
+-		    uint32_t src, unsigned int share,
+-		    unsigned int flags,
+-		    uint32_t *out)
+-{
+-	struct drm_i915_gem_context_create_ext_clone clone = {
+-		{ .name = I915_CONTEXT_CREATE_EXT_CLONE },
+-		.clone_id = src,
+-		.flags = share,
+-	};
+-	struct drm_i915_gem_context_create_ext arg = {
+-		.flags = flags | I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
+-		.extensions = to_user_pointer(&clone),
+-	};
+-	int err;
+-
+-	err = create_ext_ioctl(i915, &arg);
+-	if (err)
+-		return err;
+-
+-	*out = arg.ctx_id;
+-	return 0;
+-}
+-
+-static bool __gem_context_has(int i915, uint32_t share, unsigned int flags)
+-{
+-	uint32_t ctx = 0;
+-
+-	__gem_context_clone(i915, 0, share, flags, &ctx);
+-	if (ctx)
+-		gem_context_destroy(i915, ctx);
+-
+-	errno = 0;
+-	return ctx;
+-}
+-
+-bool gem_contexts_has_shared_gtt(int i915)
+-{
+-	return __gem_context_has(i915, I915_CONTEXT_CLONE_VM, 0);
+-}
+-
+-bool gem_has_queues(int i915)
+-{
+-	return __gem_context_has(i915,
+-				 I915_CONTEXT_CLONE_VM,
+-				 I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
+-}
+-
+-uint32_t gem_context_clone(int i915,
+-			   uint32_t src, unsigned int share,
+-			   unsigned int flags)
+-{
 -	uint32_t ctx;
 -
--	ctx = gem_context_create_for_engine(i915, class, inst);
--	set_unbannable(i915, ctx);
--	gem_context_set_priority(i915, ctx, prio);
-+	const intel_ctx_t *ctx = intel_ctx_create_for_engine(i915, class, inst);
-+	set_unbannable(i915, ctx->id);
-+	gem_context_set_priority(i915, ctx->id, prio);
- 
- 	return ctx;
- }
-@@ -149,23 +148,23 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
- 	struct timespec ts = {};
- 	igt_spin_t *spin[2];
- 	uint64_t elapsed;
--	uint32_t ctx[2];
-+	const intel_ctx_t *ctx[2];
- 
- 	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
- 	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
- 
- 	set_heartbeat(engine, timeout);
- 
--	ctx[0] = create_context(i915, class, inst, 1023);
--	spin[0] = igt_spin_new(i915, ctx[0],
-+	ctx[0] = create_ctx(i915, class, inst, 1023);
-+	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
- 			       .flags = (IGT_SPIN_NO_PREEMPTION |
- 					 IGT_SPIN_POLL_RUN |
- 					 IGT_SPIN_FENCE_OUT));
- 	igt_spin_busywait_until_started(spin[0]);
- 
--	ctx[1] = create_context(i915, class, inst, -1023);
-+	ctx[1] = create_ctx(i915, class, inst, -1023);
- 	igt_nsec_elapsed(&ts);
--	spin[1] = igt_spin_new(i915, ctx[1], .flags = IGT_SPIN_POLL_RUN);
-+	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
- 	igt_spin_busywait_until_started(spin[1]);
- 	elapsed = igt_nsec_elapsed(&ts);
- 
-@@ -176,8 +175,8 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
- 
- 	igt_spin_free(i915, spin[0]);
- 
--	gem_context_destroy(i915, ctx[1]);
--	gem_context_destroy(i915, ctx[0]);
-+	intel_ctx_destroy(i915, ctx[1]);
-+	intel_ctx_destroy(i915, ctx[0]);
- 	gem_quiescent_gpu(i915);
- 
- 	return elapsed;
-@@ -292,18 +291,18 @@ static void client(int i915, int engine, int *ctl, int duration, int expect)
- {
- 	unsigned int class, inst;
- 	unsigned long count = 0;
--	uint32_t ctx;
-+	const intel_ctx_t *ctx;
- 
- 	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
- 	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
- 
--	ctx = create_context(i915, class, inst, 0);
-+	ctx = create_ctx(i915, class, inst, 0);
- 
- 	while (!READ_ONCE(*ctl)) {
- 		unsigned int elapsed;
- 		igt_spin_t *spin;
- 
--		spin = igt_spin_new(i915, ctx,
-+		spin = igt_spin_new(i915, .ctx = ctx,
- 				    .flags = (IGT_SPIN_NO_PREEMPTION |
- 					      IGT_SPIN_POLL_RUN |
- 					      IGT_SPIN_FENCE_OUT));
-@@ -331,7 +330,7 @@ static void client(int i915, int engine, int *ctl, int duration, int expect)
- 		count++;
- 	}
- 
--	gem_context_destroy(i915, ctx);
-+	intel_ctx_destroy(i915, ctx);
- 	igt_info("%s client completed %lu spins\n",
- 		 expect < 0 ? "Bad" : "Good", count);
- }
-@@ -414,7 +413,7 @@ static void test_off(int i915, int engine)
- 	unsigned int class, inst;
- 	unsigned int saved;
- 	igt_spin_t *spin;
--	uint32_t ctx;
-+	const intel_ctx_t *ctx;
- 
- 	/*
- 	 * Some other clients request that there is never any interruption
-@@ -433,9 +432,9 @@ static void test_off(int i915, int engine)
- 
- 	set_heartbeat(engine, 0);
- 
--	ctx = create_context(i915, class, inst, 0);
-+	ctx = create_ctx(i915, class, inst, 0);
- 
--	spin = igt_spin_new(i915, ctx,
-+	spin = igt_spin_new(i915, .ctx = ctx,
- 			    .flags = (IGT_SPIN_POLL_RUN |
- 				      IGT_SPIN_NO_PREEMPTION |
- 				      IGT_SPIN_FENCE_OUT));
-@@ -455,6 +454,7 @@ static void test_off(int i915, int engine)
- 
- 	gem_quiescent_gpu(i915);
- 	set_heartbeat(engine, saved);
-+	intel_ctx_destroy(i915, ctx);
- }
- 
- igt_main
-diff --git a/tests/i915/sysfs_preempt_timeout.c b/tests/i915/sysfs_preempt_timeout.c
-index 83a60436c..9f00093ea 100644
---- a/tests/i915/sysfs_preempt_timeout.c
-+++ b/tests/i915/sysfs_preempt_timeout.c
-@@ -126,13 +126,12 @@ static void set_unbannable(int i915, uint32_t ctx)
- 	gem_context_set_param(i915, &p);
- }
- 
--static uint32_t create_context(int i915, unsigned int class, unsigned int inst, int prio)
-+static const intel_ctx_t *
-+create_ctx(int i915, unsigned int class, unsigned int inst, int prio)
- {
--	uint32_t ctx;
+-	igt_assert_eq(__gem_context_clone(i915, src, share, flags, &ctx), 0);
 -
--	ctx = gem_context_create_for_engine(i915, class, inst);
--	set_unbannable(i915, ctx);
--	gem_context_set_priority(i915, ctx, prio);
-+	const intel_ctx_t *ctx = intel_ctx_create_for_engine(i915, class, inst);
-+	set_unbannable(i915, ctx->id);
-+	gem_context_set_priority(i915, ctx->id, prio);
- 
- 	return ctx;
- }
-@@ -143,23 +142,23 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
- 	struct timespec ts = {};
- 	igt_spin_t *spin[2];
- 	uint64_t elapsed;
--	uint32_t ctx[2];
-+	const intel_ctx_t *ctx[2];
- 
- 	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
- 	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
- 
- 	set_preempt_timeout(engine, timeout);
- 
--	ctx[0] = create_context(i915, class, inst, -1023);
--	spin[0] = igt_spin_new(i915, ctx[0],
-+	ctx[0] = create_ctx(i915, class, inst, -1023);
-+	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
- 			       .flags = (IGT_SPIN_NO_PREEMPTION |
- 					 IGT_SPIN_POLL_RUN |
- 					 IGT_SPIN_FENCE_OUT));
- 	igt_spin_busywait_until_started(spin[0]);
- 
--	ctx[1] = create_context(i915, class, inst, 1023);
-+	ctx[1] = create_ctx(i915, class, inst, 1023);
- 	igt_nsec_elapsed(&ts);
--	spin[1] = igt_spin_new(i915, ctx[1], .flags = IGT_SPIN_POLL_RUN);
-+	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
- 	igt_spin_busywait_until_started(spin[1]);
- 	elapsed = igt_nsec_elapsed(&ts);
- 
-@@ -170,8 +169,8 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
- 
- 	igt_spin_free(i915, spin[0]);
- 
--	gem_context_destroy(i915, ctx[1]);
--	gem_context_destroy(i915, ctx[0]);
-+	intel_ctx_destroy(i915, ctx[1]);
-+	intel_ctx_destroy(i915, ctx[0]);
- 	gem_quiescent_gpu(i915);
- 
- 	return elapsed;
-@@ -231,7 +230,7 @@ static void test_off(int i915, int engine)
- 	unsigned int class, inst;
- 	igt_spin_t *spin[2];
- 	unsigned int saved;
--	uint32_t ctx[2];
-+	const intel_ctx_t *ctx[2];
- 
- 	/*
- 	 * We support setting the timeout to 0 to disable the reset on
-@@ -252,15 +251,15 @@ static void test_off(int i915, int engine)
- 
- 	set_preempt_timeout(engine, 0);
- 
--	ctx[0] = create_context(i915, class, inst, -1023);
--	spin[0] = igt_spin_new(i915, ctx[0],
-+	ctx[0] = create_ctx(i915, class, inst, -1023);
-+	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
- 			       .flags = (IGT_SPIN_NO_PREEMPTION |
- 					 IGT_SPIN_POLL_RUN |
- 					 IGT_SPIN_FENCE_OUT));
- 	igt_spin_busywait_until_started(spin[0]);
- 
--	ctx[1] = create_context(i915, class, inst, 1023);
--	spin[1] = igt_spin_new(i915, ctx[1], .flags = IGT_SPIN_POLL_RUN);
-+	ctx[1] = create_ctx(i915, class, inst, 1023);
-+	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
- 
- 	for (int i = 0; i < 150; i++) {
- 		igt_assert_eq(sync_fence_status(spin[0]->out_fence), 0);
-@@ -277,8 +276,8 @@ static void test_off(int i915, int engine)
- 
- 	igt_spin_free(i915, spin[0]);
- 
--	gem_context_destroy(i915, ctx[1]);
--	gem_context_destroy(i915, ctx[0]);
-+	intel_ctx_destroy(i915, ctx[1]);
-+	intel_ctx_destroy(i915, ctx[0]);
- 
- 	igt_assert(enable_hangcheck(i915, true));
- 	gem_quiescent_gpu(i915);
-diff --git a/tests/i915/sysfs_timeslice_duration.c b/tests/i915/sysfs_timeslice_duration.c
-index 05ab79667..b73ee3889 100644
---- a/tests/i915/sysfs_timeslice_duration.c
-+++ b/tests/i915/sysfs_timeslice_duration.c
-@@ -138,13 +138,12 @@ static void set_unbannable(int i915, uint32_t ctx)
- 	gem_context_set_param(i915, &p);
- }
- 
--static uint32_t create_context(int i915, unsigned int class, unsigned int inst, int prio)
-+static const intel_ctx_t *
-+create_ctx(int i915, unsigned int class, unsigned int inst, int prio)
- {
--	uint32_t ctx;
+-	return ctx;
+-}
 -
--	ctx = gem_context_create_for_engine(i915, class, inst);
--	set_unbannable(i915, ctx);
--	gem_context_set_priority(i915, ctx, prio);
-+	const intel_ctx_t *ctx = intel_ctx_create_for_engine(i915, class, inst);
-+	set_unbannable(i915, ctx->id);
-+	gem_context_set_priority(i915, ctx->id, prio);
- 
- 	return ctx;
+-bool gem_has_context_clone(int i915)
+-{
+-	struct drm_i915_gem_context_create_ext_clone ext = {
+-		{ .name = I915_CONTEXT_CREATE_EXT_CLONE },
+-		.clone_id = -1,
+-	};
+-	struct drm_i915_gem_context_create_ext create = {
+-		.flags = I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
+-		.extensions = to_user_pointer(&ext),
+-	};
+-
+-	return create_ext_ioctl(i915, &create) == -ENOENT;
+-}
+-
+-/**
+- * gem_context_clone_with_engines:
+- * @i915: open i915 drm file descriptor
+- * @src: i915 context id
+- *
+- * Special purpose wrapper to create a new context by cloning engines from @src.
+- *
+- * In can be called regardless of whether the kernel supports context cloning.
+- *
+- * Intended purpose is to use for creating contexts against which work will be
+- * submitted and the engine index came from external source, derived from a
+- * default context potentially configured with an engine map.
+- */
+-uint32_t gem_context_clone_with_engines(int i915, uint32_t src)
+-{
+-	if (!gem_has_context_clone(i915))
+-		return gem_context_create(i915);
+-	else
+-		return gem_context_clone(i915, src, I915_CONTEXT_CLONE_ENGINES,
+-					 0);
+-}
+-
+-uint32_t gem_queue_create(int i915)
+-{
+-	return gem_context_clone(i915, 0,
+-				 I915_CONTEXT_CLONE_VM |
+-				 I915_CONTEXT_CLONE_ENGINES,
+-				 I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
+-}
+-
+-/**
+- * gem_queue_clone_with_engines:
+- * @i915: open i915 drm file descriptor
+- * @src: i915 context id
+- *
+- * See gem_context_clone_with_engines.
+- */
+-uint32_t gem_queue_clone_with_engines(int i915, uint32_t src)
+-{
+-	return gem_context_clone(i915, src,
+-				 I915_CONTEXT_CLONE_ENGINES |
+-				 I915_CONTEXT_CLONE_VM,
+-				 I915_CONTEXT_CREATE_FLAGS_SINGLE_TIMELINE);
+-}
+-
+ bool gem_context_has_engine(int fd, uint32_t ctx, uint64_t engine)
+ {
+ 	struct drm_i915_gem_exec_object2 exec = {};
+@@ -551,36 +432,6 @@ bool gem_context_has_engine(int fd, uint32_t ctx, uint64_t engine)
+ 	return __gem_execbuf(fd, &execbuf) == -ENOENT;
  }
-@@ -191,7 +190,7 @@ static uint64_t __test_duration(int i915, int engine, unsigned int timeout)
- 	double duration = clockrate(i915);
- 	unsigned int class, inst, mmio;
- 	uint32_t *cs, *map;
--	uint32_t ctx[2];
-+	const intel_ctx_t *ctx[2];
- 	int start;
- 	int i;
  
-@@ -204,8 +203,8 @@ static uint64_t __test_duration(int i915, int engine, unsigned int timeout)
+-/**
+- * gem_context_copy_engines:
+- * @src_fd: open i915 drm file descriptor where @src context belongs to
+- * @src: source engine map context id
+- * @dst_fd: open i915 drm file descriptor where @dst context belongs to
+- * @dst: destination engine map context id
+- *
+- * Special purpose helper for copying engine map from one context to another.
+- *
+- * In can be called regardless of whether the kernel supports context engine
+- * maps and is a no-op if not supported.
+- */
+-void
+-gem_context_copy_engines(int src_fd, uint32_t src, int dst_fd, uint32_t dst)
+-{
+-	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, I915_EXEC_RING_MASK + 1);
+-	struct drm_i915_gem_context_param param = {
+-		.param = I915_CONTEXT_PARAM_ENGINES,
+-		.ctx_id = src,
+-		.size = sizeof(engines),
+-		.value = to_user_pointer(&engines),
+-	};
+-
+-	if (__gem_context_get_param(src_fd, &param))
+-		return;
+-
+-	param.ctx_id = dst;
+-	gem_context_set_param(dst_fd, &param);
+-}
+-
+ uint32_t gem_context_create_for_engine(int i915, unsigned int class, unsigned int inst)
+ {
+ 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 1) = {
+diff --git a/lib/i915/gem_context.h b/lib/i915/gem_context.h
+index 6e2226d27..505d55724 100644
+--- a/lib/i915/gem_context.h
++++ b/lib/i915/gem_context.h
+@@ -40,20 +40,6 @@ int __gem_context_destroy(int fd, uint32_t ctx_id);
+ uint32_t gem_context_create_for_engine(int fd, unsigned int class, unsigned int inst);
+ uint32_t gem_context_create_for_class(int i915, unsigned int class, unsigned int *count);
  
- 	set_timeslice(engine, timeout);
+-int __gem_context_clone(int i915,
+-			uint32_t src, unsigned int share,
+-			unsigned int flags,
+-			uint32_t *out);
+-uint32_t gem_context_clone(int i915,
+-			   uint32_t src, unsigned int share,
+-			   unsigned int flags);
+-uint32_t gem_context_clone_with_engines(int i915, uint32_t src);
+-void gem_context_copy_engines(int src_fd, uint32_t src,
+-			      int dst_fd, uint32_t dst);
+-
+-uint32_t gem_queue_create(int i915);
+-uint32_t gem_queue_clone_with_engines(int i915, uint32_t src);
+-
+ bool gem_contexts_has_shared_gtt(int i915);
+ bool gem_has_queues(int i915);
  
--	ctx[0] = create_context(i915, class, inst, 0);
--	ctx[1] = create_context(i915, class, inst, 0);
-+	ctx[0] = create_ctx(i915, class, inst, 0);
-+	ctx[1] = create_ctx(i915, class, inst, 0);
+@@ -63,8 +49,6 @@ bool gem_context_has_single_timeline(int i915);
+ void gem_context_require_bannable(int fd);
+ void gem_context_require_param(int fd, uint64_t param);
  
- 	map = gem_mmap__device_coherent(i915, obj[2].handle,
- 					0, 4096, PROT_WRITE);
-@@ -260,10 +259,10 @@ static uint64_t __test_duration(int i915, int engine, unsigned int timeout)
- 	igt_assert(cs - map < 4096 / sizeof(*cs));
- 	munmap(map, 4096);
- 
--	eb.rsvd1 = ctx[0];
-+	eb.rsvd1 = ctx[0]->id;
- 	gem_execbuf(i915, &eb);
- 
--	eb.rsvd1 = ctx[1];
-+	eb.rsvd1 = ctx[1]->id;
- 	eb.batch_start_offset = start;
- 	gem_execbuf(i915, &eb);
- 
-@@ -280,7 +279,7 @@ static uint64_t __test_duration(int i915, int engine, unsigned int timeout)
- 	munmap(map, 4096);
- 
- 	for (i = 0; i < ARRAY_SIZE(ctx); i++)
--		gem_context_destroy(i915, ctx[i]);
-+		intel_ctx_destroy(i915, ctx[i]);
- 
- 	for (i = 0; i < ARRAY_SIZE(obj); i++)
- 		gem_close(i915, obj[i].handle);
-@@ -371,23 +370,23 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
- 	struct timespec ts = {};
- 	igt_spin_t *spin[2];
- 	uint64_t elapsed;
--	uint32_t ctx[2];
-+	const intel_ctx_t *ctx[2];
- 
- 	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
- 	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
- 
- 	set_timeslice(engine, timeout);
- 
--	ctx[0] = create_context(i915, class, inst, 0);
--	spin[0] = igt_spin_new(i915, ctx[0],
-+	ctx[0] = create_ctx(i915, class, inst, 0);
-+	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
- 			       .flags = (IGT_SPIN_NO_PREEMPTION |
- 					 IGT_SPIN_POLL_RUN |
- 					 IGT_SPIN_FENCE_OUT));
- 	igt_spin_busywait_until_started(spin[0]);
- 
--	ctx[1] = create_context(i915, class, inst, 0);
-+	ctx[1] = create_ctx(i915, class, inst, 0);
- 	igt_nsec_elapsed(&ts);
--	spin[1] = igt_spin_new(i915, ctx[1], .flags = IGT_SPIN_POLL_RUN);
-+	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
- 	igt_spin_busywait_until_started(spin[1]);
- 	elapsed = igt_nsec_elapsed(&ts);
- 
-@@ -398,8 +397,8 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
- 
- 	igt_spin_free(i915, spin[0]);
- 
--	gem_context_destroy(i915, ctx[1]);
--	gem_context_destroy(i915, ctx[0]);
-+	intel_ctx_destroy(i915, ctx[1]);
-+	intel_ctx_destroy(i915, ctx[0]);
- 	gem_quiescent_gpu(i915);
- 
- 	return elapsed;
-@@ -460,7 +459,7 @@ static void test_off(int i915, int engine)
- 	unsigned int class, inst;
- 	unsigned int saved;
- 	igt_spin_t *spin[2];
--	uint32_t ctx[2];
-+	const intel_ctx_t *ctx[2];
- 
- 	/*
- 	 * As always, there are some who must run uninterrupted and simply do
-@@ -482,15 +481,15 @@ static void test_off(int i915, int engine)
- 
- 	set_timeslice(engine, 0);
- 
--	ctx[0] = create_context(i915, class, inst, 0);
--	spin[0] = igt_spin_new(i915, ctx[0],
-+	ctx[0] = create_ctx(i915, class, inst, 0);
-+	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
- 			       .flags = (IGT_SPIN_NO_PREEMPTION |
- 					 IGT_SPIN_POLL_RUN |
- 					 IGT_SPIN_FENCE_OUT));
- 	igt_spin_busywait_until_started(spin[0]);
- 
--	ctx[1] = create_context(i915, class, inst, 0);
--	spin[1] = igt_spin_new(i915, ctx[1], .flags = IGT_SPIN_POLL_RUN);
-+	ctx[1] = create_ctx(i915, class, inst, 0);
-+	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
- 
- 	for (int i = 0; i < 150; i++) {
- 		igt_assert_eq(sync_fence_status(spin[0]->out_fence), 0);
-@@ -507,8 +506,8 @@ static void test_off(int i915, int engine)
- 
- 	igt_spin_free(i915, spin[0]);
- 
--	gem_context_destroy(i915, ctx[1]);
--	gem_context_destroy(i915, ctx[0]);
-+	intel_ctx_destroy(i915, ctx[1]);
-+	intel_ctx_destroy(i915, ctx[0]);
- 
- 	igt_assert(enable_hangcheck(i915, true));
- 	gem_quiescent_gpu(i915);
+-bool gem_has_context_clone(int i915);
+-
+ void gem_context_get_param(int fd, struct drm_i915_gem_context_param *p);
+ void gem_context_set_param(int fd, struct drm_i915_gem_context_param *p);
+ int __gem_context_set_param(int fd, struct drm_i915_gem_context_param *p);
 -- 
 2.31.1
 
