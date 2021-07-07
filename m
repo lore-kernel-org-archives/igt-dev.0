@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
- [IPv6:2607:f8b0:4864:20::532])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C064A6E17A
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:47:16 +0000 (UTC)
-Received: by mail-pg1-x532.google.com with SMTP id g22so2487289pgl.7
- for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:47:16 -0700 (PDT)
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com
+ [IPv6:2607:f8b0:4864:20::42b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E7D206E170
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:47:37 +0000 (UTC)
+Received: by mail-pf1-x42b.google.com with SMTP id x16so2322076pfa.13
+ for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:47:37 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  7 Jul 2021 09:46:27 -0500
-Message-Id: <20210707144643.181001-16-jason@jlekstrand.net>
+Date: Wed,  7 Jul 2021 09:46:39 -0500
+Message-Id: <20210707144643.181001-28-jason@jlekstrand.net>
 In-Reply-To: <20210707144337.180693-1-jason@jlekstrand.net>
 References: <20210707144337.180693-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 65/81] tests/i915/gem_workarounds: Convert
- to intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 77/81] tests/i915/gem_ctx_param: Add tests
+ for recently removed params
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,62 +30,69 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_workarounds.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ tests/i915/gem_ctx_param.c | 44 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-diff --git a/tests/i915/gem_workarounds.c b/tests/i915/gem_workarounds.c
-index 9cdc24374..e240901c4 100644
---- a/tests/i915/gem_workarounds.c
-+++ b/tests/i915/gem_workarounds.c
-@@ -85,7 +85,7 @@ static bool write_only(const uint32_t addr)
+diff --git a/tests/i915/gem_ctx_param.c b/tests/i915/gem_ctx_param.c
+index 54bf0cc96..7fba37cbd 100644
+--- a/tests/i915/gem_ctx_param.c
++++ b/tests/i915/gem_ctx_param.c
+@@ -244,6 +244,35 @@ static void test_vm(int i915)
+ 	gem_close(i915, batch.handle);
+ }
  
- #define MI_STORE_REGISTER_MEM (0x24 << 23)
- 
--static int workaround_fail_count(int i915, uint32_t ctx)
-+static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
++static void test_set_invalid_param(int fd, uint64_t param, uint64_t value)
++{
++	/* Create a fresh context */
++	struct drm_i915_gem_context_param arg = {
++		.ctx_id = gem_context_create(fd),
++		.param = param,
++		.value = value,
++	};
++	int err;
++
++	err = __gem_context_set_param(fd, &arg);
++	gem_context_destroy(fd, arg.ctx_id);
++	igt_assert_eq(err, -EINVAL);
++}
++
++static void test_get_invalid_param(int fd, uint64_t param)
++{
++	/* Create a fresh context */
++	struct drm_i915_gem_context_param arg = {
++		.ctx_id = gem_context_create(fd),
++		.param = param,
++	};
++	int err;
++
++	err = __gem_context_get_param(fd, &arg);
++	gem_context_destroy(fd, arg.ctx_id);
++	igt_assert_eq(err, -EINVAL);
++}
++
+ igt_main
  {
- 	struct drm_i915_gem_exec_object2 obj[2];
- 	struct drm_i915_gem_relocation_entry *reloc;
-@@ -131,12 +131,12 @@ static int workaround_fail_count(int i915, uint32_t ctx)
- 	memset(&execbuf, 0, sizeof(execbuf));
- 	execbuf.buffers_ptr = to_user_pointer(obj);
- 	execbuf.buffer_count = 2;
--	execbuf.rsvd1 = ctx;
-+	execbuf.rsvd1 = ctx->id;
- 	gem_execbuf(i915, &execbuf);
- 
- 	gem_set_domain(i915, obj[0].handle, I915_GEM_DOMAIN_CPU, 0);
- 
--	spin = igt_spin_new(i915, .ctx_id = ctx, .flags = IGT_SPIN_POLL_RUN);
-+	spin = igt_spin_new(i915, .ctx = ctx, .flags = IGT_SPIN_POLL_RUN);
- 	igt_spin_busywait_until_started(spin);
- 
- 	fw = igt_open_forcewake_handle(i915);
-@@ -184,14 +184,15 @@ static int workaround_fail_count(int i915, uint32_t ctx)
- #define FD 0x2
- static void check_workarounds(int fd, enum operation op, unsigned int flags)
- {
--	uint32_t ctx = 0;
-+	const intel_ctx_t *ctx;
- 
- 	if (flags & FD)
- 		fd = gem_reopen_driver(fd);
- 
-+	ctx = intel_ctx_0(fd);
- 	if (flags & CONTEXT) {
- 		gem_require_contexts(fd);
--		ctx = gem_context_create(fd);
-+		ctx = intel_ctx_create(fd, NULL);
+ 	struct drm_i915_gem_context_param arg;
+@@ -406,6 +435,21 @@ igt_main
+ 		igt_assert_eq(__gem_context_set_param(fd, &arg), -EINVAL);
  	}
  
- 	igt_assert_eq(workaround_fail_count(fd, ctx), 0);
-@@ -221,7 +222,7 @@ static void check_workarounds(int fd, enum operation op, unsigned int flags)
- 	igt_assert_eq(workaround_fail_count(fd, ctx), 0);
- 
- 	if (flags & CONTEXT)
--		gem_context_destroy(fd, ctx);
-+		intel_ctx_destroy(fd, ctx);
- 	if (flags & FD)
++	igt_subtest("invalid-set-ringsize")
++		test_set_invalid_param(fd, I915_CONTEXT_PARAM_RINGSIZE, 8192);
++
++	igt_subtest("invalid-get-ringsize")
++		test_get_invalid_param(fd, I915_CONTEXT_PARAM_RINGSIZE);
++
++	igt_subtest("invalid-set-no-zeromap")
++		test_set_invalid_param(fd, I915_CONTEXT_PARAM_NO_ZEROMAP, 1);
++
++	igt_subtest("invalid-get-no-zeromap")
++		test_get_invalid_param(fd, I915_CONTEXT_PARAM_NO_ZEROMAP);
++
++	igt_subtest("invalid-get-engines")
++		test_get_invalid_param(fd, I915_CONTEXT_PARAM_ENGINES);
++
+ 	igt_fixture
  		close(fd);
  }
 -- 
