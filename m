@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
- [IPv6:2607:f8b0:4864:20::431])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DCE716E17E
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:47:09 +0000 (UTC)
-Received: by mail-pf1-x431.google.com with SMTP id y4so2331004pfi.9
- for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:47:09 -0700 (PDT)
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
+ [IPv6:2607:f8b0:4864:20::434])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F197B6E1A3
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:47:32 +0000 (UTC)
+Received: by mail-pf1-x434.google.com with SMTP id 145so2396402pfv.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:47:32 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  7 Jul 2021 09:46:23 -0500
-Message-Id: <20210707144643.181001-12-jason@jlekstrand.net>
+Date: Wed,  7 Jul 2021 09:46:36 -0500
+Message-Id: <20210707144643.181001-25-jason@jlekstrand.net>
 In-Reply-To: <20210707144337.180693-1-jason@jlekstrand.net>
 References: <20210707144337.180693-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 61/81] tests/i915/gem_ctx_create: Convert
- benchmarks to intel_ctx_t
+Subject: [igt-dev] [PATCH i-g-t 74/81] lib/intel_bb: Remove
+ intel_bb_assign_vm and tests (v2)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,290 +20,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
----
- tests/i915/gem_ctx_create.c | 93 +++++++++++++++++++++----------------
- 1 file changed, 52 insertions(+), 41 deletions(-)
-
-diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
-index 37061ebc5..448466523 100644
---- a/tests/i915/gem_ctx_create.c
-+++ b/tests/i915/gem_ctx_create.c
-@@ -79,7 +79,8 @@ static double elapsed(const struct timespec *start,
- 	return (end->tv_sec - start->tv_sec) + 1e-9*(end->tv_nsec - start->tv_nsec);
- }
- 
--static void files(int core, int timeout, const int ncpus)
-+static void files(int core, const intel_ctx_cfg_t *cfg,
-+		  int timeout, const int ncpus)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	struct drm_i915_gem_execbuffer2 execbuf;
-@@ -98,18 +99,22 @@ static void files(int core, int timeout, const int ncpus)
- 	igt_fork(child, ncpus) {
- 		struct timespec start, end;
- 		unsigned count = 0;
-+		const intel_ctx_t *ctx;
- 		int fd;
- 
- 		clock_gettime(CLOCK_MONOTONIC, &start);
- 		do {
- 			fd = gem_reopen_driver(core);
--			gem_context_copy_engines(core, 0, fd, 0);
-+
-+			ctx = intel_ctx_create(fd, cfg);
-+			execbuf.rsvd1 = ctx->id;
- 
- 			obj.handle = gem_open(fd, name);
- 			execbuf.flags &= ~ENGINE_FLAGS;
- 			execbuf.flags |= ppgtt_engines[count % ppgtt_nengine];
- 			gem_execbuf(fd, &execbuf);
- 
-+			intel_ctx_destroy(fd, ctx);
- 			close(fd);
- 			count++;
- 
-@@ -126,7 +131,8 @@ static void files(int core, int timeout, const int ncpus)
- 	gem_close(core, batch);
- }
- 
--static void active(int fd, const struct intel_execution_engine2 *e,
-+static void active(int fd, const intel_ctx_cfg_t *cfg,
-+		   const struct intel_execution_engine2 *e,
- 		   int timeout, int ncpus)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
-@@ -158,19 +164,19 @@ static void active(int fd, const struct intel_execution_engine2 *e,
- 	if (ncpus < 0) {
- 		igt_fork(child, ppgtt_nengine) {
- 			unsigned long count = 0;
--			int i915;
-+			const intel_ctx_t *ctx;
- 
--			i915 = gem_reopen_driver(fd);
- 			/*
- 			 * Ensure the gpu is idle by launching
- 			 * a nop execbuf and stalling for it
- 			 */
--			gem_quiescent_gpu(i915);
--			gem_context_copy_engines(fd, 0, i915, 0);
-+			gem_quiescent_gpu(fd);
- 
- 			if (ppgtt_engines[child] == e->flags)
- 				continue;
- 
-+			ctx = intel_ctx_create(fd, cfg);
-+			execbuf.rsvd1 = ctx->id;
- 			execbuf.flags = ppgtt_engines[child];
- 
- 			while (!READ_ONCE(*shared)) {
-@@ -183,6 +189,7 @@ static void active(int fd, const struct intel_execution_engine2 *e,
- 			}
- 
- 			igt_debug("hog[%d]: cycles=%lu\n", child, count);
-+			intel_ctx_destroy(fd, ctx);
- 		}
- 		ncpus = -ncpus;
- 	}
-@@ -190,33 +197,27 @@ static void active(int fd, const struct intel_execution_engine2 *e,
- 	igt_fork(child, ncpus) {
- 		struct timespec start, end;
- 		unsigned count = 0;
--		int i915;
--		uint32_t ctx;
- 
--		i915 = gem_reopen_driver(fd);
- 		/*
- 		 * Ensure the gpu is idle by launching
- 		 * a nop execbuf and stalling for it.
- 		 */
--		gem_quiescent_gpu(i915);
--		ctx = gem_context_create(i915);
--		gem_context_copy_engines(fd, 0, i915, ctx);
-+		gem_quiescent_gpu(fd);
- 
- 		clock_gettime(CLOCK_MONOTONIC, &start);
- 		do {
--			execbuf.rsvd1 = gem_context_clone_with_engines(fd, ctx);
-+			const intel_ctx_t *ctx = intel_ctx_create(fd, cfg);
-+			execbuf.rsvd1 = ctx->id;
- 			for (unsigned n = 0; n < nengine; n++) {
- 				execbuf.flags = engines[n];
- 				gem_execbuf(fd, &execbuf);
- 			}
--			gem_context_destroy(fd, execbuf.rsvd1);
-+			intel_ctx_destroy(fd, ctx);
- 			count++;
- 
- 			clock_gettime(CLOCK_MONOTONIC, &end);
- 		} while (elapsed(&start, &end) < timeout);
- 
--		gem_context_destroy(fd, ctx);
--
- 		gem_sync(fd, obj.handle);
- 		clock_gettime(CLOCK_MONOTONIC, &end);
- 		igt_info("[%d] Context creation + execution: %.3f us\n",
-@@ -239,6 +240,15 @@ static void xchg_u32(void *array, unsigned i, unsigned j)
- 	a[j] = tmp;
- }
- 
-+static void xchg_ptr(void *array, unsigned i, unsigned j)
-+{
-+	void **a = array, *tmp;
-+
-+	tmp = a[i];
-+	a[i] = a[j];
-+	a[j] = tmp;
-+}
-+
- static unsigned __context_size(int fd)
- {
- 	switch (intel_gen(intel_get_drm_devid(fd))) {
-@@ -277,16 +287,17 @@ static uint64_t total_avail_mem(unsigned mode)
- 	return total << 20;
- }
- 
--static void maximum(int fd, int ncpus, unsigned mode)
-+static void maximum(int fd, const intel_ctx_cfg_t *cfg,
-+		    int ncpus, unsigned mode)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	struct drm_i915_gem_exec_object2 obj[2];
- 	uint64_t avail_mem = total_avail_mem(mode);
- 	unsigned ctx_size = context_size(fd);
--	uint32_t *contexts = NULL;
-+	const intel_ctx_t **contexts = NULL;
- 	unsigned long count = 0;
--	uint32_t ctx_id;
-+	const intel_ctx_t *ctx;
- 
- 	do {
- 		int err;
-@@ -300,16 +311,14 @@ static void maximum(int fd, int ncpus, unsigned mode)
- 
- 		err = -ENOMEM;
- 		if (avail_mem > (count + 1) * ctx_size)
--			err =  __gem_context_clone(fd, 0,
--						   I915_CONTEXT_CLONE_ENGINES,
--						   0, &ctx_id);
-+			err = __intel_ctx_create(fd, cfg, &ctx);
- 		if (err) {
- 			igt_info("Created %lu contexts, before failing with '%s' [%d]\n",
- 				 count, strerror(-err), -err);
- 			break;
- 		}
- 
--		contexts[count++] = ctx_id;
-+		contexts[count++] = ctx;
- 	} while (1);
- 	igt_require(count);
- 
-@@ -329,11 +338,11 @@ static void maximum(int fd, int ncpus, unsigned mode)
- 
- 		clock_gettime(CLOCK_MONOTONIC, &start);
- 		for (int repeat = 0; repeat < 3; repeat++) {
--			igt_permute_array(contexts, count, xchg_u32);
-+			igt_permute_array(contexts, count, xchg_ptr);
- 			igt_permute_array(all_engines, all_nengine, xchg_u32);
- 
- 			for (unsigned long i = 0; i < count; i++) {
--				execbuf.rsvd1 = contexts[i];
-+				execbuf.rsvd1 = contexts[i]->id;
- 				for (unsigned long j = 0; j < all_nengine; j++) {
- 					execbuf.flags = all_engines[j];
- 					gem_execbuf(fd, &execbuf);
-@@ -352,7 +361,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
- 	gem_close(fd, obj[1].handle);
- 
- 	for (unsigned long i = 0; i < count; i++)
--		gem_context_destroy(fd, contexts[i]);
-+		intel_ctx_destroy(fd, contexts[i]);
- 	free(contexts);
- }
- 
-@@ -552,6 +561,7 @@ igt_main
- 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
- 	struct drm_i915_gem_context_create create;
- 	const struct intel_execution_engine2 *e;
-+	intel_ctx_cfg_t cfg;
- 	int fd = -1;
- 
- 	igt_fixture {
-@@ -559,7 +569,8 @@ igt_main
- 		igt_require_gem(fd);
- 		gem_require_contexts(fd);
- 
--		__for_each_physical_engine(fd, e)
-+		cfg = intel_ctx_cfg_all_physical(fd);
-+		for_each_ctx_cfg_engine(fd, &cfg, e)
- 			all_engines[all_nengine++] = e->flags;
- 		igt_require(all_nengine);
- 
-@@ -589,39 +600,39 @@ igt_main
- 		iris_pipeline(fd);
- 
- 	igt_subtest("maximum-mem")
--		maximum(fd, ncpus, CHECK_RAM);
-+		maximum(fd, &cfg, ncpus, CHECK_RAM);
- 	igt_subtest("maximum-swap")
--		maximum(fd, ncpus, CHECK_RAM | CHECK_SWAP);
-+		maximum(fd, &cfg, ncpus, CHECK_RAM | CHECK_SWAP);
- 
- 	igt_subtest("basic-files")
--		files(fd, 2, 1);
-+		files(fd, &cfg, 2, 1);
- 	igt_subtest("files")
--		files(fd, 20, 1);
-+		files(fd, &cfg, 20, 1);
- 	igt_subtest("forked-files")
--		files(fd, 20, ncpus);
-+		files(fd, &cfg, 20, ncpus);
- 
- 	/* NULL value means all engines */
- 	igt_subtest("active-all")
--		active(fd, NULL, 20, 1);
-+		active(fd, &cfg, NULL, 20, 1);
- 	igt_subtest("forked-active-all")
--		active(fd, NULL, 20, ncpus);
-+		active(fd, &cfg, NULL, 20, ncpus);
- 
- 	igt_subtest_with_dynamic("active") {
--		__for_each_physical_engine(fd, e) {
-+		for_each_ctx_cfg_engine(fd, &cfg, e) {
- 			igt_dynamic_f("%s", e->name)
--				active(fd, e, 20, 1);
-+				active(fd, &cfg, e, 20, 1);
- 		}
- 	}
- 	igt_subtest_with_dynamic("forked-active") {
--		__for_each_physical_engine(fd, e) {
-+		for_each_ctx_cfg_engine(fd, &cfg, e) {
- 			igt_dynamic_f("%s", e->name)
--				active(fd, e, 20, ncpus);
-+				active(fd, &cfg, e, 20, ncpus);
- 		}
- 	}
- 	igt_subtest_with_dynamic("hog") {
--		__for_each_physical_engine(fd, e) {
-+		for_each_ctx_cfg_engine(fd, &cfg, e) {
- 			igt_dynamic_f("%s", e->name)
--				active(fd, e, 20, -1);
-+				active(fd, &cfg, e, 20, -1);
- 		}
- 	}
- 
--- 
-2.31.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SXQncyBub3QgdXNlZCBieSBhbnl0aGluZyBvdGhlciB0aGFuIHRoZSB0ZXN0cyBmb3IgdGhhdCBm
+dW5jdGlvbmFsaXR5CmFuZCBpdCByZWxpZXMgb24gc2V0dGluZyB0aGUgVk0gdmlhIFNFVF9DT05U
+RVhUX1BBUkFNIHdoaWNoIGlzCmRlcHJlY2F0ZWQuICBEZWxldGUgaXQgZm9yIG5vdy4gIFdlIGNh
+biBhZGQgaXQgYmFjayBpbiBsYXRlciBpZiBpdCdzCmFjdHVhbGx5IHVzZWZ1bCBhbmQgZG8gaXQg
+cHJvcGVybHkgdGhlbi4KCnYyIChaYmlnbmlldyBLZW1wY3p5xYRza2kpOgogLSBBbHNvIHJlbW92
+ZSBpbnRlbF9iYl9kZXRhY2hfaW50ZWxfYnVmKCkKClNpZ25lZC1vZmYtYnk6IEphc29uIEVrc3Ry
+YW5kIDxqYXNvbkBqbGVrc3RyYW5kLm5ldD4KUmV2aWV3ZWQtYnk6IFpiaWduaWV3IEtlbXBjennF
+hHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgotLS0KIGxpYi9pbnRlbF9iYXRj
+aGJ1ZmZlci5jICAgfCAgNjUgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBsaWIvaW50ZWxfYmF0
+Y2hidWZmZXIuaCAgIHwgICA0IC0tCiB0ZXN0cy9pOTE1L2FwaV9pbnRlbF9iYi5jIHwgMTA0IC0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAzIGZpbGVzIGNoYW5nZWQsIDE3
+MyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9saWIvaW50ZWxfYmF0Y2hidWZmZXIuYyBiL2xp
+Yi9pbnRlbF9iYXRjaGJ1ZmZlci5jCmluZGV4IGNjOTc2YTYyNC4uMmI4YjkwM2UyIDEwMDY0NAot
+LS0gYS9saWIvaW50ZWxfYmF0Y2hidWZmZXIuYworKysgYi9saWIvaW50ZWxfYmF0Y2hidWZmZXIu
+YwpAQCAtMTUxMywxNCArMTUxMyw2IEBAIHN0YXRpYyB2b2lkIF9faW50ZWxfYmJfZGVzdHJveV9j
+YWNoZShzdHJ1Y3QgaW50ZWxfYmIgKmliYikKIAlpYmItPnJvb3QgPSBOVUxMOwogfQogCi1zdGF0
+aWMgdm9pZCBfX2ludGVsX2JiX2RldGFjaF9pbnRlbF9idWZzKHN0cnVjdCBpbnRlbF9iYiAqaWJi
+KQotewotCXN0cnVjdCBpbnRlbF9idWYgKmVudHJ5LCAqdG1wOwotCi0JaWd0X2xpc3RfZm9yX2Vh
+Y2hfZW50cnlfc2FmZShlbnRyeSwgdG1wLCAmaWJiLT5pbnRlbF9idWZzLCBsaW5rKQotCQlpbnRl
+bF9iYl9kZXRhY2hfaW50ZWxfYnVmKGliYiwgZW50cnkpOwotfQotCiBzdGF0aWMgdm9pZCBfX2lu
+dGVsX2JiX3JlbW92ZV9pbnRlbF9idWZzKHN0cnVjdCBpbnRlbF9iYiAqaWJiKQogewogCXN0cnVj
+dCBpbnRlbF9idWYgKmVudHJ5LCAqdG1wOwpAQCAtMTY0OSw1MCArMTY0MSw2IEBAIGludCBpbnRl
+bF9iYl9zeW5jKHN0cnVjdCBpbnRlbF9iYiAqaWJiKQogCXJldHVybiByZXQ7CiB9CiAKLXVpbnQ2
+NF90IGludGVsX2JiX2Fzc2lnbl92bShzdHJ1Y3QgaW50ZWxfYmIgKmliYiwgdWludDY0X3QgYWxs
+b2NhdG9yLAotCQkJICAgIHVpbnQzMl90IHZtX2lkKQotewotCXN0cnVjdCBkcm1faTkxNV9nZW1f
+Y29udGV4dF9wYXJhbSBhcmcgPSB7Ci0JCS5wYXJhbSA9IEk5MTVfQ09OVEVYVF9QQVJBTV9WTSwK
+LQl9OwotCXVpbnQ2NF90IHByZXZfYWxsb2NhdG9yID0gaWJiLT5hbGxvY2F0b3JfaGFuZGxlOwot
+CWJvb2wgY2xvc2VkID0gZmFsc2U7Ci0KLQlpZiAoaWJiLT52bV9pZCA9PSB2bV9pZCkgewotCQlp
+Z3RfZGVidWcoIlNraXBwaW5nIHRvIGFzc2lnbiBzYW1lIHZtX2lkOiAldVxuIiwgdm1faWQpOwot
+CQlyZXR1cm4gMDsKLQl9Ci0KLQkvKiBDYW5ub3Qgc3dpdGNoIGlmIHNvbWVvbmUga2VlcHMgYmIg
+cmVmY291bnQgKi8KLQlpZ3RfYXNzZXJ0KGliYi0+cmVmY291bnQgPT0gMSk7Ci0KLQkvKiBEZXRh
+Y2ggaW50ZWxfYnVmcyBhbmQgcmVtb3ZlIGJiIGhhbmRsZSAqLwotCV9faW50ZWxfYmJfZGV0YWNo
+X2ludGVsX2J1ZnMoaWJiKTsKLQlpbnRlbF9iYl9yZW1vdmVfb2JqZWN0KGliYiwgaWJiLT5oYW5k
+bGUsIGliYi0+YmF0Y2hfb2Zmc2V0LCBpYmItPnNpemUpOwotCi0JLyogQ2FjaGUgKyBvYmplY3Rz
+IGFyZSBub3QgdmFsaWQgYWZ0ZXIgY2hhbmdlIGFueW1vcmUgKi8KLQlfX2ludGVsX2JiX2Rlc3Ry
+b3lfb2JqZWN0cyhpYmIpOwotCV9faW50ZWxfYmJfZGVzdHJveV9jYWNoZShpYmIpOwotCi0JLyog
+QXR0YWNoIG5ldyBhbGxvY2F0b3IgKi8KLQlpYmItPmFsbG9jYXRvcl9oYW5kbGUgPSBhbGxvY2F0
+b3I7Ci0KLQkvKiBTZXRwYXJhbSAqLwotCWliYi0+dm1faWQgPSB2bV9pZDsKLQotCS8qIFNraXAg
+c2V0IHBhcmFtLCB3ZSBsaWtlbHkgcmV0dXJuIHRvIGRlZmF1bHQgdm0gKi8KLQlpZiAodm1faWQp
+IHsKLQkJYXJnLmN0eF9pZCA9IGliYi0+Y3R4OwotCQlhcmcudmFsdWUgPSB2bV9pZDsKLQkJZ2Vt
+X2NvbnRleHRfc2V0X3BhcmFtKGliYi0+aTkxNSwgJmFyZyk7Ci0JfQotCi0JLyogUmVjcmVhdGUg
+YmIgKi8KLQlpbnRlbF9iYl9yZXNldChpYmIsIGZhbHNlKTsKLQotCXJldHVybiBjbG9zZWQgPyAw
+IDogcHJldl9hbGxvY2F0b3I7Ci19Ci0KIC8qCiAgKiBpbnRlbF9iYl9wcmludDoKICAqIEBpYmI6
+IHBvaW50ZXIgdG8gaW50ZWxfYmIKQEAgLTIwNDAsMTkgKzE5ODgsNiBAQCBpbnRlbF9iYl9hZGRf
+aW50ZWxfYnVmX3dpdGhfYWxpZ25tZW50KHN0cnVjdCBpbnRlbF9iYiAqaWJiLCBzdHJ1Y3QgaW50
+ZWxfYnVmICpidQogCXJldHVybiBfX2ludGVsX2JiX2FkZF9pbnRlbF9idWYoaWJiLCBidWYsIGFs
+aWdubWVudCwgd3JpdGUpOwogfQogCi12b2lkIGludGVsX2JiX2RldGFjaF9pbnRlbF9idWYoc3Ry
+dWN0IGludGVsX2JiICppYmIsIHN0cnVjdCBpbnRlbF9idWYgKmJ1ZikKLXsKLQlpZ3RfYXNzZXJ0
+KGliYik7Ci0JaWd0X2Fzc2VydChidWYpOwotCWlndF9hc3NlcnQoIWJ1Zi0+aWJiIHx8IGJ1Zi0+
+aWJiID09IGliYik7Ci0KLQlpZiAoIWlndF9saXN0X2VtcHR5KCZidWYtPmxpbmspKSB7Ci0JCWJ1
+Zi0+YWRkci5vZmZzZXQgPSBJTlRFTF9CVUZfSU5WQUxJRF9BRERSRVNTOwotCQlidWYtPmliYiA9
+IE5VTEw7Ci0JCWlndF9saXN0X2RlbF9pbml0KCZidWYtPmxpbmspOwotCX0KLX0KLQogYm9vbCBp
+bnRlbF9iYl9yZW1vdmVfaW50ZWxfYnVmKHN0cnVjdCBpbnRlbF9iYiAqaWJiLCBzdHJ1Y3QgaW50
+ZWxfYnVmICpidWYpCiB7CiAJYm9vbCByZW1vdmVkOwpkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2Jh
+dGNoYnVmZmVyLmggYi9saWIvaW50ZWxfYmF0Y2hidWZmZXIuaAppbmRleCA2ZjE0ODcxM2IuLmJk
+NDE3ZTk5OCAxMDA2NDQKLS0tIGEvbGliL2ludGVsX2JhdGNoYnVmZmVyLmgKKysrIGIvbGliL2lu
+dGVsX2JhdGNoYnVmZmVyLmgKQEAgLTUyMyw5ICs1MjMsNiBAQCBzdGF0aWMgaW5saW5lIHZvaWQg
+aW50ZWxfYmJfdW5yZWYoc3RydWN0IGludGVsX2JiICppYmIpCiB2b2lkIGludGVsX2JiX3Jlc2V0
+KHN0cnVjdCBpbnRlbF9iYiAqaWJiLCBib29sIHB1cmdlX29iamVjdHNfY2FjaGUpOwogaW50IGlu
+dGVsX2JiX3N5bmMoc3RydWN0IGludGVsX2JiICppYmIpOwogCi11aW50NjRfdCBpbnRlbF9iYl9h
+c3NpZ25fdm0oc3RydWN0IGludGVsX2JiICppYmIsIHVpbnQ2NF90IGFsbG9jYXRvciwKLQkJCSAg
+ICB1aW50MzJfdCB2bV9pZCk7Ci0KIHZvaWQgaW50ZWxfYmJfcHJpbnQoc3RydWN0IGludGVsX2Ji
+ICppYmIpOwogdm9pZCBpbnRlbF9iYl9kdW1wKHN0cnVjdCBpbnRlbF9iYiAqaWJiLCBjb25zdCBj
+aGFyICpmaWxlbmFtZSk7CiB2b2lkIGludGVsX2JiX3NldF9kZWJ1ZyhzdHJ1Y3QgaW50ZWxfYmIg
+KmliYiwgYm9vbCBkZWJ1Zyk7CkBAIC01ODgsNyArNTg1LDYgQEAgaW50ZWxfYmJfYWRkX2ludGVs
+X2J1ZihzdHJ1Y3QgaW50ZWxfYmIgKmliYiwgc3RydWN0IGludGVsX2J1ZiAqYnVmLCBib29sIHdy
+aXRlKTsKIHN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY19vYmplY3QyICoKIGludGVsX2JiX2FkZF9p
+bnRlbF9idWZfd2l0aF9hbGlnbm1lbnQoc3RydWN0IGludGVsX2JiICppYmIsIHN0cnVjdCBpbnRl
+bF9idWYgKmJ1ZiwKIAkJCQkgICAgICB1aW50NjRfdCBhbGlnbm1lbnQsIGJvb2wgd3JpdGUpOwot
+dm9pZCBpbnRlbF9iYl9kZXRhY2hfaW50ZWxfYnVmKHN0cnVjdCBpbnRlbF9iYiAqaWJiLCBzdHJ1
+Y3QgaW50ZWxfYnVmICpidWYpOwogYm9vbCBpbnRlbF9iYl9yZW1vdmVfaW50ZWxfYnVmKHN0cnVj
+dCBpbnRlbF9iYiAqaWJiLCBzdHJ1Y3QgaW50ZWxfYnVmICpidWYpOwogdm9pZCBpbnRlbF9iYl9w
+cmludF9pbnRlbF9idWZzKHN0cnVjdCBpbnRlbF9iYiAqaWJiKTsKIHN0cnVjdCBkcm1faTkxNV9n
+ZW1fZXhlY19vYmplY3QyICoKZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvYXBpX2ludGVsX2JiLmMg
+Yi90ZXN0cy9pOTE1L2FwaV9pbnRlbF9iYi5jCmluZGV4IDdmZmU2NGZjNS4uNzRjYjE4NDE3IDEw
+MDY0NAotLS0gYS90ZXN0cy9pOTE1L2FwaV9pbnRlbF9iYi5jCisrKyBiL3Rlc3RzL2k5MTUvYXBp
+X2ludGVsX2JiLmMKQEAgLTI0MSwxMDcgKzI0MSw2IEBAIHN0YXRpYyB2b2lkIGJiX3dpdGhfYWxs
+b2NhdG9yKHN0cnVjdCBidWZfb3BzICpib3BzKQogCWludGVsX2JiX2Rlc3Ryb3koaWJiKTsKIH0K
+IAotc3RhdGljIHZvaWQgYmJfd2l0aF92bShzdHJ1Y3QgYnVmX29wcyAqYm9wcykKLXsKLQlpbnQg
+aTkxNSA9IGJ1Zl9vcHNfZ2V0X2ZkKGJvcHMpOwotCXN0cnVjdCBkcm1faTkxNV9nZW1fY29udGV4
+dF9wYXJhbSBhcmcgPSB7Ci0JCS5wYXJhbSA9IEk5MTVfQ09OVEVYVF9QQVJBTV9WTSwKLQl9Owot
+CXN0cnVjdCBpbnRlbF9iYiAqaWJiOwotCXN0cnVjdCBpbnRlbF9idWYgKnNyYywgKmRzdCwgKmdh
+cDsKLQl1aW50MzJfdCBjdHggPSAwLCB2bV9pZDEsIHZtX2lkMjsKLQl1aW50NjRfdCBwcmV2X3Zt
+LCB2bTsKLQl1aW50NjRfdCBzcmNfYWRkcls1XSwgZHN0X2FkZHJbNV07Ci0KLQlpZ3RfcmVxdWly
+ZShnZW1fdXNlc19mdWxsX3BwZ3R0KGk5MTUpKTsKLQotCWliYiA9IGludGVsX2JiX2NyZWF0ZV93
+aXRoX2FsbG9jYXRvcihpOTE1LCBjdHgsIFBBR0VfU0laRSwKLQkJCQkJICAgICBJTlRFTF9BTExP
+Q0FUT1JfU0lNUExFKTsKLQlpZiAoZGVidWdfYmIpCi0JCWludGVsX2JiX3NldF9kZWJ1ZyhpYmIs
+IHRydWUpOwotCi0Jc3JjID0gaW50ZWxfYnVmX2NyZWF0ZShib3BzLCA0MDk2LzMyLCAzMiwgOCwg
+MCwgSTkxNV9USUxJTkdfTk9ORSwKLQkJCSAgICAgICBJOTE1X0NPTVBSRVNTSU9OX05PTkUpOwot
+CWRzdCA9IGludGVsX2J1Zl9jcmVhdGUoYm9wcywgNDA5Ni8zMiwgMzIsIDgsIDAsIEk5MTVfVElM
+SU5HX05PTkUsCi0JCQkgICAgICAgSTkxNV9DT01QUkVTU0lPTl9OT05FKTsKLQlnYXAgPSBpbnRl
+bF9idWZfY3JlYXRlKGJvcHMsIDQwOTYsIDEyOCwgOCwgMCwgSTkxNV9USUxJTkdfTk9ORSwKLQkJ
+CSAgICAgICBJOTE1X0NPTVBSRVNTSU9OX05PTkUpOwotCi0JLyogdm0gZm9yIHNlY29uZCBibGl0
+ICovCi0Jdm1faWQxID0gZ2VtX3ZtX2NyZWF0ZShpOTE1KTsKLQotCS8qIEdldCB2bV9pZCBmb3Ig
+ZGVmYXVsdCB2bSAqLwotCWFyZy5jdHhfaWQgPSBjdHg7Ci0JZ2VtX2NvbnRleHRfZ2V0X3BhcmFt
+KGk5MTUsICZhcmcpOwotCXZtX2lkMiA9IGFyZy52YWx1ZTsKLQotCWlndF9kZWJ1ZygiVm1faWQx
+OiAldVxuIiwgdm1faWQxKTsKLQlpZ3RfZGVidWcoIlZtX2lkMjogJXVcbiIsIHZtX2lkMik7Ci0K
+LQkvKiBGaXJzdCBibGl0IHdpdGhvdXQgc2V0IGNhbGxpbmcgc2V0cGFyYW0gKi8KLQlpbnRlbF9i
+Yl9jb3B5X2ludGVsX2J1ZihpYmIsIGRzdCwgc3JjLCA0MDk2KTsKLQlzcmNfYWRkclswXSA9IHNy
+Yy0+YWRkci5vZmZzZXQ7Ci0JZHN0X2FkZHJbMF0gPSBkc3QtPmFkZHIub2Zmc2V0OwotCWlndF9k
+ZWJ1Zygic3RlcDE6IHNyYzogMHglbGx4LCBkc3Q6IDB4JWxseFxuIiwKLQkJICAobG9uZyBsb25n
+KSBzcmNfYWRkclswXSwgKGxvbmcgbG9uZykgZHN0X2FkZHJbMF0pOwotCi0JLyogT3BlbiBuZXcg
+YWxsb2NhdG9yIHdpdGggdm1faWQgKi8KLQl2bSA9IGludGVsX2FsbG9jYXRvcl9vcGVuX3ZtKGk5
+MTUsIHZtX2lkMSwgSU5URUxfQUxMT0NBVE9SX1NJTVBMRSk7Ci0JcHJldl92bSA9IGludGVsX2Ji
+X2Fzc2lnbl92bShpYmIsIHZtLCB2bV9pZDEpOwotCi0JaW50ZWxfYmJfYWRkX2ludGVsX2J1Zihp
+YmIsIGdhcCwgZmFsc2UpOwotCWludGVsX2JiX2NvcHlfaW50ZWxfYnVmKGliYiwgZHN0LCBzcmMs
+IDQwOTYpOwotCXNyY19hZGRyWzFdID0gc3JjLT5hZGRyLm9mZnNldDsKLQlkc3RfYWRkclsxXSA9
+IGRzdC0+YWRkci5vZmZzZXQ7Ci0JaWd0X2RlYnVnKCJzdGVwMjogc3JjOiAweCVsbHgsIGRzdDog
+MHglbGx4XG4iLAotCQkgIChsb25nIGxvbmcpIHNyY19hZGRyWzFdLCAobG9uZyBsb25nKSBkc3Rf
+YWRkclsxXSk7Ci0KLQkvKiBCYWNrIHdpdGggZGVmYXVsdCB2bSAqLwotCWludGVsX2JiX2Fzc2ln
+bl92bShpYmIsIHByZXZfdm0sIHZtX2lkMik7Ci0JaW50ZWxfYmJfYWRkX2ludGVsX2J1ZihpYmIs
+IGdhcCwgZmFsc2UpOwotCWludGVsX2JiX2NvcHlfaW50ZWxfYnVmKGliYiwgZHN0LCBzcmMsIDQw
+OTYpOwotCXNyY19hZGRyWzJdID0gc3JjLT5hZGRyLm9mZnNldDsKLQlkc3RfYWRkclsyXSA9IGRz
+dC0+YWRkci5vZmZzZXQ7Ci0JaWd0X2RlYnVnKCJzdGVwMzogc3JjOiAweCVsbHgsIGRzdDogMHgl
+bGx4XG4iLAotCQkgIChsb25nIGxvbmcpIHNyY19hZGRyWzJdLCAobG9uZyBsb25nKSBkc3RfYWRk
+clsyXSk7Ci0KLQkvKiBBbmQgZXhjaGFuZ2Ugb25lIG1vcmUgdGltZSAqLwotCWludGVsX2JiX2Fz
+c2lnbl92bShpYmIsIHZtLCB2bV9pZDEpOwotCWludGVsX2JiX2NvcHlfaW50ZWxfYnVmKGliYiwg
+ZHN0LCBzcmMsIDQwOTYpOwotCXNyY19hZGRyWzNdID0gc3JjLT5hZGRyLm9mZnNldDsKLQlkc3Rf
+YWRkclszXSA9IGRzdC0+YWRkci5vZmZzZXQ7Ci0JaWd0X2RlYnVnKCJzdGVwNDogc3JjOiAweCVs
+bHgsIGRzdDogMHglbGx4XG4iLAotCQkgIChsb25nIGxvbmcpIHNyY19hZGRyWzNdLCAobG9uZyBs
+b25nKSBkc3RfYWRkclszXSk7Ci0KLQkvKiBCYWNrIHdpdGggZGVmYXVsdCB2bSAqLwotCWdlbV92
+bV9kZXN0cm95KGk5MTUsIHZtX2lkMSk7Ci0JZ2VtX3ZtX2Rlc3Ryb3koaTkxNSwgdm1faWQyKTsK
+LQlpbnRlbF9iYl9hc3NpZ25fdm0oaWJiLCBwcmV2X3ZtLCAwKTsKLQotCS8qIFdlIGNhbiBjbG9z
+ZSBpdCBhZnRlciBhc3NpZ24gcHJldmlvdXMgdm0gdG8gaWJiICovCi0JaW50ZWxfYWxsb2NhdG9y
+X2Nsb3NlKHZtKTsKLQotCS8qIFRyeSBkZWZhdWx0IHZtIHN0aWxsIHdvcmtzICovCi0JaW50ZWxf
+YmJfY29weV9pbnRlbF9idWYoaWJiLCBkc3QsIHNyYywgNDA5Nik7Ci0Jc3JjX2FkZHJbNF0gPSBz
+cmMtPmFkZHIub2Zmc2V0OwotCWRzdF9hZGRyWzRdID0gZHN0LT5hZGRyLm9mZnNldDsKLQlpZ3Rf
+ZGVidWcoInN0ZXA1OiBzcmM6IDB4JWxseCwgZHN0OiAweCVsbHhcbiIsCi0JCSAgKGxvbmcgbG9u
+Zykgc3JjX2FkZHJbNF0sIChsb25nIGxvbmcpIGRzdF9hZGRyWzRdKTsKLQotCS8qIEFkZHJlc3Nl
+cyBzaG91bGQgbWF0Y2ggZm9yIHZtIGFuZCBwcmV2X3ZtIGJsaXRzICovCi0JaWd0X2Fzc2VydF9l
+cShzcmNfYWRkclswXSwgc3JjX2FkZHJbMl0pOwotCWlndF9hc3NlcnRfZXEoZHN0X2FkZHJbMF0s
+IGRzdF9hZGRyWzJdKTsKLQlpZ3RfYXNzZXJ0X2VxKHNyY19hZGRyWzFdLCBzcmNfYWRkclszXSk7
+Ci0JaWd0X2Fzc2VydF9lcShkc3RfYWRkclsxXSwgZHN0X2FkZHJbM10pOwotCWlndF9hc3NlcnRf
+ZXEoc3JjX2FkZHJbMl0sIHNyY19hZGRyWzRdKTsKLQlpZ3RfYXNzZXJ0X2VxKGRzdF9hZGRyWzJd
+LCBkc3RfYWRkcls0XSk7Ci0KLQlpbnRlbF9idWZfZGVzdHJveShzcmMpOwotCWludGVsX2J1Zl9k
+ZXN0cm95KGRzdCk7Ci0JaW50ZWxfYnVmX2Rlc3Ryb3koZ2FwKTsKLQlpbnRlbF9iYl9kZXN0cm95
+KGliYik7Ci19Ci0KIC8qCiAgKiBNYWtlIHN1cmUgd2UgbGVhZCB0byByZWFsbG9jIGluIHRoZSBp
+bnRlbF9iYi4KICAqLwpAQCAtMTU1OCw5ICsxNDU3LDYgQEAgaWd0X21haW5fYXJncygiZHBpYiIs
+IE5VTEwsIGhlbHBfc3RyLCBvcHRfaGFuZGxlciwgTlVMTCkKIAlpZ3Rfc3VidGVzdCgiYmItd2l0
+aC1hbGxvY2F0b3IiKQogCQliYl93aXRoX2FsbG9jYXRvcihib3BzKTsKIAotCWlndF9zdWJ0ZXN0
+KCJiYi13aXRoLXZtIikKLQkJYmJfd2l0aF92bShib3BzKTsKLQogCWlndF9zdWJ0ZXN0KCJsb3Qt
+b2YtYnVmZmVycyIpCiAJCWxvdF9vZl9idWZmZXJzKGJvcHMpOwogCi0tIAoyLjMxLjEKCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGlu
+ZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
