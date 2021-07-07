@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
- [IPv6:2607:f8b0:4864:20::630])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 012E56E176
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:43:52 +0000 (UTC)
-Received: by mail-pl1-x630.google.com with SMTP id p17so658460plf.12
- for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:43:52 -0700 (PDT)
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com
+ [IPv6:2607:f8b0:4864:20::436])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9559A6E193
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:43:59 +0000 (UTC)
+Received: by mail-pf1-x436.google.com with SMTP id y2so2321135pff.11
+ for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:43:59 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  7 Jul 2021 09:42:50 -0500
-Message-Id: <20210707144337.180693-3-jason@jlekstrand.net>
+Date: Wed,  7 Jul 2021 09:42:53 -0500
+Message-Id: <20210707144337.180693-6-jason@jlekstrand.net>
 In-Reply-To: <20210707144337.180693-1-jason@jlekstrand.net>
 References: <20210707144337.180693-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 02/81] tests/i915/gem_exec_fence: Move the
- engine data into inter_engine_context (v3)
+Subject: [igt-dev] [PATCH i-g-t 05/81] tests/i915/perf_pmu: Convert to
+ intel_ctx_t (v3)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,203 +20,749 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhpcyB3aWxsIG1ha2UgaXRlcmF0aW9uIGVhc2llciB3aGVuIHdlIHN3aXRjaCB0byBpbnRlbF9j
-dHhfdC4KCnYyIChaYmlnbmlldyBLZW1wY3p5xYRza2kpOgogLSBSZXF1aXJlIG5lbmdpbmVzID4g
-MCBpbiBzZXR1cF90aW1lbGluZV9jaGFpbl9lbmdpbmVzKCkKCnYzIChaYmlnbmlldyBLZW1wY3p5
-xYRza2kpOgogLSBTaG91bGQgaGF2ZSBiZWVuIG5lbmdpbmVzID4gMSBpbiBzZXR1cF90aW1lbGlu
-ZV9jaGFpbl9lbmdpbmVzKCkKCnYzIChKYXNvbiBFa3N0cmFuZCk6CiAtIERlbGV0ZSBtb3JlIGlu
-dGVsX2luaXRfZW5naW5lX2xpc3QoKSBpbiB0aGlzIHBhdGNoCgpTaWduZWQtb2ZmLWJ5OiBKYXNv
-biBFa3N0cmFuZCA8amFzb25Aamxla3N0cmFuZC5uZXQ+ClJldmlld2VkLWJ5OiBaYmlnbmlldyBL
-ZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KLS0tCiB0ZXN0cy9p
-OTE1L2dlbV9leGVjX2ZlbmNlLmMgfCA4NCArKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0t
-LS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgNDEgaW5zZXJ0aW9ucygrKSwgNDMgZGVsZXRpb25zKC0p
-CgpkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fZXhlY19mZW5jZS5jIGIvdGVzdHMvaTkxNS9n
-ZW1fZXhlY19mZW5jZS5jCmluZGV4IDZjNGQzMDM1Zi4uYTg2YmUxN2IxIDEwMDY0NAotLS0gYS90
-ZXN0cy9pOTE1L2dlbV9leGVjX2ZlbmNlLmMKKysrIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19mZW5j
-ZS5jCkBAIC0yMzQ3LDcgKzIzNDcsNyBAQCBzdHJ1Y3QgaW50ZXJfZW5naW5lX2NvbnRleHQgewog
-CQl1aW50MzJfdCBjb250ZXh0OwogCX0gaXRlcmF0aW9uc1s5XTsKIAotCXN0cnVjdCBpbnRlbF9l
-bmdpbmVfZGF0YSAqZW5naW5lczsKKwlzdHJ1Y3QgaW50ZWxfZW5naW5lX2RhdGEgZW5naW5lczsK
-IAogCXN0cnVjdCBpbnRlcl9lbmdpbmVfYmF0Y2hlcyB7CiAJCXZvaWQgKmluY3JlbWVudF9iYjsK
-QEAgLTI0MTUsNyArMjQxNSw3IEBAIHN0YXRpYyB2b2lkIHN1Ym1pdF90aW1lbGluZV9leGVjYnVm
-KHN0cnVjdCBpbnRlcl9lbmdpbmVfY29udGV4dCAqY29udGV4dCwKIAkJZXhlY2J1Zi0+Y2xpcHJl
-Y3RzX3B0ciA9IHRvX3VzZXJfcG9pbnRlcigmZmVuY2VfbGlzdCk7CiAJfQogCi0JZXhlY2J1Zi0+
-ZmxhZ3MgfD0gY29udGV4dC0+ZW5naW5lcy0+ZW5naW5lc1tydW5fZW5naW5lX2lkeF0uZmxhZ3M7
-CisJZXhlY2J1Zi0+ZmxhZ3MgfD0gY29udGV4dC0+ZW5naW5lcy5lbmdpbmVzW3J1bl9lbmdpbmVf
-aWR4XS5mbGFnczsKIAogCWdlbV9leGVjYnVmKGNvbnRleHQtPmZkLCBleGVjYnVmKTsKIH0KQEAg
-LTI2NjAsMTIgKzI2NjAsMTMgQEAgZ2V0X2NzX3RpbWVzdGFtcF9mcmVxdWVuY3koaW50IGZkKQog
-CWlndF9za2lwKCJLZXJuZWwgd2l0aCBQQVJBTV9DU19USU1FU1RBTVBfRlJFUVVFTkNZIHN1cHBv
-cnQgcmVxdWlyZWRcbiIpOwogfQogCi1zdGF0aWMgdm9pZCBzZXR1cF90aW1lbGluZV9jaGFpbl9l
-bmdpbmVzKHN0cnVjdCBpbnRlcl9lbmdpbmVfY29udGV4dCAqY29udGV4dCwgaW50IGZkLCBzdHJ1
-Y3QgaW50ZWxfZW5naW5lX2RhdGEgKmVuZ2luZXMpCitzdGF0aWMgdm9pZCBzZXR1cF90aW1lbGlu
-ZV9jaGFpbl9lbmdpbmVzKHN0cnVjdCBpbnRlcl9lbmdpbmVfY29udGV4dCAqY29udGV4dCwgaW50
-IGZkKQogewogCW1lbXNldChjb250ZXh0LCAwLCBzaXplb2YoKmNvbnRleHQpKTsKIAogCWNvbnRl
-eHQtPmZkID0gZmQ7Ci0JY29udGV4dC0+ZW5naW5lcyA9IGVuZ2luZXM7CisJY29udGV4dC0+ZW5n
-aW5lcyA9IGludGVsX2luaXRfZW5naW5lX2xpc3QoZmQsIDApOworCWlndF9yZXF1aXJlKGNvbnRl
-eHQtPmVuZ2luZXMubmVuZ2luZXMgPiAxKTsKIAogCWNvbnRleHQtPndhaXRfY29udGV4dCA9IGdl
-bV9jb250ZXh0X2Nsb25lX3dpdGhfZW5naW5lcyhmZCwgMCk7CiAJY29udGV4dC0+d2FpdF90aW1l
-bGluZSA9IHN5bmNvYmpfY3JlYXRlKGZkLCAwKTsKQEAgLTI2ODUsMTUgKzI2ODYsMTYgQEAgc3Rh
-dGljIHZvaWQgc2V0dXBfdGltZWxpbmVfY2hhaW5fZW5naW5lcyhzdHJ1Y3QgaW50ZXJfZW5naW5l
-X2NvbnRleHQgKmNvbnRleHQsIGkKIAlnZW1fd3JpdGUoZmQsIGNvbnRleHQtPndhaXRfYmJfaGFu
-ZGxlLCAwLAogCQkgIGNvbnRleHQtPndhaXRfYmIsIGNvbnRleHQtPndhaXRfYmJfbGVuKTsKIAot
-CWNvbnRleHQtPmJhdGNoZXMgPSBjYWxsb2MoZW5naW5lcy0+bmVuZ2luZXMsIHNpemVvZigqY29u
-dGV4dC0+YmF0Y2hlcykpOwotCWZvciAodWludDMyX3QgZSA9IDA7IGUgPCBlbmdpbmVzLT5uZW5n
-aW5lczsgZSsrKSB7CisJY29udGV4dC0+YmF0Y2hlcyA9IGNhbGxvYyhjb250ZXh0LT5lbmdpbmVz
-Lm5lbmdpbmVzLAorCQkJCSAgc2l6ZW9mKCpjb250ZXh0LT5iYXRjaGVzKSk7CisJZm9yICh1aW50
-MzJfdCBlID0gMDsgZSA8IGNvbnRleHQtPmVuZ2luZXMubmVuZ2luZXM7IGUrKykgewogCQlzdHJ1
-Y3QgaW50ZXJfZW5naW5lX2JhdGNoZXMgKmJhdGNoZXMgPSAmY29udGV4dC0+YmF0Y2hlc1tlXTsK
-IAogCQliYXRjaGVzLT50aW1lbGluZSA9IHN5bmNvYmpfY3JlYXRlKGZkLCAwKTsKIAogCQlidWls
-ZF9pbmNyZW1lbnRfZW5naW5lX2JiKAogCQkJYmF0Y2hlcywKLQkJCWdlbV9lbmdpbmVfbW1pb19i
-YXNlKGZkLCBlbmdpbmVzLT5lbmdpbmVzW2VdLm5hbWUpKTsKKwkJCWdlbV9lbmdpbmVfbW1pb19i
-YXNlKGZkLCBjb250ZXh0LT5lbmdpbmVzLmVuZ2luZXNbZV0ubmFtZSkpOwogCQliYXRjaGVzLT5p
-bmNyZW1lbnRfYmJfaGFuZGxlID0gZ2VtX2NyZWF0ZShmZCwgNDA5Nik7CiAJCWdlbV93cml0ZShm
-ZCwgYmF0Y2hlcy0+aW5jcmVtZW50X2JiX2hhbmRsZSwgMCwKIAkJCSAgYmF0Y2hlcy0+aW5jcmVt
-ZW50X2JiLCBiYXRjaGVzLT5pbmNyZW1lbnRfYmJfbGVuKTsKQEAgLTI3MDYsNyArMjcwOCw3IEBA
-IHN0YXRpYyB2b2lkIHNldHVwX3RpbWVsaW5lX2NoYWluX2VuZ2luZXMoc3RydWN0IGludGVyX2Vu
-Z2luZV9jb250ZXh0ICpjb250ZXh0LCBpCiAJewogCQl1aW50NjRfdCBkd29yZCA9IDE7CiAJCWdl
-bV93cml0ZShmZCwgY29udGV4dC0+ZW5naW5lX2NvdW50ZXJfb2JqZWN0LmhhbmRsZSwKLQkJCSAg
-c2l6ZW9mKGR3b3JkKSAqIChjb250ZXh0LT5lbmdpbmVzLT5uZW5naW5lcyAtIDEpLAorCQkJICBz
-aXplb2YoZHdvcmQpICogKGNvbnRleHQtPmVuZ2luZXMubmVuZ2luZXMgLSAxKSwKIAkJCSAgJmR3
-b3JkLCBzaXplb2YoZHdvcmQpKTsKIAl9CiB9CkBAIC0yNzI0LDcgKzI3MjYsNyBAQCBzdGF0aWMg
-dm9pZCB0ZWFyZG93bl90aW1lbGluZV9jaGFpbl9lbmdpbmVzKHN0cnVjdCBpbnRlcl9lbmdpbmVf
-Y29udGV4dCAqY29udGV4dAogCWdlbV9jbG9zZShjb250ZXh0LT5mZCwgY29udGV4dC0+d2FpdF9i
-Yl9oYW5kbGUpOwogCWZyZWUoY29udGV4dC0+d2FpdF9iYik7CiAKLQlmb3IgKHVpbnQzMl90IGUg
-PSAwOyBlIDwgY29udGV4dC0+ZW5naW5lcy0+bmVuZ2luZXM7IGUrKykgeworCWZvciAodWludDMy
-X3QgZSA9IDA7IGUgPCBjb250ZXh0LT5lbmdpbmVzLm5lbmdpbmVzOyBlKyspIHsKIAkJc3RydWN0
-IGludGVyX2VuZ2luZV9iYXRjaGVzICpiYXRjaGVzID0gJmNvbnRleHQtPmJhdGNoZXNbZV07CiAK
-IAkJc3luY29ial9kZXN0cm95KGNvbnRleHQtPmZkLCBiYXRjaGVzLT50aW1lbGluZSk7CkBAIC0y
-NzM0LDEyICsyNzM2LDEyIEBAIHN0YXRpYyB2b2lkIHRlYXJkb3duX3RpbWVsaW5lX2NoYWluX2Vu
-Z2luZXMoc3RydWN0IGludGVyX2VuZ2luZV9jb250ZXh0ICpjb250ZXh0CiAJZnJlZShjb250ZXh0
-LT5iYXRjaGVzKTsKIH0KIAotc3RhdGljIHZvaWQgdGVzdF9zeW5jb2JqX3RpbWVsaW5lX2NoYWlu
-X2VuZ2luZXMoaW50IGZkLCBzdHJ1Y3QgaW50ZWxfZW5naW5lX2RhdGEgKmVuZ2luZXMpCitzdGF0
-aWMgdm9pZCB0ZXN0X3N5bmNvYmpfdGltZWxpbmVfY2hhaW5fZW5naW5lcyhpbnQgZmQpCiB7CiAJ
-c3RydWN0IGludGVyX2VuZ2luZV9jb250ZXh0IGN0eDsKIAl1aW50NjRfdCAqY291bnRlcl9vdXRw
-dXQ7CiAKLQlzZXR1cF90aW1lbGluZV9jaGFpbl9lbmdpbmVzKCZjdHgsIGZkLCBlbmdpbmVzKTsK
-KwlzZXR1cF90aW1lbGluZV9jaGFpbl9lbmdpbmVzKCZjdHgsIGZkKTsKIAogCS8qCiAJICogRGVs
-YXkgYWxsIHRoZSBvdGhlciBvcGVyYXRpb25zIGJ5IG1ha2luZyB0aGVtIGRlcGVuZCBvbiBhbgpA
-QCAtMjc0OCwxMSArMjc1MCwxMSBAQCBzdGF0aWMgdm9pZCB0ZXN0X3N5bmNvYmpfdGltZWxpbmVf
-Y2hhaW5fZW5naW5lcyhpbnQgZmQsIHN0cnVjdCBpbnRlbF9lbmdpbmVfZGF0YQogCXdhaXRfZW5n
-aW5lKCZjdHgsIDAsIGN0eC53YWl0X3RpbWVsaW5lLCAxKTsKIAogCWZvciAodWludDMyX3QgaXRl
-ciA9IDA7IGl0ZXIgPCBBUlJBWV9TSVpFKGN0eC5pdGVyYXRpb25zKTsgaXRlcisrKSB7Ci0JCWZv
-ciAodWludDMyX3QgZW5naW5lID0gMDsgZW5naW5lIDwgZW5naW5lcy0+bmVuZ2luZXM7IGVuZ2lu
-ZSsrKSB7CisJCWZvciAodWludDMyX3QgZW5naW5lID0gMDsgZW5naW5lIDwgY3R4LmVuZ2luZXMu
-bmVuZ2luZXM7IGVuZ2luZSsrKSB7CiAJCQl1aW50MzJfdCBwcmV2X3ByZXZfZW5naW5lID0KLQkJ
-CQkoZW5naW5lcy0+bmVuZ2luZXMgKyBlbmdpbmUgLSAyKSAlIGVuZ2luZXMtPm5lbmdpbmVzOwor
-CQkJCShjdHguZW5naW5lcy5uZW5naW5lcyArIGVuZ2luZSAtIDIpICUgY3R4LmVuZ2luZXMubmVu
-Z2luZXM7CiAJCQl1aW50MzJfdCBwcmV2X2VuZ2luZSA9Ci0JCQkJKGVuZ2luZXMtPm5lbmdpbmVz
-ICsgZW5naW5lIC0gMSkgJSBlbmdpbmVzLT5uZW5naW5lczsKKwkJCQkoY3R4LmVuZ2luZXMubmVu
-Z2luZXMgKyBlbmdpbmUgLSAxKSAlIGN0eC5lbmdpbmVzLm5lbmdpbmVzOwogCQkJLyoKIAkJCSAq
-IFBpY2sgdXAgdGhlIHdhaXQgZW5naW5lIHNlbWFwaG9yZSBmb3IgdGhlCiAJCQkgKiBmaXJzdCBp
-bmNyZW1lbnQsIHRoZW4gcGljayB1cCB0aGUgcHJldmlvdXMKQEAgLTI3NzgsMjggKzI3ODAsMjgg
-QEAgc3RhdGljIHZvaWQgdGVzdF9zeW5jb2JqX3RpbWVsaW5lX2NoYWluX2VuZ2luZXMoaW50IGZk
-LCBzdHJ1Y3QgaW50ZWxfZW5naW5lX2RhdGEKIAogCWNvdW50ZXJfb3V0cHV0ID0gZ2VtX21tYXBf
-X3djKGZkLCBjdHguZW5naW5lX2NvdW50ZXJfb2JqZWN0LmhhbmRsZSwgMCwgNDA5NiwgUFJPVF9S
-RUFEKTsKIAotCWZvciAodWludDMyX3QgaSA9IDA7IGkgPCBjdHguZW5naW5lcy0+bmVuZ2luZXM7
-IGkrKykKKwlmb3IgKHVpbnQzMl90IGkgPSAwOyBpIDwgY3R4LmVuZ2luZXMubmVuZ2luZXM7IGkr
-KykKIAkJaWd0X2RlYnVnKCJlbmdpbmUgJWkgKCVzKVx0PSAlMDE2IlBSSXg2NCJcbiIsIGksCi0J
-CQkgIGN0eC5lbmdpbmVzLT5lbmdpbmVzW2ldLm5hbWUsIGNvdW50ZXJfb3V0cHV0W2ldKTsKKwkJ
-CSAgY3R4LmVuZ2luZXMuZW5naW5lc1tpXS5uYW1lLCBjb3VudGVyX291dHB1dFtpXSk7CiAKIAkv
-KgogCSAqIFZlcmlmeSB0aGF0IHdlIGdldCB0aGUgZmlib25hY2NpIG51bWJlciBleHBlY3RlZCAo
-d2Ugc3RhcnQKIAkgKiBhdCB0aGUgc2VxdWVuY2Ugb24gdGhlIHNlY29uZCBudW1iZXIgOiAxKS4K
-IAkgKi8KLQlpZ3RfYXNzZXJ0X2VxKGNvdW50ZXJfb3V0cHV0W2VuZ2luZXMtPm5lbmdpbmVzIC0g
-MV0sCi0JCSAgICAgIGZpYihBUlJBWV9TSVpFKGN0eC5pdGVyYXRpb25zKSAqIGVuZ2luZXMtPm5l
-bmdpbmVzICsgMSkpOworCWlndF9hc3NlcnRfZXEoY291bnRlcl9vdXRwdXRbY3R4LmVuZ2luZXMu
-bmVuZ2luZXMgLSAxXSwKKwkJICAgICAgZmliKEFSUkFZX1NJWkUoY3R4Lml0ZXJhdGlvbnMpICog
-Y3R4LmVuZ2luZXMubmVuZ2luZXMgKyAxKSk7CiAKIAltdW5tYXAoY291bnRlcl9vdXRwdXQsIDQw
-OTYpOwogCiAJdGVhcmRvd25fdGltZWxpbmVfY2hhaW5fZW5naW5lcygmY3R4KTsKIH0KIAotc3Rh
-dGljIHZvaWQgdGVzdF9zeW5jb2JqX3N0YXRpb25hcnlfdGltZWxpbmVfY2hhaW5fZW5naW5lcyhp
-bnQgZmQsIHN0cnVjdCBpbnRlbF9lbmdpbmVfZGF0YSAqZW5naW5lcykKK3N0YXRpYyB2b2lkIHRl
-c3Rfc3luY29ial9zdGF0aW9uYXJ5X3RpbWVsaW5lX2NoYWluX2VuZ2luZXMoaW50IGZkKQogewog
-CXN0cnVjdCBpbnRlcl9lbmdpbmVfY29udGV4dCBjdHg7CiAJdWludDY0X3QgKmNvdW50ZXJfb3V0
-cHV0OwogCi0Jc2V0dXBfdGltZWxpbmVfY2hhaW5fZW5naW5lcygmY3R4LCBmZCwgZW5naW5lcyk7
-CisJc2V0dXBfdGltZWxpbmVfY2hhaW5fZW5naW5lcygmY3R4LCBmZCk7CiAKIAkvKgogCSAqIERl
-bGF5IGFsbCB0aGUgb3RoZXIgb3BlcmF0aW9ucyBieSBtYWtpbmcgdGhlbSBkZXBlbmQgb24gYW4K
-QEAgLTI4MDgsMTEgKzI4MTAsMTEgQEAgc3RhdGljIHZvaWQgdGVzdF9zeW5jb2JqX3N0YXRpb25h
-cnlfdGltZWxpbmVfY2hhaW5fZW5naW5lcyhpbnQgZmQsIHN0cnVjdCBpbnRlbF8KIAl3YWl0X2Vu
-Z2luZSgmY3R4LCAwLCBjdHgud2FpdF90aW1lbGluZSwgMSk7CiAKIAlmb3IgKHVpbnQzMl90IGl0
-ZXIgPSAwOyBpdGVyIDwgQVJSQVlfU0laRShjdHguaXRlcmF0aW9ucyk7IGl0ZXIrKykgewotCQlm
-b3IgKHVpbnQzMl90IGVuZ2luZSA9IDA7IGVuZ2luZSA8IGVuZ2luZXMtPm5lbmdpbmVzOyBlbmdp
-bmUrKykgeworCQlmb3IgKHVpbnQzMl90IGVuZ2luZSA9IDA7IGVuZ2luZSA8IGN0eC5lbmdpbmVz
-Lm5lbmdpbmVzOyBlbmdpbmUrKykgewogCQkJdWludDMyX3QgcHJldl9wcmV2X2VuZ2luZSA9Ci0J
-CQkJKGVuZ2luZXMtPm5lbmdpbmVzICsgZW5naW5lIC0gMikgJSBlbmdpbmVzLT5uZW5naW5lczsK
-KwkJCQkoY3R4LmVuZ2luZXMubmVuZ2luZXMgKyBlbmdpbmUgLSAyKSAlIGN0eC5lbmdpbmVzLm5l
-bmdpbmVzOwogCQkJdWludDMyX3QgcHJldl9lbmdpbmUgPQotCQkJCShlbmdpbmVzLT5uZW5naW5l
-cyArIGVuZ2luZSAtIDEpICUgZW5naW5lcy0+bmVuZ2luZXM7CisJCQkJKGN0eC5lbmdpbmVzLm5l
-bmdpbmVzICsgZW5naW5lIC0gMSkgJSBjdHguZW5naW5lcy5uZW5naW5lczsKIAkJCS8qCiAJCQkg
-KiBQaWNrIHVwIHRoZSB3YWl0IGVuZ2luZSBzZW1hcGhvcmUgZm9yIHRoZQogCQkJICogZmlyc3Qg
-aW5jcmVtZW50LCB0aGVuIHBpY2sgdXAgdGhlIHByZXZpb3VzCkBAIC0yODQ0LDIzICsyODQ2LDIz
-IEBAIHN0YXRpYyB2b2lkIHRlc3Rfc3luY29ial9zdGF0aW9uYXJ5X3RpbWVsaW5lX2NoYWluX2Vu
-Z2luZXMoaW50IGZkLCBzdHJ1Y3QgaW50ZWxfCiAKIAljb3VudGVyX291dHB1dCA9IGdlbV9tbWFw
-X193YyhmZCwgY3R4LmVuZ2luZV9jb3VudGVyX29iamVjdC5oYW5kbGUsIDAsIDQwOTYsIFBST1Rf
-UkVBRCk7CiAKLQlmb3IgKHVpbnQzMl90IGkgPSAwOyBpIDwgY3R4LmVuZ2luZXMtPm5lbmdpbmVz
-OyBpKyspCisJZm9yICh1aW50MzJfdCBpID0gMDsgaSA8IGN0eC5lbmdpbmVzLm5lbmdpbmVzOyBp
-KyspCiAJCWlndF9kZWJ1ZygiZW5naW5lICVpICglcylcdD0gJTAxNiJQUkl4NjQiXG4iLCBpLAot
-CQkJICBjdHguZW5naW5lcy0+ZW5naW5lc1tpXS5uYW1lLCBjb3VudGVyX291dHB1dFtpXSk7Ci0J
-aWd0X2Fzc2VydF9lcShjb3VudGVyX291dHB1dFtlbmdpbmVzLT5uZW5naW5lcyAtIDFdLAotCQkg
-ICAgICBmaWIoQVJSQVlfU0laRShjdHguaXRlcmF0aW9ucykgKiBlbmdpbmVzLT5uZW5naW5lcyAr
-IDEpKTsKKwkJCSAgY3R4LmVuZ2luZXMuZW5naW5lc1tpXS5uYW1lLCBjb3VudGVyX291dHB1dFtp
-XSk7CisJaWd0X2Fzc2VydF9lcShjb3VudGVyX291dHB1dFtjdHguZW5naW5lcy5uZW5naW5lcyAt
-IDFdLAorCQkgICAgICBmaWIoQVJSQVlfU0laRShjdHguaXRlcmF0aW9ucykgKiBjdHguZW5naW5l
-cy5uZW5naW5lcyArIDEpKTsKIAogCW11bm1hcChjb3VudGVyX291dHB1dCwgNDA5Nik7CiAKIAl0
-ZWFyZG93bl90aW1lbGluZV9jaGFpbl9lbmdpbmVzKCZjdHgpOwogfQogCi1zdGF0aWMgdm9pZCB0
-ZXN0X3N5bmNvYmpfYmFja3dhcmRfdGltZWxpbmVfY2hhaW5fZW5naW5lcyhpbnQgZmQsIHN0cnVj
-dCBpbnRlbF9lbmdpbmVfZGF0YSAqZW5naW5lcykKK3N0YXRpYyB2b2lkIHRlc3Rfc3luY29ial9i
-YWNrd2FyZF90aW1lbGluZV9jaGFpbl9lbmdpbmVzKGludCBmZCkKIHsKIAlzdHJ1Y3QgaW50ZXJf
-ZW5naW5lX2NvbnRleHQgY3R4OwogCXVpbnQ2NF90ICpjb3VudGVyX291dHB1dDsKIAotCXNldHVw
-X3RpbWVsaW5lX2NoYWluX2VuZ2luZXMoJmN0eCwgZmQsIGVuZ2luZXMpOworCXNldHVwX3RpbWVs
-aW5lX2NoYWluX2VuZ2luZXMoJmN0eCwgZmQpOwogCiAJLyoKIAkgKiBEZWxheSBhbGwgdGhlIG90
-aGVyIG9wZXJhdGlvbnMgYnkgbWFraW5nIHRoZW0gZGVwZW5kIG9uIGFuCkBAIC0yODY5LDExICsy
-ODcxLDExIEBAIHN0YXRpYyB2b2lkIHRlc3Rfc3luY29ial9iYWNrd2FyZF90aW1lbGluZV9jaGFp
-bl9lbmdpbmVzKGludCBmZCwgc3RydWN0IGludGVsX2VuCiAJd2FpdF9lbmdpbmUoJmN0eCwgMCwg
-Y3R4LndhaXRfdGltZWxpbmUsIDEpOwogCiAJZm9yICh1aW50MzJfdCBpdGVyID0gMDsgaXRlciA8
-IEFSUkFZX1NJWkUoY3R4Lml0ZXJhdGlvbnMpOyBpdGVyKyspIHsKLQkJZm9yICh1aW50MzJfdCBl
-bmdpbmUgPSAwOyBlbmdpbmUgPCBlbmdpbmVzLT5uZW5naW5lczsgZW5naW5lKyspIHsKKwkJZm9y
-ICh1aW50MzJfdCBlbmdpbmUgPSAwOyBlbmdpbmUgPCBjdHguZW5naW5lcy5uZW5naW5lczsgZW5n
-aW5lKyspIHsKIAkJCXVpbnQzMl90IHByZXZfcHJldl9lbmdpbmUgPQotCQkJCShlbmdpbmVzLT5u
-ZW5naW5lcyArIGVuZ2luZSAtIDIpICUgZW5naW5lcy0+bmVuZ2luZXM7CisJCQkJKGN0eC5lbmdp
-bmVzLm5lbmdpbmVzICsgZW5naW5lIC0gMikgJSBjdHguZW5naW5lcy5uZW5naW5lczsKIAkJCXVp
-bnQzMl90IHByZXZfZW5naW5lID0KLQkJCQkoZW5naW5lcy0+bmVuZ2luZXMgKyBlbmdpbmUgLSAx
-KSAlIGVuZ2luZXMtPm5lbmdpbmVzOworCQkJCShjdHguZW5naW5lcy5uZW5naW5lcyArIGVuZ2lu
-ZSAtIDEpICUgY3R4LmVuZ2luZXMubmVuZ2luZXM7CiAJCQkvKgogCQkJICogUGljayB1cCB0aGUg
-d2FpdCBlbmdpbmUgc2VtYXBob3JlIGZvciB0aGUKIAkJCSAqIGZpcnN0IGluY3JlbWVudCwgdGhl
-biBwaWNrIHVwIHRoZSBwcmV2aW91cwpAQCAtMjkwNSwxMSArMjkwNywxMSBAQCBzdGF0aWMgdm9p
-ZCB0ZXN0X3N5bmNvYmpfYmFja3dhcmRfdGltZWxpbmVfY2hhaW5fZW5naW5lcyhpbnQgZmQsIHN0
-cnVjdCBpbnRlbF9lbgogCiAJY291bnRlcl9vdXRwdXQgPSBnZW1fbW1hcF9fd2MoZmQsIGN0eC5l
-bmdpbmVfY291bnRlcl9vYmplY3QuaGFuZGxlLCAwLCA0MDk2LCBQUk9UX1JFQUQpOwogCi0JZm9y
-ICh1aW50MzJfdCBpID0gMDsgaSA8IGN0eC5lbmdpbmVzLT5uZW5naW5lczsgaSsrKQorCWZvciAo
-dWludDMyX3QgaSA9IDA7IGkgPCBjdHguZW5naW5lcy5uZW5naW5lczsgaSsrKQogCQlpZ3RfZGVi
-dWcoImVuZ2luZSAlaSAoJXMpXHQ9ICUwMTYiUFJJeDY0IlxuIiwgaSwKLQkJCSAgY3R4LmVuZ2lu
-ZXMtPmVuZ2luZXNbaV0ubmFtZSwgY291bnRlcl9vdXRwdXRbaV0pOwotCWlndF9hc3NlcnRfZXEo
-Y291bnRlcl9vdXRwdXRbZW5naW5lcy0+bmVuZ2luZXMgLSAxXSwKLQkJICAgICAgZmliKEFSUkFZ
-X1NJWkUoY3R4Lml0ZXJhdGlvbnMpICogZW5naW5lcy0+bmVuZ2luZXMgKyAxKSk7CisJCQkgIGN0
-eC5lbmdpbmVzLmVuZ2luZXNbaV0ubmFtZSwgY291bnRlcl9vdXRwdXRbaV0pOworCWlndF9hc3Nl
-cnRfZXEoY291bnRlcl9vdXRwdXRbY3R4LmVuZ2luZXMubmVuZ2luZXMgLSAxXSwKKwkJICAgICAg
-ZmliKEFSUkFZX1NJWkUoY3R4Lml0ZXJhdGlvbnMpICogY3R4LmVuZ2luZXMubmVuZ2luZXMgKyAx
-KSk7CiAKIAltdW5tYXAoY291bnRlcl9vdXRwdXQsIDQwOTYpOwogCkBAIC0zMjAzLDggKzMyMDUs
-NiBAQCBpZ3RfbWFpbgogCQkJdGVzdF9zeW5jb2JqX3RpbWVsaW5lX211bHRpcGxlX2V4dF9ub2Rl
-cyhpOTE1KTsKIAogCQlpZ3Rfc3VidGVzdF9ncm91cCB7IC8qIHN5bmNvYmogdGltZWxpbmUgZW5n
-aW5lIGNoYWluaW5nICovCi0JCQlzdHJ1Y3QgaW50ZWxfZW5naW5lX2RhdGEgZW5naW5lczsKLQog
-CQkJaWd0X2ZpeHR1cmUgewogCQkJCS8qCiAJCQkJICogV2UgbmVlZCBzdXBwb3J0IGZvciBNSV9B
-TFUgb24gYWxsCkBAIC0zMjEyLDE4ICszMjEyLDE2IEBAIGlndF9tYWluCiAJCQkJICogb25seSBv
-biBHZW44KwogCQkJCSAqLwogCQkJCWlndF9yZXF1aXJlKGludGVsX2dlbihpbnRlbF9nZXRfZHJt
-X2RldmlkKGk5MTUpKSA+PSA4KTsKLQkJCQllbmdpbmVzID0gaW50ZWxfaW5pdF9lbmdpbmVfbGlz
-dChpOTE1LCAwKTsKLQkJCQlpZ3RfcmVxdWlyZShlbmdpbmVzLm5lbmdpbmVzID4gMSk7CiAJCQl9
-CiAKIAkJCWlndF9zdWJ0ZXN0KCJzeW5jb2JqLXRpbWVsaW5lLWNoYWluLWVuZ2luZXMiKQotCQkJ
-CXRlc3Rfc3luY29ial90aW1lbGluZV9jaGFpbl9lbmdpbmVzKGk5MTUsICZlbmdpbmVzKTsKKwkJ
-CQl0ZXN0X3N5bmNvYmpfdGltZWxpbmVfY2hhaW5fZW5naW5lcyhpOTE1KTsKIAogCQkJaWd0X3N1
-YnRlc3QoInN5bmNvYmotc3RhdGlvbmFyeS10aW1lbGluZS1jaGFpbi1lbmdpbmVzIikKLQkJCQl0
-ZXN0X3N5bmNvYmpfc3RhdGlvbmFyeV90aW1lbGluZV9jaGFpbl9lbmdpbmVzKGk5MTUsICZlbmdp
-bmVzKTsKKwkJCQl0ZXN0X3N5bmNvYmpfc3RhdGlvbmFyeV90aW1lbGluZV9jaGFpbl9lbmdpbmVz
-KGk5MTUpOwogCiAJCQlpZ3Rfc3VidGVzdCgic3luY29iai1iYWNrd2FyZC10aW1lbGluZS1jaGFp
-bi1lbmdpbmVzIikKLQkJCQl0ZXN0X3N5bmNvYmpfYmFja3dhcmRfdGltZWxpbmVfY2hhaW5fZW5n
-aW5lcyhpOTE1LCAmZW5naW5lcyk7CisJCQkJdGVzdF9zeW5jb2JqX2JhY2t3YXJkX3RpbWVsaW5l
-X2NoYWluX2VuZ2luZXMoaTkxNSk7CiAJCX0KIAogCQlpZ3RfZml4dHVyZSB7Ci0tIAoyLjMxLjEK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYg
-bWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+v2 (Ashutosh Dixit):
+ - Pass the context to the init() tests
+ - Iterate over render_ctx when using render_fd
+
+v3 (Jason Ekstrand):
+ - Pass a context config to gem_submission_measure()
+
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/perf_pmu.c | 243 ++++++++++++++++++++++++------------------
+ 1 file changed, 137 insertions(+), 106 deletions(-)
+
+diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+index f92f73919..73f378604 100644
+--- a/tests/i915/perf_pmu.c
++++ b/tests/i915/perf_pmu.c
+@@ -47,6 +47,7 @@
+ #include "igt_perf.h"
+ #include "igt_sysfs.h"
+ #include "igt_pm.h"
++#include "intel_ctx.h"
+ #include "sw_sync.h"
+ 
+ IGT_TEST_DESCRIPTION("Test the i915 pmu perf interface");
+@@ -77,7 +78,8 @@ static int open_group(int i915, uint64_t config, int group)
+ }
+ 
+ static void
+-init(int gem_fd, const struct intel_execution_engine2 *e, uint8_t sample)
++init(int gem_fd, const intel_ctx_t *ctx,
++     const struct intel_execution_engine2 *e, uint8_t sample)
+ {
+ 	int fd, err = 0;
+ 	bool exists;
+@@ -88,7 +90,7 @@ init(int gem_fd, const struct intel_execution_engine2 *e, uint8_t sample)
+ 	if (fd < 0)
+ 		err = errno;
+ 
+-	exists = gem_context_has_engine(gem_fd, 0, e->flags);
++	exists = gem_context_has_engine(gem_fd, ctx->id, e->flags);
+ 	if (intel_gen(intel_get_drm_devid(gem_fd)) < 6 &&
+ 	    sample == I915_SAMPLE_SEMA)
+ 		exists = false;
+@@ -172,11 +174,11 @@ static unsigned int measured_usleep(unsigned int usec)
+ #define FLAG_HANG (32)
+ #define TEST_S3 (64)
+ 
+-static igt_spin_t * __spin_poll(int fd, uint32_t ctx,
++static igt_spin_t * __spin_poll(int fd, const intel_ctx_t *ctx,
+ 				const struct intel_execution_engine2 *e)
+ {
+ 	struct igt_spin_factory opts = {
+-		.ctx_id = ctx,
++		.ctx = ctx,
+ 		.engine = e->flags,
+ 	};
+ 
+@@ -215,7 +217,7 @@ static unsigned long __spin_wait(int fd, igt_spin_t *spin)
+ 	return igt_nsec_elapsed(&start);
+ }
+ 
+-static igt_spin_t * __spin_sync(int fd, uint32_t ctx,
++static igt_spin_t * __spin_sync(int fd, const intel_ctx_t *ctx,
+ 				const struct intel_execution_engine2 *e)
+ {
+ 	igt_spin_t *spin = __spin_poll(fd, ctx, e);
+@@ -225,7 +227,7 @@ static igt_spin_t * __spin_sync(int fd, uint32_t ctx,
+ 	return spin;
+ }
+ 
+-static igt_spin_t * spin_sync(int fd, uint32_t ctx,
++static igt_spin_t * spin_sync(int fd, const intel_ctx_t *ctx,
+ 			      const struct intel_execution_engine2 *e)
+ {
+ 	igt_require_gem(fd);
+@@ -233,7 +235,7 @@ static igt_spin_t * spin_sync(int fd, uint32_t ctx,
+ 	return __spin_sync(fd, ctx, e);
+ }
+ 
+-static igt_spin_t * spin_sync_flags(int fd, uint32_t ctx, unsigned int flags)
++static igt_spin_t * spin_sync_flags(int fd, const intel_ctx_t *ctx, unsigned int flags)
+ {
+ 	struct intel_execution_engine2 e = { };
+ 
+@@ -277,7 +279,8 @@ static void end_spin(int fd, igt_spin_t *spin, unsigned int flags)
+ }
+ 
+ static void
+-single(int gem_fd, const struct intel_execution_engine2 *e, unsigned int flags)
++single(int gem_fd, const intel_ctx_t *ctx,
++       const struct intel_execution_engine2 *e, unsigned int flags)
+ {
+ 	unsigned long slept;
+ 	igt_spin_t *spin;
+@@ -287,7 +290,7 @@ single(int gem_fd, const struct intel_execution_engine2 *e, unsigned int flags)
+ 	fd = open_pmu(gem_fd, I915_PMU_ENGINE_BUSY(e->class, e->instance));
+ 
+ 	if (flags & TEST_BUSY)
+-		spin = spin_sync(gem_fd, 0, e);
++		spin = spin_sync(gem_fd, ctx, e);
+ 	else
+ 		spin = NULL;
+ 
+@@ -323,7 +326,8 @@ single(int gem_fd, const struct intel_execution_engine2 *e, unsigned int flags)
+ }
+ 
+ static void
+-busy_start(int gem_fd, const struct intel_execution_engine2 *e)
++busy_start(int gem_fd, const intel_ctx_t *ctx,
++	   const struct intel_execution_engine2 *e)
+ {
+ 	unsigned long slept;
+ 	uint64_t val, ts[2];
+@@ -336,7 +340,7 @@ busy_start(int gem_fd, const struct intel_execution_engine2 *e)
+ 	 */
+ 	sleep(2);
+ 
+-	spin = __spin_sync(gem_fd, 0, e);
++	spin = __spin_sync(gem_fd, ctx, e);
+ 
+ 	fd = open_pmu(gem_fd, I915_PMU_ENGINE_BUSY(e->class, e->instance));
+ 
+@@ -358,15 +362,16 @@ busy_start(int gem_fd, const struct intel_execution_engine2 *e)
+  * will depend on the CI systems running it a lot to detect issues.
+  */
+ static void
+-busy_double_start(int gem_fd, const struct intel_execution_engine2 *e)
++busy_double_start(int gem_fd, const intel_ctx_t *ctx,
++		  const struct intel_execution_engine2 *e)
+ {
+ 	unsigned long slept;
+ 	uint64_t val, val2, ts[2];
+ 	igt_spin_t *spin[2];
+-	uint32_t ctx;
++	const intel_ctx_t *tmp_ctx;
+ 	int fd;
+ 
+-	ctx = gem_context_clone_with_engines(gem_fd, 0);
++	tmp_ctx = intel_ctx_create(gem_fd, &ctx->cfg);
+ 
+ 	/*
+ 	 * Defeat the busy stats delayed disable, we need to guarantee we are
+@@ -379,10 +384,10 @@ busy_double_start(int gem_fd, const struct intel_execution_engine2 *e)
+ 	 * re-submission in execlists mode. Make sure busyness is correctly
+ 	 * reported with the engine busy, and after the engine went idle.
+ 	 */
+-	spin[0] = __spin_sync(gem_fd, 0, e);
++	spin[0] = __spin_sync(gem_fd, ctx, e);
+ 	usleep(500e3);
+ 	spin[1] = __igt_spin_new(gem_fd,
+-				 .ctx_id = ctx,
++				 .ctx = tmp_ctx,
+ 				 .engine = e->flags);
+ 
+ 	/*
+@@ -413,7 +418,7 @@ busy_double_start(int gem_fd, const struct intel_execution_engine2 *e)
+ 
+ 	close(fd);
+ 
+-	gem_context_destroy(gem_fd, ctx);
++	intel_ctx_destroy(gem_fd, tmp_ctx);
+ 
+ 	assert_within_epsilon(val, ts[1] - ts[0], tolerance);
+ 	igt_assert_eq(val2, 0);
+@@ -441,7 +446,8 @@ static void log_busy(unsigned int num_engines, uint64_t *val)
+ }
+ 
+ static void
+-busy_check_all(int gem_fd, const struct intel_execution_engine2 *e,
++busy_check_all(int gem_fd, const intel_ctx_t *ctx,
++	       const struct intel_execution_engine2 *e,
+ 	       const unsigned int num_engines, unsigned int flags)
+ {
+ 	struct intel_execution_engine2 *e_;
+@@ -454,7 +460,7 @@ busy_check_all(int gem_fd, const struct intel_execution_engine2 *e,
+ 
+ 	i = 0;
+ 	fd[0] = -1;
+-	__for_each_physical_engine(gem_fd, e_) {
++	for_each_ctx_engine(gem_fd, ctx, e_) {
+ 		if (e->class == e_->class && e->instance == e_->instance)
+ 			busy_idx = i;
+ 
+@@ -466,7 +472,7 @@ busy_check_all(int gem_fd, const struct intel_execution_engine2 *e,
+ 
+ 	igt_assert_eq(i, num_engines);
+ 
+-	spin = spin_sync(gem_fd, 0, e);
++	spin = spin_sync(gem_fd, ctx, e);
+ 	pmu_read_multi(fd[0], num_engines, tval[0]);
+ 	slept = measured_usleep(batch_duration_ns / 1000);
+ 	if (flags & TEST_TRAILING_IDLE)
+@@ -507,7 +513,8 @@ __submit_spin(int gem_fd, igt_spin_t *spin,
+ }
+ 
+ static void
+-most_busy_check_all(int gem_fd, const struct intel_execution_engine2 *e,
++most_busy_check_all(int gem_fd, const intel_ctx_t *ctx,
++		    const struct intel_execution_engine2 *e,
+ 		    const unsigned int num_engines, unsigned int flags)
+ {
+ 	struct intel_execution_engine2 *e_;
+@@ -519,13 +526,13 @@ most_busy_check_all(int gem_fd, const struct intel_execution_engine2 *e,
+ 	unsigned int idle_idx, i;
+ 
+ 	i = 0;
+-	__for_each_physical_engine(gem_fd, e_) {
++	for_each_ctx_engine(gem_fd, ctx, e_) {
+ 		if (e->class == e_->class && e->instance == e_->instance)
+ 			idle_idx = i;
+ 		else if (spin)
+ 			__submit_spin(gem_fd, spin, e_, 64);
+ 		else
+-			spin = __spin_poll(gem_fd, 0, e_);
++			spin = __spin_poll(gem_fd, ctx, e_);
+ 
+ 		val[i++] = I915_PMU_ENGINE_BUSY(e_->class, e_->instance);
+ 	}
+@@ -565,7 +572,8 @@ most_busy_check_all(int gem_fd, const struct intel_execution_engine2 *e,
+ }
+ 
+ static void
+-all_busy_check_all(int gem_fd, const unsigned int num_engines,
++all_busy_check_all(int gem_fd, const intel_ctx_t *ctx,
++		   const unsigned int num_engines,
+ 		   unsigned int flags)
+ {
+ 	struct intel_execution_engine2 *e;
+@@ -577,11 +585,11 @@ all_busy_check_all(int gem_fd, const unsigned int num_engines,
+ 	unsigned int i;
+ 
+ 	i = 0;
+-	__for_each_physical_engine(gem_fd, e) {
++	for_each_ctx_engine(gem_fd, ctx, e) {
+ 		if (spin)
+ 			__submit_spin(gem_fd, spin, e, 64);
+ 		else
+-			spin = __spin_poll(gem_fd, 0, e);
++			spin = __spin_poll(gem_fd, ctx, e);
+ 
+ 		val[i++] = I915_PMU_ENGINE_BUSY(e->class, e->instance);
+ 	}
+@@ -616,7 +624,9 @@ all_busy_check_all(int gem_fd, const unsigned int num_engines,
+ }
+ 
+ static void
+-no_sema(int gem_fd, const struct intel_execution_engine2 *e, unsigned int flags)
++no_sema(int gem_fd, const intel_ctx_t *ctx,
++	const struct intel_execution_engine2 *e,
++	unsigned int flags)
+ {
+ 	igt_spin_t *spin;
+ 	uint64_t val[2][2];
+@@ -628,7 +638,7 @@ no_sema(int gem_fd, const struct intel_execution_engine2 *e, unsigned int flags)
+ 			   fd[0]);
+ 
+ 	if (flags & TEST_BUSY)
+-		spin = spin_sync(gem_fd, 0, e);
++		spin = spin_sync(gem_fd, ctx, e);
+ 	else
+ 		spin = NULL;
+ 
+@@ -659,7 +669,8 @@ no_sema(int gem_fd, const struct intel_execution_engine2 *e, unsigned int flags)
+ #define   MI_SEMAPHORE_SAD_NEQ_SDD      (5 << 12)
+ 
+ static void
+-sema_wait(int gem_fd, const struct intel_execution_engine2 *e,
++sema_wait(int gem_fd, const intel_ctx_t *ctx,
++	  const struct intel_execution_engine2 *e,
+ 	  unsigned int flags)
+ {
+ 	struct drm_i915_gem_relocation_entry reloc[2] = {};
+@@ -718,6 +729,7 @@ sema_wait(int gem_fd, const struct intel_execution_engine2 *e,
+ 	eb.buffer_count = 2;
+ 	eb.buffers_ptr = to_user_pointer(obj);
+ 	eb.flags = e->flags;
++	eb.rsvd1 = ctx->id;
+ 
+ 	/**
+ 	 * Start the semaphore wait PMU and after some known time let the above
+@@ -789,7 +801,7 @@ create_sema(int gem_fd, struct drm_i915_gem_relocation_entry *reloc)
+ }
+ 
+ static void
+-__sema_busy(int gem_fd, int pmu,
++__sema_busy(int gem_fd, int pmu, const intel_ctx_t *ctx,
+ 	    const struct intel_execution_engine2 *e,
+ 	    int sema_pct,
+ 	    int busy_pct)
+@@ -811,6 +823,7 @@ __sema_busy(int gem_fd, int pmu,
+ 		.buffer_count = 1,
+ 		.buffers_ptr = to_user_pointer(&obj),
+ 		.flags = e->flags,
++		.rsvd1 = ctx->id,
+ 	};
+ 	igt_spin_t *spin;
+ 	uint32_t *map;
+@@ -822,7 +835,7 @@ __sema_busy(int gem_fd, int pmu,
+ 
+ 	map = gem_mmap__wc(gem_fd, obj.handle, 0, 4096, PROT_WRITE);
+ 	gem_execbuf(gem_fd, &eb);
+-	spin = igt_spin_new(gem_fd, .engine = e->flags);
++	spin = igt_spin_new(gem_fd, .ctx = ctx, .engine = e->flags);
+ 
+ 	/* Wait until the batch is executed and the semaphore is busy-waiting */
+ 	while (!READ_ONCE(*map) && gem_bo_busy(gem_fd, obj.handle))
+@@ -862,7 +875,7 @@ __sema_busy(int gem_fd, int pmu,
+ }
+ 
+ static void
+-sema_busy(int gem_fd,
++sema_busy(int gem_fd, const intel_ctx_t *ctx,
+ 	  const struct intel_execution_engine2 *e,
+ 	  unsigned int flags)
+ {
+@@ -875,15 +888,15 @@ sema_busy(int gem_fd,
+ 	fd[1] = open_group(gem_fd, I915_PMU_ENGINE_BUSY(e->class, e->instance),
+ 			   fd[0]);
+ 
+-	__sema_busy(gem_fd, fd[0], e, 50, 100);
+-	__sema_busy(gem_fd, fd[0], e, 25, 50);
+-	__sema_busy(gem_fd, fd[0], e, 75, 75);
++	__sema_busy(gem_fd, fd[0], ctx, e, 50, 100);
++	__sema_busy(gem_fd, fd[0], ctx, e, 25, 50);
++	__sema_busy(gem_fd, fd[0], ctx, e, 75, 75);
+ 
+ 	close(fd[0]);
+ 	close(fd[1]);
+ }
+ 
+-static void test_awake(int i915)
++static void test_awake(int i915, const intel_ctx_t *ctx)
+ {
+ 	const struct intel_execution_engine2 *e;
+ 	unsigned long slept;
+@@ -894,8 +907,8 @@ static void test_awake(int i915)
+ 	igt_skip_on(fd < 0);
+ 
+ 	/* Check that each engine is captured by the GT wakeref */
+-	__for_each_physical_engine(i915, e) {
+-		igt_spin_new(i915, .engine = e->flags);
++	for_each_ctx_engine(i915, ctx, e) {
++		igt_spin_new(i915, .ctx = ctx, .engine = e->flags);
+ 
+ 		val = pmu_read_single(fd);
+ 		slept = measured_usleep(batch_duration_ns / 1000);
+@@ -906,8 +919,8 @@ static void test_awake(int i915)
+ 	}
+ 
+ 	/* And that the total GT wakeref matches walltime not summation */
+-	__for_each_physical_engine(i915, e)
+-		igt_spin_new(i915, .engine = e->flags);
++	for_each_ctx_engine(i915, ctx, e)
++		igt_spin_new(i915, .ctx = ctx, .engine = e->flags);
+ 
+ 	val = pmu_read_single(fd);
+ 	slept = measured_usleep(batch_duration_ns / 1000);
+@@ -996,7 +1009,8 @@ static int has_secure_batches(const int fd)
+ }
+ 
+ static void
+-event_wait(int gem_fd, const struct intel_execution_engine2 *e)
++event_wait(int gem_fd, const intel_ctx_t *ctx,
++	   const struct intel_execution_engine2 *e)
+ {
+ 	struct drm_i915_gem_exec_object2 obj = { };
+ 	struct drm_i915_gem_execbuffer2 eb = { };
+@@ -1052,6 +1066,7 @@ event_wait(int gem_fd, const struct intel_execution_engine2 *e)
+ 	eb.buffer_count = 1;
+ 	eb.buffers_ptr = to_user_pointer(&obj);
+ 	eb.flags = e->flags | I915_EXEC_SECURE;
++	eb.rsvd1 = ctx->id;
+ 
+ 	for_each_pipe_with_valid_output(&data.display, p, output) {
+ 		struct igt_helper_process waiter = { };
+@@ -1124,7 +1139,8 @@ event_wait(int gem_fd, const struct intel_execution_engine2 *e)
+ }
+ 
+ static void
+-multi_client(int gem_fd, const struct intel_execution_engine2 *e)
++multi_client(int gem_fd, const intel_ctx_t *ctx,
++	     const struct intel_execution_engine2 *e)
+ {
+ 	uint64_t config = I915_PMU_ENGINE_BUSY(e->class, e->instance);
+ 	unsigned long slept[2];
+@@ -1143,7 +1159,7 @@ multi_client(int gem_fd, const struct intel_execution_engine2 *e)
+ 	 */
+ 	fd[1] = open_pmu(gem_fd, config);
+ 
+-	spin = spin_sync(gem_fd, 0, e);
++	spin = spin_sync(gem_fd, ctx, e);
+ 
+ 	val[0] = val[1] = __pmu_read_single(fd[0], &ts[0]);
+ 	slept[1] = measured_usleep(batch_duration_ns / 1000);
+@@ -1341,7 +1357,9 @@ static void cpu_hotplug(int gem_fd)
+ 
+ static int target_num_interrupts(int i915)
+ {
+-	return min(gem_submission_measure(i915, NULL, I915_EXEC_DEFAULT), 30);
++	const intel_ctx_cfg_t cfg = intel_ctx_cfg_all_physical(i915);
++
++	return min(gem_submission_measure(i915, &cfg, I915_EXEC_DEFAULT), 30);
+ }
+ 
+ static void
+@@ -1706,7 +1724,8 @@ test_rc6(int gem_fd, unsigned int flags)
+ }
+ 
+ static void
+-test_enable_race(int gem_fd, const struct intel_execution_engine2 *e)
++test_enable_race(int gem_fd, const intel_ctx_t *ctx,
++		 const struct intel_execution_engine2 *e)
+ {
+ 	uint64_t config = I915_PMU_ENGINE_BUSY(e->class, e->instance);
+ 	struct igt_helper_process engine_load = { };
+@@ -1724,6 +1743,7 @@ test_enable_race(int gem_fd, const struct intel_execution_engine2 *e)
+ 	eb.buffer_count = 1;
+ 	eb.buffers_ptr = to_user_pointer(&obj);
+ 	eb.flags = e->flags;
++	eb.rsvd1 = ctx->id;
+ 
+ 	/*
+ 	 * This test is probabilistic so run in a few times to increase the
+@@ -1770,7 +1790,8 @@ test_enable_race(int gem_fd, const struct intel_execution_engine2 *e)
+ 	__assert_within(x, ref, tolerance, tolerance)
+ 
+ static void
+-accuracy(int gem_fd, const struct intel_execution_engine2 *e,
++accuracy(int gem_fd, const intel_ctx_t *ctx,
++	 const struct intel_execution_engine2 *e,
+ 	 unsigned long target_busy_pct,
+ 	 unsigned long target_iters)
+ {
+@@ -1820,7 +1841,7 @@ accuracy(int gem_fd, const struct intel_execution_engine2 *e,
+ 		igt_spin_t *spin;
+ 
+ 		/* Allocate our spin batch and idle it. */
+-		spin = igt_spin_new(gem_fd, .engine = e->flags);
++		spin = igt_spin_new(gem_fd, .ctx = ctx, .engine = e->flags);
+ 		igt_spin_end(spin);
+ 		gem_sync(gem_fd, spin->handle);
+ 
+@@ -1979,6 +2000,7 @@ static int unload_i915(void)
+ static void test_unload(unsigned int num_engines)
+ {
+ 	igt_fork(child, 1) {
++		intel_ctx_cfg_t cfg;
+ 		const struct intel_execution_engine2 *e;
+ 		int fd[4 + num_engines * 3], i;
+ 		uint64_t *buf;
+@@ -2004,7 +2026,8 @@ static void test_unload(unsigned int num_engines)
+ 		if (fd[count] != -1)
+ 			count++;
+ 
+-		__for_each_physical_engine(i915, e) {
++		cfg = intel_ctx_cfg_all_physical(i915);
++		for_each_ctx_cfg_engine(i915, &cfg, e) {
+ 			fd[count] = perf_i915_open_group(i915,
+ 							 I915_PMU_ENGINE_BUSY(e->class, e->instance),
+ 							 fd[count - 1]);
+@@ -2052,12 +2075,12 @@ static void test_unload(unsigned int num_engines)
+ 	igt_assert_eq(unload_i915(), 0);
+ }
+ 
+-#define test_each_engine(T, i915, e) \
+-	igt_subtest_with_dynamic(T) __for_each_physical_engine(i915, e) \
++#define test_each_engine(T, i915, ctx, e) \
++	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
+ 		igt_dynamic_f("%s", e->name)
+ 
+-#define test_each_rcs(T, i915, e) \
+-	igt_subtest_with_dynamic(T) __for_each_physical_engine(i915, e) \
++#define test_each_rcs(T, i915, ctx, e) \
++	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
+ 		for_each_if((e)->class == I915_ENGINE_CLASS_RENDER) \
+ 			igt_dynamic_f("%s", e->name)
+ 
+@@ -2065,6 +2088,7 @@ igt_main
+ {
+ 	const struct intel_execution_engine2 *e;
+ 	unsigned int num_engines = 0;
++	const intel_ctx_t *ctx = NULL;
+ 	int fd = -1;
+ 
+ 	/**
+@@ -2079,7 +2103,9 @@ igt_main
+ 		igt_require_gem(fd);
+ 		igt_require(i915_perf_type_id(fd) > 0);
+ 
+-		__for_each_physical_engine(fd, e)
++		ctx = intel_ctx_create_all_physical(fd);
++
++		for_each_ctx_engine(fd, ctx, e)
+ 			num_engines++;
+ 		igt_require(num_engines);
+ 	}
+@@ -2107,48 +2133,48 @@ igt_main
+ 	 * Test that a single engine metric can be initialized or it
+ 	 * is correctly rejected.
+ 	 */
+-	test_each_engine("init-busy", fd, e)
+-		init(fd, e, I915_SAMPLE_BUSY);
++	test_each_engine("init-busy", fd, ctx, e)
++		init(fd, ctx, e, I915_SAMPLE_BUSY);
+ 
+-	test_each_engine("init-wait", fd, e)
+-		init(fd, e, I915_SAMPLE_WAIT);
++	test_each_engine("init-wait", fd, ctx, e)
++		init(fd, ctx, e, I915_SAMPLE_WAIT);
+ 
+-	test_each_engine("init-sema", fd, e)
+-		init(fd, e, I915_SAMPLE_SEMA);
++	test_each_engine("init-sema", fd, ctx, e)
++		init(fd, ctx, e, I915_SAMPLE_SEMA);
+ 
+ 	/**
+ 	 * Test that engines show no load when idle.
+ 	 */
+-	test_each_engine("idle", fd, e)
+-		single(fd, e, 0);
++	test_each_engine("idle", fd, ctx, e)
++		single(fd, ctx, e, 0);
+ 
+ 	/**
+ 	 * Test that a single engine reports load correctly.
+ 	 */
+-	test_each_engine("busy", fd, e)
+-		single(fd, e, TEST_BUSY);
+-	test_each_engine("busy-idle", fd, e)
+-		single(fd, e, TEST_BUSY | TEST_TRAILING_IDLE);
++	test_each_engine("busy", fd, ctx, e)
++		single(fd, ctx, e, TEST_BUSY);
++	test_each_engine("busy-idle", fd, ctx, e)
++		single(fd, ctx, e, TEST_BUSY | TEST_TRAILING_IDLE);
+ 
+ 	/**
+ 	 * Test that when one engine is loaded other report no
+ 	 * load.
+ 	 */
+-	test_each_engine("busy-check-all", fd, e)
+-		busy_check_all(fd, e, num_engines, TEST_BUSY);
+-	test_each_engine("busy-idle-check-all", fd, e)
+-		busy_check_all(fd, e, num_engines,
++	test_each_engine("busy-check-all", fd, ctx, e)
++		busy_check_all(fd, ctx, e, num_engines, TEST_BUSY);
++	test_each_engine("busy-idle-check-all", fd, ctx, e)
++		busy_check_all(fd, ctx, e, num_engines,
+ 			       TEST_BUSY | TEST_TRAILING_IDLE);
+ 
+ 	/**
+ 	 * Test that when all except one engine are loaded all
+ 	 * loads are correctly reported.
+ 	 */
+-	test_each_engine("most-busy-check-all", fd, e)
+-		most_busy_check_all(fd, e, num_engines,
++	test_each_engine("most-busy-check-all", fd, ctx, e)
++		most_busy_check_all(fd, ctx, e, num_engines,
+ 				    TEST_BUSY);
+-	test_each_engine("most-busy-idle-check-all", fd, e)
+-		most_busy_check_all(fd, e, num_engines,
++	test_each_engine("most-busy-idle-check-all", fd, ctx, e)
++		most_busy_check_all(fd, ctx, e, num_engines,
+ 				    TEST_BUSY |
+ 				    TEST_TRAILING_IDLE);
+ 
+@@ -2156,40 +2182,40 @@ igt_main
+ 	 * Test that semphore counters report no activity on
+ 	 * idle or busy engines.
+ 	 */
+-	test_each_engine("idle-no-semaphores", fd, e)
+-		no_sema(fd, e, 0);
++	test_each_engine("idle-no-semaphores", fd, ctx, e)
++		no_sema(fd, ctx, e, 0);
+ 
+-	test_each_engine("busy-no-semaphores", fd, e)
+-		no_sema(fd, e, TEST_BUSY);
++	test_each_engine("busy-no-semaphores", fd, ctx, e)
++		no_sema(fd, ctx, e, TEST_BUSY);
+ 
+-	test_each_engine("busy-idle-no-semaphores", fd, e)
+-		no_sema(fd, e, TEST_BUSY | TEST_TRAILING_IDLE);
++	test_each_engine("busy-idle-no-semaphores", fd, ctx, e)
++		no_sema(fd, ctx, e, TEST_BUSY | TEST_TRAILING_IDLE);
+ 
+ 	/**
+ 	 * Test that semaphore waits are correctly reported.
+ 	 */
+-	test_each_engine("semaphore-wait", fd, e)
+-		sema_wait(fd, e, TEST_BUSY);
++	test_each_engine("semaphore-wait", fd, ctx, e)
++		sema_wait(fd, ctx, e, TEST_BUSY);
+ 
+-	test_each_engine("semaphore-wait-idle", fd, e)
+-		sema_wait(fd, e, TEST_BUSY | TEST_TRAILING_IDLE);
++	test_each_engine("semaphore-wait-idle", fd, ctx, e)
++		sema_wait(fd, ctx, e, TEST_BUSY | TEST_TRAILING_IDLE);
+ 
+-	test_each_engine("semaphore-busy", fd, e)
+-		sema_busy(fd, e, 0);
++	test_each_engine("semaphore-busy", fd, ctx, e)
++		sema_busy(fd, ctx, e, 0);
+ 
+ 	/**
+ 	 * Check that two perf clients do not influence each
+ 	 * others observations.
+ 	 */
+-	test_each_engine("multi-client", fd, e)
+-		multi_client(fd, e);
++	test_each_engine("multi-client", fd, ctx, e)
++		multi_client(fd, ctx, e);
+ 
+ 	/**
+ 	 * Check that reported usage is correct when PMU is
+ 	 * enabled after the batch is running.
+ 	 */
+-	test_each_engine("busy-start", fd, e)
+-		busy_start(fd, e);
++	test_each_engine("busy-start", fd, ctx, e)
++		busy_start(fd, ctx, e);
+ 
+ 	/**
+ 	 * Check that reported usage is correct when PMU is
+@@ -2198,16 +2224,16 @@ igt_main
+ 	igt_subtest_group {
+ 		igt_fixture gem_require_contexts(fd);
+ 
+-		test_each_engine("busy-double-start", fd, e)
+-			busy_double_start(fd, e);
++		test_each_engine("busy-double-start", fd, ctx, e)
++			busy_double_start(fd, ctx, e);
+ 	}
+ 
+ 	/**
+ 	 * Check that the PMU can be safely enabled in face of
+ 	 * interrupt-heavy engine load.
+ 	 */
+-	test_each_engine("enable-race", fd, e)
+-		test_enable_race(fd, e);
++	test_each_engine("enable-race", fd, ctx, e)
++		test_enable_race(fd, ctx, e);
+ 
+ 	igt_subtest_group {
+ 		const unsigned int pct[] = { 2, 50, 98 };
+@@ -2217,18 +2243,18 @@ igt_main
+ 		 */
+ 		for (unsigned int i = 0; i < ARRAY_SIZE(pct); i++) {
+ 			igt_subtest_with_dynamic_f("busy-accuracy-%u", pct[i]) {
+-				__for_each_physical_engine(fd, e) {
++				for_each_ctx_engine(fd, ctx, e) {
+ 					igt_dynamic_f("%s", e->name)
+-						accuracy(fd, e, pct[i], 10);
++						accuracy(fd, ctx, e, pct[i], 10);
+ 				}
+ 			}
+ 		}
+ 	}
+ 
+-	test_each_engine("busy-hang", fd, e) {
++	test_each_engine("busy-hang", fd, ctx, e) {
+ 		igt_hang_t hang = igt_allow_hang(fd, 0, 0);
+ 
+-		single(fd, e, TEST_BUSY | FLAG_HANG);
++		single(fd, ctx, e, TEST_BUSY | FLAG_HANG);
+ 
+ 		igt_disallow_hang(fd, hang);
+ 	}
+@@ -2236,17 +2262,18 @@ igt_main
+ 	/**
+ 	 * Test that event waits are correctly reported.
+ 	 */
+-	test_each_rcs("event-wait", fd, e)
+-		event_wait(fd, e);
++	test_each_rcs("event-wait", fd, ctx, e)
++		event_wait(fd, ctx, e);
+ 
+ 	/**
+ 	 * Test that when all engines are loaded all loads are
+ 	 * correctly reported.
+ 	 */
+ 	igt_subtest("all-busy-check-all")
+-		all_busy_check_all(fd, num_engines, TEST_BUSY);
++		all_busy_check_all(fd, ctx, num_engines,
++				   TEST_BUSY);
+ 	igt_subtest("all-busy-idle-check-all")
+-		all_busy_check_all(fd, num_engines,
++		all_busy_check_all(fd, ctx, num_engines,
+ 				   TEST_BUSY | TEST_TRAILING_IDLE);
+ 
+ 	/**
+@@ -2291,32 +2318,36 @@ igt_main
+ 	 * Test GT wakeref tracking (similar to RC0, opposite of RC6)
+ 	 */
+ 	igt_subtest("gt-awake")
+-		test_awake(fd);
++		test_awake(fd, ctx);
+ 
+ 	/**
+ 	 * Check render nodes are counted.
+ 	 */
+ 	igt_subtest_group {
+ 		int render_fd = -1;
++		const intel_ctx_t *render_ctx = NULL;
+ 
+ 		igt_fixture {
+ 			render_fd = __drm_open_driver_render(DRIVER_INTEL);
+ 			igt_require_gem(render_fd);
++			render_ctx = intel_ctx_create_all_physical(render_fd);
+ 
+ 			gem_quiescent_gpu(fd);
+ 		}
+ 
+-		test_each_engine("render-node-busy", render_fd, e)
+-			single(render_fd, e, TEST_BUSY);
+-		test_each_engine("render-node-busy-idle", render_fd, e)
+-			single(render_fd, e, TEST_BUSY | TEST_TRAILING_IDLE);
++		test_each_engine("render-node-busy", render_fd, render_ctx, e)
++			single(render_fd, render_ctx, e, TEST_BUSY);
++		test_each_engine("render-node-busy-idle", render_fd, render_ctx, e)
++			single(render_fd, render_ctx, e, TEST_BUSY | TEST_TRAILING_IDLE);
+ 
+ 		igt_fixture {
++			intel_ctx_destroy(render_fd, render_ctx);
+ 			close(render_fd);
+ 		}
+ 	}
+ 
+ 	igt_fixture {
++		intel_ctx_destroy(fd, ctx);
+ 		close(fd);
+ 	}
+ 
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
