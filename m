@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
- [IPv6:2607:f8b0:4864:20::434])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A87816E170
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:46:54 +0000 (UTC)
-Received: by mail-pf1-x434.google.com with SMTP id a127so2336753pfa.10
- for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:46:54 -0700 (PDT)
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
+ [IPv6:2607:f8b0:4864:20::52a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1EA116E195
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:47:15 +0000 (UTC)
+Received: by mail-pg1-x52a.google.com with SMTP id a2so2486803pgi.6
+ for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:47:15 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  7 Jul 2021 09:46:14 -0500
-Message-Id: <20210707144643.181001-3-jason@jlekstrand.net>
+Date: Wed,  7 Jul 2021 09:46:26 -0500
+Message-Id: <20210707144643.181001-15-jason@jlekstrand.net>
 In-Reply-To: <20210707144337.180693-1-jason@jlekstrand.net>
 References: <20210707144337.180693-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 52/81] lib/intel_ctx: Add load balancing
- support (v2)
+Subject: [igt-dev] [PATCH i-g-t 64/81] tests/i915/sysfs: Convert to
+ intel_ctx_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,113 +20,396 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-V2UgdXNlIHRoZSBzYW1lIGNvbnZlbnRpb24gYXMgdGhlIGxvYWQgYmFsYW5jaW5nIHRlc3RzIGFu
-ZCwgd2hlbgpiYWxhbmNpbmcgaXMgcmVxdWVzdGVkLCB3ZSBtYWtlIGEgY29udGV4dCB3aXRoIE4r
-MSBlbmdpbmVzIHdoZXJlIHRoZQpmaXJzdCBvbmUgaXMgdGhlIGJhbGFuY2VkIGVuZ2luZSBhbmQg
-dGhlIG90aGVycyBhcmUgcGh5c2ljYWwgZW5naW5lcy4KCnYyIChaYmlnbmlldyBLZW1wY3p5xYRz
-a2kpOgogLSBEb24ndCBpbml0aWFsaXplIG51bV9sb2dpY2FsX2VuZ2luZXMKIC0gVXNlIGlndF9h
-c3NlcnQoKSBpbnN0ZWFkIG9mIGFzc2VydCgpCgpTaWduZWQtb2ZmLWJ5OiBKYXNvbiBFa3N0cmFu
-ZCA8amFzb25Aamxla3N0cmFuZC5uZXQ+ClJldmlld2VkLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRz
-a2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KLS0tCiBsaWIvaTkxNS9nZW1fZW5n
-aW5lX3RvcG9sb2d5LmMgfCAyNyArKysrKysrKysrKysrKy0tLS0KIGxpYi9pbnRlbF9jdHguYyAg
-ICAgICAgICAgICAgICB8IDUwICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0KIGxp
-Yi9pbnRlbF9jdHguaCAgICAgICAgICAgICAgICB8ICAyICsrCiAzIGZpbGVzIGNoYW5nZWQsIDY5
-IGluc2VydGlvbnMoKyksIDEwIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xpYi9pOTE1L2dl
-bV9lbmdpbmVfdG9wb2xvZ3kuYyBiL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYwppbmRl
-eCA1MGY0YmRlNzEuLjRiYjdkMjFmNiAxMDA2NDQKLS0tIGEvbGliL2k5MTUvZ2VtX2VuZ2luZV90
-b3BvbG9neS5jCisrKyBiL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYwpAQCAtMzEyLDEy
-ICszMTIsMjcgQEAgaW50ZWxfZW5naW5lX2xpc3RfZm9yX2N0eF9jZmcoaW50IGZkLCBjb25zdCBp
-bnRlbF9jdHhfY2ZnX3QgKmNmZykKIAkJc3RydWN0IGludGVsX2VuZ2luZV9kYXRhIGVuZ2luZV9k
-YXRhID0geyB9OwogCQlpbnQgaTsKIAotCQllbmdpbmVfZGF0YS5uZW5naW5lcyA9IGNmZy0+bnVt
-X2VuZ2luZXM7Ci0JCWZvciAoaSA9IDA7IGkgPCBjZmctPm51bV9lbmdpbmVzOyBpKyspCi0JCQlp
-bml0X2VuZ2luZSgmZW5naW5lX2RhdGEuZW5naW5lc1tpXSwKLQkJCQkgICAgY2ZnLT5lbmdpbmVz
-W2ldLmVuZ2luZV9jbGFzcywKLQkJCQkgICAgY2ZnLT5lbmdpbmVzW2ldLmVuZ2luZV9pbnN0YW5j
-ZSwKLQkJCQkgICAgaSk7CisJCWlmIChjZmctPmxvYWRfYmFsYW5jZSkgeworCQkJZW5naW5lX2Rh
-dGEubmVuZ2luZXMgPSBjZmctPm51bV9lbmdpbmVzICsgMTsKKworCQkJaW5pdF9lbmdpbmUoJmVu
-Z2luZV9kYXRhLmVuZ2luZXNbMF0sCisJCQkJICAgIEk5MTVfRU5HSU5FX0NMQVNTX0lOVkFMSUQs
-CisJCQkJICAgIEk5MTVfRU5HSU5FX0NMQVNTX0lOVkFMSURfTk9ORSwKKwkJCQkgICAgMCk7CisK
-KwkJCWZvciAoaSA9IDA7IGkgPCBjZmctPm51bV9lbmdpbmVzOyBpKyspCisJCQkJaW5pdF9lbmdp
-bmUoJmVuZ2luZV9kYXRhLmVuZ2luZXNbaSArIDFdLAorCQkJCQkgICAgY2ZnLT5lbmdpbmVzW2ld
-LmVuZ2luZV9jbGFzcywKKwkJCQkJICAgIGNmZy0+ZW5naW5lc1tpXS5lbmdpbmVfaW5zdGFuY2Us
-CisJCQkJCSAgICBpICsgMSk7CisJCX0gZWxzZSB7CisJCQllbmdpbmVfZGF0YS5uZW5naW5lcyA9
-IGNmZy0+bnVtX2VuZ2luZXM7CisJCQlmb3IgKGkgPSAwOyBpIDwgY2ZnLT5udW1fZW5naW5lczsg
-aSsrKQorCQkJCWluaXRfZW5naW5lKCZlbmdpbmVfZGF0YS5lbmdpbmVzW2ldLAorCQkJCQkgICAg
-Y2ZnLT5lbmdpbmVzW2ldLmVuZ2luZV9jbGFzcywKKwkJCQkJICAgIGNmZy0+ZW5naW5lc1tpXS5l
-bmdpbmVfaW5zdGFuY2UsCisJCQkJCSAgICBpKTsKKwkJfQogCiAJCXJldHVybiBlbmdpbmVfZGF0
-YTsKIAl9IGVsc2UgewpkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2N0eC5jIGIvbGliL2ludGVsX2N0
-eC5jCmluZGV4IDVjYThiNDUzNC4uNTQ5NWZhNzY0IDEwMDY0NAotLS0gYS9saWIvaW50ZWxfY3R4
-LmMKKysrIGIvbGliL2ludGVsX2N0eC5jCkBAIC04Miw2ICs4Miw3IEBAIHN0YXRpYyBpbnQKIF9f
-Y29udGV4dF9jcmVhdGVfY2ZnKGludCBmZCwgY29uc3QgaW50ZWxfY3R4X2NmZ190ICpjZmcsIHVp
-bnQzMl90ICpjdHhfaWQpCiB7CiAJdWludDY0X3QgZXh0X3Jvb3QgPSAwOworCUk5MTVfREVGSU5F
-X0NPTlRFWFRfRU5HSU5FU19MT0FEX0JBTEFOQ0UoYmFsYW5jZSwgR0VNX01BWF9FTkdJTkVTKTsK
-IAlJOTE1X0RFRklORV9DT05URVhUX1BBUkFNX0VOR0lORVMoZW5naW5lcywgR0VNX01BWF9FTkdJ
-TkVTKTsKIAlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2NvbnRleHRfY3JlYXRlX2V4dF9zZXRwYXJhbSBl
-bmdpbmVzX3BhcmFtLCB2bV9wYXJhbTsKIAlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2NvbnRleHRfY3Jl
-YXRlX2V4dF9zZXRwYXJhbSBwZXJzaXN0X3BhcmFtOwpAQCAtMTEzLDkgKzExNCwzOSBAQCBfX2Nv
-bnRleHRfY3JlYXRlX2NmZyhpbnQgZmQsIGNvbnN0IGludGVsX2N0eF9jZmdfdCAqY2ZnLCB1aW50
-MzJfdCAqY3R4X2lkKQogCX0KIAogCWlmIChjZmctPm51bV9lbmdpbmVzKSB7CisJCXVuc2lnbmVk
-IG51bV9sb2dpY2FsX2VuZ2luZXM7CiAJCW1lbXNldCgmZW5naW5lcywgMCwgc2l6ZW9mKGVuZ2lu
-ZXMpKTsKLQkJZm9yIChpID0gMDsgaSA8IGNmZy0+bnVtX2VuZ2luZXM7IGkrKykKLQkJCWVuZ2lu
-ZXMuZW5naW5lc1tpXSA9IGNmZy0+ZW5naW5lc1tpXTsKKworCQlpZiAoY2ZnLT5sb2FkX2JhbGFu
-Y2UpIHsKKwkJCW1lbXNldCgmYmFsYW5jZSwgMCwgc2l6ZW9mKGJhbGFuY2UpKTsKKworCQkJLyog
-SW4gdGhpcyBjYXNlLCB0aGUgZmlyc3QgZW5naW5lIGlzIHRoZSB2aXJ0dWFsCisJCQkgKiBiYWxh
-bmNlZCBlbmdpbmUgYW5kIHRoZSBzdWJzZXF1ZW50IGVuZ2luZXMgYXJlCisJCQkgKiB0aGUgYWN0
-dWFsIHJlcXVlc3RlZCBlbmdpbmVzLgorCQkJICovCisJCQlpZ3RfYXNzZXJ0KGNmZy0+bnVtX2Vu
-Z2luZXMgKyAxIDw9IEdFTV9NQVhfRU5HSU5FUyk7CisJCQludW1fbG9naWNhbF9lbmdpbmVzID0g
-Y2ZnLT5udW1fZW5naW5lcyArIDE7CisKKwkJCWVuZ2luZXMuZW5naW5lc1swXS5lbmdpbmVfY2xh
-c3MgPQorCQkJCUk5MTVfRU5HSU5FX0NMQVNTX0lOVkFMSUQ7CisJCQllbmdpbmVzLmVuZ2luZXNb
-MF0uZW5naW5lX2luc3RhbmNlID0KKwkJCQlJOTE1X0VOR0lORV9DTEFTU19JTlZBTElEX05PTkU7
-CisKKwkJCWJhbGFuY2UubnVtX3NpYmxpbmdzID0gY2ZnLT5udW1fZW5naW5lczsKKwkJCWZvciAo
-aSA9IDA7IGkgPCBjZmctPm51bV9lbmdpbmVzOyBpKyspIHsKKwkJCQlpZ3RfYXNzZXJ0X2VxKGNm
-Zy0+ZW5naW5lc1swXS5lbmdpbmVfY2xhc3MsCisJCQkJCSAgICAgIGNmZy0+ZW5naW5lc1tpXS5l
-bmdpbmVfY2xhc3MpOworCQkJCWJhbGFuY2UuZW5naW5lc1tpXSA9IGNmZy0+ZW5naW5lc1tpXTsK
-KwkJCQllbmdpbmVzLmVuZ2luZXNbaSArIDFdID0gY2ZnLT5lbmdpbmVzW2ldOworCQkJfQorCisJ
-CQllbmdpbmVzLmV4dGVuc2lvbnMgPSB0b191c2VyX3BvaW50ZXIoJmJhbGFuY2UpOworCQl9IGVs
-c2UgeworCQkJaWd0X2Fzc2VydChjZmctPm51bV9lbmdpbmVzIDw9IEdFTV9NQVhfRU5HSU5FUyk7
-CisJCQludW1fbG9naWNhbF9lbmdpbmVzID0gY2ZnLT5udW1fZW5naW5lczsKKwkJCWZvciAoaSA9
-IDA7IGkgPCBjZmctPm51bV9lbmdpbmVzOyBpKyspCisJCQkJZW5naW5lcy5lbmdpbmVzW2ldID0g
-Y2ZnLT5lbmdpbmVzW2ldOworCQl9CiAKIAkJZW5naW5lc19wYXJhbSA9IChzdHJ1Y3QgZHJtX2k5
-MTVfZ2VtX2NvbnRleHRfY3JlYXRlX2V4dF9zZXRwYXJhbSkgewogCQkJLmJhc2UgPSB7CkBAIC0x
-MjMsMTEgKzE1NCwxMyBAQCBfX2NvbnRleHRfY3JlYXRlX2NmZyhpbnQgZmQsIGNvbnN0IGludGVs
-X2N0eF9jZmdfdCAqY2ZnLCB1aW50MzJfdCAqY3R4X2lkKQogCQkJfSwKIAkJCS5wYXJhbSA9IHsK
-IAkJCQkucGFyYW0gPSBJOTE1X0NPTlRFWFRfUEFSQU1fRU5HSU5FUywKLQkJCQkuc2l6ZSA9IHNp
-emVvZl9wYXJhbV9lbmdpbmVzKGNmZy0+bnVtX2VuZ2luZXMpLAorCQkJCS5zaXplID0gc2l6ZW9m
-X3BhcmFtX2VuZ2luZXMobnVtX2xvZ2ljYWxfZW5naW5lcyksCiAJCQkJLnZhbHVlID0gdG9fdXNl
-cl9wb2ludGVyKCZlbmdpbmVzKSwKIAkJCX0sCiAJCX07CiAJCWFkZF91c2VyX2V4dCgmZXh0X3Jv
-b3QsICZlbmdpbmVzX3BhcmFtLmJhc2UpOworCX0gZWxzZSB7CisJCWlndF9hc3NlcnQoIWNmZy0+
-bG9hZF9iYWxhbmNlKTsKIAl9CiAKIAlyZXR1cm4gX19nZW1fY29udGV4dF9jcmVhdGVfZXh0KGZk
-LCBjZmctPmZsYWdzLCBleHRfcm9vdCwgY3R4X2lkKTsKQEAgLTI1OSw3ICsyOTIsMTYgQEAgdm9p
-ZCBpbnRlbF9jdHhfZGVzdHJveShpbnQgZmQsIGNvbnN0IGludGVsX2N0eF90ICpjdHgpCiAgKi8K
-IHVuc2lnbmVkIGludCBpbnRlbF9jdHhfZW5naW5lX2NsYXNzKGNvbnN0IGludGVsX2N0eF90ICpj
-dHgsIHVuc2lnbmVkIGludCBlbmdpbmUpCiB7Ci0JaWYgKGN0eC0+Y2ZnLm51bV9lbmdpbmVzKSB7
-CisJaWYgKGN0eC0+Y2ZnLmxvYWRfYmFsYW5jZSkgeworCQlpZiAoZW5naW5lID09IDApIHsKKwkJ
-CS8qIFRoaXMgaXMgb3VyIHZpcnR1YWwgZW5naW5lICovCisJCQlyZXR1cm4gY3R4LT5jZmcuZW5n
-aW5lc1swXS5lbmdpbmVfY2xhc3M7CisJCX0gZWxzZSB7CisJCQkvKiBUaGlzIGlzIGEgcGh5c2lj
-YWwgZW5naW5lICovCisJCQlpZ3RfYXNzZXJ0KGVuZ2luZSAtIDEgPCBjdHgtPmNmZy5udW1fZW5n
-aW5lcyk7CisJCQlyZXR1cm4gY3R4LT5jZmcuZW5naW5lc1tlbmdpbmUgLSAxXS5lbmdpbmVfY2xh
-c3M7CisJCX0KKwl9IGVsc2UgaWYgKGN0eC0+Y2ZnLm51bV9lbmdpbmVzKSB7CiAJCWlndF9hc3Nl
-cnQoZW5naW5lIDwgY3R4LT5jZmcubnVtX2VuZ2luZXMpOwogCQlyZXR1cm4gY3R4LT5jZmcuZW5n
-aW5lc1tlbmdpbmVdLmVuZ2luZV9jbGFzczsKIAl9IGVsc2UgewpkaWZmIC0tZ2l0IGEvbGliL2lu
-dGVsX2N0eC5oIGIvbGliL2ludGVsX2N0eC5oCmluZGV4IGUzNGNlZmMxNC4uZDRjYjQzNWE3IDEw
-MDY0NAotLS0gYS9saWIvaW50ZWxfY3R4LmgKKysrIGIvbGliL2ludGVsX2N0eC5oCkBAIC0xNyw2
-ICsxNyw3IEBACiAgKiBAZmxhZ3M6IENvbnRleHQgY3JlYXRlIGZsYWdzCiAgKiBAdm06IFZNIHRv
-IGluaGVyaXQgb3IgMCBmb3IgdXNpbmcgYSBwZXItY29udGV4dCBWTQogICogQG5vcGVyc2lzdDog
-c2V0IEk5MTVfQ09OVEVYVF9QQVJBTV9QRVJTSVNURU5DRSB0byAwCisgKiBAbG9hZF9iYWxhbmNl
-OiBUcnVlIGlmIHRoZSBmaXJzdCBlbmdpbmUgc2hvdWxkIGJlIGEgbG9hZCBiYWxhbmNpbmcgZW5n
-aW5lCiAgKiBAbnVtX2VuZ2luZXM6IE51bWJlciBvZiBjbGllbnQtc3BlY2lmaWVkIGVuZ2luZXMg
-b3IgMCBmb3IgbGVnYWN5IG1vZGUKICAqIEBlbmdpbmVzOiBDbGllbnQtc3BlY2lmaWVkIGVuZ2lu
-ZXMKICAqCkBAIC00NCw2ICs0NSw3IEBAIHR5cGVkZWYgc3RydWN0IGludGVsX2N0eF9jZmcgewog
-CXVpbnQzMl90IGZsYWdzOwogCXVpbnQzMl90IHZtOwogCWJvb2wgbm9wZXJzaXN0OworCWJvb2wg
-bG9hZF9iYWxhbmNlOwogCXVuc2lnbmVkIGludCBudW1fZW5naW5lczsKIAlzdHJ1Y3QgaTkxNV9l
-bmdpbmVfY2xhc3NfaW5zdGFuY2UgZW5naW5lc1tHRU1fTUFYX0VOR0lORVNdOwogfSBpbnRlbF9j
-dHhfY2ZnX3Q7Ci0tIAoyLjMxLjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0
-LWRldgo=
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/sysfs_heartbeat_interval.c | 40 ++++++++++-----------
+ tests/i915/sysfs_preempt_timeout.c    | 39 ++++++++++----------
+ tests/i915/sysfs_timeslice_duration.c | 51 +++++++++++++--------------
+ 3 files changed, 64 insertions(+), 66 deletions(-)
+
+diff --git a/tests/i915/sysfs_heartbeat_interval.c b/tests/i915/sysfs_heartbeat_interval.c
+index b8aba2416..b70b653b1 100644
+--- a/tests/i915/sysfs_heartbeat_interval.c
++++ b/tests/i915/sysfs_heartbeat_interval.c
+@@ -132,13 +132,12 @@ static void set_unbannable(int i915, uint32_t ctx)
+ 	gem_context_set_param(i915, &p);
+ }
+ 
+-static uint32_t create_context(int i915, unsigned int class, unsigned int inst, int prio)
++static const intel_ctx_t *
++create_ctx(int i915, unsigned int class, unsigned int inst, int prio)
+ {
+-	uint32_t ctx;
+-
+-	ctx = gem_context_create_for_engine(i915, class, inst);
+-	set_unbannable(i915, ctx);
+-	gem_context_set_priority(i915, ctx, prio);
++	const intel_ctx_t *ctx = intel_ctx_create_for_engine(i915, class, inst);
++	set_unbannable(i915, ctx->id);
++	gem_context_set_priority(i915, ctx->id, prio);
+ 
+ 	return ctx;
+ }
+@@ -149,23 +148,23 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ 	struct timespec ts = {};
+ 	igt_spin_t *spin[2];
+ 	uint64_t elapsed;
+-	uint32_t ctx[2];
++	const intel_ctx_t *ctx[2];
+ 
+ 	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
+ 	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
+ 
+ 	set_heartbeat(engine, timeout);
+ 
+-	ctx[0] = create_context(i915, class, inst, 1023);
+-	spin[0] = igt_spin_new(i915, ctx[0],
++	ctx[0] = create_ctx(i915, class, inst, 1023);
++	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
+ 			       .flags = (IGT_SPIN_NO_PREEMPTION |
+ 					 IGT_SPIN_POLL_RUN |
+ 					 IGT_SPIN_FENCE_OUT));
+ 	igt_spin_busywait_until_started(spin[0]);
+ 
+-	ctx[1] = create_context(i915, class, inst, -1023);
++	ctx[1] = create_ctx(i915, class, inst, -1023);
+ 	igt_nsec_elapsed(&ts);
+-	spin[1] = igt_spin_new(i915, ctx[1], .flags = IGT_SPIN_POLL_RUN);
++	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
+ 	igt_spin_busywait_until_started(spin[1]);
+ 	elapsed = igt_nsec_elapsed(&ts);
+ 
+@@ -176,8 +175,8 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ 
+ 	igt_spin_free(i915, spin[0]);
+ 
+-	gem_context_destroy(i915, ctx[1]);
+-	gem_context_destroy(i915, ctx[0]);
++	intel_ctx_destroy(i915, ctx[1]);
++	intel_ctx_destroy(i915, ctx[0]);
+ 	gem_quiescent_gpu(i915);
+ 
+ 	return elapsed;
+@@ -292,18 +291,18 @@ static void client(int i915, int engine, int *ctl, int duration, int expect)
+ {
+ 	unsigned int class, inst;
+ 	unsigned long count = 0;
+-	uint32_t ctx;
++	const intel_ctx_t *ctx;
+ 
+ 	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
+ 	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
+ 
+-	ctx = create_context(i915, class, inst, 0);
++	ctx = create_ctx(i915, class, inst, 0);
+ 
+ 	while (!READ_ONCE(*ctl)) {
+ 		unsigned int elapsed;
+ 		igt_spin_t *spin;
+ 
+-		spin = igt_spin_new(i915, ctx,
++		spin = igt_spin_new(i915, .ctx = ctx,
+ 				    .flags = (IGT_SPIN_NO_PREEMPTION |
+ 					      IGT_SPIN_POLL_RUN |
+ 					      IGT_SPIN_FENCE_OUT));
+@@ -331,7 +330,7 @@ static void client(int i915, int engine, int *ctl, int duration, int expect)
+ 		count++;
+ 	}
+ 
+-	gem_context_destroy(i915, ctx);
++	intel_ctx_destroy(i915, ctx);
+ 	igt_info("%s client completed %lu spins\n",
+ 		 expect < 0 ? "Bad" : "Good", count);
+ }
+@@ -414,7 +413,7 @@ static void test_off(int i915, int engine)
+ 	unsigned int class, inst;
+ 	unsigned int saved;
+ 	igt_spin_t *spin;
+-	uint32_t ctx;
++	const intel_ctx_t *ctx;
+ 
+ 	/*
+ 	 * Some other clients request that there is never any interruption
+@@ -433,9 +432,9 @@ static void test_off(int i915, int engine)
+ 
+ 	set_heartbeat(engine, 0);
+ 
+-	ctx = create_context(i915, class, inst, 0);
++	ctx = create_ctx(i915, class, inst, 0);
+ 
+-	spin = igt_spin_new(i915, ctx,
++	spin = igt_spin_new(i915, .ctx = ctx,
+ 			    .flags = (IGT_SPIN_POLL_RUN |
+ 				      IGT_SPIN_NO_PREEMPTION |
+ 				      IGT_SPIN_FENCE_OUT));
+@@ -455,6 +454,7 @@ static void test_off(int i915, int engine)
+ 
+ 	gem_quiescent_gpu(i915);
+ 	set_heartbeat(engine, saved);
++	intel_ctx_destroy(i915, ctx);
+ }
+ 
+ igt_main
+diff --git a/tests/i915/sysfs_preempt_timeout.c b/tests/i915/sysfs_preempt_timeout.c
+index 83a60436c..9f00093ea 100644
+--- a/tests/i915/sysfs_preempt_timeout.c
++++ b/tests/i915/sysfs_preempt_timeout.c
+@@ -126,13 +126,12 @@ static void set_unbannable(int i915, uint32_t ctx)
+ 	gem_context_set_param(i915, &p);
+ }
+ 
+-static uint32_t create_context(int i915, unsigned int class, unsigned int inst, int prio)
++static const intel_ctx_t *
++create_ctx(int i915, unsigned int class, unsigned int inst, int prio)
+ {
+-	uint32_t ctx;
+-
+-	ctx = gem_context_create_for_engine(i915, class, inst);
+-	set_unbannable(i915, ctx);
+-	gem_context_set_priority(i915, ctx, prio);
++	const intel_ctx_t *ctx = intel_ctx_create_for_engine(i915, class, inst);
++	set_unbannable(i915, ctx->id);
++	gem_context_set_priority(i915, ctx->id, prio);
+ 
+ 	return ctx;
+ }
+@@ -143,23 +142,23 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ 	struct timespec ts = {};
+ 	igt_spin_t *spin[2];
+ 	uint64_t elapsed;
+-	uint32_t ctx[2];
++	const intel_ctx_t *ctx[2];
+ 
+ 	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
+ 	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
+ 
+ 	set_preempt_timeout(engine, timeout);
+ 
+-	ctx[0] = create_context(i915, class, inst, -1023);
+-	spin[0] = igt_spin_new(i915, ctx[0],
++	ctx[0] = create_ctx(i915, class, inst, -1023);
++	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
+ 			       .flags = (IGT_SPIN_NO_PREEMPTION |
+ 					 IGT_SPIN_POLL_RUN |
+ 					 IGT_SPIN_FENCE_OUT));
+ 	igt_spin_busywait_until_started(spin[0]);
+ 
+-	ctx[1] = create_context(i915, class, inst, 1023);
++	ctx[1] = create_ctx(i915, class, inst, 1023);
+ 	igt_nsec_elapsed(&ts);
+-	spin[1] = igt_spin_new(i915, ctx[1], .flags = IGT_SPIN_POLL_RUN);
++	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
+ 	igt_spin_busywait_until_started(spin[1]);
+ 	elapsed = igt_nsec_elapsed(&ts);
+ 
+@@ -170,8 +169,8 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ 
+ 	igt_spin_free(i915, spin[0]);
+ 
+-	gem_context_destroy(i915, ctx[1]);
+-	gem_context_destroy(i915, ctx[0]);
++	intel_ctx_destroy(i915, ctx[1]);
++	intel_ctx_destroy(i915, ctx[0]);
+ 	gem_quiescent_gpu(i915);
+ 
+ 	return elapsed;
+@@ -231,7 +230,7 @@ static void test_off(int i915, int engine)
+ 	unsigned int class, inst;
+ 	igt_spin_t *spin[2];
+ 	unsigned int saved;
+-	uint32_t ctx[2];
++	const intel_ctx_t *ctx[2];
+ 
+ 	/*
+ 	 * We support setting the timeout to 0 to disable the reset on
+@@ -252,15 +251,15 @@ static void test_off(int i915, int engine)
+ 
+ 	set_preempt_timeout(engine, 0);
+ 
+-	ctx[0] = create_context(i915, class, inst, -1023);
+-	spin[0] = igt_spin_new(i915, ctx[0],
++	ctx[0] = create_ctx(i915, class, inst, -1023);
++	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
+ 			       .flags = (IGT_SPIN_NO_PREEMPTION |
+ 					 IGT_SPIN_POLL_RUN |
+ 					 IGT_SPIN_FENCE_OUT));
+ 	igt_spin_busywait_until_started(spin[0]);
+ 
+-	ctx[1] = create_context(i915, class, inst, 1023);
+-	spin[1] = igt_spin_new(i915, ctx[1], .flags = IGT_SPIN_POLL_RUN);
++	ctx[1] = create_ctx(i915, class, inst, 1023);
++	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
+ 
+ 	for (int i = 0; i < 150; i++) {
+ 		igt_assert_eq(sync_fence_status(spin[0]->out_fence), 0);
+@@ -277,8 +276,8 @@ static void test_off(int i915, int engine)
+ 
+ 	igt_spin_free(i915, spin[0]);
+ 
+-	gem_context_destroy(i915, ctx[1]);
+-	gem_context_destroy(i915, ctx[0]);
++	intel_ctx_destroy(i915, ctx[1]);
++	intel_ctx_destroy(i915, ctx[0]);
+ 
+ 	igt_assert(enable_hangcheck(i915, true));
+ 	gem_quiescent_gpu(i915);
+diff --git a/tests/i915/sysfs_timeslice_duration.c b/tests/i915/sysfs_timeslice_duration.c
+index 05ab79667..b73ee3889 100644
+--- a/tests/i915/sysfs_timeslice_duration.c
++++ b/tests/i915/sysfs_timeslice_duration.c
+@@ -138,13 +138,12 @@ static void set_unbannable(int i915, uint32_t ctx)
+ 	gem_context_set_param(i915, &p);
+ }
+ 
+-static uint32_t create_context(int i915, unsigned int class, unsigned int inst, int prio)
++static const intel_ctx_t *
++create_ctx(int i915, unsigned int class, unsigned int inst, int prio)
+ {
+-	uint32_t ctx;
+-
+-	ctx = gem_context_create_for_engine(i915, class, inst);
+-	set_unbannable(i915, ctx);
+-	gem_context_set_priority(i915, ctx, prio);
++	const intel_ctx_t *ctx = intel_ctx_create_for_engine(i915, class, inst);
++	set_unbannable(i915, ctx->id);
++	gem_context_set_priority(i915, ctx->id, prio);
+ 
+ 	return ctx;
+ }
+@@ -191,7 +190,7 @@ static uint64_t __test_duration(int i915, int engine, unsigned int timeout)
+ 	double duration = clockrate(i915);
+ 	unsigned int class, inst, mmio;
+ 	uint32_t *cs, *map;
+-	uint32_t ctx[2];
++	const intel_ctx_t *ctx[2];
+ 	int start;
+ 	int i;
+ 
+@@ -204,8 +203,8 @@ static uint64_t __test_duration(int i915, int engine, unsigned int timeout)
+ 
+ 	set_timeslice(engine, timeout);
+ 
+-	ctx[0] = create_context(i915, class, inst, 0);
+-	ctx[1] = create_context(i915, class, inst, 0);
++	ctx[0] = create_ctx(i915, class, inst, 0);
++	ctx[1] = create_ctx(i915, class, inst, 0);
+ 
+ 	map = gem_mmap__device_coherent(i915, obj[2].handle,
+ 					0, 4096, PROT_WRITE);
+@@ -260,10 +259,10 @@ static uint64_t __test_duration(int i915, int engine, unsigned int timeout)
+ 	igt_assert(cs - map < 4096 / sizeof(*cs));
+ 	munmap(map, 4096);
+ 
+-	eb.rsvd1 = ctx[0];
++	eb.rsvd1 = ctx[0]->id;
+ 	gem_execbuf(i915, &eb);
+ 
+-	eb.rsvd1 = ctx[1];
++	eb.rsvd1 = ctx[1]->id;
+ 	eb.batch_start_offset = start;
+ 	gem_execbuf(i915, &eb);
+ 
+@@ -280,7 +279,7 @@ static uint64_t __test_duration(int i915, int engine, unsigned int timeout)
+ 	munmap(map, 4096);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(ctx); i++)
+-		gem_context_destroy(i915, ctx[i]);
++		intel_ctx_destroy(i915, ctx[i]);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(obj); i++)
+ 		gem_close(i915, obj[i].handle);
+@@ -371,23 +370,23 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ 	struct timespec ts = {};
+ 	igt_spin_t *spin[2];
+ 	uint64_t elapsed;
+-	uint32_t ctx[2];
++	const intel_ctx_t *ctx[2];
+ 
+ 	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
+ 	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
+ 
+ 	set_timeslice(engine, timeout);
+ 
+-	ctx[0] = create_context(i915, class, inst, 0);
+-	spin[0] = igt_spin_new(i915, ctx[0],
++	ctx[0] = create_ctx(i915, class, inst, 0);
++	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
+ 			       .flags = (IGT_SPIN_NO_PREEMPTION |
+ 					 IGT_SPIN_POLL_RUN |
+ 					 IGT_SPIN_FENCE_OUT));
+ 	igt_spin_busywait_until_started(spin[0]);
+ 
+-	ctx[1] = create_context(i915, class, inst, 0);
++	ctx[1] = create_ctx(i915, class, inst, 0);
+ 	igt_nsec_elapsed(&ts);
+-	spin[1] = igt_spin_new(i915, ctx[1], .flags = IGT_SPIN_POLL_RUN);
++	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
+ 	igt_spin_busywait_until_started(spin[1]);
+ 	elapsed = igt_nsec_elapsed(&ts);
+ 
+@@ -398,8 +397,8 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ 
+ 	igt_spin_free(i915, spin[0]);
+ 
+-	gem_context_destroy(i915, ctx[1]);
+-	gem_context_destroy(i915, ctx[0]);
++	intel_ctx_destroy(i915, ctx[1]);
++	intel_ctx_destroy(i915, ctx[0]);
+ 	gem_quiescent_gpu(i915);
+ 
+ 	return elapsed;
+@@ -460,7 +459,7 @@ static void test_off(int i915, int engine)
+ 	unsigned int class, inst;
+ 	unsigned int saved;
+ 	igt_spin_t *spin[2];
+-	uint32_t ctx[2];
++	const intel_ctx_t *ctx[2];
+ 
+ 	/*
+ 	 * As always, there are some who must run uninterrupted and simply do
+@@ -482,15 +481,15 @@ static void test_off(int i915, int engine)
+ 
+ 	set_timeslice(engine, 0);
+ 
+-	ctx[0] = create_context(i915, class, inst, 0);
+-	spin[0] = igt_spin_new(i915, ctx[0],
++	ctx[0] = create_ctx(i915, class, inst, 0);
++	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
+ 			       .flags = (IGT_SPIN_NO_PREEMPTION |
+ 					 IGT_SPIN_POLL_RUN |
+ 					 IGT_SPIN_FENCE_OUT));
+ 	igt_spin_busywait_until_started(spin[0]);
+ 
+-	ctx[1] = create_context(i915, class, inst, 0);
+-	spin[1] = igt_spin_new(i915, ctx[1], .flags = IGT_SPIN_POLL_RUN);
++	ctx[1] = create_ctx(i915, class, inst, 0);
++	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
+ 
+ 	for (int i = 0; i < 150; i++) {
+ 		igt_assert_eq(sync_fence_status(spin[0]->out_fence), 0);
+@@ -507,8 +506,8 @@ static void test_off(int i915, int engine)
+ 
+ 	igt_spin_free(i915, spin[0]);
+ 
+-	gem_context_destroy(i915, ctx[1]);
+-	gem_context_destroy(i915, ctx[0]);
++	intel_ctx_destroy(i915, ctx[1]);
++	intel_ctx_destroy(i915, ctx[0]);
+ 
+ 	igt_assert(enable_hangcheck(i915, true));
+ 	gem_quiescent_gpu(i915);
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
