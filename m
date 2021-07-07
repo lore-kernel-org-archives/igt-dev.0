@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
- [IPv6:2607:f8b0:4864:20::1034])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 334FA6E176
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:43:51 +0000 (UTC)
-Received: by mail-pj1-x1034.google.com with SMTP id
- d9-20020a17090ae289b0290172f971883bso3263297pjz.1
- for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:43:51 -0700 (PDT)
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
+ [IPv6:2607:f8b0:4864:20::102a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 74D5B6E170
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 14:43:49 +0000 (UTC)
+Received: by mail-pj1-x102a.google.com with SMTP id
+ p14-20020a17090ad30eb02901731c776526so1542299pju.4
+ for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 07:43:49 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed,  7 Jul 2021 09:42:49 -0500
-Message-Id: <20210707144337.180693-2-jason@jlekstrand.net>
-In-Reply-To: <20210707144337.180693-1-jason@jlekstrand.net>
-References: <20210707144337.180693-1-jason@jlekstrand.net>
+Date: Wed,  7 Jul 2021 09:42:48 -0500
+Message-Id: <20210707144337.180693-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 01/81] lib/i915/gem_submission_measure: Take
- an optional intel_ctx_cfg_t
+Subject: [igt-dev] [PATCH i-g-t 00/81] Stop depending on context mutation
+ (v4)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,222 +26,284 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-If provided, the engine (or ALL_ENGINES) is relative to the given
-context config.  This is intended to be transitional.  We'll get rid of
-all the __for_each_physical_engine stuff later.
+I'm trying to clean up some of our uAPI technical debt in i915.  One of the
+biggest areas we have right now is context mutability.  There's no good
+reason why things like the set of engines or the VM should be able to be
+changed on the fly and no "real" userspace actually relies on this
+functionality.  It does, however, make for a good excuse for tests and lots
+of bug reports as things like swapping out the set of engines under load
+break randomly.  The solution here is to stop allowing that behavior and
+simplify the i915 internals.
 
-Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- lib/i915/gem_submission.c      | 39 ++++++++++++++++++++++++++++------
- lib/i915/gem_submission.h      |  5 ++++-
- tests/i915/gem_busy.c          |  2 +-
- tests/i915/gem_exec_await.c    |  2 +-
- tests/i915/gem_exec_fence.c    |  2 +-
- tests/i915/gem_exec_latency.c  |  2 +-
- tests/i915/gem_exec_schedule.c |  6 +++---
- tests/i915/perf_pmu.c          |  2 +-
- 8 files changed, 44 insertions(+), 16 deletions(-)
+In particular, we'd like to remove the following from the i915 API:
 
-diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
-index bd4bbb3ef..7c305d6d6 100644
---- a/lib/i915/gem_submission.c
-+++ b/lib/i915/gem_submission.c
-@@ -306,7 +306,7 @@ static void alarm_handler(int sig)
- }
- 
- static unsigned int
--__measure_ringsize(int i915, unsigned int engine)
-+__measure_ringsize(int i915, uint32_t ctx_id, unsigned int engine)
- {
- 	struct sigaction old_sa, sa = { .sa_handler = alarm_handler };
- 	struct drm_i915_gem_exec_object2 obj[2];
-@@ -323,6 +323,7 @@ __measure_ringsize(int i915, unsigned int engine)
- 	memset(&execbuf, 0, sizeof(execbuf));
- 	execbuf.buffers_ptr = to_user_pointer(&obj[1]);
- 	execbuf.buffer_count = 1;
-+	execbuf.rsvd1 = ctx_id;
- 	execbuf.flags = engine;
- 	gem_execbuf(i915, &execbuf);
- 
-@@ -372,8 +373,10 @@ __measure_ringsize(int i915, unsigned int engine)
- 	return count / 2 - 2;
- }
- 
--unsigned int gem_submission_measure(int i915, unsigned int engine)
-+unsigned int gem_submission_measure(int i915, const intel_ctx_cfg_t *cfg,
-+				    unsigned int engine)
- {
-+	const intel_ctx_t *ctx = NULL;
- 	unsigned int size;
- 	bool nonblock;
- 
-@@ -381,19 +384,41 @@ unsigned int gem_submission_measure(int i915, unsigned int engine)
- 	if (!nonblock)
- 		fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) | O_NONBLOCK);
- 
-+	if (cfg) {
-+		if (gem_has_contexts(i915))
-+			ctx = intel_ctx_create(i915, cfg);
-+		else
-+			ctx = intel_ctx_0(i915);
-+	}
-+
- 	if (engine == ALL_ENGINES) {
- 		struct intel_execution_engine2 *e;
- 
- 		size = -1;
--		__for_each_physical_engine(i915, e) {
--			unsigned int this =  __measure_ringsize(i915, e->flags);
--			if (this < size)
--				size = this;
-+		if (ctx) {
-+			for_each_ctx_engine(i915, ctx, e) {
-+				unsigned int this =  __measure_ringsize(i915, ctx->id, e->flags);
-+				if (this < size)
-+					size = this;
-+			}
-+		} else {
-+			__for_each_physical_engine(i915, e) {
-+				unsigned int this =  __measure_ringsize(i915, 0, e->flags);
-+				if (this < size)
-+					size = this;
-+			}
- 		}
- 	} else {
--		size =  __measure_ringsize(i915, engine);
-+		if (ctx)
-+			size =  __measure_ringsize(i915, ctx->id, engine);
-+		else
-+			size =  __measure_ringsize(i915, 0, engine);
- 	}
- 
-+	if (ctx)
-+		intel_ctx_destroy(i915, ctx);
-+
-+
- 	if (!nonblock)
- 		fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) & ~O_NONBLOCK);
- 
-diff --git a/lib/i915/gem_submission.h b/lib/i915/gem_submission.h
-index 0faba6a3e..a5497a5e2 100644
---- a/lib/i915/gem_submission.h
-+++ b/lib/i915/gem_submission.h
-@@ -26,6 +26,8 @@
- 
- #include <stdint.h>
- 
-+#include "intel_ctx.h"
-+
- #define GEM_SUBMISSION_SEMAPHORES	(1 << 0)
- #define GEM_SUBMISSION_EXECLISTS	(1 << 1)
- #define GEM_SUBMISSION_GUC		(1 << 2)
-@@ -46,7 +48,8 @@ static inline bool gem_has_cmdparser(int i915, uint32_t engine)
- bool gem_has_blitter(int i915);
- void gem_require_blitter(int i915);
- 
--unsigned int gem_submission_measure(int i915, unsigned int engine);
-+unsigned int gem_submission_measure(int i915, const intel_ctx_cfg_t *cfg,
-+				    unsigned int engine);
- 
- void gem_test_engine(int fd, unsigned int engine);
- bool gem_has_relocations(int fd);
-diff --git a/tests/i915/gem_busy.c b/tests/i915/gem_busy.c
-index dc481f3c5..7e2b220aa 100644
---- a/tests/i915/gem_busy.c
-+++ b/tests/i915/gem_busy.c
-@@ -232,7 +232,7 @@ static void xchg_u32(void *array, unsigned i, unsigned j)
- static void close_race(int fd)
- {
- 	const unsigned int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
--	const unsigned int nhandles = gem_submission_measure(fd, ALL_ENGINES);
-+	const unsigned int nhandles = gem_submission_measure(fd, NULL, ALL_ENGINES);
- 	unsigned int engines[I915_EXEC_RING_MASK + 1], nengine;
- 	const struct intel_execution_engine2 *e;
- 	unsigned long *control;
-diff --git a/tests/i915/gem_exec_await.c b/tests/i915/gem_exec_await.c
-index 6db30695f..ba8325ce3 100644
---- a/tests/i915/gem_exec_await.c
-+++ b/tests/i915/gem_exec_await.c
-@@ -237,7 +237,7 @@ igt_main
- 		igt_require_gem(device);
- 		gem_submission_print_method(device);
- 
--		ring_size = gem_submission_measure(device, ALL_ENGINES);
-+		ring_size = gem_submission_measure(device, NULL, ALL_ENGINES);
- 
- 		igt_info("Ring size: %d batches\n", ring_size);
- 		igt_require(ring_size > 0);
-diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-index c3a650d89..6c4d3035f 100644
---- a/tests/i915/gem_exec_fence.c
-+++ b/tests/i915/gem_exec_fence.c
-@@ -3103,7 +3103,7 @@ igt_main
- 		long ring_size = 0;
- 
- 		igt_fixture {
--			ring_size = gem_submission_measure(i915, ALL_ENGINES);
-+			ring_size = gem_submission_measure(i915, NULL, ALL_ENGINES);
- 			igt_info("Ring size: %ld batches\n", ring_size);
- 			igt_require(ring_size);
- 
-diff --git a/tests/i915/gem_exec_latency.c b/tests/i915/gem_exec_latency.c
-index d31e82bc1..62bad6171 100644
---- a/tests/i915/gem_exec_latency.c
-+++ b/tests/i915/gem_exec_latency.c
-@@ -897,7 +897,7 @@ igt_main
- 
- 		gem_submission_print_method(device);
- 
--		ring_size = gem_submission_measure(device, ALL_ENGINES);
-+		ring_size = gem_submission_measure(device, NULL, ALL_ENGINES);
- 		igt_info("Ring size: %d batches\n", ring_size);
- 		igt_require(ring_size > 8);
- 		ring_size -= 8; /* leave some spare */
-diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-index fe3b8d29b..64a693ba5 100644
---- a/tests/i915/gem_exec_schedule.c
-+++ b/tests/i915/gem_exec_schedule.c
-@@ -1805,7 +1805,7 @@ static void deep(int fd, unsigned ring)
- 		ctx[n] = gem_context_clone_with_engines(fd, 0);
- 	}
- 
--	nreq = gem_submission_measure(fd, ring) / (3 * XS) * MAX_CONTEXTS;
-+	nreq = gem_submission_measure(fd, NULL, ring) / (3 * XS) * MAX_CONTEXTS;
- 	if (nreq > max_req)
- 		nreq = max_req;
- 	igt_info("Using %d requests (prio range %d)\n", nreq, max_req);
-@@ -1950,7 +1950,7 @@ static int __execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf)
- 
- static void wide(int fd, unsigned ring)
- {
--	const unsigned int ring_size = gem_submission_measure(fd, ring);
-+	const unsigned int ring_size = gem_submission_measure(fd, NULL, ring);
- 	struct timespec tv = {};
- 	IGT_CORK_FENCE(cork);
- 	uint32_t result;
-@@ -1995,7 +1995,7 @@ static void wide(int fd, unsigned ring)
- 
- static void reorder_wide(int fd, unsigned ring)
- {
--	const unsigned int ring_size = gem_submission_measure(fd, ring);
-+	const unsigned int ring_size = gem_submission_measure(fd, NULL, ring);
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
- 	const int priorities[] = { MIN_PRIO, MAX_PRIO };
- 	struct drm_i915_gem_relocation_entry reloc;
-diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index aa297bf19..f92f73919 100644
---- a/tests/i915/perf_pmu.c
-+++ b/tests/i915/perf_pmu.c
-@@ -1341,7 +1341,7 @@ static void cpu_hotplug(int gem_fd)
- 
- static int target_num_interrupts(int i915)
- {
--	return min(gem_submission_measure(i915, I915_EXEC_DEFAULT), 30);
-+	return min(gem_submission_measure(i915, NULL, I915_EXEC_DEFAULT), 30);
- }
- 
- static void
+ 1. I915_CONTEXT_CLONE_*.  These are only used by IGT and have never been
+    used by any "real" userspace.
+
+ 2. Changing the VM or set of engines via SETPARAM after they've been
+    "used" by an execbuf or similar.  This would effectively make those
+    parameters create params rather than mutable state.  We can't drop
+    setparam entirely for those because media does use it but we can
+    enforce some rules.
+
+ 3. Unused (by non-IGT userspace) GETPARAM for things like engines.
+
+As much as we'd love to do that, we have a bit of a problem in IGT.  The
+way we handle multi-engine testing today relies heavily on this soon-to-be-
+deprecated functionality.  In particular, the standard flow is usually
+something like this:
+
+    static void run_test1(int fd, uint32_t engine)
+    {
+        igt_spin_t *spin;
+
+        ctx = = gem_context_clone_with_engines(fd, 0);
+        __igt_spin_new(fd, ctx, .engine = engine);
+
+        /* do some testing with ctx */
+
+        igt_spin_free(fd, spin);
+        gem_destroy_context(fd, ctx);
+    }
+
+    igt_main
+    {
+        struct intel_execution_engine2 *e;
+
+        /* Usual fixture code */
+
+        __for_each_physical_engine(fd, e)
+            run_test1(fd, e->flags);
+
+        __for_each_physical_engine(fd, e)
+            run_test2(fd, e->flags);
+    }
+
+Let's walk through what this does:
+
+ 1. __for_each_physical_engine calls intel_init_engine_list() which resets
+    the set of engines on ctx0 to the full set of engines available as per
+    the engine query.  On older kernels/hardware where we don't have the
+    engines query, it leaves the set alone.
+
+ 2. intel_init_engine_list() also returns a set of engines for iteration
+    and __for_each_physical_engine() sets up a for loop to walk the set.
+
+ 3. gem_context_clone_with_engines() creates a new context using
+    I915_CONTEXT_CONTEXT_CLONE_ENGINES (not used by anything other than
+    IGT) to ask that the newly created context has the same set of engines
+    as ctx0.  Remember we changed that at the start of loop iteration!
+
+ 4. When the context is passed to __igt_spin_new(), it calls
+    gem_context_lookup_engine which does a GETPARAM to introspet the set of
+    engines on the context and figure out the engine class.
+
+If you've been keeping track, this trivial and extremely common example
+uses every single one of these soon-to-be-deprecated APIs even though the
+test author may be completely obvious to it.  It also means that getting
+rid of IGT's use of them is going to require some fairly deep surgery.
+
+The approach proposed and partially implemented here is to add a new
+wrapper struct intel_ctx_t which wraps a GEM context handle as well as the
+full set of parameters used to create it, represented by intel_ctx_cfg_t.
+We can then use the context anywhere we would regularly use a context, we
+just have to do ctx->id.  If we want to clone it, we can do so by re-using
+the create parameters by calling intel_ctx_create(fd, &old_ctx->cfg);
+
+Along with the above rework (which got long, sorry) I've got a few other
+patches in here which delete tests which exist expressly to test APIs that
+are on the chopping block.
+
+v2 (Jason Ekstrand):
+ - Better documentation
+ - Two more patches at the end to clean up query APIs even more
+
+v3 (Jason Ekstrand):
+ - Improved intel_ctx interface
+ - More tests converted to intel_ctx_t
+ - Misc. bug fixes
+
+v4 (Jason Ekstrand):
+ - Rebased
+ - Add tests for new error conditions
+
+v5 (Jason Ekstrand):
+ - Apply review feedback from Zbigniew
+ - Fix some issues caused by updates to the kernel series
+
+v6 (Jason Ekstrand):
+ - First 17 patches from the original have been merged
+ - Apply review feedback from Ashutosh and Zbigniew
+ - Fix some tests for the set-once rule for CONTEXT_PARAM_ENGINES
+
+v7 (Jason Ekstrand):
+ - Rebased on master
+ - Apply review feedback from Ashutosh and Zbigniew
+
+v8 (Jason Ekstrand):
+ - Rebased on master
+ - Apply review feedback from Ashutosh
+ - Should be the final version
+
+--Jason
+
+Jason Ekstrand (81):
+  lib/i915/gem_submission_measure: Take an optional intel_ctx_cfg_t
+  tests/i915/gem_exec_fence: Move the engine data into
+    inter_engine_context (v3)
+  tests/i915/gem_exec_fence: Convert to intel_ctx_t (v2)
+  tests/i915/gem_exec_schedule: Convert to intel_ctx_t (v3)
+  tests/i915/perf_pmu: Convert to intel_ctx_t (v3)
+  tests/i915/gem_exec_nop: Convert to intel_ctx_t
+  tests/i915/gem_exec_reloc: Convert to intel_ctx_t (v3)
+  tests/i915/gem_busy: Convert to intel_ctx_t (v3)
+  tests/i915/gem_ctx_isolation: Convert to intel_ctx_t (v2)
+  tests/i915/gem_exec_async: Convert to intel_ctx_t (v2)
+  tests/i915/sysfs_clients: Convert to intel_ctx_t
+  tests/i915/gem_exec_fair: Convert to intel_ctx_t
+  tests/i915/gem_spin_batch: Convert to intel_ctx_t (v2)
+  tests/i915/gem_exec_store: Convert to intel_ctx_t (v2)
+  tests/amdgpu/amd_prime: Convert to intel_ctx_t
+  tests/i915/i915_hangman: Convert to intel_ctx_t (v2)
+  tests/i915/gem_ringfill: Convert to intel_ctx_t
+  tests/prime_busy: Convert to intel_ctx_t
+  tests/prime_vgem: Convert to intel_ctx_t (v2)
+  tests/gem_exec_whisper: Convert to intel_ctx_t (v2)
+  tests/i915/gem_ctx_exec: Stop cloning contexts in close_race
+  tests/i915/gem_ctx_exec: Convert to intel_ctx_t
+  tests/i915/gem_exec_suspend: Convert to intel_ctx_t (v2)
+  tests/i915/gem_sync: Convert to intel_ctx_t (v2)
+  tests/i915/gem_userptr_blits: Convert to intel_ctx_t
+  tests/i915/gem_wait: Convert to intel_ctx_t (v2)
+  tests/i915/gem_request_retire: Convert to intel_ctx_t
+  tests/i915/gem_ctx_shared: Convert to intel_ctx_t (v2)
+  tests/i915/gem_ctx_shared: Stop cloning contexts
+  tests/i915/gem_create: Convert to intel_ctx_t
+  tests/i915/gem_ctx_switch: Convert to intel_ctx_t (v3)
+  tests/i915/gem_exec_parallel: Convert to intel_ctx_t (v2)
+  tests/i915/gem_exec_latency: Convert to intel_ctx_t (v3)
+  tests/i915/gem_watchdog: Convert to intel_ctx_t (v2)
+  tests/i915/gem_shrink: Convert to intel_ctx_t (v5)
+  tests/i915/gem_exec_params: Convert to intel_ctx_t
+  tests/i915/gem_exec_gttfill: Convert to intel_ctx_t (v2)
+  tests/i915/gem_exec_capture: Convert to intel_ctx_t (v2)
+  tests/i915/gem_exec_create: Convert to intel_ctx_t
+  tests/i915/gem_exec_await: Convert to intel_ctx_t (v2)
+  tests/i915/gem_ctx_persistence: Drop the clone subtest
+  tests/i915/gem_ctx_persistence: Drop the engine replace subtests
+  tests/i915/gem_ctx_persistence: Convert to intel_ctx_t
+  tests/i915/module_load: Convert to intel_ctx_t
+  tests/i915/pm_rc6_residency: Convert to intel_ctx_t
+  tests/i915/gem_cs_tlb: Convert to intel_ctx_t
+  tests/core_hotplug: Convert to intel_ctx_t
+  tests/i915/gem_exec_balancer: Stop cloning engines
+  tests/i915/gem_exec_balancer: Don't reset engines on a context (v2)
+  tests/i915/gem_exec_balancer: Stop munging ctx0 engines
+  tests/i915/gem_exec_balancer: Drop bonded tests
+  lib/intel_ctx: Add load balancing support (v2)
+  tests/i915/gem_exec_balancer: Convert to intel_ctx_t
+  tests/i915/gem_exec_endless: Stop munging ctx0 engines
+  lib/i915/submission: Rework gem_test_all_engines to use intel_ctx_t
+    (v2)
+  lib/i915: Require a context config in gem_submission_measure
+  tests/i915/gem_ctx_engines: Rework execute-one*
+  tests/i915/gem_ctx_engines: Use better engine iteration
+  tests/i915/gem_ctx_engines: Drop the idempotent subtest
+  tests/i915/gem_ctx_create: Don't re-open the device in maximum()
+  tests/i915/gem_ctx_create: Convert benchmarks to intel_ctx_t
+  tests/i915/gem_vm_create: Delete destroy racing tests
+  tests/i915/gem_vm_create: Use intel_ctx_t in the execbuf test
+  tests/i915/sysfs: Convert to intel_ctx_t
+  tests/i915/gem_workarounds: Convert to intel_ctx_t
+  lib/i915/gem_context: Delete all the context clone/copy stuff
+  tests/i915/gem_ctx_engines: Delete the libapi subtest
+  lib/igt_dummyload: Stop supporting ALL_ENGINES without an intel_ctx_t
+  lib/i915/gem_engine_topology: Delete the old physical engine iterators
+  tests/i915/gem_mmap_gtt: Convert to intel_ctx_t (v2)
+  tests/i915/i915_query: Convert to intel_ctx_t
+  igt/dummyload: Require an intel_ctx_t for POLL_RUN and !ALL_ENGINES
+  lib/i915: Rework engine API availability checks (v4)
+  lib/intel_bb: Remove intel_bb_assign_vm and tests (v2)
+  tests/i915/gem_ctx_param: Stop setting VMs on old contexts
+  tests/i915/gen9_exec_parse: Convert to intel_ctx_t
+  tests/i915/gem_ctx_param: Add tests for recently removed params
+  tests/i915/gem_ctx_param: Add a couple invalid PARAM_VM cases
+  tests/i915/gem_ctx_engines: Fix the invalid subtest for the new rules
+  tests/i915/gem_exec_balancer: Fix invalid-balancer for the set-once
+    rule
+  tests/i915/gem_exec_balancer: Add a test for combined balancing and
+    bonding (v2)
+
+ lib/i915/gem_context.c                | 173 +----
+ lib/i915/gem_context.h                |  17 +-
+ lib/i915/gem_engine_topology.c        | 154 +----
+ lib/i915/gem_engine_topology.h        |  20 -
+ lib/i915/gem_submission.c             |  41 +-
+ lib/i915/gem_submission.h             |   7 +-
+ lib/igt_dummyload.c                   |  41 +-
+ lib/intel_batchbuffer.c               |  65 --
+ lib/intel_batchbuffer.h               |   4 -
+ lib/intel_ctx.c                       |  63 +-
+ lib/intel_ctx.h                       |   4 +
+ tests/amdgpu/amd_prime.c              |  10 +-
+ tests/core_hotunplug.c                |   6 +-
+ tests/i915/api_intel_bb.c             | 104 ---
+ tests/i915/gem_busy.c                 |  80 ++-
+ tests/i915/gem_create.c               |  14 +-
+ tests/i915/gem_cs_tlb.c               |  10 +-
+ tests/i915/gem_ctx_create.c           | 110 ++--
+ tests/i915/gem_ctx_engines.c          | 352 +++-------
+ tests/i915/gem_ctx_exec.c             |  60 +-
+ tests/i915/gem_ctx_isolation.c        | 127 ++--
+ tests/i915/gem_ctx_param.c            |  75 ++-
+ tests/i915/gem_ctx_persistence.c      | 457 ++++---------
+ tests/i915/gem_ctx_shared.c           | 380 +++++++----
+ tests/i915/gem_ctx_switch.c           | 121 ++--
+ tests/i915/gem_eio.c                  |   2 +-
+ tests/i915/gem_exec_async.c           |  32 +-
+ tests/i915/gem_exec_await.c           |  29 +-
+ tests/i915/gem_exec_balancer.c        | 916 ++++++++------------------
+ tests/i915/gem_exec_capture.c         |  31 +-
+ tests/i915/gem_exec_create.c          |   9 +-
+ tests/i915/gem_exec_endless.c         |   2 +-
+ tests/i915/gem_exec_fair.c            | 112 ++--
+ tests/i915/gem_exec_fence.c           | 306 +++++----
+ tests/i915/gem_exec_gttfill.c         |  16 +-
+ tests/i915/gem_exec_latency.c         | 122 ++--
+ tests/i915/gem_exec_nop.c             | 156 +++--
+ tests/i915/gem_exec_parallel.c        |  29 +-
+ tests/i915/gem_exec_params.c          |   4 +-
+ tests/i915/gem_exec_reloc.c           |  98 +--
+ tests/i915/gem_exec_schedule.c        | 913 +++++++++++++------------
+ tests/i915/gem_exec_store.c           |  36 +-
+ tests/i915/gem_exec_suspend.c         |  53 +-
+ tests/i915/gem_exec_whisper.c         |  88 ++-
+ tests/i915/gem_mmap_gtt.c             |  18 +-
+ tests/i915/gem_request_retire.c       |  17 +-
+ tests/i915/gem_ringfill.c             |  48 +-
+ tests/i915/gem_shrink.c               |  18 +-
+ tests/i915/gem_spin_batch.c           |  81 ++-
+ tests/i915/gem_sync.c                 | 158 +++--
+ tests/i915/gem_userptr_blits.c        |  25 +-
+ tests/i915/gem_vm_create.c            | 125 +---
+ tests/i915/gem_wait.c                 |  20 +-
+ tests/i915/gem_watchdog.c             | 174 ++---
+ tests/i915/gem_workarounds.c          |  13 +-
+ tests/i915/gen9_exec_parse.c          | 106 +--
+ tests/i915/i915_hangman.c             |  37 +-
+ tests/i915/i915_module_load.c         |   7 +-
+ tests/i915/i915_pm_rc6_residency.c    |   7 +-
+ tests/i915/i915_pm_rpm.c              |   2 +-
+ tests/i915/i915_query.c               |  17 +-
+ tests/i915/perf_pmu.c                 | 243 ++++---
+ tests/i915/sysfs_clients.c            |  87 +--
+ tests/i915/sysfs_heartbeat_interval.c |  40 +-
+ tests/i915/sysfs_preempt_timeout.c    |  39 +-
+ tests/i915/sysfs_timeslice_duration.c |  51 +-
+ tests/prime_busy.c                    |  19 +-
+ tests/prime_vgem.c                    |  35 +-
+ 68 files changed, 3067 insertions(+), 3769 deletions(-)
+
 -- 
 2.31.1
 
