@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2050.outbound.protection.outlook.com [40.107.243.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 54F7F6E1CE
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 19:14:32 +0000 (UTC)
-Date: Wed, 7 Jul 2021 15:14:28 -0400
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Message-ID: <20210707191428.lbgog43ts6xzh5ie@outlook.office365.com>
-Content-Disposition: inline
+Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com
+ [IPv6:2607:f8b0:4864:20::732])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F3E618970E
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jul 2021 20:03:54 +0000 (UTC)
+Received: by mail-qk1-x732.google.com with SMTP id q16so3272442qke.10
+ for <igt-dev@lists.freedesktop.org>; Wed, 07 Jul 2021 13:03:54 -0700 (PDT)
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Wed,  7 Jul 2021 16:03:46 -0400
+Message-Id: <20210707200346.1731702-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Subject: [igt-dev] How to integrate new hardware to IGT CI?
+Subject: [igt-dev] [PATCH] tests/kms_addfb_basic: Test addfb2 with
+ DRM_FORMAT_C8 only if supported.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,40 +22,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Arkadiusz Hiler <arek@hiler.eu>, "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>, martin.peres@free.fr
-Cc: jason.zhang13@amd.com, Anson Jacob <Anson.Jacob@amd.com>, nicholas.choi@amd.com, antonio.terceiro@linaro.org, "Wang,
- Yu (Charlie)" <Yu.Wang4@amd.com>, charles.oliveira@linaro.org, markyacoub@google.com
+To: igt-dev@lists.freedesktop.org
+Cc: seanpaul@chromium.org, petri.latvala@intel.com, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+From: Mark Yacoub <markyacoub@google.com>
 
-IGT project has a super neat integration with patchwork [1] and Gitlab
-that helps the entire community to validate the IGT patches. I'm really
-curious to understand how to integrate a set of machines (lab) to this
-CI; more precisely, I'm curious about:
+[Why]
+Some devices such as Trogdor do not support DRM_FORMAT_C8 pixel format.
+Skip any addfb2 test on such devices that is expected to succeed such as
+subtest size-max.
 
-1. How the CI capture the emails from the public mailing list?
-2. How the CI distributes the workload for the machines under the CI?
-3. How to add a new machine to this CI?
-4. Is it possible to connect external labs spread around the world?
-5. Can you summarize the basic steps you see to enable a new set of
-   machines to become part of this CI?
+[How]
+Only run the check on devices with DRM_FORMAT_C8 support
 
-I think this sort of information can be helpful for anyone in the
-community that uses IGT.
+Tested on Trogdor.
 
-Btw, thanks a lot for implementing and maintain all of this integration
-available for the entire community.
+Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+---
+ tests/kms_addfb_basic.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-Thanks
-
-1. An example:
-https://patchwork.freedesktop.org/project/igt/series/?ordering=-last_updated
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/pipelines
-
+diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+index 91fb6ac9..20597b69 100644
+--- a/tests/kms_addfb_basic.c
++++ b/tests/kms_addfb_basic.c
+@@ -411,6 +411,7 @@ static void size_tests(int fd)
+ 	struct drm_mode_fb_cmd2 f_8 = {};
+ 	struct drm_mode_fb_cmd2 *framebuffers[] = {&f, &f_16, &f_8};
+ 	int i;
++	bool is_c8_format_supported = !is_msm_device(fd);
+ 
+ 	f.width = 1024;
+ 	f.height = 1024;
+@@ -440,17 +441,19 @@ static void size_tests(int fd)
+ 	f_16.handles[0] = gem_bo;
+ 	f_8.handles[0] = gem_bo;
+ 
+-	igt_describe("Check if addfb2 call works with max size of  buffer object");
++	igt_describe("Check if addfb2 call works with max size of buffer object");
+ 	igt_subtest("size-max") {
+ 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+ 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
+ 		f.fb_id = 0;
+ 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_16) == 0);
+ 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f_16.fb_id) == 0);
+-		f.fb_id = 0;
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_8) == 0);
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f_8.fb_id) == 0);
+-		f.fb_id = 0;
++		f_16.fb_id = 0;
++		if (is_c8_format_supported) {
++			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_8) == 0);
++			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f_8.fb_id) == 0);
++			f_8.fb_id = 0;
++		}
+ 	}
+ 
+ 	f.width++;
 -- 
-Rodrigo Siqueira
-https://siqueira.tech
+2.32.0.93.g670b81a890-goog
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
