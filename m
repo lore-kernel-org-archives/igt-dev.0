@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 191836E07F
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Jul 2021 06:24:16 +0000 (UTC)
-Date: Thu, 8 Jul 2021 08:23:50 +0200
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98BFA6E07F
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Jul 2021 06:35:49 +0000 (UTC)
+Date: Thu, 8 Jul 2021 08:35:41 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210708062350.GA10726@zkempczy-mobl2>
-References: <20210617191256.577244-1-jason@jlekstrand.net>
- <20210617191516.577394-11-jason@jlekstrand.net>
- <874kdq8tjv.wl-ashutosh.dixit@intel.com>
- <CAOFGe95gw+b_NhFrbfSuLx=1CyKNwBknOOVzryrubm5h75shBw@mail.gmail.com>
+Message-ID: <20210708063541.GB10726@zkempczy-mobl2>
+References: <20210707144337.180693-1-jason@jlekstrand.net>
+ <20210707144643.181001-11-jason@jlekstrand.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAOFGe95gw+b_NhFrbfSuLx=1CyKNwBknOOVzryrubm5h75shBw@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 60/79] tests/i915/gem_ctx_create:
- Convert benchmarks to intel_ctx_t
+In-Reply-To: <20210707144643.181001-11-jason@jlekstrand.net>
+Subject: Re: [igt-dev] [PATCH i-g-t 60/81] tests/i915/gem_ctx_create: Don't
+ re-open the device in maximum()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,97 +19,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Jason Ekstrand <jason@jlekstrand.net>
-Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
+Cc: igt-dev@lists.freedesktop.org, "Sarvela, Tomi P" <tomi.p.sarvela@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jun 23, 2021 at 01:09:51AM -0500, Jason Ekstrand wrote:
-> On Mon, Jun 21, 2021 at 10:30 PM Dixit, Ashutosh
-> <ashutosh.dixit@intel.com> wrote:
-> >
-> > On Thu, 17 Jun 2021 12:14:57 -0700, Jason Ekstrand wrote:
-> > >
-> > > -static void maximum(int fd, int ncpus, unsigned mode)
-> > > +static void maximum(int fd, const intel_ctx_cfg_t *cfg,
-> > > +                 int ncpus, unsigned mode)
-> > >  {
-> > >       const uint32_t bbe = MI_BATCH_BUFFER_END;
-> > >       struct drm_i915_gem_execbuffer2 execbuf;
-> > > @@ -300,9 +302,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
-> > >
-> > >               err = -ENOMEM;
-> > >               if (avail_mem > (count + 1) * ctx_size)
-> > > -                     err =  __gem_context_clone(fd, 0,
-> > > -                                                I915_CONTEXT_CLONE_ENGINES,
-> > > -                                                0, &ctx_id);
-> > > +                     err =  __gem_context_create(fd, &ctx_id);
-> > >               if (err) {
-> > >                       igt_info("Created %lu contexts, before failing with '%s' [%d]\n",
-> > >                                count, strerror(-err), -err);
-> > > @@ -323,6 +323,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
-> > >
-> > >       igt_fork(child, ncpus) {
-> > >               struct timespec start, end;
-> > > +             const intel_ctx_t *ctx;
-> > >               int i915;
-> > >
-> > >               i915 = gem_reopen_driver(fd);
-> >
-> > Just a minor nit here. I'm thinking if we should remove the i915 variable
-> > and the gem_reopen_driver() here and just use fd? Because it seems we have
-> > exhausted the memory creating contexts earlier on, and now the previous
-> > code was creating one additional context using gem_reopen_driver() whereas
-> > we are creating two, one with gem_reopen_driver() and a second with
-> > intel_ctx_create(). Not sure if it matters or not but just in case it does
-> > we can get rid of gem_reopen_driver() and i915.
-> 
-> Wait a second... I'm not sure how this was expected to ever work.  In
-> the first loop, the test creates a bunch of contexts with fd.  Then,
-> it forks off children.  Each of those children re-open the driver and
-> then try to execute using said contexts on i915.  But those contexts
-> don't exist on the newly opened DRM device.  I don't see how this ever
-> worked.
-
-I think answer is in blacklist.txt:
-
-igt@gem_ctx_create@(?!.*basic).*
-
-So it just wasn't executed at all (apart of postmerge, but likely results
-were ignored). 
-
---
-Zbigniew
-
-> 
-> --Jason
-> 
-> > Apart from this, this is:
-> >
-> > Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> >
-> > > @@ -331,7 +332,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
-> > >                * a nop execbuf and stalling for it.
-> > >                */
-> > >               gem_quiescent_gpu(i915);
-> > > -             gem_context_copy_engines(fd, 0, i915, 0);
-> > > +             ctx = intel_ctx_create(i915, cfg);
-> > >
-> > >               hars_petruska_f54_1_random_perturb(child);
-> > >               obj[0].handle = gem_create(i915, 4096);
-> > > @@ -352,6 +353,7 @@ static void maximum(int fd, int ncpus, unsigned mode)
-> > >               gem_sync(i915, obj[0].handle);
-> > >               clock_gettime(CLOCK_MONOTONIC, &end);
-> > >               gem_close(i915, obj[0].handle);
-> > > +             intel_ctx_destroy(i915, ctx);
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gV2VkLCBKdWwgMDcsIDIwMjEgYXQgMDk6NDY6MjJBTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
+d3JvdGU6Cj4gSW4gMDBhNjQwOThhYWFlICgidGVzdHMvaTkxNS9nZW1fY3R4X2NyZWF0ZTogVXNl
+Cj4gX19mb3JfZWFjaF9waHlzaWNhbF9lbmdpbmUgdG8gdXRpbGl6ZSBhbGwgYXZhaWxhYmxlIGVu
+Z2luZXMiKSwgdGhlCj4gbWF4aW11bSB0ZXN0cyB3ZXJlIG1vZGlmaWVkIHRvIHJlLW9wZW4gdGhl
+IGRldmljZS4gIEhvd2V2ZXIsIHRoaXMgaXMKPiBib3RoIHVubmVjZXNzYXJ5IGFuZCBicm9rZW4g
+YmVjYXVzZSB0aGUgZXhlY3V0aW9uIGxvb3AgcmUtdXNlcyB0aGUKPiBjb250ZXh0cyBjcmVhdGVk
+IGFib3ZlIGl0IHdoaWNoIGRvIG5vdCBleGlzdCBvbiB0aGUgbmV3bHkgcmUtb3BlbmVkIERSTQo+
+IGZpbGUuCj4gCj4gU2lnbmVkLW9mZi1ieTogSmFzb24gRWtzdHJhbmQgPGphc29uQGpsZWtzdHJh
+bmQubmV0Pgo+IEZpeGVzOiAwMGE2NDA5OGFhYWUgKCJ0ZXN0cy9pOTE1L2dlbV9jdHhfY3JlYXRl
+OiBVc2UgX19mb3JfZWFjaF9waHlzaWNhbF9lbmdpbmUgdG8gdXRpbGl6ZSBhbGwgYXZhaWxhYmxl
+IGVuZ2luZXMiKQo+IENjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenlu
+c2tpQGludGVsLmNvbT4KPiAtLS0KPiAgdGVzdHMvaTkxNS9nZW1fY3R4X2NyZWF0ZS5jIHwgMTcg
+KysrKy0tLS0tLS0tLS0tLS0KPiAgMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgMTMg
+ZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvZ2VtX2N0eF9jcmVhdGUu
+YyBiL3Rlc3RzL2k5MTUvZ2VtX2N0eF9jcmVhdGUuYwo+IGluZGV4IDViMTRmN2FmZC4uMzcwNjFl
+YmM1IDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2k5MTUvZ2VtX2N0eF9jcmVhdGUuYwo+ICsrKyBiL3Rl
+c3RzL2k5MTUvZ2VtX2N0eF9jcmVhdGUuYwo+IEBAIC0zMjMsMTggKzMyMyw5IEBAIHN0YXRpYyB2
+b2lkIG1heGltdW0oaW50IGZkLCBpbnQgbmNwdXMsIHVuc2lnbmVkIG1vZGUpCj4gIAo+ICAJaWd0
+X2ZvcmsoY2hpbGQsIG5jcHVzKSB7Cj4gIAkJc3RydWN0IHRpbWVzcGVjIHN0YXJ0LCBlbmQ7Cj4g
+LQkJaW50IGk5MTU7Cj4gLQo+IC0JCWk5MTUgPSBnZW1fcmVvcGVuX2RyaXZlcihmZCk7Cj4gLQkJ
+LyoKPiAtCQkgKiBFbnN1cmUgdGhlIGdwdSBpcyBpZGxlIGJ5IGxhdW5jaGluZwo+IC0JCSAqIGEg
+bm9wIGV4ZWNidWYgYW5kIHN0YWxsaW5nIGZvciBpdC4KPiAtCQkgKi8KPiAtCQlnZW1fcXVpZXNj
+ZW50X2dwdShpOTE1KTsKPiAtCQlnZW1fY29udGV4dF9jb3B5X2VuZ2luZXMoZmQsIDAsIGk5MTUs
+IDApOwo+ICAKPiAgCQloYXJzX3BldHJ1c2thX2Y1NF8xX3JhbmRvbV9wZXJ0dXJiKGNoaWxkKTsK
+PiAtCQlvYmpbMF0uaGFuZGxlID0gZ2VtX2NyZWF0ZShpOTE1LCA0MDk2KTsKPiArCQlvYmpbMF0u
+aGFuZGxlID0gZ2VtX2NyZWF0ZShmZCwgNDA5Nik7Cj4gIAo+ICAJCWNsb2NrX2dldHRpbWUoQ0xP
+Q0tfTU9OT1RPTklDLCAmc3RhcnQpOwo+ICAJCWZvciAoaW50IHJlcGVhdCA9IDA7IHJlcGVhdCA8
+IDM7IHJlcGVhdCsrKSB7Cj4gQEAgLTM0NSwxMyArMzM2LDEzIEBAIHN0YXRpYyB2b2lkIG1heGlt
+dW0oaW50IGZkLCBpbnQgbmNwdXMsIHVuc2lnbmVkIG1vZGUpCj4gIAkJCQlleGVjYnVmLnJzdmQx
+ID0gY29udGV4dHNbaV07Cj4gIAkJCQlmb3IgKHVuc2lnbmVkIGxvbmcgaiA9IDA7IGogPCBhbGxf
+bmVuZ2luZTsgaisrKSB7Cj4gIAkJCQkJZXhlY2J1Zi5mbGFncyA9IGFsbF9lbmdpbmVzW2pdOwo+
+IC0JCQkJCWdlbV9leGVjYnVmKGk5MTUsICZleGVjYnVmKTsKPiArCQkJCQlnZW1fZXhlY2J1Zihm
+ZCwgJmV4ZWNidWYpOwo+ICAJCQkJfQo+ICAJCQl9Cj4gIAkJfQo+IC0JCWdlbV9zeW5jKGk5MTUs
+IG9ialswXS5oYW5kbGUpOwo+ICsJCWdlbV9zeW5jKGZkLCBvYmpbMF0uaGFuZGxlKTsKPiAgCQlj
+bG9ja19nZXR0aW1lKENMT0NLX01PTk9UT05JQywgJmVuZCk7Cj4gLQkJZ2VtX2Nsb3NlKGk5MTUs
+IG9ialswXS5oYW5kbGUpOwo+ICsJCWdlbV9jbG9zZShmZCwgb2JqWzBdLmhhbmRsZSk7Cj4gIAo+
+ICAJCWlndF9pbmZvKCJbJWRdIENvbnRleHQgZXhlY3V0aW9uOiAlLjNmIHVzXG4iLCBjaGlsZCwK
+PiAgCQkJIGVsYXBzZWQoJnN0YXJ0LCAmZW5kKSAvICgzICogY291bnQgKiBhbGxfbmVuZ2luZSkg
+KiAxZTYpOwo+IC0tIAo+IDIuMzEuMQo+IAoKK1RvbWkKCkxvb2tzIG9rLiBPbmx5IHRoaW5nIHdo
+aWNoIGlzIHdvcnJ5aW5nIG1lIGlzIHlvdXIgZml4IHdpbGwgc3RhcnQgdGVzdCBydW5uaW5nIApv
+biBwcmUtbWVyZ2Ugc28gaXQgd291bGQgaW5jcmVhc2UgQ0kgdGltZSAoZXNwZWNpYWxseSBvbiBt
+YWNoaW5lcyB3aXRoIGEgbG90Cm9mIG1lbSAoK3N3YXApLiBCdXQgbGV0cyBzZWUgaWYgdGhpcyB3
+aWxsIGJlIHJlYWxseSBub3RpY2VhYmxlLgoKUmV2aWV3ZWQtYnk6IFpiaWduaWV3IEtlbXBjennF
+hHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgoKLS0KWmJpZ25pZXcKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5n
+IGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
+a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
