@@ -1,19 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com
- [IPv6:2a00:1450:4864:20::131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C70A6E990
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Jul 2021 19:53:42 +0000 (UTC)
-Received: by mail-lf1-x131.google.com with SMTP id u18so8797448lfl.2
- for <igt-dev@lists.freedesktop.org>; Thu, 08 Jul 2021 12:53:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210707200346.1731702-1-markyacoub@chromium.org>
- <YOdNTDxptcNCTVDg@intel.com>
-In-Reply-To: <YOdNTDxptcNCTVDg@intel.com>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Thu, 8 Jul 2021 15:53:29 -0400
-Message-ID: <CAJUqKUq_Rg7x=XYEaSgiNYtTA=Wn1K9QV_oeRT5f-z=RHi-oww@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH] tests/kms_addfb_basic: Test addfb2 with
- DRM_FORMAT_C8 only if supported.
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 08 Jul 2021 20:48:19 -0000
+Message-ID: <162577729929.32075.12118243117346966478@emeril.freedesktop.org>
+References: <20210708164902.18250-1-venkata.sai.patnana@intel.com>
+In-Reply-To: <20210708164902.18250-1-venkata.sai.patnana@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgVkRTQyBB?=
+ =?utf-8?q?DLP_related_patches_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,62 +14,167 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1370067855=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, Sean Paul <seanpaul@chromium.org>, Petri Latvala <petri.latvala@intel.com>, Mark Yacoub <markyacoub@google.com>
+To: venkata.sai.patnana@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBKdWwgOCwgMjAyMSBhdCAzOjA5IFBNIFZpbGxlIFN5cmrDpGzDpAo8dmlsbGUuc3ly
-amFsYUBsaW51eC5pbnRlbC5jb20+IHdyb3RlOgo+Cj4gT24gV2VkLCBKdWwgMDcsIDIwMjEgYXQg
-MDQ6MDM6NDZQTSAtMDQwMCwgTWFyayBZYWNvdWIgd3JvdGU6Cj4gPiBGcm9tOiBNYXJrIFlhY291
-YiA8bWFya3lhY291YkBnb29nbGUuY29tPgo+ID4KPiA+IFtXaHldCj4gPiBTb21lIGRldmljZXMg
-c3VjaCBhcyBUcm9nZG9yIGRvIG5vdCBzdXBwb3J0IERSTV9GT1JNQVRfQzggcGl4ZWwgZm9ybWF0
-Lgo+ID4gU2tpcCBhbnkgYWRkZmIyIHRlc3Qgb24gc3VjaCBkZXZpY2VzIHRoYXQgaXMgZXhwZWN0
-ZWQgdG8gc3VjY2VlZCBzdWNoIGFzCj4gPiBzdWJ0ZXN0IHNpemUtbWF4Lgo+ID4KPiA+IFtIb3dd
-Cj4gPiBPbmx5IHJ1biB0aGUgY2hlY2sgb24gZGV2aWNlcyB3aXRoIERSTV9GT1JNQVRfQzggc3Vw
-cG9ydAo+ID4KPiA+IFRlc3RlZCBvbiBUcm9nZG9yLgo+ID4KPiA+IFNpZ25lZC1vZmYtYnk6IE1h
-cmsgWWFjb3ViIDxtYXJreWFjb3ViQGNocm9taXVtLm9yZz4KPiA+IC0tLQo+ID4gIHRlc3RzL2tt
-c19hZGRmYl9iYXNpYy5jIHwgMTMgKysrKysrKystLS0tLQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA4
-IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pCj4gPgo+ID4gZGlmZiAtLWdpdCBhL3Rlc3Rz
-L2ttc19hZGRmYl9iYXNpYy5jIGIvdGVzdHMva21zX2FkZGZiX2Jhc2ljLmMKPiA+IGluZGV4IDkx
-ZmI2YWM5Li4yMDU5N2I2OSAxMDA2NDQKPiA+IC0tLSBhL3Rlc3RzL2ttc19hZGRmYl9iYXNpYy5j
-Cj4gPiArKysgYi90ZXN0cy9rbXNfYWRkZmJfYmFzaWMuYwo+ID4gQEAgLTQxMSw2ICs0MTEsNyBA
-QCBzdGF0aWMgdm9pZCBzaXplX3Rlc3RzKGludCBmZCkKPiA+ICAgICAgIHN0cnVjdCBkcm1fbW9k
-ZV9mYl9jbWQyIGZfOCA9IHt9Owo+ID4gICAgICAgc3RydWN0IGRybV9tb2RlX2ZiX2NtZDIgKmZy
-YW1lYnVmZmVyc1tdID0geyZmLCAmZl8xNiwgJmZfOH07Cj4gPiAgICAgICBpbnQgaTsKPiA+ICsg
-ICAgIGJvb2wgaXNfYzhfZm9ybWF0X3N1cHBvcnRlZCA9ICFpc19tc21fZGV2aWNlKGZkKTsKPgo+
-IFRoZXJlIGlzIGEgaWd0X2Rpc3BsYXlfaGFzX2Zvcm1hdF9tb2QoKQpUaGFua3MgZm9yIHBvaW50
-aW5nIHRoYXQgb3V0LiBIZWxwcyBhIGxvdC4gbXVjaCBjbGVhbmVyIQo+Cj4gPgo+ID4gICAgICAg
-Zi53aWR0aCA9IDEwMjQ7Cj4gPiAgICAgICBmLmhlaWdodCA9IDEwMjQ7Cj4gPiBAQCAtNDQwLDE3
-ICs0NDEsMTkgQEAgc3RhdGljIHZvaWQgc2l6ZV90ZXN0cyhpbnQgZmQpCj4gPiAgICAgICBmXzE2
-LmhhbmRsZXNbMF0gPSBnZW1fYm87Cj4gPiAgICAgICBmXzguaGFuZGxlc1swXSA9IGdlbV9ibzsK
-PiA+Cj4gPiAtICAgICBpZ3RfZGVzY3JpYmUoIkNoZWNrIGlmIGFkZGZiMiBjYWxsIHdvcmtzIHdp
-dGggbWF4IHNpemUgb2YgIGJ1ZmZlciBvYmplY3QiKTsKPiA+ICsgICAgIGlndF9kZXNjcmliZSgi
-Q2hlY2sgaWYgYWRkZmIyIGNhbGwgd29ya3Mgd2l0aCBtYXggc2l6ZSBvZiBidWZmZXIgb2JqZWN0
-Iik7Cj4gPiAgICAgICBpZ3Rfc3VidGVzdCgic2l6ZS1tYXgiKSB7Cj4gPiAgICAgICAgICAgICAg
-IGlndF9hc3NlcnQoZHJtSW9jdGwoZmQsIERSTV9JT0NUTF9NT0RFX0FEREZCMiwgJmYpID09IDAp
-Owo+ID4gICAgICAgICAgICAgICBpZ3RfYXNzZXJ0KGRybUlvY3RsKGZkLCBEUk1fSU9DVExfTU9E
-RV9STUZCLCAmZi5mYl9pZCkgPT0gMCk7Cj4gPiAgICAgICAgICAgICAgIGYuZmJfaWQgPSAwOwo+
-ID4gICAgICAgICAgICAgICBpZ3RfYXNzZXJ0KGRybUlvY3RsKGZkLCBEUk1fSU9DVExfTU9ERV9B
-RERGQjIsICZmXzE2KSA9PSAwKTsKPiA+ICAgICAgICAgICAgICAgaWd0X2Fzc2VydChkcm1Jb2N0
-bChmZCwgRFJNX0lPQ1RMX01PREVfUk1GQiwgJmZfMTYuZmJfaWQpID09IDApOwo+ID4gLSAgICAg
-ICAgICAgICBmLmZiX2lkID0gMDsKPiA+IC0gICAgICAgICAgICAgaWd0X2Fzc2VydChkcm1Jb2N0
-bChmZCwgRFJNX0lPQ1RMX01PREVfQURERkIyLCAmZl84KSA9PSAwKTsKPiA+IC0gICAgICAgICAg
-ICAgaWd0X2Fzc2VydChkcm1Jb2N0bChmZCwgRFJNX0lPQ1RMX01PREVfUk1GQiwgJmZfOC5mYl9p
-ZCkgPT0gMCk7Cj4gPiAtICAgICAgICAgICAgIGYuZmJfaWQgPSAwOwo+ID4gKyAgICAgICAgICAg
-ICBmXzE2LmZiX2lkID0gMDsKPiA+ICsgICAgICAgICAgICAgaWYgKGlzX2M4X2Zvcm1hdF9zdXBw
-b3J0ZWQpIHsKPiA+ICsgICAgICAgICAgICAgICAgICAgICBpZ3RfYXNzZXJ0KGRybUlvY3RsKGZk
-LCBEUk1fSU9DVExfTU9ERV9BRERGQjIsICZmXzgpID09IDApOwo+ID4gKyAgICAgICAgICAgICAg
-ICAgICAgIGlndF9hc3NlcnQoZHJtSW9jdGwoZmQsIERSTV9JT0NUTF9NT0RFX1JNRkIsICZmXzgu
-ZmJfaWQpID09IDApOwo+ID4gKyAgICAgICAgICAgICAgICAgICAgIGZfOC5mYl9pZCA9IDA7Cj4g
-PiArICAgICAgICAgICAgIH0KPiA+ICAgICAgIH0KPiA+Cj4gPiAgICAgICBmLndpZHRoKys7Cj4g
-PiAtLQo+ID4gMi4zMi4wLjkzLmc2NzBiODFhODkwLWdvb2cKPiA+Cj4gPiBfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+ID4gaWd0LWRldiBtYWlsaW5nIGxp
-c3QKPiA+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4gPiBodHRwczovL2xpc3RzLmZy
-ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYKPgo+IC0tCj4gVmlsbGUgU3ly
-asOkbMOkCj4gSW50ZWwKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
-aHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+--===============1370067855==
+Content-Type: multipart/alternative;
+ boundary="===============0748573478243811972=="
+
+--===============0748573478243811972==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: VDSC ADLP related patches (rev2)
+URL   : https://patchwork.freedesktop.org/series/92324/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10319 -> IGTPW_6000
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6000/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6000 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@read_all_entries:
+    - fi-kbl-soraka:      [PASS][1] -> [DMESG-WARN][2] ([i915#1982] / [i915#262])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10319/fi-kbl-soraka/igt@debugfs_test@read_all_entries.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6000/fi-kbl-soraka/igt@debugfs_test@read_all_entries.html
+
+  
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#262]: https://gitlab.freedesktop.org/drm/intel/issues/262
+
+
+Participating hosts (40 -> 39)
+------------------------------
+
+  Missing    (1): fi-bsw-cyan 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6132 -> IGTPW_6000
+
+  CI-20190529: 20190529
+  CI_DRM_10319: 4b4a9f252ab44da921f5e0067ec26d29e5c43d8e @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6000: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6000/index.html
+  IGT_6132: 61fb9cdf2a9132e3618c8b08b9d20fec0c347831 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@kms_dp_dsc@basic-dsc-enable
++igt@kms_dp_dsc@xrgb8888-dsc-compression
+-igt@kms_dp_dsc@basic-dsc-enable-dp
+-igt@kms_dp_dsc@basic-dsc-enable-edp
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6000/index.html
+
+--===============0748573478243811972==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>VDSC ADLP related patches (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/92324/">https://patchwork.freedesktop.org/series/92324/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6000/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6000/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10319 -&gt; IGTPW_6000</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6000/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6000 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@debugfs_test@read_all_entries:<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10319/fi-kbl-soraka/igt@debugfs_test@read_all_entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6000/fi-kbl-soraka/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/262">i915#262</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (40 -&gt; 39)</h2>
+<p>Missing    (1): fi-bsw-cyan </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6132 -&gt; IGTPW_6000</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10319: 4b4a9f252ab44da921f5e0067ec26d29e5c43d8e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6000: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6000/index.html<br />
+  IGT_6132: 61fb9cdf2a9132e3618c8b08b9d20fec0c347831 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_dp_dsc@basic-dsc-enable<br />
++igt@kms_dp_dsc@xrgb8888-dsc-compression<br />
+-igt@kms_dp_dsc@basic-dsc-enable-dp<br />
+-igt@kms_dp_dsc@basic-dsc-enable-edp</p>
+
+</body>
+</html>
+
+--===============0748573478243811972==--
+
+--===============1370067855==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1370067855==--
