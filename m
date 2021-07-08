@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D516E6E947
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Jul 2021 17:00:13 +0000 (UTC)
-From: venkata.sai.patnana@intel.com
-Date: Thu,  8 Jul 2021 22:19:02 +0530
-Message-Id: <20210708164902.18250-5-venkata.sai.patnana@intel.com>
-In-Reply-To: <20210708164902.18250-1-venkata.sai.patnana@intel.com>
-References: <20210708164902.18250-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 4/4] tests/kms_invalid_dotclock: Modify the
- test for bigjoiner
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 08 Jul 2021 17:20:19 -0000
+Message-ID: <162576481942.32072.16523538088692378530@emeril.freedesktop.org>
+References: <20210708153629.489175-1-jason@jlekstrand.net>
+In-Reply-To: <20210708153629.489175-1-jason@jlekstrand.net>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/i915/exec=5Fbalancer=3A_Drop_the_bonded-slice_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,60 +14,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Jason Ekstrand <jason@jlekstrand.net>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogQW5raXQgTmF1dGl5YWwgPGFua2l0LmsubmF1dGl5YWxAaW50ZWwuY29tPgoKQ3VycmVu
-dGx5IHRoZSB0ZXN0IGFzc3VtZXMgdGhhdCB0aGUgbW9kZXMgd2l0aCBjbG9jayBtb3JlIHRoYW4g
-dGhlCm1heGltdW0gZG90IGNsb2NrIHdpbGwgYmUgcmVqZWN0ZWQuIFRoaXMgZmFpbHMgaW4gY2Fz
-ZSBvZgpwbGF0Zm9ybXMgdGhhdCBjb21iaW5lIG11bHRpcGxlIHBpcGVzIGFuZCBtb2RlcyBoaWdo
-ZXIgdGhhbiB0aGUKbWF4aW11bSBkb3RjbG9jayBjYW4gc3RpbGwgYmUgc3VwcG9ydGVkLgoKVGhp
-cyBwYXRjaCBtb2RpZmllcyB0aGUgdGVzdCB0byBidW1wIHRoZSBjbG9jayBmb3IgdGhlIGdpdmVu
-IG1vZGUKYnkgdHdpY2UgaWYgYmlnam9pbmVyIGlzIHN1cHBvcnRlZC4KCkNjOiBNYW5hc2kgTmF2
-YXJlIDxtYW5hc2kuZC5uYXZhcmVAaW50ZWwuY29tPgpTaWduZWQtb2ZmLWJ5OiBBbmtpdCBOYXV0
-aXlhbCA8YW5raXQuay5uYXV0aXlhbEBpbnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IEp1aGEtUGVr
-a2EgSGVpa2tpbMOkIDxqdWhhLXBla2thLmhlaWtraWxhQGludGVsLmNvbT4KU2lnbmVkLW9mZi1i
-eTogUGF0bmFuYSBWZW5rYXRhIFNhaSA8dmVua2F0YS5zYWkucGF0bmFuYUBpbnRlbC5jb20+ClJl
-dmlld2VkLWJ5OiBNYW5hc2kgTmF2YXJlIDxtYW5hc2kuZC5uYXZhcmVAaW50ZWwuY29tPgotLS0K
-IHRlc3RzL2ttc19pbnZhbGlkX2RvdGNsb2NrLmMgfCAzNCArKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKy0tCiAxIGZpbGUgY2hhbmdlZCwgMzIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlv
-bnMoLSkKCmRpZmYgLS1naXQgYS90ZXN0cy9rbXNfaW52YWxpZF9kb3RjbG9jay5jIGIvdGVzdHMv
-a21zX2ludmFsaWRfZG90Y2xvY2suYwppbmRleCA0MDI2MjlhYjA5Li40NTFhOTIyZjZjIDEwMDY0
-NAotLS0gYS90ZXN0cy9rbXNfaW52YWxpZF9kb3RjbG9jay5jCisrKyBiL3Rlc3RzL2ttc19pbnZh
-bGlkX2RvdGNsb2NrLmMKQEAgLTQzLDYgKzQzLDI1IEBAIHN0YXRpYyBib29sIGhhc19zY2FsaW5n
-X21vZGVfcHJvcChkYXRhX3QgKmRhdGEpCiAJCQkJICAgICJzY2FsaW5nIG1vZGUiLAogCQkJCSAg
-ICBOVUxMLCBOVUxMLCBOVUxMKTsKIH0KK3N0YXRpYyBib29sCitjYW5fYmlnam9pbmVyKGRhdGFf
-dCAqZGF0YSkKK3sKKwlkcm1Nb2RlQ29ubmVjdG9yICpjb25uZWN0b3IgPSBkYXRhLT5vdXRwdXQt
-PmNvbmZpZy5jb25uZWN0b3I7CisJdWludDMyX3QgZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2Rldmlk
-KGRhdGEtPmRybV9mZCk7CisKKwkvKgorCSAqIEdFTjExIGFuZCBHRU4xMiByZXF1aXJlIERTQyB0
-byBzdXBwb3J0IGJpZ2pvaW5lci4KKwkgKiBYRUxQRCBhbmQgbGF0ZXIgR0VOIHN1cHBvcnQgdW5j
-b21wcmVzc2VkIGJpZ2pvaW5lci4KKwkgKi8KKwlpZiAoaW50ZWxfZGlzcGxheV92ZXIoZGV2aWQp
-ID4gMTIpIHsKKwkJaWd0X2RlYnVnKCJQbGF0Zm9ybSBzdXBwb3J0cyB1bmNvbXByZXNzZWQgYmln
-am9pbmVyXG4iKTsKKwkJcmV0dXJuIHRydWU7CisJfSBlbHNlIGlmIChpbnRlbF9kaXNwbGF5X3Zl
-cihkZXZpZCkgPj0gMTEpIHsKKwkJcmV0dXJuIGlndF9pc19kcF9kc2Nfc3VwcG9ydGVkKGRhdGEt
-PmRybV9mZCwgY29ubmVjdG9yKTsKKwl9CisKKwlyZXR1cm4gZmFsc2U7Cit9CiAKIHN0YXRpYyBp
-bnQKIHRlc3Rfb3V0cHV0KGRhdGFfdCAqZGF0YSkKQEAgLTcwLDEyICs4OSwyNSBAQCB0ZXN0X291
-dHB1dChkYXRhX3QgKmRhdGEpCiAJbW9kZSA9ICppZ3Rfb3V0cHV0X2dldF9tb2RlKG91dHB1dCk7
-CiAJbW9kZS5jbG9jayA9IGRhdGEtPm1heF9kb3RjbG9jayArIDE7CiAKKwkvKgorCSAqIE5ld2Vy
-IHBsYXRmb3JtcyBjYW4gc3VwcG9ydCBtb2RlcyBoaWdoZXIgdGhhbiB0aGUgbWF4aW11bSBkb3Qg
-Y2xvY2sKKwkgKiBieSB1c2luZyBwaXBlIGpvaW5lciwgc28gc2V0IHRoZSBtb2RlIGNsb2NrIHR3
-aWNlIHRoYXQgb2YgbWF4aW11bQorCSAqIGRvdCBjbG9jazsKKwkgKi8KKwlpZiAoY2FuX2JpZ2pv
-aW5lcihkYXRhKSkgeworCQlpZ3RfaW5mbygiUGxhdGZvcm0gc3VwcG9ydHMgYmlnam9pbmVyIHdp
-dGggJXNcbiIsCisJCQkgIG91dHB1dC0+bmFtZSk7CisJCW1vZGUuY2xvY2sgKj0gMjsKKwl9CisK
-IAlpZ3RfY3JlYXRlX2ZiKGRhdGEtPmRybV9mZCwKIAkJICAgICAgbW9kZS5oZGlzcGxheSwgbW9k
-ZS52ZGlzcGxheSwKIAkJICAgICAgRFJNX0ZPUk1BVF9YUkdCODg4OCwKIAkJICAgICAgTE9DQUxf
-RFJNX0ZPUk1BVF9NT0RfTk9ORSwKIAkJICAgICAgJmZiKTsKIAorCWttc3Rlc3RfdW5zZXRfYWxs
-X2NydGNzKGRhdGEtPmRybV9mZCwgZGF0YS0+cmVzKTsKKwogCWZvciAoaSA9IDA7IGkgPCBkYXRh
-LT5yZXMtPmNvdW50X2NydGNzOyBpKyspIHsKIAkJaW50IHJldDsKIApAQCAtMTM1LDggKzE2Nyw2
-IEBAIGlndF9zaW1wbGVfbWFpbgogCWRhdGEucmVzID0gZHJtTW9kZUdldFJlc291cmNlcyhkYXRh
-LmRybV9mZCk7CiAJaWd0X2Fzc2VydChkYXRhLnJlcyk7CiAKLQlrbXN0ZXN0X3Vuc2V0X2FsbF9j
-cnRjcyhkYXRhLmRybV9mZCwgZGF0YS5yZXMpOwotCiAJZGF0YS5tYXhfZG90Y2xvY2sgPSBpOTE1
-X21heF9kb3RjbG9jaygmZGF0YSk7CiAJaWd0X2luZm8oIk1heCBkb3RjbG9jazogJWQga0h6XG4i
-LCBkYXRhLm1heF9kb3RjbG9jayk7CiAKLS0gCjIuMjUuMQoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9pZ3QtZGV2Cg==
+== Series Details ==
+
+Series: tests/i915/exec_balancer: Drop the bonded-slice test
+URL   : https://patchwork.freedesktop.org/series/92326/
+State : failure
+
+== Summary ==
+
+Applying: tests/i915/exec_balancer: Drop the bonded-slice test
+Patch failed at 0001 tests/i915/exec_balancer: Drop the bonded-slice test
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
