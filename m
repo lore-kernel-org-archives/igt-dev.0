@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com
- [IPv6:2607:f8b0:4864:20::82a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F22D86E990
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Jul 2021 19:51:38 +0000 (UTC)
-Received: by mail-qt1-x82a.google.com with SMTP id n9so5792482qtk.7
- for <igt-dev@lists.freedesktop.org>; Thu, 08 Jul 2021 12:51:38 -0700 (PDT)
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Thu,  8 Jul 2021 15:51:30 -0400
-Message-Id: <20210708195130.2802224-1-markyacoub@chromium.org>
-In-Reply-To: <20210707200346.1731702-1-markyacoub@chromium.org>
-References: <20210707200346.1731702-1-markyacoub@chromium.org>
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com
+ [IPv6:2a00:1450:4864:20::131])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C70A6E990
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Jul 2021 19:53:42 +0000 (UTC)
+Received: by mail-lf1-x131.google.com with SMTP id u18so8797448lfl.2
+ for <igt-dev@lists.freedesktop.org>; Thu, 08 Jul 2021 12:53:42 -0700 (PDT)
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] tests/kms_addfb_basic: Test addfb2 with
+References: <20210707200346.1731702-1-markyacoub@chromium.org>
+ <YOdNTDxptcNCTVDg@intel.com>
+In-Reply-To: <YOdNTDxptcNCTVDg@intel.com>
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Thu, 8 Jul 2021 15:53:29 -0400
+Message-ID: <CAJUqKUq_Rg7x=XYEaSgiNYtTA=Wn1K9QV_oeRT5f-z=RHi-oww@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH] tests/kms_addfb_basic: Test addfb2 with
  DRM_FORMAT_C8 only if supported.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -20,81 +21,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: seanpaul@chromium.org, petri.latvala@intel.com, Mark Yacoub <markyacoub@google.com>
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, Sean Paul <seanpaul@chromium.org>, Petri Latvala <petri.latvala@intel.com>, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mark Yacoub <markyacoub@google.com>
-
-[Why]
-Some devices such as Trogdor do not support DRM_FORMAT_C8 pixel format.
-Skip any addfb2 test on such devices that is expected to succeed such as
-subtest size-max.
-
-[How]
-Only run the check on devices with DRM_FORMAT_C8 support
-
-Tested on ChromeOS Trogdor
-
-Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
----
- tests/kms_addfb_basic.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
-
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index 91fb6ac9..a76c07d1 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -410,6 +410,7 @@ static void size_tests(int fd)
- 	struct drm_mode_fb_cmd2 f_16 = {};
- 	struct drm_mode_fb_cmd2 f_8 = {};
- 	struct drm_mode_fb_cmd2 *framebuffers[] = {&f, &f_16, &f_8};
-+	igt_display_t display;
- 	int i;
- 
- 	f.width = 1024;
-@@ -428,6 +429,8 @@ static void size_tests(int fd)
- 	f_8.pitches[0] = 1024*2;
- 
- 	igt_fixture {
-+		igt_display_require(&display, fd);
-+
- 		gem_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
- 			DRM_FORMAT_XRGB8888, 0, 0, NULL, NULL, NULL);
- 		igt_assert(gem_bo);
-@@ -440,17 +443,19 @@ static void size_tests(int fd)
- 	f_16.handles[0] = gem_bo;
- 	f_8.handles[0] = gem_bo;
- 
--	igt_describe("Check if addfb2 call works with max size of  buffer object");
-+	igt_describe("Check if addfb2 call works with max size of buffer object");
- 	igt_subtest("size-max") {
- 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
- 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
- 		f.fb_id = 0;
- 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_16) == 0);
- 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f_16.fb_id) == 0);
--		f.fb_id = 0;
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_8) == 0);
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f_8.fb_id) == 0);
--		f.fb_id = 0;
-+		f_16.fb_id = 0;
-+		if (igt_display_has_format_mod(&display, DRM_FORMAT_C8, 0)) {
-+			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_8) == 0);
-+			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f_8.fb_id) == 0);
-+			f_8.fb_id = 0;
-+		}
- 	}
- 
- 	f.width++;
--- 
-2.32.0.93.g670b81a890-goog
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gVGh1LCBKdWwgOCwgMjAyMSBhdCAzOjA5IFBNIFZpbGxlIFN5cmrDpGzDpAo8dmlsbGUuc3ly
+amFsYUBsaW51eC5pbnRlbC5jb20+IHdyb3RlOgo+Cj4gT24gV2VkLCBKdWwgMDcsIDIwMjEgYXQg
+MDQ6MDM6NDZQTSAtMDQwMCwgTWFyayBZYWNvdWIgd3JvdGU6Cj4gPiBGcm9tOiBNYXJrIFlhY291
+YiA8bWFya3lhY291YkBnb29nbGUuY29tPgo+ID4KPiA+IFtXaHldCj4gPiBTb21lIGRldmljZXMg
+c3VjaCBhcyBUcm9nZG9yIGRvIG5vdCBzdXBwb3J0IERSTV9GT1JNQVRfQzggcGl4ZWwgZm9ybWF0
+Lgo+ID4gU2tpcCBhbnkgYWRkZmIyIHRlc3Qgb24gc3VjaCBkZXZpY2VzIHRoYXQgaXMgZXhwZWN0
+ZWQgdG8gc3VjY2VlZCBzdWNoIGFzCj4gPiBzdWJ0ZXN0IHNpemUtbWF4Lgo+ID4KPiA+IFtIb3dd
+Cj4gPiBPbmx5IHJ1biB0aGUgY2hlY2sgb24gZGV2aWNlcyB3aXRoIERSTV9GT1JNQVRfQzggc3Vw
+cG9ydAo+ID4KPiA+IFRlc3RlZCBvbiBUcm9nZG9yLgo+ID4KPiA+IFNpZ25lZC1vZmYtYnk6IE1h
+cmsgWWFjb3ViIDxtYXJreWFjb3ViQGNocm9taXVtLm9yZz4KPiA+IC0tLQo+ID4gIHRlc3RzL2tt
+c19hZGRmYl9iYXNpYy5jIHwgMTMgKysrKysrKystLS0tLQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA4
+IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pCj4gPgo+ID4gZGlmZiAtLWdpdCBhL3Rlc3Rz
+L2ttc19hZGRmYl9iYXNpYy5jIGIvdGVzdHMva21zX2FkZGZiX2Jhc2ljLmMKPiA+IGluZGV4IDkx
+ZmI2YWM5Li4yMDU5N2I2OSAxMDA2NDQKPiA+IC0tLSBhL3Rlc3RzL2ttc19hZGRmYl9iYXNpYy5j
+Cj4gPiArKysgYi90ZXN0cy9rbXNfYWRkZmJfYmFzaWMuYwo+ID4gQEAgLTQxMSw2ICs0MTEsNyBA
+QCBzdGF0aWMgdm9pZCBzaXplX3Rlc3RzKGludCBmZCkKPiA+ICAgICAgIHN0cnVjdCBkcm1fbW9k
+ZV9mYl9jbWQyIGZfOCA9IHt9Owo+ID4gICAgICAgc3RydWN0IGRybV9tb2RlX2ZiX2NtZDIgKmZy
+YW1lYnVmZmVyc1tdID0geyZmLCAmZl8xNiwgJmZfOH07Cj4gPiAgICAgICBpbnQgaTsKPiA+ICsg
+ICAgIGJvb2wgaXNfYzhfZm9ybWF0X3N1cHBvcnRlZCA9ICFpc19tc21fZGV2aWNlKGZkKTsKPgo+
+IFRoZXJlIGlzIGEgaWd0X2Rpc3BsYXlfaGFzX2Zvcm1hdF9tb2QoKQpUaGFua3MgZm9yIHBvaW50
+aW5nIHRoYXQgb3V0LiBIZWxwcyBhIGxvdC4gbXVjaCBjbGVhbmVyIQo+Cj4gPgo+ID4gICAgICAg
+Zi53aWR0aCA9IDEwMjQ7Cj4gPiAgICAgICBmLmhlaWdodCA9IDEwMjQ7Cj4gPiBAQCAtNDQwLDE3
+ICs0NDEsMTkgQEAgc3RhdGljIHZvaWQgc2l6ZV90ZXN0cyhpbnQgZmQpCj4gPiAgICAgICBmXzE2
+LmhhbmRsZXNbMF0gPSBnZW1fYm87Cj4gPiAgICAgICBmXzguaGFuZGxlc1swXSA9IGdlbV9ibzsK
+PiA+Cj4gPiAtICAgICBpZ3RfZGVzY3JpYmUoIkNoZWNrIGlmIGFkZGZiMiBjYWxsIHdvcmtzIHdp
+dGggbWF4IHNpemUgb2YgIGJ1ZmZlciBvYmplY3QiKTsKPiA+ICsgICAgIGlndF9kZXNjcmliZSgi
+Q2hlY2sgaWYgYWRkZmIyIGNhbGwgd29ya3Mgd2l0aCBtYXggc2l6ZSBvZiBidWZmZXIgb2JqZWN0
+Iik7Cj4gPiAgICAgICBpZ3Rfc3VidGVzdCgic2l6ZS1tYXgiKSB7Cj4gPiAgICAgICAgICAgICAg
+IGlndF9hc3NlcnQoZHJtSW9jdGwoZmQsIERSTV9JT0NUTF9NT0RFX0FEREZCMiwgJmYpID09IDAp
+Owo+ID4gICAgICAgICAgICAgICBpZ3RfYXNzZXJ0KGRybUlvY3RsKGZkLCBEUk1fSU9DVExfTU9E
+RV9STUZCLCAmZi5mYl9pZCkgPT0gMCk7Cj4gPiAgICAgICAgICAgICAgIGYuZmJfaWQgPSAwOwo+
+ID4gICAgICAgICAgICAgICBpZ3RfYXNzZXJ0KGRybUlvY3RsKGZkLCBEUk1fSU9DVExfTU9ERV9B
+RERGQjIsICZmXzE2KSA9PSAwKTsKPiA+ICAgICAgICAgICAgICAgaWd0X2Fzc2VydChkcm1Jb2N0
+bChmZCwgRFJNX0lPQ1RMX01PREVfUk1GQiwgJmZfMTYuZmJfaWQpID09IDApOwo+ID4gLSAgICAg
+ICAgICAgICBmLmZiX2lkID0gMDsKPiA+IC0gICAgICAgICAgICAgaWd0X2Fzc2VydChkcm1Jb2N0
+bChmZCwgRFJNX0lPQ1RMX01PREVfQURERkIyLCAmZl84KSA9PSAwKTsKPiA+IC0gICAgICAgICAg
+ICAgaWd0X2Fzc2VydChkcm1Jb2N0bChmZCwgRFJNX0lPQ1RMX01PREVfUk1GQiwgJmZfOC5mYl9p
+ZCkgPT0gMCk7Cj4gPiAtICAgICAgICAgICAgIGYuZmJfaWQgPSAwOwo+ID4gKyAgICAgICAgICAg
+ICBmXzE2LmZiX2lkID0gMDsKPiA+ICsgICAgICAgICAgICAgaWYgKGlzX2M4X2Zvcm1hdF9zdXBw
+b3J0ZWQpIHsKPiA+ICsgICAgICAgICAgICAgICAgICAgICBpZ3RfYXNzZXJ0KGRybUlvY3RsKGZk
+LCBEUk1fSU9DVExfTU9ERV9BRERGQjIsICZmXzgpID09IDApOwo+ID4gKyAgICAgICAgICAgICAg
+ICAgICAgIGlndF9hc3NlcnQoZHJtSW9jdGwoZmQsIERSTV9JT0NUTF9NT0RFX1JNRkIsICZmXzgu
+ZmJfaWQpID09IDApOwo+ID4gKyAgICAgICAgICAgICAgICAgICAgIGZfOC5mYl9pZCA9IDA7Cj4g
+PiArICAgICAgICAgICAgIH0KPiA+ICAgICAgIH0KPiA+Cj4gPiAgICAgICBmLndpZHRoKys7Cj4g
+PiAtLQo+ID4gMi4zMi4wLjkzLmc2NzBiODFhODkwLWdvb2cKPiA+Cj4gPiBfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+ID4gaWd0LWRldiBtYWlsaW5nIGxp
+c3QKPiA+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4gPiBodHRwczovL2xpc3RzLmZy
+ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYKPgo+IC0tCj4gVmlsbGUgU3ly
+asOkbMOkCj4gSW50ZWwKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
+aHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
