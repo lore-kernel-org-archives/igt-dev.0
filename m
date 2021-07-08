@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F5B86E834
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Jul 2021 07:08:41 +0000 (UTC)
-Date: Thu, 8 Jul 2021 09:08:35 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210708070835.GC10726@zkempczy-mobl2>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E9DF46E880
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Jul 2021 07:45:26 +0000 (UTC)
 References: <20210707144337.180693-1-jason@jlekstrand.net>
- <20210707144643.181001-12-jason@jlekstrand.net>
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Message-ID: <692622d7-6641-85a9-a589-ab57faf26d0f@linux.intel.com>
+Date: Thu, 8 Jul 2021 09:45:17 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210707144643.181001-12-jason@jlekstrand.net>
-Subject: Re: [igt-dev] [PATCH i-g-t 61/81] tests/i915/gem_ctx_create:
- Convert benchmarks to intel_ctx_t
+In-Reply-To: <20210707144337.180693-1-jason@jlekstrand.net>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 00/81] Stop depending on context
+ mutation (v4)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,177 +18,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jason Ekstrand <jason@jlekstrand.net>
-Cc: igt-dev@lists.freedesktop.org
+To: Jason Ekstrand <jason@jlekstrand.net>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCBKdWwgMDcsIDIwMjEgYXQgMDk6NDY6MjNBTSAtMDUwMCwgSmFzb24gRWtzdHJhbmQg
-d3JvdGU6Cj4gU2lnbmVkLW9mZi1ieTogSmFzb24gRWtzdHJhbmQgPGphc29uQGpsZWtzdHJhbmQu
-bmV0Pgo+IC0tLQo+ICB0ZXN0cy9pOTE1L2dlbV9jdHhfY3JlYXRlLmMgfCA5MyArKysrKysrKysr
-KysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tCj4gIDEgZmlsZSBjaGFuZ2VkLCA1MiBpbnNlcnRp
-b25zKCspLCA0MSBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1f
-Y3R4X2NyZWF0ZS5jIGIvdGVzdHMvaTkxNS9nZW1fY3R4X2NyZWF0ZS5jCj4gaW5kZXggMzcwNjFl
-YmM1Li40NDg0NjY1MjMgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMvaTkxNS9nZW1fY3R4X2NyZWF0ZS5j
-Cj4gKysrIGIvdGVzdHMvaTkxNS9nZW1fY3R4X2NyZWF0ZS5jCj4gQEAgLTc5LDcgKzc5LDggQEAg
-c3RhdGljIGRvdWJsZSBlbGFwc2VkKGNvbnN0IHN0cnVjdCB0aW1lc3BlYyAqc3RhcnQsCj4gIAly
-ZXR1cm4gKGVuZC0+dHZfc2VjIC0gc3RhcnQtPnR2X3NlYykgKyAxZS05KihlbmQtPnR2X25zZWMg
-LSBzdGFydC0+dHZfbnNlYyk7Cj4gIH0KPiAgCj4gLXN0YXRpYyB2b2lkIGZpbGVzKGludCBjb3Jl
-LCBpbnQgdGltZW91dCwgY29uc3QgaW50IG5jcHVzKQo+ICtzdGF0aWMgdm9pZCBmaWxlcyhpbnQg
-Y29yZSwgY29uc3QgaW50ZWxfY3R4X2NmZ190ICpjZmcsCj4gKwkJICBpbnQgdGltZW91dCwgY29u
-c3QgaW50IG5jcHVzKQo+ICB7Cj4gIAljb25zdCB1aW50MzJfdCBiYmUgPSBNSV9CQVRDSF9CVUZG
-RVJfRU5EOwo+ICAJc3RydWN0IGRybV9pOTE1X2dlbV9leGVjYnVmZmVyMiBleGVjYnVmOwo+IEBA
-IC05OCwxOCArOTksMjIgQEAgc3RhdGljIHZvaWQgZmlsZXMoaW50IGNvcmUsIGludCB0aW1lb3V0
-LCBjb25zdCBpbnQgbmNwdXMpCj4gIAlpZ3RfZm9yayhjaGlsZCwgbmNwdXMpIHsKPiAgCQlzdHJ1
-Y3QgdGltZXNwZWMgc3RhcnQsIGVuZDsKPiAgCQl1bnNpZ25lZCBjb3VudCA9IDA7Cj4gKwkJY29u
-c3QgaW50ZWxfY3R4X3QgKmN0eDsKPiAgCQlpbnQgZmQ7Cj4gIAo+ICAJCWNsb2NrX2dldHRpbWUo
-Q0xPQ0tfTU9OT1RPTklDLCAmc3RhcnQpOwo+ICAJCWRvIHsKPiAgCQkJZmQgPSBnZW1fcmVvcGVu
-X2RyaXZlcihjb3JlKTsKPiAtCQkJZ2VtX2NvbnRleHRfY29weV9lbmdpbmVzKGNvcmUsIDAsIGZk
-LCAwKTsKPiArCj4gKwkJCWN0eCA9IGludGVsX2N0eF9jcmVhdGUoZmQsIGNmZyk7Cj4gKwkJCWV4
-ZWNidWYucnN2ZDEgPSBjdHgtPmlkOwo+ICAKPiAgCQkJb2JqLmhhbmRsZSA9IGdlbV9vcGVuKGZk
-LCBuYW1lKTsKPiAgCQkJZXhlY2J1Zi5mbGFncyAmPSB+RU5HSU5FX0ZMQUdTOwo+ICAJCQlleGVj
-YnVmLmZsYWdzIHw9IHBwZ3R0X2VuZ2luZXNbY291bnQgJSBwcGd0dF9uZW5naW5lXTsKClRoaXMg
-aXMgbm90IHBhcnQgb2YgdGhpcyBjb21taXQgYnV0IGl0IGlzIHJlbGF0ZWQgdG8gaXQuIE1peGlu
-ZyB1c2luZyAKYWxsX2VuZ2luZXMgLyBwcGd0dF9lbmdpbmVzIGNvbnN0cnVjdGVkIHVwb24gY2Zn
-IGFzIGdsb2JhbHMgaXMgbm90IHB1cmUgc29sdXRpb24KYW5kIHJlYWRlciBoYXMgdG8gYmUgYXdh
-cmUgY2ZnIGFuZCB0aGVzZSB2YXJpYWJsZXMgYXJlIHRpZ2h0bHkgY291cGxlZC4gCkkgdW5kZXJz
-dGFuZCB3ZSBjYW4gaW5pdGlhbGl6ZSB0aGVtIG9uY2UgaW5zdGVhZCBkb2luZyB0aGlzIGluIGVh
-Y2ggdGVzdApzZXBhcmF0ZWx5IGJ1dCBJIGFsd2F5cyBhZnJhaWQgc29tZSB0ZXN0IHdpbGwgc3Rh
-cnQgYWx0ZXJpbmcgdGhpcyBhcnJheS4KCkJ1dCB0aGlzIGlzIG1pbm9yIG5pdCBhbmQgd2UgY2Fu
-IGxpdmUgd2l0aCB0aGF0LCBzbzoKClJldmlld2VkLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kg
-PHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KCi0tClpiaWduaWV3Cgo+ICAJCQlnZW1f
-ZXhlY2J1ZihmZCwgJmV4ZWNidWYpOwo+ICAKPiArCQkJaW50ZWxfY3R4X2Rlc3Ryb3koZmQsIGN0
-eCk7Cj4gIAkJCWNsb3NlKGZkKTsKPiAgCQkJY291bnQrKzsKPiAgCj4gQEAgLTEyNiw3ICsxMzEs
-OCBAQCBzdGF0aWMgdm9pZCBmaWxlcyhpbnQgY29yZSwgaW50IHRpbWVvdXQsIGNvbnN0IGludCBu
-Y3B1cykKPiAgCWdlbV9jbG9zZShjb3JlLCBiYXRjaCk7Cj4gIH0KPiAgCj4gLXN0YXRpYyB2b2lk
-IGFjdGl2ZShpbnQgZmQsIGNvbnN0IHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAqZSwK
-PiArc3RhdGljIHZvaWQgYWN0aXZlKGludCBmZCwgY29uc3QgaW50ZWxfY3R4X2NmZ190ICpjZmcs
-Cj4gKwkJICAgY29uc3Qgc3RydWN0IGludGVsX2V4ZWN1dGlvbl9lbmdpbmUyICplLAo+ICAJCSAg
-IGludCB0aW1lb3V0LCBpbnQgbmNwdXMpCj4gIHsKPiAgCWNvbnN0IHVpbnQzMl90IGJiZSA9IE1J
-X0JBVENIX0JVRkZFUl9FTkQ7Cj4gQEAgLTE1OCwxOSArMTY0LDE5IEBAIHN0YXRpYyB2b2lkIGFj
-dGl2ZShpbnQgZmQsIGNvbnN0IHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAqZSwKPiAg
-CWlmIChuY3B1cyA8IDApIHsKPiAgCQlpZ3RfZm9yayhjaGlsZCwgcHBndHRfbmVuZ2luZSkgewo+
-ICAJCQl1bnNpZ25lZCBsb25nIGNvdW50ID0gMDsKPiAtCQkJaW50IGk5MTU7Cj4gKwkJCWNvbnN0
-IGludGVsX2N0eF90ICpjdHg7Cj4gIAo+IC0JCQlpOTE1ID0gZ2VtX3Jlb3Blbl9kcml2ZXIoZmQp
-Owo+ICAJCQkvKgo+ICAJCQkgKiBFbnN1cmUgdGhlIGdwdSBpcyBpZGxlIGJ5IGxhdW5jaGluZwo+
-ICAJCQkgKiBhIG5vcCBleGVjYnVmIGFuZCBzdGFsbGluZyBmb3IgaXQKPiAgCQkJICovCj4gLQkJ
-CWdlbV9xdWllc2NlbnRfZ3B1KGk5MTUpOwo+IC0JCQlnZW1fY29udGV4dF9jb3B5X2VuZ2luZXMo
-ZmQsIDAsIGk5MTUsIDApOwo+ICsJCQlnZW1fcXVpZXNjZW50X2dwdShmZCk7Cj4gIAo+ICAJCQlp
-ZiAocHBndHRfZW5naW5lc1tjaGlsZF0gPT0gZS0+ZmxhZ3MpCj4gIAkJCQljb250aW51ZTsKPiAg
-Cj4gKwkJCWN0eCA9IGludGVsX2N0eF9jcmVhdGUoZmQsIGNmZyk7Cj4gKwkJCWV4ZWNidWYucnN2
-ZDEgPSBjdHgtPmlkOwo+ICAJCQlleGVjYnVmLmZsYWdzID0gcHBndHRfZW5naW5lc1tjaGlsZF07
-Cj4gIAo+ICAJCQl3aGlsZSAoIVJFQURfT05DRSgqc2hhcmVkKSkgewo+IEBAIC0xODMsNiArMTg5
-LDcgQEAgc3RhdGljIHZvaWQgYWN0aXZlKGludCBmZCwgY29uc3Qgc3RydWN0IGludGVsX2V4ZWN1
-dGlvbl9lbmdpbmUyICplLAo+ICAJCQl9Cj4gIAo+ICAJCQlpZ3RfZGVidWcoImhvZ1slZF06IGN5
-Y2xlcz0lbHVcbiIsIGNoaWxkLCBjb3VudCk7Cj4gKwkJCWludGVsX2N0eF9kZXN0cm95KGZkLCBj
-dHgpOwo+ICAJCX0KPiAgCQluY3B1cyA9IC1uY3B1czsKPiAgCX0KPiBAQCAtMTkwLDMzICsxOTcs
-MjcgQEAgc3RhdGljIHZvaWQgYWN0aXZlKGludCBmZCwgY29uc3Qgc3RydWN0IGludGVsX2V4ZWN1
-dGlvbl9lbmdpbmUyICplLAo+ICAJaWd0X2ZvcmsoY2hpbGQsIG5jcHVzKSB7Cj4gIAkJc3RydWN0
-IHRpbWVzcGVjIHN0YXJ0LCBlbmQ7Cj4gIAkJdW5zaWduZWQgY291bnQgPSAwOwo+IC0JCWludCBp
-OTE1Owo+IC0JCXVpbnQzMl90IGN0eDsKPiAgCj4gLQkJaTkxNSA9IGdlbV9yZW9wZW5fZHJpdmVy
-KGZkKTsKPiAgCQkvKgo+ICAJCSAqIEVuc3VyZSB0aGUgZ3B1IGlzIGlkbGUgYnkgbGF1bmNoaW5n
-Cj4gIAkJICogYSBub3AgZXhlY2J1ZiBhbmQgc3RhbGxpbmcgZm9yIGl0Lgo+ICAJCSAqLwo+IC0J
-CWdlbV9xdWllc2NlbnRfZ3B1KGk5MTUpOwo+IC0JCWN0eCA9IGdlbV9jb250ZXh0X2NyZWF0ZShp
-OTE1KTsKPiAtCQlnZW1fY29udGV4dF9jb3B5X2VuZ2luZXMoZmQsIDAsIGk5MTUsIGN0eCk7Cj4g
-KwkJZ2VtX3F1aWVzY2VudF9ncHUoZmQpOwo+ICAKPiAgCQljbG9ja19nZXR0aW1lKENMT0NLX01P
-Tk9UT05JQywgJnN0YXJ0KTsKPiAgCQlkbyB7Cj4gLQkJCWV4ZWNidWYucnN2ZDEgPSBnZW1fY29u
-dGV4dF9jbG9uZV93aXRoX2VuZ2luZXMoZmQsIGN0eCk7Cj4gKwkJCWNvbnN0IGludGVsX2N0eF90
-ICpjdHggPSBpbnRlbF9jdHhfY3JlYXRlKGZkLCBjZmcpOwo+ICsJCQlleGVjYnVmLnJzdmQxID0g
-Y3R4LT5pZDsKPiAgCQkJZm9yICh1bnNpZ25lZCBuID0gMDsgbiA8IG5lbmdpbmU7IG4rKykgewo+
-ICAJCQkJZXhlY2J1Zi5mbGFncyA9IGVuZ2luZXNbbl07Cj4gIAkJCQlnZW1fZXhlY2J1ZihmZCwg
-JmV4ZWNidWYpOwo+ICAJCQl9Cj4gLQkJCWdlbV9jb250ZXh0X2Rlc3Ryb3koZmQsIGV4ZWNidWYu
-cnN2ZDEpOwo+ICsJCQlpbnRlbF9jdHhfZGVzdHJveShmZCwgY3R4KTsKPiAgCQkJY291bnQrKzsK
-PiAgCj4gIAkJCWNsb2NrX2dldHRpbWUoQ0xPQ0tfTU9OT1RPTklDLCAmZW5kKTsKPiAgCQl9IHdo
-aWxlIChlbGFwc2VkKCZzdGFydCwgJmVuZCkgPCB0aW1lb3V0KTsKPiAgCj4gLQkJZ2VtX2NvbnRl
-eHRfZGVzdHJveShmZCwgY3R4KTsKPiAtCj4gIAkJZ2VtX3N5bmMoZmQsIG9iai5oYW5kbGUpOwo+
-ICAJCWNsb2NrX2dldHRpbWUoQ0xPQ0tfTU9OT1RPTklDLCAmZW5kKTsKPiAgCQlpZ3RfaW5mbygi
-WyVkXSBDb250ZXh0IGNyZWF0aW9uICsgZXhlY3V0aW9uOiAlLjNmIHVzXG4iLAo+IEBAIC0yMzks
-NiArMjQwLDE1IEBAIHN0YXRpYyB2b2lkIHhjaGdfdTMyKHZvaWQgKmFycmF5LCB1bnNpZ25lZCBp
-LCB1bnNpZ25lZCBqKQo+ICAJYVtqXSA9IHRtcDsKPiAgfQo+ICAKPiArc3RhdGljIHZvaWQgeGNo
-Z19wdHIodm9pZCAqYXJyYXksIHVuc2lnbmVkIGksIHVuc2lnbmVkIGopCj4gK3sKPiArCXZvaWQg
-KiphID0gYXJyYXksICp0bXA7Cj4gKwo+ICsJdG1wID0gYVtpXTsKPiArCWFbaV0gPSBhW2pdOwo+
-ICsJYVtqXSA9IHRtcDsKPiArfQo+ICsKPiAgc3RhdGljIHVuc2lnbmVkIF9fY29udGV4dF9zaXpl
-KGludCBmZCkKPiAgewo+ICAJc3dpdGNoIChpbnRlbF9nZW4oaW50ZWxfZ2V0X2RybV9kZXZpZChm
-ZCkpKSB7Cj4gQEAgLTI3NywxNiArMjg3LDE3IEBAIHN0YXRpYyB1aW50NjRfdCB0b3RhbF9hdmFp
-bF9tZW0odW5zaWduZWQgbW9kZSkKPiAgCXJldHVybiB0b3RhbCA8PCAyMDsKPiAgfQo+ICAKPiAt
-c3RhdGljIHZvaWQgbWF4aW11bShpbnQgZmQsIGludCBuY3B1cywgdW5zaWduZWQgbW9kZSkKPiAr
-c3RhdGljIHZvaWQgbWF4aW11bShpbnQgZmQsIGNvbnN0IGludGVsX2N0eF9jZmdfdCAqY2ZnLAo+
-ICsJCSAgICBpbnQgbmNwdXMsIHVuc2lnbmVkIG1vZGUpCj4gIHsKPiAgCWNvbnN0IHVpbnQzMl90
-IGJiZSA9IE1JX0JBVENIX0JVRkZFUl9FTkQ7Cj4gIAlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNi
-dWZmZXIyIGV4ZWNidWY7Cj4gIAlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2JqZWN0MiBvYmpb
-Ml07Cj4gIAl1aW50NjRfdCBhdmFpbF9tZW0gPSB0b3RhbF9hdmFpbF9tZW0obW9kZSk7Cj4gIAl1
-bnNpZ25lZCBjdHhfc2l6ZSA9IGNvbnRleHRfc2l6ZShmZCk7Cj4gLQl1aW50MzJfdCAqY29udGV4
-dHMgPSBOVUxMOwo+ICsJY29uc3QgaW50ZWxfY3R4X3QgKipjb250ZXh0cyA9IE5VTEw7Cj4gIAl1
-bnNpZ25lZCBsb25nIGNvdW50ID0gMDsKPiAtCXVpbnQzMl90IGN0eF9pZDsKPiArCWNvbnN0IGlu
-dGVsX2N0eF90ICpjdHg7Cj4gIAo+ICAJZG8gewo+ICAJCWludCBlcnI7Cj4gQEAgLTMwMCwxNiAr
-MzExLDE0IEBAIHN0YXRpYyB2b2lkIG1heGltdW0oaW50IGZkLCBpbnQgbmNwdXMsIHVuc2lnbmVk
-IG1vZGUpCj4gIAo+ICAJCWVyciA9IC1FTk9NRU07Cj4gIAkJaWYgKGF2YWlsX21lbSA+IChjb3Vu
-dCArIDEpICogY3R4X3NpemUpCj4gLQkJCWVyciA9ICBfX2dlbV9jb250ZXh0X2Nsb25lKGZkLCAw
-LAo+IC0JCQkJCQkgICBJOTE1X0NPTlRFWFRfQ0xPTkVfRU5HSU5FUywKPiAtCQkJCQkJICAgMCwg
-JmN0eF9pZCk7Cj4gKwkJCWVyciA9IF9faW50ZWxfY3R4X2NyZWF0ZShmZCwgY2ZnLCAmY3R4KTsK
-PiAgCQlpZiAoZXJyKSB7Cj4gIAkJCWlndF9pbmZvKCJDcmVhdGVkICVsdSBjb250ZXh0cywgYmVm
-b3JlIGZhaWxpbmcgd2l0aCAnJXMnIFslZF1cbiIsCj4gIAkJCQkgY291bnQsIHN0cmVycm9yKC1l
-cnIpLCAtZXJyKTsKPiAgCQkJYnJlYWs7Cj4gIAkJfQo+ICAKPiAtCQljb250ZXh0c1tjb3VudCsr
-XSA9IGN0eF9pZDsKPiArCQljb250ZXh0c1tjb3VudCsrXSA9IGN0eDsKPiAgCX0gd2hpbGUgKDEp
-Owo+ICAJaWd0X3JlcXVpcmUoY291bnQpOwo+ICAKPiBAQCAtMzI5LDExICszMzgsMTEgQEAgc3Rh
-dGljIHZvaWQgbWF4aW11bShpbnQgZmQsIGludCBuY3B1cywgdW5zaWduZWQgbW9kZSkKPiAgCj4g
-IAkJY2xvY2tfZ2V0dGltZShDTE9DS19NT05PVE9OSUMsICZzdGFydCk7Cj4gIAkJZm9yIChpbnQg
-cmVwZWF0ID0gMDsgcmVwZWF0IDwgMzsgcmVwZWF0KyspIHsKPiAtCQkJaWd0X3Blcm11dGVfYXJy
-YXkoY29udGV4dHMsIGNvdW50LCB4Y2hnX3UzMik7Cj4gKwkJCWlndF9wZXJtdXRlX2FycmF5KGNv
-bnRleHRzLCBjb3VudCwgeGNoZ19wdHIpOwo+ICAJCQlpZ3RfcGVybXV0ZV9hcnJheShhbGxfZW5n
-aW5lcywgYWxsX25lbmdpbmUsIHhjaGdfdTMyKTsKPiAgCj4gIAkJCWZvciAodW5zaWduZWQgbG9u
-ZyBpID0gMDsgaSA8IGNvdW50OyBpKyspIHsKPiAtCQkJCWV4ZWNidWYucnN2ZDEgPSBjb250ZXh0
-c1tpXTsKPiArCQkJCWV4ZWNidWYucnN2ZDEgPSBjb250ZXh0c1tpXS0+aWQ7Cj4gIAkJCQlmb3Ig
-KHVuc2lnbmVkIGxvbmcgaiA9IDA7IGogPCBhbGxfbmVuZ2luZTsgaisrKSB7Cj4gIAkJCQkJZXhl
-Y2J1Zi5mbGFncyA9IGFsbF9lbmdpbmVzW2pdOwo+ICAJCQkJCWdlbV9leGVjYnVmKGZkLCAmZXhl
-Y2J1Zik7Cj4gQEAgLTM1Miw3ICszNjEsNyBAQCBzdGF0aWMgdm9pZCBtYXhpbXVtKGludCBmZCwg
-aW50IG5jcHVzLCB1bnNpZ25lZCBtb2RlKQo+ICAJZ2VtX2Nsb3NlKGZkLCBvYmpbMV0uaGFuZGxl
-KTsKPiAgCj4gIAlmb3IgKHVuc2lnbmVkIGxvbmcgaSA9IDA7IGkgPCBjb3VudDsgaSsrKQo+IC0J
-CWdlbV9jb250ZXh0X2Rlc3Ryb3koZmQsIGNvbnRleHRzW2ldKTsKPiArCQlpbnRlbF9jdHhfZGVz
-dHJveShmZCwgY29udGV4dHNbaV0pOwo+ICAJZnJlZShjb250ZXh0cyk7Cj4gIH0KPiAgCj4gQEAg
-LTU1Miw2ICs1NjEsNyBAQCBpZ3RfbWFpbgo+ICAJY29uc3QgaW50IG5jcHVzID0gc3lzY29uZihf
-U0NfTlBST0NFU1NPUlNfT05MTik7Cj4gIAlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2NvbnRleHRfY3Jl
-YXRlIGNyZWF0ZTsKPiAgCWNvbnN0IHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAqZTsK
-PiArCWludGVsX2N0eF9jZmdfdCBjZmc7Cj4gIAlpbnQgZmQgPSAtMTsKPiAgCj4gIAlpZ3RfZml4
-dHVyZSB7Cj4gQEAgLTU1OSw3ICs1NjksOCBAQCBpZ3RfbWFpbgo+ICAJCWlndF9yZXF1aXJlX2dl
-bShmZCk7Cj4gIAkJZ2VtX3JlcXVpcmVfY29udGV4dHMoZmQpOwo+ICAKPiAtCQlfX2Zvcl9lYWNo
-X3BoeXNpY2FsX2VuZ2luZShmZCwgZSkKPiArCQljZmcgPSBpbnRlbF9jdHhfY2ZnX2FsbF9waHlz
-aWNhbChmZCk7Cj4gKwkJZm9yX2VhY2hfY3R4X2NmZ19lbmdpbmUoZmQsICZjZmcsIGUpCj4gIAkJ
-CWFsbF9lbmdpbmVzW2FsbF9uZW5naW5lKytdID0gZS0+ZmxhZ3M7Cj4gIAkJaWd0X3JlcXVpcmUo
-YWxsX25lbmdpbmUpOwo+ICAKPiBAQCAtNTg5LDM5ICs2MDAsMzkgQEAgaWd0X21haW4KPiAgCQlp
-cmlzX3BpcGVsaW5lKGZkKTsKPiAgCj4gIAlpZ3Rfc3VidGVzdCgibWF4aW11bS1tZW0iKQo+IC0J
-CW1heGltdW0oZmQsIG5jcHVzLCBDSEVDS19SQU0pOwo+ICsJCW1heGltdW0oZmQsICZjZmcsIG5j
-cHVzLCBDSEVDS19SQU0pOwo+ICAJaWd0X3N1YnRlc3QoIm1heGltdW0tc3dhcCIpCj4gLQkJbWF4
-aW11bShmZCwgbmNwdXMsIENIRUNLX1JBTSB8IENIRUNLX1NXQVApOwo+ICsJCW1heGltdW0oZmQs
-ICZjZmcsIG5jcHVzLCBDSEVDS19SQU0gfCBDSEVDS19TV0FQKTsKPiAgCj4gIAlpZ3Rfc3VidGVz
-dCgiYmFzaWMtZmlsZXMiKQo+IC0JCWZpbGVzKGZkLCAyLCAxKTsKPiArCQlmaWxlcyhmZCwgJmNm
-ZywgMiwgMSk7Cj4gIAlpZ3Rfc3VidGVzdCgiZmlsZXMiKQo+IC0JCWZpbGVzKGZkLCAyMCwgMSk7
-Cj4gKwkJZmlsZXMoZmQsICZjZmcsIDIwLCAxKTsKPiAgCWlndF9zdWJ0ZXN0KCJmb3JrZWQtZmls
-ZXMiKQo+IC0JCWZpbGVzKGZkLCAyMCwgbmNwdXMpOwo+ICsJCWZpbGVzKGZkLCAmY2ZnLCAyMCwg
-bmNwdXMpOwo+ICAKPiAgCS8qIE5VTEwgdmFsdWUgbWVhbnMgYWxsIGVuZ2luZXMgKi8KPiAgCWln
-dF9zdWJ0ZXN0KCJhY3RpdmUtYWxsIikKPiAtCQlhY3RpdmUoZmQsIE5VTEwsIDIwLCAxKTsKPiAr
-CQlhY3RpdmUoZmQsICZjZmcsIE5VTEwsIDIwLCAxKTsKPiAgCWlndF9zdWJ0ZXN0KCJmb3JrZWQt
-YWN0aXZlLWFsbCIpCj4gLQkJYWN0aXZlKGZkLCBOVUxMLCAyMCwgbmNwdXMpOwo+ICsJCWFjdGl2
-ZShmZCwgJmNmZywgTlVMTCwgMjAsIG5jcHVzKTsKPiAgCj4gIAlpZ3Rfc3VidGVzdF93aXRoX2R5
-bmFtaWMoImFjdGl2ZSIpIHsKPiAtCQlfX2Zvcl9lYWNoX3BoeXNpY2FsX2VuZ2luZShmZCwgZSkg
-ewo+ICsJCWZvcl9lYWNoX2N0eF9jZmdfZW5naW5lKGZkLCAmY2ZnLCBlKSB7Cj4gIAkJCWlndF9k
-eW5hbWljX2YoIiVzIiwgZS0+bmFtZSkKPiAtCQkJCWFjdGl2ZShmZCwgZSwgMjAsIDEpOwo+ICsJ
-CQkJYWN0aXZlKGZkLCAmY2ZnLCBlLCAyMCwgMSk7Cj4gIAkJfQo+ICAJfQo+ICAJaWd0X3N1YnRl
-c3Rfd2l0aF9keW5hbWljKCJmb3JrZWQtYWN0aXZlIikgewo+IC0JCV9fZm9yX2VhY2hfcGh5c2lj
-YWxfZW5naW5lKGZkLCBlKSB7Cj4gKwkJZm9yX2VhY2hfY3R4X2NmZ19lbmdpbmUoZmQsICZjZmcs
-IGUpIHsKPiAgCQkJaWd0X2R5bmFtaWNfZigiJXMiLCBlLT5uYW1lKQo+IC0JCQkJYWN0aXZlKGZk
-LCBlLCAyMCwgbmNwdXMpOwo+ICsJCQkJYWN0aXZlKGZkLCAmY2ZnLCBlLCAyMCwgbmNwdXMpOwo+
-ICAJCX0KPiAgCX0KPiAgCWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygiaG9nIikgewo+IC0JCV9f
-Zm9yX2VhY2hfcGh5c2ljYWxfZW5naW5lKGZkLCBlKSB7Cj4gKwkJZm9yX2VhY2hfY3R4X2NmZ19l
-bmdpbmUoZmQsICZjZmcsIGUpIHsKPiAgCQkJaWd0X2R5bmFtaWNfZigiJXMiLCBlLT5uYW1lKQo+
-IC0JCQkJYWN0aXZlKGZkLCBlLCAyMCwgLTEpOwo+ICsJCQkJYWN0aXZlKGZkLCAmY2ZnLCBlLCAy
-MCwgLTEpOwo+ICAJCX0KPiAgCX0KPiAgCj4gLS0gCj4gMi4zMS4xCj4gCj4gX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBpZ3QtZGV2IG1haWxpbmcgbGlz
-dAo+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4gaHR0cHM6Ly9saXN0cy5mcmVlZGVz
-a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4v
-bGlzdGluZm8vaWd0LWRldgo=
+Op 07-07-2021 om 16:42 schreef Jason Ekstrand:
+> I'm trying to clean up some of our uAPI technical debt in i915.  One of the
+> biggest areas we have right now is context mutability.  There's no good
+> reason why things like the set of engines or the VM should be able to be
+> changed on the fly and no "real" userspace actually relies on this
+> functionality.  It does, however, make for a good excuse for tests and lots
+> of bug reports as things like swapping out the set of engines under load
+> break randomly.  The solution here is to stop allowing that behavior and
+> simplify the i915 internals.
+>
+> In particular, we'd like to remove the following from the i915 API:
+>
+>  1. I915_CONTEXT_CLONE_*.  These are only used by IGT and have never been
+>     used by any "real" userspace.
+>
+>  2. Changing the VM or set of engines via SETPARAM after they've been
+>     "used" by an execbuf or similar.  This would effectively make those
+>     parameters create params rather than mutable state.  We can't drop
+>     setparam entirely for those because media does use it but we can
+>     enforce some rules.
+>
+>  3. Unused (by non-IGT userspace) GETPARAM for things like engines.
+>
+> As much as we'd love to do that, we have a bit of a problem in IGT.  The
+> way we handle multi-engine testing today relies heavily on this soon-to-be-
+> deprecated functionality.  In particular, the standard flow is usually
+> something like this:
+>
+>     static void run_test1(int fd, uint32_t engine)
+>     {
+>         igt_spin_t *spin;
+>
+>         ctx = = gem_context_clone_with_engines(fd, 0);
+>         __igt_spin_new(fd, ctx, .engine = engine);
+>
+>         /* do some testing with ctx */
+>
+>         igt_spin_free(fd, spin);
+>         gem_destroy_context(fd, ctx);
+>     }
+>
+>     igt_main
+>     {
+>         struct intel_execution_engine2 *e;
+>
+>         /* Usual fixture code */
+>
+>         __for_each_physical_engine(fd, e)
+>             run_test1(fd, e->flags);
+>
+>         __for_each_physical_engine(fd, e)
+>             run_test2(fd, e->flags);
+>     }
+>
+> Let's walk through what this does:
+>
+>  1. __for_each_physical_engine calls intel_init_engine_list() which resets
+>     the set of engines on ctx0 to the full set of engines available as per
+>     the engine query.  On older kernels/hardware where we don't have the
+>     engines query, it leaves the set alone.
+>
+>  2. intel_init_engine_list() also returns a set of engines for iteration
+>     and __for_each_physical_engine() sets up a for loop to walk the set.
+>
+>  3. gem_context_clone_with_engines() creates a new context using
+>     I915_CONTEXT_CONTEXT_CLONE_ENGINES (not used by anything other than
+>     IGT) to ask that the newly created context has the same set of engines
+>     as ctx0.  Remember we changed that at the start of loop iteration!
+>
+>  4. When the context is passed to __igt_spin_new(), it calls
+>     gem_context_lookup_engine which does a GETPARAM to introspet the set of
+>     engines on the context and figure out the engine class.
+>
+> If you've been keeping track, this trivial and extremely common example
+> uses every single one of these soon-to-be-deprecated APIs even though the
+> test author may be completely obvious to it.  It also means that getting
+> rid of IGT's use of them is going to require some fairly deep surgery.
+>
+> The approach proposed and partially implemented here is to add a new
+> wrapper struct intel_ctx_t which wraps a GEM context handle as well as the
+> full set of parameters used to create it, represented by intel_ctx_cfg_t.
+> We can then use the context anywhere we would regularly use a context, we
+> just have to do ctx->id.  If we want to clone it, we can do so by re-using
+> the create parameters by calling intel_ctx_create(fd, &old_ctx->cfg);
+>
+> Along with the above rework (which got long, sorry) I've got a few other
+> patches in here which delete tests which exist expressly to test APIs that
+> are on the chopping block.
+
+Seems some tests start failing. I like this whole removal of uapi though, some of the complicated code related to ww mutex inside the kernel was related to it.
+
+I roughly looked at all the patches, so I can only give this for the whole series:
+
+Acked-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+
+Although it seems some tests in the ci full run might still be breaking?
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
