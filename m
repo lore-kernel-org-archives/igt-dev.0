@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C347F6E89A
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Jul 2021 09:15:14 +0000 (UTC)
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Thu, 8 Jul 2021 09:15:11 +0000
-Message-ID: <CO6PR11MB556989721A46C474E32019568D199@CO6PR11MB5569.namprd11.prod.outlook.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 948446E897
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Jul 2021 09:26:04 +0000 (UTC)
+From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Date: Thu, 8 Jul 2021 09:26:01 +0000
+Message-ID: <BY5PR11MB43723ECAACA4FB2BAE17C09489199@BY5PR11MB4372.namprd11.prod.outlook.com>
 References: <1625585312-8797-1-git-send-email-vidya.srinivas@intel.com>
  <20210707162245.12672-1-vidya.srinivas@intel.com>
-In-Reply-To: <20210707162245.12672-1-vidya.srinivas@intel.com>
+ <CO6PR11MB556989721A46C474E32019568D199@CO6PR11MB5569.namprd11.prod.outlook.com>
+In-Reply-To: <CO6PR11MB556989721A46C474E32019568D199@CO6PR11MB5569.namprd11.prod.outlook.com>
 Content-Language: en-US
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Skip crc
@@ -23,29 +24,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Srinivas, Vidya" <vidya.srinivas@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Vidya
-> Srinivas
+Hello Bhanu,
+
+Thank you so much.
+I have added a check for eDP only.
+
+As you said, only one pipe at a time which belongs to eDP needs to be enabled. And that is happening.
+I have tested with only eDP connected and eDP + DP connected.
+
+Regards
+Vidya
+
+-----Original Message-----
+From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com> 
+Sent: Thursday, July 8, 2021 2:45 PM
+To: Srinivas, Vidya <vidya.srinivas@intel.com>; igt-dev@lists.freedesktop.org
+Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Skip crc in coverage-vs-premult-vs-none for 6bpc panels
+
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of 
+> Vidya Srinivas
 > Sent: Wednesday, July 7, 2021 9:53 PM
 > To: igt-dev@lists.freedesktop.org
-> Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Skip crc in
-> coverage-vs-premult-vs-none for 6bpc panels
+> Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Skip crc 
+> in coverage-vs-premult-vs-none for 6bpc panels
 > 
-> Intel Gen11 6bpc panels are giving CRC mismatch in coverage-vs-premult-vs-none
-> 6bpc panel has dithering ON and CRC test with dithering ON might result in
-> mismatch. Hence, skipping CRC assertion for 6bpc panels.
+> Intel Gen11 6bpc panels are giving CRC mismatch in 
+> coverage-vs-premult-vs-none 6bpc panel has dithering ON and CRC test 
+> with dithering ON might result in mismatch. Hence, skipping CRC assertion for 6bpc panels.
 > 
 > Credits-to: Uma Shankar <uma.shankar@intel.com>
 > Credits-to: Juha-pekka Heikkila <juha-pekka.heikkila@intel.com>
 > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 > ---
->  tests/kms_plane_alpha_blend.c | 39 +++++++++++++++++++++++++++++++++--
+>  tests/kms_plane_alpha_blend.c | 39 
+> +++++++++++++++++++++++++++++++++--
 >  1 file changed, 37 insertions(+), 2 deletions(-)
 > 
-> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-> index a37cb27c7d62..536d96546608 100644
+> diff --git a/tests/kms_plane_alpha_blend.c 
+> b/tests/kms_plane_alpha_blend.c index a37cb27c7d62..536d96546608 
+> 100644
 > --- a/tests/kms_plane_alpha_blend.c
 > +++ b/tests/kms_plane_alpha_blend.c
 > @@ -25,6 +25,7 @@
@@ -57,10 +77,11 @@ List-ID: <igt-dev@lists.freedesktop.org>
 No need to include string.h
 
 > 
->  IGT_TEST_DESCRIPTION("Test plane alpha and blending mode properties");
+>  IGT_TEST_DESCRIPTION("Test plane alpha and blending mode 
+> properties");
 > 
-> @@ -442,10 +443,41 @@ static void coverage_7efc(data_t *data, enum pipe pipe,
-> igt_plane_t *plane)
+> @@ -442,10 +443,41 @@ static void coverage_7efc(data_t *data, enum 
+> pipe pipe, igt_plane_t *plane)
 >  	igt_pipe_crc_stop(data->pipe_crc);
 >  }
 > 
@@ -69,7 +90,8 @@ No need to include string.h
 > +	char *str;
 > +	bool ret;
 > +	int debugfs_fd;
-> +	igt_output_t *output = igt_get_single_output_for_pipe(display, pipe);
+> +	igt_output_t *output = igt_get_single_output_for_pipe(display, 
+> +pipe);
 > +
 > +	if (!is_i915_device(display->drm_fd))
 > +		return false;
@@ -90,25 +112,16 @@ This will throw the warning Mixed declarations
 > +
 > +	str = strstr(buf, "bpp=");
 
-I think, this approach won't work for all pipes except pipe-A,
-i915_display_info looks like below:
+I think, this approach won't work for all pipes except pipe-A, i915_display_info looks like below:
 
 [CRTC:80:pipe A]:
-	pipe src size=1920x1080, dither=no, bpp=18
-[CRTC:131:pipe B]:
-	pipe src size=1920x1080, dither=no, bpp=24
-[CRTC:182:pipe C]:
-	pipe src size=1920x1080, dither=no, bpp=30
-[CRTC:233:pipe D]:
+	pipe src size=1920x1080, dither=no, bpp=18 [CRTC:131:pipe B]:
+	pipe src size=1920x1080, dither=no, bpp=24 [CRTC:182:pipe C]:
+	pipe src size=1920x1080, dither=no, bpp=30 [CRTC:233:pipe D]:
 
-We might end-up by reading the pipe-A bpp everytime, even though we
-are running test on pipe-B.
+We might end-up by reading the pipe-A bpp everytime, even though we are running test on pipe-B.
 
-And yeah, bpp won't present if pipe is not enabled. I would suggest
-to run the test in interactive mode & check the i915_display_info to
-make sure at an instance only one pipe is enabled (means only one bpp
-available in entire debugfs), otherwise we need to modify the logic to
-read the bpp of particular pipe.
+And yeah, bpp won't present if pipe is not enabled. I would suggest to run the test in interactive mode & check the i915_display_info to make sure at an instance only one pipe is enabled (means only one bpp available in entire debugfs), otherwise we need to modify the logic to read the bpp of particular pipe.
 
 ./kms_plane_alpha_blend --r coverage-vs-premult-vs-none --interactive
 
@@ -121,9 +134,8 @@ read the bpp of particular pipe.
 > +	return ret;
 > +}
 > +
->  static void coverage_premult_constant(data_t *data, enum pipe pipe,
-> igt_plane_t *plane)
->  {
+>  static void coverage_premult_constant(data_t *data, enum pipe pipe, 
+> igt_plane_t *plane)  {
 >  	igt_display_t *display = &data->display;
 >  	igt_crc_t ref_crc = {}, crc = {};
 > +	bool is6bpc;
