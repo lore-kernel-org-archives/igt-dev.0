@@ -1,18 +1,27 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1242B89D81
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Jul 2021 07:08:16 +0000 (UTC)
-From: "Shankar, Uma" <uma.shankar@intel.com>
-Date: Fri, 9 Jul 2021 07:08:11 +0000
-Message-ID: <6f027f64999344b6af42c76f703446fa@intel.com>
-References: <20210709114134.15025-1-bhanuprakash.modem@intel.com>
- <d7d0969a18714427b6f3fd9530a4999f@intel.com>
- <CO6PR11MB55694EC5EEE89EFA132099048D189@CO6PR11MB5569.namprd11.prod.outlook.com>
-In-Reply-To: <CO6PR11MB55694EC5EEE89EFA132099048D189@CO6PR11MB5569.namprd11.prod.outlook.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 236AF6E9C1
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Jul 2021 07:08:37 +0000 (UTC)
+From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Date: Fri, 9 Jul 2021 07:08:23 +0000
+Message-ID: <BY5PR11MB43728B8D04743521EEBCC59589189@BY5PR11MB4372.namprd11.prod.outlook.com>
+References: <20210708090439.4453-1-vidya.srinivas@intel.com>
+ <20210708093057.31324-1-vidya.srinivas@intel.com>
+ <CO6PR11MB55692A2FF838FDB5DC874C4D8D199@CO6PR11MB5569.namprd11.prod.outlook.com>
+ <BY5PR11MB43721EA14E6AB31CE7AA133289199@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <PH0PR11MB557926DDD48F68486F0E34808D199@PH0PR11MB5579.namprd11.prod.outlook.com>
+ <17de69b615a548df93fdad2b86526832@intel.com>
+ <BY5PR11MB43729C0BE0CD3D6E7C6D2DAB89199@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <BY5PR11MB4372A20E955EEB653953B93889199@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <CO6PR11MB55690B39936C9D2D48498D6B8D199@CO6PR11MB5569.namprd11.prod.outlook.com>
+ <BY5PR11MB437278197A9FA5DB1633C7CD89199@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <BY5PR11MB4372BE73766BA2A9328382F189189@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <CO6PR11MB556904F68AF8D300553D6B048D189@CO6PR11MB5569.namprd11.prod.outlook.com>
+In-Reply-To: <CO6PR11MB556904F68AF8D300553D6B048D189@CO6PR11MB5569.namprd11.prod.outlook.com>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t v2 1/2] tests/kms_dither: New IGT to validate
- crtc Dithering
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Skip crc
+ assertion in coverage-vs-premult-vs-none for 6bpc panels
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,252 +29,319 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Varide, Nischal" <nischal.varide@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "Shankar, Uma" <uma.shankar@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gPg0KPiA+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiA+IEZyb206IE1v
-ZGVtLCBCaGFudXByYWthc2ggPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+DQo+ID4gPiBT
-ZW50OiBGcmlkYXksIEp1bHkgOSwgMjAyMSA1OjEyIFBNDQo+ID4gPiBUbzogaWd0LWRldkBsaXN0
-cy5mcmVlZGVza3RvcC5vcmcNCj4gPiA+IENjOiBNb2RlbSwgQmhhbnVwcmFrYXNoIDxiaGFudXBy
-YWthc2gubW9kZW1AaW50ZWwuY29tPjsgU2hhcm1hLA0KPiA+ID4gU3dhdGkyIDxzd2F0aTIuc2hh
-cm1hQGludGVsLmNvbT47IFNoYW5rYXIsIFVtYQ0KPiA+ID4gPHVtYS5zaGFua2FyQGludGVsLmNv
-bT47IFZhcmlkZSwgTmlzY2hhbCA8bmlzY2hhbC52YXJpZGVAaW50ZWwuY29tPg0KPiA+ID4gU3Vi
-amVjdDogW2ktZy10IHYyIDEvMl0gdGVzdHMva21zX2RpdGhlcjogTmV3IElHVCB0byB2YWxpZGF0
-ZSBjcnRjDQo+ID4gPiBEaXRoZXJpbmcNCj4gPiA+DQo+ID4gPiBNYW55IG9mIHRoZSBkaXNwbGF5
-IGRldmljZXMgaGF2ZSBjb2xvciBmb3JtYXQgc3VwcG9ydCBsZXNzIHRoYW4gdGhlDQo+ID4gPiBj
-b2xvcg0KPiA+IGZvcm1hdCBvZg0KPiA+ID4gdGhlIGlucHV0IGRhdGEgKEV4OiA4LWJpdCBpbnB1
-dCBkYXRhIGFuZCA2LWJpdCBkaXNwbGF5IGNvbG9yIGRlcHRoKS4NCj4gPiA+IFRoZW4NCj4gPiB0
-aGUgaW5wdXQgZGF0YQ0KPiA+ID4gd2lsbCBiZSBlaXRoZXIgdHJ1bmNhdGVkIG9yIHJvdW5kZWQs
-IGJ1dCB0aGlzIGFwcHJvYWNoIHVzdWFsbHkNCj4gPiA+IGNhdXNlcyBsb3NzDQo+ID4gb2YgZGV0
-YWlsDQo+ID4gPiBhbmQgYWxzbyBwcm9kdWNlIGxhcmdlIGJhbmRlZCBhcmVhcyBvZiBhIHNpbmds
-ZSBjb2xvciB0aGF0DQo+ID4gPiBzaWduaWZpY2FudGx5DQo+ID4gZGlmZmVycyBmcm9tDQo+ID4g
-PiB0aGUgb3JpZ2luYWwgaW1hZ2UuDQo+ID4gPg0KPiA+ID4gRGl0aGVyaW5nIGlzIGEgdGVjaG5p
-cXVlIHVzZWQgdG8gZW5oYW5jZSB0aGVzZSBjb2xvcnMgYnkgY3JlYXRpbmcNCj4gPiA+IHRoZQ0K
-PiA+IGlsbHVzaW9uIG9mDQo+ID4gPiBzbW9vdGhuZXNzIGJ5IGFkanVzdGluZyB0aGUgbmVhcmJ5
-IHBpeGVsIGNvbG9yLg0KPiA+ID4gRm9yIEVnOiBDb252ZXJ0aW5nIDgtYml0IHRvIDYtYml0IGJ5
-IG1vZGlmeWluZyB0aGUgcGl4ZWwgaW5mb3JtYXRpb24uDQo+ID4gPg0KPiA+ID4gRGl0aGVyaW5n
-IHNob3VsZCBiZSBlbmFibGVkIHdoZW4gYSBwYW5lbCBjb2xvciBkZXB0aCBpcyBsb3dlciB0aGFu
-DQo+ID4gPiB0aGUgY29sb3INCj4gPiBkZXB0aA0KPiA+ID4gb2YgdGhlIGZyYW1lYnVmZmVyLg0K
-PiA+ID4NCj4gPiA+IEV2ZW4gdGhvdWdoIGZlYXR1cmUgRGl0aGVyaW5nIGlzIHRoZXJlIHNpbmNl
-IGxlZ2FjeSwgdGhlcmUgaXMgbm8NCj4gPiA+IHNwZWNpZmljDQo+ID4gSUdUIGZvciB0aGlzLg0K
-PiA+ID4gVGhpcyBwYXRjaCB3aWxsIGNyZWF0ZSBOZXcgSUdUIGZvciBEaXRoZXJpbmcuDQo+ID4g
-PiBBbmQgYmVsb3cgaXMgdGhlIHRydXRoIHRhYmxlIGZvciBDUlRDIERpdGhlcmluZy4NCj4gPiA+
-DQo+ID4gPiB8LS0tLS0tLS0tLS0tLS0tLXwtLS0tLS0tLS18LS0tLS0tLS0tLS0tLXwNCj4gPiA+
-IHwgIEZyYW1lIGJ1ZmZlciAgfCAgUGFuZWwgIHwgIERpdGhlcmluZyAgfA0KPiA+ID4gfC0tLS0t
-LS0tLS0tLS0tLS18LS0tLS0tLS0tfC0tLS0tLS0tLS0tLS18DQo+ID4gPiB8ICAgICAgOCBCUEMg
-ICAgIHwgIDYgQlBDICB8ICAgICBZZXMgICAgIHwNCj4gPiA+IHwtLS0tLS0tLS0tLS0tLS0tfC0t
-LS0tLS0tLXwtLS0tLS0tLS0tLS0tfA0KPiA+ID4gfCAgICAgIDggQlBDICAgICB8ICA4IEJQQyAg
-fCAgICAgTm8gICAgICB8DQo+ID4gPiB8LS0tLS0tLS0tLS0tLS0tLXwtLS0tLS0tLS18LS0tLS0t
-LS0tLS0tLXwNCj4gPiA+IHwgICAgICA4IEJQQyAgICAgfCAxMCBCUEMgIHwgICAgIE5vICAgICAg
-fA0KPiA+ID4gfC0tLS0tLS0tLS0tLS0tLS18LS0tLS0tLS0tfC0tLS0tLS0tLS0tLS18DQo+ID4g
-PiB8ICAgICAxMCBCUEMgICAgIHwgIDYgQlBDICB8ICAgICBZZXMgICAgIHwNCj4gPiA+IHwtLS0t
-LS0tLS0tLS0tLS0tfC0tLS0tLS0tLXwtLS0tLS0tLS0tLS0tfA0KPiA+ID4gfCAgICAgMTAgQlBD
-ICAgICB8ICA4IEJQQyAgfCAgICAgWWVzICAgICB8DQo+ID4gPiB8LS0tLS0tLS0tLS0tLS0tLXwt
-LS0tLS0tLS18LS0tLS0tLS0tLS0tLXwNCj4gPiA+IHwgICAgIDEwIEJQQyAgICAgfCAxMCBCUEMg
-IHwgICAgIE5vICAgICAgfA0KPiA+ID4gfC0tLS0tLS0tLS0tLS0tLS18LS0tLS0tLS0tfC0tLS0t
-LS0tLS0tLS18DQo+ID4gPiB8ICAgICAxNiBCUEMgICAgIHwgIDYgQlBDICB8ICAgICBZZXMgICAg
-IHwNCj4gPiA+IHwtLS0tLS0tLS0tLS0tLS0tfC0tLS0tLS0tLXwtLS0tLS0tLS0tLS0tfA0KPiA+
-ID4gfCAgICAgMTYgQlBDICAgICB8ICA4IEJQQyAgfCAgICAgWWVzICAgICB8DQo+ID4gPiB8LS0t
-LS0tLS0tLS0tLS0tLXwtLS0tLS0tLS18LS0tLS0tLS0tLS0tLXwNCj4gPiA+IHwgICAgIDE2IEJQ
-QyAgICAgfCAxMCBCUEMgIHwgICAgIFllcyAgICAgfA0KPiA+ID4gfC0tLS0tLS0tLS0tLS0tLS18
-LS0tLS0tLS0tfC0tLS0tLS0tLS0tLS18DQo+ID4gPg0KPiA+ID4gTm90ZTogQXMgaTkxNSBlbmFi
-bGVzIGRpdGhlcmluZyBmb3IgNiBicGMgcGFuZWxzIG9ubHksIHdlIG5lZWQgdG8NCj4gPiA+IGxp
-bWl0IHRoZQ0KPiA+IGV4ZWN1dGlvbg0KPiA+ID4gdG8gNiAmIDggYnBjIHBhbmVscyAoTmVnYXRp
-dmUgdGVzdGluZykgb25seS4NCj4gPiA+DQo+ID4gPiBDYzogU3dhdGkgU2hhcm1hIDxzd2F0aTIu
-c2hhcm1hQGludGVsLmNvbT4NCj4gPiA+IENjOiBVbWEgU2hhbmthciA8dW1hLnNoYW5rYXJAaW50
-ZWwuY29tPg0KPiA+ID4gQ2M6IE5pc2NoYWwgVmFyaWRlIDxuaXNjaGFsLnZhcmlkZUBpbnRlbC5j
-b20+DQo+ID4gPiBTaWduZWQtb2ZmLWJ5OiBCaGFudXByYWthc2ggTW9kZW0gPGJoYW51cHJha2Fz
-aC5tb2RlbUBpbnRlbC5jb20+DQo+ID4gPiAtLS0NCj4gPiA+ICB0ZXN0cy9rbXNfZGl0aGVyLmMg
-fCAyNDIgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ID4g
-PiAgdGVzdHMvbWVzb24uYnVpbGQgIHwgICAxICsNCj4gPiA+ICAyIGZpbGVzIGNoYW5nZWQsIDI0
-MyBpbnNlcnRpb25zKCspDQo+ID4gPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IHRlc3RzL2ttc19kaXRo
-ZXIuYw0KPiA+ID4NCj4gPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfZGl0aGVyLmMgYi90ZXN0
-cy9rbXNfZGl0aGVyLmMgbmV3IGZpbGUgbW9kZQ0KPiA+ID4gMTAwNjQ0DQo+ID4gaW5kZXgNCj4g
-PiA+IDAwMDAwMDAwMC4uNTBjNjQ5Y2E4DQo+ID4gPiAtLS0gL2Rldi9udWxsDQo+ID4gPiArKysg
-Yi90ZXN0cy9rbXNfZGl0aGVyLmMNCj4gPiA+IEBAIC0wLDAgKzEsMjQyIEBADQo+ID4gPiArLyoN
-Cj4gPiA+ICsgKiBDb3B5cmlnaHQgwqkgMjAyMCBJbnRlbCBDb3Jwb3JhdGlvbg0KPiA+ID4gKyAq
-DQo+ID4gPiArICogUGVybWlzc2lvbiBpcyBoZXJlYnkgZ3JhbnRlZCwgZnJlZSBvZiBjaGFyZ2Us
-IHRvIGFueSBwZXJzb24NCj4gPiA+ICtvYnRhaW5pbmcgYQ0KPiA+ID4gKyAqIGNvcHkgb2YgdGhp
-cyBzb2Z0d2FyZSBhbmQgYXNzb2NpYXRlZCBkb2N1bWVudGF0aW9uIGZpbGVzICh0aGUNCj4gPiA+
-ICsiU29mdHdhcmUiKSwNCj4gPiA+ICsgKiB0byBkZWFsIGluIHRoZSBTb2Z0d2FyZSB3aXRob3V0
-IHJlc3RyaWN0aW9uLCBpbmNsdWRpbmcgd2l0aG91dA0KPiA+ID4gK2xpbWl0YXRpb24NCj4gPiA+
-ICsgKiB0aGUgcmlnaHRzIHRvIHVzZSwgY29weSwgbW9kaWZ5LCBtZXJnZSwgcHVibGlzaCwgZGlz
-dHJpYnV0ZSwNCj4gPiA+ICtzdWJsaWNlbnNlLA0KPiA+ID4gKyAqIGFuZC9vciBzZWxsIGNvcGll
-cyBvZiB0aGUgU29mdHdhcmUsIGFuZCB0byBwZXJtaXQgcGVyc29ucyB0bw0KPiA+ID4gK3dob20g
-dGhlDQo+ID4gPiArICogU29mdHdhcmUgaXMgZnVybmlzaGVkIHRvIGRvIHNvLCBzdWJqZWN0IHRv
-IHRoZSBmb2xsb3dpbmcgY29uZGl0aW9uczoNCj4gPiA+ICsgKg0KPiA+ID4gKyAqIFRoZSBhYm92
-ZSBjb3B5cmlnaHQgbm90aWNlIGFuZCB0aGlzIHBlcm1pc3Npb24gbm90aWNlIChpbmNsdWRpbmcN
-Cj4gPiA+ICt0aGUgbmV4dA0KPiA+ID4gKyAqIHBhcmFncmFwaCkgc2hhbGwgYmUgaW5jbHVkZWQg
-aW4gYWxsIGNvcGllcyBvciBzdWJzdGFudGlhbA0KPiA+ID4gK3BvcnRpb25zIG9mIHRoZQ0KPiA+
-ID4gKyAqIFNvZnR3YXJlLg0KPiA+ID4gKyAqDQo+ID4gPiArICogVEhFIFNPRlRXQVJFIElTIFBS
-T1ZJREVEICJBUyBJUyIsIFdJVEhPVVQgV0FSUkFOVFkgT0YgQU5ZIEtJTkQsDQo+ID4gPiArRVhQ
-UkVTUyBPUg0KPiA+ID4gKyAqIElNUExJRUQsIElOQ0xVRElORyBCVVQgTk9UIExJTUlURUQgVE8g
-VEhFIFdBUlJBTlRJRVMgT0YNCj4gPiA+ICtNRVJDSEFOVEFCSUxJVFksDQo+ID4gPiArICogRklU
-TkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UgQU5EIE5PTklORlJJTkdFTUVOVC4gIElOIE5P
-DQo+ID4gPiArRVZFTlQgU0hBTEwNCj4gPiA+ICsgKiBUSEUgQ09QWVJJR0hUIEhPTERFUihTKSBP
-UiBBVVRIT1IoUykgQkUgTElBQkxFIEZPUiBBTlkgQ0xBSU0sDQo+ID4gPiArREFNQUdFUyBPUg0K
-PiA+ID4gKyAqIE9USEVSIExJQUJJTElUWSwgV0hFVEhFUiBJTiBBTiBBQ1RJT04gT0YgQ09OVFJB
-Q1QsIFRPUlQgT1INCj4gPiA+ICtPVEhFUldJU0UsDQo+ID4gPiArICogQVJJU0lORyBGUk9NLCBP
-VVQgT0YgT1IgSU4gQ09OTkVDVElPTiBXSVRIIFRIRSBTT0ZUV0FSRSBPUiBUSEUNCj4gPiA+ICtV
-U0UgT1INCj4gPiA+ICsgKiBPVEhFUiBERUFMSU5HUyBJTiBUSEUgU09GVFdBUkUuDQo+ID4gPiAr
-ICoNCj4gPiA+ICsgKiBBdXRob3JzOg0KPiA+ID4gKyAqICAgICBCaGFudXByYWthc2ggTW9kZW0g
-PGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+DQo+ID4gPiArICoNCj4gPiA+ICsgKi8NCj4g
-PiA+ICsNCj4gPiA+ICsjaW5jbHVkZSAiaWd0LmgiDQo+ID4gPiArI2luY2x1ZGUgPGZjbnRsLmg+
-DQo+ID4gPiArI2luY2x1ZGUgPHRlcm1pb3MuaD4NCj4gPiA+ICsjaW5jbHVkZSA8dW5pc3RkLmg+
-DQo+ID4gPiArDQo+ID4gPiArSUdUX1RFU1RfREVTQ1JJUFRJT04oIlRlc3QgRGl0aGVyaW5nIGJs
-b2NrIHN0YXR1cyIpOw0KPiA+ID4gKw0KPiA+ID4gKy8qIENvbm5lY3RvciBCUEMgKi8NCj4gPiA+
-ICsjZGVmaW5lIElHVF9DT05ORUNUT1JfQlBDXzY2DQo+ID4gPiArI2RlZmluZSBJR1RfQ09OTkVD
-VE9SX0JQQ184OA0KPiA+ID4gKw0KPiA+ID4gKy8qIEZyYW1lYnVmZmVyIEJQQyAqLw0KPiA+ID4g
-KyNkZWZpbmUgSUdUX0ZSQU1FX0JVRkZFUl9CUENfODgNCj4gPiA+ICsNCj4gPiA+ICsvKiBDb21t
-b24gdGVzdCBkYXRhLiAqLw0KPiA+ID4gK3R5cGVkZWYgc3RydWN0IGRhdGEgew0KPiA+ID4gK2ln
-dF9kaXNwbGF5X3QgZGlzcGxheTsNCj4gPiA+ICtpZ3RfcGxhbmVfdCAqcHJpbWFyeTsNCj4gPiA+
-ICtpZ3Rfb3V0cHV0X3QgKm91dHB1dDsNCj4gPiA+ICtpZ3RfcGlwZV90ICpwaXBlOw0KPiA+ID4g
-K2RybU1vZGVNb2RlSW5mbyAqbW9kZTsNCj4gPiA+ICtlbnVtIHBpcGUgcGlwZV9pZDsNCj4gPiA+
-ICtpbnQgZHJtX2ZkOw0KPiA+ID4gK2lndF9mYl90IGZiOw0KPiA+ID4gK30gZGF0YV90Ow0KPiA+
-ID4gKw0KPiA+ID4gK3R5cGVkZWYgc3RydWN0IHsNCj4gPiA+ICt1bnNpZ25lZCBpbnQgYnBjOw0K
-PiA+ID4gK3Vuc2lnbmVkIGludCBkaXRoZXI7DQo+ID4gPiArfSBkaXRoZXJfc3RhdHVzX3Q7DQo+
-ID4gPiArDQo+ID4gPiArLyogUHJlcGFyZSB0ZXN0IGRhdGEuICovDQo+ID4gPiArc3RhdGljIHZv
-aWQgcHJlcGFyZV90ZXN0KGRhdGFfdCAqZGF0YSwgaWd0X291dHB1dF90ICpvdXRwdXQsIGVudW0N
-Cj4gPiA+ICtwaXBlDQo+ID4gPiArcGlwZSkgew0KPiA+ID4gK2lndF9kaXNwbGF5X3QgKmRpc3Bs
-YXkgPSAmZGF0YS0+ZGlzcGxheTsNCj4gPiA+ICsNCj4gPiA+ICtkYXRhLT5waXBlX2lkID0gcGlw
-ZTsNCj4gPiA+ICtkYXRhLT5waXBlID0gJmRhdGEtPmRpc3BsYXkucGlwZXNbZGF0YS0+cGlwZV9p
-ZF07DQo+ID4gPiAraWd0X2Fzc2VydChkYXRhLT5waXBlKTsNCj4gPiA+ICsNCj4gPiA+ICtpZ3Rf
-ZGlzcGxheV9yZXNldChkaXNwbGF5KTsNCj4gPiA+ICsNCj4gPiA+ICtkYXRhLT5vdXRwdXQgPSBv
-dXRwdXQ7DQo+ID4gPiAraWd0X2Fzc2VydChkYXRhLT5vdXRwdXQpOw0KPiA+ID4gKw0KPiA+ID4g
-K2RhdGEtPm1vZGUgPSBpZ3Rfb3V0cHV0X2dldF9tb2RlKGRhdGEtPm91dHB1dCk7DQo+ID4gPiAr
-aWd0X2Fzc2VydChkYXRhLT5tb2RlKTsNCj4gPiA+ICsNCj4gPiA+ICtkYXRhLT5wcmltYXJ5ID0N
-Cj4gPiA+ICtpZ3RfcGlwZV9nZXRfcGxhbmVfdHlwZShkYXRhLT5waXBlLA0KPiA+ID4gRFJNX1BM
-QU5FX1RZUEVfUFJJTUFSWSk7DQo+ID4gPiArDQo+ID4gPiAraWd0X291dHB1dF9zZXRfcGlwZShk
-YXRhLT5vdXRwdXQsIGRhdGEtPnBpcGVfaWQpOyB9DQo+ID4gPiArDQo+ID4gPiArLyogUmV0dXJu
-cyB0aGUgY3VycmVudCBzdGF0ZSBvZiBkaXRoZXJpbmcgZnJvbSB0aGUgY3J0YyBkZWJ1Z2ZzLiAq
-Lw0KPiA+ID4gK3N0YXRpYyBkaXRoZXJfc3RhdHVzX3QgZ2V0X2RpdGhlcl9zdGF0ZShkYXRhX3Qg
-KmRhdGEpIHsgY2hhcg0KPiA+ID4gK2J1Zls1MTJdLCB0bXBbNV07IGNoYXIgKnN0YXJ0X2xvYzsg
-aW50IGRpciwgcmVzOyBkaXRoZXJfc3RhdHVzX3QNCj4gPiA+ICtzdGF0dXM7DQo+ID4gPiArDQo+
-ID4gPiArZGlyID0gaWd0X2RlYnVnZnNfZGlyKGRhdGEtPmRybV9mZCk7IGlndF9hc3NlcnQoZGly
-ID49IDApOw0KPiA+ID4gKw0KPiA+ID4gK3JlcyA9IGlndF9kZWJ1Z2ZzX3NpbXBsZV9yZWFkKGRp
-ciwgImk5MTVfZGlzcGxheV9pbmZvIiwgYnVmLA0KPiA+ID4gK3NpemVvZihidWYpKTsgaWd0X3Jl
-cXVpcmUocmVzID4gMCk7IGNsb3NlKGRpcik7DQo+ID4gPiArDQo+ID4gPiAraWd0X2Fzc2VydChz
-dGFydF9sb2MgPSBzdHJzdHIoYnVmLCAiLCBicHA9IikpOw0KPiA+ID4gK2lndF9hc3NlcnRfZXEo
-c3NjYW5mKHN0YXJ0X2xvYywgIiwgYnBwPSV1IiwgJnN0YXR1cy5icGMpLCAxKTsNCj4gPiA+ICtz
-dGF0dXMuYnBjIC89IDM7DQo+ID4gPiArDQo+ID4gPiAraWd0X2Fzc2VydChzdGFydF9sb2MgPSBz
-dHJzdHIoYnVmLCAiLCBkaXRoZXI9IikpOw0KPiA+ID4gK2lndF9hc3NlcnRfZXEoc3NjYW5mKHN0
-YXJ0X2xvYywgIiwgZGl0aGVyPSVzIiwgdG1wKSwgMSk7DQo+ID4gPiArc3RhdHVzLmRpdGhlciA9
-ICFzdHJjbXAodG1wLCAieWVzLCIpOw0KPiA+ID4gKw0KPiA+ID4gK3JldHVybiBzdGF0dXM7DQo+
-ID4gPiArfQ0KPiA+ID4gKw0KPiA+ID4gK3N0YXRpYyB2b2lkIHRlc3RfZGl0aGVyaW5nKGRhdGFf
-dCAqZGF0YSwgZW51bSBwaXBlIHBpcGUsDQo+ID4gPiArICAgaWd0X291dHB1dF90ICpvdXRwdXQs
-DQo+ID4gPiArICAgaW50IGZiX2JwYywgaW50IGZiX2Zvcm1hdCwNCj4gPiA+ICsgICBpbnQgb3V0
-cHV0X2JwYykNCj4gPiA+ICt7DQo+ID4gPiAraWd0X2Rpc3BsYXlfdCAqZGlzcGxheSA9ICZkYXRh
-LT5kaXNwbGF5OyBkaXRoZXJfc3RhdHVzX3Qgc3RhdHVzOw0KPiA+ID4gK2ludCBicGMgPSAwOw0K
-PiA+ID4gKw0KPiA+ID4gK2lndF9pbmZvKCJEaXRoZXJpbmcgdGVzdCBleGVjdXRpb24gb24gJXMg
-UElQRV8lc1xuIiwNCj4gPiA+ICtvdXRwdXQtPm5hbWUsIGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUp
-KTsNCj4gPiA+ICtwcmVwYXJlX3Rlc3QoZGF0YSwgb3V0cHV0LCBwaXBlKTsNCj4gPiA+ICsNCj4g
-PiA+ICtpZ3RfYXNzZXJ0KGlndF9jcmVhdGVfZmIoZGF0YS0+ZHJtX2ZkLCBkYXRhLT5tb2RlLT5o
-ZGlzcGxheSwNCj4gPiA+ICsgZGF0YS0+bW9kZS0+dmRpc3BsYXksIGZiX2Zvcm1hdCwNCj4gPiA+
-ICsgTE9DQUxfRFJNX0ZPUk1BVF9NT0RfTk9ORSwgJmRhdGEtPmZiKSk7DQo+ID4gPiAraWd0X3Bs
-YW5lX3NldF9mYihkYXRhLT5wcmltYXJ5LCAmZGF0YS0+ZmIpOw0KPiA+ID4gK2lndF9wbGFuZV9z
-ZXRfc2l6ZShkYXRhLT5wcmltYXJ5LCBkYXRhLT5tb2RlLT5oZGlzcGxheSwNCj4gPiA+ICtkYXRh
-LT5tb2RlLT52ZGlzcGxheSk7DQo+ID4gPiArDQo+ID4gPiAraWYgKGlndF9vdXRwdXRfaGFzX3By
-b3Aob3V0cHV0LCBJR1RfQ09OTkVDVE9SX01BWF9CUEMpKSB7IGJwYyA9DQo+ID4gPiAraWd0X291
-dHB1dF9nZXRfcHJvcChvdXRwdXQsIElHVF9DT05ORUNUT1JfTUFYX0JQQyk7DQo+ID4NCj4gPiBZ
-b3UgY2FuIGhhdmUgdGhlc2UgaGFzX3Byb3AgYXMgaWd0X3JlcXVpcmUgYmVmb3JlIGdvaW5nIGZ1
-cnRoZXIgaW4gdGhlDQo+ID4gdGVzdHMgYW5kIHNraXAgaW4gY2FzZSB3ZSBkb24ndCBnZXQgdGhl
-bS4NCj4gDQo+IEluIHRoYXQgY2FzZSB3ZSdsbCBsb29zZSB0aGUgY292ZXJhZ2UgZm9yIG9sZGVy
-IGtlcm5lbHMgJiBzb21lIGNvbm5lY3RvciB0eXBlcy4NCj4gDQo+IEV4OiBEU0kgJiBWR0EgYXJl
-IHNraXBwaW5nIHdpdGggdGhhdCBjaGFuZ2UgaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3Ry
-ZWUvZHJtLQ0KPiB0aXAvSUdUUFdfNTk5Ni9iYXQtYWxsLmh0bWw/dGVzdGZpbHRlcj1rbXNfZGl0
-aGVyDQoNCkJ1dCBpc24ndCBpdCBhIG1hbmRhdG9yeSByZXF1aXJlbWVudCBmb3IgeW91ciB0ZXN0
-ID8NCj4gPg0KPiA+ID4gK2lndF9vdXRwdXRfc2V0X3Byb3BfdmFsdWUoZGF0YS0+b3V0cHV0LA0K
-PiA+ID4gSUdUX0NPTk5FQ1RPUl9NQVhfQlBDLCBvdXRwdXRfYnBjKTsNCj4gPiA+ICt9DQo+ID4g
-PiAraWd0X2Rpc3BsYXlfY29tbWl0MihkaXNwbGF5LCBkaXNwbGF5LT5pc19hdG9taWMgPyBDT01N
-SVRfQVRPTUlDIDoNCj4gPiA+ICtDT01NSVRfTEVHQUNZKTsNCj4gPiA+ICsNCj4gPiA+ICsvKg0K
-PiA+ID4gKyAqIENoZWNrIHRoZSBzdGF0dXMgb2YgRGl0aGVyaW5nIGJsb2NrOg0KPiA+ID4gKyAq
-DQo+ID4gPiArICogUHJlc2VydmUgdGhlIHJlc3VsdCAmIGNvbXB1dGUgbGF0ZXIgKGFmdGVyIGNs
-ZWFuLXVwKS4NCj4gPiA+ICsgKiBJZiBmYl9icGMgaXMgZ3JlYXRlciB0aGFuIG91dHB1dF9icGMs
-IERpdGhlcmluZyBzaG91bGQgYmUNCj4gPiA+ICtlbmFibGVkDQo+ID4gPiArICogRWxzZSBkaXNh
-YmxlZA0KPiA+ID4gKyAqLw0KPiA+ID4gK3N0YXR1cyA9IGdldF9kaXRoZXJfc3RhdGUoZGF0YSk7
-DQo+ID4gPiArDQo+ID4gPiAraWd0X2luZm8oIkZCIEJQQzolZCwgUGFuZWwgQlBDOiVkLCBQaXBl
-IEJQQzolZCwgRXhwZWN0ZWQgRGl0aGVyOiVzLA0KPiA+ID4gQWN0dWFsIHJlc3VsdDolc1xuIiwN
-Cj4gPiA+ICsgIGZiX2JwYywgb3V0cHV0X2JwYywgc3RhdHVzLmJwYywNCj4gPiA+ICsgIChmYl9i
-cGMgPiBvdXRwdXRfYnBjKSA/ICJFbmFibGUiOiAiRGlzYWJsZSIsICBzdGF0dXMuZGl0aGVyID8N
-Cj4gPiA+ICsgIkVuYWJsZSI6ICJEaXNhYmxlIik7DQo+ID4gPiArDQo+ID4gPiArICAgICAgIC8q
-DQo+ID4gPiArKiBXZSBtdXN0IHVwZGF0ZSB0aGUgQ29ubmVjdG9yIG1heF9icGMgcHJvcGVydHkg
-YmFjaw0KPiA+ID4gKyogT3RoZXJ3aXNlLCBwcmV2aW91c2x5IHVwZGF0ZWQgdmFsdWUgd2lsbCBz
-dGF5IGZvcmV2ZXIgYW5kDQo+ID4gPiArKiBtYXkgY2F1c2UgdGhlIGZhaWx1cmVzIGZvciBuZXh0
-L290aGVyIHN1YnRlc3RzLg0KPiA+ID4gKyovDQo+ID4gPiAraWYgKGJwYykNCj4gPiA+ICtpZ3Rf
-b3V0cHV0X3NldF9wcm9wX3ZhbHVlKGRhdGEtPm91dHB1dCwNCj4gPiA+IElHVF9DT05ORUNUT1Jf
-TUFYX0JQQywgYnBjKTsNCj4gPiA+ICtpZ3RfcGxhbmVfc2V0X2ZiKGRhdGEtPnByaW1hcnksIE5V
-TEwpOyBpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dCwNCj4gPiA+ICtQSVBFX05PTkUpOyBpZ3Rf
-ZGlzcGxheV9jb21taXQyKGRpc3BsYXksIGRpc3BsYXktPmlzX2F0b21pYyA/DQo+ID4gPiArQ09N
-TUlUX0FUT01JQyA6DQo+ID4gPiBDT01NSVRfTEVHQUNZKTsNCj4gPiA+ICtpZ3RfcmVtb3ZlX2Zi
-KGRhdGEtPmRybV9mZCwgJmRhdGEtPmZiKTsNCj4gPiA+ICsNCj4gPiA+ICsvKiBDaGVjayBpZiBj
-cnRjIGJwYyBpcyB1cGRhdGVkIHdpdGggcmVxdWVzdGVkIG9uZS4gKi8NCj4gPiA+ICtpZ3RfcmVx
-dWlyZV9mKChzdGF0dXMuYnBjID09IG91dHB1dF9icGMpLCAiJXMgY2FuIHN1cHBvcnQgbWF4DQo+
-ID4gPiArJXUtYnBjLCBidXQgcmVxdWVzdGVkICVkLWJwY1xuIiwNCj4gPiA+ICtvdXRwdXQtPm5h
-bWUsIHN0YXR1cy5icGMsIG91dHB1dF9icGMpOw0KPiA+ID4gKw0KPiA+ID4gKy8qIENvbXB1dGUg
-dGhlIHJlc3VsdC4gKi8NCj4gPiA+ICtpZiAoZmJfYnBjID4gb3V0cHV0X2JwYykNCj4gPiA+ICtp
-Z3RfYXNzZXJ0X2Yoc3RhdHVzLmRpdGhlciwgIihmYl8lZGJwYyA+IG91dHB1dF8lZGJwYyk6IERp
-dGhlcg0KPiA+ID4gc2hvdWxkIGJlIGVuYWJsZWRcbiIsDQo+ID4gPiArZmJfYnBjLCBvdXRwdXRf
-YnBjKTsNCj4gPiA+ICtlbHNlDQo+ID4gPiAraWd0X2Fzc2VydF9mKCFzdGF0dXMuZGl0aGVyLCAi
-KGZiXyVkYnBjIDw9IG91dHB1dF8lZGJwYyk6IERpdGhlcg0KPiA+ID4gc2hvdWxkIGJlIGRpc2Fi
-bGVkXG4iLA0KPiA+ID4gK2ZiX2JwYywgb3V0cHV0X2JwYyk7DQo+ID4gPiArDQo+ID4gPiArcmV0
-dXJuOw0KPiA+ID4gK30NCj4gPiA+ICsNCj4gPiA+ICtzdGF0aWMgdm9pZA0KPiA+ID4gK3J1bl9k
-aXRoZXJfdGVzdChkYXRhX3QgKmRhdGEsIGludCBmYl9icGMsIGludCBmYl9mb3JtYXQsIGludA0K
-PiA+ID4gK291dHB1dF9icGMpIHsNCj4gPiA+ICtpZ3Rfb3V0cHV0X3QgKm91dHB1dDsNCj4gPiA+
-ICtpZ3RfZGlzcGxheV90ICpkaXNwbGF5ID0gJmRhdGEtPmRpc3BsYXk7DQo+ID4gPiArDQo+ID4g
-PiArZm9yX2VhY2hfY29ubmVjdGVkX291dHB1dChkaXNwbGF5LCBvdXRwdXQpIHsgZW51bSBwaXBl
-IHBpcGU7DQo+ID4gPiArZHJtTW9kZUNvbm5lY3RvciAqY29ubmVjdG9yID0gb3V0cHV0LT5jb25m
-aWcuY29ubmVjdG9yOw0KPiA+ID4gKw0KPiA+ID4gKy8qIEhETUkgd29uJ3Qgc3VwcG9ydCA2IEJQ
-QyAqLw0KPiA+ID4gK2lmIChvdXRwdXRfYnBjID09IElHVF9DT05ORUNUT1JfQlBDXzYgJiYNCj4g
-PiA+ICsgICAoY29ubmVjdG9yLT5jb25uZWN0b3JfdHlwZSA9PQ0KPiA+ID4gRFJNX01PREVfQ09O
-TkVDVE9SX0hETUlBIHx8DQo+ID4gPiArICAgIGNvbm5lY3Rvci0+Y29ubmVjdG9yX3R5cGUgPT0N
-Cj4gPiA+IERSTV9NT0RFX0NPTk5FQ1RPUl9IRE1JQikpDQo+ID4NCj4gPiBJIHRoaW5rIHdlIGFs
-cmVhZHkgaGF2ZSBhIGNoZWNrIGluIHRlc3RfZGl0aGVyaW5nLCBzbyB3ZSBjYW4gZHJvcCB0aGlz
-DQo+ID4gc3BlY2lmaWMgZW5jb2RlciBjaGVjayBoZXJlLg0KPiANCj4gSSBndWVzcyBhdG9taWMg
-Y29tbWl0IHdpbGwgZmFpbCAmIHRocm93cyBhbiBlcnJvcjogLTIyIGludmFsaWQgYXJndW1lbnQg
-aWYgd2UgcmVxdWVzdA0KPiB0byBzZXQgbWF4X2JwYyBhcyA2IGZvciBIRE1JIGNvbm5lY3RvcnMs
-IGJlY2F1c2UgSERNSSB3b24ndCBzdXBwb3J0IDYtYnBjLg0KDQpUaGVyZSBjYW4gYmUgb3RoZXIg
-ZW5jb2RlcnMvc2luayBhcyB3ZWxsIHdobyBkb24ndCBzdXBwb3J0IDZicGMuIFdlIGNhbiBoYXZl
-IGEgdGVzdCBjb21taXQNCnRvIGRldGVybWluZSB0aGUgY2Fwcy4NCg0KPiA+DQo+ID4gPiArY29u
-dGludWU7DQo+ID4gPiArDQo+ID4gPiArZm9yX2VhY2hfcGlwZShkaXNwbGF5LCBwaXBlKSB7DQo+
-ID4gPiAraWYgKGlndF9waXBlX2Nvbm5lY3Rvcl92YWxpZChwaXBlLCBvdXRwdXQpKSB7DQo+ID4g
-PiAraWd0X2R5bmFtaWNfZigiJXMtcGlwZS0lcyIsIG91dHB1dC0+bmFtZSwNCj4gPiA+IGttc3Rl
-c3RfcGlwZV9uYW1lKHBpcGUpKQ0KPiA+ID4gK3Rlc3RfZGl0aGVyaW5nKGRhdGEsIHBpcGUsIG91
-dHB1dCwgZmJfYnBjLCBmYl9mb3JtYXQsIG91dHB1dF9icGMpOw0KPiA+ID4gKw0KPiA+ID4gKy8q
-IE9uZSBwaXBlIGlzIGVub3VnaCAqLw0KPiA+ID4gK2JyZWFrOw0KPiA+ID4gK30NCj4gPiA+ICt9
-DQo+ID4gPiArfQ0KPiA+ID4gK30NCj4gPiA+ICsNCj4gPiA+ICtpZ3RfbWFpbg0KPiA+ID4gK3sN
-Cj4gPiA+ICtzdHJ1Y3Qgew0KPiA+ID4gK2ludCBmYl9icGM7DQo+ID4gPiAraW50IGZvcm1hdDsN
-Cj4gPiA+ICtpbnQgb3V0cHV0X2JwYzsNCj4gPiA+ICt9IHRlc3RzW10gPSB7DQo+ID4gPiAreyBJ
-R1RfRlJBTUVfQlVGRkVSX0JQQ184LCBEUk1fRk9STUFUX1hSR0I4ODg4LA0KPiA+ID4gSUdUX0NP
-Tk5FQ1RPUl9CUENfNiB9LA0KPiA+ID4gK3sgSUdUX0ZSQU1FX0JVRkZFUl9CUENfOCwgRFJNX0ZP
-Uk1BVF9YUkdCODg4OCwNCj4gPiA+IElHVF9DT05ORUNUT1JfQlBDXzggfSwNCj4gPiA+ICt9Ow0K
-PiA+ID4gK2ludCBpOw0KPiA+ID4gK2RhdGFfdCBkYXRhID0geyAwIH07DQo+ID4gPiArDQo+ID4g
-PiAraWd0X2ZpeHR1cmUgew0KPiA+ID4gK2RhdGEuZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVyX21h
-c3RlcihEUklWRVJfSU5URUwpOw0KPiA+ID4gK2ttc3Rlc3Rfc2V0X3Z0X2dyYXBoaWNzX21vZGUo
-KTsNCj4gPiA+ICsNCj4gPiA+ICtpZ3RfZGlzcGxheV9yZXF1aXJlKCZkYXRhLmRpc3BsYXksIGRh
-dGEuZHJtX2ZkKTsNCj4gPiA+ICtpZ3RfZGlzcGxheV9yZXF1aXJlX291dHB1dCgmZGF0YS5kaXNw
-bGF5KTsNCj4gPiA+ICt9DQo+ID4gPiArDQo+ID4gPiArZm9yIChpID0gMDsgaSA8IEFSUkFZX1NJ
-WkUodGVzdHMpOyBpKyspIHsNCj4gPiA+ICtpZ3RfZGVzY3JpYmVfZigiRnJhbWVidWZmZXIgQlBD
-OiVkLCBQYW5lbCBCUEM6JWQsIEV4cGVjdGVkDQo+ID4gPiBEaXRoZXI6JXNcbiIsDQo+ID4gPiAr
-ICAgICAgIHRlc3RzW2ldLmZiX2JwYywgdGVzdHNbaV0ub3V0cHV0X2JwYywNCj4gPiA+ICsgICAg
-ICAgKHRlc3RzW2ldLmZiX2JwYyA+IHRlc3RzW2ldLm91dHB1dF9icGMpID8NCj4gPiA+ICsiRW5h
-YmxlIjogIkRpc2FibGUiKTsNCj4gPiA+ICsNCj4gPiA+ICtpZ3Rfc3VidGVzdF93aXRoX2R5bmFt
-aWNfZigiRkItJWRCUEMtVnMtUGFuZWwtJWRCUEMiLA0KPiA+ID4gK3Rlc3RzW2ldLmZiX2JwYywg
-dGVzdHNbaV0ub3V0cHV0X2JwYykgcnVuX2RpdGhlcl90ZXN0KCZkYXRhLA0KPiA+ID4gK3Rlc3Rz
-W2ldLmZiX2JwYywgdGVzdHNbaV0uZm9ybWF0LCB0ZXN0c1tpXS5vdXRwdXRfYnBjKTsgfQ0KPiA+
-ID4gKw0KPiA+ID4gK2lndF9maXh0dXJlIHsNCj4gPiA+ICtpZ3RfZGlzcGxheV9maW5pKCZkYXRh
-LmRpc3BsYXkpOw0KPiA+ID4gK30NCj4gPiA+ICt9DQo+ID4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMv
-bWVzb24uYnVpbGQgYi90ZXN0cy9tZXNvbi5idWlsZCBpbmRleA0KPiA+IDAxOTExYzQ1Ny4uZDNk
-ZTQwYmUwDQo+ID4gPiAxMDA2NDQNCj4gPiA+IC0tLSBhL3Rlc3RzL21lc29uLmJ1aWxkDQo+ID4g
-PiArKysgYi90ZXN0cy9tZXNvbi5idWlsZA0KPiA+ID4gQEAgLTI5LDYgKzI5LDcgQEAgdGVzdF9w
-cm9ncyA9IFsNCj4gPiA+ICAna21zX2N1cnNvcl9jcmMnLA0KPiA+ID4gICdrbXNfY3Vyc29yX2Vk
-Z2Vfd2FsaycsDQo+ID4gPiAgJ2ttc19jdXJzb3JfbGVnYWN5JywNCj4gPiA+ICsna21zX2RpdGhl
-cicsDQo+ID4gPiAgJ2ttc19kcF9hdXhfZGV2JywNCj4gPiA+ICAna21zX2RwX2RzYycsDQo+ID4g
-PiAgJ2ttc19kcF90aWxlZF9kaXNwbGF5JywNCj4gPiA+IC0tDQo+ID4gPiAyLjIwLjENCj4gPg0K
-PiANCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0
-LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9s
-aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Hello Bhanu,
+
+Thank you so much.
+I have changed the message as suggested and tested it. https://patchwork.freedesktop.org/patch/443390/?series=90828&rev=18
+Kindly check Rev 18.
+
+Now I get this:
+Test skipped for 6bpc panels
+Subtest pipe-A-coverage-vs-premult-vs-constant: SKIP (0.058s)
+
+Regards
+Vidya
+
+-----Original Message-----
+From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com> 
+Sent: Friday, July 9, 2021 12:17 PM
+To: Srinivas, Vidya <vidya.srinivas@intel.com>; Shankar, Uma <uma.shankar@intel.com>; igt-dev@lists.freedesktop.org
+Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Skip crc assertion in coverage-vs-premult-vs-none for 6bpc panels
+
+Hi Vidya,
+
+Overall it looks good, but I have one minor suggestion. Otherwise we are good to go.
+
++	/* 6bpc panels have dithering ON and CRC might fail, hence skip test */
++	igt_require(is_6bpc(display, pipe) == false);
+
+It would be good if we print some useful message on skipping the test, so that user can aware of that skip.
+
+Please try with below snippet:
+igt_require_f(!is_6bpc(display, pipe), "Your message\n");
+
+
+Thanks,
+Bhanu
+
+> -----Original Message-----
+> From: Srinivas, Vidya <vidya.srinivas@intel.com>
+> Sent: Friday, July 9, 2021 11:52 AM
+> To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Shankar, Uma 
+> <uma.shankar@intel.com>; igt-dev@lists.freedesktop.org
+> Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Skip 
+> crc assertion in coverage-vs-premult-vs-none for 6bpc panels
+> 
+> Hello Bhanu,
+> 
+> Could you kindly check if rev 16 is okay for merge?
+> Thank you so much.
+> 
+> Regards
+> Vidya
+> 
+> -----Original Message-----
+> From: Srinivas, Vidya
+> Sent: Thursday, July 8, 2021 7:56 PM
+> To: Modem, Bhanuprakash <Bhanuprakash.Modem@intel.com>; Shankar, Uma 
+> <uma.shankar@intel.com>; igt-dev@lists.freedesktop.org
+> Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Skip 
+> crc assertion in coverage-vs-premult-vs-none for 6bpc panels
+> 
+> Very sorry Bhanu, I missed seeing your comments before submitting. Apologies.
+> Please find them fixed here.
+> 
+> https://patchwork.freedesktop.org/patch/443213/?series=90828&rev=16
+> 
+> Regards
+> Vidya
+> 
+> -----Original Message-----
+> From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> Sent: Thursday, July 8, 2021 7:51 PM
+> To: Srinivas, Vidya <vidya.srinivas@intel.com>; Shankar, Uma 
+> <uma.shankar@intel.com>; igt-dev@lists.freedesktop.org
+> Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Skip 
+> crc assertion in coverage-vs-premult-vs-none for 6bpc panels
+> 
+> Hi Vidya,
+> 
+> Can you please address the comments in rev 14:
+> https://patchwork.freedesktop.org/patch/443207/?series=90828&rev=14
+> 
+> 
+> Thanks,
+> Bhanu
+> 
+> > -----Original Message-----
+> > From: Srinivas, Vidya <vidya.srinivas@intel.com>
+> > Sent: Thursday, July 8, 2021 7:49 PM
+> > To: Shankar, Uma <uma.shankar@intel.com>; Modem, Bhanuprakash 
+> > <bhanuprakash.modem@intel.com>; igt-dev@lists.freedesktop.org
+> > Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: 
+> > Skip crc assertion in coverage-vs-premult-vs-none for 6bpc panels
+> >
+> > Hello Uma/Bhanu,
+> >
+> > https://patchwork.freedesktop.org/patch/443212/?series=90828&rev=15 
+> > I have submitted the patch with adding DSI and skipping the test.
+> > Kindly check and approve if okay.
+> >
+> > Regards
+> > Vidya
+> >
+> > -----Original Message-----
+> > From: Srinivas, Vidya
+> > Sent: Thursday, July 8, 2021 7:44 PM
+> > To: Shankar, Uma <uma.shankar@intel.com>; Modem, Bhanuprakash 
+> > <Bhanuprakash.Modem@intel.com>; igt-dev@lists.freedesktop.org
+> > Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: 
+> > Skip crc assertion in coverage-vs-premult-vs-none for 6bpc panels
+> >
+> > Hello Uma,
+> >
+> > Sure, I have already submitted skipping test itself
+> > https://patchwork.freedesktop.org/patch/443207/?series=90828&rev=14
+> > I will add DSI also the same and re-submit. Thank you so much.
+> >
+> > Regards
+> > Vidya
+> >
+> > -----Original Message-----
+> > From: Shankar, Uma <uma.shankar@intel.com>
+> > Sent: Thursday, July 8, 2021 7:05 PM
+> > To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Srinivas, 
+> > Vidya <vidya.srinivas@intel.com>; igt-dev@lists.freedesktop.org
+> > Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: 
+> > Skip crc assertion in coverage-vs-premult-vs-none for 6bpc panels
+> >
+> >
+> >
+> > > -----Original Message-----
+> > > From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> > > Sent: Thursday, July 8, 2021 5:51 PM
+> > > To: Srinivas, Vidya <vidya.srinivas@intel.com>; 
+> > > igt-dev@lists.freedesktop.org; Shankar, Uma 
+> > > <uma.shankar@intel.com>
+> > > Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend:
+> > > Skip crc assertion in coverage-vs-premult-vs-none for 6bpc panels
+> > >
+> > > > From: Srinivas, Vidya <vidya.srinivas@intel.com>
+> > > > Sent: Thursday, July 8, 2021 5:03 PM
+> > > > To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; igt- 
+> > > > dev@lists.freedesktop.org
+> > > > Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend:
+> > > > Skip crc assertion in coverage-vs-premult-vs-none for 6bpc 
+> > > > panels
+> > > >
+> > > > Hello Bhanu,
+> > > >
+> > > > No we skip it for all 6bpc. We can skip the test, but as 
+> > > > discussed with Uma, I just skip crc check, not the test.
+> > > > Kindly suggest further.
+> > >
+> > > If we remove/skip the crc check, I think there is no point in 
+> > > doing further commits unless we have kernel checkers.
+> > >
+> > > Uma?
+> >
+> > I think it's a compromise here,  skip on 6bpc would be ideal here or 
+> > we need to have some passing criterion in order to declare this as pass.
+> >
+> > We can do the bpc check after the first commit and skip there itself 
+> > if we detect 6bpc.This should be better given the constraints. Also 
+> > Vidya its good to add MIPI_DSI along with eDP as well since we have 
+> > some 6bpc MIPI DSI panels as well.
+> >
+> > > >
+> > > > Regards
+> > > > Vidya
+> > > >
+> > > > -----Original Message-----
+> > > > From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> > > > Sent: Thursday, July 8, 2021 4:15 PM
+> > > > To: Srinivas, Vidya <vidya.srinivas@intel.com>; 
+> > > > igt-dev@lists.freedesktop.org
+> > > > Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend:
+> > > > Skip crc assertion in coverage-vs-premult-vs-none for 6bpc 
+> > > > panels
+> > > >
+> > > > > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On 
+> > > > > Behalf Of Vidya Srinivas
+> > > > > Sent: Thursday, July 8, 2021 3:01 PM
+> > > > > To: igt-dev@lists.freedesktop.org
+> > > > > Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend:
+> > > > > Skip crc assertion in coverage-vs-premult-vs-none for 6bpc 
+> > > > > panels
+> > > > >
+> > > > > Intel Gen11 platforms using 6bpc panels have dithering ON and 
+> > > > > show CRC mismatch in coverage-vs-premult-vs-none Doing a crc 
+> > > > > based test with dithering is not a great idea as pixels will 
+> > > > > change due to the 8bit to 6bits truncation with dithering.
+> > > > >
+> > > > > This patch skips the CRC assertion for 6bpc panels. Currently, 
+> > > > > there is no better way of fetching the bpc info other than 
+> > > > > EDID or display_info. Currently using i915_display_info for the same.
+> > > > > Hence restricting the check to i915 devices only.
+> > > > >
+> > > > > Credits-to: Uma Shankar <uma.shankar@intel.com>
+> > > > > Credits-to: Juha-pekka Heikkila 
+> > > > > <juha-pekka.heikkila@intel.com>
+> > > > > Credits-to: Modem Bhanuprakash <Bhanuprakash.Modem@intel.com>
+> > > > > Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+> > > > > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+> > > > > ---
+> > > > >  tests/kms_plane_alpha_blend.c | 43
+> > > > > +++++++++++++++++++++++++++++++++--
+> > > > >  1 file changed, 41 insertions(+), 2 deletions(-)
+> > > > >
+> > > > > diff --git a/tests/kms_plane_alpha_blend.c 
+> > > > > b/tests/kms_plane_alpha_blend.c index 
+> > > > > a37cb27c7d62..e450e64cb105
+> > > > > 100644
+> > > > > --- a/tests/kms_plane_alpha_blend.c
+> > > > > +++ b/tests/kms_plane_alpha_blend.c
+> > > > > @@ -442,10 +442,42 @@ static void coverage_7efc(data_t *data, 
+> > > > > enum pipe pipe, igt_plane_t *plane) 
+> > > > > igt_pipe_crc_stop(data->pipe_crc);
+> > > > >  }
+> > > > >
+> > > > > +static bool is_6bpc(igt_display_t *display, enum pipe pipe) { 
+> > > > > +char buf[4096]; char *str; bool ret; int debugfs_fd; 
+> > > > > +drmModeConnector *c; igt_output_t *output = 
+> > > > > +igt_get_single_output_for_pipe(display,
+> > > > > +pipe);
+> > > > > +
+> > > > > +if (!is_i915_device(display->drm_fd))
+> > > > > +return false;
+> > > > > +
+> > > > > +c = output->config.connector; if (c->connector_type != 
+> > > > > +DRM_MODE_CONNECTOR_eDP) return false;
+> > > > > +
+> > > > > +debugfs_fd = igt_debugfs_dir(display->drm_fd); if (debugfs_fd 
+> > > > > +<
+> > > > > +0) return false;
+> > > > > +
+> > > > > +igt_debugfs_simple_read(debugfs_fd, "i915_display_info", buf,
+> > > > > sizeof(buf));
+> > > > > +
+> > > > > +str = strstr(buf, "bpp=");
+> > > > > +if (str && (strncmp(str, "bpp=18", 6) == 0)) ret = true; else 
+> > > > > +ret = false;
+> > > > > +
+> > > > > +close(debugfs_fd);
+> > > > > +return ret;
+> > > > > +}
+> > > > > +
+> > > > >  static void coverage_premult_constant(data_t *data, enum pipe 
+> > > > > pipe, igt_plane_t *plane)  {  igt_display_t *display = 
+> > > > > &data->display;  igt_crc_t ref_crc = {}, crc = {};
+> > > > > +bool is6bpc = false;
+> > > > >
+> > > > >  /* Set a background color on the primary fb for testing */  
+> > > > > if (plane->type != DRM_PLANE_TYPE_PRIMARY) @@ -461,14 +493,21 
+> > > > > @@ static void coverage_premult_constant(data_t *data, enum 
+> > > > > pipe pipe, igt_plane_t  igt_plane_set_fb(plane, 
+> > > > > &data->argb_fb_7e); igt_display_commit2(display, 
+> > > > > COMMIT_ATOMIC); igt_pipe_crc_get_current(display->drm_fd, 
+> > > > > data->pipe_crc, &crc); -igt_assert_crc_equal(&ref_crc, &crc);
+> > > > > +
+> > > > > +/* 6bpc panels have dithering ON and CRC might fail, hence 
+> > > > > +skip crc
+> > > > > check */
+> > > > > +is6bpc = is_6bpc(display, pipe); if (is6bpc == false) 
+> > > > > +igt_assert_crc_equal(&ref_crc, &crc);
+> > > >
+> > > > We can SKIP here, right? Also no need to run on remaining planes.
+> > > > Otherwise IGT will report this test result as PASS instead of 
+> > > > reporting as
+> > SKIP.
+> > > >
+> > > > igt_require_f(!is_6bpc(display, pipe), "Skip test on 6 bpc 
+> > > > panels\n");
+> > > >
+> > > >
+> > > > Also, are we going to skip this test on only gen 11? Then we 
+> > > > need a check to perform such.
+> > > >
+> > > > if (is_i915_device(fd) && intel_gen(intel_get_drm_devid(fd)) ==
+> > > > 11) igt_require_f(!is_6bpc(display, pipe), "Skip test on 6 bpc 
+> > > > panels\n");
+> > > >
+> > > > >
+> > > > >  igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE,
+> > > "None");
+> > > > >  igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0x7e7e); 
+> > > > > igt_plane_set_fb(plane, &data->argb_fb_cov_7e); 
+> > > > > igt_display_commit2(display, COMMIT_ATOMIC); 
+> > > > > igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, 
+> > > > > &crc); -igt_assert_crc_equal(&ref_crc, &crc);
+> > > > > +
+> > > > > +/* 6bpc panels have dithering ON and CRC might fail, hence 
+> > > > > +skip crc
+> > > > > check */
+> > > > > +if (is6bpc == false)
+> > > > > +igt_assert_crc_equal(&ref_crc, &crc);
+> > > > >
+> > > > >  igt_pipe_crc_stop(data->pipe_crc);
+> > > > >  }
+> > > > > --
+> > > > > 2.32.0
+> > > > >
+> > > > > _______________________________________________
+> > > > > igt-dev mailing list
+> > > > > igt-dev@lists.freedesktop.org
+> > > > > https://lists.freedesktop.org/mailman/listinfo/igt-dev
+> >
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
