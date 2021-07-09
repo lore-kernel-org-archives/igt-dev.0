@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78E8C6EA2A
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Jul 2021 12:32:34 +0000 (UTC)
-Date: Fri, 9 Jul 2021 15:32:09 +0300
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 42D296EA19
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Jul 2021 12:41:38 +0000 (UTC)
+Date: Fri, 9 Jul 2021 15:41:26 +0300
 From: Arkadiusz Hiler <arek@hiler.eu>
-Message-ID: <20210709123139.2a55qwsyvub2usii@hatecraft.localdomain>
-References: <20210701174424.2261499-1-markyacoub@chromium.org>
- <20210701174424.2261499-2-markyacoub@chromium.org>
- <20210706134110.iopwgjfwpnibtyjb@outlook.office365.com>
- <CAJUqKUqCw-BMBrh4kYhs33qz0UFABi=kBvkbGn9VRqSEQyHsJg@mail.gmail.com>
+Message-ID: <20210709124126.ta4xfyd2ny62xsxa@hatecraft.localdomain>
+References: <20210708160127.1944507-1-markyacoub@chromium.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAJUqKUqCw-BMBrh4kYhs33qz0UFABi=kBvkbGn9VRqSEQyHsJg@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH 2/2] kms_addfb_basic: Check for AMDGPU and MSM
- bad pitch.
+In-Reply-To: <20210708160127.1944507-1-markyacoub@chromium.org>
+Subject: Re: [igt-dev] [PATCH] lib/igt_debugfs: skip test instead of assert
+ if crc/control is invalid
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,77 +23,33 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Mark Yacoub <markyacoub@chromium.org>
-Cc: Mohammed Khajapasha <mohammed.khajapasha@intel.com>, Petri Latvala <petri.latvala@intel.com>, Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, Sean Paul <seanpaul@chromium.org>, Mark Yacoub <markyacoub@google.com>
+Cc: igt-dev@lists.freedesktop.org, seanpaul@chromium.org, petri.latvala@intel.com, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jul 07, 2021 at 12:09:14PM -0400, Mark Yacoub wrote:
-> This is odd, idrk.
+On Thu, Jul 08, 2021 at 12:01:27PM -0400, Mark Yacoub wrote:
+> From: Mark Yacoub <markyacoub@google.com>
 > 
-> On Tue, Jul 6, 2021 at 9:41 AM Rodrigo Siqueira
-> <Rodrigo.Siqueira@amd.com> wrote:
-> >
-> > On 07/01, Mark Yacoub wrote:
-> > > From: Mark Yacoub <markyacoub@google.com>
-> > >
-> > > [Why]
-> > > AMDGPU and MSM devices have a known errno when it fails coorectly for
-> > > bad pitches.
-> > >
-> > > [How]
-> > > Assert `errno` to `EINVAL` for both AMDGPU and MSM as well.
-> > >
-> > > Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
-> > > ---
-> > >  tests/kms_addfb_basic.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-> > > index 85c14be5..91fb6ac9 100644
-> > > --- a/tests/kms_addfb_basic.c
-> > > +++ b/tests/kms_addfb_basic.c
-> > > @@ -310,7 +310,7 @@ static void pitch_tests(int fd)
-> > >                       f.pitches[0] = bad_pitches[i];
-> > >                       igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f), -1);
-> > >                       igt_assert(errno != 0);
-> > > -                     if (is_i915_device(fd)) {
-> > > +                     if (is_i915_device(fd) || is_amdgpu_device(fd) || is_msm_device(fd)) {
-> > >                               igt_assert_eq(errno, EINVAL);
-> > >                       } else if (is_nouveau_device(fd)) {
-> > >                               if (bad_pitches[i] > 4 * 1024)
-> > > --
-> > > 2.32.0.93.g670b81a890-goog
-> > >
-> >
-> > Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-> >
-> > Btw, from the CI log, we have:
-> >
-> > igt@kms_addfb_basic@invalid-smem-bo-on-discrete:
-> >   shard-apl: NOTRUN -> FAIL
-> >   shard-tglb: NOTRUN -> FAIL
-> >   shard-glk: NOTRUN -> FAIL
-> >   shard-kbl: NOTRUN -> FAIL
-> >   shard-snb: NOTRUN -> FAIL
-> >   shard-iclb: NOTRUN -> FAIL
-> >
-> > igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0-async-flip:
-> >   shard-iclb: NOTRUN -> SKIP +1 similar issue
-> >
-> > I don't know why your patch makes something that was not running start
-> > to run. Any theory?
+> [Why]
+> Some drivers such as msm do not currently support debugfs yet.
+> 
+> [How]
+> Change igt_assert of opening "crtc-%d/crc/control" to igt_require_f.
+> Opening this file doesn't involved a complicated logic so assert isn't
+> required to verify that things are smooth. -1 indicates that the file
+> isn't supported by the driver.
+> 
+> Test: kms_atomic:plane-immutable-zpos on ChromeOS Trogdor(msm)
 
-The CI is not perfect and the test were just not run previously due to
-unrelated issues. I've merged your changes as this is not related to
-them.
+Hey Mark,
 
-As of the failing tests - those are new and were introduced recently by
-5bb62cb290fa ("tests/kms_addfb_basic: Add invalid buffer object test for
-discrete") and seem to fail reliably:
+I am generally not a fan of hidden requirements that are burried deep in
+the helper libraries. It's nice when the tests explicitly state what they
+need through the use of functions with _require_ or _skip_ in the name.
 
-https://intel-gfx-ci.01.org/tree/drm-tip/shards-all.html?testfilter=invalid-smem-bo-on-discrete
+When you probably want to do here is to call igt_require_pipe_crc[1] in
+plane-immutable-zpos just like the other pipe crc tests do.
 
-I've CCed the author of the tests so they can have a look and fix the
-tests
+[0]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-debugfs.html#igt-require-pipe-crc
 
 -- 
 Cheers,
