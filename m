@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39D1789D81
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Jul 2021 07:05:26 +0000 (UTC)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8493489DFB
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Jul 2021 07:07:44 +0000 (UTC)
 From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Fri,  9 Jul 2021 12:25:23 +0530
-Message-Id: <20210709065523.16425-1-vidya.srinivas@intel.com>
-In-Reply-To: <20210708141454.20633-1-vidya.srinivas@intel.com>
-References: <20210708141454.20633-1-vidya.srinivas@intel.com>
+Date: Fri,  9 Jul 2021 12:27:41 +0530
+Message-Id: <20210709065741.16498-1-vidya.srinivas@intel.com>
+In-Reply-To: <20210709065523.16425-1-vidya.srinivas@intel.com>
+References: <20210709065523.16425-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Skip
  coverage-vs-premult-vs-none for 6bpc panels
@@ -39,11 +39,11 @@ Credits-to: Modem Bhanuprakash <Bhanuprakash.Modem@intel.com>
 Reviewed-by: Uma Shankar <uma.shankar@intel.com>
 Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 ---
- tests/kms_plane_alpha_blend.c | 37 +++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ tests/kms_plane_alpha_blend.c | 36 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
 diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-index a37cb27c7d62..6fccb50758dc 100644
+index a37cb27c7d62..a3529dc2190f 100644
 --- a/tests/kms_plane_alpha_blend.c
 +++ b/tests/kms_plane_alpha_blend.c
 @@ -442,6 +442,38 @@ static void coverage_7efc(data_t *data, enum pipe pipe, igt_plane_t *plane)
@@ -85,13 +85,12 @@ index a37cb27c7d62..6fccb50758dc 100644
  static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t *plane)
  {
  	igt_display_t *display = &data->display;
-@@ -454,6 +486,11 @@ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t
+@@ -454,6 +486,10 @@ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t
  	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage");
  	igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
  	igt_display_commit2(display, COMMIT_ATOMIC);
 +
 +	/* 6bpc panels have dithering ON and CRC might fail, hence skip test */
-+	igt_require(is_6bpc(display, pipe) == false);
 +	igt_require_f(!is_6bpc(display, pipe), "Test skipped for 6bpc panels\n");
 +
  	igt_pipe_crc_start(data->pipe_crc);
