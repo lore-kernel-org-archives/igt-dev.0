@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com
- [IPv6:2607:f8b0:4864:20::82b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E89D96EA3F
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Jul 2021 15:27:55 +0000 (UTC)
-Received: by mail-qt1-x82b.google.com with SMTP id g12so7847176qtb.2
- for <igt-dev@lists.freedesktop.org>; Fri, 09 Jul 2021 08:27:55 -0700 (PDT)
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Fri,  9 Jul 2021 11:27:51 -0400
-Message-Id: <20210709152751.2947886-1-markyacoub@chromium.org>
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com
+ [IPv6:2a00:1450:4864:20::134])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A14436EA3D
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Jul 2021 15:31:03 +0000 (UTC)
+Received: by mail-lf1-x134.google.com with SMTP id f30so24028780lfj.1
+ for <igt-dev@lists.freedesktop.org>; Fri, 09 Jul 2021 08:31:03 -0700 (PDT)
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] tests/kms_atomic: igt_require_pipe_crc for
- plane_immutable_zpos
+References: <20210708160127.1944507-1-markyacoub@chromium.org>
+ <20210709124126.ta4xfyd2ny62xsxa@hatecraft.localdomain>
+In-Reply-To: <20210709124126.ta4xfyd2ny62xsxa@hatecraft.localdomain>
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Fri, 9 Jul 2021 11:30:50 -0400
+Message-ID: <CAJUqKUpHf9uaSoOrDiUp1fUVSEnjXg-Ouq74bD-6JH697QZmUg@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH] lib/igt_debugfs: skip test instead of assert
+ if crc/control is invalid
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,40 +25,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: seanpaul@chromium.org, petri.latvala@intel.com, Mark Yacoub <markyacoub@google.com>
+To: Arkadiusz Hiler <arek@hiler.eu>
+Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, Sean Paul <seanpaul@chromium.org>, Petri Latvala <petri.latvala@intel.com>, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mark Yacoub <markyacoub@google.com>
-
-[Why]
-kms_atomic:plane_immutable_zpos subtest uses CRC in debugfs which is
-not supported by some drivers.
-
-[How]
-igt_require_pipe_crc before the test begins.
-
-Test: kms_atomic:plane-immutable-zpos on ChromeOS Trogdor(msm)
-Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
----
- tests/kms_atomic.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-index df9c9df7..4b262257 100644
---- a/tests/kms_atomic.c
-+++ b/tests/kms_atomic.c
-@@ -375,6 +375,7 @@ plane_immutable_zpos(igt_display_t *display, igt_pipe_t *pipe,
- 	uint32_t w_lower, h_lower, w_upper, h_upper;
- 
- 	igt_require(n_planes >= 2);
-+	igt_require_pipe_crc(display->drm_fd);
- 
- 	mode = igt_output_get_mode(output);
- 	primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
--- 
-2.32.0.93.g670b81a890-goog
-
+On Fri, Jul 9, 2021 at 8:41 AM Arkadiusz Hiler <arek@hiler.eu> wrote:
+>
+> On Thu, Jul 08, 2021 at 12:01:27PM -0400, Mark Yacoub wrote:
+> > From: Mark Yacoub <markyacoub@google.com>
+> >
+> > [Why]
+> > Some drivers such as msm do not currently support debugfs yet.
+> >
+> > [How]
+> > Change igt_assert of opening "crtc-%d/crc/control" to igt_require_f.
+> > Opening this file doesn't involved a complicated logic so assert isn't
+> > required to verify that things are smooth. -1 indicates that the file
+> > isn't supported by the driver.
+> >
+> > Test: kms_atomic:plane-immutable-zpos on ChromeOS Trogdor(msm)
+>
+> Hey Mark,
+>
+> I am generally not a fan of hidden requirements that are burried deep in
+> the helper libraries. It's nice when the tests explicitly state what they
+> need through the use of functions with _require_ or _skip_ in the name.
+Makes sense to keep visible. thanks!
+>
+> When you probably want to do here is to call igt_require_pipe_crc[1] in
+> plane-immutable-zpos just like the other pipe crc tests do.
+So i was thinking of sending the new patch as a v2 but it's completely
+different change in a different file with a different commit message
+so i thought it makes more sense to make it a completely different
+unrelated patch: https://patchwork.freedesktop.org/series/92369/
+Does this make sense, or a v2 would have been more adequate?
+>
+> [0]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-debugfs.html#igt-require-pipe-crc
+>
+> --
+> Cheers,
+> Arek
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
