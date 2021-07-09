@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0EAE66EA0D
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Jul 2021 11:34:07 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Fri, 9 Jul 2021 11:34:00 +0000
-Message-ID: <BY5PR11MB43729AE5D454C1CEC8A1FAA989189@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <20210709065523.16425-1-vidya.srinivas@intel.com>
- <20210709065741.16498-1-vidya.srinivas@intel.com>
- <CO6PR11MB5569DED0D735E6CFB614FFDB8D189@CO6PR11MB5569.namprd11.prod.outlook.com>
-In-Reply-To: <CO6PR11MB5569DED0D735E6CFB614FFDB8D189@CO6PR11MB5569.namprd11.prod.outlook.com>
-Content-Language: en-US
+Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78E8C6EA2A
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Jul 2021 12:32:34 +0000 (UTC)
+Date: Fri, 9 Jul 2021 15:32:09 +0300
+From: Arkadiusz Hiler <arek@hiler.eu>
+Message-ID: <20210709123139.2a55qwsyvub2usii@hatecraft.localdomain>
+References: <20210701174424.2261499-1-markyacoub@chromium.org>
+ <20210701174424.2261499-2-markyacoub@chromium.org>
+ <20210706134110.iopwgjfwpnibtyjb@outlook.office365.com>
+ <CAJUqKUqCw-BMBrh4kYhs33qz0UFABi=kBvkbGn9VRqSEQyHsJg@mail.gmail.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Skip
- coverage-vs-premult-vs-none for 6bpc panels
+Content-Disposition: inline
+In-Reply-To: <CAJUqKUqCw-BMBrh4kYhs33qz0UFABi=kBvkbGn9VRqSEQyHsJg@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH 2/2] kms_addfb_basic: Check for AMDGPU and MSM
+ bad pitch.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,123 +25,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Heikkila,
- Juha-pekka" <juha-pekka.heikkila@intel.com>
+To: Mark Yacoub <markyacoub@chromium.org>
+Cc: Mohammed Khajapasha <mohammed.khajapasha@intel.com>, Petri Latvala <petri.latvala@intel.com>, Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, Sean Paul <seanpaul@chromium.org>, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hello Bhanu/Uma/Juha-Pekka,
-
-Thank you so much.
-
-Petri, could you kindly help merge this? Thank you so much.
-
-Regards
-Vidya
-
------Original Message-----
-From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com> 
-Sent: Friday, July 9, 2021 4:18 PM
-To: Srinivas, Vidya <vidya.srinivas@intel.com>; igt-dev@lists.freedesktop.org
-Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Skip coverage-vs-premult-vs-none for 6bpc panels
-
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of 
-> Vidya Srinivas
-> Sent: Friday, July 9, 2021 12:28 PM
-> To: igt-dev@lists.freedesktop.org
-> Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Skip 
-> coverage- vs-premult-vs-none for 6bpc panels
+On Wed, Jul 07, 2021 at 12:09:14PM -0400, Mark Yacoub wrote:
+> This is odd, idrk.
 > 
-> Intel platforms using 6bpc panels have dithering ON and show CRC 
-> mismatch in coverage-vs-premult-vs-none Doing a crc based test with 
-> dithering is not a great idea as pixels will change due to the 8bit to 
-> 6bits truncation with dithering.
-> 
-> This patch skips the subtest for 6bpc panels. Currently, there is no 
-> better way of fetching the bpc info other than EDID or display_info. 
-> Currently using i915_display_info for the same. Hence restricting the 
-> check to i915 devices only.
-> 
-> Credits-to: Uma Shankar <uma.shankar@intel.com>
-> Credits-to: Juha-pekka Heikkila <juha-pekka.heikkila@intel.com>
-> Credits-to: Modem Bhanuprakash <Bhanuprakash.Modem@intel.com>
-> Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> ---
->  tests/kms_plane_alpha_blend.c | 36 
-> +++++++++++++++++++++++++++++++++++
->  1 file changed, 36 insertions(+)
-> 
-> diff --git a/tests/kms_plane_alpha_blend.c 
-> b/tests/kms_plane_alpha_blend.c index a37cb27c7d62..a3529dc2190f 
-> 100644
-> --- a/tests/kms_plane_alpha_blend.c
-> +++ b/tests/kms_plane_alpha_blend.c
-> @@ -442,6 +442,38 @@ static void coverage_7efc(data_t *data, enum pipe 
-> pipe, igt_plane_t *plane)
->  	igt_pipe_crc_stop(data->pipe_crc);
->  }
-> 
-> +static bool is_6bpc(igt_display_t *display, enum pipe pipe) {
-> +	char buf[8192];
-> +	char *str;
-> +	bool ret;
-> +	int debugfs_fd;
-> +	drmModeConnector *c;
-> +	igt_output_t *output = igt_get_single_output_for_pipe(display, 
-> +pipe);
-> +
-> +	if (!is_i915_device(display->drm_fd))
-> +		return false;
-> +
-> +	c = output->config.connector;
-> +	if (c->connector_type != DRM_MODE_CONNECTOR_eDP ||
-> +		c->connector_type != DRM_MODE_CONNECTOR_DSI)
-> +		return false;
-> +
-> +	debugfs_fd = igt_debugfs_dir(display->drm_fd);
-> +	if (debugfs_fd < 0)
-> +		return false;
-> +
-> +	igt_debugfs_simple_read(debugfs_fd, "i915_display_info", buf,
-> sizeof(buf));
-> +
-> +	str = strstr(buf, "bpp=");
-> +	if (str && (strncmp(str, "bpp=18", 6) == 0))
-> +		ret = true;
-> +	else
-> +		ret = false;
-> +
-> +	close(debugfs_fd);
-> +	return ret;
-> +}
-> +
->  static void coverage_premult_constant(data_t *data, enum pipe pipe, 
-> igt_plane_t *plane)  {
->  	igt_display_t *display = &data->display; @@ -454,6 +486,10 @@ static 
-> void coverage_premult_constant(data_t *data, enum pipe pipe, 
-> igt_plane_t
->  	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage");
->  	igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
->  	igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +	/* 6bpc panels have dithering ON and CRC might fail, hence skip test */
-> +	igt_require_f(!is_6bpc(display, pipe), "Test skipped for 6bpc
-> panels\n");
+> On Tue, Jul 6, 2021 at 9:41 AM Rodrigo Siqueira
+> <Rodrigo.Siqueira@amd.com> wrote:
+> >
+> > On 07/01, Mark Yacoub wrote:
+> > > From: Mark Yacoub <markyacoub@google.com>
+> > >
+> > > [Why]
+> > > AMDGPU and MSM devices have a known errno when it fails coorectly for
+> > > bad pitches.
+> > >
+> > > [How]
+> > > Assert `errno` to `EINVAL` for both AMDGPU and MSM as well.
+> > >
+> > > Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+> > > ---
+> > >  tests/kms_addfb_basic.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+> > > index 85c14be5..91fb6ac9 100644
+> > > --- a/tests/kms_addfb_basic.c
+> > > +++ b/tests/kms_addfb_basic.c
+> > > @@ -310,7 +310,7 @@ static void pitch_tests(int fd)
+> > >                       f.pitches[0] = bad_pitches[i];
+> > >                       igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f), -1);
+> > >                       igt_assert(errno != 0);
+> > > -                     if (is_i915_device(fd)) {
+> > > +                     if (is_i915_device(fd) || is_amdgpu_device(fd) || is_msm_device(fd)) {
+> > >                               igt_assert_eq(errno, EINVAL);
+> > >                       } else if (is_nouveau_device(fd)) {
+> > >                               if (bad_pitches[i] > 4 * 1024)
+> > > --
+> > > 2.32.0.93.g670b81a890-goog
+> > >
+> >
+> > Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+> >
+> > Btw, from the CI log, we have:
+> >
+> > igt@kms_addfb_basic@invalid-smem-bo-on-discrete:
+> >   shard-apl: NOTRUN -> FAIL
+> >   shard-tglb: NOTRUN -> FAIL
+> >   shard-glk: NOTRUN -> FAIL
+> >   shard-kbl: NOTRUN -> FAIL
+> >   shard-snb: NOTRUN -> FAIL
+> >   shard-iclb: NOTRUN -> FAIL
+> >
+> > igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0-async-flip:
+> >   shard-iclb: NOTRUN -> SKIP +1 similar issue
+> >
+> > I don't know why your patch makes something that was not running start
+> > to run. Any theory?
 
-LGTM: Acked-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+The CI is not perfect and the test were just not run previously due to
+unrelated issues. I've merged your changes as this is not related to
+them.
 
-> +
->  	igt_pipe_crc_start(data->pipe_crc);
->  	igt_pipe_crc_get_single(data->pipe_crc, &ref_crc);
-> 
-> --
-> 2.32.0
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+As of the failing tests - those are new and were introduced recently by
+5bb62cb290fa ("tests/kms_addfb_basic: Add invalid buffer object test for
+discrete") and seem to fail reliably:
+
+https://intel-gfx-ci.01.org/tree/drm-tip/shards-all.html?testfilter=invalid-smem-bo-on-discrete
+
+I've CCed the author of the tests so they can have a look and fix the
+tests
+
+-- 
+Cheers,
+Arek
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
