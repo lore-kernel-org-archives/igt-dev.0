@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0A576EAAC
- for <igt-dev@lists.freedesktop.org>; Sat, 10 Jul 2021 00:48:38 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3557C6EAAC
+ for <igt-dev@lists.freedesktop.org>; Sat, 10 Jul 2021 00:48:39 +0000 (UTC)
 From: Lucas De Marchi <lucas.demarchi@intel.com>
-Date: Fri,  9 Jul 2021 17:47:02 -0700
-Message-Id: <20210710004708.2871237-4-lucas.demarchi@intel.com>
+Date: Fri,  9 Jul 2021 17:47:04 -0700
+Message-Id: <20210710004708.2871237-6-lucas.demarchi@intel.com>
 In-Reply-To: <20210710004708.2871237-1-lucas.demarchi@intel.com>
 References: <20210710004708.2871237-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/9] tests/i915/gem_mmap_wc: drop
- LOCAL_IOCTL_I915_GEM_MMAP_v2
+Subject: [igt-dev] [PATCH i-g-t 5/9] benchmarks/gem_exec_tracer: nuke
+ LOCAL_IOCTL_I915_GEM_EXECBUFFER2_WR
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,54 +24,36 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LOCAL_IOCTL_I915_GEM_MMAP_v2 is not really a different ioctl, it's just
-DRM_IOCTL_I915_GEM_MMAP and a check for version/
+Use DRM_IOCTL_I915_GEM_EXECBUFFER2_WR from kernel header.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tests/i915/gem_mmap_wc.c | 15 ++-------------
- 1 file changed, 2 insertions(+), 13 deletions(-)
+ benchmarks/gem_exec_tracer.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/tests/i915/gem_mmap_wc.c b/tests/i915/gem_mmap_wc.c
-index 4fcf5478..abb89b8e 100644
---- a/tests/i915/gem_mmap_wc.c
-+++ b/tests/i915/gem_mmap_wc.c
-@@ -40,17 +40,6 @@
- #include "drm.h"
- #include "i915/gem_create.h"
+diff --git a/benchmarks/gem_exec_tracer.c b/benchmarks/gem_exec_tracer.c
+index c8f4e84b..e6973991 100644
+--- a/benchmarks/gem_exec_tracer.c
++++ b/benchmarks/gem_exec_tracer.c
+@@ -266,9 +266,6 @@ static int is_i915(int fd)
+ 	return strcmp(name, "i915") == 0;
+ }
  
--struct local_i915_gem_mmap_v2 {
--	uint32_t handle;
--	uint32_t pad;
--	uint64_t offset;
--	uint64_t size;
--	uint64_t addr_ptr;
--	uint64_t flags;
--#define I915_MMAP_WC 0x1
--};
--#define LOCAL_IOCTL_I915_GEM_MMAP_v2 DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_MMAP, struct local_i915_gem_mmap_v2)
+-#define LOCAL_IOCTL_I915_GEM_EXECBUFFER2_WR \
+-    DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_EXECBUFFER2, struct drm_i915_gem_execbuffer2)
 -
- static int OBJECT_SIZE = 16*1024*1024;
- 
- /*
-@@ -103,7 +92,7 @@ static void
- test_invalid_flags(int fd)
+ int
+ ioctl(int fd, unsigned long request, ...)
  {
- 	struct drm_i915_getparam gp;
--	struct local_i915_gem_mmap_v2 arg;
-+	struct drm_i915_gem_mmap arg;
- 	uint64_t flag = I915_MMAP_WC;
- 	int val = -1;
+@@ -327,7 +324,7 @@ ioctl(int fd, unsigned long request, ...)
  
-@@ -128,7 +117,7 @@ test_invalid_flags(int fd)
- 		while (flag) {
- 			arg.flags = flag;
- 			igt_assert(drmIoctl(fd,
--				   LOCAL_IOCTL_I915_GEM_MMAP_v2,
-+				   DRM_IOCTL_I915_GEM_MMAP,
- 				   &arg) == -1);
- 			igt_assert_eq(errno, EINVAL);
- 			flag <<= 1;
+ 	switch (request) {
+ 	case DRM_IOCTL_I915_GEM_EXECBUFFER2:
+-	case LOCAL_IOCTL_I915_GEM_EXECBUFFER2_WR:
++	case DRM_IOCTL_I915_GEM_EXECBUFFER2_WR:
+ 		trace_exec(t, argp);
+ 		break;
+ 
 -- 
 2.31.1
 
