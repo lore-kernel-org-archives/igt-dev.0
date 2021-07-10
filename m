@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 433A06EAAF
- for <igt-dev@lists.freedesktop.org>; Sat, 10 Jul 2021 00:48:39 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC9376EAAE
+ for <igt-dev@lists.freedesktop.org>; Sat, 10 Jul 2021 00:48:38 +0000 (UTC)
 From: Lucas De Marchi <lucas.demarchi@intel.com>
-Date: Fri,  9 Jul 2021 17:47:00 -0700
-Message-Id: <20210710004708.2871237-2-lucas.demarchi@intel.com>
+Date: Fri,  9 Jul 2021 17:47:07 -0700
+Message-Id: <20210710004708.2871237-9-lucas.demarchi@intel.com>
 In-Reply-To: <20210710004708.2871237-1-lucas.demarchi@intel.com>
 References: <20210710004708.2871237-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/9] include/drm-uapi: sync kernel headers
+Subject: [igt-dev] [PATCH i-g-t 8/9] Nuke local versions of DRM_FORMAT and
+ DRM_MODE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,1792 +24,2495 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Sync with drm-next:
-
-	21c355b09711 ("Merge tag 'drm-misc-next-fixes-2021-07-01' of git://anongit.freedesktop.org/drm/drm-misc into drm-next")
+Use the definition from kernel headers.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- include/drm-uapi/amdgpu_drm.h   |  93 ++++++++++--
- include/drm-uapi/drm.h          | 250 +++++++++++++++++++++++++-------
- include/drm-uapi/drm_fourcc.h   |  74 +++++++++-
- include/drm-uapi/drm_mode.h     | 195 ++++++++++++++++++-------
- include/drm-uapi/etnaviv_drm.h  |   3 +
- include/drm-uapi/exynos_drm.h   |   2 +-
- include/drm-uapi/lima_drm.h     | 176 ++++++++++++++++++++++
- include/drm-uapi/msm_drm.h      |  32 +++-
- include/drm-uapi/nouveau_drm.h  |   1 +
- include/drm-uapi/panfrost_drm.h |   1 +
- include/drm-uapi/virtgpu_drm.h  |  39 ++++-
- include/drm-uapi/vmwgfx_drm.h   |  33 ++++-
- 12 files changed, 766 insertions(+), 133 deletions(-)
- create mode 100644 include/drm-uapi/lima_drm.h
+ lib/igt_fb.c                     |  20 +++---
+ lib/ioctl_wrappers.h             |  26 --------
+ tests/amdgpu/amd_bypass.c        |   2 +-
+ tests/debugfs_test.c             |   2 +-
+ tests/drm_read.c                 |   2 +-
+ tests/i915/i915_pm_backlight.c   |   2 +-
+ tests/i915/i915_pm_dc.c          |   2 +-
+ tests/i915/i915_pm_lpsp.c        |   2 +-
+ tests/i915/i915_pm_rpm.c         |   8 +--
+ tests/i915/perf_pmu.c            |   2 +-
+ tests/kms_3d.c                   |   2 +-
+ tests/kms_addfb_basic.c          |  50 +++++++-------
+ tests/kms_async_flips.c          |   2 +-
+ tests/kms_atomic.c               |   4 +-
+ tests/kms_atomic_interruptible.c |   6 +-
+ tests/kms_atomic_transition.c    |  12 ++--
+ tests/kms_big_fb.c               |   4 +-
+ tests/kms_big_joiner.c           |   2 +-
+ tests/kms_ccs.c                  |   4 +-
+ tests/kms_chamelium.c            |  26 ++++----
+ tests/kms_color.c                |  20 +++---
+ tests/kms_color_chamelium.c      |  24 +++----
+ tests/kms_concurrent.c           |   2 +-
+ tests/kms_content_protection.c   |   4 +-
+ tests/kms_cursor_crc.c           |  12 ++--
+ tests/kms_cursor_edge_walk.c     |   4 +-
+ tests/kms_dp_dsc.c               |   2 +-
+ tests/kms_dp_tiled_display.c     |   2 +-
+ tests/kms_draw_crc.c             |  12 ++--
+ tests/kms_flip.c                 |   2 +-
+ tests/kms_flip_event_leak.c      |   4 +-
+ tests/kms_flip_tiling.c          |  16 ++---
+ tests/kms_frontbuffer_tracking.c |   6 +-
+ tests/kms_hdmi_inject.c          |   4 +-
+ tests/kms_invalid_dotclock.c     |   2 +-
+ tests/kms_lease.c                | 109 +++++++------------------------
+ tests/kms_mmap_write_crc.c       |   4 +-
+ tests/kms_multipipe_modeset.c    |   2 +-
+ tests/kms_panel_fitting.c        |  10 +--
+ tests/kms_pipe_crc_basic.c       |   8 +--
+ tests/kms_plane.c                |  10 +--
+ tests/kms_plane_alpha_blend.c    |  20 +++---
+ tests/kms_plane_lowres.c         |   2 +-
+ tests/kms_plane_multiple.c       |   6 +-
+ tests/kms_plane_scaling.c        |  10 +--
+ tests/kms_prime.c                |   4 +-
+ tests/kms_properties.c           |   2 +-
+ tests/kms_psr.c                  |   2 +-
+ tests/kms_psr2_sf.c              |  14 ++--
+ tests/kms_psr2_su.c              |   4 +-
+ tests/kms_pwrite_crc.c           |   4 +-
+ tests/kms_rmfb.c                 |   4 +-
+ tests/kms_rotation_crc.c         |  10 +--
+ tests/kms_sequence.c             |   2 +-
+ tests/kms_setmode.c              |   2 +-
+ tests/kms_universal_plane.c      |  24 +++----
+ tests/kms_vblank.c               |   2 +-
+ tests/kms_vrr.c                  |   4 +-
+ tests/nouveau_crc.c              |   4 +-
+ tests/prime_mmap_kms.c           |   2 +-
+ tests/prime_vgem.c               |   2 +-
+ tests/testdisplay.c              |   2 +-
+ tools/intel_dp_compliance.c      |   8 +--
+ tools/intel_residency.c          |   2 +-
+ tools/msm_dp_compliance.c        |   4 +-
+ 65 files changed, 245 insertions(+), 334 deletions(-)
 
-diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
-index ac387982..0cbd1540 100644
---- a/include/drm-uapi/amdgpu_drm.h
-+++ b/include/drm-uapi/amdgpu_drm.h
-@@ -116,8 +116,6 @@ extern "C" {
- #define AMDGPU_GEM_CREATE_CPU_GTT_USWC		(1 << 2)
- /* Flag that the memory should be in VRAM and cleared */
- #define AMDGPU_GEM_CREATE_VRAM_CLEARED		(1 << 3)
--/* Flag that create shadow bo(GTT) while allocating vram bo */
--#define AMDGPU_GEM_CREATE_SHADOW		(1 << 4)
- /* Flag that allocating the BO should use linear VRAM */
- #define AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS	(1 << 5)
- /* Flag that BO is always valid in this VM */
-@@ -125,13 +123,23 @@ extern "C" {
- /* Flag that BO sharing will be explicitly synchronized */
- #define AMDGPU_GEM_CREATE_EXPLICIT_SYNC		(1 << 7)
- /* Flag that indicates allocating MQD gart on GFX9, where the mtype
-- * for the second page onward should be set to NC.
-+ * for the second page onward should be set to NC. It should never
-+ * be used by user space applications.
-  */
--#define AMDGPU_GEM_CREATE_MQD_GFX9		(1 << 8)
-+#define AMDGPU_GEM_CREATE_CP_MQD_GFX9		(1 << 8)
- /* Flag that BO may contain sensitive data that must be wiped before
-  * releasing the memory
-  */
- #define AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE	(1 << 9)
-+/* Flag that BO will be encrypted and that the TMZ bit should be
-+ * set in the PTEs when mapping this buffer via GPUVM or
-+ * accessing it with various hw blocks
-+ */
-+#define AMDGPU_GEM_CREATE_ENCRYPTED		(1 << 10)
-+/* Flag that BO will be used only in preemptible context, which does
-+ * not require GTT memory accounting
-+ */
-+#define AMDGPU_GEM_CREATE_PREEMPTIBLE		(1 << 11)
- 
- struct drm_amdgpu_gem_create_in  {
- 	/** the requested memory size */
-@@ -345,6 +353,10 @@ struct drm_amdgpu_gem_userptr {
- #define AMDGPU_TILING_DCC_PITCH_MAX_MASK		0x3FFF
- #define AMDGPU_TILING_DCC_INDEPENDENT_64B_SHIFT		43
- #define AMDGPU_TILING_DCC_INDEPENDENT_64B_MASK		0x1
-+#define AMDGPU_TILING_DCC_INDEPENDENT_128B_SHIFT	44
-+#define AMDGPU_TILING_DCC_INDEPENDENT_128B_MASK		0x1
-+#define AMDGPU_TILING_SCANOUT_SHIFT			63
-+#define AMDGPU_TILING_SCANOUT_MASK			0x1
- 
- /* Set/Get helpers for tiling flags. */
- #define AMDGPU_TILING_SET(field, value) \
-@@ -492,15 +504,15 @@ struct drm_amdgpu_gem_op {
- #define AMDGPU_VM_MTYPE_MASK		(0xf << 5)
- /* Default MTYPE. Pre-AI must use this.  Recommended for newer ASICs. */
- #define AMDGPU_VM_MTYPE_DEFAULT		(0 << 5)
--/* Use NC MTYPE instead of default MTYPE */
-+/* Use Non Coherent MTYPE instead of default MTYPE */
- #define AMDGPU_VM_MTYPE_NC		(1 << 5)
--/* Use WC MTYPE instead of default MTYPE */
-+/* Use Write Combine MTYPE instead of default MTYPE */
- #define AMDGPU_VM_MTYPE_WC		(2 << 5)
--/* Use CC MTYPE instead of default MTYPE */
-+/* Use Cache Coherent MTYPE instead of default MTYPE */
- #define AMDGPU_VM_MTYPE_CC		(3 << 5)
--/* Use UC MTYPE instead of default MTYPE */
-+/* Use UnCached MTYPE instead of default MTYPE */
- #define AMDGPU_VM_MTYPE_UC		(4 << 5)
--/* Use RW MTYPE instead of default MTYPE */
-+/* Use Read Write MTYPE instead of default MTYPE */
- #define AMDGPU_VM_MTYPE_RW		(5 << 5)
- 
- struct drm_amdgpu_gem_va {
-@@ -554,7 +566,7 @@ struct drm_amdgpu_cs_in {
- 	/**  Handle of resource list associated with CS */
- 	__u32		bo_list_handle;
- 	__u32		num_chunks;
--	__u32		_pad;
-+	__u32		flags;
- 	/** this points to __u64 * which point to cs chunks */
- 	__u64		chunks;
- };
-@@ -588,6 +600,14 @@ union drm_amdgpu_cs {
-  */
- #define AMDGPU_IB_FLAG_RESET_GDS_MAX_WAVE_ID (1 << 4)
- 
-+/* Flag the IB as secure (TMZ)
-+ */
-+#define AMDGPU_IB_FLAGS_SECURE  (1 << 5)
-+
-+/* Tell KMD to flush and invalidate caches
-+ */
-+#define AMDGPU_IB_FLAG_EMIT_MEM_SYNC  (1 << 6)
-+
- struct drm_amdgpu_cs_chunk_ib {
- 	__u32 _pad;
- 	/** AMDGPU_IB_FLAG_* */
-@@ -649,12 +669,13 @@ struct drm_amdgpu_cs_chunk_data {
- 	};
- };
- 
--/**
-+/*
-  *  Query h/w info: Flag that this is integrated (a.h.a. fusion) GPU
-  *
-  */
- #define AMDGPU_IDS_FLAGS_FUSION         0x1
- #define AMDGPU_IDS_FLAGS_PREEMPTION     0x2
-+#define AMDGPU_IDS_FLAGS_TMZ            0x4
- 
- /* indicate if acceleration can be working */
- #define AMDGPU_INFO_ACCEL_WORKING		0x00
-@@ -705,6 +726,8 @@ struct drm_amdgpu_cs_chunk_data {
- 	#define AMDGPU_INFO_FW_TA		0x13
- 	/* Subquery id: Query DMCUB firmware version */
- 	#define AMDGPU_INFO_FW_DMCUB		0x14
-+	/* Subquery id: Query TOC firmware version */
-+	#define AMDGPU_INFO_FW_TOC		0x15
- 
- /* number of bytes moved for TTM migration */
- #define AMDGPU_INFO_NUM_BYTES_MOVED		0x0f
-@@ -734,6 +757,8 @@ struct drm_amdgpu_cs_chunk_data {
- 	#define AMDGPU_INFO_VBIOS_SIZE		0x1
- 	/* Subquery id: Query vbios image */
- 	#define AMDGPU_INFO_VBIOS_IMAGE		0x2
-+	/* Subquery id: Query vbios info */
-+	#define AMDGPU_INFO_VBIOS_INFO		0x3
- /* Query UVD handles */
- #define AMDGPU_INFO_NUM_HANDLES			0x1C
- /* Query sensor related information */
-@@ -761,6 +786,12 @@ struct drm_amdgpu_cs_chunk_data {
- #define AMDGPU_INFO_VRAM_LOST_COUNTER		0x1F
- /* query ras mask of enabled features*/
- #define AMDGPU_INFO_RAS_ENABLED_FEATURES	0x20
-+/* query video encode/decode caps */
-+#define AMDGPU_INFO_VIDEO_CAPS			0x21
-+	/* Subquery id: Decode */
-+	#define AMDGPU_INFO_VIDEO_CAPS_DECODE		0
-+	/* Subquery id: Encode */
-+	#define AMDGPU_INFO_VIDEO_CAPS_ENCODE		1
- 
- /* RAS MASK: UMC (VRAM) */
- #define AMDGPU_INFO_RAS_ENABLED_UMC			(1 << 0)
-@@ -857,6 +888,10 @@ struct drm_amdgpu_info {
- 		struct {
- 			__u32 type;
- 		} sensor_info;
-+
-+		struct {
-+			__u32 type;
-+		} video_cap;
- 	};
- };
- 
-@@ -917,6 +952,15 @@ struct drm_amdgpu_info_firmware {
- 	__u32 feature;
- };
- 
-+struct drm_amdgpu_info_vbios {
-+	__u8 name[64];
-+	__u8 vbios_pn[64];
-+	__u32 version;
-+	__u32 pad;
-+	__u8 vbios_ver_str[32];
-+	__u8 date[32];
-+};
-+
- #define AMDGPU_VRAM_TYPE_UNKNOWN 0
- #define AMDGPU_VRAM_TYPE_GDDR1 1
- #define AMDGPU_VRAM_TYPE_DDR2  2
-@@ -927,6 +971,7 @@ struct drm_amdgpu_info_firmware {
- #define AMDGPU_VRAM_TYPE_DDR3  7
- #define AMDGPU_VRAM_TYPE_DDR4  8
- #define AMDGPU_VRAM_TYPE_GDDR6 9
-+#define AMDGPU_VRAM_TYPE_DDR5  10
- 
- struct drm_amdgpu_info_device {
- 	/** PCI Device ID */
-@@ -1052,6 +1097,30 @@ struct drm_amdgpu_info_vce_clock_table {
- 	__u32 pad;
- };
- 
-+/* query video encode/decode caps */
-+#define AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2			0
-+#define AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4			1
-+#define AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1			2
-+#define AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC		3
-+#define AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC			4
-+#define AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG			5
-+#define AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9			6
-+#define AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_AV1			7
-+#define AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_COUNT			8
-+
-+struct drm_amdgpu_info_video_codec_info {
-+	__u32 valid;
-+	__u32 max_width;
-+	__u32 max_height;
-+	__u32 max_pixels_per_frame;
-+	__u32 max_level;
-+	__u32 pad;
-+};
-+
-+struct drm_amdgpu_info_video_caps {
-+	struct drm_amdgpu_info_video_codec_info codec_info[AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_COUNT];
-+};
-+
- /*
-  * Supported GPU families
-  */
-@@ -1064,6 +1133,8 @@ struct drm_amdgpu_info_vce_clock_table {
- #define AMDGPU_FAMILY_AI			141 /* Vega10 */
- #define AMDGPU_FAMILY_RV			142 /* Raven */
- #define AMDGPU_FAMILY_NV			143 /* Navi10 */
-+#define AMDGPU_FAMILY_VGH			144 /* Van Gogh */
-+#define AMDGPU_FAMILY_YC			146 /* Yellow Carp */
- 
- #if defined(__cplusplus)
- }
-diff --git a/include/drm-uapi/drm.h b/include/drm-uapi/drm.h
-index c7fd2a35..398c396f 100644
---- a/include/drm-uapi/drm.h
-+++ b/include/drm-uapi/drm.h
-@@ -1,11 +1,10 @@
--/**
-- * \file drm.h
-+/*
-  * Header for the Direct Rendering Manager
-  *
-- * \author Rickard E. (Rik) Faith <faith@valinux.com>
-+ * Author: Rickard E. (Rik) Faith <faith@valinux.com>
-  *
-- * \par Acknowledgments:
-- * Dec 1999, Richard Henderson <rth@twiddle.net>, move to generic \c cmpxchg.
-+ * Acknowledgments:
-+ * Dec 1999, Richard Henderson <rth@twiddle.net>, move to generic cmpxchg.
-  */
- 
- /*
-@@ -79,7 +78,7 @@ typedef unsigned int drm_context_t;
- typedef unsigned int drm_drawable_t;
- typedef unsigned int drm_magic_t;
- 
--/**
-+/*
-  * Cliprect.
-  *
-  * \warning: If you change this structure, make sure you change
-@@ -95,7 +94,7 @@ struct drm_clip_rect {
- 	unsigned short y2;
- };
- 
--/**
-+/*
-  * Drawable information.
-  */
- struct drm_drawable_info {
-@@ -103,7 +102,7 @@ struct drm_drawable_info {
- 	struct drm_clip_rect *rects;
- };
- 
--/**
-+/*
-  * Texture region,
-  */
- struct drm_tex_region {
-@@ -114,7 +113,7 @@ struct drm_tex_region {
- 	unsigned int age;
- };
- 
--/**
-+/*
-  * Hardware lock.
-  *
-  * The lock structure is a simple cache-line aligned integer.  To avoid
-@@ -126,7 +125,7 @@ struct drm_hw_lock {
- 	char padding[60];			/**< Pad to cache line */
- };
- 
--/**
-+/*
-  * DRM_IOCTL_VERSION ioctl argument type.
-  *
-  * \sa drmGetVersion().
-@@ -143,7 +142,7 @@ struct drm_version {
- 	char *desc;	  /**< User-space buffer to hold desc */
- };
- 
--/**
-+/*
-  * DRM_IOCTL_GET_UNIQUE ioctl argument type.
-  *
-  * \sa drmGetBusid() and drmSetBusId().
-@@ -162,7 +161,7 @@ struct drm_block {
- 	int unused;
- };
- 
--/**
-+/*
-  * DRM_IOCTL_CONTROL ioctl argument type.
-  *
-  * \sa drmCtlInstHandler() and drmCtlUninstHandler().
-@@ -177,7 +176,7 @@ struct drm_control {
- 	int irq;
- };
- 
--/**
-+/*
-  * Type of memory to map.
-  */
- enum drm_map_type {
-@@ -189,7 +188,7 @@ enum drm_map_type {
- 	_DRM_CONSISTENT = 5	  /**< Consistent memory for PCI DMA */
- };
- 
--/**
-+/*
-  * Memory mapping flags.
-  */
- enum drm_map_flags {
-@@ -208,7 +207,7 @@ struct drm_ctx_priv_map {
- 	void *handle;		 /**< Handle of map */
- };
- 
--/**
-+/*
-  * DRM_IOCTL_GET_MAP, DRM_IOCTL_ADD_MAP and DRM_IOCTL_RM_MAP ioctls
-  * argument type.
-  *
-@@ -225,7 +224,7 @@ struct drm_map {
- 	/*   Private data */
- };
- 
--/**
-+/*
-  * DRM_IOCTL_GET_CLIENT ioctl argument type.
-  */
- struct drm_client {
-@@ -257,7 +256,7 @@ enum drm_stat_type {
- 	    /* Add to the *END* of the list */
- };
- 
--/**
-+/*
-  * DRM_IOCTL_GET_STATS ioctl argument type.
-  */
- struct drm_stats {
-@@ -268,7 +267,7 @@ struct drm_stats {
- 	} data[15];
- };
- 
--/**
-+/*
-  * Hardware locking flags.
-  */
- enum drm_lock_flags {
-@@ -283,7 +282,7 @@ enum drm_lock_flags {
- 	_DRM_HALT_CUR_QUEUES = 0x20  /**< Halt all current queues */
- };
- 
--/**
-+/*
-  * DRM_IOCTL_LOCK, DRM_IOCTL_UNLOCK and DRM_IOCTL_FINISH ioctl argument type.
-  *
-  * \sa drmGetLock() and drmUnlock().
-@@ -293,7 +292,7 @@ struct drm_lock {
- 	enum drm_lock_flags flags;
- };
- 
--/**
-+/*
-  * DMA flags
-  *
-  * \warning
-@@ -322,7 +321,7 @@ enum drm_dma_flags {
- 	_DRM_DMA_LARGER_OK = 0x40     /**< Larger-than-requested buffers OK */
- };
- 
--/**
-+/*
-  * DRM_IOCTL_ADD_BUFS and DRM_IOCTL_MARK_BUFS ioctl argument type.
-  *
-  * \sa drmAddBufs().
-@@ -345,7 +344,7 @@ struct drm_buf_desc {
- 				  */
- };
- 
--/**
-+/*
-  * DRM_IOCTL_INFO_BUFS ioctl argument type.
-  */
- struct drm_buf_info {
-@@ -353,7 +352,7 @@ struct drm_buf_info {
- 	struct drm_buf_desc *list;
- };
- 
--/**
-+/*
-  * DRM_IOCTL_FREE_BUFS ioctl argument type.
-  */
- struct drm_buf_free {
-@@ -361,7 +360,7 @@ struct drm_buf_free {
- 	int *list;
- };
- 
--/**
-+/*
-  * Buffer information
-  *
-  * \sa drm_buf_map.
-@@ -373,7 +372,7 @@ struct drm_buf_pub {
- 	void *address;	       /**< Address of buffer */
- };
- 
--/**
-+/*
-  * DRM_IOCTL_MAP_BUFS ioctl argument type.
-  */
- struct drm_buf_map {
-@@ -386,7 +385,7 @@ struct drm_buf_map {
- 	struct drm_buf_pub *list;	/**< Buffer information */
- };
- 
--/**
-+/*
-  * DRM_IOCTL_DMA ioctl argument type.
-  *
-  * Indices here refer to the offset into the buffer list in drm_buf_get.
-@@ -411,7 +410,7 @@ enum drm_ctx_flags {
- 	_DRM_CONTEXT_2DONLY = 0x02
- };
- 
--/**
-+/*
-  * DRM_IOCTL_ADD_CTX ioctl argument type.
-  *
-  * \sa drmCreateContext() and drmDestroyContext().
-@@ -421,7 +420,7 @@ struct drm_ctx {
- 	enum drm_ctx_flags flags;
- };
- 
--/**
-+/*
-  * DRM_IOCTL_RES_CTX ioctl argument type.
-  */
- struct drm_ctx_res {
-@@ -429,14 +428,14 @@ struct drm_ctx_res {
- 	struct drm_ctx *contexts;
- };
- 
--/**
-+/*
-  * DRM_IOCTL_ADD_DRAW and DRM_IOCTL_RM_DRAW ioctl argument type.
-  */
- struct drm_draw {
- 	drm_drawable_t handle;
- };
- 
--/**
-+/*
-  * DRM_IOCTL_UPDATE_DRAW ioctl argument type.
-  */
- typedef enum {
-@@ -450,14 +449,14 @@ struct drm_update_draw {
- 	unsigned long long data;
- };
- 
--/**
-+/*
-  * DRM_IOCTL_GET_MAGIC and DRM_IOCTL_AUTH_MAGIC ioctl argument type.
-  */
- struct drm_auth {
- 	drm_magic_t magic;
- };
- 
--/**
-+/*
-  * DRM_IOCTL_IRQ_BUSID ioctl argument type.
-  *
-  * \sa drmGetInterruptFromBusID().
-@@ -499,7 +498,7 @@ struct drm_wait_vblank_reply {
- 	long tval_usec;
- };
- 
--/**
-+/*
-  * DRM_IOCTL_WAIT_VBLANK ioctl argument type.
-  *
-  * \sa drmWaitVBlank().
-@@ -512,7 +511,7 @@ union drm_wait_vblank {
- #define _DRM_PRE_MODESET 1
- #define _DRM_POST_MODESET 2
- 
--/**
-+/*
-  * DRM_IOCTL_MODESET_CTL ioctl argument type
-  *
-  * \sa drmModesetCtl().
-@@ -522,7 +521,7 @@ struct drm_modeset_ctl {
- 	__u32 cmd;
- };
- 
--/**
-+/*
-  * DRM_IOCTL_AGP_ENABLE ioctl argument type.
-  *
-  * \sa drmAgpEnable().
-@@ -531,7 +530,7 @@ struct drm_agp_mode {
- 	unsigned long mode;	/**< AGP mode */
- };
- 
--/**
-+/*
-  * DRM_IOCTL_AGP_ALLOC and DRM_IOCTL_AGP_FREE ioctls argument type.
-  *
-  * \sa drmAgpAlloc() and drmAgpFree().
-@@ -543,7 +542,7 @@ struct drm_agp_buffer {
- 	unsigned long physical;	/**< Physical used by i810 */
- };
- 
--/**
-+/*
-  * DRM_IOCTL_AGP_BIND and DRM_IOCTL_AGP_UNBIND ioctls argument type.
-  *
-  * \sa drmAgpBind() and drmAgpUnbind().
-@@ -553,7 +552,7 @@ struct drm_agp_binding {
- 	unsigned long offset;	/**< In bytes -- will round to page boundary */
- };
- 
--/**
-+/*
-  * DRM_IOCTL_AGP_INFO ioctl argument type.
-  *
-  * \sa drmAgpVersionMajor(), drmAgpVersionMinor(), drmAgpGetMode(),
-@@ -574,7 +573,7 @@ struct drm_agp_info {
- 	unsigned short id_device;
- };
- 
--/**
-+/*
-  * DRM_IOCTL_SG_ALLOC ioctl argument type.
-  */
- struct drm_scatter_gather {
-@@ -582,7 +581,7 @@ struct drm_scatter_gather {
- 	unsigned long handle;	/**< Used for mapping / unmapping */
- };
- 
--/**
-+/*
-  * DRM_IOCTL_SET_VERSION ioctl argument type.
-  */
- struct drm_set_version {
-@@ -592,14 +591,14 @@ struct drm_set_version {
- 	int drm_dd_minor;
- };
- 
--/** DRM_IOCTL_GEM_CLOSE ioctl argument type */
-+/* DRM_IOCTL_GEM_CLOSE ioctl argument type */
- struct drm_gem_close {
- 	/** Handle of the object to be closed. */
- 	__u32 handle;
- 	__u32 pad;
- };
- 
--/** DRM_IOCTL_GEM_FLINK ioctl argument type */
-+/* DRM_IOCTL_GEM_FLINK ioctl argument type */
- struct drm_gem_flink {
- 	/** Handle for the object being named */
- 	__u32 handle;
-@@ -608,7 +607,7 @@ struct drm_gem_flink {
- 	__u32 name;
- };
- 
--/** DRM_IOCTL_GEM_OPEN ioctl argument type */
-+/* DRM_IOCTL_GEM_OPEN ioctl argument type */
- struct drm_gem_open {
- 	/** Name of object being opened */
- 	__u32 name;
-@@ -620,33 +619,150 @@ struct drm_gem_open {
- 	__u64 size;
- };
- 
-+/**
-+ * DRM_CAP_DUMB_BUFFER
-+ *
-+ * If set to 1, the driver supports creating dumb buffers via the
-+ * &DRM_IOCTL_MODE_CREATE_DUMB ioctl.
-+ */
- #define DRM_CAP_DUMB_BUFFER		0x1
-+/**
-+ * DRM_CAP_VBLANK_HIGH_CRTC
-+ *
-+ * If set to 1, the kernel supports specifying a CRTC index in the high bits of
-+ * &drm_wait_vblank_request.type.
-+ *
-+ * Starting kernel version 2.6.39, this capability is always set to 1.
-+ */
- #define DRM_CAP_VBLANK_HIGH_CRTC	0x2
-+/**
-+ * DRM_CAP_DUMB_PREFERRED_DEPTH
-+ *
-+ * The preferred bit depth for dumb buffers.
-+ *
-+ * The bit depth is the number of bits used to indicate the color of a single
-+ * pixel excluding any padding. This is different from the number of bits per
-+ * pixel. For instance, XRGB8888 has a bit depth of 24 but has 32 bits per
-+ * pixel.
-+ *
-+ * Note that this preference only applies to dumb buffers, it's irrelevant for
-+ * other types of buffers.
-+ */
- #define DRM_CAP_DUMB_PREFERRED_DEPTH	0x3
-+/**
-+ * DRM_CAP_DUMB_PREFER_SHADOW
-+ *
-+ * If set to 1, the driver prefers userspace to render to a shadow buffer
-+ * instead of directly rendering to a dumb buffer. For best speed, userspace
-+ * should do streaming ordered memory copies into the dumb buffer and never
-+ * read from it.
-+ *
-+ * Note that this preference only applies to dumb buffers, it's irrelevant for
-+ * other types of buffers.
-+ */
- #define DRM_CAP_DUMB_PREFER_SHADOW	0x4
-+/**
-+ * DRM_CAP_PRIME
-+ *
-+ * Bitfield of supported PRIME sharing capabilities. See &DRM_PRIME_CAP_IMPORT
-+ * and &DRM_PRIME_CAP_EXPORT.
-+ *
-+ * PRIME buffers are exposed as dma-buf file descriptors. See
-+ * Documentation/gpu/drm-mm.rst, section "PRIME Buffer Sharing".
-+ */
- #define DRM_CAP_PRIME			0x5
-+/**
-+ * DRM_PRIME_CAP_IMPORT
-+ *
-+ * If this bit is set in &DRM_CAP_PRIME, the driver supports importing PRIME
-+ * buffers via the &DRM_IOCTL_PRIME_FD_TO_HANDLE ioctl.
-+ */
- #define  DRM_PRIME_CAP_IMPORT		0x1
-+/**
-+ * DRM_PRIME_CAP_EXPORT
-+ *
-+ * If this bit is set in &DRM_CAP_PRIME, the driver supports exporting PRIME
-+ * buffers via the &DRM_IOCTL_PRIME_HANDLE_TO_FD ioctl.
-+ */
- #define  DRM_PRIME_CAP_EXPORT		0x2
-+/**
-+ * DRM_CAP_TIMESTAMP_MONOTONIC
-+ *
-+ * If set to 0, the kernel will report timestamps with ``CLOCK_REALTIME`` in
-+ * struct drm_event_vblank. If set to 1, the kernel will report timestamps with
-+ * ``CLOCK_MONOTONIC``. See ``clock_gettime(2)`` for the definition of these
-+ * clocks.
-+ *
-+ * Starting from kernel version 2.6.39, the default value for this capability
-+ * is 1. Starting kernel version 4.15, this capability is always set to 1.
-+ */
- #define DRM_CAP_TIMESTAMP_MONOTONIC	0x6
-+/**
-+ * DRM_CAP_ASYNC_PAGE_FLIP
-+ *
-+ * If set to 1, the driver supports &DRM_MODE_PAGE_FLIP_ASYNC.
-+ */
- #define DRM_CAP_ASYNC_PAGE_FLIP		0x7
--/*
-- * The CURSOR_WIDTH and CURSOR_HEIGHT capabilities return a valid widthxheight
-- * combination for the hardware cursor. The intention is that a hardware
-- * agnostic userspace can query a cursor plane size to use.
-+/**
-+ * DRM_CAP_CURSOR_WIDTH
-+ *
-+ * The ``CURSOR_WIDTH`` and ``CURSOR_HEIGHT`` capabilities return a valid
-+ * width x height combination for the hardware cursor. The intention is that a
-+ * hardware agnostic userspace can query a cursor plane size to use.
-  *
-  * Note that the cross-driver contract is to merely return a valid size;
-  * drivers are free to attach another meaning on top, eg. i915 returns the
-  * maximum plane size.
-  */
- #define DRM_CAP_CURSOR_WIDTH		0x8
-+/**
-+ * DRM_CAP_CURSOR_HEIGHT
-+ *
-+ * See &DRM_CAP_CURSOR_WIDTH.
-+ */
- #define DRM_CAP_CURSOR_HEIGHT		0x9
-+/**
-+ * DRM_CAP_ADDFB2_MODIFIERS
-+ *
-+ * If set to 1, the driver supports supplying modifiers in the
-+ * &DRM_IOCTL_MODE_ADDFB2 ioctl.
-+ */
- #define DRM_CAP_ADDFB2_MODIFIERS	0x10
-+/**
-+ * DRM_CAP_PAGE_FLIP_TARGET
-+ *
-+ * If set to 1, the driver supports the &DRM_MODE_PAGE_FLIP_TARGET_ABSOLUTE and
-+ * &DRM_MODE_PAGE_FLIP_TARGET_RELATIVE flags in
-+ * &drm_mode_crtc_page_flip_target.flags for the &DRM_IOCTL_MODE_PAGE_FLIP
-+ * ioctl.
-+ */
- #define DRM_CAP_PAGE_FLIP_TARGET	0x11
-+/**
-+ * DRM_CAP_CRTC_IN_VBLANK_EVENT
-+ *
-+ * If set to 1, the kernel supports reporting the CRTC ID in
-+ * &drm_event_vblank.crtc_id for the &DRM_EVENT_VBLANK and
-+ * &DRM_EVENT_FLIP_COMPLETE events.
-+ *
-+ * Starting kernel version 4.12, this capability is always set to 1.
-+ */
- #define DRM_CAP_CRTC_IN_VBLANK_EVENT	0x12
-+/**
-+ * DRM_CAP_SYNCOBJ
-+ *
-+ * If set to 1, the driver supports sync objects. See
-+ * Documentation/gpu/drm-mm.rst, section "DRM Sync Objects".
-+ */
- #define DRM_CAP_SYNCOBJ		0x13
-+/**
-+ * DRM_CAP_SYNCOBJ_TIMELINE
-+ *
-+ * If set to 1, the driver supports timeline operations on sync objects. See
-+ * Documentation/gpu/drm-mm.rst, section "DRM Sync Objects".
-+ */
- #define DRM_CAP_SYNCOBJ_TIMELINE	0x14
- 
--/** DRM_IOCTL_GET_CAP ioctl argument type */
-+/* DRM_IOCTL_GET_CAP ioctl argument type */
- struct drm_get_cap {
- 	__u64 capability;
- 	__u64 value;
-@@ -655,9 +771,12 @@ struct drm_get_cap {
- /**
-  * DRM_CLIENT_CAP_STEREO_3D
-  *
-- * if set to 1, the DRM core will expose the stereo 3D capabilities of the
-+ * If set to 1, the DRM core will expose the stereo 3D capabilities of the
-  * monitor by advertising the supported 3D layouts in the flags of struct
-- * drm_mode_modeinfo.
-+ * drm_mode_modeinfo. See ``DRM_MODE_FLAG_3D_*``.
-+ *
-+ * This capability is always supported for all drivers starting from kernel
-+ * version 3.13.
-  */
- #define DRM_CLIENT_CAP_STEREO_3D	1
- 
-@@ -666,13 +785,25 @@ struct drm_get_cap {
-  *
-  * If set to 1, the DRM core will expose all planes (overlay, primary, and
-  * cursor) to userspace.
-+ *
-+ * This capability has been introduced in kernel version 3.15. Starting from
-+ * kernel version 3.17, this capability is always supported for all drivers.
-  */
- #define DRM_CLIENT_CAP_UNIVERSAL_PLANES  2
- 
- /**
-  * DRM_CLIENT_CAP_ATOMIC
-  *
-- * If set to 1, the DRM core will expose atomic properties to userspace
-+ * If set to 1, the DRM core will expose atomic properties to userspace. This
-+ * implicitly enables &DRM_CLIENT_CAP_UNIVERSAL_PLANES and
-+ * &DRM_CLIENT_CAP_ASPECT_RATIO.
-+ *
-+ * If the driver doesn't support atomic mode-setting, enabling this capability
-+ * will fail with -EOPNOTSUPP.
-+ *
-+ * This capability has been introduced in kernel version 4.0. Starting from
-+ * kernel version 4.2, this capability is always supported for atomic-capable
-+ * drivers.
-  */
- #define DRM_CLIENT_CAP_ATOMIC	3
- 
-@@ -680,6 +811,10 @@ struct drm_get_cap {
-  * DRM_CLIENT_CAP_ASPECT_RATIO
-  *
-  * If set to 1, the DRM core will provide aspect ratio information in modes.
-+ * See ``DRM_MODE_FLAG_PIC_AR_*``.
-+ *
-+ * This capability is always supported for all drivers starting from kernel
-+ * version 4.18.
-  */
- #define DRM_CLIENT_CAP_ASPECT_RATIO    4
- 
-@@ -687,12 +822,15 @@ struct drm_get_cap {
-  * DRM_CLIENT_CAP_WRITEBACK_CONNECTORS
-  *
-  * If set to 1, the DRM core will expose special connectors to be used for
-- * writing back to memory the scene setup in the commit. Depends on client
-- * also supporting DRM_CLIENT_CAP_ATOMIC
-+ * writing back to memory the scene setup in the commit. The client must enable
-+ * &DRM_CLIENT_CAP_ATOMIC first.
-+ *
-+ * This capability is always supported for atomic-capable drivers starting from
-+ * kernel version 4.19.
-  */
- #define DRM_CLIENT_CAP_WRITEBACK_CONNECTORS	5
- 
--/** DRM_IOCTL_SET_CLIENT_CAP ioctl argument type */
-+/* DRM_IOCTL_SET_CLIENT_CAP ioctl argument type */
- struct drm_set_client_cap {
- 	__u64 capability;
- 	__u64 value;
-@@ -944,7 +1082,7 @@ extern "C" {
- 
- #define DRM_IOCTL_MODE_GETFB2		DRM_IOWR(0xCE, struct drm_mode_fb_cmd2)
- 
--/**
-+/*
-  * Device specific ioctls should only be in their respective headers
-  * The device specific ioctl range is from 0x40 to 0x9f.
-  * Generic IOCTLS restart at 0xA0.
-@@ -955,7 +1093,7 @@ extern "C" {
- #define DRM_COMMAND_BASE                0x40
- #define DRM_COMMAND_END			0xA0
- 
--/**
-+/*
-  * Header for events written back to userspace on the drm fd.  The
-  * type defines the type of event, the length specifies the total
-  * length of the event (including the header), and user_data is
-diff --git a/include/drm-uapi/drm_fourcc.h b/include/drm-uapi/drm_fourcc.h
-index a7bc058c..cd3ce8a8 100644
---- a/include/drm-uapi/drm_fourcc.h
-+++ b/include/drm-uapi/drm_fourcc.h
-@@ -58,6 +58,30 @@ extern "C" {
-  * may preserve meaning - such as number of planes - from the fourcc code,
-  * whereas others may not.
-  *
-+ * Modifiers must uniquely encode buffer layout. In other words, a buffer must
-+ * match only a single modifier. A modifier must not be a subset of layouts of
-+ * another modifier. For instance, it's incorrect to encode pitch alignment in
-+ * a modifier: a buffer may match a 64-pixel aligned modifier and a 32-pixel
-+ * aligned modifier. That said, modifiers can have implicit minimal
-+ * requirements.
-+ *
-+ * For modifiers where the combination of fourcc code and modifier can alias,
-+ * a canonical pair needs to be defined and used by all drivers. Preferred
-+ * combinations are also encouraged where all combinations might lead to
-+ * confusion and unnecessarily reduced interoperability. An example for the
-+ * latter is AFBC, where the ABGR layouts are preferred over ARGB layouts.
-+ *
-+ * There are two kinds of modifier users:
-+ *
-+ * - Kernel and user-space drivers: for drivers it's important that modifiers
-+ *   don't alias, otherwise two drivers might support the same format but use
-+ *   different aliases, preventing them from sharing buffers in an efficient
-+ *   format.
-+ * - Higher-level programs interfacing with KMS/GBM/EGL/Vulkan/etc: these users
-+ *   see modifiers as opaque tokens they can check for equality and intersect.
-+ *   These users musn't need to know to reason about the modifier value
-+ *   (i.e. they are not expected to extract information out of the modifier).
-+ *
-  * Vendors should document their modifier usage in as much detail as
-  * possible, to ensure maximum compatibility across devices, drivers and
-  * applications.
-@@ -144,6 +168,13 @@ extern "C" {
- #define DRM_FORMAT_RGBA1010102	fourcc_code('R', 'A', '3', '0') /* [31:0] R:G:B:A 10:10:10:2 little endian */
- #define DRM_FORMAT_BGRA1010102	fourcc_code('B', 'A', '3', '0') /* [31:0] B:G:R:A 10:10:10:2 little endian */
- 
-+/* 64 bpp RGB */
-+#define DRM_FORMAT_XRGB16161616	fourcc_code('X', 'R', '4', '8') /* [63:0] x:R:G:B 16:16:16:16 little endian */
-+#define DRM_FORMAT_XBGR16161616	fourcc_code('X', 'B', '4', '8') /* [63:0] x:B:G:R 16:16:16:16 little endian */
-+
-+#define DRM_FORMAT_ARGB16161616	fourcc_code('A', 'R', '4', '8') /* [63:0] A:R:G:B 16:16:16:16 little endian */
-+#define DRM_FORMAT_ABGR16161616	fourcc_code('A', 'B', '4', '8') /* [63:0] A:B:G:R 16:16:16:16 little endian */
-+
- /*
-  * Floating point 64bpp RGB
-  * IEEE 754-2008 binary16 half-precision float
-@@ -155,6 +186,12 @@ extern "C" {
- #define DRM_FORMAT_ARGB16161616F fourcc_code('A', 'R', '4', 'H') /* [63:0] A:R:G:B 16:16:16:16 little endian */
- #define DRM_FORMAT_ABGR16161616F fourcc_code('A', 'B', '4', 'H') /* [63:0] A:B:G:R 16:16:16:16 little endian */
- 
-+/*
-+ * RGBA format with 10-bit components packed in 64-bit per pixel, with 6 bits
-+ * of unused padding per component:
-+ */
-+#define DRM_FORMAT_AXBXGXRX106106106106 fourcc_code('A', 'B', '1', '0') /* [63:0] A:x:B:x:G:x:R:x 10:6:10:6:10:6:10:6 little endian */
-+
- /* packed YCbCr */
- #define DRM_FORMAT_YUYV		fourcc_code('Y', 'U', 'Y', 'V') /* [31:0] Cr0:Y1:Cb0:Y0 8:8:8:8 little endian */
- #define DRM_FORMAT_YVYU		fourcc_code('Y', 'V', 'Y', 'U') /* [31:0] Cb0:Y1:Cr0:Y0 8:8:8:8 little endian */
-@@ -320,7 +357,6 @@ extern "C" {
-  */
- 
- /* Vendor Ids: */
--#define DRM_FORMAT_MOD_NONE           0
- #define DRM_FORMAT_MOD_VENDOR_NONE    0
- #define DRM_FORMAT_MOD_VENDOR_INTEL   0x01
- #define DRM_FORMAT_MOD_VENDOR_AMD     0x02
-@@ -392,6 +428,16 @@ extern "C" {
-  */
- #define DRM_FORMAT_MOD_LINEAR	fourcc_mod_code(NONE, 0)
- 
-+/*
-+ * Deprecated: use DRM_FORMAT_MOD_LINEAR instead
-+ *
-+ * The "none" format modifier doesn't actually mean that the modifier is
-+ * implicit, instead it means that the layout is linear. Whether modifiers are
-+ * used is out-of-band information carried in an API-specific way (e.g. in a
-+ * flag for drm_mode_fb_cmd2).
-+ */
-+#define DRM_FORMAT_MOD_NONE	0
-+
- /* Intel framebuffer modifiers */
- 
- /*
-@@ -488,6 +534,25 @@ extern "C" {
-  */
- #define I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS fourcc_mod_code(INTEL, 7)
- 
-+/*
-+ * Intel Color Control Surface with Clear Color (CCS) for Gen-12 render
-+ * compression.
-+ *
-+ * The main surface is Y-tiled and is at plane index 0 whereas CCS is linear
-+ * and at index 1. The clear color is stored at index 2, and the pitch should
-+ * be ignored. The clear color structure is 256 bits. The first 128 bits
-+ * represents Raw Clear Color Red, Green, Blue and Alpha color each represented
-+ * by 32 bits. The raw clear color is consumed by the 3d engine and generates
-+ * the converted clear color of size 64 bits. The first 32 bits store the Lower
-+ * Converted Clear Color value and the next 32 bits store the Higher Converted
-+ * Clear Color value when applicable. The Converted Clear Color values are
-+ * consumed by the DE. The last 64 bits are used to store Color Discard Enable
-+ * and Depth Clear Value Valid which are ignored by the DE. A CCS cache line
-+ * corresponds to an area of 4x1 tiles in the main surface. The main surface
-+ * pitch is required to be a multiple of 4 tile widths.
-+ */
-+#define I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC fourcc_mod_code(INTEL, 8)
-+
- /*
-  * Tiled, NV12MT, grouped in 64 (pixels) x 32 (lines) -sized macroblocks
-  *
-@@ -671,7 +736,7 @@ extern "C" {
-  * which corresponds to the "generic" kind used for simple single-sample
-  * uncompressed color formats on Fermi - Volta GPUs.
-  */
--static inline __u64
-+static __inline__ __u64
- drm_fourcc_canonicalize_nvidia_format_mod(__u64 modifier)
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 6591c619..f698cb6f 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -398,7 +398,7 @@ void igt_get_fb_tile_size(int fd, uint64_t modifier, int fb_bpp,
+ 	}
+ 
+ 	switch (modifier) {
+-	case LOCAL_DRM_FORMAT_MOD_NONE:
++	case DRM_FORMAT_MOD_NONE:
+ 		if (is_i915_device(fd))
+ 			*width_ret = 64;
+ 		else
+@@ -691,7 +691,7 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
+ 	uint32_t min_stride = fb->plane_width[plane] *
+ 		(fb->plane_bpp[plane] / 8);
+ 
+-	if (fb->modifier != LOCAL_DRM_FORMAT_MOD_NONE &&
++	if (fb->modifier != DRM_FORMAT_MOD_NONE &&
+ 	    is_i915_device(fb->fd) &&
+ 	    intel_display_ver(intel_get_drm_devid(fb->fd)) <= 3) {
+ 		uint32_t stride;
+@@ -714,7 +714,7 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
+ 		 * so the easiest way is to align the luma stride to 256.
+ 		 */
+ 		return ALIGN(min_stride, 256);
+-	} else if (fb->modifier != LOCAL_DRM_FORMAT_MOD_NONE && is_amdgpu_device(fb->fd)) {
++	} else if (fb->modifier != DRM_FORMAT_MOD_NONE && is_amdgpu_device(fb->fd)) {
+ 		/*
+ 		 * For amdgpu device with tiling mode
+ 		 */
+@@ -773,7 +773,7 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
+ 
+ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
  {
- 	if (!(modifier & 0x10) || (modifier & (0xff << 12)))
-@@ -997,9 +1062,9 @@ drm_fourcc_canonicalize_nvidia_format_mod(__u64 modifier)
-  * Not all combinations are valid, and different SoCs may support different
-  * combinations of layout and options.
-  */
--#define __fourcc_mod_amlogic_layout_mask 0xf
-+#define __fourcc_mod_amlogic_layout_mask 0xff
- #define __fourcc_mod_amlogic_options_shift 8
--#define __fourcc_mod_amlogic_options_mask 0xf
-+#define __fourcc_mod_amlogic_options_mask 0xff
+-	if (fb->modifier != LOCAL_DRM_FORMAT_MOD_NONE &&
++	if (fb->modifier != DRM_FORMAT_MOD_NONE &&
+ 	    is_i915_device(fb->fd) &&
+ 	    intel_display_ver(intel_get_drm_devid(fb->fd)) <= 3) {
+ 		uint64_t min_size = (uint64_t) fb->strides[plane] *
+@@ -792,7 +792,7 @@ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
+ 		size = roundup_power_of_two(size);
  
- #define DRM_FORMAT_MOD_AMLOGIC_FBC(__layout, __options) \
- 	fourcc_mod_code(AMLOGIC, \
-@@ -1195,4 +1260,3 @@ drm_fourcc_canonicalize_nvidia_format_mod(__u64 modifier)
- #endif
+ 		return size;
+-	} else if (fb->modifier != LOCAL_DRM_FORMAT_MOD_NONE && is_amdgpu_device(fb->fd)) {
++	} else if (fb->modifier != DRM_FORMAT_MOD_NONE && is_amdgpu_device(fb->fd)) {
+ 		/*
+ 		 * For amdgpu device with tiling mode
+ 		 */
+@@ -906,7 +906,7 @@ void igt_calc_fb_size(int fd, int width, int height, uint32_t drm_format, uint64
+ uint64_t igt_fb_mod_to_tiling(uint64_t modifier)
+ {
+ 	switch (modifier) {
+-	case LOCAL_DRM_FORMAT_MOD_NONE:
++	case DRM_FORMAT_MOD_NONE:
+ 		return I915_TILING_NONE;
+ 	case I915_FORMAT_MOD_X_TILED:
+ 		return I915_TILING_X;
+@@ -938,7 +938,7 @@ uint64_t igt_fb_tiling_to_mod(uint64_t tiling)
+ {
+ 	switch (tiling) {
+ 	case I915_TILING_NONE:
+-		return LOCAL_DRM_FORMAT_MOD_NONE;
++		return DRM_FORMAT_MOD_NONE;
+ 	case I915_TILING_X:
+ 		return I915_FORMAT_MOD_X_TILED;
+ 	case I915_TILING_Y:
+@@ -1801,7 +1801,7 @@ igt_create_fb_with_bo_size(int fd, int width, int height,
+ 		  __func__, fb->gem_handle, fb->strides[0]);
  
- #endif /* DRM_FOURCC_H */
+ 	if (fb->modifier || igt_has_fb_modifiers(fd))
+-		flags = LOCAL_DRM_MODE_FB_MODIFIERS;
++		flags = DRM_MODE_FB_MODIFIERS;
+ 
+ 	do_or_die(__kms_addfb(fb->fd, fb->gem_handle,
+ 			      fb->width, fb->height,
+@@ -2524,7 +2524,7 @@ static void setup_linear_mapping(struct fb_blit_upload *blit)
+ 	 */
+ 
+ 	igt_init_fb(&linear->fb, fb->fd, fb->width, fb->height,
+-		    fb->drm_format, LOCAL_DRM_FORMAT_MOD_NONE,
++		    fb->drm_format, DRM_FORMAT_MOD_NONE,
+ 		    fb->color_encoding, fb->color_range);
+ 
+ 	create_bo_for_fb(&linear->fb, true);
+@@ -2701,7 +2701,7 @@ static void *igt_fb_create_cairo_shadow_buffer(int fd,
+ 	igt_assert(shadow);
+ 
+ 	igt_init_fb(shadow, fd, width, height,
+-		    drm_format, LOCAL_DRM_FORMAT_MOD_NONE,
++		    drm_format, DRM_FORMAT_MOD_NONE,
+ 		    IGT_COLOR_YCBCR_BT709, IGT_COLOR_YCBCR_LIMITED_RANGE);
+ 
+ 	shadow->strides[0] = ALIGN(width * (shadow->plane_bpp[0] / 8), 16);
+diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+index 0ed67b6e..9a897fec 100644
+--- a/lib/ioctl_wrappers.h
++++ b/lib/ioctl_wrappers.h
+@@ -147,32 +147,6 @@ off_t prime_get_size(int dma_buf_fd);
+ void prime_sync_start(int dma_buf_fd, bool write);
+ void prime_sync_end(int dma_buf_fd, bool write);
+ 
+-/* addfb2 fb modifiers */
+-struct local_drm_mode_fb_cmd2 {
+-	uint32_t fb_id;
+-	uint32_t width, height;
+-	uint32_t pixel_format;
+-	uint32_t flags;
+-	uint32_t handles[4];
+-	uint32_t pitches[4];
+-	uint32_t offsets[4];
+-	uint64_t modifier[4];
+-};
 -
-diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
-index 735c8cfd..9b6722d4 100644
---- a/include/drm-uapi/drm_mode.h
-+++ b/include/drm-uapi/drm_mode.h
-@@ -218,6 +218,27 @@ extern "C" {
- #define DRM_MODE_CONTENT_PROTECTION_DESIRED     1
- #define DRM_MODE_CONTENT_PROTECTION_ENABLED     2
- 
-+/**
-+ * struct drm_mode_modeinfo - Display mode information.
-+ * @clock: pixel clock in kHz
-+ * @hdisplay: horizontal display size
-+ * @hsync_start: horizontal sync start
-+ * @hsync_end: horizontal sync end
-+ * @htotal: horizontal total size
-+ * @hskew: horizontal skew
-+ * @vdisplay: vertical display size
-+ * @vsync_start: vertical sync start
-+ * @vsync_end: vertical sync end
-+ * @vtotal: vertical total size
-+ * @vscan: vertical scan
-+ * @vrefresh: approximate vertical refresh rate in Hz
-+ * @flags: bitmask of misc. flags, see DRM_MODE_FLAG_* defines
-+ * @type: bitmask of type flags, see DRM_MODE_TYPE_* defines
-+ * @name: string describing the mode resolution
-+ *
-+ * This is the user-space API display mode information structure. For the
-+ * kernel version see struct drm_display_mode.
-+ */
- struct drm_mode_modeinfo {
- 	__u32 clock;
- 	__u16 hdisplay;
-@@ -332,14 +353,19 @@ struct drm_mode_get_encoder {
- /* This is for connectors with multiple signal types. */
- /* Try to match DRM_MODE_CONNECTOR_X as closely as possible. */
- enum drm_mode_subconnector {
--	DRM_MODE_SUBCONNECTOR_Automatic = 0,
--	DRM_MODE_SUBCONNECTOR_Unknown = 0,
--	DRM_MODE_SUBCONNECTOR_DVID = 3,
--	DRM_MODE_SUBCONNECTOR_DVIA = 4,
--	DRM_MODE_SUBCONNECTOR_Composite = 5,
--	DRM_MODE_SUBCONNECTOR_SVIDEO = 6,
--	DRM_MODE_SUBCONNECTOR_Component = 8,
--	DRM_MODE_SUBCONNECTOR_SCART = 9,
-+	DRM_MODE_SUBCONNECTOR_Automatic   = 0,  /* DVI-I, TV     */
-+	DRM_MODE_SUBCONNECTOR_Unknown     = 0,  /* DVI-I, TV, DP */
-+	DRM_MODE_SUBCONNECTOR_VGA	  = 1,  /*            DP */
-+	DRM_MODE_SUBCONNECTOR_DVID	  = 3,  /* DVI-I      DP */
-+	DRM_MODE_SUBCONNECTOR_DVIA	  = 4,  /* DVI-I         */
-+	DRM_MODE_SUBCONNECTOR_Composite   = 5,  /*        TV     */
-+	DRM_MODE_SUBCONNECTOR_SVIDEO	  = 6,  /*        TV     */
-+	DRM_MODE_SUBCONNECTOR_Component   = 8,  /*        TV     */
-+	DRM_MODE_SUBCONNECTOR_SCART	  = 9,  /*        TV     */
-+	DRM_MODE_SUBCONNECTOR_DisplayPort = 10, /*            DP */
-+	DRM_MODE_SUBCONNECTOR_HDMIA       = 11, /*            DP */
-+	DRM_MODE_SUBCONNECTOR_Native      = 15, /*            DP */
-+	DRM_MODE_SUBCONNECTOR_Wireless    = 18, /*            DP */
- };
- 
- #define DRM_MODE_CONNECTOR_Unknown	0
-@@ -362,28 +388,95 @@ enum drm_mode_subconnector {
- #define DRM_MODE_CONNECTOR_DPI		17
- #define DRM_MODE_CONNECTOR_WRITEBACK	18
- #define DRM_MODE_CONNECTOR_SPI		19
-+#define DRM_MODE_CONNECTOR_USB		20
- 
-+/**
-+ * struct drm_mode_get_connector - Get connector metadata.
-+ *
-+ * User-space can perform a GETCONNECTOR ioctl to retrieve information about a
-+ * connector. User-space is expected to retrieve encoders, modes and properties
-+ * by performing this ioctl at least twice: the first time to retrieve the
-+ * number of elements, the second time to retrieve the elements themselves.
-+ *
-+ * To retrieve the number of elements, set @count_props and @count_encoders to
-+ * zero, set @count_modes to 1, and set @modes_ptr to a temporary struct
-+ * drm_mode_modeinfo element.
-+ *
-+ * To retrieve the elements, allocate arrays for @encoders_ptr, @modes_ptr,
-+ * @props_ptr and @prop_values_ptr, then set @count_modes, @count_props and
-+ * @count_encoders to their capacity.
-+ *
-+ * Performing the ioctl only twice may be racy: the number of elements may have
-+ * changed with a hotplug event in-between the two ioctls. User-space is
-+ * expected to retry the last ioctl until the number of elements stabilizes.
-+ * The kernel won't fill any array which doesn't have the expected length.
-+ *
-+ * **Force-probing a connector**
-+ *
-+ * If the @count_modes field is set to zero and the DRM client is the current
-+ * DRM master, the kernel will perform a forced probe on the connector to
-+ * refresh the connector status, modes and EDID. A forced-probe can be slow,
-+ * might cause flickering and the ioctl will block.
-+ *
-+ * User-space needs to force-probe connectors to ensure their metadata is
-+ * up-to-date at startup and after receiving a hot-plug event. User-space
-+ * may perform a forced-probe when the user explicitly requests it. User-space
-+ * shouldn't perform a forced-probe in other situations.
-+ */
- struct drm_mode_get_connector {
+-#define LOCAL_DRM_MODE_FB_MODIFIERS	(1<<1)
 -
-+	/** @encoders_ptr: Pointer to ``__u32`` array of object IDs. */
- 	__u64 encoders_ptr;
-+	/** @modes_ptr: Pointer to struct drm_mode_modeinfo array. */
- 	__u64 modes_ptr;
-+	/** @props_ptr: Pointer to ``__u32`` array of property IDs. */
- 	__u64 props_ptr;
-+	/** @prop_values_ptr: Pointer to ``__u64`` array of property values. */
- 	__u64 prop_values_ptr;
+-#define LOCAL_DRM_FORMAT_MOD_VENDOR_INTEL	0x01
+-
+-#define local_fourcc_mod_code(vendor, val) \
+-		((((uint64_t)LOCAL_DRM_FORMAT_MOD_VENDOR_## vendor) << 56) | \
+-		(val & 0x00ffffffffffffffL))
+-
+-#define LOCAL_DRM_FORMAT_MOD_NONE	(0)
+-#define LOCAL_DRM_IOCTL_MODE_ADDFB2	DRM_IOWR(0xB8,			\
+-						 struct local_drm_mode_fb_cmd2)
+-
+-#define LOCAL_DRM_CAP_ADDFB2_MODIFIERS	0x10
+-
+ bool igt_has_fb_modifiers(int fd);
+ void igt_require_fb_modifiers(int fd);
+ bool igt_has_drm_cap(int fd, uint64_t capability);
+diff --git a/tests/amdgpu/amd_bypass.c b/tests/amdgpu/amd_bypass.c
+index 8231c768..f805efb2 100644
+--- a/tests/amdgpu/amd_bypass.c
++++ b/tests/amdgpu/amd_bypass.c
+@@ -316,7 +316,7 @@ static void bypass_8bpc_test(data_t *data)
+ 	test_init(data);
  
-+	/** @count_modes: Number of modes. */
- 	__u32 count_modes;
-+	/** @count_props: Number of properties. */
- 	__u32 count_props;
-+	/** @count_encoders: Number of encoders. */
- 	__u32 count_encoders;
+ 	igt_create_fb(data->drm_fd, data->width, data->height,
+-		      DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE, &fb);
++		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE, &fb);
  
--	__u32 encoder_id; /**< Current Encoder */
--	__u32 connector_id; /**< Id */
-+	/** @encoder_id: Object ID of the current encoder. */
-+	__u32 encoder_id;
-+	/** @connector_id: Object ID of the connector. */
-+	__u32 connector_id;
-+	/**
-+	 * @connector_type: Type of the connector.
-+	 *
-+	 * See DRM_MODE_CONNECTOR_* defines.
-+	 */
- 	__u32 connector_type;
-+	/**
-+	 * @connector_type_id: Type-specific connector number.
-+	 *
-+	 * This is not an object ID. This is a per-type connector number. Each
-+	 * (type, type_id) combination is unique across all connectors of a DRM
-+	 * device.
-+	 */
- 	__u32 connector_type_id;
+ 	/*
+ 	 * Settings:
+diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c
+index e50f213a..fdfa3403 100644
+--- a/tests/debugfs_test.c
++++ b/tests/debugfs_test.c
+@@ -122,7 +122,7 @@ retry:
+ 				igt_create_pattern_fb(display.drm_fd,
+ 						      mode->hdisplay, mode->vdisplay,
+ 						      DRM_FORMAT_XRGB8888,
+-						      LOCAL_DRM_FORMAT_MOD_NONE, &fb[pipe]);
++						      DRM_FORMAT_MOD_NONE, &fb[pipe]);
  
-+	/**
-+	 * @connection: Status of the connector.
-+	 *
-+	 * See enum drm_connector_status.
-+	 */
- 	__u32 connection;
--	__u32 mm_width;  /**< width in millimeters */
--	__u32 mm_height; /**< height in millimeters */
-+	/** @mm_width: Width of the connected sink in millimeters. */
-+	__u32 mm_width;
-+	/** @mm_height: Height of the connected sink in millimeters. */
-+	__u32 mm_height;
-+	/**
-+	 * @subpixel: Subpixel order of the connected sink.
-+	 *
-+	 * See enum subpixel_order.
-+	 */
- 	__u32 subpixel;
+ 				/* Set a valid fb as some debugfs like to inspect it on a active pipe */
+ 				igt_plane_set_fb(primary, &fb[pipe]);
+diff --git a/tests/drm_read.c b/tests/drm_read.c
+index 2fdec5be..d7609fbd 100644
+--- a/tests/drm_read.c
++++ b/tests/drm_read.c
+@@ -278,7 +278,7 @@ igt_main
  
-+	/** @pad: Padding, must be zero. */
- 	__u32 pad;
- };
+ 			igt_create_pattern_fb(fd, mode->hdisplay, mode->vdisplay,
+ 					      DRM_FORMAT_XRGB8888,
+-					      LOCAL_DRM_FORMAT_MOD_NONE, &fb);
++					      DRM_FORMAT_MOD_NONE, &fb);
  
-@@ -497,7 +590,7 @@ struct drm_mode_fb_cmd2 {
- 	 * In case of planar formats, this ioctl allows up to 4
- 	 * buffer objects with offsets and pitches per plane.
- 	 * The pitch and offset order is dictated by the fourcc,
--	 * e.g. NV12 (http://fourcc.org/yuv.php#NV12) is described as:
-+	 * e.g. NV12 (https://fourcc.org/yuv.php#NV12) is described as:
- 	 *
- 	 *   YUV 4:2:0 image with a plane of 8 bit Y samples
- 	 *   followed by an interleaved U/V plane containing
-@@ -899,26 +992,31 @@ struct drm_format_modifier {
- };
+ 			igt_output_set_pipe(output, pipe);
+ 			igt_plane_set_fb(igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY), &fb);
+diff --git a/tests/i915/i915_pm_backlight.c b/tests/i915/i915_pm_backlight.c
+index 9753ef95..b26013f7 100644
+--- a/tests/i915/i915_pm_backlight.c
++++ b/tests/i915/i915_pm_backlight.c
+@@ -227,7 +227,7 @@ igt_main
+ 		igt_create_pattern_fb(display.drm_fd,
+ 				      mode->hdisplay, mode->vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+-				      LOCAL_DRM_FORMAT_MOD_NONE, &fb);
++				      DRM_FORMAT_MOD_NONE, &fb);
+ 		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 		igt_plane_set_fb(primary, &fb);
  
- /**
-- * struct drm_mode_create_blob - Create New block property
-- * @data: Pointer to data to copy.
-- * @length: Length of data to copy.
-- * @blob_id: new property ID.
-+ * struct drm_mode_create_blob - Create New blob property
-+ *
-  * Create a new 'blob' data property, copying length bytes from data pointer,
-  * and returning new blob ID.
-  */
- struct drm_mode_create_blob {
--	/** Pointer to data to copy. */
-+	/** @data: Pointer to data to copy. */
- 	__u64 data;
--	/** Length of data to copy. */
-+	/** @length: Length of data to copy. */
- 	__u32 length;
--	/** Return: new property ID. */
-+	/** @blob_id: Return: new property ID. */
- 	__u32 blob_id;
- };
+diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+index 2705b7d0..53840579 100644
+--- a/tests/i915/i915_pm_dc.c
++++ b/tests/i915/i915_pm_dc.c
+@@ -159,7 +159,7 @@ static void create_color_fb(data_t *data, igt_fb_t *fb, color_t *fb_color)
+ 			      data->mode->hdisplay,
+ 			      data->mode->vdisplay,
+ 			      DRM_FORMAT_XRGB8888,
+-			      LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_MOD_NONE,
+ 			      fb);
+ 	igt_assert(fb_id);
+ 	paint_rectangles(data, data->mode, fb_color, fb);
+diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
+index 4a187810..05bc032a 100644
+--- a/tests/i915/i915_pm_lpsp.c
++++ b/tests/i915/i915_pm_lpsp.c
+@@ -111,7 +111,7 @@ static void setup_lpsp_output(data_t *data)
+ 	igt_create_pattern_fb(data->drm_fd,
+ 			      data->mode->hdisplay, data->mode->vdisplay,
+ 			      DRM_FORMAT_XRGB8888,
+-			      LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_MOD_NONE,
+ 			      &data->fb);
+ 	igt_plane_set_fb(primary, &data->fb);
+ 	igt_display_commit(&data->display);
+diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+index 4f5fc5af..d054d443 100644
+--- a/tests/i915/i915_pm_rpm.c
++++ b/tests/i915/i915_pm_rpm.c
+@@ -283,7 +283,7 @@ static bool init_modeset_params_for_type(struct mode_set_data *data,
+ 		return false;
  
- /**
-  * struct drm_mode_destroy_blob - Destroy user blob
-  * @blob_id: blob_id to destroy
-+ *
-  * Destroy a user-created blob property.
-+ *
-+ * User-space can release blobs as soon as they do not need to refer to them by
-+ * their blob object ID.  For instance, if you are using a MODE_ID blob in an
-+ * atomic commit and you will not make another commit re-using the same ID, you
-+ * can destroy the blob as soon as the commit has been issued, without waiting
-+ * for it to complete.
-  */
- struct drm_mode_destroy_blob {
- 	__u32 blob_id;
-@@ -926,36 +1024,32 @@ struct drm_mode_destroy_blob {
+ 	igt_create_pattern_fb(drm_fd, mode->hdisplay, mode->vdisplay,
+-			      DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+ 			      &params->fb);
  
- /**
-  * struct drm_mode_create_lease - Create lease
-- * @object_ids: Pointer to array of object ids.
-- * @object_count: Number of object ids.
-- * @flags: flags for new FD.
-- * @lessee_id: unique identifier for lessee.
-- * @fd: file descriptor to new drm_master file.
-+ *
-  * Lease mode resources, creating another drm_master.
-  */
- struct drm_mode_create_lease {
--	/** Pointer to array of object ids (__u32) */
-+	/** @object_ids: Pointer to array of object ids (__u32) */
- 	__u64 object_ids;
--	/** Number of object ids */
-+	/** @object_count: Number of object ids */
- 	__u32 object_count;
--	/** flags for new FD (O_CLOEXEC, etc) */
-+	/** @flags: flags for new FD (O_CLOEXEC, etc) */
- 	__u32 flags;
+ 	params->crtc_id = kmstest_find_crtc_for_connector(drm_fd, data->res,
+@@ -1588,9 +1588,9 @@ static void cursor_subtest(bool dpms)
+ 	crtc_id = default_mode_params->crtc_id;
  
--	/** Return: unique identifier for lessee. */
-+	/** @lessee_id: Return: unique identifier for lessee. */
- 	__u32 lessee_id;
--	/** Return: file descriptor to new drm_master file */
-+	/** @fd: Return: file descriptor to new drm_master file */
- 	__u32 fd;
- };
+ 	igt_create_fb(drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
+-		      LOCAL_DRM_FORMAT_MOD_NONE, &cursor_fb1);
++		      DRM_FORMAT_MOD_NONE, &cursor_fb1);
+ 	igt_create_fb(drm_fd, 64, 64, DRM_FORMAT_ARGB8888,
+-		      LOCAL_DRM_FORMAT_MOD_NONE, &cursor_fb2);
++		      DRM_FORMAT_MOD_NONE, &cursor_fb2);
+ 	igt_create_fb(drm_fd, 64, 64, DRM_FORMAT_XRGB8888,
+ 		      I915_FORMAT_MOD_X_TILED, &cursor_fb3);
  
- /**
-  * struct drm_mode_list_lessees - List lessees
-- * @count_lessees: Number of lessees.
-- * @pad: pad.
-- * @lessees_ptr: Pointer to lessess.
-- * List lesses from a drm_master
-+ *
-+ * List lesses from a drm_master.
-  */
- struct drm_mode_list_lessees {
--	/** Number of lessees.
-+	/**
-+	 * @count_lessees: Number of lessees.
-+	 *
- 	 * On input, provides length of the array.
- 	 * On output, provides total number. No
- 	 * more than the input number will be written
-@@ -963,23 +1057,26 @@ struct drm_mode_list_lessees {
- 	 * the size and then the data.
+@@ -1722,7 +1722,7 @@ static void test_one_plane(bool dpms, uint32_t plane_id,
+ 		plane_format = DRM_FORMAT_ARGB8888;
+ 		plane_w = 64;
+ 		plane_h = 64;
+-		tiling = LOCAL_DRM_FORMAT_MOD_NONE;
++		tiling = DRM_FORMAT_MOD_NONE;
+ 		break;
+ 	default:
+ 		igt_assert(0);
+diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+index aa297bf1..608ef3b4 100644
+--- a/tests/i915/perf_pmu.c
++++ b/tests/i915/perf_pmu.c
+@@ -944,7 +944,7 @@ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
+ 	mode = igt_output_get_mode(output);
+ 	igt_create_color_fb(fd, mode->hdisplay, mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 0.0, 0.0,
+ 			    &data->primary_fb);
+ 
+diff --git a/tests/kms_3d.c b/tests/kms_3d.c
+index a88a86ee..2e438b43 100644
+--- a/tests/kms_3d.c
++++ b/tests/kms_3d.c
+@@ -98,7 +98,7 @@ igt_simple_main
+ 		/* create stereo framebuffer */
+ 		fb_id = igt_create_stereo_fb(drm_fd, &connector->modes[i],
+ 					     igt_bpp_depth_to_drm_format(32, 24),
+-					     LOCAL_DRM_FORMAT_MOD_NONE);
++					     DRM_FORMAT_MOD_NONE);
+ 
+ 		ret = drmModeSetCrtc(drm_fd, config.crtc->crtc_id, fb_id, 0, 0,
+ 				     &connector->connector_id, 1,
+diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+index 7937fff8..1e62a897 100644
+--- a/tests/kms_addfb_basic.c
++++ b/tests/kms_addfb_basic.c
+@@ -71,7 +71,7 @@ static int rmfb(int fd, uint32_t id)
+ 
+ static void invalid_tests(int fd)
+ {
+-	struct local_drm_mode_fb_cmd2 f = {};
++	struct drm_mode_fb_cmd2 f = {};
+ 
+ 	f.width = 512;
+ 	f.height = 512;
+@@ -93,14 +93,14 @@ static void invalid_tests(int fd)
+ 		f.fb_id = 0;
+ 	}
+ 
+-	f.flags = LOCAL_DRM_MODE_FB_MODIFIERS;
++	f.flags = DRM_MODE_FB_MODIFIERS;
+ 
+ 	igt_describe("Test that addfb2 call fails correctly for unused handle");
+ 	igt_subtest("unused-handle") {
+ 		igt_require_fb_modifiers(fd);
+ 
+ 		f.handles[1] = gem_bo_small;
+-		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
++		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+ 			   errno == EINVAL);
+ 		f.handles[1] = 0;
+ 	}
+@@ -110,7 +110,7 @@ static void invalid_tests(int fd)
+ 		igt_require_fb_modifiers(fd);
+ 
+ 		f.pitches[1] = 512;
+-		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
++		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+ 			   errno == EINVAL);
+ 		f.pitches[1] = 0;
+ 	}
+@@ -120,7 +120,7 @@ static void invalid_tests(int fd)
+ 		igt_require_fb_modifiers(fd);
+ 
+ 		f.offsets[1] = 512;
+-		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
++		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+ 			   errno == EINVAL);
+ 		f.offsets[1] = 0;
+ 	}
+@@ -130,7 +130,7 @@ static void invalid_tests(int fd)
+ 		igt_require_fb_modifiers(fd);
+ 
+ 		f.modifier[1] =  I915_FORMAT_MOD_X_TILED;
+-		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
++		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+ 			   errno == EINVAL);
+ 		f.modifier[1] = 0;
+ 	}
+@@ -141,7 +141,7 @@ static void invalid_tests(int fd)
+ 		f.flags = 0;
+ 		f.modifier[0] = 0;
+ 		gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4);
+-		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == 0);
++		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+ 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
+ 		f.fb_id = 0;
+ 		igt_assert(f.modifier[0] == 0);
+@@ -161,7 +161,7 @@ static void invalid_tests(int fd)
+ 				DRM_FORMAT_XRGB8888, 0, &size, &stride);
+ 		handle = gem_create_in_memory_regions(fd, size, REGION_SMEM);
+ 		f.handles[0] = handle;
+-		do_ioctl_err(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f, EREMOTE);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EREMOTE);
+ 	}
+ 
+ 	igt_describe("Check if addfb2 call works for legacy formats");
+@@ -527,7 +527,7 @@ static void size_tests(int fd)
+ 
+ static void addfb25_tests(int fd)
+ {
+-	struct local_drm_mode_fb_cmd2 f = {};
++	struct drm_mode_fb_cmd2 f = {};
+ 
+ 	igt_fixture {
+ 		gem_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
+@@ -540,7 +540,7 @@ static void addfb25_tests(int fd)
+ 		f.height = 1024;
+ 		f.pixel_format = DRM_FORMAT_XRGB8888;
+ 		f.pitches[0] = 1024*4;
+-		f.modifier[0] = LOCAL_DRM_FORMAT_MOD_NONE;
++		f.modifier[0] = DRM_FORMAT_MOD_NONE;
+ 
+ 		f.handles[0] = gem_bo;
+ 	}
+@@ -550,18 +550,18 @@ static void addfb25_tests(int fd)
+ 		igt_require_fb_modifiers(fd);
+ 
+ 		f.modifier[0] = I915_FORMAT_MOD_X_TILED;
+-		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
++		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
+ 	}
+ 
+ 	igt_fixture
+-		f.flags = LOCAL_DRM_MODE_FB_MODIFIERS;
++		f.flags = DRM_MODE_FB_MODIFIERS;
+ 
+ 	igt_describe("Test that addfb2 call fails correctly for irrelevant modifier");
+ 	igt_subtest("addfb25-bad-modifier") {
+ 		igt_require_fb_modifiers(fd);
+ 
+ 		f.modifier[0] = ~0;
+-		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
++		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
+ 	}
+ 
+ 	igt_subtest_group {
+@@ -573,14 +573,14 @@ static void addfb25_tests(int fd)
+ 
+ 		igt_describe("Test that addfb2 call fails correctly for irrelevant x-tiling");
+ 		igt_subtest("addfb25-x-tiled-mismatch-legacy") {
+-			f.modifier[0] = LOCAL_DRM_FORMAT_MOD_NONE;
+-			igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
++			f.modifier[0] = DRM_FORMAT_MOD_NONE;
++			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
+ 		}
+ 
+ 		igt_describe("Check if addfb2 call works for x-tiling");
+ 		igt_subtest("addfb25-x-tiled-legacy") {
+ 			f.modifier[0] = I915_FORMAT_MOD_X_TILED;
+-			igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == 0);
++			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+ 			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
+ 			f.fb_id = 0;
+ 		}
+@@ -588,7 +588,7 @@ static void addfb25_tests(int fd)
+ 		igt_describe("Check if addfb2 call works for relevant combination of tiling and fbs");
+ 		igt_subtest("addfb25-framebuffer-vs-set-tiling") {
+ 			f.modifier[0] = I915_FORMAT_MOD_X_TILED;
+-			igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == 0);
++			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+ 			igt_assert(__gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4) == -EBUSY);
+ 			igt_assert(__gem_set_tiling(fd, gem_bo, I915_TILING_Y, 1024*4) == -EBUSY);
+ 			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
+@@ -599,7 +599,7 @@ static void addfb25_tests(int fd)
+ 		gem_close(fd, gem_bo);
+ }
+ 
+-static int addfb_expected_ret(igt_display_t *display, struct local_drm_mode_fb_cmd2 *f)
++static int addfb_expected_ret(igt_display_t *display, struct drm_mode_fb_cmd2 *f)
+ {
+ 	return igt_display_has_format_mod(display, f->pixel_format,
+ 					  f->modifier[0]) ? 0 : -1;
+@@ -607,7 +607,7 @@ static int addfb_expected_ret(igt_display_t *display, struct local_drm_mode_fb_c
+ 
+ static void addfb25_ytile(int fd)
+ {
+-	struct local_drm_mode_fb_cmd2 f = {};
++	struct drm_mode_fb_cmd2 f = {};
+ 	igt_display_t display;
+ 
+ 	igt_fixture {
+@@ -626,8 +626,8 @@ static void addfb25_ytile(int fd)
+ 		f.height = 1024;
+ 		f.pixel_format = DRM_FORMAT_XRGB8888;
+ 		f.pitches[0] = 1024*4;
+-		f.flags = LOCAL_DRM_MODE_FB_MODIFIERS;
+-		f.modifier[0] = LOCAL_DRM_FORMAT_MOD_NONE;
++		f.flags = DRM_MODE_FB_MODIFIERS;
++		f.modifier[0] = DRM_FORMAT_MOD_NONE;
+ 
+ 		f.handles[0] = gem_bo;
+ 	}
+@@ -638,7 +638,7 @@ static void addfb25_ytile(int fd)
+ 		igt_require_intel(fd);
+ 
+ 		f.modifier[0] = I915_FORMAT_MOD_Y_TILED;
+-		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) ==
++		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) ==
+ 			   addfb_expected_ret(&display, &f));
+ 		if (!addfb_expected_ret(&display, &f))
+ 			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
+@@ -651,7 +651,7 @@ static void addfb25_ytile(int fd)
+ 		igt_require_intel(fd);
+ 
+ 		f.modifier[0] = I915_FORMAT_MOD_Yf_TILED;
+-		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) ==
++		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) ==
+ 			   addfb_expected_ret(&display, &f));
+ 		if (!addfb_expected_ret(&display, &f))
+ 			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
+@@ -667,7 +667,7 @@ static void addfb25_ytile(int fd)
+ 		f.height = 1023;
+ 		f.handles[0] = gem_bo_small;
+ 		igt_require(addfb_expected_ret(&display, &f) == 0);
+-		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
++		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
+ 		f.fb_id = 0;
+ 	}
+ 
+@@ -788,7 +788,7 @@ static void master_tests(int fd)
+ 
+ static bool has_addfb2_iface(int fd)
+ {
+-	struct local_drm_mode_fb_cmd2 f = {};
++	struct drm_mode_fb_cmd2 f = {};
+ 	int err;
+ 
+ 	err = 0;
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 7a63f42b..ecc62680 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -298,7 +298,7 @@ static void test_cursor(data_t *data)
+ 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &height));
+ 
+ 	igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_ARGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE, 1., 1., 1., &cursor_fb);
++			    DRM_FORMAT_MOD_NONE, 1., 1., 1., &cursor_fb);
+ 
+ 	cur.flags = DRM_MODE_CURSOR_BO;
+ 	cur.crtc_id = data->crtc_id;
+diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+index df9c9df7..81e20099 100644
+--- a/tests/kms_atomic.c
++++ b/tests/kms_atomic.c
+@@ -642,7 +642,7 @@ static void plane_cursor(igt_pipe_t *pipe_obj,
+ 
+ 	igt_create_color_fb(pipe_obj->display->drm_fd,
+ 			    width, height, DRM_FORMAT_ARGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 0.0, 0.0, &fb);
+ 
+ 	/* Flip the cursor plane using the atomic API, and double-check
+@@ -1101,7 +1101,7 @@ igt_main
+ 		igt_create_pattern_fb(display.drm_fd,
+ 				      mode->hdisplay, mode->vdisplay,
+ 				      plane_get_igt_format(primary),
+-				      LOCAL_DRM_FORMAT_MOD_NONE, &fb);
++				      DRM_FORMAT_MOD_NONE, &fb);
+ 	}
+ 
+ 	igt_describe("Test for KMS atomic modesetting on overlay plane and ensure coherency between "
+diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
+index 9d19055c..0a127921 100644
+--- a/tests/kms_atomic_interruptible.c
++++ b/tests/kms_atomic_interruptible.c
+@@ -97,16 +97,16 @@ static void run_plane_test(igt_display_t *display, enum pipe pipe, igt_output_t
+ 	mode = igt_output_get_mode(output);
+ 
+ 	igt_create_fb(display->drm_fd, mode->hdisplay, mode->vdisplay,
+-		      DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE, &fb);
++		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE, &fb);
+ 
+ 	switch (plane_type) {
+ 	case DRM_PLANE_TYPE_PRIMARY:
+ 		igt_create_fb(display->drm_fd, mode->hdisplay, mode->vdisplay,
+-			      DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE, &fb2);
++			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE, &fb2);
+ 		break;
+ 	case DRM_PLANE_TYPE_CURSOR:
+ 		igt_create_fb(display->drm_fd, 64, 64,
+-		      DRM_FORMAT_ARGB8888, LOCAL_DRM_FORMAT_MOD_NONE, &fb2);
++		      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_NONE, &fb2);
+ 		break;
+ 	}
+ 
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index f4131071..cef6187e 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -76,7 +76,7 @@ run_primary_test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_skip_on_f(ret == -EINVAL, "Primary plane cannot be disabled separately from output\n");
+ 
+ 	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-		      DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE, &fb);
++		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE, &fb);
+ 
+ 	igt_plane_set_fb(primary, &fb);
+ 
+@@ -234,7 +234,7 @@ static void set_sprite_wh(data_t *data, enum pipe pipe,
+ 	igt_remove_fb(data->drm_fd, sprite_fb);
+ 	igt_create_fb(data->drm_fd, w, h,
+ 		      alpha ? DRM_FORMAT_ARGB8888 : DRM_FORMAT_XRGB8888,
+-		      LOCAL_DRM_FORMAT_MOD_NONE, sprite_fb);
++		      DRM_FORMAT_MOD_NONE, sprite_fb);
+ }
+ 
+ #define is_atomic_check_failure_errno(errno) \
+@@ -283,7 +283,7 @@ static void setup_parms(data_t *data, enum pipe pipe,
+ 		} else {
+ 			if (!n_overlays)
+ 				alpha = igt_plane_has_format_mod(plane,
+-					DRM_FORMAT_ARGB8888, LOCAL_DRM_FORMAT_MOD_NONE);
++					DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_NONE);
+ 			parms[i].fb = sprite_fb;
+ 			parms[i].mask = 1 << 2;
+ 
+@@ -311,10 +311,10 @@ static void setup_parms(data_t *data, enum pipe pipe,
+ 	}
+ 
+ 	igt_create_fb(data->drm_fd, cursor_width, cursor_height,
+-		      DRM_FORMAT_ARGB8888, LOCAL_DRM_FORMAT_MOD_NONE, argb_fb);
++		      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_NONE, argb_fb);
+ 
+ 	igt_create_fb(data->drm_fd, cursor_width, cursor_height,
+-		      DRM_FORMAT_ARGB8888, LOCAL_DRM_FORMAT_MOD_NONE, sprite_fb);
++		      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_NONE, sprite_fb);
+ 
+ 	*iter_max = iter_mask + 1;
+ 	if (!n_overlays)
+@@ -507,7 +507,7 @@ run_transition_test(data_t *data, enum pipe pipe, igt_output_t *output,
+ 	override_mode.flags ^= DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_NHSYNC;
+ 
+ 	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-		      DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE, &data->fb);
++		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE, &data->fb);
+ 
+ 	igt_output_set_pipe(output, pipe);
+ 
+diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
+index 065e58c0..c6f374bd 100644
+--- a/tests/kms_big_fb.c
++++ b/tests/kms_big_fb.c
+@@ -106,7 +106,7 @@ static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
+ 	f.width = newfb->width;
+ 	f.height = newfb->height;
+ 	f.pixel_format = newfb->drm_format;
+-	f.flags = LOCAL_DRM_MODE_FB_MODIFIERS;
++	f.flags = DRM_MODE_FB_MODIFIERS;
+ 
+ 	for (int n = 0; n < newfb->num_planes; n++) {
+ 		f.handles[n] = newfb->gem_handle;
+@@ -125,7 +125,7 @@ static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
+                igt_put_cairo_ctx(cr);
+        }
+ 
+-	igt_assert(drmIoctl(data->drm_fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == 0);
++	igt_assert(drmIoctl(data->drm_fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+ 	newfb->fb_id = f.fb_id;
+ }
+ 
+diff --git a/tests/kms_big_joiner.c b/tests/kms_big_joiner.c
+index 98a6fc77..4f1f3152 100644
+--- a/tests/kms_big_joiner.c
++++ b/tests/kms_big_joiner.c
+@@ -288,7 +288,7 @@ igt_main
+ 		igt_require_f(count > 0, "No output with 5k+ mode found\n");
+ 
+ 		igt_create_pattern_fb(data.drm_fd, width, height, DRM_FORMAT_XRGB8888,
+-				      LOCAL_DRM_FORMAT_MOD_NONE, &data.fb);
++				      DRM_FORMAT_MOD_NONE, &data.fb);
+ 	}
+ 
+ 	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
+diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
+index c3453160..e60a6a77 100644
+--- a/tests/kms_ccs.c
++++ b/tests/kms_ccs.c
+@@ -118,7 +118,7 @@ static void addfb_init(struct igt_fb *fb, struct drm_mode_fb_cmd2 *f)
+ 	f->width = fb->width;
+ 	f->height = fb->height;
+ 	f->pixel_format = fb->drm_format;
+-	f->flags = LOCAL_DRM_MODE_FB_MODIFIERS;
++	f->flags = DRM_MODE_FB_MODIFIERS;
+ 
+ 	for (i = 0; i < fb->num_planes; i++) {
+ 		f->handles[i] = fb->gem_handle;
+@@ -341,7 +341,7 @@ static void generate_fb(data_t *data, struct igt_fb *fb,
+ 		}
+ 	}
+ 
+-	ret = drmIoctl(data->drm_fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f);
++	ret = drmIoctl(data->drm_fd, DRM_IOCTL_MODE_ADDFB2, &f);
+ 	if (data->flags & TEST_FAIL_ON_ADDFB2) {
+ 		igt_assert_eq(ret, -1);
+ 		igt_assert_eq(errno, EINVAL);
+diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
+index 3651981a..1ab411ce 100644
+--- a/tests/kms_chamelium.c
++++ b/tests/kms_chamelium.c
+@@ -229,7 +229,7 @@ static int chamelium_get_pattern_fb(data_t *data, size_t width, size_t height,
+ 	igt_assert(fourcc == DRM_FORMAT_XRGB8888);
+ 
+ 	fb_id = igt_create_fb(data->drm_fd, width, height, fourcc,
+-			      LOCAL_DRM_FORMAT_MOD_NONE, fb);
++			      DRM_FORMAT_MOD_NONE, fb);
+ 	igt_assert(fb_id > 0);
+ 
+ 	ptr = igt_fb_map_buffer(fb->fd, fb);
+@@ -688,7 +688,7 @@ static void do_test_display(data_t *data, struct chamelium_port *port,
+ 	igt_assert(fb_id > 0);
+ 
+ 	frame_id = igt_fb_convert(&frame_fb, &fb, fourcc,
+-				  LOCAL_DRM_FORMAT_MOD_NONE);
++				  DRM_FORMAT_MOD_NONE);
+ 	igt_assert(frame_id > 0);
+ 
+ 	if (check == CHAMELIUM_CHECK_CRC)
+@@ -765,7 +765,7 @@ static void test_display_one_mode(data_t *data, struct chamelium_port *port,
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_assert(primary);
+ 
+-	igt_require(igt_plane_has_format_mod(primary, fourcc, LOCAL_DRM_FORMAT_MOD_NONE));
++	igt_require(igt_plane_has_format_mod(primary, fourcc, DRM_FORMAT_MOD_NONE));
+ 
+ 	mode = &connector->modes[0];
+ 	if (check == CHAMELIUM_CHECK_ANALOG) {
+@@ -818,7 +818,7 @@ static void test_display_all_modes(data_t *data, struct chamelium_port *port,
+ 						    DRM_PLANE_TYPE_PRIMARY);
+ 		igt_assert(primary);
+ 		igt_require(igt_plane_has_format_mod(primary, fourcc,
+-			    LOCAL_DRM_FORMAT_MOD_NONE));
++			    DRM_FORMAT_MOD_NONE));
+ 
+ 		/* we may skip some modes due to above but that's ok */
+ 		count_modes = connector->count_modes;
+@@ -886,7 +886,7 @@ test_display_frame_dump(data_t *data, struct chamelium_port *port)
+ 		fb_id = igt_create_color_pattern_fb(data->drm_fd,
+ 						    mode->hdisplay, mode->vdisplay,
+ 						    DRM_FORMAT_XRGB8888,
+-						    LOCAL_DRM_FORMAT_MOD_NONE,
++						    DRM_FORMAT_MOD_NONE,
+ 						    0, 0, 0, &fb);
+ 		igt_assert(fb_id > 0);
+ 
+@@ -1023,7 +1023,7 @@ static void test_mode_timings(data_t *data, struct chamelium_port *port)
+ 		fb_id = igt_create_color_pattern_fb(data->drm_fd,
+ 						    mode->hdisplay, mode->vdisplay,
+ 						    DRM_FORMAT_XRGB8888,
+-						    LOCAL_DRM_FORMAT_MOD_NONE,
++						    DRM_FORMAT_MOD_NONE,
+ 						    0, 0, 0, &fb);
+ 		igt_assert(fb_id > 0);
+ 
+@@ -1134,7 +1134,7 @@ static void test_display_aspect_ratio(data_t *data, struct chamelium_port *port)
+ 	fb_id = igt_create_color_pattern_fb(data->drm_fd,
+ 					    mode->hdisplay, mode->vdisplay,
+ 					    DRM_FORMAT_XRGB8888,
+-					    LOCAL_DRM_FORMAT_MOD_NONE,
++					    DRM_FORMAT_MOD_NONE,
+ 					    0, 0, 0, &fb);
+ 	igt_assert(fb_id > 0);
+ 
+@@ -1855,7 +1855,7 @@ test_display_audio(data_t *data, struct chamelium_port *port,
+ 	fb_id = igt_create_color_pattern_fb(data->drm_fd,
+ 					    mode->hdisplay, mode->vdisplay,
+ 					    DRM_FORMAT_XRGB8888,
+-					    LOCAL_DRM_FORMAT_MOD_NONE,
++					    DRM_FORMAT_MOD_NONE,
+ 					    0, 0, 0, &fb);
+ 	igt_assert(fb_id > 0);
+ 
+@@ -1938,7 +1938,7 @@ test_display_audio_edid(data_t *data, struct chamelium_port *port,
+ 	fb_id = igt_create_color_pattern_fb(data->drm_fd,
+ 					    mode->hdisplay, mode->vdisplay,
+ 					    DRM_FORMAT_XRGB8888,
+-					    LOCAL_DRM_FORMAT_MOD_NONE,
++					    DRM_FORMAT_MOD_NONE,
+ 					    0, 0, 0, &fb);
+ 	igt_assert(fb_id > 0);
+ 
+@@ -2279,7 +2279,7 @@ static void prepare_randomized_plane(data_t *data,
+ 	randomize_plane_setup(data, plane, mode, &overlay_fb_w, &overlay_fb_h,
+ 			      &format, &modifier, allow_yuv);
+ 
+-	tiled = (modifier != LOCAL_DRM_FORMAT_MOD_NONE);
++	tiled = (modifier != DRM_FORMAT_MOD_NONE);
+ 	igt_debug("Plane %d: framebuffer size %dx%d %s format (%s)\n",
+ 		  index, overlay_fb_w, overlay_fb_h,
+ 		  igt_format_str(format), tiled ? "tiled" : "linear");
+@@ -2383,7 +2383,7 @@ static void test_display_planes_random(data_t *data,
+ 	/* Get a framebuffer for the cairo composition result. */
+ 	fb_id = igt_create_fb(data->drm_fd, mode->hdisplay,
+ 			      mode->vdisplay, DRM_FORMAT_XRGB8888,
+-			      LOCAL_DRM_FORMAT_MOD_NONE, &result_fb);
++			      DRM_FORMAT_MOD_NONE, &result_fb);
+ 	igt_assert(fb_id > 0);
+ 
+ 	result_surface = igt_get_cairo_surface(data->drm_fd, &result_fb);
+@@ -2814,7 +2814,7 @@ igt_main
+ 				if (igt_format_is_yuv(primary->formats[k]))
+ 					continue;
+ 
+-				if (primary->modifiers[k] != LOCAL_DRM_FORMAT_MOD_NONE)
++				if (primary->modifiers[k] != DRM_FORMAT_MOD_NONE)
+ 					continue;
+ 
+ 				igt_dynamic_f("%s", igt_format_str(primary->formats[k]))
+@@ -2845,7 +2845,7 @@ igt_main
+ 				if (!igt_format_is_yuv(primary->formats[k]))
+ 					continue;
+ 
+-				if (primary->modifiers[k] != LOCAL_DRM_FORMAT_MOD_NONE)
++				if (primary->modifiers[k] != DRM_FORMAT_MOD_NONE)
+ 					continue;
+ 
+ 				igt_dynamic_f("%s", igt_format_str(primary->formats[k]))
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 1b021ac3..9105076a 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -58,7 +58,7 @@ static void test_pipe_degamma(data_t *data,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+-				      LOCAL_DRM_FORMAT_MOD_NONE,
++				      DRM_FORMAT_MOD_NONE,
+ 				      &fb);
+ 		igt_assert(fb_id);
+ 
+@@ -66,7 +66,7 @@ static void test_pipe_degamma(data_t *data,
+ 					      mode->hdisplay,
+ 					      mode->vdisplay,
+ 					      DRM_FORMAT_XRGB8888,
+-					      LOCAL_DRM_FORMAT_MOD_NONE,
++					      DRM_FORMAT_MOD_NONE,
+ 					      &fb_modeset);
+ 		igt_assert(fb_modeset_id);
+ 
+@@ -146,7 +146,7 @@ static void test_pipe_gamma(data_t *data,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+-				      LOCAL_DRM_FORMAT_MOD_NONE,
++				      DRM_FORMAT_MOD_NONE,
+ 				      &fb);
+ 		igt_assert(fb_id);
+ 
+@@ -154,7 +154,7 @@ static void test_pipe_gamma(data_t *data,
+ 					      mode->hdisplay,
+ 					      mode->vdisplay,
+ 					      DRM_FORMAT_XRGB8888,
+-					      LOCAL_DRM_FORMAT_MOD_NONE,
++					      DRM_FORMAT_MOD_NONE,
+ 					      &fb_modeset);
+ 		igt_assert(fb_modeset_id);
+ 
+@@ -239,7 +239,7 @@ static void test_pipe_legacy_gamma(data_t *data,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+-				      LOCAL_DRM_FORMAT_MOD_NONE,
++				      DRM_FORMAT_MOD_NONE,
+ 				      &fb);
+ 		igt_assert(fb_id);
+ 
+@@ -247,7 +247,7 @@ static void test_pipe_legacy_gamma(data_t *data,
+ 					      mode->hdisplay,
+ 					      mode->vdisplay,
+ 					      DRM_FORMAT_XRGB8888,
+-					      LOCAL_DRM_FORMAT_MOD_NONE,
++					      DRM_FORMAT_MOD_NONE,
+ 					      &fb_modeset);
+ 		igt_assert(fb_modeset_id);
+ 
+@@ -462,7 +462,7 @@ static bool test_pipe_ctm(data_t *data,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+-				      LOCAL_DRM_FORMAT_MOD_NONE,
++				      DRM_FORMAT_MOD_NONE,
+ 				      &fb);
+ 		igt_assert(fb_id);
+ 
+@@ -470,7 +470,7 @@ static bool test_pipe_ctm(data_t *data,
+ 					      mode->hdisplay,
+ 					      mode->vdisplay,
+ 					      DRM_FORMAT_XRGB8888,
+-					      LOCAL_DRM_FORMAT_MOD_NONE,
++					      DRM_FORMAT_MOD_NONE,
+ 					      &fb_modeset);
+ 		igt_assert(fb_modeset_id);
+ 		igt_plane_set_fb(primary, &fb_modeset);
+@@ -583,7 +583,7 @@ static void test_pipe_limited_range_ctm(data_t *data,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+-				      LOCAL_DRM_FORMAT_MOD_NONE,
++				      DRM_FORMAT_MOD_NONE,
+ 				      &fb);
+ 		igt_assert(fb_id);
+ 
+@@ -591,7 +591,7 @@ static void test_pipe_limited_range_ctm(data_t *data,
+ 					      mode->hdisplay,
+ 					      mode->vdisplay,
+ 					      DRM_FORMAT_XRGB8888,
+-					      LOCAL_DRM_FORMAT_MOD_NONE,
++					      DRM_FORMAT_MOD_NONE,
+ 					      &fb_modeset);
+ 		igt_assert(fb_modeset_id);
+ 		igt_plane_set_fb(primary, &fb_modeset);
+diff --git a/tests/kms_color_chamelium.c b/tests/kms_color_chamelium.c
+index 11e52869..bc4356bf 100644
+--- a/tests/kms_color_chamelium.c
++++ b/tests/kms_color_chamelium.c
+@@ -84,7 +84,7 @@ static void test_pipe_degamma(data_t *data,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+-				      LOCAL_DRM_FORMAT_MOD_NONE,
++				      DRM_FORMAT_MOD_NONE,
+ 				      &fb);
+ 		igt_assert(fb_id);
+ 
+@@ -92,7 +92,7 @@ static void test_pipe_degamma(data_t *data,
+ 					      mode->hdisplay,
+ 					      mode->vdisplay,
+ 					      DRM_FORMAT_XRGB8888,
+-					      LOCAL_DRM_FORMAT_MOD_NONE,
++					      DRM_FORMAT_MOD_NONE,
+ 					      &fb_modeset);
+ 		igt_assert(fb_modeset_id);
+ 
+@@ -100,7 +100,7 @@ static void test_pipe_degamma(data_t *data,
+ 					      mode->hdisplay,
+ 					      mode->vdisplay,
+ 					      DRM_FORMAT_XRGB8888,
+-					      LOCAL_DRM_FORMAT_MOD_NONE,
++					      DRM_FORMAT_MOD_NONE,
+ 					      &fbref);
+ 		igt_assert(fbref_id);
+ 
+@@ -198,7 +198,7 @@ static void test_pipe_gamma(data_t *data,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+-				      LOCAL_DRM_FORMAT_MOD_NONE,
++				      DRM_FORMAT_MOD_NONE,
+ 				      &fb);
+ 		igt_assert(fb_id);
+ 
+@@ -206,7 +206,7 @@ static void test_pipe_gamma(data_t *data,
+ 					      mode->hdisplay,
+ 					      mode->vdisplay,
+ 					      DRM_FORMAT_XRGB8888,
+-					      LOCAL_DRM_FORMAT_MOD_NONE,
++					      DRM_FORMAT_MOD_NONE,
+ 					      &fb_modeset);
+ 		igt_assert(fb_modeset_id);
+ 
+@@ -214,7 +214,7 @@ static void test_pipe_gamma(data_t *data,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+-				      LOCAL_DRM_FORMAT_MOD_NONE,
++				      DRM_FORMAT_MOD_NONE,
+ 				      &fbref);
+ 		igt_assert(fbref_id);
+ 
+@@ -309,7 +309,7 @@ static bool test_pipe_ctm(data_t *data,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+-				      LOCAL_DRM_FORMAT_MOD_NONE,
++				      DRM_FORMAT_MOD_NONE,
+ 				      &fb);
+ 		igt_assert(fb_id);
+ 
+@@ -317,7 +317,7 @@ static bool test_pipe_ctm(data_t *data,
+ 					      mode->hdisplay,
+ 					      mode->vdisplay,
+ 					      DRM_FORMAT_XRGB8888,
+-					      LOCAL_DRM_FORMAT_MOD_NONE,
++					      DRM_FORMAT_MOD_NONE,
+ 					      &fb_modeset);
+ 		igt_assert(fb_modeset_id);
+ 
+@@ -325,7 +325,7 @@ static bool test_pipe_ctm(data_t *data,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+-				      LOCAL_DRM_FORMAT_MOD_NONE,
++				      DRM_FORMAT_MOD_NONE,
+ 				      &fbref);
+ 		igt_assert(fbref_id);
+ 
+@@ -438,7 +438,7 @@ static void test_pipe_limited_range_ctm(data_t *data,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+-				      LOCAL_DRM_FORMAT_MOD_NONE,
++				      DRM_FORMAT_MOD_NONE,
+ 				      &fb);
+ 		igt_assert(fb_id);
+ 
+@@ -446,7 +446,7 @@ static void test_pipe_limited_range_ctm(data_t *data,
+ 					      mode->hdisplay,
+ 					      mode->vdisplay,
+ 					      DRM_FORMAT_XRGB8888,
+-					      LOCAL_DRM_FORMAT_MOD_NONE,
++					      DRM_FORMAT_MOD_NONE,
+ 					      &fb_modeset);
+ 		igt_assert(fb_modeset_id);
+ 
+@@ -454,7 +454,7 @@ static void test_pipe_limited_range_ctm(data_t *data,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+-				      LOCAL_DRM_FORMAT_MOD_NONE,
++				      DRM_FORMAT_MOD_NONE,
+ 				      &fbref);
+ 		igt_assert(fbref_id);
+ 
+diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+index 25d4b3c9..969f07a7 100644
+--- a/tests/kms_concurrent.c
++++ b/tests/kms_concurrent.c
+@@ -176,7 +176,7 @@ prepare_planes(data_t *data, enum pipe pipe, int max_planes,
+ 		igt_create_color_fb(data->drm_fd,
+ 				    size[i], size[i],
+ 				    data->plane[i]->type == DRM_PLANE_TYPE_CURSOR ? DRM_FORMAT_ARGB8888 : DRM_FORMAT_XRGB8888,
+-				    data->plane[i]->type == DRM_PLANE_TYPE_CURSOR ? LOCAL_DRM_FORMAT_MOD_NONE : I915_FORMAT_MOD_X_TILED,
++				    data->plane[i]->type == DRM_PLANE_TYPE_CURSOR ? DRM_FORMAT_MOD_NONE : I915_FORMAT_MOD_X_TILED,
+ 				    0.0f, 0.0f, 1.0f,
+ 				    &data->fb[i]);
+ 
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index bab61817..79304bd7 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -713,10 +713,10 @@ static void create_fbs(void)
+ 	}
+ 
+ 	igt_create_color_fb(data.drm_fd, width, height,
+-			    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+ 			    1.f, 0.f, 0.f, &data.red);
+ 	igt_create_color_fb(data.drm_fd, width, height,
+-			    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+ 			    0.f, 1.f, 0.f, &data.green);
+ }
+ 
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index ee8912dc..a9bc3a74 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -381,13 +381,13 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
+ 	mode = igt_output_get_mode(output);
+ 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 0.0, 0.0,
+ 			    &data->primary_fb[HWCURSORBUFFER]);
+ 
+ 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 0.0, 0.0,
+ 			    &data->primary_fb[SWCOMPARISONBUFFER]);
+ 
+@@ -447,7 +447,7 @@ static void test_cursor_alpha(data_t *data, double a)
+ 	/* Alpha cursor fb with white color */
+ 	fb_id = igt_create_fb(data->drm_fd, curw, curh,
+ 				    DRM_FORMAT_ARGB8888,
+-				    LOCAL_DRM_FORMAT_MOD_NONE,
++				    DRM_FORMAT_MOD_NONE,
+ 				    &data->fb);
+ 	igt_assert(fb_id);
+ 
+@@ -506,7 +506,7 @@ static void create_cursor_fb(data_t *data, int cur_w, int cur_h)
  	 */
- 	__u32 count_lessees;
-+	/** @pad: Padding. */
- 	__u32 pad;
+ 	fb_id = igt_create_color_fb(data->drm_fd, cur_w, cur_h + 1,
+ 				    DRM_FORMAT_ARGB8888,
+-				    LOCAL_DRM_FORMAT_MOD_NONE,
++				    DRM_FORMAT_MOD_NONE,
+ 				    1.0, 1.0, 1.0,
+ 				    &data->fb);
  
--	/** Pointer to lessees.
--	 * pointer to __u64 array of lessee ids
-+	/**
-+	 * @lessees_ptr: Pointer to lessees.
-+	 *
-+	 * Pointer to __u64 array of lessee ids
+@@ -537,7 +537,7 @@ static void require_cursor_size(data_t *data, int w, int h)
+ 
+ 	/* Create temporary primary fb for testing */
+ 	igt_assert(igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
+-				 LOCAL_DRM_FORMAT_MOD_NONE, &primary_fb));
++				 DRM_FORMAT_MOD_NONE, &primary_fb));
+ 
+ 	igt_plane_set_fb(primary, &primary_fb);
+ 	igt_plane_set_fb(cursor, &data->fb);
+@@ -585,7 +585,7 @@ static void test_cursor_size(data_t *data)
+ 	 * smaller ones to see that the size is applied correctly
  	 */
- 	__u64 lessees_ptr;
+ 	fb_id = igt_create_fb(data->drm_fd, cursor_max_size, cursor_max_size,
+-			      DRM_FORMAT_ARGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_NONE,
+ 			      &data->fb);
+ 	igt_assert(fb_id);
+ 
+diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
+index d1d8a914..e9902f5e 100644
+--- a/tests/kms_cursor_edge_walk.c
++++ b/tests/kms_cursor_edge_walk.c
+@@ -67,7 +67,7 @@ static void create_cursor_fb(data_t *data, int cur_w, int cur_h)
+ 
+ 	fb_id = igt_create_fb(data->drm_fd, cur_w, cur_h,
+ 			      DRM_FORMAT_ARGB8888,
+-			      LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_MOD_NONE,
+ 			      &data->fb);
+ 	igt_assert(fb_id);
+ 
+@@ -242,7 +242,7 @@ static void prepare_crtc(data_t *data)
+ 	mode = igt_output_get_mode(data->output);
+ 	igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 			      DRM_FORMAT_XRGB8888,
+-			      LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_MOD_NONE,
+ 			      &data->primary_fb);
+ 
+ 	primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
+diff --git a/tests/kms_dp_dsc.c b/tests/kms_dp_dsc.c
+index 3fb9852e..22065d0c 100644
+--- a/tests/kms_dp_dsc.c
++++ b/tests/kms_dp_dsc.c
+@@ -230,7 +230,7 @@ static void run_test(data_t *data, igt_output_t *output,
+ 	igt_create_pattern_fb(data->drm_fd, data->mode->hdisplay,
+ 			      data->mode->vdisplay,
+ 			      DRM_FORMAT_XRGB8888,
+-			      LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_MOD_NONE,
+ 			      &data->fb_test_pattern);
+ 
+ 	for_each_pipe(&data->display, pipe) {
+diff --git a/tests/kms_dp_tiled_display.c b/tests/kms_dp_tiled_display.c
+index eb28dd6b..8c180c88 100644
+--- a/tests/kms_dp_tiled_display.c
++++ b/tests/kms_dp_tiled_display.c
+@@ -300,7 +300,7 @@ static void setup_framebuffer(data_t *data)
+ 			      fb_h_size,
+ 			      fb_v_size,
+ 			      DRM_FORMAT_XBGR8888,
+-			      LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_MOD_NONE,
+ 			      &data->fb_test_pattern);
+ 
+ 	for (count = 0; count < data->num_h_tiles; count++) {
+diff --git a/tests/kms_draw_crc.c b/tests/kms_draw_crc.c
+index 153e654e..5e3252b7 100644
+--- a/tests/kms_draw_crc.c
++++ b/tests/kms_draw_crc.c
+@@ -50,7 +50,7 @@ static const uint32_t formats[N_FORMATS] = {
+ 
+ #define N_TILING_METHODS 3
+ static const uint64_t tilings[N_TILING_METHODS] = {
+-	LOCAL_DRM_FORMAT_MOD_NONE,
++	DRM_FORMAT_MOD_NONE,
+ 	I915_FORMAT_MOD_X_TILED,
+ 	I915_FORMAT_MOD_Y_TILED,
  };
+@@ -166,7 +166,7 @@ static bool format_is_supported(uint32_t format, uint64_t modifier)
+ 						   0, NULL, &strides[0], NULL);
+ 	ret =  __kms_addfb(drm_fd, gem_handle, 64, 64,
+ 			   format, modifier, strides, offsets, 1,
+-			   LOCAL_DRM_MODE_FB_MODIFIERS, &fb_id);
++			   DRM_MODE_FB_MODIFIERS, &fb_id);
+ 	drmModeRmFB(drm_fd, fb_id);
+ 	gem_close(drm_fd, gem_handle);
  
- /**
-  * struct drm_mode_get_lease - Get Lease
-- * @count_objects: Number of leased objects.
-- * @pad: pad.
-- * @objects_ptr: Pointer to objects.
-- * Get leased objects
-+ *
-+ * Get leased objects.
-  */
- struct drm_mode_get_lease {
--	/** Number of leased objects.
-+	/**
-+	 * @count_objects: Number of leased objects.
-+	 *
- 	 * On input, provides length of the array.
- 	 * On output, provides total number. No
- 	 * more than the input number will be written
-@@ -987,22 +1084,22 @@ struct drm_mode_get_lease {
- 	 * the size and then the data.
- 	 */
- 	__u32 count_objects;
-+	/** @pad: Padding. */
- 	__u32 pad;
+@@ -191,7 +191,7 @@ static void draw_method_subtest(enum igt_draw_method method,
+ 		get_method_crc(gem_has_mappable_ggtt(drm_fd) ? IGT_DRAW_MMAP_GTT :
+ 							       IGT_DRAW_MMAP_WC,
+ 			       formats[format_index],
+-			       LOCAL_DRM_FORMAT_MOD_NONE,
++			       DRM_FORMAT_MOD_NONE,
+ 			       &base_crcs[format_index].crc);
+ 		base_crcs[format_index].set = true;
+ 	}
+@@ -226,7 +226,7 @@ static void fill_fb_subtest(void)
+ 	igt_crc_t base_crc, crc;
  
--	/** Pointer to objects.
--	 * pointer to __u32 array of object ids
-+	/**
-+	 * @objects_ptr: Pointer to objects.
-+	 *
-+	 * Pointer to __u32 array of object ids.
- 	 */
- 	__u64 objects_ptr;
- };
+ 	igt_create_fb(drm_fd, ms.mode->hdisplay, ms.mode->vdisplay,
+-		      DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE, &fb);
++		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE, &fb);
  
- /**
-  * struct drm_mode_revoke_lease - Revoke lease
-- * @lessee_id: Unique ID of lessee.
+ 	igt_draw_rect_fb(drm_fd, bops, 0, &fb,
+ 			 gem_has_mappable_ggtt(drm_fd) ? IGT_DRAW_MMAP_GTT :
+@@ -239,7 +239,7 @@ static void fill_fb_subtest(void)
+ 
+ 	igt_pipe_crc_collect_crc(pipe_crc, &base_crc);
+ 
+-	get_fill_crc(LOCAL_DRM_FORMAT_MOD_NONE, &crc);
++	get_fill_crc(DRM_FORMAT_MOD_NONE, &crc);
+ 	igt_assert_crc_equal(&crc, &base_crc);
+ 
+ 	get_fill_crc(I915_FORMAT_MOD_X_TILED, &crc);
+@@ -309,7 +309,7 @@ static const char *format_str(int format_index)
+ static const char *tiling_str(int tiling_index)
+ {
+ 	switch (tilings[tiling_index]) {
+-	case LOCAL_DRM_FORMAT_MOD_NONE:
++	case DRM_FORMAT_MOD_NONE:
+ 		return "untiled";
+ 	case I915_FORMAT_MOD_X_TILED:
+ 		return "xtiled";
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index 03c785bd..09762ae8 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -1276,7 +1276,7 @@ static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ 	if (o->flags & TEST_PAN)
+ 		o->fb_width *= 2;
+ 
+-	tiling = LOCAL_DRM_FORMAT_MOD_NONE;
++	tiling = DRM_FORMAT_MOD_NONE;
+ 	if (o->flags & TEST_FENCE_STRESS)
+ 		tiling = I915_FORMAT_MOD_X_TILED;
+ 
+diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
+index 06b62d17..09c87191 100644
+--- a/tests/kms_flip_event_leak.c
++++ b/tests/kms_flip_event_leak.c
+@@ -56,7 +56,7 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 
+ 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 0.0, 0.0, &fb[0]);
+ 
+ 	igt_plane_set_fb(primary, &fb[0]);
+@@ -70,7 +70,7 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 
+ 	igt_create_color_fb(fd, mode->hdisplay, mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 0.0, 0.0, &fb[1]);
+ 	ret = drmModePageFlip(fd, output->config.crtc->crtc_id,
+ 			      fb[1].fb_id, DRM_MODE_PAGE_FLIP_EVENT,
+diff --git a/tests/kms_flip_tiling.c b/tests/kms_flip_tiling.c
+index 48901acb..ed3b759d 100644
+--- a/tests/kms_flip_tiling.c
++++ b/tests/kms_flip_tiling.c
+@@ -91,8 +91,8 @@ test_flip_tiling(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t ti
+ 	width = mode->hdisplay;
+ 
+ 	if (tiling[0] != tiling[1] &&
+-	    (tiling[0] != LOCAL_DRM_FORMAT_MOD_NONE ||
+-	     tiling[1] != LOCAL_DRM_FORMAT_MOD_NONE)) {
++	    (tiling[0] != DRM_FORMAT_MOD_NONE ||
++	     tiling[1] != DRM_FORMAT_MOD_NONE)) {
+ 		/*
+ 		 * Since a page flip to a buffer with different stride
+ 		 * doesn't work, choose width so that the stride of both
+@@ -182,7 +182,7 @@ igt_main
+ 	igt_describe("Check pageflip from tiled buffer to linear one works correctly with x tiling");
+ 	igt_subtest_with_dynamic("flip-changes-tiling") {
+ 		uint64_t tiling[2] = { I915_FORMAT_MOD_X_TILED,
+-				       LOCAL_DRM_FORMAT_MOD_NONE };
++				       DRM_FORMAT_MOD_NONE };
+ 		enum pipe pipe;
+ 
+ 		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
+@@ -198,7 +198,7 @@ igt_main
+ 	igt_describe("Check pageflip from tiled buffer to linear one works correctly with y tiling");
+ 	igt_subtest_with_dynamic("flip-changes-tiling-Y") {
+ 		uint64_t tiling[2] = { I915_FORMAT_MOD_Y_TILED,
+-				       LOCAL_DRM_FORMAT_MOD_NONE };
++				       DRM_FORMAT_MOD_NONE };
+ 		enum pipe pipe;
+ 
+ 		igt_require_fb_modifiers(data.drm_fd);
+@@ -218,7 +218,7 @@ igt_main
+ 	igt_describe("Check pageflip from tiled buffer to linear one works correctly with yf tiling");
+ 	igt_subtest_with_dynamic("flip-changes-tiling-Yf") {
+ 		uint64_t tiling[2] = { I915_FORMAT_MOD_Yf_TILED,
+-				       LOCAL_DRM_FORMAT_MOD_NONE };
++				       DRM_FORMAT_MOD_NONE };
+ 		enum pipe pipe;
+ 
+ 		igt_require_fb_modifiers(data.drm_fd);
+@@ -309,7 +309,7 @@ igt_main
+ 
+ 	igt_describe("Check pageflip from linear buffer to tiled one works correctly with x tiling");
+ 	igt_subtest_with_dynamic("flip-to-X-tiled") {
+-		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
++		uint64_t tiling[2] = { DRM_FORMAT_MOD_NONE,
+ 				       I915_FORMAT_MOD_X_TILED };
+ 		enum pipe pipe;
+ 
+@@ -325,7 +325,7 @@ igt_main
+ 
+ 	igt_describe("Check pageflip from linear buffer to tiled one works correctly with y tiling");
+ 	igt_subtest_with_dynamic("flip-to-Y-tiled") {
+-		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
++		uint64_t tiling[2] = { DRM_FORMAT_MOD_NONE,
+ 				       I915_FORMAT_MOD_Y_TILED };
+ 		enum pipe pipe;
+ 
+@@ -345,7 +345,7 @@ igt_main
+ 
+ 	igt_describe("Check pageflip from linear buffer to tiled one works correctly with yf tiling");
+ 	igt_subtest_with_dynamic("flip-to-Yf-tiled") {
+-		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
++		uint64_t tiling[2] = { DRM_FORMAT_MOD_NONE,
+ 				       I915_FORMAT_MOD_Yf_TILED };
+ 		enum pipe pipe;
+ 
+diff --git a/tests/kms_frontbuffer_tracking.c b/tests/kms_frontbuffer_tracking.c
+index c2f180aa..496718e2 100644
+--- a/tests/kms_frontbuffer_tracking.c
++++ b/tests/kms_frontbuffer_tracking.c
+@@ -458,7 +458,7 @@ static uint64_t tiling_to_modifier(enum tiling_type tiling)
+ {
+ 	switch (tiling) {
+ 	case TILING_LINEAR:
+-		return LOCAL_DRM_FORMAT_MOD_NONE;
++		return DRM_FORMAT_MOD_NONE;
+ 	case TILING_X:
+ 		return I915_FORMAT_MOD_X_TILED;
+ 	case TILING_Y:
+@@ -674,7 +674,7 @@ static void create_fbs(enum pixel_format format, enum tiling_type tiling)
+ 		  prim_mode_params.mode->vdisplay, tiling, PLANE_PRI,
+ 		  &s->prim_pri);
+ 	create_fb(format, prim_mode_params.cursor.w,
+-		  prim_mode_params.cursor.h, LOCAL_DRM_FORMAT_MOD_NONE,
++		  prim_mode_params.cursor.h, DRM_FORMAT_MOD_NONE,
+ 		  PLANE_CUR, &s->prim_cur);
+ 	create_fb(format, prim_mode_params.sprite.w,
+ 		  prim_mode_params.sprite.h, tiling, PLANE_SPR, &s->prim_spr);
+@@ -691,7 +691,7 @@ static void create_fbs(enum pixel_format format, enum tiling_type tiling)
+ 		  scnd_mode_params.mode->vdisplay, tiling, PLANE_PRI,
+ 		  &s->scnd_pri);
+ 	create_fb(format, scnd_mode_params.cursor.w, scnd_mode_params.cursor.h,
+-		  LOCAL_DRM_FORMAT_MOD_NONE, PLANE_CUR, &s->scnd_cur);
++		  DRM_FORMAT_MOD_NONE, PLANE_CUR, &s->scnd_cur);
+ 	create_fb(format, scnd_mode_params.sprite.w, scnd_mode_params.sprite.h,
+ 		  tiling, PLANE_SPR, &s->scnd_spr);
+ }
+diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c
+index b47b8a39..ad2dde56 100644
+--- a/tests/kms_hdmi_inject.c
++++ b/tests/kms_hdmi_inject.c
+@@ -120,7 +120,7 @@ hdmi_inject_4k(int drm_fd, drmModeConnector *connector)
+ 	fb_id = igt_create_fb(drm_fd, connector->modes[i].hdisplay,
+ 			      connector->modes[i].vdisplay,
+ 			      DRM_FORMAT_XRGB8888,
+-			      LOCAL_DRM_FORMAT_MOD_NONE, &fb);
++			      DRM_FORMAT_MOD_NONE, &fb);
+ 
+ 	ret = drmModeSetCrtc(drm_fd, config.crtc->crtc_id, fb_id, 0, 0,
+ 			     &connector->connector_id, 1,
+@@ -164,7 +164,7 @@ hdmi_inject_audio(int drm_fd, drmModeConnector *connector)
+ 	fb_id = igt_create_fb(drm_fd, connector->modes[0].hdisplay,
+ 			      connector->modes[0].vdisplay,
+ 			      DRM_FORMAT_XRGB8888,
+-			      LOCAL_DRM_FORMAT_MOD_NONE, &fb);
++			      DRM_FORMAT_MOD_NONE, &fb);
+ 
+ 	ret = drmModeSetCrtc(drm_fd, config.crtc->crtc_id, fb_id, 0, 0,
+ 			     &connector->connector_id, 1,
+diff --git a/tests/kms_invalid_dotclock.c b/tests/kms_invalid_dotclock.c
+index 402629ab..f10c0c88 100644
+--- a/tests/kms_invalid_dotclock.c
++++ b/tests/kms_invalid_dotclock.c
+@@ -73,7 +73,7 @@ test_output(data_t *data)
+ 	igt_create_fb(data->drm_fd,
+ 		      mode.hdisplay, mode.vdisplay,
+ 		      DRM_FORMAT_XRGB8888,
+-		      LOCAL_DRM_FORMAT_MOD_NONE,
++		      DRM_FORMAT_MOD_NONE,
+ 		      &fb);
+ 
+ 	for (i = 0; i < data->res->count_crtcs; i++) {
+diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+index 3a918c7f..c5c88e14 100644
+--- a/tests/kms_lease.c
++++ b/tests/kms_lease.c
+@@ -47,69 +47,6 @@
+ 
+ IGT_TEST_DESCRIPTION("Test of CreateLease.");
+ 
+-struct local_drm_mode_create_lease {
+-        /** Pointer to array of object ids (__u32) */
+-        __u64 object_ids;
+-        /** Number of object ids */
+-        __u32 object_count;
+-        /** flags for new FD (O_CLOEXEC, etc) */
+-        __u32 flags;
+-
+-        /** Return: unique identifier for lessee. */
+-        __u32 lessee_id;
+-        /** Return: file descriptor to new drm_master file */
+-        __u32 fd;
+-};
+-
+-struct local_drm_mode_list_lessees {
+-        /** Number of lessees.
+-         * On input, provides length of the array.
+-         * On output, provides total number. No
+-         * more than the input number will be written
+-         * back, so two calls can be used to get
+-         * the size and then the data.
+-         */
+-        __u32 count_lessees;
+-        __u32 pad;
+-
+-        /** Pointer to lessees.
+-         * pointer to __u64 array of lessee ids
+-         */
+-        __u64 lessees_ptr;
+-};
+-
+-struct local_drm_mode_get_lease {
+-        /** Number of leased objects.
+-         * On input, provides length of the array.
+-         * On output, provides total number. No
+-         * more than the input number will be written
+-         * back, so two calls can be used to get
+-         * the size and then the data.
+-         */
+-        __u32 count_objects;
+-        __u32 pad;
+-
+-        /** Pointer to objects.
+-         * pointer to __u32 array of object ids
+-         */
+-        __u64 objects_ptr;
+-};
+-
+-/**
 - * Revoke lease
-  */
- struct drm_mode_revoke_lease {
--	/** Unique ID of lessee
--	 */
-+	/** @lessee_id: Unique ID of lessee */
- 	__u32 lessee_id;
- };
+- */
+-struct local_drm_mode_revoke_lease {
+-        /** Unique ID of lessee
+-         */
+-        __u32 lessee_id;
+-};
+-
+-
+-#define LOCAL_DRM_IOCTL_MODE_CREATE_LEASE     DRM_IOWR(0xC6, struct local_drm_mode_create_lease)
+-#define LOCAL_DRM_IOCTL_MODE_LIST_LESSEES     DRM_IOWR(0xC7, struct local_drm_mode_list_lessees)
+-#define LOCAL_DRM_IOCTL_MODE_GET_LEASE        DRM_IOWR(0xC8, struct local_drm_mode_get_lease)
+-#define LOCAL_DRM_IOCTL_MODE_REVOKE_LEASE     DRM_IOWR(0xC9, struct local_drm_mode_revoke_lease)
+-
+ typedef struct {
+ 	int fd;
+ 	uint32_t lessee_id;
+@@ -170,7 +107,7 @@ static int prepare_crtc(lease_t *lease, uint32_t connector_id, uint32_t crtc_id)
+ 	mode = igt_output_get_mode(output);
+ 	igt_create_color_fb(lease->fd, mode->hdisplay, mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 0.0, 0.0,
+ 			    &lease->primary_fb);
  
-diff --git a/include/drm-uapi/etnaviv_drm.h b/include/drm-uapi/etnaviv_drm.h
-index 09d0df8b..af024d90 100644
---- a/include/drm-uapi/etnaviv_drm.h
-+++ b/include/drm-uapi/etnaviv_drm.h
-@@ -74,6 +74,9 @@ struct drm_etnaviv_timespec {
- #define ETNAVIV_PARAM_GPU_NUM_CONSTANTS             0x19
- #define ETNAVIV_PARAM_GPU_NUM_VARYINGS              0x1a
- #define ETNAVIV_PARAM_SOFTPIN_START_ADDR            0x1b
-+#define ETNAVIV_PARAM_GPU_PRODUCT_ID                0x1c
-+#define ETNAVIV_PARAM_GPU_CUSTOMER_ID               0x1d
-+#define ETNAVIV_PARAM_GPU_ECO_ID                    0x1e
- 
- #define ETNA_MAX_PIPES 4
- 
-diff --git a/include/drm-uapi/exynos_drm.h b/include/drm-uapi/exynos_drm.h
-index 293815e3..37eb9b5c 100644
---- a/include/drm-uapi/exynos_drm.h
-+++ b/include/drm-uapi/exynos_drm.h
-@@ -394,7 +394,7 @@ struct drm_exynos_ioctl_ipp_commit {
- #define DRM_IOCTL_EXYNOS_IPP_COMMIT		DRM_IOWR(DRM_COMMAND_BASE + \
- 		DRM_EXYNOS_IPP_COMMIT, struct drm_exynos_ioctl_ipp_commit)
- 
--/* EXYNOS specific events */
-+/* Exynos specific events */
- #define DRM_EXYNOS_G2D_EVENT		0x80000000
- #define DRM_EXYNOS_IPP_EVENT		0x80000002
- 
-diff --git a/include/drm-uapi/lima_drm.h b/include/drm-uapi/lima_drm.h
-new file mode 100644
-index 00000000..1ec58d65
---- /dev/null
-+++ b/include/drm-uapi/lima_drm.h
-@@ -0,0 +1,176 @@
-+/* SPDX-License-Identifier: (GPL-2.0 WITH Linux-syscall-note) OR MIT */
-+/* Copyright 2017-2018 Qiang Yu <yuq825@gmail.com> */
-+
-+#ifndef __LIMA_DRM_H__
-+#define __LIMA_DRM_H__
-+
-+#include "drm.h"
-+
-+#if defined(__cplusplus)
-+extern "C" {
-+#endif
-+
-+enum drm_lima_param_gpu_id {
-+	DRM_LIMA_PARAM_GPU_ID_UNKNOWN,
-+	DRM_LIMA_PARAM_GPU_ID_MALI400,
-+	DRM_LIMA_PARAM_GPU_ID_MALI450,
-+};
-+
-+enum drm_lima_param {
-+	DRM_LIMA_PARAM_GPU_ID,
-+	DRM_LIMA_PARAM_NUM_PP,
-+	DRM_LIMA_PARAM_GP_VERSION,
-+	DRM_LIMA_PARAM_PP_VERSION,
-+};
-+
-+/**
-+ * get various information of the GPU
-+ */
-+struct drm_lima_get_param {
-+	__u32 param; /* in, value in enum drm_lima_param */
-+	__u32 pad;   /* pad, must be zero */
-+	__u64 value; /* out, parameter value */
-+};
-+
-+/*
-+ * heap buffer dynamically increase backup memory size when GP task fail
-+ * due to lack of heap memory. size field of heap buffer is an up bound of
-+ * the backup memory which can be set to a fairly large value.
-+ */
-+#define LIMA_BO_FLAG_HEAP  (1 << 0)
-+
-+/**
-+ * create a buffer for used by GPU
-+ */
-+struct drm_lima_gem_create {
-+	__u32 size;    /* in, buffer size */
-+	__u32 flags;   /* in, buffer flags */
-+	__u32 handle;  /* out, GEM buffer handle */
-+	__u32 pad;     /* pad, must be zero */
-+};
-+
-+/**
-+ * get information of a buffer
-+ */
-+struct drm_lima_gem_info {
-+	__u32 handle;  /* in, GEM buffer handle */
-+	__u32 va;      /* out, virtual address mapped into GPU MMU */
-+	__u64 offset;  /* out, used to mmap this buffer to CPU */
-+};
-+
-+#define LIMA_SUBMIT_BO_READ   0x01
-+#define LIMA_SUBMIT_BO_WRITE  0x02
-+
-+/* buffer information used by one task */
-+struct drm_lima_gem_submit_bo {
-+	__u32 handle;  /* in, GEM buffer handle */
-+	__u32 flags;   /* in, buffer read/write by GPU */
-+};
-+
-+#define LIMA_GP_FRAME_REG_NUM 6
-+
-+/* frame used to setup GP for each task */
-+struct drm_lima_gp_frame {
-+	__u32 frame[LIMA_GP_FRAME_REG_NUM];
-+};
-+
-+#define LIMA_PP_FRAME_REG_NUM 23
-+#define LIMA_PP_WB_REG_NUM 12
-+
-+/* frame used to setup mali400 GPU PP for each task */
-+struct drm_lima_m400_pp_frame {
-+	__u32 frame[LIMA_PP_FRAME_REG_NUM];
-+	__u32 num_pp;
-+	__u32 wb[3 * LIMA_PP_WB_REG_NUM];
-+	__u32 plbu_array_address[4];
-+	__u32 fragment_stack_address[4];
-+};
-+
-+/* frame used to setup mali450 GPU PP for each task */
-+struct drm_lima_m450_pp_frame {
-+	__u32 frame[LIMA_PP_FRAME_REG_NUM];
-+	__u32 num_pp;
-+	__u32 wb[3 * LIMA_PP_WB_REG_NUM];
-+	__u32 use_dlbu;
-+	__u32 _pad;
-+	union {
-+		__u32 plbu_array_address[8];
-+		__u32 dlbu_regs[4];
-+	};
-+	__u32 fragment_stack_address[8];
-+};
-+
-+#define LIMA_PIPE_GP  0x00
-+#define LIMA_PIPE_PP  0x01
-+
-+#define LIMA_SUBMIT_FLAG_EXPLICIT_FENCE (1 << 0)
-+
-+/**
-+ * submit a task to GPU
-+ *
-+ * User can always merge multi sync_file and drm_syncobj
-+ * into one drm_syncobj as in_sync[0], but we reserve
-+ * in_sync[1] for another task's out_sync to avoid the
-+ * export/import/merge pass when explicit sync.
-+ */
-+struct drm_lima_gem_submit {
-+	__u32 ctx;         /* in, context handle task is submitted to */
-+	__u32 pipe;        /* in, which pipe to use, GP/PP */
-+	__u32 nr_bos;      /* in, array length of bos field */
-+	__u32 frame_size;  /* in, size of frame field */
-+	__u64 bos;         /* in, array of drm_lima_gem_submit_bo */
-+	__u64 frame;       /* in, GP/PP frame */
-+	__u32 flags;       /* in, submit flags */
-+	__u32 out_sync;    /* in, drm_syncobj handle used to wait task finish after submission */
-+	__u32 in_sync[2];  /* in, drm_syncobj handle used to wait before start this task */
-+};
-+
-+#define LIMA_GEM_WAIT_READ   0x01
-+#define LIMA_GEM_WAIT_WRITE  0x02
-+
-+/**
-+ * wait pending GPU task finish of a buffer
-+ */
-+struct drm_lima_gem_wait {
-+	__u32 handle;      /* in, GEM buffer handle */
-+	__u32 op;          /* in, CPU want to read/write this buffer */
-+	__s64 timeout_ns;  /* in, wait timeout in absulute time */
-+};
-+
-+/**
-+ * create a context
-+ */
-+struct drm_lima_ctx_create {
-+	__u32 id;          /* out, context handle */
-+	__u32 _pad;        /* pad, must be zero */
-+};
-+
-+/**
-+ * free a context
-+ */
-+struct drm_lima_ctx_free {
-+	__u32 id;          /* in, context handle */
-+	__u32 _pad;        /* pad, must be zero */
-+};
-+
-+#define DRM_LIMA_GET_PARAM   0x00
-+#define DRM_LIMA_GEM_CREATE  0x01
-+#define DRM_LIMA_GEM_INFO    0x02
-+#define DRM_LIMA_GEM_SUBMIT  0x03
-+#define DRM_LIMA_GEM_WAIT    0x04
-+#define DRM_LIMA_CTX_CREATE  0x05
-+#define DRM_LIMA_CTX_FREE    0x06
-+
-+#define DRM_IOCTL_LIMA_GET_PARAM DRM_IOWR(DRM_COMMAND_BASE + DRM_LIMA_GET_PARAM, struct drm_lima_get_param)
-+#define DRM_IOCTL_LIMA_GEM_CREATE DRM_IOWR(DRM_COMMAND_BASE + DRM_LIMA_GEM_CREATE, struct drm_lima_gem_create)
-+#define DRM_IOCTL_LIMA_GEM_INFO DRM_IOWR(DRM_COMMAND_BASE + DRM_LIMA_GEM_INFO, struct drm_lima_gem_info)
-+#define DRM_IOCTL_LIMA_GEM_SUBMIT DRM_IOW(DRM_COMMAND_BASE + DRM_LIMA_GEM_SUBMIT, struct drm_lima_gem_submit)
-+#define DRM_IOCTL_LIMA_GEM_WAIT DRM_IOW(DRM_COMMAND_BASE + DRM_LIMA_GEM_WAIT, struct drm_lima_gem_wait)
-+#define DRM_IOCTL_LIMA_CTX_CREATE DRM_IOR(DRM_COMMAND_BASE + DRM_LIMA_CTX_CREATE, struct drm_lima_ctx_create)
-+#define DRM_IOCTL_LIMA_CTX_FREE DRM_IOW(DRM_COMMAND_BASE + DRM_LIMA_CTX_FREE, struct drm_lima_ctx_free)
-+
-+#if defined(__cplusplus)
-+}
-+#endif
-+
-+#endif /* __LIMA_DRM_H__ */
-diff --git a/include/drm-uapi/msm_drm.h b/include/drm-uapi/msm_drm.h
-index 0b85ed6a..f0758510 100644
---- a/include/drm-uapi/msm_drm.h
-+++ b/include/drm-uapi/msm_drm.h
-@@ -76,6 +76,7 @@ struct drm_msm_timespec {
- #define MSM_PARAM_NR_RINGS   0x07
- #define MSM_PARAM_PP_PGTABLE 0x08  /* => 1 for per-process pagetables, else 0 */
- #define MSM_PARAM_FAULTS     0x09
-+#define MSM_PARAM_SUSPENDS   0x0a
- 
- struct drm_msm_param {
- 	__u32 pipe;           /* in, MSM_PIPE_x */
-@@ -93,13 +94,12 @@ struct drm_msm_param {
- /* cache modes */
- #define MSM_BO_CACHED        0x00010000
- #define MSM_BO_WC            0x00020000
--#define MSM_BO_UNCACHED      0x00040000
-+#define MSM_BO_UNCACHED      0x00040000 /* deprecated, use MSM_BO_WC */
-+#define MSM_BO_CACHED_COHERENT 0x080000
- 
- #define MSM_BO_FLAGS         (MSM_BO_SCANOUT | \
-                               MSM_BO_GPU_READONLY | \
--                              MSM_BO_CACHED | \
--                              MSM_BO_WC | \
--                              MSM_BO_UNCACHED)
-+                              MSM_BO_CACHE_MASK)
- 
- struct drm_msm_gem_new {
- 	__u64 size;           /* in */
-@@ -217,13 +217,28 @@ struct drm_msm_gem_submit_bo {
- #define MSM_SUBMIT_FENCE_FD_IN   0x40000000 /* enable input fence_fd */
- #define MSM_SUBMIT_FENCE_FD_OUT  0x20000000 /* enable output fence_fd */
- #define MSM_SUBMIT_SUDO          0x10000000 /* run submitted cmds from RB */
-+#define MSM_SUBMIT_SYNCOBJ_IN    0x08000000 /* enable input syncobj */
-+#define MSM_SUBMIT_SYNCOBJ_OUT   0x04000000 /* enable output syncobj */
- #define MSM_SUBMIT_FLAGS                ( \
- 		MSM_SUBMIT_NO_IMPLICIT   | \
- 		MSM_SUBMIT_FENCE_FD_IN   | \
- 		MSM_SUBMIT_FENCE_FD_OUT  | \
- 		MSM_SUBMIT_SUDO          | \
-+		MSM_SUBMIT_SYNCOBJ_IN    | \
-+		MSM_SUBMIT_SYNCOBJ_OUT   | \
- 		0)
- 
-+#define MSM_SUBMIT_SYNCOBJ_RESET 0x00000001 /* Reset syncobj after wait. */
-+#define MSM_SUBMIT_SYNCOBJ_FLAGS        ( \
-+		MSM_SUBMIT_SYNCOBJ_RESET | \
-+		0)
-+
-+struct drm_msm_gem_submit_syncobj {
-+	__u32 handle;     /* in, syncobj handle. */
-+	__u32 flags;      /* in, from MSM_SUBMIT_SYNCOBJ_FLAGS */
-+	__u64 point;      /* in, timepoint for timeline syncobjs. */
-+};
-+
- /* Each cmdstream submit consists of a table of buffers involved, and
-  * one or more cmdstream buffers.  This allows for conditional execution
-  * (context-restore), and IB buffers needed for per tile/bin draw cmds.
-@@ -236,7 +251,14 @@ struct drm_msm_gem_submit {
- 	__u64 bos;            /* in, ptr to array of submit_bo's */
- 	__u64 cmds;           /* in, ptr to array of submit_cmd's */
- 	__s32 fence_fd;       /* in/out fence fd (see MSM_SUBMIT_FENCE_FD_IN/OUT) */
--	__u32 queueid;         /* in, submitqueue id */
-+	__u32 queueid;        /* in, submitqueue id */
-+	__u64 in_syncobjs;    /* in, ptr to array of drm_msm_gem_submit_syncobj */
-+	__u64 out_syncobjs;   /* in, ptr to array of drm_msm_gem_submit_syncobj */
-+	__u32 nr_in_syncobjs; /* in, number of entries in in_syncobj */
-+	__u32 nr_out_syncobjs; /* in, number of entries in out_syncobj. */
-+	__u32 syncobj_stride; /* in, stride of syncobj arrays. */
-+	__u32 pad;            /*in, reserved for future use, always 0. */
-+
- };
- 
- /* The normal way to synchronize with the GPU is just to CPU_PREP on
-diff --git a/include/drm-uapi/nouveau_drm.h b/include/drm-uapi/nouveau_drm.h
-index 9459a6e3..853a3274 100644
---- a/include/drm-uapi/nouveau_drm.h
-+++ b/include/drm-uapi/nouveau_drm.h
-@@ -110,6 +110,7 @@ struct drm_nouveau_gem_pushbuf {
- 	__u64 push;
- 	__u32 suffix0;
- 	__u32 suffix1;
-+#define NOUVEAU_GEM_PUSHBUF_SYNC                                    (1ULL << 0)
- 	__u64 vram_available;
- 	__u64 gart_available;
- };
-diff --git a/include/drm-uapi/panfrost_drm.h b/include/drm-uapi/panfrost_drm.h
-index ec19db1e..061e700d 100644
---- a/include/drm-uapi/panfrost_drm.h
-+++ b/include/drm-uapi/panfrost_drm.h
-@@ -171,6 +171,7 @@ enum drm_panfrost_param {
- 	DRM_PANFROST_PARAM_JS_FEATURES15,
- 	DRM_PANFROST_PARAM_NR_CORE_GROUPS,
- 	DRM_PANFROST_PARAM_THREAD_TLS_ALLOC,
-+	DRM_PANFROST_PARAM_AFBC_FEATURES,
- };
- 
- struct drm_panfrost_get_param {
-diff --git a/include/drm-uapi/virtgpu_drm.h b/include/drm-uapi/virtgpu_drm.h
-index f06a789f..b9ec26e9 100644
---- a/include/drm-uapi/virtgpu_drm.h
-+++ b/include/drm-uapi/virtgpu_drm.h
-@@ -46,6 +46,7 @@ extern "C" {
- #define DRM_VIRTGPU_TRANSFER_TO_HOST 0x07
- #define DRM_VIRTGPU_WAIT     0x08
- #define DRM_VIRTGPU_GET_CAPS  0x09
-+#define DRM_VIRTGPU_RESOURCE_CREATE_BLOB 0x0a
- 
- #define VIRTGPU_EXECBUF_FENCE_FD_IN	0x01
- #define VIRTGPU_EXECBUF_FENCE_FD_OUT	0x02
-@@ -71,6 +72,9 @@ struct drm_virtgpu_execbuffer {
- 
- #define VIRTGPU_PARAM_3D_FEATURES 1 /* do we have 3D features in the hw */
- #define VIRTGPU_PARAM_CAPSET_QUERY_FIX 2 /* do we have the capset fix */
-+#define VIRTGPU_PARAM_RESOURCE_BLOB 3 /* DRM_VIRTGPU_RESOURCE_CREATE_BLOB */
-+#define VIRTGPU_PARAM_HOST_VISIBLE 4 /* Host blob resources are mappable */
-+#define VIRTGPU_PARAM_CROSS_DEVICE 5 /* Cross virtio-device resource sharing  */
- 
- struct drm_virtgpu_getparam {
- 	__u64 param;
-@@ -100,7 +104,7 @@ struct drm_virtgpu_resource_info {
- 	__u32 bo_handle;
- 	__u32 res_handle;
- 	__u32 size;
--	__u32 stride;
-+	__u32 blob_mem;
- };
- 
- struct drm_virtgpu_3d_box {
-@@ -117,6 +121,8 @@ struct drm_virtgpu_3d_transfer_to_host {
- 	struct drm_virtgpu_3d_box box;
- 	__u32 level;
- 	__u32 offset;
-+	__u32 stride;
-+	__u32 layer_stride;
- };
- 
- struct drm_virtgpu_3d_transfer_from_host {
-@@ -124,6 +130,8 @@ struct drm_virtgpu_3d_transfer_from_host {
- 	struct drm_virtgpu_3d_box box;
- 	__u32 level;
- 	__u32 offset;
-+	__u32 stride;
-+	__u32 layer_stride;
- };
- 
- #define VIRTGPU_WAIT_NOWAIT 1 /* like it */
-@@ -140,6 +148,31 @@ struct drm_virtgpu_get_caps {
- 	__u32 pad;
- };
- 
-+struct drm_virtgpu_resource_create_blob {
-+#define VIRTGPU_BLOB_MEM_GUEST             0x0001
-+#define VIRTGPU_BLOB_MEM_HOST3D            0x0002
-+#define VIRTGPU_BLOB_MEM_HOST3D_GUEST      0x0003
-+
-+#define VIRTGPU_BLOB_FLAG_USE_MAPPABLE     0x0001
-+#define VIRTGPU_BLOB_FLAG_USE_SHAREABLE    0x0002
-+#define VIRTGPU_BLOB_FLAG_USE_CROSS_DEVICE 0x0004
-+	/* zero is invalid blob_mem */
-+	__u32 blob_mem;
-+	__u32 blob_flags;
-+	__u32 bo_handle;
-+	__u32 res_handle;
-+	__u64 size;
-+
-+	/*
-+	 * for 3D contexts with VIRTGPU_BLOB_MEM_HOST3D_GUEST and
-+	 * VIRTGPU_BLOB_MEM_HOST3D otherwise, must be zero.
-+	 */
-+	__u32 pad;
-+	__u32 cmd_size;
-+	__u64 cmd;
-+	__u64 blob_id;
-+};
-+
- #define DRM_IOCTL_VIRTGPU_MAP \
- 	DRM_IOWR(DRM_COMMAND_BASE + DRM_VIRTGPU_MAP, struct drm_virtgpu_map)
- 
-@@ -175,6 +208,10 @@ struct drm_virtgpu_get_caps {
- 	DRM_IOWR(DRM_COMMAND_BASE + DRM_VIRTGPU_GET_CAPS, \
- 	struct drm_virtgpu_get_caps)
- 
-+#define DRM_IOCTL_VIRTGPU_RESOURCE_CREATE_BLOB				\
-+	DRM_IOWR(DRM_COMMAND_BASE + DRM_VIRTGPU_RESOURCE_CREATE_BLOB,	\
-+		struct drm_virtgpu_resource_create_blob)
-+
- #if defined(__cplusplus)
+@@ -203,38 +140,38 @@ static void cleanup_crtc(lease_t *lease, igt_output_t *output)
+ 	igt_display_commit(display);
  }
- #endif
-diff --git a/include/drm-uapi/vmwgfx_drm.h b/include/drm-uapi/vmwgfx_drm.h
-index 02cab33f..02e91750 100644
---- a/include/drm-uapi/vmwgfx_drm.h
-+++ b/include/drm-uapi/vmwgfx_drm.h
-@@ -71,6 +71,7 @@ extern "C" {
- #define DRM_VMW_CREATE_EXTENDED_CONTEXT 26
- #define DRM_VMW_GB_SURFACE_CREATE_EXT   27
- #define DRM_VMW_GB_SURFACE_REF_EXT      28
-+#define DRM_VMW_MSG                     29
  
- /*************************************************************************/
- /**
-@@ -85,6 +86,9 @@ extern "C" {
-  *
-  * DRM_VMW_PARAM_SM4_1
-  * SM4_1 support is enabled.
-+ *
-+ * DRM_VMW_PARAM_SM5
-+ * SM5 support is enabled.
-  */
+-static int create_lease(int fd, struct local_drm_mode_create_lease *mcl)
++static int create_lease(int fd, struct drm_mode_create_lease *mcl)
+ {
+ 	int err = 0;
  
- #define DRM_VMW_PARAM_NUM_STREAMS      0
-@@ -102,6 +106,7 @@ extern "C" {
- #define DRM_VMW_PARAM_DX               12
- #define DRM_VMW_PARAM_HW_CAPS2         13
- #define DRM_VMW_PARAM_SM4_1            14
-+#define DRM_VMW_PARAM_SM5              15
- 
- /**
-  * enum drm_vmw_handle_type - handle type for ref ioctls
-@@ -1132,7 +1137,7 @@ struct drm_vmw_handle_close_arg {
-  * svga3d surface flags split into 2, upper half and lower half.
-  */
- enum drm_vmw_surface_version {
--	drm_vmw_gb_surface_v1
-+	drm_vmw_gb_surface_v1,
- };
- 
- /**
-@@ -1143,6 +1148,7 @@ enum drm_vmw_surface_version {
-  * @svga3d_flags_upper_32_bits: Upper 32 bits of svga3d flags.
-  * @multisample_pattern: Multisampling pattern when msaa is supported.
-  * @quality_level: Precision settings for each sample.
-+ * @buffer_byte_stride: Buffer byte stride.
-  * @must_be_zero: Reserved for future usage.
-  *
-  * Input argument to the  DRM_VMW_GB_SURFACE_CREATE_EXT Ioctl.
-@@ -1151,10 +1157,11 @@ enum drm_vmw_surface_version {
- struct drm_vmw_gb_surface_create_ext_req {
- 	struct drm_vmw_gb_surface_create_req base;
- 	enum drm_vmw_surface_version version;
--	uint32_t svga3d_flags_upper_32_bits;
--	SVGA3dMSPattern multisample_pattern;
--	SVGA3dMSQualityLevel quality_level;
--	uint64_t must_be_zero;
-+	__u32 svga3d_flags_upper_32_bits;
-+	__u32 multisample_pattern;
-+	__u32 quality_level;
-+	__u32 buffer_byte_stride;
-+	__u32 must_be_zero;
- };
- 
- /**
-@@ -1213,6 +1220,22 @@ union drm_vmw_gb_surface_reference_ext_arg {
- 	struct drm_vmw_surface_arg req;
- };
- 
-+/**
-+ * struct drm_vmw_msg_arg
-+ *
-+ * @send: Pointer to user-space msg string (null terminated).
-+ * @receive: Pointer to user-space receive buffer.
-+ * @send_only: Boolean whether this is only sending or receiving too.
-+ *
-+ * Argument to the DRM_VMW_MSG ioctl.
-+ */
-+struct drm_vmw_msg_arg {
-+	__u64 send;
-+	__u64 receive;
-+	__s32 send_only;
-+	__u32 receive_len;
-+};
-+
- #if defined(__cplusplus)
+-	if (igt_ioctl(fd, LOCAL_DRM_IOCTL_MODE_CREATE_LEASE, mcl))
++	if (igt_ioctl(fd, DRM_IOCTL_MODE_CREATE_LEASE, mcl))
+ 		err = -errno;
+ 	return err;
  }
- #endif
+ 
+-static int revoke_lease(int fd, struct local_drm_mode_revoke_lease *mrl)
++static int revoke_lease(int fd, struct drm_mode_revoke_lease *mrl)
+ {
+ 	int err = 0;
+ 
+-	if (igt_ioctl(fd, LOCAL_DRM_IOCTL_MODE_REVOKE_LEASE, mrl))
++	if (igt_ioctl(fd, DRM_IOCTL_MODE_REVOKE_LEASE, mrl))
+ 		err = -errno;
+ 	return err;
+ }
+ 
+-static int list_lessees(int fd, struct local_drm_mode_list_lessees *mll)
++static int list_lessees(int fd, struct drm_mode_list_lessees *mll)
+ {
+ 	int err = 0;
+ 
+-	if (igt_ioctl(fd, LOCAL_DRM_IOCTL_MODE_LIST_LESSEES, mll))
++	if (igt_ioctl(fd, DRM_IOCTL_MODE_LIST_LESSEES, mll))
+ 		err = -errno;
+ 	return err;
+ }
+ 
+-static int get_lease(int fd, struct local_drm_mode_get_lease *mgl)
++static int get_lease(int fd, struct drm_mode_get_lease *mgl)
+ {
+ 	int err = 0;
+ 
+-	if (igt_ioctl(fd, LOCAL_DRM_IOCTL_MODE_GET_LEASE, mgl))
++	if (igt_ioctl(fd, DRM_IOCTL_MODE_GET_LEASE, mgl))
+ 		err = -errno;
+ 	return err;
+ }
+@@ -242,7 +179,7 @@ static int get_lease(int fd, struct local_drm_mode_get_lease *mgl)
+ static int make_lease(data_t *data, lease_t *lease)
+ {
+ 	uint32_t object_ids[3];
+-	struct local_drm_mode_create_lease mcl;
++	struct drm_mode_create_lease mcl;
+ 	int ret;
+ 
+ 	mcl.object_ids = (uint64_t) (uintptr_t) &object_ids[0];
+@@ -316,7 +253,7 @@ static void simple_lease(data_t *data)
+ static void page_flip_implicit_plane(data_t *data)
+ {
+ 	uint32_t object_ids[3];
+-	struct local_drm_mode_create_lease mcl;
++	struct drm_mode_create_lease mcl;
+ 	drmModePlaneRes *plane_resources;
+ 	uint32_t wrong_plane_id = 0;
+ 	int i;
+@@ -385,7 +322,7 @@ static void page_flip_implicit_plane(data_t *data)
+ static void setcrtc_implicit_plane(data_t *data)
+ {
+ 	uint32_t object_ids[3];
+-	struct local_drm_mode_create_lease mcl;
++	struct drm_mode_create_lease mcl;
+ 	drmModePlaneRes *plane_resources;
+ 	uint32_t wrong_plane_id = 0;
+ 	igt_output_t *output =
+@@ -444,7 +381,7 @@ static void setcrtc_implicit_plane(data_t *data)
+ static void cursor_implicit_plane(data_t *data)
+ {
+ 	uint32_t object_ids[3];
+-	struct local_drm_mode_create_lease mcl;
++	struct drm_mode_create_lease mcl;
+ 
+ 	mcl.object_ids = (uint64_t) (uintptr_t) &object_ids[0];
+ 	mcl.object_count = 0;
+@@ -480,7 +417,7 @@ static void cursor_implicit_plane(data_t *data)
+ static void atomic_implicit_crtc(data_t *data)
+ {
+ 	uint32_t object_ids[3];
+-	struct local_drm_mode_create_lease mcl;
++	struct drm_mode_create_lease mcl;
+ 	drmModeRes *resources;
+ 	drmModeObjectPropertiesPtr props;
+ 	uint32_t wrong_crtc_id = 0;
+@@ -569,7 +506,7 @@ static void atomic_implicit_crtc(data_t *data)
+ static void lessee_list(data_t *data)
+ {
+ 	lease_t lease;
+-	struct local_drm_mode_list_lessees mll;
++	struct drm_mode_list_lessees mll;
+ 	uint32_t lessees[1];
+ 
+ 	mll.pad = 0;
+@@ -620,7 +557,7 @@ static void lessee_list(data_t *data)
+ static void lease_get(data_t *data)
+ {
+ 	lease_t lease;
+-	struct local_drm_mode_get_lease mgl;
++	struct drm_mode_get_lease mgl;
+ 	int num_leased_obj = 3;
+ 	uint32_t objects[num_leased_obj];
+ 	int o;
+@@ -762,7 +699,7 @@ static void lease_unleased_connector(data_t *data)
+ static void lease_revoke(data_t *data)
+ {
+ 	lease_t lease;
+-	struct local_drm_mode_revoke_lease mrl;
++	struct drm_mode_revoke_lease mrl;
+ 	int ret;
+ 
+ 	/* Create a valid lease */
+@@ -905,7 +842,7 @@ static void run_test(data_t *data, void (*testfunc)(data_t *))
+ static void invalid_create_leases(data_t *data)
+ {
+ 	uint32_t object_ids[4];
+-	struct local_drm_mode_create_lease mcl;
++	struct drm_mode_create_lease mcl;
+ 	drmModeRes *resources;
+ 	int tmp_fd, ret;
+ 
+@@ -1054,7 +991,7 @@ static void check_crtc_masks(int master_fd, int lease_fd, uint32_t crtc_mask)
+ static void possible_crtcs_filtering(data_t *data)
+ {
+ 	uint32_t *object_ids;
+-	struct local_drm_mode_create_lease mcl;
++	struct drm_mode_create_lease mcl;
+ 	drmModeRes *resources;
+ 	drmModePlaneRes *plane_resources;
+ 	int i;
+@@ -1109,7 +1046,7 @@ static bool is_master(int fd)
+ static int _create_simple_lease(int master_fd, data_t *data, int expected_ret)
+ {
+ 	uint32_t object_ids[3];
+-	struct local_drm_mode_create_lease mcl;
++	struct drm_mode_create_lease mcl;
+ 
+ 	object_ids[0] = data->master.display.pipes[0].crtc_id;
+ 	object_ids[1] = data->master.display.outputs[0].id;
+@@ -1198,8 +1135,8 @@ static void multimaster_lease(data_t *data)
+ static void implicit_plane_lease(data_t *data)
+ {
+ 	uint32_t object_ids[3];
+-	struct local_drm_mode_create_lease mcl;
+-	struct local_drm_mode_get_lease mgl;
++	struct drm_mode_create_lease mcl;
++	struct drm_mode_get_lease mgl;
+ 	int ret;
+ 	uint32_t cursor_id = igt_pipe_get_plane_type(&data->master.display.pipes[0],
+ 						     DRM_PLANE_TYPE_CURSOR)->drm_plane->plane_id;
+@@ -1247,7 +1184,7 @@ static void implicit_plane_lease(data_t *data)
+ static void lease_uevent(data_t *data)
+ {
+ 	int lease_fd;
+-	struct local_drm_mode_list_lessees mll;
++	struct drm_mode_list_lessees mll;
+ 	struct udev_monitor *uevent_monitor;
+ 
+ 	uevent_monitor = igt_watch_uevents();
+diff --git a/tests/kms_mmap_write_crc.c b/tests/kms_mmap_write_crc.c
+index b57fbe15..2e323a20 100644
+--- a/tests/kms_mmap_write_crc.c
++++ b/tests/kms_mmap_write_crc.c
+@@ -86,7 +86,7 @@ static void test(data_t *data)
+ 
+ 	/* create a non-white fb where we can write later */
+ 	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-		      DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE, fb);
++		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE, fb);
+ 
+ 	ptr = dmabuf_mmap_framebuffer(data->drm_fd, fb);
+ 
+@@ -176,7 +176,7 @@ static void prepare_crtc(data_t *data)
+ 
+ 	/* create a white reference fb and flip to it */
+ 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-			    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+ 			    1.0, 1.0, 1.0, &data->fb[0]);
+ 
+ 	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+diff --git a/tests/kms_multipipe_modeset.c b/tests/kms_multipipe_modeset.c
+index b06c4e82..b1dbc73a 100644
+--- a/tests/kms_multipipe_modeset.c
++++ b/tests/kms_multipipe_modeset.c
+@@ -56,7 +56,7 @@ static void run_test(data_t *data, int valid_outputs)
+ 	}
+ 
+ 	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+-			      LOCAL_DRM_FORMAT_MOD_NONE, &data->fb);
++			      DRM_FORMAT_MOD_NONE, &data->fb);
+ 
+ 	/* Collect reference CRC by Committing individually on all outputs*/
+ 	for_each_connected_output(display, output) {
+diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
+index 3e42d148..f92dfd04 100644
+--- a/tests/kms_panel_fitting.c
++++ b/tests/kms_panel_fitting.c
+@@ -61,7 +61,7 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
+ 	igt_create_pattern_fb(data->drm_fd,
+ 			      mode->hdisplay, mode->vdisplay,
+ 			      DRM_FORMAT_XRGB8888,
+-			      LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_MOD_NONE,
+ 			      &data->fb1);
+ 
+ 	/*
+@@ -104,7 +104,7 @@ static void test_panel_fitting(data_t *d)
+ 		/* allocate fb2 with image */
+ 		igt_create_pattern_fb(d->drm_fd, mode->hdisplay / 2, mode->vdisplay / 2,
+ 				      DRM_FORMAT_XRGB8888,
+-				      LOCAL_DRM_FORMAT_MOD_NONE, &d->fb2);
++				      DRM_FORMAT_MOD_NONE, &d->fb2);
+ 
+ 		/* Set up display to enable panel fitting */
+ 		mode->hdisplay = 640;
+@@ -195,15 +195,15 @@ test_panel_fitting_fastset(igt_display_t *display, const enum pipe pipe, igt_out
+ 	sprite = igt_output_get_plane_type(output, DRM_PLANE_TYPE_OVERLAY);
+ 
+ 	igt_create_color_fb(display->drm_fd, mode.hdisplay, mode.vdisplay,
+-			    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+ 			    0.f, 0.f, 1.f, &blue);
+ 
+ 	igt_create_color_fb(display->drm_fd, 640, 480,
+-			    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+ 			    1.f, 0.f, 0.f, &red);
+ 
+ 	igt_create_color_fb(display->drm_fd, 800, 600,
+-			    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+ 			    0.f, 1.f, 0.f, &green);
+ 
+ 	igt_plane_set_fb(primary, &blue);
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 67d68ebe..dac7c648 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -89,7 +89,7 @@ static void test_read_crc(data_t *data, enum pipe pipe, unsigned flags)
+ 		igt_create_color_fb(data->drm_fd,
+ 					mode->hdisplay, mode->vdisplay,
+ 					DRM_FORMAT_XRGB8888,
+-					LOCAL_DRM_FORMAT_MOD_NONE,
++					DRM_FORMAT_MOD_NONE,
+ 					colors[c].r,
+ 					colors[c].g,
+ 					colors[c].b,
+@@ -187,13 +187,13 @@ static void test_compare_crc(data_t *data, enum pipe pipe)
+ 	igt_create_color_fb(data->drm_fd,
+ 			mode->hdisplay, mode->vdisplay,
+ 			DRM_FORMAT_XRGB8888,
+-			LOCAL_DRM_FORMAT_MOD_NONE,
++			DRM_FORMAT_MOD_NONE,
+ 			1.0, 1.0, 1.0,
+ 			&fb0);
+ 	igt_create_color_fb(data->drm_fd,
+ 			mode->hdisplay, mode->vdisplay,
+ 			DRM_FORMAT_XRGB8888,
+-			LOCAL_DRM_FORMAT_MOD_NONE,
++			DRM_FORMAT_MOD_NONE,
+ 			1.0, 1.0, 1.0,
+ 			&fb1);
+ 
+@@ -244,7 +244,7 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe)
+ 	igt_create_color_fb(data->drm_fd,
+ 			    mode->hdisplay, mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 1.0, 0.0, &data->fb);
+ 	igt_plane_set_fb(igt_output_get_plane(output, 0), &data->fb);
+ 	igt_display_commit(display);
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index f22c045d..77b13a33 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -106,7 +106,7 @@ create_fb_for_mode(data_t *data, drmModeModeInfo *mode,
+ 	fb_id = igt_create_fb(data->drm_fd,
+ 			      mode->hdisplay, mode->vdisplay,
+ 			      DRM_FORMAT_XRGB8888,
+-			      LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_MOD_NONE,
+ 			      fb);
+ 	igt_assert_fd(fb_id);
+ 
+@@ -152,7 +152,7 @@ test_grab_crc(data_t *data, igt_output_t *output, enum pipe pipe,
+ 		igt_assert_fd(igt_create_color_fb(data->drm_fd,
+ 						  mode->hdisplay, mode->vdisplay,
+ 						  DRM_FORMAT_XRGB8888,
+-						  LOCAL_DRM_FORMAT_MOD_NONE,
++						  DRM_FORMAT_MOD_NONE,
+ 						  fb_color->red, fb_color->green, fb_color->blue,
+ 						  &fb));
+ 	}
+@@ -224,7 +224,7 @@ test_plane_position_with_output(data_t *data,
+ 	igt_create_color_fb(data->drm_fd,
+ 			    64, 64, /* width, height */
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 1.0, 0.0,
+ 			    &sprite_fb);
+ 	igt_plane_set_fb(sprite, &sprite_fb);
+@@ -306,7 +306,7 @@ create_fb_for_mode_panning(data_t *data, drmModeModeInfo *mode,
+ 	fb_id = igt_create_fb(data->drm_fd,
+ 			      mode->hdisplay * 2, mode->vdisplay * 2,
+ 			      DRM_FORMAT_XRGB8888,
+-			      LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_MOD_NONE,
+ 			      fb);
+ 	igt_assert(fb_id);
+ 
+@@ -1044,7 +1044,7 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+ 	mode = igt_output_get_mode(output);
+ 
+ 	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-		      DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE, &primary_fb);
++		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE, &primary_fb);
+ 
+ 	igt_output_set_pipe(output, pipe);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+index a37cb27c..8616169e 100644
+--- a/tests/kms_plane_alpha_blend.c
++++ b/tests/kms_plane_alpha_blend.c
+@@ -184,17 +184,17 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe)
+ 		igt_remove_fb(data->gfx_fd, &data->gray_fb);
+ 
+ 		igt_create_fb(data->gfx_fd, w, h,
+-			      DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+ 			      &data->xrgb_fb);
+ 		draw_gradient(&data->xrgb_fb, w, h, 1.);
+ 
+ 		igt_create_fb(data->gfx_fd, w, h,
+-			      DRM_FORMAT_ARGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_NONE,
+ 			      &data->argb_fb_cov_0);
+ 		draw_gradient_coverage(&data->argb_fb_cov_0, w, h, 0);
+ 
+ 		igt_create_fb(data->gfx_fd, w, h,
+-			      DRM_FORMAT_ARGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_NONE,
+ 			      &data->argb_fb_0);
+ 
+ 		cr = igt_get_cairo_ctx(data->gfx_fd, &data->argb_fb_0);
+@@ -203,36 +203,36 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe)
+ 		igt_put_cairo_ctx(cr);
+ 
+ 		igt_create_fb(data->gfx_fd, w, h,
+-			      DRM_FORMAT_ARGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_NONE,
+ 			      &data->argb_fb_7e);
+ 		draw_squares(&data->argb_fb_7e, w, h, 126. / 255.);
+ 
+ 		igt_create_fb(data->gfx_fd, w, h,
+-			      DRM_FORMAT_ARGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_NONE,
+ 			      &data->argb_fb_cov_7e);
+ 		draw_squares_coverage(&data->argb_fb_cov_7e, w, h, 0x7e);
+ 
+ 		igt_create_fb(data->gfx_fd, w, h,
+-			      DRM_FORMAT_ARGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_NONE,
+ 			      &data->argb_fb_fc);
+ 		draw_squares(&data->argb_fb_fc, w, h, 252. / 255.);
+ 
+ 		igt_create_fb(data->gfx_fd, w, h,
+-			      DRM_FORMAT_ARGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_NONE,
+ 			      &data->argb_fb_cov_fc);
+ 		draw_squares_coverage(&data->argb_fb_cov_fc, w, h, 0xfc);
+ 
+ 		igt_create_fb(data->gfx_fd, w, h,
+-			      DRM_FORMAT_ARGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_NONE,
+ 			      &data->argb_fb_100);
+ 		draw_gradient(&data->argb_fb_100, w, h, 1.);
+ 
+ 		igt_create_fb(data->gfx_fd, w, h,
+-			      DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+ 			      &data->black_fb);
+ 
+ 		igt_create_color_fb(data->gfx_fd, w, h,
+-				    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+ 				    .5, .5, .5, &data->gray_fb);
+ 	}
+ 
+diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+index 4dc5a345..39c7abbe 100644
+--- a/tests/kms_plane_lowres.c
++++ b/tests/kms_plane_lowres.c
+@@ -298,7 +298,7 @@ igt_main
+ 		igt_describe("Tests the visibility of the planes when switching between "
+ 			     "high and low resolution with tiling as none.");
+ 		igt_subtest_f("pipe-%s-tiling-none", kmstest_pipe_name(pipe))
+-			test_planes_on_pipe(&data, LOCAL_DRM_FORMAT_MOD_NONE);
++			test_planes_on_pipe(&data, DRM_FORMAT_MOD_NONE);
+ 
+ 		igt_describe("Tests the visibility of the planes when switching between "
+ 			     "high and low resolution with x-tiling.");
+diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
+index 52133cd6..f57f036d 100644
+--- a/tests/kms_plane_multiple.c
++++ b/tests/kms_plane_multiple.c
+@@ -110,7 +110,7 @@ get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
+ 
+ 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    color->red, color->green, color->blue,
+ 			    &data->fb[primary->index]);
+ 
+@@ -240,7 +240,7 @@ prepare_planes(data_t *data, enum pipe pipe_id, color_t *color,
+ 		data->plane[i] = plane;
+ 
+ 		plane_format = data->plane[i]->type == DRM_PLANE_TYPE_CURSOR ? DRM_FORMAT_ARGB8888 : DRM_FORMAT_XRGB8888;
+-		plane_tiling = data->plane[i]->type == DRM_PLANE_TYPE_CURSOR ? LOCAL_DRM_FORMAT_MOD_NONE : tiling;
++		plane_tiling = data->plane[i]->type == DRM_PLANE_TYPE_CURSOR ? DRM_FORMAT_MOD_NONE : tiling;
+ 
+ 		igt_skip_on(!igt_plane_has_format_mod(plane, plane_format,
+ 						      plane_tiling));
+@@ -390,7 +390,7 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+ 		test_plane_position(data, pipe, I915_FORMAT_MOD_Yf_TILED);
+ 
+ 	igt_subtest_f("atomic-pipe-%s-tiling-none", kmstest_pipe_name(pipe))
+-		test_plane_position(data, pipe, LOCAL_DRM_FORMAT_MOD_NONE);
++		test_plane_position(data, pipe, DRM_FORMAT_MOD_NONE);
+ }
+ 
+ static data_t data;
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 1c68519e..3f47733e 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -82,7 +82,7 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
+ {
+ 	igt_display_t *display = &data->display;
+ 	uint64_t tiling = is_i915_device(data->drm_fd) ?
+-		I915_FORMAT_MOD_X_TILED : LOCAL_DRM_FORMAT_MOD_NONE;
++		I915_FORMAT_MOD_X_TILED : DRM_FORMAT_MOD_NONE;
+ 
+ 	cleanup_crtc(data);
+ 
+@@ -252,7 +252,7 @@ static void test_scaler_with_rotation_pipe(data_t *d, enum pipe pipe,
+ 	igt_display_t *display = &d->display;
+ 	igt_plane_t *plane;
+ 	uint64_t tiling = is_i915_device(d->drm_fd) ?
+-		I915_FORMAT_MOD_Y_TILED : LOCAL_DRM_FORMAT_MOD_NONE;
++		I915_FORMAT_MOD_Y_TILED : DRM_FORMAT_MOD_NONE;
+ 
+ 	igt_require(get_num_scalers(d, pipe) > 0);
+ 
+@@ -285,7 +285,7 @@ static void test_scaler_with_rotation_pipe(data_t *d, enum pipe pipe,
+ }
+ 
+ static const uint64_t tilings[] = {
+-	LOCAL_DRM_FORMAT_MOD_NONE,
++	DRM_FORMAT_MOD_NONE,
+ 	I915_FORMAT_MOD_X_TILED,
+ 	I915_FORMAT_MOD_Y_TILED,
+ 	I915_FORMAT_MOD_Yf_TILED
+@@ -369,7 +369,7 @@ test_plane_scaling_on_pipe(data_t *d, enum pipe pipe, igt_output_t *output)
+ 	drmModeModeInfo *mode;
+ 	int primary_plane_scaling = 0; /* For now */
+ 	uint64_t tiling = is_i915_device(display->drm_fd) ?
+-		I915_FORMAT_MOD_X_TILED : LOCAL_DRM_FORMAT_MOD_NONE;
++		I915_FORMAT_MOD_X_TILED : DRM_FORMAT_MOD_NONE;
+ 
+ 	igt_require(get_num_scalers(d, pipe) > 0);
+ 
+@@ -617,7 +617,7 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
+ 	drmModeModeInfo *mode1, *mode2;
+ 	enum pipe pipe1, pipe2;
+ 	uint64_t tiling = is_i915_device(display->drm_fd) ?
+-		I915_FORMAT_MOD_Y_TILED : LOCAL_DRM_FORMAT_MOD_NONE;
++		I915_FORMAT_MOD_Y_TILED : DRM_FORMAT_MOD_NONE;
+ 
+ 	cleanup_crtc(d);
+ 
+diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+index 8cb2ca2a..35f4b5b7 100644
+--- a/tests/kms_prime.c
++++ b/tests/kms_prime.c
+@@ -125,7 +125,7 @@ static void prepare_fb(int importer_fd, struct dumb_bo *scratch, struct igt_fb *
+ 	enum igt_color_range color_range = IGT_COLOR_YCBCR_LIMITED_RANGE;
+ 
+ 	igt_init_fb(fb, importer_fd, scratch->width, scratch->height,
+-		    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++		    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+ 		    color_encoding, color_range);
+ }
+ 
+@@ -215,7 +215,7 @@ static void test_crc(int exporter_fd, int importer_fd)
+ 
+ 		igt_create_color_fb(importer_fd,
+ 				    mode->hdisplay, mode->vdisplay,
+-				    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+ 				    colors[i].r, colors[i].g, colors[i].b,
+ 				    &fb);
+ 
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index 58a710e7..974f49fa 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -41,7 +41,7 @@ static void prepare_pipe(igt_display_t *display, enum pipe pipe, igt_output_t *o
+ 	drmModeModeInfo *mode = igt_output_get_mode(output);
+ 
+ 	igt_create_pattern_fb(display->drm_fd, mode->hdisplay, mode->vdisplay,
+-			      DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE, fb);
++			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE, fb);
+ 
+ 	igt_output_set_pipe(output, pipe);
+ 
+diff --git a/tests/kms_psr.c b/tests/kms_psr.c
+index 1011de9d..37537b30 100644
+--- a/tests/kms_psr.c
++++ b/tests/kms_psr.c
+@@ -81,7 +81,7 @@ static void create_cursor_fb(data_t *data)
+ 	uint32_t fb_id;
+ 
+ 	fb_id = igt_create_fb(data->drm_fd, 64, 64,
+-			      DRM_FORMAT_ARGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_NONE,
+ 			      &data->fb_white);
+ 	igt_assert(fb_id);
+ 
+diff --git a/tests/kms_psr2_sf.c b/tests/kms_psr2_sf.c
+index d4c19ca9..1be8c3da 100644
+--- a/tests/kms_psr2_sf.c
++++ b/tests/kms_psr2_sf.c
+@@ -223,7 +223,7 @@ static void prepare(data_t *data)
+ 	igt_create_color_fb(data->drm_fd,
+ 			    data->mode->hdisplay, data->mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 1.0, 0.0,
+ 			    &data->fb_primary);
+ 
+@@ -239,7 +239,7 @@ static void prepare(data_t *data)
+ 				    data->mode->hdisplay/2,
+ 				    data->mode->vdisplay/2,
+ 				    DRM_FORMAT_XRGB8888,
+-				    LOCAL_DRM_FORMAT_MOD_NONE,
++				    DRM_FORMAT_MOD_NONE,
+ 				    0.0, 0.0, 1.0,
+ 				    &data->fb_overlay);
+ 
+@@ -247,7 +247,7 @@ static void prepare(data_t *data)
+ 				    data->mode->hdisplay/2,
+ 				    data->mode->vdisplay/2,
+ 				    DRM_FORMAT_XRGB8888,
+-				    LOCAL_DRM_FORMAT_MOD_NONE,
++				    DRM_FORMAT_MOD_NONE,
+ 				    0.0, 0.0, 1.0,
+ 				    &data->fb_test);
+ 
+@@ -270,7 +270,7 @@ static void prepare(data_t *data)
+ 		igt_create_color_fb(data->drm_fd,
+ 			    data->mode->hdisplay, data->mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 1.0, 0.0,
+ 			    &data->fb_test);
+ 
+@@ -287,7 +287,7 @@ static void prepare(data_t *data)
+ 					    data->mode->hdisplay,
+ 					    data->mode->vdisplay,
+ 					    DRM_FORMAT_XRGB8888,
+-					    LOCAL_DRM_FORMAT_MOD_NONE,
++					    DRM_FORMAT_MOD_NONE,
+ 					    0.0, 0.0, 1.0,
+ 					    &data->fb_overlay);
+ 
+@@ -303,14 +303,14 @@ static void prepare(data_t *data)
+ 		igt_plane_set_position(cursor, 0, 0);
+ 
+ 		igt_create_fb(data->drm_fd, CUR_SIZE, CUR_SIZE,
+-			      DRM_FORMAT_ARGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_NONE,
+ 			      &data->fb_cursor);
+ 
+ 		draw_rect(data, &data->fb_cursor, 0, 0, CUR_SIZE, CUR_SIZE,
+ 			    0.0, 0.0, 1.0, 1.0);
+ 
+ 		igt_create_fb(data->drm_fd, CUR_SIZE, CUR_SIZE,
+-			      DRM_FORMAT_ARGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_NONE,
+ 			      &data->fb_test);
+ 
+ 		draw_rect(data, &data->fb_test, 0, 0, CUR_SIZE, CUR_SIZE,
+diff --git a/tests/kms_psr2_su.c b/tests/kms_psr2_su.c
+index c709065f..a232b3bb 100644
+--- a/tests/kms_psr2_su.c
++++ b/tests/kms_psr2_su.c
+@@ -112,7 +112,7 @@ static void prepare(data_t *data)
+ 	igt_create_color_fb(data->drm_fd,
+ 			    data->mode->hdisplay, data->mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 1.0, 0.0,
+ 			    &data->fb[0]);
+ 
+@@ -122,7 +122,7 @@ static void prepare(data_t *data)
+ 		igt_create_color_fb(data->drm_fd,
+ 				    data->mode->hdisplay, data->mode->vdisplay,
+ 				    DRM_FORMAT_XRGB8888,
+-				    LOCAL_DRM_FORMAT_MOD_NONE,
++				    DRM_FORMAT_MOD_NONE,
+ 				    0.0, 1.0, 0.0,
+ 				    &data->fb[1]);
+ 
+diff --git a/tests/kms_pwrite_crc.c b/tests/kms_pwrite_crc.c
+index d6cc0c47..dc32a070 100644
+--- a/tests/kms_pwrite_crc.c
++++ b/tests/kms_pwrite_crc.c
+@@ -58,7 +58,7 @@ static void test(data_t *data)
+ 
+ 	/* create a non-white fb where we can pwrite later */
+ 	igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-			      DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE, fb);
++			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE, fb);
+ 
+ 	/* flip to it to make it UC/WC and fully flushed */
+ 	drmModeSetPlane(data->drm_fd,
+@@ -113,7 +113,7 @@ static void prepare_crtc(data_t *data)
+ 
+ 	/* create a white reference fb and flip to it */
+ 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-			    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+ 			    1.0, 1.0, 1.0, &data->fb[0]);
+ 
+ 	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
+index 879ea574..a1b9c5ac 100644
+--- a/tests/kms_rmfb.c
++++ b/tests/kms_rmfb.c
+@@ -65,13 +65,13 @@ test_rmfb(struct rmfb_data *data, igt_output_t *output, enum pipe pipe, bool reo
+ 	mode = igt_output_get_mode(output);
+ 
+ 	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-		      DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE, &fb);
++		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE, &fb);
+ 
+ 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &cursor_width));
+ 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_HEIGHT, &cursor_height));
+ 
+ 	igt_create_fb(data->drm_fd, cursor_width, cursor_height,
+-		      DRM_FORMAT_ARGB8888, LOCAL_DRM_FORMAT_MOD_NONE, &argb_fb);
++		      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_NONE, &argb_fb);
+ 
+ 	/*
+ 	 * Make sure these buffers are suited for display use
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index c0020cec..1497120c 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -220,7 +220,7 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
+ 	drmModeModeInfo *mode;
+ 	igt_display_t *display = &data->display;
+ 	unsigned int w, h, ref_w, ref_h, min_w, min_h;
+-	uint64_t tiling = data->override_tiling ?: LOCAL_DRM_FORMAT_MOD_NONE;
++	uint64_t tiling = data->override_tiling ?: DRM_FORMAT_MOD_NONE;
+ 	uint32_t pixel_format = data->override_fmt ?: DRM_FORMAT_XRGB8888;
+ 	const float flip_opacity = 0.75;
+ 
+@@ -310,7 +310,7 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
+ 		* Create a reference CRC for a software-rotated fb.
+ 		*/
+ 		igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format,
+-			data->override_tiling ?: LOCAL_DRM_FORMAT_MOD_NONE, &data->fb_reference);
++			data->override_tiling ?: DRM_FORMAT_MOD_NONE, &data->fb_reference);
+ 		paint_squares(data, data->rotation, &data->fb_reference, 1.0);
+ 
+ 		igt_plane_set_fb(plane, &data->fb_reference);
+@@ -675,13 +675,13 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+ 		uint64_t tiling;
+ 		struct igt_fb fbs[ARRAY_SIZE(formatlist)][2];
+ 	} planeconfigs[] = {
+-	{IGT_ROTATION_0, .2f, .4f, LOCAL_DRM_FORMAT_MOD_NONE },
++	{IGT_ROTATION_0, .2f, .4f, DRM_FORMAT_MOD_NONE },
+ 	{IGT_ROTATION_0, .2f, .4f, I915_FORMAT_MOD_X_TILED },
+ 	{IGT_ROTATION_0, .2f, .4f, I915_FORMAT_MOD_Y_TILED },
+ 	{IGT_ROTATION_0, .2f, .4f, I915_FORMAT_MOD_Yf_TILED },
+ 	{IGT_ROTATION_90, .2f, .4f, I915_FORMAT_MOD_Y_TILED },
+ 	{IGT_ROTATION_90, .2f, .4f, I915_FORMAT_MOD_Yf_TILED },
+-	{IGT_ROTATION_180, .2f, .4f, LOCAL_DRM_FORMAT_MOD_NONE },
++	{IGT_ROTATION_180, .2f, .4f, DRM_FORMAT_MOD_NONE },
+ 	{IGT_ROTATION_180, .2f, .4f, I915_FORMAT_MOD_X_TILED },
+ 	{IGT_ROTATION_180, .2f, .4f, I915_FORMAT_MOD_Y_TILED },
+ 	{IGT_ROTATION_180, .2f, .4f, I915_FORMAT_MOD_Yf_TILED },
+@@ -1059,7 +1059,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 						AMD_FMT_MOD_SET(TILE, AMD_FMT_MOD_TILE_GFX9_64K_S) |
+ 						AMD_FMT_MOD_SET(TILE_VERSION, AMD_FMT_MOD_TILE_VER_GFX9);
+ 				else
+-					data.override_tiling = LOCAL_DRM_FORMAT_MOD_NONE;
++					data.override_tiling = DRM_FORMAT_MOD_NONE;
+ 			}
+ 			data.rotation = subtest->rot;
+ 			test_plane_rotation(&data, subtest->plane, false);
+diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+index 15afb2f1..bd810a5c 100644
+--- a/tests/kms_sequence.c
++++ b/tests/kms_sequence.c
+@@ -104,7 +104,7 @@ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
+ 	mode = igt_output_get_mode(output);
+ 	igt_create_color_fb(fd, mode->hdisplay, mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 0.0, 0.0,
+ 			    &data->primary_fb);
+ 
+diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+index eb9ac189..05084c3a 100644
+--- a/tests/kms_setmode.c
++++ b/tests/kms_setmode.c
+@@ -181,7 +181,7 @@ static void create_fb_for_crtc(struct crtc_config *crtc,
+ 	fb_id = igt_create_pattern_fb(drm_fd, crtc->mode.hdisplay,
+ 				      crtc->mode.vdisplay,
+ 				      igt_bpp_depth_to_drm_format(bpp, depth),
+-				      LOCAL_DRM_FORMAT_MOD_NONE,
++				      DRM_FORMAT_MOD_NONE,
+ 				      fb_info);
+ 	igt_assert_lt(0, fb_id);
+ }
+diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+index 4366dd4d..c9a9cd47 100644
+--- a/tests/kms_universal_plane.c
++++ b/tests/kms_universal_plane.c
+@@ -75,22 +75,22 @@ functional_test_init(functional_test_t *test, igt_output_t *output, enum pipe pi
+ 	mode = igt_output_get_mode(output);
+ 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 				DRM_FORMAT_XRGB8888,
+-				LOCAL_DRM_FORMAT_MOD_NONE,
++				DRM_FORMAT_MOD_NONE,
+ 				0.0, 0.0, 0.0,
+ 				&test->black_fb);
+ 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 				DRM_FORMAT_XRGB8888,
+-				LOCAL_DRM_FORMAT_MOD_NONE,
++				DRM_FORMAT_MOD_NONE,
+ 				0.0, 0.0, 1.0,
+ 				&test->blue_fb);
+ 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 				DRM_FORMAT_XRGB8888,
+-				LOCAL_DRM_FORMAT_MOD_NONE,
++				DRM_FORMAT_MOD_NONE,
+ 				1.0, 1.0, 0.0,
+ 				&test->yellow_fb);
+ 	igt_create_color_fb(data->drm_fd, 100, 100,
+ 				DRM_FORMAT_XRGB8888,
+-				LOCAL_DRM_FORMAT_MOD_NONE,
++				DRM_FORMAT_MOD_NONE,
+ 				1.0, 0.0, 0.0,
+ 				&test->red_fb);
+ 
+@@ -316,19 +316,19 @@ sanity_test_init(sanity_test_t *test, igt_output_t *output, enum pipe pipe)
+ 	mode = igt_output_get_mode(output);
+ 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 0.0, 1.0,
+ 			    &test->blue_fb);
+ 	igt_create_color_fb(data->drm_fd,
+ 			    mode->hdisplay + 100, mode->vdisplay + 100,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 0.0, 1.0,
+ 			    &test->oversized_fb);
+ 	igt_create_color_fb(data->drm_fd,
+ 			    mode->hdisplay - 100, mode->vdisplay - 100,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 0.0, 1.0,
+ 			    &test->undersized_fb);
+ 
+@@ -445,12 +445,12 @@ pageflip_test_init(pageflip_test_t *test, igt_output_t *output, enum pipe pipe)
+ 	mode = igt_output_get_mode(output);
+ 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    1.0, 0.0, 0.0,
+ 			    &test->red_fb);
+ 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 0.0, 1.0,
+ 			    &test->blue_fb);
+ }
+@@ -664,19 +664,19 @@ gen9_test_init(gen9_test_t *test, igt_output_t *output, enum pipe pipe)
+ 	/* Initial framebuffer of full CRTC size */
+ 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 1.0, 0.0,
+ 			    &test->biggreen_fb);
+ 
+ 	/* Framebuffers that only cover a quarter of the CRTC size */
+ 	igt_create_color_fb(data->drm_fd, test->w, test->h,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    1.0, 0.0, 0.0,
+ 			    &test->smallred_fb);
+ 	igt_create_color_fb(data->drm_fd, test->w, test->h,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 0.0, 1.0,
+ 			    &test->smallblue_fb);
+ }
+diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+index 93b01eba..83d5629f 100644
+--- a/tests/kms_vblank.c
++++ b/tests/kms_vblank.c
+@@ -81,7 +81,7 @@ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
+ 	mode = igt_output_get_mode(output);
+ 	igt_create_color_fb(fd, mode->hdisplay, mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_MOD_NONE,
+ 			    0.0, 0.0, 0.0,
+ 			    &data->primary_fb);
+ 
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index e28864f5..14d66905 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -218,11 +218,11 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ 
+ 	/* Prepare resources */
+ 	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
+-			    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+ 			    0.50, 0.50, 0.50, &data->fb0);
+ 
+ 	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
+-			    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+ 			    0.50, 0.50, 0.50, &data->fb1);
+ 
+ 	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb0);
+diff --git a/tests/nouveau_crc.c b/tests/nouveau_crc.c
+index 4e92d424..55b429dd 100644
+--- a/tests/nouveau_crc.c
++++ b/tests/nouveau_crc.c
+@@ -71,7 +71,7 @@ static void create_crc_colors(data_t *data,
+ 				    data->mode->hdisplay,
+ 				    data->mode->vdisplay,
+ 				    DRM_FORMAT_XRGB8888,
+-				    LOCAL_DRM_FORMAT_MOD_NONE,
++				    DRM_FORMAT_MOD_NONE,
+ 				    colors[i].r, colors[i].g, colors[i].b,
+ 				    &colors[i].fb);
+ 
+@@ -356,7 +356,7 @@ igt_main
+ 					    data.mode->hdisplay,
+ 					    data.mode->vdisplay,
+ 					    DRM_FORMAT_XRGB8888,
+-					    LOCAL_DRM_FORMAT_MOD_NONE,
++					    DRM_FORMAT_MOD_NONE,
+ 					    0.0, 0.0, 0.0,
+ 					    &data.default_fb);
+ 			igt_plane_set_fb(data.primary, &data.default_fb);
+diff --git a/tests/prime_mmap_kms.c b/tests/prime_mmap_kms.c
+index 1575eeb1..8869aba7 100644
+--- a/tests/prime_mmap_kms.c
++++ b/tests/prime_mmap_kms.c
+@@ -167,7 +167,7 @@ static void prepare_crtc(gpu_process_t *gpu)
+ 
+ 	/* create a white fb and flip to it */
+ 	igt_create_color_fb(gpu->drm_fd, mode->hdisplay, mode->vdisplay,
+-			DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
++			DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+ 			1.0, 1.0, 1.0, &gpu->fb);
+ 
+ 	gpu->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+index aeff282b..5e4741d0 100644
+--- a/tests/prime_vgem.c
++++ b/tests/prime_vgem.c
+@@ -1012,7 +1012,7 @@ static void test_flip(int i915, int vgem, unsigned hang)
+ 					bo[i].width, bo[i].height,
+ 					DRM_FORMAT_XRGB8888, I915_TILING_NONE,
+ 					strides, offsets, 1,
+-					LOCAL_DRM_MODE_FB_MODIFIERS,
++					DRM_MODE_FB_MODIFIERS,
+ 					&fb_id[i]) == 0);
+ 		igt_assert(fb_id[i]);
+ 	}
+diff --git a/tests/testdisplay.c b/tests/testdisplay.c
+index 937a48f4..74472ed9 100644
+--- a/tests/testdisplay.c
++++ b/tests/testdisplay.c
+@@ -81,7 +81,7 @@ drmModeRes *resources;
+ int drm_fd, modes;
+ int test_all_modes = 0, test_preferred_mode = 0, force_mode = 0, test_plane,
+     test_stereo_modes, test_aspect_ratio;
+-uint64_t tiling = LOCAL_DRM_FORMAT_MOD_NONE;
++uint64_t tiling = DRM_FORMAT_MOD_NONE;
+ int sleep_between_modes = 0;
+ int do_dpms = 0; /* This aliases to DPMS_ON */
+ uint32_t depth = 24, stride, bpp;
+diff --git a/tools/intel_dp_compliance.c b/tools/intel_dp_compliance.c
+index fb946056..9026a99e 100644
+--- a/tools/intel_dp_compliance.c
++++ b/tools/intel_dp_compliance.c
+@@ -174,7 +174,7 @@ uint8_t bitdepth;
+ 
+ drmModeRes *resources;
+ int drm_fd, modes, gen;
+-uint64_t tiling = LOCAL_DRM_FORMAT_MOD_NONE;
++uint64_t tiling = DRM_FORMAT_MOD_NONE;
+ uint32_t depth = 24, stride, bpp;
+ int specified_mode_num = -1, specified_disp_id = -1;
+ int width, height;
+@@ -356,7 +356,7 @@ static int setup_framebuffers(struct connector *dp_conn)
+ 	dp_conn->fb = igt_create_fb(drm_fd,
+ 				    dp_conn->fb_width, dp_conn->fb_height,
+ 				    DRM_FORMAT_XRGB8888,
+-				    LOCAL_DRM_FORMAT_MOD_NONE,
++				    DRM_FORMAT_MOD_NONE,
+ 				    &dp_conn->fb_video_pattern);
+ 	igt_assert(dp_conn->fb);
+ 
+@@ -386,7 +386,7 @@ static int setup_failsafe_framebuffer(struct connector *dp_conn)
+ 					     dp_conn->failsafe_width,
+ 					     dp_conn->failsafe_height,
+ 					     DRM_FORMAT_XRGB8888,
+-					     LOCAL_DRM_FORMAT_MOD_NONE,
++					     DRM_FORMAT_MOD_NONE,
+ 					     &dp_conn->fb_failsafe_pattern);
+ 	igt_assert(dp_conn->failsafe_fb);
+ 
+@@ -423,7 +423,7 @@ static int setup_video_pattern_framebuffer(struct connector *dp_conn)
+ 	dp_conn->test_pattern.fb = igt_create_fb(drm_fd,
+ 						 video_width, video_height,
+ 						 gen == 10 ? DRM_FORMAT_ARGB8888 : DRM_FORMAT_XRGB8888,
+-						 LOCAL_DRM_FORMAT_MOD_NONE,
++						 DRM_FORMAT_MOD_NONE,
+ 						 &dp_conn->test_pattern.fb_pattern);
+ 	igt_assert(dp_conn->test_pattern.fb);
+ 
+diff --git a/tools/intel_residency.c b/tools/intel_residency.c
+index 789dfcca..5dffea9b 100644
+--- a/tools/intel_residency.c
++++ b/tools/intel_residency.c
+@@ -273,7 +273,7 @@ static void setup_modeset(void)
+ 	draw_rect(&fbs[1], IGT_DRAW_BLT, 0x800000);
+ 
+ 	igt_create_fb(drm.fd, 64, 64, DRM_FORMAT_ARGB8888,
+-		     LOCAL_DRM_FORMAT_MOD_NONE, &cursor);
++		     DRM_FORMAT_MOD_NONE, &cursor);
+ 	igt_draw_fill_fb(drm.fd, &cursor, 0xFF008000);
+ }
+ 
+diff --git a/tools/msm_dp_compliance.c b/tools/msm_dp_compliance.c
+index 7bc2bfa8..4c7fc94b 100644
+--- a/tools/msm_dp_compliance.c
++++ b/tools/msm_dp_compliance.c
+@@ -155,7 +155,7 @@ uint8_t bitdepth;
+ 
+ drmModeRes *resources;
+ int drm_fd, modes, gen;
+-uint64_t tiling = LOCAL_DRM_FORMAT_MOD_NONE;
++uint64_t tiling = DRM_FORMAT_MOD_NONE;
+ uint32_t depth = 24, stride, bpp;
+ int specified_mode_num = -1, specified_disp_id = -1;
+ int width, height;
+@@ -310,7 +310,7 @@ static int setup_video_pattern_framebuffer(struct connector *dp_conn)
+ 	dp_conn->test_pattern.fb = igt_create_fb(drm_fd,
+ 			video_width, video_height,
+ 			DRM_FORMAT_XRGB8888,
+-			LOCAL_DRM_FORMAT_MOD_NONE,
++			DRM_FORMAT_MOD_NONE,
+ 			&dp_conn->test_pattern.fb_pattern);
+ 	igt_assert(dp_conn->test_pattern.fb);
+ 
 -- 
 2.31.1
 
