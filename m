@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14AC26EAAE
- for <igt-dev@lists.freedesktop.org>; Sat, 10 Jul 2021 00:48:39 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F27916EAAD
+ for <igt-dev@lists.freedesktop.org>; Sat, 10 Jul 2021 00:48:38 +0000 (UTC)
 From: Lucas De Marchi <lucas.demarchi@intel.com>
-Date: Fri,  9 Jul 2021 17:47:03 -0700
-Message-Id: <20210710004708.2871237-5-lucas.demarchi@intel.com>
+Date: Fri,  9 Jul 2021 17:47:08 -0700
+Message-Id: <20210710004708.2871237-10-lucas.demarchi@intel.com>
 In-Reply-To: <20210710004708.2871237-1-lucas.demarchi@intel.com>
 References: <20210710004708.2871237-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 4/9] lib/ioctl_wrappers: drop
- gem_require_stolen_support()
+Subject: [igt-dev] [PATCH i-g-t 9/9] tests/kms_sequence: nuke local drm
+ definitions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,80 +24,106 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-There is no such thing in the kernel as ioctl
-DRM_COMMAND_BASE + DRM_I915_GEM_GET_APERTURE returning a struct with
-stolen_total_size. So gem_total_stolen_size() always returns 0.
-
-Also there are no callers for gem_total_stolen_size(), except for
-gem_require_stolen_support() which is unused.
+Use the ones from kernel headers.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- lib/ioctl_wrappers.c | 28 ----------------------------
- lib/ioctl_wrappers.h | 11 -----------
- 2 files changed, 39 deletions(-)
+ tests/kms_sequence.c | 38 +++++++++-----------------------------
+ 1 file changed, 9 insertions(+), 29 deletions(-)
 
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index 48526d29..25c5e495 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -986,34 +986,6 @@ bool gem_has_bsd2(int fd)
- 	return has_param(fd, I915_PARAM_HAS_BSD2);
+diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+index bd810a5c..17cc5ab3 100644
+--- a/tests/kms_sequence.c
++++ b/tests/kms_sequence.c
+@@ -56,26 +56,6 @@ typedef struct {
+ #define FORKED 4
+ } data_t;
+ 
+-struct local_drm_crtc_get_sequence {
+-	__u32 crtc_id;
+-	__u32 active;
+-	__u64 sequence;
+-	__u64 sequence_ns;
+-};
+-
+-struct local_drm_crtc_queue_sequence {
+-	__u32 crtc_id;
+-	__u32 flags;
+-	__u64 sequence;
+-	__u64 user_data;
+-};
+-
+-#define LOCAL_DRM_IOCTL_CRTC_GET_SEQUENCE     DRM_IOWR(0x3b, struct local_drm_crtc_get_sequence)
+-#define LOCAL_DRM_IOCTL_CRTC_QUEUE_SEQUENCE   DRM_IOWR(0x3c, struct local_drm_crtc_queue_sequence)
+-
+-#define LOCAL_DRM_CRTC_SEQUENCE_RELATIVE              0x00000001      /* sequence is relative to current */
+-#define LOCAL_DRM_CRTC_SEQUENCE_NEXT_ON_MISS          0x00000002      /* Use next sequence if we've missed */
+-
+ struct local_drm_event_crtc_sequence {
+         struct drm_event        base;
+         __u64                   user_data;
+@@ -133,23 +113,23 @@ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
+ 	igt_display_commit(display);
  }
  
--struct local_i915_gem_get_aperture {
--	__u64 aper_size;
--	__u64 aper_available_size;
--	__u64 version;
--	__u64 map_total_size;
--	__u64 stolen_total_size;
--};
--#define DRM_I915_GEM_GET_APERTURE	0x23
--#define LOCAL_IOCTL_I915_GEM_GET_APERTURE DRM_IOR  (DRM_COMMAND_BASE + DRM_I915_GEM_GET_APERTURE, struct local_i915_gem_get_aperture)
--
--/**
-- * gem_total_stolen_size:
-- * @fd: open i915 drm file descriptor
-- *
-- * Feature test macro to query the kernel for the total stolen size.
-- *
-- * Returns: Total stolen memory.
-- */
--uint64_t gem_total_stolen_size(int fd)
--{
--	struct local_i915_gem_get_aperture aperture;
--
--	memset(&aperture, 0, sizeof(aperture));
--	do_ioctl(fd, LOCAL_IOCTL_I915_GEM_GET_APERTURE, &aperture);
--
--	return aperture.stolen_total_size;
--}
--
- /**
-  * gem_has_softpin:
-  * @fd: open i915 drm file descriptor
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-index 689e6d53..0ed67b6e 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -89,17 +89,6 @@ int __gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
- #define I915_GEM_DOMAIN_WC 0x80
- #endif
+-static int crtc_get_sequence(int fd, struct local_drm_crtc_get_sequence *cgs)
++static int crtc_get_sequence(int fd, struct drm_crtc_get_sequence *cgs)
+ {
+ 	int err;
  
--/**
-- * gem_require_stolen_support:
-- * @fd: open i915 drm file descriptor
-- *
-- * Test macro to query whether support for allocating objects from stolen
-- * memory is available. Automatically skips through igt_require() if not.
-- */
--#define gem_require_stolen_support(fd) \
--			igt_require(gem_create__has_stolen_support(fd) && \
--				    (gem_total_stolen_size(fd) > 0))
--
- int gem_madvise(int fd, uint32_t handle, int state);
+ 	err = 0;
+-	if (igt_ioctl(fd, LOCAL_DRM_IOCTL_CRTC_GET_SEQUENCE, cgs))
++	if (igt_ioctl(fd, DRM_IOCTL_CRTC_GET_SEQUENCE, cgs))
+ 		err = -errno;
  
- void gem_userptr(int fd, void *ptr, uint64_t size, int read_only, uint32_t flags, uint32_t *handle);
+ 	return err;
+ }
+ 
+-static int crtc_queue_sequence(int fd, struct local_drm_crtc_queue_sequence *cqs)
++static int crtc_queue_sequence(int fd, struct drm_crtc_queue_sequence *cqs)
+ {
+ 	int err;
+ 
+ 	err = 0;
+-	if (igt_ioctl(fd, LOCAL_DRM_IOCTL_CRTC_QUEUE_SEQUENCE, cqs))
++	if (igt_ioctl(fd, DRM_IOCTL_CRTC_QUEUE_SEQUENCE, cqs))
+ 		err = -errno;
+ 	return err;
+ }
+@@ -174,11 +154,11 @@ static void run_test(data_t *data, int fd, void (*testfunc)(data_t *, int, int))
+ 			 nchildren);
+ 
+ 		if (data->flags & BUSY) {
+-			struct local_drm_crtc_queue_sequence cqs;
++			struct drm_crtc_queue_sequence cqs;
+ 
+ 			memset(&cqs, 0, sizeof(cqs));
+ 			cqs.crtc_id = data->crtc_id;
+-			cqs.flags = LOCAL_DRM_CRTC_SEQUENCE_RELATIVE;
++			cqs.flags = DRM_CRTC_SEQUENCE_RELATIVE;
+ 			cqs.sequence = 120 + 12;
+ 			igt_assert_eq(crtc_queue_sequence(fd, &cqs), 0);
+ 		}
+@@ -210,7 +190,7 @@ static void run_test(data_t *data, int fd, void (*testfunc)(data_t *, int, int))
+ 
+ static void sequence_get(data_t *data, int fd, int nchildren)
+ {
+-	struct local_drm_crtc_get_sequence cgs;
++	struct drm_crtc_get_sequence cgs;
+ 	struct timespec start, end;
+ 	unsigned long sq, count = 0;
+ 
+@@ -233,8 +213,8 @@ static void sequence_get(data_t *data, int fd, int nchildren)
+ 
+ static void sequence_queue(data_t *data, int fd, int nchildren)
+ {
+-	struct local_drm_crtc_get_sequence cgs_start, cgs_end;
+-	struct local_drm_crtc_queue_sequence cqs;
++	struct drm_crtc_get_sequence cgs_start, cgs_end;
++	struct drm_crtc_queue_sequence cqs;
+ 	unsigned long target;
+ 	int total = 120 / nchildren;
+ 	int n;
 -- 
 2.31.1
 
