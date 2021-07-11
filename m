@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1DFD66EB87
- for <igt-dev@lists.freedesktop.org>; Sun, 11 Jul 2021 06:12:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF3BF6EB84
+ for <igt-dev@lists.freedesktop.org>; Sun, 11 Jul 2021 06:12:23 +0000 (UTC)
 From: Lucas De Marchi <lucas.demarchi@intel.com>
-Date: Sat, 10 Jul 2021 23:12:11 -0700
-Message-Id: <20210711061211.2879015-10-lucas.demarchi@intel.com>
+Date: Sat, 10 Jul 2021 23:12:07 -0700
+Message-Id: <20210711061211.2879015-6-lucas.demarchi@intel.com>
 In-Reply-To: <20210711061211.2879015-1-lucas.demarchi@intel.com>
 References: <20210711061211.2879015-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 9/9] tests/kms_sequence: nuke local drm
- definitions
+Subject: [igt-dev] [PATCH i-g-t v2 5/9] benchmarks/gem_exec_tracer: nuke
+ LOCAL_IOCTL_I915_GEM_EXECBUFFER2_WR
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,106 +24,36 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use the ones from kernel headers.
+Use DRM_IOCTL_I915_GEM_EXECBUFFER2_WR from kernel header.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tests/kms_sequence.c | 38 +++++++++-----------------------------
- 1 file changed, 9 insertions(+), 29 deletions(-)
+ benchmarks/gem_exec_tracer.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
-index bd810a5c..17cc5ab3 100644
---- a/tests/kms_sequence.c
-+++ b/tests/kms_sequence.c
-@@ -56,26 +56,6 @@ typedef struct {
- #define FORKED 4
- } data_t;
- 
--struct local_drm_crtc_get_sequence {
--	__u32 crtc_id;
--	__u32 active;
--	__u64 sequence;
--	__u64 sequence_ns;
--};
--
--struct local_drm_crtc_queue_sequence {
--	__u32 crtc_id;
--	__u32 flags;
--	__u64 sequence;
--	__u64 user_data;
--};
--
--#define LOCAL_DRM_IOCTL_CRTC_GET_SEQUENCE     DRM_IOWR(0x3b, struct local_drm_crtc_get_sequence)
--#define LOCAL_DRM_IOCTL_CRTC_QUEUE_SEQUENCE   DRM_IOWR(0x3c, struct local_drm_crtc_queue_sequence)
--
--#define LOCAL_DRM_CRTC_SEQUENCE_RELATIVE              0x00000001      /* sequence is relative to current */
--#define LOCAL_DRM_CRTC_SEQUENCE_NEXT_ON_MISS          0x00000002      /* Use next sequence if we've missed */
--
- struct local_drm_event_crtc_sequence {
-         struct drm_event        base;
-         __u64                   user_data;
-@@ -133,23 +113,23 @@ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
- 	igt_display_commit(display);
+diff --git a/benchmarks/gem_exec_tracer.c b/benchmarks/gem_exec_tracer.c
+index c8f4e84b..e6973991 100644
+--- a/benchmarks/gem_exec_tracer.c
++++ b/benchmarks/gem_exec_tracer.c
+@@ -266,9 +266,6 @@ static int is_i915(int fd)
+ 	return strcmp(name, "i915") == 0;
  }
  
--static int crtc_get_sequence(int fd, struct local_drm_crtc_get_sequence *cgs)
-+static int crtc_get_sequence(int fd, struct drm_crtc_get_sequence *cgs)
+-#define LOCAL_IOCTL_I915_GEM_EXECBUFFER2_WR \
+-    DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_EXECBUFFER2, struct drm_i915_gem_execbuffer2)
+-
+ int
+ ioctl(int fd, unsigned long request, ...)
  {
- 	int err;
+@@ -327,7 +324,7 @@ ioctl(int fd, unsigned long request, ...)
  
- 	err = 0;
--	if (igt_ioctl(fd, LOCAL_DRM_IOCTL_CRTC_GET_SEQUENCE, cgs))
-+	if (igt_ioctl(fd, DRM_IOCTL_CRTC_GET_SEQUENCE, cgs))
- 		err = -errno;
+ 	switch (request) {
+ 	case DRM_IOCTL_I915_GEM_EXECBUFFER2:
+-	case LOCAL_IOCTL_I915_GEM_EXECBUFFER2_WR:
++	case DRM_IOCTL_I915_GEM_EXECBUFFER2_WR:
+ 		trace_exec(t, argp);
+ 		break;
  
- 	return err;
- }
- 
--static int crtc_queue_sequence(int fd, struct local_drm_crtc_queue_sequence *cqs)
-+static int crtc_queue_sequence(int fd, struct drm_crtc_queue_sequence *cqs)
- {
- 	int err;
- 
- 	err = 0;
--	if (igt_ioctl(fd, LOCAL_DRM_IOCTL_CRTC_QUEUE_SEQUENCE, cqs))
-+	if (igt_ioctl(fd, DRM_IOCTL_CRTC_QUEUE_SEQUENCE, cqs))
- 		err = -errno;
- 	return err;
- }
-@@ -174,11 +154,11 @@ static void run_test(data_t *data, int fd, void (*testfunc)(data_t *, int, int))
- 			 nchildren);
- 
- 		if (data->flags & BUSY) {
--			struct local_drm_crtc_queue_sequence cqs;
-+			struct drm_crtc_queue_sequence cqs;
- 
- 			memset(&cqs, 0, sizeof(cqs));
- 			cqs.crtc_id = data->crtc_id;
--			cqs.flags = LOCAL_DRM_CRTC_SEQUENCE_RELATIVE;
-+			cqs.flags = DRM_CRTC_SEQUENCE_RELATIVE;
- 			cqs.sequence = 120 + 12;
- 			igt_assert_eq(crtc_queue_sequence(fd, &cqs), 0);
- 		}
-@@ -210,7 +190,7 @@ static void run_test(data_t *data, int fd, void (*testfunc)(data_t *, int, int))
- 
- static void sequence_get(data_t *data, int fd, int nchildren)
- {
--	struct local_drm_crtc_get_sequence cgs;
-+	struct drm_crtc_get_sequence cgs;
- 	struct timespec start, end;
- 	unsigned long sq, count = 0;
- 
-@@ -233,8 +213,8 @@ static void sequence_get(data_t *data, int fd, int nchildren)
- 
- static void sequence_queue(data_t *data, int fd, int nchildren)
- {
--	struct local_drm_crtc_get_sequence cgs_start, cgs_end;
--	struct local_drm_crtc_queue_sequence cqs;
-+	struct drm_crtc_get_sequence cgs_start, cgs_end;
-+	struct drm_crtc_queue_sequence cqs;
- 	unsigned long target;
- 	int total = 120 / nchildren;
- 	int n;
 -- 
 2.31.1
 
