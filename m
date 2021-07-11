@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 97DCB6EB89
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E9B06EB87
  for <igt-dev@lists.freedesktop.org>; Sun, 11 Jul 2021 06:12:23 +0000 (UTC)
 From: Lucas De Marchi <lucas.demarchi@intel.com>
-Date: Sat, 10 Jul 2021 23:12:06 -0700
-Message-Id: <20210711061211.2879015-5-lucas.demarchi@intel.com>
+Date: Sat, 10 Jul 2021 23:12:05 -0700
+Message-Id: <20210711061211.2879015-4-lucas.demarchi@intel.com>
 In-Reply-To: <20210711061211.2879015-1-lucas.demarchi@intel.com>
 References: <20210711061211.2879015-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 4/9] lib/ioctl_wrappers: drop
- gem_require_stolen_support()
+Subject: [igt-dev] [PATCH i-g-t v2 3/9] tests/i915/gem_mmap_wc: drop
+ LOCAL_IOCTL_I915_GEM_MMAP_v2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,80 +24,54 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-There is no such thing in the kernel as ioctl
-DRM_COMMAND_BASE + DRM_I915_GEM_GET_APERTURE returning a struct with
-stolen_total_size. So gem_total_stolen_size() always returns 0.
-
-Also there are no callers for gem_total_stolen_size(), except for
-gem_require_stolen_support() which is unused.
+LOCAL_IOCTL_I915_GEM_MMAP_v2 is not really a different ioctl, it's just
+DRM_IOCTL_I915_GEM_MMAP and a check for version/
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- lib/ioctl_wrappers.c | 28 ----------------------------
- lib/ioctl_wrappers.h | 11 -----------
- 2 files changed, 39 deletions(-)
+ tests/i915/gem_mmap_wc.c | 15 ++-------------
+ 1 file changed, 2 insertions(+), 13 deletions(-)
 
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index 48526d29..25c5e495 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -986,34 +986,6 @@ bool gem_has_bsd2(int fd)
- 	return has_param(fd, I915_PARAM_HAS_BSD2);
- }
+diff --git a/tests/i915/gem_mmap_wc.c b/tests/i915/gem_mmap_wc.c
+index 4fcf5478..abb89b8e 100644
+--- a/tests/i915/gem_mmap_wc.c
++++ b/tests/i915/gem_mmap_wc.c
+@@ -40,17 +40,6 @@
+ #include "drm.h"
+ #include "i915/gem_create.h"
  
--struct local_i915_gem_get_aperture {
--	__u64 aper_size;
--	__u64 aper_available_size;
--	__u64 version;
--	__u64 map_total_size;
--	__u64 stolen_total_size;
+-struct local_i915_gem_mmap_v2 {
+-	uint32_t handle;
+-	uint32_t pad;
+-	uint64_t offset;
+-	uint64_t size;
+-	uint64_t addr_ptr;
+-	uint64_t flags;
+-#define I915_MMAP_WC 0x1
 -};
--#define DRM_I915_GEM_GET_APERTURE	0x23
--#define LOCAL_IOCTL_I915_GEM_GET_APERTURE DRM_IOR  (DRM_COMMAND_BASE + DRM_I915_GEM_GET_APERTURE, struct local_i915_gem_get_aperture)
+-#define LOCAL_IOCTL_I915_GEM_MMAP_v2 DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_MMAP, struct local_i915_gem_mmap_v2)
 -
--/**
-- * gem_total_stolen_size:
-- * @fd: open i915 drm file descriptor
-- *
-- * Feature test macro to query the kernel for the total stolen size.
-- *
-- * Returns: Total stolen memory.
-- */
--uint64_t gem_total_stolen_size(int fd)
--{
--	struct local_i915_gem_get_aperture aperture;
--
--	memset(&aperture, 0, sizeof(aperture));
--	do_ioctl(fd, LOCAL_IOCTL_I915_GEM_GET_APERTURE, &aperture);
--
--	return aperture.stolen_total_size;
--}
--
- /**
-  * gem_has_softpin:
-  * @fd: open i915 drm file descriptor
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-index 689e6d53..0ed67b6e 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -89,17 +89,6 @@ int __gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
- #define I915_GEM_DOMAIN_WC 0x80
- #endif
+ static int OBJECT_SIZE = 16*1024*1024;
  
--/**
-- * gem_require_stolen_support:
-- * @fd: open i915 drm file descriptor
-- *
-- * Test macro to query whether support for allocating objects from stolen
-- * memory is available. Automatically skips through igt_require() if not.
-- */
--#define gem_require_stolen_support(fd) \
--			igt_require(gem_create__has_stolen_support(fd) && \
--				    (gem_total_stolen_size(fd) > 0))
--
- int gem_madvise(int fd, uint32_t handle, int state);
+ /*
+@@ -103,7 +92,7 @@ static void
+ test_invalid_flags(int fd)
+ {
+ 	struct drm_i915_getparam gp;
+-	struct local_i915_gem_mmap_v2 arg;
++	struct drm_i915_gem_mmap arg;
+ 	uint64_t flag = I915_MMAP_WC;
+ 	int val = -1;
  
- void gem_userptr(int fd, void *ptr, uint64_t size, int read_only, uint32_t flags, uint32_t *handle);
+@@ -128,7 +117,7 @@ test_invalid_flags(int fd)
+ 		while (flag) {
+ 			arg.flags = flag;
+ 			igt_assert(drmIoctl(fd,
+-				   LOCAL_IOCTL_I915_GEM_MMAP_v2,
++				   DRM_IOCTL_I915_GEM_MMAP,
+ 				   &arg) == -1);
+ 			igt_assert_eq(errno, EINVAL);
+ 			flag <<= 1;
 -- 
 2.31.1
 
