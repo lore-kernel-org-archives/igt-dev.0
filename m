@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com
- [IPv6:2607:f8b0:4864:20::233])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 63E266EB80
- for <igt-dev@lists.freedesktop.org>; Sun, 11 Jul 2021 03:52:14 +0000 (UTC)
-Received: by mail-oi1-x233.google.com with SMTP id u15so79830oiw.3
- for <igt-dev@lists.freedesktop.org>; Sat, 10 Jul 2021 20:52:14 -0700 (PDT)
-From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Sat, 10 Jul 2021 22:52:04 -0500
-Message-Id: <20210711035204.802908-7-jason@jlekstrand.net>
-In-Reply-To: <20210711035204.802908-1-jason@jlekstrand.net>
-References: <20210711035204.802908-1-jason@jlekstrand.net>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 97DCB6EB89
+ for <igt-dev@lists.freedesktop.org>; Sun, 11 Jul 2021 06:12:23 +0000 (UTC)
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+Date: Sat, 10 Jul 2021 23:12:06 -0700
+Message-Id: <20210711061211.2879015-5-lucas.demarchi@intel.com>
+In-Reply-To: <20210711061211.2879015-1-lucas.demarchi@intel.com>
+References: <20210711061211.2879015-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 6/6] tests/i915/gem_exec_reloc: Don't
- attempt active relocations with the command parser
+Subject: [igt-dev] [PATCH i-g-t v2 4/9] lib/ioctl_wrappers: drop
+ gem_require_stolen_support()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,54 +24,80 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The command parser stalls waiting for the batch to be idle.  If it's
-blocked by a spinner, execbuf will timeout.
+There is no such thing in the kernel as ioctl
+DRM_COMMAND_BASE + DRM_I915_GEM_GET_APERTURE returning a struct with
+stolen_total_size. So gem_total_stolen_size() always returns 0.
 
-Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Also there are no callers for gem_total_stolen_size(), except for
+gem_require_stolen_support() which is unused.
+
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tests/i915/gem_exec_reloc.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ lib/ioctl_wrappers.c | 28 ----------------------------
+ lib/ioctl_wrappers.h | 11 -----------
+ 2 files changed, 39 deletions(-)
 
-diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
-index d54473341..0c2f389ea 100644
---- a/tests/i915/gem_exec_reloc.c
-+++ b/tests/i915/gem_exec_reloc.c
-@@ -415,6 +415,11 @@ static void many_active(int i915, const intel_ctx_t *ctx, unsigned engine)
- 	const uint64_t max = 2048;
- 	unsigned long count = 256;
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index 48526d29..25c5e495 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -986,34 +986,6 @@ bool gem_has_bsd2(int fd)
+ 	return has_param(fd, I915_PARAM_HAS_BSD2);
+ }
  
-+	/* Relocating in an active batch buffer doesn't work with the
-+	 * command parser
-+	 */
-+	igt_require(!gem_engine_has_cmdparser(i915, &ctx->cfg, engine));
-+
- 	igt_until_timeout(2) {
- 		uint64_t required, total;
+-struct local_i915_gem_get_aperture {
+-	__u64 aper_size;
+-	__u64 aper_available_size;
+-	__u64 version;
+-	__u64 map_total_size;
+-	__u64 stolen_total_size;
+-};
+-#define DRM_I915_GEM_GET_APERTURE	0x23
+-#define LOCAL_IOCTL_I915_GEM_GET_APERTURE DRM_IOR  (DRM_COMMAND_BASE + DRM_I915_GEM_GET_APERTURE, struct local_i915_gem_get_aperture)
+-
+-/**
+- * gem_total_stolen_size:
+- * @fd: open i915 drm file descriptor
+- *
+- * Feature test macro to query the kernel for the total stolen size.
+- *
+- * Returns: Total stolen memory.
+- */
+-uint64_t gem_total_stolen_size(int fd)
+-{
+-	struct local_i915_gem_get_aperture aperture;
+-
+-	memset(&aperture, 0, sizeof(aperture));
+-	do_ioctl(fd, LOCAL_IOCTL_I915_GEM_GET_APERTURE, &aperture);
+-
+-	return aperture.stolen_total_size;
+-}
+-
+ /**
+  * gem_has_softpin:
+  * @fd: open i915 drm file descriptor
+diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+index 689e6d53..0ed67b6e 100644
+--- a/lib/ioctl_wrappers.h
++++ b/lib/ioctl_wrappers.h
+@@ -89,17 +89,6 @@ int __gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
+ #define I915_GEM_DOMAIN_WC 0x80
+ #endif
  
-@@ -488,6 +493,11 @@ static void wide_active(int i915, const intel_ctx_t *ctx, unsigned engine)
- 	const uint64_t max = gem_aperture_size(i915) / 4096 / 2;
- 	unsigned long count = 256;
+-/**
+- * gem_require_stolen_support:
+- * @fd: open i915 drm file descriptor
+- *
+- * Test macro to query whether support for allocating objects from stolen
+- * memory is available. Automatically skips through igt_require() if not.
+- */
+-#define gem_require_stolen_support(fd) \
+-			igt_require(gem_create__has_stolen_support(fd) && \
+-				    (gem_total_stolen_size(fd) > 0))
+-
+ int gem_madvise(int fd, uint32_t handle, int state);
  
-+	/* Relocating in an active batch buffer doesn't work with the
-+	 * command parser
-+	 */
-+	igt_require(!gem_engine_has_cmdparser(i915, &ctx->cfg, engine));
-+
- 	igt_until_timeout(2) {
- 		uint64_t required, total;
- 
-@@ -517,6 +527,11 @@ static void active_spin(int fd, const intel_ctx_t *ctx, unsigned engine)
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	igt_spin_t *spin;
- 
-+	/* Relocating in an active batch buffer doesn't work with the
-+	 * command parser
-+	 */
-+	igt_require(!gem_engine_has_cmdparser(fd, &ctx->cfg, engine));
-+
- 	spin = igt_spin_new(fd,
- 			    .ctx = ctx,
- 			    .engine = engine,
+ void gem_userptr(int fd, void *ptr, uint64_t size, int read_only, uint32_t flags, uint32_t *handle);
 -- 
 2.31.1
 
