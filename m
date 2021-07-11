@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com
- [IPv6:2607:f8b0:4864:20::236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B67F6EB7B
- for <igt-dev@lists.freedesktop.org>; Sun, 11 Jul 2021 03:52:10 +0000 (UTC)
-Received: by mail-oi1-x236.google.com with SMTP id j65so12593835oih.5
- for <igt-dev@lists.freedesktop.org>; Sat, 10 Jul 2021 20:52:10 -0700 (PDT)
+Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com
+ [IPv6:2607:f8b0:4864:20::330])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 106CC6EB7B
+ for <igt-dev@lists.freedesktop.org>; Sun, 11 Jul 2021 03:52:12 +0000 (UTC)
+Received: by mail-ot1-x330.google.com with SMTP id
+ 59-20020a9d0ac10000b0290462f0ab0800so14413943otq.11
+ for <igt-dev@lists.freedesktop.org>; Sat, 10 Jul 2021 20:52:12 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Sat, 10 Jul 2021 22:51:59 -0500
-Message-Id: <20210711035204.802908-2-jason@jlekstrand.net>
+Date: Sat, 10 Jul 2021 22:52:01 -0500
+Message-Id: <20210711035204.802908-4-jason@jlekstrand.net>
 In-Reply-To: <20210711035204.802908-1-jason@jlekstrand.net>
 References: <20210711035204.802908-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/6] lib/intel_ctx: Add a
- intel_ctx_cfg_engine_class helper
+Subject: [igt-dev] [PATCH i-g-t 3/6] tests/i915/gem_ctx_persistence: Use
+ intel_ctx_t for hang subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,82 +28,109 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+We need this for proper cmdparser detection
+
 Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
 ---
- lib/intel_ctx.c | 42 +++++++++++++++++++++++++++---------------
- lib/intel_ctx.h |  1 +
- 2 files changed, 28 insertions(+), 15 deletions(-)
+ tests/i915/gem_ctx_persistence.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
-index 5495fa764..f28c15544 100644
---- a/lib/intel_ctx.c
-+++ b/lib/intel_ctx.c
-@@ -267,6 +267,32 @@ const intel_ctx_t *intel_ctx_create_all_physical(int fd)
- 	return intel_ctx_create(fd, &cfg);
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index 142bac28e..f514e2b78 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -334,8 +334,9 @@ static void test_nonpersistent_hang(int i915, const intel_ctx_cfg_t *cfg,
+ 	igt_spin_free(i915, spin);
  }
  
-+/**
-+ * intel_ctx_cfg_engine_class:
-+ * @cfg: an intel_ctx_cfg_t
-+ * @engine: an engine specifier
-+ *
-+ * Returns the class for the given engine.
-+ */
-+int intel_ctx_cfg_engine_class(const intel_ctx_cfg_t *cfg, unsigned int engine)
-+{
-+	if (cfg->load_balance) {
-+		if (engine == 0) {
-+			/* This is our virtual engine */
-+			return cfg->engines[0].engine_class;
-+		} else {
-+			/* This is a physical engine */
-+			igt_assert(engine - 1 < cfg->num_engines);
-+			return cfg->engines[engine - 1].engine_class;
-+		}
-+	} else if (cfg->num_engines > 0) {
-+		igt_assert(engine < cfg->num_engines);
-+		return cfg->engines[engine].engine_class;
-+	} else {
-+		return gem_execbuf_flags_to_engine_class(engine);
-+	}
-+}
-+
- /**
-  * intel_ctx_destroy:
-  * @fd: open i915 drm file descriptor
-@@ -292,19 +318,5 @@ void intel_ctx_destroy(int fd, const intel_ctx_t *ctx)
-  */
- unsigned int intel_ctx_engine_class(const intel_ctx_t *ctx, unsigned int engine)
+-static void test_nohangcheck_hostile(int i915)
++static void test_nohangcheck_hostile(int i915, const intel_ctx_cfg_t *cfg)
  {
--	if (ctx->cfg.load_balance) {
--		if (engine == 0) {
--			/* This is our virtual engine */
--			return ctx->cfg.engines[0].engine_class;
--		} else {
--			/* This is a physical engine */
--			igt_assert(engine - 1 < ctx->cfg.num_engines);
--			return ctx->cfg.engines[engine - 1].engine_class;
--		}
--	} else if (ctx->cfg.num_engines) {
--		igt_assert(engine < ctx->cfg.num_engines);
--		return ctx->cfg.engines[engine].engine_class;
--	} else {
--		return gem_execbuf_flags_to_engine_class(engine);
--	}
-+	return intel_ctx_cfg_engine_class(&ctx->cfg, engine);
++	const struct intel_execution_engine2 *e;
+ 	int dir;
+ 
+ 	cleanup(i915);
+@@ -350,15 +351,15 @@ static void test_nohangcheck_hostile(int i915)
+ 
+ 	igt_require(__enable_hangcheck(dir, false));
+ 
+-	for_each_physical_ring(e, i915) {
++	for_each_ctx_cfg_engine(i915, cfg, e) {
+ 		int64_t timeout = reset_timeout_ms * NSEC_PER_MSEC;
+-		uint32_t ctx = gem_context_create(i915);
++		const intel_ctx_t *ctx = intel_ctx_create(i915, cfg);
+ 		igt_spin_t *spin;
+ 
+-		spin = igt_spin_new(i915, ctx,
+-				    .engine = eb_ring(e),
++		spin = igt_spin_new(i915, .ctx = ctx,
++				    .engine = e->flags,
+ 				    .flags = IGT_SPIN_NO_PREEMPTION);
+-		gem_context_destroy(i915, ctx);
++		intel_ctx_destroy(i915, ctx);
+ 
+ 		igt_assert_eq(gem_wait(i915, spin->handle, &timeout), 0);
+ 
+@@ -369,8 +370,9 @@ static void test_nohangcheck_hostile(int i915)
+ 	close(dir);
  }
-diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
-index d4cb435a7..9649f6d96 100644
---- a/lib/intel_ctx.h
-+++ b/lib/intel_ctx.h
-@@ -52,6 +52,7 @@ typedef struct intel_ctx_cfg {
  
- intel_ctx_cfg_t intel_ctx_cfg_for_engine(unsigned int class, unsigned int inst);
- intel_ctx_cfg_t intel_ctx_cfg_all_physical(int fd);
-+int intel_ctx_cfg_engine_class(const intel_ctx_cfg_t *cfg, unsigned int engine);
+-static void test_nohangcheck_hang(int i915)
++static void test_nohangcheck_hang(int i915, const intel_ctx_cfg_t *cfg)
+ {
++	const struct intel_execution_engine2 *e;
+ 	int dir;
  
- /**
-  * intel_ctx_t:
+ 	cleanup(i915);
+@@ -387,15 +389,15 @@ static void test_nohangcheck_hang(int i915)
+ 
+ 	igt_require(__enable_hangcheck(dir, false));
+ 
+-	for_each_physical_ring(e, i915) {
++	for_each_ctx_cfg_engine(i915, cfg, e) {
+ 		int64_t timeout = reset_timeout_ms * NSEC_PER_MSEC;
+-		uint32_t ctx = gem_context_create(i915);
++		const intel_ctx_t *ctx = intel_ctx_create(i915, cfg);
+ 		igt_spin_t *spin;
+ 
+-		spin = igt_spin_new(i915, ctx,
+-				    .engine = eb_ring(e),
++		spin = igt_spin_new(i915, .ctx = ctx,
++				    .engine = e->flags,
+ 				    .flags = IGT_SPIN_INVALID_CS);
+-		gem_context_destroy(i915, ctx);
++		intel_ctx_destroy(i915, ctx);
+ 
+ 		igt_assert_eq(gem_wait(i915, spin->handle, &timeout), 0);
+ 
+@@ -1131,6 +1133,7 @@ static void exit_handler(int sig)
+ 
+ igt_main
+ {
++	const intel_ctx_cfg_t empty_cfg = {};
+ 	struct {
+ 		const char *name;
+ 		void (*func)(int fd, const intel_ctx_cfg_t *cfg,
+@@ -1182,9 +1185,9 @@ igt_main
+ 		test_userptr(i915);
+ 
+ 	igt_subtest("hostile")
+-		test_nohangcheck_hostile(i915);
++		test_nohangcheck_hostile(i915, &empty_cfg);
+ 	igt_subtest("hang")
+-		test_nohangcheck_hang(i915);
++		test_nohangcheck_hang(i915, &empty_cfg);
+ 
+ 	igt_subtest("heartbeat-stop")
+ 		test_noheartbeat_many(i915, 1, 0);
+@@ -1204,7 +1207,6 @@ igt_main
+ 		for (test = tests; test->name; test++) {
+ 			igt_subtest_with_dynamic_f("legacy-engines-%s",
+ 						   test->name) {
+-				const intel_ctx_cfg_t empty_cfg = {};
+ 				for_each_physical_ring(e, i915) {
+ 					igt_dynamic_f("%s", e->name) {
+ 						do_test(test->func, i915,
 -- 
 2.31.1
 
