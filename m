@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com
- [IPv6:2a00:1450:4864:20::22e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D8F389CD4
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Jul 2021 15:18:24 +0000 (UTC)
-Received: by mail-lj1-x22e.google.com with SMTP id r16so24827834ljk.9
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Jul 2021 08:18:24 -0700 (PDT)
+Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com
+ [IPv6:2607:f8b0:4864:20::32f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 64B5C89A9B
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Jul 2021 15:28:40 +0000 (UTC)
+Received: by mail-ot1-x32f.google.com with SMTP id
+ p12-20020a05683019ccb02904b7e9d93563so7177026otp.13
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Jul 2021 08:28:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210624172436.1467489-1-markyacoub@chromium.org>
- <CAJUqKUp1bk3b2-t4FRGGpNG2=9=__bvrjqy+Mx6O-YP5E_-OwQ@mail.gmail.com>
-In-Reply-To: <CAJUqKUp1bk3b2-t4FRGGpNG2=9=__bvrjqy+Mx6O-YP5E_-OwQ@mail.gmail.com>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Mon, 12 Jul 2021 11:18:12 -0400
-Message-ID: <CAJUqKUrA1-Vychs3fHs1RvA13ZW5JmiAg4WACX=a9Y2r2oBOBA@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH] Add .vscode to gitignore
+References: <20210710211923.784638-1-jason@jlekstrand.net>
+In-Reply-To: <20210710211923.784638-1-jason@jlekstrand.net>
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
+Date: Mon, 12 Jul 2021 17:28:28 +0200
+Message-ID: <CAKMK7uHiVDdz0b4TRRuKsFcrhoi_4idF9cSBEFiu_f=rAJgnAg@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_ctx_param: Test that you
+ can only set the VM once
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,40 +25,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Cc: Sean Paul <seanpaul@chromium.org>, Mark Yacoub <markyacoub@google.com>
+To: Jason Ekstrand <jason@jlekstrand.net>
+Cc: IGT development <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-friendly ping :))
-
-On Fri, Jul 2, 2021 at 10:12 AM Mark Yacoub <markyacoub@chromium.org> wrote:
+On Sat, Jul 10, 2021 at 11:19 PM Jason Ekstrand <jason@jlekstrand.net> wrote:
+> We're about to add this restriction to i915 so we should test for it
+> explicitly.
 >
-> On Thu, Jun 24, 2021 at 1:24 PM Mark Yacoub <markyacoub@chromium.org> wrote:
-> >
-> > From: Mark Yacoub <markyacoub@google.com>
-> >
-> > Given the popularity of vscode, .vscode is a directory that holds
-> > the personal vscode preferences.
-> >
-> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
-> > ---
-> >  .gitignore | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/.gitignore b/.gitignore
-> > index 88dd0338..119c80ba 100644
-> > --- a/.gitignore
-> > +++ b/.gitignore
-> > @@ -50,3 +50,5 @@ results
-> >  build
-> >  patches
-> >  Makefile
-> > +
-> > +.vscode
-> > \ No newline at end of file
-> > --
-> > 2.32.0.93.g670b81a890-goog
-> >
+> Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+
+Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+
+> ---
+>  tests/i915/gem_ctx_param.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/tests/i915/gem_ctx_param.c b/tests/i915/gem_ctx_param.c
+> index c795f1b45..3b79a3e5e 100644
+> --- a/tests/i915/gem_ctx_param.c
+> +++ b/tests/i915/gem_ctx_param.c
+> @@ -188,6 +188,15 @@ static void test_vm(int i915)
+>         gem_vm_destroy(i915, arg.value);
+>         igt_assert_eq(err, -EINVAL);
+>
+> +       /* Test that we can't set the VM twice */
+> +       arg.ctx_id = gem_context_create(i915);
+> +       arg.value = gem_vm_create(i915);
+> +       gem_context_set_param(i915, &arg);
+> +       err = __gem_context_set_param(i915, &arg);
+> +       gem_vm_destroy(i915, arg.value);
+> +       gem_context_destroy(i915, arg.ctx_id);
+> +       igt_assert_eq(err, -EINVAL);
+> +
+>         /* Test that we can't set the VM after we've done an execbuf */
+>         arg.ctx_id = gem_context_create(i915);
+>         spin = igt_spin_new(i915, .ctx_id = arg.ctx_id);
+> --
+> 2.31.1
+>
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
