@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com
- [IPv6:2607:f8b0:4864:20::b31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBFC889CF6
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Jul 2021 16:02:03 +0000 (UTC)
-Received: by mail-yb1-xb31.google.com with SMTP id v189so21314497ybg.3
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Jul 2021 09:02:03 -0700 (PDT)
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com
+ [IPv6:2607:f8b0:4864:20::735])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 42B6189D58
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Jul 2021 16:31:30 +0000 (UTC)
+Received: by mail-qk1-x735.google.com with SMTP id p202so2099966qka.12
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Jul 2021 09:31:30 -0700 (PDT)
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Mon, 12 Jul 2021 12:31:16 -0400
+Message-Id: <20210712163116.384942-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-References: <20210711035204.802908-1-jason@jlekstrand.net>
- <20210711035204.802908-7-jason@jlekstrand.net>
- <YOxZJxlJnx8erM7R@phenom.ffwll.local>
-In-Reply-To: <YOxZJxlJnx8erM7R@phenom.ffwll.local>
-From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Mon, 12 Jul 2021 11:01:51 -0500
-Message-ID: <CAOFGe94r-piaqosSUKsVY0u813KrQrz9YXmM5EFMta3FztdiCQ@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 6/6] tests/i915/gem_exec_reloc: Don't
- attempt active relocations with the command parser
+Subject: [igt-dev] [PATCH] tests/kms_concurrent: Replace fb modifier to
+ DRM_FORMAT_MOD_LINEAR
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,87 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Daniel Vetter <daniel@ffwll.ch>
-Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: robdclark@chromium.org, petri.latvala@intel.com, anson.jacob@amd.com, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Jul 12, 2021 at 10:00 AM Daniel Vetter <daniel@ffwll.ch> wrote:
->
-> On Sat, Jul 10, 2021 at 10:52:04PM -0500, Jason Ekstrand wrote:
-> > The command parser stalls waiting for the batch to be idle.  If it's
-> > blocked by a spinner, execbuf will timeout.
-> >
-> > Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
->
-> I think we should just ditch these tests as invalid. Can you pick the
-> right set of reverts from my series and just push them?
->
-> https://patchwork.freedesktop.org/series/91160/
+From: Mark Yacoub <markyacoub@google.com>
 
-Yeah, we can do that too.  Kind-of invalidates the need for the first
-4.  I went this way because I was trying to be minimalist and wasn't
-sure what happened with your reloc series.
+[Why]
+LOCAL_I915_FORMAT_MOD_X_TILED is unique to intel SoCs and is not
+supported on any other device.
 
---Jason
+[How]
+Replace LOCAL_I915_FORMAT_MOD_X_TILED by DRM_FORMAT_MOD_LINEAR which is
+supported on all other devices.
 
-> Cheers, Daniel
->
-> > ---
-> >  tests/i915/gem_exec_reloc.c | 15 +++++++++++++++
-> >  1 file changed, 15 insertions(+)
-> >
-> > diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
-> > index d54473341..0c2f389ea 100644
-> > --- a/tests/i915/gem_exec_reloc.c
-> > +++ b/tests/i915/gem_exec_reloc.c
-> > @@ -415,6 +415,11 @@ static void many_active(int i915, const intel_ctx_t *ctx, unsigned engine)
-> >       const uint64_t max = 2048;
-> >       unsigned long count = 256;
-> >
-> > +     /* Relocating in an active batch buffer doesn't work with the
-> > +      * command parser
-> > +      */
-> > +     igt_require(!gem_engine_has_cmdparser(i915, &ctx->cfg, engine));
-> > +
-> >       igt_until_timeout(2) {
-> >               uint64_t required, total;
-> >
-> > @@ -488,6 +493,11 @@ static void wide_active(int i915, const intel_ctx_t *ctx, unsigned engine)
-> >       const uint64_t max = gem_aperture_size(i915) / 4096 / 2;
-> >       unsigned long count = 256;
-> >
-> > +     /* Relocating in an active batch buffer doesn't work with the
-> > +      * command parser
-> > +      */
-> > +     igt_require(!gem_engine_has_cmdparser(i915, &ctx->cfg, engine));
-> > +
-> >       igt_until_timeout(2) {
-> >               uint64_t required, total;
-> >
-> > @@ -517,6 +527,11 @@ static void active_spin(int fd, const intel_ctx_t *ctx, unsigned engine)
-> >       struct drm_i915_gem_execbuffer2 execbuf;
-> >       igt_spin_t *spin;
-> >
-> > +     /* Relocating in an active batch buffer doesn't work with the
-> > +      * command parser
-> > +      */
-> > +     igt_require(!gem_engine_has_cmdparser(fd, &ctx->cfg, engine));
-> > +
-> >       spin = igt_spin_new(fd,
-> >                           .ctx = ctx,
-> >                           .engine = engine,
-> > --
-> > 2.31.1
-> >
-> > _______________________________________________
-> > igt-dev mailing list
-> > igt-dev@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
->
-> --
-> Daniel Vetter
-> Software Engineer, Intel Corporation
-> http://blog.ffwll.ch
+Tested on ChromeOS Trogdor[msm]
+
+Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+---
+ tests/kms_concurrent.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+index c3f29ec7..abe2ab75 100644
+--- a/tests/kms_concurrent.c
++++ b/tests/kms_concurrent.c
+@@ -187,8 +187,7 @@ prepare_planes(data_t *data, enum pipe pipe, int max_planes,
+ 	/* primary plane */
+ 	data->plane[primary->index] = primary;
+ 	create_fb_for_mode_position(data, mode, x, y, size, size,
+-				    LOCAL_I915_FORMAT_MOD_X_TILED,
+-				    max_planes, output);
++		DRM_FORMAT_MOD_LINEAR, max_planes, output);
+ 
+ 	igt_plane_set_fb(data->plane[primary->index], &data->fb[primary->index]);
+ 
+-- 
+2.32.0.93.g670b81a890-goog
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
