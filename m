@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E9B9989F97
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Jul 2021 23:59:16 +0000 (UTC)
-From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
-Date: Mon, 12 Jul 2021 17:03:19 -0700
-Message-Id: <20210713000319.73451-1-jose.souza@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2] tools/registers: Add missing registers
- relevant to debug PSR underruns
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 13 Jul 2021 00:31:37 -0000
+Message-ID: <162613629759.713.4251071501243158738@emeril.freedesktop.org>
+References: <20210713000319.73451-1-jose.souza@intel.com>
+In-Reply-To: <20210713000319.73451-1-jose.souza@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdG9vbHMv?=
+ =?utf-8?q?registers=3A_Add_missing_registers_relevant_to_debug_PSR_underr?=
+ =?utf-8?q?uns_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,56 +15,142 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0301630924=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: =?utf-8?q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbSBUR0wrLCB0aGVyZSBpcyBubyBlRFAgdHJhbnNjb2RlciBpbnN0ZWFkIGFsbCB0cmFuc2Nv
-ZGVycyBzdXBwb3J0cwplRFAgcGFuZWxzIGJ1dCBpbiA5OSUgb2YgdGhlIGNhc2VzIGl0IGlzIHVz
-ZWQgaW4gcGlwZS90cmFuc2NvZGVyIEEuCkFsc28gdGhlcmUgaXMgY291cGxlIG9mIG5ldyByZWdp
-c3RlcnMgZm9yIFBTUjIgc2VsZWN0aXZlIGZldGNoLgoKdjI6Ci0gYWRkaW5nIFZJREVPIERJUAoK
-U2lnbmVkLW9mZi1ieTogSm9zw6kgUm9iZXJ0byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5j
-b20+Ci0tLQogdG9vbHMvcmVnaXN0ZXJzL2ljbF9kZWx0YS50eHQgICAgICAgfCAgMyArKysKIHRv
-b2xzL3JlZ2lzdGVycy9za2xfZGlzcGxheS50eHQgICAgIHwgIDggKysrKysrKysKIHRvb2xzL3Jl
-Z2lzdGVycy90aWdlcmxha2VfZGVsdGEudHh0IHwgMTYgKysrKysrKysrKysrKysrKwogMyBmaWxl
-cyBjaGFuZ2VkLCAyNyBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvdG9vbHMvcmVnaXN0ZXJz
-L2ljbF9kZWx0YS50eHQgYi90b29scy9yZWdpc3RlcnMvaWNsX2RlbHRhLnR4dAppbmRleCAwMzIz
-Y2ZlYWEuLmQ3ZjA4NmU2MSAxMDA2NDQKLS0tIGEvdG9vbHMvcmVnaXN0ZXJzL2ljbF9kZWx0YS50
-eHQKKysrIGIvdG9vbHMvcmVnaXN0ZXJzL2ljbF9kZWx0YS50eHQKQEAgLTIxNCw2ICsyMTQsOSBA
-QAogKCdQTEFORV9XTV9UUkFOU181X0MnLCAnMHg3MjQ2OCcsICcnKQogKCdQTEFORV9XTV9UUkFO
-U182X0MnLCAnMHg3MjQ2OCcsICcnKQogKCdQTEFORV9XTV9UUkFOU183X0MnLCAnMHg3MjQ2OCcs
-ICcnKQorKCdQSVBFX1NUQVRVU19BJywgJzB4NzAwNTgnLCAnJykKKygnUElQRV9TVEFUVVNfQics
-ICcweDcxMDU4JywgJycpCisoJ1BJUEVfU1RBVFVTX0MnLCAnMHg3MjA1OCcsICcnKQogIyBUUkFO
-U0NPREVSX0RTSV9ERElfQ09OVFJPTAogKCdUUkFOU19ERElfRlVOQ19DVExfRFNJMCcsICcweDZi
-NDAwJywgJycpCiAoJ1RSQU5TX0RESV9GVU5DX0NUTF9EU0kxJywgJzB4NmJjMDAnLCAnJykKZGlm
-ZiAtLWdpdCBhL3Rvb2xzL3JlZ2lzdGVycy9za2xfZGlzcGxheS50eHQgYi90b29scy9yZWdpc3Rl
-cnMvc2tsX2Rpc3BsYXkudHh0CmluZGV4IGNiMWEzZTkzOC4uNjBlN2FhOTk2IDEwMDY0NAotLS0g
-YS90b29scy9yZWdpc3RlcnMvc2tsX2Rpc3BsYXkudHh0CisrKyBiL3Rvb2xzL3JlZ2lzdGVycy9z
-a2xfZGlzcGxheS50eHQKQEAgLTQwNCwzICs0MDQsMTEgQEAKICgnV01fTElORVRJTUVfQicsICcw
-eDQ1Mjc0JywgJycpCiAoJ1dNX0xJTkVUSU1FX0MnLCAnMHg0NTI3OCcsICcnKQogKCdXTV9NSVND
-JywgJzB4NDUyNjAnLCAnJykKKyMgVklERU8gRElQCisoJ1ZJREVPX0RJUF9DVExfQScsICcweDYw
-MjAwJywgJycpCisoJ1ZJREVPX0RJUF9DVExfQicsICcweDYxMjAwJywgJycpCisoJ1ZJREVPX0RJ
-UF9DVExfQycsICcweDYyMjAwJywgJycpCisKKyMgTUlTQworKCdEQ19TVEFURV9FTicsICcweDQ1
-NTA0JywgJycpCisoJ0RDX1NUQVRFX0RFQlVHJywgJzB4NDU1MjAnLCAnJykKZGlmZiAtLWdpdCBh
-L3Rvb2xzL3JlZ2lzdGVycy90aWdlcmxha2VfZGVsdGEudHh0IGIvdG9vbHMvcmVnaXN0ZXJzL3Rp
-Z2VybGFrZV9kZWx0YS50eHQKaW5kZXggYzdmYzJkYzI0Li5mYmJhMTRmN2EgMTAwNjQ0Ci0tLSBh
-L3Rvb2xzL3JlZ2lzdGVycy90aWdlcmxha2VfZGVsdGEudHh0CisrKyBiL3Rvb2xzL3JlZ2lzdGVy
-cy90aWdlcmxha2VfZGVsdGEudHh0CkBAIC0zMTcsMyArMzE3LDE5IEBACiAjIFdBVEVSTUFSSwog
-KCdXTV9MSU5FVElNRV9EJywgJzB4NDUyN2MnLCAnJykKIAorIyBQU1IKKygnVFJBTlNfUFNSX0NU
-TF9BJywgICAgICAgICAgICAnMHg2MDgwMCcsICcnKQorKCdUUkFOU19QU1JfU1RBVFVTX0EnLCAg
-ICAgICAgICcweDYwODQwJywgJycpCisoJ1RSQU5TX1BTUl9FVkVOVF9BJywgICAgICAgICAgJzB4
-NjA4NDgnLCAnJykKKygnVFJBTlNfUFNSX01BU0tfQScsICAgICAgICAgICAnMHg2MDg2MCcsICcn
-KQorKCdUUkFOU19QU1IyX0NUTF9BJywgICAgICAgICAgICcweDYwOTAwJywgJycpCisoJ1RSQU5T
-X1BTUjJfTUFOX1RSS19DVExfQScsICAgJzB4NjA5MTAnLCAnJykKKygnVFJBTlNfUFNSMl9TVEFU
-VVNfQScsICAgICAgICAnMHg2MDk0MCcsICcnKQorKCdQTEFORV9TRUxfRkVUQ0hfQ1RMXzFfQScs
-ICAgICcweDcwODkwJywgJycpCisoJ1BMQU5FX1NFTF9GRVRDSF9QT1NfMV9BJywgICAgJzB4NzA4
-OTQnLCAnJykKKygnUExBTkVfU0VMX0ZFVENIX1NJWkVfMV9BJywgICAnMHg3MDg5OCcsICcnKQor
-KCdQTEFORV9TRUxfRkVUQ0hfT0ZGU0VUXzFfQScsICcweDcwODlDJywgJycpCisKKyMgTUlTQwor
-KCdETUNfREVCVUdfREM1X0NPVU5UJywgJzB4MTAxMDg0JywgJycpCisoJ0RNQ19ERUJVR19EQzZf
-Q09VTlQnLCAnMHgxMDEwODgnLCAnJykKLS0gCjIuMzIuMAoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9pZ3QtZGV2Cg==
+--===============0301630924==
+Content-Type: multipart/alternative;
+ boundary="===============5664934889620230172=="
+
+--===============5664934889620230172==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tools/registers: Add missing registers relevant to debug PSR underruns (rev2)
+URL   : https://patchwork.freedesktop.org/series/92387/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10335 -> IGTPW_6016
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6016/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6016 that come from known issues:
+
+### IGT changes ###
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+
+
+Participating hosts (40 -> 39)
+------------------------------
+
+  Missing    (1): fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6134 -> IGTPW_6016
+
+  CI-20190529: 20190529
+  CI_DRM_10335: 6420d4c905cfd9a9098c7ab339992eafa628de4d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6016: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6016/index.html
+  IGT_6134: cd63c83e23789eb194d38b8d272247a88122f2f6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6016/index.html
+
+--===============5664934889620230172==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tools/registers: Add missing registers relevant to debug PSR underruns (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/92387/">https://patchwork.freedesktop.org/series/92387/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6016/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6016/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10335 -&gt; IGTPW_6016</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6016/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6016 that come from known issues:</p>
+<h3>IGT changes</h3>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (40 -&gt; 39)</h2>
+<p>Missing    (1): fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6134 -&gt; IGTPW_6016</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10335: 6420d4c905cfd9a9098c7ab339992eafa628de4d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6016: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6016/index.html<br />
+  IGT_6134: cd63c83e23789eb194d38b8d272247a88122f2f6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5664934889620230172==--
+
+--===============0301630924==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0301630924==--
