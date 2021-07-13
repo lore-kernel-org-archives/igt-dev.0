@@ -1,206 +1,169 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Tue, 13 Jul 2021 17:14:17 +0000
-Message-ID: <BY5PR11MB43728F704DB5A7170101B1A189149@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <1622176443-12682-1-git-send-email-vidya.srinivas@intel.com>
- <YLTv/Z8j9rCf2koN@intel.com>
- <BY5PR11MB4372AB95A5AC6DE9AC0FA552893F9@BY5PR11MB4372.namprd11.prod.outlook.com>
- <SN6PR11MB34216722158A9BCB2AC4CCE9DF039@SN6PR11MB3421.namprd11.prod.outlook.com>
-In-Reply-To: <SN6PR11MB34216722158A9BCB2AC4CCE9DF039@SN6PR11MB3421.namprd11.prod.outlook.com>
-Content-Language: en-US
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com
+ [IPv6:2a00:1450:4864:20::434])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED8FF6E120
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Jul 2021 19:52:09 +0000 (UTC)
+Received: by mail-wr1-x434.google.com with SMTP id r11so162291wro.9
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Jul 2021 12:52:09 -0700 (PDT)
+Date: Tue, 13 Jul 2021 21:52:06 +0200
+From: Daniel Vetter <daniel@ffwll.ch>
+Message-ID: <YO3u5irBRnR2F7uC@phenom.ffwll.local>
+References: <20210711061211.2879015-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Subject: Re: [Intel-gfx] [igt-dev] [PATCH i-g-t] [RFC] tests/kms_prime:
- Aligned pitch to 64 byte for Intel platforms
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: "Surendrakumar Upadhyay, TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>, =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "Lin,
- Charlton" <charlton.lin@intel.com>
+Content-Disposition: inline
+In-Reply-To: <20210711061211.2879015-1-lucas.demarchi@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 0/9] Start cleanup of local
+ macros/structs
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hello All,
+On Sat, Jul 10, 2021 at 11:12:02PM -0700, Lucas De Marchi wrote:
+> We have a lot of LOCAL leftovers because:
+> 
+> a) we needed a test before landing the kernel API, or
+> b) in the past we didn't copy the kernel headers, or
+> c) it's done everywhere, so people just copy and paste
+> 
+> There are still some lingering in there, but this should cover the major
+> part.
 
-Very sorry to bother you all again. Kindly can you help so that we can clos=
-e on this please?
-We have submitted both IGT and kernel patches. If none are okay, should we =
-skip the subtest for panels which have width not 64 byte aligned for Intel =
-platforms?
+This is awesome, thanks for doing it. On the series.
 
-https://patchwork.freedesktop.org/patch/435794/  - IGT patch (we are aligni=
-ng width itself as workaround due to missing alignment in VGEM before reach=
-ing i915)
-https://patchwork.freedesktop.org/patch/436199/  - Kernel patch
+Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-Tejas has submitted another solution https://patchwork.freedesktop.org/patc=
-h/441967/ (256B alignment) - this too works.
-
-Regards
-Vidya
-
------Original Message-----
-From: Surendrakumar Upadhyay, TejaskumarX <tejaskumarx.surendrakumar.upadhy=
-ay@intel.com> =
-
-Sent: Monday, June 28, 2021 4:39 PM
-To: Srinivas, Vidya <vidya.srinivas@intel.com>; Ville Syrj=E4l=E4 <ville.sy=
-rjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org; intel-gfx@lists.freedesktop.org; Lin, Ch=
-arlton <charlton.lin@intel.com>
-Subject: RE: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_prime: Aligned pitch t=
-o 64 byte for Intel platforms
-
-
-
-> -----Original Message-----
-> From: Intel-gfx <intel-gfx-bounces@lists.freedesktop.org> On Behalf Of =
-
-> Srinivas, Vidya
-> Sent: 31 May 2021 20:18
-> To: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> Cc: igt-dev@lists.freedesktop.org; intel-gfx@lists.freedesktop.org; =
-
-> Lin, Charlton <charlton.lin@intel.com>
-> Subject: Re: [Intel-gfx] [igt-dev] [PATCH i-g-t] [RFC] =
-
-> tests/kms_prime: Aligned pitch to 64 byte for Intel platforms
-> =
-
-> Hello Ville,
-> =
-
-> Thank you very much.
-> Before reaching our i915's i915_gem_dumb_create, it goes to =
-
-> vgem_gem_dumb_create for kms_prime.
-> =
-
-> The pitch gets calculated there and it is not 64 byte aligned. Due to =
-
-> this, intel_framebuffer_init reports "pitch must be 64 byte aligned"
-> and framebuffer creation fails. I tried submitting vgem patch where 64 =
-
-> byte alignment can be done in vgem_gem_dumb_create and that also =
-
-> passes. But we did not get approval yet as few of them felt, vgem is =
-
-> generic and other platforms might fail if we do 64 byte alignment there.
-> =
-
-> Kindly suggest. Thanks a lot.
-> =
-
-> Regards
-> Vidya
-> =
-
-> -----Original Message-----
-> From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> Sent: Monday, May 31, 2021 7:48 PM
-> To: Srinivas, Vidya <vidya.srinivas@intel.com>
-> Cc: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org; =
-
-> Lin, Charlton <charlton.lin@intel.com>
-> Subject: Re: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_prime: Aligned =
-
-> pitch to 64 byte for Intel platforms
-> =
-
-> On Fri, May 28, 2021 at 10:04:03AM +0530, Vidya Srinivas wrote:
-> > For Intel platforms, pitch needs to be 64 byte aligned.
-> > Kernel code vgem_gem_dumb_create which is platform generic code
-> doesnt
-> > do the alignment. This causes frame buffer creation to fail on Intel =
-
-> > platforms where the pitch is not 64 byte aligned.
-> >
-> > tests: test run on Intel platforms with panel resolution 1366x768
-> >
-> > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> > ---
-> >  tests/kms_prime.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/tests/kms_prime.c b/tests/kms_prime.c index
-> > 8cb2ca2a9dc3..fdc941fe8100 100644
-> > --- a/tests/kms_prime.c
-> > +++ b/tests/kms_prime.c
-> > @@ -51,6 +51,8 @@ static struct {
-> >  	{ .r =3D 1.0, .g =3D 0.0, .b =3D 0.0, .color =3D 0xffff0000 },  };
-> >
-> > +bool check_platform;
-> > +
-> >  IGT_TEST_DESCRIPTION("Prime tests, focusing on KMS side");
-> >
-> >  static bool has_prime_import(int fd) @@ -101,7 +103,7 @@ static =
-
-> > void prepare_scratch(int exporter_fd, struct
-> dumb_bo *scratch,
-> >  	scratch->bpp =3D 32;
-> >
-> >  	scratch->handle =3D kmstest_dumb_create(exporter_fd,
-> > -			scratch->width,
-> > +			check_platform? ALIGN(scratch->width, 64): scratch-
-> >width,
-> =
-
-> The dumb_create ioctl already does this for us.
-
-I915_dumb_create does it for us but "vgem_gem_dumb_create" does not do 64 A=
-LIGN. And kms_prime is using "vgem_gem_dumb_create" never call i915 dumb_cr=
-eate() as the IGT creates buffer through VGEM driver, see below IGT snippet=
- :
-
-/* ANY =3D anything that is not VGEM */
-                first_fd =3D __drm_open_driver_another(0, DRIVER_ANY | DRIV=
-ER_VGEM);
-                igt_require(first_fd >=3D 0);
-
-                second_fd =3D __drm_open_driver_another(1, DRIVER_ANY | DRI=
-VER_VGEM);
-
-Thanks,
-Tejas
-> =
-
-> >  			scratch->height,
-> >  			scratch->bpp,
-> >  			&scratch->pitch,
-> > @@ -262,6 +264,7 @@ igt_main
-> >
-> >  		/* ANY =3D anything that is not VGEM */
-> >  		first_fd =3D __drm_open_driver_another(0, DRIVER_ANY |
-> DRIVER_VGEM);
-> > +		check_platform =3D is_i915_device(first_fd);
-> >  		igt_require(first_fd >=3D 0);
-> >
-> >  		second_fd =3D __drm_open_driver_another(1, DRIVER_ANY |
-> DRIVER_VGEM);
-> > --
-> > 2.7.4
-> >
-> > _______________________________________________
-> > igt-dev mailing list
-> > igt-dev@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
-> =
-
-> --
-> Ville Syrj=E4l=E4
-> Intel
+> 
+> v2: Rebase
+> 
+> Lucas De Marchi (9):
+>   include/drm-uapi: sync kernel headers
+>   Remove local copies of I915 macros
+>   tests/i915/gem_mmap_wc: drop LOCAL_IOCTL_I915_GEM_MMAP_v2
+>   lib/ioctl_wrappers: drop gem_require_stolen_support()
+>   benchmarks/gem_exec_tracer: nuke LOCAL_IOCTL_I915_GEM_EXECBUFFER2_WR
+>   benchmarks/gem_busy: nuke LOCAL_IOCTL_SYNCOBJ_CREATE
+>   benchmarks/gem_busy: nuke LOCAL_IOCTL_SYNCOBJ_WAIT
+>   Nuke local versions of DRM_FORMAT and DRM_MODE
+>   tests/kms_sequence: nuke local drm definitions
+> 
+>  benchmarks/gem_busy.c             |  25 +--
+>  benchmarks/gem_exec_tracer.c      |   5 +-
+>  include/drm-uapi/amdgpu_drm.h     |  93 +++++++++--
+>  include/drm-uapi/drm.h            | 250 +++++++++++++++++++++++-------
+>  include/drm-uapi/drm_fourcc.h     |  74 ++++++++-
+>  include/drm-uapi/drm_mode.h       | 195 +++++++++++++++++------
+>  include/drm-uapi/etnaviv_drm.h    |   3 +
+>  include/drm-uapi/exynos_drm.h     |   2 +-
+>  include/drm-uapi/lima_drm.h       | 176 +++++++++++++++++++++
+>  include/drm-uapi/msm_drm.h        |  32 +++-
+>  include/drm-uapi/nouveau_drm.h    |   1 +
+>  include/drm-uapi/panfrost_drm.h   |   1 +
+>  include/drm-uapi/virtgpu_drm.h    |  39 ++++-
+>  include/drm-uapi/vmwgfx_drm.h     |  33 +++-
+>  lib/igt_fb.c                      |  68 ++++----
+>  lib/ioctl_wrappers.c              |  28 ----
+>  lib/ioctl_wrappers.h              |  45 ------
+>  tests/amdgpu/amd_bypass.c         |   2 +-
+>  tests/debugfs_test.c              |   2 +-
+>  tests/drm_read.c                  |   2 +-
+>  tests/i915/gem_eio.c              |   2 +-
+>  tests/i915/gem_exec_reloc.c       |   2 +-
+>  tests/i915/gem_mmap_wc.c          |  15 +-
+>  tests/i915/i915_fb_tiling.c       |   2 +-
+>  tests/i915/i915_getparams_basic.c |   6 +-
+>  tests/i915/i915_pm_backlight.c    |   2 +-
+>  tests/i915/i915_pm_dc.c           |   4 +-
+>  tests/i915/i915_pm_lpsp.c         |   2 +-
+>  tests/i915/i915_pm_rpm.c          |  16 +-
+>  tests/i915/perf_pmu.c             |   2 +-
+>  tests/kms_3d.c                    |   2 +-
+>  tests/kms_addfb_basic.c           |  68 ++++----
+>  tests/kms_async_flips.c           |   8 +-
+>  tests/kms_atomic.c                |   4 +-
+>  tests/kms_atomic_interruptible.c  |   6 +-
+>  tests/kms_atomic_transition.c     |  12 +-
+>  tests/kms_big_fb.c                |   4 +-
+>  tests/kms_big_joiner.c            |   2 +-
+>  tests/kms_busy.c                  |   6 +-
+>  tests/kms_ccs.c                   |  18 +--
+>  tests/kms_chamelium.c             |  26 ++--
+>  tests/kms_color.c                 |  20 +--
+>  tests/kms_color_chamelium.c       |  24 +--
+>  tests/kms_concurrent.c            |   4 +-
+>  tests/kms_content_protection.c    |   4 +-
+>  tests/kms_cursor_crc.c            |  12 +-
+>  tests/kms_cursor_edge_walk.c      |   4 +-
+>  tests/kms_cursor_legacy.c         |   2 +-
+>  tests/kms_dither.c                |   2 +-
+>  tests/kms_dp_dsc.c                |   2 +-
+>  tests/kms_dp_tiled_display.c      |   2 +-
+>  tests/kms_draw_crc.c              |  24 +--
+>  tests/kms_fbcon_fbt.c             |   2 +-
+>  tests/kms_fence_pin_leak.c        |   4 +-
+>  tests/kms_flip.c                  |   4 +-
+>  tests/kms_flip_event_leak.c       |   4 +-
+>  tests/kms_flip_scaled_crc.c       |  28 ++--
+>  tests/kms_flip_tiling.c           |  48 +++---
+>  tests/kms_frontbuffer_tracking.c  |  10 +-
+>  tests/kms_hdmi_inject.c           |   4 +-
+>  tests/kms_invalid_dotclock.c      |   2 +-
+>  tests/kms_lease.c                 | 109 +++----------
+>  tests/kms_mmap_write_crc.c        |   4 +-
+>  tests/kms_multipipe_modeset.c     |   2 +-
+>  tests/kms_panel_fitting.c         |  10 +-
+>  tests/kms_pipe_crc_basic.c        |   8 +-
+>  tests/kms_plane.c                 |  10 +-
+>  tests/kms_plane_alpha_blend.c     |  20 +--
+>  tests/kms_plane_lowres.c          |   8 +-
+>  tests/kms_plane_multiple.c        |  12 +-
+>  tests/kms_plane_scaling.c         |  20 +--
+>  tests/kms_prime.c                 |   4 +-
+>  tests/kms_properties.c            |   2 +-
+>  tests/kms_psr.c                   |   6 +-
+>  tests/kms_psr2_sf.c               |  14 +-
+>  tests/kms_psr2_su.c               |   4 +-
+>  tests/kms_pwrite_crc.c            |   4 +-
+>  tests/kms_rmfb.c                  |   4 +-
+>  tests/kms_rotation_crc.c          |  64 ++++----
+>  tests/kms_sequence.c              |  40 ++---
+>  tests/kms_setmode.c               |   2 +-
+>  tests/kms_universal_plane.c       |  24 +--
+>  tests/kms_vblank.c                |   2 +-
+>  tests/kms_vrr.c                   |   4 +-
+>  tests/nouveau_crc.c               |   4 +-
+>  tests/prime_mmap_kms.c            |   2 +-
+>  tests/prime_vgem.c                |   2 +-
+>  tests/testdisplay.c               |   8 +-
+>  tools/intel_dp_compliance.c       |   8 +-
+>  tools/intel_residency.c           |   4 +-
+>  tools/msm_dp_compliance.c         |   4 +-
+>  91 files changed, 1173 insertions(+), 727 deletions(-)
+>  create mode 100644 include/drm-uapi/lima_drm.h
+> 
+> -- 
+> 2.31.1
+> 
 > _______________________________________________
-> Intel-gfx mailing list
-> Intel-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
