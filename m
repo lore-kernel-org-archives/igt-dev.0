@@ -1,19 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com
- [IPv6:2a00:1450:4864:20::12d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52C0F6E0F4
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Jul 2021 16:26:35 +0000 (UTC)
-Received: by mail-lf1-x12d.google.com with SMTP id b26so18954939lfo.4
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Jul 2021 09:26:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210713120016.463320-1-stylon.wang@amd.com>
- <20210713120016.463320-2-stylon.wang@amd.com>
-In-Reply-To: <20210713120016.463320-2-stylon.wang@amd.com>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Tue, 13 Jul 2021 12:26:22 -0400
-Message-ID: <CAJUqKUo7VQcHZmet3J9MYZi5uh03Qh4AP2Qq93B8Z1E9Ns5vRw@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/amdgpu: New ASSR test on
- DP/eDP links
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 13 Jul 2021 16:39:30 -0000
+Message-ID: <162619437086.712.8382783174994311294@emeril.freedesktop.org>
+References: <20210527140732.5762-1-daniel.vetter@ffwll.ch>
+In-Reply-To: <20210527140732.5762-1-daniel.vetter@ffwll.ch>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?vgem=5Fbasic=3A_Fix_unload_testcase_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,322 +14,420 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0423795162=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Stylon Wang <stylon.wang@amd.com>
-Cc: Petri Latvala <petri.latvala@intel.com>, Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, Anson Jacob <Anson.Jacob@amd.com>, Nicholas Choi <Nicholas.Choi@amd.com>, Mark Yacoub <markyacoub@google.com>
+To: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jul 13, 2021 at 8:00 AM Stylon Wang <stylon.wang@amd.com> wrote:
->
-> Check if ASSR is correctly disabled or enabled on DP/eDP links.
->
-> Signed-off-by: Stylon Wang <stylon.wang@amd.com>
-> ---
->  tests/amdgpu/amd_assr.c  | 266 +++++++++++++++++++++++++++++++++++++++
->  tests/amdgpu/meson.build |   1 +
->  2 files changed, 267 insertions(+)
->  create mode 100644 tests/amdgpu/amd_assr.c
->
-> diff --git a/tests/amdgpu/amd_assr.c b/tests/amdgpu/amd_assr.c
-> new file mode 100644
-> index 00000000..bcddbaad
-> --- /dev/null
-> +++ b/tests/amdgpu/amd_assr.c
-> @@ -0,0 +1,266 @@
-> +/*
-> + * Copyright 2021 Advanced Micro Devices, Inc.
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-> + * OTHER DEALINGS IN THE SOFTWARE.
-> + */
-> +
-> +#include "igt.h"
-> +#include "igt_sysfs.h"
-> +#include <dirent.h>
-> +#include <fcntl.h>
-> +#include <limits.h>
-> +#include <sys/types.h>
-> +#include <sys/stat.h>
-> +
-> +IGT_TEST_DESCRIPTION("Check if ASSR is enabled on eDP links that support"
-> +                    "the display authentication by changing scrambling sequence."
-> +                    "The test also covers embedded and non-removable "
-> +                    "displays that appears as DP.");
-> +
-> +/* Common test data. */
-> +typedef struct data {
-> +       igt_display_t display;
-> +       igt_plane_t *primary;
-> +       int fd;
-> +} data_t;
-> +
-> +/* Common test setup. */
-> +static void test_init(data_t *data)
-> +{
-> +       igt_display_reset(&data->display);
-> +}
-> +
-> +/* Common test cleanup. */
-> +static void test_fini(data_t *data)
-> +{
-> +       igt_display_reset(&data->display);
-> +}
-> +
-> +static char *find_aux_dev(data_t *data, igt_output_t *output)
-> +{
-> +       char sysfs_name[PATH_MAX] = { 0 };
-> +       /* +7 only to get rid of snprintf_chk warning.
-> +        * Path name cannot exceed the size of PATH_MAX anyway.
-> +        */
-> +       char conn_dir_name[PATH_MAX+7] = { 0 };
-> +       static char aux_name[PATH_MAX] = { 0 };
-I'm not comfortable with how this is done. It feels like a hack to me
-using a static variable to maintain its value when returned. It feels
-dangerous especially if you happen to call the function twice.
-I'd recommend an old school way, maybe like pass in aux_name to
-find_aux_dev and fill it up here.
-> +       DIR *dir;
-> +       struct dirent *dirent;
-> +
-> +       if(igt_sysfs_path(data->fd, sysfs_name, sizeof(sysfs_name))) {
-> +                       snprintf(conn_dir_name, sizeof(conn_dir_name),
-> +                                       "%s%scard0%s%s",
-> +                                       sysfs_name, "/", "-", output->name);
-> +       }
-> +
-> +       dir = opendir(conn_dir_name);
-> +       if (!dir)
-> +               return NULL;
-> +
-> +       while((dirent = readdir(dir))) {
-> +               if (strncmp(dirent->d_name, "drm_dp_aux", sizeof("drm_dp_aux")-1))
-> +                       continue;
-> +
-> +               strncpy(aux_name, dirent->d_name, sizeof(aux_name));
-> +               break;
-> +       }
-> +
-> +       closedir(dir);
-> +
-> +       if (aux_name[0])
-> +               return aux_name;
-> +       else
-> +               return NULL;
-> +}
-> +
-> +static void parse_dpcd(const char *aux_dev, bool *assr_supported, bool *assr_enabled)
-> +{
-> +       char aux_name[256];
-> +       char dpcd[2];
-> +       int aux_fd;
-> +
-> +       snprintf(aux_name, sizeof(aux_name), "/dev/%s", aux_dev);
-> +
-> +       igt_assert((aux_fd = open(aux_name, O_RDONLY)) >= 0);
-> +
-> +       /* Refer to section 3.5 of VESA eDP standard v1.4b:
-> +        * Display Authentication and Content Protection Support
-> +        */
-> +
-> +       /* DPCD register 0x0D, eDP_CONFIGURATION_CAP
-> +        * Bit 0 is ALTERNATE_SCRAMBLER_RESET_CAPABLE,
-> +        * indicating if eDP device can use ASSR.
-> +        */
-> +       igt_assert(lseek(aux_fd, 0x0D, SEEK_SET));
-> +       igt_assert(read(aux_fd, &dpcd[0], 1) == 1);
-> +       *assr_supported = dpcd[0] & 0x01;
-> +
-> +       /* DPCD register 0x10A, eDP_CONFIGURATION_SET
-> +        * Bit 0 is ALTERNATE_SCRAMBLER_RESET_ENABLE,
-> +        * indicating if ASSR is enabled on the eDP device
-> +        */
-> +       igt_assert(lseek(aux_fd, 0x10A, SEEK_SET));
-> +       igt_assert(read(aux_fd, &dpcd[1], 1) == 1);
-> +       *assr_enabled = dpcd[1] & 0x01;
-> +
-> +       close(aux_fd);
-> +}
-> +
-> +static bool get_internal_display_flag(data_t *data, igt_output_t *output)
-> +{
-> +       char buf[256];
-> +       char *start_loc;
-> +       int fd, res;
-> +       int internal_flag;
-> +
-> +       fd = igt_debugfs_connector_dir(data->fd, output->name, O_RDONLY);
-> +       if (fd < 0)
-> +               return false;
-> +
-> +       res = igt_debugfs_simple_read(fd, "internal_display", buf, sizeof(buf));
-> +       if (res <= 0) {
-> +               close(fd);
-> +               return false;
-> +       }
-> +
-> +       close(fd);
-> +
-> +       igt_assert(start_loc = strstr(buf, "Internal: "));
-> +       igt_assert_eq(sscanf(start_loc, "Internal: %u", &internal_flag), 1);
-> +
-> +       return (bool)internal_flag;
-> +}
-> +
-> +static void present_visual_pattern(data_t *data, igt_output_t *output)
-> +{
-> +       igt_plane_t *primary;
-> +       igt_pipe_t *pipe;
-> +       drmModeModeInfo *mode;
-> +       igt_fb_t fb;
-> +       cairo_t *cr;
-> +
-> +       mode = igt_output_get_mode(output);
-> +       igt_assert(mode);
-> +
-> +       pipe = &data->display.pipes[PIPE_A];
-> +       primary =
-> +               igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +       igt_output_set_pipe(output, PIPE_A);
-> +
-> +       igt_create_fb(data->fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888, 0, &fb);
-> +       cr = igt_get_cairo_ctx(fb.fd, &fb);
-> +       igt_paint_test_pattern(cr, fb.width, fb.height);
-> +
-> +       igt_put_cairo_ctx(cr);
-> +
-> +       igt_plane_set_fb(primary, &fb);
-> +       igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +       /* useful for visual inspection on artifacts */
-> +       igt_debug_wait_for_keypress("assr");
-> +
-> +       igt_plane_set_fb(primary, NULL);
-> +       igt_remove_fb(data->fd, &fb);
-> +       igt_output_set_pipe(output, PIPE_NONE);
-> +       igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +}
-> +
-> +static void test_assr(data_t *data, igt_output_t *output)
-> +{
-> +       drmModeConnector *connector = output->config.connector;
-> +       int connector_type = connector->connector_type;
-> +       const char *aux_dev;
-> +       bool assr_supported = false, assr_enabled = false;
-> +       bool is_internal_display;
-> +
-> +       igt_info("Test ASSR on link %s\n", output->name);
-> +
-> +       aux_dev = find_aux_dev(data, output);
-> +       igt_info("Link %s aux %s\n", output->name, aux_dev);
-> +       igt_require_f(aux_dev, "Cannot find AUX device for link %s\n", output->name);
-> +
-> +       parse_dpcd(aux_dev, &assr_supported, &assr_enabled);
-> +
-> +       is_internal_display = get_internal_display_flag(data, output);
-> +
-> +       igt_info("Link %s internal: %d, ASSR supported: %d, ASSR enabled: %d\n",
-> +                       output->name,
-> +                       is_internal_display,
-> +                       assr_supported, assr_enabled);
-> +
-> +       present_visual_pattern(data, output);
-> +
-> +       if (connector_type == DRM_MODE_CONNECTOR_eDP ||
-> +               (connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
-> +                is_internal_display))
-> +               igt_assert(assr_supported == assr_enabled);
-> +       else
-> +               igt_assert(!assr_enabled);
-> +}
-> +
-> +static void test_assr_links(data_t *data)
-> +{
-> +       for (int i = 0; i < data->display.n_outputs; ++i) {
-> +               drmModeConnector *connector = data->display.outputs[i].config.connector;
-> +               igt_output_t *output = &data->display.outputs[i];
-> +
-> +               if (connector->connection != DRM_MODE_CONNECTED)
-> +                       continue;
-> +
-> +               if (connector->connector_type != DRM_MODE_CONNECTOR_eDP &&
-> +                       connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort)
-> +                       continue;
-> +
-> +               test_init(data);
-> +
-> +               test_assr(data, output);
-> +
-> +               test_fini(data);
-> +       }
-> +
-> +}
-> +
-> +igt_main
-> +{
-> +       data_t data;
-> +
-> +       igt_skip_on_simulation();
-> +
-> +       memset(&data, 0, sizeof(data));
-> +
-> +       igt_fixture
-> +       {
-> +               data.fd = drm_open_driver_master(DRIVER_AMDGPU);
-> +
-> +               kmstest_set_vt_graphics_mode();
-> +
-> +               igt_display_require(&data.display, data.fd);
-> +               igt_require(data.display.is_atomic);
-> +               igt_display_require_output(&data.display);
-> +       }
-> +
-> +       igt_describe("Test ASSR on connected DP/eDP links");
-> +       igt_subtest("assr-links")
-> +               test_assr_links(&data);
-> +
-> +       igt_fixture
-> +       {
-> +               igt_display_fini(&data.display);
-> +       }
-> +}
-> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-> index 84179410..1752cafb 100644
-> --- a/tests/amdgpu/meson.build
-> +++ b/tests/amdgpu/meson.build
-> @@ -10,6 +10,7 @@ if libdrm_amdgpu.found()
->                           'amd_info',
->                           'amd_prime',
->                           'amd_module_load',
-> +                         'amd_assr',
->                         ]
->         amdgpu_deps += libdrm_amdgpu
->  endif
-> --
-> 2.32.0
->
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+--===============0423795162==
+Content-Type: multipart/alternative;
+ boundary="===============3264790374125663312=="
+
+--===============3264790374125663312==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/vgem_basic: Fix unload testcase (rev2)
+URL   : https://patchwork.freedesktop.org/series/90669/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10341 -> IGTPW_6018
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_6018 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_6018, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6018:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@gem_exec_parallel@engines@userptr:
+    - fi-bsw-kefka:       [PASS][1] -> [DMESG-WARN][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-bsw-kefka/igt@gem_exec_parallel@engines@userptr.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-bsw-kefka/igt@gem_exec_parallel@engines@userptr.html
+
+  * igt@vgem_basic@unload:
+    - fi-kbl-7567u:       [PASS][3] -> [FAIL][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-kbl-7567u/igt@vgem_basic@unload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-kbl-7567u/igt@vgem_basic@unload.html
+    - fi-elk-e7500:       [PASS][5] -> [FAIL][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-elk-e7500/igt@vgem_basic@unload.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-elk-e7500/igt@vgem_basic@unload.html
+    - fi-skl-6700k2:      [PASS][7] -> [FAIL][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-skl-6700k2/igt@vgem_basic@unload.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-skl-6700k2/igt@vgem_basic@unload.html
+    - fi-skl-guc:         [PASS][9] -> [FAIL][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-skl-guc/igt@vgem_basic@unload.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-skl-guc/igt@vgem_basic@unload.html
+    - fi-cfl-guc:         [PASS][11] -> [FAIL][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-cfl-guc/igt@vgem_basic@unload.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-cfl-guc/igt@vgem_basic@unload.html
+    - fi-hsw-4770:        [PASS][13] -> [FAIL][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-hsw-4770/igt@vgem_basic@unload.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-hsw-4770/igt@vgem_basic@unload.html
+    - fi-ilk-650:         [PASS][15] -> [FAIL][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-ilk-650/igt@vgem_basic@unload.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-ilk-650/igt@vgem_basic@unload.html
+    - fi-cml-u2:          [PASS][17] -> [FAIL][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-cml-u2/igt@vgem_basic@unload.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-cml-u2/igt@vgem_basic@unload.html
+    - fi-bxt-dsi:         [PASS][19] -> [FAIL][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-bxt-dsi/igt@vgem_basic@unload.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-bxt-dsi/igt@vgem_basic@unload.html
+    - fi-kbl-soraka:      [PASS][21] -> [FAIL][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-kbl-soraka/igt@vgem_basic@unload.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-kbl-soraka/igt@vgem_basic@unload.html
+    - fi-cfl-8109u:       [PASS][23] -> [FAIL][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-cfl-8109u/igt@vgem_basic@unload.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-cfl-8109u/igt@vgem_basic@unload.html
+    - fi-bsw-nick:        [PASS][25] -> [FAIL][26]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-bsw-nick/igt@vgem_basic@unload.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-bsw-nick/igt@vgem_basic@unload.html
+    - fi-bdw-5557u:       [PASS][27] -> [FAIL][28]
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-bdw-5557u/igt@vgem_basic@unload.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-bdw-5557u/igt@vgem_basic@unload.html
+    - fi-kbl-8809g:       [PASS][29] -> [FAIL][30]
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-kbl-8809g/igt@vgem_basic@unload.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-kbl-8809g/igt@vgem_basic@unload.html
+    - fi-bwr-2160:        [PASS][31] -> [FAIL][32]
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-bwr-2160/igt@vgem_basic@unload.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-bwr-2160/igt@vgem_basic@unload.html
+    - fi-bsw-kefka:       [PASS][33] -> [FAIL][34]
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-bsw-kefka/igt@vgem_basic@unload.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-bsw-kefka/igt@vgem_basic@unload.html
+    - fi-kbl-guc:         [PASS][35] -> [FAIL][36]
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-kbl-guc/igt@vgem_basic@unload.html
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-kbl-guc/igt@vgem_basic@unload.html
+    - fi-kbl-7500u:       [PASS][37] -> [FAIL][38]
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-kbl-7500u/igt@vgem_basic@unload.html
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-kbl-7500u/igt@vgem_basic@unload.html
+    - fi-kbl-x1275:       [PASS][39] -> [FAIL][40]
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-kbl-x1275/igt@vgem_basic@unload.html
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-kbl-x1275/igt@vgem_basic@unload.html
+    - fi-pnv-d510:        [PASS][41] -> [FAIL][42]
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-pnv-d510/igt@vgem_basic@unload.html
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-pnv-d510/igt@vgem_basic@unload.html
+    - fi-tgl-y:           [PASS][43] -> [FAIL][44]
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-tgl-y/igt@vgem_basic@unload.html
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-tgl-y/igt@vgem_basic@unload.html
+    - fi-icl-y:           [PASS][45] -> [FAIL][46]
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-icl-y/igt@vgem_basic@unload.html
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-icl-y/igt@vgem_basic@unload.html
+    - fi-cfl-8700k:       [PASS][47] -> [FAIL][48]
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-cfl-8700k/igt@vgem_basic@unload.html
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-cfl-8700k/igt@vgem_basic@unload.html
+    - fi-snb-2520m:       [PASS][49] -> [FAIL][50]
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-snb-2520m/igt@vgem_basic@unload.html
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-snb-2520m/igt@vgem_basic@unload.html
+    - fi-ivb-3770:        [PASS][51] -> [FAIL][52]
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-ivb-3770/igt@vgem_basic@unload.html
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-ivb-3770/igt@vgem_basic@unload.html
+    - fi-glk-dsi:         [PASS][53] -> [FAIL][54]
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-glk-dsi/igt@vgem_basic@unload.html
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-glk-dsi/igt@vgem_basic@unload.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@vgem_basic@unload:
+    - {fi-ehl-2}:         [PASS][55] -> [FAIL][56]
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-ehl-2/igt@vgem_basic@unload.html
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-ehl-2/igt@vgem_basic@unload.html
+    - {fi-jsl-1}:         [PASS][57] -> [FAIL][58]
+   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-jsl-1/igt@vgem_basic@unload.html
+   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-jsl-1/igt@vgem_basic@unload.html
+    - {fi-tgl-1115g4}:    [PASS][59] -> [FAIL][60]
+   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-tgl-1115g4/igt@vgem_basic@unload.html
+   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-tgl-1115g4/igt@vgem_basic@unload.html
+    - {fi-hsw-gt1}:       [PASS][61] -> [FAIL][62]
+   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-hsw-gt1/igt@vgem_basic@unload.html
+   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-hsw-gt1/igt@vgem_basic@unload.html
+    - {fi-tgl-dsi}:       [PASS][63] -> [FAIL][64]
+   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-tgl-dsi/igt@vgem_basic@unload.html
+   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-tgl-dsi/igt@vgem_basic@unload.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6018 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_prime@amd-to-i915:
+    - fi-tgl-y:           NOTRUN -> [SKIP][65] ([fdo#109315] / [i915#2575])
+   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-tgl-y/igt@amdgpu/amd_prime@amd-to-i915.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-kbl-soraka:      [PASS][66] -> [INCOMPLETE][67] ([i915#2782] / [i915#794])
+   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
+   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
+  [i915#3717]: https://gitlab.freedesktop.org/drm/intel/issues/3717
+  [i915#794]: https://gitlab.freedesktop.org/drm/intel/issues/794
+
+
+Participating hosts (39 -> 36)
+------------------------------
+
+  Missing    (3): fi-ilk-m540 fi-bdw-samus fi-hsw-4200u 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6137 -> IGTPW_6018
+
+  CI-20190529: 20190529
+  CI_DRM_10341: 72a4e94d9585ff89a8c85bd1436fb05b60dad2f8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6018: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/index.html
+  IGT_6137: 2fee489255f7a8cd6a584373c30e3d44a07a78ea @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/index.html
+
+--===============3264790374125663312==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/vgem_basic: Fix unload testcase (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/90669/">https://patchwork.freedesktop.org/series/90669/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10341 -&gt; IGTPW_6018</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_6018 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_6018, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6018:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@gem_exec_parallel@engines@userptr:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-bsw-kefka/igt@gem_exec_parallel@engines@userptr.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-bsw-kefka/igt@gem_exec_parallel@engines@userptr.html">DMESG-WARN</a></li>
+</ul>
+</li>
+<li>
+<p>igt@vgem_basic@unload:</p>
+<ul>
+<li>
+<p>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-kbl-7567u/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-kbl-7567u/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-elk-e7500:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-elk-e7500/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-elk-e7500/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-skl-6700k2:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-skl-6700k2/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-skl-6700k2/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-skl-guc/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-skl-guc/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-cfl-guc/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-cfl-guc/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-hsw-4770/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-hsw-4770/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-ilk-650:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-ilk-650/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-ilk-650/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-cml-u2/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-cml-u2/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-bxt-dsi/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-bxt-dsi/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-kbl-soraka/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-kbl-soraka/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-cfl-8109u/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-cfl-8109u/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-bsw-nick/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-bsw-nick/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-bdw-5557u/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-bdw-5557u/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-kbl-8809g/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-kbl-8809g/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bwr-2160:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-bwr-2160/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-bwr-2160/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-bsw-kefka/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-bsw-kefka/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-kbl-guc/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-kbl-guc/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-kbl-7500u/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-kbl-7500u/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-kbl-x1275/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-kbl-x1275/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-pnv-d510/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-pnv-d510/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-tgl-y/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-tgl-y/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-icl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-icl-y/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-icl-y/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-cfl-8700k/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-cfl-8700k/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-snb-2520m:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-snb-2520m/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-snb-2520m/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-ivb-3770/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-ivb-3770/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-glk-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-glk-dsi/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-glk-dsi/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@vgem_basic@unload:</p>
+<ul>
+<li>
+<p>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-ehl-2/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-ehl-2/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-jsl-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-jsl-1/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-jsl-1/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-tgl-1115g4}:    <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-tgl-1115g4/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-tgl-1115g4/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-hsw-gt1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-hsw-gt1/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-hsw-gt1/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-tgl-dsi/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-tgl-dsi/igt@vgem_basic@unload.html">FAIL</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6018 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_prime@amd-to-i915:</p>
+<ul>
+<li>fi-tgl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-tgl-y/igt@amdgpu/amd_prime@amd-to-i915.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10341/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/794">i915#794</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (39 -&gt; 36)</h2>
+<p>Missing    (3): fi-ilk-m540 fi-bdw-samus fi-hsw-4200u </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6137 -&gt; IGTPW_6018</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10341: 72a4e94d9585ff89a8c85bd1436fb05b60dad2f8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6018: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6018/index.html<br />
+  IGT_6137: 2fee489255f7a8cd6a584373c30e3d44a07a78ea @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3264790374125663312==--
+
+--===============0423795162==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0423795162==--
