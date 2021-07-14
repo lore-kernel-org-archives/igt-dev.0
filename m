@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Wed, 14 Jul 2021 15:24:06 +0530
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B2516E1F5
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 10:02:23 +0000 (UTC)
+Date: Wed, 14 Jul 2021 15:34:04 +0530
 From: Ramalingam C <ramalingam.c@intel.com>
-Message-ID: <20210714095406.GA27868@intel.com>
-References: <20210707105238.1694091-1-matthew.auld@intel.com>
+Message-ID: <20210714100404.GB27868@intel.com>
+References: <20210714080002.26107-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210707105238.1694091-1-matthew.auld@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_addfb_basic: pass the actual
- fd to gem_has_lmem
+In-Reply-To: <20210714080002.26107-1-vidya.srinivas@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Fix a
+ check in is_6bpc function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,46 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Matthew Auld <matthew.auld@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Mohammed Khajapasha <mohammed.khajapasha@intel.com>, intel-gfx@lists.freedesktop.org, Latvala Petri <petri.latvala@intel.com>
+To: Vidya Srinivas <vidya.srinivas@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2021-07-07 at 11:52:38 +0100, Matthew Auld wrote:
-> Currently we pass the devid as if it were the fd, which doesn't work.
+On 2021-07-14 at 13:30:02 +0530, Vidya Srinivas wrote:
+> Fixes commit 3bf28f9dffd41b85c262d4e6664ffbdf5b7d9a93.
 > 
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> is_6bpc is supposed to return false if connector is not eDP or DSI.
+> The right check will be DRM_MODE_CONNECTOR_eDP && DRM_MODE_CONNECTOR_DSI
+> By mistake DRM_MODE_CONNECTOR_eDP || DRM_MODE_CONNECTOR_DSI
+> was being used.
+> 
+> Credits-to: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 LGTM.
 
 Reviewed-by: Ramalingam C <ramalingam.c@intel.com>
-
-> Cc: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-> Cc: Latvala Petri <petri.latvala@intel.com>
-> Cc: Michael J. Ruhl <michael.j.ruhl@intel.com>
 > ---
->  tests/kms_addfb_basic.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+>  tests/kms_plane_alpha_blend.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-> index 91fb6ac9..eff1d9b2 100644
-> --- a/tests/kms_addfb_basic.c
-> +++ b/tests/kms_addfb_basic.c
-> @@ -150,13 +150,11 @@ static void invalid_tests(int fd)
->  	igt_describe("Check if addfb2 with a system memory gem object "
->  		     "fails correctly if device requires local memory framebuffers");
->  	igt_subtest("invalid-smem-bo-on-discrete") {
-> -		int devid;
->  		uint32_t handle, stride;
->  		uint64_t size;
+> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+> index a3529dc2190f..8020216c1594 100644
+> --- a/tests/kms_plane_alpha_blend.c
+> +++ b/tests/kms_plane_alpha_blend.c
+> @@ -454,7 +454,7 @@ static bool is_6bpc(igt_display_t *display, enum pipe pipe) {
+>  		return false;
 >  
->  		igt_require_intel(fd);
-> -		devid = intel_get_drm_devid(fd);
-> -		igt_require(gem_has_lmem(devid));
-> +		igt_require(gem_has_lmem(fd));
->  		igt_calc_fb_size(fd, f.width, f.height,
->  				DRM_FORMAT_XRGB8888, 0, &size, &stride);
->  		handle = gem_create_in_memory_regions(fd, size, REGION_SMEM);
+>  	c = output->config.connector;
+> -	if (c->connector_type != DRM_MODE_CONNECTOR_eDP ||
+> +	if (c->connector_type != DRM_MODE_CONNECTOR_eDP &&
+>  		c->connector_type != DRM_MODE_CONNECTOR_DSI)
+>  		return false;
+>  
 > -- 
-> 2.26.3
+> 2.32.0
 > 
 > _______________________________________________
 > igt-dev mailing list
