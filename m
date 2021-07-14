@@ -1,20 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 200766E194
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 08:12:13 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Wed, 14 Jul 2021 08:12:06 +0000
-Message-ID: <BY5PR11MB437220B41A1FB29A4441350A89139@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <20210709065523.16425-1-vidya.srinivas@intel.com>
- <20210709065741.16498-1-vidya.srinivas@intel.com>
- <874kcx4pk0.wl-ashutosh.dixit@intel.com>
- <BY5PR11MB4372BB10AE74CB5B1638008389139@BY5PR11MB4372.namprd11.prod.outlook.com>
- <8735sh4m69.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <8735sh4m69.wl-ashutosh.dixit@intel.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Skip
- coverage-vs-premult-vs-none for 6bpc panels
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 14 Jul 2021 08:50:18 -0000
+Message-ID: <162625261817.13706.8717164620970300050@emeril.freedesktop.org>
+References: <20210714080002.26107-1-vidya.srinivas@intel.com>
+In-Reply-To: <20210714080002.26107-1-vidya.srinivas@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Falpha=5Fblend=3A_Fix_a_check_in_is=5F6bpc_functio?=
+ =?utf-8?q?n?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,59 +15,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0290773922=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Joshi,
- Kunal1" <kunal1.joshi@intel.com>
+To: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGVsbG8gQXNodXRvc2gsDQoNClRoYW5rcyBtdWNoIGZvciBwb2ludGluZyB0aGUgaXNzdWUuDQpo
-dHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvcGF0Y2gvNDQzOTI2LyBoYXZlIHN1Ym1p
-dHRlZCB0aGlzLg0KDQpBcG9sb2dpZXMgVW1hL0JoYW51L0t1bmFsLCBjYW4gd2UgbWVyZ2UgdGhp
-cyBwYXRjaCBhcyB3ZWxsIOKYuT8NCg0KUmVnYXJkcw0KVmlkeWENCg0KLS0tLS1PcmlnaW5hbCBN
-ZXNzYWdlLS0tLS0NCkZyb206IERpeGl0LCBBc2h1dG9zaCA8YXNodXRvc2guZGl4aXRAaW50ZWwu
-Y29tPiANClNlbnQ6IFdlZG5lc2RheSwgSnVseSAxNCwgMjAyMSA4OjQ5IEFNDQpUbzogU3Jpbml2
-YXMsIFZpZHlhIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+DQpDYzogaWd0LWRldkBsaXN0cy5m
-cmVlZGVza3RvcC5vcmc7IFNoYW5rYXIsIFVtYSA8dW1hLnNoYW5rYXJAaW50ZWwuY29tPjsgTW9k
-ZW0sIEJoYW51cHJha2FzaCA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNvbT4NClN1YmplY3Q6
-IFJlOiBbaWd0LWRldl0gW1BBVENIIGktZy10XSB0ZXN0cy9rbXNfcGxhbmVfYWxwaGFfYmxlbmQ6
-IFNraXAgY292ZXJhZ2UtdnMtcHJlbXVsdC12cy1ub25lIGZvciA2YnBjIHBhbmVscw0KDQpPbiBU
-dWUsIDEzIEp1bCAyMDIxIDE5OjU2OjE2IC0wNzAwLCBTcmluaXZhcywgVmlkeWEgd3JvdGU6DQo+
-DQo+IEhpIEFzaHV0b3NoLA0KPg0KPiBBcG9sb2dpZXMsIHllcyBpdCBzaG91bGQgYmUgJiYuIFlv
-dSBhcmUgcmlnaHQuIEhvdyBkbyBJIGZpeCBpdCwgcmV2ZXJ0IGFuZCByZXN1Ym1pdD8NCj4gUGF0
-Y2ggaXMgbWVyZ2VkLiBTaG91bGQgSSBzdWJtaXQgYW5vdGhlciBwYXRjaCBzYXlpbmcgZml4ZXMg
-dGhpcz8NCj4gSW1tZWRpYXRlbHkgaXQgbWlnaHQgbm90IGJlIGJyZWFraW5nIGFueXRoaW5nIGh1
-Z2UgYnV0IEkgbmVlZCB0byBmaXggaXQuDQoNCk5vIG5lZWQgdG8gcmV2ZXJ0LCBqdXN0IHNlbmQg
-YW5vdGhlciBwYXRjaCB0byBmaXggaXQuDQoNCj4NCj4gUmVnYXJkcw0KPiBWaWR5YQ0KPg0KPiAt
-LS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBEaXhpdCwgQXNodXRvc2ggPGFzaHV0
-b3NoLmRpeGl0QGludGVsLmNvbT4NCj4gU2VudDogV2VkbmVzZGF5LCBKdWx5IDE0LCAyMDIxIDc6
-MzYgQU0NCj4gVG86IFNyaW5pdmFzLCBWaWR5YSA8dmlkeWEuc3Jpbml2YXNAaW50ZWwuY29tPg0K
-PiBDYzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogUmU6IFtpZ3Qt
-ZGV2XSBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19wbGFuZV9hbHBoYV9ibGVuZDogU2tpcCBjb3Zl
-cmFnZS12cy1wcmVtdWx0LXZzLW5vbmUgZm9yIDZicGMgcGFuZWxzDQo+DQo+IE9uIFRodSwgMDgg
-SnVsIDIwMjEgMjM6NTc6NDEgLTA3MDAsIFZpZHlhIFNyaW5pdmFzIHdyb3RlOg0KPiA+DQo+ID4g
-K3N0YXRpYyBib29sIGlzXzZicGMoaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSwgZW51bSBwaXBlIHBp
-cGUpIHsNCj4gPiArICAgICBjaGFyIGJ1Zls4MTkyXTsNCj4gPiArICAgICBjaGFyICpzdHI7DQo+
-ID4gKyAgICAgYm9vbCByZXQ7DQo+ID4gKyAgICAgaW50IGRlYnVnZnNfZmQ7DQo+ID4gKyAgICAg
-ZHJtTW9kZUNvbm5lY3RvciAqYzsNCj4gPiArICAgICBpZ3Rfb3V0cHV0X3QgKm91dHB1dCA9IGln
-dF9nZXRfc2luZ2xlX291dHB1dF9mb3JfcGlwZShkaXNwbGF5LA0KPiA+ICtwaXBlKTsNCj4gPiAr
-DQo+ID4gKyAgICAgaWYgKCFpc19pOTE1X2RldmljZShkaXNwbGF5LT5kcm1fZmQpKQ0KPiA+ICsg
-ICAgICAgICAgICAgcmV0dXJuIGZhbHNlOw0KPiA+ICsNCj4gPiArICAgICBjID0gb3V0cHV0LT5j
-b25maWcuY29ubmVjdG9yOw0KPiA+ICsgICAgIGlmIChjLT5jb25uZWN0b3JfdHlwZSAhPSBEUk1f
-TU9ERV9DT05ORUNUT1JfZURQIHx8DQo+ID4gKyAgICAgICAgICAgICBjLT5jb25uZWN0b3JfdHlw
-ZSAhPSBEUk1fTU9ERV9DT05ORUNUT1JfRFNJKQ0KPiA+ICsgICAgICAgICAgICAgcmV0dXJuIGZh
-bHNlOw0KPg0KPiBJc24ndCB0aGlzIGFuICYmIHJhdGhlciB0aGFuIGFuIHx8ID8NCj4NCj4gWzI5
-OC8xMDYzXSBDb21waWxpbmcgQyBvYmplY3QgJ3Rlc3RzLzU5ODMwZWJAQGttc19wbGFuZV9hbHBo
-YV9ibGVuZEBleGUva21zX3BsYW5lX2FscGhhX2JsZW5kLmMubycuDQo+IC4uL3Rlc3RzL2ttc19w
-bGFuZV9hbHBoYV9ibGVuZC5jOiBJbiBmdW5jdGlvbiDKvWlzXzZicGPKvDoNCj4gLi4vdGVzdHMv
-a21zX3BsYW5lX2FscGhhX2JsZW5kLmM6NDU3OjUwOiB3YXJuaW5nOiBsb2dpY2FsIMq9b3LKvCBv
-ZiBjb2xsZWN0aXZlbHkgZXhoYXVzdGl2ZSB0ZXN0cyBpcyBhbHdheXMgdHJ1ZSBbLVdsb2dpY2Fs
-LW9wXQ0KPiAgIGlmIChjLT5jb25uZWN0b3JfdHlwZSAhPSBEUk1fTU9ERV9DT05ORUNUT1JfZURQ
-IHx8DQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-Xn4gWW91IGNhbm5vdCBtZXJnZSBjb2RlIHdpdGggY29tcGlsZSB3YXJuaW5ncy4NCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBs
-aXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+--===============0290773922==
+Content-Type: multipart/alternative;
+ boundary="===============4795044481449782592=="
+
+--===============4795044481449782592==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/kms_plane_alpha_blend: Fix a check in is_6bpc function
+URL   : https://patchwork.freedesktop.org/series/92513/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10344 -> IGTPW_6019
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6019/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6019 that come from known issues:
+
+### IGT changes ###
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [i915#1759]: https://gitlab.freedesktop.org/drm/intel/issues/1759
+  [i915#2373]: https://gitlab.freedesktop.org/drm/intel/issues/2373
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+
+
+Participating hosts (39 -> 36)
+------------------------------
+
+  Missing    (3): fi-ilk-m540 fi-bdw-samus fi-hsw-4200u 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6138 -> IGTPW_6019
+
+  CI-20190529: 20190529
+  CI_DRM_10344: ea6974acd4fe82ca98cc1390b21af67d63c22471 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6019: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6019/index.html
+  IGT_6138: 92bf2c7865037e18946d4c3d705587c8e8c3d1b8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6019/index.html
+
+--===============4795044481449782592==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_alpha_blend: Fix a check in is_6bpc function</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/92513/">https://patchwork.freedesktop.org/series/92513/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6019/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6019/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10344 -&gt; IGTPW_6019</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6019/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6019 that come from known issues:</p>
+<h3>IGT changes</h3>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (39 -&gt; 36)</h2>
+<p>Missing    (3): fi-ilk-m540 fi-bdw-samus fi-hsw-4200u </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6138 -&gt; IGTPW_6019</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10344: ea6974acd4fe82ca98cc1390b21af67d63c22471 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6019: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6019/index.html<br />
+  IGT_6138: 92bf2c7865037e18946d4c3d705587c8e8c3d1b8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4795044481449782592==--
+
+--===============0290773922==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0290773922==--
