@@ -1,13 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 841116E194
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 08:10:17 +0000 (UTC)
-From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Wed, 14 Jul 2021 13:30:02 +0530
-Message-Id: <20210714080002.26107-1-vidya.srinivas@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 200766E194
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 08:12:13 +0000 (UTC)
+From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Date: Wed, 14 Jul 2021 08:12:06 +0000
+Message-ID: <BY5PR11MB437220B41A1FB29A4441350A89139@BY5PR11MB4372.namprd11.prod.outlook.com>
+References: <20210709065523.16425-1-vidya.srinivas@intel.com>
+ <20210709065741.16498-1-vidya.srinivas@intel.com>
+ <874kcx4pk0.wl-ashutosh.dixit@intel.com>
+ <BY5PR11MB4372BB10AE74CB5B1638008389139@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <8735sh4m69.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <8735sh4m69.wl-ashutosh.dixit@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Fix a check in
- is_6bpc function
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Skip
+ coverage-vs-premult-vs-none for 6bpc panels
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,43 +22,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Joshi,
+ Kunal1" <kunal1.joshi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Fixes commit 3bf28f9dffd41b85c262d4e6664ffbdf5b7d9a93.
-
-is_6bpc is supposed to return false if connector is not eDP or DSI.
-The right check will be DRM_MODE_CONNECTOR_eDP && DRM_MODE_CONNECTOR_DSI
-By mistake DRM_MODE_CONNECTOR_eDP || DRM_MODE_CONNECTOR_DSI
-was being used.
-
-Credits-to: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
----
- tests/kms_plane_alpha_blend.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-index a3529dc2190f..8020216c1594 100644
---- a/tests/kms_plane_alpha_blend.c
-+++ b/tests/kms_plane_alpha_blend.c
-@@ -454,7 +454,7 @@ static bool is_6bpc(igt_display_t *display, enum pipe pipe) {
- 		return false;
- 
- 	c = output->config.connector;
--	if (c->connector_type != DRM_MODE_CONNECTOR_eDP ||
-+	if (c->connector_type != DRM_MODE_CONNECTOR_eDP &&
- 		c->connector_type != DRM_MODE_CONNECTOR_DSI)
- 		return false;
- 
--- 
-2.32.0
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SGVsbG8gQXNodXRvc2gsDQoNClRoYW5rcyBtdWNoIGZvciBwb2ludGluZyB0aGUgaXNzdWUuDQpo
+dHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvcGF0Y2gvNDQzOTI2LyBoYXZlIHN1Ym1p
+dHRlZCB0aGlzLg0KDQpBcG9sb2dpZXMgVW1hL0JoYW51L0t1bmFsLCBjYW4gd2UgbWVyZ2UgdGhp
+cyBwYXRjaCBhcyB3ZWxsIOKYuT8NCg0KUmVnYXJkcw0KVmlkeWENCg0KLS0tLS1PcmlnaW5hbCBN
+ZXNzYWdlLS0tLS0NCkZyb206IERpeGl0LCBBc2h1dG9zaCA8YXNodXRvc2guZGl4aXRAaW50ZWwu
+Y29tPiANClNlbnQ6IFdlZG5lc2RheSwgSnVseSAxNCwgMjAyMSA4OjQ5IEFNDQpUbzogU3Jpbml2
+YXMsIFZpZHlhIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+DQpDYzogaWd0LWRldkBsaXN0cy5m
+cmVlZGVza3RvcC5vcmc7IFNoYW5rYXIsIFVtYSA8dW1hLnNoYW5rYXJAaW50ZWwuY29tPjsgTW9k
+ZW0sIEJoYW51cHJha2FzaCA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNvbT4NClN1YmplY3Q6
+IFJlOiBbaWd0LWRldl0gW1BBVENIIGktZy10XSB0ZXN0cy9rbXNfcGxhbmVfYWxwaGFfYmxlbmQ6
+IFNraXAgY292ZXJhZ2UtdnMtcHJlbXVsdC12cy1ub25lIGZvciA2YnBjIHBhbmVscw0KDQpPbiBU
+dWUsIDEzIEp1bCAyMDIxIDE5OjU2OjE2IC0wNzAwLCBTcmluaXZhcywgVmlkeWEgd3JvdGU6DQo+
+DQo+IEhpIEFzaHV0b3NoLA0KPg0KPiBBcG9sb2dpZXMsIHllcyBpdCBzaG91bGQgYmUgJiYuIFlv
+dSBhcmUgcmlnaHQuIEhvdyBkbyBJIGZpeCBpdCwgcmV2ZXJ0IGFuZCByZXN1Ym1pdD8NCj4gUGF0
+Y2ggaXMgbWVyZ2VkLiBTaG91bGQgSSBzdWJtaXQgYW5vdGhlciBwYXRjaCBzYXlpbmcgZml4ZXMg
+dGhpcz8NCj4gSW1tZWRpYXRlbHkgaXQgbWlnaHQgbm90IGJlIGJyZWFraW5nIGFueXRoaW5nIGh1
+Z2UgYnV0IEkgbmVlZCB0byBmaXggaXQuDQoNCk5vIG5lZWQgdG8gcmV2ZXJ0LCBqdXN0IHNlbmQg
+YW5vdGhlciBwYXRjaCB0byBmaXggaXQuDQoNCj4NCj4gUmVnYXJkcw0KPiBWaWR5YQ0KPg0KPiAt
+LS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBEaXhpdCwgQXNodXRvc2ggPGFzaHV0
+b3NoLmRpeGl0QGludGVsLmNvbT4NCj4gU2VudDogV2VkbmVzZGF5LCBKdWx5IDE0LCAyMDIxIDc6
+MzYgQU0NCj4gVG86IFNyaW5pdmFzLCBWaWR5YSA8dmlkeWEuc3Jpbml2YXNAaW50ZWwuY29tPg0K
+PiBDYzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogUmU6IFtpZ3Qt
+ZGV2XSBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19wbGFuZV9hbHBoYV9ibGVuZDogU2tpcCBjb3Zl
+cmFnZS12cy1wcmVtdWx0LXZzLW5vbmUgZm9yIDZicGMgcGFuZWxzDQo+DQo+IE9uIFRodSwgMDgg
+SnVsIDIwMjEgMjM6NTc6NDEgLTA3MDAsIFZpZHlhIFNyaW5pdmFzIHdyb3RlOg0KPiA+DQo+ID4g
+K3N0YXRpYyBib29sIGlzXzZicGMoaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSwgZW51bSBwaXBlIHBp
+cGUpIHsNCj4gPiArICAgICBjaGFyIGJ1Zls4MTkyXTsNCj4gPiArICAgICBjaGFyICpzdHI7DQo+
+ID4gKyAgICAgYm9vbCByZXQ7DQo+ID4gKyAgICAgaW50IGRlYnVnZnNfZmQ7DQo+ID4gKyAgICAg
+ZHJtTW9kZUNvbm5lY3RvciAqYzsNCj4gPiArICAgICBpZ3Rfb3V0cHV0X3QgKm91dHB1dCA9IGln
+dF9nZXRfc2luZ2xlX291dHB1dF9mb3JfcGlwZShkaXNwbGF5LA0KPiA+ICtwaXBlKTsNCj4gPiAr
+DQo+ID4gKyAgICAgaWYgKCFpc19pOTE1X2RldmljZShkaXNwbGF5LT5kcm1fZmQpKQ0KPiA+ICsg
+ICAgICAgICAgICAgcmV0dXJuIGZhbHNlOw0KPiA+ICsNCj4gPiArICAgICBjID0gb3V0cHV0LT5j
+b25maWcuY29ubmVjdG9yOw0KPiA+ICsgICAgIGlmIChjLT5jb25uZWN0b3JfdHlwZSAhPSBEUk1f
+TU9ERV9DT05ORUNUT1JfZURQIHx8DQo+ID4gKyAgICAgICAgICAgICBjLT5jb25uZWN0b3JfdHlw
+ZSAhPSBEUk1fTU9ERV9DT05ORUNUT1JfRFNJKQ0KPiA+ICsgICAgICAgICAgICAgcmV0dXJuIGZh
+bHNlOw0KPg0KPiBJc24ndCB0aGlzIGFuICYmIHJhdGhlciB0aGFuIGFuIHx8ID8NCj4NCj4gWzI5
+OC8xMDYzXSBDb21waWxpbmcgQyBvYmplY3QgJ3Rlc3RzLzU5ODMwZWJAQGttc19wbGFuZV9hbHBo
+YV9ibGVuZEBleGUva21zX3BsYW5lX2FscGhhX2JsZW5kLmMubycuDQo+IC4uL3Rlc3RzL2ttc19w
+bGFuZV9hbHBoYV9ibGVuZC5jOiBJbiBmdW5jdGlvbiDKvWlzXzZicGPKvDoNCj4gLi4vdGVzdHMv
+a21zX3BsYW5lX2FscGhhX2JsZW5kLmM6NDU3OjUwOiB3YXJuaW5nOiBsb2dpY2FsIMq9b3LKvCBv
+ZiBjb2xsZWN0aXZlbHkgZXhoYXVzdGl2ZSB0ZXN0cyBpcyBhbHdheXMgdHJ1ZSBbLVdsb2dpY2Fs
+LW9wXQ0KPiAgIGlmIChjLT5jb25uZWN0b3JfdHlwZSAhPSBEUk1fTU9ERV9DT05ORUNUT1JfZURQ
+IHx8DQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+Xn4gWW91IGNhbm5vdCBtZXJnZSBjb2RlIHdpdGggY29tcGlsZSB3YXJuaW5ncy4NCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBs
+aXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
