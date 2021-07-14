@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mblankhorst.nl (mblankhorst.nl
- [IPv6:2a02:2308::216:3eff:fe92:dfa3])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD07C6E212
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 11:06:15 +0000 (UTC)
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Date: Wed, 14 Jul 2021 13:06:10 +0200
-Message-Id: <20210714110610.758606-1-maarten.lankhorst@linux.intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B2086E220
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 11:21:52 +0000 (UTC)
+From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Date: Wed, 14 Jul 2021 11:21:47 +0000
+Message-ID: <BY5PR11MB437298FAC0A6FDDEAB99CAF289139@BY5PR11MB4372.namprd11.prod.outlook.com>
+References: <20210714080002.26107-1-vidya.srinivas@intel.com>
+ <YO67kjKArYFJS5WD@intel.com>
+In-Reply-To: <YO67kjKArYFJS5WD@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/gem_userptr_blits: Remove tests
- depending on old userptr behavior.
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Fix a
+ check in is_6bpc function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,164 +19,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: =?utf-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Some tests now wait for the batch buffer to finish, resulting in
-a test failure when the spin batch is terminated by the watchdog.
-Remove the tests, as they are no longer valid.
-
-Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
----
- tests/i915/gem_userptr_blits.c | 120 ---------------------------------
- 1 file changed, 120 deletions(-)
-
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index 0616a9378909..545148624fe8 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -655,120 +655,6 @@ static void test_nohangcheck_hostile(int i915)
- 	close(i915);
- }
- 
--static size_t hugepagesize(void)
--{
--#define LINE "Hugepagesize:"
--	size_t sz = 2 << 20;
--	char *line = NULL;
--	size_t len = 0;
--	FILE *file;
--
--	file = fopen("/proc/meminfo", "r");
--	if (!file)
--		return sz;
--
--	while (getline(&line, &len, file) > 0) {
--		if (strncmp(line, LINE, strlen(LINE)))
--			continue;
--
--		if (sscanf(line + strlen(LINE), "%zu", &sz) == 1) {
--			sz <<= 10;
--			igt_debug("Found huge page size: %zu\n", sz);
--		}
--		break;
--	}
--	free(line);
--	fclose(file);
--
--	return sz;
--#undef LINE
--}
--
--static void test_vma_merge(int i915)
--{
--	const size_t sz = 2 * hugepagesize();
--	igt_spin_t *spin;
--	uint32_t handle;
--	void *addr;
--
--	addr = mmap(NULL, sz, PROT_READ | PROT_WRITE,
--		    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
--
--	gem_userptr(i915, addr + sz / 2, 4096, 0, userptr_flags, &handle);
--
--	spin = igt_spin_new(i915, .dependency = handle, .flags = IGT_SPIN_FENCE_OUT);
--	igt_assert(gem_bo_busy(i915, handle));
--
--	for (size_t x = 0; x < sz; x += 4096) {
--		if (x == sz / 2)
--			continue;
--
--		igt_assert(mmap(addr + x, 4096, PROT_READ | PROT_WRITE,
--				MAP_FIXED | MAP_SHARED | MAP_ANON, -1, 0) !=
--			   MAP_FAILED);
--	}
--
--	igt_spin_end(spin);
--	gem_close(i915, handle);
--
--	munmap(addr, sz);
--
--	gem_sync(i915, spin->handle);
--	igt_assert_eq(sync_fence_status(spin->out_fence), 1);
--	igt_spin_free(i915, spin);
--}
--
--static void test_huge_split(int i915)
--{
--	const size_t sz = 2 * hugepagesize();
--	unsigned int flags;
--	igt_spin_t *spin;
--	uint32_t handle;
--	void *addr;
--
--	flags = MFD_HUGETLB;
--#if defined(MFD_HUGE_2MB)
--	flags |= MFD_HUGE_2MB;
--#endif
--
--	do {
--		int memfd;
--
--		memfd = memfd_create("huge", flags);
--		igt_require(memfd != -1);
--		igt_require(ftruncate(memfd, sz) == 0);
--
--		addr = mmap(NULL, sz, PROT_WRITE, MAP_SHARED, memfd, 0);
--		close(memfd);
--		if (addr != MAP_FAILED)
--			break;
--
--		igt_require_f(flags, "memfd not supported\n");
--		flags = 0;
--	} while (1);
--	madvise(addr, sz, MADV_HUGEPAGE);
--
--	gem_userptr(i915, addr + sz / 2 - 4096, 8192, 0, userptr_flags, &handle);
--	spin = igt_spin_new(i915, .dependency = handle, .flags = IGT_SPIN_FENCE_OUT);
--	igt_assert(gem_bo_busy(i915, handle));
--
--	igt_assert(mmap(addr, 4096, PROT_READ,
--			MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1, 0) !=
--		   MAP_FAILED);
--	igt_assert(mmap(addr + sz - 4096, 4096, PROT_READ,
--			MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1, 0) !=
--		   MAP_FAILED);
--
--	igt_spin_end(spin);
--	gem_close(i915, handle);
--
--	munmap(addr, sz);
--
--	gem_sync(i915, spin->handle);
--	igt_assert_eq(sync_fence_status(spin->out_fence), 1);
--	igt_spin_free(i915, spin);
--}
--
- static int test_access_control(int fd)
- {
- 	/* CAP_SYS_ADMIN is needed for UNSYNCHRONIZED mappings. */
-@@ -2506,12 +2392,6 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
- 
- 		igt_subtest("nohangcheck")
- 			test_nohangcheck_hostile(fd);
--
--		igt_subtest("vma-merge")
--			test_vma_merge(fd);
--
--		igt_subtest("huge-split")
--			test_huge_split(fd);
- 	}
- 
- 	igt_subtest("access-control")
--- 
-2.31.0
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SGVsbG8gVmlsbGUsDQoNCkFwb2xvZ2llcy4gSSB0cmllZCB0byB0dXJuIG9mZiBkaXRoZXJpbmcg
+ZnJvbSBrZXJuZWwgaXRzZWxmLiBCdXQgc3RpbGwgQ1JDIG1pc21hdGNoIGNhbWUgdXAuDQpUaGlz
+IGlzIG9uIEphc3Blcmxha2UgY2hyb21lYm9vayB3aGljaCBpcyB1c2luZyA2YnBjIHBhbmVsLg0K
+DQpTYW1lIGphc3Blcmxha2Ugd2l0aCA4YnBjIHBhbmVsIGlzIHdvcmtpbmcgZmluZS4gDQoNClNv
+LCBhcyBsYXN0IHJlc29ydCB3ZSBkaWQgdGhpcyDimLkuDQoNClJlZ2FyZHMNClZpZHlhDQoNCi0t
+LS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5
+cmphbGFAbGludXguaW50ZWwuY29tPiANClNlbnQ6IFdlZG5lc2RheSwgSnVseSAxNCwgMjAyMSAz
+OjU1IFBNDQpUbzogU3Jpbml2YXMsIFZpZHlhIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+DQpD
+YzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNClN1YmplY3Q6IFJlOiBbaWd0LWRldl0g
+W1BBVENIIGktZy10XSB0ZXN0cy9rbXNfcGxhbmVfYWxwaGFfYmxlbmQ6IEZpeCBhIGNoZWNrIGlu
+IGlzXzZicGMgZnVuY3Rpb24NCg0KT24gV2VkLCBKdWwgMTQsIDIwMjEgYXQgMDE6MzA6MDJQTSAr
+MDUzMCwgVmlkeWEgU3Jpbml2YXMgd3JvdGU6DQo+IEZpeGVzIGNvbW1pdCAzYmYyOGY5ZGZmZDQx
+Yjg1YzI2MmQ0ZTY2NjRmZmJkZjViN2Q5YTkzLg0KPiANCj4gaXNfNmJwYyBpcyBzdXBwb3NlZCB0
+byByZXR1cm4gZmFsc2UgaWYgY29ubmVjdG9yIGlzIG5vdCBlRFAgb3IgRFNJLg0KPiBUaGUgcmln
+aHQgY2hlY2sgd2lsbCBiZSBEUk1fTU9ERV9DT05ORUNUT1JfZURQICYmIA0KPiBEUk1fTU9ERV9D
+T05ORUNUT1JfRFNJIEJ5IG1pc3Rha2UgRFJNX01PREVfQ09OTkVDVE9SX2VEUCB8fCANCj4gRFJN
+X01PREVfQ09OTkVDVE9SX0RTSSB3YXMgYmVpbmcgdXNlZC4NCg0KSW5zdGVhZCBvZiB0aGVzZSBp
+bmNvbXBsZXRlIGhhY2tzIHdoeSBhcmVuJ3Qgd2UganVzdCB0dXJuaW5nIG9mZiBkaXRoZXJpbmcg
+d2hlbiBkb2luZyBjcmMgY2FwdHVyZT8NCg0KPiANCj4gQ3JlZGl0cy10bzogQXNodXRvc2ggRGl4
+aXQgPGFzaHV0b3NoLmRpeGl0QGludGVsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogVmlkeWEgU3Jp
+bml2YXMgPHZpZHlhLnNyaW5pdmFzQGludGVsLmNvbT4NCj4gLS0tDQo+ICB0ZXN0cy9rbXNfcGxh
+bmVfYWxwaGFfYmxlbmQuYyB8IDIgKy0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigr
+KSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19wbGFuZV9hbHBo
+YV9ibGVuZC5jIA0KPiBiL3Rlc3RzL2ttc19wbGFuZV9hbHBoYV9ibGVuZC5jIGluZGV4IGEzNTI5
+ZGMyMTkwZi4uODAyMDIxNmMxNTk0IA0KPiAxMDA2NDQNCj4gLS0tIGEvdGVzdHMva21zX3BsYW5l
+X2FscGhhX2JsZW5kLmMNCj4gKysrIGIvdGVzdHMva21zX3BsYW5lX2FscGhhX2JsZW5kLmMNCj4g
+QEAgLTQ1NCw3ICs0NTQsNyBAQCBzdGF0aWMgYm9vbCBpc182YnBjKGlndF9kaXNwbGF5X3QgKmRp
+c3BsYXksIGVudW0gcGlwZSBwaXBlKSB7DQo+ICAJCXJldHVybiBmYWxzZTsNCj4gIA0KPiAgCWMg
+PSBvdXRwdXQtPmNvbmZpZy5jb25uZWN0b3I7DQo+IC0JaWYgKGMtPmNvbm5lY3Rvcl90eXBlICE9
+IERSTV9NT0RFX0NPTk5FQ1RPUl9lRFAgfHwNCj4gKwlpZiAoYy0+Y29ubmVjdG9yX3R5cGUgIT0g
+RFJNX01PREVfQ09OTkVDVE9SX2VEUCAmJg0KPiAgCQljLT5jb25uZWN0b3JfdHlwZSAhPSBEUk1f
+TU9ERV9DT05ORUNUT1JfRFNJKQ0KPiAgCQlyZXR1cm4gZmFsc2U7DQo+ICANCj4gLS0NCj4gMi4z
+Mi4wDQo+IA0KPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+Xw0KPiBpZ3QtZGV2IG1haWxpbmcgbGlzdA0KPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
+Zw0KPiBodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
+ZXYNCg0KLS0NClZpbGxlIFN5cmrDpGzDpA0KSW50ZWwNCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4v
+bGlzdGluZm8vaWd0LWRldgo=
