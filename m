@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com
- [IPv6:2607:f8b0:4864:20::333])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5AAF76E226
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 11:56:16 +0000 (UTC)
-Received: by mail-ot1-x333.google.com with SMTP id
- 75-20020a9d08510000b02904acfe6bcccaso2129029oty.12
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 04:56:16 -0700 (PDT)
-From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed, 14 Jul 2021 06:56:12 -0500
-Message-Id: <20210714115612.1350201-1-jason@jlekstrand.net>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 380CD6E24E
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 12:00:04 +0000 (UTC)
+From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Wed, 14 Jul 2021 17:21:33 +0530
+Message-Id: <20210714115133.973808-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] test/i915/gem_ringfill: Create contexts on
- the right FD with NEW_FD
+Subject: [igt-dev] [i-g-t] lib/i915: Fix the check for scheduler caps for
+ timeslicing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,35 +22,42 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We originally did the re-open dance because we were copying engines from
-ctx0 on one FD to ctx0 on the other and we needed both FDs.  When we
-converted to intel_ctx_t in 81e16a59d788 ("tests/i915/gem_ringfill:
-Convert to intel_ctx_t"), we got the FDs wrong in the context create.
-This both fixes the bug and avoids the whold FD dance.
+Semaphore and preemption both are required and the check
+was missing required check logic.
 
-Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
-Fixes: 81e16a59d788 ("tests/i915/gem_ringfill: Convert to intel_ctx_t")
+Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
 ---
- tests/i915/gem_ringfill.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ lib/i915/gem_scheduler.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
-index 5d2169d65..d32d47994 100644
---- a/tests/i915/gem_ringfill.c
-+++ b/tests/i915/gem_ringfill.c
-@@ -203,11 +203,8 @@ static void run_test(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		igt_fork(child, nchild) {
- 			const intel_ctx_t *child_ctx = NULL;
- 			if (flags & NEWFD) {
--				int this;
--
--				this = gem_reopen_driver(fd);
-+				fd = gem_reopen_driver(fd);
- 				child_ctx = intel_ctx_create(fd, &ctx->cfg);
--				fd = this;
+diff --git a/lib/i915/gem_scheduler.c b/lib/i915/gem_scheduler.c
+index 6dfa3676..cdddf42a 100644
+--- a/lib/i915/gem_scheduler.c
++++ b/lib/i915/gem_scheduler.c
+@@ -140,9 +140,11 @@ bool gem_scheduler_has_engine_busy_stats(int fd)
+  */
+ bool gem_scheduler_has_timeslicing(int fd)
+ {
+-	return ((gem_scheduler_capability(fd) &
++	return (((gem_scheduler_capability(fd) &
+ 	        (I915_SCHEDULER_CAP_PREEMPTION |
+-		 I915_SCHEDULER_CAP_SEMAPHORES))
++		 I915_SCHEDULER_CAP_SEMAPHORES)) ==
++		(I915_SCHEDULER_CAP_PREEMPTION |
++		I915_SCHEDULER_CAP_SEMAPHORES))
+ 		|| gem_has_guc_submission(fd));
+ }
  
- 				setup_execbuf(fd, child_ctx, &execbuf, obj, reloc, ring);
- 			}
+@@ -168,8 +170,6 @@ void gem_scheduler_print_capability(int fd)
+ 		igt_info(" - With HW semaphores enabled\n");
+ 	if (caps & I915_SCHEDULER_CAP_ENGINE_BUSY_STATS)
+ 		igt_info(" - With engine busy statistics\n");
+-	if ((caps & (I915_SCHEDULER_CAP_PREEMPTION
+-		  | I915_SCHEDULER_CAP_SEMAPHORES))
+-		|| gem_has_guc_submission(fd))
++	if (gem_scheduler_has_timeslicing(fd))
+ 		igt_info(" - With timeslicing enabled\n");
+ }
 -- 
 2.31.1
 
