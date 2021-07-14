@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
- [IPv6:2607:f8b0:4864:20::634])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E55A6E235
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 17:31:48 +0000 (UTC)
-Received: by mail-pl1-x634.google.com with SMTP id a14so1817413pls.4
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 10:31:48 -0700 (PDT)
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
+ [IPv6:2607:f8b0:4864:20::42f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7CC7C6E44B
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 17:31:53 +0000 (UTC)
+Received: by mail-pf1-x42f.google.com with SMTP id p36so2649391pfw.11
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 10:31:53 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed, 14 Jul 2021 12:31:32 -0500
-Message-Id: <20210714173141.1381686-1-jason@jlekstrand.net>
+Date: Wed, 14 Jul 2021 12:31:35 -0500
+Message-Id: <20210714173141.1381686-4-jason@jlekstrand.net>
+In-Reply-To: <20210714173141.1381686-1-jason@jlekstrand.net>
+References: <20210714173141.1381686-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 0/9] Prepare for a synchronous command parser
+Subject: [igt-dev] [PATCH i-g-t 3/9] tests/i915/gem_ctx_persistence: Use
+ intel_ctx_t for hang subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,55 +25,112 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We're trying to move the command parser in i915 back to being synchronous
-and happening in execbuf().  This patch series does two things primarily:
+We need this for proper cmdparser detection
 
- 1. Rework the way we check for the command parser.  Previously, we had a
-    parameter that claimed to check per-engine but the engine was ignored.
-    With this series, we now have a version which doesn't take an engine
-    for general "Is there a command parser at all?" checks and one which
-    takes a context config and an engine specifier and provides an accurate
-    check.
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+---
+ tests/i915/gem_ctx_persistence.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
- 2. Delete tests which don't work with a synchronous command parser.
-    Originally, I took a more conservative approach and just made those
-    tests skip but Daniel had patches to delete them since we'd like to
-    make relocations immediate again as well and then they won't work at
-    all.
-
-Cc: Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
-
-Daniel Vetter (4):
-  tests/gem_exec_schedule: Use store_dword_plug again (v2)
-  Revert "test/i915/gem_exec_reloc: Restore interclient testings"
-  Revert "i915/gem_exec_reloc: Flood the ring with GPU relocs"
-  Revert "i915/gem_exec_reloc: Check that relocations do not block"
-
-Jason Ekstrand (5):
-  lib/intel_ctx: Add a intel_ctx_cfg_engine_class helper
-  tests/i915/gem_eio: Convert to intel_ctx_t
-  tests/i915/gem_ctx_persistence: Use intel_ctx_t for hang subtests
-  i915: Improve the precision of command parser checks
-  tests/i915/gen9_exec_parse: Expect sync_fence_status to succeed
-
- lib/i915/gem_submission.c        |  38 ++-
- lib/i915/gem_submission.h        |   8 +-
- lib/igt_dummyload.c              |  15 +-
- lib/intel_ctx.c                  |  42 +--
- lib/intel_ctx.h                  |   1 +
- tests/i915/gem_ctx_persistence.c |  43 +--
- tests/i915/gem_eio.c             |  59 ++--
- tests/i915/gem_exec_balancer.c   |   2 +-
- tests/i915/gem_exec_reloc.c      | 445 -------------------------------
- tests/i915/gem_exec_schedule.c   |  52 +---
- tests/i915/gen7_exec_parse.c     |   2 +-
- tests/i915/gen9_exec_parse.c     |   6 +-
- tests/i915/i915_hangman.c        |   2 +-
- 13 files changed, 146 insertions(+), 569 deletions(-)
-
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index 142bac28e..f514e2b78 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -334,8 +334,9 @@ static void test_nonpersistent_hang(int i915, const intel_ctx_cfg_t *cfg,
+ 	igt_spin_free(i915, spin);
+ }
+ 
+-static void test_nohangcheck_hostile(int i915)
++static void test_nohangcheck_hostile(int i915, const intel_ctx_cfg_t *cfg)
+ {
++	const struct intel_execution_engine2 *e;
+ 	int dir;
+ 
+ 	cleanup(i915);
+@@ -350,15 +351,15 @@ static void test_nohangcheck_hostile(int i915)
+ 
+ 	igt_require(__enable_hangcheck(dir, false));
+ 
+-	for_each_physical_ring(e, i915) {
++	for_each_ctx_cfg_engine(i915, cfg, e) {
+ 		int64_t timeout = reset_timeout_ms * NSEC_PER_MSEC;
+-		uint32_t ctx = gem_context_create(i915);
++		const intel_ctx_t *ctx = intel_ctx_create(i915, cfg);
+ 		igt_spin_t *spin;
+ 
+-		spin = igt_spin_new(i915, ctx,
+-				    .engine = eb_ring(e),
++		spin = igt_spin_new(i915, .ctx = ctx,
++				    .engine = e->flags,
+ 				    .flags = IGT_SPIN_NO_PREEMPTION);
+-		gem_context_destroy(i915, ctx);
++		intel_ctx_destroy(i915, ctx);
+ 
+ 		igt_assert_eq(gem_wait(i915, spin->handle, &timeout), 0);
+ 
+@@ -369,8 +370,9 @@ static void test_nohangcheck_hostile(int i915)
+ 	close(dir);
+ }
+ 
+-static void test_nohangcheck_hang(int i915)
++static void test_nohangcheck_hang(int i915, const intel_ctx_cfg_t *cfg)
+ {
++	const struct intel_execution_engine2 *e;
+ 	int dir;
+ 
+ 	cleanup(i915);
+@@ -387,15 +389,15 @@ static void test_nohangcheck_hang(int i915)
+ 
+ 	igt_require(__enable_hangcheck(dir, false));
+ 
+-	for_each_physical_ring(e, i915) {
++	for_each_ctx_cfg_engine(i915, cfg, e) {
+ 		int64_t timeout = reset_timeout_ms * NSEC_PER_MSEC;
+-		uint32_t ctx = gem_context_create(i915);
++		const intel_ctx_t *ctx = intel_ctx_create(i915, cfg);
+ 		igt_spin_t *spin;
+ 
+-		spin = igt_spin_new(i915, ctx,
+-				    .engine = eb_ring(e),
++		spin = igt_spin_new(i915, .ctx = ctx,
++				    .engine = e->flags,
+ 				    .flags = IGT_SPIN_INVALID_CS);
+-		gem_context_destroy(i915, ctx);
++		intel_ctx_destroy(i915, ctx);
+ 
+ 		igt_assert_eq(gem_wait(i915, spin->handle, &timeout), 0);
+ 
+@@ -1131,6 +1133,7 @@ static void exit_handler(int sig)
+ 
+ igt_main
+ {
++	const intel_ctx_cfg_t empty_cfg = {};
+ 	struct {
+ 		const char *name;
+ 		void (*func)(int fd, const intel_ctx_cfg_t *cfg,
+@@ -1182,9 +1185,9 @@ igt_main
+ 		test_userptr(i915);
+ 
+ 	igt_subtest("hostile")
+-		test_nohangcheck_hostile(i915);
++		test_nohangcheck_hostile(i915, &empty_cfg);
+ 	igt_subtest("hang")
+-		test_nohangcheck_hang(i915);
++		test_nohangcheck_hang(i915, &empty_cfg);
+ 
+ 	igt_subtest("heartbeat-stop")
+ 		test_noheartbeat_many(i915, 1, 0);
+@@ -1204,7 +1207,6 @@ igt_main
+ 		for (test = tests; test->name; test++) {
+ 			igt_subtest_with_dynamic_f("legacy-engines-%s",
+ 						   test->name) {
+-				const intel_ctx_cfg_t empty_cfg = {};
+ 				for_each_physical_ring(e, i915) {
+ 					igt_dynamic_f("%s", e->name) {
+ 						do_test(test->func, i915,
 -- 
 2.31.1
 
