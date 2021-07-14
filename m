@@ -1,20 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 79EE16E155
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 04:08:25 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Wed, 14 Jul 2021 04:08:17 +0000
-Message-ID: <BY5PR11MB43723EE158676134407B893D89139@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <20210709065523.16425-1-vidya.srinivas@intel.com>
- <20210709065741.16498-1-vidya.srinivas@intel.com>
- <874kcx4pk0.wl-ashutosh.dixit@intel.com>
- <BY5PR11MB4372BB10AE74CB5B1638008389139@BY5PR11MB4372.namprd11.prod.outlook.com>
- <8735sh4m69.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <8735sh4m69.wl-ashutosh.dixit@intel.com>
-Content-Language: en-US
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 841116E194
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 08:10:17 +0000 (UTC)
+From: Vidya Srinivas <vidya.srinivas@intel.com>
+Date: Wed, 14 Jul 2021 13:30:02 +0530
+Message-Id: <20210714080002.26107-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Skip
- coverage-vs-premult-vs-none for 6bpc panels
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Fix a check in
+ is_6bpc function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,54 +15,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso8859-7"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-U3VyZSwgdGhhbmsgeW91IHNvIG11Y2ggQXNodXRvc2guCgpSZWdhcmRzClZpZHlhCgotLS0tLU9y
-aWdpbmFsIE1lc3NhZ2UtLS0tLQpGcm9tOiBEaXhpdCwgQXNodXRvc2ggPGFzaHV0b3NoLmRpeGl0
-QGludGVsLmNvbT4gClNlbnQ6IFdlZG5lc2RheSwgSnVseSAxNCwgMjAyMSA4OjQ5IEFNClRvOiBT
-cmluaXZhcywgVmlkeWEgPHZpZHlhLnNyaW5pdmFzQGludGVsLmNvbT4KQ2M6IGlndC1kZXZAbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnOyBTaGFua2FyLCBVbWEgPHVtYS5zaGFua2FyQGludGVsLmNvbT47
-IE1vZGVtLCBCaGFudXByYWthc2ggPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+ClN1Ympl
-Y3Q6IFJlOiBbaWd0LWRldl0gW1BBVENIIGktZy10XSB0ZXN0cy9rbXNfcGxhbmVfYWxwaGFfYmxl
-bmQ6IFNraXAgY292ZXJhZ2UtdnMtcHJlbXVsdC12cy1ub25lIGZvciA2YnBjIHBhbmVscwoKT24g
-VHVlLCAxMyBKdWwgMjAyMSAxOTo1NjoxNiAtMDcwMCwgU3Jpbml2YXMsIFZpZHlhIHdyb3RlOgo+
-Cj4gSGkgQXNodXRvc2gsCj4KPiBBcG9sb2dpZXMsIHllcyBpdCBzaG91bGQgYmUgJiYuIFlvdSBh
-cmUgcmlnaHQuIEhvdyBkbyBJIGZpeCBpdCwgcmV2ZXJ0IGFuZCByZXN1Ym1pdD8KPiBQYXRjaCBp
-cyBtZXJnZWQuIFNob3VsZCBJIHN1Ym1pdCBhbm90aGVyIHBhdGNoIHNheWluZyBmaXhlcyB0aGlz
-Pwo+IEltbWVkaWF0ZWx5IGl0IG1pZ2h0IG5vdCBiZSBicmVha2luZyBhbnl0aGluZyBodWdlIGJ1
-dCBJIG5lZWQgdG8gZml4IGl0LgoKTm8gbmVlZCB0byByZXZlcnQsIGp1c3Qgc2VuZCBhbm90aGVy
-IHBhdGNoIHRvIGZpeCBpdC4KCj4KPiBSZWdhcmRzCj4gVmlkeWEKPgo+IC0tLS0tT3JpZ2luYWwg
-TWVzc2FnZS0tLS0tCj4gRnJvbTogRGl4aXQsIEFzaHV0b3NoIDxhc2h1dG9zaC5kaXhpdEBpbnRl
-bC5jb20+Cj4gU2VudDogV2VkbmVzZGF5LCBKdWx5IDE0LCAyMDIxIDc6MzYgQU0KPiBUbzogU3Jp
-bml2YXMsIFZpZHlhIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+Cj4gQ2M6IGlndC1kZXZAbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnCj4gU3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXRd
-IHRlc3RzL2ttc19wbGFuZV9hbHBoYV9ibGVuZDogU2tpcCBjb3ZlcmFnZS12cy1wcmVtdWx0LXZz
-LW5vbmUgZm9yIDZicGMgcGFuZWxzCj4KPiBPbiBUaHUsIDA4IEp1bCAyMDIxIDIzOjU3OjQxIC0w
-NzAwLCBWaWR5YSBTcmluaXZhcyB3cm90ZToKPiA+Cj4gPiArc3RhdGljIGJvb2wgaXNfNmJwYyhp
-Z3RfZGlzcGxheV90ICpkaXNwbGF5LCBlbnVtIHBpcGUgcGlwZSkgewo+ID4gKyAgICAgY2hhciBi
-dWZbODE5Ml07Cj4gPiArICAgICBjaGFyICpzdHI7Cj4gPiArICAgICBib29sIHJldDsKPiA+ICsg
-ICAgIGludCBkZWJ1Z2ZzX2ZkOwo+ID4gKyAgICAgZHJtTW9kZUNvbm5lY3RvciAqYzsKPiA+ICsg
-ICAgIGlndF9vdXRwdXRfdCAqb3V0cHV0ID0gaWd0X2dldF9zaW5nbGVfb3V0cHV0X2Zvcl9waXBl
-KGRpc3BsYXksCj4gPiArcGlwZSk7Cj4gPiArCj4gPiArICAgICBpZiAoIWlzX2k5MTVfZGV2aWNl
-KGRpc3BsYXktPmRybV9mZCkpCj4gPiArICAgICAgICAgICAgIHJldHVybiBmYWxzZTsKPiA+ICsK
-PiA+ICsgICAgIGMgPSBvdXRwdXQtPmNvbmZpZy5jb25uZWN0b3I7Cj4gPiArICAgICBpZiAoYy0+
-Y29ubmVjdG9yX3R5cGUgIT0gRFJNX01PREVfQ09OTkVDVE9SX2VEUCB8fAo+ID4gKyAgICAgICAg
-ICAgICBjLT5jb25uZWN0b3JfdHlwZSAhPSBEUk1fTU9ERV9DT05ORUNUT1JfRFNJKQo+ID4gKyAg
-ICAgICAgICAgICByZXR1cm4gZmFsc2U7Cj4KPiBJc24ndCB0aGlzIGFuICYmIHJhdGhlciB0aGFu
-IGFuIHx8ID8KPgo+IFsyOTgvMTA2M10gQ29tcGlsaW5nIEMgb2JqZWN0ICd0ZXN0cy81OTgzMGVi
-QEBrbXNfcGxhbmVfYWxwaGFfYmxlbmRAZXhlL2ttc19wbGFuZV9hbHBoYV9ibGVuZC5jLm8nLgo+
-IC4uL3Rlc3RzL2ttc19wbGFuZV9hbHBoYV9ibGVuZC5jOiBJbiBmdW5jdGlvbiChaXNfNmJwY6I6
-Cj4gLi4vdGVzdHMva21zX3BsYW5lX2FscGhhX2JsZW5kLmM6NDU3OjUwOiB3YXJuaW5nOiBsb2dp
-Y2FsIKFvcqIgb2YgY29sbGVjdGl2ZWx5IGV4aGF1c3RpdmUgdGVzdHMgaXMgYWx3YXlzIHRydWUg
-Wy1XbG9naWNhbC1vcF0KPiAgIGlmIChjLT5jb25uZWN0b3JfdHlwZSAhPSBEUk1fTU9ERV9DT05O
-RUNUT1JfZURQIHx8Cj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBefiBZb3UgY2Fubm90IG1lcmdlIGNvZGUgd2l0aCBjb21waWxlIHdhcm5pbmdzLgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1h
-aWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZy
-ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+Fixes commit 3bf28f9dffd41b85c262d4e6664ffbdf5b7d9a93.
+
+is_6bpc is supposed to return false if connector is not eDP or DSI.
+The right check will be DRM_MODE_CONNECTOR_eDP && DRM_MODE_CONNECTOR_DSI
+By mistake DRM_MODE_CONNECTOR_eDP || DRM_MODE_CONNECTOR_DSI
+was being used.
+
+Credits-to: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+---
+ tests/kms_plane_alpha_blend.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+index a3529dc2190f..8020216c1594 100644
+--- a/tests/kms_plane_alpha_blend.c
++++ b/tests/kms_plane_alpha_blend.c
+@@ -454,7 +454,7 @@ static bool is_6bpc(igt_display_t *display, enum pipe pipe) {
+ 		return false;
+ 
+ 	c = output->config.connector;
+-	if (c->connector_type != DRM_MODE_CONNECTOR_eDP ||
++	if (c->connector_type != DRM_MODE_CONNECTOR_eDP &&
+ 		c->connector_type != DRM_MODE_CONNECTOR_DSI)
+ 		return false;
+ 
+-- 
+2.32.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
