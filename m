@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B2086E220
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 11:21:52 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 775506E220
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 11:23:10 +0000 (UTC)
 From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Wed, 14 Jul 2021 11:21:47 +0000
-Message-ID: <BY5PR11MB437298FAC0A6FDDEAB99CAF289139@BY5PR11MB4372.namprd11.prod.outlook.com>
+Date: Wed, 14 Jul 2021 11:22:53 +0000
+Message-ID: <BY5PR11MB4372BFEABDF46860B15FD47389139@BY5PR11MB4372.namprd11.prod.outlook.com>
 References: <20210714080002.26107-1-vidya.srinivas@intel.com>
- <YO67kjKArYFJS5WD@intel.com>
-In-Reply-To: <YO67kjKArYFJS5WD@intel.com>
+ <20210714100404.GB27868@intel.com>
+In-Reply-To: <20210714100404.GB27868@intel.com>
 Content-Language: en-US
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Fix a
@@ -19,50 +19,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+To: "C, Ramalingam" <ramalingam.c@intel.com>, "Joshi, Kunal1" <kunal1.joshi@intel.com>, "Shankar, Uma" <uma.shankar@intel.com>
 Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGVsbG8gVmlsbGUsDQoNCkFwb2xvZ2llcy4gSSB0cmllZCB0byB0dXJuIG9mZiBkaXRoZXJpbmcg
-ZnJvbSBrZXJuZWwgaXRzZWxmLiBCdXQgc3RpbGwgQ1JDIG1pc21hdGNoIGNhbWUgdXAuDQpUaGlz
-IGlzIG9uIEphc3Blcmxha2UgY2hyb21lYm9vayB3aGljaCBpcyB1c2luZyA2YnBjIHBhbmVsLg0K
-DQpTYW1lIGphc3Blcmxha2Ugd2l0aCA4YnBjIHBhbmVsIGlzIHdvcmtpbmcgZmluZS4gDQoNClNv
-LCBhcyBsYXN0IHJlc29ydCB3ZSBkaWQgdGhpcyDimLkuDQoNClJlZ2FyZHMNClZpZHlhDQoNCi0t
-LS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5
-cmphbGFAbGludXguaW50ZWwuY29tPiANClNlbnQ6IFdlZG5lc2RheSwgSnVseSAxNCwgMjAyMSAz
-OjU1IFBNDQpUbzogU3Jpbml2YXMsIFZpZHlhIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+DQpD
-YzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNClN1YmplY3Q6IFJlOiBbaWd0LWRldl0g
-W1BBVENIIGktZy10XSB0ZXN0cy9rbXNfcGxhbmVfYWxwaGFfYmxlbmQ6IEZpeCBhIGNoZWNrIGlu
-IGlzXzZicGMgZnVuY3Rpb24NCg0KT24gV2VkLCBKdWwgMTQsIDIwMjEgYXQgMDE6MzA6MDJQTSAr
-MDUzMCwgVmlkeWEgU3Jpbml2YXMgd3JvdGU6DQo+IEZpeGVzIGNvbW1pdCAzYmYyOGY5ZGZmZDQx
-Yjg1YzI2MmQ0ZTY2NjRmZmJkZjViN2Q5YTkzLg0KPiANCj4gaXNfNmJwYyBpcyBzdXBwb3NlZCB0
-byByZXR1cm4gZmFsc2UgaWYgY29ubmVjdG9yIGlzIG5vdCBlRFAgb3IgRFNJLg0KPiBUaGUgcmln
-aHQgY2hlY2sgd2lsbCBiZSBEUk1fTU9ERV9DT05ORUNUT1JfZURQICYmIA0KPiBEUk1fTU9ERV9D
-T05ORUNUT1JfRFNJIEJ5IG1pc3Rha2UgRFJNX01PREVfQ09OTkVDVE9SX2VEUCB8fCANCj4gRFJN
-X01PREVfQ09OTkVDVE9SX0RTSSB3YXMgYmVpbmcgdXNlZC4NCg0KSW5zdGVhZCBvZiB0aGVzZSBp
-bmNvbXBsZXRlIGhhY2tzIHdoeSBhcmVuJ3Qgd2UganVzdCB0dXJuaW5nIG9mZiBkaXRoZXJpbmcg
-d2hlbiBkb2luZyBjcmMgY2FwdHVyZT8NCg0KPiANCj4gQ3JlZGl0cy10bzogQXNodXRvc2ggRGl4
-aXQgPGFzaHV0b3NoLmRpeGl0QGludGVsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogVmlkeWEgU3Jp
-bml2YXMgPHZpZHlhLnNyaW5pdmFzQGludGVsLmNvbT4NCj4gLS0tDQo+ICB0ZXN0cy9rbXNfcGxh
-bmVfYWxwaGFfYmxlbmQuYyB8IDIgKy0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigr
-KSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19wbGFuZV9hbHBo
-YV9ibGVuZC5jIA0KPiBiL3Rlc3RzL2ttc19wbGFuZV9hbHBoYV9ibGVuZC5jIGluZGV4IGEzNTI5
-ZGMyMTkwZi4uODAyMDIxNmMxNTk0IA0KPiAxMDA2NDQNCj4gLS0tIGEvdGVzdHMva21zX3BsYW5l
-X2FscGhhX2JsZW5kLmMNCj4gKysrIGIvdGVzdHMva21zX3BsYW5lX2FscGhhX2JsZW5kLmMNCj4g
-QEAgLTQ1NCw3ICs0NTQsNyBAQCBzdGF0aWMgYm9vbCBpc182YnBjKGlndF9kaXNwbGF5X3QgKmRp
-c3BsYXksIGVudW0gcGlwZSBwaXBlKSB7DQo+ICAJCXJldHVybiBmYWxzZTsNCj4gIA0KPiAgCWMg
-PSBvdXRwdXQtPmNvbmZpZy5jb25uZWN0b3I7DQo+IC0JaWYgKGMtPmNvbm5lY3Rvcl90eXBlICE9
-IERSTV9NT0RFX0NPTk5FQ1RPUl9lRFAgfHwNCj4gKwlpZiAoYy0+Y29ubmVjdG9yX3R5cGUgIT0g
-RFJNX01PREVfQ09OTkVDVE9SX2VEUCAmJg0KPiAgCQljLT5jb25uZWN0b3JfdHlwZSAhPSBEUk1f
-TU9ERV9DT05ORUNUT1JfRFNJKQ0KPiAgCQlyZXR1cm4gZmFsc2U7DQo+ICANCj4gLS0NCj4gMi4z
-Mi4wDQo+IA0KPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-Xw0KPiBpZ3QtZGV2IG1haWxpbmcgbGlzdA0KPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
-Zw0KPiBodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
-ZXYNCg0KLS0NClZpbGxlIFN5cmrDpGzDpA0KSW50ZWwNCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4v
-bGlzdGluZm8vaWd0LWRldgo=
+Thank you so much Ram. Kunal, kindly help merge this. Sorry for the trouble.
+
+Regards
+Vidya
+
+-----Original Message-----
+From: C, Ramalingam <ramalingam.c@intel.com> 
+Sent: Wednesday, July 14, 2021 3:34 PM
+To: Srinivas, Vidya <vidya.srinivas@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Fix a check in is_6bpc function
+
+On 2021-07-14 at 13:30:02 +0530, Vidya Srinivas wrote:
+> Fixes commit 3bf28f9dffd41b85c262d4e6664ffbdf5b7d9a93.
+> 
+> is_6bpc is supposed to return false if connector is not eDP or DSI.
+> The right check will be DRM_MODE_CONNECTOR_eDP && 
+> DRM_MODE_CONNECTOR_DSI By mistake DRM_MODE_CONNECTOR_eDP || 
+> DRM_MODE_CONNECTOR_DSI was being used.
+> 
+> Credits-to: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+LGTM.
+
+Reviewed-by: Ramalingam C <ramalingam.c@intel.com>
+> ---
+>  tests/kms_plane_alpha_blend.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_plane_alpha_blend.c 
+> b/tests/kms_plane_alpha_blend.c index a3529dc2190f..8020216c1594 
+> 100644
+> --- a/tests/kms_plane_alpha_blend.c
+> +++ b/tests/kms_plane_alpha_blend.c
+> @@ -454,7 +454,7 @@ static bool is_6bpc(igt_display_t *display, enum pipe pipe) {
+>  		return false;
+>  
+>  	c = output->config.connector;
+> -	if (c->connector_type != DRM_MODE_CONNECTOR_eDP ||
+> +	if (c->connector_type != DRM_MODE_CONNECTOR_eDP &&
+>  		c->connector_type != DRM_MODE_CONNECTOR_DSI)
+>  		return false;
+>  
+> --
+> 2.32.0
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
