@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
- [IPv6:2607:f8b0:4864:20::52b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDCA26E44B
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 17:31:57 +0000 (UTC)
-Received: by mail-pg1-x52b.google.com with SMTP id s18so3215500pgq.3
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 10:31:57 -0700 (PDT)
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
+ [IPv6:2607:f8b0:4864:20::102a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0B8AA6E454
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 17:32:03 +0000 (UTC)
+Received: by mail-pj1-x102a.google.com with SMTP id bt15so2046903pjb.2
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 10:32:03 -0700 (PDT)
 From: Jason Ekstrand <jason@jlekstrand.net>
-Date: Wed, 14 Jul 2021 12:31:37 -0500
-Message-Id: <20210714173141.1381686-6-jason@jlekstrand.net>
+Date: Wed, 14 Jul 2021 12:31:39 -0500
+Message-Id: <20210714173141.1381686-8-jason@jlekstrand.net>
 In-Reply-To: <20210714173141.1381686-1-jason@jlekstrand.net>
 References: <20210714173141.1381686-1-jason@jlekstrand.net>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 5/9] tests/gem_exec_schedule: Use
- store_dword_plug again (v2)
+Subject: [igt-dev] [PATCH i-g-t 7/9] Revert "i915/gem_exec_reloc: Flood the
+ ring with GPU relocs"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,89 +20,144 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>, Daniel Vetter <daniel.vetter@intel.com>, Dave Airlie <airlied@redhat.com>
+Cc: Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>, Dave Airlie <airlied@redhat.com>, Daniel Vetter <daniel.vetter@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogRGFuaWVsIFZldHRlciA8ZGFuaWVsLnZldHRlckBmZndsbC5jaD4KCkluCgpjb21taXQg
-Mjg4NGY5MWRkNmQ3NjgyZWE3MzhlZjZmMDk0M2NjNTkxNjQzZGRhMgpBdXRob3I6IENocmlzIFdp
-bHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgpEYXRlOiAgIEZyaSBKdWwgMjAgMTI6Mjk6
-MzAgMjAxOCArMDEwMAoKICAgIGlndC9nZW1fZXhlY19zY2hlZHVsZTogVHJpbSBkZWVwIHJ1bnRp
-bWUKCnRoaXMgd2FzIG9wZW4tY29kZWQsIEkgZ3Vlc3MgdG8gYXZvaWQgaGF2aW5nIHRvIGFsbG9j
-YXRlIGEgdG9uIG9mCmJhdGNoYnVmZmVycy4gVW5mb3J0dW5hdGVseSB0aGlzIHJlbGllcyBvbiBi
-ZWluZyBhYmxlIHRvIHJld3JpdGUKYmF0Y2hidWZmZXIgcmVsb2NhdGlvbnMgd2hpbGUgdGhlIGJh
-dGNoIGlzIGluLWZsaWdodCAob3RoZXJ3aXNlCmV2ZXJ5dGhpbmcgc3RhbGxzIGFuZCBvdXIgc2V0
-dXAgaXMgZm9yIG5vdGhpbmcpLCBhbmQgd2UncmUgcmVtb3ZpbmcKZ3B1IHJlbG9jYXRpb25zIGZy
-b20gdXBzdHJlYW0uCgpUaGlzIHByb2JsZW0gd2FzIHJlYWxpemVkIGZvciB0aGUgdGVzdGNhc2Ug
-aW4gZ2VuZXJhbCBpbgoKY29tbWl0IGYxZTYyZTMzMGE2ZTJkZTdiM2NiZjdjZjAyZDcxYWUwMGNj
-NmFkY2MKQXV0aG9yOiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KRGF0
-ZTogICBUdWUgTWF5IDI2IDE1OjIyOjM4IDIwMjAgKzAxMDAKCiAgICBpOTE1L2dlbV9leGVjX3Nj
-aGVkdWxlOiBSZWR1Y2UgcmVsb2NhdGlvbiByaXNrIGZvciBzdG9yZS1kd29yZAoKYnV0IHRoZSBm
-aXggaW4gdGhlcmUgaXMgb25seSBzdG9jaGFzdGljLCB0aGVyZSdzIHN0aWxsIGEgY2hhbmNlIG9m
-CmZhaWx1cmUgYW5kIGhlbmNlIHVuc2lnaHRseSBub2lzZSBpbiBDSS4gVGhlIHByb3BlciBmaXgg
-aXMgdG8gdXNlCnNvZnRwaW4gZm9yIHRoaXMgdGVzdGNhc2UgdW5jb25kaXRpb25hbGx5IChub3Qg
-anVzdCB3aGVuIHJlbG9jYXRpb25zCmFyZW4ndCBhdmFpbGFibGUpLCBzbyB0aGF0IHdlIGNsZWFy
-bHkgZGlzZW50YW5nbGUgdGhlIGNvbmNlcm5zIGhlcmUKYW5kIHJlYWxseSBvbmx5IHRlc3QgdGhl
-IHNjaGVkdWxlci4gQW5kIG5vdCBzb21lIGxlZ2FjeSBmZWF0dXJlcyB0aGF0CmFyZSBvbiB0aGUg
-d2F5IG91dCB0byB0aGVpciBkZXNlcnZlZCByZXRpcmVtZW50IGxpa2UgcmVsb2NhdGlvbnMuCgpa
-YnlzY2VrIGFuZCBBc2hvdHVzaCBjYydlZCBzbyB0aGV5J3JlIGF3YXJlIHRoYXQgdGhpcyB0ZXN0
-Y2FzZSBtdXN0IGJlCnN3aXRjaGVkIG92ZXIgdG8gc29mdHBpbmcgdW5jb25kdGlvbmFsbHksIGZv
-ciBjb3JyZWN0bmVzcyByZWFzb25zLgoKQnV0IHRoYXQncyBhIHBpbGUgbW9yZSB3b3JrLCBzbyBh
-cyBhbiBpbnRlcmltIHNvbHV0aW9uIGdvIGJhY2sgdG8KX19zdG9yZV9kd29yZCBoZWxwZXIuCgp2
-MiAoSmFzb24gRWtzdHJhbmQpOgogLSBSZWJhc2Ugb24gaW50ZWxfY3R4X3QgY2hhbmdlcwoKQ2M6
-IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3RyYW5kLm5ldD4KQ2M6IERpeGl0IEFzaHV0b3No
-IDxhc2h1dG9zaC5kaXhpdEBpbnRlbC5jb20+CkNjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpi
-aWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KQ2M6IE1hYXJ0ZW4gTGFua2hvcnN0IDxtYWFy
-dGVuLmxhbmtob3JzdEBsaW51eC5pbnRlbC5jb20+CkNjOiBEYXZlIEFpcmxpZSA8YWlybGllZEBy
-ZWRoYXQuY29tPgpDYzogTGFrc2htaW5hcmF5YW5hIFZ1ZHVtIDxsYWtzaG1pbmFyYXlhbmEudnVk
-dW1AaW50ZWwuY29tPgpTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgVmV0dGVyIDxkYW5pZWwudmV0dGVy
-QGludGVsLmNvbT4KUmV2aWV3ZWQtYnk6IEphc29uIEVrc3RyYW5kIDxqYXNvbkBqbGVrc3RyYW5k
-Lm5ldD4KLS0tCiB0ZXN0cy9pOTE1L2dlbV9leGVjX3NjaGVkdWxlLmMgfCA1MiArKystLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCsp
-LCA0OCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9leGVjX3NjaGVk
-dWxlLmMgYi90ZXN0cy9pOTE1L2dlbV9leGVjX3NjaGVkdWxlLmMKaW5kZXggYTc1ZmFlYjY4Li5l
-NWZiNDU5ODIgMTAwNjQ0Ci0tLSBhL3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfc2NoZWR1bGUuYworKysg
-Yi90ZXN0cy9pOTE1L2dlbV9leGVjX3NjaGVkdWxlLmMKQEAgLTE4NzAsNTUgKzE4NzAsMTEgQEAg
-c3RhdGljIHZvaWQgZGVlcChpbnQgZmQsIGNvbnN0IGludGVsX2N0eF9jZmdfdCAqY2ZnLAogCiAJ
-LyogQ3JlYXRlIGEgZGVlcCBkZXBlbmRlbmN5IGNoYWluLCB3aXRoIGEgZmV3IGJyYW5jaGVzICov
-CiAJZm9yIChuID0gMDsgbiA8IG5yZXEgJiYgaWd0X3NlY29uZHNfZWxhcHNlZCgmdHYpIDwgMjsg
-bisrKSB7Ci0JCWNvbnN0IHVuc2lnbmVkIGludCBnZW4gPSBpbnRlbF9nZW4oaW50ZWxfZ2V0X2Ry
-bV9kZXZpZChmZCkpOwotCQlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2JqZWN0MiBvYmpbM107
-Ci0JCXN0cnVjdCBkcm1faTkxNV9nZW1fcmVsb2NhdGlvbl9lbnRyeSByZWxvYzsKLQkJc3RydWN0
-IGRybV9pOTE1X2dlbV9leGVjYnVmZmVyMiBlYiA9IHsKLQkJCS5idWZmZXJzX3B0ciA9IHRvX3Vz
-ZXJfcG9pbnRlcihvYmopLAotCQkJLmJ1ZmZlcl9jb3VudCA9IDMsCi0JCQkuZmxhZ3MgPSByaW5n
-IHwgKGdlbiA8IDYgPyBJOTE1X0VYRUNfU0VDVVJFIDogMCksCi0JCQkucnN2ZDEgPSBjdHhbbiAl
-IE1BWF9DT05URVhUU10tPmlkLAotCQl9OwotCQl1aW50MzJfdCBiYXRjaFsxNl07Ci0JCWludCBp
-OwotCi0JCW1lbXNldChvYmosIDAsIHNpemVvZihvYmopKTsKLQkJb2JqWzBdLmhhbmRsZSA9IHBs
-dWc7Ci0KLQkJbWVtc2V0KCZyZWxvYywgMCwgc2l6ZW9mKHJlbG9jKSk7Ci0JCXJlbG9jLnByZXN1
-bWVkX29mZnNldCA9IDA7Ci0JCXJlbG9jLm9mZnNldCA9IHNpemVvZih1aW50MzJfdCk7Ci0JCXJl
-bG9jLmRlbHRhID0gc2l6ZW9mKHVpbnQzMl90KSAqIG47Ci0JCXJlbG9jLnJlYWRfZG9tYWlucyA9
-IEk5MTVfR0VNX0RPTUFJTl9SRU5ERVI7Ci0JCXJlbG9jLndyaXRlX2RvbWFpbiA9IEk5MTVfR0VN
-X0RPTUFJTl9SRU5ERVI7Ci0JCW9ialsyXS5oYW5kbGUgPSBnZW1fY3JlYXRlKGZkLCA0MDk2KTsK
-LQkJb2JqWzJdLnJlbG9jc19wdHIgPSB0b191c2VyX3BvaW50ZXIoJnJlbG9jKTsKLQkJb2JqWzJd
-LnJlbG9jYXRpb25fY291bnQgPSAxOwotCi0JCWkgPSAwOwotCQliYXRjaFtpXSA9IE1JX1NUT1JF
-X0RXT1JEX0lNTSB8IChnZW4gPCA2ID8gMSA8PCAyMiA6IDApOwotCQlpZiAoZ2VuID49IDgpIHsK
-LQkJCWJhdGNoWysraV0gPSByZWxvYy5kZWx0YTsKLQkJCWJhdGNoWysraV0gPSAwOwotCQl9IGVs
-c2UgaWYgKGdlbiA+PSA0KSB7Ci0JCQliYXRjaFsrK2ldID0gMDsKLQkJCWJhdGNoWysraV0gPSBy
-ZWxvYy5kZWx0YTsKLQkJCXJlbG9jLm9mZnNldCArPSBzaXplb2YodWludDMyX3QpOwotCQl9IGVs
-c2UgewotCQkJYmF0Y2hbaV0tLTsKLQkJCWJhdGNoWysraV0gPSByZWxvYy5kZWx0YTsKLQkJfQot
-CQliYXRjaFsrK2ldID0gZWIucnN2ZDE7Ci0JCWJhdGNoWysraV0gPSBNSV9CQVRDSF9CVUZGRVJf
-RU5EOwotCQlnZW1fd3JpdGUoZmQsIG9ialsyXS5oYW5kbGUsIDAsIGJhdGNoLCBzaXplb2YoYmF0
-Y2gpKTsKKwkJY29uc3QgaW50ZWxfY3R4X3QgKmNvbnRleHQgPSBjdHhbbiAlIE1BWF9DT05URVhU
-U107CisJCWdlbV9jb250ZXh0X3NldF9wcmlvcml0eShmZCwgY29udGV4dC0+aWQsIE1BWF9QUklP
-IC0gbnJlcSArIG4pOwogCi0JCWdlbV9jb250ZXh0X3NldF9wcmlvcml0eShmZCwgZWIucnN2ZDEs
-IE1BWF9QUklPIC0gbnJlcSArIG4pOwotCQlmb3IgKGludCBtID0gMDsgbSA8IFhTOyBtKyspIHsK
-LQkJCW9ialsxXS5oYW5kbGUgPSBkZXBbbV07Ci0JCQlyZWxvYy50YXJnZXRfaGFuZGxlID0gb2Jq
-WzFdLmhhbmRsZTsKLQkJCWdlbV9leGVjYnVmKGZkLCAmZWIpOwotCQl9Ci0JCWdlbV9jbG9zZShm
-ZCwgb2JqWzJdLmhhbmRsZSk7CisJCWZvciAoaW50IG0gPSAwOyBtIDwgWFM7IG0rKykKKwkJCXN0
-b3JlX2R3b3JkX3BsdWcoZmQsIGNvbnRleHQsIHJpbmcsIGRlcFttXSwgNCpuLCBjb250ZXh0LT5p
-ZCwgcGx1ZywgSTkxNV9HRU1fRE9NQUlOX0lOU1RSVUNUSU9OKTsKIAl9CiAJaWd0X2luZm8oIkZp
-cnN0IGRlcHRyZWU6ICVkIHJlcXVlc3RzIFslLjNmc11cbiIsCiAJCSBuICogWFMsIDFlLTkqaWd0
-X25zZWNfZWxhcHNlZCgmdHYpKTsKLS0gCjIuMzEuMQoKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0
-cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9pZ3QtZGV2Cg==
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
+
+This reverts commit 57ee41f12b7a53283fd812c5f72fcb39e6ad2197.
+
+This validates gpu relocations, which we're about to delete.
+
+Cc: Jason Ekstrand <jason@jlekstrand.net>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+Reviewed-by: Jason Ekstrand <jason@jlekstrand.net>
+---
+ tests/i915/gem_exec_reloc.c | 92 -------------------------------------
+ 1 file changed, 92 deletions(-)
+
+diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
+index 16e9910de..c51e79504 100644
+--- a/tests/i915/gem_exec_reloc.c
++++ b/tests/i915/gem_exec_reloc.c
+@@ -346,91 +346,6 @@ static void active(int fd, const intel_ctx_t *ctx, unsigned engine)
+ 	gem_close(fd, obj[0].handle);
+ }
+ 
+-static uint64_t many_relocs(unsigned long count, unsigned long *out)
+-{
+-	struct drm_i915_gem_relocation_entry *reloc;
+-	unsigned long sz;
+-	int i;
+-
+-	sz = count * sizeof(*reloc);
+-	sz = ALIGN(sz, 4096);
+-
+-	reloc = mmap(0, sz, PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+-	igt_assert(reloc != MAP_FAILED);
+-	for (i = 0; i < count; i++) {
+-		reloc[i].target_handle = 0;
+-		reloc[i].presumed_offset = ~0ull;
+-		reloc[i].offset = 8 * i;
+-		reloc[i].delta = 8 * i;
+-	}
+-	mprotect(reloc, sz, PROT_READ);
+-
+-	*out = sz;
+-	return to_user_pointer(reloc);
+-}
+-
+-static void __many_active(int i915, const intel_ctx_t *ctx, unsigned engine,
+-			  unsigned long count)
+-{
+-	unsigned long reloc_sz;
+-	struct drm_i915_gem_exec_object2 obj[2] = {{
+-		.handle = gem_create(i915, count * sizeof(uint64_t)),
+-		.relocs_ptr = many_relocs(count, &reloc_sz),
+-		.relocation_count = count,
+-	}};
+-	struct drm_i915_gem_execbuffer2 execbuf = {
+-		.buffers_ptr = to_user_pointer(obj),
+-		.buffer_count = ARRAY_SIZE(obj),
+-		.flags = engine | I915_EXEC_HANDLE_LUT,
+-		.rsvd1 = ctx->id,
+-	};
+-	igt_spin_t *spin;
+-
+-	spin = __igt_spin_new(i915,
+-			      .ctx = ctx,
+-			      .engine = engine,
+-			      .dependency = obj[0].handle,
+-			      .flags = (IGT_SPIN_FENCE_OUT |
+-					IGT_SPIN_NO_PREEMPTION));
+-	obj[1] = spin->obj[1];
+-	gem_execbuf(i915, &execbuf);
+-	igt_assert_eq(sync_fence_status(spin->out_fence), 0);
+-	igt_spin_free(i915, spin);
+-
+-	for (unsigned long i = 0; i < count; i++) {
+-		uint64_t addr;
+-
+-		gem_read(i915, obj[0].handle, i * sizeof(addr),
+-			 &addr, sizeof(addr));
+-
+-		igt_assert_eq_u64(addr, obj[0].offset + i * sizeof(addr));
+-	}
+-
+-	munmap(from_user_pointer(obj[0].relocs_ptr), reloc_sz);
+-	gem_close(i915, obj[0].handle);
+-}
+-
+-static void many_active(int i915, const intel_ctx_t *ctx, unsigned engine)
+-{
+-	const uint64_t max = 2048;
+-	unsigned long count = 256;
+-
+-	igt_until_timeout(2) {
+-		uint64_t required, total;
+-
+-		if (!__intel_check_memory(1, 8 * count, CHECK_RAM,
+-					  &required, &total))
+-			break;
+-
+-		igt_debug("Testing count:%lu\n", count);
+-		__many_active(i915, ctx, engine, count);
+-
+-		count <<= 1;
+-		if (count >= max)
+-			break;
+-	}
+-}
+-
+ static unsigned int offset_in_page(void *addr)
+ {
+ 	return (uintptr_t)addr & 4095;
+@@ -1371,13 +1286,6 @@ igt_main
+ 		}
+ 	}
+ 
+-	igt_subtest_with_dynamic("basic-many-active") {
+-		for_each_ctx_engine(fd, ctx, e) {
+-			igt_dynamic_f("%s", e->name)
+-				many_active(fd, ctx, e->flags);
+-		}
+-	}
+-
+ 	igt_subtest("basic-concurrent0")
+ 		concurrent(fd, ctx, 0);
+ 	igt_subtest("basic-concurrent16")
+-- 
+2.31.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
