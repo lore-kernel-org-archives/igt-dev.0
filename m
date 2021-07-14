@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com
- [IPv6:2607:f8b0:4864:20::732])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DCBF389317
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 18:30:08 +0000 (UTC)
-Received: by mail-qk1-x732.google.com with SMTP id e14so2549616qkl.9
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 11:30:08 -0700 (PDT)
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Wed, 14 Jul 2021 14:30:04 -0400
-Message-Id: <20210714183004.1918917-1-markyacoub@chromium.org>
-In-Reply-To: <20210624173525.1526215-1-markyacoub@chromium.org>
-References: <20210624173525.1526215-1-markyacoub@chromium.org>
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com
+ [IPv6:2607:f8b0:4864:20::b2c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5905C6E4B7
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 19:33:50 +0000 (UTC)
+Received: by mail-yb1-xb2c.google.com with SMTP id r132so5063915yba.5
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jul 2021 12:33:50 -0700 (PDT)
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v6] tests/kms_vblank: Turn on hardware before
- testing invalid vblank.
+References: <20210714173141.1381686-1-jason@jlekstrand.net>
+ <20210714173141.1381686-10-jason@jlekstrand.net>
+ <230a51b2c1554090b637bc8145f2b55f@intel.com>
+In-Reply-To: <230a51b2c1554090b637bc8145f2b55f@intel.com>
+From: Jason Ekstrand <jason@jlekstrand.net>
+Date: Wed, 14 Jul 2021 14:33:38 -0500
+Message-ID: <CAOFGe95AituBJ669P0KmpjzVQ=vw6VNM0xBZVYVHDk=VoMEiKQ@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 9/9] tests/i915/gen9_exec_parse: Expect
+ sync_fence_status to succeed
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,81 +26,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: robdclark@chromium.org, petri.latvala@intel.com, anson.jacob@amd.com, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
+To: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mark Yacoub <markyacoub@google.com>
+On Wed, Jul 14, 2021 at 12:39 PM Vudum, Lakshminarayana
+<lakshminarayana.vudum@intel.com> wrote:
+>
+> What is expected from myside? Should these email's I received go to a different person?
 
-[Why]
-Before any hardware is on, the vblank is off and its ref counter is in
-an initialized state as each driver handles toggling it differently.
-Ioctl DRM_IOCTL_WAIT_VBLANK could return 0 such as on i915, or an invalid
-integer that doesn't mean much, such as on Zork running Kernel 5.4 due
-to the kernel workaround that increments the vblank ref count to prevent
-a get from enabling the interrupt.
+The're going to make a few small IGT CI changes.  Daniel thought you'd
+want to be in the loop.
 
-[How]
-For invalid_subtest(), active the CRTCs to turn the hardware on so
-DRM_IOCTL_WAIT_VBLANK returns something meaningful.
+--Jason
 
-Tested on ChromeOS Zork(amdgpu) and Trogdor(msm)
-
-Changes since v5:
-Explicitly set the data pipe and output.
-
-Changes since v4:
-Use igt_get_single_output_for_pipe to get igt_output_t.
-
-Changes since v3:
-Turn on only 1 output instead of all.
-
-Changes since v2:
-1. Updated Signed-off-by.
-
-Changes since v1:
-1. Update Commit message
-2. Rename variable p to pipe_number
-
-Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
----
- tests/kms_vblank.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index 93b01eba..53b7ae0b 100644
---- a/tests/kms_vblank.c
-+++ b/tests/kms_vblank.c
-@@ -475,8 +475,15 @@ static void invalid_subtest(data_t *data, int fd)
- {
- 	union drm_wait_vblank vbl;
- 	unsigned long valid_flags;
--
--	igt_display_require_output_on_pipe(&data->display, 0);
-+	igt_display_t* display = &data->display;
-+	enum pipe pipe = 0;
-+	igt_output_t* output = igt_get_single_output_for_pipe(display, pipe);
-+
-+	data->pipe = pipe;
-+	data->output = output;
-+	igt_output_set_pipe(output, pipe);
-+	igt_display_require_output_on_pipe(display, pipe);
-+	prepare_crtc(data, fd, output);
- 
- 	/* First check all is well with a simple query */
- 	memset(&vbl, 0, sizeof(vbl));
-@@ -511,6 +518,8 @@ static void invalid_subtest(data_t *data, int fd)
- 	vbl.request.type |= _DRM_VBLANK_SECONDARY;
- 	vbl.request.type |= _DRM_VBLANK_FLAGS_MASK;
- 	igt_assert_eq(wait_vblank(fd, &vbl), -EINVAL);
-+
-+	cleanup_crtc(data, fd, output);
- }
- 
- igt_main
--- 
-2.32.0.93.g670b81a890-goog
-
+> Lakshmi.
+> -----Original Message-----
+> From: Jason Ekstrand <jason@jlekstrand.net>
+> Sent: Wednesday, July 14, 2021 10:32 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Jason Ekstrand <jason@jlekstrand.net>; Vudum, Lakshminarayana <lakshminarayana.vudum@intel.com>
+> Subject: [PATCH i-g-t 9/9] tests/i915/gen9_exec_parse: Expect sync_fence_status to succeed
+>
+> i915 is switching to synchronously parse command buffers and deliver the error immediately instead of trying to propagate it to the fence.  We can assume that, if there is an error, it's returned from execbuf.
+>
+> Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+> Cc: Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
+> ---
+>  tests/i915/gen9_exec_parse.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/tests/i915/gen9_exec_parse.c b/tests/i915/gen9_exec_parse.c index b35f2cb43..512891873 100644
+> --- a/tests/i915/gen9_exec_parse.c
+> +++ b/tests/i915/gen9_exec_parse.c
+> @@ -72,10 +72,8 @@ __checked_execbuf(int i915, struct drm_i915_gem_execbuffer2 *eb)
+>         fence = eb->rsvd2 >> 32;
+>
+>         sync_fence_wait(fence, -1);
+> -       err = sync_fence_status(fence);
+> +       igt_assert(sync_fence_status(fence) >= 0);
+>         close(fence);
+> -       if (err < 0)
+> -               return err;
+>
+>         return 0;
+>  }
+> --
+> 2.31.1
+>
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
