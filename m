@@ -1,8 +1,8 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 15 Jul 2021 18:29:14 -0000
-Message-ID: <162637375422.18699.16227032943425077450@emeril.freedesktop.org>
+Date: Thu, 15 Jul 2021 18:51:09 -0000
+Message-ID: <162637506931.18699.16741953578678391749@emeril.freedesktop.org>
 References: <20210624173525.1526215-1-markyacoub@chromium.org>
 In-Reply-To: <20210624173525.1526215-1-markyacoub@chromium.org>
 Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
@@ -16,18 +16,18 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0281854967=="
+Content-Type: multipart/mixed; boundary="===============0734403067=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Mark Yacoub <markyacoub@chromium.org>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0281854967==
+--===============0734403067==
 Content-Type: multipart/alternative;
- boundary="===============2135029636231875944=="
+ boundary="===============5824097233709944251=="
 
---===============2135029636231875944==
+--===============5824097233709944251==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -519,7 +519,7 @@ Known issues
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6024/index.html
 
---===============2135029636231875944==
+--===============5824097233709944251==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -1221,9 +1221,9 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============2135029636231875944==--
+--===============5824097233709944251==--
 
---===============0281854967==
+--===============0734403067==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -1234,4 +1234,4 @@ igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
---===============0281854967==--
+--===============0734403067==--
