@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 15 Jul 2021 12:33:53 -0000
-Message-ID: <162635243353.18698.938997321403667850@emeril.freedesktop.org>
-References: <20210714173141.1381686-1-jason@jlekstrand.net>
-In-Reply-To: <20210714173141.1381686-1-jason@jlekstrand.net>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgUHJlcGFy?=
- =?utf-8?q?e_for_a_synchronous_command_parser_=28rev2=29?=
+Date: Thu, 15 Jul 2021 13:05:18 -0000
+Message-ID: <162635431868.18698.14668303251162958294@emeril.freedesktop.org>
+References: <20210624173525.1526215-1-markyacoub@chromium.org>
+In-Reply-To: <20210624173525.1526215-1-markyacoub@chromium.org>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fvblank=3A_Turn_on_hardware_before_testing_invalid_vblank?=
+ =?utf-8?b?LiAocmV2OSk=?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,31 +16,31 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0673782428=="
+Content-Type: multipart/mixed; boundary="===============0010932463=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+To: Mark Yacoub <markyacoub@chromium.org>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0673782428==
+--===============0010932463==
 Content-Type: multipart/alternative;
- boundary="===============1075583484543300900=="
+ boundary="===============8048186294340400457=="
 
---===============1075583484543300900==
+--===============8048186294340400457==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Prepare for a synchronous command parser (rev2)
-URL   : https://patchwork.freedesktop.org/series/92541/
+Series: tests/kms_vblank: Turn on hardware before testing invalid vblank. (rev9)
+URL   : https://patchwork.freedesktop.org/series/90382/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_6140 -> IGTPW_6023
+CI Bug Log - changes from IGT_6140 -> IGTPW_6024
 ====================================================
 
 Summary
@@ -49,35 +50,44 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6023/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6024/index.html
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_6023 that come from known issues:
+  Here are the changes found in IGTPW_6024 that come from known issues:
 
 ### IGT changes ###
 
+#### Issues hit ####
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-kbl-7500u:       [PASS][1] -> [DMESG-FAIL][2] ([i915#165])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6140/fi-kbl-7500u/igt@kms_chamelium@common-hpd-after-suspend.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6024/fi-kbl-7500u/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  
 #### Possible fixes ####
 
   * igt@gem_exec_suspend@basic-s3:
-    - {fi-tgl-1115g4}:    [FAIL][1] ([i915#1888]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6140/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6023/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
+    - {fi-tgl-1115g4}:    [FAIL][3] ([i915#1888]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6140/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6024/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
 
   
 #### Warnings ####
 
   * igt@i915_pm_rpm@basic-pci-d3-state:
-    - fi-kbl-guc:         [FAIL][3] -> [SKIP][4] ([fdo#109271])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6140/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6023/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html
+    - fi-kbl-guc:         [FAIL][5] -> [SKIP][6] ([fdo#109271])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6140/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6024/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
           the status of the difference (SUCCESS, WARNING, or FAILURE).
 
   [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#165]: https://gitlab.freedesktop.org/drm/intel/issues/165
   [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
 
 
@@ -91,28 +101,18 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_6140 -> IGTPW_6023
+  * IGT: IGT_6140 -> IGTPW_6024
 
   CI-20190529: 20190529
   CI_DRM_10344: ea6974acd4fe82ca98cc1390b21af67d63c22471 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6023: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6023/index.html
+  IGTPW_6024: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6024/index.html
   IGT_6140: a91b7955265ccb52aeb27c911f81965279c73ebe @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-
-== Testlist changes ==
-
--igt@gem_exec_reloc@basic-many-active
--igt@gem_exec_reloc@basic-parallel
--igt@gem_exec_reloc@basic-spin
--igt@gem_exec_reloc@basic-spin-others
--igt@gem_exec_reloc@basic-wide-active
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6023/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6024/index.html
 
---===============1075583484543300900==
+--===============8048186294340400457==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -132,34 +132,41 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Prepare for a synchronous command parser (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/92541/">https://patchwork.freedesktop.org/series/92541/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/kms_vblank: Turn on hardware before testing invalid vblank. (rev9)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/90382/">https://patchwork.freedesktop.org/series/90382/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6023/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6023/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6024/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6024/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_6140 -&gt; IGTPW_6023</h1>
+    <h1>CI Bug Log - changes from IGT_6140 -&gt; IGTPW_6024</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6023/index.html</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6024/index.html</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6023 that come from known issues:</p>
+<p>Here are the changes found in IGTPW_6024 that come from known issues:</p>
 <h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_chamelium@common-hpd-after-suspend:<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6140/fi-kbl-7500u/igt@kms_chamelium@common-hpd-after-suspend.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6024/fi-kbl-7500u/igt@kms_chamelium@common-hpd-after-suspend.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/165">i915#165</a>)</li>
+</ul>
+</li>
+</ul>
 <h4>Possible fixes</h4>
 <ul>
 <li>igt@gem_exec_suspend@basic-s3:<ul>
-<li>{fi-tgl-1115g4}:    <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6140/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6023/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">PASS</a></li>
+<li>{fi-tgl-1115g4}:    <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6140/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6024/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">PASS</a></li>
 </ul>
 </li>
 </ul>
 <h4>Warnings</h4>
 <ul>
 <li>igt@i915_pm_rpm@basic-pci-d3-state:<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6140/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6023/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6140/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6024/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
 </ul>
 </li>
 </ul>
@@ -170,25 +177,19 @@ Content-Transfer-Encoding: 7bit
 <h2>Build changes</h2>
 <ul>
 <li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6140 -&gt; IGTPW_6023</li>
+<li>IGT: IGT_6140 -&gt; IGTPW_6024</li>
 </ul>
 <p>CI-20190529: 20190529<br />
   CI_DRM_10344: ea6974acd4fe82ca98cc1390b21af67d63c22471 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6023: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6023/index.html<br />
+  IGTPW_6024: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6024/index.html<br />
   IGT_6140: a91b7955265ccb52aeb27c911f81965279c73ebe @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<p>== Testlist changes ==</p>
-<p>-igt@gem_exec_reloc@basic-many-active<br />
--igt@gem_exec_reloc@basic-parallel<br />
--igt@gem_exec_reloc@basic-spin<br />
--igt@gem_exec_reloc@basic-spin-others<br />
--igt@gem_exec_reloc@basic-wide-active</p>
 
 </body>
 </html>
 
---===============1075583484543300900==--
+--===============8048186294340400457==--
 
---===============0673782428==
+--===============0010932463==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -199,4 +200,4 @@ igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
---===============0673782428==--
+--===============0010932463==--
