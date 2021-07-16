@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 145CD6E958
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Jul 2021 09:23:39 +0000 (UTC)
-From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Fri, 16 Jul 2021 02:23:32 -0700
-Message-Id: <20210716092334.961262-15-alan.previn.teres.alexis@intel.com>
-In-Reply-To: <20210716092334.961262-1-alan.previn.teres.alexis@intel.com>
-References: <20210716092334.961262-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v6 14/16] Ensure RESET_STATS reports
- invalidated protected context
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 16 Jul 2021 10:08:47 -0000
+Message-ID: <162643012798.12778.9365098807907044069@emeril.freedesktop.org>
+References: <20210716092334.961262-1-alan.previn.teres.alexis@intel.com>
+In-Reply-To: <20210716092334.961262-1-alan.previn.teres.alexis@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBJbnRy?=
+ =?utf-8?q?oduce_PXP_Test_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,83 +14,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When protected contexts are created but get invalidated
-due to PXP session teardown (such as after a suspend-resume
-cycle), RESET_STATS ioctl for said context will report it
-as I915_CONTEXT_INVALIDATED.
-
-Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- tests/i915/gem_pxp.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
-
-diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 73ec9cd8..d14b085f 100644
---- a/tests/i915/gem_pxp.c
-+++ b/tests/i915/gem_pxp.c
-@@ -760,6 +760,22 @@ static void free_exec_assets(int i915, struct simple_exec_assets *data)
- 	buf_ops_destroy(data->bops);
- }
- 
-+static bool is_context_valid(int i915, uint32_t ctx)
-+{
-+	struct drm_i915_reset_stats rs;
-+	int ret;
-+
-+	memset(&rs, 0, sizeof(rs));
-+	rs.ctx_id = ctx;
-+	ret = drmIoctl(i915, DRM_IOCTL_I915_GET_RESET_STATS, &rs);
-+	igt_assert(ret == 0);
-+
-+	if (rs.flags & I915_CONTEXT_INVALIDATED)
-+		return false;
-+
-+	return true;
-+}
-+
- static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_data *pm)
- {
- 	int ret;
-@@ -791,6 +807,8 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
- 
- 	trigger_powermgt_suspend_cycle(i915, pm);
- 
-+	igt_assert_f(!is_context_valid(i915, data[0].ctx),
-+				       "RESET_STATS missed INVAL bit on stale pxp context\n");
- 	ret = gem_execbuf_flush_store_dw(i915, data[0].ibb, data[0].ctx, data[0].fencebuf);
- 	igt_assert_f((ret == -EACCES), "Executing stale pxp context didn't fail with -EACCES\n");
- 
-@@ -799,6 +817,8 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
- 	 * reuse the bo to ensure the kernel is catching the
- 	 * invalidated bo (not context)
- 	 */
-+	igt_assert_f(!is_context_valid(i915, data[1].ctx),
-+				       "RESET_STATS missed INVAL bit on stale pxp context\n");
- 	ret = create_ctx_with_params(i915, true, true, true, false, &ctx2);
- 	igt_assert_eq(ret, 0);
- 	igt_assert_eq(get_ctx_protected_param(i915, ctx2), 1);
-@@ -809,6 +829,8 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
- 	ret = gem_execbuf_flush_store_dw(i915, ibb2, ctx2, data[1].fencebuf);
- 	igt_assert_f((ret == -ENOEXEC), "Executing stale pxp buffer didn't fail with -ENOEXEC\n");
- 
-+	igt_assert_f(is_context_valid(i915, data[2].ctx),
-+				       "RESET_STATS false-hit on opt-out context\n");
- 	ret = gem_execbuf_flush_store_dw(i915, data[2].ibb, data[2].ctx, data[2].fencebuf);
- 	igt_assert_f((ret == 0), "Opt-out-execution with stale pxp buffer didn't succeed\n");
- 
--- 
-2.25.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogSW50cm9kdWNlIFBYUCBUZXN0IChyZXY2KQpV
+UkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvODc1NzAvClN0
+YXRlIDogZmFpbHVyZQoKPT0gU3VtbWFyeSA9PQoKSUdUIHBhdGNoc2V0IGJ1aWxkIGZhaWxlZCBv
+biBsYXRlc3Qgc3VjY2Vzc2Z1bCBidWlsZAoxNmU3NTNmYzVlMWU1MTM5NWUxZGY0MDg2NWM1Njk5
+ODRhNzRjNWVkIHRvb2xzL3JlZ2lzdGVyczogQWRkIG1pc3NpbmcgcmVnaXN0ZXJzIHJlbGV2YW50
+IHRvIGRlYnVnIFBTUiB1bmRlcnJ1bnMKClsxOTgvNTcxXSBMaW5raW5nIHRhcmdldCB0ZXN0cy9n
+ZW1fZmVuY2VkX2V4ZWNfdGhyYXNoLgpbMTk5LzU3MV0gTGlua2luZyB0YXJnZXQgdGVzdHMvZ2Vt
+X2ZsaW5rX2Jhc2ljLgpbMjAwLzU3MV0gTGlua2luZyB0YXJnZXQgdGVzdHMvZ2VtX2ZsaW5rX3Jh
+Y2UuClsyMDEvNTcxXSBMaW5raW5nIHRhcmdldCB0ZXN0cy9nZW1fZ3BncHVfZmlsbC4KWzIwMi81
+NzFdIExpbmtpbmcgdGFyZ2V0IHRlc3RzL2dlbV9ndHRfaG9nLgpbMjAzLzU3MV0gTGlua2luZyB0
+YXJnZXQgdGVzdHMvZ2VtX2d0dF9jcHVfdGxiLgpbMjA0LzU3MV0gTGlua2luZyB0YXJnZXQgdGVz
+dHMvZ2VtX2d0dF9zcGVlZC4KWzIwNS81NzFdIExpbmtpbmcgdGFyZ2V0IHRlc3RzL2dlbV9sdXRf
+aGFuZGxlLgpbMjA2LzU3MV0gTGlua2luZyB0YXJnZXQgdGVzdHMvZ2VtX2h1Y19jb3B5LgpbMjA3
+LzU3MV0gTGlua2luZyB0YXJnZXQgdGVzdHMvZ2VtX2xpbmVhcl9ibGl0cy4KWzIwOC81NzFdIExp
+bmtpbmcgdGFyZ2V0IHRlc3RzL2dlbV9tYWR2aXNlLgpbMjA5LzU3MV0gTGlua2luZyB0YXJnZXQg
+dGVzdHMvZ2VtX21lZGlhX2ZpbGwuClsyMTAvNTcxXSBMaW5raW5nIHRhcmdldCB0ZXN0cy9nZW1f
+bWVkaWFfdm1lLgpbMjExLzU3MV0gTGlua2luZyB0YXJnZXQgdGVzdHMvZ2VtX21tYXAuClsyMTIv
+NTcxXSBMaW5raW5nIHRhcmdldCB0ZXN0cy9nZW1fbW1hcF9ndHQuClsyMTMvNTcxXSBMaW5raW5n
+IHRhcmdldCB0ZXN0cy9nZW1fcGlwZV9jb250cm9sX3N0b3JlX2xvb3AuClsyMTQvNTcxXSBMaW5r
+aW5nIHRhcmdldCB0ZXN0cy9nZW1fbW1hcF93Yy4KWzIxNS81NzFdIExpbmtpbmcgdGFyZ2V0IHRl
+c3RzL2dlbV9wYXJ0aWFsX3B3cml0ZV9wcmVhZC4KWzIxNi81NzFdIExpbmtpbmcgdGFyZ2V0IHRl
+c3RzL2dlbV9wcmVhZC4KWzIxNy81NzFdIExpbmtpbmcgdGFyZ2V0IHRlc3RzL2dlbV9wcGd0dC4K
+WzIxOC81NzFdIExpbmtpbmcgdGFyZ2V0IHRlc3RzL2dlbV9wd3JpdGUuClsyMTkvNTcxXSBMaW5r
+aW5nIHRhcmdldCB0ZXN0cy9nZW1fcHJlYWRfYWZ0ZXJfYmxpdC4KWzIyMC81NzFdIExpbmtpbmcg
+dGFyZ2V0IHRlc3RzL2dlbV9wd3JpdGVfc25vb3BlZC4KWzIyMS81NzFdIENvbXBpbGluZyBDIG9i
+amVjdCAndGVzdHMvdGVzdHNAQGdlbV9weHBAZXhlL2k5MTVfZ2VtX3B4cC5jLm8nLgpGQUlMRUQ6
+IHRlc3RzL3Rlc3RzQEBnZW1fcHhwQGV4ZS9pOTE1X2dlbV9weHAuYy5vIApjY2FjaGUgY2MgLUl0
+ZXN0cy90ZXN0c0BAZ2VtX3B4cEBleGUgLUl0ZXN0cyAtSS4uL3Rlc3RzIC1JLi4vaW5jbHVkZS9k
+cm0tdWFwaSAtSWxpYiAtSS4uL2xpYiAtSS4uL2xpYi9zdHVicy9zeXNjYWxscyAtSS4gLUkuLi8g
+LUkvdXNyL2luY2x1ZGUvY2Fpcm8gLUkvdXNyL2luY2x1ZGUvZ2xpYi0yLjAgLUkvdXNyL2xpYi94
+ODZfNjQtbGludXgtZ251L2dsaWItMi4wL2luY2x1ZGUgLUkvdXNyL2luY2x1ZGUvcGl4bWFuLTEg
+LUkvdXNyL2luY2x1ZGUvbGlicG5nMTYgLUkvdXNyL2luY2x1ZGUvZnJlZXR5cGUyIC1JL3Vzci9p
+bmNsdWRlL2xpYnBuZzEyIC1JL3Vzci9pbmNsdWRlL2xpYmRybSAtSS91c3IvaW5jbHVkZS9saWJk
+cm0vbm91dmVhdSAtSS91c3IvaW5jbHVkZS94ODZfNjQtbGludXgtZ251IC1JL3Vzci9pbmNsdWRl
+L2Fsc2EgLUkvdXNyL2luY2x1ZGUgLUkvaG9tZS9jaWRybS9rZXJuZWxfaGVhZGVycy9pbmNsdWRl
+IC1mZGlhZ25vc3RpY3MtY29sb3I9YWx3YXlzIC1waXBlIC1EX0ZJTEVfT0ZGU0VUX0JJVFM9NjQg
+LVdhbGwgLVdpbnZhbGlkLXBjaCAtV2V4dHJhIC1zdGQ9Z251MTEgLU8yIC1nIC1EX0dOVV9TT1VS
+Q0UgLWluY2x1ZGUgY29uZmlnLmggLURfRk9SVElGWV9TT1VSQ0U9MiAtV2JhZC1mdW5jdGlvbi1j
+YXN0IC1XZGVjbGFyYXRpb24tYWZ0ZXItc3RhdGVtZW50IC1XZm9ybWF0PTIgLVdpbXBsaWNpdC1m
+YWxsdGhyb3VnaD0wIC1XbG9naWNhbC1vcCAtV21pc3NpbmctZGVjbGFyYXRpb25zIC1XbWlzc2lu
+Zy1mb3JtYXQtYXR0cmlidXRlIC1XbWlzc2luZy1ub3JldHVybiAtV21pc3NpbmctcHJvdG90eXBl
+cyAtV25lc3RlZC1leHRlcm5zIC1Xb2xkLXN0eWxlLWRlZmluaXRpb24gLVdwb2ludGVyLWFyaXRo
+IC1XcmVkdW5kYW50LWRlY2xzIC1Xc2hhZG93IC1Xc3RyaWN0LXByb3RvdHlwZXMgLVd1bmluaXRp
+YWxpemVkIC1XdW51c2VkIC1Xbm8tY2xvYmJlcmVkIC1Xbm8tbWF5YmUtdW5pbml0aWFsaXplZCAt
+V25vLW1pc3NpbmctZmllbGQtaW5pdGlhbGl6ZXJzIC1Xbm8tcG9pbnRlci1hcml0aCAtV25vLXNp
+Z24tY29tcGFyZSAtV25vLXR5cGUtbGltaXRzIC1Xbm8tdW51c2VkLXBhcmFtZXRlciAtV25vLXVu
+dXNlZC1yZXN1bHQgLVdlcnJvcj1hZGRyZXNzIC1XZXJyb3I9YXJyYXktYm91bmRzIC1XZXJyb3I9
+aW1wbGljaXQgLVdlcnJvcj1pbml0LXNlbGYgLVdlcnJvcj1pbnQtdG8tcG9pbnRlci1jYXN0IC1X
+ZXJyb3I9bWFpbiAtV2Vycm9yPW1pc3NpbmctYnJhY2VzIC1XZXJyb3I9bm9ubnVsbCAtV2Vycm9y
+PXBvaW50ZXItdG8taW50LWNhc3QgLVdlcnJvcj1yZXR1cm4tdHlwZSAtV2Vycm9yPXNlcXVlbmNl
+LXBvaW50IC1XZXJyb3I9dHJpZ3JhcGhzIC1XZXJyb3I9d3JpdGUtc3RyaW5ncyAtZm5vLWJ1aWx0
+aW4tbWFsbG9jIC1mbm8tYnVpbHRpbi1jYWxsb2MgLWZjb21tb24gLXB0aHJlYWQgIC1NRCAtTVEg
+J3Rlc3RzL3Rlc3RzQEBnZW1fcHhwQGV4ZS9pOTE1X2dlbV9weHAuYy5vJyAtTUYgJ3Rlc3RzL3Rl
+c3RzQEBnZW1fcHhwQGV4ZS9pOTE1X2dlbV9weHAuYy5vLmQnIC1vICd0ZXN0cy90ZXN0c0BAZ2Vt
+X3B4cEBleGUvaTkxNV9nZW1fcHhwLmMubycgLWMgLi4vdGVzdHMvaTkxNS9nZW1fcHhwLmMKLi4v
+dGVzdHMvaTkxNS9nZW1fcHhwLmM6IEluIGZ1bmN0aW9uIOKAmHNldHVwX3Byb3RlY3RlZF9mYuKA
+mToKLi4vdGVzdHMvaTkxNS9nZW1fcHhwLmM6OTYzOjYwOiBlcnJvcjog4oCYTE9DQUxfRFJNX0ZP
+Uk1BVF9NT0RfTk9OReKAmSB1bmRlY2xhcmVkIChmaXJzdCB1c2UgaW4gdGhpcyBmdW5jdGlvbik7
+IGRpZCB5b3UgbWVhbiDigJhEUk1fRk9STUFUX01PRF9OT05F4oCZPwogIGlndF9pbml0X2ZiKGZi
+LCBpOTE1LCB3aWR0aCwgaGVpZ2h0LCBEUk1fRk9STUFUX1hSR0I4ODg4LCBMT0NBTF9EUk1fRk9S
+TUFUX01PRF9OT05FLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICBefn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+CiAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIERSTV9GT1JNQVRf
+TU9EX05PTkUKLi4vdGVzdHMvaTkxNS9nZW1fcHhwLmM6OTYzOjYwOiBub3RlOiBlYWNoIHVuZGVj
+bGFyZWQgaWRlbnRpZmllciBpcyByZXBvcnRlZCBvbmx5IG9uY2UgZm9yIGVhY2ggZnVuY3Rpb24g
+aXQgYXBwZWFycyBpbgpJbiBmaWxlIGluY2x1ZGVkIGZyb20gLi4vbGliL2RybXRlc3QuaDozOSwK
+ICAgICAgICAgICAgICAgICBmcm9tIC4uL2xpYi9pZ3QuaDoyNywKICAgICAgICAgICAgICAgICBm
+cm9tIC4uL3Rlc3RzL2k5MTUvZ2VtX3B4cC5jOjc6Ci4uL3Rlc3RzL2k5MTUvZ2VtX3B4cC5jOjk3
+OToxMDogZXJyb3I6IOKAmExPQ0FMX0RSTV9NT0RFX0ZCX01PRElGSUVSU+KAmSB1bmRlY2xhcmVk
+IChmaXJzdCB1c2UgaW4gdGhpcyBmdW5jdGlvbik7IGRpZCB5b3UgbWVhbiDigJhEUk1fTU9ERV9G
+Ql9NT0RJRklFUlPigJk/CiAgICAgICAgICBMT0NBTF9EUk1fTU9ERV9GQl9NT0RJRklFUlMsICZm
+Yi0+ZmJfaWQpKTsKICAgICAgICAgIF5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fgouLi9saWIv
+aWd0X2NvcmUuaDo2NTc6MTM6IG5vdGU6IGluIGRlZmluaXRpb24gb2YgbWFjcm8g4oCYaWd0X2Fz
+c2VydOKAmQogIGRvIHsgaWYgKCEoZXhwcikpIFwKICAgICAgICAgICAgIF5+fn4KLi4vdGVzdHMv
+aTkxNS9nZW1fcHhwLmM6OTc3OjI6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyDigJhkb19v
+cl9kaWXigJkKICBkb19vcl9kaWUoX19rbXNfYWRkZmIoZmItPmZkLCBmYi0+Z2VtX2hhbmRsZSwg
+ZmItPndpZHRoLCBmYi0+aGVpZ2h0LCBmYi0+ZHJtX2Zvcm1hdCwKICBefn5+fn5+fn4KLi4vdGVz
+dHMvaTkxNS9nZW1fcHhwLmM6IEluIGZ1bmN0aW9uIOKAmHRlc3RfZGlzcGxheV9wcm90ZWN0ZWRf
+Y3Jj4oCZOgouLi90ZXN0cy9pOTE1L2dlbV9weHAuYzoxMDM0OjY0OiBlcnJvcjog4oCYTE9DQUxf
+RFJNX0ZPUk1BVF9NT0RfTk9OReKAmSB1bmRlY2xhcmVkIChmaXJzdCB1c2UgaW4gdGhpcyBmdW5j
+dGlvbik7IGRpZCB5b3UgbWVhbiDigJhEUk1fRk9STUFUX01PRF9OT05F4oCZPwogIGlndF9jcmVh
+dGVfY29sb3JfZmIoaTkxNSwgd2lkdGgsIGhlaWdodCwgRFJNX0ZPUk1BVF9YUkdCODg4OCwgTE9D
+QUxfRFJNX0ZPUk1BVF9NT0RfTk9ORSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4K
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIERSTV9GT1JNQVRfTU9EX05PTkUKbmluamE6IGJ1aWxkIHN0b3BwZWQ6IHN1YmNvbW1h
+bmQgZmFpbGVkLgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0
+dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
