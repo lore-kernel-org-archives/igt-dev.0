@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA3CB6E951
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Jul 2021 09:23:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 603AF6E951
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Jul 2021 09:23:38 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Fri, 16 Jul 2021 02:23:20 -0700
-Message-Id: <20210716092334.961262-3-alan.previn.teres.alexis@intel.com>
+Date: Fri, 16 Jul 2021 02:23:25 -0700
+Message-Id: <20210716092334.961262-8-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210716092334.961262-1-alan.previn.teres.alexis@intel.com>
 References: <20210716092334.961262-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v6 02/16] Update IOCTL wrapper with
- DRM_IOCTL_I915_GEM_CONTEXT_CREATE_EXT
+Subject: [igt-dev] [PATCH i-g-t v6 07/16] Enable protected session cmd in
+ gen12_render_copyfunc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,73 +25,170 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update IOCTL wrapper with DRM_IOCTL_I915_GEM_CONTEXT_CREATE_EXT
+1. In _gen9_render_op, check if the incoming batchbuffer
+   is marked with pxp enabled. If so, insert MI_SET_APPID
+   along with PIPE_CONTROL instructions at the start and
+   end of the rendering operation in the command buffer.
+
+2. The two PIPE_CONTROLs will enable protected memory
+   at the start of the batch and disabling protected
+   memory at the end of it. These PIPE_CONTROLs require a
+   Post-Sync operation with a write to memory for hardware
+   to accept.
+
+3. In order to satisfy #2, _gen9_render_op uses unused
+   regions of the ibb buffer for the PIPE_CONTROL PostSync
+   write to memory (no different from how other 3d states
+   are being referenced).
+
+4. _gen9_render_op shall check the incoming surface
+   buffers for "is_protected" flag and if its set, it
+   will mark the SURFACE_STATE's MOCS field accordingly.
+
+NOTE: _gen9_render_op needs to program the HW to enable
+the PXP session as part of the rendering batch buffer
+because the HW requires that enabling/disabling protected
+memory access must be programmed in pairs within the same
+"dispatch of rendering commands" to HW.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- lib/ioctl_wrappers.c | 34 ++++++++++++++++++++++++++++++++++
- lib/ioctl_wrappers.h |  2 ++
- 2 files changed, 36 insertions(+)
+ lib/rendercopy_gen9.c | 72 ++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 65 insertions(+), 7 deletions(-)
 
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index 48526d29..99d4419f 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -680,6 +680,40 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf)
- 	igt_assert_eq(__gem_execbuf_wr(fd, execbuf), 0);
+diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+index eecf73d3..bfcf311b 100644
+--- a/lib/rendercopy_gen9.c
++++ b/lib/rendercopy_gen9.c
+@@ -19,7 +19,8 @@
+ #include "intel_bufops.h"
+ #include "intel_batchbuffer.h"
+ #include "intel_io.h"
+-#include "rendercopy.h"
++#include "igt.h"
++#include "i915/gem.h"
+ #include "gen9_render.h"
+ #include "intel_reg.h"
+ #include "igt_aux.h"
+@@ -152,6 +153,8 @@ gen8_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst) {
+ 		ss->ss0.tiled_mode = 3;
+ 
+ 	ss->ss1.memory_object_control = I915_MOCS_PTE << 1;
++	if (intel_buf_pxp(buf))
++		ss->ss1.memory_object_control |= 1;
+ 
+ 	if (buf->tiling == I915_TILING_Yf)
+ 		ss->ss5.trmode = 1;
+@@ -873,6 +876,53 @@ static void gen8_emit_primitive(struct intel_bb *ibb, uint32_t offset)
+ 	intel_bb_out(ibb, 0);	/* index buffer offset, ignored */
  }
  
-+/**
-+ * __gem_ctx_create_ext:
-+ * @fd: open i915 drm file descriptor
-+ * @ctx_ext: context_create_ext data structure
-+ *
-+ * This wraps the GEM_CONTEXT_CREATE_EXT ioctl, which allocates gem context based on
-+ * additional drm_i915_gem_context_create_ext_setparam input extensions. This is
-+ * allowed to fail, with -errno returned
-+ */
-+int __gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext *ctx_ext)
++#define GFX_OP_PIPE_CONTROL    ((3 << 29) | (3 << 27) | (2 << 24))
++#define PIPE_CONTROL_CS_STALL	            (1 << 20)
++#define PIPE_CONTROL_RENDER_TARGET_FLUSH    (1 << 12)
++#define PIPE_CONTROL_FLUSH_ENABLE           (1 << 7)
++#define PIPE_CONTROL_DATA_CACHE_INVALIDATE  (1 << 5)
++#define PIPE_CONTROL_PROTECTEDPATH_DISABLE  (1 << 27)
++#define PIPE_CONTROL_PROTECTEDPATH_ENABLE   (1 << 22)
++#define PIPE_CONTROL_POST_SYNC_OP           (1 << 14)
++#define PIPE_CONTROL_POST_SYNC_OP_STORE_DW_IDX (1 << 21)
++#define PS_OP_TAG_START                     0x1234fed0
++#define PS_OP_TAG_END                       0x5678cbaf
++static void gen12_emit_pxp_state(struct intel_bb *ibb, bool enable,
++		 uint32_t pxp_write_op_offset)
 +{
-+	int err = 0;
++	uint32_t pipe_ctl_flags;
++	uint32_t set_app_id, ps_op_id;
 +
-+	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_CONTEXT_CREATE_EXT, ctx_ext)) {
-+		err = -errno;
-+		igt_assume(err != 0);
++	if (enable) {
++		pipe_ctl_flags = PIPE_CONTROL_FLUSH_ENABLE;
++		intel_bb_out(ibb, GFX_OP_PIPE_CONTROL);
++		intel_bb_out(ibb, pipe_ctl_flags);
++
++		set_app_id =  MI_SET_APPID |
++			      APPTYPE(intel_bb_pxp_apptype(ibb)) |
++			      APPID(intel_bb_pxp_appid(ibb));
++		intel_bb_out(ibb, set_app_id);
++
++		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_ENABLE;
++		ps_op_id = PS_OP_TAG_START;
++	} else {
++		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_DISABLE;
++		ps_op_id = PS_OP_TAG_END;
 +	}
-+	errno = 0;
-+	return err;
++
++	pipe_ctl_flags |= (PIPE_CONTROL_CS_STALL |
++			   PIPE_CONTROL_RENDER_TARGET_FLUSH |
++			   PIPE_CONTROL_DATA_CACHE_INVALIDATE |
++			   PIPE_CONTROL_POST_SYNC_OP);
++	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL | 4);
++	intel_bb_out(ibb, pipe_ctl_flags);
++	intel_bb_emit_reloc(ibb, ibb->handle, 0, I915_GEM_DOMAIN_COMMAND,
++			    (enable ? pxp_write_op_offset : (pxp_write_op_offset+8)),
++			    ibb->batch_offset);
++	intel_bb_out(ibb, ps_op_id);
++	intel_bb_out(ibb, ps_op_id);
 +}
 +
-+/**
-+ * gem_ctx_create_ext:
-+ * @fd: open i915 drm file descriptor
-+ * @ctx_ext: context_create_ext data structure
-+ *
-+ * This wraps the GEM_CONTEXT_CREATE_EXT ioctl, which allocates gem context based on
-+ * additional drm_i915_gem_context_create_ext_setparam input extensions.
-+ */
-+void gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext *ctx_ext)
-+{
-+	igt_assert_eq(__gem_ctx_create_ext(fd, ctx_ext), 0);
-+}
-+
- /**
-  * gem_madvise:
-  * @fd: open i915 drm file descriptor
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-index a8274a3f..24191db3 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -84,6 +84,8 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
- int __gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
- void gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
- int __gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
-+int __gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext *ctx_ext);
-+void gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext *ctx_ext);
+ /* The general rule is if it's named gen6 it is directly copied from
+  * gen6_render_copyfunc.
+  *
+@@ -922,6 +972,7 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 	uint32_t vertex_buffer;
+ 	uint32_t aux_pgtable_state;
+ 	bool fast_clear = !src;
++	uint32_t pxp_scratch_offset;
  
- #ifndef I915_GEM_DOMAIN_WC
- #define I915_GEM_DOMAIN_WC 0x80
+ 	if (!fast_clear)
+ 		igt_assert(src->bpp == dst->bpp);
+@@ -950,8 +1001,12 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 	aux_pgtable_state = gen12_create_aux_pgtable_state(ibb, aux_pgtable_buf);
+ 
+ 	/* TODO: there is other state which isn't setup */
++	pxp_scratch_offset = intel_bb_offset(ibb);
+ 	intel_bb_ptr_set(ibb, 0);
+ 
++	if (intel_bb_pxp_enabled(ibb))
++		gen12_emit_pxp_state(ibb, true, pxp_scratch_offset);
++
+ 	/* Start emitting the commands. The order roughly follows the mesa blorp
+ 	 * order */
+ 	intel_bb_out(ibb, G4X_PIPELINE_SELECT | PIPELINE_SELECT_3D |
+@@ -963,13 +1018,12 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 		for (int i = 0; i < 4; i++) {
+ 			intel_bb_out(ibb, MI_STORE_DWORD_IMM);
+ 			intel_bb_emit_reloc(ibb, dst->handle,
+-					    I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER,
+-                                            dst->cc.offset + i*sizeof(float),
+-					    dst->addr.offset);
++					I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER,
++					dst->cc.offset + i*sizeof(float),
++					dst->addr.offset);
+ 			intel_bb_out(ibb, *(uint32_t*)&clear_color[i]);
+-               }
+-       }
+-
++		}
++	}
+ 
+ 	gen8_emit_sip(ibb);
+ 
+@@ -1023,10 +1077,14 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 	gen8_emit_vf_topology(ibb);
+ 	gen8_emit_primitive(ibb, vertex_buffer);
+ 
++	if (intel_bb_pxp_enabled(ibb))
++		gen12_emit_pxp_state(ibb, false, pxp_scratch_offset);
++
+ 	intel_bb_emit_bbe(ibb);
+ 	intel_bb_exec(ibb, intel_bb_offset(ibb),
+ 		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, false);
+ 	dump_batch(ibb);
++
+ 	intel_bb_reset(ibb, false);
+ }
+ 
 -- 
 2.25.1
 
