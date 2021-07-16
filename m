@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3BA816E9A7
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Jul 2021 14:46:44 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Fri, 16 Jul 2021 17:44:35 +0300
-Message-Id: <20210716144442.31962-10-ville.syrjala@linux.intel.com>
-In-Reply-To: <20210716144442.31962-1-ville.syrjala@linux.intel.com>
-References: <20210716144442.31962-1-ville.syrjala@linux.intel.com>
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com
+ [IPv6:2a00:1450:4864:20::12c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 427CF6E9A4
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Jul 2021 14:58:15 +0000 (UTC)
+Received: by mail-lf1-x12c.google.com with SMTP id f30so16518682lfj.1
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Jul 2021 07:58:15 -0700 (PDT)
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 09/16] tests/kms_big_fb: Use
- igt_has_drm_cap()
+References: <20210713120016.463320-1-stylon.wang@amd.com>
+ <20210716131622.103320-1-stylon.wang@amd.com>
+ <20210716131622.103320-2-stylon.wang@amd.com>
+In-Reply-To: <20210716131622.103320-2-stylon.wang@amd.com>
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Fri, 16 Jul 2021 10:58:02 -0400
+Message-ID: <CAJUqKUpZGiML8xft+y9M77a2HEkiHcGruH84Tc8o37ZSYYfMFw@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/amdgpu: New ASSR test on
+ DP/eDP links
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,40 +22,322 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Stylon Wang <stylon.wang@amd.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, Anson Jacob <Anson.Jacob@amd.com>, Nicholas Choi <Nicholas.Choi@amd.com>, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KClJl
-cGxhY2UgdGhlIGhhbmQgcm9sbGVkIGNhcCBjaGVjayB3aXRoIGlndF9oYXNfZHJtX2NhcCgpLgoK
-U2lnbmVkLW9mZi1ieTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVs
-LmNvbT4KLS0tCiB0ZXN0cy9rbXNfYmlnX2ZiLmMgfCA3ICstLS0tLS0KIDEgZmlsZSBjaGFuZ2Vk
-LCAxIGluc2VydGlvbigrKSwgNiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS90ZXN0cy9rbXNf
-YmlnX2ZiLmMgYi90ZXN0cy9rbXNfYmlnX2ZiLmMKaW5kZXggMDkyY2JjNjg0NmZlLi4zMDgyMjdj
-OTExM2EgMTAwNjQ0Ci0tLSBhL3Rlc3RzL2ttc19iaWdfZmIuYworKysgYi90ZXN0cy9rbXNfYmln
-X2ZiLmMKQEAgLTU3LDcgKzU3LDYgQEAgdHlwZWRlZiBzdHJ1Y3QgewogCWRvdWJsZSBwbGFuZWNs
-ZWFycmdiWzNdOwogCXVpbnQzMl90IGZvcm1hdF9vdmVycmlkZTsKIAl1aW50MzJfdCBzdHJpZGVf
-b3ZlcnJpZGU7Ci0JdWludDMyX3QgYXN5bmNfZmxpcF9zdXBwb3J0OwogfSBkYXRhX3Q7CiAKIHN0
-YXRpYyBzdHJ1Y3QgaW50ZWxfYnVmICppbml0X2J1ZihkYXRhX3QgKmRhdGEsCkBAIC04MDAsNyAr
-Nzk5LDYgQEAgaWd0X21haW4KIHsKIAlpZ3RfZml4dHVyZSB7CiAJCWRybU1vZGVSZXNQdHIgcmVz
-OwotCQlzdHJ1Y3QgZHJtX2dldF9jYXAgY2FwID0geyAuY2FwYWJpbGl0eSA9IERSTV9DQVBfQVNZ
-TkNfUEFHRV9GTElQIH07CiAKIAkJZGF0YS5kcm1fZmQgPSBkcm1fb3Blbl9kcml2ZXJfbWFzdGVy
-KERSSVZFUl9JTlRFTCk7CiAKQEAgLTg1MSw5ICs4NDksNiBAQCBpZ3RfbWFpbgogCiAJCWRhdGEu
-bWF4X2h3X3N0cmlkZV90ZXN0ID0gZmFsc2U7CiAJCWRhdGEuYXN5bmNfZmxpcF90ZXN0ID0gZmFs
-c2U7Ci0KLQkJaWd0X2lvY3RsKGRhdGEuZHJtX2ZkLCBEUk1fSU9DVExfR0VUX0NBUCwgJmNhcCk7
-Ci0JCWRhdGEuYXN5bmNfZmxpcF9zdXBwb3J0ID0gY2FwLnZhbHVlOwogCX0KIAogCS8qCkBAIC05
-ODMsNyArOTc4LDcgQEAgaWd0X21haW4KIAkJCQkJCQlpZ3RfcmVxdWlyZShkYXRhLmZvcm1hdCA9
-PSBEUk1fRk9STUFUX0M4IHx8CiAJCQkJCQkJCWlndF9mYl9zdXBwb3J0ZWRfZm9ybWF0KGRhdGEu
-Zm9ybWF0KSk7CiAJCQkJCQkJaWd0X3JlcXVpcmUoaWd0X2Rpc3BsYXlfaGFzX2Zvcm1hdF9tb2Qo
-JmRhdGEuZGlzcGxheSwgZGF0YS5mb3JtYXQsIGRhdGEubW9kaWZpZXIpKTsKLQkJCQkJCQlpZ3Rf
-cmVxdWlyZV9mKGRhdGEuYXN5bmNfZmxpcF9zdXBwb3J0LCAiQXN5bmMgRmxpcCBpcyBub3Qgc3Vw
-cG9ydGVkXG4iKTsKKwkJCQkJCQlpZ3RfcmVxdWlyZShpZ3RfaGFzX2RybV9jYXAoZGF0YS5kcm1f
-ZmQsIERSTV9DQVBfQVNZTkNfUEFHRV9GTElQKSk7CiAJCQkJCQkJZGF0YS5tYXhfaHdfZmJfd2lk
-dGggPSBtaW4oZGF0YS5od19zdHJpZGUgLyAoZm9ybWF0c1tqXS5icHAgPj4gMyksIGRhdGEubWF4
-X2ZiX3dpZHRoKTsKIAkJCQkJCQl0ZXN0X3NjYW5vdXQoJmRhdGEpOwogCQkJCQl9Ci0tIAoyLjMx
-LjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
-ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+On Fri, Jul 16, 2021 at 9:16 AM Stylon Wang <stylon.wang@amd.com> wrote:
+>
+> Check if ASSR is correctly disabled or enabled on DP/eDP links.
+>
+> Signed-off-by: Stylon Wang <stylon.wang@amd.com>
+> ---
+>  tests/amdgpu/amd_assr.c  | 269 +++++++++++++++++++++++++++++++++++++++
+>  tests/amdgpu/meson.build |   1 +
+>  2 files changed, 270 insertions(+)
+>  create mode 100644 tests/amdgpu/amd_assr.c
+>
+> diff --git a/tests/amdgpu/amd_assr.c b/tests/amdgpu/amd_assr.c
+> new file mode 100644
+> index 00000000..066973d3
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_assr.c
+> @@ -0,0 +1,269 @@
+> +/*
+> + * Copyright 2021 Advanced Micro Devices, Inc.
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice shall be included in
+> + * all copies or substantial portions of the Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
+> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+> + * OTHER DEALINGS IN THE SOFTWARE.
+> + */
+> +
+> +#include "igt.h"
+> +#include "igt_sysfs.h"
+> +#include <dirent.h>
+> +#include <fcntl.h>
+> +#include <limits.h>
+> +#include <sys/types.h>
+> +#include <sys/stat.h>
+> +
+> +IGT_TEST_DESCRIPTION("Check if ASSR is enabled on eDP links that support"
+> +                    "the display authentication by changing scrambling sequence."
+> +                    "The test also covers embedded and non-removable "
+> +                    "displays that appears as DP.");
+> +
+> +/* Common test data. */
+> +typedef struct data {
+> +       igt_display_t display;
+> +       igt_plane_t *primary;
+> +       int fd;
+> +} data_t;
+> +
+> +/* Common test setup. */
+> +static void test_init(data_t *data)
+> +{
+> +       igt_display_reset(&data->display);
+> +}
+> +
+> +/* Common test cleanup. */
+> +static void test_fini(data_t *data)
+> +{
+> +       igt_display_reset(&data->display);
+> +}
+> +
+> +static char *find_aux_dev(data_t *data, igt_output_t *output,
+> +                               char *aux_dev, size_t max_aux_dev_len)
+> +{
+> +       char sysfs_name[PATH_MAX] = { 0 };
+> +       /* +7 only to get rid of snprintf_chk warning.
+> +        * Path name cannot exceed the size of PATH_MAX anyway.
+> +        */
+> +       char conn_dir_name[PATH_MAX+7] = { 0 };
+> +       DIR *dir;
+> +       struct dirent *dirent;
+> +
+> +       aux_dev[0] = 0;
+> +
+> +       if(igt_sysfs_path(data->fd, sysfs_name, sizeof(sysfs_name))) {
+> +                       snprintf(conn_dir_name, sizeof(conn_dir_name),
+> +                                       "%s%scard0%s%s",
+> +                                       sysfs_name, "/", "-", output->name);
+> +       }
+> +
+> +       dir = opendir(conn_dir_name);
+> +       if (!dir)
+> +               return NULL;
+> +
+> +       while((dirent = readdir(dir))) {
+> +               if (strncmp(dirent->d_name, "drm_dp_aux", sizeof("drm_dp_aux")-1))
+> +                       continue;
+> +
+> +               strncpy(aux_dev, dirent->d_name, max_aux_dev_len);
+> +               break;
+> +       }
+> +
+> +       closedir(dir);
+> +
+> +       if (aux_dev[0])
+> +               return aux_dev;
+> +       else
+> +               return NULL;
+> +}
+> +
+> +static void parse_dpcd(const char *aux_dev, bool *assr_supported, bool *assr_enabled)
+> +{
+> +       char aux_name[PATH_MAX+6]; /* +6 only to get rid of snprintf_chk warning */
+> +       char dpcd[2];
+> +       int aux_fd;
+> +
+> +       snprintf(aux_name, sizeof(aux_name), "/dev/%s", aux_dev);
+> +
+> +       igt_assert((aux_fd = open(aux_name, O_RDONLY)) >= 0);
+> +
+> +       /* Refer to section 3.5 of VESA eDP standard v1.4b:
+> +        * Display Authentication and Content Protection Support
+> +        */
+> +
+> +       /* DPCD register 0x0D, eDP_CONFIGURATION_CAP
+> +        * Bit 0 is ALTERNATE_SCRAMBLER_RESET_CAPABLE,
+> +        * indicating if eDP device can use ASSR.
+> +        */
+> +       igt_assert(lseek(aux_fd, 0x0D, SEEK_SET));
+> +       igt_assert(read(aux_fd, &dpcd[0], 1) == 1);
+> +       *assr_supported = dpcd[0] & 0x01;
+> +
+> +       /* DPCD register 0x10A, eDP_CONFIGURATION_SET
+> +        * Bit 0 is ALTERNATE_SCRAMBLER_RESET_ENABLE,
+> +        * indicating if ASSR is enabled on the eDP device
+> +        */
+> +       igt_assert(lseek(aux_fd, 0x10A, SEEK_SET));
+> +       igt_assert(read(aux_fd, &dpcd[1], 1) == 1);
+> +       *assr_enabled = dpcd[1] & 0x01;
+> +
+> +       close(aux_fd);
+> +}
+> +
+> +static bool get_internal_display_flag(data_t *data, igt_output_t *output)
+> +{
+> +       char buf[256];
+> +       char *start_loc;
+> +       int fd, res;
+> +       int internal_flag;
+> +
+> +       fd = igt_debugfs_connector_dir(data->fd, output->name, O_RDONLY);
+> +       if (fd < 0)
+> +               return false;
+> +
+> +       res = igt_debugfs_simple_read(fd, "internal_display", buf, sizeof(buf));
+> +       if (res <= 0) {
+> +               close(fd);
+> +               return false;
+> +       }
+> +
+> +       close(fd);
+> +
+> +       igt_assert(start_loc = strstr(buf, "Internal: "));
+> +       igt_assert_eq(sscanf(start_loc, "Internal: %u", &internal_flag), 1);
+> +
+> +       return (bool)internal_flag;
+> +}
+> +
+> +static void present_visual_pattern(data_t *data, igt_output_t *output)
+> +{
+> +       igt_plane_t *primary;
+> +       igt_pipe_t *pipe;
+> +       drmModeModeInfo *mode;
+> +       igt_fb_t fb;
+> +       cairo_t *cr;
+> +
+> +       mode = igt_output_get_mode(output);
+> +       igt_assert(mode);
+> +
+> +       pipe = &data->display.pipes[PIPE_A];
+> +       primary =
+> +               igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+> +       igt_output_set_pipe(output, PIPE_A);
+> +
+> +       igt_create_fb(data->fd, mode->hdisplay, mode->vdisplay,
+> +                       DRM_FORMAT_XRGB8888, 0, &fb);
+> +       cr = igt_get_cairo_ctx(fb.fd, &fb);
+> +       igt_paint_test_pattern(cr, fb.width, fb.height);
+> +
+> +       igt_put_cairo_ctx(cr);
+> +
+> +       igt_plane_set_fb(primary, &fb);
+> +       igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +
+> +       /* useful for visual inspection on artifacts */
+> +       igt_debug_wait_for_keypress("assr");
+> +
+> +       igt_plane_set_fb(primary, NULL);
+> +       igt_remove_fb(data->fd, &fb);
+> +       igt_output_set_pipe(output, PIPE_NONE);
+> +       igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +}
+> +
+> +static void test_assr(data_t *data, igt_output_t *output)
+> +{
+> +       drmModeConnector *connector = output->config.connector;
+> +       int connector_type = connector->connector_type;
+> +       char aux_dev[PATH_MAX];
+> +       bool assr_supported = false, assr_enabled = false;
+> +       bool is_internal_display;
+> +
+> +       igt_info("Test ASSR on link %s\n", output->name);
+> +
+> +       igt_assert_f(find_aux_dev(data, output, aux_dev, sizeof(aux_dev)),
+> +                       "Cannot find AUX device for link %s\n", output->name);
+> +       igt_info("Link %s aux %s\n", output->name, aux_dev);
+> +
+> +       parse_dpcd(aux_dev, &assr_supported, &assr_enabled);
+> +
+> +       is_internal_display = get_internal_display_flag(data, output);
+> +
+> +       igt_info("Link %s internal: %d, ASSR supported: %d, ASSR enabled: %d\n",
+> +                       output->name,
+> +                       is_internal_display,
+> +                       assr_supported, assr_enabled);
+> +
+> +       present_visual_pattern(data, output);
+> +
+> +       if (connector_type == DRM_MODE_CONNECTOR_eDP ||
+> +               (connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
+> +                is_internal_display))
+> +               igt_assert(assr_supported == assr_enabled);
+> +       else
+> +               igt_assert(!assr_enabled);
+> +}
+> +
+> +static void test_assr_links(data_t *data)
+> +{
+> +       for (int i = 0; i < data->display.n_outputs; ++i) {
+> +               igt_output_t *output = &data->display.outputs[i];
+> +               drmModeConnector *connector = output->config.connector;
+> +
+> +               if (connector->connection != DRM_MODE_CONNECTED)
+> +                       continue;
+> +
+> +               if (connector->connector_type != DRM_MODE_CONNECTOR_eDP &&
+> +                       connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort)
+> +                       continue;
+> +
+> +               test_init(data);
+> +
+> +               test_assr(data, output);
+> +
+> +               test_fini(data);
+> +       }
+> +
+> +}
+> +
+> +igt_main
+> +{
+> +       data_t data;
+> +
+> +       igt_skip_on_simulation();
+> +
+> +       memset(&data, 0, sizeof(data));
+> +
+> +       igt_fixture
+> +       {
+> +               data.fd = drm_open_driver_master(DRIVER_ANY);
+Thanks. Now that this is generic, it can move to kms tests instead of
+amdgpu directory.
+> +
+> +               kmstest_set_vt_graphics_mode();
+> +
+> +               igt_display_require(&data.display, data.fd);
+> +               igt_require(data.display.is_atomic);
+> +               igt_display_require_output(&data.display);
+> +       }
+> +
+> +       igt_describe("Test ASSR on connected DP/eDP links");
+> +       igt_subtest("assr-links")
+> +               test_assr_links(&data);
+> +
+> +       igt_fixture
+> +       {
+> +               igt_display_fini(&data.display);
+> +       }
+> +}
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index 84179410..a1c5dcd4 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -3,6 +3,7 @@ amdgpu_progs = []
+>  amdgpu_deps = test_deps
+>  if libdrm_amdgpu.found()
+>         amdgpu_progs += [ 'amd_abm',
+> +                         'amd_assr',
+>                           'amd_basic',
+>                           'amd_bypass',
+>                           'amd_color',
+> --
+> 2.32.0
+>
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
