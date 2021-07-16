@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 65CFC6E364
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Jul 2021 21:51:36 +0000 (UTC)
-Date: Thu, 15 Jul 2021 14:51:29 -0700
-From: Matt Atwood <matthew.s.atwood@intel.com>
-Message-ID: <20210715215129.GA5885@msatwood-mobl>
-References: <20210713000319.73451-1-jose.souza@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 093266E8E6
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Jul 2021 03:16:52 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Fri, 16 Jul 2021 16:33:42 +0530
+Message-Id: <20210716110342.20034-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210713000319.73451-1-jose.souza@intel.com>
-Subject: Re: [igt-dev] [i-g-t,
- v2] tools/registers: Add missing registers relevant to debug PSR
- underruns
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_dither: Make dither tests generic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,60 +14,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?B?Sm9zw6k=?= Roberto de Souza <jose.souza@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCBKdWwgMTIsIDIwMjEgYXQgMDU6MDM6MTlQTSAtMDcwMCwgSm9zw6kgUm9iZXJ0byBk
-ZSBTb3V6YSB3cm90ZToKPiBGcm9tIFRHTCssIHRoZXJlIGlzIG5vIGVEUCB0cmFuc2NvZGVyIGlu
-c3RlYWQgYWxsIHRyYW5zY29kZXJzIHN1cHBvcnRzCj4gZURQIHBhbmVscyBidXQgaW4gOTklIG9m
-IHRoZSBjYXNlcyBpdCBpcyB1c2VkIGluIHBpcGUvdHJhbnNjb2RlciBBLgo+IEFsc28gdGhlcmUg
-aXMgY291cGxlIG9mIG5ldyByZWdpc3RlcnMgZm9yIFBTUjIgc2VsZWN0aXZlIGZldGNoLgo+IAo+
-IHYyOgo+IC0gYWRkaW5nIFZJREVPIERJUAo+IAo+IFNpZ25lZC1vZmYtYnk6IEpvc8OpIFJvYmVy
-dG8gZGUgU291emEgPGpvc2Uuc291emFAaW50ZWwuY29tPgpSZXZpZXdlZC1ieTogTWF0dCBBdHdv
-b2QgPG1hdHRoZXcucy5hdHdvb2RAaW50ZWwuY29tPgo+IC0tLQo+ICB0b29scy9yZWdpc3RlcnMv
-aWNsX2RlbHRhLnR4dCAgICAgICB8ICAzICsrKwo+ICB0b29scy9yZWdpc3RlcnMvc2tsX2Rpc3Bs
-YXkudHh0ICAgICB8ICA4ICsrKysrKysrCj4gIHRvb2xzL3JlZ2lzdGVycy90aWdlcmxha2VfZGVs
-dGEudHh0IHwgMTYgKysrKysrKysrKysrKysrKwo+ICAzIGZpbGVzIGNoYW5nZWQsIDI3IGluc2Vy
-dGlvbnMoKykKPiAKPiBkaWZmIC0tZ2l0IGEvdG9vbHMvcmVnaXN0ZXJzL2ljbF9kZWx0YS50eHQg
-Yi90b29scy9yZWdpc3RlcnMvaWNsX2RlbHRhLnR4dAo+IGluZGV4IDAzMjNjZmVhYS4uZDdmMDg2
-ZTYxIDEwMDY0NAo+IC0tLSBhL3Rvb2xzL3JlZ2lzdGVycy9pY2xfZGVsdGEudHh0Cj4gKysrIGIv
-dG9vbHMvcmVnaXN0ZXJzL2ljbF9kZWx0YS50eHQKPiBAQCAtMjE0LDYgKzIxNCw5IEBACj4gICgn
-UExBTkVfV01fVFJBTlNfNV9DJywgJzB4NzI0NjgnLCAnJykKPiAgKCdQTEFORV9XTV9UUkFOU182
-X0MnLCAnMHg3MjQ2OCcsICcnKQo+ICAoJ1BMQU5FX1dNX1RSQU5TXzdfQycsICcweDcyNDY4Jywg
-JycpCj4gKygnUElQRV9TVEFUVVNfQScsICcweDcwMDU4JywgJycpCj4gKygnUElQRV9TVEFUVVNf
-QicsICcweDcxMDU4JywgJycpCj4gKygnUElQRV9TVEFUVVNfQycsICcweDcyMDU4JywgJycpCj4g
-ICMgVFJBTlNDT0RFUl9EU0lfRERJX0NPTlRST0wKPiAgKCdUUkFOU19ERElfRlVOQ19DVExfRFNJ
-MCcsICcweDZiNDAwJywgJycpCj4gICgnVFJBTlNfRERJX0ZVTkNfQ1RMX0RTSTEnLCAnMHg2YmMw
-MCcsICcnKQo+IGRpZmYgLS1naXQgYS90b29scy9yZWdpc3RlcnMvc2tsX2Rpc3BsYXkudHh0IGIv
-dG9vbHMvcmVnaXN0ZXJzL3NrbF9kaXNwbGF5LnR4dAo+IGluZGV4IGNiMWEzZTkzOC4uNjBlN2Fh
-OTk2IDEwMDY0NAo+IC0tLSBhL3Rvb2xzL3JlZ2lzdGVycy9za2xfZGlzcGxheS50eHQKPiArKysg
-Yi90b29scy9yZWdpc3RlcnMvc2tsX2Rpc3BsYXkudHh0Cj4gQEAgLTQwNCwzICs0MDQsMTEgQEAK
-PiAgKCdXTV9MSU5FVElNRV9CJywgJzB4NDUyNzQnLCAnJykKPiAgKCdXTV9MSU5FVElNRV9DJywg
-JzB4NDUyNzgnLCAnJykKPiAgKCdXTV9NSVNDJywgJzB4NDUyNjAnLCAnJykKPiArIyBWSURFTyBE
-SVAKPiArKCdWSURFT19ESVBfQ1RMX0EnLCAnMHg2MDIwMCcsICcnKQo+ICsoJ1ZJREVPX0RJUF9D
-VExfQicsICcweDYxMjAwJywgJycpCj4gKygnVklERU9fRElQX0NUTF9DJywgJzB4NjIyMDAnLCAn
-JykKPiArCj4gKyMgTUlTQwo+ICsoJ0RDX1NUQVRFX0VOJywgJzB4NDU1MDQnLCAnJykKPiArKCdE
-Q19TVEFURV9ERUJVRycsICcweDQ1NTIwJywgJycpCj4gZGlmZiAtLWdpdCBhL3Rvb2xzL3JlZ2lz
-dGVycy90aWdlcmxha2VfZGVsdGEudHh0IGIvdG9vbHMvcmVnaXN0ZXJzL3RpZ2VybGFrZV9kZWx0
-YS50eHQKPiBpbmRleCBjN2ZjMmRjMjQuLmZiYmExNGY3YSAxMDA2NDQKPiAtLS0gYS90b29scy9y
-ZWdpc3RlcnMvdGlnZXJsYWtlX2RlbHRhLnR4dAo+ICsrKyBiL3Rvb2xzL3JlZ2lzdGVycy90aWdl
-cmxha2VfZGVsdGEudHh0Cj4gQEAgLTMxNywzICszMTcsMTkgQEAKPiAgIyBXQVRFUk1BUksKPiAg
-KCdXTV9MSU5FVElNRV9EJywgJzB4NDUyN2MnLCAnJykKPiAgCj4gKyMgUFNSCj4gKygnVFJBTlNf
-UFNSX0NUTF9BJywgICAgICAgICAgICAnMHg2MDgwMCcsICcnKQo+ICsoJ1RSQU5TX1BTUl9TVEFU
-VVNfQScsICAgICAgICAgJzB4NjA4NDAnLCAnJykKPiArKCdUUkFOU19QU1JfRVZFTlRfQScsICAg
-ICAgICAgICcweDYwODQ4JywgJycpCj4gKygnVFJBTlNfUFNSX01BU0tfQScsICAgICAgICAgICAn
-MHg2MDg2MCcsICcnKQo+ICsoJ1RSQU5TX1BTUjJfQ1RMX0EnLCAgICAgICAgICAgJzB4NjA5MDAn
-LCAnJykKPiArKCdUUkFOU19QU1IyX01BTl9UUktfQ1RMX0EnLCAgICcweDYwOTEwJywgJycpCj4g
-KygnVFJBTlNfUFNSMl9TVEFUVVNfQScsICAgICAgICAnMHg2MDk0MCcsICcnKQo+ICsoJ1BMQU5F
-X1NFTF9GRVRDSF9DVExfMV9BJywgICAgJzB4NzA4OTAnLCAnJykKPiArKCdQTEFORV9TRUxfRkVU
-Q0hfUE9TXzFfQScsICAgICcweDcwODk0JywgJycpCj4gKygnUExBTkVfU0VMX0ZFVENIX1NJWkVf
-MV9BJywgICAnMHg3MDg5OCcsICcnKQo+ICsoJ1BMQU5FX1NFTF9GRVRDSF9PRkZTRVRfMV9BJywg
-JzB4NzA4OUMnLCAnJykKPiArCj4gKyMgTUlTQwo+ICsoJ0RNQ19ERUJVR19EQzVfQ09VTlQnLCAn
-MHgxMDEwODQnLCAnJykKPiArKCdETUNfREVCVUdfREM2X0NPVU5UJywgJzB4MTAxMDg4JywgJycp
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYg
-bWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+As dithering is not Intel specific, it would be good to make
+these tests generic, so that it can be easy to extend/re-use
+for other platforms.
+
+Cc: Uma Shankar <uma.shankar@intel.com>
+Cc: Mark Yacoub <markyacoub@chromium.org>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_dither.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/tests/kms_dither.c b/tests/kms_dither.c
+index 49f7935268..65ca169ac2 100644
+--- a/tests/kms_dither.c
++++ b/tests/kms_dither.c
+@@ -90,6 +90,8 @@ static dither_status_t get_dither_state(data_t *data)
+ 	int dir, res;
+ 	dither_status_t status;
+ 
++	igt_require(is_i915_device(data->drm_fd));
++
+ 	dir = igt_debugfs_dir(data->drm_fd);
+ 	igt_assert(dir >= 0);
+ 
+@@ -230,7 +232,7 @@ igt_main
+ 	data_t data = { 0 };
+ 
+ 	igt_fixture {
+-		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 		kmstest_set_vt_graphics_mode();
+ 
+ 		igt_display_require(&data.display, data.drm_fd);
+-- 
+2.20.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
