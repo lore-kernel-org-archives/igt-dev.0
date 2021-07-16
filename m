@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4E426E949
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Jul 2021 08:54:05 +0000 (UTC)
-References: <20210715230558.36122-1-bindu.r@amd.com>
-From: Martin Peres <martin.peres@mupuf.org>
-Message-ID: <18583bcc-580a-973c-abed-fb68fec5c4e9@mupuf.org>
-Date: Fri, 16 Jul 2021 11:53:42 +0300
 MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 16 Jul 2021 09:07:52 -0000
+Message-ID: <162642647242.12777.17267592347611988599@emeril.freedesktop.org>
+References: <20210715230558.36122-1-bindu.r@amd.com>
 In-Reply-To: <20210715230558.36122-1-bindu.r@amd.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH] tests/amdgpu: Add generic commit test for
- bandwidth validation
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?amdgpu=3A_Add_generic_commit_test_for_bandwidth_validation?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,308 +14,184 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0004569601=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bindu Ramamurthy <bindu.r@amd.com>, petri.latvala@intel.com, arek@hiler.eu, markyacoub@google.com, igt-dev@lists.freedesktop.org, "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
-Cc: Anson.Jacob@amd.com, Nicholas.Choi@amd.com
+To: Bindu Ramamurthy <bindu.r@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 16/07/2021 02:05, Bindu Ramamurthy wrote:
-> From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> 
-> Add linear tiling mode tests
+--===============0004569601==
+Content-Type: multipart/alternative;
+ boundary="===============3468494381355851927=="
 
-Thanks for you test, Aurabindo! I think this test is similar to the one 
-that Stan was working on a couple of years ago. Stan, do you have some 
-updates on it?
+--===============3468494381355851927==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Also, this test does not have to be limited to AMD.
+== Series Details ==
 
-Cheers,
-Martin
+Series: tests/amdgpu: Add generic commit test for bandwidth validation
+URL   : https://patchwork.freedesktop.org/series/92641/
+State : success
 
-> 
-> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> Acked-by: Bindu Ramamurthy <bindu.r@amd.com>
-> ---
->   tests/amdgpu/amd_bw.c    | 251 +++++++++++++++++++++++++++++++++++++++
->   tests/amdgpu/meson.build |   1 +
->   2 files changed, 252 insertions(+)
->   create mode 100644 tests/amdgpu/amd_bw.c
-> 
-> diff --git a/tests/amdgpu/amd_bw.c b/tests/amdgpu/amd_bw.c
-> new file mode 100644
-> index 00000000..44a3ef33
-> --- /dev/null
-> +++ b/tests/amdgpu/amd_bw.c
-> @@ -0,0 +1,251 @@
-> +/*
-> + * Copyrights 2019/2021 Advanced Micro Devices, Inc.
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-> + * OTHER DEALINGS IN THE SOFTWARE.
-> + */
-> +
-> +#include "drm_mode.h"
-> +#include "igt.h"
-> +#include "libdrm/amdgpu.h"
-> +#include "libdrm/amdgpu_drm.h"
-> +#include <stdio.h>
-> +#include <xf86drmMode.h>
-> +
-> +/* Maximum pipes on any AMD ASIC. */
-> +#define MAX_PIPES 6
-> +
-> +/* Common test data. */
-> +typedef struct data {
-> +        igt_display_t display;
-> +        igt_plane_t *primary[MAX_PIPES];
-> +        igt_output_t *output[MAX_PIPES];
-> +        igt_pipe_t *pipe[MAX_PIPES];
-> +        igt_pipe_crc_t *pipe_crc[MAX_PIPES];
-> +        drmModeModeInfo mode[MAX_PIPES];
-> +        enum pipe pipe_id[MAX_PIPES];
-> +        int w[MAX_PIPES];
-> +        int h[MAX_PIPES];
-> +        int fd;
-> +} data_t;
-> +
-> +static const drmModeModeInfo test_mode_1 = {
-> +	.name = "1920x1080p\0",
-> +	.vrefresh = 60,
-> +	.clock = 173000,
-> +	.hdisplay = 1920,
-> +	.hsync_start = 2048,
-> +	.hsync_end = 2248,
-> +	.htotal = 2576,
-> +	.vdisplay = 1080,
-> +	.vsync_start = 1083,
-> +	.vsync_end = 1088,
-> +	.vtotal = 1120,
-> +	.type = 0x40,
-> +	.flags = DRM_MODE_FLAG_NHSYNC,
-> +	.hskew = 0,
-> +	.vscan = 0,
-> +};
-> +
-> +static const drmModeModeInfo test_mode_2 = {
-> +	.name = "2560x1440p\0",
-> +	.vrefresh = 60,
-> +	.clock = 312250,
-> +	.hdisplay = 2560,
-> +	.hsync_start = 2752,
-> +	.hsync_end = 3024,
-> +	.htotal = 3488,
-> +	.vdisplay = 1440,
-> +	.vsync_start = 1443,
-> +	.vsync_end = 1448,
-> +	.vtotal = 1493,
-> +	.type = 0x40,
-> +	.flags = DRM_MODE_FLAG_NHSYNC,
-> +	.hskew = 0,
-> +	.vscan = 0,
-> +};
-> +
-> +static const drmModeModeInfo test_mode_3 = {
-> +	.name = "3840x2160p\0",
-> +	.vrefresh = 60,
-> +	.clock = 533000,
-> +	.hdisplay = 3840,
-> +	.hsync_start = 3888,
-> +	.hsync_end = 3920,
-> +	.htotal = 4000,
-> +	.vdisplay = 2160,
-> +	.vsync_start = 2163,
-> +	.vsync_end = 2168,
-> +	.vtotal = 2222,
-> +	.type = 0x40,
-> +	.flags = DRM_MODE_FLAG_NHSYNC,
-> +	.hskew = 0,
-> +	.vscan = 0,
-> +};
-> +
-> +static void test_init(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	int i, max_pipes = display->n_pipes;
-> +
-> +	for_each_pipe(display, i) {
-> +		data->pipe_id[i] = PIPE_A + i;
-> +		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
-> +		data->primary[i] = igt_pipe_get_plane_type(
-> +			data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
-> +		data->pipe_crc[i] =
-> +			igt_pipe_crc_new(data->fd, data->pipe_id[i], "auto");
-> +	}
-> +
-> +	for (i = 0; i < display->n_outputs && i < max_pipes; i++) {
-> +		igt_output_t *output = &display->outputs[i];
-> +
-> +		data->output[i] = output;
-> +
-> +		/* Only allow physically connected displays for the tests. */
-> +		if (!igt_output_is_connected(output))
-> +			continue;
-> +
-> +		igt_assert(kmstest_get_connector_default_mode(
-> +			data->fd, output->config.connector, &data->mode[i]));
-> +
-> +		data->w[i] = data->mode[i].hdisplay;
-> +		data->h[i] = data->mode[i].vdisplay;
-> +	}
-> +
-> +
-> +	igt_require(data->output[0]);
-> +	igt_display_reset(display);
-> +}
-> +
-> +static void test_fini(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	int i;
-> +
-> +	for_each_pipe(display, i) {
-> +		igt_pipe_crc_free(data->pipe_crc[i]);
-> +	}
-> +
-> +	igt_display_reset(display);
-> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-> +}
-> +
-> +/* Forces a mode for a connector. */
-> +static void force_output_mode(data_t *d, igt_output_t *output,
-> +			      const drmModeModeInfo *mode)
-> +{
-> +	/* This allows us to create a virtual sink. */
-> +	if (!igt_output_is_connected(output)) {
-> +		kmstest_force_edid(d->fd, output->config.connector,
-> +				   igt_kms_get_4k_edid());
-> +
-> +		kmstest_force_connector(d->fd, output->config.connector,
-> +					FORCE_CONNECTOR_DIGITAL);
-> +	}
-> +
-> +	igt_output_override_mode(output, mode);
-> +}
-> +
-> +static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo *mode) {
-> +	igt_display_t *display = &data->display;
-> +	igt_output_t *output;
-> +	struct igt_fb buffer[MAX_PIPES];
-> +	igt_crc_t zero, captured[MAX_PIPES];
-> +	void *user_data = NULL;
-> +	int ret;
-> +	int i = 0;
-> +
-> +	test_init(data);
-> +
-> +	igt_skip_on_f(pipe >= igt_display_get_n_pipes(display),
-> +		      "ASIC does not have %d pipes\n", pipe);
-> +
-> +	/* create buffers */
-> +	for (i = 0; i <= pipe; i++) {
-> +
-> +		output = data->output[i];
-> +		if (!output) {
-> +			continue;
-> +		}
-> +
-> +		force_output_mode(data, output, mode);
-> +
-> +		igt_create_color_fb(display->drm_fd, test_mode_1.hdisplay,
-> +				    test_mode_1.vdisplay, DRM_FORMAT_XRGB8888,
-> +				    DRM_FORMAT_MOD_NONE, 1.f, 0.f, 0.f,
-> +				    &buffer[i]);
-> +
-> +		igt_output_set_pipe(output, i);
-> +
-> +		igt_plane_set_fb(data->primary[i], &buffer[i]);
-> +	}
-> +
-> +	ret = igt_display_try_commit_atomic(
-> +		display, DRM_MODE_ATOMIC_ALLOW_MODESET, user_data);
-> +
-> +	igt_assert_f(ret >= 0, "Modeset failed\n");
-> +
-> +	for (i = 0; i <= pipe; i++) {
-> +		igt_pipe_crc_collect_crc(data->pipe_crc[i], &captured[i]);
-> +		igt_assert_f(!igt_check_crc_equal(&zero, &captured[i]),
-> +			     "CRC is zero\n");
-> +		igt_remove_fb(display->drm_fd, &buffer[i]);
-> +	}
-> +
-> +	test_fini(data);
-> +}
-> +
-> +igt_main
-> +{
-> +	data_t data;
-> +	int i = 0;
-> +
-> +	igt_skip_on_simulation();
-> +
-> +	memset(&data, 0, sizeof(data));
-> +
-> +	igt_fixture
-> +	{
-> +		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
-> +
-> +		kmstest_set_vt_graphics_mode();
-> +
-> +		igt_display_require(&data.display, data.fd);
-> +		igt_require(&data.display.is_atomic);
-> +		igt_display_require_output(&data.display);
-> +
-> +	}
-> +
-> +	for (i = 0; i < MAX_PIPES; i++) {
-> +		igt_subtest_f("linear-tiling-%d-displays-%s", i+1,
-> +			      test_mode_1.name)
-> +			run_test_linear_tiling(&data, i, &test_mode_1);
-> +		igt_subtest_f("linear-tiling-%d-displays-%s", i+1,
-> +			      test_mode_2.name)
-> +			run_test_linear_tiling(&data, i, &test_mode_2);
-> +		igt_subtest_f("linear-tiling-%d-displays-%s", i+1,
-> +			      test_mode_3.name)
-> +			run_test_linear_tiling(&data, i, &test_mode_3);
-> +	}
-> +
-> +	igt_fixture
-> +	{
-> +		igt_display_fini(&data.display);
-> +	}
-> +}
-> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-> index 84179410..8e1d791d 100644
-> --- a/tests/amdgpu/meson.build
-> +++ b/tests/amdgpu/meson.build
-> @@ -10,6 +10,7 @@ if libdrm_amdgpu.found()
->   			  'amd_info',
->   			  'amd_prime',
->   			  'amd_module_load',
-> +			  'amd_bw',
->   			]
->   	amdgpu_deps += libdrm_amdgpu
->   endif
-> 
+== Summary ==
+
+CI Bug Log - changes from IGT_6142 -> IGTPW_6029
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6029/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6029 that come from known issues:
+
+### IGT changes ###
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+
+
+Participating hosts (40 -> 35)
+------------------------------
+
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-n3050 fi-bsw-cyan fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6142 -> IGTPW_6029
+
+  CI-20190529: 20190529
+  CI_DRM_10344: ea6974acd4fe82ca98cc1390b21af67d63c22471 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6029: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6029/index.html
+  IGT_6142: 16e753fc5e1e51395e1df40865c569984a74c5ed @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@amdgpu/amd_bw@linear-tiling-1-displays-1920x1080p
++igt@amdgpu/amd_bw@linear-tiling-1-displays-2560x1440p
++igt@amdgpu/amd_bw@linear-tiling-1-displays-3840x2160p
++igt@amdgpu/amd_bw@linear-tiling-2-displays-1920x1080p
++igt@amdgpu/amd_bw@linear-tiling-2-displays-2560x1440p
++igt@amdgpu/amd_bw@linear-tiling-2-displays-3840x2160p
++igt@amdgpu/amd_bw@linear-tiling-3-displays-1920x1080p
++igt@amdgpu/amd_bw@linear-tiling-3-displays-2560x1440p
++igt@amdgpu/amd_bw@linear-tiling-3-displays-3840x2160p
++igt@amdgpu/amd_bw@linear-tiling-4-displays-1920x1080p
++igt@amdgpu/amd_bw@linear-tiling-4-displays-2560x1440p
++igt@amdgpu/amd_bw@linear-tiling-4-displays-3840x2160p
++igt@amdgpu/amd_bw@linear-tiling-5-displays-1920x1080p
++igt@amdgpu/amd_bw@linear-tiling-5-displays-2560x1440p
++igt@amdgpu/amd_bw@linear-tiling-5-displays-3840x2160p
++igt@amdgpu/amd_bw@linear-tiling-6-displays-1920x1080p
++igt@amdgpu/amd_bw@linear-tiling-6-displays-2560x1440p
++igt@amdgpu/amd_bw@linear-tiling-6-displays-3840x2160p
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6029/index.html
+
+--===============3468494381355851927==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: Add generic commit test for bandwidth validation</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/92641/">https://patchwork.freedesktop.org/series/92641/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6029/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6029/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6142 -&gt; IGTPW_6029</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6029/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6029 that come from known issues:</p>
+<h3>IGT changes</h3>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (40 -&gt; 35)</h2>
+<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-n3050 fi-bsw-cyan fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6142 -&gt; IGTPW_6029</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10344: ea6974acd4fe82ca98cc1390b21af67d63c22471 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6029: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6029/index.html<br />
+  IGT_6142: 16e753fc5e1e51395e1df40865c569984a74c5ed @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@amdgpu/amd_bw@linear-tiling-1-displays-1920x1080p<br />
++igt@amdgpu/amd_bw@linear-tiling-1-displays-2560x1440p<br />
++igt@amdgpu/amd_bw@linear-tiling-1-displays-3840x2160p<br />
++igt@amdgpu/amd_bw@linear-tiling-2-displays-1920x1080p<br />
++igt@amdgpu/amd_bw@linear-tiling-2-displays-2560x1440p<br />
++igt@amdgpu/amd_bw@linear-tiling-2-displays-3840x2160p<br />
++igt@amdgpu/amd_bw@linear-tiling-3-displays-1920x1080p<br />
++igt@amdgpu/amd_bw@linear-tiling-3-displays-2560x1440p<br />
++igt@amdgpu/amd_bw@linear-tiling-3-displays-3840x2160p<br />
++igt@amdgpu/amd_bw@linear-tiling-4-displays-1920x1080p<br />
++igt@amdgpu/amd_bw@linear-tiling-4-displays-2560x1440p<br />
++igt@amdgpu/amd_bw@linear-tiling-4-displays-3840x2160p<br />
++igt@amdgpu/amd_bw@linear-tiling-5-displays-1920x1080p<br />
++igt@amdgpu/amd_bw@linear-tiling-5-displays-2560x1440p<br />
++igt@amdgpu/amd_bw@linear-tiling-5-displays-3840x2160p<br />
++igt@amdgpu/amd_bw@linear-tiling-6-displays-1920x1080p<br />
++igt@amdgpu/amd_bw@linear-tiling-6-displays-2560x1440p<br />
++igt@amdgpu/amd_bw@linear-tiling-6-displays-3840x2160p</p>
+
+</body>
+</html>
+
+--===============3468494381355851927==--
+
+--===============0004569601==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0004569601==--
