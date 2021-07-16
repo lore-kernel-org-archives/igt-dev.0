@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC2DC6E955
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFE206E959
  for <igt-dev@lists.freedesktop.org>; Fri, 16 Jul 2021 09:23:38 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Fri, 16 Jul 2021 02:23:31 -0700
-Message-Id: <20210716092334.961262-14-alan.previn.teres.alexis@intel.com>
+Date: Fri, 16 Jul 2021 02:23:28 -0700
+Message-Id: <20210716092334.961262-11-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210716092334.961262-1-alan.previn.teres.alexis@intel.com>
 References: <20210716092334.961262-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v6 13/16] Verify execbuf ok with stale
- prot-buff and regular context
+Subject: [igt-dev] [PATCH i-g-t v6 10/16] Verify PXP teardown occurred
+ through suspend-resume
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,68 +25,135 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a check to verify that reusing a stale protected
-buffer in a gem_execbuff call, but using a regular (not-
-protected) context will succeed despite after a teardown
-(triggered by suspend-resume cycle).
-
-This ensures that user space applications that choose
-not to opt-in for strict PXP teardown awareness (by
-using a regular context) won't suffer gem_execbuff
-failures if a protected buffer was among the assets
-used in any of its rendering operations.
-
-Reuse the existing subtest to minimize the number
-of suspend resume cycles we take.
+During a suspend-resume cycle, the hardware and driver shall
+ensure the PXP session and keys are torn down and re-
+established. Verify that key change did occur by repeating
+the 3d rendercopy operation before and after a suspend cycle
+and ensuring that the encrypted output is different.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/i915/gem_pxp.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ tests/i915/gem_pxp.c | 67 +++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 66 insertions(+), 1 deletion(-)
 
 diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 701badb1..73ec9cd8 100644
+index 4c77051e..5fd728e7 100644
 --- a/tests/i915/gem_pxp.c
 +++ b/tests/i915/gem_pxp.c
-@@ -763,7 +763,7 @@ static void free_exec_assets(int i915, struct simple_exec_assets *data)
- static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_data *pm)
+@@ -9,6 +9,12 @@
+ IGT_TEST_DESCRIPTION("Test PXP that manages protected content through arbitrated HW-PXP-session");
+ /* Note: PXP = "Protected Xe Path" */
+ 
++/* Struct and definitions for power management. */
++struct powermgt_data {
++	int debugfsdir;
++	bool has_runtime_pm;
++};
++
+ static int create_bo_ext(int i915, uint32_t size, bool protected_is_true, uint32_t *bo_out)
  {
  	int ret;
--	struct simple_exec_assets data[2] = {{0}, {0}};
-+	struct simple_exec_assets data[3] = {{0}, {0}, {0}};
- 	uint32_t ctx2;
- 	struct intel_bb *ibb2;
- 
-@@ -780,6 +780,15 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
- 	ret = gem_execbuf_flush_store_dw(i915, data[1].ibb, data[1].ctx, data[1].fencebuf);
- 	igt_assert(ret == 0);
- 
-+	/*
-+	 * For data[2]: Use non-pxp contexts but with protected buffers
-+	 * to verify the "pxp-execution-opt-in" expectation where
-+	 * execution will run without error (not buffer)
-+	 */
-+	prepare_exec_assets(i915, &data[2], false, true);
-+	ret = gem_execbuf_flush_store_dw(i915, data[2].ibb, data[2].ctx, data[2].fencebuf);
-+	igt_assert(ret == 0);
-+
- 	trigger_powermgt_suspend_cycle(i915, pm);
- 
- 	ret = gem_execbuf_flush_store_dw(i915, data[0].ibb, data[0].ctx, data[0].fencebuf);
-@@ -800,8 +809,12 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
- 	ret = gem_execbuf_flush_store_dw(i915, ibb2, ctx2, data[1].fencebuf);
- 	igt_assert_f((ret == -ENOEXEC), "Executing stale pxp buffer didn't fail with -ENOEXEC\n");
- 
-+	ret = gem_execbuf_flush_store_dw(i915, data[2].ibb, data[2].ctx, data[2].fencebuf);
-+	igt_assert_f((ret == 0), "Opt-out-execution with stale pxp buffer didn't succeed\n");
-+
- 	free_exec_assets(i915, &data[0]);
- 	free_exec_assets(i915, &data[1]);
-+	free_exec_assets(i915, &data[2]);
+@@ -468,7 +474,7 @@ static void test_render_baseline(int i915)
+ 	buf_ops_destroy(bops);
  }
  
+-static void test_render_pxp_src_to_protdest(int i915)
++static void __test_render_pxp_src_to_protdest(int i915, uint32_t *outpixels, int outsize)
+ {
+ 	uint32_t ctx, srcbo, dstbo;
+ 	struct intel_buf *srcbuf, *dstbuf;
+@@ -510,6 +516,10 @@ static void test_render_pxp_src_to_protdest(int i915)
+ 	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
+ 				TSTSURF_SIZE, TSTSURF_FILLCOLOR2, NULL, 0);
+ 
++	if (outpixels)
++		assert_bo_content_check(i915, dstbo, COPY_BUFFER,
++					TSTSURF_SIZE, 0, outpixels, outsize);
++
+ 	intel_bb_destroy(ibb);
+ 	intel_buf_destroy(srcbuf);
+ 	gem_close(i915, srcbo);
+@@ -519,6 +529,11 @@ static void test_render_pxp_src_to_protdest(int i915)
+ 	buf_ops_destroy(bops);
+ }
+ 
++static void test_render_pxp_src_to_protdest(int i915)
++{
++	__test_render_pxp_src_to_protdest(i915, NULL, 0);
++}
++
+ static void test_render_pxp_protsrc_to_protdest(int i915)
+ {
+ 	uint32_t ctx, srcbo, dstbo, dstbo2;
+@@ -598,10 +613,47 @@ static void test_render_pxp_protsrc_to_protdest(int i915)
+ 	buf_ops_destroy(bops);
+ }
+ 
++static void init_powermgt_resources(int i915, struct powermgt_data *pm)
++{
++	pm->debugfsdir = igt_debugfs_dir(i915);
++	igt_require(pm->debugfsdir != -1);
++	pm->has_runtime_pm = igt_setup_runtime_pm(i915);
++	igt_require(pm->has_runtime_pm);
++}
++
++static void trigger_powermgt_suspend_cycle(int i915,
++	struct powermgt_data *pm)
++{
++	igt_pm_enable_sata_link_power_management();
++	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_DEVICES);
++	igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED);
++}
++
++static void test_pxp_pwrcycle_teardown_keychange(int i915, struct powermgt_data *pm)
++{
++	uint32_t encrypted_pixels_b4[TSTSURF_SIZE/TSTSURF_BYTESPP];
++	uint32_t encrypted_pixels_aft[TSTSURF_SIZE/TSTSURF_BYTESPP];
++	int matched_after_keychange = 0, loop = 0;
++
++	__test_render_pxp_src_to_protdest(i915, encrypted_pixels_b4, TSTSURF_SIZE);
++
++	trigger_powermgt_suspend_cycle(i915, pm);
++
++	__test_render_pxp_src_to_protdest(i915, encrypted_pixels_aft, TSTSURF_SIZE);
++
++	while (loop < (TSTSURF_SIZE/TSTSURF_BYTESPP)) {
++		if (encrypted_pixels_b4[loop] == encrypted_pixels_aft[loop])
++			++matched_after_keychange;
++		++loop;
++	}
++	igt_assert_eq(matched_after_keychange, 0);
++}
++
  igt_main
+ {
+ 	int i915 = -1;
+ 	bool pxp_supported = false;
++	struct powermgt_data pm = {0};
+ 	igt_render_copyfunc_t rendercopy = NULL;
+ 	uint32_t devid = 0;
+ 
+@@ -674,6 +726,19 @@ igt_main
+ 		igt_subtest("protected-encrypted-src-copy-not-readible")
+ 			test_render_pxp_protsrc_to_protdest(i915);
+ 	}
++	igt_subtest_group {
++		igt_fixture {
++			igt_require(pxp_supported);
++			devid = intel_get_drm_devid(i915);
++			igt_assert(devid);
++			rendercopy = igt_get_render_copyfunc(devid);
++			igt_require(rendercopy);
++			init_powermgt_resources(i915, &pm);
++		}
++		igt_describe("Verify suspend-resume teardown management:");
++		igt_subtest("verify-pxp-key-change-after-suspend-resume")
++			test_pxp_pwrcycle_teardown_keychange(i915, &pm);
++	}
+ 
+ 	igt_fixture {
+ 		close(i915);
 -- 
 2.25.1
 
