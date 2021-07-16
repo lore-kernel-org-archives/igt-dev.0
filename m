@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com
- [IPv6:2a00:1450:4864:20::131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CB246E9A5
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Jul 2021 15:06:12 +0000 (UTC)
-Received: by mail-lf1-x131.google.com with SMTP id 22so16438204lfy.12
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Jul 2021 08:06:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210716110342.20034-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20210716110342.20034-1-bhanuprakash.modem@intel.com>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Fri, 16 Jul 2021 11:05:58 -0400
-Message-ID: <CAJUqKUovE+RXAfGEPwGBbnf=jvChF9oNf3E360Czk-if37Zkfg@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_dither: Make dither tests
- generic
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 16 Jul 2021 15:38:05 -0000
+Message-ID: <162644988575.12776.17540884253349354756@emeril.freedesktop.org>
+References: <20210716144442.31962-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20210716144442.31962-1-ville.syrjala@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Iga21zOiBW?=
+ =?utf-8?q?arious_cleanups_and_fixes?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,63 +14,324 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0821374907=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jul 15, 2021 at 11:16 PM Bhanuprakash Modem
-<bhanuprakash.modem@intel.com> wrote:
->
-> As dithering is not Intel specific, it would be good to make
-> these tests generic, so that it can be easy to extend/re-use
-> for other platforms.
->
-> Cc: Uma Shankar <uma.shankar@intel.com>
-> Cc: Mark Yacoub <markyacoub@chromium.org>
-> Cc: Harry Wentland <harry.wentland@amd.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  tests/kms_dither.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/tests/kms_dither.c b/tests/kms_dither.c
-> index 49f7935268..65ca169ac2 100644
-> --- a/tests/kms_dither.c
-> +++ b/tests/kms_dither.c
-> @@ -90,6 +90,8 @@ static dither_status_t get_dither_state(data_t *data)
->         int dir, res;
->         dither_status_t status;
->
-> +       igt_require(is_i915_device(data->drm_fd));
-you can use `igt_require_intel(int fd)` for brevity.
-> +
-I'd suggest to move this right above `igt_debugfs_simple_read(dir,
-"i915_display_info")` instead of igt_debugfs_dir(data->drm_fd) cause
-this requirement is strictly for opening i915_display_info, making it
-easier in the future to extend to other platforms by converting
-igt_require_intel to `if (is_i915_device) do_intel_logic; else if
-(is_other_platform) do_other_logic;`
->         dir = igt_debugfs_dir(data->drm_fd);
->         igt_assert(dir >= 0);
->
-> @@ -230,7 +232,7 @@ igt_main
->         data_t data = { 0 };
->
->         igt_fixture {
-> -               data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-> +               data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-Thanks!
->                 kmstest_set_vt_graphics_mode();
->
->                 igt_display_require(&data.display, data.drm_fd);
-> --
-> 2.20.1
->
+--===============0821374907==
+Content-Type: multipart/alternative;
+ boundary="===============6071539640450548716=="
+
+--===============6071539640450548716==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: kms: Various cleanups and fixes
+URL   : https://patchwork.freedesktop.org/series/92656/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6143 -> IGTPW_6031
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6031/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6031 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@runner@aborted:
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][1] ([i915#1602] / [i915#2029])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6031/fi-bdw-5557u/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - {fi-hsw-gt1}:       [DMESG-WARN][2] ([i915#3303]) -> [PASS][3]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6143/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6031/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-kbl-guc:         [SKIP][4] ([fdo#109271]) -> [FAIL][5] ([i915#579])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6143/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6031/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
+  [i915#2029]: https://gitlab.freedesktop.org/drm/intel/issues/2029
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#579]: https://gitlab.freedesktop.org/drm/intel/issues/579
+
+
+Participating hosts (40 -> 35)
+------------------------------
+
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-n3050 fi-bsw-cyan fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6143 -> IGTPW_6031
+
+  CI-20190529: 20190529
+  CI_DRM_10345: 8c6a974b932fbaa798102b4713ceedf3b04227d9 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6031: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6031/index.html
+  IGT_6143: cd649eee0f74fa6ee71de18ff59b5ae39fd62159 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@kms_big_fb@linear-8bpp-rotate-0-hflip
++igt@kms_big_fb@linear-8bpp-rotate-90-hflip
++igt@kms_big_fb@linear-8bpp-rotate-180-hflip
++igt@kms_big_fb@linear-8bpp-rotate-270-hflip
++igt@kms_big_fb@linear-16bpp-rotate-0-hflip
++igt@kms_big_fb@linear-16bpp-rotate-90-hflip
++igt@kms_big_fb@linear-16bpp-rotate-180-hflip
++igt@kms_big_fb@linear-16bpp-rotate-270-hflip
++igt@kms_big_fb@linear-32bpp-rotate-0-hflip
++igt@kms_big_fb@linear-32bpp-rotate-90-hflip
++igt@kms_big_fb@linear-32bpp-rotate-180-hflip
++igt@kms_big_fb@linear-32bpp-rotate-270-hflip
++igt@kms_big_fb@linear-64bpp-rotate-0-hflip
++igt@kms_big_fb@linear-64bpp-rotate-90-hflip
++igt@kms_big_fb@linear-64bpp-rotate-180-hflip
++igt@kms_big_fb@linear-64bpp-rotate-270-hflip
++igt@kms_big_fb@x-tiled-8bpp-rotate-0-hflip
++igt@kms_big_fb@x-tiled-8bpp-rotate-90-hflip
++igt@kms_big_fb@x-tiled-8bpp-rotate-180-hflip
++igt@kms_big_fb@x-tiled-8bpp-rotate-270-hflip
++igt@kms_big_fb@x-tiled-16bpp-rotate-0-hflip
++igt@kms_big_fb@x-tiled-16bpp-rotate-90-hflip
++igt@kms_big_fb@x-tiled-16bpp-rotate-180-hflip
++igt@kms_big_fb@x-tiled-16bpp-rotate-270-hflip
++igt@kms_big_fb@x-tiled-32bpp-rotate-0-hflip
++igt@kms_big_fb@x-tiled-32bpp-rotate-90-hflip
++igt@kms_big_fb@x-tiled-32bpp-rotate-180-hflip
++igt@kms_big_fb@x-tiled-32bpp-rotate-270-hflip
++igt@kms_big_fb@x-tiled-64bpp-rotate-0-hflip
++igt@kms_big_fb@x-tiled-64bpp-rotate-90-hflip
++igt@kms_big_fb@x-tiled-64bpp-rotate-180-hflip
++igt@kms_big_fb@x-tiled-64bpp-rotate-270-hflip
++igt@kms_big_fb@yf-tiled-8bpp-rotate-0-hflip
++igt@kms_big_fb@yf-tiled-8bpp-rotate-90-hflip
++igt@kms_big_fb@yf-tiled-8bpp-rotate-180-hflip
++igt@kms_big_fb@yf-tiled-8bpp-rotate-270-hflip
++igt@kms_big_fb@yf-tiled-16bpp-rotate-0-hflip
++igt@kms_big_fb@yf-tiled-16bpp-rotate-90-hflip
++igt@kms_big_fb@yf-tiled-16bpp-rotate-180-hflip
++igt@kms_big_fb@yf-tiled-16bpp-rotate-270-hflip
++igt@kms_big_fb@yf-tiled-32bpp-rotate-0-hflip
++igt@kms_big_fb@yf-tiled-32bpp-rotate-90-hflip
++igt@kms_big_fb@yf-tiled-32bpp-rotate-180-hflip
++igt@kms_big_fb@yf-tiled-32bpp-rotate-270-hflip
++igt@kms_big_fb@yf-tiled-64bpp-rotate-0-hflip
++igt@kms_big_fb@yf-tiled-64bpp-rotate-90-hflip
++igt@kms_big_fb@yf-tiled-64bpp-rotate-180-hflip
++igt@kms_big_fb@yf-tiled-64bpp-rotate-270-hflip
++igt@kms_big_fb@y-tiled-8bpp-rotate-0-hflip
++igt@kms_big_fb@y-tiled-8bpp-rotate-90-hflip
++igt@kms_big_fb@y-tiled-8bpp-rotate-180-hflip
++igt@kms_big_fb@y-tiled-8bpp-rotate-270-hflip
++igt@kms_big_fb@y-tiled-16bpp-rotate-0-hflip
++igt@kms_big_fb@y-tiled-16bpp-rotate-90-hflip
++igt@kms_big_fb@y-tiled-16bpp-rotate-180-hflip
++igt@kms_big_fb@y-tiled-16bpp-rotate-270-hflip
++igt@kms_big_fb@y-tiled-32bpp-rotate-0-hflip
++igt@kms_big_fb@y-tiled-32bpp-rotate-90-hflip
++igt@kms_big_fb@y-tiled-32bpp-rotate-180-hflip
++igt@kms_big_fb@y-tiled-32bpp-rotate-270-hflip
++igt@kms_big_fb@y-tiled-64bpp-rotate-0-hflip
++igt@kms_big_fb@y-tiled-64bpp-rotate-90-hflip
++igt@kms_big_fb@y-tiled-64bpp-rotate-180-hflip
++igt@kms_big_fb@y-tiled-64bpp-rotate-270-hflip
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6031/index.html
+
+--===============6071539640450548716==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>kms: Various cleanups and fixes</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/92656/">https://patchwork.freedesktop.org/series/92656/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6031/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6031/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6143 -&gt; IGTPW_6031</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6031/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6031 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@runner@aborted:<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6031/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2029">i915#2029</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>{fi-hsw-gt1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6143/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6031/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_pm_rpm@basic-rte:<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6143/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6031/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/579">i915#579</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (40 -&gt; 35)</h2>
+<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-n3050 fi-bsw-cyan fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6143 -&gt; IGTPW_6031</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10345: 8c6a974b932fbaa798102b4713ceedf3b04227d9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6031: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6031/index.html<br />
+  IGT_6143: cd649eee0f74fa6ee71de18ff59b5ae39fd62159 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_big_fb@linear-8bpp-rotate-0-hflip<br />
++igt@kms_big_fb@linear-8bpp-rotate-90-hflip<br />
++igt@kms_big_fb@linear-8bpp-rotate-180-hflip<br />
++igt@kms_big_fb@linear-8bpp-rotate-270-hflip<br />
++igt@kms_big_fb@linear-16bpp-rotate-0-hflip<br />
++igt@kms_big_fb@linear-16bpp-rotate-90-hflip<br />
++igt@kms_big_fb@linear-16bpp-rotate-180-hflip<br />
++igt@kms_big_fb@linear-16bpp-rotate-270-hflip<br />
++igt@kms_big_fb@linear-32bpp-rotate-0-hflip<br />
++igt@kms_big_fb@linear-32bpp-rotate-90-hflip<br />
++igt@kms_big_fb@linear-32bpp-rotate-180-hflip<br />
++igt@kms_big_fb@linear-32bpp-rotate-270-hflip<br />
++igt@kms_big_fb@linear-64bpp-rotate-0-hflip<br />
++igt@kms_big_fb@linear-64bpp-rotate-90-hflip<br />
++igt@kms_big_fb@linear-64bpp-rotate-180-hflip<br />
++igt@kms_big_fb@linear-64bpp-rotate-270-hflip<br />
++igt@kms_big_fb@x-tiled-8bpp-rotate-0-hflip<br />
++igt@kms_big_fb@x-tiled-8bpp-rotate-90-hflip<br />
++igt@kms_big_fb@x-tiled-8bpp-rotate-180-hflip<br />
++igt@kms_big_fb@x-tiled-8bpp-rotate-270-hflip<br />
++igt@kms_big_fb@x-tiled-16bpp-rotate-0-hflip<br />
++igt@kms_big_fb@x-tiled-16bpp-rotate-90-hflip<br />
++igt@kms_big_fb@x-tiled-16bpp-rotate-180-hflip<br />
++igt@kms_big_fb@x-tiled-16bpp-rotate-270-hflip<br />
++igt@kms_big_fb@x-tiled-32bpp-rotate-0-hflip<br />
++igt@kms_big_fb@x-tiled-32bpp-rotate-90-hflip<br />
++igt@kms_big_fb@x-tiled-32bpp-rotate-180-hflip<br />
++igt@kms_big_fb@x-tiled-32bpp-rotate-270-hflip<br />
++igt@kms_big_fb@x-tiled-64bpp-rotate-0-hflip<br />
++igt@kms_big_fb@x-tiled-64bpp-rotate-90-hflip<br />
++igt@kms_big_fb@x-tiled-64bpp-rotate-180-hflip<br />
++igt@kms_big_fb@x-tiled-64bpp-rotate-270-hflip<br />
++igt@kms_big_fb@yf-tiled-8bpp-rotate-0-hflip<br />
++igt@kms_big_fb@yf-tiled-8bpp-rotate-90-hflip<br />
++igt@kms_big_fb@yf-tiled-8bpp-rotate-180-hflip<br />
++igt@kms_big_fb@yf-tiled-8bpp-rotate-270-hflip<br />
++igt@kms_big_fb@yf-tiled-16bpp-rotate-0-hflip<br />
++igt@kms_big_fb@yf-tiled-16bpp-rotate-90-hflip<br />
++igt@kms_big_fb@yf-tiled-16bpp-rotate-180-hflip<br />
++igt@kms_big_fb@yf-tiled-16bpp-rotate-270-hflip<br />
++igt@kms_big_fb@yf-tiled-32bpp-rotate-0-hflip<br />
++igt@kms_big_fb@yf-tiled-32bpp-rotate-90-hflip<br />
++igt@kms_big_fb@yf-tiled-32bpp-rotate-180-hflip<br />
++igt@kms_big_fb@yf-tiled-32bpp-rotate-270-hflip<br />
++igt@kms_big_fb@yf-tiled-64bpp-rotate-0-hflip<br />
++igt@kms_big_fb@yf-tiled-64bpp-rotate-90-hflip<br />
++igt@kms_big_fb@yf-tiled-64bpp-rotate-180-hflip<br />
++igt@kms_big_fb@yf-tiled-64bpp-rotate-270-hflip<br />
++igt@kms_big_fb@y-tiled-8bpp-rotate-0-hflip<br />
++igt@kms_big_fb@y-tiled-8bpp-rotate-90-hflip<br />
++igt@kms_big_fb@y-tiled-8bpp-rotate-180-hflip<br />
++igt@kms_big_fb@y-tiled-8bpp-rotate-270-hflip<br />
++igt@kms_big_fb@y-tiled-16bpp-rotate-0-hflip<br />
++igt@kms_big_fb@y-tiled-16bpp-rotate-90-hflip<br />
++igt@kms_big_fb@y-tiled-16bpp-rotate-180-hflip<br />
++igt@kms_big_fb@y-tiled-16bpp-rotate-270-hflip<br />
++igt@kms_big_fb@y-tiled-32bpp-rotate-0-hflip<br />
++igt@kms_big_fb@y-tiled-32bpp-rotate-90-hflip<br />
++igt@kms_big_fb@y-tiled-32bpp-rotate-180-hflip<br />
++igt@kms_big_fb@y-tiled-32bpp-rotate-270-hflip<br />
++igt@kms_big_fb@y-tiled-64bpp-rotate-0-hflip<br />
++igt@kms_big_fb@y-tiled-64bpp-rotate-90-hflip<br />
++igt@kms_big_fb@y-tiled-64bpp-rotate-180-hflip<br />
++igt@kms_big_fb@y-tiled-64bpp-rotate-270-hflip</p>
+
+</body>
+</html>
+
+--===============6071539640450548716==--
+
+--===============0821374907==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0821374907==--
