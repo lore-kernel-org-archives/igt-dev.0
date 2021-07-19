@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 261DC89CBE
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Jul 2021 04:48:42 +0000 (UTC)
-References: <20210716144442.31962-1-ville.syrjala@linux.intel.com>
- <20210716144442.31962-5-ville.syrjala@linux.intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-Message-ID: <c517ace2-f230-6b71-98af-d3d367c6392c@intel.com>
-Date: Mon, 19 Jul 2021 10:18:29 +0530
-In-Reply-To: <20210716144442.31962-5-ville.syrjala@linux.intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A21889CBE
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Jul 2021 05:59:03 +0000 (UTC)
+From: "Kulkarni, Vandita" <vandita.kulkarni@intel.com>
+Date: Mon, 19 Jul 2021 05:58:58 +0000
+Message-ID: <fb907301dc7a4fdeba667fe3f7006dd5@intel.com>
+References: <20210708164902.18250-2-venkata.sai.patnana@intel.com>
+ <20210709151628.10799-1-venkata.sai.patnana@intel.com>
+In-Reply-To: <20210709151628.10799-1-venkata.sai.patnana@intel.com>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 04/16] tests/kms_rotation_crc: Use
- igt_rotation_90_or_270()
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/4] tests/kms_dp_dsc: Add a subtest
+ to force DSC output BPP
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,106 +19,390 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: "Patnana, Venkata Sai" <venkata.sai.patnana@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Latvala, Petri" <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gNy8xNi8yMDIxIDg6MTQgUE0sIFZpbGxlIFN5cmphbGEgd3JvdGU6Cj4gRnJvbTogVmlsbGUg
-U3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KPgo+IFJlcGxhY2UgdGhl
-IGhhbmQgcm9sbGVkIDkwLzI3MCByb3RhdGlvbiBjaGVja3Mgd2l0aAo+IGlndF9yb3RhdGlvbl85
-MF9vcl8yNzAoKS4KPgo+IFNpZ25lZC1vZmYtYnk6IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3ly
-amFsYUBsaW51eC5pbnRlbC5jb20+ClJldmlld2VkLWJ5OiBLYXJ0aGlrIEIgUyA8a2FydGhpay5i
-LnNAaW50ZWwuY29tPgo+IC0tLQo+ICAgdGVzdHMva21zX3JvdGF0aW9uX2NyYy5jIHwgMzAgKysr
-KysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tCj4gICAxIGZpbGUgY2hhbmdlZCwgMTQgaW5zZXJ0
-aW9ucygrKSwgMTYgZGVsZXRpb25zKC0pCj4KPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX3JvdGF0
-aW9uX2NyYy5jIGIvdGVzdHMva21zX3JvdGF0aW9uX2NyYy5jCj4gaW5kZXggMTQ5NzEyMGNkNGUw
-Li4yYzY2Y2Q3YzRlMzEgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMva21zX3JvdGF0aW9uX2NyYy5jCj4g
-KysrIGIvdGVzdHMva21zX3JvdGF0aW9uX2NyYy5jCj4gQEAgLTI3MCw3ICsyNzAsNyBAQCBzdGF0
-aWMgdm9pZCBwcmVwYXJlX2ZicyhkYXRhX3QgKmRhdGEsIGlndF9vdXRwdXRfdCAqb3V0cHV0LAo+
-ICAgCSAqIEZvciA5MC8yNzAsIHdlIHdpbGwgdXNlIGNyZWF0ZSBzbWFsbGVyIGZiIHNvIHRoYXQg
-dGhlIHJvdGF0ZWQKPiAgIAkgKiBmcmFtZSBjYW4gZml0IGluCj4gICAJICovCj4gLQlpZiAoZGF0
-YS0+cm90YXRpb24gJiAoSUdUX1JPVEFUSU9OXzkwIHwgSUdUX1JPVEFUSU9OXzI3MCkpIHsKPiAr
-CWlmIChpZ3Rfcm90YXRpb25fOTBfb3JfMjcwKGRhdGEtPnJvdGF0aW9uKSkgewo+ICAgCQl0aWxp
-bmcgPSBkYXRhLT5vdmVycmlkZV90aWxpbmcgPzogSTkxNV9GT1JNQVRfTU9EX1lfVElMRUQ7Cj4g
-ICAKPiAgIAkJaWd0X3N3YXAodywgaCk7Cj4gQEAgLTM2Miw3ICszNjIsNyBAQCBzdGF0aWMgdm9p
-ZCB0ZXN0X3NpbmdsZV9jYXNlKGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUsCj4gICAJcHJl
-cGFyZV9mYnMoZGF0YSwgb3V0cHV0LCBwbGFuZSwgcmVjdCwgZm9ybWF0KTsKPiAgIAo+ICAgCWln
-dF9wbGFuZV9zZXRfcm90YXRpb24ocGxhbmUsIGRhdGEtPnJvdGF0aW9uKTsKPiAtCWlmIChkYXRh
-LT5yb3RhdGlvbiAmIChJR1RfUk9UQVRJT05fOTAgfCBJR1RfUk9UQVRJT05fMjcwKSkKPiArCWlm
-IChpZ3Rfcm90YXRpb25fOTBfb3JfMjcwKGRhdGEtPnJvdGF0aW9uKSkKPiAgIAkJaWd0X3BsYW5l
-X3NldF9zaXplKHBsYW5lLCBkYXRhLT5mYi5oZWlnaHQsIGRhdGEtPmZiLndpZHRoKTsKPiAgIAo+
-ICAgCXJldCA9IGlndF9kaXNwbGF5X3RyeV9jb21taXQyKGRpc3BsYXksIENPTU1JVF9BVE9NSUMp
-Owo+IEBAIC0zOTYsNyArMzk2LDcgQEAgc3RhdGljIHZvaWQgdGVzdF9zaW5nbGVfY2FzZShkYXRh
-X3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlLAo+ICAgCSAqLwo+ICAgCWlmIChkYXRhLT5mYl9mbGlw
-LmZiX2lkKSB7Cj4gICAJCWlndF9wbGFuZV9zZXRfZmIocGxhbmUsICZkYXRhLT5mYl9mbGlwKTsK
-PiAtCQlpZiAoZGF0YS0+cm90YXRpb24gPT0gSUdUX1JPVEFUSU9OXzkwIHx8IGRhdGEtPnJvdGF0
-aW9uID09IElHVF9ST1RBVElPTl8yNzApCj4gKwkJaWYgKGlndF9yb3RhdGlvbl85MF9vcl8yNzAo
-ZGF0YS0+cm90YXRpb24pKQo+ICAgCQkJaWd0X3BsYW5lX3NldF9zaXplKHBsYW5lLCBkYXRhLT5m
-Yi5oZWlnaHQsIGRhdGEtPmZiLndpZHRoKTsKPiAgIAo+ICAgCQlpZiAocGxhbmUtPnR5cGUgIT0g
-RFJNX1BMQU5FX1RZUEVfUFJJTUFSWSkgewo+IEBAIC01NzUsNyArNTc1LDcgQEAgc3RhdGljIGJv
-b2wgc2V0dXBfbXVsdGlwbGFuZShkYXRhX3QgKmRhdGEsIHBsYW5laW5mb3MgKnBsYW5laW5mbywK
-PiAgIAkJdyA9IHBsYW5laW5mb1tjXS53aWR0aCAmIH4zOwo+ICAgCQloID0gcGxhbmVpbmZvW2Nd
-LmhlaWdodCAmIH4zOwo+ICAgCj4gLQkJaWYgKHBsYW5laW5mb1tjXS5yb3RhdGlvbl9zdyAmIChJ
-R1RfUk9UQVRJT05fOTAgfCBJR1RfUk9UQVRJT05fMjcwKSkKPiArCQlpZiAoaWd0X3JvdGF0aW9u
-XzkwX29yXzI3MChwbGFuZWluZm9bY10ucm90YXRpb25fc3cpKQo+ICAgCQkJaWd0X3N3YXAodywg
-aCk7Cj4gICAKPiAgIAkJaWYgKCFpZ3RfcGxhbmVfaGFzX2Zvcm1hdF9tb2QocGxhbmVpbmZvW2Nd
-LnBsYW5lLAo+IEBAIC01OTYsNyArNTk2LDcgQEAgc3RhdGljIGJvb2wgc2V0dXBfbXVsdGlwbGFu
-ZShkYXRhX3QgKmRhdGEsIHBsYW5laW5mb3MgKnBsYW5laW5mbywKPiAgIAkJfQo+ICAgCQlpZ3Rf
-cGxhbmVfc2V0X2ZiKHBsYW5laW5mb1tjXS5wbGFuZSwgcGxhbmVzW2NdKTsKPiAgIAo+IC0JCWlm
-IChwbGFuZWluZm9bY10ucm90YXRpb25faHcgJiAoSUdUX1JPVEFUSU9OXzkwIHwgSUdUX1JPVEFU
-SU9OXzI3MCkpCj4gKwkJaWYgKGlndF9yb3RhdGlvbl85MF9vcl8yNzAocGxhbmVpbmZvW2NdLnJv
-dGF0aW9uX2h3KSkKPiAgIAkJCWlndF9wbGFuZV9zZXRfc2l6ZShwbGFuZWluZm9bY10ucGxhbmUs
-IGgsIHcpOwo+ICAgCj4gICAJCWlndF9wbGFuZV9zZXRfcG9zaXRpb24ocGxhbmVpbmZvW2NdLnBs
-YW5lLCBwbGFuZWluZm9bY10ueDEsCj4gQEAgLTcyOSwyMCArNzI5LDIwIEBAIHN0YXRpYyB2b2lk
-IHRlc3RfbXVsdGlfcGxhbmVfcm90YXRpb24oZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSkK
-PiAgIAkJCQkJCSAqIGZyb20gZ2VuMTEgb253YXJkcy4KPiAgIAkJCQkJCSAqLwo+ICAgCQkJCQkJ
-aWYgKHBbMF0uZm9ybWF0ID09IERSTV9GT1JNQVRfUkdCNTY1ICYmCj4gLQkJCQkJCSAgICAgKHBs
-YW5lY29uZmlnc1tpXS5yb3RhdGlvbiAmIChJR1RfUk9UQVRJT05fOTAgfCBJR1RfUk9UQVRJT05f
-MjcwKSkKPiArCQkJCQkJICAgICBpZ3Rfcm90YXRpb25fOTBfb3JfMjcwKHBsYW5lY29uZmlnc1tp
-XS5yb3RhdGlvbikKPiAgIAkJCQkJCSAgICAgJiYgaW50ZWxfZGlzcGxheV92ZXIoZGF0YS0+ZGV2
-aWQpIDwgMTEpCj4gICAJCQkJCQkJY29udGludWU7Cj4gICAKPiAgIAkJCQkJCWlmIChwWzFdLmZv
-cm1hdCA9PSBEUk1fRk9STUFUX1JHQjU2NSAmJgo+IC0JCQkJCQkgICAgIChwbGFuZWNvbmZpZ3Nb
-al0ucm90YXRpb24gJiAoSUdUX1JPVEFUSU9OXzkwIHwgSUdUX1JPVEFUSU9OXzI3MCkpCj4gKwkJ
-CQkJCSAgICAgaWd0X3JvdGF0aW9uXzkwX29yXzI3MChwbGFuZWNvbmZpZ3Nbal0ucm90YXRpb24p
-Cj4gICAJCQkJCQkgICAgICYmIGludGVsX2Rpc3BsYXlfdmVyKGRhdGEtPmRldmlkKSA8IDExKQo+
-ICAgCQkJCQkJCWNvbnRpbnVlOwo+ICAgCj4gLQkJCQkJCWlmICgocGxhbmVjb25maWdzW2ldLnJv
-dGF0aW9uICYgKElHVF9ST1RBVElPTl85MCB8IElHVF9ST1RBVElPTl8yNzApKQo+ICsJCQkJCQlp
-ZiAoaWd0X3JvdGF0aW9uXzkwX29yXzI3MChwbGFuZWNvbmZpZ3NbaV0ucm90YXRpb24pCj4gICAJ
-CQkJCQkgICAgJiYgaW50ZWxfZGlzcGxheV92ZXIoZGF0YS0+ZGV2aWQpID49IDEzKQo+ICAgCQkJ
-CQkJCWNvbnRpbnVlOwo+ICAgCj4gLQkJCQkJCWlmICgocGxhbmVjb25maWdzW2pdLnJvdGF0aW9u
-ICYgKElHVF9ST1RBVElPTl85MCB8IElHVF9ST1RBVElPTl8yNzApKQo+ICsJCQkJCQlpZiAoaWd0
-X3JvdGF0aW9uXzkwX29yXzI3MChwbGFuZWNvbmZpZ3Nbal0ucm90YXRpb24pCj4gICAJCQkJCQkg
-ICAgJiYgaW50ZWxfZGlzcGxheV92ZXIoZGF0YS0+ZGV2aWQpID49IDEzKQo+ICAgCQkJCQkJCWNv
-bnRpbnVlOwo+ICAgCQkJCQkJLyoKPiBAQCAtMTA0OSwxMiArMTA0OSwxMSBAQCBpZ3RfbWFpbl9h
-cmdzKCIiLCBsb25nX29wdHMsIGhlbHBfc3RyLCBvcHRfaGFuZGxlciwgJmRhdGEpCj4gICAJCQkg
-ICAgICBwbGFuZV90ZXN0X3N0cihzdWJ0ZXN0LT5wbGFuZSksCj4gICAJCQkgICAgICByb3RfdGVz
-dF9zdHIoc3VidGVzdC0+cm90KSkgewo+ICAgCQkJaWYgKGlzX2k5MTVfZGV2aWNlKGRhdGEuZ2Z4
-X2ZkKSkgewo+IC0JCQkJaWd0X3JlcXVpcmUoIShzdWJ0ZXN0LT5yb3QgJgo+IC0gICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIChJR1RfUk9UQVRJT05fOTAgfCBJR1Rf
-Uk9UQVRJT05fMjcwKSkgfHwKPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAoZ2VuID49IDkgJiYgZ2VuIDwgMTMpKTsKPiArCQkJCWlndF9yZXF1aXJlKCFpZ3Rf
-cm90YXRpb25fOTBfb3JfMjcwKHN1YnRlc3QtPnJvdCkgfHwKPiArCQkJCQkgICAgKGdlbiA+PSA5
-ICYmIGdlbiA8IDEzKSk7Cj4gICAJCQl9IGVsc2UgaWYgKGlzX2FtZGdwdV9kZXZpY2UoZGF0YS5n
-ZnhfZmQpKSB7Cj4gICAJCQkJZGF0YS5vdmVycmlkZV9mbXQgPSBEUk1fRk9STUFUX1hSR0I4ODg4
-Owo+IC0JCQkJaWYgKHN1YnRlc3QtPnJvdCAmIChJR1RfUk9UQVRJT05fOTAgfCBJR1RfUk9UQVRJ
-T05fMjcwKSkKPiArCQkJCWlmIChpZ3Rfcm90YXRpb25fOTBfb3JfMjcwKHN1YnRlc3QtPnJvdCkp
-Cj4gICAJCQkJCWRhdGEub3ZlcnJpZGVfdGlsaW5nID0gQU1EX0ZNVF9NT0QgfAo+ICAgCQkJCQkJ
-QU1EX0ZNVF9NT0RfU0VUKFRJTEUsIEFNRF9GTVRfTU9EX1RJTEVfR0ZYOV82NEtfUykgfAo+ICAg
-CQkJCQkJQU1EX0ZNVF9NT0RfU0VUKFRJTEVfVkVSU0lPTiwgQU1EX0ZNVF9NT0RfVElMRV9WRVJf
-R0ZYOSk7Cj4gQEAgLTExMDgsOSArMTEwNyw4IEBAIGlndF9tYWluX2FyZ3MoIiIsIGxvbmdfb3B0
-cywgaGVscF9zdHIsIG9wdF9oYW5kbGVyLCAmZGF0YSkKPiAgIAkJCQkgICAgKElTX0NIRVJSWVZJ
-RVcoZGF0YS5kZXZpZCkgJiYgcmVmbGVjdF94LT5yb3QgPT0gSUdUX1JPVEFUSU9OXzAKPiAgIAkJ
-CQkgICAgICYmIHJlZmxlY3RfeC0+dGlsaW5nID09IEk5MTVfRk9STUFUX01PRF9YX1RJTEVEKSk7
-Cj4gICAJCQlkYXRhLnJvdGF0aW9uID0gKElHVF9SRUZMRUNUX1ggfCByZWZsZWN0X3gtPnJvdCk7
-Cj4gLQkJCWlndF9yZXF1aXJlKCEoZ2VuID49IDEzICYmIChkYXRhLnJvdGF0aW9uICYKPiAtCQkJ
-CQkJICAgIChJR1RfUk9UQVRJT05fOTAgfAo+IC0JCQkJCQkgICAgIElHVF9ST1RBVElPTl8yNzAp
-KSkpOwo+ICsJCQlpZ3RfcmVxdWlyZSghKGdlbiA+PSAxMyAmJgo+ICsJCQkJICAgICAgaWd0X3Jv
-dGF0aW9uXzkwX29yXzI3MChkYXRhLnJvdGF0aW9uKSkpOwo+ICAgCQkJZGF0YS5vdmVycmlkZV90
-aWxpbmcgPSByZWZsZWN0X3gtPnRpbGluZzsKPiAgIAkJCXRlc3RfcGxhbmVfcm90YXRpb24oJmRh
-dGEsIERSTV9QTEFORV9UWVBFX1BSSU1BUlksIGZhbHNlKTsKPiAgIAkJfQoKCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0
-CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+It would have been easier to review if version changes were mentioned in the commit message, otherwise
+LGTM
+Reviewed-by: Vandita Kulkarni <Vandita.kulkarni@intel.com>
+
+> -----Original Message-----
+> From: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>
+> Sent: Friday, July 9, 2021 8:46 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>; Srivatsa, Anusha
+> <anusha.srivatsa@intel.com>; B S, Karthik <karthik.b.s@intel.com>; Kulkarni,
+> Vandita <vandita.kulkarni@intel.com>; Navare, Manasi D
+> <manasi.d.navare@intel.com>; Latvala, Petri <petri.latvala@intel.com>
+> Subject: [PATCH i-g-t v3 1/4] tests/kms_dp_dsc: Add a subtest to force DSC
+> output BPP
+> 
+> From: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+> 
+> This subtest uses the accepted DSC BPPs and tries to force a modeset by
+> setting a certain BPP as the output BPP for a connector.
+> 
+> Signed-off-by: Anusha Srivatsa <anusha.srivatsa@intel.com>
+> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Cc: Vandita Kulkarni <vandita.kulkarni@intel.com>
+> Cc: Navare Manasi D <manasi.d.navare@intel.com>
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> Signed-off-by: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+> ---
+>  tests/kms_dp_dsc.c | 206 ++++++++++++++++++++++++++++----------------
+> -
+>  1 file changed, 130 insertions(+), 76 deletions(-)
+> 
+> diff --git a/tests/kms_dp_dsc.c b/tests/kms_dp_dsc.c index
+> 3fb9852e9e..7e913d0de7 100644
+> --- a/tests/kms_dp_dsc.c
+> +++ b/tests/kms_dp_dsc.c
+> @@ -44,23 +44,26 @@
+>  #include <fcntl.h>
+>  #include <termios.h>
+> 
+> +/* currently dsc compression is verifying on 8bpc frame only */ #define
+> +XRGB8888_DRM_FORMAT_MIN_BPP 8
+> +
+>  enum dsc_test_type
+>  {
+> -	test_basic_dsc_enable
+> +	test_basic_dsc_enable,
+> +	test_dsc_compression_bpp
+>  };
+> 
+>  typedef struct {
+>  	int drm_fd;
+>  	int debugfs_fd;
+> -	uint32_t id;
+> +	uint32_t devid;
+>  	igt_display_t display;
+>  	struct igt_fb fb_test_pattern;
+>  	igt_output_t *output;
+>  	int mode_valid;
+> -	drmModeModeInfo *mode;
+> -	drmModeConnector *connector;
+>  	drmModeEncoder *encoder;
+>  	int crtc;
+> +	int compression_bpp;
+>  	enum pipe pipe;
+>  	char conn_name[128];
+>  } data_t;
+> @@ -121,6 +124,22 @@ static void force_dp_dsc_enable(data_t *data)
+>  	igt_assert_f(ret > 0, "debugfs_write failed");  }
+> 
+> +static void force_dp_dsc_set_bpp(data_t *data) {
+> +	int ret;
+> +	char file_name[128] = {0};
+> +	char buffer[20];
+> +
+> +	sprintf(buffer, "%d", data->compression_bpp);
+> +	strcpy(file_name, data->conn_name);
+> +	strcat(file_name, "/i915_dsc_bpp");
+> +	igt_debug("Forcing DSC BPP to %d on %s\n",
+> +		  data->compression_bpp, data->conn_name);
+> +	ret = igt_sysfs_write(data->debugfs_fd, file_name,
+> +			      buffer, sizeof(buffer));
+> +	igt_assert_f(ret > 0, "debugfs_write failed"); }
+> +
+>  static bool is_force_dsc_enabled(data_t *data)  {
+>  	char file_name[128] = {0};
+> @@ -165,6 +184,7 @@ static void test_cleanup(data_t *data)
+>  		primary = igt_output_get_plane_type(data->output,
+> 
+> DRM_PLANE_TYPE_PRIMARY);
+>  		igt_plane_set_fb(primary, NULL);
+> +		igt_output_set_pipe(data->output, PIPE_NONE);
+>  		igt_display_commit(&data->display);
+>  	}
+>  }
+> @@ -174,6 +194,37 @@ static void kms_dp_dsc_exit_handler(int sig)
+>  	restore_force_dsc_en();
+>  }
+> 
+> +static bool check_dsc_on_connector(data_t *data, uint32_t drmConnector)
+> +{
+> +	drmModeConnector *connector;
+> +	igt_output_t *output;
+> +
+> +	connector = drmModeGetConnectorCurrent(data->drm_fd,
+> +					       drmConnector);
+> +	if (connector->connection != DRM_MODE_CONNECTED ||
+> +	    ((connector->connector_type != DRM_MODE_CONNECTOR_eDP)
+> &&
+> +	    (connector->connector_type !=
+> DRM_MODE_CONNECTOR_DisplayPort)))
+> +		return false;
+> +
+> +	output = igt_output_from_connector(&data->display, connector);
+> +	sprintf(data->conn_name, "%s-%d",
+> +		kmstest_connector_type_str(connector->connector_type),
+> +		connector->connector_type_id);
+> +
+> +	if (!is_dp_dsc_supported(data)) {
+> +		igt_debug("DSC not supported on connector %s\n",
+> +			  data->conn_name);
+> +		return false;
+> +	}
+> +	if (connector->connector_type ==
+> DRM_MODE_CONNECTOR_DisplayPort &&
+> +	    !is_dp_fec_supported(data)) {
+> +		igt_debug("DSC cannot be enabled without FEC on %s\n",
+> +			  data->conn_name);
+> +		return false;
+> +	}
+> +	data->output = output;
+> +	return true;
+> +}
+> 
+>  /*
+>   * Re-probe connectors and do a modeset with DSC @@ -181,54 +232,57
+> @@ static void kms_dp_dsc_exit_handler(int sig)
+>   */
+>  static void update_display(data_t *data, enum dsc_test_type test_type)  {
+> +	bool enabled;
+>  	igt_plane_t *primary;
+> -	data->connector = data->output->config.connector;
+> 
+>  	/* Disable the output first */
+>  	igt_output_set_pipe(data->output, PIPE_NONE);
+>  	igt_display_commit(&data->display);
+> 
+> -	if (test_type == test_basic_dsc_enable) {
+> -		bool enabled;
+> +	igt_debug("DSC is supported on %s\n", data->conn_name);
+> +	save_force_dsc_en(data);
+> +	force_dp_dsc_enable(data);
+> +	if (test_type == test_dsc_compression_bpp) {
+> +		igt_debug("Trying to set BPP to %d\n", data-
+> >compression_bpp);
+> +		force_dp_dsc_set_bpp(data);
+> +	}
+> 
+> -		igt_debug("DSC is supported on %s\n", data->conn_name);
+> -		save_force_dsc_en(data);
+> -		force_dp_dsc_enable(data);
+> +	igt_output_set_pipe(data->output, data->pipe);
+> +	primary = igt_output_get_plane_type(data->output,
+> +					    DRM_PLANE_TYPE_PRIMARY);
+> 
+> -		igt_output_set_pipe(data->output, data->pipe);
+> -		primary = igt_output_get_plane_type(data->output,
+> -
+> DRM_PLANE_TYPE_PRIMARY);
+> +	/* Now set the output to the desired mode */
+> +	igt_plane_set_fb(primary, &data->fb_test_pattern);
+> +	igt_display_commit(&data->display);
+> 
+> -		/* Now set the output to the desired mode */
+> -		igt_plane_set_fb(primary, &data->fb_test_pattern);
+> -		igt_display_commit(&data->display);
+> +	/*
+> +	 * Until we have CRC check support, manually check if RGB test
+> +	 * pattern has no corruption.
+> +	 */
+> +	manual("RGB test pattern without corruption");
+> 
+> -		/*
+> -		 * Until we have CRC check support, manually check if RGB
+> test
+> -		 * pattern has no corruption.
+> -		 */
+> -		manual("RGB test pattern without corruption");
+> -
+> -		enabled = is_dp_dsc_enabled(data);
+> -		restore_force_dsc_en();
+> -
+> -		igt_assert_f(enabled,
+> -			     "Default DSC enable failed on Connector: %s Pipe:
+> %s\n",
+> -			     data->conn_name,
+> -			     kmstest_pipe_name(data->pipe));
+> -	} else {
+> -		igt_assert(!"Unknown test type\n");
+> +	enabled = is_dp_dsc_enabled(data);
+> +	restore_force_dsc_en();
+> +	if (test_type == test_dsc_compression_bpp) {
+> +		igt_debug("Rest compression BPP \n");
+> +		data->compression_bpp = 0;
+> +		force_dp_dsc_set_bpp(data);
+>  	}
+> +
+> +	igt_assert_f(enabled,
+> +		     "Default DSC enable failed on Connector: %s Pipe: %s\n",
+> +		     data->conn_name,
+> +		     kmstest_pipe_name(data->pipe));
+>  }
+> 
+> -static void run_test(data_t *data, igt_output_t *output,
+> -		     enum dsc_test_type test_type)
+> +static void run_test(data_t *data, enum dsc_test_type test_type)
+>  {
+>  	enum pipe pipe;
+> +	char test_name[10];
+> +	drmModeModeInfo *mode = igt_output_get_mode(data->output);
+> 
+> -	data->mode = igt_output_get_mode(output);
+> -	igt_create_pattern_fb(data->drm_fd, data->mode->hdisplay,
+> -			      data->mode->vdisplay,
+> +	igt_create_pattern_fb(data->drm_fd, mode->hdisplay,
+> +			      mode->vdisplay,
+>  			      DRM_FORMAT_XRGB8888,
+>  			      LOCAL_DRM_FORMAT_MOD_NONE,
+>  			      &data->fb_test_pattern);
+> @@ -237,19 +291,26 @@ static void run_test(data_t *data, igt_output_t
+> *output,
+>  		if (is_i915_device(data->drm_fd)) {
+>  			uint32_t devid = intel_get_drm_devid(data-
+> >drm_fd);
+> 
+> -			if (output->config.connector->connector_type ==
+> DRM_MODE_CONNECTOR_DisplayPort &&
+> +			if (data->output->config.connector->connector_type
+> ==
+> +DRM_MODE_CONNECTOR_DisplayPort &&
+>  			    pipe == PIPE_A && IS_GEN11(devid)) {
+>  				igt_debug("DSC not supported on Pipe A on
+> external DP in Gen11 platforms\n");
+>  				continue;
+>  			}
+>  		}
+> 
+> -		if (igt_pipe_connector_valid(pipe, output)) {
+> +		snprintf(test_name, sizeof(test_name), "-%dbpp", data-
+> >compression_bpp);
+> +		if (igt_pipe_connector_valid(pipe, data->output)) {
+>  			data->pipe = pipe;
+> -			data->output = output;
+> -			update_display(data, test_type);
+> -			test_cleanup(data);
+> +
+> +			igt_dynamic_f("%s-pipe-%s%s", data->output-
+> >name,
+> +					kmstest_pipe_name(pipe),
+> +					(test_type ==
+> test_dsc_compression_bpp) ?
+> +					 test_name : "")
+> +				update_display(data, test_type);
+>  		}
+> +
+> +		if (test_type == test_dsc_compression_bpp)
+> +			break;
+>  	}
+> 
+>  	igt_remove_fb(data->drm_fd, &data->fb_test_pattern); @@ -
+> 258,59 +319,52 @@ static void run_test(data_t *data, igt_output_t *output,
+> igt_main  {
+>  	data_t data = {};
+> -	igt_output_t *output;
+>  	drmModeRes *res;
+>  	drmModeConnector *connector = NULL;
+> -	int i, test_conn_cnt, test_cnt;
+> -	int tests[] = {DRM_MODE_CONNECTOR_eDP,
+> DRM_MODE_CONNECTOR_DisplayPort};
+> -
+> +	int i, j;
+>  	igt_fixture {
+>  		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> +		igt_require_intel(data.drm_fd);
+> +		data.devid = intel_get_drm_devid(data.drm_fd);
+>  		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+>  		kmstest_set_vt_graphics_mode();
+>  		igt_install_exit_handler(kms_dp_dsc_exit_handler);
+>  		igt_display_require(&data.display, data.drm_fd);
+>  		igt_require(res = drmModeGetResources(data.drm_fd));
+>  	}
+> +	igt_subtest_with_dynamic("basic-dsc-enable") {
+> +		for (j = 0; j < res->count_connectors; j++) {
+> +			if (!check_dsc_on_connector(&data, res-
+> >connectors[j]))
+> +				continue;
+> +			run_test(&data, test_basic_dsc_enable);
+> +		}
+> +	}
+> +	/* currently we are validating compression bpp on XRGB8888 format
+> only */
+> +	igt_subtest_with_dynamic("XRGB8888-dsc-compression") {
+> +		uint32_t bpp_list[] = {
+> +			XRGB8888_DRM_FORMAT_MIN_BPP,
+> +			(XRGB8888_DRM_FORMAT_MIN_BPP  +
+> +			 (XRGB8888_DRM_FORMAT_MIN_BPP * 3) - 1) / 2,
+> +			(XRGB8888_DRM_FORMAT_MIN_BPP * 3) - 1
+> +		};
+> +
+> +		igt_require(intel_display_ver(data.devid) >= 13);
+> +
+> +		for (j = 0; j < res->count_connectors; j++) {
+> +			if (!check_dsc_on_connector(&data, res-
+> >connectors[j]))
+> +				continue;
+> 
+> -	for (test_cnt = 0; test_cnt < ARRAY_SIZE(tests); test_cnt++) {
+> -		igt_describe("Validate display stream compression
+> functionality if supported on "
+> -			       "DP/eDP connector");
+> -		igt_subtest_f("basic-dsc-enable-%s",
+> -			      kmstest_connector_type_str(tests[test_cnt])) {
+> -			test_conn_cnt = 0;
+> -			for (i = 0; i < res->count_connectors; i++) {
+> -				connector =
+> drmModeGetConnectorCurrent(data.drm_fd,
+> -								       res-
+> >connectors[i]);
+> -				if (connector->connection !=
+> DRM_MODE_CONNECTED ||
+> -				    connector->connector_type !=
+> -				    tests[test_cnt])
+> -					continue;
+> -				output =
+> igt_output_from_connector(&data.display, connector);
+> -				sprintf(data.conn_name, "%s-%d",
+> -
+> 	kmstest_connector_type_str(connector->connector_type),
+> -					connector->connector_type_id);
+> -				if(!is_dp_dsc_supported(&data)) {
+> -					igt_debug("DSC not supported on
+> connector %s \n",
+> -						  data.conn_name);
+> -					continue;
+> -				}
+> -				if (connector->connector_type ==
+> DRM_MODE_CONNECTOR_DisplayPort &&
+> -				    !is_dp_fec_supported(&data)) {
+> -					igt_debug("DSC cannot be enabled
+> without FEC on %s\n",
+> -						  data.conn_name);
+> -					continue;
+> -				}
+> -				test_conn_cnt++;
+> -				run_test(&data, output,
+> test_basic_dsc_enable);
+> +			for (i = 0; i < ARRAY_SIZE(bpp_list); i++) {
+> +				data.compression_bpp = bpp_list[i];
+> +				run_test(&data,
+> test_dsc_compression_bpp);
+>  			}
+> -			igt_skip_on(test_conn_cnt == 0);
+>  		}
+>  	}
+> 
+>  	igt_fixture {
+>  		if (connector)
+>  			drmModeFreeConnector(connector);
+> +		test_cleanup(&data);
+>  		drmModeFreeResources(res);
+>  		close(data.debugfs_fd);
+>  		close(data.drm_fd);
+> --
+> 2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
