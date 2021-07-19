@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2075.outbound.protection.outlook.com [40.107.94.75])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0212489B05
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Jul 2021 12:59:06 +0000 (UTC)
-From: Stylon Wang <stylon.wang@amd.com>
-Date: Mon, 19 Jul 2021 20:58:34 +0800
-Message-ID: <20210719125835.652219-2-stylon.wang@amd.com>
-In-Reply-To: <20210719125835.652219-1-stylon.wang@amd.com>
-References: <20210716131622.103320-2-stylon.wang@amd.com>
- <20210719125835.652219-1-stylon.wang@amd.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v3 1/2] tests/kms_assr: New ASSR test on
- DP/eDP links
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 19 Jul 2021 13:05:55 -0000
+Message-ID: <162669995529.8479.1906751742892491816@emeril.freedesktop.org>
+References: <20210715064731.4484-1-anshuman.gupta@intel.com>
+In-Reply-To: <20210715064731.4484-1-anshuman.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915=5Fpm=5Fdc=3A_Fix_platform_version_check_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,314 +14,216 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1448170201=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: petri.latvala@intel.com, arek@hiler.eu, markyacoub@google.com, igt-dev@lists.freedesktop.org
-Cc: Anson.Jacob@amd.com, Nicholas.Choi@amd.com
+To: Anshuman Gupta <anshuman.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Check if ASSR is correctly disabled or enabled on DP/eDP links.
+--===============1448170201==
+Content-Type: multipart/alternative;
+ boundary="===============4524048916413958422=="
 
-Signed-off-by: Stylon Wang <stylon.wang@amd.com>
----
- tests/kms_assr.c  | 269 ++++++++++++++++++++++++++++++++++++++++++++++
- tests/meson.build |   1 +
- 2 files changed, 270 insertions(+)
- create mode 100644 tests/kms_assr.c
+--===============4524048916413958422==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tests/kms_assr.c b/tests/kms_assr.c
-new file mode 100644
-index 00000000..066973d3
---- /dev/null
-+++ b/tests/kms_assr.c
-@@ -0,0 +1,269 @@
-+/*
-+ * Copyright 2021 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ */
-+
-+#include "igt.h"
-+#include "igt_sysfs.h"
-+#include <dirent.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+
-+IGT_TEST_DESCRIPTION("Check if ASSR is enabled on eDP links that support"
-+		     "the display authentication by changing scrambling sequence."
-+		     "The test also covers embedded and non-removable "
-+		     "displays that appears as DP.");
-+
-+/* Common test data. */
-+typedef struct data {
-+	igt_display_t display;
-+	igt_plane_t *primary;
-+	int fd;
-+} data_t;
-+
-+/* Common test setup. */
-+static void test_init(data_t *data)
-+{
-+	igt_display_reset(&data->display);
-+}
-+
-+/* Common test cleanup. */
-+static void test_fini(data_t *data)
-+{
-+	igt_display_reset(&data->display);
-+}
-+
-+static char *find_aux_dev(data_t *data, igt_output_t *output,
-+				char *aux_dev, size_t max_aux_dev_len)
-+{
-+	char sysfs_name[PATH_MAX] = { 0 };
-+	/* +7 only to get rid of snprintf_chk warning.
-+	 * Path name cannot exceed the size of PATH_MAX anyway.
-+	 */
-+	char conn_dir_name[PATH_MAX+7] = { 0 };
-+	DIR *dir;
-+	struct dirent *dirent;
-+
-+	aux_dev[0] = 0;
-+
-+	if(igt_sysfs_path(data->fd, sysfs_name, sizeof(sysfs_name))) {
-+			snprintf(conn_dir_name, sizeof(conn_dir_name),
-+					"%s%scard0%s%s",
-+					sysfs_name, "/", "-", output->name);
-+	}
-+
-+	dir = opendir(conn_dir_name);
-+	if (!dir)
-+		return NULL;
-+
-+	while((dirent = readdir(dir))) {
-+		if (strncmp(dirent->d_name, "drm_dp_aux", sizeof("drm_dp_aux")-1))
-+			continue;
-+
-+		strncpy(aux_dev, dirent->d_name, max_aux_dev_len);
-+		break;
-+	}
-+
-+	closedir(dir);
-+
-+	if (aux_dev[0])
-+		return aux_dev;
-+	else
-+		return NULL;
-+}
-+
-+static void parse_dpcd(const char *aux_dev, bool *assr_supported, bool *assr_enabled)
-+{
-+	char aux_name[PATH_MAX+6]; /* +6 only to get rid of snprintf_chk warning */
-+	char dpcd[2];
-+	int aux_fd;
-+
-+	snprintf(aux_name, sizeof(aux_name), "/dev/%s", aux_dev);
-+
-+	igt_assert((aux_fd = open(aux_name, O_RDONLY)) >= 0);
-+
-+	/* Refer to section 3.5 of VESA eDP standard v1.4b:
-+	 * Display Authentication and Content Protection Support
-+	 */
-+
-+	/* DPCD register 0x0D, eDP_CONFIGURATION_CAP
-+	 * Bit 0 is ALTERNATE_SCRAMBLER_RESET_CAPABLE,
-+	 * indicating if eDP device can use ASSR.
-+	 */
-+	igt_assert(lseek(aux_fd, 0x0D, SEEK_SET));
-+	igt_assert(read(aux_fd, &dpcd[0], 1) == 1);
-+	*assr_supported = dpcd[0] & 0x01;
-+
-+	/* DPCD register 0x10A, eDP_CONFIGURATION_SET
-+	 * Bit 0 is ALTERNATE_SCRAMBLER_RESET_ENABLE,
-+	 * indicating if ASSR is enabled on the eDP device
-+	 */
-+	igt_assert(lseek(aux_fd, 0x10A, SEEK_SET));
-+	igt_assert(read(aux_fd, &dpcd[1], 1) == 1);
-+	*assr_enabled = dpcd[1] & 0x01;
-+
-+	close(aux_fd);
-+}
-+
-+static bool get_internal_display_flag(data_t *data, igt_output_t *output)
-+{
-+	char buf[256];
-+	char *start_loc;
-+	int fd, res;
-+	int internal_flag;
-+
-+	fd = igt_debugfs_connector_dir(data->fd, output->name, O_RDONLY);
-+	if (fd < 0)
-+		return false;
-+
-+	res = igt_debugfs_simple_read(fd, "internal_display", buf, sizeof(buf));
-+	if (res <= 0) {
-+		close(fd);
-+		return false;
-+	}
-+
-+	close(fd);
-+
-+	igt_assert(start_loc = strstr(buf, "Internal: "));
-+	igt_assert_eq(sscanf(start_loc, "Internal: %u", &internal_flag), 1);
-+
-+	return (bool)internal_flag;
-+}
-+
-+static void present_visual_pattern(data_t *data, igt_output_t *output)
-+{
-+	igt_plane_t *primary;
-+	igt_pipe_t *pipe;
-+	drmModeModeInfo *mode;
-+	igt_fb_t fb;
-+	cairo_t *cr;
-+
-+	mode = igt_output_get_mode(output);
-+	igt_assert(mode);
-+
-+	pipe = &data->display.pipes[PIPE_A];
-+	primary =
-+		igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+	igt_output_set_pipe(output, PIPE_A);
-+
-+	igt_create_fb(data->fd, mode->hdisplay, mode->vdisplay,
-+			DRM_FORMAT_XRGB8888, 0, &fb);
-+	cr = igt_get_cairo_ctx(fb.fd, &fb);
-+	igt_paint_test_pattern(cr, fb.width, fb.height);
-+
-+	igt_put_cairo_ctx(cr);
-+
-+	igt_plane_set_fb(primary, &fb);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	/* useful for visual inspection on artifacts */
-+	igt_debug_wait_for_keypress("assr");
-+
-+	igt_plane_set_fb(primary, NULL);
-+	igt_remove_fb(data->fd, &fb);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+}
-+
-+static void test_assr(data_t *data, igt_output_t *output)
-+{
-+	drmModeConnector *connector = output->config.connector;
-+	int connector_type = connector->connector_type;
-+	char aux_dev[PATH_MAX];
-+	bool assr_supported = false, assr_enabled = false;
-+	bool is_internal_display;
-+
-+	igt_info("Test ASSR on link %s\n", output->name);
-+
-+	igt_assert_f(find_aux_dev(data, output, aux_dev, sizeof(aux_dev)),
-+			"Cannot find AUX device for link %s\n", output->name);
-+	igt_info("Link %s aux %s\n", output->name, aux_dev);
-+
-+	parse_dpcd(aux_dev, &assr_supported, &assr_enabled);
-+
-+	is_internal_display = get_internal_display_flag(data, output);
-+
-+	igt_info("Link %s internal: %d, ASSR supported: %d, ASSR enabled: %d\n",
-+			output->name,
-+			is_internal_display,
-+			assr_supported, assr_enabled);
-+
-+	present_visual_pattern(data, output);
-+
-+	if (connector_type == DRM_MODE_CONNECTOR_eDP ||
-+		(connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
-+		 is_internal_display))
-+		igt_assert(assr_supported == assr_enabled);
-+	else
-+		igt_assert(!assr_enabled);
-+}
-+
-+static void test_assr_links(data_t *data)
-+{
-+	for (int i = 0; i < data->display.n_outputs; ++i) {
-+		igt_output_t *output = &data->display.outputs[i];
-+		drmModeConnector *connector = output->config.connector;
-+
-+		if (connector->connection != DRM_MODE_CONNECTED)
-+			continue;
-+
-+		if (connector->connector_type != DRM_MODE_CONNECTOR_eDP &&
-+			connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort)
-+			continue;
-+
-+		test_init(data);
-+
-+		test_assr(data, output);
-+
-+		test_fini(data);
-+	}
-+
-+}
-+
-+igt_main
-+{
-+	data_t data;
-+
-+	igt_skip_on_simulation();
-+
-+	memset(&data, 0, sizeof(data));
-+
-+	igt_fixture
-+	{
-+		data.fd = drm_open_driver_master(DRIVER_ANY);
-+
-+		kmstest_set_vt_graphics_mode();
-+
-+		igt_display_require(&data.display, data.fd);
-+		igt_require(data.display.is_atomic);
-+		igt_display_require_output(&data.display);
-+	}
-+
-+	igt_describe("Test ASSR on connected DP/eDP links");
-+	igt_subtest("assr-links")
-+		test_assr_links(&data);
-+
-+	igt_fixture
-+	{
-+		igt_display_fini(&data.display);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 2351b3d3..c1d60859 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -15,6 +15,7 @@ test_progs = [
- 	'feature_discovery',
- 	'kms_3d',
- 	'kms_addfb_basic',
-+	'kms_assr',
- 	'kms_async_flips',
- 	'kms_atomic',
- 	'kms_atomic_interruptible',
--- 
-2.32.0
+== Series Details ==
+
+Series: tests/i915_pm_dc: Fix platform version check (rev3)
+URL   : https://patchwork.freedesktop.org/series/92563/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6145 -> IGTPW_6035
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6035 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271]) +24 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#2190])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][3] ([i915#1886] / [i915#2291])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#533])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-tgl-u2:          [FAIL][6] ([i915#1888]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6145/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Participating hosts (41 -> 35)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-bwr-2160 fi-ctg-p8600 fi-tgl-y fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6145 -> IGTPW_6035
+
+  CI-20190529: 20190529
+  CI_DRM_10350: 0da7e60301374bc5d2d53573b061cad7f6e2959e @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6035: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/index.html
+  IGT_6145: e93b651b955c44a6ebd53368faec1d856a8df3a1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/index.html
+
+--===============4524048916413958422==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915_pm_dc: Fix platform version check (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/92563/">https://patchwork.freedesktop.org/series/92563/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6145 -&gt; IGTPW_6035</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6035 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +24 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_exec_suspend@basic-s3:<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6145/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (41 -&gt; 35)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-bwr-2160 fi-ctg-p8600 fi-tgl-y fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6145 -&gt; IGTPW_6035</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10350: 0da7e60301374bc5d2d53573b061cad7f6e2959e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6035: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6035/index.html<br />
+  IGT_6145: e93b651b955c44a6ebd53368faec1d856a8df3a1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4524048916413958422==--
+
+--===============1448170201==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1448170201==--
