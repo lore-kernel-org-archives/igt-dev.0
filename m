@@ -1,186 +1,104 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Matthew Brost <matthew.brost@intel.com>
-Date: Wed, 21 Jul 2021 16:19:58 -0700
-Message-Id: <20210721232004.31470-2-matthew.brost@intel.com>
+Date: Wed, 21 Jul 2021 16:20:00 -0700
+Message-Id: <20210721232004.31470-4-matthew.brost@intel.com>
 In-Reply-To: <20210721232004.31470-1-matthew.brost@intel.com>
 References: <20210721232004.31470-1-matthew.brost@intel.com>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t 1/7] include/drm-uapi: Add parallel
- context configuration uAPI
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Subject: [igt-dev] [PATCH i-g-t 3/7] lib/intel_ctx: Add support for parallel
+ contexts to intel_ctx library
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- include/drm-uapi/i915_drm.h | 128 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 128 insertions(+)
+ lib/intel_ctx.c | 28 +++++++++++++++++++++++++++-
+ lib/intel_ctx.h |  2 ++
+ 2 files changed, 29 insertions(+), 1 deletion(-)
 
-diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-index a1c0030c3..3c1aac348 100644
---- a/include/drm-uapi/i915_drm.h
-+++ b/include/drm-uapi/i915_drm.h
-@@ -1705,6 +1705,7 @@ struct drm_i915_gem_context_param {
-  * Extensions:
-  *   i915_context_engines_load_balance (I915_CONTEXT_ENGINES_EXT_LOAD_BALANCE)
-  *   i915_context_engines_bond (I915_CONTEXT_ENGINES_EXT_BOND)
-+ *   i915_context_engines_parallel_submit (I915_CONTEXT_ENGINES_EXT_PARALLEL_SUBMIT)
-  */
- #define I915_CONTEXT_PARAM_ENGINES	0xa
+diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
+index f28c15544..11ec6fca4 100644
+--- a/lib/intel_ctx.c
++++ b/lib/intel_ctx.c
+@@ -83,6 +83,7 @@ __context_create_cfg(int fd, const intel_ctx_cfg_t *cfg, uint32_t *ctx_id)
+ {
+ 	uint64_t ext_root = 0;
+ 	I915_DEFINE_CONTEXT_ENGINES_LOAD_BALANCE(balance, GEM_MAX_ENGINES);
++	I915_DEFINE_CONTEXT_ENGINES_PARALLEL_SUBMIT(parallel, GEM_MAX_ENGINES);
+ 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, GEM_MAX_ENGINES);
+ 	struct drm_i915_gem_context_create_ext_setparam engines_param, vm_param;
+ 	struct drm_i915_gem_context_create_ext_setparam persist_param;
+@@ -117,7 +118,29 @@ __context_create_cfg(int fd, const intel_ctx_cfg_t *cfg, uint32_t *ctx_id)
+ 		unsigned num_logical_engines;
+ 		memset(&engines, 0, sizeof(engines));
  
-@@ -1883,10 +1884,137 @@ struct i915_context_engines_bond {
- 	struct i915_engine_class_instance engines[N__]; \
- } __attribute__((packed)) name__
+-		if (cfg->load_balance) {
++		if (cfg->parallel) {
++			memset(&parallel, 0, sizeof(parallel));
++
++			num_logical_engines = 1;
++
++			parallel.base.name =
++				I915_CONTEXT_ENGINES_EXT_PARALLEL_SUBMIT;
++
++			engines.engines[0].engine_class =
++				I915_ENGINE_CLASS_INVALID;
++			engines.engines[0].engine_instance =
++				I915_ENGINE_CLASS_INVALID_NONE;
++
++			parallel.num_siblings = cfg->num_engines;
++			parallel.width = cfg->width;
++			for (i = 0; i < cfg->num_engines * cfg->width; i++) {
++				igt_assert_eq(cfg->engines[0].engine_class,
++					      cfg->engines[i].engine_class);
++				parallel.engines[i] = cfg->engines[i];
++			}
++
++			engines.extensions = to_user_pointer(&parallel);
++		} else if (cfg->load_balance) {
+ 			memset(&balance, 0, sizeof(balance));
  
-+/**
-+ * struct i915_context_engines_parallel_submit - Configure engine for
-+ * parallel submission.
-+ *
-+ * Setup a slot in the context engine map to allow multiple BBs to be submitted
-+ * in a single execbuf IOCTL. Those BBs will then be scheduled to run on the GPU
-+ * in parallel. Multiple hardware contexts are created internally in the i915
-+ * run these BBs. Once a slot is configured for N BBs only N BBs can be
-+ * submitted in each execbuf IOCTL and this is implicit behavior e.g. The user
-+ * doesn't tell the execbuf IOCTL there are N BBs, the execbuf IOCTL knows how
-+ * many BBs there are based on the slot's configuration. The N BBs are the last
-+ * N buffer objects or first N if I915_EXEC_BATCH_FIRST is set.
-+ *
-+ * The default placement behavior is to create implicit bonds between each
-+ * context if each context maps to more than 1 physical engine (e.g. context is
-+ * a virtual engine). Also we only allow contexts of same engine class and these
-+ * contexts must be in logically contiguous order. Examples of the placement
-+ * behavior described below. Lastly, the default is to not allow BBs to
-+ * preempted mid BB rather insert coordinated preemption on all hardware
-+ * contexts between each set of BBs. Flags may be added in the future to change
-+ * both of these default behaviors.
-+ *
-+ * Returns -EINVAL if hardware context placement configuration is invalid or if
-+ * the placement configuration isn't supported on the platform / submission
-+ * interface.
-+ * Returns -ENODEV if extension isn't supported on the platform / submission
-+ * interface.
-+ *
-+ * .. code-block:: none
-+ *
-+ *	Example 1 pseudo code:
-+ *	CS[X] = generic engine of same class, logical instance X
-+ *	INVALID = I915_ENGINE_CLASS_INVALID, I915_ENGINE_CLASS_INVALID_NONE
-+ *	set_engines(INVALID)
-+ *	set_parallel(engine_index=0, width=2, num_siblings=1,
-+ *		     engines=CS[0],CS[1])
-+ *
-+ *	Results in the following valid placement:
-+ *	CS[0], CS[1]
-+ *
-+ *	Example 2 pseudo code:
-+ *	CS[X] = generic engine of same class, logical instance X
-+ *	INVALID = I915_ENGINE_CLASS_INVALID, I915_ENGINE_CLASS_INVALID_NONE
-+ *	set_engines(INVALID)
-+ *	set_parallel(engine_index=0, width=2, num_siblings=2,
-+ *		     engines=CS[0],CS[2],CS[1],CS[3])
-+ *
-+ *	Results in the following valid placements:
-+ *	CS[0], CS[1]
-+ *	CS[2], CS[3]
-+ *
-+ *	This can also be thought of as 2 virtual engines described by 2-D array
-+ *	in the engines the field with bonds placed between each index of the
-+ *	virtual engines. e.g. CS[0] is bonded to CS[1], CS[2] is bonded to
-+ *	CS[3].
-+ *	VE[0] = CS[0], CS[2]
-+ *	VE[1] = CS[1], CS[3]
-+ *
-+ *	Example 3 pseudo code:
-+ *	CS[X] = generic engine of same class, logical instance X
-+ *	INVALID = I915_ENGINE_CLASS_INVALID, I915_ENGINE_CLASS_INVALID_NONE
-+ *	set_engines(INVALID)
-+ *	set_parallel(engine_index=0, width=2, num_siblings=2,
-+ *		     engines=CS[0],CS[1],CS[1],CS[3])
-+ *
-+ *	Results in the following valid and invalid placements:
-+ *	CS[0], CS[1]
-+ *	CS[1], CS[3] - Not logical contiguous, return -EINVAL
-+ */
-+struct i915_context_engines_parallel_submit {
-+	/**
-+	 * @base: base user extension.
-+	 */
-+	struct i915_user_extension base;
+ 			/* In this case, the first engine is the virtual
+@@ -127,6 +150,9 @@ __context_create_cfg(int fd, const intel_ctx_cfg_t *cfg, uint32_t *ctx_id)
+ 			igt_assert(cfg->num_engines + 1 <= GEM_MAX_ENGINES);
+ 			num_logical_engines = cfg->num_engines + 1;
+ 
++			balance.base.name =
++				I915_CONTEXT_ENGINES_EXT_LOAD_BALANCE;
 +
-+	/**
-+	 * @engine_index: slot for parallel engine
-+	 */
-+	__u16 engine_index;
-+
-+	/**
-+	 * @width: number of contexts per parallel engine
-+	 */
-+	__u16 width;
-+
-+	/**
-+	 * @num_siblings: number of siblings per context
-+	 */
-+	__u16 num_siblings;
-+
-+	/**
-+	 * @mbz16: reserved for future use; must be zero
-+	 */
-+	__u16 mbz16;
-+
-+	/**
-+	 * @flags: all undefined flags must be zero, currently not defined flags
-+	 */
-+	__u64 flags;
-+
-+	/**
-+	 * @mbz64: reserved for future use; must be zero
-+	 */
-+	__u64 mbz64[3];
-+
-+	/**
-+	 * @engines: 2-d array of engine instances to configure parallel engine
-+	 *
-+	 * length = width (i) * num_siblings (j)
-+	 * index = j + i * num_siblings
-+	 */
-+	struct i915_engine_class_instance engines[0];
-+
-+} __packed;
-+
-+#define I915_DEFINE_CONTEXT_ENGINES_PARALLEL_SUBMIT(name__, N__) struct { \
-+	struct i915_user_extension base; \
-+	__u16 engine_index; \
-+	__u16 width; \
-+	__u16 num_siblings; \
-+	__u16 mbz16; \
-+	__u64 flags; \
-+	__u64 mbz64[3]; \
-+	struct i915_engine_class_instance engines[N__]; \
-+} __attribute__((packed)) name__
-+
- struct i915_context_param_engines {
- 	__u64 extensions; /* linked chain of extension blocks, 0 terminates */
- #define I915_CONTEXT_ENGINES_EXT_LOAD_BALANCE 0 /* see i915_context_engines_load_balance */
- #define I915_CONTEXT_ENGINES_EXT_BOND 1 /* see i915_context_engines_bond */
-+#define I915_CONTEXT_ENGINES_EXT_PARALLEL_SUBMIT 2 /* see i915_context_engines_parallel_submit */
- 	struct i915_engine_class_instance engines[0];
- } __attribute__((packed));
+ 			engines.engines[0].engine_class =
+ 				I915_ENGINE_CLASS_INVALID;
+ 			engines.engines[0].engine_instance =
+diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
+index 9649f6d96..89c65fcd3 100644
+--- a/lib/intel_ctx.h
++++ b/lib/intel_ctx.h
+@@ -46,7 +46,9 @@ typedef struct intel_ctx_cfg {
+ 	uint32_t vm;
+ 	bool nopersist;
+ 	bool load_balance;
++	bool parallel;
+ 	unsigned int num_engines;
++	unsigned int width;
+ 	struct i915_engine_class_instance engines[GEM_MAX_ENGINES];
+ } intel_ctx_cfg_t;
  
 -- 
 2.28.0
 
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
