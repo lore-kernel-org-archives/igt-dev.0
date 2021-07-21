@@ -1,9 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Matthew Brost <matthew.brost@intel.com>
-Date: Wed, 21 Jul 2021 16:19:57 -0700
-Message-Id: <20210721232004.31470-1-matthew.brost@intel.com>
+Date: Wed, 21 Jul 2021 16:19:59 -0700
+Message-Id: <20210721232004.31470-3-matthew.brost@intel.com>
+In-Reply-To: <20210721232004.31470-1-matthew.brost@intel.com>
+References: <20210721232004.31470-1-matthew.brost@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 0/7] Updates for GuC & parallel execbuf
+Subject: [igt-dev] [PATCH i-g-t 2/7] include/drm-uapi: Add logical mapping
+ uAPI
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,40 +22,37 @@ To: igt-dev@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-IGT updates for GuC submission [1] and parallel submission (aka multi-bb
-execbuf) [2]. This entails adding tests for parallel submission and
-teaching IGTs to know of static priority mapping.
-
-More IGTs likely need to be updated gem_ctx_persistence and i915_hangman
-come to mind. Expect following series to address those tests. 
-
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+---
+ include/drm-uapi/i915_drm.h | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-[1] https://patchwork.freedesktop.org/series/91840/
-[2] https://patchwork.freedesktop.org/series/92789/
-
-Matthew Brost (7):
-  include/drm-uapi: Add parallel context configuration uAPI
-  include/drm-uapi: Add logical mapping uAPI
-  lib/intel_ctx: Add support for parallel contexts to intel_ctx library
-  i915/gem_exec_balancer: Test parallel execbuf
-  include/drm-uapi: Add static priority mapping UAPI
-  i915/gem_scheduler: Make gem_scheduler understand static priority
-    mapping
-  i915/gem_ctx_shared: Make gem_ctx_shared understand static priority
-    mapping
-
- include/drm-uapi/i915_drm.h    | 145 +++++++++-
- lib/i915/gem_scheduler.c       |  13 +
- lib/i915/gem_scheduler.h       |   1 +
- lib/intel_ctx.c                |  28 +-
- lib/intel_ctx.h                |   2 +
- lib/intel_reg.h                |   5 +
- tests/i915/gem_ctx_shared.c    |   5 +-
- tests/i915/gem_exec_balancer.c | 487 +++++++++++++++++++++++++++++++++
- tests/i915/gem_exec_schedule.c |  47 ++--
- 9 files changed, 709 insertions(+), 24 deletions(-)
-
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index 3c1aac348..6ac6c76b4 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -2518,14 +2518,20 @@ struct drm_i915_engine_info {
+ 
+ 	/** @flags: Engine flags. */
+ 	__u64 flags;
++#define I915_ENGINE_INFO_HAS_LOGICAL_INSTANCE		(1 << 0)
+ 
+ 	/** @capabilities: Capabilities of this engine. */
+ 	__u64 capabilities;
+ #define I915_VIDEO_CLASS_CAPABILITY_HEVC		(1 << 0)
+ #define I915_VIDEO_AND_ENHANCE_CLASS_CAPABILITY_SFC	(1 << 1)
+ 
++	/** @logical_instance: Logical instance of engine */
++	__u16 logical_instance;
++
+ 	/** @rsvd1: Reserved fields. */
+-	__u64 rsvd1[4];
++	__u16 rsvd1[3];
++	/** @rsvd2: Reserved fields. */
++	__u64 rsvd2[2];
+ };
+ 
+ /**
 -- 
 2.28.0
 
