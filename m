@@ -1,17 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB5E56E81C
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jul 2021 09:19:54 +0000 (UTC)
-Date: Wed, 21 Jul 2021 11:19:50 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210721091950.GA16761@zkempczy-mobl2>
-References: <20210720141232.12812-1-andrzej.turko@linux.intel.com>
- <20210720141232.12812-2-andrzej.turko@linux.intel.com>
+From: Matthew Brost <matthew.brost@intel.com>
+Date: Wed, 21 Jul 2021 16:19:57 -0700
+Message-Id: <20210721232004.31470-1-matthew.brost@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210720141232.12812-2-andrzej.turko@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/4] lib/intel_allocator: Fix argument
- names in declarations
+Subject: [igt-dev] [PATCH i-g-t 0/7] Updates for GuC & parallel execbuf
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,41 +11,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Andrzej Turko <andrzej.turko@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBKdWwgMjAsIDIwMjEgYXQgMDQ6MTI6MjlQTSArMDIwMCwgQW5kcnplaiBUdXJrbyB3
-cm90ZToKPiBVbmlmeSB0aGUgYXJndW1lbnQgbmFtZXMgdG8gYXZvaWQgY29uZnVzaW9uLgo+IAo+
-IFNpZ25lZC1vZmYtYnk6IEFuZHJ6ZWogVHVya28gPGFuZHJ6ZWoudHVya29AbGludXguaW50ZWwu
-Y29tPgo+IENjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGlu
-dGVsLmNvbT4KClJpZ2h0LCBwcm90b3R5cGUgbWlzbWF0Y2ggaW1wbGVtZW50YXRpb24uIFRoYW5r
-cyBmb3IgZml4LgoKUmV2aWV3ZWQtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcu
-a2VtcGN6eW5za2lAaW50ZWwuY29tPgoKLS0KWmJpZ25pZXcKCj4gLS0tCj4gIGxpYi9pbnRlbF9h
-bGxvY2F0b3IuaCB8IDggKysrKy0tLS0KPiAgMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygr
-KSwgNCBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2FsbG9jYXRvci5o
-IGIvbGliL2ludGVsX2FsbG9jYXRvci5oCj4gaW5kZXggYzE0ZjU3YjRkLi43ZDlkMDExMjMgMTAw
-NjQ0Cj4gLS0tIGEvbGliL2ludGVsX2FsbG9jYXRvci5oCj4gKysrIGIvbGliL2ludGVsX2FsbG9j
-YXRvci5oCj4gQEAgLTE0NCwxMyArMTQ0LDEzIEBAIHN0cnVjdCBpbnRlbF9hbGxvY2F0b3Igewo+
-ICAJCQkgIHVpbnQ2NF90IHNpemUsIHVpbnQ2NF90IGFsaWdubWVudCwKPiAgCQkJICBlbnVtIGFs
-bG9jYXRvcl9zdHJhdGVneSBzdHJhdGVneSk7Cj4gIAlib29sICgqaXNfYWxsb2NhdGVkKShzdHJ1
-Y3QgaW50ZWxfYWxsb2NhdG9yICppYWwsIHVpbnQzMl90IGhhbmRsZSwKPiAtCQkJICAgICB1aW50
-NjRfdCBzaXplLCB1aW50NjRfdCBhbGlnbm1lbnQpOwo+ICsJCQkgICAgIHVpbnQ2NF90IHNpemUs
-IHVpbnQ2NF90IG9mZnNldCk7Cj4gIAlib29sICgqcmVzZXJ2ZSkoc3RydWN0IGludGVsX2FsbG9j
-YXRvciAqaWFsLAo+IC0JCQl1aW50MzJfdCBoYW5kbGUsIHVpbnQ2NF90IHN0YXJ0LCB1aW50NjRf
-dCBzaXplKTsKPiArCQkJdWludDMyX3QgaGFuZGxlLCB1aW50NjRfdCBzdGFydCwgdWludDY0X3Qg
-ZW5kKTsKPiAgCWJvb2wgKCp1bnJlc2VydmUpKHN0cnVjdCBpbnRlbF9hbGxvY2F0b3IgKmlhbCwK
-PiAtCQkJICB1aW50MzJfdCBoYW5kbGUsIHVpbnQ2NF90IHN0YXJ0LCB1aW50NjRfdCBzaXplKTsK
-PiArCQkJICB1aW50MzJfdCBoYW5kbGUsIHVpbnQ2NF90IHN0YXJ0LCB1aW50NjRfdCBlbmQpOwo+
-ICAJYm9vbCAoKmlzX3Jlc2VydmVkKShzdHJ1Y3QgaW50ZWxfYWxsb2NhdG9yICppYWwsCj4gLQkJ
-CSAgICB1aW50NjRfdCBzdGFydCwgdWludDY0X3Qgc2l6ZSk7Cj4gKwkJCSAgICB1aW50NjRfdCBz
-dGFydCwgdWludDY0X3QgZW5kKTsKPiAgCWJvb2wgKCpmcmVlKShzdHJ1Y3QgaW50ZWxfYWxsb2Nh
-dG9yICppYWwsIHVpbnQzMl90IGhhbmRsZSk7Cj4gIAo+ICAJdm9pZCAoKmRlc3Ryb3kpKHN0cnVj
-dCBpbnRlbF9hbGxvY2F0b3IgKmlhbCk7Cj4gLS0gCj4gMi4yNS4xCj4gCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
-dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+IGT updates for GuC submission [1] and parallel submission (aka multi-bb
+execbuf) [2]. This entails adding tests for parallel submission and
+teaching IGTs to know of static priority mapping.
+
+More IGTs likely need to be updated gem_ctx_persistence and i915_hangman
+come to mind. Expect following series to address those tests. 
+
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+
+[1] https://patchwork.freedesktop.org/series/91840/
+[2] https://patchwork.freedesktop.org/series/92789/
+
+Matthew Brost (7):
+  include/drm-uapi: Add parallel context configuration uAPI
+  include/drm-uapi: Add logical mapping uAPI
+  lib/intel_ctx: Add support for parallel contexts to intel_ctx library
+  i915/gem_exec_balancer: Test parallel execbuf
+  include/drm-uapi: Add static priority mapping UAPI
+  i915/gem_scheduler: Make gem_scheduler understand static priority
+    mapping
+  i915/gem_ctx_shared: Make gem_ctx_shared understand static priority
+    mapping
+
+ include/drm-uapi/i915_drm.h    | 145 +++++++++-
+ lib/i915/gem_scheduler.c       |  13 +
+ lib/i915/gem_scheduler.h       |   1 +
+ lib/intel_ctx.c                |  28 +-
+ lib/intel_ctx.h                |   2 +
+ lib/intel_reg.h                |   5 +
+ tests/i915/gem_ctx_shared.c    |   5 +-
+ tests/i915/gem_exec_balancer.c | 487 +++++++++++++++++++++++++++++++++
+ tests/i915/gem_exec_schedule.c |  47 ++--
+ 9 files changed, 709 insertions(+), 24 deletions(-)
+
+-- 
+2.28.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
