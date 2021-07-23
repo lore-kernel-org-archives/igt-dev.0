@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam08on2079.outbound.protection.outlook.com [40.107.102.79])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 46FA26F3A1
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Jul 2021 13:33:09 +0000 (UTC)
+Date: Fri, 23 Jul 2021 09:33:04 -0400
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Message-ID: <20210723133304.u5zwqu2q7nigoewt@outlook.office365.com>
+References: <20210722215448.654382-1-bindu.r@amd.com>
+Content-Disposition: inline
+In-Reply-To: <20210722215448.654382-1-bindu.r@amd.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 23 Jul 2021 12:12:46 -0000
-Message-ID: <162704236685.3042.12784573468970573035@emeril.freedesktop.org>
-References: <20210723093548.22273-1-vidya.srinivas@intel.com>
-In-Reply-To: <20210723093548.22273-1-vidya.srinivas@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=3A_Return_false_in_gem=5Fhas=5Flmem_for_platforms_not_havin?=
- =?utf-8?q?g_LMEM_support?=
+Subject: Re: [igt-dev] [PATCH v2] tests/kms_bw: New test for bandwidth
+ validation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,222 +19,315 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0345070625=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Vidya Srinivas <vidya.srinivas@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Bindu Ramamurthy <bindu.r@amd.com>, petri.latvala@intel.com, arek@hiler.eu
+Cc: Anson.Jacob@amd.com, igt-dev@lists.freedesktop.org, nicholas.choi@amd.com, markyacoub@google.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0345070625==
-Content-Type: multipart/alternative;
- boundary="===============3474805048023940685=="
+For some reason, I don't see this patch in the patchwork and in the
+igt-dev mailing list. Did the CI run in this patch? Any idea on what
+happened here?
 
---===============3474805048023940685==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Thanks
+Siqueira
 
-== Series Details ==
+On 07/22, Bindu Ramamurthy wrote:
+> From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+> 
+> Add linear tiling mode tests
+> 
+> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+> Acked-by: Bindu Ramamurthy <bindu.r@amd.com>
+> ---
+> 
+> Changes since v2:
+>    Test added as generic IGT. 
+> 
+> 
+>  tests/kms_bw.c    | 250 ++++++++++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build |   1 +
+>  2 files changed, 251 insertions(+)
+>  create mode 100644 tests/kms_bw.c
+> 
+> diff --git a/tests/kms_bw.c b/tests/kms_bw.c
+> new file mode 100644
+> index 00000000..65b97c98
+> --- /dev/null
+> +++ b/tests/kms_bw.c
+> @@ -0,0 +1,250 @@
+> +/*
+> + * Copyrights 2021 Advanced Micro Devices, Inc.
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice shall be included in
+> + * all copies or substantial portions of the Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
+> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+> + * OTHER DEALINGS IN THE SOFTWARE.
+> + */
+> +
+> +#include "drm_mode.h"
+> +#include "igt.h"
+> +#include "drm.h"
+> +#include <stdio.h>
+> +#include <xf86drmMode.h>
+> +
+> +/* Maximum pipes on any ASIC. */
+> +#define MAX_PIPES 6
+> +
+> +/* Common test data. */
+> +typedef struct data {
+> +        igt_display_t display;
+> +        igt_plane_t *primary[MAX_PIPES];
+> +        igt_output_t *output[MAX_PIPES];
+> +        igt_pipe_t *pipe[MAX_PIPES];
+> +        igt_pipe_crc_t *pipe_crc[MAX_PIPES];
+> +        drmModeModeInfo mode[MAX_PIPES];
+> +        enum pipe pipe_id[MAX_PIPES];
+> +        int w[MAX_PIPES];
+> +        int h[MAX_PIPES];
+> +        int fd;
+> +} data_t;
+> +
+> +static const drmModeModeInfo test_mode_1 = {
+> +	.name = "1920x1080p\0",
+> +	.vrefresh = 60,
+> +	.clock = 173000,
+> +	.hdisplay = 1920,
+> +	.hsync_start = 2048,
+> +	.hsync_end = 2248,
+> +	.htotal = 2576,
+> +	.vdisplay = 1080,
+> +	.vsync_start = 1083,
+> +	.vsync_end = 1088,
+> +	.vtotal = 1120,
+> +	.type = 0x40,
+> +	.flags = DRM_MODE_FLAG_NHSYNC,
+> +	.hskew = 0,
+> +	.vscan = 0,
+> +};
+> +
+> +static const drmModeModeInfo test_mode_2 = {
+> +	.name = "2560x1440p\0",
+> +	.vrefresh = 60,
+> +	.clock = 312250,
+> +	.hdisplay = 2560,
+> +	.hsync_start = 2752,
+> +	.hsync_end = 3024,
+> +	.htotal = 3488,
+> +	.vdisplay = 1440,
+> +	.vsync_start = 1443,
+> +	.vsync_end = 1448,
+> +	.vtotal = 1493,
+> +	.type = 0x40,
+> +	.flags = DRM_MODE_FLAG_NHSYNC,
+> +	.hskew = 0,
+> +	.vscan = 0,
+> +};
+> +
+> +static const drmModeModeInfo test_mode_3 = {
+> +	.name = "3840x2160p\0",
+> +	.vrefresh = 60,
+> +	.clock = 533000,
+> +	.hdisplay = 3840,
+> +	.hsync_start = 3888,
+> +	.hsync_end = 3920,
+> +	.htotal = 4000,
+> +	.vdisplay = 2160,
+> +	.vsync_start = 2163,
+> +	.vsync_end = 2168,
+> +	.vtotal = 2222,
+> +	.type = 0x40,
+> +	.flags = DRM_MODE_FLAG_NHSYNC,
+> +	.hskew = 0,
+> +	.vscan = 0,
+> +};
+> +
+> +static void test_init(data_t *data)
+> +{
+> +	igt_display_t *display = &data->display;
+> +	int i, max_pipes = display->n_pipes;
+> +
+> +	for_each_pipe(display, i) {
+> +		data->pipe_id[i] = PIPE_A + i;
+> +		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
+> +		data->primary[i] = igt_pipe_get_plane_type(
+> +			data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
+> +		data->pipe_crc[i] =
+> +			igt_pipe_crc_new(data->fd, data->pipe_id[i], "auto");
+> +	}
+> +
+> +	for (i = 0; i < display->n_outputs && i < max_pipes; i++) {
+> +		igt_output_t *output = &display->outputs[i];
+> +
+> +		data->output[i] = output;
+> +
+> +		/* Only allow physically connected displays for the tests. */
+> +		if (!igt_output_is_connected(output))
+> +			continue;
+> +
+> +		igt_assert(kmstest_get_connector_default_mode(
+> +			data->fd, output->config.connector, &data->mode[i]));
+> +
+> +		data->w[i] = data->mode[i].hdisplay;
+> +		data->h[i] = data->mode[i].vdisplay;
+> +	}
+> +
+> +
+> +	igt_require(data->output[0]);
+> +	igt_display_reset(display);
+> +}
+> +
+> +static void test_fini(data_t *data)
+> +{
+> +	igt_display_t *display = &data->display;
+> +	int i;
+> +
+> +	for_each_pipe(display, i) {
+> +		igt_pipe_crc_free(data->pipe_crc[i]);
+> +	}
+> +
+> +	igt_display_reset(display);
+> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+> +}
+> +
+> +/* Forces a mode for a connector. */
+> +static void force_output_mode(data_t *d, igt_output_t *output,
+> +			      const drmModeModeInfo *mode)
+> +{
+> +	/* This allows us to create a virtual sink. */
+> +	if (!igt_output_is_connected(output)) {
+> +		kmstest_force_edid(d->fd, output->config.connector,
+> +				   igt_kms_get_4k_edid());
+> +
+> +		kmstest_force_connector(d->fd, output->config.connector,
+> +					FORCE_CONNECTOR_DIGITAL);
+> +	}
+> +
+> +	igt_output_override_mode(output, mode);
+> +}
+> +
+> +static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo *mode) {
+> +	igt_display_t *display = &data->display;
+> +	igt_output_t *output;
+> +	struct igt_fb buffer[MAX_PIPES];
+> +	igt_crc_t zero, captured[MAX_PIPES];
+> +	void *user_data = NULL;
+> +	int ret;
+> +	int i = 0;
+> +
+> +	test_init(data);
+> +
+> +	igt_skip_on_f(pipe >= igt_display_get_n_pipes(display),
+> +		      "ASIC does not have %d pipes\n", pipe);
+> +
+> +	/* create buffers */
+> +	for (i = 0; i <= pipe; i++) {
+> +
+> +		output = data->output[i];
+> +		if (!output) {
+> +			continue;
+> +		}
+> +
+> +		force_output_mode(data, output, mode);
+> +
+> +		igt_create_color_fb(display->drm_fd, test_mode_1.hdisplay,
+> +				    test_mode_1.vdisplay, DRM_FORMAT_XRGB8888,
+> +				    DRM_FORMAT_MOD_NONE, 1.f, 0.f, 0.f,
+> +				    &buffer[i]);
+> +
+> +		igt_output_set_pipe(output, i);
+> +
+> +		igt_plane_set_fb(data->primary[i], &buffer[i]);
+> +	}
+> +
+> +	ret = igt_display_try_commit_atomic(
+> +		display, DRM_MODE_ATOMIC_ALLOW_MODESET, user_data);
+> +
+> +	igt_assert_f(ret >= 0, "Modeset failed\n");
+> +
+> +	for (i = 0; i <= pipe; i++) {
+> +		igt_pipe_crc_collect_crc(data->pipe_crc[i], &captured[i]);
+> +		igt_assert_f(!igt_check_crc_equal(&zero, &captured[i]),
+> +			     "CRC is zero\n");
+> +		igt_remove_fb(display->drm_fd, &buffer[i]);
+> +	}
+> +
+> +	test_fini(data);
+> +}
+> +
+> +igt_main
+> +{
+> +	data_t data;
+> +	int i = 0;
+> +
+> +	igt_skip_on_simulation();
+> +
+> +	memset(&data, 0, sizeof(data));
+> +
+> +	igt_fixture
+> +	{
+> +		data.fd = drm_open_driver_master(DRIVER_ANY);
+> +
+> +		kmstest_set_vt_graphics_mode();
+> +
+> +		igt_display_require(&data.display, data.fd);
+> +		igt_require(&data.display.is_atomic);
+> +		igt_display_require_output(&data.display);
+> +
+> +	}
+> +
+> +	for (i = 0; i < MAX_PIPES; i++) {
+> +		igt_subtest_f("linear-tiling-%d-displays-%s", i+1,
+> +			      test_mode_1.name)
+> +			run_test_linear_tiling(&data, i, &test_mode_1);
+> +		igt_subtest_f("linear-tiling-%d-displays-%s", i+1,
+> +			      test_mode_2.name)
+> +			run_test_linear_tiling(&data, i, &test_mode_2);
+> +		igt_subtest_f("linear-tiling-%d-displays-%s", i+1,
+> +			      test_mode_3.name)
+> +			run_test_linear_tiling(&data, i, &test_mode_3);
+> +	}
+> +
+> +	igt_fixture
+> +	{
+> +		igt_display_fini(&data.display);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 1bdfddbb..6d1ebe42 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -22,6 +22,7 @@ test_progs = [
+>  	'kms_big_fb',
+>  	'kms_big_joiner' ,
+>  	'kms_busy',
+> +	'kms_bw',
+>  	'kms_ccs',
+>  	'kms_cdclk',
+>  	'kms_concurrent',
+> -- 
+> 2.25.1
+> 
 
-Series: tests/kms: Return false in gem_has_lmem for platforms not having LMEM support
-URL   : https://patchwork.freedesktop.org/series/92935/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_10377 -> IGTPW_6047
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6047 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_fence@basic-busy@bcs0:
-    - fi-apl-guc:         NOTRUN -> [SKIP][1] ([fdo#109271]) +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/fi-apl-guc/igt@gem_exec_fence@basic-busy@bcs0.html
-
-  * igt@gem_exec_suspend@basic-s0:
-    - fi-tgl-u2:          [PASS][2] -> [FAIL][3] ([i915#1888])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10377/fi-tgl-u2/igt@gem_exec_suspend@basic-s0.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/fi-tgl-u2/igt@gem_exec_suspend@basic-s0.html
-
-  * igt@i915_hangman@error-state-basic:
-    - fi-apl-guc:         NOTRUN -> [DMESG-WARN][4] ([i915#1610])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/fi-apl-guc/igt@i915_hangman@error-state-basic.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-kbl-7500u:       [PASS][5] -> [FAIL][6] ([i915#3449])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10377/fi-kbl-7500u/igt@kms_chamelium@common-hpd-after-suspend.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/fi-kbl-7500u/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@runner@aborted:
-    - fi-apl-guc:         NOTRUN -> [FAIL][7] ([i915#2426] / [i915#3363])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/fi-apl-guc/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s0:
-    - {fi-tgl-1115g4}:    [FAIL][8] ([i915#1888]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10377/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1610]: https://gitlab.freedesktop.org/drm/intel/issues/1610
-  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
-  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
-  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
-  [i915#3449]: https://gitlab.freedesktop.org/drm/intel/issues/3449
-
-
-Participating hosts (43 -> 36)
-------------------------------
-
-  Additional (1): fi-apl-guc 
-  Missing    (8): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan bat-adlp-4 bat-adls-4 fi-ctg-p8600 bat-adls-3 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6148 -> IGTPW_6047
-
-  CI-20190529: 20190529
-  CI_DRM_10377: 4d78197ace2ea28cfd1adce0977130c8c70a8e12 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6047: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/index.html
-  IGT_6148: 784dca328ac03b97da517008103b903eca100170 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/index.html
-
---===============3474805048023940685==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms: Return false in gem_has_lmem for platforms not having LMEM support</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/92935/">https://patchwork.freedesktop.org/series/92935/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10377 -&gt; IGTPW_6047</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6047 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
-<ul>
-<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/fi-apl-guc/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s0:</p>
-<ul>
-<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10377/fi-tgl-u2/igt@gem_exec_suspend@basic-s0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/fi-tgl-u2/igt@gem_exec_suspend@basic-s0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_hangman@error-state-basic:</p>
-<ul>
-<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/fi-apl-guc/igt@i915_hangman@error-state-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1610">i915#1610</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10377/fi-kbl-7500u/igt@kms_chamelium@common-hpd-after-suspend.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/fi-kbl-7500u/igt@kms_chamelium@common-hpd-after-suspend.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3449">i915#3449</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/fi-apl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@gem_exec_suspend@basic-s0:<ul>
-<li>{fi-tgl-1115g4}:    <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10377/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (43 -&gt; 36)</h2>
-<p>Additional (1): fi-apl-guc <br />
-  Missing    (8): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan bat-adlp-4 bat-adls-4 fi-ctg-p8600 bat-adls-3 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6148 -&gt; IGTPW_6047</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10377: 4d78197ace2ea28cfd1adce0977130c8c70a8e12 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6047: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6047/index.html<br />
-  IGT_6148: 784dca328ac03b97da517008103b903eca100170 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============3474805048023940685==--
-
---===============0345070625==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+-- 
+Rodrigo Siqueira
+https://siqueira.tech
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0345070625==--
