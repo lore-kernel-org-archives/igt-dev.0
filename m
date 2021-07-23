@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4E7A6E042
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Jul 2021 09:49:11 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DDE446F9ED
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Jul 2021 09:46:15 +0000 (UTC)
 From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Fri, 23 Jul 2021 15:08:44 +0530
-Message-Id: <20210723093844.22352-1-vidya.srinivas@intel.com>
+Date: Fri, 23 Jul 2021 15:05:48 +0530
+Message-Id: <20210723093548.22273-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Fix hw stride length tests
+Subject: [igt-dev] [PATCH i-g-t] tests/kms: Return false in gem_has_lmem for
+ platforms not having LMEM support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,41 +23,48 @@ To: igt-dev@lists.freedesktop.org
 Cc: kunal1.joshi@intel.com, petri.latvala@intel.com, juha-pekka.heikkila@intel.com, Lin Charlton <charlton.lin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We see the HW stride length tests are crashing
-when run in sequence. Individually, they PASS.
-This is happening due to missing data.ibb creation
-before the test_scanout. Patch fixes the same.
+Starting commit (tests/kms: Create buffer object from LMEM for discrete) it checks
+for LMEM. But this is breaking older kernels like 5.4 without
+DRM_I915_QUERY_MEMORY_REGIONS support. This causes
+item.length filled from IOCTL to be < 0 and gives segmentation
+fault. Another way to fix is check for NULL query in
+gem_get_lmem_region_count and return false.
+
+Patch returns false from gem_has_lmem for obvious platforms
+which dont have LMEM support and also adds the check
+for NULL query in gem_get_lmem_region_count.
 
 Signed-off-by: Lin Charlton <charlton.lin@intel.com>
 Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 ---
- tests/kms_big_fb.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ lib/i915/intel_memory_region.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
-index c6f374bdd073..91439ceb34b6 100644
---- a/tests/kms_big_fb.c
-+++ b/tests/kms_big_fb.c
-@@ -978,7 +978,9 @@ igt_main
- 						igt_require(data.format == DRM_FORMAT_C8 ||
- 							igt_fb_supported_format(data.format));
- 						igt_require(igt_display_has_format_mod(&data.display, data.format, data.modifier));
-+						data.ibb = intel_bb_create(data.drm_fd, 4096);
- 						test_scanout(&data);
-+						intel_bb_destroy(data.ibb);
- 					}
+diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+index 144ae12ca7a0..635c21ab3765 100644
+--- a/lib/i915/intel_memory_region.c
++++ b/lib/i915/intel_memory_region.c
+@@ -143,6 +143,10 @@ uint8_t gem_get_lmem_region_count(int fd)
+ 	uint8_t lmem_regions = 0;
  
- 					// async flip doesn't support linear fbs.
-@@ -994,7 +996,9 @@ igt_main
- 							igt_require(igt_display_has_format_mod(&data.display, data.format, data.modifier));
- 							igt_require_f(data.async_flip_support, "Async Flip is not supported\n");
- 							data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
-+							data.ibb = intel_bb_create(data.drm_fd, 4096);
- 							test_scanout(&data);
-+							intel_bb_destroy(data.ibb);
- 					}
- 					data.async_flip_test = false;
- 				}
+ 	query_info = gem_get_query_memory_regions(fd);
++
++	if (!query_info)
++		return 0;
++
+ 	num_regions = query_info->num_regions;
+ 
+ 	for (int i = 0; i < num_regions; i++) {
+@@ -164,6 +168,9 @@ uint8_t gem_get_lmem_region_count(int fd)
+  */
+ bool gem_has_lmem(int fd)
+ {
++	if (intel_display_ver(intel_get_drm_devid(fd) < 12) ||
++		IS_ALDERLAKE_P(intel_get_drm_devid(fd)) || IS_TIGERLAKE(intel_get_drm_devid(fd)))
++		return false;
+ 	return gem_get_lmem_region_count(fd) > 0;
+ }
+ 
 -- 
 2.32.0
 
