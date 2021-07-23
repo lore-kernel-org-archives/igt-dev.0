@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2053.outbound.protection.outlook.com [40.107.92.53])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04EF26EB0A
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Jul 2021 13:46:05 +0000 (UTC)
-Date: Fri, 23 Jul 2021 09:45:59 -0400
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12on2047.outbound.protection.outlook.com [40.107.243.47])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 844476EB0A
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Jul 2021 13:47:54 +0000 (UTC)
+Date: Fri, 23 Jul 2021 09:47:49 -0400
 From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Message-ID: <20210723134559.ubvvs4qmhmqv5wrm@outlook.office365.com>
-References: <20210624173525.1526215-1-markyacoub@chromium.org>
- <20210714183004.1918917-1-markyacoub@chromium.org>
+Message-ID: <20210723134749.t4t4jtw27uuzzmqs@outlook.office365.com>
+References: <20210624172436.1467489-1-markyacoub@chromium.org>
 Content-Disposition: inline
-In-Reply-To: <20210714183004.1918917-1-markyacoub@chromium.org>
+In-Reply-To: <20210624172436.1467489-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v6] tests/kms_vblank: Turn on hardware before
- testing invalid vblank.
+Subject: Re: [igt-dev] [PATCH] Add .vscode to gitignore
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,88 +22,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>, Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
-Cc: robdclark@chromium.org, petri.latvala@intel.com, igt-dev@lists.freedesktop.org, anson.jacob@amd.com, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
+To: Mark Yacoub <markyacoub@chromium.org>
+Cc: igt-dev@lists.freedesktop.org, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 07/14, Mark Yacoub wrote:
+On 06/24, Mark Yacoub wrote:
 > From: Mark Yacoub <markyacoub@google.com>
 > 
-> [Why]
-> Before any hardware is on, the vblank is off and its ref counter is in
-> an initialized state as each driver handles toggling it differently.
-> Ioctl DRM_IOCTL_WAIT_VBLANK could return 0 such as on i915, or an invalid
-> integer that doesn't mean much, such as on Zork running Kernel 5.4 due
-> to the kernel workaround that increments the vblank ref count to prevent
-> a get from enabling the interrupt.
+> Given the popularity of vscode, .vscode is a directory that holds
+> the personal vscode preferences.
 > 
-> [How]
-> For invalid_subtest(), active the CRTCs to turn the hardware on so
-> DRM_IOCTL_WAIT_VBLANK returns something meaningful.
-> 
-> Tested on ChromeOS Zork(amdgpu) and Trogdor(msm)
-> 
-> Changes since v5:
-> Explicitly set the data pipe and output.
-> 
-> Changes since v4:
-> Use igt_get_single_output_for_pipe to get igt_output_t.
-> 
-> Changes since v3:
-> Turn on only 1 output instead of all.
-> 
-> Changes since v2:
-> 1. Updated Signed-off-by.
-> 
-> Changes since v1:
-> 1. Update Commit message
-> 2. Rename variable p to pipe_number
-> 
-> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
 > ---
->  tests/kms_vblank.c | 13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
+>  .gitignore | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-> index 93b01eba..53b7ae0b 100644
-> --- a/tests/kms_vblank.c
-> +++ b/tests/kms_vblank.c
-> @@ -475,8 +475,15 @@ static void invalid_subtest(data_t *data, int fd)
->  {
->  	union drm_wait_vblank vbl;
->  	unsigned long valid_flags;
-> -
-> -	igt_display_require_output_on_pipe(&data->display, 0);
-> +	igt_display_t* display = &data->display;
-> +	enum pipe pipe = 0;
-> +	igt_output_t* output = igt_get_single_output_for_pipe(display, pipe);
+> diff --git a/.gitignore b/.gitignore
+> index 88dd0338..119c80ba 100644
+> --- a/.gitignore
+> +++ b/.gitignore
+> @@ -50,3 +50,5 @@ results
+>  build
+>  patches
+>  Makefile
 > +
-> +	data->pipe = pipe;
-> +	data->output = output;
-> +	igt_output_set_pipe(output, pipe);
-> +	igt_display_require_output_on_pipe(display, pipe);
-> +	prepare_crtc(data, fd, output);
->  
->  	/* First check all is well with a simple query */
->  	memset(&vbl, 0, sizeof(vbl));
-> @@ -511,6 +518,8 @@ static void invalid_subtest(data_t *data, int fd)
->  	vbl.request.type |= _DRM_VBLANK_SECONDARY;
->  	vbl.request.type |= _DRM_VBLANK_FLAGS_MASK;
->  	igt_assert_eq(wait_vblank(fd, &vbl), -EINVAL);
-> +
-> +	cleanup_crtc(data, fd, output);
->  }
+> +.vscode
+> \ No newline at end of file
 
-I tested it in 5700 and Raven system, everything looks good in those
-ASIC; and from the CI result, it seems that everything is ok. However,
-I noticed that the Gitlab pipeline was not triggered. Is it a problem?
+lgtm,
 
 Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-  
->  igt_main
+
 > -- 
 > 2.32.0.93.g670b81a890-goog
 > 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Flists.freedesktop.org%2Fmailman%2Flistinfo%2Figt-dev&amp;data=04%7C01%7CRodrigo.Siqueira%40amd.com%7C1f883944678440bcd68808d93734fd8a%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637601523013147260%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=yEfFsitJBtVLxuk%2BA%2FM4nqYrkrYrOrBN9jxfeXDnwnc%3D&amp;reserved=0
 
 -- 
 Rodrigo Siqueira
