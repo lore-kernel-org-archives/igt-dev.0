@@ -1,12 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2058.outbound.protection.outlook.com [40.107.223.58])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 433E26E083
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Jul 2021 14:37:33 +0000 (UTC)
+Date: Fri, 23 Jul 2021 10:37:28 -0400
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Message-ID: <20210723143728.54fljrwfz3glfwmo@outlook.office365.com>
+References: <20210709152751.2947886-1-markyacoub@chromium.org>
+Content-Disposition: inline
+In-Reply-To: <20210709152751.2947886-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 23 Jul 2021 14:34:49 -0000
-Message-ID: <162705088999.3042.15108991416987195566@emeril.freedesktop.org>
-References: <20210723111411.3444839-1-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20210723111411.3444839-1-tvrtko.ursulin@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaW50ZWwt?=
- =?utf-8?q?gpu-top=3A_Adapt_for_fdinfo_stats_=28rev2=29?=
+Subject: Re: [igt-dev] [PATCH] tests/kms_atomic: igt_require_pipe_crc for
+ plane_immutable_zpos
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,174 +19,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0678221506=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Mark Yacoub <markyacoub@chromium.org>
+Cc: igt-dev@lists.freedesktop.org, seanpaul@chromium.org, petri.latvala@intel.com, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0678221506==
-Content-Type: multipart/alternative;
- boundary="===============5388934432974279180=="
+On 07/09, Mark Yacoub wrote:
+> From: Mark Yacoub <markyacoub@google.com>
+> 
+> [Why]
+> kms_atomic:plane_immutable_zpos subtest uses CRC in debugfs which is
+> not supported by some drivers.
+> 
+> [How]
+> igt_require_pipe_crc before the test begins.
+> 
+> Test: kms_atomic:plane-immutable-zpos on ChromeOS Trogdor(msm)
+> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+> ---
+>  tests/kms_atomic.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+> index df9c9df7..4b262257 100644
+> --- a/tests/kms_atomic.c
+> +++ b/tests/kms_atomic.c
+> @@ -375,6 +375,7 @@ plane_immutable_zpos(igt_display_t *display, igt_pipe_t *pipe,
+>  	uint32_t w_lower, h_lower, w_upper, h_upper;
+>  
+>  	igt_require(n_planes >= 2);
+> +	igt_require_pipe_crc(display->drm_fd);
 
---===============5388934432974279180==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-== Series Details ==
+Just for curiosity, what is the result for this test in your Zork
+system?
 
-Series: intel-gpu-top: Adapt for fdinfo stats (rev2)
-URL   : https://patchwork.freedesktop.org/series/90464/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_10378 -> IGTPW_6050
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6050/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6050 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-kefka:       [PASS][1] -> [INCOMPLETE][2] ([i915#2782] / [i915#2940])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10378/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6050/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
-
-  * igt@runner@aborted:
-    - fi-bsw-kefka:       NOTRUN -> [FAIL][3] ([fdo#109271] / [i915#1436])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6050/fi-bsw-kefka/igt@runner@aborted.html
-
+Thanks
   
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
+>  	mode = igt_output_get_mode(output);
+>  	primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+> -- 
+> 2.32.0.93.g670b81a890-goog
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Flists.freedesktop.org%2Fmailman%2Flistinfo%2Figt-dev&amp;data=04%7C01%7CRodrigo.Siqueira%40amd.com%7C96d85f55a3064d29832c08d942ee2170%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637614413326773397%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=SKj30lk%2BZtlcT9iiROaeRlOnnh7psSUFzSbfi2w7JF0%3D&amp;reserved=0
 
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
-  [i915#2782]: https://gitlab.freedesktop.org/drm/intel/issues/2782
-  [i915#2927]: https://gitlab.freedesktop.org/drm/intel/issues/2927
-  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
-  [i915#2966]: https://gitlab.freedesktop.org/drm/intel/issues/2966
-
-
-Participating hosts (41 -> 36)
-------------------------------
-
-  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6149 -> IGTPW_6050
-
-  CI-20190529: 20190529
-  CI_DRM_10378: 2fb64ab28f475f70fcd9a714f8299d7595bc7001 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6050: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6050/index.html
-  IGT_6149: 34ff2cf2bc352dce691593db803389fe0eb2be03 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6050/index.html
-
---===============5388934432974279180==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>intel-gpu-top: Adapt for fdinfo stats (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/90464/">https://patchwork.freedesktop.org/series/90464/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6050/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6050/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10378 -&gt; IGTPW_6050</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6050/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6050 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10378/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6050/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2782">i915#2782</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6050/fi-bsw-kefka/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (41 -&gt; 36)</h2>
-<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6149 -&gt; IGTPW_6050</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10378: 2fb64ab28f475f70fcd9a714f8299d7595bc7001 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6050: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6050/index.html<br />
-  IGT_6149: 34ff2cf2bc352dce691593db803389fe0eb2be03 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5388934432974279180==--
-
---===============0678221506==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+-- 
+Rodrigo Siqueira
+https://siqueira.tech
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0678221506==--
