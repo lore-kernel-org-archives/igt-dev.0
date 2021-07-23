@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EA3D56FAA8
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Jul 2021 10:10:47 +0000 (UTC)
-From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Date: Fri, 23 Jul 2021 15:32:29 +0530
-Message-Id: <20210723100229.1030627-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB2566EA1E
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Jul 2021 10:14:38 +0000 (UTC)
+Date: Fri, 23 Jul 2021 12:14:33 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210723101433.GA26998@zkempczy-mobl2>
+References: <20210723100229.1030627-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [i-g-t V3] tests/kms_prime: Use 256B aligned width
+Content-Disposition: inline
+In-Reply-To: <20210723100229.1030627-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+Subject: Re: [igt-dev] [i-g-t V3] tests/kms_prime: Use 256B aligned width
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,56 +17,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-kms_prime uses vgem driver for fb creation which does not
-take care of intel's 64B align requirement. As we want to
-keep vgem driver clean we are doing align requirement in
-kms_prime test itself.
-
-Also having different alignment requirement by different drivers,
-256B aligned should work for all drm drivers.
-
-amdgpu and radeon, amdgpu_align_pitch: 256B
-armada, armada_pitch: 128B
-exynos_drm_gem_dumb_create: No alignment required
-drm_gem_shmem_dumb_create: 8B
-drm_gem_vram_fill_create_dumb: 8B
-
-Thus 256B covers everything we see in the kernel drm drivers.
-
-Changes since V2:
-	- Edited commit message to give more detailed info about patch requirement - zkempczy/Daniel
-Changes since V1:
-	- Edited commit message with driver compatible with 256B align - Daniel
-
-Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
----
- tests/kms_prime.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-index 35f4b5b7..2e20c58b 100644
---- a/tests/kms_prime.c
-+++ b/tests/kms_prime.c
-@@ -101,7 +101,7 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
- 	scratch->bpp = 32;
- 
- 	scratch->handle = kmstest_dumb_create(exporter_fd,
--			scratch->width,
-+			ALIGN(scratch->width, 256),
- 			scratch->height,
- 			scratch->bpp,
- 			&scratch->pitch,
--- 
-2.31.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gRnJpLCBKdWwgMjMsIDIwMjEgYXQgMDM6MzI6MjlQTSArMDUzMCwgVGVqYXMgVXBhZGh5YXkg
+d3JvdGU6Cj4ga21zX3ByaW1lIHVzZXMgdmdlbSBkcml2ZXIgZm9yIGZiIGNyZWF0aW9uIHdoaWNo
+IGRvZXMgbm90Cj4gdGFrZSBjYXJlIG9mIGludGVsJ3MgNjRCIGFsaWduIHJlcXVpcmVtZW50LiBB
+cyB3ZSB3YW50IHRvCj4ga2VlcCB2Z2VtIGRyaXZlciBjbGVhbiB3ZSBhcmUgZG9pbmcgYWxpZ24g
+cmVxdWlyZW1lbnQgaW4KPiBrbXNfcHJpbWUgdGVzdCBpdHNlbGYuCj4gCj4gQWxzbyBoYXZpbmcg
+ZGlmZmVyZW50IGFsaWdubWVudCByZXF1aXJlbWVudCBieSBkaWZmZXJlbnQgZHJpdmVycywKPiAy
+NTZCIGFsaWduZWQgc2hvdWxkIHdvcmsgZm9yIGFsbCBkcm0gZHJpdmVycy4KPiAKPiBhbWRncHUg
+YW5kIHJhZGVvbiwgYW1kZ3B1X2FsaWduX3BpdGNoOiAyNTZCCj4gYXJtYWRhLCBhcm1hZGFfcGl0
+Y2g6IDEyOEIKPiBleHlub3NfZHJtX2dlbV9kdW1iX2NyZWF0ZTogTm8gYWxpZ25tZW50IHJlcXVp
+cmVkCj4gZHJtX2dlbV9zaG1lbV9kdW1iX2NyZWF0ZTogOEIKPiBkcm1fZ2VtX3ZyYW1fZmlsbF9j
+cmVhdGVfZHVtYjogOEIKPiAKPiBUaHVzIDI1NkIgY292ZXJzIGV2ZXJ5dGhpbmcgd2Ugc2VlIGlu
+IHRoZSBrZXJuZWwgZHJtIGRyaXZlcnMuCj4gCj4gQ2hhbmdlcyBzaW5jZSBWMjoKPiAJLSBFZGl0
+ZWQgY29tbWl0IG1lc3NhZ2UgdG8gZ2l2ZSBtb3JlIGRldGFpbGVkIGluZm8gYWJvdXQgcGF0Y2gg
+cmVxdWlyZW1lbnQgLSB6a2VtcGN6eS9EYW5pZWwKPiBDaGFuZ2VzIHNpbmNlIFYxOgo+IAktIEVk
+aXRlZCBjb21taXQgbWVzc2FnZSB3aXRoIGRyaXZlciBjb21wYXRpYmxlIHdpdGggMjU2QiBhbGln
+biAtIERhbmllbAo+IAo+IFNpZ25lZC1vZmYtYnk6IFRlamFzIFVwYWRoeWF5IDx0ZWphc2t1bWFy
+eC5zdXJlbmRyYWt1bWFyLnVwYWRoeWF5QGludGVsLmNvbT4KCk9rLCBub3cgeW91J3ZlIGRlc2Ny
+aWJlZCB3aHkgaXMgaXQgbmVjZXNzYXJ5LCBzbzoKCkFja2VkLWJ5OiBaYmlnbmlldyBLZW1wY3p5
+xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KCi0tClpiaWduaWV3Cgo+IC0t
+LQo+ICB0ZXN0cy9rbXNfcHJpbWUuYyB8IDIgKy0KPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0
+aW9uKCspLCAxIGRlbGV0aW9uKC0pCj4gCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19wcmltZS5j
+IGIvdGVzdHMva21zX3ByaW1lLmMKPiBpbmRleCAzNWY0YjViNy4uMmUyMGM1OGIgMTAwNjQ0Cj4g
+LS0tIGEvdGVzdHMva21zX3ByaW1lLmMKPiArKysgYi90ZXN0cy9rbXNfcHJpbWUuYwo+IEBAIC0x
+MDEsNyArMTAxLDcgQEAgc3RhdGljIHZvaWQgcHJlcGFyZV9zY3JhdGNoKGludCBleHBvcnRlcl9m
+ZCwgc3RydWN0IGR1bWJfYm8gKnNjcmF0Y2gsCj4gIAlzY3JhdGNoLT5icHAgPSAzMjsKPiAgCj4g
+IAlzY3JhdGNoLT5oYW5kbGUgPSBrbXN0ZXN0X2R1bWJfY3JlYXRlKGV4cG9ydGVyX2ZkLAo+IC0J
+CQlzY3JhdGNoLT53aWR0aCwKPiArCQkJQUxJR04oc2NyYXRjaC0+d2lkdGgsIDI1NiksCj4gIAkJ
+CXNjcmF0Y2gtPmhlaWdodCwKPiAgCQkJc2NyYXRjaC0+YnBwLAo+ICAJCQkmc2NyYXRjaC0+cGl0
+Y2gsCj4gLS0gCj4gMi4zMS4xCj4gCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KPiBpZ3QtZGV2IG1haWxpbmcgbGlzdAo+IGlndC1kZXZAbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnCj4gaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9pZ3QtZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0
+dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
