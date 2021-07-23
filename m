@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2047.outbound.protection.outlook.com [40.107.243.47])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 844476EB0A
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Jul 2021 13:47:54 +0000 (UTC)
-Date: Fri, 23 Jul 2021 09:47:49 -0400
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Message-ID: <20210723134749.t4t4jtw27uuzzmqs@outlook.office365.com>
-References: <20210624172436.1467489-1-markyacoub@chromium.org>
-Content-Disposition: inline
-In-Reply-To: <20210624172436.1467489-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] Add .vscode to gitignore
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 23 Jul 2021 14:04:05 -0000
+Message-ID: <162704904571.3045.4947369536378937268@emeril.freedesktop.org>
+References: <20210723100229.1030627-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+In-Reply-To: <20210723100229.1030627-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fprime=3A_Use_256B_aligned_width_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,52 +14,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0534382491=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>
-Cc: igt-dev@lists.freedesktop.org, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
+To: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 06/24, Mark Yacoub wrote:
-> From: Mark Yacoub <markyacoub@google.com>
-> 
-> Given the popularity of vscode, .vscode is a directory that holds
-> the personal vscode preferences.
-> 
-> ---
->  .gitignore | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/.gitignore b/.gitignore
-> index 88dd0338..119c80ba 100644
-> --- a/.gitignore
-> +++ b/.gitignore
-> @@ -50,3 +50,5 @@ results
->  build
->  patches
->  Makefile
-> +
-> +.vscode
-> \ No newline at end of file
+--===============0534382491==
+Content-Type: multipart/alternative;
+ boundary="===============1000039739511628664=="
 
-lgtm,
+--===============1000039739511628664==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+== Series Details ==
 
-> -- 
-> 2.32.0.93.g670b81a890-goog
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Flists.freedesktop.org%2Fmailman%2Flistinfo%2Figt-dev&amp;data=04%7C01%7CRodrigo.Siqueira%40amd.com%7C1f883944678440bcd68808d93734fd8a%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637601523013147260%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=yEfFsitJBtVLxuk%2BA%2FM4nqYrkrYrOrBN9jxfeXDnwnc%3D&amp;reserved=0
+Series: tests/kms_prime: Use 256B aligned width (rev3)
+URL   : https://patchwork.freedesktop.org/series/92751/
+State : failure
 
--- 
-Rodrigo Siqueira
-https://siqueira.tech
+== Summary ==
+
+Series 92751 revision 3 was fully merged or fully failed: no git log
+
+
+
+--===============1000039739511628664==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_prime: Use 256B aligned width (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/92751/">https://patchwork.freedesktop.org/series/92751/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+</table>
+
+
+    <p>Series 92751 revision 3 was fully merged or fully failed: no git log</p>
+
+</body>
+</html>
+
+--===============1000039739511628664==--
+
+--===============0534382491==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0534382491==--
