@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 647836FC5E
- for <igt-dev@lists.freedesktop.org>; Sat, 24 Jul 2021 17:00:37 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Sat, 24 Jul 2021 17:00:02 +0000
-Message-ID: <BY5PR11MB4372D08EA9DF7F8415BCC22889E69@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <20210723093548.22273-1-vidya.srinivas@intel.com>
- <87v9519chq.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <87v9519chq.wl-ashutosh.dixit@intel.com>
-Content-Language: en-US
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F1106F9EF
+ for <igt-dev@lists.freedesktop.org>; Sat, 24 Jul 2021 17:03:46 +0000 (UTC)
+From: Vidya Srinivas <vidya.srinivas@intel.com>
+Date: Sat, 24 Jul 2021 22:23:17 +0530
+Message-Id: <20210724165317.32000-1-vidya.srinivas@intel.com>
+In-Reply-To: <20210724164624.31848-1-vidya.srinivas@intel.com>
+References: <20210724164624.31848-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms: Return false in gem_has_lmem
- for platforms not having LMEM support
+Subject: [igt-dev] [PATCH i-g-t] tests/kms: Return false in gem_has_lmem for
+ kernels not having DRM_I915_QUERY_MEMORY_REGIONS support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,83 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Joshi,
- Kunal1" <kunal1.joshi@intel.com>, "Lin, Charlton" <charlton.lin@intel.com>, "Latvala, Petri" <petri.latvala@intel.com>, "Heikkila,
- Juha-pekka" <juha-pekka.heikkila@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kunal1.joshi@intel.com, petri.latvala@intel.com, juha-pekka.heikkila@intel.com, Lin Charlton <charlton.lin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Starting commit (tests/kms: Create buffer object from LMEM for discrete)
+it checks for LMEM. This is breaking older kernels like 5.4 without
+DRM_I915_QUERY_MEMORY_REGIONS support.
 
+Patch returns false from gem_has_lmem if kernel doesnt have support
+for DRM_I915_QUERY_MEMORY_REGIONS.
 
-> -----Original Message-----
-> From: Dixit, Ashutosh <ashutosh.dixit@intel.com>
-> Sent: Friday, July 23, 2021 10:47 PM
-> To: Srinivas, Vidya <vidya.srinivas@intel.com>
-> Cc: igt-dev@lists.freedesktop.org; Joshi, Kunal1 <kunal1.joshi@intel.com>;
-> Latvala, Petri <petri.latvala@intel.com>; Heikkila, Juha-pekka <juha-
-> pekka.heikkila@intel.com>; Lin, Charlton <charlton.lin@intel.com>
-> Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms: Return false in gem_has_lmem
-> for platforms not having LMEM support
-> 
-> On Fri, 23 Jul 2021 02:35:48 -0700, Vidya Srinivas wrote:
-> >
-> > Starting commit (tests/kms: Create buffer object from LMEM for
-> > discrete) it checks for LMEM. But this is breaking older kernels like
-> > 5.4 without DRM_I915_QUERY_MEMORY_REGIONS support. This causes
-> > item.length filled from IOCTL to be < 0 and gives segmentation fault.
-> > Another way to fix is check for NULL query in
-> > gem_get_lmem_region_count and return false.
-> >
-> > Patch returns false from gem_has_lmem for obvious platforms which dont
-> > have LMEM support and also adds the check for NULL query in
-> > gem_get_lmem_region_count.
-> >
-> > Signed-off-by: Lin Charlton <charlton.lin@intel.com>
-> > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> > ---
-> >  lib/i915/intel_memory_region.c | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> >
-> > diff --git a/lib/i915/intel_memory_region.c
-> > b/lib/i915/intel_memory_region.c index 144ae12ca7a0..635c21ab3765
-> > 100644
-> > --- a/lib/i915/intel_memory_region.c
-> > +++ b/lib/i915/intel_memory_region.c
-> > @@ -143,6 +143,10 @@ uint8_t gem_get_lmem_region_count(int fd)
-> >	uint8_t lmem_regions = 0;
-> >
-> >	query_info = gem_get_query_memory_regions(fd);
-> > +
-> > +	if (!query_info)
-> > +		return 0;
-> 
-> From the code doesn't look like this works.
-> 
-> > +
-> >	num_regions = query_info->num_regions;
-> >
-> >	for (int i = 0; i < num_regions; i++) {  @@ -164,6 +168,9 @@ uint8_t
-> >gem_get_lmem_region_count(int fd)
-> >   */
-> >  bool gem_has_lmem(int fd)
-> >  {
-> > +	if (intel_display_ver(intel_get_drm_devid(fd) < 12) ||
-> > +		IS_ALDERLAKE_P(intel_get_drm_devid(fd)) ||
-> IS_TIGERLAKE(intel_get_drm_devid(fd)))
-> > +		return false;
-> 
-> No platform checks. Check if DRM_I915_QUERY_MEMORY_REGIONS is not
-> supported and in that case return 0 from gem_get_lmem_region_count.
+Signed-off-by: Lin Charlton <charlton.lin@intel.com>
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+---
+ lib/i915/intel_memory_region.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-Thank you Ashutosh. I have submitted rev2 https://patchwork.freedesktop.org/patch/446219/?series=92935&rev=2
-Kindly have a check. Thank you.
+diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+index 144ae12ca7a0..bdd88967b417 100644
+--- a/lib/i915/intel_memory_region.c
++++ b/lib/i915/intel_memory_region.c
+@@ -76,6 +76,17 @@ bool gem_has_query_support(int fd)
+ 	return __i915_query(fd, &query) == 0;
+ }
+ 
++bool gem_has_memregion_query_support(int fd)
++{
++	struct drm_i915_query_item item;
++	int ret;
++
++	memset(&item, 0, sizeof(item));
++	item.query_id = DRM_I915_QUERY_MEMORY_REGIONS;
++	ret = __i915_query_items(fd, &item, 1);
++	return ret;
++}
++
+ const char *get_memory_region_name(uint32_t region)
+ {
+ 	uint16_t class = MEMORY_TYPE_FROM_REGION(region);
+@@ -164,6 +175,9 @@ uint8_t gem_get_lmem_region_count(int fd)
+  */
+ bool gem_has_lmem(int fd)
+ {
++	int ret = gem_has_memregion_query_support(fd);
++	if (ret == ENOSYS || ret == ENOTSUP)
++		return false;
+ 	return gem_get_lmem_region_count(fd) > 0;
+ }
+ 
+-- 
+2.32.0
 
-Regards
-Vidya
-
-> 
-> >	return gem_get_lmem_region_count(fd) > 0;
-> >  }
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
