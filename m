@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C7E456E147
- for <igt-dev@lists.freedesktop.org>; Sat, 24 Jul 2021 16:09:01 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Sat, 24 Jul 2021 16:08:55 +0000
-Message-ID: <BY5PR11MB43721158F69B22B17A661D2189E69@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <20210722150700.18435-1-vidya.srinivas@intel.com>
- <BY5PR11MB4372DC7CD6A6F7BF06ECEE0689E59@BY5PR11MB4372.namprd11.prod.outlook.com>
- <60ca1d0569f548c58664966995b6264f@intel.com>
-In-Reply-To: <60ca1d0569f548c58664966995b6264f@intel.com>
-Content-Language: en-US
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43FA573301
+ for <igt-dev@lists.freedesktop.org>; Sat, 24 Jul 2021 16:56:53 +0000 (UTC)
+From: Vidya Srinivas <vidya.srinivas@intel.com>
+Date: Sat, 24 Jul 2021 22:16:24 +0530
+Message-Id: <20210724164624.31848-1-vidya.srinivas@intel.com>
+In-Reply-To: <20210723093548.22273-1-vidya.srinivas@intel.com>
+References: <20210723093548.22273-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 0/2] Revert the wrong fix for
- coverage-premultiplied-constant
+Subject: [igt-dev] [PATCH] tests/kms: Return false in gem_has_lmem for
+ kernels not having DRM_I915_QUERY_MEMORY_REGIONS support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,82 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kunal1.joshi@intel.com, petri.latvala@intel.com, Lin Charlton <charston.lin@intel.com>, juha-pekka.heikkila@intel.com, charlton.Lin@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thank you so much Lakshmi. This time it has PASSED.
+Starting commit (tests/kms: Create buffer object from LMEM for discrete)
+it checks for LMEM. This is breaking older kernels like 5.4 without
+DRM_I915_QUERY_MEMORY_REGIONS support.
 
-Regards
-Vidya
+Patch returns false from gem_has_lmem if kernel doesnt have support
+for DRM_I915_QUERY_MEMORY_REGIONS.
 
-> -----Original Message-----
-> From: Vudum, Lakshminarayana <lakshminarayana.vudum@intel.com>
-> Sent: Friday, July 23, 2021 9:00 PM
-> To: Srinivas, Vidya <vidya.srinivas@intel.com>; igt-dev@lists.freedesktop.org
-> Cc: Latvala, Petri <petri.latvala@intel.com>; Modem, Bhanuprakash
-> <bhanuprakash.modem@intel.com>; Shankar, Uma
-> <uma.shankar@intel.com>
-> Subject: RE: [PATCH i-g-t 0/2] Revert the wrong fix for coverage-
-> premultiplied-constant
-> 
-> Hi,
-> 
-> Failures are addressed and results are re-reported.
-> 
-> Lakshmi.
-> -----Original Message-----
-> From: Srinivas, Vidya <vidya.srinivas@intel.com>
-> Sent: Friday, July 23, 2021 1:46 AM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Latvala, Petri <petri.latvala@intel.com>; Modem, Bhanuprakash
-> <bhanuprakash.modem@intel.com>; Shankar, Uma
-> <uma.shankar@intel.com>; Vudum, Lakshminarayana
-> <lakshminarayana.vudum@intel.com>
-> Subject: RE: [PATCH i-g-t 0/2] Revert the wrong fix for coverage-
-> premultiplied-constant
-> 
-> Hello Lakshmi,
-> 
-> We need to revert this series. But there is a false positive.
-> Could you kindly help with re-run? Thank you so much.
-> 
-> https://patchwork.freedesktop.org/series/92898/
-> 
-> Regards
-> Vidya
-> 
-> > -----Original Message-----
-> > From: Srinivas, Vidya <vidya.srinivas@intel.com>
-> > Sent: Thursday, July 22, 2021 8:37 PM
-> > To: igt-dev@lists.freedesktop.org
-> > Cc: Latvala, Petri <petri.latvala@intel.com>; Modem, Bhanuprakash
-> > <bhanuprakash.modem@intel.com>; Shankar, Uma
-> <uma.shankar@intel.com>;
-> > Srinivas, Vidya <vidya.srinivas@intel.com>
-> > Subject: [PATCH i-g-t 0/2] Revert the wrong fix for
-> > coverage-premultiplied- constant
-> >
-> > Subtest coverage-premultiplied-constant was failing due to buffer
-> > alignment issue. It was not due to 6bpc.
-> > Hence, we need to revert this patch which was wrongly submitted.
-> >
-> > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> >
-> >
-> > Vidya Srinivas (2):
-> >   Revert "tests/kms_plane_alpha_blend: Fix a check in is_6bpc function"
-> >   Revert "tests/kms_plane_alpha_blend: Skip coverage-vs-premult-vs-none
-> >     for 6bpc panels"
-> >
-> >  tests/kms_plane_alpha_blend.c | 36
-> > -----------------------------------
-> >  1 file changed, 36 deletions(-)
-> >
-> > --
-> > 2.32.0
-> 
-> 
+Signed-off-by: Lin Charlton <charston.lin@intel.com>
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+Change-Id: Ia5bb2f0bb9ca1e854bb03c12dfed6646584bbb9b
+---
+ lib/i915/intel_memory_region.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+index 144ae12ca7a0..e553d7ec0f1c 100644
+--- a/lib/i915/intel_memory_region.c
++++ b/lib/i915/intel_memory_region.c
+@@ -76,6 +76,17 @@ bool gem_has_query_support(int fd)
+ 	return __i915_query(fd, &query) == 0;
+ }
+ 
++bool gem_has_memregion_query_support(int fd)
++{
++	struct drm_i915_query_item item;
++	int ret;
++
++	memset(&item, 0, sizeof(item));
++	item.query_id = DRM_I915_QUERY_MEMORY_REGIONS;
++	ret = __i915_query_items(fd, &item, 1);
++	return ret;
++}
++
+ const char *get_memory_region_name(uint32_t region)
+ {
+ 	uint16_t class = MEMORY_TYPE_FROM_REGION(region);
+@@ -164,6 +175,9 @@ uint8_t gem_get_lmem_region_count(int fd)
+  */
+ bool gem_has_lmem(int fd)
+ {
++	if (gem_has_memregion_query_support(fd) == ENOSYS ||
++		gem_has_memregion_query_support(fd) == ENOTSUP)
++		return false;
+ 	return gem_get_lmem_region_count(fd) > 0;
+ }
+ 
+-- 
+2.26.2
 
 _______________________________________________
 igt-dev mailing list
