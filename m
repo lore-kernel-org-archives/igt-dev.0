@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F1106F9EF
- for <igt-dev@lists.freedesktop.org>; Sat, 24 Jul 2021 17:03:46 +0000 (UTC)
-From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Sat, 24 Jul 2021 22:23:17 +0530
-Message-Id: <20210724165317.32000-1-vidya.srinivas@intel.com>
-In-Reply-To: <20210724164624.31848-1-vidya.srinivas@intel.com>
-References: <20210724164624.31848-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms: Return false in gem_has_lmem for
- kernels not having DRM_I915_QUERY_MEMORY_REGIONS support
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Sat, 24 Jul 2021 17:32:54 -0000
+Message-ID: <162714797486.10883.9062059964300688116@emeril.freedesktop.org>
+References: <20210723093548.22273-1-vidya.srinivas@intel.com>
+In-Reply-To: <20210723093548.22273-1-vidya.srinivas@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=3A_Return_false_in_gem=5Fhas=5Flmem_for_platforms_not_havin?=
+ =?utf-8?q?g_LMEM_support_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,63 +15,152 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0136725264=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com, petri.latvala@intel.com, juha-pekka.heikkila@intel.com, Lin Charlton <charlton.lin@intel.com>
+To: Vidya Srinivas <vidya.srinivas@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Starting commit (tests/kms: Create buffer object from LMEM for discrete)
-it checks for LMEM. This is breaking older kernels like 5.4 without
-DRM_I915_QUERY_MEMORY_REGIONS support.
+--===============0136725264==
+Content-Type: multipart/alternative;
+ boundary="===============6720960566080781341=="
 
-Patch returns false from gem_has_lmem if kernel doesnt have support
-for DRM_I915_QUERY_MEMORY_REGIONS.
+--===============6720960566080781341==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Lin Charlton <charlton.lin@intel.com>
-Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
----
- lib/i915/intel_memory_region.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+== Series Details ==
 
-diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-index 144ae12ca7a0..bdd88967b417 100644
---- a/lib/i915/intel_memory_region.c
-+++ b/lib/i915/intel_memory_region.c
-@@ -76,6 +76,17 @@ bool gem_has_query_support(int fd)
- 	return __i915_query(fd, &query) == 0;
- }
- 
-+bool gem_has_memregion_query_support(int fd)
-+{
-+	struct drm_i915_query_item item;
-+	int ret;
-+
-+	memset(&item, 0, sizeof(item));
-+	item.query_id = DRM_I915_QUERY_MEMORY_REGIONS;
-+	ret = __i915_query_items(fd, &item, 1);
-+	return ret;
-+}
-+
- const char *get_memory_region_name(uint32_t region)
- {
- 	uint16_t class = MEMORY_TYPE_FROM_REGION(region);
-@@ -164,6 +175,9 @@ uint8_t gem_get_lmem_region_count(int fd)
-  */
- bool gem_has_lmem(int fd)
- {
-+	int ret = gem_has_memregion_query_support(fd);
-+	if (ret == ENOSYS || ret == ENOTSUP)
-+		return false;
- 	return gem_get_lmem_region_count(fd) > 0;
- }
- 
--- 
-2.32.0
+Series: tests/kms: Return false in gem_has_lmem for platforms not having LMEM support (rev2)
+URL   : https://patchwork.freedesktop.org/series/92935/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10385 -> IGTPW_6052
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6052/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6052 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-tgl-1115g4:      [FAIL][1] ([i915#1888]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10385/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6052/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+
+  
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+
+
+Participating hosts (42 -> 35)
+------------------------------
+
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan bat-adls-4 fi-ctg-p8600 bat-adls-3 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6149 -> IGTPW_6052
+
+  CI-20190529: 20190529
+  CI_DRM_10385: 52984d543f551e0bb1b8792eaa09291ead82666d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6052: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6052/index.html
+  IGT_6149: 34ff2cf2bc352dce691593db803389fe0eb2be03 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6052/index.html
+
+--===============6720960566080781341==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms: Return false in gem_has_lmem for platforms not having LMEM support (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/92935/">https://patchwork.freedesktop.org/series/92935/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6052/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6052/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10385 -&gt; IGTPW_6052</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6052/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6052 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_exec_suspend@basic-s0:<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10385/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6052/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (42 -&gt; 35)</h2>
+<p>Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan bat-adls-4 fi-ctg-p8600 bat-adls-3 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6149 -&gt; IGTPW_6052</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10385: 52984d543f551e0bb1b8792eaa09291ead82666d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6052: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6052/index.html<br />
+  IGT_6149: 34ff2cf2bc352dce691593db803389fe0eb2be03 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6720960566080781341==--
+
+--===============0136725264==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0136725264==--
