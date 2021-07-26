@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D6F946E3B2
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Jul 2021 04:43:13 +0000 (UTC)
-References: <20210705125617.4631-1-bhanuprakash.modem@intel.com>
- <20210705125617.4631-4-bhanuprakash.modem@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-Message-ID: <b0be4667-e972-11e8-0ff0-50c3a86782f6@intel.com>
-Date: Mon, 26 Jul 2021 10:12:54 +0530
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C50DA6E5A1
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Jul 2021 05:45:01 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Mon, 26 Jul 2021 11:15:50 +0530
+Message-Id: <20210726054550.148435-1-bhanuprakash.modem@intel.com>
 In-Reply-To: <20210705125617.4631-4-bhanuprakash.modem@intel.com>
-Content-Language: en-US
+References: <20210705125617.4631-4-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tests/intel-ci: Remove hang tests
- from pre-merge blacklist
+Subject: [igt-dev] [i-g-t V2 3/3] tests/intel-ci: Remove hang tests from
+ pre-merge blacklist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,82 +17,82 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 7/5/2021 6:26 PM, Bhanuprakash Modem wrote:
-> Remove kms_(busy|flip)-*hang* tests from pre-merge blacklist
->
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Remove kms_(busy|flip)-*hang* tests from pre-merge blacklist
 
-Please add the details of how much improvement in execution time we're 
-seeing with this patch. I'm assuming it should be ~50%(on platforms with 
-4 pipes), since we're restricting the execution to 2 pipes. But will be 
-good to have this detail in the commit message.
+Below are the results on shards-tglb:
+|---------------------|-------------|---------------|
+|        Test         |   Before    |     After     |
+|---------------------|-------------|---------------|
+|      kms_busy       |  ~8.3 mins  |    ~4.1 mins  |
+|---------------------|-------------|---------------|
+| kms_flip@.*-hang-.* |  ~4 mins    |    ~2 mins    |
+|---------------------|-------------|---------------|
 
-With this added, the patch looks good to me.
-
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+---
+ tests/intel-ci/blacklist-pre-merge.txt | 39 --------------------------
+ 1 file changed, 39 deletions(-)
 
-> ---
->   tests/intel-ci/blacklist-pre-merge.txt | 39 --------------------------
->   1 file changed, 39 deletions(-)
->
-> diff --git a/tests/intel-ci/blacklist-pre-merge.txt b/tests/intel-ci/blacklist-pre-merge.txt
-> index 115474d987..dc6095ea1b 100644
-> --- a/tests/intel-ci/blacklist-pre-merge.txt
-> +++ b/tests/intel-ci/blacklist-pre-merge.txt
-> @@ -71,45 +71,6 @@ igt@gem_pwrite@big-.*
->   igt@gem_exec_alignment@.*
->   
->   
-> -###############################################################################
-> -# These 4 tests are covering an edge case which should never be hit by users
-> -# unless we already are in a bad situation, yet they are responsible for a
-> -# significant portion of our execution time:
-> -#
-> -# - shard-skl: 2% (~5 minutes)
-> -# - shard-kbl: 4% (~5 minutes)
-> -# - shard-apl: 2.7% (~5 minutes)
-> -# - shard-glk: 4.5% (~10 minutes)
-> -# - shard-icl: 2.5% (~5 minutes)
-> -# - shard-tgl: 3.5% (~7 minutes)
-> -#
-> -# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1284
-> -#
-> -# Data acquired on 2020-02-20 by Martin Peres
-> -###############################################################################
-> -igt@kms_flip@flip-vs-modeset-vs-hang(-interruptible)?
-> -igt@kms_flip@flip-vs-panning-vs-hang(-interruptible)?
-> -
-> -
-> -###############################################################################
-> -# These 28 tests are covering an edge case which should never be hit by users
-> -# unless we already are in a bad situation, yet they are responsible for a
-> -# significant portion of our execution time:
-> -#
-> -# - shard-skl: 1.7% (~4 minutes)
-> -# - shard-kbl: 2.8% (~3.5 minutes)
-> -# - shard-apl: 2.2% (~4 minutes)
-> -# - shard-glk: 1.8% (~4 minutes)
-> -# - shard-icl: 1.9% (~4 minutes)
-> -# - shard-tgl: 2.8% (~5.5 minutes)
-> -#
-> -# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1285
-> -#
-> -# Data acquired on 2020-02-20 by Martin Peres
-> -###############################################################################
-> -igt@kms_busy@.*hang.*
-> -
-> -
->   ###############################################################################
->   # This test is reading one file at a time while being suspended, which makes
->   # testing extremelly slow. This is a developer-only feature which is also used
-
+diff --git a/tests/intel-ci/blacklist-pre-merge.txt b/tests/intel-ci/blacklist-pre-merge.txt
+index 115474d98..dc6095ea1 100644
+--- a/tests/intel-ci/blacklist-pre-merge.txt
++++ b/tests/intel-ci/blacklist-pre-merge.txt
+@@ -71,45 +71,6 @@ igt@gem_pwrite@big-.*
+ igt@gem_exec_alignment@.*
+ 
+ 
+-###############################################################################
+-# These 4 tests are covering an edge case which should never be hit by users
+-# unless we already are in a bad situation, yet they are responsible for a
+-# significant portion of our execution time:
+-#
+-# - shard-skl: 2% (~5 minutes)
+-# - shard-kbl: 4% (~5 minutes)
+-# - shard-apl: 2.7% (~5 minutes)
+-# - shard-glk: 4.5% (~10 minutes)
+-# - shard-icl: 2.5% (~5 minutes)
+-# - shard-tgl: 3.5% (~7 minutes)
+-#
+-# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1284
+-#
+-# Data acquired on 2020-02-20 by Martin Peres
+-###############################################################################
+-igt@kms_flip@flip-vs-modeset-vs-hang(-interruptible)?
+-igt@kms_flip@flip-vs-panning-vs-hang(-interruptible)?
+-
+-
+-###############################################################################
+-# These 28 tests are covering an edge case which should never be hit by users
+-# unless we already are in a bad situation, yet they are responsible for a
+-# significant portion of our execution time:
+-#
+-# - shard-skl: 1.7% (~4 minutes)
+-# - shard-kbl: 2.8% (~3.5 minutes)
+-# - shard-apl: 2.2% (~4 minutes)
+-# - shard-glk: 1.8% (~4 minutes)
+-# - shard-icl: 1.9% (~4 minutes)
+-# - shard-tgl: 2.8% (~5.5 minutes)
+-#
+-# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1285
+-#
+-# Data acquired on 2020-02-20 by Martin Peres
+-###############################################################################
+-igt@kms_busy@.*hang.*
+-
+-
+ ###############################################################################
+ # This test is reading one file at a time while being suspended, which makes
+ # testing extremelly slow. This is a developer-only feature which is also used
+-- 
+2.32.0
 
 _______________________________________________
 igt-dev mailing list
