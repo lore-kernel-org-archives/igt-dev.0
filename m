@@ -1,12 +1,12 @@
 Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Matthew Auld <matthew.auld@intel.com>
-Date: Mon, 26 Jul 2021 13:03:07 +0100
-Message-Id: <20210726120310.1115522-4-matthew.auld@intel.com>
+Date: Mon, 26 Jul 2021 13:03:09 +0100
+Message-Id: <20210726120310.1115522-6-matthew.auld@intel.com>
 In-Reply-To: <20210726120310.1115522-1-matthew.auld@intel.com>
 References: <20210726120310.1115522-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t 4/7] lib/i915/gem_mman: update
- mmap_offset_types with FIXED
+Subject: [Intel-gfx] [PATCH i-g-t 6/7] lib/ioctl_wrappers: update set_domain
+ for discrete
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
@@ -22,28 +22,35 @@ To: igt-dev@lists.freedesktop.org
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We need to also iterate the fixed mode in the tests which rely on this.
+On discrete set_domain is now gone, instead we just need to add the
+wait.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Cc: Ramalingam C <ramalingam.c@intel.com>
 ---
- lib/i915/gem_mman.c | 1 +
- 1 file changed, 1 insertion(+)
+ lib/ioctl_wrappers.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
-index 337d28fb..fe4963f0 100644
---- a/lib/i915/gem_mman.c
-+++ b/lib/i915/gem_mman.c
-@@ -611,6 +611,7 @@ const struct mmap_offset mmap_offset_types[] = {
- 	{ "wb", I915_MMAP_OFFSET_WB, I915_GEM_DOMAIN_CPU },
- 	{ "wc", I915_MMAP_OFFSET_WC, I915_GEM_DOMAIN_WC },
- 	{ "uc", I915_MMAP_OFFSET_UC, I915_GEM_DOMAIN_WC },
-+	{ "fixed", LOCAL_I915_MMAP_OFFSET_FIXED, 0},
- 	{},
- };
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index 7e27a1b3..09eb3ce7 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -565,7 +565,12 @@ int __gem_set_domain(int fd, uint32_t handle, uint32_t read, uint32_t write)
+  */
+ void gem_set_domain(int fd, uint32_t handle, uint32_t read, uint32_t write)
+ {
+-	igt_assert_eq(__gem_set_domain(fd, handle, read, write), 0);
++	int ret = __gem_set_domain(fd, handle, read, write);
++
++	if (ret == -ENODEV && gem_has_lmem(fd))
++		igt_assert_eq(gem_wait(fd, handle, 0), 0);
++	else
++		igt_assert_eq(ret, 0);
+ }
  
+ /**
 -- 
 2.26.3
 
