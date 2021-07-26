@@ -1,73 +1,102 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: Matthew Auld <matthew.auld@intel.com>
-Date: Mon, 26 Jul 2021 13:03:10 +0100
-Message-Id: <20210726120310.1115522-7-matthew.auld@intel.com>
-In-Reply-To: <20210726120310.1115522-1-matthew.auld@intel.com>
-References: <20210726120310.1115522-1-matthew.auld@intel.com>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A1F006E17E
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Jul 2021 12:25:44 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Mon, 26 Jul 2021 17:56:36 +0530
+Message-Id: <20210726122636.159703-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20210726094938.155619-1-bhanuprakash.modem@intel.com>
+References: <20210726094938.155619-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t 7/7] tests/i915/module_load: update for
- discrete
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Subject: [igt-dev] [i-g-t V2] lib/i915: Handle QUERY_MEMORY_REGIONS on older
+ kernels
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The set_caching ioctl is gone for discrete, and now just returns
--ENODEV. Update the gem_sanitycheck to account for that. After this we
-should be back to just having the breakage caused by missing reloc
-support for the reload testcase.
+While checking for LMEM support on older kernels with the
+DRM_I915_QUERY_MEMORY_REGIONS, it may fail with EINVAL.
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Ramalingam C <ramalingam.c@intel.com>
+Instead of abort/asserting the test, we must handle this
+case properly.
+
+V2:
+* Rebase
+
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Vidya Srinivas <vidya.srinivas@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/i915_module_load.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ lib/i915/intel_memory_region.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-index 98ceb5d8..4b42fe3e 100644
---- a/tests/i915/i915_module_load.c
-+++ b/tests/i915/i915_module_load.c
-@@ -172,17 +172,22 @@ static void gem_sanitycheck(void)
+diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+index e1e210f2c..72e337af3 100644
+--- a/lib/i915/intel_memory_region.c
++++ b/lib/i915/intel_memory_region.c
+@@ -114,7 +114,7 @@ uint32_t gem_get_batch_size(int fd, uint8_t mem_region_type)
+ struct drm_i915_query_memory_regions *gem_get_query_memory_regions(int fd)
  {
- 	struct drm_i915_gem_caching args = {};
- 	int i915 = __drm_open_driver(DRIVER_INTEL);
-+	int expected;
- 	int err;
+ 	struct drm_i915_query_item item;
+-	struct drm_i915_query_memory_regions *query_info;
++	struct drm_i915_query_memory_regions *query_info = NULL;
  
-+	expected = -ENOENT;
-+	if (gem_has_lmem(i915))
-+		expected = -ENODEV;
-+
- 	err = 0;
- 	if (ioctl(i915, DRM_IOCTL_I915_GEM_SET_CACHING, &args))
- 		err = -errno;
--	if (err == -ENOENT)
-+	if (err == expected)
- 		store_all(i915);
- 	errno = 0;
+ 	memset(&item, 0, sizeof(item));
+ 	item.query_id = DRM_I915_QUERY_MEMORY_REGIONS;
+@@ -123,15 +123,18 @@ struct drm_i915_query_memory_regions *gem_get_query_memory_regions(int fd)
+ 	 * Any DRM_I915_QUERY_MEMORY_REGIONS specific errors are encoded in the
+ 	 * item.length, even though the ioctl might still return success.
+ 	 */
+-	igt_assert_f(item.length > 0,
+-		     "DRM_I915_QUERY_MEMORY_REGIONS failed with %d\n",
+-		     item.length);
++	if (item.length < 0) {
++		igt_critical("DRM_I915_QUERY_MEMORY_REGIONS failed with %d\n",
++			     item.length);
++		goto out;
++	}
  
- 	close(i915);
--	igt_assert_eq(err, -ENOENT);
-+	igt_assert_eq(err, expected);
+ 	query_info = calloc(1, item.length);
+ 
+ 	item.data_ptr = to_user_pointer(query_info);
+ 	i915_query_items(fd, &item, 1);
+ 
++out:
+ 	return query_info;
  }
  
- static void
+@@ -150,6 +153,9 @@ uint8_t gem_get_lmem_region_count(int fd)
+ 	uint8_t lmem_regions = 0;
+ 
+ 	query_info = gem_get_query_memory_regions(fd);
++	if (!query_info)
++		goto out;
++
+ 	num_regions = query_info->num_regions;
+ 
+ 	for (int i = 0; i < num_regions; i++) {
+@@ -158,6 +164,7 @@ uint8_t gem_get_lmem_region_count(int fd)
+ 	}
+ 	free(query_info);
+ 
++out:
+ 	return lmem_regions;
+ }
+ 
 -- 
-2.26.3
+2.32.0
 
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
