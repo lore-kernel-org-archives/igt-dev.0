@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C50DA6E5A1
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Jul 2021 05:45:01 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Mon, 26 Jul 2021 11:15:50 +0530
-Message-Id: <20210726054550.148435-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20210705125617.4631-4-bhanuprakash.modem@intel.com>
-References: <20210705125617.4631-4-bhanuprakash.modem@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7296F6E5BB
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Jul 2021 06:17:03 +0000 (UTC)
+From: Vidya Srinivas <vidya.srinivas@intel.com>
+Date: Mon, 26 Jul 2021 11:36:30 +0530
+Message-Id: <20210726060630.28834-1-vidya.srinivas@intel.com>
+In-Reply-To: <20210724165317.32000-1-vidya.srinivas@intel.com>
+References: <20210724165317.32000-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [i-g-t V2 3/3] tests/intel-ci: Remove hang tests from
- pre-merge blacklist
+Subject: [igt-dev] [PATCH i-g-t] lib/i915: Return false in gem_has_lmem for
+ kernels not having DRM_I915_QUERY_MEMORY_REGIONS support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,75 +22,46 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: kunal1.joshi@intel.com, petri.latvala@intel.com, juha-pekka.heikkila@intel.com, Lin Charlton <charlton.lin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Remove kms_(busy|flip)-*hang* tests from pre-merge blacklist
+Starting commit (tests/kms: Create buffer object from LMEM for discrete)
+it checks for LMEM. This is breaking older kernels like 5.4 without
+DRM_I915_QUERY_MEMORY_REGIONS support.
 
-Below are the results on shards-tglb:
-|---------------------|-------------|---------------|
-|        Test         |   Before    |     After     |
-|---------------------|-------------|---------------|
-|      kms_busy       |  ~8.3 mins  |    ~4.1 mins  |
-|---------------------|-------------|---------------|
-| kms_flip@.*-hang-.* |  ~4 mins    |    ~2 mins    |
-|---------------------|-------------|---------------|
+Kernel writes length back to userspace if ret and
+length differ, indicating an error condition. In this case, the length
+written back is -22 which is EINVAL. Patch checks negative item length
+and returns false from gem_has_lmem.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+Credits-to: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Signed-off-by: Lin Charlton <charlton.lin@intel.com>
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+Change-Id: Ia404b77fbe4c1fc22ca462a15f26640f9ffa4120
 ---
- tests/intel-ci/blacklist-pre-merge.txt | 39 --------------------------
- 1 file changed, 39 deletions(-)
+ lib/i915/intel_memory_region.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tests/intel-ci/blacklist-pre-merge.txt b/tests/intel-ci/blacklist-pre-merge.txt
-index 115474d98..dc6095ea1 100644
---- a/tests/intel-ci/blacklist-pre-merge.txt
-+++ b/tests/intel-ci/blacklist-pre-merge.txt
-@@ -71,45 +71,6 @@ igt@gem_pwrite@big-.*
- igt@gem_exec_alignment@.*
+diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+index 144ae12ca7a0..8db3e69e9913 100644
+--- a/lib/i915/intel_memory_region.c
++++ b/lib/i915/intel_memory_region.c
+@@ -164,6 +164,15 @@ uint8_t gem_get_lmem_region_count(int fd)
+  */
+ bool gem_has_lmem(int fd)
+ {
++	struct drm_i915_query_item item;
++	int ret;
++
++	memset(&item, 0, sizeof(item));
++	item.query_id = DRM_I915_QUERY_MEMORY_REGIONS;
++	ret = __i915_query_items(fd, &item, 1);
++	if (ret != 0 || item.length < 0)
++		return false;
++
+ 	return gem_get_lmem_region_count(fd) > 0;
+ }
  
- 
--###############################################################################
--# These 4 tests are covering an edge case which should never be hit by users
--# unless we already are in a bad situation, yet they are responsible for a
--# significant portion of our execution time:
--#
--# - shard-skl: 2% (~5 minutes)
--# - shard-kbl: 4% (~5 minutes)
--# - shard-apl: 2.7% (~5 minutes)
--# - shard-glk: 4.5% (~10 minutes)
--# - shard-icl: 2.5% (~5 minutes)
--# - shard-tgl: 3.5% (~7 minutes)
--#
--# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1284
--#
--# Data acquired on 2020-02-20 by Martin Peres
--###############################################################################
--igt@kms_flip@flip-vs-modeset-vs-hang(-interruptible)?
--igt@kms_flip@flip-vs-panning-vs-hang(-interruptible)?
--
--
--###############################################################################
--# These 28 tests are covering an edge case which should never be hit by users
--# unless we already are in a bad situation, yet they are responsible for a
--# significant portion of our execution time:
--#
--# - shard-skl: 1.7% (~4 minutes)
--# - shard-kbl: 2.8% (~3.5 minutes)
--# - shard-apl: 2.2% (~4 minutes)
--# - shard-glk: 1.8% (~4 minutes)
--# - shard-icl: 1.9% (~4 minutes)
--# - shard-tgl: 2.8% (~5.5 minutes)
--#
--# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1285
--#
--# Data acquired on 2020-02-20 by Martin Peres
--###############################################################################
--igt@kms_busy@.*hang.*
--
--
- ###############################################################################
- # This test is reading one file at a time while being suspended, which makes
- # testing extremelly slow. This is a developer-only feature which is also used
 -- 
 2.32.0
 
