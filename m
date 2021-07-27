@@ -1,14 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A3F496E82A
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Jul 2021 15:08:09 +0000 (UTC)
-From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Tue, 27 Jul 2021 20:27:14 +0530
-Message-Id: <20210727145714.27046-1-vidya.srinivas@intel.com>
-In-Reply-To: <20210723093844.22352-1-vidya.srinivas@intel.com>
-References: <20210723093844.22352-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Fix hw stride length tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 27 Jul 2021 15:41:24 -0000
+Message-ID: <162740048454.18664.4626984876661486835@emeril.freedesktop.org>
+References: <20210727152202.9527-1-matthew.brost@intel.com>
+In-Reply-To: <20210727152202.9527-1-matthew.brost@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgVXBkYXRl?=
+ =?utf-8?q?s_for_GuC_=26_parallel_submission?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,96 +14,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============2145077481=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com, petri.latvala@intel.com, Lin Charlton <lin.charlton@intel.com>, juha-pekka.heikkila@intel.com, charlton.Lin@intel.com
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We see the HW stride length tests are crashing
-when run in sequence. Individually, they PASS.
-This is happening due to missing data.ibb creation
-before the test_scanout. Patch fixes the same.
-Patch also fixes CRC failures seen.
+--===============2145077481==
+Content-Type: multipart/alternative;
+ boundary="===============0232070656496892681=="
 
-Signed-off-by: Lin Charlton <lin.charlton@intel.com>
-Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
----
- tests/kms_big_fb.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+--===============0232070656496892681==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
-index c6f374bdd073..89934ad3b5aa 100644
---- a/tests/kms_big_fb.c
-+++ b/tests/kms_big_fb.c
-@@ -462,6 +462,7 @@ static bool test_pipe(data_t *data)
- 	igt_display_commit2(&data->display, data->display.is_atomic ?
- 			    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
- 
-+	igt_pipe_crc_free(data->pipe_crc);
- 	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
- 					  INTEL_PIPE_CRC_SOURCE_AUTO);
- 
-@@ -474,8 +475,6 @@ static bool test_pipe(data_t *data)
- 	if (data->format == DRM_FORMAT_C8)
- 		unset_lut(data);
- 
--	igt_pipe_crc_free(data->pipe_crc);
--
- 	igt_output_set_pipe(data->output, PIPE_ANY);
- 
- 	igt_remove_fb(data->drm_fd, &data->small_fb);
-@@ -519,6 +518,7 @@ max_hw_stride_async_flip_test(data_t *data)
- 		 data->hw_stride);
- 	generate_pattern(data, &data->big_fb_flip[1], 640, 480);
- 
-+	igt_pipe_crc_free(data->pipe_crc);
- 	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
- 					  INTEL_PIPE_CRC_SOURCE_AUTO);
- 	igt_pipe_crc_start(data->pipe_crc);
-@@ -564,7 +564,7 @@ max_hw_stride_async_flip_test(data_t *data)
- 	}
- 	igt_reset_timeout();
- 
--	igt_pipe_crc_free(data->pipe_crc);
-+	igt_pipe_crc_stop(data->pipe_crc);
- 	igt_output_set_pipe(data->output, PIPE_NONE);
- 	igt_remove_fb(data->drm_fd, &data->big_fb);
- 	igt_remove_fb(data->drm_fd, &data->big_fb_flip[0]);
-@@ -852,7 +852,6 @@ igt_main
- 			data.render_copy = igt_get_render_copyfunc(data.devid);
- 
- 		data.bops = buf_ops_create(data.drm_fd);
--		data.ibb = intel_bb_create(data.drm_fd, 4096);
- 
- 		data.planeclearrgb[0] = 0.0;
- 		data.planeclearrgb[1] = 0.0;
-@@ -978,7 +977,9 @@ igt_main
- 						igt_require(data.format == DRM_FORMAT_C8 ||
- 							igt_fb_supported_format(data.format));
- 						igt_require(igt_display_has_format_mod(&data.display, data.format, data.modifier));
-+						data.ibb = intel_bb_create(data.drm_fd, 4096);
- 						test_scanout(&data);
-+						intel_bb_destroy(data.ibb);
- 					}
- 
- 					// async flip doesn't support linear fbs.
-@@ -994,7 +995,9 @@ igt_main
- 							igt_require(igt_display_has_format_mod(&data.display, data.format, data.modifier));
- 							igt_require_f(data.async_flip_support, "Async Flip is not supported\n");
- 							data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
-+							data.ibb = intel_bb_create(data.drm_fd, 4096);
- 							test_scanout(&data);
-+							intel_bb_destroy(data.ibb);
- 					}
- 					data.async_flip_test = false;
- 				}
--- 
-2.32.0
+== Series Details ==
+
+Series: Updates for GuC & parallel submission
+URL   : https://patchwork.freedesktop.org/series/93071/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10404 -> IGTPW_6064
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6064/index.html
+
+
+Changes
+-------
+
+  No changes found
+
+
+Participating hosts (40 -> 35)
+------------------------------
+
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan bat-jsl-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6153 -> IGTPW_6064
+
+  CI-20190529: 20190529
+  CI_DRM_10404: 371bd54db63fdd99356a1a3d0fdc9b76616eddcb @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6064: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6064/index.html
+  IGT_6153: a5dffe7499a2f7189718ddf1ccf49060b7c1529d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@gem_exec_balancer@parallel
++igt@gem_exec_balancer@parallel-balancer
++igt@gem_exec_balancer@parallel-bb-first
++igt@gem_exec_balancer@parallel-contexts
++igt@gem_exec_balancer@parallel-keep-in-fence
++igt@gem_exec_balancer@parallel-keep-submit-fence
++igt@gem_exec_balancer@parallel-ordering
++igt@gem_exec_balancer@parallel-out-fence
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6064/index.html
+
+--===============0232070656496892681==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Updates for GuC &amp; parallel submission</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93071/">https://patchwork.freedesktop.org/series/93071/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6064/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6064/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10404 -&gt; IGTPW_6064</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6064/index.html</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Participating hosts (40 -&gt; 35)</h2>
+<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan bat-jsl-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6153 -&gt; IGTPW_6064</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10404: 371bd54db63fdd99356a1a3d0fdc9b76616eddcb @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6064: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6064/index.html<br />
+  IGT_6153: a5dffe7499a2f7189718ddf1ccf49060b7c1529d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@gem_exec_balancer@parallel<br />
++igt@gem_exec_balancer@parallel-balancer<br />
++igt@gem_exec_balancer@parallel-bb-first<br />
++igt@gem_exec_balancer@parallel-contexts<br />
++igt@gem_exec_balancer@parallel-keep-in-fence<br />
++igt@gem_exec_balancer@parallel-keep-submit-fence<br />
++igt@gem_exec_balancer@parallel-ordering<br />
++igt@gem_exec_balancer@parallel-out-fence</p>
+
+</body>
+</html>
+
+--===============0232070656496892681==--
+
+--===============2145077481==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============2145077481==--
