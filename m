@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 71CF96E0F4
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Jul 2021 10:01:28 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D861896E7
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Jul 2021 10:03:05 +0000 (UTC)
 From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Date: Tue, 27 Jul 2021 15:23:14 +0530
-Message-Id: <20210727095314.1043574-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Tue, 27 Jul 2021 15:24:51 +0530
+Message-Id: <20210727095451.1043630-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] lib/igt_fb: Align width to 256B
+Subject: [igt-dev] [i-g-t] lib/igt_fb: Align width to 256B
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
