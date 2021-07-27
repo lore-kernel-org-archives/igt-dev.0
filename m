@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Matthew Brost <matthew.brost@intel.com>
-Date: Tue, 27 Jul 2021 08:22:00 -0700
-Message-Id: <20210727152202.9527-6-matthew.brost@intel.com>
-In-Reply-To: <20210727152202.9527-1-matthew.brost@intel.com>
-References: <20210727152202.9527-1-matthew.brost@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F1A696E882
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Jul 2021 15:09:14 +0000 (UTC)
+From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Date: Tue, 27 Jul 2021 15:09:04 +0000
+Message-ID: <BY5PR11MB4372149E40B4D016DF570DA289E99@BY5PR11MB4372.namprd11.prod.outlook.com>
+References: <20210723093844.22352-1-vidya.srinivas@intel.com>
+ <c2aa9ae184c34188bbd04b87a702c1a9@intel.com>
+ <4ebece4443894fee8e618013027f7be0@intel.com>
+In-Reply-To: <4ebece4443894fee8e618013027f7be0@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 5/7] include/drm-uapi: Add static priority
- mapping UAPI
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Fix hw stride length
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,37 +24,112 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+To: "Shankar, Uma" <uma.shankar@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "Latvala,
+ Petri" <petri.latvala@intel.com>, "Heikkila,
+ Juha-pekka" <juha-pekka.heikkila@intel.com>, "Lin,
+ Charlton" <charlton.lin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
----
- include/drm-uapi/i915_drm.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
 
-diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-index 332c07e3d..0c023a52d 100644
---- a/include/drm-uapi/i915_drm.h
-+++ b/include/drm-uapi/i915_drm.h
-@@ -572,6 +572,15 @@ typedef struct drm_i915_irq_wait {
- #define   I915_SCHEDULER_CAP_PREEMPTION	(1ul << 2)
- #define   I915_SCHEDULER_CAP_SEMAPHORES	(1ul << 3)
- #define   I915_SCHEDULER_CAP_ENGINE_BUSY_STATS	(1ul << 4)
-+/*
-+ * Indicates the 2k user priority levels are statically mapped into 3 buckets as
-+ * follows:
-+ *
-+ * -1k to -1	Low priority
-+ * 0		Normal priority
-+ * 1 to 1k	Highest priority
-+ */
-+#define   I915_SCHEDULER_CAP_STATIC_PRIORITY_MAP	(1ul << 5)
+
+> -----Original Message-----
+> From: Shankar, Uma <uma.shankar@intel.com>
+> Sent: Tuesday, July 27, 2021 1:27 AM
+> To: Srinivas, Vidya <vidya.srinivas@intel.com>; igt-dev@lists.freedesktop.org
+> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>;
+> Almahallawy, Khaled <khaled.almahallawy@intel.com>; Joshi, Kunal1
+> <kunal1.joshi@intel.com>; Heikkila, Juha-pekka <juha-
+> pekka.heikkila@intel.com>; Lin, Charlton <charlton.lin@intel.com>; Latvala,
+> Petri <petri.latvala@intel.com>; Lin, Charlton <charlton.lin@intel.com>
+> Subject: RE: [PATCH i-g-t] tests/kms_big_fb: Fix hw stride length tests
+> 
+> >
+> > > -----Original Message-----
+> > > From: Srinivas, Vidya <vidya.srinivas@intel.com>
+> > > Sent: Friday, July 23, 2021 3:09 PM
+> > > To: igt-dev@lists.freedesktop.org
+> > > Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>;
+> Shankar, Uma
+> > > <uma.shankar@intel.com>; Almahallawy, Khaled
+> > > <khaled.almahallawy@intel.com>; Joshi, Kunal1
+> > > <kunal1.joshi@intel.com>; Heikkila, Juha-pekka <juha-
+> > > pekka.heikkila@intel.com>; Lin, Charlton <charlton.lin@intel.com>;
+> > > Latvala, Petri <petri.latvala@intel.com>; Srinivas, Vidya
+> > > <vidya.srinivas@intel.com>; Lin, Charlton <charlton.lin@intel.com>
+> > > Subject: [PATCH i-g-t] tests/kms_big_fb: Fix hw stride length tests
+> > >
+> > > We see the HW stride length tests are crashing when run in sequence.
+> > > Individually, they PASS.
+> > > This is happening due to missing data.ibb creation before the
+> > > test_scanout. Patch fixes the same.
+> >
+> > Looks Good to me.
+> > Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+> 
+> Meanwhile while we are at it, I feel the intel_bb_create at fixture can be
+> dropped as well. Currently its created but not getting destroyed in cleanup.
+> Please check and update your patch fixing that as well.
+>
+
+Thank you Uma. This patch was removing the crash. But with this too, we see failures in CRC.
+I have updated the patch. Even with this updated patch, we are seeing one random CRC failure when
+run in sequence mostly either in x-tiled-max-hw-stride-32bpp-rotate-0-async-flip 
+or y-tiled-max-hw-stride-32bpp-rotate-180-async-flip (CRC failure with async flip, crc shouldn't match for checked round).
+However, if we run the test individually, it PASSES. Something more might be missing. For now, is it good to merge this
+patch? https://patchwork.freedesktop.org/patch/447014/?series=92936&rev=2
+
+Regards
+Vidya
+
+
  
- #define I915_PARAM_HUC_STATUS		 42
- 
--- 
-2.28.0
+> Thanks & Regards,
+> Uma Shankar
+> 
+> > > Signed-off-by: Lin Charlton <charlton.lin@intel.com>
+> > > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+> > > ---
+> > >  tests/kms_big_fb.c | 4 ++++
+> > >  1 file changed, 4 insertions(+)
+> > >
+> > > diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c index
+> > > c6f374bdd073..91439ceb34b6 100644
+> > > --- a/tests/kms_big_fb.c
+> > > +++ b/tests/kms_big_fb.c
+> > > @@ -978,7 +978,9 @@ igt_main
+> > >  igt_require(data.format ==
+> > > DRM_FORMAT_C8 ||
+> > >
+> > > igt_fb_supported_format(data.format));
+> > >
+> > > igt_require(igt_display_has_format_mod(&data.display, data.format,
+> > > data.modifier));
+> > > +data.ibb =
+> > > intel_bb_create(data.drm_fd, 4096);
+> > >  test_scanout(&data);
+> > > +intel_bb_destroy(data.ibb);
+> > >  }
+> > >
+> > >  // async flip doesn't support linear fbs.
+> > > @@ -994,7 +996,9 @@ igt_main
+> > >
+> > > igt_require(igt_display_has_format_mod(&data.display, data.format,
+> > > data.modifier));
+> > >
+> > > igt_require_f(data.async_flip_support, "Async Flip is not
+> > > supported\n");  data.max_hw_fb_width = min(data.hw_stride /
+> > > (formats[j].bpp >> 3), data.max_fb_width);
+> > > +data.ibb =
+> > > intel_bb_create(data.drm_fd, 4096);
+> > >  test_scanout(&data);
+> > > +intel_bb_destroy(data.ibb);
+> > >  }
+> > >  data.async_flip_test = false;
+> > >  }
+> > > --
+> > > 2.32.0
+> 
 
 _______________________________________________
 igt-dev mailing list
