@@ -1,73 +1,56 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Matthew Brost <matthew.brost@intel.com>
-Date: Tue, 27 Jul 2021 08:22:02 -0700
-Message-Id: <20210727152202.9527-8-matthew.brost@intel.com>
+Date: Tue, 27 Jul 2021 08:22:00 -0700
+Message-Id: <20210727152202.9527-6-matthew.brost@intel.com>
 In-Reply-To: <20210727152202.9527-1-matthew.brost@intel.com>
 References: <20210727152202.9527-1-matthew.brost@intel.com>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t 7/7] i915/gem_ctx_shared: Make
- gem_ctx_shared understand static priority mapping
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Subject: [igt-dev] [PATCH i-g-t 5/7] include/drm-uapi: Add static priority
+ mapping UAPI
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The i915 currently has 2k visible priority levels which are currently
-unique. This is changing to statically map these 2k levels into 3
-buckets:
-
-low: < 0
-mid: 0
-high: > 0
-
-Update gem_scheduler to understand this. This entails updating promotion
-test to use 3 levels that will map into different buckets and also
-delete a racey check.
-
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- tests/i915/gem_ctx_shared.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/drm-uapi/i915_drm.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
-index 4441e6eb7..0d95df8a5 100644
---- a/tests/i915/gem_ctx_shared.c
-+++ b/tests/i915/gem_ctx_shared.c
-@@ -771,10 +771,10 @@ static void promotion(int i915, const intel_ctx_cfg_t *cfg, unsigned ring)
- 	gem_context_set_priority(i915, ctx[LO]->id, MIN_PRIO);
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index 332c07e3d..0c023a52d 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -572,6 +572,15 @@ typedef struct drm_i915_irq_wait {
+ #define   I915_SCHEDULER_CAP_PREEMPTION	(1ul << 2)
+ #define   I915_SCHEDULER_CAP_SEMAPHORES	(1ul << 3)
+ #define   I915_SCHEDULER_CAP_ENGINE_BUSY_STATS	(1ul << 4)
++/*
++ * Indicates the 2k user priority levels are statically mapped into 3 buckets as
++ * follows:
++ *
++ * -1k to -1	Low priority
++ * 0		Normal priority
++ * 1 to 1k	Highest priority
++ */
++#define   I915_SCHEDULER_CAP_STATIC_PRIORITY_MAP	(1ul << 5)
  
- 	ctx[HI] = intel_ctx_create(i915, &q_cfg);
--	gem_context_set_priority(i915, ctx[HI]->id, 0);
-+	gem_context_set_priority(i915, ctx[HI]->id, MAX_PRIO);
+ #define I915_PARAM_HUC_STATUS		 42
  
- 	ctx[NOISE] = intel_ctx_create(i915, &q_cfg);
--	gem_context_set_priority(i915, ctx[NOISE]->id, MIN_PRIO/2);
-+	gem_context_set_priority(i915, ctx[NOISE]->id, 0);
- 
- 	result = gem_create(i915, 4096);
- 	dep = gem_create(i915, 4096);
-@@ -811,7 +811,6 @@ static void promotion(int i915, const intel_ctx_cfg_t *cfg, unsigned ring)
- 			I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
- 	gem_close(i915, result);
- 
--	igt_assert_eq_u32(ptr[0], ctx[NOISE]->id);
- 	munmap(ptr, 4096);
- 
- 	intel_ctx_destroy(i915, ctx[NOISE]);
 -- 
 2.28.0
 
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
