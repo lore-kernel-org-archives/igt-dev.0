@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4E6B6E027
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jul 2021 05:03:58 +0000 (UTC)
-From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Date: Wed, 28 Jul 2021 10:25:44 +0530
-Message-Id: <20210728045544.1046657-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C79866E027
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jul 2021 05:17:04 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Date: Tue, 27 Jul 2021 22:17:00 -0700
+Message-Id: <20210728051700.21223-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [i-g-t] tests/kms_plane_alpha_blend: Align width to 256B
+Subject: [igt-dev] [PATCH i-g-t] lib/i915: Add i915_drm_local.h
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,48 +14,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-some display resolutions like 1366x768 6bpc which does not
-have 64B aligned width are creating crc mismatch in
-kms_plane_alpha_blend test on Intel platforms.
-
-Also having different alignment requirement by different drivers,
-256B aligned width should work for all drm drivers.
-
-amdgpu and radeon, amdgpu_align_pitch: 256B
-armada, armada_pitch: 128B
-exynos_drm_gem_dumb_create: No alignment required
-drm_gem_shmem_dumb_create: 8B
-drm_gem_vram_fill_create_dumb: 8B
-
-Thus 256B covers everything we see in the kernel drm drivers.
-Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
----
- tests/kms_plane_alpha_blend.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-index d649a09f..864e83f9 100644
---- a/tests/kms_plane_alpha_blend.c
-+++ b/tests/kms_plane_alpha_blend.c
-@@ -168,6 +168,7 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe)
- 	w = mode->hdisplay;
- 	h = mode->vdisplay;
- 
-+	w = ALIGN(w, 256);
- 	/* recreate all fbs if incompatible */
- 	if (data->xrgb_fb.width != w || data->xrgb_fb.height != h) {
- 		cairo_t *cr;
--- 
-2.31.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SXQgaXMgbmVjZXNzYXJ5IG9uIG9jY2FzaW9uIHRvIGFkZCB1YXBpIGRlY2xhcmF0aW9ucyB0byBJ
+R1QgYmVmb3JlIHRoZXkKYXBwZWFyIGluIGltcG9ydGVkIGtlcm5lbCB1YXBpIGhlYWRlcnMuIFRo
+aXMgaXMgdHlwaWNhbGx5IGRvbmUgYXQgcHJlc2VudAp1c2luZyBMT0NBTCBkZWNsYXJhdGlvbnMg
+KG9yICNpZm5kZWYncykgd2hpY2ggYXJlIGRpc3BlcnNlZCBhY3Jvc3MgbXVsdGlwbGUKc291cmNl
+IGFuZCBoZWFkZXIgZmlsZXMuIFN1Y2ggZGVjbGFyYXRpb25zIHNvbWV0aW1lcyBsaW5nZXIgb24g
+aW4gdGhlIGNvZGUKZm9yIG1vbnRocyBvciB5ZWFycyB0aWxsIHNvbWVvbmUgdGhpbmtzIG9mIGNs
+ZWFuaW5nIHRoZW0gdXAuCgpBcyBvcHBvc2VkIHRvIHRoaXMsIHByb3ZpZGUgYSBjZW50cmFsIGxv
+Y2F0aW9uIChpbiBpOTE1X2RybV9sb2NhbC5oKSBmb3IKc3VjaCBlYXJseSB1YXBpIGRlY2xhcmF0
+aW9ucyBpbiBJR1QuIFRoZXNlIGRlY2xhcmF0aW9ucyB3aWxsIGJlIGFkZGVkIHRvCmk5MTVfZHJt
+X2xvY2FsLmggZXhhY3RseSBhcyB0aGV5IGFyZSBleHBlY3RlZCB0byBhcHBlYXIgaW4gdGhlIGtl
+cm5lbCB1YXBpCmhlYWRlcnMsIGkuZS4gd2l0aG91dCB0aGUgTE9DQUxfIG9yIGxvY2FsXyBwcmVm
+aXguIFRoZXkgY2FuIGJlIGNsZWFuZWQgdXAKd2hlbiB0aGUgdWFwaSBoZWFkZXJzIGFyZSBzeW5j
+J2Qgb3IgdGhleSBjYW4gbGl2ZSBvbiAoaWYgdGhleSBkb24ndApjb25mbGljdCB3aXRoIHRoZSBr
+ZXJuZWwgaGVhZGVycykgYnV0IGF0IGxlYXN0IHRoZXkgd2lsbCBiZSBpbiBhIHNpbmdsZQpwbGFj
+ZSBhbmQgbW9yZSB2aXNpYmxlLiBBdCBsZWFzdCB0aGF0IGlzIHRoZSBob3BlLgoKQ2M6IFBldHJp
+IExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgpTaWduZWQtb2ZmLWJ5OiBBc2h1dG9z
+aCBEaXhpdCA8YXNodXRvc2guZGl4aXRAaW50ZWwuY29tPgotLS0KIGxpYi9pOTE1L2k5MTVfZHJt
+X2xvY2FsLmggfCAyNyArKysrKysrKysrKysrKysrKysrKysrKysrKysKIGxpYi9pZ3RfZ3QuaCAg
+ICAgICAgICAgICAgfCAgMSArCiAyIGZpbGVzIGNoYW5nZWQsIDI4IGluc2VydGlvbnMoKykKIGNy
+ZWF0ZSBtb2RlIDEwMDY0NCBsaWIvaTkxNS9pOTE1X2RybV9sb2NhbC5oCgpkaWZmIC0tZ2l0IGEv
+bGliL2k5MTUvaTkxNV9kcm1fbG9jYWwuaCBiL2xpYi9pOTE1L2k5MTVfZHJtX2xvY2FsLmgKbmV3
+IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAwMDAuLmRkNjQ2YWVkZjQ5Ci0tLSAvZGV2
+L251bGwKKysrIGIvbGliL2k5MTUvaTkxNV9kcm1fbG9jYWwuaApAQCAtMCwwICsxLDI3IEBACisv
+KiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogTUlUICovCisvKgorICogQ29weXJpZ2h0IMKpIDIw
+MjEgSW50ZWwgQ29ycG9yYXRpb24KKyAqLworI2lmbmRlZiBfSTkxNV9EUk1fTE9DQUxfSF8KKyNk
+ZWZpbmUgX0k5MTVfRFJNX0xPQ0FMX0hfCisKKyNpZiBkZWZpbmVkKF9fY3BsdXNwbHVzKQorZXh0
+ZXJuICJDIiB7CisjZW5kaWYKKworLyoKKyAqIEl0IGlzIG5lY2Vzc2FyeSBvbiBvY2Nhc2lvbiB0
+byBhZGQgdWFwaSBkZWNsYXJhdGlvbnMgdG8gSUdUIGJlZm9yZSB0aGV5CisgKiBhcHBlYXIgaW4g
+aW1wb3J0ZWQga2VybmVsIHVhcGkgaGVhZGVycy4gVGhpcyBoZWFkZXIgaXMgcHJvdmlkZWQgZm9y
+IHRoaXMKKyAqIHB1cnBvc2UuCisKKyAqIEVhcmx5IHVhcGkgZGVjbGFyYXRpb25zIHNob3VsZCBi
+ZSBhZGRlZCBoZXJlIGV4YWN0bHkgYXMgdGhleSBhcmUKKyAqIGV4cGVjdGVkIHRvIGFwcGVhciBp
+biB0aGUga2VybmVsIHVhcGkgaGVhZGVycywgaS5lLiB3aXRob3V0IHRoZSBMT0NBTF8KKyAqIG9y
+IGxvY2FsXyBwcmVmaXggYW5kIHdpdGhvdXQgYW55ICNpZm5kZWYncy4gQXR0ZW1wdCBzaG91bGQg
+YmUgbWFkZSB0bworICogY2xlYW4gdGhlc2UgdXAgd2hlbiBrZXJuZWwgdWFwaSBoZWFkZXJzIGFy
+ZSBzeW5jJ2QuCisgKi8KKworI2lmIGRlZmluZWQoX19jcGx1c3BsdXMpCit9CisjZW5kaWYKKwor
+I2VuZGlmIC8qIF9JOTE1X0RSTV9MT0NBTF9IXyAqLwpkaWZmIC0tZ2l0IGEvbGliL2lndF9ndC5o
+IGIvbGliL2lndF9ndC5oCmluZGV4IDJlYTM2MGNjNDhhLi5kODdmYWUyZDM5YyAxMDA2NDQKLS0t
+IGEvbGliL2lndF9ndC5oCisrKyBiL2xpYi9pZ3RfZ3QuaApAQCAtMjgsNiArMjgsNyBAQAogI2lu
+Y2x1ZGUgImlndF9kdW1teWxvYWQuaCIKICNpbmNsdWRlICJpZ3RfY29yZS5oIgogCisjaW5jbHVk
+ZSAiaTkxNS9pOTE1X2RybV9sb2NhbC5oIgogI2luY2x1ZGUgImk5MTVfZHJtLmgiCiAKIHZvaWQg
+aWd0X3JlcXVpcmVfaGFuZ19yaW5nKGludCBmZCwgaW50IHJpbmcpOwotLSAKMi4zMS4xCgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxp
+bmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVk
+ZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
