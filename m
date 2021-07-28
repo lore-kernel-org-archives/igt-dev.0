@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com
- [IPv6:2607:f8b0:4864:20::730])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED3EA6E49A
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jul 2021 17:16:20 +0000 (UTC)
-Received: by mail-qk1-x730.google.com with SMTP id 129so2954014qkg.4
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jul 2021 10:16:20 -0700 (PDT)
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Wed, 28 Jul 2021 13:16:16 -0400
-Message-Id: <20210728171616.2242447-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] tests/kms_flip: Discard any stale event at each
- retry
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 28 Jul 2021 18:39:47 -0000
+Message-ID: <162749758720.22806.10969387444677931933@emeril.freedesktop.org>
+References: <20210728151207.5322-1-andrzej.turko@linux.intel.com>
+In-Reply-To: <20210728151207.5322-1-andrzej.turko@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
+ =?utf-8?q?mplement_the_BST_allocator?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,80 +14,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: robdclark@chromium.org, petri.latvala@intel.com, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
+To: Andrzej Turko <andrzej.turko@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mark Yacoub <markyacoub@google.com>
+== Series Details ==
 
-[Why]
-On slower devices, non blocking do_page_flip followed by wait_for_events does not finish fast enough to send an event to be consumed by wait_for_events.
-Instead, wait_for_events ends up finding an unconsumed event from a
-previous do_page_flip (i.e. a skipped preceding subtest) and signals
-that the userspace is ready to do another do_page_flip while the first
-one hasn't finished yet, resulting in an EBUSY.
+Series: Implement the BST allocator
+URL   : https://patchwork.freedesktop.org/series/93125/
+State : warning
 
-[How]
-At the beginning of every test running on crtc set, check for any stale
-events and consume them so the kernel has no pending events.
+== Summary ==
 
-Fixes: flip-vs-suspend and flip-vs-suspend-interruptible.
-Tested on ChromeOS Volteer(i915-TGL) and Trogdor(msm)
+Pipeline status: FAILED.
 
-Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
-Change-Id: I254a84a202140c332312aba1d9edf15ea78b7a61
----
- tests/kms_flip.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/369421 for the overview.
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index f2fce8d2..0a2041c5 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -1261,6 +1261,26 @@ static bool needs_retry_after_link_reset(struct udev_monitor *mon)
- 	return hotplug_detected;
- }
- 
-+static void discard_any_stale_events() {
-+	fd_set fds;
-+	FD_ZERO(&fds);
-+	FD_SET(drm_fd, &fds);
-+	struct timeval timeout = { .tv_sec = 3, .tv_usec = 0 };
-+	int ret = select(drm_fd + 1, &fds, NULL, NULL, &timeout);
-+
-+	if (ret > 0) {
-+		drmEventContext evctx;
-+		memset(&evctx, 0, sizeof evctx);
-+		evctx.version = 2;
-+		igt_info("Stale Event found - Discarding now\n");
-+		drmHandleEvent(drm_fd, &evctx);
-+	}
-+	else {
-+		igt_debug("No stale Event found\n");
-+	}
-+}
-+
-+
- static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
- 				   int crtc_count, int duration_ms)
- {
-@@ -1311,6 +1331,9 @@ static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
- 		kmstest_dump_mode(&o->kmode[i]);
- 
- retry:
-+	// Discard any pending event that hasn't been consumed from a previous retry or subtest.
-+	discard_any_stale_events();
-+
- 	memset(&o->vblank_state, 0, sizeof(o->vblank_state));
- 	memset(&o->flip_state, 0, sizeof(o->flip_state));
- 	o->flip_state.name = "flip";
--- 
-2.32.0.432.gabb21c7263-goog
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12267483):
+  
+    9/305 lib igt_exit_handler                    TIMEOUT 30.08 s 
+  
+  --- command ---
+  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_exit_handler
+  -------
+  
+   10/305 lib igt_fork                            TIMEOUT 30.03 s 
+  
+  --- command ---
+  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_fork
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1627497159:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
 
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12267821):
+      return options.run_func(options)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
+      return th.doit()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
+      self.run_tests(tests)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
+      self.drain_futures(futures)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
+      self.print_stats(numlen, tests, name, result.result(), i)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
+      result_str += "\n\n" + result.get_log()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
+      res += self.stde
+  TypeError: can only concatenate str (not "bytes") to str
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1627497278:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
+
+test:ninja-test-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12267484):
+      return options.run_func(options)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
+      return th.doit()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
+      self.run_tests(tests)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
+      self.drain_futures(futures)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
+      self.print_stats(numlen, tests, name, result.result(), i)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
+      result_str += "\n\n" + result.get_log()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
+      res += self.stde
+  TypeError: can only concatenate str (not "bytes") to str
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1627497165:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/369421
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
