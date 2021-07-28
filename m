@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Matthew Auld <matthew.auld@intel.com>
-Date: Wed, 28 Jul 2021 11:30:33 +0100
-Message-Id: <20210728103041.1669985-3-matthew.auld@intel.com>
+Date: Wed, 28 Jul 2021 11:30:34 +0100
+Message-Id: <20210728103041.1669985-4-matthew.auld@intel.com>
 In-Reply-To: <20210728103041.1669985-1-matthew.auld@intel.com>
 References: <20210728103041.1669985-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 03/11] lib/i915/gem_mman: add fixed mode
- to mmap__cpu_coherent
+Subject: [igt-dev] [PATCH i-g-t v2 04/11] lib/i915/gem_mman: add fixed mode
+ to gem_mmap__cpu
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,22 +30,28 @@ Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Cc: Ramalingam C <ramalingam.c@intel.com>
 ---
- lib/i915/gem_mman.c | 2 ++
- 1 file changed, 2 insertions(+)
+ lib/i915/gem_mman.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
-index 222e8896..337d28fb 100644
+index 337d28fb..6f5e6d72 100644
 --- a/lib/i915/gem_mman.c
 +++ b/lib/i915/gem_mman.c
-@@ -580,6 +580,8 @@ void *gem_mmap__cpu_coherent(int fd, uint32_t handle, uint64_t offset,
- 	igt_assert(offset == 0);
- 
- 	ptr = __gem_mmap__cpu_coherent(fd, handle, offset, size, prot);
+@@ -434,7 +434,13 @@ void *gem_mmap__device_coherent(int fd, uint32_t handle, uint64_t offset,
+  */
+ void *__gem_mmap__cpu(int fd, uint32_t handle, uint64_t offset, uint64_t size, unsigned prot)
+ {
+-	return __gem_mmap(fd, handle, offset, size, prot, 0);
++	void *ptr;
++
++	ptr = __gem_mmap(fd, handle, offset, size, prot, 0);
 +	if (!ptr)
 +		ptr = __gem_mmap_offset__fixed(fd, handle, offset, size, prot);
- 	igt_assert(ptr);
++
++	return ptr;
+ }
  
- 	return ptr;
+ /**
 -- 
 2.26.3
 
