@@ -1,12 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: Matthew Auld <matthew.auld@intel.com>
+Date: Wed, 28 Jul 2021 11:30:31 +0100
+Message-Id: <20210728103041.1669985-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 28 Jul 2021 09:28:01 -0000
-Message-ID: <162746448151.22805.9449127616711018387@emeril.freedesktop.org>
-References: <20210728051700.21223-1-ashutosh.dixit@intel.com>
-In-Reply-To: <20210728051700.21223-1-ashutosh.dixit@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_l?=
- =?utf-8?q?ib/i915=3A_Add_i915=5Fdrm=5Flocal=2Eh?=
+Subject: [igt-dev] [PATCH i-g-t v2 01/11] lib/i915/gem_mman: add FIXED mmap
+ mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,117 +12,99 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+We need this for discrete.
 
-Series: lib/i915: Add i915_drm_local.h
-URL   : https://patchwork.freedesktop.org/series/93096/
-State : warning
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Ramalingam C <ramalingam.c@intel.com>
+---
+ lib/i915/gem_mman.c | 37 +++++++++++++++++++++++++++++++++++++
+ lib/i915/gem_mman.h |  4 ++++
+ 2 files changed, 41 insertions(+)
 
-== Summary ==
+diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
+index 4b4f2114..e2514f0c 100644
+--- a/lib/i915/gem_mman.c
++++ b/lib/i915/gem_mman.c
+@@ -497,6 +497,43 @@ void *gem_mmap_offset__cpu(int fd, uint32_t handle, uint64_t offset,
+ 	return ptr;
+ }
+ 
++#define LOCAL_I915_MMAP_OFFSET_FIXED 4
++
++void *__gem_mmap_offset__fixed(int fd, uint32_t handle, uint64_t offset,
++			       uint64_t size, unsigned prot)
++{
++	return __gem_mmap_offset(fd, handle, offset, size, prot,
++				 LOCAL_I915_MMAP_OFFSET_FIXED);
++}
++
++/**
++ * gem_mmap_offset__fixed: Used to mmap objects on discrete platforms
++ * @fd: open i915 drm file descriptor
++ * @handle: gem buffer object handle
++ * @offset: offset in the gem buffer of the mmap arena
++ * @size: size of the mmap arena
++ * @prot: memory protection bits as used by mmap()
++ *
++ * Like __gem_mmap_offset__fixed() except we assert on failure.
++ *
++ * For discrete the caching attributes for the pages are fixed at allocation
++ * time, and can't be changed. The FIXED mode will simply use the same caching *
++ * mode of the allocated pages. This mode will always be coherent with GPU
++ * access.
++ *
++ * On non-discrete platforms this mode is not supported.
++ *
++ * Returns: A pointer to the created memory mapping
++ */
++void *gem_mmap_offset__fixed(int fd, uint32_t handle, uint64_t offset,
++			   uint64_t size, unsigned prot)
++{
++	void *ptr = __gem_mmap_offset__fixed(fd, handle, offset, size, prot);
++
++	igt_assert(ptr);
++	return ptr;
++}
++
+ /**
+  * __gem_mmap__cpu_coherent:
+  * @fd: open i915 drm file descriptor
+diff --git a/lib/i915/gem_mman.h b/lib/i915/gem_mman.h
+index 5695d2ad..290c997d 100644
+--- a/lib/i915/gem_mman.h
++++ b/lib/i915/gem_mman.h
+@@ -37,6 +37,8 @@ bool gem_mmap_offset__has_wc(int fd);
+ void *gem_mmap__wc(int fd, uint32_t handle, uint64_t offset, uint64_t size, unsigned prot);
+ void *gem_mmap_offset__wc(int fd, uint32_t handle, uint64_t offset,
+ 			  uint64_t size, unsigned prot);
++void *gem_mmap_offset__fixed(int fd, uint32_t handle, uint64_t offset,
++			     uint64_t size, unsigned prot);
+ void *gem_mmap__device_coherent(int fd, uint32_t handle, uint64_t offset,
+ 				uint64_t size, unsigned prot);
+ void *gem_mmap__cpu_coherent(int fd, uint32_t handle, uint64_t offset,
+@@ -54,6 +56,8 @@ void *__gem_mmap_offset__cpu(int fd, uint32_t handle, uint64_t offset,
+ void *__gem_mmap__wc(int fd, uint32_t handle, uint64_t offset, uint64_t size, unsigned prot);
+ void *__gem_mmap_offset__wc(int fd, uint32_t handle, uint64_t offset,
+ 			    uint64_t size, unsigned prot);
++void *__gem_mmap_offset__fixed(int fd, uint32_t handle, uint64_t offset,
++			       uint64_t size, unsigned prot);
+ void *__gem_mmap__device_coherent(int fd, uint32_t handle, uint64_t offset,
+ 				  uint64_t size, unsigned prot);
+ void *__gem_mmap_offset(int fd, uint32_t handle, uint64_t offset, uint64_t size,
+-- 
+2.26.3
 
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/368959 for the overview.
-
-test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12239125):
-  
-    9/305 lib igt_exit_handler                    TIMEOUT 30.06 s 
-  
-  --- command ---
-  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_exit_handler
-  -------
-  
-   10/305 lib igt_fork                            TIMEOUT 30.05 s 
-  
-  --- command ---
-  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_fork
-  -------
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1627464155:step_script
-  ERROR: Job failed: execution took longer than 1h0m0s seconds
-  
-
-test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12239126):
-      return options.run_func(options)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
-      return th.doit()
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
-      self.run_tests(tests)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
-      self.drain_futures(futures)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
-      self.print_stats(numlen, tests, name, result.result(), i)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
-      result_str += "\n\n" + result.get_log()
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
-      res += self.stde
-  TypeError: can only concatenate str (not "bytes") to str
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1627464155:step_script
-  ERROR: Job failed: execution took longer than 1h0m0s seconds
-  
-
-test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12239127):
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
-      return th.doit()
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
-      self.run_tests(tests)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
-      self.drain_futures(futures)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
-      self.print_stats(numlen, tests, name, result.result(), i)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
-      result_str += "\n\n" + result.get_log()
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
-      res += self.stde
-  TypeError: can only concatenate str (not "bytes") to str
-    1/291 lib igt_assert                          TIMEOUT 32.04 s 
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1627464155:step_script
-  ERROR: Job failed: execution took longer than 1h0m0s seconds
-  
-
-test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12239128):
-      return options.run_func(options)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
-      return th.doit()
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
-      self.run_tests(tests)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
-      self.drain_futures(futures)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
-      self.print_stats(numlen, tests, name, result.result(), i)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
-      result_str += "\n\n" + result.get_log()
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
-      res += self.stde
-  TypeError: can only concatenate str (not "bytes") to str
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1627464155:step_script
-  ERROR: Job failed: execution took longer than 1h0m0s seconds
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/368959
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
