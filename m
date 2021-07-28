@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Matthew Auld <matthew.auld@intel.com>
-Date: Wed, 28 Jul 2021 11:30:32 +0100
-Message-Id: <20210728103041.1669985-2-matthew.auld@intel.com>
+Date: Wed, 28 Jul 2021 11:30:33 +0100
+Message-Id: <20210728103041.1669985-3-matthew.auld@intel.com>
 In-Reply-To: <20210728103041.1669985-1-matthew.auld@intel.com>
 References: <20210728103041.1669985-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 02/11] lib/i915/gem_mman: add fixed mode
- to mmap__device_coherent
+Subject: [igt-dev] [PATCH i-g-t v2 03/11] lib/i915/gem_mman: add fixed mode
+ to mmap__cpu_coherent
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,7 +22,7 @@ To: igt-dev@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On discrete we need to fallback to this mode.
+On discrete we only support the new fixed mode.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
@@ -30,25 +30,22 @@ Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Cc: Ramalingam C <ramalingam.c@intel.com>
 ---
- lib/i915/gem_mman.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ lib/i915/gem_mman.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
-index e2514f0c..222e8896 100644
+index 222e8896..337d28fb 100644
 --- a/lib/i915/gem_mman.c
 +++ b/lib/i915/gem_mman.c
-@@ -383,9 +383,10 @@ void *__gem_mmap__device_coherent(int fd, uint32_t handle, uint64_t offset,
- 				      I915_MMAP_OFFSET_WC);
- 	if (!ptr)
- 		ptr = __gem_mmap__wc(fd, handle, offset, size, prot);
--
- 	if (!ptr)
- 		ptr = __gem_mmap__gtt(fd, handle, size, prot);
+@@ -580,6 +580,8 @@ void *gem_mmap__cpu_coherent(int fd, uint32_t handle, uint64_t offset,
+ 	igt_assert(offset == 0);
+ 
+ 	ptr = __gem_mmap__cpu_coherent(fd, handle, offset, size, prot);
 +	if (!ptr)
 +		ptr = __gem_mmap_offset__fixed(fd, handle, offset, size, prot);
+ 	igt_assert(ptr);
  
  	return ptr;
- }
 -- 
 2.26.3
 
