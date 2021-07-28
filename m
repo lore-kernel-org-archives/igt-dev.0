@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67B496E9B8
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jul 2021 11:31:21 +0000 (UTC)
-References: <20210525200508.5451-1-bhanuprakash.modem@intel.com>
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-Message-ID: <d188ee67-447b-50fb-1ed6-fce700257d9d@intel.com>
-Date: Wed, 28 Jul 2021 17:01:05 +0530
-In-Reply-To: <20210525200508.5451-1-bhanuprakash.modem@intel.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_setmode: Fix mode selection
- for Nx tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 28 Jul 2021 13:58:55 -0000
+Message-ID: <162748073560.22807.9181307917336433697@emeril.freedesktop.org>
+References: <20210728103041.1669985-1-matthew.auld@intel.com>
+In-Reply-To: <20210728103041.1669985-1-matthew.auld@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
+ =?utf-8?q?eries_starting_with_=5Bi-g-t=2Cv2=2C01/11=5D_lib/i915/gem=5Fmma?=
+ =?utf-8?q?n=3A_add_FIXED_mmap_mode?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,115 +15,118 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, igt-dev@lists.freedesktop.org, imre.deak@intel.com
+To: Matthew Auld <matthew.auld@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgQmhhbnUsCgpPdmVyYWxsIHRoZSBjaGFuZ2UgbG9va3MgZ29vZCB0byBtZS4KCk9ubHkgb25l
-IHRoaW5nIHRoYXQgd2UgbWlnaHQgd2FudCB0byBjaGFuZ2UgaXM6CgpXZSBhcmUgY3VycmVudGx5
-LCB0cnlpbmcgYWxsIG1vZGVzIG9mIERpc3BsYXkgMiB3aXRoIGZpcnN0IG1vZGUgb2YgCkRpc3Bs
-YXkgMS4KCklmIHdlIGV4aGF1c3QgYWxsIHRoZSBtb2RlcyBvZiBEaXNwbGF5Miwgd2Ugc2hvdWxk
-IGdvIHdpdGggdGhlIDJuZCBtb2RlIApvZiBEaXNwbGF5MSBhbmQgdHJ5IGFnYWluLgoKSW5zdGVh
-ZCB3ZSBqdXN0IHJldHVybiBmcm9tIHRoYXQgcG9pbnQuCgpDb25zaWRlciBhIGh5cG90aGV0aWNh
-bCBjYXNlOiBTYXkgd2UgaGF2ZSBEUCBhbmQgZURQIGNvbWJpbmF0aW9uIG1hcHBlZCAKdG8gcGlw
-ZSBBIGFuZCBwaXBlIEIuCgpJbiB0aGF0IGNhc2UsIGZpcnN0IHdlIHdpbGwgdHJ5IGZpcnN0IGZv
-ciBEUCAocGlwZSBBKSBhbmQgdGhlbiB0cnkgYWxsIAptb2RlcyBvZiBlRFAuCgpJbiBjYXNlIG9m
-IGVEUCBpcyBoYXZpbmcgZml4ZWQgbW9kZSwgd2UgZ2V0IG91dCBvZiByZWN1cnNpb24gYWZ0ZXIg
-CnRyeWluZyB0aGUgb25lIGZpeGVkIG1vZGUgb2YgRGlzcGxheTIgYW5kIGp1c3QgZmFpbCB0aGUg
-dGVzdCwgaW5zdGVhZCBvZiAKdHJ5aW5nIHdpdGggbG93ZXIgbW9kZXMgb2YgRFAuCgpQbGVhc2Ug
-ZmluZCBpbmxpbmUgc3VnZ2VzdGlvbiB0byBmaXggdGhpczoKCgpPbiA1LzI2LzIwMjEgMTozNSBB
-TSwgQmhhbnVwcmFrYXNoIE1vZGVtIHdyb3RlOgo+IFRoaXMgcGF0Y2ggd2lsbCBmaW5kIHRoZSBj
-b25uZWN0b3IvbW9kZSBjb21iaW5hdGlvbiB0aGF0IGZpdHMKPiBpbnRvIHRoZSBiYW5kd2lkdGgg
-d2hlbiBtb3JlIHRoYW4gb25lIG1vbml0b3IgaXMgY29ubmVjdGVkLgo+Cj4gRXhhbXBsZToKPiAg
-ICBXaGVuIHR3byBtb25pdG9ycyBjb25uZWN0ZWQgdGhyb3VnaCBNU1QsIHRoZSBzZWNvbmQgbW9u
-aXRvcgo+ICAgIGFsc28gdHJpZXMgdG8gdXNlIHRoZSBzYW1lIG1vZGUuIFNvIHR3byBzdWNoIG1v
-ZGVzIG1heSBub3QKPiAgICBmaXQgaW50byB0aGUgbGluayBiYW5kd2lkdGguIFNvLCBpdGVyYXRl
-IHRocm91Z2ggY29ubmVjdGVkCj4gICAgb3V0cHV0cyAmIG1vZGVzIGFuZCBmaW5kIGEgY29tYmlu
-YXRpb24gb2YgbW9kZXMgdGhvc2UgZml0Cj4gICAgaW50byB0aGUgbGluayBCVy4KPgo+IENjOiBJ
-bXJlIERlYWsgPGltcmUuZGVha0BpbnRlbC5jb20+Cj4gQ2M6IEFua2l0IE5hdXRpeWFsIDxhbmtp
-dC5rLm5hdXRpeWFsQGludGVsLmNvbT4KPiBTaWduZWQtb2ZmLWJ5OiBCaGFudXByYWthc2ggTW9k
-ZW0gPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+Cj4gLS0tCj4gICB0ZXN0cy9rbXNfc2V0
-bW9kZS5jIHwgOTUgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0t
-Cj4gICAxIGZpbGUgY2hhbmdlZCwgNjggaW5zZXJ0aW9ucygrKSwgMjcgZGVsZXRpb25zKC0pCj4K
-PiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX3NldG1vZGUuYyBiL3Rlc3RzL2ttc19zZXRtb2RlLmMK
-PiBpbmRleCBlYjlhYzE4OTY0Li45M2NjYjgyOWUzIDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2ttc19z
-ZXRtb2RlLmMKPiArKysgYi90ZXN0cy9rbXNfc2V0bW9kZS5jCj4gQEAgLTQ2LDYgKzQ2LDkgQEAg
-c3RhdGljIGludCBmaWx0ZXJfdGVzdF9pZDsKPiAgIHN0YXRpYyBib29sIGRyeV9ydW47Cj4gICBz
-dGF0aWMgYm9vbCBhbGxfcGlwZXMgPSBmYWxzZTsKPiAgIAo+ICtzdGF0aWMgY2hhciBzdHJfYnVm
-W01BWF9DUlRDU11bMTAyNF07Cj4gK3N0YXRpYyBjb25zdCBjaGFyICpjcnRjX3N0cnNbTUFYX0NS
-VENTXTsKPiArCj4gICBjb25zdCBkcm1Nb2RlTW9kZUluZm8gbW9kZV82NDBfNDgwID0gewo+ICAg
-CS5uYW1lCQk9ICI2NDB4NDgwIiwKPiAgIAkudnJlZnJlc2gJPSA2MCwKPiBAQCAtNTQwLDQ0ICs1
-NDMsNDYgQEAgc3RhdGljIHZvaWQgY2hlY2tfdGltaW5ncyhpbnQgY3J0Y19pZHgsIGNvbnN0IGRy
-bU1vZGVNb2RlSW5mbyAqa21vZGUpCj4gICAJCSAgICAgZmFicyhtZWFuIC0gZXhwZWN0ZWQpIC8g
-bGluZV90aW1lKGttb2RlKSk7Cj4gICB9Cj4gICAKPiAtc3RhdGljIHZvaWQgdGVzdF9jcnRjX2Nv
-bmZpZyhjb25zdCBzdHJ1Y3QgdGVzdF9jb25maWcgKnRjb25mLAo+IC0JCQkgICAgIHN0cnVjdCBj
-cnRjX2NvbmZpZyAqY3J0Y3MsIGludCBjcnRjX2NvdW50KQo+ICtzdGF0aWMgaW50IHNvcnRfZHJt
-X21vZGVzKGNvbnN0IHZvaWQgKmEsIGNvbnN0IHZvaWQgKmIpCj4gICB7Cj4gLQljaGFyIHN0cl9i
-dWZbTUFYX0NSVENTXVsxMDI0XTsKPiAtCWNvbnN0IGNoYXIgKmNydGNfc3Ryc1tNQVhfQ1JUQ1Nd
-Owo+IC0Jc3RydWN0IGNydGNfY29uZmlnICpjcnRjOwo+IC0Jc3RhdGljIGludCB0ZXN0X2lkOwo+
-IC0JYm9vbCBjb25maWdfZmFpbGVkID0gZmFsc2U7Cj4gLQlpbnQgcmV0ID0gMDsKPiAtCWludCBp
-Owo+ICsJY29uc3QgZHJtTW9kZU1vZGVJbmZvICptb2RlMSA9IGEsICptb2RlMiA9IGI7Cj4gICAK
-PiAtCXRlc3RfaWQrKzsKPiArCXJldHVybiAobW9kZTEtPmNsb2NrIDwgbW9kZTItPmNsb2NrKSAt
-IChtb2RlMi0+Y2xvY2sgPCBtb2RlMS0+Y2xvY2spOwo+ICt9Cj4gICAKPiAtCWlmIChmaWx0ZXJf
-dGVzdF9pZCAmJiBmaWx0ZXJfdGVzdF9pZCAhPSB0ZXN0X2lkKQo+IC0JCXJldHVybjsKPiArc3Rh
-dGljCj4gK2ludCBfX3Rlc3RfY3J0Y19jb25maWcoc3RydWN0IGNydGNfY29uZmlnICpjcnRjcywg
-aW50IGNydGNfY291bnQsCj4gKwkJICAgICAgIGNvbnN0IHN0cnVjdCB0ZXN0X2NvbmZpZyAqdGNv
-bmYsIGJvb2wgKmNvbmZpZ19mYWlsZWQsCj4gKwkJICAgICAgIGludCBiYXNlKQo+ICt7Cj4gKwlz
-dHJ1Y3QgY3J0Y19jb25maWcgKmNydGMgPSBOVUxMOwo+ICsJaW50IHJldCA9IDA7Cj4gICAKPiAt
-CWlndF9pbmZvKCIgIFRlc3QgaWQjJWQgQ1JUQyBjb3VudCAlZFxuIiwgdGVzdF9pZCwgY3J0Y19j
-b3VudCk7Cj4gKwlpZiAoYmFzZSA+PSBjcnRjX2NvdW50KQo+ICsJCXJldHVybiByZXQ7Cj4gICAK
-PiAtCWZvciAoaSA9IDA7IGkgPCBjcnRjX2NvdW50OyBpKyspIHsKPiAtCQlnZXRfY3J0Y19jb25m
-aWdfc3RyKCZjcnRjc1tpXSwgc3RyX2J1ZltpXSwgc2l6ZW9mKHN0cl9idWZbaV0pKTsKPiAtCQlj
-cnRjX3N0cnNbaV0gPSAmc3RyX2J1ZltpXVswXTsKPiAtCX0KPiArCWNydGMgPSAmY3J0Y3NbYmFz
-ZV07Cj4gICAKPiAtCWlmIChkcnlfcnVuKSB7Cj4gLQkJZm9yIChpID0gMDsgaSA8IGNydGNfY291
-bnQ7IGkrKykKPiAtCQkJaWd0X2luZm8oIiAgICAlc1xuIiwgY3J0Y19zdHJzW2ldKTsKPiAtCQly
-ZXR1cm47Cj4gLQl9Cj4gKwkvKiBTb3J0IHRoZSBtb2RlcyBpbiBkZXNjZW5kaW5nIG9yZGVyIGJ5
-IGNsb2NrIGZyZXEuICovCj4gKwlxc29ydChjcnRjLT5jY29uZnMtPmNvbm5lY3Rvci0+bW9kZXMs
-Cj4gKwkJY3J0Yy0+Y2NvbmZzLT5jb25uZWN0b3ItPmNvdW50X21vZGVzLAo+ICsJCXNpemVvZihk
-cm1Nb2RlTW9kZUluZm8pLAo+ICsJCXNvcnRfZHJtX21vZGVzKTsKPiAgIAo+IC0JZm9yIChpID0g
-MDsgaSA8IGNydGNfY291bnQ7IGkrKykgewo+ICsJZm9yIChpbnQgaSA9IDA7IGkgPCBjcnRjLT5j
-Y29uZnMtPmNvbm5lY3Rvci0+Y291bnRfbW9kZXM7IGkrKykgewo+ICAgCQl1aW50MzJfdCAqaWRz
-Owo+ICAgCj4gLQkJY3J0YyA9ICZjcnRjc1tpXTsKPiArCQlpZiAoIWNydGNfc3VwcG9ydHNfbW9k
-ZShjcnRjLCAmY3J0Yy0+Y2NvbmZzLT5jb25uZWN0b3ItPm1vZGVzW2ldKSkKPiArCQkJY29udGlu
-dWU7Cj4gKwo+ICsJCWNydGMtPm1vZGUgPSBjcnRjLT5jY29uZnMtPmNvbm5lY3Rvci0+bW9kZXNb
-aV07Cj4gICAKPiAtCQlpZ3RfaW5mbygiICAgICVzXG4iLCBjcnRjX3N0cnNbaV0pOwo+ICsJCWdl
-dF9jcnRjX2NvbmZpZ19zdHIoY3J0Yywgc3RyX2J1ZltiYXNlXSwgc2l6ZW9mKHN0cl9idWZbYmFz
-ZV0pKTsKPiArCQljcnRjX3N0cnNbYmFzZV0gPSAmc3RyX2J1ZltiYXNlXVswXTsKPiArCQlpZ3Rf
-aW5mbygiICAgICVzXG4iLCBjcnRjX3N0cnNbYmFzZV0pOwo+ICAgCj4gICAJCWNyZWF0ZV9mYl9m
-b3JfY3J0YyhjcnRjLCAmY3J0Yy0+ZmJfaW5mbyk7Cj4gLQkJcGFpbnRfZmIoJmNydGMtPmZiX2lu
-Zm8sIHRjb25mLT5uYW1lLCBjcnRjX3N0cnMsIGNydGNfY291bnQsIGkpOwo+ICsJCXBhaW50X2Zi
-KCZjcnRjLT5mYl9pbmZvLCB0Y29uZi0+bmFtZSwgY3J0Y19zdHJzLCBjcnRjX2NvdW50LCBiYXNl
-KTsKPiAgIAo+ICAgCQlpZHMgPSBnZXRfY29ubmVjdG9yX2lkcyhjcnRjKTsKPiAgIAkJaWYgKHRj
-b25mLT5mbGFncyAmIFRFU1RfU1RFQUxJTkcpCj4gQEAgLTU4OSwxMiArNTk0LDQ4IEBAIHN0YXRp
-YyB2b2lkIHRlc3RfY3J0Y19jb25maWcoY29uc3Qgc3RydWN0IHRlc3RfY29uZmlnICp0Y29uZiwK
-PiAgIAo+ICAgCQlmcmVlKGlkcyk7Cj4gICAKPiArCQlpZiAocmV0IDwgMCAmJiBlcnJubyA9PSBF
-Tk9TUEMpCj4gKwkJCWNvbnRpbnVlOwo+ICsKPiAgIAkJaWYgKHJldCA8IDApIHsKPiAgIAkJCWln
-dF9hc3NlcnRfZXEoZXJybm8sIEVJTlZBTCk7Cj4gLQkJCWNvbmZpZ19mYWlsZWQgPSB0cnVlOwo+
-ICsJCQkqY29uZmlnX2ZhaWxlZCA9IHRydWU7Cj4gICAJCX0KPiArCj4gKwkJcmV0dXJuIF9fdGVz
-dF9jcnRjX2NvbmZpZyhjcnRjcywgY3J0Y19jb3VudCwgdGNvbmYsIGNvbmZpZ19mYWlsZWQsIGJh
-c2UgKyAxKTsKCklNSE8gdGhpcyBzaG91bGQgYmU6CgpyZXQgPSBfX3Rlc3RfY3J0Y19jb25maWco
-Y3J0Y3MsIGNydGNfY291bnQsIHRjb25mLCBjb25maWdfZmFpbGVkLCBiYXNlICsgMSk7CgppZiAo
-cmV0IDwgMCAmJiBlcnJubyA9PSBFTk9TUEMpCgogwqDCoMKgwqDCoCBjb250aW51ZTsgLy9jb250
-aW51ZSB3aXRoIG5leHQgbW9kZSBvZiBjdXJyZW50IENSVEMKCmVsc2UKCiDCoMKgwqDCoMKgIHJl
-dHVybiByZXQ7CgoKUmVnYXJkcywKCkFua2l0CgoKPiArCX0KPiArCj4gKwlyZXR1cm4gcmV0Owo+
-ICt9Cj4gKwo+ICtzdGF0aWMgdm9pZCB0ZXN0X2NydGNfY29uZmlnKGNvbnN0IHN0cnVjdCB0ZXN0
-X2NvbmZpZyAqdGNvbmYsCj4gKwkJCSAgICAgc3RydWN0IGNydGNfY29uZmlnICpjcnRjcywgaW50
-IGNydGNfY291bnQpCj4gK3sKPiArCXN0YXRpYyBpbnQgdGVzdF9pZDsKPiArCWJvb2wgY29uZmln
-X2ZhaWxlZCA9IGZhbHNlOwo+ICsJaW50IHJldCA9IDA7Cj4gKwlpbnQgaTsKPiArCj4gKwl0ZXN0
-X2lkKys7Cj4gKwo+ICsJaWYgKGZpbHRlcl90ZXN0X2lkICYmIGZpbHRlcl90ZXN0X2lkICE9IHRl
-c3RfaWQpCj4gKwkJcmV0dXJuOwo+ICsKPiArCWlndF9pbmZvKCIgIFRlc3QgaWQjJWQgQ1JUQyBj
-b3VudCAlZFxuIiwgdGVzdF9pZCwgY3J0Y19jb3VudCk7Cj4gKwo+ICsJZm9yIChpID0gMDsgaSA8
-IGNydGNfY291bnQ7IGkrKykgewo+ICsJCWdldF9jcnRjX2NvbmZpZ19zdHIoJmNydGNzW2ldLCBz
-dHJfYnVmW2ldLCBzaXplb2Yoc3RyX2J1ZltpXSkpOwo+ICsJCWNydGNfc3Ryc1tpXSA9ICZzdHJf
-YnVmW2ldWzBdOwo+ICAgCX0KPiAgIAo+ICsJaWYgKGRyeV9ydW4pIHsKPiArCQlmb3IgKGkgPSAw
-OyBpIDwgY3J0Y19jb3VudDsgaSsrKQo+ICsJCQlpZ3RfaW5mbygiICAgICVzXG4iLCBjcnRjX3N0
-cnNbaV0pOwo+ICsJCXJldHVybjsKPiArCX0KPiArCj4gKwlyZXQgPSBfX3Rlc3RfY3J0Y19jb25m
-aWcoY3J0Y3MsIGNydGNfY291bnQsIHRjb25mLCAmY29uZmlnX2ZhaWxlZCwgMCk7Cj4gKwo+ICAg
-CWlndF9hc3NlcnQoY29uZmlnX2ZhaWxlZCA9PSAhISh0Y29uZi0+ZmxhZ3MgJiBURVNUX0lOVkFM
-SUQpKTsKPiAgIAo+ICAgCWlmIChyZXQgPT0gMCAmJiB0Y29uZi0+ZmxhZ3MgJiBURVNUX1RJTUlO
-R1MpCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
-ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+== Series Details ==
+
+Series: series starting with [i-g-t,v2,01/11] lib/i915/gem_mman: add FIXED mmap mode
+URL   : https://patchwork.freedesktop.org/series/93104/
+State : warning
+
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/369123 for the overview.
+
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12249676):
+  
+    9/305 lib igt_exit_handler                    TIMEOUT 30.08 s 
+  
+  --- command ---
+  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_exit_handler
+  -------
+  
+   10/305 lib igt_fork                            TIMEOUT 30.05 s 
+  
+  --- command ---
+  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_fork
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1627480313:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
+
+test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12249679):
+      return options.run_func(options)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
+      return th.doit()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
+      self.run_tests(tests)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
+      self.drain_futures(futures)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
+      self.print_stats(numlen, tests, name, result.result(), i)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
+      result_str += "\n\n" + result.get_log()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
+      res += self.stde
+  TypeError: can only concatenate str (not "bytes") to str
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1627480319:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12249677):
+  
+    9/305 lib igt_exit_handler                    TIMEOUT 30.06 s 
+  
+  --- command ---
+  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_exit_handler
+  -------
+  
+   10/305 lib igt_fork                            TIMEOUT 30.04 s 
+  
+  --- command ---
+  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_fork
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1627480318:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12249680):
+      return options.run_func(options)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
+      return th.doit()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
+      self.run_tests(tests)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
+      self.drain_futures(futures)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
+      self.print_stats(numlen, tests, name, result.result(), i)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
+      result_str += "\n\n" + result.get_log()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
+      res += self.stde
+  TypeError: can only concatenate str (not "bytes") to str
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1627480319:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/369123
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
