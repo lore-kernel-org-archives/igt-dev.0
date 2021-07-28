@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB8D26E3C4
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jul 2021 17:14:59 +0000 (UTC)
-Date: Wed, 28 Jul 2021 19:14:54 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210728171454.GB4024@zkempczy-mobl2>
-References: <20210722082426.4538-1-andrzej.turko@linux.intel.com>
- <20210722082426.4538-3-andrzej.turko@linux.intel.com>
+Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com
+ [IPv6:2607:f8b0:4864:20::730])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED3EA6E49A
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jul 2021 17:16:20 +0000 (UTC)
+Received: by mail-qk1-x730.google.com with SMTP id 129so2954014qkg.4
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jul 2021 10:16:20 -0700 (PDT)
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Wed, 28 Jul 2021 13:16:16 -0400
+Message-Id: <20210728171616.2242447-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210722082426.4538-3-andrzej.turko@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/i915/gem_softpin: Adjust the
- addresses of reverved blocks
+Subject: [igt-dev] [PATCH] tests/kms_flip: Discard any stale event at each
+ retry
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,44 +18,81 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Andrzej Turko <andrzej.turko@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: robdclark@chromium.org, petri.latvala@intel.com, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBKdWwgMjIsIDIwMjEgYXQgMTA6MjQ6MjZBTSArMDIwMCwgQW5kcnplaiBUdXJrbyB3
-cm90ZToKPiBNYWtlIHN1cmUgdGhhdCB0aGUgcmVzZXJ2YXRpb25zIGZpdCBpbiB0aGUgYWRkcmVz
-cyBzcGFjZS4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBBbmRyemVqIFR1cmtvIDxhbmRyemVqLnR1cmtv
-QGxpbnV4LmludGVsLmNvbT4KPiBDYzogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5r
-ZW1wY3p5bnNraUBpbnRlbC5jb20+Cj4gLS0tCj4gIHRlc3RzL2k5MTUvZ2VtX3NvZnRwaW4uYyB8
-IDcgKysrKy0tLQo+ICAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9u
-cygtKQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9zb2Z0cGluLmMgYi90ZXN0cy9p
-OTE1L2dlbV9zb2Z0cGluLmMKPiBpbmRleCBiZGIwNDgyMWQuLjVlNDdhMGNlMyAxMDA2NDQKPiAt
-LS0gYS90ZXN0cy9pOTE1L2dlbV9zb2Z0cGluLmMKPiArKysgYi90ZXN0cy9pOTE1L2dlbV9zb2Z0
-cGluLmMKPiBAQCAtNzAzLDcgKzcwMyw3IEBAIHN0YXRpYyB2b2lkIF9fcmVzZXJ2ZSh1aW50NjRf
-dCBhaG5kLCBpbnQgaTkxNSwgYm9vbCBwaW5uZWQsCj4gIAkJICAgICAgc3RydWN0IGRybV9pOTE1
-X2dlbV9leGVjX29iamVjdDIgKm9iamVjdHMsCj4gIAkJICAgICAgaW50IG51bV9vYmosIHVpbnQ2
-NF90IHNpemUpCj4gIHsKPiAtCXVpbnQ2NF90IGd0dCA9IGdlbV9hcGVydHVyZV9zaXplKGk5MTUp
-Owo+ICsJdWludDY0X3Qgc3RhcnQsIGVuZDsKPiAgCXVuc2lnbmVkIGludCBmbGFnczsKPiAgCWlu
-dCBpOwo+ICAKPiBAQCAtNzE0LDEzICs3MTQsMTQgQEAgc3RhdGljIHZvaWQgX19yZXNlcnZlKHVp
-bnQ2NF90IGFobmQsIGludCBpOTE1LCBib29sIHBpbm5lZCwKPiAgCQlmbGFncyB8PSBFWEVDX09C
-SkVDVF9QSU5ORUQ7Cj4gIAo+ICAJbWVtc2V0KG9iamVjdHMsIDAsIHNpemVvZihvYmplY3RzKSAq
-IG51bV9vYmopOwo+ICsJaW50ZWxfYWxsb2NhdG9yX2dldF9hZGRyZXNzX3JhbmdlKGFobmQsICZz
-dGFydCwgJmVuZCk7CgpBZ3JlZSwgYXNzdW1wdGlvbiB2bSBpcyBiZXR3ZWVuIDwwLCBndHQgc2l6
-ZT4gaXMgd3JvbmcgYW5kIGJldHRlcgppcyB0byBjaGVjayBpdHMgcmFuZ2VzIGJlZm9yZSByZXNl
-cnZpbmcgb2Zmc2V0cyBpbnNpZGUuCgpSZXZpZXdlZC1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tp
-IDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+CgotLQpaYmlnbmlldwoKPiAgCj4gIAlm
-b3IgKGkgPSAwOyBpIDwgbnVtX29iajsgaSsrKSB7Cj4gIAkJb2JqZWN0c1tpXS5oYW5kbGUgPSBn
-ZW1fY3JlYXRlKGk5MTUsIHNpemUpOwo+ICAJCWlmIChpIDwgbnVtX29iai8yKQo+IC0JCQlvYmpl
-Y3RzW2ldLm9mZnNldCA9IGkgKiBzaXplOwo+ICsJCQlvYmplY3RzW2ldLm9mZnNldCA9IHN0YXJ0
-ICsgaSAqIHNpemU7Cj4gIAkJZWxzZQo+IC0JCQlvYmplY3RzW2ldLm9mZnNldCA9IGd0dCAtIChp
-ICsgMSAtIG51bV9vYmovMikgKiBzaXplOwo+ICsJCQlvYmplY3RzW2ldLm9mZnNldCA9IGVuZCAt
-IChpICsgMSAtIG51bV9vYmovMikgKiBzaXplOwo+ICAJCW9iamVjdHNbaV0uZmxhZ3MgPSBmbGFn
-czsKPiAgCj4gIAkJaW50ZWxfYWxsb2NhdG9yX3Jlc2VydmUoYWhuZCwgb2JqZWN0c1tpXS5oYW5k
-bGUsCj4gLS0gCj4gMi4yNS4xCj4gCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0
-LWRldgo=
+From: Mark Yacoub <markyacoub@google.com>
+
+[Why]
+On slower devices, non blocking do_page_flip followed by wait_for_events does not finish fast enough to send an event to be consumed by wait_for_events.
+Instead, wait_for_events ends up finding an unconsumed event from a
+previous do_page_flip (i.e. a skipped preceding subtest) and signals
+that the userspace is ready to do another do_page_flip while the first
+one hasn't finished yet, resulting in an EBUSY.
+
+[How]
+At the beginning of every test running on crtc set, check for any stale
+events and consume them so the kernel has no pending events.
+
+Fixes: flip-vs-suspend and flip-vs-suspend-interruptible.
+Tested on ChromeOS Volteer(i915-TGL) and Trogdor(msm)
+
+Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+Change-Id: I254a84a202140c332312aba1d9edf15ea78b7a61
+---
+ tests/kms_flip.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index f2fce8d2..0a2041c5 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -1261,6 +1261,26 @@ static bool needs_retry_after_link_reset(struct udev_monitor *mon)
+ 	return hotplug_detected;
+ }
+ 
++static void discard_any_stale_events() {
++	fd_set fds;
++	FD_ZERO(&fds);
++	FD_SET(drm_fd, &fds);
++	struct timeval timeout = { .tv_sec = 3, .tv_usec = 0 };
++	int ret = select(drm_fd + 1, &fds, NULL, NULL, &timeout);
++
++	if (ret > 0) {
++		drmEventContext evctx;
++		memset(&evctx, 0, sizeof evctx);
++		evctx.version = 2;
++		igt_info("Stale Event found - Discarding now\n");
++		drmHandleEvent(drm_fd, &evctx);
++	}
++	else {
++		igt_debug("No stale Event found\n");
++	}
++}
++
++
+ static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ 				   int crtc_count, int duration_ms)
+ {
+@@ -1311,6 +1331,9 @@ static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ 		kmstest_dump_mode(&o->kmode[i]);
+ 
+ retry:
++	// Discard any pending event that hasn't been consumed from a previous retry or subtest.
++	discard_any_stale_events();
++
+ 	memset(&o->vblank_state, 0, sizeof(o->vblank_state));
+ 	memset(&o->flip_state, 0, sizeof(o->flip_state));
+ 	o->flip_state.name = "flip";
+-- 
+2.32.0.432.gabb21c7263-goog
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
