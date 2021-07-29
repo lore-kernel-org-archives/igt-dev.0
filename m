@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk
- [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 50B0C6EE1E
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jul 2021 18:08:38 +0000 (UTC)
-From: Daniel Stone <daniels@collabora.com>
-Mime-Version: 1.0 (1.0)
-Date: Thu, 29 Jul 2021 19:08:34 +0100
-Message-Id: <84F01D53-1202-4B46-ABC3-5EA845B20F57@collabora.com>
-References: <YQLMJXQDbi+pXGf0@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YQLMJXQDbi+pXGf0@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH v2] ci: Use FDO_CI_CONCURRENT to limit
- build/test concurrency
+MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 29 Jul 2021 18:12:21 -0000
+Message-ID: <162758234105.27325.12064995679711238797@emeril.freedesktop.org>
+References: <20210729144128.3263929-1-jigar.bhatt@intel.com>
+In-Reply-To: <20210729144128.3263929-1-jigar.bhatt@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/i915/i915=5Fpm=5Fdc=3A_Fix_DC9_test_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,24 +14,74 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
+To: Jigar Bhatt <jigar.bhatt@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Cj4gT24gMjkgSnVsIDIwMjEsIGF0IDQ6MzggcG0sIFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZh
-bGFAaW50ZWwuY29tPiB3cm90ZToKPiAKPiDvu79PbiBUaHUsIEp1bCAyOSwgMjAyMSBhdCAwMzo0
-OTo0NlBNICswMTAwLCBEYW5pZWwgU3RvbmUgd3JvdGU6Cj4+ICR7RkRPX0NJX0NPTkNVUlJFTlR9
-IGlzIHNldCB0byBhbiBhcHByb3ByaWF0ZSBjb25jdXJyZW5jeSBvbiBvdXIgc2hhcmVkCj4+IHJ1
-bm5lcnMuIFVzaW5nIGFsbCBhdmFpbGFibGUgQ1BVcyB3aWxsIGp1c3QgRG9TIHRoZSB3b3JsZCBh
-bmQgd291bGQKPj4gZXhwbGFpbiBhIGxvdCBhYm91dCB0aGUgdGltZW91dHMuCj4+IAo+PiBTaWdu
-ZWQtb2ZmLWJ5OiBEYW5pZWwgU3RvbmUgPGRhbmllbHNAY29sbGFib3JhLmNvbT4KPiAKPiBJdCBk
-aWRuJ3QgaGVscCB3aXRoIGFsbCB0aW1lb3V0cyBidXQgaGVscGVkIHF1aXRlIGEgYml0Lgo+IAo+
-IFJldmlld2VkLWJ5OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4KClRo
-YW5rcyBmb3IgYXBwbHlpbmchCgotZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
-dG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2ln
-dC1kZXYK
+== Series Details ==
+
+Series: tests/i915/i915_pm_dc: Fix DC9 test (rev2)
+URL   : https://patchwork.freedesktop.org/series/93180/
+State : warning
+
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/370363 for the overview.
+
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12316739):
+  
+    9/305 lib igt_exit_handler                    TIMEOUT 30.05 s 
+  
+  --- command ---
+  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_exit_handler
+  -------
+  
+   10/305 lib igt_fork                            TIMEOUT 30.02 s 
+  
+  --- command ---
+  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_fork
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1627581984:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12316740):
+  
+    9/305 lib igt_exit_handler                    TIMEOUT 30.03 s 
+  
+  --- command ---
+  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_exit_handler
+  -------
+  
+   10/305 lib igt_fork                            TIMEOUT 30.02 s 
+  
+  --- command ---
+  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_fork
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1627581993:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/370363
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
