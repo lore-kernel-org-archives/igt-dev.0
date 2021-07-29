@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7CA56E51B
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jul 2021 08:00:58 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EEFA6E203
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jul 2021 08:06:54 +0000 (UTC)
 From: "Surendrakumar Upadhyay, TejaskumarX"
  <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Date: Thu, 29 Jul 2021 08:00:55 +0000
-Message-ID: <SN6PR11MB342156BFBBA95520F805D4A3DFEB9@SN6PR11MB3421.namprd11.prod.outlook.com>
+Date: Thu, 29 Jul 2021 08:06:50 +0000
+Message-ID: <SN6PR11MB34216E3C32447D67EEB703B9DFEB9@SN6PR11MB3421.namprd11.prod.outlook.com>
 References: <20210722150700.18435-1-vidya.srinivas@intel.com>
  <20210722150700.18435-2-vidya.srinivas@intel.com>
 In-Reply-To: <20210722150700.18435-2-vidya.srinivas@intel.com>
@@ -46,7 +46,7 @@ List-ID: <igt-dev@lists.freedesktop.org>
 > 
 > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 
-Reviewed-by : Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Reviewed-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
 
 > ---
 >  tests/kms_plane_alpha_blend.c | 2 +-
