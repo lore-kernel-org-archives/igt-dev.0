@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B9D1E6EDB2
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jul 2021 14:44:07 +0000 (UTC)
-Date: Thu, 29 Jul 2021 17:46:33 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YQK/SeM3HliYlOna@platvala-desk.ger.corp.intel.com>
-References: <20210729143755.349932-1-daniels@collabora.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 047BB6EDB5
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jul 2021 14:44:56 +0000 (UTC)
+From: Jigar Bhatt <jigar.bhatt@intel.com>
+Date: Thu, 29 Jul 2021 20:11:28 +0530
+Message-Id: <20210729144128.3263929-1-jigar.bhatt@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210729143755.349932-1-daniels@collabora.com>
-Subject: Re: [igt-dev] [PATCH] ci: Use FDO_CI_CONCURRENT to limit build/test
- concurrency
+Subject: [igt-dev] [PATCH i-g-t RFC] tests/i915/i915_pm_dc: Fix DC9 test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,200 +18,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Daniel Stone <daniels@collabora.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: nischal.varide@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jul 29, 2021 at 03:37:55PM +0100, Daniel Stone wrote:
-> ${FDO_CI_CONCURRENT} is set to an appropriate concurrency on our shared
-> runners. Using all available CPUs will just DoS the world and would
-> explain a lot about the timeouts.
-> 
-> Signed-off-by: Daniel Stone <daniels@collabora.com>
-> ---
->  .gitlab-ci.yml | 38 +++++++++++++++++++-------------------
->  1 file changed, 19 insertions(+), 19 deletions(-)
-> 
-> diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-> index 3b0e98ae..b5edfee8 100644
-> --- a/.gitlab-ci.yml
-> +++ b/.gitlab-ci.yml
-> @@ -64,9 +64,9 @@ build:tests-fedora:
->    stage: build
->    script:
->      - meson --prefix=/opt/igt $MESON_OPTIONS build
-> -    - ninja -C build || ninja -C build -j 1
-> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
->      - DESTDIR="$PWD/installdir" ninja -C build install
-> -    - ninja -C build igt-gpu-tools-doc
-> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} igt-gpu-tools-doc
->    artifacts:
->      paths:
->        - build
-> @@ -77,7 +77,7 @@ build:tests-fedora-no-libunwind:
->    script:
->      - dnf remove -y libunwind-devel
->      - meson -Dlibunwind=disabled build
-> -    - ninja -C build || ninja -C build -j 1
-> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
->  
->  # documentation building is different with meson<0.47
->  build:tests-fedora-oldest-meson:
-> @@ -86,15 +86,15 @@ build:tests-fedora-oldest-meson:
->      - dnf remove -y meson
->      - pip install /usr/src/meson-*.tar.gz
->      - meson $MESON_OPTIONS build
-> -    - ninja -C build || ninja -C build -j 1
-> -    - ninja -C build igt-gpu-tools-doc
-> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
-> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} igt-gpu-tools-doc
->  
->  # ensure igt_nouveau stubs build when nouveau support for libdrm is disabled
->  build:tests-fedora-no-libdrm-nouveau:
->    stage: build
->    script:
->      - meson -Dlibdrm_drivers= build
-> -    - ninja -C build || ninja -C build -j 1
-> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
->  
->  build:tests-fedora-clang:
->    stage: build
-> @@ -102,7 +102,7 @@ build:tests-fedora-clang:
->      CC: clang
->    script:
->      - meson $MESON_OPTIONS build
-> -    - ninja -C build || ninja -C build -j 1
-> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
->    artifacts:
->      paths:
->        - build
-> @@ -112,7 +112,7 @@ build:tests-debian-meson:
->    stage: build
->    script:
->      - meson $MESON_OPTIONS build
-> -    - ninja -C build || ninja -C build -j 1
-> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
->      - cp build/tests/test-list.txt meson-test-list.txt
->    artifacts:
->      paths:
-> @@ -123,7 +123,7 @@ build:tests-debian-minimal:
->    stage: build
->    script:
->      - meson -Dtests=disabled -Dlibdrm_drivers="" build
-> -    - ninja -C build || ninja -C build -j 1
-> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
->    artifacts:
->      paths:
->        - build
-> @@ -134,7 +134,7 @@ build:tests-debian-meson-armhf:
->    script:
->      - export PKG_CONFIG_PATH=/usr/lib/arm-linux-gnueabihf/pkgconfig/
->      - meson --cross-file meson-cross-armhf.txt build
-> -    - ninja -C build || ninja -C build -j 1
-> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
->    artifacts:
->      paths:
->        - build
-> @@ -145,7 +145,7 @@ build:tests-debian-meson-arm64:
->    script:
->      - export PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig/
->      - meson --cross-file meson-cross-arm64.txt build
-> -    - ninja -C build || ninja -C build -j 1
-> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
->    artifacts:
->      paths:
->        - build
-> @@ -156,7 +156,7 @@ build:tests-debian-meson-mips:
->    script:
->      - export PKG_CONFIG_PATH=/usr/lib/mips-linux-gnu/pkgconfig/
->      - meson --cross-file meson-cross-mips.txt build
-> -    - ninja -C build || ninja -C build -j 1
-> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
->    artifacts:
->      paths:
->        - build
-> @@ -168,7 +168,7 @@ test:ninja-test:
->    dependencies:
->      - build:tests-fedora
->    stage: test
-> -  script: ninja -C build test
-> +  script: meson -C build test --num-processes ${FDO_CI_CONCURRENT:-4}
+1. Currently, check_dc9 is being called with reference
+(previous) counter being read after dpms_off call.
+At this time, already the counter is 0.
+We need to read the counter before dpms_off is called
+so that it holds the previous value which had
+incremented while testing shallow states (DC5 or DC6).
 
-usage: meson [-h] {setup,configure,dist,install,introspect,init,test,wrap,subprojects,help,rewrite,compile} ...
-meson: error: unrecognized arguments: -C --num-processes 4
+2. Check for a condition dc counter to be reset along with
+system should in runtime suspend state :
+currect_dc < prev_dc && i915 runtime status == SUSPENDED.
+If above condition pass, test is passed otherwise test is failed.
 
+3. adding dc9_dpms_off()
 
-Doesn't ninja -C build -j $... test   work for this?
+Signed-off-by: Jigar Bhatt <jigar.bhatt@intel.com>
+---
+ tests/i915/i915_pm_dc.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-
+diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+index 9d0a15d81..a6fddb617 100644
+--- a/tests/i915/i915_pm_dc.c
++++ b/tests/i915/i915_pm_dc.c
+@@ -358,6 +358,15 @@ static void dpms_off(data_t *data)
+ 			   (IGT_RUNTIME_PM_STATUS_SUSPENDED));
+ }
+ 
++static void dc9_dpms_off(data_t *data)
++{
++	for (int i = 0; i < data->display.n_outputs; i++) {
++		kmstest_set_connector_dpms(data->drm_fd,
++					   data->display.outputs[i].config.connector,
++					   DRM_MODE_DPMS_OFF);
++	}
++}
++
+ static void dpms_on(data_t *data)
+ {
+ 	for (int i = 0; i < data->display.n_outputs; i++) {
+@@ -400,8 +409,11 @@ static bool check_dc9(uint32_t debugfs_fd, int prev_dc, bool dc6_supported, int
+ 	 * so we rely on dc5/dc6 counter reset to check if display engine was in DC9.
+ 	 */
+ 	return igt_wait(dc6_supported ? read_dc_counter(debugfs_fd, CHECK_DC6) <
+-			prev_dc : read_dc_counter(debugfs_fd, CHECK_DC5) <
+-			prev_dc, seconds, 100);
++			prev_dc &&
++			igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)
++			: read_dc_counter(debugfs_fd, CHECK_DC5) < prev_dc &&
++			igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)
++			, seconds, 100);
+ }
+ 
+ static void setup_dc9_dpms(data_t *data, int prev_dc, bool dc6_supported)
+@@ -418,15 +430,16 @@ static void setup_dc9_dpms(data_t *data, int prev_dc, bool dc6_supported)
+ static void test_dc9_dpms(data_t *data)
+ {
+ 	bool dc6_supported;
++	int prev_dc;
+ 
+ 	require_dc_counter(data->debugfs_fd, CHECK_DC5);
+ 	dc6_supported = support_dc6(data->debugfs_fd);
+ 	setup_dc9_dpms(data, dc6_supported ? read_dc_counter(data->debugfs_fd, CHECK_DC6) :
+ 			read_dc_counter(data->debugfs_fd, CHECK_DC5), dc6_supported);
+-	dpms_off(data);
+-	igt_assert_f(check_dc9(data->debugfs_fd, dc6_supported ?
+-				read_dc_counter(data->debugfs_fd, CHECK_DC6) :
+-				read_dc_counter(data->debugfs_fd, CHECK_DC5),
++	prev_dc = dc6_supported ? read_dc_counter(data->debugfs_fd, CHECK_DC6) :
++		read_dc_counter(data->debugfs_fd, CHECK_DC5);
++	dc9_dpms_off(data);
++	igt_assert_f(check_dc9(data->debugfs_fd, prev_dc,
+ 				dc6_supported, 3000), "Not in DC9\n");
+ 	dpms_on(data);
+ }
 -- 
-Petri Latvala
+2.25.1
 
-
->  
->  test:ninja-test-clang:
->    retry: 2
-> @@ -177,7 +177,7 @@ test:ninja-test-clang:
->    variables:
->      CC: clang
->    stage: test
-> -  script: ninja -C build test
-> +  script: meson -C build test --num-processes ${FDO_CI_CONCURRENT:-4}
->  
->  test:ninja-test-minimal:
->    retry: 2
-> @@ -185,7 +185,7 @@ test:ninja-test-minimal:
->    dependencies:
->      - build:tests-debian-minimal
->    stage: test
-> -  script: ninja -C build test
-> +  script: meson -C build test --num-processes ${FDO_CI_CONCURRENT:-4}
->  
->  test:ninja-test-arm64:
->    retry: 2
-> @@ -196,7 +196,7 @@ test:ninja-test-arm64:
->    script:
->      - export PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig/
->      - env > build/envdump.txt
-> -    - ninja -C build test
-> +    - meson -C build test --num-processes ${FDO_CI_CONCURRENT:-4}
->    artifacts:
->      paths:
->        - build
-> @@ -211,7 +211,7 @@ test:ninja-test-armhf:
->    script:
->      - export PKG_CONFIG_PATH=/usr/lib/arm-linux-gnueabihf/pkgconfig/
->      - env > build/envdump.txt
-> -    - ninja -C build test
-> +    - meson -C build test --num-processes ${FDO_CI_CONCURRENT:-4}
->    artifacts:
->      paths:
->        - build
-> @@ -226,7 +226,7 @@ test:ninja-test-mips:
->    script:
->      - export PKG_CONFIG_PATH=/usr/lib/mips-linux-gnu/pkgconfig/
->      - env > build/envdump.txt
-> -    - ninja -C build test
-> +    - meson -C build test --num-processes ${FDO_CI_CONCURRENT:-4}
->    artifacts:
->      paths:
->        - build
-> @@ -255,7 +255,7 @@ pages:
->      - build:tests-fedora
->    stage: deploy
->    script:
-> -    - ninja -C build igt-gpu-tools-doc
-> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} igt-gpu-tools-doc
->      - cp -r build/docs/reference/igt-gpu-tools/html public
->    artifacts:
->      paths:
-> -- 
-> 2.31.1
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
