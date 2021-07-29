@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20210728103041.1669985-1-matthew.auld@intel.com>
- <20210728103041.1669985-4-matthew.auld@intel.com>
- <87eebi3ume.wl-ashutosh.dixit@intel.com>
-From: Matthew Auld <matthew.auld@intel.com>
-Message-ID: <ba2ce167-59eb-95d5-61be-d9b2828ff13b@intel.com>
-Date: Thu, 29 Jul 2021 09:50:45 +0100
 MIME-Version: 1.0
-In-Reply-To: <87eebi3ume.wl-ashutosh.dixit@intel.com>
-Content-Language: en-GB
-Subject: Re: [igt-dev] [PATCH i-g-t v2 04/11] lib/i915/gem_mman: add fixed
- mode to gem_mmap__cpu
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 29 Jul 2021 11:23:00 -0000
+Message-ID: <162755778005.27327.17834819574646521948@emeril.freedesktop.org>
+References: <20210728045544.1046657-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+In-Reply-To: <20210728045544.1046657-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/kms=5Fplane=5Falpha=5Fblend=3A_Align_width_to_256B_=28rev2?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,57 +15,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+To: "Surendrakumar Upadhyay,
+ TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 29/07/2021 00:07, Dixit, Ashutosh wrote:
-> On Wed, 28 Jul 2021 03:30:34 -0700, Matthew Auld wrote:
->>
->> diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
->> index 337d28fb..6f5e6d72 100644
->> --- a/lib/i915/gem_mman.c
->> +++ b/lib/i915/gem_mman.c
->> @@ -434,7 +434,13 @@ void *gem_mmap__device_coherent(int fd, uint32_t handle, uint64_t offset,
->>    */
->>   void *__gem_mmap__cpu(int fd, uint32_t handle, uint64_t offset, uint64_t size, unsigned prot)
->>   {
->> -	return __gem_mmap(fd, handle, offset, size, prot, 0);
->> +	void *ptr;
->> +
->> +	ptr = __gem_mmap(fd, handle, offset, size, prot, 0);
->> +	if (!ptr)
->> +		ptr = __gem_mmap_offset__fixed(fd, handle, offset, size, prot);
->> +
->> +	return ptr;
-> 
-> What about __gem_mmap__wc? Also shouldn't we just fix the __gem_mmap_offset
-> fallback in __gem_mmap and that will take care of both __gem_mmap__cpu and
-> __gem_mmap__wc?
+== Series Details ==
 
-For gem_mmap__wc it felt like slightly too much lying, since on discrete 
-smem-only buffers are always wb, and so the __wc here is not what the 
-user gets with the new FIXED mode. gem_mmap__device_coherent() I think 
-matches this new behaviour well, where we don't explicitly state what 
-the mapping type is, but instead just guarantee that the returned 
-mapping is device coherent. My rough thinking was to convert most users 
-of __wc over to __device_coherent(), at least in the tests that we care 
-about for discrete?
+Series: tests/kms_plane_alpha_blend: Align width to 256B (rev2)
+URL   : https://patchwork.freedesktop.org/series/93095/
+State : warning
 
-On the other hand if we are happy with the lie, I don't think anything 
-will break, and pretty much all testscases using mmap I think should 
-just magically work on discrete, and it does mean a less less work vs 
-converting to __device_coherent?
+== Summary ==
 
-> 
-> (I think it will actually also fix __gem_mmap__device_coherent and
-> __gem_mmap__cpu_coherent but maybe we can still have those patches in this
-> series especially if they save a couple of system calls).
-> 
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/370032 for the overview.
+
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12301269):
+  
+    9/305 lib igt_exit_handler                    TIMEOUT 30.05 s 
+  
+  --- command ---
+  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_exit_handler
+  -------
+  
+   10/305 lib igt_fork                            TIMEOUT 30.05 s 
+  
+  --- command ---
+  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_fork
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1627557519:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/370032
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
