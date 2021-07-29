@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com
- [IPv6:2607:f8b0:4864:20::32c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 79E4D6ECC7
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jul 2021 07:43:21 +0000 (UTC)
-Received: by mail-ot1-x32c.google.com with SMTP id
- 68-20020a9d0f4a0000b02904b1f1d7c5f4so4988507ott.9
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jul 2021 00:43:21 -0700 (PDT)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D7CA56E51B
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jul 2021 08:00:58 +0000 (UTC)
+From: "Surendrakumar Upadhyay, TejaskumarX"
+ <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Thu, 29 Jul 2021 08:00:55 +0000
+Message-ID: <SN6PR11MB342156BFBBA95520F805D4A3DFEB9@SN6PR11MB3421.namprd11.prod.outlook.com>
+References: <20210722150700.18435-1-vidya.srinivas@intel.com>
+ <20210722150700.18435-2-vidya.srinivas@intel.com>
+In-Reply-To: <20210722150700.18435-2-vidya.srinivas@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-References: <4ba5bb1e9fe08cbd9a6c43fc0e6e7eabc3d6520e.camel@redhat.com>
-In-Reply-To: <4ba5bb1e9fe08cbd9a6c43fc0e6e7eabc3d6520e.camel@redhat.com>
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Thu, 29 Jul 2021 09:43:09 +0200
-Message-ID: <CAKMK7uH0_62jhrLkiz0ZynM1iwcdZ2nM2qWdDtu=mJB80nFjFw@mail.gmail.com>
-Subject: Re: [igt-dev] Testing s2idle/S0?
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] Revert
+ "tests/kms_plane_alpha_blend: Fix a check in is_6bpc function"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,45 +24,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lyude Paul <lyude@redhat.com>
-Cc: IGT development <igt-dev@lists.freedesktop.org>, Porygon Solomon <jsolomon@redhat.com>
+To: "Srinivas, Vidya" <vidya.srinivas@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Latvala, Petri" <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jul 28, 2021 at 10:06 PM Lyude Paul <lyude@redhat.com> wrote:
-> Hi! Recently one of my coworkers from QA (cc'd here) asked me about whether we
-> had any tests for s2idle in igt - to which I looked, didn't see anything that
-> looked like a match, and suggested that they consider contributing some tests
-> for it. Note that when I mention s2idle here, I'm thinking about systems which
-> support both s2idle and S3 - as I know that s2idle is already being used by
-> default for suspend/resume by igt on s2idle only systems.
->
-> This made me realize that we don't actually have any explicit suspend/resume
-> tests - we only have tests which handle testing other functionality across
-> suspend/resume. This seems like it makes sense for the most part, which brings
-> me to my real question here - would it be worth it to try adding s2idle
-> support for most igt tests, so that on s2idle/S3 hybrid systems both suspend
-> modes are tested individually for each suspend/resume test?
 
-If you really add it to all of them the runtime explosion is likely
-prohibitive. But a handful of explicit ones should be fine I guess.
--Daniel
 
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Vidya
+> Srinivas
+> Sent: 22 July 2021 20:37
+> To: igt-dev@lists.freedesktop.org
+> Cc: Latvala, Petri <petri.latvala@intel.com>
+> Subject: [igt-dev] [PATCH i-g-t 1/2] Revert "tests/kms_plane_alpha_blend: Fix
+> a check in is_6bpc function"
+> 
+> This reverts commit 7b4fdeca7cc4bc5786d9ee06be71779b28f29b59.
+> 
+> Subtest coverage-premultiplied-constant was failing due to buffer alignment
+> issue. It was not due to 6bpc. Hence this patch needs to be reverted.
+> 
+> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+
+Reviewed-by : Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+
+> ---
+>  tests/kms_plane_alpha_blend.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+> index d649a09f52b4..57bbda5d975a 100644
+> --- a/tests/kms_plane_alpha_blend.c
+> +++ b/tests/kms_plane_alpha_blend.c
+> @@ -454,7 +454,7 @@ static bool is_6bpc(igt_display_t *display, enum pipe
+> pipe) {
+>  		return false;
+> 
+>  	c = output->config.connector;
+> -	if (c->connector_type != DRM_MODE_CONNECTOR_eDP &&
+> +	if (c->connector_type != DRM_MODE_CONNECTOR_eDP ||
+>  		c->connector_type != DRM_MODE_CONNECTOR_DSI)
+>  		return false;
+> 
 > --
-> Cheers,
->  Lyude Paul (she/her)
->  Software Engineer at Red Hat
->
+> 2.32.0
+> 
 > _______________________________________________
 > igt-dev mailing list
 > igt-dev@lists.freedesktop.org
 > https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
-
-
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
