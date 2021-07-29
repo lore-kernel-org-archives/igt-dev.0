@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE7FA6EE3A
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jul 2021 19:17:19 +0000 (UTC)
+From: Vidya Srinivas <vidya.srinivas@intel.com>
+Date: Fri, 30 Jul 2021 00:36:36 +0530
+Message-Id: <20210729190636.17973-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 29 Jul 2021 18:12:21 -0000
-Message-ID: <162758234105.27325.12064995679711238797@emeril.freedesktop.org>
-References: <20210729144128.3263929-1-jigar.bhatt@intel.com>
-In-Reply-To: <20210729144128.3263929-1-jigar.bhatt@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/i915/i915=5Fpm=5Fdc=3A_Fix_DC9_test_=28rev2=29?=
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Use max stride 128K
+ generic in set_max_hw_stride
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,73 +15,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jigar Bhatt <jigar.bhatt@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Charlton Lin <charlton.Lin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+As per kernel i9xx_plane_max_stride, if I915_FORMAT_MOD_X_TILED
+stride should be 16*1024 and for other modifiers 32*1024.
+However, we see random CRC failures on kernel 5.4
+With 64K or 128K, tests PASS. We are keeping 128K for now
+to avoid failures on 5.4 kernel.
 
-Series: tests/i915/i915_pm_dc: Fix DC9 test (rev2)
-URL   : https://patchwork.freedesktop.org/series/93180/
-State : warning
+But it should try only those formats which can show full length.
+However, changing that to 128K again fails. So, not changing
+32768 in the check
 
-== Summary ==
+Signed-off-by: Charlton Lin <charlton.Lin@intel.com>
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+---
+ tests/kms_big_fb.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-Pipeline status: FAILED.
+diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
+index c6f374bdd073..905b5cfdc47a 100644
+--- a/tests/kms_big_fb.c
++++ b/tests/kms_big_fb.c
+@@ -754,16 +754,7 @@ test_addfb(data_t *data)
+ static void
+ set_max_hw_stride(data_t *data)
+ {
+-	if (intel_display_ver(data->devid) >= 13) {
+-		/*
+-		 * The stride in bytes must not exceed of the size
+-		 * of 128K bytes. For pixel formats of 64bpp will allow
+-		 * for a 16K pixel surface.
+-		 */
+-		data->hw_stride = 131072;
+-	} else {
+-		data->hw_stride = 32768;
+-	}
++	data->hw_stride = 131072;
+ }
+ 
+ static data_t data = {};
+-- 
+2.32.0
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/370363 for the overview.
-
-test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12316739):
-  
-    9/305 lib igt_exit_handler                    TIMEOUT 30.05 s 
-  
-  --- command ---
-  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_exit_handler
-  -------
-  
-   10/305 lib igt_fork                            TIMEOUT 30.02 s 
-  
-  --- command ---
-  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_fork
-  -------
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1627581984:step_script
-  ERROR: Job failed: execution took longer than 1h0m0s seconds
-  
-
-test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12316740):
-  
-    9/305 lib igt_exit_handler                    TIMEOUT 30.03 s 
-  
-  --- command ---
-  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_exit_handler
-  -------
-  
-   10/305 lib igt_fork                            TIMEOUT 30.02 s 
-  
-  --- command ---
-  /builds/gfx-ci/igt-ci-tags/build/lib/tests/igt_fork
-  -------
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1627581993:step_script
-  ERROR: Job failed: execution took longer than 1h0m0s seconds
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/370363
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
