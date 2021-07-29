@@ -1,17 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 72C446ECC5
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jul 2021 07:39:32 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Thu, 29 Jul 2021 07:39:23 +0000
-Message-ID: <BY5PR11MB4372521D9BC4A09D6A389AB589EB9@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <20210727145714.27046-1-vidya.srinivas@intel.com>
- <20210727185445.11804-1-vidya.srinivas@intel.com>
-In-Reply-To: <20210727185445.11804-1-vidya.srinivas@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7620F6ECCB
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jul 2021 07:42:41 +0000 (UTC)
+From: "Shankar, Uma" <uma.shankar@intel.com>
+Date: Thu, 29 Jul 2021 07:42:36 +0000
+Message-ID: <83448a629c114a5394f98af83accee25@intel.com>
+References: <20210722150700.18435-1-vidya.srinivas@intel.com>
+ <BY5PR11MB4372DC7CD6A6F7BF06ECEE0689E59@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <60ca1d0569f548c58664966995b6264f@intel.com>
+ <BY5PR11MB43721158F69B22B17A661D2189E69@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <BY5PR11MB43721449F6D48620A43FC23B89EB9@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <SN6PR11MB3421F31D4487939E06DE3FB0DFEB9@SN6PR11MB3421.namprd11.prod.outlook.com>
+In-Reply-To: <SN6PR11MB3421F31D4487939E06DE3FB0DFEB9@SN6PR11MB3421.namprd11.prod.outlook.com>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Fix hw stride length
- tests
+Subject: Re: [igt-dev] [PATCH i-g-t 0/2] Revert the wrong fix for
+ coverage-premultiplied-constant
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,91 +27,142 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Vudum,
- Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Cc: "Lin, Charlton" <charlton.lin@intel.com>
+To: "Surendrakumar Upadhyay, TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>, "Srinivas, Vidya" <vidya.srinivas@intel.com>, "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Joshi, Kunal1" <kunal1.joshi@intel.com>
+Cc: "Latvala, Petri" <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hello Lakshmi,
 
-Could you kindly help re-run https://patchwork.freedesktop.org/series/92936/ Rev 3?
-Thank you so much.
-
-Regards
-Vidya
 
 > -----Original Message-----
-> From: Srinivas, Vidya <vidya.srinivas@intel.com>
-> Sent: Wednesday, July 28, 2021 12:25 AM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Shankar,
-> Uma <uma.shankar@intel.com>; Almahallawy, Khaled
-> <khaled.almahallawy@intel.com>; Lin, Charlton <charlton.lin@intel.com>;
-> Srinivas, Vidya <vidya.srinivas@intel.com>; Lin, Charlton
-> <charlton.lin@intel.com>
-> Subject: [PATCH i-g-t] tests/kms_big_fb: Fix hw stride length tests
+> From: Surendrakumar Upadhyay, TejaskumarX
+> <tejaskumarx.surendrakumar.upadhyay@intel.com>
+> Sent: Thursday, July 29, 2021 12:09 PM
+> To: Srinivas, Vidya <vidya.srinivas@intel.com>; Vudum, Lakshminarayana
+> <lakshminarayana.vudum@intel.com>; igt-dev@lists.freedesktop.org; Joshi, Kunal1
+> <kunal1.joshi@intel.com>
+> Cc: Latvala, Petri <petri.latvala@intel.com>; Modem, Bhanuprakash
+> <bhanuprakash.modem@intel.com>; Shankar, Uma <uma.shankar@intel.com>
+> Subject: RE: [PATCH i-g-t 0/2] Revert the wrong fix for coverage-premultiplied-
+> constant
 > 
-> We see the HW stride length tests are crashing when run in sequence.
-> Individually, they PASS.
-> This is happening due to missing data.ibb creation before the test_scanout.
-> Patch fixes the same.
+> Reviewed-by : Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+
+Request to all, please refrain from top posting. Have all your comments inline.
+
+Regards,
+Uma Shankar
+> Thanks,
+> Tejas
 > 
-> Signed-off-by: Charlton Lin <charlton.lin@intel.com>
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> Change-Id: I8a9ec8dd00ff249ef2ef72e0c2da28467e65563c
-> ---
->  tests/kms_big_fb.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+> > -----Original Message-----
+> > From: Srinivas, Vidya <vidya.srinivas@intel.com>
+> > Sent: 29 July 2021 12:07
+> > To: Vudum, Lakshminarayana <lakshminarayana.vudum@intel.com>; igt-
+> > dev@lists.freedesktop.org; Joshi, Kunal1 <kunal1.joshi@intel.com>;
+> > Surendrakumar Upadhyay, TejaskumarX
+> > <tejaskumarx.surendrakumar.upadhyay@intel.com>
+> > Cc: Latvala, Petri <petri.latvala@intel.com>; Modem, Bhanuprakash
+> > <bhanuprakash.modem@intel.com>; Shankar, Uma <uma.shankar@intel.com>
+> > Subject: RE: [PATCH i-g-t 0/2] Revert the wrong fix for coverage-
+> > premultiplied-constant
+> >
+> > @Surendrakumar Upadhyay, TejaskumarX Can you kindly review the patch
+> > series - Please provide RB for full series? Thank you.
+> > Kunal, kindly help merge. Thank you.
+> >
+> > Regards
+> > Vidya
+> >
+> > > -----Original Message-----
+> > > From: Srinivas, Vidya
+> > > Sent: Saturday, July 24, 2021 9:39 PM
+> > > To: Vudum, Lakshminarayana <Lakshminarayana.Vudum@intel.com>; igt-
+> > > dev@lists.freedesktop.org
+> > > Cc: Latvala, Petri <petri.latvala@intel.com>; Modem, Bhanuprakash
+> > > <Bhanuprakash.Modem@intel.com>; Shankar, Uma
+> > <uma.shankar@intel.com>
+> > > Subject: RE: [PATCH i-g-t 0/2] Revert the wrong fix for coverage-
+> > > premultiplied-constant
+> > >
+> > > Thank you so much Lakshmi. This time it has PASSED.
+> > >
+> > > Regards
+> > > Vidya
+> > >
+> > > > -----Original Message-----
+> > > > From: Vudum, Lakshminarayana <lakshminarayana.vudum@intel.com>
+> > > > Sent: Friday, July 23, 2021 9:00 PM
+> > > > To: Srinivas, Vidya <vidya.srinivas@intel.com>;
+> > > > igt-dev@lists.freedesktop.org
+> > > > Cc: Latvala, Petri <petri.latvala@intel.com>; Modem, Bhanuprakash
+> > > > <bhanuprakash.modem@intel.com>; Shankar, Uma
+> > > <uma.shankar@intel.com>
+> > > > Subject: RE: [PATCH i-g-t 0/2] Revert the wrong fix for coverage-
+> > > > premultiplied-constant
+> > > >
+> > > > Hi,
+> > > >
+> > > > Failures are addressed and results are re-reported.
+> > > >
+> > > > Lakshmi.
+> > > > -----Original Message-----
+> > > > From: Srinivas, Vidya <vidya.srinivas@intel.com>
+> > > > Sent: Friday, July 23, 2021 1:46 AM
+> > > > To: igt-dev@lists.freedesktop.org
+> > > > Cc: Latvala, Petri <petri.latvala@intel.com>; Modem, Bhanuprakash
+> > > > <bhanuprakash.modem@intel.com>; Shankar, Uma
+> > > <uma.shankar@intel.com>;
+> > > > Vudum, Lakshminarayana <lakshminarayana.vudum@intel.com>
+> > > > Subject: RE: [PATCH i-g-t 0/2] Revert the wrong fix for coverage-
+> > > > premultiplied-constant
+> > > >
+> > > > Hello Lakshmi,
+> > > >
+> > > > We need to revert this series. But there is a false positive.
+> > > > Could you kindly help with re-run? Thank you so much.
+> > > >
+> > > > https://patchwork.freedesktop.org/series/92898/
+> > > >
+> > > > Regards
+> > > > Vidya
+> > > >
+> > > > > -----Original Message-----
+> > > > > From: Srinivas, Vidya <vidya.srinivas@intel.com>
+> > > > > Sent: Thursday, July 22, 2021 8:37 PM
+> > > > > To: igt-dev@lists.freedesktop.org
+> > > > > Cc: Latvala, Petri <petri.latvala@intel.com>; Modem,
+> > > > > Bhanuprakash <bhanuprakash.modem@intel.com>; Shankar, Uma
+> > > > <uma.shankar@intel.com>;
+> > > > > Srinivas, Vidya <vidya.srinivas@intel.com>
+> > > > > Subject: [PATCH i-g-t 0/2] Revert the wrong fix for
+> > > > > coverage-premultiplied- constant
+> > > > >
+> > > > > Subtest coverage-premultiplied-constant was failing due to
+> > > > > buffer alignment issue. It was not due to 6bpc.
+> > > > > Hence, we need to revert this patch which was wrongly submitted.
+> > > > >
+> > > > > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 > 
-> diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c index
-> c6f374bdd073..26c7b8b200eb 100644
-> --- a/tests/kms_big_fb.c
-> +++ b/tests/kms_big_fb.c
-> @@ -852,7 +852,6 @@ igt_main
->  			data.render_copy =
-> igt_get_render_copyfunc(data.devid);
+> Reviewed-by : Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
 > 
->  		data.bops = buf_ops_create(data.drm_fd);
-> -		data.ibb = intel_bb_create(data.drm_fd, 4096);
+> > > > >
+> > > > >
+> > > > > Vidya Srinivas (2):
+> > > > >   Revert "tests/kms_plane_alpha_blend: Fix a check in is_6bpc function"
+> > > > >   Revert "tests/kms_plane_alpha_blend: Skip
+> > > > > coverage-vs-premult-vs-
+> > > none
+> > > > >     for 6bpc panels"
+> > > > >
+> > > > >  tests/kms_plane_alpha_blend.c | 36
+> > > > > -----------------------------------
+> > > > >  1 file changed, 36 deletions(-)
+> > > > >
+> > > > > --
+> > > > > 2.32.0
+> > > >
+> > > >
 > 
->  		data.planeclearrgb[0] = 0.0;
->  		data.planeclearrgb[1] = 0.0;
-> @@ -978,7 +977,9 @@ igt_main
->  						igt_require(data.format ==
-> DRM_FORMAT_C8 ||
-> 
-> 	igt_fb_supported_format(data.format));
-> 
-> 	igt_require(igt_display_has_format_mod(&data.display,
-> data.format, data.modifier));
-> +						data.ibb =
-> intel_bb_create(data.drm_fd, 4096);
->  						test_scanout(&data);
-> +						intel_bb_destroy(data.ibb);
->  					}
-> 
->  					// async flip doesn't support linear
-> fbs.
-> @@ -994,7 +995,9 @@ igt_main
-> 
-> 	igt_require(igt_display_has_format_mod(&data.display,
-> data.format, data.modifier));
-> 
-> 	igt_require_f(data.async_flip_support, "Async Flip is not
-> supported\n");
-> 
-> 	data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >>
-> 3), data.max_fb_width);
-> +							data.ibb =
-> intel_bb_create(data.drm_fd, 4096);
->  							test_scanout(&data);
-> +
-> 	intel_bb_destroy(data.ibb);
->  					}
->  					data.async_flip_test = false;
->  				}
-> --
-> 2.32.0
 
 _______________________________________________
 igt-dev mailing list
