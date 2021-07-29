@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 948646EC88
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jul 2021 06:13:32 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C2ADC6E104
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jul 2021 06:33:53 +0000 (UTC)
 From: "Surendrakumar Upadhyay, TejaskumarX"
  <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Date: Thu, 29 Jul 2021 06:13:18 +0000
-Message-ID: <SN6PR11MB342122DF68B498F8B34F5D0EDFEB9@SN6PR11MB3421.namprd11.prod.outlook.com>
+Date: Thu, 29 Jul 2021 06:33:48 +0000
+Message-ID: <SN6PR11MB342187FE335D2DE0AE993540DFEB9@SN6PR11MB3421.namprd11.prod.outlook.com>
 References: <20210722150700.18435-1-vidya.srinivas@intel.com>
- <BY5PR11MB4372DC7CD6A6F7BF06ECEE0689E59@BY5PR11MB4372.namprd11.prod.outlook.com>
- <60ca1d0569f548c58664966995b6264f@intel.com>
- <BY5PR11MB43721158F69B22B17A661D2189E69@BY5PR11MB4372.namprd11.prod.outlook.com>
-In-Reply-To: <BY5PR11MB43721158F69B22B17A661D2189E69@BY5PR11MB4372.namprd11.prod.outlook.com>
+In-Reply-To: <20210722150700.18435-1-vidya.srinivas@intel.com>
 Content-Language: en-US
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t 0/2] Revert the wrong fix for
@@ -26,99 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Srinivas, Vidya" <vidya.srinivas@intel.com>, "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "Srinivas, Vidya" <vidya.srinivas@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Cc: "Latvala, Petri" <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
 
 > -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Srinivas,
-> Vidya
-> Sent: 24 July 2021 21:39
-> To: Vudum, Lakshminarayana <lakshminarayana.vudum@intel.com>; igt-
-> dev@lists.freedesktop.org
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Vidya
+> Srinivas
+> Sent: 22 July 2021 20:37
+> To: igt-dev@lists.freedesktop.org
 > Cc: Latvala, Petri <petri.latvala@intel.com>
-> Subject: Re: [igt-dev] [PATCH i-g-t 0/2] Revert the wrong fix for coverage-
+> Subject: [igt-dev] [PATCH i-g-t 0/2] Revert the wrong fix for coverage-
 > premultiplied-constant
 > 
-> Thank you so much Lakshmi. This time it has PASSED.
+> Subtest coverage-premultiplied-constant was failing due to buffer alignment
+> issue. It was not due to 6bpc.
+> Hence, we need to revert this patch which was wrongly submitted.
 > 
-> Regards
-> Vidya
+> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+
+Reviewed-by : Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+
 > 
-> > -----Original Message-----
-> > From: Vudum, Lakshminarayana <lakshminarayana.vudum@intel.com>
-> > Sent: Friday, July 23, 2021 9:00 PM
-> > To: Srinivas, Vidya <vidya.srinivas@intel.com>;
-> > igt-dev@lists.freedesktop.org
-> > Cc: Latvala, Petri <petri.latvala@intel.com>; Modem, Bhanuprakash
-> > <bhanuprakash.modem@intel.com>; Shankar, Uma
-> <uma.shankar@intel.com>
-> > Subject: RE: [PATCH i-g-t 0/2] Revert the wrong fix for coverage-
-> > premultiplied-constant
-> >
-> > Hi,
-> >
-> > Failures are addressed and results are re-reported.
-> >
-> > Lakshmi.
-> > -----Original Message-----
-> > From: Srinivas, Vidya <vidya.srinivas@intel.com>
-> > Sent: Friday, July 23, 2021 1:46 AM
-> > To: igt-dev@lists.freedesktop.org
-> > Cc: Latvala, Petri <petri.latvala@intel.com>; Modem, Bhanuprakash
-> > <bhanuprakash.modem@intel.com>; Shankar, Uma
-> <uma.shankar@intel.com>;
-> > Vudum, Lakshminarayana <lakshminarayana.vudum@intel.com>
-> > Subject: RE: [PATCH i-g-t 0/2] Revert the wrong fix for coverage-
-> > premultiplied-constant
-> >
-> > Hello Lakshmi,
-> >
-> > We need to revert this series. But there is a false positive.
-> > Could you kindly help with re-run? Thank you so much.
-> >
-> > https://patchwork.freedesktop.org/series/92898/
-> >
-> > Regards
-> > Vidya
-> >
-> > > -----Original Message-----
-> > > From: Srinivas, Vidya <vidya.srinivas@intel.com>
-> > > Sent: Thursday, July 22, 2021 8:37 PM
-> > > To: igt-dev@lists.freedesktop.org
-> > > Cc: Latvala, Petri <petri.latvala@intel.com>; Modem, Bhanuprakash
-> > > <bhanuprakash.modem@intel.com>; Shankar, Uma
-> > <uma.shankar@intel.com>;
-> > > Srinivas, Vidya <vidya.srinivas@intel.com>
-> > > Subject: [PATCH i-g-t 0/2] Revert the wrong fix for
-> > > coverage-premultiplied- constant
-> > >
-> > > Subtest coverage-premultiplied-constant was failing due to buffer
-> > > alignment issue. It was not due to 6bpc.
-> > > Hence, we need to revert this patch which was wrongly submitted.
-> > >
-> > > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-
-Reviewed-by : Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com> 
-
-> > >
-> > >
-> > > Vidya Srinivas (2):
-> > >   Revert "tests/kms_plane_alpha_blend: Fix a check in is_6bpc function"
-> > >   Revert "tests/kms_plane_alpha_blend: Skip coverage-vs-premult-vs-
-> none
-> > >     for 6bpc panels"
-> > >
-> > >  tests/kms_plane_alpha_blend.c | 36
-> > > -----------------------------------
-> > >  1 file changed, 36 deletions(-)
-> > >
-> > > --
-> > > 2.32.0
-> >
-> >
+> 
+> Vidya Srinivas (2):
+>   Revert "tests/kms_plane_alpha_blend: Fix a check in is_6bpc function"
+>   Revert "tests/kms_plane_alpha_blend: Skip coverage-vs-premult-vs-none
+>     for 6bpc panels"
+> 
+>  tests/kms_plane_alpha_blend.c | 36 -----------------------------------
+>  1 file changed, 36 deletions(-)
+> 
+> --
+> 2.32.0
 > 
 > _______________________________________________
 > igt-dev mailing list
