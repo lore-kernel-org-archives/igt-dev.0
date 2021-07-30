@@ -1,30 +1,32 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Matthew Auld <matthew.auld@intel.com>
-Date: Fri, 30 Jul 2021 09:53:47 +0100
-Message-Id: <20210730085348.2326899-10-matthew.auld@intel.com>
+Date: Fri, 30 Jul 2021 09:53:48 +0100
+Message-Id: <20210730085348.2326899-11-matthew.auld@intel.com>
 In-Reply-To: <20210730085348.2326899-1-matthew.auld@intel.com>
 References: <20210730085348.2326899-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t v3 10/11] lib/i915/gem_mman: add helper
- query for has_device_coherent
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Subject: [igt-dev] [PATCH i-g-t v3 11/11] tests/i915/gem_exec_fence: use
+ device_coherent mmap
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>, intel-gfx@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Might be useful in some tests, where we are not explicitly testing WC
-maps, but rather just require something that is "device coherent", which
-should also play nice on discrete platforms.
+We lost explicit WC mmaps on discrete, where we now only support FIXED,
+however such mappings should be device coherent. In gem_exec_fence it
+looks like we can just use mmap__device_coherent, which should also work
+on discrete platforms, while still using an explicit WC mmap on
+integrated platforms.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
@@ -32,93 +34,89 @@ Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Cc: Ramalingam C <ramalingam.c@intel.com>
 ---
- lib/i915/gem_mman.c | 39 +++++++++++++++++++++++++++++++++++++++
- lib/i915/gem_mman.h | 11 +++++++++++
- 2 files changed, 50 insertions(+)
+ tests/i915/gem_exec_fence.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
-index c69dc6f5..0406a0b9 100644
---- a/lib/i915/gem_mman.c
-+++ b/lib/i915/gem_mman.c
-@@ -197,6 +197,45 @@ bool gem_mmap_offset__has_wc(int fd)
- 	return has_wc > 0;
- }
+diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+index ef1bb0ca..620e7ac2 100644
+--- a/tests/i915/gem_exec_fence.c
++++ b/tests/i915/gem_exec_fence.c
+@@ -152,7 +152,7 @@ static void test_fence_busy(int fd, const intel_ctx_t *ctx,
+ 	obj.relocation_count = 1;
+ 	memset(&reloc, 0, sizeof(reloc));
  
-+bool gem_mmap__has_device_coherent(int fd)
-+{
-+	struct drm_i915_gem_mmap_offset arg;
-+	bool supported;
-+
-+	if (gem_mmap__has_wc(fd))
-+		return true;
-+
-+	/* Maybe we still have GTT mmaps? */
-+	memset(&arg, 0, sizeof(arg));
-+	arg.handle = gem_create(fd, 4096);
-+	arg.offset = 0;
-+	arg.flags = I915_MMAP_OFFSET_GTT;
-+	supported = igt_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_OFFSET,
-+			      &arg) == 0;
-+	gem_close(fd, arg.handle);
-+
-+	errno = 0;
-+
-+	if (supported)
-+		return true;
-+
-+	/*
-+	 * Maybe this is a discrete device, which only supports fixed mmaps?
-+	 * Such mappings should also be considered device coherent.
-+	 */
-+	memset(&arg, 0, sizeof(arg));
-+	arg.handle = gem_create(fd, 4096);
-+	arg.offset = 0;
-+	arg.flags = I915_MMAP_OFFSET_FIXED;
-+	supported = igt_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_OFFSET,
-+			      &arg) == 0;
-+	gem_close(fd, arg.handle);
-+
-+	errno = 0;
-+
-+	return supported;
-+}
-+
- /**
-  * __gem_mmap:
-  * @fd: open i915 drm file descriptor
-diff --git a/lib/i915/gem_mman.h b/lib/i915/gem_mman.h
-index 290c997d..5966ddb5 100644
---- a/lib/i915/gem_mman.h
-+++ b/lib/i915/gem_mman.h
-@@ -41,6 +41,7 @@ void *gem_mmap_offset__fixed(int fd, uint32_t handle, uint64_t offset,
- 			     uint64_t size, unsigned prot);
- void *gem_mmap__device_coherent(int fd, uint32_t handle, uint64_t offset,
- 				uint64_t size, unsigned prot);
-+bool gem_mmap__has_device_coherent(int fd);
- void *gem_mmap__cpu_coherent(int fd, uint32_t handle, uint64_t offset,
- 			     uint64_t size, unsigned prot);
+-	batch = gem_mmap__wc(fd, obj.handle, 0, 4096, PROT_WRITE);
++	batch = gem_mmap__device_coherent(fd, obj.handle, 0, 4096, PROT_WRITE);
+ 	gem_set_domain(fd, obj.handle,
+ 		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
  
-@@ -96,6 +97,16 @@ int gem_munmap(void *ptr, uint64_t size);
-  */
- #define gem_require_mmap_offset_wc(fd) igt_require(gem_mmap_offset__has_wc(fd))
+@@ -244,7 +244,7 @@ static void test_fence_busy_all(int fd, const intel_ctx_t *ctx, unsigned flags)
+ 	obj.relocation_count = 1;
+ 	memset(&reloc, 0, sizeof(reloc));
  
-+/**
-+ * gem_require_mmap_offset_device_coherent:
-+ * @fd: open i915 drm file descriptor
-+ *
-+ * Feature test macro to query whether direct (i.e. cpu access path, bypassing
-+ * the gtt) write-combine memory mappings are available, or fixed mapping for
-+ * discrete. Automatically skips through igt_require() if not.
-+ */
-+#define gem_require_mmap_device_coherent(fd) igt_require(gem_mmap__has_device_coherent(fd))
-+
- extern const struct mmap_offset {
- 	const char *name;
- 	unsigned int type;
+-	batch = gem_mmap__wc(fd, obj.handle, 0, 4096, PROT_WRITE);
++	batch = gem_mmap__device_coherent(fd, obj.handle, 0, 4096, PROT_WRITE);
+ 	gem_set_domain(fd, obj.handle,
+ 		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+ 
+@@ -353,7 +353,7 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
+ 	uint32_t *out;
+ 	int i;
+ 
+-	out = gem_mmap__wc(fd, scratch, 0, 4096, PROT_WRITE);
++	out = gem_mmap__device_coherent(fd, scratch, 0, 4096, PROT_WRITE);
+ 	gem_set_domain(fd, scratch,
+ 			I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+ 
+@@ -617,7 +617,7 @@ static void test_parallel(int i915, const intel_ctx_t *ctx,
+ 	const struct intel_execution_engine2 *e2;
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
+ 	uint32_t scratch = gem_create(i915, 4096);
+-	uint32_t *out = gem_mmap__wc(i915, scratch, 0, 4096, PROT_READ);
++	uint32_t *out = gem_mmap__device_coherent(i915, scratch, 0, 4096, PROT_READ);
+ 	uint32_t handle[I915_EXEC_RING_MASK];
+ 	IGT_CORK_FENCE(cork);
+ 	igt_spin_t *spin;
+@@ -2813,7 +2813,7 @@ static void test_syncobj_timeline_chain_engines(int fd, const intel_ctx_cfg_t *c
+ 
+ 	gem_sync(fd, ctx.engine_counter_object.handle);
+ 
+-	counter_output = gem_mmap__wc(fd, ctx.engine_counter_object.handle, 0, 4096, PROT_READ);
++	counter_output = gem_mmap__device_coherent(fd, ctx.engine_counter_object.handle, 0, 4096, PROT_READ);
+ 
+ 	for (uint32_t i = 0; i < ctx.engines.nengines; i++)
+ 		igt_debug("engine %i (%s)\t= %016"PRIx64"\n", i,
+@@ -2879,7 +2879,7 @@ static void test_syncobj_stationary_timeline_chain_engines(int fd, const intel_c
+ 
+ 	gem_sync(fd, ctx.engine_counter_object.handle);
+ 
+-	counter_output = gem_mmap__wc(fd, ctx.engine_counter_object.handle, 0, 4096, PROT_READ);
++	counter_output = gem_mmap__device_coherent(fd, ctx.engine_counter_object.handle, 0, 4096, PROT_READ);
+ 
+ 	for (uint32_t i = 0; i < ctx.engines.nengines; i++)
+ 		igt_debug("engine %i (%s)\t= %016"PRIx64"\n", i,
+@@ -2940,7 +2940,7 @@ static void test_syncobj_backward_timeline_chain_engines(int fd, const intel_ctx
+ 
+ 	gem_sync(fd, ctx.engine_counter_object.handle);
+ 
+-	counter_output = gem_mmap__wc(fd, ctx.engine_counter_object.handle, 0, 4096, PROT_READ);
++	counter_output = gem_mmap__device_coherent(fd, ctx.engine_counter_object.handle, 0, 4096, PROT_READ);
+ 
+ 	for (uint32_t i = 0; i < ctx.engines.nengines; i++)
+ 		igt_debug("engine %i (%s)\t= %016"PRIx64"\n", i,
+@@ -2963,7 +2963,7 @@ igt_main
+ 		i915 = drm_open_driver(DRIVER_INTEL);
+ 		igt_require_gem(i915);
+ 		igt_require(gem_has_exec_fence(i915));
+-		gem_require_mmap_wc(i915);
++		gem_require_mmap_device_coherent(i915);
+ 		ctx = intel_ctx_create_all_physical(i915);
+ 
+ 		gem_submission_print_method(i915);
 -- 
 2.26.3
 
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
