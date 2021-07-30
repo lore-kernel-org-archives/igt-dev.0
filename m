@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Matthew Auld <matthew.auld@intel.com>
-Date: Fri, 30 Jul 2021 09:53:42 +0100
-Message-Id: <20210730085348.2326899-5-matthew.auld@intel.com>
+Date: Fri, 30 Jul 2021 09:53:43 +0100
+Message-Id: <20210730085348.2326899-6-matthew.auld@intel.com>
 In-Reply-To: <20210730085348.2326899-1-matthew.auld@intel.com>
 References: <20210730085348.2326899-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v3 05/11] lib/i915/gem_mman: update
- mmap_offset_types with FIXED
+Subject: [igt-dev] [PATCH i-g-t v3 06/11] lib/ioctl_wrappers: update
+ mmap_{read, write} for discrete
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,7 +22,9 @@ To: igt-dev@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We need to also iterate the fixed mode in the tests which rely on this.
+We can no longer just call get_caching or set_domain, and the mmap mode
+must be FIXED. This should bring back gem_exec_basic and a few others in
+CI on DG1.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
@@ -30,21 +32,52 @@ Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Cc: Ramalingam C <ramalingam.c@intel.com>
 ---
- lib/i915/gem_mman.c | 1 +
- 1 file changed, 1 insertion(+)
+ lib/ioctl_wrappers.c | 25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
-index c134e973..c69dc6f5 100644
---- a/lib/i915/gem_mman.c
-+++ b/lib/i915/gem_mman.c
-@@ -621,6 +621,7 @@ const struct mmap_offset mmap_offset_types[] = {
- 	{ "wb", I915_MMAP_OFFSET_WB, I915_GEM_DOMAIN_CPU },
- 	{ "wc", I915_MMAP_OFFSET_WC, I915_GEM_DOMAIN_WC },
- 	{ "uc", I915_MMAP_OFFSET_UC, I915_GEM_DOMAIN_WC },
-+	{ "fixed", I915_MMAP_OFFSET_FIXED, 0},
- 	{},
- };
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index 25c5e495..7e27a1b3 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -339,7 +339,18 @@ static void mmap_write(int fd, uint32_t handle, uint64_t offset,
+ 	if (!length)
+ 		return;
  
+-	if (is_cache_coherent(fd, handle)) {
++	if (gem_has_lmem(fd)) {
++		/*
++		 * set/get_caching and set_domain are no longer supported on
++		 * discrete, also the only mmap mode supportd is FIXED.
++		 */
++		map = gem_mmap_offset__fixed(fd, handle, 0,
++					     offset + length,
++					     PROT_READ | PROT_WRITE);
++		igt_assert_eq(gem_wait(fd, handle, 0), 0);
++	}
++
++	if (!map && is_cache_coherent(fd, handle)) {
+ 		/* offset arg for mmap functions must be 0 */
+ 		map = __gem_mmap__cpu_coherent(fd, handle, 0, offset + length,
+ 					       PROT_READ | PROT_WRITE);
+@@ -369,7 +380,17 @@ static void mmap_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint6
+ 	if (!length)
+ 		return;
+ 
+-	if (gem_has_llc(fd) || is_cache_coherent(fd, handle)) {
++	if (gem_has_lmem(fd)) {
++		/*
++		 * set/get_caching and set_domain are no longer supported on
++		 * discrete, also the only supported mmap mode is FIXED.
++		 */
++		map = gem_mmap_offset__fixed(fd, handle, 0,
++					     offset + length, PROT_READ);
++		igt_assert_eq(gem_wait(fd, handle, 0), 0);
++	}
++
++	if (!map && (gem_has_llc(fd) || is_cache_coherent(fd, handle))) {
+ 		/* offset arg for mmap functions must be 0 */
+ 		map = __gem_mmap__cpu_coherent(fd, handle, 0,
+ 					       offset + length, PROT_READ);
 -- 
 2.26.3
 
