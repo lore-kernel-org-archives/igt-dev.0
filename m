@@ -1,12 +1,12 @@
 Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Matthew Auld <matthew.auld@intel.com>
-Date: Fri, 30 Jul 2021 09:53:46 +0100
-Message-Id: <20210730085348.2326899-9-matthew.auld@intel.com>
+Date: Fri, 30 Jul 2021 09:53:44 +0100
+Message-Id: <20210730085348.2326899-7-matthew.auld@intel.com>
 In-Reply-To: <20210730085348.2326899-1-matthew.auld@intel.com>
 References: <20210730085348.2326899-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t v3 09/11] tests/i915/module_load: update
- for discrete
+Subject: [Intel-gfx] [PATCH i-g-t v3 07/11] lib/intel_bufops: update
+ mmap_{read, write} for discrete
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
@@ -22,10 +22,8 @@ To: igt-dev@lists.freedesktop.org
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The set_caching ioctl is gone for discrete, and now just returns
--ENODEV. Update the gem_sanitycheck to account for that. After this we
-should be back to just having the breakage caused by missing reloc
-support for the reload testcase.
+On discrete we can no longer call get_caching or set_domain, and the
+mmap mode must be FIXED.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
@@ -33,38 +31,52 @@ Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Cc: Ramalingam C <ramalingam.c@intel.com>
 ---
- tests/i915/i915_module_load.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ lib/intel_bufops.c | 25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-index 98ceb5d8..4b42fe3e 100644
---- a/tests/i915/i915_module_load.c
-+++ b/tests/i915/i915_module_load.c
-@@ -172,17 +172,22 @@ static void gem_sanitycheck(void)
+diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+index 3ce68663..faca4406 100644
+--- a/lib/intel_bufops.c
++++ b/lib/intel_bufops.c
+@@ -424,7 +424,18 @@ static void *mmap_write(int fd, struct intel_buf *buf)
  {
- 	struct drm_i915_gem_caching args = {};
- 	int i915 = __drm_open_driver(DRIVER_INTEL);
-+	int expected;
- 	int err;
+ 	void *map = NULL;
  
-+	expected = -ENOENT;
-+	if (gem_has_lmem(i915))
-+		expected = -ENODEV;
+-	if (is_cache_coherent(fd, buf->handle)) {
++	if (gem_has_lmem(fd)) {
++		/*
++		 * set/get_caching and set_domain are no longer supported on
++		 * discrete, also the only mmap mode supportd is FIXED.
++		 */
++		map = gem_mmap_offset__fixed(fd, buf->handle, 0,
++					     buf->surface[0].size,
++					     PROT_READ | PROT_WRITE);
++		igt_assert_eq(gem_wait(fd, buf->handle, 0), 0);
++	}
 +
- 	err = 0;
- 	if (ioctl(i915, DRM_IOCTL_I915_GEM_SET_CACHING, &args))
- 		err = -errno;
--	if (err == -ENOENT)
-+	if (err == expected)
- 		store_all(i915);
- 	errno = 0;
++	if (!map && is_cache_coherent(fd, buf->handle)) {
+ 		map = __gem_mmap_offset__cpu(fd, buf->handle, 0, buf->surface[0].size,
+ 					     PROT_READ | PROT_WRITE);
+ 		if (!map)
+@@ -455,7 +466,17 @@ static void *mmap_read(int fd, struct intel_buf *buf)
+ {
+ 	void *map = NULL;
  
- 	close(i915);
--	igt_assert_eq(err, -ENOENT);
-+	igt_assert_eq(err, expected);
- }
- 
- static void
+-	if (gem_has_llc(fd) || is_cache_coherent(fd, buf->handle)) {
++	if (gem_has_lmem(fd)) {
++		/*
++		 * set/get_caching and set_domain are no longer supported on
++		 * discrete, also the only supported mmap mode is FIXED.
++		 */
++		map = gem_mmap_offset__fixed(fd, buf->handle, 0,
++					     buf->surface[0].size, PROT_READ);
++		igt_assert_eq(gem_wait(fd, buf->handle, 0), 0);
++	}
++
++	if (!map && (gem_has_llc(fd) || is_cache_coherent(fd, buf->handle))) {
+ 		map = __gem_mmap_offset__cpu(fd, buf->handle, 0,
+ 					     buf->surface[0].size, PROT_READ);
+ 		if (!map)
 -- 
 2.26.3
 
