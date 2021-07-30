@@ -1,113 +1,77 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-References: <20210727182057.78409-1-matthew.brost@intel.com>
- <20210727182057.78409-2-matthew.brost@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <9095b26a-975b-9180-045f-7231d63fe9ff@linux.intel.com>
-Date: Fri, 30 Jul 2021 10:58:38 +0100
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E76E96F423
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Jul 2021 10:09:40 +0000 (UTC)
+From: Vidya Srinivas <vidya.srinivas@intel.com>
+Date: Fri, 30 Jul 2021 15:29:04 +0530
+Message-Id: <20210730095904.13667-1-vidya.srinivas@intel.com>
+In-Reply-To: <20210729190636.17973-1-vidya.srinivas@intel.com>
+References: <20210729190636.17973-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20210727182057.78409-2-matthew.brost@intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Subject: Re: [Intel-gfx] [PATCH i-g-t 1/1] i915/gem_scheduler: Ensure
- submission order in manycontexts
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Matthew Brost <matthew.brost@intel.com>, igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] [RFC] tests/kms_big_fb: Use max stride 128K
+ generic in set_max_hw_stride
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: charlton.Lin@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
+As per kernel i9xx_plane_max_stride, if I915_FORMAT_MOD_X_TILED
+stride should be 16*1024 and for other modifiers 32*1024.
+However, we see random CRC failures on kernel 5.4
+With 64K or 128K, tests PASS. We are keeping 128K for now
+to avoid failures on 5.4 kernel.
 
-On 27/07/2021 19:20, Matthew Brost wrote:
-> With GuC submission contexts can get reordered (compared to submission
-> order), if contexts get reordered the sequential nature of the batches
-> releasing the next batch's semaphore in function timesliceN() get broken
-> resulting in the test taking much longer than if should. e.g. Every
-> contexts needs to be timesliced to release the next batch. Corking the
-> first submission until all the batches have been submitted should ensure
-> submission order.
+Signed-off-by: Charlton Lin <charlton.Lin@intel.com>
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+---
+ tests/kms_big_fb.c | 17 ++++-------------
+ 1 file changed, 4 insertions(+), 13 deletions(-)
 
-The explanation sounds suspect.
-
-Consider this comment from the test itself:
-
-	/*
-	 * Create a pair of interlocking batches, that ping pong
-	 * between each other, and only advance one step at a time.
-	 * We require the kernel to preempt at each semaphore and
-	 * switch to the other batch in order to advance.
-	 */
-
-I'd say the test does not rely on no re-ordering at all, but relies on 
-context switch on an unsatisfied semaphore.
-
-In the commit you seem to acknowledge GuC does not do that but instead 
-ends up waiting for the timeslice to expire, did I get that right? If 
-so, why does the GuC does not do that and can we fix it?
-
-Regards,
-
-Tvrtko
-
-> 
-> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> ---
->   tests/i915/gem_exec_schedule.c | 16 +++++++++++++++-
->   1 file changed, 15 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-> index f03842478..41f2591a5 100644
-> --- a/tests/i915/gem_exec_schedule.c
-> +++ b/tests/i915/gem_exec_schedule.c
-> @@ -597,12 +597,13 @@ static void timesliceN(int i915, const intel_ctx_cfg_t *cfg,
->   	struct drm_i915_gem_execbuffer2 execbuf  = {
->   		.buffers_ptr = to_user_pointer(&obj),
->   		.buffer_count = 1,
-> -		.flags = engine | I915_EXEC_FENCE_OUT,
-> +		.flags = engine | I915_EXEC_FENCE_OUT | I915_EXEC_FENCE_SUBMIT,
->   	};
->   	uint32_t *result =
->   		gem_mmap__device_coherent(i915, obj.handle, 0, sz, PROT_READ);
->   	const intel_ctx_t *ctx;
->   	int fence[count];
-> +	IGT_CORK_FENCE(cork);
->   
->   	/*
->   	 * Create a pair of interlocking batches, that ping pong
-> @@ -614,6 +615,17 @@ static void timesliceN(int i915, const intel_ctx_cfg_t *cfg,
->   	igt_require(gem_scheduler_has_timeslicing(i915));
->   	igt_require(intel_gen(intel_get_drm_devid(i915)) >= 8);
->   
-> +	/*
-> +	 * With GuC submission contexts can get reordered (compared to
-> +	 * submission order), if contexts get reordered the sequential
-> +	 * nature of the batches releasing the next batch's semaphore gets
-> +	 * broken resulting in the test taking much longer than it should (e.g.
-> +	 * every context needs to be timesliced to release the next batch).
-> +	 * Corking the first submission until all batches have been
-> +	 * submitted should ensure submission order.
-> +	 */
-> +	execbuf.rsvd2 = igt_cork_plug(&cork, i915);
-> +
->   	/* No coupling between requests; free to timeslice */
->   
->   	for (int i = 0; i < count; i++) {
-> @@ -624,8 +636,10 @@ static void timesliceN(int i915, const intel_ctx_cfg_t *cfg,
->   		intel_ctx_destroy(i915, ctx);
->   
->   		fence[i] = execbuf.rsvd2 >> 32;
-> +		execbuf.rsvd2 >>= 32;
->   	}
->   
-> +	igt_cork_unplug(&cork);
->   	gem_sync(i915, obj.handle);
->   	gem_close(i915, obj.handle);
->   
-> 
+diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
+index c6f374bdd073..8f262af0d047 100644
+--- a/tests/kms_big_fb.c
++++ b/tests/kms_big_fb.c
+@@ -754,16 +754,7 @@ test_addfb(data_t *data)
+ static void
+ set_max_hw_stride(data_t *data)
+ {
+-	if (intel_display_ver(data->devid) >= 13) {
+-		/*
+-		 * The stride in bytes must not exceed of the size
+-		 * of 128K bytes. For pixel formats of 64bpp will allow
+-		 * for a 16K pixel surface.
+-		 */
+-		data->hw_stride = 131072;
+-	} else {
+-		data->hw_stride = 32768;
+-	}
++	data->hw_stride = 131072;
+ }
+ 
+ static data_t data = {};
+@@ -941,11 +932,11 @@ igt_main
+ 			for (int j = 0; j < ARRAY_SIZE(formats); j++) {
+ 				/*
+ 				* try only those formats which can show full length.
+-				* Here 32K is used to have CI test results consistent
+-				* for all platforms, 32K is smallest number possbily
++				* Here 128K is used to have CI test results consistent
++				* for all platforms, 128K is smallest number possbily
+ 				* coming to data.hw_stride from above set_max_hw_stride()
+ 				*/
+-				if (32768 / (formats[j].bpp >> 3) > 8192)
++				if (131072 / (formats[j].bpp >> 3) > 8192)
+ 					continue;
+ 
+ 				data.format = formats[j].format;
+-- 
+2.32.0
