@@ -1,81 +1,113 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 315BC6F404
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Jul 2021 09:27:43 +0000 (UTC)
-From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Fri, 30 Jul 2021 14:47:06 +0530
-Message-Id: <20210730091706.5942-1-vidya.srinivas@intel.com>
-In-Reply-To: <20210727185445.11804-1-vidya.srinivas@intel.com>
-References: <20210727185445.11804-1-vidya.srinivas@intel.com>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+References: <20210727182057.78409-1-matthew.brost@intel.com>
+ <20210727182057.78409-2-matthew.brost@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <9095b26a-975b-9180-045f-7231d63fe9ff@linux.intel.com>
+Date: Fri, 30 Jul 2021 10:58:38 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Fix crash in hw stride
- length tests
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Charlton Lin <charlton.lin@intel.com>
+In-Reply-To: <20210727182057.78409-2-matthew.brost@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Subject: Re: [Intel-gfx] [PATCH i-g-t 1/1] i915/gem_scheduler: Ensure
+ submission order in manycontexts
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: Matthew Brost <matthew.brost@intel.com>, igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We see the HW stride length tests are crashing or
-FAILING on 5.4 kernel. Individually, they PASS.
-On Gen11, they CRASH mostly.
-This is happening due to missing data.ibb creation
-before the test_scanout. Patch fixes the same.
-Patch also fixes a missing crc stop in max_hw_stride_async_flip_test
 
-Signed-off-by: Charlton Lin <charlton.lin@intel.com>
-Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
----
- tests/kms_big_fb.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+On 27/07/2021 19:20, Matthew Brost wrote:
+> With GuC submission contexts can get reordered (compared to submission
+> order), if contexts get reordered the sequential nature of the batches
+> releasing the next batch's semaphore in function timesliceN() get broken
+> resulting in the test taking much longer than if should. e.g. Every
+> contexts needs to be timesliced to release the next batch. Corking the
+> first submission until all the batches have been submitted should ensure
+> submission order.
 
-diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
-index c6f374bdd073..d9250259020e 100644
---- a/tests/kms_big_fb.c
-+++ b/tests/kms_big_fb.c
-@@ -563,6 +563,7 @@ max_hw_stride_async_flip_test(data_t *data)
- 			     i?"should":"shouldn't");
- 	}
- 	igt_reset_timeout();
-+	igt_pipe_crc_stop(data->pipe_crc);
- 
- 	igt_pipe_crc_free(data->pipe_crc);
- 	igt_output_set_pipe(data->output, PIPE_NONE);
-@@ -852,7 +853,6 @@ igt_main
- 			data.render_copy = igt_get_render_copyfunc(data.devid);
- 
- 		data.bops = buf_ops_create(data.drm_fd);
--		data.ibb = intel_bb_create(data.drm_fd, 4096);
- 
- 		data.planeclearrgb[0] = 0.0;
- 		data.planeclearrgb[1] = 0.0;
-@@ -978,7 +978,9 @@ igt_main
- 						igt_require(data.format == DRM_FORMAT_C8 ||
- 							igt_fb_supported_format(data.format));
- 						igt_require(igt_display_has_format_mod(&data.display, data.format, data.modifier));
-+						data.ibb = intel_bb_create(data.drm_fd, 4096);
- 						test_scanout(&data);
-+						intel_bb_destroy(data.ibb);
- 					}
- 
- 					// async flip doesn't support linear fbs.
-@@ -994,7 +996,9 @@ igt_main
- 							igt_require(igt_display_has_format_mod(&data.display, data.format, data.modifier));
- 							igt_require_f(data.async_flip_support, "Async Flip is not supported\n");
- 							data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
-+							data.ibb = intel_bb_create(data.drm_fd, 4096);
- 							test_scanout(&data);
-+							intel_bb_destroy(data.ibb);
- 					}
- 					data.async_flip_test = false;
- 				}
--- 
-2.32.0
+The explanation sounds suspect.
+
+Consider this comment from the test itself:
+
+	/*
+	 * Create a pair of interlocking batches, that ping pong
+	 * between each other, and only advance one step at a time.
+	 * We require the kernel to preempt at each semaphore and
+	 * switch to the other batch in order to advance.
+	 */
+
+I'd say the test does not rely on no re-ordering at all, but relies on 
+context switch on an unsatisfied semaphore.
+
+In the commit you seem to acknowledge GuC does not do that but instead 
+ends up waiting for the timeslice to expire, did I get that right? If 
+so, why does the GuC does not do that and can we fix it?
+
+Regards,
+
+Tvrtko
+
+> 
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> ---
+>   tests/i915/gem_exec_schedule.c | 16 +++++++++++++++-
+>   1 file changed, 15 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
+> index f03842478..41f2591a5 100644
+> --- a/tests/i915/gem_exec_schedule.c
+> +++ b/tests/i915/gem_exec_schedule.c
+> @@ -597,12 +597,13 @@ static void timesliceN(int i915, const intel_ctx_cfg_t *cfg,
+>   	struct drm_i915_gem_execbuffer2 execbuf  = {
+>   		.buffers_ptr = to_user_pointer(&obj),
+>   		.buffer_count = 1,
+> -		.flags = engine | I915_EXEC_FENCE_OUT,
+> +		.flags = engine | I915_EXEC_FENCE_OUT | I915_EXEC_FENCE_SUBMIT,
+>   	};
+>   	uint32_t *result =
+>   		gem_mmap__device_coherent(i915, obj.handle, 0, sz, PROT_READ);
+>   	const intel_ctx_t *ctx;
+>   	int fence[count];
+> +	IGT_CORK_FENCE(cork);
+>   
+>   	/*
+>   	 * Create a pair of interlocking batches, that ping pong
+> @@ -614,6 +615,17 @@ static void timesliceN(int i915, const intel_ctx_cfg_t *cfg,
+>   	igt_require(gem_scheduler_has_timeslicing(i915));
+>   	igt_require(intel_gen(intel_get_drm_devid(i915)) >= 8);
+>   
+> +	/*
+> +	 * With GuC submission contexts can get reordered (compared to
+> +	 * submission order), if contexts get reordered the sequential
+> +	 * nature of the batches releasing the next batch's semaphore gets
+> +	 * broken resulting in the test taking much longer than it should (e.g.
+> +	 * every context needs to be timesliced to release the next batch).
+> +	 * Corking the first submission until all batches have been
+> +	 * submitted should ensure submission order.
+> +	 */
+> +	execbuf.rsvd2 = igt_cork_plug(&cork, i915);
+> +
+>   	/* No coupling between requests; free to timeslice */
+>   
+>   	for (int i = 0; i < count; i++) {
+> @@ -624,8 +636,10 @@ static void timesliceN(int i915, const intel_ctx_cfg_t *cfg,
+>   		intel_ctx_destroy(i915, ctx);
+>   
+>   		fence[i] = execbuf.rsvd2 >> 32;
+> +		execbuf.rsvd2 >>= 32;
+>   	}
+>   
+> +	igt_cork_unplug(&cork);
+>   	gem_sync(i915, obj.handle);
+>   	gem_close(i915, obj.handle);
+>   
+> 
