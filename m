@@ -1,20 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E38446E1BB
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Aug 2021 14:16:20 +0000 (UTC)
-From: "Surendrakumar Upadhyay, TejaskumarX"
- <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Date: Mon, 2 Aug 2021 14:16:17 +0000
-Message-ID: <SN6PR11MB34210D1C5FF9B12A07947902DFEF9@SN6PR11MB3421.namprd11.prod.outlook.com>
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com
+ [IPv6:2a00:1450:4864:20::331])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6374689ED6
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Aug 2021 14:41:19 +0000 (UTC)
+Received: by mail-wm1-x331.google.com with SMTP id b128so10557007wmb.4
+ for <igt-dev@lists.freedesktop.org>; Mon, 02 Aug 2021 07:41:19 -0700 (PDT)
 References: <20210728045544.1046657-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
  <2ce3082b-9823-8625-920e-7dcb8da0efbc@intel.com>
  <62dfe8ca-34a3-cd2c-6cf1-4181a0acb36a@gmail.com>
  <cd2e65f9-b5de-3ac7-3f56-ec004cecacfa@intel.com>
-In-Reply-To: <cd2e65f9-b5de-3ac7-3f56-ec004cecacfa@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ <SN6PR11MB34210D1C5FF9B12A07947902DFEF9@SN6PR11MB3421.namprd11.prod.outlook.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Message-ID: <23ed24c7-381d-8097-b19d-6f4d4934026f@gmail.com>
+Date: Mon, 2 Aug 2021 17:41:09 +0300
 MIME-Version: 1.0
+In-Reply-To: <SN6PR11MB34210D1C5FF9B12A07947902DFEF9@SN6PR11MB3421.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Subject: Re: [igt-dev] [i-g-t] tests/kms_plane_alpha_blend: Align width to
  256B
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -24,74 +27,124 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>, "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "Surendrakumar Upadhyay, TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>, "Sharma, Swati2" <swati2.sharma@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgSlAsDQoNCllvdSBhcmUgcmlnaHQgaTkxNSBkcml2ZXIgaXMgZ2l2aW5nIDY0QiBhbGlnbmVk
-IGJ1ZmZlciBidXQgdGVzdCB1c2VzIHJhdyB3aWR0aCBhbmQgdGh1cyBpdCByZXF1aXJlcyB3aWR0
-aCB0byBiZSBhbGlnbmVkLg0KDQpUaGFua3MsDQpUZWphcyANCg0KPiAtLS0tLU9yaWdpbmFsIE1l
-c3NhZ2UtLS0tLQ0KPiBGcm9tOiBTaGFybWEsIFN3YXRpMiA8c3dhdGkyLnNoYXJtYUBpbnRlbC5j
-b20+DQo+IFNlbnQ6IDAyIEF1Z3VzdCAyMDIxIDE4OjM1DQo+IFRvOiBqdWhhcGVra2EuaGVpa2tp
-bGFAZ21haWwuY29tOyBTdXJlbmRyYWt1bWFyIFVwYWRoeWF5LCBUZWphc2t1bWFyWA0KPiA8dGVq
-YXNrdW1hcnguc3VyZW5kcmFrdW1hci51cGFkaHlheUBpbnRlbC5jb20+OyBpZ3QtDQo+IGRldkBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbaS1nLXRdIHRl
-c3RzL2ttc19wbGFuZV9hbHBoYV9ibGVuZDogQWxpZ24gd2lkdGggdG8NCj4gMjU2Qg0KPiANCj4g
-SGkgSlAsDQo+IA0KPiBUZWphcyByZWFwcGxpZWQgdGhlIHNhbWUgZml4IGFzIGluDQo+IGh0dHBz
-Oi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC80NDUwMTAvP3Nlcmllcz05Mjc1MSZy
-ZXY9Mg0KPiB3aGljaCB3YXMgcmV2aWV3ZWQgYnkgRGFuaWVsLg0KPiANCj4gT24gMDItQXVnLTIx
-IDU6NDIgUE0sIEp1aGEtUGVra2EgSGVpa2tpbGEgd3JvdGU6DQo+ID4gSGkgVGVqYXMsIFN3YXRp
-LA0KPiA+DQo+ID4gSSB3YXMgY29uZnVzZWQgd2hlbiBJIHJlYWQgdGhpcyBwYXRjaCwgbWluZCB5
-b3UgdGVsbCB3aGF0IGhhcHBlbiBoZXJlPw0KPiA+IFRvIG1lIGl0IGxvb2sgbGlrZSBub3RoaW5n
-IG1hdGNoZXMgd2l0aCBlYWNoIG90aGVyIHdpdGggdGhlIHBhdGNoLg0KPiA+DQo+ID4gRXZlbiBz
-dWJqZWN0IGlzIHRlbGxpbmcgb3RoZXIgdGhpbmdzIHRoYW4gd2hhdCB0aGlzIHBhdGNoIGFjdHVh
-bGx5IGRvZXMuDQo+ID4NCj4gPiBPbiAzMC43LjIwMjEgOC41MCwgU2hhcm1hLCBTd2F0aTIgd3Jv
-dGU6DQo+ID4+IFJldmlld2VkLWJ5Og0KPiA+PiBTd2F0aSBTaGFybWEgPHN3YXRpMi5zaGFybWFA
-aW50ZWwuY29tPg0KPiA+Pg0KPiA+PiBPbiAyOC1KdWwtMjEgMTA6MjUgQU0sIFRlamFzIFVwYWRo
-eWF5IHdyb3RlOg0KPiA+Pj4gc29tZSBkaXNwbGF5IHJlc29sdXRpb25zIGxpa2UgMTM2Nng3Njgg
-NmJwYyB3aGljaCBkb2VzIG5vdCBoYXZlIDY0Qg0KPiA+Pj4gYWxpZ25lZCB3aWR0aCBhcmUgY3Jl
-YXRpbmcgY3JjIG1pc21hdGNoIGluIGttc19wbGFuZV9hbHBoYV9ibGVuZA0KPiA+Pj4gdGVzdCBv
-biBJbnRlbCBwbGF0Zm9ybXMuDQo+ID4NCj4gPiBobS4gWW91IGFyZSBzYXlpbmcgbm9uZSBvZiBJ
-bnRlbCBodyBpcyBhYmxlIHRvIHNob3cgMTM2NiB3aWRlDQo+ID4gZnJhbWVidWZmZXJzIGNvcnJl
-Y3RseT8gQW5kIGl0IGlzIGZpeGVkIGJ5IGhpZGluZyBpdCBmcm9tIGJlaW5nIHRlc3RlZD8NCj4g
-Pg0KPiA+IE1lbW9yeSBnaXZlbiBmcm9tIGtlcm5lbCB3aWxsIGhhdmUgNjRCIGFsaWdubWVudC4g
-WW91IGNhbiBlYXNpbHkgc2VlDQo+ID4gYnkgeW91cnNlbGYuDQo+ID4NCj4gPj4+DQo+ID4+PiBB
-bHNvIGhhdmluZyBkaWZmZXJlbnQgYWxpZ25tZW50IHJlcXVpcmVtZW50IGJ5IGRpZmZlcmVudCBk
-cml2ZXJzLA0KPiA+Pj4gMjU2QiBhbGlnbmVkIHdpZHRoIHNob3VsZCB3b3JrIGZvciBhbGwgZHJt
-IGRyaXZlcnMuDQo+ID4NCj4gPiBZb3UgYXJlIHNheWluZyB5b3UgYXJlIGZpeGluZyBzb21lIHBy
-b2JsZW0gd2l0aCBJbnRlbCBodywgd2hhdCBkb2VzDQo+ID4gYWxsIHRoaXMgb3RoZXIgc3R1ZmYg
-aGF2ZSB0byBkbyB3aXRoIGl0PyBOb25lIG9mIHRob3NlIG90aGVyIGRyaXZlcnMNCj4gPiBhcmUg
-YWJsZSB0byBzaG93IDEzNjYgcGl4ZWxzIHdpZGUgZnJhbWVidWZmZXJzIGVpdGhlcj8NCj4gPg0K
-PiA+Pj4NCj4gPj4+IGFtZGdwdSBhbmQgcmFkZW9uLCBhbWRncHVfYWxpZ25fcGl0Y2g6IDI1NkIg
-YXJtYWRhLCBhcm1hZGFfcGl0Y2g6DQo+ID4+PiAxMjhCDQo+ID4+PiBleHlub3NfZHJtX2dlbV9k
-dW1iX2NyZWF0ZTogTm8gYWxpZ25tZW50IHJlcXVpcmVkDQo+ID4+PiBkcm1fZ2VtX3NobWVtX2R1
-bWJfY3JlYXRlOiA4Qg0KPiA+Pj4gZHJtX2dlbV92cmFtX2ZpbGxfY3JlYXRlX2R1bWI6IDhCDQo+
-ID4+Pg0KPiA+Pj4gVGh1cyAyNTZCIGNvdmVycyBldmVyeXRoaW5nIHdlIHNlZSBpbiB0aGUga2Vy
-bmVsIGRybSBkcml2ZXJzLg0KPiA+Pj4gU2lnbmVkLW9mZi1ieTogVGVqYXMgVXBhZGh5YXkNCj4g
-Pj4+IDx0ZWphc2t1bWFyeC5zdXJlbmRyYWt1bWFyLnVwYWRoeWF5QGludGVsLmNvbT4NCj4gPj4+
-IC0tLQ0KPiA+Pj4gwqAgdGVzdHMva21zX3BsYW5lX2FscGhhX2JsZW5kLmMgfCAxICsNCj4gPj4+
-IMKgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKQ0KPiA+Pj4NCj4gPj4+IGRpZmYgLS1n
-aXQgYS90ZXN0cy9rbXNfcGxhbmVfYWxwaGFfYmxlbmQuYw0KPiA+Pj4gYi90ZXN0cy9rbXNfcGxh
-bmVfYWxwaGFfYmxlbmQuYyBpbmRleCBkNjQ5YTA5Zi4uODY0ZTgzZjkgMTAwNjQ0DQo+ID4+PiAt
-LS0gYS90ZXN0cy9rbXNfcGxhbmVfYWxwaGFfYmxlbmQuYw0KPiA+Pj4gKysrIGIvdGVzdHMva21z
-X3BsYW5lX2FscGhhX2JsZW5kLmMNCj4gPj4+IEBAIC0xNjgsNiArMTY4LDcgQEAgc3RhdGljIHZv
-aWQgcHJlcGFyZV9jcnRjKGRhdGFfdCAqZGF0YSwNCj4gPj4+IGlndF9vdXRwdXRfdCAqb3V0cHV0
-LCBlbnVtIHBpcGUgcGlwZSkNCj4gPj4+IMKgwqDCoMKgwqAgdyA9IG1vZGUtPmhkaXNwbGF5Ow0K
-PiA+Pj4gwqDCoMKgwqDCoCBoID0gbW9kZS0+dmRpc3BsYXk7DQo+ID4+PiArwqDCoMKgIHcgPSBB
-TElHTih3LCAyNTYpOw0KPiA+DQo+ID4gVGhpcyBkb2Vzbid0IGNhdXNlIGFueXRoaW5nIHRvIGFs
-aWduIHdpdGggMjU2IGJ5dGVzLiBUaGlzIG1ha2VzIGZiDQo+ID4gd2lkdGggaW4gcGl4ZWxzIGRp
-dmlzaWJsZSBieSAyNTYuIEZvciBhbnl0aGluZyB0byBkbyB3aXRoIGZiDQo+ID4gYWxpZ25tZW50
-cy4udGhpcyBoYXMgdmVyeSBsaXR0bGUgdG8gZG8uIEtlcm5lbCB3aWxsIGRvIHZpZXdwb3J0DQo+
-ID4gY2xpcHBpbmcgaGVuY2UgZm9yIGFjdHVhbCBpbnRlbmRlZCB0ZXN0IHRoaXMgZG9lcyBub3Ro
-aW5nLiBGQg0KPiA+IGFsaWdubWVudHMgYXJlIGhhbmRsZWQgb3RoZXJ3aXNlIGFzIGluIHRoaXMg
-Y2FzZSB3aXRoIHdpdGggbGluZWFyIGZiIHdpbGwNCj4gaGF2ZSA2NCBieXRlcyBwZXIgc3RyaWRl
-Lg0KPiA+DQo+ID4+PiDCoMKgwqDCoMKgIC8qIHJlY3JlYXRlIGFsbCBmYnMgaWYgaW5jb21wYXRp
-YmxlICovDQo+ID4+PiDCoMKgwqDCoMKgIGlmIChkYXRhLT54cmdiX2ZiLndpZHRoICE9IHcgfHwg
-ZGF0YS0+eHJnYl9mYi5oZWlnaHQgIT0gaCkgew0KPiA+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgIGNh
-aXJvX3QgKmNyOw0KPiA+Pj4NCj4gPj4NCj4gPg0KPiA+IElmIHRoaXMgcGF0Y2ggYWN0dWFsbHkg
-Zml4ZWQgYW55dGhpbmcgeW91J2xsIG5lZWQgdG8gY3JlYXRlIGh3IHdhIGFuZA0KPiA+IHRoaXMg
-bmVlZCB0byBiZSBmaXhlZCBpbiBrZXJuZWwuIE5vdCB0ZXN0aW5nIGlzIG5vdCBmaXhpbmcuIElt
-byB0aGVyZQ0KPiA+IHNob3VsZCBiZSBubyBwcm9ibGVtIGZvciBJbnRlbCBodyB0byBzaG93IHZh
-cnlpbmcgZmIgc2l6ZXMsIGluY2x1ZGluZw0KPiA+IDEzNjYgd2lkZS4NCj4gPg0KPiA+IC9KdWhh
-LVBla2thDQo+IA0KPiAtLQ0KPiB+U3dhdGkgU2hhcm1hDQo=
+On 2.8.2021 17.16, Surendrakumar Upadhyay, TejaskumarX wrote:
+> Hi JP,
+> 
+> You are right i915 driver is giving 64B aligned buffer but test uses raw width and thus it requires width to be aligned.
+
+I don't understand what you mean with raw width? This is in use:
+
+	mode = igt_output_get_mode(output);
+	w = mode->hdisplay;
+
+I see on kms_plane_alpha_blend is allocated framebuffer using normal igt 
+functions like igt_create_fb(..) and then renders onto them with cairo, 
+just like any other kms test. igt_create_fb(..) will create fb for you 
+which is all correct, it get alignments from calc_plane_stride(..) which 
+in this case will say stride alignment is 64 bytes since linear fb is in 
+use. If these are wrong you will start to see all kms tests fail equally.
+
+/Juha-Pekka
+
+> 
+> Thanks,
+> Tejas
+> 
+>> -----Original Message-----
+>> From: Sharma, Swati2 <swati2.sharma@intel.com>
+>> Sent: 02 August 2021 18:35
+>> To: juhapekka.heikkila@gmail.com; Surendrakumar Upadhyay, TejaskumarX
+>> <tejaskumarx.surendrakumar.upadhyay@intel.com>; igt-
+>> dev@lists.freedesktop.org
+>> Subject: Re: [igt-dev] [i-g-t] tests/kms_plane_alpha_blend: Align width to
+>> 256B
+>>
+>> Hi JP,
+>>
+>> Tejas reapplied the same fix as in
+>> https://patchwork.freedesktop.org/patch/445010/?series=92751&rev=2
+>> which was reviewed by Daniel.
+>>
+>> On 02-Aug-21 5:42 PM, Juha-Pekka Heikkila wrote:
+>>> Hi Tejas, Swati,
+>>>
+>>> I was confused when I read this patch, mind you tell what happen here?
+>>> To me it look like nothing matches with each other with the patch.
+>>>
+>>> Even subject is telling other things than what this patch actually does.
+>>>
+>>> On 30.7.2021 8.50, Sharma, Swati2 wrote:
+>>>> Reviewed-by:
+>>>> Swati Sharma <swati2.sharma@intel.com>
+>>>>
+>>>> On 28-Jul-21 10:25 AM, Tejas Upadhyay wrote:
+>>>>> some display resolutions like 1366x768 6bpc which does not have 64B
+>>>>> aligned width are creating crc mismatch in kms_plane_alpha_blend
+>>>>> test on Intel platforms.
+>>>
+>>> hm. You are saying none of Intel hw is able to show 1366 wide
+>>> framebuffers correctly? And it is fixed by hiding it from being tested?
+>>>
+>>> Memory given from kernel will have 64B alignment. You can easily see
+>>> by yourself.
+>>>
+>>>>>
+>>>>> Also having different alignment requirement by different drivers,
+>>>>> 256B aligned width should work for all drm drivers.
+>>>
+>>> You are saying you are fixing some problem with Intel hw, what does
+>>> all this other stuff have to do with it? None of those other drivers
+>>> are able to show 1366 pixels wide framebuffers either?
+>>>
+>>>>>
+>>>>> amdgpu and radeon, amdgpu_align_pitch: 256B armada, armada_pitch:
+>>>>> 128B
+>>>>> exynos_drm_gem_dumb_create: No alignment required
+>>>>> drm_gem_shmem_dumb_create: 8B
+>>>>> drm_gem_vram_fill_create_dumb: 8B
+>>>>>
+>>>>> Thus 256B covers everything we see in the kernel drm drivers.
+>>>>> Signed-off-by: Tejas Upadhyay
+>>>>> <tejaskumarx.surendrakumar.upadhyay@intel.com>
+>>>>> ---
+>>>>>    tests/kms_plane_alpha_blend.c | 1 +
+>>>>>    1 file changed, 1 insertion(+)
+>>>>>
+>>>>> diff --git a/tests/kms_plane_alpha_blend.c
+>>>>> b/tests/kms_plane_alpha_blend.c index d649a09f..864e83f9 100644
+>>>>> --- a/tests/kms_plane_alpha_blend.c
+>>>>> +++ b/tests/kms_plane_alpha_blend.c
+>>>>> @@ -168,6 +168,7 @@ static void prepare_crtc(data_t *data,
+>>>>> igt_output_t *output, enum pipe pipe)
+>>>>>        w = mode->hdisplay;
+>>>>>        h = mode->vdisplay;
+>>>>> +    w = ALIGN(w, 256);
+>>>
+>>> This doesn't cause anything to align with 256 bytes. This makes fb
+>>> width in pixels divisible by 256. For anything to do with fb
+>>> alignments..this has very little to do. Kernel will do viewport
+>>> clipping hence for actual intended test this does nothing. FB
+>>> alignments are handled otherwise as in this case with with linear fb will
+>> have 64 bytes per stride.
+>>>
+>>>>>        /* recreate all fbs if incompatible */
+>>>>>        if (data->xrgb_fb.width != w || data->xrgb_fb.height != h) {
+>>>>>            cairo_t *cr;
+>>>>>
+>>>>
+>>>
+>>> If this patch actually fixed anything you'll need to create hw wa and
+>>> this need to be fixed in kernel. Not testing is not fixing. Imo there
+>>> should be no problem for Intel hw to show varying fb sizes, including
+>>> 1366 wide.
+>>>
+>>> /Juha-Pekka
+>>
+>> --
+>> ~Swati Sharma
