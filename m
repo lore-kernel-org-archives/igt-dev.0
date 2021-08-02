@@ -1,146 +1,192 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com
- [IPv6:2a00:1450:4864:20::62d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 426176E079
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Aug 2021 19:19:25 +0000 (UTC)
-Received: by mail-ej1-x62d.google.com with SMTP id nd39so32583877ejc.5
- for <igt-dev@lists.freedesktop.org>; Mon, 02 Aug 2021 12:19:25 -0700 (PDT)
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Date: Mon, 2 Aug 2021 20:10:26 +0000
+From: Matthew Brost <matthew.brost@intel.com>
+Message-ID: <20210802201026.GA79291@DUT151-ICLU.fm.intel.com>
+References: <20210727182057.78409-1-matthew.brost@intel.com>
+ <20210727182057.78409-2-matthew.brost@intel.com>
+ <9095b26a-975b-9180-045f-7231d63fe9ff@linux.intel.com>
+ <20210730180609.GA60763@DUT151-ICLU.fm.intel.com>
+ <90b87a17-43df-96ac-d491-73c73722a58f@linux.intel.com>
 MIME-Version: 1.0
-References: <20210728045544.1046657-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
- <2ce3082b-9823-8625-920e-7dcb8da0efbc@intel.com>
- <62dfe8ca-34a3-cd2c-6cf1-4181a0acb36a@gmail.com>
- <cd2e65f9-b5de-3ac7-3f56-ec004cecacfa@intel.com>
- <SN6PR11MB34210D1C5FF9B12A07947902DFEF9@SN6PR11MB3421.namprd11.prod.outlook.com>
-In-Reply-To: <SN6PR11MB34210D1C5FF9B12A07947902DFEF9@SN6PR11MB3421.namprd11.prod.outlook.com>
-From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-Date: Mon, 2 Aug 2021 22:19:12 +0300
-Message-ID: <CAJ=qYWSdy+n-rNFhHgghkRRO6F0Eo-txwkVwqDSrbFNRhBU=eA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [i-g-t] tests/kms_plane_alpha_blend: Align width to
- 256B
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Surendrakumar Upadhyay,
- TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Cc: "Sharma, Swati2" <swati2.sharma@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <90b87a17-43df-96ac-d491-73c73722a58f@linux.intel.com>
+Subject: Re: [Intel-gfx] [PATCH i-g-t 1/1] i915/gem_scheduler: Ensure
+ submission order in manycontexts
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Aug 2, 2021 at 5:16 PM Surendrakumar Upadhyay, TejaskumarX
-<tejaskumarx.surendrakumar.upadhyay@intel.com> wrote:
->
-> Hi JP,
->
-> You are right i915 driver is giving 64B aligned buffer but test uses raw width and thus it requires width to be aligned.
+On Mon, Aug 02, 2021 at 09:59:01AM +0100, Tvrtko Ursulin wrote:
+> 
+> 
+> On 30/07/2021 19:06, Matthew Brost wrote:
+> > On Fri, Jul 30, 2021 at 10:58:38AM +0100, Tvrtko Ursulin wrote:
+> > > 
+> > > On 27/07/2021 19:20, Matthew Brost wrote:
+> > > > With GuC submission contexts can get reordered (compared to submission
+> > > > order), if contexts get reordered the sequential nature of the batches
+> > > > releasing the next batch's semaphore in function timesliceN() get broken
+> > > > resulting in the test taking much longer than if should. e.g. Every
+> > > > contexts needs to be timesliced to release the next batch. Corking the
+> > > > first submission until all the batches have been submitted should ensure
+> > > > submission order.
+> > > 
+> > > The explanation sounds suspect.
+> > > 
+> > > Consider this comment from the test itself:
+> > > 
+> > > 	/*
+> > > 	 * Create a pair of interlocking batches, that ping pong
+> > > 	 * between each other, and only advance one step at a time.
+> > > 	 * We require the kernel to preempt at each semaphore and
+> > > 	 * switch to the other batch in order to advance.
+> > > 	 */
+> > > 
+> > > I'd say the test does not rely on no re-ordering at all, but relies on
+> > > context switch on an unsatisfied semaphore.
+> > > 
+> > 
+> > Yes, let do a simple example with 5 batches. Batch 0 releases batch's
+> > semaphore 1, batch 1 releases batch's 2 semaphore, etc... If the batches
+> > are seen in order the test should take 40 timeslices (8 semaphores in
+> > each batch have to be released).
+> > 
+> > If the batches are in the below order:
+> > 0 2 1 3 4
+> > 
+> > Now we have 72 timeslices. Now imagine with 67 batches completely out of
+> > order, the number timeslices can explode.
+> 
+> Yes that part is clear, issue is to understand why is guc waiting for the
+> timeslice to expire..
+> 
+> > > In the commit you seem to acknowledge GuC does not do that but instead ends
+> > > up waiting for the timeslice to expire, did I get that right? If so, why
+> > 
+> > I think GuC waits for the timeslice to expire if a semaphore is
+> > unsatisfied, I have to double check on that. I thought that was what
+> > execlists were doing too but I now see it has a convoluted algorithm to
+> > yield the timeslice if subsequent request comes in and the ring is
+> > waiting on a timeslice. Let me check with GuC team and see if they can
+> > / are doing something similiar. I was thinking the only to switch a
+> > sempahore was clear CTX_CTRL_INHIBIT_SYN_CTX_SWITCH but that appears to
+> > be incorrect.
+> 
+> .. so this will need clarifying with the firmware team.
+> 
 
-Can you try this on the device which is failing:
-https://patchwork.freedesktop.org/series/93317/
+They do not use the GT_WAIT_SEMAPHORE_INTERRUPT. However, we can
+clear CTX_CTRL_INHIBIT_SYN_CTX_SWITCH will result in more or less the
+same behavior as execlists but I'm suspect if that is the right
+solution. More on that below.
 
-It will put on pixel blend and alpha and try different width linear fbs
-and compare results with crc. This should tell if alignments somehow can
-affect the crc on your test machine. On my ICL everything work as expected.
+> With execlists we enable and react on GT_WAIT_SEMAPHORE_INTERRUPT. If guc
 
-/Juha-Pekka
+Because execlists does this, doesn't mean it is the spec or is correct.
+As far as I can tell this behavior is yet another thing just shoehorned
+into the execlists scheduler without a ton of thought or input from
+architecture about what the scheduler should look like or what the UMD
+needs actually are.
 
+If we change anything related to GuC scheduling there needs to be a clear
+need - again saying execlists does this is not an argument. There needs
+to be an agreement with architecture, the UMD teams, the i915 team,
+possibly the Windows team, and the GuC team before we make any changes.
+
+IMO the correct solution is to use tokens. Have uAPI interface which
+distributes tokens to the UMDs, the i915 clears context switch inhibit
+bit in the LRC if the user opted into tokens, and now semaphores switch
+out automatically and get rescheduled when the token is signaled.
+
+> does not, or can not, do that that could be worrying since userspace can and
+> does use semaphores legitimately so making it pay the timeslice penalty.
+> Well actually that has an effect to unrelated clients as well, not just the
+> semaphore user.
+
+Not buying this argument. Any user can submit a long running batch that
+always uses its full time slice and this affects unrelated clients.
+
+> 
+> > For what is worth, after this change the run times of test are pretty
+> > similar for execlists & GuC on TGL.
+> 
+> Yes, but the test was useful in this case since it found a weakness in guc
+> scheduling so it may not be the best approach to hide that.
 >
-> Thanks,
-> Tejas
->
-> > -----Original Message-----
-> > From: Sharma, Swati2 <swati2.sharma@intel.com>
-> > Sent: 02 August 2021 18:35
-> > To: juhapekka.heikkila@gmail.com; Surendrakumar Upadhyay, TejaskumarX
-> > <tejaskumarx.surendrakumar.upadhyay@intel.com>; igt-
-> > dev@lists.freedesktop.org
-> > Subject: Re: [igt-dev] [i-g-t] tests/kms_plane_alpha_blend: Align width to
-> > 256B
-> >
-> > Hi JP,
-> >
-> > Tejas reapplied the same fix as in
-> > https://patchwork.freedesktop.org/patch/445010/?series=92751&rev=2
-> > which was reviewed by Daniel.
-> >
-> > On 02-Aug-21 5:42 PM, Juha-Pekka Heikkila wrote:
-> > > Hi Tejas, Swati,
-> > >
-> > > I was confused when I read this patch, mind you tell what happen here?
-> > > To me it look like nothing matches with each other with the patch.
-> > >
-> > > Even subject is telling other things than what this patch actually does.
-> > >
-> > > On 30.7.2021 8.50, Sharma, Swati2 wrote:
-> > >> Reviewed-by:
-> > >> Swati Sharma <swati2.sharma@intel.com>
-> > >>
-> > >> On 28-Jul-21 10:25 AM, Tejas Upadhyay wrote:
-> > >>> some display resolutions like 1366x768 6bpc which does not have 64B
-> > >>> aligned width are creating crc mismatch in kms_plane_alpha_blend
-> > >>> test on Intel platforms.
-> > >
-> > > hm. You are saying none of Intel hw is able to show 1366 wide
-> > > framebuffers correctly? And it is fixed by hiding it from being tested?
-> > >
-> > > Memory given from kernel will have 64B alignment. You can easily see
-> > > by yourself.
-> > >
-> > >>>
-> > >>> Also having different alignment requirement by different drivers,
-> > >>> 256B aligned width should work for all drm drivers.
-> > >
-> > > You are saying you are fixing some problem with Intel hw, what does
-> > > all this other stuff have to do with it? None of those other drivers
-> > > are able to show 1366 pixels wide framebuffers either?
-> > >
-> > >>>
-> > >>> amdgpu and radeon, amdgpu_align_pitch: 256B armada, armada_pitch:
-> > >>> 128B
-> > >>> exynos_drm_gem_dumb_create: No alignment required
-> > >>> drm_gem_shmem_dumb_create: 8B
-> > >>> drm_gem_vram_fill_create_dumb: 8B
-> > >>>
-> > >>> Thus 256B covers everything we see in the kernel drm drivers.
-> > >>> Signed-off-by: Tejas Upadhyay
-> > >>> <tejaskumarx.surendrakumar.upadhyay@intel.com>
-> > >>> ---
-> > >>>   tests/kms_plane_alpha_blend.c | 1 +
-> > >>>   1 file changed, 1 insertion(+)
-> > >>>
-> > >>> diff --git a/tests/kms_plane_alpha_blend.c
-> > >>> b/tests/kms_plane_alpha_blend.c index d649a09f..864e83f9 100644
-> > >>> --- a/tests/kms_plane_alpha_blend.c
-> > >>> +++ b/tests/kms_plane_alpha_blend.c
-> > >>> @@ -168,6 +168,7 @@ static void prepare_crtc(data_t *data,
-> > >>> igt_output_t *output, enum pipe pipe)
-> > >>>       w = mode->hdisplay;
-> > >>>       h = mode->vdisplay;
-> > >>> +    w = ALIGN(w, 256);
-> > >
-> > > This doesn't cause anything to align with 256 bytes. This makes fb
-> > > width in pixels divisible by 256. For anything to do with fb
-> > > alignments..this has very little to do. Kernel will do viewport
-> > > clipping hence for actual intended test this does nothing. FB
-> > > alignments are handled otherwise as in this case with with linear fb will
-> > have 64 bytes per stride.
-> > >
-> > >>>       /* recreate all fbs if incompatible */
-> > >>>       if (data->xrgb_fb.width != w || data->xrgb_fb.height != h) {
-> > >>>           cairo_t *cr;
-> > >>>
-> > >>
-> > >
-> > > If this patch actually fixed anything you'll need to create hw wa and
-> > > this need to be fixed in kernel. Not testing is not fixing. Imo there
-> > > should be no problem for Intel hw to show varying fb sizes, including
-> > > 1366 wide.
-> > >
-> > > /Juha-Pekka
-> >
-> > --
-> > ~Swati Sharma
+
+Not a weakness, just a difference.
+
+Matt
+
+> Regards,
+> 
+> Tvrtko
+> 
+> > 
+> > Matt
+> > 
+> > > does the GuC does not do that and can we fix it?
+> > > 
+> > > Regards,
+> > > 
+> > > Tvrtko
+> > > 
+> > > > 
+> > > > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> > > > ---
+> > > >    tests/i915/gem_exec_schedule.c | 16 +++++++++++++++-
+> > > >    1 file changed, 15 insertions(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
+> > > > index f03842478..41f2591a5 100644
+> > > > --- a/tests/i915/gem_exec_schedule.c
+> > > > +++ b/tests/i915/gem_exec_schedule.c
+> > > > @@ -597,12 +597,13 @@ static void timesliceN(int i915, const intel_ctx_cfg_t *cfg,
+> > > >    	struct drm_i915_gem_execbuffer2 execbuf  = {
+> > > >    		.buffers_ptr = to_user_pointer(&obj),
+> > > >    		.buffer_count = 1,
+> > > > -		.flags = engine | I915_EXEC_FENCE_OUT,
+> > > > +		.flags = engine | I915_EXEC_FENCE_OUT | I915_EXEC_FENCE_SUBMIT,
+> > > >    	};
+> > > >    	uint32_t *result =
+> > > >    		gem_mmap__device_coherent(i915, obj.handle, 0, sz, PROT_READ);
+> > > >    	const intel_ctx_t *ctx;
+> > > >    	int fence[count];
+> > > > +	IGT_CORK_FENCE(cork);
+> > > >    	/*
+> > > >    	 * Create a pair of interlocking batches, that ping pong
+> > > > @@ -614,6 +615,17 @@ static void timesliceN(int i915, const intel_ctx_cfg_t *cfg,
+> > > >    	igt_require(gem_scheduler_has_timeslicing(i915));
+> > > >    	igt_require(intel_gen(intel_get_drm_devid(i915)) >= 8);
+> > > > +	/*
+> > > > +	 * With GuC submission contexts can get reordered (compared to
+> > > > +	 * submission order), if contexts get reordered the sequential
+> > > > +	 * nature of the batches releasing the next batch's semaphore gets
+> > > > +	 * broken resulting in the test taking much longer than it should (e.g.
+> > > > +	 * every context needs to be timesliced to release the next batch).
+> > > > +	 * Corking the first submission until all batches have been
+> > > > +	 * submitted should ensure submission order.
+> > > > +	 */
+> > > > +	execbuf.rsvd2 = igt_cork_plug(&cork, i915);
+> > > > +
+> > > >    	/* No coupling between requests; free to timeslice */
+> > > >    	for (int i = 0; i < count; i++) {
+> > > > @@ -624,8 +636,10 @@ static void timesliceN(int i915, const intel_ctx_cfg_t *cfg,
+> > > >    		intel_ctx_destroy(i915, ctx);
+> > > >    		fence[i] = execbuf.rsvd2 >> 32;
+> > > > +		execbuf.rsvd2 >>= 32;
+> > > >    	}
+> > > > +	igt_cork_unplug(&cork);
+> > > >    	gem_sync(i915, obj.handle);
+> > > >    	gem_close(i915, obj.handle);
+> > > > 
