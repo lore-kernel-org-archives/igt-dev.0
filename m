@@ -1,192 +1,155 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-Date: Mon, 2 Aug 2021 20:10:26 +0000
-From: Matthew Brost <matthew.brost@intel.com>
-Message-ID: <20210802201026.GA79291@DUT151-ICLU.fm.intel.com>
-References: <20210727182057.78409-1-matthew.brost@intel.com>
- <20210727182057.78409-2-matthew.brost@intel.com>
- <9095b26a-975b-9180-045f-7231d63fe9ff@linux.intel.com>
- <20210730180609.GA60763@DUT151-ICLU.fm.intel.com>
- <90b87a17-43df-96ac-d491-73c73722a58f@linux.intel.com>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 974246E105
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Aug 2021 04:40:21 +0000 (UTC)
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Date: Tue, 3 Aug 2021 04:40:16 +0000
+Message-ID: <DM8PR11MB57199E3DF3AF6340731CFDF18DF09@DM8PR11MB5719.namprd11.prod.outlook.com>
+References: <20210525200508.5451-1-bhanuprakash.modem@intel.com>
+ <d188ee67-447b-50fb-1ed6-fce700257d9d@intel.com>
+In-Reply-To: <d188ee67-447b-50fb-1ed6-fce700257d9d@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <90b87a17-43df-96ac-d491-73c73722a58f@linux.intel.com>
-Subject: Re: [Intel-gfx] [PATCH i-g-t 1/1] i915/gem_scheduler: Ensure
- submission order in manycontexts
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_setmode: Fix mode selection
+ for Nx tests
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Deak, Imre" <imre.deak@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Aug 02, 2021 at 09:59:01AM +0100, Tvrtko Ursulin wrote:
-> 
-> 
-> On 30/07/2021 19:06, Matthew Brost wrote:
-> > On Fri, Jul 30, 2021 at 10:58:38AM +0100, Tvrtko Ursulin wrote:
-> > > 
-> > > On 27/07/2021 19:20, Matthew Brost wrote:
-> > > > With GuC submission contexts can get reordered (compared to submission
-> > > > order), if contexts get reordered the sequential nature of the batches
-> > > > releasing the next batch's semaphore in function timesliceN() get broken
-> > > > resulting in the test taking much longer than if should. e.g. Every
-> > > > contexts needs to be timesliced to release the next batch. Corking the
-> > > > first submission until all the batches have been submitted should ensure
-> > > > submission order.
-> > > 
-> > > The explanation sounds suspect.
-> > > 
-> > > Consider this comment from the test itself:
-> > > 
-> > > 	/*
-> > > 	 * Create a pair of interlocking batches, that ping pong
-> > > 	 * between each other, and only advance one step at a time.
-> > > 	 * We require the kernel to preempt at each semaphore and
-> > > 	 * switch to the other batch in order to advance.
-> > > 	 */
-> > > 
-> > > I'd say the test does not rely on no re-ordering at all, but relies on
-> > > context switch on an unsatisfied semaphore.
-> > > 
-> > 
-> > Yes, let do a simple example with 5 batches. Batch 0 releases batch's
-> > semaphore 1, batch 1 releases batch's 2 semaphore, etc... If the batches
-> > are seen in order the test should take 40 timeslices (8 semaphores in
-> > each batch have to be released).
-> > 
-> > If the batches are in the below order:
-> > 0 2 1 3 4
-> > 
-> > Now we have 72 timeslices. Now imagine with 67 batches completely out of
-> > order, the number timeslices can explode.
-> 
-> Yes that part is clear, issue is to understand why is guc waiting for the
-> timeslice to expire..
-> 
-> > > In the commit you seem to acknowledge GuC does not do that but instead ends
-> > > up waiting for the timeslice to expire, did I get that right? If so, why
-> > 
-> > I think GuC waits for the timeslice to expire if a semaphore is
-> > unsatisfied, I have to double check on that. I thought that was what
-> > execlists were doing too but I now see it has a convoluted algorithm to
-> > yield the timeslice if subsequent request comes in and the ring is
-> > waiting on a timeslice. Let me check with GuC team and see if they can
-> > / are doing something similiar. I was thinking the only to switch a
-> > sempahore was clear CTX_CTRL_INHIBIT_SYN_CTX_SWITCH but that appears to
-> > be incorrect.
-> 
-> .. so this will need clarifying with the firmware team.
-> 
-
-They do not use the GT_WAIT_SEMAPHORE_INTERRUPT. However, we can
-clear CTX_CTRL_INHIBIT_SYN_CTX_SWITCH will result in more or less the
-same behavior as execlists but I'm suspect if that is the right
-solution. More on that below.
-
-> With execlists we enable and react on GT_WAIT_SEMAPHORE_INTERRUPT. If guc
-
-Because execlists does this, doesn't mean it is the spec or is correct.
-As far as I can tell this behavior is yet another thing just shoehorned
-into the execlists scheduler without a ton of thought or input from
-architecture about what the scheduler should look like or what the UMD
-needs actually are.
-
-If we change anything related to GuC scheduling there needs to be a clear
-need - again saying execlists does this is not an argument. There needs
-to be an agreement with architecture, the UMD teams, the i915 team,
-possibly the Windows team, and the GuC team before we make any changes.
-
-IMO the correct solution is to use tokens. Have uAPI interface which
-distributes tokens to the UMDs, the i915 clears context switch inhibit
-bit in the LRC if the user opted into tokens, and now semaphores switch
-out automatically and get rescheduled when the token is signaled.
-
-> does not, or can not, do that that could be worrying since userspace can and
-> does use semaphores legitimately so making it pay the timeslice penalty.
-> Well actually that has an effect to unrelated clients as well, not just the
-> semaphore user.
-
-Not buying this argument. Any user can submit a long running batch that
-always uses its full time slice and this affects unrelated clients.
-
-> 
-> > For what is worth, after this change the run times of test are pretty
-> > similar for execlists & GuC on TGL.
-> 
-> Yes, but the test was useful in this case since it found a weakness in guc
-> scheduling so it may not be the best approach to hide that.
->
-
-Not a weakness, just a difference.
-
-Matt
-
-> Regards,
-> 
-> Tvrtko
-> 
-> > 
-> > Matt
-> > 
-> > > does the GuC does not do that and can we fix it?
-> > > 
-> > > Regards,
-> > > 
-> > > Tvrtko
-> > > 
-> > > > 
-> > > > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> > > > ---
-> > > >    tests/i915/gem_exec_schedule.c | 16 +++++++++++++++-
-> > > >    1 file changed, 15 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-> > > > index f03842478..41f2591a5 100644
-> > > > --- a/tests/i915/gem_exec_schedule.c
-> > > > +++ b/tests/i915/gem_exec_schedule.c
-> > > > @@ -597,12 +597,13 @@ static void timesliceN(int i915, const intel_ctx_cfg_t *cfg,
-> > > >    	struct drm_i915_gem_execbuffer2 execbuf  = {
-> > > >    		.buffers_ptr = to_user_pointer(&obj),
-> > > >    		.buffer_count = 1,
-> > > > -		.flags = engine | I915_EXEC_FENCE_OUT,
-> > > > +		.flags = engine | I915_EXEC_FENCE_OUT | I915_EXEC_FENCE_SUBMIT,
-> > > >    	};
-> > > >    	uint32_t *result =
-> > > >    		gem_mmap__device_coherent(i915, obj.handle, 0, sz, PROT_READ);
-> > > >    	const intel_ctx_t *ctx;
-> > > >    	int fence[count];
-> > > > +	IGT_CORK_FENCE(cork);
-> > > >    	/*
-> > > >    	 * Create a pair of interlocking batches, that ping pong
-> > > > @@ -614,6 +615,17 @@ static void timesliceN(int i915, const intel_ctx_cfg_t *cfg,
-> > > >    	igt_require(gem_scheduler_has_timeslicing(i915));
-> > > >    	igt_require(intel_gen(intel_get_drm_devid(i915)) >= 8);
-> > > > +	/*
-> > > > +	 * With GuC submission contexts can get reordered (compared to
-> > > > +	 * submission order), if contexts get reordered the sequential
-> > > > +	 * nature of the batches releasing the next batch's semaphore gets
-> > > > +	 * broken resulting in the test taking much longer than it should (e.g.
-> > > > +	 * every context needs to be timesliced to release the next batch).
-> > > > +	 * Corking the first submission until all batches have been
-> > > > +	 * submitted should ensure submission order.
-> > > > +	 */
-> > > > +	execbuf.rsvd2 = igt_cork_plug(&cork, i915);
-> > > > +
-> > > >    	/* No coupling between requests; free to timeslice */
-> > > >    	for (int i = 0; i < count; i++) {
-> > > > @@ -624,8 +636,10 @@ static void timesliceN(int i915, const intel_ctx_cfg_t *cfg,
-> > > >    		intel_ctx_destroy(i915, ctx);
-> > > >    		fence[i] = execbuf.rsvd2 >> 32;
-> > > > +		execbuf.rsvd2 >>= 32;
-> > > >    	}
-> > > > +	igt_cork_unplug(&cork);
-> > > >    	gem_sync(i915, obj.handle);
-> > > >    	gem_close(i915, obj.handle);
-> > > > 
+PiBGcm9tOiBOYXV0aXlhbCwgQW5raXQgSyA8YW5raXQuay5uYXV0aXlhbEBpbnRlbC5jb20+DQo+
+IFNlbnQ6IFdlZG5lc2RheSwgSnVseSAyOCwgMjAyMSA1OjAxIFBNDQo+IFRvOiBNb2RlbSwgQmhh
+bnVwcmFrYXNoIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPjsgaWd0LQ0KPiBkZXZAbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnOyBEZWFrLCBJbXJlIDxpbXJlLmRlYWtAaW50ZWwuY29tPg0KPiBT
+dWJqZWN0OiBSZTogW1BBVENIIGktZy10XSB0ZXN0cy9rbXNfc2V0bW9kZTogRml4IG1vZGUgc2Vs
+ZWN0aW9uIGZvciBOeCB0ZXN0cw0KPiANCj4gSGkgQmhhbnUsDQo+IA0KPiBPdmVyYWxsIHRoZSBj
+aGFuZ2UgbG9va3MgZ29vZCB0byBtZS4NCj4gDQo+IE9ubHkgb25lIHRoaW5nIHRoYXQgd2UgbWln
+aHQgd2FudCB0byBjaGFuZ2UgaXM6DQo+IA0KPiBXZSBhcmUgY3VycmVudGx5LCB0cnlpbmcgYWxs
+IG1vZGVzIG9mIERpc3BsYXkgMiB3aXRoIGZpcnN0IG1vZGUgb2YNCj4gRGlzcGxheSAxLg0KPiAN
+Cj4gSWYgd2UgZXhoYXVzdCBhbGwgdGhlIG1vZGVzIG9mIERpc3BsYXkyLCB3ZSBzaG91bGQgZ28g
+d2l0aCB0aGUgMm5kIG1vZGUNCj4gb2YgRGlzcGxheTEgYW5kIHRyeSBhZ2Fpbi4NCj4gDQo+IElu
+c3RlYWQgd2UganVzdCByZXR1cm4gZnJvbSB0aGF0IHBvaW50Lg0KPiANCj4gQ29uc2lkZXIgYSBo
+eXBvdGhldGljYWwgY2FzZTogU2F5IHdlIGhhdmUgRFAgYW5kIGVEUCBjb21iaW5hdGlvbiBtYXBw
+ZWQNCj4gdG8gcGlwZSBBIGFuZCBwaXBlIEIuDQo+IA0KPiBJbiB0aGF0IGNhc2UsIGZpcnN0IHdl
+IHdpbGwgdHJ5IGZpcnN0IGZvciBEUCAocGlwZSBBKSBhbmQgdGhlbiB0cnkgYWxsDQo+IG1vZGVz
+IG9mIGVEUC4NCj4gDQo+IEluIGNhc2Ugb2YgZURQIGlzIGhhdmluZyBmaXhlZCBtb2RlLCB3ZSBn
+ZXQgb3V0IG9mIHJlY3Vyc2lvbiBhZnRlcg0KPiB0cnlpbmcgdGhlIG9uZSBmaXhlZCBtb2RlIG9m
+IERpc3BsYXkyIGFuZCBqdXN0IGZhaWwgdGhlIHRlc3QsIGluc3RlYWQgb2YNCj4gdHJ5aW5nIHdp
+dGggbG93ZXIgbW9kZXMgb2YgRFAuDQo+IA0KPiBQbGVhc2UgZmluZCBpbmxpbmUgc3VnZ2VzdGlv
+biB0byBmaXggdGhpczoNCj4gDQo+IA0KPiBPbiA1LzI2LzIwMjEgMTozNSBBTSwgQmhhbnVwcmFr
+YXNoIE1vZGVtIHdyb3RlOg0KPiA+IFRoaXMgcGF0Y2ggd2lsbCBmaW5kIHRoZSBjb25uZWN0b3Iv
+bW9kZSBjb21iaW5hdGlvbiB0aGF0IGZpdHMNCj4gPiBpbnRvIHRoZSBiYW5kd2lkdGggd2hlbiBt
+b3JlIHRoYW4gb25lIG1vbml0b3IgaXMgY29ubmVjdGVkLg0KPiA+DQo+ID4gRXhhbXBsZToNCj4g
+PiAgICBXaGVuIHR3byBtb25pdG9ycyBjb25uZWN0ZWQgdGhyb3VnaCBNU1QsIHRoZSBzZWNvbmQg
+bW9uaXRvcg0KPiA+ICAgIGFsc28gdHJpZXMgdG8gdXNlIHRoZSBzYW1lIG1vZGUuIFNvIHR3byBz
+dWNoIG1vZGVzIG1heSBub3QNCj4gPiAgICBmaXQgaW50byB0aGUgbGluayBiYW5kd2lkdGguIFNv
+LCBpdGVyYXRlIHRocm91Z2ggY29ubmVjdGVkDQo+ID4gICAgb3V0cHV0cyAmIG1vZGVzIGFuZCBm
+aW5kIGEgY29tYmluYXRpb24gb2YgbW9kZXMgdGhvc2UgZml0DQo+ID4gICAgaW50byB0aGUgbGlu
+ayBCVy4NCj4gPg0KPiA+IENjOiBJbXJlIERlYWsgPGltcmUuZGVha0BpbnRlbC5jb20+DQo+ID4g
+Q2M6IEFua2l0IE5hdXRpeWFsIDxhbmtpdC5rLm5hdXRpeWFsQGludGVsLmNvbT4NCj4gPiBTaWdu
+ZWQtb2ZmLWJ5OiBCaGFudXByYWthc2ggTW9kZW0gPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5j
+b20+DQo+ID4gLS0tDQo+ID4gICB0ZXN0cy9rbXNfc2V0bW9kZS5jIHwgOTUgKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tDQo+ID4gICAxIGZpbGUgY2hhbmdlZCwg
+NjggaW5zZXJ0aW9ucygrKSwgMjcgZGVsZXRpb25zKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEv
+dGVzdHMva21zX3NldG1vZGUuYyBiL3Rlc3RzL2ttc19zZXRtb2RlLmMNCj4gPiBpbmRleCBlYjlh
+YzE4OTY0Li45M2NjYjgyOWUzIDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL2ttc19zZXRtb2RlLmMN
+Cj4gPiArKysgYi90ZXN0cy9rbXNfc2V0bW9kZS5jDQo+ID4gQEAgLTQ2LDYgKzQ2LDkgQEAgc3Rh
+dGljIGludCBmaWx0ZXJfdGVzdF9pZDsNCj4gPiAgIHN0YXRpYyBib29sIGRyeV9ydW47DQo+ID4g
+ICBzdGF0aWMgYm9vbCBhbGxfcGlwZXMgPSBmYWxzZTsNCj4gPg0KPiA+ICtzdGF0aWMgY2hhciBz
+dHJfYnVmW01BWF9DUlRDU11bMTAyNF07DQo+ID4gK3N0YXRpYyBjb25zdCBjaGFyICpjcnRjX3N0
+cnNbTUFYX0NSVENTXTsNCj4gPiArDQo+ID4gICBjb25zdCBkcm1Nb2RlTW9kZUluZm8gbW9kZV82
+NDBfNDgwID0gew0KPiA+ICAgCS5uYW1lCQk9ICI2NDB4NDgwIiwNCj4gPiAgIAkudnJlZnJlc2gJ
+PSA2MCwNCj4gPiBAQCAtNTQwLDQ0ICs1NDMsNDYgQEAgc3RhdGljIHZvaWQgY2hlY2tfdGltaW5n
+cyhpbnQgY3J0Y19pZHgsIGNvbnN0DQo+IGRybU1vZGVNb2RlSW5mbyAqa21vZGUpDQo+ID4gICAJ
+CSAgICAgZmFicyhtZWFuIC0gZXhwZWN0ZWQpIC8gbGluZV90aW1lKGttb2RlKSk7DQo+ID4gICB9
+DQo+ID4NCj4gPiAtc3RhdGljIHZvaWQgdGVzdF9jcnRjX2NvbmZpZyhjb25zdCBzdHJ1Y3QgdGVz
+dF9jb25maWcgKnRjb25mLA0KPiA+IC0JCQkgICAgIHN0cnVjdCBjcnRjX2NvbmZpZyAqY3J0Y3Ms
+IGludCBjcnRjX2NvdW50KQ0KPiA+ICtzdGF0aWMgaW50IHNvcnRfZHJtX21vZGVzKGNvbnN0IHZv
+aWQgKmEsIGNvbnN0IHZvaWQgKmIpDQo+ID4gICB7DQo+ID4gLQljaGFyIHN0cl9idWZbTUFYX0NS
+VENTXVsxMDI0XTsNCj4gPiAtCWNvbnN0IGNoYXIgKmNydGNfc3Ryc1tNQVhfQ1JUQ1NdOw0KPiA+
+IC0Jc3RydWN0IGNydGNfY29uZmlnICpjcnRjOw0KPiA+IC0Jc3RhdGljIGludCB0ZXN0X2lkOw0K
+PiA+IC0JYm9vbCBjb25maWdfZmFpbGVkID0gZmFsc2U7DQo+ID4gLQlpbnQgcmV0ID0gMDsNCj4g
+PiAtCWludCBpOw0KPiA+ICsJY29uc3QgZHJtTW9kZU1vZGVJbmZvICptb2RlMSA9IGEsICptb2Rl
+MiA9IGI7DQo+ID4NCj4gPiAtCXRlc3RfaWQrKzsNCj4gPiArCXJldHVybiAobW9kZTEtPmNsb2Nr
+IDwgbW9kZTItPmNsb2NrKSAtIChtb2RlMi0+Y2xvY2sgPCBtb2RlMS0+Y2xvY2spOw0KPiA+ICt9
+DQo+ID4NCj4gPiAtCWlmIChmaWx0ZXJfdGVzdF9pZCAmJiBmaWx0ZXJfdGVzdF9pZCAhPSB0ZXN0
+X2lkKQ0KPiA+IC0JCXJldHVybjsNCj4gPiArc3RhdGljDQo+ID4gK2ludCBfX3Rlc3RfY3J0Y19j
+b25maWcoc3RydWN0IGNydGNfY29uZmlnICpjcnRjcywgaW50IGNydGNfY291bnQsDQo+ID4gKwkJ
+ICAgICAgIGNvbnN0IHN0cnVjdCB0ZXN0X2NvbmZpZyAqdGNvbmYsIGJvb2wgKmNvbmZpZ19mYWls
+ZWQsDQo+ID4gKwkJICAgICAgIGludCBiYXNlKQ0KPiA+ICt7DQo+ID4gKwlzdHJ1Y3QgY3J0Y19j
+b25maWcgKmNydGMgPSBOVUxMOw0KPiA+ICsJaW50IHJldCA9IDA7DQo+ID4NCj4gPiAtCWlndF9p
+bmZvKCIgIFRlc3QgaWQjJWQgQ1JUQyBjb3VudCAlZFxuIiwgdGVzdF9pZCwgY3J0Y19jb3VudCk7
+DQo+ID4gKwlpZiAoYmFzZSA+PSBjcnRjX2NvdW50KQ0KPiA+ICsJCXJldHVybiByZXQ7DQo+ID4N
+Cj4gPiAtCWZvciAoaSA9IDA7IGkgPCBjcnRjX2NvdW50OyBpKyspIHsNCj4gPiAtCQlnZXRfY3J0
+Y19jb25maWdfc3RyKCZjcnRjc1tpXSwgc3RyX2J1ZltpXSwgc2l6ZW9mKHN0cl9idWZbaV0pKTsN
+Cj4gPiAtCQljcnRjX3N0cnNbaV0gPSAmc3RyX2J1ZltpXVswXTsNCj4gPiAtCX0NCj4gPiArCWNy
+dGMgPSAmY3J0Y3NbYmFzZV07DQo+ID4NCj4gPiAtCWlmIChkcnlfcnVuKSB7DQo+ID4gLQkJZm9y
+IChpID0gMDsgaSA8IGNydGNfY291bnQ7IGkrKykNCj4gPiAtCQkJaWd0X2luZm8oIiAgICAlc1xu
+IiwgY3J0Y19zdHJzW2ldKTsNCj4gPiAtCQlyZXR1cm47DQo+ID4gLQl9DQo+ID4gKwkvKiBTb3J0
+IHRoZSBtb2RlcyBpbiBkZXNjZW5kaW5nIG9yZGVyIGJ5IGNsb2NrIGZyZXEuICovDQo+ID4gKwlx
+c29ydChjcnRjLT5jY29uZnMtPmNvbm5lY3Rvci0+bW9kZXMsDQo+ID4gKwkJY3J0Yy0+Y2NvbmZz
+LT5jb25uZWN0b3ItPmNvdW50X21vZGVzLA0KPiA+ICsJCXNpemVvZihkcm1Nb2RlTW9kZUluZm8p
+LA0KPiA+ICsJCXNvcnRfZHJtX21vZGVzKTsNCj4gPg0KPiA+IC0JZm9yIChpID0gMDsgaSA8IGNy
+dGNfY291bnQ7IGkrKykgew0KPiA+ICsJZm9yIChpbnQgaSA9IDA7IGkgPCBjcnRjLT5jY29uZnMt
+PmNvbm5lY3Rvci0+Y291bnRfbW9kZXM7IGkrKykgew0KPiA+ICAgCQl1aW50MzJfdCAqaWRzOw0K
+PiA+DQo+ID4gLQkJY3J0YyA9ICZjcnRjc1tpXTsNCj4gPiArCQlpZiAoIWNydGNfc3VwcG9ydHNf
+bW9kZShjcnRjLCAmY3J0Yy0+Y2NvbmZzLT5jb25uZWN0b3ItPm1vZGVzW2ldKSkNCj4gPiArCQkJ
+Y29udGludWU7DQo+ID4gKw0KPiA+ICsJCWNydGMtPm1vZGUgPSBjcnRjLT5jY29uZnMtPmNvbm5l
+Y3Rvci0+bW9kZXNbaV07DQo+ID4NCj4gPiAtCQlpZ3RfaW5mbygiICAgICVzXG4iLCBjcnRjX3N0
+cnNbaV0pOw0KPiA+ICsJCWdldF9jcnRjX2NvbmZpZ19zdHIoY3J0Yywgc3RyX2J1ZltiYXNlXSwg
+c2l6ZW9mKHN0cl9idWZbYmFzZV0pKTsNCj4gPiArCQljcnRjX3N0cnNbYmFzZV0gPSAmc3RyX2J1
+ZltiYXNlXVswXTsNCj4gPiArCQlpZ3RfaW5mbygiICAgICVzXG4iLCBjcnRjX3N0cnNbYmFzZV0p
+Ow0KPiA+DQo+ID4gICAJCWNyZWF0ZV9mYl9mb3JfY3J0YyhjcnRjLCAmY3J0Yy0+ZmJfaW5mbyk7
+DQo+ID4gLQkJcGFpbnRfZmIoJmNydGMtPmZiX2luZm8sIHRjb25mLT5uYW1lLCBjcnRjX3N0cnMs
+IGNydGNfY291bnQsIGkpOw0KPiA+ICsJCXBhaW50X2ZiKCZjcnRjLT5mYl9pbmZvLCB0Y29uZi0+
+bmFtZSwgY3J0Y19zdHJzLCBjcnRjX2NvdW50LCBiYXNlKTsNCj4gPg0KPiA+ICAgCQlpZHMgPSBn
+ZXRfY29ubmVjdG9yX2lkcyhjcnRjKTsNCj4gPiAgIAkJaWYgKHRjb25mLT5mbGFncyAmIFRFU1Rf
+U1RFQUxJTkcpDQo+ID4gQEAgLTU4OSwxMiArNTk0LDQ4IEBAIHN0YXRpYyB2b2lkIHRlc3RfY3J0
+Y19jb25maWcoY29uc3Qgc3RydWN0IHRlc3RfY29uZmlnDQo+ICp0Y29uZiwNCj4gPg0KPiA+ICAg
+CQlmcmVlKGlkcyk7DQo+ID4NCj4gPiArCQlpZiAocmV0IDwgMCAmJiBlcnJubyA9PSBFTk9TUEMp
+DQo+ID4gKwkJCWNvbnRpbnVlOw0KPiA+ICsNCj4gPiAgIAkJaWYgKHJldCA8IDApIHsNCj4gPiAg
+IAkJCWlndF9hc3NlcnRfZXEoZXJybm8sIEVJTlZBTCk7DQo+ID4gLQkJCWNvbmZpZ19mYWlsZWQg
+PSB0cnVlOw0KPiA+ICsJCQkqY29uZmlnX2ZhaWxlZCA9IHRydWU7DQo+ID4gICAJCX0NCj4gPiAr
+DQo+ID4gKwkJcmV0dXJuIF9fdGVzdF9jcnRjX2NvbmZpZyhjcnRjcywgY3J0Y19jb3VudCwgdGNv
+bmYsIGNvbmZpZ19mYWlsZWQsDQo+IGJhc2UgKyAxKTsNCj4gDQo+IElNSE8gdGhpcyBzaG91bGQg
+YmU6DQo+IA0KPiByZXQgPSBfX3Rlc3RfY3J0Y19jb25maWcoY3J0Y3MsIGNydGNfY291bnQsIHRj
+b25mLCBjb25maWdfZmFpbGVkLCBiYXNlICsgMSk7DQoNClRoYW5rcyBmb3IgdGhlIHJldmlldyBB
+bmtpdCwgSSBoYXZlIGdvbmUgdGhyb3VnaCB0aGUgbG9naWMgYWdhaW4uDQoNCkFzIHJlY3Vyc2lv
+biBjYWxsaW5nIGlzIGluc2lkZSB0aGUgbG9vcCAobGlzdCBvZiBkaXNwbGF5IG1vZGVzKSwgSXQg
+Y2FuIGl0ZXJhdGUNCm92ZXIgdGhlIGFsbCBtb2RlcyBvbiBlYWNoIGNvbm5lY3RlZCBkaXNwbGF5
+Lg0KDQpBbmQgeWVzLCB0aGVyZSBpcyBhIHByb2JsZW0gd2l0aCB0aGlzIGxvZ2ljLiBFdmVuIHRo
+b3VnaCB3ZSBmaW5kIHRoZSB2YWxpZA0KY29ubmVjdG9yICYgbW9kZSBjb21iaW5hdGlvbiwgcmVj
+dXJzaW9uIHdpbGwgY29udGludWUgJiBlbmR1cCB3aXRoIHRoZSBtaW5pbXVtDQptb2Rlcy4gSSBh
+bSB0cnlpbmcgdG8gZmluZCBhIHdheSB0byBicmVhayB0aGUgcmVjdXJzaW9uIHdoZW4gd2UgZmlu
+ZCB0aGUgdmFsaWQNCmNvbWJpbmF0aW9uLiBJZiBwb3NzaWJsZSwgY2FuIHlvdSBwbGVhc2Ugc3Vn
+Z2VzdCBhbnkgc29sdXRpb24/DQoNCi0gQmhhbnUNCg0KPiANCj4gaWYgKHJldCA8IDAgJiYgZXJy
+bm8gPT0gRU5PU1BDKQ0KPiANCj4gIMKgwqDCoMKgwqAgY29udGludWU7IC8vY29udGludWUgd2l0
+aCBuZXh0IG1vZGUgb2YgY3VycmVudCBDUlRDDQo+IA0KPiBlbHNlDQo+IA0KPiAgwqDCoMKgwqDC
+oCByZXR1cm4gcmV0Ow0KPiANCj4gDQo+IFJlZ2FyZHMsDQo+IA0KPiBBbmtpdA0KPiANCj4gDQo+
+ID4gKwl9DQo+ID4gKw0KPiA+ICsJcmV0dXJuIHJldDsNCj4gPiArfQ0KPiA+ICsNCj4gPiArc3Rh
+dGljIHZvaWQgdGVzdF9jcnRjX2NvbmZpZyhjb25zdCBzdHJ1Y3QgdGVzdF9jb25maWcgKnRjb25m
+LA0KPiA+ICsJCQkgICAgIHN0cnVjdCBjcnRjX2NvbmZpZyAqY3J0Y3MsIGludCBjcnRjX2NvdW50
+KQ0KPiA+ICt7DQo+ID4gKwlzdGF0aWMgaW50IHRlc3RfaWQ7DQo+ID4gKwlib29sIGNvbmZpZ19m
+YWlsZWQgPSBmYWxzZTsNCj4gPiArCWludCByZXQgPSAwOw0KPiA+ICsJaW50IGk7DQo+ID4gKw0K
+PiA+ICsJdGVzdF9pZCsrOw0KPiA+ICsNCj4gPiArCWlmIChmaWx0ZXJfdGVzdF9pZCAmJiBmaWx0
+ZXJfdGVzdF9pZCAhPSB0ZXN0X2lkKQ0KPiA+ICsJCXJldHVybjsNCj4gPiArDQo+ID4gKwlpZ3Rf
+aW5mbygiICBUZXN0IGlkIyVkIENSVEMgY291bnQgJWRcbiIsIHRlc3RfaWQsIGNydGNfY291bnQp
+Ow0KPiA+ICsNCj4gPiArCWZvciAoaSA9IDA7IGkgPCBjcnRjX2NvdW50OyBpKyspIHsNCj4gPiAr
+CQlnZXRfY3J0Y19jb25maWdfc3RyKCZjcnRjc1tpXSwgc3RyX2J1ZltpXSwgc2l6ZW9mKHN0cl9i
+dWZbaV0pKTsNCj4gPiArCQljcnRjX3N0cnNbaV0gPSAmc3RyX2J1ZltpXVswXTsNCj4gPiAgIAl9
+DQo+ID4NCj4gPiArCWlmIChkcnlfcnVuKSB7DQo+ID4gKwkJZm9yIChpID0gMDsgaSA8IGNydGNf
+Y291bnQ7IGkrKykNCj4gPiArCQkJaWd0X2luZm8oIiAgICAlc1xuIiwgY3J0Y19zdHJzW2ldKTsN
+Cj4gPiArCQlyZXR1cm47DQo+ID4gKwl9DQo+ID4gKw0KPiA+ICsJcmV0ID0gX190ZXN0X2NydGNf
+Y29uZmlnKGNydGNzLCBjcnRjX2NvdW50LCB0Y29uZiwgJmNvbmZpZ19mYWlsZWQsIDApOw0KPiA+
+ICsNCj4gPiAgIAlpZ3RfYXNzZXJ0KGNvbmZpZ19mYWlsZWQgPT0gISEodGNvbmYtPmZsYWdzICYg
+VEVTVF9JTlZBTElEKSk7DQo+ID4NCj4gPiAgIAlpZiAocmV0ID09IDAgJiYgdGNvbmYtPmZsYWdz
+ICYgVEVTVF9USU1JTkdTKQ0K
