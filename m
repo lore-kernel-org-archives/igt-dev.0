@@ -1,20 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20210727182057.78409-1-matthew.brost@intel.com>
- <20210727182057.78409-2-matthew.brost@intel.com>
- <9095b26a-975b-9180-045f-7231d63fe9ff@linux.intel.com>
- <20210730180609.GA60763@DUT151-ICLU.fm.intel.com>
- <90b87a17-43df-96ac-d491-73c73722a58f@linux.intel.com>
- <20210802201026.GA79291@DUT151-ICLU.fm.intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <94deb99e-bc74-e4e7-b30b-a13f1a808679@linux.intel.com>
-Date: Tue, 3 Aug 2021 09:54:36 +0100
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com
+ [IPv6:2a00:1450:4864:20::52a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B6D589FDB
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Aug 2021 09:29:15 +0000 (UTC)
+Received: by mail-ed1-x52a.google.com with SMTP id x90so28116350ede.8
+ for <igt-dev@lists.freedesktop.org>; Tue, 03 Aug 2021 02:29:15 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210802201026.GA79291@DUT151-ICLU.fm.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 1/1] i915/gem_scheduler:
- Ensure submission order in manycontexts
+References: <20210728045544.1046657-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+ <2ce3082b-9823-8625-920e-7dcb8da0efbc@intel.com>
+ <62dfe8ca-34a3-cd2c-6cf1-4181a0acb36a@gmail.com>
+ <cd2e65f9-b5de-3ac7-3f56-ec004cecacfa@intel.com>
+ <SN6PR11MB34210D1C5FF9B12A07947902DFEF9@SN6PR11MB3421.namprd11.prod.outlook.com>
+ <CAJ=qYWSdy+n-rNFhHgghkRRO6F0Eo-txwkVwqDSrbFNRhBU=eA@mail.gmail.com>
+ <SN6PR11MB34210F089547C6A1737C5FEEDFF09@SN6PR11MB3421.namprd11.prod.outlook.com>
+In-Reply-To: <SN6PR11MB34210F089547C6A1737C5FEEDFF09@SN6PR11MB3421.namprd11.prod.outlook.com>
+From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
+Date: Tue, 3 Aug 2021 12:29:02 +0300
+Message-ID: <CAJ=qYWTNo9MXbsvL-7vWCtam7mm6UpwAwEf-OKe9x7puL2CT2g@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [i-g-t] tests/kms_plane_alpha_blend: Align width to
+ 256B
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,138 +30,167 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+To: "Surendrakumar Upadhyay,
+ TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Cc: "Sharma, Swati2" <swati2.sharma@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Tue, Aug 3, 2021 at 7:55 AM Surendrakumar Upadhyay, TejaskumarX
+<tejaskumarx.surendrakumar.upadhyay@intel.com> wrote:
+>
+> Use 1366x768 panel and you should be able to reproduce. I don=E2=80=99t h=
+ave that panel with me right now. I will check once I get it.
 
-On 02/08/2021 21:10, Matthew Brost wrote:
-> On Mon, Aug 02, 2021 at 09:59:01AM +0100, Tvrtko Ursulin wrote:
->>
->>
->> On 30/07/2021 19:06, Matthew Brost wrote:
->>> On Fri, Jul 30, 2021 at 10:58:38AM +0100, Tvrtko Ursulin wrote:
->>>>
->>>> On 27/07/2021 19:20, Matthew Brost wrote:
->>>>> With GuC submission contexts can get reordered (compared to submission
->>>>> order), if contexts get reordered the sequential nature of the batches
->>>>> releasing the next batch's semaphore in function timesliceN() get broken
->>>>> resulting in the test taking much longer than if should. e.g. Every
->>>>> contexts needs to be timesliced to release the next batch. Corking the
->>>>> first submission until all the batches have been submitted should ensure
->>>>> submission order.
->>>>
->>>> The explanation sounds suspect.
->>>>
->>>> Consider this comment from the test itself:
->>>>
->>>> 	/*
->>>> 	 * Create a pair of interlocking batches, that ping pong
->>>> 	 * between each other, and only advance one step at a time.
->>>> 	 * We require the kernel to preempt at each semaphore and
->>>> 	 * switch to the other batch in order to advance.
->>>> 	 */
->>>>
->>>> I'd say the test does not rely on no re-ordering at all, but relies on
->>>> context switch on an unsatisfied semaphore.
->>>>
->>>
->>> Yes, let do a simple example with 5 batches. Batch 0 releases batch's
->>> semaphore 1, batch 1 releases batch's 2 semaphore, etc... If the batches
->>> are seen in order the test should take 40 timeslices (8 semaphores in
->>> each batch have to be released).
->>>
->>> If the batches are in the below order:
->>> 0 2 1 3 4
->>>
->>> Now we have 72 timeslices. Now imagine with 67 batches completely out of
->>> order, the number timeslices can explode.
->>
->> Yes that part is clear, issue is to understand why is guc waiting for the
->> timeslice to expire..
->>
->>>> In the commit you seem to acknowledge GuC does not do that but instead ends
->>>> up waiting for the timeslice to expire, did I get that right? If so, why
->>>
->>> I think GuC waits for the timeslice to expire if a semaphore is
->>> unsatisfied, I have to double check on that. I thought that was what
->>> execlists were doing too but I now see it has a convoluted algorithm to
->>> yield the timeslice if subsequent request comes in and the ring is
->>> waiting on a timeslice. Let me check with GuC team and see if they can
->>> / are doing something similiar. I was thinking the only to switch a
->>> sempahore was clear CTX_CTRL_INHIBIT_SYN_CTX_SWITCH but that appears to
->>> be incorrect.
->>
->> .. so this will need clarifying with the firmware team.
->>
-> 
-> They do not use the GT_WAIT_SEMAPHORE_INTERRUPT. However, we can
-> clear CTX_CTRL_INHIBIT_SYN_CTX_SWITCH will result in more or less the
-> same behavior as execlists but I'm suspect if that is the right
-> solution. More on that below.
-> 
->> With execlists we enable and react on GT_WAIT_SEMAPHORE_INTERRUPT. If guc
-> 
-> Because execlists does this, doesn't mean it is the spec or is correct.
-> As far as I can tell this behavior is yet another thing just shoehorned
-> into the execlists scheduler without a ton of thought or input from
-> architecture about what the scheduler should look like or what the UMD
-> needs actually are.
-> 
-> If we change anything related to GuC scheduling there needs to be a clear
-> need - again saying execlists does this is not an argument. There needs
-> to be an agreement with architecture, the UMD teams, the i915 team,
-> possibly the Windows team, and the GuC team before we make any changes.
-> 
-> IMO the correct solution is to use tokens. Have uAPI interface which
-> distributes tokens to the UMDs, the i915 clears context switch inhibit
-> bit in the LRC if the user opted into tokens, and now semaphores switch
-> out automatically and get rescheduled when the token is signaled.
+Setting fb size to 1366x768 does not reproduce this issue on my icl. I
+don't have such panel nor could I swap such into my lenovo in any
+case.
 
-Tokens are Gen12+ right? Downside in that plan would be what do you do 
-with earlier platforms.
+For testing purpose you could try take out your change from
+kms_plane_alpha_blend and change all used modifiers to something
+different than linear, ie. x or y tile. With different tiling
+everything will be different on both sw and hw level while still
+testing same hw alpha blending feature.
 
->> does not, or can not, do that that could be worrying since userspace can and
->> does use semaphores legitimately so making it pay the timeslice penalty.
->> Well actually that has an effect to unrelated clients as well, not just the
->> semaphore user.
-> 
-> Not buying this argument. Any user can submit a long running batch that
-> always uses its full time slice and this affects unrelated clients.
+/Juha-Pekka
 
-To an extent, but it's not the same if that batch is long running due 
-some work it's doing, or long running because it sits there waiting on 
-an unsatisfied semaphore wasting everyone's time. If nothing because 
-that might not be what the userspace expects.
-
-But yes, you will need to figure out if UMDs benefit from this in 
-practical use cases before you can rip this out.
-
-And it will tie back to the thing about tokens and uapi you mention. 
-(Although I don't immediately see how exposing the hardware "flavour of 
-the day" thing like tokens makes a good candidate to be mentioned in the 
-uapi. Especially given their limited nature.)
-
->>> For what is worth, after this change the run times of test are pretty
->>> similar for execlists & GuC on TGL.
->>
->> Yes, but the test was useful in this case since it found a weakness in guc
->> scheduling so it may not be the best approach to hide that.
->>
-> 
-> Not a weakness, just a difference.
-
-Okay not a weakness, it's just much slower when userspace uses 
-semaphores. :)
-
-Also, I worry submit fence works for you in this patch for you not by 
-ABI contract but due implementation details. Probably both in case of 
-execlists and GuC. Because all it is guaranteeing as part of its ABI 
-contract is that request B will not enter the backend before request A. 
-But backend is really free to execute them in any order. (Assuming no 
-other dependencies.) So I think that's the second reason this patch as 
-is is not the best choice.
-
-Regards,
-
-Tvrtko
+>
+> Thanks,
+> Tejas
+>
+> > -----Original Message-----
+> > From: Juha-Pekka Heikkil=C3=A4 <juhapekka.heikkila@gmail.com>
+> > Sent: 03 August 2021 00:49
+> > To: Surendrakumar Upadhyay, TejaskumarX
+> > <tejaskumarx.surendrakumar.upadhyay@intel.com>
+> > Cc: Sharma, Swati2 <swati2.sharma@intel.com>; igt-
+> > dev@lists.freedesktop.org
+> > Subject: Re: [igt-dev] [i-g-t] tests/kms_plane_alpha_blend: Align width=
+ to
+> > 256B
+> >
+> > On Mon, Aug 2, 2021 at 5:16 PM Surendrakumar Upadhyay, TejaskumarX
+> > <tejaskumarx.surendrakumar.upadhyay@intel.com> wrote:
+> > >
+> > > Hi JP,
+> > >
+> > > You are right i915 driver is giving 64B aligned buffer but test uses =
+raw width
+> > and thus it requires width to be aligned.
+> >
+> > Can you try this on the device which is failing:
+> > https://patchwork.freedesktop.org/series/93317/
+> >
+> > It will put on pixel blend and alpha and try different width linear fbs=
+ and
+> > compare results with crc. This should tell if alignments somehow can af=
+fect
+> > the crc on your test machine. On my ICL everything work as expected.
+> >
+> > /Juha-Pekka
+> >
+> > >
+> > > Thanks,
+> > > Tejas
+> > >
+> > > > -----Original Message-----
+> > > > From: Sharma, Swati2 <swati2.sharma@intel.com>
+> > > > Sent: 02 August 2021 18:35
+> > > > To: juhapekka.heikkila@gmail.com; Surendrakumar Upadhyay,
+> > > > TejaskumarX <tejaskumarx.surendrakumar.upadhyay@intel.com>; igt-
+> > > > dev@lists.freedesktop.org
+> > > > Subject: Re: [igt-dev] [i-g-t] tests/kms_plane_alpha_blend: Align
+> > > > width to 256B
+> > > >
+> > > > Hi JP,
+> > > >
+> > > > Tejas reapplied the same fix as in
+> > > > https://patchwork.freedesktop.org/patch/445010/?series=3D92751&rev=
+=3D2
+> > > > which was reviewed by Daniel.
+> > > >
+> > > > On 02-Aug-21 5:42 PM, Juha-Pekka Heikkila wrote:
+> > > > > Hi Tejas, Swati,
+> > > > >
+> > > > > I was confused when I read this patch, mind you tell what happen =
+here?
+> > > > > To me it look like nothing matches with each other with the patch=
+.
+> > > > >
+> > > > > Even subject is telling other things than what this patch actuall=
+y does.
+> > > > >
+> > > > > On 30.7.2021 8.50, Sharma, Swati2 wrote:
+> > > > >> Reviewed-by:
+> > > > >> Swati Sharma <swati2.sharma@intel.com>
+> > > > >>
+> > > > >> On 28-Jul-21 10:25 AM, Tejas Upadhyay wrote:
+> > > > >>> some display resolutions like 1366x768 6bpc which does not have
+> > > > >>> 64B aligned width are creating crc mismatch in
+> > > > >>> kms_plane_alpha_blend test on Intel platforms.
+> > > > >
+> > > > > hm. You are saying none of Intel hw is able to show 1366 wide
+> > > > > framebuffers correctly? And it is fixed by hiding it from being t=
+ested?
+> > > > >
+> > > > > Memory given from kernel will have 64B alignment. You can easily
+> > > > > see by yourself.
+> > > > >
+> > > > >>>
+> > > > >>> Also having different alignment requirement by different
+> > > > >>> drivers, 256B aligned width should work for all drm drivers.
+> > > > >
+> > > > > You are saying you are fixing some problem with Intel hw, what
+> > > > > does all this other stuff have to do with it? None of those other
+> > > > > drivers are able to show 1366 pixels wide framebuffers either?
+> > > > >
+> > > > >>>
+> > > > >>> amdgpu and radeon, amdgpu_align_pitch: 256B armada,
+> > armada_pitch:
+> > > > >>> 128B
+> > > > >>> exynos_drm_gem_dumb_create: No alignment required
+> > > > >>> drm_gem_shmem_dumb_create: 8B
+> > > > >>> drm_gem_vram_fill_create_dumb: 8B
+> > > > >>>
+> > > > >>> Thus 256B covers everything we see in the kernel drm drivers.
+> > > > >>> Signed-off-by: Tejas Upadhyay
+> > > > >>> <tejaskumarx.surendrakumar.upadhyay@intel.com>
+> > > > >>> ---
+> > > > >>>   tests/kms_plane_alpha_blend.c | 1 +
+> > > > >>>   1 file changed, 1 insertion(+)
+> > > > >>>
+> > > > >>> diff --git a/tests/kms_plane_alpha_blend.c
+> > > > >>> b/tests/kms_plane_alpha_blend.c index d649a09f..864e83f9 100644
+> > > > >>> --- a/tests/kms_plane_alpha_blend.c
+> > > > >>> +++ b/tests/kms_plane_alpha_blend.c
+> > > > >>> @@ -168,6 +168,7 @@ static void prepare_crtc(data_t *data,
+> > > > >>> igt_output_t *output, enum pipe pipe)
+> > > > >>>       w =3D mode->hdisplay;
+> > > > >>>       h =3D mode->vdisplay;
+> > > > >>> +    w =3D ALIGN(w, 256);
+> > > > >
+> > > > > This doesn't cause anything to align with 256 bytes. This makes f=
+b
+> > > > > width in pixels divisible by 256. For anything to do with fb
+> > > > > alignments..this has very little to do. Kernel will do viewport
+> > > > > clipping hence for actual intended test this does nothing. FB
+> > > > > alignments are handled otherwise as in this case with with linear
+> > > > > fb will
+> > > > have 64 bytes per stride.
+> > > > >
+> > > > >>>       /* recreate all fbs if incompatible */
+> > > > >>>       if (data->xrgb_fb.width !=3D w || data->xrgb_fb.height !=
+=3D h) {
+> > > > >>>           cairo_t *cr;
+> > > > >>>
+> > > > >>
+> > > > >
+> > > > > If this patch actually fixed anything you'll need to create hw wa
+> > > > > and this need to be fixed in kernel. Not testing is not fixing.
+> > > > > Imo there should be no problem for Intel hw to show varying fb
+> > > > > sizes, including
+> > > > > 1366 wide.
+> > > > >
+> > > > > /Juha-Pekka
+> > > >
+> > > > --
+> > > > ~Swati Sharma
