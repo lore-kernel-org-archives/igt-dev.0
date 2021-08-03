@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 118AC89ED3
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Aug 2021 11:13:15 +0000 (UTC)
-From: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-Date: Tue,  3 Aug 2021 16:39:34 +0530
-Message-Id: <20210803110934.970874-2-ayaz.siddiqui@intel.com>
-In-Reply-To: <20210803110934.970874-1-ayaz.siddiqui@intel.com>
-References: <20210803110934.970874-1-ayaz.siddiqui@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5254492273930255116=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/1] lib/rendercopy_gen9: Program MOCS value
- based on platform
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 03 Aug 2021 11:59:32 -0000
+Message-ID: <162799197222.9818.1097402788430799065@emeril.freedesktop.org>
+References: <20210803110934.970874-1-ayaz.siddiqui@intel.com>
+In-Reply-To: <20210803110934.970874-1-ayaz.siddiqui@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL3Jl?=
+ =?utf-8?q?ndercopy=5Fgen9=3A_Program_platform_specific_MOCS_index?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,87 +16,115 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+To: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Gen12 onward platforms does not support coachability via PTE.
-So I915_MOCS_PTE( index 1) may point to unspecified/reserved or some
-other coachability MOCS index. This may leads to data corruption.
+--===============5254492273930255116==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-A helper function has been added to provide UC MOCS index based
-on platform.
+== Series Details ==
 
-Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
----
- lib/rendercopy_gen9.c | 33 ++++++++++++++++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+Series: lib/rendercopy_gen9: Program platform specific MOCS index
+URL   : https://patchwork.freedesktop.org/series/93337/
+State : success
 
-diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-index eecf73d318..5845d3b280 100644
---- a/lib/rendercopy_gen9.c
-+++ b/lib/rendercopy_gen9.c
-@@ -23,6 +23,7 @@
- #include "gen9_render.h"
- #include "intel_reg.h"
- #include "igt_aux.h"
-+#include "intel_chipset.h"
- 
- #define VERTEX_SIZE (3*4)
- 
-@@ -115,12 +116,42 @@ static const uint32_t gen12_render_copy[][4] = {
- 	{ 0x80040131, 0x00000004, 0x50007144, 0x00c40000 },
- };
- 
-+
-+/*
-+ * Gen >= 12 onwards don't have a setting for PTE,
-+ * so using I915_MOCS_PTE as mocs index may leads to
-+ * some undefined MOCS behavior.
-+ * Correct MOCS index should be referred from BSPCES
-+ * and programmed accordingly.
-+ * This helper function is providing appropraite UC index.
-+ */
-+static uint8_t
-+intel_get_uc_mocs(int fd) {
-+
-+	uint16_t devid = intel_get_drm_devid(fd);
-+	uint8_t  uc_index;
-+
-+	if (IS_DG1(devid))
-+		uc_index = 1;
-+	else if (IS_GEN12(devid))
-+		uc_index = 3;
-+	else
-+		uc_index = I915_MOCS_PTE;
-+
-+	/*
-+	 * BitField [6:1] represents index to MOCS Tables
-+	 * BitField [0] represents Encryption/Decryption
-+	 */
-+	return uc_index << 1;
-+}
-+
- /* Mostly copy+paste from gen6, except height, width, pitch moved */
- static uint32_t
- gen8_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst) {
- 	struct gen9_surface_state *ss;
- 	uint32_t write_domain, read_domain;
- 	uint64_t address;
-+	int i915 = buf_ops_get_fd(buf->bops);
- 
- 	igt_assert_lte(buf->surface[0].stride, 256*1024);
- 	igt_assert_lte(intel_buf_width(buf), 16384);
-@@ -151,7 +182,7 @@ gen8_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst) {
- 	else if (buf->tiling != I915_TILING_NONE)
- 		ss->ss0.tiled_mode = 3;
- 
--	ss->ss1.memory_object_control = I915_MOCS_PTE << 1;
-+	ss->ss1.memory_object_control = intel_get_uc_mocs(i915);
- 
- 	if (buf->tiling == I915_TILING_Yf)
- 		ss->ss5.trmode = 1;
--- 
-2.26.2
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10440 -> IGTPW_6084
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6084/index.html
+
+
+Changes
+-------
+
+  No changes found
+
+
+Participating hosts (37 -> 32)
+------------------------------
+
+  Missing    (5): fi-kbl-soraka fi-hsw-4200u fi-bsw-cyan bat-jsl-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6159 -> IGTPW_6084
+
+  CI-20190529: 20190529
+  CI_DRM_10440: 95b785be5ff0413ff419b30da574a7e3d353b33b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6084: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6084/index.html
+  IGT_6159: 6135b9cc319ed965e3aafb5b2ae2abf4762a06b2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6084/index.html
+
+--===============5254492273930255116==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/rendercopy_gen9: Program platform specific MOCS index</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93337/">https://patchwork.freedesktop.org/series/93337/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6084/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6084/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10440 -&gt; IGTPW_6084</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6084/index.html</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Participating hosts (37 -&gt; 32)</h2>
+<p>Missing    (5): fi-kbl-soraka fi-hsw-4200u fi-bsw-cyan bat-jsl-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6159 -&gt; IGTPW_6084</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10440: 95b785be5ff0413ff419b30da574a7e3d353b33b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6084: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6084/index.html<br />
+  IGT_6159: 6135b9cc319ed965e3aafb5b2ae2abf4762a06b2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5254492273930255116==--
