@@ -1,14 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7162575167028899004=="
+References: <20210727182057.78409-1-matthew.brost@intel.com>
+ <20210727182057.78409-2-matthew.brost@intel.com>
+ <9095b26a-975b-9180-045f-7231d63fe9ff@linux.intel.com>
+ <20210730180609.GA60763@DUT151-ICLU.fm.intel.com>
+ <90b87a17-43df-96ac-d491-73c73722a58f@linux.intel.com>
+ <20210802201026.GA79291@DUT151-ICLU.fm.intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <94deb99e-bc74-e4e7-b30b-a13f1a808679@linux.intel.com>
+Date: Tue, 3 Aug 2021 09:54:36 +0100
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 03 Aug 2021 08:11:30 -0000
-Message-ID: <162797829002.9815.3096576395651265047@emeril.freedesktop.org>
-References: <20210803073835.2910-1-andrzej.turko@linux.intel.com>
-In-Reply-To: <20210803073835.2910-1-andrzej.turko@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgS2VlcCB0?=
- =?utf-8?q?ests_working_without_relocations_2?=
+In-Reply-To: <20210802201026.GA79291@DUT151-ICLU.fm.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 1/1] i915/gem_scheduler:
+ Ensure submission order in manycontexts
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,167 +22,140 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Andrzej Turko <andrzej.turko@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7162575167028899004==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-== Series Details ==
+On 02/08/2021 21:10, Matthew Brost wrote:
+> On Mon, Aug 02, 2021 at 09:59:01AM +0100, Tvrtko Ursulin wrote:
+>>
+>>
+>> On 30/07/2021 19:06, Matthew Brost wrote:
+>>> On Fri, Jul 30, 2021 at 10:58:38AM +0100, Tvrtko Ursulin wrote:
+>>>>
+>>>> On 27/07/2021 19:20, Matthew Brost wrote:
+>>>>> With GuC submission contexts can get reordered (compared to submission
+>>>>> order), if contexts get reordered the sequential nature of the batches
+>>>>> releasing the next batch's semaphore in function timesliceN() get broken
+>>>>> resulting in the test taking much longer than if should. e.g. Every
+>>>>> contexts needs to be timesliced to release the next batch. Corking the
+>>>>> first submission until all the batches have been submitted should ensure
+>>>>> submission order.
+>>>>
+>>>> The explanation sounds suspect.
+>>>>
+>>>> Consider this comment from the test itself:
+>>>>
+>>>> 	/*
+>>>> 	 * Create a pair of interlocking batches, that ping pong
+>>>> 	 * between each other, and only advance one step at a time.
+>>>> 	 * We require the kernel to preempt at each semaphore and
+>>>> 	 * switch to the other batch in order to advance.
+>>>> 	 */
+>>>>
+>>>> I'd say the test does not rely on no re-ordering at all, but relies on
+>>>> context switch on an unsatisfied semaphore.
+>>>>
+>>>
+>>> Yes, let do a simple example with 5 batches. Batch 0 releases batch's
+>>> semaphore 1, batch 1 releases batch's 2 semaphore, etc... If the batches
+>>> are seen in order the test should take 40 timeslices (8 semaphores in
+>>> each batch have to be released).
+>>>
+>>> If the batches are in the below order:
+>>> 0 2 1 3 4
+>>>
+>>> Now we have 72 timeslices. Now imagine with 67 batches completely out of
+>>> order, the number timeslices can explode.
+>>
+>> Yes that part is clear, issue is to understand why is guc waiting for the
+>> timeslice to expire..
+>>
+>>>> In the commit you seem to acknowledge GuC does not do that but instead ends
+>>>> up waiting for the timeslice to expire, did I get that right? If so, why
+>>>
+>>> I think GuC waits for the timeslice to expire if a semaphore is
+>>> unsatisfied, I have to double check on that. I thought that was what
+>>> execlists were doing too but I now see it has a convoluted algorithm to
+>>> yield the timeslice if subsequent request comes in and the ring is
+>>> waiting on a timeslice. Let me check with GuC team and see if they can
+>>> / are doing something similiar. I was thinking the only to switch a
+>>> sempahore was clear CTX_CTRL_INHIBIT_SYN_CTX_SWITCH but that appears to
+>>> be incorrect.
+>>
+>> .. so this will need clarifying with the firmware team.
+>>
+> 
+> They do not use the GT_WAIT_SEMAPHORE_INTERRUPT. However, we can
+> clear CTX_CTRL_INHIBIT_SYN_CTX_SWITCH will result in more or less the
+> same behavior as execlists but I'm suspect if that is the right
+> solution. More on that below.
+> 
+>> With execlists we enable and react on GT_WAIT_SEMAPHORE_INTERRUPT. If guc
+> 
+> Because execlists does this, doesn't mean it is the spec or is correct.
+> As far as I can tell this behavior is yet another thing just shoehorned
+> into the execlists scheduler without a ton of thought or input from
+> architecture about what the scheduler should look like or what the UMD
+> needs actually are.
+> 
+> If we change anything related to GuC scheduling there needs to be a clear
+> need - again saying execlists does this is not an argument. There needs
+> to be an agreement with architecture, the UMD teams, the i915 team,
+> possibly the Windows team, and the GuC team before we make any changes.
+> 
+> IMO the correct solution is to use tokens. Have uAPI interface which
+> distributes tokens to the UMDs, the i915 clears context switch inhibit
+> bit in the LRC if the user opted into tokens, and now semaphores switch
+> out automatically and get rescheduled when the token is signaled.
 
-Series: Keep tests working without relocations 2
-URL   : https://patchwork.freedesktop.org/series/93326/
-State : success
+Tokens are Gen12+ right? Downside in that plan would be what do you do 
+with earlier platforms.
 
-== Summary ==
+>> does not, or can not, do that that could be worrying since userspace can and
+>> does use semaphores legitimately so making it pay the timeslice penalty.
+>> Well actually that has an effect to unrelated clients as well, not just the
+>> semaphore user.
+> 
+> Not buying this argument. Any user can submit a long running batch that
+> always uses its full time slice and this affects unrelated clients.
 
-CI Bug Log - changes from CI_DRM_10440 -> IGTPW_6083
-====================================================
+To an extent, but it's not the same if that batch is long running due 
+some work it's doing, or long running because it sits there waiting on 
+an unsatisfied semaphore wasting everyone's time. If nothing because 
+that might not be what the userspace expects.
 
-Summary
--------
+But yes, you will need to figure out if UMDs benefit from this in 
+practical use cases before you can rip this out.
 
-  **SUCCESS**
+And it will tie back to the thing about tokens and uapi you mention. 
+(Although I don't immediately see how exposing the hardware "flavour of 
+the day" thing like tokens makes a good candidate to be mentioned in the 
+uapi. Especially given their limited nature.)
 
-  No regressions found.
+>>> For what is worth, after this change the run times of test are pretty
+>>> similar for execlists & GuC on TGL.
+>>
+>> Yes, but the test was useful in this case since it found a weakness in guc
+>> scheduling so it may not be the best approach to hide that.
+>>
+> 
+> Not a weakness, just a difference.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6083/index.html
+Okay not a weakness, it's just much slower when userspace uses 
+semaphores. :)
 
-Known issues
-------------
+Also, I worry submit fence works for you in this patch for you not by 
+ABI contract but due implementation details. Probably both in case of 
+execlists and GuC. Because all it is guaranteeing as part of its ABI 
+contract is that request B will not enter the backend before request A. 
+But backend is really free to execute them in any order. (Assuming no 
+other dependencies.) So I think that's the second reason this patch as 
+is is not the best choice.
 
-  Here are the changes found in IGTPW_6083 that come from known issues:
+Regards,
 
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_parallel@engines@userptr:
-    - fi-pnv-d510:        [PASS][1] -> [INCOMPLETE][2] ([i915#299])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10440/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6083/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-tgl-1115g4:      [PASS][3] -> [FAIL][4] ([i915#1888]) +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10440/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6083/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@runner@aborted:
-    - fi-pnv-d510:        NOTRUN -> [FAIL][5] ([i915#2403] / [i915#2505] / [i915#2722])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6083/fi-pnv-d510/igt@runner@aborted.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
-  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
-  [i915#2505]: https://gitlab.freedesktop.org/drm/intel/issues/2505
-  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#299]: https://gitlab.freedesktop.org/drm/intel/issues/299
-
-
-Participating hosts (37 -> 33)
-------------------------------
-
-  Missing    (4): fi-bdw-samus fi-bsw-cyan bat-jsl-1 fi-hsw-4200u 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6159 -> IGTPW_6083
-
-  CI-20190529: 20190529
-  CI_DRM_10440: 95b785be5ff0413ff419b30da574a7e3d353b33b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6083: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6083/index.html
-  IGT_6159: 6135b9cc319ed965e3aafb5b2ae2abf4762a06b2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6083/index.html
-
---===============7162575167028899004==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Keep tests working without relocations 2</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93326/">https://patchwork.freedesktop.org/series/93326/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6083/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6083/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10440 -&gt; IGTPW_6083</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6083/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6083 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_parallel@engines@userptr:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10440/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6083/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/299">i915#299</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10440/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6083/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6083/fi-pnv-d510/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2505">i915#2505</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (37 -&gt; 33)</h2>
-<p>Missing    (4): fi-bdw-samus fi-bsw-cyan bat-jsl-1 fi-hsw-4200u </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6159 -&gt; IGTPW_6083</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10440: 95b785be5ff0413ff419b30da574a7e3d353b33b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6083: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6083/index.html<br />
-  IGT_6159: 6135b9cc319ed965e3aafb5b2ae2abf4762a06b2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============7162575167028899004==--
+Tvrtko
