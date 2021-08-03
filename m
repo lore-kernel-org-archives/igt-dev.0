@@ -1,21 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 08FF6892E4
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Aug 2021 16:16:56 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Tue, 3 Aug 2021 16:16:52 +0000
-Message-ID: <BY5PR11MB4372D4D9D2CB75AF4CD6C7D289F09@BY5PR11MB4372.namprd11.prod.outlook.com>
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com
+ [IPv6:2a00:1450:4864:20::535])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE7C66E104
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Aug 2021 17:49:24 +0000 (UTC)
+Received: by mail-ed1-x535.google.com with SMTP id d6so143838edt.7
+ for <igt-dev@lists.freedesktop.org>; Tue, 03 Aug 2021 10:49:24 -0700 (PDT)
+MIME-Version: 1.0
 References: <20210728045544.1046657-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
  <2ce3082b-9823-8625-920e-7dcb8da0efbc@intel.com>
  <62dfe8ca-34a3-cd2c-6cf1-4181a0acb36a@gmail.com>
  <cd2e65f9-b5de-3ac7-3f56-ec004cecacfa@intel.com>
  <SN6PR11MB34210D1C5FF9B12A07947902DFEF9@SN6PR11MB3421.namprd11.prod.outlook.com>
  <CAJ=qYWSdy+n-rNFhHgghkRRO6F0Eo-txwkVwqDSrbFNRhBU=eA@mail.gmail.com>
-In-Reply-To: <CAJ=qYWSdy+n-rNFhHgghkRRO6F0Eo-txwkVwqDSrbFNRhBU=eA@mail.gmail.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
+ <BY5PR11MB4372D4D9D2CB75AF4CD6C7D289F09@BY5PR11MB4372.namprd11.prod.outlook.com>
+In-Reply-To: <BY5PR11MB4372D4D9D2CB75AF4CD6C7D289F09@BY5PR11MB4372.namprd11.prod.outlook.com>
+From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
+Date: Tue, 3 Aug 2021 20:49:12 +0300
+Message-ID: <CAJ=qYWQ0KMzQJL5kcks7O2eKyaOHE+BHBR3DutPczLo4WKU4nw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Subject: Re: [igt-dev] [i-g-t] tests/kms_plane_alpha_blend: Align width to
  256B
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -27,107 +30,203 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?B?SnVoYS1QZWtrYSBIZWlra2lsw6Q=?= <juhapekka.heikkila@gmail.com>, "Surendrakumar Upadhyay, TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Cc: "Sharma, Swati2" <swati2.sharma@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Cc: "Surendrakumar Upadhyay,
+ TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>, "Sharma, Swati2" <swati2.sharma@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogaWd0LWRldiA8aWd0LWRl
-di1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mIEp1aGEtDQo+IFBl
-a2thIEhlaWtraWzDpA0KPiBTZW50OiBUdWVzZGF5LCBBdWd1c3QgMywgMjAyMSAxMjo0OSBBTQ0K
-PiBUbzogU3VyZW5kcmFrdW1hciBVcGFkaHlheSwgVGVqYXNrdW1hclgNCj4gPHRlamFza3VtYXJ4
-LnN1cmVuZHJha3VtYXIudXBhZGh5YXlAaW50ZWwuY29tPg0KPiBDYzogU2hhcm1hLCBTd2F0aTIg
-PHN3YXRpMi5zaGFybWFAaW50ZWwuY29tPjsgaWd0LQ0KPiBkZXZAbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnDQo+IFN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW2ktZy10XSB0ZXN0cy9rbXNfcGxhbmVfYWxw
-aGFfYmxlbmQ6IEFsaWduIHdpZHRoIHRvDQo+IDI1NkINCj4gDQo+IE9uIE1vbiwgQXVnIDIsIDIw
-MjEgYXQgNToxNiBQTSBTdXJlbmRyYWt1bWFyIFVwYWRoeWF5LCBUZWphc2t1bWFyWA0KPiA8dGVq
-YXNrdW1hcnguc3VyZW5kcmFrdW1hci51cGFkaHlheUBpbnRlbC5jb20+IHdyb3RlOg0KPiA+DQo+
-ID4gSGkgSlAsDQo+ID4NCj4gPiBZb3UgYXJlIHJpZ2h0IGk5MTUgZHJpdmVyIGlzIGdpdmluZyA2
-NEIgYWxpZ25lZCBidWZmZXIgYnV0IHRlc3QgdXNlcyByYXcgd2lkdGgNCj4gYW5kIHRodXMgaXQg
-cmVxdWlyZXMgd2lkdGggdG8gYmUgYWxpZ25lZC4NCj4gDQo+IENhbiB5b3UgdHJ5IHRoaXMgb24g
-dGhlIGRldmljZSB3aGljaCBpcyBmYWlsaW5nOg0KPiBodHRwczovL3BhdGNod29yay5mcmVlZGVz
-a3RvcC5vcmcvc2VyaWVzLzkzMzE3Lw0KPiANCj4gSXQgd2lsbCBwdXQgb24gcGl4ZWwgYmxlbmQg
-YW5kIGFscGhhIGFuZCB0cnkgZGlmZmVyZW50IHdpZHRoIGxpbmVhciBmYnMgYW5kDQo+IGNvbXBh
-cmUgcmVzdWx0cyB3aXRoIGNyYy4gVGhpcyBzaG91bGQgdGVsbCBpZiBhbGlnbm1lbnRzIHNvbWVo
-b3cgY2FuIGFmZmVjdA0KPiB0aGUgY3JjIG9uIHlvdXIgdGVzdCBtYWNoaW5lLiBPbiBteSBJQ0wg
-ZXZlcnl0aGluZyB3b3JrIGFzIGV4cGVjdGVkLg0KPiANCg0KSGkgSnVoYS1QZWtrYQ0KDQpXaXRo
-IHlvdXIgaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy85MzMxNy8gdGhl
-IHRlc3QgUEFTU0VTLg0KQnV0IHdlIG5lZWQgdG8gdXNlIGJvdGggcGxhbmVzIGFuZCBleGFjdCBz
-YW1lIHNlcXVlbmNlIGFzIGttc19wbGFuZV9hbHBoYV9ibGVuZCBjb3ZlcmFnZS1wcmVtdWx0aXBs
-aWVkLWNvbnN0YW50IGNhc2UNCnRvIHJlcHJvZHVjZSB0aGUgaXNzdWUuDQoNCkJ1dCB3aXRoIHRo
-aXMgbW9kaWZpY2F0aW9uIChzYW1lIGFzIGttc19wbGFuZV9hbHBoYV9ibGVuZCkgZG9uZSBoZXJl
-IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC80NDgzNjkvP3Nlcmllcz05
-MzMxNyZyZXY9Mw0KSXQgUEFTUyB3aXRoIEFMSUdOIGluIGRyYXdfc3F1YXJlcyBhbmQgZHJhd19z
-cXVhcmVzX2NvdmVyYWdlIGJ1dCBmYWlscyB3aXRob3V0IHRoZSBBTElHTk1FTlQuDQoNCktpbmRs
-eSBoYXZlIGEgY2hlY2suIFRoYW5rIHlvdS4gQXBvbG9naWVzLCBJIHB1c2hlZCByZXYzIG9uIHRv
-cCBvZiB5b3VycyB0byB0cnktYm90IHRvIG1haW50YWluIGNvbnRleHQuDQoNClJlZ2FyZHMNClZp
-ZHlhDQoNCg0KDQo+IC9KdWhhLVBla2thDQo+IA0KPiA+DQo+ID4gVGhhbmtzLA0KPiA+IFRlamFz
-DQo+ID4NCj4gPiA+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiBGcm9tOiBTaGFy
-bWEsIFN3YXRpMiA8c3dhdGkyLnNoYXJtYUBpbnRlbC5jb20+DQo+ID4gPiBTZW50OiAwMiBBdWd1
-c3QgMjAyMSAxODozNQ0KPiA+ID4gVG86IGp1aGFwZWtrYS5oZWlra2lsYUBnbWFpbC5jb207IFN1
-cmVuZHJha3VtYXIgVXBhZGh5YXksDQo+ID4gPiBUZWphc2t1bWFyWCA8dGVqYXNrdW1hcnguc3Vy
-ZW5kcmFrdW1hci51cGFkaHlheUBpbnRlbC5jb20+OyBpZ3QtDQo+ID4gPiBkZXZAbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnDQo+ID4gPiBTdWJqZWN0OiBSZTogW2lndC1kZXZdIFtpLWctdF0gdGVzdHMv
-a21zX3BsYW5lX2FscGhhX2JsZW5kOiBBbGlnbg0KPiA+ID4gd2lkdGggdG8gMjU2Qg0KPiA+ID4N
-Cj4gPiA+IEhpIEpQLA0KPiA+ID4NCj4gPiA+IFRlamFzIHJlYXBwbGllZCB0aGUgc2FtZSBmaXgg
-YXMgaW4NCj4gPiA+IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC80NDUw
-MTAvP3Nlcmllcz05Mjc1MSZyZXY9Mg0KPiA+ID4gd2hpY2ggd2FzIHJldmlld2VkIGJ5IERhbmll
-bC4NCj4gPiA+DQo+ID4gPiBPbiAwMi1BdWctMjEgNTo0MiBQTSwgSnVoYS1QZWtrYSBIZWlra2ls
-YSB3cm90ZToNCj4gPiA+ID4gSGkgVGVqYXMsIFN3YXRpLA0KPiA+ID4gPg0KPiA+ID4gPiBJIHdh
-cyBjb25mdXNlZCB3aGVuIEkgcmVhZCB0aGlzIHBhdGNoLCBtaW5kIHlvdSB0ZWxsIHdoYXQgaGFw
-cGVuIGhlcmU/DQo+ID4gPiA+IFRvIG1lIGl0IGxvb2sgbGlrZSBub3RoaW5nIG1hdGNoZXMgd2l0
-aCBlYWNoIG90aGVyIHdpdGggdGhlIHBhdGNoLg0KPiA+ID4gPg0KPiA+ID4gPiBFdmVuIHN1Ympl
-Y3QgaXMgdGVsbGluZyBvdGhlciB0aGluZ3MgdGhhbiB3aGF0IHRoaXMgcGF0Y2ggYWN0dWFsbHkg
-ZG9lcy4NCj4gPiA+ID4NCj4gPiA+ID4gT24gMzAuNy4yMDIxIDguNTAsIFNoYXJtYSwgU3dhdGky
-IHdyb3RlOg0KPiA+ID4gPj4gUmV2aWV3ZWQtYnk6DQo+ID4gPiA+PiBTd2F0aSBTaGFybWEgPHN3
-YXRpMi5zaGFybWFAaW50ZWwuY29tPg0KPiA+ID4gPj4NCj4gPiA+ID4+IE9uIDI4LUp1bC0yMSAx
-MDoyNSBBTSwgVGVqYXMgVXBhZGh5YXkgd3JvdGU6DQo+ID4gPiA+Pj4gc29tZSBkaXNwbGF5IHJl
-c29sdXRpb25zIGxpa2UgMTM2Nng3NjggNmJwYyB3aGljaCBkb2VzIG5vdCBoYXZlDQo+ID4gPiA+
-Pj4gNjRCIGFsaWduZWQgd2lkdGggYXJlIGNyZWF0aW5nIGNyYyBtaXNtYXRjaCBpbg0KPiA+ID4g
-Pj4+IGttc19wbGFuZV9hbHBoYV9ibGVuZCB0ZXN0IG9uIEludGVsIHBsYXRmb3Jtcy4NCj4gPiA+
-ID4NCj4gPiA+ID4gaG0uIFlvdSBhcmUgc2F5aW5nIG5vbmUgb2YgSW50ZWwgaHcgaXMgYWJsZSB0
-byBzaG93IDEzNjYgd2lkZQ0KPiA+ID4gPiBmcmFtZWJ1ZmZlcnMgY29ycmVjdGx5PyBBbmQgaXQg
-aXMgZml4ZWQgYnkgaGlkaW5nIGl0IGZyb20gYmVpbmcgdGVzdGVkPw0KPiA+ID4gPg0KPiA+ID4g
-PiBNZW1vcnkgZ2l2ZW4gZnJvbSBrZXJuZWwgd2lsbCBoYXZlIDY0QiBhbGlnbm1lbnQuIFlvdSBj
-YW4gZWFzaWx5DQo+ID4gPiA+IHNlZSBieSB5b3Vyc2VsZi4NCj4gPiA+ID4NCj4gPiA+ID4+Pg0K
-PiA+ID4gPj4+IEFsc28gaGF2aW5nIGRpZmZlcmVudCBhbGlnbm1lbnQgcmVxdWlyZW1lbnQgYnkg
-ZGlmZmVyZW50DQo+ID4gPiA+Pj4gZHJpdmVycywgMjU2QiBhbGlnbmVkIHdpZHRoIHNob3VsZCB3
-b3JrIGZvciBhbGwgZHJtIGRyaXZlcnMuDQo+ID4gPiA+DQo+ID4gPiA+IFlvdSBhcmUgc2F5aW5n
-IHlvdSBhcmUgZml4aW5nIHNvbWUgcHJvYmxlbSB3aXRoIEludGVsIGh3LCB3aGF0DQo+ID4gPiA+
-IGRvZXMgYWxsIHRoaXMgb3RoZXIgc3R1ZmYgaGF2ZSB0byBkbyB3aXRoIGl0PyBOb25lIG9mIHRo
-b3NlIG90aGVyDQo+ID4gPiA+IGRyaXZlcnMgYXJlIGFibGUgdG8gc2hvdyAxMzY2IHBpeGVscyB3
-aWRlIGZyYW1lYnVmZmVycyBlaXRoZXI/DQo+ID4gPiA+DQo+ID4gPiA+Pj4NCj4gPiA+ID4+PiBh
-bWRncHUgYW5kIHJhZGVvbiwgYW1kZ3B1X2FsaWduX3BpdGNoOiAyNTZCIGFybWFkYSwNCj4gYXJt
-YWRhX3BpdGNoOg0KPiA+ID4gPj4+IDEyOEINCj4gPiA+ID4+PiBleHlub3NfZHJtX2dlbV9kdW1i
-X2NyZWF0ZTogTm8gYWxpZ25tZW50IHJlcXVpcmVkDQo+ID4gPiA+Pj4gZHJtX2dlbV9zaG1lbV9k
-dW1iX2NyZWF0ZTogOEINCj4gPiA+ID4+PiBkcm1fZ2VtX3ZyYW1fZmlsbF9jcmVhdGVfZHVtYjog
-OEINCj4gPiA+ID4+Pg0KPiA+ID4gPj4+IFRodXMgMjU2QiBjb3ZlcnMgZXZlcnl0aGluZyB3ZSBz
-ZWUgaW4gdGhlIGtlcm5lbCBkcm0gZHJpdmVycy4NCj4gPiA+ID4+PiBTaWduZWQtb2ZmLWJ5OiBU
-ZWphcyBVcGFkaHlheQ0KPiA+ID4gPj4+IDx0ZWphc2t1bWFyeC5zdXJlbmRyYWt1bWFyLnVwYWRo
-eWF5QGludGVsLmNvbT4NCj4gPiA+ID4+PiAtLS0NCj4gPiA+ID4+PiAgIHRlc3RzL2ttc19wbGFu
-ZV9hbHBoYV9ibGVuZC5jIHwgMSArDQo+ID4gPiA+Pj4gICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNl
-cnRpb24oKykNCj4gPiA+ID4+Pg0KPiA+ID4gPj4+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfcGxh
-bmVfYWxwaGFfYmxlbmQuYw0KPiA+ID4gPj4+IGIvdGVzdHMva21zX3BsYW5lX2FscGhhX2JsZW5k
-LmMgaW5kZXggZDY0OWEwOWYuLjg2NGU4M2Y5IDEwMDY0NA0KPiA+ID4gPj4+IC0tLSBhL3Rlc3Rz
-L2ttc19wbGFuZV9hbHBoYV9ibGVuZC5jDQo+ID4gPiA+Pj4gKysrIGIvdGVzdHMva21zX3BsYW5l
-X2FscGhhX2JsZW5kLmMNCj4gPiA+ID4+PiBAQCAtMTY4LDYgKzE2OCw3IEBAIHN0YXRpYyB2b2lk
-IHByZXBhcmVfY3J0YyhkYXRhX3QgKmRhdGEsDQo+ID4gPiA+Pj4gaWd0X291dHB1dF90ICpvdXRw
-dXQsIGVudW0gcGlwZSBwaXBlKQ0KPiA+ID4gPj4+ICAgICAgIHcgPSBtb2RlLT5oZGlzcGxheTsN
-Cj4gPiA+ID4+PiAgICAgICBoID0gbW9kZS0+dmRpc3BsYXk7DQo+ID4gPiA+Pj4gKyAgICB3ID0g
-QUxJR04odywgMjU2KTsNCj4gPiA+ID4NCj4gPiA+ID4gVGhpcyBkb2Vzbid0IGNhdXNlIGFueXRo
-aW5nIHRvIGFsaWduIHdpdGggMjU2IGJ5dGVzLiBUaGlzIG1ha2VzIGZiDQo+ID4gPiA+IHdpZHRo
-IGluIHBpeGVscyBkaXZpc2libGUgYnkgMjU2LiBGb3IgYW55dGhpbmcgdG8gZG8gd2l0aCBmYg0K
-PiA+ID4gPiBhbGlnbm1lbnRzLi50aGlzIGhhcyB2ZXJ5IGxpdHRsZSB0byBkby4gS2VybmVsIHdp
-bGwgZG8gdmlld3BvcnQNCj4gPiA+ID4gY2xpcHBpbmcgaGVuY2UgZm9yIGFjdHVhbCBpbnRlbmRl
-ZCB0ZXN0IHRoaXMgZG9lcyBub3RoaW5nLiBGQg0KPiA+ID4gPiBhbGlnbm1lbnRzIGFyZSBoYW5k
-bGVkIG90aGVyd2lzZSBhcyBpbiB0aGlzIGNhc2Ugd2l0aCB3aXRoIGxpbmVhcg0KPiA+ID4gPiBm
-YiB3aWxsDQo+ID4gPiBoYXZlIDY0IGJ5dGVzIHBlciBzdHJpZGUuDQo+ID4gPiA+DQo+ID4gPiA+
-Pj4gICAgICAgLyogcmVjcmVhdGUgYWxsIGZicyBpZiBpbmNvbXBhdGlibGUgKi8NCj4gPiA+ID4+
-PiAgICAgICBpZiAoZGF0YS0+eHJnYl9mYi53aWR0aCAhPSB3IHx8IGRhdGEtPnhyZ2JfZmIuaGVp
-Z2h0ICE9IGgpIHsNCj4gPiA+ID4+PiAgICAgICAgICAgY2Fpcm9fdCAqY3I7DQo+ID4gPiA+Pj4N
-Cj4gPiA+ID4+DQo+ID4gPiA+DQo+ID4gPiA+IElmIHRoaXMgcGF0Y2ggYWN0dWFsbHkgZml4ZWQg
-YW55dGhpbmcgeW91J2xsIG5lZWQgdG8gY3JlYXRlIGh3IHdhDQo+ID4gPiA+IGFuZCB0aGlzIG5l
-ZWQgdG8gYmUgZml4ZWQgaW4ga2VybmVsLiBOb3QgdGVzdGluZyBpcyBub3QgZml4aW5nLg0KPiA+
-ID4gPiBJbW8gdGhlcmUgc2hvdWxkIGJlIG5vIHByb2JsZW0gZm9yIEludGVsIGh3IHRvIHNob3cg
-dmFyeWluZyBmYg0KPiA+ID4gPiBzaXplcywgaW5jbHVkaW5nDQo+ID4gPiA+IDEzNjYgd2lkZS4N
-Cj4gPiA+ID4NCj4gPiA+ID4gL0p1aGEtUGVra2ENCj4gPiA+DQo+ID4gPiAtLQ0KPiA+ID4gflN3
-YXRpIFNoYXJtYQ0K
+On Tue, Aug 3, 2021 at 7:16 PM Srinivas, Vidya <vidya.srinivas@intel.com> w=
+rote:
+>
+>
+>
+> > -----Original Message-----
+> > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Juha=
+-
+> > Pekka Heikkil=C3=A4
+> > Sent: Tuesday, August 3, 2021 12:49 AM
+> > To: Surendrakumar Upadhyay, TejaskumarX
+> > <tejaskumarx.surendrakumar.upadhyay@intel.com>
+> > Cc: Sharma, Swati2 <swati2.sharma@intel.com>; igt-
+> > dev@lists.freedesktop.org
+> > Subject: Re: [igt-dev] [i-g-t] tests/kms_plane_alpha_blend: Align width=
+ to
+> > 256B
+> >
+> > On Mon, Aug 2, 2021 at 5:16 PM Surendrakumar Upadhyay, TejaskumarX
+> > <tejaskumarx.surendrakumar.upadhyay@intel.com> wrote:
+> > >
+> > > Hi JP,
+> > >
+> > > You are right i915 driver is giving 64B aligned buffer but test uses =
+raw width
+> > and thus it requires width to be aligned.
+> >
+> > Can you try this on the device which is failing:
+> > https://patchwork.freedesktop.org/series/93317/
+> >
+> > It will put on pixel blend and alpha and try different width linear fbs=
+ and
+> > compare results with crc. This should tell if alignments somehow can af=
+fect
+> > the crc on your test machine. On my ICL everything work as expected.
+> >
+>
+> Hi Juha-Pekka
+>
+> With your https://patchwork.freedesktop.org/series/93317/ the test PASSES=
+.
+> But we need to use both planes and exact same sequence as kms_plane_alpha=
+_blend coverage-premultiplied-constant case
+> to reproduce the issue.
+>
+> But with this modification (same as kms_plane_alpha_blend) done here http=
+s://patchwork.freedesktop.org/patch/448369/?series=3D93317&rev=3D3
+> It PASS with ALIGN in draw_squares and draw_squares_coverage but fails wi=
+thout the ALIGNMENT.
+>
+> Kindly have a check. Thank you. Apologies, I pushed rev3 on top of yours =
+to try-bot to maintain context.
+>
+
+Hi Vidya,
+
+thanks for showing this. Your change should segfault because with your
+alignment that memory drawing function will draw past reserved memory
+but that's not the interesting part. That original bug was included on
+the cut'n'pasted lines, it has nothing to do with strides but just
+simple rounding issue.
+
+Where there's this function:
+
++static void draw_squares(struct igt_fb *fb, int w, int h, double a)
++{
++ cairo_t *cr =3D igt_get_cairo_ctx(fb->fd, fb);
++
++ cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
++ igt_paint_color_alpha(cr, 0, 0, w / 2, h / 2, 1., 0., 0., a);
++ igt_paint_color_alpha(cr, w / 2, 0, w / 2, h / 2, 0., 1., 0., a);
++ igt_paint_color_alpha(cr, 0, h / 2, w / 2, h / 2, 0., 0., 1., a);
++ igt_paint_color_alpha(cr, w / 2, h / 2, w / 4, h / 2, 1., 1., 1., a);
++ igt_paint_color_alpha(cr, 3 * w / 4, h / 2, w / 4, h / 2, 0., 0., 0., a);
++
++ igt_put_cairo_ctx(cr);
++}
+
+
+That last igt_paint_color_alpha(..) will need to say:
+
+igt_paint_color_alpha(cr, w * 3 / 4, h / 2, w - (w * 3 / 4), h / 2,
+0., 0., 0., a);
+
+Otherwise it can draw one pixel too narrow box.
+
+/Juha-Pekka
+
+> >
+> > >
+> > > Thanks,
+> > > Tejas
+> > >
+> > > > -----Original Message-----
+> > > > From: Sharma, Swati2 <swati2.sharma@intel.com>
+> > > > Sent: 02 August 2021 18:35
+> > > > To: juhapekka.heikkila@gmail.com; Surendrakumar Upadhyay,
+> > > > TejaskumarX <tejaskumarx.surendrakumar.upadhyay@intel.com>; igt-
+> > > > dev@lists.freedesktop.org
+> > > > Subject: Re: [igt-dev] [i-g-t] tests/kms_plane_alpha_blend: Align
+> > > > width to 256B
+> > > >
+> > > > Hi JP,
+> > > >
+> > > > Tejas reapplied the same fix as in
+> > > > https://patchwork.freedesktop.org/patch/445010/?series=3D92751&rev=
+=3D2
+> > > > which was reviewed by Daniel.
+> > > >
+> > > > On 02-Aug-21 5:42 PM, Juha-Pekka Heikkila wrote:
+> > > > > Hi Tejas, Swati,
+> > > > >
+> > > > > I was confused when I read this patch, mind you tell what happen =
+here?
+> > > > > To me it look like nothing matches with each other with the patch=
+.
+> > > > >
+> > > > > Even subject is telling other things than what this patch actuall=
+y does.
+> > > > >
+> > > > > On 30.7.2021 8.50, Sharma, Swati2 wrote:
+> > > > >> Reviewed-by:
+> > > > >> Swati Sharma <swati2.sharma@intel.com>
+> > > > >>
+> > > > >> On 28-Jul-21 10:25 AM, Tejas Upadhyay wrote:
+> > > > >>> some display resolutions like 1366x768 6bpc which does not have
+> > > > >>> 64B aligned width are creating crc mismatch in
+> > > > >>> kms_plane_alpha_blend test on Intel platforms.
+> > > > >
+> > > > > hm. You are saying none of Intel hw is able to show 1366 wide
+> > > > > framebuffers correctly? And it is fixed by hiding it from being t=
+ested?
+> > > > >
+> > > > > Memory given from kernel will have 64B alignment. You can easily
+> > > > > see by yourself.
+> > > > >
+> > > > >>>
+> > > > >>> Also having different alignment requirement by different
+> > > > >>> drivers, 256B aligned width should work for all drm drivers.
+> > > > >
+> > > > > You are saying you are fixing some problem with Intel hw, what
+> > > > > does all this other stuff have to do with it? None of those other
+> > > > > drivers are able to show 1366 pixels wide framebuffers either?
+> > > > >
+> > > > >>>
+> > > > >>> amdgpu and radeon, amdgpu_align_pitch: 256B armada,
+> > armada_pitch:
+> > > > >>> 128B
+> > > > >>> exynos_drm_gem_dumb_create: No alignment required
+> > > > >>> drm_gem_shmem_dumb_create: 8B
+> > > > >>> drm_gem_vram_fill_create_dumb: 8B
+> > > > >>>
+> > > > >>> Thus 256B covers everything we see in the kernel drm drivers.
+> > > > >>> Signed-off-by: Tejas Upadhyay
+> > > > >>> <tejaskumarx.surendrakumar.upadhyay@intel.com>
+> > > > >>> ---
+> > > > >>>   tests/kms_plane_alpha_blend.c | 1 +
+> > > > >>>   1 file changed, 1 insertion(+)
+> > > > >>>
+> > > > >>> diff --git a/tests/kms_plane_alpha_blend.c
+> > > > >>> b/tests/kms_plane_alpha_blend.c index d649a09f..864e83f9 100644
+> > > > >>> --- a/tests/kms_plane_alpha_blend.c
+> > > > >>> +++ b/tests/kms_plane_alpha_blend.c
+> > > > >>> @@ -168,6 +168,7 @@ static void prepare_crtc(data_t *data,
+> > > > >>> igt_output_t *output, enum pipe pipe)
+> > > > >>>       w =3D mode->hdisplay;
+> > > > >>>       h =3D mode->vdisplay;
+> > > > >>> +    w =3D ALIGN(w, 256);
+> > > > >
+> > > > > This doesn't cause anything to align with 256 bytes. This makes f=
+b
+> > > > > width in pixels divisible by 256. For anything to do with fb
+> > > > > alignments..this has very little to do. Kernel will do viewport
+> > > > > clipping hence for actual intended test this does nothing. FB
+> > > > > alignments are handled otherwise as in this case with with linear
+> > > > > fb will
+> > > > have 64 bytes per stride.
+> > > > >
+> > > > >>>       /* recreate all fbs if incompatible */
+> > > > >>>       if (data->xrgb_fb.width !=3D w || data->xrgb_fb.height !=
+=3D h) {
+> > > > >>>           cairo_t *cr;
+> > > > >>>
+> > > > >>
+> > > > >
+> > > > > If this patch actually fixed anything you'll need to create hw wa
+> > > > > and this need to be fixed in kernel. Not testing is not fixing.
+> > > > > Imo there should be no problem for Intel hw to show varying fb
+> > > > > sizes, including
+> > > > > 1366 wide.
+> > > > >
+> > > > > /Juha-Pekka
+> > > >
+> > > > --
+> > > > ~Swati Sharma
