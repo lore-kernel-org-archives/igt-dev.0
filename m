@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0DAFB6E9E4
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Aug 2021 06:20:03 +0000 (UTC)
-Date: Wed, 4 Aug 2021 08:19:58 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210804061958.GB4891@zkempczy-mobl2>
-References: <20210726200026.4815-1-zbigniew.kempczynski@intel.com>
- <20210726200026.4815-2-zbigniew.kempczynski@intel.com>
- <87im0mku04.wl-ashutosh.dixit@intel.com>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87im0mku04.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 01/52] lib/igt_dummyload: Add support
- of using allocator in igt spinner
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 04 Aug 2021 06:22:44 -0000
+Message-ID: <162805816460.3397.927480495061421356@emeril.freedesktop.org>
+References: <20210804025637.2473-1-vidya.srinivas@intel.com>
+In-Reply-To: <20210804025637.2473-1-vidya.srinivas@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_F?=
+ =?utf-8?q?ix_rounding_error_in_draw=5Fsquares_in_kms=5Fplane=5Falpha=5Fbl?=
+ =?utf-8?q?end?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,40 +17,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
+To: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Aug 03, 2021 at 04:07:07PM -0700, Dixit, Ashutosh wrote:
-> On Mon, 26 Jul 2021 12:59:35 -0700, Zbigniew Kempczyński wrote:
-> >
-> > @@ -164,16 +171,34 @@ emit_recursive_batch(igt_spin_t *spin,
-> >	execbuf->buffer_count++;
-> >	cs = spin->batch;
-> >
-> > -	obj[BATCH].offset = addr;
-> > +	if (ahnd)
-> > +		addr = intel_allocator_alloc_with_strategy(ahnd, obj[BATCH].handle,
-> > +							   BATCH_SIZE, 0,
-> > +							   ALLOC_STRATEGY_LOW_TO_HIGH);
-> 
-> Is the strategy argument just for debug, so that spin offsets look
-> different from offsets for other objects? Since everyone should be
-> allocating from the same allocator which is managing offsets this should
-> probably not be needed?
+== Series Details ==
 
-I wanted to be consisted with reloc version. Currently it randomize offsets
-within first 32bit gtt space (see comment in emit_recursive_batch()).
+Series: Fix rounding error in draw_squares in kms_plane_alpha_blend
+URL   : https://patchwork.freedesktop.org/series/93370/
+State : warning
 
-Simple allocator starts from high->low from default so to be consisted 
-I've added LOW_TO_HIGH flag to alloc offsets on low vm address space.
+== Summary ==
 
---
-Zbigniew
+Pipeline status: FAILED.
 
-> 
-> In any case, the patch is great, so this is:
-> 
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/374196 for the overview.
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12476673):
+  298/305 assembler test/rndd                     OK       0.06 s 
+  299/305 assembler test/rndu                     OK       0.06 s 
+  300/305 assembler test/rnde                     OK       0.05 s 
+  301/305 assembler test/rnde-intsrc              OK       0.08 s 
+  302/305 assembler test/rndz                     OK       0.05 s 
+  303/305 assembler test/lzd                      OK       0.08 s 
+  304/305 assembler test/not                      OK       0.04 s 
+  305/305 assembler test/immediate                OK       0.09 s 
+  
+  Ok:                  280
+  Expected Fail:         0
+  Fail:                  0
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:              25
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1628057859:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
+
+test:ninja-test-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12476674):
+   1/24 lib igt_assert                          TIMEOUT 32.03 s 
+  Traceback (most recent call last):
+    File "/usr/lib/python3/dist-packages/mesonbuild/mesonmain.py", line 112, in run
+      return options.run_func(options)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
+      return th.doit()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
+      self.run_tests(tests)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
+      self.drain_futures(futures)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
+      self.print_stats(numlen, tests, name, result.result(), i)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
+      result_str += "\n\n" + result.get_log()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
+      res += self.stde
+  TypeError: can only concatenate str (not "bytes") to str
+  section_end:1628057859:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/374196
