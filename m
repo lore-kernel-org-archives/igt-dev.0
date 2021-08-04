@@ -1,17 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3AD16882B5
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Aug 2021 05:51:17 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-Date: Wed, 4 Aug 2021 05:51:13 +0000
-Message-ID: <ac9b2064c690417c8c0ef6cab1ff55e6@intel.com>
-References: <20210729132008.3258299-1-jigar.bhatt@intel.com>
-In-Reply-To: <20210729132008.3258299-1-jigar.bhatt@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC4D56E11A
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Aug 2021 06:13:47 +0000 (UTC)
+Date: Wed, 4 Aug 2021 08:13:41 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210804061341.GA4891@zkempczy-mobl2>
+References: <20210726200026.4815-1-zbigniew.kempczynski@intel.com>
+ <20210726200026.4815-3-zbigniew.kempczynski@intel.com>
+ <87k0l2kztn.wl-ashutosh.dixit@intel.com>
+ <87eebakqp3.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t RFC] tests/i915/i915_pm_dc: Fix DC9 test
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87eebakqp3.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 02/52] lib/intel_allocator: Add few
+ helper functions for common use
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,117 +25,101 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Bhatt, Jigar" <jigar.bhatt@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Varide, Nischal" <nischal.varide@intel.com>, "Shankar, Uma" <uma.shankar@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Tue, Aug 03, 2021 at 05:18:32PM -0700, Dixit, Ashutosh wrote:
+> On Tue, 03 Aug 2021 14:01:24 -0700, Dixit, Ashutosh wrote:
+> >
+> > On Mon, 26 Jul 2021 12:59:36 -0700, Zbigniew Kempczyński wrote:
+> > >
+> > > +static inline uint64_t get_simple_ahnd(int fd, uint32_t ctx)
+> > > +{
+> > > +	bool do_relocs = gem_has_relocations(fd);
+> > > +
+> > > +	return do_relocs ? 0 : intel_allocator_open(fd, ctx, INTEL_ALLOCATOR_SIMPLE);
+> >
+> > Should this function be e.g.
+> >
+> >     return intel_allocator_open(fd, 0, do_relocs ?
+> >                                 INTEL_ALLOCATOR_RELOC : INTEL_ALLOCATOR_SIMPLE);
+> >
+> > Similarly for others.
+> 
+> The patch is fine but there was the above code (which I wrote) in
+> gem_linear_blits.c, hence I was wondering.
 
+On the beginning - I'm sorry for email length. It may give some light how
+things were designed, why and what issues with that we got.
 
-> -----Original Message-----
-> From: Bhatt, Jigar <jigar.bhatt@intel.com>
-> Sent: Thursday, July 29, 2021 6:50 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Bhatt, Jigar <jigar.bhatt@intel.com>; Varide, Nischal
-> <nischal.varide@intel.com>; Gupta, Anshuman <anshuman.gupta@intel.com>;
-> Shankar, Uma <uma.shankar@intel.com>
-> Subject: [PATCH i-g-t RFC] tests/i915/i915_pm_dc: Fix DC9 test
->=20
-Please use the standard patch header format.
-> 1. Currently, check_dc9 is being called with reference
-> (previous) counter being read after dpms_off call.
-> At this time, already the counter is 0.
-> We need to read the counter before dpms_off is called so that it holds th=
-e
-> previous value which had incremented while testing shallow states (DC5 or=
- DC6).
->=20
-> 2. Check for a condition dc counter to be reset along with system should =
-in
-> runtime suspend state :
-> currect_dc < prev_dc && i915 runtime status =3D=3D SUSPENDED.
-> If above condition pass, test is passed otherwise test is failed.
->=20
-> 3. adding dc9_dpms_off()
->=20
-> Signed-off-by: Jigar Bhatt <jigar.bhatt@intel.com>
-> ---
->  tests/i915/i915_pm_dc.c | 25 +++++++++++++++++++------
->  1 file changed, 19 insertions(+), 6 deletions(-)
->=20
-> diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c index
-> 9d0a15d81..a6fddb617 100644
-> --- a/tests/i915/i915_pm_dc.c
-> +++ b/tests/i915/i915_pm_dc.c
-> @@ -358,6 +358,15 @@ static void dpms_off(data_t *data)
->  			   (IGT_RUNTIME_PM_STATUS_SUSPENDED));
->  }
->=20
-> +static void dc9_dpms_off(data_t *data)
-> +{
-> +	for (int i =3D 0; i < data->display.n_outputs; i++) {
-> +		kmstest_set_connector_dpms(data->drm_fd,
-> +					   data-
-> >display.outputs[i].config.connector,
-> +					   DRM_MODE_DPMS_OFF);
-> +	}
-> +}
-> +
->  static void dpms_on(data_t *data)
->  {
->  	for (int i =3D 0; i < data->display.n_outputs; i++) { @@ -400,8 +409,11=
- @@
-> static bool check_dc9(uint32_t debugfs_fd, int prev_dc, bool dc6_supporte=
-d, int
->  	 * so we rely on dc5/dc6 counter reset to check if display engine was i=
-n
-> DC9.
->  	 */
->  	return igt_wait(dc6_supported ? read_dc_counter(debugfs_fd,
-> CHECK_DC6) <
-> -			prev_dc : read_dc_counter(debugfs_fd, CHECK_DC5) <
-> -			prev_dc, seconds, 100);
-> +			prev_dc &&
-> +
-> 	igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)
-Don't use igt_wait_for_pm_status here , it waits for 10 seconds internally.
-We just need i915 runtime pm status and that should check against suspended=
-.
-This will waste may CI cycles.
-Br,
-Anshuman
-> +			: read_dc_counter(debugfs_fd, CHECK_DC5) < prev_dc
-> &&
-> +
-> 	igt_wait_for_pm_status(IGT_RUNTIME_STATUS_PM_SUSPENDED)
-> +			, seconds, 100);
->  }
->=20
->  static void setup_dc9_dpms(data_t *data, int prev_dc, bool dc6_supported=
-)
-> @@ -418,15 +430,16 @@ static void setup_dc9_dpms(data_t *data, int
-> prev_dc, bool dc6_supported)  static void test_dc9_dpms(data_t *data)  {
->  	bool dc6_supported;
-> +	int prev_dc;
->=20
->  	require_dc_counter(data->debugfs_fd, CHECK_DC5);
->  	dc6_supported =3D support_dc6(data->debugfs_fd);
->  	setup_dc9_dpms(data, dc6_supported ? read_dc_counter(data-
-> >debugfs_fd, CHECK_DC6) :
->  			read_dc_counter(data->debugfs_fd, CHECK_DC5),
-> dc6_supported);
-> -	dpms_off(data);
-> -	igt_assert_f(check_dc9(data->debugfs_fd, dc6_supported ?
-> -				read_dc_counter(data->debugfs_fd,
-> CHECK_DC6) :
-> -				read_dc_counter(data->debugfs_fd,
-> CHECK_DC5),
-> +	prev_dc =3D dc6_supported ? read_dc_counter(data->debugfs_fd,
-> CHECK_DC6) :
-> +		read_dc_counter(data->debugfs_fd, CHECK_DC5);
-> +	dc9_dpms_off(data);
-> +	igt_assert_f(check_dc9(data->debugfs_fd, prev_dc,
->  				dc6_supported, 3000), "Not in DC9\n");
->  	dpms_on(data);
->  }
-> --
-> 2.25.1
+Regarding gem_linear_blits - in this case doesn't matter which allocator
+you'll use. There's summary:
+
+1. Reloc allocator just increments offsets but is doing this in multiprocess
+   environment. It doesn't track which offsets are occupied.
+
+2. Simple takes care of which offsets are occupied.
+
+For gem_linear_blits on older gens kernel will propose its own offsets
+if we pass something it don't like. For simple we're on newer gens 
+and we got full ppgtt so we don't overlap with offsets.
+
+Even if Simple is stateful we got some case in which its usage
+is currently limited (so you can see using reloc in most of the
+tests). Problem is with...  it is stateful. Most of tests creates batch
+(gem object), use it and destroy it. From allocator perspective we alloc
+offset, then we free it. In next round we got same offset for another batch
+(gem object). So kernel serialize the execution until previous vma is freed.
+This lead to non-pipelined execution.
+
+You can see pattern in many tests - ahnd = get_reloc_ahnd(...), 
+get offset for scratch surface, then pass scratch_offset to some execution
+function. This allows to keep us same offset for scratch and get new
+offsets for batches. The best would be to have something hybrid which would
+propose new (and not busy) bb, but that should happen in multiprocess env
+so I haven't found how to write this yet. Libdrm handles pools of objects
+and reuses them if they were not busy. But doing this in multiprocess
+requires synchronization so some additional mechanism should be added
+to allocator to handle this case. 
+
+I still wonder to introduce .dependency_offset in creating spinner when
+.dependency handle is passed. Currently we have to use Simple to ensure
+we got same offset for .dependency. As spinners keep batch handles until
+they are freed this likely is not a problem. But it may be in the future.
+
+> 
+> > +static inline uint64_t get_offset(uint64_t ahnd, uint32_t handle,
+> > +				  uint64_t size, uint64_t alignment)
+> > +{
+> > +	if (!ahnd)
+> > +		return 0;
+> > +
+> > +	return intel_allocator_alloc(ahnd, handle, size, alignment);
+> > +}
+> > +
+> > +static inline bool put_offset(uint64_t ahnd, uint32_t handle)
+> > +{
+> > +	if (!ahnd)
+> > +		return 0;
+> > +
+> > +	return intel_allocator_free(ahnd, handle);
+> > +}
+> > +
+> 
+> Also for the function names are too generic with potential for namespace
+> conflicts, probably ahnd_get_offset/ahnd_put_offset?
+
+If there will be more voices to change it I'll do it. At the moment
+I wanted to have few short functions. I thought about ahnd_get_offset(ahnd, ...) 
+but when ahnd would be valid allocator handle, asserting otherwise. 
+get_offset(ahnd, ...) would just return some offset, for relocations
+it may be 0 (like currently is), allocating offset for valid ahnd.
+
+--
+Zbigniew 
+
+> 
+> In any case, this is:
+> 
+> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
