@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E24ED6E07D
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Aug 2021 05:28:15 +0000 (UTC)
-Date: Wed, 4 Aug 2021 08:30:49 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YQomCU6hoNY2jjvp@platvala-desk.ger.corp.intel.com>
-References: <20210803200749.416767-1-bindu.r@amd.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3AD16882B5
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Aug 2021 05:51:17 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+Date: Wed, 4 Aug 2021 05:51:13 +0000
+Message-ID: <ac9b2064c690417c8c0ef6cab1ff55e6@intel.com>
+References: <20210729132008.3258299-1-jigar.bhatt@intel.com>
+In-Reply-To: <20210729132008.3258299-1-jigar.bhatt@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210803200749.416767-1-bindu.r@amd.com>
-Subject: Re: [igt-dev] [PATCH v3] tests/kms_bw: New test for bandwidth
- validation
+Subject: Re: [igt-dev] [PATCH i-g-t RFC] tests/i915/i915_pm_dc: Fix DC9 test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,274 +21,117 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bindu Ramamurthy <bindu.r@amd.com>
-Cc: arek@hiler.eu, markyacoub@google.com, igt-dev@lists.freedesktop.org, Harry.Wentland@amd.com, Rodrigo.Siqueira@amd.com, Anson.Jacob@amd.com, aurabindo.pillai@amd.com, Nicholas.Choi@amd.com
+To: "Bhatt, Jigar" <jigar.bhatt@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Varide, Nischal" <nischal.varide@intel.com>, "Shankar, Uma" <uma.shankar@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Aug 03, 2021 at 04:07:49PM -0400, Bindu Ramamurthy wrote:
-> From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> 
-> Add linear tiling mode tests
-> 
-> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> Acked-by: Bindu Ramamurthy <bindu.r@amd.com>
+
+
+> -----Original Message-----
+> From: Bhatt, Jigar <jigar.bhatt@intel.com>
+> Sent: Thursday, July 29, 2021 6:50 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Bhatt, Jigar <jigar.bhatt@intel.com>; Varide, Nischal
+> <nischal.varide@intel.com>; Gupta, Anshuman <anshuman.gupta@intel.com>;
+> Shankar, Uma <uma.shankar@intel.com>
+> Subject: [PATCH i-g-t RFC] tests/i915/i915_pm_dc: Fix DC9 test
+>=20
+Please use the standard patch header format.
+> 1. Currently, check_dc9 is being called with reference
+> (previous) counter being read after dpms_off call.
+> At this time, already the counter is 0.
+> We need to read the counter before dpms_off is called so that it holds th=
+e
+> previous value which had incremented while testing shallow states (DC5 or=
+ DC6).
+>=20
+> 2. Check for a condition dc counter to be reset along with system should =
+in
+> runtime suspend state :
+> currect_dc < prev_dc && i915 runtime status =3D=3D SUSPENDED.
+> If above condition pass, test is passed otherwise test is failed.
+>=20
+> 3. adding dc9_dpms_off()
+>=20
+> Signed-off-by: Jigar Bhatt <jigar.bhatt@intel.com>
 > ---
-> Changes since v3:
-> 	This version implements array of test modes in igt_main,
-> 	global IGT_MAX_PIPE and other comments from Mark.
-> 
-> 
->  tests/kms_bw.c    | 218 ++++++++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build |   1 +
->  2 files changed, 219 insertions(+)
->  create mode 100644 tests/kms_bw.c
-> 
-> diff --git a/tests/kms_bw.c b/tests/kms_bw.c
-> new file mode 100644
-> index 00000000..eb6dc57e
-> --- /dev/null
-> +++ b/tests/kms_bw.c
-> @@ -0,0 +1,218 @@
-> +/*
-> + * Copyrights 2021 Advanced Micro Devices, Inc.
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-> + * OTHER DEALINGS IN THE SOFTWARE.
-> + */
-> +
-> +#include "drm_mode.h"
-> +#include "igt.h"
-> +#include "drm.h"
-> +#include <stdio.h>
-> +#include <xf86drmMode.h>
-> +
-> +
-> +/* Common test data. */
-> +typedef struct data {
-> +        igt_display_t display;
-> +        igt_plane_t *primary[IGT_MAX_PIPES];
-> +        igt_output_t *output[IGT_MAX_PIPES];
-> +        igt_pipe_t *pipe[IGT_MAX_PIPES];
-> +        igt_pipe_crc_t *pipe_crc[IGT_MAX_PIPES];
-> +        drmModeModeInfo mode[IGT_MAX_PIPES];
-> +        enum pipe pipe_id[IGT_MAX_PIPES];
-> +        int w[IGT_MAX_PIPES];
-> +        int h[IGT_MAX_PIPES];
-> +        int fd;
-> +} data_t;
-> +
-> +static drmModeModeInfo test_mode[] = {
-> +	{ 173000,
-> +	1920, 2048, 2248, 2576, 0,
-> +	1080, 1083, 1088, 1120, 0,
-> +	60,
-> +	DRM_MODE_FLAG_NHSYNC,
-> +	0x40,
-> +	"1920x1080p\0",
-> +	}, /* test_mode_1 */
-> +
-> +	{ 312250,
-> +	2560, 2752, 3024, 3488, 0,
-> +	1440, 1443, 1448, 1493, 0,
-> +	60,
-> +	DRM_MODE_FLAG_NHSYNC,
-> +	0x40,
-> +	"2560x1440p\0",
-> +	}, /* test_mode_2 */
-> +
-> +	{ 533000,
-> +	3840, 3888, 3920, 4000, 0,
-> +	2160, 2163, 2168, 2222, 0,
-> +	60,
-> +	DRM_MODE_FLAG_NHSYNC,
-> +	0x40,
-> +	"3840x2160p\0",
-> +	}, /* test_mode_3 */
-> +
-> +};
-> +
-> +static void test_init(data_t *data)
+>  tests/i915/i915_pm_dc.c | 25 +++++++++++++++++++------
+>  1 file changed, 19 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c index
+> 9d0a15d81..a6fddb617 100644
+> --- a/tests/i915/i915_pm_dc.c
+> +++ b/tests/i915/i915_pm_dc.c
+> @@ -358,6 +358,15 @@ static void dpms_off(data_t *data)
+>  			   (IGT_RUNTIME_PM_STATUS_SUSPENDED));
+>  }
+>=20
+> +static void dc9_dpms_off(data_t *data)
 > +{
-> +	igt_display_t *display = &data->display;
-> +	int i, max_pipes = display->n_pipes;
-> +
-> +	for_each_pipe(display, i) {
-> +		data->pipe_id[i] = PIPE_A + i;
-> +		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
-> +		data->primary[i] = igt_pipe_get_plane_type(
-> +			data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
-> +		data->pipe_crc[i] =
-> +			igt_pipe_crc_new(data->fd, data->pipe_id[i], "auto");
-> +	}
-> +
-> +	for (i = 0; i < display->n_outputs && i < max_pipes; i++) {
-> +		igt_output_t *output = &display->outputs[i];
-> +
-> +		data->output[i] = output;
-> +
-> +		/* Only allow physically connected displays for the tests. */
-> +		if (!igt_output_is_connected(output))
-> +			continue;
-> +
-> +		igt_assert(kmstest_get_connector_default_mode(
-> +			data->fd, output->config.connector, &data->mode[i]));
-> +
-> +		data->w[i] = data->mode[i].hdisplay;
-> +		data->h[i] = data->mode[i].vdisplay;
-> +	}
-> +
-> +
-> +	igt_require(data->output[0]);
-> +	igt_display_reset(display);
-> +}
-> +
-> +static void test_fini(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	int i;
-> +
-> +	for_each_pipe(display, i) {
-> +		igt_pipe_crc_free(data->pipe_crc[i]);
-> +	}
-> +
-> +	igt_display_reset(display);
-> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-> +}
-> +
-> +/* Forces a mode for a connector. */
-> +static void force_output_mode(data_t *d, igt_output_t *output,
-> +			      const drmModeModeInfo *mode)
-> +{
-> +	/* This allows us to create a virtual sink. */
-> +	if (!igt_output_is_connected(output)) {
-> +		kmstest_force_edid(d->fd, output->config.connector,
-> +				   igt_kms_get_4k_edid());
-> +
-> +		kmstest_force_connector(d->fd, output->config.connector,
-> +					FORCE_CONNECTOR_DIGITAL);
-> +	}
-> +
-> +	igt_output_override_mode(output, mode);
-> +}
-> +
-> +static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo *mode) {
-> +	igt_display_t *display = &data->display;
-> +	igt_output_t *output;
-> +	struct igt_fb buffer[IGT_MAX_PIPES];
-> +	igt_crc_t zero, captured[IGT_MAX_PIPES];
-> +	int i = 0;
-> +
-> +
-> +	igt_skip_on_f(pipe >= igt_display_get_n_pipes(display),
-> +                      "ASIC does not have %d pipes\n", pipe);
-> +
-> +	test_init(data);
-> +
-> +	/* create buffers */
-> +	for (i = 0; i <= pipe; i++) {
-> +
-> +		output = data->output[i];
-> +		if (!output) {
-> +			continue;
-> +		}
-> +
-> +		force_output_mode(data, output, mode);
-> +
-> +		igt_create_color_fb(display->drm_fd, test_mode[0].hdisplay,
-> +				    test_mode[0].vdisplay, DRM_FORMAT_XRGB8888,
-> +				    DRM_FORMAT_MOD_NONE, 1.f, 0.f, 0.f,
-> +				    &buffer[i]);
-> +
-> +		igt_output_set_pipe(output, i);
-> +
-> +		igt_plane_set_fb(data->primary[i], &buffer[i]);
-> +	}
-> +
-> +	igt_display_commit_atomic(
-> +		display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +
-> +
-> +	for (i = 0; i <= pipe; i++) {
-> +		igt_pipe_crc_collect_crc(data->pipe_crc[i], &captured[i]);
-> +		igt_assert_f(!igt_check_crc_equal(&zero, &captured[i]),
-> +			     "CRC is zero\n");
-> +		igt_remove_fb(display->drm_fd, &buffer[i]);
-> +	}
-> +
-> +	test_fini(data);
-> +}
-> +
-> +igt_main
-> +{
-> +	data_t data;
-> +	int i = 0, j = 0;
-> +
-> +	igt_skip_on_simulation();
-
-Remove this, igt_skip_on_simulation is deprecated and does more harm
-than good.
-
-
--- 
-Petri Latvala
-
-
-
-> +
-> +	memset(&data, 0, sizeof(data));
-> +
-> +	igt_fixture
-> +	{
-> +		data.fd = drm_open_driver_master(DRIVER_ANY);
-> +
-> +		kmstest_set_vt_graphics_mode();
-> +
-> +		igt_display_require(&data.display, data.fd);
-> +		igt_require(&data.display.is_atomic);
-> +		igt_display_require_output(&data.display);
-> +
-> +	}
-> +
-> +	for (i = 0; i < IGT_MAX_PIPES; i++)
-> +		for (j = 0; j < ARRAY_SIZE(test_mode); j++) {
-> +			igt_subtest_f("linear-tiling-%d-displays-%s", i+1,
-> +			      test_mode[j].name)
-> +			run_test_linear_tiling(&data, i, &test_mode[j]);
-> +		}
-> +
-> +
-> +	igt_fixture
-> +	{
-> +		igt_display_fini(&data.display);
+> +	for (int i =3D 0; i < data->display.n_outputs; i++) {
+> +		kmstest_set_connector_dpms(data->drm_fd,
+> +					   data-
+> >display.outputs[i].config.connector,
+> +					   DRM_MODE_DPMS_OFF);
 > +	}
 > +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 1bdfddbb..6d1ebe42 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -22,6 +22,7 @@ test_progs = [
->  	'kms_big_fb',
->  	'kms_big_joiner' ,
->  	'kms_busy',
-> +	'kms_bw',
->  	'kms_ccs',
->  	'kms_cdclk',
->  	'kms_concurrent',
-> -- 
+> +
+>  static void dpms_on(data_t *data)
+>  {
+>  	for (int i =3D 0; i < data->display.n_outputs; i++) { @@ -400,8 +409,11=
+ @@
+> static bool check_dc9(uint32_t debugfs_fd, int prev_dc, bool dc6_supporte=
+d, int
+>  	 * so we rely on dc5/dc6 counter reset to check if display engine was i=
+n
+> DC9.
+>  	 */
+>  	return igt_wait(dc6_supported ? read_dc_counter(debugfs_fd,
+> CHECK_DC6) <
+> -			prev_dc : read_dc_counter(debugfs_fd, CHECK_DC5) <
+> -			prev_dc, seconds, 100);
+> +			prev_dc &&
+> +
+> 	igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)
+Don't use igt_wait_for_pm_status here , it waits for 10 seconds internally.
+We just need i915 runtime pm status and that should check against suspended=
+.
+This will waste may CI cycles.
+Br,
+Anshuman
+> +			: read_dc_counter(debugfs_fd, CHECK_DC5) < prev_dc
+> &&
+> +
+> 	igt_wait_for_pm_status(IGT_RUNTIME_STATUS_PM_SUSPENDED)
+> +			, seconds, 100);
+>  }
+>=20
+>  static void setup_dc9_dpms(data_t *data, int prev_dc, bool dc6_supported=
+)
+> @@ -418,15 +430,16 @@ static void setup_dc9_dpms(data_t *data, int
+> prev_dc, bool dc6_supported)  static void test_dc9_dpms(data_t *data)  {
+>  	bool dc6_supported;
+> +	int prev_dc;
+>=20
+>  	require_dc_counter(data->debugfs_fd, CHECK_DC5);
+>  	dc6_supported =3D support_dc6(data->debugfs_fd);
+>  	setup_dc9_dpms(data, dc6_supported ? read_dc_counter(data-
+> >debugfs_fd, CHECK_DC6) :
+>  			read_dc_counter(data->debugfs_fd, CHECK_DC5),
+> dc6_supported);
+> -	dpms_off(data);
+> -	igt_assert_f(check_dc9(data->debugfs_fd, dc6_supported ?
+> -				read_dc_counter(data->debugfs_fd,
+> CHECK_DC6) :
+> -				read_dc_counter(data->debugfs_fd,
+> CHECK_DC5),
+> +	prev_dc =3D dc6_supported ? read_dc_counter(data->debugfs_fd,
+> CHECK_DC6) :
+> +		read_dc_counter(data->debugfs_fd, CHECK_DC5);
+> +	dc9_dpms_off(data);
+> +	igt_assert_f(check_dc9(data->debugfs_fd, prev_dc,
+>  				dc6_supported, 3000), "Not in DC9\n");
+>  	dpms_on(data);
+>  }
+> --
 > 2.25.1
-> 
