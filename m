@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D41A6E3F7
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Aug 2021 08:46:49 +0000 (UTC)
+Date: Thu, 5 Aug 2021 10:46:41 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210805084641.GG3295@zkempczy-mobl2>
+References: <20210726200026.4815-1-zbigniew.kempczynski@intel.com>
+ <20210726200026.4815-14-zbigniew.kempczynski@intel.com>
+ <875ywktwt8.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 05 Aug 2021 08:39:36 -0000
-Message-ID: <162815277610.30836.18211645662289265532@emeril.freedesktop.org>
-References: <20210805051716.278860-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20210805051716.278860-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/kms=5Fsetmode=3A_Fix_mode_selection_for_Nx_tests_=28rev2?=
- =?utf-8?q?=29?=
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <875ywktwt8.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 13/52] tests/gem_ctx_exec: Adopt to
+ use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,90 +22,74 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Wed, Aug 04, 2021 at 08:06:11PM -0700, Dixit, Ashutosh wrote:
+> On Mon, 26 Jul 2021 12:59:47 -0700, Zbigniew Kempczyński wrote:
+> 
+> With the couple of nits below addressed, this is:
+> 
+> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> 
+> > @@ -345,10 +354,14 @@ static void close_race(int i915)
+> >	const intel_ctx_t **ctx;
+> >	uint32_t *ctx_id;
+> >	igt_spin_t *spin;
+> > +	uint64_t ahnd;
+> >
+> >	/* Check we can execute a polling spinner */
+> >	base_ctx = intel_ctx_create(i915, NULL);
+> > -	igt_spin_free(i915, igt_spin_new(i915, .ctx = base_ctx,
+> > +	ahnd = get_reloc_ahnd(i915, base_ctx->id);
+> > +	igt_spin_free(i915, igt_spin_new(i915,
+> > +					 .ahnd = ahnd,
+> > +					 .ctx = base_ctx,
+> >					 .flags = IGT_SPIN_POLL_RUN));
+> 
+> Missing put_ahnd here I think.
 
-Series: tests/kms_setmode: Fix mode selection for Nx tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/90525/
-State : warning
+We may free ahnd here (internally allocator structure will be free
+due to refcnt == 0), then first child which will call get_reloc_ahnd()
+will recreate this. Or we may keep this allocator structure till the
+end of the test - I will put put_ahnd() there. 
+ 
+> 
+> > @@ -403,6 +419,7 @@ static void close_race(int i915)
+> >		}
+> >
+> >		igt_spin_free(i915, spin);
+> > +		put_ahnd(ahnd);
+> 
+> nit: prefer to move it next to intel_ctx_destroy.
 
-== Summary ==
+I need to add this there, not move. put_ahnd() in children will
+decrement refcount of allocator structure then last put_ahnd()
+in main process will lead to freeing it. 
 
-Pipeline status: FAILED.
+> 
+> > @@ -474,11 +491,22 @@ igt_main
+> >	igt_subtest("basic-nohangcheck")
+> >		nohangcheck_hostile(fd);
+> >
+> > -	igt_subtest("basic-close-race")
+> > -		close_race(fd);
+> > +	igt_subtest_group {
+> > +		igt_fixture {
+> > +			intel_allocator_multiprocess_start();
+> > +		}
+> > +
+> > +		igt_subtest("basic-close-race")
+> > +				close_race(fd);
+> 
+> indent
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/374940 for the overview.
+Ack.
 
-test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12505274):
-  Traceback (most recent call last):
-    File "/usr/lib/python3/dist-packages/mesonbuild/mesonmain.py", line 112, in run
-      return options.run_func(options)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
-      return th.doit()
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
-      self.run_tests(tests)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
-      self.drain_futures(futures)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
-      self.print_stats(numlen, tests, name, result.result(), i)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
-      result_str += "\n\n" + result.get_log()
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
-      res += self.stde
-  TypeError: can only concatenate str (not "bytes") to str
-    1/291 lib igt_assert                          TIMEOUT 32.10 s 
-  section_end:1628152254:step_script
-  ERROR: Job failed: execution took longer than 1h0m0s seconds
-  
+Thanks for review!
 
-test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12505275):
-    1/291 lib igt_assert                          TIMEOUT 32.11 s 
-  Traceback (most recent call last):
-    File "/usr/lib/python3/dist-packages/mesonbuild/mesonmain.py", line 112, in run
-      return options.run_func(options)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
-      return th.doit()
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
-      self.run_tests(tests)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
-      self.drain_futures(futures)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
-      self.print_stats(numlen, tests, name, result.result(), i)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
-      result_str += "\n\n" + result.get_log()
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
-      res += self.stde
-  TypeError: can only concatenate str (not "bytes") to str
-  section_end:1628152259:step_script
-  ERROR: Job failed: execution took longer than 1h0m0s seconds
-  
-
-test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12505276):
-  298/305 assembler test/rndd                     OK       0.01 s 
-  299/305 assembler test/rndu                     OK       0.02 s 
-  300/305 assembler test/rnde                     OK       0.01 s 
-  301/305 assembler test/rnde-intsrc              OK       0.02 s 
-  302/305 assembler test/rndz                     OK       0.01 s 
-  303/305 assembler test/lzd                      OK       0.01 s 
-  304/305 assembler test/not                      OK       0.01 s 
-  305/305 assembler test/immediate                OK       0.02 s 
-  
-  Ok:                  280
-  Expected Fail:         0
-  Fail:                  0
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:              25
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1628152259:step_script
-  ERROR: Job failed: execution took longer than 1h0m0s seconds
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/374940
+--
+Zbigniew
