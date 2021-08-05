@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 255DB89D57
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Aug 2021 04:01:46 +0000 (UTC)
-From: "Bhatt, Jigar" <jigar.bhatt@intel.com>
-Date: Thu, 5 Aug 2021 04:01:37 +0000
-Message-ID: <DM8PR11MB5608AA460CAB3B055D9B3393FDF29@DM8PR11MB5608.namprd11.prod.outlook.com>
-References: <20210729132008.3258299-1-jigar.bhatt@intel.com>
- <ac9b2064c690417c8c0ef6cab1ff55e6@intel.com>
-In-Reply-To: <ac9b2064c690417c8c0ef6cab1ff55e6@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 069E28985A
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Aug 2021 05:16:46 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Thu,  5 Aug 2021 10:47:16 +0530
+Message-Id: <20210805051716.278860-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t RFC] tests/i915/i915_pm_dc: Fix DC9 test
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t V2] tests/kms_setmode: Fix mode selection
+ for Nx tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,132 +18,186 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Gupta, Anshuman" <anshuman.gupta@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Varide, Nischal" <nischal.varide@intel.com>, "Shankar, Uma" <uma.shankar@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, Imre Deak <imre.deak@intel.com>, Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Anshuman,
+This patch will find the connector/mode combination that fits
+into the bandwidth when more than one monitor is connected.
 
------Original Message-----
-From: Gupta, Anshuman <anshuman.gupta@intel.com>=20
-Sent: Wednesday, August 4, 2021 11:21 AM
-To: Bhatt, Jigar <jigar.bhatt@intel.com>; igt-dev@lists.freedesktop.org
-Cc: Varide, Nischal <nischal.varide@intel.com>; Shankar, Uma <uma.shankar@i=
-ntel.com>
-Subject: RE: [PATCH i-g-t RFC] tests/i915/i915_pm_dc: Fix DC9 test
+Example:
+  When two monitors connected through MST, the second monitor
+  also tries to use the same mode. So two such modes may not
+  fit into the link bandwidth. So, iterate through connected
+  outputs & modes and find a combination of modes those fit
+  into the link BW.
 
+V2:
+* Addressed comments from Ankit
 
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_setmode.c | 116 +++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 88 insertions(+), 28 deletions(-)
 
-> -----Original Message-----
-> From: Bhatt, Jigar <jigar.bhatt@intel.com>
-> Sent: Thursday, July 29, 2021 6:50 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Bhatt, Jigar <jigar.bhatt@intel.com>; Varide, Nischal=20
-> <nischal.varide@intel.com>; Gupta, Anshuman=20
-> <anshuman.gupta@intel.com>; Shankar, Uma <uma.shankar@intel.com>
-> Subject: [PATCH i-g-t RFC] tests/i915/i915_pm_dc: Fix DC9 test
->=20
-Please use the standard patch header format.
-> 1. Currently, check_dc9 is being called with reference
-> (previous) counter being read after dpms_off call.
-> At this time, already the counter is 0.
-> We need to read the counter before dpms_off is called so that it holds=20
-> the previous value which had incremented while testing shallow states (DC=
-5 or DC6).
->=20
-> 2. Check for a condition dc counter to be reset along with system=20
-> should in runtime suspend state :
-> currect_dc < prev_dc && i915 runtime status =3D=3D SUSPENDED.
-> If above condition pass, test is passed otherwise test is failed.
->=20
-> 3. adding dc9_dpms_off()
->=20
-> Signed-off-by: Jigar Bhatt <jigar.bhatt@intel.com>
-> ---
->  tests/i915/i915_pm_dc.c | 25 +++++++++++++++++++------
->  1 file changed, 19 insertions(+), 6 deletions(-)
->=20
-> diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c index
-> 9d0a15d81..a6fddb617 100644
-> --- a/tests/i915/i915_pm_dc.c
-> +++ b/tests/i915/i915_pm_dc.c
-> @@ -358,6 +358,15 @@ static void dpms_off(data_t *data)
->     (IGT_RUNTIME_PM_STATUS_SUSPENDED));
->  }
->=20
-> +static void dc9_dpms_off(data_t *data) { for (int i =3D 0; i <=20
-> +data->display.n_outputs; i++) {=20
-> +kmstest_set_connector_dpms(data->drm_fd,
-> +   data-
-> >display.outputs[i].config.connector,
-> +   DRM_MODE_DPMS_OFF);
-> +}
-> +}
-> +
->  static void dpms_on(data_t *data)
->  {
->  for (int i =3D 0; i < data->display.n_outputs; i++) { @@ -400,8 +409,11=
-=20
-> @@ static bool check_dc9(uint32_t debugfs_fd, int prev_dc, bool dc6_suppo=
-rted, int
->   * so we rely on dc5/dc6 counter reset to check if display engine was=20
-> in DC9.
->   */
->  return igt_wait(dc6_supported ? read_dc_counter(debugfs_fd,
-> CHECK_DC6) <
-> -prev_dc : read_dc_counter(debugfs_fd, CHECK_DC5) < -prev_dc, seconds,=20
-> 100);
-> +prev_dc &&
-> +
-> igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)
-Don't use igt_wait_for_pm_status here , it waits for 10 seconds internally.
-We just need i915 runtime pm status and that should check against suspended=
-.
-This will waste may CI cycles.
-Br,
-Anshuman
+diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+index 05084c3a7..89220b83e 100644
+--- a/tests/kms_setmode.c
++++ b/tests/kms_setmode.c
+@@ -46,6 +46,9 @@ static int filter_test_id;
+ static bool dry_run;
+ static bool all_pipes = false;
 
-If we are not using this igt_wait_for_status then it will check status only=
- one time and mostly it has active status.
-and after dpms_off it will take some time to be suspended that's why this i=
-gt_wait_for_status has
-max 10 sec wait loop if status =3D=3D SUSPENDED then it will automatically =
-getting out of waiting time(10 sec).
++static char str_buf[MAX_CRTCS][1024];
++static const char *crtc_strs[MAX_CRTCS];
++
+ const drmModeModeInfo mode_640_480 = {
+ 	.name		= "640x480",
+ 	.vrefresh	= 60,
+@@ -540,44 +543,43 @@ static void check_timings(int crtc_idx, const drmModeModeInfo *kmode)
+ 		     fabs(mean - expected) / line_time(kmode));
+ }
 
-If we only depend on i915 runtime status after immediate DPMS_OFF then it w=
-ill take some milliseconds for getting SUSPENDED.
+-static void test_crtc_config(const struct test_config *tconf,
+-			     struct crtc_config *crtcs, int crtc_count)
++static int sort_drm_modes(const void *a, const void *b)
+ {
+-	char str_buf[MAX_CRTCS][1024];
+-	const char *crtc_strs[MAX_CRTCS];
+-	struct crtc_config *crtc;
+-	static int test_id;
+-	bool config_failed = false;
+-	int ret = 0;
+-	int i;
++	const drmModeModeInfo *mode1 = a, *mode2 = b;
 
-Thanks and Regards,
-Jigar Bhatt
-> +: read_dc_counter(debugfs_fd, CHECK_DC5) < prev_dc
-> &&
-> +
-> igt_wait_for_pm_status(IGT_RUNTIME_STATUS_PM_SUSPENDED)
-> +, seconds, 100);
->  }
->=20
->  static void setup_dc9_dpms(data_t *data, int prev_dc, bool=20
-> dc6_supported) @@ -418,15 +430,16 @@ static void setup_dc9_dpms(data_t=20
-> *data, int prev_dc, bool dc6_supported)  static void=20
-> test_dc9_dpms(data_t *data)  {  bool dc6_supported;
-> +int prev_dc;
->=20
->  require_dc_counter(data->debugfs_fd, CHECK_DC5);  dc6_supported =3D=20
-> support_dc6(data->debugfs_fd);  setup_dc9_dpms(data, dc6_supported ?=20
-> read_dc_counter(data-
-> >debugfs_fd, CHECK_DC6) :
->  read_dc_counter(data->debugfs_fd, CHECK_DC5), dc6_supported);=20
-> -dpms_off(data); -igt_assert_f(check_dc9(data->debugfs_fd,=20
-> dc6_supported ?
-> -read_dc_counter(data->debugfs_fd,
-> CHECK_DC6) :
-> -read_dc_counter(data->debugfs_fd,
-> CHECK_DC5),
-> +prev_dc =3D dc6_supported ? read_dc_counter(data->debugfs_fd,
-> CHECK_DC6) :
-> +read_dc_counter(data->debugfs_fd, CHECK_DC5); dc9_dpms_off(data);=20
-> +igt_assert_f(check_dc9(data->debugfs_fd, prev_dc,
->  dc6_supported, 3000), "Not in DC9\n");  dpms_on(data);  }
-> --
-> 2.25.1
+-	test_id++;
+-
+-	if (filter_test_id && filter_test_id != test_id)
+-		return;
++	return (mode1->clock < mode2->clock) - (mode2->clock < mode1->clock);
++}
 
+-	igt_info("  Test id#%d CRTC count %d\n", test_id, crtc_count);
++static
++int __test_crtc_config(struct crtc_config *crtcs, int crtc_count,
++		       const struct test_config *tconf, bool *config_failed,
++		       int base)
++{
++	struct crtc_config *crtc = NULL;
++	int ret = 0;
+
+-	for (i = 0; i < crtc_count; i++) {
+-		get_crtc_config_str(&crtcs[i], str_buf[i], sizeof(str_buf[i]));
+-		crtc_strs[i] = &str_buf[i][0];
+-	}
++	crtc = &crtcs[base];
+
+-	if (dry_run) {
+-		for (i = 0; i < crtc_count; i++)
+-			igt_info("    %s\n", crtc_strs[i]);
+-		return;
+-	}
++	/* Sort the modes in descending order by clock freq. */
++	qsort(crtc->cconfs->connector->modes,
++		crtc->cconfs->connector->count_modes,
++		sizeof(drmModeModeInfo),
++		sort_drm_modes);
+
+-	for (i = 0; i < crtc_count; i++) {
++	for (int i = 0; i < crtc->cconfs->connector->count_modes; i++) {
+ 		uint32_t *ids;
+
+-		crtc = &crtcs[i];
++		if (!crtc_supports_mode(crtc, &crtc->cconfs->connector->modes[i]))
++			continue;
++
++		crtc->mode = crtc->cconfs->connector->modes[i];
+
+-		igt_info("    %s\n", crtc_strs[i]);
++		get_crtc_config_str(crtc, str_buf[base], sizeof(str_buf[base]));
++		crtc_strs[base] = &str_buf[base][0];
++		igt_info("    %s\n", crtc_strs[base]);
+
+ 		create_fb_for_crtc(crtc, &crtc->fb_info);
+-		paint_fb(&crtc->fb_info, tconf->name, crtc_strs, crtc_count, i);
++		paint_fb(&crtc->fb_info, tconf->name, crtc_strs, crtc_count, base);
+
+ 		ids = get_connector_ids(crtc);
+ 		if (tconf->flags & TEST_STEALING)
+@@ -589,12 +591,70 @@ static void test_crtc_config(const struct test_config *tconf,
+
+ 		free(ids);
+
++		/* crtcs[base].modes[i] don't fit, try next mode. */
++		if (ret < 0 && errno == ENOSPC)
++			continue;
++
+ 		if (ret < 0) {
+ 			igt_assert_eq(errno, EINVAL);
+-			config_failed = true;
++			*config_failed = true;
++
++			return ret;
+ 		}
++
++		/* Try all crtcs recursively. */
++		if (base + 1 < crtc_count)
++			ret = __test_crtc_config(crtcs, crtc_count, tconf, config_failed, base + 1);
++
++		/*
++		 * With crtcs[base].modes[i], None of the crtc[base+1] modes fits
++		 * into the link BW.
++		 *
++		 * Lets try with crtcs[base].modes[i+1]
++		 */
++		if (ret < 0 && errno == ENOSPC)
++			continue;
++
++		/*
++		 * ret == 0, (or) ret < 0 && errno == EINVAL
++		 * No need to try other modes of crtcs[base].
++		 */
++		return ret;
++	}
++
++	/* When all crtcs[base].modes are tried & failed to fit into link BW. */
++	return ret;
++}
++
++static void test_crtc_config(const struct test_config *tconf,
++			     struct crtc_config *crtcs, int crtc_count)
++{
++	static int test_id;
++	bool config_failed = false;
++	int ret = 0;
++	int i;
++
++	test_id++;
++
++	if (filter_test_id && filter_test_id != test_id)
++		return;
++
++	igt_info("  Test id#%d CRTC count %d\n", test_id, crtc_count);
++
++	for (i = 0; i < crtc_count; i++) {
++		get_crtc_config_str(&crtcs[i], str_buf[i], sizeof(str_buf[i]));
++		crtc_strs[i] = &str_buf[i][0];
++	}
++
++	if (dry_run) {
++		for (i = 0; i < crtc_count; i++)
++			igt_info("    %s\n", crtc_strs[i]);
++		return;
+ 	}
+
++	ret = __test_crtc_config(crtcs, crtc_count, tconf, &config_failed, 0);
++	igt_skip_on_f((ret < 0 && errno == ENOSPC),
++			"No suitable mode(s) found to fit into the link BW\n");
+ 	igt_assert(config_failed == !!(tconf->flags & TEST_INVALID));
+
+ 	if (ret == 0 && tconf->flags & TEST_TIMINGS)
+--
+2.32.0
