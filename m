@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D63A6E2C0
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Aug 2021 08:15:02 +0000 (UTC)
-Date: Thu, 5 Aug 2021 10:14:49 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210805081449.GF3295@zkempczy-mobl2>
-References: <20210726200026.4815-1-zbigniew.kempczynski@intel.com>
- <20210726200026.4815-11-zbigniew.kempczynski@intel.com>
- <87a6lwtziq.wl-ashutosh.dixit@intel.com>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87a6lwtziq.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 10/52] tests/gem_busy: Adopt to use
- allocator
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 05 Aug 2021 08:39:36 -0000
+Message-ID: <162815277610.30836.18211645662289265532@emeril.freedesktop.org>
+References: <20210805051716.278860-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20210805051716.278860-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/kms=5Fsetmode=3A_Fix_mode_selection_for_Nx_tests_=28rev2?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,69 +17,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Aug 04, 2021 at 07:07:41PM -0700, Dixit, Ashutosh wrote:
-> On Mon, 26 Jul 2021 12:59:44 -0700, Zbigniew Kempczyński wrote:
-> >
-> > For newer gens we're not able to rely on relocations. Adopt to use
-> > offsets acquired from the allocator.
-> >
-> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > Cc: Petri Latvala <petri.latvala@intel.com>
-> > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > ---
-> >  tests/i915/gem_busy.c | 35 +++++++++++++++++++++++++++++++----
-> >  1 file changed, 31 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/tests/i915/gem_busy.c b/tests/i915/gem_busy.c
-> > index f0fca0e8a..51ec5ad04 100644
-> > --- a/tests/i915/gem_busy.c
-> > +++ b/tests/i915/gem_busy.c
-> > @@ -108,6 +108,7 @@ static void semaphore(int fd, const intel_ctx_t *ctx,
-> >	uint32_t handle[3];
-> >	uint32_t read, write;
-> >	uint32_t active;
-> > +	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
-> >	unsigned i;
-> >
-> >	handle[TEST] = gem_create(fd, 4096);
-> > @@ -117,6 +118,7 @@ static void semaphore(int fd, const intel_ctx_t *ctx,
-> >	/* Create a long running batch which we can use to hog the GPU */
-> >	handle[BUSY] = gem_create(fd, 4096);
-> >	spin = igt_spin_new(fd,
-> > +			    .ahnd = ahnd,
-> >			    .ctx = ctx,
-> >			    .engine = e->flags,
-> >			    .dependency = handle[BUSY]);
-> 
-> Missing put_ahnd.
-> 
-> > @@ -428,6 +442,7 @@ igt_main
-> >
-> >	igt_subtest_group {
-> >		igt_fixture {
-> > +			intel_allocator_multiprocess_start();
-> >			igt_fork_hang_detector(fd);
-> >		}
-> >
-> > @@ -445,6 +460,21 @@ igt_main
-> >			}
-> >		}
-> >
-> 
-> Just above here is basic() which doesn't have a fork. Is it ok to do
-> intel_allocator_multiprocess_start/stop when we don't have a fork? If yes,
-> then can we _always_ do intel_allocator_multiprocess_start/stop rather than
-> only when we have fork? Thanks.
+== Series Details ==
 
-It seems that basic() is called within same dynamic subtest "busy", so migrating
-it outside of this (there's all() with igt_fork inside "busy") would split
-that subtest. I'm not sure we want to do this.
+Series: tests/kms_setmode: Fix mode selection for Nx tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/90525/
+State : warning
 
---
-Zbigniew
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/374940 for the overview.
+
+test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12505274):
+  Traceback (most recent call last):
+    File "/usr/lib/python3/dist-packages/mesonbuild/mesonmain.py", line 112, in run
+      return options.run_func(options)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
+      return th.doit()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
+      self.run_tests(tests)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
+      self.drain_futures(futures)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
+      self.print_stats(numlen, tests, name, result.result(), i)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
+      result_str += "\n\n" + result.get_log()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
+      res += self.stde
+  TypeError: can only concatenate str (not "bytes") to str
+    1/291 lib igt_assert                          TIMEOUT 32.10 s 
+  section_end:1628152254:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
+
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12505275):
+    1/291 lib igt_assert                          TIMEOUT 32.11 s 
+  Traceback (most recent call last):
+    File "/usr/lib/python3/dist-packages/mesonbuild/mesonmain.py", line 112, in run
+      return options.run_func(options)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
+      return th.doit()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
+      self.run_tests(tests)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
+      self.drain_futures(futures)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
+      self.print_stats(numlen, tests, name, result.result(), i)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
+      result_str += "\n\n" + result.get_log()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
+      res += self.stde
+  TypeError: can only concatenate str (not "bytes") to str
+  section_end:1628152259:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12505276):
+  298/305 assembler test/rndd                     OK       0.01 s 
+  299/305 assembler test/rndu                     OK       0.02 s 
+  300/305 assembler test/rnde                     OK       0.01 s 
+  301/305 assembler test/rnde-intsrc              OK       0.02 s 
+  302/305 assembler test/rndz                     OK       0.01 s 
+  303/305 assembler test/lzd                      OK       0.01 s 
+  304/305 assembler test/not                      OK       0.01 s 
+  305/305 assembler test/immediate                OK       0.02 s 
+  
+  Ok:                  280
+  Expected Fail:         0
+  Fail:                  0
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:              25
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1628152259:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/374940
