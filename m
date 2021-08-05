@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76A1D6E2DF
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Aug 2021 08:02:48 +0000 (UTC)
-Date: Thu, 5 Aug 2021 10:02:41 +0200
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D63A6E2C0
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Aug 2021 08:15:02 +0000 (UTC)
+Date: Thu, 5 Aug 2021 10:14:49 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210805080241.GE3295@zkempczy-mobl2>
+Message-ID: <20210805081449.GF3295@zkempczy-mobl2>
 References: <20210726200026.4815-1-zbigniew.kempczynski@intel.com>
  <20210726200026.4815-11-zbigniew.kempczynski@intel.com>
  <87a6lwtziq.wl-ashutosh.dixit@intel.com>
@@ -63,9 +63,6 @@ On Wed, Aug 04, 2021 at 07:07:41PM -0700, Dixit, Ashutosh wrote:
 > >			    .dependency = handle[BUSY]);
 > 
 > Missing put_ahnd.
-
-Good catch.
-
 > 
 > > @@ -428,6 +442,7 @@ igt_main
 > >
@@ -85,15 +82,9 @@ Good catch.
 > then can we _always_ do intel_allocator_multiprocess_start/stop rather than
 > only when we have fork? Thanks.
 
-intel_allocator_multiprocess_start() creates allocator thread which acts
-for children (igt_fork) to alloc/free offsets. If you use alloc/free within
-same process (from which thread was spawned) internal structure is mutexed
-and no IPCs are called. So only consequence of this here is additional thread
-in system/memory (which does nothing for basic() tests). It will be stopped
-with intel_allocator_multiprocess_stop().
-
-But for purity test should work without additional dependencies so I'll fix
-this - it will be sent in v4.
+It seems that basic() is called within same dynamic subtest "busy", so migrating
+it outside of this (there's all() with igt_fork inside "busy") would split
+that subtest. I'm not sure we want to do this.
 
 --
-Zbigniew 
+Zbigniew
