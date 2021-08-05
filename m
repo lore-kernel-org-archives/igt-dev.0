@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 069E28985A
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Aug 2021 05:16:46 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Thu,  5 Aug 2021 10:47:16 +0530
-Message-Id: <20210805051716.278860-1-bhanuprakash.modem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4591010057679466340=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t V2] tests/kms_setmode: Fix mode selection
- for Nx tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 05 Aug 2021 05:55:14 -0000
+Message-ID: <162814291449.30835.11098299789274949747@emeril.freedesktop.org>
+References: <20210805051716.278860-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20210805051716.278860-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fsetmode=3A_Fix_mode_selection_for_Nx_tests_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,188 +16,167 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, Imre Deak <imre.deak@intel.com>, Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will find the connector/mode combination that fits
-into the bandwidth when more than one monitor is connected.
+--===============4591010057679466340==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Example:
-  When two monitors connected through MST, the second monitor
-  also tries to use the same mode. So two such modes may not
-  fit into the link bandwidth. So, iterate through connected
-  outputs & modes and find a combination of modes those fit
-  into the link BW.
+== Series Details ==
 
-V2:
-* Addressed comments from Ankit
+Series: tests/kms_setmode: Fix mode selection for Nx tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/90525/
+State : success
 
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_setmode.c | 116 +++++++++++++++++++++++++++++++++-----------
- 1 file changed, 88 insertions(+), 28 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 05084c3a7..89220b83e 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -46,6 +46,9 @@ static int filter_test_id;
- static bool dry_run;
- static bool all_pipes = false;
+CI Bug Log - changes from CI_DRM_10446 -> IGTPW_6090
+====================================================
 
-+static char str_buf[MAX_CRTCS][1024];
-+static const char *crtc_strs[MAX_CRTCS];
-+
- const drmModeModeInfo mode_640_480 = {
- 	.name		= "640x480",
- 	.vrefresh	= 60,
-@@ -540,44 +543,43 @@ static void check_timings(int crtc_idx, const drmModeModeInfo *kmode)
- 		     fabs(mean - expected) / line_time(kmode));
- }
+Summary
+-------
 
--static void test_crtc_config(const struct test_config *tconf,
--			     struct crtc_config *crtcs, int crtc_count)
-+static int sort_drm_modes(const void *a, const void *b)
- {
--	char str_buf[MAX_CRTCS][1024];
--	const char *crtc_strs[MAX_CRTCS];
--	struct crtc_config *crtc;
--	static int test_id;
--	bool config_failed = false;
--	int ret = 0;
--	int i;
-+	const drmModeModeInfo *mode1 = a, *mode2 = b;
+  **SUCCESS**
 
--	test_id++;
--
--	if (filter_test_id && filter_test_id != test_id)
--		return;
-+	return (mode1->clock < mode2->clock) - (mode2->clock < mode1->clock);
-+}
+  No regressions found.
 
--	igt_info("  Test id#%d CRTC count %d\n", test_id, crtc_count);
-+static
-+int __test_crtc_config(struct crtc_config *crtcs, int crtc_count,
-+		       const struct test_config *tconf, bool *config_failed,
-+		       int base)
-+{
-+	struct crtc_config *crtc = NULL;
-+	int ret = 0;
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6090/index.html
 
--	for (i = 0; i < crtc_count; i++) {
--		get_crtc_config_str(&crtcs[i], str_buf[i], sizeof(str_buf[i]));
--		crtc_strs[i] = &str_buf[i][0];
--	}
-+	crtc = &crtcs[base];
+Known issues
+------------
 
--	if (dry_run) {
--		for (i = 0; i < crtc_count; i++)
--			igt_info("    %s\n", crtc_strs[i]);
--		return;
--	}
-+	/* Sort the modes in descending order by clock freq. */
-+	qsort(crtc->cconfs->connector->modes,
-+		crtc->cconfs->connector->count_modes,
-+		sizeof(drmModeModeInfo),
-+		sort_drm_modes);
+  Here are the changes found in IGTPW_6090 that come from known issues:
 
--	for (i = 0; i < crtc_count; i++) {
-+	for (int i = 0; i < crtc->cconfs->connector->count_modes; i++) {
- 		uint32_t *ids;
+### IGT changes ###
 
--		crtc = &crtcs[i];
-+		if (!crtc_supports_mode(crtc, &crtc->cconfs->connector->modes[i]))
-+			continue;
-+
-+		crtc->mode = crtc->cconfs->connector->modes[i];
+#### Issues hit ####
 
--		igt_info("    %s\n", crtc_strs[i]);
-+		get_crtc_config_str(crtc, str_buf[base], sizeof(str_buf[base]));
-+		crtc_strs[base] = &str_buf[base][0];
-+		igt_info("    %s\n", crtc_strs[base]);
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][1] ([fdo#109271]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6090/fi-kbl-8809g/igt@gem_exec_fence@basic-busy@bcs0.html
 
- 		create_fb_for_crtc(crtc, &crtc->fb_info);
--		paint_fb(&crtc->fb_info, tconf->name, crtc_strs, crtc_count, i);
-+		paint_fb(&crtc->fb_info, tconf->name, crtc_strs, crtc_count, base);
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-kbl-8809g:       NOTRUN -> [INCOMPLETE][2] ([i915#155])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6090/fi-kbl-8809g/igt@gem_exec_suspend@basic-s3.html
 
- 		ids = get_connector_ids(crtc);
- 		if (tconf->flags & TEST_STEALING)
-@@ -589,12 +591,70 @@ static void test_crtc_config(const struct test_config *tconf,
+  
+#### Possible fixes ####
 
- 		free(ids);
+  * igt@core_auth@basic-auth:
+    - fi-kbl-8809g:       [DMESG-WARN][3] -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10446/fi-kbl-8809g/igt@core_auth@basic-auth.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6090/fi-kbl-8809g/igt@core_auth@basic-auth.html
 
-+		/* crtcs[base].modes[i] don't fit, try next mode. */
-+		if (ret < 0 && errno == ENOSPC)
-+			continue;
-+
- 		if (ret < 0) {
- 			igt_assert_eq(errno, EINVAL);
--			config_failed = true;
-+			*config_failed = true;
-+
-+			return ret;
- 		}
-+
-+		/* Try all crtcs recursively. */
-+		if (base + 1 < crtc_count)
-+			ret = __test_crtc_config(crtcs, crtc_count, tconf, config_failed, base + 1);
-+
-+		/*
-+		 * With crtcs[base].modes[i], None of the crtc[base+1] modes fits
-+		 * into the link BW.
-+		 *
-+		 * Lets try with crtcs[base].modes[i+1]
-+		 */
-+		if (ret < 0 && errno == ENOSPC)
-+			continue;
-+
-+		/*
-+		 * ret == 0, (or) ret < 0 && errno == EINVAL
-+		 * No need to try other modes of crtcs[base].
-+		 */
-+		return ret;
-+	}
-+
-+	/* When all crtcs[base].modes are tried & failed to fit into link BW. */
-+	return ret;
-+}
-+
-+static void test_crtc_config(const struct test_config *tconf,
-+			     struct crtc_config *crtcs, int crtc_count)
-+{
-+	static int test_id;
-+	bool config_failed = false;
-+	int ret = 0;
-+	int i;
-+
-+	test_id++;
-+
-+	if (filter_test_id && filter_test_id != test_id)
-+		return;
-+
-+	igt_info("  Test id#%d CRTC count %d\n", test_id, crtc_count);
-+
-+	for (i = 0; i < crtc_count; i++) {
-+		get_crtc_config_str(&crtcs[i], str_buf[i], sizeof(str_buf[i]));
-+		crtc_strs[i] = &str_buf[i][0];
-+	}
-+
-+	if (dry_run) {
-+		for (i = 0; i < crtc_count; i++)
-+			igt_info("    %s\n", crtc_strs[i]);
-+		return;
- 	}
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
 
-+	ret = __test_crtc_config(crtcs, crtc_count, tconf, &config_failed, 0);
-+	igt_skip_on_f((ret < 0 && errno == ENOSPC),
-+			"No suitable mode(s) found to fit into the link BW\n");
- 	igt_assert(config_failed == !!(tconf->flags & TEST_INVALID));
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#155]: https://gitlab.freedesktop.org/drm/intel/issues/155
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
 
- 	if (ret == 0 && tconf->flags & TEST_TIMINGS)
---
-2.32.0
+
+Participating hosts (35 -> 33)
+------------------------------
+
+  Missing    (2): fi-bsw-cyan fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6159 -> IGTPW_6090
+
+  CI-20190529: 20190529
+  CI_DRM_10446: 7b039c201fce9777a2a3304cdf7cf6d8cc6bd33d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6090: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6090/index.html
+  IGT_6159: 6135b9cc319ed965e3aafb5b2ae2abf4762a06b2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6090/index.html
+
+--===============4591010057679466340==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_setmode: Fix mode selection for Nx tests (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/90525/">https://patchwork.freedesktop.org/series/90525/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6090/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6090/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10446 -&gt; IGTPW_6090</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6090/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6090 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6090/fi-kbl-8809g/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6090/fi-kbl-8809g/igt@gem_exec_suspend@basic-s3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/155">i915#155</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@core_auth@basic-auth:<ul>
+<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10446/fi-kbl-8809g/igt@core_auth@basic-auth.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6090/fi-kbl-8809g/igt@core_auth@basic-auth.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (35 -&gt; 33)</h2>
+<p>Missing    (2): fi-bsw-cyan fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6159 -&gt; IGTPW_6090</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10446: 7b039c201fce9777a2a3304cdf7cf6d8cc6bd33d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6090: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6090/index.html<br />
+  IGT_6159: 6135b9cc319ed965e3aafb5b2ae2abf4762a06b2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4591010057679466340==--
