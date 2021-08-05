@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5070C6E222
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Aug 2021 07:44:16 +0000 (UTC)
-Date: Thu, 5 Aug 2021 09:44:11 +0200
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C31B089B8F
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Aug 2021 07:46:50 +0000 (UTC)
+Date: Thu, 5 Aug 2021 09:46:43 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210805074411.GC3295@zkempczy-mobl2>
+Message-ID: <20210805074643.GD3295@zkempczy-mobl2>
 References: <20210726200026.4815-1-zbigniew.kempczynski@intel.com>
- <20210726200026.4815-9-zbigniew.kempczynski@intel.com>
- <87eeb8u3zu.wl-ashutosh.dixit@intel.com>
+ <20210726200026.4815-10-zbigniew.kempczynski@intel.com>
+ <87czqsu3vh.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87eeb8u3zu.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 08/52] lib/huc_copy: Extend huc copy
- prototype to pass allocator handle
+In-Reply-To: <87czqsu3vh.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 09/52] tests/gem_bad_reloc: Skip on
+ gens where relocations are not supported
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,30 +28,39 @@ To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Aug 04, 2021 at 05:31:01PM -0700, Dixit, Ashutosh wrote:
-> On Mon, 26 Jul 2021 12:59:42 -0700, Zbigniew Kempczyński wrote:
+On Wed, Aug 04, 2021 at 05:33:38PM -0700, Dixit, Ashutosh wrote:
+> On Mon, 26 Jul 2021 12:59:43 -0700, Zbigniew Kempczyński wrote:
 > >
-> > @@ -86,6 +90,21 @@ gen9_huc_copyfunc(int fd,
-> >	buf[i++] = MFX_WAIT;
-> >
-> >	memset(reloc, 0, sizeof(reloc));
-> > +
-> > +	if (ahnd) {
-> > +		obj[0].flags = EXEC_OBJECT_PINNED;
-> > +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-> > +		obj[2].flags = EXEC_OBJECT_PINNED;
-> 
-> Don't need | EXEC_OBJECT_SUPPORTS_48B_ADDRESS here?
-> 
-> Otherwise this is:
 > 
 > Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> 
+> Though looks like this is already merged.
 
-gen9_emit_huc_virtual_addr_state() currently sets only first dword with
-offset (other two buf[(*i)++] = 0; are intact).
-
-This is only used within gem_huc_copy.c and I know offsets passed starts
-from 0x0 and won't exceed 32-bit I left it with without 48B_ADDRESS set.
+Eh, I walked through my failure list before I merged Tejas patch.
+Thanks for catching this, I remove this patch from series.
 
 --
 Zbigniew
+> 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Petri Latvala <petri.latvala@intel.com>
+> > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > ---
+> >  tests/i915/gem_bad_reloc.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/tests/i915/gem_bad_reloc.c b/tests/i915/gem_bad_reloc.c
+> > index 3ca0f3452..0e9c4c79c 100644
+> > --- a/tests/i915/gem_bad_reloc.c
+> > +++ b/tests/i915/gem_bad_reloc.c
+> > @@ -195,6 +195,7 @@ igt_main
+> >		/* Check if relocations supported by platform */
+> >		igt_require(gem_has_relocations(fd));
+> >		gem_require_blitter(fd);
+> > +		igt_require(gem_has_relocations(fd));
+> >	}
+> >
+> >	igt_subtest("negative-reloc")
+> > --
+> > 2.26.0
+> >
