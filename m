@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36D896EB97
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 13:42:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ECE3D6E053
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 13:42:43 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  6 Aug 2021 15:41:17 +0200
-Message-Id: <20210806134145.24634-29-zbigniew.kempczynski@intel.com>
+Date: Fri,  6 Aug 2021 15:41:18 +0200
+Message-Id: <20210806134145.24634-30-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
 References: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 28/56] tests/gem_fenced_exec_thrash:
- Adopt to use allocator
+Subject: [igt-dev] [PATCH i-g-t v4 29/56] tests/gem_mmap: Add allocator
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,79 +22,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Ch Sai Gowtham <sai.gowtham.ch@intel.com>, =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For newer gens we're not able to rely on relocations. Adopt to use
-offsets acquired from the allocator.
+From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+When relocations are not available tests must assign addresses to objects
+by themselves instead of relying on the driver. We use allocator for
+that purpose.
+
+Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_fenced_exec_thrash.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ tests/i915/gem_mmap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_fenced_exec_thrash.c b/tests/i915/gem_fenced_exec_thrash.c
-index 6497ff576..a9597d801 100644
---- a/tests/i915/gem_fenced_exec_thrash.c
-+++ b/tests/i915/gem_fenced_exec_thrash.c
-@@ -98,7 +98,7 @@ static void run_test(int fd, int num_fences, int expected_errno,
- 	struct drm_i915_gem_execbuffer2 execbuf[2];
- 	struct drm_i915_gem_exec_object2 exec[2][2*MAX_FENCES+1];
- 	struct drm_i915_gem_relocation_entry reloc[2*MAX_FENCES];
--
-+	uint64_t ahnd = get_reloc_ahnd(fd, 0);
- 	unsigned long count;
- 	int i, n;
+diff --git a/tests/i915/gem_mmap.c b/tests/i915/gem_mmap.c
+index a77c0ad60..61c9c5c19 100644
+--- a/tests/i915/gem_mmap.c
++++ b/tests/i915/gem_mmap.c
+@@ -123,8 +123,9 @@ test_pf_nonblock(int i915)
+ {
+ 	igt_spin_t *spin;
+ 	uint32_t *ptr;
++	uint64_t ahnd = get_reloc_ahnd(i915, 0);
  
-@@ -111,7 +111,19 @@ static void run_test(int fd, int num_fences, int expected_errno,
+-	spin = igt_spin_new(i915);
++	spin = igt_spin_new(i915, .ahnd = ahnd);
  
- 	for (n = 0; n < 2*num_fences; n++) {
- 		uint32_t handle = tiled_bo_create(fd);
--		exec[1][2*num_fences - n-1].handle = exec[0][n].handle = handle;
-+		struct drm_i915_gem_exec_object2 *obj0, *obj1;
-+
-+		obj0 = &exec[0][n];
-+		obj1 = &exec[1][2*num_fences - n-1];
-+
-+		obj1->handle = obj0->handle = handle;
-+		obj1->offset = get_offset(ahnd, handle, OBJECT_SIZE, 0);
-+		obj0->offset = obj1->offset;
-+
-+		if (ahnd) {
-+			obj0->flags |= EXEC_OBJECT_PINNED;
-+			obj1->flags |= EXEC_OBJECT_PINNED;
-+		}
- 		fill_reloc(&reloc[n], handle);
- 	}
+ 	igt_set_timeout(1, "initial pagefaulting did not complete within 1s");
  
-@@ -121,7 +133,7 @@ static void run_test(int fd, int num_fences, int expected_errno,
+@@ -135,6 +136,7 @@ test_pf_nonblock(int i915)
+ 	igt_reset_timeout();
  
- 		exec[i][2*num_fences].handle = batch_create(fd);
- 		exec[i][2*num_fences].relocs_ptr = to_user_pointer(reloc);
--		exec[i][2*num_fences].relocation_count = 2*num_fences;
-+		exec[i][2*num_fences].relocation_count = !ahnd ? 2*num_fences : 0;
- 
- 		execbuf[i].buffers_ptr = to_user_pointer(exec[i]);
- 		execbuf[i].buffer_count = 2*num_fences+1;
-@@ -134,7 +146,7 @@ static void run_test(int fd, int num_fences, int expected_errno,
- 			igt_spin_t *spin = NULL;
- 
- 			if (flags & BUSY_LOAD)
--				spin = __igt_spin_new(fd);
-+				spin = __igt_spin_new(fd, .ahnd = ahnd);
- 
- 			igt_while_interruptible(flags & INTERRUPTIBLE) {
- 				igt_assert_eq(__gem_execbuf(fd, &execbuf[i]),
-@@ -154,6 +166,8 @@ static void run_test(int fd, int num_fences, int expected_errno,
- 
- 	for (i = 0; i < 2; i++)
- 		gem_close(fd, exec[i][2*num_fences].handle);
-+
+ 	igt_spin_free(i915, spin);
 +	put_ahnd(ahnd);
  }
  
- igt_main
+ static int mmap_ioctl(int i915, struct drm_i915_gem_mmap *arg)
 -- 
 2.26.0
