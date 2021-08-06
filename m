@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B0EEC6EBF6
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:48:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41A616EC00
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:48:28 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  6 Aug 2021 11:46:44 +0200
-Message-Id: <20210806094649.21162-52-zbigniew.kempczynski@intel.com>
+Date: Fri,  6 Aug 2021 11:46:49 +0200
+Message-Id: <20210806094649.21162-57-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 References: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 51/56] tests/kms_flip: Adopt to use
- allocator
+Subject: [igt-dev] [PATCH i-g-t v4 56/56] tests/sysfs_timeslice_duration:
+ Adopt to use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,68 +22,105 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+For newer gens we're not able to rely on relocations. Adopt to use
+offsets acquired from the allocator.
 
-For newer gens kernel will reject relocations returning -EINVAL
-so we should just provide the allocator handle to inject the hang.
-
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/kms_flip.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ tests/i915/sysfs_timeslice_duration.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index f2fce8d2a..e87d571a7 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -616,9 +616,9 @@ static void recreate_fb(struct test_output *o)
- 	o->fb_info[o->current_fb_id].fb_id = new_fb_id;
- }
+diff --git a/tests/i915/sysfs_timeslice_duration.c b/tests/i915/sysfs_timeslice_duration.c
+index b73ee3889..8a2f1c2f2 100644
+--- a/tests/i915/sysfs_timeslice_duration.c
++++ b/tests/i915/sysfs_timeslice_duration.c
+@@ -37,6 +37,7 @@
+ #include "i915/gem_mman.h"
+ #include "igt_dummyload.h"
+ #include "igt_sysfs.h"
++#include "intel_allocator.h"
+ #include "ioctl_wrappers.h"
+ #include "intel_chipset.h"
+ #include "intel_reg.h"
+@@ -371,6 +372,7 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ 	igt_spin_t *spin[2];
+ 	uint64_t elapsed;
+ 	const intel_ctx_t *ctx[2];
++	uint64_t ahnd[2];
  
--static igt_hang_t hang_gpu(int fd)
-+static igt_hang_t hang_gpu(int fd, uint64_t ahnd)
- {
--	return igt_hang_ring(fd, I915_EXEC_DEFAULT);
-+	return igt_hang_ring_with_ahnd(fd, I915_EXEC_DEFAULT, ahnd);
- }
+ 	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
+ 	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
+@@ -378,15 +380,18 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ 	set_timeslice(engine, timeout);
  
- static void unhang_gpu(int fd, igt_hang_t hang)
-@@ -675,6 +675,7 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
- 	struct vblank_reply vbl_reply;
- 	unsigned int target_seq;
- 	igt_hang_t hang;
-+	uint64_t ahnd = 0;
+ 	ctx[0] = create_ctx(i915, class, inst, 0);
+-	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
++	ahnd[0] = get_reloc_ahnd(i915, ctx[0]->id);
++	spin[0] = igt_spin_new(i915, .ahnd = ahnd[0], .ctx = ctx[0],
+ 			       .flags = (IGT_SPIN_NO_PREEMPTION |
+ 					 IGT_SPIN_POLL_RUN |
+ 					 IGT_SPIN_FENCE_OUT));
+ 	igt_spin_busywait_until_started(spin[0]);
  
- 	target_seq = o->vblank_state.seq_step;
- 	/* Absolute waits only works once we have a frame counter. */
-@@ -776,8 +777,11 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
- 	igt_print_activity();
+ 	ctx[1] = create_ctx(i915, class, inst, 0);
++	ahnd[1] = get_reloc_ahnd(i915, ctx[1]->id);
+ 	igt_nsec_elapsed(&ts);
+-	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
++	spin[1] = igt_spin_new(i915, .ahnd = ahnd[1], .ctx = ctx[1],
++				.flags = IGT_SPIN_POLL_RUN);
+ 	igt_spin_busywait_until_started(spin[1]);
+ 	elapsed = igt_nsec_elapsed(&ts);
  
- 	memset(&hang, 0, sizeof(hang));
--	if (do_flip && (o->flags & TEST_HANG))
--		hang = hang_gpu(drm_fd);
-+	if (do_flip && (o->flags & TEST_HANG)) {
-+		if (is_i915_device(drm_fd))
-+			ahnd = get_reloc_ahnd(drm_fd, 0);
-+		hang = hang_gpu(drm_fd, ahnd);
-+	}
+@@ -399,6 +404,8 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
  
- 	/* try to make sure we can issue two flips during the same frame */
- 	if (do_flip && (o->flags & TEST_EBUSY)) {
-@@ -847,6 +851,8 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
- 		igt_assert(do_page_flip(o, new_fb_id, false) == expected_einval);
+ 	intel_ctx_destroy(i915, ctx[1]);
+ 	intel_ctx_destroy(i915, ctx[0]);
++	put_ahnd(ahnd[1]);
++	put_ahnd(ahnd[0]);
+ 	gem_quiescent_gpu(i915);
  
- 	unhang_gpu(drm_fd, hang);
-+	if (is_i915_device(drm_fd))
-+		put_ahnd(ahnd);
+ 	return elapsed;
+@@ -460,6 +467,7 @@ static void test_off(int i915, int engine)
+ 	unsigned int saved;
+ 	igt_spin_t *spin[2];
+ 	const intel_ctx_t *ctx[2];
++	uint64_t ahnd[2];
  
- 	*events = completed_events;
+ 	/*
+ 	 * As always, there are some who must run uninterrupted and simply do
+@@ -482,14 +490,17 @@ static void test_off(int i915, int engine)
+ 	set_timeslice(engine, 0);
  
+ 	ctx[0] = create_ctx(i915, class, inst, 0);
+-	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
++	ahnd[0] = get_reloc_ahnd(i915, ctx[0]->id);
++	spin[0] = igt_spin_new(i915, .ahnd = ahnd[0], .ctx = ctx[0],
+ 			       .flags = (IGT_SPIN_NO_PREEMPTION |
+ 					 IGT_SPIN_POLL_RUN |
+ 					 IGT_SPIN_FENCE_OUT));
+ 	igt_spin_busywait_until_started(spin[0]);
+ 
+ 	ctx[1] = create_ctx(i915, class, inst, 0);
+-	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
++	ahnd[1] = get_reloc_ahnd(i915, ctx[1]->id);
++	spin[1] = igt_spin_new(i915, .ahnd = ahnd[1], .ctx = ctx[1],
++				.flags = IGT_SPIN_POLL_RUN);
+ 
+ 	for (int i = 0; i < 150; i++) {
+ 		igt_assert_eq(sync_fence_status(spin[0]->out_fence), 0);
+@@ -508,6 +519,8 @@ static void test_off(int i915, int engine)
+ 
+ 	intel_ctx_destroy(i915, ctx[1]);
+ 	intel_ctx_destroy(i915, ctx[0]);
++	put_ahnd(ahnd[1]);
++	put_ahnd(ahnd[0]);
+ 
+ 	igt_assert(enable_hangcheck(i915, true));
+ 	gem_quiescent_gpu(i915);
 -- 
 2.26.0
