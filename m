@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0BBA16EB7A
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:47:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2117B6EB81
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:47:45 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  6 Aug 2021 11:45:56 +0200
-Message-Id: <20210806094649.21162-4-zbigniew.kempczynski@intel.com>
+Date: Fri,  6 Aug 2021 11:46:22 +0200
+Message-Id: <20210806094649.21162-30-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 References: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 03/56] lib/igt_gt: Add passing ahnd as an
- argument to igt_hang
+Subject: [igt-dev] [PATCH i-g-t v4 29/56] tests/gem_mmap: Add allocator
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,92 +22,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Ch Sai Gowtham <sai.gowtham.ch@intel.com>, =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Required as spinner is used, see gem_ringfill.c
+From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+When relocations are not available tests must assign addresses to objects
+by themselves instead of relying on the driver. We use allocator for
+that purpose.
+
+Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/igt_gt.c | 21 ++++++++++++++++++++-
- lib/igt_gt.h |  4 ++++
- 2 files changed, 24 insertions(+), 1 deletion(-)
+ tests/i915/gem_mmap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_gt.c b/lib/igt_gt.c
-index c049477db..a0ba04cc1 100644
---- a/lib/igt_gt.c
-+++ b/lib/igt_gt.c
-@@ -269,7 +269,8 @@ static bool has_ctx_exec(int fd, unsigned ring, uint32_t ctx)
-  * Returns:
-  * Structure with helper internal state for igt_post_hang_ring().
-  */
--igt_hang_t igt_hang_ctx(int fd, uint32_t ctx, int ring, unsigned flags)
-+static igt_hang_t __igt_hang_ctx(int fd, uint64_t ahnd, uint32_t ctx, int ring,
-+				 unsigned flags)
+diff --git a/tests/i915/gem_mmap.c b/tests/i915/gem_mmap.c
+index a77c0ad60..61c9c5c19 100644
+--- a/tests/i915/gem_mmap.c
++++ b/tests/i915/gem_mmap.c
+@@ -123,8 +123,9 @@ test_pf_nonblock(int i915)
  {
- 	struct drm_i915_gem_context_param param;
  	igt_spin_t *spin;
-@@ -298,6 +299,7 @@ igt_hang_t igt_hang_ctx(int fd, uint32_t ctx, int ring, unsigned flags)
- 		context_set_ban(fd, ctx, 0);
+ 	uint32_t *ptr;
++	uint64_t ahnd = get_reloc_ahnd(i915, 0);
  
- 	spin = __igt_spin_new(fd,
-+			      .ahnd = ahnd,
- 			      .ctx_id = ctx,
- 			      .engine = ring,
- 			      .flags = IGT_SPIN_NO_PREEMPTION);
-@@ -305,6 +307,17 @@ igt_hang_t igt_hang_ctx(int fd, uint32_t ctx, int ring, unsigned flags)
- 	return (igt_hang_t){ spin, ctx, ban, flags };
+-	spin = igt_spin_new(i915);
++	spin = igt_spin_new(i915, .ahnd = ahnd);
+ 
+ 	igt_set_timeout(1, "initial pagefaulting did not complete within 1s");
+ 
+@@ -135,6 +136,7 @@ test_pf_nonblock(int i915)
+ 	igt_reset_timeout();
+ 
+ 	igt_spin_free(i915, spin);
++	put_ahnd(ahnd);
  }
  
-+igt_hang_t igt_hang_ctx(int fd, uint32_t ctx, int ring, unsigned flags)
-+{
-+	return __igt_hang_ctx(fd, 0, ctx, ring, flags);
-+}
-+
-+igt_hang_t igt_hang_ctx_with_ahnd(int fd, uint64_t ahnd, uint32_t ctx, int ring,
-+				  unsigned flags)
-+{
-+	return __igt_hang_ctx(fd, ahnd, ctx, ring, flags);
-+}
-+
- /**
-  * igt_hang_ring:
-  * @fd: open i915 drm file descriptor
-@@ -322,6 +335,12 @@ igt_hang_t igt_hang_ring(int fd, int ring)
- 	return igt_hang_ctx(fd, 0, ring, 0);
- }
- 
-+igt_hang_t igt_hang_ring_with_ahnd(int fd, int ring, uint64_t ahnd)
-+{
-+	return igt_hang_ctx_with_ahnd(fd, ahnd, 0, ring, 0);
-+}
-+
-+
- /**
-  * igt_post_hang_ring:
-  * @fd: open i915 drm file descriptor
-diff --git a/lib/igt_gt.h b/lib/igt_gt.h
-index d87fae2d3..ceb044b86 100644
---- a/lib/igt_gt.h
-+++ b/lib/igt_gt.h
-@@ -46,10 +46,14 @@ void igt_disallow_hang(int fd, igt_hang_t arg);
- #define HANG_POISON 0xc5c5c5c5
- 
- igt_hang_t igt_hang_ctx(int fd, uint32_t ctx, int ring, unsigned flags);
-+igt_hang_t igt_hang_ctx_with_ahnd(int fd, uint64_t ahnd, uint32_t ctx, int ring,
-+				  unsigned flags);
-+
- #define HANG_ALLOW_BAN 1
- #define HANG_ALLOW_CAPTURE 2
- 
- igt_hang_t igt_hang_ring(int fd, int ring);
-+igt_hang_t igt_hang_ring_with_ahnd(int fd, int ring, uint64_t ahnd);
- void igt_post_hang_ring(int fd, igt_hang_t arg);
- 
- void igt_force_gpu_reset(int fd);
+ static int mmap_ioctl(int i915, struct drm_i915_gem_mmap *arg)
 -- 
 2.26.0
