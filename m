@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0C686EB85
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:47:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A5C46EB81
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:47:13 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  6 Aug 2021 11:46:02 +0200
-Message-Id: <20210806094649.21162-10-zbigniew.kempczynski@intel.com>
+Date: Fri,  6 Aug 2021 11:46:01 +0200
+Message-Id: <20210806094649.21162-9-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 References: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 09/56] tests/gem_busy: Adopt to use
- allocator
+Subject: [igt-dev] [PATCH i-g-t v4 08/56] lib/huc_copy: Extend huc copy
+ prototype to pass allocator handle
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,166 +25,191 @@ To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For newer gens we're not able to rely on relocations. Adopt to use
-offsets acquired from the allocator.
+For testing gem_huc_copy on no-reloc platforms we need to pass
+allocator handle and object sizes to properly acquire offsets from
+allocator.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_busy.c | 36 ++++++++++++++++++++++++++++++++----
- 1 file changed, 32 insertions(+), 4 deletions(-)
+ lib/huc_copy.c            | 27 +++++++++++++++++++++++----
+ lib/huc_copy.h            |  4 ++--
+ lib/intel_batchbuffer.h   |  6 ++++--
+ tests/i915/gem_huc_copy.c | 12 ++++++++++--
+ 4 files changed, 39 insertions(+), 10 deletions(-)
 
-diff --git a/tests/i915/gem_busy.c b/tests/i915/gem_busy.c
-index f0fca0e8a..b107734c1 100644
---- a/tests/i915/gem_busy.c
-+++ b/tests/i915/gem_busy.c
-@@ -108,6 +108,7 @@ static void semaphore(int fd, const intel_ctx_t *ctx,
- 	uint32_t handle[3];
- 	uint32_t read, write;
- 	uint32_t active;
-+	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
- 	unsigned i;
+diff --git a/lib/huc_copy.c b/lib/huc_copy.c
+index bc98b1f9f..6ec68864b 100644
+--- a/lib/huc_copy.c
++++ b/lib/huc_copy.c
+@@ -23,7 +23,9 @@
+  */
  
- 	handle[TEST] = gem_create(fd, 4096);
-@@ -117,6 +118,7 @@ static void semaphore(int fd, const intel_ctx_t *ctx,
- 	/* Create a long running batch which we can use to hog the GPU */
- 	handle[BUSY] = gem_create(fd, 4096);
- 	spin = igt_spin_new(fd,
-+			    .ahnd = ahnd,
- 			    .ctx = ctx,
- 			    .engine = e->flags,
- 			    .dependency = handle[BUSY]);
-@@ -149,6 +151,7 @@ static void semaphore(int fd, const intel_ctx_t *ctx,
- 	/* Check that our long batch was long enough */
- 	igt_assert(still_busy(fd, handle[BUSY]));
- 	igt_spin_free(fd, spin);
-+	put_ahnd(ahnd);
+ #include <i915_drm.h>
++#include "drmtest.h"
+ #include "huc_copy.h"
++#include "intel_allocator.h"
  
- 	/* And make sure it becomes idle again */
- 	gem_sync(fd, handle[TEST]);
-@@ -171,8 +174,10 @@ static void one(int fd, const intel_ctx_t *ctx,
- 	struct timespec tv;
- 	igt_spin_t *spin;
- 	int timeout;
-+	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
+ static void
+ gen9_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
+@@ -40,6 +42,7 @@ gen9_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
+ 			buf[(*i)++] = src->offset;
  
- 	spin = igt_spin_new(fd,
-+			    .ahnd = ahnd,
- 			    .ctx = ctx,
- 			    .engine = e->flags,
- 			    .dependency = scratch,
-@@ -225,6 +230,7 @@ static void one(int fd, const intel_ctx_t *ctx,
+ 			reloc_src->target_handle = src->handle;
++			reloc_src->presumed_offset = src->offset;
+ 			reloc_src->delta = 0;
+ 			reloc_src->offset = (*i - 1) * sizeof(buf[0]);
+ 			reloc_src->read_domains = 0;
+@@ -48,6 +51,7 @@ gen9_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
+ 			buf[(*i)++] = dst->offset;
  
- 	igt_spin_free(fd, spin);
- 	gem_close(fd, scratch);
-+	put_ahnd(ahnd);
+ 			reloc_dst->target_handle = dst->handle;
++			reloc_dst->presumed_offset = dst->offset;
+ 			reloc_dst->delta = 0;
+ 			reloc_dst->offset = (*i - 1) * sizeof(buf[0]);
+ 			reloc_dst->read_domains = 0;
+@@ -61,8 +65,8 @@ gen9_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
  }
  
- static void xchg_u32(void *array, unsigned i, unsigned j)
-@@ -298,11 +304,13 @@ static void close_race(int fd, const intel_ctx_t *ctx)
- 		struct sched_param rt = {.sched_priority = 99 };
- 		igt_spin_t *spin[nhandles];
- 		unsigned long count = 0;
-+		uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
- 
- 		igt_assert(sched_setscheduler(getpid(), SCHED_RR, &rt) == 0);
- 
- 		for (i = 0; i < nhandles; i++) {
- 			spin[i] = __igt_spin_new(fd,
-+						 .ahnd = ahnd,
- 						 .ctx = ctx,
- 						 .engine = engines[rand() % nengine]);
- 			handles[i] = spin[i]->handle;
-@@ -312,6 +320,7 @@ static void close_race(int fd, const intel_ctx_t *ctx)
- 			for (i = 0; i < nhandles; i++) {
- 				igt_spin_free(fd, spin[i]);
- 				spin[i] = __igt_spin_new(fd,
-+							 .ahnd = ahnd,
- 							 .ctx = ctx,
- 							 .engine = engines[rand() % nengine]);
- 				handles[i] = spin[i]->handle;
-@@ -324,6 +333,7 @@ static void close_race(int fd, const intel_ctx_t *ctx)
- 
- 		for (i = 0; i < nhandles; i++)
- 			igt_spin_free(fd, spin[i]);
-+		put_ahnd(ahnd);
- 	}
- 	igt_waitchildren();
- 
-@@ -355,11 +365,13 @@ static bool has_semaphores(int fd)
- 
- static bool has_extended_busy_ioctl(int fd)
+ void
+-gen9_huc_copyfunc(int fd,
+-		struct drm_i915_gem_exec_object2 *obj)
++gen9_huc_copyfunc(int fd, uint64_t ahnd,
++		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize)
  {
--	igt_spin_t *spin = igt_spin_new(fd, .engine = I915_EXEC_DEFAULT);
-+	uint64_t ahnd = get_reloc_ahnd(fd, 0);
-+	igt_spin_t *spin = igt_spin_new(fd, .ahnd = ahnd, .engine = I915_EXEC_DEFAULT);
- 	uint32_t read, write;
+ 	struct drm_i915_gem_relocation_entry reloc[2];
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+@@ -86,6 +90,21 @@ gen9_huc_copyfunc(int fd,
+ 	buf[i++] = MFX_WAIT;
  
- 	__gem_busy(fd, spin->handle, &read, &write);
- 	igt_spin_free(fd, spin);
-+	put_ahnd(ahnd);
- 
- 	return read != 0;
- }
-@@ -367,8 +379,10 @@ static bool has_extended_busy_ioctl(int fd)
- static void basic(int fd, const intel_ctx_t *ctx,
- 		  const struct intel_execution_engine2 *e, unsigned flags)
- {
-+	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
- 	igt_spin_t *spin =
- 		igt_spin_new(fd,
-+			     .ahnd = ahnd,
- 			     .ctx = ctx,
- 			     .engine = e->flags,
- 			     .flags = flags & HANG ?
-@@ -394,6 +408,7 @@ static void basic(int fd, const intel_ctx_t *ctx,
- 	}
- 
- 	igt_spin_free(fd, spin);
-+	put_ahnd(ahnd);
- }
- 
- static void all(int i915, const intel_ctx_t *ctx)
-@@ -428,6 +443,7 @@ igt_main
- 
- 	igt_subtest_group {
- 		igt_fixture {
-+			intel_allocator_multiprocess_start();
- 			igt_fork_hang_detector(fd);
- 		}
- 
-@@ -445,6 +461,21 @@ igt_main
- 			}
- 		}
- 
-+		igt_subtest("close-race")
-+			close_race(fd, ctx);
+ 	memset(reloc, 0, sizeof(reloc));
 +
-+		igt_fixture {
-+			igt_stop_hang_detector();
-+			intel_allocator_multiprocess_stop();
-+		}
++	if (ahnd) {
++		obj[0].flags = EXEC_OBJECT_PINNED;
++		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
++		obj[2].flags = EXEC_OBJECT_PINNED;
++		obj[0].offset = get_offset(ahnd, obj[0].handle, objsize[0], 0);
++		obj[1].offset = get_offset(ahnd, obj[1].handle, objsize[1], 0);
++		obj[2].offset = get_offset(ahnd, obj[2].handle, objsize[2], 0);
++	} else {
++		obj[0].offset = 1 << 20;
++		obj[1].offset = ALIGN(obj[0].offset + objsize[0], 1 << 20);
++		obj[2].offset = ALIGN(obj[1].offset + objsize[1], 1 << 20);
++		obj[1].flags = EXEC_OBJECT_WRITE;
 +	}
 +
-+
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_fork_hang_detector(fd);
-+		}
-+
- 		igt_subtest_group {
- 			igt_fixture {
- 				igt_require(has_extended_busy_ioctl(fd));
-@@ -477,9 +508,6 @@ igt_main
- 			}
- 		}
+ 	gen9_emit_huc_virtual_addr_state(&obj[0], &obj[1], &reloc[0], &reloc[1], buf, &i);
  
--		igt_subtest("close-race")
--			close_race(fd, ctx);
--
- 		igt_fixture {
- 			igt_stop_hang_detector();
- 		}
+ 	buf[i++] = HUC_START;
+@@ -94,13 +113,13 @@ gen9_huc_copyfunc(int fd,
+ 	buf[i++] = MI_BATCH_BUFFER_END;
+ 
+ 	gem_write(fd, obj[2].handle, 0, buf, sizeof(buf));
+-	obj[2].relocation_count = 2;
++	obj[2].relocation_count = !ahnd ? 2 : 0;
+ 	obj[2].relocs_ptr = to_user_pointer(reloc);
+ 
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(obj);
+ 	execbuf.buffer_count = 3;
+-	execbuf.flags = I915_EXEC_BSD;
++	execbuf.flags = I915_EXEC_BSD | I915_EXEC_NO_RELOC;
+ 
+ 	gem_execbuf(fd, &execbuf);
+ }
+diff --git a/lib/huc_copy.h b/lib/huc_copy.h
+index ac31d8009..69d140933 100644
+--- a/lib/huc_copy.h
++++ b/lib/huc_copy.h
+@@ -43,7 +43,7 @@
+ #define HUC_VIRTUAL_ADDR_REGION_DST	14
+ 
+ void
+-gen9_huc_copyfunc(int fd,
+-		struct drm_i915_gem_exec_object2 *obj);
++gen9_huc_copyfunc(int fd, uint64_t ahnd,
++		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
+ 
+ #endif /* HUC_COPY_H */
+diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+index c1974fe73..0839d7612 100644
+--- a/lib/intel_batchbuffer.h
++++ b/lib/intel_batchbuffer.h
+@@ -679,10 +679,12 @@ void intel_bb_copy_intel_buf(struct intel_bb *ibb,
+ /**
+  * igt_huc_copyfunc_t:
+  * @fd: drm fd
++ * @ahnd: allocator handle, if it is equal to 0 we use relocations
+  * @obj: drm_i915_gem_exec_object2 buffer array
+  *       obj[0] is source buffer
+  *       obj[1] is destination buffer
+  *       obj[2] is execution buffer
++ * @objsize: corresponding buffer sizes to @obj
+  *
+  * This is the type of the per-platform huc copy functions.
+  *
+@@ -690,8 +692,8 @@ void intel_bb_copy_intel_buf(struct intel_bb *ibb,
+  * invoke the HuC Copy kernel to copy 4K bytes from the source buffer
+  * to the destination buffer.
+  */
+-typedef void (*igt_huc_copyfunc_t)(int fd,
+-		struct drm_i915_gem_exec_object2 *obj);
++typedef void (*igt_huc_copyfunc_t)(int fd, uint64_t ahnd,
++		struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
+ 
+ igt_huc_copyfunc_t	igt_get_huc_copyfunc(int devid);
+ #endif
+diff --git a/tests/i915/gem_huc_copy.c b/tests/i915/gem_huc_copy.c
+index 9a32893ea..ea32b705a 100644
+--- a/tests/i915/gem_huc_copy.c
++++ b/tests/i915/gem_huc_copy.c
+@@ -89,6 +89,7 @@ igt_main
+ 	int drm_fd = -1;
+ 	uint32_t devid;
+ 	igt_huc_copyfunc_t huc_copy;
++	uint64_t ahnd;
+ 
+ 	igt_fixture {
+ 		drm_fd = drm_open_driver(DRIVER_INTEL);
+@@ -97,6 +98,8 @@ igt_main
+ 		huc_copy = igt_get_huc_copyfunc(devid);
+ 
+ 		igt_require_f(huc_copy, "no huc_copy function\n");
++
++		ahnd = get_reloc_ahnd(drm_fd, 0);
+ 	}
+ 
+ 	igt_describe("Make sure that Huc firmware works"
+@@ -106,6 +109,9 @@ igt_main
+ 	igt_subtest("huc-copy") {
+ 		char inputs[HUC_COPY_DATA_BUF_SIZE];
+ 		struct drm_i915_gem_exec_object2 obj[3];
++		uint64_t objsize[3] = { HUC_COPY_DATA_BUF_SIZE,
++					HUC_COPY_DATA_BUF_SIZE,
++					4096 };
+ 
+ 		test_huc_load(drm_fd);
+ 		/* Initialize src buffer randomly */
+@@ -123,7 +129,7 @@ igt_main
+ 
+ 		gem_write(drm_fd, obj[0].handle, 0, inputs, HUC_COPY_DATA_BUF_SIZE);
+ 
+-		huc_copy(drm_fd, obj);
++		huc_copy(drm_fd, ahnd, obj, objsize);
+ 		compare_huc_copy_result(drm_fd, obj[0].handle, obj[1].handle);
+ 
+ 		gem_close(drm_fd, obj[0].handle);
+@@ -131,6 +137,8 @@ igt_main
+ 		gem_close(drm_fd, obj[2].handle);
+ 	}
+ 
+-	igt_fixture
++	igt_fixture {
++		put_ahnd(ahnd);
+ 		close(drm_fd);
++	}
+ }
 -- 
 2.26.0
