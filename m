@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D44B56EBAA
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 13:43:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 553466EBAC
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 13:43:13 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  6 Aug 2021 15:41:36 +0200
-Message-Id: <20210806134145.24634-48-zbigniew.kempczynski@intel.com>
+Date: Fri,  6 Aug 2021 15:41:37 +0200
+Message-Id: <20210806134145.24634-49-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
 References: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 47/56] tests/i915_pm_rpm: Adopt to use
+Subject: [igt-dev] [PATCH i-g-t v4 48/56] tests/i915_pm_rps: Alter to use
  no-reloc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,91 +32,77 @@ Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/i915_pm_rpm.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ tests/i915/i915_pm_rps.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 39e0064a1..62720d02b 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -1178,7 +1178,8 @@ static void gem_pread_subtest(void)
+diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
+index f51a47479..ada06aa94 100644
+--- a/tests/i915/i915_pm_rps.c
++++ b/tests/i915/i915_pm_rps.c
+@@ -250,6 +250,10 @@ static void load_helper_run(enum load load)
+ 		igt_spin_t *spin[2] = {};
+ 		bool prev_load;
+ 		uint32_t handle;
++		uint64_t ahnd;
++
++		intel_allocator_init();
++		ahnd = get_reloc_ahnd(drm_fd, 0);
  
- /* Paints a square of color $color, size $width x $height, at position $x x $y
-  * of $dst_handle, which contains pitch $pitch. */
--static void submit_blt_cmd(uint32_t dst_handle, uint16_t x, uint16_t y,
-+static void submit_blt_cmd(uint32_t dst_handle, int dst_size,
-+			   uint16_t x, uint16_t y,
- 			   uint16_t width, uint16_t height, uint32_t pitch,
- 			   uint32_t color, uint32_t *presumed_dst_offset)
+ 		signal(SIGTERM, load_helper_signal_handler);
+ 		signal(SIGUSR2, load_helper_signal_handler);
+@@ -257,9 +261,9 @@ static void load_helper_run(enum load load)
+ 		igt_debug("Applying %s load...\n", lh.load ? "high" : "low");
+ 
+ 		prev_load = lh.load == HIGH;
+-		spin[0] = __igt_spin_new(drm_fd);
++		spin[0] = __igt_spin_new(drm_fd, .ahnd = ahnd);
+ 		if (prev_load)
+-			spin[1] = __igt_spin_new(drm_fd);
++			spin[1] = __igt_spin_new(drm_fd, .ahnd = ahnd);
+ 		prev_load = !prev_load; /* send the initial signal */
+ 		while (!lh.exit) {
+ 			bool high_load;
+@@ -279,7 +283,7 @@ static void load_helper_run(enum load load)
+ 			} else {
+ 				spin[0] = spin[1];
+ 			}
+-			spin[high_load] = __igt_spin_new(drm_fd);
++			spin[high_load] = __igt_spin_new(drm_fd, .ahnd = ahnd);
+ 
+ 			if (lh.signal && high_load != prev_load) {
+ 				write(lh.link, &lh.signal, sizeof(lh.signal));
+@@ -310,6 +314,7 @@ static void load_helper_run(enum load load)
+ 
+ 		igt_spin_free(drm_fd, spin[1]);
+ 		igt_spin_free(drm_fd, spin[0]);
++		put_ahnd(ahnd);
+ 	}
+ 
+ 	close(lh.link);
+@@ -542,11 +547,14 @@ static void boost_freq(int fd, int *boost_freqs)
  {
-@@ -1190,6 +1191,12 @@ static void submit_blt_cmd(uint32_t dst_handle, uint16_t x, uint16_t y,
- 	struct drm_i915_gem_exec_object2 objs[2] = {{}, {}};
- 	struct drm_i915_gem_relocation_entry relocs[1] = {{}};
- 	struct drm_i915_gem_wait gem_wait;
-+	uint64_t ahnd = get_reloc_ahnd(drm_fd, 0), dst_offset;
-+
-+	if (ahnd)
-+		dst_offset = get_offset(ahnd, dst_handle, dst_size, 0);
-+	else
-+		dst_offset = *presumed_dst_offset;
+ 	int64_t timeout = 1;
+ 	igt_spin_t *load;
++	/* We need to keep dependency spin offset for load->handle */
++	uint64_t ahnd = get_simple_l2h_ahnd(fd, 0);
  
- 	i = 0;
+-	load = igt_spin_new(fd);
++	//get_offset(ahnd, 1000, 0x1000000, 0);
++	load = igt_spin_new(fd, .ahnd = ahnd);
  
-@@ -1205,9 +1212,9 @@ static void submit_blt_cmd(uint32_t dst_handle, uint16_t x, uint16_t y,
- 	batch_buf[i++] = (y << 16) | x;
- 	batch_buf[i++] = ((y + height) << 16) | (x + width);
- 	reloc_pos = i;
--	batch_buf[i++] = *presumed_dst_offset;
-+	batch_buf[i++] = dst_offset;
- 	if (intel_gen(ms_data.devid) >= 8)
--		batch_buf[i++] = 0;
-+		batch_buf[i++] = dst_offset >> 32;
- 	batch_buf[i++] = color;
+ 	/* Strip off extra fences from the object, and keep it from starting */
+-	igt_spin_free(fd, igt_spin_new(fd, .dependency = load->handle));
++	igt_spin_free(fd, igt_spin_new(fd, .ahnd = ahnd, .dependency = load->handle));
  
- 	batch_buf[i++] = MI_BATCH_BUFFER_END;
-@@ -1230,9 +1237,16 @@ static void submit_blt_cmd(uint32_t dst_handle, uint16_t x, uint16_t y,
- 	objs[0].alignment = 64;
- 
- 	objs[1].handle = batch_handle;
--	objs[1].relocation_count = 1;
-+	objs[1].relocation_count = !ahnd ? 1 : 0;
- 	objs[1].relocs_ptr = (uintptr_t)relocs;
- 
-+	if (ahnd) {
-+		objs[0].offset = dst_offset;
-+		objs[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+		objs[1].offset = get_offset(ahnd, batch_handle, batch_size, 0);
-+		objs[1].flags = EXEC_OBJECT_PINNED;
-+	}
-+
- 	execbuf.buffers_ptr = (uintptr_t)objs;
- 	execbuf.buffer_count = 2;
- 	execbuf.batch_len = batch_size;
-@@ -1253,6 +1267,7 @@ static void submit_blt_cmd(uint32_t dst_handle, uint16_t x, uint16_t y,
- 	do_ioctl(drm_fd, DRM_IOCTL_I915_GEM_WAIT, &gem_wait);
- 
- 	gem_close(drm_fd, batch_handle);
+ 	/* Waiting will grant us a boost to maximum */
+ 	gem_wait(fd, load->handle, &timeout);
+@@ -558,6 +566,7 @@ static void boost_freq(int fd, int *boost_freqs)
+ 	igt_spin_end(load);
+ 	gem_sync(fd, load->handle);
+ 	igt_spin_free(fd, load);
 +	put_ahnd(ahnd);
  }
  
- /* Make sure we can submit a batch buffer and verify its result. */
-@@ -1285,7 +1300,7 @@ static void gem_execbuf_subtest(void)
- 	disable_all_screens_and_wait(&ms_data);
- 
- 	color = 0x12345678;
--	submit_blt_cmd(handle, sq_x, sq_y, sq_w, sq_h, pitch, color,
-+	submit_blt_cmd(handle, dst_size, sq_x, sq_y, sq_w, sq_h, pitch, color,
- 		       &presumed_offset);
- 	igt_assert(wait_for_suspended());
- 
-@@ -1324,7 +1339,7 @@ static void gem_execbuf_subtest(void)
- 	 * suspended. We use the same spot, but a different color. As a bonus,
- 	 * we're testing the presumed_offset from the previous command. */
- 	color = 0x87654321;
--	submit_blt_cmd(handle, sq_x, sq_y, sq_w, sq_h, pitch, color,
-+	submit_blt_cmd(handle, dst_size, sq_x, sq_y, sq_w, sq_h, pitch, color,
- 		       &presumed_offset);
- 
- 	disable_all_screens_and_wait(&ms_data);
+ static void waitboost(int fd, bool reset)
 -- 
 2.26.0
