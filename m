@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B807E6EB90
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 13:42:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 69B3D6EB93
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 13:42:03 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  6 Aug 2021 15:40:51 +0200
-Message-Id: <20210806134145.24634-3-zbigniew.kempczynski@intel.com>
+Date: Fri,  6 Aug 2021 15:40:52 +0200
+Message-Id: <20210806134145.24634-4-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
 References: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 02/56] lib/intel_allocator: Add few
- helper functions for common use
+Subject: [igt-dev] [PATCH i-g-t v4 03/56] lib/igt_gt: Add passing ahnd as an
+ argument to igt_hang
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,26 +25,7 @@ To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add few helper functions which can be used in reloc/no-reloc tests.
-
-Common name is get_<ALLOCATOR_TYPE>_ahnd(i915, ctx), like:
-get_reloc_ahnd(), get_simple_ahnd(). As simple allows acquiring
-offsets starting from top or bottom of vm additional two were added:
-get_simple_l2h_ahnd() and get_simple_h2l_ahnd(). put_ahnd() closes
-allocator handle (if it is valid).
-
-To acquire / release an offset get_offset() and put_offset() were
-added. When allocator handle is invalid (equal to zero) get_offset()
-just returns 0, put_offset() does nothing in this case. We can then
-call them regardless reloc/no-reloc code keeping conditional code in
-these functions.
-
-Be aware that each get_..._ahnd() functions calls checking kernel
-relocation capabilities. This generates extra execbuf ioctl() call (but
-without queueing job to gpu). If that is a problem and we want to avoid
-additional execbuf calls, checking relocation caps should be done on the
-beginning of the test. Allocator handle (open()) should be acquired then
-conditionally according to the result of this check.
+Required as spinner is used, see gem_ringfill.c
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
@@ -52,79 +33,81 @@ Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: Chris Wilson <chris@chris-wilson.co.uk>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/intel_allocator.h | 55 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ lib/igt_gt.c | 21 ++++++++++++++++++++-
+ lib/igt_gt.h |  4 ++++
+ 2 files changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
-index c14f57b4d..f6511ffbf 100644
---- a/lib/intel_allocator.h
-+++ b/lib/intel_allocator.h
-@@ -11,6 +11,7 @@
- #include <pthread.h>
- #include <stdint.h>
- #include <stdatomic.h>
-+#include "i915/gem_submission.h"
+diff --git a/lib/igt_gt.c b/lib/igt_gt.c
+index c049477db..a0ba04cc1 100644
+--- a/lib/igt_gt.c
++++ b/lib/igt_gt.c
+@@ -269,7 +269,8 @@ static bool has_ctx_exec(int fd, unsigned ring, uint32_t ctx)
+  * Returns:
+  * Structure with helper internal state for igt_post_hang_ring().
+  */
+-igt_hang_t igt_hang_ctx(int fd, uint32_t ctx, int ring, unsigned flags)
++static igt_hang_t __igt_hang_ctx(int fd, uint64_t ahnd, uint32_t ctx, int ring,
++				 unsigned flags)
+ {
+ 	struct drm_i915_gem_context_param param;
+ 	igt_spin_t *spin;
+@@ -298,6 +299,7 @@ igt_hang_t igt_hang_ctx(int fd, uint32_t ctx, int ring, unsigned flags)
+ 		context_set_ban(fd, ctx, 0);
  
+ 	spin = __igt_spin_new(fd,
++			      .ahnd = ahnd,
+ 			      .ctx_id = ctx,
+ 			      .engine = ring,
+ 			      .flags = IGT_SPIN_NO_PREEMPTION);
+@@ -305,6 +307,17 @@ igt_hang_t igt_hang_ctx(int fd, uint32_t ctx, int ring, unsigned flags)
+ 	return (igt_hang_t){ spin, ctx, ban, flags };
+ }
+ 
++igt_hang_t igt_hang_ctx(int fd, uint32_t ctx, int ring, unsigned flags)
++{
++	return __igt_hang_ctx(fd, 0, ctx, ring, flags);
++}
++
++igt_hang_t igt_hang_ctx_with_ahnd(int fd, uint64_t ahnd, uint32_t ctx, int ring,
++				  unsigned flags)
++{
++	return __igt_hang_ctx(fd, ahnd, ctx, ring, flags);
++}
++
  /**
-  * SECTION:intel_allocator
-@@ -228,4 +229,58 @@ static inline uint64_t CANONICAL(uint64_t offset)
+  * igt_hang_ring:
+  * @fd: open i915 drm file descriptor
+@@ -322,6 +335,12 @@ igt_hang_t igt_hang_ring(int fd, int ring)
+ 	return igt_hang_ctx(fd, 0, ring, 0);
+ }
  
- #define DECANONICAL(offset) (offset & ((1ull << GEN8_GTT_ADDRESS_WIDTH) - 1))
++igt_hang_t igt_hang_ring_with_ahnd(int fd, int ring, uint64_t ahnd)
++{
++	return igt_hang_ctx_with_ahnd(fd, ahnd, 0, ring, 0);
++}
++
++
+ /**
+  * igt_post_hang_ring:
+  * @fd: open i915 drm file descriptor
+diff --git a/lib/igt_gt.h b/lib/igt_gt.h
+index d87fae2d3..ceb044b86 100644
+--- a/lib/igt_gt.h
++++ b/lib/igt_gt.h
+@@ -46,10 +46,14 @@ void igt_disallow_hang(int fd, igt_hang_t arg);
+ #define HANG_POISON 0xc5c5c5c5
  
-+static inline uint64_t get_simple_ahnd(int fd, uint32_t ctx)
-+{
-+	bool do_relocs = gem_has_relocations(fd);
+ igt_hang_t igt_hang_ctx(int fd, uint32_t ctx, int ring, unsigned flags);
++igt_hang_t igt_hang_ctx_with_ahnd(int fd, uint64_t ahnd, uint32_t ctx, int ring,
++				  unsigned flags);
 +
-+	return do_relocs ? 0 : intel_allocator_open(fd, ctx, INTEL_ALLOCATOR_SIMPLE);
-+}
-+
-+static inline uint64_t get_simple_l2h_ahnd(int fd, uint32_t ctx)
-+{
-+	bool do_relocs = gem_has_relocations(fd);
-+
-+	return do_relocs ? 0 : intel_allocator_open_full(fd, ctx, 0, 0,
-+							 INTEL_ALLOCATOR_SIMPLE,
-+							 ALLOC_STRATEGY_LOW_TO_HIGH);
-+}
-+
-+static inline uint64_t get_simple_h2l_ahnd(int fd, uint32_t ctx)
-+{
-+	bool do_relocs = gem_has_relocations(fd);
-+
-+	return do_relocs ? 0 : intel_allocator_open_full(fd, ctx, 0, 0,
-+							 INTEL_ALLOCATOR_SIMPLE,
-+							 ALLOC_STRATEGY_LOW_TO_HIGH);
-+}
-+
-+static inline uint64_t get_reloc_ahnd(int fd, uint32_t ctx)
-+{
-+	bool do_relocs = gem_has_relocations(fd);
-+
-+	return do_relocs ? 0 : intel_allocator_open(fd, ctx, INTEL_ALLOCATOR_RELOC);
-+}
-+
-+static inline bool put_ahnd(uint64_t ahnd)
-+{
-+	return !ahnd || intel_allocator_close(ahnd);
-+}
-+
-+static inline uint64_t get_offset(uint64_t ahnd, uint32_t handle,
-+				  uint64_t size, uint64_t alignment)
-+{
-+	if (!ahnd)
-+		return 0;
-+
-+	return intel_allocator_alloc(ahnd, handle, size, alignment);
-+}
-+
-+static inline bool put_offset(uint64_t ahnd, uint32_t handle)
-+{
-+	if (!ahnd)
-+		return 0;
-+
-+	return intel_allocator_free(ahnd, handle);
-+}
-+
- #endif
+ #define HANG_ALLOW_BAN 1
+ #define HANG_ALLOW_CAPTURE 2
+ 
+ igt_hang_t igt_hang_ring(int fd, int ring);
++igt_hang_t igt_hang_ring_with_ahnd(int fd, int ring, uint64_t ahnd);
+ void igt_post_hang_ring(int fd, igt_hang_t arg);
+ 
+ void igt_force_gpu_reset(int fd);
 -- 
 2.26.0
