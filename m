@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E25836EB75
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:47:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 920AC6EB88
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:47:19 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  6 Aug 2021 11:45:54 +0200
-Message-Id: <20210806094649.21162-2-zbigniew.kempczynski@intel.com>
+Date: Fri,  6 Aug 2021 11:46:05 +0200
+Message-Id: <20210806094649.21162-13-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 References: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 01/56] lib/igt_dummyload: Add support of
- using allocator in igt spinner
+Subject: [igt-dev] [PATCH i-g-t v4 12/56] tests/gem_ctx_exec: Adopt to use
+ allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,203 +22,179 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For gens without relocations we need to use softpin with valid offsets
-which do not overlap other execbuf objects. As spinner during creation
-knows nothing about vm it has to run into allocator handle must be
-passed to properly acquire offsets from allocator instance.
+For newer gens we're not able to rely on relocations. Adopt to use
+offsets acquired from the allocator.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/igt_dummyload.c | 74 ++++++++++++++++++++++++++++++++++++---------
- lib/igt_dummyload.h |  3 ++
- 2 files changed, 63 insertions(+), 14 deletions(-)
+ tests/i915/gem_ctx_exec.c | 46 +++++++++++++++++++++++++++++++++------
+ 1 file changed, 39 insertions(+), 7 deletions(-)
 
-diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
-index 8a5ad5ee3..645db9222 100644
---- a/lib/igt_dummyload.c
-+++ b/lib/igt_dummyload.c
-@@ -35,6 +35,7 @@
- #include "i915/gem_engine_topology.h"
- #include "i915/gem_mman.h"
- #include "i915/gem_submission.h"
-+#include "igt_aux.h"
- #include "igt_core.h"
- #include "igt_device.h"
- #include "igt_dummyload.h"
-@@ -101,7 +102,7 @@ emit_recursive_batch(igt_spin_t *spin,
- 	unsigned int flags[GEM_MAX_ENGINES];
- 	unsigned int nengine;
- 	int fence_fd = -1;
--	uint64_t addr;
-+	uint64_t addr, addr_scratch, ahnd = opts->ahnd, objflags = 0;
- 	uint32_t *cs;
- 	int i;
+diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
+index 4d3d1c12f..a1270a889 100644
+--- a/tests/i915/gem_ctx_exec.c
++++ b/tests/i915/gem_ctx_exec.c
+@@ -178,6 +178,7 @@ static void norecovery(int i915)
+ 		};
+ 		int expect = pass == 0 ? -EIO : 0;
+ 		igt_spin_t *spin;
++		uint64_t ahnd = get_reloc_ahnd(i915, param.ctx_id);
  
-@@ -119,11 +120,17 @@ emit_recursive_batch(igt_spin_t *spin,
- 	 * are not allowed in the first 256KiB, for fear of negative relocations
- 	 * that wrap.
- 	 */
--	addr = gem_aperture_size(fd) / 2;
--	if (addr >> 31)
--		addr = 1u << 31;
--	addr += random() % addr / 2;
--	addr &= -4096;
-+
-+	if (!ahnd) {
-+		addr = gem_aperture_size(fd) / 2;
-+		if (addr >> 31)
-+			addr = 1u << 31;
-+		addr += random() % addr / 2;
-+		addr &= -4096;
-+	} else {
-+		spin->ahnd = ahnd;
-+		objflags |= EXEC_OBJECT_PINNED;
-+	}
+ 		gem_context_set_param(i915, &param);
  
- 	igt_assert(!(opts->ctx && opts->ctx_id));
+@@ -185,7 +186,9 @@ static void norecovery(int i915)
+ 		gem_context_get_param(i915, &param);
+ 		igt_assert_eq(param.value, pass);
  
-@@ -164,16 +171,34 @@ emit_recursive_batch(igt_spin_t *spin,
- 	execbuf->buffer_count++;
- 	cs = spin->batch;
+-		spin = __igt_spin_new(i915, .ctx = ctx,
++		spin = __igt_spin_new(i915,
++				      .ahnd = ahnd,
++				      .ctx = ctx,
+ 				      .flags = IGT_SPIN_POLL_RUN);
+ 		igt_spin_busywait_until_started(spin);
  
--	obj[BATCH].offset = addr;
-+	if (ahnd)
-+		addr = intel_allocator_alloc_with_strategy(ahnd, obj[BATCH].handle,
-+							   BATCH_SIZE, 0,
-+							   ALLOC_STRATEGY_LOW_TO_HIGH);
-+	obj[BATCH].offset = CANONICAL(addr);
-+	obj[BATCH].flags |= objflags;
-+	if (obj[BATCH].offset >= (1ull << 32))
-+		obj[BATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+
- 	addr += BATCH_SIZE;
+@@ -196,6 +199,7 @@ static void norecovery(int i915)
+ 		igt_spin_free(i915, spin);
  
- 	if (opts->dependency) {
- 		igt_assert(!(opts->flags & IGT_SPIN_POLL_RUN));
-+		if (ahnd)
-+			addr_scratch = intel_allocator_alloc_with_strategy(ahnd, opts->dependency,
-+									   BATCH_SIZE, 0,
-+									   ALLOC_STRATEGY_LOW_TO_HIGH);
-+		else
-+			addr_scratch = addr;
+ 		intel_ctx_destroy(i915, ctx);
++		put_ahnd(ahnd);
+ 	}
  
- 		obj[SCRATCH].handle = opts->dependency;
--		obj[SCRATCH].offset = addr;
-+		obj[SCRATCH].offset = CANONICAL(addr_scratch);
-+		obj[SCRATCH].flags |= objflags;
-+		if (obj[SCRATCH].offset >= (1ull << 32))
-+			obj[SCRATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+
- 		if (!(opts->flags & IGT_SPIN_SOFTDEP)) {
--			obj[SCRATCH].flags = EXEC_OBJECT_WRITE;
-+			obj[SCRATCH].flags |= EXEC_OBJECT_WRITE;
+ 	 igt_disallow_hang(i915, hang);
+@@ -271,6 +275,7 @@ static void nohangcheck_hostile(int i915)
+ 	const intel_ctx_t *ctx;
+ 	int err = 0;
+ 	int dir;
++	uint64_t ahnd;
  
- 			/* dummy write to dependency */
- 			r = &relocs[obj[BATCH].relocation_count++];
-@@ -212,8 +237,14 @@ emit_recursive_batch(igt_spin_t *spin,
- 								       0, 4096,
- 								       PROT_READ | PROT_WRITE);
+ 	/*
+ 	 * Even if the user disables hangcheck during their context,
+@@ -284,6 +289,7 @@ static void nohangcheck_hostile(int i915)
+ 
+ 	ctx = intel_ctx_create_all_physical(i915);
+ 	hang = igt_allow_hang(i915, ctx->id, 0);
++	ahnd = get_reloc_ahnd(i915, ctx->id);
+ 
+ 	igt_require(__enable_hangcheck(dir, false));
+ 
+@@ -295,7 +301,9 @@ static void nohangcheck_hostile(int i915)
+ 		gem_engine_property_printf(i915, e->name,
+ 					   "preempt_timeout_ms", "%d", 50);
+ 
+-		spin = __igt_spin_new(i915, .ctx = ctx,
++		spin = __igt_spin_new(i915,
++				      .ahnd = ahnd,
++				      .ctx = ctx,
+ 				      .engine = e->flags,
+ 				      .flags = (IGT_SPIN_NO_PREEMPTION |
+ 						IGT_SPIN_FENCE_OUT));
+@@ -333,6 +341,7 @@ static void nohangcheck_hostile(int i915)
+ 
+ 	igt_assert_eq(sync_fence_status(fence), -EIO);
+ 	close(fence);
++	put_ahnd(ahnd);
+ 
+ 	close(dir);
+ 	close(i915);
+@@ -345,10 +354,14 @@ static void close_race(int i915)
+ 	const intel_ctx_t **ctx;
+ 	uint32_t *ctx_id;
+ 	igt_spin_t *spin;
++	uint64_t ahnd;
+ 
+ 	/* Check we can execute a polling spinner */
+ 	base_ctx = intel_ctx_create(i915, NULL);
+-	igt_spin_free(i915, igt_spin_new(i915, .ctx = base_ctx,
++	ahnd = get_reloc_ahnd(i915, base_ctx->id);
++	igt_spin_free(i915, igt_spin_new(i915,
++					 .ahnd = ahnd,
++					 .ctx = base_ctx,
+ 					 .flags = IGT_SPIN_POLL_RUN));
+ 
+ 	ctx = calloc(ncpus, sizeof(*ctx));
+@@ -361,7 +374,10 @@ static void close_race(int i915)
+ 	}
+ 
+ 	igt_fork(child, ncpus) {
+-		spin = __igt_spin_new(i915, .ctx = base_ctx,
++		ahnd = get_reloc_ahnd(i915, base_ctx->id);
++		spin = __igt_spin_new(i915,
++				      .ahnd = ahnd,
++				      .ctx = base_ctx,
+ 				      .flags = IGT_SPIN_POLL_RUN);
+ 		igt_spin_end(spin);
+ 		gem_sync(i915, spin->handle);
+@@ -403,6 +419,7 @@ static void close_race(int i915)
  		}
+ 
+ 		igt_spin_free(i915, spin);
++		put_ahnd(ahnd);
+ 	}
+ 
+ 	igt_until_timeout(5) {
+@@ -425,6 +442,7 @@ static void close_race(int i915)
+ 	intel_ctx_destroy(i915, base_ctx);
+ 	for (int child = 0; child < ncpus; child++)
+ 		intel_ctx_destroy(i915, ctx[child]);
++	put_ahnd(ahnd);
+ 
+ 	free(ctx);
+ 	munmap(ctx_id, 4096);
+@@ -474,11 +492,22 @@ igt_main
+ 	igt_subtest("basic-nohangcheck")
+ 		nohangcheck_hostile(fd);
+ 
+-	igt_subtest("basic-close-race")
+-		close_race(fd);
++	igt_subtest_group {
++		igt_fixture {
++			intel_allocator_multiprocess_start();
++		}
 +
-+		if (ahnd)
-+			addr = intel_allocator_alloc_with_strategy(ahnd,
-+								   spin->poll_handle,
-+								   BATCH_SIZE * 3, 0,
-+								   ALLOC_STRATEGY_LOW_TO_HIGH);
- 		addr += 4096; /* guard page */
--		obj[SCRATCH].offset = addr;
-+		obj[SCRATCH].offset = CANONICAL(addr);
- 		addr += 4096;
- 
- 		igt_assert_eq(spin->poll[SPIN_POLL_START_IDX], 0);
-@@ -223,11 +254,15 @@ emit_recursive_batch(igt_spin_t *spin,
- 		r->offset = sizeof(uint32_t) * 1;
- 		r->delta = sizeof(uint32_t) * SPIN_POLL_START_IDX;
- 
-+		obj[SCRATCH].flags |= objflags;
-+		if (obj[SCRATCH].offset >= (1ull << 32))
-+			obj[SCRATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++		igt_subtest("basic-close-race")
++			close_race(fd);
 +
- 		*cs++ = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
- 
- 		if (gen >= 8) {
- 			*cs++ = r->presumed_offset + r->delta;
--			*cs++ = 0;
-+			*cs++ = (r->presumed_offset + r->delta) >> 32;
- 		} else if (gen >= 4) {
- 			*cs++ = 0;
- 			*cs++ = r->presumed_offset + r->delta;
-@@ -314,10 +349,11 @@ emit_recursive_batch(igt_spin_t *spin,
- 	r->offset = (cs + 1 - spin->batch) * sizeof(*cs);
- 	r->read_domains = I915_GEM_DOMAIN_COMMAND;
- 	r->delta = LOOP_START_OFFSET;
-+
- 	if (gen >= 8) {
- 		*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | 1;
- 		*cs++ = r->presumed_offset + r->delta;
--		*cs++ = 0;
-+		*cs++ = (r->presumed_offset + r->delta) >> 32;
- 	} else if (gen >= 6) {
- 		*cs++ = MI_BATCH_BUFFER_START | 1 << 8;
- 		*cs++ = r->presumed_offset + r->delta;
-@@ -351,6 +387,10 @@ emit_recursive_batch(igt_spin_t *spin,
- 		execbuf->flags &= ~ENGINE_MASK;
- 		execbuf->flags |= flags[i];
- 
-+		/* For allocator we have to rid of relocation_count */
-+		for (int j = 0; j < ARRAY_SIZE(spin->obj) && ahnd; j++)
-+			spin->obj[j].relocation_count = 0;
-+
- 		gem_execbuf_wr(fd, execbuf);
- 
- 		if (opts->flags & IGT_SPIN_FENCE_OUT) {
-@@ -569,11 +609,17 @@ static void __igt_spin_free(int fd, igt_spin_t *spin)
- 	if (spin->batch)
- 		gem_munmap(spin->batch, BATCH_SIZE);
- 
--	if (spin->poll_handle)
-+	if (spin->poll_handle) {
- 		gem_close(fd, spin->poll_handle);
-+		if (spin->ahnd)
-+			intel_allocator_free(spin->ahnd, spin->poll_handle);
++		igt_fixture {
++			intel_allocator_multiprocess_stop();
++		}
 +	}
  
--	if (spin->handle)
-+	if (spin->handle) {
- 		gem_close(fd, spin->handle);
-+		if (spin->ahnd)
-+			intel_allocator_free(spin->ahnd, spin->handle);
-+	}
+ 	igt_subtest("reset-pin-leak") {
+ 		int i;
++		uint64_t ahnd;
  
- 	if (spin->out_fence >= 0)
- 		close(spin->out_fence);
-diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
-index 67e1a08ed..f02052614 100644
---- a/lib/igt_dummyload.h
-+++ b/lib/igt_dummyload.h
-@@ -58,6 +58,8 @@ typedef struct igt_spin {
+ 		/*
+ 		 * Use an explicit context to isolate the test from
+@@ -486,6 +515,7 @@ igt_main
+ 		 * default context (eg. if they would be eliminated).
+ 		 */
+ 		ctx_id = gem_context_create(fd);
++		ahnd = get_reloc_ahnd(fd, ctx_id);
  
- 	unsigned int flags;
- #define SPIN_CLFLUSH (1 << 0)
+ 		/*
+ 		 * Iterate enough times that the kernel will
+@@ -493,7 +523,8 @@ igt_main
+ 		 * the last context is leaked at every reset.
+ 		 */
+ 		for (i = 0; i < 20; i++) {
+-			igt_hang_t hang = igt_hang_ring(fd, 0);
 +
-+	uint64_t ahnd;
- } igt_spin_t;
++			igt_hang_t hang = igt_hang_ring_with_ahnd(fd, 0, ahnd);
  
- /**
-@@ -78,6 +80,7 @@ typedef struct igt_spin_factory {
- 	unsigned int engine;
- 	unsigned int flags;
- 	int fence;
-+	uint64_t ahnd;
- } igt_spin_factory_t;
+ 			igt_assert_eq(exec(fd, handle, 0, 0), 0);
+ 			igt_assert_eq(exec(fd, handle, 0, ctx_id), 0);
+@@ -501,5 +532,6 @@ igt_main
+ 		}
  
- #define IGT_SPIN_FENCE_IN      (1 << 0)
+ 		gem_context_destroy(fd, ctx_id);
++		put_ahnd(ahnd);
+ 	}
+ }
 -- 
 2.26.0
