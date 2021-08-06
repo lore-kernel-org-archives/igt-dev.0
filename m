@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1058030395022783717=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 06 Aug 2021 12:16:32 -0000
-Message-ID: <162825219224.27547.9391400532509049743@emeril.freedesktop.org>
-References: <20210806105031.297958-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20210806105031.297958-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fsetmode=3A_Fix_to_get_a_valid_config_=28rev2=29?=
+Date: Fri, 06 Aug 2021 13:05:02 -0000
+Message-ID: <162825510253.27549.15602379282737845325@emeril.freedesktop.org>
+References: <20210806091028.296829-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20210806091028.296829-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/kms=5Fsetmode=3A_Fix_to_get_a_valid_config?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,198 +23,262 @@ To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1058030395022783717==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+=3D=3D Series Details =3D=3D
 
-== Series Details ==
-
-Series: tests/kms_setmode: Fix to get a valid config (rev2)
+Series: tests/kms_setmode: Fix to get a valid config
 URL   : https://patchwork.freedesktop.org/series/93450/
-State : success
+State : warning
 
-== Summary ==
+=3D=3D Summary =3D=3D
 
-CI Bug Log - changes from CI_DRM_10456 -> IGTPW_6094
-====================================================
+Pipeline status: FAILED.
 
-Summary
--------
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/375993 fo=
+r the overview.
 
-  **SUCCESS**
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
+igt-ci-tags/-/jobs/12557637):
+  ../tests/kms_setmode.c: In function =E2=80=98setup_crtcs=E2=80=99:
+  ../tests/kms_setmode.c:364:63: error: expected =E2=80=98)=E2=80=99 before=
+ =E2=80=98config_valid=E2=80=99
+       !!(tconf->flags & (TEST_SINGLE_CRTC_CLONE | TEST_TIMINGS))
+                                                                 ^
+                                                                 )
+      config_valid =3D false;
+      ~~~~~~~~~~~~                                               =20
+  ../tests/kms_setmode.c:363:6: note: to match this =E2=80=98(=E2=80=99
+     if (encoder_usage_count[i] > 1 &&
+        ^
+  ../tests/kms_setmode.c:369:1: error: expected expression before =E2=80=98=
+}=E2=80=99 token
+   }
+   ^
+  ninja: build stopped: subcommand failed.
+  section_end:1628246761:step_script
+  section_start:1628246761:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1628246762:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
 
-  No regressions found.
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
+fx-ci/igt-ci-tags/-/jobs/12557640):
+  ../tests/kms_setmode.c: In function =E2=80=98setup_crtcs=E2=80=99:
+  ../tests/kms_setmode.c:364:63: error: expected =E2=80=98)=E2=80=99 before=
+ =E2=80=98config_valid=E2=80=99
+       !!(tconf->flags & (TEST_SINGLE_CRTC_CLONE | TEST_TIMINGS))
+                                                                 ^
+                                                                 )
+      config_valid =3D false;
+      ~~~~~~~~~~~~                                               =20
+  ../tests/kms_setmode.c:363:6: note: to match this =E2=80=98(=E2=80=99
+     if (encoder_usage_count[i] > 1 &&
+        ^
+  ../tests/kms_setmode.c:369:1: error: expected expression before =E2=80=98=
+}=E2=80=99 token
+   }
+   ^
+  ninja: build stopped: subcommand failed.
+  section_end:1628246755:step_script
+  section_start:1628246755:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1628246756:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6094/index.html
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
+fx-ci/igt-ci-tags/-/jobs/12557639):
+  ../tests/kms_setmode.c: In function =E2=80=98setup_crtcs=E2=80=99:
+  ../tests/kms_setmode.c:364:63: error: expected =E2=80=98)=E2=80=99 before=
+ =E2=80=98config_valid=E2=80=99
+       !!(tconf->flags & (TEST_SINGLE_CRTC_CLONE | TEST_TIMINGS))
+                                                                 ^
+                                                                 )
+      config_valid =3D false;
+      ~~~~~~~~~~~~                                               =20
+  ../tests/kms_setmode.c:363:6: note: to match this =E2=80=98(=E2=80=99
+     if (encoder_usage_count[i] > 1 &&
+        ^
+  ../tests/kms_setmode.c:369:1: error: expected expression before =E2=80=98=
+}=E2=80=99 token
+   }
+   ^
+  ninja: build stopped: subcommand failed.
+  section_end:1628246755:step_script
+  section_start:1628246755:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1628246756:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
 
-Possible new issues
--------------------
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
+x-ci/igt-ci-tags/-/jobs/12557641):
+  ../tests/kms_setmode.c: In function =E2=80=98setup_crtcs=E2=80=99:
+  ../tests/kms_setmode.c:364:63: error: expected =E2=80=98)=E2=80=99 before=
+ =E2=80=98config_valid=E2=80=99
+       !!(tconf->flags & (TEST_SINGLE_CRTC_CLONE | TEST_TIMINGS))
+                                                                 ^
+                                                                 )
+      config_valid =3D false;
+      ~~~~~~~~~~~~                                               =20
+  ../tests/kms_setmode.c:363:6: note: to match this =E2=80=98(=E2=80=99
+     if (encoder_usage_count[i] > 1 &&
+        ^
+  ../tests/kms_setmode.c:369:1: error: expected expression before =E2=80=98=
+}=E2=80=99 token
+   }
+   ^
+  ninja: build stopped: subcommand failed.
+  section_end:1628246758:step_script
+  section_start:1628246758:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1628246759:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
 
-  Here are the unknown changes that may have been introduced in IGTPW_6094:
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
+-tags/-/jobs/12557632):
+  ../tests/kms_setmode.c: In function =E2=80=98setup_crtcs=E2=80=99:
+  ../tests/kms_setmode.c:364:63: error: expected =E2=80=98)=E2=80=99 before=
+ =E2=80=98config_valid=E2=80=99
+    364 |     !!(tconf->flags & (TEST_SINGLE_CRTC_CLONE | TEST_TIMINGS))
+        |                                                               ^
+        |                                                               )
+    365 |    config_valid =3D false;
+        |    ~~~~~~~~~~~~                                               =20
+  ../tests/kms_setmode.c:363:6: note: to match this =E2=80=98(=E2=80=99
+    363 |   if (encoder_usage_count[i] > 1 &&
+        |      ^
+  ../tests/kms_setmode.c:369:1: error: expected expression before =E2=80=98=
+}=E2=80=99 token
+    369 | }
+        | ^
+  ninja: build stopped: subcommand failed.
+  section_end:1628246761:step_script
+  section_start:1628246761:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1628246762:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
 
-### IGT changes ###
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
+igt-ci-tags/-/jobs/12557636):
+  ninja: Entering directory `build'
+  [1/725] Generating version.h with a custom command.
+  [2/623] Linking target tests/kms_rotation_crc.
+  [3/623] Compiling C object 'tests/59830eb@@kms_setmode@exe/kms_setmode.c.=
+o'.
+  FAILED: tests/59830eb@@kms_setmode@exe/kms_setmode.c.o=20
+  clang -Itests/59830eb@@kms_setmode@exe -Itests -I../tests -I../include/dr=
+m-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cair=
+o -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixm=
+an-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm=
+ -I/usr/include/libdrm/nouveau -I/usr/include/valgrind -Xclang -fcolor-diag=
+nostics -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dg=
+nu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-fun=
+ction-cast -Wdeclaration-after-statement -Wformat=3D2 -Wmissing-declaration=
+s -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnest=
+ed-externs -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshado=
+w -Wstrict-prototypes -Wuninitialized -Wunused -Wno-missing-field-initializ=
+ers -Wno-pointer-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno=
+-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -We=
+rror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to=
+-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -We=
+rror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -=
+Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin=
+-calloc -fcommon -pthread -MD -MQ 'tests/59830eb@@kms_setmode@exe/kms_setmo=
+de.c.o' -MF 'tests/59830eb@@kms_setmode@exe/kms_setmode.c.o.d' -o 'tests/59=
+830eb@@kms_setmode@exe/kms_setmode.c.o' -c ../tests/kms_setmode.c
+  ../tests/kms_setmode.c:365:4: error: expected ')'
+                          config_valid =3D false;
+                          ^
+  ../tests/kms_setmode.c:363:6: note: to match this '('
+                  if (encoder_usage_count[i] > 1 &&
+                     ^
+  1 error generated.
+  ninja: build stopped: subcommand failed.
+  section_end:1628246771:step_script
+  section_start:1628246771:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1628246772:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
 
-#### Suppressed ####
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop=
+.org/gfx-ci/igt-ci-tags/-/jobs/12557635):
+  ../tests/kms_setmode.c: In function =E2=80=98setup_crtcs=E2=80=99:
+  ../tests/kms_setmode.c:364:63: error: expected =E2=80=98)=E2=80=99 before=
+ =E2=80=98config_valid=E2=80=99
+    364 |     !!(tconf->flags & (TEST_SINGLE_CRTC_CLONE | TEST_TIMINGS))
+        |                                                               ^
+        |                                                               )
+    365 |    config_valid =3D false;
+        |    ~~~~~~~~~~~~                                               =20
+  ../tests/kms_setmode.c:363:6: note: to match this =E2=80=98(=E2=80=99
+    363 |   if (encoder_usage_count[i] > 1 &&
+        |      ^
+  ../tests/kms_setmode.c:369:1: error: expected expression before =E2=80=98=
+}=E2=80=99 token
+    369 | }
+        | ^
+  ninja: build stopped: subcommand failed.
+  section_end:1628246760:step_script
+  section_start:1628246760:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1628246762:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
 
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/=
+gfx-ci/igt-ci-tags/-/jobs/12557633):
+  ../tests/kms_setmode.c: In function =E2=80=98setup_crtcs=E2=80=99:
+  ../tests/kms_setmode.c:364:63: error: expected =E2=80=98)=E2=80=99 before=
+ =E2=80=98config_valid=E2=80=99
+    364 |     !!(tconf->flags & (TEST_SINGLE_CRTC_CLONE | TEST_TIMINGS))
+        |                                                               ^
+        |                                                               )
+    365 |    config_valid =3D false;
+        |    ~~~~~~~~~~~~                                               =20
+  ../tests/kms_setmode.c:363:6: note: to match this =E2=80=98(=E2=80=99
+    363 |   if (encoder_usage_count[i] > 1 &&
+        |      ^
+  ../tests/kms_setmode.c:369:1: error: expected expression before =E2=80=98=
+}=E2=80=99 token
+    369 | }
+        | ^
+  ninja: build stopped: subcommand failed.
+  section_end:1628246761:step_script
+  section_start:1628246761:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1628246763:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
 
-  * igt@runner@aborted:
-    - {fi-jsl-1}:         NOTRUN -> [FAIL][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6094/fi-jsl-1/igt@runner@aborted.html
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
+gfx-ci/igt-ci-tags/-/jobs/12557634):
+  ../tests/kms_setmode.c: In function =E2=80=98setup_crtcs=E2=80=99:
+  ../tests/kms_setmode.c:364:63: error: expected =E2=80=98)=E2=80=99 before=
+ =E2=80=98config_valid=E2=80=99
+    364 |     !!(tconf->flags & (TEST_SINGLE_CRTC_CLONE | TEST_TIMINGS))
+        |                                                               ^
+        |                                                               )
+    365 |    config_valid =3D false;
+        |    ~~~~~~~~~~~~                                               =20
+  ../tests/kms_setmode.c:363:6: note: to match this =E2=80=98(=E2=80=99
+    363 |   if (encoder_usage_count[i] > 1 &&
+        |      ^
+  ../tests/kms_setmode.c:369:1: error: expected expression before =E2=80=98=
+}=E2=80=99 token
+    369 | }
+        | ^
+  ninja: build stopped: subcommand failed.
+  section_end:1628246759:step_script
+  section_start:1628246759:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1628246760:cleanup_file_variables
+  ERROR: Job failed: exit code 1
 
-  
-Known issues
-------------
+=3D=3D Logs =3D=3D
 
-  Here are the changes found in IGTPW_6094 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-tgl-1115g4:      [PASS][2] -> [FAIL][3] ([i915#1888])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10456/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6094/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@coherency:
-    - {fi-tgl-dsi}:       [INCOMPLETE][4] -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10456/fi-tgl-dsi/igt@i915_selftest@live@coherency.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6094/fi-tgl-dsi/igt@i915_selftest@live@coherency.html
-
-  
-#### Warnings ####
-
-  * igt@runner@aborted:
-    - fi-rkl-guc:         [FAIL][6] -> [FAIL][7] ([i915#1602] / [i915#2029])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10456/fi-rkl-guc/igt@runner@aborted.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6094/fi-rkl-guc/igt@runner@aborted.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
-  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#2029]: https://gitlab.freedesktop.org/drm/intel/issues/2029
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#3057]: https://gitlab.freedesktop.org/drm/intel/issues/3057
-  [k.org#205379]: https://bugzilla.kernel.org/show_bug.cgi?id=205379
-
-
-Participating hosts (37 -> 34)
-------------------------------
-
-  Missing    (3): fi-bdw-samus fi-bsw-cyan bat-jsl-1 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6162 -> IGTPW_6094
-
-  CI-20190529: 20190529
-  CI_DRM_10456: def34654b5a1c994816500ea5bcf7f23893d452d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6094: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6094/index.html
-  IGT_6162: 2f32b9e0da5f1ac9529318dd5b836c8cf4d3c441 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6094/index.html
-
---===============1058030395022783717==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_setmode: Fix to get a valid config (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93450/">https://patchwork.freedesktop.org/series/93450/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6094/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6094/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10456 -&gt; IGTPW_6094</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6094/index.html</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6094:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@runner@aborted:<ul>
-<li>{fi-jsl-1}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6094/fi-jsl-1/igt@runner@aborted.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6094 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@gem_exec_suspend@basic-s3:<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10456/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6094/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@coherency:<ul>
-<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10456/fi-tgl-dsi/igt@i915_selftest@live@coherency.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6094/fi-tgl-dsi/igt@i915_selftest@live@coherency.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@runner@aborted:<ul>
-<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10456/fi-rkl-guc/igt@runner@aborted.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6094/fi-rkl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2029">i915#2029</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (37 -&gt; 34)</h2>
-<p>Missing    (3): fi-bdw-samus fi-bsw-cyan bat-jsl-1 </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6162 -&gt; IGTPW_6094</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10456: def34654b5a1c994816500ea5bcf7f23893d452d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6094: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6094/index.html<br />
-  IGT_6162: 2f32b9e0da5f1ac9529318dd5b836c8cf4d3c441 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============1058030395022783717==--
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
+ipelines/375993
