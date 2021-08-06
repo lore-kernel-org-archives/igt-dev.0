@@ -1,13 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2EBE6E0F4
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 10:50:05 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Fri,  6 Aug 2021 16:20:31 +0530
-Message-Id: <20210806105031.297958-1-bhanuprakash.modem@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E504F6E82C
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 11:12:03 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+Date: Fri, 6 Aug 2021 11:12:00 +0000
+Message-ID: <2f2adec22b834113ab24a23b45f6ff0a@intel.com>
+References: <20210803110934.970874-1-ayaz.siddiqui@intel.com>
+ <20210803110934.970874-2-ayaz.siddiqui@intel.com>
+In-Reply-To: <20210803110934.970874-2-ayaz.siddiqui@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_setmode: Fix to get a valid config
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] lib/rendercopy_gen9: Program MOCS
+ value based on platform
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,32 +23,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, Imre Deak <imre.deak@intel.com>, Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+To: "Siddiqui, Ayaz A" <ayaz.siddiqui@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Siddiqui, Ayaz A" <ayaz.siddiqui@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-CRTCs in this test will be modesetted one-by-one, we won't
-get a failure sice each connector has its own CRTC.
-
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_setmode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 89220b83e..e3f59617c 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -361,7 +361,7 @@ static void setup_crtcs(const struct test_config *tconf,
- 	}
- 	for (i = 0; i < resources->count_encoders; i++)
- 		if (encoder_usage_count[i] > 1 &&
--				!!(tconf->flags & TEST_SINGLE_CRTC_CLONE))
-+				!!(tconf->flags & (TEST_SINGLE_CRTC_CLONE | TEST_TIMINGS)))
- 			config_valid = false;
- 
- 	*crtc_count_ret = crtc_count;
--- 
-2.32.0
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJv
+dW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YgQXlheiBBDQo+IFNpZGRp
+cXVpDQo+IFNlbnQ6IFR1ZXNkYXksIEF1Z3VzdCAzLCAyMDIxIDI6MTAgUE0NCj4gVG86IGlndC1k
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBTaWRkaXF1aSwgQXlheiBBIDxheWF6LnNp
+ZGRpcXVpQGludGVsLmNvbT4NCj4gU3ViamVjdDogW2lndC1kZXZdIFtQQVRDSCBpLWctdCAxLzFd
+IGxpYi9yZW5kZXJjb3B5X2dlbjk6IFByb2dyYW0gTU9DUyB2YWx1ZQ0KPiBiYXNlZCBvbiBwbGF0
+Zm9ybQ0KPiANCj4gR2VuMTIgb253YXJkIHBsYXRmb3JtcyBkb2VzIG5vdCBzdXBwb3J0IGNvYWNo
+YWJpbGl0eSB2aWEgUFRFLg0KPiBTbyBJOTE1X01PQ1NfUFRFKCBpbmRleCAxKSBtYXkgcG9pbnQg
+dG8gdW5zcGVjaWZpZWQvcmVzZXJ2ZWQgb3Igc29tZSBvdGhlcg0KPiBjb2FjaGFiaWxpdHkgTU9D
+UyBpbmRleC4gVGhpcyBtYXkgbGVhZHMgdG8gZGF0YSBjb3JydXB0aW9uLg0KPiANCj4gQSBoZWxw
+ZXIgZnVuY3Rpb24gaGFzIGJlZW4gYWRkZWQgdG8gcHJvdmlkZSBVQyBNT0NTIGluZGV4IGJhc2Vk
+IG9uIHBsYXRmb3JtLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQXlheiBBIFNpZGRpcXVpIDxheWF6
+LnNpZGRpcXVpQGludGVsLmNvbT4NCj4gLS0tDQo+ICBsaWIvcmVuZGVyY29weV9nZW45LmMgfCAz
+MyArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAz
+MiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGliL3Jl
+bmRlcmNvcHlfZ2VuOS5jIGIvbGliL3JlbmRlcmNvcHlfZ2VuOS5jIGluZGV4DQo+IGVlY2Y3M2Qz
+MTguLjU4NDVkM2IyODAgMTAwNjQ0DQo+IC0tLSBhL2xpYi9yZW5kZXJjb3B5X2dlbjkuYw0KPiAr
+KysgYi9saWIvcmVuZGVyY29weV9nZW45LmMNCj4gQEAgLTIzLDYgKzIzLDcgQEANCj4gICNpbmNs
+dWRlICJnZW45X3JlbmRlci5oIg0KPiAgI2luY2x1ZGUgImludGVsX3JlZy5oIg0KPiAgI2luY2x1
+ZGUgImlndF9hdXguaCINCj4gKyNpbmNsdWRlICJpbnRlbF9jaGlwc2V0LmgiDQo+IA0KPiAgI2Rl
+ZmluZSBWRVJURVhfU0laRSAoMyo0KQ0KPiANCj4gQEAgLTExNSwxMiArMTE2LDQyIEBAIHN0YXRp
+YyBjb25zdCB1aW50MzJfdCBnZW4xMl9yZW5kZXJfY29weVtdWzRdID0gew0KPiAgCXsgMHg4MDA0
+MDEzMSwgMHgwMDAwMDAwNCwgMHg1MDAwNzE0NCwgMHgwMGM0MDAwMCB9LCAgfTsNCj4gDQo+ICsN
+Cj4gKy8qDQo+ICsgKiBHZW4gPj0gMTIgb253YXJkcyBkb24ndCBoYXZlIGEgc2V0dGluZyBmb3Ig
+UFRFLA0KPiArICogc28gdXNpbmcgSTkxNV9NT0NTX1BURSBhcyBtb2NzIGluZGV4IG1heSBsZWFk
+cyB0bw0KDQpzL2xlYWRzL2xlYWQvZw0KDQo+ICsgKiBzb21lIHVuZGVmaW5lZCBNT0NTIGJlaGF2
+aW9yLg0KPiArICogQ29ycmVjdCBNT0NTIGluZGV4IHNob3VsZCBiZSByZWZlcnJlZCBmcm9tIEJT
+UENFUw0KDQpzL0JTUENFUy9CU3BlYy9nDQoNCj4gKyAqIGFuZCBwcm9ncmFtbWVkIGFjY29yZGlu
+Z2x5Lg0KPiArICogVGhpcyBoZWxwZXIgZnVuY3Rpb24gaXMgcHJvdmlkaW5nIGFwcHJvcHJhaXRl
+IFVDIGluZGV4Lg0KDQpzLyBhcHByb3ByYWl0ZS9hcHByb3ByaWF0ZS9nDQoNCldpdGggdGhlc2Ug
+bWlub3IgdHlwb3MgaW4gY29tbWVudCBzZWN0aW9ucywgdGhpcyBpcyANCg0KUmV2aWV3ZWQtYnk6
+IE1pa2EgS2Fob2xhIDxtaWthLmthaG9sYUBpbnRlbC5jb20+DQoNCj4gKyAqLw0KPiArc3RhdGlj
+IHVpbnQ4X3QNCj4gK2ludGVsX2dldF91Y19tb2NzKGludCBmZCkgew0KPiArDQo+ICsJdWludDE2
+X3QgZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2RldmlkKGZkKTsNCj4gKwl1aW50OF90ICB1Y19pbmRl
+eDsNCj4gKw0KPiArCWlmIChJU19ERzEoZGV2aWQpKQ0KPiArCQl1Y19pbmRleCA9IDE7DQo+ICsJ
+ZWxzZSBpZiAoSVNfR0VOMTIoZGV2aWQpKQ0KPiArCQl1Y19pbmRleCA9IDM7DQo+ICsJZWxzZQ0K
+PiArCQl1Y19pbmRleCA9IEk5MTVfTU9DU19QVEU7DQo+ICsNCj4gKwkvKg0KPiArCSAqIEJpdEZp
+ZWxkIFs2OjFdIHJlcHJlc2VudHMgaW5kZXggdG8gTU9DUyBUYWJsZXMNCj4gKwkgKiBCaXRGaWVs
+ZCBbMF0gcmVwcmVzZW50cyBFbmNyeXB0aW9uL0RlY3J5cHRpb24NCj4gKwkgKi8NCj4gKwlyZXR1
+cm4gdWNfaW5kZXggPDwgMTsNCj4gK30NCj4gKw0KPiAgLyogTW9zdGx5IGNvcHkrcGFzdGUgZnJv
+bSBnZW42LCBleGNlcHQgaGVpZ2h0LCB3aWR0aCwgcGl0Y2ggbW92ZWQgKi8gIHN0YXRpYw0KPiB1
+aW50MzJfdCAgZ2VuOF9iaW5kX2J1ZihzdHJ1Y3QgaW50ZWxfYmIgKmliYiwgY29uc3Qgc3RydWN0
+IGludGVsX2J1ZiAqYnVmLCBpbnQNCj4gaXNfZHN0KSB7DQo+ICAJc3RydWN0IGdlbjlfc3VyZmFj
+ZV9zdGF0ZSAqc3M7DQo+ICAJdWludDMyX3Qgd3JpdGVfZG9tYWluLCByZWFkX2RvbWFpbjsNCj4g
+IAl1aW50NjRfdCBhZGRyZXNzOw0KPiArCWludCBpOTE1ID0gYnVmX29wc19nZXRfZmQoYnVmLT5i
+b3BzKTsNCj4gDQo+ICAJaWd0X2Fzc2VydF9sdGUoYnVmLT5zdXJmYWNlWzBdLnN0cmlkZSwgMjU2
+KjEwMjQpOw0KPiAgCWlndF9hc3NlcnRfbHRlKGludGVsX2J1Zl93aWR0aChidWYpLCAxNjM4NCk7
+IEBAIC0xNTEsNyArMTgyLDcgQEANCj4gZ2VuOF9iaW5kX2J1ZihzdHJ1Y3QgaW50ZWxfYmIgKmli
+YiwgY29uc3Qgc3RydWN0IGludGVsX2J1ZiAqYnVmLCBpbnQgaXNfZHN0KSB7DQo+ICAJZWxzZSBp
+ZiAoYnVmLT50aWxpbmcgIT0gSTkxNV9USUxJTkdfTk9ORSkNCj4gIAkJc3MtPnNzMC50aWxlZF9t
+b2RlID0gMzsNCj4gDQo+IC0Jc3MtPnNzMS5tZW1vcnlfb2JqZWN0X2NvbnRyb2wgPSBJOTE1X01P
+Q1NfUFRFIDw8IDE7DQo+ICsJc3MtPnNzMS5tZW1vcnlfb2JqZWN0X2NvbnRyb2wgPSBpbnRlbF9n
+ZXRfdWNfbW9jcyhpOTE1KTsNCj4gDQo+ICAJaWYgKGJ1Zi0+dGlsaW5nID09IEk5MTVfVElMSU5H
+X1lmKQ0KPiAgCQlzcy0+c3M1LnRybW9kZSA9IDE7DQo+IC0tDQo+IDIuMjYuMg0KDQo=
