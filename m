@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 559AA6E053
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 13:41:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F0956EB90
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 13:42:00 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  6 Aug 2021 15:40:49 +0200
-Message-Id: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
+Date: Fri,  6 Aug 2021 15:40:50 +0200
+Message-Id: <20210806134145.24634-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
+References: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 00/56] Add allocator support in IGT
+Subject: [igt-dev] [PATCH i-g-t v4 01/56] lib/igt_dummyload: Add support of
+ using allocator in igt spinner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,157 +22,203 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is first batch which should decrease gap on platforms which 
-are switched to softpin mode only (RKL, ADL and newer).
+For gens without relocations we need to use softpin with valid offsets
+which do not overlap other execbuf objects. As spinner during creation
+knows nothing about vm it has to run into allocator handle must be
+passed to properly acquire offsets from allocator instance.
 
-Be aware current drm-tip contains core-for-CI patch which temporarily
-reenables relocations for ADL so CI run may be not expose bugs
-in the series code. I'm going to disable relocations for ADL 
-in separate patch for intel-gfx trybot to verify results.
-
-v2: - add NO_RELOC in intel_batchbuffer blitting functions
-    - switch back to gem_mmap__cpu() in gem_tiled_fence_blits.c
-
-v3: - fix gem_spin_batch ctx fail (occurs in rebase on top of new
-      intel_ctx_t)
-
-v4: - addressing review (Ashutosh)
-    - cleaning up series to have tests which should be ready for 
-      merge if reloc/no-reloc CI runs would be clear
-
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/igt_dummyload.c | 74 ++++++++++++++++++++++++++++++++++++---------
+ lib/igt_dummyload.h |  3 ++
+ 2 files changed, 63 insertions(+), 14 deletions(-)
 
-Andrzej Turko (5):
-  tests/gem_exec_big: Require relocation support
-  tests/gem_exec_capture: Support gens without relocations
-  tests/gem_exec_gttfill: Require relocation support
-  tests/gem_exec_store: Support gens without relocations
-  tests/gem_softpin: Exercise eviction with softpinning
-
-Bhanuprakash Modem (3):
-  lib/intel_batchbuffer: Add allocator support in blitter fast copy
-  tests/kms_flip: Adopt to use allocator
-  tests/kms_vblank: Adopt to use allocator
-
-Ch Sai Gowtham (4):
-  tests/gem_mmap: Add allocator support
-  tests/gem_mmap_gtt: Add allocator support
-  tests/gem_mmap_offset: Add allocator support
-  tests/gem_request_retire: Add allocator support
-
-Sai Gowtham (1):
-  tests/gem_exec_params: Support gens without relocations
-
-Zbigniew Kempczyński (43):
-  lib/igt_dummyload: Add support of using allocator in igt spinner
-  lib/intel_allocator: Add few helper functions for common use
-  lib/igt_gt: Add passing ahnd as an argument to igt_hang
-  lib/intel_batchbuffer: Ensure relocation code will be called
-  lib/intel_batchbuffer: Add allocator support in blitter src copy
-  lib/intel_batchbuffer: Try to avoid relocations in blitting
-  lib/huc_copy: Extend huc copy prototype to pass allocator handle
-  tests/gem_busy: Adopt to use allocator
-  tests/gem_create: Adopt to use allocator
-  tests/gem_ctx_engines: Adopt to use allocator
-  tests/gem_ctx_exec: Adopt to use allocator
-  tests/gem_ctx_freq: Adopt to use allocator
-  tests/gem_ctx_isolation: Adopt to use allocator
-  tests/gem_ctx_param: Adopt to use allocator
-  tests/gem_eio: Adopt to use allocator
-  tests/gem_exec_async: Adopt to use allocator
-  tests/gem_exec_balancer: Adopt to use allocator
-  tests/gem_exec_fair: Add softpin support
-  tests/gem_exec_suspend: Adopt to use allocator
-  tests/gem_exec_parallel: Adopt to use alloctor
-  tests/gem_exec_whisper: Adopt to use allocator
-  tests/gem_fenced_exec_thrash: Adopt to use allocator
-  tests/gem_mmap_wc: Adopt to use allocator
-  tests/gem_ringfill: Adopt to use allocator
-  tests/gem_spin_batch: Adopt to use allocator
-  tests/gem_tiled_fence_blits: Adopt to use allocator
-  tests/gem_unfence_active_buffers: Adopt to use allocator
-  tests/gem_unref_active_buffers: Adopt to use allocator
-  tests/gem_userptr_blits: Adopt to use allocator
-  tests/gem_wait: Adopt to use allocator
-  tests/gem_watchdog: Adopt to use no-reloc
-  tests/gem_workarounds: Adopt to use allocator
-  tests/i915_hangman: Adopt to use allocator
-  tests/i915_module_load: Adopt to use allocator
-  tests/i915_pm_rc6_residency: Adopt to use allocator
-  tests/i915_pm_rpm: Adopt to use no-reloc
-  tests/i915_pm_rps: Alter to use no-reloc
-  tests/kms_busy: Adopt to use allocator
-  tests/kms_cursor_legacy: Adopt to use allocator
-  tests/perf_pmu: Adopt to use allocator
-  tests/sysfs_heartbeat_interval: Adopt to use allocator
-  tests/sysfs_preempt_timeout: Adopt to use allocator
-  tests/sysfs_timeslice_duration: Adopt to use allocator
-
- lib/huc_copy.c                          |  27 ++-
- lib/huc_copy.h                          |   4 +-
- lib/igt_dummyload.c                     |  74 ++++++--
- lib/igt_dummyload.h                     |   3 +
- lib/igt_fb.c                            |  22 ++-
- lib/igt_gt.c                            |  21 ++-
- lib/igt_gt.h                            |   4 +
- lib/intel_allocator.h                   |  55 ++++++
- lib/intel_batchbuffer.c                 | 118 +++++++++----
- lib/intel_batchbuffer.h                 |  18 +-
- tests/i915/gem_busy.c                   |  36 +++-
- tests/i915/gem_create.c                 |  11 +-
- tests/i915/gem_ctx_engines.c            |  25 ++-
- tests/i915/gem_ctx_exec.c               |  46 ++++-
- tests/i915/gem_ctx_freq.c               |   4 +-
- tests/i915/gem_ctx_isolation.c          |  97 ++++++++---
- tests/i915/gem_ctx_param.c              |   9 +-
- tests/i915/gem_eio.c                    |  60 +++++--
- tests/i915/gem_exec_async.c             |  67 ++++++--
- tests/i915/gem_exec_balancer.c          | 105 +++++++++---
- tests/i915/gem_exec_big.c               |   1 +
- tests/i915/gem_exec_capture.c           | 131 +++++++++++----
- tests/i915/gem_exec_fair.c              |   6 +
- tests/i915/gem_exec_gttfill.c           |   1 +
- tests/i915/gem_exec_parallel.c          |  33 +++-
- tests/i915/gem_exec_params.c            |  74 +++++---
- tests/i915/gem_exec_store.c             | 134 +++++++++++----
- tests/i915/gem_exec_suspend.c           |  44 +++--
- tests/i915/gem_exec_whisper.c           |  39 ++++-
- tests/i915/gem_fenced_exec_thrash.c     |  22 ++-
- tests/i915/gem_huc_copy.c               |  12 +-
- tests/i915/gem_mmap.c                   |   4 +-
- tests/i915/gem_mmap_gtt.c               |  15 +-
- tests/i915/gem_mmap_offset.c            |   4 +-
- tests/i915/gem_mmap_wc.c                |   4 +-
- tests/i915/gem_request_retire.c         |  14 +-
- tests/i915/gem_ringfill.c               |  37 +++-
- tests/i915/gem_softpin.c                | 213 +++++++++++++++++++++++-
- tests/i915/gem_spin_batch.c             |  37 ++--
- tests/i915/gem_tiled_fence_blits.c      |  65 ++++++--
- tests/i915/gem_unfence_active_buffers.c |   5 +-
- tests/i915/gem_unref_active_buffers.c   |   5 +-
- tests/i915/gem_userptr_blits.c          |  44 ++++-
- tests/i915/gem_wait.c                   |   3 +
- tests/i915/gem_watchdog.c               |  11 +-
- tests/i915/gem_workarounds.c            |  17 +-
- tests/i915/i915_hangman.c               |  15 +-
- tests/i915/i915_module_load.c           |  23 ++-
- tests/i915/i915_pm_rc6_residency.c      |   8 +-
- tests/i915/i915_pm_rpm.c                |  27 ++-
- tests/i915/i915_pm_rps.c                |  19 ++-
- tests/i915/perf_pmu.c                   | 147 +++++++++++-----
- tests/i915/sysfs_heartbeat_interval.c   |  24 ++-
- tests/i915/sysfs_preempt_timeout.c      |  21 ++-
- tests/i915/sysfs_timeslice_duration.c   |  21 ++-
- tests/kms_busy.c                        |   9 +
- tests/kms_cursor_legacy.c               |   6 +
- tests/kms_flip.c                        |  14 +-
- tests/kms_vblank.c                      |  11 +-
- tests/prime_vgem.c                      | 120 +++++++++----
- 60 files changed, 1817 insertions(+), 429 deletions(-)
-
+diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+index 8a5ad5ee3..645db9222 100644
+--- a/lib/igt_dummyload.c
++++ b/lib/igt_dummyload.c
+@@ -35,6 +35,7 @@
+ #include "i915/gem_engine_topology.h"
+ #include "i915/gem_mman.h"
+ #include "i915/gem_submission.h"
++#include "igt_aux.h"
+ #include "igt_core.h"
+ #include "igt_device.h"
+ #include "igt_dummyload.h"
+@@ -101,7 +102,7 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	unsigned int flags[GEM_MAX_ENGINES];
+ 	unsigned int nengine;
+ 	int fence_fd = -1;
+-	uint64_t addr;
++	uint64_t addr, addr_scratch, ahnd = opts->ahnd, objflags = 0;
+ 	uint32_t *cs;
+ 	int i;
+ 
+@@ -119,11 +120,17 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	 * are not allowed in the first 256KiB, for fear of negative relocations
+ 	 * that wrap.
+ 	 */
+-	addr = gem_aperture_size(fd) / 2;
+-	if (addr >> 31)
+-		addr = 1u << 31;
+-	addr += random() % addr / 2;
+-	addr &= -4096;
++
++	if (!ahnd) {
++		addr = gem_aperture_size(fd) / 2;
++		if (addr >> 31)
++			addr = 1u << 31;
++		addr += random() % addr / 2;
++		addr &= -4096;
++	} else {
++		spin->ahnd = ahnd;
++		objflags |= EXEC_OBJECT_PINNED;
++	}
+ 
+ 	igt_assert(!(opts->ctx && opts->ctx_id));
+ 
+@@ -164,16 +171,34 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	execbuf->buffer_count++;
+ 	cs = spin->batch;
+ 
+-	obj[BATCH].offset = addr;
++	if (ahnd)
++		addr = intel_allocator_alloc_with_strategy(ahnd, obj[BATCH].handle,
++							   BATCH_SIZE, 0,
++							   ALLOC_STRATEGY_LOW_TO_HIGH);
++	obj[BATCH].offset = CANONICAL(addr);
++	obj[BATCH].flags |= objflags;
++	if (obj[BATCH].offset >= (1ull << 32))
++		obj[BATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++
+ 	addr += BATCH_SIZE;
+ 
+ 	if (opts->dependency) {
+ 		igt_assert(!(opts->flags & IGT_SPIN_POLL_RUN));
++		if (ahnd)
++			addr_scratch = intel_allocator_alloc_with_strategy(ahnd, opts->dependency,
++									   BATCH_SIZE, 0,
++									   ALLOC_STRATEGY_LOW_TO_HIGH);
++		else
++			addr_scratch = addr;
+ 
+ 		obj[SCRATCH].handle = opts->dependency;
+-		obj[SCRATCH].offset = addr;
++		obj[SCRATCH].offset = CANONICAL(addr_scratch);
++		obj[SCRATCH].flags |= objflags;
++		if (obj[SCRATCH].offset >= (1ull << 32))
++			obj[SCRATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++
+ 		if (!(opts->flags & IGT_SPIN_SOFTDEP)) {
+-			obj[SCRATCH].flags = EXEC_OBJECT_WRITE;
++			obj[SCRATCH].flags |= EXEC_OBJECT_WRITE;
+ 
+ 			/* dummy write to dependency */
+ 			r = &relocs[obj[BATCH].relocation_count++];
+@@ -212,8 +237,14 @@ emit_recursive_batch(igt_spin_t *spin,
+ 								       0, 4096,
+ 								       PROT_READ | PROT_WRITE);
+ 		}
++
++		if (ahnd)
++			addr = intel_allocator_alloc_with_strategy(ahnd,
++								   spin->poll_handle,
++								   BATCH_SIZE * 3, 0,
++								   ALLOC_STRATEGY_LOW_TO_HIGH);
+ 		addr += 4096; /* guard page */
+-		obj[SCRATCH].offset = addr;
++		obj[SCRATCH].offset = CANONICAL(addr);
+ 		addr += 4096;
+ 
+ 		igt_assert_eq(spin->poll[SPIN_POLL_START_IDX], 0);
+@@ -223,11 +254,15 @@ emit_recursive_batch(igt_spin_t *spin,
+ 		r->offset = sizeof(uint32_t) * 1;
+ 		r->delta = sizeof(uint32_t) * SPIN_POLL_START_IDX;
+ 
++		obj[SCRATCH].flags |= objflags;
++		if (obj[SCRATCH].offset >= (1ull << 32))
++			obj[SCRATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++
+ 		*cs++ = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
+ 
+ 		if (gen >= 8) {
+ 			*cs++ = r->presumed_offset + r->delta;
+-			*cs++ = 0;
++			*cs++ = (r->presumed_offset + r->delta) >> 32;
+ 		} else if (gen >= 4) {
+ 			*cs++ = 0;
+ 			*cs++ = r->presumed_offset + r->delta;
+@@ -314,10 +349,11 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	r->offset = (cs + 1 - spin->batch) * sizeof(*cs);
+ 	r->read_domains = I915_GEM_DOMAIN_COMMAND;
+ 	r->delta = LOOP_START_OFFSET;
++
+ 	if (gen >= 8) {
+ 		*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | 1;
+ 		*cs++ = r->presumed_offset + r->delta;
+-		*cs++ = 0;
++		*cs++ = (r->presumed_offset + r->delta) >> 32;
+ 	} else if (gen >= 6) {
+ 		*cs++ = MI_BATCH_BUFFER_START | 1 << 8;
+ 		*cs++ = r->presumed_offset + r->delta;
+@@ -351,6 +387,10 @@ emit_recursive_batch(igt_spin_t *spin,
+ 		execbuf->flags &= ~ENGINE_MASK;
+ 		execbuf->flags |= flags[i];
+ 
++		/* For allocator we have to rid of relocation_count */
++		for (int j = 0; j < ARRAY_SIZE(spin->obj) && ahnd; j++)
++			spin->obj[j].relocation_count = 0;
++
+ 		gem_execbuf_wr(fd, execbuf);
+ 
+ 		if (opts->flags & IGT_SPIN_FENCE_OUT) {
+@@ -569,11 +609,17 @@ static void __igt_spin_free(int fd, igt_spin_t *spin)
+ 	if (spin->batch)
+ 		gem_munmap(spin->batch, BATCH_SIZE);
+ 
+-	if (spin->poll_handle)
++	if (spin->poll_handle) {
+ 		gem_close(fd, spin->poll_handle);
++		if (spin->ahnd)
++			intel_allocator_free(spin->ahnd, spin->poll_handle);
++	}
+ 
+-	if (spin->handle)
++	if (spin->handle) {
+ 		gem_close(fd, spin->handle);
++		if (spin->ahnd)
++			intel_allocator_free(spin->ahnd, spin->handle);
++	}
+ 
+ 	if (spin->out_fence >= 0)
+ 		close(spin->out_fence);
+diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
+index 67e1a08ed..f02052614 100644
+--- a/lib/igt_dummyload.h
++++ b/lib/igt_dummyload.h
+@@ -58,6 +58,8 @@ typedef struct igt_spin {
+ 
+ 	unsigned int flags;
+ #define SPIN_CLFLUSH (1 << 0)
++
++	uint64_t ahnd;
+ } igt_spin_t;
+ 
+ /**
+@@ -78,6 +80,7 @@ typedef struct igt_spin_factory {
+ 	unsigned int engine;
+ 	unsigned int flags;
+ 	int fence;
++	uint64_t ahnd;
+ } igt_spin_factory_t;
+ 
+ #define IGT_SPIN_FENCE_IN      (1 << 0)
 -- 
 2.26.0
