@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 990446EB90
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 13:43:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 23FBE6EB94
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 13:43:28 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  6 Aug 2021 15:41:44 +0200
-Message-Id: <20210806134145.24634-56-zbigniew.kempczynski@intel.com>
+Date: Fri,  6 Aug 2021 15:41:45 +0200
+Message-Id: <20210806134145.24634-57-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
 References: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 55/56] tests/sysfs_preempt_timeout: Adopt
- to use allocator
+Subject: [igt-dev] [PATCH i-g-t v4 56/56] tests/sysfs_timeslice_duration:
+ Adopt to use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,22 +32,22 @@ Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/sysfs_preempt_timeout.c | 21 +++++++++++++++++----
+ tests/i915/sysfs_timeslice_duration.c | 21 +++++++++++++++++----
  1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/sysfs_preempt_timeout.c b/tests/i915/sysfs_preempt_timeout.c
-index 9f00093ea..d176ae72e 100644
---- a/tests/i915/sysfs_preempt_timeout.c
-+++ b/tests/i915/sysfs_preempt_timeout.c
+diff --git a/tests/i915/sysfs_timeslice_duration.c b/tests/i915/sysfs_timeslice_duration.c
+index b73ee3889..8a2f1c2f2 100644
+--- a/tests/i915/sysfs_timeslice_duration.c
++++ b/tests/i915/sysfs_timeslice_duration.c
 @@ -37,6 +37,7 @@
- #include "igt_debugfs.h"
+ #include "i915/gem_mman.h"
  #include "igt_dummyload.h"
  #include "igt_sysfs.h"
 +#include "intel_allocator.h"
- #include "sw_sync.h"
- 
- #define ATTR "preempt_timeout_ms"
-@@ -143,6 +144,7 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ #include "ioctl_wrappers.h"
+ #include "intel_chipset.h"
+ #include "intel_reg.h"
+@@ -371,6 +372,7 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
  	igt_spin_t *spin[2];
  	uint64_t elapsed;
  	const intel_ctx_t *ctx[2];
@@ -55,10 +55,10 @@ index 9f00093ea..d176ae72e 100644
  
  	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
  	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
-@@ -150,15 +152,18 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
- 	set_preempt_timeout(engine, timeout);
+@@ -378,15 +380,18 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ 	set_timeslice(engine, timeout);
  
- 	ctx[0] = create_ctx(i915, class, inst, -1023);
+ 	ctx[0] = create_ctx(i915, class, inst, 0);
 -	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
 +	ahnd[0] = get_reloc_ahnd(i915, ctx[0]->id);
 +	spin[0] = igt_spin_new(i915, .ahnd = ahnd[0], .ctx = ctx[0],
@@ -67,7 +67,7 @@ index 9f00093ea..d176ae72e 100644
  					 IGT_SPIN_FENCE_OUT));
  	igt_spin_busywait_until_started(spin[0]);
  
- 	ctx[1] = create_ctx(i915, class, inst, 1023);
+ 	ctx[1] = create_ctx(i915, class, inst, 0);
 +	ahnd[1] = get_reloc_ahnd(i915, ctx[1]->id);
  	igt_nsec_elapsed(&ts);
 -	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
@@ -76,7 +76,7 @@ index 9f00093ea..d176ae72e 100644
  	igt_spin_busywait_until_started(spin[1]);
  	elapsed = igt_nsec_elapsed(&ts);
  
-@@ -171,6 +176,8 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+@@ -399,6 +404,8 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
  
  	intel_ctx_destroy(i915, ctx[1]);
  	intel_ctx_destroy(i915, ctx[0]);
@@ -85,18 +85,18 @@ index 9f00093ea..d176ae72e 100644
  	gem_quiescent_gpu(i915);
  
  	return elapsed;
-@@ -231,6 +238,7 @@ static void test_off(int i915, int engine)
- 	igt_spin_t *spin[2];
+@@ -460,6 +467,7 @@ static void test_off(int i915, int engine)
  	unsigned int saved;
+ 	igt_spin_t *spin[2];
  	const intel_ctx_t *ctx[2];
 +	uint64_t ahnd[2];
  
  	/*
- 	 * We support setting the timeout to 0 to disable the reset on
-@@ -252,14 +260,17 @@ static void test_off(int i915, int engine)
- 	set_preempt_timeout(engine, 0);
+ 	 * As always, there are some who must run uninterrupted and simply do
+@@ -482,14 +490,17 @@ static void test_off(int i915, int engine)
+ 	set_timeslice(engine, 0);
  
- 	ctx[0] = create_ctx(i915, class, inst, -1023);
+ 	ctx[0] = create_ctx(i915, class, inst, 0);
 -	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
 +	ahnd[0] = get_reloc_ahnd(i915, ctx[0]->id);
 +	spin[0] = igt_spin_new(i915, .ahnd = ahnd[0], .ctx = ctx[0],
@@ -105,7 +105,7 @@ index 9f00093ea..d176ae72e 100644
  					 IGT_SPIN_FENCE_OUT));
  	igt_spin_busywait_until_started(spin[0]);
  
- 	ctx[1] = create_ctx(i915, class, inst, 1023);
+ 	ctx[1] = create_ctx(i915, class, inst, 0);
 -	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
 +	ahnd[1] = get_reloc_ahnd(i915, ctx[1]->id);
 +	spin[1] = igt_spin_new(i915, .ahnd = ahnd[1], .ctx = ctx[1],
@@ -113,7 +113,7 @@ index 9f00093ea..d176ae72e 100644
  
  	for (int i = 0; i < 150; i++) {
  		igt_assert_eq(sync_fence_status(spin[0]->out_fence), 0);
-@@ -278,6 +289,8 @@ static void test_off(int i915, int engine)
+@@ -508,6 +519,8 @@ static void test_off(int i915, int engine)
  
  	intel_ctx_destroy(i915, ctx[1]);
  	intel_ctx_destroy(i915, ctx[0]);
