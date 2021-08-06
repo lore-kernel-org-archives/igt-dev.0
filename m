@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F0956EB90
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 13:42:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B807E6EB90
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 13:42:01 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  6 Aug 2021 15:40:50 +0200
-Message-Id: <20210806134145.24634-2-zbigniew.kempczynski@intel.com>
+Date: Fri,  6 Aug 2021 15:40:51 +0200
+Message-Id: <20210806134145.24634-3-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
 References: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 01/56] lib/igt_dummyload: Add support of
- using allocator in igt spinner
+Subject: [igt-dev] [PATCH i-g-t v4 02/56] lib/intel_allocator: Add few
+ helper functions for common use
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,10 +25,26 @@ To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For gens without relocations we need to use softpin with valid offsets
-which do not overlap other execbuf objects. As spinner during creation
-knows nothing about vm it has to run into allocator handle must be
-passed to properly acquire offsets from allocator instance.
+Add few helper functions which can be used in reloc/no-reloc tests.
+
+Common name is get_<ALLOCATOR_TYPE>_ahnd(i915, ctx), like:
+get_reloc_ahnd(), get_simple_ahnd(). As simple allows acquiring
+offsets starting from top or bottom of vm additional two were added:
+get_simple_l2h_ahnd() and get_simple_h2l_ahnd(). put_ahnd() closes
+allocator handle (if it is valid).
+
+To acquire / release an offset get_offset() and put_offset() were
+added. When allocator handle is invalid (equal to zero) get_offset()
+just returns 0, put_offset() does nothing in this case. We can then
+call them regardless reloc/no-reloc code keeping conditional code in
+these functions.
+
+Be aware that each get_..._ahnd() functions calls checking kernel
+relocation capabilities. This generates extra execbuf ioctl() call (but
+without queueing job to gpu). If that is a problem and we want to avoid
+additional execbuf calls, checking relocation caps should be done on the
+beginning of the test. Allocator handle (open()) should be acquired then
+conditionally according to the result of this check.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
@@ -36,189 +52,79 @@ Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: Chris Wilson <chris@chris-wilson.co.uk>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/igt_dummyload.c | 74 ++++++++++++++++++++++++++++++++++++---------
- lib/igt_dummyload.h |  3 ++
- 2 files changed, 63 insertions(+), 14 deletions(-)
+ lib/intel_allocator.h | 55 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
-diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
-index 8a5ad5ee3..645db9222 100644
---- a/lib/igt_dummyload.c
-+++ b/lib/igt_dummyload.c
-@@ -35,6 +35,7 @@
- #include "i915/gem_engine_topology.h"
- #include "i915/gem_mman.h"
- #include "i915/gem_submission.h"
-+#include "igt_aux.h"
- #include "igt_core.h"
- #include "igt_device.h"
- #include "igt_dummyload.h"
-@@ -101,7 +102,7 @@ emit_recursive_batch(igt_spin_t *spin,
- 	unsigned int flags[GEM_MAX_ENGINES];
- 	unsigned int nengine;
- 	int fence_fd = -1;
--	uint64_t addr;
-+	uint64_t addr, addr_scratch, ahnd = opts->ahnd, objflags = 0;
- 	uint32_t *cs;
- 	int i;
- 
-@@ -119,11 +120,17 @@ emit_recursive_batch(igt_spin_t *spin,
- 	 * are not allowed in the first 256KiB, for fear of negative relocations
- 	 * that wrap.
- 	 */
--	addr = gem_aperture_size(fd) / 2;
--	if (addr >> 31)
--		addr = 1u << 31;
--	addr += random() % addr / 2;
--	addr &= -4096;
-+
-+	if (!ahnd) {
-+		addr = gem_aperture_size(fd) / 2;
-+		if (addr >> 31)
-+			addr = 1u << 31;
-+		addr += random() % addr / 2;
-+		addr &= -4096;
-+	} else {
-+		spin->ahnd = ahnd;
-+		objflags |= EXEC_OBJECT_PINNED;
-+	}
- 
- 	igt_assert(!(opts->ctx && opts->ctx_id));
- 
-@@ -164,16 +171,34 @@ emit_recursive_batch(igt_spin_t *spin,
- 	execbuf->buffer_count++;
- 	cs = spin->batch;
- 
--	obj[BATCH].offset = addr;
-+	if (ahnd)
-+		addr = intel_allocator_alloc_with_strategy(ahnd, obj[BATCH].handle,
-+							   BATCH_SIZE, 0,
-+							   ALLOC_STRATEGY_LOW_TO_HIGH);
-+	obj[BATCH].offset = CANONICAL(addr);
-+	obj[BATCH].flags |= objflags;
-+	if (obj[BATCH].offset >= (1ull << 32))
-+		obj[BATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+
- 	addr += BATCH_SIZE;
- 
- 	if (opts->dependency) {
- 		igt_assert(!(opts->flags & IGT_SPIN_POLL_RUN));
-+		if (ahnd)
-+			addr_scratch = intel_allocator_alloc_with_strategy(ahnd, opts->dependency,
-+									   BATCH_SIZE, 0,
-+									   ALLOC_STRATEGY_LOW_TO_HIGH);
-+		else
-+			addr_scratch = addr;
- 
- 		obj[SCRATCH].handle = opts->dependency;
--		obj[SCRATCH].offset = addr;
-+		obj[SCRATCH].offset = CANONICAL(addr_scratch);
-+		obj[SCRATCH].flags |= objflags;
-+		if (obj[SCRATCH].offset >= (1ull << 32))
-+			obj[SCRATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+
- 		if (!(opts->flags & IGT_SPIN_SOFTDEP)) {
--			obj[SCRATCH].flags = EXEC_OBJECT_WRITE;
-+			obj[SCRATCH].flags |= EXEC_OBJECT_WRITE;
- 
- 			/* dummy write to dependency */
- 			r = &relocs[obj[BATCH].relocation_count++];
-@@ -212,8 +237,14 @@ emit_recursive_batch(igt_spin_t *spin,
- 								       0, 4096,
- 								       PROT_READ | PROT_WRITE);
- 		}
-+
-+		if (ahnd)
-+			addr = intel_allocator_alloc_with_strategy(ahnd,
-+								   spin->poll_handle,
-+								   BATCH_SIZE * 3, 0,
-+								   ALLOC_STRATEGY_LOW_TO_HIGH);
- 		addr += 4096; /* guard page */
--		obj[SCRATCH].offset = addr;
-+		obj[SCRATCH].offset = CANONICAL(addr);
- 		addr += 4096;
- 
- 		igt_assert_eq(spin->poll[SPIN_POLL_START_IDX], 0);
-@@ -223,11 +254,15 @@ emit_recursive_batch(igt_spin_t *spin,
- 		r->offset = sizeof(uint32_t) * 1;
- 		r->delta = sizeof(uint32_t) * SPIN_POLL_START_IDX;
- 
-+		obj[SCRATCH].flags |= objflags;
-+		if (obj[SCRATCH].offset >= (1ull << 32))
-+			obj[SCRATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+
- 		*cs++ = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
- 
- 		if (gen >= 8) {
- 			*cs++ = r->presumed_offset + r->delta;
--			*cs++ = 0;
-+			*cs++ = (r->presumed_offset + r->delta) >> 32;
- 		} else if (gen >= 4) {
- 			*cs++ = 0;
- 			*cs++ = r->presumed_offset + r->delta;
-@@ -314,10 +349,11 @@ emit_recursive_batch(igt_spin_t *spin,
- 	r->offset = (cs + 1 - spin->batch) * sizeof(*cs);
- 	r->read_domains = I915_GEM_DOMAIN_COMMAND;
- 	r->delta = LOOP_START_OFFSET;
-+
- 	if (gen >= 8) {
- 		*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | 1;
- 		*cs++ = r->presumed_offset + r->delta;
--		*cs++ = 0;
-+		*cs++ = (r->presumed_offset + r->delta) >> 32;
- 	} else if (gen >= 6) {
- 		*cs++ = MI_BATCH_BUFFER_START | 1 << 8;
- 		*cs++ = r->presumed_offset + r->delta;
-@@ -351,6 +387,10 @@ emit_recursive_batch(igt_spin_t *spin,
- 		execbuf->flags &= ~ENGINE_MASK;
- 		execbuf->flags |= flags[i];
- 
-+		/* For allocator we have to rid of relocation_count */
-+		for (int j = 0; j < ARRAY_SIZE(spin->obj) && ahnd; j++)
-+			spin->obj[j].relocation_count = 0;
-+
- 		gem_execbuf_wr(fd, execbuf);
- 
- 		if (opts->flags & IGT_SPIN_FENCE_OUT) {
-@@ -569,11 +609,17 @@ static void __igt_spin_free(int fd, igt_spin_t *spin)
- 	if (spin->batch)
- 		gem_munmap(spin->batch, BATCH_SIZE);
- 
--	if (spin->poll_handle)
-+	if (spin->poll_handle) {
- 		gem_close(fd, spin->poll_handle);
-+		if (spin->ahnd)
-+			intel_allocator_free(spin->ahnd, spin->poll_handle);
-+	}
- 
--	if (spin->handle)
-+	if (spin->handle) {
- 		gem_close(fd, spin->handle);
-+		if (spin->ahnd)
-+			intel_allocator_free(spin->ahnd, spin->handle);
-+	}
- 
- 	if (spin->out_fence >= 0)
- 		close(spin->out_fence);
-diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
-index 67e1a08ed..f02052614 100644
---- a/lib/igt_dummyload.h
-+++ b/lib/igt_dummyload.h
-@@ -58,6 +58,8 @@ typedef struct igt_spin {
- 
- 	unsigned int flags;
- #define SPIN_CLFLUSH (1 << 0)
-+
-+	uint64_t ahnd;
- } igt_spin_t;
+diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
+index c14f57b4d..f6511ffbf 100644
+--- a/lib/intel_allocator.h
++++ b/lib/intel_allocator.h
+@@ -11,6 +11,7 @@
+ #include <pthread.h>
+ #include <stdint.h>
+ #include <stdatomic.h>
++#include "i915/gem_submission.h"
  
  /**
-@@ -78,6 +80,7 @@ typedef struct igt_spin_factory {
- 	unsigned int engine;
- 	unsigned int flags;
- 	int fence;
-+	uint64_t ahnd;
- } igt_spin_factory_t;
+  * SECTION:intel_allocator
+@@ -228,4 +229,58 @@ static inline uint64_t CANONICAL(uint64_t offset)
  
- #define IGT_SPIN_FENCE_IN      (1 << 0)
+ #define DECANONICAL(offset) (offset & ((1ull << GEN8_GTT_ADDRESS_WIDTH) - 1))
+ 
++static inline uint64_t get_simple_ahnd(int fd, uint32_t ctx)
++{
++	bool do_relocs = gem_has_relocations(fd);
++
++	return do_relocs ? 0 : intel_allocator_open(fd, ctx, INTEL_ALLOCATOR_SIMPLE);
++}
++
++static inline uint64_t get_simple_l2h_ahnd(int fd, uint32_t ctx)
++{
++	bool do_relocs = gem_has_relocations(fd);
++
++	return do_relocs ? 0 : intel_allocator_open_full(fd, ctx, 0, 0,
++							 INTEL_ALLOCATOR_SIMPLE,
++							 ALLOC_STRATEGY_LOW_TO_HIGH);
++}
++
++static inline uint64_t get_simple_h2l_ahnd(int fd, uint32_t ctx)
++{
++	bool do_relocs = gem_has_relocations(fd);
++
++	return do_relocs ? 0 : intel_allocator_open_full(fd, ctx, 0, 0,
++							 INTEL_ALLOCATOR_SIMPLE,
++							 ALLOC_STRATEGY_LOW_TO_HIGH);
++}
++
++static inline uint64_t get_reloc_ahnd(int fd, uint32_t ctx)
++{
++	bool do_relocs = gem_has_relocations(fd);
++
++	return do_relocs ? 0 : intel_allocator_open(fd, ctx, INTEL_ALLOCATOR_RELOC);
++}
++
++static inline bool put_ahnd(uint64_t ahnd)
++{
++	return !ahnd || intel_allocator_close(ahnd);
++}
++
++static inline uint64_t get_offset(uint64_t ahnd, uint32_t handle,
++				  uint64_t size, uint64_t alignment)
++{
++	if (!ahnd)
++		return 0;
++
++	return intel_allocator_alloc(ahnd, handle, size, alignment);
++}
++
++static inline bool put_offset(uint64_t ahnd, uint32_t handle)
++{
++	if (!ahnd)
++		return 0;
++
++	return intel_allocator_free(ahnd, handle);
++}
++
+ #endif
 -- 
 2.26.0
