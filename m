@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D72966EBAC
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:48:17 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E7F26EBFB
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:48:22 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  6 Aug 2021 11:46:40 +0200
-Message-Id: <20210806094649.21162-48-zbigniew.kempczynski@intel.com>
+Date: Fri,  6 Aug 2021 11:46:45 +0200
+Message-Id: <20210806094649.21162-53-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 References: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 47/56] tests/i915_pm_rpm: Adopt to use
- no-reloc
+Subject: [igt-dev] [PATCH i-g-t v4 52/56] tests/kms_vblank: Adopt to use
+ allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,101 +22,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For newer gens we're not able to rely on relocations. Adopt to use
-offsets acquired from the allocator.
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+For newer gens kernel will reject relocations returning -EINVAL
+so we should just provide the allocator handle to inject the hang.
+
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/i915_pm_rpm.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ tests/kms_vblank.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 39e0064a1..62720d02b 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -1178,7 +1178,8 @@ static void gem_pread_subtest(void)
+diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+index 885b2e2c4..7b7e1372e 100644
+--- a/tests/kms_vblank.c
++++ b/tests/kms_vblank.c
+@@ -118,6 +118,7 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
+ 	igt_output_t *output = data->output;
+ 	int fd = display->drm_fd;
+ 	igt_hang_t hang;
++	uint64_t ahnd = 0;
  
- /* Paints a square of color $color, size $width x $height, at position $x x $y
-  * of $dst_handle, which contains pitch $pitch. */
--static void submit_blt_cmd(uint32_t dst_handle, uint16_t x, uint16_t y,
-+static void submit_blt_cmd(uint32_t dst_handle, int dst_size,
-+			   uint16_t x, uint16_t y,
- 			   uint16_t width, uint16_t height, uint32_t pitch,
- 			   uint32_t color, uint32_t *presumed_dst_offset)
- {
-@@ -1190,6 +1191,12 @@ static void submit_blt_cmd(uint32_t dst_handle, uint16_t x, uint16_t y,
- 	struct drm_i915_gem_exec_object2 objs[2] = {{}, {}};
- 	struct drm_i915_gem_relocation_entry relocs[1] = {{}};
- 	struct drm_i915_gem_wait gem_wait;
-+	uint64_t ahnd = get_reloc_ahnd(drm_fd, 0), dst_offset;
-+
-+	if (ahnd)
-+		dst_offset = get_offset(ahnd, dst_handle, dst_size, 0);
-+	else
-+		dst_offset = *presumed_dst_offset;
+ 	prepare_crtc(data, fd, output);
  
- 	i = 0;
+@@ -128,8 +129,11 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
+ 		 igt_subtest_name(), kmstest_pipe_name(data->pipe),
+ 		 igt_output_name(output));
  
-@@ -1205,9 +1212,9 @@ static void submit_blt_cmd(uint32_t dst_handle, uint16_t x, uint16_t y,
- 	batch_buf[i++] = (y << 16) | x;
- 	batch_buf[i++] = ((y + height) << 16) | (x + width);
- 	reloc_pos = i;
--	batch_buf[i++] = *presumed_dst_offset;
-+	batch_buf[i++] = dst_offset;
- 	if (intel_gen(ms_data.devid) >= 8)
--		batch_buf[i++] = 0;
-+		batch_buf[i++] = dst_offset >> 32;
- 	batch_buf[i++] = color;
- 
- 	batch_buf[i++] = MI_BATCH_BUFFER_END;
-@@ -1230,9 +1237,16 @@ static void submit_blt_cmd(uint32_t dst_handle, uint16_t x, uint16_t y,
- 	objs[0].alignment = 64;
- 
- 	objs[1].handle = batch_handle;
--	objs[1].relocation_count = 1;
-+	objs[1].relocation_count = !ahnd ? 1 : 0;
- 	objs[1].relocs_ptr = (uintptr_t)relocs;
- 
-+	if (ahnd) {
-+		objs[0].offset = dst_offset;
-+		objs[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+		objs[1].offset = get_offset(ahnd, batch_handle, batch_size, 0);
-+		objs[1].flags = EXEC_OBJECT_PINNED;
+-	if (!(data->flags & NOHANG))
+-		hang = igt_hang_ring(fd, I915_EXEC_DEFAULT);
++	if (!(data->flags & NOHANG)) {
++		if (is_i915_device(fd))
++			ahnd = get_reloc_ahnd(fd, 0);
++		hang = igt_hang_ring_with_ahnd(fd, I915_EXEC_DEFAULT, ahnd);
 +	}
+ 
+ 	if (data->flags & BUSY) {
+ 		union drm_wait_vblank vbl;
+@@ -166,6 +170,9 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
+ 	igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
+ 		 igt_subtest_name(), kmstest_pipe_name(data->pipe), igt_output_name(output));
+ 
++	if (is_i915_device(fd))
++		put_ahnd(ahnd);
 +
- 	execbuf.buffers_ptr = (uintptr_t)objs;
- 	execbuf.buffer_count = 2;
- 	execbuf.batch_len = batch_size;
-@@ -1253,6 +1267,7 @@ static void submit_blt_cmd(uint32_t dst_handle, uint16_t x, uint16_t y,
- 	do_ioctl(drm_fd, DRM_IOCTL_I915_GEM_WAIT, &gem_wait);
- 
- 	gem_close(drm_fd, batch_handle);
-+	put_ahnd(ahnd);
+ 	/* cleanup what prepare_crtc() has done */
+ 	cleanup_crtc(data, fd, output);
  }
- 
- /* Make sure we can submit a batch buffer and verify its result. */
-@@ -1285,7 +1300,7 @@ static void gem_execbuf_subtest(void)
- 	disable_all_screens_and_wait(&ms_data);
- 
- 	color = 0x12345678;
--	submit_blt_cmd(handle, sq_x, sq_y, sq_w, sq_h, pitch, color,
-+	submit_blt_cmd(handle, dst_size, sq_x, sq_y, sq_w, sq_h, pitch, color,
- 		       &presumed_offset);
- 	igt_assert(wait_for_suspended());
- 
-@@ -1324,7 +1339,7 @@ static void gem_execbuf_subtest(void)
- 	 * suspended. We use the same spot, but a different color. As a bonus,
- 	 * we're testing the presumed_offset from the previous command. */
- 	color = 0x87654321;
--	submit_blt_cmd(handle, sq_x, sq_y, sq_w, sq_h, pitch, color,
-+	submit_blt_cmd(handle, dst_size, sq_x, sq_y, sq_w, sq_h, pitch, color,
- 		       &presumed_offset);
- 
- 	disable_all_screens_and_wait(&ms_data);
 -- 
 2.26.0
