@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0937949086389858805=="
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 22FBD6EB7D
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:47:10 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Fri,  6 Aug 2021 11:45:58 +0200
+Message-Id: <20210806094649.21162-6-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
+References: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 06 Aug 2021 09:15:58 -0000
-Message-ID: <162824135836.27549.15487027748365454569@emeril.freedesktop.org>
-References: <20210806084412.478115-1-stylon.wang@amd.com>
-In-Reply-To: <20210806084412.478115-1-stylon.wang@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?amdgpu=3A_Introduce_amd=5Fhotplug_tests?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4 05/56] lib/intel_batchbuffer: Add
+ allocator support in blitter fast copy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,184 +19,262 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Stylon Wang <stylon.wang@amd.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0937949086389858805==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-== Series Details ==
+For newer gens kernel will reject relocations by returning -EINVAL
+so we should support allocator and acquire offsets for blit.
 
-Series: tests/amdgpu: Introduce amd_hotplug tests
-URL   : https://patchwork.freedesktop.org/series/93449/
-State : success
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ lib/igt_fb.c            | 17 ++++++++++++-
+ lib/intel_batchbuffer.c | 55 ++++++++++++++++++++++++++++++-----------
+ lib/intel_batchbuffer.h |  6 ++++-
+ 3 files changed, 62 insertions(+), 16 deletions(-)
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_10454 -> IGTPW_6092
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6092/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6092 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@cs-gfx:
-    - fi-rkl-guc:         NOTRUN -> [SKIP][1] ([fdo#109315]) +17 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6092/fi-rkl-guc/igt@amdgpu/amd_basic@cs-gfx.html
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-tgl-1115g4:      [PASS][2] -> [FAIL][3] ([i915#1888])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10454/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6092/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-kbl-7500u:       [PASS][4] -> [FAIL][5] ([i915#1372])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10454/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6092/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - fi-rkl-guc:         [INCOMPLETE][6] -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10454/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6092/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
-
-  
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [i915#1372]: https://gitlab.freedesktop.org/drm/intel/issues/1372
-  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
-
-
-Participating hosts (37 -> 34)
-------------------------------
-
-  Missing    (3): fi-bdw-samus fi-bsw-cyan bat-jsl-1 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6160 -> IGTPW_6092
-
-  CI-20190529: 20190529
-  CI_DRM_10454: 224f5b80ba7d0caf6c4899e30d13cabde980bf49 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6092: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6092/index.html
-  IGT_6160: 4287344dd6a39d9036c5fb9a047a7d8f10bee981 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-
-== Testlist changes ==
-
-+igt@amdgpu/amd_hotplug@basic
-+igt@amdgpu/amd_hotplug@basic-suspend
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6092/index.html
-
---===============0937949086389858805==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu: Introduce amd_hotplug tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93449/">https://patchwork.freedesktop.org/series/93449/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6092/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6092/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10454 -&gt; IGTPW_6092</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6092/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6092 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@cs-gfx:</p>
-<ul>
-<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6092/fi-rkl-guc/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10454/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6092/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10454/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6092/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1372">i915#1372</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10454/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6092/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (37 -&gt; 34)</h2>
-<p>Missing    (3): fi-bdw-samus fi-bsw-cyan bat-jsl-1 </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6160 -&gt; IGTPW_6092</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10454: 224f5b80ba7d0caf6c4899e30d13cabde980bf49 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6092: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6092/index.html<br />
-  IGT_6160: 4287344dd6a39d9036c5fb9a047a7d8f10bee981 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<p>== Testlist changes ==</p>
-<p>+igt@amdgpu/amd_hotplug@basic<br />
-+igt@amdgpu/amd_hotplug@basic-suspend</p>
-
-</body>
-</html>
-
---===============0937949086389858805==--
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 75ab217b8..1bb32cd8a 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2417,6 +2417,8 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 		     const struct igt_fb *src_fb)
+ {
+ 	uint32_t src_tiling, dst_tiling;
++	uint32_t ctx = 0;
++	uint64_t ahnd = 0;
+ 
+ 	igt_assert_eq(dst_fb->fd, src_fb->fd);
+ 	igt_assert_eq(dst_fb->num_planes, src_fb->num_planes);
+@@ -2424,6 +2426,12 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
+ 	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
+ 
++	if (!gem_has_relocations(dst_fb->fd)) {
++		igt_require(gem_has_contexts(dst_fb->fd));
++		ctx = gem_context_create(dst_fb->fd);
++		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
++	}
++
+ 	for (int i = 0; i < dst_fb->num_planes; i++) {
+ 		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
+ 		igt_assert_eq(dst_fb->plane_width[i], src_fb->plane_width[i]);
+@@ -2435,11 +2443,13 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 		 */
+ 		if (fast_blit_ok(src_fb) && fast_blit_ok(dst_fb)) {
+ 			igt_blitter_fast_copy__raw(dst_fb->fd,
++						   ahnd, ctx,
+ 						   src_fb->gem_handle,
+ 						   src_fb->offsets[i],
+ 						   src_fb->strides[i],
+ 						   src_tiling,
+ 						   0, 0, /* src_x, src_y */
++						   src_fb->size,
+ 						   dst_fb->plane_width[i],
+ 						   dst_fb->plane_height[i],
+ 						   dst_fb->plane_bpp[i],
+@@ -2447,7 +2457,8 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 						   dst_fb->offsets[i],
+ 						   dst_fb->strides[i],
+ 						   dst_tiling,
+-						   0, 0 /* dst_x, dst_y */);
++						   0, 0 /* dst_x, dst_y */,
++						   dst_fb->size);
+ 		} else {
+ 			igt_blitter_src_copy(dst_fb->fd,
+ 					     src_fb->gem_handle,
+@@ -2465,6 +2476,10 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 					     0, 0 /* dst_x, dst_y */);
+ 		}
+ 	}
++
++	if (ctx)
++		gem_context_destroy(dst_fb->fd, ctx);
++	put_ahnd(ahnd);
+ }
+ 
+ static void free_linear_mapping(struct fb_blit_upload *blit)
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index 3747019a5..d9cc4d89c 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -706,12 +706,13 @@ fill_object(struct drm_i915_gem_exec_object2 *obj,
+ 
+ static void exec_blit(int fd,
+ 		      struct drm_i915_gem_exec_object2 *objs, uint32_t count,
+-		      unsigned int gen)
++		      unsigned int gen, uint32_t ctx)
+ {
+ 	struct drm_i915_gem_execbuffer2 exec = {
+ 		.buffers_ptr = to_user_pointer(objs),
+ 		.buffer_count = count,
+ 		.flags = gen >= 6 ? I915_EXEC_BLT : 0,
++		.rsvd1 = ctx,
+ 	};
+ 
+ 	gem_execbuf(fd, &exec);
+@@ -896,7 +897,7 @@ void igt_blitter_src_copy(int fd,
+ 	objs[0].flags |= EXEC_OBJECT_NEEDS_FENCE;
+ 	objs[1].flags |= EXEC_OBJECT_NEEDS_FENCE;
+ 
+-	exec_blit(fd, objs, 3, gen);
++	exec_blit(fd, objs, 3, gen, 0);
+ 
+ 	gem_close(fd, batch_handle);
+ }
+@@ -904,12 +905,15 @@ void igt_blitter_src_copy(int fd,
+ /**
+  * igt_blitter_fast_copy__raw:
+  * @fd: file descriptor of the i915 driver
++ * @ahnd: handle to an allocator
++ * @ctx: context within which execute copy blit
+  * @src_handle: GEM handle of the source buffer
+  * @src_delta: offset into the source GEM bo, in bytes
+  * @src_stride: Stride (in bytes) of the source buffer
+  * @src_tiling: Tiling mode of the source buffer
+  * @src_x: X coordinate of the source region to copy
+  * @src_y: Y coordinate of the source region to copy
++ * @src_size: size of the src bo required for allocator and softpin
+  * @width: Width of the region to copy
+  * @height: Height of the region to copy
+  * @bpp: source and destination bits per pixel
+@@ -919,16 +923,20 @@ void igt_blitter_src_copy(int fd,
+  * @dst_tiling: Tiling mode of the destination buffer
+  * @dst_x: X coordinate of destination
+  * @dst_y: Y coordinate of destination
++ * @dst_size: size of the dst bo required for allocator and softpin
+  *
+  * Like igt_blitter_fast_copy(), but talking to the kernel directly.
+  */
+ void igt_blitter_fast_copy__raw(int fd,
++				uint64_t ahnd,
++				uint32_t ctx,
+ 				/* src */
+ 				uint32_t src_handle,
+ 				unsigned int src_delta,
+ 				unsigned int src_stride,
+ 				unsigned int src_tiling,
+ 				unsigned int src_x, unsigned src_y,
++				uint64_t src_size,
+ 
+ 				/* size */
+ 				unsigned int width, unsigned int height,
+@@ -941,7 +949,8 @@ void igt_blitter_fast_copy__raw(int fd,
+ 				unsigned dst_delta,
+ 				unsigned int dst_stride,
+ 				unsigned int dst_tiling,
+-				unsigned int dst_x, unsigned dst_y)
++				unsigned int dst_x, unsigned dst_y,
++				uint64_t dst_size)
+ {
+ 	uint32_t batch[12];
+ 	struct drm_i915_gem_exec_object2 objs[3];
+@@ -949,8 +958,20 @@ void igt_blitter_fast_copy__raw(int fd,
+ 	uint32_t batch_handle;
+ 	uint32_t dword0, dword1;
+ 	uint32_t src_pitch, dst_pitch;
++	uint64_t batch_offset, src_offset, dst_offset;
+ 	int i = 0;
+ 
++	batch_handle = gem_create(fd, 4096);
++	if (ahnd) {
++		src_offset = get_offset(ahnd, src_handle, src_size, 0);
++		dst_offset = get_offset(ahnd, dst_handle, dst_size, 0);
++		batch_offset = get_offset(ahnd, batch_handle, 4096, 0);
++	} else {
++		src_offset = 16 << 20;
++		dst_offset = ALIGN(src_offset + src_size, 1 << 20);
++		batch_offset = ALIGN(dst_offset + dst_size, 1 << 20);
++	}
++
+ 	src_pitch = fast_copy_pitch(src_stride, src_tiling);
+ 	dst_pitch = fast_copy_pitch(dst_stride, dst_tiling);
+ 	dword0 = fast_copy_dword0(src_tiling, dst_tiling);
+@@ -967,30 +988,36 @@ void igt_blitter_fast_copy__raw(int fd,
+ 	batch[i++] = dword1 | dst_pitch;
+ 	batch[i++] = (dst_y << 16) | dst_x; /* dst x1,y1 */
+ 	batch[i++] = ((dst_y + height) << 16) | (dst_x + width); /* dst x2,y2 */
+-	batch[i++] = dst_delta; /* dst address lower bits */
+-	batch[i++] = 0;	/* dst address upper bits */
++	batch[i++] = dst_offset + dst_delta; /* dst address lower bits */
++	batch[i++] = (dst_offset + dst_delta) >> 32; /* dst address upper bits */
+ 	batch[i++] = (src_y << 16) | src_x; /* src x1,y1 */
+ 	batch[i++] = src_pitch;
+-	batch[i++] = src_delta; /* src address lower bits */
+-	batch[i++] = 0;	/* src address upper bits */
++	batch[i++] = src_offset + src_delta; /* src address lower bits */
++	batch[i++] = (src_offset + src_delta) >> 32; /* src address upper bits */
+ 	batch[i++] = MI_BATCH_BUFFER_END;
+ 	batch[i++] = MI_NOOP;
+ 
+ 	igt_assert(i == ARRAY_SIZE(batch));
+ 
+-	batch_handle = gem_create(fd, 4096);
+ 	gem_write(fd, batch_handle, 0, batch, sizeof(batch));
+ 
+-	fill_relocation(&relocs[0], dst_handle, -1, dst_delta, 4,
++	fill_relocation(&relocs[0], dst_handle, dst_offset, dst_delta, 4,
+ 			I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER);
+-	fill_relocation(&relocs[1], src_handle, -1, src_delta, 8,
++	fill_relocation(&relocs[1], src_handle, src_offset, src_delta, 8,
+ 			I915_GEM_DOMAIN_RENDER, 0);
+ 
+-	fill_object(&objs[0], dst_handle, 0, NULL, 0);
+-	fill_object(&objs[1], src_handle, 0, NULL, 0);
+-	fill_object(&objs[2], batch_handle, 0, relocs, 2);
++	fill_object(&objs[0], dst_handle, dst_offset, NULL, 0);
++	objs[0].flags |= EXEC_OBJECT_WRITE;
++	fill_object(&objs[1], src_handle, src_offset, NULL, 0);
++	fill_object(&objs[2], batch_handle, batch_offset, relocs, !ahnd ? 2 : 0);
++
++	if (ahnd) {
++		objs[0].flags |= EXEC_OBJECT_PINNED;
++		objs[1].flags |= EXEC_OBJECT_PINNED;
++		objs[2].flags |= EXEC_OBJECT_PINNED;
++	}
+ 
+-	exec_blit(fd, objs, 3, intel_gen(intel_get_drm_devid(fd)));
++	exec_blit(fd, objs, 3, intel_gen(intel_get_drm_devid(fd)), ctx);
+ 
+ 	gem_close(fd, batch_handle);
+ }
+diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+index bd417e998..74c21c40e 100644
+--- a/lib/intel_batchbuffer.h
++++ b/lib/intel_batchbuffer.h
+@@ -300,12 +300,15 @@ void igt_blitter_fast_copy(struct intel_batchbuffer *batch,
+ 			   unsigned dst_x, unsigned dst_y);
+ 
+ void igt_blitter_fast_copy__raw(int fd,
++				uint64_t ahnd,
++				uint32_t ctx,
+ 				/* src */
+ 				uint32_t src_handle,
+ 				unsigned int src_delta,
+ 				unsigned int src_stride,
+ 				unsigned int src_tiling,
+ 				unsigned int src_x, unsigned src_y,
++				uint64_t src_size,
+ 
+ 				/* size */
+ 				unsigned int width, unsigned int height,
+@@ -318,7 +321,8 @@ void igt_blitter_fast_copy__raw(int fd,
+ 				unsigned int dst_delta,
+ 				unsigned int dst_stride,
+ 				unsigned int dst_tiling,
+-				unsigned int dst_x, unsigned dst_y);
++				unsigned int dst_x, unsigned dst_y,
++				uint64_t dst_size);
+ 
+ /**
+  * igt_render_copyfunc_t:
+-- 
+2.26.0
