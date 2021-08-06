@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2085.outbound.protection.outlook.com [40.107.244.85])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFE7B6EA13
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 08:44:30 +0000 (UTC)
-From: Stylon Wang <stylon.wang@amd.com>
-Date: Fri, 6 Aug 2021 16:44:12 +0800
-Message-ID: <20210806084412.478115-1-stylon.wang@amd.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D51686EB07
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:07:55 +0000 (UTC)
+References: <20210805051716.278860-1-bhanuprakash.modem@intel.com>
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+Message-ID: <1677f78b-fedf-efe5-53aa-42b31ee202ce@intel.com>
+Date: Fri, 6 Aug 2021 14:37:41 +0530
+In-Reply-To: <20210805051716.278860-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t] tests/amdgpu: Introduce amd_hotplug tests
+Subject: Re: [igt-dev] [PATCH i-g-t V2] tests/kms_setmode: Fix mode
+ selection for Nx tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,347 +22,192 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, Harry.Wentland@amd.com, Rodrigo.Siqueira@amd.com, Anson.Jacob@amd.com
-Cc: Victor Lu <victorchengchi.lu@amd.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Imre Deak <imre.deak@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Victor Lu <victorchengchi.lu@amd.com>
+LGTM.
 
-[Why]
-There is a debugfs entry to trigger software hotplugs. We can use this
-for IGT tests.
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-[How]
-Add hotplug test for all connectors, hotplug after suspend.
-
-Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
----
- lib/igt_amd.c              |  77 ++++++++++++++++
- lib/igt_amd.h              |   8 ++
- tests/amdgpu/amd_hotplug.c | 184 +++++++++++++++++++++++++++++++++++++
- tests/amdgpu/meson.build   |   1 +
- 4 files changed, 270 insertions(+)
- create mode 100644 tests/amdgpu/amd_hotplug.c
-
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index a4e1cb59..4ffe7cf2 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -20,6 +20,9 @@
-  * OTHER DEALINGS IN THE SOFTWARE.
-  */
- 
-+#include <fcntl.h>
-+#include <sys/stat.h>
-+
- #include "igt_amd.h"
- #include "igt.h"
- #include <amdgpu_drm.h>
-@@ -246,3 +249,77 @@ bool igt_amd_is_tiled(uint64_t modifier)
- 	else
- 		return false;
- }
-+
-+/**
-+ * igt_amd_output_has_hpd: check if connector has HPD debugfs entry
-+ * @drm_fd: DRM file descriptor
-+ * @connector_name: The connector's name, on which we're reading the status
-+ */
-+static bool igt_amd_output_has_hpd(int drm_fd, char *connector_name)
-+{
-+	int fd;
-+	int res;
-+	struct stat stat;
-+
-+	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-+	if (fd < 0) {
-+		igt_info("output %s: debugfs not found\n", connector_name);
-+		return false;
-+	}
-+
-+	res = fstatat(fd, DEBUGFS_HPD_TRIGGER, &stat, 0);
-+	if (res != 0) {
-+		igt_info("%s debugfs not supported\n", DEBUGFS_HPD_TRIGGER);
-+		close(fd);
-+		return false;
-+	}
-+
-+	close(fd);
-+	return true;
-+}
-+
-+/**
-+ * igt_amd_require_hpd: Checks if connectors have HPD debugfs
-+ * @display: A pointer to an #igt_display_t structure
-+ * @drm_fd: DRM file descriptor
-+ *
-+ * Checks if the AMDGPU driver has support the 'trigger_hotplug'
-+ * entry for HPD. Skip test if HPD is not supported.
-+ */
-+void igt_amd_require_hpd(igt_display_t *display, int drm_fd)
-+{
-+	igt_output_t *output;
-+
-+	for_each_connected_output(display, output) {
-+		if (igt_amd_output_has_hpd(drm_fd, output->name))
-+			return;
-+	}
-+
-+	igt_skip("No HPD debugfs support.\n");
-+}
-+
-+/**
-+ * igt_amd_trigger_hotplut: Triggers a debugfs HPD
-+ * @drm_fd: DRM file descriptor
-+ * @connector_name: The connector's name, which we trigger the hotplug on
-+ *
-+ * igt_amd_require_hpd should be called before calling this.
-+ */
-+int igt_amd_trigger_hotplug(int drm_fd, char *connector_name)
-+{
-+	int fd, hpd_fd;
-+	int wr_len;
-+	const char *enable_hpd = "1";
-+
-+	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-+	igt_assert(fd >= 0);
-+	hpd_fd = openat(fd, DEBUGFS_HPD_TRIGGER, O_WRONLY);
-+	close(fd);
-+	igt_assert(hpd_fd >= 0);
-+
-+	wr_len = write(hpd_fd, enable_hpd, strlen(enable_hpd));
-+	close(hpd_fd);
-+	igt_assert_eq(wr_len, strlen(enable_hpd));
-+
-+	return 0;
-+}
-diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-index 6656d901..d333ad9c 100644
---- a/lib/igt_amd.h
-+++ b/lib/igt_amd.h
-@@ -24,8 +24,11 @@
- #define IGT_AMD_H
- 
- #include <stdint.h>
-+#include "igt.h"
- #include "igt_fb.h"
- 
-+#define DEBUGFS_HPD_TRIGGER "trigger_hotplug"
-+
- uint32_t igt_amd_create_bo(int fd, uint64_t size);
- void *igt_amd_mmap_bo(int fd, uint32_t handle, uint64_t size, int prot);
- unsigned int igt_amd_compute_offset(unsigned int* swizzle_pattern,
-@@ -40,4 +43,9 @@ void igt_amd_fb_to_tiled(struct igt_fb *dst, void *dst_buf, struct igt_fb *src,
- void igt_amd_fb_convert_plane_to_tiled(struct igt_fb *dst, void *dst_buf,
- 				       struct igt_fb *src, void *src_buf);
- bool igt_amd_is_tiled(uint64_t modifier);
-+
-+/* IGT HPD helper functions */
-+void igt_amd_require_hpd(igt_display_t *display, int drm_fd);
-+int igt_amd_trigger_hotplug(int drm_fd, char *connector_name);
-+
- #endif /* IGT_AMD_H */
-diff --git a/tests/amdgpu/amd_hotplug.c b/tests/amdgpu/amd_hotplug.c
-new file mode 100644
-index 00000000..7e6b63db
---- /dev/null
-+++ b/tests/amdgpu/amd_hotplug.c
-@@ -0,0 +1,184 @@
-+/*
-+ * Copyright 2021 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ */
-+
-+#include "igt.h"
-+#include "igt_amd.h"
-+
-+IGT_TEST_DESCRIPTION("Test simulated hotplugging on connectors");
-+
-+/* Maximum pipes on any AMD ASIC. */
-+#define MAX_PIPES 6
-+
-+/* Common test data. */
-+typedef struct data {
-+	igt_display_t display;
-+	igt_plane_t *primary[MAX_PIPES];
-+	igt_plane_t *overlay[MAX_PIPES];
-+	igt_plane_t *cursor[MAX_PIPES];
-+	igt_output_t *output[MAX_PIPES];
-+	igt_pipe_t *pipe[MAX_PIPES];
-+	igt_pipe_crc_t *pipe_crc[MAX_PIPES];
-+	drmModeModeInfo mode[MAX_PIPES];
-+	enum pipe pipe_id[MAX_PIPES];
-+	int w[MAX_PIPES];
-+	int h[MAX_PIPES];
-+	int fd;
-+} data_t;
-+
-+static void test_init(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	int i, n, max_pipes = display->n_pipes;
-+
-+	for_each_pipe(display, i) {
-+		data->pipe_id[i] = PIPE_A + i;
-+		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
-+		data->primary[i] = igt_pipe_get_plane_type(
-+			data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
-+		data->overlay[i] = igt_pipe_get_plane_type_index(
-+			data->pipe[i], DRM_PLANE_TYPE_OVERLAY, 0);
-+		data->cursor[i] = igt_pipe_get_plane_type(
-+			data->pipe[i], DRM_PLANE_TYPE_CURSOR);
-+		data->pipe_crc[i] =
-+			igt_pipe_crc_new(data->fd, data->pipe_id[i], "auto");
-+	}
-+
-+	for (i = 0, n = 0; i < display->n_outputs && n < max_pipes; ++i) {
-+		igt_output_t *output = &display->outputs[i];
-+
-+		data->output[n] = output;
-+
-+		/* Only allow physically connected displays for the tests. */
-+		if (!igt_output_is_connected(output))
-+			continue;
-+
-+		igt_assert(kmstest_get_connector_default_mode(
-+			data->fd, output->config.connector, &data->mode[n]));
-+
-+		data->w[n] = data->mode[n].hdisplay;
-+		data->h[n] = data->mode[n].vdisplay;
-+
-+		n += 1;
-+	}
-+
-+	igt_require(data->output[0]);
-+	igt_display_reset(display);
-+}
-+
-+static void test_fini(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	int i;
-+
-+	for_each_pipe(display, i) {
-+		igt_pipe_crc_free(data->pipe_crc[i]);
-+	}
-+
-+	igt_display_reset(display);
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-+}
-+
-+static void test_hotplug_basic(data_t *data, bool suspend)
-+{
-+	igt_output_t *output;
-+	igt_fb_t ref_fb[MAX_PIPES];
-+	igt_crc_t ref_crc[MAX_PIPES], new_crc[MAX_PIPES];
-+	igt_display_t *display = &data->display;
-+	int i = 0;
-+
-+	test_init(data);
-+
-+	/* Setup all outputs */
-+	for (i = 0; i < display->n_pipes; i++) {
-+		output = data->output[i];
-+		if (!output || !igt_output_is_connected(output))
-+			continue;
-+
-+		igt_create_pattern_fb(data->fd, data->w[i], data->h[i],
-+				      DRM_FORMAT_XRGB8888, 0, &ref_fb[i]);
-+		igt_output_set_pipe(output, data->pipe_id[i]);
-+		igt_plane_set_fb(data->primary[i], &ref_fb[i]);
-+	}
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-+
-+	/* Collect reference CRCs */
-+	for (i = 0; i < display->n_pipes; i++) {
-+		output = data->output[i];
-+		if (!output || !igt_output_is_connected(output))
-+			continue;
-+
-+		igt_pipe_crc_collect_crc(data->pipe_crc[i], &ref_crc[i]);
-+	}
-+
-+	if (suspend) {
-+		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-+					      SUSPEND_TEST_NONE);
-+	}
-+
-+	/* Trigger hotplug and confirm reference image is the same. */
-+	for (i = 0; i < display->n_pipes; i++) {
-+		output = data->output[i];
-+		if (!output || !igt_output_is_connected(output))
-+			continue;
-+
-+		igt_amd_trigger_hotplug(data->fd, output->name);
-+
-+		igt_pipe_crc_collect_crc(data->pipe_crc[i], &new_crc[i]);
-+		igt_assert_crc_equal(&ref_crc[i], &new_crc[i]);
-+		igt_remove_fb(data->fd, &ref_fb[i]);
-+	}
-+
-+	test_fini(data);
-+}
-+
-+igt_main
-+{
-+	data_t data;
-+
-+	igt_skip_on_simulation();
-+
-+	memset(&data, 0, sizeof(data));
-+
-+	igt_fixture
-+	{
-+		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
-+
-+		kmstest_set_vt_graphics_mode();
-+
-+		igt_display_require(&data.display, data.fd);
-+		igt_require(data.display.is_atomic);
-+		igt_display_require_output(&data.display);
-+
-+		igt_amd_require_hpd(&data.display, data.fd);
-+	}
-+
-+	igt_describe("Tests HPD on each connected output");
-+	igt_subtest("basic") test_hotplug_basic(&data, false);
-+
-+	igt_describe("Tests HPD on each connected output after a suspend sequence");
-+	igt_subtest("basic-suspend") test_hotplug_basic(&data, true);
-+
-+	igt_fixture
-+	{
-+		igt_display_fini(&data.display);
-+	}
-+}
-diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-index 84179410..6aa10361 100644
---- a/tests/amdgpu/meson.build
-+++ b/tests/amdgpu/meson.build
-@@ -7,6 +7,7 @@ if libdrm_amdgpu.found()
- 			  'amd_bypass',
- 			  'amd_color',
- 			  'amd_cs_nop',
-+			  'amd_hotplug',
- 			  'amd_info',
- 			  'amd_prime',
- 			  'amd_module_load',
--- 
-2.32.0
+On 8/5/2021 10:47 AM, Bhanuprakash Modem wrote:
+> This patch will find the connector/mode combination that fits
+> into the bandwidth when more than one monitor is connected.
+>
+> Example:
+>    When two monitors connected through MST, the second monitor
+>    also tries to use the same mode. So two such modes may not
+>    fit into the link bandwidth. So, iterate through connected
+>    outputs & modes and find a combination of modes those fit
+>    into the link BW.
+>
+> V2:
+> * Addressed comments from Ankit
+>
+> Cc: Imre Deak <imre.deak@intel.com>
+> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/kms_setmode.c | 116 +++++++++++++++++++++++++++++++++-----------
+>   1 file changed, 88 insertions(+), 28 deletions(-)
+>
+> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+> index 05084c3a7..89220b83e 100644
+> --- a/tests/kms_setmode.c
+> +++ b/tests/kms_setmode.c
+> @@ -46,6 +46,9 @@ static int filter_test_id;
+>   static bool dry_run;
+>   static bool all_pipes = false;
+>
+> +static char str_buf[MAX_CRTCS][1024];
+> +static const char *crtc_strs[MAX_CRTCS];
+> +
+>   const drmModeModeInfo mode_640_480 = {
+>   	.name		= "640x480",
+>   	.vrefresh	= 60,
+> @@ -540,44 +543,43 @@ static void check_timings(int crtc_idx, const drmModeModeInfo *kmode)
+>   		     fabs(mean - expected) / line_time(kmode));
+>   }
+>
+> -static void test_crtc_config(const struct test_config *tconf,
+> -			     struct crtc_config *crtcs, int crtc_count)
+> +static int sort_drm_modes(const void *a, const void *b)
+>   {
+> -	char str_buf[MAX_CRTCS][1024];
+> -	const char *crtc_strs[MAX_CRTCS];
+> -	struct crtc_config *crtc;
+> -	static int test_id;
+> -	bool config_failed = false;
+> -	int ret = 0;
+> -	int i;
+> +	const drmModeModeInfo *mode1 = a, *mode2 = b;
+>
+> -	test_id++;
+> -
+> -	if (filter_test_id && filter_test_id != test_id)
+> -		return;
+> +	return (mode1->clock < mode2->clock) - (mode2->clock < mode1->clock);
+> +}
+>
+> -	igt_info("  Test id#%d CRTC count %d\n", test_id, crtc_count);
+> +static
+> +int __test_crtc_config(struct crtc_config *crtcs, int crtc_count,
+> +		       const struct test_config *tconf, bool *config_failed,
+> +		       int base)
+> +{
+> +	struct crtc_config *crtc = NULL;
+> +	int ret = 0;
+>
+> -	for (i = 0; i < crtc_count; i++) {
+> -		get_crtc_config_str(&crtcs[i], str_buf[i], sizeof(str_buf[i]));
+> -		crtc_strs[i] = &str_buf[i][0];
+> -	}
+> +	crtc = &crtcs[base];
+>
+> -	if (dry_run) {
+> -		for (i = 0; i < crtc_count; i++)
+> -			igt_info("    %s\n", crtc_strs[i]);
+> -		return;
+> -	}
+> +	/* Sort the modes in descending order by clock freq. */
+> +	qsort(crtc->cconfs->connector->modes,
+> +		crtc->cconfs->connector->count_modes,
+> +		sizeof(drmModeModeInfo),
+> +		sort_drm_modes);
+>
+> -	for (i = 0; i < crtc_count; i++) {
+> +	for (int i = 0; i < crtc->cconfs->connector->count_modes; i++) {
+>   		uint32_t *ids;
+>
+> -		crtc = &crtcs[i];
+> +		if (!crtc_supports_mode(crtc, &crtc->cconfs->connector->modes[i]))
+> +			continue;
+> +
+> +		crtc->mode = crtc->cconfs->connector->modes[i];
+>
+> -		igt_info("    %s\n", crtc_strs[i]);
+> +		get_crtc_config_str(crtc, str_buf[base], sizeof(str_buf[base]));
+> +		crtc_strs[base] = &str_buf[base][0];
+> +		igt_info("    %s\n", crtc_strs[base]);
+>
+>   		create_fb_for_crtc(crtc, &crtc->fb_info);
+> -		paint_fb(&crtc->fb_info, tconf->name, crtc_strs, crtc_count, i);
+> +		paint_fb(&crtc->fb_info, tconf->name, crtc_strs, crtc_count, base);
+>
+>   		ids = get_connector_ids(crtc);
+>   		if (tconf->flags & TEST_STEALING)
+> @@ -589,12 +591,70 @@ static void test_crtc_config(const struct test_config *tconf,
+>
+>   		free(ids);
+>
+> +		/* crtcs[base].modes[i] don't fit, try next mode. */
+> +		if (ret < 0 && errno == ENOSPC)
+> +			continue;
+> +
+>   		if (ret < 0) {
+>   			igt_assert_eq(errno, EINVAL);
+> -			config_failed = true;
+> +			*config_failed = true;
+> +
+> +			return ret;
+>   		}
+> +
+> +		/* Try all crtcs recursively. */
+> +		if (base + 1 < crtc_count)
+> +			ret = __test_crtc_config(crtcs, crtc_count, tconf, config_failed, base + 1);
+> +
+> +		/*
+> +		 * With crtcs[base].modes[i], None of the crtc[base+1] modes fits
+> +		 * into the link BW.
+> +		 *
+> +		 * Lets try with crtcs[base].modes[i+1]
+> +		 */
+> +		if (ret < 0 && errno == ENOSPC)
+> +			continue;
+> +
+> +		/*
+> +		 * ret == 0, (or) ret < 0 && errno == EINVAL
+> +		 * No need to try other modes of crtcs[base].
+> +		 */
+> +		return ret;
+> +	}
+> +
+> +	/* When all crtcs[base].modes are tried & failed to fit into link BW. */
+> +	return ret;
+> +}
+> +
+> +static void test_crtc_config(const struct test_config *tconf,
+> +			     struct crtc_config *crtcs, int crtc_count)
+> +{
+> +	static int test_id;
+> +	bool config_failed = false;
+> +	int ret = 0;
+> +	int i;
+> +
+> +	test_id++;
+> +
+> +	if (filter_test_id && filter_test_id != test_id)
+> +		return;
+> +
+> +	igt_info("  Test id#%d CRTC count %d\n", test_id, crtc_count);
+> +
+> +	for (i = 0; i < crtc_count; i++) {
+> +		get_crtc_config_str(&crtcs[i], str_buf[i], sizeof(str_buf[i]));
+> +		crtc_strs[i] = &str_buf[i][0];
+> +	}
+> +
+> +	if (dry_run) {
+> +		for (i = 0; i < crtc_count; i++)
+> +			igt_info("    %s\n", crtc_strs[i]);
+> +		return;
+>   	}
+>
+> +	ret = __test_crtc_config(crtcs, crtc_count, tconf, &config_failed, 0);
+> +	igt_skip_on_f((ret < 0 && errno == ENOSPC),
+> +			"No suitable mode(s) found to fit into the link BW\n");
+>   	igt_assert(config_failed == !!(tconf->flags & TEST_INVALID));
+>
+>   	if (ret == 0 && tconf->flags & TEST_TIMINGS)
+> --
+> 2.32.0
+>
