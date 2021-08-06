@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41FE06EB76
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:47:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BBA16EB7A
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:47:10 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  6 Aug 2021 11:46:21 +0200
-Message-Id: <20210806094649.21162-29-zbigniew.kempczynski@intel.com>
+Date: Fri,  6 Aug 2021 11:45:56 +0200
+Message-Id: <20210806094649.21162-4-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 References: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 28/56] tests/gem_fenced_exec_thrash:
- Adopt to use allocator
+Subject: [igt-dev] [PATCH i-g-t v4 03/56] lib/igt_gt: Add passing ahnd as an
+ argument to igt_hang
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,79 +22,92 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For newer gens we're not able to rely on relocations. Adopt to use
-offsets acquired from the allocator.
+Required as spinner is used, see gem_ringfill.c
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_fenced_exec_thrash.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ lib/igt_gt.c | 21 ++++++++++++++++++++-
+ lib/igt_gt.h |  4 ++++
+ 2 files changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_fenced_exec_thrash.c b/tests/i915/gem_fenced_exec_thrash.c
-index 6497ff576..a9597d801 100644
---- a/tests/i915/gem_fenced_exec_thrash.c
-+++ b/tests/i915/gem_fenced_exec_thrash.c
-@@ -98,7 +98,7 @@ static void run_test(int fd, int num_fences, int expected_errno,
- 	struct drm_i915_gem_execbuffer2 execbuf[2];
- 	struct drm_i915_gem_exec_object2 exec[2][2*MAX_FENCES+1];
- 	struct drm_i915_gem_relocation_entry reloc[2*MAX_FENCES];
--
-+	uint64_t ahnd = get_reloc_ahnd(fd, 0);
- 	unsigned long count;
- 	int i, n;
+diff --git a/lib/igt_gt.c b/lib/igt_gt.c
+index c049477db..a0ba04cc1 100644
+--- a/lib/igt_gt.c
++++ b/lib/igt_gt.c
+@@ -269,7 +269,8 @@ static bool has_ctx_exec(int fd, unsigned ring, uint32_t ctx)
+  * Returns:
+  * Structure with helper internal state for igt_post_hang_ring().
+  */
+-igt_hang_t igt_hang_ctx(int fd, uint32_t ctx, int ring, unsigned flags)
++static igt_hang_t __igt_hang_ctx(int fd, uint64_t ahnd, uint32_t ctx, int ring,
++				 unsigned flags)
+ {
+ 	struct drm_i915_gem_context_param param;
+ 	igt_spin_t *spin;
+@@ -298,6 +299,7 @@ igt_hang_t igt_hang_ctx(int fd, uint32_t ctx, int ring, unsigned flags)
+ 		context_set_ban(fd, ctx, 0);
  
-@@ -111,7 +111,19 @@ static void run_test(int fd, int num_fences, int expected_errno,
- 
- 	for (n = 0; n < 2*num_fences; n++) {
- 		uint32_t handle = tiled_bo_create(fd);
--		exec[1][2*num_fences - n-1].handle = exec[0][n].handle = handle;
-+		struct drm_i915_gem_exec_object2 *obj0, *obj1;
-+
-+		obj0 = &exec[0][n];
-+		obj1 = &exec[1][2*num_fences - n-1];
-+
-+		obj1->handle = obj0->handle = handle;
-+		obj1->offset = get_offset(ahnd, handle, OBJECT_SIZE, 0);
-+		obj0->offset = obj1->offset;
-+
-+		if (ahnd) {
-+			obj0->flags |= EXEC_OBJECT_PINNED;
-+			obj1->flags |= EXEC_OBJECT_PINNED;
-+		}
- 		fill_reloc(&reloc[n], handle);
- 	}
- 
-@@ -121,7 +133,7 @@ static void run_test(int fd, int num_fences, int expected_errno,
- 
- 		exec[i][2*num_fences].handle = batch_create(fd);
- 		exec[i][2*num_fences].relocs_ptr = to_user_pointer(reloc);
--		exec[i][2*num_fences].relocation_count = 2*num_fences;
-+		exec[i][2*num_fences].relocation_count = !ahnd ? 2*num_fences : 0;
- 
- 		execbuf[i].buffers_ptr = to_user_pointer(exec[i]);
- 		execbuf[i].buffer_count = 2*num_fences+1;
-@@ -134,7 +146,7 @@ static void run_test(int fd, int num_fences, int expected_errno,
- 			igt_spin_t *spin = NULL;
- 
- 			if (flags & BUSY_LOAD)
--				spin = __igt_spin_new(fd);
-+				spin = __igt_spin_new(fd, .ahnd = ahnd);
- 
- 			igt_while_interruptible(flags & INTERRUPTIBLE) {
- 				igt_assert_eq(__gem_execbuf(fd, &execbuf[i]),
-@@ -154,6 +166,8 @@ static void run_test(int fd, int num_fences, int expected_errno,
- 
- 	for (i = 0; i < 2; i++)
- 		gem_close(fd, exec[i][2*num_fences].handle);
-+
-+	put_ahnd(ahnd);
+ 	spin = __igt_spin_new(fd,
++			      .ahnd = ahnd,
+ 			      .ctx_id = ctx,
+ 			      .engine = ring,
+ 			      .flags = IGT_SPIN_NO_PREEMPTION);
+@@ -305,6 +307,17 @@ igt_hang_t igt_hang_ctx(int fd, uint32_t ctx, int ring, unsigned flags)
+ 	return (igt_hang_t){ spin, ctx, ban, flags };
  }
  
- igt_main
++igt_hang_t igt_hang_ctx(int fd, uint32_t ctx, int ring, unsigned flags)
++{
++	return __igt_hang_ctx(fd, 0, ctx, ring, flags);
++}
++
++igt_hang_t igt_hang_ctx_with_ahnd(int fd, uint64_t ahnd, uint32_t ctx, int ring,
++				  unsigned flags)
++{
++	return __igt_hang_ctx(fd, ahnd, ctx, ring, flags);
++}
++
+ /**
+  * igt_hang_ring:
+  * @fd: open i915 drm file descriptor
+@@ -322,6 +335,12 @@ igt_hang_t igt_hang_ring(int fd, int ring)
+ 	return igt_hang_ctx(fd, 0, ring, 0);
+ }
+ 
++igt_hang_t igt_hang_ring_with_ahnd(int fd, int ring, uint64_t ahnd)
++{
++	return igt_hang_ctx_with_ahnd(fd, ahnd, 0, ring, 0);
++}
++
++
+ /**
+  * igt_post_hang_ring:
+  * @fd: open i915 drm file descriptor
+diff --git a/lib/igt_gt.h b/lib/igt_gt.h
+index d87fae2d3..ceb044b86 100644
+--- a/lib/igt_gt.h
++++ b/lib/igt_gt.h
+@@ -46,10 +46,14 @@ void igt_disallow_hang(int fd, igt_hang_t arg);
+ #define HANG_POISON 0xc5c5c5c5
+ 
+ igt_hang_t igt_hang_ctx(int fd, uint32_t ctx, int ring, unsigned flags);
++igt_hang_t igt_hang_ctx_with_ahnd(int fd, uint64_t ahnd, uint32_t ctx, int ring,
++				  unsigned flags);
++
+ #define HANG_ALLOW_BAN 1
+ #define HANG_ALLOW_CAPTURE 2
+ 
+ igt_hang_t igt_hang_ring(int fd, int ring);
++igt_hang_t igt_hang_ring_with_ahnd(int fd, int ring, uint64_t ahnd);
+ void igt_post_hang_ring(int fd, igt_hang_t arg);
+ 
+ void igt_force_gpu_reset(int fd);
 -- 
 2.26.0
