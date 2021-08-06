@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A87D6EB8B
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:47:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D3216EB78
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:47:37 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  6 Aug 2021 11:46:08 +0200
-Message-Id: <20210806094649.21162-16-zbigniew.kempczynski@intel.com>
+Date: Fri,  6 Aug 2021 11:46:17 +0200
+Message-Id: <20210806094649.21162-25-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 References: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 15/56] tests/gem_ctx_param: Adopt to use
- allocator
+Subject: [igt-dev] [PATCH i-g-t v4 24/56] tests/gem_exec_suspend: Adopt to
+ use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,59 +28,96 @@ List-ID: <igt-dev@lists.freedesktop.org>
 For newer gens we're not able to rely on relocations. Adopt to use
 offsets acquired from the allocator.
 
-v2: recreate ahnd for appropriate context before starting the second
-    spinner (Ashutosh)
-
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_ctx_param.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tests/i915/gem_exec_suspend.c | 44 +++++++++++++++++++++++------------
+ 1 file changed, 29 insertions(+), 15 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_param.c b/tests/i915/gem_ctx_param.c
-index c795f1b45..d119ea74e 100644
---- a/tests/i915/gem_ctx_param.c
-+++ b/tests/i915/gem_ctx_param.c
-@@ -165,6 +165,7 @@ static void test_vm(int i915)
- 	int err;
- 	uint32_t parent, child;
- 	igt_spin_t *spin;
-+	uint64_t ahnd;
+diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
+index 0ef26ce11..dbe0c8a71 100644
+--- a/tests/i915/gem_exec_suspend.c
++++ b/tests/i915/gem_exec_suspend.c
+@@ -83,6 +83,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
+ 	unsigned engines[I915_EXEC_RING_MASK + 1];
+ 	unsigned nengine;
+ 	igt_spin_t *spin = NULL;
++	uint64_t ahnd = get_reloc_ahnd(fd, 0);
  
- 	/*
- 	 * Proving 2 contexts share the same GTT is quite tricky as we have no
-@@ -190,8 +191,10 @@ static void test_vm(int i915)
+ 	nengine = 0;
+ 	if (engine == ALL_ENGINES) {
+@@ -120,27 +121,39 @@ static void run_test(int fd, const intel_ctx_t *ctx,
+ 	igt_require(__gem_execbuf(fd, &execbuf) == 0);
+ 	gem_close(fd, obj[1].handle);
  
- 	/* Test that we can't set the VM after we've done an execbuf */
- 	arg.ctx_id = gem_context_create(i915);
--	spin = igt_spin_new(i915, .ctx_id = arg.ctx_id);
-+	ahnd = get_reloc_ahnd(i915, arg.ctx_id);
-+	spin = igt_spin_new(i915, .ahnd = ahnd, .ctx_id = arg.ctx_id);
- 	igt_spin_free(i915, spin);
+-	memset(&reloc, 0, sizeof(reloc));
+-	reloc.target_handle = obj[0].handle;
+-	reloc.presumed_offset = obj[0].offset;
+-	reloc.offset = sizeof(uint32_t);
+-	if (gen >= 4 && gen < 8)
+-		reloc.offset += sizeof(uint32_t);
+-	reloc.read_domains = I915_GEM_DOMAIN_INSTRUCTION;
+-	reloc.write_domain = I915_GEM_DOMAIN_INSTRUCTION;
+-
+-	obj[1].relocs_ptr = to_user_pointer(&reloc);
+-	obj[1].relocation_count = 1;
++	if (!ahnd) {
++		memset(&reloc, 0, sizeof(reloc));
++		reloc.target_handle = obj[0].handle;
++		reloc.presumed_offset = obj[0].offset;
++		reloc.offset = sizeof(uint32_t);
++		if (gen >= 4 && gen < 8)
++			reloc.offset += sizeof(uint32_t);
++		reloc.read_domains = I915_GEM_DOMAIN_INSTRUCTION;
++		reloc.write_domain = I915_GEM_DOMAIN_INSTRUCTION;
++
++		obj[1].relocs_ptr = to_user_pointer(&reloc);
++		obj[1].relocation_count = 1;
++	} else {
++		/* ignore first execbuf offset */
++		obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, 0);
++		obj[0].flags |= EXEC_OBJECT_PINNED;
++	}
+ 
+ 	for (int i = 0; i < 1024; i++) {
+ 		uint64_t offset;
+ 		uint32_t buf[16];
+ 		int b;
+ 
+-		obj[1].handle = gem_create(fd, 4096);
+-
+ 		reloc.delta = i * sizeof(uint32_t);
+-		offset = reloc.presumed_offset + reloc.delta;
++
++		obj[1].handle = gem_create(fd, 4096);
++		if (ahnd) {
++			obj[1].offset = get_offset(ahnd, obj[1].handle, 4096, 0);
++			obj[1].flags |= EXEC_OBJECT_PINNED;
++			offset = obj[0].offset + reloc.delta;
++		} else {
++			offset = reloc.presumed_offset + reloc.delta;
++		}
+ 
+ 		b = 0;
+ 		buf[b] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
+@@ -165,7 +178,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
+ 	}
+ 
+ 	if (flags & HANG)
+-		spin = igt_spin_new(fd, .engine = engine);
++		spin = igt_spin_new(fd, .ahnd = ahnd, .engine = engine);
+ 
+ 	switch (mode(flags)) {
+ 	case NOSLEEP:
+@@ -201,6 +214,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
+ 
+ 	check_bo(fd, obj[0].handle);
+ 	gem_close(fd, obj[0].handle);
 +	put_ahnd(ahnd);
- 	arg.value = gem_vm_create(i915);
- 	err = __gem_context_set_param(i915, &arg);
- 	gem_context_destroy(i915, arg.ctx_id);
-@@ -201,8 +204,9 @@ static void test_vm(int i915)
- 	parent = gem_context_create(i915);
- 	child = gem_context_create(i915);
  
-+	ahnd = get_reloc_ahnd(i915, 0);
- 	/* Create a background spinner to keep the engines busy */
--	spin = igt_spin_new(i915);
-+	spin = igt_spin_new(i915, .ahnd = ahnd);
- 	for (int i = 0; i < 16; i++) {
- 		spin->execbuf.rsvd1 = gem_context_create(i915);
- 		__gem_context_set_priority(i915, spin->execbuf.rsvd1, 1023);
-@@ -259,6 +263,7 @@ static void test_vm(int i915)
- 	igt_spin_free(i915, spin);
- 	gem_sync(i915, batch.handle);
- 	gem_close(i915, batch.handle);
-+	put_ahnd(ahnd);
- }
+ 	gem_quiescent_gpu(fd);
  
- static void test_set_invalid_param(int fd, uint64_t param, uint64_t value)
 -- 
 2.26.0
