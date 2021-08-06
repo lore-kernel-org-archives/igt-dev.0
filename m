@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 505936EB7E
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:47:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 97FF36EB8A
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:47:22 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  6 Aug 2021 11:45:59 +0200
-Message-Id: <20210806094649.21162-7-zbigniew.kempczynski@intel.com>
+Date: Fri,  6 Aug 2021 11:46:07 +0200
+Message-Id: <20210806094649.21162-15-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 References: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 06/56] lib/intel_batchbuffer: Add
- allocator support in blitter src copy
+Subject: [igt-dev] [PATCH i-g-t v4 14/56] tests/gem_ctx_isolation: Adopt to
+ use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,549 +22,322 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adjust igt_fb library + prime_vgem test as they are blitter src copy
-users.
+For newer gens we're not able to rely on relocations. Adopt to use
+offsets acquired from the allocator.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/igt_fb.c            |   5 +-
- lib/intel_batchbuffer.c |  53 +++++++++++++-----
- lib/intel_batchbuffer.h |   6 +-
- tests/prime_vgem.c      | 120 +++++++++++++++++++++++++++++-----------
- 4 files changed, 138 insertions(+), 46 deletions(-)
+ tests/i915/gem_ctx_isolation.c | 97 +++++++++++++++++++++++++---------
+ 1 file changed, 73 insertions(+), 24 deletions(-)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 1bb32cd8a..c7dcadcf6 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2461,11 +2461,13 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 						   dst_fb->size);
- 		} else {
- 			igt_blitter_src_copy(dst_fb->fd,
-+					     ahnd, ctx,
- 					     src_fb->gem_handle,
- 					     src_fb->offsets[i],
- 					     src_fb->strides[i],
- 					     src_tiling,
- 					     0, 0, /* src_x, src_y */
-+					     src_fb->size,
- 					     dst_fb->plane_width[i],
- 					     dst_fb->plane_height[i],
- 					     dst_fb->plane_bpp[i],
-@@ -2473,7 +2475,8 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 					     dst_fb->offsets[i],
- 					     dst_fb->strides[i],
- 					     dst_tiling,
--					     0, 0 /* dst_x, dst_y */);
-+					     0, 0 /* dst_x, dst_y */,
-+					     dst_fb->size);
+diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
+index 24ddde0bc..c57e05079 100644
+--- a/tests/i915/gem_ctx_isolation.c
++++ b/tests/i915/gem_ctx_isolation.c
+@@ -277,6 +277,7 @@ static void tmpl_regs(int fd,
+ }
+ 
+ static uint32_t read_regs(int fd,
++			  uint64_t ahnd,
+ 			  const intel_ctx_t *ctx,
+ 			  const struct intel_execution_engine2 *e,
+ 			  unsigned int flags)
+@@ -305,6 +306,12 @@ static uint32_t read_regs(int fd,
+ 	obj[0].handle = gem_create(fd, regs_size);
+ 	obj[1].handle = gem_create(fd, batch_size);
+ 	obj[1].relocs_ptr = to_user_pointer(reloc);
++	if (ahnd) {
++		obj[0].offset = get_offset(ahnd, obj[0].handle, regs_size, 0);
++		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
++		obj[1].offset = get_offset(ahnd, obj[1].handle, batch_size, 0);
++		obj[1].flags |= EXEC_OBJECT_PINNED;
++	}
+ 
+ 	b = batch = gem_mmap__cpu(fd, obj[1].handle, 0, batch_size, PROT_WRITE);
+ 	gem_set_domain(fd, obj[1].handle,
+@@ -334,14 +341,14 @@ static uint32_t read_regs(int fd,
+ 			reloc[n].delta = offset;
+ 			reloc[n].read_domains = I915_GEM_DOMAIN_RENDER;
+ 			reloc[n].write_domain = I915_GEM_DOMAIN_RENDER;
+-			*b++ = offset;
++			*b++ = obj[0].offset + offset;
+ 			if (r64b)
+-				*b++ = 0;
++				*b++ = (obj[0].offset + offset) >> 32;
+ 			n++;
  		}
  	}
  
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index d9cc4d89c..008dc78ef 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -762,12 +762,15 @@ static uint32_t src_copy_dword1(uint32_t dst_pitch, uint32_t bpp)
- /**
-  * igt_blitter_src_copy:
-  * @fd: file descriptor of the i915 driver
-+ * @ahnd: handle to an allocator
-+ * @ctx: context within which execute copy blit
-  * @src_handle: GEM handle of the source buffer
-  * @src_delta: offset into the source GEM bo, in bytes
-  * @src_stride: Stride (in bytes) of the source buffer
-  * @src_tiling: Tiling mode of the source buffer
-  * @src_x: X coordinate of the source region to copy
-  * @src_y: Y coordinate of the source region to copy
-+ * @src_size: size of the src bo required for allocator and softpin
-  * @width: Width of the region to copy
-  * @height: Height of the region to copy
-  * @bpp: source and destination bits per pixel
-@@ -777,16 +780,20 @@ static uint32_t src_copy_dword1(uint32_t dst_pitch, uint32_t bpp)
-  * @dst_tiling: Tiling mode of the destination buffer
-  * @dst_x: X coordinate of destination
-  * @dst_y: Y coordinate of destination
-+ * @dst_size: size of the dst bo required for allocator and softpin
-  *
-  * Copy @src into @dst using the XY_SRC blit command.
-  */
- void igt_blitter_src_copy(int fd,
-+			  uint64_t ahnd,
-+			  uint32_t ctx,
- 			  /* src */
- 			  uint32_t src_handle,
- 			  uint32_t src_delta,
- 			  uint32_t src_stride,
- 			  uint32_t src_tiling,
- 			  uint32_t src_x, uint32_t src_y,
-+			  uint64_t src_size,
+-	obj[1].relocation_count = n;
++	obj[1].relocation_count = !ahnd ? n : 0;
+ 	*b++ = MI_BATCH_BUFFER_END;
+ 	munmap(batch, batch_size);
  
- 			  /* size */
- 			  uint32_t width, uint32_t height,
-@@ -799,7 +806,8 @@ void igt_blitter_src_copy(int fd,
- 			  uint32_t dst_delta,
- 			  uint32_t dst_stride,
- 			  uint32_t dst_tiling,
--			  uint32_t dst_x, uint32_t dst_y)
-+			  uint32_t dst_x, uint32_t dst_y,
-+			  uint64_t dst_size)
- {
- 	uint32_t batch[32];
- 	struct drm_i915_gem_exec_object2 objs[3];
-@@ -808,9 +816,21 @@ void igt_blitter_src_copy(int fd,
- 	uint32_t src_pitch, dst_pitch;
- 	uint32_t dst_reloc_offset, src_reloc_offset;
- 	uint32_t gen = intel_gen(intel_get_drm_devid(fd));
-+	uint64_t batch_offset, src_offset, dst_offset;
- 	const bool has_64b_reloc = gen >= 8;
- 	int i = 0;
+@@ -353,6 +360,7 @@ static uint32_t read_regs(int fd,
+ 	gem_execbuf(fd, &execbuf);
+ 	gem_close(fd, obj[1].handle);
+ 	free(reloc);
++	put_offset(ahnd, obj[1].handle);
  
-+	batch_handle = gem_create(fd, 4096);
-+	if (ahnd) {
-+		src_offset = get_offset(ahnd, src_handle, src_size, 0);
-+		dst_offset = get_offset(ahnd, dst_handle, dst_size, 0);
-+		batch_offset = get_offset(ahnd, batch_handle, 4096, 0);
-+	} else {
-+		src_offset = 16 << 20;
-+		dst_offset = ALIGN(src_offset + src_size, 1 << 20);
-+		batch_offset = ALIGN(dst_offset + dst_size, 1 << 20);
-+	}
-+
- 	memset(batch, 0, sizeof(batch));
- 
- 	igt_assert((src_tiling == I915_TILING_NONE) ||
-@@ -855,15 +875,15 @@ void igt_blitter_src_copy(int fd,
- 	batch[i++] = (dst_y << 16) | dst_x; /* dst x1,y1 */
- 	batch[i++] = ((dst_y + height) << 16) | (dst_x + width); /* dst x2,y2 */
- 	dst_reloc_offset = i;
--	batch[i++] = dst_delta; /* dst address lower bits */
-+	batch[i++] = dst_offset + dst_delta; /* dst address lower bits */
- 	if (has_64b_reloc)
--		batch[i++] = 0;	/* dst address upper bits */
-+		batch[i++] = (dst_offset + dst_delta) >> 32; /* dst address upper bits */
- 	batch[i++] = (src_y << 16) | src_x; /* src x1,y1 */
- 	batch[i++] = src_pitch;
- 	src_reloc_offset = i;
--	batch[i++] = src_delta; /* src address lower bits */
-+	batch[i++] = src_offset + src_delta; /* src address lower bits */
- 	if (has_64b_reloc)
--		batch[i++] = 0;	/* src address upper bits */
-+		batch[i++] = (src_offset + src_delta) >> 32; /* src address upper bits */
- 
- 	if ((src_tiling | dst_tiling) >= I915_TILING_Y) {
- 		igt_assert(gen >= 6);
-@@ -882,22 +902,29 @@ void igt_blitter_src_copy(int fd,
- 
- 	igt_assert(i <= ARRAY_SIZE(batch));
- 
--	batch_handle = gem_create(fd, 4096);
- 	gem_write(fd, batch_handle, 0, batch, sizeof(batch));
- 
--	fill_relocation(&relocs[0], dst_handle, -1, dst_delta, dst_reloc_offset,
-+	fill_relocation(&relocs[0], dst_handle, dst_offset,
-+			dst_delta, dst_reloc_offset,
- 			I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER);
--	fill_relocation(&relocs[1], src_handle, -1, src_delta, src_reloc_offset,
-+	fill_relocation(&relocs[1], src_handle, src_offset,
-+			src_delta, src_reloc_offset,
- 			I915_GEM_DOMAIN_RENDER, 0);
- 
--	fill_object(&objs[0], dst_handle, 0, NULL, 0);
--	fill_object(&objs[1], src_handle, 0, NULL, 0);
--	fill_object(&objs[2], batch_handle, 0, relocs, 2);
-+	fill_object(&objs[0], dst_handle, dst_offset, NULL, 0);
-+	fill_object(&objs[1], src_handle, src_offset, NULL, 0);
-+	fill_object(&objs[2], batch_handle, batch_offset, relocs, !ahnd ? 2 : 0);
- 
--	objs[0].flags |= EXEC_OBJECT_NEEDS_FENCE;
-+	objs[0].flags |= EXEC_OBJECT_NEEDS_FENCE | EXEC_OBJECT_WRITE;
- 	objs[1].flags |= EXEC_OBJECT_NEEDS_FENCE;
- 
--	exec_blit(fd, objs, 3, gen, 0);
-+	if (ahnd) {
-+		objs[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+		objs[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+		objs[2].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+	}
-+
-+	exec_blit(fd, objs, 3, gen, ctx);
- 
- 	gem_close(fd, batch_handle);
+ 	return obj[0].handle;
  }
-diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-index 74c21c40e..c1974fe73 100644
---- a/lib/intel_batchbuffer.h
-+++ b/lib/intel_batchbuffer.h
-@@ -271,12 +271,15 @@ unsigned int igt_buf_intel_ccs_height(unsigned int gen,
- 				      const struct igt_buf *buf);
+@@ -419,6 +427,7 @@ static void write_regs(int fd,
+ }
  
- void igt_blitter_src_copy(int fd,
-+			  uint64_t ahnd,
-+			  uint32_t ctx,
- 			  /* src */
- 			  uint32_t src_handle,
- 			  uint32_t src_delta,
- 			  uint32_t src_stride,
- 			  uint32_t src_tiling,
- 			  uint32_t src_x, uint32_t src_y,
-+			  uint64_t src_size,
+ static void restore_regs(int fd,
++			 uint64_t ahnd,
+ 			 const intel_ctx_t *ctx,
+ 			 const struct intel_execution_engine2 *e,
+ 			 unsigned int flags,
+@@ -434,6 +443,7 @@ static void restore_regs(int fd,
+ 	struct drm_i915_gem_relocation_entry *reloc;
+ 	unsigned int batch_size, n;
+ 	uint32_t *batch, *b;
++	uint32_t regs_size = NUM_REGS * sizeof(uint32_t);
  
- 			  /* size */
- 			  uint32_t width, uint32_t height,
-@@ -289,7 +292,8 @@ void igt_blitter_src_copy(int fd,
- 			  uint32_t dst_delta,
- 			  uint32_t dst_stride,
- 			  uint32_t dst_tiling,
--			  uint32_t dst_x, uint32_t dst_y);
-+			  uint32_t dst_x, uint32_t dst_y,
-+			  uint64_t dst_size);
+ 	if (gen < 7) /* no LRM */
+ 		return;
+@@ -448,6 +458,12 @@ static void restore_regs(int fd,
+ 	obj[0].handle = regs;
+ 	obj[1].handle = gem_create(fd, batch_size);
+ 	obj[1].relocs_ptr = to_user_pointer(reloc);
++	if (ahnd) {
++		obj[0].offset = get_offset(ahnd, obj[0].handle, regs_size, 0);
++		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
++		obj[1].offset = get_offset(ahnd, obj[1].handle, batch_size, 0);
++		obj[1].flags |= EXEC_OBJECT_PINNED;
++	}
  
- void igt_blitter_fast_copy(struct intel_batchbuffer *batch,
- 			   const struct igt_buf *src, unsigned src_delta,
-diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-index 25c5f42f5..b837f2bfa 100644
---- a/tests/prime_vgem.c
-+++ b/tests/prime_vgem.c
-@@ -207,10 +207,14 @@ static void test_fence_blt(int i915, int vgem)
+ 	b = batch = gem_mmap__cpu(fd, obj[1].handle, 0, batch_size, PROT_WRITE);
+ 	gem_set_domain(fd, obj[1].handle,
+@@ -477,13 +493,13 @@ static void restore_regs(int fd,
+ 			reloc[n].delta = offset;
+ 			reloc[n].read_domains = I915_GEM_DOMAIN_RENDER;
+ 			reloc[n].write_domain = 0;
+-			*b++ = offset;
++			*b++ = obj[0].offset + offset;
+ 			if (r64b)
+-				*b++ = 0;
++				*b++ = (obj[0].offset + offset) >> 32;
+ 			n++;
+ 		}
+ 	}
+-	obj[1].relocation_count = n;
++	obj[1].relocation_count = !ahnd ? n : 0;
+ 	*b++ = MI_BATCH_BUFFER_END;
+ 	munmap(batch, batch_size);
  
- 	igt_fork(child, 1) {
- 		uint32_t native;
+@@ -494,6 +510,7 @@ static void restore_regs(int fd,
+ 	execbuf.rsvd1 = ctx->id;
+ 	gem_execbuf(fd, &execbuf);
+ 	gem_close(fd, obj[1].handle);
++	put_offset(ahnd, obj[1].offset);
+ }
+ 
+ __attribute__((unused))
+@@ -622,15 +639,20 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
+ 		igt_spin_t *spin = NULL;
+ 		const intel_ctx_t *ctx;
+ 		uint32_t regs[2], tmpl;
 +		uint64_t ahnd;
  
- 		close(master[0]);
- 		close(slave[1]);
+ 		ctx = intel_ctx_create(fd, cfg);
++		ahnd = get_reloc_ahnd(fd, ctx->id);
  
-+		intel_allocator_init();
-+		ahnd = get_reloc_ahnd(i915, 0);
-+
- 		native = gem_create(i915, scratch.size);
+-		tmpl = read_regs(fd, ctx, e, flags);
+-		regs[0] = read_regs(fd, ctx, e, flags);
++		tmpl = read_regs(fd, ahnd, ctx, e, flags);
++		regs[0] = read_regs(fd, ahnd, ctx, e, flags);
  
- 		ptr = gem_mmap__wc(i915, native, 0, scratch.size, PROT_READ);
-@@ -221,10 +225,11 @@ static void test_fence_blt(int i915, int vgem)
- 		write(master[1], &child, sizeof(child));
- 		read(slave[0], &child, sizeof(child));
+ 		tmpl_regs(fd, e, tmpl, values[v]);
  
--		igt_blitter_src_copy(i915, prime, 0, scratch.pitch,
--				     I915_TILING_NONE, 0, 0, scratch.width,
--				     scratch.height, scratch.bpp, native, 0,
--				     scratch.pitch, I915_TILING_NONE, 0, 0);
-+		igt_blitter_src_copy(i915, ahnd, 0, prime, 0, scratch.pitch,
-+				     I915_TILING_NONE, 0, 0, scratch.size,
-+				     scratch.width, scratch.height, scratch.bpp,
-+				     native, 0, scratch.pitch,
-+				     I915_TILING_NONE, 0, 0, scratch.size);
- 		gem_sync(i915, native);
+-		spin = igt_spin_new(fd, .ctx = ctx, .engine = e->flags);
++		spin = igt_spin_new(fd,
++				    .ahnd = ahnd,
++				    .ctx = ctx,
++				    .engine = e->flags);
  
- 		for (i = 0; i < scratch.height; i++)
-@@ -234,6 +239,7 @@ static void test_fence_blt(int i915, int vgem)
- 		munmap(ptr, scratch.size);
- 		gem_close(i915, native);
- 		gem_close(i915, prime);
-+		put_ahnd(ahnd);
- 	}
+ 		igt_debug("%s[%d]: Setting all registers to 0x%08x\n",
+ 			  __func__, v, values[v]);
+@@ -638,15 +660,18 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
  
- 	close(master[1]);
-@@ -375,6 +381,7 @@ static void test_blt(int vgem, int i915)
- 	uint32_t prime, native;
- 	uint32_t *ptr;
- 	int dmabuf, i;
-+	uint64_t ahnd = get_reloc_ahnd(i915, 0);
+ 		if (flags & DIRTY2) {
+ 			const intel_ctx_t *sw = intel_ctx_create(fd, &ctx->cfg);
++			uint64_t ahnd_sw = get_reloc_ahnd(fd, sw->id);
+ 			igt_spin_t *syncpt, *dirt;
  
- 	scratch.width = 1024;
- 	scratch.height = 1024;
-@@ -391,9 +398,11 @@ static void test_blt(int vgem, int i915)
- 		ptr[scratch.pitch * i / sizeof(*ptr)] = i;
- 	munmap(ptr, scratch.size);
+ 			/* Explicit sync to keep the switch between write/read */
+ 			syncpt = igt_spin_new(fd,
++					      .ahnd = ahnd,
+ 					      .ctx = ctx,
+ 					      .engine = e->flags,
+ 					      .flags = IGT_SPIN_FENCE_OUT);
  
--	igt_blitter_src_copy(i915, native, 0, scratch.pitch, I915_TILING_NONE,
--			     0, 0, scratch.width, scratch.height, scratch.bpp,
--			     prime, 0, scratch.pitch, I915_TILING_NONE, 0, 0);
-+	igt_blitter_src_copy(i915, ahnd, 0, native, 0, scratch.pitch,
-+			     I915_TILING_NONE, 0, 0, scratch.size,
-+			     scratch.width, scratch.height, scratch.bpp,
-+			     prime, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
-+			     scratch.size);
- 	prime_sync_start(dmabuf, true);
- 	prime_sync_end(dmabuf, true);
- 	close(dmabuf);
-@@ -405,9 +414,11 @@ static void test_blt(int vgem, int i915)
- 	}
- 	munmap(ptr, scratch.size);
+ 			dirt = igt_spin_new(fd,
++					    .ahnd = ahnd_sw,
+ 					    .ctx = sw,
+ 					    .engine = e->flags,
+ 					    .fence = syncpt->out_fence,
+@@ -655,6 +680,7 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
+ 			igt_spin_free(fd, syncpt);
  
--	igt_blitter_src_copy(i915, prime, 0, scratch.pitch, I915_TILING_NONE,
--			     0, 0, scratch.width, scratch.height, scratch.bpp,
--			     native, 0, scratch.pitch, I915_TILING_NONE, 0, 0);
-+	igt_blitter_src_copy(i915, ahnd, 0, prime, 0, scratch.pitch,
-+			     I915_TILING_NONE, 0, 0, scratch.size,
-+			     scratch.width, scratch.height, scratch.bpp,
-+			     native, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
-+			     scratch.size);
- 	gem_sync(i915, native);
+ 			syncpt = igt_spin_new(fd,
++					      .ahnd = ahnd,
+ 					      .ctx = ctx,
+ 					      .engine = e->flags,
+ 					      .fence = dirt->out_fence,
+@@ -663,15 +689,16 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
  
- 	ptr = gem_mmap__wc(i915, native, 0, scratch.size, PROT_READ);
-@@ -418,6 +429,7 @@ static void test_blt(int vgem, int i915)
- 	gem_close(i915, native);
- 	gem_close(i915, prime);
- 	gem_close(vgem, scratch.handle);
-+	put_ahnd(ahnd);
- }
- 
- static void test_shrink(int vgem, int i915)
-@@ -509,6 +521,7 @@ static void test_blt_interleaved(int vgem, int i915)
- 	uint32_t prime, native;
- 	uint32_t *foreign, *local;
- 	int dmabuf, i;
-+	uint64_t ahnd = get_reloc_ahnd(i915, 0);
- 
- 	scratch.width = 1024;
- 	scratch.height = 1024;
-@@ -525,20 +538,22 @@ static void test_blt_interleaved(int vgem, int i915)
- 
- 	for (i = 0; i < scratch.height; i++) {
- 		local[scratch.pitch * i / sizeof(*local)] = i;
--		igt_blitter_src_copy(i915, native, 0, scratch.pitch,
--				     I915_TILING_NONE, 0, i, scratch.width, 1,
-+		igt_blitter_src_copy(i915, ahnd, 0, native, 0, scratch.pitch,
-+				     I915_TILING_NONE, 0, i, scratch.size,
-+				     scratch.width, 1,
- 				     scratch.bpp, prime, 0, scratch.pitch,
--				     I915_TILING_NONE, 0, i);
-+				     I915_TILING_NONE, 0, i, scratch.size);
- 		prime_sync_start(dmabuf, true);
- 		igt_assert_eq_u32(foreign[scratch.pitch * i / sizeof(*foreign)],
- 				  i);
- 		prime_sync_end(dmabuf, true);
- 
- 		foreign[scratch.pitch * i / sizeof(*foreign)] = ~i;
--		igt_blitter_src_copy(i915, prime, 0, scratch.pitch,
--				     I915_TILING_NONE, 0, i, scratch.width, 1,
-+		igt_blitter_src_copy(i915, ahnd, 0, prime, 0, scratch.pitch,
-+				     I915_TILING_NONE, 0, i, scratch.size,
-+				     scratch.width, 1,
- 				     scratch.bpp, native, 0, scratch.pitch,
--				     I915_TILING_NONE, 0, i);
-+				     I915_TILING_NONE, 0, i, scratch.size);
- 		gem_sync(i915, native);
- 		igt_assert_eq_u32(local[scratch.pitch * i / sizeof(*local)],
- 				  ~i);
-@@ -551,6 +566,7 @@ static void test_blt_interleaved(int vgem, int i915)
- 	gem_close(i915, native);
- 	gem_close(i915, prime);
- 	gem_close(vgem, scratch.handle);
-+	put_ahnd(ahnd);
- }
- 
- static bool prime_busy(int fd, bool excl)
-@@ -559,7 +575,8 @@ static bool prime_busy(int fd, bool excl)
- 	return poll(&pfd, 1, 0) == 0;
- }
- 
--static void work(int i915, int dmabuf, const intel_ctx_t *ctx, unsigned ring)
-+static void work(int i915, uint64_t ahnd, uint64_t scratch_offset, int dmabuf,
-+		 const intel_ctx_t *ctx, unsigned ring)
- {
- 	const int SCRATCH = 0;
- 	const int BATCH = 1;
-@@ -584,10 +601,17 @@ static void work(int i915, int dmabuf, const intel_ctx_t *ctx, unsigned ring)
- 	obj[SCRATCH].handle = prime_fd_to_handle(i915, dmabuf);
- 
- 	obj[BATCH].handle = gem_create(i915, size);
-+	obj[BATCH].offset = get_offset(ahnd, obj[BATCH].handle, size, 0);
- 	obj[BATCH].relocs_ptr = (uintptr_t)store;
--	obj[BATCH].relocation_count = ARRAY_SIZE(store);
-+	obj[BATCH].relocation_count = !ahnd ? ARRAY_SIZE(store) : 0;
- 	memset(store, 0, sizeof(store));
- 
-+	if (ahnd) {
-+		obj[SCRATCH].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+		obj[SCRATCH].offset = scratch_offset;
-+		obj[BATCH].flags = EXEC_OBJECT_PINNED;
-+	}
-+
- 	batch = gem_mmap__wc(i915, obj[BATCH].handle, 0, size, PROT_WRITE);
- 	gem_set_domain(i915, obj[BATCH].handle,
- 		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
-@@ -602,8 +626,8 @@ static void work(int i915, int dmabuf, const intel_ctx_t *ctx, unsigned ring)
- 		store[count].write_domain = I915_GEM_DOMAIN_INSTRUCTION;
- 		batch[i] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
- 		if (gen >= 8) {
--			batch[++i] = 0;
--			batch[++i] = 0;
-+			batch[++i] = scratch_offset + store[count].delta;
-+			batch[++i] = (scratch_offset + store[count].delta) >> 32;
- 		} else if (gen >= 4) {
- 			batch[++i] = 0;
- 			batch[++i] = 0;
-@@ -626,8 +650,8 @@ static void work(int i915, int dmabuf, const intel_ctx_t *ctx, unsigned ring)
- 	batch[i] = MI_BATCH_BUFFER_START;
- 	if (gen >= 8) {
- 		batch[i] |= 1 << 8 | 1;
--		batch[++i] = 0;
--		batch[++i] = 0;
-+		batch[++i] = obj[BATCH].offset;
-+		batch[++i] = obj[BATCH].offset >> 32;
- 	} else if (gen >= 6) {
- 		batch[i] |= 1 << 8;
- 		batch[++i] = 0;
-@@ -662,14 +686,18 @@ static void test_busy(int i915, int vgem, const intel_ctx_t *ctx, unsigned ring)
- 	uint32_t *ptr;
- 	int dmabuf;
- 	int i;
-+	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id), scratch_offset;
- 
- 	scratch.width = 1024;
- 	scratch.height = 1;
- 	scratch.bpp = 32;
- 	vgem_create(vgem, &scratch);
-+	scratch_offset = get_offset(ahnd, scratch.handle, scratch.size, 0);
- 	dmabuf = prime_handle_to_fd(vgem, scratch.handle);
- 
--	work(i915, dmabuf, ctx, ring);
-+	work(i915, ahnd, scratch_offset, dmabuf, ctx, ring);
-+
-+	put_ahnd(ahnd);
- 
- 	/* Calling busy in a loop should be enough to flush the rendering */
- 	memset(&tv, 0, sizeof(tv));
-@@ -691,14 +719,18 @@ static void test_wait(int i915, int vgem, const intel_ctx_t *ctx, unsigned ring)
- 	struct pollfd pfd;
- 	uint32_t *ptr;
- 	int i;
-+	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id), scratch_offset;
- 
- 	scratch.width = 1024;
- 	scratch.height = 1;
- 	scratch.bpp = 32;
- 	vgem_create(vgem, &scratch);
-+	scratch_offset = get_offset(ahnd, scratch.handle, scratch.size, 0);
- 	pfd.fd = prime_handle_to_fd(vgem, scratch.handle);
- 
--	work(i915, pfd.fd, ctx, ring);
-+	work(i915, ahnd, scratch_offset, pfd.fd, ctx, ring);
-+
-+	put_ahnd(ahnd);
- 
- 	pfd.events = POLLIN;
- 	igt_assert_eq(poll(&pfd, 1, 10000), 1);
-@@ -718,18 +750,22 @@ static void test_sync(int i915, int vgem, const intel_ctx_t *ctx, unsigned ring)
- 	uint32_t *ptr;
- 	int dmabuf;
- 	int i;
-+	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id), scratch_offset;
- 
- 	scratch.width = 1024;
- 	scratch.height = 1;
- 	scratch.bpp = 32;
- 	vgem_create(vgem, &scratch);
-+	scratch_offset = get_offset(ahnd, scratch.handle, scratch.size, 0);
- 	dmabuf = prime_handle_to_fd(vgem, scratch.handle);
- 
- 	ptr = mmap(NULL, scratch.size, PROT_READ, MAP_SHARED, dmabuf, 0);
- 	igt_assert(ptr != MAP_FAILED);
- 	gem_close(vgem, scratch.handle);
- 
--	work(i915, dmabuf, ctx, ring);
-+	work(i915, ahnd, scratch_offset, dmabuf, ctx, ring);
-+
-+	put_ahnd(ahnd);
- 
- 	prime_sync_start(dmabuf, false);
- 	for (i = 0; i < 1024; i++)
-@@ -746,12 +782,13 @@ static void test_fence_wait(int i915, int vgem, const intel_ctx_t *ctx, unsigned
- 	uint32_t fence;
- 	uint32_t *ptr;
- 	int dmabuf;
-+	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id), scratch_offset;
- 
- 	scratch.width = 1024;
- 	scratch.height = 1;
- 	scratch.bpp = 32;
- 	vgem_create(vgem, &scratch);
--
-+	scratch_offset = get_offset(ahnd, scratch.handle, scratch.size, 0);
- 	dmabuf = prime_handle_to_fd(vgem, scratch.handle);
- 	fence = vgem_fence_attach(vgem, &scratch, VGEM_FENCE_WRITE);
- 	igt_assert(prime_busy(dmabuf, false));
-@@ -760,10 +797,14 @@ static void test_fence_wait(int i915, int vgem, const intel_ctx_t *ctx, unsigned
- 	ptr = mmap(NULL, scratch.size, PROT_READ, MAP_SHARED, dmabuf, 0);
- 	igt_assert(ptr != MAP_FAILED);
- 
--	igt_fork(child, 1)
--		work(i915, dmabuf, ctx, ring);
-+	igt_fork(child, 1) {
-+		ahnd = get_reloc_ahnd(i915, ctx->id);
-+		work(i915, ahnd, scratch_offset, dmabuf, ctx, ring);
-+		put_ahnd(ahnd);
-+	}
- 
- 	sleep(1);
-+	put_ahnd(ahnd);
- 
- 	/* Check for invalidly completing the task early */
- 	for (int i = 0; i < 1024; i++)
-@@ -789,11 +830,13 @@ static void test_fence_hang(int i915, int vgem, unsigned flags)
- 	uint32_t *ptr;
- 	int dmabuf;
- 	int i;
-+	uint64_t ahnd = get_reloc_ahnd(i915, 0), scratch_offset;
- 
- 	scratch.width = 1024;
- 	scratch.height = 1;
- 	scratch.bpp = 32;
- 	vgem_create(vgem, &scratch);
-+	scratch_offset = get_offset(ahnd, scratch.handle, scratch.size, 0);
- 	dmabuf = prime_handle_to_fd(vgem, scratch.handle);
- 	vgem_fence_attach(vgem, &scratch, flags | WIP_VGEM_FENCE_NOTIMEOUT);
- 
-@@ -801,7 +844,9 @@ static void test_fence_hang(int i915, int vgem, unsigned flags)
- 	igt_assert(ptr != MAP_FAILED);
- 	gem_close(vgem, scratch.handle);
- 
--	work(i915, dmabuf, intel_ctx_0(i915), 0);
-+	work(i915, ahnd, scratch_offset, dmabuf, intel_ctx_0(i915), 0);
-+
-+	put_ahnd(ahnd);
- 
- 	/* The work should have been cancelled */
- 
-@@ -1146,8 +1191,6 @@ igt_main
- 		igt_subtest("basic-fence-blt")
- 			test_fence_blt(i915, vgem);
- 
--		test_each_engine("fence-wait", vgem, i915, test_fence_wait);
--
- 		igt_subtest("basic-fence-flip")
- 			test_flip(i915, vgem, 0);
- 
-@@ -1166,6 +1209,21 @@ igt_main
+ 			igt_spin_free(fd, syncpt);
+ 			intel_ctx_destroy(fd, sw);
++			put_ahnd(ahnd_sw);
  		}
+ 
+-		regs[1] = read_regs(fd, ctx, e, flags);
++		regs[1] = read_regs(fd, ahnd, ctx, e, flags);
+ 
+ 		/*
+ 		 * Restore the original register values before the HW idles.
+ 		 * Or else it may never restart!
+ 		 */
+-		restore_regs(fd, ctx, e, flags, regs[0]);
++		restore_regs(fd, ahnd, ctx, e, flags, regs[0]);
+ 
+ 		igt_spin_free(fd, spin);
+ 
+@@ -681,6 +708,7 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
+ 			gem_close(fd, regs[n]);
+ 		intel_ctx_destroy(fd, ctx);
+ 		gem_close(fd, tmpl);
++		put_ahnd(ahnd);
+ 	}
+ }
+ 
+@@ -706,11 +734,16 @@ static void isolation(int fd, const intel_ctx_cfg_t *cfg,
+ 		igt_spin_t *spin = NULL;
+ 		const intel_ctx_t *ctx[2];
+ 		uint32_t regs[2], tmp;
++		uint64_t ahnd[2];
+ 
+ 		ctx[0] = intel_ctx_create(fd, cfg);
+-		regs[0] = read_regs(fd, ctx[0], e, flags);
++		ahnd[0] = get_reloc_ahnd(fd, ctx[0]->id);
++		regs[0] = read_regs(fd, ahnd[0], ctx[0], e, flags);
+ 
+-		spin = igt_spin_new(fd, .ctx = ctx[0], .engine = e->flags);
++		spin = igt_spin_new(fd,
++				    .ahnd = ahnd[0],
++				    .ctx = ctx[0],
++				    .engine = e->flags);
+ 
+ 		if (flags & DIRTY1) {
+ 			igt_debug("%s[%d]: Setting all registers of ctx 0 to 0x%08x\n",
+@@ -727,7 +760,8 @@ static void isolation(int fd, const intel_ctx_cfg_t *cfg,
+ 		 * see the corruption from the previous context instead!
+ 		 */
+ 		ctx[1] = intel_ctx_create(fd, cfg);
+-		regs[1] = read_regs(fd, ctx[1], e, flags);
++		ahnd[1] = get_reloc_ahnd(fd, ctx[1]->id);
++		regs[1] = read_regs(fd, ahnd[1], ctx[1], e, flags);
+ 
+ 		if (flags & DIRTY2) {
+ 			igt_debug("%s[%d]: Setting all registers of ctx 1 to 0x%08x\n",
+@@ -739,8 +773,8 @@ static void isolation(int fd, const intel_ctx_cfg_t *cfg,
+ 		 * Restore the original register values before the HW idles.
+ 		 * Or else it may never restart!
+ 		 */
+-		tmp = read_regs(fd, ctx[0], e, flags);
+-		restore_regs(fd, ctx[0], e, flags, regs[0]);
++		tmp = read_regs(fd, ahnd[0], ctx[0], e, flags);
++		restore_regs(fd, ahnd[0], ctx[0], e, flags, regs[0]);
+ 
+ 		igt_spin_free(fd, spin);
+ 
+@@ -752,6 +786,7 @@ static void isolation(int fd, const intel_ctx_cfg_t *cfg,
+ 		for (int n = 0; n < ARRAY_SIZE(ctx); n++) {
+ 			gem_close(fd, regs[n]);
+ 			intel_ctx_destroy(fd, ctx[n]);
++			put_ahnd(ahnd[n]);
+ 		}
+ 		gem_close(fd, tmp);
+ 	}
+@@ -781,7 +816,9 @@ static void inject_reset_context(int fd, const intel_ctx_cfg_t *cfg,
+ 				 const struct intel_execution_engine2 *e)
+ {
+ 	const intel_ctx_t *ctx = create_reset_context(fd, cfg);
++	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
+ 	struct igt_spin_factory opts = {
++		.ahnd = ahnd,
+ 		.ctx = ctx,
+ 		.engine = e->flags,
+ 		.flags = IGT_SPIN_FAST,
+@@ -826,21 +863,27 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
+ 	const unsigned int num_values = ARRAY_SIZE(values);
+ 	const intel_ctx_t *ctx[num_values + 1];
+ 	uint32_t regs[num_values + 1][2];
++	uint64_t ahnd[num_values + 1];
+ 	igt_spin_t *spin;
+ 
+ 	gem_quiescent_gpu(fd);
+ 
+ 	ctx[num_values] = intel_ctx_create(fd, cfg);
+-	spin = igt_spin_new(fd, .ctx = ctx[num_values], .engine = e->flags);
+-	regs[num_values][0] = read_regs(fd, ctx[num_values], e, flags);
++	ahnd[num_values] = get_reloc_ahnd(fd, ctx[num_values]->id);
++	spin = igt_spin_new(fd,
++			    .ahnd = ahnd[num_values],
++			    .ctx = ctx[num_values],
++			    .engine = e->flags);
++	regs[num_values][0] = read_regs(fd, ahnd[num_values], ctx[num_values],
++					e, flags);
+ 	for (int v = 0; v < num_values; v++) {
+ 		ctx[v] = intel_ctx_create(fd, cfg);
++		ahnd[v] = get_reloc_ahnd(fd, ctx[v]->id);
+ 		write_regs(fd, ctx[v], e, flags, values[v]);
+ 
+-		regs[v][0] = read_regs(fd, ctx[v], e, flags);
+-
++		regs[v][0] = read_regs(fd, ahnd[v], ctx[v], e, flags);
+ 	}
+-	gem_close(fd, read_regs(fd, ctx[num_values], e, flags));
++	gem_close(fd, read_regs(fd, ahnd[num_values], ctx[num_values], e, flags));
+ 	igt_spin_free(fd, spin);
+ 
+ 	if (flags & RESET)
+@@ -871,10 +914,14 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
+ 		break;
  	}
  
-+	/* Fence testing, requires multiprocess allocator */
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require(vgem_has_fences(vgem));
-+			intel_allocator_multiprocess_start();
-+		}
-+
-+		test_each_engine("fence-wait", vgem, i915, test_fence_wait);
-+
-+		igt_fixture {
-+			intel_allocator_multiprocess_stop();
-+		}
-+	}
-+
-+
- 	igt_fixture {
- 		close(i915);
- 		close(vgem);
+-	spin = igt_spin_new(fd, .ctx = ctx[num_values], .engine = e->flags);
++	spin = igt_spin_new(fd,
++			    .ahnd = ahnd[num_values],
++			    .ctx = ctx[num_values],
++			    .engine = e->flags);
+ 	for (int v = 0; v < num_values; v++)
+-		regs[v][1] = read_regs(fd, ctx[v], e, flags);
+-	regs[num_values][1] = read_regs(fd, ctx[num_values], e, flags);
++		regs[v][1] = read_regs(fd, ahnd[v], ctx[v], e, flags);
++	regs[num_values][1] = read_regs(fd, ahnd[num_values], ctx[num_values],
++					e, flags);
+ 	igt_spin_free(fd, spin);
+ 
+ 	for (int v = 0; v < num_values; v++) {
+@@ -886,9 +933,11 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
+ 		gem_close(fd, regs[v][0]);
+ 		gem_close(fd, regs[v][1]);
+ 		intel_ctx_destroy(fd, ctx[v]);
++		put_ahnd(ahnd[v]);
+ 	}
+ 	compare_regs(fd, e, regs[num_values][0], regs[num_values][1], "clean");
+ 	intel_ctx_destroy(fd, ctx[num_values]);
++	put_ahnd(ahnd[num_values]);
+ }
+ 
+ static unsigned int __has_context_isolation(int fd)
 -- 
 2.26.0
