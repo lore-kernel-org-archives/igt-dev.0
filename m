@@ -1,26 +1,26 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 References: <20210730085348.2326899-1-matthew.auld@intel.com>
  <20210730085348.2326899-3-matthew.auld@intel.com>
  <87pmuw5pg8.wl-ashutosh.dixit@intel.com>
 From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Message-ID: <c608c3ec-0a42-d70a-49e4-868b15fba9a6@linux.intel.com>
-Date: Fri, 6 Aug 2021 12:00:52 +0200
+Message-ID: <56a57564-961f-f7da-a6d2-bf8eb577d852@linux.intel.com>
+Date: Fri, 6 Aug 2021 12:10:54 +0200
 MIME-Version: 1.0
 In-Reply-To: <87pmuw5pg8.wl-ashutosh.dixit@intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v3 03/11] lib/i915/gem_mman: add fixed
+Subject: Re: [Intel-gfx] [PATCH i-g-t v3 03/11] lib/i915/gem_mman: add fixed
  mode to gem_mmap_offset__cpu
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
 To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>, Matthew Auld <matthew.auld@intel.com>
 Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, Daniel Vetter <daniel.vetter@ffwll.ch>, Ramalingam C <ramalingam.c@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
@@ -61,4 +61,6 @@ Op 02-08-2021 om 08:29 schreef Dixit, Ashutosh:
 > __gem_mmap_offset__cpu we should also be adding it to
 > __gem_mmap_offset__wc. Thanks.
 
-I've applied the patch series for now. Not sure I agree on adding it to __gem_mmap_offset__wc, but if there's a need, we could do that. :)
+Why do we need it in __gem_mmap_offset_wc btw?
+
+Rest of series doesn't seem to be blocked by it, so pushed for now.
