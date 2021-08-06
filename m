@@ -1,19 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E504F6E82C
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 11:12:03 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-Date: Fri, 6 Aug 2021 11:12:00 +0000
-Message-ID: <2f2adec22b834113ab24a23b45f6ff0a@intel.com>
-References: <20210803110934.970874-1-ayaz.siddiqui@intel.com>
- <20210803110934.970874-2-ayaz.siddiqui@intel.com>
-In-Reply-To: <20210803110934.970874-2-ayaz.siddiqui@intel.com>
-Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] lib/rendercopy_gen9: Program MOCS
- value based on platform
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 06 Aug 2021 11:59:29 -0000
+Message-ID: <162825116921.27547.4725286243931543820@emeril.freedesktop.org>
+References: <20210806084412.478115-1-stylon.wang@amd.com>
+In-Reply-To: <20210806084412.478115-1-stylon.wang@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/amdgpu=3A_Introduce_amd=5Fhotplug_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,63 +16,156 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Siddiqui, Ayaz A" <ayaz.siddiqui@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Siddiqui, Ayaz A" <ayaz.siddiqui@intel.com>
+To: Stylon Wang <stylon.wang@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJv
-dW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YgQXlheiBBDQo+IFNpZGRp
-cXVpDQo+IFNlbnQ6IFR1ZXNkYXksIEF1Z3VzdCAzLCAyMDIxIDI6MTAgUE0NCj4gVG86IGlndC1k
-ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBTaWRkaXF1aSwgQXlheiBBIDxheWF6LnNp
-ZGRpcXVpQGludGVsLmNvbT4NCj4gU3ViamVjdDogW2lndC1kZXZdIFtQQVRDSCBpLWctdCAxLzFd
-IGxpYi9yZW5kZXJjb3B5X2dlbjk6IFByb2dyYW0gTU9DUyB2YWx1ZQ0KPiBiYXNlZCBvbiBwbGF0
-Zm9ybQ0KPiANCj4gR2VuMTIgb253YXJkIHBsYXRmb3JtcyBkb2VzIG5vdCBzdXBwb3J0IGNvYWNo
-YWJpbGl0eSB2aWEgUFRFLg0KPiBTbyBJOTE1X01PQ1NfUFRFKCBpbmRleCAxKSBtYXkgcG9pbnQg
-dG8gdW5zcGVjaWZpZWQvcmVzZXJ2ZWQgb3Igc29tZSBvdGhlcg0KPiBjb2FjaGFiaWxpdHkgTU9D
-UyBpbmRleC4gVGhpcyBtYXkgbGVhZHMgdG8gZGF0YSBjb3JydXB0aW9uLg0KPiANCj4gQSBoZWxw
-ZXIgZnVuY3Rpb24gaGFzIGJlZW4gYWRkZWQgdG8gcHJvdmlkZSBVQyBNT0NTIGluZGV4IGJhc2Vk
-IG9uIHBsYXRmb3JtLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQXlheiBBIFNpZGRpcXVpIDxheWF6
-LnNpZGRpcXVpQGludGVsLmNvbT4NCj4gLS0tDQo+ICBsaWIvcmVuZGVyY29weV9nZW45LmMgfCAz
-MyArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAz
-MiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGliL3Jl
-bmRlcmNvcHlfZ2VuOS5jIGIvbGliL3JlbmRlcmNvcHlfZ2VuOS5jIGluZGV4DQo+IGVlY2Y3M2Qz
-MTguLjU4NDVkM2IyODAgMTAwNjQ0DQo+IC0tLSBhL2xpYi9yZW5kZXJjb3B5X2dlbjkuYw0KPiAr
-KysgYi9saWIvcmVuZGVyY29weV9nZW45LmMNCj4gQEAgLTIzLDYgKzIzLDcgQEANCj4gICNpbmNs
-dWRlICJnZW45X3JlbmRlci5oIg0KPiAgI2luY2x1ZGUgImludGVsX3JlZy5oIg0KPiAgI2luY2x1
-ZGUgImlndF9hdXguaCINCj4gKyNpbmNsdWRlICJpbnRlbF9jaGlwc2V0LmgiDQo+IA0KPiAgI2Rl
-ZmluZSBWRVJURVhfU0laRSAoMyo0KQ0KPiANCj4gQEAgLTExNSwxMiArMTE2LDQyIEBAIHN0YXRp
-YyBjb25zdCB1aW50MzJfdCBnZW4xMl9yZW5kZXJfY29weVtdWzRdID0gew0KPiAgCXsgMHg4MDA0
-MDEzMSwgMHgwMDAwMDAwNCwgMHg1MDAwNzE0NCwgMHgwMGM0MDAwMCB9LCAgfTsNCj4gDQo+ICsN
-Cj4gKy8qDQo+ICsgKiBHZW4gPj0gMTIgb253YXJkcyBkb24ndCBoYXZlIGEgc2V0dGluZyBmb3Ig
-UFRFLA0KPiArICogc28gdXNpbmcgSTkxNV9NT0NTX1BURSBhcyBtb2NzIGluZGV4IG1heSBsZWFk
-cyB0bw0KDQpzL2xlYWRzL2xlYWQvZw0KDQo+ICsgKiBzb21lIHVuZGVmaW5lZCBNT0NTIGJlaGF2
-aW9yLg0KPiArICogQ29ycmVjdCBNT0NTIGluZGV4IHNob3VsZCBiZSByZWZlcnJlZCBmcm9tIEJT
-UENFUw0KDQpzL0JTUENFUy9CU3BlYy9nDQoNCj4gKyAqIGFuZCBwcm9ncmFtbWVkIGFjY29yZGlu
-Z2x5Lg0KPiArICogVGhpcyBoZWxwZXIgZnVuY3Rpb24gaXMgcHJvdmlkaW5nIGFwcHJvcHJhaXRl
-IFVDIGluZGV4Lg0KDQpzLyBhcHByb3ByYWl0ZS9hcHByb3ByaWF0ZS9nDQoNCldpdGggdGhlc2Ug
-bWlub3IgdHlwb3MgaW4gY29tbWVudCBzZWN0aW9ucywgdGhpcyBpcyANCg0KUmV2aWV3ZWQtYnk6
-IE1pa2EgS2Fob2xhIDxtaWthLmthaG9sYUBpbnRlbC5jb20+DQoNCj4gKyAqLw0KPiArc3RhdGlj
-IHVpbnQ4X3QNCj4gK2ludGVsX2dldF91Y19tb2NzKGludCBmZCkgew0KPiArDQo+ICsJdWludDE2
-X3QgZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2RldmlkKGZkKTsNCj4gKwl1aW50OF90ICB1Y19pbmRl
-eDsNCj4gKw0KPiArCWlmIChJU19ERzEoZGV2aWQpKQ0KPiArCQl1Y19pbmRleCA9IDE7DQo+ICsJ
-ZWxzZSBpZiAoSVNfR0VOMTIoZGV2aWQpKQ0KPiArCQl1Y19pbmRleCA9IDM7DQo+ICsJZWxzZQ0K
-PiArCQl1Y19pbmRleCA9IEk5MTVfTU9DU19QVEU7DQo+ICsNCj4gKwkvKg0KPiArCSAqIEJpdEZp
-ZWxkIFs2OjFdIHJlcHJlc2VudHMgaW5kZXggdG8gTU9DUyBUYWJsZXMNCj4gKwkgKiBCaXRGaWVs
-ZCBbMF0gcmVwcmVzZW50cyBFbmNyeXB0aW9uL0RlY3J5cHRpb24NCj4gKwkgKi8NCj4gKwlyZXR1
-cm4gdWNfaW5kZXggPDwgMTsNCj4gK30NCj4gKw0KPiAgLyogTW9zdGx5IGNvcHkrcGFzdGUgZnJv
-bSBnZW42LCBleGNlcHQgaGVpZ2h0LCB3aWR0aCwgcGl0Y2ggbW92ZWQgKi8gIHN0YXRpYw0KPiB1
-aW50MzJfdCAgZ2VuOF9iaW5kX2J1ZihzdHJ1Y3QgaW50ZWxfYmIgKmliYiwgY29uc3Qgc3RydWN0
-IGludGVsX2J1ZiAqYnVmLCBpbnQNCj4gaXNfZHN0KSB7DQo+ICAJc3RydWN0IGdlbjlfc3VyZmFj
-ZV9zdGF0ZSAqc3M7DQo+ICAJdWludDMyX3Qgd3JpdGVfZG9tYWluLCByZWFkX2RvbWFpbjsNCj4g
-IAl1aW50NjRfdCBhZGRyZXNzOw0KPiArCWludCBpOTE1ID0gYnVmX29wc19nZXRfZmQoYnVmLT5i
-b3BzKTsNCj4gDQo+ICAJaWd0X2Fzc2VydF9sdGUoYnVmLT5zdXJmYWNlWzBdLnN0cmlkZSwgMjU2
-KjEwMjQpOw0KPiAgCWlndF9hc3NlcnRfbHRlKGludGVsX2J1Zl93aWR0aChidWYpLCAxNjM4NCk7
-IEBAIC0xNTEsNyArMTgyLDcgQEANCj4gZ2VuOF9iaW5kX2J1ZihzdHJ1Y3QgaW50ZWxfYmIgKmli
-YiwgY29uc3Qgc3RydWN0IGludGVsX2J1ZiAqYnVmLCBpbnQgaXNfZHN0KSB7DQo+ICAJZWxzZSBp
-ZiAoYnVmLT50aWxpbmcgIT0gSTkxNV9USUxJTkdfTk9ORSkNCj4gIAkJc3MtPnNzMC50aWxlZF9t
-b2RlID0gMzsNCj4gDQo+IC0Jc3MtPnNzMS5tZW1vcnlfb2JqZWN0X2NvbnRyb2wgPSBJOTE1X01P
-Q1NfUFRFIDw8IDE7DQo+ICsJc3MtPnNzMS5tZW1vcnlfb2JqZWN0X2NvbnRyb2wgPSBpbnRlbF9n
-ZXRfdWNfbW9jcyhpOTE1KTsNCj4gDQo+ICAJaWYgKGJ1Zi0+dGlsaW5nID09IEk5MTVfVElMSU5H
-X1lmKQ0KPiAgCQlzcy0+c3M1LnRybW9kZSA9IDE7DQo+IC0tDQo+IDIuMjYuMg0KDQo=
+== Series Details ==
+
+Series: tests/amdgpu: Introduce amd_hotplug tests
+URL   : https://patchwork.freedesktop.org/series/93449/
+State : warning
+
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/375900 for the overview.
+
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12557709):
+  299/306 assembler test/rndd                     OK       0.02 s 
+  300/306 assembler test/rndu                     OK       0.02 s 
+  301/306 assembler test/rnde                     OK       0.01 s 
+  302/306 assembler test/rnde-intsrc              OK       0.02 s 
+  303/306 assembler test/rndz                     OK       0.02 s 
+  304/306 assembler test/lzd                      OK       0.02 s 
+  305/306 assembler test/not                      OK       0.02 s 
+  306/306 assembler test/immediate                OK       0.01 s 
+  
+  Ok:                  281
+  Expected Fail:         0
+  Fail:                  0
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:              25
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1628250811:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
+
+test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12557712):
+    1/292 lib igt_assert                          TIMEOUT 32.09 s 
+  Traceback (most recent call last):
+    File "/usr/lib/python3/dist-packages/mesonbuild/mesonmain.py", line 112, in run
+      return options.run_func(options)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
+      return th.doit()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
+      self.run_tests(tests)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
+      self.drain_futures(futures)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
+      self.print_stats(numlen, tests, name, result.result(), i)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
+      result_str += "\n\n" + result.get_log()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
+      res += self.stde
+  TypeError: can only concatenate str (not "bytes") to str
+  section_end:1628250811:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
+
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12557711):
+    1/292 lib igt_assert                          TIMEOUT 32.10 s 
+  Traceback (most recent call last):
+    File "/usr/lib/python3/dist-packages/mesonbuild/mesonmain.py", line 112, in run
+      return options.run_func(options)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
+      return th.doit()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
+      self.run_tests(tests)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
+      self.drain_futures(futures)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
+      self.print_stats(numlen, tests, name, result.result(), i)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
+      result_str += "\n\n" + result.get_log()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
+      res += self.stde
+  TypeError: can only concatenate str (not "bytes") to str
+  section_end:1628250811:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12557708):
+  299/306 assembler test/rndd                     OK       0.01 s 
+  300/306 assembler test/rndu                     OK       0.01 s 
+  301/306 assembler test/rnde                     OK       0.02 s 
+  302/306 assembler test/rnde-intsrc              OK       0.02 s 
+  303/306 assembler test/rndz                     OK       0.02 s 
+  304/306 assembler test/lzd                      OK       0.02 s 
+  305/306 assembler test/not                      OK       0.02 s 
+  306/306 assembler test/immediate                OK       0.01 s 
+  
+  Ok:                  281
+  Expected Fail:         0
+  Fail:                  0
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:              25
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1628250805:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
+
+test:ninja-test-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12557710):
+   1/24 lib igt_assert                          TIMEOUT 32.03 s 
+  Traceback (most recent call last):
+    File "/usr/lib/python3/dist-packages/mesonbuild/mesonmain.py", line 112, in run
+      return options.run_func(options)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
+      return th.doit()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
+      self.run_tests(tests)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
+      self.drain_futures(futures)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
+      self.print_stats(numlen, tests, name, result.result(), i)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
+      result_str += "\n\n" + result.get_log()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
+      res += self.stde
+  TypeError: can only concatenate str (not "bytes") to str
+  section_end:1628250811:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12557713):
+    1/292 lib igt_assert                          TIMEOUT 32.09 s 
+  Traceback (most recent call last):
+    File "/usr/lib/python3/dist-packages/mesonbuild/mesonmain.py", line 112, in run
+      return options.run_func(options)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
+      return th.doit()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
+      self.run_tests(tests)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
+      self.drain_futures(futures)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
+      self.print_stats(numlen, tests, name, result.result(), i)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
+      result_str += "\n\n" + result.get_log()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
+      res += self.stde
+  TypeError: can only concatenate str (not "bytes") to str
+  section_end:1628250812:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/375900
