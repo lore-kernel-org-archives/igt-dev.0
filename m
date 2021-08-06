@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D74CF6E1F1
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 10:12:27 +0000 (UTC)
-Date: Fri, 6 Aug 2021 13:15:03 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YQ0Lp+ZmKlDwiqyF@platvala-desk.ger.corp.intel.com>
-References: <20210805160622.516552-1-bindu.r@amd.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210805160622.516552-1-bindu.r@amd.com>
-Subject: Re: [igt-dev] [PATCH v4] tests/kms_bw: New test for bandwidth
- validation
+Content-Transfer-Encoding: quoted-printable
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 06 Aug 2021 10:44:53 -0000
+Message-ID: <162824669384.27547.615895460786658957@emeril.freedesktop.org>
+References: <20210806091028.296829-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20210806091028.296829-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/kms=5Fsetmode=3A_Fix_to_get_a_valid_config?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,308 +16,97 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bindu Ramamurthy <bindu.r@amd.com>
-Cc: arek@hiler.eu, markyacoub@google.com, igt-dev@lists.freedesktop.org, Harry.Wentland@amd.com, Rodrigo.Siqueira@amd.com, Anson.Jacob@amd.com, aurabindo.pillai@amd.com, Nicholas.Choi@amd.com
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Aug 05, 2021 at 12:06:22PM -0400, Bindu Ramamurthy wrote:
-> From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> 
-> Add linear tiling mode tests
-> 
-> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> Acked-by: Bindu Ramamurthy <bindu.r@amd.com>
-> ---
-> 
-> Changes since v4:
-> 	Removed igt_skip_on_simulation from main function.
-> Changes since v3:
->         This version implements array of test modes in igt_main,
->         global IGT_MAX_PIPE and other comments from Mark.
-> Changes since v2:
-> 	Test added as generic IGT. 
-> 
-> 
->  tests/kms_bw.c    | 217 ++++++++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build |   1 +
->  2 files changed, 218 insertions(+)
->  create mode 100644 tests/kms_bw.c
-> 
-> diff --git a/tests/kms_bw.c b/tests/kms_bw.c
-> new file mode 100644
-> index 00000000..1c287c0f
-> --- /dev/null
-> +++ b/tests/kms_bw.c
-> @@ -0,0 +1,217 @@
-> +/*
-> + * Copyrights 2021 Advanced Micro Devices, Inc.
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-> + * OTHER DEALINGS IN THE SOFTWARE.
-> + */
-> +
-> +#include "drm_mode.h"
-> +#include "igt.h"
-> +#include "drm.h"
-> +#include <stdio.h>
-> +#include <xf86drmMode.h>
-> +
-> +
-> +/* Common test data. */
-> +typedef struct data {
-> +        igt_display_t display;
-> +        igt_plane_t *primary[IGT_MAX_PIPES];
-> +        igt_output_t *output[IGT_MAX_PIPES];
-> +        igt_pipe_t *pipe[IGT_MAX_PIPES];
-> +        igt_pipe_crc_t *pipe_crc[IGT_MAX_PIPES];
-> +        drmModeModeInfo mode[IGT_MAX_PIPES];
-> +        enum pipe pipe_id[IGT_MAX_PIPES];
-> +        int w[IGT_MAX_PIPES];
-> +        int h[IGT_MAX_PIPES];
-> +        int fd;
-> +} data_t;
-> +
-> +static drmModeModeInfo test_mode[] = {
-> +	{ 173000,
-> +	1920, 2048, 2248, 2576, 0,
-> +	1080, 1083, 1088, 1120, 0,
-> +	60,
-> +	DRM_MODE_FLAG_NHSYNC,
-> +	0x40,
-> +	"1920x1080p\0",
-> +	}, /* test_mode_1 */
-> +
-> +	{ 312250,
-> +	2560, 2752, 3024, 3488, 0,
-> +	1440, 1443, 1448, 1493, 0,
-> +	60,
-> +	DRM_MODE_FLAG_NHSYNC,
-> +	0x40,
-> +	"2560x1440p\0",
-> +	}, /* test_mode_2 */
-> +
-> +	{ 533000,
-> +	3840, 3888, 3920, 4000, 0,
-> +	2160, 2163, 2168, 2222, 0,
-> +	60,
-> +	DRM_MODE_FLAG_NHSYNC,
-> +	0x40,
-> +	"3840x2160p\0",
-> +	}, /* test_mode_3 */
-> +
-> +};
-> +
-> +static void test_init(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	int i, max_pipes = display->n_pipes;
-> +
-> +	for_each_pipe(display, i) {
-> +		data->pipe_id[i] = PIPE_A + i;
+=3D=3D Series Details =3D=3D
 
-i is already a valid PIPE_x here, no need to PIPE_A + i.
+Series: tests/kms_setmode: Fix to get a valid config
+URL   : https://patchwork.freedesktop.org/series/93450/
+State : failure
 
-But beware of holes in your array. for_each_pipe goes through valid
-pipes and the set of valid pipes can be PIPE_A, PIPE_C, leaving PIPE_B
-(index 1) uninitialized.
+=3D=3D Summary =3D=3D
 
-> +		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
-> +		data->primary[i] = igt_pipe_get_plane_type(
-> +			data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
-> +		data->pipe_crc[i] =
-> +			igt_pipe_crc_new(data->fd, data->pipe_id[i], "auto");
-> +	}
-> +
-> +	for (i = 0; i < display->n_outputs && i < max_pipes; i++) {
-> +		igt_output_t *output = &display->outputs[i];
-> +
-> +		data->output[i] = output;
-> +
-> +		/* Only allow physically connected displays for the tests. */
-> +		if (!igt_output_is_connected(output))
-> +			continue;
-> +
-> +		igt_assert(kmstest_get_connector_default_mode(
-> +			data->fd, output->config.connector, &data->mode[i]));
-> +
-> +		data->w[i] = data->mode[i].hdisplay;
-> +		data->h[i] = data->mode[i].vdisplay;
-> +	}
-> +
-> +
-> +	igt_require(data->output[0]);
-> +	igt_display_reset(display);
-> +}
-> +
-> +static void test_fini(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	int i;
-> +
-> +	for_each_pipe(display, i) {
-> +		igt_pipe_crc_free(data->pipe_crc[i]);
-> +	}
-> +
-> +	igt_display_reset(display);
-> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-> +}
-> +
-> +/* Forces a mode for a connector. */
-> +static void force_output_mode(data_t *d, igt_output_t *output,
-> +			      const drmModeModeInfo *mode)
-> +{
-> +	/* This allows us to create a virtual sink. */
-> +	if (!igt_output_is_connected(output)) {
-> +		kmstest_force_edid(d->fd, output->config.connector,
-> +				   igt_kms_get_4k_edid());
-> +
-> +		kmstest_force_connector(d->fd, output->config.connector,
-> +					FORCE_CONNECTOR_DIGITAL);
-> +	}
-> +
-> +	igt_output_override_mode(output, mode);
-> +}
-> +
-> +static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo *mode) {
-> +	igt_display_t *display = &data->display;
-> +	igt_output_t *output;
-> +	struct igt_fb buffer[IGT_MAX_PIPES];
-> +	igt_crc_t zero, captured[IGT_MAX_PIPES];
-> +	int i = 0;
-> +
-> +
-> +	igt_skip_on_f(pipe >= igt_display_get_n_pipes(display),
-> +                      "ASIC does not have %d pipes\n", pipe);
+IGT patchset build failed on latest successful build
+2f32b9e0da5f1ac9529318dd5b836c8cf4d3c441 tests/i915/gem_exec_fence: use dev=
+ice_coherent mmap
 
+[122/427] Linking target tests/kms_flip_event_leak.
+[123/427] Linking target tests/kms_flip_scaled_crc.
+[124/427] Linking target tests/kms_flip.
+[125/427] Linking target tests/i915_pm_rps.
+[126/427] Linking target tests/i915_pm_dc.
+[127/427] Linking target tests/vc4_tiling.
+[128/427] Linking target tests/kms_hdmi_inject.
+[129/427] Linking target tests/kms_frontbuffer_tracking.
+[130/427] Linking target tests/kms_force_connector_basic.
+[131/427] Linking target tests/kms_getfb.
+[132/427] Linking target tests/kms_legacy_colorkey.
+[133/427] Linking target tests/kms_lease.
+[134/427] Linking target tests/kms_hdr.
+[135/427] Linking target tests/kms_invalid_dotclock.
+[136/427] Linking target tests/kms_multipipe_modeset.
+[137/427] Linking target tests/kms_mmap_write_crc.
+[138/427] Linking target tests/kms_panel_fitting.
+[139/427] Linking target tests/kms_pipe_b_c_ivb.
+[140/427] Linking target tools/intel_residency.
+[141/427] Linking target tools/intel_reg_checker.
+[142/427] Linking target tools/intel_gem_info.
+[143/427] Linking target tools/intel_stepping.
+[144/427] Linking target tests/kms_plane_multiple.
+[145/427] Linking target tests/kms_plane_cursor.
+[146/427] Linking target tests/kms_plane_lowres.
+[147/427] Linking target tests/kms_plane_scaling.
+[148/427] Linking target tests/kms_prime.
+[149/427] Linking target tests/kms_prop_blob.
+[150/427] Linking target tests/kms_properties.
+[151/427] Linking target tests/kms_psr.
+[152/427] Linking target tests/kms_psr2_su.
+[153/427] Linking target tests/kms_psr2_sf.
+[154/427] Linking target tests/kms_pwrite_crc.
+[155/427] Compiling C object 'tests/tests@@kms_setmode@exe/kms_setmode.c.o'.
+FAILED: tests/tests@@kms_setmode@exe/kms_setmode.c.o=20
+ccache cc -Itests/tests@@kms_setmode@exe -Itests -I../tests -I../include/dr=
+m-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cair=
+o -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/u=
+sr/include/pixman-1 -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr=
+/include/libpng12 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/us=
+r/include/x86_64-linux-gnu -I/usr/include/alsa -I/usr/include -I/home/cidrm=
+/kernel_headers/include -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_B=
+ITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -inc=
+lude config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after=
+-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-d=
+eclarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototy=
+pes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredundant-dec=
+ls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wn=
+o-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointer-arith -W=
+no-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -=
+Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-s=
+elf -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -=
+Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werro=
+r=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin=
+-malloc -fno-builtin-calloc -fcommon -pthread  -MD -MQ 'tests/tests@@kms_se=
+tmode@exe/kms_setmode.c.o' -MF 'tests/tests@@kms_setmode@exe/kms_setmode.c.=
+o.d' -o 'tests/tests@@kms_setmode@exe/kms_setmode.c.o' -c ../tests/kms_setm=
+ode.c
+../tests/kms_setmode.c: In function =E2=80=98setup_crtcs=E2=80=99:
+../tests/kms_setmode.c:364:63: error: expected =E2=80=98)=E2=80=99 before =
+=E2=80=98config_valid=E2=80=99
+     !!(tconf->flags & (TEST_SINGLE_CRTC_CLONE | TEST_TIMINGS))
+                                                               ^
+                                                               )
+    config_valid =3D false;
+    ~~~~~~~~~~~~                                               =20
+../tests/kms_setmode.c:363:6: note: to match this =E2=80=98(=E2=80=99
+   if (encoder_usage_count[i] > 1 &&
+      ^
+../tests/kms_setmode.c:369:1: error: expected expression before =E2=80=98}=
+=E2=80=99 token
+ }
+ ^
+ninja: build stopped: subcommand failed.
 
-The funky fused pipes support for i915 mentioned above has caused
-igt_display_get_n_pipes to not quite do what you want to do here. It
-always gives IGT_MAX_PIPES regardless of the amount of valid crtcs.
-
-To get the amount of valid pipes you can do
-
-enum pipe pipe;
-num_pipes = 0;
-for_each_pipe(display, pipe) num_pipes++;
-
-
-
-> +
-> +	test_init(data);
-> +
-> +	/* create buffers */
-> +	for (i = 0; i <= pipe; i++) {
-
-Looping through the arrays in data this way accesses the holes
-mentioned above.
-
-> +
-> +		output = data->output[i];
-> +		if (!output) {
-> +			continue;
-> +		}
-> +
-> +		force_output_mode(data, output, mode);
-> +
-> +		igt_create_color_fb(display->drm_fd, test_mode[0].hdisplay,
-> +				    test_mode[0].vdisplay, DRM_FORMAT_XRGB8888,
-> +				    DRM_FORMAT_MOD_NONE, 1.f, 0.f, 0.f,
-> +				    &buffer[i]);
-> +
-> +		igt_output_set_pipe(output, i);
-> +
-> +		igt_plane_set_fb(data->primary[i], &buffer[i]);
-> +	}
-> +
-> +	igt_display_commit_atomic(
-> +		display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +
-> +
-> +	for (i = 0; i <= pipe; i++) {
-> +		igt_pipe_crc_collect_crc(data->pipe_crc[i], &captured[i]);
-> +		igt_assert_f(!igt_check_crc_equal(&zero, &captured[i]),
-> +			     "CRC is zero\n");
-> +		igt_remove_fb(display->drm_fd, &buffer[i]);
-> +	}
-> +
-> +	test_fini(data);
-> +}
-> +
-> +igt_main
-> +{
-> +	data_t data;
-> +	int i = 0, j = 0;
-> +
-> +
-> +	memset(&data, 0, sizeof(data));
-> +
-> +	igt_fixture
-> +	{
-> +		data.fd = drm_open_driver_master(DRIVER_ANY);
-> +
-> +		kmstest_set_vt_graphics_mode();
-> +
-> +		igt_display_require(&data.display, data.fd);
-> +		igt_require(&data.display.is_atomic);
-> +		igt_display_require_output(&data.display);
-> +
-> +	}
-> +
-> +	for (i = 0; i < IGT_MAX_PIPES; i++)
-
-I was going to suggest using for_each_pipe_static for this but
-conceptually this makes more sense, as it's going for the _amount_ of
-pipes.
-
-Please add comment here that explains that.
-
-
--- 
-Petri Latvala
-
-
-
-> +		for (j = 0; j < ARRAY_SIZE(test_mode); j++) {
-> +			igt_subtest_f("linear-tiling-%d-displays-%s", i+1,
-> +			      test_mode[j].name)
-> +			run_test_linear_tiling(&data, i, &test_mode[j]);
-> +		}
-> +
-> +
-> +	igt_fixture
-> +	{
-> +		igt_display_fini(&data.display);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 1bdfddbb..6d1ebe42 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -22,6 +22,7 @@ test_progs = [
->  	'kms_big_fb',
->  	'kms_big_joiner' ,
->  	'kms_busy',
-> +	'kms_bw',
->  	'kms_ccs',
->  	'kms_cdclk',
->  	'kms_concurrent',
-> -- 
-> 2.25.1
-> 
