@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A5C46EB81
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:47:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E25836EB75
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Aug 2021 09:47:01 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  6 Aug 2021 11:46:01 +0200
-Message-Id: <20210806094649.21162-9-zbigniew.kempczynski@intel.com>
+Date: Fri,  6 Aug 2021 11:45:54 +0200
+Message-Id: <20210806094649.21162-2-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 References: <20210806094649.21162-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 08/56] lib/huc_copy: Extend huc copy
- prototype to pass allocator handle
+Subject: [igt-dev] [PATCH i-g-t v4 01/56] lib/igt_dummyload: Add support of
+ using allocator in igt spinner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,194 +22,203 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For testing gem_huc_copy on no-reloc platforms we need to pass
-allocator handle and object sizes to properly acquire offsets from
-allocator.
+For gens without relocations we need to use softpin with valid offsets
+which do not overlap other execbuf objects. As spinner during creation
+knows nothing about vm it has to run into allocator handle must be
+passed to properly acquire offsets from allocator instance.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/huc_copy.c            | 27 +++++++++++++++++++++++----
- lib/huc_copy.h            |  4 ++--
- lib/intel_batchbuffer.h   |  6 ++++--
- tests/i915/gem_huc_copy.c | 12 ++++++++++--
- 4 files changed, 39 insertions(+), 10 deletions(-)
+ lib/igt_dummyload.c | 74 ++++++++++++++++++++++++++++++++++++---------
+ lib/igt_dummyload.h |  3 ++
+ 2 files changed, 63 insertions(+), 14 deletions(-)
 
-diff --git a/lib/huc_copy.c b/lib/huc_copy.c
-index bc98b1f9f..6ec68864b 100644
---- a/lib/huc_copy.c
-+++ b/lib/huc_copy.c
-@@ -23,7 +23,9 @@
-  */
+diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+index 8a5ad5ee3..645db9222 100644
+--- a/lib/igt_dummyload.c
++++ b/lib/igt_dummyload.c
+@@ -35,6 +35,7 @@
+ #include "i915/gem_engine_topology.h"
+ #include "i915/gem_mman.h"
+ #include "i915/gem_submission.h"
++#include "igt_aux.h"
+ #include "igt_core.h"
+ #include "igt_device.h"
+ #include "igt_dummyload.h"
+@@ -101,7 +102,7 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	unsigned int flags[GEM_MAX_ENGINES];
+ 	unsigned int nengine;
+ 	int fence_fd = -1;
+-	uint64_t addr;
++	uint64_t addr, addr_scratch, ahnd = opts->ahnd, objflags = 0;
+ 	uint32_t *cs;
+ 	int i;
  
- #include <i915_drm.h>
-+#include "drmtest.h"
- #include "huc_copy.h"
-+#include "intel_allocator.h"
- 
- static void
- gen9_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
-@@ -40,6 +42,7 @@ gen9_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
- 			buf[(*i)++] = src->offset;
- 
- 			reloc_src->target_handle = src->handle;
-+			reloc_src->presumed_offset = src->offset;
- 			reloc_src->delta = 0;
- 			reloc_src->offset = (*i - 1) * sizeof(buf[0]);
- 			reloc_src->read_domains = 0;
-@@ -48,6 +51,7 @@ gen9_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
- 			buf[(*i)++] = dst->offset;
- 
- 			reloc_dst->target_handle = dst->handle;
-+			reloc_dst->presumed_offset = dst->offset;
- 			reloc_dst->delta = 0;
- 			reloc_dst->offset = (*i - 1) * sizeof(buf[0]);
- 			reloc_dst->read_domains = 0;
-@@ -61,8 +65,8 @@ gen9_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
- }
- 
- void
--gen9_huc_copyfunc(int fd,
--		struct drm_i915_gem_exec_object2 *obj)
-+gen9_huc_copyfunc(int fd, uint64_t ahnd,
-+		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize)
- {
- 	struct drm_i915_gem_relocation_entry reloc[2];
- 	struct drm_i915_gem_execbuffer2 execbuf;
-@@ -86,6 +90,21 @@ gen9_huc_copyfunc(int fd,
- 	buf[i++] = MFX_WAIT;
- 
- 	memset(reloc, 0, sizeof(reloc));
+@@ -119,11 +120,17 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	 * are not allowed in the first 256KiB, for fear of negative relocations
+ 	 * that wrap.
+ 	 */
+-	addr = gem_aperture_size(fd) / 2;
+-	if (addr >> 31)
+-		addr = 1u << 31;
+-	addr += random() % addr / 2;
+-	addr &= -4096;
 +
-+	if (ahnd) {
-+		obj[0].flags = EXEC_OBJECT_PINNED;
-+		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+		obj[2].flags = EXEC_OBJECT_PINNED;
-+		obj[0].offset = get_offset(ahnd, obj[0].handle, objsize[0], 0);
-+		obj[1].offset = get_offset(ahnd, obj[1].handle, objsize[1], 0);
-+		obj[2].offset = get_offset(ahnd, obj[2].handle, objsize[2], 0);
++	if (!ahnd) {
++		addr = gem_aperture_size(fd) / 2;
++		if (addr >> 31)
++			addr = 1u << 31;
++		addr += random() % addr / 2;
++		addr &= -4096;
 +	} else {
-+		obj[0].offset = 1 << 20;
-+		obj[1].offset = ALIGN(obj[0].offset + objsize[0], 1 << 20);
-+		obj[2].offset = ALIGN(obj[1].offset + objsize[1], 1 << 20);
-+		obj[1].flags = EXEC_OBJECT_WRITE;
++		spin->ahnd = ahnd;
++		objflags |= EXEC_OBJECT_PINNED;
 +	}
+ 
+ 	igt_assert(!(opts->ctx && opts->ctx_id));
+ 
+@@ -164,16 +171,34 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	execbuf->buffer_count++;
+ 	cs = spin->batch;
+ 
+-	obj[BATCH].offset = addr;
++	if (ahnd)
++		addr = intel_allocator_alloc_with_strategy(ahnd, obj[BATCH].handle,
++							   BATCH_SIZE, 0,
++							   ALLOC_STRATEGY_LOW_TO_HIGH);
++	obj[BATCH].offset = CANONICAL(addr);
++	obj[BATCH].flags |= objflags;
++	if (obj[BATCH].offset >= (1ull << 32))
++		obj[BATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
 +
- 	gen9_emit_huc_virtual_addr_state(&obj[0], &obj[1], &reloc[0], &reloc[1], buf, &i);
+ 	addr += BATCH_SIZE;
  
- 	buf[i++] = HUC_START;
-@@ -94,13 +113,13 @@ gen9_huc_copyfunc(int fd,
- 	buf[i++] = MI_BATCH_BUFFER_END;
+ 	if (opts->dependency) {
+ 		igt_assert(!(opts->flags & IGT_SPIN_POLL_RUN));
++		if (ahnd)
++			addr_scratch = intel_allocator_alloc_with_strategy(ahnd, opts->dependency,
++									   BATCH_SIZE, 0,
++									   ALLOC_STRATEGY_LOW_TO_HIGH);
++		else
++			addr_scratch = addr;
  
- 	gem_write(fd, obj[2].handle, 0, buf, sizeof(buf));
--	obj[2].relocation_count = 2;
-+	obj[2].relocation_count = !ahnd ? 2 : 0;
- 	obj[2].relocs_ptr = to_user_pointer(reloc);
+ 		obj[SCRATCH].handle = opts->dependency;
+-		obj[SCRATCH].offset = addr;
++		obj[SCRATCH].offset = CANONICAL(addr_scratch);
++		obj[SCRATCH].flags |= objflags;
++		if (obj[SCRATCH].offset >= (1ull << 32))
++			obj[SCRATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++
+ 		if (!(opts->flags & IGT_SPIN_SOFTDEP)) {
+-			obj[SCRATCH].flags = EXEC_OBJECT_WRITE;
++			obj[SCRATCH].flags |= EXEC_OBJECT_WRITE;
  
- 	memset(&execbuf, 0, sizeof(execbuf));
- 	execbuf.buffers_ptr = to_user_pointer(obj);
- 	execbuf.buffer_count = 3;
--	execbuf.flags = I915_EXEC_BSD;
-+	execbuf.flags = I915_EXEC_BSD | I915_EXEC_NO_RELOC;
+ 			/* dummy write to dependency */
+ 			r = &relocs[obj[BATCH].relocation_count++];
+@@ -212,8 +237,14 @@ emit_recursive_batch(igt_spin_t *spin,
+ 								       0, 4096,
+ 								       PROT_READ | PROT_WRITE);
+ 		}
++
++		if (ahnd)
++			addr = intel_allocator_alloc_with_strategy(ahnd,
++								   spin->poll_handle,
++								   BATCH_SIZE * 3, 0,
++								   ALLOC_STRATEGY_LOW_TO_HIGH);
+ 		addr += 4096; /* guard page */
+-		obj[SCRATCH].offset = addr;
++		obj[SCRATCH].offset = CANONICAL(addr);
+ 		addr += 4096;
  
- 	gem_execbuf(fd, &execbuf);
- }
-diff --git a/lib/huc_copy.h b/lib/huc_copy.h
-index ac31d8009..69d140933 100644
---- a/lib/huc_copy.h
-+++ b/lib/huc_copy.h
-@@ -43,7 +43,7 @@
- #define HUC_VIRTUAL_ADDR_REGION_DST	14
+ 		igt_assert_eq(spin->poll[SPIN_POLL_START_IDX], 0);
+@@ -223,11 +254,15 @@ emit_recursive_batch(igt_spin_t *spin,
+ 		r->offset = sizeof(uint32_t) * 1;
+ 		r->delta = sizeof(uint32_t) * SPIN_POLL_START_IDX;
  
- void
--gen9_huc_copyfunc(int fd,
--		struct drm_i915_gem_exec_object2 *obj);
-+gen9_huc_copyfunc(int fd, uint64_t ahnd,
-+		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
++		obj[SCRATCH].flags |= objflags;
++		if (obj[SCRATCH].offset >= (1ull << 32))
++			obj[SCRATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++
+ 		*cs++ = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
  
- #endif /* HUC_COPY_H */
-diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-index c1974fe73..0839d7612 100644
---- a/lib/intel_batchbuffer.h
-+++ b/lib/intel_batchbuffer.h
-@@ -679,10 +679,12 @@ void intel_bb_copy_intel_buf(struct intel_bb *ibb,
- /**
-  * igt_huc_copyfunc_t:
-  * @fd: drm fd
-+ * @ahnd: allocator handle, if it is equal to 0 we use relocations
-  * @obj: drm_i915_gem_exec_object2 buffer array
-  *       obj[0] is source buffer
-  *       obj[1] is destination buffer
-  *       obj[2] is execution buffer
-+ * @objsize: corresponding buffer sizes to @obj
-  *
-  * This is the type of the per-platform huc copy functions.
-  *
-@@ -690,8 +692,8 @@ void intel_bb_copy_intel_buf(struct intel_bb *ibb,
-  * invoke the HuC Copy kernel to copy 4K bytes from the source buffer
-  * to the destination buffer.
-  */
--typedef void (*igt_huc_copyfunc_t)(int fd,
--		struct drm_i915_gem_exec_object2 *obj);
-+typedef void (*igt_huc_copyfunc_t)(int fd, uint64_t ahnd,
-+		struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
+ 		if (gen >= 8) {
+ 			*cs++ = r->presumed_offset + r->delta;
+-			*cs++ = 0;
++			*cs++ = (r->presumed_offset + r->delta) >> 32;
+ 		} else if (gen >= 4) {
+ 			*cs++ = 0;
+ 			*cs++ = r->presumed_offset + r->delta;
+@@ -314,10 +349,11 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	r->offset = (cs + 1 - spin->batch) * sizeof(*cs);
+ 	r->read_domains = I915_GEM_DOMAIN_COMMAND;
+ 	r->delta = LOOP_START_OFFSET;
++
+ 	if (gen >= 8) {
+ 		*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | 1;
+ 		*cs++ = r->presumed_offset + r->delta;
+-		*cs++ = 0;
++		*cs++ = (r->presumed_offset + r->delta) >> 32;
+ 	} else if (gen >= 6) {
+ 		*cs++ = MI_BATCH_BUFFER_START | 1 << 8;
+ 		*cs++ = r->presumed_offset + r->delta;
+@@ -351,6 +387,10 @@ emit_recursive_batch(igt_spin_t *spin,
+ 		execbuf->flags &= ~ENGINE_MASK;
+ 		execbuf->flags |= flags[i];
  
- igt_huc_copyfunc_t	igt_get_huc_copyfunc(int devid);
- #endif
-diff --git a/tests/i915/gem_huc_copy.c b/tests/i915/gem_huc_copy.c
-index 9a32893ea..ea32b705a 100644
---- a/tests/i915/gem_huc_copy.c
-+++ b/tests/i915/gem_huc_copy.c
-@@ -89,6 +89,7 @@ igt_main
- 	int drm_fd = -1;
- 	uint32_t devid;
- 	igt_huc_copyfunc_t huc_copy;
++		/* For allocator we have to rid of relocation_count */
++		for (int j = 0; j < ARRAY_SIZE(spin->obj) && ahnd; j++)
++			spin->obj[j].relocation_count = 0;
++
+ 		gem_execbuf_wr(fd, execbuf);
+ 
+ 		if (opts->flags & IGT_SPIN_FENCE_OUT) {
+@@ -569,11 +609,17 @@ static void __igt_spin_free(int fd, igt_spin_t *spin)
+ 	if (spin->batch)
+ 		gem_munmap(spin->batch, BATCH_SIZE);
+ 
+-	if (spin->poll_handle)
++	if (spin->poll_handle) {
+ 		gem_close(fd, spin->poll_handle);
++		if (spin->ahnd)
++			intel_allocator_free(spin->ahnd, spin->poll_handle);
++	}
+ 
+-	if (spin->handle)
++	if (spin->handle) {
+ 		gem_close(fd, spin->handle);
++		if (spin->ahnd)
++			intel_allocator_free(spin->ahnd, spin->handle);
++	}
+ 
+ 	if (spin->out_fence >= 0)
+ 		close(spin->out_fence);
+diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
+index 67e1a08ed..f02052614 100644
+--- a/lib/igt_dummyload.h
++++ b/lib/igt_dummyload.h
+@@ -58,6 +58,8 @@ typedef struct igt_spin {
+ 
+ 	unsigned int flags;
+ #define SPIN_CLFLUSH (1 << 0)
++
 +	uint64_t ahnd;
+ } igt_spin_t;
  
- 	igt_fixture {
- 		drm_fd = drm_open_driver(DRIVER_INTEL);
-@@ -97,6 +98,8 @@ igt_main
- 		huc_copy = igt_get_huc_copyfunc(devid);
+ /**
+@@ -78,6 +80,7 @@ typedef struct igt_spin_factory {
+ 	unsigned int engine;
+ 	unsigned int flags;
+ 	int fence;
++	uint64_t ahnd;
+ } igt_spin_factory_t;
  
- 		igt_require_f(huc_copy, "no huc_copy function\n");
-+
-+		ahnd = get_reloc_ahnd(drm_fd, 0);
- 	}
- 
- 	igt_describe("Make sure that Huc firmware works"
-@@ -106,6 +109,9 @@ igt_main
- 	igt_subtest("huc-copy") {
- 		char inputs[HUC_COPY_DATA_BUF_SIZE];
- 		struct drm_i915_gem_exec_object2 obj[3];
-+		uint64_t objsize[3] = { HUC_COPY_DATA_BUF_SIZE,
-+					HUC_COPY_DATA_BUF_SIZE,
-+					4096 };
- 
- 		test_huc_load(drm_fd);
- 		/* Initialize src buffer randomly */
-@@ -123,7 +129,7 @@ igt_main
- 
- 		gem_write(drm_fd, obj[0].handle, 0, inputs, HUC_COPY_DATA_BUF_SIZE);
- 
--		huc_copy(drm_fd, obj);
-+		huc_copy(drm_fd, ahnd, obj, objsize);
- 		compare_huc_copy_result(drm_fd, obj[0].handle, obj[1].handle);
- 
- 		gem_close(drm_fd, obj[0].handle);
-@@ -131,6 +137,8 @@ igt_main
- 		gem_close(drm_fd, obj[2].handle);
- 	}
- 
--	igt_fixture
-+	igt_fixture {
-+		put_ahnd(ahnd);
- 		close(drm_fd);
-+	}
- }
+ #define IGT_SPIN_FENCE_IN      (1 << 0)
 -- 
 2.26.0
