@@ -1,13 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A692C899B0
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 08:48:04 +0000 (UTC)
-From: Petri Latvala <petri.latvala@intel.com>
-Date: Mon,  9 Aug 2021 11:50:40 +0300
-Message-Id: <20210809085040.503-1-petri.latvala@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CCDBD899B0
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 08:55:27 +0000 (UTC)
+Date: Mon, 9 Aug 2021 10:55:22 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210809085522.GA17331@zkempczy-mobl2>
+References: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
+ <162848657413.2458.2190320059148939877@emeril.freedesktop.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] gitlab-ci: Try to avoid runners that jam
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <162848657413.2458.2190320059148939877@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQWRkIGFs?=
+ =?utf-8?q?locator_support_in_IGT_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,78 +23,99 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>, Arkadiusz Hiler <arek@hiler.eu>
+To: igt-dev@lists.freedesktop.org, "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For a yet unknown reason, some gitlab runners leave qemu-user
-processes in 'D' state. Try to avoid those by using runners that are
-known to get through the testing fine. Currently that would be the
-"gstreamer"-tagged runners.
+On Mon, Aug 09, 2021 at 05:22:54AM +0000, Patchwork wrote:
+>    Patch Details
+> 
+>    Series:  Add allocator support in IGT (rev3)                            
+>    URL:     https://patchwork.freedesktop.org/series/93464/                
+>    State:   failure                                                        
+>    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6097/index.html 
+> 
+>               CI Bug Log - changes from CI_DRM_10459 -> IGTPW_6097
+> 
+> Summary
+> 
+>    FAILURE
+> 
+>    Serious unknown changes coming with IGTPW_6097 absolutely need to be
+>    verified manually.
+> 
+>    If you think the reported changes have nothing to do with the changes
+>    introduced in IGTPW_6097, please notify your bug team to allow them
+>    to document this new failure mode, which will reduce false positives in
+>    CI.
+> 
+>    External URL:
+>    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6097/index.html
+> 
+> Possible new issues
+> 
+>    Here are the unknown changes that may have been introduced in IGTPW_6097:
+> 
+>   IGT changes
+> 
+>     Possible regressions
+> 
+>      * igt@i915_selftest@live@workarounds:
+>           * fi-rkl-guc: PASS -> INCOMPLETE
 
-Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-Cc: Arkadiusz Hiler <arek@hiler.eu>
----
- .gitlab-ci.yml | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Series is not related with RKL fail exercised here.
 
-diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-index 0de61828..fd0ca7cb 100644
---- a/.gitlab-ci.yml
-+++ b/.gitlab-ci.yml
-@@ -164,6 +164,8 @@ build:tests-debian-meson-mips:
- #################### TEST ##########################
- 
- test:ninja-test:
-+  tags:
-+    - gstreamer
-   retry: 2
-   dependencies:
-     - build:tests-fedora
-@@ -171,6 +173,8 @@ test:ninja-test:
-   script: meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
- 
- test:ninja-test-clang:
-+  tags:
-+    - gstreamer
-   retry: 2
-   dependencies:
-     - build:tests-fedora-clang
-@@ -180,6 +184,8 @@ test:ninja-test-clang:
-   script: meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
- 
- test:ninja-test-minimal:
-+  tags:
-+    - gstreamer
-   retry: 2
-   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-minimal:commit-$CI_COMMIT_SHA
-   dependencies:
-@@ -188,6 +194,8 @@ test:ninja-test-minimal:
-   script: meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
- 
- test:ninja-test-arm64:
-+  tags:
-+    - gstreamer
-   retry: 2
-   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-arm64:commit-$CI_COMMIT_SHA
-   dependencies:
-@@ -203,6 +211,8 @@ test:ninja-test-arm64:
-     when: on_failure
- 
- test:ninja-test-armhf:
-+  tags:
-+    - gstreamer
-   retry: 2
-   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-armhf:commit-$CI_COMMIT_SHA
-   dependencies:
-@@ -218,6 +228,8 @@ test:ninja-test-armhf:
-     when: on_failure
- 
- test:ninja-test-mips:
-+  tags:
-+    - gstreamer
-   retry: 2
-   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-mips:commit-$CI_COMMIT_SHA
-   dependencies:
--- 
-2.29.2
+--
+Zbigniew
+
+> 
+> Known issues
+> 
+>    Here are the changes found in IGTPW_6097 that come from known issues:
+> 
+>   IGT changes
+> 
+>     Issues hit
+> 
+>      * igt@amdgpu/amd_basic@semaphore:
+> 
+>           * fi-bsw-nick: NOTRUN -> SKIP (fdo#109271) +17 similar issues
+>      * igt@gem_exec_suspend@basic-s3:
+> 
+>           * fi-tgl-1115g4: PASS -> FAIL (i915#1888)
+> 
+>     Possible fixes
+> 
+>      * igt@i915_selftest@live@execlists:
+> 
+>           * fi-bsw-nick: INCOMPLETE (i915#2940) -> PASS
+>      * igt@i915_selftest@live@hangcheck:
+> 
+>           * {fi-hsw-gt1}: DMESG-WARN (i915#3303) -> PASS
+>      * igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a2:
+> 
+>           * {fi-dg1-1}: FAIL (i915#3717) -> PASS +43 similar issues
+> 
+>    {name}: This element is suppressed. This means it is ignored when
+>    computing
+>    the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+> Participating hosts (37 -> 34)
+> 
+>    Missing (3): fi-bdw-samus fi-bsw-cyan bat-jsl-1
+> 
+> Build changes
+> 
+>      * CI: CI-20190529 -> None
+>      * IGT: IGT_6162 -> IGTPW_6097
+> 
+>    CI-20190529: 20190529
+>    CI_DRM_10459: f06b3f8ccf62862d4ca7dd149bba4e654be8e323 @
+>    git://anongit.freedesktop.org/gfx-ci/linux
+>    IGTPW_6097: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6097/index.html
+>    IGT_6162: 2f32b9e0da5f1ac9529318dd5b836c8cf4d3c441 @
+>    https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+>    == Testlist changes ==
+> 
+>    +igt@gem_softpin@allocator-evict
+>    +igt@gem_softpin@allocator-evict-all-engines
