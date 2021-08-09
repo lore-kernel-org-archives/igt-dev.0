@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2FEB7898F1
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:09:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 979BB899A5
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:09:02 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon,  9 Aug 2021 15:05:07 +0200
-Message-Id: <20210809130533.27759-40-zbigniew.kempczynski@intel.com>
+Date: Mon,  9 Aug 2021 15:04:59 +0200
+Message-Id: <20210809130533.27759-32-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 39/65] tests/gem_unref_active_buffers:
- Adopt to use allocator
+Subject: [igt-dev] [PATCH i-g-t v5 31/65] tests/gem_mmap_offset: Add
+ allocator support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,44 +22,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Ch Sai Gowtham <sai.gowtham.ch@intel.com>, =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For newer gens we're not able to rely on relocations. Adopt to use
-offsets acquired from the allocator.
+From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+When relocations are not available tests must assign addresses to objects
+by themselves instead of relying on the driver. We use allocator for
+that purpose.
+
+Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/i915/gem_unref_active_buffers.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tests/i915/gem_mmap_offset.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_unref_active_buffers.c b/tests/i915/gem_unref_active_buffers.c
-index 731190b39..3b8c981da 100644
---- a/tests/i915/gem_unref_active_buffers.c
-+++ b/tests/i915/gem_unref_active_buffers.c
-@@ -69,11 +69,13 @@ igt_simple_main
- 	struct itimerval itv;
- 	igt_spin_t *spin;
- 	int i915;
-+	uint64_t ahnd;
+diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
+index f1ba67b7c..8148f0a2d 100644
+--- a/tests/i915/gem_mmap_offset.c
++++ b/tests/i915/gem_mmap_offset.c
+@@ -248,7 +248,8 @@ static void isolation(int i915)
  
- 	i915 = drm_open_driver(DRIVER_INTEL);
- 	igt_require_gem(i915);
+ static void pf_nonblock(int i915)
+ {
+-	igt_spin_t *spin = igt_spin_new(i915);
++	uint64_t ahnd = get_reloc_ahnd(i915, 0);
++	igt_spin_t *spin = igt_spin_new(i915, .ahnd = ahnd);
  
--	spin = igt_spin_new(i915);
-+	ahnd = get_reloc_ahnd(i915, 0);
-+	spin = igt_spin_new(i915, .ahnd = ahnd);
- 	fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) | O_NONBLOCK);
- 
- 	sigaction(SIGALRM, &sa, &old_sa);
-@@ -118,4 +120,5 @@ igt_simple_main
- 	sigaction(SIGALRM, &old_sa, NULL);
+ 	for_each_mmap_offset_type(i915, t) {
+ 		uint32_t *ptr;
+@@ -268,6 +269,7 @@ static void pf_nonblock(int i915)
+ 	}
  
  	igt_spin_free(i915, spin);
 +	put_ahnd(ahnd);
  }
+ 
+ static void *memchr_inv(const void *s, int c, size_t n)
 -- 
 2.26.0
