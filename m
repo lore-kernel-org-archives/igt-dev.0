@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73F72898C7
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 09:33:16 +0000 (UTC)
-Date: Mon, 9 Aug 2021 11:33:10 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210809093310.GE17331@zkempczy-mobl2>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 316738973E
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 10:21:35 +0000 (UTC)
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Date: Mon, 9 Aug 2021 10:21:32 +0000
+Message-ID: <DM8PR11MB571941E897D741A1031F16EC8DF69@DM8PR11MB5719.namprd11.prod.outlook.com>
 References: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
- <20210806134145.24634-34-zbigniew.kempczynski@intel.com>
-MIME-Version: 1.0
+ <20210806134145.24634-53-zbigniew.kempczynski@intel.com>
+ <20210809082604.GD5318@zkempczy-mobl2>
+In-Reply-To: <20210809082604.GD5318@zkempczy-mobl2>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210806134145.24634-34-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 33/56] tests/gem_request_retire: Add
- allocator support
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v4 52/56] tests/kms_vblank: Adopt to use
+ allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,83 +24,71 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Ch Sai Gowtham <sai.gowtham.ch@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Latvala, Petri" <petri.latvala@intel.com>, "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Aug 06, 2021 at 03:41:22PM +0200, Zbigniew Kempczyński wrote:
-> From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-> 
-> When relocations are not available tests must assign addresses to objects
-> by themselves instead of relying on the driver. We use allocator for
-> that purpose.
-> 
-> Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> ---
->  tests/i915/gem_request_retire.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/i915/gem_request_retire.c b/tests/i915/gem_request_retire.c
-> index 3df54f2a5..da9d405ed 100644
-> --- a/tests/i915/gem_request_retire.c
-> +++ b/tests/i915/gem_request_retire.c
-> @@ -63,21 +63,29 @@ test_retire_vma_not_inactive(int fd)
->  {
->  	struct intel_execution_engine2 *e;
->  	const intel_ctx_t *ctx;
-> +	uint64_t ahnd, ahndN;
->  	igt_spin_t *bg = NULL;
->  
->  	ctx = intel_ctx_create_all_physical(fd);
-> +	ahnd = get_reloc_ahnd(fd, ctx->id);
->  
->  	for_each_ctx_engine(fd, ctx, e) {
->  		igt_spin_t *spin;
->  		const intel_ctx_t *spin_ctx;
->  
->  		if (!bg) {
-> -			bg = igt_spin_new(fd, .ctx = ctx, .engine = e->flags);
-> +			bg = igt_spin_new(fd,
-> +					  .ahnd = ahnd,
-> +					  .ctx = ctx,
-> +					  .engine = e->flags);
->  			continue;
->  		}
->  
->  		spin_ctx = intel_ctx_create(fd, &ctx->cfg);
-> -		spin = igt_spin_new(fd, .ctx = spin_ctx,
-> +		ahndN = get_reloc_ahnd(fd, spin_ctx->id);
-> +		spin = igt_spin_new(fd,
-> +				    .ahnd = ahndN,
-> +				    .ctx = spin_ctx,
->  				    .engine = e->flags,
->  				    .dependency = bg->handle,
->  				    .flags = IGT_SPIN_SOFTDEP);
-
-Ok, we're running this on separate contexts so .dependency
-can have different vma. 
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
---
-Zbigniew
-
-> @@ -86,11 +94,13 @@ test_retire_vma_not_inactive(int fd)
->  
->  		gem_sync(fd, spin->handle);
->  		igt_spin_free(fd, spin);
-> +		put_ahnd(ahndN);
->  	}
->  
->  	igt_drop_caches_set(fd, DROP_RETIRE);
->  	igt_spin_free(fd, bg);
->  	intel_ctx_destroy(fd, ctx);
-> +	put_ahnd(ahnd);
->  }
->  
->  int fd;
-> -- 
-> 2.26.0
-> 
+PiBGcm9tOiBLZW1wY3p5bnNraSwgWmJpZ25pZXcgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVs
+LmNvbT4NCj4gU2VudDogTW9uZGF5LCBBdWd1c3QgOSwgMjAyMSAxOjU2IFBNDQo+IFRvOiBpZ3Qt
+ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogTW9kZW0sIEJoYW51cHJha2FzaCA8Ymhh
+bnVwcmFrYXNoLm1vZGVtQGludGVsLmNvbT47IExhdHZhbGEsIFBldHJpDQo+IDxwZXRyaS5sYXR2
+YWxhQGludGVsLmNvbT47IERpeGl0LCBBc2h1dG9zaCA8YXNodXRvc2guZGl4aXRAaW50ZWwuY29t
+Pg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIGktZy10IHY0IDUyLzU2XSB0ZXN0cy9rbXNfdmJsYW5r
+OiBBZG9wdCB0byB1c2UgYWxsb2NhdG9yDQo+IA0KPiBPbiBGcmksIEF1ZyAwNiwgMjAyMSBhdCAw
+Mzo0MTo0MVBNICswMjAwLCBaYmlnbmlldyBLZW1wY3p5xYRza2kgd3JvdGU6DQo+ID4gRnJvbTog
+QmhhbnVwcmFrYXNoIE1vZGVtIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPg0KPiA+DQo+
+ID4gRm9yIG5ld2VyIGdlbnMga2VybmVsIHdpbGwgcmVqZWN0IHJlbG9jYXRpb25zIHJldHVybmlu
+ZyAtRUlOVkFMDQo+ID4gc28gd2Ugc2hvdWxkIGp1c3QgcHJvdmlkZSB0aGUgYWxsb2NhdG9yIGhh
+bmRsZSB0byBpbmplY3QgdGhlIGhhbmcuDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBCaGFudXBy
+YWthc2ggTW9kZW0gPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+DQo+ID4gQ2M6IFpiaWdu
+aWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPg0KPiA+IENj
+OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4NCj4gPiBDYzogQXNodXRv
+c2ggRGl4aXQgPGFzaHV0b3NoLmRpeGl0QGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgdGVzdHMv
+a21zX3ZibGFuay5jIHwgMTEgKysrKysrKysrLS0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDkgaW5z
+ZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9r
+bXNfdmJsYW5rLmMgYi90ZXN0cy9rbXNfdmJsYW5rLmMNCj4gPiBpbmRleCA4ODViMmUyYzQuLjdi
+N2UxMzcyZSAxMDA2NDQNCj4gPiAtLS0gYS90ZXN0cy9rbXNfdmJsYW5rLmMNCj4gPiArKysgYi90
+ZXN0cy9rbXNfdmJsYW5rLmMNCj4gPiBAQCAtMTE4LDYgKzExOCw3IEBAIHN0YXRpYyB2b2lkIHJ1
+bl90ZXN0KGRhdGFfdCAqZGF0YSwgdm9pZA0KPiAoKnRlc3RmdW5jKShkYXRhX3QgKiwgaW50LCBp
+bnQpKQ0KPiA+ICAJaWd0X291dHB1dF90ICpvdXRwdXQgPSBkYXRhLT5vdXRwdXQ7DQo+ID4gIAlp
+bnQgZmQgPSBkaXNwbGF5LT5kcm1fZmQ7DQo+ID4gIAlpZ3RfaGFuZ190IGhhbmc7DQo+ID4gKwl1
+aW50NjRfdCBhaG5kID0gMDsNCj4gPg0KPiA+ICAJcHJlcGFyZV9jcnRjKGRhdGEsIGZkLCBvdXRw
+dXQpOw0KPiA+DQo+ID4gQEAgLTEyOCw4ICsxMjksMTEgQEAgc3RhdGljIHZvaWQgcnVuX3Rlc3Qo
+ZGF0YV90ICpkYXRhLCB2b2lkDQo+ICgqdGVzdGZ1bmMpKGRhdGFfdCAqLCBpbnQsIGludCkpDQo+
+ID4gIAkJIGlndF9zdWJ0ZXN0X25hbWUoKSwga21zdGVzdF9waXBlX25hbWUoZGF0YS0+cGlwZSks
+DQo+ID4gIAkJIGlndF9vdXRwdXRfbmFtZShvdXRwdXQpKTsNCj4gPg0KPiA+IC0JaWYgKCEoZGF0
+YS0+ZmxhZ3MgJiBOT0hBTkcpKQ0KPiA+IC0JCWhhbmcgPSBpZ3RfaGFuZ19yaW5nKGZkLCBJOTE1
+X0VYRUNfREVGQVVMVCk7DQo+ID4gKwlpZiAoIShkYXRhLT5mbGFncyAmIE5PSEFORykpIHsNCj4g
+PiArCQlpZiAoaXNfaTkxNV9kZXZpY2UoZmQpKQ0KPiA+ICsJCQlhaG5kID0gZ2V0X3JlbG9jX2Fo
+bmQoZmQsIDApOw0KPiA+ICsJCWhhbmcgPSBpZ3RfaGFuZ19yaW5nX3dpdGhfYWhuZChmZCwgSTkx
+NV9FWEVDX0RFRkFVTFQsIGFobmQpOw0KPiA+ICsJfQ0KPiANCj4gV2hhdCBmb3IgaXNfaTkxNV9k
+ZXZpY2UoZmQpIGNoZWNrIGlzIGludHJvZHVjZWQgaGVyZT8gaWd0X2hhbmdfcmluZygpIGlzDQo+
+IGN1cnJlbnRseQ0KPiB2YWxpZCBvbmx5IGZvciBpOTE1IHNvIGFobmQgPSBnZXRfcmVsb2NfYWhu
+ZChmZCwgMCkgY2FuIGJlIGNhbGxlZA0KPiB1bmNvbmRpdGlvbmFsbHkNCj4gaGVyZS4gQW0gSSBt
+aXNzZWQgc29tZXRoaW5nIGhlcmU/DQogDQpXZSBuZWVkIHRoaXMgaXNfaTkxNV9kZXZpY2UoZmQp
+IGNoZWNrLCBiZWNhdXNlIGttc192YmxhbmsgaXMgbm90IGFuIGk5MTUNCnNwZWNpZmljLiBgZmQg
+PSBkcm1fb3Blbl9kcml2ZXJfbWFzdGVyKERSSVZFUl9BTlkpO2ANCg0KQXMgb2Ygbm93LCBJIGd1
+ZXNzIG9ubHkgSW50ZWwgaXMgdXNpbmcgdGhpcyB0ZXN0LCBzbyBubyBvbmUgaXMgY29uY2VybmVk
+LA0Kd2UgYWxyZWFkeSBmbG9hdGVkIGEgaW5pdGlhbCB2ZXJzaW9uIG9mIHNlcmllcyB0byBtb3Zl
+IGludGVsIHNwZWNpZmljIGttcw0KdGVzdHMgdG8gdGVzdC9pOTE1IGRpcmVjdG9yeSwgaWYgcGFy
+dCBvZiBhIHRlc3QgaXMgaW50ZWwgc3BlY2lmaWMgd2UgbXVzdA0KbGltaXQgdGhlIHRlc3QgYnkg
+YWRkaW5nIGEgY2hlY2sgaWd0X3JlcXVpcmVfaW50ZWwoKSBbKl0uDQoNClllYWgsIGF0IGxlYXN0
+IGluIG91ciBjb250ZXh0IHdlIGNhbiBkcm9wIHRoaXMgaXNfaTkxNV9kZXZpY2UoKSBjaGVjayBo
+ZXJlDQphbmQgaGFuZGxlIGl0IHNlcGFyYXRlbHkuIEknbGwgZmxvYXQgYSBuZXcgcGF0Y2ggd2l0
+aCB0aGVzZSBjaGFuZ2VzLCB0aGFua3MNCmZvciB0aGUgcmV2aWV3Lg0KDQpbKl0gaHR0cHM6Ly9w
+YXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy85MzIyNC8NCg0KLSBCaGFudQ0KICANCj4g
+DQo+ID4NCj4gPiAgCWlmIChkYXRhLT5mbGFncyAmIEJVU1kpIHsNCj4gPiAgCQl1bmlvbiBkcm1f
+d2FpdF92YmxhbmsgdmJsOw0KPiA+IEBAIC0xNjYsNiArMTcwLDkgQEAgc3RhdGljIHZvaWQgcnVu
+X3Rlc3QoZGF0YV90ICpkYXRhLCB2b2lkDQo+ICgqdGVzdGZ1bmMpKGRhdGFfdCAqLCBpbnQsIGlu
+dCkpDQo+ID4gIAlpZ3RfaW5mbygiXG4lcyBvbiBwaXBlICVzLCBjb25uZWN0b3IgJXM6IFBBU1NF
+RFxuXG4iLA0KPiA+ICAJCSBpZ3Rfc3VidGVzdF9uYW1lKCksIGttc3Rlc3RfcGlwZV9uYW1lKGRh
+dGEtPnBpcGUpLA0KPiBpZ3Rfb3V0cHV0X25hbWUob3V0cHV0KSk7DQo+ID4NCj4gPiArCWlmIChp
+c19pOTE1X2RldmljZShmZCkpDQo+ID4gKwkJcHV0X2FobmQoYWhuZCk7DQo+ID4gKw0KPiANCj4g
+Rm9yIG5vbi1pOTE1IG1hY2hpbmVzIGFobmQgd2lsbCBiZSBlcXVhbCB0byAwLCBzbyBwdXRfYWhu
+ZCgpIHdpbGwganVzdCByZXR1cm4NCj4gYW5kIG5vIGk5MTUgZGVwZW5kYW5kIGNvZGUgd2lsbCBi
+ZSBjYWxsZWQuIEkgd291bGQgcmF0aGVyIGV4cGVjdDoNCj4gDQo+IGlmICghKGRhdGEtPmZsYWdz
+ICYgTk9IQU5HKSkNCj4gCXB1dF9haG5kKGFobmQpOw0KPiANCj4gQnV0IGFzIEkgc2FpZCBwdXRf
+YWhuZCgpIHdpdGggYWhuZCA9PSAwIGRvZXMgbm90aGluZy4NCj4gDQo+IC0tDQo+IFpiaWduaWV3
+DQo+IA0KPiANCj4gPiAgCS8qIGNsZWFudXAgd2hhdCBwcmVwYXJlX2NydGMoKSBoYXMgZG9uZSAq
+Lw0KPiA+ICAJY2xlYW51cF9jcnRjKGRhdGEsIGZkLCBvdXRwdXQpOw0KPiA+ICB9DQo+ID4gLS0N
+Cj4gPiAyLjI2LjANCj4gPg0K
