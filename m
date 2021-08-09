@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 499F789ACD
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:20:40 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28DE089B18
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:20:44 +0000 (UTC)
 From: Andrzej Turko <andrzej.turko@linux.intel.com>
-Date: Mon,  9 Aug 2021 15:20:25 +0200
-Message-Id: <20210809132026.8692-2-andrzej.turko@linux.intel.com>
+Date: Mon,  9 Aug 2021 15:20:26 +0200
+Message-Id: <20210809132026.8692-3-andrzej.turko@linux.intel.com>
 In-Reply-To: <20210809132026.8692-1-andrzej.turko@linux.intel.com>
 References: <20210809132026.8692-1-andrzej.turko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/i915/gem_streaming_writes:
- Support gens without relocations
+Subject: [igt-dev] [PATCH i-g-t 2/2] HAX: Add the tests to fast feedback
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,214 +20,206 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Andrzej Turko <andrzej.turko@linux.intel.com>, =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: Andrzej Turko <andrzej.turko@linux.intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use softpin to completely avoid relocations on generations
-which do not support them.
-
 Signed-off-by: Andrzej Turko <andrzej.turko@linux.intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/i915/gem_streaming_writes.c | 109 +++++++++++++++++-------------
- 1 file changed, 62 insertions(+), 47 deletions(-)
+ tests/intel-ci/fast-feedback.testlist | 185 ++------------------------
+ 1 file changed, 13 insertions(+), 172 deletions(-)
 
-diff --git a/tests/i915/gem_streaming_writes.c b/tests/i915/gem_streaming_writes.c
-index c104792bd..ce82d8823 100644
---- a/tests/i915/gem_streaming_writes.c
-+++ b/tests/i915/gem_streaming_writes.c
-@@ -62,7 +62,8 @@ IGT_TEST_DESCRIPTION("Test of streaming writes into active GPU sources");
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index fa5006d2e..ab1691776 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,175 +1,16 @@
+ # Keep alphabetically sorted by default
  
- static void test_streaming(int fd, int mode, int sync)
- {
--	const int has_64bit_reloc = intel_gen(intel_get_drm_devid(fd)) >= 8;
-+	const bool has_64bit_addr = intel_gen(intel_get_drm_devid(fd)) >= 8;
-+	const bool do_relocs = gem_has_relocations(fd);
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	struct drm_i915_gem_exec_object2 exec[3];
- 	struct drm_i915_gem_relocation_entry reloc[128];
-@@ -112,30 +113,35 @@ static void test_streaming(int fd, int mode, int sync)
- 	__src_offset = src_offset;
- 	__dst_offset = dst_offset;
+-igt@core_auth@basic-auth
+-igt@debugfs_test@read_all_entries
+-igt@fbdev@eof
+-igt@fbdev@info
+-igt@fbdev@nullptr
+-igt@fbdev@read
+-igt@fbdev@write
+-igt@gem_basic@bad-close
+-igt@gem_basic@create-close
+-igt@gem_basic@create-fd-close
+-igt@gem_busy@busy@all
+-igt@gem_close_race@basic-process
+-igt@gem_close_race@basic-threads
+-igt@gem_ctx_create@basic
+-igt@gem_ctx_create@basic-files
+-igt@gem_ctx_exec@basic
+-igt@gem_exec_basic@basic
+-igt@gem_exec_create@basic
+-igt@gem_exec_fence@basic-busy
+-igt@gem_exec_fence@basic-wait
+-igt@gem_exec_fence@basic-await
+-igt@gem_exec_fence@nb-await
+-igt@gem_exec_gttfill@basic
+-igt@gem_exec_parallel@engines
+-igt@gem_exec_store@basic
+-igt@gem_exec_suspend@basic-s0
+-igt@gem_exec_suspend@basic-s3
+-igt@gem_flink_basic@bad-flink
+-igt@gem_flink_basic@bad-open
+-igt@gem_flink_basic@basic
+-igt@gem_flink_basic@double-flink
+-igt@gem_flink_basic@flink-lifetime
+-igt@gem_huc_copy@huc-copy
+-igt@gem_linear_blits@basic
+-igt@gem_mmap@basic
+-igt@gem_mmap_gtt@basic
+-igt@gem_render_linear_blits@basic
+-igt@gem_render_tiled_blits@basic
+-igt@gem_ringfill@basic-all
+-igt@gem_softpin@allocator-basic
+-igt@gem_softpin@allocator-basic-reserve
+-igt@gem_sync@basic-all
+-igt@gem_sync@basic-each
+-igt@gem_tiled_blits@basic
+-igt@gem_tiled_fence_blits@basic
+-igt@gem_tiled_pread_basic
+-igt@gem_wait@busy@all
+-igt@gem_wait@wait@all
+-igt@i915_getparams_basic@basic-eu-total
+-igt@i915_getparams_basic@basic-subslice-total
+-igt@i915_hangman@error-state-basic
+-igt@kms_addfb_basic@addfb25-bad-modifier
+-igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@addfb25-modifier-no-flag
+-igt@kms_addfb_basic@addfb25-x-tiled-legacy
+-igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
+-igt@kms_addfb_basic@addfb25-yf-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+-igt@kms_addfb_basic@bad-pitch-0
+-igt@kms_addfb_basic@bad-pitch-1024
+-igt@kms_addfb_basic@bad-pitch-128
+-igt@kms_addfb_basic@bad-pitch-256
+-igt@kms_addfb_basic@bad-pitch-32
+-igt@kms_addfb_basic@bad-pitch-63
+-igt@kms_addfb_basic@bad-pitch-65536
+-igt@kms_addfb_basic@bad-pitch-999
+-igt@kms_addfb_basic@basic
+-igt@kms_addfb_basic@basic-x-tiled-legacy
+-igt@kms_addfb_basic@basic-y-tiled-legacy
+-igt@kms_addfb_basic@bo-too-small
+-igt@kms_addfb_basic@bo-too-small-due-to-tiling
+-igt@kms_addfb_basic@clobberred-modifier
+-igt@kms_addfb_basic@framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@invalid-get-prop
+-igt@kms_addfb_basic@invalid-get-prop-any
+-igt@kms_addfb_basic@invalid-set-prop
+-igt@kms_addfb_basic@invalid-set-prop-any
+-igt@kms_addfb_basic@no-handle
+-igt@kms_addfb_basic@size-max
+-igt@kms_addfb_basic@small-bo
+-igt@kms_addfb_basic@tile-pitch-mismatch
+-igt@kms_addfb_basic@too-high
+-igt@kms_addfb_basic@too-wide
+-igt@kms_addfb_basic@unused-handle
+-igt@kms_addfb_basic@unused-modifier
+-igt@kms_addfb_basic@unused-offsets
+-igt@kms_addfb_basic@unused-pitches
+-igt@kms_busy@basic
+-igt@kms_chamelium@dp-hpd-fast
+-igt@kms_chamelium@dp-edid-read
+-igt@kms_chamelium@dp-crc-fast
+-igt@kms_chamelium@hdmi-hpd-fast
+-igt@kms_chamelium@hdmi-edid-read
+-igt@kms_chamelium@hdmi-crc-fast
+-igt@kms_chamelium@vga-hpd-fast
+-igt@kms_chamelium@vga-edid-read
+-igt@kms_chamelium@common-hpd-after-suspend
+-igt@kms_prop_blob@basic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
+-igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
+-igt@kms_flip@basic-flip-vs-dpms
+-igt@kms_flip@basic-flip-vs-modeset
+-igt@kms_flip@basic-flip-vs-wf_vblank
+-igt@kms_flip@basic-plain-flip
+-igt@kms_force_connector_basic@force-connector-state
+-igt@kms_force_connector_basic@force-edid
+-igt@kms_force_connector_basic@force-load-detect
+-igt@kms_force_connector_basic@prune-stale-modes
+-igt@kms_frontbuffer_tracking@basic
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d
+-igt@kms_pipe_crc_basic@hang-read-crc-pipe-a
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc-pipe-a
+-igt@kms_pipe_crc_basic@read-crc-pipe-b
+-igt@kms_pipe_crc_basic@read-crc-pipe-c
+-igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
+-igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
+-igt@kms_psr@primary_page_flip
+-igt@kms_psr@cursor_plane_move
+-igt@kms_psr@sprite_plane_onoff
+-igt@kms_psr@primary_mmap_gtt
+-igt@kms_setmode@basic-clone-single-crtc
+-igt@i915_pm_backlight@basic-brightness
+-igt@i915_pm_rpm@basic-pci-d3-state
+-igt@i915_pm_rpm@basic-rte
+-igt@i915_pm_rps@basic-api
+-igt@prime_self_import@basic-llseek-bad
+-igt@prime_self_import@basic-llseek-size
+-igt@prime_self_import@basic-with_fd_dup
+-igt@prime_self_import@basic-with_one_bo
+-igt@prime_self_import@basic-with_one_bo_two_files
+-igt@prime_self_import@basic-with_two_bos
+-igt@prime_vgem@basic-fence-flip
+-igt@prime_vgem@basic-fence-mmap
+-igt@prime_vgem@basic-fence-read
+-igt@prime_vgem@basic-gtt
+-igt@prime_vgem@basic-read
+-igt@prime_vgem@basic-write
+-igt@prime_vgem@basic-userptr
+-igt@vgem_basic@setversion
+-igt@vgem_basic@create
+-igt@vgem_basic@debugfs
+-igt@vgem_basic@dmabuf-export
+-igt@vgem_basic@dmabuf-fence
+-igt@vgem_basic@dmabuf-fence-before
+-igt@vgem_basic@dmabuf-mmap
+-igt@vgem_basic@mmap
+-igt@vgem_basic@second-client
+-igt@vgem_basic@sysfs
  
--	memset(reloc, 0, sizeof(reloc));
--	for (i = 0; i < 64; i++) {
--		reloc[2*i+0].offset = 64*i + 4 * sizeof(uint32_t);
--		reloc[2*i+0].delta = 0;
--		reloc[2*i+0].target_handle = execbuf.flags & I915_EXEC_HANDLE_LUT ? DST : dst;
--		reloc[2*i+0].presumed_offset = dst_offset;
--		reloc[2*i+0].read_domains = I915_GEM_DOMAIN_RENDER;
--		reloc[2*i+0].write_domain = I915_GEM_DOMAIN_RENDER;
+-# All tests that do module unloading and reloading are executed last.
+-# They will sometimes reveal issues of earlier tests leaving the
+-# driver in a broken state that is not otherwise noticed in that test.
 -
--		reloc[2*i+1].offset = 64*i + 7 * sizeof(uint32_t);
--		if (has_64bit_reloc)
--			reloc[2*i+1].offset +=  sizeof(uint32_t);
--		reloc[2*i+1].delta = 0;
--		reloc[2*i+1].target_handle = execbuf.flags & I915_EXEC_HANDLE_LUT ? SRC : src;
--		reloc[2*i+1].presumed_offset = src_offset;
--		reloc[2*i+1].read_domains = I915_GEM_DOMAIN_RENDER;
--		reloc[2*i+1].write_domain = 0;
--	}
- 	gem_execbuf(fd, &execbuf);
- 	igt_assert_eq_u64(__src_offset, src_offset);
- 	igt_assert_eq_u64(__dst_offset, dst_offset);
- 
- 	exec[DST].flags = EXEC_OBJECT_WRITE;
--	exec[BATCH].relocation_count = 2;
-+	if (do_relocs) {
-+		memset(reloc, 0, sizeof(reloc));
-+		for (i = 0; i < 64; i++) {
-+			reloc[2*i+0].offset = 64*i + 4 * sizeof(uint32_t);
-+			reloc[2*i+0].delta = 0;
-+			reloc[2*i+0].target_handle = execbuf.flags & I915_EXEC_HANDLE_LUT ? DST : dst;
-+			reloc[2*i+0].presumed_offset = dst_offset;
-+			reloc[2*i+0].read_domains = I915_GEM_DOMAIN_RENDER;
-+			reloc[2*i+0].write_domain = I915_GEM_DOMAIN_RENDER;
-+
-+			reloc[2*i+1].offset = 64*i + 7 * sizeof(uint32_t);
-+			if (has_64bit_addr)
-+				reloc[2*i+1].offset +=  sizeof(uint32_t);
-+			reloc[2*i+1].delta = 0;
-+			reloc[2*i+1].target_handle = execbuf.flags & I915_EXEC_HANDLE_LUT ? SRC : src;
-+			reloc[2*i+1].presumed_offset = src_offset;
-+			reloc[2*i+1].read_domains = I915_GEM_DOMAIN_RENDER;
-+			reloc[2*i+1].write_domain = 0;
-+		}
-+		exec[BATCH].relocation_count = 2;
-+	} else {
-+		exec[DST].flags |= EXEC_OBJECT_PINNED;
-+		exec[SRC].flags = EXEC_OBJECT_PINNED;
-+	}
- 	execbuf.buffer_count = 3;
- 	execbuf.flags |= I915_EXEC_NO_RELOC;
- 	if (gem_has_blt(fd))
-@@ -159,19 +165,19 @@ static void test_streaming(int fd, int mode, int sync)
- 			int k = 0;
- 
- 			b[k] = COPY_BLT_CMD | BLT_WRITE_ARGB;
--			if (has_64bit_reloc)
-+			if (has_64bit_addr)
- 				b[k] += 2;
- 			k++;
- 			b[k++] = 0xcc << 16 | 1 << 25 | 1 << 24 | 4096;
- 			b[k++] = (y << 16) | x;
- 			b[k++] = ((y+1) << 16) | (x + (CHUNK_SIZE >> 2));
- 			b[k++] = dst_offset;
--			if (has_64bit_reloc)
-+			if (has_64bit_addr)
- 				b[k++] = dst_offset >> 32;
- 			b[k++] = (y << 16) | x;
- 			b[k++] = 4096;
- 			b[k++] = src_offset;
--			if (has_64bit_reloc)
-+			if (has_64bit_addr)
- 				b[k++] = src_offset >> 32;
- 			b[k++] = MI_BATCH_BUFFER_END;
- 
-@@ -205,7 +211,8 @@ static void test_streaming(int fd, int mode, int sync)
- 
- 			b = offset / CHUNK_SIZE / 64;
- 			n = offset / CHUNK_SIZE % 64;
--			exec[BATCH].relocs_ptr = to_user_pointer((reloc + 2*n));
-+			if (do_relocs)
-+				exec[BATCH].relocs_ptr = to_user_pointer((reloc + 2*n));
- 			exec[BATCH].handle = batch[b].handle;
- 			exec[BATCH].offset = batch[b].offset;
- 			execbuf.batch_start_offset = 64*n;
-@@ -234,7 +241,8 @@ static void test_streaming(int fd, int mode, int sync)
- 
- static void test_batch(int fd, int mode, int reverse)
- {
--	const int has_64bit_reloc = intel_gen(intel_get_drm_devid(fd)) >= 8;
-+	const bool has_64bit_addr = intel_gen(intel_get_drm_devid(fd)) >= 8;
-+	const bool do_relocs = gem_has_relocations(fd);
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	struct drm_i915_gem_exec_object2 exec[3];
- 	struct drm_i915_gem_relocation_entry reloc[2];
-@@ -254,26 +262,28 @@ static void test_batch(int fd, int mode, int reverse)
- 
- 	d = gem_mmap__cpu(fd, dst, 0, OBJECT_SIZE, PROT_READ);
- 
--	memset(reloc, 0, sizeof(reloc));
--	reloc[0].offset =  4 * sizeof(uint32_t);
--	reloc[0].delta = 0;
--	reloc[0].target_handle = execbuf.flags & I915_EXEC_HANDLE_LUT ? DST : dst;
--	reloc[0].presumed_offset = dst_offset;
--	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
--	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
+-igt@core_hotunplug@unbind-rebind
+-igt@vgem_basic@unload
+-igt@i915_module_load@reload
+-igt@i915_pm_rpm@module-reload
 -
--	reloc[1].offset = 7 * sizeof(uint32_t);
--	if (has_64bit_reloc)
--		reloc[1].offset +=  sizeof(uint32_t);
--	reloc[1].delta = 0;
--	reloc[1].target_handle = execbuf.flags & I915_EXEC_HANDLE_LUT ? SRC : src;
--	reloc[1].presumed_offset = src_offset;
--	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
--	reloc[1].write_domain = 0;
--
-+	if (do_relocs) {
-+		memset(reloc, 0, sizeof(reloc));
-+		reloc[0].offset =  4 * sizeof(uint32_t);
-+		reloc[0].delta = 0;
-+		reloc[0].target_handle = execbuf.flags & I915_EXEC_HANDLE_LUT ? DST : dst;
-+		reloc[0].presumed_offset = dst_offset;
-+		reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
-+		reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
-+
-+		reloc[1].offset = 7 * sizeof(uint32_t);
-+		if (has_64bit_addr)
-+			reloc[1].offset +=  sizeof(uint32_t);
-+		reloc[1].delta = 0;
-+		reloc[1].target_handle = execbuf.flags & I915_EXEC_HANDLE_LUT ? SRC : src;
-+		reloc[1].presumed_offset = src_offset;
-+		reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
-+		reloc[1].write_domain = 0;
-+
-+		exec[BATCH].relocs_ptr = to_user_pointer(reloc);
-+		exec[BATCH].relocation_count = 2;
-+	}
- 	batch_size = ALIGN(OBJECT_SIZE / CHUNK_SIZE * 128, 4096);
--	exec[BATCH].relocs_ptr = to_user_pointer(reloc);
--	exec[BATCH].relocation_count = 2;
- 	exec[BATCH].handle = gem_create(fd, batch_size);
- 
- 	switch (mode) {
-@@ -308,8 +318,13 @@ static void test_batch(int fd, int mode, int reverse)
- 	exec[DST].flags = EXEC_OBJECT_WRITE;
- 	/* We assume that the active objects are fixed to avoid relocations */
- 	exec[BATCH].relocation_count = 0;
-+	exec[BATCH].relocs_ptr = 0;
- 	__src_offset = src_offset;
- 	__dst_offset = dst_offset;
-+	if (!do_relocs) {
-+		exec[DST].flags |= EXEC_OBJECT_PINNED;
-+		exec[SRC].flags = EXEC_OBJECT_PINNED;
-+	}
- 
- 	offset = mode ? I915_GEM_DOMAIN_GTT : I915_GEM_DOMAIN_CPU;
- 	gem_set_domain(fd, exec[BATCH].handle, offset, offset);
-@@ -334,19 +349,19 @@ static void test_batch(int fd, int mode, int reverse)
- 			k = execbuf.batch_start_offset / 4;
- 
- 			base[k] = COPY_BLT_CMD | BLT_WRITE_ARGB;
--			if (has_64bit_reloc)
-+			if (has_64bit_addr)
- 				base[k] += 2;
- 			k++;
- 			base[k++] = 0xcc << 16 | 1 << 25 | 1 << 24 | 4096;
- 			base[k++] = (y << 16) | x;
- 			base[k++] = ((y+1) << 16) | (x + (CHUNK_SIZE >> 2));
- 			base[k++] = dst_offset;
--			if (has_64bit_reloc)
-+			if (has_64bit_addr)
- 				base[k++] = dst_offset >> 32;
- 			base[k++] = (y << 16) | x;
- 			base[k++] = 4096;
- 			base[k++] = src_offset;
--			if (has_64bit_reloc)
-+			if (has_64bit_addr)
- 				base[k++] = src_offset >> 32;
- 			base[k++] = MI_BATCH_BUFFER_END;
- 
+-# Kernel selftests
+-igt@i915_selftest@live
+-igt@dmabuf@all
++igt@gem_streaming_writes@batch-cpu
++igt@gem_streaming_writes@batch-gtt
++igt@gem_streaming_writes@batch-reverse-cpu
++igt@gem_streaming_writes@batch-reverse-gtt
++igt@gem_streaming_writes@batch-reverse-wc
++igt@gem_streaming_writes@batch-wc
++igt@gem_streaming_writes@cpu
++igt@gem_streaming_writes@cpu-sync
++igt@gem_streaming_writes@gtt
++igt@gem_streaming_writes@gtt-sync
++igt@gem_streaming_writes@wc
++igt@gem_streaming_writes@wc-sync
++igt@meta_test@fail-result
 -- 
 2.25.1
