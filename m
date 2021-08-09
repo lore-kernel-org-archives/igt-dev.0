@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5443C89A83
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:08:49 +0000 (UTC)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 53B0A89B0C
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:08:54 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon,  9 Aug 2021 15:04:47 +0200
-Message-Id: <20210809130533.27759-20-zbigniew.kempczynski@intel.com>
+Date: Mon,  9 Aug 2021 15:05:24 +0200
+Message-Id: <20210809130533.27759-57-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 19/65] tests/gem_exec_fair: Add softpin
- support
+Subject: [igt-dev] [PATCH i-g-t v5 56/65] tests/sysfs_heartbeat_interval:
+ Adopt to use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,39 +25,138 @@ To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use softpin on gens where relocations are not allowed.
+For newer gens we're not able to rely on relocations. Adopt to use
+offsets acquired from the allocator.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_exec_fair.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/i915/sysfs_heartbeat_interval.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/gem_exec_fair.c b/tests/i915/gem_exec_fair.c
-index 4b5531cc2..ef5a450f6 100644
---- a/tests/i915/gem_exec_fair.c
-+++ b/tests/i915/gem_exec_fair.c
-@@ -379,6 +379,7 @@ read_ctx_timestamp(int i915, const intel_ctx_t *ctx,
- 	const uint32_t runtime = base + (use_64b ? 0x3a8 : 0x358);
- 	uint32_t *map, *cs;
- 	uint32_t ts;
-+	bool has_relocs = gem_has_relocations(i915);
+diff --git a/tests/i915/sysfs_heartbeat_interval.c b/tests/i915/sysfs_heartbeat_interval.c
+index b70b653b1..bc8d1b3c0 100644
+--- a/tests/i915/sysfs_heartbeat_interval.c
++++ b/tests/i915/sysfs_heartbeat_interval.c
+@@ -36,6 +36,7 @@
+ #include "i915/gem.h"
+ #include "i915/gem_context.h"
+ #include "i915/gem_engine_topology.h"
++#include "intel_allocator.h"
+ #include "igt_debugfs.h"
+ #include "igt_dummyload.h"
+ #include "igt_sysfs.h"
+@@ -149,6 +150,7 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ 	igt_spin_t *spin[2];
+ 	uint64_t elapsed;
+ 	const intel_ctx_t *ctx[2];
++	uint64_t ahnd[2];
  
- 	cs = map = gem_mmap__device_coherent(i915, obj.handle,
- 					     0, 4096, PROT_WRITE);
-@@ -396,6 +397,11 @@ read_ctx_timestamp(int i915, const intel_ctx_t *ctx,
+ 	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
+ 	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
+@@ -156,15 +158,18 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ 	set_heartbeat(engine, timeout);
  
- 	*cs++ = MI_BATCH_BUFFER_END;
+ 	ctx[0] = create_ctx(i915, class, inst, 1023);
+-	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
++	ahnd[0] = get_reloc_ahnd(i915, ctx[0]->id);
++	spin[0] = igt_spin_new(i915, .ahnd = ahnd[0], .ctx = ctx[0],
+ 			       .flags = (IGT_SPIN_NO_PREEMPTION |
+ 					 IGT_SPIN_POLL_RUN |
+ 					 IGT_SPIN_FENCE_OUT));
+ 	igt_spin_busywait_until_started(spin[0]);
  
-+	if (!has_relocs) {
-+		obj.relocation_count = 0;
-+		obj.flags |= EXEC_OBJECT_PINNED;
-+	}
+ 	ctx[1] = create_ctx(i915, class, inst, -1023);
++	ahnd[1] = get_reloc_ahnd(i915, ctx[1]->id);
+ 	igt_nsec_elapsed(&ts);
+-	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
++	spin[1] = igt_spin_new(i915, .ahnd = ahnd[1], .ctx = ctx[1],
++				.flags = IGT_SPIN_POLL_RUN);
+ 	igt_spin_busywait_until_started(spin[1]);
+ 	elapsed = igt_nsec_elapsed(&ts);
+ 
+@@ -177,6 +182,8 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ 
+ 	intel_ctx_destroy(i915, ctx[1]);
+ 	intel_ctx_destroy(i915, ctx[0]);
++	put_ahnd(ahnd[1]);
++	put_ahnd(ahnd[0]);
+ 	gem_quiescent_gpu(i915);
+ 
+ 	return elapsed;
+@@ -292,17 +299,19 @@ static void client(int i915, int engine, int *ctl, int duration, int expect)
+ 	unsigned int class, inst;
+ 	unsigned long count = 0;
+ 	const intel_ctx_t *ctx;
++	uint64_t ahnd;
+ 
+ 	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
+ 	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
+ 
+ 	ctx = create_ctx(i915, class, inst, 0);
++	ahnd = get_reloc_ahnd(i915, ctx->id);
+ 
+ 	while (!READ_ONCE(*ctl)) {
+ 		unsigned int elapsed;
+ 		igt_spin_t *spin;
+ 
+-		spin = igt_spin_new(i915, .ctx = ctx,
++		spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
+ 				    .flags = (IGT_SPIN_NO_PREEMPTION |
+ 					      IGT_SPIN_POLL_RUN |
+ 					      IGT_SPIN_FENCE_OUT));
+@@ -331,6 +340,7 @@ static void client(int i915, int engine, int *ctl, int duration, int expect)
+ 	}
+ 
+ 	intel_ctx_destroy(i915, ctx);
++	put_ahnd(ahnd);
+ 	igt_info("%s client completed %lu spins\n",
+ 		 expect < 0 ? "Bad" : "Good", count);
+ }
+@@ -354,6 +364,8 @@ static void __test_mixed(int i915, int engine,
+ 	 * terminate the hog leaving the good client to run.
+ 	 */
+ 
++	intel_allocator_multiprocess_start();
 +
- 	gem_execbuf(i915, &execbuf);
- 	gem_sync(i915, obj.handle);
- 	ts = map[1000];
+ 	igt_assert(igt_sysfs_scanf(engine, ATTR, "%u", &saved) == 1);
+ 	igt_debug("Initial %s:%u\n", ATTR, saved);
+ 	gem_quiescent_gpu(i915);
+@@ -378,6 +390,7 @@ static void __test_mixed(int i915, int engine,
+ 
+ 	gem_quiescent_gpu(i915);
+ 	set_heartbeat(engine, saved);
++	intel_allocator_multiprocess_stop();
+ }
+ 
+ static void test_mixed(int i915, int engine)
+@@ -414,6 +427,7 @@ static void test_off(int i915, int engine)
+ 	unsigned int saved;
+ 	igt_spin_t *spin;
+ 	const intel_ctx_t *ctx;
++	uint64_t ahnd;
+ 
+ 	/*
+ 	 * Some other clients request that there is never any interruption
+@@ -433,8 +447,9 @@ static void test_off(int i915, int engine)
+ 	set_heartbeat(engine, 0);
+ 
+ 	ctx = create_ctx(i915, class, inst, 0);
++	ahnd = get_reloc_ahnd(i915, ctx->id);
+ 
+-	spin = igt_spin_new(i915, .ctx = ctx,
++	spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
+ 			    .flags = (IGT_SPIN_POLL_RUN |
+ 				      IGT_SPIN_NO_PREEMPTION |
+ 				      IGT_SPIN_FENCE_OUT));
+@@ -455,6 +470,7 @@ static void test_off(int i915, int engine)
+ 	gem_quiescent_gpu(i915);
+ 	set_heartbeat(engine, saved);
+ 	intel_ctx_destroy(i915, ctx);
++	put_ahnd(ahnd);
+ }
+ 
+ igt_main
 -- 
 2.26.0
