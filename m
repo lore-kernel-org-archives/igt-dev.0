@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E6F31899E7
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 77133899D6
  for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:08:47 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon,  9 Aug 2021 15:04:43 +0200
-Message-Id: <20210809130533.27759-16-zbigniew.kempczynski@intel.com>
+Date: Mon,  9 Aug 2021 15:04:41 +0200
+Message-Id: <20210809130533.27759-14-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 15/65] tests/gem_ctx_param: Adopt to use
+Subject: [igt-dev] [PATCH i-g-t v5 13/65] tests/gem_ctx_freq: Adopt to use
  allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,59 +28,42 @@ List-ID: <igt-dev@lists.freedesktop.org>
 For newer gens we're not able to rely on relocations. Adopt to use
 offsets acquired from the allocator.
 
-v2: recreate ahnd for appropriate context before starting the second
-    spinner (Ashutosh)
-
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_ctx_param.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tests/i915/gem_ctx_freq.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_ctx_param.c b/tests/i915/gem_ctx_param.c
-index c795f1b45..d119ea74e 100644
---- a/tests/i915/gem_ctx_param.c
-+++ b/tests/i915/gem_ctx_param.c
-@@ -165,6 +165,7 @@ static void test_vm(int i915)
- 	int err;
- 	uint32_t parent, child;
+diff --git a/tests/i915/gem_ctx_freq.c b/tests/i915/gem_ctx_freq.c
+index a34472de5..a29fe68b7 100644
+--- a/tests/i915/gem_ctx_freq.c
++++ b/tests/i915/gem_ctx_freq.c
+@@ -124,6 +124,7 @@ static void sysfs_range(int i915)
  	igt_spin_t *spin;
-+	uint64_t ahnd;
+ 	double measured;
+ 	int pmu;
++	uint64_t ahnd = get_reloc_ahnd(i915, 0);
  
  	/*
- 	 * Proving 2 contexts share the same GTT is quite tricky as we have no
-@@ -190,8 +191,10 @@ static void test_vm(int i915)
+ 	 * The sysfs interface sets the global limits and overrides the
+@@ -145,7 +146,7 @@ static void sysfs_range(int i915)
+ 		uint32_t cur, discard;
  
- 	/* Test that we can't set the VM after we've done an execbuf */
- 	arg.ctx_id = gem_context_create(i915);
--	spin = igt_spin_new(i915, .ctx_id = arg.ctx_id);
-+	ahnd = get_reloc_ahnd(i915, arg.ctx_id);
-+	spin = igt_spin_new(i915, .ahnd = ahnd, .ctx_id = arg.ctx_id);
- 	igt_spin_free(i915, spin);
-+	put_ahnd(ahnd);
- 	arg.value = gem_vm_create(i915);
- 	err = __gem_context_set_param(i915, &arg);
- 	gem_context_destroy(i915, arg.ctx_id);
-@@ -201,8 +204,9 @@ static void test_vm(int i915)
- 	parent = gem_context_create(i915);
- 	child = gem_context_create(i915);
+ 		gem_quiescent_gpu(i915);
+-		spin = igt_spin_new(i915);
++		spin = igt_spin_new(i915, .ahnd = ahnd);
+ 		usleep(10000);
  
-+	ahnd = get_reloc_ahnd(i915, 0);
- 	/* Create a background spinner to keep the engines busy */
--	spin = igt_spin_new(i915);
-+	spin = igt_spin_new(i915, .ahnd = ahnd);
- 	for (int i = 0; i < 16; i++) {
- 		spin->execbuf.rsvd1 = gem_context_create(i915);
- 		__gem_context_set_priority(i915, spin->execbuf.rsvd1, 1023);
-@@ -259,6 +263,7 @@ static void test_vm(int i915)
- 	igt_spin_free(i915, spin);
- 	gem_sync(i915, batch.handle);
- 	gem_close(i915, batch.handle);
+ 		set_sysfs_freq(sys_freq, sys_freq);
+@@ -164,6 +165,7 @@ static void sysfs_range(int i915)
+ 	gem_quiescent_gpu(i915);
+ 
+ 	close(pmu);
 +	put_ahnd(ahnd);
+ 
+ #undef N_STEPS
  }
- 
- static void test_set_invalid_param(int fd, uint64_t param, uint64_t value)
 -- 
 2.26.0
