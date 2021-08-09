@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F74E89BF8
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:09:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED82C899A5
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:09:01 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon,  9 Aug 2021 15:05:10 +0200
-Message-Id: <20210809130533.27759-43-zbigniew.kempczynski@intel.com>
+Date: Mon,  9 Aug 2021 15:04:58 +0200
+Message-Id: <20210809130533.27759-31-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 42/65] tests/gem_watchdog: Adopt to use
- no-reloc
+Subject: [igt-dev] [PATCH i-g-t v5 30/65] tests/gem_mmap_gtt: Add allocator
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,78 +22,95 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Ch Sai Gowtham <sai.gowtham.ch@intel.com>, =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For newer gens we're not able to rely on relocations. Adopt to use
-offsets acquired from the allocator.
+From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+When relocations are not available tests must assign addresses to objects
+by themselves instead of relying on the driver. We use allocator for
+that purpose.
+
+Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/i915/gem_watchdog.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ tests/i915/gem_mmap_gtt.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/tests/i915/gem_watchdog.c b/tests/i915/gem_watchdog.c
-index 4d4aaee48..db562335a 100644
---- a/tests/i915/gem_watchdog.c
-+++ b/tests/i915/gem_watchdog.c
-@@ -111,10 +111,13 @@ static void physical(int i915, const intel_ctx_t *ctx)
- 	unsigned int num_engines, i, count;
- 	const struct intel_execution_engine2 *e;
- 	igt_spin_t *spin[GEM_MAX_ENGINES];
-+	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
- 
- 	i = 0;
- 	for_each_ctx_engine(i915, ctx, e) {
--		spin[i] = igt_spin_new(i915, .ctx = ctx,
-+		spin[i] = igt_spin_new(i915,
-+				       .ahnd = ahnd,
-+				       .ctx = ctx,
- 				       .engine = e->flags,
- 				       .flags = spin_flags());
- 		i++;
-@@ -125,6 +128,7 @@ static void physical(int i915, const intel_ctx_t *ctx)
- 
- 	for (i = 0; i < num_engines; i++)
- 		igt_spin_free(i915, spin[i]);
-+	put_ahnd(ahnd);
- 
- 	igt_assert_eq(count, num_engines);
- }
-@@ -216,6 +220,7 @@ static void virtual(int i915, const intel_ctx_cfg_t *base_cfg)
- 	unsigned int expect = num_engines;
- 	intel_ctx_cfg_t cfg = {};
- 	const intel_ctx_t *ctx[num_engines];
+diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
+index 60282699e..92bbb5d2a 100644
+--- a/tests/i915/gem_mmap_gtt.c
++++ b/tests/i915/gem_mmap_gtt.c
+@@ -335,10 +335,12 @@ test_pf_nonblock(int i915)
+ {
+ 	igt_spin_t *spin;
+ 	uint32_t *ptr;
 +	uint64_t ahnd;
  
- 	igt_require(gem_has_execlists(i915));
+ 	igt_require(mmap_gtt_version(i915) >= 3);
  
-@@ -239,10 +244,12 @@ static void virtual(int i915, const intel_ctx_cfg_t *base_cfg)
- 			igt_assert(i < num_engines);
+-	spin = igt_spin_new(i915);
++	ahnd = get_reloc_ahnd(i915, 0);
++	spin = igt_spin_new(i915, .ahnd = ahnd);
  
- 			ctx[i] = intel_ctx_create(i915, &cfg);
-+			ahnd = get_reloc_ahnd(i915, ctx[i]->id);
+ 	igt_set_timeout(1, "initial pagefaulting did not complete within 1s");
  
- 			set_load_balancer(i915, ctx[i]->id, ci, count, NULL);
+@@ -349,6 +351,7 @@ test_pf_nonblock(int i915)
+ 	igt_reset_timeout();
  
- 			spin[i] = igt_spin_new(i915,
-+					       .ahnd = ahnd,
- 					       .ctx = ctx[i],
- 					       .flags = spin_flags());
- 			i++;
-@@ -254,8 +261,10 @@ static void virtual(int i915, const intel_ctx_cfg_t *base_cfg)
- 	count = wait_timeout(i915, spin, num_engines, wait_us, expect);
+ 	igt_spin_free(i915, spin);
++	put_ahnd(ahnd);
+ }
  
- 	for (i = 0; i < num_engines && spin[i]; i++) {
-+		ahnd = spin[i]->ahnd;
- 		igt_spin_free(i915, spin[i]);
- 		intel_ctx_destroy(i915, ctx[i]);
-+		put_ahnd(ahnd);
- 	}
+ static void
+@@ -741,11 +744,13 @@ test_hang_busy(int i915)
+ 	igt_spin_t *spin;
+ 	igt_hang_t hang;
+ 	uint32_t handle;
++	uint64_t ahnd;
  
- 	igt_assert_eq(count, expect);
+ 	hang = igt_allow_hang(i915, ctx->id, 0);
+ 	igt_require(igt_params_set(i915, "reset", "1")); /* global */
+ 
+-	spin = igt_spin_new(i915, .ctx = ctx,
++	ahnd = get_reloc_ahnd(i915, ctx->id);
++	spin = igt_spin_new(i915, .ctx = ctx, .ahnd = ahnd,
+ 			    .flags = IGT_SPIN_POLL_RUN |
+ 				     IGT_SPIN_FENCE_OUT |
+ 				     IGT_SPIN_NO_PREEMPTION);
+@@ -788,6 +793,7 @@ test_hang_busy(int i915)
+ 	munmap(ptr, 4096);
+ 
+ 	igt_spin_free(i915, spin);
++	put_ahnd(ahnd);
+ 	igt_disallow_hang(i915, hang);
+ 	intel_ctx_destroy(i915, ctx);
+ }
+@@ -800,11 +806,13 @@ test_hang_user(int i915)
+ 	igt_spin_t *spin;
+ 	igt_hang_t hang;
+ 	uint32_t handle;
++	uint64_t ahnd;
+ 
+ 	hang = igt_allow_hang(i915, ctx->id, 0);
+ 	igt_require(igt_params_set(i915, "reset", "1")); /* global */
+ 
+-	spin = igt_spin_new(i915, .ctx = ctx,
++	ahnd = get_reloc_ahnd(i915, ctx->id);
++	spin = igt_spin_new(i915, .ctx = ctx, .ahnd = ahnd,
+ 			    .flags = IGT_SPIN_POLL_RUN |
+ 				     IGT_SPIN_FENCE_OUT |
+ 				     IGT_SPIN_NO_PREEMPTION);
+@@ -843,6 +851,7 @@ test_hang_user(int i915)
+ 	munmap(ptr, 4096);
+ 
+ 	igt_spin_free(i915, spin);
++	put_ahnd(ahnd);
+ 	igt_disallow_hang(i915, hang);
+ 	intel_ctx_destroy(i915, ctx);
+ }
 -- 
 2.26.0
