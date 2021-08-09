@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B37B589B84
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:08:55 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 94E8989ACD
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:08:49 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon,  9 Aug 2021 15:05:33 +0200
-Message-Id: <20210809130533.27759-66-zbigniew.kempczynski@intel.com>
+Date: Mon,  9 Aug 2021 15:04:48 +0200
+Message-Id: <20210809130533.27759-21-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 65/65] HAX: remove gttfill for tgl ci
+Subject: [igt-dev] [PATCH i-g-t v5 20/65] tests/gem_exec_gttfill: Require
+ relocation support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,24 +22,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: Andrzej Turko <andrzej.turko@linux.intel.com>, =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
----
- tests/intel-ci/fast-feedback.testlist | 1 -
- 1 file changed, 1 deletion(-)
+From: Andrzej Turko <andrzej.turko@linux.intel.com>
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index fa5006d2e..cac694b61 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -22,7 +22,6 @@ igt@gem_exec_fence@basic-busy
- igt@gem_exec_fence@basic-wait
- igt@gem_exec_fence@basic-await
- igt@gem_exec_fence@nb-await
--igt@gem_exec_gttfill@basic
- igt@gem_exec_parallel@engines
- igt@gem_exec_store@basic
- igt@gem_exec_suspend@basic-s0
+Since this test uses relocations, which are now disabled on newer
+generations, we need to skip the test if they are not supported.
+In order to maintain coverage a slightly modified version of this test
+using softpinning instead of relocations is added to gem_softpin.
+
+Signed-off-by: Andrzej Turko <andrzej.turko@linux.intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ tests/i915/gem_exec_gttfill.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tests/i915/gem_exec_gttfill.c b/tests/i915/gem_exec_gttfill.c
+index b8283eb8f..f16428714 100644
+--- a/tests/i915/gem_exec_gttfill.c
++++ b/tests/i915/gem_exec_gttfill.c
+@@ -216,6 +216,7 @@ igt_main
+ 	igt_fixture {
+ 		i915 = drm_open_driver(DRIVER_INTEL);
+ 		igt_require_gem(i915);
++		igt_require(gem_has_relocations(i915));
+ 		ctx = intel_ctx_create_all_physical(i915);
+ 		igt_fork_hang_detector(i915);
+ 	}
 -- 
 2.26.0
