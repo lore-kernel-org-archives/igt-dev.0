@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8149B89950
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:08:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9468C899A5
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:09:05 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon,  9 Aug 2021 15:04:55 +0200
-Message-Id: <20210809130533.27759-28-zbigniew.kempczynski@intel.com>
+Date: Mon,  9 Aug 2021 15:05:01 +0200
+Message-Id: <20210809130533.27759-34-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 27/65] tests/gem_fenced_exec_thrash:
- Adopt to use allocator
+Subject: [igt-dev] [PATCH i-g-t v5 33/65] tests/gem_request_retire: Add
+ allocator support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,80 +22,73 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Ch Sai Gowtham <sai.gowtham.ch@intel.com>, =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For newer gens we're not able to rely on relocations. Adopt to use
-offsets acquired from the allocator.
+From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+When relocations are not available tests must assign addresses to objects
+by themselves instead of relying on the driver. We use allocator for
+that purpose.
+
+Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/i915/gem_fenced_exec_thrash.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ tests/i915/gem_request_retire.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/gem_fenced_exec_thrash.c b/tests/i915/gem_fenced_exec_thrash.c
-index 6497ff576..a9597d801 100644
---- a/tests/i915/gem_fenced_exec_thrash.c
-+++ b/tests/i915/gem_fenced_exec_thrash.c
-@@ -98,7 +98,7 @@ static void run_test(int fd, int num_fences, int expected_errno,
- 	struct drm_i915_gem_execbuffer2 execbuf[2];
- 	struct drm_i915_gem_exec_object2 exec[2][2*MAX_FENCES+1];
- 	struct drm_i915_gem_relocation_entry reloc[2*MAX_FENCES];
--
-+	uint64_t ahnd = get_reloc_ahnd(fd, 0);
- 	unsigned long count;
- 	int i, n;
+diff --git a/tests/i915/gem_request_retire.c b/tests/i915/gem_request_retire.c
+index 3df54f2a5..da9d405ed 100644
+--- a/tests/i915/gem_request_retire.c
++++ b/tests/i915/gem_request_retire.c
+@@ -63,21 +63,29 @@ test_retire_vma_not_inactive(int fd)
+ {
+ 	struct intel_execution_engine2 *e;
+ 	const intel_ctx_t *ctx;
++	uint64_t ahnd, ahndN;
+ 	igt_spin_t *bg = NULL;
  
-@@ -111,7 +111,19 @@ static void run_test(int fd, int num_fences, int expected_errno,
+ 	ctx = intel_ctx_create_all_physical(fd);
++	ahnd = get_reloc_ahnd(fd, ctx->id);
  
- 	for (n = 0; n < 2*num_fences; n++) {
- 		uint32_t handle = tiled_bo_create(fd);
--		exec[1][2*num_fences - n-1].handle = exec[0][n].handle = handle;
-+		struct drm_i915_gem_exec_object2 *obj0, *obj1;
-+
-+		obj0 = &exec[0][n];
-+		obj1 = &exec[1][2*num_fences - n-1];
-+
-+		obj1->handle = obj0->handle = handle;
-+		obj1->offset = get_offset(ahnd, handle, OBJECT_SIZE, 0);
-+		obj0->offset = obj1->offset;
-+
-+		if (ahnd) {
-+			obj0->flags |= EXEC_OBJECT_PINNED;
-+			obj1->flags |= EXEC_OBJECT_PINNED;
-+		}
- 		fill_reloc(&reloc[n], handle);
+ 	for_each_ctx_engine(fd, ctx, e) {
+ 		igt_spin_t *spin;
+ 		const intel_ctx_t *spin_ctx;
+ 
+ 		if (!bg) {
+-			bg = igt_spin_new(fd, .ctx = ctx, .engine = e->flags);
++			bg = igt_spin_new(fd,
++					  .ahnd = ahnd,
++					  .ctx = ctx,
++					  .engine = e->flags);
+ 			continue;
+ 		}
+ 
+ 		spin_ctx = intel_ctx_create(fd, &ctx->cfg);
+-		spin = igt_spin_new(fd, .ctx = spin_ctx,
++		ahndN = get_reloc_ahnd(fd, spin_ctx->id);
++		spin = igt_spin_new(fd,
++				    .ahnd = ahndN,
++				    .ctx = spin_ctx,
+ 				    .engine = e->flags,
+ 				    .dependency = bg->handle,
+ 				    .flags = IGT_SPIN_SOFTDEP);
+@@ -86,11 +94,13 @@ test_retire_vma_not_inactive(int fd)
+ 
+ 		gem_sync(fd, spin->handle);
+ 		igt_spin_free(fd, spin);
++		put_ahnd(ahndN);
  	}
  
-@@ -121,7 +133,7 @@ static void run_test(int fd, int num_fences, int expected_errno,
- 
- 		exec[i][2*num_fences].handle = batch_create(fd);
- 		exec[i][2*num_fences].relocs_ptr = to_user_pointer(reloc);
--		exec[i][2*num_fences].relocation_count = 2*num_fences;
-+		exec[i][2*num_fences].relocation_count = !ahnd ? 2*num_fences : 0;
- 
- 		execbuf[i].buffers_ptr = to_user_pointer(exec[i]);
- 		execbuf[i].buffer_count = 2*num_fences+1;
-@@ -134,7 +146,7 @@ static void run_test(int fd, int num_fences, int expected_errno,
- 			igt_spin_t *spin = NULL;
- 
- 			if (flags & BUSY_LOAD)
--				spin = __igt_spin_new(fd);
-+				spin = __igt_spin_new(fd, .ahnd = ahnd);
- 
- 			igt_while_interruptible(flags & INTERRUPTIBLE) {
- 				igt_assert_eq(__gem_execbuf(fd, &execbuf[i]),
-@@ -154,6 +166,8 @@ static void run_test(int fd, int num_fences, int expected_errno,
- 
- 	for (i = 0; i < 2; i++)
- 		gem_close(fd, exec[i][2*num_fences].handle);
-+
+ 	igt_drop_caches_set(fd, DROP_RETIRE);
+ 	igt_spin_free(fd, bg);
+ 	intel_ctx_destroy(fd, ctx);
 +	put_ahnd(ahnd);
  }
  
- igt_main
+ int fd;
 -- 
 2.26.0
