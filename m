@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B7A11899D6
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:08:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6482089AEE
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:08:51 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon,  9 Aug 2021 15:04:42 +0200
-Message-Id: <20210809130533.27759-15-zbigniew.kempczynski@intel.com>
+Date: Mon,  9 Aug 2021 15:04:51 +0200
+Message-Id: <20210809130533.27759-24-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 14/65] tests/gem_ctx_isolation: Adopt to
+Subject: [igt-dev] [PATCH i-g-t v5 23/65] tests/gem_exec_suspend: Adopt to
  use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,329 +28,96 @@ List-ID: <igt-dev@lists.freedesktop.org>
 For newer gens we're not able to rely on relocations. Adopt to use
 offsets acquired from the allocator.
 
-v2: add missing put_offset/ahnd (Ashutosh)
-
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_ctx_isolation.c | 100 +++++++++++++++++++++++++--------
- 1 file changed, 76 insertions(+), 24 deletions(-)
+ tests/i915/gem_exec_suspend.c | 44 +++++++++++++++++++++++------------
+ 1 file changed, 29 insertions(+), 15 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
-index 24ddde0bc..c4fd771ed 100644
---- a/tests/i915/gem_ctx_isolation.c
-+++ b/tests/i915/gem_ctx_isolation.c
-@@ -277,6 +277,7 @@ static void tmpl_regs(int fd,
- }
+diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
+index 0ef26ce11..dbe0c8a71 100644
+--- a/tests/i915/gem_exec_suspend.c
++++ b/tests/i915/gem_exec_suspend.c
+@@ -83,6 +83,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
+ 	unsigned engines[I915_EXEC_RING_MASK + 1];
+ 	unsigned nengine;
+ 	igt_spin_t *spin = NULL;
++	uint64_t ahnd = get_reloc_ahnd(fd, 0);
  
- static uint32_t read_regs(int fd,
-+			  uint64_t ahnd,
- 			  const intel_ctx_t *ctx,
- 			  const struct intel_execution_engine2 *e,
- 			  unsigned int flags)
-@@ -305,6 +306,12 @@ static uint32_t read_regs(int fd,
- 	obj[0].handle = gem_create(fd, regs_size);
- 	obj[1].handle = gem_create(fd, batch_size);
- 	obj[1].relocs_ptr = to_user_pointer(reloc);
-+	if (ahnd) {
-+		obj[0].offset = get_offset(ahnd, obj[0].handle, regs_size, 0);
-+		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+		obj[1].offset = get_offset(ahnd, obj[1].handle, batch_size, 0);
-+		obj[1].flags |= EXEC_OBJECT_PINNED;
+ 	nengine = 0;
+ 	if (engine == ALL_ENGINES) {
+@@ -120,27 +121,39 @@ static void run_test(int fd, const intel_ctx_t *ctx,
+ 	igt_require(__gem_execbuf(fd, &execbuf) == 0);
+ 	gem_close(fd, obj[1].handle);
+ 
+-	memset(&reloc, 0, sizeof(reloc));
+-	reloc.target_handle = obj[0].handle;
+-	reloc.presumed_offset = obj[0].offset;
+-	reloc.offset = sizeof(uint32_t);
+-	if (gen >= 4 && gen < 8)
+-		reloc.offset += sizeof(uint32_t);
+-	reloc.read_domains = I915_GEM_DOMAIN_INSTRUCTION;
+-	reloc.write_domain = I915_GEM_DOMAIN_INSTRUCTION;
+-
+-	obj[1].relocs_ptr = to_user_pointer(&reloc);
+-	obj[1].relocation_count = 1;
++	if (!ahnd) {
++		memset(&reloc, 0, sizeof(reloc));
++		reloc.target_handle = obj[0].handle;
++		reloc.presumed_offset = obj[0].offset;
++		reloc.offset = sizeof(uint32_t);
++		if (gen >= 4 && gen < 8)
++			reloc.offset += sizeof(uint32_t);
++		reloc.read_domains = I915_GEM_DOMAIN_INSTRUCTION;
++		reloc.write_domain = I915_GEM_DOMAIN_INSTRUCTION;
++
++		obj[1].relocs_ptr = to_user_pointer(&reloc);
++		obj[1].relocation_count = 1;
++	} else {
++		/* ignore first execbuf offset */
++		obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, 0);
++		obj[0].flags |= EXEC_OBJECT_PINNED;
 +	}
  
- 	b = batch = gem_mmap__cpu(fd, obj[1].handle, 0, batch_size, PROT_WRITE);
- 	gem_set_domain(fd, obj[1].handle,
-@@ -334,14 +341,14 @@ static uint32_t read_regs(int fd,
- 			reloc[n].delta = offset;
- 			reloc[n].read_domains = I915_GEM_DOMAIN_RENDER;
- 			reloc[n].write_domain = I915_GEM_DOMAIN_RENDER;
--			*b++ = offset;
-+			*b++ = obj[0].offset + offset;
- 			if (r64b)
--				*b++ = 0;
-+				*b++ = (obj[0].offset + offset) >> 32;
- 			n++;
- 		}
+ 	for (int i = 0; i < 1024; i++) {
+ 		uint64_t offset;
+ 		uint32_t buf[16];
+ 		int b;
+ 
+-		obj[1].handle = gem_create(fd, 4096);
+-
+ 		reloc.delta = i * sizeof(uint32_t);
+-		offset = reloc.presumed_offset + reloc.delta;
++
++		obj[1].handle = gem_create(fd, 4096);
++		if (ahnd) {
++			obj[1].offset = get_offset(ahnd, obj[1].handle, 4096, 0);
++			obj[1].flags |= EXEC_OBJECT_PINNED;
++			offset = obj[0].offset + reloc.delta;
++		} else {
++			offset = reloc.presumed_offset + reloc.delta;
++		}
+ 
+ 		b = 0;
+ 		buf[b] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
+@@ -165,7 +178,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
  	}
  
--	obj[1].relocation_count = n;
-+	obj[1].relocation_count = !ahnd ? n : 0;
- 	*b++ = MI_BATCH_BUFFER_END;
- 	munmap(batch, batch_size);
+ 	if (flags & HANG)
+-		spin = igt_spin_new(fd, .engine = engine);
++		spin = igt_spin_new(fd, .ahnd = ahnd, .engine = engine);
  
-@@ -353,6 +360,8 @@ static uint32_t read_regs(int fd,
- 	gem_execbuf(fd, &execbuf);
- 	gem_close(fd, obj[1].handle);
- 	free(reloc);
-+	put_offset(ahnd, obj[0].handle);
-+	put_offset(ahnd, obj[1].handle);
+ 	switch (mode(flags)) {
+ 	case NOSLEEP:
+@@ -201,6 +214,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
  
- 	return obj[0].handle;
- }
-@@ -419,6 +428,7 @@ static void write_regs(int fd,
- }
- 
- static void restore_regs(int fd,
-+			 uint64_t ahnd,
- 			 const intel_ctx_t *ctx,
- 			 const struct intel_execution_engine2 *e,
- 			 unsigned int flags,
-@@ -434,6 +444,7 @@ static void restore_regs(int fd,
- 	struct drm_i915_gem_relocation_entry *reloc;
- 	unsigned int batch_size, n;
- 	uint32_t *batch, *b;
-+	uint32_t regs_size = NUM_REGS * sizeof(uint32_t);
- 
- 	if (gen < 7) /* no LRM */
- 		return;
-@@ -448,6 +459,12 @@ static void restore_regs(int fd,
- 	obj[0].handle = regs;
- 	obj[1].handle = gem_create(fd, batch_size);
- 	obj[1].relocs_ptr = to_user_pointer(reloc);
-+	if (ahnd) {
-+		obj[0].offset = get_offset(ahnd, obj[0].handle, regs_size, 0);
-+		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+		obj[1].offset = get_offset(ahnd, obj[1].handle, batch_size, 0);
-+		obj[1].flags |= EXEC_OBJECT_PINNED;
-+	}
- 
- 	b = batch = gem_mmap__cpu(fd, obj[1].handle, 0, batch_size, PROT_WRITE);
- 	gem_set_domain(fd, obj[1].handle,
-@@ -477,13 +494,13 @@ static void restore_regs(int fd,
- 			reloc[n].delta = offset;
- 			reloc[n].read_domains = I915_GEM_DOMAIN_RENDER;
- 			reloc[n].write_domain = 0;
--			*b++ = offset;
-+			*b++ = obj[0].offset + offset;
- 			if (r64b)
--				*b++ = 0;
-+				*b++ = (obj[0].offset + offset) >> 32;
- 			n++;
- 		}
- 	}
--	obj[1].relocation_count = n;
-+	obj[1].relocation_count = !ahnd ? n : 0;
- 	*b++ = MI_BATCH_BUFFER_END;
- 	munmap(batch, batch_size);
- 
-@@ -494,6 +511,8 @@ static void restore_regs(int fd,
- 	execbuf.rsvd1 = ctx->id;
- 	gem_execbuf(fd, &execbuf);
- 	gem_close(fd, obj[1].handle);
-+	put_offset(ahnd, obj[0].offset);
-+	put_offset(ahnd, obj[1].offset);
- }
- 
- __attribute__((unused))
-@@ -622,15 +641,20 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
- 		igt_spin_t *spin = NULL;
- 		const intel_ctx_t *ctx;
- 		uint32_t regs[2], tmpl;
-+		uint64_t ahnd;
- 
- 		ctx = intel_ctx_create(fd, cfg);
-+		ahnd = get_reloc_ahnd(fd, ctx->id);
- 
--		tmpl = read_regs(fd, ctx, e, flags);
--		regs[0] = read_regs(fd, ctx, e, flags);
-+		tmpl = read_regs(fd, ahnd, ctx, e, flags);
-+		regs[0] = read_regs(fd, ahnd, ctx, e, flags);
- 
- 		tmpl_regs(fd, e, tmpl, values[v]);
- 
--		spin = igt_spin_new(fd, .ctx = ctx, .engine = e->flags);
-+		spin = igt_spin_new(fd,
-+				    .ahnd = ahnd,
-+				    .ctx = ctx,
-+				    .engine = e->flags);
- 
- 		igt_debug("%s[%d]: Setting all registers to 0x%08x\n",
- 			  __func__, v, values[v]);
-@@ -638,15 +662,18 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
- 
- 		if (flags & DIRTY2) {
- 			const intel_ctx_t *sw = intel_ctx_create(fd, &ctx->cfg);
-+			uint64_t ahnd_sw = get_reloc_ahnd(fd, sw->id);
- 			igt_spin_t *syncpt, *dirt;
- 
- 			/* Explicit sync to keep the switch between write/read */
- 			syncpt = igt_spin_new(fd,
-+					      .ahnd = ahnd,
- 					      .ctx = ctx,
- 					      .engine = e->flags,
- 					      .flags = IGT_SPIN_FENCE_OUT);
- 
- 			dirt = igt_spin_new(fd,
-+					    .ahnd = ahnd_sw,
- 					    .ctx = sw,
- 					    .engine = e->flags,
- 					    .fence = syncpt->out_fence,
-@@ -655,6 +682,7 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
- 			igt_spin_free(fd, syncpt);
- 
- 			syncpt = igt_spin_new(fd,
-+					      .ahnd = ahnd,
- 					      .ctx = ctx,
- 					      .engine = e->flags,
- 					      .fence = dirt->out_fence,
-@@ -663,15 +691,16 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
- 
- 			igt_spin_free(fd, syncpt);
- 			intel_ctx_destroy(fd, sw);
-+			put_ahnd(ahnd_sw);
- 		}
- 
--		regs[1] = read_regs(fd, ctx, e, flags);
-+		regs[1] = read_regs(fd, ahnd, ctx, e, flags);
- 
- 		/*
- 		 * Restore the original register values before the HW idles.
- 		 * Or else it may never restart!
- 		 */
--		restore_regs(fd, ctx, e, flags, regs[0]);
-+		restore_regs(fd, ahnd, ctx, e, flags, regs[0]);
- 
- 		igt_spin_free(fd, spin);
- 
-@@ -681,6 +710,7 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
- 			gem_close(fd, regs[n]);
- 		intel_ctx_destroy(fd, ctx);
- 		gem_close(fd, tmpl);
-+		put_ahnd(ahnd);
- 	}
- }
- 
-@@ -706,11 +736,16 @@ static void isolation(int fd, const intel_ctx_cfg_t *cfg,
- 		igt_spin_t *spin = NULL;
- 		const intel_ctx_t *ctx[2];
- 		uint32_t regs[2], tmp;
-+		uint64_t ahnd[2];
- 
- 		ctx[0] = intel_ctx_create(fd, cfg);
--		regs[0] = read_regs(fd, ctx[0], e, flags);
-+		ahnd[0] = get_reloc_ahnd(fd, ctx[0]->id);
-+		regs[0] = read_regs(fd, ahnd[0], ctx[0], e, flags);
- 
--		spin = igt_spin_new(fd, .ctx = ctx[0], .engine = e->flags);
-+		spin = igt_spin_new(fd,
-+				    .ahnd = ahnd[0],
-+				    .ctx = ctx[0],
-+				    .engine = e->flags);
- 
- 		if (flags & DIRTY1) {
- 			igt_debug("%s[%d]: Setting all registers of ctx 0 to 0x%08x\n",
-@@ -727,7 +762,8 @@ static void isolation(int fd, const intel_ctx_cfg_t *cfg,
- 		 * see the corruption from the previous context instead!
- 		 */
- 		ctx[1] = intel_ctx_create(fd, cfg);
--		regs[1] = read_regs(fd, ctx[1], e, flags);
-+		ahnd[1] = get_reloc_ahnd(fd, ctx[1]->id);
-+		regs[1] = read_regs(fd, ahnd[1], ctx[1], e, flags);
- 
- 		if (flags & DIRTY2) {
- 			igt_debug("%s[%d]: Setting all registers of ctx 1 to 0x%08x\n",
-@@ -739,8 +775,8 @@ static void isolation(int fd, const intel_ctx_cfg_t *cfg,
- 		 * Restore the original register values before the HW idles.
- 		 * Or else it may never restart!
- 		 */
--		tmp = read_regs(fd, ctx[0], e, flags);
--		restore_regs(fd, ctx[0], e, flags, regs[0]);
-+		tmp = read_regs(fd, ahnd[0], ctx[0], e, flags);
-+		restore_regs(fd, ahnd[0], ctx[0], e, flags, regs[0]);
- 
- 		igt_spin_free(fd, spin);
- 
-@@ -752,6 +788,7 @@ static void isolation(int fd, const intel_ctx_cfg_t *cfg,
- 		for (int n = 0; n < ARRAY_SIZE(ctx); n++) {
- 			gem_close(fd, regs[n]);
- 			intel_ctx_destroy(fd, ctx[n]);
-+			put_ahnd(ahnd[n]);
- 		}
- 		gem_close(fd, tmp);
- 	}
-@@ -781,7 +818,9 @@ static void inject_reset_context(int fd, const intel_ctx_cfg_t *cfg,
- 				 const struct intel_execution_engine2 *e)
- {
- 	const intel_ctx_t *ctx = create_reset_context(fd, cfg);
-+	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
- 	struct igt_spin_factory opts = {
-+		.ahnd = ahnd,
- 		.ctx = ctx,
- 		.engine = e->flags,
- 		.flags = IGT_SPIN_FAST,
-@@ -808,6 +847,7 @@ static void inject_reset_context(int fd, const intel_ctx_cfg_t *cfg,
- 
- 	igt_spin_free(fd, spin);
- 	intel_ctx_destroy(fd, ctx);
+ 	check_bo(fd, obj[0].handle);
+ 	gem_close(fd, obj[0].handle);
 +	put_ahnd(ahnd);
- }
- 
- static void preservation(int fd, const intel_ctx_cfg_t *cfg,
-@@ -826,21 +866,27 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
- 	const unsigned int num_values = ARRAY_SIZE(values);
- 	const intel_ctx_t *ctx[num_values + 1];
- 	uint32_t regs[num_values + 1][2];
-+	uint64_t ahnd[num_values + 1];
- 	igt_spin_t *spin;
  
  	gem_quiescent_gpu(fd);
  
- 	ctx[num_values] = intel_ctx_create(fd, cfg);
--	spin = igt_spin_new(fd, .ctx = ctx[num_values], .engine = e->flags);
--	regs[num_values][0] = read_regs(fd, ctx[num_values], e, flags);
-+	ahnd[num_values] = get_reloc_ahnd(fd, ctx[num_values]->id);
-+	spin = igt_spin_new(fd,
-+			    .ahnd = ahnd[num_values],
-+			    .ctx = ctx[num_values],
-+			    .engine = e->flags);
-+	regs[num_values][0] = read_regs(fd, ahnd[num_values], ctx[num_values],
-+					e, flags);
- 	for (int v = 0; v < num_values; v++) {
- 		ctx[v] = intel_ctx_create(fd, cfg);
-+		ahnd[v] = get_reloc_ahnd(fd, ctx[v]->id);
- 		write_regs(fd, ctx[v], e, flags, values[v]);
- 
--		regs[v][0] = read_regs(fd, ctx[v], e, flags);
--
-+		regs[v][0] = read_regs(fd, ahnd[v], ctx[v], e, flags);
- 	}
--	gem_close(fd, read_regs(fd, ctx[num_values], e, flags));
-+	gem_close(fd, read_regs(fd, ahnd[num_values], ctx[num_values], e, flags));
- 	igt_spin_free(fd, spin);
- 
- 	if (flags & RESET)
-@@ -871,10 +917,14 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
- 		break;
- 	}
- 
--	spin = igt_spin_new(fd, .ctx = ctx[num_values], .engine = e->flags);
-+	spin = igt_spin_new(fd,
-+			    .ahnd = ahnd[num_values],
-+			    .ctx = ctx[num_values],
-+			    .engine = e->flags);
- 	for (int v = 0; v < num_values; v++)
--		regs[v][1] = read_regs(fd, ctx[v], e, flags);
--	regs[num_values][1] = read_regs(fd, ctx[num_values], e, flags);
-+		regs[v][1] = read_regs(fd, ahnd[v], ctx[v], e, flags);
-+	regs[num_values][1] = read_regs(fd, ahnd[num_values], ctx[num_values],
-+					e, flags);
- 	igt_spin_free(fd, spin);
- 
- 	for (int v = 0; v < num_values; v++) {
-@@ -886,9 +936,11 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
- 		gem_close(fd, regs[v][0]);
- 		gem_close(fd, regs[v][1]);
- 		intel_ctx_destroy(fd, ctx[v]);
-+		put_ahnd(ahnd[v]);
- 	}
- 	compare_regs(fd, e, regs[num_values][0], regs[num_values][1], "clean");
- 	intel_ctx_destroy(fd, ctx[num_values]);
-+	put_ahnd(ahnd[num_values]);
- }
- 
- static unsigned int __has_context_isolation(int fd)
 -- 
 2.26.0
