@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC42B899A5
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:09:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B141189B18
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:09:12 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon,  9 Aug 2021 15:05:02 +0200
-Message-Id: <20210809130533.27759-35-zbigniew.kempczynski@intel.com>
+Date: Mon,  9 Aug 2021 15:05:08 +0200
+Message-Id: <20210809130533.27759-41-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 34/65] tests/gem_ringfill: Adopt to use
- allocator
+Subject: [igt-dev] [PATCH i-g-t v5 40/65] tests/gem_userptr_blits: Adopt to
+ use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,161 +25,178 @@ To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-v2: Add missing ahnd release (Ashutosh)
+For newer gens we're not able to rely on relocations. Adopt to use
+offsets acquired from the allocator.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_ringfill.c | 37 +++++++++++++++++++++++++++++--------
- 1 file changed, 29 insertions(+), 8 deletions(-)
+ tests/i915/gem_userptr_blits.c | 44 +++++++++++++++++++++++++++-------
+ 1 file changed, 35 insertions(+), 9 deletions(-)
 
-diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
-index d32d47994..ecfa0bead 100644
---- a/tests/i915/gem_ringfill.c
-+++ b/tests/i915/gem_ringfill.c
-@@ -94,6 +94,7 @@ static void fill_ring(int fd,
- 	}
- }
- 
-+#define NUMSTORES 1024
- static void setup_execbuf(int fd, const intel_ctx_t *ctx,
- 			  struct drm_i915_gem_execbuffer2 *execbuf,
- 			  struct drm_i915_gem_exec_object2 *obj,
-@@ -104,10 +105,11 @@ static void setup_execbuf(int fd, const intel_ctx_t *ctx,
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	uint32_t *batch, *b;
- 	int i;
-+	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
- 
- 	memset(execbuf, 0, sizeof(*execbuf));
- 	memset(obj, 0, 2*sizeof(*obj));
--	memset(reloc, 0, 1024*sizeof(*reloc));
-+	memset(reloc, 0, NUMSTORES * sizeof(*reloc));
- 
- 	execbuf->buffers_ptr = to_user_pointer(obj);
- 	execbuf->flags = ring | (1 << 11) | (1 << 12);
-@@ -118,23 +120,33 @@ static void setup_execbuf(int fd, const intel_ctx_t *ctx,
- 	execbuf->rsvd1 = ctx->id;
- 
- 	obj[0].handle = gem_create(fd, 4096);
-+	if (ahnd) {
-+		obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, 0);
-+		obj[0].flags |= EXEC_OBJECT_PINNED;
-+	}
+diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
+index 532298dce..756bd6e47 100644
+--- a/tests/i915/gem_userptr_blits.c
++++ b/tests/i915/gem_userptr_blits.c
+@@ -100,6 +100,12 @@ static int copy(int fd, uint32_t dst, uint32_t src)
+ 	struct drm_i915_gem_execbuffer2 exec;
+ 	uint32_t handle;
+ 	int ret, i=0;
++	uint64_t dst_offset, src_offset, bb_offset;
++	bool has_relocs = gem_has_relocations(fd);
 +
- 	gem_write(fd, obj[0].handle, 0, &bbe, sizeof(bbe));
- 	execbuf->buffer_count = 1;
- 	gem_execbuf(fd, execbuf);
++	bb_offset = 16 << 20;
++	dst_offset = bb_offset + 4096;
++	src_offset = dst_offset + WIDTH * HEIGHT * sizeof(uint32_t) * (src != dst);
  
- 	obj[0].flags |= EXEC_OBJECT_WRITE;
--	obj[1].handle = gem_create(fd, 1024*16 + 4096);
--
-+	obj[1].handle = gem_create(fd, NUMSTORES * 16 + 4096);
- 	obj[1].relocs_ptr = to_user_pointer(reloc);
--	obj[1].relocation_count = 1024;
-+	obj[1].relocation_count = !ahnd ? NUMSTORES : 0;
-+
-+	if (ahnd) {
-+		obj[1].offset = get_offset(ahnd, obj[1].handle,
-+				NUMSTORES * 16 + 4096, 0);
-+		obj[1].flags |= EXEC_OBJECT_PINNED;
-+	}
+ 	batch[i++] = XY_SRC_COPY_BLT_CMD |
+ 		  XY_SRC_COPY_BLT_WRITE_ALPHA |
+@@ -114,14 +120,14 @@ static int copy(int fd, uint32_t dst, uint32_t src)
+ 		  WIDTH*4;
+ 	batch[i++] = 0; /* dst x1,y1 */
+ 	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
+-	batch[i++] = 0; /* dst reloc */
++	batch[i++] = dst_offset; /* dst reloc */
+ 	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i++] = 0;
++		batch[i++] = dst_offset >> 32;
+ 	batch[i++] = 0; /* src x1,y1 */
+ 	batch[i++] = WIDTH*4;
+-	batch[i++] = 0; /* src reloc */
++	batch[i++] = src_offset; /* src reloc */
+ 	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i++] = 0;
++		batch[i++] = src_offset >> 32;
+ 	batch[i++] = MI_BATCH_BUFFER_END;
+ 	batch[i++] = MI_NOOP;
  
--	batch = gem_mmap__cpu(fd, obj[1].handle, 0, 16*1024 + 4096,
-+	batch = gem_mmap__cpu(fd, obj[1].handle, 0, NUMSTORES * 16 + 4096,
- 			      PROT_WRITE | PROT_READ);
- 	gem_set_domain(fd, obj[1].handle,
- 		       I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
+@@ -148,19 +154,28 @@ static int copy(int fd, uint32_t dst, uint32_t src)
+ 	memset(obj, 0, sizeof(obj));
  
- 	b = batch;
--	for (i = 0; i < 1024; i++) {
-+	for (i = 0; i < NUMSTORES; i++) {
- 		uint64_t offset;
+ 	obj[exec.buffer_count].handle = dst;
++	obj[exec.buffer_count].offset = dst_offset;
+ 	obj[exec.buffer_count].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++	if (!has_relocs)
++		obj[exec.buffer_count].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
+ 	exec.buffer_count++;
  
- 		reloc[i].presumed_offset = obj[0].offset;
-@@ -162,10 +174,11 @@ static void setup_execbuf(int fd, const intel_ctx_t *ctx,
- 		*b++ = i;
+ 	if (src != dst) {
+ 		obj[exec.buffer_count].handle = src;
++		obj[exec.buffer_count].offset = src_offset;
+ 		obj[exec.buffer_count].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++		if (!has_relocs)
++			obj[exec.buffer_count].flags |= EXEC_OBJECT_PINNED;
+ 		exec.buffer_count++;
  	}
- 	*b++ = MI_BATCH_BUFFER_END;
--	munmap(batch, 16*1024+4096);
-+	munmap(batch, NUMSTORES * 16 + 4096);
  
- 	execbuf->buffer_count = 2;
- 	gem_execbuf(fd, execbuf);
+ 	obj[exec.buffer_count].handle = handle;
+-	obj[exec.buffer_count].relocation_count = 2;
++	obj[exec.buffer_count].offset = bb_offset;
++	obj[exec.buffer_count].relocation_count = has_relocs ? 2 : 0;
+ 	obj[exec.buffer_count].relocs_ptr = to_user_pointer(reloc);
+ 	obj[exec.buffer_count].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++	if (!has_relocs)
++		obj[exec.buffer_count].flags |= EXEC_OBJECT_PINNED;
+ 	exec.buffer_count++;
+ 	exec.buffers_ptr = to_user_pointer(obj);
+ 	exec.flags = HAS_BLT_RING(intel_get_drm_devid(fd)) ? I915_EXEC_BLT : 0;
+@@ -588,6 +603,7 @@ static void test_nohangcheck_hostile(int i915)
+ 	int fence = -1;
+ 	int err = 0;
+ 	int dir;
++	uint64_t ahnd;
+ 
+ 	/*
+ 	 * Even if the user disables hangcheck, we must still recover.
+@@ -602,6 +618,7 @@ static void test_nohangcheck_hostile(int i915)
+ 	ctx = intel_ctx_create_all_physical(i915);
+ 	hang = igt_allow_hang(i915, ctx->id, 0);
+ 	igt_require(__enable_hangcheck(dir, false));
++	ahnd = get_reloc_ahnd(i915, ctx->id);
+ 
+ 	for_each_ctx_engine(i915, ctx, e) {
+ 		igt_spin_t *spin;
+@@ -611,7 +628,7 @@ static void test_nohangcheck_hostile(int i915)
+ 		gem_engine_property_printf(i915, e->name,
+ 					   "preempt_timeout_ms", "%d", 50);
+ 
+-		spin = __igt_spin_new(i915, .ctx = ctx,
++		spin = __igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
+ 				      .engine = e->flags,
+ 				      .flags = (IGT_SPIN_NO_PREEMPTION |
+ 						IGT_SPIN_USERPTR |
+@@ -634,6 +651,7 @@ static void test_nohangcheck_hostile(int i915)
+ 		}
+ 	}
+ 	intel_ctx_destroy(i915, ctx);
 +	put_ahnd(ahnd);
+ 	igt_assert(fence != -1);
  
- 	check_bo(fd, obj[0].handle);
- }
-@@ -177,6 +190,7 @@ static void run_test(int fd, const intel_ctx_t *ctx, unsigned ring,
- 	struct drm_i915_gem_relocation_entry reloc[1024];
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	igt_hang_t hang;
-+	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
+ 	if (sync_fence_wait(fence, MSEC_PER_SEC)) { /* 640ms preempt-timeout */
+@@ -690,13 +708,15 @@ static void test_vma_merge(int i915)
+ 	igt_spin_t *spin;
+ 	uint32_t handle;
+ 	void *addr;
++	uint64_t ahnd = get_reloc_ahnd(i915, 0);
  
- 	if (flags & (SUSPEND | HIBERNATE)) {
- 		run_test(fd, ctx, ring, 0, 0);
-@@ -187,7 +201,7 @@ static void run_test(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 	addr = mmap(NULL, sz, PROT_READ | PROT_WRITE,
+ 		    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
  
- 	memset(&hang, 0, sizeof(hang));
- 	if (flags & HANG)
--		hang = igt_hang_ctx(fd, ctx->id, ring & ~(3<<13), 0);
-+		hang = igt_hang_ring_with_ahnd(fd, ring & ~(3<<13), ahnd);
+ 	gem_userptr(i915, addr + sz / 2, 4096, 0, userptr_flags, &handle);
  
- 	if (flags & (CHILD | FORKED | BOMB)) {
- 		int nchild;
-@@ -240,6 +254,7 @@ static void run_test(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		gem_quiescent_gpu(fd);
- 		run_test(fd, ctx, ring, 0, 0);
- 	}
+-	spin = igt_spin_new(i915, .dependency = handle, .flags = IGT_SPIN_FENCE_OUT);
++	spin = igt_spin_new(i915, .ahnd = ahnd, .dependency = handle,
++			    .flags = IGT_SPIN_FENCE_OUT);
+ 	igt_assert(gem_bo_busy(i915, handle));
+ 
+ 	for (size_t x = 0; x < sz; x += 4096) {
+@@ -716,6 +736,7 @@ static void test_vma_merge(int i915)
+ 	gem_sync(i915, spin->handle);
+ 	igt_assert_eq(sync_fence_status(spin->out_fence), 1);
+ 	igt_spin_free(i915, spin);
 +	put_ahnd(ahnd);
  }
  
- static uint32_t batch_create(int i915)
-@@ -321,11 +336,13 @@ igt_main
- 			for_each_ring(e, fd) {
- 				igt_dynamic_f("%s", e->name) {
- 					igt_require(gem_can_store_dword(fd, eb_ring(e)));
-+					intel_allocator_multiprocess_start();
- 					run_test(fd, intel_ctx_0(fd),
- 						 eb_ring(e),
- 						 m->flags,
- 						 m->timeout);
- 					gem_quiescent_gpu(fd);
-+					intel_allocator_multiprocess_stop();
- 				}
- 			}
- 		}
-@@ -342,11 +359,13 @@ igt_main
- 					continue;
+ static void test_huge_split(int i915)
+@@ -725,6 +746,7 @@ static void test_huge_split(int i915)
+ 	igt_spin_t *spin;
+ 	uint32_t handle;
+ 	void *addr;
++	uint64_t ahnd = get_reloc_ahnd(i915, 0);
  
- 				igt_dynamic_f("%s", e->name) {
-+					intel_allocator_multiprocess_start();
- 					run_test(fd, ctx,
- 						 e->flags,
- 						 m->flags,
- 						 m->timeout);
- 					gem_quiescent_gpu(fd);
-+					intel_allocator_multiprocess_stop();
- 				}
- 			}
- 		}
-@@ -354,6 +373,7 @@ igt_main
+ 	flags = MFD_HUGETLB;
+ #if defined(MFD_HUGE_2MB)
+@@ -749,7 +771,8 @@ static void test_huge_split(int i915)
+ 	madvise(addr, sz, MADV_HUGEPAGE);
  
- 	igt_subtest("basic-all") {
- 		const struct intel_execution_engine2 *e;
-+		intel_allocator_multiprocess_start();
+ 	gem_userptr(i915, addr + sz / 2 - 4096, 8192, 0, userptr_flags, &handle);
+-	spin = igt_spin_new(i915, .dependency = handle, .flags = IGT_SPIN_FENCE_OUT);
++	spin = igt_spin_new(i915, .ahnd = ahnd, .dependency = handle,
++			    .flags = IGT_SPIN_FENCE_OUT);
+ 	igt_assert(gem_bo_busy(i915, handle));
  
- 		for_each_ctx_engine(fd, ctx, e) {
- 			if (!gem_class_can_store_dword(fd, e->class))
-@@ -364,6 +384,7 @@ igt_main
- 		}
+ 	igt_assert(mmap(addr, 4096, PROT_READ,
+@@ -767,6 +790,7 @@ static void test_huge_split(int i915)
+ 	gem_sync(i915, spin->handle);
+ 	igt_assert_eq(sync_fence_status(spin->out_fence), 1);
+ 	igt_spin_free(i915, spin);
++	put_ahnd(ahnd);
+ }
  
- 		igt_waitchildren();
-+		intel_allocator_multiprocess_stop();
+ static int test_access_control(int fd)
+@@ -2353,8 +2377,10 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
+ 		igt_subtest("userfault")
+ 			test_userfault(fd);
+ 
+-		igt_subtest("relocations")
++		igt_subtest("relocations") {
++			igt_require(gem_has_relocations(fd));
+ 			test_relocations(fd);
++		}
  	}
  
- 	igt_fixture {
+ 	igt_subtest_group {
 -- 
 2.26.0
