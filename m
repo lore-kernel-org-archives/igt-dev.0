@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 35927899AB
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:08:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 97105899B5
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:08:44 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon,  9 Aug 2021 15:04:40 +0200
-Message-Id: <20210809130533.27759-13-zbigniew.kempczynski@intel.com>
+Date: Mon,  9 Aug 2021 15:04:38 +0200
+Message-Id: <20210809130533.27759-11-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 12/65] tests/gem_ctx_exec: Adopt to use
+Subject: [igt-dev] [PATCH i-g-t v5 10/65] tests/gem_create: Adopt to use
  allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -33,168 +33,49 @@ Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_ctx_exec.c | 46 +++++++++++++++++++++++++++++++++------
- 1 file changed, 39 insertions(+), 7 deletions(-)
+ tests/i915/gem_create.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
-index 4d3d1c12f..a1270a889 100644
---- a/tests/i915/gem_ctx_exec.c
-+++ b/tests/i915/gem_ctx_exec.c
-@@ -178,6 +178,7 @@ static void norecovery(int i915)
- 		};
- 		int expect = pass == 0 ? -EIO : 0;
- 		igt_spin_t *spin;
-+		uint64_t ahnd = get_reloc_ahnd(i915, param.ctx_id);
- 
- 		gem_context_set_param(i915, &param);
- 
-@@ -185,7 +186,9 @@ static void norecovery(int i915)
- 		gem_context_get_param(i915, &param);
- 		igt_assert_eq(param.value, pass);
- 
--		spin = __igt_spin_new(i915, .ctx = ctx,
-+		spin = __igt_spin_new(i915,
-+				      .ahnd = ahnd,
-+				      .ctx = ctx,
- 				      .flags = IGT_SPIN_POLL_RUN);
- 		igt_spin_busywait_until_started(spin);
- 
-@@ -196,6 +199,7 @@ static void norecovery(int i915)
- 		igt_spin_free(i915, spin);
- 
- 		intel_ctx_destroy(i915, ctx);
-+		put_ahnd(ahnd);
- 	}
- 
- 	 igt_disallow_hang(i915, hang);
-@@ -271,6 +275,7 @@ static void nohangcheck_hostile(int i915)
+diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
+index 1acf8ee6a..45804cde0 100644
+--- a/tests/i915/gem_create.c
++++ b/tests/i915/gem_create.c
+@@ -249,12 +249,16 @@ static void busy_create(int i915, int timeout)
  	const intel_ctx_t *ctx;
- 	int err = 0;
- 	int dir;
+ 	igt_spin_t *spin[I915_EXEC_RING_MASK + 1];
+ 	unsigned long count = 0;
 +	uint64_t ahnd;
- 
- 	/*
- 	 * Even if the user disables hangcheck during their context,
-@@ -284,6 +289,7 @@ static void nohangcheck_hostile(int i915)
  
  	ctx = intel_ctx_create_all_physical(i915);
- 	hang = igt_allow_hang(i915, ctx->id, 0);
 +	ahnd = get_reloc_ahnd(i915, ctx->id);
  
- 	igt_require(__enable_hangcheck(dir, false));
+ 	igt_fork_hang_detector(i915);
+ 	for_each_ctx_engine(i915, ctx, e)
+-		spin[e->flags] = igt_spin_new(i915, .ctx = ctx,
++		spin[e->flags] = igt_spin_new(i915,
++					      .ahnd = ahnd,
++					      .ctx = ctx,
+ 					      .engine = e->flags);
  
-@@ -295,7 +301,9 @@ static void nohangcheck_hostile(int i915)
- 		gem_engine_property_printf(i915, e->name,
- 					   "preempt_timeout_ms", "%d", 50);
+ 	igt_until_timeout(timeout) {
+@@ -263,7 +267,9 @@ static void busy_create(int i915, int timeout)
+ 			igt_spin_t *next;
  
--		spin = __igt_spin_new(i915, .ctx = ctx,
-+		spin = __igt_spin_new(i915,
-+				      .ahnd = ahnd,
-+				      .ctx = ctx,
- 				      .engine = e->flags,
- 				      .flags = (IGT_SPIN_NO_PREEMPTION |
- 						IGT_SPIN_FENCE_OUT));
-@@ -333,6 +341,7 @@ static void nohangcheck_hostile(int i915)
+ 			handle = gem_create(i915, 4096);
+-			next = igt_spin_new(i915, .ctx = ctx,
++			next = igt_spin_new(i915,
++					    .ahnd = ahnd,
++					    .ctx = ctx,
+ 					    .engine = e->flags,
+ 					    .dependency = handle,
+ 					    .flags = IGT_SPIN_SOFTDEP);
+@@ -277,6 +283,7 @@ static void busy_create(int i915, int timeout)
+ 	}
  
- 	igt_assert_eq(sync_fence_status(fence), -EIO);
- 	close(fence);
+ 	intel_ctx_destroy(i915, ctx);
 +	put_ahnd(ahnd);
  
- 	close(dir);
- 	close(i915);
-@@ -345,10 +354,14 @@ static void close_race(int i915)
- 	const intel_ctx_t **ctx;
- 	uint32_t *ctx_id;
- 	igt_spin_t *spin;
-+	uint64_t ahnd;
+ 	igt_info("Created %ld objects while busy\n", count);
  
- 	/* Check we can execute a polling spinner */
- 	base_ctx = intel_ctx_create(i915, NULL);
--	igt_spin_free(i915, igt_spin_new(i915, .ctx = base_ctx,
-+	ahnd = get_reloc_ahnd(i915, base_ctx->id);
-+	igt_spin_free(i915, igt_spin_new(i915,
-+					 .ahnd = ahnd,
-+					 .ctx = base_ctx,
- 					 .flags = IGT_SPIN_POLL_RUN));
- 
- 	ctx = calloc(ncpus, sizeof(*ctx));
-@@ -361,7 +374,10 @@ static void close_race(int i915)
- 	}
- 
- 	igt_fork(child, ncpus) {
--		spin = __igt_spin_new(i915, .ctx = base_ctx,
-+		ahnd = get_reloc_ahnd(i915, base_ctx->id);
-+		spin = __igt_spin_new(i915,
-+				      .ahnd = ahnd,
-+				      .ctx = base_ctx,
- 				      .flags = IGT_SPIN_POLL_RUN);
- 		igt_spin_end(spin);
- 		gem_sync(i915, spin->handle);
-@@ -403,6 +419,7 @@ static void close_race(int i915)
- 		}
- 
- 		igt_spin_free(i915, spin);
-+		put_ahnd(ahnd);
- 	}
- 
- 	igt_until_timeout(5) {
-@@ -425,6 +442,7 @@ static void close_race(int i915)
- 	intel_ctx_destroy(i915, base_ctx);
- 	for (int child = 0; child < ncpus; child++)
- 		intel_ctx_destroy(i915, ctx[child]);
-+	put_ahnd(ahnd);
- 
- 	free(ctx);
- 	munmap(ctx_id, 4096);
-@@ -474,11 +492,22 @@ igt_main
- 	igt_subtest("basic-nohangcheck")
- 		nohangcheck_hostile(fd);
- 
--	igt_subtest("basic-close-race")
--		close_race(fd);
-+	igt_subtest_group {
-+		igt_fixture {
-+			intel_allocator_multiprocess_start();
-+		}
-+
-+		igt_subtest("basic-close-race")
-+			close_race(fd);
-+
-+		igt_fixture {
-+			intel_allocator_multiprocess_stop();
-+		}
-+	}
- 
- 	igt_subtest("reset-pin-leak") {
- 		int i;
-+		uint64_t ahnd;
- 
- 		/*
- 		 * Use an explicit context to isolate the test from
-@@ -486,6 +515,7 @@ igt_main
- 		 * default context (eg. if they would be eliminated).
- 		 */
- 		ctx_id = gem_context_create(fd);
-+		ahnd = get_reloc_ahnd(fd, ctx_id);
- 
- 		/*
- 		 * Iterate enough times that the kernel will
-@@ -493,7 +523,8 @@ igt_main
- 		 * the last context is leaked at every reset.
- 		 */
- 		for (i = 0; i < 20; i++) {
--			igt_hang_t hang = igt_hang_ring(fd, 0);
-+
-+			igt_hang_t hang = igt_hang_ring_with_ahnd(fd, 0, ahnd);
- 
- 			igt_assert_eq(exec(fd, handle, 0, 0), 0);
- 			igt_assert_eq(exec(fd, handle, 0, ctx_id), 0);
-@@ -501,5 +532,6 @@ igt_main
- 		}
- 
- 		gem_context_destroy(fd, ctx_id);
-+		put_ahnd(ahnd);
- 	}
- }
 -- 
 2.26.0
