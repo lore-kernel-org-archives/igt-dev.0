@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB02A89BFC
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:09:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E38A89A83
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:09:15 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon,  9 Aug 2021 15:05:13 +0200
-Message-Id: <20210809130533.27759-46-zbigniew.kempczynski@intel.com>
+Date: Mon,  9 Aug 2021 15:05:15 +0200
+Message-Id: <20210809130533.27759-48-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 45/65] tests/i915_pm_rc6_residency: Adopt
- to use allocator
+Subject: [igt-dev] [PATCH i-g-t v5 47/65] tests/kms_cursor_legacy: Adopt to
+ use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,59 +22,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>, Petri Latvala <petri.latvala@intel.com>, Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 For newer gens we're not able to rely on relocations. Adopt to use
 offsets acquired from the allocator.
 
+v2: Don't query i915 for relocations on AMD devices (Rodrigo)
+
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/i915_pm_rc6_residency.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tests/kms_cursor_legacy.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/i915/i915_pm_rc6_residency.c b/tests/i915/i915_pm_rc6_residency.c
-index d1cce474e..96a951406 100644
---- a/tests/i915/i915_pm_rc6_residency.c
-+++ b/tests/i915/i915_pm_rc6_residency.c
-@@ -458,7 +458,7 @@ static void rc6_fence(int i915)
- 	const intel_ctx_t *ctx;
- 	struct power_sample sample[2];
- 	unsigned long slept;
--	uint64_t rc6, ts[2];
-+	uint64_t rc6, ts[2], ahnd;
- 	struct rapl rapl;
- 	int fd;
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index 75a822c4e..0f0df951b 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -517,6 +517,7 @@ static void basic_flip_cursor(igt_display_t *display,
+ 	struct igt_fb fb_info, cursor_fb, cursor_fb2, argb_fb;
+ 	unsigned vblank_start;
+ 	enum pipe pipe = find_connected_pipe(display, false);
++	uint64_t ahnd = (flags & BASIC_BUSY) ? get_reloc_ahnd(display->drm_fd, 0) : 0;
+ 	igt_spin_t *spin;
+ 	int i, miss1 = 0, miss2 = 0, delta;
  
-@@ -486,6 +486,7 @@ static void rc6_fence(int i915)
+@@ -548,6 +549,7 @@ static void basic_flip_cursor(igt_display_t *display,
+ 		spin = NULL;
+ 		if (flags & BASIC_BUSY)
+ 			spin = igt_spin_new(display->drm_fd,
++					    .ahnd = ahnd,
+ 					    .dependency = fb_info.gem_handle);
  
- 	/* Submit but delay execution, we should be idle and conserving power */
- 	ctx = intel_ctx_create_all_physical(i915);
-+	ahnd = get_reloc_ahnd(i915, ctx->id);
- 	for_each_ctx_engine(i915, ctx, e) {
- 		igt_spin_t *spin;
- 		int timeline;
-@@ -493,7 +494,9 @@ static void rc6_fence(int i915)
- 
- 		timeline = sw_sync_timeline_create();
- 		fence = sw_sync_timeline_create_fence(timeline, 1);
--		spin = igt_spin_new(i915, .ctx = ctx,
-+		spin = igt_spin_new(i915,
-+				    .ahnd = ahnd,
-+				    .ctx = ctx,
- 				    .engine = e->flags,
- 				    .fence = fence,
- 				    .flags = IGT_SPIN_FENCE_IN);
-@@ -522,6 +525,7 @@ static void rc6_fence(int i915)
- 		gem_quiescent_gpu(i915);
- 	}
- 	intel_ctx_destroy(i915, ctx);
+ 		/* Start with a synchronous query to align with the vblank */
+@@ -631,6 +633,7 @@ static void basic_flip_cursor(igt_display_t *display,
+ 		igt_remove_fb(display->drm_fd, &argb_fb);
+ 	if (cursor_fb2.gem_handle)
+ 		igt_remove_fb(display->drm_fd, &cursor_fb2);
 +	put_ahnd(ahnd);
+ }
  
- 	rapl_close(&rapl);
- 	close(fd);
+ static int
+@@ -1319,6 +1322,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ 	igt_pipe_t *pipe_connected = &display->pipes[pipe];
+ 	igt_plane_t *plane_primary = igt_pipe_get_plane_type(pipe_connected, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_crc_t crcs[2], test_crc;
++	uint64_t ahnd = get_reloc_ahnd(display->drm_fd, 0);
+ 
+ 	if (atomic)
+ 		igt_require(display->is_atomic);
+@@ -1366,6 +1370,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ 		igt_spin_t *spin;
+ 
+ 		spin = igt_spin_new(display->drm_fd,
++				    .ahnd = ahnd,
+ 				    .dependency = fb_info[1].gem_handle);
+ 
+ 		vblank_start = kmstest_get_vblank(display->drm_fd, pipe, DRM_VBLANK_NEXTONMISS);
+@@ -1394,6 +1399,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ 	igt_remove_fb(display->drm_fd, &fb_info[1]);
+ 	igt_remove_fb(display->drm_fd, &fb_info[0]);
+ 	igt_remove_fb(display->drm_fd, &cursor_fb);
++	put_ahnd(ahnd);
+ }
+ 
+ igt_main
 -- 
 2.26.0
