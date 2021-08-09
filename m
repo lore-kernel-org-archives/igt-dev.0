@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1208189ACD
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:08:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5443C89A83
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:08:49 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon,  9 Aug 2021 15:04:49 +0200
-Message-Id: <20210809130533.27759-22-zbigniew.kempczynski@intel.com>
+Date: Mon,  9 Aug 2021 15:04:47 +0200
+Message-Id: <20210809130533.27759-20-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 21/65] tests/gem_exec_lut_handle: Require
- relocation support
+Subject: [igt-dev] [PATCH i-g-t v5 19/65] tests/gem_exec_fair: Add softpin
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,32 +22,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Andrzej Turko <andrzej.turko@linux.intel.com>, =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Andrzej Turko <andrzej.turko@linux.intel.com>
+Use softpin on gens where relocations are not allowed.
 
-This test exercises LUT which is a part of the relocation
-interface. Running this test makes no sense on platforms
-without relocation support -- thus the new requirement.
-
-Signed-off-by: Andrzej Turko <andrzej.turko@linux.intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_exec_lut_handle.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/i915/gem_exec_fair.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/i915/gem_exec_lut_handle.c b/tests/i915/gem_exec_lut_handle.c
-index 3c5c81f1a..064308666 100644
---- a/tests/i915/gem_exec_lut_handle.c
-+++ b/tests/i915/gem_exec_lut_handle.c
-@@ -99,6 +99,7 @@ igt_simple_main
+diff --git a/tests/i915/gem_exec_fair.c b/tests/i915/gem_exec_fair.c
+index 4b5531cc2..ef5a450f6 100644
+--- a/tests/i915/gem_exec_fair.c
++++ b/tests/i915/gem_exec_fair.c
+@@ -379,6 +379,7 @@ read_ctx_timestamp(int i915, const intel_ctx_t *ctx,
+ 	const uint32_t runtime = base + (use_64b ? 0x3a8 : 0x358);
+ 	uint32_t *map, *cs;
+ 	uint32_t ts;
++	bool has_relocs = gem_has_relocations(i915);
  
- 	fd = drm_open_driver(DRIVER_INTEL);
- 	igt_require_gem(fd);
-+	igt_require(gem_has_relocations(fd));
+ 	cs = map = gem_mmap__device_coherent(i915, obj.handle,
+ 					     0, 4096, PROT_WRITE);
+@@ -396,6 +397,11 @@ read_ctx_timestamp(int i915, const intel_ctx_t *ctx,
  
- 	memset(gem_exec, 0, sizeof(gem_exec));
- 	for (n = 0; n < MAX_NUM_EXEC; n++)
+ 	*cs++ = MI_BATCH_BUFFER_END;
+ 
++	if (!has_relocs) {
++		obj.relocation_count = 0;
++		obj.flags |= EXEC_OBJECT_PINNED;
++	}
++
+ 	gem_execbuf(i915, &execbuf);
+ 	gem_sync(i915, obj.handle);
+ 	ts = map[1000];
 -- 
 2.26.0
