@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9468C899A5
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:09:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD8D7899A5
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:08:58 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon,  9 Aug 2021 15:05:01 +0200
-Message-Id: <20210809130533.27759-34-zbigniew.kempczynski@intel.com>
+Date: Mon,  9 Aug 2021 15:04:57 +0200
+Message-Id: <20210809130533.27759-30-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 33/65] tests/gem_request_retire: Add
- allocator support
+Subject: [igt-dev] [PATCH i-g-t v5 29/65] tests/gem_mmap: Add allocator
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -37,58 +37,31 @@ Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/i915/gem_request_retire.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ tests/i915/gem_mmap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_request_retire.c b/tests/i915/gem_request_retire.c
-index 3df54f2a5..da9d405ed 100644
---- a/tests/i915/gem_request_retire.c
-+++ b/tests/i915/gem_request_retire.c
-@@ -63,21 +63,29 @@ test_retire_vma_not_inactive(int fd)
+diff --git a/tests/i915/gem_mmap.c b/tests/i915/gem_mmap.c
+index a77c0ad60..61c9c5c19 100644
+--- a/tests/i915/gem_mmap.c
++++ b/tests/i915/gem_mmap.c
+@@ -123,8 +123,9 @@ test_pf_nonblock(int i915)
  {
- 	struct intel_execution_engine2 *e;
- 	const intel_ctx_t *ctx;
-+	uint64_t ahnd, ahndN;
- 	igt_spin_t *bg = NULL;
+ 	igt_spin_t *spin;
+ 	uint32_t *ptr;
++	uint64_t ahnd = get_reloc_ahnd(i915, 0);
  
- 	ctx = intel_ctx_create_all_physical(fd);
-+	ahnd = get_reloc_ahnd(fd, ctx->id);
+-	spin = igt_spin_new(i915);
++	spin = igt_spin_new(i915, .ahnd = ahnd);
  
- 	for_each_ctx_engine(fd, ctx, e) {
- 		igt_spin_t *spin;
- 		const intel_ctx_t *spin_ctx;
+ 	igt_set_timeout(1, "initial pagefaulting did not complete within 1s");
  
- 		if (!bg) {
--			bg = igt_spin_new(fd, .ctx = ctx, .engine = e->flags);
-+			bg = igt_spin_new(fd,
-+					  .ahnd = ahnd,
-+					  .ctx = ctx,
-+					  .engine = e->flags);
- 			continue;
- 		}
+@@ -135,6 +136,7 @@ test_pf_nonblock(int i915)
+ 	igt_reset_timeout();
  
- 		spin_ctx = intel_ctx_create(fd, &ctx->cfg);
--		spin = igt_spin_new(fd, .ctx = spin_ctx,
-+		ahndN = get_reloc_ahnd(fd, spin_ctx->id);
-+		spin = igt_spin_new(fd,
-+				    .ahnd = ahndN,
-+				    .ctx = spin_ctx,
- 				    .engine = e->flags,
- 				    .dependency = bg->handle,
- 				    .flags = IGT_SPIN_SOFTDEP);
-@@ -86,11 +94,13 @@ test_retire_vma_not_inactive(int fd)
- 
- 		gem_sync(fd, spin->handle);
- 		igt_spin_free(fd, spin);
-+		put_ahnd(ahndN);
- 	}
- 
- 	igt_drop_caches_set(fd, DROP_RETIRE);
- 	igt_spin_free(fd, bg);
- 	intel_ctx_destroy(fd, ctx);
+ 	igt_spin_free(i915, spin);
 +	put_ahnd(ahnd);
  }
  
- int fd;
+ static int mmap_ioctl(int i915, struct drm_i915_gem_mmap *arg)
 -- 
 2.26.0
