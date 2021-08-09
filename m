@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BEE34896C4
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 07:30:42 +0000 (UTC)
-Date: Mon, 9 Aug 2021 09:30:33 +0200
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A4355898F5
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 08:26:11 +0000 (UTC)
+Date: Mon, 9 Aug 2021 10:26:04 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210809073033.GC5318@zkempczy-mobl2>
+Message-ID: <20210809082604.GD5318@zkempczy-mobl2>
 References: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
- <20210806134145.24634-38-zbigniew.kempczynski@intel.com>
- <87fsvmum2i.wl-ashutosh.dixit@intel.com>
+ <20210806134145.24634-53-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87fsvmum2i.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 37/56] tests/gem_tiled_fence_blits:
- Adopt to use allocator
+In-Reply-To: <20210806134145.24634-53-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 52/56] tests/kms_vblank: Adopt to use
+ allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,54 +23,78 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Aug 06, 2021 at 05:37:25PM -0700, Dixit, Ashutosh wrote:
-> On Fri, 06 Aug 2021 06:41:26 -0700, Zbigniew Kempczyński wrote:
-> >
-> > For newer gens we're not able to rely on relocations. Adopt to use
-> > offsets acquired from the allocator.
+On Fri, Aug 06, 2021 at 03:41:41PM +0200, Zbigniew Kempczyński wrote:
+> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > 
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> For newer gens kernel will reject relocations returning -EINVAL
+> so we should just provide the allocator handle to inject the hang.
 > 
-> Just a question below.
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> ---
+>  tests/kms_vblank.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
 > 
-> > @@ -198,7 +209,23 @@ static void run_test(int fd, int count)
-> >			reloc[0].target_handle = obj[0].handle = bo[dst];
-> >			reloc[1].target_handle = obj[1].handle = bo[src];
-> >
-> > +			if (ahnd) {
-> > +				obj[0].offset = get_offset(ahnd, obj[0].handle,
-> > +						sizeof(linear), 0);
-> > +				obj[1].offset = get_offset(ahnd, obj[1].handle,
-> > +						sizeof(linear), 0);
-> > +				obj[2].offset = get_offset(ahnd, obj[2].handle,
-> > +						4096, 0);
-> > +				update_batch(fd, obj[2].handle, reloc,
-> > +					     obj[0].offset, obj[1].offset);
-> > +			}
-> > +
-> >			gem_execbuf(fd, &eb);
-> > +			if (ahnd) {
-> > +				gem_close(fd, obj[2].handle);
-> > +				obj[2].handle = gem_create(fd, 4096);
-> 
-> Is it necessary to update these offsets above, rather than just fix the
-> offsets at the beginning of the function? Also to recreate obj[2]? What we
-> have above is fine but just wondering the reason for it. Thanks.
+> diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+> index 885b2e2c4..7b7e1372e 100644
+> --- a/tests/kms_vblank.c
+> +++ b/tests/kms_vblank.c
+> @@ -118,6 +118,7 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
+>  	igt_output_t *output = data->output;
+>  	int fd = display->drm_fd;
+>  	igt_hang_t hang;
+> +	uint64_t ahnd = 0;
+>  
+>  	prepare_crtc(data, fd, output);
+>  
+> @@ -128,8 +129,11 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
+>  		 igt_subtest_name(), kmstest_pipe_name(data->pipe),
+>  		 igt_output_name(output));
+>  
+> -	if (!(data->flags & NOHANG))
+> -		hang = igt_hang_ring(fd, I915_EXEC_DEFAULT);
+> +	if (!(data->flags & NOHANG)) {
+> +		if (is_i915_device(fd))
+> +			ahnd = get_reloc_ahnd(fd, 0);
+> +		hang = igt_hang_ring_with_ahnd(fd, I915_EXEC_DEFAULT, ahnd);
+> +	}
 
-Original - reloc version uses single batch which is patched by kernel 
-when it completes. i915 knows when it can be altered with new relocation
-data then executed. For softpin we're not able to do so on same active bb.
-We should wait until bb will be not busy and then we could patch it. 
-Doing this in userspace can be done using out-fence, poll() then patch
-bb and execbuf(). But this strategy is prone to stalls because time 
-we spend in userspace is idle from gpu point of view. Another attitude
-is to prepare more execbufs which enqueued on same context will be
-executed sequentially but without gaps between. This is strategy
-above. 
+What for is_i915_device(fd) check is introduced here? igt_hang_ring() is currently
+valid only for i915 so ahnd = get_reloc_ahnd(fd, 0) can be called unconditionally
+here. Am I missed something here?
+
+>  
+>  	if (data->flags & BUSY) {
+>  		union drm_wait_vblank vbl;
+> @@ -166,6 +170,9 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
+>  	igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
+>  		 igt_subtest_name(), kmstest_pipe_name(data->pipe), igt_output_name(output));
+>  
+> +	if (is_i915_device(fd))
+> +		put_ahnd(ahnd);
+> +
+
+For non-i915 machines ahnd will be equal to 0, so put_ahnd() will just return
+and no i915 dependand code will be called. I would rather expect: 
+
+if (!(data->flags & NOHANG))
+	put_ahnd(ahnd);
+
+But as I said put_ahnd() with ahnd == 0 does nothing.
 
 --
 Zbigniew 
+
+
+>  	/* cleanup what prepare_crtc() has done */
+>  	cleanup_crtc(data, fd, output);
+>  }
+> -- 
+> 2.26.0
+> 
