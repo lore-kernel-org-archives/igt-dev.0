@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D2D589885
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:08:54 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D7541899E7
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:08:52 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon,  9 Aug 2021 15:05:26 +0200
-Message-Id: <20210809130533.27759-59-zbigniew.kempczynski@intel.com>
+Date: Mon,  9 Aug 2021 15:04:52 +0200
+Message-Id: <20210809130533.27759-25-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 58/65] tests/sysfs_timeslice_duration:
- Adopt to use allocator
+Subject: [igt-dev] [PATCH i-g-t v5 24/65] tests/gem_exec_parallel: Adopt to
+ use alloctor
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,96 +31,135 @@ offsets acquired from the allocator.
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/sysfs_timeslice_duration.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ tests/i915/gem_exec_parallel.c | 33 +++++++++++++++++++++++++++------
+ 1 file changed, 27 insertions(+), 6 deletions(-)
 
-diff --git a/tests/i915/sysfs_timeslice_duration.c b/tests/i915/sysfs_timeslice_duration.c
-index b73ee3889..8a2f1c2f2 100644
---- a/tests/i915/sysfs_timeslice_duration.c
-+++ b/tests/i915/sysfs_timeslice_duration.c
-@@ -37,6 +37,7 @@
- #include "i915/gem_mman.h"
- #include "igt_dummyload.h"
- #include "igt_sysfs.h"
-+#include "intel_allocator.h"
- #include "ioctl_wrappers.h"
- #include "intel_chipset.h"
- #include "intel_reg.h"
-@@ -371,6 +372,7 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
- 	igt_spin_t *spin[2];
- 	uint64_t elapsed;
- 	const intel_ctx_t *ctx[2];
-+	uint64_t ahnd[2];
+diff --git a/tests/i915/gem_exec_parallel.c b/tests/i915/gem_exec_parallel.c
+index 5920ac730..36bf5f742 100644
+--- a/tests/i915/gem_exec_parallel.c
++++ b/tests/i915/gem_exec_parallel.c
+@@ -49,6 +49,7 @@ static inline uint32_t hash32(uint32_t val)
+ #define USERPTR 0x4
  
- 	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
- 	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
-@@ -378,15 +380,18 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
- 	set_timeslice(engine, timeout);
+ #define NUMOBJ 16
++#define NUMTHREADS 1024
  
- 	ctx[0] = create_ctx(i915, class, inst, 0);
--	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
-+	ahnd[0] = get_reloc_ahnd(i915, ctx[0]->id);
-+	spin[0] = igt_spin_new(i915, .ahnd = ahnd[0], .ctx = ctx[0],
- 			       .flags = (IGT_SPIN_NO_PREEMPTION |
- 					 IGT_SPIN_POLL_RUN |
- 					 IGT_SPIN_FENCE_OUT));
- 	igt_spin_busywait_until_started(spin[0]);
+ struct thread {
+ 	pthread_t thread;
+@@ -56,11 +57,13 @@ struct thread {
+ 	pthread_cond_t *cond;
+ 	unsigned flags;
+ 	uint32_t *scratch;
++	uint64_t *offsets;
+ 	unsigned id;
+ 	const intel_ctx_t *ctx;
+ 	unsigned engine;
+ 	uint32_t used;
+ 	int fd, gen, *go;
++	uint64_t ahnd;
+ };
  
- 	ctx[1] = create_ctx(i915, class, inst, 0);
-+	ahnd[1] = get_reloc_ahnd(i915, ctx[1]->id);
- 	igt_nsec_elapsed(&ts);
--	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
-+	spin[1] = igt_spin_new(i915, .ahnd = ahnd[1], .ctx = ctx[1],
-+				.flags = IGT_SPIN_POLL_RUN);
- 	igt_spin_busywait_until_started(spin[1]);
- 	elapsed = igt_nsec_elapsed(&ts);
+ static void *thread(void *data)
+@@ -70,6 +73,7 @@ static void *thread(void *data)
+ 	struct drm_i915_gem_relocation_entry reloc;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	const intel_ctx_t *tmp_ctx = NULL;
++	uint64_t offset;
+ 	uint32_t batch[16];
+ 	uint16_t used;
+ 	int fd, i;
+@@ -112,7 +116,7 @@ static void *thread(void *data)
+ 	reloc.delta = 4*t->id;
+ 	obj[1].handle = gem_create(fd, 4096);
+ 	obj[1].relocs_ptr = to_user_pointer(&reloc);
+-	obj[1].relocation_count = 1;
++	obj[1].relocation_count = !t->ahnd ? 1 : 0;
+ 	gem_write(fd, obj[1].handle, 0, batch, sizeof(batch));
  
-@@ -399,6 +404,8 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ 	memset(&execbuf, 0, sizeof(execbuf));
+@@ -140,6 +144,18 @@ static void *thread(void *data)
+ 		if (t->flags & FDS)
+ 			obj[0].handle = gem_open(fd, obj[0].handle);
  
- 	intel_ctx_destroy(i915, ctx[1]);
- 	intel_ctx_destroy(i915, ctx[0]);
-+	put_ahnd(ahnd[1]);
-+	put_ahnd(ahnd[0]);
- 	gem_quiescent_gpu(i915);
++		if (t->ahnd) {
++			offset = t->offsets[x];
++			i = 0;
++			batch[++i] = offset + 4*t->id;
++			batch[++i] = offset >> 32;
++			obj[0].offset = offset;
++			obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
++			obj[1].offset = get_offset(t->ahnd, obj[1].handle, 4096, 0);
++			obj[1].flags |= EXEC_OBJECT_PINNED;
++			gem_write(fd, obj[1].handle, 0, batch, sizeof(batch));
++		}
++
+ 		gem_execbuf(fd, &execbuf);
  
- 	return elapsed;
-@@ -460,6 +467,7 @@ static void test_off(int i915, int engine)
- 	unsigned int saved;
- 	igt_spin_t *spin[2];
- 	const intel_ctx_t *ctx[2];
-+	uint64_t ahnd[2];
+ 		if (t->flags & FDS)
+@@ -158,7 +174,7 @@ static void *thread(void *data)
  
- 	/*
- 	 * As always, there are some who must run uninterrupted and simply do
-@@ -482,14 +490,17 @@ static void test_off(int i915, int engine)
- 	set_timeslice(engine, 0);
+ static void check_bo(int fd, uint32_t *data, uint32_t handle, int pass, struct thread *threads)
+ {
+-	uint32_t x = hash32(handle * pass) % 1024;
++	uint32_t x = hash32(handle * pass) % NUMTHREADS;
+ 	uint32_t result;
  
- 	ctx[0] = create_ctx(i915, class, inst, 0);
--	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
-+	ahnd[0] = get_reloc_ahnd(i915, ctx[0]->id);
-+	spin[0] = igt_spin_new(i915, .ahnd = ahnd[0], .ctx = ctx[0],
- 			       .flags = (IGT_SPIN_NO_PREEMPTION |
- 					 IGT_SPIN_POLL_RUN |
- 					 IGT_SPIN_FENCE_OUT));
- 	igt_spin_busywait_until_started(spin[0]);
+ 	if (!(threads[x].used & (1 << pass)))
+@@ -213,6 +229,7 @@ static void all(int fd, const intel_ctx_t *ctx,
+ 	void *arg[NUMOBJ];
+ 	int go;
+ 	int i;
++	uint64_t ahnd = get_reloc_ahnd(fd, 0), offsets[NUMOBJ];
  
- 	ctx[1] = create_ctx(i915, class, inst, 0);
--	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
-+	ahnd[1] = get_reloc_ahnd(i915, ctx[1]->id);
-+	spin[1] = igt_spin_new(i915, .ahnd = ahnd[1], .ctx = ctx[1],
-+				.flags = IGT_SPIN_POLL_RUN);
+ 	if (flags & CONTEXTS)
+ 		gem_require_contexts(fd);
+@@ -238,9 +255,11 @@ static void all(int fd, const intel_ctx_t *ctx,
+ 		scratch[i] = handle[i] = handle_create(fd, flags, &arg[i]);
+ 		if (flags & FDS)
+ 			scratch[i] = gem_flink(fd, handle[i]);
++		offsets[i] = get_offset(ahnd, scratch[i], 4096, 0);
++
+ 	}
  
- 	for (int i = 0; i < 150; i++) {
- 		igt_assert_eq(sync_fence_status(spin[0]->out_fence), 0);
-@@ -508,6 +519,8 @@ static void test_off(int i915, int engine)
+-	threads = calloc(1024, sizeof(struct thread));
++	threads = calloc(NUMTHREADS, sizeof(struct thread));
+ 	igt_assert(threads);
  
- 	intel_ctx_destroy(i915, ctx[1]);
- 	intel_ctx_destroy(i915, ctx[0]);
-+	put_ahnd(ahnd[1]);
-+	put_ahnd(ahnd[0]);
+ 	intel_detect_and_clear_missed_interrupts(fd);
+@@ -248,7 +267,7 @@ static void all(int fd, const intel_ctx_t *ctx,
+ 	pthread_cond_init(&cond, 0);
+ 	go = 0;
  
- 	igt_assert(enable_hangcheck(i915, true));
- 	gem_quiescent_gpu(i915);
+-	for (i = 0; i < 1024; i++) {
++	for (i = 0; i < NUMTHREADS; i++) {
+ 		threads[i].id = i;
+ 		threads[i].fd = fd;
+ 		threads[i].gen = gen;
+@@ -256,19 +275,21 @@ static void all(int fd, const intel_ctx_t *ctx,
+ 		threads[i].engine = engines[i % nengine];
+ 		threads[i].flags = flags;
+ 		threads[i].scratch = scratch;
++		threads[i].offsets = ahnd ? offsets : NULL;
+ 		threads[i].mutex = &mutex;
+ 		threads[i].cond = &cond;
+ 		threads[i].go = &go;
++		threads[i].ahnd = ahnd;
+ 
+ 		pthread_create(&threads[i].thread, 0, thread, &threads[i]);
+ 	}
+ 
+ 	pthread_mutex_lock(&mutex);
+-	go = 1024;
++	go = NUMTHREADS;
+ 	pthread_cond_broadcast(&cond);
+ 	pthread_mutex_unlock(&mutex);
+ 
+-	for (i = 0; i < 1024; i++)
++	for (i = 0; i < NUMTHREADS; i++)
+ 		pthread_join(threads[i].thread, NULL);
+ 
+ 	for (i = 0; i < NUMOBJ; i++) {
 -- 
 2.26.0
