@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F6EE89BF4
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:09:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1338289C05
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:09:14 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon,  9 Aug 2021 15:05:09 +0200
-Message-Id: <20210809130533.27759-42-zbigniew.kempczynski@intel.com>
+Date: Mon,  9 Aug 2021 15:05:14 +0200
+Message-Id: <20210809130533.27759-47-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 41/65] tests/gem_wait: Adopt to use
+Subject: [igt-dev] [PATCH i-g-t v5 46/65] tests/kms_busy: Adopt to use
  allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -33,34 +33,76 @@ Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_wait.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tests/kms_busy.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tests/i915/gem_wait.c b/tests/i915/gem_wait.c
-index d56707eda..0d1fea996 100644
---- a/tests/i915/gem_wait.c
-+++ b/tests/i915/gem_wait.c
-@@ -78,11 +78,13 @@ static void invalid_buf(int fd)
- static void basic(int fd, const intel_ctx_t *ctx, unsigned engine,
- 		  unsigned flags)
- {
-+	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
- 	IGT_CORK_HANDLE(cork);
- 	uint32_t plug =
- 		flags & (WRITE | AWAIT) ? igt_cork_plug(&cork, fd) : 0;
- 	igt_spin_t *spin =
- 		igt_spin_new(fd,
-+			     .ahnd = ahnd,
- 			     .ctx = ctx,
- 			     .engine = engine,
- 			     .dependency = plug,
-@@ -147,6 +149,7 @@ static void basic(int fd, const intel_ctx_t *ctx, unsigned engine,
- 	if (plug)
- 		gem_close(fd, plug);
- 	igt_spin_free(fd, spin);
+diff --git a/tests/kms_busy.c b/tests/kms_busy.c
+index a60ff6b05..6cbdfa66a 100644
+--- a/tests/kms_busy.c
++++ b/tests/kms_busy.c
+@@ -78,11 +78,13 @@ static void flip_to_fb(igt_display_t *dpy, int pipe,
+ 	struct pollfd pfd = { .fd = dpy->drm_fd, .events = POLLIN };
+ 	struct drm_event_vblank ev;
+ 	IGT_CORK_FENCE(cork);
++	uint64_t ahnd = get_reloc_ahnd(dpy->drm_fd, 0);
+ 	igt_spin_t *t;
+ 	int fence;
+ 
+ 	fence = igt_cork_plug(&cork, dpy->drm_fd);
+ 	t = igt_spin_new(dpy->drm_fd,
++			 .ahnd = ahnd,
+ 			 .fence = fence,
+ 			 .dependency = fb->gem_handle,
+ 			 .flags = IGT_SPIN_FENCE_IN);
+@@ -130,6 +132,7 @@ static void flip_to_fb(igt_display_t *dpy, int pipe,
+ 	}
+ 
+ 	igt_spin_free(dpy->drm_fd, t);
 +	put_ahnd(ahnd);
  }
  
- static void test_all_engines(const char *name, int i915, const intel_ctx_t *ctx,
+ static void test_flip(igt_display_t *dpy, int pipe, bool modeset)
+@@ -183,7 +186,9 @@ static void test_flip(igt_display_t *dpy, int pipe, bool modeset)
+ static void test_atomic_commit_hang(igt_display_t *dpy, igt_plane_t *primary,
+ 				    struct igt_fb *busy_fb)
+ {
++	uint64_t ahnd = get_reloc_ahnd(dpy->drm_fd, 0);
+ 	igt_spin_t *t = igt_spin_new(dpy->drm_fd,
++				     .ahnd = ahnd,
+ 				     .dependency = busy_fb->gem_handle,
+ 				     .flags = IGT_SPIN_NO_PREEMPTION);
+ 	struct pollfd pfd = { .fd = dpy->drm_fd, .events = POLLIN };
+@@ -214,6 +219,7 @@ static void test_atomic_commit_hang(igt_display_t *dpy, igt_plane_t *primary,
+ 	igt_assert(read(dpy->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
+ 
+ 	igt_spin_end(t);
++	put_ahnd(ahnd);
+ }
+ 
+ static void test_hang(igt_display_t *dpy,
+@@ -265,6 +271,7 @@ static void test_pageflip_modeset_hang(igt_display_t *dpy, enum pipe pipe)
+ 	igt_output_t *output;
+ 	igt_plane_t *primary;
+ 	igt_spin_t *t;
++	uint64_t ahnd = get_reloc_ahnd(dpy->drm_fd, 0);
+ 
+ 	output = set_fb_on_crtc(dpy, pipe, &fb);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+@@ -272,6 +279,7 @@ static void test_pageflip_modeset_hang(igt_display_t *dpy, enum pipe pipe)
+ 	igt_display_commit2(dpy, dpy->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 
+ 	t = igt_spin_new(dpy->drm_fd,
++			 .ahnd = ahnd,
+ 			 .dependency = fb.gem_handle,
+ 			 .flags = IGT_SPIN_NO_PREEMPTION);
+ 
+@@ -285,6 +293,7 @@ static void test_pageflip_modeset_hang(igt_display_t *dpy, enum pipe pipe)
+ 	igt_assert(read(dpy->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
+ 
+ 	igt_spin_end(t);
++	put_ahnd(ahnd);
+ 
+ 	igt_remove_fb(dpy->drm_fd, &fb);
+ }
 -- 
 2.26.0
