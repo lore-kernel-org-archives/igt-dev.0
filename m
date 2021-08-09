@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2561C898BC
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 10:46:03 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3694C894C9
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 10:53:13 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Mon,  9 Aug 2021 16:16:27 +0530
-Message-Id: <20210809104627.324681-2-bhanuprakash.modem@intel.com>
+Date: Mon,  9 Aug 2021 16:23:30 +0530
+Message-Id: <20210809105330.325650-2-bhanuprakash.modem@intel.com>
 In-Reply-To: <20210806134145.24634-53-zbigniew.kempczynski@intel.com>
 References: <20210806134145.24634-53-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v6 53/56] tests/kms_vblank: Adopt to use allocator
+Subject: [igt-dev] [i-g-t v8 52/56] tests/kms_vblank: Adopt to use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
