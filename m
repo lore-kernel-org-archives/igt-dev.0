@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 20B9E8940E
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 08:27:40 +0000 (UTC)
-Date: Mon, 9 Aug 2021 10:27:35 +0200
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 56EA38966B
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 08:37:02 +0000 (UTC)
+Date: Mon, 9 Aug 2021 10:36:56 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210809082735.GE5318@zkempczy-mobl2>
+Message-ID: <20210809083656.GF5318@zkempczy-mobl2>
 References: <20210806134145.24634-1-zbigniew.kempczynski@intel.com>
- <20210806134145.24634-52-zbigniew.kempczynski@intel.com>
+ <162848657413.2458.2190320059148939877@emeril.freedesktop.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210806134145.24634-52-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 51/56] tests/kms_flip: Adopt to use
- allocator
+In-Reply-To: <162848657413.2458.2190320059148939877@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQWRkIGFs?=
+ =?utf-8?q?locator_support_in_IGT_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,77 +24,99 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Aug 06, 2021 at 03:41:40PM +0200, Zbigniew Kempczyński wrote:
-> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+On Mon, Aug 09, 2021 at 05:22:54AM +0000, Patchwork wrote:
+>    Patch Details
 > 
-> For newer gens kernel will reject relocations returning -EINVAL
-> so we should just provide the allocator handle to inject the hang.
+>    Series:  Add allocator support in IGT (rev3)                            
+>    URL:     https://patchwork.freedesktop.org/series/93464/                
+>    State:   failure                                                        
+>    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6097/index.html 
 > 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> ---
->  tests/kms_flip.c | 14 ++++++++++----
->  1 file changed, 10 insertions(+), 4 deletions(-)
+>               CI Bug Log - changes from CI_DRM_10459 -> IGTPW_6097
 > 
-> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-> index f2fce8d2a..e87d571a7 100755
-> --- a/tests/kms_flip.c
-> +++ b/tests/kms_flip.c
-> @@ -616,9 +616,9 @@ static void recreate_fb(struct test_output *o)
->  	o->fb_info[o->current_fb_id].fb_id = new_fb_id;
->  }
->  
-> -static igt_hang_t hang_gpu(int fd)
-> +static igt_hang_t hang_gpu(int fd, uint64_t ahnd)
->  {
-> -	return igt_hang_ring(fd, I915_EXEC_DEFAULT);
-> +	return igt_hang_ring_with_ahnd(fd, I915_EXEC_DEFAULT, ahnd);
->  }
->  
->  static void unhang_gpu(int fd, igt_hang_t hang)
-> @@ -675,6 +675,7 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
->  	struct vblank_reply vbl_reply;
->  	unsigned int target_seq;
->  	igt_hang_t hang;
-> +	uint64_t ahnd = 0;
->  
->  	target_seq = o->vblank_state.seq_step;
->  	/* Absolute waits only works once we have a frame counter. */
-> @@ -776,8 +777,11 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
->  	igt_print_activity();
->  
->  	memset(&hang, 0, sizeof(hang));
-> -	if (do_flip && (o->flags & TEST_HANG))
-> -		hang = hang_gpu(drm_fd);
-> +	if (do_flip && (o->flags & TEST_HANG)) {
-> +		if (is_i915_device(drm_fd))
-> +			ahnd = get_reloc_ahnd(drm_fd, 0);
-> +		hang = hang_gpu(drm_fd, ahnd);
-> +	}
+> Summary
+> 
+>    FAILURE
+> 
+>    Serious unknown changes coming with IGTPW_6097 absolutely need to be
+>    verified manually.
+> 
+>    If you think the reported changes have nothing to do with the changes
+>    introduced in IGTPW_6097, please notify your bug team to allow them
+>    to document this new failure mode, which will reduce false positives in
+>    CI.
+> 
+>    External URL:
+>    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6097/index.html
+> 
+> Possible new issues
+> 
+>    Here are the unknown changes that may have been introduced in IGTPW_6097:
+> 
+>   IGT changes
+> 
+>     Possible regressions
+> 
+>      * igt@i915_selftest@live@workarounds:
+>           * fi-rkl-guc: PASS -> INCOMPLETE
 
-Same issue like in kms_vblank.c - why we need is_i915_device() here if hang
-is valid only for i915?
+Series is not related with RKL fail exercised here.
 
 --
-Zbigniew
+Zbigniew 
 
->  
->  	/* try to make sure we can issue two flips during the same frame */
->  	if (do_flip && (o->flags & TEST_EBUSY)) {
-> @@ -847,6 +851,8 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
->  		igt_assert(do_page_flip(o, new_fb_id, false) == expected_einval);
->  
->  	unhang_gpu(drm_fd, hang);
-> +	if (is_i915_device(drm_fd))
-> +		put_ahnd(ahnd);
->  
->  	*events = completed_events;
->  
-> -- 
-> 2.26.0
+
 > 
+> Known issues
+> 
+>    Here are the changes found in IGTPW_6097 that come from known issues:
+> 
+>   IGT changes
+> 
+>     Issues hit
+> 
+>      * igt@amdgpu/amd_basic@semaphore:
+> 
+>           * fi-bsw-nick: NOTRUN -> SKIP (fdo#109271) +17 similar issues
+>      * igt@gem_exec_suspend@basic-s3:
+> 
+>           * fi-tgl-1115g4: PASS -> FAIL (i915#1888)
+> 
+>     Possible fixes
+> 
+>      * igt@i915_selftest@live@execlists:
+> 
+>           * fi-bsw-nick: INCOMPLETE (i915#2940) -> PASS
+>      * igt@i915_selftest@live@hangcheck:
+> 
+>           * {fi-hsw-gt1}: DMESG-WARN (i915#3303) -> PASS
+>      * igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a2:
+> 
+>           * {fi-dg1-1}: FAIL (i915#3717) -> PASS +43 similar issues
+> 
+>    {name}: This element is suppressed. This means it is ignored when
+>    computing
+>    the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+> Participating hosts (37 -> 34)
+> 
+>    Missing (3): fi-bdw-samus fi-bsw-cyan bat-jsl-1
+> 
+> Build changes
+> 
+>      * CI: CI-20190529 -> None
+>      * IGT: IGT_6162 -> IGTPW_6097
+> 
+>    CI-20190529: 20190529
+>    CI_DRM_10459: f06b3f8ccf62862d4ca7dd149bba4e654be8e323 @
+>    git://anongit.freedesktop.org/gfx-ci/linux
+>    IGTPW_6097: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6097/index.html
+>    IGT_6162: 2f32b9e0da5f1ac9529318dd5b836c8cf4d3c441 @
+>    https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+>    == Testlist changes ==
+> 
+>    +igt@gem_softpin@allocator-evict
+>    +igt@gem_softpin@allocator-evict-all-engines
