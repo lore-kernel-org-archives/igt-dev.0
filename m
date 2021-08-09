@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1338289C05
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:09:14 +0000 (UTC)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 61C8C899E7
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Aug 2021 13:08:55 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon,  9 Aug 2021 15:05:14 +0200
-Message-Id: <20210809130533.27759-47-zbigniew.kempczynski@intel.com>
+Date: Mon,  9 Aug 2021 15:05:32 +0200
+Message-Id: <20210809130533.27759-65-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 46/65] tests/kms_busy: Adopt to use
- allocator
+Subject: [igt-dev] [PATCH i-g-t v5 64/65] WIP: tests/gem_exec_flush: Adopt
+ to no-reloc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,87 +22,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For newer gens we're not able to rely on relocations. Adopt to use
-offsets acquired from the allocator.
-
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/kms_busy.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tests/i915/gem_exec_flush.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_busy.c b/tests/kms_busy.c
-index a60ff6b05..6cbdfa66a 100644
---- a/tests/kms_busy.c
-+++ b/tests/kms_busy.c
-@@ -78,11 +78,13 @@ static void flip_to_fb(igt_display_t *dpy, int pipe,
- 	struct pollfd pfd = { .fd = dpy->drm_fd, .events = POLLIN };
- 	struct drm_event_vblank ev;
- 	IGT_CORK_FENCE(cork);
-+	uint64_t ahnd = get_reloc_ahnd(dpy->drm_fd, 0);
- 	igt_spin_t *t;
- 	int fence;
+diff --git a/tests/i915/gem_exec_flush.c b/tests/i915/gem_exec_flush.c
+index 629fdd7af..08851b4c3 100644
+--- a/tests/i915/gem_exec_flush.c
++++ b/tests/i915/gem_exec_flush.c
+@@ -128,6 +128,7 @@ static void run(int fd, unsigned ring, int nchild, int timeout,
+ 		uint32_t *ptr;
+ 		uint32_t *map;
+ 		int i;
++		bool has_relocs = gem_has_relocations(fd);
  
- 	fence = igt_cork_plug(&cork, dpy->drm_fd);
- 	t = igt_spin_new(dpy->drm_fd,
-+			 .ahnd = ahnd,
- 			 .fence = fence,
- 			 .dependency = fb->gem_handle,
- 			 .flags = IGT_SPIN_FENCE_IN);
-@@ -130,6 +132,7 @@ static void flip_to_fb(igt_display_t *dpy, int pipe,
- 	}
+ 		memset(obj, 0, sizeof(obj));
+ 		obj[0].handle = gem_create(fd, 4096);
+@@ -382,6 +383,7 @@ static void batch(int fd, unsigned ring, int nchild, int timeout,
+ 		uint32_t *ptr;
+ 		uint32_t *map;
+ 		int i;
++		bool has_relocs = gem_has_relocations(fd);
  
- 	igt_spin_free(dpy->drm_fd, t);
-+	put_ahnd(ahnd);
- }
+ 		memset(obj, 0, sizeof(obj));
+ 		obj[0].handle = gem_create(fd, 4096);
+@@ -407,7 +409,11 @@ static void batch(int fd, unsigned ring, int nchild, int timeout,
+ 		gem_write(fd, obj[1].handle, 0, &bbe, sizeof(bbe));
+ 		igt_require(__gem_execbuf(fd, &execbuf) == 0);
  
- static void test_flip(igt_display_t *dpy, int pipe, bool modeset)
-@@ -183,7 +186,9 @@ static void test_flip(igt_display_t *dpy, int pipe, bool modeset)
- static void test_atomic_commit_hang(igt_display_t *dpy, igt_plane_t *primary,
- 				    struct igt_fb *busy_fb)
- {
-+	uint64_t ahnd = get_reloc_ahnd(dpy->drm_fd, 0);
- 	igt_spin_t *t = igt_spin_new(dpy->drm_fd,
-+				     .ahnd = ahnd,
- 				     .dependency = busy_fb->gem_handle,
- 				     .flags = IGT_SPIN_NO_PREEMPTION);
- 	struct pollfd pfd = { .fd = dpy->drm_fd, .events = POLLIN };
-@@ -214,6 +219,7 @@ static void test_atomic_commit_hang(igt_display_t *dpy, igt_plane_t *primary,
- 	igt_assert(read(dpy->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
+-		obj[1].relocation_count = 1;
++		if (!has_relocs) {
++			obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
++			obj[1].flags |= EXEC_OBJECT_PINNED;
++		}
++		obj[1].relocation_count = has_relocs ? 1 : 0;
+ 		obj[1].relocs_ptr = to_user_pointer(&reloc);
  
- 	igt_spin_end(t);
-+	put_ahnd(ahnd);
- }
- 
- static void test_hang(igt_display_t *dpy,
-@@ -265,6 +271,7 @@ static void test_pageflip_modeset_hang(igt_display_t *dpy, enum pipe pipe)
- 	igt_output_t *output;
- 	igt_plane_t *primary;
- 	igt_spin_t *t;
-+	uint64_t ahnd = get_reloc_ahnd(dpy->drm_fd, 0);
- 
- 	output = set_fb_on_crtc(dpy, pipe, &fb);
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-@@ -272,6 +279,7 @@ static void test_pageflip_modeset_hang(igt_display_t *dpy, enum pipe pipe)
- 	igt_display_commit2(dpy, dpy->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 
- 	t = igt_spin_new(dpy->drm_fd,
-+			 .ahnd = ahnd,
- 			 .dependency = fb.gem_handle,
- 			 .flags = IGT_SPIN_NO_PREEMPTION);
- 
-@@ -285,6 +293,7 @@ static void test_pageflip_modeset_hang(igt_display_t *dpy, enum pipe pipe)
- 	igt_assert(read(dpy->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
- 
- 	igt_spin_end(t);
-+	put_ahnd(ahnd);
- 
- 	igt_remove_fb(dpy->drm_fd, &fb);
- }
+ 		switch (mode) {
 -- 
 2.26.0
