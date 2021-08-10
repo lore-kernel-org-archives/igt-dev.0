@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2564D6E03B
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 10:53:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE4206E029
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 10:53:51 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 12:52:47 +0200
-Message-Id: <20210810105323.31375-19-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 12:52:42 +0200
+Message-Id: <20210810105323.31375-14-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810105323.31375-1-zbigniew.kempczynski@intel.com>
 References: <20210810105323.31375-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 18/54] tests/gem_exec_fair: Add softpin
- support
+Subject: [igt-dev] [PATCH i-g-t v7 13/54] tests/gem_ctx_freq: Adopt to use
+ allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,39 +24,45 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use softpin on gens where relocations are not allowed.
+For newer gens we're not able to rely on relocations. Adopt to use
+offsets acquired from the allocator.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_exec_fair.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/i915/gem_ctx_freq.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_exec_fair.c b/tests/i915/gem_exec_fair.c
-index 4b5531cc2..ef5a450f6 100644
---- a/tests/i915/gem_exec_fair.c
-+++ b/tests/i915/gem_exec_fair.c
-@@ -379,6 +379,7 @@ read_ctx_timestamp(int i915, const intel_ctx_t *ctx,
- 	const uint32_t runtime = base + (use_64b ? 0x3a8 : 0x358);
- 	uint32_t *map, *cs;
- 	uint32_t ts;
-+	bool has_relocs = gem_has_relocations(i915);
+diff --git a/tests/i915/gem_ctx_freq.c b/tests/i915/gem_ctx_freq.c
+index a34472de5..a29fe68b7 100644
+--- a/tests/i915/gem_ctx_freq.c
++++ b/tests/i915/gem_ctx_freq.c
+@@ -124,6 +124,7 @@ static void sysfs_range(int i915)
+ 	igt_spin_t *spin;
+ 	double measured;
+ 	int pmu;
++	uint64_t ahnd = get_reloc_ahnd(i915, 0);
  
- 	cs = map = gem_mmap__device_coherent(i915, obj.handle,
- 					     0, 4096, PROT_WRITE);
-@@ -396,6 +397,11 @@ read_ctx_timestamp(int i915, const intel_ctx_t *ctx,
+ 	/*
+ 	 * The sysfs interface sets the global limits and overrides the
+@@ -145,7 +146,7 @@ static void sysfs_range(int i915)
+ 		uint32_t cur, discard;
  
- 	*cs++ = MI_BATCH_BUFFER_END;
+ 		gem_quiescent_gpu(i915);
+-		spin = igt_spin_new(i915);
++		spin = igt_spin_new(i915, .ahnd = ahnd);
+ 		usleep(10000);
  
-+	if (!has_relocs) {
-+		obj.relocation_count = 0;
-+		obj.flags |= EXEC_OBJECT_PINNED;
-+	}
-+
- 	gem_execbuf(i915, &execbuf);
- 	gem_sync(i915, obj.handle);
- 	ts = map[1000];
+ 		set_sysfs_freq(sys_freq, sys_freq);
+@@ -164,6 +165,7 @@ static void sysfs_range(int i915)
+ 	gem_quiescent_gpu(i915);
+ 
+ 	close(pmu);
++	put_ahnd(ahnd);
+ 
+ #undef N_STEPS
+ }
 -- 
 2.26.0
