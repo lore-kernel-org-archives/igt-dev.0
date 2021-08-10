@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 47CE889E05
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 59C1F89DEA
  for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:28:22 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 07:26:47 +0200
-Message-Id: <20210810052711.7866-42-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 07:26:49 +0200
+Message-Id: <20210810052711.7866-44-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 References: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 41/65] tests/gem_workarounds: Adopt to
+Subject: [igt-dev] [PATCH i-g-t v6 43/65] tests/i915_module_load: Adopt to
  use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,65 +32,70 @@ Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_workarounds.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ tests/i915/i915_module_load.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_workarounds.c b/tests/i915/gem_workarounds.c
-index e240901c4..3d1851279 100644
---- a/tests/i915/gem_workarounds.c
-+++ b/tests/i915/gem_workarounds.c
-@@ -94,6 +94,7 @@ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
- 	uint32_t *base, *out;
- 	igt_spin_t *spin;
- 	int fw, fail = 0;
-+	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
+diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
+index 08bc7aefd..a86dd86cd 100644
+--- a/tests/i915/i915_module_load.c
++++ b/tests/i915/i915_module_load.c
+@@ -42,6 +42,7 @@ static void store_all(int i915)
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
+ 	uint32_t engines[I915_EXEC_RING_MASK + 1];
+ 	uint32_t batch[16];
++	uint64_t ahnd, offset, bb_offset;
+ 	unsigned int sz = ALIGN(sizeof(batch) * ARRAY_SIZE(engines), 4096);
+ 	struct drm_i915_gem_relocation_entry reloc = {
+ 		.offset = sizeof(uint32_t),
+@@ -91,6 +92,12 @@ static void store_all(int i915)
+ 	cs = gem_mmap__device_coherent(i915, obj[1].handle, 0, sz, PROT_WRITE);
  
- 	reloc = calloc(num_wa_regs, sizeof(*reloc));
- 	igt_assert(reloc);
-@@ -109,7 +110,13 @@ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
- 	gem_set_caching(i915, obj[0].handle, I915_CACHING_CACHED);
- 	obj[1].handle = gem_create(i915, batch_sz);
- 	obj[1].relocs_ptr = to_user_pointer(reloc);
--	obj[1].relocation_count = num_wa_regs;
-+	obj[1].relocation_count = !ahnd ? num_wa_regs : 0;
-+	if (ahnd) {
-+		obj[0].offset = get_offset(ahnd, obj[0].handle, result_sz, 0);
-+		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+		obj[1].offset = get_offset(ahnd, obj[1].handle, batch_sz, 0);
-+		obj[1].flags |= EXEC_OBJECT_PINNED;
-+	}
+ 	ctx = intel_ctx_create_all_physical(i915);
++	ahnd = get_reloc_ahnd(i915, ctx->id);
++	if (ahnd)
++		obj[1].relocation_count = 0;
++	bb_offset = get_offset(ahnd, obj[1].handle, sz, 4096);
++	offset = get_offset(ahnd, obj[0].handle, sizeof(engines), 0);
++
+ 	for_each_ctx_engine(i915, ctx, e) {
+ 		uint64_t addr;
  
- 	out = base =
- 		gem_mmap__cpu(i915, obj[1].handle, 0, batch_sz, PROT_WRITE);
-@@ -121,9 +128,9 @@ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
- 		reloc[i].delta = i * sizeof(uint32_t);
- 		reloc[i].read_domains = I915_GEM_DOMAIN_INSTRUCTION;
- 		reloc[i].write_domain = I915_GEM_DOMAIN_INSTRUCTION;
--		*out++ = reloc[i].delta;
-+		*out++ = obj[0].offset + reloc[i].delta;
- 		if (gen >= 8)
--			*out++ = 0;
-+			*out++ = (obj[0].offset + reloc[i].delta) >> 32;
- 	}
- 	*out++ = MI_BATCH_BUFFER_END;
- 	munmap(base, batch_sz);
-@@ -136,7 +143,8 @@ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
+@@ -100,6 +107,16 @@ static void store_all(int i915)
+ 		if (!gem_class_can_store_dword(i915, e->class))
+ 			continue;
  
- 	gem_set_domain(i915, obj[0].handle, I915_GEM_DOMAIN_CPU, 0);
++		if (ahnd) {
++			i = 1;
++			batch[i++] = offset + reloc.delta;
++			batch[i++] = offset >> 32;
++			obj[0].offset = offset;
++			obj[0].flags |= EXEC_OBJECT_PINNED;
++			obj[1].offset = bb_offset;
++			obj[1].flags |= EXEC_OBJECT_PINNED;
++		}
++
+ 		batch[value] = nengine;
  
--	spin = igt_spin_new(i915, .ctx = ctx, .flags = IGT_SPIN_POLL_RUN);
-+	spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
-+			    .flags = IGT_SPIN_POLL_RUN);
- 	igt_spin_busywait_until_started(spin);
+ 		execbuf.flags = e->flags;
+@@ -109,7 +126,8 @@ static void store_all(int i915)
+ 		execbuf.rsvd1 = ctx->id;
  
- 	fw = igt_open_forcewake_handle(i915);
-@@ -172,6 +180,7 @@ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
+ 		memcpy(cs + execbuf.batch_start_offset, batch, sizeof(batch));
+-		memcpy(cs + reloc.offset, &addr, reloc_sz);
++		if (!ahnd)
++			memcpy(cs + reloc.offset, &addr, reloc_sz);
+ 		gem_execbuf(i915, &execbuf);
  
- 	close(fw);
- 	igt_spin_free(i915, spin);
+ 		if (++nengine == ARRAY_SIZE(engines))
+@@ -126,6 +144,9 @@ static void store_all(int i915)
+ 	gem_read(i915, obj[0].handle, 0, engines, nengine * sizeof(engines[0]));
+ 	gem_close(i915, obj[0].handle);
+ 	intel_ctx_destroy(i915, ctx);
++	put_offset(ahnd, obj[0].handle);
++	put_offset(ahnd, obj[1].handle);
 +	put_ahnd(ahnd);
  
- 	gem_close(i915, obj[1].handle);
- 	gem_close(i915, obj[0].handle);
+ 	for (i = 0; i < nengine; i++)
+ 		igt_assert_eq_u32(engines[i], i);
 -- 
 2.26.0
