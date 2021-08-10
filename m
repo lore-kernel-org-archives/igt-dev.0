@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52FB289DC2
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:27:25 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 07:26:07 +0200
-Message-Id: <20210810052711.7866-2-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
-References: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3471A89DA9
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:22:05 +0000 (UTC)
+Date: Tue, 10 Aug 2021 07:22:00 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210810052200.GI3738@zkempczy-mobl2>
+References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
+ <20210809130533.27759-36-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 01/65] lib/igt_dummyload: Add support of
- using allocator in igt spinner
+In-Reply-To: <20210809130533.27759-36-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v5 35/65] tests/gem_softpin: Exercise
+ eviction with softpinning
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,202 +24,288 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Andrzej Turko <andrzej.turko@linux.intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For gens without relocations we need to use softpin with valid offsets
-which do not overlap other execbuf objects. As spinner during creation
-knows nothing about vm it has to run into allocator handle must be
-passed to properly acquire offsets from allocator instance.
+On Mon, Aug 09, 2021 at 03:05:03PM +0200, Zbigniew Kempczyński wrote:
+> From: Andrzej Turko <andrzej.turko@linux.intel.com>
+> 
+> Exercise eviction of many gem objects. The added tests are analogous
+> to gem_exec_gttfill, but they use softpin and do not require relocation
+> support.
+> 
+> Signed-off-by: Andrzej Turko <andrzej.turko@linux.intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> ---
+>  tests/i915/gem_softpin.c | 213 ++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 212 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
+> index 5e47a0ce3..2c9c3320e 100644
+> --- a/tests/i915/gem_softpin.c
+> +++ b/tests/i915/gem_softpin.c
+> @@ -29,6 +29,7 @@
+>  #include "i915/gem.h"
+>  #include "i915/gem_create.h"
+>  #include "igt.h"
+> +#include "igt_rand.h"
+>  #include "intel_allocator.h"
+>  
+>  #define EXEC_OBJECT_PINNED	(1<<4)
+> @@ -878,9 +879,209 @@ static void test_allocator_fork(int fd)
+>  	intel_allocator_multiprocess_stop();
+>  }
+>  
+> +#define BATCH_SIZE (4096<<10)
+> +/* We don't have alignment detection yet, so assume the worst-case scenario. */
+> +#define BATCH_ALIGNMENT (1 << 21)
+> +
+> +struct batch {
+> +	uint32_t handle;
+> +	void *ptr;
+> +};
+> +
+> +static void xchg_batch(void *array, unsigned int i, unsigned int j)
+> +{
+> +	struct batch *batches = array;
+> +	struct batch tmp;
+> +
+> +	tmp = batches[i];
+> +	batches[i] = batches[j];
+> +	batches[j] = tmp;
+> +}
+> +
+> +static void submit(int fd, int gen,
+> +		   struct drm_i915_gem_execbuffer2 *eb,
+> +		   struct batch *batches, unsigned int count,
+> +		   uint64_t ahnd)
+> +{
+> +	struct drm_i915_gem_exec_object2 obj;
+> +	uint32_t batch[16];
+> +	uint64_t address;
+> +	unsigned n;
+> +
+> +	memset(&obj, 0, sizeof(obj));
+> +	obj.flags = EXEC_OBJECT_PINNED;
+> +
+> +	for (unsigned i = 0; i < count; i++) {
+> +		obj.handle = batches[i].handle;
+> +		obj.offset = intel_allocator_alloc(ahnd, obj.handle,
+> +						   BATCH_SIZE,
+> +						   BATCH_ALIGNMENT);
+> +		address = obj.offset + BATCH_SIZE - eb->batch_start_offset - 8;
+> +		n = 0;
+> +		batch[n] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
+> +		if (gen >= 8) {
+> +			batch[n] |= 1 << 21;
+> +			batch[n]++;
+> +			batch[++n] = address;
+> +			batch[++n] = address >> 32;
+> +		} else if (gen >= 4) {
+> +			batch[++n] = 0;
+> +			batch[++n] = address;
+> +		} else {
+> +			batch[n]--;
+> +			batch[++n] = address;
+> +		}
+> +		batch[++n] = obj.offset; /* lower_32_bits(value) */
+> +		batch[++n] = obj.offset >> 32; /* upper_32_bits(value) / nop */
+> +		batch[++n] = MI_BATCH_BUFFER_END;
+> +		eb->buffers_ptr = to_user_pointer(&obj);
+> +
+> +		memcpy(batches[i].ptr + eb->batch_start_offset,
+> +		       batch, sizeof(batch));
+> +
+> +		gem_execbuf(fd, eb);
+> +	}
+> +	/* As we have been lying about the write_domain, we need to do a sync */
+> +	gem_sync(fd, obj.handle);
+> +}
+> +
+> +static void test_allocator_evict(int fd, const intel_ctx_t *ctx,
+> +				 unsigned ring, int timeout)
+> +{
+> +	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+> +	struct drm_i915_gem_execbuffer2 execbuf;
+> +	unsigned engines[I915_EXEC_RING_MASK + 1];
+> +	volatile uint64_t *shared;
+> +	struct timespec tv = {};
+> +	struct batch *batches;
+> +	unsigned nengine;
+> +	unsigned count;
+> +	uint64_t size, ahnd;
+> +
+> +	shared = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> +	igt_assert(shared != MAP_FAILED);
+> +
+> +	nengine = 0;
+> +	if (ring == ALL_ENGINES) {
+> +		struct intel_execution_engine2 *e;
+> +
+> +		for_each_ctx_engine(fd, ctx, e) {
+> +			if (!gem_class_can_store_dword(fd, e->class))
+> +				continue;
+> +
+> +			engines[nengine++] = e->flags;
+> +		}
+> +	} else {
+> +		engines[nengine++] = ring;
+> +	}
+> +	igt_require(nengine);
+> +	igt_assert(nengine * 64 <= BATCH_SIZE);
+> +
+> +	size = gem_aperture_size(fd);
+> +	if (!gem_uses_full_ppgtt(fd))
+> +		size /= 2;
+> +	if (size > 1ull<<32) /* Limit to 4GiB as we do not use allow-48b */
+> +		size = 1ull << 32;
+> +	igt_require(size < (1ull<<32) * BATCH_SIZE);
+> +
+> +	count = size / BATCH_SIZE + 1;
+> +	igt_debug("Using %'d batches to fill %'llu aperture on %d engines\n",
+> +		  count, (long long)size, nengine);
+> +
+> +	intel_allocator_multiprocess_start();
+> +	/* Avoid allocating on the last page */
+> +	ahnd = intel_allocator_open_full(fd, 0, 0, size - 4096,
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- lib/igt_dummyload.c | 74 ++++++++++++++++++++++++++++++++++++---------
- lib/igt_dummyload.h |  3 ++
- 2 files changed, 63 insertions(+), 14 deletions(-)
+Remove comment and limit end of vm to size/16. This will increase
+eviction rate.
 
-diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
-index 8a5ad5ee3..645db9222 100644
---- a/lib/igt_dummyload.c
-+++ b/lib/igt_dummyload.c
-@@ -35,6 +35,7 @@
- #include "i915/gem_engine_topology.h"
- #include "i915/gem_mman.h"
- #include "i915/gem_submission.h"
-+#include "igt_aux.h"
- #include "igt_core.h"
- #include "igt_device.h"
- #include "igt_dummyload.h"
-@@ -101,7 +102,7 @@ emit_recursive_batch(igt_spin_t *spin,
- 	unsigned int flags[GEM_MAX_ENGINES];
- 	unsigned int nengine;
- 	int fence_fd = -1;
--	uint64_t addr;
-+	uint64_t addr, addr_scratch, ahnd = opts->ahnd, objflags = 0;
- 	uint32_t *cs;
- 	int i;
- 
-@@ -119,11 +120,17 @@ emit_recursive_batch(igt_spin_t *spin,
- 	 * are not allowed in the first 256KiB, for fear of negative relocations
- 	 * that wrap.
- 	 */
--	addr = gem_aperture_size(fd) / 2;
--	if (addr >> 31)
--		addr = 1u << 31;
--	addr += random() % addr / 2;
--	addr &= -4096;
-+
-+	if (!ahnd) {
-+		addr = gem_aperture_size(fd) / 2;
-+		if (addr >> 31)
-+			addr = 1u << 31;
-+		addr += random() % addr / 2;
-+		addr &= -4096;
-+	} else {
-+		spin->ahnd = ahnd;
-+		objflags |= EXEC_OBJECT_PINNED;
-+	}
- 
- 	igt_assert(!(opts->ctx && opts->ctx_id));
- 
-@@ -164,16 +171,34 @@ emit_recursive_batch(igt_spin_t *spin,
- 	execbuf->buffer_count++;
- 	cs = spin->batch;
- 
--	obj[BATCH].offset = addr;
-+	if (ahnd)
-+		addr = intel_allocator_alloc_with_strategy(ahnd, obj[BATCH].handle,
-+							   BATCH_SIZE, 0,
-+							   ALLOC_STRATEGY_LOW_TO_HIGH);
-+	obj[BATCH].offset = CANONICAL(addr);
-+	obj[BATCH].flags |= objflags;
-+	if (obj[BATCH].offset >= (1ull << 32))
-+		obj[BATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+
- 	addr += BATCH_SIZE;
- 
- 	if (opts->dependency) {
- 		igt_assert(!(opts->flags & IGT_SPIN_POLL_RUN));
-+		if (ahnd)
-+			addr_scratch = intel_allocator_alloc_with_strategy(ahnd, opts->dependency,
-+									   BATCH_SIZE, 0,
-+									   ALLOC_STRATEGY_LOW_TO_HIGH);
-+		else
-+			addr_scratch = addr;
- 
- 		obj[SCRATCH].handle = opts->dependency;
--		obj[SCRATCH].offset = addr;
-+		obj[SCRATCH].offset = CANONICAL(addr_scratch);
-+		obj[SCRATCH].flags |= objflags;
-+		if (obj[SCRATCH].offset >= (1ull << 32))
-+			obj[SCRATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+
- 		if (!(opts->flags & IGT_SPIN_SOFTDEP)) {
--			obj[SCRATCH].flags = EXEC_OBJECT_WRITE;
-+			obj[SCRATCH].flags |= EXEC_OBJECT_WRITE;
- 
- 			/* dummy write to dependency */
- 			r = &relocs[obj[BATCH].relocation_count++];
-@@ -212,8 +237,14 @@ emit_recursive_batch(igt_spin_t *spin,
- 								       0, 4096,
- 								       PROT_READ | PROT_WRITE);
- 		}
-+
-+		if (ahnd)
-+			addr = intel_allocator_alloc_with_strategy(ahnd,
-+								   spin->poll_handle,
-+								   BATCH_SIZE * 3, 0,
-+								   ALLOC_STRATEGY_LOW_TO_HIGH);
- 		addr += 4096; /* guard page */
--		obj[SCRATCH].offset = addr;
-+		obj[SCRATCH].offset = CANONICAL(addr);
- 		addr += 4096;
- 
- 		igt_assert_eq(spin->poll[SPIN_POLL_START_IDX], 0);
-@@ -223,11 +254,15 @@ emit_recursive_batch(igt_spin_t *spin,
- 		r->offset = sizeof(uint32_t) * 1;
- 		r->delta = sizeof(uint32_t) * SPIN_POLL_START_IDX;
- 
-+		obj[SCRATCH].flags |= objflags;
-+		if (obj[SCRATCH].offset >= (1ull << 32))
-+			obj[SCRATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+
- 		*cs++ = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
- 
- 		if (gen >= 8) {
- 			*cs++ = r->presumed_offset + r->delta;
--			*cs++ = 0;
-+			*cs++ = (r->presumed_offset + r->delta) >> 32;
- 		} else if (gen >= 4) {
- 			*cs++ = 0;
- 			*cs++ = r->presumed_offset + r->delta;
-@@ -314,10 +349,11 @@ emit_recursive_batch(igt_spin_t *spin,
- 	r->offset = (cs + 1 - spin->batch) * sizeof(*cs);
- 	r->read_domains = I915_GEM_DOMAIN_COMMAND;
- 	r->delta = LOOP_START_OFFSET;
-+
- 	if (gen >= 8) {
- 		*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | 1;
- 		*cs++ = r->presumed_offset + r->delta;
--		*cs++ = 0;
-+		*cs++ = (r->presumed_offset + r->delta) >> 32;
- 	} else if (gen >= 6) {
- 		*cs++ = MI_BATCH_BUFFER_START | 1 << 8;
- 		*cs++ = r->presumed_offset + r->delta;
-@@ -351,6 +387,10 @@ emit_recursive_batch(igt_spin_t *spin,
- 		execbuf->flags &= ~ENGINE_MASK;
- 		execbuf->flags |= flags[i];
- 
-+		/* For allocator we have to rid of relocation_count */
-+		for (int j = 0; j < ARRAY_SIZE(spin->obj) && ahnd; j++)
-+			spin->obj[j].relocation_count = 0;
-+
- 		gem_execbuf_wr(fd, execbuf);
- 
- 		if (opts->flags & IGT_SPIN_FENCE_OUT) {
-@@ -569,11 +609,17 @@ static void __igt_spin_free(int fd, igt_spin_t *spin)
- 	if (spin->batch)
- 		gem_munmap(spin->batch, BATCH_SIZE);
- 
--	if (spin->poll_handle)
-+	if (spin->poll_handle) {
- 		gem_close(fd, spin->poll_handle);
-+		if (spin->ahnd)
-+			intel_allocator_free(spin->ahnd, spin->poll_handle);
-+	}
- 
--	if (spin->handle)
-+	if (spin->handle) {
- 		gem_close(fd, spin->handle);
-+		if (spin->ahnd)
-+			intel_allocator_free(spin->ahnd, spin->handle);
-+	}
- 
- 	if (spin->out_fence >= 0)
- 		close(spin->out_fence);
-diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
-index 67e1a08ed..f02052614 100644
---- a/lib/igt_dummyload.h
-+++ b/lib/igt_dummyload.h
-@@ -58,6 +58,8 @@ typedef struct igt_spin {
- 
- 	unsigned int flags;
- #define SPIN_CLFLUSH (1 << 0)
-+
-+	uint64_t ahnd;
- } igt_spin_t;
- 
- /**
-@@ -78,6 +80,7 @@ typedef struct igt_spin_factory {
- 	unsigned int engine;
- 	unsigned int flags;
- 	int fence;
-+	uint64_t ahnd;
- } igt_spin_factory_t;
- 
- #define IGT_SPIN_FENCE_IN      (1 << 0)
--- 
-2.26.0
+> +					 INTEL_ALLOCATOR_RELOC,
+> +					 ALLOC_STRATEGY_HIGH_TO_LOW);
+> +
+> +	intel_require_memory(count, BATCH_SIZE, CHECK_RAM);
+> +	intel_detect_and_clear_missed_interrupts(fd);
+> +
+> +	igt_nsec_elapsed(&tv);
+> +
+> +	memset(&execbuf, 0, sizeof(execbuf));
+> +	execbuf.buffer_count = 1;
+> +	if (gen < 6)
+> +		execbuf.flags |= I915_EXEC_SECURE;
+> +
+> +	batches = calloc(count, sizeof(*batches));
+> +	igt_assert(batches);
+> +	for (unsigned i = 0; i < count; i++) {
+> +		batches[i].handle = gem_create(fd, BATCH_SIZE);
+> +		batches[i].ptr =
+> +			gem_mmap__device_coherent(fd, batches[i].handle,
+> +						  0, BATCH_SIZE, PROT_WRITE);
+> +	}
+> +
+> +	/* Flush all memory before we start the timer */
+> +	submit(fd, gen, &execbuf, batches, count, ahnd);
+> +
+> +	igt_info("Setup %u batches in %.2fms\n",
+> +		 count, 1e-6 * igt_nsec_elapsed(&tv));
+> +
+> +	igt_fork(child, nengine) {
+> +		uint64_t dst, src, dst_offset, src_offset;
+> +		uint64_t cycles = 0;
+> +
+> +		hars_petruska_f54_1_random_perturb(child);
+> +		igt_permute_array(batches, count, xchg_batch);
+> +		execbuf.batch_start_offset = child * 64;
+> +		execbuf.flags |= engines[child];
+> +
+> +		dst_offset = BATCH_SIZE - child*64 - 8;
+> +		if (gen >= 8)
+> +			src_offset = child*64 + 3*sizeof(uint32_t);
+> +		else if (gen >= 4)
+> +			src_offset = child*64 + 4*sizeof(uint32_t);
+> +		else
+> +			src_offset = child*64 + 2*sizeof(uint32_t);
+> +
+> +		/* We need to open the allocator again in the new process */
+> +		ahnd = intel_allocator_open_full(fd, 0, 0, size - 4096,
+> +						 INTEL_ALLOCATOR_RELOC,
+> +						 ALLOC_STRATEGY_HIGH_TO_LOW);
+
+Comment is ok, just limit end to size/16.
+
+--
+Zbigniew
+
+> +
+> +		igt_until_timeout(timeout) {
+> +			submit(fd, gen, &execbuf, batches, count, ahnd);
+> +			for (unsigned i = 0; i < count; i++) {
+> +				dst = *(uint64_t *)(batches[i].ptr + dst_offset);
+> +				src = *(uint64_t *)(batches[i].ptr + src_offset);
+> +				igt_assert_eq_u64(dst, src);
+> +			}
+> +			cycles++;
+> +		}
+> +		shared[child] = cycles;
+> +		igt_info("engine[%d]: %llu cycles\n", child, (long long)cycles);
+> +		intel_allocator_close(ahnd);
+> +	}
+> +	igt_waitchildren();
+> +
+> +	intel_allocator_close(ahnd);
+> +	intel_allocator_multiprocess_stop();
+> +
+> +	for (unsigned i = 0; i < count; i++) {
+> +		munmap(batches[i].ptr, BATCH_SIZE);
+> +		gem_close(fd, batches[i].handle);
+> +	}
+> +	free(batches);
+> +
+> +	shared[nengine] = 0;
+> +	for (unsigned i = 0; i < nengine; i++)
+> +		shared[nengine] += shared[i];
+> +	igt_info("Total: %llu cycles\n", (long long)shared[nengine]);
+> +
+> +	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
+> +}
+> +
+> +#define test_each_engine(T, i915, ctx, e) \
+> +	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
+> +		igt_dynamic_f("%s", e->name)
+> +
+>  igt_main
+>  {
+> +	const struct intel_execution_engine2 *e;
+>  	int fd = -1;
+> +	const intel_ctx_t *ctx;
+>  
+>  	igt_fixture {
+>  		fd = drm_open_driver_master(DRIVER_INTEL);
+> @@ -888,6 +1089,8 @@ igt_main
+>  		gem_require_blitter(fd);
+>  		igt_require(gem_has_softpin(fd));
+>  		igt_require(gem_can_store_dword(fd, 0));
+> +
+> +		ctx = intel_ctx_create_all_physical(fd);
+>  	}
+>  
+>  	igt_subtest("invalid")
+> @@ -923,6 +1126,12 @@ igt_main
+>  
+>  		igt_subtest("allocator-fork")
+>  			test_allocator_fork(fd);
+> +
+> +		test_each_engine("allocator-evict", fd, ctx, e)
+> +			test_allocator_evict(fd, ctx, e->flags, 20);
+> +
+> +		igt_subtest("allocator-evict-all-engines")
+> +			test_allocator_evict(fd, ctx, ALL_ENGINES, 20);
+>  	}
+>  
+>  	igt_subtest("softpin")
+> @@ -950,6 +1159,8 @@ igt_main
+>  	igt_subtest("evict-hang")
+>  		test_evict_hang(fd);
+>  
+> -	igt_fixture
+> +	igt_fixture {
+> +		intel_ctx_destroy(fd, ctx);
+>  		close(fd);
+> +	}
+>  }
+> -- 
+> 2.26.0
+> 
