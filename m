@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6960689E36
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 47CE889E05
  for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:28:22 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 07:26:52 +0200
-Message-Id: <20210810052711.7866-47-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 07:26:47 +0200
+Message-Id: <20210810052711.7866-42-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 References: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 46/65] tests/i915_pm_rps: Alter to use
- no-reloc
+Subject: [igt-dev] [PATCH i-g-t v6 41/65] tests/gem_workarounds: Adopt to
+ use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,83 +27,70 @@ List-ID: <igt-dev@lists.freedesktop.org>
 For newer gens we're not able to rely on relocations. Adopt to use
 offsets acquired from the allocator.
 
-v2: clean unnecessary commented code (Ashutosh)
-
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/i915_pm_rps.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ tests/i915/gem_workarounds.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-index f51a47479..b37f15c26 100644
---- a/tests/i915/i915_pm_rps.c
-+++ b/tests/i915/i915_pm_rps.c
-@@ -250,6 +250,10 @@ static void load_helper_run(enum load load)
- 		igt_spin_t *spin[2] = {};
- 		bool prev_load;
- 		uint32_t handle;
-+		uint64_t ahnd;
-+
-+		intel_allocator_init();
-+		ahnd = get_reloc_ahnd(drm_fd, 0);
+diff --git a/tests/i915/gem_workarounds.c b/tests/i915/gem_workarounds.c
+index e240901c4..3d1851279 100644
+--- a/tests/i915/gem_workarounds.c
++++ b/tests/i915/gem_workarounds.c
+@@ -94,6 +94,7 @@ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
+ 	uint32_t *base, *out;
+ 	igt_spin_t *spin;
+ 	int fw, fail = 0;
++	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
  
- 		signal(SIGTERM, load_helper_signal_handler);
- 		signal(SIGUSR2, load_helper_signal_handler);
-@@ -257,9 +261,9 @@ static void load_helper_run(enum load load)
- 		igt_debug("Applying %s load...\n", lh.load ? "high" : "low");
+ 	reloc = calloc(num_wa_regs, sizeof(*reloc));
+ 	igt_assert(reloc);
+@@ -109,7 +110,13 @@ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
+ 	gem_set_caching(i915, obj[0].handle, I915_CACHING_CACHED);
+ 	obj[1].handle = gem_create(i915, batch_sz);
+ 	obj[1].relocs_ptr = to_user_pointer(reloc);
+-	obj[1].relocation_count = num_wa_regs;
++	obj[1].relocation_count = !ahnd ? num_wa_regs : 0;
++	if (ahnd) {
++		obj[0].offset = get_offset(ahnd, obj[0].handle, result_sz, 0);
++		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
++		obj[1].offset = get_offset(ahnd, obj[1].handle, batch_sz, 0);
++		obj[1].flags |= EXEC_OBJECT_PINNED;
++	}
  
- 		prev_load = lh.load == HIGH;
--		spin[0] = __igt_spin_new(drm_fd);
-+		spin[0] = __igt_spin_new(drm_fd, .ahnd = ahnd);
- 		if (prev_load)
--			spin[1] = __igt_spin_new(drm_fd);
-+			spin[1] = __igt_spin_new(drm_fd, .ahnd = ahnd);
- 		prev_load = !prev_load; /* send the initial signal */
- 		while (!lh.exit) {
- 			bool high_load;
-@@ -279,7 +283,7 @@ static void load_helper_run(enum load load)
- 			} else {
- 				spin[0] = spin[1];
- 			}
--			spin[high_load] = __igt_spin_new(drm_fd);
-+			spin[high_load] = __igt_spin_new(drm_fd, .ahnd = ahnd);
- 
- 			if (lh.signal && high_load != prev_load) {
- 				write(lh.link, &lh.signal, sizeof(lh.signal));
-@@ -310,6 +314,7 @@ static void load_helper_run(enum load load)
- 
- 		igt_spin_free(drm_fd, spin[1]);
- 		igt_spin_free(drm_fd, spin[0]);
-+		put_ahnd(ahnd);
+ 	out = base =
+ 		gem_mmap__cpu(i915, obj[1].handle, 0, batch_sz, PROT_WRITE);
+@@ -121,9 +128,9 @@ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
+ 		reloc[i].delta = i * sizeof(uint32_t);
+ 		reloc[i].read_domains = I915_GEM_DOMAIN_INSTRUCTION;
+ 		reloc[i].write_domain = I915_GEM_DOMAIN_INSTRUCTION;
+-		*out++ = reloc[i].delta;
++		*out++ = obj[0].offset + reloc[i].delta;
+ 		if (gen >= 8)
+-			*out++ = 0;
++			*out++ = (obj[0].offset + reloc[i].delta) >> 32;
  	}
+ 	*out++ = MI_BATCH_BUFFER_END;
+ 	munmap(base, batch_sz);
+@@ -136,7 +143,8 @@ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
  
- 	close(lh.link);
-@@ -542,11 +547,13 @@ static void boost_freq(int fd, int *boost_freqs)
- {
- 	int64_t timeout = 1;
- 	igt_spin_t *load;
-+	/* We need to keep dependency spin offset for load->handle */
-+	uint64_t ahnd = get_simple_l2h_ahnd(fd, 0);
+ 	gem_set_domain(i915, obj[0].handle, I915_GEM_DOMAIN_CPU, 0);
  
--	load = igt_spin_new(fd);
-+	load = igt_spin_new(fd, .ahnd = ahnd);
+-	spin = igt_spin_new(i915, .ctx = ctx, .flags = IGT_SPIN_POLL_RUN);
++	spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
++			    .flags = IGT_SPIN_POLL_RUN);
+ 	igt_spin_busywait_until_started(spin);
  
- 	/* Strip off extra fences from the object, and keep it from starting */
--	igt_spin_free(fd, igt_spin_new(fd, .dependency = load->handle));
-+	igt_spin_free(fd, igt_spin_new(fd, .ahnd = ahnd, .dependency = load->handle));
+ 	fw = igt_open_forcewake_handle(i915);
+@@ -172,6 +180,7 @@ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
  
- 	/* Waiting will grant us a boost to maximum */
- 	gem_wait(fd, load->handle, &timeout);
-@@ -558,6 +565,7 @@ static void boost_freq(int fd, int *boost_freqs)
- 	igt_spin_end(load);
- 	gem_sync(fd, load->handle);
- 	igt_spin_free(fd, load);
+ 	close(fw);
+ 	igt_spin_free(i915, spin);
 +	put_ahnd(ahnd);
- }
  
- static void waitboost(int fd, bool reset)
+ 	gem_close(i915, obj[1].handle);
+ 	gem_close(i915, obj[0].handle);
 -- 
 2.26.0
