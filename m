@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1655989E32
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 03:34:45 +0000 (UTC)
-Date: Tue, 10 Aug 2021 05:34:38 +0200
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 47A5C89E35
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 03:38:40 +0000 (UTC)
+Date: Tue, 10 Aug 2021 05:38:34 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210810033438.GE3738@zkempczy-mobl2>
+Message-ID: <20210810033834.GF3738@zkempczy-mobl2>
 References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
- <20210809130533.27759-22-zbigniew.kempczynski@intel.com>
+ <20210809130533.27759-49-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210809130533.27759-22-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v5 21/65] tests/gem_exec_lut_handle:
- Require relocation support
+In-Reply-To: <20210809130533.27759-49-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v5 48/65] tests/kms_flip: Adopt to use
+ allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,39 +24,78 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Andrzej Turko <andrzej.turko@linux.intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Aug 09, 2021 at 03:04:49PM +0200, Zbigniew Kempczyński wrote:
-> From: Andrzej Turko <andrzej.turko@linux.intel.com>
+On Mon, Aug 09, 2021 at 03:05:16PM +0200, Zbigniew Kempczyński wrote:
+> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > 
-> This test exercises LUT which is a part of the relocation
-> interface. Running this test makes no sense on platforms
-> without relocation support -- thus the new requirement.
+> For newer gens kernel will reject relocations returning -EINVAL
+> so we should just provide the allocator handle to inject the hang.
 > 
-> Signed-off-by: Andrzej Turko <andrzej.turko@linux.intel.com>
+> V2:
+> * Drop is_i915_device() check
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 > ---
->  tests/i915/gem_exec_lut_handle.c | 1 +
->  1 file changed, 1 insertion(+)
+>  tests/kms_flip.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
 > 
-> diff --git a/tests/i915/gem_exec_lut_handle.c b/tests/i915/gem_exec_lut_handle.c
-> index 3c5c81f1a..064308666 100644
-> --- a/tests/i915/gem_exec_lut_handle.c
-> +++ b/tests/i915/gem_exec_lut_handle.c
-> @@ -99,6 +99,7 @@ igt_simple_main
+> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+> index f2fce8d2a..b4836a44d 100755
+> --- a/tests/kms_flip.c
+> +++ b/tests/kms_flip.c
+> @@ -616,9 +616,9 @@ static void recreate_fb(struct test_output *o)
+>  	o->fb_info[o->current_fb_id].fb_id = new_fb_id;
+>  }
 >  
->  	fd = drm_open_driver(DRIVER_INTEL);
->  	igt_require_gem(fd);
-> +	igt_require(gem_has_relocations(fd));
+> -static igt_hang_t hang_gpu(int fd)
+> +static igt_hang_t hang_gpu(int fd, uint64_t ahnd)
+>  {
+> -	return igt_hang_ring(fd, I915_EXEC_DEFAULT);
+> +	return igt_hang_ring_with_ahnd(fd, I915_EXEC_DEFAULT, ahnd);
+>  }
 >  
->  	memset(gem_exec, 0, sizeof(gem_exec));
->  	for (n = 0; n < MAX_NUM_EXEC; n++)
+>  static void unhang_gpu(int fd, igt_hang_t hang)
+> @@ -675,6 +675,7 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
+>  	struct vblank_reply vbl_reply;
+>  	unsigned int target_seq;
+>  	igt_hang_t hang;
+> +	uint64_t ahnd = 0;
+>  
+>  	target_seq = o->vblank_state.seq_step;
+>  	/* Absolute waits only works once we have a frame counter. */
+> @@ -776,8 +777,10 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
+>  	igt_print_activity();
+>  
+>  	memset(&hang, 0, sizeof(hang));
+> -	if (do_flip && (o->flags & TEST_HANG))
+> -		hang = hang_gpu(drm_fd);
+> +	if (do_flip && (o->flags & TEST_HANG)) {
+> +		ahnd = get_reloc_ahnd(drm_fd, 0);
+> +		hang = hang_gpu(drm_fd, ahnd);
+> +	}
+>  
+>  	/* try to make sure we can issue two flips during the same frame */
+>  	if (do_flip && (o->flags & TEST_EBUSY)) {
+> @@ -847,6 +850,7 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
+>  		igt_assert(do_page_flip(o, new_fb_id, false) == expected_einval);
+>  
+>  	unhang_gpu(drm_fd, hang);
+> +	put_ahnd(ahnd);
+>  
+>  	*events = completed_events;
+>  
 > -- 
 > 2.26.0
-> 
+>
+
+Looks good,
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
-Zbigniew
+Zbigniew 
