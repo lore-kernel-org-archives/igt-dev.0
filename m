@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A5B589E52
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:28:56 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2EF4189E0D
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:28:23 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 07:27:10 +0200
-Message-Id: <20210810052711.7866-65-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 07:26:54 +0200
+Message-Id: <20210810052711.7866-49-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 References: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 64/65] WIP: tests/gem_exec_flush: Adopt
- to no-reloc
+Subject: [igt-dev] [PATCH i-g-t v6 48/65] tests/kms_cursor_legacy: Adopt to
+ use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,43 +24,71 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/i915/gem_exec_flush.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+For newer gens we're not able to rely on relocations. Adopt to use
+offsets acquired from the allocator.
 
-diff --git a/tests/i915/gem_exec_flush.c b/tests/i915/gem_exec_flush.c
-index 629fdd7af..08851b4c3 100644
---- a/tests/i915/gem_exec_flush.c
-+++ b/tests/i915/gem_exec_flush.c
-@@ -128,6 +128,7 @@ static void run(int fd, unsigned ring, int nchild, int timeout,
- 		uint32_t *ptr;
- 		uint32_t *map;
- 		int i;
-+		bool has_relocs = gem_has_relocations(fd);
+v2: Don't query i915 for relocations on AMD devices (Rodrigo)
+
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/kms_cursor_legacy.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index 75a822c4e..0f0df951b 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -517,6 +517,7 @@ static void basic_flip_cursor(igt_display_t *display,
+ 	struct igt_fb fb_info, cursor_fb, cursor_fb2, argb_fb;
+ 	unsigned vblank_start;
+ 	enum pipe pipe = find_connected_pipe(display, false);
++	uint64_t ahnd = (flags & BASIC_BUSY) ? get_reloc_ahnd(display->drm_fd, 0) : 0;
+ 	igt_spin_t *spin;
+ 	int i, miss1 = 0, miss2 = 0, delta;
  
- 		memset(obj, 0, sizeof(obj));
- 		obj[0].handle = gem_create(fd, 4096);
-@@ -382,6 +383,7 @@ static void batch(int fd, unsigned ring, int nchild, int timeout,
- 		uint32_t *ptr;
- 		uint32_t *map;
- 		int i;
-+		bool has_relocs = gem_has_relocations(fd);
+@@ -548,6 +549,7 @@ static void basic_flip_cursor(igt_display_t *display,
+ 		spin = NULL;
+ 		if (flags & BASIC_BUSY)
+ 			spin = igt_spin_new(display->drm_fd,
++					    .ahnd = ahnd,
+ 					    .dependency = fb_info.gem_handle);
  
- 		memset(obj, 0, sizeof(obj));
- 		obj[0].handle = gem_create(fd, 4096);
-@@ -407,7 +409,11 @@ static void batch(int fd, unsigned ring, int nchild, int timeout,
- 		gem_write(fd, obj[1].handle, 0, &bbe, sizeof(bbe));
- 		igt_require(__gem_execbuf(fd, &execbuf) == 0);
+ 		/* Start with a synchronous query to align with the vblank */
+@@ -631,6 +633,7 @@ static void basic_flip_cursor(igt_display_t *display,
+ 		igt_remove_fb(display->drm_fd, &argb_fb);
+ 	if (cursor_fb2.gem_handle)
+ 		igt_remove_fb(display->drm_fd, &cursor_fb2);
++	put_ahnd(ahnd);
+ }
  
--		obj[1].relocation_count = 1;
-+		if (!has_relocs) {
-+			obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+			obj[1].flags |= EXEC_OBJECT_PINNED;
-+		}
-+		obj[1].relocation_count = has_relocs ? 1 : 0;
- 		obj[1].relocs_ptr = to_user_pointer(&reloc);
+ static int
+@@ -1319,6 +1322,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ 	igt_pipe_t *pipe_connected = &display->pipes[pipe];
+ 	igt_plane_t *plane_primary = igt_pipe_get_plane_type(pipe_connected, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_crc_t crcs[2], test_crc;
++	uint64_t ahnd = get_reloc_ahnd(display->drm_fd, 0);
  
- 		switch (mode) {
+ 	if (atomic)
+ 		igt_require(display->is_atomic);
+@@ -1366,6 +1370,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ 		igt_spin_t *spin;
+ 
+ 		spin = igt_spin_new(display->drm_fd,
++				    .ahnd = ahnd,
+ 				    .dependency = fb_info[1].gem_handle);
+ 
+ 		vblank_start = kmstest_get_vblank(display->drm_fd, pipe, DRM_VBLANK_NEXTONMISS);
+@@ -1394,6 +1399,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ 	igt_remove_fb(display->drm_fd, &fb_info[1]);
+ 	igt_remove_fb(display->drm_fd, &fb_info[0]);
+ 	igt_remove_fb(display->drm_fd, &cursor_fb);
++	put_ahnd(ahnd);
+ }
+ 
+ igt_main
 -- 
 2.26.0
