@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7696643750383420684=="
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E278C89F5F
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 10:00:52 +0000 (UTC)
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Tue, 10 Aug 2021 12:00:47 +0200
+Message-ID: <2206187.ElGaqSPkdT@jkrzyszt-mobl1.ger.corp.intel.com>
+In-Reply-To: <YRI8e3vKxxsFVi4C@platvala-desk.ger.corp.intel.com>
+References: <20210809191020.18960-1-janusz.krzysztofik@linux.intel.com>
+ <YRI8e3vKxxsFVi4C@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 10 Aug 2021 09:59:14 -0000
-Message-ID: <162858955462.29684.17917451402216559507@emeril.freedesktop.org>
-References: <20210810081440.21803-1-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20210810081440.21803-1-janusz.krzysztofik@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaTkxNS9p?=
- =?utf-8?q?ntel=5Fmemory=5Fregion=3A_Add_missing_forward_declaration?=
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Subject: Re: [igt-dev] [RFC PATCH i-g-t 1/2] lib/core: Add igt_debug_on*
+ variants
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,207 +20,109 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7696643750383420684==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On wtorek, 10 sierpnia 2021 10:44:43 CEST Petri Latvala wrote:
+> On Mon, Aug 09, 2021 at 09:10:19PM +0200, Janusz Krzysztofik wrote:
+> > If a test calls a function which can return a failure, only the fact
+> > that the function failed can be reported to the caller, with no details
+> > on what actually failed inside.  It could be helpful if functions which
+> > perform several steps or iterations emitted debug messages with failure
+> > details.
+> > 
+> > To simplify coding and avoid code duplication in functions, igt_debug
+> > variants similar to igt_warn_on and friends could be useful.  Add them.
+> > 
+> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> 
+> 
+> This looks lovely.
+> 
+> Only thing I didn't like was that one double negative if statement
+> with if (!igt_debug_on(!cond)) but meh...
+> 
+> Series is
+> 
+> Acked-by: Petri Latvala <petri.latvala@intel.com>
 
-== Series Details ==
+Thanks Petri, pushed.
 
-Series: i915/intel_memory_region: Add missing forward declaration
-URL   : https://patchwork.freedesktop.org/series/93540/
-State : failure
+Janusz
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_10463 -> IGTPW_6107
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_6107 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_6107, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_6107:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-rkl-guc:         [PASS][1] -> [DMESG-WARN][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10463/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6107 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_suspend@basic-s0:
-    - fi-kbl-soraka:      [PASS][3] -> [INCOMPLETE][4] ([i915#155])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10463/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-kefka:       NOTRUN -> [INCOMPLETE][5] ([i915#2940])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
-
-  * igt@runner@aborted:
-    - fi-rkl-guc:         NOTRUN -> [FAIL][6] ([i915#1602])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/fi-rkl-guc/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-bsw-kefka:       [INCOMPLETE][7] -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10463/fi-bsw-kefka/igt@i915_selftest@live@hangcheck.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/fi-bsw-kefka/igt@i915_selftest@live@hangcheck.html
-
-  
-  [i915#155]: https://gitlab.freedesktop.org/drm/intel/issues/155
-  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
-  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
-
-
-Participating hosts (37 -> 33)
-------------------------------
-
-  Missing    (4): fi-bdw-samus fi-tgl-1115g4 fi-bsw-cyan bat-jsl-1 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6164 -> IGTPW_6107
-
-  CI-20190529: 20190529
-  CI_DRM_10463: 48b6a0d12e726a238c0d2dc0c39bda41566f5ff9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6107: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/index.html
-  IGT_6164: 7ed112d82c228e755fa773253a25f407bb20965b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/index.html
-
---===============7696643750383420684==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+> 
+> 
+> > ---
+> >  lib/igt_core.h | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 52 insertions(+)
+> > 
+> > diff --git a/lib/igt_core.h b/lib/igt_core.h
+> > index 6075d1539..8d433fc16 100644
+> > --- a/lib/igt_core.h
+> > +++ b/lib/igt_core.h
+> > @@ -1274,6 +1274,58 @@ extern enum igt_log_level igt_log_level;
+> >  		ret__; \
+> >  	})
+> >  
+> > +/**
+> > + * igt_debug_on:
+> > + * @condition: condition to test
+> > + *
+> > + * Print a IGT_LOG_DEBUG level message if a condition is met.
+> > + *
+> > + * Should be used when something fails in a function that doesn't perform
+> > + * a long jump in that case, and either performs several operations that
+> > + * can fail that way or doesn't return unambiguous error codes on failures.
+> > + * This is useful to streamline the test logic since it allows for
+> > + * replacing open conding with function calls without loosing ability to
+> > + * provide debug output with failure details.
+> > + *
+> > + * This macro also returns the value of @condition.
+> > + */
+> > +#define igt_debug_on(condition) ({ \
+> > +		typeof(condition) ret__ = (condition); \
+> > +		if (ret__) \
+> > +			igt_debug("Condition %s occurred in function %s, file %s:%i\n", \
+> > +				  #condition, __func__, __FILE__, __LINE__); \
+> > +		ret__; \
+> > +	})
+> > +
+> > +/**
+> > + * igt_debug_on_f:
+> > + * @condition: condition to test
+> > + * @...: format string and optional arguments
+> > + *
+> > + * Print a IGT_LOG_DEBUG level message if a condition is met.
+> > + *
+> > + * Should be used when something fails in a function that doesn't perform
+> > + * a long jump in that case, and performs one or more operations in a
+> > + * loop, each time with different values of parameters.  This is useful
+> > + * to streamline the test logic since it allows for replacing open conding
+> > + * with function calls without loosing ability to provide debug output
+> > + * with failure details.
+> > + *
+> > + * In addition to the plain igt_debug_on() helper this allows to print
+> > + * additional debug information to help debugging operation failures.
+> > + *
+> > + * It also returns the value of @condition.
+> > + */
+> > +#define igt_debug_on_f(condition, f...) ({ \
+> > +		typeof(condition) ret__ = (condition); \
+> > +		if (ret__) {\
+> > +			igt_debug("condition %s occurred in function %s, file %s:%i\n", \
+> > +				  #condition, __func__, __FILE__, __LINE__); \
+> > +			igt_debug(f); \
+> > +		} \
+> > +		ret__; \
+> > +	})
+> > +
+> >  void igt_set_timeout(unsigned int seconds,
+> >  		     const char *op);
+> >  
+> 
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
 
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>i915/intel_memory_region: Add missing forward declaration</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93540/">https://patchwork.freedesktop.org/series/93540/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10463 -&gt; IGTPW_6107</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_6107 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_6107, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/index.html</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6107:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10463/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6107 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10463/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/155">i915#155</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/fi-rkl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10463/fi-bsw-kefka/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/fi-bsw-kefka/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (37 -&gt; 33)</h2>
-<p>Missing    (4): fi-bdw-samus fi-tgl-1115g4 fi-bsw-cyan bat-jsl-1 </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6164 -&gt; IGTPW_6107</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10463: 48b6a0d12e726a238c0d2dc0c39bda41566f5ff9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6107: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6107/index.html<br />
-  IGT_6164: 7ed112d82c228e755fa773253a25f407bb20965b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============7696643750383420684==--
