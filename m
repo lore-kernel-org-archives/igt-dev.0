@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0139389E06
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:28:21 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 48D8889E0D
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:28:22 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 07:26:44 +0200
-Message-Id: <20210810052711.7866-39-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 07:26:48 +0200
+Message-Id: <20210810052711.7866-43-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 References: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 38/65] tests/gem_userptr_blits: Adopt to
- use allocator
+Subject: [igt-dev] [PATCH i-g-t v6 42/65] tests/i915_hangman: Adopt to use
+ allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,170 +32,79 @@ Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_userptr_blits.c | 44 +++++++++++++++++++++++++++-------
- 1 file changed, 35 insertions(+), 9 deletions(-)
+ tests/i915/i915_hangman.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index 532298dce..756bd6e47 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -100,6 +100,12 @@ static int copy(int fd, uint32_t dst, uint32_t src)
- 	struct drm_i915_gem_execbuffer2 exec;
- 	uint32_t handle;
- 	int ret, i=0;
-+	uint64_t dst_offset, src_offset, bb_offset;
-+	bool has_relocs = gem_has_relocations(fd);
-+
-+	bb_offset = 16 << 20;
-+	dst_offset = bb_offset + 4096;
-+	src_offset = dst_offset + WIDTH * HEIGHT * sizeof(uint32_t) * (src != dst);
+diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
+index ddead9493..4c18c22db 100644
+--- a/tests/i915/i915_hangman.c
++++ b/tests/i915/i915_hangman.c
+@@ -211,10 +211,12 @@ static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
+ 	uint32_t *batch;
+ 	igt_hang_t hang;
+ 	uint64_t offset;
++	uint64_t ahnd = get_reloc_ahnd(device, ctx->id);
  
- 	batch[i++] = XY_SRC_COPY_BLT_CMD |
- 		  XY_SRC_COPY_BLT_WRITE_ALPHA |
-@@ -114,14 +120,14 @@ static int copy(int fd, uint32_t dst, uint32_t src)
- 		  WIDTH*4;
- 	batch[i++] = 0; /* dst x1,y1 */
- 	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
--	batch[i++] = 0; /* dst reloc */
-+	batch[i++] = dst_offset; /* dst reloc */
- 	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = 0;
-+		batch[i++] = dst_offset >> 32;
- 	batch[i++] = 0; /* src x1,y1 */
- 	batch[i++] = WIDTH*4;
--	batch[i++] = 0; /* src reloc */
-+	batch[i++] = src_offset; /* src reloc */
- 	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = 0;
-+		batch[i++] = src_offset >> 32;
- 	batch[i++] = MI_BATCH_BUFFER_END;
- 	batch[i++] = MI_NOOP;
+ 	clear_error_state();
  
-@@ -148,19 +154,28 @@ static int copy(int fd, uint32_t dst, uint32_t src)
- 	memset(obj, 0, sizeof(obj));
+-	hang = igt_hang_ctx(device, ctx->id, ring_id, HANG_ALLOW_CAPTURE);
++	hang = igt_hang_ctx_with_ahnd(device, ahnd, ctx->id, ring_id,
++				      HANG_ALLOW_CAPTURE);
+ 	offset = hang.spin->obj[IGT_SPIN_BATCH].offset;
  
- 	obj[exec.buffer_count].handle = dst;
-+	obj[exec.buffer_count].offset = dst_offset;
- 	obj[exec.buffer_count].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+	if (!has_relocs)
-+		obj[exec.buffer_count].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
- 	exec.buffer_count++;
+ 	batch = gem_mmap__cpu(device, hang.spin->handle, 0, 4096, PROT_READ);
+@@ -224,6 +226,7 @@ static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
  
- 	if (src != dst) {
- 		obj[exec.buffer_count].handle = src;
-+		obj[exec.buffer_count].offset = src_offset;
- 		obj[exec.buffer_count].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+		if (!has_relocs)
-+			obj[exec.buffer_count].flags |= EXEC_OBJECT_PINNED;
- 		exec.buffer_count++;
- 	}
- 
- 	obj[exec.buffer_count].handle = handle;
--	obj[exec.buffer_count].relocation_count = 2;
-+	obj[exec.buffer_count].offset = bb_offset;
-+	obj[exec.buffer_count].relocation_count = has_relocs ? 2 : 0;
- 	obj[exec.buffer_count].relocs_ptr = to_user_pointer(reloc);
- 	obj[exec.buffer_count].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+	if (!has_relocs)
-+		obj[exec.buffer_count].flags |= EXEC_OBJECT_PINNED;
- 	exec.buffer_count++;
- 	exec.buffers_ptr = to_user_pointer(obj);
- 	exec.flags = HAS_BLT_RING(intel_get_drm_devid(fd)) ? I915_EXEC_BLT : 0;
-@@ -588,6 +603,7 @@ static void test_nohangcheck_hostile(int i915)
- 	int fence = -1;
- 	int err = 0;
- 	int dir;
-+	uint64_t ahnd;
- 
- 	/*
- 	 * Even if the user disables hangcheck, we must still recover.
-@@ -602,6 +618,7 @@ static void test_nohangcheck_hostile(int i915)
- 	ctx = intel_ctx_create_all_physical(i915);
- 	hang = igt_allow_hang(i915, ctx->id, 0);
- 	igt_require(__enable_hangcheck(dir, false));
-+	ahnd = get_reloc_ahnd(i915, ctx->id);
- 
- 	for_each_ctx_engine(i915, ctx, e) {
- 		igt_spin_t *spin;
-@@ -611,7 +628,7 @@ static void test_nohangcheck_hostile(int i915)
- 		gem_engine_property_printf(i915, e->name,
- 					   "preempt_timeout_ms", "%d", 50);
- 
--		spin = __igt_spin_new(i915, .ctx = ctx,
-+		spin = __igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
- 				      .engine = e->flags,
- 				      .flags = (IGT_SPIN_NO_PREEMPTION |
- 						IGT_SPIN_USERPTR |
-@@ -634,6 +651,7 @@ static void test_nohangcheck_hostile(int i915)
- 		}
- 	}
- 	intel_ctx_destroy(i915, ctx);
-+	put_ahnd(ahnd);
- 	igt_assert(fence != -1);
- 
- 	if (sync_fence_wait(fence, MSEC_PER_SEC)) { /* 640ms preempt-timeout */
-@@ -690,13 +708,15 @@ static void test_vma_merge(int i915)
- 	igt_spin_t *spin;
- 	uint32_t handle;
- 	void *addr;
-+	uint64_t ahnd = get_reloc_ahnd(i915, 0);
- 
- 	addr = mmap(NULL, sz, PROT_READ | PROT_WRITE,
- 		    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
- 
- 	gem_userptr(i915, addr + sz / 2, 4096, 0, userptr_flags, &handle);
- 
--	spin = igt_spin_new(i915, .dependency = handle, .flags = IGT_SPIN_FENCE_OUT);
-+	spin = igt_spin_new(i915, .ahnd = ahnd, .dependency = handle,
-+			    .flags = IGT_SPIN_FENCE_OUT);
- 	igt_assert(gem_bo_busy(i915, handle));
- 
- 	for (size_t x = 0; x < sz; x += 4096) {
-@@ -716,6 +736,7 @@ static void test_vma_merge(int i915)
- 	gem_sync(i915, spin->handle);
- 	igt_assert_eq(sync_fence_status(spin->out_fence), 1);
- 	igt_spin_free(i915, spin);
+ 	check_error_state(ring_name, offset, batch);
+ 	munmap(batch, 4096);
 +	put_ahnd(ahnd);
  }
  
- static void test_huge_split(int i915)
-@@ -725,6 +746,7 @@ static void test_huge_split(int i915)
- 	igt_spin_t *spin;
- 	uint32_t handle;
- 	void *addr;
-+	uint64_t ahnd = get_reloc_ahnd(i915, 0);
+ static void
+@@ -234,6 +237,7 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 	const intel_ctx_t *tmp_ctx;
+ 	igt_spin_t *spin, *next;
+ 	IGT_LIST_HEAD(list);
++	uint64_t ahnd = get_reloc_ahnd(device, ctx->id), ahndN;
  
- 	flags = MFD_HUGETLB;
- #if defined(MFD_HUGE_2MB)
-@@ -749,7 +771,8 @@ static void test_huge_split(int i915)
- 	madvise(addr, sz, MADV_HUGEPAGE);
+ 	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
+ 		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
+@@ -244,7 +248,10 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 			continue;
  
- 	gem_userptr(i915, addr + sz / 2 - 4096, 8192, 0, userptr_flags, &handle);
--	spin = igt_spin_new(i915, .dependency = handle, .flags = IGT_SPIN_FENCE_OUT);
-+	spin = igt_spin_new(i915, .ahnd = ahnd, .dependency = handle,
-+			    .flags = IGT_SPIN_FENCE_OUT);
- 	igt_assert(gem_bo_busy(i915, handle));
+ 		tmp_ctx = intel_ctx_create(device, &ctx->cfg);
+-		spin = __igt_spin_new(device, .ctx = tmp_ctx,
++		ahndN = get_reloc_ahnd(device, tmp_ctx->id);
++		spin = __igt_spin_new(device,
++				      .ahnd = ahndN,
++				      .ctx = tmp_ctx,
+ 				      .engine = other->flags,
+ 				      .flags = IGT_SPIN_FENCE_OUT);
+ 		intel_ctx_destroy(device, tmp_ctx);
+@@ -254,6 +261,7 @@ test_engine_hang(const intel_ctx_t *ctx,
  
- 	igt_assert(mmap(addr, 4096, PROT_READ,
-@@ -767,6 +790,7 @@ static void test_huge_split(int i915)
- 	gem_sync(i915, spin->handle);
- 	igt_assert_eq(sync_fence_status(spin->out_fence), 1);
- 	igt_spin_free(i915, spin);
+ 	/* And on the target engine, we hang */
+ 	spin = igt_spin_new(device,
++			    .ahnd = ahnd,
+ 			    .ctx = ctx,
+ 			    .engine = e->flags,
+ 			    .flags = (IGT_SPIN_FENCE_OUT |
+@@ -267,13 +275,16 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 
+ 	/* But no other engines/clients should be affected */
+ 	igt_list_for_each_entry_safe(spin, next, &list, link) {
++		ahndN = spin->ahnd;
+ 		igt_assert(sync_fence_wait(spin->out_fence, 0) == -ETIME);
+ 		igt_spin_end(spin);
+ 
+ 		igt_assert(sync_fence_wait(spin->out_fence, 500) == 0);
+ 		igt_assert_eq(sync_fence_status(spin->out_fence), 1);
+ 		igt_spin_free(device, spin);
++		put_ahnd(ahndN);
+ 	}
 +	put_ahnd(ahnd);
  }
  
- static int test_access_control(int fd)
-@@ -2353,8 +2377,10 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
- 		igt_subtest("userfault")
- 			test_userfault(fd);
- 
--		igt_subtest("relocations")
-+		igt_subtest("relocations") {
-+			igt_require(gem_has_relocations(fd));
- 			test_relocations(fd);
-+		}
- 	}
- 
- 	igt_subtest_group {
+ /* This test covers the case where we end up in an uninitialised area of the
 -- 
 2.26.0
