@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B54689DC2
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:28:21 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6E08589E59
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:27:48 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 07:26:34 +0200
-Message-Id: <20210810052711.7866-29-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 07:26:30 +0200
+Message-Id: <20210810052711.7866-25-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 References: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 28/65] tests/gem_mmap: Add allocator
- support
+Subject: [igt-dev] [PATCH i-g-t v6 24/65] tests/gem_exec_params: Support
+ gens without relocations
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -36,31 +36,149 @@ Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/i915/gem_mmap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/i915/gem_exec_params.c | 74 ++++++++++++++++++++++++++----------
+ 1 file changed, 53 insertions(+), 21 deletions(-)
 
-diff --git a/tests/i915/gem_mmap.c b/tests/i915/gem_mmap.c
-index a77c0ad60..61c9c5c19 100644
---- a/tests/i915/gem_mmap.c
-+++ b/tests/i915/gem_mmap.c
-@@ -123,8 +123,9 @@ test_pf_nonblock(int i915)
+diff --git a/tests/i915/gem_exec_params.c b/tests/i915/gem_exec_params.c
+index 729d38a43..ba79791a1 100644
+--- a/tests/i915/gem_exec_params.c
++++ b/tests/i915/gem_exec_params.c
+@@ -45,6 +45,8 @@
+ #include "igt_device.h"
+ #include "sw_sync.h"
+ 
++#define ALIGNMENT (1 << 22)
++
+ static bool has_exec_batch_first(int fd)
  {
- 	igt_spin_t *spin;
- 	uint32_t *ptr;
-+	uint64_t ahnd = get_reloc_ahnd(i915, 0);
+ 	int val = -1;
+@@ -74,24 +76,45 @@ static void test_batch_first(int fd)
+ 	struct drm_i915_gem_exec_object2 obj[3];
+ 	struct drm_i915_gem_relocation_entry reloc[2];
+ 	uint32_t *map, value;
++	uint64_t ahnd;
++	bool do_relocs = !gem_uses_ppgtt(fd);
+ 	int i;
  
--	spin = igt_spin_new(i915);
-+	spin = igt_spin_new(i915, .ahnd = ahnd);
+ 	igt_require(gem_can_store_dword(fd, 0));
+ 	igt_require(has_exec_batch_first(fd));
  
- 	igt_set_timeout(1, "initial pagefaulting did not complete within 1s");
++	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_SIMPLE);
++
+ 	memset(obj, 0, sizeof(obj));
+ 	memset(reloc, 0, sizeof(reloc));
  
-@@ -135,6 +136,7 @@ test_pf_nonblock(int i915)
- 	igt_reset_timeout();
+ 	obj[0].handle = gem_create(fd, 4096);
++	obj[0].offset = intel_allocator_alloc(ahnd, obj[0].handle,
++						4096, ALIGNMENT);
++	obj[0].offset = CANONICAL(obj[0].offset);
++	obj[0].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+ 	obj[1].handle = gem_create(fd, 4096);
++	obj[1].offset = intel_allocator_alloc(ahnd, obj[1].handle,
++						4096, ALIGNMENT);
++	obj[1].offset = CANONICAL(obj[1].offset);
++	obj[1].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+ 	obj[2].handle = gem_create(fd, 4096);
+-
+-	reloc[0].target_handle = obj[1].handle;
+-	reloc[0].offset = sizeof(uint32_t);
+-	reloc[0].read_domains = I915_GEM_DOMAIN_INSTRUCTION;
+-	reloc[0].write_domain = I915_GEM_DOMAIN_INSTRUCTION;
+-	obj[0].relocs_ptr = to_user_pointer(&reloc[0]);
+-	obj[0].relocation_count = 1;
++	obj[2].offset = intel_allocator_alloc(ahnd, obj[2].handle,
++						4096, ALIGNMENT);
++	obj[2].offset = CANONICAL(obj[2].offset);
++	obj[2].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++
++	if (do_relocs) {
++		reloc[0].target_handle = obj[1].handle;
++		reloc[0].offset = sizeof(uint32_t);
++		reloc[0].read_domains = I915_GEM_DOMAIN_INSTRUCTION;
++		reloc[0].write_domain = I915_GEM_DOMAIN_INSTRUCTION;
++		obj[0].relocs_ptr = to_user_pointer(&reloc[0]);
++		obj[0].relocation_count = 1;
++	} else {
++		obj[0].flags |= EXEC_OBJECT_PINNED;
++		obj[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
++	}
  
- 	igt_spin_free(i915, spin);
-+	put_ahnd(ahnd);
+ 	i = 0;
+ 	map = gem_mmap__cpu(fd, obj[0].handle, 0, 4096, PROT_WRITE);
+@@ -99,26 +122,31 @@ static void test_batch_first(int fd)
+ 			I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
+ 	map[i] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
+ 	if (gen >= 8) {
+-		map[++i] = 0;
+-		map[++i] = 0;
++		map[++i] = obj[1].offset;
++		map[++i] = obj[1].offset >> 32;
+ 	} else if (gen >= 4) {
+ 		map[++i] = 0;
+-		map[++i] = 0;
++		map[++i] = obj[1].offset;
+ 		reloc[0].offset += sizeof(uint32_t);
+ 	} else {
+ 		map[i]--;
+-		map[++i] = 0;
++		map[++i] = obj[1].offset;
+ 	}
+ 	map[++i] = 1;
+ 	map[++i] = MI_BATCH_BUFFER_END;
+ 	munmap(map, 4096);
+ 
+-	reloc[1].target_handle = obj[1].handle;
+-	reloc[1].offset = sizeof(uint32_t);
+-	reloc[1].read_domains = I915_GEM_DOMAIN_INSTRUCTION;
+-	reloc[1].write_domain = I915_GEM_DOMAIN_INSTRUCTION;
+-	obj[2].relocs_ptr = to_user_pointer(&reloc[1]);
+-	obj[2].relocation_count = 1;
++	if (do_relocs) {
++		reloc[1].target_handle = obj[1].handle;
++		reloc[1].offset = sizeof(uint32_t);
++		reloc[1].read_domains = I915_GEM_DOMAIN_INSTRUCTION;
++		reloc[1].write_domain = I915_GEM_DOMAIN_INSTRUCTION;
++		obj[2].relocs_ptr = to_user_pointer(&reloc[1]);
++		obj[2].relocation_count = 1;
++	} else {
++		obj[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
++		obj[2].flags |= EXEC_OBJECT_PINNED;
++	}
+ 
+ 	i = 0;
+ 	map = gem_mmap__cpu(fd, obj[2].handle, 0, 4096, PROT_WRITE);
+@@ -126,15 +154,15 @@ static void test_batch_first(int fd)
+ 			I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
+ 	map[i] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
+ 	if (gen >= 8) {
+-		map[++i] = 0;
+-		map[++i] = 0;
++		map[++i] = obj[1].offset;
++		map[++i] = obj[1].offset >> 32;
+ 	} else if (gen >= 4) {
+ 		map[++i] = 0;
+-		map[++i] = 0;
++		map[++i] = obj[1].offset;
+ 		reloc[1].offset += sizeof(uint32_t);
+ 	} else {
+ 		map[i]--;
+-		map[++i] = 0;
++		map[++i] = obj[1].offset;
+ 	}
+ 	map[++i] = 2;
+ 	map[++i] = MI_BATCH_BUFFER_END;
+@@ -158,8 +186,12 @@ static void test_batch_first(int fd)
+ 	igt_assert_eq_u32(value, 1);
+ 
+ 	gem_close(fd, obj[2].handle);
++	intel_allocator_free(ahnd, obj[2].handle);
+ 	gem_close(fd, obj[1].handle);
++	intel_allocator_free(ahnd, obj[1].handle);
+ 	gem_close(fd, obj[0].handle);
++	intel_allocator_free(ahnd, obj[0].handle);
++	intel_allocator_close(ahnd);
  }
  
- static int mmap_ioctl(int i915, struct drm_i915_gem_mmap *arg)
+ static int has_secure_batches(const int fd)
 -- 
 2.26.0
