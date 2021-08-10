@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E1C689F1B
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 08:42:03 +0000 (UTC)
-Date: Tue, 10 Aug 2021 11:44:43 +0300
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2040B89F4F
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 08:46:10 +0000 (UTC)
+Date: Tue, 10 Aug 2021 11:48:50 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YRI8e3vKxxsFVi4C@platvala-desk.ger.corp.intel.com>
-References: <20210809191020.18960-1-janusz.krzysztofik@linux.intel.com>
+Message-ID: <YRI9ch5fTTyoihUN@platvala-desk.ger.corp.intel.com>
+References: <20210810081440.21803-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <20210809191020.18960-1-janusz.krzysztofik@linux.intel.com>
-Subject: Re: [igt-dev] [RFC PATCH i-g-t 1/2] lib/core: Add igt_debug_on*
- variants
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210810081440.21803-1-janusz.krzysztofik@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/intel_memory_region: Add missing
+ forward declaration
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,99 +23,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Andrzej Turko <andrzej.turko@linux.intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Aug 09, 2021 at 09:10:19PM +0200, Janusz Krzysztofik wrote:
-> If a test calls a function which can return a failure, only the fact
-> that the function failed can be reported to the caller, with no details
-> on what actually failed inside.  It could be helpful if functions which
-> perform several steps or iterations emitted debug messages with failure
-> details.
+On Tue, Aug 10, 2021 at 10:14:40AM +0200, Janusz Krzysztofik wrote:
+> Intel memory region header declares some functions with a pointer to a
+> structure defined elsewhere as one of their arguments.  Forward declare
+> that structure to avoid compiler warnings.
 > 
-> To simplify coding and avoid code duplication in functions, igt_debug
-> variants similar to igt_warn_on and friends could be useful.  Add them.
+> ../lib/i915/intel_memory_region.h:69:19: warning: ‘struct drm_i915_gem_memory_class_instance’ declared inside parameter list will not be visible outside of this definition or declaration
+>    69 |            struct drm_i915_gem_memory_class_instance *mem_regions,
+>       |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> ../lib/i915/intel_memory_region.h:73:15: warning: ‘struct drm_i915_gem_memory_class_instance’ declared inside parameter list will not be visible outside of this definition or declaration
+>    73 |        struct drm_i915_gem_memory_class_instance *mem_regions,
+>       |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 > 
 > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-
-
-This looks lovely.
-
-Only thing I didn't like was that one double negative if statement
-with if (!igt_debug_on(!cond)) but meh...
-
-Series is
-
-Acked-by: Petri Latvala <petri.latvala@intel.com>
-
-
 > ---
->  lib/igt_core.h | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 52 insertions(+)
+>  lib/i915/intel_memory_region.h | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/lib/igt_core.h b/lib/igt_core.h
-> index 6075d1539..8d433fc16 100644
-> --- a/lib/igt_core.h
-> +++ b/lib/igt_core.h
-> @@ -1274,6 +1274,58 @@ extern enum igt_log_level igt_log_level;
->  		ret__; \
->  	})
+> diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
+> index e9d1d66d4..8cd18ea0e 100644
+> --- a/lib/i915/intel_memory_region.h
+> +++ b/lib/i915/intel_memory_region.h
+> @@ -62,6 +62,8 @@ uint8_t gem_get_lmem_region_count(int fd);
 >  
-> +/**
-> + * igt_debug_on:
-> + * @condition: condition to test
-> + *
-> + * Print a IGT_LOG_DEBUG level message if a condition is met.
-> + *
-> + * Should be used when something fails in a function that doesn't perform
-> + * a long jump in that case, and either performs several operations that
-> + * can fail that way or doesn't return unambiguous error codes on failures.
-> + * This is useful to streamline the test logic since it allows for
-> + * replacing open conding with function calls without loosing ability to
-> + * provide debug output with failure details.
-> + *
-> + * This macro also returns the value of @condition.
-> + */
-> +#define igt_debug_on(condition) ({ \
-> +		typeof(condition) ret__ = (condition); \
-> +		if (ret__) \
-> +			igt_debug("Condition %s occurred in function %s, file %s:%i\n", \
-> +				  #condition, __func__, __FILE__, __LINE__); \
-> +		ret__; \
-> +	})
-> +
-> +/**
-> + * igt_debug_on_f:
-> + * @condition: condition to test
-> + * @...: format string and optional arguments
-> + *
-> + * Print a IGT_LOG_DEBUG level message if a condition is met.
-> + *
-> + * Should be used when something fails in a function that doesn't perform
-> + * a long jump in that case, and performs one or more operations in a
-> + * loop, each time with different values of parameters.  This is useful
-> + * to streamline the test logic since it allows for replacing open conding
-> + * with function calls without loosing ability to provide debug output
-> + * with failure details.
-> + *
-> + * In addition to the plain igt_debug_on() helper this allows to print
-> + * additional debug information to help debugging operation failures.
-> + *
-> + * It also returns the value of @condition.
-> + */
-> +#define igt_debug_on_f(condition, f...) ({ \
-> +		typeof(condition) ret__ = (condition); \
-> +		if (ret__) {\
-> +			igt_debug("condition %s occurred in function %s, file %s:%i\n", \
-> +				  #condition, __func__, __FILE__, __LINE__); \
-> +			igt_debug(f); \
-> +		} \
-> +		ret__; \
-> +	})
-> +
->  void igt_set_timeout(unsigned int seconds,
->  		     const char *op);
+>  bool gem_has_lmem(int fd);
 >  
+> +struct drm_i915_gem_memory_class_instance;
+> +
+
+
+You want to avoid an #include <i915_drm.h> ?
+
+
+-- 
+Petri Latvala
+
+
+
+>  int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t size,
+>  				       struct drm_i915_gem_memory_class_instance *mem_regions,
+>  				       int num_regions);
 > -- 
 > 2.25.1
 > 
