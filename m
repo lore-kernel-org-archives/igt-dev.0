@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D7216E029
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 10:54:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B7956E046
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 10:54:21 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 12:53:17 +0200
-Message-Id: <20210810105323.31375-49-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 12:53:15 +0200
+Message-Id: <20210810105323.31375-47-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810105323.31375-1-zbigniew.kempczynski@intel.com>
 References: <20210810105323.31375-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 48/54] tests/kms_flip: Adopt to use
+Subject: [igt-dev] [PATCH i-g-t v7 46/54] tests/kms_busy: Adopt to use
  allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -24,67 +24,84 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+For newer gens we're not able to rely on relocations. Adopt to use
+offsets acquired from the allocator.
 
-For newer gens kernel will reject relocations returning -EINVAL
-so we should just provide the allocator handle to inject the hang.
-
-V2:
-* Drop is_i915_device() check
-
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/kms_flip.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ tests/kms_busy.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index f2fce8d2a..b4836a44d 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -616,9 +616,9 @@ static void recreate_fb(struct test_output *o)
- 	o->fb_info[o->current_fb_id].fb_id = new_fb_id;
+diff --git a/tests/kms_busy.c b/tests/kms_busy.c
+index a60ff6b05..6cbdfa66a 100644
+--- a/tests/kms_busy.c
++++ b/tests/kms_busy.c
+@@ -78,11 +78,13 @@ static void flip_to_fb(igt_display_t *dpy, int pipe,
+ 	struct pollfd pfd = { .fd = dpy->drm_fd, .events = POLLIN };
+ 	struct drm_event_vblank ev;
+ 	IGT_CORK_FENCE(cork);
++	uint64_t ahnd = get_reloc_ahnd(dpy->drm_fd, 0);
+ 	igt_spin_t *t;
+ 	int fence;
+ 
+ 	fence = igt_cork_plug(&cork, dpy->drm_fd);
+ 	t = igt_spin_new(dpy->drm_fd,
++			 .ahnd = ahnd,
+ 			 .fence = fence,
+ 			 .dependency = fb->gem_handle,
+ 			 .flags = IGT_SPIN_FENCE_IN);
+@@ -130,6 +132,7 @@ static void flip_to_fb(igt_display_t *dpy, int pipe,
+ 	}
+ 
+ 	igt_spin_free(dpy->drm_fd, t);
++	put_ahnd(ahnd);
  }
  
--static igt_hang_t hang_gpu(int fd)
-+static igt_hang_t hang_gpu(int fd, uint64_t ahnd)
+ static void test_flip(igt_display_t *dpy, int pipe, bool modeset)
+@@ -183,7 +186,9 @@ static void test_flip(igt_display_t *dpy, int pipe, bool modeset)
+ static void test_atomic_commit_hang(igt_display_t *dpy, igt_plane_t *primary,
+ 				    struct igt_fb *busy_fb)
  {
--	return igt_hang_ring(fd, I915_EXEC_DEFAULT);
-+	return igt_hang_ring_with_ahnd(fd, I915_EXEC_DEFAULT, ahnd);
++	uint64_t ahnd = get_reloc_ahnd(dpy->drm_fd, 0);
+ 	igt_spin_t *t = igt_spin_new(dpy->drm_fd,
++				     .ahnd = ahnd,
+ 				     .dependency = busy_fb->gem_handle,
+ 				     .flags = IGT_SPIN_NO_PREEMPTION);
+ 	struct pollfd pfd = { .fd = dpy->drm_fd, .events = POLLIN };
+@@ -214,6 +219,7 @@ static void test_atomic_commit_hang(igt_display_t *dpy, igt_plane_t *primary,
+ 	igt_assert(read(dpy->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
+ 
+ 	igt_spin_end(t);
++	put_ahnd(ahnd);
  }
  
- static void unhang_gpu(int fd, igt_hang_t hang)
-@@ -675,6 +675,7 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
- 	struct vblank_reply vbl_reply;
- 	unsigned int target_seq;
- 	igt_hang_t hang;
-+	uint64_t ahnd = 0;
+ static void test_hang(igt_display_t *dpy,
+@@ -265,6 +271,7 @@ static void test_pageflip_modeset_hang(igt_display_t *dpy, enum pipe pipe)
+ 	igt_output_t *output;
+ 	igt_plane_t *primary;
+ 	igt_spin_t *t;
++	uint64_t ahnd = get_reloc_ahnd(dpy->drm_fd, 0);
  
- 	target_seq = o->vblank_state.seq_step;
- 	/* Absolute waits only works once we have a frame counter. */
-@@ -776,8 +777,10 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
- 	igt_print_activity();
+ 	output = set_fb_on_crtc(dpy, pipe, &fb);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+@@ -272,6 +279,7 @@ static void test_pageflip_modeset_hang(igt_display_t *dpy, enum pipe pipe)
+ 	igt_display_commit2(dpy, dpy->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
  
- 	memset(&hang, 0, sizeof(hang));
--	if (do_flip && (o->flags & TEST_HANG))
--		hang = hang_gpu(drm_fd);
-+	if (do_flip && (o->flags & TEST_HANG)) {
-+		ahnd = get_reloc_ahnd(drm_fd, 0);
-+		hang = hang_gpu(drm_fd, ahnd);
-+	}
+ 	t = igt_spin_new(dpy->drm_fd,
++			 .ahnd = ahnd,
+ 			 .dependency = fb.gem_handle,
+ 			 .flags = IGT_SPIN_NO_PREEMPTION);
  
- 	/* try to make sure we can issue two flips during the same frame */
- 	if (do_flip && (o->flags & TEST_EBUSY)) {
-@@ -847,6 +850,7 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
- 		igt_assert(do_page_flip(o, new_fb_id, false) == expected_einval);
+@@ -285,6 +293,7 @@ static void test_pageflip_modeset_hang(igt_display_t *dpy, enum pipe pipe)
+ 	igt_assert(read(dpy->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
  
- 	unhang_gpu(drm_fd, hang);
+ 	igt_spin_end(t);
 +	put_ahnd(ahnd);
  
- 	*events = completed_events;
- 
+ 	igt_remove_fb(dpy->drm_fd, &fb);
+ }
 -- 
 2.26.0
