@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 59C1F89DEA
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F9B989E08
  for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:28:22 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 07:26:49 +0200
-Message-Id: <20210810052711.7866-44-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 07:26:46 +0200
+Message-Id: <20210810052711.7866-41-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 References: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 43/65] tests/i915_module_load: Adopt to
- use allocator
+Subject: [igt-dev] [PATCH i-g-t v6 40/65] tests/gem_watchdog: Adopt to use
+ no-reloc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,70 +32,67 @@ Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/i915_module_load.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ tests/i915/gem_watchdog.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-index 08bc7aefd..a86dd86cd 100644
---- a/tests/i915/i915_module_load.c
-+++ b/tests/i915/i915_module_load.c
-@@ -42,6 +42,7 @@ static void store_all(int i915)
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
- 	uint32_t engines[I915_EXEC_RING_MASK + 1];
- 	uint32_t batch[16];
-+	uint64_t ahnd, offset, bb_offset;
- 	unsigned int sz = ALIGN(sizeof(batch) * ARRAY_SIZE(engines), 4096);
- 	struct drm_i915_gem_relocation_entry reloc = {
- 		.offset = sizeof(uint32_t),
-@@ -91,6 +92,12 @@ static void store_all(int i915)
- 	cs = gem_mmap__device_coherent(i915, obj[1].handle, 0, sz, PROT_WRITE);
+diff --git a/tests/i915/gem_watchdog.c b/tests/i915/gem_watchdog.c
+index 4d4aaee48..db562335a 100644
+--- a/tests/i915/gem_watchdog.c
++++ b/tests/i915/gem_watchdog.c
+@@ -111,10 +111,13 @@ static void physical(int i915, const intel_ctx_t *ctx)
+ 	unsigned int num_engines, i, count;
+ 	const struct intel_execution_engine2 *e;
+ 	igt_spin_t *spin[GEM_MAX_ENGINES];
++	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
  
- 	ctx = intel_ctx_create_all_physical(i915);
-+	ahnd = get_reloc_ahnd(i915, ctx->id);
-+	if (ahnd)
-+		obj[1].relocation_count = 0;
-+	bb_offset = get_offset(ahnd, obj[1].handle, sz, 4096);
-+	offset = get_offset(ahnd, obj[0].handle, sizeof(engines), 0);
-+
+ 	i = 0;
  	for_each_ctx_engine(i915, ctx, e) {
- 		uint64_t addr;
+-		spin[i] = igt_spin_new(i915, .ctx = ctx,
++		spin[i] = igt_spin_new(i915,
++				       .ahnd = ahnd,
++				       .ctx = ctx,
+ 				       .engine = e->flags,
+ 				       .flags = spin_flags());
+ 		i++;
+@@ -125,6 +128,7 @@ static void physical(int i915, const intel_ctx_t *ctx)
  
-@@ -100,6 +107,16 @@ static void store_all(int i915)
- 		if (!gem_class_can_store_dword(i915, e->class))
- 			continue;
- 
-+		if (ahnd) {
-+			i = 1;
-+			batch[i++] = offset + reloc.delta;
-+			batch[i++] = offset >> 32;
-+			obj[0].offset = offset;
-+			obj[0].flags |= EXEC_OBJECT_PINNED;
-+			obj[1].offset = bb_offset;
-+			obj[1].flags |= EXEC_OBJECT_PINNED;
-+		}
-+
- 		batch[value] = nengine;
- 
- 		execbuf.flags = e->flags;
-@@ -109,7 +126,8 @@ static void store_all(int i915)
- 		execbuf.rsvd1 = ctx->id;
- 
- 		memcpy(cs + execbuf.batch_start_offset, batch, sizeof(batch));
--		memcpy(cs + reloc.offset, &addr, reloc_sz);
-+		if (!ahnd)
-+			memcpy(cs + reloc.offset, &addr, reloc_sz);
- 		gem_execbuf(i915, &execbuf);
- 
- 		if (++nengine == ARRAY_SIZE(engines))
-@@ -126,6 +144,9 @@ static void store_all(int i915)
- 	gem_read(i915, obj[0].handle, 0, engines, nengine * sizeof(engines[0]));
- 	gem_close(i915, obj[0].handle);
- 	intel_ctx_destroy(i915, ctx);
-+	put_offset(ahnd, obj[0].handle);
-+	put_offset(ahnd, obj[1].handle);
+ 	for (i = 0; i < num_engines; i++)
+ 		igt_spin_free(i915, spin[i]);
 +	put_ahnd(ahnd);
  
- 	for (i = 0; i < nengine; i++)
- 		igt_assert_eq_u32(engines[i], i);
+ 	igt_assert_eq(count, num_engines);
+ }
+@@ -216,6 +220,7 @@ static void virtual(int i915, const intel_ctx_cfg_t *base_cfg)
+ 	unsigned int expect = num_engines;
+ 	intel_ctx_cfg_t cfg = {};
+ 	const intel_ctx_t *ctx[num_engines];
++	uint64_t ahnd;
+ 
+ 	igt_require(gem_has_execlists(i915));
+ 
+@@ -239,10 +244,12 @@ static void virtual(int i915, const intel_ctx_cfg_t *base_cfg)
+ 			igt_assert(i < num_engines);
+ 
+ 			ctx[i] = intel_ctx_create(i915, &cfg);
++			ahnd = get_reloc_ahnd(i915, ctx[i]->id);
+ 
+ 			set_load_balancer(i915, ctx[i]->id, ci, count, NULL);
+ 
+ 			spin[i] = igt_spin_new(i915,
++					       .ahnd = ahnd,
+ 					       .ctx = ctx[i],
+ 					       .flags = spin_flags());
+ 			i++;
+@@ -254,8 +261,10 @@ static void virtual(int i915, const intel_ctx_cfg_t *base_cfg)
+ 	count = wait_timeout(i915, spin, num_engines, wait_us, expect);
+ 
+ 	for (i = 0; i < num_engines && spin[i]; i++) {
++		ahnd = spin[i]->ahnd;
+ 		igt_spin_free(i915, spin[i]);
+ 		intel_ctx_destroy(i915, ctx[i]);
++		put_ahnd(ahnd);
+ 	}
+ 
+ 	igt_assert_eq(count, expect);
 -- 
 2.26.0
