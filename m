@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDC0B89FEA
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 16:15:50 +0000 (UTC)
+From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Date: Tue, 10 Aug 2021 16:15:47 +0000
+Message-ID: <7846295c7d9b442d8ff570a679407fc5@intel.com>
+References: <20210810081440.21803-1-janusz.krzysztofik@linux.intel.com>
+ <162858955462.29684.17917451402216559507@emeril.freedesktop.org>
+ <3122319.aeNJFYEL58@jkrzyszt-mobl1.ger.corp.intel.com>
+In-Reply-To: <3122319.aeNJFYEL58@jkrzyszt-mobl1.ger.corp.intel.com>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 10 Aug 2021 16:06:35 -0000
-Message-ID: <162861159585.29682.4050838555705102380@emeril.freedesktop.org>
-References: <20210810120914.2543884-1-ayaz.siddiqui@intel.com>
-In-Reply-To: <20210810120914.2543884-1-ayaz.siddiqui@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_l?=
- =?utf-8?q?ib/rendercopy=5Fgen9=3A_Program_platform_specific_MOCS_index_?=
- =?utf-8?b?KHJldjIp?=
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaTkxNS9p?=
+ =?utf-8?q?ntel=5Fmemory=5Fregion=3A_Add_missing_forward_declaration?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,134 +23,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Illipilli, TejasreeX" <tejasreex.illipilli@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: lib/rendercopy_gen9: Program platform specific MOCS index (rev2)
-URL   : https://patchwork.freedesktop.org/series/93337/
-State : warning
-
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/378501 for the overview.
-
-test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12657136):
-  298/305 assembler test/rndd                     OK       0.02 s 
-  299/305 assembler test/rndu                     OK       0.01 s 
-  300/305 assembler test/rnde                     OK       0.01 s 
-  301/305 assembler test/rnde-intsrc              OK       0.01 s 
-  302/305 assembler test/rndz                     OK       0.02 s 
-  303/305 assembler test/lzd                      OK       0.01 s 
-  304/305 assembler test/not                      OK       0.01 s 
-  305/305 assembler test/immediate                OK       0.01 s 
-  
-  Ok:                  280
-  Expected Fail:         0
-  Fail:                  0
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:              25
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1628611157:step_script
-  ERROR: Job failed: execution took longer than 1h0m0s seconds
-  
-
-test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12657139):
-  Traceback (most recent call last):
-    File "/usr/lib/python3/dist-packages/mesonbuild/mesonmain.py", line 112, in run
-      return options.run_func(options)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
-      return th.doit()
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
-      self.run_tests(tests)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
-      self.drain_futures(futures)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
-      self.print_stats(numlen, tests, name, result.result(), i)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
-      result_str += "\n\n" + result.get_log()
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
-      res += self.stde
-  TypeError: can only concatenate str (not "bytes") to str
-    1/291 lib igt_assert                          TIMEOUT 32.09 s 
-  section_end:1628611180:step_script
-  ERROR: Job failed: execution took longer than 1h0m0s seconds
-  
-
-test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12657310):
-  Traceback (most recent call last):
-    File "/usr/lib/python3/dist-packages/mesonbuild/mesonmain.py", line 112, in run
-      return options.run_func(options)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
-      return th.doit()
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
-      self.run_tests(tests)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
-      self.drain_futures(futures)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
-      self.print_stats(numlen, tests, name, result.result(), i)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
-      result_str += "\n\n" + result.get_log()
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
-      res += self.stde
-  TypeError: can only concatenate str (not "bytes") to str
-    1/291 lib igt_assert                          TIMEOUT 32.06 s 
-  section_end:1628611325:step_script
-  ERROR: Job failed: execution took longer than 1h0m0s seconds
-  
-
-test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12657137):
-  298/305 assembler test/rndd                     OK       0.02 s 
-  299/305 assembler test/rndu                     OK       0.01 s 
-  300/305 assembler test/rnde                     OK       0.02 s 
-  301/305 assembler test/rnde-intsrc              OK       0.01 s 
-  302/305 assembler test/rndz                     OK       0.02 s 
-  303/305 assembler test/lzd                      OK       0.02 s 
-  304/305 assembler test/not                      OK       0.02 s 
-  305/305 assembler test/immediate                OK       0.01 s 
-  
-  Ok:                  280
-  Expected Fail:         0
-  Fail:                  0
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:              25
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1628611157:step_script
-  ERROR: Job failed: execution took longer than 1h0m0s seconds
-  
-
-test:ninja-test-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12657138):
-   1/24 lib igt_assert                          TIMEOUT 32.02 s 
-  Traceback (most recent call last):
-    File "/usr/lib/python3/dist-packages/mesonbuild/mesonmain.py", line 112, in run
-      return options.run_func(options)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
-      return th.doit()
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
-      self.run_tests(tests)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
-      self.drain_futures(futures)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
-      self.print_stats(numlen, tests, name, result.result(), i)
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
-      result_str += "\n\n" + result.get_log()
-    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
-      res += self.stde
-  TypeError: can only concatenate str (not "bytes") to str
-  section_end:1628611160:step_script
-  ERROR: Job failed: execution took longer than 1h0m0s seconds
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/378501
+UmUtcmVwb3J0ZWQuDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBKYW51c3og
+S3J6eXN6dG9maWsgPGphbnVzei5rcnp5c3p0b2Zpa0BsaW51eC5pbnRlbC5jb20+IA0KU2VudDog
+VHVlc2RheSwgQXVndXN0IDEwLCAyMDIxIDM6MjkgQU0NClRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVk
+ZXNrdG9wLm9yZw0KQ2M6IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBWdWR1bSwgTGFr
+c2htaW5hcmF5YW5hIDxsYWtzaG1pbmFyYXlhbmEudnVkdW1AaW50ZWwuY29tPjsgSWxsaXBpbGxp
+LCBUZWphc3JlZVggPHRlamFzcmVleC5pbGxpcGlsbGlAaW50ZWwuY29tPg0KU3ViamVjdDogUmU6
+IOKclyBGaS5DSS5CQVQ6IGZhaWx1cmUgZm9yIGk5MTUvaW50ZWxfbWVtb3J5X3JlZ2lvbjogQWRk
+IG1pc3NpbmcgZm9yd2FyZCBkZWNsYXJhdGlvbg0KDQpPbiB3dG9yZWssIDEwIHNpZXJwbmlhIDIw
+MjEgMTE6NTk6MTQgQ0VTVCBQYXRjaHdvcmsgd3JvdGU6DQo+ID09IFNlcmllcyBEZXRhaWxzID09
+DQo+IA0KPiBTZXJpZXM6IGk5MTUvaW50ZWxfbWVtb3J5X3JlZ2lvbjogQWRkIG1pc3NpbmcgZm9y
+d2FyZCBkZWNsYXJhdGlvbg0KPiBVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9w
+Lm9yZy9zZXJpZXMvOTM1NDAvDQo+IFN0YXRlIDogZmFpbHVyZQ0KPiANCj4gPT0gU3VtbWFyeSA9
+PQ0KPiANCj4gQ0kgQnVnIExvZyAtIGNoYW5nZXMgZnJvbSBDSV9EUk1fMTA0NjMgLT4gSUdUUFdf
+NjEwNyANCj4gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PQ0KPiANCj4gU3VtbWFyeQ0KPiAtLS0tLS0tDQo+IA0KPiAgICoqRkFJTFVSRSoqDQo+IA0K
+PiAgIFNlcmlvdXMgdW5rbm93biBjaGFuZ2VzIGNvbWluZyB3aXRoIElHVFBXXzYxMDcgYWJzb2x1
+dGVseSBuZWVkIHRvIGJlDQo+ICAgdmVyaWZpZWQgbWFudWFsbHkuDQo+ICAgDQo+ICAgSWYgeW91
+IHRoaW5rIHRoZSByZXBvcnRlZCBjaGFuZ2VzIGhhdmUgbm90aGluZyB0byBkbyB3aXRoIHRoZSBj
+aGFuZ2VzDQo+ICAgaW50cm9kdWNlZCBpbiBJR1RQV182MTA3LCBwbGVhc2Ugbm90aWZ5IHlvdXIg
+YnVnIHRlYW0gdG8gYWxsb3cgdGhlbQ0KPiAgIHRvIGRvY3VtZW50IHRoaXMgbmV3IGZhaWx1cmUg
+bW9kZSwgd2hpY2ggd2lsbCByZWR1Y2UgZmFsc2UgcG9zaXRpdmVzIGluIENJLg0KPiANCj4gICBF
+eHRlcm5hbCBVUkw6IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlw
+L0lHVFBXXzYxMDcvaW5kZXguaHRtbA0KPiANCj4gUG9zc2libGUgbmV3IGlzc3Vlcw0KPiAtLS0t
+LS0tLS0tLS0tLS0tLS0tDQo+IA0KPiAgIEhlcmUgYXJlIHRoZSB1bmtub3duIGNoYW5nZXMgdGhh
+dCBtYXkgaGF2ZSBiZWVuIGludHJvZHVjZWQgaW4gSUdUUFdfNjEwNzoNCj4gDQo+ICMjIyBJR1Qg
+Y2hhbmdlcyAjIyMNCj4gDQo+ICMjIyMgUG9zc2libGUgcmVncmVzc2lvbnMgIyMjIw0KPiANCj4g
+ICAqIGlndEBjb3JlX2hvdHVucGx1Z0B1bmJpbmQtcmViaW5kOg0KPiAgICAgLSBmaS1ya2wtZ3Vj
+OiAgICAgICAgIFtQQVNTXVsxXSAtPiBbRE1FU0ctV0FSTl1bMl0NCj4gICAgWzFdOiBodHRwczov
+L2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV8xMDQ2My9maS1ya2wtZ3Vj
+L2lndEBjb3JlX2hvdHVucGx1Z0B1bmJpbmQtcmViaW5kLmh0bWwNCj4gICAgWzJdOiANCj4gaHR0
+cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV182MTA3L2ZpLXJrbC1n
+dWMvaWd0QGNvcg0KPiBlX2hvdHVucGx1Z0B1bmJpbmQtcmViaW5kLmh0bWwNCg0KTm90IHJlbGF0
+ZWQgdG8gdGhlIGNoYW5nZSwgbG9va3Mgc2ltaWxhciB0byBodHRwczovL2dpdGxhYi5mcmVlZGVz
+a3RvcC5vcmcvZHJtL2ludGVsLy0vaXNzdWVzLzM5MjUuDQoNClRoYW5rcywNCkphbnVzeg0KDQo+
+IA0KPiAgIA0KPiBLbm93biBpc3N1ZXMNCj4gLS0tLS0tLS0tLS0tDQo+IA0KPiAgIEhlcmUgYXJl
+IHRoZSBjaGFuZ2VzIGZvdW5kIGluIElHVFBXXzYxMDcgdGhhdCBjb21lIGZyb20ga25vd24gaXNz
+dWVzOg0KPiANCj4gIyMjIElHVCBjaGFuZ2VzICMjIw0KPiANCj4gIyMjIyBJc3N1ZXMgaGl0ICMj
+IyMNCj4gDQo+ICAgKiBpZ3RAZ2VtX2V4ZWNfc3VzcGVuZEBiYXNpYy1zMDoNCj4gICAgIC0gZmkt
+a2JsLXNvcmFrYTogICAgICBbUEFTU11bM10gLT4gW0lOQ09NUExFVEVdWzRdIChbaTkxNSMxNTVd
+KQ0KPiAgICBbM106IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvQ0lf
+RFJNXzEwNDYzL2ZpLWtibC1zb3Jha2EvaWd0QGdlbV9leGVjX3N1c3BlbmRAYmFzaWMtczAuaHRt
+bA0KPiAgICBbNF06IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlw
+L0lHVFBXXzYxMDcvZmkta2JsLXNvcmFrYS9pZ3RADQo+IGdlbV9leGVjX3N1c3BlbmRAYmFzaWMt
+czAuaHRtbA0KPiANCj4gICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAZXhlY2xpc3RzOg0KPiAg
+ICAgLSBmaS1ic3cta2Vma2E6ICAgICAgIE5PVFJVTiAtPiBbSU5DT01QTEVURV1bNV0gKFtpOTE1
+IzI5NDBdKQ0KPiAgICBbNV06IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9k
+cm0tdGlwL0lHVFBXXzYxMDcvZmktYnN3LWtlZmthL2lndEBpDQo+IDkxNV9zZWxmdGVzdEBsaXZl
+QGV4ZWNsaXN0cy5odG1sDQo+IA0KPiAgICogaWd0QHJ1bm5lckBhYm9ydGVkOg0KPiAgICAgLSBm
+aS1ya2wtZ3VjOiAgICAgICAgIE5PVFJVTiAtPiBbRkFJTF1bNl0gKFtpOTE1IzE2MDJdKQ0KPiAg
+ICBbNl06IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBX
+XzYxMDcvZmktcmtsLWd1Yy9pZ3RAcnVuDQo+IG5lckBhYm9ydGVkLmh0bWwNCj4gDQo+ICAgDQo+
+ICMjIyMgUG9zc2libGUgZml4ZXMgIyMjIw0KPiANCj4gICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxp
+dmVAaGFuZ2NoZWNrOg0KPiAgICAgLSBmaS1ic3cta2Vma2E6ICAgICAgIFtJTkNPTVBMRVRFXVs3
+XSAtPiBbUEFTU11bOF0NCj4gICAgWzddOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJl
+ZS9kcm0tdGlwL0NJX0RSTV8xMDQ2My9maS1ic3cta2Vma2EvaWd0QGk5MTVfc2VsZnRlc3RAbGl2
+ZUBoYW5nY2hlY2suaHRtbA0KPiAgICBbOF06IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5v
+cmcvdHJlZS9kcm0tdGlwL0lHVFBXXzYxMDcvZmktYnN3LWtlZmthL2lndEBpDQo+IDkxNV9zZWxm
+dGVzdEBsaXZlQGhhbmdjaGVjay5odG1sDQo+IA0KPiAgIA0KPiAgIFtpOTE1IzE1NV06IGh0dHBz
+Oi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzE1NQ0KPiAgIFtpOTE1
+IzE2MDJdOiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2ludGVsL2lzc3Vlcy8x
+NjAyDQo+ICAgW2k5MTUjMjk0MF06IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0v
+aW50ZWwvaXNzdWVzLzI5NDANCj4gDQo+IA0KPiBQYXJ0aWNpcGF0aW5nIGhvc3RzICgzNyAtPiAz
+MykNCj4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+IA0KPiAgIE1pc3NpbmcgICAg
+KDQpOiBmaS1iZHctc2FtdXMgZmktdGdsLTExMTVnNCBmaS1ic3ctY3lhbiBiYXQtanNsLTEgDQo+
+IA0KPiANCj4gQnVpbGQgY2hhbmdlcw0KPiAtLS0tLS0tLS0tLS0tDQo+IA0KPiAgICogQ0k6IENJ
+LTIwMTkwNTI5IC0+IE5vbmUNCj4gICAqIElHVDogSUdUXzYxNjQgLT4gSUdUUFdfNjEwNw0KPiAN
+Cj4gICBDSS0yMDE5MDUyOTogMjAxOTA1MjkNCj4gICBDSV9EUk1fMTA0NjM6IDQ4YjZhMGQxMmU3
+MjZhMjM4YzBkMmRjMGMzOWJkYTQxNTY2ZjVmZjkgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9w
+Lm9yZy9nZngtY2kvbGludXgNCj4gICBJR1RQV182MTA3OiBodHRwczovL2ludGVsLWdmeC1jaS4w
+MS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzYxMDcvaW5kZXguaHRtbA0KPiAgIElHVF82MTY0OiA3
+ZWQxMTJkODJjMjI4ZTc1NWZhNzczMjUzYTI1ZjQwN2JiMjA5NjViIEAgDQo+IGh0dHBzOi8vZ2l0
+bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaWd0LWdwdS10b29scy5naXQNCj4gDQo+ID09IExvZ3Mg
+PT0NCj4gDQo+IEZvciBtb3JlIGRldGFpbHMgc2VlOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2ku
+MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV182MTA3L2luZGV4Lmh0bWwNCj4gDQoNCg0KDQoNCg==
