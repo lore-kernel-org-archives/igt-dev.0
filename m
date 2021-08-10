@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D1A589E50
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:28:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A4BA489E39
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:28:22 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 07:27:00 +0200
-Message-Id: <20210810052711.7866-55-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 07:26:51 +0200
+Message-Id: <20210810052711.7866-46-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 References: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 54/65] tests/sysfs_timeslice_duration:
- Adopt to use allocator
+Subject: [igt-dev] [PATCH i-g-t v6 45/65] tests/i915_pm_rpm: Adopt to use
+ no-reloc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,95 +32,91 @@ Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/sysfs_timeslice_duration.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ tests/i915/i915_pm_rpm.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/tests/i915/sysfs_timeslice_duration.c b/tests/i915/sysfs_timeslice_duration.c
-index b73ee3889..8a2f1c2f2 100644
---- a/tests/i915/sysfs_timeslice_duration.c
-+++ b/tests/i915/sysfs_timeslice_duration.c
-@@ -37,6 +37,7 @@
- #include "i915/gem_mman.h"
- #include "igt_dummyload.h"
- #include "igt_sysfs.h"
-+#include "intel_allocator.h"
- #include "ioctl_wrappers.h"
- #include "intel_chipset.h"
- #include "intel_reg.h"
-@@ -371,6 +372,7 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
- 	igt_spin_t *spin[2];
- 	uint64_t elapsed;
- 	const intel_ctx_t *ctx[2];
-+	uint64_t ahnd[2];
+diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+index 39e0064a1..62720d02b 100644
+--- a/tests/i915/i915_pm_rpm.c
++++ b/tests/i915/i915_pm_rpm.c
+@@ -1178,7 +1178,8 @@ static void gem_pread_subtest(void)
  
- 	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
- 	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
-@@ -378,15 +380,18 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
- 	set_timeslice(engine, timeout);
+ /* Paints a square of color $color, size $width x $height, at position $x x $y
+  * of $dst_handle, which contains pitch $pitch. */
+-static void submit_blt_cmd(uint32_t dst_handle, uint16_t x, uint16_t y,
++static void submit_blt_cmd(uint32_t dst_handle, int dst_size,
++			   uint16_t x, uint16_t y,
+ 			   uint16_t width, uint16_t height, uint32_t pitch,
+ 			   uint32_t color, uint32_t *presumed_dst_offset)
+ {
+@@ -1190,6 +1191,12 @@ static void submit_blt_cmd(uint32_t dst_handle, uint16_t x, uint16_t y,
+ 	struct drm_i915_gem_exec_object2 objs[2] = {{}, {}};
+ 	struct drm_i915_gem_relocation_entry relocs[1] = {{}};
+ 	struct drm_i915_gem_wait gem_wait;
++	uint64_t ahnd = get_reloc_ahnd(drm_fd, 0), dst_offset;
++
++	if (ahnd)
++		dst_offset = get_offset(ahnd, dst_handle, dst_size, 0);
++	else
++		dst_offset = *presumed_dst_offset;
  
- 	ctx[0] = create_ctx(i915, class, inst, 0);
--	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
-+	ahnd[0] = get_reloc_ahnd(i915, ctx[0]->id);
-+	spin[0] = igt_spin_new(i915, .ahnd = ahnd[0], .ctx = ctx[0],
- 			       .flags = (IGT_SPIN_NO_PREEMPTION |
- 					 IGT_SPIN_POLL_RUN |
- 					 IGT_SPIN_FENCE_OUT));
- 	igt_spin_busywait_until_started(spin[0]);
+ 	i = 0;
  
- 	ctx[1] = create_ctx(i915, class, inst, 0);
-+	ahnd[1] = get_reloc_ahnd(i915, ctx[1]->id);
- 	igt_nsec_elapsed(&ts);
--	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
-+	spin[1] = igt_spin_new(i915, .ahnd = ahnd[1], .ctx = ctx[1],
-+				.flags = IGT_SPIN_POLL_RUN);
- 	igt_spin_busywait_until_started(spin[1]);
- 	elapsed = igt_nsec_elapsed(&ts);
+@@ -1205,9 +1212,9 @@ static void submit_blt_cmd(uint32_t dst_handle, uint16_t x, uint16_t y,
+ 	batch_buf[i++] = (y << 16) | x;
+ 	batch_buf[i++] = ((y + height) << 16) | (x + width);
+ 	reloc_pos = i;
+-	batch_buf[i++] = *presumed_dst_offset;
++	batch_buf[i++] = dst_offset;
+ 	if (intel_gen(ms_data.devid) >= 8)
+-		batch_buf[i++] = 0;
++		batch_buf[i++] = dst_offset >> 32;
+ 	batch_buf[i++] = color;
  
-@@ -399,6 +404,8 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ 	batch_buf[i++] = MI_BATCH_BUFFER_END;
+@@ -1230,9 +1237,16 @@ static void submit_blt_cmd(uint32_t dst_handle, uint16_t x, uint16_t y,
+ 	objs[0].alignment = 64;
  
- 	intel_ctx_destroy(i915, ctx[1]);
- 	intel_ctx_destroy(i915, ctx[0]);
-+	put_ahnd(ahnd[1]);
-+	put_ahnd(ahnd[0]);
- 	gem_quiescent_gpu(i915);
+ 	objs[1].handle = batch_handle;
+-	objs[1].relocation_count = 1;
++	objs[1].relocation_count = !ahnd ? 1 : 0;
+ 	objs[1].relocs_ptr = (uintptr_t)relocs;
  
- 	return elapsed;
-@@ -460,6 +467,7 @@ static void test_off(int i915, int engine)
- 	unsigned int saved;
- 	igt_spin_t *spin[2];
- 	const intel_ctx_t *ctx[2];
-+	uint64_t ahnd[2];
++	if (ahnd) {
++		objs[0].offset = dst_offset;
++		objs[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
++		objs[1].offset = get_offset(ahnd, batch_handle, batch_size, 0);
++		objs[1].flags = EXEC_OBJECT_PINNED;
++	}
++
+ 	execbuf.buffers_ptr = (uintptr_t)objs;
+ 	execbuf.buffer_count = 2;
+ 	execbuf.batch_len = batch_size;
+@@ -1253,6 +1267,7 @@ static void submit_blt_cmd(uint32_t dst_handle, uint16_t x, uint16_t y,
+ 	do_ioctl(drm_fd, DRM_IOCTL_I915_GEM_WAIT, &gem_wait);
  
- 	/*
- 	 * As always, there are some who must run uninterrupted and simply do
-@@ -482,14 +490,17 @@ static void test_off(int i915, int engine)
- 	set_timeslice(engine, 0);
+ 	gem_close(drm_fd, batch_handle);
++	put_ahnd(ahnd);
+ }
  
- 	ctx[0] = create_ctx(i915, class, inst, 0);
--	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
-+	ahnd[0] = get_reloc_ahnd(i915, ctx[0]->id);
-+	spin[0] = igt_spin_new(i915, .ahnd = ahnd[0], .ctx = ctx[0],
- 			       .flags = (IGT_SPIN_NO_PREEMPTION |
- 					 IGT_SPIN_POLL_RUN |
- 					 IGT_SPIN_FENCE_OUT));
- 	igt_spin_busywait_until_started(spin[0]);
+ /* Make sure we can submit a batch buffer and verify its result. */
+@@ -1285,7 +1300,7 @@ static void gem_execbuf_subtest(void)
+ 	disable_all_screens_and_wait(&ms_data);
  
- 	ctx[1] = create_ctx(i915, class, inst, 0);
--	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
-+	ahnd[1] = get_reloc_ahnd(i915, ctx[1]->id);
-+	spin[1] = igt_spin_new(i915, .ahnd = ahnd[1], .ctx = ctx[1],
-+				.flags = IGT_SPIN_POLL_RUN);
+ 	color = 0x12345678;
+-	submit_blt_cmd(handle, sq_x, sq_y, sq_w, sq_h, pitch, color,
++	submit_blt_cmd(handle, dst_size, sq_x, sq_y, sq_w, sq_h, pitch, color,
+ 		       &presumed_offset);
+ 	igt_assert(wait_for_suspended());
  
- 	for (int i = 0; i < 150; i++) {
- 		igt_assert_eq(sync_fence_status(spin[0]->out_fence), 0);
-@@ -508,6 +519,8 @@ static void test_off(int i915, int engine)
+@@ -1324,7 +1339,7 @@ static void gem_execbuf_subtest(void)
+ 	 * suspended. We use the same spot, but a different color. As a bonus,
+ 	 * we're testing the presumed_offset from the previous command. */
+ 	color = 0x87654321;
+-	submit_blt_cmd(handle, sq_x, sq_y, sq_w, sq_h, pitch, color,
++	submit_blt_cmd(handle, dst_size, sq_x, sq_y, sq_w, sq_h, pitch, color,
+ 		       &presumed_offset);
  
- 	intel_ctx_destroy(i915, ctx[1]);
- 	intel_ctx_destroy(i915, ctx[0]);
-+	put_ahnd(ahnd[1]);
-+	put_ahnd(ahnd[0]);
- 
- 	igt_assert(enable_hangcheck(i915, true));
- 	gem_quiescent_gpu(i915);
+ 	disable_all_screens_and_wait(&ms_data);
 -- 
 2.26.0
