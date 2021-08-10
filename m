@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3904389E59
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:27:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8756389DEA
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:27:42 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 07:26:29 +0200
-Message-Id: <20210810052711.7866-24-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 07:26:24 +0200
+Message-Id: <20210810052711.7866-19-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 References: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 23/65] tests/gem_exec_parallel: Adopt to
- use alloctor
+Subject: [igt-dev] [PATCH i-g-t v6 18/65] tests/gem_exec_balancer: Adopt to
+ use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,138 +27,419 @@ List-ID: <igt-dev@lists.freedesktop.org>
 For newer gens we're not able to rely on relocations. Adopt to use
 offsets acquired from the allocator.
 
+v2: use load instead of ctx in bonded test (Ashutosh)
+
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_exec_parallel.c | 33 +++++++++++++++++++++++++++------
- 1 file changed, 27 insertions(+), 6 deletions(-)
+ tests/i915/gem_exec_balancer.c | 105 +++++++++++++++++++++++++--------
+ 1 file changed, 82 insertions(+), 23 deletions(-)
 
-diff --git a/tests/i915/gem_exec_parallel.c b/tests/i915/gem_exec_parallel.c
-index 5920ac730..36bf5f742 100644
---- a/tests/i915/gem_exec_parallel.c
-+++ b/tests/i915/gem_exec_parallel.c
-@@ -49,6 +49,7 @@ static inline uint32_t hash32(uint32_t val)
- #define USERPTR 0x4
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index 2f98950bb..ad9c46d35 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -482,14 +482,16 @@ static void check_individual_engine(int i915,
+ 	igt_spin_t *spin;
+ 	double load;
+ 	int pmu;
++	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
  
- #define NUMOBJ 16
-+#define NUMTHREADS 1024
+ 	pmu = perf_i915_open(i915,
+ 			     I915_PMU_ENGINE_BUSY(ci[idx].engine_class,
+ 						  ci[idx].engine_instance));
  
- struct thread {
- 	pthread_t thread;
-@@ -56,11 +57,13 @@ struct thread {
- 	pthread_cond_t *cond;
- 	unsigned flags;
- 	uint32_t *scratch;
-+	uint64_t *offsets;
- 	unsigned id;
- 	const intel_ctx_t *ctx;
- 	unsigned engine;
- 	uint32_t used;
- 	int fd, gen, *go;
+-	spin = igt_spin_new(i915, .ctx = ctx, .engine = idx + 1);
++	spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx, .engine = idx + 1);
+ 	load = measure_load(pmu, 10000);
+ 	igt_spin_free(i915, spin);
++	put_ahnd(ahnd);
+ 
+ 	close(pmu);
+ 
+@@ -766,10 +768,12 @@ static void __bonded_sema(int i915,
+ 	igt_spin_t *spin;
+ 
+ 	for (int i = 0; i < ARRAY_SIZE(priorities); i++) {
+-		const intel_ctx_t *ctx;
++		const intel_ctx_t *ctx = intel_ctx_0(i915);
++		uint64_t ahnd = get_reloc_ahnd(i915, 0);
+ 
+ 		/* A: spin forever on seperate render engine */
+-		spin = igt_spin_new(i915, .ctx = intel_ctx_0(i915),
++		spin = igt_spin_new(i915, .ahnd = ahnd,
++				    .ctx = intel_ctx_0(i915),
+ 				    .flags = (IGT_SPIN_POLL_RUN |
+ 					      IGT_SPIN_FENCE_OUT));
+ 		igt_spin_busywait_until_started(spin);
+@@ -818,6 +822,7 @@ static void __bonded_sema(int i915,
+ 		igt_spin_free(i915, spin);
+ 		gem_sync(i915, batch.handle);
+ 		intel_ctx_destroy(i915, ctx);
++		put_ahnd(ahnd);
+ 
+ 		igt_assert_eq(sync_fence_status(execbuf.rsvd2 & 0xffffffff), 1);
+ 		igt_assert_eq(sync_fence_status(execbuf.rsvd2 >> 32), 1);
+@@ -871,6 +876,7 @@ static void __bonded_pair(int i915,
+ 	igt_spin_t *a;
+ 	int timeline;
+ 	const intel_ctx_t *A;
 +	uint64_t ahnd;
- };
  
- static void *thread(void *data)
-@@ -70,6 +73,7 @@ static void *thread(void *data)
+ 	srandom(getpid());
+ 
+@@ -879,7 +885,8 @@ static void __bonded_pair(int i915,
+ 		spinner |= IGT_SPIN_NO_PREEMPTION;
+ 
+ 	A = ctx_create_balanced(i915, siblings, count);
+-	a = igt_spin_new(i915, .ctx = A, .flags = spinner);
++	ahnd = get_reloc_ahnd(i915, A->id);
++	a = igt_spin_new(i915, .ahnd = ahnd, .ctx = A, .flags = spinner);
+ 	igt_spin_end(a);
+ 	gem_sync(i915, a->handle);
+ 
+@@ -933,6 +940,7 @@ static void __bonded_pair(int i915,
+ 	close(timeline);
+ 	igt_spin_free(i915, a);
+ 	intel_ctx_destroy(i915, A);
++	put_ahnd(ahnd);
+ 
+ 	*out = cycles;
+ }
+@@ -953,6 +961,7 @@ static void __bonded_dual(int i915,
+ 	igt_spin_t *a, *b;
+ 	int timeline;
+ 	const intel_ctx_t *A, *B;
++	uint64_t ahnd_A, ahnd_B;
+ 
+ 	srandom(getpid());
+ 
+@@ -961,12 +970,14 @@ static void __bonded_dual(int i915,
+ 		spinner |= IGT_SPIN_NO_PREEMPTION;
+ 
+ 	A = ctx_create_balanced(i915, siblings, count);
+-	a = igt_spin_new(i915, .ctx = A, .flags = spinner);
++	ahnd_A = get_reloc_ahnd(i915, A->id);
++	a = igt_spin_new(i915, .ahnd = ahnd_A, .ctx = A, .flags = spinner);
+ 	igt_spin_end(a);
+ 	gem_sync(i915, a->handle);
+ 
+ 	B = ctx_create_balanced(i915, siblings, count);
+-	b = igt_spin_new(i915, .ctx = B, .flags = spinner);
++	ahnd_B = get_reloc_ahnd(i915, B->id);
++	b = igt_spin_new(i915, .ahnd = ahnd_B, .ctx = B, .flags = spinner);
+ 	igt_spin_end(b);
+ 	gem_sync(i915, b->handle);
+ 
+@@ -1047,6 +1058,8 @@ static void __bonded_dual(int i915,
+ 
+ 	intel_ctx_destroy(i915, A);
+ 	intel_ctx_destroy(i915, B);
++	put_ahnd(ahnd_A);
++	put_ahnd(ahnd_B);
+ 
+ 	*out = cycles;
+ }
+@@ -1334,11 +1347,13 @@ static void __bonded_nohang(int i915, const intel_ctx_t *ctx,
+ 	};
+ 	igt_spin_t *time, *spin;
+ 	const intel_ctx_t *load;
++	uint64_t ahnd0 = get_reloc_ahnd(i915, 0), ahnd;
+ 
+ 	load = ctx_create_balanced(i915, siblings, count);
+ 	gem_context_set_priority(i915, load->id, 1023);
++	ahnd = get_reloc_ahnd(i915, load->id);
+ 
+-	spin = igt_spin_new(i915, .ctx = load, .engine = 1);
++	spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = load, .engine = 1);
+ 
+ 	/* Master on engine 1, stuck behind a spinner */
+ 	execbuf.flags = 1 | I915_EXEC_FENCE_OUT;
+@@ -1352,13 +1367,15 @@ static void __bonded_nohang(int i915, const intel_ctx_t *ctx,
+ 	igt_debugfs_dump(i915, "i915_engine_info");
+ 
+ 	/* The master will remain blocked until the spinner is reset */
+-	time = igt_spin_new(i915, .flags = IGT_SPIN_NO_PREEMPTION); /* rcs0 */
++	time = igt_spin_new(i915, .ahnd = ahnd0,
++			    .flags = IGT_SPIN_NO_PREEMPTION); /* rcs0 */
+ 	while (gem_bo_busy(i915, time->handle)) {
+ 		igt_spin_t *next;
+ 
+ 		if (flags & NOHANG) {
+ 			/* Keep replacing spin, so that it doesn't hang */
+-			next = igt_spin_new(i915, .ctx = load, .engine = 1);
++			next = igt_spin_new(i915, .ahnd = ahnd, .ctx = load,
++					    .engine = 1);
+ 			igt_spin_free(i915, spin);
+ 			spin = next;
+ 		}
+@@ -1368,6 +1385,8 @@ static void __bonded_nohang(int i915, const intel_ctx_t *ctx,
+ 	}
+ 	igt_spin_free(i915, time);
+ 	igt_spin_free(i915, spin);
++	put_ahnd(ahnd);
++	put_ahnd(ahnd0);
+ 
+ 	/* Check the bonded pair completed and were not declared hung */
+ 	igt_assert_eq(sync_fence_status(execbuf.rsvd2 & 0xffffffff), 1);
+@@ -1520,6 +1539,7 @@ static void busy(int i915)
+ 		unsigned int count;
+ 		igt_spin_t *spin[2];
+ 		const intel_ctx_t *ctx;
++		uint64_t ahnd;
+ 
+ 		ci = list_engines(i915, 1u << class, &count);
+ 		if (!ci)
+@@ -1527,11 +1547,14 @@ static void busy(int i915)
+ 
+ 		ctx = ctx_create_balanced(i915, ci, count);
+ 		free(ci);
++		ahnd = get_simple_l2h_ahnd(i915, ctx->id);
+ 
+ 		spin[0] = __igt_spin_new(i915,
++					 .ahnd = ahnd,
+ 					 .ctx = ctx,
+ 					 .flags = IGT_SPIN_POLL_RUN);
+ 		spin[1] = __igt_spin_new(i915,
++					 .ahnd = ahnd,
+ 					 .ctx = ctx,
+ 					 .dependency = scratch);
+ 
+@@ -1557,6 +1580,7 @@ static void busy(int i915)
+ 		igt_spin_free(i915, spin[0]);
+ 
+ 		intel_ctx_destroy(i915, ctx);
++		put_ahnd(ahnd);
+ 	}
+ 
+ 	gem_close(i915, scratch);
+@@ -1596,6 +1620,7 @@ static void full(int i915, unsigned int flags)
+ 		double load;
+ 		int fence = -1;
+ 		int *pmu;
++		uint64_t ahnd;
+ 
+ 		ci = list_engines(i915, 1u << class, &count);
+ 		if (!ci)
+@@ -1631,7 +1656,9 @@ static void full(int i915, unsigned int flags)
+ 			ctx = ctx_create_balanced(i915, ci, count);
+ 
+ 			if (spin == NULL) {
+-				spin = __igt_spin_new(i915, .ctx = ctx);
++				ahnd = get_reloc_ahnd(i915, ctx->id);
++				spin = __igt_spin_new(i915, .ahnd = ahnd,
++						      .ctx = ctx);
+ 			} else {
+ 				struct drm_i915_gem_execbuffer2 eb = {
+ 					.buffers_ptr = spin->execbuf.buffers_ptr,
+@@ -1653,6 +1680,7 @@ static void full(int i915, unsigned int flags)
+ 
+ 		load = measure_min_load(pmu[0], count, 10000);
+ 		igt_spin_free(i915, spin);
++		put_ahnd(ahnd);
+ 
+ 		close(pmu[0]);
+ 		free(pmu);
+@@ -1756,14 +1784,15 @@ static void __hog(int i915, const intel_ctx_t *ctx, unsigned int count)
+ 	int64_t timeout = 50 * 1000 * 1000; /* 50ms */
+ 	igt_spin_t *virtual;
+ 	igt_spin_t *hog;
++	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
+ 
+-	virtual = igt_spin_new(i915, .ctx = ctx, .engine = 0);
++	virtual = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx, .engine = 0);
+ 	for (int i = 0; i < count; i++)
+ 		gem_execbuf(i915, &virtual->execbuf);
+ 	usleep(50 * 1000); /* 50ms, long enough to spread across all engines */
+ 
+ 	gem_context_set_priority(i915, ctx->id, 1023);
+-	hog = __igt_spin_new(i915, .ctx = ctx,
++	hog = __igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
+ 			     .engine = 1 + (random() % count),
+ 			     .flags = (IGT_SPIN_POLL_RUN |
+ 				       IGT_SPIN_NO_PREEMPTION));
+@@ -1780,6 +1809,7 @@ static void __hog(int i915, const intel_ctx_t *ctx, unsigned int count)
+ 
+ 	igt_spin_free(i915, hog);
+ 	igt_spin_free(i915, virtual);
++	put_ahnd(ahnd);
+ }
+ 
+ static void hog(int i915)
+@@ -2149,6 +2179,7 @@ static void semaphore(int i915)
+ {
+ 	uint32_t scratch;
+ 	igt_spin_t *spin[3];
++	uint64_t ahnd0 = get_simple_l2h_ahnd(i915, 0);
+ 
+ 	/*
+ 	 * If we are using HW semaphores to launch serialised requests
+@@ -2158,7 +2189,7 @@ static void semaphore(int i915)
+ 	igt_require(gem_scheduler_has_preemption(i915));
+ 
+ 	scratch = gem_create(i915, 4096);
+-	spin[2] = igt_spin_new(i915, .dependency = scratch);
++	spin[2] = igt_spin_new(i915, .ahnd = ahnd0, .dependency = scratch);
+ 	for (int class = 1; class < 32; class++) {
+ 		struct i915_engine_class_instance *ci;
+ 		unsigned int count;
+@@ -2177,6 +2208,7 @@ static void semaphore(int i915)
+ 		for (int i = 0; i < count; i++) {
+ 			block[i] = ctx_create_balanced(i915, ci, count);
+ 			spin[i] = __igt_spin_new(i915,
++						 .ahnd = ahnd0,
+ 						 .ctx = block[i],
+ 						 .dependency = scratch);
+ 		}
+@@ -2198,6 +2230,7 @@ static void semaphore(int i915)
+ 	}
+ 	igt_spin_free(i915, spin[2]);
+ 	gem_close(i915, scratch);
++	put_ahnd(ahnd0);
+ 
+ 	gem_quiescent_gpu(i915);
+ }
+@@ -2250,9 +2283,11 @@ static void hangme(int i915)
+ 			const intel_ctx_t *ctx;
+ 			struct client *c = &client[i];
+ 			unsigned int flags;
++			uint64_t ahnd;
+ 
+ 			ctx = ctx_create_balanced(i915, ci, count);
+ 			set_unbannable(i915, ctx->id);
++			ahnd = get_reloc_ahnd(i915, ctx->id);
+ 
+ 			flags = IGT_SPIN_FENCE_IN |
+ 				IGT_SPIN_FENCE_OUT |
+@@ -2260,7 +2295,9 @@ static void hangme(int i915)
+ 			if (!gem_engine_has_cmdparser(i915, &ctx->cfg, 0))
+ 				flags |= IGT_SPIN_INVALID_CS;
+ 			for (int j = 0; j < ARRAY_SIZE(c->spin); j++)  {
+-				c->spin[j] = __igt_spin_new(i915, .ctx = ctx,
++				c->spin[j] = __igt_spin_new(i915,
++							    .ahnd = ahnd,
++							    .ctx = ctx,
+ 							    .fence = fence,
+ 							    .flags = flags);
+ 				flags = IGT_SPIN_FENCE_OUT;
+@@ -2288,6 +2325,7 @@ static void hangme(int i915)
+ 		for (int i = 0; i < count; i++) {
+ 			struct client *c = &client[i];
+ 			int64_t timeout;
++			uint64_t ahnd;
+ 
+ 			igt_debug("Waiting for client[%d].spin[%d]\n", i, 0);
+ 			timeout = NSEC_PER_SEC / 2;
+@@ -2304,8 +2342,10 @@ static void hangme(int i915)
+ 			igt_assert_eq(sync_fence_status(c->spin[1]->out_fence),
+ 				      -EIO);
+ 
++			ahnd = c->spin[0]->ahnd;
+ 			igt_spin_free(i915, c->spin[0]);
+ 			igt_spin_free(i915, c->spin[1]);
++			put_ahnd(ahnd);
+ 		}
+ 		free(client);
+ 	}
+@@ -2398,12 +2438,14 @@ static void smoketest(int i915, int timeout)
+ 
+ static uint32_t read_ctx_timestamp(int i915, const intel_ctx_t *ctx)
+ {
++	bool has_relocs = gem_has_relocations(i915);
  	struct drm_i915_gem_relocation_entry reloc;
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	const intel_ctx_t *tmp_ctx = NULL;
-+	uint64_t offset;
- 	uint32_t batch[16];
- 	uint16_t used;
- 	int fd, i;
-@@ -112,7 +116,7 @@ static void *thread(void *data)
- 	reloc.delta = 4*t->id;
- 	obj[1].handle = gem_create(fd, 4096);
- 	obj[1].relocs_ptr = to_user_pointer(&reloc);
--	obj[1].relocation_count = 1;
-+	obj[1].relocation_count = !t->ahnd ? 1 : 0;
- 	gem_write(fd, obj[1].handle, 0, batch, sizeof(batch));
+ 	struct drm_i915_gem_exec_object2 obj = {
+ 		.handle = gem_create(i915, 4096),
+ 		.offset = 32 << 20,
+ 		.relocs_ptr = to_user_pointer(&reloc),
+-		.relocation_count = 1,
++		.relocation_count = has_relocs,
++		.flags = has_relocs ? 0 : EXEC_OBJECT_PINNED,
+ 	};
+ 	struct drm_i915_gem_execbuffer2 execbuf = {
+ 		.buffers_ptr = to_user_pointer(&obj),
+@@ -2483,6 +2525,7 @@ static void __fairslice(int i915,
+ 	const intel_ctx_t *ctx[count + 1];
+ 	uint32_t ts[count + 1];
+ 	double threshold;
++	uint64_t ahnd = get_reloc_ahnd(i915, 0); /* ctx id is not important */
  
- 	memset(&execbuf, 0, sizeof(execbuf));
-@@ -140,6 +144,18 @@ static void *thread(void *data)
- 		if (t->flags & FDS)
- 			obj[0].handle = gem_open(fd, obj[0].handle);
+ 	igt_debug("Launching %zd spinners on %s\n",
+ 		  ARRAY_SIZE(ctx), class_to_str(ci->engine_class));
+@@ -2491,7 +2534,7 @@ static void __fairslice(int i915,
+ 	for (int i = 0; i < ARRAY_SIZE(ctx); i++) {
+ 		ctx[i] = ctx_create_balanced(i915, ci, count);
+ 		if (spin == NULL) {
+-			spin = __igt_spin_new(i915, .ctx = ctx[i]);
++			spin = __igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx[i]);
+ 		} else {
+ 			struct drm_i915_gem_execbuffer2 eb = {
+ 				.buffer_count = 1,
+@@ -2514,6 +2557,7 @@ static void __fairslice(int i915,
+ 	for (int i = 0; i < ARRAY_SIZE(ctx); i++)
+ 		intel_ctx_destroy(i915, ctx[i]);
+ 	igt_spin_free(i915, spin);
++	put_ahnd(ahnd);
  
-+		if (t->ahnd) {
-+			offset = t->offsets[x];
-+			i = 0;
-+			batch[++i] = offset + 4*t->id;
-+			batch[++i] = offset >> 32;
-+			obj[0].offset = offset;
-+			obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+			obj[1].offset = get_offset(t->ahnd, obj[1].handle, 4096, 0);
-+			obj[1].flags |= EXEC_OBJECT_PINNED;
-+			gem_write(fd, obj[1].handle, 0, batch, sizeof(batch));
+ 	/*
+ 	 * If we imagine that the timeslices are randomly distributed to
+@@ -2578,6 +2622,7 @@ static void __persistence(int i915,
+ {
+ 	igt_spin_t *spin;
+ 	const intel_ctx_t *ctx;
++	uint64_t ahnd;
+ 
+ 	/*
+ 	 * A nonpersistent context is terminated immediately upon closure,
+@@ -2587,14 +2632,16 @@ static void __persistence(int i915,
+ 	ctx = ctx_create_balanced(i915, ci, count);
+ 	if (!persistent)
+ 		gem_context_set_persistence(i915, ctx->id, persistent);
++	ahnd = get_reloc_ahnd(i915, ctx->id);
+ 
+-	spin = igt_spin_new(i915, .ctx = ctx,
++	spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
+ 			    .flags = IGT_SPIN_FENCE_OUT | IGT_SPIN_POLL_RUN);
+ 	igt_spin_busywait_until_started(spin);
+ 	intel_ctx_destroy(i915, ctx);
+ 
+ 	igt_assert_eq(wait_for_status(spin->out_fence, 500), -EIO);
+ 	igt_spin_free(i915, spin);
++	put_ahnd(ahnd);
+ }
+ 
+ static void persistence(int i915)
+@@ -2802,12 +2849,24 @@ igt_main
+ 	igt_subtest("bonded-semaphore")
+ 		bonded_semaphore(i915);
+ 
+-	igt_subtest("bonded-pair")
+-		bonded_runner(i915, __bonded_pair);
+-	igt_subtest("bonded-dual")
+-		bonded_runner(i915, __bonded_dual);
+-	igt_subtest("bonded-sync")
+-		bonded_runner(i915, __bonded_sync);
++	igt_subtest_group {
++		igt_fixture {
++			intel_allocator_multiprocess_start();
 +		}
 +
- 		gem_execbuf(fd, &execbuf);
- 
- 		if (t->flags & FDS)
-@@ -158,7 +174,7 @@ static void *thread(void *data)
- 
- static void check_bo(int fd, uint32_t *data, uint32_t handle, int pass, struct thread *threads)
- {
--	uint32_t x = hash32(handle * pass) % 1024;
-+	uint32_t x = hash32(handle * pass) % NUMTHREADS;
- 	uint32_t result;
- 
- 	if (!(threads[x].used & (1 << pass)))
-@@ -213,6 +229,7 @@ static void all(int fd, const intel_ctx_t *ctx,
- 	void *arg[NUMOBJ];
- 	int go;
- 	int i;
-+	uint64_t ahnd = get_reloc_ahnd(fd, 0), offsets[NUMOBJ];
- 
- 	if (flags & CONTEXTS)
- 		gem_require_contexts(fd);
-@@ -238,9 +255,11 @@ static void all(int fd, const intel_ctx_t *ctx,
- 		scratch[i] = handle[i] = handle_create(fd, flags, &arg[i]);
- 		if (flags & FDS)
- 			scratch[i] = gem_flink(fd, handle[i]);
-+		offsets[i] = get_offset(ahnd, scratch[i], 4096, 0);
++		igt_subtest("bonded-pair")
++			bonded_runner(i915, __bonded_pair);
 +
- 	}
++		igt_subtest("bonded-dual")
++			bonded_runner(i915, __bonded_dual);
++
++		igt_subtest("bonded-sync")
++			bonded_runner(i915, __bonded_sync);
++
++		igt_fixture {
++			intel_allocator_multiprocess_stop();
++		}
++	}
  
--	threads = calloc(1024, sizeof(struct thread));
-+	threads = calloc(NUMTHREADS, sizeof(struct thread));
- 	igt_assert(threads);
- 
- 	intel_detect_and_clear_missed_interrupts(fd);
-@@ -248,7 +267,7 @@ static void all(int fd, const intel_ctx_t *ctx,
- 	pthread_cond_init(&cond, 0);
- 	go = 0;
- 
--	for (i = 0; i < 1024; i++) {
-+	for (i = 0; i < NUMTHREADS; i++) {
- 		threads[i].id = i;
- 		threads[i].fd = fd;
- 		threads[i].gen = gen;
-@@ -256,19 +275,21 @@ static void all(int fd, const intel_ctx_t *ctx,
- 		threads[i].engine = engines[i % nengine];
- 		threads[i].flags = flags;
- 		threads[i].scratch = scratch;
-+		threads[i].offsets = ahnd ? offsets : NULL;
- 		threads[i].mutex = &mutex;
- 		threads[i].cond = &cond;
- 		threads[i].go = &go;
-+		threads[i].ahnd = ahnd;
- 
- 		pthread_create(&threads[i].thread, 0, thread, &threads[i]);
- 	}
- 
- 	pthread_mutex_lock(&mutex);
--	go = 1024;
-+	go = NUMTHREADS;
- 	pthread_cond_broadcast(&cond);
- 	pthread_mutex_unlock(&mutex);
- 
--	for (i = 0; i < 1024; i++)
-+	for (i = 0; i < NUMTHREADS; i++)
- 		pthread_join(threads[i].thread, NULL);
- 
- 	for (i = 0; i < NUMOBJ; i++) {
+ 	igt_fixture {
+ 		igt_stop_hang_detector();
 -- 
 2.26.0
