@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8676B6E054
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 10:54:27 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7D78A6E040
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 10:54:20 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 12:53:22 +0200
-Message-Id: <20210810105323.31375-54-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 12:53:14 +0200
+Message-Id: <20210810105323.31375-46-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810105323.31375-1-zbigniew.kempczynski@intel.com>
 References: <20210810105323.31375-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 53/54] tests/sysfs_timeslice_duration:
- Adopt to use allocator
+Subject: [igt-dev] [PATCH i-g-t v7 45/54] tests/i915_pm_rps: Alter to use
+ no-reloc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,100 +27,83 @@ List-ID: <igt-dev@lists.freedesktop.org>
 For newer gens we're not able to rely on relocations. Adopt to use
 offsets acquired from the allocator.
 
+v2: clean unnecessary commented code (Ashutosh)
+
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/sysfs_timeslice_duration.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ tests/i915/i915_pm_rps.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/tests/i915/sysfs_timeslice_duration.c b/tests/i915/sysfs_timeslice_duration.c
-index b73ee3889..8a2f1c2f2 100644
---- a/tests/i915/sysfs_timeslice_duration.c
-+++ b/tests/i915/sysfs_timeslice_duration.c
-@@ -37,6 +37,7 @@
- #include "i915/gem_mman.h"
- #include "igt_dummyload.h"
- #include "igt_sysfs.h"
-+#include "intel_allocator.h"
- #include "ioctl_wrappers.h"
- #include "intel_chipset.h"
- #include "intel_reg.h"
-@@ -371,6 +372,7 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
- 	igt_spin_t *spin[2];
- 	uint64_t elapsed;
- 	const intel_ctx_t *ctx[2];
-+	uint64_t ahnd[2];
+diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
+index f51a47479..b37f15c26 100644
+--- a/tests/i915/i915_pm_rps.c
++++ b/tests/i915/i915_pm_rps.c
+@@ -250,6 +250,10 @@ static void load_helper_run(enum load load)
+ 		igt_spin_t *spin[2] = {};
+ 		bool prev_load;
+ 		uint32_t handle;
++		uint64_t ahnd;
++
++		intel_allocator_init();
++		ahnd = get_reloc_ahnd(drm_fd, 0);
  
- 	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
- 	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
-@@ -378,15 +380,18 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
- 	set_timeslice(engine, timeout);
+ 		signal(SIGTERM, load_helper_signal_handler);
+ 		signal(SIGUSR2, load_helper_signal_handler);
+@@ -257,9 +261,9 @@ static void load_helper_run(enum load load)
+ 		igt_debug("Applying %s load...\n", lh.load ? "high" : "low");
  
- 	ctx[0] = create_ctx(i915, class, inst, 0);
--	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
-+	ahnd[0] = get_reloc_ahnd(i915, ctx[0]->id);
-+	spin[0] = igt_spin_new(i915, .ahnd = ahnd[0], .ctx = ctx[0],
- 			       .flags = (IGT_SPIN_NO_PREEMPTION |
- 					 IGT_SPIN_POLL_RUN |
- 					 IGT_SPIN_FENCE_OUT));
- 	igt_spin_busywait_until_started(spin[0]);
+ 		prev_load = lh.load == HIGH;
+-		spin[0] = __igt_spin_new(drm_fd);
++		spin[0] = __igt_spin_new(drm_fd, .ahnd = ahnd);
+ 		if (prev_load)
+-			spin[1] = __igt_spin_new(drm_fd);
++			spin[1] = __igt_spin_new(drm_fd, .ahnd = ahnd);
+ 		prev_load = !prev_load; /* send the initial signal */
+ 		while (!lh.exit) {
+ 			bool high_load;
+@@ -279,7 +283,7 @@ static void load_helper_run(enum load load)
+ 			} else {
+ 				spin[0] = spin[1];
+ 			}
+-			spin[high_load] = __igt_spin_new(drm_fd);
++			spin[high_load] = __igt_spin_new(drm_fd, .ahnd = ahnd);
  
- 	ctx[1] = create_ctx(i915, class, inst, 0);
-+	ahnd[1] = get_reloc_ahnd(i915, ctx[1]->id);
- 	igt_nsec_elapsed(&ts);
--	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
-+	spin[1] = igt_spin_new(i915, .ahnd = ahnd[1], .ctx = ctx[1],
-+				.flags = IGT_SPIN_POLL_RUN);
- 	igt_spin_busywait_until_started(spin[1]);
- 	elapsed = igt_nsec_elapsed(&ts);
+ 			if (lh.signal && high_load != prev_load) {
+ 				write(lh.link, &lh.signal, sizeof(lh.signal));
+@@ -310,6 +314,7 @@ static void load_helper_run(enum load load)
  
-@@ -399,6 +404,8 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ 		igt_spin_free(drm_fd, spin[1]);
+ 		igt_spin_free(drm_fd, spin[0]);
++		put_ahnd(ahnd);
+ 	}
  
- 	intel_ctx_destroy(i915, ctx[1]);
- 	intel_ctx_destroy(i915, ctx[0]);
-+	put_ahnd(ahnd[1]);
-+	put_ahnd(ahnd[0]);
- 	gem_quiescent_gpu(i915);
+ 	close(lh.link);
+@@ -542,11 +547,13 @@ static void boost_freq(int fd, int *boost_freqs)
+ {
+ 	int64_t timeout = 1;
+ 	igt_spin_t *load;
++	/* We need to keep dependency spin offset for load->handle */
++	uint64_t ahnd = get_simple_l2h_ahnd(fd, 0);
  
- 	return elapsed;
-@@ -460,6 +467,7 @@ static void test_off(int i915, int engine)
- 	unsigned int saved;
- 	igt_spin_t *spin[2];
- 	const intel_ctx_t *ctx[2];
-+	uint64_t ahnd[2];
+-	load = igt_spin_new(fd);
++	load = igt_spin_new(fd, .ahnd = ahnd);
  
- 	/*
- 	 * As always, there are some who must run uninterrupted and simply do
-@@ -482,14 +490,17 @@ static void test_off(int i915, int engine)
- 	set_timeslice(engine, 0);
+ 	/* Strip off extra fences from the object, and keep it from starting */
+-	igt_spin_free(fd, igt_spin_new(fd, .dependency = load->handle));
++	igt_spin_free(fd, igt_spin_new(fd, .ahnd = ahnd, .dependency = load->handle));
  
- 	ctx[0] = create_ctx(i915, class, inst, 0);
--	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
-+	ahnd[0] = get_reloc_ahnd(i915, ctx[0]->id);
-+	spin[0] = igt_spin_new(i915, .ahnd = ahnd[0], .ctx = ctx[0],
- 			       .flags = (IGT_SPIN_NO_PREEMPTION |
- 					 IGT_SPIN_POLL_RUN |
- 					 IGT_SPIN_FENCE_OUT));
- 	igt_spin_busywait_until_started(spin[0]);
+ 	/* Waiting will grant us a boost to maximum */
+ 	gem_wait(fd, load->handle, &timeout);
+@@ -558,6 +565,7 @@ static void boost_freq(int fd, int *boost_freqs)
+ 	igt_spin_end(load);
+ 	gem_sync(fd, load->handle);
+ 	igt_spin_free(fd, load);
++	put_ahnd(ahnd);
+ }
  
- 	ctx[1] = create_ctx(i915, class, inst, 0);
--	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
-+	ahnd[1] = get_reloc_ahnd(i915, ctx[1]->id);
-+	spin[1] = igt_spin_new(i915, .ahnd = ahnd[1], .ctx = ctx[1],
-+				.flags = IGT_SPIN_POLL_RUN);
- 
- 	for (int i = 0; i < 150; i++) {
- 		igt_assert_eq(sync_fence_status(spin[0]->out_fence), 0);
-@@ -508,6 +519,8 @@ static void test_off(int i915, int engine)
- 
- 	intel_ctx_destroy(i915, ctx[1]);
- 	intel_ctx_destroy(i915, ctx[0]);
-+	put_ahnd(ahnd[1]);
-+	put_ahnd(ahnd[0]);
- 
- 	igt_assert(enable_hangcheck(i915, true));
- 	gem_quiescent_gpu(i915);
+ static void waitboost(int fd, bool reset)
 -- 
 2.26.0
