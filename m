@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3589774660639524623=="
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA4246E029
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 10:53:37 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 12:52:29 +0200
+Message-Id: <20210810105323.31375-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 10 Aug 2021 10:51:40 -0000
-Message-ID: <162859270013.29682.14757059176702995481@emeril.freedesktop.org>
-References: <20210810092619.16556-1-petri.latvala@intel.com>
-In-Reply-To: <20210810092619.16556-1-petri.latvala@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
- =?utf-8?q?t=5Fedid=3A_Properly_pad_display_descriptor_strings?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v7 00/54] Add allocator support in IGT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,185 +16,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3589774660639524623==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Series contains only ready-for-merge patches which I'm going to merge
+when CI won't complain on tests touched in the series.
 
-== Series Details ==
+Leaving HAX to allow enter shards on TGL for no-reloc kernel patch
+(it complains gem_exec_gttfill is skipping two subtests do to no-reloc).
 
-Series: lib/igt_edid: Properly pad display descriptor strings
-URL   : https://patchwork.freedesktop.org/series/93544/
-State : success
+v7: - leaving only patches which don't fail in reloc/no-reloc mode.
+     
+Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-== Summary ==
+Andrzej Turko (3):
+  tests/gem_exec_gttfill: Require relocation support
+  tests/gem_exec_lut_handle: Require relocation support
+  tests/gem_lut_handle: Require relocation support
 
-CI Bug Log - changes from IGT_6165 -> IGTPW_6108
-====================================================
+Bhanuprakash Modem (3):
+  lib/intel_batchbuffer: Add allocator support in blitter fast copy
+  tests/kms_flip: Adopt to use allocator
+  tests/kms_vblank: Adopt to use allocator
 
-Summary
--------
+Ch Sai Gowtham (5):
+  tests/gem_exec_params: Support gens without relocations
+  tests/gem_mmap: Add allocator support
+  tests/gem_mmap_gtt: Add allocator support
+  tests/gem_mmap_offset: Add allocator support
+  tests/gem_request_retire: Add allocator support
 
-  **SUCCESS**
+Zbigniew Kempczyński (43):
+  lib/igt_dummyload: Add support of using allocator in igt spinner
+  lib/intel_allocator: Add few helper functions for common use
+  lib/igt_gt: Add passing ahnd as an argument to igt_hang
+  lib/intel_batchbuffer: Ensure relocation code will be called
+  lib/intel_batchbuffer: Add allocator support in blitter src copy
+  lib/intel_batchbuffer: Try to avoid relocations in blitting
+  lib/huc_copy: Extend huc copy prototype to pass allocator handle
+  tests/gem_busy: Adopt to use allocator
+  tests/gem_create: Adopt to use allocator
+  tests/gem_ctx_engines: Adopt to use allocator
+  tests/gem_ctx_exec: Adopt to use allocator
+  tests/gem_ctx_freq: Adopt to use allocator
+  tests/gem_ctx_isolation: Adopt to use allocator
+  tests/gem_ctx_param: Adopt to use allocator
+  tests/gem_eio: Adopt to use allocator
+  tests/gem_exec_async: Adopt to use allocator
+  tests/gem_exec_fair: Add softpin support
+  tests/gem_exec_suspend: Adopt to use allocator
+  tests/gem_exec_parallel: Adopt to use alloctor
+  tests/gem_exec_whisper: Adopt to use allocator
+  tests/gem_fenced_exec_thrash: Adopt to use allocator
+  tests/gem_mmap_wc: Adopt to use allocator
+  tests/gem_ringfill: Adopt to use allocator
+  tests/gem_spin_batch: Adopt to use allocator
+  tests/gem_tiled_fence_blits: Adopt to use allocator
+  tests/gem_unfence_active_buffers: Adopt to use allocator
+  tests/gem_unref_active_buffers: Adopt to use allocator
+  tests/gem_userptr_blits: Adopt to use allocator
+  tests/gem_wait: Adopt to use allocator
+  tests/gem_watchdog: Adopt to use no-reloc
+  tests/gem_workarounds: Adopt to use allocator
+  tests/i915_hangman: Adopt to use allocator
+  tests/i915_module_load: Adopt to use allocator
+  tests/i915_pm_rc6_residency: Adopt to use allocator
+  tests/i915_pm_rpm: Adopt to use no-reloc
+  tests/i915_pm_rps: Alter to use no-reloc
+  tests/kms_busy: Adopt to use allocator
+  tests/kms_cursor_legacy: Adopt to use allocator
+  tests/perf_pmu: Adopt to use allocator
+  tests/sysfs_heartbeat_interval: Adopt to use allocator
+  tests/sysfs_preempt_timeout: Adopt to use allocator
+  tests/sysfs_timeslice_duration: Adopt to use allocator
+  HAX: remove gttfill for tgl ci
 
-  No regressions found.
+ lib/huc_copy.c                          |  27 ++++-
+ lib/huc_copy.h                          |   4 +-
+ lib/igt_dummyload.c                     |  74 +++++++++---
+ lib/igt_dummyload.h                     |   3 +
+ lib/igt_fb.c                            |  22 +++-
+ lib/igt_gt.c                            |  21 +++-
+ lib/igt_gt.h                            |   4 +
+ lib/intel_allocator.h                   |  55 +++++++++
+ lib/intel_batchbuffer.c                 | 118 ++++++++++++++-----
+ lib/intel_batchbuffer.h                 |  18 ++-
+ tests/i915/gem_busy.c                   |  36 +++++-
+ tests/i915/gem_create.c                 |  11 +-
+ tests/i915/gem_ctx_engines.c            |  25 +++-
+ tests/i915/gem_ctx_exec.c               |  46 ++++++--
+ tests/i915/gem_ctx_freq.c               |   4 +-
+ tests/i915/gem_ctx_isolation.c          | 100 ++++++++++++----
+ tests/i915/gem_ctx_param.c              |   9 +-
+ tests/i915/gem_eio.c                    |  60 +++++++---
+ tests/i915/gem_exec_async.c             |  67 +++++++++--
+ tests/i915/gem_exec_fair.c              |   6 +
+ tests/i915/gem_exec_gttfill.c           |   1 +
+ tests/i915/gem_exec_lut_handle.c        |   1 +
+ tests/i915/gem_exec_parallel.c          |  33 +++++-
+ tests/i915/gem_exec_params.c            |  74 ++++++++----
+ tests/i915/gem_exec_suspend.c           |  44 ++++---
+ tests/i915/gem_exec_whisper.c           |  39 +++++--
+ tests/i915/gem_fenced_exec_thrash.c     |  22 +++-
+ tests/i915/gem_huc_copy.c               |  12 +-
+ tests/i915/gem_lut_handle.c             |   1 +
+ tests/i915/gem_mmap.c                   |   4 +-
+ tests/i915/gem_mmap_gtt.c               |  15 ++-
+ tests/i915/gem_mmap_offset.c            |   4 +-
+ tests/i915/gem_mmap_wc.c                |   4 +-
+ tests/i915/gem_request_retire.c         |  14 ++-
+ tests/i915/gem_ringfill.c               |  37 ++++--
+ tests/i915/gem_spin_batch.c             |  37 ++++--
+ tests/i915/gem_tiled_fence_blits.c      |  65 ++++++++---
+ tests/i915/gem_unfence_active_buffers.c |   5 +-
+ tests/i915/gem_unref_active_buffers.c   |   5 +-
+ tests/i915/gem_userptr_blits.c          |  44 +++++--
+ tests/i915/gem_wait.c                   |   3 +
+ tests/i915/gem_watchdog.c               |  11 +-
+ tests/i915/gem_workarounds.c            |  17 ++-
+ tests/i915/i915_hangman.c               |  15 ++-
+ tests/i915/i915_module_load.c           |  23 +++-
+ tests/i915/i915_pm_rc6_residency.c      |   8 +-
+ tests/i915/i915_pm_rpm.c                |  27 ++++-
+ tests/i915/i915_pm_rps.c                |  18 ++-
+ tests/i915/perf_pmu.c                   | 147 +++++++++++++++++-------
+ tests/i915/sysfs_heartbeat_interval.c   |  24 +++-
+ tests/i915/sysfs_preempt_timeout.c      |  21 +++-
+ tests/i915/sysfs_timeslice_duration.c   |  21 +++-
+ tests/intel-ci/fast-feedback.testlist   |   1 -
+ tests/kms_busy.c                        |   9 ++
+ tests/kms_cursor_legacy.c               |   6 +
+ tests/kms_flip.c                        |  12 +-
+ tests/kms_vblank.c                      |   9 +-
+ tests/prime_vgem.c                      | 120 ++++++++++++++-----
+ 58 files changed, 1315 insertions(+), 348 deletions(-)
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6108 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@query-info:
-    - fi-bsw-kefka:       NOTRUN -> [SKIP][1] ([fdo#109271]) +17 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/fi-bsw-kefka/igt@amdgpu/amd_basic@query-info.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_module_load@reload:
-    - fi-kbl-soraka:      [DMESG-WARN][2] ([i915#1982]) -> [PASS][3]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6165/fi-kbl-soraka/igt@i915_module_load@reload.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/fi-kbl-soraka/igt@i915_module_load@reload.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-kefka:       [INCOMPLETE][4] ([i915#2940]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6165/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
-
-  * igt@i915_selftest@live@workarounds:
-    - fi-rkl-guc:         [DMESG-WARN][6] -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6165/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:
-    - fi-rkl-guc:         [SKIP][8] -> [PASS][9] +1 similar issue
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6165/fi-rkl-guc/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/fi-rkl-guc/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
-
-
-Participating hosts (36 -> 34)
-------------------------------
-
-  Missing    (2): fi-bsw-cyan fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6165 -> IGTPW_6108
-
-  CI-20190529: 20190529
-  CI_DRM_10463: 48b6a0d12e726a238c0d2dc0c39bda41566f5ff9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6108: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/index.html
-  IGT_6165: df5d05d742275b049f6f3c852a86c4769966b126 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/index.html
-
---===============3589774660639524623==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_edid: Properly pad display descriptor strings</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93544/">https://patchwork.freedesktop.org/series/93544/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6165 -&gt; IGTPW_6108</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6108 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@amdgpu/amd_basic@query-info:<ul>
-<li>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/fi-bsw-kefka/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6165/fi-kbl-soraka/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/fi-kbl-soraka/igt@i915_module_load@reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6165/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6165/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:</p>
-<ul>
-<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6165/fi-rkl-guc/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/fi-rkl-guc/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (36 -&gt; 34)</h2>
-<p>Missing    (2): fi-bsw-cyan fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6165 -&gt; IGTPW_6108</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10463: 48b6a0d12e726a238c0d2dc0c39bda41566f5ff9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6108: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6108/index.html<br />
-  IGT_6165: df5d05d742275b049f6f3c852a86c4769966b126 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============3589774660639524623==--
+-- 
+2.26.0
