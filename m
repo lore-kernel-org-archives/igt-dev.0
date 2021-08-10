@@ -1,14 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8049843087902418175=="
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E088189F24
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 07:09:18 +0000 (UTC)
+Date: Tue, 10 Aug 2021 09:09:12 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210810070912.GA10247@zkempczy-mobl2>
+References: <20210809132026.8692-1-andrzej.turko@linux.intel.com>
+ <20210809132026.8692-2-andrzej.turko@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 10 Aug 2021 06:10:49 -0000
-Message-ID: <162857584945.29683.17107768748388120963@emeril.freedesktop.org>
-References: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQWRkIGFs?=
- =?utf-8?q?locator_support_in_IGT?=
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210809132026.8692-2-andrzej.turko@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/gem_streaming_writes:
+ Support gens without relocations
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,224 +21,228 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Andrzej Turko <andrzej.turko@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8049843087902418175==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Mon, Aug 09, 2021 at 03:20:25PM +0200, Andrzej Turko wrote:
+> Use softpin to completely avoid relocations on generations
+> which do not support them.
+> 
+> Signed-off-by: Andrzej Turko <andrzej.turko@linux.intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>  tests/i915/gem_streaming_writes.c | 109 +++++++++++++++++-------------
+>  1 file changed, 62 insertions(+), 47 deletions(-)
+> 
+> diff --git a/tests/i915/gem_streaming_writes.c b/tests/i915/gem_streaming_writes.c
+> index c104792bd..ce82d8823 100644
+> --- a/tests/i915/gem_streaming_writes.c
+> +++ b/tests/i915/gem_streaming_writes.c
+> @@ -62,7 +62,8 @@ IGT_TEST_DESCRIPTION("Test of streaming writes into active GPU sources");
+>  
+>  static void test_streaming(int fd, int mode, int sync)
+>  {
+> -	const int has_64bit_reloc = intel_gen(intel_get_drm_devid(fd)) >= 8;
+> +	const bool has_64bit_addr = intel_gen(intel_get_drm_devid(fd)) >= 8;
+> +	const bool do_relocs = gem_has_relocations(fd);
+>  	struct drm_i915_gem_execbuffer2 execbuf;
+>  	struct drm_i915_gem_exec_object2 exec[3];
+>  	struct drm_i915_gem_relocation_entry reloc[128];
+> @@ -112,30 +113,35 @@ static void test_streaming(int fd, int mode, int sync)
+>  	__src_offset = src_offset;
+>  	__dst_offset = dst_offset;
+>  
+> -	memset(reloc, 0, sizeof(reloc));
+> -	for (i = 0; i < 64; i++) {
+> -		reloc[2*i+0].offset = 64*i + 4 * sizeof(uint32_t);
+> -		reloc[2*i+0].delta = 0;
+> -		reloc[2*i+0].target_handle = execbuf.flags & I915_EXEC_HANDLE_LUT ? DST : dst;
+> -		reloc[2*i+0].presumed_offset = dst_offset;
+> -		reloc[2*i+0].read_domains = I915_GEM_DOMAIN_RENDER;
+> -		reloc[2*i+0].write_domain = I915_GEM_DOMAIN_RENDER;
+> -
+> -		reloc[2*i+1].offset = 64*i + 7 * sizeof(uint32_t);
+> -		if (has_64bit_reloc)
+> -			reloc[2*i+1].offset +=  sizeof(uint32_t);
+> -		reloc[2*i+1].delta = 0;
+> -		reloc[2*i+1].target_handle = execbuf.flags & I915_EXEC_HANDLE_LUT ? SRC : src;
+> -		reloc[2*i+1].presumed_offset = src_offset;
+> -		reloc[2*i+1].read_domains = I915_GEM_DOMAIN_RENDER;
+> -		reloc[2*i+1].write_domain = 0;
+> -	}
+>  	gem_execbuf(fd, &execbuf);
+>  	igt_assert_eq_u64(__src_offset, src_offset);
+>  	igt_assert_eq_u64(__dst_offset, dst_offset);
+>  
+>  	exec[DST].flags = EXEC_OBJECT_WRITE;
+> -	exec[BATCH].relocation_count = 2;
+> +	if (do_relocs) {
+> +		memset(reloc, 0, sizeof(reloc));
+> +		for (i = 0; i < 64; i++) {
+> +			reloc[2*i+0].offset = 64*i + 4 * sizeof(uint32_t);
+> +			reloc[2*i+0].delta = 0;
+> +			reloc[2*i+0].target_handle = execbuf.flags & I915_EXEC_HANDLE_LUT ? DST : dst;
+> +			reloc[2*i+0].presumed_offset = dst_offset;
+> +			reloc[2*i+0].read_domains = I915_GEM_DOMAIN_RENDER;
+> +			reloc[2*i+0].write_domain = I915_GEM_DOMAIN_RENDER;
+> +
+> +			reloc[2*i+1].offset = 64*i + 7 * sizeof(uint32_t);
+> +			if (has_64bit_addr)
+> +				reloc[2*i+1].offset +=  sizeof(uint32_t);
+> +			reloc[2*i+1].delta = 0;
+> +			reloc[2*i+1].target_handle = execbuf.flags & I915_EXEC_HANDLE_LUT ? SRC : src;
+> +			reloc[2*i+1].presumed_offset = src_offset;
+> +			reloc[2*i+1].read_domains = I915_GEM_DOMAIN_RENDER;
+> +			reloc[2*i+1].write_domain = 0;
+> +		}
+> +		exec[BATCH].relocation_count = 2;
+> +	} else {
+> +		exec[DST].flags |= EXEC_OBJECT_PINNED;
+> +		exec[SRC].flags = EXEC_OBJECT_PINNED;
+> +	}
+>  	execbuf.buffer_count = 3;
+>  	execbuf.flags |= I915_EXEC_NO_RELOC;
+>  	if (gem_has_blt(fd))
+> @@ -159,19 +165,19 @@ static void test_streaming(int fd, int mode, int sync)
+>  			int k = 0;
+>  
+>  			b[k] = COPY_BLT_CMD | BLT_WRITE_ARGB;
+> -			if (has_64bit_reloc)
+> +			if (has_64bit_addr)
+>  				b[k] += 2;
+>  			k++;
+>  			b[k++] = 0xcc << 16 | 1 << 25 | 1 << 24 | 4096;
+>  			b[k++] = (y << 16) | x;
+>  			b[k++] = ((y+1) << 16) | (x + (CHUNK_SIZE >> 2));
+>  			b[k++] = dst_offset;
+> -			if (has_64bit_reloc)
+> +			if (has_64bit_addr)
+>  				b[k++] = dst_offset >> 32;
+>  			b[k++] = (y << 16) | x;
+>  			b[k++] = 4096;
+>  			b[k++] = src_offset;
+> -			if (has_64bit_reloc)
+> +			if (has_64bit_addr)
+>  				b[k++] = src_offset >> 32;
+>  			b[k++] = MI_BATCH_BUFFER_END;
+>  
+> @@ -205,7 +211,8 @@ static void test_streaming(int fd, int mode, int sync)
+>  
+>  			b = offset / CHUNK_SIZE / 64;
+>  			n = offset / CHUNK_SIZE % 64;
+> -			exec[BATCH].relocs_ptr = to_user_pointer((reloc + 2*n));
+> +			if (do_relocs)
+> +				exec[BATCH].relocs_ptr = to_user_pointer((reloc + 2*n));
+>  			exec[BATCH].handle = batch[b].handle;
+>  			exec[BATCH].offset = batch[b].offset;
+>  			execbuf.batch_start_offset = 64*n;
+> @@ -234,7 +241,8 @@ static void test_streaming(int fd, int mode, int sync)
+>  
+>  static void test_batch(int fd, int mode, int reverse)
+>  {
+> -	const int has_64bit_reloc = intel_gen(intel_get_drm_devid(fd)) >= 8;
+> +	const bool has_64bit_addr = intel_gen(intel_get_drm_devid(fd)) >= 8;
+> +	const bool do_relocs = gem_has_relocations(fd);
+>  	struct drm_i915_gem_execbuffer2 execbuf;
+>  	struct drm_i915_gem_exec_object2 exec[3];
+>  	struct drm_i915_gem_relocation_entry reloc[2];
+> @@ -254,26 +262,28 @@ static void test_batch(int fd, int mode, int reverse)
+>  
+>  	d = gem_mmap__cpu(fd, dst, 0, OBJECT_SIZE, PROT_READ);
+>  
+> -	memset(reloc, 0, sizeof(reloc));
+> -	reloc[0].offset =  4 * sizeof(uint32_t);
+> -	reloc[0].delta = 0;
+> -	reloc[0].target_handle = execbuf.flags & I915_EXEC_HANDLE_LUT ? DST : dst;
+> -	reloc[0].presumed_offset = dst_offset;
+> -	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
+> -	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
+> -
+> -	reloc[1].offset = 7 * sizeof(uint32_t);
+> -	if (has_64bit_reloc)
+> -		reloc[1].offset +=  sizeof(uint32_t);
+> -	reloc[1].delta = 0;
+> -	reloc[1].target_handle = execbuf.flags & I915_EXEC_HANDLE_LUT ? SRC : src;
+> -	reloc[1].presumed_offset = src_offset;
+> -	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
+> -	reloc[1].write_domain = 0;
+> -
+> +	if (do_relocs) {
+> +		memset(reloc, 0, sizeof(reloc));
+> +		reloc[0].offset =  4 * sizeof(uint32_t);
+> +		reloc[0].delta = 0;
+> +		reloc[0].target_handle = execbuf.flags & I915_EXEC_HANDLE_LUT ? DST : dst;
+> +		reloc[0].presumed_offset = dst_offset;
+> +		reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
+> +		reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
+> +
+> +		reloc[1].offset = 7 * sizeof(uint32_t);
+> +		if (has_64bit_addr)
+> +			reloc[1].offset +=  sizeof(uint32_t);
+> +		reloc[1].delta = 0;
+> +		reloc[1].target_handle = execbuf.flags & I915_EXEC_HANDLE_LUT ? SRC : src;
+> +		reloc[1].presumed_offset = src_offset;
+> +		reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
+> +		reloc[1].write_domain = 0;
+> +
+> +		exec[BATCH].relocs_ptr = to_user_pointer(reloc);
+> +		exec[BATCH].relocation_count = 2;
+> +	}
+>  	batch_size = ALIGN(OBJECT_SIZE / CHUNK_SIZE * 128, 4096);
+> -	exec[BATCH].relocs_ptr = to_user_pointer(reloc);
+> -	exec[BATCH].relocation_count = 2;
+>  	exec[BATCH].handle = gem_create(fd, batch_size);
+>  
+>  	switch (mode) {
+> @@ -308,8 +318,13 @@ static void test_batch(int fd, int mode, int reverse)
+>  	exec[DST].flags = EXEC_OBJECT_WRITE;
+>  	/* We assume that the active objects are fixed to avoid relocations */
+>  	exec[BATCH].relocation_count = 0;
+> +	exec[BATCH].relocs_ptr = 0;
+>  	__src_offset = src_offset;
+>  	__dst_offset = dst_offset;
+> +	if (!do_relocs) {
+> +		exec[DST].flags |= EXEC_OBJECT_PINNED;
+> +		exec[SRC].flags = EXEC_OBJECT_PINNED;
+> +	}
+>  
+>  	offset = mode ? I915_GEM_DOMAIN_GTT : I915_GEM_DOMAIN_CPU;
+>  	gem_set_domain(fd, exec[BATCH].handle, offset, offset);
+> @@ -334,19 +349,19 @@ static void test_batch(int fd, int mode, int reverse)
+>  			k = execbuf.batch_start_offset / 4;
+>  
+>  			base[k] = COPY_BLT_CMD | BLT_WRITE_ARGB;
+> -			if (has_64bit_reloc)
+> +			if (has_64bit_addr)
+>  				base[k] += 2;
+>  			k++;
+>  			base[k++] = 0xcc << 16 | 1 << 25 | 1 << 24 | 4096;
+>  			base[k++] = (y << 16) | x;
+>  			base[k++] = ((y+1) << 16) | (x + (CHUNK_SIZE >> 2));
+>  			base[k++] = dst_offset;
+> -			if (has_64bit_reloc)
+> +			if (has_64bit_addr)
+>  				base[k++] = dst_offset >> 32;
+>  			base[k++] = (y << 16) | x;
+>  			base[k++] = 4096;
+>  			base[k++] = src_offset;
+> -			if (has_64bit_reloc)
+> +			if (has_64bit_addr)
+>  				base[k++] = src_offset >> 32;
+>  			base[k++] = MI_BATCH_BUFFER_END;
+>  
+> -- 
+> 2.25.1
+>
 
-== Series Details ==
+Code looks ok so it should handle softpin properly. Only check I need to add
+before merge is to check mappable aperture - test won't run on discrete due
+to lack of gtt mapping. Anyway:
 
-Series: Add allocator support in IGT
-URL   : https://patchwork.freedesktop.org/series/93536/
-State : failure
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_10462 -> IGTPW_6105
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_6105 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_6105, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_6105:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-icl-u2:          [PASS][1] -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10462/fi-icl-u2/igt@i915_selftest@live@hangcheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/fi-icl-u2/igt@i915_selftest@live@hangcheck.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6105 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][3] ([fdo#109271]) +48 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_parallel@engines@userptr:
-    - fi-pnv-d510:        [INCOMPLETE][4] ([i915#299]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10462/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html
-
-  * igt@i915_selftest@live@workarounds:
-    - fi-rkl-guc:         [DMESG-WARN][6] -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10462/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a2:
-    - {fi-dg1-1}:         [FAIL][8] ([i915#3717]) -> [PASS][9] +63 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10462/fi-dg1-1/igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a2.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/fi-dg1-1/igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a2.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#299]: https://gitlab.freedesktop.org/drm/intel/issues/299
-  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
-  [i915#3717]: https://gitlab.freedesktop.org/drm/intel/issues/3717
-
-
-Participating hosts (37 -> 33)
-------------------------------
-
-  Missing    (4): fi-kbl-soraka fi-bdw-samus fi-bsw-cyan bat-jsl-1 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6163 -> IGTPW_6105
-
-  CI-20190529: 20190529
-  CI_DRM_10462: 1ab8dc433360478c35eba12661f1dd9327588830 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6105: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/index.html
-  IGT_6163: 9f9d82df8c8e68c304e84aba717a9937b65e10e6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-
-== Testlist changes ==
-
-+igt@gem_softpin@allocator-evict
-+igt@gem_softpin@allocator-evict-all-engines
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/index.html
-
---===============8049843087902418175==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add allocator support in IGT</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93536/">https://patchwork.freedesktop.org/series/93536/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10462 -&gt; IGTPW_6105</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_6105 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_6105, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/index.html</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6105:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10462/fi-icl-u2/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/fi-icl-u2/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6105 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@prime_vgem@basic-userptr:<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +48 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_parallel@engines@userptr:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10462/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/299">i915#299</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10462/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a2:</p>
-<ul>
-<li>{fi-dg1-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10462/fi-dg1-1/igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3717">i915#3717</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/fi-dg1-1/igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a2.html">PASS</a> +63 similar issues</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (37 -&gt; 33)</h2>
-<p>Missing    (4): fi-kbl-soraka fi-bdw-samus fi-bsw-cyan bat-jsl-1 </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6163 -&gt; IGTPW_6105</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10462: 1ab8dc433360478c35eba12661f1dd9327588830 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6105: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6105/index.html<br />
-  IGT_6163: 9f9d82df8c8e68c304e84aba717a9937b65e10e6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<p>== Testlist changes ==</p>
-<p>+igt@gem_softpin@allocator-evict<br />
-+igt@gem_softpin@allocator-evict-all-engines</p>
-
-</body>
-</html>
-
---===============8049843087902418175==--
+--
+Zbigniew 
