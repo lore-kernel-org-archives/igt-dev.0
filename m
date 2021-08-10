@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A43B76E049
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 10:54:26 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 686B26E044
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 10:54:09 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 12:53:21 +0200
-Message-Id: <20210810105323.31375-53-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 12:53:02 +0200
+Message-Id: <20210810105323.31375-34-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810105323.31375-1-zbigniew.kempczynski@intel.com>
 References: <20210810105323.31375-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 52/54] tests/sysfs_preempt_timeout: Adopt
- to use allocator
+Subject: [igt-dev] [PATCH i-g-t v7 33/54] tests/gem_spin_batch: Adopt to use
+ allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,95 +32,119 @@ Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/sysfs_preempt_timeout.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ tests/i915/gem_spin_batch.c | 37 +++++++++++++++++++++++++++----------
+ 1 file changed, 27 insertions(+), 10 deletions(-)
 
-diff --git a/tests/i915/sysfs_preempt_timeout.c b/tests/i915/sysfs_preempt_timeout.c
-index 9f00093ea..d176ae72e 100644
---- a/tests/i915/sysfs_preempt_timeout.c
-+++ b/tests/i915/sysfs_preempt_timeout.c
-@@ -37,6 +37,7 @@
- #include "igt_debugfs.h"
- #include "igt_dummyload.h"
- #include "igt_sysfs.h"
-+#include "intel_allocator.h"
- #include "sw_sync.h"
- 
- #define ATTR "preempt_timeout_ms"
-@@ -143,6 +144,7 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
- 	igt_spin_t *spin[2];
+diff --git a/tests/i915/gem_spin_batch.c b/tests/i915/gem_spin_batch.c
+index 4a9d6c2df..653812c7a 100644
+--- a/tests/i915/gem_spin_batch.c
++++ b/tests/i915/gem_spin_batch.c
+@@ -45,13 +45,14 @@ static void spin(int fd, const intel_ctx_t *ctx_id,
+ 	struct timespec tv = { };
+ 	struct timespec itv = { };
  	uint64_t elapsed;
- 	const intel_ctx_t *ctx[2];
-+	uint64_t ahnd[2];
++	uint64_t ahnd = get_reloc_ahnd(fd, ctx_id->id);
  
- 	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
- 	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
-@@ -150,15 +152,18 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
- 	set_preempt_timeout(engine, timeout);
+-	spin = __igt_spin_new(fd, .ctx = ctx_id, .engine = engine,
+-			      .flags = flags);
++	spin = __igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx_id,
++			      .engine = engine, .flags = flags);
+ 	while ((elapsed = igt_nsec_elapsed(&tv)) >> 30 < timeout_sec) {
+ 		igt_spin_t *next =
+-			__igt_spin_new(fd, .ctx = ctx_id, .engine = engine,
+-				       .flags = flags);
++			__igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx_id,
++				       .engine = engine, .flags = flags);
  
- 	ctx[0] = create_ctx(i915, class, inst, -1023);
--	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
-+	ahnd[0] = get_reloc_ahnd(i915, ctx[0]->id);
-+	spin[0] = igt_spin_new(i915, .ahnd = ahnd[0], .ctx = ctx[0],
- 			       .flags = (IGT_SPIN_NO_PREEMPTION |
- 					 IGT_SPIN_POLL_RUN |
- 					 IGT_SPIN_FENCE_OUT));
- 	igt_spin_busywait_until_started(spin[0]);
+ 		igt_spin_set_timeout(spin,
+ 				     timeout_100ms - igt_nsec_elapsed(&itv));
+@@ -67,6 +68,7 @@ static void spin(int fd, const intel_ctx_t *ctx_id,
+ 		loops++;
+ 	}
+ 	igt_spin_free(fd, spin);
++	put_ahnd(ahnd);
  
- 	ctx[1] = create_ctx(i915, class, inst, 1023);
-+	ahnd[1] = get_reloc_ahnd(i915, ctx[1]->id);
- 	igt_nsec_elapsed(&ts);
--	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
-+	spin[1] = igt_spin_new(i915, .ahnd = ahnd[1], .ctx = ctx[1],
-+				.flags = IGT_SPIN_POLL_RUN);
- 	igt_spin_busywait_until_started(spin[1]);
- 	elapsed = igt_nsec_elapsed(&ts);
+ 	igt_info("Completed %ld loops in %lld ns, target %ld\n",
+ 		 loops, (long long)elapsed, (long)(elapsed / timeout_100ms));
+@@ -82,11 +84,12 @@ static void spin_resubmit(int fd, const intel_ctx_t *ctx,
+ {
+ 	const intel_ctx_t *new_ctx = NULL;
+ 	igt_spin_t *spin;
++	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
  
-@@ -171,6 +176,8 @@ static uint64_t __test_timeout(int i915, int engine, unsigned int timeout)
+ 	if (flags & RESUBMIT_NEW_CTX)
+ 		igt_require(gem_has_contexts(fd));
  
- 	intel_ctx_destroy(i915, ctx[1]);
- 	intel_ctx_destroy(i915, ctx[0]);
-+	put_ahnd(ahnd[1]);
-+	put_ahnd(ahnd[0]);
- 	gem_quiescent_gpu(i915);
+-	spin = __igt_spin_new(fd, .ctx = ctx, .engine = engine);
++	spin = __igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx, .engine = engine);
+ 	if (flags & RESUBMIT_NEW_CTX) {
+ 		new_ctx = intel_ctx_create(fd, &ctx->cfg);
+ 		spin->execbuf.rsvd1 = new_ctx->id;
+@@ -110,6 +113,7 @@ static void spin_resubmit(int fd, const intel_ctx_t *ctx,
+ 		intel_ctx_destroy(fd, new_ctx);
  
- 	return elapsed;
-@@ -231,6 +238,7 @@ static void test_off(int i915, int engine)
- 	igt_spin_t *spin[2];
- 	unsigned int saved;
- 	const intel_ctx_t *ctx[2];
-+	uint64_t ahnd[2];
+ 	igt_spin_free(fd, spin);
++	put_ahnd(ahnd);
+ }
  
- 	/*
- 	 * We support setting the timeout to 0 to disable the reset on
-@@ -252,14 +260,17 @@ static void test_off(int i915, int engine)
- 	set_preempt_timeout(engine, 0);
+ static void spin_exit_handler(int sig)
+@@ -139,6 +143,7 @@ static void spin_all(int i915, const intel_ctx_t *ctx, unsigned int flags)
+ 	const struct intel_execution_engine2 *e;
+ 	intel_ctx_cfg_t cfg = ctx->cfg;
+ 	struct igt_spin *spin, *n;
++	uint64_t ahnd;
+ 	IGT_LIST_HEAD(list);
  
- 	ctx[0] = create_ctx(i915, class, inst, -1023);
--	spin[0] = igt_spin_new(i915, .ctx = ctx[0],
-+	ahnd[0] = get_reloc_ahnd(i915, ctx[0]->id);
-+	spin[0] = igt_spin_new(i915, .ahnd = ahnd[0], .ctx = ctx[0],
- 			       .flags = (IGT_SPIN_NO_PREEMPTION |
- 					 IGT_SPIN_POLL_RUN |
- 					 IGT_SPIN_FENCE_OUT));
- 	igt_spin_busywait_until_started(spin[0]);
+ 	for_each_ctx_cfg_engine(i915, &cfg, e) {
+@@ -147,9 +152,11 @@ static void spin_all(int i915, const intel_ctx_t *ctx, unsigned int flags)
  
- 	ctx[1] = create_ctx(i915, class, inst, 1023);
--	spin[1] = igt_spin_new(i915, .ctx = ctx[1], .flags = IGT_SPIN_POLL_RUN);
-+	ahnd[1] = get_reloc_ahnd(i915, ctx[1]->id);
-+	spin[1] = igt_spin_new(i915, .ahnd = ahnd[1], .ctx = ctx[1],
-+				.flags = IGT_SPIN_POLL_RUN);
+ 		if (flags & PARALLEL_SPIN_NEW_CTX)
+ 			ctx = intel_ctx_create(i915, &cfg);
++		ahnd = get_reloc_ahnd(i915, ctx->id);
  
- 	for (int i = 0; i < 150; i++) {
- 		igt_assert_eq(sync_fence_status(spin[0]->out_fence), 0);
-@@ -278,6 +289,8 @@ static void test_off(int i915, int engine)
+ 		/* Prevent preemption so only one is allowed on each engine */
+ 		spin = igt_spin_new(i915,
++				    .ahnd = ahnd,
+ 				    .ctx = ctx,
+ 				    .engine = e->flags,
+ 				    .flags = (IGT_SPIN_POLL_RUN |
+@@ -163,9 +170,11 @@ static void spin_all(int i915, const intel_ctx_t *ctx, unsigned int flags)
  
- 	intel_ctx_destroy(i915, ctx[1]);
- 	intel_ctx_destroy(i915, ctx[0]);
-+	put_ahnd(ahnd[1]);
-+	put_ahnd(ahnd[0]);
+ 	igt_list_for_each_entry_safe(spin, n, &list, link) {
+ 		igt_assert(gem_bo_busy(i915, spin->handle));
++		ahnd = spin->ahnd;
+ 		igt_spin_end(spin);
+ 		gem_sync(i915, spin->handle);
+ 		igt_spin_free(i915, spin);
++		put_ahnd(ahnd);
+ 	}
+ }
  
- 	igt_assert(enable_hangcheck(i915, true));
- 	gem_quiescent_gpu(i915);
+@@ -249,12 +258,20 @@ igt_main
+ 
+ #undef test_each_engine
+ 
+-	igt_subtest("spin-each")
+-		spin_on_all_engines(fd, ctx, 0, 3);
++	igt_subtest_group {
++		igt_fixture
++			intel_allocator_multiprocess_start();
+ 
+-	igt_subtest("user-each") {
+-		igt_require(has_userptr(fd));
+-		spin_on_all_engines(fd, ctx, IGT_SPIN_USERPTR, 3);
++		igt_subtest("spin-each")
++			spin_on_all_engines(fd, ctx, 0, 3);
++
++		igt_subtest("user-each") {
++			igt_require(has_userptr(fd));
++			spin_on_all_engines(fd, ctx, IGT_SPIN_USERPTR, 3);
++		}
++
++		igt_fixture
++			intel_allocator_multiprocess_stop();
+ 	}
+ 
+ 	igt_fixture {
 -- 
 2.26.0
