@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EBBF76E029
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 10:54:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 380C06E045
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 10:54:11 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 12:53:18 +0200
-Message-Id: <20210810105323.31375-50-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 12:53:04 +0200
+Message-Id: <20210810105323.31375-36-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810105323.31375-1-zbigniew.kempczynski@intel.com>
 References: <20210810105323.31375-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 49/54] tests/kms_vblank: Adopt to use
- allocator
+Subject: [igt-dev] [PATCH i-g-t v7 35/54] tests/gem_unfence_active_buffers:
+ Adopt to use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,56 +24,41 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+For newer gens we're not able to rely on relocations. Adopt to use
+offsets acquired from the allocator.
 
-For newer gens kernel will reject relocations returning -EINVAL
-so we should just provide the allocator handle to inject the hang.
-
-V2:
-* Drop is_i915_device() check
-
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/kms_vblank.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tests/i915/gem_unfence_active_buffers.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index 885b2e2c4..f3a9875e3 100644
---- a/tests/kms_vblank.c
-+++ b/tests/kms_vblank.c
-@@ -118,6 +118,7 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
- 	igt_output_t *output = data->output;
- 	int fd = display->drm_fd;
- 	igt_hang_t hang;
-+	uint64_t ahnd = 0;
+diff --git a/tests/i915/gem_unfence_active_buffers.c b/tests/i915/gem_unfence_active_buffers.c
+index 2c9cebb6d..532eed2e7 100644
+--- a/tests/i915/gem_unfence_active_buffers.c
++++ b/tests/i915/gem_unfence_active_buffers.c
+@@ -69,11 +69,13 @@ igt_simple_main
+ {
+ 	int i915, num_fences;
+ 	igt_spin_t *spin;
++	uint64_t ahnd;
  
- 	prepare_crtc(data, fd, output);
+ 	i915 = drm_open_driver(DRIVER_INTEL);
+ 	igt_require_gem(i915);
  
-@@ -128,8 +129,10 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
- 		 igt_subtest_name(), kmstest_pipe_name(data->pipe),
- 		 igt_output_name(output));
+-	spin = igt_spin_new(i915);
++	ahnd = get_reloc_ahnd(i915, 0);
++	spin = igt_spin_new(i915, .ahnd = ahnd);
  
--	if (!(data->flags & NOHANG))
--		hang = igt_hang_ring(fd, I915_EXEC_DEFAULT);
-+	if (!(data->flags & NOHANG)) {
-+		ahnd = get_reloc_ahnd(fd, 0);
-+		hang = igt_hang_ring_with_ahnd(fd, I915_EXEC_DEFAULT, ahnd);
-+	}
+ 	num_fences = gem_available_fences(i915);
+ 	igt_require(num_fences);
+@@ -96,4 +98,5 @@ igt_simple_main
+ 	}
  
- 	if (data->flags & BUSY) {
- 		union drm_wait_vblank vbl;
-@@ -166,6 +169,8 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
- 	igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
- 		 igt_subtest_name(), kmstest_pipe_name(data->pipe), igt_output_name(output));
- 
+ 	igt_spin_free(i915, spin);
 +	put_ahnd(ahnd);
-+
- 	/* cleanup what prepare_crtc() has done */
- 	cleanup_crtc(data, fd, output);
  }
 -- 
 2.26.0
