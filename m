@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2040B89F4F
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 08:46:10 +0000 (UTC)
-Date: Tue, 10 Aug 2021 11:48:50 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YRI9ch5fTTyoihUN@platvala-desk.ger.corp.intel.com>
-References: <20210810081440.21803-1-janusz.krzysztofik@linux.intel.com>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210810081440.21803-1-janusz.krzysztofik@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/intel_memory_region: Add missing
- forward declaration
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 10 Aug 2021 08:49:50 -0000
+Message-ID: <162858539003.29681.7408947836809268217@emeril.freedesktop.org>
+References: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_A?=
+ =?utf-8?q?dd_allocator_support_in_IGT?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,52 +16,112 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Andrzej Turko <andrzej.turko@linux.intel.com>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Aug 10, 2021 at 10:14:40AM +0200, Janusz Krzysztofik wrote:
-> Intel memory region header declares some functions with a pointer to a
-> structure defined elsewhere as one of their arguments.  Forward declare
-> that structure to avoid compiler warnings.
-> 
-> ../lib/i915/intel_memory_region.h:69:19: warning: ‘struct drm_i915_gem_memory_class_instance’ declared inside parameter list will not be visible outside of this definition or declaration
->    69 |            struct drm_i915_gem_memory_class_instance *mem_regions,
->       |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> ../lib/i915/intel_memory_region.h:73:15: warning: ‘struct drm_i915_gem_memory_class_instance’ declared inside parameter list will not be visible outside of this definition or declaration
->    73 |        struct drm_i915_gem_memory_class_instance *mem_regions,
->       |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> ---
->  lib/i915/intel_memory_region.h | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
-> index e9d1d66d4..8cd18ea0e 100644
-> --- a/lib/i915/intel_memory_region.h
-> +++ b/lib/i915/intel_memory_region.h
-> @@ -62,6 +62,8 @@ uint8_t gem_get_lmem_region_count(int fd);
->  
->  bool gem_has_lmem(int fd);
->  
-> +struct drm_i915_gem_memory_class_instance;
-> +
+== Series Details ==
 
+Series: Add allocator support in IGT
+URL   : https://patchwork.freedesktop.org/series/93536/
+State : warning
 
-You want to avoid an #include <i915_drm.h> ?
+== Summary ==
 
+Pipeline status: FAILED.
 
--- 
-Petri Latvala
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/378239 for the overview.
 
+test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12642823):
+    1/291 lib igt_assert                          TIMEOUT 32.09 s 
+  Traceback (most recent call last):
+    File "/usr/lib/python3/dist-packages/mesonbuild/mesonmain.py", line 112, in run
+      return options.run_func(options)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
+      return th.doit()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
+      self.run_tests(tests)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
+      self.drain_futures(futures)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
+      self.print_stats(numlen, tests, name, result.result(), i)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
+      result_str += "\n\n" + result.get_log()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
+      res += self.stde
+  TypeError: can only concatenate str (not "bytes") to str
+  section_end:1628585037:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
 
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12642824):
+    1/291 lib igt_assert                          TIMEOUT 32.09 s 
+  Traceback (most recent call last):
+    File "/usr/lib/python3/dist-packages/mesonbuild/mesonmain.py", line 112, in run
+      return options.run_func(options)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
+      return th.doit()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
+      self.run_tests(tests)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
+      self.drain_futures(futures)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
+      self.print_stats(numlen, tests, name, result.result(), i)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
+      result_str += "\n\n" + result.get_log()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
+      res += self.stde
+  TypeError: can only concatenate str (not "bytes") to str
+  section_end:1628585038:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
 
->  int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t size,
->  				       struct drm_i915_gem_memory_class_instance *mem_regions,
->  				       int num_regions);
-> -- 
-> 2.25.1
-> 
+test:ninja-test-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12642822):
+   1/24 lib igt_assert                          TIMEOUT 32.04 s 
+  Traceback (most recent call last):
+    File "/usr/lib/python3/dist-packages/mesonbuild/mesonmain.py", line 112, in run
+      return options.run_func(options)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
+      return th.doit()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
+      self.run_tests(tests)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
+      self.drain_futures(futures)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
+      self.print_stats(numlen, tests, name, result.result(), i)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
+      result_str += "\n\n" + result.get_log()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
+      res += self.stde
+  TypeError: can only concatenate str (not "bytes") to str
+  section_end:1628585037:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+  
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/12642825):
+    1/291 lib igt_assert                          TIMEOUT 32.11 s 
+  Traceback (most recent call last):
+    File "/usr/lib/python3/dist-packages/mesonbuild/mesonmain.py", line 112, in run
+      return options.run_func(options)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 805, in run
+      return th.doit()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 555, in doit
+      self.run_tests(tests)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 715, in run_tests
+      self.drain_futures(futures)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 732, in drain_futures
+      self.print_stats(numlen, tests, name, result.result(), i)
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 505, in print_stats
+      result_str += "\n\n" + result.get_log()
+    File "/usr/lib/python3/dist-packages/mesonbuild/mtest.py", line 178, in get_log
+      res += self.stde
+  TypeError: can only concatenate str (not "bytes") to str
+  section_end:1628585038:step_script
+  ERROR: Job failed: execution took longer than 1h0m0s seconds
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/378239
