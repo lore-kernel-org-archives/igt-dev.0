@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E320189E05
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:28:21 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF94889E7C
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:28:23 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 07:26:40 +0200
-Message-Id: <20210810052711.7866-35-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 07:27:08 +0200
+Message-Id: <20210810052711.7866-63-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 References: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 34/65] tests/gem_spin_batch: Adopt to use
- allocator
+Subject: [igt-dev] [PATCH i-g-t v6 62/65] WIP: NOTWORKING: gem_exec_await
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,127 +22,71 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For newer gens we're not able to rely on relocations. Adopt to use
-offsets acquired from the allocator.
-
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_spin_batch.c | 37 +++++++++++++++++++++++++++----------
- 1 file changed, 27 insertions(+), 10 deletions(-)
+ tests/i915/gem_exec_await.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/gem_spin_batch.c b/tests/i915/gem_spin_batch.c
-index 4a9d6c2df..653812c7a 100644
---- a/tests/i915/gem_spin_batch.c
-+++ b/tests/i915/gem_spin_batch.c
-@@ -45,13 +45,14 @@ static void spin(int fd, const intel_ctx_t *ctx_id,
- 	struct timespec tv = { };
- 	struct timespec itv = { };
- 	uint64_t elapsed;
-+	uint64_t ahnd = get_reloc_ahnd(fd, ctx_id->id);
+diff --git a/tests/i915/gem_exec_await.c b/tests/i915/gem_exec_await.c
+index bea57c61b..8b45e10de 100644
+--- a/tests/i915/gem_exec_await.c
++++ b/tests/i915/gem_exec_await.c
+@@ -72,6 +72,7 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
+ 	unsigned engines[I915_EXEC_RING_MASK + 1], nengine;
+ 	unsigned long count;
+ 	double time;
++	uint64_t ahnd = get_reloc_ahnd(fd, 0);
  
--	spin = __igt_spin_new(fd, .ctx = ctx_id, .engine = engine,
--			      .flags = flags);
-+	spin = __igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx_id,
-+			      .engine = engine, .flags = flags);
- 	while ((elapsed = igt_nsec_elapsed(&tv)) >> 30 < timeout_sec) {
- 		igt_spin_t *next =
--			__igt_spin_new(fd, .ctx = ctx_id, .engine = engine,
--				       .flags = flags);
-+			__igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx_id,
-+				       .engine = engine, .flags = flags);
+ 	nengine = 0;
+ 	for_each_ctx_engine(fd, ctx, engine) {
+@@ -87,17 +88,22 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
+ 	exec = calloc(nengine, sizeof(*exec));
+ 	igt_assert(exec);
  
- 		igt_spin_set_timeout(spin,
- 				     timeout_100ms - igt_nsec_elapsed(&itv));
-@@ -67,6 +68,7 @@ static void spin(int fd, const intel_ctx_t *ctx_id,
- 		loops++;
- 	}
- 	igt_spin_free(fd, spin);
-+	put_ahnd(ahnd);
+-	intel_require_memory(nengine*(2 + ring_size), 4096, CHECK_RAM);
++	//intel_require_memory(nengine*(2 + ring_size), 4096, CHECK_RAM);
+ 	obj = calloc(nengine*ring_size + 1, sizeof(*obj));
+ 	igt_assert(obj);
  
- 	igt_info("Completed %ld loops in %lld ns, target %ld\n",
- 		 loops, (long long)elapsed, (long)(elapsed / timeout_100ms));
-@@ -82,11 +84,12 @@ static void spin_resubmit(int fd, const intel_ctx_t *ctx,
- {
- 	const intel_ctx_t *new_ctx = NULL;
- 	igt_spin_t *spin;
-+	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
++	igt_info("nengine: %u, ring_size: %u\n", nengine, ring_size);
+ 	for (unsigned e = 0; e < nengine; e++) {
+ 		exec[e].obj = calloc(ring_size, sizeof(*exec[e].obj));
+ 		igt_assert(exec[e].obj);
+ 		for (unsigned n = 0; n < ring_size; n++)  {
+ 			exec[e].obj[n].handle = gem_create(fd, 4096);
+ 			exec[e].obj[n].flags = EXEC_OBJECT_WRITE;
+-
++			if (ahnd) {
++				exec[e].obj[n].offset = get_offset(ahnd, exec[e].obj[n].handle, 4096, 0);
++				exec[e].obj[n].flags |= EXEC_OBJECT_PINNED;
++				obj[e*ring_size + n].offset = exec[e].obj[n].offset;
++			}
+ 			obj[e*ring_size + n].handle = exec[e].obj[n].handle;
+ 		}
  
- 	if (flags & RESUBMIT_NEW_CTX)
- 		igt_require(gem_has_contexts(fd));
+@@ -123,6 +129,8 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
+ 		exec[e].cmd[0] = MI_BATCH_BUFFER_END;
  
--	spin = __igt_spin_new(fd, .ctx = ctx, .engine = engine);
-+	spin = __igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx, .engine = engine);
- 	if (flags & RESUBMIT_NEW_CTX) {
- 		new_ctx = intel_ctx_create(fd, &ctx->cfg);
- 		spin->execbuf.rsvd1 = new_ctx->id;
-@@ -110,6 +113,7 @@ static void spin_resubmit(int fd, const intel_ctx_t *ctx,
- 		intel_ctx_destroy(fd, new_ctx);
+ 		gem_execbuf(fd, &exec[e].execbuf);
++		igt_info("obj[0].offset: %llx, handle: %u\n",
++			 exec[e].exec[0].offset, exec[e].exec[0].handle);
+ 		exec[e].exec[1] = exec[e].exec[0];
+ 		exec[e].execbuf.buffer_count = 2;
  
- 	igt_spin_free(fd, spin);
-+	put_ahnd(ahnd);
- }
+@@ -181,6 +189,7 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
+ 				exec[e].cmd[++i] = address;
+ 			}
  
- static void spin_exit_handler(int sig)
-@@ -139,6 +143,7 @@ static void spin_all(int i915, const intel_ctx_t *ctx, unsigned int flags)
- 	const struct intel_execution_engine2 *e;
- 	intel_ctx_cfg_t cfg = ctx->cfg;
- 	struct igt_spin *spin, *n;
-+	uint64_t ahnd;
- 	IGT_LIST_HEAD(list);
++			igt_info("Address: %llx\n", (long long) address);
+ 			exec[e].exec[0] = obj[nengine*ring_size];
+ 			gem_execbuf(fd, &exec[e].execbuf);
  
- 	for_each_ctx_cfg_engine(i915, &cfg, e) {
-@@ -147,9 +152,11 @@ static void spin_all(int i915, const intel_ctx_t *ctx, unsigned int flags)
- 
- 		if (flags & PARALLEL_SPIN_NEW_CTX)
- 			ctx = intel_ctx_create(i915, &cfg);
-+		ahnd = get_reloc_ahnd(i915, ctx->id);
- 
- 		/* Prevent preemption so only one is allowed on each engine */
- 		spin = igt_spin_new(i915,
-+				    .ahnd = ahnd,
- 				    .ctx = ctx,
- 				    .engine = e->flags,
- 				    .flags = (IGT_SPIN_POLL_RUN |
-@@ -163,9 +170,11 @@ static void spin_all(int i915, const intel_ctx_t *ctx, unsigned int flags)
- 
- 	igt_list_for_each_entry_safe(spin, n, &list, link) {
- 		igt_assert(gem_bo_busy(i915, spin->handle));
-+		ahnd = spin->ahnd;
- 		igt_spin_end(spin);
- 		gem_sync(i915, spin->handle);
- 		igt_spin_free(i915, spin);
-+		put_ahnd(ahnd);
- 	}
- }
- 
-@@ -249,12 +258,20 @@ igt_main
- 
- #undef test_each_engine
- 
--	igt_subtest("spin-each")
--		spin_on_all_engines(fd, ctx, 0, 3);
-+	igt_subtest_group {
-+		igt_fixture
-+			intel_allocator_multiprocess_start();
- 
--	igt_subtest("user-each") {
--		igt_require(has_userptr(fd));
--		spin_on_all_engines(fd, ctx, IGT_SPIN_USERPTR, 3);
-+		igt_subtest("spin-each")
-+			spin_on_all_engines(fd, ctx, 0, 3);
-+
-+		igt_subtest("user-each") {
-+			igt_require(has_userptr(fd));
-+			spin_on_all_engines(fd, ctx, IGT_SPIN_USERPTR, 3);
-+		}
-+
-+		igt_fixture
-+			intel_allocator_multiprocess_stop();
+@@ -208,6 +217,7 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
+ 		for (unsigned e = 0; e < nengine; e++)
+ 			exec[e].cmd[0] = MI_BATCH_BUFFER_END;
+ 		__sync_synchronize();
++		break;
  	}
  
- 	igt_fixture {
+ 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
 -- 
 2.26.0
