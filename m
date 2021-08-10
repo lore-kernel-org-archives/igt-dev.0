@@ -1,20 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3610C89DFE
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 03:17:07 +0000 (UTC)
-Date: Tue, 10 Aug 2021 05:17:01 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210810031701.GC3738@zkempczy-mobl2>
-References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
- <20210809130533.27759-56-zbigniew.kempczynski@intel.com>
- <87r1f21g6r.wl-ashutosh.dixit@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7229231755629177568=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87r1f21g6r.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v5 55/65] tests/i915_pm_rps: Alter to
- use no-reloc
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 10 Aug 2021 03:22:28 -0000
+Message-ID: <162856574811.29684.15832462114088255626@emeril.freedesktop.org>
+References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQWRkIGFs?=
+ =?utf-8?q?locator_support_in_IGT_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,56 +16,239 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Aug 09, 2021 at 02:06:20PM -0700, Dixit, Ashutosh wrote:
-> On Mon, 09 Aug 2021 06:05:23 -0700, Zbigniew Kempczyński wrote:
-> >
-> > diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-> > index f51a47479..ada06aa94 100644
-> > --- a/tests/i915/i915_pm_rps.c
-> > +++ b/tests/i915/i915_pm_rps.c
-> > @@ -250,6 +250,10 @@ static void load_helper_run(enum load load)
-> >		igt_spin_t *spin[2] = {};
-> >		bool prev_load;
-> >		uint32_t handle;
-> > +		uint64_t ahnd;
-> > +
-> > +		intel_allocator_init();
-> 
-> OK, this extra step is needed because there is no igt_constructor
-> here. Also each child process is completely independent.
+--===============7229231755629177568==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Yes, we want to detach from IPC and allocate offsets locally in the 
-child process.
+== Series Details ==
 
-> 
-> > @@ -542,11 +547,14 @@ static void boost_freq(int fd, int *boost_freqs)
-> >  {
-> >	int64_t timeout = 1;
-> >	igt_spin_t *load;
-> > +	/* We need to keep dependency spin offset for load->handle */
-> > +	uint64_t ahnd = get_simple_l2h_ahnd(fd, 0);
-> >
-> > -	load = igt_spin_new(fd);
-> > +	//get_offset(ahnd, 1000, 0x1000000, 0);
-> 
-> Please delete this line, with that:
+Series: Add allocator support in IGT (rev3)
+URL   : https://patchwork.freedesktop.org/series/93509/
+State : failure
 
-Oh, that remains because on SKL (I'm testing this on my Nuc device)
-there's risk to allocate offset used internally in shadow buffer.
-I've incidentally left this because adding this allows test to pass
-on blt0 instead of getting stuck. But this hides the problem so it 
-should be removed allowing us to hang. I've enqueued test to add
-to gem_softpin which will reveal the problem.
+== Summary ==
 
-Thanks for catching this line and r-b.
---
-Zbigniew
+CI Bug Log - changes from CI_DRM_10462 -> IGTPW_6104
+====================================================
 
-> 
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_6104 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_6104, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6104:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-tgl-1115g4:      [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10462/fi-tgl-1115g4/igt@i915_selftest@live@gt_heartbeat.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/fi-tgl-1115g4/igt@i915_selftest@live@gt_heartbeat.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6104 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][3] ([fdo#109271]) +48 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
+
+  * igt@runner@aborted:
+    - fi-tgl-1115g4:      NOTRUN -> [FAIL][4] ([i915#1436] / [i915#2966] / [i915#3690])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/fi-tgl-1115g4/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_parallel@engines@userptr:
+    - fi-pnv-d510:        [INCOMPLETE][5] ([i915#299]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10462/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - fi-rkl-guc:         [DMESG-WARN][7] -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10462/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a2:
+    - {fi-dg1-1}:         [FAIL][9] ([i915#3717]) -> [PASS][10] +63 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10462/fi-dg1-1/igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a2.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/fi-dg1-1/igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a2.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
+  [i915#2966]: https://gitlab.freedesktop.org/drm/intel/issues/2966
+  [i915#299]: https://gitlab.freedesktop.org/drm/intel/issues/299
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#3690]: https://gitlab.freedesktop.org/drm/intel/issues/3690
+  [i915#3717]: https://gitlab.freedesktop.org/drm/intel/issues/3717
+
+
+Participating hosts (37 -> 34)
+------------------------------
+
+  Missing    (3): fi-bdw-samus fi-bsw-cyan bat-jsl-1 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6163 -> IGTPW_6104
+
+  CI-20190529: 20190529
+  CI_DRM_10462: 1ab8dc433360478c35eba12661f1dd9327588830 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6104: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/index.html
+  IGT_6163: 9f9d82df8c8e68c304e84aba717a9937b65e10e6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@gem_softpin@allocator-evict
++igt@gem_softpin@allocator-evict-all-engines
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/index.html
+
+--===============7229231755629177568==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add allocator support in IGT (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93509/">https://patchwork.freedesktop.org/series/93509/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10462 -&gt; IGTPW_6104</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_6104 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_6104, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6104:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_heartbeat:<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10462/fi-tgl-1115g4/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/fi-tgl-1115g4/igt@i915_selftest@live@gt_heartbeat.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6104 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +48 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/fi-tgl-1115g4/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2966">i915#2966</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3690">i915#3690</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_parallel@engines@userptr:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10462/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/299">i915#299</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10462/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a2:</p>
+<ul>
+<li>{fi-dg1-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10462/fi-dg1-1/igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3717">i915#3717</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/fi-dg1-1/igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a2.html">PASS</a> +63 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (37 -&gt; 34)</h2>
+<p>Missing    (3): fi-bdw-samus fi-bsw-cyan bat-jsl-1 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6163 -&gt; IGTPW_6104</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10462: 1ab8dc433360478c35eba12661f1dd9327588830 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6104: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6104/index.html<br />
+  IGT_6163: 9f9d82df8c8e68c304e84aba717a9937b65e10e6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@gem_softpin@allocator-evict<br />
++igt@gem_softpin@allocator-evict-all-engines</p>
+
+</body>
+</html>
+
+--===============7229231755629177568==--
