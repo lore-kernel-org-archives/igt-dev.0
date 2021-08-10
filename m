@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8723511921928966063=="
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E1C689F1B
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 08:42:03 +0000 (UTC)
+Date: Tue, 10 Aug 2021 11:44:43 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YRI8e3vKxxsFVi4C@platvala-desk.ger.corp.intel.com>
+References: <20210809191020.18960-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 10 Aug 2021 08:30:24 -0000
-Message-ID: <162858422483.29684.317728653865233836@emeril.freedesktop.org>
-References: <20210810072352.337660-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20210810072352.337660-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fbusy=3A_Limit_the_execution_to_single_connector?=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210809191020.18960-1-janusz.krzysztofik@linux.intel.com>
+Subject: Re: [igt-dev] [RFC PATCH i-g-t 1/2] lib/core: Add igt_debug_on*
+ variants
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,235 +19,102 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8723511921928966063==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/kms_busy: Limit the execution to single connector
-URL   : https://patchwork.freedesktop.org/series/93539/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from IGT_6164 -> IGTPW_6106
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_6106 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_6106, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_6106:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_busy@basic@flip:
-    - fi-kbl-7567u:       NOTRUN -> [CRASH][1] +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-
-  * igt@kms_busy@basic@modeset:
-    - fi-bsw-nick:        NOTRUN -> [CRASH][2] +1 similar issue
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/fi-bsw-nick/igt@kms_busy@basic@modeset.html
-    - fi-kbl-guc:         NOTRUN -> [CRASH][3] +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/fi-kbl-guc/igt@kms_busy@basic@modeset.html
-
-  
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@kms_busy@basic@modeset:
-    - {fi-hsw-gt1}:       NOTRUN -> [CRASH][4] +1 similar issue
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/fi-hsw-gt1/igt@kms_busy@basic@modeset.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6106 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@cs-gfx:
-    - fi-rkl-guc:         NOTRUN -> [SKIP][5] ([fdo#109315]) +17 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/fi-rkl-guc/igt@amdgpu/amd_basic@cs-gfx.html
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271]) +17 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/fi-kbl-soraka/igt@amdgpu/amd_basic@cs-gfx.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - fi-rkl-guc:         [INCOMPLETE][7] ([i915#3920]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6164/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [i915#3920]: https://gitlab.freedesktop.org/drm/intel/issues/3920
+On Mon, Aug 09, 2021 at 09:10:19PM +0200, Janusz Krzysztofik wrote:
+> If a test calls a function which can return a failure, only the fact
+> that the function failed can be reported to the caller, with no details
+> on what actually failed inside.  It could be helpful if functions which
+> perform several steps or iterations emitted debug messages with failure
+> details.
+> 
+> To simplify coding and avoid code duplication in functions, igt_debug
+> variants similar to igt_warn_on and friends could be useful.  Add them.
+> 
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
 
-Participating hosts (36 -> 34)
-------------------------------
+This looks lovely.
 
-  Missing    (2): fi-bsw-cyan fi-bdw-samus 
+Only thing I didn't like was that one double negative if statement
+with if (!igt_debug_on(!cond)) but meh...
 
+Series is
 
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6164 -> IGTPW_6106
-
-  CI-20190529: 20190529
-  CI_DRM_10462: 1ab8dc433360478c35eba12661f1dd9327588830 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6106: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/index.html
-  IGT_6164: 7ed112d82c228e755fa773253a25f407bb20965b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/index.html
-
---===============8723511921928966063==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Acked-by: Petri Latvala <petri.latvala@intel.com>
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_busy: Limit the execution to single connector</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93539/">https://patchwork.freedesktop.org/series/93539/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6164 -&gt; IGTPW_6106</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_6106 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_6106, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/index.html</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6106:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/fi-kbl-7567u/igt@kms_busy@basic@flip.html">CRASH</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@modeset:</p>
-<ul>
-<li>
-<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/fi-bsw-nick/igt@kms_busy@basic@modeset.html">CRASH</a> +1 similar issue</p>
-</li>
-<li>
-<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/fi-kbl-guc/igt@kms_busy@basic@modeset.html">CRASH</a> +1 similar issue</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@kms_busy@basic@modeset:<ul>
-<li>{fi-hsw-gt1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/fi-hsw-gt1/igt@kms_busy@basic@modeset.html">CRASH</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6106 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@cs-gfx:</p>
-<ul>
-<li>
-<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/fi-rkl-guc/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</p>
-</li>
-<li>
-<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/fi-kbl-soraka/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6164/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3920">i915#3920</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (36 -&gt; 34)</h2>
-<p>Missing    (2): fi-bsw-cyan fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6164 -&gt; IGTPW_6106</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10462: 1ab8dc433360478c35eba12661f1dd9327588830 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6106: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6106/index.html<br />
-  IGT_6164: 7ed112d82c228e755fa773253a25f407bb20965b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8723511921928966063==--
+> ---
+>  lib/igt_core.h | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 52 insertions(+)
+> 
+> diff --git a/lib/igt_core.h b/lib/igt_core.h
+> index 6075d1539..8d433fc16 100644
+> --- a/lib/igt_core.h
+> +++ b/lib/igt_core.h
+> @@ -1274,6 +1274,58 @@ extern enum igt_log_level igt_log_level;
+>  		ret__; \
+>  	})
+>  
+> +/**
+> + * igt_debug_on:
+> + * @condition: condition to test
+> + *
+> + * Print a IGT_LOG_DEBUG level message if a condition is met.
+> + *
+> + * Should be used when something fails in a function that doesn't perform
+> + * a long jump in that case, and either performs several operations that
+> + * can fail that way or doesn't return unambiguous error codes on failures.
+> + * This is useful to streamline the test logic since it allows for
+> + * replacing open conding with function calls without loosing ability to
+> + * provide debug output with failure details.
+> + *
+> + * This macro also returns the value of @condition.
+> + */
+> +#define igt_debug_on(condition) ({ \
+> +		typeof(condition) ret__ = (condition); \
+> +		if (ret__) \
+> +			igt_debug("Condition %s occurred in function %s, file %s:%i\n", \
+> +				  #condition, __func__, __FILE__, __LINE__); \
+> +		ret__; \
+> +	})
+> +
+> +/**
+> + * igt_debug_on_f:
+> + * @condition: condition to test
+> + * @...: format string and optional arguments
+> + *
+> + * Print a IGT_LOG_DEBUG level message if a condition is met.
+> + *
+> + * Should be used when something fails in a function that doesn't perform
+> + * a long jump in that case, and performs one or more operations in a
+> + * loop, each time with different values of parameters.  This is useful
+> + * to streamline the test logic since it allows for replacing open conding
+> + * with function calls without loosing ability to provide debug output
+> + * with failure details.
+> + *
+> + * In addition to the plain igt_debug_on() helper this allows to print
+> + * additional debug information to help debugging operation failures.
+> + *
+> + * It also returns the value of @condition.
+> + */
+> +#define igt_debug_on_f(condition, f...) ({ \
+> +		typeof(condition) ret__ = (condition); \
+> +		if (ret__) {\
+> +			igt_debug("condition %s occurred in function %s, file %s:%i\n", \
+> +				  #condition, __func__, __FILE__, __LINE__); \
+> +			igt_debug(f); \
+> +		} \
+> +		ret__; \
+> +	})
+> +
+>  void igt_set_timeout(unsigned int seconds,
+>  		     const char *op);
+>  
+> -- 
+> 2.25.1
+> 
