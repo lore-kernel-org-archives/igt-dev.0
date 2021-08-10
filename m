@@ -1,19 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8A84989CA0
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:09:54 +0000 (UTC)
-Date: Tue, 10 Aug 2021 07:09:48 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210810050948.GH3738@zkempczy-mobl2>
-References: <20210809130533.27759-1-zbigniew.kempczynski@intel.com>
- <20210809130533.27759-23-zbigniew.kempczynski@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C05D089DC2
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:27:24 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 07:26:06 +0200
+Message-Id: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210809130533.27759-23-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v5 22/65] tests/gem_exec_store: Support
- gens without relocations
+Subject: [igt-dev] [PATCH i-g-t v6 00/65] Add allocator support in IGT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,366 +19,183 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Andrzej Turko <andrzej.turko@linux.intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Aug 09, 2021 at 03:04:50PM +0200, Zbigniew Kempczyński wrote:
-> From: Andrzej Turko <andrzej.turko@linux.intel.com>
-> 
-> With relocations disabled on newer generations
-> tests must assign addresses to objects by
-> themselves instead of relying on the driver.
-> 
-> Signed-off-by: Andrzej Turko <andrzej.turko@linux.intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  tests/i915/gem_exec_store.c | 134 ++++++++++++++++++++++++++++--------
->  1 file changed, 106 insertions(+), 28 deletions(-)
-> 
-> diff --git a/tests/i915/gem_exec_store.c b/tests/i915/gem_exec_store.c
-> index 0798f61d7..38c595e34 100644
-> --- a/tests/i915/gem_exec_store.c
-> +++ b/tests/i915/gem_exec_store.c
-> @@ -37,6 +37,9 @@
->  
->  #define ENGINE_MASK  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
->  
-> +/* Without alignment detection we assume the worst-case scenario. */
-> +#define ALIGNMENT (1 << 21)
-> +
->  static void store_dword(int fd, const intel_ctx_t *ctx,
->  			const struct intel_execution_engine2 *e)
->  {
-> @@ -45,6 +48,7 @@ static void store_dword(int fd, const intel_ctx_t *ctx,
->  	struct drm_i915_gem_relocation_entry reloc;
->  	struct drm_i915_gem_execbuffer2 execbuf;
->  	uint32_t batch[16];
-> +	uint64_t ahnd;
->  	int i;
->  
->  	intel_detect_and_clear_missed_interrupts(fd);
-> @@ -56,43 +60,63 @@ static void store_dword(int fd, const intel_ctx_t *ctx,
->  		execbuf.flags |= I915_EXEC_SECURE;
->  	execbuf.rsvd1 = ctx->id;
->  
-> +	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_SIMPLE);
+Series contains patches which have been already reviewed and which
+still are waiting for the review. Here we have also patches marked 
+with "work in progress" (WIP). Reviewed patches are first in the series
+and if CI won't complain I'm going to merge them. WIP are added here
+to avoid unnecessary run (I need to test this with and without relocations)
+on CI. So please skip them for review, they will be part of next series.
 
-We should use ctx->id instead of default context. Just for being sure we're
-not playing with offsets in another allocator. 
+Be aware current drm-tip contains core-for-CI patch which temporarily
+reenables relocations for ADL so CI run may be not expose bugs
+in the series code. I'm going to disable relocations for ADL 
+in separate patch for intel-gfx trybot to verify results.
 
-> +
->  	memset(obj, 0, sizeof(obj));
->  	obj[0].handle = gem_create(fd, 4096);
-> +	obj[0].offset = intel_allocator_alloc(ahnd, obj[0].handle,
-> +					      4096, ALIGNMENT);
-> +	obj[0].offset = CANONICAL(obj[0].offset);
-> +	obj[0].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS | EXEC_OBJECT_WRITE;
->  	obj[1].handle = gem_create(fd, 4096);
-> +	obj[1].offset = intel_allocator_alloc(ahnd, obj[1].handle,
-> +					      4096, ALIGNMENT);
-> +	obj[1].offset = CANONICAL(obj[1].offset);
-> +	obj[1].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+v2: - add NO_RELOC in intel_batchbuffer blitting functions
+    - switch back to gem_mmap__cpu() in gem_tiled_fence_blits.c
 
-Interesting case, we got high offset (default strategy for simple) so they
-will be definitely changed in older gens where only up to 32bit is important.
+v3: - fix gem_spin_batch ctx fail (occurs in rebase on top of new
+      intel_ctx_t)
 
->  
->  	memset(&reloc, 0, sizeof(reloc));
->  	reloc.target_handle = obj[0].handle;
-> -	reloc.presumed_offset = 0;
-> +	reloc.presumed_offset = obj[0].offset;
->  	reloc.offset = sizeof(uint32_t);
->  	reloc.delta = 0;
->  	reloc.read_domains = I915_GEM_DOMAIN_INSTRUCTION;
->  	reloc.write_domain = I915_GEM_DOMAIN_INSTRUCTION;
-> -	obj[1].relocs_ptr = to_user_pointer(&reloc);
-> -	obj[1].relocation_count = 1;
-> +
-> +	if (gem_has_relocations(fd)) {
-> +		obj[1].relocs_ptr = to_user_pointer(&reloc);
-> +		obj[1].relocation_count = 1;
-> +	} else {
-> +		obj[0].flags |= EXEC_OBJECT_PINNED;
-> +		obj[1].flags |= EXEC_OBJECT_PINNED;
-> +		execbuf.flags |= I915_EXEC_NO_RELOC;
-> +	}
->  
->  	i = 0;
->  	batch[i] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
->  	if (gen >= 8) {
-> -		batch[++i] = 0;
-> -		batch[++i] = 0;
-> +		batch[++i] = obj[0].offset;
-> +		batch[++i] = obj[0].offset >> 32;
->  	} else if (gen >= 4) {
->  		batch[++i] = 0;
-> -		batch[++i] = 0;
-> +		batch[++i] = obj[0].offset;
->  		reloc.offset += sizeof(uint32_t);
->  	} else {
->  		batch[i]--;
-> -		batch[++i] = 0;
-> +		batch[++i] = obj[0].offset;
->  	}
->  	batch[++i] = 0xc0ffee;
->  	batch[++i] = MI_BATCH_BUFFER_END;
->  	gem_write(fd, obj[1].handle, 0, batch, sizeof(batch));
->  	gem_execbuf(fd, &execbuf);
->  	gem_close(fd, obj[1].handle);
-> +	intel_allocator_free(ahnd, obj[1].handle);
->  
->  	gem_read(fd, obj[0].handle, 0, batch, sizeof(batch));
->  	gem_close(fd, obj[0].handle);
-> +	intel_allocator_free(ahnd, obj[0].handle);
->  	igt_assert_eq(*batch, 0xc0ffee);
->  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
-> +	intel_allocator_close(ahnd);
->  }
->  
->  #define PAGES 1
-> @@ -106,7 +130,9 @@ static void store_cachelines(int fd, const intel_ctx_t *ctx,
->  	struct drm_i915_gem_execbuffer2 execbuf;
->  #define NCACHELINES (4096/64)
->  	uint32_t *batch;
-> +	uint64_t ahnd, reloc_value;
->  	int i;
-> +	bool do_relocs = gem_has_relocations(fd);
->  
->  	reloc = calloc(NCACHELINES, sizeof(*reloc));
->  	igt_assert(reloc);
-> @@ -119,12 +145,25 @@ static void store_cachelines(int fd, const intel_ctx_t *ctx,
->  		execbuf.flags |= I915_EXEC_SECURE;
->  	execbuf.rsvd1 = ctx->id;
->  
-> +	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_SIMPLE);
+v4: - addressing review (Ashutosh)
+    - cleaning up series to have tests which should be ready for 
+      merge if reloc/no-reloc CI runs would be clear
 
-Same, use ctx->id.
+v5, v6: - addressing review (Ashutosh)
+    - reviewing patches (Zbigniew)
+    - reordering series to have ready and reviewed patches first
+      in the series ready for merge if CI won't complain
 
->  	obj = calloc(execbuf.buffer_count, sizeof(*obj));
->  	igt_assert(obj);
-> -	for (i = 0; i < execbuf.buffer_count; i++)
-> +	for (i = 0; i < execbuf.buffer_count; i++) {
->  		obj[i].handle = gem_create(fd, 4096);
-> -	obj[i-1].relocs_ptr = to_user_pointer(reloc);
-> -	obj[i-1].relocation_count = NCACHELINES;
-> +		obj[i].offset = intel_allocator_alloc(ahnd, obj[i].handle,
-> +						      4096, ALIGNMENT);
-> +		obj[i].offset = CANONICAL(obj[i].offset);
-> +		obj[i].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS |
-> +			       (do_relocs ? 0 : EXEC_OBJECT_PINNED);
-> +		if (i + 1 < execbuf.buffer_count)
-> +			obj[i].flags |= EXEC_OBJECT_WRITE;
-> +	}
-> +	if (do_relocs) {
-> +		obj[i-1].relocs_ptr = to_user_pointer(reloc);
-> +		obj[i-1].relocation_count = NCACHELINES;
-> +	} else {
-> +		execbuf.flags |= I915_EXEC_NO_RELOC;
-> +	}
->  	execbuf.buffers_ptr = to_user_pointer(obj);
->  
->  	batch = gem_mmap__cpu(fd, obj[i-1].handle, 0, 4096, PROT_WRITE);
-> @@ -132,23 +171,24 @@ static void store_cachelines(int fd, const intel_ctx_t *ctx,
->  	i = 0;
->  	for (unsigned n = 0; n < NCACHELINES; n++) {
->  		reloc[n].target_handle = obj[n % (execbuf.buffer_count-1)].handle;
-> -		reloc[n].presumed_offset = -1;
-> +		reloc[n].presumed_offset = obj[n % (execbuf.buffer_count-1)].offset;
->  		reloc[n].offset = (i + 1)*sizeof(uint32_t);
->  		reloc[n].delta = 4 * (n * 16 + n % 16);
->  		reloc[n].read_domains = I915_GEM_DOMAIN_INSTRUCTION;
->  		reloc[n].write_domain = I915_GEM_DOMAIN_INSTRUCTION;
-> +		reloc_value = CANONICAL(reloc[n].presumed_offset + reloc[n].delta);
+Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-Maybe store_offset? reloc_value looks weird in this case. But what is my serious
-concern is obj[n].offset was previously canonicalized. Arithmetic on such value
-can be risky so you should defer getting canonical value until you sum with with
-another value (like reloc[n].delta). Especially you're using Simple here which
-allocates from the top so adding value can exceed end. In this particular test
-likely this won't happen but I want to sleep well with this.  
+Andrzej Turko (7):
+  tests/gem_exec_gttfill: Require relocation support
+  tests/gem_exec_lut_handle: Require relocation support
+  tests/gem_lut_handle: Require relocation support
+  tests/gem_exec_big: Require relocation support
+  tests/gem_exec_capture: Support gens without relocations
+  tests/gem_exec_store: Support gens without relocations
+  tests/gem_softpin: Exercise eviction with softpinning
 
->  
->  		batch[i] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
->  		if (gen >= 8) {
-> -			batch[++i] = 0;
-> -			batch[++i] = 0;
-> +			batch[++i] = reloc_value;
-> +			batch[++i] = reloc_value >> 32;
->  		} else if (gen >= 4) {
->  			batch[++i] = 0;
-> -			batch[++i] = 0;
-> +			batch[++i] = reloc_value;
->  			reloc[n].offset += sizeof(uint32_t);
->  		} else {
->  			batch[i]--;
-> -			batch[++i] = 0;
-> +			batch[++i] = reloc_value;
->  		}
->  		batch[++i] = n | ~n << 16;
->  		i++;
-> @@ -168,11 +208,14 @@ static void store_cachelines(int fd, const intel_ctx_t *ctx,
->  	}
->  	free(reloc);
->  
-> -	for (unsigned n = 0; n < execbuf.buffer_count; n++)
-> +	for (unsigned n = 0; n < execbuf.buffer_count; n++) {
->  		gem_close(fd, obj[n].handle);
-> +		intel_allocator_free(ahnd, obj[n].handle);
-> +	}
->  	free(obj);
->  
->  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
-> +	intel_allocator_close(ahnd);
->  }
->  
->  static void store_all(int fd, const intel_ctx_t *ctx)
-> @@ -184,10 +227,11 @@ static void store_all(int fd, const intel_ctx_t *ctx)
->  	struct drm_i915_gem_execbuffer2 execbuf;
->  	unsigned *engines, *permuted;
->  	uint32_t batch[16];
-> -	uint64_t offset;
-> +	uint64_t offset, ahnd, reloc_value;
->  	unsigned nengine;
-> -	int value;
-> +	int value, address;
->  	int i, j;
-> +	bool do_relocs = gem_has_relocations(fd);
->  
->  	nengine = 0;
->  	for_each_ctx_engine(fd, ctx, engine) {
-> @@ -213,24 +257,41 @@ static void store_all(int fd, const intel_ctx_t *ctx)
->  		execbuf.flags |= I915_EXEC_SECURE;
->  	execbuf.rsvd1 = ctx->id;
->  
-> +	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_SIMPLE);
-> +
->  	memset(obj, 0, sizeof(obj));
->  	obj[0].handle = gem_create(fd, nengine*sizeof(uint32_t));
-> +	obj[0].offset = intel_allocator_alloc(ahnd, obj[0].handle,
-> +					      nengine*sizeof(uint32_t), ALIGNMENT);
-> +	obj[0].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS | EXEC_OBJECT_WRITE;
-> +	obj[0].offset = CANONICAL(obj[0].offset);
->  	obj[1].handle = gem_create(fd, 2*nengine*sizeof(batch));
-> -	obj[1].relocation_count = 1;
-> +	obj[1].offset = intel_allocator_alloc(ahnd, obj[1].handle,
-> +					      nengine*sizeof(uint32_t), ALIGNMENT);
-> +	obj[1].offset = CANONICAL(obj[1].offset);
-> +	obj[1].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +
-> +	if (do_relocs) {
-> +		obj[1].relocation_count = 1;
-> +	} else {
-> +		obj[0].flags |= EXEC_OBJECT_PINNED;
-> +		obj[1].flags |= EXEC_OBJECT_PINNED;
-> +		execbuf.flags |= I915_EXEC_NO_RELOC;
-> +	}
->  
->  	offset = sizeof(uint32_t);
->  	i = 0;
->  	batch[i] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
->  	if (gen >= 8) {
-> -		batch[++i] = 0;
-> +		batch[address = ++i] = 0;
->  		batch[++i] = 0;
->  	} else if (gen >= 4) {
->  		batch[++i] = 0;
-> -		batch[++i] = 0;
-> +		batch[address = ++i] = 0;
->  		offset += sizeof(uint32_t);
->  	} else {
->  		batch[i]--;
-> -		batch[++i] = 0;
-> +		batch[address = ++i] = 0;
->  	}
->  	batch[value = ++i] = 0xc0ffee;
->  	batch[++i] = MI_BATCH_BUFFER_END;
-> @@ -246,12 +307,17 @@ static void store_all(int fd, const intel_ctx_t *ctx)
->  
->  		j = 2*nengine;
->  		reloc[j].target_handle = obj[0].handle;
-> -		reloc[j].presumed_offset = ~0;
-> +		reloc[j].presumed_offset = obj[0].offset;
->  		reloc[j].offset = j*sizeof(batch) + offset;
->  		reloc[j].delta = nengine*sizeof(uint32_t);
->  		reloc[j].read_domains = I915_GEM_DOMAIN_INSTRUCTION;
->  		reloc[j].write_domain = I915_GEM_DOMAIN_INSTRUCTION;
-> -		obj[1].relocs_ptr = to_user_pointer(&reloc[j]);
-> +		reloc_value = CANONICAL(obj[0].offset + nengine*sizeof(uint32_t));
-> +		batch[address] = reloc_value;
-> +		if (gen >= 8)
-> +			batch[address + 1] = reloc_value >> 32;
-> +		if (do_relocs)
-> +			obj[1].relocs_ptr = to_user_pointer(&reloc[j]);
->  
->  		batch[value] = 0xdeadbeef;
->  		gem_write(fd, obj[1].handle, j*sizeof(batch),
-> @@ -261,12 +327,17 @@ static void store_all(int fd, const intel_ctx_t *ctx)
->  
->  		j = 2*nengine + 1;
->  		reloc[j].target_handle = obj[0].handle;
-> -		reloc[j].presumed_offset = ~0;
-> +		reloc[j].presumed_offset = obj[0].offset;
->  		reloc[j].offset = j*sizeof(batch) + offset;
->  		reloc[j].delta = nengine*sizeof(uint32_t);
->  		reloc[j].read_domains = I915_GEM_DOMAIN_INSTRUCTION;
->  		reloc[j].write_domain = I915_GEM_DOMAIN_INSTRUCTION;
-> -		obj[1].relocs_ptr = to_user_pointer(&reloc[j]);
-> +		reloc_value = CANONICAL(obj[0].offset + nengine*sizeof(uint32_t));
+Bhanuprakash Modem (3):
+  lib/intel_batchbuffer: Add allocator support in blitter fast copy
+  tests/kms_flip: Adopt to use allocator
+  tests/kms_vblank: Adopt to use allocator
 
-Why not to add reloc[j].delta here? Would be more clear where that store offset
-comes from.
+Ch Sai Gowtham (5):
+  tests/gem_exec_params: Support gens without relocations
+  tests/gem_mmap: Add allocator support
+  tests/gem_mmap_gtt: Add allocator support
+  tests/gem_mmap_offset: Add allocator support
+  tests/gem_request_retire: Add allocator support
 
---
-Zbigniew
+Zbigniew Kempczyński (50):
+  lib/igt_dummyload: Add support of using allocator in igt spinner
+  lib/intel_allocator: Add few helper functions for common use
+  lib/igt_gt: Add passing ahnd as an argument to igt_hang
+  lib/intel_batchbuffer: Ensure relocation code will be called
+  lib/intel_batchbuffer: Add allocator support in blitter src copy
+  lib/intel_batchbuffer: Try to avoid relocations in blitting
+  lib/huc_copy: Extend huc copy prototype to pass allocator handle
+  tests/gem_busy: Adopt to use allocator
+  tests/gem_create: Adopt to use allocator
+  tests/gem_ctx_engines: Adopt to use allocator
+  tests/gem_ctx_exec: Adopt to use allocator
+  tests/gem_ctx_freq: Adopt to use allocator
+  tests/gem_ctx_isolation: Adopt to use allocator
+  tests/gem_ctx_param: Adopt to use allocator
+  tests/gem_eio: Adopt to use allocator
+  tests/gem_exec_async: Adopt to use allocator
+  tests/gem_exec_balancer: Adopt to use allocator
+  tests/gem_exec_fair: Add softpin support
+  tests/gem_exec_suspend: Adopt to use allocator
+  tests/gem_exec_parallel: Adopt to use alloctor
+  tests/gem_exec_whisper: Adopt to use allocator
+  tests/gem_fenced_exec_thrash: Adopt to use allocator
+  tests/gem_mmap_wc: Adopt to use allocator
+  tests/gem_ringfill: Adopt to use allocator
+  tests/gem_spin_batch: Adopt to use allocator
+  tests/gem_tiled_fence_blits: Adopt to use allocator
+  tests/gem_unfence_active_buffers: Adopt to use allocator
+  tests/gem_unref_active_buffers: Adopt to use allocator
+  tests/gem_userptr_blits: Adopt to use allocator
+  tests/gem_wait: Adopt to use allocator
+  tests/gem_watchdog: Adopt to use no-reloc
+  tests/gem_workarounds: Adopt to use allocator
+  tests/i915_hangman: Adopt to use allocator
+  tests/i915_module_load: Adopt to use allocator
+  tests/i915_pm_rc6_residency: Adopt to use allocator
+  tests/i915_pm_rpm: Adopt to use no-reloc
+  tests/i915_pm_rps: Alter to use no-reloc
+  tests/kms_busy: Adopt to use allocator
+  tests/kms_cursor_legacy: Adopt to use allocator
+  tests/perf_pmu: Adopt to use allocator
+  tests/sysfs_heartbeat_interval: Adopt to use allocator
+  tests/sysfs_preempt_timeout: Adopt to use allocator
+  tests/sysfs_timeslice_duration: Adopt to use allocator
+  WIP: tests/gem_exec_fence: rewrite to no-reloc
+  WIP: tests/gem_ctx_persistence: Adopt to use allocator
+  WIP: tests/gem_ctx_shared: Convert to use no-reloc
+  WIP: NOTWORKING: gem_exec_await
+  WIP: tests/gem_exec_schedule WIP: tests/gem_exec_schedule@deep - NOT
+    WORKING WIP: tests/gem_exec_schedule@wide (ok) + reorder_wide (still
+    to be fixed)
+  WIP: tests/gem_exec_flush: Adopt to no-reloc
+  HAX: remove gttfill for tgl ci
 
-> +		batch[address] = reloc_value;
-> +		if (gen >= 8)
-> +			batch[address + 1] = reloc_value >> 32;
-> +		if (do_relocs)
-> +			obj[1].relocs_ptr = to_user_pointer(&reloc[j]);
->  
->  		batch[value] = nengine;
->  		gem_write(fd, obj[1].handle, j*sizeof(batch),
-> @@ -279,30 +350,37 @@ static void store_all(int fd, const intel_ctx_t *ctx)
->  	gem_sync(fd, obj[1].handle);
->  
->  	for (i = 0; i < nengine; i++) {
-> -		obj[1].relocs_ptr = to_user_pointer(&reloc[2*i]);
->  		execbuf.batch_start_offset = 2*i*sizeof(batch);
->  		memcpy(permuted, engines, nengine*sizeof(engines[0]));
->  		igt_permute_array(permuted, nengine, igt_exchange_int);
-> +		if (do_relocs)
-> +			obj[1].relocs_ptr = to_user_pointer(&reloc[2*i]);
-> +
->  		for (j = 0; j < nengine; j++) {
->  			execbuf.flags &= ~ENGINE_MASK;
->  			execbuf.flags |= permuted[j];
->  			gem_execbuf(fd, &execbuf);
->  		}
-> -		obj[1].relocs_ptr = to_user_pointer(&reloc[2*i+1]);
->  		execbuf.batch_start_offset = (2*i+1)*sizeof(batch);
->  		execbuf.flags &= ~ENGINE_MASK;
->  		execbuf.flags |= engines[i];
-> +		if (do_relocs)
-> +			obj[1].relocs_ptr = to_user_pointer(&reloc[2*i+1]);
-> +
->  		gem_execbuf(fd, &execbuf);
->  	}
->  	gem_close(fd, obj[1].handle);
-> +	intel_allocator_free(ahnd, obj[1].handle);
->  
->  	gem_read(fd, obj[0].handle, 0, engines, nengine*sizeof(engines[0]));
->  	gem_close(fd, obj[0].handle);
-> +	intel_allocator_free(ahnd, obj[0].handle);
->  
->  	for (i = 0; i < nengine; i++)
->  		igt_assert_eq_u32(engines[i], i);
->  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
->  
-> +	intel_allocator_close(ahnd);
->  	free(permuted);
->  	free(engines);
->  	free(reloc);
-> -- 
-> 2.26.0
-> 
+ lib/huc_copy.c                          |  27 +-
+ lib/huc_copy.h                          |   4 +-
+ lib/igt_dummyload.c                     |  74 ++++-
+ lib/igt_dummyload.h                     |   3 +
+ lib/igt_fb.c                            |  22 +-
+ lib/igt_gt.c                            |  21 +-
+ lib/igt_gt.h                            |   4 +
+ lib/intel_allocator.h                   |  55 ++++
+ lib/intel_batchbuffer.c                 | 118 +++++--
+ lib/intel_batchbuffer.h                 |  18 +-
+ tests/i915/gem_busy.c                   |  36 ++-
+ tests/i915/gem_create.c                 |  11 +-
+ tests/i915/gem_ctx_engines.c            |  25 +-
+ tests/i915/gem_ctx_exec.c               |  46 ++-
+ tests/i915/gem_ctx_freq.c               |   4 +-
+ tests/i915/gem_ctx_isolation.c          | 100 ++++--
+ tests/i915/gem_ctx_param.c              |   9 +-
+ tests/i915/gem_ctx_persistence.c        | 120 +++++--
+ tests/i915/gem_ctx_shared.c             | 111 +++++--
+ tests/i915/gem_eio.c                    |  60 +++-
+ tests/i915/gem_exec_async.c             |  67 +++-
+ tests/i915/gem_exec_await.c             |  14 +-
+ tests/i915/gem_exec_balancer.c          | 105 ++++--
+ tests/i915/gem_exec_big.c               |   1 +
+ tests/i915/gem_exec_capture.c           | 131 ++++++--
+ tests/i915/gem_exec_fair.c              |   6 +
+ tests/i915/gem_exec_fence.c             | 244 +++++++++-----
+ tests/i915/gem_exec_flush.c             |   8 +-
+ tests/i915/gem_exec_gttfill.c           |   1 +
+ tests/i915/gem_exec_lut_handle.c        |   1 +
+ tests/i915/gem_exec_parallel.c          |  33 +-
+ tests/i915/gem_exec_params.c            |  74 +++--
+ tests/i915/gem_exec_schedule.c          | 405 +++++++++++++++++++-----
+ tests/i915/gem_exec_store.c             | 134 ++++++--
+ tests/i915/gem_exec_suspend.c           |  44 ++-
+ tests/i915/gem_exec_whisper.c           |  39 ++-
+ tests/i915/gem_fenced_exec_thrash.c     |  22 +-
+ tests/i915/gem_huc_copy.c               |  12 +-
+ tests/i915/gem_lut_handle.c             |   1 +
+ tests/i915/gem_mmap.c                   |   4 +-
+ tests/i915/gem_mmap_gtt.c               |  15 +-
+ tests/i915/gem_mmap_offset.c            |   4 +-
+ tests/i915/gem_mmap_wc.c                |   4 +-
+ tests/i915/gem_request_retire.c         |  14 +-
+ tests/i915/gem_ringfill.c               |  37 ++-
+ tests/i915/gem_softpin.c                | 213 ++++++++++++-
+ tests/i915/gem_spin_batch.c             |  37 ++-
+ tests/i915/gem_tiled_fence_blits.c      |  65 +++-
+ tests/i915/gem_unfence_active_buffers.c |   5 +-
+ tests/i915/gem_unref_active_buffers.c   |   5 +-
+ tests/i915/gem_userptr_blits.c          |  44 ++-
+ tests/i915/gem_wait.c                   |   3 +
+ tests/i915/gem_watchdog.c               |  11 +-
+ tests/i915/gem_workarounds.c            |  17 +-
+ tests/i915/i915_hangman.c               |  15 +-
+ tests/i915/i915_module_load.c           |  23 +-
+ tests/i915/i915_pm_rc6_residency.c      |   8 +-
+ tests/i915/i915_pm_rpm.c                |  27 +-
+ tests/i915/i915_pm_rps.c                |  18 +-
+ tests/i915/perf_pmu.c                   | 147 ++++++---
+ tests/i915/sysfs_heartbeat_interval.c   |  24 +-
+ tests/i915/sysfs_preempt_timeout.c      |  21 +-
+ tests/i915/sysfs_timeslice_duration.c   |  21 +-
+ tests/intel-ci/fast-feedback.testlist   |   1 -
+ tests/kms_busy.c                        |   9 +
+ tests/kms_cursor_legacy.c               |   6 +
+ tests/kms_flip.c                        |  12 +-
+ tests/kms_vblank.c                      |   9 +-
+ tests/prime_vgem.c                      | 120 +++++--
+ 69 files changed, 2516 insertions(+), 633 deletions(-)
+
+-- 
+2.26.0
