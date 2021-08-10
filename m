@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2BA7A6E042
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 10:53:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CADC26E047
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 10:53:50 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 12:52:38 +0200
-Message-Id: <20210810105323.31375-10-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 12:52:41 +0200
+Message-Id: <20210810105323.31375-13-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810105323.31375-1-zbigniew.kempczynski@intel.com>
 References: <20210810105323.31375-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 09/54] tests/gem_busy: Adopt to use
+Subject: [igt-dev] [PATCH i-g-t v7 12/54] tests/gem_ctx_exec: Adopt to use
  allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,159 +32,168 @@ Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_busy.c | 36 ++++++++++++++++++++++++++++++++----
- 1 file changed, 32 insertions(+), 4 deletions(-)
+ tests/i915/gem_ctx_exec.c | 46 +++++++++++++++++++++++++++++++++------
+ 1 file changed, 39 insertions(+), 7 deletions(-)
 
-diff --git a/tests/i915/gem_busy.c b/tests/i915/gem_busy.c
-index f0fca0e8a..b107734c1 100644
---- a/tests/i915/gem_busy.c
-+++ b/tests/i915/gem_busy.c
-@@ -108,6 +108,7 @@ static void semaphore(int fd, const intel_ctx_t *ctx,
- 	uint32_t handle[3];
- 	uint32_t read, write;
- 	uint32_t active;
-+	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
- 	unsigned i;
+diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
+index 4d3d1c12f..a1270a889 100644
+--- a/tests/i915/gem_ctx_exec.c
++++ b/tests/i915/gem_ctx_exec.c
+@@ -178,6 +178,7 @@ static void norecovery(int i915)
+ 		};
+ 		int expect = pass == 0 ? -EIO : 0;
+ 		igt_spin_t *spin;
++		uint64_t ahnd = get_reloc_ahnd(i915, param.ctx_id);
  
- 	handle[TEST] = gem_create(fd, 4096);
-@@ -117,6 +118,7 @@ static void semaphore(int fd, const intel_ctx_t *ctx,
- 	/* Create a long running batch which we can use to hog the GPU */
- 	handle[BUSY] = gem_create(fd, 4096);
- 	spin = igt_spin_new(fd,
-+			    .ahnd = ahnd,
- 			    .ctx = ctx,
- 			    .engine = e->flags,
- 			    .dependency = handle[BUSY]);
-@@ -149,6 +151,7 @@ static void semaphore(int fd, const intel_ctx_t *ctx,
- 	/* Check that our long batch was long enough */
- 	igt_assert(still_busy(fd, handle[BUSY]));
- 	igt_spin_free(fd, spin);
-+	put_ahnd(ahnd);
+ 		gem_context_set_param(i915, &param);
  
- 	/* And make sure it becomes idle again */
- 	gem_sync(fd, handle[TEST]);
-@@ -171,8 +174,10 @@ static void one(int fd, const intel_ctx_t *ctx,
- 	struct timespec tv;
- 	igt_spin_t *spin;
- 	int timeout;
-+	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
+@@ -185,7 +186,9 @@ static void norecovery(int i915)
+ 		gem_context_get_param(i915, &param);
+ 		igt_assert_eq(param.value, pass);
  
- 	spin = igt_spin_new(fd,
-+			    .ahnd = ahnd,
- 			    .ctx = ctx,
- 			    .engine = e->flags,
- 			    .dependency = scratch,
-@@ -225,6 +230,7 @@ static void one(int fd, const intel_ctx_t *ctx,
+-		spin = __igt_spin_new(i915, .ctx = ctx,
++		spin = __igt_spin_new(i915,
++				      .ahnd = ahnd,
++				      .ctx = ctx,
+ 				      .flags = IGT_SPIN_POLL_RUN);
+ 		igt_spin_busywait_until_started(spin);
  
- 	igt_spin_free(fd, spin);
- 	gem_close(fd, scratch);
-+	put_ahnd(ahnd);
- }
+@@ -196,6 +199,7 @@ static void norecovery(int i915)
+ 		igt_spin_free(i915, spin);
  
- static void xchg_u32(void *array, unsigned i, unsigned j)
-@@ -298,11 +304,13 @@ static void close_race(int fd, const intel_ctx_t *ctx)
- 		struct sched_param rt = {.sched_priority = 99 };
- 		igt_spin_t *spin[nhandles];
- 		unsigned long count = 0;
-+		uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
- 
- 		igt_assert(sched_setscheduler(getpid(), SCHED_RR, &rt) == 0);
- 
- 		for (i = 0; i < nhandles; i++) {
- 			spin[i] = __igt_spin_new(fd,
-+						 .ahnd = ahnd,
- 						 .ctx = ctx,
- 						 .engine = engines[rand() % nengine]);
- 			handles[i] = spin[i]->handle;
-@@ -312,6 +320,7 @@ static void close_race(int fd, const intel_ctx_t *ctx)
- 			for (i = 0; i < nhandles; i++) {
- 				igt_spin_free(fd, spin[i]);
- 				spin[i] = __igt_spin_new(fd,
-+							 .ahnd = ahnd,
- 							 .ctx = ctx,
- 							 .engine = engines[rand() % nengine]);
- 				handles[i] = spin[i]->handle;
-@@ -324,6 +333,7 @@ static void close_race(int fd, const intel_ctx_t *ctx)
- 
- 		for (i = 0; i < nhandles; i++)
- 			igt_spin_free(fd, spin[i]);
+ 		intel_ctx_destroy(i915, ctx);
 +		put_ahnd(ahnd);
  	}
- 	igt_waitchildren();
  
-@@ -355,11 +365,13 @@ static bool has_semaphores(int fd)
+ 	 igt_disallow_hang(i915, hang);
+@@ -271,6 +275,7 @@ static void nohangcheck_hostile(int i915)
+ 	const intel_ctx_t *ctx;
+ 	int err = 0;
+ 	int dir;
++	uint64_t ahnd;
  
- static bool has_extended_busy_ioctl(int fd)
- {
--	igt_spin_t *spin = igt_spin_new(fd, .engine = I915_EXEC_DEFAULT);
-+	uint64_t ahnd = get_reloc_ahnd(fd, 0);
-+	igt_spin_t *spin = igt_spin_new(fd, .ahnd = ahnd, .engine = I915_EXEC_DEFAULT);
- 	uint32_t read, write;
+ 	/*
+ 	 * Even if the user disables hangcheck during their context,
+@@ -284,6 +289,7 @@ static void nohangcheck_hostile(int i915)
  
- 	__gem_busy(fd, spin->handle, &read, &write);
- 	igt_spin_free(fd, spin);
+ 	ctx = intel_ctx_create_all_physical(i915);
+ 	hang = igt_allow_hang(i915, ctx->id, 0);
++	ahnd = get_reloc_ahnd(i915, ctx->id);
+ 
+ 	igt_require(__enable_hangcheck(dir, false));
+ 
+@@ -295,7 +301,9 @@ static void nohangcheck_hostile(int i915)
+ 		gem_engine_property_printf(i915, e->name,
+ 					   "preempt_timeout_ms", "%d", 50);
+ 
+-		spin = __igt_spin_new(i915, .ctx = ctx,
++		spin = __igt_spin_new(i915,
++				      .ahnd = ahnd,
++				      .ctx = ctx,
+ 				      .engine = e->flags,
+ 				      .flags = (IGT_SPIN_NO_PREEMPTION |
+ 						IGT_SPIN_FENCE_OUT));
+@@ -333,6 +341,7 @@ static void nohangcheck_hostile(int i915)
+ 
+ 	igt_assert_eq(sync_fence_status(fence), -EIO);
+ 	close(fence);
 +	put_ahnd(ahnd);
  
- 	return read != 0;
- }
-@@ -367,8 +379,10 @@ static bool has_extended_busy_ioctl(int fd)
- static void basic(int fd, const intel_ctx_t *ctx,
- 		  const struct intel_execution_engine2 *e, unsigned flags)
- {
-+	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
- 	igt_spin_t *spin =
- 		igt_spin_new(fd,
-+			     .ahnd = ahnd,
- 			     .ctx = ctx,
- 			     .engine = e->flags,
- 			     .flags = flags & HANG ?
-@@ -394,6 +408,7 @@ static void basic(int fd, const intel_ctx_t *ctx,
+ 	close(dir);
+ 	close(i915);
+@@ -345,10 +354,14 @@ static void close_race(int i915)
+ 	const intel_ctx_t **ctx;
+ 	uint32_t *ctx_id;
+ 	igt_spin_t *spin;
++	uint64_t ahnd;
+ 
+ 	/* Check we can execute a polling spinner */
+ 	base_ctx = intel_ctx_create(i915, NULL);
+-	igt_spin_free(i915, igt_spin_new(i915, .ctx = base_ctx,
++	ahnd = get_reloc_ahnd(i915, base_ctx->id);
++	igt_spin_free(i915, igt_spin_new(i915,
++					 .ahnd = ahnd,
++					 .ctx = base_ctx,
+ 					 .flags = IGT_SPIN_POLL_RUN));
+ 
+ 	ctx = calloc(ncpus, sizeof(*ctx));
+@@ -361,7 +374,10 @@ static void close_race(int i915)
  	}
  
- 	igt_spin_free(fd, spin);
+ 	igt_fork(child, ncpus) {
+-		spin = __igt_spin_new(i915, .ctx = base_ctx,
++		ahnd = get_reloc_ahnd(i915, base_ctx->id);
++		spin = __igt_spin_new(i915,
++				      .ahnd = ahnd,
++				      .ctx = base_ctx,
+ 				      .flags = IGT_SPIN_POLL_RUN);
+ 		igt_spin_end(spin);
+ 		gem_sync(i915, spin->handle);
+@@ -403,6 +419,7 @@ static void close_race(int i915)
+ 		}
+ 
+ 		igt_spin_free(i915, spin);
++		put_ahnd(ahnd);
+ 	}
+ 
+ 	igt_until_timeout(5) {
+@@ -425,6 +442,7 @@ static void close_race(int i915)
+ 	intel_ctx_destroy(i915, base_ctx);
+ 	for (int child = 0; child < ncpus; child++)
+ 		intel_ctx_destroy(i915, ctx[child]);
 +	put_ahnd(ahnd);
- }
  
- static void all(int i915, const intel_ctx_t *ctx)
-@@ -428,6 +443,7 @@ igt_main
+ 	free(ctx);
+ 	munmap(ctx_id, 4096);
+@@ -474,11 +492,22 @@ igt_main
+ 	igt_subtest("basic-nohangcheck")
+ 		nohangcheck_hostile(fd);
  
- 	igt_subtest_group {
- 		igt_fixture {
+-	igt_subtest("basic-close-race")
+-		close_race(fd);
++	igt_subtest_group {
++		igt_fixture {
 +			intel_allocator_multiprocess_start();
- 			igt_fork_hang_detector(fd);
- 		}
- 
-@@ -445,6 +461,21 @@ igt_main
- 			}
- 		}
- 
-+		igt_subtest("close-race")
-+			close_race(fd, ctx);
++		}
++
++		igt_subtest("basic-close-race")
++			close_race(fd);
 +
 +		igt_fixture {
-+			igt_stop_hang_detector();
 +			intel_allocator_multiprocess_stop();
 +		}
 +	}
+ 
+ 	igt_subtest("reset-pin-leak") {
+ 		int i;
++		uint64_t ahnd;
+ 
+ 		/*
+ 		 * Use an explicit context to isolate the test from
+@@ -486,6 +515,7 @@ igt_main
+ 		 * default context (eg. if they would be eliminated).
+ 		 */
+ 		ctx_id = gem_context_create(fd);
++		ahnd = get_reloc_ahnd(fd, ctx_id);
+ 
+ 		/*
+ 		 * Iterate enough times that the kernel will
+@@ -493,7 +523,8 @@ igt_main
+ 		 * the last context is leaked at every reset.
+ 		 */
+ 		for (i = 0; i < 20; i++) {
+-			igt_hang_t hang = igt_hang_ring(fd, 0);
 +
-+
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_fork_hang_detector(fd);
-+		}
-+
- 		igt_subtest_group {
- 			igt_fixture {
- 				igt_require(has_extended_busy_ioctl(fd));
-@@ -477,9 +508,6 @@ igt_main
- 			}
++			igt_hang_t hang = igt_hang_ring_with_ahnd(fd, 0, ahnd);
+ 
+ 			igt_assert_eq(exec(fd, handle, 0, 0), 0);
+ 			igt_assert_eq(exec(fd, handle, 0, ctx_id), 0);
+@@ -501,5 +532,6 @@ igt_main
  		}
  
--		igt_subtest("close-race")
--			close_race(fd, ctx);
--
- 		igt_fixture {
- 			igt_stop_hang_detector();
- 		}
+ 		gem_context_destroy(fd, ctx_id);
++		put_ahnd(ahnd);
+ 	}
+ }
 -- 
 2.26.0
