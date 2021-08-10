@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 48D8889E0D
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1726589DF7
  for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 05:28:22 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 07:26:48 +0200
-Message-Id: <20210810052711.7866-43-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 07:26:45 +0200
+Message-Id: <20210810052711.7866-40-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 References: <20210810052711.7866-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 42/65] tests/i915_hangman: Adopt to use
+Subject: [igt-dev] [PATCH i-g-t v6 39/65] tests/gem_wait: Adopt to use
  allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,79 +32,34 @@ Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/i915_hangman.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ tests/i915/gem_wait.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index ddead9493..4c18c22db 100644
---- a/tests/i915/i915_hangman.c
-+++ b/tests/i915/i915_hangman.c
-@@ -211,10 +211,12 @@ static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
- 	uint32_t *batch;
- 	igt_hang_t hang;
- 	uint64_t offset;
-+	uint64_t ahnd = get_reloc_ahnd(device, ctx->id);
- 
- 	clear_error_state();
- 
--	hang = igt_hang_ctx(device, ctx->id, ring_id, HANG_ALLOW_CAPTURE);
-+	hang = igt_hang_ctx_with_ahnd(device, ahnd, ctx->id, ring_id,
-+				      HANG_ALLOW_CAPTURE);
- 	offset = hang.spin->obj[IGT_SPIN_BATCH].offset;
- 
- 	batch = gem_mmap__cpu(device, hang.spin->handle, 0, 4096, PROT_READ);
-@@ -224,6 +226,7 @@ static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
- 
- 	check_error_state(ring_name, offset, batch);
- 	munmap(batch, 4096);
+diff --git a/tests/i915/gem_wait.c b/tests/i915/gem_wait.c
+index d56707eda..0d1fea996 100644
+--- a/tests/i915/gem_wait.c
++++ b/tests/i915/gem_wait.c
+@@ -78,11 +78,13 @@ static void invalid_buf(int fd)
+ static void basic(int fd, const intel_ctx_t *ctx, unsigned engine,
+ 		  unsigned flags)
+ {
++	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
+ 	IGT_CORK_HANDLE(cork);
+ 	uint32_t plug =
+ 		flags & (WRITE | AWAIT) ? igt_cork_plug(&cork, fd) : 0;
+ 	igt_spin_t *spin =
+ 		igt_spin_new(fd,
++			     .ahnd = ahnd,
+ 			     .ctx = ctx,
+ 			     .engine = engine,
+ 			     .dependency = plug,
+@@ -147,6 +149,7 @@ static void basic(int fd, const intel_ctx_t *ctx, unsigned engine,
+ 	if (plug)
+ 		gem_close(fd, plug);
+ 	igt_spin_free(fd, spin);
 +	put_ahnd(ahnd);
  }
  
- static void
-@@ -234,6 +237,7 @@ test_engine_hang(const intel_ctx_t *ctx,
- 	const intel_ctx_t *tmp_ctx;
- 	igt_spin_t *spin, *next;
- 	IGT_LIST_HEAD(list);
-+	uint64_t ahnd = get_reloc_ahnd(device, ctx->id), ahndN;
- 
- 	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
- 		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
-@@ -244,7 +248,10 @@ test_engine_hang(const intel_ctx_t *ctx,
- 			continue;
- 
- 		tmp_ctx = intel_ctx_create(device, &ctx->cfg);
--		spin = __igt_spin_new(device, .ctx = tmp_ctx,
-+		ahndN = get_reloc_ahnd(device, tmp_ctx->id);
-+		spin = __igt_spin_new(device,
-+				      .ahnd = ahndN,
-+				      .ctx = tmp_ctx,
- 				      .engine = other->flags,
- 				      .flags = IGT_SPIN_FENCE_OUT);
- 		intel_ctx_destroy(device, tmp_ctx);
-@@ -254,6 +261,7 @@ test_engine_hang(const intel_ctx_t *ctx,
- 
- 	/* And on the target engine, we hang */
- 	spin = igt_spin_new(device,
-+			    .ahnd = ahnd,
- 			    .ctx = ctx,
- 			    .engine = e->flags,
- 			    .flags = (IGT_SPIN_FENCE_OUT |
-@@ -267,13 +275,16 @@ test_engine_hang(const intel_ctx_t *ctx,
- 
- 	/* But no other engines/clients should be affected */
- 	igt_list_for_each_entry_safe(spin, next, &list, link) {
-+		ahndN = spin->ahnd;
- 		igt_assert(sync_fence_wait(spin->out_fence, 0) == -ETIME);
- 		igt_spin_end(spin);
- 
- 		igt_assert(sync_fence_wait(spin->out_fence, 500) == 0);
- 		igt_assert_eq(sync_fence_status(spin->out_fence), 1);
- 		igt_spin_free(device, spin);
-+		put_ahnd(ahndN);
- 	}
-+	put_ahnd(ahnd);
- }
- 
- /* This test covers the case where we end up in an uninitialised area of the
+ static void test_all_engines(const char *name, int i915, const intel_ctx_t *ctx,
 -- 
 2.26.0
