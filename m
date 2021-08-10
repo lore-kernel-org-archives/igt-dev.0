@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D78A6E040
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 10:54:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F3266E046
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 10:54:22 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 10 Aug 2021 12:53:14 +0200
-Message-Id: <20210810105323.31375-46-zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Aug 2021 12:53:16 +0200
+Message-Id: <20210810105323.31375-48-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20210810105323.31375-1-zbigniew.kempczynski@intel.com>
 References: <20210810105323.31375-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 45/54] tests/i915_pm_rps: Alter to use
- no-reloc
+Subject: [igt-dev] [PATCH i-g-t v7 47/54] tests/kms_cursor_legacy: Adopt to
+ use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,83 +27,68 @@ List-ID: <igt-dev@lists.freedesktop.org>
 For newer gens we're not able to rely on relocations. Adopt to use
 offsets acquired from the allocator.
 
-v2: clean unnecessary commented code (Ashutosh)
+v2: Don't query i915 for relocations on AMD devices (Rodrigo)
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/i915_pm_rps.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ tests/kms_cursor_legacy.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-index f51a47479..b37f15c26 100644
---- a/tests/i915/i915_pm_rps.c
-+++ b/tests/i915/i915_pm_rps.c
-@@ -250,6 +250,10 @@ static void load_helper_run(enum load load)
- 		igt_spin_t *spin[2] = {};
- 		bool prev_load;
- 		uint32_t handle;
-+		uint64_t ahnd;
-+
-+		intel_allocator_init();
-+		ahnd = get_reloc_ahnd(drm_fd, 0);
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index 75a822c4e..0f0df951b 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -517,6 +517,7 @@ static void basic_flip_cursor(igt_display_t *display,
+ 	struct igt_fb fb_info, cursor_fb, cursor_fb2, argb_fb;
+ 	unsigned vblank_start;
+ 	enum pipe pipe = find_connected_pipe(display, false);
++	uint64_t ahnd = (flags & BASIC_BUSY) ? get_reloc_ahnd(display->drm_fd, 0) : 0;
+ 	igt_spin_t *spin;
+ 	int i, miss1 = 0, miss2 = 0, delta;
  
- 		signal(SIGTERM, load_helper_signal_handler);
- 		signal(SIGUSR2, load_helper_signal_handler);
-@@ -257,9 +261,9 @@ static void load_helper_run(enum load load)
- 		igt_debug("Applying %s load...\n", lh.load ? "high" : "low");
+@@ -548,6 +549,7 @@ static void basic_flip_cursor(igt_display_t *display,
+ 		spin = NULL;
+ 		if (flags & BASIC_BUSY)
+ 			spin = igt_spin_new(display->drm_fd,
++					    .ahnd = ahnd,
+ 					    .dependency = fb_info.gem_handle);
  
- 		prev_load = lh.load == HIGH;
--		spin[0] = __igt_spin_new(drm_fd);
-+		spin[0] = __igt_spin_new(drm_fd, .ahnd = ahnd);
- 		if (prev_load)
--			spin[1] = __igt_spin_new(drm_fd);
-+			spin[1] = __igt_spin_new(drm_fd, .ahnd = ahnd);
- 		prev_load = !prev_load; /* send the initial signal */
- 		while (!lh.exit) {
- 			bool high_load;
-@@ -279,7 +283,7 @@ static void load_helper_run(enum load load)
- 			} else {
- 				spin[0] = spin[1];
- 			}
--			spin[high_load] = __igt_spin_new(drm_fd);
-+			spin[high_load] = __igt_spin_new(drm_fd, .ahnd = ahnd);
- 
- 			if (lh.signal && high_load != prev_load) {
- 				write(lh.link, &lh.signal, sizeof(lh.signal));
-@@ -310,6 +314,7 @@ static void load_helper_run(enum load load)
- 
- 		igt_spin_free(drm_fd, spin[1]);
- 		igt_spin_free(drm_fd, spin[0]);
-+		put_ahnd(ahnd);
- 	}
- 
- 	close(lh.link);
-@@ -542,11 +547,13 @@ static void boost_freq(int fd, int *boost_freqs)
- {
- 	int64_t timeout = 1;
- 	igt_spin_t *load;
-+	/* We need to keep dependency spin offset for load->handle */
-+	uint64_t ahnd = get_simple_l2h_ahnd(fd, 0);
- 
--	load = igt_spin_new(fd);
-+	load = igt_spin_new(fd, .ahnd = ahnd);
- 
- 	/* Strip off extra fences from the object, and keep it from starting */
--	igt_spin_free(fd, igt_spin_new(fd, .dependency = load->handle));
-+	igt_spin_free(fd, igt_spin_new(fd, .ahnd = ahnd, .dependency = load->handle));
- 
- 	/* Waiting will grant us a boost to maximum */
- 	gem_wait(fd, load->handle, &timeout);
-@@ -558,6 +565,7 @@ static void boost_freq(int fd, int *boost_freqs)
- 	igt_spin_end(load);
- 	gem_sync(fd, load->handle);
- 	igt_spin_free(fd, load);
+ 		/* Start with a synchronous query to align with the vblank */
+@@ -631,6 +633,7 @@ static void basic_flip_cursor(igt_display_t *display,
+ 		igt_remove_fb(display->drm_fd, &argb_fb);
+ 	if (cursor_fb2.gem_handle)
+ 		igt_remove_fb(display->drm_fd, &cursor_fb2);
 +	put_ahnd(ahnd);
  }
  
- static void waitboost(int fd, bool reset)
+ static int
+@@ -1319,6 +1322,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ 	igt_pipe_t *pipe_connected = &display->pipes[pipe];
+ 	igt_plane_t *plane_primary = igt_pipe_get_plane_type(pipe_connected, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_crc_t crcs[2], test_crc;
++	uint64_t ahnd = get_reloc_ahnd(display->drm_fd, 0);
+ 
+ 	if (atomic)
+ 		igt_require(display->is_atomic);
+@@ -1366,6 +1370,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ 		igt_spin_t *spin;
+ 
+ 		spin = igt_spin_new(display->drm_fd,
++				    .ahnd = ahnd,
+ 				    .dependency = fb_info[1].gem_handle);
+ 
+ 		vblank_start = kmstest_get_vblank(display->drm_fd, pipe, DRM_VBLANK_NEXTONMISS);
+@@ -1394,6 +1399,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ 	igt_remove_fb(display->drm_fd, &fb_info[1]);
+ 	igt_remove_fb(display->drm_fd, &fb_info[0]);
+ 	igt_remove_fb(display->drm_fd, &cursor_fb);
++	put_ahnd(ahnd);
+ }
+ 
+ igt_main
 -- 
 2.26.0
