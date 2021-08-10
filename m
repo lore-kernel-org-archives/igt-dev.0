@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E13B389F38
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 07:23:34 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Tue, 10 Aug 2021 12:53:52 +0530
-Message-Id: <20210810072352.337660-1-bhanuprakash.modem@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 94C5C89DEA
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Aug 2021 08:15:02 +0000 (UTC)
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Tue, 10 Aug 2021 10:14:40 +0200
+Message-Id: <20210810081440.21803-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_busy: Limit the execution to
- single connector
+Subject: [igt-dev] [PATCH i-g-t] i915/intel_memory_region: Add missing
+ forward declaration
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,85 +20,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, Karthik B S <karthik.b.s@intel.com>
+Cc: Andrzej Turko <andrzej.turko@linux.intel.com>, Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As part of reducing the CI time, we restricted the execution
-to two pipes (first & last), which also introduced running the
-tests on all connectors.
+Intel memory region header declares some functions with a pointer to a
+structure defined elsewhere as one of their arguments.  Forward declare
+that structure to avoid compiler warnings.
 
-	commit 030c28d099a5c6793c92e2b22c8e9abd3d340fdc
-	tests/kms_busy: Limit the execution to two pipes
+../lib/i915/intel_memory_region.h:69:19: warning: ‘struct drm_i915_gem_memory_class_instance’ declared inside parameter list will not be visible outside of this definition or declaration
+   69 |            struct drm_i915_gem_memory_class_instance *mem_regions,
+      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../lib/i915/intel_memory_region.h:73:15: warning: ‘struct drm_i915_gem_memory_class_instance’ declared inside parameter list will not be visible outside of this definition or declaration
+   73 |        struct drm_i915_gem_memory_class_instance *mem_regions,
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-With that change in multi-display configuration, we run the test
-multiple times on the same pipe with different connectors, which
-increases the CI time.
-
-This patch will fix the logic to run the tests on a single
-connector only.
-
-Cc: Karthik B S <karthik.b.s@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- tests/kms_busy.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ lib/i915/intel_memory_region.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/kms_busy.c b/tests/kms_busy.c
-index a60ff6b05..57c11b2ca 100644
---- a/tests/kms_busy.c
-+++ b/tests/kms_busy.c
-@@ -348,9 +348,8 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 	igt_describe("Test for basic check of KMS ABI with busy framebuffers.");
- 	igt_subtest_with_dynamic("basic") { /* just run on the first pipe */
- 		enum pipe pipe;
--		igt_output_t *output;
+diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
+index e9d1d66d4..8cd18ea0e 100644
+--- a/lib/i915/intel_memory_region.h
++++ b/lib/i915/intel_memory_region.h
+@@ -62,6 +62,8 @@ uint8_t gem_get_lmem_region_count(int fd);
  
--		for_each_pipe_with_valid_output(&display, pipe, output) {
-+		for_each_pipe(&display, pipe) {
- 			igt_dynamic("flip")
- 				test_flip(&display, pipe, false);
- 			igt_dynamic("modeset")
-@@ -361,11 +360,10 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ bool gem_has_lmem(int fd);
  
- 	igt_subtest_with_dynamic("basic-hang") {
- 		enum pipe pipe;
--		igt_output_t *output;
- 		igt_hang_t hang = igt_allow_hang(display.drm_fd, 0, 0);
- 		errno = 0;
- 
--		for_each_pipe_with_valid_output(&display, pipe, output) {
-+		for_each_pipe(&display, pipe) {
- 			if (!all_pipes && pipe != active_pipes[0] &&
- 					  pipe != active_pipes[last_pipe])
- 				continue;
-@@ -381,11 +379,10 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 
- 	igt_subtest_with_dynamic("extended-pageflip-modeset-hang-oldfb") {
- 		enum pipe pipe;
--		igt_output_t *output;
- 		igt_hang_t hang = igt_allow_hang(display.drm_fd, 0, 0);
- 		errno = 0;
- 
--		for_each_pipe_with_valid_output(&display, pipe, output) {
-+		for_each_pipe(&display, pipe) {
- 			if (!all_pipes && pipe != active_pipes[0] &&
- 					  pipe != active_pipes[last_pipe])
- 				continue;
-@@ -400,14 +397,13 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 	for (i = 0; i < sizeof(tests) / sizeof (tests[0]); i++) {
- 		igt_subtest_with_dynamic(tests[i].name) {
- 			enum pipe pipe;
--			igt_output_t *output;
- 			igt_hang_t hang;
- 			errno = 0;
- 
- 			igt_require(display.is_atomic);
- 			hang = igt_allow_hang(display.drm_fd, 0, 0);
- 
--			for_each_pipe_with_valid_output(&display, pipe, output) {
-+			for_each_pipe(&display, pipe) {
- 				if (!all_pipes && pipe != active_pipes[0] &&
- 						  pipe != active_pipes[last_pipe])
- 					continue;
++struct drm_i915_gem_memory_class_instance;
++
+ int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t size,
+ 				       struct drm_i915_gem_memory_class_instance *mem_regions,
+ 				       int num_regions);
 -- 
-2.32.0
+2.25.1
