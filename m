@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C71C8989C
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Aug 2021 09:12:23 +0000 (UTC)
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Wed, 11 Aug 2021 11:12:18 +0200
-Message-ID: <4125636.ejJDZkT8p0@jkrzyszt-mobl1.ger.corp.intel.com>
-In-Reply-To: <YRJGl1/e5jijarP0@platvala-desk.ger.corp.intel.com>
-References: <20210810081440.21803-1-janusz.krzysztofik@linux.intel.com>
- <5485866.DvuYhMxLoT@jkrzyszt-mobl1.ger.corp.intel.com>
- <YRJGl1/e5jijarP0@platvala-desk.ger.corp.intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/intel_memory_region: Add missing
- forward declaration
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 11 Aug 2021 10:05:00 -0000
+Message-ID: <162867630093.27217.17268245808448052891@emeril.freedesktop.org>
+References: <20210811073513.726866-1-thomas.hellstrom@linux.intel.com>
+In-Reply-To: <20210811073513.726866-1-thomas.hellstrom@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/i915/gem=5Flmem=5Fswapping=3A_Add_the_gem=5Flmem=5Fswappin?=
+ =?utf-8?q?g_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,75 +17,25 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Andrzej Turko <andrzej.turko@linux.intel.com>
+To: =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On wtorek, 10 sierpnia 2021 11:27:51 CEST Petri Latvala wrote:
-> On Tue, Aug 10, 2021 at 10:55:26AM +0200, Janusz Krzysztofik wrote:
-> > Hi Petri,
-> >=20
-> > On wtorek, 10 sierpnia 2021 10:48:50 CEST Petri Latvala wrote:
-> > > On Tue, Aug 10, 2021 at 10:14:40AM +0200, Janusz Krzysztofik wrote:
-> > > > Intel memory region header declares some functions with a pointer t=
-o a
-> > > > structure defined elsewhere as one of their arguments.  Forward dec=
-lare
-> > > > that structure to avoid compiler warnings.
-> > > >=20
-> > > > ../lib/i915/intel_memory_region.h:69:19: warning: =E2=80=98struct=20
-> > drm_i915_gem_memory_class_instance=E2=80=99 declared inside parameter l=
-ist will not be=20
-> > visible outside of this definition or declaration
-> > > >    69 |            struct drm_i915_gem_memory_class_instance *mem_r=
-egions,
-> > > >       |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > > > ../lib/i915/intel_memory_region.h:73:15: warning: =E2=80=98struct=20
-> > drm_i915_gem_memory_class_instance=E2=80=99 declared inside parameter l=
-ist will not be=20
-> > visible outside of this definition or declaration
-> > > >    73 |        struct drm_i915_gem_memory_class_instance *mem_regio=
-ns,
-> > > >       |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > > >=20
-> > > > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.c=
-om>
-> > > > ---
-> > > >  lib/i915/intel_memory_region.h | 2 ++
-> > > >  1 file changed, 2 insertions(+)
-> > > >=20
-> > > > diff --git a/lib/i915/intel_memory_region.h b/lib/i915/
-> > intel_memory_region.h
-> > > > index e9d1d66d4..8cd18ea0e 100644
-> > > > --- a/lib/i915/intel_memory_region.h
-> > > > +++ b/lib/i915/intel_memory_region.h
-> > > > @@ -62,6 +62,8 @@ uint8_t gem_get_lmem_region_count(int fd);
-> > > > =20
-> > > >  bool gem_has_lmem(int fd);
-> > > > =20
-> > > > +struct drm_i915_gem_memory_class_instance;
-> > > > +
-> > >=20
-> > >=20
-> > > You want to avoid an #include <i915_drm.h> ?
-> >=20
-> > The intel_memory_region.h header doesn't need to know anything about in=
-ternals=20
-> > of struct drm_i915_gem_memory_class_instance, then I think the forward=
-=20
-> > declaration is more standard, but we can add #include <i915_drm.h> if y=
-ou=20
-> > prefer.
->=20
-> Nah, I don't have a preference. Indeed nothing else in that file needs
-> any further knowledge so let's go with the forward declaration.
->=20
-> Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+== Series Details ==
 
-Thank you Petri, pushed.
+Series: tests/i915/gem_lmem_swapping: Add the gem_lmem_swapping test
+URL   : https://patchwork.freedesktop.org/series/93584/
+State : warning
 
-Janusz
+== Summary ==
 
+Pipeline status: CANCELED.
 
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/379177 for the overview.
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/379177
