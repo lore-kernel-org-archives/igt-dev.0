@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5332A89B61
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Aug 2021 07:26:23 +0000 (UTC)
-Date: Wed, 11 Aug 2021 09:26:17 +0200
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4B156E0CB
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Aug 2021 07:28:53 +0000 (UTC)
+Date: Wed, 11 Aug 2021 09:28:37 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210811072617.GA6002@zkempczy-mobl2>
+Message-ID: <20210811072837.GB6002@zkempczy-mobl2>
 References: <20210810191425.8391-1-andrzej.turko@linux.intel.com>
- <20210810191425.8391-2-andrzej.turko@linux.intel.com>
+ <20210810191425.8391-3-andrzej.turko@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210810191425.8391-2-andrzej.turko@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/gem_exec_store: Support gens
- without relocations
+In-Reply-To: <20210810191425.8391-3-andrzej.turko@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/gem_softpin: Exercise
+ eviction with softpinning
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,345 +24,283 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Andrzej Turko <andrzej.turko@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Aug 10, 2021 at 09:14:24PM +0200, Andrzej Turko wrote:
-> With relocations disabled on newer generations
-> tests must assign addresses to objects by
-> themselves instead of relying on the driver.
+On Tue, Aug 10, 2021 at 09:14:25PM +0200, Andrzej Turko wrote:
+> Exercise eviction of many gem objects. The added tests are analogous
+> to gem_exec_gttfill, but they use softpin and do not require relocation
+> support.
 > 
 > Signed-off-by: Andrzej Turko <andrzej.turko@linux.intel.com>
 > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 > ---
->  tests/i915/gem_exec_store.c | 134 ++++++++++++++++++++++++++++--------
->  1 file changed, 106 insertions(+), 28 deletions(-)
+>  tests/i915/gem_softpin.c | 212 ++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 211 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tests/i915/gem_exec_store.c b/tests/i915/gem_exec_store.c
-> index 0798f61d7..cb99f9510 100644
-> --- a/tests/i915/gem_exec_store.c
-> +++ b/tests/i915/gem_exec_store.c
-> @@ -37,6 +37,9 @@
+> diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
+> index 5e47a0ce3..d085dea34 100644
+> --- a/tests/i915/gem_softpin.c
+> +++ b/tests/i915/gem_softpin.c
+> @@ -29,6 +29,7 @@
+>  #include "i915/gem.h"
+>  #include "i915/gem_create.h"
+>  #include "igt.h"
+> +#include "igt_rand.h"
+>  #include "intel_allocator.h"
 >  
->  #define ENGINE_MASK  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
->  
-> +/* Without alignment detection we assume the worst-case scenario. */
-> +#define ALIGNMENT (1 << 21)
-> +
->  static void store_dword(int fd, const intel_ctx_t *ctx,
->  			const struct intel_execution_engine2 *e)
->  {
-> @@ -45,6 +48,7 @@ static void store_dword(int fd, const intel_ctx_t *ctx,
->  	struct drm_i915_gem_relocation_entry reloc;
->  	struct drm_i915_gem_execbuffer2 execbuf;
->  	uint32_t batch[16];
-> +	uint64_t ahnd;
->  	int i;
->  
->  	intel_detect_and_clear_missed_interrupts(fd);
-> @@ -56,43 +60,63 @@ static void store_dword(int fd, const intel_ctx_t *ctx,
->  		execbuf.flags |= I915_EXEC_SECURE;
->  	execbuf.rsvd1 = ctx->id;
->  
-> +	ahnd = intel_allocator_open(fd, ctx->id, INTEL_ALLOCATOR_SIMPLE);
-> +
->  	memset(obj, 0, sizeof(obj));
->  	obj[0].handle = gem_create(fd, 4096);
-> +	obj[0].offset = intel_allocator_alloc(ahnd, obj[0].handle,
-> +					      4096, ALIGNMENT);
-> +	obj[0].offset = CANONICAL(obj[0].offset);
-> +	obj[0].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS | EXEC_OBJECT_WRITE;
->  	obj[1].handle = gem_create(fd, 4096);
-> +	obj[1].offset = intel_allocator_alloc(ahnd, obj[1].handle,
-> +					      4096, ALIGNMENT);
-> +	obj[1].offset = CANONICAL(obj[1].offset);
-> +	obj[1].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->  
->  	memset(&reloc, 0, sizeof(reloc));
->  	reloc.target_handle = obj[0].handle;
-> -	reloc.presumed_offset = 0;
-> +	reloc.presumed_offset = obj[0].offset;
->  	reloc.offset = sizeof(uint32_t);
->  	reloc.delta = 0;
->  	reloc.read_domains = I915_GEM_DOMAIN_INSTRUCTION;
->  	reloc.write_domain = I915_GEM_DOMAIN_INSTRUCTION;
-> -	obj[1].relocs_ptr = to_user_pointer(&reloc);
-> -	obj[1].relocation_count = 1;
-> +
-> +	if (gem_has_relocations(fd)) {
-> +		obj[1].relocs_ptr = to_user_pointer(&reloc);
-> +		obj[1].relocation_count = 1;
-> +	} else {
-> +		obj[0].flags |= EXEC_OBJECT_PINNED;
-> +		obj[1].flags |= EXEC_OBJECT_PINNED;
-> +		execbuf.flags |= I915_EXEC_NO_RELOC;
-> +	}
->  
->  	i = 0;
->  	batch[i] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
->  	if (gen >= 8) {
-> -		batch[++i] = 0;
-> -		batch[++i] = 0;
-> +		batch[++i] = obj[0].offset;
-> +		batch[++i] = obj[0].offset >> 32;
->  	} else if (gen >= 4) {
->  		batch[++i] = 0;
-> -		batch[++i] = 0;
-> +		batch[++i] = obj[0].offset;
->  		reloc.offset += sizeof(uint32_t);
->  	} else {
->  		batch[i]--;
-> -		batch[++i] = 0;
-> +		batch[++i] = obj[0].offset;
->  	}
->  	batch[++i] = 0xc0ffee;
->  	batch[++i] = MI_BATCH_BUFFER_END;
->  	gem_write(fd, obj[1].handle, 0, batch, sizeof(batch));
->  	gem_execbuf(fd, &execbuf);
->  	gem_close(fd, obj[1].handle);
-> +	intel_allocator_free(ahnd, obj[1].handle);
->  
->  	gem_read(fd, obj[0].handle, 0, batch, sizeof(batch));
->  	gem_close(fd, obj[0].handle);
-> +	intel_allocator_free(ahnd, obj[0].handle);
->  	igt_assert_eq(*batch, 0xc0ffee);
->  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
-> +	intel_allocator_close(ahnd);
+>  #define EXEC_OBJECT_PINNED	(1<<4)
+> @@ -878,9 +879,208 @@ static void test_allocator_fork(int fd)
+>  	intel_allocator_multiprocess_stop();
 >  }
 >  
->  #define PAGES 1
-> @@ -106,7 +130,9 @@ static void store_cachelines(int fd, const intel_ctx_t *ctx,
->  	struct drm_i915_gem_execbuffer2 execbuf;
->  #define NCACHELINES (4096/64)
->  	uint32_t *batch;
-> +	uint64_t ahnd, dst_offset;
->  	int i;
-> +	bool do_relocs = gem_has_relocations(fd);
->  
->  	reloc = calloc(NCACHELINES, sizeof(*reloc));
->  	igt_assert(reloc);
-> @@ -119,12 +145,25 @@ static void store_cachelines(int fd, const intel_ctx_t *ctx,
->  		execbuf.flags |= I915_EXEC_SECURE;
->  	execbuf.rsvd1 = ctx->id;
->  
-> +	ahnd = intel_allocator_open(fd, ctx->id, INTEL_ALLOCATOR_SIMPLE);
->  	obj = calloc(execbuf.buffer_count, sizeof(*obj));
->  	igt_assert(obj);
-> -	for (i = 0; i < execbuf.buffer_count; i++)
-> +	for (i = 0; i < execbuf.buffer_count; i++) {
->  		obj[i].handle = gem_create(fd, 4096);
-> -	obj[i-1].relocs_ptr = to_user_pointer(reloc);
-> -	obj[i-1].relocation_count = NCACHELINES;
-> +		obj[i].offset = intel_allocator_alloc(ahnd, obj[i].handle,
-> +						      4096, ALIGNMENT);
-> +		obj[i].offset = CANONICAL(obj[i].offset);
-> +		obj[i].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS |
-> +			       (do_relocs ? 0 : EXEC_OBJECT_PINNED);
-> +		if (i + 1 < execbuf.buffer_count)
-> +			obj[i].flags |= EXEC_OBJECT_WRITE;
+> +#define BATCH_SIZE (4096<<10)
+> +/* We don't have alignment detection yet, so assume the worst-case scenario. */
+> +#define BATCH_ALIGNMENT (1 << 21)
+> +
+> +struct batch {
+> +	uint32_t handle;
+> +	void *ptr;
+> +};
+> +
+> +static void xchg_batch(void *array, unsigned int i, unsigned int j)
+> +{
+> +	struct batch *batches = array;
+> +	struct batch tmp;
+> +
+> +	tmp = batches[i];
+> +	batches[i] = batches[j];
+> +	batches[j] = tmp;
+> +}
+> +
+> +static void submit(int fd, int gen,
+> +		   struct drm_i915_gem_execbuffer2 *eb,
+> +		   struct batch *batches, unsigned int count,
+> +		   uint64_t ahnd)
+> +{
+> +	struct drm_i915_gem_exec_object2 obj;
+> +	uint32_t batch[16];
+> +	uint64_t address;
+> +	unsigned n;
+> +
+> +	memset(&obj, 0, sizeof(obj));
+> +	obj.flags = EXEC_OBJECT_PINNED;
+> +
+> +	for (unsigned i = 0; i < count; i++) {
+> +		obj.handle = batches[i].handle;
+> +		obj.offset = intel_allocator_alloc(ahnd, obj.handle,
+> +						   BATCH_SIZE,
+> +						   BATCH_ALIGNMENT);
+> +		address = obj.offset + BATCH_SIZE - eb->batch_start_offset - 8;
+> +		n = 0;
+> +		batch[n] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
+> +		if (gen >= 8) {
+> +			batch[n] |= 1 << 21;
+> +			batch[n]++;
+> +			batch[++n] = address;
+> +			batch[++n] = address >> 32;
+> +		} else if (gen >= 4) {
+> +			batch[++n] = 0;
+> +			batch[++n] = address;
+> +		} else {
+> +			batch[n]--;
+> +			batch[++n] = address;
+> +		}
+> +		batch[++n] = obj.offset; /* lower_32_bits(value) */
+> +		batch[++n] = obj.offset >> 32; /* upper_32_bits(value) / nop */
+> +		batch[++n] = MI_BATCH_BUFFER_END;
+> +		eb->buffers_ptr = to_user_pointer(&obj);
+> +
+> +		memcpy(batches[i].ptr + eb->batch_start_offset,
+> +		       batch, sizeof(batch));
+> +
+> +		gem_execbuf(fd, eb);
 > +	}
-> +	if (do_relocs) {
-> +		obj[i-1].relocs_ptr = to_user_pointer(reloc);
-> +		obj[i-1].relocation_count = NCACHELINES;
+> +	/* As we have been lying about the write_domain, we need to do a sync */
+> +	gem_sync(fd, obj.handle);
+> +}
+> +
+> +static void test_allocator_evict(int fd, const intel_ctx_t *ctx,
+> +				 unsigned ring, int timeout)
+> +{
+> +	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+> +	struct drm_i915_gem_execbuffer2 execbuf;
+> +	unsigned engines[I915_EXEC_RING_MASK + 1];
+> +	volatile uint64_t *shared;
+> +	struct timespec tv = {};
+> +	struct batch *batches;
+> +	unsigned nengine;
+> +	unsigned count;
+> +	uint64_t size, ahnd;
+> +
+> +	shared = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> +	igt_assert(shared != MAP_FAILED);
+> +
+> +	nengine = 0;
+> +	if (ring == ALL_ENGINES) {
+> +		struct intel_execution_engine2 *e;
+> +
+> +		for_each_ctx_engine(fd, ctx, e) {
+> +			if (!gem_class_can_store_dword(fd, e->class))
+> +				continue;
+> +
+> +			engines[nengine++] = e->flags;
+> +		}
 > +	} else {
-> +		execbuf.flags |= I915_EXEC_NO_RELOC;
+> +		engines[nengine++] = ring;
 > +	}
->  	execbuf.buffers_ptr = to_user_pointer(obj);
->  
->  	batch = gem_mmap__cpu(fd, obj[i-1].handle, 0, 4096, PROT_WRITE);
-> @@ -132,23 +171,24 @@ static void store_cachelines(int fd, const intel_ctx_t *ctx,
->  	i = 0;
->  	for (unsigned n = 0; n < NCACHELINES; n++) {
->  		reloc[n].target_handle = obj[n % (execbuf.buffer_count-1)].handle;
-> -		reloc[n].presumed_offset = -1;
-> +		reloc[n].presumed_offset = obj[n % (execbuf.buffer_count-1)].offset;
->  		reloc[n].offset = (i + 1)*sizeof(uint32_t);
->  		reloc[n].delta = 4 * (n * 16 + n % 16);
->  		reloc[n].read_domains = I915_GEM_DOMAIN_INSTRUCTION;
->  		reloc[n].write_domain = I915_GEM_DOMAIN_INSTRUCTION;
-> +		dst_offset = CANONICAL(reloc[n].presumed_offset + reloc[n].delta);
->  
->  		batch[i] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
->  		if (gen >= 8) {
-> -			batch[++i] = 0;
-> -			batch[++i] = 0;
-> +			batch[++i] = dst_offset;
-> +			batch[++i] = dst_offset >> 32;
->  		} else if (gen >= 4) {
->  			batch[++i] = 0;
-> -			batch[++i] = 0;
-> +			batch[++i] = dst_offset;
->  			reloc[n].offset += sizeof(uint32_t);
->  		} else {
->  			batch[i]--;
-> -			batch[++i] = 0;
-> +			batch[++i] = dst_offset;
->  		}
->  		batch[++i] = n | ~n << 16;
->  		i++;
-> @@ -168,11 +208,14 @@ static void store_cachelines(int fd, const intel_ctx_t *ctx,
->  	}
->  	free(reloc);
->  
-> -	for (unsigned n = 0; n < execbuf.buffer_count; n++)
-> +	for (unsigned n = 0; n < execbuf.buffer_count; n++) {
->  		gem_close(fd, obj[n].handle);
-> +		intel_allocator_free(ahnd, obj[n].handle);
-> +	}
->  	free(obj);
->  
->  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
-> +	intel_allocator_close(ahnd);
->  }
->  
->  static void store_all(int fd, const intel_ctx_t *ctx)
-> @@ -184,10 +227,11 @@ static void store_all(int fd, const intel_ctx_t *ctx)
->  	struct drm_i915_gem_execbuffer2 execbuf;
->  	unsigned *engines, *permuted;
->  	uint32_t batch[16];
-> -	uint64_t offset;
-> +	uint64_t offset, ahnd, dst_offset;
->  	unsigned nengine;
-> -	int value;
-> +	int value, address;
->  	int i, j;
-> +	bool do_relocs = gem_has_relocations(fd);
->  
->  	nengine = 0;
->  	for_each_ctx_engine(fd, ctx, engine) {
-> @@ -213,24 +257,41 @@ static void store_all(int fd, const intel_ctx_t *ctx)
->  		execbuf.flags |= I915_EXEC_SECURE;
->  	execbuf.rsvd1 = ctx->id;
->  
-> +	ahnd = intel_allocator_open(fd, ctx->id, INTEL_ALLOCATOR_SIMPLE);
+> +	igt_require(nengine);
+> +	igt_assert(nengine * 64 <= BATCH_SIZE);
 > +
->  	memset(obj, 0, sizeof(obj));
->  	obj[0].handle = gem_create(fd, nengine*sizeof(uint32_t));
-> +	obj[0].offset = intel_allocator_alloc(ahnd, obj[0].handle,
-> +					      nengine*sizeof(uint32_t), ALIGNMENT);
-> +	obj[0].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS | EXEC_OBJECT_WRITE;
-> +	obj[0].offset = CANONICAL(obj[0].offset);
->  	obj[1].handle = gem_create(fd, 2*nengine*sizeof(batch));
-> -	obj[1].relocation_count = 1;
-> +	obj[1].offset = intel_allocator_alloc(ahnd, obj[1].handle,
-> +					      nengine*sizeof(uint32_t), ALIGNMENT);
-> +	obj[1].offset = CANONICAL(obj[1].offset);
-> +	obj[1].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +	size = gem_aperture_size(fd);
+> +	if (!gem_uses_full_ppgtt(fd))
+> +		size /= 2;
+> +	if (size > 1ull<<32) /* Limit to 4GiB as we do not use allow-48b */
+> +		size = 1ull << 32;
+> +	igt_require(size < (1ull<<32) * BATCH_SIZE);
 > +
-> +	if (do_relocs) {
-> +		obj[1].relocation_count = 1;
-> +	} else {
-> +		obj[0].flags |= EXEC_OBJECT_PINNED;
-> +		obj[1].flags |= EXEC_OBJECT_PINNED;
-> +		execbuf.flags |= I915_EXEC_NO_RELOC;
-> +	}
->  
->  	offset = sizeof(uint32_t);
->  	i = 0;
->  	batch[i] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
->  	if (gen >= 8) {
-> -		batch[++i] = 0;
-> +		batch[address = ++i] = 0;
->  		batch[++i] = 0;
->  	} else if (gen >= 4) {
->  		batch[++i] = 0;
-> -		batch[++i] = 0;
-> +		batch[address = ++i] = 0;
->  		offset += sizeof(uint32_t);
->  	} else {
->  		batch[i]--;
-> -		batch[++i] = 0;
-> +		batch[address = ++i] = 0;
->  	}
->  	batch[value = ++i] = 0xc0ffee;
->  	batch[++i] = MI_BATCH_BUFFER_END;
-> @@ -246,12 +307,17 @@ static void store_all(int fd, const intel_ctx_t *ctx)
->  
->  		j = 2*nengine;
->  		reloc[j].target_handle = obj[0].handle;
-> -		reloc[j].presumed_offset = ~0;
-> +		reloc[j].presumed_offset = obj[0].offset;
->  		reloc[j].offset = j*sizeof(batch) + offset;
->  		reloc[j].delta = nengine*sizeof(uint32_t);
->  		reloc[j].read_domains = I915_GEM_DOMAIN_INSTRUCTION;
->  		reloc[j].write_domain = I915_GEM_DOMAIN_INSTRUCTION;
-> -		obj[1].relocs_ptr = to_user_pointer(&reloc[j]);
-> +		dst_offset = CANONICAL(obj[0].offset + reloc[j].delta);
-> +		batch[address] = dst_offset;
-> +		if (gen >= 8)
-> +			batch[address + 1] = dst_offset >> 32;
-> +		if (do_relocs)
-> +			obj[1].relocs_ptr = to_user_pointer(&reloc[j]);
->  
->  		batch[value] = 0xdeadbeef;
->  		gem_write(fd, obj[1].handle, j*sizeof(batch),
-> @@ -261,12 +327,17 @@ static void store_all(int fd, const intel_ctx_t *ctx)
->  
->  		j = 2*nengine + 1;
->  		reloc[j].target_handle = obj[0].handle;
-> -		reloc[j].presumed_offset = ~0;
-> +		reloc[j].presumed_offset = obj[0].offset;
->  		reloc[j].offset = j*sizeof(batch) + offset;
->  		reloc[j].delta = nengine*sizeof(uint32_t);
->  		reloc[j].read_domains = I915_GEM_DOMAIN_INSTRUCTION;
->  		reloc[j].write_domain = I915_GEM_DOMAIN_INSTRUCTION;
-> -		obj[1].relocs_ptr = to_user_pointer(&reloc[j]);
-> +		dst_offset = CANONICAL(obj[0].offset + reloc[j].delta);
-> +		batch[address] = dst_offset;
-> +		if (gen >= 8)
-> +			batch[address + 1] = dst_offset >> 32;
-> +		if (do_relocs)
-> +			obj[1].relocs_ptr = to_user_pointer(&reloc[j]);
->  
->  		batch[value] = nengine;
->  		gem_write(fd, obj[1].handle, j*sizeof(batch),
-> @@ -279,30 +350,37 @@ static void store_all(int fd, const intel_ctx_t *ctx)
->  	gem_sync(fd, obj[1].handle);
->  
->  	for (i = 0; i < nengine; i++) {
-> -		obj[1].relocs_ptr = to_user_pointer(&reloc[2*i]);
->  		execbuf.batch_start_offset = 2*i*sizeof(batch);
->  		memcpy(permuted, engines, nengine*sizeof(engines[0]));
->  		igt_permute_array(permuted, nengine, igt_exchange_int);
-> +		if (do_relocs)
-> +			obj[1].relocs_ptr = to_user_pointer(&reloc[2*i]);
+> +	count = size / BATCH_SIZE + 1;
+> +	igt_debug("Using %'d batches to fill %'llu aperture on %d engines\n",
+> +		  count, (long long)size, nengine);
 > +
->  		for (j = 0; j < nengine; j++) {
->  			execbuf.flags &= ~ENGINE_MASK;
->  			execbuf.flags |= permuted[j];
->  			gem_execbuf(fd, &execbuf);
->  		}
-> -		obj[1].relocs_ptr = to_user_pointer(&reloc[2*i+1]);
->  		execbuf.batch_start_offset = (2*i+1)*sizeof(batch);
->  		execbuf.flags &= ~ENGINE_MASK;
->  		execbuf.flags |= engines[i];
-> +		if (do_relocs)
-> +			obj[1].relocs_ptr = to_user_pointer(&reloc[2*i+1]);
-> +
->  		gem_execbuf(fd, &execbuf);
->  	}
->  	gem_close(fd, obj[1].handle);
-> +	intel_allocator_free(ahnd, obj[1].handle);
->  
->  	gem_read(fd, obj[0].handle, 0, engines, nengine*sizeof(engines[0]));
->  	gem_close(fd, obj[0].handle);
-> +	intel_allocator_free(ahnd, obj[0].handle);
->  
->  	for (i = 0; i < nengine; i++)
->  		igt_assert_eq_u32(engines[i], i);
->  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
->  
-> +	intel_allocator_close(ahnd);
->  	free(permuted);
->  	free(engines);
->  	free(reloc);
-> -- 
-> 2.25.1
-> 
+> +	intel_allocator_multiprocess_start();
+> +	ahnd = intel_allocator_open_full(fd, 0, 0, size / 16,
+> +					 INTEL_ALLOCATOR_RELOC,
+> +					 ALLOC_STRATEGY_NONE);
 
-LGTM
+Ok, narrowing vm end will increase evictions.
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
+
+> +
+> +	intel_require_memory(count, BATCH_SIZE, CHECK_RAM);
+> +	intel_detect_and_clear_missed_interrupts(fd);
+> +
+> +	igt_nsec_elapsed(&tv);
+> +
+> +	memset(&execbuf, 0, sizeof(execbuf));
+> +	execbuf.buffer_count = 1;
+> +	if (gen < 6)
+> +		execbuf.flags |= I915_EXEC_SECURE;
+> +
+> +	batches = calloc(count, sizeof(*batches));
+> +	igt_assert(batches);
+> +	for (unsigned i = 0; i < count; i++) {
+> +		batches[i].handle = gem_create(fd, BATCH_SIZE);
+> +		batches[i].ptr =
+> +			gem_mmap__device_coherent(fd, batches[i].handle,
+> +						  0, BATCH_SIZE, PROT_WRITE);
+> +	}
+> +
+> +	/* Flush all memory before we start the timer */
+> +	submit(fd, gen, &execbuf, batches, count, ahnd);
+> +
+> +	igt_info("Setup %u batches in %.2fms\n",
+> +		 count, 1e-6 * igt_nsec_elapsed(&tv));
+> +
+> +	igt_fork(child, nengine) {
+> +		uint64_t dst, src, dst_offset, src_offset;
+> +		uint64_t cycles = 0;
+> +
+> +		hars_petruska_f54_1_random_perturb(child);
+> +		igt_permute_array(batches, count, xchg_batch);
+> +		execbuf.batch_start_offset = child * 64;
+> +		execbuf.flags |= engines[child];
+> +
+> +		dst_offset = BATCH_SIZE - child*64 - 8;
+> +		if (gen >= 8)
+> +			src_offset = child*64 + 3*sizeof(uint32_t);
+> +		else if (gen >= 4)
+> +			src_offset = child*64 + 4*sizeof(uint32_t);
+> +		else
+> +			src_offset = child*64 + 2*sizeof(uint32_t);
+> +
+> +		/* We need to open the allocator again in the new process */
+> +		ahnd = intel_allocator_open_full(fd, 0, 0, size / 16,
+> +						 INTEL_ALLOCATOR_RELOC,
+> +						 ALLOC_STRATEGY_NONE);
+> +
+> +		igt_until_timeout(timeout) {
+> +			submit(fd, gen, &execbuf, batches, count, ahnd);
+> +			for (unsigned i = 0; i < count; i++) {
+> +				dst = *(uint64_t *)(batches[i].ptr + dst_offset);
+> +				src = *(uint64_t *)(batches[i].ptr + src_offset);
+> +				igt_assert_eq_u64(dst, src);
+> +			}
+> +			cycles++;
+> +		}
+> +		shared[child] = cycles;
+> +		igt_info("engine[%d]: %llu cycles\n", child, (long long)cycles);
+> +		intel_allocator_close(ahnd);
+> +	}
+> +	igt_waitchildren();
+> +
+> +	intel_allocator_close(ahnd);
+> +	intel_allocator_multiprocess_stop();
+> +
+> +	for (unsigned i = 0; i < count; i++) {
+> +		munmap(batches[i].ptr, BATCH_SIZE);
+> +		gem_close(fd, batches[i].handle);
+> +	}
+> +	free(batches);
+> +
+> +	shared[nengine] = 0;
+> +	for (unsigned i = 0; i < nengine; i++)
+> +		shared[nengine] += shared[i];
+> +	igt_info("Total: %llu cycles\n", (long long)shared[nengine]);
+> +
+> +	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
+> +}
+> +
+> +#define test_each_engine(T, i915, ctx, e) \
+> +	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
+> +		igt_dynamic_f("%s", e->name)
+> +
+>  igt_main
+>  {
+> +	const struct intel_execution_engine2 *e;
+>  	int fd = -1;
+> +	const intel_ctx_t *ctx;
+>  
+>  	igt_fixture {
+>  		fd = drm_open_driver_master(DRIVER_INTEL);
+> @@ -888,6 +1088,8 @@ igt_main
+>  		gem_require_blitter(fd);
+>  		igt_require(gem_has_softpin(fd));
+>  		igt_require(gem_can_store_dword(fd, 0));
+> +
+> +		ctx = intel_ctx_create_all_physical(fd);
+>  	}
+>  
+>  	igt_subtest("invalid")
+> @@ -923,6 +1125,12 @@ igt_main
+>  
+>  		igt_subtest("allocator-fork")
+>  			test_allocator_fork(fd);
+> +
+> +		test_each_engine("allocator-evict", fd, ctx, e)
+> +			test_allocator_evict(fd, ctx, e->flags, 20);
+> +
+> +		igt_subtest("allocator-evict-all-engines")
+> +			test_allocator_evict(fd, ctx, ALL_ENGINES, 20);
+>  	}
+>  
+>  	igt_subtest("softpin")
+> @@ -950,6 +1158,8 @@ igt_main
+>  	igt_subtest("evict-hang")
+>  		test_evict_hang(fd);
+>  
+> -	igt_fixture
+> +	igt_fixture {
+> +		intel_ctx_destroy(fd, ctx);
+>  		close(fd);
+> +	}
+>  }
+> -- 
+> 2.25.1
+> 
