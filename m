@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A4D26E3D6
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Aug 2021 12:00:58 +0000 (UTC)
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Thu, 12 Aug 2021 14:00:54 +0200
-Message-ID: <3558678.MHq7AAxBmi@jkrzyszt-mobl1.ger.corp.intel.com>
-In-Reply-To: <20210812090738.GB27582@zkempczy-mobl2>
-References: <20210812090032.117930-1-janusz.krzysztofik@linux.intel.com>
- <20210812090738.GB27582@zkempczy-mobl2>
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com
+ [IPv6:2a00:1450:4864:20::435])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D36ED6E40D
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Aug 2021 14:33:05 +0000 (UTC)
+Received: by mail-wr1-x435.google.com with SMTP id v4so1513064wro.12
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Aug 2021 07:33:05 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Thu, 12 Aug 2021 17:33:00 +0300
+Message-Id: <20210812143300.14975-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_memory_region: Constify info
- structures
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: separate hw and sw
+ runs on tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,158 +21,520 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Zbigniew =?utf-8?B?S2VtcGN6ecWEc2tp?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On czwartek, 12 sierpnia 2021 11:07:38 CEST Zbigniew Kempczy=C5=84ski wrote:
-> On Thu, Aug 12, 2021 at 11:00:32AM +0200, Janusz Krzysztofik wrote:
-> > Functions which extract information from drm_i915_query_memory_regions
-> > structures passed via their pointer as an argument don't modify those
-> > structures, let them accept that content declared as constant.
-> >=20
-> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
->=20
-> Looks safe:=20
->=20
-> Reviewed-by: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
+On some hw versions it seems setting cursor plane on may get delayed.
+Mitigate this away from test by separating cursor hw and sw runs so
+that during test cursor will be switched on only once and kept on until
+it is no more needed.
 
-Thanks Zbyszek, pushed.
+While at it did some simple cleanup.
 
-Janusz
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ tests/kms_cursor_crc.c | 372 ++++++++++++++++++++++++++---------------
+ 1 file changed, 234 insertions(+), 138 deletions(-)
 
->=20
-> --
-> Zbigniew
-> > ---
-> >  lib/i915/intel_memory_region.c | 12 ++++++------
-> >  lib/i915/intel_memory_region.h | 12 ++++++------
-> >  2 files changed, 12 insertions(+), 12 deletions(-)
-> >=20
-> > diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_reg=
-ion.c
-> > index 72e337af3..3de405493 100644
-> > --- a/lib/i915/intel_memory_region.c
-> > +++ b/lib/i915/intel_memory_region.c
-> > @@ -309,7 +309,7 @@ char *memregion_dynamic_subtest_name(struct igt_col=
-lection *set)
-> >   *
-> >   * Outputs memory regions and their sizes.
-> >   */
-> > -void intel_dump_gpu_meminfo(struct drm_i915_query_memory_regions *info)
-> > +void intel_dump_gpu_meminfo(const struct drm_i915_query_memory_regions=
- *info)
-> >  {
-> >  	int i;
-> > =20
-> > @@ -336,7 +336,7 @@ void intel_dump_gpu_meminfo(struct drm_i915_query_m=
-emory_regions *info)
-> >   *
-> >   * Returns: number of regions for type @memory_class
-> >   */
-> > -uint32_t gpu_meminfo_region_count(struct drm_i915_query_memory_regions=
- *info,
-> > +uint32_t gpu_meminfo_region_count(const struct drm_i915_query_memory_r=
-egions *info,
-> >  				  uint16_t memory_class)
-> >  {
-> >  	uint32_t num =3D 0;
-> > @@ -359,7 +359,7 @@ uint32_t gpu_meminfo_region_count(struct drm_i915_q=
-uery_memory_regions *info,
-> >   * Returns: total size of all regions which are type @memory_class, -1=
- when the
-> >   * size of at least one region is unknown
-> >   */
-> > -uint64_t gpu_meminfo_region_total_size(struct drm_i915_query_memory_re=
-gions *info,
-> > +uint64_t gpu_meminfo_region_total_size(const struct drm_i915_query_mem=
-ory_regions *info,
-> >  				       uint16_t memory_class)
-> >  {
-> >  	uint64_t total =3D 0;
-> > @@ -386,7 +386,7 @@ uint64_t gpu_meminfo_region_total_size(struct drm_i=
-915_query_memory_regions *inf
-> >   * Returns: available size of all regions which are type @memory_class=
-, -1 when
-> >   * the size of at least one region cannot be estimated
-> >   */
-> > -uint64_t gpu_meminfo_region_total_available(struct drm_i915_query_memo=
-ry_regions *info,
-> > +uint64_t gpu_meminfo_region_total_available(const struct drm_i915_quer=
-y_memory_regions *info,
-> >  					    uint16_t memory_class)
-> >  {
-> >  	uint64_t avail =3D 0;
-> > @@ -414,7 +414,7 @@ uint64_t gpu_meminfo_region_total_available(struct =
-drm_i915_query_memory_regions
-> >   * Returns: available size of @memory_instance which type is @memory_c=
-lass, -1
-> >   * when the size is unknown
-> >   */
-> > -uint64_t gpu_meminfo_region_size(struct drm_i915_query_memory_regions =
-*info,
-> > +uint64_t gpu_meminfo_region_size(const struct drm_i915_query_memory_re=
-gions *info,
-> >  				 uint16_t memory_class,
-> >  				 uint16_t memory_instance)
-> >  {
-> > @@ -439,7 +439,7 @@ uint64_t gpu_meminfo_region_size(struct drm_i915_qu=
-ery_memory_regions *info,
-> >   * Returns: available size of @memory_instance region which type is
-> >   * @memory_class, -1 when the size cannot be estimated
-> >   */
-> > -uint64_t gpu_meminfo_region_available(struct drm_i915_query_memory_reg=
-ions *info,
-> > +uint64_t gpu_meminfo_region_available(const struct drm_i915_query_memo=
-ry_regions *info,
-> >  				      uint16_t memory_class,
-> >  				      uint16_t memory_instance)
-> >  {
-> > diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_reg=
-ion.h
-> > index 8cd18ea0e..70b74944b 100644
-> > --- a/lib/i915/intel_memory_region.h
-> > +++ b/lib/i915/intel_memory_region.h
-> > @@ -113,19 +113,19 @@ __get_memory_region_set(struct drm_i915_query_mem=
-ory_regions *regions,
-> > =20
-> >  char *memregion_dynamic_subtest_name(struct igt_collection *set);
-> > =20
-> > -void intel_dump_gpu_meminfo(struct drm_i915_query_memory_regions *info=
-);
-> > +void intel_dump_gpu_meminfo(const struct drm_i915_query_memory_regions=
- *info);
-> > =20
-> > -uint32_t gpu_meminfo_region_count(struct drm_i915_query_memory_regions=
- *info,
-> > +uint32_t gpu_meminfo_region_count(const struct drm_i915_query_memory_r=
-egions *info,
-> >  				  uint16_t region_class);
-> > -uint64_t gpu_meminfo_region_total_size(struct drm_i915_query_memory_re=
-gions *info,
-> > +uint64_t gpu_meminfo_region_total_size(const struct drm_i915_query_mem=
-ory_regions *info,
-> >  				       uint16_t region_class);
-> > -uint64_t gpu_meminfo_region_total_available(struct drm_i915_query_memo=
-ry_regions *info,
-> > +uint64_t gpu_meminfo_region_total_available(const struct drm_i915_quer=
-y_memory_regions *info,
-> >  					    uint16_t region_type);
-> > =20
-> > -uint64_t gpu_meminfo_region_size(struct drm_i915_query_memory_regions =
-*info,
-> > +uint64_t gpu_meminfo_region_size(const struct drm_i915_query_memory_re=
-gions *info,
-> >  				 uint16_t memory_class,
-> >  				 uint16_t memory_instance);
-> > -uint64_t gpu_meminfo_region_available(struct drm_i915_query_memory_reg=
-ions *info,
-> > +uint64_t gpu_meminfo_region_available(const struct drm_i915_query_memo=
-ry_regions *info,
-> >  				      uint16_t memory_class,
-> >  				      uint16_t memory_instance);
-> > =20
->=20
-
-
-
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index a9bc3a745..98227d041 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -49,7 +49,7 @@ IGT_TEST_DESCRIPTION(
+ typedef struct {
+ 	int drm_fd;
+ 	igt_display_t display;
+-	struct igt_fb primary_fb[2];
++	struct igt_fb primary_fb[3];
+ 	struct igt_fb fb;
+ 	igt_output_t *output;
+ 	enum pipe pipe;
+@@ -71,7 +71,8 @@ typedef struct {
+ #define TEST_SUSPEND (1<<1)
+ 
+ #define HWCURSORBUFFER 0
+-#define SWCOMPARISONBUFFER 1
++#define SWCOMPARISONBUFFER1 1
++#define SWCOMPARISONBUFFER2 2
+ 
+ static void draw_cursor(cairo_t *cr, int x, int y, int cw, int ch, double a)
+ {
+@@ -156,77 +157,83 @@ static void restore_image(data_t *data, uint32_t buffer)
+ 	igt_put_cairo_ctx(cr);
+ }
+ 
+-static void do_single_test(data_t *data, int x, int y)
++static void do_single_test(data_t *data, int x, int y, bool hw_test,
++			   igt_crc_t *hwcrc)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_pipe_crc_t *pipe_crc = data->pipe_crc;
+-	igt_crc_t crc, ref_crc;
++	igt_crc_t crc;
+ 	cairo_t *cr;
+-	int ret = 0;
++	int ret = 0, swbufidx;
+ 
+ 	igt_print_activity();
+ 
+-	/* Hardware test */
+-	igt_plane_set_position(data->cursor, x, y);
+-	cursor_enable(data);
++	if (hw_test) {
++		/* Hardware test */
++		igt_plane_set_position(data->cursor, x, y);
+ 
+-	if (chv_cursor_broken(data, x) && cursor_visible(data, x, y)) {
+-		ret = igt_display_try_commit2(display, COMMIT_LEGACY);
+-		igt_assert_eq(ret, -EINVAL);
+-		igt_plane_set_position(data->cursor, 0, y);
+-		return;
+-	}
++		if (chv_cursor_broken(data, x) && cursor_visible(data, x, y)) {
++			ret = igt_display_try_commit2(display, COMMIT_LEGACY);
++			igt_assert_eq(ret, -EINVAL);
++			igt_plane_set_position(data->cursor, 0, y);
++			return;
++		}
+ 
+-	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
+-	igt_display_commit(display);
++		igt_display_commit(display);
+ 
+-	/* Extra vblank wait is because nonblocking cursor ioctl */
+-	igt_wait_for_vblank(data->drm_fd,
+-			    display->pipes[data->pipe].crtc_offset);
++		/* Extra vblank wait is because nonblocking cursor ioctl */
++		igt_wait_for_vblank(data->drm_fd,
++				display->pipes[data->pipe].crtc_offset);
+ 
+-	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
+-	restore_image(data, SWCOMPARISONBUFFER);
++		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, hwcrc);
+ 
+-	if (data->flags & (TEST_DPMS | TEST_SUSPEND)) {
+-		igt_crc_t crc_after;
+-		/*
+-		 * stop/start crc to avoid dmesg notifications about userspace
+-		 * reading too slow.
+-		 */
+-		igt_pipe_crc_stop(pipe_crc);
+-
+-		if (data->flags & TEST_DPMS) {
+-			igt_debug("dpms off/on cycle\n");
+-			kmstest_set_connector_dpms(data->drm_fd,
+-						   data->output->config.connector,
+-						   DRM_MODE_DPMS_OFF);
+-			kmstest_set_connector_dpms(data->drm_fd,
+-						   data->output->config.connector,
+-						   DRM_MODE_DPMS_ON);
++		if (data->flags & (TEST_DPMS | TEST_SUSPEND)) {
++			igt_crc_t crc_after;
++			/*
++			* stop/start crc to avoid dmesg notifications about userspace
++			* reading too slow.
++			*/
++			igt_pipe_crc_stop(pipe_crc);
++
++			if (data->flags & TEST_DPMS) {
++				igt_debug("dpms off/on cycle\n");
++				kmstest_set_connector_dpms(data->drm_fd,
++							data->output->config.connector,
++							DRM_MODE_DPMS_OFF);
++				kmstest_set_connector_dpms(data->drm_fd,
++							data->output->config.connector,
++							DRM_MODE_DPMS_ON);
++			}
++
++			if (data->flags & TEST_SUSPEND)
++				igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
++							SUSPEND_TEST_NONE);
++
++			igt_pipe_crc_start(pipe_crc);
++			igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc_after);
++			igt_assert_crc_equal(hwcrc, &crc_after);
+ 		}
++	} else {
++		/* Now render the same in software and collect crc */
++		swbufidx = (data->primary->drm_plane->fb_id ==
++			    data->primary_fb[SWCOMPARISONBUFFER1].fb_id) ? 1 : 0;
+ 
+-		if (data->flags & TEST_SUSPEND)
+-			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+-						      SUSPEND_TEST_NONE);
+-
+-		igt_pipe_crc_start(pipe_crc);
+-		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc_after);
+-		igt_assert_crc_equal(&crc, &crc_after);
+-	}
++		restore_image(data, SWCOMPARISONBUFFER1 + swbufidx);
++		cr = igt_get_cairo_ctx(data->drm_fd,
++				       &data->primary_fb[SWCOMPARISONBUFFER1 + swbufidx]);
+ 
+-	/* Now render the same in software and collect crc */
+-	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
+-	draw_cursor(cr, x, y, data->curw, data->curh, 1.0);
+-	igt_put_cairo_ctx(cr);
+-	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
+-	cursor_disable(data);
+-	igt_display_commit(display);
++		draw_cursor(cr, x, y, data->curw, data->curh, 1.0);
++		igt_put_cairo_ctx(cr);
++		igt_plane_set_fb(data->primary,
++				 &data->primary_fb[SWCOMPARISONBUFFER1 + swbufidx]);
+ 
+-	igt_wait_for_vblank(data->drm_fd,
+-			display->pipes[data->pipe].crtc_offset);
++		igt_display_commit(display);
++		igt_wait_for_vblank(data->drm_fd,
++				display->pipes[data->pipe].crtc_offset);
+ 
+-	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
+-	igt_assert_crc_equal(&crc, &ref_crc);
++		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
++		igt_assert_crc_equal(&crc, hwcrc);
++	}
+ }
+ 
+ static void do_fail_test(data_t *data, int x, int y, int expect)
+@@ -248,70 +255,112 @@ static void do_fail_test(data_t *data, int x, int y, int expect)
+ 	igt_assert_eq(ret, expect);
+ }
+ 
+-static void do_test(data_t *data,
+-		    int left, int right, int top, int bottom)
++static void do_test(data_t *data, const int coords[4], igt_crc_t crc[4],
++		    bool hwtest)
+ {
+-	do_single_test(data, left, top);
+-	do_single_test(data, right, top);
+-	do_single_test(data, right, bottom);
+-	do_single_test(data, left, bottom);
++	do_single_test(data, coords[0], coords[2], hwtest, &crc[0]);
++	do_single_test(data, coords[1], coords[2], hwtest, &crc[1]);
++	do_single_test(data, coords[1], coords[3], hwtest, &crc[2]);
++	do_single_test(data, coords[0], coords[3], hwtest, &crc[3]);
+ }
+ 
+ static void test_crc_onscreen(data_t *data)
+ {
+-	int left = data->left;
+-	int right = data->right;
+-	int top = data->top;
+-	int bottom = data->bottom;
+-	int cursor_w = data->curw;
+-	int cursor_h = data->curh;
+-
+-	/* fully inside  */
+-	do_test(data, left, right, top, bottom);
+-
+-	/* 2 pixels inside */
+-	do_test(data, left - (cursor_w-2), right + (cursor_w-2), top               , bottom               );
+-	do_test(data, left               , right               , top - (cursor_h-2), bottom + (cursor_h-2));
+-	do_test(data, left - (cursor_w-2), right + (cursor_w-2), top - (cursor_h-2), bottom + (cursor_h-2));
+-
+-	/* 1 pixel inside */
+-	do_test(data, left - (cursor_w-1), right + (cursor_w-1), top               , bottom               );
+-	do_test(data, left               , right               , top - (cursor_h-1), bottom + (cursor_h-1));
+-	do_test(data, left - (cursor_w-1), right + (cursor_w-1), top - (cursor_h-1), bottom + (cursor_h-1));
++	const int left = data->left;
++	const int right = data->right;
++	const int top = data->top;
++	const int bottom = data->bottom;
++	const int cursor_w = data->curw;
++	const int cursor_h = data->curh;
++
++	struct {
++		const int coords[4];
++		igt_crc_t crc[4];
++	} tests[] = {
++		/* fully inside  */
++		{{left, right, top, bottom}},
++		/* 2 pixels inside */
++		{{left - (cursor_w - 2), right + (cursor_w - 2), top, bottom}},
++		{{left, right, top - (cursor_h - 2), bottom + (cursor_h - 2)}},
++		{{left - (cursor_w - 2), right + (cursor_w - 2),
++		  top - (cursor_h - 2), bottom + (cursor_h - 2)}},
++		/* 1 pixel inside */
++		{{left - (cursor_w - 1), right + (cursor_w - 1), top, bottom}},
++		{{left, right, top - (cursor_h - 1), bottom + (cursor_h - 1)}},
++		{{left - (cursor_w - 1), right + (cursor_w - 1),
++		  top - (cursor_h - 1), bottom + (cursor_h - 1)}},
++	};
++
++	/* HW test */
++	cursor_enable(data);
++	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
++	for (int i = 0; i < ARRAY_SIZE(tests); i++)
++		do_test(data, tests[i].coords, tests[i].crc, true);
++
++	/* SW test */
++	cursor_disable(data);
++	for (int i = 0; i < ARRAY_SIZE(tests); i++)
++		do_test(data, tests[i].coords, tests[i].crc, false);
+ }
+ 
+ static void test_crc_offscreen(data_t *data)
+ {
+-	int left = data->left;
+-	int right = data->right;
+-	int top = data->top;
+-	int bottom = data->bottom;
+-	int cursor_w = data->curw;
+-	int cursor_h = data->curh;
+-
+-	/* fully outside */
+-	do_test(data, left - (cursor_w), right + (cursor_w), top             , bottom             );
+-	do_test(data, left             , right             , top - (cursor_h), bottom + (cursor_h));
+-	do_test(data, left - (cursor_w), right + (cursor_w), top - (cursor_h), bottom + (cursor_h));
+-
+-	/* fully outside by 1 extra pixels */
+-	do_test(data, left - (cursor_w+1), right + (cursor_w+1), top               , bottom               );
+-	do_test(data, left               , right               , top - (cursor_h+1), bottom + (cursor_h+1));
+-	do_test(data, left - (cursor_w+1), right + (cursor_w+1), top - (cursor_h+1), bottom + (cursor_h+1));
+-
+-	/* fully outside by 2 extra pixels */
+-	do_test(data, left - (cursor_w+2), right + (cursor_w+2), top               , bottom               );
+-	do_test(data, left               , right               , top - (cursor_h+2), bottom + (cursor_h+2));
+-	do_test(data, left - (cursor_w+2), right + (cursor_w+2), top - (cursor_h+2), bottom + (cursor_h+2));
+-
+-	/* fully outside by a lot of extra pixels */
+-	do_test(data, left - (cursor_w+512), right + (cursor_w+512), top                 , bottom                 );
+-	do_test(data, left                 , right                 , top - (cursor_h+512), bottom + (cursor_h+512));
+-	do_test(data, left - (cursor_w+512), right + (cursor_w+512), top - (cursor_h+512), bottom + (cursor_h+512));
+-
+-	/* go nuts */
+-	do_test(data, INT_MIN, INT_MAX - cursor_w, INT_MIN, INT_MAX - cursor_h);
+-	do_test(data, SHRT_MIN, SHRT_MAX, SHRT_MIN, SHRT_MAX);
++	const int left = data->left;
++	const int right = data->right;
++	const int top = data->top;
++	const int bottom = data->bottom;
++	const int cursor_w = data->curw;
++	const int cursor_h = data->curh;
++
++	struct {
++		const int coords[4];
++		igt_crc_t crc[4];
++	} tests[] = {
++		/* fully outside */
++		{{left - (cursor_w), right + (cursor_w), top, bottom}},
++		{{left, right, top - (cursor_h), bottom + (cursor_h)}},
++		{{left - (cursor_w), right + (cursor_w), top - (cursor_h),
++		  bottom + (cursor_h)}},
++		/* fully outside by 1 extra pixels */
++		{{left - (cursor_w + 1), right + (cursor_w + 1), top, bottom}},
++		{{left, right, top - (cursor_h + 1), bottom + (cursor_h + 1)}},
++		{{left - (cursor_w + 1), right + (cursor_w + 1),
++		  top - (cursor_h + 1), bottom + (cursor_h + 1)}},
++		/* fully outside by 2 extra pixels */
++		{{left - (cursor_w + 2), right + (cursor_w + 2), top, bottom}},
++		{{left, right, top - (cursor_h + 2), bottom + (cursor_h + 2)}},
++		{{left - (cursor_w + 2), right + (cursor_w + 2),
++		  top - (cursor_h + 2), bottom + (cursor_h + 2)}},
++		/* fully outside by a lot of extra pixels */
++		{{left - (cursor_w + 512), right + (cursor_w + 512), top, bottom}},
++		{{left, right, top - (cursor_h + 512), bottom + (cursor_h + 512)}},
++		{{left - (cursor_w + 512), right + (cursor_w + 512),
++		  top - (cursor_h + 512), bottom + (cursor_h + 512)}},
++		/* go nuts */
++		{{INT_MIN, INT_MAX - cursor_w, INT_MIN, INT_MAX - cursor_h}},
++		{{SHRT_MIN, SHRT_MAX, SHRT_MIN, SHRT_MAX}},
++	};
++
++	/* HW test */
++	cursor_enable(data);
++	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
++	for (int i = 0; i < ARRAY_SIZE(tests); i++)
++		do_test(data, tests[i].coords, tests[i].crc, true);
++
++	/* SW test */
++	cursor_disable(data);
++	/*
++	 * all these crc's should be the same, actually render only first image
++	 * to check crc and then compare rest of crc are matching
++	 */
++	do_test(data, tests[0].coords, tests[0].crc, false);
++
++	for (int i = 1; i < ARRAY_SIZE(tests); i++) {
++		igt_assert_crc_equal(&tests[0].crc[0], &tests[i].crc[0]);
++		igt_assert_crc_equal(&tests[0].crc[0], &tests[i].crc[1]);
++		igt_assert_crc_equal(&tests[0].crc[0], &tests[i].crc[2]);
++		igt_assert_crc_equal(&tests[0].crc[0], &tests[i].crc[3]);
++	}	
+ 
+ 	/* Make sure we get -ERANGE on integer overflow */
+ 	do_fail_test(data, INT_MAX - cursor_w + 1, INT_MAX - cursor_h + 1, -ERANGE);
+@@ -320,29 +369,75 @@ static void test_crc_offscreen(data_t *data)
+ static void test_crc_sliding(data_t *data)
+ {
+ 	int i;
++	igt_crc_t crc[16 * 3];
+ 
+ 	/* Make sure cursor moves smoothly and pixel-by-pixel, and that there are
+ 	 * no alignment issues. Horizontal, vertical and diagonal test.
+ 	 */
+-	for (i = 0; i < 16; i++) {
+-		do_single_test(data, i, 0);
+-		do_single_test(data, 0, i);
+-		do_single_test(data, i, i);
++
++	/* HW test */
++	cursor_enable(data);
++	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
++
++	for (i = 0; i < ARRAY_SIZE(crc); i++) {
++		switch (i % 3) {
++		case 0:
++			do_single_test(data, i, 0, true, &crc[i]);
++			break;
++		case 1:
++			do_single_test(data, 0, i, true, &crc[i]);
++			break;
++		case 2:
++			do_single_test(data, i, i, true, &crc[i]);
++			break;
++		default:
++			igt_assert(false);
++		}
++	}
++
++	/* SW test */
++	cursor_disable(data);
++	for (i = 0; i < ARRAY_SIZE(crc); i++) {
++		switch (i % 3) {
++		case 0:
++			do_single_test(data, i, 0, false, &crc[i]);
++			break;
++		case 1:
++			do_single_test(data, 0, i, false, &crc[i]);
++			break;
++		case 2:
++			do_single_test(data, i, i, false, &crc[i]);
++			break;
++		default:
++			igt_assert(false);
++		}
+ 	}
+ }
+ 
+ static void test_crc_random(data_t *data)
+ {
+-	int i, max;
++	igt_crc_t crc[50];
++	int i, max, x[ARRAY_SIZE(crc)], y[ARRAY_SIZE(crc)];
+ 
+-	max = data->flags & (TEST_DPMS | TEST_SUSPEND) ? 2 : 50;
++	max = data->flags & (TEST_DPMS | TEST_SUSPEND) ? 2 : ARRAY_SIZE(crc);
+ 
+ 	/* Random cursor placement */
++
++	/* HW test */
++	cursor_enable(data);
++	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
++
+ 	for (i = 0; i < max; i++) {
+-		int x = rand() % (data->screenw + data->curw * 2) - data->curw;
+-		int y = rand() % (data->screenh + data->curh * 2) - data->curh;
+-		do_single_test(data, x, y);
++		x[i] = rand() % (data->screenw + data->curw * 2) - data->curw;
++		y[i] = rand() % (data->screenh + data->curh * 2) - data->curh;
++		do_single_test(data, x[i], y[i], true, &crc[i]);
+ 	}
++
++	/* SW test */
++	cursor_disable(data);
++	for (i = 0; i < max; i++)
++		do_single_test(data, x[i], y[i], false, &crc[i]);
++
+ }
+ 
+ static void cleanup_crtc(data_t *data)
+@@ -362,7 +457,8 @@ static void cleanup_crtc(data_t *data)
+ 	igt_display_commit(display);
+ 
+ 	igt_remove_fb(data->drm_fd, &data->primary_fb[HWCURSORBUFFER]);
+-	igt_remove_fb(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
++	igt_remove_fb(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER1]);
++	igt_remove_fb(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER2]);
+ 
+ 	igt_display_reset(display);
+ }
+@@ -379,22 +475,22 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
+ 
+ 	/* create and set the primary plane fbs */
+ 	mode = igt_output_get_mode(output);
+-	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-			    DRM_FORMAT_XRGB8888,
+-			    DRM_FORMAT_MOD_NONE,
+-			    0.0, 0.0, 0.0,
+-			    &data->primary_fb[HWCURSORBUFFER]);
+-
+-	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-			    DRM_FORMAT_XRGB8888,
+-			    DRM_FORMAT_MOD_NONE,
+-			    0.0, 0.0, 0.0,
+-			    &data->primary_fb[SWCOMPARISONBUFFER]);
++	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
++		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
++		      &data->primary_fb[HWCURSORBUFFER]);
++
++	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
++		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
++		      &data->primary_fb[SWCOMPARISONBUFFER1]);
++
++	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
++		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
++		      &data->primary_fb[SWCOMPARISONBUFFER2]);
+ 
+ 	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	data->cursor = igt_output_get_plane_type(output, DRM_PLANE_TYPE_CURSOR);
+ 
+-	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
++	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER1]);
+ 
+ 	igt_display_commit(display);
+ 
+@@ -427,7 +523,7 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
+ 		cairo_destroy(cr);
+ 
+ 		/* Set HW cursor buffer in place */
+-			restore_image(data, HWCURSORBUFFER);
++		restore_image(data, HWCURSORBUFFER);
+ 	} else
+ 		data->surface = NULL;
+ 
+@@ -469,10 +565,10 @@ static void test_cursor_alpha(data_t *data, double a)
+ 	igt_remove_fb(data->drm_fd, &data->fb);
+ 
+ 	/* Software Test - render cursor in software, drawn it directly on PF */
+-	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
++	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER1]);
+ 	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
+ 	igt_put_cairo_ctx(cr);
+-	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
++	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER1]);
+ 	igt_display_commit(display);
+ 	igt_wait_for_vblank(data->drm_fd,
+ 			display->pipes[data->pipe].crtc_offset);
+@@ -610,7 +706,7 @@ static void test_cursor_size(data_t *data)
+ 		igt_display_commit(display);
+ 
+ 		/* Now render the same in software and collect crc */
+-		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
++		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER1]);
+ 
+ 		/* remove previous cursor sw image */
+ 		if (prevsize > 0)
+@@ -619,7 +715,7 @@ static void test_cursor_size(data_t *data)
+ 
+ 		igt_paint_color_alpha(cr, 0, 0, size, size, 1.0, 1.0, 1.0, 1.0);
+ 		igt_put_cairo_ctx(cr);
+-		igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
++		igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER1]);
+ 		igt_display_commit(display);
+ 		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
+ 
+-- 
+2.28.0
