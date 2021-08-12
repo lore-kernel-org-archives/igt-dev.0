@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61D4A6E321
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Aug 2021 07:49:16 +0000 (UTC)
-Date: Thu, 12 Aug 2021 10:51:58 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YRTTHlNMeuMfn/hF@platvala-desk.ger.corp.intel.com>
-References: <20210811180217.91142-1-lucas.demarchi@intel.com>
- <20210811180217.91142-2-lucas.demarchi@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5ECE16E33F
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Aug 2021 09:00:47 +0000 (UTC)
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Thu, 12 Aug 2021 11:00:32 +0200
+Message-Id: <20210812090032.117930-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210811180217.91142-2-lucas.demarchi@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/igt_edid: fix string padding
+Subject: [igt-dev] [PATCH i-g-t] lib/intel_memory_region: Constify info
+ structures
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,67 +18,107 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org, kunal1.joshi@intel.com, Simon Ser <contact@emersion.fr>
+To: igt-dev@lists.freedesktop.org
+Cc: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>, Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Aug 11, 2021 at 11:02:17AM -0700, Lucas De Marchi wrote:
-> While checking a fix for the warning
-> 
-> 	[2/390] Compiling C object lib/libigt-igt_edid_c.a.p/igt_edid.c.o
-> 	In file included from /usr/include/string.h:519,
-> 			 from ../lib/igt_edid.c:29:
-> 	In function ‘strncpy’,
-> 	    inlined from ‘detailed_timing_set_string’ at ../lib/igt_edid.c:186:2:
-> 	/usr/include/x86_64-linux-gnu/bits/string_fortified.h:95:10: warning: ‘__builtin_strncpy’ specified bound 13 equals destination size [-Wstringop-truncation]
-> 	   95 |   return __builtin___strncpy_chk (__dest, __src, __len,
-> 	      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 	   96 |       __glibc_objsize (__dest));
-> 	      |       ~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> ... I noticed we were not following the spec to the letter.
-> According to EDID 1.3 data format, EDID Other Monitor Descriptors has the this
-> information for bytes 5-17: "Defined by descriptor type. If text, code page 437
-> text, terminated (if less than 13 bytes) with LF and padded with SP."
-> So, while fixing the warning, also guarantee we correctly pad the field.
-> The only caller sets it to "IGT", so previously we would set the field
-> would alway be 'IGT\n\0\0\0\0\0\0\0\0\0', since all the callers
-> zero-initialize the struct.
-> 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->  lib/igt_edid.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/lib/igt_edid.c b/lib/igt_edid.c
-> index 6fe984d9..df346c4c 100644
-> --- a/lib/igt_edid.c
-> +++ b/lib/igt_edid.c
-> @@ -31,6 +31,7 @@
->  #include <time.h>
->  #include <xf86drmMode.h>
->  
-> +#include "igt_aux.h"
->  #include "igt_core.h"
->  #include "igt_edid.h"
->  
-> @@ -183,10 +184,14 @@ void detailed_timing_set_string(struct detailed_timing *dt,
->  
->  	np->type = type;
->  
-> -	strncpy(ds->str, str, sizeof(ds->str));
-> -	len = strlen(str);
-> +	len = min(strlen(str), sizeof(ds->str));
-> +	memcpy(ds->str, str, len);
-> +
->  	if (len < sizeof(ds->str))
-> -		ds->str[len] = '\n';
-> +		ds->str[len++] = '\n';
-> +
-> +	while (len < sizeof(ds->str))
-> +		ds->str[len++] = ' ';
->  }
+Functions which extract information from drm_i915_query_memory_regions
+structures passed via their pointer as an argument don't modify those
+structures, let them accept that content declared as constant.
 
-Ah, much better than my own scuffed attempt at this earlier, thanks.
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ lib/i915/intel_memory_region.c | 12 ++++++------
+ lib/i915/intel_memory_region.h | 12 ++++++------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+index 72e337af3..3de405493 100644
+--- a/lib/i915/intel_memory_region.c
++++ b/lib/i915/intel_memory_region.c
+@@ -309,7 +309,7 @@ char *memregion_dynamic_subtest_name(struct igt_collection *set)
+  *
+  * Outputs memory regions and their sizes.
+  */
+-void intel_dump_gpu_meminfo(struct drm_i915_query_memory_regions *info)
++void intel_dump_gpu_meminfo(const struct drm_i915_query_memory_regions *info)
+ {
+ 	int i;
+ 
+@@ -336,7 +336,7 @@ void intel_dump_gpu_meminfo(struct drm_i915_query_memory_regions *info)
+  *
+  * Returns: number of regions for type @memory_class
+  */
+-uint32_t gpu_meminfo_region_count(struct drm_i915_query_memory_regions *info,
++uint32_t gpu_meminfo_region_count(const struct drm_i915_query_memory_regions *info,
+ 				  uint16_t memory_class)
+ {
+ 	uint32_t num = 0;
+@@ -359,7 +359,7 @@ uint32_t gpu_meminfo_region_count(struct drm_i915_query_memory_regions *info,
+  * Returns: total size of all regions which are type @memory_class, -1 when the
+  * size of at least one region is unknown
+  */
+-uint64_t gpu_meminfo_region_total_size(struct drm_i915_query_memory_regions *info,
++uint64_t gpu_meminfo_region_total_size(const struct drm_i915_query_memory_regions *info,
+ 				       uint16_t memory_class)
+ {
+ 	uint64_t total = 0;
+@@ -386,7 +386,7 @@ uint64_t gpu_meminfo_region_total_size(struct drm_i915_query_memory_regions *inf
+  * Returns: available size of all regions which are type @memory_class, -1 when
+  * the size of at least one region cannot be estimated
+  */
+-uint64_t gpu_meminfo_region_total_available(struct drm_i915_query_memory_regions *info,
++uint64_t gpu_meminfo_region_total_available(const struct drm_i915_query_memory_regions *info,
+ 					    uint16_t memory_class)
+ {
+ 	uint64_t avail = 0;
+@@ -414,7 +414,7 @@ uint64_t gpu_meminfo_region_total_available(struct drm_i915_query_memory_regions
+  * Returns: available size of @memory_instance which type is @memory_class, -1
+  * when the size is unknown
+  */
+-uint64_t gpu_meminfo_region_size(struct drm_i915_query_memory_regions *info,
++uint64_t gpu_meminfo_region_size(const struct drm_i915_query_memory_regions *info,
+ 				 uint16_t memory_class,
+ 				 uint16_t memory_instance)
+ {
+@@ -439,7 +439,7 @@ uint64_t gpu_meminfo_region_size(struct drm_i915_query_memory_regions *info,
+  * Returns: available size of @memory_instance region which type is
+  * @memory_class, -1 when the size cannot be estimated
+  */
+-uint64_t gpu_meminfo_region_available(struct drm_i915_query_memory_regions *info,
++uint64_t gpu_meminfo_region_available(const struct drm_i915_query_memory_regions *info,
+ 				      uint16_t memory_class,
+ 				      uint16_t memory_instance)
+ {
+diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
+index 8cd18ea0e..70b74944b 100644
+--- a/lib/i915/intel_memory_region.h
++++ b/lib/i915/intel_memory_region.h
+@@ -113,19 +113,19 @@ __get_memory_region_set(struct drm_i915_query_memory_regions *regions,
+ 
+ char *memregion_dynamic_subtest_name(struct igt_collection *set);
+ 
+-void intel_dump_gpu_meminfo(struct drm_i915_query_memory_regions *info);
++void intel_dump_gpu_meminfo(const struct drm_i915_query_memory_regions *info);
+ 
+-uint32_t gpu_meminfo_region_count(struct drm_i915_query_memory_regions *info,
++uint32_t gpu_meminfo_region_count(const struct drm_i915_query_memory_regions *info,
+ 				  uint16_t region_class);
+-uint64_t gpu_meminfo_region_total_size(struct drm_i915_query_memory_regions *info,
++uint64_t gpu_meminfo_region_total_size(const struct drm_i915_query_memory_regions *info,
+ 				       uint16_t region_class);
+-uint64_t gpu_meminfo_region_total_available(struct drm_i915_query_memory_regions *info,
++uint64_t gpu_meminfo_region_total_available(const struct drm_i915_query_memory_regions *info,
+ 					    uint16_t region_type);
+ 
+-uint64_t gpu_meminfo_region_size(struct drm_i915_query_memory_regions *info,
++uint64_t gpu_meminfo_region_size(const struct drm_i915_query_memory_regions *info,
+ 				 uint16_t memory_class,
+ 				 uint16_t memory_instance);
+-uint64_t gpu_meminfo_region_available(struct drm_i915_query_memory_regions *info,
++uint64_t gpu_meminfo_region_available(const struct drm_i915_query_memory_regions *info,
+ 				      uint16_t memory_class,
+ 				      uint16_t memory_instance);
+ 
+-- 
+2.25.1
