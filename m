@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com
- [IPv6:2a00:1450:4864:20::435])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D36ED6E40D
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Aug 2021 14:33:05 +0000 (UTC)
-Received: by mail-wr1-x435.google.com with SMTP id v4so1513064wro.12
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Aug 2021 07:33:05 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Thu, 12 Aug 2021 17:33:00 +0300
-Message-Id: <20210812143300.14975-1-juhapekka.heikkila@gmail.com>
+Content-Type: multipart/alternative;
+ boundary="===============6848896282840015309=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: separate hw and sw
- runs on tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 12 Aug 2021 18:09:24 -0000
+Message-ID: <162879176405.21763.7733781309205096458@emeril.freedesktop.org>
+References: <20210812143300.14975-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20210812143300.14975-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fcursor=5Fcrc=3A_separate_hw_and_sw_runs_on_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,522 +16,256 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On some hw versions it seems setting cursor plane on may get delayed.
-Mitigate this away from test by separating cursor hw and sw runs so
-that during test cursor will be switched on only once and kept on until
-it is no more needed.
+--===============6848896282840015309==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-While at it did some simple cleanup.
+== Series Details ==
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/kms_cursor_crc.c | 372 ++++++++++++++++++++++++++---------------
- 1 file changed, 234 insertions(+), 138 deletions(-)
+Series: tests/kms_cursor_crc: separate hw and sw runs on tests
+URL   : https://patchwork.freedesktop.org/series/93642/
+State : success
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index a9bc3a745..98227d041 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -49,7 +49,7 @@ IGT_TEST_DESCRIPTION(
- typedef struct {
- 	int drm_fd;
- 	igt_display_t display;
--	struct igt_fb primary_fb[2];
-+	struct igt_fb primary_fb[3];
- 	struct igt_fb fb;
- 	igt_output_t *output;
- 	enum pipe pipe;
-@@ -71,7 +71,8 @@ typedef struct {
- #define TEST_SUSPEND (1<<1)
- 
- #define HWCURSORBUFFER 0
--#define SWCOMPARISONBUFFER 1
-+#define SWCOMPARISONBUFFER1 1
-+#define SWCOMPARISONBUFFER2 2
- 
- static void draw_cursor(cairo_t *cr, int x, int y, int cw, int ch, double a)
- {
-@@ -156,77 +157,83 @@ static void restore_image(data_t *data, uint32_t buffer)
- 	igt_put_cairo_ctx(cr);
- }
- 
--static void do_single_test(data_t *data, int x, int y)
-+static void do_single_test(data_t *data, int x, int y, bool hw_test,
-+			   igt_crc_t *hwcrc)
- {
- 	igt_display_t *display = &data->display;
- 	igt_pipe_crc_t *pipe_crc = data->pipe_crc;
--	igt_crc_t crc, ref_crc;
-+	igt_crc_t crc;
- 	cairo_t *cr;
--	int ret = 0;
-+	int ret = 0, swbufidx;
- 
- 	igt_print_activity();
- 
--	/* Hardware test */
--	igt_plane_set_position(data->cursor, x, y);
--	cursor_enable(data);
-+	if (hw_test) {
-+		/* Hardware test */
-+		igt_plane_set_position(data->cursor, x, y);
- 
--	if (chv_cursor_broken(data, x) && cursor_visible(data, x, y)) {
--		ret = igt_display_try_commit2(display, COMMIT_LEGACY);
--		igt_assert_eq(ret, -EINVAL);
--		igt_plane_set_position(data->cursor, 0, y);
--		return;
--	}
-+		if (chv_cursor_broken(data, x) && cursor_visible(data, x, y)) {
-+			ret = igt_display_try_commit2(display, COMMIT_LEGACY);
-+			igt_assert_eq(ret, -EINVAL);
-+			igt_plane_set_position(data->cursor, 0, y);
-+			return;
-+		}
- 
--	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
--	igt_display_commit(display);
-+		igt_display_commit(display);
- 
--	/* Extra vblank wait is because nonblocking cursor ioctl */
--	igt_wait_for_vblank(data->drm_fd,
--			    display->pipes[data->pipe].crtc_offset);
-+		/* Extra vblank wait is because nonblocking cursor ioctl */
-+		igt_wait_for_vblank(data->drm_fd,
-+				display->pipes[data->pipe].crtc_offset);
- 
--	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
--	restore_image(data, SWCOMPARISONBUFFER);
-+		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, hwcrc);
- 
--	if (data->flags & (TEST_DPMS | TEST_SUSPEND)) {
--		igt_crc_t crc_after;
--		/*
--		 * stop/start crc to avoid dmesg notifications about userspace
--		 * reading too slow.
--		 */
--		igt_pipe_crc_stop(pipe_crc);
--
--		if (data->flags & TEST_DPMS) {
--			igt_debug("dpms off/on cycle\n");
--			kmstest_set_connector_dpms(data->drm_fd,
--						   data->output->config.connector,
--						   DRM_MODE_DPMS_OFF);
--			kmstest_set_connector_dpms(data->drm_fd,
--						   data->output->config.connector,
--						   DRM_MODE_DPMS_ON);
-+		if (data->flags & (TEST_DPMS | TEST_SUSPEND)) {
-+			igt_crc_t crc_after;
-+			/*
-+			* stop/start crc to avoid dmesg notifications about userspace
-+			* reading too slow.
-+			*/
-+			igt_pipe_crc_stop(pipe_crc);
-+
-+			if (data->flags & TEST_DPMS) {
-+				igt_debug("dpms off/on cycle\n");
-+				kmstest_set_connector_dpms(data->drm_fd,
-+							data->output->config.connector,
-+							DRM_MODE_DPMS_OFF);
-+				kmstest_set_connector_dpms(data->drm_fd,
-+							data->output->config.connector,
-+							DRM_MODE_DPMS_ON);
-+			}
-+
-+			if (data->flags & TEST_SUSPEND)
-+				igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-+							SUSPEND_TEST_NONE);
-+
-+			igt_pipe_crc_start(pipe_crc);
-+			igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc_after);
-+			igt_assert_crc_equal(hwcrc, &crc_after);
- 		}
-+	} else {
-+		/* Now render the same in software and collect crc */
-+		swbufidx = (data->primary->drm_plane->fb_id ==
-+			    data->primary_fb[SWCOMPARISONBUFFER1].fb_id) ? 1 : 0;
- 
--		if (data->flags & TEST_SUSPEND)
--			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
--						      SUSPEND_TEST_NONE);
--
--		igt_pipe_crc_start(pipe_crc);
--		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc_after);
--		igt_assert_crc_equal(&crc, &crc_after);
--	}
-+		restore_image(data, SWCOMPARISONBUFFER1 + swbufidx);
-+		cr = igt_get_cairo_ctx(data->drm_fd,
-+				       &data->primary_fb[SWCOMPARISONBUFFER1 + swbufidx]);
- 
--	/* Now render the same in software and collect crc */
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
--	draw_cursor(cr, x, y, data->curw, data->curh, 1.0);
--	igt_put_cairo_ctx(cr);
--	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
--	cursor_disable(data);
--	igt_display_commit(display);
-+		draw_cursor(cr, x, y, data->curw, data->curh, 1.0);
-+		igt_put_cairo_ctx(cr);
-+		igt_plane_set_fb(data->primary,
-+				 &data->primary_fb[SWCOMPARISONBUFFER1 + swbufidx]);
- 
--	igt_wait_for_vblank(data->drm_fd,
--			display->pipes[data->pipe].crtc_offset);
-+		igt_display_commit(display);
-+		igt_wait_for_vblank(data->drm_fd,
-+				display->pipes[data->pipe].crtc_offset);
- 
--	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
--	igt_assert_crc_equal(&crc, &ref_crc);
-+		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
-+		igt_assert_crc_equal(&crc, hwcrc);
-+	}
- }
- 
- static void do_fail_test(data_t *data, int x, int y, int expect)
-@@ -248,70 +255,112 @@ static void do_fail_test(data_t *data, int x, int y, int expect)
- 	igt_assert_eq(ret, expect);
- }
- 
--static void do_test(data_t *data,
--		    int left, int right, int top, int bottom)
-+static void do_test(data_t *data, const int coords[4], igt_crc_t crc[4],
-+		    bool hwtest)
- {
--	do_single_test(data, left, top);
--	do_single_test(data, right, top);
--	do_single_test(data, right, bottom);
--	do_single_test(data, left, bottom);
-+	do_single_test(data, coords[0], coords[2], hwtest, &crc[0]);
-+	do_single_test(data, coords[1], coords[2], hwtest, &crc[1]);
-+	do_single_test(data, coords[1], coords[3], hwtest, &crc[2]);
-+	do_single_test(data, coords[0], coords[3], hwtest, &crc[3]);
- }
- 
- static void test_crc_onscreen(data_t *data)
- {
--	int left = data->left;
--	int right = data->right;
--	int top = data->top;
--	int bottom = data->bottom;
--	int cursor_w = data->curw;
--	int cursor_h = data->curh;
--
--	/* fully inside  */
--	do_test(data, left, right, top, bottom);
--
--	/* 2 pixels inside */
--	do_test(data, left - (cursor_w-2), right + (cursor_w-2), top               , bottom               );
--	do_test(data, left               , right               , top - (cursor_h-2), bottom + (cursor_h-2));
--	do_test(data, left - (cursor_w-2), right + (cursor_w-2), top - (cursor_h-2), bottom + (cursor_h-2));
--
--	/* 1 pixel inside */
--	do_test(data, left - (cursor_w-1), right + (cursor_w-1), top               , bottom               );
--	do_test(data, left               , right               , top - (cursor_h-1), bottom + (cursor_h-1));
--	do_test(data, left - (cursor_w-1), right + (cursor_w-1), top - (cursor_h-1), bottom + (cursor_h-1));
-+	const int left = data->left;
-+	const int right = data->right;
-+	const int top = data->top;
-+	const int bottom = data->bottom;
-+	const int cursor_w = data->curw;
-+	const int cursor_h = data->curh;
-+
-+	struct {
-+		const int coords[4];
-+		igt_crc_t crc[4];
-+	} tests[] = {
-+		/* fully inside  */
-+		{{left, right, top, bottom}},
-+		/* 2 pixels inside */
-+		{{left - (cursor_w - 2), right + (cursor_w - 2), top, bottom}},
-+		{{left, right, top - (cursor_h - 2), bottom + (cursor_h - 2)}},
-+		{{left - (cursor_w - 2), right + (cursor_w - 2),
-+		  top - (cursor_h - 2), bottom + (cursor_h - 2)}},
-+		/* 1 pixel inside */
-+		{{left - (cursor_w - 1), right + (cursor_w - 1), top, bottom}},
-+		{{left, right, top - (cursor_h - 1), bottom + (cursor_h - 1)}},
-+		{{left - (cursor_w - 1), right + (cursor_w - 1),
-+		  top - (cursor_h - 1), bottom + (cursor_h - 1)}},
-+	};
-+
-+	/* HW test */
-+	cursor_enable(data);
-+	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
-+	for (int i = 0; i < ARRAY_SIZE(tests); i++)
-+		do_test(data, tests[i].coords, tests[i].crc, true);
-+
-+	/* SW test */
-+	cursor_disable(data);
-+	for (int i = 0; i < ARRAY_SIZE(tests); i++)
-+		do_test(data, tests[i].coords, tests[i].crc, false);
- }
- 
- static void test_crc_offscreen(data_t *data)
- {
--	int left = data->left;
--	int right = data->right;
--	int top = data->top;
--	int bottom = data->bottom;
--	int cursor_w = data->curw;
--	int cursor_h = data->curh;
--
--	/* fully outside */
--	do_test(data, left - (cursor_w), right + (cursor_w), top             , bottom             );
--	do_test(data, left             , right             , top - (cursor_h), bottom + (cursor_h));
--	do_test(data, left - (cursor_w), right + (cursor_w), top - (cursor_h), bottom + (cursor_h));
--
--	/* fully outside by 1 extra pixels */
--	do_test(data, left - (cursor_w+1), right + (cursor_w+1), top               , bottom               );
--	do_test(data, left               , right               , top - (cursor_h+1), bottom + (cursor_h+1));
--	do_test(data, left - (cursor_w+1), right + (cursor_w+1), top - (cursor_h+1), bottom + (cursor_h+1));
--
--	/* fully outside by 2 extra pixels */
--	do_test(data, left - (cursor_w+2), right + (cursor_w+2), top               , bottom               );
--	do_test(data, left               , right               , top - (cursor_h+2), bottom + (cursor_h+2));
--	do_test(data, left - (cursor_w+2), right + (cursor_w+2), top - (cursor_h+2), bottom + (cursor_h+2));
--
--	/* fully outside by a lot of extra pixels */
--	do_test(data, left - (cursor_w+512), right + (cursor_w+512), top                 , bottom                 );
--	do_test(data, left                 , right                 , top - (cursor_h+512), bottom + (cursor_h+512));
--	do_test(data, left - (cursor_w+512), right + (cursor_w+512), top - (cursor_h+512), bottom + (cursor_h+512));
--
--	/* go nuts */
--	do_test(data, INT_MIN, INT_MAX - cursor_w, INT_MIN, INT_MAX - cursor_h);
--	do_test(data, SHRT_MIN, SHRT_MAX, SHRT_MIN, SHRT_MAX);
-+	const int left = data->left;
-+	const int right = data->right;
-+	const int top = data->top;
-+	const int bottom = data->bottom;
-+	const int cursor_w = data->curw;
-+	const int cursor_h = data->curh;
-+
-+	struct {
-+		const int coords[4];
-+		igt_crc_t crc[4];
-+	} tests[] = {
-+		/* fully outside */
-+		{{left - (cursor_w), right + (cursor_w), top, bottom}},
-+		{{left, right, top - (cursor_h), bottom + (cursor_h)}},
-+		{{left - (cursor_w), right + (cursor_w), top - (cursor_h),
-+		  bottom + (cursor_h)}},
-+		/* fully outside by 1 extra pixels */
-+		{{left - (cursor_w + 1), right + (cursor_w + 1), top, bottom}},
-+		{{left, right, top - (cursor_h + 1), bottom + (cursor_h + 1)}},
-+		{{left - (cursor_w + 1), right + (cursor_w + 1),
-+		  top - (cursor_h + 1), bottom + (cursor_h + 1)}},
-+		/* fully outside by 2 extra pixels */
-+		{{left - (cursor_w + 2), right + (cursor_w + 2), top, bottom}},
-+		{{left, right, top - (cursor_h + 2), bottom + (cursor_h + 2)}},
-+		{{left - (cursor_w + 2), right + (cursor_w + 2),
-+		  top - (cursor_h + 2), bottom + (cursor_h + 2)}},
-+		/* fully outside by a lot of extra pixels */
-+		{{left - (cursor_w + 512), right + (cursor_w + 512), top, bottom}},
-+		{{left, right, top - (cursor_h + 512), bottom + (cursor_h + 512)}},
-+		{{left - (cursor_w + 512), right + (cursor_w + 512),
-+		  top - (cursor_h + 512), bottom + (cursor_h + 512)}},
-+		/* go nuts */
-+		{{INT_MIN, INT_MAX - cursor_w, INT_MIN, INT_MAX - cursor_h}},
-+		{{SHRT_MIN, SHRT_MAX, SHRT_MIN, SHRT_MAX}},
-+	};
-+
-+	/* HW test */
-+	cursor_enable(data);
-+	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
-+	for (int i = 0; i < ARRAY_SIZE(tests); i++)
-+		do_test(data, tests[i].coords, tests[i].crc, true);
-+
-+	/* SW test */
-+	cursor_disable(data);
-+	/*
-+	 * all these crc's should be the same, actually render only first image
-+	 * to check crc and then compare rest of crc are matching
-+	 */
-+	do_test(data, tests[0].coords, tests[0].crc, false);
-+
-+	for (int i = 1; i < ARRAY_SIZE(tests); i++) {
-+		igt_assert_crc_equal(&tests[0].crc[0], &tests[i].crc[0]);
-+		igt_assert_crc_equal(&tests[0].crc[0], &tests[i].crc[1]);
-+		igt_assert_crc_equal(&tests[0].crc[0], &tests[i].crc[2]);
-+		igt_assert_crc_equal(&tests[0].crc[0], &tests[i].crc[3]);
-+	}	
- 
- 	/* Make sure we get -ERANGE on integer overflow */
- 	do_fail_test(data, INT_MAX - cursor_w + 1, INT_MAX - cursor_h + 1, -ERANGE);
-@@ -320,29 +369,75 @@ static void test_crc_offscreen(data_t *data)
- static void test_crc_sliding(data_t *data)
- {
- 	int i;
-+	igt_crc_t crc[16 * 3];
- 
- 	/* Make sure cursor moves smoothly and pixel-by-pixel, and that there are
- 	 * no alignment issues. Horizontal, vertical and diagonal test.
- 	 */
--	for (i = 0; i < 16; i++) {
--		do_single_test(data, i, 0);
--		do_single_test(data, 0, i);
--		do_single_test(data, i, i);
-+
-+	/* HW test */
-+	cursor_enable(data);
-+	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
-+
-+	for (i = 0; i < ARRAY_SIZE(crc); i++) {
-+		switch (i % 3) {
-+		case 0:
-+			do_single_test(data, i, 0, true, &crc[i]);
-+			break;
-+		case 1:
-+			do_single_test(data, 0, i, true, &crc[i]);
-+			break;
-+		case 2:
-+			do_single_test(data, i, i, true, &crc[i]);
-+			break;
-+		default:
-+			igt_assert(false);
-+		}
-+	}
-+
-+	/* SW test */
-+	cursor_disable(data);
-+	for (i = 0; i < ARRAY_SIZE(crc); i++) {
-+		switch (i % 3) {
-+		case 0:
-+			do_single_test(data, i, 0, false, &crc[i]);
-+			break;
-+		case 1:
-+			do_single_test(data, 0, i, false, &crc[i]);
-+			break;
-+		case 2:
-+			do_single_test(data, i, i, false, &crc[i]);
-+			break;
-+		default:
-+			igt_assert(false);
-+		}
- 	}
- }
- 
- static void test_crc_random(data_t *data)
- {
--	int i, max;
-+	igt_crc_t crc[50];
-+	int i, max, x[ARRAY_SIZE(crc)], y[ARRAY_SIZE(crc)];
- 
--	max = data->flags & (TEST_DPMS | TEST_SUSPEND) ? 2 : 50;
-+	max = data->flags & (TEST_DPMS | TEST_SUSPEND) ? 2 : ARRAY_SIZE(crc);
- 
- 	/* Random cursor placement */
-+
-+	/* HW test */
-+	cursor_enable(data);
-+	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
-+
- 	for (i = 0; i < max; i++) {
--		int x = rand() % (data->screenw + data->curw * 2) - data->curw;
--		int y = rand() % (data->screenh + data->curh * 2) - data->curh;
--		do_single_test(data, x, y);
-+		x[i] = rand() % (data->screenw + data->curw * 2) - data->curw;
-+		y[i] = rand() % (data->screenh + data->curh * 2) - data->curh;
-+		do_single_test(data, x[i], y[i], true, &crc[i]);
- 	}
-+
-+	/* SW test */
-+	cursor_disable(data);
-+	for (i = 0; i < max; i++)
-+		do_single_test(data, x[i], y[i], false, &crc[i]);
-+
- }
- 
- static void cleanup_crtc(data_t *data)
-@@ -362,7 +457,8 @@ static void cleanup_crtc(data_t *data)
- 	igt_display_commit(display);
- 
- 	igt_remove_fb(data->drm_fd, &data->primary_fb[HWCURSORBUFFER]);
--	igt_remove_fb(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
-+	igt_remove_fb(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER1]);
-+	igt_remove_fb(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER2]);
- 
- 	igt_display_reset(display);
- }
-@@ -379,22 +475,22 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
- 
- 	/* create and set the primary plane fbs */
- 	mode = igt_output_get_mode(output);
--	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
--			    DRM_FORMAT_XRGB8888,
--			    DRM_FORMAT_MOD_NONE,
--			    0.0, 0.0, 0.0,
--			    &data->primary_fb[HWCURSORBUFFER]);
--
--	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
--			    DRM_FORMAT_XRGB8888,
--			    DRM_FORMAT_MOD_NONE,
--			    0.0, 0.0, 0.0,
--			    &data->primary_fb[SWCOMPARISONBUFFER]);
-+	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
-+		      &data->primary_fb[HWCURSORBUFFER]);
-+
-+	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
-+		      &data->primary_fb[SWCOMPARISONBUFFER1]);
-+
-+	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
-+		      &data->primary_fb[SWCOMPARISONBUFFER2]);
- 
- 	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	data->cursor = igt_output_get_plane_type(output, DRM_PLANE_TYPE_CURSOR);
- 
--	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
-+	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER1]);
- 
- 	igt_display_commit(display);
- 
-@@ -427,7 +523,7 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
- 		cairo_destroy(cr);
- 
- 		/* Set HW cursor buffer in place */
--			restore_image(data, HWCURSORBUFFER);
-+		restore_image(data, HWCURSORBUFFER);
- 	} else
- 		data->surface = NULL;
- 
-@@ -469,10 +565,10 @@ static void test_cursor_alpha(data_t *data, double a)
- 	igt_remove_fb(data->drm_fd, &data->fb);
- 
- 	/* Software Test - render cursor in software, drawn it directly on PF */
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
-+	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER1]);
- 	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
- 	igt_put_cairo_ctx(cr);
--	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
-+	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER1]);
- 	igt_display_commit(display);
- 	igt_wait_for_vblank(data->drm_fd,
- 			display->pipes[data->pipe].crtc_offset);
-@@ -610,7 +706,7 @@ static void test_cursor_size(data_t *data)
- 		igt_display_commit(display);
- 
- 		/* Now render the same in software and collect crc */
--		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
-+		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER1]);
- 
- 		/* remove previous cursor sw image */
- 		if (prevsize > 0)
-@@ -619,7 +715,7 @@ static void test_cursor_size(data_t *data)
- 
- 		igt_paint_color_alpha(cr, 0, 0, size, size, 1.0, 1.0, 1.0, 1.0);
- 		igt_put_cairo_ctx(cr);
--		igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
-+		igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER1]);
- 		igt_display_commit(display);
- 		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
- 
--- 
-2.28.0
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10478 -> IGTPW_6119
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6119 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271]) +26 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-tgl-1115g4:      [PASS][2] -> [FAIL][3] ([i915#1888])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10478/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#2190])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-kbl-soraka:      NOTRUN -> [FAIL][5] ([i915#579])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-kbl-soraka/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][6] ([i915#1886] / [i915#2291])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][8] ([fdo#109271] / [i915#533])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][9] ([fdo#109271]) +48 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_parallel@engines@userptr:
+    - fi-pnv-d510:        [INCOMPLETE][10] ([i915#299]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10478/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-tgl-1115g4:      [FAIL][12] ([i915#1888]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10478/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - fi-rkl-guc:         [DMESG-WARN][14] ([i915#3958]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10478/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
+  [i915#299]: https://gitlab.freedesktop.org/drm/intel/issues/299
+  [i915#3958]: https://gitlab.freedesktop.org/drm/intel/issues/3958
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+  [i915#579]: https://gitlab.freedesktop.org/drm/intel/issues/579
+
+
+Participating hosts (38 -> 35)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (4): fi-bdw-samus fi-bsw-cyan bat-jsl-1 fi-hsw-4200u 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6174 -> IGTPW_6119
+
+  CI-20190529: 20190529
+  CI_DRM_10478: d65ef4634e5c795a6a4df1d198992c70e9692fb3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6119: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/index.html
+  IGT_6174: 0de07aea208ea848066f4f6af04c13e25d23d9a7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/index.html
+
+--===============6848896282840015309==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_cursor_crc: separate hw and sw runs on tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93642/">https://patchwork.freedesktop.org/series/93642/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10478 -&gt; IGTPW_6119</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6119 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +26 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s0:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10478/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-kbl-soraka/igt@i915_pm_rpm@basic-rte.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/579">i915#579</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +48 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_parallel@engines@userptr:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10478/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/299">i915#299</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10478/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10478/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3958">i915#3958</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (38 -&gt; 35)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (4): fi-bdw-samus fi-bsw-cyan bat-jsl-1 fi-hsw-4200u </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6174 -&gt; IGTPW_6119</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10478: d65ef4634e5c795a6a4df1d198992c70e9692fb3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6119: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6119/index.html<br />
+  IGT_6174: 0de07aea208ea848066f4f6af04c13e25d23d9a7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6848896282840015309==--
