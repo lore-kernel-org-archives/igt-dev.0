@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B4DC6E544
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Aug 2021 07:37:56 +0000 (UTC)
-From: Mika Kahola <mika.kahola@intel.com>
-Date: Fri, 13 Aug 2021 10:38:58 +0300
-Message-Id: <20210813073858.1360821-1-mika.kahola@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 816F36E54C
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Aug 2021 07:47:16 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Fri, 13 Aug 2021 09:46:54 +0200
+Message-Id: <20210813074703.18778-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_multiple: Limit plane
- testing to 3 planes by default
+Subject: [igt-dev] [PATCH i-g-t 0/9] Adopt to use allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,91 +19,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, Mika Kahola <mika.kahola@intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-To speed up test execution, let's limit planes to be tested to 3
-by default. This reduces the test execution time especially in case
-of platforms that offer higher number of overlay planes.
+This is second series which should decrease coverage gap on 
+gens without relocations support.
 
-For example, the subtest atomic-pipe-A-tiling-x the execution times
-on ADL-P
+In gem_exec_fence I've left three subtests intact - they are 
+not trivial to rewrite so they will be send in future series.
+I decided to send not fully rewritten test because some subtests
+are part of BAT run and this should make life easier to enable
+DG1 on CI.
 
-With 6 planes:
-Testing connector eDP-1 using pipe A with 6 planes for 1 iteration with seed 1
-Subtest atomic-pipe-A-tiling-x: SUCCESS (2,168s)
+Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-With 3 planes:
-Testing connector eDP-1 using pipe A with 3 planes for 1 iteration with seed 1
-Subtest atomic-pipe-A-tiling-x: SUCCESS (1,878s)
+Andrzej Turko (2):
+  lib/intel_allocator: Fix argument names in declarations
+  tests/gem_exec_capture: Support gens without relocations
 
-The downside of this is of course the reduced test coverage as all
-available planes are not tested by default simultaneusly.
+Zbigniew Kempczyński (7):
+  tests/gem_ctx_persistence: Adopt to use allocator
+  tests/gem_exec_balancer: Adopt to use allocator
+  tests/gem_exec_big: Skip relocation part
+  tests/gem_exec_fence: Adopt to use allocator
+  tests/gem_exec_flush: Adopt to no-reloc
+  tests/gem_exec_schedule: Adopt to use allocator
+  HAX: remove gttfill for tgl ci
 
-For VLK-11391
+ lib/intel_allocator.h                 |   8 +-
+ tests/i915/gem_ctx_persistence.c      | 120 +++++--
+ tests/i915/gem_exec_balancer.c        | 132 ++++++--
+ tests/i915/gem_exec_big.c             |  21 +-
+ tests/i915/gem_exec_capture.c         |  98 ++++--
+ tests/i915/gem_exec_fence.c           | 240 +++++++++----
+ tests/i915/gem_exec_flush.c           |  24 +-
+ tests/i915/gem_exec_schedule.c        | 463 ++++++++++++++++++++------
+ tests/intel-ci/fast-feedback.testlist |   1 -
+ 9 files changed, 842 insertions(+), 265 deletions(-)
 
-Signed-off-by: Mika Kahola <mika.kahola@intel.com>
----
- tests/kms_plane_multiple.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index bfeb8c07b..45cabb500 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -35,6 +35,7 @@ IGT_TEST_DESCRIPTION("Test atomic mode setting with multiple planes.");
- #define SIZE_PLANE      256
- #define SIZE_CURSOR     128
- #define LOOP_FOREVER     -1
-+#define DEFAULT_N_PLANES  3
- 
- typedef struct {
- 	float red;
-@@ -56,8 +57,10 @@ struct {
- 	int iterations;
- 	unsigned int seed;
- 	bool user_seed;
-+	bool all_planes;
- } opt = {
- 	.iterations = 1,
-+	.all_planes = false,
- };
- 
- /*
-@@ -361,7 +364,8 @@ static void
- test_plane_position(data_t *data, enum pipe pipe, uint64_t tiling)
- {
- 	igt_output_t *output;
--	int n_planes = data->display.pipes[pipe].n_planes;
-+	int n_planes = opt.all_planes ?
-+			data->display.pipes[pipe].n_planes : DEFAULT_N_PLANES;
- 
- 	output = igt_get_single_output_for_pipe(&data->display, pipe);
- 	igt_require(output);
-@@ -401,6 +405,9 @@ static data_t data;
- static int opt_handler(int option, int option_index, void *input)
- {
- 	switch (option) {
-+	case 'a':
-+		opt.all_planes = true;
-+		break;
- 	case 'i':
- 		opt.iterations = strtol(optarg, NULL, 0);
- 
-@@ -423,11 +430,13 @@ static int opt_handler(int option, int option_index, void *input)
- 
- const char *help_str =
- 	"  --iterations Number of iterations for test coverage. -1 loop forever, default 64 iterations\n"
--	"  --seed       Seed for random number generator\n";
-+	"  --seed       Seed for random number generator\n"
-+	"  --all-planes Test with all available planes";
- 
- struct option long_options[] = {
- 	{ "iterations", required_argument, NULL, 'i'},
- 	{ "seed",    required_argument, NULL, 's'},
-+	{ "all-planes", no_argument, NULL, 'a'},
- 	{ 0, 0, 0, 0 }
- };
- 
 -- 
-2.27.0
+2.26.0
