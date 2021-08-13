@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com
- [IPv6:2a00:1450:4864:20::434])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BEA4C6E5B9
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Aug 2021 10:48:14 +0000 (UTC)
-Received: by mail-wr1-x434.google.com with SMTP id k29so12655878wrd.7
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Aug 2021 03:48:14 -0700 (PDT)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78CCA6E5B9
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Aug 2021 10:54:10 +0000 (UTC)
 References: <20210813073858.1360821-1-mika.kahola@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <ad896c78-ab2f-5243-0679-7742342ff956@gmail.com>
-Date: Fri, 13 Aug 2021 13:48:06 +0300
-MIME-Version: 1.0
+From: Karthik B S <karthik.b.s@intel.com>
+Message-ID: <1278fcf3-2516-13ac-c374-799a45844dc4@intel.com>
+Date: Fri, 13 Aug 2021 16:23:55 +0530
 In-Reply-To: <20210813073858.1360821-1-mika.kahola@intel.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_multiple: Limit plane
  testing to 3 planes by default
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -23,44 +20,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Mika Kahola <mika.kahola@intel.com>, igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 13.8.2021 10.38, Mika Kahola wrote:
+On 8/13/2021 1:08 PM, Mika Kahola wrote:
 > To speed up test execution, let's limit planes to be tested to 3
 > by default. This reduces the test execution time especially in case
 > of platforms that offer higher number of overlay planes.
-> 
+>
 > For example, the subtest atomic-pipe-A-tiling-x the execution times
 > on ADL-P
-> 
+>
 > With 6 planes:
 > Testing connector eDP-1 using pipe A with 6 planes for 1 iteration with seed 1
 > Subtest atomic-pipe-A-tiling-x: SUCCESS (2,168s)
-> 
+>
 > With 3 planes:
 > Testing connector eDP-1 using pipe A with 3 planes for 1 iteration with seed 1
 > Subtest atomic-pipe-A-tiling-x: SUCCESS (1,878s)
-> 
+>
 > The downside of this is of course the reduced test coverage as all
 > available planes are not tested by default simultaneusly.
-> 
+>
 > For VLK-11391
-> 
+
+I think we can remove the VLK reference.
+
+With that, looks good to me.
+
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+
+>
 > Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-
-Look ok to me.
-
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-
 > ---
 >   tests/kms_plane_multiple.c | 13 +++++++++++--
 >   1 file changed, 11 insertions(+), 2 deletions(-)
-> 
+>
 > diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
 > index bfeb8c07b..45cabb500 100644
 > --- a/tests/kms_plane_multiple.c
@@ -119,4 +116,4 @@ Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 >   	{ 0, 0, 0, 0 }
 >   };
 >   
-> 
+
