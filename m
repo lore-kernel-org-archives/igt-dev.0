@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E689589826
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Aug 2021 05:37:14 +0000 (UTC)
-Date: Mon, 16 Aug 2021 07:37:09 +0200
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2189789AA2
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Aug 2021 05:43:02 +0000 (UTC)
+Date: Mon, 16 Aug 2021 07:42:56 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210816053709.GA6051@zkempczy-mobl2>
+Message-ID: <20210816054256.GB6051@zkempczy-mobl2>
 References: <20210813074703.18778-1-zbigniew.kempczynski@intel.com>
- <20210813074703.18778-3-zbigniew.kempczynski@intel.com>
- <87zgtlgjnp.wl-ashutosh.dixit@intel.com>
+ <20210813074703.18778-5-zbigniew.kempczynski@intel.com>
+ <87y295gf8v.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87zgtlgjnp.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/9] tests/gem_ctx_persistence: Adopt to
- use allocator
+In-Reply-To: <87y295gf8v.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 4/9] tests/gem_exec_big: Skip relocation
+ part
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,124 +25,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Andrzej Turko <andrzej.turko@linux.intel.com>, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Aug 13, 2021 at 01:43:38PM -0700, Dixit, Ashutosh wrote:
-> On Fri, 13 Aug 2021 00:46:56 -0700, Zbigniew Kempczyński wrote:
+On Fri, Aug 13, 2021 at 03:18:56PM -0700, Dixit, Ashutosh wrote:
+> On Fri, 13 Aug 2021 00:46:58 -0700, Zbigniew Kempczyński wrote:
 > >
+> > When running on platforms without relocation support, verification
+> > of their correctness should be skipped.  What remains is exercising
+> > submission of large batches.
+> 
+> Not sure if there's much point to this file in the absence of relocations
+> since all it would do is bind the batch buffer in the gtt but the first
+> instruction is already MI_BATCH_BUFFER_END. So the patch could possibly
+> just be:
+> 
+> 		igt_require(gem_has_relocations(i915));
+> 
+> as was in the earlier version of the patch.
+
+But we want to run this test, at least to try big batchbuffer. We skip
+playing with relocations but still imo test is valuable for no-reloc gens.
+
+--
+Zbigniew
+
+> 
+> > @@ -70,7 +71,7 @@ static void exec1(int fd, uint32_t handle, uint64_t reloc_ofs, unsigned flags, c
+> >	gem_reloc[0].presumed_offset = 0;
+> >
+> >	gem_exec[0].handle = handle;
+> > -	gem_exec[0].relocation_count = 1;
+> > +	gem_exec[0].relocation_count = has_relocs ? 1 : 0;
+> >	gem_exec[0].relocs_ptr = to_user_pointer(gem_reloc);
+> >	gem_exec[0].alignment = 0;
+> >	gem_exec[0].offset = 0;
+> > @@ -100,6 +101,9 @@ static void exec1(int fd, uint32_t handle, uint64_t reloc_ofs, unsigned flags, c
+> >	igt_warn_on(gem_reloc[0].presumed_offset == -1);
+> >	gem_set_domain(fd, gem_exec[0].handle, I915_GEM_DOMAIN_WC, 0);
+> >
+> > +	if (!has_relocs)
+> > +		return;
+> > +
+> 
+> I would move this 2 lines above, right after gem_execbuf(), so that there's
+> no confusion about verifying presumed_offset etc. in the absence of
+> relocations.
+> 
+> Otherwise this is:
 > 
 > Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> 
-> But please check and fix below.
-> 
-> > @@ -703,12 +739,16 @@ static void test_process(int i915)
-> >
-> >	igt_fork(child, 1) {
-> >		igt_spin_t *spin;
-> > +		uint64_t ahnd;
-> >
-> > +		intel_allocator_init();
-> >		i915 = gem_reopen_driver(i915);
-> >		gem_quiescent_gpu(i915);
-> >
-> >		gem_context_set_persistence(i915, 0, false);
-> > -		spin = igt_spin_new(i915, .flags = IGT_SPIN_FENCE_OUT);
-> > +		ahnd = get_reloc_ahnd(i915, 0);
-> > +		spin = igt_spin_new(i915, .ahnd = ahnd,
-> > +				    .flags = IGT_SPIN_FENCE_OUT);
-> >		sendfd(sv[0], spin->out_fence);
-> >
-> >		igt_list_del(&spin->link); /* prevent autocleanup */
-> 
-> Missing put_ahnd?
-> 
-> > @@ -747,12 +787,16 @@ static void test_userptr(int i915)
-> >
-> >	igt_fork(child, 1) {
-> >		igt_spin_t *spin;
-> > +		uint64_t ahnd;
-> >
-> > +		intel_allocator_init();
-> >		i915 = gem_reopen_driver(i915);
-> >		gem_quiescent_gpu(i915);
-> >
-> >		gem_context_set_persistence(i915, 0, false);
-> > -		spin = igt_spin_new(i915, .flags = IGT_SPIN_FENCE_OUT | IGT_SPIN_USERPTR);
-> > +		ahnd = get_reloc_ahnd(i915, 0);
-> > +		spin = igt_spin_new(i915, .ahnd = ahnd,
-> > +				    .flags = IGT_SPIN_FENCE_OUT | IGT_SPIN_USERPTR);
-> >		sendfd(sv[0], spin->out_fence);
-> >
-> >		igt_list_del(&spin->link); /* prevent autocleanup */
-> 
-> Missing put_ahnd?
-> 
-> > @@ -795,9 +839,12 @@ static void test_process_mixed(int pfd, const intel_ctx_cfg_t *cfg,
-> >		for (int persists = 0; persists <= 1; persists++) {
-> >			igt_spin_t *spin;
-> >			const intel_ctx_t *ctx;
-> > +			uint64_t ahnd;
-> >
-> > +			intel_allocator_init();
-> >			ctx = ctx_create_persistence(i915, cfg, persists);
-> > -			spin = igt_spin_new(i915, .ctx = ctx,
-> > +			ahnd = get_reloc_ahnd(i915, ctx->id);
-> > +			spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
-> >					    .engine = engine,
-> >					    .flags = IGT_SPIN_FENCE_OUT);
-> 
-> Missing put_ahnd?
-> 
-> >  static void test_processes(int i915)
-> > @@ -912,11 +963,15 @@ static void test_processes(int i915)
-> >		igt_fork(child, 1) {
-> >			igt_spin_t *spin;
-> >			int pid;
-> > +			uint64_t ahnd;
-> >
-> > +			intel_allocator_init();
-> >			i915 = gem_reopen_driver(i915);
-> >			gem_context_set_persistence(i915, 0, i);
-> >
-> > -			spin = igt_spin_new(i915, .flags = IGT_SPIN_FENCE_OUT);
-> > +			ahnd = get_reloc_ahnd(i915, 0);
-> > +			spin = igt_spin_new(i915, .ahnd = ahnd,
-> > +					    .flags = IGT_SPIN_FENCE_OUT);
-> >			/* prevent autocleanup */
-> >			igt_list_del(&spin->link);
-> 
-> Missing put_ahnd?
-> 
-> > @@ -1256,9 +1316,21 @@ igt_main
-> >
-> >		igt_subtest("many-contexts")
-> >			many_contexts(i915, &ctx->cfg);
-> > +	}
-> > +
-> > +	igt_subtest_group {
-> > +		igt_fixture {
-> > +			gem_require_contexts(i915);
-> > +			intel_allocator_multiprocess_start();
-> > +		}
-> >
-> >		igt_subtest("smoketest")
-> >			smoketest(i915, &ctx->cfg);
-> > +
-> > +		igt_fixture {
-> > +			intel_allocator_multiprocess_stop();
-> > +		}
-> > +
-> 
-> Also, why are we not putting intel_allocator_multiprocess_start/stop around
-> the multiprocess tests above? Is that because they all do "igt_fork(child, 1)"?
-> At least test_processes() seems to be creating multiple child processes. Thanks.
 
-No, if you will call intel_allocator_init() in child it will "detach"
-from IPC, it will prepare allocator structures locally and no allocator
-thread is necessary.  You can use this if you have creating new contexts
-in child, they are independent so we can skip using IPC here.
-gem_reopen_driver() is also such case because we have individual fd to i915.
+I missed your comment and I've already merged this test. You're absolutely
+right and this should be after return. I'm going to move this in next series.
 
 --
 Zbigniew
