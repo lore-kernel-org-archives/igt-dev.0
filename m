@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E07A89AA2
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Aug 2021 05:44:31 +0000 (UTC)
-Date: Mon, 16 Aug 2021 07:44:25 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210816054425.GC6051@zkempczy-mobl2>
-References: <20210813074703.18778-1-zbigniew.kempczynski@intel.com>
- <20210813074703.18778-6-zbigniew.kempczynski@intel.com>
- <87tujshkzr.wl-ashutosh.dixit@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA39C8969E
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Aug 2021 11:56:39 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Mon, 16 Aug 2021 13:56:22 +0200
+Message-Id: <20210816115626.22759-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20210816115626.22759-1-zbigniew.kempczynski@intel.com>
+References: <20210816115626.22759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87tujshkzr.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 5/9] tests/gem_exec_capture: Support
- gens without relocations
+Subject: [igt-dev] [PATCH i-g-t 1/5] tests/gem_exec_capture: Remove
+ unnecessary multiprocess stop() call
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,58 +21,35 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Andrzej Turko <andrzej.turko@linux.intel.com>, Petri Latvala <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Aug 13, 2021 at 06:29:28PM -0700, Dixit, Ashutosh wrote:
-> On Fri, 13 Aug 2021 00:46:59 -0700, Zbigniew Kempczyński wrote:
-> >
-> > @@ -512,10 +545,13 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
-> >		.rsvd1 = ctx->id,
-> >	};
-> >	int64_t timeout = NSEC_PER_SEC; /* 1s, feeling generous, blame debug */
-> > -	uint64_t ram, gtt, size = 4 << 20;
-> > +	uint64_t ram, gtt, ahnd, size = 4 << 20;
-> >	unsigned long count;
-> >	int link[2], dummy;
-> >
-> > +	ahnd = get_reloc_ahnd(fd, ctx->id);
-> > +	obj.offset = get_offset(ahnd, obj.handle, 4096, 0);
-> > +
-> >	igt_require(gem_scheduler_enabled(fd));
-> >	igt_require(igt_params_set(fd, "reset", "%u", -1)); /* engine resets! */
-> >	igt_require(gem_gpu_reset_type(fd) > 1);
-> > @@ -544,7 +580,14 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
-> >		fd = gem_reopen_driver(fd);
-> >		igt_debug("Submitting large capture [%ld x %dMiB objects]\n",
-> >			  count, (int)(size >> 20));
-> > -		free(__captureN(fd, dir, ring, size, count, ASYNC));
-> > +
-> > +		intel_allocator_init();
-> > +		/* Reopen the allocator in the new process. */
-> > +		ahnd = get_reloc_ahnd(fd, 0);
-> > +
-> > +		free(__captureN(fd, dir, ahnd, ring, size, count, ASYNC));
-> > +		put_ahnd(ahnd);
-> > +
-> >		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
-> >		igt_force_gpu_reset(fd);
-> >		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
-> > @@ -567,19 +610,26 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
-> >	close(link[1]);
-> >
-> >	gem_quiescent_gpu(fd);
-> > +	put_offset(ahnd, obj.handle);
-> > +	put_ahnd(ahnd);
-> > +	intel_allocator_multiprocess_stop();
-> 
-> Is this asymmetric intel_allocator_multiprocess_stop without a start
-> needed? Otherwise this is:
-> 
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+I've incidentally missed this during review and line calling
+intel_allocator_multiprocess_stop() left before merge.
 
-That's remnant from previous patch version, I've incidentally missed it.
+Remove this as source of confusion - for igt_fork() we can use
+standalone allocator within child for some cases (reopen driver
+or work within new created context).
 
---
-Zbigniew
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/gem_exec_capture.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
+index cd6b2f88f..f2ea6cb06 100644
+--- a/tests/i915/gem_exec_capture.c
++++ b/tests/i915/gem_exec_capture.c
+@@ -612,7 +612,6 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+ 	gem_quiescent_gpu(fd);
+ 	put_offset(ahnd, obj.handle);
+ 	put_ahnd(ahnd);
+-	intel_allocator_multiprocess_stop();
+ }
+ 
+ static void userptr(int fd, int dir)
+-- 
+2.26.0
