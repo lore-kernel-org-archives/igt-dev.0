@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2189789AA2
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Aug 2021 05:43:02 +0000 (UTC)
-Date: Mon, 16 Aug 2021 07:42:56 +0200
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E07A89AA2
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Aug 2021 05:44:31 +0000 (UTC)
+Date: Mon, 16 Aug 2021 07:44:25 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210816054256.GB6051@zkempczy-mobl2>
+Message-ID: <20210816054425.GC6051@zkempczy-mobl2>
 References: <20210813074703.18778-1-zbigniew.kempczynski@intel.com>
- <20210813074703.18778-5-zbigniew.kempczynski@intel.com>
- <87y295gf8v.wl-ashutosh.dixit@intel.com>
+ <20210813074703.18778-6-zbigniew.kempczynski@intel.com>
+ <87tujshkzr.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87y295gf8v.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/9] tests/gem_exec_big: Skip relocation
- part
+In-Reply-To: <87tujshkzr.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 5/9] tests/gem_exec_capture: Support
+ gens without relocations
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,56 +28,54 @@ To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 Cc: igt-dev@lists.freedesktop.org, Andrzej Turko <andrzej.turko@linux.intel.com>, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Aug 13, 2021 at 03:18:56PM -0700, Dixit, Ashutosh wrote:
-> On Fri, 13 Aug 2021 00:46:58 -0700, Zbigniew Kempczyński wrote:
+On Fri, Aug 13, 2021 at 06:29:28PM -0700, Dixit, Ashutosh wrote:
+> On Fri, 13 Aug 2021 00:46:59 -0700, Zbigniew Kempczyński wrote:
 > >
-> > When running on platforms without relocation support, verification
-> > of their correctness should be skipped.  What remains is exercising
-> > submission of large batches.
-> 
-> Not sure if there's much point to this file in the absence of relocations
-> since all it would do is bind the batch buffer in the gtt but the first
-> instruction is already MI_BATCH_BUFFER_END. So the patch could possibly
-> just be:
-> 
-> 		igt_require(gem_has_relocations(i915));
-> 
-> as was in the earlier version of the patch.
-
-But we want to run this test, at least to try big batchbuffer. We skip
-playing with relocations but still imo test is valuable for no-reloc gens.
-
---
-Zbigniew
-
-> 
-> > @@ -70,7 +71,7 @@ static void exec1(int fd, uint32_t handle, uint64_t reloc_ofs, unsigned flags, c
-> >	gem_reloc[0].presumed_offset = 0;
+> > @@ -512,10 +545,13 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+> >		.rsvd1 = ctx->id,
+> >	};
+> >	int64_t timeout = NSEC_PER_SEC; /* 1s, feeling generous, blame debug */
+> > -	uint64_t ram, gtt, size = 4 << 20;
+> > +	uint64_t ram, gtt, ahnd, size = 4 << 20;
+> >	unsigned long count;
+> >	int link[2], dummy;
 > >
-> >	gem_exec[0].handle = handle;
-> > -	gem_exec[0].relocation_count = 1;
-> > +	gem_exec[0].relocation_count = has_relocs ? 1 : 0;
-> >	gem_exec[0].relocs_ptr = to_user_pointer(gem_reloc);
-> >	gem_exec[0].alignment = 0;
-> >	gem_exec[0].offset = 0;
-> > @@ -100,6 +101,9 @@ static void exec1(int fd, uint32_t handle, uint64_t reloc_ofs, unsigned flags, c
-> >	igt_warn_on(gem_reloc[0].presumed_offset == -1);
-> >	gem_set_domain(fd, gem_exec[0].handle, I915_GEM_DOMAIN_WC, 0);
-> >
-> > +	if (!has_relocs)
-> > +		return;
+> > +	ahnd = get_reloc_ahnd(fd, ctx->id);
+> > +	obj.offset = get_offset(ahnd, obj.handle, 4096, 0);
 > > +
+> >	igt_require(gem_scheduler_enabled(fd));
+> >	igt_require(igt_params_set(fd, "reset", "%u", -1)); /* engine resets! */
+> >	igt_require(gem_gpu_reset_type(fd) > 1);
+> > @@ -544,7 +580,14 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+> >		fd = gem_reopen_driver(fd);
+> >		igt_debug("Submitting large capture [%ld x %dMiB objects]\n",
+> >			  count, (int)(size >> 20));
+> > -		free(__captureN(fd, dir, ring, size, count, ASYNC));
+> > +
+> > +		intel_allocator_init();
+> > +		/* Reopen the allocator in the new process. */
+> > +		ahnd = get_reloc_ahnd(fd, 0);
+> > +
+> > +		free(__captureN(fd, dir, ahnd, ring, size, count, ASYNC));
+> > +		put_ahnd(ahnd);
+> > +
+> >		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
+> >		igt_force_gpu_reset(fd);
+> >		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
+> > @@ -567,19 +610,26 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+> >	close(link[1]);
+> >
+> >	gem_quiescent_gpu(fd);
+> > +	put_offset(ahnd, obj.handle);
+> > +	put_ahnd(ahnd);
+> > +	intel_allocator_multiprocess_stop();
 > 
-> I would move this 2 lines above, right after gem_execbuf(), so that there's
-> no confusion about verifying presumed_offset etc. in the absence of
-> relocations.
-> 
-> Otherwise this is:
+> Is this asymmetric intel_allocator_multiprocess_stop without a start
+> needed? Otherwise this is:
 > 
 > Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-I missed your comment and I've already merged this test. You're absolutely
-right and this should be after return. I'm going to move this in next series.
+That's remnant from previous patch version, I've incidentally missed it.
 
 --
 Zbigniew
