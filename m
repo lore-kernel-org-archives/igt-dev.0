@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 296FF8969E
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Aug 2021 11:56:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 36F528969E
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Aug 2021 11:56:41 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon, 16 Aug 2021 13:56:21 +0200
-Message-Id: <20210816115626.22759-1-zbigniew.kempczynski@intel.com>
+Date: Mon, 16 Aug 2021 13:56:23 +0200
+Message-Id: <20210816115626.22759-3-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20210816115626.22759-1-zbigniew.kempczynski@intel.com>
+References: <20210816115626.22759-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/5] Adopt to use allocator
+Subject: [igt-dev] [PATCH i-g-t 2/5] tests/gem_exec_big: Move check of
+ pressumed offset out of no-reloc scope
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,39 +25,34 @@ To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is third series which should decrease coverage gap on 
-gens without relocations support.
+Missed during addressing last review - we don't want to process checking
+of pressumed offset on no-reloc path. Move this out of no-reloc scope.
 
-In gem_exec_fence I've left three subtests intact - they are 
-not trivial to rewrite so they will be send in future series.
-I decided to send not fully rewritten test because some subtests
-are part of BAT run and this should make life easier to enable
-DG1 on CI.
-
-I've incidentally omit review comments and didn't address minor
-nits so I've added it in this series (gem_exec_capture + gem_exec_big).
-
-In gem_exec_schedule 'pi*' subtests should work properly now. I had
-userfault disabled previously so I notice skip on CI, but we want to
-have these tests.
-
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/gem_exec_big.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Zbigniew Kempczyński (5):
-  tests/gem_exec_capture: Remove unnecessary multiprocess stop() call
-  tests/gem_exec_big: Move check of pressumed offset out of no-reloc
-    scope
-  tests/gem_exec_fence: Adopt to use allocator
-  tests/gem_exec_schedule: Adopt to use allocator
-  HAX: remove gttfill for tgl ci
-
- tests/i915/gem_exec_big.c             |   3 +-
- tests/i915/gem_exec_capture.c         |   1 -
- tests/i915/gem_exec_fence.c           | 240 +++++++++----
- tests/i915/gem_exec_schedule.c        | 472 ++++++++++++++++++++------
- tests/intel-ci/fast-feedback.testlist |   1 -
- 5 files changed, 541 insertions(+), 176 deletions(-)
-
+diff --git a/tests/i915/gem_exec_big.c b/tests/i915/gem_exec_big.c
+index 90230fc33..2f47de398 100644
+--- a/tests/i915/gem_exec_big.c
++++ b/tests/i915/gem_exec_big.c
+@@ -98,12 +98,13 @@ static void exec1(int fd, uint32_t handle, uint64_t reloc_ofs, unsigned flags, c
+ 
+ 	gem_execbuf(fd, &execbuf);
+ 
+-	igt_warn_on(gem_reloc[0].presumed_offset == -1);
+ 	gem_set_domain(fd, gem_exec[0].handle, I915_GEM_DOMAIN_WC, 0);
+ 
+ 	if (!has_relocs)
+ 		return;
+ 
++	igt_warn_on(gem_reloc[0].presumed_offset == -1);
++
+ 	if (use_64bit_relocs) {
+ 		uint64_t tmp;
+ 		if (ptr)
 -- 
 2.26.0
