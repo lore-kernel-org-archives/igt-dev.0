@@ -1,22 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com
- [IPv6:2a00:1450:4864:20::62c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 882876E216
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Aug 2021 17:46:30 +0000 (UTC)
-Received: by mail-ej1-x62c.google.com with SMTP id h9so40264513ejs.4
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Aug 2021 10:46:30 -0700 (PDT)
-References: <20210817092724.16512-1-juhapekka.heikkila@gmail.com>
- <YRvc0PUFPqYV2txm@platvala-desk.ger.corp.intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <fb8b928a-6bf6-84ea-10c7-574f47838291@gmail.com>
-Date: Tue, 17 Aug 2021 20:46:22 +0300
+Content-Type: multipart/alternative;
+ boundary="===============6450128060426964948=="
 MIME-Version: 1.0
-In-Reply-To: <YRvc0PUFPqYV2txm@platvala-desk.ger.corp.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_cursor_crc: Separate hw
- and sw runs on tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 17 Aug 2021 18:03:07 -0000
+Message-ID: <162922338721.22607.360640800385399909@emeril.freedesktop.org>
+References: <20210817172439.2159386-1-lucas.demarchi@intel.com>
+In-Reply-To: <20210817172439.2159386-1-lucas.demarchi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaTkxNS9p?=
+ =?utf-8?q?915=5Fpm=5Frps=3A_ensure_array_size_matches_loop_method?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,613 +16,367 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 17.8.2021 18.59, Petri Latvala wrote:
-> On Tue, Aug 17, 2021 at 12:27:23PM +0300, Juha-Pekka Heikkila wrote:
->> Reset display structure settings and commit them in before starting
->> test in case some earlier test left tail.
->>
->> Separate hw and sw test runs for optimizing test.
->>
->> Simple cleanup.
->>
->> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
->> ---
->>   tests/kms_cursor_crc.c | 404 +++++++++++++++++++++++++----------------
->>   1 file changed, 251 insertions(+), 153 deletions(-)
->>
->> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
->> index a9bc3a745..f478ae08d 100644
->> --- a/tests/kms_cursor_crc.c
->> +++ b/tests/kms_cursor_crc.c
->> @@ -46,10 +46,17 @@ IGT_TEST_DESCRIPTION(
->>   #define DRM_CAP_CURSOR_HEIGHT 0x9
->>   #endif
->>   
->> +enum cursor_buffers {
->> +	HWCURSORBUFFER,
->> +	SWCOMPARISONBUFFER1,
->> +	SWCOMPARISONBUFFER2,
->> +	MAXCURSORBUFFER
->> +};
->> +
->>   typedef struct {
->>   	int drm_fd;
->>   	igt_display_t display;
->> -	struct igt_fb primary_fb[2];
->> +	struct igt_fb primary_fb[MAXCURSORBUFFER];
->>   	struct igt_fb fb;
->>   	igt_output_t *output;
->>   	enum pipe pipe;
->> @@ -70,29 +77,40 @@ typedef struct {
->>   #define TEST_DPMS (1<<0)
->>   #define TEST_SUSPEND (1<<1)
->>   
->> -#define HWCURSORBUFFER 0
->> -#define SWCOMPARISONBUFFER 1
->> +#define RED 1.0, 0.0, 0.0
->> +#define GREEN 0.0, 1.0, 0.0
->> +#define BLUE 0.0, 0.0, 1.0
->> +#define WHITE 1.0, 1.0, 1.0
->> +
->> +typedef struct {
->> +	int x;
->> +	int y;
->> +	int width;
->> +	int height;
->> +} cursorarea;
->>   
->> -static void draw_cursor(cairo_t *cr, int x, int y, int cw, int ch, double a)
->> +static void draw_cursor(cairo_t *cr, cursorarea *cursor)
->>   {
->>   	int wl, wr, ht, hb;
->>   
->>   	/* deal with odd cursor width/height */
->> -	wl = cw / 2;
->> -	wr = (cw + 1) / 2;
->> -	ht = ch / 2;
->> -	hb = (ch + 1) / 2;
->> +	wl = cursor->width / 2;
->> +	wr = (cursor->width + 1) / 2;
->> +	ht = cursor->height / 2;
->> +	hb = (cursor->height + 1) / 2;
->>   
->>   	/* Cairo doesn't like to be fed numbers that are too wild */
->> -	if ((x < SHRT_MIN) || (x > SHRT_MAX) || (y < SHRT_MIN) || (y > SHRT_MAX))
->> +	if ((cursor->x < SHRT_MIN) || (cursor->x > SHRT_MAX) ||
->> +	    (cursor->y < SHRT_MIN) || (cursor->y > SHRT_MAX))
->>   		return;
->> +
->>   	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
->>   	cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
->>   	/* 4 color rectangles in the corners, RGBY */
->> -	igt_paint_color_alpha(cr, x,      y,      wl, ht, 1.0, 0.0, 0.0, a);
->> -	igt_paint_color_alpha(cr, x + wl, y,      wr, ht, 0.0, 1.0, 0.0, a);
->> -	igt_paint_color_alpha(cr, x,      y + ht, wl, hb, 0.0, 0.0, 1.0, a);
->> -	igt_paint_color_alpha(cr, x + wl, y + ht, wr, hb, 1.0, 1.0, 1.0, a);
->> +	igt_paint_color(cr, cursor->x, cursor->y, wl, ht, RED);
->> +	igt_paint_color(cr, cursor->x + wl, cursor->y, wr, ht, GREEN);
->> +	igt_paint_color(cr, cursor->x, cursor->y + ht, wl, hb, BLUE);
->> +	igt_paint_color(cr, cursor->x + wl, cursor->y + ht, wr, hb, WHITE);
->>   }
->>   
->>   static void cursor_enable(data_t *data)
->> @@ -144,7 +162,7 @@ static bool cursor_visible(data_t *data, int x, int y)
->>   	return true;
->>   }
->>   
->> -static void restore_image(data_t *data, uint32_t buffer)
->> +static void restore_image(data_t *data, uint32_t buffer, cursorarea *cursor)
->>   {
->>   	cairo_t *cr;
->>   
->> @@ -153,80 +171,84 @@ static void restore_image(data_t *data, uint32_t buffer)
->>   	cairo_set_source_surface(cr, data->surface, 0, 0);
->>   	cairo_rectangle(cr, 0, 0, data->screenw, data->screenh);
->>   	cairo_fill(cr);
->> +
->> +	if (cursor)
->> +		draw_cursor(cr, cursor);
->> +
->>   	igt_put_cairo_ctx(cr);
->>   }
->>   
->> -static void do_single_test(data_t *data, int x, int y)
->> +static void do_single_test(data_t *data, int x, int y, bool hw_test,
->> +			   igt_crc_t *hwcrc)
->>   {
->>   	igt_display_t *display = &data->display;
->>   	igt_pipe_crc_t *pipe_crc = data->pipe_crc;
->> -	igt_crc_t crc, ref_crc;
->> -	cairo_t *cr;
->> -	int ret = 0;
->> +	igt_crc_t crc;
->> +	int ret = 0, swbufidx;
->>   
->>   	igt_print_activity();
->>   
->> -	/* Hardware test */
->> -	igt_plane_set_position(data->cursor, x, y);
->> -	cursor_enable(data);
->> +	if (hw_test) {
->> +		/* Hardware test */
->> +		igt_plane_set_position(data->cursor, x, y);
->>   
->> -	if (chv_cursor_broken(data, x) && cursor_visible(data, x, y)) {
->> -		ret = igt_display_try_commit2(display, COMMIT_LEGACY);
->> -		igt_assert_eq(ret, -EINVAL);
->> -		igt_plane_set_position(data->cursor, 0, y);
->> -		return;
->> -	}
->> +		if (chv_cursor_broken(data, x) && cursor_visible(data, x, y)) {
->> +			ret = igt_display_try_commit2(display, COMMIT_LEGACY);
->> +			igt_assert_eq(ret, -EINVAL);
->> +			igt_plane_set_position(data->cursor, 0, y);
->> +			return;
->> +		}
->>   
->> -	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
->> -	igt_display_commit(display);
->> +		igt_display_commit(display);
->>   
->> -	/* Extra vblank wait is because nonblocking cursor ioctl */
->> -	igt_wait_for_vblank(data->drm_fd,
->> -			    display->pipes[data->pipe].crtc_offset);
->> +		/* Extra vblank wait is because nonblocking cursor ioctl */
->> +		igt_wait_for_vblank(data->drm_fd,
->> +				display->pipes[data->pipe].crtc_offset);
->>   
->> -	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
->> -	restore_image(data, SWCOMPARISONBUFFER);
->> +		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, hwcrc);
->>   
->> -	if (data->flags & (TEST_DPMS | TEST_SUSPEND)) {
->> -		igt_crc_t crc_after;
->> -		/*
->> -		 * stop/start crc to avoid dmesg notifications about userspace
->> -		 * reading too slow.
->> -		 */
->> -		igt_pipe_crc_stop(pipe_crc);
->> -
->> -		if (data->flags & TEST_DPMS) {
->> -			igt_debug("dpms off/on cycle\n");
->> -			kmstest_set_connector_dpms(data->drm_fd,
->> -						   data->output->config.connector,
->> -						   DRM_MODE_DPMS_OFF);
->> -			kmstest_set_connector_dpms(data->drm_fd,
->> -						   data->output->config.connector,
->> -						   DRM_MODE_DPMS_ON);
->> +		if (data->flags & (TEST_DPMS | TEST_SUSPEND)) {
->> +			igt_crc_t crc_after;
->> +			/*
->> +			* stop/start crc to avoid dmesg notifications about userspace
->> +			* reading too slow.
->> +			*/
->> +			igt_pipe_crc_stop(pipe_crc);
->> +
->> +			if (data->flags & TEST_DPMS) {
->> +				igt_debug("dpms off/on cycle\n");
->> +				kmstest_set_connector_dpms(data->drm_fd,
->> +							data->output->config.connector,
->> +							DRM_MODE_DPMS_OFF);
->> +				kmstest_set_connector_dpms(data->drm_fd,
->> +							data->output->config.connector,
->> +							DRM_MODE_DPMS_ON);
->> +			}
->> +
->> +			if (data->flags & TEST_SUSPEND)
->> +				igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
->> +							SUSPEND_TEST_NONE);
->> +
->> +			igt_pipe_crc_start(pipe_crc);
->> +			igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc_after);
->> +			igt_assert_crc_equal(hwcrc, &crc_after);
->>   		}
->> +	} else {
->> +		/* Now render the same in software and collect crc */
->> +		swbufidx = (data->primary->drm_plane->fb_id ==
->> +			    data->primary_fb[SWCOMPARISONBUFFER1].fb_id) ?
->> +			    SWCOMPARISONBUFFER2 : SWCOMPARISONBUFFER1;
->>   
->> -		if (data->flags & TEST_SUSPEND)
->> -			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
->> -						      SUSPEND_TEST_NONE);
->> -
->> -		igt_pipe_crc_start(pipe_crc);
->> -		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc_after);
->> -		igt_assert_crc_equal(&crc, &crc_after);
->> -	}
->> -
->> -	/* Now render the same in software and collect crc */
->> -	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
->> -	draw_cursor(cr, x, y, data->curw, data->curh, 1.0);
->> -	igt_put_cairo_ctx(cr);
->> -	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
->> -	cursor_disable(data);
->> -	igt_display_commit(display);
->> +		restore_image(data, swbufidx, &((cursorarea){x, y, data->curw, data->curh}));
->> +		igt_plane_set_fb(data->primary, &data->primary_fb[swbufidx]);
->>   
->> -	igt_wait_for_vblank(data->drm_fd,
->> -			display->pipes[data->pipe].crtc_offset);
->> +		igt_display_commit(display);
->> +		igt_wait_for_vblank(data->drm_fd,
->> +				display->pipes[data->pipe].crtc_offset);
->>   
->> -	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
->> -	igt_assert_crc_equal(&crc, &ref_crc);
->> +		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
->> +		igt_assert_crc_equal(&crc, hwcrc);
->> +	}
->>   }
->>   
->>   static void do_fail_test(data_t *data, int x, int y, int expect)
->> @@ -248,70 +270,112 @@ static void do_fail_test(data_t *data, int x, int y, int expect)
->>   	igt_assert_eq(ret, expect);
->>   }
->>   
->> -static void do_test(data_t *data,
->> -		    int left, int right, int top, int bottom)
->> +static void do_test(data_t *data, const cursorarea *coords, igt_crc_t crc[4],
->> +		    bool hwtest)
->>   {
->> -	do_single_test(data, left, top);
->> -	do_single_test(data, right, top);
->> -	do_single_test(data, right, bottom);
->> -	do_single_test(data, left, bottom);
->> +	do_single_test(data, coords->x, coords->width, hwtest, &crc[0]);
->> +	do_single_test(data, coords->y, coords->width, hwtest, &crc[1]);
->> +	do_single_test(data, coords->y, coords->height, hwtest, &crc[2]);
->> +	do_single_test(data, coords->x, coords->height, hwtest, &crc[3]);
->>   }
->>   
->>   static void test_crc_onscreen(data_t *data)
->>   {
->> -	int left = data->left;
->> -	int right = data->right;
->> -	int top = data->top;
->> -	int bottom = data->bottom;
->> -	int cursor_w = data->curw;
->> -	int cursor_h = data->curh;
->> -
->> -	/* fully inside  */
->> -	do_test(data, left, right, top, bottom);
->> -
->> -	/* 2 pixels inside */
->> -	do_test(data, left - (cursor_w-2), right + (cursor_w-2), top               , bottom               );
->> -	do_test(data, left               , right               , top - (cursor_h-2), bottom + (cursor_h-2));
->> -	do_test(data, left - (cursor_w-2), right + (cursor_w-2), top - (cursor_h-2), bottom + (cursor_h-2));
->> -
->> -	/* 1 pixel inside */
->> -	do_test(data, left - (cursor_w-1), right + (cursor_w-1), top               , bottom               );
->> -	do_test(data, left               , right               , top - (cursor_h-1), bottom + (cursor_h-1));
->> -	do_test(data, left - (cursor_w-1), right + (cursor_w-1), top - (cursor_h-1), bottom + (cursor_h-1));
->> +	const int left = data->left;
->> +	const int right = data->right;
->> +	const int top = data->top;
->> +	const int bottom = data->bottom;
->> +	const int cursor_w = data->curw;
->> +	const int cursor_h = data->curh;
->> +
->> +	struct {
->> +		const cursorarea coords;
->> +		igt_crc_t crc[4];
->> +	} tests[] = {
->> +		/* fully inside  */
->> +		{{left, right, top, bottom}},
->> +		/* 2 pixels inside */
->> +		{{left - (cursor_w - 2), right + (cursor_w - 2), top, bottom}},
->> +		{{left, right, top - (cursor_h - 2), bottom + (cursor_h - 2)}},
->> +		{{left - (cursor_w - 2), right + (cursor_w - 2),
->> +		  top - (cursor_h - 2), bottom + (cursor_h - 2)}},
->> +		/* 1 pixel inside */
->> +		{{left - (cursor_w - 1), right + (cursor_w - 1), top, bottom}},
->> +		{{left, right, top - (cursor_h - 1), bottom + (cursor_h - 1)}},
->> +		{{left - (cursor_w - 1), right + (cursor_w - 1),
->> +		  top - (cursor_h - 1), bottom + (cursor_h - 1)}},
->> +	};
->> +
->> +	/* HW test */
->> +	cursor_enable(data);
->> +	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
->> +	for (int i = 0; i < ARRAY_SIZE(tests); i++)
->> +		do_test(data, &tests[i].coords, tests[i].crc, true);
->> +
->> +	/* SW test */
->> +	cursor_disable(data);
->> +	for (int i = 0; i < ARRAY_SIZE(tests); i++)
->> +		do_test(data, &tests[i].coords, tests[i].crc, false);
->>   }
->>   
->>   static void test_crc_offscreen(data_t *data)
->>   {
->> -	int left = data->left;
->> -	int right = data->right;
->> -	int top = data->top;
->> -	int bottom = data->bottom;
->> -	int cursor_w = data->curw;
->> -	int cursor_h = data->curh;
->> -
->> -	/* fully outside */
->> -	do_test(data, left - (cursor_w), right + (cursor_w), top             , bottom             );
->> -	do_test(data, left             , right             , top - (cursor_h), bottom + (cursor_h));
->> -	do_test(data, left - (cursor_w), right + (cursor_w), top - (cursor_h), bottom + (cursor_h));
->> -
->> -	/* fully outside by 1 extra pixels */
->> -	do_test(data, left - (cursor_w+1), right + (cursor_w+1), top               , bottom               );
->> -	do_test(data, left               , right               , top - (cursor_h+1), bottom + (cursor_h+1));
->> -	do_test(data, left - (cursor_w+1), right + (cursor_w+1), top - (cursor_h+1), bottom + (cursor_h+1));
->> -
->> -	/* fully outside by 2 extra pixels */
->> -	do_test(data, left - (cursor_w+2), right + (cursor_w+2), top               , bottom               );
->> -	do_test(data, left               , right               , top - (cursor_h+2), bottom + (cursor_h+2));
->> -	do_test(data, left - (cursor_w+2), right + (cursor_w+2), top - (cursor_h+2), bottom + (cursor_h+2));
->> -
->> -	/* fully outside by a lot of extra pixels */
->> -	do_test(data, left - (cursor_w+512), right + (cursor_w+512), top                 , bottom                 );
->> -	do_test(data, left                 , right                 , top - (cursor_h+512), bottom + (cursor_h+512));
->> -	do_test(data, left - (cursor_w+512), right + (cursor_w+512), top - (cursor_h+512), bottom + (cursor_h+512));
->> -
->> -	/* go nuts */
->> -	do_test(data, INT_MIN, INT_MAX - cursor_w, INT_MIN, INT_MAX - cursor_h);
->> -	do_test(data, SHRT_MIN, SHRT_MAX, SHRT_MIN, SHRT_MAX);
->> +	const int left = data->left;
->> +	const int right = data->right;
->> +	const int top = data->top;
->> +	const int bottom = data->bottom;
->> +	const int cursor_w = data->curw;
->> +	const int cursor_h = data->curh;
->> +
->> +	struct {
->> +		const cursorarea coords;
->> +		igt_crc_t crc[4];
->> +	} tests[] = {
->> +		/* fully outside */
->> +		{{left - (cursor_w), right + (cursor_w), top, bottom}},
->> +		{{left, right, top - (cursor_h), bottom + (cursor_h)}},
->> +		{{left - (cursor_w), right + (cursor_w), top - (cursor_h),
->> +		  bottom + (cursor_h)}},
->> +		/* fully outside by 1 extra pixels */
->> +		{{left - (cursor_w + 1), right + (cursor_w + 1), top, bottom}},
->> +		{{left, right, top - (cursor_h + 1), bottom + (cursor_h + 1)}},
->> +		{{left - (cursor_w + 1), right + (cursor_w + 1),
->> +		  top - (cursor_h + 1), bottom + (cursor_h + 1)}},
->> +		/* fully outside by 2 extra pixels */
->> +		{{left - (cursor_w + 2), right + (cursor_w + 2), top, bottom}},
->> +		{{left, right, top - (cursor_h + 2), bottom + (cursor_h + 2)}},
->> +		{{left - (cursor_w + 2), right + (cursor_w + 2),
->> +		  top - (cursor_h + 2), bottom + (cursor_h + 2)}},
->> +		/* fully outside by a lot of extra pixels */
->> +		{{left - (cursor_w + 512), right + (cursor_w + 512), top, bottom}},
->> +		{{left, right, top - (cursor_h + 512), bottom + (cursor_h + 512)}},
->> +		{{left - (cursor_w + 512), right + (cursor_w + 512),
->> +		  top - (cursor_h + 512), bottom + (cursor_h + 512)}},
->> +		/* go nuts */
->> +		{{INT_MIN, INT_MAX - cursor_w, INT_MIN, INT_MAX - cursor_h}},
->> +		{{SHRT_MIN, SHRT_MAX, SHRT_MIN, SHRT_MAX}},
->> +	};
->> +
->> +	/* HW test */
->> +	cursor_enable(data);
->> +	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
->> +	for (int i = 0; i < ARRAY_SIZE(tests); i++)
->> +		do_test(data, &tests[i].coords, tests[i].crc, true);
->> +
->> +	/* SW test */
->> +	cursor_disable(data);
->> +	/*
->> +	 * all these crc's should be the same, actually render only first image
->> +	 * to check crc and then compare rest of crc are matching
->> +	 */
->> +	do_test(data, &tests[0].coords, tests[0].crc, false);
->> +
->> +	for (int i = 1; i < ARRAY_SIZE(tests); i++) {
->> +		igt_assert_crc_equal(&tests[0].crc[0], &tests[i].crc[0]);
->> +		igt_assert_crc_equal(&tests[0].crc[0], &tests[i].crc[1]);
->> +		igt_assert_crc_equal(&tests[0].crc[0], &tests[i].crc[2]);
->> +		igt_assert_crc_equal(&tests[0].crc[0], &tests[i].crc[3]);
->> +	}
->>   
->>   	/* Make sure we get -ERANGE on integer overflow */
->>   	do_fail_test(data, INT_MAX - cursor_w + 1, INT_MAX - cursor_h + 1, -ERANGE);
->> @@ -320,29 +384,57 @@ static void test_crc_offscreen(data_t *data)
->>   static void test_crc_sliding(data_t *data)
->>   {
->>   	int i;
->> +	struct {
->> +		igt_crc_t crc[3];
->> +	} rounds[16] = {};
->>   
->>   	/* Make sure cursor moves smoothly and pixel-by-pixel, and that there are
->>   	 * no alignment issues. Horizontal, vertical and diagonal test.
->>   	 */
->> -	for (i = 0; i < 16; i++) {
->> -		do_single_test(data, i, 0);
->> -		do_single_test(data, 0, i);
->> -		do_single_test(data, i, i);
->> +
->> +	/* HW test */
->> +	cursor_enable(data);
->> +	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
->> +
->> +	for (i = 0; i < ARRAY_SIZE(rounds); i++) {
->> +		do_single_test(data, i, 0, true, &rounds[i].crc[0]);
->> +		do_single_test(data, 0, i, true, &rounds[i].crc[1]);
->> +		do_single_test(data, i, i, true, &rounds[i].crc[2]);
->> +	}
->> +
->> +	/* SW test */
->> +	cursor_disable(data);
->> +	for (i = 0; i < ARRAY_SIZE(rounds); i++) {
->> +		do_single_test(data, i, 0, false, &rounds[i].crc[0]);
->> +		do_single_test(data, 0, i, false, &rounds[i].crc[1]);
->> +		do_single_test(data, i, i, false, &rounds[i].crc[2]);
->>   	}
->>   }
->>   
->>   static void test_crc_random(data_t *data)
->>   {
->> -	int i, max;
->> +	igt_crc_t crc[50];
->> +	int i, max, x[ARRAY_SIZE(crc)], y[ARRAY_SIZE(crc)];
->>   
->> -	max = data->flags & (TEST_DPMS | TEST_SUSPEND) ? 2 : 50;
->> +	max = data->flags & (TEST_DPMS | TEST_SUSPEND) ? 2 : ARRAY_SIZE(crc);
->>   
->>   	/* Random cursor placement */
->> +
->> +	/* HW test */
->> +	cursor_enable(data);
->> +	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
->> +
->>   	for (i = 0; i < max; i++) {
->> -		int x = rand() % (data->screenw + data->curw * 2) - data->curw;
->> -		int y = rand() % (data->screenh + data->curh * 2) - data->curh;
->> -		do_single_test(data, x, y);
->> +		x[i] = rand() % (data->screenw + data->curw * 2) - data->curw;
->> +		y[i] = rand() % (data->screenh + data->curh * 2) - data->curh;
->> +		do_single_test(data, x[i], y[i], true, &crc[i]);
->>   	}
->> +
->> +	/* SW test */
->> +	cursor_disable(data);
->> +	for (i = 0; i < max; i++)
->> +		do_single_test(data, x[i], y[i], false, &crc[i]);
->> +
->>   }
->>   
->>   static void cleanup_crtc(data_t *data)
->> @@ -362,7 +454,8 @@ static void cleanup_crtc(data_t *data)
->>   	igt_display_commit(display);
->>   
->>   	igt_remove_fb(data->drm_fd, &data->primary_fb[HWCURSORBUFFER]);
->> -	igt_remove_fb(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
->> +	igt_remove_fb(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER1]);
->> +	igt_remove_fb(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER2]);
->>   
->>   	igt_display_reset(display);
->>   }
->> @@ -379,22 +472,22 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
->>   
->>   	/* create and set the primary plane fbs */
->>   	mode = igt_output_get_mode(output);
->> -	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
->> -			    DRM_FORMAT_XRGB8888,
->> -			    DRM_FORMAT_MOD_NONE,
->> -			    0.0, 0.0, 0.0,
->> -			    &data->primary_fb[HWCURSORBUFFER]);
->> -
->> -	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
->> -			    DRM_FORMAT_XRGB8888,
->> -			    DRM_FORMAT_MOD_NONE,
->> -			    0.0, 0.0, 0.0,
->> -			    &data->primary_fb[SWCOMPARISONBUFFER]);
->> +	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
->> +		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
->> +		      &data->primary_fb[HWCURSORBUFFER]);
->> +
->> +	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
->> +		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
->> +		      &data->primary_fb[SWCOMPARISONBUFFER1]);
->> +
->> +	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
->> +		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
->> +		      &data->primary_fb[SWCOMPARISONBUFFER2]);
->>   
->>   	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->>   	data->cursor = igt_output_get_plane_type(output, DRM_PLANE_TYPE_CURSOR);
->>   
->> -	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
->> +	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER1]);
->>   
->>   	igt_display_commit(display);
->>   
->> @@ -427,7 +520,7 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
->>   		cairo_destroy(cr);
->>   
->>   		/* Set HW cursor buffer in place */
->> -			restore_image(data, HWCURSORBUFFER);
->> +		restore_image(data, HWCURSORBUFFER, NULL);
->>   	} else
->>   		data->surface = NULL;
->>   
->> @@ -469,10 +562,10 @@ static void test_cursor_alpha(data_t *data, double a)
->>   	igt_remove_fb(data->drm_fd, &data->fb);
->>   
->>   	/* Software Test - render cursor in software, drawn it directly on PF */
->> -	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
->> +	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER1]);
->>   	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
->>   	igt_put_cairo_ctx(cr);
->> -	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
->> +	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER1]);
->>   	igt_display_commit(display);
->>   	igt_wait_for_vblank(data->drm_fd,
->>   			display->pipes[data->pipe].crtc_offset);
->> @@ -513,7 +606,7 @@ static void create_cursor_fb(data_t *data, int cur_w, int cur_h)
->>   	igt_assert(fb_id);
->>   
->>   	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb);
->> -	draw_cursor(cr, 0, 0, cur_w, cur_h, 1.0);
->> +	draw_cursor(cr, &((cursorarea){0, 0, cur_w, cur_h}));
->>   	igt_put_cairo_ctx(cr);
->>   }
->>   
->> @@ -610,7 +703,7 @@ static void test_cursor_size(data_t *data)
->>   		igt_display_commit(display);
->>   
->>   		/* Now render the same in software and collect crc */
->> -		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER]);
->> +		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER1]);
->>   
->>   		/* remove previous cursor sw image */
->>   		if (prevsize > 0)
->> @@ -619,7 +712,7 @@ static void test_cursor_size(data_t *data)
->>   
->>   		igt_paint_color_alpha(cr, 0, 0, size, size, 1.0, 1.0, 1.0, 1.0);
->>   		igt_put_cairo_ctx(cr);
->> -		igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER]);
->> +		igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER1]);
->>   		igt_display_commit(display);
->>   		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
->>   
->> @@ -657,6 +750,8 @@ static void test_rapid_movement(data_t *data)
->>   	}
->>   	gettimeofday(&end, NULL);
->>   
->> +	cursor_disable(data);
->> +
->>   	/*
->>   	 * We've done 400 cursor updates now.  If we're being throttled to
->>   	 * vblank, then that would take roughly 400/refresh seconds.  If the
->> @@ -813,6 +908,9 @@ igt_main
->>   		igt_require_pipe_crc(data.drm_fd);
->>   
->>   		igt_display_require(&data.display, data.drm_fd);
->> +		igt_display_reset(&data.display);
->> +		igt_display_commit2(&data.display, data.display.is_atomic ?
->> +				    COMMIT_ATOMIC : COMMIT_LEGACY);
->>   	}
-> 
-> igt_display_require() calls igt_display_reset at the end of it... but
-> after that does igt_enable_connectors. Is that why this extra
-> igt_display_reset is needed here?
-> 
+--===============6450128060426964948==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This is something I don't yet know where exactly the problem exists, 
-earlier failed tests may leave tail which this is able to clear out. I 
-coined this for myself to do some debugging:
-https://patchwork.freedesktop.org/series/93756/
+== Series Details ==
 
-Those igt_display_reset(..) followed by atomic and legacy commit and get 
-crc of white imo should match but they don't do that for me. Situation 
-is the same as kms_plane_alpha_blend failed and will arrive to new test, 
-there maybe differences if test uses legacy or atomic commits.
+Series: i915/i915_pm_rps: ensure array size matches loop method
+URL   : https://patchwork.freedesktop.org/series/93755/
+State : failure
 
-/Juha-Pekka
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10490 -> IGTPW_6130
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_6130 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_6130, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6130:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_pm_rps@basic-api:
+    - fi-kbl-guc:         [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-kbl-guc/igt@i915_pm_rps@basic-api.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-kbl-guc/igt@i915_pm_rps@basic-api.html
+    - fi-cfl-8109u:       [PASS][3] -> [FAIL][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-cfl-8109u/igt@i915_pm_rps@basic-api.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-cfl-8109u/igt@i915_pm_rps@basic-api.html
+    - fi-rkl-guc:         [PASS][5] -> [FAIL][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-rkl-guc/igt@i915_pm_rps@basic-api.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-rkl-guc/igt@i915_pm_rps@basic-api.html
+    - fi-bsw-nick:        [PASS][7] -> [FAIL][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-bsw-nick/igt@i915_pm_rps@basic-api.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-bsw-nick/igt@i915_pm_rps@basic-api.html
+    - fi-kbl-7500u:       [PASS][9] -> [FAIL][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-kbl-7500u/igt@i915_pm_rps@basic-api.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-kbl-7500u/igt@i915_pm_rps@basic-api.html
+    - fi-kbl-8809g:       [PASS][11] -> [FAIL][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-kbl-8809g/igt@i915_pm_rps@basic-api.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-kbl-8809g/igt@i915_pm_rps@basic-api.html
+    - fi-bsw-kefka:       [PASS][13] -> [FAIL][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-bsw-kefka/igt@i915_pm_rps@basic-api.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-bsw-kefka/igt@i915_pm_rps@basic-api.html
+    - fi-glk-dsi:         [PASS][15] -> [FAIL][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-glk-dsi/igt@i915_pm_rps@basic-api.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-glk-dsi/igt@i915_pm_rps@basic-api.html
+    - fi-cfl-guc:         [PASS][17] -> [FAIL][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-cfl-guc/igt@i915_pm_rps@basic-api.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-cfl-guc/igt@i915_pm_rps@basic-api.html
+    - fi-ivb-3770:        [PASS][19] -> [FAIL][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-ivb-3770/igt@i915_pm_rps@basic-api.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-ivb-3770/igt@i915_pm_rps@basic-api.html
+    - fi-cml-u2:          [PASS][21] -> [FAIL][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-cml-u2/igt@i915_pm_rps@basic-api.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-cml-u2/igt@i915_pm_rps@basic-api.html
+    - fi-icl-u2:          [PASS][23] -> [FAIL][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-icl-u2/igt@i915_pm_rps@basic-api.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-icl-u2/igt@i915_pm_rps@basic-api.html
+    - fi-skl-6700k2:      [PASS][25] -> [FAIL][26]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-skl-6700k2/igt@i915_pm_rps@basic-api.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-skl-6700k2/igt@i915_pm_rps@basic-api.html
+    - fi-bxt-dsi:         [PASS][27] -> [FAIL][28]
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-bxt-dsi/igt@i915_pm_rps@basic-api.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-bxt-dsi/igt@i915_pm_rps@basic-api.html
+    - fi-cfl-8700k:       [PASS][29] -> [FAIL][30]
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-cfl-8700k/igt@i915_pm_rps@basic-api.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-cfl-8700k/igt@i915_pm_rps@basic-api.html
+    - fi-hsw-4770:        [PASS][31] -> [FAIL][32]
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-hsw-4770/igt@i915_pm_rps@basic-api.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-hsw-4770/igt@i915_pm_rps@basic-api.html
+    - fi-snb-2520m:       [PASS][33] -> [FAIL][34]
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-snb-2520m/igt@i915_pm_rps@basic-api.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-snb-2520m/igt@i915_pm_rps@basic-api.html
+    - fi-tgl-1115g4:      [PASS][35] -> [FAIL][36]
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-tgl-1115g4/igt@i915_pm_rps@basic-api.html
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-tgl-1115g4/igt@i915_pm_rps@basic-api.html
+    - fi-kbl-7567u:       [PASS][37] -> [FAIL][38]
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-kbl-7567u/igt@i915_pm_rps@basic-api.html
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-kbl-7567u/igt@i915_pm_rps@basic-api.html
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][39]
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-bdw-5557u/igt@i915_pm_rps@basic-api.html
+    - fi-skl-guc:         [PASS][40] -> [FAIL][41]
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-skl-guc/igt@i915_pm_rps@basic-api.html
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-skl-guc/igt@i915_pm_rps@basic-api.html
+    - fi-icl-y:           [PASS][42] -> [FAIL][43]
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-icl-y/igt@i915_pm_rps@basic-api.html
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-icl-y/igt@i915_pm_rps@basic-api.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_pm_rps@basic-api:
+    - {fi-ehl-2}:         [PASS][44] -> [FAIL][45]
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-ehl-2/igt@i915_pm_rps@basic-api.html
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-ehl-2/igt@i915_pm_rps@basic-api.html
+    - {fi-jsl-1}:         [PASS][46] -> [FAIL][47]
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-jsl-1/igt@i915_pm_rps@basic-api.html
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-jsl-1/igt@i915_pm_rps@basic-api.html
+    - {fi-tgl-dsi}:       [PASS][48] -> [FAIL][49]
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-tgl-dsi/igt@i915_pm_rps@basic-api.html
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-tgl-dsi/igt@i915_pm_rps@basic-api.html
+    - {fi-hsw-gt1}:       [PASS][50] -> [FAIL][51]
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-hsw-gt1/igt@i915_pm_rps@basic-api.html
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-hsw-gt1/igt@i915_pm_rps@basic-api.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6130 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@semaphore:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][52] ([fdo#109271]) +27 similar issues
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html
+
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-bdw-5557u:       NOTRUN -> [WARN][53] ([i915#3718])
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][54] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#3718]: https://gitlab.freedesktop.org/drm/intel/issues/3718
+
+
+Participating hosts (36 -> 33)
+------------------------------
+
+  Missing    (3): fi-kbl-soraka fi-bsw-cyan fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6177 -> IGTPW_6130
+
+  CI-20190529: 20190529
+  CI_DRM_10490: 3bd74b377986fcb89cf4563629f97c5b3199ca6f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6130: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/index.html
+  IGT_6177: f474644e7226dd319195ca03b3cde82ad10ac54c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/index.html
+
+--===============6450128060426964948==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915/i915_pm_rps: ensure array size matches loop method</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93755/">https://patchwork.freedesktop.org/series/93755/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10490 -&gt; IGTPW_6130</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_6130 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_6130, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6130:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>
+<p>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-kbl-guc/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-kbl-guc/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-cfl-8109u/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-cfl-8109u/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-rkl-guc/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-rkl-guc/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-bsw-nick/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-bsw-nick/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-kbl-7500u/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-kbl-7500u/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-kbl-8809g/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-kbl-8809g/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-bsw-kefka/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-bsw-kefka/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-glk-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-glk-dsi/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-glk-dsi/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-cfl-guc/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-cfl-guc/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-ivb-3770/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-ivb-3770/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-cml-u2/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-cml-u2/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-icl-u2/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-icl-u2/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-skl-6700k2:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-skl-6700k2/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-skl-6700k2/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-bxt-dsi/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-bxt-dsi/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-cfl-8700k/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-cfl-8700k/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-hsw-4770/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-hsw-4770/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-snb-2520m:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-snb-2520m/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-snb-2520m/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-tgl-1115g4/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-tgl-1115g4/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-kbl-7567u/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-kbl-7567u/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-bdw-5557u/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-skl-guc/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-skl-guc/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-icl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-icl-y/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-icl-y/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>
+<p>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-ehl-2/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-ehl-2/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-jsl-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-jsl-1/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-jsl-1/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-tgl-dsi/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-tgl-dsi/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-hsw-gt1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10490/fi-hsw-gt1/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-hsw-gt1/igt@i915_pm_rps@basic-api.html">FAIL</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6130 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@semaphore:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +27 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3718">i915#3718</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (36 -&gt; 33)</h2>
+<p>Missing    (3): fi-kbl-soraka fi-bsw-cyan fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6177 -&gt; IGTPW_6130</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10490: 3bd74b377986fcb89cf4563629f97c5b3199ca6f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6130: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6130/index.html<br />
+  IGT_6177: f474644e7226dd319195ca03b3cde82ad10ac54c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6450128060426964948==--
