@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5DB0F6E8D5
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Aug 2021 21:49:33 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Wed, 18 Aug 2021 21:49:28 +0000
-Message-ID: <432f5eff5ce978a445f981ac24a36b12df792cc4.camel@intel.com>
-References: <20210817232154.152035-1-jose.souza@intel.com>
- <YRzRLu2nT+0zywDb@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YRzRLu2nT+0zywDb@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <667023CBDAB2E141A8DCBBDD0641BEE4@intel.com>
-Content-Transfer-Encoding: base64
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83F376E91A
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Aug 2021 22:19:35 +0000 (UTC)
+From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
+Date: Wed, 18 Aug 2021 15:24:18 -0700
+Message-Id: <20210818222419.210879-3-jose.souza@intel.com>
+In-Reply-To: <20210818222419.210879-1-jose.souza@intel.com>
+References: <20210818222419.210879-1-jose.souza@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/4] tests/kms_cursor_legacy: Handle
- cursor movements as slow patch for display 9+
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 3/4] test/kms_frontbuffer_tracking: Fix
+ multidraw test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,68 +21,53 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Mun,
- Gwan-gyeong" <gwan-gyeong.mun@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>, =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCAyMDIxLTA4LTE4IGF0IDEyOjIxICswMzAwLCBQZXRyaSBMYXR2YWxhIHdyb3RlOg0K
-PiBPbiBUdWUsIEF1ZyAxNywgMjAyMSBhdCAwNDoyMTo1MVBNIC0wNzAwLCBKb3PDqSBSb2JlcnRv
-IGRlIFNvdXphIHdyb3RlOg0KPiA+IGk5MTUgaXMgZHJvcHBpbmcgZnJvbnRidWZmZXIgcmVuZGVy
-aW5nIHN1cHBvcnQgZm9yIGRpc3BsYXkgOSsgc28NCj4gPiB0aGlzIGV2YXNpb24gYXR0ZW1wdHMg
-d2lsbCBuZXZlciBoYXBwZW4gYXMgRFJNX0lPQ1RMX01PREVfQ1VSU09SIHdpbGwNCj4gPiBiZSBj
-b252ZXJ0ZWQgdG8gYXRvbWljIGNvbW1pdHMgdGhhdCB3aWxsIGJlIGV4ZWN1dGVkIGR1cmluZyB2
-YmxhbmtzLg0KPiA+IA0KPiA+IENjOiBHd2FuLWd5ZW9uZyBNdW4gPGd3YW4tZ3llb25nLm11bkBp
-bnRlbC5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogSm9zw6kgUm9iZXJ0byBkZSBTb3V6YSA8am9z
-ZS5zb3V6YUBpbnRlbC5jb20+DQo+ID4gLS0tDQo+ID4gIHRlc3RzL2ttc19jdXJzb3JfbGVnYWN5
-LmMgfCAxNSArKysrKysrKysrLS0tLS0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDEwIGluc2VydGlv
-bnMoKyksIDUgZGVsZXRpb25zKC0pDQo+ID4gDQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19j
-dXJzb3JfbGVnYWN5LmMgYi90ZXN0cy9rbXNfY3Vyc29yX2xlZ2FjeS5jDQo+ID4gaW5kZXggMGYw
-ZGY5NTFiLi42Y2MyY2YzMjkgMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMva21zX2N1cnNvcl9sZWdh
-Y3kuYw0KPiA+ICsrKyBiL3Rlc3RzL2ttc19jdXJzb3JfbGVnYWN5LmMNCj4gPiBAQCAtMzAzLDgg
-KzMwMywxMyBAQCBlbnVtIGZsaXBfdGVzdCB7DQo+ID4gIAlmbGlwX3Rlc3RfbGFzdCA9IGZsaXBf
-dGVzdF9hdG9taWNfdHJhbnNpdGlvbnNfdmFyeWluZ19zaXplDQo+ID4gIH07DQo+ID4gIA0KPiA+
-IC1zdGF0aWMgYm9vbCBjdXJzb3Jfc2xvd3BhdGgoZW51bSBmbGlwX3Rlc3QgbW9kZSkNCj4gPiAr
-c3RhdGljIGJvb2wgY3Vyc29yX3Nsb3dwYXRoKGlndF9kaXNwbGF5X3QgKmRpc3BsYXksIGVudW0g
-ZmxpcF90ZXN0IG1vZGUpDQo+ID4gIHsNCj4gPiArCS8qIEludGVsIGRpc3BsYXkgOSBhbmQgbmV3
-ZXIgd2lsbCBoYW5kbGUgY3Vyc29yIG1vdmVtZW50IGFzIGZhc3RzZXRzICovDQo+ID4gKwlpZiAo
-aXNfaTkxNV9kZXZpY2UoZGlzcGxheS0+ZHJtX2ZkKSAmJg0KPiA+ICsJICAgIGludGVsX2Rpc3Bs
-YXlfdmVyKGludGVsX2dldF9kcm1fZGV2aWQoZGlzcGxheS0+ZHJtX2ZkKSkgPj0gOSkNCj4gPiAr
-CSAgICByZXR1cm4gdHJ1ZTsNCj4gPiArDQo+ID4gIAkvKiBjdXJzb3IgbW92aW5nIGRvZXNuJ3Qg
-dGFrZSBzbG93cGF0aCwgZXZlcnl0aGluZyBlbHNlIGRvZXMuICovDQo+ID4gIAlpZiAobW9kZSA9
-PSBmbGlwX3Rlc3RfbGVnYWN5IHx8IG1vZGUgPT0gZmxpcF90ZXN0X2F0b21pYykNCj4gPiAgCQly
-ZXR1cm4gZmFsc2U7DQo+ID4gQEAgLTYwMCw3ICs2MDUsNyBAQCBzdGF0aWMgdm9pZCBiYXNpY19m
-bGlwX2N1cnNvcihpZ3RfZGlzcGxheV90ICpkaXNwbGF5LA0KPiA+ICANCj4gPiAgCQlpZiAobWlz
-cykNCj4gPiAgCQkJeyAvKiBjb21wYXJlIG5vdGhpbmcsIGFscmVhZHkgZmFpbGVkICovIH0NCj4g
-PiAtCQllbHNlIGlmICghY3Vyc29yX3Nsb3dwYXRoKG1vZGUpKQ0KPiA+ICsJCWVsc2UgaWYgKCFj
-dXJzb3Jfc2xvd3BhdGgoZGlzcGxheSwgbW9kZSkpDQo+ID4gIAkJCW1pc3MgPSBkZWx0YSAhPSAw
-Ow0KPiA+ICAJCWVsc2UNCj4gPiAgCQkJbWlzcyA9IGRlbHRhICE9IDAgJiYgZGVsdGEgIT0gMTsN
-Cj4gPiBAQCAtNzUzLDcgKzc1OCw3IEBAIHN0YXRpYyB2b2lkIGZsaXBfdnNfY3Vyc29yKGlndF9k
-aXNwbGF5X3QgKmRpc3BsYXksIGVudW0gZmxpcF90ZXN0IG1vZGUsIGludCBubG9vDQo+ID4gIAkJ
-CWRvX2lvY3RsKGRpc3BsYXktPmRybV9mZCwgRFJNX0lPQ1RMX01PREVfQ1VSU09SLCAmYXJnW25s
-b29wcyAmIDFdKTsNCj4gPiAgDQo+ID4gIAkJLyogTm9yIHNob3VsZCBpdCBoYXZlIGRlbGF5ZWQg
-dGhlIGZvbGxvd2luZyBjdXJzb3IgdXBkYXRlICovDQo+ID4gLQkJaWYgKCFjdXJzb3Jfc2xvd3Bh
-dGgobW9kZSkpDQo+ID4gKwkJaWYgKCFjdXJzb3Jfc2xvd3BhdGgoZGlzcGxheSwgbW9kZSkpDQo+
-ID4gIAkJCWlndF9hc3NlcnRfZXEoa21zdGVzdF9nZXRfdmJsYW5rKGRpc3BsYXktPmRybV9mZCwg
-cGlwZSwgMCksIHZibGFua19zdGFydCk7DQo+ID4gIAkJZWxzZQ0KPiA+ICAJCQlpZ3RfYXNzZXJ0
-X2x0ZShrbXN0ZXN0X2dldF92YmxhbmsoZGlzcGxheS0+ZHJtX2ZkLCBwaXBlLCAwKSwgdmJsYW5r
-X3N0YXJ0ICsgMSk7DQo+ID4gQEAgLTExMTksNyArMTEyNCw3IEBAIHN0YXRpYyB2b2lkIGN1cnNv
-cl92c19mbGlwKGlndF9kaXNwbGF5X3QgKmRpc3BsYXksIGVudW0gZmxpcF90ZXN0IG1vZGUsIGlu
-dCBubG9vDQo+ID4gIAkJCXZibGFua19sYXN0ID0gdmJsLnNlcXVlbmNlOw0KPiA+ICAJCX0NCj4g
-PiAgDQo+ID4gLQkJaWYgKCFjdXJzb3Jfc2xvd3BhdGgobW9kZSkpDQo+ID4gKwkJaWYgKCFjdXJz
-b3Jfc2xvd3BhdGgoZGlzcGxheSwgbW9kZSkpDQo+ID4gIAkJCWlndF9hc3NlcnRfbHRlKHZibC5z
-ZXF1ZW5jZSwgdmJsYW5rX3N0YXJ0ICsgNSAqIHZyZWZyZXNoIC8gOCk7DQo+ID4gIA0KPiA+ICAJ
-CXNoYXJlZFswXSA9IDE7DQo+ID4gQEAgLTE1NTgsNyArMTU2Myw3IEBAIGlndF9tYWluDQo+ID4g
-IAkJaWd0X3N1YnRlc3RfZigiJXNmbGlwLWJlZm9yZS1jdXJzb3ItJXMiLCBwcmVmaXgsIG1vZGVz
-W2ldKQ0KPiA+ICAJCQliYXNpY19mbGlwX2N1cnNvcigmZGlzcGxheSwgaSwgRkxJUF9CRUZPUkVf
-Q1VSU09SLCAwKTsNCj4gPiAgDQo+ID4gLQkJaWYgKCFjdXJzb3Jfc2xvd3BhdGgoaSkpIHsNCj4g
-PiArCQlpZiAoIWN1cnNvcl9zbG93cGF0aCgmZGlzcGxheSwgaSkpIHsNCj4gPiAgCQkJaWd0X3N1
-YnRlc3RfZigiJXNidXN5LWZsaXAtYmVmb3JlLWN1cnNvci0lcyIsIHByZWZpeCwgbW9kZXNbaV0p
-IHsNCj4gDQo+IFlvdSBjYW4ndCBkbyB0aGlzLiBJZiB5b3UncmUgbm90IGluIGEgZml4dHVyZSBv
-ciBhIHN1YnRlc3QsIHlvdSBjYW5ub3QNCj4gdG91Y2ggaGFyZHdhcmUuIEluIGdlbmVyYWwsIGRv
-bid0IGF0dGVtcHQgdG8gZG8NCj4gDQo+IGlmICguLi4pDQo+ICAgaWd0X3N1YnRlc3QoKQ0KPiAN
-Cj4gDQo+IFRoaXMgc2hvdWxkIHJhdGhlciBiZSBzb21ldGhpbmcgbGlrZQ0KPiANCj4gaWd0X3N1
-YnRlc3RfZigiLi4uIiwgcHJlZml4LCBtb2Rlc1tpXSkgew0KPiAgIGlndF9yZXF1aXJlKCFjdXJz
-b3Jfc2xvd3BhdGgoJmRpc3BsYXksIGkpKTsNCj4gICAuLi4NCj4gfQ0KPiANCg0KTmljZSBjYXRj
-aCENCldpbGwgYmUgZml4ZWQgaW4gdGhlIG5leHQgdmVyc2lvbi4NCg0KdGhhbmtzDQoNCj4gDQoN
-Cg==
+Multidraw tests was not notifying driver about the area it uses
+blitter to pain the primary background color between drawing methods.
+Without this notification driver will not update pipe and the CRC will
+not update causing the tests fail due a CRC mismatch.
+
+All the other callers of fill_fb_region() are safe, doing a page flip
+or a atomic commit afterwards.
+
+Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
+---
+ tests/kms_frontbuffer_tracking.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/tests/kms_frontbuffer_tracking.c b/tests/kms_frontbuffer_tracking.c
+index 496718e2a..574048537 100644
+--- a/tests/kms_frontbuffer_tracking.c
++++ b/tests/kms_frontbuffer_tracking.c
+@@ -1123,6 +1123,17 @@ static void fill_fb_region(struct fb_region *region, enum color ecolor)
+ 			 color);
+ }
+ 
++static void _fb_dirty_ioctl(struct fb_region *region)
++{
++	struct rect rect;
++
++	rect.x = region->x;
++	rect.y = region->y;
++	rect.w = region->w;
++	rect.h = region->h;
++	fb_dirty_ioctl(region, &rect);
++}
++
+ static void unset_all_crtcs(void)
+ {
+ 	igt_display_reset(&drm.display);
+@@ -2122,6 +2133,7 @@ static void multidraw_subtest(const struct test_mode *t)
+ 			}
+ 
+ 			fill_fb_region(target, COLOR_PRIM_BG);
++			_fb_dirty_ioctl(target);
+ 
+ 			update_wanted_crc(t, &blue_crcs[t->format].crc);
+ 			do_assertions(ASSERT_NO_ACTION_CHANGE);
+-- 
+2.32.0
