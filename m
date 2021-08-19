@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 327D56E80B
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Aug 2021 07:50:40 +0000 (UTC)
-From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Date: Thu, 19 Aug 2021 13:12:54 +0530
-Message-Id: <20210819074254.1129285-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E5E026E4B5
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Aug 2021 06:10:24 +0000 (UTC)
+From: Mastan Katragadda <mastanx.katragadda@intel.com>
+Date: Thu, 19 Aug 2021 11:40:29 +0530
+Message-Id: <20210819061029.610090-1-mastanx.katragadda@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t] tests/kms_setmode: Handle unsupported modes for
- invalid crtc test
+Subject: [igt-dev] [i-g-t] tests/i915/exec_balancer: Added Skip invalid-bonds
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,46 +17,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, tejaskumarx.surendrakumar.upadhyay@intel.com
+Cc: mastanx.katragadda@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Unsupported modes in crtc need to return proper error in order
-to report back that applied config was failed or not. Thus added
-ENOENT error.
+Added skip which ever gen12+ platforms not supporing bonding.
 
-Test affected (fail -> pass after change) :
-igt@kms_setmode@invalid-clone-single-[crtc|crtc-stealing]
+Disable bonding on gen12+ platforms aside from ones already supported by
+the i915 - TGL, RKL, and ADL-S.
 
-Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Link: https://cgit.freedesktop.org/drm-tip/commit/?id=ce7e75c7ef1bf8ea3d947da8c674d2f40fd7d73
+
+Signed-off-by: Mastan Katragadda <mastanx.katragadda@intel.com>
 ---
- tests/kms_setmode.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tests/i915/gem_exec_balancer.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 89220b83..f322a373 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -569,8 +569,10 @@ int __test_crtc_config(struct crtc_config *crtcs, int crtc_count,
- 	for (int i = 0; i < crtc->cconfs->connector->count_modes; i++) {
- 		uint32_t *ids;
- 
--		if (!crtc_supports_mode(crtc, &crtc->cconfs->connector->modes[i]))
-+		if (!crtc_supports_mode(crtc, &crtc->cconfs->connector->modes[i])) {
-+			ret = -ENOENT;
- 			continue;
-+		}
- 
- 		crtc->mode = crtc->cconfs->connector->modes[i];
- 
-@@ -622,6 +624,9 @@ int __test_crtc_config(struct crtc_config *crtcs, int crtc_count,
- 		return ret;
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index 2f98950b..2d9c1a53 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -349,6 +349,10 @@ static void invalid_bonds(int i915)
+ 		bonds[n].num_bonds = 1;
  	}
- 
-+	if (ret < 0)
-+		*config_failed = true;
+ 	engines.extensions = to_user_pointer(&bonds);
 +
- 	/* When all crtcs[base].modes are tried & failed to fit into link BW. */
- 	return ret;
- }
++	igt_skip_on_f(__set_param_fresh_context(i915, p) == -ENODEV,
++			"Bonding not supported\n");
++
+ 	igt_assert_eq(__set_param_fresh_context(i915, p), 0);
+ 
+ 	bonds[0].base.next_extension = -1ull;
 -- 
-2.31.1
+2.25.1
