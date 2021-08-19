@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8365426380154548671=="
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 187C66E484
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Aug 2021 07:01:11 +0000 (UTC)
+Message-ID: <7350bf26fc74b02873fd8dd7b447159c58214bff.camel@linux.intel.com>
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+Date: Thu, 19 Aug 2021 09:00:33 +0200
+In-Reply-To: <98f14695d85b4c4db75ba7435c00ec76@intel.com>
+References: <20210818140651.819205-1-thomas.hellstrom@linux.intel.com>
+ <98f14695d85b4c4db75ba7435c00ec76@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 19 Aug 2021 06:38:42 -0000
-Message-ID: <162935512216.11705.2269258183038833810@emeril.freedesktop.org>
-References: <20210819044941.7699-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20210819044941.7699-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRvcHQg?=
- =?utf-8?q?to_use_allocator_=28rev5=29?=
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/i915/gem_lmem_swapping: Add
+ the gem_lmem_swapping test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,171 +20,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Tang, CQ" <cq.tang@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, "Dixit, Ashutosh" <ashutosh.dixit@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8365426380154548671==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, 2021-08-18 at 15:51 +0000, Tang, CQ wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> > Sent: Wednesday, August 18, 2021 7:07 AM
+> > To: igt-dev@lists.freedesktop.org
+> > Cc: Tang, CQ <cq.tang@intel.com>; Tvrtko Ursulin
+> > <tvrtko.ursulin@linux.intel.com>; Dixit, Ashutosh
+> > <ashutosh.dixit@intel.com>; Thomas Hellström
+> > <thomas.hellstrom@linux.intel.com>; Chris Wilson
+> > <chris@chris-wilson.co.uk>
+> > Subject: [PATCH i-g-t v2] tests/i915/gem_lmem_swapping: Add the
+> > gem_lmem_swapping test
+> > 
+> > From: CQ Tang <cq.tang@intel.com>
+> > 
+> > This test exercises the lmem eviction functionality with one
+> > dynamic subtest
+> > per lmem region.
+> > 
+> > In essence the various subtests create lmem buffers objects
+> > consuming
+> > more lmem memory than available and check that they are successful
+> > submitting workload subsets whose lmem size requirements are
+> > smaller
+> > than the total amount of lmem available, forcing eviction of buffer
+> > objects
+> > under various conditions.
+> 
+> I see this is not the latest code version. I made modification
+> yesterday to further reduce the testing runtime. There are other
+> differences as well.
+> Is this intended?
 
-== Series Details ==
+Yes, there have been some recent changes lately. The code sent upstream
+is currently intended only for DG1, and does not have some of the speed
+adjustment needed for newer hardware and some code used to adjust the
+number of loops for the workload to be similar across most tests on
+DG1, where no test typically runs for longer than 20-30s. The code is
+also completely adapted to the new uapi changes.
 
-Series: Adopt to use allocator (rev5)
-URL   : https://patchwork.freedesktop.org/series/93661/
-State : success
+/Thomas
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_10498 -> IGTPW_6136
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6136/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6136 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-guc:         [PASS][1] -> [FAIL][2] ([i915#2203] / [i915#579])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10498/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6136/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gtt:
-    - {fi-tgl-dsi}:       [DMESG-WARN][3] -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10498/fi-tgl-dsi/igt@i915_selftest@live@gtt.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6136/fi-tgl-dsi/igt@i915_selftest@live@gtt.html
-
-  * igt@i915_selftest@live@perf:
-    - {fi-tgl-dsi}:       [DMESG-WARN][5] ([i915#2867]) -> [PASS][6] +6 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10498/fi-tgl-dsi/igt@i915_selftest@live@perf.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6136/fi-tgl-dsi/igt@i915_selftest@live@perf.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#2203]: https://gitlab.freedesktop.org/drm/intel/issues/2203
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#579]: https://gitlab.freedesktop.org/drm/intel/issues/579
-  [k.org#205379]: https://bugzilla.kernel.org/show_bug.cgi?id=205379
-
-
-Participating hosts (35 -> 33)
-------------------------------
-
-  Missing    (2): fi-tgl-1115g4 fi-bsw-cyan 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6178 -> IGTPW_6136
-
-  CI-20190529: 20190529
-  CI_DRM_10498: b66f2ed13db3f8f7bcf616cea0e59ebe8728b131 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6136: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6136/index.html
-  IGT_6178: 146260200f9a6d4536e48a195e2ab49a07d4f0c1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6136/index.html
-
---===============8365426380154548671==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Adopt to use allocator (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93661/">https://patchwork.freedesktop.org/series/93661/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6136/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6136/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10498 -&gt; IGTPW_6136</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6136/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6136 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_pm_rpm@module-reload:<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10498/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6136/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/579">i915#579</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gtt:</p>
-<ul>
-<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10498/fi-tgl-dsi/igt@i915_selftest@live@gtt.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6136/fi-tgl-dsi/igt@i915_selftest@live@gtt.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@perf:</p>
-<ul>
-<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10498/fi-tgl-dsi/igt@i915_selftest@live@perf.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6136/fi-tgl-dsi/igt@i915_selftest@live@perf.html">PASS</a> +6 similar issues</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (35 -&gt; 33)</h2>
-<p>Missing    (2): fi-tgl-1115g4 fi-bsw-cyan </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6178 -&gt; IGTPW_6136</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10498: b66f2ed13db3f8f7bcf616cea0e59ebe8728b131 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6136: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6136/index.html<br />
-  IGT_6178: 146260200f9a6d4536e48a195e2ab49a07d4f0c1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8365426380154548671==--
