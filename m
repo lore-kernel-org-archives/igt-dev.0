@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20210727182057.78409-1-matthew.brost@intel.com>
- <20210727182057.78409-2-matthew.brost@intel.com>
- <be3caf10-93d7-bc72-21bc-00d7e4d57630@intel.com>
- <20210730000010.GA58337@DUT151-ICLU.fm.intel.com>
-From: John Harrison <john.c.harrison@intel.com>
-Message-ID: <b5cdcc00-122b-d8be-1617-e5f3d676d4a6@intel.com>
-Date: Thu, 19 Aug 2021 16:31:13 -0700
-In-Reply-To: <20210730000010.GA58337@DUT151-ICLU.fm.intel.com>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: 8bit
-Content-Language: en-GB
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0CBF16E832
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Aug 2021 04:46:20 +0000 (UTC)
+Date: Fri, 20 Aug 2021 06:46:14 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210820044614.GA3286@zkempczy-mobl2>
+References: <20210819044941.7699-1-zbigniew.kempczynski@intel.com>
+ <20210819044941.7699-2-zbigniew.kempczynski@intel.com>
+ <87v941b0f6.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] i915/gem_scheduler: Ensure
- submission order in manycontexts
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87v941b0f6.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/gem_ctx_shared: Adopt to use
+ allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,110 +24,137 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 7/29/2021 17:00, Matthew Brost wrote:
-> On Thu, Jul 29, 2021 at 04:54:08PM -0700, John Harrison wrote:
->> On 7/27/2021 11:20, Matthew Brost wrote:
->>> With GuC submission contexts can get reordered (compared to submission
->>> order), if contexts get reordered the sequential nature of the batches
->>> releasing the next batch's semaphore in function timesliceN() get broken
->>> resulting in the test taking much longer than if should. e.g. Every
->>> contexts needs to be timesliced to release the next batch. Corking the
->>> first submission until all the batches have been submitted should ensure
->>> submission order.
->>>
->>> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
->>> ---
->>>    tests/i915/gem_exec_schedule.c | 16 +++++++++++++++-
->>>    1 file changed, 15 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
->>> index f03842478..41f2591a5 100644
->>> --- a/tests/i915/gem_exec_schedule.c
->>> +++ b/tests/i915/gem_exec_schedule.c
->>> @@ -597,12 +597,13 @@ static void timesliceN(int i915, const intel_ctx_cfg_t *cfg,
->>>    	struct drm_i915_gem_execbuffer2 execbuf  = {
->>>    		.buffers_ptr = to_user_pointer(&obj),
->>>    		.buffer_count = 1,
->>> -		.flags = engine | I915_EXEC_FENCE_OUT,
->>> +		.flags = engine | I915_EXEC_FENCE_OUT | I915_EXEC_FENCE_SUBMIT,
->>>    	};
->>>    	uint32_t *result =
->>>    		gem_mmap__device_coherent(i915, obj.handle, 0, sz, PROT_READ);
->>>    	const intel_ctx_t *ctx;
->>>    	int fence[count];
->>> +	IGT_CORK_FENCE(cork);
->>>    	/*
->>>    	 * Create a pair of interlocking batches, that ping pong
->>> @@ -614,6 +615,17 @@ static void timesliceN(int i915, const intel_ctx_cfg_t *cfg,
->>>    	igt_require(gem_scheduler_has_timeslicing(i915));
->>>    	igt_require(intel_gen(intel_get_drm_devid(i915)) >= 8);
->>> +	/*
->>> +	 * With GuC submission contexts can get reordered (compared to
->>> +	 * submission order), if contexts get reordered the sequential
->>> +	 * nature of the batches releasing the next batch's semaphore gets
->>> +	 * broken resulting in the test taking much longer than it should (e.g.
->>> +	 * every context needs to be timesliced to release the next batch).
->>> +	 * Corking the first submission until all batches have been
->>> +	 * submitted should ensure submission order.
->>> +	 */
->>> +	execbuf.rsvd2 = igt_cork_plug(&cork, i915);
->>> +
->>>    	/* No coupling between requests; free to timeslice */
->>>    	for (int i = 0; i < count; i++) {
->>> @@ -624,8 +636,10 @@ static void timesliceN(int i915, const intel_ctx_cfg_t *cfg,
->>>    		intel_ctx_destroy(i915, ctx);
->>>    		fence[i] = execbuf.rsvd2 >> 32;
->>> +		execbuf.rsvd2 >>= 32;
->> This means you are passing fence_out[A] as fenc_in[B]? I.e. this patch is
->> also changing the behaviour to make each batch dependent upon the previous
-> This is a submission fence, it just ensures they get submitted in order.
-> Corking the first request + the fence, ensures all the requests get
-> submitted basically at the same time compared to execbuf IOCTL time
-> without it.
-The input side is the submit fence, but the output side is the 
-completion fence. You are chaining the out fence of the previous request 
-as the submit fence of the next request.
+On Thu, Aug 19, 2021 at 02:16:13PM -0700, Dixit, Ashutosh wrote:
+> On Wed, 18 Aug 2021 21:49:39 -0700, Zbigniew Kempczyński wrote:
+> >
+> > @@ -518,12 +533,24 @@ static void store_dword(int i915, const intel_ctx_t *ctx, unsigned ring,
+> >
+> >	memset(obj, 0, sizeof(obj));
+> >	obj[0].handle = cork;
+> > -	obj[0].offset = cork << 20;
+> >	obj[1].handle = target;
+> > -	obj[1].offset = target << 20;
+> >	obj[2].handle = gem_create(i915, 4096);
+> > -	obj[2].offset = 256 << 10;
+> > -	obj[2].offset += (random() % 128) << 12;
+> > +	if (ahnd) {
+> > +		obj[0].offset = cork_offset;
+> > +		obj[0].flags |= EXEC_OBJECT_PINNED;
+> > +		obj[1].offset = target_offset;
+> > +		obj[1].flags |= EXEC_OBJECT_PINNED;
+> > +		if (write_domain)
+> > +			obj[1].flags |= EXEC_OBJECT_WRITE;
+> > +		obj[2].offset = get_offset(ahnd, obj[2].handle, 4096, 0x0);
+> > +		obj[2].flags |= EXEC_OBJECT_PINNED;
+> > +		execbuf.flags |= I915_EXEC_NO_RELOC;
+> 
+> I915_EXEC_NO_RELOC needed (since I think we weren't doing this earlier)?
 
-Loop 0:
-   execbuf.rsvd2 = cork
-   submit()
-       execbuf.rsvd2 is now the out fence in the upper 32
-   fence[0] = execbuf.rsvd2 >> 32;
-   execbuf.rsvd2 >>= 32;
-       move new out fence to be the next in fence
+That's minor optimization for softpinning. We got relocation_count == 0 for 
+each gem object, so eb->relocs is empty list. We also don't expect offset
+change on execbuf return.
 
-Loop 1:
-   execbuf.rsvd2 == fence[0]
-   submit()
-   fence[1] = new out fence
+> 
+> > -static void unplug_show_queue(int i915, struct igt_cork *c,
+> > +static void unplug_show_queue(int i915, struct igt_cork *c, uint64_t ahnd,
+> >			      const intel_ctx_cfg_t *cfg, unsigned int engine)
+> >  {
+> >	igt_spin_t *spin[MAX_ELSP_QLEN];
+> >
+> >	for (int n = 0; n < ARRAY_SIZE(spin); n++) {
+> >		const intel_ctx_t *ctx = create_highest_priority(i915, cfg);
+> > -		spin[n] = __igt_spin_new(i915, .ctx = ctx, .engine = engine);
+> > +
+> > +		/*
+> > +		 * When we're using same vm we should use allocator handle
+> > +		 * passed by the caller. This is the case where cfg->vm
+> > +		 * is not NULL.
+> > +		 *
+> > +		 * For cases where context use its own vm we need separate
+> > +		 * ahnd for it.
+> > +		 */
+> > +		if (!cfg->vm)
+> > +			ahnd = get_reloc_ahnd(i915, ctx->id);
+> 
+> Ok, good, even though in this code we always used shared vm this is good in
+> case something changes later.
+> 
+> > @@ -599,8 +643,10 @@ static uint32_t store_timestamp(int i915,
+> >	uint32_t handle = gem_create(i915, 4096);
+> >	struct drm_i915_gem_exec_object2 obj = {
+> >		.handle = handle,
+> > -		.relocation_count = 1,
+> > -		.offset = (32 << 20) + (handle << 16),
+> > +		.relocation_count = !ahnd ? 1 : 0,
+> > +		.offset = !ahnd ? (32 << 20) + (handle << 16) :
+> > +				  get_offset(ahnd, handle, 4096, 0),
+> > +		.flags = !ahnd ? 0 : EXEC_OBJECT_PINNED,
+> 
+> | EXEC_OBJECT_WRITE ?
 
-Loop 2:
-   execbuf.rsvd2 == fence[1]
-   ...
+No, see there's no write_domain in reloc struct. We're waiting for objects
+explicitely - see gem_set_domain() /* no write hazard lies */.
 
+> 
+> > @@ -612,7 +658,7 @@ static uint32_t store_timestamp(int i915,
+> >	struct drm_i915_gem_execbuffer2 execbuf = {
+> >		.buffers_ptr = to_user_pointer(&obj),
+> >		.buffer_count = 1,
+> > -		.flags = ring | I915_EXEC_FENCE_IN,
+> > +		.flags = ring | I915_EXEC_FENCE_IN | (!!ahnd * I915_EXEC_NO_RELOC),
+> 
+> I915_EXEC_NO_RELOC needed? Also !! has gone out of fashion :)
 
-You have changed the parallel requests into a sequential line. Request X 
-is now waiting for Request Y to *complete* before it can be submitted. 
-Only the first request is waiting on the cork.
+I wanted to put minimal code changes here. If you really don't like !!ahnd 
+I will remove it, putting dedicated if () to add this flag later.
 
-John.
+> 
+> > @@ -831,6 +903,8 @@ static void smoketest(int i915, const intel_ctx_cfg_t *cfg,
+> >	unsigned engine;
+> >	uint32_t scratch;
+> >	uint32_t *ptr;
+> > +	uint64_t ahnd = get_reloc_ahnd(i915, 0); /* same vm */
+> > +	uint64_t scratch_offset;
+> >
+> >	q_cfg = *cfg;
+> >	q_cfg.vm = gem_vm_create(i915);
+> > @@ -848,9 +922,11 @@ static void smoketest(int i915, const intel_ctx_cfg_t *cfg,
+> >	igt_require(nengine);
+> >
+> >	scratch = gem_create(i915, 4096);
+> > +	scratch_offset = get_offset(ahnd, scratch, 4096, 0);
+> >	igt_fork(child, ncpus) {
+> >		unsigned long count = 0;
+> >		const intel_ctx_t *ctx;
+> > +		ahnd = get_reloc_ahnd(i915, 0); /* ahnd to same vm */
+> 
+> Can't we use the parent's ahnd here, since we are using
+> intel_allocator_multiprocess_start/stop?
 
->> one. That change is not mentioned in the new comment. It is also the exact
-> Yea, I could explain this better. Will fix.
->
-> Matt
->
->> opposite of the comment immediately above the loop - 'No coupling between
->> requests'.
->>
->> John.
->>
->>
->>>    	}
->>> +	igt_cork_unplug(&cork);
->>>    	gem_sync(i915, obj.handle);
->>>    	gem_close(i915, obj.handle);
+No, you cannot use ahnd created within parent process in the child.
+IPC communication rely on child_tid value which is properly assigned on
+intel_allocator_open(). Idea of this is to send requests to the allocator
+by the children with their own child_tid to distinguish them. Please track
+
+- intel_allocator.c: send_req_recv_resp()
+  - intel_allocator.c: send_req()
+    - intel_allocator_msgchannel.c: msgqueue_send_req() 
+
+calls. Using child_tid in this communication will become clear then
+(especially it's initialization necessity on intel_allocator_open()).
+
+That's why calling intel_allocator_open() in each child is necessary,
+it just assigns that magic number for IPC which distinguishes requests.
+
+--
+Zbigniew
+
+> 
+> Please take a look at the nits above and if anything needs to be
+> done. Otherwise this is:
+> 
+> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
