@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9D94A89E5B
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Aug 2021 03:10:14 +0000 (UTC)
-Date: Mon, 23 Aug 2021 05:10:08 +0200
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E194F89E7C
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Aug 2021 03:13:05 +0000 (UTC)
+Date: Mon, 23 Aug 2021 05:13:00 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210823031008.GB3253@zkempczy-mobl2>
+Message-ID: <20210823031300.GC3253@zkempczy-mobl2>
 References: <20210821071025.1657059-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -50,17 +50,16 @@ On Sat, Aug 21, 2021 at 12:40:25PM +0530, apoorva1.singh@intel.com wrote:
 > -					    I915_SYSTEM_MEMORY);
 > +					    I915_SYSTEM_MEMORY,
 > +					    I915_DEVICE_MEMORY);
-
-Works fine for dg1, thanks!
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
-
 >  
 >  		igt_fork_hang_detector(data.drm_fd);
 >  	}
 > -- 
 > 2.25.1
 > 
+
+Works fine, thanks!
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
