@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEA2E89B9F
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Aug 2021 06:49:37 +0000 (UTC)
-Date: Mon, 23 Aug 2021 08:49:33 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210823064933.GD5611@zkempczy-mobl2>
-References: <20210822121626.12150-1-arjun.melkaveri@intel.com>
- <20210823032608.GB5611@zkempczy-mobl2>
- <20210823060921.GA17300@arjun-NUC8i7BEH>
-MIME-Version: 1.0
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3659289CD9
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Aug 2021 08:18:52 +0000 (UTC)
+From: "Surendrakumar Upadhyay, TejaskumarX"
+ <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Mon, 23 Aug 2021 08:18:50 +0000
+Message-ID: <SN6PR11MB342140213AA1B77BBD544EB5DFC49@SN6PR11MB3421.namprd11.prod.outlook.com>
+References: <20210819074254.1129285-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+ <4c56c2a1-92ec-93b6-5492-ef7266d6a9bc@intel.com>
+ <DM8PR11MB5719A53693C75E3921CB84C18DC19@DM8PR11MB5719.namprd11.prod.outlook.com>
+In-Reply-To: <DM8PR11MB5719A53693C75E3921CB84C18DC19@DM8PR11MB5719.namprd11.prod.outlook.com>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210823060921.GA17300@arjun-NUC8i7BEH>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_sync: igt_require to
- check availability of engine in list_engines
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [i-g-t] tests/kms_setmode: Handle unsupported modes
+ for invalid crtc test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,66 +25,75 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Melkaveri, Arjun" <arjun.melkaveri@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Aug 23, 2021 at 11:39:21AM +0530, Melkaveri, Arjun wrote:
-> On Mon, Aug 23, 2021 at 05:26:08AM +0200, Zbigniew Kempczyński wrote:
-> > On Sun, Aug 22, 2021 at 05:46:26PM +0530, Arjun Melkaveri wrote:
-> > > Replaced igt_assert with igt_require in list_engines , to
-> > > avoid false failure of test case if engine is not supported
-> > > or found .
-> > > Test will return Test requirement not met.
-> > > 
-> > > Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
-> > > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > > ---
-> > >  tests/i915/gem_sync.c | 4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c
-> > > index 6cb00c40..4ad264a2 100644
-> > > --- a/tests/i915/gem_sync.c
-> > > +++ b/tests/i915/gem_sync.c
-> > > @@ -106,9 +106,9 @@ list_engines(int fd, const intel_ctx_t *ctx, unsigned ring)
-> > >  		ied = intel_engine_list_for_ctx_cfg(fd, &ctx->cfg);
-> > >  	} else {
-> > >  		if (ctx->cfg.num_engines)
-> > > -			igt_assert(ring < ctx->cfg.num_engines);
-> > > +			igt_require(ring < ctx->cfg.num_engines);
-> > >  		else
-> > > -			igt_assert(gem_has_ring(fd, ring));
-> > > +			igt_require(gem_has_ring(fd, ring));
-> > 
-> > To be honest I don't like this change. If we have invalid ring
-> > here it smells like bug in the code. If caller is passed 
-> > ctx it should be created over cfg, so it contains valid (imo)
-> > engine set. Thus if someone passed invalid ring I would assume
-> > this is bug in the code and assert is correct bahavior here.
-> > 
-> > What are scenarios you're trying to handle?
-> > 
-> > --
-> > Zbigniew
-> This test is asserting for render engine in platform that doesnt support it.
-> It used to skip before test was converted to use intel_ctx_t .
-> (https://patchwork.freedesktop.org/patch/442850/)
-
-I think render engine should be excluded in DRM_I915_QUERY_ENGINE_INFO query.
-If it is not imo this is a bug. Kernel shouldn't return render engine if it is
-not available on some platform.
-
---
-Zbigniew
-
-> 
-> -Arjun 
-> > 
-> > >  
-> > >  		ied.engines[ied.nengines].flags = ring;
-> > >  		strcpy(ied.engines[ied.nengines].name, " ");
-> > > -- 
-> > > 2.25.1
-> > > 
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTW9kZW0sIEJoYW51cHJh
+a2FzaCA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNvbT4NCj4gU2VudDogMjAgQXVndXN0IDIw
+MjEgMTY6NDgNCj4gVG86IE5hdXRpeWFsLCBBbmtpdCBLIDxhbmtpdC5rLm5hdXRpeWFsQGludGVs
+LmNvbT47IFN1cmVuZHJha3VtYXINCj4gVXBhZGh5YXksIFRlamFza3VtYXJYDQo+IDx0ZWphc2t1
+bWFyeC5zdXJlbmRyYWt1bWFyLnVwYWRoeWF5QGludGVsLmNvbT47IGlndC0NCj4gZGV2QGxpc3Rz
+LmZyZWVkZXNrdG9wLm9yZw0KPiBTdWJqZWN0OiBSRTogW2lndC1kZXZdIFtpLWctdF0gdGVzdHMv
+a21zX3NldG1vZGU6IEhhbmRsZSB1bnN1cHBvcnRlZCBtb2Rlcw0KPiBmb3IgaW52YWxpZCBjcnRj
+IHRlc3QNCj4gDQo+ID4gRnJvbTogaWd0LWRldiA8aWd0LWRldi1ib3VuY2VzQGxpc3RzLmZyZWVk
+ZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mDQo+ID4gTmF1dGl5YWwsIEFua2l0IEsNCj4gPiBTZW50
+OiBGcmlkYXksIEF1Z3VzdCAyMCwgMjAyMSA0OjI2IFBNDQo+ID4gVG86IFN1cmVuZHJha3VtYXIg
+VXBhZGh5YXksIFRlamFza3VtYXJYDQo+ID4gPHRlamFza3VtYXJ4LnN1cmVuZHJha3VtYXIudXBh
+ZGh5YXlAaW50ZWwuY29tPjsNCj4gPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiA+
+IFN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW2ktZy10XSB0ZXN0cy9rbXNfc2V0bW9kZTogSGFuZGxl
+IHVuc3VwcG9ydGVkDQo+ID4gbW9kZXMgZm9yIGludmFsaWQgY3J0YyB0ZXN0DQo+ID4NCj4gPiBU
+aGFua3MgZm9yIHRoZSBwYXRjaC4gVGhpcyBpbmRlZWQgd2FzIG1pc3NpbmcgZm9yIHRoZSBpbnZh
+bGlkIHRlc3RzDQo+ID4gd2l0aCBtdWx0aS1kaXNwbGF5cy4NCj4gPg0KPiA+IFBhdGNoIGxvb2tz
+IGdvb2QgdG8gbWUuDQo+ID4NCj4gPiBSZXZpZXdlZC1ieTogQW5raXQgTmF1dGl5YWwgPGFua2l0
+LmsubmF1dGl5YWxAaW50ZWwuY29tPg0KPiA+DQo+ID4NCj4gPiBPbiA4LzE5LzIwMjEgMToxMiBQ
+TSwgVGVqYXMgVXBhZGh5YXkgd3JvdGU6DQo+ID4gPiBVbnN1cHBvcnRlZCBtb2RlcyBpbiBjcnRj
+IG5lZWQgdG8gcmV0dXJuIHByb3BlciBlcnJvciBpbiBvcmRlciB0bw0KPiA+ID4gcmVwb3J0IGJh
+Y2sgdGhhdCBhcHBsaWVkIGNvbmZpZyB3YXMgZmFpbGVkIG9yIG5vdC4gVGh1cyBhZGRlZCBFTk9F
+TlQNCj4gPiA+IGVycm9yLg0KPiA+ID4NCj4gPiA+IFRlc3QgYWZmZWN0ZWQgKGZhaWwgLT4gcGFz
+cyBhZnRlciBjaGFuZ2UpIDoNCj4gPiA+IGlndEBrbXNfc2V0bW9kZUBpbnZhbGlkLWNsb25lLXNp
+bmdsZS1bY3J0Y3xjcnRjLXN0ZWFsaW5nXQ0KPiA+ID4NCj4gPiA+IFNpZ25lZC1vZmYtYnk6IFRl
+amFzIFVwYWRoeWF5DQo+ID4gPiA8dGVqYXNrdW1hcnguc3VyZW5kcmFrdW1hci51cGFkaHlheUBp
+bnRlbC5jb20+DQo+ID4gPiAtLS0NCj4gPiA+ICAgdGVzdHMva21zX3NldG1vZGUuYyB8IDcgKysr
+KysrLQ0KPiA+ID4gICAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9u
+KC0pDQo+ID4gPg0KPiA+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19zZXRtb2RlLmMgYi90ZXN0
+cy9rbXNfc2V0bW9kZS5jIGluZGV4DQo+ID4gPiA4OTIyMGI4My4uZjMyMmEzNzMgMTAwNjQ0DQo+
+ID4gPiAtLS0gYS90ZXN0cy9rbXNfc2V0bW9kZS5jDQo+ID4gPiArKysgYi90ZXN0cy9rbXNfc2V0
+bW9kZS5jDQo+ID4gPiBAQCAtNTY5LDggKzU2OSwxMCBAQCBpbnQgX190ZXN0X2NydGNfY29uZmln
+KHN0cnVjdCBjcnRjX2NvbmZpZw0KPiA+ID4gKmNydGNzLCBpbnQNCj4gPiBjcnRjX2NvdW50LA0K
+PiA+ID4gICAJZm9yIChpbnQgaSA9IDA7IGkgPCBjcnRjLT5jY29uZnMtPmNvbm5lY3Rvci0+Y291
+bnRfbW9kZXM7IGkrKykgew0KPiA+ID4gICAJCXVpbnQzMl90ICppZHM7DQo+ID4gPg0KPiA+ID4g
+LQkJaWYgKCFjcnRjX3N1cHBvcnRzX21vZGUoY3J0YywgJmNydGMtPmNjb25mcy0+Y29ubmVjdG9y
+LQ0KPiA+bW9kZXNbaV0pKQ0KPiA+ID4gKwkJaWYgKCFjcnRjX3N1cHBvcnRzX21vZGUoY3J0YywN
+Cj4gPiA+ICsmY3J0Yy0+Y2NvbmZzLT5jb25uZWN0b3ItPm1vZGVzW2ldKSkNCj4gPiB7DQo+ID4g
+PiArCQkJcmV0ID0gLUVOT0VOVDsNCj4gDQo+IEkgZ3Vlc3MsIHdlIGNhbiBkcm9wIHRoaXMgY3J0
+Y19zdXBwb3J0c19tb2RlKCkgY2hlY2ssIHNpbmNlIG91ciBpbnRlbnNpb24gaXMNCj4gdG8gY2F0
+Y2ggRUlOVkFMIG9ubHkgYXMgdGhlcmUgYXJlIE4gI29mIHBvc3NpYmlsaXRpZXMgdG8gZmFpbC4N
+Cg0KV2l0aCBkcm9wcGluZyB0aGlzIGNoZWNrLCB3ZSBhcmUgc2VlaW5nIGZhaWx1cmUgaW4gaW52
+YWxpZC1jbG9uZS1zaW5nbGUtY3J0Yy1zdGVhbGluZy4gU2VlIGJlbG93IDoNCiAgVGVzdCBpZCMx
+IENSVEMgY291bnQgMQ0KICAgIENSVENbODBdIFtQaXBlIEFdIE1vZGU6IDM4NDB4MjE2MEA2MEh6
+IENvbm5lY3RvcnM6IGVEUC0xWzIzNl0sIEhETUktQS0xWzI0NV0NCihrbXNfc2V0bW9kZTo5OTI4
+KSBpZ3RfZmItREVCVUc6IGlndF9jcmVhdGVfZmJfd2l0aF9ib19zaXplKHdpZHRoPTM4NDAsIGhl
+aWdodD0yMTYwLCBmb3JtYXQ9WFIyNCgweDM0MzI1MjU4KSwgbW9kaWZpZXI9MHgwLCBzaXplPTAp
+DQooa21zX3NldG1vZGU6OTkyOCkgaWd0X2ZiLURFQlVHOiBpZ3RfY3JlYXRlX2ZiX3dpdGhfYm9f
+c2l6ZShoYW5kbGU9MiwgcGl0Y2g9MTUzNjApDQooa21zX3NldG1vZGU6OTkyOCkgaW9jdGxfd3Jh
+cHBlcnMtREVCVUc6IFRlc3QgcmVxdWlyZW1lbnQgcGFzc2VkOiBpZ3RfaGFzX2ZiX21vZGlmaWVy
+cyhmZCkNCihrbXNfc2V0bW9kZTo5OTI4KSBpZ3RfZmItREVCVUc6IFRlc3QgcmVxdWlyZW1lbnQg
+cGFzc2VkOiBjYWlyb19zdXJmYWNlX3N0YXR1cyhmYi0+Y2Fpcm9fc3VyZmFjZSkgPT0gQ0FJUk9f
+U1RBVFVTX1NVQ0NFU1MNCihrbXNfc2V0bW9kZTo5OTI4KSBpZ3RfZmItREVCVUc6IFRlc3QgcmVx
+dWlyZW1lbnQgcGFzc2VkOiBjYWlyb19zdXJmYWNlX3N0YXR1cyhmYi0+Y2Fpcm9fc3VyZmFjZSkg
+PT0gQ0FJUk9fU1RBVFVTX1NVQ0NFU1MNCihrbXNfc2V0bW9kZTo5OTI4KSBDUklUSUNBTDogVGVz
+dCBhc3NlcnRpb24gZmFpbHVyZSBmdW5jdGlvbiB0ZXN0X3N0ZWFsaW5nLCBmaWxlIC4uL3Rlc3Rz
+L2ttc19zZXRtb2RlLmM6NDEwOg0KKGttc19zZXRtb2RlOjk5MjgpIENSSVRJQ0FMOiBGYWlsZWQg
+YXNzZXJ0aW9uOiByZXQgPT0gMA0KKGttc19zZXRtb2RlOjk5MjgpIENSSVRJQ0FMOiBMYXN0IGVy
+cm5vOiAyMiwgSW52YWxpZCBhcmd1bWVudA0KKGttc19zZXRtb2RlOjk5MjgpIENSSVRJQ0FMOiBl
+cnJvcjogLTIyICE9IDANCg0KV2hpbGUgd2l0aCB0aGlzIHBhdGNoIGFsbCB0aGUgdGVzdHMgcGFz
+c2VzLiBDYW4gd2UgZ28gYWhlYWQgYW5kIG1lcmdlIHRoaXMgcGF0Y2g/DQoNClRoYW5rcywNClRl
+amFzIA0KDQo+IA0KPiA+ID4gICAJCQljb250aW51ZTsNCj4gPiA+ICsJCX0NCj4gPiA+DQo+ID4g
+PiAgIAkJY3J0Yy0+bW9kZSA9IGNydGMtPmNjb25mcy0+Y29ubmVjdG9yLT5tb2Rlc1tpXTsNCj4g
+PiA+DQo+ID4gPiBAQCAtNjIyLDYgKzYyNCw5IEBAIGludCBfX3Rlc3RfY3J0Y19jb25maWcoc3Ry
+dWN0IGNydGNfY29uZmlnDQo+ID4gPiAqY3J0Y3MsIGludA0KPiA+IGNydGNfY291bnQsDQo+ID4g
+PiAgIAkJcmV0dXJuIHJldDsNCj4gPiA+ICAgCX0NCj4gPiA+DQo+ID4gPiArCWlmIChyZXQgPCAw
+KQ0KPiA+ID4gKwkJKmNvbmZpZ19mYWlsZWQgPSB0cnVlOw0KPiANCj4gUGxlYXNlIGNvbnNpZGVy
+IGFib3ZlIGNvbW1lbnQuDQo+IA0KPiAtIEJoYW51DQo+IA0KPiA+ID4gKw0KPiA+ID4gICAJLyog
+V2hlbiBhbGwgY3J0Y3NbYmFzZV0ubW9kZXMgYXJlIHRyaWVkICYgZmFpbGVkIHRvIGZpdCBpbnRv
+IGxpbmsgQlcuICovDQo+ID4gPiAgIAlyZXR1cm4gcmV0Ow0KPiA+ID4gICB9DQo=
