@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61DEF89E7C
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Aug 2021 03:15:11 +0000 (UTC)
-Date: Mon, 23 Aug 2021 05:15:05 +0200
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60B9489E7C
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Aug 2021 03:26:13 +0000 (UTC)
+Date: Mon, 23 Aug 2021 05:26:08 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210823031505.GA5611@zkempczy-mobl2>
-References: <20210821071844.1660525-1-apoorva1.singh@intel.com>
+Message-ID: <20210823032608.GB5611@zkempczy-mobl2>
+References: <20210822121626.12150-1-arjun.melkaveri@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210821071844.1660525-1-apoorva1.singh@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_gpgpu_fill: Add support for
- local memory
+In-Reply-To: <20210822121626.12150-1-arjun.melkaveri@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_sync: igt_require to
+ check availability of engine in list_engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,47 +22,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: apoorva1.singh@intel.com
-Cc: thomas.hellstrom@linux.intel.com, igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com
+To: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Sat, Aug 21, 2021 at 12:48:44PM +0530, apoorva1.singh@intel.com wrote:
-> From: Apoorva Singh <apoorva1.singh@intel.com>
+On Sun, Aug 22, 2021 at 05:46:26PM +0530, Arjun Melkaveri wrote:
+> Replaced igt_assert with igt_require in list_engines , to
+> avoid false failure of test case if engine is not supported
+> or found .
+> Test will return Test requirement not met.
 > 
-> Add support for local memory region (Device memory)
-> 
-> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+> Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
 > ---
->  tests/i915/gem_gpgpu_fill.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  tests/i915/gem_sync.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/tests/i915/gem_gpgpu_fill.c b/tests/i915/gem_gpgpu_fill.c
-> index 1fcd42e2..74a227f6 100644
-> --- a/tests/i915/gem_gpgpu_fill.c
-> +++ b/tests/i915/gem_gpgpu_fill.c
-> @@ -150,7 +150,8 @@ igt_main
->  		igt_assert(region_info);
->  
->  		region_set = get_memory_region_set(region_info,
-> -						   I915_SYSTEM_MEMORY);
-> +						   I915_SYSTEM_MEMORY,
-> +						   I915_DEVICE_MEMORY);
->  	}
->  
->  	igt_subtest_with_dynamic("basic") {
-> -- 
-> 2.25.1
->
+> diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c
+> index 6cb00c40..4ad264a2 100644
+> --- a/tests/i915/gem_sync.c
+> +++ b/tests/i915/gem_sync.c
+> @@ -106,9 +106,9 @@ list_engines(int fd, const intel_ctx_t *ctx, unsigned ring)
+>  		ied = intel_engine_list_for_ctx_cfg(fd, &ctx->cfg);
+>  	} else {
+>  		if (ctx->cfg.num_engines)
+> -			igt_assert(ring < ctx->cfg.num_engines);
+> +			igt_require(ring < ctx->cfg.num_engines);
+>  		else
+> -			igt_assert(gem_has_ring(fd, ring));
+> +			igt_require(gem_has_ring(fd, ring));
 
-I've incidentally answered twice on gem_media_fill.
+To be honest I don't like this change. If we have invalid ring
+here it smells like bug in the code. If caller is passed 
+ctx it should be created over cfg, so it contains valid (imo)
+engine set. Thus if someone passed invalid ring I would assume
+this is bug in the code and assert is correct bahavior here.
 
-Works fine on discrete, thanks!
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+What are scenarios you're trying to handle?
 
 --
 Zbigniew
- 
+
+>  
+>  		ied.engines[ied.nengines].flags = ring;
+>  		strcpy(ied.engines[ied.nengines].name, " ");
+> -- 
+> 2.25.1
+> 
