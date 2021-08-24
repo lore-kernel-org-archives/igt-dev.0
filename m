@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Rob Clark <robdclark@gmail.com>
-Date: Tue, 24 Aug 2021 15:49:31 -0700
-Message-Id: <20210824224932.564352-3-robdclark@gmail.com>
-In-Reply-To: <20210824224932.564352-1-robdclark@gmail.com>
-References: <20210824224932.564352-1-robdclark@gmail.com>
+Content-Type: multipart/alternative;
+ boundary="===============7464059214597030995=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH igt 2/3] msm: Add helper library
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 24 Aug 2021 23:51:00 -0000
+Message-ID: <162984906098.27154.8077343407939866329@emeril.freedesktop.org>
+References: <20210824224932.564352-1-robdclark@gmail.com>
+In-Reply-To: <20210824224932.564352-1-robdclark@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW5pdGlh?=
+ =?utf-8?q?l_igt_tests_for_drm/msm_ioctls?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,339 +16,246 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, Jordan Crouse <jordan@cosmicpenguin.net>, Akhil P Oommen <akhilpo@codeaurora.org>, Rob Clark <robdclark@chromium.org>
+To: Rob Clark <robdclark@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Rob Clark <robdclark@chromium.org>
+--===============7464059214597030995==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Handle some of the boilerplate for tests.
+== Series Details ==
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
----
- lib/igt_msm.c   | 163 ++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_msm.h   | 128 +++++++++++++++++++++++++++++++++++++
- lib/meson.build |   1 +
- 3 files changed, 292 insertions(+)
- create mode 100644 lib/igt_msm.c
- create mode 100644 lib/igt_msm.h
+Series: Initial igt tests for drm/msm ioctls
+URL   : https://patchwork.freedesktop.org/series/93973/
+State : success
 
-diff --git a/lib/igt_msm.c b/lib/igt_msm.c
-new file mode 100644
-index 00000000..1bcb08d9
---- /dev/null
-+++ b/lib/igt_msm.c
-@@ -0,0 +1,163 @@
-+/*
-+ * Copyright © 2021 Google, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice (including the next
-+ * paragraph) shall be included in all copies or substantial portions of the
-+ * Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-+ * IN THE SOFTWARE.
-+ */
-+
-+#include <assert.h>
-+#include <string.h>
-+#include <signal.h>
-+#include <errno.h>
-+#include <sys/mman.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <sys/ioctl.h>
-+#include <fcntl.h>
-+
-+#include "drmtest.h"
-+#include "igt_aux.h"
-+#include "igt_core.h"
-+#include "igt_msm.h"
-+#include "ioctl_wrappers.h"
-+
-+/**
-+ * SECTION:igt_msm
-+ * @short_description: msm support library
-+ * @title: msm
-+ * @include: igt_msm.h
-+ *
-+ * This library provides various auxiliary helper functions for writing msm
-+ * tests.
-+ */
-+
-+struct msm_device *
-+igt_msm_dev_open(void)
-+{
-+	struct msm_device *dev = calloc(1, sizeof(*dev));
-+
-+	dev->fd = drm_open_driver_render(DRIVER_MSM);
-+	if (dev->fd < 0) {
-+		free(dev);
-+		return NULL;
-+	}
-+
-+	return dev;
-+}
-+
-+void
-+igt_msm_dev_close(struct msm_device *dev)
-+{
-+	close(dev->fd);
-+	free(dev);
-+}
-+
-+struct msm_bo *
-+igt_msm_bo_new(struct msm_device *dev, size_t size, uint32_t flags)
-+{
-+	struct msm_bo *bo = calloc(1, sizeof(*bo));
-+
-+	struct drm_msm_gem_new req = {
-+			.size = size,
-+			.flags = flags,
-+	};
-+
-+	bo->dev = dev;
-+	bo->size = size;
-+
-+	do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_NEW, &req);
-+
-+	bo->handle = req.handle;
-+
-+	return bo;
-+}
-+
-+void
-+igt_msm_bo_free(struct msm_bo *bo)
-+{
-+	if (bo->map)
-+		munmap(bo->map, bo->size);
-+	gem_close(bo->dev->fd, bo->handle);
-+	free(bo);
-+}
-+
-+void *
-+igt_msm_bo_map(struct msm_bo *bo)
-+{
-+	if (!bo->map) {
-+		struct drm_msm_gem_info req = {
-+				.handle = bo->handle,
-+				.info = MSM_INFO_GET_OFFSET,
-+		};
-+		void *ptr;
-+
-+		do_ioctl(bo->dev->fd, DRM_IOCTL_MSM_GEM_INFO, &req);
-+
-+		ptr = mmap(0, bo->size, PROT_READ | PROT_WRITE, MAP_SHARED,
-+				bo->dev->fd, req.value);
-+		if (ptr == MAP_FAILED)
-+			return NULL;
-+
-+		bo->map = ptr;
-+	}
-+	return bo->map;
-+}
-+
-+struct msm_pipe *
-+igt_msm_pipe_open(struct msm_device *dev, uint32_t prio)
-+{
-+	struct msm_pipe *pipe = calloc(1, sizeof(*pipe));
-+	struct drm_msm_submitqueue req = {
-+			.flags = 0,
-+			.prio = prio,
-+	};
-+
-+	pipe->dev = dev;
-+	pipe->pipe = MSM_PIPE_3D0;
-+
-+	/* Note that kerenels prior to v4.15 did not support submitqueues.
-+	 * Mesa maintains support for older kernels, but I do not think
-+	 * that IGT needs to.
-+	 */
-+	do_ioctl(dev->fd, DRM_IOCTL_MSM_SUBMITQUEUE_NEW, &req);
-+
-+	pipe->submitqueue_id = req.id;
-+
-+	return pipe;
-+}
-+
-+void
-+igt_msm_pipe_close(struct msm_pipe *pipe)
-+{
-+	do_ioctl(pipe->dev->fd, DRM_IOCTL_MSM_SUBMITQUEUE_CLOSE, &pipe->submitqueue_id);
-+	free(pipe);
-+}
-+
-+uint64_t
-+igt_msm_pipe_get_param(struct msm_pipe *pipe, uint32_t param)
-+{
-+	struct drm_msm_param req = {
-+			.pipe = pipe->pipe,
-+			.param = param,
-+	};
-+
-+	do_ioctl(pipe->dev->fd, DRM_IOCTL_MSM_GET_PARAM, &req);
-+
-+	return req.value;
-+}
-diff --git a/lib/igt_msm.h b/lib/igt_msm.h
-new file mode 100644
-index 00000000..0d302e18
---- /dev/null
-+++ b/lib/igt_msm.h
-@@ -0,0 +1,128 @@
-+/*
-+ * Copyright © 2021 Google, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice (including the next
-+ * paragraph) shall be included in all copies or substantial portions of the
-+ * Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-+ * IN THE SOFTWARE.
-+ */
-+
-+#ifndef IGT_MSM_H
-+#define IGT_MSM_H
-+
-+#include "msm_drm.h"
-+
-+struct msm_device {
-+	int fd;
-+};
-+
-+struct msm_device *igt_msm_dev_open(void);
-+void igt_msm_dev_close(struct msm_device *dev);
-+
-+struct msm_bo {
-+	struct msm_device *dev;
-+	int handle;
-+	uint32_t size;
-+	void *map;
-+};
-+
-+struct msm_bo *igt_msm_bo_new(struct msm_device *dev, size_t size, uint32_t flags);
-+void igt_msm_bo_free(struct msm_bo *bo);
-+void *igt_msm_bo_map(struct msm_bo *bo);
-+
-+struct msm_pipe {
-+	struct msm_device *dev;
-+	uint32_t pipe;
-+	uint32_t submitqueue_id;
-+};
-+
-+struct msm_pipe *igt_msm_pipe_open(struct msm_device *dev, uint32_t prio);
-+void igt_msm_pipe_close(struct msm_pipe *pipe);
-+uint64_t igt_msm_pipe_get_param(struct msm_pipe *pipe, uint32_t param);
-+
-+/* Helper to get GPU gen.. we don't need too much actual cmdstream generation,
-+ * but even CP_NOP is different between generations
-+ */
-+static inline unsigned
-+igt_msm_pipe_gen(struct msm_pipe *pipe)
-+{
-+	uint64_t chip_id = igt_msm_pipe_get_param(pipe, MSM_PARAM_CHIP_ID);
-+	return (chip_id >> 24) & 0xff;
-+}
-+
-+/*
-+ * Helpers for cmdstream building:
-+ */
-+
-+enum adreno_pm4_packet_type {
-+	CP_TYPE0_PKT = 0,
-+	CP_TYPE1_PKT = 0x40000000,
-+	CP_TYPE2_PKT = 0x80000000,
-+	CP_TYPE3_PKT = 0xc0000000,
-+	CP_TYPE4_PKT = 0x40000000,
-+	CP_TYPE7_PKT = 0x70000000,
-+};
-+
-+enum adreno_pm4_type3_packets {
-+	CP_NOP = 16,
-+};
-+
-+static inline unsigned
-+pm4_odd_parity_bit(unsigned val)
-+{
-+	/* See: http://graphics.stanford.edu/~seander/bithacks.html#ParityParallel
-+	 * note that we want odd parity so 0x6996 is inverted.
-+	 */
-+	val ^= val >> 16;
-+	val ^= val >> 8;
-+	val ^= val >> 4;
-+	val &= 0xf;
-+	return (~0x6996 >> val) & 1;
-+}
-+
-+static inline uint32_t
-+pm4_pkt0_hdr(uint16_t regindx, uint16_t cnt)
-+{
-+	return CP_TYPE0_PKT | ((cnt - 1) << 16) | (regindx & 0x7fff);
-+}
-+
-+static inline uint32_t
-+pm4_pkt3_hdr(uint8_t opcode, uint16_t cnt)
-+{
-+	return CP_TYPE3_PKT | ((cnt - 1) << 16) | ((opcode & 0xff) << 8);
-+}
-+
-+static inline uint32_t
-+pm4_pkt4_hdr(uint16_t regindx, uint16_t cnt)
-+{
-+	return CP_TYPE4_PKT | cnt | (pm4_odd_parity_bit(cnt) << 7) |
-+			((regindx & 0x3ffff) << 8) |
-+			((pm4_odd_parity_bit(regindx) << 27));
-+}
-+
-+static inline uint32_t
-+pm4_pkt7_hdr(uint8_t opcode, uint16_t cnt)
-+{
-+	return CP_TYPE7_PKT | cnt | (pm4_odd_parity_bit(cnt) << 15) |
-+			((opcode & 0x7f) << 16) |
-+			((pm4_odd_parity_bit(opcode) << 23));
-+}
-+
-+#define U642VOID(x) ((void *)(uintptr_t)(x))
-+#define VOID2U64(x) ((uint64_t)(uintptr_t)(x))
-+
-+#endif /* IGT_MSM_H */
-diff --git a/lib/meson.build b/lib/meson.build
-index 67d40512..c3080fc8 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -82,6 +82,7 @@ lib_sources = [
- 	'igt_eld.c',
- 	'igt_infoframe.c',
- 	'veboxcopy_gen12.c',
-+	'igt_msm.c',
- ]
- 
- lib_deps = [
--- 
-2.31.1
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10517 -> IGTPW_6150
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6150 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-n3050:       NOTRUN -> [INCOMPLETE][1] ([i915#2940])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+
+  * igt@kms_chamelium@hdmi-crc-fast:
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][2] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/fi-bsw-n3050/igt@kms_chamelium@hdmi-crc-fast.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc-pipe-a:
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][3] ([fdo#109271]) +24 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/fi-bsw-n3050/igt@kms_pipe_crc_basic@hang-read-crc-pipe-a.html
+
+  * igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:
+    - fi-rkl-guc:         [PASS][4] -> [SKIP][5] ([i915#3919]) +1 similar issue
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10517/fi-rkl-guc/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/fi-rkl-guc/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
+
+  * igt@runner@aborted:
+    - fi-bsw-n3050:       NOTRUN -> [FAIL][6] ([fdo#109271] / [i915#1436])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/fi-bsw-n3050/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-guc:         [FAIL][7] ([i915#2203] / [i915#579]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10517/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-icl-u2:          [DMESG-WARN][9] ([i915#2203] / [i915#2868]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10517/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@kms_pipe_crc_basic@read-crc-pipe-b:
+    - fi-rkl-11600:       [SKIP][11] -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10517/fi-rkl-11600/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/fi-rkl-11600/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
+  [i915#2203]: https://gitlab.freedesktop.org/drm/intel/issues/2203
+  [i915#2868]: https://gitlab.freedesktop.org/drm/intel/issues/2868
+  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
+  [i915#3919]: https://gitlab.freedesktop.org/drm/intel/issues/3919
+  [i915#579]: https://gitlab.freedesktop.org/drm/intel/issues/579
+
+
+Participating hosts (39 -> 33)
+------------------------------
+
+  Additional (1): fi-bsw-n3050 
+  Missing    (7): fi-ilk-m540 bat-adls-5 fi-hsw-4200u fi-tgl-1115g4 fi-bsw-cyan fi-bdw-samus bat-jsl-1 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6185 -> IGTPW_6150
+
+  CI-20190529: 20190529
+  CI_DRM_10517: 844e662cf49196dc189309aa1692f6342e855325 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6150: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/index.html
+  IGT_6185: 5dca04416f50576f464ebbd9aea96edccd7e4eab @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@msm_submit@empty-submit
++igt@msm_submit@invalid-cmd-idx-submit
++igt@msm_submit@invalid-cmd-type-submit
++igt@msm_submit@invalid-duplicate-bo-submit
++igt@msm_submit@invalid-flags-submit
++igt@msm_submit@invalid-in-fence-submit
++igt@msm_submit@invalid-queue-submit
++igt@msm_submit@valid-submit
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/index.html
+
+--===============7464059214597030995==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Initial igt tests for drm/msm ioctls</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93973/">https://patchwork.freedesktop.org/series/93973/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10517 -&gt; IGTPW_6150</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6150 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-crc-fast:</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/fi-bsw-n3050/igt@kms_chamelium@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc-pipe-a:</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/fi-bsw-n3050/igt@kms_pipe_crc_basic@hang-read-crc-pipe-a.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +24 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10517/fi-rkl-guc/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/fi-rkl-guc/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3919">i915#3919</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/fi-bsw-n3050/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10517/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/579">i915#579</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10517/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2868">i915#2868</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-pipe-b:</p>
+<ul>
+<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10517/fi-rkl-11600/igt@kms_pipe_crc_basic@read-crc-pipe-b.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/fi-rkl-11600/igt@kms_pipe_crc_basic@read-crc-pipe-b.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (39 -&gt; 33)</h2>
+<p>Additional (1): fi-bsw-n3050 <br />
+  Missing    (7): fi-ilk-m540 bat-adls-5 fi-hsw-4200u fi-tgl-1115g4 fi-bsw-cyan fi-bdw-samus bat-jsl-1 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6185 -&gt; IGTPW_6150</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10517: 844e662cf49196dc189309aa1692f6342e855325 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6150: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6150/index.html<br />
+  IGT_6185: 5dca04416f50576f464ebbd9aea96edccd7e4eab @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@msm_submit@empty-submit<br />
++igt@msm_submit@invalid-cmd-idx-submit<br />
++igt@msm_submit@invalid-cmd-type-submit<br />
++igt@msm_submit@invalid-duplicate-bo-submit<br />
++igt@msm_submit@invalid-flags-submit<br />
++igt@msm_submit@invalid-in-fence-submit<br />
++igt@msm_submit@invalid-queue-submit<br />
++igt@msm_submit@valid-submit</p>
+
+</body>
+</html>
+
+--===============7464059214597030995==--
