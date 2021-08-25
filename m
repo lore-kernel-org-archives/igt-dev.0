@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB2D16E150
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F45A6E14C
  for <igt-dev@lists.freedesktop.org>; Wed, 25 Aug 2021 05:31:09 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue, 24 Aug 2021 22:30:59 -0700
-Message-Id: <20210825053109.336142-8-alan.previn.teres.alexis@intel.com>
+Date: Tue, 24 Aug 2021 22:30:56 -0700
+Message-Id: <20210825053109.336142-5-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210825053109.336142-1-alan.previn.teres.alexis@intel.com>
 References: <20210825053109.336142-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 07/17] Enable protected session cmd in
- gen12_render_copyfunc
+Subject: [igt-dev] [PATCH i-g-t v7 04/17] Perform a regular 3d copy as a
+ control checkpoint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,135 +24,215 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-1. In _gen9_render_op, check if the incoming batchbuffer
-   is marked with pxp enabled. If so, insert MI_SET_APPID
-   along with PIPE_CONTROL instructions at the start and
-   end of the rendering operation in the command buffer.
-
-2. The two PIPE_CONTROLs will enable protected memory
-   at the start of the batch and disabling protected
-   memory at the end of it. These PIPE_CONTROLs require a
-   Post-Sync operation with a write to memory for hardware
-   to accept.
-
-3. In order to satisfy #2, _gen9_render_op uses unused
-   regions of the ibb buffer for the PIPE_CONTROL PostSync
-   write to memory (no different from how other 3d states
-   are being referenced).
-
-4. _gen9_render_op shall check the incoming surface
-   buffers for "is_protected" flag and if its set, it
-   will mark the SURFACE_STATE's MOCS field accordingly.
-
-NOTE: _gen9_render_op needs to program the HW to enable
-the PXP session as part of the rendering batch buffer
-because the HW requires that enabling/disabling protected
-memory access must be programmed in pairs within the same
-"dispatch of rendering commands" to HW.
+As a control checkpoint, allocate buffers to be used
+as texture and render target in the 3d engine for a
+regular src to dest copy blit and verify buffer pixels.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- lib/rendercopy_gen9.c | 57 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 57 insertions(+)
+ tests/i915/gem_pxp.c | 166 ++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 157 insertions(+), 9 deletions(-)
 
-diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-index 0356964e..f021f4cb 100644
---- a/lib/rendercopy_gen9.c
-+++ b/lib/rendercopy_gen9.c
-@@ -183,6 +183,8 @@ gen8_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst) {
- 		ss->ss0.tiled_mode = 3;
- 
- 	ss->ss1.memory_object_control = intel_get_uc_mocs(i915);
-+	if (intel_buf_pxp(buf))
-+		ss->ss1.memory_object_control |= 1;
- 
- 	if (buf->tiling == I915_TILING_Yf)
- 		ss->ss5.trmode = 1;
-@@ -904,6 +906,53 @@ static void gen8_emit_primitive(struct intel_bb *ibb, uint32_t offset)
- 	intel_bb_out(ibb, 0);	/* index buffer offset, ignored */
+diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+index 3e85fa48..7a5d61ea 100644
+--- a/tests/i915/gem_pxp.c
++++ b/tests/i915/gem_pxp.c
+@@ -239,6 +239,20 @@ static void test_ctx_alloc_recover_on_protect_on(int i915)
+ 	igt_assert_eq(create_ctx_with_params(i915, true, true, false, false, &ctx), -EPERM);
  }
  
-+#define GFX_OP_PIPE_CONTROL    ((3 << 29) | (3 << 27) | (2 << 24))
-+#define PIPE_CONTROL_CS_STALL	            (1 << 20)
-+#define PIPE_CONTROL_RENDER_TARGET_FLUSH    (1 << 12)
-+#define PIPE_CONTROL_FLUSH_ENABLE           (1 << 7)
-+#define PIPE_CONTROL_DATA_CACHE_INVALIDATE  (1 << 5)
-+#define PIPE_CONTROL_PROTECTEDPATH_DISABLE  (1 << 27)
-+#define PIPE_CONTROL_PROTECTEDPATH_ENABLE   (1 << 22)
-+#define PIPE_CONTROL_POST_SYNC_OP           (1 << 14)
-+#define PIPE_CONTROL_POST_SYNC_OP_STORE_DW_IDX (1 << 21)
-+#define PS_OP_TAG_START                     0x1234fed0
-+#define PS_OP_TAG_END                       0x5678cbaf
-+static void gen12_emit_pxp_state(struct intel_bb *ibb, bool enable,
-+		 uint32_t pxp_write_op_offset)
++static void test_ctx_mod_regular_to_all_valid(int i915)
 +{
-+	uint32_t pipe_ctl_flags;
-+	uint32_t set_app_id, ps_op_id;
++	uint32_t ctx;
 +
-+	if (enable) {
-+		pipe_ctl_flags = PIPE_CONTROL_FLUSH_ENABLE;
-+		intel_bb_out(ibb, GFX_OP_PIPE_CONTROL);
-+		intel_bb_out(ibb, pipe_ctl_flags);
-+
-+		set_app_id =  MI_SET_APPID |
-+			      APPTYPE(intel_bb_pxp_apptype(ibb)) |
-+			      APPID(intel_bb_pxp_appid(ibb));
-+		intel_bb_out(ibb, set_app_id);
-+
-+		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_ENABLE;
-+		ps_op_id = PS_OP_TAG_START;
-+	} else {
-+		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_DISABLE;
-+		ps_op_id = PS_OP_TAG_END;
-+	}
-+
-+	pipe_ctl_flags |= (PIPE_CONTROL_CS_STALL |
-+			   PIPE_CONTROL_RENDER_TARGET_FLUSH |
-+			   PIPE_CONTROL_DATA_CACHE_INVALIDATE |
-+			   PIPE_CONTROL_POST_SYNC_OP);
-+	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL | 4);
-+	intel_bb_out(ibb, pipe_ctl_flags);
-+	intel_bb_emit_reloc(ibb, ibb->handle, 0, I915_GEM_DOMAIN_COMMAND,
-+			    (enable ? pxp_write_op_offset : (pxp_write_op_offset+8)),
-+			    ibb->batch_offset);
-+	intel_bb_out(ibb, ps_op_id);
-+	intel_bb_out(ibb, ps_op_id);
++	igt_assert_eq(create_ctx_with_params(i915, false, false, false, false, &ctx), 0);
++	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
++	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 1);
++	igt_assert_eq(modify_ctx_param(i915, ctx, CHANGE_PARAM_RECOVERY, false), 0);
++	igt_assert_eq(modify_ctx_param(i915, ctx, CHANGE_PARAM_PROTECTED, true), -EPERM);
++	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
++	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
++	gem_context_destroy(i915, ctx);
 +}
 +
- /* The general rule is if it's named gen6 it is directly copied from
-  * gen6_render_copyfunc.
-  *
-@@ -953,6 +1002,7 @@ void _gen9_render_op(struct intel_bb *ibb,
- 	uint32_t vertex_buffer;
- 	uint32_t aux_pgtable_state;
- 	bool fast_clear = !src;
-+	uint32_t pxp_scratch_offset;
+ static void test_ctx_mod_recover_off_to_on(int i915)
+ {
+ 	uint32_t ctx;
+@@ -278,24 +292,145 @@ static void test_ctx_mod_protected_to_all_invalid(int i915)
+ 	gem_context_destroy(i915, ctx);
+ }
  
- 	if (!fast_clear)
- 		igt_assert(src->bpp == dst->bpp);
-@@ -981,8 +1031,12 @@ void _gen9_render_op(struct intel_bb *ibb,
- 	aux_pgtable_state = gen12_create_aux_pgtable_state(ibb, aux_pgtable_buf);
+-static void test_ctx_mod_regular_to_all_valid(int i915)
++static void fill_bo_content(int i915, uint32_t bo, uint32_t size, uint32_t initcolor)
+ {
+-	uint32_t ctx;
++	uint32_t *ptr, *ptrtmp;
++	int loop = 0;
  
- 	/* TODO: there is other state which isn't setup */
-+	pxp_scratch_offset = intel_bb_offset(ibb);
- 	intel_bb_ptr_set(ibb, 0);
- 
-+	if (intel_bb_pxp_enabled(ibb))
-+		gen12_emit_pxp_state(ibb, true, pxp_scratch_offset);
+-	igt_assert_eq(create_ctx_with_params(i915, false, false, false, false, &ctx), 0);
+-	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
+-	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 1);
+-	igt_assert_eq(modify_ctx_param(i915, ctx, CHANGE_PARAM_RECOVERY, false), 0);
+-	igt_assert_eq(modify_ctx_param(i915, ctx, CHANGE_PARAM_PROTECTED, true), -EPERM);
+-	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
+-	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
++	ptr = gem_mmap__device_coherent(i915, bo, 0, size, PROT_WRITE);
++	ptrtmp = ptr;
 +
- 	/* Start emitting the commands. The order roughly follows the mesa blorp
- 	 * order */
- 	intel_bb_out(ibb, G4X_PIPELINE_SELECT | PIPELINE_SELECT_3D |
-@@ -1054,6 +1108,9 @@ void _gen9_render_op(struct intel_bb *ibb,
- 	gen8_emit_vf_topology(ibb);
- 	gen8_emit_primitive(ibb, vertex_buffer);
- 
-+	if (intel_bb_pxp_enabled(ibb))
-+		gen12_emit_pxp_state(ibb, false, pxp_scratch_offset);
++	/* read and count all dword matches till size */
++	while (loop++ < (size/4)) {
++		*ptrtmp = initcolor;
++		++ptrtmp;
++	}
 +
- 	intel_bb_emit_bbe(ibb);
- 	intel_bb_exec(ibb, intel_bb_offset(ibb),
- 		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, false);
++	igt_assert(gem_munmap(ptr, size) == 0);
++}
++
++#define COMPARE_COLOR_READIBLE     1
++#define COMPARE_COLOR_UNREADIBLE   2
++#define COMPARE_N_PIXELS_VERBOSELY 0
++
++static void assert_bo_content_check(int i915, uint32_t bo, int compare_op,
++				    uint32_t size, uint32_t color)
++{
++	uint32_t *ptr, *ptrtmp;
++	int loop = 0, num_matches = 0;
++	uint32_t value;
++	bool op_readible = (compare_op == COMPARE_COLOR_READIBLE);
++
++	ptr = gem_mmap__device_coherent(i915, bo, 0, size, PROT_READ);
++	ptrtmp = ptr;
++
++	if (COMPARE_N_PIXELS_VERBOSELY) {
++		igt_info("--------->>>\n");
++		while (loop < COMPARE_N_PIXELS_VERBOSELY && loop < (size/4)) {
++			value = *ptrtmp;
++			igt_info("Color read = 0x%08x ", value);
++			igt_info("expected %c= 0x%08x)\n", op_readible?'=':'!', color);
++			++ptrtmp;
++			++loop;
++		}
++		igt_info("<<<---------\n");
++		ptrtmp = ptr;
++		loop = 0;
++	}
++
++	/* count all pixels for matches */
++	while (loop++ < (size/4)) {
++		value = *ptrtmp;
++		if (value == color)
++			++num_matches;
++		++ptrtmp;
++	}
++
++	if (op_readible)
++		igt_assert_eq(num_matches, (size/4));
++	else
++		igt_assert_eq(num_matches, 0);
++
++	igt_assert(gem_munmap(ptr, size) == 0);
++}
++
++static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size,
++					 uint32_t init_color)
++{
++	uint32_t bo;
++	int ret;
++
++	ret = create_bo_ext(i915, size, protected, &bo);
++	igt_assert_eq(ret, 0);
++	igt_assert(bo);
++	fill_bo_content(i915, bo, size, init_color);
++	assert_bo_content_check(i915, bo, COMPARE_COLOR_READIBLE, size, init_color);
++
++	return bo;
++}
++
++/*
++ * Rendering tests surface attributes, keep it simple:
++ * page aligned width==stride, thus, and size
++ */
++#define TSTSURF_WIDTH       1024
++#define TSTSURF_HEIGHT      128
++#define TSTSURF_BYTESPP     4
++#define TSTSURF_STRIDE      (TSTSURF_WIDTH*TSTSURF_BYTESPP)
++#define TSTSURF_SIZE        (TSTSURF_STRIDE*TSTSURF_HEIGHT)
++#define TSTSURF_FILLCOLOR1  0xfaceface
++#define TSTSURF_INITCOLOR1  0x12341234
++
++static void test_render_baseline(int i915)
++{
++	uint32_t ctx, srcbo, dstbo;
++	struct intel_buf *srcbuf, *dstbuf;
++	struct buf_ops *bops;
++	struct intel_bb *ibb;
++	uint32_t devid;
++	int ret;
++
++	devid = intel_get_drm_devid(i915);
++	igt_assert(devid);
++
++	bops = buf_ops_create(i915);
++	igt_assert(bops);
++
++	/* Perform a regular 3d copy as a control checkpoint */
++	ret = create_ctx_with_params(i915, false, false, false, false, &ctx);
++	igt_assert_eq(ret, 0);
++	ibb = intel_bb_create_with_context(i915, ctx, 4096);
++	igt_assert(ibb);
++
++	dstbo = alloc_and_fill_dest_buff(i915, false, TSTSURF_SIZE, TSTSURF_INITCOLOR1);
++	dstbuf = intel_buf_create_using_handle(bops, dstbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++					       TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
++
++	srcbo = alloc_and_fill_dest_buff(i915, false, TSTSURF_SIZE, TSTSURF_FILLCOLOR1);
++	srcbuf = intel_buf_create_using_handle(bops, srcbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++					       TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
++
++	gen12_render_copyfunc(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
++	gem_sync(i915, dstbo);
++
++	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_READIBLE,
++				TSTSURF_SIZE, TSTSURF_FILLCOLOR1);
++
++	intel_bb_destroy(ibb);
++	intel_buf_destroy(srcbuf);
++	gem_close(i915, srcbo);
++	intel_buf_destroy(dstbuf);
++	gem_close(i915, dstbo);
+ 	gem_context_destroy(i915, ctx);
++	buf_ops_destroy(bops);
+ }
+ 
+ igt_main
+ {
+ 	int i915 = -1;
+ 	bool pxp_supported = false;
++	igt_render_copyfunc_t rendercopy = NULL;
++	uint32_t devid = 0;
+ 
+ 	igt_fixture
+ 	{
+@@ -349,6 +484,19 @@ igt_main
+ 		igt_subtest("reject-modify-context-protection-off-3")
+ 			test_ctx_mod_protected_to_all_invalid(i915);
+ 	}
++	igt_subtest_group {
++		igt_fixture {
++			igt_require(pxp_supported);
++			devid = intel_get_drm_devid(i915);
++			igt_assert(devid);
++			rendercopy = igt_get_render_copyfunc(devid);
++			igt_require(rendercopy);
++		}
++
++		igt_describe("Verify protected render operations:");
++		igt_subtest("regular-baseline-src-copy-readible")
++			test_render_baseline(i915);
++	}
+ 
+ 	igt_fixture {
+ 		close(i915);
 -- 
 2.25.1
