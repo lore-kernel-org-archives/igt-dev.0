@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ABE376E151
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7CC876E14C
  for <igt-dev@lists.freedesktop.org>; Wed, 25 Aug 2021 05:31:09 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue, 24 Aug 2021 22:31:00 -0700
-Message-Id: <20210825053109.336142-9-alan.previn.teres.alexis@intel.com>
+Date: Tue, 24 Aug 2021 22:30:58 -0700
+Message-Id: <20210825053109.336142-7-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210825053109.336142-1-alan.previn.teres.alexis@intel.com>
 References: <20210825053109.336142-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 08/17] Add subtest to copy raw source to
- protected dest
+Subject: [igt-dev] [PATCH i-g-t v7 06/17] Add MI_SET_APPID instruction
+ definition
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,99 +24,32 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add subtest to 3d-copy raw source buffer (with
-known readible content) to a destination buffer
-marked as protected with a protected session using
-default session keys. The destination buffer is
-verified to be different from the source (when
-read via CPU) because its encrypted.
+Add MI_SET_APPID instruction and param definitions
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/i915/gem_pxp.c | 55 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ lib/intel_reg.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 7a5d61ea..396d6d5f 100644
---- a/tests/i915/gem_pxp.c
-+++ b/tests/i915/gem_pxp.c
-@@ -379,7 +379,9 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size
- #define TSTSURF_STRIDE      (TSTSURF_WIDTH*TSTSURF_BYTESPP)
- #define TSTSURF_SIZE        (TSTSURF_STRIDE*TSTSURF_HEIGHT)
- #define TSTSURF_FILLCOLOR1  0xfaceface
-+#define TSTSURF_FILLCOLOR2  0xdeaddead
- #define TSTSURF_INITCOLOR1  0x12341234
-+#define TSTSURF_INITCOLOR2  0x56785678
+diff --git a/lib/intel_reg.h b/lib/intel_reg.h
+index ac1fc6cb..ab01a283 100644
+--- a/lib/intel_reg.h
++++ b/lib/intel_reg.h
+@@ -2546,6 +2546,14 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ #define CTXT_PALETTE_SAVE_DISABLE	(1<<3)
+ #define CTXT_PALETTE_RESTORE_DISABLE	(1<<2)
  
- static void test_render_baseline(int i915)
- {
-@@ -425,6 +427,57 @@ static void test_render_baseline(int i915)
- 	buf_ops_destroy(bops);
- }
- 
-+static void test_render_pxp_src_to_protdest(int i915)
-+{
-+	uint32_t ctx, srcbo, dstbo;
-+	struct intel_buf *srcbuf, *dstbuf;
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb;
-+	uint32_t devid;
-+	int ret;
++#define MI_SET_APPID                    (0x0E << 23)
++#define APPID_CTXREST_INHIBIT           (1 << 9)
++#define APPID_CTXSAVE_INHIBIT           (1 << 8)
++#define APPTYPE(n)                      ((n) << 7)
++#define  DISPLAY_APPTYPE                (0)
++#define  TRANSCODE_APPTYPE              (1)
++#define APPID(n)                        ((n) & 0x7f)
 +
-+	devid = intel_get_drm_devid(i915);
-+	igt_assert(devid);
-+
-+	bops = buf_ops_create(i915);
-+	igt_assert(bops);
-+
-+	/*
-+	 * Perform a protected render operation but only label
-+	 * the dest as protected. After rendering, the content
-+	 * should be encrypted
-+	 */
-+	ret = create_ctx_with_params(i915, true, true, true, false, &ctx);
-+	igt_assert_eq(ret, 0);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
-+	ibb = intel_bb_create_with_context(i915, ctx, 4096);
-+	igt_assert(ibb);
-+	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
-+
-+	dstbo = alloc_and_fill_dest_buff(i915, true, TSTSURF_SIZE, TSTSURF_INITCOLOR2);
-+	dstbuf = intel_buf_create_using_handle(bops, dstbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
-+						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
-+	intel_buf_set_pxp(dstbuf, true);
-+
-+	srcbo = alloc_and_fill_dest_buff(i915, false, TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
-+	srcbuf = intel_buf_create_using_handle(bops, srcbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
-+						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
-+
-+	gen12_render_copyfunc(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
-+	gem_sync(i915, dstbo);
-+
-+	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
-+				TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
-+
-+	intel_bb_destroy(ibb);
-+	intel_buf_destroy(srcbuf);
-+	gem_close(i915, srcbo);
-+	intel_buf_destroy(dstbuf);
-+	gem_close(i915, dstbo);
-+	gem_context_destroy(i915, ctx);
-+	buf_ops_destroy(bops);
-+}
-+
- igt_main
- {
- 	int i915 = -1;
-@@ -496,6 +549,8 @@ igt_main
- 		igt_describe("Verify protected render operations:");
- 		igt_subtest("regular-baseline-src-copy-readible")
- 			test_render_baseline(i915);
-+		igt_subtest("protected-raw-src-copy-not-readible")
-+			test_render_pxp_src_to_protdest(i915);
- 	}
- 
- 	igt_fixture {
+ /* Dword 0 */
+ #define MI_VERTEX_BUFFER		(0x17<<23)
+ #define MI_VERTEX_BUFFER_IDX(x)		(x<<20)
 -- 
 2.25.1
