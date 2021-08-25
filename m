@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C76B56E3E3
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Aug 2021 17:09:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E81876E3EB
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Aug 2021 17:09:02 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
-Date: Wed, 25 Aug 2021 22:40:16 +0530
-Message-Id: <20210825171018.10821-1-jeevan.b@intel.com>
+Date: Wed, 25 Aug 2021 22:40:18 +0530
+Message-Id: <20210825171018.10821-3-jeevan.b@intel.com>
+In-Reply-To: <20210825171018.10821-1-jeevan.b@intel.com>
+References: <20210825171018.10821-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/2] Fix kms_psr2_sf test
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_psr2_sf: Make this a generic
+ test and change testcase design
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,21 +24,80 @@ To: igt-dev@lists.freedesktop.org
 Cc: jose.souza@intel.com, daniel@ffwll.ch, Jeevan B <jeevan.b@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Make this test generic, rename igt_debug_manual_check, patch the
-igt functions igt_debug_manual_check() and igt_debug_wait_for_keypress()
-to assert if "all" is supplied and change testcase design.
+Make this a generic kms test and change testcase design so that it avoids
+new subtest for each block position.
 
-Jeevan B (2):
-  lib/igt_aux: Rename igt_debug_manual_check and assert check if all is
-    supplied
-  tests/kms_psr2_sf: Make this a generic test and change testcase design
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+---
+ tests/kms_psr2_sf.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
- lib/igt_aux.c       | 16 +++++++++++-----
- lib/igt_aux.h       |  2 +-
- tests/kms_dsc.c     |  2 +-
- tests/kms_psr.c     |  2 +-
- tests/kms_psr2_sf.c | 30 +++++++++++++++---------------
- 5 files changed, 29 insertions(+), 23 deletions(-)
-
+diff --git a/tests/kms_psr2_sf.c b/tests/kms_psr2_sf.c
+index 93347327..c83120c4 100644
+--- a/tests/kms_psr2_sf.c
++++ b/tests/kms_psr2_sf.c
+@@ -550,7 +550,7 @@ igt_main
+ 	igt_fixture {
+ 		int r;
+ 
+-		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+ 		kmstest_set_vt_graphics_mode();
+ 
+@@ -582,9 +582,9 @@ igt_main
+ 	}
+ 
+ 	/* Verify primary plane selective fetch */
+-	for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
+-		igt_describe("Test that selective fetch works on primary plane");
+-		igt_subtest_f("primary-%s-sf-dmg-area-%d", op_str(data.op), i) {
++	igt_describe("Test that selective fetch works on primary plane");
++	igt_subtest_f("primary-%s-sf-dmg-area", op_str(data.op)) {
++		for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
+ 			data.damage_area_count = i;
+ 			data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+ 			prepare(&data);
+@@ -594,9 +594,9 @@ igt_main
+ 	}
+ 
+ 	/* Verify overlay plane selective fetch */
+-	for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
+-		igt_describe("Test that selective fetch works on overlay plane");
+-		igt_subtest_f("overlay-%s-sf-dmg-area-%d", op_str(data.op), i) {
++	igt_describe("Test that selective fetch works on overlay plane");
++	igt_subtest_f("overlay-%s-sf-dmg-area", op_str(data.op)) {
++		for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
+ 			data.damage_area_count = i;
+ 			data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+ 			prepare(&data);
+@@ -618,9 +618,9 @@ igt_main
+ 	/* Only for overlay plane */
+ 	data.op = PLANE_MOVE;
+ 	/* Verify overlay plane move selective fetch */
+-	for (i = POS_TOP_LEFT; i <= POS_BOTTOM_RIGHT ; i++) {
+-		igt_describe("Test that selective fetch works on moving overlay plane");
+-		igt_subtest_f("%s-sf-dmg-area-%d", op_str(data.op), i) {
++	igt_describe("Test that selective fetch works on moving overlay plane");
++	igt_subtest_f("%s-sf-dmg-area", op_str(data.op)) {
++		for (i = POS_TOP_LEFT; i <= POS_BOTTOM_RIGHT ; i++) {
+ 			data.pos = i;
+ 			data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+ 			prepare(&data);
+@@ -631,10 +631,10 @@ igt_main
+ 
+ 	/* Verify primary plane selective fetch with overplay plane blended */
+ 	data.op = OVERLAY_PRIM_UPDATE;
+-	for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
+-		igt_describe("Test that selective fetch works on primary plane "
+-			     "with blended overlay plane");
+-		igt_subtest_f("%s-sf-dmg-area-%d", op_str(data.op), i) {
++	igt_describe("Test that selective fetch works on primary plane "
++		     "with blended overlay plane");
++	igt_subtest_f("%s-sf-dmg-area", op_str(data.op)) {
++		for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
+ 			data.damage_area_count = i;
+ 			data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+ 			prepare(&data);
 -- 
 2.19.1
