@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C0136E151
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Aug 2021 05:31:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 036BF6E14C
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Aug 2021 05:31:08 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue, 24 Aug 2021 22:31:08 -0700
-Message-Id: <20210825053109.336142-17-alan.previn.teres.alexis@intel.com>
+Date: Tue, 24 Aug 2021 22:30:54 -0700
+Message-Id: <20210825053109.336142-3-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210825053109.336142-1-alan.previn.teres.alexis@intel.com>
 References: <20210825053109.336142-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 16/17] Verify protected surfaces are dma
- buffer sharable
+Subject: [igt-dev] [PATCH i-g-t v7 02/17] Update IOCTL wrapper with
+ DRM_IOCTL_I915_GEM_CONTEXT_CREATE_EXT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,138 +24,72 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Verify we can export a protected surface from
-protected context A into protected context B (with
-different client driver handles) and protected
-rendering is successful even after prior file
-handle is closed (i.e. pxp specific refcounting
-works).
+Update IOCTL wrapper with DRM_IOCTL_I915_GEM_CONTEXT_CREATE_EXT
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/i915/gem_pxp.c | 102 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 102 insertions(+)
+ lib/ioctl_wrappers.c | 34 ++++++++++++++++++++++++++++++++++
+ lib/ioctl_wrappers.h |  2 ++
+ 2 files changed, 36 insertions(+)
 
-diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 4e560962..9b7f50ab 100644
---- a/tests/i915/gem_pxp.c
-+++ b/tests/i915/gem_pxp.c
-@@ -622,6 +622,106 @@ static void test_render_pxp_protsrc_to_protdest(int i915)
- 	buf_ops_destroy(bops);
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index 09eb3ce7..5c59a259 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -706,6 +706,40 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf)
+ 	igt_assert_eq(__gem_execbuf_wr(fd, execbuf), 0);
  }
  
-+static int export_handle(int fd, uint32_t handle, int *outfd)
++/**
++ * __gem_ctx_create_ext:
++ * @fd: open i915 drm file descriptor
++ * @ctx_ext: context_create_ext data structure
++ *
++ * This wraps the GEM_CONTEXT_CREATE_EXT ioctl, which allocates gem context based on
++ * additional drm_i915_gem_context_create_ext_setparam input extensions. This is
++ * allowed to fail, with -errno returned
++ */
++int __gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext *ctx_ext)
 +{
-+	struct drm_prime_handle args;
-+	int ret;
++	int err = 0;
 +
-+	args.handle = handle;
-+	args.flags = DRM_CLOEXEC;
-+	args.fd = -1;
-+
-+	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
-+	if (ret)
-+		ret = errno;
-+	*outfd = args.fd;
-+
-+	return ret;
++	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_CONTEXT_CREATE_EXT, ctx_ext)) {
++		err = -errno;
++		igt_assume(err != 0);
++	}
++	errno = 0;
++	return err;
 +}
 +
-+static void test_pxp_dmabuffshare_refcnt(void)
++/**
++ * gem_ctx_create_ext:
++ * @fd: open i915 drm file descriptor
++ * @ctx_ext: context_create_ext data structure
++ *
++ * This wraps the GEM_CONTEXT_CREATE_EXT ioctl, which allocates gem context based on
++ * additional drm_i915_gem_context_create_ext_setparam input extensions.
++ */
++void gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext *ctx_ext)
 +{
-+	uint32_t ctx[2], sbo[2], dbo[2];
-+	struct intel_buf *sbuf[2], *dbuf[2];
-+	struct buf_ops *bops[2];
-+	struct intel_bb *ibb[2];
-+	int fd[2], dmabuf_fd = 0, ret, n, num_matches = 0;
-+	uint32_t encrypted[2][TSTSURF_SIZE/TSTSURF_BYTESPP];
-+
-+	/* First, create the client driver handles and
-+	 * protected dest buffer (is exported via dma-buff
-+	 * from first handle and imported to the second).
-+	 */
-+	for (n = 0; n < 2; ++n) {
-+		fd[n] = drm_open_driver(DRIVER_INTEL);
-+		igt_require(fd[n]);
-+		if (n == 0) {
-+			dbo[0] = alloc_and_fill_dest_buff(fd[0], true, TSTSURF_SIZE,
-+							  TSTSURF_INITCOLOR1);
-+		} else {
-+			ret = export_handle(fd[0], dbo[0], &dmabuf_fd);
-+			igt_assert(ret == 0);
-+			dbo[1] = prime_fd_to_handle(fd[1], dmabuf_fd);
-+			igt_assert(dbo[1]);
-+		}
-+	}
-+	/* Repeat twice: Create a full set of assets to perform
-+	 * a protected 3D session but using the same dest buffer
-+	 * from above.
-+	 */
-+	for (n = 0; n < 2; ++n) {
-+		ret = create_ctx_with_params(fd[n], true, true, true, false, &ctx[n]);
-+		igt_assert_eq(ret, 0);
-+		igt_assert_eq(get_ctx_protected_param(fd[n], ctx[n]), 1);
-+		ibb[n] = intel_bb_create_with_context(fd[n], ctx[n], 4096);
-+		intel_bb_set_pxp(ibb[n], true, DISPLAY_APPTYPE,
-+				 I915_PROTECTED_CONTENT_DEFAULT_SESSION);
-+
-+		bops[n] = buf_ops_create(fd[n]);
-+		if (n == 1)
-+			fill_bo_content(fd[1], dbo[1], TSTSURF_SIZE, TSTSURF_INITCOLOR2);
-+
-+		dbuf[n] = intel_buf_create_using_handle(bops[n], dbo[n], TSTSURF_WIDTH,
-+							TSTSURF_HEIGHT,	TSTSURF_BYTESPP*8, 0,
-+							I915_TILING_NONE, 0);
-+		intel_buf_set_pxp(dbuf[n], true);
-+
-+		sbo[n] = alloc_and_fill_dest_buff(fd[n], false, TSTSURF_SIZE, TSTSURF_FILLCOLOR1);
-+		sbuf[n] = intel_buf_create_using_handle(bops[n], sbo[n], TSTSURF_WIDTH,
-+							TSTSURF_HEIGHT, TSTSURF_BYTESPP*8, 0,
-+							I915_TILING_NONE, 0);
-+
-+		gen12_render_copyfunc(ibb[n], sbuf[n], 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT,
-+				      dbuf[n], 0, 0);
-+		gem_sync(fd[n], dbo[n]);
-+
-+		assert_bo_content_check(fd[n], dbo[n], COMPARE_COLOR_UNREADIBLE, TSTSURF_SIZE,
-+					TSTSURF_FILLCOLOR1, NULL, 0);
-+		assert_bo_content_check(fd[n], dbo[n], COPY_BUFFER, TSTSURF_SIZE, 0, encrypted[n],
-+					TSTSURF_SIZE);
-+
-+		/* free up all assets except the dest buffer to
-+		 * verify dma buff refcounting is performed on
-+		 * the protected dest buffer on the 2nd loop with
-+		 * successful reuse in another protected render.
-+		 */
-+		intel_bb_destroy(ibb[n]);
-+		intel_buf_destroy(sbuf[n]);
-+		intel_buf_destroy(dbuf[n]);
-+		gem_close(fd[n], sbo[n]);
-+		gem_close(fd[n], dbo[n]);
-+		gem_context_destroy(fd[n], ctx[n]);
-+		close(fd[n]);
-+	}
-+
-+	/* Verify that encrypted output across loops were equal */
-+	for (n = 0; n < (TSTSURF_SIZE/4); ++n)
-+		if (encrypted[0][n] == encrypted[1][n])
-+			++num_matches;
-+	igt_assert(num_matches == (TSTSURF_SIZE/4));
++	igt_assert_eq(__gem_ctx_create_ext(fd, ctx_ext), 0);
 +}
 +
-+
- static void init_powermgt_resources(int i915, struct powermgt_data *pm)
- {
- 	pm->debugfsdir = igt_debugfs_dir(i915);
-@@ -1056,6 +1156,8 @@ igt_main
- 			test_render_pxp_src_to_protdest(i915);
- 		igt_subtest("protected-encrypted-src-copy-not-readible")
- 			test_render_pxp_protsrc_to_protdest(i915);
-+		igt_subtest("dmabuf-shared-protected-dst-is-context-refcounted")
-+			test_pxp_dmabuffshare_refcnt();
- 	}
- 	igt_subtest_group {
- 		igt_fixture {
+ /**
+  * gem_madvise:
+  * @fd: open i915 drm file descriptor
+diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+index 9a897fec..6f7fbf1a 100644
+--- a/lib/ioctl_wrappers.h
++++ b/lib/ioctl_wrappers.h
+@@ -84,6 +84,8 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
+ int __gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
+ void gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
+ int __gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
++int __gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext *ctx_ext);
++void gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext *ctx_ext);
+ 
+ #ifndef I915_GEM_DOMAIN_WC
+ #define I915_GEM_DOMAIN_WC 0x80
 -- 
 2.25.1
