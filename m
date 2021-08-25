@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D3EC36E152
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB2D16E150
  for <igt-dev@lists.freedesktop.org>; Wed, 25 Aug 2021 05:31:09 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue, 24 Aug 2021 22:31:02 -0700
-Message-Id: <20210825053109.336142-11-alan.previn.teres.alexis@intel.com>
+Date: Tue, 24 Aug 2021 22:30:59 -0700
+Message-Id: <20210825053109.336142-8-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210825053109.336142-1-alan.previn.teres.alexis@intel.com>
 References: <20210825053109.336142-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 10/17] Verify PXP teardown occurred
- through suspend-resume
+Subject: [igt-dev] [PATCH i-g-t v7 07/17] Enable protected session cmd in
+ gen12_render_copyfunc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,134 +24,135 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-During a suspend-resume cycle, the driver shall ensure the
-PXP session and keys are torn down and re-established.
-Verify that key change did occur by repeating the 3d
-rendercopy operation before and after the suspend-resume
-cycle and ensuring the encrypted output is different.
+1. In _gen9_render_op, check if the incoming batchbuffer
+   is marked with pxp enabled. If so, insert MI_SET_APPID
+   along with PIPE_CONTROL instructions at the start and
+   end of the rendering operation in the command buffer.
+
+2. The two PIPE_CONTROLs will enable protected memory
+   at the start of the batch and disabling protected
+   memory at the end of it. These PIPE_CONTROLs require a
+   Post-Sync operation with a write to memory for hardware
+   to accept.
+
+3. In order to satisfy #2, _gen9_render_op uses unused
+   regions of the ibb buffer for the PIPE_CONTROL PostSync
+   write to memory (no different from how other 3d states
+   are being referenced).
+
+4. _gen9_render_op shall check the incoming surface
+   buffers for "is_protected" flag and if its set, it
+   will mark the SURFACE_STATE's MOCS field accordingly.
+
+NOTE: _gen9_render_op needs to program the HW to enable
+the PXP session as part of the rendering batch buffer
+because the HW requires that enabling/disabling protected
+memory access must be programmed in pairs within the same
+"dispatch of rendering commands" to HW.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/i915/gem_pxp.c | 67 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 66 insertions(+), 1 deletion(-)
+ lib/rendercopy_gen9.c | 57 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 57 insertions(+)
 
-diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 4c77051e..5fd728e7 100644
---- a/tests/i915/gem_pxp.c
-+++ b/tests/i915/gem_pxp.c
-@@ -9,6 +9,12 @@
- IGT_TEST_DESCRIPTION("Test PXP that manages protected content through arbitrated HW-PXP-session");
- /* Note: PXP = "Protected Xe Path" */
+diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+index 0356964e..f021f4cb 100644
+--- a/lib/rendercopy_gen9.c
++++ b/lib/rendercopy_gen9.c
+@@ -183,6 +183,8 @@ gen8_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst) {
+ 		ss->ss0.tiled_mode = 3;
  
-+/* Struct and definitions for power management. */
-+struct powermgt_data {
-+	int debugfsdir;
-+	bool has_runtime_pm;
-+};
-+
- static int create_bo_ext(int i915, uint32_t size, bool protected_is_true, uint32_t *bo_out)
- {
- 	int ret;
-@@ -468,7 +474,7 @@ static void test_render_baseline(int i915)
- 	buf_ops_destroy(bops);
+ 	ss->ss1.memory_object_control = intel_get_uc_mocs(i915);
++	if (intel_buf_pxp(buf))
++		ss->ss1.memory_object_control |= 1;
+ 
+ 	if (buf->tiling == I915_TILING_Yf)
+ 		ss->ss5.trmode = 1;
+@@ -904,6 +906,53 @@ static void gen8_emit_primitive(struct intel_bb *ibb, uint32_t offset)
+ 	intel_bb_out(ibb, 0);	/* index buffer offset, ignored */
  }
  
--static void test_render_pxp_src_to_protdest(int i915)
-+static void __test_render_pxp_src_to_protdest(int i915, uint32_t *outpixels, int outsize)
- {
- 	uint32_t ctx, srcbo, dstbo;
- 	struct intel_buf *srcbuf, *dstbuf;
-@@ -510,6 +516,10 @@ static void test_render_pxp_src_to_protdest(int i915)
- 	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
- 				TSTSURF_SIZE, TSTSURF_FILLCOLOR2, NULL, 0);
- 
-+	if (outpixels)
-+		assert_bo_content_check(i915, dstbo, COPY_BUFFER,
-+					TSTSURF_SIZE, 0, outpixels, outsize);
-+
- 	intel_bb_destroy(ibb);
- 	intel_buf_destroy(srcbuf);
- 	gem_close(i915, srcbo);
-@@ -519,6 +529,11 @@ static void test_render_pxp_src_to_protdest(int i915)
- 	buf_ops_destroy(bops);
- }
- 
-+static void test_render_pxp_src_to_protdest(int i915)
++#define GFX_OP_PIPE_CONTROL    ((3 << 29) | (3 << 27) | (2 << 24))
++#define PIPE_CONTROL_CS_STALL	            (1 << 20)
++#define PIPE_CONTROL_RENDER_TARGET_FLUSH    (1 << 12)
++#define PIPE_CONTROL_FLUSH_ENABLE           (1 << 7)
++#define PIPE_CONTROL_DATA_CACHE_INVALIDATE  (1 << 5)
++#define PIPE_CONTROL_PROTECTEDPATH_DISABLE  (1 << 27)
++#define PIPE_CONTROL_PROTECTEDPATH_ENABLE   (1 << 22)
++#define PIPE_CONTROL_POST_SYNC_OP           (1 << 14)
++#define PIPE_CONTROL_POST_SYNC_OP_STORE_DW_IDX (1 << 21)
++#define PS_OP_TAG_START                     0x1234fed0
++#define PS_OP_TAG_END                       0x5678cbaf
++static void gen12_emit_pxp_state(struct intel_bb *ibb, bool enable,
++		 uint32_t pxp_write_op_offset)
 +{
-+	__test_render_pxp_src_to_protdest(i915, NULL, 0);
-+}
++	uint32_t pipe_ctl_flags;
++	uint32_t set_app_id, ps_op_id;
 +
- static void test_render_pxp_protsrc_to_protdest(int i915)
- {
- 	uint32_t ctx, srcbo, dstbo, dstbo2;
-@@ -598,10 +613,47 @@ static void test_render_pxp_protsrc_to_protdest(int i915)
- 	buf_ops_destroy(bops);
- }
- 
-+static void init_powermgt_resources(int i915, struct powermgt_data *pm)
-+{
-+	pm->debugfsdir = igt_debugfs_dir(i915);
-+	igt_require(pm->debugfsdir != -1);
-+	pm->has_runtime_pm = igt_setup_runtime_pm(i915);
-+	igt_require(pm->has_runtime_pm);
-+}
++	if (enable) {
++		pipe_ctl_flags = PIPE_CONTROL_FLUSH_ENABLE;
++		intel_bb_out(ibb, GFX_OP_PIPE_CONTROL);
++		intel_bb_out(ibb, pipe_ctl_flags);
 +
-+static void trigger_powermgt_suspend_cycle(int i915,
-+	struct powermgt_data *pm)
-+{
-+	igt_pm_enable_sata_link_power_management();
-+	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_DEVICES);
-+	igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED);
-+}
++		set_app_id =  MI_SET_APPID |
++			      APPTYPE(intel_bb_pxp_apptype(ibb)) |
++			      APPID(intel_bb_pxp_appid(ibb));
++		intel_bb_out(ibb, set_app_id);
 +
-+static void test_pxp_pwrcycle_teardown_keychange(int i915, struct powermgt_data *pm)
-+{
-+	uint32_t encrypted_pixels_b4[TSTSURF_SIZE/TSTSURF_BYTESPP];
-+	uint32_t encrypted_pixels_aft[TSTSURF_SIZE/TSTSURF_BYTESPP];
-+	int matched_after_keychange = 0, loop = 0;
-+
-+	__test_render_pxp_src_to_protdest(i915, encrypted_pixels_b4, TSTSURF_SIZE);
-+
-+	trigger_powermgt_suspend_cycle(i915, pm);
-+
-+	__test_render_pxp_src_to_protdest(i915, encrypted_pixels_aft, TSTSURF_SIZE);
-+
-+	while (loop < (TSTSURF_SIZE/TSTSURF_BYTESPP)) {
-+		if (encrypted_pixels_b4[loop] == encrypted_pixels_aft[loop])
-+			++matched_after_keychange;
-+		++loop;
++		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_ENABLE;
++		ps_op_id = PS_OP_TAG_START;
++	} else {
++		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_DISABLE;
++		ps_op_id = PS_OP_TAG_END;
 +	}
-+	igt_assert_eq(matched_after_keychange, 0);
++
++	pipe_ctl_flags |= (PIPE_CONTROL_CS_STALL |
++			   PIPE_CONTROL_RENDER_TARGET_FLUSH |
++			   PIPE_CONTROL_DATA_CACHE_INVALIDATE |
++			   PIPE_CONTROL_POST_SYNC_OP);
++	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL | 4);
++	intel_bb_out(ibb, pipe_ctl_flags);
++	intel_bb_emit_reloc(ibb, ibb->handle, 0, I915_GEM_DOMAIN_COMMAND,
++			    (enable ? pxp_write_op_offset : (pxp_write_op_offset+8)),
++			    ibb->batch_offset);
++	intel_bb_out(ibb, ps_op_id);
++	intel_bb_out(ibb, ps_op_id);
 +}
 +
- igt_main
- {
- 	int i915 = -1;
- 	bool pxp_supported = false;
-+	struct powermgt_data pm = {0};
- 	igt_render_copyfunc_t rendercopy = NULL;
- 	uint32_t devid = 0;
+ /* The general rule is if it's named gen6 it is directly copied from
+  * gen6_render_copyfunc.
+  *
+@@ -953,6 +1002,7 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 	uint32_t vertex_buffer;
+ 	uint32_t aux_pgtable_state;
+ 	bool fast_clear = !src;
++	uint32_t pxp_scratch_offset;
  
-@@ -674,6 +726,19 @@ igt_main
- 		igt_subtest("protected-encrypted-src-copy-not-readible")
- 			test_render_pxp_protsrc_to_protdest(i915);
- 	}
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require(pxp_supported);
-+			devid = intel_get_drm_devid(i915);
-+			igt_assert(devid);
-+			rendercopy = igt_get_render_copyfunc(devid);
-+			igt_require(rendercopy);
-+			init_powermgt_resources(i915, &pm);
-+		}
-+		igt_describe("Verify suspend-resume teardown management:");
-+		igt_subtest("verify-pxp-key-change-after-suspend-resume")
-+			test_pxp_pwrcycle_teardown_keychange(i915, &pm);
-+	}
+ 	if (!fast_clear)
+ 		igt_assert(src->bpp == dst->bpp);
+@@ -981,8 +1031,12 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 	aux_pgtable_state = gen12_create_aux_pgtable_state(ibb, aux_pgtable_buf);
  
- 	igt_fixture {
- 		close(i915);
+ 	/* TODO: there is other state which isn't setup */
++	pxp_scratch_offset = intel_bb_offset(ibb);
+ 	intel_bb_ptr_set(ibb, 0);
+ 
++	if (intel_bb_pxp_enabled(ibb))
++		gen12_emit_pxp_state(ibb, true, pxp_scratch_offset);
++
+ 	/* Start emitting the commands. The order roughly follows the mesa blorp
+ 	 * order */
+ 	intel_bb_out(ibb, G4X_PIPELINE_SELECT | PIPELINE_SELECT_3D |
+@@ -1054,6 +1108,9 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 	gen8_emit_vf_topology(ibb);
+ 	gen8_emit_primitive(ibb, vertex_buffer);
+ 
++	if (intel_bb_pxp_enabled(ibb))
++		gen12_emit_pxp_state(ibb, false, pxp_scratch_offset);
++
+ 	intel_bb_emit_bbe(ibb);
+ 	intel_bb_exec(ibb, intel_bb_offset(ibb),
+ 		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, false);
 -- 
 2.25.1
