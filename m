@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24A456E14C
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Aug 2021 05:31:10 +0000 (UTC)
-From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue, 24 Aug 2021 22:31:06 -0700
-Message-Id: <20210825053109.336142-15-alan.previn.teres.alexis@intel.com>
-In-Reply-To: <20210825053109.336142-1-alan.previn.teres.alexis@intel.com>
-References: <20210825053109.336142-1-alan.previn.teres.alexis@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 14/17] Verify execution behavior with
- stale PXP assets through suspend-resume
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 25 Aug 2021 06:15:57 -0000
+Message-ID: <162987215757.17673.18102079934894647184@emeril.freedesktop.org>
+References: <20210825053109.336142-1-alan.previn.teres.alexis@intel.com>
+In-Reply-To: <20210825053109.336142-1-alan.previn.teres.alexis@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
+ =?utf-8?q?ntroduce_PXP_Test_=28rev7=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,111 +16,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a subtest to repeat the same previous three scenarios when attempting
-to execute work with either stale PXP contexts or buffers but this time
-trigger the teardown event via an S3 suspend-resume power state cycle.
+== Series Details ==
 
-NOTE: The end-to-end architecture requirement includes that
-any break in the links of the PXP sessions needs to trigger a
-full teardown and the application needs to be made aware of that
-allowing it to re-establish the end-to-end pipeline of buffers,
-contexts and renders again if it chooses to. This stricter
-behavior targets only contexts created with PXP enabled.
+Series: Introduce PXP Test (rev7)
+URL   : https://patchwork.freedesktop.org/series/87570/
+State : warning
 
-Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- tests/i915/gem_pxp.c | 65 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 65 insertions(+)
+== Summary ==
 
-diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 22e9150a..24727f8a 100644
---- a/tests/i915/gem_pxp.c
-+++ b/tests/i915/gem_pxp.c
-@@ -852,6 +852,69 @@ static void test_pxp_stale_buf_optout_execution(int i915)
- 	free_exec_assets(i915, &data);
- }
- 
-+static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_data *pm)
-+{
-+	int ret;
-+	struct simple_exec_assets data[3] = {{0}, {0}, {0}};
-+	uint32_t ctx2;
-+	struct intel_bb *ibb2;
-+
-+	/*
-+	 * For asset data[0]: Use normal buffers for testing for invalidation
-+	 * of protected contexts to ensure kernel is catching
-+	 * the invalidated context (not buffer)
-+	 */
-+	prepare_exec_assets(i915, &data[0], true, false);
-+	ret = gem_execbuf_flush_store_dw(i915, data[0].ibb, data[0].ctx, data[0].fencebuf);
-+	igt_assert(ret == 0);
-+
-+	/*
-+	 * For asset data[1]: Use pxp buffers with pxp context for testing for invalidation
-+	 * of protected buffers.
-+	 */
-+	prepare_exec_assets(i915, &data[1], true, true);
-+	ret = gem_execbuf_flush_store_dw(i915, data[1].ibb, data[1].ctx, data[1].fencebuf);
-+	igt_assert(ret == 0);
-+
-+	/*
-+	 * For asset data[2]: Use a normal context for testing opt-out behavior
-+	 * when executing with a pxp buffer across a teardown event.
-+	 */
-+	prepare_exec_assets(i915, &data[2], false, true);
-+	ret = gem_execbuf_flush_store_dw(i915, data[2].ibb, data[2].ctx, data[2].fencebuf);
-+	igt_assert(ret == 0);
-+
-+	/* Do an S3 suspend resume cycle which also causes the pxp teardown event */
-+	trigger_powermgt_suspend_cycle(i915, pm);
-+
-+	ret = gem_execbuf_flush_store_dw(i915, data[0].ibb, data[0].ctx, data[0].fencebuf);
-+	igt_assert_f((ret == -EIO), "Executing stale pxp context didn't fail with -EIO\n");
-+
-+	/*
-+	 * For asset data[1]: after teardown, alloc new assets for context but
-+	 * reuse the bo to ensure the kernel is catching the
-+	 * invalidated bo (not context)
-+	 */
-+	ret = create_ctx_with_params(i915, true, true, true, false, &ctx2);
-+	igt_assert_eq(ret, 0);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx2), 1);
-+	ibb2 = intel_bb_create_with_context(i915, ctx2, 4096);
-+	igt_assert(ibb2);
-+	intel_bb_remove_intel_buf(data[1].ibb, data[1].fencebuf);
-+	intel_bb_add_intel_buf(ibb2, data[1].fencebuf, true);
-+	ret = gem_execbuf_flush_store_dw(i915, ibb2, ctx2, data[1].fencebuf);
-+	igt_assert_f((ret == -ENOEXEC), "Executing stale pxp buffer didn't fail with -ENOEXEC\n");
-+
-+	ret = gem_execbuf_flush_store_dw(i915, data[2].ibb, data[2].ctx, data[2].fencebuf);
-+	igt_assert_f((ret == 0), "Opt-out-execution with stale pxp buffer didn't succeed\n");
-+
-+	free_exec_assets(i915, &data[0]);
-+	intel_bb_destroy(ibb2);
-+	gem_context_destroy(i915, ctx2);
-+	free_exec_assets(i915, &data[1]);
-+	free_exec_assets(i915, &data[2]);
-+}
-+
- igt_main
- {
- 	int i915 = -1;
-@@ -947,6 +1010,8 @@ igt_main
- 			test_pxp_stale_buf_execution(i915);
- 		igt_subtest("verify-pxp-stale-buf-optout-execution")
- 			test_pxp_stale_buf_optout_execution(i915);
-+		igt_subtest("verify-pxp-execution-after-suspend-resume")
-+			test_pxp_pwrcycle_staleasset_execution(i915, &pm);
- 	}
- 
- 	igt_fixture {
--- 
-2.25.1
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/388082 for the overview.
+
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/13080590):
+  Setting up libmount-dev:amd64 (2.33.1-0.1) ...
+  Setting up libcairo-script-interpreter2:amd64 (1.16.0-4+deb10u1) ...
+  Setting up libfontconfig1-dev:amd64 (2.13.1-2) ...
+  Setting up libdw-dev:amd64 (0.176-1.1) ...
+  Setting up libglib2.0-dev:amd64 (2.58.3-2+deb10u3) ...
+  Setting up libcairo2-dev:amd64 (1.16.0-4+deb10u1) ...
+  Processing triggers for libc-bin (2.28-10) ...
+  5d99ebc0f7fc92cd0c9353f989ee7ed88760e218d7e5db09810f9cf0ba4f4e8f
+  STEP 4: RUN apt-get clean
+  STEP 5: COMMIT registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal:dockerfile-6bf4b730e51b28190390693acbc1776ba69f9124
+  e5c509b8c0a358091ad32ce2b8e106638bfdcf80b7089359bbe709f9d4bb4c78
+  [Warning] one or more build args were not consumed: [CI_COMMIT_SHA CI_REGISTRY_IMAGE]
+  Getting image source signatures
+  Error: Error copying image to the remote destination: Error trying to reuse blob sha256:80092b3a41154de4cac582a8e89b168126945dbe776db7d2172221da8ebf9bac at destination: unexpected http code: 502 (Bad Gateway), URL: https://gitlab.freedesktop.org/jwt/auth?account=gitlab-ci-token&scope=repository%3Agfx-ci%2Figt-ci-tags%2Fbuild-debian-minimal%3Apull%2Cpush&service=container_registry
+  section_end:1629871379:step_script
+  section_start:1629871379:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1629871380:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/13080592):
+  done.
+  Processing triggers for libc-bin (2.28-10) ...
+  749d6b2df0f2e8e0f69c1105aed76f634f3d09f639c14c70e3580975fe9dd077
+  STEP 7: RUN apt-get clean
+  STEP 8: COMMIT registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:dockerfile-f370b1c77e386827453db413b775a4c9bff41794
+  7360075a71dacfc66f0b49b3271b9a459904dbe51c5760efac48fe52da27946c
+  [Warning] one or more build args were not consumed: [CI_COMMIT_SHA CI_REGISTRY_IMAGE]
+  Getting image source signatures
+  Copying blob sha256:bcd671e982c319d93d63aba55fcf7d23c596cb73d6e7762fd03be70da5efe002
+  Copying config sha256:7360075a71dacfc66f0b49b3271b9a459904dbe51c5760efac48fe52da27946c
+  Writing manifest to image destination
+  Storing signatures
+  Getting image source signatures
+  time="2021-08-25T06:09:27Z" level=fatal msg="Error trying to reuse blob sha256:a1c4b97398ec8bc7b17c52a01ef6941dc58811cb43f945b093db7a131586297a at destination: unexpected http code: 502 (Bad Gateway), URL: https://gitlab.freedesktop.org/jwt/auth?account=gitlab-ci-token&scope=repository%3Agfx-ci%2Figt-ci-tags%2Fbuild-debian-arm64%3Apull%2Cpush&service=container_registry" 
+  section_end:1629871767:step_script
+  section_start:1629871767:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1629871768:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/388082
