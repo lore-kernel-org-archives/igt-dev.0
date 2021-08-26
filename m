@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Rob Clark <robdclark@gmail.com>
-Date: Wed, 25 Aug 2021 16:31:39 -0700
-Message-Id: <20210825233139.1066504-4-robdclark@gmail.com>
-In-Reply-To: <20210825233139.1066504-1-robdclark@gmail.com>
-References: <20210825233139.1066504-1-robdclark@gmail.com>
+Content-Type: multipart/alternative;
+ boundary="===============9153022969924077181=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH igt v2 3/3] msm: Add submit ioctl tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 26 Aug 2021 00:20:23 -0000
+Message-ID: <162993722306.15050.14500593927400633348@emeril.freedesktop.org>
+References: <20210825233139.1066504-1-robdclark@gmail.com>
+In-Reply-To: <20210825233139.1066504-1-robdclark@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW5pdGlh?=
+ =?utf-8?q?l_igt_tests_for_drm/msm_ioctls_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,226 +16,229 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, Jordan Crouse <jordan@cosmicpenguin.net>, Akhil P Oommen <akhilpo@codeaurora.org>, Petri Latvala <petri.latvala@intel.com>, Rob Clark <robdclark@chromium.org>
+To: Rob Clark <robdclark@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Rob Clark <robdclark@chromium.org>
+--===============9153022969924077181==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add an initial set of tests for the submit ioctl.
+== Series Details ==
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
----
- tests/meson.build  |   1 +
- tests/msm_submit.c | 186 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 187 insertions(+)
- create mode 100644 tests/msm_submit.c
+Series: Initial igt tests for drm/msm ioctls (rev2)
+URL   : https://patchwork.freedesktop.org/series/93973/
+State : success
 
-diff --git a/tests/meson.build b/tests/meson.build
-index 1bdfddbb..ff7c709a 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -107,6 +107,7 @@ test_progs = [
- 	'vc4_wait_seqno',
- 	'vgem_basic',
- 	'vgem_slow',
-+	'msm_submit',
- ]
- 
- i915_progs = [
-diff --git a/tests/msm_submit.c b/tests/msm_submit.c
-new file mode 100644
-index 00000000..da93c574
---- /dev/null
-+++ b/tests/msm_submit.c
-@@ -0,0 +1,186 @@
-+/*
-+ * Copyright © 2021 Google, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice (including the next
-+ * paragraph) shall be included in all copies or substantial portions of the
-+ * Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-+ * IN THE SOFTWARE.
-+ */
-+
-+#include "igt.h"
-+#include "igt_msm.h"
-+
-+igt_main
-+{
-+	struct msm_device *dev;
-+	struct msm_pipe *pipe;
-+	struct msm_bo *a, *b;
-+
-+	igt_fixture {
-+		dev = igt_msm_dev_open();
-+		pipe = igt_msm_pipe_open(dev, 0);
-+		a = igt_msm_bo_new(dev, 0x1000, MSM_BO_WC);
-+		b = igt_msm_bo_new(dev, 0x1000, MSM_BO_WC);
-+	}
-+
-+	igt_subtest("empty-submit") {
-+		struct drm_msm_gem_submit req = {
-+				.flags   = pipe->pipe,
-+				.queueid = pipe->submitqueue_id,
-+		};
-+		do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
-+	}
-+
-+	igt_subtest("invalid-queue-submit") {
-+		struct drm_msm_gem_submit req = {
-+				.flags   = pipe->pipe,
-+				.queueid = 0x1234,
-+		};
-+		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, ENOENT);
-+	}
-+
-+	igt_subtest("invalid-flags-submit") {
-+		struct drm_msm_gem_submit req = {
-+				.flags   = 0x1234,
-+				.queueid = pipe->submitqueue_id,
-+		};
-+		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
-+	}
-+
-+	igt_subtest("invalid-in-fence-submit") {
-+		struct drm_msm_gem_submit req = {
-+				.flags   = pipe->pipe | MSM_SUBMIT_FENCE_FD_IN,
-+				.queueid = pipe->submitqueue_id,
-+				.fence_fd = dev->fd,  /* This is not a fence fd! */
-+		};
-+		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
-+	}
-+
-+	igt_subtest("invalid-duplicate-bo-submit") {
-+		struct drm_msm_gem_submit_bo bos[] = {
-+			[0] = {
-+				.handle     = a->handle,
-+				.flags      = MSM_SUBMIT_BO_READ,
-+			},
-+			[1] = {
-+				.handle     = b->handle,
-+				.flags      = MSM_SUBMIT_BO_READ,
-+			},
-+			[2] = {
-+				/* this is invalid.. there should not be two entries
-+				 * for the same bo, instead a single entry w/ all
-+				 * usage flags OR'd together should be used.  Kernel
-+				 * should catch this, and return an error code after
-+				 * cleaning up properly (not leaking any bo's)
-+				 */
-+				.handle     = a->handle,
-+				.flags      = MSM_SUBMIT_BO_WRITE,
-+			},
-+		};
-+		struct drm_msm_gem_submit req = {
-+				.flags   = pipe->pipe,
-+				.queueid = pipe->submitqueue_id,
-+				.nr_bos  = ARRAY_SIZE(bos),
-+				.bos     = VOID2U64(bos),
-+		};
-+		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
-+	}
-+
-+	igt_subtest("invalid-cmd-idx-submit") {
-+		struct drm_msm_gem_submit_cmd cmds[] = {
-+			[0] = {
-+				.type       = MSM_SUBMIT_CMD_BUF,
-+				.submit_idx = 0,      /* bos[0] does not exist */
-+				.size       = 4 * 4,  /* 4 dwords in cmdbuf */
-+			},
-+		};
-+		struct drm_msm_gem_submit req = {
-+				.flags   = pipe->pipe,
-+				.queueid = pipe->submitqueue_id,
-+				.nr_cmds    = ARRAY_SIZE(cmds),
-+				.cmds       = VOID2U64(cmds),
-+		};
-+		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
-+	}
-+
-+	igt_subtest("invalid-cmd-type-submit") {
-+		struct drm_msm_gem_submit_bo bos[] = {
-+			[0] = {
-+				.handle     = a->handle,
-+				.flags      = MSM_SUBMIT_BO_READ,
-+			},
-+		};
-+		struct drm_msm_gem_submit_cmd cmds[] = {
-+			[0] = {
-+				.type       = 0x1234,
-+				.submit_idx = 0,
-+				.size       = 4 * 4,  /* 4 dwords in cmdbuf */
-+			},
-+		};
-+		struct drm_msm_gem_submit req = {
-+				.flags   = pipe->pipe,
-+				.queueid = pipe->submitqueue_id,
-+				.nr_cmds    = ARRAY_SIZE(cmds),
-+				.cmds       = VOID2U64(cmds),
-+				.nr_bos  = ARRAY_SIZE(bos),
-+				.bos     = VOID2U64(bos),
-+		};
-+		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
-+	}
-+
-+	igt_subtest("valid-submit") {
-+		struct drm_msm_gem_submit_bo bos[] = {
-+			[0] = {
-+				.handle     = a->handle,
-+				.flags      = MSM_SUBMIT_BO_READ,
-+			},
-+		};
-+		struct drm_msm_gem_submit_cmd cmds[] = {
-+			[0] = {
-+				.type       = MSM_SUBMIT_CMD_BUF,
-+				.submit_idx = 0,
-+				.size       = 4 * 4,  /* 4 dwords in cmdbuf */
-+			},
-+		};
-+		struct drm_msm_gem_submit req = {
-+				.flags   = pipe->pipe,
-+				.queueid = pipe->submitqueue_id,
-+				.nr_cmds    = ARRAY_SIZE(cmds),
-+				.cmds       = VOID2U64(cmds),
-+				.nr_bos  = ARRAY_SIZE(bos),
-+				.bos     = VOID2U64(bos),
-+		};
-+		uint32_t *cmdstream = igt_msm_bo_map(a);
-+		if (dev->gen >= 5) {
-+			*(cmdstream++) = pm4_pkt7_hdr(CP_NOP, 3);
-+		} else {
-+			*(cmdstream++) = pm4_pkt3_hdr(CP_NOP, 3);
-+		}
-+		*(cmdstream++) = 0;
-+		*(cmdstream++) = 0;
-+		*(cmdstream++) = 0;
-+
-+		do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
-+	}
-+
-+	igt_fixture {
-+		igt_msm_bo_free(a);
-+		igt_msm_bo_free(b);
-+		igt_msm_pipe_close(pipe);
-+		igt_msm_dev_close(dev);
-+	}
-+}
--- 
-2.31.1
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10521 -> IGTPW_6157
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6157 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@cs-gfx:
+    - fi-rkl-guc:         NOTRUN -> [SKIP][1] ([fdo#109315]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/fi-rkl-guc/igt@amdgpu/amd_basic@cs-gfx.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - fi-rkl-guc:         NOTRUN -> [DMESG-WARN][2] ([i915#3958])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - fi-rkl-guc:         [DMESG-FAIL][3] ([i915#3928]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10521/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - fi-rkl-guc:         [FAIL][5] ([i915#3983]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10521/fi-rkl-guc/igt@kms_force_connector_basic@force-connector-state.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/fi-rkl-guc/igt@kms_force_connector_basic@force-connector-state.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-tgl-1115g4:      [INCOMPLETE][7] ([i915#1385] / [i915#4006]) -> [INCOMPLETE][8] ([i915#4006])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10521/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-tgl-1115g4:      [SKIP][9] ([i915#1072]) -> [SKIP][10] ([i915#1072] / [i915#1385])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10521/fi-tgl-1115g4/igt@kms_psr@primary_page_flip.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/fi-tgl-1115g4/igt@kms_psr@primary_page_flip.html
+
+  
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1385]: https://gitlab.freedesktop.org/drm/intel/issues/1385
+  [i915#3928]: https://gitlab.freedesktop.org/drm/intel/issues/3928
+  [i915#3958]: https://gitlab.freedesktop.org/drm/intel/issues/3958
+  [i915#3983]: https://gitlab.freedesktop.org/drm/intel/issues/3983
+  [i915#4006]: https://gitlab.freedesktop.org/drm/intel/issues/4006
+
+
+Participating hosts (40 -> 34)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 bat-adls-5 fi-hsw-4200u fi-bsw-cyan fi-bdw-samus bat-jsl-1 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6186 -> IGTPW_6157
+
+  CI-20190529: 20190529
+  CI_DRM_10521: 22d97eae8a21ddd48ba661b0a3a68c83bf518d35 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6157: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/index.html
+  IGT_6186: 250081b306c6fa8f95405fab6a7604f1968dd4ec @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@msm_submit@empty-submit
++igt@msm_submit@invalid-cmd-idx-submit
++igt@msm_submit@invalid-cmd-type-submit
++igt@msm_submit@invalid-duplicate-bo-submit
++igt@msm_submit@invalid-flags-submit
++igt@msm_submit@invalid-in-fence-submit
++igt@msm_submit@invalid-queue-submit
++igt@msm_submit@valid-submit
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/index.html
+
+--===============9153022969924077181==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Initial igt tests for drm/msm ioctls (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93973/">https://patchwork.freedesktop.org/series/93973/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10521 -&gt; IGTPW_6157</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6157 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@cs-gfx:</p>
+<ul>
+<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/fi-rkl-guc/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3958">i915#3958</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10521/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3928">i915#3928</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-connector-state:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10521/fi-rkl-guc/igt@kms_force_connector_basic@force-connector-state.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3983">i915#3983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/fi-rkl-guc/igt@kms_force_connector_basic@force-connector-state.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10521/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1385">i915#1385</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4006">i915#4006</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4006">i915#4006</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10521/fi-tgl-1115g4/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/fi-tgl-1115g4/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1385">i915#1385</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (40 -&gt; 34)</h2>
+<p>Missing    (6): fi-ilk-m540 bat-adls-5 fi-hsw-4200u fi-bsw-cyan fi-bdw-samus bat-jsl-1 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6186 -&gt; IGTPW_6157</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10521: 22d97eae8a21ddd48ba661b0a3a68c83bf518d35 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6157: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6157/index.html<br />
+  IGT_6186: 250081b306c6fa8f95405fab6a7604f1968dd4ec @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@msm_submit@empty-submit<br />
++igt@msm_submit@invalid-cmd-idx-submit<br />
++igt@msm_submit@invalid-cmd-type-submit<br />
++igt@msm_submit@invalid-duplicate-bo-submit<br />
++igt@msm_submit@invalid-flags-submit<br />
++igt@msm_submit@invalid-in-fence-submit<br />
++igt@msm_submit@invalid-queue-submit<br />
++igt@msm_submit@valid-submit</p>
+
+</body>
+</html>
+
+--===============9153022969924077181==--
