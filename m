@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3200656013673603945=="
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 26 Aug 2021 14:20:16 -0000
-Message-ID: <162998761660.15048.16074537520504048429@emeril.freedesktop.org>
-References: <20210824110459.27235-1-swati2.sharma@intel.com>
-In-Reply-To: <20210824110459.27235-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fflip=5Fscaled=5Fcrc=3A_Add_upscaling_tests_=28rev2=29?=
+References: <20210825233139.1066504-1-robdclark@gmail.com>
+ <20210825233139.1066504-4-robdclark@gmail.com>
+ <YScnGRjPt48cEtF1@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <YScnGRjPt48cEtF1@platvala-desk.ger.corp.intel.com>
+From: Rob Clark <robdclark@gmail.com>
+Date: Thu, 26 Aug 2021 08:37:19 -0700
+Message-ID: <CAF6AEGsf=jf7-miUXt+4h5cOEYx0obW-_Gmxm=vUL4wWTsbsJw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH igt v2 3/3] msm: Add submit ioctl tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,299 +17,272 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Swati Sharma <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, freedreno <freedreno@lists.freedesktop.org>, linux-arm-msm <linux-arm-msm@vger.kernel.org>, Jordan Crouse <jordan@cosmicpenguin.net>, Akhil P Oommen <akhilpo@codeaurora.org>, Rob Clark <robdclark@chromium.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3200656013673603945==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, Aug 25, 2021 at 10:28 PM Petri Latvala <petri.latvala@intel.com> wr=
+ote:
+>
+> On Wed, Aug 25, 2021 at 04:31:39PM -0700, Rob Clark wrote:
+> > From: Rob Clark <robdclark@chromium.org>
+> >
+> > Add an initial set of tests for the submit ioctl.
+> >
+> > Signed-off-by: Rob Clark <robdclark@chromium.org>
+> > ---
+> >  tests/meson.build  |   1 +
+> >  tests/msm_submit.c | 186 +++++++++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 187 insertions(+)
+> >  create mode 100644 tests/msm_submit.c
+> >
+> > diff --git a/tests/meson.build b/tests/meson.build
+> > index 1bdfddbb..ff7c709a 100644
+> > --- a/tests/meson.build
+> > +++ b/tests/meson.build
+> > @@ -107,6 +107,7 @@ test_progs =3D [
+> >       'vc4_wait_seqno',
+> >       'vgem_basic',
+> >       'vgem_slow',
+> > +     'msm_submit',
+> >  ]
+> >
+> >  i915_progs =3D [
+> > diff --git a/tests/msm_submit.c b/tests/msm_submit.c
+> > new file mode 100644
+> > index 00000000..da93c574
+> > --- /dev/null
+> > +++ b/tests/msm_submit.c
+> > @@ -0,0 +1,186 @@
+> > +/*
+> > + * Copyright =C2=A9 2021 Google, Inc.
+> > + *
+> > + * Permission is hereby granted, free of charge, to any person obtaini=
+ng a
+> > + * copy of this software and associated documentation files (the "Soft=
+ware"),
+> > + * to deal in the Software without restriction, including without limi=
+tation
+> > + * the rights to use, copy, modify, merge, publish, distribute, sublic=
+ense,
+> > + * and/or sell copies of the Software, and to permit persons to whom t=
+he
+> > + * Software is furnished to do so, subject to the following conditions=
+:
+> > + *
+> > + * The above copyright notice and this permission notice (including th=
+e next
+> > + * paragraph) shall be included in all copies or substantial portions =
+of the
+> > + * Software.
+> > + *
+> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXP=
+RESS OR
+> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABI=
+LITY,
+> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT =
+SHALL
+> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES O=
+R OTHER
+> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARI=
+SING
+> > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER=
+ DEALINGS
+> > + * IN THE SOFTWARE.
+> > + */
+> > +
+> > +#include "igt.h"
+> > +#include "igt_msm.h"
+> > +
+> > +igt_main
+> > +{
+> > +     struct msm_device *dev;
+> > +     struct msm_pipe *pipe;
+> > +     struct msm_bo *a, *b;
+> > +
+> > +     igt_fixture {
+> > +             dev =3D igt_msm_dev_open();
+>
+> What I replied on 2/3 applies here: If opening the device fails,
+> igt_msm_dev_open() does not return and 'dev' is left uninitialized,
+> those other pointers likewise. Leading to...
+>
+> > +             pipe =3D igt_msm_pipe_open(dev, 0);
+> > +             a =3D igt_msm_bo_new(dev, 0x1000, MSM_BO_WC);
+> > +             b =3D igt_msm_bo_new(dev, 0x1000, MSM_BO_WC);
+> > +     }
+> > +
+> > +     igt_subtest("empty-submit") {
+> > +             struct drm_msm_gem_submit req =3D {
+> > +                             .flags   =3D pipe->pipe,
+> > +                             .queueid =3D pipe->submitqueue_id,
+> > +             };
+> > +             do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
+> > +     }
+> > +
+> > +     igt_subtest("invalid-queue-submit") {
+> > +             struct drm_msm_gem_submit req =3D {
+> > +                             .flags   =3D pipe->pipe,
+> > +                             .queueid =3D 0x1234,
+> > +             };
+> > +             do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, ENO=
+ENT);
+> > +     }
+> > +
+> > +     igt_subtest("invalid-flags-submit") {
+> > +             struct drm_msm_gem_submit req =3D {
+> > +                             .flags   =3D 0x1234,
+> > +                             .queueid =3D pipe->submitqueue_id,
+> > +             };
+> > +             do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EIN=
+VAL);
+> > +     }
+> > +
+> > +     igt_subtest("invalid-in-fence-submit") {
+> > +             struct drm_msm_gem_submit req =3D {
+> > +                             .flags   =3D pipe->pipe | MSM_SUBMIT_FENC=
+E_FD_IN,
+> > +                             .queueid =3D pipe->submitqueue_id,
+> > +                             .fence_fd =3D dev->fd,  /* This is not a =
+fence fd! */
+> > +             };
+> > +             do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EIN=
+VAL);
+> > +     }
+> > +
+> > +     igt_subtest("invalid-duplicate-bo-submit") {
+> > +             struct drm_msm_gem_submit_bo bos[] =3D {
+> > +                     [0] =3D {
+> > +                             .handle     =3D a->handle,
+> > +                             .flags      =3D MSM_SUBMIT_BO_READ,
+> > +                     },
+> > +                     [1] =3D {
+> > +                             .handle     =3D b->handle,
+> > +                             .flags      =3D MSM_SUBMIT_BO_READ,
+> > +                     },
+> > +                     [2] =3D {
+> > +                             /* this is invalid.. there should not be =
+two entries
+> > +                              * for the same bo, instead a single entr=
+y w/ all
+> > +                              * usage flags OR'd together should be us=
+ed.  Kernel
+> > +                              * should catch this, and return an error=
+ code after
+> > +                              * cleaning up properly (not leaking any =
+bo's)
+> > +                              */
+> > +                             .handle     =3D a->handle,
+> > +                             .flags      =3D MSM_SUBMIT_BO_WRITE,
+> > +                     },
+> > +             };
+> > +             struct drm_msm_gem_submit req =3D {
+> > +                             .flags   =3D pipe->pipe,
+> > +                             .queueid =3D pipe->submitqueue_id,
+> > +                             .nr_bos  =3D ARRAY_SIZE(bos),
+> > +                             .bos     =3D VOID2U64(bos),
+> > +             };
+> > +             do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EIN=
+VAL);
+> > +     }
+> > +
+> > +     igt_subtest("invalid-cmd-idx-submit") {
+> > +             struct drm_msm_gem_submit_cmd cmds[] =3D {
+> > +                     [0] =3D {
+> > +                             .type       =3D MSM_SUBMIT_CMD_BUF,
+> > +                             .submit_idx =3D 0,      /* bos[0] does no=
+t exist */
+> > +                             .size       =3D 4 * 4,  /* 4 dwords in cm=
+dbuf */
+> > +                     },
+> > +             };
+> > +             struct drm_msm_gem_submit req =3D {
+> > +                             .flags   =3D pipe->pipe,
+> > +                             .queueid =3D pipe->submitqueue_id,
+> > +                             .nr_cmds    =3D ARRAY_SIZE(cmds),
+> > +                             .cmds       =3D VOID2U64(cmds),
+> > +             };
+> > +             do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EIN=
+VAL);
+> > +     }
+> > +
+> > +     igt_subtest("invalid-cmd-type-submit") {
+> > +             struct drm_msm_gem_submit_bo bos[] =3D {
+> > +                     [0] =3D {
+> > +                             .handle     =3D a->handle,
+> > +                             .flags      =3D MSM_SUBMIT_BO_READ,
+> > +                     },
+> > +             };
+> > +             struct drm_msm_gem_submit_cmd cmds[] =3D {
+> > +                     [0] =3D {
+> > +                             .type       =3D 0x1234,
+> > +                             .submit_idx =3D 0,
+> > +                             .size       =3D 4 * 4,  /* 4 dwords in cm=
+dbuf */
+> > +                     },
+> > +             };
+> > +             struct drm_msm_gem_submit req =3D {
+> > +                             .flags   =3D pipe->pipe,
+> > +                             .queueid =3D pipe->submitqueue_id,
+> > +                             .nr_cmds    =3D ARRAY_SIZE(cmds),
+> > +                             .cmds       =3D VOID2U64(cmds),
+> > +                             .nr_bos  =3D ARRAY_SIZE(bos),
+> > +                             .bos     =3D VOID2U64(bos),
+> > +             };
+> > +             do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EIN=
+VAL);
+> > +     }
+> > +
+> > +     igt_subtest("valid-submit") {
+> > +             struct drm_msm_gem_submit_bo bos[] =3D {
+> > +                     [0] =3D {
+> > +                             .handle     =3D a->handle,
+> > +                             .flags      =3D MSM_SUBMIT_BO_READ,
+> > +                     },
+> > +             };
+> > +             struct drm_msm_gem_submit_cmd cmds[] =3D {
+> > +                     [0] =3D {
+> > +                             .type       =3D MSM_SUBMIT_CMD_BUF,
+> > +                             .submit_idx =3D 0,
+> > +                             .size       =3D 4 * 4,  /* 4 dwords in cm=
+dbuf */
+> > +                     },
+> > +             };
+> > +             struct drm_msm_gem_submit req =3D {
+> > +                             .flags   =3D pipe->pipe,
+> > +                             .queueid =3D pipe->submitqueue_id,
+> > +                             .nr_cmds    =3D ARRAY_SIZE(cmds),
+> > +                             .cmds       =3D VOID2U64(cmds),
+> > +                             .nr_bos  =3D ARRAY_SIZE(bos),
+> > +                             .bos     =3D VOID2U64(bos),
+> > +             };
+> > +             uint32_t *cmdstream =3D igt_msm_bo_map(a);
+> > +             if (dev->gen >=3D 5) {
+> > +                     *(cmdstream++) =3D pm4_pkt7_hdr(CP_NOP, 3);
+> > +             } else {
+> > +                     *(cmdstream++) =3D pm4_pkt3_hdr(CP_NOP, 3);
+> > +             }
+> > +             *(cmdstream++) =3D 0;
+> > +             *(cmdstream++) =3D 0;
+> > +             *(cmdstream++) =3D 0;
+> > +
+> > +             do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
+> > +     }
+> > +
+> > +     igt_fixture {
+> > +             igt_msm_bo_free(a);
+> > +             igt_msm_bo_free(b);
+> > +             igt_msm_pipe_close(pipe);
+> > +             igt_msm_dev_close(dev);
+>
+> ... crashes in here.
+>
 
-== Series Details ==
+I did test this on intel as well, and it skips properly.. I think the
+setjmp/longjmp magic just bails completely out so we never try to run
+the cleanup?
 
-Series: tests/kms_flip_scaled_crc: Add upscaling tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/93952/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_10525 -> IGTPW_6161
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_6161 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_6161, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_6161:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@requests:
-    - fi-rkl-guc:         [PASS][1] -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10525/fi-rkl-guc/igt@i915_selftest@live@requests.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/fi-rkl-guc/igt@i915_selftest@live@requests.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6161 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271]) +9 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/fi-kbl-soraka/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-icl-y:           [PASS][4] -> [DMESG-FAIL][5] ([i915#2291])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10525/fi-icl-y/igt@i915_selftest@live@gt_pm.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/fi-icl-y/igt@i915_selftest@live@gt_pm.html
-
-  * igt@kms_busy@basic@modeset:
-    - fi-tgl-1115g4:      [PASS][6] -> [DMESG-WARN][7] ([i915#4002])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10525/fi-tgl-1115g4/igt@kms_busy@basic@modeset.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/fi-tgl-1115g4/igt@kms_busy@basic@modeset.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-kbl-7500u:       [PASS][8] -> [FAIL][9] ([i915#1372])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10525/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-
-  
-#### Possible fixes ####
-
-  * igt@vgem_basic@unload:
-    - fi-tgl-1115g4:      [DMESG-WARN][10] ([i915#4002]) -> [PASS][11] +1 similar issue
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10525/fi-tgl-1115g4/igt@vgem_basic@unload.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/fi-tgl-1115g4/igt@vgem_basic@unload.html
-
-  
-#### Warnings ####
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-tgl-1115g4:      [FAIL][12] ([i915#1888]) -> [DMESG-WARN][13] ([i915#4002])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10525/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-tgl-1115g4:      [INCOMPLETE][14] ([i915#1385] / [i915#4006]) -> [INCOMPLETE][15] ([i915#4006])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10525/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1372]: https://gitlab.freedesktop.org/drm/intel/issues/1372
-  [i915#1385]: https://gitlab.freedesktop.org/drm/intel/issues/1385
-  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
-  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
-  [i915#4002]: https://gitlab.freedesktop.org/drm/intel/issues/4002
-  [i915#4006]: https://gitlab.freedesktop.org/drm/intel/issues/4006
-
-
-Participating hosts (40 -> 34)
-------------------------------
-
-  Missing    (6): fi-ilk-m540 bat-adls-5 fi-hsw-4200u fi-bsw-cyan fi-bdw-samus bat-jsl-1 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6186 -> IGTPW_6161
-
-  CI-20190529: 20190529
-  CI_DRM_10525: 059309d37ac2de5d93cf6d71fd7fe33c9c2c66ea @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6161: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/index.html
-  IGT_6186: 250081b306c6fa8f95405fab6a7604f1968dd4ec @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-
-== Testlist changes ==
-
-+igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile-downscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile-upscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-downscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-upscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-downscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-upscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-downscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-upscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-downscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-upscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs-downscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs-upscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytile-downscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytile-upscaling
--igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile
--igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs
--igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs
--igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile
--igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile
--igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytile
--igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/index.html
-
---===============3200656013673603945==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_flip_scaled_crc: Add upscaling tests (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93952/">https://patchwork.freedesktop.org/series/93952/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10525 -&gt; IGTPW_6161</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_6161 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_6161, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/index.html</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6161:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@requests:<ul>
-<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10525/fi-rkl-guc/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/fi-rkl-guc/igt@i915_selftest@live@requests.html">DMESG-FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6161 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_cs_nop@sync-fork-compute0:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/fi-kbl-soraka/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-icl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10525/fi-icl-y/igt@i915_selftest@live@gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/fi-icl-y/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@modeset:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10525/fi-tgl-1115g4/igt@kms_busy@basic@modeset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/fi-tgl-1115g4/igt@kms_busy@basic@modeset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4002">i915#4002</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10525/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1372">i915#1372</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@vgem_basic@unload:<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10525/fi-tgl-1115g4/igt@vgem_basic@unload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4002">i915#4002</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/fi-tgl-1115g4/igt@vgem_basic@unload.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10525/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4002">i915#4002</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10525/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1385">i915#1385</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4006">i915#4006</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4006">i915#4006</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (40 -&gt; 34)</h2>
-<p>Missing    (6): fi-ilk-m540 bat-adls-5 fi-hsw-4200u fi-bsw-cyan fi-bdw-samus bat-jsl-1 </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6186 -&gt; IGTPW_6161</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10525: 059309d37ac2de5d93cf6d71fd7fe33c9c2c66ea @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6161: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6161/index.html<br />
-  IGT_6186: 250081b306c6fa8f95405fab6a7604f1968dd4ec @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<p>== Testlist changes ==</p>
-<p>+igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytile-upscaling<br />
--igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile<br />
--igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs<br />
--igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs<br />
--igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile<br />
--igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile<br />
--igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytile<br />
--igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs</p>
-
-</body>
-</html>
-
---===============3200656013673603945==--
+BR,
+-R
