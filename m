@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on2050.outbound.protection.outlook.com [40.107.93.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1DE776E82C
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Aug 2021 12:36:43 +0000 (UTC)
-Date: Thu, 26 Aug 2021 08:36:35 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2070.outbound.protection.outlook.com [40.107.236.70])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D80606E842
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Aug 2021 12:54:56 +0000 (UTC)
+Date: Thu, 26 Aug 2021 08:39:09 -0400
 From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Message-ID: <20210826123635.7oue5lowthdkln5d@outlook.office365.com>
-References: <20210825074707.145773-1-tianci.yin@amd.com>
+Message-ID: <20210826123909.3bfelyirr3hsqfvl@outlook.office365.com>
+References: <20210719125835.652219-1-stylon.wang@amd.com>
+ <20210825122413.1708578-1-stylon.wang@amd.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210825074707.145773-1-tianci.yin@amd.com>
+In-Reply-To: <20210825122413.1708578-1-stylon.wang@amd.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] tests/kms_atomic_interruptible: fix a warning
- message on AMD GPU
+Subject: Re: [igt-dev] [PATCH i-g-t v4 0/2] New ASSR test on DP/eDP links
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,55 +22,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tianci Yin <tianci.yin@amd.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Arkadiusz Hiler <arek@hiler.eu>, Mark Yacoub <markyacoub@google.com>, Harry Wentland <harry.wentland@amd.com>, Nicholas Choi <nicholas.choi@amd.com>
+To: Stylon Wang <stylon.wang@amd.com>
+Cc: igt-dev@lists.freedesktop.org, nicholas.kazlauskas@amd.com, sunpeng.li@amd.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 08/25, Tianci Yin wrote:
-> From: "Tianci.Yin" <tianci.yin@amd.com>
+On 08/25, Stylon Wang wrote:
+> Create new tests for checking if ASSR is working on eDP displays.
+> The tests also cover embedded and non-removable displays that
+> appear as DP.
 > 
-> [why]
-> For subtest legacy-setmode and atomic-setmode, fb buffer is
-> unbinded from plane by block_plane(), then igt_display_commit2()
-> will trigger a dmesg warning message in drm_atomic_helper_commit(),
-> since for block commit, drm will wait fences that represents
-> finishing fb writing, when it find this fence has no accompanying
-> fb, it gives out a warning.
+> Currrently the tests are verified to work on AMD hardware but failing
+> on some others, so they are AMD-specific for the time being.
 > 
-> [how]
-> Just remove igt_plane_set_fb() from block_plane() to retain
-> the fb binding with plane.
-> Verified on AMD Radeon Pro W5500 and Intel UHD Graphics 630
-> (inside i7-9700K), both pass.
+> Changes from prior rev1 to now:
 > 
-> Signed-off-by: Tianci.Yin <tianci.yin@amd.com>
-> ---
->  tests/kms_atomic_interruptible.c | 1 -
->  1 file changed, 1 deletion(-)
+> v4:
+>   - Move tests back to being amdgpu specific
+>   - Fix spacing in the test description
+> v3:
+>   - Move tests from amdgpu to generic
+> v2:
+>   - Fix static local variable used in path name creation
+>   - Fix test assertion
+>   - Allow tests to run on any GPU
+>   - Keep test in alphabetical order
 > 
-> diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
-> index 0a127921..03980d6e 100644
-> --- a/tests/kms_atomic_interruptible.c
-> +++ b/tests/kms_atomic_interruptible.c
-> @@ -49,7 +49,6 @@ static int block_plane(igt_display_t *display, igt_output_t *output, enum plane_
->  
->  		if (test_type == test_legacy_modeset || test_type == test_atomic_modeset) {
->  			igt_output_set_pipe(output, PIPE_NONE);
-> -			igt_plane_set_fb(plane, NULL);
->  		}
->  		igt_plane_set_fence_fd(plane, sw_sync_timeline_create_fence(timeline, 1));
->  
+> Stylon Wang (2):
+>   tests/amdgpu: New ASSR test on DP/eDP links
+>   tests/amdgpu: Add suspend and DPMS subtests to ASSR test
+> 
+>  tests/amdgpu/amd_assr.c  | 303 +++++++++++++++++++++++++++++++++++++++
+>  tests/amdgpu/meson.build |   1 +
+>  2 files changed, 304 insertions(+)
+>  create mode 100644 tests/amdgpu/amd_assr.c
+> 
 > -- 
-> 2.25.1
+> 2.32.0
 >
 
-Btw, did you submit a V2?
+Hi Stylon,
 
-If so, it looks like that there is a merge problem in the new version, see:
+Thanks for this new version. Everything looks ok to me, series is:
 
-https://patchwork.freedesktop.org/series/94006/#rev2 
-
-Thanks
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com> 
 
 -- 
 Rodrigo Siqueira
