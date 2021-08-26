@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 26 Aug 2021 08:28:11 +0300
+Date: Thu, 26 Aug 2021 08:31:05 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YScma3GeDyv+DIVn@platvala-desk.ger.corp.intel.com>
+Message-ID: <YScnGRjPt48cEtF1@platvala-desk.ger.corp.intel.com>
 References: <20210825233139.1066504-1-robdclark@gmail.com>
- <20210825233139.1066504-3-robdclark@gmail.com>
+ <20210825233139.1066504-4-robdclark@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20210825233139.1066504-3-robdclark@gmail.com>
-Subject: Re: [igt-dev] [PATCH igt v2 2/3] msm: Add helper library
+In-Reply-To: <20210825233139.1066504-4-robdclark@gmail.com>
+Subject: Re: [igt-dev] [PATCH igt v2 3/3] msm: Add submit ioctl tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,26 +23,36 @@ To: Rob Clark <robdclark@gmail.com>
 Cc: igt-dev@lists.freedesktop.org, freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, Jordan Crouse <jordan@cosmicpenguin.net>, Akhil P Oommen <akhilpo@codeaurora.org>, Rob Clark <robdclark@chromium.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Aug 25, 2021 at 04:31:38PM -0700, Rob Clark wrote:
+On Wed, Aug 25, 2021 at 04:31:39PM -0700, Rob Clark wrote:
 > From: Rob Clark <robdclark@chromium.org>
 >=20
-> Handle some of the boilerplate for tests.
+> Add an initial set of tests for the submit ioctl.
 >=20
 > Signed-off-by: Rob Clark <robdclark@chromium.org>
 > ---
->  lib/igt_msm.c   | 171 ++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_msm.h   | 119 +++++++++++++++++++++++++++++++++
->  lib/meson.build |   1 +
->  3 files changed, 291 insertions(+)
->  create mode 100644 lib/igt_msm.c
->  create mode 100644 lib/igt_msm.h
+>  tests/meson.build  |   1 +
+>  tests/msm_submit.c | 186 +++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 187 insertions(+)
+>  create mode 100644 tests/msm_submit.c
 >=20
-> diff --git a/lib/igt_msm.c b/lib/igt_msm.c
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 1bdfddbb..ff7c709a 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -107,6 +107,7 @@ test_progs =3D [
+>  	'vc4_wait_seqno',
+>  	'vgem_basic',
+>  	'vgem_slow',
+> +	'msm_submit',
+>  ]
+> =20
+>  i915_progs =3D [
+> diff --git a/tests/msm_submit.c b/tests/msm_submit.c
 > new file mode 100644
-> index 00000000..3bd0ee53
+> index 00000000..da93c574
 > --- /dev/null
-> +++ b/lib/igt_msm.c
-> @@ -0,0 +1,171 @@
+> +++ b/tests/msm_submit.c
+> @@ -0,0 +1,186 @@
 > +/*
 > + * Copyright =A9 2021 Google, Inc.
 > + *
@@ -78,151 +88,174 @@ EALINGS
 > + * IN THE SOFTWARE.
 > + */
 > +
-> +#include <assert.h>
-> +#include <string.h>
-> +#include <signal.h>
-> +#include <errno.h>
-> +#include <sys/mman.h>
-> +#include <sys/types.h>
-> +#include <sys/stat.h>
-> +#include <sys/ioctl.h>
-> +#include <fcntl.h>
-> +
-> +#include "drmtest.h"
-> +#include "igt_aux.h"
-> +#include "igt_core.h"
+> +#include "igt.h"
 > +#include "igt_msm.h"
-> +#include "ioctl_wrappers.h"
 > +
-> +/**
-> + * SECTION:igt_msm
-> + * @short_description: msm support library
-> + * @title: msm
-> + * @include: igt_msm.h
-> + *
-> + * This library provides various auxiliary helper functions for writing =
-msm
-> + * tests.
-> + */
-> +
-> +static uint64_t
-> +get_param(struct msm_device *dev, uint32_t pipe, uint32_t param)
+> +igt_main
 > +{
-> +	struct drm_msm_param req =3D {
-> +			.pipe =3D pipe,
-> +			.param =3D param,
-> +	};
+> +	struct msm_device *dev;
+> +	struct msm_pipe *pipe;
+> +	struct msm_bo *a, *b;
 > +
-> +	do_ioctl(dev->fd, DRM_IOCTL_MSM_GET_PARAM, &req);
-> +
-> +	return req.value;
-> +}
-> +
-> +struct msm_device *
-> +igt_msm_dev_open(void)
-> +{
-> +	struct msm_device *dev =3D calloc(1, sizeof(*dev));
-> +
-> +	dev->fd =3D drm_open_driver_render(DRIVER_MSM);
-> +	if (dev->fd < 0) {
-> +		free(dev);
-> +		return NULL;
+> +	igt_fixture {
+> +		dev =3D igt_msm_dev_open();
+
+What I replied on 2/3 applies here: If opening the device fails,
+igt_msm_dev_open() does not return and 'dev' is left uninitialized,
+those other pointers likewise. Leading to...
+
+> +		pipe =3D igt_msm_pipe_open(dev, 0);
+> +		a =3D igt_msm_bo_new(dev, 0x1000, MSM_BO_WC);
+> +		b =3D igt_msm_bo_new(dev, 0x1000, MSM_BO_WC);
 > +	}
-
-Note that drm_open_driver_render() cannot return < 0.
-
-
 > +
-> +	dev->gen =3D (get_param(dev, MSM_PIPE_3D0, MSM_PARAM_CHIP_ID) >> 24) & =
-0xff;
-> +
-> +	return dev;
-> +}
-> +
-> +void
-> +igt_msm_dev_close(struct msm_device *dev)
-> +{
-> +	close(dev->fd);
-> +	free(dev);
-> +}
-> +
-> +struct msm_bo *
-> +igt_msm_bo_new(struct msm_device *dev, size_t size, uint32_t flags)
-> +{
-> +	struct msm_bo *bo =3D calloc(1, sizeof(*bo));
-> +
-> +	struct drm_msm_gem_new req =3D {
-> +			.size =3D size,
-> +			.flags =3D flags,
-> +	};
-> +
-> +	bo->dev =3D dev;
-> +	bo->size =3D size;
-> +
-> +	do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_NEW, &req);
-> +
-> +	bo->handle =3D req.handle;
-> +
-> +	return bo;
-> +}
-> +
-> +void
-> +igt_msm_bo_free(struct msm_bo *bo)
-> +{
-> +	if (bo->map)
-> +		munmap(bo->map, bo->size);
-> +	gem_close(bo->dev->fd, bo->handle);
-> +	free(bo);
-> +}
-> +
-> +void *
-> +igt_msm_bo_map(struct msm_bo *bo)
-> +{
-> +	if (!bo->map) {
-> +		struct drm_msm_gem_info req =3D {
-> +				.handle =3D bo->handle,
-> +				.info =3D MSM_INFO_GET_OFFSET,
+> +	igt_subtest("empty-submit") {
+> +		struct drm_msm_gem_submit req =3D {
+> +				.flags   =3D pipe->pipe,
+> +				.queueid =3D pipe->submitqueue_id,
 > +		};
-> +		void *ptr;
-> +
-> +		do_ioctl(bo->dev->fd, DRM_IOCTL_MSM_GEM_INFO, &req);
-> +
-> +		ptr =3D mmap(0, bo->size, PROT_READ | PROT_WRITE, MAP_SHARED,
-> +				bo->dev->fd, req.value);
-> +		if (ptr =3D=3D MAP_FAILED)
-> +			return NULL;
-> +
-> +		bo->map =3D ptr;
+> +		do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
 > +	}
-> +	return bo->map;
-> +}
 > +
-> +struct msm_pipe *
-> +igt_msm_pipe_open(struct msm_device *dev, uint32_t prio)
-> +{
-> +	struct msm_pipe *pipe =3D calloc(1, sizeof(*pipe));
-> +	struct drm_msm_submitqueue req =3D {
-> +			.flags =3D 0,
-> +			.prio =3D prio,
-> +	};
+> +	igt_subtest("invalid-queue-submit") {
+> +		struct drm_msm_gem_submit req =3D {
+> +				.flags   =3D pipe->pipe,
+> +				.queueid =3D 0x1234,
+> +		};
+> +		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, ENOENT);
+> +	}
 > +
-> +	pipe->dev =3D dev;
-> +	pipe->pipe =3D MSM_PIPE_3D0;
+> +	igt_subtest("invalid-flags-submit") {
+> +		struct drm_msm_gem_submit req =3D {
+> +				.flags   =3D 0x1234,
+> +				.queueid =3D pipe->submitqueue_id,
+> +		};
+> +		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
+> +	}
 > +
-> +	/* Note that kerenels prior to v4.15 did not support submitqueues.
-> +	 * Mesa maintains support for older kernels, but I do not think
-> +	 * that IGT needs to.
-> +	 */
-> +	do_ioctl(dev->fd, DRM_IOCTL_MSM_SUBMITQUEUE_NEW, &req);
+> +	igt_subtest("invalid-in-fence-submit") {
+> +		struct drm_msm_gem_submit req =3D {
+> +				.flags   =3D pipe->pipe | MSM_SUBMIT_FENCE_FD_IN,
+> +				.queueid =3D pipe->submitqueue_id,
+> +				.fence_fd =3D dev->fd,  /* This is not a fence fd! */
+> +		};
+> +		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
+> +	}
+> +
+> +	igt_subtest("invalid-duplicate-bo-submit") {
+> +		struct drm_msm_gem_submit_bo bos[] =3D {
+> +			[0] =3D {
+> +				.handle     =3D a->handle,
+> +				.flags      =3D MSM_SUBMIT_BO_READ,
+> +			},
+> +			[1] =3D {
+> +				.handle     =3D b->handle,
+> +				.flags      =3D MSM_SUBMIT_BO_READ,
+> +			},
+> +			[2] =3D {
+> +				/* this is invalid.. there should not be two entries
+> +				 * for the same bo, instead a single entry w/ all
+> +				 * usage flags OR'd together should be used.  Kernel
+> +				 * should catch this, and return an error code after
+> +				 * cleaning up properly (not leaking any bo's)
+> +				 */
+> +				.handle     =3D a->handle,
+> +				.flags      =3D MSM_SUBMIT_BO_WRITE,
+> +			},
+> +		};
+> +		struct drm_msm_gem_submit req =3D {
+> +				.flags   =3D pipe->pipe,
+> +				.queueid =3D pipe->submitqueue_id,
+> +				.nr_bos  =3D ARRAY_SIZE(bos),
+> +				.bos     =3D VOID2U64(bos),
+> +		};
+> +		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
+> +	}
+> +
+> +	igt_subtest("invalid-cmd-idx-submit") {
+> +		struct drm_msm_gem_submit_cmd cmds[] =3D {
+> +			[0] =3D {
+> +				.type       =3D MSM_SUBMIT_CMD_BUF,
+> +				.submit_idx =3D 0,      /* bos[0] does not exist */
+> +				.size       =3D 4 * 4,  /* 4 dwords in cmdbuf */
+> +			},
+> +		};
+> +		struct drm_msm_gem_submit req =3D {
+> +				.flags   =3D pipe->pipe,
+> +				.queueid =3D pipe->submitqueue_id,
+> +				.nr_cmds    =3D ARRAY_SIZE(cmds),
+> +				.cmds       =3D VOID2U64(cmds),
+> +		};
+> +		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
+> +	}
+> +
+> +	igt_subtest("invalid-cmd-type-submit") {
+> +		struct drm_msm_gem_submit_bo bos[] =3D {
+> +			[0] =3D {
+> +				.handle     =3D a->handle,
+> +				.flags      =3D MSM_SUBMIT_BO_READ,
+> +			},
+> +		};
+> +		struct drm_msm_gem_submit_cmd cmds[] =3D {
+> +			[0] =3D {
+> +				.type       =3D 0x1234,
+> +				.submit_idx =3D 0,
+> +				.size       =3D 4 * 4,  /* 4 dwords in cmdbuf */
+> +			},
+> +		};
+> +		struct drm_msm_gem_submit req =3D {
+> +				.flags   =3D pipe->pipe,
+> +				.queueid =3D pipe->submitqueue_id,
+> +				.nr_cmds    =3D ARRAY_SIZE(cmds),
+> +				.cmds       =3D VOID2U64(cmds),
+> +				.nr_bos  =3D ARRAY_SIZE(bos),
+> +				.bos     =3D VOID2U64(bos),
+> +		};
+> +		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
+> +	}
+> +
+> +	igt_subtest("valid-submit") {
+> +		struct drm_msm_gem_submit_bo bos[] =3D {
+> +			[0] =3D {
+> +				.handle     =3D a->handle,
+> +				.flags      =3D MSM_SUBMIT_BO_READ,
+> +			},
+> +		};
+> +		struct drm_msm_gem_submit_cmd cmds[] =3D {
+> +			[0] =3D {
+> +				.type       =3D MSM_SUBMIT_CMD_BUF,
+> +				.submit_idx =3D 0,
+> +				.size       =3D 4 * 4,  /* 4 dwords in cmdbuf */
+> +			},
+> +		};
+> +		struct drm_msm_gem_submit req =3D {
+> +				.flags   =3D pipe->pipe,
+> +				.queueid =3D pipe->submitqueue_id,
+> +				.nr_cmds    =3D ARRAY_SIZE(cmds),
+> +				.cmds       =3D VOID2U64(cmds),
+> +				.nr_bos  =3D ARRAY_SIZE(bos),
+> +				.bos     =3D VOID2U64(bos),
+> +		};
+> +		uint32_t *cmdstream =3D igt_msm_bo_map(a);
+> +		if (dev->gen >=3D 5) {
+> +			*(cmdstream++) =3D pm4_pkt7_hdr(CP_NOP, 3);
+> +		} else {
+> +			*(cmdstream++) =3D pm4_pkt3_hdr(CP_NOP, 3);
+> +		}
+> +		*(cmdstream++) =3D 0;
+> +		*(cmdstream++) =3D 0;
+> +		*(cmdstream++) =3D 0;
+> +
+> +		do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
+> +	}
+> +
+> +	igt_fixture {
+> +		igt_msm_bo_free(a);
+> +		igt_msm_bo_free(b);
+> +		igt_msm_pipe_close(pipe);
+> +		igt_msm_dev_close(dev);
 
-We try to maintain compatibility with older kernels to around "yay
-back". If you want to be perfect, this part could produce a skip if
-submitqueues don't exist, but most often such dancing is not worth the
-trouble. Letting it fail "normally" on an old kernel is fine, the
-error message received already points out which ioctl failed. You can
-remove the uncertainty from this comment, in other words.
-
-Also typo, kerenels -> kernels.
+... crashes in here.
 
 
 --=20
