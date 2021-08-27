@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============3916330394270817651=="
+ boundary="===============4809290376973145481=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 27 Aug 2021 06:20:17 -0000
-Message-ID: <163004521758.12587.1807371986308562278@emeril.freedesktop.org>
-References: <20210827052349.1171468-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
-In-Reply-To: <20210827052349.1171468-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Fri, 27 Aug 2021 06:48:51 -0000
+Message-ID: <163004693174.12588.6002223580670310902@emeril.freedesktop.org>
+References: <20210709152751.2947886-1-markyacoub@chromium.org>
+In-Reply-To: <20210709152751.2947886-1-markyacoub@chromium.org>
 Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fsetmode=3A_Handle_unsupported_modes_for_invalid_crtc_test?=
- =?utf-8?q?_=28rev3=29?=
+ =?utf-8?q?kms=5Fatomic=3A_igt=5Frequire=5Fpipe=5Fcrc_for_plane=5Fimmutabl?=
+ =?utf-8?q?e=5Fzpos_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,24 +20,24 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+To: Mark Yacoub <markyacoub@chromium.org>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3916330394270817651==
+--===============4809290376973145481==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/kms_setmode: Handle unsupported modes for invalid crtc test (rev3)
-URL   : https://patchwork.freedesktop.org/series/93812/
+Series: tests/kms_atomic: igt_require_pipe_crc for plane_immutable_zpos (rev2)
+URL   : https://patchwork.freedesktop.org/series/92369/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_10528 -> IGTPW_6162
+CI Bug Log - changes from CI_DRM_10528 -> IGTPW_6163
 ====================================================
 
 Summary
@@ -47,12 +47,12 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6163/index.html
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_6162 that come from known issues:
+  Here are the changes found in IGTPW_6163 that come from known issues:
 
 ### IGT changes ###
 
@@ -60,64 +60,49 @@ Known issues
 
   * igt@amdgpu/amd_cs_nop@sync-gfx0:
     - fi-bsw-n3050:       NOTRUN -> [SKIP][1] ([fdo#109271]) +17 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/fi-bsw-n3050/igt@amdgpu/amd_cs_nop@sync-gfx0.html
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6163/fi-bsw-n3050/igt@amdgpu/amd_cs_nop@sync-gfx0.html
 
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-tgl-1115g4:      [PASS][2] -> [DMESG-WARN][3] ([i915#4002])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-tgl-1115g4/igt@core_hotunplug@unbind-rebind.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/fi-tgl-1115g4/igt@core_hotunplug@unbind-rebind.html
+  * igt@i915_selftest@live@workarounds:
+    - fi-rkl-guc:         [PASS][2] -> [INCOMPLETE][3] ([i915#3920])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6163/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
 
   
 #### Possible fixes ####
 
-  * igt@i915_module_load@reload:
-    - fi-tgl-1115g4:      [DMESG-WARN][4] ([i915#4002]) -> [PASS][5] +1 similar issue
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-tgl-1115g4/igt@i915_module_load@reload.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/fi-tgl-1115g4/igt@i915_module_load@reload.html
-
   * igt@i915_selftest@live@execlists:
-    - fi-bsw-n3050:       [INCOMPLETE][6] ([i915#2940]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-
-  
-#### Warnings ####
-
-  * igt@kms_psr@primary_page_flip:
-    - fi-tgl-1115g4:      [SKIP][8] ([i915#1072] / [i915#1385]) -> [SKIP][9] ([i915#1072])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-tgl-1115g4/igt@kms_psr@primary_page_flip.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/fi-tgl-1115g4/igt@kms_psr@primary_page_flip.html
+    - fi-bsw-n3050:       [INCOMPLETE][4] ([i915#2940]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6163/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
 
   
   [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1385]: https://gitlab.freedesktop.org/drm/intel/issues/1385
   [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
-  [i915#4002]: https://gitlab.freedesktop.org/drm/intel/issues/4002
+  [i915#3920]: https://gitlab.freedesktop.org/drm/intel/issues/3920
 
 
-Participating hosts (39 -> 34)
+Participating hosts (39 -> 33)
 ------------------------------
 
-  Missing    (5): fi-ilk-m540 bat-adls-5 fi-bsw-cyan bat-jsl-1 fi-bdw-samus 
+  Missing    (6): fi-ilk-m540 bat-adls-5 fi-tgl-1115g4 fi-bsw-cyan fi-bdw-samus bat-jsl-1 
 
 
 Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_6187 -> IGTPW_6162
+  * IGT: IGT_6187 -> IGTPW_6163
 
   CI-20190529: 20190529
   CI_DRM_10528: c0d72b2775df87cc8a852e5be38e9d84e7e42a05 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6162: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/index.html
+  IGTPW_6163: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6163/index.html
   IGT_6187: 1afd52c1471dafdf521eae431f3e228826de6de2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6163/index.html
 
---===============3916330394270817651==
+--===============4809290376973145481==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -137,73 +122,58 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/kms_setmode: Handle unsupported modes for invalid crtc test (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93812/">https://patchwork.freedesktop.org/series/93812/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/kms_atomic: igt_require_pipe_crc for plane_immutable_zpos (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/92369/">https://patchwork.freedesktop.org/series/92369/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6163/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6163/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_10528 -&gt; IGTPW_6162</h1>
+    <h1>CI Bug Log - changes from CI_DRM_10528 -&gt; IGTPW_6163</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/index.html</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6163/index.html</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6162 that come from known issues:</p>
+<p>Here are the changes found in IGTPW_6163 that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
 <p>igt@amdgpu/amd_cs_nop@sync-gfx0:</p>
 <ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/fi-bsw-n3050/igt@amdgpu/amd_cs_nop@sync-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6163/fi-bsw-n3050/igt@amdgpu/amd_cs_nop@sync-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
+<p>igt@i915_selftest@live@workarounds:</p>
 <ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-tgl-1115g4/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/fi-tgl-1115g4/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4002">i915#4002</a>)</li>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6163/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3920">i915#3920</a>)</li>
 </ul>
 </li>
 </ul>
 <h4>Possible fixes</h4>
 <ul>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-tgl-1115g4/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4002">i915#4002</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/fi-tgl-1115g4/igt@i915_module_load@reload.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a></li>
+<li>igt@i915_selftest@live@execlists:<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6163/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a></li>
 </ul>
 </li>
 </ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_psr@primary_page_flip:<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-tgl-1115g4/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1385">i915#1385</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/fi-tgl-1115g4/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (39 -&gt; 34)</h2>
-<p>Missing    (5): fi-ilk-m540 bat-adls-5 fi-bsw-cyan bat-jsl-1 fi-bdw-samus </p>
+<h2>Participating hosts (39 -&gt; 33)</h2>
+<p>Missing    (6): fi-ilk-m540 bat-adls-5 fi-tgl-1115g4 fi-bsw-cyan fi-bdw-samus bat-jsl-1 </p>
 <h2>Build changes</h2>
 <ul>
 <li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6187 -&gt; IGTPW_6162</li>
+<li>IGT: IGT_6187 -&gt; IGTPW_6163</li>
 </ul>
 <p>CI-20190529: 20190529<br />
   CI_DRM_10528: c0d72b2775df87cc8a852e5be38e9d84e7e42a05 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6162: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6162/index.html<br />
+  IGTPW_6163: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6163/index.html<br />
   IGT_6187: 1afd52c1471dafdf521eae431f3e228826de6de2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============3916330394270817651==--
+--===============4809290376973145481==--
