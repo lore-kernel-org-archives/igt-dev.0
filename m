@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============7145764939811867972=="
+ boundary="===============2753187724934548795=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 27 Aug 2021 07:20:05 -0000
-Message-ID: <163004880565.12588.1731639789376496686@emeril.freedesktop.org>
-References: <20210824110459.27235-1-swati2.sharma@intel.com>
-In-Reply-To: <20210824110459.27235-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fflip=5Fscaled=5Fcrc=3A_Add_upscaling_tests_=28rev3=29?=
+Date: Fri, 27 Aug 2021 07:52:07 -0000
+Message-ID: <163005072786.12588.12091883756451169739@emeril.freedesktop.org>
+References: <20210728171616.2242447-1-markyacoub@chromium.org>
+In-Reply-To: <20210728171616.2242447-1-markyacoub@chromium.org>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fflip=3A_Discard_any_stale_event_at_each_retry_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,146 +19,111 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Swati Sharma <swati2.sharma@intel.com>
+To: Mark Yacoub <markyacoub@chromium.org>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7145764939811867972==
+--===============2753187724934548795==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/kms_flip_scaled_crc: Add upscaling tests (rev3)
-URL   : https://patchwork.freedesktop.org/series/93952/
-State : success
+Series: tests/kms_flip: Discard any stale event at each retry (rev2)
+URL   : https://patchwork.freedesktop.org/series/93133/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_10528 -> IGTPW_6164
+CI Bug Log - changes from CI_DRM_10528 -> IGTPW_6165
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
+  Serious unknown changes coming with IGTPW_6165 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_6165, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/index.html
 
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6165:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_flip@basic-flip-vs-modeset:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/fi-rkl-11600/igt@kms_flip@basic-flip-vs-modeset.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
+    - fi-rkl-guc:         [PASS][2] -> [SKIP][3] +1 similar issue
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-rkl-guc/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/fi-rkl-guc/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+
+  
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_6164 that come from known issues:
+  Here are the changes found in IGTPW_6165 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271]) +3 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/fi-kbl-soraka/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
-
-  * igt@amdgpu/amd_cs_nop@sync-gfx0:
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][2] ([fdo#109271]) +17 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/fi-bsw-n3050/igt@amdgpu/amd_cs_nop@sync-gfx0.html
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-tgl-1115g4:      [PASS][3] -> [DMESG-WARN][4] ([i915#4002])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-tgl-1115g4/igt@core_hotunplug@unbind-rebind.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/fi-tgl-1115g4/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@i915_selftest@live@workarounds:
-    - fi-rkl-guc:         [PASS][5] -> [DMESG-WARN][6] ([i915#3967])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
   * igt@i915_selftest@live@execlists:
-    - fi-bsw-n3050:       [INCOMPLETE][7] ([i915#2940]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+    - fi-bsw-kefka:       [PASS][4] -> [INCOMPLETE][5] ([i915#2940])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
 
-  * igt@kms_busy@basic@modeset:
-    - fi-tgl-1115g4:      [DMESG-WARN][9] ([i915#4002]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-tgl-1115g4/igt@kms_busy@basic@modeset.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/fi-tgl-1115g4/igt@kms_busy@basic@modeset.html
+  * igt@i915_selftest@live@gt_lrc:
+    - fi-rkl-guc:         [PASS][6] -> [DMESG-WARN][7] ([i915#3958])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
 
-  
-#### Warnings ####
-
-  * igt@gem_exec_suspend@basic-s0:
-    - fi-tgl-1115g4:      [DMESG-WARN][11] ([i915#4002]) -> [FAIL][12] ([i915#1888])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
-
-  * igt@kms_psr@primary_page_flip:
-    - fi-tgl-1115g4:      [SKIP][13] ([i915#1072] / [i915#1385]) -> [SKIP][14] ([i915#1072])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-tgl-1115g4/igt@kms_psr@primary_page_flip.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/fi-tgl-1115g4/igt@kms_psr@primary_page_flip.html
+  * igt@runner@aborted:
+    - fi-bsw-kefka:       NOTRUN -> [FAIL][8] ([fdo#109271] / [i915#1436])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/fi-bsw-kefka/igt@runner@aborted.html
 
   
   [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1385]: https://gitlab.freedesktop.org/drm/intel/issues/1385
-  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
   [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
-  [i915#3967]: https://gitlab.freedesktop.org/drm/intel/issues/3967
-  [i915#4002]: https://gitlab.freedesktop.org/drm/intel/issues/4002
+  [i915#3958]: https://gitlab.freedesktop.org/drm/intel/issues/3958
 
 
-Participating hosts (39 -> 34)
+Participating hosts (39 -> 33)
 ------------------------------
 
-  Missing    (5): fi-ilk-m540 bat-adls-5 fi-bsw-cyan bat-jsl-1 fi-bdw-samus 
+  Missing    (6): fi-ilk-m540 bat-adls-5 fi-tgl-1115g4 fi-bsw-cyan fi-bdw-samus bat-jsl-1 
 
 
 Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_6187 -> IGTPW_6164
+  * IGT: IGT_6187 -> IGTPW_6165
 
   CI-20190529: 20190529
   CI_DRM_10528: c0d72b2775df87cc8a852e5be38e9d84e7e42a05 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6164: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/index.html
+  IGTPW_6165: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/index.html
   IGT_6187: 1afd52c1471dafdf521eae431f3e228826de6de2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-
-== Testlist changes ==
-
-+igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile-downscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile-upscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-downscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-upscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-downscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-upscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-downscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-upscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-downscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-upscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs-downscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs-upscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytile-downscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytile-upscaling
--igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile
--igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs
--igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs
--igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile
--igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile
--igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytile
--igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/index.html
 
---===============7145764939811867972==
+--===============2753187724934548795==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -178,115 +143,79 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/kms_flip_scaled_crc: Add upscaling tests (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93952/">https://patchwork.freedesktop.org/series/93952/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>tests/kms_flip: Discard any stale event at each retry (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/93133/">https://patchwork.freedesktop.org/series/93133/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_10528 -&gt; IGTPW_6164</h1>
+    <h1>CI Bug Log - changes from CI_DRM_10528 -&gt; IGTPW_6165</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/index.html</p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_6165 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_6165, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6165:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/fi-rkl-11600/igt@kms_flip@basic-flip-vs-modeset.html">SKIP</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-rkl-guc/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/fi-rkl-guc/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">SKIP</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6164 that come from known issues:</p>
+<p>Here are the changes found in IGTPW_6165 that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>igt@amdgpu/amd_cs_nop@sync-fork-compute0:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/fi-kbl-soraka/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_cs_nop@sync-gfx0:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/fi-bsw-n3050/igt@amdgpu/amd_cs_nop@sync-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-tgl-1115g4/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/fi-tgl-1115g4/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4002">i915#4002</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3967">i915#3967</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
 <p>igt@i915_selftest@live@execlists:</p>
 <ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a></li>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_busy@basic@modeset:</p>
+<p>igt@i915_selftest@live@gt_lrc:</p>
 <ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-tgl-1115g4/igt@kms_busy@basic@modeset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4002">i915#4002</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/fi-tgl-1115g4/igt@kms_busy@basic@modeset.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4002">i915#4002</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>)</li>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3958">i915#3958</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr@primary_page_flip:</p>
+<p>igt@runner@aborted:</p>
 <ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10528/fi-tgl-1115g4/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1385">i915#1385</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/fi-tgl-1115g4/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
+<li>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/fi-bsw-kefka/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a>)</li>
 </ul>
 </li>
 </ul>
-<h2>Participating hosts (39 -&gt; 34)</h2>
-<p>Missing    (5): fi-ilk-m540 bat-adls-5 fi-bsw-cyan bat-jsl-1 fi-bdw-samus </p>
+<h2>Participating hosts (39 -&gt; 33)</h2>
+<p>Missing    (6): fi-ilk-m540 bat-adls-5 fi-tgl-1115g4 fi-bsw-cyan fi-bdw-samus bat-jsl-1 </p>
 <h2>Build changes</h2>
 <ul>
 <li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6187 -&gt; IGTPW_6164</li>
+<li>IGT: IGT_6187 -&gt; IGTPW_6165</li>
 </ul>
 <p>CI-20190529: 20190529<br />
   CI_DRM_10528: c0d72b2775df87cc8a852e5be38e9d84e7e42a05 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6164: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6164/index.html<br />
+  IGTPW_6165: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6165/index.html<br />
   IGT_6187: 1afd52c1471dafdf521eae431f3e228826de6de2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<p>== Testlist changes ==</p>
-<p>+igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytile-upscaling<br />
--igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile<br />
--igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs<br />
--igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs<br />
--igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile<br />
--igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile<br />
--igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytile<br />
--igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs</p>
 
 </body>
 </html>
 
---===============7145764939811867972==--
+--===============2753187724934548795==--
