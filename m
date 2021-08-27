@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8BE906E98D
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Aug 2021 14:58:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7DB9A6E990
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Aug 2021 14:58:06 +0000 (UTC)
 From: Imre Deak <imre.deak@intel.com>
-Date: Fri, 27 Aug 2021 17:57:55 +0300
-Message-Id: <20210827145756.3342904-6-imre.deak@intel.com>
+Date: Fri, 27 Aug 2021 17:57:56 +0300
+Message-Id: <20210827145756.3342904-7-imre.deak@intel.com>
 In-Reply-To: <20210827145756.3342904-1-imre.deak@intel.com>
 References: <20210827145756.3342904-1-imre.deak@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 5/6] lib/igt_fb: Add support for remapping
- CCS FBs
+Subject: [igt-dev] [PATCH i-g-t 6/6] for-ci: Check for ccs remap support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,156 +22,119 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Having a kernel support for this, CCS framebuffer strides don't need to
-be power-of-two aligned, the kernel will auto-pad the stride.
-
-Only the main surface tiles can be remapped and the AUX surface must be
-generated to align with the POT padded main surface stride. Add the
-required AUX pagetable programming for this.
-
-Since the AUX pagetable has a granularity of 64 kbytes on the main
-surface, mapped by one AUX PTE, the main surface stride must be either 8
-tiles, or the stride must be aligned to 16 tiles.
+Remove the power-of-two stride size restriction only if there is a
+kernel support for this.
 
 Signed-off-by: Imre Deak <imre.deak@intel.com>
 ---
- lib/igt_fb.c            | 24 ++++++++-------
- lib/intel_aux_pgtable.c | 66 ++++++++++++++++++++++++++++++++++++-----
- 2 files changed, 72 insertions(+), 18 deletions(-)
+ lib/igt_fb.c | 65 ++++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 60 insertions(+), 5 deletions(-)
 
 diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 2e53d9225..72291f4f7 100644
+index 72291f4f7..e729703d9 100644
 --- a/lib/igt_fb.c
 +++ b/lib/igt_fb.c
-@@ -780,23 +780,27 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
- 		return ALIGN(min_stride, align);
- 	} else {
- 		unsigned int tile_width, tile_height;
--		uint32_t stride;
-+		int tile_align = 1;
+@@ -715,6 +715,55 @@ void igt_init_fb(struct igt_fb *fb, int fd, int width, int height,
+ 	}
+ }
  
- 		igt_get_fb_tile_size(fb->fd, fb->modifier, fb->plane_bpp[plane],
++static bool adlp_ccs_remap_supported(int drm_fd)
++{
++	uint64_t modifier = I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS;
++	uint64_t size;
++	uint32_t width = 48 * 32;	/* Min stride with remapping to 48->64 tiles */
++	uint32_t height = 32 * 32;	/* 4 tile aligned height */
++	uint32_t format = DRM_FORMAT_XRGB8888;
++	uint32_t strides[4] = {};
++	uint32_t offsets[4] = {};
++	uint32_t bo;
++	uint32_t fb_id;
++	static int supported = -1;
++
++	if (supported != -1)
++		return supported;
++
++	strides[0] = width * 4;
++	strides[1] = roundup_power_of_two(strides[0] / 512) * 64;
++
++	offsets[0] = 0;
++	/* Ensure CCS plane 1 is misaligned. */
++	offsets[1] = ALIGN(offsets[0] + strides[0] * height, 2 * 1024 * 1024) + 4096;
++
++	size = offsets[1] + strides[1] * height / 32;
++
++	bo = gem_buffer_create_fb_obj(drm_fd, size);
++	igt_assert(bo);
++
++	if (__kms_addfb(drm_fd, bo,
++			width, height,
++			format, modifier,
++			strides, offsets,
++			2,
++			DRM_MODE_FB_MODIFIERS, &fb_id) != 0) {
++		supported = 0;
++		igt_debug("CCS framebuffer remapping not supported.\n");
++
++		return false;
++	}
++
++	igt_ioctl(drm_fd, DRM_IOCTL_MODE_RMFB, &fb_id);
++	gem_close(drm_fd, bo);
++
++	supported = 1;
++	igt_debug("CCS framebuffer remapping supported\n");
++
++	return true;
++}
++
+ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
+ {
+ 	uint32_t min_stride = fb->plane_width[plane] *
+@@ -786,7 +835,7 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
  				     &tile_width, &tile_height);
  
  		if (is_gen12_ccs_modifier(fb->modifier)) {
--			stride = ALIGN(min_stride, tile_width * 4);
--
--			/* TODO: add support to kernel to POT align CCS format strides */
--			if (is_i915_device(fb->fd) &&
--			    IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)))
--				stride = roundup_power_of_two(max(stride, tile_width * 8));
--		} else {
--			stride = ALIGN(min_stride, tile_width);
-+			if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)))
-+				/*
-+				 * The main surface stride must be aligned to the CCS AUX
-+				 * page table block size (covered by one AUX PTE). This
-+				 * block size is 64kb -> 16 tiles.
-+				 * We can do away padding an 8 tile stride to 16, since in
-+				 * this case one AUX PTE entry will cover 2 main surface
-+				 * tile rows.
-+				 */
-+				tile_align = (min_stride <= 8 * tile_width) ? 8 : 16;
-+			else
-+				tile_align = 4;
+-			if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)))
++			if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd))) {
+ 				/*
+ 				 * The main surface stride must be aligned to the CCS AUX
+ 				 * page table block size (covered by one AUX PTE). This
+@@ -796,8 +845,13 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
+ 				 * tile rows.
+ 				 */
+ 				tile_align = (min_stride <= 8 * tile_width) ? 8 : 16;
+-			else
++				if (!adlp_ccs_remap_supported(fb->fd)) {
++					tile_align = roundup_power_of_two(min_stride) / 128;
++					tile_align = max(tile_align, 8);
++				}
++			} else {
+ 				tile_align = 4;
++			}
  		}
  
--		return stride;
-+		return ALIGN(min_stride, tile_width * tile_align);
- 	}
- }
+ 		return ALIGN(min_stride, tile_width * tile_align);
+@@ -848,7 +902,8 @@ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
+ 		 * On ADL_P CCS color planes must be 2MB aligned, until remapping
+ 		 * support is added for CCS FBs.
+ 		 */
+-		if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)))
++		if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)) &&
++		    !adlp_ccs_remap_supported(fb->fd))
+ 			size = ALIGN(size, 2 * 1024 * 1024);
  
-diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
-index d89b0575a..fcc337b8d 100644
---- a/lib/intel_aux_pgtable.c
-+++ b/lib/intel_aux_pgtable.c
-@@ -7,6 +7,8 @@
- #include "intel_bufops.h"
- #include "ioctl_wrappers.h"
+ 		return size;
+@@ -870,9 +925,9 @@ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
+ 		 * On ADL_P CCS color planes must be 2MB aligned, until remapping
+ 		 * support is added for CCS FBs.
+ 		 */
+-		if (is_i915_device(fb->fd) &&
++		if (is_ccs_modifier(fb->modifier) &&
+ 		    IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)) &&
+-		    is_ccs_modifier(fb->modifier))
++		    !adlp_ccs_remap_supported(fb->fd))
+ 			size = ALIGN(size, 2 * 1024 * 1024);
  
-+#include "lib/intel_chipset.h"
-+
- #include "i915/gem_mman.h"
- 
- #define BITS_PER_LONG_LONG	(sizeof(long long) * 8)
-@@ -356,22 +358,70 @@ pgt_populate_entries_for_buf(struct pgtable *pgt,
- 	uint64_t aux_addr = buf->addr.offset + buf->ccs[surface_idx].offset;
- 	uint64_t l1_flags = pgt_get_l1_flags(buf, surface_idx);
- 	uint64_t lx_flags = pgt_get_lx_flags();
-+	int surface_tile_align;
-+	int surface_src_row_tiles = buf->surface[surface_idx].stride / 128;
-+	/*
-+	 * The span of tiles in the FB object mapped by one AUX PTE
-+	 * entry, which can be one or more tile rows.
-+	 */
-+	int surface_src_span_tiles = ALIGN(surface_src_row_tiles, 16);
-+	int surface_src_span_size = surface_src_span_tiles * 4096;
-+	/*
-+	 * The number of tiles in a tile row on the surface auto-padded by
-+	 * the kernel if necessary (to a power-of-two size on ADL-P).
-+	 */
-+	int surface_dst_row_tiles;
-+	/*
-+	 * The span of tiles on the auto-padded surface, including the
-+	 * tiles in the FB object accounted by surface_src_span_tiles and
-+	 * any padding tiles.
-+	 */
-+	int surface_dst_span_tiles;
-+	/*
-+	 * The size of CCS data mapping a surface_dst_span_tiles sized area
-+	 * on the main surface.
-+	 */
-+	int aux_dst_span_size;
-+	int surface_span_offset = 0;
-+	int aux_span_offset = 0;
- 
--	igt_assert(!(buf->surface[surface_idx].stride % 512));
--	igt_assert_eq(buf->ccs[surface_idx].stride,
--		      buf->surface[surface_idx].stride / 512 * 64);
-+	if (IS_ALDERLAKE_P(buf->ibb->devid)) {
-+		surface_tile_align = surface_src_row_tiles <= 8 ? 8 : 16;
-+		surface_dst_row_tiles = roundup_power_of_two(surface_src_row_tiles);
-+		surface_dst_span_tiles = roundup_power_of_two(surface_src_span_tiles);
-+	} else {
-+		surface_tile_align = 4;
-+		surface_dst_row_tiles = surface_src_row_tiles;
-+		surface_dst_span_tiles = surface_src_span_tiles;
-+	}
- 
--	for (; surface_addr < surface_end;
--	     surface_addr += MAIN_SURFACE_BLOCK_SIZE,
--	     aux_addr += AUX_CCS_BLOCK_SIZE) {
-+	aux_dst_span_size = surface_dst_span_tiles / 16 * AUX_CCS_BLOCK_SIZE;
-+
-+	igt_assert_eq(buf->surface[surface_idx].stride % (128 * surface_tile_align), 0);
-+	igt_assert_eq(buf->ccs[surface_idx].stride, surface_dst_row_tiles / 4 * 64);
-+
-+	while (surface_addr + surface_span_offset < surface_end) {
- 		uint64_t table = top_table;
- 		int level;
- 
- 		for (level = pgt->levels - 1; level >= 1; level--)
- 			table = pgt_get_child_table(pgt, table, level,
--						    surface_addr, lx_flags);
-+						    surface_addr + surface_span_offset, lx_flags);
- 
--		pgt_set_l1_entry(pgt, table, surface_addr, aux_addr, l1_flags);
-+		pgt_set_l1_entry(pgt, table,
-+				 surface_addr + surface_span_offset,
-+				 aux_addr + aux_span_offset, l1_flags);
-+
-+		surface_span_offset += MAIN_SURFACE_BLOCK_SIZE;
-+		aux_span_offset += AUX_CCS_BLOCK_SIZE;
-+
-+		if (surface_span_offset >= surface_src_span_size) {
-+			surface_addr += surface_src_span_size;
-+			surface_span_offset = 0;
-+
-+			aux_addr += aux_dst_span_size;
-+			aux_span_offset = 0;
-+		}
- 	}
- }
- 
+ 		return size;
 -- 
 2.27.0
