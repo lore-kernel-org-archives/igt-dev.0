@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DB9A6E990
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Aug 2021 14:58:06 +0000 (UTC)
-From: Imre Deak <imre.deak@intel.com>
-Date: Fri, 27 Aug 2021 17:57:56 +0300
-Message-Id: <20210827145756.3342904-7-imre.deak@intel.com>
-In-Reply-To: <20210827145756.3342904-1-imre.deak@intel.com>
-References: <20210827145756.3342904-1-imre.deak@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7884999383465677958=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 6/6] for-ci: Check for ccs remap support
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 27 Aug 2021 16:05:04 -0000
+Message-ID: <163008030423.12588.3077161142946441645@emeril.freedesktop.org>
+References: <20210827145756.3342904-1-imre.deak@intel.com>
+In-Reply-To: <20210827145756.3342904-1-imre.deak@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Ffb=3A_Remove_stride=2C_offset_restrictions_on_CCS_FBs?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,124 +16,174 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Imre Deak <imre.deak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Remove the power-of-two stride size restriction only if there is a
-kernel support for this.
+--===============7884999383465677958==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Imre Deak <imre.deak@intel.com>
----
- lib/igt_fb.c | 65 ++++++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 60 insertions(+), 5 deletions(-)
+== Series Details ==
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 72291f4f7..e729703d9 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -715,6 +715,55 @@ void igt_init_fb(struct igt_fb *fb, int fd, int width, int height,
- 	}
- }
- 
-+static bool adlp_ccs_remap_supported(int drm_fd)
-+{
-+	uint64_t modifier = I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS;
-+	uint64_t size;
-+	uint32_t width = 48 * 32;	/* Min stride with remapping to 48->64 tiles */
-+	uint32_t height = 32 * 32;	/* 4 tile aligned height */
-+	uint32_t format = DRM_FORMAT_XRGB8888;
-+	uint32_t strides[4] = {};
-+	uint32_t offsets[4] = {};
-+	uint32_t bo;
-+	uint32_t fb_id;
-+	static int supported = -1;
-+
-+	if (supported != -1)
-+		return supported;
-+
-+	strides[0] = width * 4;
-+	strides[1] = roundup_power_of_two(strides[0] / 512) * 64;
-+
-+	offsets[0] = 0;
-+	/* Ensure CCS plane 1 is misaligned. */
-+	offsets[1] = ALIGN(offsets[0] + strides[0] * height, 2 * 1024 * 1024) + 4096;
-+
-+	size = offsets[1] + strides[1] * height / 32;
-+
-+	bo = gem_buffer_create_fb_obj(drm_fd, size);
-+	igt_assert(bo);
-+
-+	if (__kms_addfb(drm_fd, bo,
-+			width, height,
-+			format, modifier,
-+			strides, offsets,
-+			2,
-+			DRM_MODE_FB_MODIFIERS, &fb_id) != 0) {
-+		supported = 0;
-+		igt_debug("CCS framebuffer remapping not supported.\n");
-+
-+		return false;
-+	}
-+
-+	igt_ioctl(drm_fd, DRM_IOCTL_MODE_RMFB, &fb_id);
-+	gem_close(drm_fd, bo);
-+
-+	supported = 1;
-+	igt_debug("CCS framebuffer remapping supported\n");
-+
-+	return true;
-+}
-+
- static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
- {
- 	uint32_t min_stride = fb->plane_width[plane] *
-@@ -786,7 +835,7 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
- 				     &tile_width, &tile_height);
- 
- 		if (is_gen12_ccs_modifier(fb->modifier)) {
--			if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)))
-+			if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd))) {
- 				/*
- 				 * The main surface stride must be aligned to the CCS AUX
- 				 * page table block size (covered by one AUX PTE). This
-@@ -796,8 +845,13 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
- 				 * tile rows.
- 				 */
- 				tile_align = (min_stride <= 8 * tile_width) ? 8 : 16;
--			else
-+				if (!adlp_ccs_remap_supported(fb->fd)) {
-+					tile_align = roundup_power_of_two(min_stride) / 128;
-+					tile_align = max(tile_align, 8);
-+				}
-+			} else {
- 				tile_align = 4;
-+			}
- 		}
- 
- 		return ALIGN(min_stride, tile_width * tile_align);
-@@ -848,7 +902,8 @@ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
- 		 * On ADL_P CCS color planes must be 2MB aligned, until remapping
- 		 * support is added for CCS FBs.
- 		 */
--		if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)))
-+		if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)) &&
-+		    !adlp_ccs_remap_supported(fb->fd))
- 			size = ALIGN(size, 2 * 1024 * 1024);
- 
- 		return size;
-@@ -870,9 +925,9 @@ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
- 		 * On ADL_P CCS color planes must be 2MB aligned, until remapping
- 		 * support is added for CCS FBs.
- 		 */
--		if (is_i915_device(fb->fd) &&
-+		if (is_ccs_modifier(fb->modifier) &&
- 		    IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)) &&
--		    is_ccs_modifier(fb->modifier))
-+		    !adlp_ccs_remap_supported(fb->fd))
- 			size = ALIGN(size, 2 * 1024 * 1024);
- 
- 		return size;
--- 
-2.27.0
+Series: lib/igt_fb: Remove stride, offset restrictions on CCS FBs
+URL   : https://patchwork.freedesktop.org/series/94107/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10530 -> IGTPW_6168
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6168/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6168 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@cs-gfx:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271]) +8 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6168/fi-kbl-soraka/igt@amdgpu/amd_basic@cs-gfx.html
+
+  * igt@i915_pm_rps@basic-api:
+    - fi-rkl-guc:         [PASS][2] -> [DMESG-WARN][3] ([i915#3925])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10530/fi-rkl-guc/igt@i915_pm_rps@basic-api.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6168/fi-rkl-guc/igt@i915_pm_rps@basic-api.html
+
+  * igt@runner@aborted:
+    - fi-rkl-guc:         NOTRUN -> [FAIL][4] ([i915#3925])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6168/fi-rkl-guc/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-icl-u2:          [DMESG-WARN][5] ([i915#2203] / [i915#2868]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10530/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6168/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#2203]: https://gitlab.freedesktop.org/drm/intel/issues/2203
+  [i915#2868]: https://gitlab.freedesktop.org/drm/intel/issues/2868
+  [i915#3925]: https://gitlab.freedesktop.org/drm/intel/issues/3925
+
+
+Participating hosts (38 -> 33)
+------------------------------
+
+  Missing    (5): fi-ilk-m540 bat-adls-5 fi-bsw-cyan bat-jsl-1 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6187 -> IGTPW_6168
+
+  CI-20190529: 20190529
+  CI_DRM_10530: 63bca765c920120bd9746d9093190d82c4ace341 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6168: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6168/index.html
+  IGT_6187: 1afd52c1471dafdf521eae431f3e228826de6de2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6168/index.html
+
+--===============7884999383465677958==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_fb: Remove stride, offset restrictions on CCS FBs</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/94107/">https://patchwork.freedesktop.org/series/94107/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6168/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6168/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10530 -&gt; IGTPW_6168</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6168/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6168 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@cs-gfx:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6168/fi-kbl-soraka/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10530/fi-rkl-guc/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6168/fi-rkl-guc/igt@i915_pm_rps@basic-api.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3925">i915#3925</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6168/fi-rkl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3925">i915#3925</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_chamelium@hdmi-hpd-fast:<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10530/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2868">i915#2868</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6168/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (38 -&gt; 33)</h2>
+<p>Missing    (5): fi-ilk-m540 bat-adls-5 fi-bsw-cyan bat-jsl-1 fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6187 -&gt; IGTPW_6168</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10530: 63bca765c920120bd9746d9093190d82c4ace341 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6168: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6168/index.html<br />
+  IGT_6187: 1afd52c1471dafdf521eae431f3e228826de6de2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7884999383465677958==--
