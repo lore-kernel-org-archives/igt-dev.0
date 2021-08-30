@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 35F9E89BF6
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Aug 2021 19:33:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E57B889BF6
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Aug 2021 19:33:42 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Date: Mon, 30 Aug 2021 12:33:37 -0700
-Message-Id: <20210830193337.15260-5-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 30 Aug 2021 12:33:35 -0700
+Message-Id: <20210830193337.15260-3-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20210830193337.15260-1-umesh.nerlige.ramappa@intel.com>
 References: <20210830193337.15260-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 5/5] tools/i915-perf: Add a command to trigger a
- report in OA buffer
+Subject: [igt-dev] [PATCH 3/5] lib/i915/perf: Add new record for mmaped OA
+ buffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,316 +24,247 @@ To: igt-dev@lists.freedesktop.org, Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: Lionel G Landwerlin <lionel.g.landwerlin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Current OA captures used by GPUvis show timelines corresponding to
-individual contexts as parsed from the OA buffer.
+DRM_I915_PERF_RECORD_SAMPLE header is added by i915 when user issues a
+read to read the counter reports from the OA buffer. When user mmaps the
+OA buffer, user has a view into the raw reports without this header.
 
-Add support to query OA report using the command line interface -
-i915_perf_control. The query will take a snapshot of the counters and
-store it in the OA buffer. The snapshots can be viewed as a separate
-trigger event timeline in GPUvis. The command line allows passing a
-distinct 32 bit trigger value that can be used to identify the triggers
-in the visulaization.
+Introduce INTEL_PERF_RECORD_TYPE_MULTIPLE_SAMPLE in the perf library to
+track reports from an mmapped OA buffer.
 
-The idea is to show counter deltas between these on-demand trigger
-events. More fine grained triggerring can be achieved by adding the
-trigger commands into a batch.
+While each DRM_I915_PERF_RECORD_SAMPLE record corresponds to a single OA
+report, INTEL_PERF_RECORD_TYPE_MULTIPLE_SAMPLE corresponds to multiple
+OA reports.
 
-Example: i915_perf_control -t <distinct_32bit_value>
+By design, these 2 record types cannot be mixed. The i915-perf-recorder
+chooses to use mmaped OA buffer using the -M option. Once -M is chosen,
+all samples are INTEL_PERF_RECORD_TYPE_MULTIPLE_SAMPLE.
+
+The way timeline events are created and displayed in GPUvis remains
+the same, the only change is that the source of these events now is
+multiple INTEL_PERF_RECORD_TYPE_MULTIPLE_SAMPLE records.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tools/i915-perf/i915_perf_control.c           |  43 ++++++-
- tools/i915-perf/i915_perf_recorder.c          | 109 ++++++++++++++++--
- tools/i915-perf/i915_perf_recorder_commands.h |   1 +
- 3 files changed, 142 insertions(+), 11 deletions(-)
+ lib/i915/perf.c                    |  7 ++-
+ lib/i915/perf.h                    |  4 +-
+ lib/i915/perf_data.h               |  3 +
+ lib/i915/perf_data_reader.c        | 95 +++++++++++++++++++++++++++++-
+ lib/i915/perf_data_reader.h        |  2 +
+ tools/i915-perf/i915_perf_reader.c |  3 +-
+ 6 files changed, 106 insertions(+), 8 deletions(-)
 
-diff --git a/tools/i915-perf/i915_perf_control.c b/tools/i915-perf/i915_perf_control.c
-index be5996c0..509549d8 100644
---- a/tools/i915-perf/i915_perf_control.c
-+++ b/tools/i915-perf/i915_perf_control.c
-@@ -26,9 +26,19 @@
- #include <stdlib.h>
- #include <string.h>
- #include <unistd.h>
-+#include <limits.h>
- 
- #include "i915_perf_recorder_commands.h"
- 
-+static bool
-+__valid_trigger_value(const char *value)
-+{
-+	char *endptr = '\0';
-+
-+	return strtoul(value, &endptr, 0) != ULONG_MAX &&
-+	       *endptr == '\0';
-+}
-+
- static void
- usage(const char *name)
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index 9cfa3bca..3ace687c 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -626,10 +626,11 @@ accumulate_uint40(int a_index,
+ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+ 				   int oa_format,
+ 				   const struct drm_i915_perf_record_header *record0,
+-				   const struct drm_i915_perf_record_header *record1)
++				   const struct drm_i915_perf_record_header *record1,
++				   uint32_t offset0, uint32_t offset1)
  {
-@@ -37,7 +47,9 @@ usage(const char *name)
- 		"\n"
- 		"     --help,               -h         Print this screen\n"
- 		"     --command-fifo,       -f <path>  Path to a command fifo\n"
--		"     --dump,               -d <path>  Write a content of circular buffer to path\n",
-+		"     --dump,               -d <path>  Write a content of circular buffer to path\n"
-+		"     --quit,               -q         Quit capturing reports fromm perf recorder\n"
-+		"     --trigger,            -t <value> Trigger a report into OA buffer with this 32 bit unsigned value\n",
- 		name);
- }
+-	const uint32_t *start = (const uint32_t *)(record0 + 1);
+-	const uint32_t *end = (const uint32_t *)(record1 + 1);
++	const uint32_t *start = (const uint32_t *)(record0 + 1) + (offset0 / 4);
++	const uint32_t *end = (const uint32_t *)(record1 + 1) + (offset1 / 4);
+ 	uint64_t *deltas = acc->deltas;
+ 	int idx = 0;
+ 	int i;
+diff --git a/lib/i915/perf.h b/lib/i915/perf.h
+index d2429c47..7706eb43 100644
+--- a/lib/i915/perf.h
++++ b/lib/i915/perf.h
+@@ -238,7 +238,9 @@ void intel_perf_load_perf_configs(struct intel_perf *perf, int drm_fd);
+ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+ 				   int oa_format,
+ 				   const struct drm_i915_perf_record_header *record0,
+-				   const struct drm_i915_perf_record_header *record1);
++				   const struct drm_i915_perf_record_header *record1,
++				   uint32_t report_start_offset,
++				   uint32_t report_end_offset);
  
-@@ -49,14 +61,16 @@ main(int argc, char *argv[])
- 		{"dump",                 required_argument, 0, 'd'},
- 		{"command-fifo",         required_argument, 0, 'f'},
- 		{"quit",                       no_argument, 0, 'q'},
-+		{"trigger",              required_argument, 0, 't'},
- 		{0, 0, 0, 0}
- 	};
- 	const char *command_fifo = I915_PERF_RECORD_FIFO_PATH, *dump_file = NULL;
- 	FILE *command_fifo_file;
- 	int opt;
--	bool quit = false;
-+	bool triggered = false, quit = false;
-+	char *trigger_value;
+ #ifdef __cplusplus
+ };
+diff --git a/lib/i915/perf_data.h b/lib/i915/perf_data.h
+index fb3556f6..a730a0b4 100644
+--- a/lib/i915/perf_data.h
++++ b/lib/i915/perf_data.h
+@@ -52,6 +52,9 @@ enum intel_perf_record_type {
  
--	while ((opt = getopt_long(argc, argv, "hd:f:q", long_options, NULL)) != -1) {
-+	while ((opt = getopt_long(argc, argv, "hd:f:qt:", long_options, NULL)) != -1) {
- 		switch (opt) {
- 		case 'h':
- 			usage(argv[0]);
-@@ -70,6 +84,14 @@ main(int argc, char *argv[])
- 		case 'q':
- 			quit = true;
+ 	/* intel_perf_record_timestamp_correlation */
+ 	INTEL_PERF_RECORD_TYPE_TIMESTAMP_CORRELATION,
++
++	/* intel_perf_record_timestamp_correlation */
++	INTEL_PERF_RECORD_TYPE_MULTIPLE_SAMPLE,
+ };
+ 
+ /* This structure cannot ever change. */
+diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
+index e69189ac..ad0b2daf 100644
+--- a/lib/i915/perf_data_reader.c
++++ b/lib/i915/perf_data_reader.c
+@@ -131,6 +131,7 @@ parse_data(struct intel_perf_data_reader *reader)
+ 
+ 		switch (header->type) {
+ 		case DRM_I915_PERF_RECORD_SAMPLE:
++		case INTEL_PERF_RECORD_TYPE_MULTIPLE_SAMPLE:
+ 			append_record(reader, header);
  			break;
-+		case 't':
-+			if (!__valid_trigger_value(optarg)) {
-+				fprintf(stderr, "Invalid trigger value: %s\n", optarg);
-+				return EXIT_FAILURE;
-+			}
-+			trigger_value = optarg;
-+			triggered = true;
-+			break;
- 		default:
- 			fprintf(stderr, "Internal error: "
- 				"unexpected getopt value: %d\n", opt);
-@@ -118,6 +140,21 @@ main(int argc, char *argv[])
- 		}
- 	}
  
-+	if (triggered) {
-+		uint32_t total_len =
-+			sizeof(struct recorder_command_base) + strlen(trigger_value) + 1;
-+		struct {
-+			struct recorder_command_base base;
-+			uint8_t trigger[];
-+		} *data = malloc(total_len);
-+
-+		data->base.command = RECORDER_COMMAND_TRIGGER;
-+		data->base.size = total_len;
-+		snprintf((char *) data->trigger, strlen(trigger_value) + 1, "%s", trigger_value);
-+
-+		fwrite(data, total_len, 1, command_fifo_file);
-+	}
-+
- 	if (quit) {
- 		struct recorder_command_base base = {
- 			.command = RECORDER_COMMAND_QUIT,
-diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
-index 7481f33c..12908ae7 100644
---- a/tools/i915-perf/i915_perf_recorder.c
-+++ b/tools/i915-perf/i915_perf_recorder.c
-@@ -26,6 +26,7 @@
- #include <fcntl.h>
- #include <getopt.h>
- #include <inttypes.h>
-+#include <limits.h>
- #include <poll.h>
- #include <signal.h>
- #include <stdbool.h>
-@@ -384,6 +385,8 @@ struct recording_context {
- 	uint32_t oa_status_reg;
- 	uint32_t oa_buffer_reg;
- 	uint32_t oa_tail_reg;
-+	uint32_t oa_trigger_reg;
-+	uint32_t oa_marker_reg;
+@@ -254,6 +255,7 @@ static void
+ append_timeline_event(struct intel_perf_data_reader *reader,
+ 		      uint64_t ts_start, uint64_t ts_end,
+ 		      uint32_t record_start, uint32_t record_end,
++		      uint32_t start_offset, uint32_t end_offset,
+ 		      uint32_t hw_id)
+ {
+ 	if (reader->n_timelines >= reader->n_allocated_timelines) {
+@@ -274,12 +276,81 @@ append_timeline_event(struct intel_perf_data_reader *reader,
+ 		correlate_gpu_timestamp(reader, ts_end);
+ 	reader->timelines[reader->n_timelines].record_start = record_start;
+ 	reader->timelines[reader->n_timelines].record_end = record_end;
++	reader->timelines[reader->n_timelines].report_start_offset = start_offset;
++	reader->timelines[reader->n_timelines].report_end_offset = end_offset;
+ 	reader->timelines[reader->n_timelines].hw_id = hw_id;
+ 	reader->n_timelines++;
+ }
  
- 	struct bb_context bb;
- };
-@@ -564,8 +567,21 @@ write_i915_perf_data(FILE *output, int perf_fd)
- #define _MI_INSTR(opcode, flags)	(((opcode) << 23) | (flags))
- #define MI_STORE_REGISTER_MEM      	_MI_INSTR(0x24, 1)
- #define MI_STORE_REGISTER_MEM_GEN8 	_MI_INSTR(0x24, 2)
-+#define MI_LOAD_REGISTER_IMM		((0x22 << 23) | 1)
-+#define MI_NOOP				0x00
- #define MI_BATCH_BUFFER_END		(0xA << 23)
- 
-+static void
-+bb_emit_lri(struct bb_context *bb, uint32_t reg, uint32_t val)
-+{
-+	assert(bb->offset < BATCH_SIZE);
-+
-+	bb->batch[bb->offset++] = MI_LOAD_REGISTER_IMM;
-+	bb->batch[bb->offset++] = reg;
-+	bb->batch[bb->offset++] = val;
-+	bb->batch[bb->offset++] = MI_NOOP;
-+}
++struct perf_record_report {
++	uint32_t record_idx;
++	uint32_t report_offset;
++	uint32_t ctx_id;
++	uint64_t gpu_ts;
++};
 +
  static void
- bb_emit_srm(struct bb_context *bb, uint32_t reg, uint32_t devid)
- {
-@@ -687,6 +703,18 @@ err:
- #define GEN12_OAG_OATAILPTR  0xdb04
- #define GEN12_OAG_OASTATUS   0xdafc
- 
-+#define OAREPORTTRIG2 (0x2744)
-+#define   OAREPORTTRIG2_INVERT_C_1  (1 << 21)
-+#define   OAREPORTTRIG2_INVERT_D_0  (1 << 22)
-+#define   OAREPORTTRIG2_REPORT_TRIGGER_ENABLE (1 << 31)
-+#define OAREPORTTRIG6 (0x2754)
-+#define OA_PERF_COUNTER_A(idx) (0x2800 + 8 * (idx))
-+
-+#define GEN12_OAREPORTTRIG2 (0xd924)
-+#define GEN12_OAREPORTTRIG6 (0xd934)
-+#define GEN12_OAG_PERF_COUNTER_A(idx) (0xD980 + 8 * (idx))
-+
-+
- static void
- init_oa_regs(struct recording_context *ctx)
- {
-@@ -694,10 +722,14 @@ init_oa_regs(struct recording_context *ctx)
- 		ctx->oa_status_reg = GEN12_OAG_OASTATUS;
- 		ctx->oa_buffer_reg = GEN12_OAG_OABUFFER;
- 		ctx->oa_tail_reg = GEN12_OAG_OATAILPTR;
-+		ctx->oa_trigger_reg = GEN12_OAREPORTTRIG2;
-+		ctx->oa_marker_reg = GEN12_OAG_PERF_COUNTER_A(18);
- 	} else if (ctx->devinfo->graphics_ver >= 9) {
- 		ctx->oa_status_reg = GEN8_OASTATUS;
- 		ctx->oa_buffer_reg = GEN8_OABUFFER;
- 		ctx->oa_tail_reg = GEN8_OATAILPTR;
-+		ctx->oa_trigger_reg = OAREPORTTRIG2;
-+		ctx->oa_marker_reg = OA_PERF_COUNTER_A(18);
- 	}
- }
- 
-@@ -718,6 +750,22 @@ __read_oa_reg(struct recording_context *ctx, uint32_t reg, uint32_t *val)
- 	munmap(bb->dest, DEST_SIZE);
- }
- 
-+static void
-+oa_trigger_report(struct recording_context *ctx, uint32_t reg,
-+		  uint32_t trigger_marker)
+-generate_cpu_events(struct intel_perf_data_reader *reader)
++__init_perf_record_report(struct intel_perf_data_reader *reader,
++			  struct perf_record_report *prr)
 +{
-+	bb_emit_lri(&ctx->bb, ctx->oa_marker_reg, trigger_marker);
-+	bb_emit_lri(&ctx->bb, reg,
-+		    OAREPORTTRIG2_INVERT_C_1 |
-+		    OAREPORTTRIG2_REPORT_TRIGGER_ENABLE);
-+	bb_emit_lri(&ctx->bb, reg,
-+		    OAREPORTTRIG2_INVERT_C_1 |
-+		    OAREPORTTRIG2_INVERT_D_0 |
-+		    OAREPORTTRIG2_REPORT_TRIGGER_ENABLE);
-+	bb_emit_bbe(&ctx->bb);
-+	bb_exec(ctx->drm_fd, &ctx->bb);
++	const struct drm_i915_perf_record_header *record;
++	const uint8_t *report;
++
++	record = reader->records[prr->record_idx];
++	report = (const uint8_t *)(record + 1) + prr->report_offset;
++	prr->ctx_id = oa_report_ctx_id(&reader->devinfo, report);
++	prr->gpu_ts = oa_report_timestamp(report);
 +}
 +
- static bool
- __process_oa_status(struct recording_context *ctx)
- {
-@@ -903,6 +951,35 @@ write_correlation_timestamps(FILE *output, int drm_fd)
- 	return write_saved_correlation_timestamps(output, &corr);
- }
- 
 +static bool
-+__valid_trigger_value(const char *str, uint32_t *trigger_value)
++__context_switched(struct intel_perf_data_reader *reader,
++		   struct perf_record_report *prev,
++		   struct perf_record_report *curr)
 +{
-+	char *endptr = '\0';
-+	uint32_t value = strtoul(str, &endptr, 0);
++	__init_perf_record_report(reader, prev);
++	__init_perf_record_report(reader, curr);
 +
-+	if (value != ULONG_MAX && *endptr == '\0') {
-+		*trigger_value = value;
-+		return true;
-+	}
-+
-+	return false;
++	return (prev->ctx_id != curr->ctx_id);
 +}
 +
-+static int read_command_data(int fd, uint8_t *buf, uint32_t len)
++static void
++append_timeline(struct intel_perf_data_reader *reader,
++		struct perf_record_report *prev,
++		struct perf_record_report *curr)
 +{
-+	uint32_t offset = 0;
-+	ssize_t ret;
-+
-+	while (offset < len &&
-+	       ((ret = read(fd, (void *)(buf + offset), len - offset)) > 0
-+		|| errno == EAGAIN)) {
-+		if (ret > 0)
-+			offset += ret;
-+	}
-+
-+	return ret;
++	append_timeline_event(reader, prev->gpu_ts, curr->gpu_ts,
++			prev->record_idx, curr->record_idx,
++			prev->report_offset, curr->report_offset,
++			prev->ctx_id);
 +}
 +
- static void
- read_command_file(struct recording_context *ctx)
++static void
++generate_cpu_events_multi_sample(struct intel_perf_data_reader *reader)
++{
++	uint32_t report_size = reader->metric_set->perf_raw_size;
++	struct perf_record_report prev = {0}, curr = {0};
++	int i;
++
++	for (i = 0; i < reader->n_records; i++) {
++		uint32_t length = reader->records[i]->size -
++				  sizeof(*(reader->records[i]));
++
++		curr.record_idx = i;
++		for (curr.report_offset = 0;
++		     curr.report_offset < length;
++		     curr.report_offset += report_size)
++			if (__context_switched(reader, &prev, &curr)) {
++				append_timeline(reader, &prev, &curr);
++				prev = curr;
++			}
++	}
++
++	if (!memcmp(&prev, &curr, sizeof(prev)))
++		append_timeline(reader, &prev, &curr);
++}
++
++static void
++generate_cpu_events_oa_sample(struct intel_perf_data_reader *reader)
  {
-@@ -914,17 +991,12 @@ read_command_file(struct recording_context *ctx)
+ 	uint32_t last_header_idx = 0;
+ 	const struct drm_i915_perf_record_header *last_header = reader->records[0],
+@@ -303,14 +374,32 @@ generate_cpu_events(struct intel_perf_data_reader *reader)
+ 		if (last_ctx_id == current_ctx_id)
+ 			continue;
  
- 	switch (header.command) {
- 	case RECORDER_COMMAND_DUMP: {
--		uint32_t len = header.size - sizeof(header), offset = 0;
-+		uint32_t len = header.size - sizeof(header);
- 		uint8_t *dump = malloc(len);
- 		FILE *file;
+-		append_timeline_event(reader, gpu_ts_start, gpu_ts_end, last_header_idx, i, last_ctx_id);
++		append_timeline_event(reader, gpu_ts_start, gpu_ts_end,
++				      last_header_idx, i,
++				      0, 0,
++				      last_ctx_id);
  
--		while (offset < len &&
--		       ((ret = read(ctx->command_fifo_fd,
--				    (void *) dump + offset, len - offset)) > 0
--			|| errno == EAGAIN)) {
--			if (ret > 0)
--				offset += ret;
--		}
-+		assert(dump);
-+		assert(read_command_data(ctx->command_fifo_fd, dump, len) > 0);
+ 		last_header = current_header;
+ 		last_header_idx = i;
+ 	}
  
- 		fprintf(stdout, "Writing circular buffer to %s\n", dump);
- 
-@@ -956,6 +1028,27 @@ read_command_file(struct recording_context *ctx)
- 	case RECORDER_COMMAND_QUIT:
- 		quit = true;
- 		break;
-+	case RECORDER_COMMAND_TRIGGER: {
-+		uint32_t len = header.size - sizeof(header);
-+		uint32_t value;
-+		char *trigger;
+ 	if (last_header != current_header)
+-		append_timeline_event(reader, gpu_ts_start, gpu_ts_end, last_header_idx, reader->n_records - 1, last_ctx_id);
++		append_timeline_event(reader, gpu_ts_start, gpu_ts_end,
++				      last_header_idx, reader->n_records - 1,
++				      0, 0,
++				      last_ctx_id);
++}
 +
-+		if (ctx->perf->devinfo.devid < 9) {
-+			fprintf(stderr, "OA report trigger not supported on gen %d\n",
-+				ctx->perf->devinfo.devid);
-+			break;
-+		}
++static void
++generate_cpu_events(struct intel_perf_data_reader *reader)
++{
++	const struct drm_i915_perf_record_header *hdr = reader->records[0];
 +
-+		trigger = malloc(len);
-+		assert(trigger);
-+		assert(read_command_data(ctx->command_fifo_fd, (uint8_t *)trigger, len) > 0);
++	if (hdr->type == DRM_I915_PERF_RECORD_SAMPLE)
++		generate_cpu_events_oa_sample(reader);
 +
-+		if (__valid_trigger_value(trigger, &value))
-+			oa_trigger_report(ctx, ctx->oa_trigger_reg, value);
-+
-+		free(trigger);
-+		break;
-+	}
- 	default:
- 		fprintf(stderr, "Unknown command 0x%x\n", header.command);
- 		break;
-diff --git a/tools/i915-perf/i915_perf_recorder_commands.h b/tools/i915-perf/i915_perf_recorder_commands.h
-index d9353cfa..e48d9426 100644
---- a/tools/i915-perf/i915_perf_recorder_commands.h
-+++ b/tools/i915-perf/i915_perf_recorder_commands.h
-@@ -30,6 +30,7 @@
- enum recorder_command {
- 	RECORDER_COMMAND_DUMP = 1,
- 	RECORDER_COMMAND_QUIT,
-+	RECORDER_COMMAND_TRIGGER,
- };
++	if (hdr->type == INTEL_PERF_RECORD_TYPE_MULTIPLE_SAMPLE)
++		generate_cpu_events_multi_sample(reader);
+ }
  
- struct recorder_command_base {
+ static void
+diff --git a/lib/i915/perf_data_reader.h b/lib/i915/perf_data_reader.h
+index f625f12d..a9f14a1d 100644
+--- a/lib/i915/perf_data_reader.h
++++ b/lib/i915/perf_data_reader.h
+@@ -44,6 +44,8 @@ struct intel_perf_timeline_item {
+ 	/* Offsets into intel_perf_data_reader.records */
+ 	uint32_t record_start;
+ 	uint32_t record_end;
++	uint32_t report_start_offset;
++	uint32_t report_end_offset;
+ 
+ 	uint32_t hw_id;
+ 
+diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
+index e51f5a5d..12638685 100644
+--- a/tools/i915-perf/i915_perf_reader.c
++++ b/tools/i915-perf/i915_perf_reader.c
+@@ -252,7 +252,8 @@ main(int argc, char *argv[])
+ 			item->hw_id, item->hw_id == 0xffffffff ? "(idle)" : "");
+ 
+ 		intel_perf_accumulate_reports(&accu, reader.metric_set->perf_oa_format,
+-					      i915_report0, i915_report1);
++					      i915_report0, i915_report1,
++					      item->report_start_offset, item->report_end_offset);
+ 
+ 		for (uint32_t c = 0; c < n_counters; c++) {
+ 			struct intel_perf_logical_counter *counter = counters[c];
 -- 
 2.20.1
