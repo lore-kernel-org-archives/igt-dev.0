@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B7C589E08
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Aug 2021 20:05:54 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1CBC789E08
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Aug 2021 20:07:21 +0000 (UTC)
 From: Arjun Melkaveri <arjun.melkaveri@intel.com>
-Date: Tue, 31 Aug 2021 01:29:10 +0530
-Message-Id: <20210830195910.11675-1-arjun.melkaveri@intel.com>
+Date: Tue, 31 Aug 2021 01:30:37 +0530
+Message-Id: <20210830200037.11776-1-arjun.melkaveri@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -33,14 +33,14 @@ Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_exec_schedule.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/i915/gem_exec_schedule.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-index 62d616f3..e694482f 100644
+index 62d616f3..1f6f71db 100644
 --- a/tests/i915/gem_exec_schedule.c
 +++ b/tests/i915/gem_exec_schedule.c
-@@ -390,12 +390,13 @@ static void independent(int fd, const intel_ctx_t *ctx, unsigned int engine,
+@@ -390,6 +390,7 @@ static void independent(int fd, const intel_ctx_t *ctx, unsigned int engine,
  			struct drm_i915_gem_execbuffer2 eb = {
  				.buffer_count = 1,
  				.buffers_ptr = to_user_pointer(&spin->obj[IGT_SPIN_BATCH]),
@@ -48,12 +48,5 @@ index 62d616f3..e694482f 100644
  				.flags = e->flags,
  			};
  			gem_execbuf(fd, &eb);
- 		}
- 
--		store_dword_fenced(fd, ahnd, ctx, e->flags,
-+		store_dword_fenced(fd, ahnd, tmp_ctx, e->flags,
- 				   scratch, scratch_offset,
- 				   0, e->flags, fence, 0);
- 	}
 -- 
 2.25.1
