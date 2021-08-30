@@ -1,22 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3FD3389BF5
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Aug 2021 09:31:13 +0000 (UTC)
-From: "Surendrakumar Upadhyay, TejaskumarX"
- <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Date: Mon, 30 Aug 2021 09:31:05 +0000
-Message-ID: <SN6PR11MB3421C69BE2E8340BAD42029FDFCB9@SN6PR11MB3421.namprd11.prod.outlook.com>
-References: <20210827130002.1188868-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
- <YSyYqeaPapBItJE8@platvala-desk.ger.corp.intel.com>
- <SN6PR11MB34217D6C6F8CCBEE73712585DFCB9@SN6PR11MB3421.namprd11.prod.outlook.com>
- <YSyi05MMPGmGWE8S@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YSyi05MMPGmGWE8S@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/alternative;
+ boundary="===============2038921652756446075=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t] lib/i915: Use FIXED mapping only for discrete
- memory
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 30 Aug 2021 12:25:03 -0000
+Message-ID: <163032630359.14975.10664048494219441344@emeril.freedesktop.org>
+References: <20210830092214.1204343-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+In-Reply-To: <20210830092214.1204343-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2k5?=
+ =?utf-8?q?15=3A_Use_FIXED_mapping_only_for_discrete_memory_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,103 +16,211 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "Surendrakumar Upadhyay,
+ TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============2038921652756446075==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: lib/i915: Use FIXED mapping only for discrete memory (rev3)
+URL   : https://patchwork.freedesktop.org/series/94103/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10536 -> IGTPW_6172
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6172 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@cs-gfx:
+    - fi-rkl-guc:         NOTRUN -> [SKIP][1] ([fdo#109315]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/fi-rkl-guc/igt@amdgpu/amd_basic@cs-gfx.html
+
+  * igt@amdgpu/amd_cs_nop@sync-compute0:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271]) +2 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/fi-kbl-soraka/igt@amdgpu/amd_cs_nop@sync-compute0.html
+
+  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
+    - fi-snb-2600:        NOTRUN -> [SKIP][3] ([fdo#109271]) +17 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-kefka:       [PASS][4] -> [INCOMPLETE][5] ([i915#2940])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10536/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
+
+  * igt@runner@aborted:
+    - fi-bsw-kefka:       NOTRUN -> [FAIL][6] ([fdo#109271] / [i915#1436] / [i915#3428])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/fi-bsw-kefka/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [INCOMPLETE][7] ([i915#3921]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10536/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@workarounds:
+    - fi-rkl-guc:         [DMESG-FAIL][9] ([i915#3928]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10536/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
+  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
+  [i915#3428]: https://gitlab.freedesktop.org/drm/intel/issues/3428
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#3928]: https://gitlab.freedesktop.org/drm/intel/issues/3928
 
 
-> -----Original Message-----
-> From: Latvala, Petri <petri.latvala@intel.com>
-> Sent: 30 August 2021 14:50
-> To: Surendrakumar Upadhyay, TejaskumarX
-> <tejaskumarx.surendrakumar.upadhyay@intel.com>
-> Cc: igt-dev@lists.freedesktop.org
-> Subject: Re: [igt-dev] [i-g-t] lib/i915: Use FIXED mapping only for discr=
-ete
-> memory
->=20
-> On Mon, Aug 30, 2021 at 12:12:25PM +0300, Surendrakumar Upadhyay,
-> TejaskumarX wrote:
-> >
-> >
-> > > -----Original Message-----
-> > > From: Latvala, Petri <petri.latvala@intel.com>
-> > > Sent: 30 August 2021 14:07
-> > > To: Surendrakumar Upadhyay, TejaskumarX
-> > > <tejaskumarx.surendrakumar.upadhyay@intel.com>
-> > > Cc: igt-dev@lists.freedesktop.org
-> > > Subject: Re: [igt-dev] [i-g-t] lib/i915: Use FIXED mapping only for
-> > > discrete memory
-> > >
-> > > On Fri, Aug 27, 2021 at 06:30:02PM +0530, Tejas Upadhyay wrote:
-> > > > The FIXED mapping is only used for discrete, and mapping type is
-> > > > pre-defined. This disables the other type of mmap offsets when
-> > > > discrete memory is used.
-> > > >
-> > > > Taken from kernel commit:
-> > > > commit 7961c5b60f23 ("drm/i915: Add TTM offset argument to
-> mmap.")
-> > > >
-> > > > Signed-off-by: Tejas Upadhyay
-> > > > <tejaskumarx.surendrakumar.upadhyay@intel.com>
-> > > > ---
-> > > >  include/drm-uapi/i915_drm.h | 1 +
-> > > >  lib/i915/gem_mman.c         | 8 +++++++-
-> > > >  2 files changed, 8 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/include/drm-uapi/i915_drm.h
-> > > > b/include/drm-uapi/i915_drm.h index a1c0030c..b46367f2 100644
-> > > > --- a/include/drm-uapi/i915_drm.h
-> > > > +++ b/include/drm-uapi/i915_drm.h
-> > > > @@ -871,6 +871,7 @@ struct drm_i915_gem_mmap_offset {  #define
-> > > > I915_MMAP_OFFSET_WC  1  #define I915_MMAP_OFFSET_WB  2
-> #define
-> > > > I915_MMAP_OFFSET_UC  3
-> > > > +#define I915_MMAP_OFFSET_FIXED 4
-> > > >
-> > > >     /*
-> > > >      * Zero-terminated chain of extensions.
-> > > > diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c index
-> > > > 0406a0b9..1917c24d 100644
-> > > > --- a/lib/i915/gem_mman.c
-> > > > +++ b/lib/i915/gem_mman.c
-> > > > @@ -75,7 +75,13 @@ bool gem_has_legacy_mmap(int fd)
-> > > >
-> > > >  bool gem_has_mmap_offset_type(int fd, const struct mmap_offset *t)
-> {
-> > > > -   return gem_has_mmap_offset(fd) || t->type =3D=3D
-> > > I915_MMAP_OFFSET_GTT;
-> > > > +   if (gem_has_mmap_offset(fd))
-> > > > +           if (!gem_has_lmem(fd))
-> > > > +                   return !(t->type =3D=3D I915_MMAP_OFFSET_FIXED)=
-;
-> > > > +           else
-> > > > +                   return !(t->type !=3D I915_MMAP_OFFSET_FIXED);
-> > >
-> > > Why the !(a =3D=3D b) stuff?
-> > >        ^^^
-> >
-> > If its discrete memory and offset type is fixed then only its valid
-> combination.  Reverse if not discrete then any offset type except fixed i=
-s valid
-> combination.
->=20
->=20
-> I understand the goal, but this is imho more readable:
->=20
-> if (gem_has_lmem(fd))
->   return t->type =3D=3D I915_MMAP_OFFSET_FIXED; else
->   return t->type !=3D I915_MMAP_OFFSET_FIXED;
->=20
+Participating hosts (44 -> 36)
+------------------------------
 
-I agree. Changed accordingly.
+  Missing    (8): fi-ilk-m540 bat-adls-5 bat-dg1-6 bat-dg1-5 fi-bsw-cyan fi-ctg-p8600 fi-bdw-samus bat-jsl-1 
 
-Thanks,
-Tejas
->=20
->=20
-> --
-> Petri Latvala
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6191 -> IGTPW_6172
+
+  CI-20190529: 20190529
+  CI_DRM_10536: b6d834a72c14ca22b2df32a607c1ee36e8629f1a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6172: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/index.html
+  IGT_6191: e9292b533691784f46eeb9bae522ca7a8710c920 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/index.html
+
+--===============2038921652756446075==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/i915: Use FIXED mapping only for discrete memory (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/94103/">https://patchwork.freedesktop.org/series/94103/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10536 -&gt; IGTPW_6172</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6172 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@cs-gfx:</p>
+<ul>
+<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/fi-rkl-guc/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-compute0:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/fi-kbl-soraka/igt@amdgpu/amd_cs_nop@sync-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-fork-compute0:</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10536/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/fi-bsw-kefka/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3428">i915#3428</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10536/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10536/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3928">i915#3928</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (44 -&gt; 36)</h2>
+<p>Missing    (8): fi-ilk-m540 bat-adls-5 bat-dg1-6 bat-dg1-5 fi-bsw-cyan fi-ctg-p8600 fi-bdw-samus bat-jsl-1 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6191 -&gt; IGTPW_6172</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10536: b6d834a72c14ca22b2df32a607c1ee36e8629f1a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6172: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6172/index.html<br />
+  IGT_6191: e9292b533691784f46eeb9bae522ca7a8710c920 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2038921652756446075==--
