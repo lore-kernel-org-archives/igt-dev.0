@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A1A0589BF6
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Aug 2021 19:33:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DBE489BFC
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Aug 2021 19:33:43 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Date: Mon, 30 Aug 2021 12:33:33 -0700
-Message-Id: <20210830193337.15260-1-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 30 Aug 2021 12:33:36 -0700
+Message-Id: <20210830193337.15260-4-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20210830193337.15260-1-umesh.nerlige.ramappa@intel.com>
+References: <20210830193337.15260-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 1/5] i915/perf: add tests for triggered OA reports
+Subject: [igt-dev] [PATCH 4/5] tools/i915-perf: Add mmapped OA buffer
+ support to i915-perf-recorder
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,500 +24,581 @@ To: igt-dev@lists.freedesktop.org, Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: Lionel G Landwerlin <lionel.g.landwerlin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lionel G Landwerlin <lionel.g.landwerlin@intel.com>
+Currently report from OA buffer are read from the perf_fd. The kernel
+patches enable mmaping the OA buffer into user space to allow for faster
+report queries across different platforms and engines.
 
-By whitelisting a couple of registers we can allow an application
-batch to trigger OA reports in the OA buffer by switching back & forth
-an inverter on the condition logic.
+Enable OA buffer to be mmaped by the recorder tool based on command line
+option -M.
 
-v2: Wait before sampling the timestamp used to end the OA buffer search
-v3:
-- Ensure OA regs are whitelisted and reports are triggered only when
-  perf_stream_paranoid is set to 0.
-- Drop root to trigger reports.
-v4:
-- wait for children after igt_assert
-- use new api for intel batch buffer
-- clean up test code
+Example:
+i915-perf-recorder -m RenderBasic -s 8000 -k "mono" -M
 
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+The recorder processes the mmaped OA buffer by periodically reading the
+OA TAIL PTR register from a batch and determining the number of reports
+available. These reports are then logged in the circular-buffer as
+INTEL_PERF_RECORD_TYPE_MULTIPLE_SAMPLE records. In this implementation
+the periodicity of checking the TAIL is the same as writing correlation
+timestamps (1 sec).
+
+v2: Avoid unnecessarily draining the OA buffer (Ashutosh)
+v3: Use igt lib helpers (Ashutosh)
+
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/i915/perf.c | 421 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 404 insertions(+), 17 deletions(-)
+ tools/i915-perf/i915_perf_recorder.c | 375 ++++++++++++++++++++++++++-
+ tools/i915-perf/meson.build          |   6 +-
+ 2 files changed, 366 insertions(+), 15 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index e641d5d2..fa3840eb 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -53,6 +53,8 @@ IGT_TEST_DESCRIPTION("Test the i915 perf metrics streaming interface");
- #define OAREPORT_REASON_SHIFT          19
- #define OAREPORT_REASON_TIMER          (1<<0)
- #define OAREPORT_REASON_INTERNAL       (3<<1)
-+#define OAREPORT_REASON_TRIGGER1       (1<<1)
-+#define OAREPORT_REASON_TRIGGER2       (1<<2)
- #define OAREPORT_REASON_CTX_SWITCH     (1<<3)
- #define OAREPORT_REASON_GO             (1<<4)
- #define OAREPORT_REASON_CLK_RATIO      (1<<5)
-@@ -204,6 +206,7 @@ static struct intel_perf *intel_perf = NULL;
- static struct intel_perf_metric_set *test_set = NULL;
- static bool *undefined_a_counters;
- static uint64_t oa_exp_1_millisec;
-+struct intel_mmio_data mmio_data;
+diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
+index 00195290..7481f33c 100644
+--- a/tools/i915-perf/i915_perf_recorder.c
++++ b/tools/i915-perf/i915_perf_recorder.c
+@@ -34,6 +34,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/ioctl.h>
++#include <sys/mman.h>
+ #include <sys/stat.h>
+ #include <sys/sysmacros.h>
+ #include <sys/time.h>
+@@ -44,11 +45,16 @@
+ #include <i915_drm.h>
  
- static igt_render_copyfunc_t render_copy = NULL;
- static uint32_t (*read_report_ticks)(const uint32_t *report,
-@@ -294,6 +297,23 @@ __perf_open(int fd, struct drm_i915_perf_open_param *param, bool prevent_pm)
- 	return ret;
+ #include "igt_core.h"
++#include "intel_allocator.h"
+ #include "intel_chipset.h"
++#include "intel_ctx.h"
++#include "i915/gem_create.h"
++#include "i915/gem_mman.h"
+ #include "i915/perf.h"
+ #include "i915/perf_data.h"
+ 
+ #include "i915_perf_recorder_commands.h"
++#include "ioctl_wrappers.h"
+ 
+ #define ALIGN(v, a) (((v) + (a)-1) & ~((a)-1))
+ #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof((arr)[0]))
+@@ -331,6 +337,18 @@ get_device_timestamp_frequency(const struct intel_device_info *devinfo, int drm_
+ 	return 12000000;
  }
  
-+static int i915_perf_revision(int fd)
-+{
-+	drm_i915_getparam_t gp;
-+	int value = 1, ret;
++struct bb_context {
++	struct drm_i915_gem_relocation_entry reloc[2];
++	struct drm_i915_gem_exec_object2 obj[2];
++	struct drm_i915_gem_execbuffer2 execbuf;
++	uint32_t *batch;
++	uint32_t *dest;
++	uint32_t offset;
++	uint32_t reloc_idx;
++	uint64_t ahnd;
++	const intel_ctx_t *ctx;
++};
 +
-+	gp.param = I915_PARAM_PERF_REVISION;
-+	gp.value = &value;
-+	ret = igt_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp);
-+	if (ret == -1) {
-+		/* If the param is missing, consider version 1. */
-+		igt_assert_eq(errno, EINVAL);
-+		return 1;
-+	}
+ struct recording_context {
+ 	int drm_fd;
+ 	int perf_fd;
+@@ -355,6 +373,19 @@ struct recording_context {
+ 	int command_fifo_fd;
+ 
+ 	uint64_t poll_period;
++	double perf_period;
 +
-+	return value;
-+}
++	uint32_t max_record_length;
 +
++	uint8_t *oa_buffer_vaddr;
++	uint32_t oa_buffer_size;
++	uint32_t tail_offset;
++	uint32_t head_offset;
++	uint32_t oa_status_reg;
++	uint32_t oa_buffer_reg;
++	uint32_t oa_tail_reg;
++
++	struct bb_context bb;
+ };
+ 
  static int
- lookup_format(int i915_perf_fmt_id)
- {
-@@ -3151,6 +3171,283 @@ emit_stall_timestamp_and_rpc(struct intel_bb *ibb,
- 	emit_report_perf_count(ibb, dst, report_dst_offset, report_id);
+@@ -527,6 +558,270 @@ write_i915_perf_data(FILE *output, int perf_fd)
+ 	return true;
  }
  
-+/* The following register all have the same layout. */
-+#define OAREPORTTRIG2 (0x2744)
-+#define   OAREPORTTRIG2_INVERT_A_0  (1 << 0)
-+#define   OAREPORTTRIG2_INVERT_A_1  (1 << 1)
-+#define   OAREPORTTRIG2_INVERT_A_2  (1 << 2)
-+#define   OAREPORTTRIG2_INVERT_A_3  (1 << 3)
-+#define   OAREPORTTRIG2_INVERT_A_4  (1 << 4)
-+#define   OAREPORTTRIG2_INVERT_A_5  (1 << 5)
-+#define   OAREPORTTRIG2_INVERT_A_6  (1 << 6)
-+#define   OAREPORTTRIG2_INVERT_A_7  (1 << 7)
-+#define   OAREPORTTRIG2_INVERT_A_8  (1 << 8)
-+#define   OAREPORTTRIG2_INVERT_A_9  (1 << 9)
-+#define   OAREPORTTRIG2_INVERT_A_10 (1 << 10)
-+#define   OAREPORTTRIG2_INVERT_A_11 (1 << 11)
-+#define   OAREPORTTRIG2_INVERT_A_12 (1 << 12)
-+#define   OAREPORTTRIG2_INVERT_A_13 (1 << 13)
-+#define   OAREPORTTRIG2_INVERT_A_14 (1 << 14)
-+#define   OAREPORTTRIG2_INVERT_A_15 (1 << 15)
-+#define   OAREPORTTRIG2_INVERT_B_0  (1 << 16)
-+#define   OAREPORTTRIG2_INVERT_B_1  (1 << 17)
-+#define   OAREPORTTRIG2_INVERT_B_2  (1 << 18)
-+#define   OAREPORTTRIG2_INVERT_B_3  (1 << 19)
-+#define   OAREPORTTRIG2_INVERT_C_0  (1 << 20)
-+#define   OAREPORTTRIG2_INVERT_C_1  (1 << 21)
-+#define   OAREPORTTRIG2_INVERT_D_0  (1 << 22)
-+#define   OAREPORTTRIG2_THRESHOLD_ENABLE      (1 << 23)
-+#define   OAREPORTTRIG2_REPORT_TRIGGER_ENABLE (1 << 31)
-+#define OAREPORTTRIG6 (0x2754)
-+#define OA_PERF_COUNTER_A(idx) (0x2800 + 8 * (idx))
-+#define GEN8_OASTATUS (0x2b08)
++#define BATCH_SIZE 4096
++#define DEST_SIZE 4096
 +
-+#define GEN12_OAREPORTTRIG2 (0xd924)
-+#define GEN12_OAREPORTTRIG6 (0xd934)
-+#define GEN12_OAG_PERF_COUNTER_A(idx) (0xD980 + 8 * (idx))
-+#define GEN12_OAG_OASTATUS (0xdafc)
++#define _MI_INSTR(opcode, flags)	(((opcode) << 23) | (flags))
++#define MI_STORE_REGISTER_MEM      	_MI_INSTR(0x24, 1)
++#define MI_STORE_REGISTER_MEM_GEN8 	_MI_INSTR(0x24, 2)
++#define MI_BATCH_BUFFER_END		(0xA << 23)
 +
-+#define RING_FORCE_TO_NONPRIV_ADDRESS_MASK 0x03fffffc
-+
-+/*
-+ * We have 2 trigger registers that each generate a different
-+ * report reason.
-+ */
-+static const uint32_t gen9_oa_wl[] = {
-+	OAREPORTTRIG2,
-+	OAREPORTTRIG6,
-+	OA_PERF_COUNTER_A(18),
-+	GEN8_OASTATUS,
-+};
-+static const uint32_t gen12_oa_wl[] = {
-+	GEN12_OAREPORTTRIG2,
-+	GEN12_OAREPORTTRIG6,
-+	GEN12_OAG_PERF_COUNTER_A(18),
-+	GEN12_OAG_OASTATUS,
-+};
-+
-+static const uint32_t nonpriv_slots[] = {
-+	0x24d0, 0x24d4, 0x24d8, 0x24dc, 0x24e0, 0x24e4, 0x24e8, 0x24ec,
-+	0x24f0, 0x24f4, 0x24f8, 0x24fc, 0x2010, 0x2014, 0x2018, 0x201c,
-+	0x21e0, 0x21e4, 0x21e8, 0x21ec,
-+};
-+
-+struct test_perf {
-+	const uint32_t *slots;
-+	uint32_t num_slots;
-+	const uint32_t *wl;
-+	uint32_t num_wl;
-+} perf;
-+
-+static void perf_init_whitelist(void)
++static void
++bb_emit_srm(struct bb_context *bb, uint32_t reg, uint32_t devid)
 +{
-+	perf.slots = nonpriv_slots;
++	bool gen8_plus = devid >= 8;
++	uint64_t mem;
 +
-+	if (intel_gen(devid) >= 12) {
-+		perf.num_slots = 20;
-+		perf.wl = gen12_oa_wl;
-+		perf.num_wl = i915_perf_revision(drm_fd) < 7 ? 2 :
-+			       ARRAY_SIZE(gen12_oa_wl);
++	assert(bb->reloc_idx < ARRAY_SIZE(bb->reloc));
++	assert(bb->offset < BATCH_SIZE);
++
++	bb->batch[bb->offset++] = gen8_plus ? MI_STORE_REGISTER_MEM_GEN8 :
++					      MI_STORE_REGISTER_MEM;
++	bb->batch[bb->offset++] = reg;
++
++	bb->reloc[bb->reloc_idx].target_handle = bb->obj[0].handle;
++	bb->reloc[bb->reloc_idx].presumed_offset = bb->obj[0].offset;
++	bb->reloc[bb->reloc_idx].offset = bb->offset * sizeof(uint32_t);
++	bb->reloc[bb->reloc_idx].delta = bb->reloc_idx * sizeof(uint32_t);
++	bb->reloc[bb->reloc_idx].read_domains = I915_GEM_DOMAIN_RENDER;
++	bb->reloc[bb->reloc_idx].write_domain = I915_GEM_DOMAIN_RENDER;
++
++	mem = bb->obj[0].offset + bb->reloc[bb->reloc_idx].delta;
++	bb->batch[bb->offset++] = mem;
++	if (gen8_plus)
++		bb->batch[bb->offset++] = mem >> 32;
++
++	bb->reloc_idx++;
++}
++
++static void
++bb_emit_bbe(struct bb_context *bb)
++{
++	bb->batch[bb->offset++] = MI_BATCH_BUFFER_END;
++}
++
++static void
++bb_exec(int fd, struct bb_context *bb)
++{
++	struct drm_i915_gem_execbuffer2 *execbuf = &bb->execbuf;
++
++	memset(execbuf, 0, sizeof(*execbuf));
++	if (bb->reloc_idx) {
++		bb->obj[1].relocation_count = !bb->ahnd ? bb->reloc_idx : 0;
++		execbuf->buffers_ptr = to_user_pointer(bb->obj);
++		execbuf->buffer_count = 2;
 +	} else {
-+		perf.num_slots = 12;
-+		perf.wl = gen9_oa_wl;
-+		perf.num_wl = i915_perf_revision(drm_fd) < 7 ? 2 :
-+			       ARRAY_SIZE(gen9_oa_wl);
++		bb->obj[1].relocation_count = 0;
++		execbuf->buffers_ptr = to_user_pointer(&bb->obj[1]);
++		execbuf->buffer_count = 1;
++	}
++	execbuf->rsvd1 = bb->ctx->id;
++	gem_execbuf(fd, execbuf);
++
++	bb->reloc_idx = 0;
++	bb->offset = 0;
++}
++
++static void
++bb_ctx_fini(struct recording_context *ctx)
++{
++	struct bb_context *bb = &ctx->bb;
++
++	intel_ctx_destroy(ctx->drm_fd, bb->ctx);
++
++	if (bb->batch)
++		munmap(bb->batch, BATCH_SIZE);
++
++	if (bb->obj[1].handle)
++		gem_close(ctx->drm_fd, bb->obj[1].handle);
++
++	if (bb->obj[0].handle)
++		gem_close(ctx->drm_fd, bb->obj[0].handle);
++
++	put_ahnd(bb->ahnd);
++}
++
++static int
++bb_ctx_init(struct recording_context *ctx)
++{
++	struct bb_context *bb = &ctx->bb;
++	struct drm_i915_gem_exec_object2 *obj = bb->obj;
++	int fd = ctx->drm_fd;
++
++	memset(bb, 0, sizeof(struct bb_context));
++
++	bb->ctx = intel_ctx_create(fd, NULL);
++	bb->ahnd = get_reloc_ahnd(fd, bb->ctx->id);
++
++	obj[0].handle = gem_create(fd, DEST_SIZE);
++	obj[1].handle = gem_create(fd, BATCH_SIZE);
++	obj[1].relocs_ptr = to_user_pointer(bb->reloc);
++	if (bb->ahnd) {
++		obj[0].offset = get_offset(bb->ahnd, obj[0].handle, DEST_SIZE, 0);
++		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
++		obj[1].offset = get_offset(bb->ahnd, obj[1].handle, BATCH_SIZE, 0);
++		obj[1].flags |= EXEC_OBJECT_PINNED;
++	}
++
++	bb->batch = gem_mmap__cpu_coherent(fd, obj[1].handle, 0, BATCH_SIZE, PROT_WRITE);
++	if (!bb->batch)
++		goto err;
++
++	gem_set_domain(fd, obj[1].handle, I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
++
++	return 0;
++err:
++	bb_ctx_fini(ctx);
++	return -1;
++}
++
++#define OA_PTR_MASK 0xffffffc0
++
++#define GEN8_OABUFFER	0x2b14
++#define GEN8_OATAILPTR	0x2B10
++#define GEN8_OASTATUS   0x2b08
++#define  GEN8_OASTATUS_OABUFFER_OVERFLOW    (1 << 1)
++#define  GEN8_OASTATUS_REPORT_LOST	    (1 << 0)
++
++#define GEN12_OAG_OABUFFER   0xdb08
++#define GEN12_OAG_OATAILPTR  0xdb04
++#define GEN12_OAG_OASTATUS   0xdafc
++
++static void
++init_oa_regs(struct recording_context *ctx)
++{
++	if (ctx->devinfo->graphics_ver >= 12) {
++		ctx->oa_status_reg = GEN12_OAG_OASTATUS;
++		ctx->oa_buffer_reg = GEN12_OAG_OABUFFER;
++		ctx->oa_tail_reg = GEN12_OAG_OATAILPTR;
++	} else if (ctx->devinfo->graphics_ver >= 9) {
++		ctx->oa_status_reg = GEN8_OASTATUS;
++		ctx->oa_buffer_reg = GEN8_OABUFFER;
++		ctx->oa_tail_reg = GEN8_OATAILPTR;
 +	}
 +}
 +
 +static void
-+emit_triggered_oa_report(struct intel_bb *ibb, uint32_t trigger)
++__read_oa_reg(struct recording_context *ctx, uint32_t reg, uint32_t *val)
 +{
-+	const uint32_t *triggers = perf.wl;
++	struct bb_context *bb = &ctx->bb;
++	int fd = ctx->drm_fd;
 +
-+	assert(trigger <= 1);
++	bb_emit_srm(bb, reg, ctx->perf->devinfo.devid);
++	bb_emit_bbe(bb);
++	bb_exec(fd, bb);
++	bb->dest = gem_mmap__cpu_coherent(fd, bb->obj[0].handle, 0, DEST_SIZE, PROT_READ);
++	assert(bb->dest);
++	gem_set_domain(fd, bb->obj[0].handle, I915_GEM_DOMAIN_CPU, 0);
 +
-+	intel_bb_out(ibb, MI_LOAD_REGISTER_IMM);
-+	intel_bb_out(ibb, triggers[trigger]);
-+	intel_bb_out(ibb, OAREPORTTRIG2_INVERT_C_1 |
-+			  OAREPORTTRIG2_REPORT_TRIGGER_ENABLE);
-+	intel_bb_out(ibb, MI_LOAD_REGISTER_IMM);
-+	intel_bb_out(ibb, triggers[trigger]);
-+	intel_bb_out(ibb, OAREPORTTRIG2_INVERT_C_1 |
-+			  OAREPORTTRIG2_INVERT_D_0 |
-+			  OAREPORTTRIG2_REPORT_TRIGGER_ENABLE);
++	*val = bb->dest[0];
++	munmap(bb->dest, DEST_SIZE);
 +}
 +
-+static uint64_t
-+rcs_timestmap_reg_read(int fd)
++static bool
++__process_oa_status(struct recording_context *ctx)
 +{
-+	struct drm_i915_reg_read rr = {
-+		.offset = 0x2358 | I915_REG_READ_8B_WA, /* render ring timestamp */
++	struct drm_i915_perf_record_header header = {
++		.type = 0,
++		.pad = 0,
++		.size = sizeof(header)
 +	};
++	uint32_t status;
 +
-+	do_ioctl(fd, DRM_IOCTL_I915_REG_READ, &rr);
++	__read_oa_reg(ctx, ctx->oa_status_reg, &status);
++	if (status & GEN8_OASTATUS_REPORT_LOST) {
++		header.type = DRM_I915_PERF_RECORD_OA_REPORT_LOST;
++		if (fwrite(&header, sizeof(header), 1, ctx->output_stream) != 1)
++			return false;
++	}
 +
-+	return rr.val;
++	return true;
 +}
 +
-+/*
-+ * Verify that we can trigger OA reports into the OA buffer using
-+ * MI_LRI.
-+ */
++static inline uint32_t
++__data_available(uint32_t tail, uint32_t head, uint32_t size)
++{
++	return tail >= head ? tail - head : size - (head - tail);
++}
++
++static inline uint32_t
++__rewind_tail(uint32_t tail, uint32_t report_size, uint32_t oa_buffer_size)
++{
++	return tail >= report_size ?
++	       tail - report_size :
++	       oa_buffer_size - (report_size - tail);
++}
++
++static bool
++write_i915_perf_mmapped_data(struct recording_context *ctx)
++{
++	uint32_t report_size = ctx->metric_set->perf_raw_size;
++	struct drm_i915_perf_record_header header;
++	uint32_t buff, tail, data_len;
++
++	if (!__process_oa_status(ctx))
++		return false;
++
++	__read_oa_reg(ctx, ctx->oa_buffer_reg, &buff);
++	buff = buff & OA_PTR_MASK;
++
++	__read_oa_reg(ctx, ctx->oa_tail_reg, &tail);
++	tail = (tail & OA_PTR_MASK) - buff;
++
++	/*
++	 * tail increments in 64 bytes, so round up to nearest report. note that
++	 * oa buffer size may not be a power of 2 and a report may split across
++	 * the boundary of the oa buffer
++	 */
++	data_len = __data_available(tail, ctx->head_offset, ctx->oa_buffer_size);
++	assert(data_len <= ctx->oa_buffer_size);
++
++	tail -= data_len % report_size;
++	ctx->tail_offset = tail;
++
++	while (ctx->tail_offset != ctx->head_offset) {
++		const uint32_t *report32 = (uint32_t *)(ctx->oa_buffer_vaddr +
++							ctx->tail_offset);
++
++		if (report32[0] || report32[1])
++			break;
++
++		ctx->tail_offset = __rewind_tail(ctx->tail_offset, report_size,
++						 ctx->oa_buffer_size);
++	}
++
++	data_len = __data_available(ctx->tail_offset, ctx->head_offset,
++				    ctx->oa_buffer_size);
++	if (!data_len)
++		return true;
++
++	assert(data_len < ctx->oa_buffer_size);
++
++	header.type = INTEL_PERF_RECORD_TYPE_MULTIPLE_SAMPLE;
++	while (data_len > 0) {
++		uint32_t len;
++
++		len = MIN(data_len, ctx->max_record_length);
++		len = MIN(len, ctx->oa_buffer_size - ctx->head_offset);
++
++		header.size = sizeof(header) + len;
++		if (fwrite(&header, sizeof(header), 1, ctx->output_stream) != 1)
++			return false;
++
++		if (fwrite(ctx->oa_buffer_vaddr + ctx->head_offset, len, 1, ctx->output_stream) != 1)
++			return false;
++
++		data_len -= len;
++		ctx->head_offset = ctx->head_offset + len;
++
++		assert(ctx->head_offset <= ctx->oa_buffer_size);
++		if (ctx->head_offset == ctx->oa_buffer_size)
++			ctx->head_offset = 0;
++	}
++
++	return true;
++}
++
+ static uint64_t timespec_diff(struct timespec *begin,
+ 			      struct timespec *end)
+ {
+@@ -667,6 +962,21 @@ read_command_file(struct recording_context *ctx)
+ 	}
+ }
+ 
 +static void
-+test_triggered_oa_reports(int paranoid)
++mmap_oa_buffer(struct recording_context *ctx)
 +{
-+	int oa_exponent = max_oa_exponent_for_period_lte(1000000);
-+	uint64_t properties[] = {
-+		DRM_I915_PERF_PROP_CTX_HANDLE, UINT64_MAX, /* updated below */
++	struct drm_i915_perf_oa_buffer_info oa_info = {0};
++	void *vaddr;
 +
-+		/* Note: we have to specify at least one sample property even
-+		 * though we aren't interested in samples in this case
-+		 */
-+		DRM_I915_PERF_PROP_SAMPLE_OA, true,
++	perf_ioctl(ctx->perf_fd, I915_PERF_IOCTL_GET_OA_BUFFER_INFO, &oa_info);
++	vaddr = mmap(0, oa_info.size, PROT_READ, MAP_PRIVATE, ctx->perf_fd,
++		     oa_info.offset);
++	assert(vaddr != NULL);
 +
-+		/* OA unit configuration */
-+		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
-+		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-+		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
++	ctx->oa_buffer_size = oa_info.size;
++	ctx->oa_buffer_vaddr = vaddr;
++}
 +
-+		/* Note: no OA exponent specified in this case */
-+	};
-+	struct drm_i915_perf_open_param param = {
-+		.flags = I915_PERF_FLAG_FD_CLOEXEC,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	struct drm_i915_perf_record_header *header;
-+	struct buf_ops *bops;
-+	uint32_t context;
-+	struct igt_helper_process child = {};
-+	struct intel_bb *ibb;
-+	struct intel_buf src[2], dst[2];
-+	uint64_t timestamp32_mask = (1ull << 32) - 1;
-+	uint64_t timestamps[2];
-+	uint32_t buf_size = 16 * 1024 * 1024;
-+	uint8_t *buf = malloc(buf_size);
-+	int width = 800;
-+	int height = 600;
-+	uint32_t trigger_counts[2] = { 0, };
-+	int ret;
+ static void
+ print_metric_sets(const struct intel_perf *perf)
+ {
+@@ -761,6 +1071,11 @@ teardown_recording_context(struct recording_context *ctx)
+ 
+ 	free(ctx->circular_buffer.data);
+ 
++	if (ctx->oa_buffer_vaddr)
++		munmap(ctx->oa_buffer_vaddr, ctx->oa_buffer_size);
 +
-+	write_u64_file("/proc/sys/dev/i915/perf_stream_paranoid", paranoid);
++	bb_ctx_fini(ctx);
 +
-+	do {
-+		igt_fork_helper(&child) {
-+			if (!paranoid)
-+				igt_drop_root();
+ 	if (ctx->perf_fd != -1)
+ 		close(ctx->perf_fd);
+ 	if (ctx->drm_fd != -1)
+@@ -781,6 +1096,7 @@ main(int argc, char *argv[])
+ 		{"command-fifo",         required_argument, 0, 'f'},
+ 		{"cpu-clock",            required_argument, 0, 'k'},
+ 		{"poll-period",          required_argument, 0, 'P'},
++		{"mmap-buffer",                no_argument, 0, 'M'},
+ 		{0, 0, 0, 0}
+ 	};
+ 	const struct {
+@@ -791,7 +1107,7 @@ main(int argc, char *argv[])
+ 		{ CLOCK_MONOTONIC,     "mono" },
+ 		{ CLOCK_MONOTONIC_RAW, "mono_raw" },
+ 	};
+-	double corr_period = 1.0, perf_period = 0.001;
++	double corr_period = 1.0;
+ 	const char *metric_name = NULL, *output_file = "i915_perf.record";
+ 	struct intel_perf_metric_set *metric_set;
+ 	struct intel_perf_record_timestamp_correlation initial_correlation;
+@@ -799,7 +1115,7 @@ main(int argc, char *argv[])
+ 	uint64_t corr_period_ns, poll_time_ns;
+ 	uint32_t circular_size = 0;
+ 	int opt;
+-	bool list_counters = false;
++	bool list_counters = false, mmap_buffer = false;
+ 	FILE *output = NULL;
+ 	struct recording_context ctx = {
+ 		.drm_fd = -1,
+@@ -810,9 +1126,16 @@ main(int argc, char *argv[])
+ 
+ 		/* 5 ms poll period */
+ 		.poll_period = 5 * 1000 * 1000,
++		.perf_period = 0.001,
 +
-+			bops = buf_ops_create(drm_fd);
++		.oa_buffer_vaddr = NULL,
++		.head_offset = 0,
++		.tail_offset = 0,
++		.oa_buffer_size = 0,
+ 	};
+ 
+-	while ((opt = getopt_long(argc, argv, "hc:p:m:Co:s:f:k:P:", long_options, NULL)) != -1) {
++	memset(&ctx.bb, 0, sizeof(ctx.bb));
++	while ((opt = getopt_long(argc, argv, "hc:p:m:Co:s:f:k:P:M", long_options, NULL)) != -1) {
+ 		switch (opt) {
+ 		case 'h':
+ 			usage(argv[0]);
+@@ -821,7 +1144,7 @@ main(int argc, char *argv[])
+ 			corr_period = atof(optarg);
+ 			break;
+ 		case 'p':
+-			perf_period = atof(optarg);
++			ctx.perf_period = atof(optarg);
+ 			break;
+ 		case 'm':
+ 			metric_name = optarg;
+@@ -857,6 +1180,9 @@ main(int argc, char *argv[])
+ 		case 'P':
+ 			ctx.poll_period = MAX(100, atol(optarg)) * 1000;
+ 			break;
++		case 'M':
++			mmap_buffer = true;
++			break;
+ 		default:
+ 			fprintf(stderr, "Internal error: "
+ 				"unexpected getopt value: %d\n", opt);
+@@ -876,6 +1202,10 @@ main(int argc, char *argv[])
+ 		fprintf(stderr, "No device info found.\n");
+ 		goto fail;
+ 	}
++	if (ctx.devinfo->graphics_ver < 9 && mmap_buffer) {
++		fprintf(stderr, "mmap_buffer not supported on graphics version less than 9\n");
++		goto fail;
++	}
+ 
+ 	fprintf(stdout, "Device name=%s gen=%i gt=%i id=0x%x\n",
+ 		ctx.devinfo->codename, ctx.devinfo->graphics_ver, ctx.devinfo->gt, ctx.devid);
+@@ -926,6 +1256,11 @@ main(int argc, char *argv[])
+ 		goto fail;
+ 	}
+ 
++	/* header size is a uint16_t, so accomodate the header first */
++	ctx.max_record_length = 65535 - sizeof(struct drm_i915_perf_record_header);
++	/* accomodate only full report sizes */
++	ctx.max_record_length -= (ctx.max_record_length % ctx.metric_set->perf_raw_size);
 +
-+			scratch_buf_init(bops, &src[0], width, height, 0xff0000ff);
-+			scratch_buf_init(bops, &dst[0], width, height, 0x00ff00ff);
-+			scratch_buf_init(bops, &src[1], 2 * width, height, 0xff0000ff);
-+			scratch_buf_init(bops, &dst[1], 2 * width, height, 0x00ff00ff);
-+
-+			context = gem_context_create(drm_fd);
-+			igt_assert(context);
-+			ibb = intel_bb_create_with_context(drm_fd, context, BATCH_SZ);
-+			properties[1] = context;
-+
-+			timestamps[0] = rcs_timestmap_reg_read(drm_fd);
-+
-+			stream_fd = __perf_open(drm_fd, &param, false);
-+
-+			emit_triggered_oa_report(ibb, 0);
-+
-+			render_copy(ibb,
-+				    &src[0], 0, 0, width, height,
-+				    &dst[0], 0, 0);
-+
-+			emit_triggered_oa_report(ibb, 0);
-+
-+			emit_triggered_oa_report(ibb, 1);
-+
-+			render_copy(ibb,
-+				    &src[1], 0, 0, 2 * width, height,
-+				    &dst[1], 0, 0);
-+
-+			emit_triggered_oa_report(ibb, 1);
-+
-+			intel_bb_flush_render(ibb);
-+			intel_bb_sync(ibb);
-+
-+			timestamps[1] = rcs_timestmap_reg_read(drm_fd);
-+
-+			if (timestamps[1] < timestamps[0] ||
-+			    (timestamps[1] & timestamp32_mask) < (timestamps[1] & timestamp32_mask)) {
-+				igt_debug("Timestamp rollover, trying again\n");
-+				exit(EAGAIN);
-+			}
-+
-+			ret = i915_read_reports_until_timestamp(test_set->perf_oa_format,
-+								buf, buf_size,
-+								timestamps[0] & timestamp32_mask,
-+								timestamps[1] & timestamp32_mask);
-+
-+			for (size_t offset = 0; offset < ret; offset += header->size) {
-+				uint32_t *report;
-+
-+				header = (void *)(buf + offset);
-+
-+				igt_assert_eq(header->pad, 0); /* Reserved */
-+
-+				igt_assert_neq(header->type, DRM_I915_PERF_RECORD_OA_BUFFER_LOST);
-+
-+				if (header->type == DRM_I915_PERF_RECORD_OA_REPORT_LOST)
-+					continue;
-+
-+				/* Currently the only other record type expected is a
-+				 * _SAMPLE. Notably this test will need updating if
-+				 * i915-perf is extended in the future with additional
-+				 * record types.
-+				 */
-+				igt_assert_eq(header->type, DRM_I915_PERF_RECORD_SAMPLE);
-+
-+				report = (void *)(header + 1);
-+
-+				igt_debug("report ts=0x%08x hw_id=0x%08x reason=%s\n",
-+					  report[1], report[2],
-+					  gen8_read_report_reason(report));
-+
-+				if (gen8_report_reason(report) & OAREPORT_REASON_TRIGGER1) {
-+					igt_assert_eq(trigger_counts[1], 0);
-+					trigger_counts[0]++;
-+				}
-+				if (gen8_report_reason(report) & OAREPORT_REASON_TRIGGER2) {
-+					igt_assert_eq(trigger_counts[0], 2);
-+					trigger_counts[1]++;
-+				}
-+			}
-+
-+			if (paranoid) {
-+				igt_assert_eq(trigger_counts[0], 0);
-+				igt_assert_eq(trigger_counts[1], 0);
-+			} else {
-+				igt_assert_eq(trigger_counts[0], 2);
-+				igt_assert_eq(trigger_counts[1], 2);
-+			}
-+
-+			for (int i = 0; i < ARRAY_SIZE(src); i++) {
-+				intel_buf_close(bops, &src[i]);
-+				intel_buf_close(bops, &dst[i]);
-+			}
-+
-+			intel_bb_destroy(ibb);
-+			gem_context_destroy(drm_fd, context);
-+			buf_ops_destroy(bops);
-+			__perf_close(stream_fd);
+ 	intel_perf_load_perf_configs(ctx.perf, ctx.drm_fd);
+ 
+ 	ctx.timestamp_frequency = get_device_timestamp_frequency(ctx.devinfo, ctx.drm_fd);
+@@ -1000,7 +1335,7 @@ main(int argc, char *argv[])
+ 		goto fail;
+ 	}
+ 
+-	ctx.oa_exponent = oa_exponent_for_period(ctx.timestamp_frequency, perf_period);
++	ctx.oa_exponent = oa_exponent_for_period(ctx.timestamp_frequency, ctx.perf_period);
+ 	fprintf(stdout, "Opening perf stream with metric_id=%"PRIu64" oa_exponent=%u oa_format=%u\n",
+ 		ctx.metric_set->perf_oa_metrics_set, ctx.oa_exponent,
+ 		ctx.metric_set->perf_oa_format);
+@@ -1015,16 +1350,27 @@ main(int argc, char *argv[])
+ 	corr_period_ns = corr_period * 1000000000ul;
+ 	poll_time_ns = corr_period_ns;
+ 
++	if (mmap_buffer) {
++		if (bb_ctx_init(&ctx)) {
++			fprintf(stderr, "Unable to initialize batch buffer %s\n", strerror(errno));
++			goto fail;
 +		}
 +
-+		ret = igt_wait_helper(&child);
-+
-+		igt_assert(WEXITSTATUS(ret) == EAGAIN ||
-+			   WEXITSTATUS(ret) == 0);
-+
-+	} while (WEXITSTATUS(ret) == EAGAIN);
-+
-+	free(buf);
-+}
-+
- /* Tests the INTEL_performance_query use case where an unprivileged process
-  * should be able to configure the OA unit for per-context metrics (for a
-  * context associated with that process' drm file descriptor) and the counters
-@@ -4777,6 +5074,88 @@ test_whitelisted_registers_userspace_config(void)
- 	i915_perf_remove_config(drm_fd, config_id);
- }
- 
-+static void dump_whitelist(const char *msg)
-+{
-+	int i;
-+
-+	igt_debug("%s\n", msg);
-+
-+	for (i = 0; i < perf.num_slots; i++)
-+		igt_debug("FORCE_TO_NON_PRIV_%02d = %08x\n",
-+			  i, intel_register_read(&mmio_data, perf.slots[i]));
-+}
-+
-+static bool in_whitelist(uint32_t reg)
-+{
-+	int i;
-+
-+	for (i = 0; i < perf.num_slots; i++) {
-+		uint32_t fpriv = intel_register_read(&mmio_data, perf.slots[i]);
-+
-+		if ((fpriv & RING_FORCE_TO_NONPRIV_ADDRESS_MASK) == reg)
-+			return true;
++		init_oa_regs(&ctx);
++		mmap_oa_buffer(&ctx);
 +	}
 +
-+	return false;
-+}
-+
-+static void oa_regs_in_whitelist(bool are_present)
-+{
-+	int i;
-+
-+	if (are_present) {
-+		for (i = 0; i < perf.num_wl; i++)
-+			igt_assert(in_whitelist(perf.wl[i]));
-+	} else {
-+		for (i = 0; i < perf.num_wl; i++)
-+			igt_assert(!in_whitelist(perf.wl[i]));
-+	}
-+}
-+
-+static void test_oa_regs_whitelist(int paranoid)
-+{
-+	uint64_t properties[] = {
-+		DRM_I915_PERF_PROP_SAMPLE_OA, true,
-+		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
-+		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-+		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
-+
-+	};
-+	struct drm_i915_perf_open_param param = {
-+		.flags = I915_PERF_FLAG_FD_CLOEXEC,
-+		.num_properties = sizeof(properties) / 16,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	write_u64_file("/proc/sys/dev/i915/perf_stream_paranoid", paranoid);
-+	intel_register_access_init(&mmio_data, intel_get_pci_device(),
-+				   0, drm_fd);
-+	stream_fd = __perf_open(drm_fd, &param, false);
-+
-+	dump_whitelist("oa whitelisted");
-+
-+	/*
-+	 * oa registers are whitelisted only if paranoid = 0. if so, make sure
-+	 * that the registers are in the nonpriv slots. if not, make sure the
-+	 * registers are NOT present in the nonpriv slots.
-+	 */
-+	if (paranoid)
-+		oa_regs_in_whitelist(false);
-+	else
-+		oa_regs_in_whitelist(true);
-+
-+	__perf_close(stream_fd);
-+
-+	dump_whitelist("oa remove whitelist");
-+
-+	/*
-+	 * after perf close, check that registers are removed from the nonpriv
-+	 * slots
-+	 */
-+	oa_regs_in_whitelist(false);
-+
-+	intel_register_access_fini(&mmio_data);
-+}
-+
- static unsigned
- read_i915_module_ref(void)
- {
-@@ -4889,23 +5268,6 @@ test_sysctl_defaults(void)
- 	igt_assert_eq(max_freq, 100000);
- }
+ 	while (!quit) {
+ 		struct pollfd pollfd[2] = {
+-			{         ctx.perf_fd, POLLIN, 0 },
+ 			{ ctx.command_fifo_fd, POLLIN, 0 },
++			{ ctx.perf_fd, POLLIN, 0 },
+ 		};
+ 		uint64_t elapsed_ns;
++		nfds_t num_fds = mmap_buffer ? 1 : 2;
+ 		int ret;
  
--static int i915_perf_revision(int fd)
--{
--	drm_i915_getparam_t gp;
--	int value = 1, ret;
--
--	gp.param = I915_PARAM_PERF_REVISION;
--	gp.value = &value;
--	ret = igt_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp);
--	if (ret == -1) {
--		/* If the param is missing, consider version 1. */
--		igt_assert_eq(errno, EINVAL);
--		return 1;
--	}
--
--	return value;
--}
--
- igt_main
- {
- 	igt_fixture {
-@@ -5119,6 +5481,31 @@ igt_main
- 	igt_subtest("whitelisted-registers-userspace-config")
- 		test_whitelisted_registers_userspace_config();
+ 		igt_gettime(&now);
+-		ret = poll(pollfd, ctx.command_fifo_fd != -1 ? 2 : 1, poll_time_ns / 1000000);
++		ret = poll(pollfd, num_fds, poll_time_ns / 1000000);
+ 		if (ret < 0 && errno != EINTR) {
+ 			fprintf(stderr, "Failed to poll i915-perf stream: %s\n",
+ 				strerror(errno));
+@@ -1032,17 +1378,16 @@ main(int argc, char *argv[])
+ 		}
  
+ 		if (ret > 0) {
+-			if (pollfd[0].revents & POLLIN) {
++			if (pollfd[0].revents & POLLIN)
++				read_command_file(&ctx);
 +
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require(intel_gen(devid) > 8);
-+			igt_require(i915_perf_revision(drm_fd) >= 6);
-+			perf_init_whitelist();
-+		}
++			if (num_fds > 1 && pollfd[1].revents & POLLIN) {
+ 				if (!write_i915_perf_data(ctx.output_stream, ctx.perf_fd)) {
+ 					fprintf(stderr, "Failed to write i915-perf data: %s\n",
+ 						strerror(errno));
+ 					break;
+ 				}
+ 			}
+-
+-			if (pollfd[1].revents & POLLIN) {
+-				read_command_file(&ctx);
+-			}
+ 		}
+ 
+ 		elapsed_ns = igt_nsec_elapsed(&now);
+@@ -1054,6 +1399,12 @@ main(int argc, char *argv[])
+ 					strerror(errno));
+ 				break;
+ 			}
 +
-+		igt_describe("Verify that OA registers are whitelisted for paranoid 0");
-+		igt_subtest("oa-regs-whitelisted")
-+			test_oa_regs_whitelist(0);
-+
-+		igt_describe("Verify that OA registers are not whitelisted for paranoid 1");
-+		igt_subtest("oa-regs-not-whitelisted")
-+			test_oa_regs_whitelist(1);
-+
-+		igt_describe("Verify reports triggered when perf_stream_paranoid is 0");
-+		igt_subtest("triggered-oa-reports-paranoid-0")
-+			test_triggered_oa_reports(0);
-+
-+		igt_describe("Verify reports not triggered when perf_stream_paranoid is 1");
-+		igt_subtest("triggered-oa-reports-paranoid-1")
-+			test_triggered_oa_reports(1);
-+	}
-+
- 	igt_fixture {
- 		/* leave sysctl options in their default state... */
- 		write_u64_file("/proc/sys/dev/i915/oa_max_sample_rate", 100000);
++			if (mmap_buffer && !write_i915_perf_mmapped_data(&ctx)) {
++				fprintf(stderr, "Failed to write i915-perf mmapped data: %s\n",
++					strerror(errno));
++				break;
++			}
+ 		} else {
+ 			poll_time_ns -= elapsed_ns;
+ 		}
+diff --git a/tools/i915-perf/meson.build b/tools/i915-perf/meson.build
+index 3fbf20a0..60abb694 100644
+--- a/tools/i915-perf/meson.build
++++ b/tools/i915-perf/meson.build
+@@ -5,9 +5,9 @@ executable('i915-perf-configs',
+            install: true)
+ 
+ executable('i915-perf-recorder',
+-           [ 'i915_perf_recorder.c' ],
+-           include_directories: inc,
+-           dependencies: [lib_igt, lib_igt_i915_perf],
++           [ 'i915_perf_recorder.c', '../../lib/stubs/drm/intel_bufmgr.c' ],
++           include_directories: [ inc, include_directories('../../lib/stubs/drm') ],
++           dependencies: [ lib_igt, lib_igt_i915_perf ],
+            install: true)
+ 
+ executable('i915-perf-control',
 -- 
 2.20.1
