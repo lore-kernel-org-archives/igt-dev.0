@@ -1,22 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com
- [IPv6:2a00:1450:4864:20::630])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B5469898BF
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Aug 2021 17:49:13 +0000 (UTC)
-Received: by mail-ej1-x630.google.com with SMTP id x11so683481ejv.0
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Aug 2021 10:49:13 -0700 (PDT)
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com
+ [IPv6:2a00:1450:4864:20::632])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 71E80898BF
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Aug 2021 17:49:35 +0000 (UTC)
+Received: by mail-ej1-x632.google.com with SMTP id h9so553663ejs.4
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Aug 2021 10:49:35 -0700 (PDT)
 References: <20210827145756.3342904-1-imre.deak@intel.com>
- <20210827145756.3342904-5-imre.deak@intel.com>
+ <20210827145756.3342904-6-imre.deak@intel.com>
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <8e35f961-0f24-733c-fce3-c252d623da9d@gmail.com>
-Date: Tue, 31 Aug 2021 20:49:06 +0300
+Message-ID: <d67fea50-134b-b55a-8c78-5b035b641445@gmail.com>
+Date: Tue, 31 Aug 2021 20:49:28 +0300
 MIME-Version: 1.0
-In-Reply-To: <20210827145756.3342904-5-imre.deak@intel.com>
+In-Reply-To: <20210827145756.3342904-6-imre.deak@intel.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 4/6] tests/kms_ccs: Test bad params for
- all CCS planes
+Subject: Re: [igt-dev] [PATCH i-g-t 5/6] lib/igt_fb: Add support for
+ remapping CCS FBs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -35,277 +35,155 @@ Look ok to me
 Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
 On 27.8.2021 17.57, Imre Deak wrote:
-> Test creating an FB with incorrect CCS plane parameters for all CCS
-> planes. While at it move all the incorrect FB parameter subtests earlier
-> before generating an FB. For these subtests we won't modeset and so
-> don't need to generate FBs with a test pattern. Exceptions are the
-> bad-rotation subtests which also do a modeset.
+> Having a kernel support for this, CCS framebuffer strides don't need to
+> be power-of-two aligned, the kernel will auto-pad the stride.
+> 
+> Only the main surface tiles can be remapped and the AUX surface must be
+> generated to align with the POT padded main surface stride. Add the
+> required AUX pagetable programming for this.
+> 
+> Since the AUX pagetable has a granularity of 64 kbytes on the main
+> surface, mapped by one AUX PTE, the main surface stride must be either 8
+> tiles, or the stride must be aligned to 16 tiles.
 > 
 > Signed-off-by: Imre Deak <imre.deak@intel.com>
 > ---
->   tests/kms_ccs.c | 180 ++++++++++++++++++++++++++++++------------------
->   1 file changed, 112 insertions(+), 68 deletions(-)
+>   lib/igt_fb.c            | 24 ++++++++-------
+>   lib/intel_aux_pgtable.c | 66 ++++++++++++++++++++++++++++++++++++-----
+>   2 files changed, 72 insertions(+), 18 deletions(-)
 > 
-> diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
-> index 52252c633..7440f8427 100644
-> --- a/tests/kms_ccs.c
-> +++ b/tests/kms_ccs.c
-> @@ -44,9 +44,9 @@ enum test_flags {
->   	TEST_ALL_PLANES			= 1 << 9,
->   };
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 2e53d9225..72291f4f7 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -780,23 +780,27 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
+>   		return ALIGN(min_stride, align);
+>   	} else {
+>   		unsigned int tile_width, tile_height;
+> -		uint32_t stride;
+> +		int tile_align = 1;
 >   
-> -#define TEST_FAIL_ON_ADDFB2 \
-> -	(TEST_BAD_PIXEL_FORMAT | TEST_NO_AUX_BUFFER | TEST_BAD_CCS_HANDLE | \
-> -	 TEST_BAD_AUX_STRIDE)
-> +#define TEST_BAD_CCS_PLANE	(TEST_NO_AUX_BUFFER | TEST_BAD_CCS_HANDLE | \
-> +				 TEST_BAD_AUX_STRIDE)
-> +#define TEST_FAIL_ON_ADDFB2	(TEST_BAD_PIXEL_FORMAT | TEST_BAD_CCS_PLANE)
+>   		igt_get_fb_tile_size(fb->fd, fb->modifier, fb->plane_bpp[plane],
+>   				     &tile_width, &tile_height);
 >   
->   enum test_fb_flags {
->   	FB_COMPRESSED			= 1 << 0,
-> @@ -128,6 +128,17 @@ static void addfb_init(struct igt_fb *fb, struct drm_mode_fb_cmd2 *f)
+>   		if (is_gen12_ccs_modifier(fb->modifier)) {
+> -			stride = ALIGN(min_stride, tile_width * 4);
+> -
+> -			/* TODO: add support to kernel to POT align CCS format strides */
+> -			if (is_i915_device(fb->fd) &&
+> -			    IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)))
+> -				stride = roundup_power_of_two(max(stride, tile_width * 8));
+> -		} else {
+> -			stride = ALIGN(min_stride, tile_width);
+> +			if (IS_ALDERLAKE_P(intel_get_drm_devid(fb->fd)))
+> +				/*
+> +				 * The main surface stride must be aligned to the CCS AUX
+> +				 * page table block size (covered by one AUX PTE). This
+> +				 * block size is 64kb -> 16 tiles.
+> +				 * We can do away padding an 8 tile stride to 16, since in
+> +				 * this case one AUX PTE entry will cover 2 main surface
+> +				 * tile rows.
+> +				 */
+> +				tile_align = (min_stride <= 8 * tile_width) ? 8 : 16;
+> +			else
+> +				tile_align = 4;
+>   		}
+>   
+> -		return stride;
+> +		return ALIGN(min_stride, tile_width * tile_align);
 >   	}
 >   }
 >   
-> +static void
-> +create_fb_prepare_add(int drm_fd, int width, int height,
-> +		      uint32_t format, uint64_t modifier,
-> +		      igt_fb_t *fb, struct drm_mode_fb_cmd2 *f)
-> +{
-> +	igt_create_bo_for_fb(drm_fd, width, height, format, modifier, fb);
-> +	igt_assert(fb->gem_handle > 0);
+> diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
+> index d89b0575a..fcc337b8d 100644
+> --- a/lib/intel_aux_pgtable.c
+> +++ b/lib/intel_aux_pgtable.c
+> @@ -7,6 +7,8 @@
+>   #include "intel_bufops.h"
+>   #include "ioctl_wrappers.h"
+>   
+> +#include "lib/intel_chipset.h"
 > +
-> +	addfb_init(fb, f);
-> +}
-> +
->   static bool is_ccs_cc_modifier(uint64_t modifier)
->   {
->   	return modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC;
-> @@ -226,14 +237,96 @@ static void fill_fb_random(int drm_fd, igt_fb_t *fb)
->   	munmap(map, fb->size);
->   }
+>   #include "i915/gem_mman.h"
 >   
-> -static int get_ccs_plane_index(uint32_t format)
-> +static void test_bad_ccs_plane(data_t *data, int width, int height, int ccs_plane,
-> +			       enum test_fb_flags fb_flags)
->   {
-> -	int index = 1;
-> +	struct igt_fb fb = {};
-> +	struct drm_mode_fb_cmd2 f = {};
-> +	uint32_t bad_ccs_bo = 0;
-> +	int ret;
->   
-> -	if (igt_format_is_yuv_semiplanar(format))
-> -		return 2;
-> +	igt_assert(fb_flags & FB_COMPRESSED);
-> +	create_fb_prepare_add(data->drm_fd, width, height,
-> +			      data->format, data->ccs_modifier,
-> +			      &fb, &f);
->   
-> -	return index;
+>   #define BITS_PER_LONG_LONG	(sizeof(long long) * 8)
+> @@ -356,22 +358,70 @@ pgt_populate_entries_for_buf(struct pgtable *pgt,
+>   	uint64_t aux_addr = buf->addr.offset + buf->ccs[surface_idx].offset;
+>   	uint64_t l1_flags = pgt_get_l1_flags(buf, surface_idx);
+>   	uint64_t lx_flags = pgt_get_lx_flags();
+> +	int surface_tile_align;
+> +	int surface_src_row_tiles = buf->surface[surface_idx].stride / 128;
 > +	/*
-> +	 * The stride of CCS planes on GEN12+ is fixed, so we can check for
-> +	 * an incorrect stride with the same delta as on earlier platforms.
+> +	 * The span of tiles in the FB object mapped by one AUX PTE
+> +	 * entry, which can be one or more tile rows.
 > +	 */
-> +	if (fb_flags & FB_MISALIGN_AUX_STRIDE) {
-> +		igt_skip_on_f(width <= 1024,
-> +			      "FB already has the smallest possible stride\n");
-> +		f.pitches[ccs_plane] -= 64;
+> +	int surface_src_span_tiles = ALIGN(surface_src_row_tiles, 16);
+> +	int surface_src_span_size = surface_src_span_tiles * 4096;
+> +	/*
+> +	 * The number of tiles in a tile row on the surface auto-padded by
+> +	 * the kernel if necessary (to a power-of-two size on ADL-P).
+> +	 */
+> +	int surface_dst_row_tiles;
+> +	/*
+> +	 * The span of tiles on the auto-padded surface, including the
+> +	 * tiles in the FB object accounted by surface_src_span_tiles and
+> +	 * any padding tiles.
+> +	 */
+> +	int surface_dst_span_tiles;
+> +	/*
+> +	 * The size of CCS data mapping a surface_dst_span_tiles sized area
+> +	 * on the main surface.
+> +	 */
+> +	int aux_dst_span_size;
+> +	int surface_span_offset = 0;
+> +	int aux_span_offset = 0;
+>   
+> -	igt_assert(!(buf->surface[surface_idx].stride % 512));
+> -	igt_assert_eq(buf->ccs[surface_idx].stride,
+> -		      buf->surface[surface_idx].stride / 512 * 64);
+> +	if (IS_ALDERLAKE_P(buf->ibb->devid)) {
+> +		surface_tile_align = surface_src_row_tiles <= 8 ? 8 : 16;
+> +		surface_dst_row_tiles = roundup_power_of_two(surface_src_row_tiles);
+> +		surface_dst_span_tiles = roundup_power_of_two(surface_src_span_tiles);
+> +	} else {
+> +		surface_tile_align = 4;
+> +		surface_dst_row_tiles = surface_src_row_tiles;
+> +		surface_dst_span_tiles = surface_src_span_tiles;
 > +	}
+>   
+> -	for (; surface_addr < surface_end;
+> -	     surface_addr += MAIN_SURFACE_BLOCK_SIZE,
+> -	     aux_addr += AUX_CCS_BLOCK_SIZE) {
+> +	aux_dst_span_size = surface_dst_span_tiles / 16 * AUX_CCS_BLOCK_SIZE;
 > +
-> +	if (fb_flags & FB_SMALL_AUX_STRIDE) {
-> +		igt_skip_on_f(width <= 1024,
-> +			      "FB already has the smallest possible stride\n");
-> +		f.pitches[ccs_plane] = ALIGN(f.pitches[ccs_plane] / 2, 128);
-> +	}
+> +	igt_assert_eq(buf->surface[surface_idx].stride % (128 * surface_tile_align), 0);
+> +	igt_assert_eq(buf->ccs[surface_idx].stride, surface_dst_row_tiles / 4 * 64);
 > +
-> +	if (fb_flags & FB_ZERO_AUX_STRIDE)
-> +		f.pitches[ccs_plane] = 0;
+> +	while (surface_addr + surface_span_offset < surface_end) {
+>   		uint64_t table = top_table;
+>   		int level;
+>   
+>   		for (level = pgt->levels - 1; level >= 1; level--)
+>   			table = pgt_get_child_table(pgt, table, level,
+> -						    surface_addr, lx_flags);
+> +						    surface_addr + surface_span_offset, lx_flags);
+>   
+> -		pgt_set_l1_entry(pgt, table, surface_addr, aux_addr, l1_flags);
+> +		pgt_set_l1_entry(pgt, table,
+> +				 surface_addr + surface_span_offset,
+> +				 aux_addr + aux_span_offset, l1_flags);
 > +
-> +	/* Put the CCS buffer on a different BO. */
-> +	if (data->flags & TEST_BAD_CCS_HANDLE) {
-> +		bad_ccs_bo = gem_create(data->drm_fd, fb.size);
-> +		f.handles[ccs_plane] = bad_ccs_bo;
-> +	}
+> +		surface_span_offset += MAIN_SURFACE_BLOCK_SIZE;
+> +		aux_span_offset += AUX_CCS_BLOCK_SIZE;
 > +
-> +	if (data->flags & TEST_NO_AUX_BUFFER) {
-> +		f.handles[ccs_plane] = 0;
-> +		f.modifier[ccs_plane] = 0;
-> +		f.pitches[ccs_plane] = 0;
-> +		f.offsets[ccs_plane] = 0;
-> +	}
+> +		if (surface_span_offset >= surface_src_span_size) {
+> +			surface_addr += surface_src_span_size;
+> +			surface_span_offset = 0;
 > +
-> +	ret = drmIoctl(data->drm_fd, DRM_IOCTL_MODE_ADDFB2, &f);
-> +	igt_assert_eq(ret, -1);
-> +	igt_assert_eq(errno, EINVAL);
-> +
-> +	if (bad_ccs_bo)
-> +		gem_close(data->drm_fd, bad_ccs_bo);
-> +
-> +	gem_close(data->drm_fd, fb.gem_handle);
-> +}
-> +
-> +static void test_bad_ccs_plane_params(data_t *data, int width, int height,
-> +				      enum test_fb_flags fb_flags)
-> +{
-> +	for (int ccs_plane = 1;
-> +	     ccs_plane <= (igt_format_is_yuv_semiplanar(data->format) ? 2 : 1);
-> +	     ccs_plane++)
-> +		test_bad_ccs_plane(data, width, height, ccs_plane, fb_flags);
-> +}
-> +
-> +static void test_bad_pixel_format(data_t *data, int width, int height,
-> +				  enum test_fb_flags fb_flags)
-> +{
-> +	struct igt_fb fb = {};
-> +	struct drm_mode_fb_cmd2 f = {};
-> +	int ret;
-> +
-> +	igt_assert(fb_flags & FB_COMPRESSED);
-> +	create_fb_prepare_add(data->drm_fd, width, height,
-> +			      DRM_FORMAT_RGB565, data->ccs_modifier,
-> +			      &fb, &f);
-> +
-> +	ret = drmIoctl(data->drm_fd, DRM_IOCTL_MODE_ADDFB2, &f);
-> +	igt_assert_eq(ret, -1);
-> +	igt_assert_eq(errno, EINVAL);
-> +
-> +	gem_close(data->drm_fd, fb.gem_handle);
-> +}
-> +
-> +static void test_bad_fb_params(data_t *data, int width, int height, enum test_fb_flags fb_flags)
-> +{
-> +	if (data->flags & TEST_BAD_PIXEL_FORMAT)
-> +		test_bad_pixel_format(data, width, height, fb_flags);
-> +
-> +	if (data->flags & TEST_BAD_CCS_PLANE)
-> +		test_bad_ccs_plane_params(data, width, height, fb_flags);
+> +			aux_addr += aux_dst_span_size;
+> +			aux_span_offset = 0;
+> +		}
+>   	}
 >   }
 >   
->   static void fast_clear_fb(int drm_fd, struct igt_fb *fb, const float *cc_color)
-> @@ -259,16 +352,15 @@ static void generate_fb(data_t *data, struct igt_fb *fb,
->   			enum test_fb_flags fb_flags)
->   {
->   	struct drm_mode_fb_cmd2 f = {0};
-> -	uint32_t format;
->   	uint64_t modifier;
->   	cairo_t *cr;
-> -	int index;
->   	int ret;
->   	const float cc_color[4] = {colors[!!data->plane].r,
->   				   colors[!!data->plane].g,
->   				   colors[!!data->plane].b,
->   				   1.0};
->   
-> +
->   	/* Use either compressed or Y-tiled to test. However, given the lack of
->   	 * available bandwidth, we use linear for the primary plane when
->   	 * testing sprites, since we cannot fit two CCS planes into the
-> @@ -281,54 +373,14 @@ static void generate_fb(data_t *data, struct igt_fb *fb,
->   	else
->   		modifier = 0;
->   
-> -	if (data->flags & TEST_BAD_PIXEL_FORMAT)
-> -		format = DRM_FORMAT_RGB565;
-> -	else
-> -		format = data->format;
-> -
-> -	index = get_ccs_plane_index(format);
-> -
-> -	igt_create_bo_for_fb(data->drm_fd, width, height, format, modifier, fb);
-> -	igt_assert(fb->gem_handle > 0);
-> -
-> -	addfb_init(fb, &f);
-> -
-> -	/*
-> -	 * The stride of CCS planes on GEN12+ is fixed, so we can check for
-> -	 * an incorrect stride with the same delta as on earlier platforms.
-> -	 */
-> -	if (fb_flags & FB_COMPRESSED) {
-> -		if (fb_flags & FB_MISALIGN_AUX_STRIDE) {
-> -			igt_skip_on_f(width <= 1024,
-> -				      "FB already has the smallest possible stride\n");
-> -			f.pitches[index] -= 64;
-> -		}
-> -
-> -		if (fb_flags & FB_SMALL_AUX_STRIDE) {
-> -			igt_skip_on_f(width <= 1024,
-> -				      "FB already has the smallest possible stride\n");
-> -			f.pitches[index] = ALIGN(f.pitches[index]/2, 128);
-> -		}
-> -
-> -		if (fb_flags & FB_ZERO_AUX_STRIDE)
-> -			f.pitches[index] = 0;
-> -
-> -		/* Put the CCS buffer on a different BO. */
-> -		if (data->flags & TEST_BAD_CCS_HANDLE)
-> -			f.handles[index] = gem_create(data->drm_fd, fb->size);
-> -
-> -		if (data->flags & TEST_NO_AUX_BUFFER) {
-> -			f.handles[index] = 0;
-> -			f.modifier[index] = 0;
-> -			f.pitches[index] = 0;
-> -			f.offsets[index] = 0;
-> -		}
-> -	}
-> +	create_fb_prepare_add(data->drm_fd, width, height,
-> +			      data->format, modifier,
-> +			      fb, &f);
->   
->   	if (data->flags & TEST_RANDOM) {
->   		srand(data->seed);
->   		fill_fb_random(data->drm_fd, fb);
-> -	} else if (!(data->flags & TEST_BAD_PIXEL_FORMAT)) {
-> +	} else {
->   		bool do_fast_clear = is_ccs_cc_modifier(data->ccs_modifier);
->   		bool do_solid_fill = do_fast_clear || data->plane;
->   		int c = !!data->plane;
-> @@ -348,16 +400,7 @@ static void generate_fb(data_t *data, struct igt_fb *fb,
->   	}
->   
->   	ret = drmIoctl(data->drm_fd, DRM_IOCTL_MODE_ADDFB2, &f);
-> -	if (data->flags & TEST_FAIL_ON_ADDFB2) {
-> -		igt_assert_eq(ret, -1);
-> -		igt_assert_eq(errno, EINVAL);
-> -
-> -		if (f.handles[index])
-> -			gem_close(data->drm_fd, f.handles[index]);
-> -
-> -		return;
-> -	} else
-> -		igt_assert_eq(ret, 0);
-> +	igt_assert_eq(ret, 0);
->   
->   	if (check_ccs_planes)
->   		check_all_ccs_planes(data->drm_fd, fb, cc_color, !(data->flags & TEST_RANDOM));
-> @@ -423,6 +466,11 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
->   
->   	fb_width = min(MAX_SPRITE_PLANE_WIDTH, fb_width);
->   
-> +	if (data->flags & TEST_FAIL_ON_ADDFB2) {
-> +		test_bad_fb_params(data, fb_width, drm_mode->vdisplay, fb_flags);
-> +		return true;
-> +	}
-> +
->   	if (data->plane && fb_flags & FB_COMPRESSED) {
->   		if (!igt_plane_has_format_mod(data->plane, data->format,
->   					      data->ccs_modifier))
-> @@ -435,9 +483,6 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
->   		generate_fb(data, &fb, fb_width, drm_mode->vdisplay, fb_flags);
->   	}
->   
-> -	if (data->flags & TEST_FAIL_ON_ADDFB2)
-> -		goto out_free_fbs;
-> -
->   	igt_plane_set_position(primary, 0, 0);
->   	igt_plane_set_size(primary, drm_mode->hdisplay, drm_mode->vdisplay);
->   	igt_plane_set_fb(primary, &fb);
-> @@ -475,7 +520,6 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
->   	igt_plane_set_rotation(primary, IGT_ROTATION_0);
->   	igt_display_commit2(display, commit);
->   
-> -out_free_fbs:
->   	if (fb_sprite.fb_id)
->   		igt_remove_fb(data->drm_fd, &fb_sprite);
->   	if (fb.fb_id)
 > 
