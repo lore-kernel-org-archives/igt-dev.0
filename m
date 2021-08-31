@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D40568929D
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Aug 2021 05:47:12 +0000 (UTC)
-From: "Surendrakumar Upadhyay, TejaskumarX"
- <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Date: Tue, 31 Aug 2021 05:47:10 +0000
-Message-ID: <SN6PR11MB3421B6569584930A1F603834DFCC9@SN6PR11MB3421.namprd11.prod.outlook.com>
-References: <20210824090943.1158940-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
- <CAKMK7uEwswaCyEOtEk7rhbXFtSE95+8bUjB+=hjttyStHiMWBQ@mail.gmail.com>
-In-Reply-To: <CAKMK7uEwswaCyEOtEk7rhbXFtSE95+8bUjB+=hjttyStHiMWBQ@mail.gmail.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9A00589B20
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Aug 2021 06:04:15 +0000 (UTC)
+Date: Tue, 31 Aug 2021 09:06:29 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YS3G5TE3itejdbTb@platvala-desk.ger.corp.intel.com>
+References: <20210830162232.1328594-1-robdclark@gmail.com>
+ <163034309381.14976.10026239798210863296@emeril.freedesktop.org>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t] tests/gem_userptr_blits: Remove vma-merge
- subtest
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <163034309381.14976.10026239798210863296@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgSW5pdGlh?=
+ =?utf-8?q?l_igt_tests_for_drm/msm_ioctls_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,77 +23,121 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: IGT development <igt-dev@lists.freedesktop.org>, "Lankhorst, Maarten" <maarten.lankhorst@intel.com>, "Ursulin, Tvrtko" <tvrtko.ursulin@intel.com>
+To: igt-dev@lists.freedesktop.org, Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
+Cc: Rob Clark <robdclark@gmail.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRGFuaWVsIFZldHRlciA8
-ZGFuaWVsLnZldHRlckBmZndsbC5jaD4NCj4gU2VudDogMzAgQXVndXN0IDIwMjEgMjE6MzENCj4g
-VG86IFN1cmVuZHJha3VtYXIgVXBhZGh5YXksIFRlamFza3VtYXJYDQo+IDx0ZWphc2t1bWFyeC5z
-dXJlbmRyYWt1bWFyLnVwYWRoeWF5QGludGVsLmNvbT4NCj4gQ2M6IElHVCBkZXZlbG9wbWVudCA8
-aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc+OyBMYW5raG9yc3QsIE1hYXJ0ZW4NCj4gPG1h
-YXJ0ZW4ubGFua2hvcnN0QGludGVsLmNvbT47IFVyc3VsaW4sIFR2cnRrbyA8dHZydGtvLnVyc3Vs
-aW5AaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW2lndC1kZXZdIFtpLWctdF0gdGVzdHMvZ2Vt
-X3VzZXJwdHJfYmxpdHM6IFJlbW92ZSB2bWEtbWVyZ2UNCj4gc3VidGVzdA0KPiANCj4gT24gVHVl
-LCBBdWcgMjQsIDIwMjEgYXQgMTE6MTcgQU0gVGVqYXMgVXBhZGh5YXkNCj4gPHRlamFza3VtYXJ4
-LnN1cmVuZHJha3VtYXIudXBhZGh5YXlAaW50ZWwuY29tPiB3cm90ZToNCj4gPg0KPiA+IG1tYXAg
-cmVxdWVzdHMgZm9yIGh1Z2UgcGFnZSBzaXplIGluIHZtYS1tZXJnZSBzdWJ0ZXN0IGFyZSBjYW5j
-ZWxsZWQNCj4gPiBmcm9tIGtlcm5lbCB1c2luZyBpOTE1X3JlcXVlc3RfY2FuY2VsKHJxLCAtRUlO
-VFIpLCBvdGhlcndpc2UgaXQNCj4gPiByZXN1bHRzIGluIHN5c3RlbSBoYW5nLiBJdCBpcyBrbm93
-bi9leHBlY3RlZCBmYWlsdXJlIHRodXMgaXQgaXMNCj4gPiBkZWNpZGVkIHRvIHJlbW92ZSB0aGUg
-c3VidGVzdC4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFRlamFzIFVwYWRoeWF5DQo+ID4gPHRl
-amFza3VtYXJ4LnN1cmVuZHJha3VtYXIudXBhZGh5YXlAaW50ZWwuY29tPg0KPiANCj4gQnVnZml4
-ZXMgbmVlZCB0byBsaW5rIHRvIHRoZSBnaXRsYWIgaXNzdWUsIG90aGVyd2lzZSBpdCdzIG5vdCBy
-ZWFsbHkgYSBidWdmaXggZm9yIGENCj4gQ0kgaXNzdWUuDQoNClRlamFzIDogT2suDQoNCj4gDQo+
-IEZ1cnRoZXJtb3JlIHRoaXMgaXMgd3Jvbmc6DQo+IC0gSW4gRElJIHRoaXMgbWlnaHQgaGFwcGVu
-LiBJZiB0aGlzIGlzIGEgcGF0Y2ggdXBzdHJlYW0gdGhlbiBwbGVhc2UgbWFyayB1cCB0aGUNCj4g
-RElJIHBhdGNoIGFzIE5PVF9VUFNUUkVBTS4gRHJvcHBpbmcgaXQgaXMgYmxvY2tlZCBvbiBiYWNr
-cG9ydGluZw0KPiBoYW5nY2hlY2suIFlvdXIgbWFuYWdlciBzaG91bGQgYmUgYXdhcmUgb2YgdGhl
-IEppcmEgdGhhdCB0cmFja3MgaGFuZ2NoZWNrDQo+IGJhY2twb3J0aW5nLg0KDQpUZWphcyA6IFRo
-aXMgaXMgb25seSBmb3IgdXBzdHJlYW0uIA0KDQo+IC0gSW4gdXBzdHJlYW0gaGFuZ2NoZWNrIHNo
-b3VsZCBnZXQgdXMgb3V0IG9mIHRoaXMgc2l0dWF0aW9uLiBJZiBub3QsIHRoZW4gdGhpcyBpcw0K
-PiBhIGtlcm5lbCBidWcuDQoNCg0KVGVqYXMgOiBIYW5nY2hlY2sgd2F0Y2hkb2cgaXMgaW1wbGVt
-ZW50ZWQgaW4ga2VybmVsIGJ5IFR2cnRrby4gSGVuY2Ugbm93IHRlc3QgZG9lcyBub3QgaGFuZywg
-aXQgZmFpbHMuDQoNCj4gDQo+IENoZWVycywgRGFuaWVsDQo+ID4gLS0tDQo+ID4gIHRlc3RzL2k5
-MTUvZ2VtX3VzZXJwdHJfYmxpdHMuYyB8IDQwDQo+ID4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLQ0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgNDAgZGVsZXRpb25zKC0pDQo+ID4NCj4g
-PiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fdXNlcnB0cl9ibGl0cy5jDQo+ID4gYi90ZXN0
-cy9pOTE1L2dlbV91c2VycHRyX2JsaXRzLmMgaW5kZXggNzU2YmQ2ZTQuLjExYmNlNmQ3IDEwMDY0
-NA0KPiA+IC0tLSBhL3Rlc3RzL2k5MTUvZ2VtX3VzZXJwdHJfYmxpdHMuYw0KPiA+ICsrKyBiL3Rl
-c3RzL2k5MTUvZ2VtX3VzZXJwdHJfYmxpdHMuYw0KPiA+IEBAIC03MDIsNDMgKzcwMiw2IEBAIHN0
-YXRpYyBzaXplX3QgaHVnZXBhZ2VzaXplKHZvaWQpICAjdW5kZWYgTElORSAgfQ0KPiA+DQo+ID4g
-LXN0YXRpYyB2b2lkIHRlc3Rfdm1hX21lcmdlKGludCBpOTE1KQ0KPiA+IC17DQo+ID4gLSAgICAg
-ICBjb25zdCBzaXplX3Qgc3ogPSAyICogaHVnZXBhZ2VzaXplKCk7DQo+ID4gLSAgICAgICBpZ3Rf
-c3Bpbl90ICpzcGluOw0KPiA+IC0gICAgICAgdWludDMyX3QgaGFuZGxlOw0KPiA+IC0gICAgICAg
-dm9pZCAqYWRkcjsNCj4gPiAtICAgICAgIHVpbnQ2NF90IGFobmQgPSBnZXRfcmVsb2NfYWhuZChp
-OTE1LCAwKTsNCj4gPiAtDQo+ID4gLSAgICAgICBhZGRyID0gbW1hcChOVUxMLCBzeiwgUFJPVF9S
-RUFEIHwgUFJPVF9XUklURSwNCj4gPiAtICAgICAgICAgICAgICAgICAgIE1BUF9TSEFSRUQgfCBN
-QVBfQU5PTllNT1VTLCAtMSwgMCk7DQo+ID4gLQ0KPiA+IC0gICAgICAgZ2VtX3VzZXJwdHIoaTkx
-NSwgYWRkciArIHN6IC8gMiwgNDA5NiwgMCwgdXNlcnB0cl9mbGFncywgJmhhbmRsZSk7DQo+ID4g
-LQ0KPiA+IC0gICAgICAgc3BpbiA9IGlndF9zcGluX25ldyhpOTE1LCAuYWhuZCA9IGFobmQsIC5k
-ZXBlbmRlbmN5ID0gaGFuZGxlLA0KPiA+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAuZmxh
-Z3MgPSBJR1RfU1BJTl9GRU5DRV9PVVQpOw0KPiA+IC0gICAgICAgaWd0X2Fzc2VydChnZW1fYm9f
-YnVzeShpOTE1LCBoYW5kbGUpKTsNCj4gPiAtDQo+ID4gLSAgICAgICBmb3IgKHNpemVfdCB4ID0g
-MDsgeCA8IHN6OyB4ICs9IDQwOTYpIHsNCj4gPiAtICAgICAgICAgICAgICAgaWYgKHggPT0gc3og
-LyAyKQ0KPiA+IC0gICAgICAgICAgICAgICAgICAgICAgIGNvbnRpbnVlOw0KPiA+IC0NCj4gPiAt
-ICAgICAgICAgICAgICAgaWd0X2Fzc2VydChtbWFwKGFkZHIgKyB4LCA0MDk2LCBQUk9UX1JFQUQg
-fCBQUk9UX1dSSVRFLA0KPiA+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTUFQX0ZJ
-WEVEIHwgTUFQX1NIQVJFRCB8IE1BUF9BTk9OLCAtMSwgMCkgIT0NCj4gPiAtICAgICAgICAgICAg
-ICAgICAgICAgICAgICBNQVBfRkFJTEVEKTsNCj4gPiAtICAgICAgIH0NCj4gPiAtDQo+ID4gLSAg
-ICAgICBpZ3Rfc3Bpbl9lbmQoc3Bpbik7DQo+ID4gLSAgICAgICBnZW1fY2xvc2UoaTkxNSwgaGFu
-ZGxlKTsNCj4gPiAtDQo+ID4gLSAgICAgICBtdW5tYXAoYWRkciwgc3opOw0KPiA+IC0NCj4gPiAt
-ICAgICAgIGdlbV9zeW5jKGk5MTUsIHNwaW4tPmhhbmRsZSk7DQo+ID4gLSAgICAgICBpZ3RfYXNz
-ZXJ0X2VxKHN5bmNfZmVuY2Vfc3RhdHVzKHNwaW4tPm91dF9mZW5jZSksIDEpOw0KPiA+IC0gICAg
-ICAgaWd0X3NwaW5fZnJlZShpOTE1LCBzcGluKTsNCj4gPiAtICAgICAgIHB1dF9haG5kKGFobmQp
-Ow0KPiA+IC19DQo+ID4gLQ0KPiA+ICBzdGF0aWMgdm9pZCB0ZXN0X2h1Z2Vfc3BsaXQoaW50IGk5
-MTUpICB7DQo+ID4gICAgICAgICBjb25zdCBzaXplX3Qgc3ogPSAyICogaHVnZXBhZ2VzaXplKCk7
-IEBAIC0yNjE0LDkgKzI1NzcsNiBAQA0KPiA+IGlndF9tYWluX2FyZ3MoImM6IiwgTlVMTCwgaGVs
-cF9zdHIsIG9wdF9oYW5kbGVyLCBOVUxMKQ0KPiA+ICAgICAgICAgICAgICAgICBpZ3Rfc3VidGVz
-dCgibm9oYW5nY2hlY2siKQ0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgIHRlc3Rfbm9oYW5n
-Y2hlY2tfaG9zdGlsZShmZCk7DQo+ID4NCj4gPiAtICAgICAgICAgICAgICAgaWd0X3N1YnRlc3Qo
-InZtYS1tZXJnZSIpDQo+ID4gLSAgICAgICAgICAgICAgICAgICAgICAgdGVzdF92bWFfbWVyZ2Uo
-ZmQpOw0KPiA+IC0NCj4gPiAgICAgICAgICAgICAgICAgaWd0X3N1YnRlc3QoImh1Z2Utc3BsaXQi
-KQ0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgIHRlc3RfaHVnZV9zcGxpdChmZCk7DQo+ID4g
-ICAgICAgICB9DQo+ID4gLS0NCj4gPiAyLjMxLjENCj4gPg0KPiANCj4gDQo+IC0tDQo+IERhbmll
-bCBWZXR0ZXINCj4gU29mdHdhcmUgRW5naW5lZXIsIEludGVsIENvcnBvcmF0aW9uDQo+IGh0dHA6
-Ly9ibG9nLmZmd2xsLmNoDQo=
+On Mon, Aug 30, 2021 at 05:04:53PM +0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: Initial igt tests for drm/msm ioctls (rev3)
+> URL   : https://patchwork.freedesktop.org/series/93973/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_10536 -> IGTPW_6173
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_6173 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_6173, please notify your bug team to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6173/index.html
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_6173:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:
+>     - fi-tgl-1115g4:      [PASS][1] -> [FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10536/fi-tgl-1115g4/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6173/fi-tgl-1115g4/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+
+
+Lakshmi, false positive here.
+
+
+-- 
+Petri Latvala
+
+
+
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_6173 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
+>     - fi-snb-2600:        NOTRUN -> [SKIP][3] ([fdo#109271]) +17 similar issues
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6173/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@i915_selftest@live@hangcheck:
+>     - fi-snb-2600:        [INCOMPLETE][4] ([i915#3921]) -> [PASS][5]
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10536/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6173/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+> 
+>   
+>   {name}: This element is suppressed. This means it is ignored when computing
+>           the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+>   [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+>   [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+>   [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+> 
+> 
+> Participating hosts (44 -> 34)
+> ------------------------------
+> 
+>   Missing    (10): fi-ilk-m540 fi-rkl-guc bat-adls-5 bat-dg1-6 bat-dg1-5 fi-bsw-cyan fi-kbl-guc fi-ctg-p8600 fi-bdw-samus bat-jsl-1 
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_6191 -> IGTPW_6173
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_10536: b6d834a72c14ca22b2df32a607c1ee36e8629f1a @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_6173: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6173/index.html
+>   IGT_6191: e9292b533691784f46eeb9bae522ca7a8710c920 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> 
+> 
+> == Testlist changes ==
+> 
+> +igt@msm_submit@empty-submit
+> +igt@msm_submit@invalid-cmd-idx-submit
+> +igt@msm_submit@invalid-cmd-type-submit
+> +igt@msm_submit@invalid-duplicate-bo-submit
+> +igt@msm_submit@invalid-flags-submit
+> +igt@msm_submit@invalid-in-fence-submit
+> +igt@msm_submit@invalid-queue-submit
+> +igt@msm_submit@valid-submit
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6173/index.html
