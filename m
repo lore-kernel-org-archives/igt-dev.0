@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Rob Clark <robdclark@gmail.com>
-Date: Tue, 31 Aug 2021 09:17:16 -0700
-Message-Id: <20210831161716.1400057-4-robdclark@gmail.com>
+Date: Tue, 31 Aug 2021 09:17:14 -0700
+Message-Id: <20210831161716.1400057-2-robdclark@gmail.com>
 In-Reply-To: <20210831161716.1400057-1-robdclark@gmail.com>
 References: <20210831161716.1400057-1-robdclark@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH igt v4 3/3] msm: Add submit ioctl tests
+Subject: [igt-dev] [PATCH igt v4 1/3] drmtest: Add DRIVER_MSM support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,230 +22,45 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Rob Clark <robdclark@chromium.org>
 
-Add an initial set of tests for the submit ioctl.
-
-v2: Add NULL inits, igt_describe()
-v3: Alphabetize meson.build
-
 Signed-off-by: Rob Clark <robdclark@chromium.org>
-Acked-by: Petri Latvala <petri.latvala@intel.com>
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 ---
- tests/meson.build  |   1 +
- tests/msm_submit.c | 194 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 195 insertions(+)
- create mode 100644 tests/msm_submit.c
+ lib/drmtest.c | 3 +++
+ lib/drmtest.h | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/tests/meson.build b/tests/meson.build
-index 1bdfddbb..cbc02534 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -78,6 +78,7 @@ test_progs = [
- 	'kms_vrr',
- 	'kms_writeback',
- 	'meta_test',
-+	'msm_submit',
- 	'panfrost_get_param',
- 	'panfrost_gem_new',
- 	'panfrost_prime',
-diff --git a/tests/msm_submit.c b/tests/msm_submit.c
-new file mode 100644
-index 00000000..95f8318f
---- /dev/null
-+++ b/tests/msm_submit.c
-@@ -0,0 +1,194 @@
-+/*
-+ * Copyright © 2021 Google, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice (including the next
-+ * paragraph) shall be included in all copies or substantial portions of the
-+ * Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-+ * IN THE SOFTWARE.
-+ */
-+
-+#include "igt.h"
-+#include "igt_msm.h"
-+
-+igt_main
-+{
-+	struct msm_device *dev = NULL;
-+	struct msm_pipe *pipe = NULL;
-+	struct msm_bo *a = NULL, *b = NULL;
-+
-+	igt_fixture {
-+		dev = igt_msm_dev_open();
-+		pipe = igt_msm_pipe_open(dev, 0);
-+		a = igt_msm_bo_new(dev, 0x1000, MSM_BO_WC);
-+		b = igt_msm_bo_new(dev, 0x1000, MSM_BO_WC);
-+	}
-+
-+	igt_describe("Check that a valid empty submit succeeds");
-+	igt_subtest("empty-submit") {
-+		struct drm_msm_gem_submit req = {
-+				.flags   = pipe->pipe,
-+				.queueid = pipe->submitqueue_id,
-+		};
-+		do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
-+	}
-+
-+	igt_describe("Check that submit with invalid submitqueue id fails");
-+	igt_subtest("invalid-queue-submit") {
-+		struct drm_msm_gem_submit req = {
-+				.flags   = pipe->pipe,
-+				.queueid = 0x1234,
-+		};
-+		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, ENOENT);
-+	}
-+
-+	igt_describe("Check that submit with invalid flags fails");
-+	igt_subtest("invalid-flags-submit") {
-+		struct drm_msm_gem_submit req = {
-+				.flags   = 0x1234,
-+				.queueid = pipe->submitqueue_id,
-+		};
-+		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
-+	}
-+
-+	igt_describe("Check that submit with invalid in-fence fd fails");
-+	igt_subtest("invalid-in-fence-submit") {
-+		struct drm_msm_gem_submit req = {
-+				.flags   = pipe->pipe | MSM_SUBMIT_FENCE_FD_IN,
-+				.queueid = pipe->submitqueue_id,
-+				.fence_fd = dev->fd,  /* This is not a fence fd! */
-+		};
-+		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
-+	}
-+
-+	igt_describe("Check that submit with duplicate bo fails");
-+	igt_subtest("invalid-duplicate-bo-submit") {
-+		struct drm_msm_gem_submit_bo bos[] = {
-+			[0] = {
-+				.handle     = a->handle,
-+				.flags      = MSM_SUBMIT_BO_READ,
-+			},
-+			[1] = {
-+				.handle     = b->handle,
-+				.flags      = MSM_SUBMIT_BO_READ,
-+			},
-+			[2] = {
-+				/* this is invalid.. there should not be two entries
-+				 * for the same bo, instead a single entry w/ all
-+				 * usage flags OR'd together should be used.  Kernel
-+				 * should catch this, and return an error code after
-+				 * cleaning up properly (not leaking any bo's)
-+				 */
-+				.handle     = a->handle,
-+				.flags      = MSM_SUBMIT_BO_WRITE,
-+			},
-+		};
-+		struct drm_msm_gem_submit req = {
-+				.flags   = pipe->pipe,
-+				.queueid = pipe->submitqueue_id,
-+				.nr_bos  = ARRAY_SIZE(bos),
-+				.bos     = VOID2U64(bos),
-+		};
-+		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
-+	}
-+
-+	igt_describe("Check that submit with cmdstream referencing an invalid bo fails");
-+	igt_subtest("invalid-cmd-idx-submit") {
-+		struct drm_msm_gem_submit_cmd cmds[] = {
-+			[0] = {
-+				.type       = MSM_SUBMIT_CMD_BUF,
-+				.submit_idx = 0,      /* bos[0] does not exist */
-+				.size       = 4 * 4,  /* 4 dwords in cmdbuf */
-+			},
-+		};
-+		struct drm_msm_gem_submit req = {
-+				.flags   = pipe->pipe,
-+				.queueid = pipe->submitqueue_id,
-+				.nr_cmds    = ARRAY_SIZE(cmds),
-+				.cmds       = VOID2U64(cmds),
-+		};
-+		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
-+	}
-+
-+	igt_describe("Check that submit with invalid cmdstream type fails");
-+	igt_subtest("invalid-cmd-type-submit") {
-+		struct drm_msm_gem_submit_bo bos[] = {
-+			[0] = {
-+				.handle     = a->handle,
-+				.flags      = MSM_SUBMIT_BO_READ,
-+			},
-+		};
-+		struct drm_msm_gem_submit_cmd cmds[] = {
-+			[0] = {
-+				.type       = 0x1234,
-+				.submit_idx = 0,
-+				.size       = 4 * 4,  /* 4 dwords in cmdbuf */
-+			},
-+		};
-+		struct drm_msm_gem_submit req = {
-+				.flags   = pipe->pipe,
-+				.queueid = pipe->submitqueue_id,
-+				.nr_cmds    = ARRAY_SIZE(cmds),
-+				.cmds       = VOID2U64(cmds),
-+				.nr_bos  = ARRAY_SIZE(bos),
-+				.bos     = VOID2U64(bos),
-+		};
-+		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
-+	}
-+
-+	igt_describe("Check that a valid non-empty submit succeeds");
-+	igt_subtest("valid-submit") {
-+		struct drm_msm_gem_submit_bo bos[] = {
-+			[0] = {
-+				.handle     = a->handle,
-+				.flags      = MSM_SUBMIT_BO_READ,
-+			},
-+		};
-+		struct drm_msm_gem_submit_cmd cmds[] = {
-+			[0] = {
-+				.type       = MSM_SUBMIT_CMD_BUF,
-+				.submit_idx = 0,
-+				.size       = 4 * 4,  /* 4 dwords in cmdbuf */
-+			},
-+		};
-+		struct drm_msm_gem_submit req = {
-+				.flags   = pipe->pipe,
-+				.queueid = pipe->submitqueue_id,
-+				.nr_cmds    = ARRAY_SIZE(cmds),
-+				.cmds       = VOID2U64(cmds),
-+				.nr_bos  = ARRAY_SIZE(bos),
-+				.bos     = VOID2U64(bos),
-+		};
-+		uint32_t *cmdstream = igt_msm_bo_map(a);
-+		if (dev->gen >= 5) {
-+			*(cmdstream++) = pm4_pkt7_hdr(CP_NOP, 3);
-+		} else {
-+			*(cmdstream++) = pm4_pkt3_hdr(CP_NOP, 3);
-+		}
-+		*(cmdstream++) = 0;
-+		*(cmdstream++) = 0;
-+		*(cmdstream++) = 0;
-+
-+		do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
-+	}
-+
-+	igt_fixture {
-+		igt_msm_bo_free(a);
-+		igt_msm_bo_free(b);
-+		igt_msm_pipe_close(pipe);
-+		igt_msm_dev_close(dev);
-+	}
-+}
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index e1f9b115..29cb3f4c 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -179,6 +179,7 @@ static const struct module {
+ } modules[] = {
+ 	{ DRIVER_AMDGPU, "amdgpu" },
+ 	{ DRIVER_INTEL, "i915", modprobe_i915 },
++	{ DRIVER_MSM, "msm" },
+ 	{ DRIVER_PANFROST, "panfrost" },
+ 	{ DRIVER_V3D, "v3d" },
+ 	{ DRIVER_VC4, "vc4" },
+@@ -539,6 +540,8 @@ static const char *chipset_to_str(int chipset)
+ 		return "amdgpu";
+ 	case DRIVER_PANFROST:
+ 		return "panfrost";
++	case DRIVER_MSM:
++		return "msm";
+ 	case DRIVER_ANY:
+ 		return "any";
+ 	default:
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index 7d17a0f9..a6eb60c3 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -50,6 +50,7 @@
+ #define DRIVER_AMDGPU	(1 << 3)
+ #define DRIVER_V3D	(1 << 4)
+ #define DRIVER_PANFROST	(1 << 5)
++#define DRIVER_MSM	(1 << 6)
+ 
+ /*
+  * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
 -- 
 2.31.1
