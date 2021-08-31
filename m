@@ -1,21 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E94096E0DD
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Aug 2021 15:27:00 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Date: Tue, 31 Aug 2021 15:26:55 +0000
-Message-ID: <65352e9ba9f748b29371f8640f7e4fe9@intel.com>
-References: <20210830162232.1328594-1-robdclark@gmail.com>
- <163034309381.14976.10026239798210863296@emeril.freedesktop.org>
- <YS3G5TE3itejdbTb@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YS3G5TE3itejdbTb@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+From: Rob Clark <robdclark@gmail.com>
+Date: Tue, 31 Aug 2021 09:17:16 -0700
+Message-Id: <20210831161716.1400057-4-robdclark@gmail.com>
+In-Reply-To: <20210831161716.1400057-1-robdclark@gmail.com>
+References: <20210831161716.1400057-1-robdclark@gmail.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgSW5pdGlh?=
- =?utf-8?q?l_igt_tests_for_drm/msm_ioctls_=28rev3=29?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH igt v4 3/3] msm: Add submit ioctl tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,85 +17,236 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: Rob Clark <robdclark@gmail.com>
+To: igt-dev@lists.freedesktop.org
+Cc: freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, Jordan Crouse <jordan@cosmicpenguin.net>, Akhil P Oommen <akhilpo@codeaurora.org>, Petri Latvala <petri.latvala@intel.com>, Rob Clark <robdclark@chromium.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RmlsZWQgYSBuZXcgaXNzdWUgaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRl
-bC8tL2lzc3Vlcy80MDQ4IGFuZCByZS1yZXByb3RlZC4NCmlndEBrbXNfcGlwZV9jcmNfYmFzaWNA
-Y29tcGFyZS1jcmMtc2FuaXR5Y2hlY2stcGlwZS1jIC0gZmFpbCAtIEZhaWxlZCBhc3NlcnRpb246
-IGlndF9pb2N0bCguKiksIExhc3QgZXJybm86IDIyLCBJbnZhbGlkIGFyZ3VtZW50LCBlcnJvcjog
-LTEgIT0gMA0KDQpUaGFua3MsDQpMYWtzaG1pLg0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0t
-LQ0KRnJvbTogTGF0dmFsYSwgUGV0cmkgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPiANClNlbnQ6
-IE1vbmRheSwgQXVndXN0IDMwLCAyMDIxIDExOjA2IFBNDQpUbzogaWd0LWRldkBsaXN0cy5mcmVl
-ZGVza3RvcC5vcmc7IFZ1ZHVtLCBMYWtzaG1pbmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1
-bUBpbnRlbC5jb20+DQpDYzogUm9iIENsYXJrIDxyb2JkY2xhcmtAZ21haWwuY29tPg0KU3ViamVj
-dDogUmU6IFtpZ3QtZGV2XSDinJcgRmkuQ0kuQkFUOiBmYWlsdXJlIGZvciBJbml0aWFsIGlndCB0
-ZXN0cyBmb3IgZHJtL21zbSBpb2N0bHMgKHJldjMpDQoNCk9uIE1vbiwgQXVnIDMwLCAyMDIxIGF0
-IDA1OjA0OjUzUE0gKzAwMDAsIFBhdGNod29yayB3cm90ZToNCj4gPT0gU2VyaWVzIERldGFpbHMg
-PT0NCj4gDQo+IFNlcmllczogSW5pdGlhbCBpZ3QgdGVzdHMgZm9yIGRybS9tc20gaW9jdGxzIChy
-ZXYzKQ0KPiBVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMv
-OTM5NzMvDQo+IFN0YXRlIDogZmFpbHVyZQ0KPiANCj4gPT0gU3VtbWFyeSA9PQ0KPiANCj4gQ0kg
-QnVnIExvZyAtIGNoYW5nZXMgZnJvbSBDSV9EUk1fMTA1MzYgLT4gSUdUUFdfNjE3MyANCj4gPT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQ0KPiANCj4g
-U3VtbWFyeQ0KPiAtLS0tLS0tDQo+IA0KPiAgICoqRkFJTFVSRSoqDQo+IA0KPiAgIFNlcmlvdXMg
-dW5rbm93biBjaGFuZ2VzIGNvbWluZyB3aXRoIElHVFBXXzYxNzMgYWJzb2x1dGVseSBuZWVkIHRv
-IGJlDQo+ICAgdmVyaWZpZWQgbWFudWFsbHkuDQo+ICAgDQo+ICAgSWYgeW91IHRoaW5rIHRoZSBy
-ZXBvcnRlZCBjaGFuZ2VzIGhhdmUgbm90aGluZyB0byBkbyB3aXRoIHRoZSBjaGFuZ2VzDQo+ICAg
-aW50cm9kdWNlZCBpbiBJR1RQV182MTczLCBwbGVhc2Ugbm90aWZ5IHlvdXIgYnVnIHRlYW0gdG8g
-YWxsb3cgdGhlbQ0KPiAgIHRvIGRvY3VtZW50IHRoaXMgbmV3IGZhaWx1cmUgbW9kZSwgd2hpY2gg
-d2lsbCByZWR1Y2UgZmFsc2UgcG9zaXRpdmVzIGluIENJLg0KPiANCj4gICBFeHRlcm5hbCBVUkw6
-IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzYxNzMv
-aW5kZXguaHRtbA0KPiANCj4gUG9zc2libGUgbmV3IGlzc3Vlcw0KPiAtLS0tLS0tLS0tLS0tLS0t
-LS0tDQo+IA0KPiAgIEhlcmUgYXJlIHRoZSB1bmtub3duIGNoYW5nZXMgdGhhdCBtYXkgaGF2ZSBi
-ZWVuIGludHJvZHVjZWQgaW4gSUdUUFdfNjE3MzoNCj4gDQo+ICMjIyBJR1QgY2hhbmdlcyAjIyMN
-Cj4gDQo+ICMjIyMgUG9zc2libGUgcmVncmVzc2lvbnMgIyMjIw0KPiANCj4gICAqIGlndEBrbXNf
-cGlwZV9jcmNfYmFzaWNAY29tcGFyZS1jcmMtc2FuaXR5Y2hlY2stcGlwZS1jOg0KPiAgICAgLSBm
-aS10Z2wtMTExNWc0OiAgICAgIFtQQVNTXVsxXSAtPiBbRkFJTF1bMl0NCj4gICAgWzFdOiBodHRw
-czovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV8xMDUzNi9maS10Z2wt
-MTExNWc0L2lndEBrbXNfcGlwZV9jcmNfYmFzaWNAY29tcGFyZS1jcmMtc2FuaXR5Y2hlY2stcGlw
-ZS1jLmh0bWwNCj4gICAgWzJdOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUv
-ZHJtLXRpcC9JR1RQV182MTczL2ZpLXRnbC0xMTE1ZzQvaWd0QA0KPiBrbXNfcGlwZV9jcmNfYmFz
-aWNAY29tcGFyZS1jcmMtc2FuaXR5Y2hlY2stcGlwZS1jLmh0bWwNCg0KDQpMYWtzaG1pLCBmYWxz
-ZSBwb3NpdGl2ZSBoZXJlLg0KDQoNCi0tDQpQZXRyaSBMYXR2YWxhDQoNCg0KDQo+IA0KPiAgIA0K
-PiBLbm93biBpc3N1ZXMNCj4gLS0tLS0tLS0tLS0tDQo+IA0KPiAgIEhlcmUgYXJlIHRoZSBjaGFu
-Z2VzIGZvdW5kIGluIElHVFBXXzYxNzMgdGhhdCBjb21lIGZyb20ga25vd24gaXNzdWVzOg0KPiAN
-Cj4gIyMjIElHVCBjaGFuZ2VzICMjIw0KPiANCj4gIyMjIyBJc3N1ZXMgaGl0ICMjIyMNCj4gDQo+
-ICAgKiBpZ3RAYW1kZ3B1L2FtZF9jc19ub3BAc3luYy1mb3JrLWNvbXB1dGUwOg0KPiAgICAgLSBm
-aS1zbmItMjYwMDogICAgICAgIE5PVFJVTiAtPiBbU0tJUF1bM10gKFtmZG8jMTA5MjcxXSkgKzE3
-IHNpbWlsYXIgaXNzdWVzDQo+ICAgIFszXTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3Ry
-ZWUvZHJtLXRpcC9JR1RQV182MTczL2ZpLXNuYi0yNjAwL2lndEBhbWRncHUvYW1kX2NzX25vcEBz
-eW5jLWZvcmstY29tcHV0ZTAuaHRtbA0KPiANCj4gICANCj4gIyMjIyBQb3NzaWJsZSBmaXhlcyAj
-IyMjDQo+IA0KPiAgICogaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZUBoYW5nY2hlY2s6DQo+ICAgICAt
-IGZpLXNuYi0yNjAwOiAgICAgICAgW0lOQ09NUExFVEVdWzRdIChbaTkxNSMzOTIxXSkgLT4gW1BB
-U1NdWzVdDQo+ICAgIFs0XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRp
-cC9DSV9EUk1fMTA1MzYvZmktc25iLTI2MDAvaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZUBoYW5nY2hl
-Y2suaHRtbA0KPiAgICBbNV06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10
-aXAvSUdUUFdfNjE3My9maS1zbmItMjYwMC9pZ3RAaTkxNV9zZWxmdGVzdEBsaXZlQGhhbmdjaGVj
-ay5odG1sDQo+IA0KPiAgIA0KPiAgIHtuYW1lfTogVGhpcyBlbGVtZW50IGlzIHN1cHByZXNzZWQu
-IFRoaXMgbWVhbnMgaXQgaXMgaWdub3JlZCB3aGVuIGNvbXB1dGluZw0KPiAgICAgICAgICAgdGhl
-IHN0YXR1cyBvZiB0aGUgZGlmZmVyZW5jZSAoU1VDQ0VTUywgV0FSTklORywgb3IgRkFJTFVSRSku
-DQo+IA0KPiAgIFtmZG8jMTA5MjcxXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93
-X2J1Zy5jZ2k/aWQ9MTA5MjcxDQo+ICAgW2k5MTUjMzMwM106IGh0dHBzOi8vZ2l0bGFiLmZyZWVk
-ZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzMzMDMNCj4gICBbaTkxNSMzOTIxXTogaHR0cHM6
-Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC9pc3N1ZXMvMzkyMQ0KPiANCj4gDQo+
-IFBhcnRpY2lwYXRpbmcgaG9zdHMgKDQ0IC0+IDM0KQ0KPiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0NCj4gDQo+ICAgTWlzc2luZyAgICAoMTApOiBmaS1pbGstbTU0MCBmaS1ya2wtZ3Vj
-IGJhdC1hZGxzLTUgYmF0LWRnMS02IGJhdC1kZzEtNSBmaS1ic3ctY3lhbiBmaS1rYmwtZ3VjIGZp
-LWN0Zy1wODYwMCBmaS1iZHctc2FtdXMgYmF0LWpzbC0xIA0KPiANCj4gDQo+IEJ1aWxkIGNoYW5n
-ZXMNCj4gLS0tLS0tLS0tLS0tLQ0KPiANCj4gICAqIENJOiBDSS0yMDE5MDUyOSAtPiBOb25lDQo+
-ICAgKiBJR1Q6IElHVF82MTkxIC0+IElHVFBXXzYxNzMNCj4gDQo+ICAgQ0ktMjAxOTA1Mjk6IDIw
-MTkwNTI5DQo+ICAgQ0lfRFJNXzEwNTM2OiBiNmQ4MzRhNzJjMTRjYTIyYjJkZjMyYTYwN2MxZWUz
-NmU4NjI5ZjFhIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2xpbnV4DQo+
-ICAgSUdUUFdfNjE3MzogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9J
-R1RQV182MTczL2luZGV4Lmh0bWwNCj4gICBJR1RfNjE5MTogZTkyOTJiNTMzNjkxNzg0ZjQ2ZWVi
-OWJhZTUyMmNhN2E4NzEwYzkyMCBAIGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0v
-aWd0LWdwdS10b29scy5naXQNCj4gDQo+IA0KPiANCj4gPT0gVGVzdGxpc3QgY2hhbmdlcyA9PQ0K
-PiANCj4gK2lndEBtc21fc3VibWl0QGVtcHR5LXN1Ym1pdA0KPiAraWd0QG1zbV9zdWJtaXRAaW52
-YWxpZC1jbWQtaWR4LXN1Ym1pdA0KPiAraWd0QG1zbV9zdWJtaXRAaW52YWxpZC1jbWQtdHlwZS1z
-dWJtaXQNCj4gK2lndEBtc21fc3VibWl0QGludmFsaWQtZHVwbGljYXRlLWJvLXN1Ym1pdA0KPiAr
-aWd0QG1zbV9zdWJtaXRAaW52YWxpZC1mbGFncy1zdWJtaXQNCj4gK2lndEBtc21fc3VibWl0QGlu
-dmFsaWQtaW4tZmVuY2Utc3VibWl0DQo+ICtpZ3RAbXNtX3N1Ym1pdEBpbnZhbGlkLXF1ZXVlLXN1
-Ym1pdA0KPiAraWd0QG1zbV9zdWJtaXRAdmFsaWQtc3VibWl0DQo+IA0KPiA9PSBMb2dzID09DQo+
-IA0KPiBGb3IgbW9yZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3Ry
-ZWUvZHJtLXRpcC9JR1RQV182MTczL2luZGV4Lmh0bWwNCg==
+From: Rob Clark <robdclark@chromium.org>
+
+Add an initial set of tests for the submit ioctl.
+
+v2: Add NULL inits, igt_describe()
+v3: Alphabetize meson.build
+
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Acked-by: Petri Latvala <petri.latvala@intel.com>
+---
+ tests/meson.build  |   1 +
+ tests/msm_submit.c | 194 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 195 insertions(+)
+ create mode 100644 tests/msm_submit.c
+
+diff --git a/tests/meson.build b/tests/meson.build
+index 1bdfddbb..cbc02534 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -78,6 +78,7 @@ test_progs = [
+ 	'kms_vrr',
+ 	'kms_writeback',
+ 	'meta_test',
++	'msm_submit',
+ 	'panfrost_get_param',
+ 	'panfrost_gem_new',
+ 	'panfrost_prime',
+diff --git a/tests/msm_submit.c b/tests/msm_submit.c
+new file mode 100644
+index 00000000..95f8318f
+--- /dev/null
++++ b/tests/msm_submit.c
+@@ -0,0 +1,194 @@
++/*
++ * Copyright © 2021 Google, Inc.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the next
++ * paragraph) shall be included in all copies or substantial portions of the
++ * Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
++ */
++
++#include "igt.h"
++#include "igt_msm.h"
++
++igt_main
++{
++	struct msm_device *dev = NULL;
++	struct msm_pipe *pipe = NULL;
++	struct msm_bo *a = NULL, *b = NULL;
++
++	igt_fixture {
++		dev = igt_msm_dev_open();
++		pipe = igt_msm_pipe_open(dev, 0);
++		a = igt_msm_bo_new(dev, 0x1000, MSM_BO_WC);
++		b = igt_msm_bo_new(dev, 0x1000, MSM_BO_WC);
++	}
++
++	igt_describe("Check that a valid empty submit succeeds");
++	igt_subtest("empty-submit") {
++		struct drm_msm_gem_submit req = {
++				.flags   = pipe->pipe,
++				.queueid = pipe->submitqueue_id,
++		};
++		do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
++	}
++
++	igt_describe("Check that submit with invalid submitqueue id fails");
++	igt_subtest("invalid-queue-submit") {
++		struct drm_msm_gem_submit req = {
++				.flags   = pipe->pipe,
++				.queueid = 0x1234,
++		};
++		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, ENOENT);
++	}
++
++	igt_describe("Check that submit with invalid flags fails");
++	igt_subtest("invalid-flags-submit") {
++		struct drm_msm_gem_submit req = {
++				.flags   = 0x1234,
++				.queueid = pipe->submitqueue_id,
++		};
++		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
++	}
++
++	igt_describe("Check that submit with invalid in-fence fd fails");
++	igt_subtest("invalid-in-fence-submit") {
++		struct drm_msm_gem_submit req = {
++				.flags   = pipe->pipe | MSM_SUBMIT_FENCE_FD_IN,
++				.queueid = pipe->submitqueue_id,
++				.fence_fd = dev->fd,  /* This is not a fence fd! */
++		};
++		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
++	}
++
++	igt_describe("Check that submit with duplicate bo fails");
++	igt_subtest("invalid-duplicate-bo-submit") {
++		struct drm_msm_gem_submit_bo bos[] = {
++			[0] = {
++				.handle     = a->handle,
++				.flags      = MSM_SUBMIT_BO_READ,
++			},
++			[1] = {
++				.handle     = b->handle,
++				.flags      = MSM_SUBMIT_BO_READ,
++			},
++			[2] = {
++				/* this is invalid.. there should not be two entries
++				 * for the same bo, instead a single entry w/ all
++				 * usage flags OR'd together should be used.  Kernel
++				 * should catch this, and return an error code after
++				 * cleaning up properly (not leaking any bo's)
++				 */
++				.handle     = a->handle,
++				.flags      = MSM_SUBMIT_BO_WRITE,
++			},
++		};
++		struct drm_msm_gem_submit req = {
++				.flags   = pipe->pipe,
++				.queueid = pipe->submitqueue_id,
++				.nr_bos  = ARRAY_SIZE(bos),
++				.bos     = VOID2U64(bos),
++		};
++		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
++	}
++
++	igt_describe("Check that submit with cmdstream referencing an invalid bo fails");
++	igt_subtest("invalid-cmd-idx-submit") {
++		struct drm_msm_gem_submit_cmd cmds[] = {
++			[0] = {
++				.type       = MSM_SUBMIT_CMD_BUF,
++				.submit_idx = 0,      /* bos[0] does not exist */
++				.size       = 4 * 4,  /* 4 dwords in cmdbuf */
++			},
++		};
++		struct drm_msm_gem_submit req = {
++				.flags   = pipe->pipe,
++				.queueid = pipe->submitqueue_id,
++				.nr_cmds    = ARRAY_SIZE(cmds),
++				.cmds       = VOID2U64(cmds),
++		};
++		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
++	}
++
++	igt_describe("Check that submit with invalid cmdstream type fails");
++	igt_subtest("invalid-cmd-type-submit") {
++		struct drm_msm_gem_submit_bo bos[] = {
++			[0] = {
++				.handle     = a->handle,
++				.flags      = MSM_SUBMIT_BO_READ,
++			},
++		};
++		struct drm_msm_gem_submit_cmd cmds[] = {
++			[0] = {
++				.type       = 0x1234,
++				.submit_idx = 0,
++				.size       = 4 * 4,  /* 4 dwords in cmdbuf */
++			},
++		};
++		struct drm_msm_gem_submit req = {
++				.flags   = pipe->pipe,
++				.queueid = pipe->submitqueue_id,
++				.nr_cmds    = ARRAY_SIZE(cmds),
++				.cmds       = VOID2U64(cmds),
++				.nr_bos  = ARRAY_SIZE(bos),
++				.bos     = VOID2U64(bos),
++		};
++		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req, EINVAL);
++	}
++
++	igt_describe("Check that a valid non-empty submit succeeds");
++	igt_subtest("valid-submit") {
++		struct drm_msm_gem_submit_bo bos[] = {
++			[0] = {
++				.handle     = a->handle,
++				.flags      = MSM_SUBMIT_BO_READ,
++			},
++		};
++		struct drm_msm_gem_submit_cmd cmds[] = {
++			[0] = {
++				.type       = MSM_SUBMIT_CMD_BUF,
++				.submit_idx = 0,
++				.size       = 4 * 4,  /* 4 dwords in cmdbuf */
++			},
++		};
++		struct drm_msm_gem_submit req = {
++				.flags   = pipe->pipe,
++				.queueid = pipe->submitqueue_id,
++				.nr_cmds    = ARRAY_SIZE(cmds),
++				.cmds       = VOID2U64(cmds),
++				.nr_bos  = ARRAY_SIZE(bos),
++				.bos     = VOID2U64(bos),
++		};
++		uint32_t *cmdstream = igt_msm_bo_map(a);
++		if (dev->gen >= 5) {
++			*(cmdstream++) = pm4_pkt7_hdr(CP_NOP, 3);
++		} else {
++			*(cmdstream++) = pm4_pkt3_hdr(CP_NOP, 3);
++		}
++		*(cmdstream++) = 0;
++		*(cmdstream++) = 0;
++		*(cmdstream++) = 0;
++
++		do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
++	}
++
++	igt_fixture {
++		igt_msm_bo_free(a);
++		igt_msm_bo_free(b);
++		igt_msm_pipe_close(pipe);
++		igt_msm_dev_close(dev);
++	}
++}
+-- 
+2.31.1
