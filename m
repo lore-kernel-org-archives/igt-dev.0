@@ -1,23 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com
- [IPv6:2a00:1450:4864:20::635])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D042289FF6
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Aug 2021 18:51:20 +0000 (UTC)
-Received: by mail-ej1-x635.google.com with SMTP id a25so930297ejv.6
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Aug 2021 11:51:20 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CBF716E051
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Aug 2021 18:54:45 +0000 (UTC)
+Date: Tue, 31 Aug 2021 21:54:37 +0300
+From: Imre Deak <imre.deak@intel.com>
+Message-ID: <20210831185437.GG3458504@ideak-desk.fi.intel.com>
 References: <20210827145756.3342904-1-imre.deak@intel.com>
- <20210827145756.3342904-3-imre.deak@intel.com>
- <368fc246-9373-4c9f-8c74-f652843b4af9@gmail.com>
-Message-ID: <168039dd-422f-7afd-ffb8-861217ab02f7@gmail.com>
-Date: Tue, 31 Aug 2021 21:51:11 +0300
+ <20210827145756.3342904-2-imre.deak@intel.com>
+ <60f7c750-9ab4-8193-a019-63ff68ebd826@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <368fc246-9373-4c9f-8c74-f652843b4af9@gmail.com>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/6] tests/kms_ccs: Use test pattern
- when possible
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <60f7c750-9ab4-8193-a019-63ff68ebd826@gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/6] tests/kms_ccs: Make sure to free
+ GEM and FB objects
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,64 +21,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Imre Deak <imre.deak@intel.com>, igt-dev@lists.freedesktop.org
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 31.8.2021 20.48, Juha-Pekka Heikkila wrote:
+On Tue, Aug 31, 2021 at 08:47:49PM +0300, Juha-Pekka Heikkila wrote:
 > On 27.8.2021 17.57, Imre Deak wrote:
->> A CRC match against a test pattern reference image gives a better
->> guarantee than against a solid filled image, so use a test pattern
->> instead.
->>
->> The sprite tests compare a single solid filled reference plane against
->> two overlapped solid filled planes for some reason, so for these subtests
->> and the fast clear subtest still keep the solid filled pattern.
->>
->> Signed-off-by: Imre Deak <imre.deak@intel.com>
->> ---
->>   tests/kms_ccs.c | 14 ++++++++++----
->>   1 file changed, 10 insertions(+), 4 deletions(-)
->>
->> diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
->> index f376f1c80..5bc50b4bb 100644
->> --- a/tests/kms_ccs.c
->> +++ b/tests/kms_ccs.c
->> @@ -329,15 +329,21 @@ static void generate_fb(data_t *data, struct 
->> igt_fb *fb,
->>           srand(data->seed);
->>           fill_fb_random(data->drm_fd, fb);
->>       } else if (!(data->flags & TEST_BAD_PIXEL_FORMAT)) {
->> +        bool do_fast_clear = is_ccs_cc_modifier(data->ccs_modifier);
->> +        bool do_solid_fill = do_fast_clear || data->plane;
+> > At the moment we're leaking the GEM and FB objects that could lead to
+> > OOM if multiple subtests are run (vs. each subtest in a seperate test
+> > run).
+> > 
+> > Signed-off-by: Imre Deak <imre.deak@intel.com>
+> > ---
+> >   tests/kms_ccs.c | 15 +++++++++++----
+> >   1 file changed, 11 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
+> > index 586680ae1..f376f1c80 100644
+> > --- a/tests/kms_ccs.c
+> > +++ b/tests/kms_ccs.c
+> > @@ -345,6 +345,10 @@ static void generate_fb(data_t *data, struct igt_fb *fb,
+> >   	if (data->flags & TEST_FAIL_ON_ADDFB2) {
+> >   		igt_assert_eq(ret, -1);
+> >   		igt_assert_eq(errno, EINVAL);
+> > +
+> > +		if (f.handles[index])
+> > +			gem_close(data->drm_fd, f.handles[index]);
+> > +
 > 
-> data->plane will be set when doing crc tests, why crc tests needed solid 
-> color?
+> I guess this gem_close could be called before doing asserts.
 
-After offline discussion we agree this is ok because of two plane case.
+Ah yes, the assert will continue with the next subtest, doh:/
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-
+> >   		return;
+> >   	} else
+> >   		igt_assert_eq(ret, 0);
+> > @@ -387,7 +391,8 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
+> >   	drmModeModeInfo *drm_mode = igt_output_get_mode(data->output);
+> >   	int fb_width = drm_mode->hdisplay;
+> >   	enum igt_commit_style commit;
+> > -	struct igt_fb fb, fb_sprite;
+> > +	struct igt_fb fb = {};
+> > +	struct igt_fb fb_sprite = {};
+> >   	int ret;
+> >   	if (data->display.is_atomic)
+> > @@ -425,7 +430,7 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
+> >   	}
+> >   	if (data->flags & TEST_FAIL_ON_ADDFB2)
+> > -		return true;
+> > +		goto out_free_fbs;
+> >   	igt_plane_set_position(primary, 0, 0);
+> >   	igt_plane_set_size(primary, drm_mode->hdisplay, drm_mode->vdisplay);
+> > @@ -458,14 +463,16 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
+> >   		igt_plane_set_position(data->plane, 0, 0);
+> >   		igt_plane_set_size(data->plane, 0, 0);
+> >   		igt_plane_set_fb(data->plane, NULL);
+> > -		igt_remove_fb(display->drm_fd, &fb_sprite);
+> >   	}
+> >   	igt_plane_set_fb(primary, NULL);
+> >   	igt_plane_set_rotation(primary, IGT_ROTATION_0);
+> >   	igt_display_commit2(display, commit);
+> > -	if (data->flags & TEST_CRC)
+> > +out_free_fbs:
+> > +	if (fb_sprite.fb_id)
+> > +		igt_remove_fb(data->drm_fd, &fb_sprite);
+> > +	if (fb.fb_id)
+> >   		igt_remove_fb(data->drm_fd, &fb);
 > 
->>           int c = !!data->plane;
->> -        if (is_ccs_cc_modifier(modifier)) {
->> +        if (do_fast_clear && (fb_flags & FB_COMPRESSED)) {
->>               fast_clear_fb(data->drm_fd, fb, cc_color);
->>           } else {
->>               cr = igt_get_cairo_ctx(data->drm_fd, fb);
->> -            igt_paint_color(cr, 0, 0, width, height,
->> -                    colors[c].r, colors[c].g, colors[c].b);
->> -                    igt_put_cairo_ctx(cr);
->> +
->> +            if (do_solid_fill)
->> +                igt_paint_color(cr, 0, 0, width, height,
->> +                        colors[c].r, colors[c].g, colors[c].b);
->> +            else
->> +                igt_paint_test_pattern(cr, width, height);
->> +            igt_put_cairo_ctx(cr);
->>           }
->>       }
->>
+> These igt_remove_fb could be called unconditionally, they do as first things
+> same check for fb_id
+
+Ok, missed that.
+
+> >   	return true;
+> > 
 > 
+> those are just minor comments, fix or no fix either way
+> 
+> Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
