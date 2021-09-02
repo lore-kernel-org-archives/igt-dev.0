@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A8E3A6E7E2
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Sep 2021 17:30:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 76CFB6E7DC
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Sep 2021 17:30:44 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Thu,  2 Sep 2021 10:30:41 -0700
-Message-Id: <20210902173043.821318-15-alan.previn.teres.alexis@intel.com>
+Date: Thu,  2 Sep 2021 10:30:33 -0700
+Message-Id: <20210902173043.821318-7-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210902173043.821318-1-alan.previn.teres.alexis@intel.com>
 References: <20210902173043.821318-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 14/16] Ensure RESET_STATS reports
- invalidated protected contexts
+Subject: [igt-dev] [PATCH i-g-t v9 06/16] Enable protected session cmd in
+ gen12_render_copyfunc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,159 +21,138 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When protected contexts are created but get invalidated
-due to PXP session teardown, RESET_STATS ioctl for said
-context shall log an increased count in lost batch_active
-equal to all engines of this context indicating the pxp
-context is now banned.
+1. In _gen9_render_op, check if the incoming batchbuffer
+   is marked with pxp enabled. If so, insert MI_SET_APPID
+   along with PIPE_CONTROL instructions at the start and
+   end of the rendering operation in the command buffer.
+
+2. The two PIPE_CONTROLs will enable protected memory
+   at the start of the batch and disabling protected
+   memory at the end of it. These PIPE_CONTROLs require a
+   Post-Sync operation with a write to memory for hardware
+   to accept.
+
+3. In order to satisfy #2, _gen9_render_op uses unused
+   regions of the ibb buffer for the PIPE_CONTROL PostSync
+   write to memory (no different from how other 3d states
+   are being referenced).
+
+4. _gen9_render_op shall check the incoming surface
+   buffers for "is_protected" flag and if its set, it
+   will mark the SURFACE_STATE's MOCS field accordingly.
+
+NOTE: _gen9_render_op needs to program the HW to enable
+the PXP session as part of the rendering batch buffer
+because the HW requires that enabling/disabling protected
+memory access must be programmed in pairs within the same
+"dispatch of rendering commands" to HW.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/i915/gem_pxp.c | 73 +++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 69 insertions(+), 4 deletions(-)
+ lib/rendercopy_gen9.c | 57 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 57 insertions(+)
 
-diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 38c7925b..d538e78c 100644
---- a/tests/i915/gem_pxp.c
-+++ b/tests/i915/gem_pxp.c
-@@ -772,9 +772,34 @@ static void trigger_pxp_debugfs_forced_teardown(int i915)
- 	close(fd);
+diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+index 0356964e..f021f4cb 100644
+--- a/lib/rendercopy_gen9.c
++++ b/lib/rendercopy_gen9.c
+@@ -183,6 +183,8 @@ gen8_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst) {
+ 		ss->ss0.tiled_mode = 3;
+ 
+ 	ss->ss1.memory_object_control = intel_get_uc_mocs(i915);
++	if (intel_buf_pxp(buf))
++		ss->ss1.memory_object_control |= 1;
+ 
+ 	if (buf->tiling == I915_TILING_Yf)
+ 		ss->ss5.trmode = 1;
+@@ -904,6 +906,53 @@ static void gen8_emit_primitive(struct intel_bb *ibb, uint32_t offset)
+ 	intel_bb_out(ibb, 0);	/* index buffer offset, ignored */
  }
  
--static void test_pxp_stale_ctx_execution(int i915)
-+static int get_context_num_engines(int i915, uint32_t ctx)
++#define GFX_OP_PIPE_CONTROL    ((3 << 29) | (3 << 27) | (2 << 24))
++#define PIPE_CONTROL_CS_STALL	            (1 << 20)
++#define PIPE_CONTROL_RENDER_TARGET_FLUSH    (1 << 12)
++#define PIPE_CONTROL_FLUSH_ENABLE           (1 << 7)
++#define PIPE_CONTROL_DATA_CACHE_INVALIDATE  (1 << 5)
++#define PIPE_CONTROL_PROTECTEDPATH_DISABLE  (1 << 27)
++#define PIPE_CONTROL_PROTECTEDPATH_ENABLE   (1 << 22)
++#define PIPE_CONTROL_POST_SYNC_OP           (1 << 14)
++#define PIPE_CONTROL_POST_SYNC_OP_STORE_DW_IDX (1 << 21)
++#define PS_OP_TAG_START                     0x1234fed0
++#define PS_OP_TAG_END                       0x5678cbaf
++static void gen12_emit_pxp_state(struct intel_bb *ibb, bool enable,
++		 uint32_t pxp_write_op_offset)
 +{
-+	intel_ctx_cfg_t cfg;
-+	int n = 4; /* at the very least Gen12s have 4 engines */
++	uint32_t pipe_ctl_flags;
++	uint32_t set_app_id, ps_op_id;
 +
-+	if (gem_has_engine_topology(i915)) {
-+		cfg =  intel_ctx_cfg_all_physical(i915);
-+		n = cfg.num_engines;
++	if (enable) {
++		pipe_ctl_flags = PIPE_CONTROL_FLUSH_ENABLE;
++		intel_bb_out(ibb, GFX_OP_PIPE_CONTROL);
++		intel_bb_out(ibb, pipe_ctl_flags);
++
++		set_app_id =  MI_SET_APPID |
++			      APPTYPE(intel_bb_pxp_apptype(ibb)) |
++			      APPID(intel_bb_pxp_appid(ibb));
++		intel_bb_out(ibb, set_app_id);
++
++		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_ENABLE;
++		ps_op_id = PS_OP_TAG_START;
++	} else {
++		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_DISABLE;
++		ps_op_id = PS_OP_TAG_END;
 +	}
-+	return n;
++
++	pipe_ctl_flags |= (PIPE_CONTROL_CS_STALL |
++			   PIPE_CONTROL_RENDER_TARGET_FLUSH |
++			   PIPE_CONTROL_DATA_CACHE_INVALIDATE |
++			   PIPE_CONTROL_POST_SYNC_OP);
++	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL | 4);
++	intel_bb_out(ibb, pipe_ctl_flags);
++	intel_bb_emit_reloc(ibb, ibb->handle, 0, I915_GEM_DOMAIN_COMMAND,
++			    (enable ? pxp_write_op_offset : (pxp_write_op_offset+8)),
++			    ibb->batch_offset);
++	intel_bb_out(ibb, ps_op_id);
++	intel_bb_out(ibb, ps_op_id);
 +}
 +
-+static int get_context_lost_count(int i915, uint32_t ctx)
- {
-+	struct drm_i915_reset_stats rs;
- 	int ret;
+ /* The general rule is if it's named gen6 it is directly copied from
+  * gen6_render_copyfunc.
+  *
+@@ -953,6 +1002,7 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 	uint32_t vertex_buffer;
+ 	uint32_t aux_pgtable_state;
+ 	bool fast_clear = !src;
++	uint32_t pxp_scratch_offset;
+ 
+ 	if (!fast_clear)
+ 		igt_assert(src->bpp == dst->bpp);
+@@ -981,8 +1031,12 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 	aux_pgtable_state = gen12_create_aux_pgtable_state(ibb, aux_pgtable_buf);
+ 
+ 	/* TODO: there is other state which isn't setup */
++	pxp_scratch_offset = intel_bb_offset(ibb);
+ 	intel_bb_ptr_set(ibb, 0);
+ 
++	if (intel_bb_pxp_enabled(ibb))
++		gen12_emit_pxp_state(ibb, true, pxp_scratch_offset);
 +
-+	memset(&rs, 0, sizeof(rs));
-+	rs.ctx_id = ctx;
-+	ret = drmIoctl(i915, DRM_IOCTL_I915_GET_RESET_STATS, &rs);
-+	igt_assert(ret == 0);
+ 	/* Start emitting the commands. The order roughly follows the mesa blorp
+ 	 * order */
+ 	intel_bb_out(ibb, G4X_PIPELINE_SELECT | PIPELINE_SELECT_3D |
+@@ -1054,6 +1108,9 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 	gen8_emit_vf_topology(ibb);
+ 	gen8_emit_primitive(ibb, vertex_buffer);
+ 
++	if (intel_bb_pxp_enabled(ibb))
++		gen12_emit_pxp_state(ibb, false, pxp_scratch_offset);
 +
-+	return (int)rs.batch_active;
-+}
-+
-+static void test_pxp_stale_ctx_execution(int i915)
-+{
-+	int ret, lostcount;
- 	struct simple_exec_assets data = {0};
- 
- 	/*
-@@ -786,7 +811,15 @@ static void test_pxp_stale_ctx_execution(int i915)
- 	ret = gem_execbuf_flush_store_dw(i915, data.ibb, data.ctx, data.fencebuf);
- 	igt_assert(ret == 0);
- 
-+	lostcount = get_context_lost_count(i915, data.ctx);
- 	trigger_pxp_debugfs_forced_teardown(i915);
-+	/* After teardown, verify RESET_STATS for pxp context reflects
-+	 * the non-recoverable invalidation
-+	 */
-+	usleep(50000);
-+	igt_assert_f(get_context_lost_count(i915, data.ctx) >=
-+		     lostcount + get_context_num_engines(i915, data.ctx),
-+		     "RESET_STATS didn't reflect stale pxp context1\n");
- 
- 	ret = gem_execbuf_flush_store_dw(i915, data.ibb, data.ctx, data.fencebuf);
- 	igt_assert_f((ret == -EIO), "Executing stale pxp context didn't fail with -EIO\n");
-@@ -796,7 +829,7 @@ static void test_pxp_stale_ctx_execution(int i915)
- 
- static void test_pxp_stale_buf_execution(int i915)
- {
--	int ret;
-+	int ret, lostcount;
- 	struct simple_exec_assets data = {0};
- 	uint32_t ctx2;
- 	struct intel_bb *ibb2;
-@@ -806,7 +839,15 @@ static void test_pxp_stale_buf_execution(int i915)
- 	ret = gem_execbuf_flush_store_dw(i915, data.ibb, data.ctx, data.fencebuf);
- 	igt_assert(ret == 0);
- 
-+	lostcount = get_context_lost_count(i915, data.ctx);
- 	trigger_pxp_debugfs_forced_teardown(i915);
-+	/* After teardown, verify RESET_STATS for pxp context reflects
-+	 * the non-recoverable invalidation
-+	 */
-+	usleep(50000);
-+	igt_assert_f(get_context_lost_count(i915, data.ctx) >=
-+		     lostcount + get_context_num_engines(i915, data.ctx),
-+		     "RESET_STATS didn't reflect stale pxp context2\n");
- 
- 	/*
- 	 * After teardown, use a new pxp context but reuse the stale bo to ensure
-@@ -829,7 +870,7 @@ static void test_pxp_stale_buf_execution(int i915)
- 
- static void test_pxp_stale_buf_optout_execution(int i915)
- {
--	int ret;
-+	int ret, lostcount;
- 	struct simple_exec_assets data = {0};
- 
- 	/*
-@@ -840,7 +881,14 @@ static void test_pxp_stale_buf_optout_execution(int i915)
- 	ret = gem_execbuf_flush_store_dw(i915, data.ibb, data.ctx, data.fencebuf);
- 	igt_assert(ret == 0);
- 
-+	lostcount = get_context_lost_count(i915, data.ctx);
- 	trigger_pxp_debugfs_forced_teardown(i915);
-+	/* After teardown, verify RESET_STATS for regular context doesn't
-+	 * exhibit any invalidation
-+	 */
-+	usleep(50000);
-+	igt_assert_f(get_context_lost_count(i915, data.ctx) ==  lostcount,
-+		     "Bad RESET_STATS report for regular context3\n");
- 
- 	ret = gem_execbuf_flush_store_dw(i915, data.ibb, data.ctx, data.fencebuf);
- 	igt_assert_f((ret == 0), "Opt-out-execution with stale pxp buffer didn't succeed\n");
-@@ -850,7 +898,7 @@ static void test_pxp_stale_buf_optout_execution(int i915)
- 
- static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_data *pm)
- {
--	int ret;
-+	int ret, lostcount[3];
- 	struct simple_exec_assets data[3] = {{0}, {0}, {0}};
- 	uint32_t ctx2;
- 	struct intel_bb *ibb2;
-@@ -881,8 +929,25 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
- 	igt_assert(ret == 0);
- 
- 	/* Do an S3 suspend resume cycle which also causes the pxp teardown event */
-+	lostcount[0] = get_context_lost_count(i915, data[0].ctx);
-+	lostcount[1] = get_context_lost_count(i915, data[1].ctx);
-+	lostcount[2] = get_context_lost_count(i915, data[2].ctx);
- 	trigger_powermgt_suspend_cycle(i915, pm);
- 
-+	/* After teardown, verify RESET_STATS reflect:
-+	 * for data[0]: non-recoverable invalidation
-+	 * for data[1]: non-recoverable invalidation
-+	 * for data[2]: no invalidation
-+	 */
-+	igt_assert_f(get_context_lost_count(i915,
-+		     data[0].ctx) >= lostcount[0] + get_context_num_engines(i915, data[0].ctx),
-+		     "Post-s3 RESET_STATS didn't reflect stale pxp context1\n");
-+	igt_assert_f(get_context_lost_count(i915,
-+		     data[1].ctx) >= lostcount[1] + get_context_num_engines(i915, data[1].ctx),
-+		     "Post-s3 RESET_STATS didn't reflect stale pxp context2\n");
-+	igt_assert_f(get_context_lost_count(i915, data[2].ctx) == lostcount[2],
-+		     "Post-s3 bad RESET_STATS report for regular context3\n");
-+
- 	ret = gem_execbuf_flush_store_dw(i915, data[0].ibb, data[0].ctx, data[0].fencebuf);
- 	igt_assert_f((ret == -EIO), "Executing stale pxp context didn't fail with -EIO\n");
- 
+ 	intel_bb_emit_bbe(ibb);
+ 	intel_bb_exec(ibb, intel_bb_offset(ibb),
+ 		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, false);
 -- 
 2.25.1
