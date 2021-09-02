@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE1896E082
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Sep 2021 17:30:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0929A6E096
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Sep 2021 17:30:44 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Thu,  2 Sep 2021 10:30:27 -0700
-Message-Id: <20210902173043.821318-1-alan.previn.teres.alexis@intel.com>
+Date: Thu,  2 Sep 2021 10:30:40 -0700
+Message-Id: <20210902173043.821318-14-alan.previn.teres.alexis@intel.com>
+In-Reply-To: <20210902173043.821318-1-alan.previn.teres.alexis@intel.com>
+References: <20210902173043.821318-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 00/16] Introduce PXP Test
+Subject: [igt-dev] [PATCH i-g-t v9 13/16] Verify execution behavior with
+ stale PXP assets through suspend-resume
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,133 +21,108 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This series adds gem_pxp tests for the new PXP subsystem currently
-being reviewed at https://patchwork.freedesktop.org/series/90504/.
-This series currently includes 4 groups of tests addressing the
-features and restrictions described by Daniele's series :
-   1. test i915 interfaces for allocation of protected bo's
-      and contexts and enforcement of UAPI rule disallowing the
-      modification of parameters after it's been created.
-   2. verify PXP subsystem protected sessions generate encrypted
-      content on protected output buffers and decrypt protected
-      inputs buffers.
-   3. verify i915 PXP auto-teardown succeeds on suspend-resume
-      cycles and gem-exec of stale protected assets fail. Ensure
-      protected-contexts adhere to stricter invalidation
-      enforcement upon teardown event.
-   4. Ensure that display plane decryption works as expected with
-      protected buffers.
+Add a subtest to repeat the same previous three scenarios when attempting
+to execute work with either stale PXP contexts or buffers but this time
+trigger the teardown event via an S3 suspend-resume power state cycle.
 
-NOTE: This series is on the ninth revision. R-v-b status is the same
-as it was at rev7, (i.e. removed the Rvb's from reworked Rev-6 patches
-that require another review: #11, #12, #13 and #15).
+NOTE: The end-to-end architecture requirement includes that
+any break in the links of the PXP sessions needs to trigger a
+full teardown and the application needs to be made aware of that
+allowing it to re-establish the end-to-end pipeline of buffers,
+contexts and renders again if it chooses to. This stricter
+behavior targets only contexts created with PXP enabled.
 
-Changes from prior rev1 to now:
-   v9:
-      - Remove patch #2 from rev7 as it was duplicating
-        an existing ioctl wrapper helper
-      - Fix the false-negative warnings when triggering
-        auto-suspend-resume (remove checking if we are
-        suspending after the system has already resumed).
-   v8:
-      - Nothing - mistaken detection from patchwork
-   v7:
-      - In prior rev, Patches #11->13 was testing expected results
-        from calling gem_execbuf with stale pxp-context, pxp-buffer
-        or combinations of them (including an opt-out usage). All
-        of them used a single suspend-resume power state cycles to
-        trigger the PXP teardown event. These patches have been
-        combined into patch #14 that continues to carry the prior rev
-        Rvb.
-      - In its place, the new patches of #11->#13 do the identical
-        set of tests as before (results from gem_execbuf with various
-        combinations of stale pxp context and buffer), but this time
-        using a debugfs file handle that triggers the same code path
-        taken when the HW triggers the pxp teardown. That said, the
-        code is nearly identical as v6 but I did not keep the Rvb's.
-      - In patch #15, RESET_STAT now reports invalidated / banned
-        pxp contexts via the existing batch_active's lost count.
-   v6:
-      - Addressed rev5 review comments for patch #1, #7, #14
-        and #17.
-      - For #17, I'm using Rodrigo's Rv-b because offline 
-        discussions concluded that we couldn't use those
-        test sequences with HDCP and so it was removed it.
-      - Added Rv-b into all patches that received it.
-      - Modified the test requirement from a list of device
-        ids to checking if runtime PXP interface succeeds
-        due to kernel's build config dependency.
-   v5:
-      - Addressed all rev4 review comments. No changes to
-        overall flow and logic compared to the last rev.
-   v4:
-      - Addressed all rev3 review comments. NOTE: that all
-        test cases and code logic are the same but a decent
-        amount of refactoring has occured due to address
-        v3 comments to break out subtests into separate
-        functions while combining certain checks into the same
-        function to reduce test time by minimizing number of
-        suspend-resume power cycles.
-   v3:
-      - Addressed all rev2 review comments.
-      - In line with one of the rev2 comments, a thorough fixup
-        of all line-breaks in function calls was made for a more
-        consistent styling.
-      - Rebased on igt upstream repo and updated to latest kernel
-        UAPI that added GEM_CREATE_EXT.
-   v2: 
-      - Addressed all rev1 review comments except these:
-           1.Chris Wilson : "...have the caller do 1-3 once for its protected
-             context. Call it something like intel_bb_enable_pxp(),
-             intel_bb_set_pxp if it should be reversible.".
-             -  This couldn't be implemented because [1] HW needs different
-             instruction sequences for enabling/disabling PXP depending
-             on the engine class and [2] the pair of "pxp-enable" and "pxp-
-             disable" instructions need to be contained within the same batch
-             that is dispatched to the hardware. That said, implementing
-             internal intel_batchbuffer funtionality for this would conflict
-             with how rendercopy_gen9 uses batch buffer memory by repositioing
-             the pointer and consuming unused portions of the batch buffer as
-             3d state offsets that batchbuffer has no visibility.
-         
-      - Added these additional subtests:
-           1. verify that buffer sharing works across testing pxp context.
-           2. verify teardown bans contexts via DRM_IOCTL_I915_GET_RESET_STAT.
-           3. verify display plane decryption of protected buffers.
+Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+---
+ tests/i915/gem_pxp.c | 65 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
 
-Alan Previn (15):
-  Add PXP UAPI support in i915_drm.h
-  Add basic PXP testing of buffer and context alloc
-  Perform a regular 3d copy as a control checkpoint
-  Add PXP attribute support in batchbuffer and buffer_ops libs
-  Add MI_SET_APPID instruction definition
-  Enable protected session cmd in gen12_render_copyfunc
-  Add subtest to copy raw source to protected dest
-  Add test where both src and dest are protected
-  Verify PXP teardown occurred through suspend-resume
-  Verify execbuf fails with stale PXP context after teardown
-  Verify execbuf fails with stale PXP buffer after teardown
-  Verify execbuf ok with stale PXP buf in opt-out use
-  Verify execution behavior with stale PXP assets through suspend-resume
-  Ensure RESET_STATS reports invalidated protected contexts
-  Verify protected surfaces are dma buffer sharable
-
-Karthik B S (1):
-  tests/i915_pxp: CRC validation for display tests.
-
- include/drm-uapi/i915_drm.h |   53 ++
- lib/intel_batchbuffer.c     |   23 +-
- lib/intel_batchbuffer.h     |   31 +
- lib/intel_bufops.h          |   15 +
- lib/intel_reg.h             |    8 +
- lib/rendercopy_gen9.c       |   57 ++
- tests/i915/gem_pxp.c        | 1346 +++++++++++++++++++++++++++++++++++
- tests/meson.build           |    1 +
- 8 files changed, 1533 insertions(+), 1 deletion(-)
- create mode 100644 tests/i915/gem_pxp.c
-
+diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+index 36dc5c46..38c7925b 100644
+--- a/tests/i915/gem_pxp.c
++++ b/tests/i915/gem_pxp.c
+@@ -848,6 +848,69 @@ static void test_pxp_stale_buf_optout_execution(int i915)
+ 	free_exec_assets(i915, &data);
+ }
+ 
++static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_data *pm)
++{
++	int ret;
++	struct simple_exec_assets data[3] = {{0}, {0}, {0}};
++	uint32_t ctx2;
++	struct intel_bb *ibb2;
++
++	/*
++	 * For asset data[0]: Use normal buffers for testing for invalidation
++	 * of protected contexts to ensure kernel is catching
++	 * the invalidated context (not buffer)
++	 */
++	prepare_exec_assets(i915, &data[0], true, false);
++	ret = gem_execbuf_flush_store_dw(i915, data[0].ibb, data[0].ctx, data[0].fencebuf);
++	igt_assert(ret == 0);
++
++	/*
++	 * For asset data[1]: Use pxp buffers with pxp context for testing for invalidation
++	 * of protected buffers.
++	 */
++	prepare_exec_assets(i915, &data[1], true, true);
++	ret = gem_execbuf_flush_store_dw(i915, data[1].ibb, data[1].ctx, data[1].fencebuf);
++	igt_assert(ret == 0);
++
++	/*
++	 * For asset data[2]: Use a normal context for testing opt-out behavior
++	 * when executing with a pxp buffer across a teardown event.
++	 */
++	prepare_exec_assets(i915, &data[2], false, true);
++	ret = gem_execbuf_flush_store_dw(i915, data[2].ibb, data[2].ctx, data[2].fencebuf);
++	igt_assert(ret == 0);
++
++	/* Do an S3 suspend resume cycle which also causes the pxp teardown event */
++	trigger_powermgt_suspend_cycle(i915, pm);
++
++	ret = gem_execbuf_flush_store_dw(i915, data[0].ibb, data[0].ctx, data[0].fencebuf);
++	igt_assert_f((ret == -EIO), "Executing stale pxp context didn't fail with -EIO\n");
++
++	/*
++	 * For asset data[1]: after teardown, alloc new assets for context but
++	 * reuse the bo to ensure the kernel is catching the
++	 * invalidated bo (not context)
++	 */
++	ret = create_ctx_with_params(i915, true, true, true, false, &ctx2);
++	igt_assert_eq(ret, 0);
++	igt_assert_eq(get_ctx_protected_param(i915, ctx2), 1);
++	ibb2 = intel_bb_create_with_context(i915, ctx2, 4096);
++	igt_assert(ibb2);
++	intel_bb_remove_intel_buf(data[1].ibb, data[1].fencebuf);
++	intel_bb_add_intel_buf(ibb2, data[1].fencebuf, true);
++	ret = gem_execbuf_flush_store_dw(i915, ibb2, ctx2, data[1].fencebuf);
++	igt_assert_f((ret == -ENOEXEC), "Executing stale pxp buffer didn't fail with -ENOEXEC\n");
++
++	ret = gem_execbuf_flush_store_dw(i915, data[2].ibb, data[2].ctx, data[2].fencebuf);
++	igt_assert_f((ret == 0), "Opt-out-execution with stale pxp buffer didn't succeed\n");
++
++	free_exec_assets(i915, &data[0]);
++	intel_bb_destroy(ibb2);
++	gem_context_destroy(i915, ctx2);
++	free_exec_assets(i915, &data[1]);
++	free_exec_assets(i915, &data[2]);
++}
++
+ igt_main
+ {
+ 	int i915 = -1;
+@@ -943,6 +1006,8 @@ igt_main
+ 			test_pxp_stale_buf_execution(i915);
+ 		igt_subtest("verify-pxp-stale-buf-optout-execution")
+ 			test_pxp_stale_buf_optout_execution(i915);
++		igt_subtest("verify-pxp-execution-after-suspend-resume")
++			test_pxp_pwrcycle_staleasset_execution(i915, &pm);
+ 	}
+ 
+ 	igt_fixture {
 -- 
 2.25.1
