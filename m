@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 309F06E7DC
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Sep 2021 17:30:44 +0000 (UTC)
-From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Thu,  2 Sep 2021 10:30:36 -0700
-Message-Id: <20210902173043.821318-10-alan.previn.teres.alexis@intel.com>
-In-Reply-To: <20210902173043.821318-1-alan.previn.teres.alexis@intel.com>
-References: <20210902173043.821318-1-alan.previn.teres.alexis@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8678875583876682193=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 09/16] Verify PXP teardown occurred
- through suspend-resume
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 02 Sep 2021 17:48:44 -0000
+Message-ID: <163060492430.29442.10661605442221350852@emeril.freedesktop.org>
+References: <20210902164508.20104-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20210902164508.20104-1-ville.syrjala@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Iga21zOiBD?=
+ =?utf-8?q?lean_up_the_supported_rotations_mess?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,139 +16,173 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-During a suspend-resume cycle, the driver shall ensure the
-PXP session and keys are torn down and re-established.
-Verify that key change did occur by repeating the 3d
-rendercopy operation before and after the suspend-resume
-cycle and ensuring the encrypted output is different.
+--===============8678875583876682193==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- tests/i915/gem_pxp.c | 66 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 65 insertions(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index af40e893..b997b058 100644
---- a/tests/i915/gem_pxp.c
-+++ b/tests/i915/gem_pxp.c
-@@ -9,6 +9,12 @@
- IGT_TEST_DESCRIPTION("Test PXP that manages protected content through arbitrated HW-PXP-session");
- /* Note: PXP = "Protected Xe Path" */
- 
-+/* Struct and definitions for power management. */
-+struct powermgt_data {
-+	int debugfsdir;
-+	bool has_runtime_pm;
-+};
-+
- static int create_bo_ext(int i915, uint32_t size, bool protected_is_true, uint32_t *bo_out)
- {
- 	int ret;
-@@ -465,7 +471,7 @@ static void test_render_baseline(int i915)
- 	buf_ops_destroy(bops);
- }
- 
--static void test_render_pxp_src_to_protdest(int i915)
-+static void __test_render_pxp_src_to_protdest(int i915, uint32_t *outpixels, int outsize)
- {
- 	uint32_t ctx, srcbo, dstbo;
- 	struct intel_buf *srcbuf, *dstbuf;
-@@ -507,6 +513,10 @@ static void test_render_pxp_src_to_protdest(int i915)
- 	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
- 				TSTSURF_SIZE, TSTSURF_FILLCOLOR2, NULL, 0);
- 
-+	if (outpixels)
-+		assert_bo_content_check(i915, dstbo, COPY_BUFFER,
-+					TSTSURF_SIZE, 0, outpixels, outsize);
-+
- 	intel_bb_destroy(ibb);
- 	intel_buf_destroy(srcbuf);
- 	gem_close(i915, srcbo);
-@@ -516,6 +526,11 @@ static void test_render_pxp_src_to_protdest(int i915)
- 	buf_ops_destroy(bops);
- }
- 
-+static void test_render_pxp_src_to_protdest(int i915)
-+{
-+	__test_render_pxp_src_to_protdest(i915, NULL, 0);
-+}
-+
- static void test_render_pxp_protsrc_to_protdest(int i915)
- {
- 	uint32_t ctx, srcbo, dstbo, dstbo2;
-@@ -595,10 +610,46 @@ static void test_render_pxp_protsrc_to_protdest(int i915)
- 	buf_ops_destroy(bops);
- }
- 
-+static void init_powermgt_resources(int i915, struct powermgt_data *pm)
-+{
-+	pm->debugfsdir = igt_debugfs_dir(i915);
-+	igt_require(pm->debugfsdir != -1);
-+	pm->has_runtime_pm = igt_setup_runtime_pm(i915);
-+	igt_require(pm->has_runtime_pm);
-+}
-+
-+static void trigger_powermgt_suspend_cycle(int i915,
-+	struct powermgt_data *pm)
-+{
-+	igt_pm_enable_sata_link_power_management();
-+	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_DEVICES);
-+}
-+
-+static void test_pxp_pwrcycle_teardown_keychange(int i915, struct powermgt_data *pm)
-+{
-+	uint32_t encrypted_pixels_b4[TSTSURF_SIZE/TSTSURF_BYTESPP];
-+	uint32_t encrypted_pixels_aft[TSTSURF_SIZE/TSTSURF_BYTESPP];
-+	int matched_after_keychange = 0, loop = 0;
-+
-+	__test_render_pxp_src_to_protdest(i915, encrypted_pixels_b4, TSTSURF_SIZE);
-+
-+	trigger_powermgt_suspend_cycle(i915, pm);
-+
-+	__test_render_pxp_src_to_protdest(i915, encrypted_pixels_aft, TSTSURF_SIZE);
-+
-+	while (loop < (TSTSURF_SIZE/TSTSURF_BYTESPP)) {
-+		if (encrypted_pixels_b4[loop] == encrypted_pixels_aft[loop])
-+			++matched_after_keychange;
-+		++loop;
-+	}
-+	igt_assert_eq(matched_after_keychange, 0);
-+}
-+
- igt_main
- {
- 	int i915 = -1;
- 	bool pxp_supported = false;
-+	struct powermgt_data pm = {0};
- 	igt_render_copyfunc_t rendercopy = NULL;
- 	uint32_t devid = 0;
- 
-@@ -671,6 +722,19 @@ igt_main
- 		igt_subtest("protected-encrypted-src-copy-not-readible")
- 			test_render_pxp_protsrc_to_protdest(i915);
- 	}
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require(pxp_supported);
-+			devid = intel_get_drm_devid(i915);
-+			igt_assert(devid);
-+			rendercopy = igt_get_render_copyfunc(devid);
-+			igt_require(rendercopy);
-+			init_powermgt_resources(i915, &pm);
-+		}
-+		igt_describe("Verify suspend-resume teardown management:");
-+		igt_subtest("verify-pxp-key-change-after-suspend-resume")
-+			test_pxp_pwrcycle_teardown_keychange(i915, &pm);
-+	}
- 
- 	igt_fixture {
- 		close(i915);
--- 
-2.25.1
+Series: kms: Clean up the supported rotations mess
+URL   : https://patchwork.freedesktop.org/series/94293/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10548 -> IGTPW_6191
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6191/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6191 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-tgl-1115g4:      [PASS][1] -> [FAIL][2] ([i915#1888])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10548/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6191/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([i915#1982] / [i915#2411])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10548/fi-tgl-y/igt@i915_pm_rpm@module-reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6191/fi-tgl-y/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - fi-rkl-guc:         [PASS][5] -> [DMESG-WARN][6] ([i915#3958])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10548/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6191/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [PASS][7] -> [INCOMPLETE][8] ([i915#3921])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10548/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6191/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2411]: https://gitlab.freedesktop.org/drm/intel/issues/2411
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#3958]: https://gitlab.freedesktop.org/drm/intel/issues/3958
+
+
+Participating hosts (48 -> 39)
+------------------------------
+
+  Missing    (9): fi-ilk-m540 bat-adls-5 fi-hsw-4200u bat-dg1-5 fi-bsw-cyan fi-cfl-guc bat-adlp-4 fi-bdw-samus bat-jsl-1 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6197 -> IGTPW_6191
+
+  CI-20190529: 20190529
+  CI_DRM_10548: 50be9d6f82904be755ea5b04efbd6c5e19e2d945 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6191: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6191/index.html
+  IGT_6197: 40888f97a6ad219f4ed48a1830d0ef3c9617d006 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6191/index.html
+
+--===============8678875583876682193==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>kms: Clean up the supported rotations mess</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/94293/">https://patchwork.freedesktop.org/series/94293/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6191/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6191/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10548 -&gt; IGTPW_6191</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6191/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6191 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10548/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6191/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10548/fi-tgl-y/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6191/fi-tgl-y/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2411">i915#2411</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10548/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6191/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3958">i915#3958</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10548/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6191/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (48 -&gt; 39)</h2>
+<p>Missing    (9): fi-ilk-m540 bat-adls-5 fi-hsw-4200u bat-dg1-5 fi-bsw-cyan fi-cfl-guc bat-adlp-4 fi-bdw-samus bat-jsl-1 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6197 -&gt; IGTPW_6191</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10548: 50be9d6f82904be755ea5b04efbd6c5e19e2d945 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6191: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6191/index.html<br />
+  IGT_6197: 40888f97a6ad219f4ed48a1830d0ef3c9617d006 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8678875583876682193==--
