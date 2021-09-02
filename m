@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1FC386E082
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 96A3F6E7E6
  for <igt-dev@lists.freedesktop.org>; Thu,  2 Sep 2021 17:30:44 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Thu,  2 Sep 2021 10:30:38 -0700
-Message-Id: <20210902173043.821318-12-alan.previn.teres.alexis@intel.com>
+Date: Thu,  2 Sep 2021 10:30:32 -0700
+Message-Id: <20210902173043.821318-6-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210902173043.821318-1-alan.previn.teres.alexis@intel.com>
 References: <20210902173043.821318-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 11/16] Verify execbuf fails with stale
- PXP buffer after teardown
+Subject: [igt-dev] [PATCH i-g-t v9 05/16] Add MI_SET_APPID instruction
+ definition
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,78 +21,35 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a check to verify that reusing a stale protected buffer
-in a gem_execbuff (with a protected context) after a teardown
-event fails with -ENOEXEC error. Trigger the teardown via the
-pxp invalidation debugfs that simulates a HW teardown IRQ.
-
-NOTE: The end-to-end architecture requirement includes that
-any break in the links of the PXP sessions needs to trigger a
-full teardown and the application needs to be made aware of that
-allowing it to re-establish the end-to-end pipeline of buffers,
-contexts and renders again if it chooses to. This stricter
-behavior targets only contexts created with PXP enabled.
+Add MI_SET_APPID instruction and param definitions
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/i915/gem_pxp.c | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ lib/intel_reg.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 6884e0d7..fab8e28d 100644
---- a/tests/i915/gem_pxp.c
-+++ b/tests/i915/gem_pxp.c
-@@ -794,6 +794,39 @@ static void test_pxp_stale_ctx_execution(int i915)
- 	free_exec_assets(i915, &data);
- }
+diff --git a/lib/intel_reg.h b/lib/intel_reg.h
+index ac1fc6cb..ab01a283 100644
+--- a/lib/intel_reg.h
++++ b/lib/intel_reg.h
+@@ -2546,6 +2546,14 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ #define CTXT_PALETTE_SAVE_DISABLE	(1<<3)
+ #define CTXT_PALETTE_RESTORE_DISABLE	(1<<2)
  
-+static void test_pxp_stale_buf_execution(int i915)
-+{
-+	int ret;
-+	struct simple_exec_assets data = {0};
-+	uint32_t ctx2;
-+	struct intel_bb *ibb2;
++#define MI_SET_APPID                    (0x0E << 23)
++#define APPID_CTXREST_INHIBIT           (1 << 9)
++#define APPID_CTXSAVE_INHIBIT           (1 << 8)
++#define APPTYPE(n)                      ((n) << 7)
++#define  DISPLAY_APPTYPE                (0)
++#define  TRANSCODE_APPTYPE              (1)
++#define APPID(n)                        ((n) & 0x7f)
 +
-+	/* Use pxp buffers with pxp context for testing for invalidation of protected buffers. */
-+	prepare_exec_assets(i915, &data, true, true);
-+	ret = gem_execbuf_flush_store_dw(i915, data.ibb, data.ctx, data.fencebuf);
-+	igt_assert(ret == 0);
-+
-+	trigger_pxp_debugfs_forced_teardown(i915);
-+
-+	/*
-+	 * After teardown, use a new pxp context but reuse the stale bo to ensure
-+	 * the kernel is catching the invalidated bo (not context)
-+	 */
-+	ret = create_ctx_with_params(i915, true, true, true, false, &ctx2);
-+	igt_assert_eq(ret, 0);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx2), 1);
-+	ibb2 = intel_bb_create_with_context(i915, ctx2, 4096);
-+	igt_assert(ibb2);
-+	intel_bb_remove_intel_buf(data.ibb, data.fencebuf);
-+	intel_bb_add_intel_buf(ibb2, data.fencebuf, true);
-+	ret = gem_execbuf_flush_store_dw(i915, ibb2, ctx2, data.fencebuf);
-+	igt_assert_f((ret == -ENOEXEC), "Executing stale pxp buffer didn't fail with -ENOEXEC\n");
-+
-+	intel_bb_destroy(ibb2);
-+	gem_context_destroy(i915, ctx2);
-+	free_exec_assets(i915, &data);
-+}
-+
- igt_main
- {
- 	int i915 = -1;
-@@ -885,6 +918,8 @@ igt_main
- 			test_pxp_pwrcycle_teardown_keychange(i915, &pm);
- 		igt_subtest("verify-pxp-stale-ctx-execution")
- 			test_pxp_stale_ctx_execution(i915);
-+		igt_subtest("verify-pxp-stale-buf-execution")
-+			test_pxp_stale_buf_execution(i915);
- 	}
- 
- 	igt_fixture {
+ /* Dword 0 */
+ #define MI_VERTEX_BUFFER		(0x17<<23)
+ #define MI_VERTEX_BUFFER_IDX(x)		(x<<20)
 -- 
 2.25.1
