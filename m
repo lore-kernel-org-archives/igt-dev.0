@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C6E8F6E5BB
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Sep 2021 15:36:10 +0000 (UTC)
-From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
-Date: Thu, 2 Sep 2021 15:35:37 +0000
-Message-ID: <BYAPR11MB3784776BE5B2874BBA797CB78ACE9@BYAPR11MB3784.namprd11.prod.outlook.com>
-References: <20210825053109.336142-1-alan.previn.teres.alexis@intel.com>
- <20210825053109.336142-3-alan.previn.teres.alexis@intel.com>
-In-Reply-To: <20210825053109.336142-3-alan.previn.teres.alexis@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B3DB6E5C0
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Sep 2021 15:44:51 +0000 (UTC)
+From: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Date: Thu,  2 Sep 2021 21:08:00 +0530
+Message-Id: <20210902153800.14831-1-arjun.melkaveri@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v7 02/17] Update IOCTL wrapper with
- DRM_IOCTL_I915_GEM_CONTEXT_CREATE_EXT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_ctx_persistence: modified
+ test_saturated_hostile subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,94 +19,82 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+To: arjun.melkaveri@intel.com, zbigniew.kempczynski@intel.com, ashutosh.dixit@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-I need to remove this patch. Looks like between the start of this series un=
-til now, we didnt have a wrapper for CONTEXT_CREATE_EXT, then i was asked t=
-o create one, and now a wrapper was merged in lib/i915/gem_context.h. So i =
-have to remove this patch and modify the pxp code to call that wrapper.
+Applying saturated_hostile to support for twiddling the
+scheduling parameters via sysfs to tune timeouts.
 
-...alan
+New Context is created in for_each_ctx_cfg_engine and
+passed to get_reloc_ahnd.
 
------Original Message-----
-From: Teres Alexis, Alan Previn <alan.previn.teres.alexis@intel.com>=20
-Sent: Tuesday, August 24, 2021 10:31 PM
-To: igt-dev@lists.freedesktop.org
-Cc: Teres Alexis, Alan Previn <alan.previn.teres.alexis@intel.com>; Vivi, R=
-odrigo <rodrigo.vivi@intel.com>
-Subject: [PATCH i-g-t v7 02/17] Update IOCTL wrapper with DRM_IOCTL_I915_GE=
-M_CONTEXT_CREATE_EXT
-
-Update IOCTL wrapper with DRM_IOCTL_I915_GEM_CONTEXT_CREATE_EXT
-
-Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/ioctl_wrappers.c | 34 ++++++++++++++++++++++++++++++++++
- lib/ioctl_wrappers.h |  2 ++
- 2 files changed, 36 insertions(+)
+ tests/i915/gem_ctx_persistence.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c index 09eb3ce7..5c=
-59a259 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -706,6 +706,40 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbu=
-ffer2 *execbuf)
- 	igt_assert_eq(__gem_execbuf_wr(fd, execbuf), 0);  }
-=20
-+/**
-+ * __gem_ctx_create_ext:
-+ * @fd: open i915 drm file descriptor
-+ * @ctx_ext: context_create_ext data structure
-+ *
-+ * This wraps the GEM_CONTEXT_CREATE_EXT ioctl, which allocates gem=20
-+context based on
-+ * additional drm_i915_gem_context_create_ext_setparam input=20
-+extensions. This is
-+ * allowed to fail, with -errno returned  */ int=20
-+__gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext=20
-+*ctx_ext) {
-+	int err =3D 0;
-+
-+	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_CONTEXT_CREATE_EXT, ctx_ext)) {
-+		err =3D -errno;
-+		igt_assume(err !=3D 0);
-+	}
-+	errno =3D 0;
-+	return err;
-+}
-+
-+/**
-+ * gem_ctx_create_ext:
-+ * @fd: open i915 drm file descriptor
-+ * @ctx_ext: context_create_ext data structure
-+ *
-+ * This wraps the GEM_CONTEXT_CREATE_EXT ioctl, which allocates gem=20
-+context based on
-+ * additional drm_i915_gem_context_create_ext_setparam input extensions.
-+ */
-+void gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext=20
-+*ctx_ext) {
-+	igt_assert_eq(__gem_ctx_create_ext(fd, ctx_ext), 0); }
-+
- /**
-  * gem_madvise:
-  * @fd: open i915 drm file descriptor
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h index 9a897fec..6f=
-7fbf1a 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -84,6 +84,8 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffe=
-r2 *execbuf);  int __gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2=
- *execbuf);  void gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *exec=
-buf);  int __gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
-+int __gem_ctx_create_ext(int fd, struct drm_i915_gem_context_create_ext=20
-+*ctx_ext); void gem_ctx_create_ext(int fd, struct=20
-+drm_i915_gem_context_create_ext *ctx_ext);
-=20
- #ifndef I915_GEM_DOMAIN_WC
- #define I915_GEM_DOMAIN_WC 0x80
---
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index fafd8bb2..251c0037 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -876,13 +876,13 @@ static void test_process_mixed(int pfd, const intel_ctx_cfg_t *cfg,
+ }
+ 
+ static void
+-test_saturated_hostile(int i915, const intel_ctx_t *base_ctx,
+-		       const struct intel_execution_engine2 *engine)
++test_saturated_hostile(int i915, const intel_ctx_cfg_t *cfg,
++		       unsigned int engine_flags)
+ {
+ 	const struct intel_execution_engine2 *other;
+ 	igt_spin_t *spin;
+ 	const intel_ctx_t *ctx;
+-	uint64_t ahnd = get_reloc_ahnd(i915, base_ctx->id);
++	uint64_t ahnd;
+ 	int fence = -1;
+ 
+ 	cleanup(i915);
+@@ -899,11 +899,13 @@ test_saturated_hostile(int i915, const intel_ctx_t *base_ctx,
+ 	 * reset other users whenever they chose.]
+ 	 */
+ 
+-	for_each_ctx_engine(i915, base_ctx, other) {
+-		if (other->flags == engine->flags)
++	for_each_ctx_cfg_engine(i915, cfg, other) {
++		if (other->flags == engine_flags)
+ 			continue;
+ 
+-		spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = base_ctx,
++		ctx = intel_ctx_create(i915, cfg);
++		ahnd = get_reloc_ahnd(i915, ctx->id);
++		spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
+ 				   .engine = other->flags,
+ 				   .flags = (IGT_SPIN_NO_PREEMPTION |
+ 					     IGT_SPIN_FENCE_OUT));
+@@ -924,10 +926,10 @@ test_saturated_hostile(int i915, const intel_ctx_t *base_ctx,
+ 	put_ahnd(ahnd);
+ 	igt_require(fence != -1);
+ 
+-	ctx = ctx_create_persistence(i915, &base_ctx->cfg, false);
++	ctx = ctx_create_persistence(i915, cfg, false);
+ 	ahnd = get_reloc_ahnd(i915, ctx->id);
+ 	spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
+-			    .engine = engine->flags,
++			    .engine = engine_flags,
+ 			    .flags = (IGT_SPIN_NO_PREEMPTION |
+ 				      IGT_SPIN_POLL_RUN |
+ 				      IGT_SPIN_FENCE_OUT));
+@@ -1310,7 +1312,8 @@ igt_main
+ 		igt_subtest_with_dynamic_f("saturated-hostile") {
+ 			for_each_ctx_engine(i915, ctx, e) {
+ 				igt_dynamic_f("%s", e->name)
+-					test_saturated_hostile(i915, ctx, e);
++					do_test(test_saturated_hostile, i915,
++						&ctx->cfg, e->flags, e->name);
+ 			}
+ 		}
+ 
+-- 
 2.25.1
