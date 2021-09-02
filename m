@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F5776E7F1
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Sep 2021 19:32:56 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B5B06E7F5
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Sep 2021 19:42:39 +0000 (UTC)
 References: <20210818222419.210879-1-jose.souza@intel.com>
- <20210818222419.210879-2-jose.souza@intel.com>
+ <20210818222419.210879-3-jose.souza@intel.com>
 From: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Message-ID: <57932115-f086-d45d-9126-f581b5ca4b08@intel.com>
-Date: Thu, 2 Sep 2021 22:32:44 +0300
-In-Reply-To: <20210818222419.210879-2-jose.souza@intel.com>
+Message-ID: <f2c6f78f-d20f-c33b-6bad-76f75002bd45@intel.com>
+Date: Thu, 2 Sep 2021 22:42:25 +0300
+In-Reply-To: <20210818222419.210879-3-jose.souza@intel.com>
 Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/4] tests/kms_psr2_su: Set the
- damaged clip in page flips
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/4] test/kms_frontbuffer_tracking:
+ Fix multidraw test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,36 +30,48 @@ Looks good to me.
 Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 
 On 8/19/21 1:24 AM, José Roberto de Souza wrote:
-> Without this i915 will not know what was updated in the screen and
-> update the whole plane causing mismatch between the read SU blocks and
-> the expected value when PSR2 selective fetch is enabled.
+> Multidraw tests was not notifying driver about the area it uses
+> blitter to pain the primary background color between drawing methods.
+> Without this notification driver will not update pipe and the CRC will
+> not update causing the tests fail due a CRC mismatch.
+> 
+> All the other callers of fill_fb_region() are safe, doing a page flip
+> or a atomic commit afterwards.
 > 
 > Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 > Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
 > ---
->   tests/kms_psr2_su.c | 6 ++++++
->   1 file changed, 6 insertions(+)
+>   tests/kms_frontbuffer_tracking.c | 12 ++++++++++++
+>   1 file changed, 12 insertions(+)
 > 
-> diff --git a/tests/kms_psr2_su.c b/tests/kms_psr2_su.c
-> index a232b3bb4..318deefdf 100644
-> --- a/tests/kms_psr2_su.c
-> +++ b/tests/kms_psr2_su.c
-> @@ -149,11 +149,17 @@ static bool update_screen_and_test(data_t *data)
+> diff --git a/tests/kms_frontbuffer_tracking.c b/tests/kms_frontbuffer_tracking.c
+> index 496718e2a..574048537 100644
+> --- a/tests/kms_frontbuffer_tracking.c
+> +++ b/tests/kms_frontbuffer_tracking.c
+> @@ -1123,6 +1123,17 @@ static void fill_fb_region(struct fb_region *region, enum color ecolor)
+>   			 color);
+>   }
 >   
->   	switch (data->op) {
->   	case PAGE_FLIP: {
-> +		struct drm_mode_rect clip;
->   		igt_plane_t *primary;
->   
-> +		clip.x1 = clip.y1 = 0;
-> +		clip.x2 = clip.y2 = SQUARE_SIZE;
+> +static void _fb_dirty_ioctl(struct fb_region *region)
+> +{
+> +	struct rect rect;
 > +
->   		primary = igt_output_get_plane_type(data->output,
->   						    DRM_PLANE_TYPE_PRIMARY);
+> +	rect.x = region->x;
+> +	rect.y = region->y;
+> +	rect.w = region->w;
+> +	rect.h = region->h;
+> +	fb_dirty_ioctl(region, &rect);
+> +}
+> +
+>   static void unset_all_crtcs(void)
+>   {
+>   	igt_display_reset(&drm.display);
+> @@ -2122,6 +2133,7 @@ static void multidraw_subtest(const struct test_mode *t)
+>   			}
 >   
-> +		igt_plane_replace_prop_blob(primary, IGT_PLANE_FB_DAMAGE_CLIPS,
-> +					    &clip, sizeof(clip));
->   		igt_plane_set_fb(primary, &data->fb[data->screen_changes & 1]);
->   		igt_display_commit2(&data->display, COMMIT_ATOMIC);
->   		break;
+>   			fill_fb_region(target, COLOR_PRIM_BG);
+> +			_fb_dirty_ioctl(target);
+>   
+>   			update_wanted_crc(t, &blue_crcs[t->format].crc);
+>   			do_assertions(ASSERT_NO_ACTION_CHANGE);
 > 
