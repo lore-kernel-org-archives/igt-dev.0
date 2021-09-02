@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5063E6E096
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Sep 2021 17:30:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 932896E7DC
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Sep 2021 17:30:43 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Thu,  2 Sep 2021 10:30:31 -0700
-Message-Id: <20210902173043.821318-5-alan.previn.teres.alexis@intel.com>
+Date: Thu,  2 Sep 2021 10:30:35 -0700
+Message-Id: <20210902173043.821318-9-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210902173043.821318-1-alan.previn.teres.alexis@intel.com>
 References: <20210902173043.821318-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 04/16] Add PXP attribute support in
- batchbuffer and buffer_ops libs
+Subject: [igt-dev] [PATCH i-g-t v9 08/16] Add test where both src and dest
+ are protected
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,143 +21,246 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Eventually when we get to testing PXP rendering capability,
-we shall reuse lib's rendercopy feature. Rendercopy libraries
-shall retrieve information about PXP-session-enablement and
-which buffers are protected from these new flags.
+When both the source and destination surfaces are
+protected, the destination pixel result of the 3d
+copy operation would be the same as the source. By
+appending this test case to the end of the prior
+test (raw-src to protected-dest) and reusing the
+previous' test destination as the current source,
+we can prove that new-source was decrypted properly
+as we would see the difference in results: repeating
+the same render operation but with a src buffer
+that is protected in this case yields matching
+(but still encrypted) output rendered pixels.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- lib/intel_batchbuffer.c | 21 +++++++++++++++++++++
- lib/intel_batchbuffer.h | 28 ++++++++++++++++++++++++++++
- lib/intel_bufops.h      | 15 +++++++++++++++
- 3 files changed, 64 insertions(+)
+ tests/i915/gem_pxp.c | 144 +++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 133 insertions(+), 11 deletions(-)
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 399d0e99..773d0d27 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -2350,6 +2350,27 @@ uint64_t intel_bb_offset_reloc_to_object(struct intel_bb *ibb,
- 				  delta, offset, presumed_offset);
- }
+diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+index f34d6a7c..af40e893 100644
+--- a/tests/i915/gem_pxp.c
++++ b/tests/i915/gem_pxp.c
+@@ -308,29 +308,51 @@ static void fill_bo_content(int i915, uint32_t bo, uint32_t size, uint32_t initc
  
-+/*
-+ * @intel_bb_set_pxp:
-+ * @ibb: pointer to intel_bb
-+ * @new_state: enable or disable pxp session
-+ * @apptype: pxp session input identifies what type of session to enable
-+ * @appid: pxp session input provides which appid to use
-+ *
-+ * This function merely stores the pxp state and session information to
-+ * be retrieved and programmed later by supporting libraries such as
-+ * gen12_render_copy that must program the HW within the same dispatch
-+ */
-+void intel_bb_set_pxp(struct intel_bb *ibb, bool new_state,
-+		      uint32_t apptype, uint32_t appid)
-+{
-+	igt_assert(ibb);
-+
-+	ibb->pxp.enabled = new_state;
-+	ibb->pxp.apptype = new_state ? apptype : 0;
-+	ibb->pxp.appid   = new_state ? appid : 0;
-+}
-+
- static void intel_bb_dump_execbuf(struct intel_bb *ibb,
- 				  struct drm_i915_gem_execbuffer2 *execbuf)
+ #define COMPARE_COLOR_READIBLE     1
+ #define COMPARE_COLOR_UNREADIBLE   2
++#define COMPARE_BUFFER_READIBLE    3
++#define COMPARE_BUFFER_UNREADIBLE  4
++#define COPY_BUFFER                5
+ #define COMPARE_N_PIXELS_VERBOSELY 0
+ 
+-static void assert_bo_content_check(int i915, uint32_t bo, int compare_op,
+-				    uint32_t size, uint32_t color)
++static void assert_bo_content_check(int i915, uint32_t bo, int compare_op, uint32_t size,
++				    uint32_t color, uint32_t *auxptr, int auxsize)
  {
-diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-index 0839d761..10fa66ee 100644
---- a/lib/intel_batchbuffer.h
-+++ b/lib/intel_batchbuffer.h
-@@ -446,6 +446,11 @@ typedef void (*igt_media_spinfunc_t)(int i915,
+-	uint32_t *ptr, *ptrtmp;
++	uint32_t *ptr, *ptrtmp, *auxtmp;
+ 	int loop = 0, num_matches = 0;
+ 	uint32_t value;
+-	bool op_readible = (compare_op == COMPARE_COLOR_READIBLE);
++	bool op_readible = ((compare_op == COMPARE_COLOR_READIBLE) ||
++		 (compare_op == COMPARE_BUFFER_READIBLE));
++	bool chk_buff = ((compare_op == COMPARE_BUFFER_READIBLE) ||
++		 (compare_op == COMPARE_BUFFER_UNREADIBLE));
++	bool copy_buff = (compare_op == COPY_BUFFER);
  
- igt_media_spinfunc_t igt_get_media_spinfunc(int devid);
+ 	ptr = gem_mmap__device_coherent(i915, bo, 0, size, PROT_READ);
+ 	ptrtmp = ptr;
  
-+struct igt_pxp {
-+	bool     enabled;
-+	uint32_t apptype;
-+	uint32_t appid;
-+};
++	if (chk_buff || copy_buff) {
++		if (auxsize < size)
++			auxptr = NULL;
++		igt_assert(auxptr);
++		auxtmp = auxptr;
++	}
++
+ 	if (COMPARE_N_PIXELS_VERBOSELY) {
+ 		igt_info("--------->>>\n");
+ 		while (loop < COMPARE_N_PIXELS_VERBOSELY && loop < (size/4)) {
+ 			value = *ptrtmp;
+-			igt_info("Color read = 0x%08x ", value);
+-			igt_info("expected %c= 0x%08x)\n", op_readible?'=':'!', color);
++			if (chk_buff)
++				color = *auxtmp;
++			if (copy_buff)
++				igt_info("Color copy = 0x%08x\n", value);
++			else {
++				igt_info("Color read = 0x%08x ", value);
++				igt_info("expected %c= 0x%08x)\n", op_readible?'=':'!', color);
++			}
++			++auxtmp;
+ 			++ptrtmp;
+ 			++loop;
+ 		}
+ 		igt_info("<<<---------\n");
++		auxtmp = auxptr;
+ 		ptrtmp = ptr;
+ 		loop = 0;
+ 	}
+@@ -338,8 +360,25 @@ static void assert_bo_content_check(int i915, uint32_t bo, int compare_op,
+ 	/* count all pixels for matches */
+ 	while (loop++ < (size/4)) {
+ 		value = *ptrtmp;
+-		if (value == color)
+-			++num_matches;
++		switch (compare_op) {
++		case COMPARE_COLOR_READIBLE:
++		case COMPARE_COLOR_UNREADIBLE:
++			if (value == color)
++				++num_matches;
++			break;
++		case COMPARE_BUFFER_READIBLE:
++		case COMPARE_BUFFER_UNREADIBLE:
++			if (value == (*auxtmp))
++				++num_matches;
++			++auxtmp;
++			break;
++		case COPY_BUFFER:
++			*auxtmp = value;
++			++auxtmp;
++			break;
++		default:
++			break;
++		}
+ 		++ptrtmp;
+ 	}
  
- /*
-  * Batchbuffer without libdrm dependency
-@@ -472,6 +477,7 @@ struct intel_bb {
- 	bool supports_48b_address;
- 	bool uses_full_ppgtt;
+@@ -361,7 +400,8 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size
+ 	igt_assert_eq(ret, 0);
+ 	igt_assert(bo);
+ 	fill_bo_content(i915, bo, size, init_color);
+-	assert_bo_content_check(i915, bo, COMPARE_COLOR_READIBLE, size, init_color);
++	assert_bo_content_check(i915, bo, COMPARE_COLOR_READIBLE,
++				size, init_color, NULL, 0);
  
-+	struct igt_pxp pxp;
- 	uint32_t ctx;
- 	uint32_t vm_id;
- 
-@@ -583,6 +589,27 @@ static inline void intel_bb_out(struct intel_bb *ibb, uint32_t dword)
- 	igt_assert(intel_bb_offset(ibb) <= ibb->size);
+ 	return bo;
  }
+@@ -379,6 +419,7 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size
+ #define TSTSURF_FILLCOLOR2  0xdeaddead
+ #define TSTSURF_INITCOLOR1  0x12341234
+ #define TSTSURF_INITCOLOR2  0x56785678
++#define TSTSURF_INITCOLOR3  0xabcdabcd
  
-+void intel_bb_set_pxp(struct intel_bb *ibb, bool new_state,
-+		      uint32_t apptype, uint32_t appid);
+ static void test_render_baseline(int i915)
+ {
+@@ -413,7 +454,7 @@ static void test_render_baseline(int i915)
+ 	gem_sync(i915, dstbo);
+ 
+ 	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_READIBLE,
+-				TSTSURF_SIZE, TSTSURF_FILLCOLOR1);
++				TSTSURF_SIZE, TSTSURF_FILLCOLOR1, NULL, 0);
+ 
+ 	intel_bb_destroy(ibb);
+ 	intel_buf_destroy(srcbuf);
+@@ -464,13 +505,92 @@ static void test_render_pxp_src_to_protdest(int i915)
+ 	gem_sync(i915, dstbo);
+ 
+ 	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
+-				TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
++				TSTSURF_SIZE, TSTSURF_FILLCOLOR2, NULL, 0);
 +
-+static inline bool intel_bb_pxp_enabled(struct intel_bb *ibb)
++	intel_bb_destroy(ibb);
++	intel_buf_destroy(srcbuf);
++	gem_close(i915, srcbo);
++	intel_buf_destroy(dstbuf);
++	gem_close(i915, dstbo);
++	gem_context_destroy(i915, ctx);
++	buf_ops_destroy(bops);
++}
++
++static void test_render_pxp_protsrc_to_protdest(int i915)
 +{
++	uint32_t ctx, srcbo, dstbo, dstbo2;
++	struct intel_buf *srcbuf, *dstbuf, *dstbuf2;
++	struct buf_ops *bops;
++	struct intel_bb *ibb;
++	uint32_t devid;
++	int ret;
++	uint32_t encrypted[TSTSURF_SIZE/TSTSURF_BYTESPP];
++
++	devid = intel_get_drm_devid(i915);
++	igt_assert(devid);
++
++	bops = buf_ops_create(i915);
++	igt_assert(bops);
++
++	/*
++	 * Perform a protected render operation but only label
++	 * the dest as protected. After rendering, the content
++	 * should be encrypted
++	 */
++	ret = create_ctx_with_params(i915, true, true, true, false, &ctx);
++	igt_assert_eq(ret, 0);
++	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
++	ibb = intel_bb_create_with_context(i915, ctx, 4096);
 +	igt_assert(ibb);
-+	return ibb->pxp.enabled;
-+}
++	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
 +
-+static inline uint32_t intel_bb_pxp_apptype(struct intel_bb *ibb)
-+{
-+	igt_assert(ibb);
-+	return ibb->pxp.apptype;
-+}
++	dstbo = alloc_and_fill_dest_buff(i915, true, TSTSURF_SIZE, TSTSURF_INITCOLOR2);
++	dstbuf = intel_buf_create_using_handle(bops, dstbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
++	intel_buf_set_pxp(dstbuf, true);
 +
-+static inline uint32_t intel_bb_pxp_appid(struct intel_bb *ibb)
-+{
-+	igt_assert(ibb);
-+	return ibb->pxp.appid;
-+}
++	srcbo = alloc_and_fill_dest_buff(i915, false, TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
++	srcbuf = intel_buf_create_using_handle(bops, srcbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
 +
- struct drm_i915_gem_exec_object2 *
- intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
- 		    uint64_t offset, uint64_t alignment, bool write);
-@@ -697,3 +724,4 @@ typedef void (*igt_huc_copyfunc_t)(int fd, uint64_t ahnd,
++	gen12_render_copyfunc(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
++	gem_sync(i915, dstbo);
++
++	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
++				TSTSURF_SIZE, TSTSURF_FILLCOLOR2, NULL, 0);
++
++	/*
++	 * Reuse prior dst as the new-src and create dst2 as the new-dest.
++	 * Take a copy of encrypted content from new-src for comparison after render
++	 * operation. After the rendering, we should find no difference in content
++	 * since both new-src and new-dest are labelled as encrypted. HW should read
++	 * and decrypt new-src, perform the render and re-encrypt when going into
++	 * new-dest
++	 */
++	assert_bo_content_check(i915, dstbo, COPY_BUFFER,
++				TSTSURF_SIZE, 0, encrypted, TSTSURF_SIZE);
++
++	dstbo2 = alloc_and_fill_dest_buff(i915, true, TSTSURF_SIZE, TSTSURF_INITCOLOR3);
++	dstbuf2 = intel_buf_create_using_handle(bops, dstbo2, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
++	intel_buf_set_pxp(dstbuf2, true);
++	intel_buf_set_pxp(dstbuf, true);/*this time, src is protected*/
++
++	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
++
++	gen12_render_copyfunc(ibb, dstbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf2, 0, 0);
++	gem_sync(i915, dstbo2);
++
++	assert_bo_content_check(i915, dstbo2, COMPARE_BUFFER_READIBLE,
++				TSTSURF_SIZE, 0, encrypted, TSTSURF_SIZE);
  
- igt_huc_copyfunc_t	igt_get_huc_copyfunc(int devid);
- #endif
-+
-diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-index 9e57d53e..bffeb1b0 100644
---- a/lib/intel_bufops.h
-+++ b/lib/intel_bufops.h
-@@ -50,6 +50,9 @@ struct intel_buf {
- 	uint32_t *ptr;
- 	bool cpu_write;
+ 	intel_bb_destroy(ibb);
+ 	intel_buf_destroy(srcbuf);
+ 	gem_close(i915, srcbo);
+ 	intel_buf_destroy(dstbuf);
+ 	gem_close(i915, dstbo);
++	intel_buf_destroy(dstbuf2);
++	gem_close(i915, dstbo2);
+ 	gem_context_destroy(i915, ctx);
+ 	buf_ops_destroy(bops);
+ }
+@@ -548,6 +668,8 @@ igt_main
+ 			test_render_baseline(i915);
+ 		igt_subtest("protected-raw-src-copy-not-readible")
+ 			test_render_pxp_src_to_protdest(i915);
++		igt_subtest("protected-encrypted-src-copy-not-readible")
++			test_render_pxp_protsrc_to_protdest(i915);
+ 	}
  
-+	/* Content Protection*/
-+	bool is_protected;
-+
- 	/* For debugging purposes */
- 	char name[INTEL_BUF_NAME_MAXSIZE + 1];
- };
-@@ -155,6 +158,18 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
- 							 int stride);
- void intel_buf_destroy(struct intel_buf *buf);
- 
-+static inline void intel_buf_set_pxp(struct intel_buf *buf, bool new_pxp_state)
-+{
-+	igt_assert(buf);
-+	buf->is_protected = new_pxp_state;
-+}
-+
-+static inline bool intel_buf_pxp(const struct intel_buf *buf)
-+{
-+	igt_assert(buf);
-+	return buf->is_protected;
-+}
-+
- void *intel_buf_cpu_map(struct intel_buf *buf, bool write);
- void *intel_buf_device_map(struct intel_buf *buf, bool write);
- void intel_buf_unmap(struct intel_buf *buf);
+ 	igt_fixture {
 -- 
 2.25.1
