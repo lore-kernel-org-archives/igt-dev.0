@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2EB636E7D9
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Sep 2021 16:45:30 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21E4E6E7DC
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Sep 2021 16:45:39 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Thu,  2 Sep 2021 19:45:03 +0300
-Message-Id: <20210902164508.20104-7-ville.syrjala@linux.intel.com>
+Date: Thu,  2 Sep 2021 19:45:05 +0300
+Message-Id: <20210902164508.20104-9-ville.syrjala@linux.intel.com>
 In-Reply-To: <20210902164508.20104-1-ville.syrjala@linux.intel.com>
 References: <20210902164508.20104-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 06/11] tests/kms_big_fb: Move batch creation
- into lower level functions
+Subject: [igt-dev] [PATCH i-g-t 08/11] tests/kms_big_fb: Nuke the
+ stride/format overrides
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,107 +26,45 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-At some point the back creation from moved form the fixture
-into each subtest, on account of something going bad between
-subtests (not really sure what that was). But when the hw stride
-tests were added they stuffed the batch back into the fixture,
-and indeed I get a segfault when running this stuff. So let's move
-all the batch stuff to the lowe level functions that actually need
-it.
+format_override/stride_override are never set. Nuke them.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_big_fb.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ tests/kms_big_fb.c | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
 diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
-index 308227c9113a..9e98ed3f9edc 100644
+index 0022f2ad264b..6be3062bd335 100644
 --- a/tests/kms_big_fb.c
 +++ b/tests/kms_big_fb.c
-@@ -410,6 +410,8 @@ static bool test_pipe(data_t *data)
- 				   IGT_CRTC_GAMMA_LUT))
- 		return false;
+@@ -55,8 +55,6 @@ typedef struct {
+ 	int hw_stride;
+ 	int max_hw_fb_width;
+ 	double planeclearrgb[3];
+-	uint32_t format_override;
+-	uint32_t stride_override;
+ } data_t;
  
-+	data->ibb = intel_bb_create(data->drm_fd, 4096);
-+
- 	mode = igt_output_get_mode(data->output);
+ static struct intel_buf *init_buf(data_t *data,
+@@ -949,18 +947,7 @@ igt_main
+ 					igt_subtest_f("%s-max-hw-stride-%dbpp-rotate-%d%s", modifiers[i].name,
+ 						formats[j].bpp, rotations[k].angle, fliptab[l].flipname) {
+ 						igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 5);
+-						if (data.format_override != 0) {
+-							igt_info("using format override fourcc %.4s\n", (char *)&data.format_override);
+-							data.format = data.format_override;
+-						}
+-						if (data.stride_override != 0) {
+-							igt_info("using FB width override %.d\n", data.stride_override);
+-							data.hw_stride = data.stride_override;
+-							data.max_hw_fb_width = data.stride_override;
+-
+-						} else {
+-							data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
+-						}
++						data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
  
- 	data->width = mode->hdisplay;
-@@ -470,6 +472,8 @@ static bool test_pipe(data_t *data)
- 
- 	igt_remove_fb(data->drm_fd, &data->small_fb);
- 
-+	intel_bb_destroy(data->ibb);
-+
- 	return ret;
- }
- 
-@@ -492,6 +496,8 @@ max_hw_stride_async_flip_test(data_t *data)
- 	igt_require_f(igt_display_try_commit2(&data->display, COMMIT_ATOMIC) == 0,
- 		      "rotation/flip not supported\n");
- 
-+	data->ibb = intel_bb_create(data->drm_fd, 4096);
-+
- 	setup_fb(data, &data->big_fb, data->big_fb_width, data->big_fb_height,
- 		 data->format, data->modifier, data->hw_stride);
- 	generate_pattern(data, &data->big_fb, 640, 480);
-@@ -559,6 +565,9 @@ max_hw_stride_async_flip_test(data_t *data)
- 	igt_remove_fb(data->drm_fd, &data->big_fb);
- 	igt_remove_fb(data->drm_fd, &data->big_fb_flip[0]);
- 	igt_remove_fb(data->drm_fd, &data->big_fb_flip[1]);
-+
-+	intel_bb_destroy(data->ibb);
-+
- 	return true;
- }
- 
-@@ -841,7 +850,6 @@ igt_main
- 			data.render_copy = igt_get_render_copyfunc(data.devid);
- 
- 		data.bops = buf_ops_create(data.drm_fd);
--		data.ibb = intel_bb_create(data.drm_fd, 4096);
- 
- 		data.planeclearrgb[0] = 0.0;
- 		data.planeclearrgb[1] = 0.0;
-@@ -862,9 +870,7 @@ igt_main
- 		igt_subtest_f("%s-addfb-size-overflow",
- 			      modifiers[i].name) {
- 			data.modifier = modifiers[i].modifier;
--			data.ibb = intel_bb_create(data.drm_fd, 4096);
- 			test_size_overflow(&data);
--			intel_bb_destroy(data.ibb);
- 		}
- 	}
- 
-@@ -873,9 +879,7 @@ igt_main
- 		igt_subtest_f("%s-addfb-size-offset-overflow",
- 			      modifiers[i].name) {
- 			data.modifier = modifiers[i].modifier;
--			data.ibb = intel_bb_create(data.drm_fd, 4096);
- 			test_size_offset_overflow(&data);
--			intel_bb_destroy(data.ibb);
- 		}
- 	}
- 
-@@ -883,9 +887,7 @@ igt_main
- 	for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
- 		igt_subtest_f("%s-addfb", modifiers[i].name) {
- 			data.modifier = modifiers[i].modifier;
--			data.ibb = intel_bb_create(data.drm_fd, 4096);
- 			test_addfb(&data);
--			intel_bb_destroy(data.ibb);
- 		}
- 	}
- 
-@@ -905,9 +907,7 @@ igt_main
- 					igt_require(data.format == DRM_FORMAT_C8 ||
- 						    igt_fb_supported_format(data.format));
- 					igt_require(igt_display_has_format_mod(&data.display, data.format, data.modifier));
--					data.ibb = intel_bb_create(data.drm_fd, 4096);
- 					test_scanout(&data);
--					intel_bb_destroy(data.ibb);
- 				}
- 			}
- 
+ 						test_scanout(&data);
+ 					}
 -- 
 2.31.1
