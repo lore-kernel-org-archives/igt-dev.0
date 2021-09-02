@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE1ED6E7E2
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D6C2E6E7DC
  for <igt-dev@lists.freedesktop.org>; Thu,  2 Sep 2021 17:30:43 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Thu,  2 Sep 2021 10:30:39 -0700
-Message-Id: <20210902173043.821318-13-alan.previn.teres.alexis@intel.com>
+Date: Thu,  2 Sep 2021 10:30:28 -0700
+Message-Id: <20210902173043.821318-2-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210902173043.821318-1-alan.previn.teres.alexis@intel.com>
 References: <20210902173043.821318-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 12/16] Verify execbuf ok with stale PXP
- buf in opt-out use
+Subject: [igt-dev] [PATCH i-g-t v9 01/16] Add PXP UAPI support in i915_drm.h
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,63 +23,93 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a check to verify that reusing a stale protected
-buffer in a gem_execbuff call, but using a regular (not-
-protected) context will succeed after a teardown event.
-Trigger the teardown via the pxp invalidation debugfs
-that simulates a HW teardown IRQ.
-
-This ensures that user space applications that choose
-not to opt-in for strict PXP teardown awareness (by
-using a regular context) won't suffer gem_execbuff
-failures if a protected buffer was among the assets
-used in any of its rendering operations.
+At the time of this commit, PXP hasnt been merged into
+upstream kernel so this has no kernel tag reference yet
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 ---
- tests/i915/gem_pxp.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ include/drm-uapi/i915_drm.h | 53 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index fab8e28d..36dc5c46 100644
---- a/tests/i915/gem_pxp.c
-+++ b/tests/i915/gem_pxp.c
-@@ -827,6 +827,27 @@ static void test_pxp_stale_buf_execution(int i915)
- 	free_exec_assets(i915, &data);
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index b9632bb2..98149a7d 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -1815,6 +1815,25 @@ struct drm_i915_gem_context_param {
+  * attempted to use it, never re-use this context param number.
+  */
+ #define I915_CONTEXT_PARAM_RINGSIZE	0xc
++
++/*
++ * I915_CONTEXT_PARAM_PROTECTED_CONTENT:
++ *
++ * Mark that the context makes use of protected content, which will result
++ * in the context being invalidated when the protected content session is.
++ * This flag can only be set at context creation time and, when set to true,
++ * must be preceded by an explicit setting of I915_CONTEXT_PARAM_RECOVERABLE
++ * to false. This flag can't be set to true in conjunction with setting the
++ * I915_CONTEXT_PARAM_BANNABLE flag to false.
++ *
++ * Given the numerous restriction on this flag, there are several unique
++ * failure cases:
++ *
++ * -ENODEV: feature not available
++ * -EPERM: trying to mark a recoverable or not bannable context as protected
++ * -EACCES: submitting an invalidated context for execution
++ */
++#define I915_CONTEXT_PARAM_PROTECTED_CONTENT    0xd
+ /* Must be kept compact -- no holes and well documented */
+ 
+ 	__u64 value;
+@@ -2931,8 +2950,12 @@ struct drm_i915_gem_create_ext {
+ 	 *
+ 	 * For I915_GEM_CREATE_EXT_MEMORY_REGIONS usage see
+ 	 * struct drm_i915_gem_create_ext_memory_regions.
++	 *
++	 * For I915_GEM_CREATE_EXT_PROTECTED_CONTENT usage see
++	 * struct drm_i915_gem_create_ext_protected_content.
+ 	 */
+ #define I915_GEM_CREATE_EXT_MEMORY_REGIONS 0
++#define I915_GEM_CREATE_EXT_PROTECTED_CONTENT 1
+ 	__u64 extensions;
+ };
+ 
+@@ -2990,6 +3013,36 @@ struct drm_i915_gem_create_ext_memory_regions {
+ 	__u64 regions;
+ };
+ 
++/**
++ * struct drm_i915_gem_create_ext_protected_content - The
++ * I915_OBJECT_PARAM_PROTECTED_CONTENT extension.
++ *
++ * If this extension is provided, buffer contents are expected to be
++ * protected by PXP encryption and requires decryption for scan out
++ * and processing. This is only possible on platforms that have PXP enabled,
++ * on all other scenarios ysing this extension will cause the ioctl to fail
++ * and return -ENODEV. The flags parameter is reserved for future expansion and
++ * must currently be set to zero.
++ *
++ * The buffer contents are considered invalid after a PXP session teardown.
++ *
++ * The encryption is guaranteed to be processed correctly only if the object
++ * is submitted with a context created using the
++ * I915_CONTEXT_PARAM_PROTECTED_CONTENT flag. This will also enable extra checks
++ * at submission time on the validity of the objects involved, which can lead to
++ * the following errors being returned from the execbuf ioctl:
++ *
++ * -ENODEV: PXP session not currently active
++ * -ENOEXEC: buffer has become invalid after a teardown event
++ */
++struct drm_i915_gem_create_ext_protected_content {
++	struct i915_user_extension base;
++	__u32 flags;
++};
++
++/* ID of the protected content session managed by i915 when PXP is active */
++#define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
++
+ #if defined(__cplusplus)
  }
- 
-+static void test_pxp_stale_buf_optout_execution(int i915)
-+{
-+	int ret;
-+	struct simple_exec_assets data = {0};
-+
-+	/*
-+	 * Use a normal context for testing opt-out behavior
-+	 * when executing with a pxp buffer across a teardown event.
-+	 */
-+	prepare_exec_assets(i915, &data, false, true);
-+	ret = gem_execbuf_flush_store_dw(i915, data.ibb, data.ctx, data.fencebuf);
-+	igt_assert(ret == 0);
-+
-+	trigger_pxp_debugfs_forced_teardown(i915);
-+
-+	ret = gem_execbuf_flush_store_dw(i915, data.ibb, data.ctx, data.fencebuf);
-+	igt_assert_f((ret == 0), "Opt-out-execution with stale pxp buffer didn't succeed\n");
-+
-+	free_exec_assets(i915, &data);
-+}
-+
- igt_main
- {
- 	int i915 = -1;
-@@ -920,6 +941,8 @@ igt_main
- 			test_pxp_stale_ctx_execution(i915);
- 		igt_subtest("verify-pxp-stale-buf-execution")
- 			test_pxp_stale_buf_execution(i915);
-+		igt_subtest("verify-pxp-stale-buf-optout-execution")
-+			test_pxp_stale_buf_optout_execution(i915);
- 	}
- 
- 	igt_fixture {
+ #endif
 -- 
 2.25.1
