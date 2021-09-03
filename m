@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 401BF6E8B3
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 16:27:58 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E8C3B6E8B4
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 16:28:00 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Fri,  3 Sep 2021 19:27:39 +0300
-Message-Id: <20210903162743.29851-4-ville.syrjala@linux.intel.com>
+Date: Fri,  3 Sep 2021 19:27:40 +0300
+Message-Id: <20210903162743.29851-5-ville.syrjala@linux.intel.com>
 In-Reply-To: <20210903162743.29851-1-ville.syrjala@linux.intel.com>
 References: <20210903162743.29851-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 3/7] tests/kms_color: Store r/g/b
- separately for LUT color tests
+Subject: [igt-dev] [PATCH i-g-t v3 4/7] tests/kms_color: Pass pipe to
+ invalid LUT size tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,106 +27,199 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Store the r/g/b values separately for each LUT. A lot of hw
-has a separate 1D LUT for each channel, so with this we can
-potentially do more interesting tests. Also needed for 3D LUTs
-(if we should ever support them).
+Each pipe can have a different LUT sizes, so run the invalid LUT
+size tests once for each pipe.
 
-Reviewed-by: Bhanuprakash Modem <Bhanuprakash.modem@intel.com>
+This also makes sure data->(de)gamma_lut_size are properly initialized
+prior to running these subtests.
+
+Cc: Bhanuprakash Modem <Bhanuprakash.modem@intel.com>
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_color_helper.c | 29 +++++++++++++++++++----------
- tests/kms_color_helper.h |  2 +-
- 2 files changed, 20 insertions(+), 11 deletions(-)
+ tests/kms_color.c        | 73 +++++++++++++++++++++++++---------------
+ tests/kms_color_helper.c | 17 +++++-----
+ tests/kms_color_helper.h |  7 ++--
+ 3 files changed, 58 insertions(+), 39 deletions(-)
 
-diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index 68fa5f0e42ea..8b08cdaeea5f 100644
---- a/tests/kms_color_helper.c
-+++ b/tests/kms_color_helper.c
-@@ -103,14 +103,19 @@ void free_lut(gamma_lut_t *gamma)
- 	free(gamma);
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 9105076aba4f..dabc6963e9e0 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -638,6 +638,26 @@ static void test_pipe_limited_range_ctm(data_t *data,
  }
+ #endif
  
-+static void set_rgb(color_t *coeff, double value)
++static void
++prep_pipe(data_t *data, enum pipe p)
 +{
-+	coeff->r = coeff->g = coeff->b = value;
++	igt_require_pipe(&data->display, p);
++
++	if (igt_pipe_obj_has_prop(&data->display.pipes[p], IGT_CRTC_DEGAMMA_LUT_SIZE)) {
++		data->degamma_lut_size =
++			igt_pipe_obj_get_prop(&data->display.pipes[p],
++					      IGT_CRTC_DEGAMMA_LUT_SIZE);
++		igt_assert_lt(0, data->degamma_lut_size);
++	}
++
++	if (igt_pipe_obj_has_prop(&data->display.pipes[p], IGT_CRTC_GAMMA_LUT_SIZE)) {
++		data->gamma_lut_size =
++			igt_pipe_obj_get_prop(&data->display.pipes[p],
++					      IGT_CRTC_GAMMA_LUT_SIZE);
++		igt_assert_lt(0, data->gamma_lut_size);
++	}
 +}
 +
- gamma_lut_t *generate_table(int lut_size, double exp)
+ static void
+ run_tests_for_pipe(data_t *data, enum pipe p)
  {
- 	gamma_lut_t *gamma = alloc_lut(lut_size);
- 	int i;
+@@ -652,10 +672,10 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+ 	};
  
--	gamma->coeffs[0] = 0.0;
-+	set_rgb(&gamma->coeffs[0], 0.0);
- 	for (i = 1; i < lut_size; i++)
--		gamma->coeffs[i] = pow(i * 1.0 / (lut_size - 1), exp);
-+		set_rgb(&gamma->coeffs[i], pow(i * 1.0 / (lut_size - 1), exp));
+ 	igt_fixture {
++		prep_pipe(data, p);
++
+ 		igt_require_pipe_crc(data->drm_fd);
  
- 	return gamma;
- }
-@@ -120,9 +125,9 @@ gamma_lut_t *generate_table_max(int lut_size)
- 	gamma_lut_t *gamma = alloc_lut(lut_size);
- 	int i;
+-		igt_require_pipe(&data->display, p);
+-
+ 		pipe = &data->display.pipes[p];
+ 		igt_require(pipe->n_planes >= 0);
  
--	gamma->coeffs[0] = 0.0;
-+	set_rgb(&gamma->coeffs[0], 0.0);
- 	for (i = 1; i < lut_size; i++)
--		gamma->coeffs[i] = 1.0;
-+		set_rgb(&gamma->coeffs[i], 1.0);
+@@ -665,20 +685,6 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+ 						  primary->pipe->pipe,
+ 						  INTEL_PIPE_CRC_SOURCE_AUTO);
  
- 	return gamma;
- }
-@@ -133,7 +138,7 @@ gamma_lut_t *generate_table_zero(int lut_size)
- 	int i;
- 
- 	for (i = 0; i < lut_size; i++)
--		gamma->coeffs[i] = 0.0;
-+		set_rgb(&gamma->coeffs[i], 0.0);
- 
- 	return gamma;
- }
-@@ -158,7 +163,9 @@ struct drm_color_lut *coeffs_to_lut(data_t *data,
- 	if (IS_CHERRYVIEW(data->devid))
- 		lut_size -= 1;
- 	for (i = 0; i < lut_size; i++) {
--		uint32_t v = (gamma->coeffs[i] * max_value);
-+		uint32_t r = gamma->coeffs[i].r * max_value;
-+		uint32_t g = gamma->coeffs[i].g * max_value;
-+		uint32_t b = gamma->coeffs[i].b * max_value;
- 
- 		/*
- 		 * Hardware might encode colors on a different number of bits
-@@ -166,11 +173,13 @@ struct drm_color_lut *coeffs_to_lut(data_t *data,
- 		 * Mask the lower bits not provided by the framebuffer so we
- 		 * can do CRC comparisons.
- 		 */
--		v &= mask;
-+		r &= mask;
-+		g &= mask;
-+		b &= mask;
- 
--		lut[i].red = v;
--		lut[i].green = v;
--		lut[i].blue = v;
-+		lut[i].red = r;
-+		lut[i].green = g;
-+		lut[i].blue = b;
+-		if (igt_pipe_obj_has_prop(&data->display.pipes[p], IGT_CRTC_DEGAMMA_LUT_SIZE)) {
+-			data->degamma_lut_size =
+-				igt_pipe_obj_get_prop(&data->display.pipes[p],
+-						      IGT_CRTC_DEGAMMA_LUT_SIZE);
+-			igt_assert_lt(0, data->degamma_lut_size);
+-		}
+-
+-		if (igt_pipe_obj_has_prop(&data->display.pipes[p], IGT_CRTC_GAMMA_LUT_SIZE)) {
+-			data->gamma_lut_size =
+-				igt_pipe_obj_get_prop(&data->display.pipes[p],
+-						      IGT_CRTC_GAMMA_LUT_SIZE);
+-			igt_assert_lt(0, data->gamma_lut_size);
+-		}
+-
+ 		igt_display_require_output_on_pipe(&data->display, p);
  	}
  
- 	if (IS_CHERRYVIEW(data->devid))
+@@ -865,6 +871,25 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+ 	}
+ }
+ 
++static void
++run_invalid_tests_for_pipe(data_t *data, enum pipe p)
++{
++	igt_fixture
++		prep_pipe(data, p);
++
++	igt_describe("Negative check for invalid gamma lut sizes");
++	igt_subtest_f("pipe-%s-invalid-gamma-lut-sizes", kmstest_pipe_name(p))
++		invalid_gamma_lut_sizes(data, p);
++
++	igt_describe("Negative check for invalid degamma lut sizes");
++	igt_subtest_f("pipe-%s-invalid-degamma-lut-sizes", kmstest_pipe_name(p))
++		invalid_degamma_lut_sizes(data, p);
++
++	igt_describe("Negative check for color tranformation matrix sizes");
++	igt_subtest_f("pipe-%s-invalid-ctm-matrix-sizes", kmstest_pipe_name(p))
++		invalid_ctm_matrix_sizes(data, p);
++}
++
+ igt_main
+ {
+ 	data_t data = {};
+@@ -879,21 +904,13 @@ igt_main
+ 		igt_display_require(&data.display, data.drm_fd);
+ 	}
+ 
+-	for_each_pipe_static(pipe)
++	for_each_pipe_static(pipe) {
+ 		igt_subtest_group
+ 			run_tests_for_pipe(&data, pipe);
+ 
+-	igt_describe("Negative check for invalid gamma lut sizes");
+-	igt_subtest_f("pipe-invalid-gamma-lut-sizes")
+-		invalid_gamma_lut_sizes(&data);
+-
+-	igt_describe("Negative check for invalid degamma lut sizes");
+-	igt_subtest_f("pipe-invalid-degamma-lut-sizes")
+-		invalid_degamma_lut_sizes(&data);
+-
+-	igt_describe("Negative check for color tranformation matrix sizes");
+-	igt_subtest_f("pipe-invalid-ctm-matrix-sizes")
+-		invalid_ctm_matrix_sizes(&data);
++		igt_subtest_group
++			run_invalid_tests_for_pipe(&data, pipe);
++	}
+ 
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
+index 8b08cdaeea5f..d71e7bb2e6f9 100644
+--- a/tests/kms_color_helper.c
++++ b/tests/kms_color_helper.c
+@@ -287,10 +287,11 @@ pipe_set_property_blob(igt_pipe_t *pipe,
+ }
+ 
+ static void
+-invalid_lut_sizes(data_t *data, enum igt_atomic_crtc_properties prop, int size)
++invalid_lut_sizes(data_t *data, enum pipe p,
++		  enum igt_atomic_crtc_properties prop, int size)
+ {
+ 	igt_display_t *display = &data->display;
+-	igt_pipe_t *pipe = &display->pipes[0];
++	igt_pipe_t *pipe = &display->pipes[p];
+ 	struct drm_color_lut *lut;
+ 	size_t lut_size = size * sizeof(lut[0]);
+ 
+@@ -319,21 +320,21 @@ invalid_lut_sizes(data_t *data, enum igt_atomic_crtc_properties prop, int size)
+ }
+ 
+ void
+-invalid_gamma_lut_sizes(data_t *data)
++invalid_gamma_lut_sizes(data_t *data, enum pipe p)
+ {
+-	invalid_lut_sizes(data, IGT_CRTC_GAMMA_LUT, data->gamma_lut_size);
++	invalid_lut_sizes(data, p, IGT_CRTC_GAMMA_LUT, data->gamma_lut_size);
+ }
+ 
+ void
+-invalid_degamma_lut_sizes(data_t *data)
++invalid_degamma_lut_sizes(data_t *data, enum pipe p)
+ {
+-	invalid_lut_sizes(data, IGT_CRTC_DEGAMMA_LUT, data->degamma_lut_size);
++	invalid_lut_sizes(data, p, IGT_CRTC_DEGAMMA_LUT, data->degamma_lut_size);
+ }
+ 
+-void invalid_ctm_matrix_sizes(data_t *data)
++void invalid_ctm_matrix_sizes(data_t *data, enum pipe p)
+ {
+ 	igt_display_t *display = &data->display;
+-	igt_pipe_t *pipe = &display->pipes[0];
++	igt_pipe_t *pipe = &display->pipes[p];
+ 	void *ptr;
+ 
+ 	igt_require(igt_pipe_obj_has_prop(pipe, IGT_CRTC_CTM));
 diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index 88890724c2e4..3f49e7cae4c0 100644
+index 3f49e7cae4c0..bb6f0054f388 100644
 --- a/tests/kms_color_helper.h
 +++ b/tests/kms_color_helper.h
-@@ -61,7 +61,7 @@ typedef struct {
+@@ -103,8 +103,9 @@ int pipe_set_property_blob_id(igt_pipe_t *pipe,
+ int pipe_set_property_blob(igt_pipe_t *pipe,
+ 			   enum igt_atomic_crtc_properties prop,
+ 			   void *ptr, size_t length);
+-void invalid_gamma_lut_sizes(data_t *data);
+-void invalid_degamma_lut_sizes(data_t *data);
+-void invalid_ctm_matrix_sizes(data_t *data);
++void invalid_gamma_lut_sizes(data_t *data, enum pipe p);
++void invalid_degamma_lut_sizes(data_t *data, enum pipe p);
++void invalid_ctm_matrix_sizes(data_t *data, enum pipe p);
++
+ #endif
  
- typedef struct {
- 	int size;
--	double coeffs[];
-+	color_t coeffs[];
- } gamma_lut_t;
- 
- void paint_gradient_rectangles(data_t *data,
 -- 
 2.31.1
