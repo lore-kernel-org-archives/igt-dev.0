@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E3316E855
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 07:32:55 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Fri,  3 Sep 2021 13:02:51 +0530
-Message-Id: <20210903073251.462352-7-bhanuprakash.modem@intel.com>
-In-Reply-To: <20210903073251.462352-1-bhanuprakash.modem@intel.com>
-References: <20210903073251.462352-1-bhanuprakash.modem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8532911281952990405=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v2 6/6] tests/kms_color: Add GAMMA_LUT_3D tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 03 Sep 2021 08:16:43 -0000
+Message-ID: <163065700314.21416.6181516286109709065@emeril.freedesktop.org>
+References: <20210903073251.462352-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20210903073251.462352-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fcolor=3A_3D_LUT_tests_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,312 +16,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com, uma.shankar@intel.com
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+--===============8532911281952990405==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add some basic tests for 3D LUTs.
+== Series Details ==
 
-V2: Rebase
+Series: tests/kms_color: 3D LUT tests (rev3)
+URL   : https://patchwork.freedesktop.org/series/90165/
+State : success
 
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_color.c        | 104 +++++++++++++++++++++++++++++++++++++++
- tests/kms_color_helper.c |  58 +++++++++++++++++++++-
- tests/kms_color_helper.h |  18 +++++++
- 3 files changed, 179 insertions(+), 1 deletion(-)
+== Summary ==
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 716bd899c..a0ced0193 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -198,6 +198,88 @@ static void test_pipe_gamma(data_t *data,
- 	free_lut(gamma_full);
- }
- 
-+static void test_pipe_gamma_lut_3d(data_t *data,
-+				   igt_plane_t *primary)
-+{
-+	igt_output_t *output;
-+	igt_display_t *display = &data->display;
-+	gamma_lut_t *gamma_lut_3d_linear, *gamma_lut_3d_full;
-+	color_t red_green_blue[] = {
-+		{ 1.0, 0.0, 0.0 },
-+		{ 0.0, 1.0, 0.0 },
-+		{ 0.0, 0.0, 1.0 }
-+	};
-+
-+	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT_3D));
-+
-+	gamma_lut_3d_linear = generate_lut_3d(data->gamma_lut_3d_size, 1.0);
-+	gamma_lut_3d_full = generate_lut_3d_max(data->gamma_lut_3d_size);
-+
-+	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe, output) {
-+		drmModeModeInfo *mode;
-+		struct igt_fb fb_modeset, fb;
-+		igt_crc_t crc_fulllut3d, crc_fullcolors;
-+		int fb_id, fb_modeset_id;
-+
-+		igt_output_set_pipe(output, primary->pipe->pipe);
-+		mode = igt_output_get_mode(output);
-+
-+		/* Create a framebuffer at the size of the output. */
-+		fb_id = igt_create_fb(data->drm_fd,
-+				      mode->hdisplay,
-+				      mode->vdisplay,
-+				      DRM_FORMAT_XRGB8888,
-+				      DRM_FORMAT_MOD_NONE,
-+				      &fb);
-+		igt_assert(fb_id);
-+
-+		fb_modeset_id = igt_create_fb(data->drm_fd,
-+					      mode->hdisplay,
-+					      mode->vdisplay,
-+					      DRM_FORMAT_XRGB8888,
-+					      DRM_FORMAT_MOD_NONE,
-+					      &fb_modeset);
-+		igt_assert(fb_modeset_id);
-+
-+		igt_plane_set_fb(primary, &fb_modeset);
-+		disable_ctm(primary->pipe);
-+		disable_degamma(primary->pipe);
-+		disable_gamma(primary->pipe);
-+		set_gamma_lut_3d(data, primary->pipe, gamma_lut_3d_linear);
-+		igt_display_commit(&data->display);
-+
-+		/* Draw solid colors without 3D LUT transformation. */
-+		paint_rectangles(data, mode, red_green_blue, &fb);
-+		igt_plane_set_fb(primary, &fb);
-+		igt_display_commit(&data->display);
-+		igt_wait_for_vblank(data->drm_fd,
-+				    display->pipes[primary->pipe->pipe].crtc_offset);
-+		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
-+
-+		/* Draw a gradient with 3D LUT to remap all
-+		 * values to max red/green/blue.
-+		 */
-+		paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-+		igt_plane_set_fb(primary, &fb);
-+		set_gamma_lut_3d(data, primary->pipe, gamma_lut_3d_full);
-+		igt_display_commit(&data->display);
-+		igt_wait_for_vblank(data->drm_fd,
-+				    display->pipes[primary->pipe->pipe].crtc_offset);
-+		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fulllut3d);
-+
-+		/* Verify that the CRC of the software computed output is
-+		 * equal to the CRC of the 3D LUT transformation output.
-+		 */
-+		igt_assert_crc_equal(&crc_fulllut3d, &crc_fullcolors);
-+
-+		igt_plane_set_fb(primary, NULL);
-+		igt_output_set_pipe(output, PIPE_NONE);
-+	}
-+
-+	free_lut(gamma_lut_3d_linear);
-+	free_lut(gamma_lut_3d_full);
-+}
-+
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out legacy
-  * gamma LUT and verify we have the same CRC as drawing solid color rectangles
-@@ -679,6 +761,13 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 			igt_assert_lt(0, data->gamma_lut_size);
- 		}
- 
-+		if (igt_pipe_obj_has_prop(&data->display.pipes[p], IGT_CRTC_GAMMA_LUT_3D_SIZE)) {
-+			data->gamma_lut_3d_size =
-+				igt_pipe_obj_get_prop(&data->display.pipes[p],
-+						      IGT_CRTC_GAMMA_LUT_3D_SIZE);
-+			igt_assert_lt(0, data->gamma_lut_3d_size);
-+		}
-+
- 		igt_display_require_output_on_pipe(&data->display, p);
- 	}
- 
-@@ -854,6 +943,10 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 	igt_subtest_f("pipe-%s-legacy-gamma-reset", kmstest_pipe_name(p))
- 		test_pipe_legacy_gamma_reset(data, primary);
- 
-+	igt_describe("Verify that gamma 3DLUT works correctly");
-+	igt_subtest_f("pipe-%s-gamma-lut-3d", kmstest_pipe_name(p))
-+		test_pipe_gamma_lut_3d(data, primary);
-+
- 	igt_fixture {
- 		disable_degamma(primary->pipe);
- 		disable_gamma(primary->pipe);
-@@ -883,6 +976,13 @@ static void run_size_tests(data_t *data)
- 						      IGT_CRTC_GAMMA_LUT_SIZE);
- 			igt_assert_lt(0, data->gamma_lut_size);
- 		}
-+
-+		if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_GAMMA_LUT_3D_SIZE)) {
-+			data->gamma_lut_3d_size =
-+				igt_pipe_obj_get_prop(pipe,
-+						      IGT_CRTC_GAMMA_LUT_3D_SIZE);
-+			igt_assert_lt(0, data->gamma_lut_3d_size);
-+		}
- 	}
- 
- 	igt_describe("Negative check for invalid gamma lut sizes");
-@@ -896,6 +996,10 @@ static void run_size_tests(data_t *data)
- 	igt_describe("Negative check for color tranformation matrix sizes");
- 	igt_subtest_f("pipe-invalid-ctm-matrix-sizes")
- 		invalid_ctm_matrix_sizes(data);
-+
-+	igt_describe("Negative check for invalid gamma 3dlut sizes");
-+	igt_subtest_f("pipe-invalid-gamma-lut-3d-sizes")
-+		invalid_gamma_lut_3d_sizes(data);
- }
- 
- igt_main
-diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index 7f9a30e62..261ec7836 100644
---- a/tests/kms_color_helper.c
-+++ b/tests/kms_color_helper.c
-@@ -143,6 +143,44 @@ gamma_lut_t *generate_table_zero(int lut_size)
- 	return gamma;
- }
- 
-+gamma_lut_t *generate_lut_3d(int lut_size, double exp)
-+{
-+	gamma_lut_t *gamma = alloc_lut(lut_3d_size(lut_size));
-+
-+	for (int r = 0; r < lut_size; r++) {
-+		for (int g = 0; g < lut_size; g++) {
-+			for (int b = 0; b < lut_size; b++) {
-+				int i = lut_3d_index(r, g, b, lut_size);
-+
-+				gamma->coeffs[i].r = pow(r * 1.0 / (lut_size - 1), exp);
-+				gamma->coeffs[i].g = pow(g * 1.0 / (lut_size - 1), exp);
-+				gamma->coeffs[i].b = pow(b * 1.0 / (lut_size - 1), exp);
-+			}
-+		}
-+	}
-+
-+	return gamma;
-+}
-+
-+gamma_lut_t *generate_lut_3d_max(int lut_size)
-+{
-+	gamma_lut_t *gamma = alloc_lut(lut_3d_size(lut_size));
-+
-+	for (int r = 0; r < lut_size; r++) {
-+		for (int g = 0; g < lut_size; g++) {
-+			for (int b = 0; b < lut_size; b++) {
-+				int i = lut_3d_index(r, g, b, lut_size);
-+
-+				gamma->coeffs[i].r = r == 0 ? 0.0 : 1.0;
-+				gamma->coeffs[i].g = g == 0 ? 0.0 : 1.0;
-+				gamma->coeffs[i].b = b == 0 ? 0.0 : 1.0;
-+			}
-+		}
-+	}
-+
-+	return gamma;
-+}
-+
- struct drm_color_lut *coeffs_to_lut(data_t *data,
- 				    const gamma_lut_t *gamma,
- 				    uint32_t color_depth,
-@@ -215,6 +253,19 @@ void set_gamma(data_t *data,
- 	free(lut);
- }
- 
-+void set_gamma_lut_3d(data_t *data,
-+		      igt_pipe_t *pipe,
-+		      const gamma_lut_t *gamma_lut_3d)
-+{
-+	size_t size = sizeof(struct drm_color_lut) * gamma_lut_3d->size;
-+	struct drm_color_lut *lut = coeffs_to_lut(data, gamma_lut_3d,
-+						  data->color_depth, 0);
-+
-+	igt_pipe_obj_replace_prop_blob(pipe, IGT_CRTC_GAMMA_LUT_3D, lut, size);
-+
-+	free(lut);
-+}
-+
- void set_ctm(igt_pipe_t *pipe, const double *coefficients)
- {
- 	struct drm_color_ctm ctm;
-@@ -330,6 +381,12 @@ invalid_degamma_lut_sizes(data_t *data)
- 	return invalid_lut_sizes(data, IGT_CRTC_DEGAMMA_LUT, data->degamma_lut_size);
- }
- 
-+void
-+invalid_gamma_lut_3d_sizes(data_t *data)
-+{
-+	invalid_lut_sizes(data, IGT_CRTC_GAMMA_LUT_3D, lut_3d_size(data->gamma_lut_3d_size));
-+}
-+
- void invalid_ctm_matrix_sizes(data_t *data)
- {
- 	igt_display_t *display = &data->display;
-@@ -358,4 +415,3 @@ void invalid_ctm_matrix_sizes(data_t *data)
- 
- 	free(ptr);
- }
--
-diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index 3f49e7cae..e21adaa22 100644
---- a/tests/kms_color_helper.h
-+++ b/tests/kms_color_helper.h
-@@ -52,6 +52,7 @@ typedef struct {
- 	uint32_t color_depth;
- 	uint64_t degamma_lut_size;
- 	uint64_t gamma_lut_size;
-+	uint64_t gamma_lut_3d_size;
- 	#ifdef HAVE_CHAMELIUM
- 	struct chamelium *chamelium;
- 	struct chamelium_port **ports;
-@@ -77,6 +78,8 @@ void free_lut(gamma_lut_t *gamma);
- gamma_lut_t *generate_table(int lut_size, double exp);
- gamma_lut_t *generate_table_max(int lut_size);
- gamma_lut_t *generate_table_zero(int lut_size);
-+gamma_lut_t *generate_lut_3d(int lut_size, double exp);
-+gamma_lut_t *generate_lut_3d_max(int lut_size);
- struct drm_color_lut *coeffs_to_lut(data_t *data,
- 				    const gamma_lut_t *gamma,
- 				    uint32_t color_depth,
-@@ -87,13 +90,27 @@ void set_degamma(data_t *data,
- void set_gamma(data_t *data,
- 	       igt_pipe_t *pipe,
- 	       const gamma_lut_t *gamma);
-+void set_gamma_lut_3d(data_t *data,
-+		      igt_pipe_t *pipe,
-+		      const gamma_lut_t *gamma);
- void set_ctm(igt_pipe_t *pipe, const double *coefficients);
- void disable_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties prop);
- 
- #define disable_degamma(pipe) disable_prop(pipe, IGT_CRTC_DEGAMMA_LUT)
- #define disable_gamma(pipe) disable_prop(pipe, IGT_CRTC_GAMMA_LUT)
-+#define disable_lut_3d(pipe) disable_prop(pipe, IGT_CRTC_LUT_3D)
- #define disable_ctm(pipe) disable_prop(pipe, IGT_CRTC_CTM)
- 
-+static inline int lut_3d_size(int lut_size)
-+{
-+	return lut_size * lut_size * lut_size;
-+}
-+
-+static inline int lut_3d_index(int r, int g, int b, int lut_size)
-+{
-+	return r * lut_size * lut_size + g * lut_size + b;
-+}
-+
- drmModePropertyBlobPtr get_blob(data_t *data, igt_pipe_t *pipe,
- 				enum igt_atomic_crtc_properties prop);
- bool crc_equal(igt_crc_t *a, igt_crc_t *b);
-@@ -105,6 +122,7 @@ int pipe_set_property_blob(igt_pipe_t *pipe,
- 			   void *ptr, size_t length);
- void invalid_gamma_lut_sizes(data_t *data);
- void invalid_degamma_lut_sizes(data_t *data);
-+void invalid_gamma_lut_3d_sizes(data_t *data);
- void invalid_ctm_matrix_sizes(data_t *data);
- #endif
- 
--- 
-2.32.0
+CI Bug Log - changes from CI_DRM_10548 -> IGTPW_6193
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6193/index.html
+
+
+Changes
+-------
+
+  No changes found
+
+
+Participating hosts (48 -> 37)
+------------------------------
+
+  Missing    (11): fi-kbl-soraka fi-ilk-m540 bat-adls-5 bat-dg1-5 fi-hsw-4200u fi-bsw-cyan bat-adlp-4 fi-kbl-x1275 fi-bdw-samus fi-tgl-y bat-jsl-1 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6197 -> IGTPW_6193
+
+  CI-20190529: 20190529
+  CI_DRM_10548: 50be9d6f82904be755ea5b04efbd6c5e19e2d945 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6193: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6193/index.html
+  IGT_6197: 40888f97a6ad219f4ed48a1830d0ef3c9617d006 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@kms_color@pipe-a-gamma-lut-3d
++igt@kms_color@pipe-b-gamma-lut-3d
++igt@kms_color@pipe-c-gamma-lut-3d
++igt@kms_color@pipe-d-gamma-lut-3d
++igt@kms_color@pipe-e-gamma-lut-3d
++igt@kms_color@pipe-f-gamma-lut-3d
++igt@kms_color@pipe-invalid-gamma-lut-3d-sizes
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6193/index.html
+
+--===============8532911281952990405==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_color: 3D LUT tests (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/90165/">https://patchwork.freedesktop.org/series/90165/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6193/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6193/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10548 -&gt; IGTPW_6193</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6193/index.html</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Participating hosts (48 -&gt; 37)</h2>
+<p>Missing    (11): fi-kbl-soraka fi-ilk-m540 bat-adls-5 bat-dg1-5 fi-hsw-4200u fi-bsw-cyan bat-adlp-4 fi-kbl-x1275 fi-bdw-samus fi-tgl-y bat-jsl-1 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6197 -&gt; IGTPW_6193</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10548: 50be9d6f82904be755ea5b04efbd6c5e19e2d945 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6193: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6193/index.html<br />
+  IGT_6197: 40888f97a6ad219f4ed48a1830d0ef3c9617d006 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_color@pipe-a-gamma-lut-3d<br />
++igt@kms_color@pipe-b-gamma-lut-3d<br />
++igt@kms_color@pipe-c-gamma-lut-3d<br />
++igt@kms_color@pipe-d-gamma-lut-3d<br />
++igt@kms_color@pipe-e-gamma-lut-3d<br />
++igt@kms_color@pipe-f-gamma-lut-3d<br />
++igt@kms_color@pipe-invalid-gamma-lut-3d-sizes</p>
+
+</body>
+</html>
+
+--===============8532911281952990405==--
