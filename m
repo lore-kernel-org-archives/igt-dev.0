@@ -1,21 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-4321.protonmail.ch (mail-4321.protonmail.ch [185.70.43.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DBAE36E883
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 12:37:54 +0000 (UTC)
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com
- [51.77.79.158])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail-4321.protonmail.ch (Postfix) with ESMTPS id 4H1HFl5Xmqz4xDg8
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 12:30:51 +0000 (UTC)
-Date: Fri, 03 Sep 2021 12:30:38 +0000
-From: Simon Ser <contact@emersion.fr>
-Message-ID: <20210903123027.1433-1-contact@emersion.fr>
+Content-Type: multipart/alternative;
+ boundary="===============2546781080395614936=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Subject: [igt-dev] [RFC i-g-t] tests/kms_lease: add empty lease test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 03 Sep 2021 13:16:42 -0000
+Message-ID: <163067500273.21415.7837662550386626238@emeril.freedesktop.org>
+References: <20210903123027.1433-1-contact@emersion.fr>
+In-Reply-To: <20210903123027.1433-1-contact@emersion.fr>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Flease=3A_add_empty_lease_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,71 +16,199 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: Simon Ser <contact@emersion.fr>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Simon Ser <contact@emersion.fr>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is an update for a kernel change currently being reviewed.
+--===============2546781080395614936==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Simon Ser <contact@emersion.fr>
----
- tests/kms_lease.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+== Series Details ==
 
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index c5c88e145e1a..b69d99389de0 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -250,6 +250,15 @@ static void simple_lease(data_t *data)
- =09terminate_lease(&lease);
- }
-=20
-+static void empty_lease(data_t *data)
-+{
-+=09struct drm_mode_create_lease mcl =3D {0};
-+
-+=09igt_assert_eq(create_lease(data->master.fd, &mcl), 0);
-+
-+=09close(mcl.fd);
-+}
-+
- static void page_flip_implicit_plane(data_t *data)
- {
- =09uint32_t object_ids[3];
-@@ -842,16 +851,10 @@ static void run_test(data_t *data, void (*testfunc)(d=
-ata_t *))
- static void invalid_create_leases(data_t *data)
- {
- =09uint32_t object_ids[4];
--=09struct drm_mode_create_lease mcl;
-+=09struct drm_mode_create_lease mcl =3D {0};
- =09drmModeRes *resources;
- =09int tmp_fd, ret;
-=20
--=09/* empty lease */
--=09mcl.object_ids =3D 0;
--=09mcl.object_count =3D 0;
--=09mcl.flags =3D 0;
--=09igt_assert_eq(create_lease(data->master.fd, &mcl), -EINVAL);
--
- =09/* NULL array pointer */
- =09mcl.object_count =3D 1;
- =09igt_assert_eq(create_lease(data->master.fd, &mcl), -EFAULT);
-@@ -1221,6 +1224,7 @@ igt_main
- =09=09const char *desc;
- =09} funcs[] =3D {
- =09=09{ "simple_lease", simple_lease, "Check if create lease ioctl call wo=
-rks" },
-+=09=09{ "empty_lease", empty_lease, "Check that creating an empty lease wo=
-rks" },
- =09=09{ "lessee_list", lessee_list, "Check if listed lease is same as crea=
-ted one" },
- =09=09{ "lease_get", lease_get, "Tests getting the required contents of a =
-lease" },
- =09=09{ "lease_unleased_connector", lease_unleased_connector, "Negative te=
-st by trying to"
---=20
-2.33.0
+Series: tests/kms_lease: add empty lease test
+URL   : https://patchwork.freedesktop.org/series/94323/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10549 -> IGTPW_6194
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6194 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-icl-y:           [PASS][1] -> [DMESG-FAIL][2] ([i915#1993])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10549/fi-icl-y/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/fi-icl-y/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@workarounds:
+    - fi-rkl-guc:         NOTRUN -> [DMESG-FAIL][3] ([i915#3928])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-kbl-7500u:       [PASS][4] -> [FAIL][5] ([i915#1372])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10549/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+
+  
+#### Possible fixes ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-rkl-guc:         [DMESG-WARN][6] ([i915#3925]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10549/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html
+
+  
+#### Warnings ####
+
+  * igt@runner@aborted:
+    - fi-rkl-guc:         [FAIL][8] ([i915#1602]) -> [FAIL][9] ([i915#3928])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10549/fi-rkl-guc/igt@runner@aborted.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/fi-rkl-guc/igt@runner@aborted.html
+
+  
+  [i915#1372]: https://gitlab.freedesktop.org/drm/intel/issues/1372
+  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
+  [i915#1993]: https://gitlab.freedesktop.org/drm/intel/issues/1993
+  [i915#3925]: https://gitlab.freedesktop.org/drm/intel/issues/3925
+  [i915#3928]: https://gitlab.freedesktop.org/drm/intel/issues/3928
+
+
+Participating hosts (46 -> 39)
+------------------------------
+
+  Missing    (7): bat-adls-5 fi-hsw-4200u bat-dg1-5 fi-bsw-cyan bat-adlp-4 fi-bdw-samus bat-jsl-1 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6197 -> IGTPW_6194
+
+  CI-20190529: 20190529
+  CI_DRM_10549: cd8e346a0b56ce66f94a9908c7a068bbee8f1829 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6194: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/index.html
+  IGT_6197: 40888f97a6ad219f4ed48a1830d0ef3c9617d006 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@kms_lease@empty_lease
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/index.html
+
+--===============2546781080395614936==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_lease: add empty lease test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/94323/">https://patchwork.freedesktop.org/series/94323/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10549 -&gt; IGTPW_6194</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6194 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-icl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10549/fi-icl-y/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/fi-icl-y/igt@i915_selftest@live@execlists.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1993">i915#1993</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3928">i915#3928</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10549/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1372">i915#1372</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10549/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3925">i915#3925</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@runner@aborted:<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10549/fi-rkl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/fi-rkl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3928">i915#3928</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (46 -&gt; 39)</h2>
+<p>Missing    (7): bat-adls-5 fi-hsw-4200u bat-dg1-5 fi-bsw-cyan bat-adlp-4 fi-bdw-samus bat-jsl-1 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6197 -&gt; IGTPW_6194</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10549: cd8e346a0b56ce66f94a9908c7a068bbee8f1829 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6194: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6194/index.html<br />
+  IGT_6197: 40888f97a6ad219f4ed48a1830d0ef3c9617d006 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_lease@empty_lease</p>
+
+</body>
+</html>
+
+--===============2546781080395614936==--
