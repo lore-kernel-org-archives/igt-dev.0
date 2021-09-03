@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F6E06E8AF
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 16:27:51 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0803F6E8B2
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 16:27:55 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Fri,  3 Sep 2021 19:27:37 +0300
-Message-Id: <20210903162743.29851-2-ville.syrjala@linux.intel.com>
+Date: Fri,  3 Sep 2021 19:27:38 +0300
+Message-Id: <20210903162743.29851-3-ville.syrjala@linux.intel.com>
 In-Reply-To: <20210903162743.29851-1-ville.syrjala@linux.intel.com>
 References: <20210903162743.29851-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 1/7] tests/kms_color_chamelium: Remove
- invalid LUT size tests
+Subject: [igt-dev] [PATCH i-g-t v3 2/7] tests/kms_color: Refactor invalid
+ LUT size tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,36 +27,123 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-There is zero point in duplicating the invalid LUT size tests
-in the chamelium test. Get rid of them.
+Reuse the same code for all invalid LUT size tests.
+
+v2: Drop the pointless return statements in void functions
 
 Cc: Bhanuprakash Modem <Bhanuprakash.modem@intel.com>
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_color_chamelium.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ tests/kms_color_helper.c | 81 +++++++++++++---------------------------
+ 1 file changed, 26 insertions(+), 55 deletions(-)
 
-diff --git a/tests/kms_color_chamelium.c b/tests/kms_color_chamelium.c
-index bc4356bfab6a..97741b9c968e 100644
---- a/tests/kms_color_chamelium.c
-+++ b/tests/kms_color_chamelium.c
-@@ -752,17 +752,6 @@ igt_main
- 	for_each_pipe_static(pipe)
- 		igt_subtest_group
- 			run_tests_for_pipe(&data, pipe);
--	igt_describe("Negative test case gamma lut size");
--	igt_subtest_f("pipe-invalid-gamma-lut-sizes")
--		invalid_gamma_lut_sizes(&data);
--
--	igt_describe("Negative test case degamma lut size");
--	igt_subtest_f("pipe-invalid-degamma-lut-sizes")
--		invalid_degamma_lut_sizes(&data);
--
--	igt_describe("Negative test case ctm matrix size");
--	igt_subtest_f("pipe-invalid-ctm-matrix-sizes")
--		invalid_ctm_matrix_sizes(&data);
+diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
+index 5f223a88129f..68fa5f0e42ea 100644
+--- a/tests/kms_color_helper.c
++++ b/tests/kms_color_helper.c
+@@ -277,77 +277,48 @@ pipe_set_property_blob(igt_pipe_t *pipe,
+ 				       COMMIT_ATOMIC : COMMIT_LEGACY);
+ }
  
- 	igt_fixture {
- 		igt_display_fini(&data.display);
+-void
+-invalid_gamma_lut_sizes(data_t *data)
++static void
++invalid_lut_sizes(data_t *data, enum igt_atomic_crtc_properties prop, int size)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_pipe_t *pipe = &display->pipes[0];
+-	size_t gamma_lut_size = data->gamma_lut_size *
+-				sizeof(struct drm_color_lut);
+-	struct drm_color_lut *gamma_lut;
++	struct drm_color_lut *lut;
++	size_t lut_size = size * sizeof(lut[0]);
+ 
+-	igt_require(igt_pipe_obj_has_prop(pipe, IGT_CRTC_GAMMA_LUT));
++	igt_require(igt_pipe_obj_has_prop(pipe, prop));
+ 
+-	gamma_lut = malloc(gamma_lut_size * 2);
++	lut = malloc(lut_size * 2);
+ 
+ 	igt_display_commit2(display,
+ 			    display->is_atomic ?
+ 			    COMMIT_ATOMIC : COMMIT_LEGACY);
+ 
+-	igt_assert_eq(pipe_set_property_blob(pipe, IGT_CRTC_GAMMA_LUT,
+-					     gamma_lut, 1), -EINVAL);
+-	igt_assert_eq(pipe_set_property_blob(pipe, IGT_CRTC_GAMMA_LUT,
+-					     gamma_lut, gamma_lut_size + 1),
+-					     -EINVAL);
+-	igt_assert_eq(pipe_set_property_blob(pipe, IGT_CRTC_GAMMA_LUT,
+-					     gamma_lut, gamma_lut_size - 1),
+-					     -EINVAL);
+-	igt_assert_eq(pipe_set_property_blob(pipe, IGT_CRTC_GAMMA_LUT,
+-					     gamma_lut, gamma_lut_size +
+-					     sizeof(struct drm_color_lut)),
+-					     -EINVAL);
+-	igt_assert_eq(pipe_set_property_blob_id(pipe, IGT_CRTC_GAMMA_LUT,
+-		      pipe->crtc_id), -EINVAL);
+-	igt_assert_eq(pipe_set_property_blob_id(pipe, IGT_CRTC_GAMMA_LUT,
+-		      4096 * 4096), -EINVAL);
++	igt_assert_eq(pipe_set_property_blob(pipe, prop, lut,
++					     1), -EINVAL);
++	igt_assert_eq(pipe_set_property_blob(pipe, prop, lut,
++					     lut_size + 1), -EINVAL);
++	igt_assert_eq(pipe_set_property_blob(pipe, prop, lut,
++					     lut_size - 1), -EINVAL);
++	igt_assert_eq(pipe_set_property_blob(pipe, prop, lut,
++					     lut_size + sizeof(struct drm_color_lut)), -EINVAL);
++	igt_assert_eq(pipe_set_property_blob_id(pipe, prop,
++						pipe->crtc_id), -EINVAL);
++	igt_assert_eq(pipe_set_property_blob_id(pipe, prop,
++						4096 * 4096), -EINVAL);
+ 
+-	free(gamma_lut);
++	free(lut);
++}
++
++void
++invalid_gamma_lut_sizes(data_t *data)
++{
++	invalid_lut_sizes(data, IGT_CRTC_GAMMA_LUT, data->gamma_lut_size);
+ }
+ 
+ void
+ invalid_degamma_lut_sizes(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+-	igt_pipe_t *pipe = &display->pipes[0];
+-	size_t degamma_lut_size = data->degamma_lut_size *
+-				  sizeof(struct drm_color_lut);
+-	struct drm_color_lut *degamma_lut;
+-
+-	igt_require(igt_pipe_obj_has_prop(pipe, IGT_CRTC_DEGAMMA_LUT));
+-
+-	degamma_lut = malloc(degamma_lut_size * 2);
+-
+-	igt_display_commit2(display, display->is_atomic ?
+-			    COMMIT_ATOMIC : COMMIT_LEGACY);
+-
+-	igt_assert_eq(pipe_set_property_blob(pipe, IGT_CRTC_DEGAMMA_LUT,
+-					     degamma_lut, 1), -EINVAL);
+-	igt_assert_eq(pipe_set_property_blob(pipe, IGT_CRTC_DEGAMMA_LUT,
+-					     degamma_lut, degamma_lut_size + 1),
+-					     -EINVAL);
+-	igt_assert_eq(pipe_set_property_blob(pipe, IGT_CRTC_DEGAMMA_LUT,
+-					     degamma_lut, degamma_lut_size - 1),
+-					     -EINVAL);
+-	igt_assert_eq(pipe_set_property_blob(pipe, IGT_CRTC_DEGAMMA_LUT,
+-					     degamma_lut, degamma_lut_size +
+-					     sizeof(struct drm_color_lut)),
+-					     -EINVAL);
+-	igt_assert_eq(pipe_set_property_blob_id(pipe, IGT_CRTC_DEGAMMA_LUT,
+-						pipe->crtc_id), -EINVAL);
+-	igt_assert_eq(pipe_set_property_blob_id(pipe, IGT_CRTC_DEGAMMA_LUT,
+-						4096 * 4096), -EINVAL);
+-
+-	free(degamma_lut);
++	invalid_lut_sizes(data, IGT_CRTC_DEGAMMA_LUT, data->degamma_lut_size);
+ }
+ 
+ void invalid_ctm_matrix_sizes(data_t *data)
 -- 
 2.31.1
