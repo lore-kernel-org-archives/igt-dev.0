@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 99FF66E852
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 07:32:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E3316E855
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 07:32:55 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Fri,  3 Sep 2021 13:02:49 +0530
-Message-Id: <20210903073251.462352-5-bhanuprakash.modem@intel.com>
+Date: Fri,  3 Sep 2021 13:02:51 +0530
+Message-Id: <20210903073251.462352-7-bhanuprakash.modem@intel.com>
 In-Reply-To: <20210903073251.462352-1-bhanuprakash.modem@intel.com>
 References: <20210903073251.462352-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v2 4/6] tests/kms_color: Store r/g/b separately
- for LUT color tests
+Subject: [igt-dev] [i-g-t v2 6/6] tests/kms_color: Add GAMMA_LUT_3D tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,111 +21,309 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com, uma.shankar@intel.com
-Cc: Bhanuprakash Modem <Bhanuprakash.modem@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Store the r/g/b values separately for each LUT. A lot of hw
-has a separate 1D LUT for each channel, so with this we can
-potentially do more interesting tests. Also needed for 3D LUTs
-(if we should ever support them).
+Add some basic tests for 3D LUTs.
+
+V2: Rebase
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Reviewed-by: Bhanuprakash Modem <Bhanuprakash.modem@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_color_helper.c | 29 +++++++++++++++++++----------
- tests/kms_color_helper.h |  2 +-
- 2 files changed, 20 insertions(+), 11 deletions(-)
+ tests/kms_color.c        | 104 +++++++++++++++++++++++++++++++++++++++
+ tests/kms_color_helper.c |  58 +++++++++++++++++++++-
+ tests/kms_color_helper.h |  18 +++++++
+ 3 files changed, 179 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index f9fde340f..7f9a30e62 100644
---- a/tests/kms_color_helper.c
-+++ b/tests/kms_color_helper.c
-@@ -103,14 +103,19 @@ void free_lut(gamma_lut_t *gamma)
- 	free(gamma);
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 716bd899c..a0ced0193 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -198,6 +198,88 @@ static void test_pipe_gamma(data_t *data,
+ 	free_lut(gamma_full);
  }
  
-+static void set_rgb(color_t *coeff, double value)
++static void test_pipe_gamma_lut_3d(data_t *data,
++				   igt_plane_t *primary)
 +{
-+	coeff->r = coeff->g = coeff->b = value;
++	igt_output_t *output;
++	igt_display_t *display = &data->display;
++	gamma_lut_t *gamma_lut_3d_linear, *gamma_lut_3d_full;
++	color_t red_green_blue[] = {
++		{ 1.0, 0.0, 0.0 },
++		{ 0.0, 1.0, 0.0 },
++		{ 0.0, 0.0, 1.0 }
++	};
++
++	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT_3D));
++
++	gamma_lut_3d_linear = generate_lut_3d(data->gamma_lut_3d_size, 1.0);
++	gamma_lut_3d_full = generate_lut_3d_max(data->gamma_lut_3d_size);
++
++	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe, output) {
++		drmModeModeInfo *mode;
++		struct igt_fb fb_modeset, fb;
++		igt_crc_t crc_fulllut3d, crc_fullcolors;
++		int fb_id, fb_modeset_id;
++
++		igt_output_set_pipe(output, primary->pipe->pipe);
++		mode = igt_output_get_mode(output);
++
++		/* Create a framebuffer at the size of the output. */
++		fb_id = igt_create_fb(data->drm_fd,
++				      mode->hdisplay,
++				      mode->vdisplay,
++				      DRM_FORMAT_XRGB8888,
++				      DRM_FORMAT_MOD_NONE,
++				      &fb);
++		igt_assert(fb_id);
++
++		fb_modeset_id = igt_create_fb(data->drm_fd,
++					      mode->hdisplay,
++					      mode->vdisplay,
++					      DRM_FORMAT_XRGB8888,
++					      DRM_FORMAT_MOD_NONE,
++					      &fb_modeset);
++		igt_assert(fb_modeset_id);
++
++		igt_plane_set_fb(primary, &fb_modeset);
++		disable_ctm(primary->pipe);
++		disable_degamma(primary->pipe);
++		disable_gamma(primary->pipe);
++		set_gamma_lut_3d(data, primary->pipe, gamma_lut_3d_linear);
++		igt_display_commit(&data->display);
++
++		/* Draw solid colors without 3D LUT transformation. */
++		paint_rectangles(data, mode, red_green_blue, &fb);
++		igt_plane_set_fb(primary, &fb);
++		igt_display_commit(&data->display);
++		igt_wait_for_vblank(data->drm_fd,
++				    display->pipes[primary->pipe->pipe].crtc_offset);
++		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
++
++		/* Draw a gradient with 3D LUT to remap all
++		 * values to max red/green/blue.
++		 */
++		paint_gradient_rectangles(data, mode, red_green_blue, &fb);
++		igt_plane_set_fb(primary, &fb);
++		set_gamma_lut_3d(data, primary->pipe, gamma_lut_3d_full);
++		igt_display_commit(&data->display);
++		igt_wait_for_vblank(data->drm_fd,
++				    display->pipes[primary->pipe->pipe].crtc_offset);
++		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fulllut3d);
++
++		/* Verify that the CRC of the software computed output is
++		 * equal to the CRC of the 3D LUT transformation output.
++		 */
++		igt_assert_crc_equal(&crc_fulllut3d, &crc_fullcolors);
++
++		igt_plane_set_fb(primary, NULL);
++		igt_output_set_pipe(output, PIPE_NONE);
++	}
++
++	free_lut(gamma_lut_3d_linear);
++	free_lut(gamma_lut_3d_full);
 +}
 +
- gamma_lut_t *generate_table(int lut_size, double exp)
- {
- 	gamma_lut_t *gamma = alloc_lut(lut_size);
- 	int i;
+ /*
+  * Draw 3 gradient rectangles in red, green and blue, with a maxed out legacy
+  * gamma LUT and verify we have the same CRC as drawing solid color rectangles
+@@ -679,6 +761,13 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+ 			igt_assert_lt(0, data->gamma_lut_size);
+ 		}
  
--	gamma->coeffs[0] = 0.0;
-+	set_rgb(&gamma->coeffs[0], 0.0);
- 	for (i = 1; i < lut_size; i++)
--		gamma->coeffs[i] = pow(i * 1.0 / (lut_size - 1), exp);
-+		set_rgb(&gamma->coeffs[i], pow(i * 1.0 / (lut_size - 1), exp));
- 
- 	return gamma;
- }
-@@ -120,9 +125,9 @@ gamma_lut_t *generate_table_max(int lut_size)
- 	gamma_lut_t *gamma = alloc_lut(lut_size);
- 	int i;
- 
--	gamma->coeffs[0] = 0.0;
-+	set_rgb(&gamma->coeffs[0], 0.0);
- 	for (i = 1; i < lut_size; i++)
--		gamma->coeffs[i] = 1.0;
-+		set_rgb(&gamma->coeffs[i], 1.0);
- 
- 	return gamma;
- }
-@@ -133,7 +138,7 @@ gamma_lut_t *generate_table_zero(int lut_size)
- 	int i;
- 
- 	for (i = 0; i < lut_size; i++)
--		gamma->coeffs[i] = 0.0;
-+		set_rgb(&gamma->coeffs[i], 0.0);
- 
- 	return gamma;
- }
-@@ -158,7 +163,9 @@ struct drm_color_lut *coeffs_to_lut(data_t *data,
- 	if (IS_CHERRYVIEW(data->devid))
- 		lut_size -= 1;
- 	for (i = 0; i < lut_size; i++) {
--		uint32_t v = (gamma->coeffs[i] * max_value);
-+		uint32_t r = gamma->coeffs[i].r * max_value;
-+		uint32_t g = gamma->coeffs[i].g * max_value;
-+		uint32_t b = gamma->coeffs[i].b * max_value;
- 
- 		/*
- 		 * Hardware might encode colors on a different number of bits
-@@ -166,11 +173,13 @@ struct drm_color_lut *coeffs_to_lut(data_t *data,
- 		 * Mask the lower bits not provided by the framebuffer so we
- 		 * can do CRC comparisons.
- 		 */
--		v &= mask;
-+		r &= mask;
-+		g &= mask;
-+		b &= mask;
- 
--		lut[i].red = v;
--		lut[i].green = v;
--		lut[i].blue = v;
-+		lut[i].red = r;
-+		lut[i].green = g;
-+		lut[i].blue = b;
++		if (igt_pipe_obj_has_prop(&data->display.pipes[p], IGT_CRTC_GAMMA_LUT_3D_SIZE)) {
++			data->gamma_lut_3d_size =
++				igt_pipe_obj_get_prop(&data->display.pipes[p],
++						      IGT_CRTC_GAMMA_LUT_3D_SIZE);
++			igt_assert_lt(0, data->gamma_lut_3d_size);
++		}
++
+ 		igt_display_require_output_on_pipe(&data->display, p);
  	}
  
- 	if (IS_CHERRYVIEW(data->devid))
+@@ -854,6 +943,10 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+ 	igt_subtest_f("pipe-%s-legacy-gamma-reset", kmstest_pipe_name(p))
+ 		test_pipe_legacy_gamma_reset(data, primary);
+ 
++	igt_describe("Verify that gamma 3DLUT works correctly");
++	igt_subtest_f("pipe-%s-gamma-lut-3d", kmstest_pipe_name(p))
++		test_pipe_gamma_lut_3d(data, primary);
++
+ 	igt_fixture {
+ 		disable_degamma(primary->pipe);
+ 		disable_gamma(primary->pipe);
+@@ -883,6 +976,13 @@ static void run_size_tests(data_t *data)
+ 						      IGT_CRTC_GAMMA_LUT_SIZE);
+ 			igt_assert_lt(0, data->gamma_lut_size);
+ 		}
++
++		if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_GAMMA_LUT_3D_SIZE)) {
++			data->gamma_lut_3d_size =
++				igt_pipe_obj_get_prop(pipe,
++						      IGT_CRTC_GAMMA_LUT_3D_SIZE);
++			igt_assert_lt(0, data->gamma_lut_3d_size);
++		}
+ 	}
+ 
+ 	igt_describe("Negative check for invalid gamma lut sizes");
+@@ -896,6 +996,10 @@ static void run_size_tests(data_t *data)
+ 	igt_describe("Negative check for color tranformation matrix sizes");
+ 	igt_subtest_f("pipe-invalid-ctm-matrix-sizes")
+ 		invalid_ctm_matrix_sizes(data);
++
++	igt_describe("Negative check for invalid gamma 3dlut sizes");
++	igt_subtest_f("pipe-invalid-gamma-lut-3d-sizes")
++		invalid_gamma_lut_3d_sizes(data);
+ }
+ 
+ igt_main
+diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
+index 7f9a30e62..261ec7836 100644
+--- a/tests/kms_color_helper.c
++++ b/tests/kms_color_helper.c
+@@ -143,6 +143,44 @@ gamma_lut_t *generate_table_zero(int lut_size)
+ 	return gamma;
+ }
+ 
++gamma_lut_t *generate_lut_3d(int lut_size, double exp)
++{
++	gamma_lut_t *gamma = alloc_lut(lut_3d_size(lut_size));
++
++	for (int r = 0; r < lut_size; r++) {
++		for (int g = 0; g < lut_size; g++) {
++			for (int b = 0; b < lut_size; b++) {
++				int i = lut_3d_index(r, g, b, lut_size);
++
++				gamma->coeffs[i].r = pow(r * 1.0 / (lut_size - 1), exp);
++				gamma->coeffs[i].g = pow(g * 1.0 / (lut_size - 1), exp);
++				gamma->coeffs[i].b = pow(b * 1.0 / (lut_size - 1), exp);
++			}
++		}
++	}
++
++	return gamma;
++}
++
++gamma_lut_t *generate_lut_3d_max(int lut_size)
++{
++	gamma_lut_t *gamma = alloc_lut(lut_3d_size(lut_size));
++
++	for (int r = 0; r < lut_size; r++) {
++		for (int g = 0; g < lut_size; g++) {
++			for (int b = 0; b < lut_size; b++) {
++				int i = lut_3d_index(r, g, b, lut_size);
++
++				gamma->coeffs[i].r = r == 0 ? 0.0 : 1.0;
++				gamma->coeffs[i].g = g == 0 ? 0.0 : 1.0;
++				gamma->coeffs[i].b = b == 0 ? 0.0 : 1.0;
++			}
++		}
++	}
++
++	return gamma;
++}
++
+ struct drm_color_lut *coeffs_to_lut(data_t *data,
+ 				    const gamma_lut_t *gamma,
+ 				    uint32_t color_depth,
+@@ -215,6 +253,19 @@ void set_gamma(data_t *data,
+ 	free(lut);
+ }
+ 
++void set_gamma_lut_3d(data_t *data,
++		      igt_pipe_t *pipe,
++		      const gamma_lut_t *gamma_lut_3d)
++{
++	size_t size = sizeof(struct drm_color_lut) * gamma_lut_3d->size;
++	struct drm_color_lut *lut = coeffs_to_lut(data, gamma_lut_3d,
++						  data->color_depth, 0);
++
++	igt_pipe_obj_replace_prop_blob(pipe, IGT_CRTC_GAMMA_LUT_3D, lut, size);
++
++	free(lut);
++}
++
+ void set_ctm(igt_pipe_t *pipe, const double *coefficients)
+ {
+ 	struct drm_color_ctm ctm;
+@@ -330,6 +381,12 @@ invalid_degamma_lut_sizes(data_t *data)
+ 	return invalid_lut_sizes(data, IGT_CRTC_DEGAMMA_LUT, data->degamma_lut_size);
+ }
+ 
++void
++invalid_gamma_lut_3d_sizes(data_t *data)
++{
++	invalid_lut_sizes(data, IGT_CRTC_GAMMA_LUT_3D, lut_3d_size(data->gamma_lut_3d_size));
++}
++
+ void invalid_ctm_matrix_sizes(data_t *data)
+ {
+ 	igt_display_t *display = &data->display;
+@@ -358,4 +415,3 @@ void invalid_ctm_matrix_sizes(data_t *data)
+ 
+ 	free(ptr);
+ }
+-
 diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index 88890724c..3f49e7cae 100644
+index 3f49e7cae..e21adaa22 100644
 --- a/tests/kms_color_helper.h
 +++ b/tests/kms_color_helper.h
-@@ -61,7 +61,7 @@ typedef struct {
+@@ -52,6 +52,7 @@ typedef struct {
+ 	uint32_t color_depth;
+ 	uint64_t degamma_lut_size;
+ 	uint64_t gamma_lut_size;
++	uint64_t gamma_lut_3d_size;
+ 	#ifdef HAVE_CHAMELIUM
+ 	struct chamelium *chamelium;
+ 	struct chamelium_port **ports;
+@@ -77,6 +78,8 @@ void free_lut(gamma_lut_t *gamma);
+ gamma_lut_t *generate_table(int lut_size, double exp);
+ gamma_lut_t *generate_table_max(int lut_size);
+ gamma_lut_t *generate_table_zero(int lut_size);
++gamma_lut_t *generate_lut_3d(int lut_size, double exp);
++gamma_lut_t *generate_lut_3d_max(int lut_size);
+ struct drm_color_lut *coeffs_to_lut(data_t *data,
+ 				    const gamma_lut_t *gamma,
+ 				    uint32_t color_depth,
+@@ -87,13 +90,27 @@ void set_degamma(data_t *data,
+ void set_gamma(data_t *data,
+ 	       igt_pipe_t *pipe,
+ 	       const gamma_lut_t *gamma);
++void set_gamma_lut_3d(data_t *data,
++		      igt_pipe_t *pipe,
++		      const gamma_lut_t *gamma);
+ void set_ctm(igt_pipe_t *pipe, const double *coefficients);
+ void disable_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties prop);
  
- typedef struct {
- 	int size;
--	double coeffs[];
-+	color_t coeffs[];
- } gamma_lut_t;
+ #define disable_degamma(pipe) disable_prop(pipe, IGT_CRTC_DEGAMMA_LUT)
+ #define disable_gamma(pipe) disable_prop(pipe, IGT_CRTC_GAMMA_LUT)
++#define disable_lut_3d(pipe) disable_prop(pipe, IGT_CRTC_LUT_3D)
+ #define disable_ctm(pipe) disable_prop(pipe, IGT_CRTC_CTM)
  
- void paint_gradient_rectangles(data_t *data,
++static inline int lut_3d_size(int lut_size)
++{
++	return lut_size * lut_size * lut_size;
++}
++
++static inline int lut_3d_index(int r, int g, int b, int lut_size)
++{
++	return r * lut_size * lut_size + g * lut_size + b;
++}
++
+ drmModePropertyBlobPtr get_blob(data_t *data, igt_pipe_t *pipe,
+ 				enum igt_atomic_crtc_properties prop);
+ bool crc_equal(igt_crc_t *a, igt_crc_t *b);
+@@ -105,6 +122,7 @@ int pipe_set_property_blob(igt_pipe_t *pipe,
+ 			   void *ptr, size_t length);
+ void invalid_gamma_lut_sizes(data_t *data);
+ void invalid_degamma_lut_sizes(data_t *data);
++void invalid_gamma_lut_3d_sizes(data_t *data);
+ void invalid_ctm_matrix_sizes(data_t *data);
+ #endif
+ 
 -- 
 2.32.0
