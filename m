@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B43E6E84F
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 07:32:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D6786E851
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 07:32:52 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Fri,  3 Sep 2021 13:02:45 +0530
-Message-Id: <20210903073251.462352-1-bhanuprakash.modem@intel.com>
+Date: Fri,  3 Sep 2021 13:02:47 +0530
+Message-Id: <20210903073251.462352-3-bhanuprakash.modem@intel.com>
+In-Reply-To: <20210903073251.462352-1-bhanuprakash.modem@intel.com>
+References: <20210903073251.462352-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v2 0/6] tests/kms_color: 3D LUT tests
+Subject: [igt-dev] [i-g-t v2 2/6] tests/kms_color_chamelium: Initialize
+ lut_size before running the test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,34 +24,82 @@ To: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com, uma.shankar@in
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Here are some basic tests for 3D LUTs. The kernel support is at [1]
-but as the actual use case for this dried up I'm not going to land it
-and thus I'm not proposing to land the igt tests either.
+If we try to run the lut_size tests alone, we may get improper
+result, b'coz lut_size is not initialized. But in the CI,
+igt_runner will run gamma/degamma test first which will cache
+the lut_size then run the size tests.
 
-I'd like to land the two prep igt patches from this series however so
-that it'll be easier to resurrect this in the future if needed. And
-rather than posting them separately I figured I'd just post the whole
-thing to provide full context for the changes.
+This patch will fix the logic to initialized lut_size before
+running any test.
 
-[1] git://github.com/vsyrjala/linux.git 3dlut
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_color_chamelium.c | 45 ++++++++++++++++++++++++++++---------
+ 1 file changed, 35 insertions(+), 10 deletions(-)
 
-Bhanuprakash Modem (2):
-  tests/kms_color: Initialize lut_size before running the test
-  tests/kms_color_chamelium: Initialize lut_size before running the test
-
-Ville Syrjälä (4):
-  tests/kms_color: Refactor invalid LUT size tests
-  tests/kms_color: Store r/g/b separately for LUT color tests
-  lib/kms: Add GAMMA_LUT_3D support
-  tests/kms_color: Add GAMMA_LUT_3D tests
-
- lib/igt_kms.c               |   5 ++
- lib/igt_kms.h               |   2 +
- tests/kms_color.c           | 150 +++++++++++++++++++++++++++++---
- tests/kms_color_chamelium.c |  45 +++++++---
- tests/kms_color_helper.c    | 166 ++++++++++++++++++++++--------------
- tests/kms_color_helper.h    |  20 ++++-
- 6 files changed, 301 insertions(+), 87 deletions(-)
-
---
+diff --git a/tests/kms_color_chamelium.c b/tests/kms_color_chamelium.c
+index bc4356bfa..97efdcaae 100644
+--- a/tests/kms_color_chamelium.c
++++ b/tests/kms_color_chamelium.c
+@@ -721,6 +721,39 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+ 	}
+ }
+ 
++static void run_size_tests(data_t *data)
++{
++	igt_pipe_t *pipe = &data->display.pipes[0];
++
++	igt_fixture {
++		if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_DEGAMMA_LUT_SIZE)) {
++			data->degamma_lut_size =
++				igt_pipe_obj_get_prop(pipe,
++						      IGT_CRTC_DEGAMMA_LUT_SIZE);
++			igt_assert_lt(0, data->degamma_lut_size);
++		}
++
++		if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_GAMMA_LUT_SIZE)) {
++			data->gamma_lut_size =
++				igt_pipe_obj_get_prop(pipe,
++						      IGT_CRTC_GAMMA_LUT_SIZE);
++			igt_assert_lt(0, data->gamma_lut_size);
++		}
++	}
++
++	igt_describe("Negative check for invalid gamma lut sizes");
++	igt_subtest_f("pipe-invalid-gamma-lut-sizes")
++		invalid_gamma_lut_sizes(data);
++
++	igt_describe("Negative check for invalid degamma lut sizes");
++	igt_subtest_f("pipe-invalid-degamma-lut-sizes")
++		invalid_degamma_lut_sizes(data);
++
++	igt_describe("Negative check for color tranformation matrix sizes");
++	igt_subtest_f("pipe-invalid-ctm-matrix-sizes")
++		invalid_ctm_matrix_sizes(data);
++}
++
+ igt_main
+ {
+ 	data_t data = {};
+@@ -752,17 +785,9 @@ igt_main
+ 	for_each_pipe_static(pipe)
+ 		igt_subtest_group
+ 			run_tests_for_pipe(&data, pipe);
+-	igt_describe("Negative test case gamma lut size");
+-	igt_subtest_f("pipe-invalid-gamma-lut-sizes")
+-		invalid_gamma_lut_sizes(&data);
+ 
+-	igt_describe("Negative test case degamma lut size");
+-	igt_subtest_f("pipe-invalid-degamma-lut-sizes")
+-		invalid_degamma_lut_sizes(&data);
+-
+-	igt_describe("Negative test case ctm matrix size");
+-	igt_subtest_f("pipe-invalid-ctm-matrix-sizes")
+-		invalid_ctm_matrix_sizes(&data);
++	igt_subtest_group
++		run_size_tests(&data);
+ 
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+-- 
 2.32.0
