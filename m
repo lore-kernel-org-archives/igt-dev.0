@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 158A66E8AF
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 16:27:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F6E06E8AF
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 16:27:51 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Fri,  3 Sep 2021 19:27:36 +0300
-Message-Id: <20210903162743.29851-1-ville.syrjala@linux.intel.com>
+Date: Fri,  3 Sep 2021 19:27:37 +0300
+Message-Id: <20210903162743.29851-2-ville.syrjala@linux.intel.com>
+In-Reply-To: <20210903162743.29851-1-ville.syrjala@linux.intel.com>
+References: <20210903162743.29851-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 0/7] tests/kms_color: 3D LUT tests
+Subject: [igt-dev] [PATCH i-g-t v3 1/7] tests/kms_color_chamelium: Remove
+ invalid LUT size tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,26 +27,36 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Updated set of 3D LUT tests and associated refactoring/fixes.
+There is zero point in duplicating the invalid LUT size tests
+in the chamelium test. Get rid of them.
 
 Cc: Bhanuprakash Modem <Bhanuprakash.modem@intel.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ tests/kms_color_chamelium.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-Ville Syrjälä (7):
-  tests/kms_color_chamelium: Remove invalid LUT size tests
-  tests/kms_color: Refactor invalid LUT size tests
-  tests/kms_color: Store r/g/b separately for LUT color tests
-  tests/kms_color: Pass pipe to invalid LUT size tests
-  tests/kms_color: Run each subtest only for a single connector
-  lib/kms: Add GAMMA_LUT_3D support
-  tests/kms_color: Add GAMMA_LUT_3D tests
-
- lib/igt_kms.c               |   5 +
- lib/igt_kms.h               |   2 +
- tests/kms_color.c           | 782 +++++++++++++++++++++---------------
- tests/kms_color_chamelium.c |  11 -
- tests/kms_color_helper.c    | 181 +++++----
- tests/kms_color_helper.h    |  27 +-
- 6 files changed, 587 insertions(+), 421 deletions(-)
-
+diff --git a/tests/kms_color_chamelium.c b/tests/kms_color_chamelium.c
+index bc4356bfab6a..97741b9c968e 100644
+--- a/tests/kms_color_chamelium.c
++++ b/tests/kms_color_chamelium.c
+@@ -752,17 +752,6 @@ igt_main
+ 	for_each_pipe_static(pipe)
+ 		igt_subtest_group
+ 			run_tests_for_pipe(&data, pipe);
+-	igt_describe("Negative test case gamma lut size");
+-	igt_subtest_f("pipe-invalid-gamma-lut-sizes")
+-		invalid_gamma_lut_sizes(&data);
+-
+-	igt_describe("Negative test case degamma lut size");
+-	igt_subtest_f("pipe-invalid-degamma-lut-sizes")
+-		invalid_degamma_lut_sizes(&data);
+-
+-	igt_describe("Negative test case ctm matrix size");
+-	igt_subtest_f("pipe-invalid-ctm-matrix-sizes")
+-		invalid_ctm_matrix_sizes(&data);
+ 
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
 -- 
 2.31.1
