@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E8A066E83E
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 05:05:07 +0000 (UTC)
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Fri, 3 Sep 2021 05:05:03 +0000
-Message-ID: <DM8PR11MB571915B618E4E7421425C6E78DCF9@DM8PR11MB5719.namprd11.prod.outlook.com>
-References: <20210514132643.30709-1-ville.syrjala@linux.intel.com>
- <20210514132643.30709-5-ville.syrjala@linux.intel.com>
-In-Reply-To: <20210514132643.30709-5-ville.syrjala@linux.intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6CBBA6E095
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 05:31:55 +0000 (UTC)
+References: <20210811070222.365182-1-bhanuprakash.modem@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+Message-ID: <711b4153-a083-980b-ac17-b44d5e75288e@intel.com>
+Date: Fri, 3 Sep 2021 11:01:41 +0530
+In-Reply-To: <20210811070222.365182-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/kms_color: Add GAMMA_LUT_3D
- tests
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms: Move Intel specific kms
+ tests to i915 directory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,198 +22,582 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, igt-dev@lists.freedesktop.org, "Navare, Manasi" <manasi.d.navare@intel.com>
+Cc: Mark Yacoub <markyacoub@chromium.org>, Petri Latvala <petri.latvala@intel.com>, Vidya Srinivas <vidya.srinivas@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJvdW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBP
-biBCZWhhbGYgT2YgVmlsbGUNCj4gU3lyamFsYQ0KPiBTZW50OiBGcmlkYXksIE1heSAxNCwgMjAy
-MSA2OjU3IFBNDQo+IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBTdWJqZWN0
-OiBbaWd0LWRldl0gW1BBVENIIGktZy10IDQvNF0gdGVzdHMva21zX2NvbG9yOiBBZGQgR0FNTUFf
-TFVUXzNEIHRlc3RzDQo+IA0KPiBGcm9tOiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFA
-bGludXguaW50ZWwuY29tPg0KPiANCj4gQWRkIHNvbWUgYmFzaWMgdGVzdHMgZm9yIDNEIExVVHMu
-DQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFAbGlu
-dXguaW50ZWwuY29tPg0KPiAtLS0NCj4gIHRlc3RzL2ttc19jb2xvci5jICAgICAgICB8IDk1ICsr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gIHRlc3RzL2ttc19jb2xv
-cl9oZWxwZXIuYyB8IDU4ICsrKysrKysrKysrKysrKysrKysrKysrLQ0KPiAgdGVzdHMva21zX2Nv
-bG9yX2hlbHBlci5oIHwgMTggKysrKysrKysNCj4gIDMgZmlsZXMgY2hhbmdlZCwgMTcwIGluc2Vy
-dGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4gDQo+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfY29s
-b3IuYyBiL3Rlc3RzL2ttc19jb2xvci5jDQo+IGluZGV4IDNhNDI1MzJhNWMyNy4uZTIzZTVmNWZj
-YzI2IDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9rbXNfY29sb3IuYw0KPiArKysgYi90ZXN0cy9rbXNf
-Y29sb3IuYw0KPiBAQCAtMTk4LDYgKzE5OCw4OCBAQCBzdGF0aWMgdm9pZCB0ZXN0X3BpcGVfZ2Ft
-bWEoZGF0YV90ICpkYXRhLA0KPiAgCWZyZWVfbHV0KGdhbW1hX2Z1bGwpOw0KPiAgfQ0KPiANCj4g
-K3N0YXRpYyB2b2lkIHRlc3RfcGlwZV9nYW1tYV9sdXRfM2QoZGF0YV90ICpkYXRhLA0KPiArCQkJ
-CSAgIGlndF9wbGFuZV90ICpwcmltYXJ5KQ0KPiArew0KPiArCWlndF9vdXRwdXRfdCAqb3V0cHV0
-Ow0KPiArCWlndF9kaXNwbGF5X3QgKmRpc3BsYXkgPSAmZGF0YS0+ZGlzcGxheTsNCj4gKwlnYW1t
-YV9sdXRfdCAqZ2FtbWFfbHV0XzNkX2xpbmVhciwgKmdhbW1hX2x1dF8zZF9mdWxsOw0KPiArCWNv
-bG9yX3QgcmVkX2dyZWVuX2JsdWVbXSA9IHsNCj4gKwkJeyAxLjAsIDAuMCwgMC4wIH0sDQo+ICsJ
-CXsgMC4wLCAxLjAsIDAuMCB9LA0KPiArCQl7IDAuMCwgMC4wLCAxLjAgfQ0KPiArCX07DQo+ICsN
-Cj4gKwlpZ3RfcmVxdWlyZShpZ3RfcGlwZV9vYmpfaGFzX3Byb3AocHJpbWFyeS0+cGlwZSwNCj4g
-SUdUX0NSVENfR0FNTUFfTFVUXzNEKSk7DQo+ICsNCj4gKwlnYW1tYV9sdXRfM2RfbGluZWFyID0g
-Z2VuZXJhdGVfbHV0XzNkKGRhdGEtPmdhbW1hX2x1dF8zZF9zaXplLCAxLjApOw0KPiArCWdhbW1h
-X2x1dF8zZF9mdWxsID0gZ2VuZXJhdGVfbHV0XzNkX21heChkYXRhLT5nYW1tYV9sdXRfM2Rfc2l6
-ZSk7DQo+ICsNCj4gKwlmb3JfZWFjaF92YWxpZF9vdXRwdXRfb25fcGlwZSgmZGF0YS0+ZGlzcGxh
-eSwgcHJpbWFyeS0+cGlwZS0+cGlwZSwNCj4gb3V0cHV0KSB7DQoNCkluc3RlYWQgb2YgcnVubmlu
-ZyB0aGUgdGVzdCBvbiBhbGwgcG9zc2libGUgInBpcGUtY29ubmVjdG9yIiBjb21iaW5hdGlvbnMs
-DQpJIHRoaW5rIGl0IGlzIHN1ZmZpY2llbnQgdG8gcnVuIG9uIHNpbmdsZSBjb25uZWN0b3IsIHNp
-bmNlIHdlIGFyZSB0cnlpbmcgdG8NCnZhbGlkYXRlIFBJUEUgcHJvcGVydGllcy4gQWxzbyB3ZSBj
-YW4gc2F2ZSBzb21lIENJIHRpbWUuDQoNCkkgYW0gYWxzbyB0aGlua2luZyB0byByZXZhbXAgYWxs
-IGNvbG9yIHRlc3RzIHRvIHJ1biBvbiBzaW5nbGUgY29ubmVjdG9yLiANCg0KPiArCQlkcm1Nb2Rl
-TW9kZUluZm8gKm1vZGU7DQo+ICsJCXN0cnVjdCBpZ3RfZmIgZmJfbW9kZXNldCwgZmI7DQo+ICsJ
-CWlndF9jcmNfdCBjcmNfZnVsbGx1dDNkLCBjcmNfZnVsbGNvbG9yczsNCj4gKwkJaW50IGZiX2lk
-LCBmYl9tb2Rlc2V0X2lkOw0KPiArDQo+ICsJCWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBw
-cmltYXJ5LT5waXBlLT5waXBlKTsNCj4gKwkJbW9kZSA9IGlndF9vdXRwdXRfZ2V0X21vZGUob3V0
-cHV0KTsNCj4gKw0KPiArCQkvKiBDcmVhdGUgYSBmcmFtZWJ1ZmZlciBhdCB0aGUgc2l6ZSBvZiB0
-aGUgb3V0cHV0LiAqLw0KPiArCQlmYl9pZCA9IGlndF9jcmVhdGVfZmIoZGF0YS0+ZHJtX2ZkLA0K
-PiArCQkJCSAgICAgIG1vZGUtPmhkaXNwbGF5LA0KPiArCQkJCSAgICAgIG1vZGUtPnZkaXNwbGF5
-LA0KPiArCQkJCSAgICAgIERSTV9GT1JNQVRfWFJHQjg4ODgsDQo+ICsJCQkJICAgICAgTE9DQUxf
-RFJNX0ZPUk1BVF9NT0RfTk9ORSwNCj4gKwkJCQkgICAgICAmZmIpOw0KPiArCQlpZ3RfYXNzZXJ0
-KGZiX2lkKTsNCj4gKw0KPiArCQlmYl9tb2Rlc2V0X2lkID0gaWd0X2NyZWF0ZV9mYihkYXRhLT5k
-cm1fZmQsDQo+ICsJCQkJCSAgICAgIG1vZGUtPmhkaXNwbGF5LA0KPiArCQkJCQkgICAgICBtb2Rl
-LT52ZGlzcGxheSwNCj4gKwkJCQkJICAgICAgRFJNX0ZPUk1BVF9YUkdCODg4OCwNCj4gKwkJCQkJ
-ICAgICAgTE9DQUxfRFJNX0ZPUk1BVF9NT0RfTk9ORSwNCj4gKwkJCQkJICAgICAgJmZiX21vZGVz
-ZXQpOw0KPiArCQlpZ3RfYXNzZXJ0KGZiX21vZGVzZXRfaWQpOw0KPiArDQo+ICsJCWlndF9wbGFu
-ZV9zZXRfZmIocHJpbWFyeSwgJmZiX21vZGVzZXQpOw0KPiArCQlkaXNhYmxlX2N0bShwcmltYXJ5
-LT5waXBlKTsNCj4gKwkJZGlzYWJsZV9kZWdhbW1hKHByaW1hcnktPnBpcGUpOw0KPiArCQlkaXNh
-YmxlX2dhbW1hKHByaW1hcnktPnBpcGUpOw0KPiArCQlzZXRfZ2FtbWFfbHV0XzNkKGRhdGEsIHBy
-aW1hcnktPnBpcGUsIGdhbW1hX2x1dF8zZF9saW5lYXIpOw0KPiArCQlpZ3RfZGlzcGxheV9jb21t
-aXQoJmRhdGEtPmRpc3BsYXkpOw0KPiArDQo+ICsJCS8qIERyYXcgc29saWQgY29sb3JzIHdpdGgg
-bm8gZGVnYW1tYSB0cmFuc2Zvcm1hdGlvbi4gKi8NCiANClR5cG86IHMvZGVnYW1tYS8zZGx1dC8N
-Cg0KPiArCQlwYWludF9yZWN0YW5nbGVzKGRhdGEsIG1vZGUsIHJlZF9ncmVlbl9ibHVlLCAmZmIp
-Ow0KPiArCQlpZ3RfcGxhbmVfc2V0X2ZiKHByaW1hcnksICZmYik7DQo+ICsJCWlndF9kaXNwbGF5
-X2NvbW1pdCgmZGF0YS0+ZGlzcGxheSk7DQo+ICsJCWlndF93YWl0X2Zvcl92YmxhbmsoZGF0YS0+
-ZHJtX2ZkLA0KPiArCQkJCSAgICBkaXNwbGF5LT5waXBlc1twcmltYXJ5LT5waXBlLT5waXBlXS5j
-cnRjX29mZnNldCk7DQo+ICsJCWlndF9waXBlX2NyY19jb2xsZWN0X2NyYyhkYXRhLT5waXBlX2Ny
-YywgJmNyY19mdWxsY29sb3JzKTsNCj4gKw0KPiArCQkvKiBEcmF3IGEgZ3JhZGllbnQgd2l0aCAz
-RCBMVVQgdG8gcmVtYXAgYWxsDQo+ICsJCSAqIHZhbHVlcyB0byBtYXggcmVkL2dyZWVuL2JsdWUu
-DQo+ICsJCSAqLw0KPiArCQlwYWludF9ncmFkaWVudF9yZWN0YW5nbGVzKGRhdGEsIG1vZGUsIHJl
-ZF9ncmVlbl9ibHVlLCAmZmIpOw0KPiArCQlpZ3RfcGxhbmVfc2V0X2ZiKHByaW1hcnksICZmYik7
-DQo+ICsJCXNldF9nYW1tYV9sdXRfM2QoZGF0YSwgcHJpbWFyeS0+cGlwZSwgZ2FtbWFfbHV0XzNk
-X2Z1bGwpOw0KPiArCQlpZ3RfZGlzcGxheV9jb21taXQoJmRhdGEtPmRpc3BsYXkpOw0KPiArCQlp
-Z3Rfd2FpdF9mb3JfdmJsYW5rKGRhdGEtPmRybV9mZCwNCj4gKwkJCQkgICAgZGlzcGxheS0+cGlw
-ZXNbcHJpbWFyeS0+cGlwZS0+cGlwZV0uY3J0Y19vZmZzZXQpOw0KPiArCQlpZ3RfcGlwZV9jcmNf
-Y29sbGVjdF9jcmMoZGF0YS0+cGlwZV9jcmMsICZjcmNfZnVsbGx1dDNkKTsNCj4gKw0KPiArCQkv
-KiBWZXJpZnkgdGhhdCB0aGUgQ1JDIG9mIHRoZSBzb2Z0d2FyZSBjb21wdXRlZCBvdXRwdXQgaXMN
-Cj4gKwkJICogZXF1YWwgdG8gdGhlIENSQyBvZiB0aGUgZGVnYW1tYSBMVVQgdHJhbnNmb3JtYXRp
-b24gb3V0cHV0Lg0KIA0KVHlwbzogcy9kZWdhbW1hLzNkbHV0Lw0KDQpTbywgaXMgdGhpcyB0aGUg
-ZXhwZWN0YXRpb24/DQooKFNvbGlkIGNvbG9ycyArIG5vIDNkbHV0KSA9PSAoZ3JhZGllbnQgY29s
-b3JzICsgM2RsdXQpKSA/IFBBU1MgOiBGQUlMOw0KDQo+ICsJCSAqLw0KPiArCQlpZ3RfYXNzZXJ0
-X2NyY19lcXVhbCgmY3JjX2Z1bGxsdXQzZCwgJmNyY19mdWxsY29sb3JzKTsNCj4gKw0KPiArCQlp
-Z3RfcGxhbmVfc2V0X2ZiKHByaW1hcnksIE5VTEwpOw0KPiArCQlpZ3Rfb3V0cHV0X3NldF9waXBl
-KG91dHB1dCwgUElQRV9OT05FKTsNCj4gKwl9DQo+ICsNCj4gKwlmcmVlX2x1dChnYW1tYV9sdXRf
-M2RfbGluZWFyKTsNCj4gKwlmcmVlX2x1dChnYW1tYV9sdXRfM2RfZnVsbCk7DQo+ICt9DQo+ICsN
-Cj4gIC8qDQo+ICAgKiBEcmF3IDMgZ3JhZGllbnQgcmVjdGFuZ2xlcyBpbiByZWQsIGdyZWVuIGFu
-ZCBibHVlLCB3aXRoIGEgbWF4ZWQgb3V0IGxlZ2FjeQ0KPiAgICogZ2FtbWEgTFVUIGFuZCB2ZXJp
-Znkgd2UgaGF2ZSB0aGUgc2FtZSBDUkMgYXMgZHJhd2luZyBzb2xpZCBjb2xvcg0KPiByZWN0YW5n
-bGVzDQo+IEBAIC02NzksNiArNzYxLDEzIEBAIHJ1bl90ZXN0c19mb3JfcGlwZShkYXRhX3QgKmRh
-dGEsIGVudW0gcGlwZSBwKQ0KPiAgCQkJaWd0X2Fzc2VydF9sdCgwLCBkYXRhLT5nYW1tYV9sdXRf
-c2l6ZSk7DQo+ICAJCX0NCj4gDQo+ICsJCWlmIChpZ3RfcGlwZV9vYmpfaGFzX3Byb3AoJmRhdGEt
-PmRpc3BsYXkucGlwZXNbcF0sDQo+IElHVF9DUlRDX0dBTU1BX0xVVF8zRF9TSVpFKSkgew0KPiAr
-CQkJZGF0YS0+Z2FtbWFfbHV0XzNkX3NpemUgPQ0KPiArCQkJCWlndF9waXBlX29ial9nZXRfcHJv
-cCgmZGF0YS0+ZGlzcGxheS5waXBlc1twXSwNCj4gKwkJCQkJCSAgICAgIElHVF9DUlRDX0dBTU1B
-X0xVVF8zRF9TSVpFKTsNCj4gKwkJCWlndF9hc3NlcnRfbHQoMCwgZGF0YS0+Z2FtbWFfbHV0XzNk
-X3NpemUpOw0KPiArCQl9DQo+ICsNCj4gIAkJaWd0X2Rpc3BsYXlfcmVxdWlyZV9vdXRwdXRfb25f
-cGlwZSgmZGF0YS0+ZGlzcGxheSwgcCk7DQo+ICAJfQ0KPiANCj4gQEAgLTg1NCw2ICs5NDMsOSBA
-QCBydW5fdGVzdHNfZm9yX3BpcGUoZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgcCkNCj4gIAlpZ3Rf
-c3VidGVzdF9mKCJwaXBlLSVzLWxlZ2FjeS1nYW1tYS1yZXNldCIsIGttc3Rlc3RfcGlwZV9uYW1l
-KHApKQ0KPiAgCQl0ZXN0X3BpcGVfbGVnYWN5X2dhbW1hX3Jlc2V0KGRhdGEsIHByaW1hcnkpOw0K
-PiANCg0KaWd0X2Rlc2NyaWJlKCkgaXMgbWFuZGF0b3J5Lg0KDQo+ICsJaWd0X3N1YnRlc3RfZigi
-cGlwZS0lcy1nYW1tYS1sdXQtM2QiLCBrbXN0ZXN0X3BpcGVfbmFtZShwKSkNCj4gKwkJdGVzdF9w
-aXBlX2dhbW1hX2x1dF8zZChkYXRhLCBwcmltYXJ5KTsNCj4gKw0KPiAgCWlndF9maXh0dXJlIHsN
-Cj4gIAkJZGlzYWJsZV9kZWdhbW1hKHByaW1hcnktPnBpcGUpOw0KPiAgCQlkaXNhYmxlX2dhbW1h
-KHByaW1hcnktPnBpcGUpOw0KPiBAQCAtODk1LDYgKzk4Nyw5IEBAIGlndF9tYWluDQo+ICAJaWd0
-X3N1YnRlc3RfZigicGlwZS1pbnZhbGlkLWN0bS1tYXRyaXgtc2l6ZXMiKQ0KPiAgCQlpbnZhbGlk
-X2N0bV9tYXRyaXhfc2l6ZXMoJmRhdGEpOw0KPiANCiANCmlndF9kZXNjcmliZSgpIGlzIG1hbmRh
-dG9yeS4NCg0KPiArCWlndF9zdWJ0ZXN0X2YoInBpcGUtaW52YWxpZC1nYW1tYS1sdXQtM2Qtc2l6
-ZXMiKQ0KPiArCQlpbnZhbGlkX2dhbW1hX2x1dF8zZF9zaXplcygmZGF0YSk7DQo+ICsNCj4gIAlp
-Z3RfZml4dHVyZSB7DQo+ICAJCWlndF9kaXNwbGF5X2ZpbmkoJmRhdGEuZGlzcGxheSk7DQo+ICAJ
-fQ0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2NvbG9yX2hlbHBlci5jIGIvdGVzdHMva21zX2Nv
-bG9yX2hlbHBlci5jDQo+IGluZGV4IDdmOWEzMGU2MjViNi4uMjYxZWM3ODM2NjZkIDEwMDY0NA0K
-PiAtLS0gYS90ZXN0cy9rbXNfY29sb3JfaGVscGVyLmMNCj4gKysrIGIvdGVzdHMva21zX2NvbG9y
-X2hlbHBlci5jDQo+IEBAIC0xNDMsNiArMTQzLDQ0IEBAIGdhbW1hX2x1dF90ICpnZW5lcmF0ZV90
-YWJsZV96ZXJvKGludCBsdXRfc2l6ZSkNCj4gIAlyZXR1cm4gZ2FtbWE7DQo+ICB9DQo+IA0KPiAr
-Z2FtbWFfbHV0X3QgKmdlbmVyYXRlX2x1dF8zZChpbnQgbHV0X3NpemUsIGRvdWJsZSBleHApDQo+
-ICt7DQo+ICsJZ2FtbWFfbHV0X3QgKmdhbW1hID0gYWxsb2NfbHV0KGx1dF8zZF9zaXplKGx1dF9z
-aXplKSk7DQo+ICsNCj4gKwlmb3IgKGludCByID0gMDsgciA8IGx1dF9zaXplOyByKyspIHsNCj4g
-KwkJZm9yIChpbnQgZyA9IDA7IGcgPCBsdXRfc2l6ZTsgZysrKSB7DQo+ICsJCQlmb3IgKGludCBi
-ID0gMDsgYiA8IGx1dF9zaXplOyBiKyspIHsNCj4gKwkJCQlpbnQgaSA9IGx1dF8zZF9pbmRleChy
-LCBnLCBiLCBsdXRfc2l6ZSk7DQo+ICsNCj4gKwkJCQlnYW1tYS0+Y29lZmZzW2ldLnIgPSBwb3co
-ciAqIDEuMCAvIChsdXRfc2l6ZSAtIDEpLCBleHApOw0KPiArCQkJCWdhbW1hLT5jb2VmZnNbaV0u
-ZyA9IHBvdyhnICogMS4wIC8gKGx1dF9zaXplIC0gMSksIGV4cCk7DQo+ICsJCQkJZ2FtbWEtPmNv
-ZWZmc1tpXS5iID0gcG93KGIgKiAxLjAgLyAobHV0X3NpemUgLSAxKSwgZXhwKTsNCj4gKwkJCX0N
-Cj4gKwkJfQ0KPiArCX0NCj4gKw0KPiArCXJldHVybiBnYW1tYTsNCj4gK30NCj4gKw0KPiArZ2Ft
-bWFfbHV0X3QgKmdlbmVyYXRlX2x1dF8zZF9tYXgoaW50IGx1dF9zaXplKQ0KPiArew0KPiArCWdh
-bW1hX2x1dF90ICpnYW1tYSA9IGFsbG9jX2x1dChsdXRfM2Rfc2l6ZShsdXRfc2l6ZSkpOw0KPiAr
-DQo+ICsJZm9yIChpbnQgciA9IDA7IHIgPCBsdXRfc2l6ZTsgcisrKSB7DQo+ICsJCWZvciAoaW50
-IGcgPSAwOyBnIDwgbHV0X3NpemU7IGcrKykgew0KPiArCQkJZm9yIChpbnQgYiA9IDA7IGIgPCBs
-dXRfc2l6ZTsgYisrKSB7DQo+ICsJCQkJaW50IGkgPSBsdXRfM2RfaW5kZXgociwgZywgYiwgbHV0
-X3NpemUpOw0KPiArDQo+ICsJCQkJZ2FtbWEtPmNvZWZmc1tpXS5yID0gciA9PSAwID8gMC4wIDog
-MS4wOw0KPiArCQkJCWdhbW1hLT5jb2VmZnNbaV0uZyA9IGcgPT0gMCA/IDAuMCA6IDEuMDsNCj4g
-KwkJCQlnYW1tYS0+Y29lZmZzW2ldLmIgPSBiID09IDAgPyAwLjAgOiAxLjA7DQo+ICsJCQl9DQo+
-ICsJCX0NCj4gKwl9DQo+ICsNCj4gKwlyZXR1cm4gZ2FtbWE7DQo+ICt9DQo+ICsNCj4gIHN0cnVj
-dCBkcm1fY29sb3JfbHV0ICpjb2VmZnNfdG9fbHV0KGRhdGFfdCAqZGF0YSwNCj4gIAkJCQkgICAg
-Y29uc3QgZ2FtbWFfbHV0X3QgKmdhbW1hLA0KPiAgCQkJCSAgICB1aW50MzJfdCBjb2xvcl9kZXB0
-aCwNCj4gQEAgLTIxNSw2ICsyNTMsMTkgQEAgdm9pZCBzZXRfZ2FtbWEoZGF0YV90ICpkYXRhLA0K
-PiAgCWZyZWUobHV0KTsNCj4gIH0NCj4gDQo+ICt2b2lkIHNldF9nYW1tYV9sdXRfM2QoZGF0YV90
-ICpkYXRhLA0KPiArCQkgICAgICBpZ3RfcGlwZV90ICpwaXBlLA0KPiArCQkgICAgICBjb25zdCBn
-YW1tYV9sdXRfdCAqZ2FtbWFfbHV0XzNkKQ0KPiArew0KPiArCXNpemVfdCBzaXplID0gc2l6ZW9m
-KHN0cnVjdCBkcm1fY29sb3JfbHV0KSAqIGdhbW1hX2x1dF8zZC0+c2l6ZTsNCj4gKwlzdHJ1Y3Qg
-ZHJtX2NvbG9yX2x1dCAqbHV0ID0gY29lZmZzX3RvX2x1dChkYXRhLCBnYW1tYV9sdXRfM2QsDQo+
-ICsJCQkJCQkgIGRhdGEtPmNvbG9yX2RlcHRoLCAwKTsNCj4gKw0KPiArCWlndF9waXBlX29ial9y
-ZXBsYWNlX3Byb3BfYmxvYihwaXBlLCBJR1RfQ1JUQ19HQU1NQV9MVVRfM0QsIGx1dCwgc2l6ZSk7
-DQo+ICsNCj4gKwlmcmVlKGx1dCk7DQo+ICt9DQo+ICsNCj4gIHZvaWQgc2V0X2N0bShpZ3RfcGlw
-ZV90ICpwaXBlLCBjb25zdCBkb3VibGUgKmNvZWZmaWNpZW50cykNCj4gIHsNCj4gIAlzdHJ1Y3Qg
-ZHJtX2NvbG9yX2N0bSBjdG07DQo+IEBAIC0zMzAsNiArMzgxLDEyIEBAIGludmFsaWRfZGVnYW1t
-YV9sdXRfc2l6ZXMoZGF0YV90ICpkYXRhKQ0KPiAgCXJldHVybiBpbnZhbGlkX2x1dF9zaXplcyhk
-YXRhLCBJR1RfQ1JUQ19ERUdBTU1BX0xVVCwgZGF0YS0NCj4gPmRlZ2FtbWFfbHV0X3NpemUpOw0K
-PiAgfQ0KPiANCj4gK3ZvaWQNCj4gK2ludmFsaWRfZ2FtbWFfbHV0XzNkX3NpemVzKGRhdGFfdCAq
-ZGF0YSkNCj4gK3sNCj4gKwlpbnZhbGlkX2x1dF9zaXplcyhkYXRhLCBJR1RfQ1JUQ19HQU1NQV9M
-VVRfM0QsIGx1dF8zZF9zaXplKGRhdGEtDQo+ID5nYW1tYV9sdXRfM2Rfc2l6ZSkpOw0KPiArfQ0K
-PiArDQo+ICB2b2lkIGludmFsaWRfY3RtX21hdHJpeF9zaXplcyhkYXRhX3QgKmRhdGEpDQo+ICB7
-DQo+ICAJaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSA9ICZkYXRhLT5kaXNwbGF5Ow0KPiBAQCAtMzU4
-LDQgKzQxNSwzIEBAIHZvaWQgaW52YWxpZF9jdG1fbWF0cml4X3NpemVzKGRhdGFfdCAqZGF0YSkN
-Cj4gDQo+ICAJZnJlZShwdHIpOw0KPiAgfQ0KPiAtDQo+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNf
-Y29sb3JfaGVscGVyLmggYi90ZXN0cy9rbXNfY29sb3JfaGVscGVyLmgNCj4gaW5kZXggM2Y0OWU3
-Y2FlNGMwLi5lMjFhZGFhMjI4ZmYgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2ttc19jb2xvcl9oZWxw
-ZXIuaA0KPiArKysgYi90ZXN0cy9rbXNfY29sb3JfaGVscGVyLmgNCj4gQEAgLTUyLDYgKzUyLDcg
-QEAgdHlwZWRlZiBzdHJ1Y3Qgew0KPiAgCXVpbnQzMl90IGNvbG9yX2RlcHRoOw0KPiAgCXVpbnQ2
-NF90IGRlZ2FtbWFfbHV0X3NpemU7DQo+ICAJdWludDY0X3QgZ2FtbWFfbHV0X3NpemU7DQo+ICsJ
-dWludDY0X3QgZ2FtbWFfbHV0XzNkX3NpemU7DQoNCk1heWJlIHJlbmFtZSB0byBnYW1tYV8zZF9s
-dXRfc2l6ZT8NCg0KPiAgCSNpZmRlZiBIQVZFX0NIQU1FTElVTQ0KPiAgCXN0cnVjdCBjaGFtZWxp
-dW0gKmNoYW1lbGl1bTsNCj4gIAlzdHJ1Y3QgY2hhbWVsaXVtX3BvcnQgKipwb3J0czsNCj4gQEAg
-LTc3LDYgKzc4LDggQEAgdm9pZCBmcmVlX2x1dChnYW1tYV9sdXRfdCAqZ2FtbWEpOw0KPiAgZ2Ft
-bWFfbHV0X3QgKmdlbmVyYXRlX3RhYmxlKGludCBsdXRfc2l6ZSwgZG91YmxlIGV4cCk7DQo+ICBn
-YW1tYV9sdXRfdCAqZ2VuZXJhdGVfdGFibGVfbWF4KGludCBsdXRfc2l6ZSk7DQo+ICBnYW1tYV9s
-dXRfdCAqZ2VuZXJhdGVfdGFibGVfemVybyhpbnQgbHV0X3NpemUpOw0KPiArZ2FtbWFfbHV0X3Qg
-KmdlbmVyYXRlX2x1dF8zZChpbnQgbHV0X3NpemUsIGRvdWJsZSBleHApOw0KPiArZ2FtbWFfbHV0
-X3QgKmdlbmVyYXRlX2x1dF8zZF9tYXgoaW50IGx1dF9zaXplKTsNCj4gIHN0cnVjdCBkcm1fY29s
-b3JfbHV0ICpjb2VmZnNfdG9fbHV0KGRhdGFfdCAqZGF0YSwNCj4gIAkJCQkgICAgY29uc3QgZ2Ft
-bWFfbHV0X3QgKmdhbW1hLA0KPiAgCQkJCSAgICB1aW50MzJfdCBjb2xvcl9kZXB0aCwNCj4gQEAg
-LTg3LDEzICs5MCwyNyBAQCB2b2lkIHNldF9kZWdhbW1hKGRhdGFfdCAqZGF0YSwNCj4gIHZvaWQg
-c2V0X2dhbW1hKGRhdGFfdCAqZGF0YSwNCj4gIAkgICAgICAgaWd0X3BpcGVfdCAqcGlwZSwNCj4g
-IAkgICAgICAgY29uc3QgZ2FtbWFfbHV0X3QgKmdhbW1hKTsNCj4gK3ZvaWQgc2V0X2dhbW1hX2x1
-dF8zZChkYXRhX3QgKmRhdGEsDQo+ICsJCSAgICAgIGlndF9waXBlX3QgKnBpcGUsDQo+ICsJCSAg
-ICAgIGNvbnN0IGdhbW1hX2x1dF90ICpnYW1tYSk7DQo+ICB2b2lkIHNldF9jdG0oaWd0X3BpcGVf
-dCAqcGlwZSwgY29uc3QgZG91YmxlICpjb2VmZmljaWVudHMpOw0KPiAgdm9pZCBkaXNhYmxlX3By
-b3AoaWd0X3BpcGVfdCAqcGlwZSwgZW51bSBpZ3RfYXRvbWljX2NydGNfcHJvcGVydGllcyBwcm9w
-KTsNCj4gDQo+ICAjZGVmaW5lIGRpc2FibGVfZGVnYW1tYShwaXBlKSBkaXNhYmxlX3Byb3AocGlw
-ZSwgSUdUX0NSVENfREVHQU1NQV9MVVQpDQo+ICAjZGVmaW5lIGRpc2FibGVfZ2FtbWEocGlwZSkg
-ZGlzYWJsZV9wcm9wKHBpcGUsIElHVF9DUlRDX0dBTU1BX0xVVCkNCj4gKyNkZWZpbmUgZGlzYWJs
-ZV9sdXRfM2QocGlwZSkgZGlzYWJsZV9wcm9wKHBpcGUsIElHVF9DUlRDX0xVVF8zRCkNCj4gICNk
-ZWZpbmUgZGlzYWJsZV9jdG0ocGlwZSkgZGlzYWJsZV9wcm9wKHBpcGUsIElHVF9DUlRDX0NUTSkN
-Cj4gDQo+ICtzdGF0aWMgaW5saW5lIGludCBsdXRfM2Rfc2l6ZShpbnQgbHV0X3NpemUpDQo+ICt7
-DQo+ICsJcmV0dXJuIGx1dF9zaXplICogbHV0X3NpemUgKiBsdXRfc2l6ZTsNCj4gK30NCj4gKw0K
-PiArc3RhdGljIGlubGluZSBpbnQgbHV0XzNkX2luZGV4KGludCByLCBpbnQgZywgaW50IGIsIGlu
-dCBsdXRfc2l6ZSkNCj4gK3sNCj4gKwlyZXR1cm4gciAqIGx1dF9zaXplICogbHV0X3NpemUgKyBn
-ICogbHV0X3NpemUgKyBiOw0KPiArfQ0KPiArDQo+ICBkcm1Nb2RlUHJvcGVydHlCbG9iUHRyIGdl
-dF9ibG9iKGRhdGFfdCAqZGF0YSwgaWd0X3BpcGVfdCAqcGlwZSwNCj4gIAkJCQllbnVtIGlndF9h
-dG9taWNfY3J0Y19wcm9wZXJ0aWVzIHByb3ApOw0KPiAgYm9vbCBjcmNfZXF1YWwoaWd0X2NyY190
-ICphLCBpZ3RfY3JjX3QgKmIpOw0KPiBAQCAtMTA1LDYgKzEyMiw3IEBAIGludCBwaXBlX3NldF9w
-cm9wZXJ0eV9ibG9iKGlndF9waXBlX3QgKnBpcGUsDQo+ICAJCQkgICB2b2lkICpwdHIsIHNpemVf
-dCBsZW5ndGgpOw0KPiAgdm9pZCBpbnZhbGlkX2dhbW1hX2x1dF9zaXplcyhkYXRhX3QgKmRhdGEp
-Ow0KPiAgdm9pZCBpbnZhbGlkX2RlZ2FtbWFfbHV0X3NpemVzKGRhdGFfdCAqZGF0YSk7DQo+ICt2
-b2lkIGludmFsaWRfZ2FtbWFfbHV0XzNkX3NpemVzKGRhdGFfdCAqZGF0YSk7DQo+ICB2b2lkIGlu
-dmFsaWRfY3RtX21hdHJpeF9zaXplcyhkYXRhX3QgKmRhdGEpOw0KPiAgI2VuZGlmDQo+IA0KPiAt
-LQ0KPiAyLjI2LjMNCj4gDQo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fDQo+IGlndC1kZXYgbWFpbGluZyBsaXN0DQo+IGlndC1kZXZAbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnDQo+IGh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
-Zm8vaWd0LWRldg0K
+On 8/11/2021 12:32 PM, Bhanuprakash Modem wrote:
+> As KMS tests on IGT are officially supported on multiple SoCs
+> and there is an active development on it. So, KMS tests are
+> meant to be generic and if we need to test few things specific
+> to Intel, so we can use igt_require_intel(). But if the whole
+> test is Intel specific, then the best place for the test would
+> be tests/i915.
+>
+> This patch will move all Intel specific kms tests to tests/i915
+> directory. And update the tests those are generic but still open
+> the driver as 'drm_open_driver_master(DRIVER_INTEL);'. This patch
+> will also do some minor cleanups.
+>
+> V2:
+> * Few more tests
+>
+> Cc: Mark Yacoub <markyacoub@chromium.org>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Vidya Srinivas <vidya.srinivas@intel.com>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/{ => i915}/kms_big_fb.c               |  0
+>   tests/{ => i915}/kms_busy.c                 |  0
+>   tests/{ => i915}/kms_ccs.c                  |  0
+>   tests/{ => i915}/kms_cdclk.c                |  0
+>   tests/{ => i915}/kms_draw_crc.c             |  0
+>   tests/{ => i915}/kms_dsc.c                  | 15 ++++-----
+>   tests/{ => i915}/kms_fbcon_fbt.c            |  0
+>   tests/{ => i915}/kms_fence_pin_leak.c       |  0
+>   tests/{ => i915}/kms_flip_scaled_crc.c      |  0
+>   tests/{ => i915}/kms_flip_tiling.c          |  0
+>   tests/{ => i915}/kms_frontbuffer_tracking.c |  0
+>   tests/{ => i915}/kms_invalid_dotclock.c     |  0
+>   tests/{ => i915}/kms_legacy_colorkey.c      |  0
+>   tests/{ => i915}/kms_pipe_b_c_ivb.c         |  0
+>   tests/{ => i915}/kms_psr.c                  |  0
+>   tests/{ => i915}/kms_psr2_sf.c              |  0
+>   tests/{ => i915}/kms_psr2_su.c              |  0
+>   tests/kms_3d.c                              |  5 +--
+>   tests/kms_big_joiner.c                      |  2 +-
+>   tests/kms_cursor_edge_walk.c                |  9 +++---
+>   tests/kms_flip.c                            |  1 +
+>   tests/kms_flip_event_leak.c                 |  2 +-
+>   tests/kms_force_connector_basic.c           |  4 +--
+>   tests/kms_hdmi_inject.c                     | 14 +++++----
+>   tests/kms_mmap_write_crc.c                  |  8 ++---
+>   tests/kms_pwrite_crc.c                      |  8 ++---
+>   tests/kms_tv_load_detect.c                  |  2 +-
+>   tests/kms_universal_plane.c                 | 10 ++++--
+>   tests/meson.build                           | 34 ++++++++++-----------
+>   29 files changed, 58 insertions(+), 56 deletions(-)
+>   rename tests/{ => i915}/kms_big_fb.c (100%)
+>   rename tests/{ => i915}/kms_busy.c (100%)
+>   rename tests/{ => i915}/kms_ccs.c (100%)
+>   rename tests/{ => i915}/kms_cdclk.c (100%)
+>   rename tests/{ => i915}/kms_draw_crc.c (100%)
+>   rename tests/{ => i915}/kms_dsc.c (95%)
+>   rename tests/{ => i915}/kms_fbcon_fbt.c (100%)
+>   rename tests/{ => i915}/kms_fence_pin_leak.c (100%)
+>   rename tests/{ => i915}/kms_flip_scaled_crc.c (100%)
+>   rename tests/{ => i915}/kms_flip_tiling.c (100%)
+>   rename tests/{ => i915}/kms_frontbuffer_tracking.c (100%)
+>   rename tests/{ => i915}/kms_invalid_dotclock.c (100%)
+>   rename tests/{ => i915}/kms_legacy_colorkey.c (100%)
+>   rename tests/{ => i915}/kms_pipe_b_c_ivb.c (100%)
+>   rename tests/{ => i915}/kms_psr.c (100%)
+>   rename tests/{ => i915}/kms_psr2_sf.c (100%)
+>   rename tests/{ => i915}/kms_psr2_su.c (100%)
+>
+> diff --git a/tests/kms_big_fb.c b/tests/i915/kms_big_fb.c
+> similarity index 100%
+> rename from tests/kms_big_fb.c
+> rename to tests/i915/kms_big_fb.c
+> diff --git a/tests/kms_busy.c b/tests/i915/kms_busy.c
+> similarity index 100%
+> rename from tests/kms_busy.c
+> rename to tests/i915/kms_busy.c
+> diff --git a/tests/kms_ccs.c b/tests/i915/kms_ccs.c
+> similarity index 100%
+> rename from tests/kms_ccs.c
+> rename to tests/i915/kms_ccs.c
+> diff --git a/tests/kms_cdclk.c b/tests/i915/kms_cdclk.c
+> similarity index 100%
+> rename from tests/kms_cdclk.c
+> rename to tests/i915/kms_cdclk.c
+> diff --git a/tests/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+> similarity index 100%
+> rename from tests/kms_draw_crc.c
+> rename to tests/i915/kms_draw_crc.c
+> diff --git a/tests/kms_dsc.c b/tests/i915/kms_dsc.c
+> similarity index 95%
+> rename from tests/kms_dsc.c
+> rename to tests/i915/kms_dsc.c
+> index b56e01837..3e450207f 100644
+> --- a/tests/kms_dsc.c
+> +++ b/tests/i915/kms_dsc.c
+> @@ -244,14 +244,12 @@ static void run_test(data_t *data, enum dsc_test_type test_type)
+>   			      &data->fb_test_pattern);
+>
+>   	for_each_pipe(&data->display, pipe) {
+> -		if (is_i915_device(data->drm_fd)) {
+> -			uint32_t devid = intel_get_drm_devid(data->drm_fd);
+> +		uint32_t devid = intel_get_drm_devid(data->drm_fd);
+>
+> -			if (data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
+> -			    pipe == PIPE_A && IS_GEN11(devid)) {
+> -				igt_debug("DSC not supported on Pipe A on external DP in Gen11 platforms\n");
+> -				continue;
+> -			}
+> +		if (data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
+> +		    pipe == PIPE_A && IS_GEN11(devid)) {
+> +			igt_debug("DSC not supported on Pipe A on external DP in Gen11 platforms\n");
+> +			continue;
+>   		}
+>
+>   		snprintf(test_name, sizeof(test_name), "-%dbpp", data->compression_bpp);
+> @@ -279,8 +277,7 @@ igt_main
+>   	drmModeConnector *connector = NULL;
+>   	int i, j;
+>   	igt_fixture {
+> -		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> -		igt_require_intel(data.drm_fd);
+> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+>   		data.devid = intel_get_drm_devid(data.drm_fd);
+>   		kmstest_set_vt_graphics_mode();
+>   		igt_install_exit_handler(kms_dsc_exit_handler);
+> diff --git a/tests/kms_fbcon_fbt.c b/tests/i915/kms_fbcon_fbt.c
+> similarity index 100%
+> rename from tests/kms_fbcon_fbt.c
+> rename to tests/i915/kms_fbcon_fbt.c
+> diff --git a/tests/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_leak.c
+> similarity index 100%
+> rename from tests/kms_fence_pin_leak.c
+> rename to tests/i915/kms_fence_pin_leak.c
+> diff --git a/tests/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+> similarity index 100%
+> rename from tests/kms_flip_scaled_crc.c
+> rename to tests/i915/kms_flip_scaled_crc.c
+> diff --git a/tests/kms_flip_tiling.c b/tests/i915/kms_flip_tiling.c
+> similarity index 100%
+> rename from tests/kms_flip_tiling.c
+> rename to tests/i915/kms_flip_tiling.c
+> diff --git a/tests/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
+> similarity index 100%
+> rename from tests/kms_frontbuffer_tracking.c
+> rename to tests/i915/kms_frontbuffer_tracking.c
+> diff --git a/tests/kms_invalid_dotclock.c b/tests/i915/kms_invalid_dotclock.c
+> similarity index 100%
+> rename from tests/kms_invalid_dotclock.c
+> rename to tests/i915/kms_invalid_dotclock.c
+> diff --git a/tests/kms_legacy_colorkey.c b/tests/i915/kms_legacy_colorkey.c
+> similarity index 100%
+> rename from tests/kms_legacy_colorkey.c
+> rename to tests/i915/kms_legacy_colorkey.c
+> diff --git a/tests/kms_pipe_b_c_ivb.c b/tests/i915/kms_pipe_b_c_ivb.c
+> similarity index 100%
+> rename from tests/kms_pipe_b_c_ivb.c
+> rename to tests/i915/kms_pipe_b_c_ivb.c
+> diff --git a/tests/kms_psr.c b/tests/i915/kms_psr.c
+> similarity index 100%
+> rename from tests/kms_psr.c
+> rename to tests/i915/kms_psr.c
+> diff --git a/tests/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
+> similarity index 100%
+> rename from tests/kms_psr2_sf.c
+> rename to tests/i915/kms_psr2_sf.c
+> diff --git a/tests/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
+> similarity index 100%
+> rename from tests/kms_psr2_su.c
+> rename to tests/i915/kms_psr2_su.c
+> diff --git a/tests/kms_3d.c b/tests/kms_3d.c
+> index 2e438b430..c29d1d57c 100644
+> --- a/tests/kms_3d.c
+> +++ b/tests/kms_3d.c
+> @@ -34,7 +34,7 @@ igt_simple_main
+>   	const struct edid *edid;
+>   	int mode_count, connector_id;
+>
+> -	drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> +	drm_fd = drm_open_driver_master(DRIVER_ANY);
+>
+>   	res = drmModeGetResources(drm_fd);
+>   	igt_require(res);
+> @@ -44,7 +44,8 @@ igt_simple_main
+>   	/* find an hdmi connector */
+>   	for (int i = 0; i < res->count_connectors; i++) {
+>   		connector = drmModeGetConnectorCurrent(drm_fd, res->connectors[i]);
+> -		if (connector->connector_type == DRM_MODE_CONNECTOR_HDMIA)
+> +		if (connector->connector_type == DRM_MODE_CONNECTOR_HDMIA ||
+> +		    connector->connector_type == DRM_MODE_CONNECTOR_HDMIB)
+
+Hi,
+
+Please move the clean up parts to an individual patch.
+
+>   			break;
+>   		drmModeFreeConnector(connector);
+>   		connector = NULL;
+> diff --git a/tests/kms_big_joiner.c b/tests/kms_big_joiner.c
+> index 4f1f3152e..45c5b2a2a 100644
+> --- a/tests/kms_big_joiner.c
+> +++ b/tests/kms_big_joiner.c
+> @@ -258,7 +258,7 @@ igt_main
+>   	uint16_t width = 0, height = 0;
+>
+>   	igt_fixture {
+> -		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+
+I'm not sure if this test is valid for other drivers. Could you please 
+check this.
+
+Manasi: Could you please provide your inputs here.
+
+>   		kmstest_set_vt_graphics_mode();
+>
+>   		igt_display_require(&data.display, data.drm_fd);
+> diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
+> index e9902f5e7..66781eec6 100644
+> --- a/tests/kms_cursor_edge_walk.c
+> +++ b/tests/kms_cursor_edge_walk.c
+> @@ -94,8 +94,8 @@ static void cursor_move(data_t *data, int x, int y, int i)
+>   	 * fails). So let's accept a failure from the ioctl in that case.
+>   	 */
+>   	igt_assert(drmModeMoveCursor(data->drm_fd, crtc_id, x, y) == 0 ||
+> -		   (IS_CHERRYVIEW(data->devid) && data->pipe == PIPE_C &&
+> -		    x < 0 && x > -data->curw));
+> +		   (data->devid && IS_CHERRYVIEW(data->devid) &&
+Could we combine this check into one? may be populate a flag in fixture 
+and use it throughout the test?
+> +		    data->pipe == PIPE_C && x < 0 && x > -data->curw));
+>   	igt_wait_for_vblank(data->drm_fd,
+>   			display->pipes[data->pipe].crtc_offset);
+>   }
+> @@ -312,9 +312,10 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   	igt_fixture {
+>   		int ret;
+>
+> -		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>
+> -		data.devid = intel_get_drm_devid(data.drm_fd);
+> +		if (is_i915_device(data.drm_fd))
+> +			data.devid = intel_get_drm_devid(data.drm_fd);
+>
+>   		ret = drmGetCap(data.drm_fd, DRM_CAP_CURSOR_WIDTH, &max_curw);
+>   		igt_assert(ret == 0 || errno == EINVAL);
+> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+> index b4836a44d..541378712 100755
+> --- a/tests/kms_flip.c
+> +++ b/tests/kms_flip.c
+> @@ -778,6 +778,7 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
+>
+>   	memset(&hang, 0, sizeof(hang));
+>   	if (do_flip && (o->flags & TEST_HANG)) {
+> +		igt_require_intel(drm_fd);
+Doesn't this make the test i915 specific? Or is it that only a few of 
+the subtests use this?
+>   		ahnd = get_reloc_ahnd(drm_fd, 0);
+>   		hang = hang_gpu(drm_fd, ahnd);
+>   	}
+> diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
+> index 09c871911..97be91907 100644
+> --- a/tests/kms_flip_event_leak.c
+> +++ b/tests/kms_flip_event_leak.c
+> @@ -83,7 +83,7 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
+>   	igt_device_set_master(data->drm_fd);
+>
+>   	igt_plane_set_fb(primary, NULL);
+> -	igt_output_set_pipe(output, PIPE_ANY);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+Please move the clean up parts to an individual patch.
+>   	igt_display_commit(&data->display);
+>
+>   	igt_remove_fb(data->drm_fd, &fb[0]);
+> diff --git a/tests/kms_force_connector_basic.c b/tests/kms_force_connector_basic.c
+> index 3b0146fe9..683d36720 100644
+> --- a/tests/kms_force_connector_basic.c
+> +++ b/tests/kms_force_connector_basic.c
+> @@ -37,7 +37,7 @@ static void reset_connectors(void)
+>   	drmModeRes *res;
+>   	drmModeConnector *connector = NULL;
+>
+> -	drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> +	drm_fd = drm_open_driver_master(DRIVER_ANY);
+>   	res = drmModeGetResources(drm_fd);
+>
+>   	for (int i = 0; i < res->count_connectors; i++) {
+> @@ -86,7 +86,7 @@ igt_main_args("", long_opts, help_str, opt_handler, NULL)
+>   	igt_fixture {
+>   		unsigned connector_id = 0;
+>
+> -		drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> +		drm_fd = drm_open_driver_master(DRIVER_ANY);
+>
+>   		res = drmModeGetResources(drm_fd);
+>   		igt_require(res);
+> diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c
+> index ad2dde569..13a05eb1e 100644
+> --- a/tests/kms_hdmi_inject.c
+> +++ b/tests/kms_hdmi_inject.c
+> @@ -63,7 +63,8 @@ get_connector(int drm_fd, drmModeRes *res)
+>   		connector =
+>   			drmModeGetConnectorCurrent(drm_fd, res->connectors[i]);
+>
+> -		if (connector->connector_type == DRM_MODE_CONNECTOR_HDMIA)
+> +		if (connector->connector_type == DRM_MODE_CONNECTOR_HDMIA ||
+> +		    connector->connector_type == DRM_MODE_CONNECTOR_HDMIB)
+Same as above.
+>   			break;
+>
+>   		drmModeFreeConnector(connector);
+> @@ -82,12 +83,13 @@ hdmi_inject_4k(int drm_fd, drmModeConnector *connector)
+>   	int fb_id;
+>   	struct igt_fb fb;
+>   	uint8_t found_4k_mode = 0;
+> -	uint32_t devid;
+>
+> -	devid = intel_get_drm_devid(drm_fd);
+> +	if (is_i915_device(drm_fd)) {
+> +		uint32_t devid = intel_get_drm_devid(drm_fd);
+>
+> -	/* 4K requires at least HSW */
+> -	igt_require(IS_HASWELL(devid) || intel_display_ver(devid) >= 8);
+> +		/* 4K requires at least HSW */
+> +		igt_require(IS_HASWELL(devid) || intel_display_ver(devid) >= 8);
+> +	}
+>
+>   	edid = igt_kms_get_4k_edid();
+>   	kmstest_force_edid(drm_fd, connector, edid);
+> @@ -195,7 +197,7 @@ igt_main
+>   	drmModeConnector *connector;
+>
+>   	igt_fixture {
+> -		drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> +		drm_fd = drm_open_driver_master(DRIVER_ANY);
+>
+>   		res = drmModeGetResources(drm_fd);
+>   		igt_require(res);
+> diff --git a/tests/kms_mmap_write_crc.c b/tests/kms_mmap_write_crc.c
+> index 2e323a209..0c697c246 100644
+> --- a/tests/kms_mmap_write_crc.c
+> +++ b/tests/kms_mmap_write_crc.c
+> @@ -51,7 +51,6 @@ typedef struct {
+>   	enum pipe pipe;
+>   	igt_crc_t ref_crc;
+>   	igt_pipe_crc_t *pipe_crc;
+> -	uint32_t devid;
+>   } data_t;
+>
+>   static int ioctl_sync = true;
+> @@ -103,6 +102,7 @@ static void test(data_t *data)
+>   	igt_display_commit(display);
+>
+>   	/* make sure caching mode has become UC/WT */
+> +	igt_require_intel(data->drm_fd);
+Doesn't this make it i915 specific?
+>   	caching = gem_get_caching(data->drm_fd, fb->gem_handle);
+>   	igt_assert(caching == I915_CACHING_NONE || caching == I915_CACHING_DISPLAY);
+>
+> @@ -204,7 +204,7 @@ static void cleanup_crtc(data_t *data)
+>
+>   	igt_plane_set_fb(data->primary, NULL);
+>
+> -	igt_output_set_pipe(output, PIPE_ANY);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+Please move this to an individual patch.
+>   	igt_display_commit(display);
+>
+>   	igt_remove_fb(data->drm_fd, &data->fb[0]);
+> @@ -272,9 +272,7 @@ igt_main_args("n", NULL, NULL, opt_handler, NULL)
+>   	int i;
+>
+>   	igt_fixture {
+> -		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> -
+> -		data.devid = intel_get_drm_devid(data.drm_fd);
+> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>
+>   		kmstest_set_vt_graphics_mode();
+>
+> diff --git a/tests/kms_pwrite_crc.c b/tests/kms_pwrite_crc.c
+> index dc32a070c..a1642df6f 100644
+> --- a/tests/kms_pwrite_crc.c
+> +++ b/tests/kms_pwrite_crc.c
+> @@ -42,7 +42,6 @@ typedef struct {
+>   	enum pipe pipe;
+>   	igt_crc_t ref_crc;
+>   	igt_pipe_crc_t *pipe_crc;
+> -	uint32_t devid;
+>   } data_t;
+>
+>   static void test(data_t *data)
+> @@ -77,6 +76,7 @@ static void test(data_t *data)
+>   			0, 0, fb->width << 16, fb->height << 16);
+>
+>   	/* make sure caching mode has become UC/WT */
+> +	igt_require_intel(data->drm_fd);
+Doesn't this make it i915 specific?
+>   	caching = gem_get_caching(data->drm_fd, fb->gem_handle);
+>   	igt_assert(caching == I915_CACHING_NONE || caching == I915_CACHING_DISPLAY);
+>
+> @@ -141,7 +141,7 @@ static void cleanup_crtc(data_t *data)
+>
+>   	igt_plane_set_fb(data->primary, NULL);
+>
+> -	igt_output_set_pipe(output, PIPE_ANY);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+Please move this to an individual patch.
+>   	igt_display_commit(display);
+>
+>   	igt_remove_fb(data->drm_fd, &data->fb[0]);
+> @@ -174,9 +174,7 @@ static data_t data;
+>
+>   igt_simple_main
+>   {
+> -	data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> -
+> -	data.devid = intel_get_drm_devid(data.drm_fd);
+> +	data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>
+>   	kmstest_set_vt_graphics_mode();
+>
+> diff --git a/tests/kms_tv_load_detect.c b/tests/kms_tv_load_detect.c
+> index caac3aecb..80ced9918 100644
+> --- a/tests/kms_tv_load_detect.c
+> +++ b/tests/kms_tv_load_detect.c
+> @@ -34,7 +34,7 @@ igt_main
+>   	drmModeConnector *tv_connector = NULL, *temp;
+>
+>   	igt_fixture {
+> -		drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> +		drm_fd = drm_open_driver_master(DRIVER_ANY);
+>
+>   		res = drmModeGetResources(drm_fd);
+>   		igt_require(res);
+> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+> index c9a9cd47a..ea9bd9a56 100644
+> --- a/tests/kms_universal_plane.c
+> +++ b/tests/kms_universal_plane.c
+> @@ -107,7 +107,7 @@ functional_test_fini(functional_test_t *test, igt_output_t *output)
+>   	igt_remove_fb(test->data->drm_fd, &test->red_fb);
+>   	igt_remove_fb(test->data->drm_fd, &test->yellow_fb);
+>
+> -	igt_output_set_pipe(output, PIPE_ANY);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+>   	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
+>   }
+>
+> @@ -382,6 +382,7 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+>   	 * doesn't cover CRTC (should fail on pre-gen9 and succeed on
+>   	 * gen9+).
+>   	 */
+> +	igt_require_intel(data->drm_fd);
+Doesn't this make it i915 specific?
+>   	igt_plane_set_fb(primary, &test.undersized_fb);
+>   	expect = (data->display_ver < 9) ? -EINVAL : 0;
+>   	igt_assert(igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL) == expect);
+> @@ -579,6 +580,7 @@ cursor_leak_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+>
+>   	igt_require_pipe(display, pipe);
+>   	igt_require(display->has_cursor_plane);
+> +	igt_require_intel(data->drm_fd);
+Same as above.
+>
+>   	igt_output_set_pipe(output, pipe);
+>   	mode = igt_output_get_mode(output);
+> @@ -704,6 +706,7 @@ gen9_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+>
+>   	int ret = 0;
+>
+> +	igt_require_intel(data->drm_fd);
+
+Same as above.
+
+Thanks,
+
+Karthik.B.S
+
+>   	igt_skip_on(data->display_ver < 9);
+>   	igt_require_pipe(&data->display, pipe);
+>
+> @@ -797,8 +800,9 @@ igt_main
+>   	enum pipe pipe;
+>
+>   	igt_fixture {
+> -		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> -		data.display_ver = intel_display_ver(intel_get_drm_devid(data.drm_fd));
+> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> +		if (is_i915_device(data.drm_fd))
+> +			data.display_ver = intel_display_ver(intel_get_drm_devid(data.drm_fd));
+>
+>   		kmstest_set_vt_graphics_mode();
+>
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 1bdfddbb2..8ca78fa0c 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -19,11 +19,7 @@ test_progs = [
+>   	'kms_atomic',
+>   	'kms_atomic_interruptible',
+>   	'kms_atomic_transition',
+> -	'kms_big_fb',
+>   	'kms_big_joiner' ,
+> -	'kms_busy',
+> -	'kms_ccs',
+> -	'kms_cdclk',
+>   	'kms_concurrent',
+>   	'kms_content_protection',
+>   	'kms_cursor_crc',
+> @@ -32,26 +28,16 @@ test_progs = [
+>   	'kms_dither',
+>   	'kms_dp_aux_dev',
+>   	'kms_dp_tiled_display',
+> -	'kms_draw_crc',
+> -	'kms_dsc',
+> -	'kms_fbcon_fbt',
+> -	'kms_fence_pin_leak',
+>   	'kms_flip',
+>   	'kms_flip_event_leak',
+> -	'kms_flip_scaled_crc',
+> -	'kms_flip_tiling',
+>   	'kms_force_connector_basic',
+> -	'kms_frontbuffer_tracking',
+>   	'kms_getfb',
+>   	'kms_hdmi_inject',
+>   	'kms_hdr',
+> -	'kms_invalid_dotclock',
+>   	'kms_lease',
+> -	'kms_legacy_colorkey',
+>   	'kms_mmap_write_crc',
+>   	'kms_multipipe_modeset',
+>   	'kms_panel_fitting',
+> -	'kms_pipe_b_c_ivb',
+>   	'kms_pipe_crc_basic',
+>   	'kms_plane',
+>   	'kms_plane_alpha_blend',
+> @@ -62,9 +48,6 @@ test_progs = [
+>   	'kms_prime',
+>   	'kms_prop_blob',
+>   	'kms_properties',
+> -	'kms_psr',
+> -	'kms_psr2_su',
+> -	'kms_psr2_sf',
+>   	'kms_pwrite_crc',
+>   	'kms_rmfb',
+>   	'kms_rotation_crc',
+> @@ -235,6 +218,23 @@ i915_progs = [
+>   	'i915_query',
+>   	'i915_selftest',
+>   	'i915_suspend',
+> +	'kms_big_fb',
+> +	'kms_busy',
+> +	'kms_ccs',
+> +	'kms_cdclk',
+> +	'kms_draw_crc',
+> +	'kms_dsc',
+> +	'kms_fbcon_fbt',
+> +	'kms_fence_pin_leak',
+> +	'kms_flip_scaled_crc',
+> +	'kms_flip_tiling',
+> +	'kms_frontbuffer_tracking',
+> +	'kms_invalid_dotclock',
+> +	'kms_legacy_colorkey',
+> +	'kms_pipe_b_c_ivb',
+> +	'kms_psr',
+> +	'kms_psr2_su',
+> +	'kms_psr2_sf',
+>   	'sysfs_clients',
+>   	'sysfs_defaults',
+>   	'sysfs_heartbeat_interval',
+> --
+> 2.32.0
+>
