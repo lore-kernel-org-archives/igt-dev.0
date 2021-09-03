@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0CC56E0AB
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 10:28:27 +0000 (UTC)
-Date: Fri, 3 Sep 2021 13:31:29 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YTH5gdy/GGp1LT6C@platvala-desk.ger.corp.intel.com>
-References: <20210902173043.821318-1-alan.previn.teres.alexis@intel.com>
- <20210902173043.821318-2-alan.previn.teres.alexis@intel.com>
+Received: from mail-4321.protonmail.ch (mail-4321.protonmail.ch [185.70.43.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DBAE36E883
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 12:37:54 +0000 (UTC)
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com
+ [51.77.79.158])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail-4321.protonmail.ch (Postfix) with ESMTPS id 4H1HFl5Xmqz4xDg8
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Sep 2021 12:30:51 +0000 (UTC)
+Date: Fri, 03 Sep 2021 12:30:38 +0000
+From: Simon Ser <contact@emersion.fr>
+Message-ID: <20210903123027.1433-1-contact@emersion.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210902173043.821318-2-alan.previn.teres.alexis@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v9 01/16] Add PXP UAPI support in
- i915_drm.h
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: [igt-dev] [RFC i-g-t] tests/kms_lease: add empty lease test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,110 +23,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: Simon Ser <contact@emersion.fr>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Alan Previn <alan.previn.teres.alexis@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Sep 02, 2021 at 10:30:28AM -0700, Alan Previn wrote:
-> At the time of this commit, PXP hasnt been merged into
-> upstream kernel so this has no kernel tag reference yet
+This is an update for a kernel change currently being reviewed.
 
-Please use the newly added lib/i915/i915_drm_local.h for these
-additions then.
+Signed-off-by: Simon Ser <contact@emersion.fr>
+---
+ tests/kms_lease.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
+diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+index c5c88e145e1a..b69d99389de0 100644
+--- a/tests/kms_lease.c
++++ b/tests/kms_lease.c
+@@ -250,6 +250,15 @@ static void simple_lease(data_t *data)
+ =09terminate_lease(&lease);
+ }
+=20
++static void empty_lease(data_t *data)
++{
++=09struct drm_mode_create_lease mcl =3D {0};
++
++=09igt_assert_eq(create_lease(data->master.fd, &mcl), 0);
++
++=09close(mcl.fd);
++}
++
+ static void page_flip_implicit_plane(data_t *data)
+ {
+ =09uint32_t object_ids[3];
+@@ -842,16 +851,10 @@ static void run_test(data_t *data, void (*testfunc)(d=
+ata_t *))
+ static void invalid_create_leases(data_t *data)
+ {
+ =09uint32_t object_ids[4];
+-=09struct drm_mode_create_lease mcl;
++=09struct drm_mode_create_lease mcl =3D {0};
+ =09drmModeRes *resources;
+ =09int tmp_fd, ret;
+=20
+-=09/* empty lease */
+-=09mcl.object_ids =3D 0;
+-=09mcl.object_count =3D 0;
+-=09mcl.flags =3D 0;
+-=09igt_assert_eq(create_lease(data->master.fd, &mcl), -EINVAL);
+-
+ =09/* NULL array pointer */
+ =09mcl.object_count =3D 1;
+ =09igt_assert_eq(create_lease(data->master.fd, &mcl), -EFAULT);
+@@ -1221,6 +1224,7 @@ igt_main
+ =09=09const char *desc;
+ =09} funcs[] =3D {
+ =09=09{ "simple_lease", simple_lease, "Check if create lease ioctl call wo=
+rks" },
++=09=09{ "empty_lease", empty_lease, "Check that creating an empty lease wo=
+rks" },
+ =09=09{ "lessee_list", lessee_list, "Check if listed lease is same as crea=
+ted one" },
+ =09=09{ "lease_get", lease_get, "Tests getting the required contents of a =
+lease" },
+ =09=09{ "lease_unleased_connector", lease_unleased_connector, "Negative te=
+st by trying to"
+--=20
+2.33.0
 
--- 
-Petri Latvala
-
-
-> 
-> Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-> ---
->  include/drm-uapi/i915_drm.h | 53 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 53 insertions(+)
-> 
-> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-> index b9632bb2..98149a7d 100644
-> --- a/include/drm-uapi/i915_drm.h
-> +++ b/include/drm-uapi/i915_drm.h
-> @@ -1815,6 +1815,25 @@ struct drm_i915_gem_context_param {
->   * attempted to use it, never re-use this context param number.
->   */
->  #define I915_CONTEXT_PARAM_RINGSIZE	0xc
-> +
-> +/*
-> + * I915_CONTEXT_PARAM_PROTECTED_CONTENT:
-> + *
-> + * Mark that the context makes use of protected content, which will result
-> + * in the context being invalidated when the protected content session is.
-> + * This flag can only be set at context creation time and, when set to true,
-> + * must be preceded by an explicit setting of I915_CONTEXT_PARAM_RECOVERABLE
-> + * to false. This flag can't be set to true in conjunction with setting the
-> + * I915_CONTEXT_PARAM_BANNABLE flag to false.
-> + *
-> + * Given the numerous restriction on this flag, there are several unique
-> + * failure cases:
-> + *
-> + * -ENODEV: feature not available
-> + * -EPERM: trying to mark a recoverable or not bannable context as protected
-> + * -EACCES: submitting an invalidated context for execution
-> + */
-> +#define I915_CONTEXT_PARAM_PROTECTED_CONTENT    0xd
->  /* Must be kept compact -- no holes and well documented */
->  
->  	__u64 value;
-> @@ -2931,8 +2950,12 @@ struct drm_i915_gem_create_ext {
->  	 *
->  	 * For I915_GEM_CREATE_EXT_MEMORY_REGIONS usage see
->  	 * struct drm_i915_gem_create_ext_memory_regions.
-> +	 *
-> +	 * For I915_GEM_CREATE_EXT_PROTECTED_CONTENT usage see
-> +	 * struct drm_i915_gem_create_ext_protected_content.
->  	 */
->  #define I915_GEM_CREATE_EXT_MEMORY_REGIONS 0
-> +#define I915_GEM_CREATE_EXT_PROTECTED_CONTENT 1
->  	__u64 extensions;
->  };
->  
-> @@ -2990,6 +3013,36 @@ struct drm_i915_gem_create_ext_memory_regions {
->  	__u64 regions;
->  };
->  
-> +/**
-> + * struct drm_i915_gem_create_ext_protected_content - The
-> + * I915_OBJECT_PARAM_PROTECTED_CONTENT extension.
-> + *
-> + * If this extension is provided, buffer contents are expected to be
-> + * protected by PXP encryption and requires decryption for scan out
-> + * and processing. This is only possible on platforms that have PXP enabled,
-> + * on all other scenarios ysing this extension will cause the ioctl to fail
-> + * and return -ENODEV. The flags parameter is reserved for future expansion and
-> + * must currently be set to zero.
-> + *
-> + * The buffer contents are considered invalid after a PXP session teardown.
-> + *
-> + * The encryption is guaranteed to be processed correctly only if the object
-> + * is submitted with a context created using the
-> + * I915_CONTEXT_PARAM_PROTECTED_CONTENT flag. This will also enable extra checks
-> + * at submission time on the validity of the objects involved, which can lead to
-> + * the following errors being returned from the execbuf ioctl:
-> + *
-> + * -ENODEV: PXP session not currently active
-> + * -ENOEXEC: buffer has become invalid after a teardown event
-> + */
-> +struct drm_i915_gem_create_ext_protected_content {
-> +	struct i915_user_extension base;
-> +	__u32 flags;
-> +};
-> +
-> +/* ID of the protected content session managed by i915 when PXP is active */
-> +#define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
-> +
->  #if defined(__cplusplus)
->  }
->  #endif
-> -- 
-> 2.25.1
-> 
