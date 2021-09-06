@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC1778996E
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Sep 2021 06:18:38 +0000 (UTC)
-Date: Mon, 6 Sep 2021 09:21:42 +0300
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC4F9898A7
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Sep 2021 06:21:57 +0000 (UTC)
+Date: Mon, 6 Sep 2021 09:25:01 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YTWzdjyUV49hy5/f@platvala-desk.ger.corp.intel.com>
-References: <20210902173043.821318-1-alan.previn.teres.alexis@intel.com>
- <20210902173043.821318-2-alan.previn.teres.alexis@intel.com>
- <YTH5gdy/GGp1LT6C@platvala-desk.ger.corp.intel.com>
- <0ec0c1e9f6e06a7cdf9b87f377c892f542d10ece.camel@intel.com>
+Message-ID: <YTW0PS1FF5XTGhmO@platvala-desk.ger.corp.intel.com>
+References: <20210903140348.252686-1-thomas.hellstrom@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
-In-Reply-To: <0ec0c1e9f6e06a7cdf9b87f377c892f542d10ece.camel@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v9 01/16] Add PXP UAPI support in
- i915_drm.h
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210903140348.252686-1-thomas.hellstrom@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] test/gem_exec_suspend: Enable the test
+ for discrete GPUs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,131 +22,90 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, maarten.lankhorst@linux.intel.com, matthew.auld@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Sat, Sep 04, 2021 at 12:11:47AM +0300, Teres Alexis, Alan Previn wrote:
-> oops - my bad - didnt realize we had that - will do.
-> 
-> While on this, would it make sense to permanently include lib/i915/i915_drm_local.h from include/drm-
-> uapi/i915_drm.h (but latter would always remain empty on upstream)?. This way, when kernel support is
-> added for UAPI changes, we move the definitions across but dont add and need remove the '#include
-> "lib/i915/i915_drm_local.h" from the other source files (requiring another change)?
+On Fri, Sep 03, 2021 at 04:03:48PM +0200, Thomas Hellstr=F6m wrote:
+> Discrete GPUs don't support gem_set_caching() and uses a single,
+> kernel provided mapping mode, FIXED. Adjust the test accordingly.
+>=20
+> This makes the test run on DG1.
+>=20
+> Signed-off-by: Thomas Hellstr=F6m <thomas.hellstrom@linux.intel.com>
+> ---
+>  tests/i915/gem_exec_suspend.c | 17 ++++++++++++++++-
+>  1 file changed, 16 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
+> index dbe0c8a7..5f17e600 100644
+> --- a/tests/i915/gem_exec_suspend.c
+> +++ b/tests/i915/gem_exec_suspend.c
+> @@ -114,7 +114,8 @@ static void run_test(int fd, const intel_ctx_t *ctx,
+> =20
+>  	memset(obj, 0, sizeof(obj));
+>  	obj[0].handle =3D gem_create(fd, 4096);
+> -	gem_set_caching(fd, obj[0].handle, !!(flags & CACHED));
+> +	if (!gem_has_lmem(fd))
+> +		gem_set_caching(fd, obj[0].handle, !!(flags & CACHED));
+>  	obj[0].flags |=3D EXEC_OBJECT_WRITE;
+>  	obj[1].handle =3D gem_create(fd, 4096);
+>  	gem_write(fd, obj[1].handle, 0, &bbe, sizeof(bbe));
+> @@ -293,6 +294,7 @@ igt_main
+>  	const struct intel_execution_engine2 *e;
+>  	igt_hang_t hang;
+>  	const intel_ctx_t *ctx;
+> +	bool has_lmem;
+>  	int fd;
+> =20
+>  	igt_fixture {
+> @@ -302,6 +304,7 @@ igt_main
+>  		ctx =3D intel_ctx_create_all_physical(fd);
+> =20
+>  		igt_fork_hang_detector(fd);
+> +		has_lmem =3D gem_has_lmem(fd);
+>  	}
+> =20
+>  	igt_subtest("basic")
+> @@ -318,6 +321,18 @@ igt_main
+>  		run_test(fd, ctx, ALL_ENGINES, HIBERNATE);
+> =20
+>  	for (m =3D modes; m->suffix; m++) {
+> +		if (has_lmem) {
+> +			igt_subtest_with_dynamic_f("fixed%s", m->suffix) {
 
-It would, but it's impossible. include/drm-uapi/i915_drm.h is supposed
-to be a pristine unchanged drop from the kernel.
+You can't do
 
-The other way around might work but looks more odd from the .c side.
+if (something_that_depends_on_the_running_system)
+  igt_subtest_of_any_kind(...)
 
 
--- 
+Instead you need to do
+
+igt_subtest_of_any_kind(...) {
+  igt_require(something_that_depends_on_the_running_system);
+  ...
+}
+
+
+--=20
 Petri Latvala
 
 
 
-> 
-> ...alan
-> 
-> On Fri, 2021-09-03 at 13:31 +0300, Petri Latvala wrote:
-> > On Thu, Sep 02, 2021 at 10:30:28AM -0700, Alan Previn wrote:
-> > > At the time of this commit, PXP hasnt been merged into
-> > > upstream kernel so this has no kernel tag reference yet
-> >
-> > Please use the newly added lib/i915/i915_drm_local.h for these
-> > additions then.
-> >
-> >
-> > --
-> > Petri Latvala
-> >
-> >
-> > > Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-> > > ---
-> > >  include/drm-uapi/i915_drm.h | 53 +++++++++++++++++++++++++++++++++++++
-> > >  1 file changed, 53 insertions(+)
-> > >
-> > > diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-> > > index b9632bb2..98149a7d 100644
-> > > --- a/include/drm-uapi/i915_drm.h
-> > > +++ b/include/drm-uapi/i915_drm.h
-> > > @@ -1815,6 +1815,25 @@ struct drm_i915_gem_context_param {
-> > >   * attempted to use it, never re-use this context param number.
-> > >   */
-> > >  #define I915_CONTEXT_PARAM_RINGSIZE        0xc
-> > > +
-> > > +/*
-> > > + * I915_CONTEXT_PARAM_PROTECTED_CONTENT:
-> > > + *
-> > > + * Mark that the context makes use of protected content, which will result
-> > > + * in the context being invalidated when the protected content session is.
-> > > + * This flag can only be set at context creation time and, when set to true,
-> > > + * must be preceded by an explicit setting of I915_CONTEXT_PARAM_RECOVERABLE
-> > > + * to false. This flag can't be set to true in conjunction with setting the
-> > > + * I915_CONTEXT_PARAM_BANNABLE flag to false.
-> > > + *
-> > > + * Given the numerous restriction on this flag, there are several unique
-> > > + * failure cases:
-> > > + *
-> > > + * -ENODEV: feature not available
-> > > + * -EPERM: trying to mark a recoverable or not bannable context as protected
-> > > + * -EACCES: submitting an invalidated context for execution
-> > > + */
-> > > +#define I915_CONTEXT_PARAM_PROTECTED_CONTENT    0xd
-> > >  /* Must be kept compact -- no holes and well documented */
-> > >
-> > >     __u64 value;
-> > > @@ -2931,8 +2950,12 @@ struct drm_i915_gem_create_ext {
-> > >      *
-> > >      * For I915_GEM_CREATE_EXT_MEMORY_REGIONS usage see
-> > >      * struct drm_i915_gem_create_ext_memory_regions.
-> > > +    *
-> > > +    * For I915_GEM_CREATE_EXT_PROTECTED_CONTENT usage see
-> > > +    * struct drm_i915_gem_create_ext_protected_content.
-> > >      */
-> > >  #define I915_GEM_CREATE_EXT_MEMORY_REGIONS 0
-> > > +#define I915_GEM_CREATE_EXT_PROTECTED_CONTENT 1
-> > >     __u64 extensions;
-> > >  };
-> > >
-> > > @@ -2990,6 +3013,36 @@ struct drm_i915_gem_create_ext_memory_regions {
-> > >     __u64 regions;
-> > >  };
-> > >
-> > > +/**
-> > > + * struct drm_i915_gem_create_ext_protected_content - The
-> > > + * I915_OBJECT_PARAM_PROTECTED_CONTENT extension.
-> > > + *
-> > > + * If this extension is provided, buffer contents are expected to be
-> > > + * protected by PXP encryption and requires decryption for scan out
-> > > + * and processing. This is only possible on platforms that have PXP enabled,
-> > > + * on all other scenarios ysing this extension will cause the ioctl to fail
-> > > + * and return -ENODEV. The flags parameter is reserved for future expansion and
-> > > + * must currently be set to zero.
-> > > + *
-> > > + * The buffer contents are considered invalid after a PXP session teardown.
-> > > + *
-> > > + * The encryption is guaranteed to be processed correctly only if the object
-> > > + * is submitted with a context created using the
-> > > + * I915_CONTEXT_PARAM_PROTECTED_CONTENT flag. This will also enable extra checks
-> > > + * at submission time on the validity of the objects involved, which can lead to
-> > > + * the following errors being returned from the execbuf ioctl:
-> > > + *
-> > > + * -ENODEV: PXP session not currently active
-> > > + * -ENOEXEC: buffer has become invalid after a teardown event
-> > > + */
-> > > +struct drm_i915_gem_create_ext_protected_content {
-> > > +   struct i915_user_extension base;
-> > > +   __u32 flags;
-> > > +};
-> > > +
-> > > +/* ID of the protected content session managed by i915 when PXP is active */
-> > > +#define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
-> > > +
-> > >  #if defined(__cplusplus)
-> > >  }
-> > >  #endif
-> > > --
-> > > 2.25.1
-> > >
-> 
+> +				for_each_ctx_engine(fd, ctx, e) {
+> +					if (!gem_class_can_store_dword(fd, e->class))
+> +						continue;
+> +					igt_dynamic_f("%s", e->name)
+> +						run_test(fd, ctx, e->flags, m->mode);
+> +				}
+> +			}
+> +			continue;
+> +		}
+> +
+>  		igt_subtest_with_dynamic_f("uncached%s", m->suffix) {
+>  			for_each_ctx_engine(fd, ctx, e) {
+>  				if (!gem_class_can_store_dword(fd, e->class))
+> --=20
+> 2.31.1
+>=20
