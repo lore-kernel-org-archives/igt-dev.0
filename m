@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2796373944232904457=="
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AC1778996E
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Sep 2021 06:18:38 +0000 (UTC)
+Date: Mon, 6 Sep 2021 09:21:42 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YTWzdjyUV49hy5/f@platvala-desk.ger.corp.intel.com>
+References: <20210902173043.821318-1-alan.previn.teres.alexis@intel.com>
+ <20210902173043.821318-2-alan.previn.teres.alexis@intel.com>
+ <YTH5gdy/GGp1LT6C@platvala-desk.ger.corp.intel.com>
+ <0ec0c1e9f6e06a7cdf9b87f377c892f542d10ece.camel@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Sat, 04 Sep 2021 18:09:58 -0000
-Message-ID: <163077899876.20408.11209416543070501184@emeril.freedesktop.org>
-References: <20210904170932.26321-1-arjun.melkaveri@intel.com>
-In-Reply-To: <20210904170932.26321-1-arjun.melkaveri@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/gem=5Fctx=5Fpersistence=3A_modified_test=5Fsaturated=5Fhos?=
- =?utf-8?q?tile_subtest_=28rev2=29?=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0ec0c1e9f6e06a7cdf9b87f377c892f542d10ece.camel@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v9 01/16] Add PXP UAPI support in
+ i915_drm.h
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,307 +22,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arjun Melkaveri <arjun.melkaveri@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2796373944232904457==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Sat, Sep 04, 2021 at 12:11:47AM +0300, Teres Alexis, Alan Previn wrote:
+> oops - my bad - didnt realize we had that - will do.
+> 
+> While on this, would it make sense to permanently include lib/i915/i915_drm_local.h from include/drm-
+> uapi/i915_drm.h (but latter would always remain empty on upstream)?. This way, when kernel support is
+> added for UAPI changes, we move the definitions across but dont add and need remove the '#include
+> "lib/i915/i915_drm_local.h" from the other source files (requiring another change)?
 
-== Series Details ==
+It would, but it's impossible. include/drm-uapi/i915_drm.h is supposed
+to be a pristine unchanged drop from the kernel.
 
-Series: tests/i915/gem_ctx_persistence: modified test_saturated_hostile subtest (rev2)
-URL   : https://patchwork.freedesktop.org/series/94290/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_10550 -> IGTPW_6199
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_6199 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_6199, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_6199:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_flip@basic-flip-vs-dpms:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][1] +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@kms_flip@basic-flip-vs-dpms.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:
-    - fi-rkl-11600:       [PASS][2] -> [SKIP][3]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-rkl-11600/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6199 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@fbdev@write:
-    - fi-rkl-11600:       [PASS][4] -> [SKIP][5] ([i915#2582]) +4 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-rkl-11600/igt@fbdev@write.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@fbdev@write.html
-
-  * igt@i915_pm_rpm@basic-rte:
-    - fi-rkl-11600:       [PASS][6] -> [SKIP][7] ([fdo#109308]) +1 similar issue
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-rkl-11600/igt@i915_pm_rpm@basic-rte.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@i915_pm_rpm@basic-rte.html
-
-  * igt@i915_selftest@live@gt_lrc:
-    - fi-rkl-guc:         [PASS][8] -> [DMESG-WARN][9] ([i915#3958])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-icl-y:           [PASS][10] -> [DMESG-FAIL][11] ([i915#2291])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-icl-y/igt@i915_selftest@live@gt_pm.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-icl-y/igt@i915_selftest@live@gt_pm.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-rkl-11600:       [PASS][12] -> [SKIP][13] ([fdo#111825]) +7 similar issues
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  * igt@kms_flip@basic-flip-vs-modeset:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][14] ([i915#3669]) +2 similar issues
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@kms_flip@basic-flip-vs-modeset.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-rkl-11600:       [PASS][15] -> [SKIP][16] ([i915#3180])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-rkl-11600/igt@kms_frontbuffer_tracking@basic.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a:
-    - fi-rkl-11600:       [PASS][17] -> [SKIP][18] ([i915#3919]) +9 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-rkl-11600/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - fi-rkl-11600:       [PASS][19] -> [SKIP][20] ([i915#1845])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-rkl-11600/igt@prime_vgem@basic-fence-flip.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@prime_vgem@basic-fence-flip.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-icl-y:           [DMESG-FAIL][21] ([i915#1993]) -> [PASS][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-icl-y/igt@i915_selftest@live@execlists.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-icl-y/igt@i915_selftest@live@execlists.html
-
-  * igt@kms_chamelium@hdmi-edid-read:
-    - fi-kbl-7500u:       [FAIL][23] ([i915#3449]) -> [PASS][24]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html
-
-  
-  [fdo#109308]: https://bugs.freedesktop.org/show_bug.cgi?id=109308
-  [fdo#111825]: https://bugs.freedesktop.org/show_bug.cgi?id=111825
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1993]: https://gitlab.freedesktop.org/drm/intel/issues/1993
-  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#3180]: https://gitlab.freedesktop.org/drm/intel/issues/3180
-  [i915#3449]: https://gitlab.freedesktop.org/drm/intel/issues/3449
-  [i915#3669]: https://gitlab.freedesktop.org/drm/intel/issues/3669
-  [i915#3919]: https://gitlab.freedesktop.org/drm/intel/issues/3919
-  [i915#3958]: https://gitlab.freedesktop.org/drm/intel/issues/3958
+The other way around might work but looks more odd from the .c side.
 
 
-Participating hosts (45 -> 39)
-------------------------------
-
-  Missing    (6): bat-adls-5 bat-dg1-5 fi-bsw-cyan bat-adlp-4 fi-bdw-samus bat-jsl-1 
+-- 
+Petri Latvala
 
 
-Build changes
--------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6197 -> IGTPW_6199
-
-  CI-20190529: 20190529
-  CI_DRM_10550: 07f6ce3dba287a2aa8a62cdd3b7d46ea0676007f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6199: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/index.html
-  IGT_6197: 40888f97a6ad219f4ed48a1830d0ef3c9617d006 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/index.html
-
---===============2796373944232904457==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/gem_ctx_persistence: modified test_saturated_hostile subtest (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/94290/">https://patchwork.freedesktop.org/series/94290/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10550 -&gt; IGTPW_6199</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_6199 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_6199, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/index.html</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6199:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@kms_flip@basic-flip-vs-dpms.html">SKIP</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-rkl-11600/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html">SKIP</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6199 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@fbdev@write:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-rkl-11600/igt@fbdev@write.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@fbdev@write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) +4 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@basic-rte:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-rkl-11600/igt@i915_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@i915_pm_rpm@basic-rte.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109308">fdo#109308</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_lrc:</p>
-<ul>
-<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3958">i915#3958</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-icl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-icl-y/igt@i915_selftest@live@gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-icl-y/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111825">fdo#111825</a>) +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@kms_flip@basic-flip-vs-modeset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3669">i915#3669</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-rkl-11600/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3180">i915#3180</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-rkl-11600/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3919">i915#3919</a>) +9 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-rkl-11600/igt@prime_vgem@basic-fence-flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-rkl-11600/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-icl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-icl-y/igt@i915_selftest@live@execlists.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1993">i915#1993</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-icl-y/igt@i915_selftest@live@execlists.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-edid-read:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10550/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3449">i915#3449</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (45 -&gt; 39)</h2>
-<p>Missing    (6): bat-adls-5 bat-dg1-5 fi-bsw-cyan bat-adlp-4 fi-bdw-samus bat-jsl-1 </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6197 -&gt; IGTPW_6199</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10550: 07f6ce3dba287a2aa8a62cdd3b7d46ea0676007f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6199: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6199/index.html<br />
-  IGT_6197: 40888f97a6ad219f4ed48a1830d0ef3c9617d006 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============2796373944232904457==--
+> 
+> ...alan
+> 
+> On Fri, 2021-09-03 at 13:31 +0300, Petri Latvala wrote:
+> > On Thu, Sep 02, 2021 at 10:30:28AM -0700, Alan Previn wrote:
+> > > At the time of this commit, PXP hasnt been merged into
+> > > upstream kernel so this has no kernel tag reference yet
+> >
+> > Please use the newly added lib/i915/i915_drm_local.h for these
+> > additions then.
+> >
+> >
+> > --
+> > Petri Latvala
+> >
+> >
+> > > Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+> > > ---
+> > >  include/drm-uapi/i915_drm.h | 53 +++++++++++++++++++++++++++++++++++++
+> > >  1 file changed, 53 insertions(+)
+> > >
+> > > diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+> > > index b9632bb2..98149a7d 100644
+> > > --- a/include/drm-uapi/i915_drm.h
+> > > +++ b/include/drm-uapi/i915_drm.h
+> > > @@ -1815,6 +1815,25 @@ struct drm_i915_gem_context_param {
+> > >   * attempted to use it, never re-use this context param number.
+> > >   */
+> > >  #define I915_CONTEXT_PARAM_RINGSIZE        0xc
+> > > +
+> > > +/*
+> > > + * I915_CONTEXT_PARAM_PROTECTED_CONTENT:
+> > > + *
+> > > + * Mark that the context makes use of protected content, which will result
+> > > + * in the context being invalidated when the protected content session is.
+> > > + * This flag can only be set at context creation time and, when set to true,
+> > > + * must be preceded by an explicit setting of I915_CONTEXT_PARAM_RECOVERABLE
+> > > + * to false. This flag can't be set to true in conjunction with setting the
+> > > + * I915_CONTEXT_PARAM_BANNABLE flag to false.
+> > > + *
+> > > + * Given the numerous restriction on this flag, there are several unique
+> > > + * failure cases:
+> > > + *
+> > > + * -ENODEV: feature not available
+> > > + * -EPERM: trying to mark a recoverable or not bannable context as protected
+> > > + * -EACCES: submitting an invalidated context for execution
+> > > + */
+> > > +#define I915_CONTEXT_PARAM_PROTECTED_CONTENT    0xd
+> > >  /* Must be kept compact -- no holes and well documented */
+> > >
+> > >     __u64 value;
+> > > @@ -2931,8 +2950,12 @@ struct drm_i915_gem_create_ext {
+> > >      *
+> > >      * For I915_GEM_CREATE_EXT_MEMORY_REGIONS usage see
+> > >      * struct drm_i915_gem_create_ext_memory_regions.
+> > > +    *
+> > > +    * For I915_GEM_CREATE_EXT_PROTECTED_CONTENT usage see
+> > > +    * struct drm_i915_gem_create_ext_protected_content.
+> > >      */
+> > >  #define I915_GEM_CREATE_EXT_MEMORY_REGIONS 0
+> > > +#define I915_GEM_CREATE_EXT_PROTECTED_CONTENT 1
+> > >     __u64 extensions;
+> > >  };
+> > >
+> > > @@ -2990,6 +3013,36 @@ struct drm_i915_gem_create_ext_memory_regions {
+> > >     __u64 regions;
+> > >  };
+> > >
+> > > +/**
+> > > + * struct drm_i915_gem_create_ext_protected_content - The
+> > > + * I915_OBJECT_PARAM_PROTECTED_CONTENT extension.
+> > > + *
+> > > + * If this extension is provided, buffer contents are expected to be
+> > > + * protected by PXP encryption and requires decryption for scan out
+> > > + * and processing. This is only possible on platforms that have PXP enabled,
+> > > + * on all other scenarios ysing this extension will cause the ioctl to fail
+> > > + * and return -ENODEV. The flags parameter is reserved for future expansion and
+> > > + * must currently be set to zero.
+> > > + *
+> > > + * The buffer contents are considered invalid after a PXP session teardown.
+> > > + *
+> > > + * The encryption is guaranteed to be processed correctly only if the object
+> > > + * is submitted with a context created using the
+> > > + * I915_CONTEXT_PARAM_PROTECTED_CONTENT flag. This will also enable extra checks
+> > > + * at submission time on the validity of the objects involved, which can lead to
+> > > + * the following errors being returned from the execbuf ioctl:
+> > > + *
+> > > + * -ENODEV: PXP session not currently active
+> > > + * -ENOEXEC: buffer has become invalid after a teardown event
+> > > + */
+> > > +struct drm_i915_gem_create_ext_protected_content {
+> > > +   struct i915_user_extension base;
+> > > +   __u32 flags;
+> > > +};
+> > > +
+> > > +/* ID of the protected content session managed by i915 when PXP is active */
+> > > +#define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
+> > > +
+> > >  #if defined(__cplusplus)
+> > >  }
+> > >  #endif
+> > > --
+> > > 2.25.1
+> > >
+> 
