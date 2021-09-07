@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 86C6C89BF3
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Sep 2021 01:58:21 +0000 (UTC)
-From: Imre Deak <imre.deak@intel.com>
-Date: Tue,  7 Sep 2021 04:58:07 +0300
-Message-Id: <20210907015807.3932309-1-imre.deak@intel.com>
-In-Reply-To: <20210906181736.3914421-2-imre.deak@intel.com>
-References: <20210906181736.3914421-2-imre.deak@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7133805301658868989=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 1/6] tests/kms_ccs: Make sure to free GEM and
- FB objects
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 07 Sep 2021 02:38:41 -0000
+Message-ID: <163098232196.24493.11518447536007603924@emeril.freedesktop.org>
+References: <20210906181736.3914421-1-imre.deak@intel.com>
+In-Reply-To: <20210906181736.3914421-1-imre.deak@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Ffb=3A_Remove_stride=2C_offset_restrictions_on_CCS_FBs_=28re?=
+ =?utf-8?b?djMp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,94 +17,175 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+To: Imre Deak <imre.deak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-At the moment we're leaking the GEM and FB objects that could lead to
-OOM if multiple subtests are run (vs. each subtest in a separate test
-run).
+--===============7133805301658868989==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2:
-- Free things before calling igt_assert(), as this jumps to the next
-  subtest if the check fails. (Juha-Pekka)
-v3:
-- Remove FBs only after collecting CRCs.
+== Series Details ==
 
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com> (v2)
----
- tests/kms_ccs.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+Series: lib/igt_fb: Remove stride, offset restrictions on CCS FBs (rev3)
+URL   : https://patchwork.freedesktop.org/series/94107/
+State : success
 
-diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
-index 586680ae1..241b220f4 100644
---- a/tests/kms_ccs.c
-+++ b/tests/kms_ccs.c
-@@ -343,8 +343,14 @@ static void generate_fb(data_t *data, struct igt_fb *fb,
- 
- 	ret = drmIoctl(data->drm_fd, DRM_IOCTL_MODE_ADDFB2, &f);
- 	if (data->flags & TEST_FAIL_ON_ADDFB2) {
-+		int addfb_errno = errno;
-+
-+		if (f.handles[index])
-+			gem_close(data->drm_fd, f.handles[index]);
-+
- 		igt_assert_eq(ret, -1);
--		igt_assert_eq(errno, EINVAL);
-+		igt_assert_eq(addfb_errno, EINVAL);
-+
- 		return;
- 	} else
- 		igt_assert_eq(ret, 0);
-@@ -387,7 +393,8 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
- 	drmModeModeInfo *drm_mode = igt_output_get_mode(data->output);
- 	int fb_width = drm_mode->hdisplay;
- 	enum igt_commit_style commit;
--	struct igt_fb fb, fb_sprite;
-+	struct igt_fb fb = {};
-+	struct igt_fb fb_sprite = {};
- 	int ret;
- 
- 	if (data->display.is_atomic)
-@@ -443,14 +450,9 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
- 		igt_plane_set_rotation(primary, IGT_ROTATION_90);
- 
- 	ret = igt_display_try_commit2(display, commit);
--	if (data->flags & TEST_BAD_ROTATION_90) {
--		igt_assert_eq(ret, -EINVAL);
--	} else {
--		igt_assert_eq(ret, 0);
- 
--		if (crc)
--			igt_pipe_crc_collect_crc(data->pipe_crc, crc);
--	}
-+	if (ret == 0 && !(fb_flags & TEST_BAD_ROTATION_90) && crc)
-+		igt_pipe_crc_collect_crc(data->pipe_crc, crc);
- 
- 	igt_debug_wait_for_keypress("ccs");
- 
-@@ -458,15 +460,16 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
- 		igt_plane_set_position(data->plane, 0, 0);
- 		igt_plane_set_size(data->plane, 0, 0);
- 		igt_plane_set_fb(data->plane, NULL);
--		igt_remove_fb(display->drm_fd, &fb_sprite);
- 	}
- 
- 	igt_plane_set_fb(primary, NULL);
- 	igt_plane_set_rotation(primary, IGT_ROTATION_0);
- 	igt_display_commit2(display, commit);
- 
--	if (data->flags & TEST_CRC)
--		igt_remove_fb(data->drm_fd, &fb);
-+	igt_remove_fb(data->drm_fd, &fb_sprite);
-+	igt_remove_fb(data->drm_fd, &fb);
-+
-+	igt_assert_eq(ret, data->flags & TEST_BAD_ROTATION_90 ? -EINVAL : 0);
- 
- 	return true;
- }
--- 
-2.27.0
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10553 -> IGTPW_6202
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6202/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6202 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_cs_nop@sync-fork-gfx0:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][1] ([fdo#109271]) +18 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6202/fi-skl-6600u/igt@amdgpu/amd_cs_nop@sync-fork-gfx0.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [PASS][2] -> [INCOMPLETE][3] ([i915#3921])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10553/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6202/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@runner@aborted:
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][4] ([i915#1602] / [i915#2029])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6202/fi-bdw-5557u/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:
+    - fi-skl-6600u:       [INCOMPLETE][5] ([i915#198]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10553/fi-skl-6600u/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6202/fi-skl-6600u/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
+  [i915#198]: https://gitlab.freedesktop.org/drm/intel/issues/198
+  [i915#2029]: https://gitlab.freedesktop.org/drm/intel/issues/2029
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+
+
+Participating hosts (45 -> 39)
+------------------------------
+
+  Missing    (6): bat-adls-5 bat-dg1-6 bat-dg1-5 fi-bsw-cyan bat-adlp-4 bat-jsl-1 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6197 -> IGTPW_6202
+
+  CI-20190529: 20190529
+  CI_DRM_10553: 47b2bd2caa7b29b5741ff2521206657853b85165 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6202: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6202/index.html
+  IGT_6197: 40888f97a6ad219f4ed48a1830d0ef3c9617d006 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6202/index.html
+
+--===============7133805301658868989==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_fb: Remove stride, offset restrictions on CCS FBs (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/94107/">https://patchwork.freedesktop.org/series/94107/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6202/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6202/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10553 -&gt; IGTPW_6202</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6202/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6202 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-fork-gfx0:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6202/fi-skl-6600u/igt@amdgpu/amd_cs_nop@sync-fork-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +18 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10553/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6202/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6202/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2029">i915#2029</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10553/fi-skl-6600u/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/198">i915#198</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6202/fi-skl-6600u/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (45 -&gt; 39)</h2>
+<p>Missing    (6): bat-adls-5 bat-dg1-6 bat-dg1-5 fi-bsw-cyan bat-adlp-4 bat-jsl-1 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6197 -&gt; IGTPW_6202</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10553: 47b2bd2caa7b29b5741ff2521206657853b85165 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6202: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6202/index.html<br />
+  IGT_6197: 40888f97a6ad219f4ed48a1830d0ef3c9617d006 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7133805301658868989==--
