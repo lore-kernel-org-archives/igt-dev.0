@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 201B8895C8
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Sep 2021 15:57:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 05F7B894C9
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Sep 2021 15:57:54 +0000 (UTC)
 From: Ramalingam C <ramalingam.c@intel.com>
-Date: Tue,  7 Sep 2021 21:30:12 +0530
-Message-Id: <20210907160012.21601-3-ramalingam.c@intel.com>
-In-Reply-To: <20210907160012.21601-1-ramalingam.c@intel.com>
-References: <20210907160012.21601-1-ramalingam.c@intel.com>
+Date: Tue,  7 Sep 2021 21:30:10 +0530
+Message-Id: <20210907160012.21601-1-ramalingam.c@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_prime: Create the exporting
- BO with smem placement
+Subject: [igt-dev] [PATCH i-g-t 0/2] tests/kms_prime: Sharing BO with smem
+ as placement
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,52 +22,17 @@ To: igt-dev <igt-dev@lists.freedesktop.org>
 Cc: Chris Wilson <chris@chris-wilson.co.uk>, Chris_intel_ID <chris.p.wilson@intel.com>, Dixit Ashutosh <ashutosh.dixit@intel.com>, Michael Ruhl <michael.j.ruhl@intel.com>, Ramalingam C <ramalingam.c@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On i915, to use the dmabuf, we need the sharing object needs to
-be migrated to smem. So shared object needs to have the smem as second
-placement option.
+Create the sharing obj with smem as second placement option through
+gem_create.
 
-Currently kms_prime sharing the dumb buffer between the devices.
-But dumb buffer can't have the placements and resides at lmem for the
-dgfx. Hence to meet the i915 expectation for dgfx, we create the BO
-using the gem_create with smem as second placement option.
+Ramalingam C (2):
+  lib/ioctl_wrappers: wrapper for mmap ptr for gem obj
+  tests/kms_prime: Create the exporting BO with smem placement
 
-Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
----
- tests/kms_prime.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ lib/ioctl_wrappers.c | 69 +++++++++++++++++---------------------------
+ lib/ioctl_wrappers.h |  1 +
+ tests/kms_prime.c    | 22 +++++++-------
+ 3 files changed, 38 insertions(+), 54 deletions(-)
 
-diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-index 2e20c58bc16e..877774249e0f 100644
---- a/tests/kms_prime.c
-+++ b/tests/kms_prime.c
-@@ -100,18 +100,16 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
- 	scratch->height = mode->vdisplay;
- 	scratch->bpp = 32;
- 
--	scratch->handle = kmstest_dumb_create(exporter_fd,
--			ALIGN(scratch->width, 256),
--			scratch->height,
--			scratch->bpp,
--			&scratch->pitch,
--			&scratch->size);
--
--
--	ptr = kmstest_dumb_map_buffer(exporter_fd,
--				      scratch->handle,
--				      scratch->size,
--				      PROT_WRITE);
-+	igt_calc_fb_size(exporter_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
-+			 DRM_FORMAT_MOD_NONE, &scratch->size, &scratch->pitch);
-+	if (gem_has_lmem(exporter_fd))
-+		scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
-+							       REGION_LMEM(0), REGION_SMEM);
-+	else
-+		scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
-+							       REGION_SMEM);
-+
-+	ptr = gem_mmap_ptr(exporter_fd, scratch->handle, 0, scratch->size, PROT_WRITE | PROT_READ);
- 
- 	for (size_t idx = 0; idx < scratch->size / sizeof(*ptr); ++idx)
- 		ptr[idx] = color;
 -- 
 2.20.1
