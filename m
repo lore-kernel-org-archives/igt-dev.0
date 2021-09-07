@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 60BD06E08E
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Sep 2021 17:26:57 +0000 (UTC)
-Date: Tue, 7 Sep 2021 20:26:53 +0300
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD1BD6E037
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Sep 2021 17:35:02 +0000 (UTC)
+Date: Tue, 7 Sep 2021 20:34:44 +0300
 From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <YTeg3Yi6Q1vX+Pd0@intel.com>
+Message-ID: <YTeitC71qNjpahfk@intel.com>
 References: <20210903162743.29851-1-ville.syrjala@linux.intel.com>
- <20210903162743.29851-5-ville.syrjala@linux.intel.com>
- <DM8PR11MB571939F2C5F6BFCF7A7D80C68DD29@DM8PR11MB5719.namprd11.prod.outlook.com>
+ <20210903162743.29851-6-ville.syrjala@linux.intel.com>
+ <DM8PR11MB571907CF887F2CBAFC65A24F8DD29@DM8PR11MB5719.namprd11.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <DM8PR11MB571939F2C5F6BFCF7A7D80C68DD29@DM8PR11MB5719.namprd11.prod.outlook.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 4/7] tests/kms_color: Pass pipe to
- invalid LUT size tests
+In-Reply-To: <DM8PR11MB571907CF887F2CBAFC65A24F8DD29@DM8PR11MB5719.namprd11.prod.outlook.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 5/7] tests/kms_color: Run each
+ subtest only for a single connector
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,241 +28,812 @@ To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
 Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Sep 06, 2021 at 06:37:39AM +0000, Modem, Bhanuprakash wrote:
+On Mon, Sep 06, 2021 at 06:38:26AM +0000, Modem, Bhanuprakash wrote:
 > > From: Ville Syrjala <ville.syrjala@linux.intel.com>
 > > Sent: Friday, September 3, 2021 9:58 PM
 > > To: igt-dev@lists.freedesktop.org
 > > Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> > Subject: [PATCH i-g-t v3 4/7] tests/kms_color: Pass pipe to invalid LUT=
- size
-> > tests
+> > Subject: [PATCH i-g-t v3 5/7] tests/kms_color: Run each subtest only fo=
+r a
+> > single connector
 > >=20
 > > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
 > >=20
-> > Each pipe can have a different LUT sizes, so run the invalid LUT
-> > size tests once for each pipe.
+> > For most of the subtests the used connector should not matter,
+> > so run each subtest just for a single connector.
 > >=20
-> > This also makes sure data->(de)gamma_lut_size are properly initialized
-> > prior to running these subtests.
-> >=20
-> > Cc: Bhanuprakash Modem <Bhanuprakash.modem@intel.com>
+> > Suggested-by: Bhanuprakash Modem <Bhanuprakash.modem@intel.com>
 > > Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
 > > ---
-> >  tests/kms_color.c        | 73 +++++++++++++++++++++++++---------------
-> >  tests/kms_color_helper.c | 17 +++++-----
-> >  tests/kms_color_helper.h |  7 ++--
-> >  3 files changed, 58 insertions(+), 39 deletions(-)
+> >  tests/kms_color.c | 612 +++++++++++++++++++++++-----------------------
+> >  1 file changed, 306 insertions(+), 306 deletions(-)
 > >=20
 > > diff --git a/tests/kms_color.c b/tests/kms_color.c
-> > index 9105076aba4f..dabc6963e9e0 100644
+> > index dabc6963e9e0..d78c7e211511 100644
 > > --- a/tests/kms_color.c
 > > +++ b/tests/kms_color.c
-> > @@ -638,6 +638,26 @@ static void test_pipe_limited_range_ctm(data_t *da=
-ta,
-> >  }
-> >  #endif
-> >=20
-> > +static void
-> > +prep_pipe(data_t *data, enum pipe p)
-> > +{
-> > +	igt_require_pipe(&data->display, p);
-> > +
-> > +	if (igt_pipe_obj_has_prop(&data->display.pipes[p],
-> > IGT_CRTC_DEGAMMA_LUT_SIZE)) {
-> > +		data->degamma_lut_size =3D
-> > +			igt_pipe_obj_get_prop(&data->display.pipes[p],
-> > +					      IGT_CRTC_DEGAMMA_LUT_SIZE);
-> > +		igt_assert_lt(0, data->degamma_lut_size);
-> > +	}
-> > +
-> > +	if (igt_pipe_obj_has_prop(&data->display.pipes[p],
-> > IGT_CRTC_GAMMA_LUT_SIZE)) {
-> > +		data->gamma_lut_size =3D
-> > +			igt_pipe_obj_get_prop(&data->display.pipes[p],
-> > +					      IGT_CRTC_GAMMA_LUT_SIZE);
-> > +		igt_assert_lt(0, data->gamma_lut_size);
-> > +	}
-> > +}
-> > +
-> >  static void
-> >  run_tests_for_pipe(data_t *data, enum pipe p)
-> >  {
-> > @@ -652,10 +672,10 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+> > @@ -37,6 +37,10 @@ static void test_pipe_degamma(data_t *data,
+> >  		{ 0.0, 1.0, 0.0 },
+> >  		{ 0.0, 0.0, 1.0 }
 > >  	};
+> > +	drmModeModeInfo *mode;
+> > +	struct igt_fb fb_modeset, fb;
+> > +	igt_crc_t crc_fullgamma, crc_fullcolors;
+> > +	int fb_id, fb_modeset_id;
 > >=20
-> >  	igt_fixture {
-> > +		prep_pipe(data, p);
-> > +
-> >  		igt_require_pipe_crc(data->drm_fd);
+> >  	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT=
+));
+> >  	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
+> > @@ -44,69 +48,65 @@ static void test_pipe_degamma(data_t *data,
+> >  	degamma_linear =3D generate_table(data->degamma_lut_size, 1.0);
+> >  	degamma_full =3D generate_table_max(data->degamma_lut_size);
 > >=20
-> > -		igt_require_pipe(&data->display, p);
-> > -
-> >  		pipe =3D &data->display.pipes[p];
-> >  		igt_require(pipe->n_planes >=3D 0);
+> > -	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe,
+> > output) {
+> > -		drmModeModeInfo *mode;
+> > -		struct igt_fb fb_modeset, fb;
+> > -		igt_crc_t crc_fullgamma, crc_fullcolors;
+> > -		int fb_id, fb_modeset_id;
+> > +	output =3D igt_get_single_output_for_pipe(&data->display, primary->pi=
+pe-
+> > >pipe);
+> > +	igt_require(output);
 > >=20
-> > @@ -665,20 +685,6 @@ run_tests_for_pipe(data_t *data, enum pipe p)
-> >  						  primary->pipe->pipe,
-> >  						  INTEL_PIPE_CRC_SOURCE_AUTO);
+> > -		igt_output_set_pipe(output, primary->pipe->pipe);
+> > -		mode =3D igt_output_get_mode(output);
+> > +	igt_output_set_pipe(output, primary->pipe->pipe);
+> > +	mode =3D igt_output_get_mode(output);
 > >=20
-> > -		if (igt_pipe_obj_has_prop(&data->display.pipes[p],
-> > IGT_CRTC_DEGAMMA_LUT_SIZE)) {
-> > -			data->degamma_lut_size =3D
-> > -				igt_pipe_obj_get_prop(&data->display.pipes[p],
-> > -						      IGT_CRTC_DEGAMMA_LUT_SIZE);
-> > -			igt_assert_lt(0, data->degamma_lut_size);
-> > -		}
-> > -
-> > -		if (igt_pipe_obj_has_prop(&data->display.pipes[p],
-> > IGT_CRTC_GAMMA_LUT_SIZE)) {
-> > -			data->gamma_lut_size =3D
-> > -				igt_pipe_obj_get_prop(&data->display.pipes[p],
-> > -						      IGT_CRTC_GAMMA_LUT_SIZE);
-> > -			igt_assert_lt(0, data->gamma_lut_size);
-> > -		}
-> > -
-> >  		igt_display_require_output_on_pipe(&data->display, p);
-> >  	}
-> >=20
-> > @@ -865,6 +871,25 @@ run_tests_for_pipe(data_t *data, enum pipe p)
-> >  	}
-> >  }
-> >=20
-> > +static void
-> > +run_invalid_tests_for_pipe(data_t *data, enum pipe p)
-> > +{
-> > +	igt_fixture
-> > +		prep_pipe(data, p);
-> > +
-> > +	igt_describe("Negative check for invalid gamma lut sizes");
-> > +	igt_subtest_f("pipe-%s-invalid-gamma-lut-sizes", kmstest_pipe_name(p))
-> > +		invalid_gamma_lut_sizes(data, p);
-> > +
-> > +	igt_describe("Negative check for invalid degamma lut sizes");
-> > +	igt_subtest_f("pipe-%s-invalid-degamma-lut-sizes", kmstest_pipe_name(=
-p))
-> > +		invalid_degamma_lut_sizes(data, p);
-> > +
-> > +	igt_describe("Negative check for color tranformation matrix sizes");
-> > +	igt_subtest_f("pipe-%s-invalid-ctm-matrix-sizes", kmstest_pipe_name(p=
-))
-> > +		invalid_ctm_matrix_sizes(data, p);
-> > +}
-> > +
-> >  igt_main
-> >  {
-> >  	data_t data =3D {};
-> > @@ -879,21 +904,13 @@ igt_main
-> >  		igt_display_require(&data.display, data.drm_fd);
-> >  	}
-> >=20
-> > -	for_each_pipe_static(pipe)
-> > +	for_each_pipe_static(pipe) {
-> >  		igt_subtest_group
-> >  			run_tests_for_pipe(&data, pipe);
-> >=20
-> > -	igt_describe("Negative check for invalid gamma lut sizes");
-> > -	igt_subtest_f("pipe-invalid-gamma-lut-sizes")
-> > -		invalid_gamma_lut_sizes(&data);
-> > -
-> > -	igt_describe("Negative check for invalid degamma lut sizes");
-> > -	igt_subtest_f("pipe-invalid-degamma-lut-sizes")
-> > -		invalid_degamma_lut_sizes(&data);
-> > -
-> > -	igt_describe("Negative check for color tranformation matrix sizes");
-> > -	igt_subtest_f("pipe-invalid-ctm-matrix-sizes")
-> > -		invalid_ctm_matrix_sizes(&data);
-> > +		igt_subtest_group
-> > +			run_invalid_tests_for_pipe(&data, pipe);
-> > +	}
-> >=20
-> >  	igt_fixture {
-> >  		igt_display_fini(&data.display);
-> > diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-> > index 8b08cdaeea5f..d71e7bb2e6f9 100644
-> > --- a/tests/kms_color_helper.c
-> > +++ b/tests/kms_color_helper.c
-> > @@ -287,10 +287,11 @@ pipe_set_property_blob(igt_pipe_t *pipe,
-> >  }
-> >=20
-> >  static void
-> > -invalid_lut_sizes(data_t *data, enum igt_atomic_crtc_properties prop, =
-int
-> > size)
-> > +invalid_lut_sizes(data_t *data, enum pipe p,
-> > +		  enum igt_atomic_crtc_properties prop, int size)
-> >  {
-> >  	igt_display_t *display =3D &data->display;
-> > -	igt_pipe_t *pipe =3D &display->pipes[0];
-> > +	igt_pipe_t *pipe =3D &display->pipes[p];
-> >  	struct drm_color_lut *lut;
-> >  	size_t lut_size =3D size * sizeof(lut[0]);
-> >=20
-> > @@ -319,21 +320,21 @@ invalid_lut_sizes(data_t *data, enum
-> > igt_atomic_crtc_properties prop, int size)
-> >  }
-> >=20
-> >  void
-> > -invalid_gamma_lut_sizes(data_t *data)
-> > +invalid_gamma_lut_sizes(data_t *data, enum pipe p)
-> >  {
-> > -	invalid_lut_sizes(data, IGT_CRTC_GAMMA_LUT, data->gamma_lut_size);
-> > +	invalid_lut_sizes(data, p, IGT_CRTC_GAMMA_LUT, data->gamma_lut_size);
+> > -		/* Create a framebuffer at the size of the output. */
+> > -		fb_id =3D igt_create_fb(data->drm_fd,
+> > +	/* Create a framebuffer at the size of the output. */
+> > +	fb_id =3D igt_create_fb(data->drm_fd,
+> > +			      mode->hdisplay,
+> > +			      mode->vdisplay,
+> > +			      DRM_FORMAT_XRGB8888,
+> > +			      DRM_FORMAT_MOD_NONE,
+> > +			      &fb);
+> > +	igt_assert(fb_id);
 > =20
-> Still, it is possible to get data->gamma_lut_size as NULL, b'coz prep_pip=
-e()
-> will not initialize if GAMMA_LUT_SIZE prop is not present.
->=20
-> `igt_require(data->gamma_lut_size);` or
-> `igt_require(igt_pipe_obj_has_prop(p, IGT_CRTC_GAMMA_LUT_SIZE));` before
-> calling invalid_lut_sizes() can fix this.
+> Minor: we can get rid of extra variables by updating like
+> `igt_assert(igt_create_fb());`
 
-invalid_lut_sizes() already has the necessary igt_require().
+I'm not going to be doing any unrelated changes in this
+patch. The indentation change alone is already bad enough
+to review.
 
 >=20
-> >  }
-> >=20
-> >  void
-> > -invalid_degamma_lut_sizes(data_t *data)
-> > +invalid_degamma_lut_sizes(data_t *data, enum pipe p)
-> >  {
-> > -	invalid_lut_sizes(data, IGT_CRTC_DEGAMMA_LUT, data->degamma_lut_size);
-> > +	invalid_lut_sizes(data, p, IGT_CRTC_DEGAMMA_LUT, data-
-> > >degamma_lut_size);
-> =20
-> Please consider the above comment.
+> And this is applicable for all the places.
 >=20
-> With above change, this patch is
+> > +
+> > +	fb_modeset_id =3D igt_create_fb(data->drm_fd,
+> >  				      mode->hdisplay,
+> >  				      mode->vdisplay,
+> >  				      DRM_FORMAT_XRGB8888,
+> >  				      DRM_FORMAT_MOD_NONE,
+> > -				      &fb);
+> > -		igt_assert(fb_id);
+> > +				      &fb_modeset);
+> > +	igt_assert(fb_modeset_id);
+> >=20
+> > -		fb_modeset_id =3D igt_create_fb(data->drm_fd,
+> > -					      mode->hdisplay,
+> > -					      mode->vdisplay,
+> > -					      DRM_FORMAT_XRGB8888,
+> > -					      DRM_FORMAT_MOD_NONE,
+> > -					      &fb_modeset);
+> > -		igt_assert(fb_modeset_id);
+> > +	igt_plane_set_fb(primary, &fb_modeset);
+> > +	disable_ctm(primary->pipe);
+> > +	disable_gamma(primary->pipe);
+> > +	set_degamma(data, primary->pipe, degamma_linear);
+> > +	igt_display_commit(&data->display);
+> >=20
+> > -		igt_plane_set_fb(primary, &fb_modeset);
+> > -		disable_ctm(primary->pipe);
+> > -		disable_gamma(primary->pipe);
+> > -		set_degamma(data, primary->pipe, degamma_linear);
+> > -		igt_display_commit(&data->display);
+> > +	/* Draw solid colors with linear degamma transformation. */
+> > +	paint_rectangles(data, mode, red_green_blue, &fb);
+> > +	igt_plane_set_fb(primary, &fb);
+> > +	igt_display_commit(&data->display);
+> > +	igt_wait_for_vblank(data->drm_fd,
+> > +			    display->pipes[primary->pipe->pipe].crtc_offset);
+> > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
+> >=20
+> > -		/* Draw solid colors with linear degamma transformation. */
+> > -		paint_rectangles(data, mode, red_green_blue, &fb);
+> > -		igt_plane_set_fb(primary, &fb);
+> > -		igt_display_commit(&data->display);
+> > -		igt_wait_for_vblank(data->drm_fd,
+> > -				display->pipes[primary->pipe->pipe].crtc_offset);
+> > -		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
+> > +	/* Draw a gradient with degamma LUT to remap all
+> > +	 * values to max red/green/blue.
+> > +	 */
+> > +	paint_gradient_rectangles(data, mode, red_green_blue, &fb);
+> > +	igt_plane_set_fb(primary, &fb);
+> > +	set_degamma(data, primary->pipe, degamma_full);
+> > +	igt_display_commit(&data->display);
+> > +	igt_wait_for_vblank(data->drm_fd,
+> > +			    display->pipes[primary->pipe->pipe].crtc_offset);
+> > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
+> >=20
+> > -		/* Draw a gradient with degamma LUT to remap all
+> > -		 * values to max red/green/blue.
+> > -		 */
+> > -		paint_gradient_rectangles(data, mode, red_green_blue, &fb);
+> > -		igt_plane_set_fb(primary, &fb);
+> > -		set_degamma(data, primary->pipe, degamma_full);
+> > -		igt_display_commit(&data->display);
+> > -		igt_wait_for_vblank(data->drm_fd,
+> > -				display->pipes[primary->pipe->pipe].crtc_offset);
+> > -		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
+> > +	/* Verify that the CRC of the software computed output is
+> > +	 * equal to the CRC of the degamma LUT transformation output.
+> > +	 */
+> > +	igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
+> >=20
+> > -		/* Verify that the CRC of the software computed output is
+> > -		 * equal to the CRC of the degamma LUT transformation output.
+> > -		 */
+> > -		igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
+> > -
+> > -		disable_degamma(primary->pipe);
+> > -		igt_plane_set_fb(primary, NULL);
+> > -		igt_output_set_pipe(output, PIPE_NONE);
+> > -		igt_display_commit(&data->display);
+> > -		igt_remove_fb(data->drm_fd, &fb);
+> > -		igt_remove_fb(data->drm_fd, &fb_modeset);
+> > -	}
+> > +	disable_degamma(primary->pipe);
+> > +	igt_plane_set_fb(primary, NULL);
+> > +	igt_output_set_pipe(output, PIPE_NONE);
+> > +	igt_display_commit(&data->display);
+> > +	igt_remove_fb(data->drm_fd, &fb);
+> > +	igt_remove_fb(data->drm_fd, &fb_modeset);
+> >=20
+> >  	free_lut(degamma_linear);
+> >  	free_lut(degamma_full);
+> > @@ -127,73 +127,73 @@ static void test_pipe_gamma(data_t *data,
+> >  		{ 0.0, 1.0, 0.0 },
+> >  		{ 0.0, 0.0, 1.0 }
+> >  	};
+> > +	drmModeModeInfo *mode;
+> > +	struct igt_fb fb_modeset, fb;
+> > +	igt_crc_t crc_fullgamma, crc_fullcolors;
+> > +	int fb_id, fb_modeset_id;
+> >=20
+> >  	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
+> >=20
+> >  	gamma_full =3D generate_table_max(data->gamma_lut_size);
+> >=20
+> > -	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe,
+> > output) {
+> > -		drmModeModeInfo *mode;
+> > -		struct igt_fb fb_modeset, fb;
+> > -		igt_crc_t crc_fullgamma, crc_fullcolors;
+> > -		int fb_id, fb_modeset_id;
+> > +	output =3D igt_get_single_output_for_pipe(&data->display, primary->pi=
+pe-
+> > >pipe);
+> > +	igt_require(output);
+> >=20
+> > -		igt_output_set_pipe(output, primary->pipe->pipe);
+> > -		mode =3D igt_output_get_mode(output);
+> > +	igt_output_set_pipe(output, primary->pipe->pipe);
+> > +	mode =3D igt_output_get_mode(output);
+> >=20
+> > -		/* Create a framebuffer at the size of the output. */
+> > -		fb_id =3D igt_create_fb(data->drm_fd,
+> > +	/* Create a framebuffer at the size of the output. */
+> > +	fb_id =3D igt_create_fb(data->drm_fd,
+> > +			      mode->hdisplay,
+> > +			      mode->vdisplay,
+> > +			      DRM_FORMAT_XRGB8888,
+> > +			      DRM_FORMAT_MOD_NONE,
+> > +			      &fb);
+> > +	igt_assert(fb_id);
+> > +
+> > +	fb_modeset_id =3D igt_create_fb(data->drm_fd,
+> >  				      mode->hdisplay,
+> >  				      mode->vdisplay,
+> >  				      DRM_FORMAT_XRGB8888,
+> >  				      DRM_FORMAT_MOD_NONE,
+> > -				      &fb);
+> > -		igt_assert(fb_id);
+> > +				      &fb_modeset);
+> > +	igt_assert(fb_modeset_id);
+> >=20
+> > -		fb_modeset_id =3D igt_create_fb(data->drm_fd,
+> > -					      mode->hdisplay,
+> > -					      mode->vdisplay,
+> > -					      DRM_FORMAT_XRGB8888,
+> > -					      DRM_FORMAT_MOD_NONE,
+> > -					      &fb_modeset);
+> > -		igt_assert(fb_modeset_id);
+> > +	igt_plane_set_fb(primary, &fb_modeset);
+> > +	disable_ctm(primary->pipe);
+> > +	disable_degamma(primary->pipe);
+> > +	set_gamma(data, primary->pipe, gamma_full);
+> =20
+> This could be disable_gamma(), right?
+
+Getting matching crcs has been rather problematic in this
+test. I don't recall the specifics on which LUT is needed
+in each case to guarantee that.
+
+>=20
+> > +	igt_display_commit(&data->display);
+> >=20
+> > -		igt_plane_set_fb(primary, &fb_modeset);
+> > -		disable_ctm(primary->pipe);
+> > -		disable_degamma(primary->pipe);
+> > -		set_gamma(data, primary->pipe, gamma_full);
+> > -		igt_display_commit(&data->display);
+> > +	/* Draw solid colors with no gamma transformation. */
+> > +	paint_rectangles(data, mode, red_green_blue, &fb);
+> > +	igt_plane_set_fb(primary, &fb);
+> > +	igt_display_commit(&data->display);
+> > +	igt_wait_for_vblank(data->drm_fd,
+> > +			    display->pipes[primary->pipe->pipe].crtc_offset);
+> > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
+> >=20
+> > -		/* Draw solid colors with no gamma transformation. */
+> > -		paint_rectangles(data, mode, red_green_blue, &fb);
+> > -		igt_plane_set_fb(primary, &fb);
+> > -		igt_display_commit(&data->display);
+> > -		igt_wait_for_vblank(data->drm_fd,
+> > -				display->pipes[primary->pipe->pipe].crtc_offset);
+> > -		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
+> > +	/* Draw a gradient with gamma LUT to remap all values
+> > +	 * to max red/green/blue.
+> > +	 */
+> > +	paint_gradient_rectangles(data, mode, red_green_blue, &fb);
+> > +	igt_plane_set_fb(primary, &fb);
+> =20
+> And here we need to set the gamma: set_gamma(gamma_max)
+
+Also a totally unrelated change. If you think there's a bug here
+pls submit a separate patch.
+
+>=20
+> With these changes, this patch is
 > Reviewed-by: Bhanuprakash Modem <Bhanuprakash.modem@intel.com>
 >=20
 > - Bhanu
 >=20
+> > +	igt_display_commit(&data->display);
+> > +	igt_wait_for_vblank(data->drm_fd,
+> > +			    display->pipes[primary->pipe->pipe].crtc_offset);
+> > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
+> >=20
+> > -		/* Draw a gradient with gamma LUT to remap all values
+> > -		 * to max red/green/blue.
+> > -		 */
+> > -		paint_gradient_rectangles(data, mode, red_green_blue, &fb);
+> > -		igt_plane_set_fb(primary, &fb);
+> > -		igt_display_commit(&data->display);
+> > -		igt_wait_for_vblank(data->drm_fd,
+> > -				display->pipes[primary->pipe->pipe].crtc_offset);
+> > -		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
+> > +	/* Verify that the CRC of the software computed output is
+> > +	 * equal to the CRC of the gamma LUT transformation output.
+> > +	 */
+> > +	igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
+> >=20
+> > -		/* Verify that the CRC of the software computed output is
+> > -		 * equal to the CRC of the gamma LUT transformation output.
+> > -		 */
+> > -		igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
+> > -
+> > -		disable_gamma(primary->pipe);
+> > -		igt_plane_set_fb(primary, NULL);
+> > -		igt_output_set_pipe(output, PIPE_NONE);
+> > -		igt_display_commit(&data->display);
+> > -		igt_remove_fb(data->drm_fd, &fb);
+> > -		igt_remove_fb(data->drm_fd, &fb_modeset);
+> > -	}
+> > +	disable_gamma(primary->pipe);
+> > +	igt_plane_set_fb(primary, NULL);
+> > +	igt_output_set_pipe(output, PIPE_NONE);
+> > +	igt_display_commit(&data->display);
+> > +	igt_remove_fb(data->drm_fd, &fb);
+> > +	igt_remove_fb(data->drm_fd, &fb_modeset);
+> >=20
+> >  	free_lut(gamma_full);
 > >  }
+> > @@ -216,6 +216,10 @@ static void test_pipe_legacy_gamma(data_t *data,
+> >  	drmModeCrtc *kms_crtc;
+> >  	uint32_t i, legacy_lut_size;
+> >  	uint16_t *red_lut, *green_lut, *blue_lut;
+> > +	drmModeModeInfo *mode;
+> > +	struct igt_fb fb_modeset, fb;
+> > +	igt_crc_t crc_fullgamma, crc_fullcolors;
+> > +	int fb_id, fb_modeset_id;
 > >=20
-> > -void invalid_ctm_matrix_sizes(data_t *data)
-> > +void invalid_ctm_matrix_sizes(data_t *data, enum pipe p)
-> >  {
-> >  	igt_display_t *display =3D &data->display;
-> > -	igt_pipe_t *pipe =3D &display->pipes[0];
-> > +	igt_pipe_t *pipe =3D &display->pipes[p];
-> >  	void *ptr;
+> >  	kms_crtc =3D drmModeGetCrtc(data->drm_fd, primary->pipe->crtc_id);
+> >  	legacy_lut_size =3D kms_crtc->gamma_size;
+> > @@ -225,80 +229,76 @@ static void test_pipe_legacy_gamma(data_t *data,
+> >  	green_lut =3D malloc(sizeof(uint16_t) * legacy_lut_size);
+> >  	blue_lut =3D malloc(sizeof(uint16_t) * legacy_lut_size);
 > >=20
-> >  	igt_require(igt_pipe_obj_has_prop(pipe, IGT_CRTC_CTM));
-> > diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-> > index 3f49e7cae4c0..bb6f0054f388 100644
-> > --- a/tests/kms_color_helper.h
-> > +++ b/tests/kms_color_helper.h
-> > @@ -103,8 +103,9 @@ int pipe_set_property_blob_id(igt_pipe_t *pipe,
-> >  int pipe_set_property_blob(igt_pipe_t *pipe,
-> >  			   enum igt_atomic_crtc_properties prop,
-> >  			   void *ptr, size_t length);
-> > -void invalid_gamma_lut_sizes(data_t *data);
-> > -void invalid_degamma_lut_sizes(data_t *data);
-> > -void invalid_ctm_matrix_sizes(data_t *data);
-> > +void invalid_gamma_lut_sizes(data_t *data, enum pipe p);
-> > +void invalid_degamma_lut_sizes(data_t *data, enum pipe p);
-> > +void invalid_ctm_matrix_sizes(data_t *data, enum pipe p);
+> > -	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe,
+> > output) {
+> > -		drmModeModeInfo *mode;
+> > -		struct igt_fb fb_modeset, fb;
+> > -		igt_crc_t crc_fullgamma, crc_fullcolors;
+> > -		int fb_id, fb_modeset_id;
+> > +	output =3D igt_get_single_output_for_pipe(&data->display, primary->pi=
+pe-
+> > >pipe);
+> > +	igt_require(output);
+> >=20
+> > -		igt_output_set_pipe(output, primary->pipe->pipe);
+> > -		mode =3D igt_output_get_mode(output);
+> > +	igt_output_set_pipe(output, primary->pipe->pipe);
+> > +	mode =3D igt_output_get_mode(output);
+> >=20
+> > -		/* Create a framebuffer at the size of the output. */
+> > -		fb_id =3D igt_create_fb(data->drm_fd,
+> > +	/* Create a framebuffer at the size of the output. */
+> > +	fb_id =3D igt_create_fb(data->drm_fd,
+> > +			      mode->hdisplay,
+> > +			      mode->vdisplay,
+> > +			      DRM_FORMAT_XRGB8888,
+> > +			      DRM_FORMAT_MOD_NONE,
+> > +			      &fb);
+> > +	igt_assert(fb_id);
 > > +
-> >  #endif
+> > +	fb_modeset_id =3D igt_create_fb(data->drm_fd,
+> >  				      mode->hdisplay,
+> >  				      mode->vdisplay,
+> >  				      DRM_FORMAT_XRGB8888,
+> >  				      DRM_FORMAT_MOD_NONE,
+> > -				      &fb);
+> > -		igt_assert(fb_id);
+> > -
+> > -		fb_modeset_id =3D igt_create_fb(data->drm_fd,
+> > -					      mode->hdisplay,
+> > -					      mode->vdisplay,
+> > -					      DRM_FORMAT_XRGB8888,
+> > -					      DRM_FORMAT_MOD_NONE,
+> > -					      &fb_modeset);
+> > -		igt_assert(fb_modeset_id);
+> > -
+> > -		igt_plane_set_fb(primary, &fb_modeset);
+> > -		disable_degamma(primary->pipe);
+> > -		disable_gamma(primary->pipe);
+> > -		disable_ctm(primary->pipe);
+> > -		igt_display_commit(&data->display);
+> > -
+> > -		/* Draw solid colors with no gamma transformation. */
+> > -		paint_rectangles(data, mode, red_green_blue, &fb);
+> > -		igt_plane_set_fb(primary, &fb);
+> > -		igt_display_commit(&data->display);
+> > -		igt_wait_for_vblank(data->drm_fd,
+> > -				display->pipes[primary->pipe->pipe].crtc_offset);
+> > -		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
+> > -
+> > -		/* Draw a gradient with gamma LUT to remap all values
+> > -		 * to max red/green/blue.
+> > -		 */
+> > -		paint_gradient_rectangles(data, mode, red_green_blue, &fb);
+> > -		igt_plane_set_fb(primary, &fb);
+> > -
+> > -		red_lut[0] =3D green_lut[0] =3D blue_lut[0] =3D 0;
+> > -		for (i =3D 1; i < legacy_lut_size; i++)
+> > -			red_lut[i] =3D green_lut[i] =3D blue_lut[i] =3D 0xffff;
+> > -		igt_assert_eq(drmModeCrtcSetGamma(data->drm_fd, primary->pipe-
+> > >crtc_id,
+> > -						  legacy_lut_size, red_lut, green_lut,
+> > blue_lut), 0);
+> > -		igt_display_commit(&data->display);
+> > -		igt_wait_for_vblank(data->drm_fd,
+> > -				display->pipes[primary->pipe->pipe].crtc_offset);
+> > -		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
+> > -
+> > -		/* Verify that the CRC of the software computed output is
+> > -		 * equal to the CRC of the gamma LUT transformation output.
+> > -		 */
+> > -		igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
+> > -
+> > -		/* Reset output. */
+> > -		for (i =3D 1; i < legacy_lut_size; i++)
+> > -			red_lut[i] =3D green_lut[i] =3D blue_lut[i] =3D i << 8;
+> > -
+> > -		igt_assert_eq(drmModeCrtcSetGamma(data->drm_fd, primary->pipe-
+> > >crtc_id,
+> > -						  legacy_lut_size, red_lut, green_lut,
+> > blue_lut), 0);
+> > -		igt_display_commit(&data->display);
+> > -
+> > -		igt_plane_set_fb(primary, NULL);
+> > -		igt_output_set_pipe(output, PIPE_NONE);
+> > -		igt_remove_fb(data->drm_fd, &fb);
+> > -		igt_remove_fb(data->drm_fd, &fb_modeset);
+> > -	}
+> > +				      &fb_modeset);
+> > +	igt_assert(fb_modeset_id);
+> > +
+> > +	igt_plane_set_fb(primary, &fb_modeset);
+> > +	disable_degamma(primary->pipe);
+> > +	disable_gamma(primary->pipe);
+> > +	disable_ctm(primary->pipe);
+> > +	igt_display_commit(&data->display);
+> > +
+> > +	/* Draw solid colors with no gamma transformation. */
+> > +	paint_rectangles(data, mode, red_green_blue, &fb);
+> > +	igt_plane_set_fb(primary, &fb);
+> > +	igt_display_commit(&data->display);
+> > +	igt_wait_for_vblank(data->drm_fd,
+> > +			    display->pipes[primary->pipe->pipe].crtc_offset);
+> > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
+> > +
+> > +	/* Draw a gradient with gamma LUT to remap all values
+> > +	 * to max red/green/blue.
+> > +	 */
+> > +	paint_gradient_rectangles(data, mode, red_green_blue, &fb);
+> > +	igt_plane_set_fb(primary, &fb);
+> > +
+> > +	red_lut[0] =3D green_lut[0] =3D blue_lut[0] =3D 0;
+> > +	for (i =3D 1; i < legacy_lut_size; i++)
+> > +		red_lut[i] =3D green_lut[i] =3D blue_lut[i] =3D 0xffff;
+> > +	igt_assert_eq(drmModeCrtcSetGamma(data->drm_fd, primary->pipe->crtc_i=
+d,
+> > +					  legacy_lut_size, red_lut, green_lut, blue_lut),
+> > 0);
+> > +	igt_display_commit(&data->display);
+> > +	igt_wait_for_vblank(data->drm_fd,
+> > +			    display->pipes[primary->pipe->pipe].crtc_offset);
+> > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
+> > +
+> > +	/* Verify that the CRC of the software computed output is
+> > +	 * equal to the CRC of the gamma LUT transformation output.
+> > +	 */
+> > +	igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
+> > +
+> > +	/* Reset output. */
+> > +	for (i =3D 1; i < legacy_lut_size; i++)
+> > +		red_lut[i] =3D green_lut[i] =3D blue_lut[i] =3D i << 8;
+> > +
+> > +	igt_assert_eq(drmModeCrtcSetGamma(data->drm_fd, primary->pipe->crtc_i=
+d,
+> > +					  legacy_lut_size, red_lut, green_lut, blue_lut),
+> > 0);
+> > +	igt_display_commit(&data->display);
+> > +
+> > +	igt_plane_set_fb(primary, NULL);
+> > +	igt_output_set_pipe(output, PIPE_NONE);
+> > +	igt_remove_fb(data->drm_fd, &fb);
+> > +	igt_remove_fb(data->drm_fd, &fb_modeset);
+> >=20
+> >  	free(red_lut);
+> >  	free(green_lut);
+> > @@ -331,93 +331,93 @@ static void test_pipe_legacy_gamma_reset(data_t *=
+data,
+> >  		degamma_linear =3D generate_table(data->degamma_lut_size, 1.0);
+> >  	gamma_zero =3D generate_table_zero(data->gamma_lut_size);
+> >=20
+> > -	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe,
+> > output) {
+> > -		igt_output_set_pipe(output, primary->pipe->pipe);
+> > +	output =3D igt_get_single_output_for_pipe(&data->display, primary->pi=
+pe-
+> > >pipe);
+> > +	igt_require(output);
+> >=20
+> > -		/* Ensure we have a clean state to start with. */
+> > -		disable_degamma(primary->pipe);
+> > -		disable_ctm(primary->pipe);
+> > -		disable_gamma(primary->pipe);
+> > -		igt_display_commit(&data->display);
+> > +	igt_output_set_pipe(output, primary->pipe->pipe);
+> >=20
+> > -		/* Set a degama & gamma LUT and a CTM using the
+> > -		 * properties and verify the content of the
+> > -		 * properties. */
+> > -		if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT))
+> > -			set_degamma(data, primary->pipe, degamma_linear);
+> > -		if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM))
+> > -			set_ctm(primary->pipe, ctm_identity);
+> > -		set_gamma(data, primary->pipe, gamma_zero);
+> > -		igt_display_commit(&data->display);
+> > +	/* Ensure we have a clean state to start with. */
+> > +	disable_degamma(primary->pipe);
+> > +	disable_ctm(primary->pipe);
+> > +	disable_gamma(primary->pipe);
+> > +	igt_display_commit(&data->display);
+> >=20
+> > -		if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT)) {
+> > -			blob =3D get_blob(data, primary->pipe, IGT_CRTC_DEGAMMA_LUT);
+> > -			igt_assert(blob &&
+> > -				   blob->length =3D=3D (sizeof(struct drm_color_lut) *
+> > -						    data->degamma_lut_size));
+> > -			drmModeFreePropertyBlob(blob);
+> > -		}
+> > +	/* Set a degama & gamma LUT and a CTM using the
+> > +	 * properties and verify the content of the
+> > +	 * properties. */
+> > +	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT))
+> > +		set_degamma(data, primary->pipe, degamma_linear);
+> > +	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM))
+> > +		set_ctm(primary->pipe, ctm_identity);
+> > +	set_gamma(data, primary->pipe, gamma_zero);
+> > +	igt_display_commit(&data->display);
+> >=20
+> > -		if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM)) {
+> > -			blob =3D get_blob(data, primary->pipe, IGT_CRTC_CTM);
+> > -			igt_assert(blob &&
+> > -				   blob->length =3D=3D sizeof(struct drm_color_ctm));
+> > -			drmModeFreePropertyBlob(blob);
+> > -		}
+> > -
+> > -		blob =3D get_blob(data, primary->pipe, IGT_CRTC_GAMMA_LUT);
+> > +	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT)) {
+> > +		blob =3D get_blob(data, primary->pipe, IGT_CRTC_DEGAMMA_LUT);
+> >  		igt_assert(blob &&
+> >  			   blob->length =3D=3D (sizeof(struct drm_color_lut) *
+> > -					    data->gamma_lut_size));
+> > -		lut =3D (struct drm_color_lut *) blob->data;
+> > -		for (i =3D 0; i < data->gamma_lut_size; i++)
+> > -			igt_assert(lut[i].red =3D=3D 0 &&
+> > -				   lut[i].green =3D=3D 0 &&
+> > -				   lut[i].blue =3D=3D 0);
+> > +					    data->degamma_lut_size));
+> >  		drmModeFreePropertyBlob(blob);
+> > +	}
+> >=20
+> > -		/* Set a gamma LUT using the legacy ioctl and verify
+> > -		 * the content of the GAMMA_LUT property is changed
+> > -		 * and that CTM and DEGAMMA_LUT are empty. */
+> > -		kms_crtc =3D drmModeGetCrtc(data->drm_fd, primary->pipe->crtc_id);
+> > -		legacy_lut_size =3D kms_crtc->gamma_size;
+> > -		drmModeFreeCrtc(kms_crtc);
+> > +	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM)) {
+> > +		blob =3D get_blob(data, primary->pipe, IGT_CRTC_CTM);
+> > +		igt_assert(blob &&
+> > +			   blob->length =3D=3D sizeof(struct drm_color_ctm));
+> > +		drmModeFreePropertyBlob(blob);
+> > +	}
+> >=20
+> > -		red_lut =3D malloc(sizeof(uint16_t) * legacy_lut_size);
+> > -		green_lut =3D malloc(sizeof(uint16_t) * legacy_lut_size);
+> > -		blue_lut =3D malloc(sizeof(uint16_t) * legacy_lut_size);
+> > +	blob =3D get_blob(data, primary->pipe, IGT_CRTC_GAMMA_LUT);
+> > +	igt_assert(blob &&
+> > +		   blob->length =3D=3D (sizeof(struct drm_color_lut) *
+> > +				    data->gamma_lut_size));
+> > +	lut =3D (struct drm_color_lut *) blob->data;
+> > +	for (i =3D 0; i < data->gamma_lut_size; i++)
+> > +		igt_assert(lut[i].red =3D=3D 0 &&
+> > +			   lut[i].green =3D=3D 0 &&
+> > +			   lut[i].blue =3D=3D 0);
+> > +	drmModeFreePropertyBlob(blob);
+> >=20
+> > -		for (i =3D 0; i < legacy_lut_size; i++)
+> > -			red_lut[i] =3D green_lut[i] =3D blue_lut[i] =3D 0xffff;
+> > +	/* Set a gamma LUT using the legacy ioctl and verify
+> > +	 * the content of the GAMMA_LUT property is changed
+> > +	 * and that CTM and DEGAMMA_LUT are empty. */
+> > +	kms_crtc =3D drmModeGetCrtc(data->drm_fd, primary->pipe->crtc_id);
+> > +	legacy_lut_size =3D kms_crtc->gamma_size;
+> > +	drmModeFreeCrtc(kms_crtc);
+> >=20
+> > -		igt_assert_eq(drmModeCrtcSetGamma(data->drm_fd,
+> > -						  primary->pipe->crtc_id,
+> > -						  legacy_lut_size,
+> > -						  red_lut, green_lut, blue_lut),
+> > -			      0);
+> > -		igt_display_commit(&data->display);
+> > +	red_lut =3D malloc(sizeof(uint16_t) * legacy_lut_size);
+> > +	green_lut =3D malloc(sizeof(uint16_t) * legacy_lut_size);
+> > +	blue_lut =3D malloc(sizeof(uint16_t) * legacy_lut_size);
+> >=20
+> > -		if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT))
+> > -			igt_assert(get_blob(data, primary->pipe,
+> > -					    IGT_CRTC_DEGAMMA_LUT) =3D=3D NULL);
+> > +	for (i =3D 0; i < legacy_lut_size; i++)
+> > +		red_lut[i] =3D green_lut[i] =3D blue_lut[i] =3D 0xffff;
+> >=20
+> > -		if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM))
+> > -			igt_assert(get_blob(data, primary->pipe, IGT_CRTC_CTM) =3D=3D
+> > NULL);
+> > +	igt_assert_eq(drmModeCrtcSetGamma(data->drm_fd,
+> > +					  primary->pipe->crtc_id,
+> > +					  legacy_lut_size,
+> > +					  red_lut, green_lut, blue_lut), 0);
+> > +	igt_display_commit(&data->display);
+> >=20
+> > -		blob =3D get_blob(data, primary->pipe, IGT_CRTC_GAMMA_LUT);
+> > -		igt_assert(blob &&
+> > -			   blob->length =3D=3D (sizeof(struct drm_color_lut) *
+> > -					    legacy_lut_size));
+> > -		lut =3D (struct drm_color_lut *) blob->data;
+> > -		for (i =3D 0; i < legacy_lut_size; i++)
+> > -			igt_assert(lut[i].red =3D=3D 0xffff &&
+> > -				   lut[i].green =3D=3D 0xffff &&
+> > -				   lut[i].blue =3D=3D 0xffff);
+> > -		drmModeFreePropertyBlob(blob);
+> > +	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT))
+> > +		igt_assert(get_blob(data, primary->pipe,
+> > +				    IGT_CRTC_DEGAMMA_LUT) =3D=3D NULL);
+> >=20
+> > -		igt_plane_set_fb(primary, NULL);
+> > -		igt_output_set_pipe(output, PIPE_NONE);
+> > -	}
+> > +	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM))
+> > +		igt_assert(get_blob(data, primary->pipe, IGT_CRTC_CTM) =3D=3D NULL);
+> > +
+> > +	blob =3D get_blob(data, primary->pipe, IGT_CRTC_GAMMA_LUT);
+> > +	igt_assert(blob &&
+> > +		   blob->length =3D=3D (sizeof(struct drm_color_lut) *
+> > +				    legacy_lut_size));
+> > +	lut =3D (struct drm_color_lut *) blob->data;
+> > +	for (i =3D 0; i < legacy_lut_size; i++)
+> > +		igt_assert(lut[i].red =3D=3D 0xffff &&
+> > +			   lut[i].green =3D=3D 0xffff &&
+> > +			   lut[i].blue =3D=3D 0xffff);
+> > +	drmModeFreePropertyBlob(blob);
+> > +
+> > +	igt_plane_set_fb(primary, NULL);
+> > +	igt_output_set_pipe(output, PIPE_NONE);
+> >=20
+> >  	free_lut(degamma_linear);
+> >  	free_lut(gamma_zero);
+> > @@ -442,84 +442,84 @@ static bool test_pipe_ctm(data_t *data,
+> >  	igt_output_t *output;
+> >  	bool ret =3D true;
+> >  	igt_display_t *display =3D &data->display;
+> > +	drmModeModeInfo *mode;
+> > +	struct igt_fb fb_modeset, fb;
+> > +	igt_crc_t crc_software, crc_hardware;
+> > +	int fb_id, fb_modeset_id;
+> >=20
+> >  	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM));
+> >=20
+> >  	degamma_linear =3D generate_table(data->degamma_lut_size, 1.0);
+> >  	gamma_linear =3D generate_table(data->gamma_lut_size, 1.0);
+> >=20
+> > -	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe,
+> > output) {
+> > -		drmModeModeInfo *mode;
+> > -		struct igt_fb fb_modeset, fb;
+> > -		igt_crc_t crc_software, crc_hardware;
+> > -		int fb_id, fb_modeset_id;
+> > +	output =3D igt_get_single_output_for_pipe(&data->display, primary->pi=
+pe-
+> > >pipe);
+> > +	igt_require(output);
+> >=20
+> > -		igt_output_set_pipe(output, primary->pipe->pipe);
+> > -		mode =3D igt_output_get_mode(output);
+> > +	igt_output_set_pipe(output, primary->pipe->pipe);
+> > +	mode =3D igt_output_get_mode(output);
+> >=20
+> > -		/* Create a framebuffer at the size of the output. */
+> > -		fb_id =3D igt_create_fb(data->drm_fd,
+> > +	/* Create a framebuffer at the size of the output. */
+> > +	fb_id =3D igt_create_fb(data->drm_fd,
+> > +			      mode->hdisplay,
+> > +			      mode->vdisplay,
+> > +			      DRM_FORMAT_XRGB8888,
+> > +			      DRM_FORMAT_MOD_NONE,
+> > +			      &fb);
+> > +	igt_assert(fb_id);
+> > +
+> > +	fb_modeset_id =3D igt_create_fb(data->drm_fd,
+> >  				      mode->hdisplay,
+> >  				      mode->vdisplay,
+> >  				      DRM_FORMAT_XRGB8888,
+> >  				      DRM_FORMAT_MOD_NONE,
+> > -				      &fb);
+> > -		igt_assert(fb_id);
+> > +				      &fb_modeset);
+> > +	igt_assert(fb_modeset_id);
+> > +	igt_plane_set_fb(primary, &fb_modeset);
+> >=20
+> > -		fb_modeset_id =3D igt_create_fb(data->drm_fd,
+> > -					      mode->hdisplay,
+> > -					      mode->vdisplay,
+> > -					      DRM_FORMAT_XRGB8888,
+> > -					      DRM_FORMAT_MOD_NONE,
+> > -					      &fb_modeset);
+> > -		igt_assert(fb_modeset_id);
+> > -		igt_plane_set_fb(primary, &fb_modeset);
+> > -
+> > -		/*
+> > -		 * Don't program LUT's for max CTM cases, as limitation of
+> > -		 * representing intermediate values between 0 and 1.0 causes
+> > -		 * rounding issues and inaccuracies leading to crc mismatch.
+> > -		 */
+> > -		if (memcmp(before, after, sizeof(color_t))) {
+> > -			set_degamma(data, primary->pipe, degamma_linear);
+> > -			set_gamma(data, primary->pipe, gamma_linear);
+> > -		} else {
+> > -			/* Disable Degamma and Gamma for ctm max test */
+> > -			disable_degamma(primary->pipe);
+> > -			disable_gamma(primary->pipe);
+> > -		}
+> > -
+> > -		disable_ctm(primary->pipe);
+> > -		igt_display_commit(&data->display);
+> > -
+> > -		paint_rectangles(data, mode, after, &fb);
+> > -		igt_plane_set_fb(primary, &fb);
+> > -		set_ctm(primary->pipe, ctm_identity);
+> > -		igt_display_commit(&data->display);
+> > -		igt_wait_for_vblank(data->drm_fd,
+> > -				display->pipes[primary->pipe->pipe].crtc_offset);
+> > -		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_software);
+> > -
+> > -		/* With CTM transformation. */
+> > -		paint_rectangles(data, mode, before, &fb);
+> > -		igt_plane_set_fb(primary, &fb);
+> > -		set_ctm(primary->pipe, ctm_matrix);
+> > -		igt_display_commit(&data->display);
+> > -		igt_wait_for_vblank(data->drm_fd,
+> > -				display->pipes[primary->pipe->pipe].crtc_offset);
+> > -		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_hardware);
+> > -
+> > -		/* Verify that the CRC of the software computed output is
+> > -		 * equal to the CRC of the CTM matrix transformation output.
+> > -		 */
+> > -		ret &=3D !igt_skip_crc_compare || igt_check_crc_equal(&crc_software,
+> > &crc_hardware);
+> > -
+> > -		igt_plane_set_fb(primary, NULL);
+> > -		igt_output_set_pipe(output, PIPE_NONE);
+> > -		igt_remove_fb(data->drm_fd, &fb);
+> > -		igt_remove_fb(data->drm_fd, &fb_modeset);
+> > +	/*
+> > +	 * Don't program LUT's for max CTM cases, as limitation of
+> > +	 * representing intermediate values between 0 and 1.0 causes
+> > +	 * rounding issues and inaccuracies leading to crc mismatch.
+> > +	 */
+> > +	if (memcmp(before, after, sizeof(color_t))) {
+> > +		set_degamma(data, primary->pipe, degamma_linear);
+> > +		set_gamma(data, primary->pipe, gamma_linear);
+> > +	} else {
+> > +		/* Disable Degamma and Gamma for ctm max test */
+> > +		disable_degamma(primary->pipe);
+> > +		disable_gamma(primary->pipe);
+> >  	}
+> >=20
+> > +	disable_ctm(primary->pipe);
+> > +	igt_display_commit(&data->display);
+> > +
+> > +	paint_rectangles(data, mode, after, &fb);
+> > +	igt_plane_set_fb(primary, &fb);
+> > +	set_ctm(primary->pipe, ctm_identity);
+> > +	igt_display_commit(&data->display);
+> > +	igt_wait_for_vblank(data->drm_fd,
+> > +			    display->pipes[primary->pipe->pipe].crtc_offset);
+> > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_software);
+> > +
+> > +	/* With CTM transformation. */
+> > +	paint_rectangles(data, mode, before, &fb);
+> > +	igt_plane_set_fb(primary, &fb);
+> > +	set_ctm(primary->pipe, ctm_matrix);
+> > +	igt_display_commit(&data->display);
+> > +	igt_wait_for_vblank(data->drm_fd,
+> > +			    display->pipes[primary->pipe->pipe].crtc_offset);
+> > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_hardware);
+> > +
+> > +	/* Verify that the CRC of the software computed output is
+> > +	 * equal to the CRC of the CTM matrix transformation output.
+> > +	 */
+> > +	ret &=3D !igt_skip_crc_compare || igt_check_crc_equal(&crc_software,
+> > &crc_hardware);
+> > +
+> > +	igt_plane_set_fb(primary, NULL);
+> > +	igt_output_set_pipe(output, PIPE_NONE);
+> > +	igt_remove_fb(data->drm_fd, &fb);
+> > +	igt_remove_fb(data->drm_fd, &fb_modeset);
+> > +
+> >  	free_lut(degamma_linear);
+> >  	free_lut(gamma_linear);
 > >=20
 > > --
 > > 2.31.1
