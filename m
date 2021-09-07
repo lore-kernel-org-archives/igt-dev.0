@@ -1,13 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 522226E0CB
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Sep 2021 19:17:51 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
-Date: Wed,  8 Sep 2021 00:47:52 +0530
-Message-Id: <20210907191752.11262-1-jeevan.b@intel.com>
-MIME-Version: 1.0
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 12C4B6E0CB
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Sep 2021 19:24:08 +0000 (UTC)
+References: <20210907180130.43156-1-jose.souza@intel.com>
+From: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Message-ID: <7b429332-f396-f3dd-9b59-78742bc8ec8c@intel.com>
+Date: Tue, 7 Sep 2021 22:23:49 +0300
+In-Reply-To: <20210907180130.43156-1-jose.souza@intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] Change igt log level from warn to info
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/4] tests/kms_cursor_legacy: Handle
+ cursor movements as slow patch for display 9+
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,44 +22,90 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: uma.shankar@intel.com, Jeevan B <jeevan.b@intel.com>
+To: =?UTF-8?Q?Jos=c3=a9_Roberto_de_Souza?= <jose.souza@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-change igt_warn to igt_info when unloading the snd module before
-unbinding i915 until WA is fixed.
+Looks good to me.
+Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/core_hotunplug.c | 2 +-
- tests/device_reset.c   | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 2d73e27f..b3661668 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -164,7 +164,7 @@ static void driver_unbind(struct hotunplug *priv, const char *prefix,
- 			igt_lsof("/dev/snd");
- 			igt_skip("Audio is in use, skipping\n");
- 		} else {
--			igt_warn("Preventively unloaded snd_hda_intel\n");
-+			igt_info("Preventively unloaded snd_hda_intel\n");
- 		}
- 	}
- 
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-index e6a468e6..982ba5ef 100644
---- a/tests/device_reset.c
-+++ b/tests/device_reset.c
-@@ -201,7 +201,7 @@ static void driver_unbind(struct device_fds *dev)
- 			igt_lsof("/dev/snd");
- 			igt_skip("Audio is in use, skipping\n");
- 		} else {
--			igt_warn("Preventively unloaded snd_hda_intel\n");
-+			igt_info("Preventively unloaded snd_hda_intel\n");
- 		}
- 	}
- 
--- 
-2.19.1
+On 9/7/21 9:01 PM, José Roberto de Souza wrote:
+> i915 is dropping frontbuffer rendering support for display 9+ so
+> this evasion attempts will never happen as DRM_IOCTL_MODE_CURSOR will
+> be converted to atomic commits that will be executed during vblanks.
+> 
+> v2:
+> - Not using data filed by fixture to generate subtest list (Petri)
+> 
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+> Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
+> ---
+>   tests/kms_cursor_legacy.c | 24 ++++++++++++++----------
+>   1 file changed, 14 insertions(+), 10 deletions(-)
+> 
+> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+> index 0f0df951b..3ddea9c35 100644
+> --- a/tests/kms_cursor_legacy.c
+> +++ b/tests/kms_cursor_legacy.c
+> @@ -303,8 +303,13 @@ enum flip_test {
+>   	flip_test_last = flip_test_atomic_transitions_varying_size
+>   };
+>   
+> -static bool cursor_slowpath(enum flip_test mode)
+> +static bool cursor_slowpath(igt_display_t *display, enum flip_test mode)
+>   {
+> +	/* Intel display 9 and newer will handle cursor movement as fastsets */
+> +	if (is_i915_device(display->drm_fd) &&
+> +	    intel_display_ver(intel_get_drm_devid(display->drm_fd)) >= 9)
+> +	    return true;
+> +
+>   	/* cursor moving doesn't take slowpath, everything else does. */
+>   	if (mode == flip_test_legacy || mode == flip_test_atomic)
+>   		return false;
+> @@ -600,7 +605,7 @@ static void basic_flip_cursor(igt_display_t *display,
+>   
+>   		if (miss)
+>   			{ /* compare nothing, already failed */ }
+> -		else if (!cursor_slowpath(mode))
+> +		else if (!cursor_slowpath(display, mode))
+>   			miss = delta != 0;
+>   		else
+>   			miss = delta != 0 && delta != 1;
+> @@ -753,7 +758,7 @@ static void flip_vs_cursor(igt_display_t *display, enum flip_test mode, int nloo
+>   			do_ioctl(display->drm_fd, DRM_IOCTL_MODE_CURSOR, &arg[nloops & 1]);
+>   
+>   		/* Nor should it have delayed the following cursor update */
+> -		if (!cursor_slowpath(mode))
+> +		if (!cursor_slowpath(display, mode))
+>   			igt_assert_eq(kmstest_get_vblank(display->drm_fd, pipe, 0), vblank_start);
+>   		else
+>   			igt_assert_lte(kmstest_get_vblank(display->drm_fd, pipe, 0), vblank_start + 1);
+> @@ -1119,7 +1124,7 @@ static void cursor_vs_flip(igt_display_t *display, enum flip_test mode, int nloo
+>   			vblank_last = vbl.sequence;
+>   		}
+>   
+> -		if (!cursor_slowpath(mode))
+> +		if (!cursor_slowpath(display, mode))
+>   			igt_assert_lte(vbl.sequence, vblank_start + 5 * vrefresh / 8);
+>   
+>   		shared[0] = 1;
+> @@ -1558,12 +1563,11 @@ igt_main
+>   		igt_subtest_f("%sflip-before-cursor-%s", prefix, modes[i])
+>   			basic_flip_cursor(&display, i, FLIP_BEFORE_CURSOR, 0);
+>   
+> -		if (!cursor_slowpath(i)) {
+> -			igt_subtest_f("%sbusy-flip-before-cursor-%s", prefix, modes[i]) {
+> -				igt_require_gem(display.drm_fd);
+> -				basic_flip_cursor(&display, i, FLIP_BEFORE_CURSOR,
+> -						  BASIC_BUSY);
+> -			}
+> +		igt_subtest_f("%sbusy-flip-before-cursor-%s", prefix, modes[i]) {
+> +			igt_require(!cursor_slowpath(&display, i));
+> +			igt_require_gem(display.drm_fd);
+> +			basic_flip_cursor(&display, i, FLIP_BEFORE_CURSOR,
+> +					  BASIC_BUSY);
+>   		}
+>   	}
+>   
+> 
