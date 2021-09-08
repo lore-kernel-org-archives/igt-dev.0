@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 378786E17E
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Sep 2021 10:20:40 +0000 (UTC)
-Date: Wed, 8 Sep 2021 13:20:34 +0300
-From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20210908102034.GA4026934@ideak-desk.fi.intel.com>
-References: <20210908000400.14579-1-ashutosh.dixit@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E6BCA6E17E
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Sep 2021 10:39:18 +0000 (UTC)
+From: Ramalingam C <ramalingam.c@intel.com>
+Date: Wed,  8 Sep 2021 16:11:37 +0530
+Message-Id: <20210908104137.28851-1-ramalingam.c@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210908000400.14579-1-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_addfb_basic: Skip tiling
- subtests on device without hw tiling
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_prime: Create the exporting BO
+ with smem placement
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,80 +18,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Vanshidhar Konda <vanshidhar.r.konda@intel.com>
+To: igt-dev <igt-dev@lists.freedesktop.org>
+Cc: Dixit Ashutosh <ashutosh.dixit@intel.com>, Chris_intel_ID <chris.p.wilson@intel.com>, Michael Ruhl <michael.j.ruhl@intel.com>, Ramalingam C <ramalingam.c@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Sep 07, 2021 at 05:04:00PM -0700, Ashutosh Dixit wrote:
-> From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
-> 
-> Skip subtests that are testing interoperability of FB modifiers and
-> hardware tiling if the device does not support HW tiling.
-> 
-> v2: Don't skip basic-y-tiled-legacy even on platforms w/o fences (Imre)
-> 
-> Cc: Imre Deak <imre.deak@intel.com>
-> Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+On i915, to avail the dmabuf, the sharing object needs to migratable
+into smem. So if the shared object is lmem, then it needs to have the
+smem as second placement option.
 
-Reviewed-by: Imre Deak <imre.deak@intel.com>
+Currently kms_prime sharing the dumb buffer between the devices.
+But dumb buffer can't have the placements and resides at lmem for the
+dgfx. Hence to meet the i915 expectation for dgfx, we create the BO
+using the gem_create with smem as second placement option.
 
-> ---
->  tests/kms_addfb_basic.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-> index 082f10ee9ee..0f641e7dd78 100644
-> --- a/tests/kms_addfb_basic.c
-> +++ b/tests/kms_addfb_basic.c
-> @@ -138,6 +138,7 @@ static void invalid_tests(int fd)
->  	igt_describe("Check if addfb2 call works for clobbered modifier");
->  	igt_subtest("clobberred-modifier") {
->  		igt_require_intel(fd);
-> +		igt_require(gem_available_fences(fd) > 0);
->  		f.flags = 0;
->  		f.modifier[0] = 0;
->  		gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4);
-> @@ -358,6 +359,7 @@ static void tiling_tests(int fd)
->  		f.pitches[0] = 1024*4;
->  		igt_describe("Check if addfb2 and rmfb call works for basic x-tiling test");
->  		igt_subtest("basic-x-tiled-legacy") {
-> +			igt_require(gem_available_fences(fd) > 0);
->  			f.handles[0] = tiled_x_bo;
->  
->  			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
-> @@ -367,6 +369,7 @@ static void tiling_tests(int fd)
->  
->  		igt_describe("Check if addfb2 call works for x and y tiling");
->  		igt_subtest("framebuffer-vs-set-tiling") {
-> +			igt_require(gem_available_fences(fd) > 0);
->  			f.handles[0] = gem_bo;
->  
->  			gem_set_tiling(fd, gem_bo, I915_TILING_X, 1024*4);
-> @@ -380,6 +383,7 @@ static void tiling_tests(int fd)
->  		igt_describe("Test that addfb2 call fails correctly for pitches mismatch");
->  			f.pitches[0] = 512*4;
->  		igt_subtest("tile-pitch-mismatch") {
-> +			igt_require(gem_available_fences(fd) > 0);
->  			f.handles[0] = tiled_x_bo;
->  
->  			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
-> @@ -516,6 +520,7 @@ static void size_tests(int fd)
->  	igt_describe("Test that addfb2 call fails correctly with small buffer object after changing tile");
->  	igt_subtest("bo-too-small-due-to-tiling") {
->  		igt_require_intel(fd);
-> +		igt_require(gem_available_fences(fd) > 0);
->  		gem_set_tiling(fd, gem_bo_small, I915_TILING_X, 1024*4);
->  		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
->  			   errno == EINVAL);
-> @@ -570,6 +575,7 @@ static void addfb25_tests(int fd)
->  	igt_subtest_group {
->  		igt_fixture {
->  			igt_require_intel(fd);
-> +			igt_require(gem_available_fences(fd) > 0);
->  			gem_set_tiling(fd, gem_bo, I915_TILING_X, 1024*4);
->  			igt_require_fb_modifiers(fd);
->  		}
-> -- 
-> 2.31.1
-> 
+v2: Used gem_mmap__device_coherent for mmaped ptr (Ashutosh)
+
+Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
+---
+ tests/kms_prime.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
+
+diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+index 2e20c58bc16e..ccbb2feadd29 100644
+--- a/tests/kms_prime.c
++++ b/tests/kms_prime.c
+@@ -100,18 +100,17 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
+ 	scratch->height = mode->vdisplay;
+ 	scratch->bpp = 32;
+ 
+-	scratch->handle = kmstest_dumb_create(exporter_fd,
+-			ALIGN(scratch->width, 256),
+-			scratch->height,
+-			scratch->bpp,
+-			&scratch->pitch,
+-			&scratch->size);
+-
+-
+-	ptr = kmstest_dumb_map_buffer(exporter_fd,
+-				      scratch->handle,
+-				      scratch->size,
+-				      PROT_WRITE);
++	igt_calc_fb_size(exporter_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
++			 DRM_FORMAT_MOD_NONE, &scratch->size, &scratch->pitch);
++	if (gem_has_lmem(exporter_fd))
++		scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
++							       REGION_LMEM(0), REGION_SMEM);
++	else
++		scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
++							       REGION_SMEM);
++
++	ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0, scratch->size,
++					PROT_WRITE | PROT_READ);
+ 
+ 	for (size_t idx = 0; idx < scratch->size / sizeof(*ptr); ++idx)
+ 		ptr[idx] = color;
+-- 
+2.20.1
