@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B34D66E14F
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Sep 2021 05:43:20 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-Date: Thu, 9 Sep 2021 05:43:14 +0000
-Message-ID: <ac3ea882889f438298c457e2baaff4ee@intel.com>
-References: <20210908111543.1552728-1-jigar.bhatt@intel.com>
- <20210908185457.GA4059482@ideak-desk.fi.intel.com>
-In-Reply-To: <20210908185457.GA4059482@ideak-desk.fi.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 221FF6E323
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Sep 2021 22:41:32 +0000 (UTC)
+Received: by mail-lf1-f69.google.com with SMTP id
+ d2-20020ac25442000000b003e52a038afaso1328847lfn.10
+ for <igt-dev@lists.freedesktop.org>; Wed, 08 Sep 2021 15:40:25 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [ PATCH i-g-t v1 ] tests/i915/i915_pm_dc: Fix DC9 test
+References: <4ba5bb1e9fe08cbd9a6c43fc0e6e7eabc3d6520e.camel@redhat.com>
+ <CAKMK7uH0_62jhrLkiz0ZynM1iwcdZ2nM2qWdDtu=mJB80nFjFw@mail.gmail.com>
+In-Reply-To: <CAKMK7uH0_62jhrLkiz0ZynM1iwcdZ2nM2qWdDtu=mJB80nFjFw@mail.gmail.com>
+From: Porygon <jsolomon@redhat.com>
+Date: Wed, 8 Sep 2021 18:40:12 -0400
+Message-ID: <CAMBYGp5y=sk_F9uygz44kjNkvFjXex90tGgv24VedLXBL6PRmA@mail.gmail.com>
+Content-Type: multipart/alternative; boundary="000000000000606b1f05cb83917a"
+Subject: Re: [igt-dev] Testing s2idle/S0?
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,114 +22,179 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: porygon@redhat.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Deak, Imre" <imre.deak@intel.com>, "Bhatt, Jigar" <jigar.bhatt@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Shankar,
- Uma" <uma.shankar@intel.com>, "Varide, Nischal" <nischal.varide@intel.com>
+To: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Lyude Paul <lyude@redhat.com>, IGT development <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--000000000000606b1f05cb83917a
+Content-Type: text/plain; charset="UTF-8"
+
+Hey Daniel,
+
+Sorry for the long wait for a response, QE has been rather busy :)
+
+This will be my first time contributing directly to an upstream project, so
+I may need some assistance with the whole process. I do think it would be
+good to write some tests explicitly for s2idle testing since some machines
+are shipped with both "deep" (this is S3, I believe) and "s2idle" supported
+as suspend states. s2idle is becoming more common on laptops being shipped
+so we do want to make sure this is covered. Some machines seem to support
+only s2idle and are dropping support for deep; I think that the regular
+suspend cases may still cover s2idle in this case specifically, so perhaps
+it makes sense to have some explicit cases for the alternate state on
+machines that support both, just some simple sanity checks to catch
+possible regressions and ensure suspend works in general.
+
+I know we can blacklist tests when running IGT but I'm guessing under a
+typical use case, we don't want to blacklist anything by default in a
+regular test run, hence the worry about extra overhead. If this is
+incorrect & having some side set then we could blacklist the extra tests by
+default and only have them run as a set if the user chooses to specifically.
+
+If you have any further advice or thoughts on this, please let me know!
+Just hoping to get working on this ASAP so I've got a solution in mind
+within the next few weeks.
 
 
-> -----Original Message-----
-> From: Deak, Imre <imre.deak@intel.com>
-> Sent: Thursday, September 9, 2021 12:25 AM
-> To: Bhatt, Jigar <jigar.bhatt@intel.com>
-> Cc: igt-dev@lists.freedesktop.org; Shankar, Uma <uma.shankar@intel.com>;
-> Varide, Nischal <nischal.varide@intel.com>; Gupta, Anshuman
-> <anshuman.gupta@intel.com>
-> Subject: Re: [ PATCH i-g-t v1 ] tests/i915/i915_pm_dc: Fix DC9 test
->=20
-> On Wed, Sep 08, 2021 at 04:45:43PM +0530, Jigar Bhatt wrote:
-> > Currently, check_dc9 is being called with reference
-> > (previous) counter being read after dpms_off call.
-> > At this time, already the counter is 0.
-> > We need to read the counter before dpms_off is called so that it holds
-> > the previous value which had incremented while testing shallow states
-> > (DC5 or DC6).
-> >
-> > Signed-off-by: Jigar Bhatt <jigar.bhatt@intel.com>
-> > ---
-> >  tests/i915/i915_pm_dc.c | 11 ++++++-----
-> >  1 file changed, 6 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c index
-> > 9d0a15d8..d1925e5a 100644
-> > --- a/tests/i915/i915_pm_dc.c
-> > +++ b/tests/i915/i915_pm_dc.c
-> > @@ -400,8 +400,8 @@ static bool check_dc9(uint32_t debugfs_fd, int
-> prev_dc, bool dc6_supported, int
-> >  	 * so we rely on dc5/dc6 counter reset to check if display engine was=
- in
-> DC9.
-> >  	 */
-> >  	return igt_wait(dc6_supported ? read_dc_counter(debugfs_fd,
-> CHECK_DC6) <
-> > -			prev_dc : read_dc_counter(debugfs_fd, CHECK_DC5) <
-> > -			prev_dc, seconds, 100);
-> > +			prev_dc : read_dc_counter(debugfs_fd, CHECK_DC5) <
-> prev_dc
-> > +			, seconds, 100);
-> >  }
-> >
-> >  static void setup_dc9_dpms(data_t *data, int prev_dc, bool
-> > dc6_supported) @@ -418,15 +418,16 @@ static void setup_dc9_dpms(data_t
-> > *data, int prev_dc, bool dc6_supported)  static void
-> > test_dc9_dpms(data_t *data)
-> >
-> >  	bool dc6_supported;
->=20
-> The fix looks good, but while at it could you also make things a bit clea=
-ner by
->=20
-> 	int dc_target =3D support_dc6() ? CHECK_DC6 : CHECK_DC5;
->=20
-> > +	int prev_dc;
-> >
-> >  	require_dc_counter(data->debugfs_fd, CHECK_DC5);
-> >  	dc6_supported =3D support_dc6(data->debugfs_fd);
-> >  	setup_dc9_dpms(data, dc6_supported ? read_dc_counter(data-
-> >debugfs_fd, CHECK_DC6) :
-> >  			read_dc_counter(data->debugfs_fd, CHECK_DC5),
-> dc6_supported);
->=20
-> 	setup_dc9_dpms(data, dc_target);
->=20
-> and read out the counter within setup_dc9_dpms().
->=20
-> > +	prev_dc =3D dc6_supported ? read_dc_counter(data->debugfs_fd,
-> CHECK_DC6) :
-> > +		read_dc_counter(data->debugfs_fd, CHECK_DC5);
->=20
-> 	prev_dc =3D read_dc_counter(dc_target);
->=20
-> >  	dpms_off(data);
-> > -	igt_assert_f(check_dc9(data->debugfs_fd, dc6_supported ?
-> > -				read_dc_counter(data->debugfs_fd,
-> CHECK_DC6) :
-> > -				read_dc_counter(data->debugfs_fd,
-> CHECK_DC5),
-> > +	igt_assert_f(check_dc9(data->debugfs_fd, prev_dc,
-> >  				dc6_supported, 3000), "Not in DC9\n");
-This test can also fail due to any wakeup which lead to runtime resume (kms=
- connector polling is one of example), which will disable
-DC9 in DC_STATE_EN register. To debug such failure it would be better to du=
-mp the i915_pm_runtime_status debugfs  file in case of test failure.
-Like below example:
-igt_assert_f(dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
-                     "%s st\n%s:\n%s\n", tmp, PWR_DOMAIN_INFO,
-                     data->pwr_dmn_info =3D igt_sysfs_get(data->debugfs_fd,=
- PWR_DOMAIN_INFO));
+Best regards,
+-- Porygon
 
-Br,
-Anshuman Gupta.
->=20
-> 		     check_dc9(data->debugfs_fd, target_dc, 3000, ...
->=20
-> and simplify check_dc9() accordingly?
->=20
-> >  	dpms_on(data);
-> >  }
+
+On Thu, Jul 29, 2021 at 3:43 AM Daniel Vetter <daniel.vetter@ffwll.ch>
+wrote:
+
+> On Wed, Jul 28, 2021 at 10:06 PM Lyude Paul <lyude@redhat.com> wrote:
+> > Hi! Recently one of my coworkers from QA (cc'd here) asked me about
+> whether we
+> > had any tests for s2idle in igt - to which I looked, didn't see anything
+> that
+> > looked like a match, and suggested that they consider contributing some
+> tests
+> > for it. Note that when I mention s2idle here, I'm thinking about systems
+> which
+> > support both s2idle and S3 - as I know that s2idle is already being used
+> by
+> > default for suspend/resume by igt on s2idle only systems.
+> >
+> > This made me realize that we don't actually have any explicit
+> suspend/resume
+> > tests - we only have tests which handle testing other functionality
+> across
+> > suspend/resume. This seems like it makes sense for the most part, which
+> brings
+> > me to my real question here - would it be worth it to try adding s2idle
+> > support for most igt tests, so that on s2idle/S3 hybrid systems both
+> suspend
+> > modes are tested individually for each suspend/resume test?
+>
+> If you really add it to all of them the runtime explosion is likely
+> prohibitive. But a handful of explicit ones should be fine I guess.
+> -Daniel
+>
 > > --
-> > 2.25.1
+> > Cheers,
+> >  Lyude Paul (she/her)
+> >  Software Engineer at Red Hat
 > >
+> > _______________________________________________
+> > igt-dev mailing list
+> > igt-dev@lists.freedesktop.org
+> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
+>
+>
+>
+> --
+> Daniel Vetter
+> Software Engineer, Intel Corporation
+> http://blog.ffwll.ch
+>
+>
+
+--000000000000606b1f05cb83917a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hey Daniel,</div><div><br></div><div>Sorry for the lo=
+ng wait for a response, QE has been rather busy :)</div><div><br></div><div=
+>This will be my first time contributing directly to an upstream project, s=
+o I may need some assistance with the whole process. I do think it would be=
+ good to write some tests explicitly for s2idle testing since some machines=
+ are shipped with both &quot;deep&quot; (this is S3, I believe) and &quot;s=
+2idle&quot; supported as suspend states. s2idle is becoming more common on =
+laptops being shipped so we do want to make sure this is covered. Some mach=
+ines seem to support only s2idle and are dropping support for deep; I think=
+ that the regular suspend cases may still cover s2idle in this case specifi=
+cally, so perhaps it makes sense to have some explicit cases for the altern=
+ate state on machines that support both, just some simple sanity checks to =
+catch possible regressions and ensure suspend works in general.</div><div><=
+br></div><div>I know we can blacklist tests when running IGT but I&#39;m gu=
+essing under a typical use case, we don&#39;t want to blacklist anything by=
+ default in a regular test run, hence the worry about extra overhead. If th=
+is is incorrect &amp; having some side set then we could blacklist the extr=
+a tests by default and only have them run as a set if the user chooses to s=
+pecifically.</div><div><br></div><div>If you have any further advice or tho=
+ughts on this, please let me know! Just hoping to get working on this ASAP =
+so I&#39;ve got a solution in mind within the next few weeks.</div><div><br=
+></div><div><br></div><div>Best regards,</div><div>-- Porygon<br></div><div=
+><br></div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"g=
+mail_attr">On Thu, Jul 29, 2021 at 3:43 AM Daniel Vetter &lt;<a href=3D"mai=
+lto:daniel.vetter@ffwll.ch">daniel.vetter@ffwll.ch</a>&gt; wrote:<br></div>=
+<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-=
+left:1px solid rgb(204,204,204);padding-left:1ex">On Wed, Jul 28, 2021 at 1=
+0:06 PM Lyude Paul &lt;<a href=3D"mailto:lyude@redhat.com" target=3D"_blank=
+">lyude@redhat.com</a>&gt; wrote:<br>
+&gt; Hi! Recently one of my coworkers from QA (cc&#39;d here) asked me abou=
+t whether we<br>
+&gt; had any tests for s2idle in igt - to which I looked, didn&#39;t see an=
+ything that<br>
+&gt; looked like a match, and suggested that they consider contributing som=
+e tests<br>
+&gt; for it. Note that when I mention s2idle here, I&#39;m thinking about s=
+ystems which<br>
+&gt; support both s2idle and S3 - as I know that s2idle is already being us=
+ed by<br>
+&gt; default for suspend/resume by igt on s2idle only systems.<br>
+&gt;<br>
+&gt; This made me realize that we don&#39;t actually have any explicit susp=
+end/resume<br>
+&gt; tests - we only have tests which handle testing other functionality ac=
+ross<br>
+&gt; suspend/resume. This seems like it makes sense for the most part, whic=
+h brings<br>
+&gt; me to my real question here - would it be worth it to try adding s2idl=
+e<br>
+&gt; support for most igt tests, so that on s2idle/S3 hybrid systems both s=
+uspend<br>
+&gt; modes are tested individually for each suspend/resume test?<br>
+<br>
+If you really add it to all of them the runtime explosion is likely<br>
+prohibitive. But a handful of explicit ones should be fine I guess.<br>
+-Daniel<br>
+<br>
+&gt; --<br>
+&gt; Cheers,<br>
+&gt;=C2=A0 Lyude Paul (she/her)<br>
+&gt;=C2=A0 Software Engineer at Red Hat<br>
+&gt;<br>
+&gt; _______________________________________________<br>
+&gt; igt-dev mailing list<br>
+&gt; <a href=3D"mailto:igt-dev@lists.freedesktop.org" target=3D"_blank">igt=
+-dev@lists.freedesktop.org</a><br>
+&gt; <a href=3D"https://lists.freedesktop.org/mailman/listinfo/igt-dev" rel=
+=3D"noreferrer" target=3D"_blank">https://lists.freedesktop.org/mailman/lis=
+tinfo/igt-dev</a><br>
+<br>
+<br>
+<br>
+-- <br>
+Daniel Vetter<br>
+Software Engineer, Intel Corporation<br>
+<a href=3D"http://blog.ffwll.ch" rel=3D"noreferrer" target=3D"_blank">http:=
+//blog.ffwll.ch</a><br>
+<br>
+</blockquote></div>
+
+--000000000000606b1f05cb83917a--
