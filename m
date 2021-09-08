@@ -1,21 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 59B9C6E171
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Sep 2021 09:46:31 +0000 (UTC)
-Date: Wed, 8 Sep 2021 12:49:36 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YTiHMF0IogolYWYs@platvala-desk.ger.corp.intel.com>
-References: <20210907180130.43156-1-jose.souza@intel.com>
- <163104001597.24494.16238533254075989149@emeril.freedesktop.org>
- <44b82be006579d81875d20d09a3fcfc0687a8d20.camel@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 378786E17E
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Sep 2021 10:20:40 +0000 (UTC)
+Date: Wed, 8 Sep 2021 13:20:34 +0300
+From: Imre Deak <imre.deak@intel.com>
+Message-ID: <20210908102034.GA4026934@ideak-desk.fi.intel.com>
+References: <20210908000400.14579-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <44b82be006579d81875d20d09a3fcfc0687a8d20.camel@intel.com>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2Cv2=2C1/4=5D_tests/kms=5Fcursor=5Flega?=
- =?utf-8?q?cy=3A_Handle_cursor_movements_as_slow_patch_for_display_9+?=
+In-Reply-To: <20210908000400.14579-1-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_addfb_basic: Skip tiling
+ subtests on device without hw tiling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,20 +21,80 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Souza, Jose" <jose.souza@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Mun, Gwan-gyeong" <gwan-gyeong.mun@intel.com>
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Sep 07, 2021 at 10:07:14PM +0300, Souza, Jose wrote:
-> <br>
-> So this patches are expected to change some subtests of kms_cursor_legacy from PASS to SKIP due to some changes that are about to land in kernel.<br>
-> Can you please trigger a shard run of this series?<br>
-> <br>
+On Tue, Sep 07, 2021 at 05:04:00PM -0700, Ashutosh Dixit wrote:
+> From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
+> 
+> Skip subtests that are testing interoperability of FB modifiers and
+> hardware tiling if the device does not support HW tiling.
+> 
+> v2: Don't skip basic-y-tiled-legacy even on platforms w/o fences (Imre)
+> 
+> Cc: Imre Deak <imre.deak@intel.com>
+> Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
+> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-Forced to shards.
+Reviewed-by: Imre Deak <imre.deak@intel.com>
 
-Please send plaintext to this mailing list.
-
-
--- 
-Petri Latvala
+> ---
+>  tests/kms_addfb_basic.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+> index 082f10ee9ee..0f641e7dd78 100644
+> --- a/tests/kms_addfb_basic.c
+> +++ b/tests/kms_addfb_basic.c
+> @@ -138,6 +138,7 @@ static void invalid_tests(int fd)
+>  	igt_describe("Check if addfb2 call works for clobbered modifier");
+>  	igt_subtest("clobberred-modifier") {
+>  		igt_require_intel(fd);
+> +		igt_require(gem_available_fences(fd) > 0);
+>  		f.flags = 0;
+>  		f.modifier[0] = 0;
+>  		gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4);
+> @@ -358,6 +359,7 @@ static void tiling_tests(int fd)
+>  		f.pitches[0] = 1024*4;
+>  		igt_describe("Check if addfb2 and rmfb call works for basic x-tiling test");
+>  		igt_subtest("basic-x-tiled-legacy") {
+> +			igt_require(gem_available_fences(fd) > 0);
+>  			f.handles[0] = tiled_x_bo;
+>  
+>  			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+> @@ -367,6 +369,7 @@ static void tiling_tests(int fd)
+>  
+>  		igt_describe("Check if addfb2 call works for x and y tiling");
+>  		igt_subtest("framebuffer-vs-set-tiling") {
+> +			igt_require(gem_available_fences(fd) > 0);
+>  			f.handles[0] = gem_bo;
+>  
+>  			gem_set_tiling(fd, gem_bo, I915_TILING_X, 1024*4);
+> @@ -380,6 +383,7 @@ static void tiling_tests(int fd)
+>  		igt_describe("Test that addfb2 call fails correctly for pitches mismatch");
+>  			f.pitches[0] = 512*4;
+>  		igt_subtest("tile-pitch-mismatch") {
+> +			igt_require(gem_available_fences(fd) > 0);
+>  			f.handles[0] = tiled_x_bo;
+>  
+>  			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+> @@ -516,6 +520,7 @@ static void size_tests(int fd)
+>  	igt_describe("Test that addfb2 call fails correctly with small buffer object after changing tile");
+>  	igt_subtest("bo-too-small-due-to-tiling") {
+>  		igt_require_intel(fd);
+> +		igt_require(gem_available_fences(fd) > 0);
+>  		gem_set_tiling(fd, gem_bo_small, I915_TILING_X, 1024*4);
+>  		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+>  			   errno == EINVAL);
+> @@ -570,6 +575,7 @@ static void addfb25_tests(int fd)
+>  	igt_subtest_group {
+>  		igt_fixture {
+>  			igt_require_intel(fd);
+> +			igt_require(gem_available_fences(fd) > 0);
+>  			gem_set_tiling(fd, gem_bo, I915_TILING_X, 1024*4);
+>  			igt_require_fb_modifiers(fd);
+>  		}
+> -- 
+> 2.31.1
+> 
