@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D397F6E890
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Sep 2021 15:31:05 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B8246E5BD
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Sep 2021 15:30:55 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Thu,  9 Sep 2021 18:30:36 +0300
-Message-Id: <20210909153047.16729-1-ville.syrjala@linux.intel.com>
+Date: Thu,  9 Sep 2021 18:30:37 +0300
+Message-Id: <20210909153047.16729-2-ville.syrjala@linux.intel.com>
+In-Reply-To: <20210909153047.16729-1-ville.syrjala@linux.intel.com>
+References: <20210909153047.16729-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 00/11] kms: Clean up the supported
- rotations mess
+Subject: [igt-dev] [PATCH i-g-t v2 01/11] lib/kms: Add
+ igt_plane_has_rotation()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,39 +26,110 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Full repost due to Ci getting confused by bogus patch numbering :/
+Probe the supported rotations for each plane from the kernel
+This should let us eliminate tons of hand rolled gen checks all over.
 
-Reposting of igt_plane_has_rotation() + a few other remaining
-bits and bobs from the previous series. The main idea here is
-to remove most of the hardcoded platform checks for supported
-rotations. Sadly not quite 100% due to a few exceptional cases.
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ lib/igt_kms.c | 41 +++++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h | 16 ++++++++++++++++
+ 2 files changed, 57 insertions(+)
 
-I left out the kms_big_fb fliptab[] nukage for the moment so that
-the CI results will be less noisy.
-
-v2: keep some gen9+ checks in kms_rotation_crc
-
-Ville Syrjälä (11):
-  lib/kms: Add igt_plane_has_rotation()
-  tests/kms_rotation_crc: Use igt_plane_has_rotation()
-  tests/kms_plane_scaling: Use igt_plane_has_rotation()
-  tests/kms_big_fb: Use igt_plane_has_rotation()
-  tests/kms_big_fb: Use igt_has_drm_cap()
-  tests/kms_big_fb: Move batch creation into lower level functions
-  tests/kms_big_fb: Move format/modifier checks lower
-  tests/kms_big_fb: Nuke the stride/format overrides
-  tests/kms_big_fb: Check whether the rotation is supposed in the async
-    flip test
-  tests/kms_plane: Abstract single vs. multiple crsc better
-  tests/kms_plane: Use single colors during extended test
-
- lib/igt_kms.c             | 41 ++++++++++++++++++++++++
- lib/igt_kms.h             | 16 ++++++++++
- tests/kms_big_fb.c        | 67 +++++++++++----------------------------
- tests/kms_plane.c         | 61 +++++++++++++++++++----------------
- tests/kms_plane_scaling.c |  5 +--
- tests/kms_rotation_crc.c  | 32 +++++++------------
- 6 files changed, 123 insertions(+), 99 deletions(-)
-
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index cc38f5a25334..6b0639f628b9 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -612,6 +612,41 @@ const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
+ 	[IGT_CONNECTOR_DITHERING_MODE] = "dithering mode",
+ };
+ 
++const char * const igt_rotation_names[] = {
++	[0] = "rotate-0",
++	[1] = "rotate-90",
++	[2] = "rotate-180",
++	[3] = "rotate-270",
++	[4] = "reflect-x",
++	[5] = "reflect-y",
++};
++
++static unsigned int
++igt_plane_rotations(igt_display_t *display, igt_plane_t *plane,
++		    drmModePropertyPtr prop)
++{
++	unsigned int rotations = 0;
++
++	igt_assert_eq(prop->flags & DRM_MODE_PROP_LEGACY_TYPE,
++		      DRM_MODE_PROP_BITMASK);
++	igt_assert_eq(prop->count_values, prop->count_enums);
++
++	for (int i = 0; i < ARRAY_SIZE(igt_rotation_names); i++) {
++		for (int j = 0; j < prop->count_enums; j++) {
++			if (strcmp(igt_rotation_names[i], prop->enums[j].name))
++				continue;
++
++			/* various places assume the uabi uses specific bit values */
++			igt_assert_eq(prop->values[j], i);
++
++			rotations |= 1 << i;
++		}
++	}
++	igt_assert_neq(rotations, 0);
++
++	return rotations;
++}
++
+ /*
+  * Retrieve all the properies specified in props_name and store them into
+  * plane->props.
+@@ -640,9 +675,15 @@ igt_fill_plane_props(igt_display_t *display, igt_plane_t *plane,
+ 			break;
+ 		}
+ 
++		if (strcmp(prop->name, "rotation") == 0)
++			plane->rotations = igt_plane_rotations(display, plane, prop);
++
+ 		drmModeFreeProperty(prop);
+ 	}
+ 
++	if (!plane->rotations)
++		plane->rotations = IGT_ROTATION_0;
++
+ 	drmModeFreeObjectProperties(props);
+ }
+ 
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index ed598f164a59..b6cbf937166f 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -358,6 +358,8 @@ typedef struct igt_plane {
+ 		uint64_t values[IGT_NUM_COLOR_RANGES];
+ 	} color_range;
+ 
++	igt_rotation_t rotations;
++
+ 	uint64_t changed;
+ 	uint32_t props[IGT_NUM_PLANE_PROPS];
+ 	uint64_t values[IGT_NUM_PLANE_PROPS];
+@@ -491,6 +493,20 @@ void igt_fb_set_position(struct igt_fb *fb, igt_plane_t *plane,
+ void igt_fb_set_size(struct igt_fb *fb, igt_plane_t *plane,
+ 	uint32_t w, uint32_t h);
+ 
++/**
++ * igt_plane_has_rotation:
++ * @plane: Plane pointer for which rotation is to be queried
++ * @rotation: Plane rotation value (0, 90, 180, 270)
++ *
++ * Check whether @plane potentially supports the given @rotation.
++ * Note that @rotation may still rejected later due to other
++ * constraints (eg. incompatible pixel format or modifier).
++ */
++static inline bool igt_plane_has_rotation(igt_plane_t *plane, igt_rotation_t rotation)
++{
++	return (plane->rotations & rotation) == rotation;
++}
++
+ void igt_wait_for_vblank(int drm_fd, int crtc_offset);
+ void igt_wait_for_vblank_count(int drm_fd, int crtc_offset, int count);
+ 
 -- 
 2.31.1
