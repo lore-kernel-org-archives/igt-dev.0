@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC2086E891
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Sep 2021 15:31:12 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA2E86E5BD
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Sep 2021 15:31:18 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Thu,  9 Sep 2021 18:30:43 +0300
-Message-Id: <20210909153047.16729-8-ville.syrjala@linux.intel.com>
+Date: Thu,  9 Sep 2021 18:30:45 +0300
+Message-Id: <20210909153047.16729-10-ville.syrjala@linux.intel.com>
 In-Reply-To: <20210909153047.16729-1-ville.syrjala@linux.intel.com>
 References: <20210909153047.16729-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 07/11] tests/kms_big_fb: Move
- format/modifier checks lower
+Subject: [igt-dev] [PATCH i-g-t v2 09/11] tests/kms_big_fb: Check whether
+ the rotation is supposed in the async flip test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,63 +26,27 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-No reason to keep repeating the same format checks multiple
-times. Just move them into test_scanout().
+Don't corrupt the plane state with some totally unsupported
+rotation. Doing so causes subseuqenct subtests to just fail
+on account of that bad rotation state leaking between the
+subtests.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_big_fb.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ tests/kms_big_fb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
-index 9e98ed3f9edc..0022f2ad264b 100644
+index 6be3062bd335..d38c24a70d2b 100644
 --- a/tests/kms_big_fb.c
 +++ b/tests/kms_big_fb.c
-@@ -575,6 +575,11 @@ static void test_scanout(data_t *data)
- {
- 	igt_output_t *output;
+@@ -489,6 +489,7 @@ max_hw_stride_async_flip_test(data_t *data)
  
-+	igt_require(data->format == DRM_FORMAT_C8 ||
-+		    igt_fb_supported_format(data->format));
-+
-+	igt_require(igt_display_has_format_mod(&data->display, data->format, data->modifier));
-+
- 	if (data->max_hw_stride_test) {
- 		data->big_fb_width = data->max_hw_fb_width;
- 		data->big_fb_height = 0;
-@@ -903,12 +908,8 @@ igt_main
- 				igt_describe("Sanity check if addfb ioctl works correctly for given "
- 						"combination of modifier formats and rotation");
- 				igt_subtest_f("%s-%dbpp-rotate-%d", modifiers[i].name,
--					      formats[j].bpp, rotations[k].angle) {
--					igt_require(data.format == DRM_FORMAT_C8 ||
--						    igt_fb_supported_format(data.format));
--					igt_require(igt_display_has_format_mod(&data.display, data.format, data.modifier));
-+					      formats[j].bpp, rotations[k].angle)
- 					test_scanout(&data);
--				}
- 			}
+ 	primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
  
- 			igt_fixture
-@@ -961,9 +962,6 @@ igt_main
- 							data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
- 						}
++	igt_require(igt_plane_has_rotation(primary, data->rotation));
+ 	igt_plane_set_rotation(primary, data->rotation);
  
--						igt_require(data.format == DRM_FORMAT_C8 ||
--							igt_fb_supported_format(data.format));
--						igt_require(igt_display_has_format_mod(&data.display, data.format, data.modifier));
- 						test_scanout(&data);
- 					}
- 
-@@ -975,9 +973,6 @@ igt_main
- 					igt_describe("test async flip on maximum hardware supported stride length for given bpp and modifiers.");
- 					igt_subtest_f("%s-max-hw-stride-%dbpp-rotate-%d%s-async-flip", modifiers[i].name,
- 						formats[j].bpp, rotations[k].angle, fliptab[l].flipname) {
--							igt_require(data.format == DRM_FORMAT_C8 ||
--								igt_fb_supported_format(data.format));
--							igt_require(igt_display_has_format_mod(&data.display, data.format, data.modifier));
- 							igt_require(igt_has_drm_cap(data.drm_fd, DRM_CAP_ASYNC_PAGE_FLIP));
- 							data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
- 							test_scanout(&data);
+ 	igt_require_f(igt_display_try_commit2(&data->display, COMMIT_ATOMIC) == 0,
 -- 
 2.31.1
