@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EA2E86E5BD
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Sep 2021 15:31:18 +0000 (UTC)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C5676E88F
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Sep 2021 15:31:21 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Thu,  9 Sep 2021 18:30:45 +0300
-Message-Id: <20210909153047.16729-10-ville.syrjala@linux.intel.com>
+Date: Thu,  9 Sep 2021 18:30:40 +0300
+Message-Id: <20210909153047.16729-5-ville.syrjala@linux.intel.com>
 In-Reply-To: <20210909153047.16729-1-ville.syrjala@linux.intel.com>
 References: <20210909153047.16729-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 09/11] tests/kms_big_fb: Check whether
- the rotation is supposed in the async flip test
+Subject: [igt-dev] [PATCH i-g-t v2 04/11] tests/kms_big_fb: Use
+ igt_plane_has_rotation()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,27 +26,40 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Don't corrupt the plane state with some totally unsupported
-rotation. Doing so causes subseuqenct subtests to just fail
-on account of that bad rotation state leaking between the
-subtests.
+Use igt_plane_has_rotation() instead of the manual
+"if there's no rotation prop -> only 0 dgree is supported"
+conclusion.
+
+And let's also get rid of the atomic vs. 0/270 degree rotation
+check. I think I added this to avoid the test failing since
+we can't do the TEST_ONLY probe withoiut atomic. With the
+unsupported rotations filtered out ahead of time we should
+never get into that situation.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_big_fb.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/kms_big_fb.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
 diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
-index 6be3062bd335..d38c24a70d2b 100644
+index b988a092771a..092cbc6846fe 100644
 --- a/tests/kms_big_fb.c
 +++ b/tests/kms_big_fb.c
-@@ -489,6 +489,7 @@ max_hw_stride_async_flip_test(data_t *data)
+@@ -323,14 +323,7 @@ static bool test_plane(data_t *data)
+ 	if (!igt_plane_has_format_mod(plane, data->format, data->modifier))
+ 		return false;
  
- 	primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
+-	if (data->rotation != IGT_ROTATION_0 &&
+-	    !igt_plane_has_prop(plane, IGT_PLANE_ROTATION))
+-		return false;
+-
+-	/* FIXME need atomic on i965/g4x */
+-	if (data->rotation != IGT_ROTATION_0 &&
+-	    data->rotation != IGT_ROTATION_180 &&
+-	    !data->display.is_atomic)
++	if (!igt_plane_has_rotation(plane, data->rotation))
+ 		return false;
  
-+	igt_require(igt_plane_has_rotation(primary, data->rotation));
- 	igt_plane_set_rotation(primary, data->rotation);
- 
- 	igt_require_f(igt_display_try_commit2(&data->display, COMMIT_ATOMIC) == 0,
+ 	if (igt_plane_has_prop(plane, IGT_PLANE_ROTATION))
 -- 
 2.31.1
