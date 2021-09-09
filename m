@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2587A6E88E
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Sep 2021 15:30:57 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A44256E88E
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Sep 2021 15:31:11 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Thu,  9 Sep 2021 18:30:38 +0300
-Message-Id: <20210909153047.16729-3-ville.syrjala@linux.intel.com>
+Date: Thu,  9 Sep 2021 18:30:42 +0300
+Message-Id: <20210909153047.16729-7-ville.syrjala@linux.intel.com>
 In-Reply-To: <20210909153047.16729-1-ville.syrjala@linux.intel.com>
 References: <20210909153047.16729-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 02/11] tests/kms_rotation_crc: Use
- igt_plane_has_rotation()
+Subject: [igt-dev] [PATCH i-g-t v2 06/11] tests/kms_big_fb: Move batch
+ creation into lower level functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,132 +26,107 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Use igt_plane_has_rotation() instead of these annoying
-hand rolled gen checks.
-
-Also fix up the bogus CHV checks to match reality. Since
-the test doesn't probe the final configuration with a
-TEST_ONLY atomic commit we must still manually filter
-out any case that would pass the basic rotation check but
-fail later.
-
-v2: Keep the gen9+ checks for the multiplane tests since they
-    want a non-fullscreen primary plane
+At some point the back creation from moved form the fixture
+into each subtest, on account of something going bad between
+subtests (not really sure what that was). But when the hw stride
+tests were added they stuffed the batch back into the fixture,
+and indeed I get a segfault when running this stuff. So let's move
+all the batch stuff to the lowe level functions that actually need
+it.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_rotation_crc.c | 32 ++++++++++++--------------------
- 1 file changed, 12 insertions(+), 20 deletions(-)
+ tests/kms_big_fb.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index 2c66cd7c4e31..11401a6d00ad 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -493,9 +493,6 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 		for (c = 0; c < num_rectangle_types; c++)
- 			data->crc_rect[data->output_crc_in_use][c].valid = false;
+diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
+index 308227c9113a..9e98ed3f9edc 100644
+--- a/tests/kms_big_fb.c
++++ b/tests/kms_big_fb.c
+@@ -410,6 +410,8 @@ static bool test_pipe(data_t *data)
+ 				   IGT_CRTC_GAMMA_LUT))
+ 		return false;
  
--		if (is_i915_device(data->gfx_fd) && IS_CHERRYVIEW(data->devid) && pipe != PIPE_B)
--			continue;
--
- 		/* restricting the execution to 2 pipes to reduce execution time*/
- 		if (pipe_count == 2 * connected_outputs && !data->extended)
- 			break;
-@@ -505,6 +502,11 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 
- 		plane = igt_output_get_plane_type(output, plane_type);
- 		igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
-+		igt_require(igt_plane_has_rotation(plane, data->rotation));
-+		/* CHV can't rotate and reflect simultaneously */
-+		igt_require(!is_i915_device(data->gfx_fd) ||
-+			    !IS_CHERRYVIEW(data->devid) ||
-+			    data->rotation != (IGT_ROTATION_180 | IGT_REFLECT_X));
- 
- 		prepare_crtc(data, output, pipe, plane, true);
- 
-@@ -738,13 +740,14 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 						     && intel_display_ver(data->devid) < 11)
- 							continue;
- 
--						if (igt_rotation_90_or_270(planeconfigs[i].rotation)
--						    && intel_display_ver(data->devid) >= 13)
-+						if (!igt_plane_has_rotation(p[0].plane,
-+									    planeconfigs[i].rotation))
- 							continue;
- 
--						if (igt_rotation_90_or_270(planeconfigs[j].rotation)
--						    && intel_display_ver(data->devid) >= 13)
-+						if (!igt_plane_has_rotation(p[1].plane,
-+									    planeconfigs[j].rotation))
- 							continue;
++	data->ibb = intel_bb_create(data->drm_fd, 4096);
 +
- 						/*
- 						 * if using packed formats crc's will be
- 						 * same and can store them so there's
-@@ -892,6 +895,7 @@ static void test_plane_rotation_exhaust_fences(data_t *data,
- 	int i;
+ 	mode = igt_output_get_mode(data->output);
  
- 	igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
-+	igt_require(igt_plane_has_rotation(plane, IGT_ROTATION_0 | IGT_ROTATION_90));
- 	igt_require(gem_available_fences(display->drm_fd) > 0);
+ 	data->width = mode->hdisplay;
+@@ -470,6 +472,8 @@ static bool test_pipe(data_t *data)
  
- 	prepare_crtc(data, output, pipe, plane, false);
-@@ -1048,10 +1052,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		igt_subtest_f("%s-rotation-%s",
- 			      plane_test_str(subtest->plane),
- 			      rot_test_str(subtest->rot)) {
--			if (is_i915_device(data.gfx_fd)) {
--				igt_require(!igt_rotation_90_or_270(subtest->rot) ||
--					    (gen >= 9 && gen < 13));
--			} else if (is_amdgpu_device(data.gfx_fd)) {
-+			if (is_amdgpu_device(data.gfx_fd)) {
- 				data.override_fmt = DRM_FORMAT_XRGB8888;
- 				if (igt_rotation_90_or_270(subtest->rot))
- 					data.override_tiling = AMD_FMT_MOD |
-@@ -1067,7 +1068,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	igt_remove_fb(data->drm_fd, &data->small_fb);
  
- 	igt_describe("Rotation test with 90 degree for a plane of gen9+ with given position");
- 	igt_subtest_f("sprite-rotation-90-pos-100-0") {
--		igt_require(gen >=9 && gen < 13);
- 		data.rotation = IGT_ROTATION_90;
- 		data.pos_x = 100,
- 		data.pos_y = 0;
-@@ -1082,7 +1082,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		  * so apart from this, any other gen11+ pixel format
- 		  * can be used which doesn't support 90/270 degree
- 		  * rotation */
--		igt_require(gen >=9 && gen < 13);
- 		data.rotation = IGT_ROTATION_90;
- 		data.override_fmt = gen < 11 ? DRM_FORMAT_RGB565 : DRM_FORMAT_Y212;
- 		test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, true);
-@@ -1091,7 +1090,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
++	intel_bb_destroy(data->ibb);
++
+ 	return ret;
+ }
  
- 	igt_describe("Checking unsupported tiling for gen9+ with 90 degree of rotation");
- 	igt_subtest_f("bad-tiling") {
--		igt_require(gen >=9 && gen < 13);
- 		data.rotation = IGT_ROTATION_90;
- 		data.override_tiling = I915_FORMAT_MOD_X_TILED;
- 		test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, true);
-@@ -1103,12 +1101,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		igt_subtest_f("primary-%s-reflect-x-%s",
- 			      tiling_test_str(reflect_x->tiling),
- 			      rot_test_str(reflect_x->rot)) {
--			igt_require(gen >= 10 ||
--				    (IS_CHERRYVIEW(data.devid) && reflect_x->rot == IGT_ROTATION_0
--				     && reflect_x->tiling == I915_FORMAT_MOD_X_TILED));
- 			data.rotation = (IGT_REFLECT_X | reflect_x->rot);
--			igt_require(!(gen >= 13 &&
--				      igt_rotation_90_or_270(data.rotation)));
- 			data.override_tiling = reflect_x->tiling;
- 			test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, false);
+@@ -492,6 +496,8 @@ max_hw_stride_async_flip_test(data_t *data)
+ 	igt_require_f(igt_display_try_commit2(&data->display, COMMIT_ATOMIC) == 0,
+ 		      "rotation/flip not supported\n");
+ 
++	data->ibb = intel_bb_create(data->drm_fd, 4096);
++
+ 	setup_fb(data, &data->big_fb, data->big_fb_width, data->big_fb_height,
+ 		 data->format, data->modifier, data->hw_stride);
+ 	generate_pattern(data, &data->big_fb, 640, 480);
+@@ -559,6 +565,9 @@ max_hw_stride_async_flip_test(data_t *data)
+ 	igt_remove_fb(data->drm_fd, &data->big_fb);
+ 	igt_remove_fb(data->drm_fd, &data->big_fb_flip[0]);
+ 	igt_remove_fb(data->drm_fd, &data->big_fb_flip[1]);
++
++	intel_bb_destroy(data->ibb);
++
+ 	return true;
+ }
+ 
+@@ -841,7 +850,6 @@ igt_main
+ 			data.render_copy = igt_get_render_copyfunc(data.devid);
+ 
+ 		data.bops = buf_ops_create(data.drm_fd);
+-		data.ibb = intel_bb_create(data.drm_fd, 4096);
+ 
+ 		data.planeclearrgb[0] = 0.0;
+ 		data.planeclearrgb[1] = 0.0;
+@@ -862,9 +870,7 @@ igt_main
+ 		igt_subtest_f("%s-addfb-size-overflow",
+ 			      modifiers[i].name) {
+ 			data.modifier = modifiers[i].modifier;
+-			data.ibb = intel_bb_create(data.drm_fd, 4096);
+ 			test_size_overflow(&data);
+-			intel_bb_destroy(data.ibb);
  		}
-@@ -1164,7 +1157,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		enum pipe pipe;
- 		igt_output_t *output;
+ 	}
  
--		igt_require(gen >= 9 && gen < 13);
- 		igt_display_require_output(&data.display);
+@@ -873,9 +879,7 @@ igt_main
+ 		igt_subtest_f("%s-addfb-size-offset-overflow",
+ 			      modifiers[i].name) {
+ 			data.modifier = modifiers[i].modifier;
+-			data.ibb = intel_bb_create(data.drm_fd, 4096);
+ 			test_size_offset_overflow(&data);
+-			intel_bb_destroy(data.ibb);
+ 		}
+ 	}
  
- 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+@@ -883,9 +887,7 @@ igt_main
+ 	for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
+ 		igt_subtest_f("%s-addfb", modifiers[i].name) {
+ 			data.modifier = modifiers[i].modifier;
+-			data.ibb = intel_bb_create(data.drm_fd, 4096);
+ 			test_addfb(&data);
+-			intel_bb_destroy(data.ibb);
+ 		}
+ 	}
+ 
+@@ -905,9 +907,7 @@ igt_main
+ 					igt_require(data.format == DRM_FORMAT_C8 ||
+ 						    igt_fb_supported_format(data.format));
+ 					igt_require(igt_display_has_format_mod(&data.display, data.format, data.modifier));
+-					data.ibb = intel_bb_create(data.drm_fd, 4096);
+ 					test_scanout(&data);
+-					intel_bb_destroy(data.ibb);
+ 				}
+ 			}
+ 
 -- 
 2.31.1
