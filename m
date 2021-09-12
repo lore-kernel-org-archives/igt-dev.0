@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E9C46E02A
- for <igt-dev@lists.freedesktop.org>; Sun, 12 Sep 2021 15:36:22 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8878F6E02E
+ for <igt-dev@lists.freedesktop.org>; Sun, 12 Sep 2021 15:54:38 +0000 (UTC)
 From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Sun, 12 Sep 2021 15:36:19 +0000
-Message-ID: <DM8PR11MB571904ADF3819C3AC6AB13748DD89@DM8PR11MB5719.namprd11.prod.outlook.com>
-References: <20210903162743.29851-1-ville.syrjala@linux.intel.com>
- <20210903162743.29851-6-ville.syrjala@linux.intel.com>
- <DM8PR11MB571907CF887F2CBAFC65A24F8DD29@DM8PR11MB5719.namprd11.prod.outlook.com>
- <YTeitC71qNjpahfk@intel.com>
-In-Reply-To: <YTeitC71qNjpahfk@intel.com>
+Date: Sun, 12 Sep 2021 15:54:35 +0000
+Message-ID: <DM8PR11MB5719878220BAC60EBC81D67C8DD89@DM8PR11MB5719.namprd11.prod.outlook.com>
+References: <20210811070222.365182-1-bhanuprakash.modem@intel.com>
+ <711b4153-a083-980b-ac17-b44d5e75288e@intel.com>
+In-Reply-To: <711b4153-a083-980b-ac17-b44d5e75288e@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 5/7] tests/kms_color: Run each
- subtest only for a single connector
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms: Move Intel specific kms
+ tests to i915 directory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,842 +23,422 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Navare, Manasi D" <manasi.d.navare@intel.com>
+Cc: Mark Yacoub <markyacoub@chromium.org>, "Latvala, Petri" <petri.latvala@intel.com>, "Srinivas, Vidya" <vidya.srinivas@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> Sent: Tuesday, September 7, 2021 11:05 PM
-> To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> Cc: igt-dev@lists.freedesktop.org
-> Subject: Re: [PATCH i-g-t v3 5/7] tests/kms_color: Run each subtest only =
-for a
-> single connector
->=20
-> On Mon, Sep 06, 2021 at 06:38:26AM +0000, Modem, Bhanuprakash wrote:
-> > > From: Ville Syrjala <ville.syrjala@linux.intel.com>
-> > > Sent: Friday, September 3, 2021 9:58 PM
-> > > To: igt-dev@lists.freedesktop.org
-> > > Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> > > Subject: [PATCH i-g-t v3 5/7] tests/kms_color: Run each subtest only =
-for a
-> > > single connector
-> > >
-> > > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > >
-> > > For most of the subtests the used connector should not matter,
-> > > so run each subtest just for a single connector.
-> > >
-> > > Suggested-by: Bhanuprakash Modem <Bhanuprakash.modem@intel.com>
-> > > Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > > ---
-> > >  tests/kms_color.c | 612 +++++++++++++++++++++++---------------------=
---
-> > >  1 file changed, 306 insertions(+), 306 deletions(-)
-> > >
-> > > diff --git a/tests/kms_color.c b/tests/kms_color.c
-> > > index dabc6963e9e0..d78c7e211511 100644
-> > > --- a/tests/kms_color.c
-> > > +++ b/tests/kms_color.c
-> > > @@ -37,6 +37,10 @@ static void test_pipe_degamma(data_t *data,
-> > >  		{ 0.0, 1.0, 0.0 },
-> > >  		{ 0.0, 0.0, 1.0 }
-> > >  	};
-> > > +	drmModeModeInfo *mode;
-> > > +	struct igt_fb fb_modeset, fb;
-> > > +	igt_crc_t crc_fullgamma, crc_fullcolors;
-> > > +	int fb_id, fb_modeset_id;
-> > >
-> > >  	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_L=
-UT));
-> > >  	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT=
-));
-> > > @@ -44,69 +48,65 @@ static void test_pipe_degamma(data_t *data,
-> > >  	degamma_linear =3D generate_table(data->degamma_lut_size, 1.0);
-> > >  	degamma_full =3D generate_table_max(data->degamma_lut_size);
-> > >
-> > > -	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe,
-> > > output) {
-> > > -		drmModeModeInfo *mode;
-> > > -		struct igt_fb fb_modeset, fb;
-> > > -		igt_crc_t crc_fullgamma, crc_fullcolors;
-> > > -		int fb_id, fb_modeset_id;
-> > > +	output =3D igt_get_single_output_for_pipe(&data->display, primary->=
-pipe-
-> > > >pipe);
-> > > +	igt_require(output);
-> > >
-> > > -		igt_output_set_pipe(output, primary->pipe->pipe);
-> > > -		mode =3D igt_output_get_mode(output);
-> > > +	igt_output_set_pipe(output, primary->pipe->pipe);
-> > > +	mode =3D igt_output_get_mode(output);
-> > >
-> > > -		/* Create a framebuffer at the size of the output. */
-> > > -		fb_id =3D igt_create_fb(data->drm_fd,
-> > > +	/* Create a framebuffer at the size of the output. */
-> > > +	fb_id =3D igt_create_fb(data->drm_fd,
-> > > +			      mode->hdisplay,
-> > > +			      mode->vdisplay,
-> > > +			      DRM_FORMAT_XRGB8888,
-> > > +			      DRM_FORMAT_MOD_NONE,
-> > > +			      &fb);
-> > > +	igt_assert(fb_id);
-> >
-> > Minor: we can get rid of extra variables by updating like
-> > `igt_assert(igt_create_fb());`
->=20
-> I'm not going to be doing any unrelated changes in this
-> patch. The indentation change alone is already bad enough
-> to review.
->=20
-> >
-> > And this is applicable for all the places.
-> >
-> > > +
-> > > +	fb_modeset_id =3D igt_create_fb(data->drm_fd,
-> > >  				      mode->hdisplay,
-> > >  				      mode->vdisplay,
-> > >  				      DRM_FORMAT_XRGB8888,
-> > >  				      DRM_FORMAT_MOD_NONE,
-> > > -				      &fb);
-> > > -		igt_assert(fb_id);
-> > > +				      &fb_modeset);
-> > > +	igt_assert(fb_modeset_id);
-> > >
-> > > -		fb_modeset_id =3D igt_create_fb(data->drm_fd,
-> > > -					      mode->hdisplay,
-> > > -					      mode->vdisplay,
-> > > -					      DRM_FORMAT_XRGB8888,
-> > > -					      DRM_FORMAT_MOD_NONE,
-> > > -					      &fb_modeset);
-> > > -		igt_assert(fb_modeset_id);
-> > > +	igt_plane_set_fb(primary, &fb_modeset);
-> > > +	disable_ctm(primary->pipe);
-> > > +	disable_gamma(primary->pipe);
-> > > +	set_degamma(data, primary->pipe, degamma_linear);
-> > > +	igt_display_commit(&data->display);
-> > >
-> > > -		igt_plane_set_fb(primary, &fb_modeset);
-> > > -		disable_ctm(primary->pipe);
-> > > -		disable_gamma(primary->pipe);
-> > > -		set_degamma(data, primary->pipe, degamma_linear);
-> > > -		igt_display_commit(&data->display);
-> > > +	/* Draw solid colors with linear degamma transformation. */
-> > > +	paint_rectangles(data, mode, red_green_blue, &fb);
-> > > +	igt_plane_set_fb(primary, &fb);
-> > > +	igt_display_commit(&data->display);
-> > > +	igt_wait_for_vblank(data->drm_fd,
-> > > +			    display->pipes[primary->pipe->pipe].crtc_offset);
-> > > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
-> > >
-> > > -		/* Draw solid colors with linear degamma transformation. */
-> > > -		paint_rectangles(data, mode, red_green_blue, &fb);
-> > > -		igt_plane_set_fb(primary, &fb);
-> > > -		igt_display_commit(&data->display);
-> > > -		igt_wait_for_vblank(data->drm_fd,
-> > > -				display->pipes[primary->pipe->pipe].crtc_offset);
-> > > -		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
-> > > +	/* Draw a gradient with degamma LUT to remap all
-> > > +	 * values to max red/green/blue.
-> > > +	 */
-> > > +	paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-> > > +	igt_plane_set_fb(primary, &fb);
-> > > +	set_degamma(data, primary->pipe, degamma_full);
-> > > +	igt_display_commit(&data->display);
-> > > +	igt_wait_for_vblank(data->drm_fd,
-> > > +			    display->pipes[primary->pipe->pipe].crtc_offset);
-> > > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
-> > >
-> > > -		/* Draw a gradient with degamma LUT to remap all
-> > > -		 * values to max red/green/blue.
-> > > -		 */
-> > > -		paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-> > > -		igt_plane_set_fb(primary, &fb);
-> > > -		set_degamma(data, primary->pipe, degamma_full);
-> > > -		igt_display_commit(&data->display);
-> > > -		igt_wait_for_vblank(data->drm_fd,
-> > > -				display->pipes[primary->pipe->pipe].crtc_offset);
-> > > -		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
-> > > +	/* Verify that the CRC of the software computed output is
-> > > +	 * equal to the CRC of the degamma LUT transformation output.
-> > > +	 */
-> > > +	igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
-> > >
-> > > -		/* Verify that the CRC of the software computed output is
-> > > -		 * equal to the CRC of the degamma LUT transformation output.
-> > > -		 */
-> > > -		igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
-> > > -
-> > > -		disable_degamma(primary->pipe);
-> > > -		igt_plane_set_fb(primary, NULL);
-> > > -		igt_output_set_pipe(output, PIPE_NONE);
-> > > -		igt_display_commit(&data->display);
-> > > -		igt_remove_fb(data->drm_fd, &fb);
-> > > -		igt_remove_fb(data->drm_fd, &fb_modeset);
-> > > -	}
-> > > +	disable_degamma(primary->pipe);
-> > > +	igt_plane_set_fb(primary, NULL);
-> > > +	igt_output_set_pipe(output, PIPE_NONE);
-> > > +	igt_display_commit(&data->display);
-> > > +	igt_remove_fb(data->drm_fd, &fb);
-> > > +	igt_remove_fb(data->drm_fd, &fb_modeset);
-> > >
-> > >  	free_lut(degamma_linear);
-> > >  	free_lut(degamma_full);
-> > > @@ -127,73 +127,73 @@ static void test_pipe_gamma(data_t *data,
-> > >  		{ 0.0, 1.0, 0.0 },
-> > >  		{ 0.0, 0.0, 1.0 }
-> > >  	};
-> > > +	drmModeModeInfo *mode;
-> > > +	struct igt_fb fb_modeset, fb;
-> > > +	igt_crc_t crc_fullgamma, crc_fullcolors;
-> > > +	int fb_id, fb_modeset_id;
-> > >
-> > >  	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT=
-));
-> > >
-> > >  	gamma_full =3D generate_table_max(data->gamma_lut_size);
-> > >
-> > > -	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe,
-> > > output) {
-> > > -		drmModeModeInfo *mode;
-> > > -		struct igt_fb fb_modeset, fb;
-> > > -		igt_crc_t crc_fullgamma, crc_fullcolors;
-> > > -		int fb_id, fb_modeset_id;
-> > > +	output =3D igt_get_single_output_for_pipe(&data->display, primary->=
-pipe-
-> > > >pipe);
-> > > +	igt_require(output);
-> > >
-> > > -		igt_output_set_pipe(output, primary->pipe->pipe);
-> > > -		mode =3D igt_output_get_mode(output);
-> > > +	igt_output_set_pipe(output, primary->pipe->pipe);
-> > > +	mode =3D igt_output_get_mode(output);
-> > >
-> > > -		/* Create a framebuffer at the size of the output. */
-> > > -		fb_id =3D igt_create_fb(data->drm_fd,
-> > > +	/* Create a framebuffer at the size of the output. */
-> > > +	fb_id =3D igt_create_fb(data->drm_fd,
-> > > +			      mode->hdisplay,
-> > > +			      mode->vdisplay,
-> > > +			      DRM_FORMAT_XRGB8888,
-> > > +			      DRM_FORMAT_MOD_NONE,
-> > > +			      &fb);
-> > > +	igt_assert(fb_id);
-> > > +
-> > > +	fb_modeset_id =3D igt_create_fb(data->drm_fd,
-> > >  				      mode->hdisplay,
-> > >  				      mode->vdisplay,
-> > >  				      DRM_FORMAT_XRGB8888,
-> > >  				      DRM_FORMAT_MOD_NONE,
-> > > -				      &fb);
-> > > -		igt_assert(fb_id);
-> > > +				      &fb_modeset);
-> > > +	igt_assert(fb_modeset_id);
-> > >
-> > > -		fb_modeset_id =3D igt_create_fb(data->drm_fd,
-> > > -					      mode->hdisplay,
-> > > -					      mode->vdisplay,
-> > > -					      DRM_FORMAT_XRGB8888,
-> > > -					      DRM_FORMAT_MOD_NONE,
-> > > -					      &fb_modeset);
-> > > -		igt_assert(fb_modeset_id);
-> > > +	igt_plane_set_fb(primary, &fb_modeset);
-> > > +	disable_ctm(primary->pipe);
-> > > +	disable_degamma(primary->pipe);
-> > > +	set_gamma(data, primary->pipe, gamma_full);
-> >
-> > This could be disable_gamma(), right?
->=20
-> Getting matching crcs has been rather problematic in this
-> test. I don't recall the specifics on which LUT is needed
-> in each case to guarantee that.
->=20
-> >
-> > > +	igt_display_commit(&data->display);
-> > >
-> > > -		igt_plane_set_fb(primary, &fb_modeset);
-> > > -		disable_ctm(primary->pipe);
-> > > -		disable_degamma(primary->pipe);
-> > > -		set_gamma(data, primary->pipe, gamma_full);
-> > > -		igt_display_commit(&data->display);
-> > > +	/* Draw solid colors with no gamma transformation. */
-> > > +	paint_rectangles(data, mode, red_green_blue, &fb);
-> > > +	igt_plane_set_fb(primary, &fb);
-> > > +	igt_display_commit(&data->display);
-> > > +	igt_wait_for_vblank(data->drm_fd,
-> > > +			    display->pipes[primary->pipe->pipe].crtc_offset);
-> > > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
-> > >
-> > > -		/* Draw solid colors with no gamma transformation. */
-> > > -		paint_rectangles(data, mode, red_green_blue, &fb);
-> > > -		igt_plane_set_fb(primary, &fb);
-> > > -		igt_display_commit(&data->display);
-> > > -		igt_wait_for_vblank(data->drm_fd,
-> > > -				display->pipes[primary->pipe->pipe].crtc_offset);
-> > > -		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
-> > > +	/* Draw a gradient with gamma LUT to remap all values
-> > > +	 * to max red/green/blue.
-> > > +	 */
-> > > +	paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-> > > +	igt_plane_set_fb(primary, &fb);
-> >
-> > And here we need to set the gamma: set_gamma(gamma_max)
->=20
-> Also a totally unrelated change. If you think there's a bug here
-> pls submit a separate patch.
-
-Sure I'll submit a new patch, I Think we are in good shape to merge
-this series (I already reviewed remaining patches in this series).
-
-- Bhanu
-
->=20
-> >
-> > With these changes, this patch is
-> > Reviewed-by: Bhanuprakash Modem <Bhanuprakash.modem@intel.com>
-> >
-> > - Bhanu
-> >
-> > > +	igt_display_commit(&data->display);
-> > > +	igt_wait_for_vblank(data->drm_fd,
-> > > +			    display->pipes[primary->pipe->pipe].crtc_offset);
-> > > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
-> > >
-> > > -		/* Draw a gradient with gamma LUT to remap all values
-> > > -		 * to max red/green/blue.
-> > > -		 */
-> > > -		paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-> > > -		igt_plane_set_fb(primary, &fb);
-> > > -		igt_display_commit(&data->display);
-> > > -		igt_wait_for_vblank(data->drm_fd,
-> > > -				display->pipes[primary->pipe->pipe].crtc_offset);
-> > > -		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
-> > > +	/* Verify that the CRC of the software computed output is
-> > > +	 * equal to the CRC of the gamma LUT transformation output.
-> > > +	 */
-> > > +	igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
-> > >
-> > > -		/* Verify that the CRC of the software computed output is
-> > > -		 * equal to the CRC of the gamma LUT transformation output.
-> > > -		 */
-> > > -		igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
-> > > -
-> > > -		disable_gamma(primary->pipe);
-> > > -		igt_plane_set_fb(primary, NULL);
-> > > -		igt_output_set_pipe(output, PIPE_NONE);
-> > > -		igt_display_commit(&data->display);
-> > > -		igt_remove_fb(data->drm_fd, &fb);
-> > > -		igt_remove_fb(data->drm_fd, &fb_modeset);
-> > > -	}
-> > > +	disable_gamma(primary->pipe);
-> > > +	igt_plane_set_fb(primary, NULL);
-> > > +	igt_output_set_pipe(output, PIPE_NONE);
-> > > +	igt_display_commit(&data->display);
-> > > +	igt_remove_fb(data->drm_fd, &fb);
-> > > +	igt_remove_fb(data->drm_fd, &fb_modeset);
-> > >
-> > >  	free_lut(gamma_full);
-> > >  }
-> > > @@ -216,6 +216,10 @@ static void test_pipe_legacy_gamma(data_t *data,
-> > >  	drmModeCrtc *kms_crtc;
-> > >  	uint32_t i, legacy_lut_size;
-> > >  	uint16_t *red_lut, *green_lut, *blue_lut;
-> > > +	drmModeModeInfo *mode;
-> > > +	struct igt_fb fb_modeset, fb;
-> > > +	igt_crc_t crc_fullgamma, crc_fullcolors;
-> > > +	int fb_id, fb_modeset_id;
-> > >
-> > >  	kms_crtc =3D drmModeGetCrtc(data->drm_fd, primary->pipe->crtc_id);
-> > >  	legacy_lut_size =3D kms_crtc->gamma_size;
-> > > @@ -225,80 +229,76 @@ static void test_pipe_legacy_gamma(data_t *data=
-,
-> > >  	green_lut =3D malloc(sizeof(uint16_t) * legacy_lut_size);
-> > >  	blue_lut =3D malloc(sizeof(uint16_t) * legacy_lut_size);
-> > >
-> > > -	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe,
-> > > output) {
-> > > -		drmModeModeInfo *mode;
-> > > -		struct igt_fb fb_modeset, fb;
-> > > -		igt_crc_t crc_fullgamma, crc_fullcolors;
-> > > -		int fb_id, fb_modeset_id;
-> > > +	output =3D igt_get_single_output_for_pipe(&data->display, primary->=
-pipe-
-> > > >pipe);
-> > > +	igt_require(output);
-> > >
-> > > -		igt_output_set_pipe(output, primary->pipe->pipe);
-> > > -		mode =3D igt_output_get_mode(output);
-> > > +	igt_output_set_pipe(output, primary->pipe->pipe);
-> > > +	mode =3D igt_output_get_mode(output);
-> > >
-> > > -		/* Create a framebuffer at the size of the output. */
-> > > -		fb_id =3D igt_create_fb(data->drm_fd,
-> > > +	/* Create a framebuffer at the size of the output. */
-> > > +	fb_id =3D igt_create_fb(data->drm_fd,
-> > > +			      mode->hdisplay,
-> > > +			      mode->vdisplay,
-> > > +			      DRM_FORMAT_XRGB8888,
-> > > +			      DRM_FORMAT_MOD_NONE,
-> > > +			      &fb);
-> > > +	igt_assert(fb_id);
-> > > +
-> > > +	fb_modeset_id =3D igt_create_fb(data->drm_fd,
-> > >  				      mode->hdisplay,
-> > >  				      mode->vdisplay,
-> > >  				      DRM_FORMAT_XRGB8888,
-> > >  				      DRM_FORMAT_MOD_NONE,
-> > > -				      &fb);
-> > > -		igt_assert(fb_id);
-> > > -
-> > > -		fb_modeset_id =3D igt_create_fb(data->drm_fd,
-> > > -					      mode->hdisplay,
-> > > -					      mode->vdisplay,
-> > > -					      DRM_FORMAT_XRGB8888,
-> > > -					      DRM_FORMAT_MOD_NONE,
-> > > -					      &fb_modeset);
-> > > -		igt_assert(fb_modeset_id);
-> > > -
-> > > -		igt_plane_set_fb(primary, &fb_modeset);
-> > > -		disable_degamma(primary->pipe);
-> > > -		disable_gamma(primary->pipe);
-> > > -		disable_ctm(primary->pipe);
-> > > -		igt_display_commit(&data->display);
-> > > -
-> > > -		/* Draw solid colors with no gamma transformation. */
-> > > -		paint_rectangles(data, mode, red_green_blue, &fb);
-> > > -		igt_plane_set_fb(primary, &fb);
-> > > -		igt_display_commit(&data->display);
-> > > -		igt_wait_for_vblank(data->drm_fd,
-> > > -				display->pipes[primary->pipe->pipe].crtc_offset);
-> > > -		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
-> > > -
-> > > -		/* Draw a gradient with gamma LUT to remap all values
-> > > -		 * to max red/green/blue.
-> > > -		 */
-> > > -		paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-> > > -		igt_plane_set_fb(primary, &fb);
-> > > -
-> > > -		red_lut[0] =3D green_lut[0] =3D blue_lut[0] =3D 0;
-> > > -		for (i =3D 1; i < legacy_lut_size; i++)
-> > > -			red_lut[i] =3D green_lut[i] =3D blue_lut[i] =3D 0xffff;
-> > > -		igt_assert_eq(drmModeCrtcSetGamma(data->drm_fd, primary->pipe-
-> > > >crtc_id,
-> > > -						  legacy_lut_size, red_lut, green_lut,
-> > > blue_lut), 0);
-> > > -		igt_display_commit(&data->display);
-> > > -		igt_wait_for_vblank(data->drm_fd,
-> > > -				display->pipes[primary->pipe->pipe].crtc_offset);
-> > > -		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
-> > > -
-> > > -		/* Verify that the CRC of the software computed output is
-> > > -		 * equal to the CRC of the gamma LUT transformation output.
-> > > -		 */
-> > > -		igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
-> > > -
-> > > -		/* Reset output. */
-> > > -		for (i =3D 1; i < legacy_lut_size; i++)
-> > > -			red_lut[i] =3D green_lut[i] =3D blue_lut[i] =3D i << 8;
-> > > -
-> > > -		igt_assert_eq(drmModeCrtcSetGamma(data->drm_fd, primary->pipe-
-> > > >crtc_id,
-> > > -						  legacy_lut_size, red_lut, green_lut,
-> > > blue_lut), 0);
-> > > -		igt_display_commit(&data->display);
-> > > -
-> > > -		igt_plane_set_fb(primary, NULL);
-> > > -		igt_output_set_pipe(output, PIPE_NONE);
-> > > -		igt_remove_fb(data->drm_fd, &fb);
-> > > -		igt_remove_fb(data->drm_fd, &fb_modeset);
-> > > -	}
-> > > +				      &fb_modeset);
-> > > +	igt_assert(fb_modeset_id);
-> > > +
-> > > +	igt_plane_set_fb(primary, &fb_modeset);
-> > > +	disable_degamma(primary->pipe);
-> > > +	disable_gamma(primary->pipe);
-> > > +	disable_ctm(primary->pipe);
-> > > +	igt_display_commit(&data->display);
-> > > +
-> > > +	/* Draw solid colors with no gamma transformation. */
-> > > +	paint_rectangles(data, mode, red_green_blue, &fb);
-> > > +	igt_plane_set_fb(primary, &fb);
-> > > +	igt_display_commit(&data->display);
-> > > +	igt_wait_for_vblank(data->drm_fd,
-> > > +			    display->pipes[primary->pipe->pipe].crtc_offset);
-> > > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
-> > > +
-> > > +	/* Draw a gradient with gamma LUT to remap all values
-> > > +	 * to max red/green/blue.
-> > > +	 */
-> > > +	paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-> > > +	igt_plane_set_fb(primary, &fb);
-> > > +
-> > > +	red_lut[0] =3D green_lut[0] =3D blue_lut[0] =3D 0;
-> > > +	for (i =3D 1; i < legacy_lut_size; i++)
-> > > +		red_lut[i] =3D green_lut[i] =3D blue_lut[i] =3D 0xffff;
-> > > +	igt_assert_eq(drmModeCrtcSetGamma(data->drm_fd, primary->pipe->crtc=
-_id,
-> > > +					  legacy_lut_size, red_lut, green_lut, blue_lut),
-> > > 0);
-> > > +	igt_display_commit(&data->display);
-> > > +	igt_wait_for_vblank(data->drm_fd,
-> > > +			    display->pipes[primary->pipe->pipe].crtc_offset);
-> > > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
-> > > +
-> > > +	/* Verify that the CRC of the software computed output is
-> > > +	 * equal to the CRC of the gamma LUT transformation output.
-> > > +	 */
-> > > +	igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
-> > > +
-> > > +	/* Reset output. */
-> > > +	for (i =3D 1; i < legacy_lut_size; i++)
-> > > +		red_lut[i] =3D green_lut[i] =3D blue_lut[i] =3D i << 8;
-> > > +
-> > > +	igt_assert_eq(drmModeCrtcSetGamma(data->drm_fd, primary->pipe->crtc=
-_id,
-> > > +					  legacy_lut_size, red_lut, green_lut, blue_lut),
-> > > 0);
-> > > +	igt_display_commit(&data->display);
-> > > +
-> > > +	igt_plane_set_fb(primary, NULL);
-> > > +	igt_output_set_pipe(output, PIPE_NONE);
-> > > +	igt_remove_fb(data->drm_fd, &fb);
-> > > +	igt_remove_fb(data->drm_fd, &fb_modeset);
-> > >
-> > >  	free(red_lut);
-> > >  	free(green_lut);
-> > > @@ -331,93 +331,93 @@ static void test_pipe_legacy_gamma_reset(data_t
-> *data,
-> > >  		degamma_linear =3D generate_table(data->degamma_lut_size, 1.0);
-> > >  	gamma_zero =3D generate_table_zero(data->gamma_lut_size);
-> > >
-> > > -	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe,
-> > > output) {
-> > > -		igt_output_set_pipe(output, primary->pipe->pipe);
-> > > +	output =3D igt_get_single_output_for_pipe(&data->display, primary->=
-pipe-
-> > > >pipe);
-> > > +	igt_require(output);
-> > >
-> > > -		/* Ensure we have a clean state to start with. */
-> > > -		disable_degamma(primary->pipe);
-> > > -		disable_ctm(primary->pipe);
-> > > -		disable_gamma(primary->pipe);
-> > > -		igt_display_commit(&data->display);
-> > > +	igt_output_set_pipe(output, primary->pipe->pipe);
-> > >
-> > > -		/* Set a degama & gamma LUT and a CTM using the
-> > > -		 * properties and verify the content of the
-> > > -		 * properties. */
-> > > -		if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT))
-> > > -			set_degamma(data, primary->pipe, degamma_linear);
-> > > -		if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM))
-> > > -			set_ctm(primary->pipe, ctm_identity);
-> > > -		set_gamma(data, primary->pipe, gamma_zero);
-> > > -		igt_display_commit(&data->display);
-> > > +	/* Ensure we have a clean state to start with. */
-> > > +	disable_degamma(primary->pipe);
-> > > +	disable_ctm(primary->pipe);
-> > > +	disable_gamma(primary->pipe);
-> > > +	igt_display_commit(&data->display);
-> > >
-> > > -		if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT)) {
-> > > -			blob =3D get_blob(data, primary->pipe, IGT_CRTC_DEGAMMA_LUT);
-> > > -			igt_assert(blob &&
-> > > -				   blob->length =3D=3D (sizeof(struct drm_color_lut) *
-> > > -						    data->degamma_lut_size));
-> > > -			drmModeFreePropertyBlob(blob);
-> > > -		}
-> > > +	/* Set a degama & gamma LUT and a CTM using the
-> > > +	 * properties and verify the content of the
-> > > +	 * properties. */
-> > > +	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT))
-> > > +		set_degamma(data, primary->pipe, degamma_linear);
-> > > +	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM))
-> > > +		set_ctm(primary->pipe, ctm_identity);
-> > > +	set_gamma(data, primary->pipe, gamma_zero);
-> > > +	igt_display_commit(&data->display);
-> > >
-> > > -		if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM)) {
-> > > -			blob =3D get_blob(data, primary->pipe, IGT_CRTC_CTM);
-> > > -			igt_assert(blob &&
-> > > -				   blob->length =3D=3D sizeof(struct drm_color_ctm));
-> > > -			drmModeFreePropertyBlob(blob);
-> > > -		}
-> > > -
-> > > -		blob =3D get_blob(data, primary->pipe, IGT_CRTC_GAMMA_LUT);
-> > > +	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT)) {
-> > > +		blob =3D get_blob(data, primary->pipe, IGT_CRTC_DEGAMMA_LUT);
-> > >  		igt_assert(blob &&
-> > >  			   blob->length =3D=3D (sizeof(struct drm_color_lut) *
-> > > -					    data->gamma_lut_size));
-> > > -		lut =3D (struct drm_color_lut *) blob->data;
-> > > -		for (i =3D 0; i < data->gamma_lut_size; i++)
-> > > -			igt_assert(lut[i].red =3D=3D 0 &&
-> > > -				   lut[i].green =3D=3D 0 &&
-> > > -				   lut[i].blue =3D=3D 0);
-> > > +					    data->degamma_lut_size));
-> > >  		drmModeFreePropertyBlob(blob);
-> > > +	}
-> > >
-> > > -		/* Set a gamma LUT using the legacy ioctl and verify
-> > > -		 * the content of the GAMMA_LUT property is changed
-> > > -		 * and that CTM and DEGAMMA_LUT are empty. */
-> > > -		kms_crtc =3D drmModeGetCrtc(data->drm_fd, primary->pipe->crtc_id);
-> > > -		legacy_lut_size =3D kms_crtc->gamma_size;
-> > > -		drmModeFreeCrtc(kms_crtc);
-> > > +	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM)) {
-> > > +		blob =3D get_blob(data, primary->pipe, IGT_CRTC_CTM);
-> > > +		igt_assert(blob &&
-> > > +			   blob->length =3D=3D sizeof(struct drm_color_ctm));
-> > > +		drmModeFreePropertyBlob(blob);
-> > > +	}
-> > >
-> > > -		red_lut =3D malloc(sizeof(uint16_t) * legacy_lut_size);
-> > > -		green_lut =3D malloc(sizeof(uint16_t) * legacy_lut_size);
-> > > -		blue_lut =3D malloc(sizeof(uint16_t) * legacy_lut_size);
-> > > +	blob =3D get_blob(data, primary->pipe, IGT_CRTC_GAMMA_LUT);
-> > > +	igt_assert(blob &&
-> > > +		   blob->length =3D=3D (sizeof(struct drm_color_lut) *
-> > > +				    data->gamma_lut_size));
-> > > +	lut =3D (struct drm_color_lut *) blob->data;
-> > > +	for (i =3D 0; i < data->gamma_lut_size; i++)
-> > > +		igt_assert(lut[i].red =3D=3D 0 &&
-> > > +			   lut[i].green =3D=3D 0 &&
-> > > +			   lut[i].blue =3D=3D 0);
-> > > +	drmModeFreePropertyBlob(blob);
-> > >
-> > > -		for (i =3D 0; i < legacy_lut_size; i++)
-> > > -			red_lut[i] =3D green_lut[i] =3D blue_lut[i] =3D 0xffff;
-> > > +	/* Set a gamma LUT using the legacy ioctl and verify
-> > > +	 * the content of the GAMMA_LUT property is changed
-> > > +	 * and that CTM and DEGAMMA_LUT are empty. */
-> > > +	kms_crtc =3D drmModeGetCrtc(data->drm_fd, primary->pipe->crtc_id);
-> > > +	legacy_lut_size =3D kms_crtc->gamma_size;
-> > > +	drmModeFreeCrtc(kms_crtc);
-> > >
-> > > -		igt_assert_eq(drmModeCrtcSetGamma(data->drm_fd,
-> > > -						  primary->pipe->crtc_id,
-> > > -						  legacy_lut_size,
-> > > -						  red_lut, green_lut, blue_lut),
-> > > -			      0);
-> > > -		igt_display_commit(&data->display);
-> > > +	red_lut =3D malloc(sizeof(uint16_t) * legacy_lut_size);
-> > > +	green_lut =3D malloc(sizeof(uint16_t) * legacy_lut_size);
-> > > +	blue_lut =3D malloc(sizeof(uint16_t) * legacy_lut_size);
-> > >
-> > > -		if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT))
-> > > -			igt_assert(get_blob(data, primary->pipe,
-> > > -					    IGT_CRTC_DEGAMMA_LUT) =3D=3D NULL);
-> > > +	for (i =3D 0; i < legacy_lut_size; i++)
-> > > +		red_lut[i] =3D green_lut[i] =3D blue_lut[i] =3D 0xffff;
-> > >
-> > > -		if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM))
-> > > -			igt_assert(get_blob(data, primary->pipe, IGT_CRTC_CTM) =3D=3D
-> > > NULL);
-> > > +	igt_assert_eq(drmModeCrtcSetGamma(data->drm_fd,
-> > > +					  primary->pipe->crtc_id,
-> > > +					  legacy_lut_size,
-> > > +					  red_lut, green_lut, blue_lut), 0);
-> > > +	igt_display_commit(&data->display);
-> > >
-> > > -		blob =3D get_blob(data, primary->pipe, IGT_CRTC_GAMMA_LUT);
-> > > -		igt_assert(blob &&
-> > > -			   blob->length =3D=3D (sizeof(struct drm_color_lut) *
-> > > -					    legacy_lut_size));
-> > > -		lut =3D (struct drm_color_lut *) blob->data;
-> > > -		for (i =3D 0; i < legacy_lut_size; i++)
-> > > -			igt_assert(lut[i].red =3D=3D 0xffff &&
-> > > -				   lut[i].green =3D=3D 0xffff &&
-> > > -				   lut[i].blue =3D=3D 0xffff);
-> > > -		drmModeFreePropertyBlob(blob);
-> > > +	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT))
-> > > +		igt_assert(get_blob(data, primary->pipe,
-> > > +				    IGT_CRTC_DEGAMMA_LUT) =3D=3D NULL);
-> > >
-> > > -		igt_plane_set_fb(primary, NULL);
-> > > -		igt_output_set_pipe(output, PIPE_NONE);
-> > > -	}
-> > > +	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM))
-> > > +		igt_assert(get_blob(data, primary->pipe, IGT_CRTC_CTM) =3D=3D NULL=
-);
-> > > +
-> > > +	blob =3D get_blob(data, primary->pipe, IGT_CRTC_GAMMA_LUT);
-> > > +	igt_assert(blob &&
-> > > +		   blob->length =3D=3D (sizeof(struct drm_color_lut) *
-> > > +				    legacy_lut_size));
-> > > +	lut =3D (struct drm_color_lut *) blob->data;
-> > > +	for (i =3D 0; i < legacy_lut_size; i++)
-> > > +		igt_assert(lut[i].red =3D=3D 0xffff &&
-> > > +			   lut[i].green =3D=3D 0xffff &&
-> > > +			   lut[i].blue =3D=3D 0xffff);
-> > > +	drmModeFreePropertyBlob(blob);
-> > > +
-> > > +	igt_plane_set_fb(primary, NULL);
-> > > +	igt_output_set_pipe(output, PIPE_NONE);
-> > >
-> > >  	free_lut(degamma_linear);
-> > >  	free_lut(gamma_zero);
-> > > @@ -442,84 +442,84 @@ static bool test_pipe_ctm(data_t *data,
-> > >  	igt_output_t *output;
-> > >  	bool ret =3D true;
-> > >  	igt_display_t *display =3D &data->display;
-> > > +	drmModeModeInfo *mode;
-> > > +	struct igt_fb fb_modeset, fb;
-> > > +	igt_crc_t crc_software, crc_hardware;
-> > > +	int fb_id, fb_modeset_id;
-> > >
-> > >  	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM));
-> > >
-> > >  	degamma_linear =3D generate_table(data->degamma_lut_size, 1.0);
-> > >  	gamma_linear =3D generate_table(data->gamma_lut_size, 1.0);
-> > >
-> > > -	for_each_valid_output_on_pipe(&data->display, primary->pipe->pipe,
-> > > output) {
-> > > -		drmModeModeInfo *mode;
-> > > -		struct igt_fb fb_modeset, fb;
-> > > -		igt_crc_t crc_software, crc_hardware;
-> > > -		int fb_id, fb_modeset_id;
-> > > +	output =3D igt_get_single_output_for_pipe(&data->display, primary->=
-pipe-
-> > > >pipe);
-> > > +	igt_require(output);
-> > >
-> > > -		igt_output_set_pipe(output, primary->pipe->pipe);
-> > > -		mode =3D igt_output_get_mode(output);
-> > > +	igt_output_set_pipe(output, primary->pipe->pipe);
-> > > +	mode =3D igt_output_get_mode(output);
-> > >
-> > > -		/* Create a framebuffer at the size of the output. */
-> > > -		fb_id =3D igt_create_fb(data->drm_fd,
-> > > +	/* Create a framebuffer at the size of the output. */
-> > > +	fb_id =3D igt_create_fb(data->drm_fd,
-> > > +			      mode->hdisplay,
-> > > +			      mode->vdisplay,
-> > > +			      DRM_FORMAT_XRGB8888,
-> > > +			      DRM_FORMAT_MOD_NONE,
-> > > +			      &fb);
-> > > +	igt_assert(fb_id);
-> > > +
-> > > +	fb_modeset_id =3D igt_create_fb(data->drm_fd,
-> > >  				      mode->hdisplay,
-> > >  				      mode->vdisplay,
-> > >  				      DRM_FORMAT_XRGB8888,
-> > >  				      DRM_FORMAT_MOD_NONE,
-> > > -				      &fb);
-> > > -		igt_assert(fb_id);
-> > > +				      &fb_modeset);
-> > > +	igt_assert(fb_modeset_id);
-> > > +	igt_plane_set_fb(primary, &fb_modeset);
-> > >
-> > > -		fb_modeset_id =3D igt_create_fb(data->drm_fd,
-> > > -					      mode->hdisplay,
-> > > -					      mode->vdisplay,
-> > > -					      DRM_FORMAT_XRGB8888,
-> > > -					      DRM_FORMAT_MOD_NONE,
-> > > -					      &fb_modeset);
-> > > -		igt_assert(fb_modeset_id);
-> > > -		igt_plane_set_fb(primary, &fb_modeset);
-> > > -
-> > > -		/*
-> > > -		 * Don't program LUT's for max CTM cases, as limitation of
-> > > -		 * representing intermediate values between 0 and 1.0 causes
-> > > -		 * rounding issues and inaccuracies leading to crc mismatch.
-> > > -		 */
-> > > -		if (memcmp(before, after, sizeof(color_t))) {
-> > > -			set_degamma(data, primary->pipe, degamma_linear);
-> > > -			set_gamma(data, primary->pipe, gamma_linear);
-> > > -		} else {
-> > > -			/* Disable Degamma and Gamma for ctm max test */
-> > > -			disable_degamma(primary->pipe);
-> > > -			disable_gamma(primary->pipe);
-> > > -		}
-> > > -
-> > > -		disable_ctm(primary->pipe);
-> > > -		igt_display_commit(&data->display);
-> > > -
-> > > -		paint_rectangles(data, mode, after, &fb);
-> > > -		igt_plane_set_fb(primary, &fb);
-> > > -		set_ctm(primary->pipe, ctm_identity);
-> > > -		igt_display_commit(&data->display);
-> > > -		igt_wait_for_vblank(data->drm_fd,
-> > > -				display->pipes[primary->pipe->pipe].crtc_offset);
-> > > -		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_software);
-> > > -
-> > > -		/* With CTM transformation. */
-> > > -		paint_rectangles(data, mode, before, &fb);
-> > > -		igt_plane_set_fb(primary, &fb);
-> > > -		set_ctm(primary->pipe, ctm_matrix);
-> > > -		igt_display_commit(&data->display);
-> > > -		igt_wait_for_vblank(data->drm_fd,
-> > > -				display->pipes[primary->pipe->pipe].crtc_offset);
-> > > -		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_hardware);
-> > > -
-> > > -		/* Verify that the CRC of the software computed output is
-> > > -		 * equal to the CRC of the CTM matrix transformation output.
-> > > -		 */
-> > > -		ret &=3D !igt_skip_crc_compare || igt_check_crc_equal(&crc_softwar=
-e,
-> > > &crc_hardware);
-> > > -
-> > > -		igt_plane_set_fb(primary, NULL);
-> > > -		igt_output_set_pipe(output, PIPE_NONE);
-> > > -		igt_remove_fb(data->drm_fd, &fb);
-> > > -		igt_remove_fb(data->drm_fd, &fb_modeset);
-> > > +	/*
-> > > +	 * Don't program LUT's for max CTM cases, as limitation of
-> > > +	 * representing intermediate values between 0 and 1.0 causes
-> > > +	 * rounding issues and inaccuracies leading to crc mismatch.
-> > > +	 */
-> > > +	if (memcmp(before, after, sizeof(color_t))) {
-> > > +		set_degamma(data, primary->pipe, degamma_linear);
-> > > +		set_gamma(data, primary->pipe, gamma_linear);
-> > > +	} else {
-> > > +		/* Disable Degamma and Gamma for ctm max test */
-> > > +		disable_degamma(primary->pipe);
-> > > +		disable_gamma(primary->pipe);
-> > >  	}
-> > >
-> > > +	disable_ctm(primary->pipe);
-> > > +	igt_display_commit(&data->display);
-> > > +
-> > > +	paint_rectangles(data, mode, after, &fb);
-> > > +	igt_plane_set_fb(primary, &fb);
-> > > +	set_ctm(primary->pipe, ctm_identity);
-> > > +	igt_display_commit(&data->display);
-> > > +	igt_wait_for_vblank(data->drm_fd,
-> > > +			    display->pipes[primary->pipe->pipe].crtc_offset);
-> > > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_software);
-> > > +
-> > > +	/* With CTM transformation. */
-> > > +	paint_rectangles(data, mode, before, &fb);
-> > > +	igt_plane_set_fb(primary, &fb);
-> > > +	set_ctm(primary->pipe, ctm_matrix);
-> > > +	igt_display_commit(&data->display);
-> > > +	igt_wait_for_vblank(data->drm_fd,
-> > > +			    display->pipes[primary->pipe->pipe].crtc_offset);
-> > > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_hardware);
-> > > +
-> > > +	/* Verify that the CRC of the software computed output is
-> > > +	 * equal to the CRC of the CTM matrix transformation output.
-> > > +	 */
-> > > +	ret &=3D !igt_skip_crc_compare || igt_check_crc_equal(&crc_software=
-,
-> > > &crc_hardware);
-> > > +
-> > > +	igt_plane_set_fb(primary, NULL);
-> > > +	igt_output_set_pipe(output, PIPE_NONE);
-> > > +	igt_remove_fb(data->drm_fd, &fb);
-> > > +	igt_remove_fb(data->drm_fd, &fb_modeset);
-> > > +
-> > >  	free_lut(degamma_linear);
-> > >  	free_lut(gamma_linear);
-> > >
-> > > --
-> > > 2.31.1
-> >
->=20
-> --
-> Ville Syrj=E4l=E4
-> Intel
+PiBGcm9tOiBCIFMsIEthcnRoaWsgPGthcnRoaWsuYi5zQGludGVsLmNvbT4NCj4gU2VudDogRnJp
+ZGF5LCBTZXB0ZW1iZXIgMywgMjAyMSAxMTowMiBBTQ0KPiBUbzogTW9kZW0sIEJoYW51cHJha2Fz
+aCA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNvbT47IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVk
+ZXNrdG9wLm9yZzsgTmF2YXJlLCBNYW5hc2kgRCA8bWFuYXNpLmQubmF2YXJlQGludGVsLmNvbT4N
+Cj4gQ2M6IE1hcmsgWWFjb3ViIDxtYXJreWFjb3ViQGNocm9taXVtLm9yZz47IExhdHZhbGEsIFBl
+dHJpDQo+IDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT47IFNyaW5pdmFzLCBWaWR5YSA8dmlkeWEu
+c3Jpbml2YXNAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIGktZy10IHYyXSB0ZXN0
+cy9rbXM6IE1vdmUgSW50ZWwgc3BlY2lmaWMga21zIHRlc3RzIHRvIGk5MTUNCj4gZGlyZWN0b3J5
+DQo+IA0KPiBPbiA4LzExLzIwMjEgMTI6MzIgUE0sIEJoYW51cHJha2FzaCBNb2RlbSB3cm90ZToN
+Cj4gPiBBcyBLTVMgdGVzdHMgb24gSUdUIGFyZSBvZmZpY2lhbGx5IHN1cHBvcnRlZCBvbiBtdWx0
+aXBsZSBTb0NzDQo+ID4gYW5kIHRoZXJlIGlzIGFuIGFjdGl2ZSBkZXZlbG9wbWVudCBvbiBpdC4g
+U28sIEtNUyB0ZXN0cyBhcmUNCj4gPiBtZWFudCB0byBiZSBnZW5lcmljIGFuZCBpZiB3ZSBuZWVk
+IHRvIHRlc3QgZmV3IHRoaW5ncyBzcGVjaWZpYw0KPiA+IHRvIEludGVsLCBzbyB3ZSBjYW4gdXNl
+IGlndF9yZXF1aXJlX2ludGVsKCkuIEJ1dCBpZiB0aGUgd2hvbGUNCj4gPiB0ZXN0IGlzIEludGVs
+IHNwZWNpZmljLCB0aGVuIHRoZSBiZXN0IHBsYWNlIGZvciB0aGUgdGVzdCB3b3VsZA0KPiA+IGJl
+IHRlc3RzL2k5MTUuDQo+ID4NCj4gPiBUaGlzIHBhdGNoIHdpbGwgbW92ZSBhbGwgSW50ZWwgc3Bl
+Y2lmaWMga21zIHRlc3RzIHRvIHRlc3RzL2k5MTUNCj4gPiBkaXJlY3RvcnkuIEFuZCB1cGRhdGUg
+dGhlIHRlc3RzIHRob3NlIGFyZSBnZW5lcmljIGJ1dCBzdGlsbCBvcGVuDQo+ID4gdGhlIGRyaXZl
+ciBhcyAnZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfSU5URUwpOycuIFRoaXMgcGF0Y2gN
+Cj4gPiB3aWxsIGFsc28gZG8gc29tZSBtaW5vciBjbGVhbnVwcy4NCj4gPg0KPiA+IFYyOg0KPiA+
+ICogRmV3IG1vcmUgdGVzdHMNCj4gPg0KPiA+IENjOiBNYXJrIFlhY291YiA8bWFya3lhY291YkBj
+aHJvbWl1bS5vcmc+DQo+ID4gQ2M6IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwu
+Y29tPg0KPiA+IENjOiBWaWR5YSBTcmluaXZhcyA8dmlkeWEuc3Jpbml2YXNAaW50ZWwuY29tPg0K
+PiA+IENjOiBLYXJ0aGlrIEIgUyA8a2FydGhpay5iLnNAaW50ZWwuY29tPg0KPiA+IFNpZ25lZC1v
+ZmYtYnk6IEJoYW51cHJha2FzaCBNb2RlbSA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNvbT4N
+Cj4gPiAtLS0NCj4gPiAgIHRlc3RzL3sgPT4gaTkxNX0va21zX2JpZ19mYi5jICAgICAgICAgICAg
+ICAgfCAgMA0KPiA+ICAgdGVzdHMveyA9PiBpOTE1fS9rbXNfYnVzeS5jICAgICAgICAgICAgICAg
+ICB8ICAwDQo+ID4gICB0ZXN0cy97ID0+IGk5MTV9L2ttc19jY3MuYyAgICAgICAgICAgICAgICAg
+IHwgIDANCj4gPiAgIHRlc3RzL3sgPT4gaTkxNX0va21zX2NkY2xrLmMgICAgICAgICAgICAgICAg
+fCAgMA0KPiA+ICAgdGVzdHMveyA9PiBpOTE1fS9rbXNfZHJhd19jcmMuYyAgICAgICAgICAgICB8
+ICAwDQo+ID4gICB0ZXN0cy97ID0+IGk5MTV9L2ttc19kc2MuYyAgICAgICAgICAgICAgICAgIHwg
+MTUgKysrKy0tLS0tDQo+ID4gICB0ZXN0cy97ID0+IGk5MTV9L2ttc19mYmNvbl9mYnQuYyAgICAg
+ICAgICAgIHwgIDANCj4gPiAgIHRlc3RzL3sgPT4gaTkxNX0va21zX2ZlbmNlX3Bpbl9sZWFrLmMg
+ICAgICAgfCAgMA0KPiA+ICAgdGVzdHMveyA9PiBpOTE1fS9rbXNfZmxpcF9zY2FsZWRfY3JjLmMg
+ICAgICB8ICAwDQo+ID4gICB0ZXN0cy97ID0+IGk5MTV9L2ttc19mbGlwX3RpbGluZy5jICAgICAg
+ICAgIHwgIDANCj4gPiAgIHRlc3RzL3sgPT4gaTkxNX0va21zX2Zyb250YnVmZmVyX3RyYWNraW5n
+LmMgfCAgMA0KPiA+ICAgdGVzdHMveyA9PiBpOTE1fS9rbXNfaW52YWxpZF9kb3RjbG9jay5jICAg
+ICB8ICAwDQo+ID4gICB0ZXN0cy97ID0+IGk5MTV9L2ttc19sZWdhY3lfY29sb3JrZXkuYyAgICAg
+IHwgIDANCj4gPiAgIHRlc3RzL3sgPT4gaTkxNX0va21zX3BpcGVfYl9jX2l2Yi5jICAgICAgICAg
+fCAgMA0KPiA+ICAgdGVzdHMveyA9PiBpOTE1fS9rbXNfcHNyLmMgICAgICAgICAgICAgICAgICB8
+ICAwDQo+ID4gICB0ZXN0cy97ID0+IGk5MTV9L2ttc19wc3IyX3NmLmMgICAgICAgICAgICAgIHwg
+IDANCj4gPiAgIHRlc3RzL3sgPT4gaTkxNX0va21zX3BzcjJfc3UuYyAgICAgICAgICAgICAgfCAg
+MA0KPiA+ICAgdGVzdHMva21zXzNkLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA1
+ICstLQ0KPiA+ICAgdGVzdHMva21zX2JpZ19qb2luZXIuYyAgICAgICAgICAgICAgICAgICAgICB8
+ICAyICstDQo+ID4gICB0ZXN0cy9rbXNfY3Vyc29yX2VkZ2Vfd2Fsay5jICAgICAgICAgICAgICAg
+IHwgIDkgKysrLS0tDQo+ID4gICB0ZXN0cy9rbXNfZmxpcC5jICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIHwgIDEgKw0KPiA+ICAgdGVzdHMva21zX2ZsaXBfZXZlbnRfbGVhay5jICAgICAgICAg
+ICAgICAgICB8ICAyICstDQo+ID4gICB0ZXN0cy9rbXNfZm9yY2VfY29ubmVjdG9yX2Jhc2ljLmMg
+ICAgICAgICAgIHwgIDQgKy0tDQo+ID4gICB0ZXN0cy9rbXNfaGRtaV9pbmplY3QuYyAgICAgICAg
+ICAgICAgICAgICAgIHwgMTQgKysrKystLS0tDQo+ID4gICB0ZXN0cy9rbXNfbW1hcF93cml0ZV9j
+cmMuYyAgICAgICAgICAgICAgICAgIHwgIDggKystLS0NCj4gPiAgIHRlc3RzL2ttc19wd3JpdGVf
+Y3JjLmMgICAgICAgICAgICAgICAgICAgICAgfCAgOCArKy0tLQ0KPiA+ICAgdGVzdHMva21zX3R2
+X2xvYWRfZGV0ZWN0LmMgICAgICAgICAgICAgICAgICB8ICAyICstDQo+ID4gICB0ZXN0cy9rbXNf
+dW5pdmVyc2FsX3BsYW5lLmMgICAgICAgICAgICAgICAgIHwgMTAgKysrKy0tDQo+ID4gICB0ZXN0
+cy9tZXNvbi5idWlsZCAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgMzQgKysrKysrKysrKy0t
+LS0tLS0tLS0tDQo+ID4gICAyOSBmaWxlcyBjaGFuZ2VkLCA1OCBpbnNlcnRpb25zKCspLCA1NiBk
+ZWxldGlvbnMoLSkNCj4gPiAgIHJlbmFtZSB0ZXN0cy97ID0+IGk5MTV9L2ttc19iaWdfZmIuYyAo
+MTAwJSkNCj4gPiAgIHJlbmFtZSB0ZXN0cy97ID0+IGk5MTV9L2ttc19idXN5LmMgKDEwMCUpDQo+
+ID4gICByZW5hbWUgdGVzdHMveyA9PiBpOTE1fS9rbXNfY2NzLmMgKDEwMCUpDQo+ID4gICByZW5h
+bWUgdGVzdHMveyA9PiBpOTE1fS9rbXNfY2RjbGsuYyAoMTAwJSkNCj4gPiAgIHJlbmFtZSB0ZXN0
+cy97ID0+IGk5MTV9L2ttc19kcmF3X2NyYy5jICgxMDAlKQ0KPiA+ICAgcmVuYW1lIHRlc3RzL3sg
+PT4gaTkxNX0va21zX2RzYy5jICg5NSUpDQo+ID4gICByZW5hbWUgdGVzdHMveyA9PiBpOTE1fS9r
+bXNfZmJjb25fZmJ0LmMgKDEwMCUpDQo+ID4gICByZW5hbWUgdGVzdHMveyA9PiBpOTE1fS9rbXNf
+ZmVuY2VfcGluX2xlYWsuYyAoMTAwJSkNCj4gPiAgIHJlbmFtZSB0ZXN0cy97ID0+IGk5MTV9L2tt
+c19mbGlwX3NjYWxlZF9jcmMuYyAoMTAwJSkNCj4gPiAgIHJlbmFtZSB0ZXN0cy97ID0+IGk5MTV9
+L2ttc19mbGlwX3RpbGluZy5jICgxMDAlKQ0KPiA+ICAgcmVuYW1lIHRlc3RzL3sgPT4gaTkxNX0v
+a21zX2Zyb250YnVmZmVyX3RyYWNraW5nLmMgKDEwMCUpDQo+ID4gICByZW5hbWUgdGVzdHMveyA9
+PiBpOTE1fS9rbXNfaW52YWxpZF9kb3RjbG9jay5jICgxMDAlKQ0KPiA+ICAgcmVuYW1lIHRlc3Rz
+L3sgPT4gaTkxNX0va21zX2xlZ2FjeV9jb2xvcmtleS5jICgxMDAlKQ0KPiA+ICAgcmVuYW1lIHRl
+c3RzL3sgPT4gaTkxNX0va21zX3BpcGVfYl9jX2l2Yi5jICgxMDAlKQ0KPiA+ICAgcmVuYW1lIHRl
+c3RzL3sgPT4gaTkxNX0va21zX3Bzci5jICgxMDAlKQ0KPiA+ICAgcmVuYW1lIHRlc3RzL3sgPT4g
+aTkxNX0va21zX3BzcjJfc2YuYyAoMTAwJSkNCj4gPiAgIHJlbmFtZSB0ZXN0cy97ID0+IGk5MTV9
+L2ttc19wc3IyX3N1LmMgKDEwMCUpDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2Jp
+Z19mYi5jIGIvdGVzdHMvaTkxNS9rbXNfYmlnX2ZiLmMNCj4gPiBzaW1pbGFyaXR5IGluZGV4IDEw
+MCUNCj4gPiByZW5hbWUgZnJvbSB0ZXN0cy9rbXNfYmlnX2ZiLmMNCj4gPiByZW5hbWUgdG8gdGVz
+dHMvaTkxNS9rbXNfYmlnX2ZiLmMNCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2J1c3kuYyBi
+L3Rlc3RzL2k5MTUva21zX2J1c3kuYw0KPiA+IHNpbWlsYXJpdHkgaW5kZXggMTAwJQ0KPiA+IHJl
+bmFtZSBmcm9tIHRlc3RzL2ttc19idXN5LmMNCj4gPiByZW5hbWUgdG8gdGVzdHMvaTkxNS9rbXNf
+YnVzeS5jDQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19jY3MuYyBiL3Rlc3RzL2k5MTUva21z
+X2Njcy5jDQo+ID4gc2ltaWxhcml0eSBpbmRleCAxMDAlDQo+ID4gcmVuYW1lIGZyb20gdGVzdHMv
+a21zX2Njcy5jDQo+ID4gcmVuYW1lIHRvIHRlc3RzL2k5MTUva21zX2Njcy5jDQo+ID4gZGlmZiAt
+LWdpdCBhL3Rlc3RzL2ttc19jZGNsay5jIGIvdGVzdHMvaTkxNS9rbXNfY2RjbGsuYw0KPiA+IHNp
+bWlsYXJpdHkgaW5kZXggMTAwJQ0KPiA+IHJlbmFtZSBmcm9tIHRlc3RzL2ttc19jZGNsay5jDQo+
+ID4gcmVuYW1lIHRvIHRlc3RzL2k5MTUva21zX2NkY2xrLmMNCj4gPiBkaWZmIC0tZ2l0IGEvdGVz
+dHMva21zX2RyYXdfY3JjLmMgYi90ZXN0cy9pOTE1L2ttc19kcmF3X2NyYy5jDQo+ID4gc2ltaWxh
+cml0eSBpbmRleCAxMDAlDQo+ID4gcmVuYW1lIGZyb20gdGVzdHMva21zX2RyYXdfY3JjLmMNCj4g
+PiByZW5hbWUgdG8gdGVzdHMvaTkxNS9rbXNfZHJhd19jcmMuYw0KPiA+IGRpZmYgLS1naXQgYS90
+ZXN0cy9rbXNfZHNjLmMgYi90ZXN0cy9pOTE1L2ttc19kc2MuYw0KPiA+IHNpbWlsYXJpdHkgaW5k
+ZXggOTUlDQo+ID4gcmVuYW1lIGZyb20gdGVzdHMva21zX2RzYy5jDQo+ID4gcmVuYW1lIHRvIHRl
+c3RzL2k5MTUva21zX2RzYy5jDQo+ID4gaW5kZXggYjU2ZTAxODM3Li4zZTQ1MDIwN2YgMTAwNjQ0
+DQo+ID4gLS0tIGEvdGVzdHMva21zX2RzYy5jDQo+ID4gKysrIGIvdGVzdHMvaTkxNS9rbXNfZHNj
+LmMNCj4gPiBAQCAtMjQ0LDE0ICsyNDQsMTIgQEAgc3RhdGljIHZvaWQgcnVuX3Rlc3QoZGF0YV90
+ICpkYXRhLCBlbnVtIGRzY190ZXN0X3R5cGUNCj4gdGVzdF90eXBlKQ0KPiA+ICAgCQkJICAgICAg
+JmRhdGEtPmZiX3Rlc3RfcGF0dGVybik7DQo+ID4NCj4gPiAgIAlmb3JfZWFjaF9waXBlKCZkYXRh
+LT5kaXNwbGF5LCBwaXBlKSB7DQo+ID4gLQkJaWYgKGlzX2k5MTVfZGV2aWNlKGRhdGEtPmRybV9m
+ZCkpIHsNCj4gPiAtCQkJdWludDMyX3QgZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2RldmlkKGRhdGEt
+PmRybV9mZCk7DQo+ID4gKwkJdWludDMyX3QgZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2RldmlkKGRh
+dGEtPmRybV9mZCk7DQo+ID4NCj4gPiAtCQkJaWYgKGRhdGEtPm91dHB1dC0+Y29uZmlnLmNvbm5l
+Y3Rvci0+Y29ubmVjdG9yX3R5cGUgPT0NCj4gRFJNX01PREVfQ09OTkVDVE9SX0Rpc3BsYXlQb3J0
+ICYmDQo+ID4gLQkJCSAgICBwaXBlID09IFBJUEVfQSAmJiBJU19HRU4xMShkZXZpZCkpIHsNCj4g
+PiAtCQkJCWlndF9kZWJ1ZygiRFNDIG5vdCBzdXBwb3J0ZWQgb24gUGlwZSBBIG9uIGV4dGVybmFs
+IERQIGluDQo+IEdlbjExIHBsYXRmb3Jtc1xuIik7DQo+ID4gLQkJCQljb250aW51ZTsNCj4gPiAt
+CQkJfQ0KPiA+ICsJCWlmIChkYXRhLT5vdXRwdXQtPmNvbmZpZy5jb25uZWN0b3ItPmNvbm5lY3Rv
+cl90eXBlID09DQo+IERSTV9NT0RFX0NPTk5FQ1RPUl9EaXNwbGF5UG9ydCAmJg0KPiA+ICsJCSAg
+ICBwaXBlID09IFBJUEVfQSAmJiBJU19HRU4xMShkZXZpZCkpIHsNCj4gPiArCQkJaWd0X2RlYnVn
+KCJEU0Mgbm90IHN1cHBvcnRlZCBvbiBQaXBlIEEgb24gZXh0ZXJuYWwgRFAgaW4NCj4gR2VuMTEg
+cGxhdGZvcm1zXG4iKTsNCj4gPiArCQkJY29udGludWU7DQo+ID4gICAJCX0NCj4gPg0KPiA+ICAg
+CQlzbnByaW50Zih0ZXN0X25hbWUsIHNpemVvZih0ZXN0X25hbWUpLCAiLSVkYnBwIiwgZGF0YS0N
+Cj4gPmNvbXByZXNzaW9uX2JwcCk7DQo+ID4gQEAgLTI3OSw4ICsyNzcsNyBAQCBpZ3RfbWFpbg0K
+PiA+ICAgCWRybU1vZGVDb25uZWN0b3IgKmNvbm5lY3RvciA9IE5VTEw7DQo+ID4gICAJaW50IGks
+IGo7DQo+ID4gICAJaWd0X2ZpeHR1cmUgew0KPiA+IC0JCWRhdGEuZHJtX2ZkID0gZHJtX29wZW5f
+ZHJpdmVyX21hc3RlcihEUklWRVJfQU5ZKTsNCj4gPiAtCQlpZ3RfcmVxdWlyZV9pbnRlbChkYXRh
+LmRybV9mZCk7DQo+ID4gKwkJZGF0YS5kcm1fZmQgPSBkcm1fb3Blbl9kcml2ZXJfbWFzdGVyKERS
+SVZFUl9JTlRFTCk7DQo+ID4gICAJCWRhdGEuZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2RldmlkKGRh
+dGEuZHJtX2ZkKTsNCj4gPiAgIAkJa21zdGVzdF9zZXRfdnRfZ3JhcGhpY3NfbW9kZSgpOw0KPiA+
+ICAgCQlpZ3RfaW5zdGFsbF9leGl0X2hhbmRsZXIoa21zX2RzY19leGl0X2hhbmRsZXIpOw0KPiA+
+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfZmJjb25fZmJ0LmMgYi90ZXN0cy9pOTE1L2ttc19mYmNv
+bl9mYnQuYw0KPiA+IHNpbWlsYXJpdHkgaW5kZXggMTAwJQ0KPiA+IHJlbmFtZSBmcm9tIHRlc3Rz
+L2ttc19mYmNvbl9mYnQuYw0KPiA+IHJlbmFtZSB0byB0ZXN0cy9pOTE1L2ttc19mYmNvbl9mYnQu
+Yw0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfZmVuY2VfcGluX2xlYWsuYyBiL3Rlc3RzL2k5
+MTUva21zX2ZlbmNlX3Bpbl9sZWFrLmMNCj4gPiBzaW1pbGFyaXR5IGluZGV4IDEwMCUNCj4gPiBy
+ZW5hbWUgZnJvbSB0ZXN0cy9rbXNfZmVuY2VfcGluX2xlYWsuYw0KPiA+IHJlbmFtZSB0byB0ZXN0
+cy9pOTE1L2ttc19mZW5jZV9waW5fbGVhay5jDQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19m
+bGlwX3NjYWxlZF9jcmMuYyBiL3Rlc3RzL2k5MTUva21zX2ZsaXBfc2NhbGVkX2NyYy5jDQo+ID4g
+c2ltaWxhcml0eSBpbmRleCAxMDAlDQo+ID4gcmVuYW1lIGZyb20gdGVzdHMva21zX2ZsaXBfc2Nh
+bGVkX2NyYy5jDQo+ID4gcmVuYW1lIHRvIHRlc3RzL2k5MTUva21zX2ZsaXBfc2NhbGVkX2NyYy5j
+DQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19mbGlwX3RpbGluZy5jIGIvdGVzdHMvaTkxNS9r
+bXNfZmxpcF90aWxpbmcuYw0KPiA+IHNpbWlsYXJpdHkgaW5kZXggMTAwJQ0KPiA+IHJlbmFtZSBm
+cm9tIHRlc3RzL2ttc19mbGlwX3RpbGluZy5jDQo+ID4gcmVuYW1lIHRvIHRlc3RzL2k5MTUva21z
+X2ZsaXBfdGlsaW5nLmMNCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2Zyb250YnVmZmVyX3Ry
+YWNraW5nLmMNCj4gYi90ZXN0cy9pOTE1L2ttc19mcm9udGJ1ZmZlcl90cmFja2luZy5jDQo+ID4g
+c2ltaWxhcml0eSBpbmRleCAxMDAlDQo+ID4gcmVuYW1lIGZyb20gdGVzdHMva21zX2Zyb250YnVm
+ZmVyX3RyYWNraW5nLmMNCj4gPiByZW5hbWUgdG8gdGVzdHMvaTkxNS9rbXNfZnJvbnRidWZmZXJf
+dHJhY2tpbmcuYw0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfaW52YWxpZF9kb3RjbG9jay5j
+DQo+IGIvdGVzdHMvaTkxNS9rbXNfaW52YWxpZF9kb3RjbG9jay5jDQo+ID4gc2ltaWxhcml0eSBp
+bmRleCAxMDAlDQo+ID4gcmVuYW1lIGZyb20gdGVzdHMva21zX2ludmFsaWRfZG90Y2xvY2suYw0K
+PiA+IHJlbmFtZSB0byB0ZXN0cy9pOTE1L2ttc19pbnZhbGlkX2RvdGNsb2NrLmMNCj4gPiBkaWZm
+IC0tZ2l0IGEvdGVzdHMva21zX2xlZ2FjeV9jb2xvcmtleS5jIGIvdGVzdHMvaTkxNS9rbXNfbGVn
+YWN5X2NvbG9ya2V5LmMNCj4gPiBzaW1pbGFyaXR5IGluZGV4IDEwMCUNCj4gPiByZW5hbWUgZnJv
+bSB0ZXN0cy9rbXNfbGVnYWN5X2NvbG9ya2V5LmMNCj4gPiByZW5hbWUgdG8gdGVzdHMvaTkxNS9r
+bXNfbGVnYWN5X2NvbG9ya2V5LmMNCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX3BpcGVfYl9j
+X2l2Yi5jIGIvdGVzdHMvaTkxNS9rbXNfcGlwZV9iX2NfaXZiLmMNCj4gPiBzaW1pbGFyaXR5IGlu
+ZGV4IDEwMCUNCj4gPiByZW5hbWUgZnJvbSB0ZXN0cy9rbXNfcGlwZV9iX2NfaXZiLmMNCj4gPiBy
+ZW5hbWUgdG8gdGVzdHMvaTkxNS9rbXNfcGlwZV9iX2NfaXZiLmMNCj4gPiBkaWZmIC0tZ2l0IGEv
+dGVzdHMva21zX3Bzci5jIGIvdGVzdHMvaTkxNS9rbXNfcHNyLmMNCj4gPiBzaW1pbGFyaXR5IGlu
+ZGV4IDEwMCUNCj4gPiByZW5hbWUgZnJvbSB0ZXN0cy9rbXNfcHNyLmMNCj4gPiByZW5hbWUgdG8g
+dGVzdHMvaTkxNS9rbXNfcHNyLmMNCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX3BzcjJfc2Yu
+YyBiL3Rlc3RzL2k5MTUva21zX3BzcjJfc2YuYw0KPiA+IHNpbWlsYXJpdHkgaW5kZXggMTAwJQ0K
+PiA+IHJlbmFtZSBmcm9tIHRlc3RzL2ttc19wc3IyX3NmLmMNCj4gPiByZW5hbWUgdG8gdGVzdHMv
+aTkxNS9rbXNfcHNyMl9zZi5jDQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19wc3IyX3N1LmMg
+Yi90ZXN0cy9pOTE1L2ttc19wc3IyX3N1LmMNCj4gPiBzaW1pbGFyaXR5IGluZGV4IDEwMCUNCj4g
+PiByZW5hbWUgZnJvbSB0ZXN0cy9rbXNfcHNyMl9zdS5jDQo+ID4gcmVuYW1lIHRvIHRlc3RzL2k5
+MTUva21zX3BzcjJfc3UuYw0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfM2QuYyBiL3Rlc3Rz
+L2ttc18zZC5jDQo+ID4gaW5kZXggMmU0MzhiNDMwLi5jMjlkMWQ1N2MgMTAwNjQ0DQo+ID4gLS0t
+IGEvdGVzdHMva21zXzNkLmMNCj4gPiArKysgYi90ZXN0cy9rbXNfM2QuYw0KPiA+IEBAIC0zNCw3
+ICszNCw3IEBAIGlndF9zaW1wbGVfbWFpbg0KPiA+ICAgCWNvbnN0IHN0cnVjdCBlZGlkICplZGlk
+Ow0KPiA+ICAgCWludCBtb2RlX2NvdW50LCBjb25uZWN0b3JfaWQ7DQo+ID4NCj4gPiAtCWRybV9m
+ZCA9IGRybV9vcGVuX2RyaXZlcl9tYXN0ZXIoRFJJVkVSX0lOVEVMKTsNCj4gPiArCWRybV9mZCA9
+IGRybV9vcGVuX2RyaXZlcl9tYXN0ZXIoRFJJVkVSX0FOWSk7DQo+ID4NCj4gPiAgIAlyZXMgPSBk
+cm1Nb2RlR2V0UmVzb3VyY2VzKGRybV9mZCk7DQo+ID4gICAJaWd0X3JlcXVpcmUocmVzKTsNCj4g
+PiBAQCAtNDQsNyArNDQsOCBAQCBpZ3Rfc2ltcGxlX21haW4NCj4gPiAgIAkvKiBmaW5kIGFuIGhk
+bWkgY29ubmVjdG9yICovDQo+ID4gICAJZm9yIChpbnQgaSA9IDA7IGkgPCByZXMtPmNvdW50X2Nv
+bm5lY3RvcnM7IGkrKykgew0KPiA+ICAgCQljb25uZWN0b3IgPSBkcm1Nb2RlR2V0Q29ubmVjdG9y
+Q3VycmVudChkcm1fZmQsIHJlcy0+Y29ubmVjdG9yc1tpXSk7DQo+ID4gLQkJaWYgKGNvbm5lY3Rv
+ci0+Y29ubmVjdG9yX3R5cGUgPT0gRFJNX01PREVfQ09OTkVDVE9SX0hETUlBKQ0KPiA+ICsJCWlm
+IChjb25uZWN0b3ItPmNvbm5lY3Rvcl90eXBlID09IERSTV9NT0RFX0NPTk5FQ1RPUl9IRE1JQSB8
+fA0KPiA+ICsJCSAgICBjb25uZWN0b3ItPmNvbm5lY3Rvcl90eXBlID09IERSTV9NT0RFX0NPTk5F
+Q1RPUl9IRE1JQikNCj4gDQo+IEhpLA0KPiANCj4gUGxlYXNlIG1vdmUgdGhlIGNsZWFuIHVwIHBh
+cnRzIHRvIGFuIGluZGl2aWR1YWwgcGF0Y2guDQogDQpTdXJlLCBJJ2xsIHN1Ym1pdCBhIG5ldyBw
+YXRjaCBmb3IgY2xlYW4tdXBzLg0KDQo+IA0KPiA+ICAgCQkJYnJlYWs7DQo+ID4gICAJCWRybU1v
+ZGVGcmVlQ29ubmVjdG9yKGNvbm5lY3Rvcik7DQo+ID4gICAJCWNvbm5lY3RvciA9IE5VTEw7DQo+
+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19iaWdfam9pbmVyLmMgYi90ZXN0cy9rbXNfYmlnX2pv
+aW5lci5jDQo+ID4gaW5kZXggNGYxZjMxNTJlLi40NWM1YjJhMmEgMTAwNjQ0DQo+ID4gLS0tIGEv
+dGVzdHMva21zX2JpZ19qb2luZXIuYw0KPiA+ICsrKyBiL3Rlc3RzL2ttc19iaWdfam9pbmVyLmMN
+Cj4gPiBAQCAtMjU4LDcgKzI1OCw3IEBAIGlndF9tYWluDQo+ID4gICAJdWludDE2X3Qgd2lkdGgg
+PSAwLCBoZWlnaHQgPSAwOw0KPiA+DQo+ID4gICAJaWd0X2ZpeHR1cmUgew0KPiA+IC0JCWRhdGEu
+ZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfSU5URUwpOw0KPiA+ICsJCWRh
+dGEuZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfQU5ZKTsNCj4gDQo+IEkn
+bSBub3Qgc3VyZSBpZiB0aGlzIHRlc3QgaXMgdmFsaWQgZm9yIG90aGVyIGRyaXZlcnMuIENvdWxk
+IHlvdSBwbGVhc2UNCj4gY2hlY2sgdGhpcy4NCj4gDQo+IE1hbmFzaTogQ291bGQgeW91IHBsZWFz
+ZSBwcm92aWRlIHlvdXIgaW5wdXRzIGhlcmUuDQogDQpDb2RlIHdpc2UsIEkgZG9uJ3Qgc2VlIGFu
+eXRoaW5nIEludGVsIHNwZWNpZmljLCBzbyBJIGtlcHQgdGhpcyB0ZXN0IGFzIGENCmdlbmVyaWMu
+DQoNCj4gDQo+ID4gICAJCWttc3Rlc3Rfc2V0X3Z0X2dyYXBoaWNzX21vZGUoKTsNCj4gPg0KPiA+
+ICAgCQlpZ3RfZGlzcGxheV9yZXF1aXJlKCZkYXRhLmRpc3BsYXksIGRhdGEuZHJtX2ZkKTsNCj4g
+PiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2N1cnNvcl9lZGdlX3dhbGsuYyBiL3Rlc3RzL2ttc19j
+dXJzb3JfZWRnZV93YWxrLmMNCj4gPiBpbmRleCBlOTkwMmY1ZTcuLjY2NzgxZWVjNiAxMDA2NDQN
+Cj4gPiAtLS0gYS90ZXN0cy9rbXNfY3Vyc29yX2VkZ2Vfd2Fsay5jDQo+ID4gKysrIGIvdGVzdHMv
+a21zX2N1cnNvcl9lZGdlX3dhbGsuYw0KPiA+IEBAIC05NCw4ICs5NCw4IEBAIHN0YXRpYyB2b2lk
+IGN1cnNvcl9tb3ZlKGRhdGFfdCAqZGF0YSwgaW50IHgsIGludCB5LCBpbnQgaSkNCj4gPiAgIAkg
+KiBmYWlscykuIFNvIGxldCdzIGFjY2VwdCBhIGZhaWx1cmUgZnJvbSB0aGUgaW9jdGwgaW4gdGhh
+dCBjYXNlLg0KPiA+ICAgCSAqLw0KPiA+ICAgCWlndF9hc3NlcnQoZHJtTW9kZU1vdmVDdXJzb3Io
+ZGF0YS0+ZHJtX2ZkLCBjcnRjX2lkLCB4LCB5KSA9PSAwIHx8DQo+ID4gLQkJICAgKElTX0NIRVJS
+WVZJRVcoZGF0YS0+ZGV2aWQpICYmIGRhdGEtPnBpcGUgPT0gUElQRV9DICYmDQo+ID4gLQkJICAg
+IHggPCAwICYmIHggPiAtZGF0YS0+Y3VydykpOw0KPiA+ICsJCSAgIChkYXRhLT5kZXZpZCAmJiBJ
+U19DSEVSUllWSUVXKGRhdGEtPmRldmlkKSAmJg0KPiBDb3VsZCB3ZSBjb21iaW5lIHRoaXMgY2hl
+Y2sgaW50byBvbmU/IG1heSBiZSBwb3B1bGF0ZSBhIGZsYWcgaW4gZml4dHVyZQ0KPiBhbmQgdXNl
+IGl0IHRocm91Z2hvdXQgdGhlIHRlc3Q/DQogDQpUaGlzIG5ld2x5IGFkZGVkIGNoZWNrIGlzIG5v
+dCByZXF1aXJlZCwgSSdsbCByZXZlcnQgdGhpcyBpbiBuZXh0IHZlcnNpb24NCg0KPiA+ICsJCSAg
+ICBkYXRhLT5waXBlID09IFBJUEVfQyAmJiB4IDwgMCAmJiB4ID4gLWRhdGEtPmN1cncpKTsNCj4g
+PiAgIAlpZ3Rfd2FpdF9mb3JfdmJsYW5rKGRhdGEtPmRybV9mZCwNCj4gPiAgIAkJCWRpc3BsYXkt
+PnBpcGVzW2RhdGEtPnBpcGVdLmNydGNfb2Zmc2V0KTsNCj4gPiAgIH0NCj4gPiBAQCAtMzEyLDkg
+KzMxMiwxMCBAQCBpZ3RfbWFpbl9hcmdzKCIiLCBsb25nX29wdHMsIGhlbHBfc3RyLCBvcHRfaGFu
+ZGxlciwNCj4gJmRhdGEpDQo+ID4gICAJaWd0X2ZpeHR1cmUgew0KPiA+ICAgCQlpbnQgcmV0Ow0K
+PiA+DQo+ID4gLQkJZGF0YS5kcm1fZmQgPSBkcm1fb3Blbl9kcml2ZXJfbWFzdGVyKERSSVZFUl9J
+TlRFTCk7DQo+ID4gKwkJZGF0YS5kcm1fZmQgPSBkcm1fb3Blbl9kcml2ZXJfbWFzdGVyKERSSVZF
+Ul9BTlkpOw0KPiA+DQo+ID4gLQkJZGF0YS5kZXZpZCA9IGludGVsX2dldF9kcm1fZGV2aWQoZGF0
+YS5kcm1fZmQpOw0KPiA+ICsJCWlmIChpc19pOTE1X2RldmljZShkYXRhLmRybV9mZCkpDQo+ID4g
+KwkJCWRhdGEuZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2RldmlkKGRhdGEuZHJtX2ZkKTsNCj4gPg0K
+PiA+ICAgCQlyZXQgPSBkcm1HZXRDYXAoZGF0YS5kcm1fZmQsIERSTV9DQVBfQ1VSU09SX1dJRFRI
+LCAmbWF4X2N1cncpOw0KPiA+ICAgCQlpZ3RfYXNzZXJ0KHJldCA9PSAwIHx8IGVycm5vID09IEVJ
+TlZBTCk7DQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19mbGlwLmMgYi90ZXN0cy9rbXNfZmxp
+cC5jDQo+ID4gaW5kZXggYjQ4MzZhNDRkLi41NDEzNzg3MTIgMTAwNzU1DQo+ID4gLS0tIGEvdGVz
+dHMva21zX2ZsaXAuYw0KPiA+ICsrKyBiL3Rlc3RzL2ttc19mbGlwLmMNCj4gPiBAQCAtNzc4LDYg
+Kzc3OCw3IEBAIHN0YXRpYyBib29sIHJ1bl90ZXN0X3N0ZXAoc3RydWN0IHRlc3Rfb3V0cHV0ICpv
+LA0KPiB1bnNpZ25lZCBpbnQgKmV2ZW50cykNCj4gPg0KPiA+ICAgCW1lbXNldCgmaGFuZywgMCwg
+c2l6ZW9mKGhhbmcpKTsNCj4gPiAgIAlpZiAoZG9fZmxpcCAmJiAoby0+ZmxhZ3MgJiBURVNUX0hB
+TkcpKSB7DQo+ID4gKwkJaWd0X3JlcXVpcmVfaW50ZWwoZHJtX2ZkKTsNCj4gRG9lc24ndCB0aGlz
+IG1ha2UgdGhlIHRlc3QgaTkxNSBzcGVjaWZpYz8gT3IgaXMgaXQgdGhhdCBvbmx5IGEgZmV3IG9m
+DQo+IHRoZSBzdWJ0ZXN0cyB1c2UgdGhpcz8NCiANCkN1cnJlbnRseSwgb25seSBIQU5HIHRlc3Rz
+IGFyZSBpOTE1IHNwZWNpZmljLg0KDQo+ID4gICAJCWFobmQgPSBnZXRfcmVsb2NfYWhuZChkcm1f
+ZmQsIDApOw0KPiA+ICAgCQloYW5nID0gaGFuZ19ncHUoZHJtX2ZkLCBhaG5kKTsNCj4gPiAgIAl9
+DQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19mbGlwX2V2ZW50X2xlYWsuYyBiL3Rlc3RzL2tt
+c19mbGlwX2V2ZW50X2xlYWsuYw0KPiA+IGluZGV4IDA5Yzg3MTkxMS4uOTdiZTkxOTA3IDEwMDY0
+NA0KPiA+IC0tLSBhL3Rlc3RzL2ttc19mbGlwX2V2ZW50X2xlYWsuYw0KPiA+ICsrKyBiL3Rlc3Rz
+L2ttc19mbGlwX2V2ZW50X2xlYWsuYw0KPiA+IEBAIC04Myw3ICs4Myw3IEBAIHN0YXRpYyB2b2lk
+IHRlc3QoZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSwNCj4gaWd0X291dHB1dF90ICpvdXRw
+dXQpDQo+ID4gICAJaWd0X2RldmljZV9zZXRfbWFzdGVyKGRhdGEtPmRybV9mZCk7DQo+ID4NCj4g
+PiAgIAlpZ3RfcGxhbmVfc2V0X2ZiKHByaW1hcnksIE5VTEwpOw0KPiA+IC0JaWd0X291dHB1dF9z
+ZXRfcGlwZShvdXRwdXQsIFBJUEVfQU5ZKTsNCj4gPiArCWlndF9vdXRwdXRfc2V0X3BpcGUob3V0
+cHV0LCBQSVBFX05PTkUpOw0KPiBQbGVhc2UgbW92ZSB0aGUgY2xlYW4gdXAgcGFydHMgdG8gYW4g
+aW5kaXZpZHVhbCBwYXRjaC4NCj4gPiAgIAlpZ3RfZGlzcGxheV9jb21taXQoJmRhdGEtPmRpc3Bs
+YXkpOw0KPiA+DQo+ID4gICAJaWd0X3JlbW92ZV9mYihkYXRhLT5kcm1fZmQsICZmYlswXSk7DQo+
+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19mb3JjZV9jb25uZWN0b3JfYmFzaWMuYw0KPiBiL3Rl
+c3RzL2ttc19mb3JjZV9jb25uZWN0b3JfYmFzaWMuYw0KPiA+IGluZGV4IDNiMDE0NmZlOS4uNjgz
+ZDM2NzIwIDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL2ttc19mb3JjZV9jb25uZWN0b3JfYmFzaWMu
+Yw0KPiA+ICsrKyBiL3Rlc3RzL2ttc19mb3JjZV9jb25uZWN0b3JfYmFzaWMuYw0KPiA+IEBAIC0z
+Nyw3ICszNyw3IEBAIHN0YXRpYyB2b2lkIHJlc2V0X2Nvbm5lY3RvcnModm9pZCkNCj4gPiAgIAlk
+cm1Nb2RlUmVzICpyZXM7DQo+ID4gICAJZHJtTW9kZUNvbm5lY3RvciAqY29ubmVjdG9yID0gTlVM
+TDsNCj4gPg0KPiA+IC0JZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfSU5U
+RUwpOw0KPiA+ICsJZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfQU5ZKTsN
+Cj4gPiAgIAlyZXMgPSBkcm1Nb2RlR2V0UmVzb3VyY2VzKGRybV9mZCk7DQo+ID4NCj4gPiAgIAlm
+b3IgKGludCBpID0gMDsgaSA8IHJlcy0+Y291bnRfY29ubmVjdG9yczsgaSsrKSB7DQo+ID4gQEAg
+LTg2LDcgKzg2LDcgQEAgaWd0X21haW5fYXJncygiIiwgbG9uZ19vcHRzLCBoZWxwX3N0ciwgb3B0
+X2hhbmRsZXIsIE5VTEwpDQo+ID4gICAJaWd0X2ZpeHR1cmUgew0KPiA+ICAgCQl1bnNpZ25lZCBj
+b25uZWN0b3JfaWQgPSAwOw0KPiA+DQo+ID4gLQkJZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVyX21h
+c3RlcihEUklWRVJfSU5URUwpOw0KPiA+ICsJCWRybV9mZCA9IGRybV9vcGVuX2RyaXZlcl9tYXN0
+ZXIoRFJJVkVSX0FOWSk7DQo+ID4NCj4gPiAgIAkJcmVzID0gZHJtTW9kZUdldFJlc291cmNlcyhk
+cm1fZmQpOw0KPiA+ICAgCQlpZ3RfcmVxdWlyZShyZXMpOw0KPiA+IGRpZmYgLS1naXQgYS90ZXN0
+cy9rbXNfaGRtaV9pbmplY3QuYyBiL3Rlc3RzL2ttc19oZG1pX2luamVjdC5jDQo+ID4gaW5kZXgg
+YWQyZGRlNTY5Li4xM2EwNWViMWUgMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMva21zX2hkbWlfaW5q
+ZWN0LmMNCj4gPiArKysgYi90ZXN0cy9rbXNfaGRtaV9pbmplY3QuYw0KPiA+IEBAIC02Myw3ICs2
+Myw4IEBAIGdldF9jb25uZWN0b3IoaW50IGRybV9mZCwgZHJtTW9kZVJlcyAqcmVzKQ0KPiA+ICAg
+CQljb25uZWN0b3IgPQ0KPiA+ICAgCQkJZHJtTW9kZUdldENvbm5lY3RvckN1cnJlbnQoZHJtX2Zk
+LCByZXMtPmNvbm5lY3RvcnNbaV0pOw0KPiA+DQo+ID4gLQkJaWYgKGNvbm5lY3Rvci0+Y29ubmVj
+dG9yX3R5cGUgPT0gRFJNX01PREVfQ09OTkVDVE9SX0hETUlBKQ0KPiA+ICsJCWlmIChjb25uZWN0
+b3ItPmNvbm5lY3Rvcl90eXBlID09IERSTV9NT0RFX0NPTk5FQ1RPUl9IRE1JQSB8fA0KPiA+ICsJ
+CSAgICBjb25uZWN0b3ItPmNvbm5lY3Rvcl90eXBlID09IERSTV9NT0RFX0NPTk5FQ1RPUl9IRE1J
+QikNCj4gU2FtZSBhcyBhYm92ZS4NCj4gPiAgIAkJCWJyZWFrOw0KPiA+DQo+ID4gICAJCWRybU1v
+ZGVGcmVlQ29ubmVjdG9yKGNvbm5lY3Rvcik7DQo+ID4gQEAgLTgyLDEyICs4MywxMyBAQCBoZG1p
+X2luamVjdF80ayhpbnQgZHJtX2ZkLCBkcm1Nb2RlQ29ubmVjdG9yICpjb25uZWN0b3IpDQo+ID4g
+ICAJaW50IGZiX2lkOw0KPiA+ICAgCXN0cnVjdCBpZ3RfZmIgZmI7DQo+ID4gICAJdWludDhfdCBm
+b3VuZF80a19tb2RlID0gMDsNCj4gPiAtCXVpbnQzMl90IGRldmlkOw0KPiA+DQo+ID4gLQlkZXZp
+ZCA9IGludGVsX2dldF9kcm1fZGV2aWQoZHJtX2ZkKTsNCj4gPiArCWlmIChpc19pOTE1X2Rldmlj
+ZShkcm1fZmQpKSB7DQo+ID4gKwkJdWludDMyX3QgZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2Rldmlk
+KGRybV9mZCk7DQo+ID4NCj4gPiAtCS8qIDRLIHJlcXVpcmVzIGF0IGxlYXN0IEhTVyAqLw0KPiA+
+IC0JaWd0X3JlcXVpcmUoSVNfSEFTV0VMTChkZXZpZCkgfHwgaW50ZWxfZGlzcGxheV92ZXIoZGV2
+aWQpID49IDgpOw0KPiA+ICsJCS8qIDRLIHJlcXVpcmVzIGF0IGxlYXN0IEhTVyAqLw0KPiA+ICsJ
+CWlndF9yZXF1aXJlKElTX0hBU1dFTEwoZGV2aWQpIHx8IGludGVsX2Rpc3BsYXlfdmVyKGRldmlk
+KSA+PSA4KTsNCj4gPiArCX0NCj4gPg0KPiA+ICAgCWVkaWQgPSBpZ3Rfa21zX2dldF80a19lZGlk
+KCk7DQo+ID4gICAJa21zdGVzdF9mb3JjZV9lZGlkKGRybV9mZCwgY29ubmVjdG9yLCBlZGlkKTsN
+Cj4gPiBAQCAtMTk1LDcgKzE5Nyw3IEBAIGlndF9tYWluDQo+ID4gICAJZHJtTW9kZUNvbm5lY3Rv
+ciAqY29ubmVjdG9yOw0KPiA+DQo+ID4gICAJaWd0X2ZpeHR1cmUgew0KPiA+IC0JCWRybV9mZCA9
+IGRybV9vcGVuX2RyaXZlcl9tYXN0ZXIoRFJJVkVSX0lOVEVMKTsNCj4gPiArCQlkcm1fZmQgPSBk
+cm1fb3Blbl9kcml2ZXJfbWFzdGVyKERSSVZFUl9BTlkpOw0KPiA+DQo+ID4gICAJCXJlcyA9IGRy
+bU1vZGVHZXRSZXNvdXJjZXMoZHJtX2ZkKTsNCj4gPiAgIAkJaWd0X3JlcXVpcmUocmVzKTsNCj4g
+PiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX21tYXBfd3JpdGVfY3JjLmMgYi90ZXN0cy9rbXNfbW1h
+cF93cml0ZV9jcmMuYw0KPiA+IGluZGV4IDJlMzIzYTIwOS4uMGM2OTdjMjQ2IDEwMDY0NA0KPiA+
+IC0tLSBhL3Rlc3RzL2ttc19tbWFwX3dyaXRlX2NyYy5jDQo+ID4gKysrIGIvdGVzdHMva21zX21t
+YXBfd3JpdGVfY3JjLmMNCj4gPiBAQCAtNTEsNyArNTEsNiBAQCB0eXBlZGVmIHN0cnVjdCB7DQo+
+ID4gICAJZW51bSBwaXBlIHBpcGU7DQo+ID4gICAJaWd0X2NyY190IHJlZl9jcmM7DQo+ID4gICAJ
+aWd0X3BpcGVfY3JjX3QgKnBpcGVfY3JjOw0KPiA+IC0JdWludDMyX3QgZGV2aWQ7DQo+ID4gICB9
+IGRhdGFfdDsNCj4gPg0KPiA+ICAgc3RhdGljIGludCBpb2N0bF9zeW5jID0gdHJ1ZTsNCj4gPiBA
+QCAtMTAzLDYgKzEwMiw3IEBAIHN0YXRpYyB2b2lkIHRlc3QoZGF0YV90ICpkYXRhKQ0KPiA+ICAg
+CWlndF9kaXNwbGF5X2NvbW1pdChkaXNwbGF5KTsNCj4gPg0KPiA+ICAgCS8qIG1ha2Ugc3VyZSBj
+YWNoaW5nIG1vZGUgaGFzIGJlY29tZSBVQy9XVCAqLw0KPiA+ICsJaWd0X3JlcXVpcmVfaW50ZWwo
+ZGF0YS0+ZHJtX2ZkKTsNCj4gRG9lc24ndCB0aGlzIG1ha2UgaXQgaTkxNSBzcGVjaWZpYz8NCg0K
+WWVzLCBJJ2xsIHRha2VjYXJlIGluIG5leHQgcmV2Lg0KDQo+ID4gICAJY2FjaGluZyA9IGdlbV9n
+ZXRfY2FjaGluZyhkYXRhLT5kcm1fZmQsIGZiLT5nZW1faGFuZGxlKTsNCj4gPiAgIAlpZ3RfYXNz
+ZXJ0KGNhY2hpbmcgPT0gSTkxNV9DQUNISU5HX05PTkUgfHwgY2FjaGluZyA9PQ0KPiBJOTE1X0NB
+Q0hJTkdfRElTUExBWSk7DQo+ID4NCj4gPiBAQCAtMjA0LDcgKzIwNCw3IEBAIHN0YXRpYyB2b2lk
+IGNsZWFudXBfY3J0YyhkYXRhX3QgKmRhdGEpDQo+ID4NCj4gPiAgIAlpZ3RfcGxhbmVfc2V0X2Zi
+KGRhdGEtPnByaW1hcnksIE5VTEwpOw0KPiA+DQo+ID4gLQlpZ3Rfb3V0cHV0X3NldF9waXBlKG91
+dHB1dCwgUElQRV9BTlkpOw0KPiA+ICsJaWd0X291dHB1dF9zZXRfcGlwZShvdXRwdXQsIFBJUEVf
+Tk9ORSk7DQo+IFBsZWFzZSBtb3ZlIHRoaXMgdG8gYW4gaW5kaXZpZHVhbCBwYXRjaC4NCj4gPiAg
+IAlpZ3RfZGlzcGxheV9jb21taXQoZGlzcGxheSk7DQo+ID4NCj4gPiAgIAlpZ3RfcmVtb3ZlX2Zi
+KGRhdGEtPmRybV9mZCwgJmRhdGEtPmZiWzBdKTsNCj4gPiBAQCAtMjcyLDkgKzI3Miw3IEBAIGln
+dF9tYWluX2FyZ3MoIm4iLCBOVUxMLCBOVUxMLCBvcHRfaGFuZGxlciwgTlVMTCkNCj4gPiAgIAlp
+bnQgaTsNCj4gPg0KPiA+ICAgCWlndF9maXh0dXJlIHsNCj4gPiAtCQlkYXRhLmRybV9mZCA9IGRy
+bV9vcGVuX2RyaXZlcl9tYXN0ZXIoRFJJVkVSX0lOVEVMKTsNCj4gPiAtDQo+ID4gLQkJZGF0YS5k
+ZXZpZCA9IGludGVsX2dldF9kcm1fZGV2aWQoZGF0YS5kcm1fZmQpOw0KPiA+ICsJCWRhdGEuZHJt
+X2ZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfQU5ZKTsNCj4gPg0KPiA+ICAgCQlr
+bXN0ZXN0X3NldF92dF9ncmFwaGljc19tb2RlKCk7DQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvdGVz
+dHMva21zX3B3cml0ZV9jcmMuYyBiL3Rlc3RzL2ttc19wd3JpdGVfY3JjLmMNCj4gPiBpbmRleCBk
+YzMyYTA3MGMuLmExNjQyZGY2ZiAxMDA2NDQNCj4gPiAtLS0gYS90ZXN0cy9rbXNfcHdyaXRlX2Ny
+Yy5jDQo+ID4gKysrIGIvdGVzdHMva21zX3B3cml0ZV9jcmMuYw0KPiA+IEBAIC00Miw3ICs0Miw2
+IEBAIHR5cGVkZWYgc3RydWN0IHsNCj4gPiAgIAllbnVtIHBpcGUgcGlwZTsNCj4gPiAgIAlpZ3Rf
+Y3JjX3QgcmVmX2NyYzsNCj4gPiAgIAlpZ3RfcGlwZV9jcmNfdCAqcGlwZV9jcmM7DQo+ID4gLQl1
+aW50MzJfdCBkZXZpZDsNCj4gPiAgIH0gZGF0YV90Ow0KPiA+DQo+ID4gICBzdGF0aWMgdm9pZCB0
+ZXN0KGRhdGFfdCAqZGF0YSkNCj4gPiBAQCAtNzcsNiArNzYsNyBAQCBzdGF0aWMgdm9pZCB0ZXN0
+KGRhdGFfdCAqZGF0YSkNCj4gPiAgIAkJCTAsIDAsIGZiLT53aWR0aCA8PCAxNiwgZmItPmhlaWdo
+dCA8PCAxNik7DQo+ID4NCj4gPiAgIAkvKiBtYWtlIHN1cmUgY2FjaGluZyBtb2RlIGhhcyBiZWNv
+bWUgVUMvV1QgKi8NCj4gPiArCWlndF9yZXF1aXJlX2ludGVsKGRhdGEtPmRybV9mZCk7DQo+IERv
+ZXNuJ3QgdGhpcyBtYWtlIGl0IGk5MTUgc3BlY2lmaWM/DQogDQpZZXMsIEknbGwgdGFrZWNhcmUg
+aW4gbmV4dCByZXYuDQoNCj4gPiAgIAljYWNoaW5nID0gZ2VtX2dldF9jYWNoaW5nKGRhdGEtPmRy
+bV9mZCwgZmItPmdlbV9oYW5kbGUpOw0KPiA+ICAgCWlndF9hc3NlcnQoY2FjaGluZyA9PSBJOTE1
+X0NBQ0hJTkdfTk9ORSB8fCBjYWNoaW5nID09DQo+IEk5MTVfQ0FDSElOR19ESVNQTEFZKTsNCj4g
+Pg0KPiA+IEBAIC0xNDEsNyArMTQxLDcgQEAgc3RhdGljIHZvaWQgY2xlYW51cF9jcnRjKGRhdGFf
+dCAqZGF0YSkNCj4gPg0KPiA+ICAgCWlndF9wbGFuZV9zZXRfZmIoZGF0YS0+cHJpbWFyeSwgTlVM
+TCk7DQo+ID4NCj4gPiAtCWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBQSVBFX0FOWSk7DQo+
+ID4gKwlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dCwgUElQRV9OT05FKTsNCj4gUGxlYXNlIG1v
+dmUgdGhpcyB0byBhbiBpbmRpdmlkdWFsIHBhdGNoLg0KPiA+ICAgCWlndF9kaXNwbGF5X2NvbW1p
+dChkaXNwbGF5KTsNCj4gPg0KPiA+ICAgCWlndF9yZW1vdmVfZmIoZGF0YS0+ZHJtX2ZkLCAmZGF0
+YS0+ZmJbMF0pOw0KPiA+IEBAIC0xNzQsOSArMTc0LDcgQEAgc3RhdGljIGRhdGFfdCBkYXRhOw0K
+PiA+DQo+ID4gICBpZ3Rfc2ltcGxlX21haW4NCj4gPiAgIHsNCj4gPiAtCWRhdGEuZHJtX2ZkID0g
+ZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfSU5URUwpOw0KPiA+IC0NCj4gPiAtCWRhdGEu
+ZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2RldmlkKGRhdGEuZHJtX2ZkKTsNCj4gPiArCWRhdGEuZHJt
+X2ZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfQU5ZKTsNCj4gPg0KPiA+ICAgCWtt
+c3Rlc3Rfc2V0X3Z0X2dyYXBoaWNzX21vZGUoKTsNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS90ZXN0
+cy9rbXNfdHZfbG9hZF9kZXRlY3QuYyBiL3Rlc3RzL2ttc190dl9sb2FkX2RldGVjdC5jDQo+ID4g
+aW5kZXggY2FhYzNhZWNiLi44MGNlZDk5MTggMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMva21zX3R2
+X2xvYWRfZGV0ZWN0LmMNCj4gPiArKysgYi90ZXN0cy9rbXNfdHZfbG9hZF9kZXRlY3QuYw0KPiA+
+IEBAIC0zNCw3ICszNCw3IEBAIGlndF9tYWluDQo+ID4gICAJZHJtTW9kZUNvbm5lY3RvciAqdHZf
+Y29ubmVjdG9yID0gTlVMTCwgKnRlbXA7DQo+ID4NCj4gPiAgIAlpZ3RfZml4dHVyZSB7DQo+ID4g
+LQkJZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfSU5URUwpOw0KPiA+ICsJ
+CWRybV9mZCA9IGRybV9vcGVuX2RyaXZlcl9tYXN0ZXIoRFJJVkVSX0FOWSk7DQo+ID4NCj4gPiAg
+IAkJcmVzID0gZHJtTW9kZUdldFJlc291cmNlcyhkcm1fZmQpOw0KPiA+ICAgCQlpZ3RfcmVxdWly
+ZShyZXMpOw0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfdW5pdmVyc2FsX3BsYW5lLmMgYi90
+ZXN0cy9rbXNfdW5pdmVyc2FsX3BsYW5lLmMNCj4gPiBpbmRleCBjOWE5Y2Q0N2EuLmVhOWJkOWE1
+NiAxMDA2NDQNCj4gPiAtLS0gYS90ZXN0cy9rbXNfdW5pdmVyc2FsX3BsYW5lLmMNCj4gPiArKysg
+Yi90ZXN0cy9rbXNfdW5pdmVyc2FsX3BsYW5lLmMNCj4gPiBAQCAtMTA3LDcgKzEwNyw3IEBAIGZ1
+bmN0aW9uYWxfdGVzdF9maW5pKGZ1bmN0aW9uYWxfdGVzdF90ICp0ZXN0LA0KPiBpZ3Rfb3V0cHV0
+X3QgKm91dHB1dCkNCj4gPiAgIAlpZ3RfcmVtb3ZlX2ZiKHRlc3QtPmRhdGEtPmRybV9mZCwgJnRl
+c3QtPnJlZF9mYik7DQo+ID4gICAJaWd0X3JlbW92ZV9mYih0ZXN0LT5kYXRhLT5kcm1fZmQsICZ0
+ZXN0LT55ZWxsb3dfZmIpOw0KPiA+DQo+ID4gLQlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dCwg
+UElQRV9BTlkpOw0KPiA+ICsJaWd0X291dHB1dF9zZXRfcGlwZShvdXRwdXQsIFBJUEVfTk9ORSk7
+DQo+ID4gICAJaWd0X2Rpc3BsYXlfY29tbWl0MigmdGVzdC0+ZGF0YS0+ZGlzcGxheSwgQ09NTUlU
+X0xFR0FDWSk7DQo+ID4gICB9DQo+ID4NCj4gPiBAQCAtMzgyLDYgKzM4Miw3IEBAIHNhbml0eV90
+ZXN0X3BpcGUoZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSwNCj4gaWd0X291dHB1dF90ICpv
+dXRwdXQpDQo+ID4gICAJICogZG9lc24ndCBjb3ZlciBDUlRDIChzaG91bGQgZmFpbCBvbiBwcmUt
+Z2VuOSBhbmQgc3VjY2VlZCBvbg0KPiA+ICAgCSAqIGdlbjkrKS4NCj4gPiAgIAkgKi8NCj4gPiAr
+CWlndF9yZXF1aXJlX2ludGVsKGRhdGEtPmRybV9mZCk7DQo+IERvZXNuJ3QgdGhpcyBtYWtlIGl0
+IGk5MTUgc3BlY2lmaWM/DQogDQpBcyBtZW50aW9uZWQgaW4gZWFybGllciBjb21tZW50cywgYXMg
+b2Ygbm93IG9ubHkgSW50ZWwgaXMgdXNpbmcgdGhlc2UgdGVzdHMNCndob2V2ZXIgd2FudHMgdG8g
+ZXh0ZW5kIHRoZXNlIHRlc3RzIGNhbiByZW1vdmUgdGhpcyBjaGVjay4NCg0KLSBCaGFudQ0KDQo+
+ID4gICAJaWd0X3BsYW5lX3NldF9mYihwcmltYXJ5LCAmdGVzdC51bmRlcnNpemVkX2ZiKTsNCj4g
+PiAgIAlleHBlY3QgPSAoZGF0YS0+ZGlzcGxheV92ZXIgPCA5KSA/IC1FSU5WQUwgOiAwOw0KPiA+
+ICAgCWlndF9hc3NlcnQoaWd0X2Rpc3BsYXlfdHJ5X2NvbW1pdDIoJmRhdGEtPmRpc3BsYXksIENP
+TU1JVF9VTklWRVJTQUwpID09DQo+IGV4cGVjdCk7DQo+ID4gQEAgLTU3OSw2ICs1ODAsNyBAQCBj
+dXJzb3JfbGVha190ZXN0X3BpcGUoZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSwNCj4gaWd0
+X291dHB1dF90ICpvdXRwdXQpDQo+ID4NCj4gPiAgIAlpZ3RfcmVxdWlyZV9waXBlKGRpc3BsYXks
+IHBpcGUpOw0KPiA+ICAgCWlndF9yZXF1aXJlKGRpc3BsYXktPmhhc19jdXJzb3JfcGxhbmUpOw0K
+PiA+ICsJaWd0X3JlcXVpcmVfaW50ZWwoZGF0YS0+ZHJtX2ZkKTsNCj4gU2FtZSBhcyBhYm92ZS4N
+Cj4gPg0KPiA+ICAgCWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBwaXBlKTsNCj4gPiAgIAlt
+b2RlID0gaWd0X291dHB1dF9nZXRfbW9kZShvdXRwdXQpOw0KPiA+IEBAIC03MDQsNiArNzA2LDcg
+QEAgZ2VuOV90ZXN0X3BpcGUoZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSwNCj4gaWd0X291
+dHB1dF90ICpvdXRwdXQpDQo+ID4NCj4gPiAgIAlpbnQgcmV0ID0gMDsNCj4gPg0KPiA+ICsJaWd0
+X3JlcXVpcmVfaW50ZWwoZGF0YS0+ZHJtX2ZkKTsNCj4gDQo+IFNhbWUgYXMgYWJvdmUuDQo+IA0K
+PiBUaGFua3MsDQo+IA0KPiBLYXJ0aGlrLkIuUw0KPiANCj4gPiAgIAlpZ3Rfc2tpcF9vbihkYXRh
+LT5kaXNwbGF5X3ZlciA8IDkpOw0KPiA+ICAgCWlndF9yZXF1aXJlX3BpcGUoJmRhdGEtPmRpc3Bs
+YXksIHBpcGUpOw0KPiA+DQo+ID4gQEAgLTc5Nyw4ICs4MDAsOSBAQCBpZ3RfbWFpbg0KPiA+ICAg
+CWVudW0gcGlwZSBwaXBlOw0KPiA+DQo+ID4gICAJaWd0X2ZpeHR1cmUgew0KPiA+IC0JCWRhdGEu
+ZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfSU5URUwpOw0KPiA+IC0JCWRh
+dGEuZGlzcGxheV92ZXIgPQ0KPiBpbnRlbF9kaXNwbGF5X3ZlcihpbnRlbF9nZXRfZHJtX2Rldmlk
+KGRhdGEuZHJtX2ZkKSk7DQo+ID4gKwkJZGF0YS5kcm1fZmQgPSBkcm1fb3Blbl9kcml2ZXJfbWFz
+dGVyKERSSVZFUl9BTlkpOw0KPiA+ICsJCWlmIChpc19pOTE1X2RldmljZShkYXRhLmRybV9mZCkp
+DQo+ID4gKwkJCWRhdGEuZGlzcGxheV92ZXIgPQ0KPiBpbnRlbF9kaXNwbGF5X3ZlcihpbnRlbF9n
+ZXRfZHJtX2RldmlkKGRhdGEuZHJtX2ZkKSk7DQo+ID4NCj4gPiAgIAkJa21zdGVzdF9zZXRfdnRf
+Z3JhcGhpY3NfbW9kZSgpOw0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL21lc29uLmJ1aWxk
+IGIvdGVzdHMvbWVzb24uYnVpbGQNCj4gPiBpbmRleCAxYmRmZGRiYjIuLjhjYTc4ZmEwYyAxMDA2
+NDQNCj4gPiAtLS0gYS90ZXN0cy9tZXNvbi5idWlsZA0KPiA+ICsrKyBiL3Rlc3RzL21lc29uLmJ1
+aWxkDQo+ID4gQEAgLTE5LDExICsxOSw3IEBAIHRlc3RfcHJvZ3MgPSBbDQo+ID4gICAJJ2ttc19h
+dG9taWMnLA0KPiA+ICAgCSdrbXNfYXRvbWljX2ludGVycnVwdGlibGUnLA0KPiA+ICAgCSdrbXNf
+YXRvbWljX3RyYW5zaXRpb24nLA0KPiA+IC0JJ2ttc19iaWdfZmInLA0KPiA+ICAgCSdrbXNfYmln
+X2pvaW5lcicgLA0KPiA+IC0JJ2ttc19idXN5JywNCj4gPiAtCSdrbXNfY2NzJywNCj4gPiAtCSdr
+bXNfY2RjbGsnLA0KPiA+ICAgCSdrbXNfY29uY3VycmVudCcsDQo+ID4gICAJJ2ttc19jb250ZW50
+X3Byb3RlY3Rpb24nLA0KPiA+ICAgCSdrbXNfY3Vyc29yX2NyYycsDQo+ID4gQEAgLTMyLDI2ICsy
+OCwxNiBAQCB0ZXN0X3Byb2dzID0gWw0KPiA+ICAgCSdrbXNfZGl0aGVyJywNCj4gPiAgIAkna21z
+X2RwX2F1eF9kZXYnLA0KPiA+ICAgCSdrbXNfZHBfdGlsZWRfZGlzcGxheScsDQo+ID4gLQkna21z
+X2RyYXdfY3JjJywNCj4gPiAtCSdrbXNfZHNjJywNCj4gPiAtCSdrbXNfZmJjb25fZmJ0JywNCj4g
+PiAtCSdrbXNfZmVuY2VfcGluX2xlYWsnLA0KPiA+ICAgCSdrbXNfZmxpcCcsDQo+ID4gICAJJ2tt
+c19mbGlwX2V2ZW50X2xlYWsnLA0KPiA+IC0JJ2ttc19mbGlwX3NjYWxlZF9jcmMnLA0KPiA+IC0J
+J2ttc19mbGlwX3RpbGluZycsDQo+ID4gICAJJ2ttc19mb3JjZV9jb25uZWN0b3JfYmFzaWMnLA0K
+PiA+IC0JJ2ttc19mcm9udGJ1ZmZlcl90cmFja2luZycsDQo+ID4gICAJJ2ttc19nZXRmYicsDQo+
+ID4gICAJJ2ttc19oZG1pX2luamVjdCcsDQo+ID4gICAJJ2ttc19oZHInLA0KPiA+IC0JJ2ttc19p
+bnZhbGlkX2RvdGNsb2NrJywNCj4gPiAgIAkna21zX2xlYXNlJywNCj4gPiAtCSdrbXNfbGVnYWN5
+X2NvbG9ya2V5JywNCj4gPiAgIAkna21zX21tYXBfd3JpdGVfY3JjJywNCj4gPiAgIAkna21zX211
+bHRpcGlwZV9tb2Rlc2V0JywNCj4gPiAgIAkna21zX3BhbmVsX2ZpdHRpbmcnLA0KPiA+IC0JJ2tt
+c19waXBlX2JfY19pdmInLA0KPiA+ICAgCSdrbXNfcGlwZV9jcmNfYmFzaWMnLA0KPiA+ICAgCSdr
+bXNfcGxhbmUnLA0KPiA+ICAgCSdrbXNfcGxhbmVfYWxwaGFfYmxlbmQnLA0KPiA+IEBAIC02Miw5
+ICs0OCw2IEBAIHRlc3RfcHJvZ3MgPSBbDQo+ID4gICAJJ2ttc19wcmltZScsDQo+ID4gICAJJ2tt
+c19wcm9wX2Jsb2InLA0KPiA+ICAgCSdrbXNfcHJvcGVydGllcycsDQo+ID4gLQkna21zX3Bzcics
+DQo+ID4gLQkna21zX3BzcjJfc3UnLA0KPiA+IC0JJ2ttc19wc3IyX3NmJywNCj4gPiAgIAkna21z
+X3B3cml0ZV9jcmMnLA0KPiA+ICAgCSdrbXNfcm1mYicsDQo+ID4gICAJJ2ttc19yb3RhdGlvbl9j
+cmMnLA0KPiA+IEBAIC0yMzUsNiArMjE4LDIzIEBAIGk5MTVfcHJvZ3MgPSBbDQo+ID4gICAJJ2k5
+MTVfcXVlcnknLA0KPiA+ICAgCSdpOTE1X3NlbGZ0ZXN0JywNCj4gPiAgIAknaTkxNV9zdXNwZW5k
+JywNCj4gPiArCSdrbXNfYmlnX2ZiJywNCj4gPiArCSdrbXNfYnVzeScsDQo+ID4gKwkna21zX2Nj
+cycsDQo+ID4gKwkna21zX2NkY2xrJywNCj4gPiArCSdrbXNfZHJhd19jcmMnLA0KPiA+ICsJJ2tt
+c19kc2MnLA0KPiA+ICsJJ2ttc19mYmNvbl9mYnQnLA0KPiA+ICsJJ2ttc19mZW5jZV9waW5fbGVh
+aycsDQo+ID4gKwkna21zX2ZsaXBfc2NhbGVkX2NyYycsDQo+ID4gKwkna21zX2ZsaXBfdGlsaW5n
+JywNCj4gPiArCSdrbXNfZnJvbnRidWZmZXJfdHJhY2tpbmcnLA0KPiA+ICsJJ2ttc19pbnZhbGlk
+X2RvdGNsb2NrJywNCj4gPiArCSdrbXNfbGVnYWN5X2NvbG9ya2V5JywNCj4gPiArCSdrbXNfcGlw
+ZV9iX2NfaXZiJywNCj4gPiArCSdrbXNfcHNyJywNCj4gPiArCSdrbXNfcHNyMl9zdScsDQo+ID4g
+Kwkna21zX3BzcjJfc2YnLA0KPiA+ICAgCSdzeXNmc19jbGllbnRzJywNCj4gPiAgIAknc3lzZnNf
+ZGVmYXVsdHMnLA0KPiA+ICAgCSdzeXNmc19oZWFydGJlYXRfaW50ZXJ2YWwnLA0KPiA+IC0tDQo+
+ID4gMi4zMi4wDQo+ID4NCg0K
