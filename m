@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21B956E20A
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Sep 2021 17:28:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 872946E20A
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Sep 2021 17:28:27 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Mon, 13 Sep 2021 10:26:45 -0700
-Message-Id: <20210913172658.1573994-3-alan.previn.teres.alexis@intel.com>
-In-Reply-To: <20210913172658.1573994-1-alan.previn.teres.alexis@intel.com>
-References: <20210913172658.1573994-1-alan.previn.teres.alexis@intel.com>
+Date: Mon, 13 Sep 2021 10:26:43 -0700
+Message-Id: <20210913172658.1573994-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v10 02/15] Add basic PXP testing of buffer
- and context alloc
+Subject: [igt-dev] [PATCH i-g-t v10 00/15] Introduce PXP Test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,386 +18,139 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Test PXP capability support as well as the allocation of protected
-buffers and protected contexts.
+This series adds gem_pxp tests for the new PXP subsystem currently
+being reviewed at https://patchwork.freedesktop.org/series/90504/.
+This series currently includes 4 groups of tests addressing the
+features and restrictions described by Daniele's series :
+   1. test i915 interfaces for allocation of protected bo's
+      and contexts and enforcement of UAPI rule disallowing the
+      modification of parameters after it's been created.
+   2. verify PXP subsystem protected sessions generate encrypted
+      content on protected output buffers and decrypt protected
+      inputs buffers.
+   3. verify i915 PXP auto-teardown succeeds on suspend-resume
+      cycles and gem-exec of stale protected assets fail. Ensure
+      protected-contexts adhere to stricter invalidation
+      enforcement upon teardown event.
+   4. Ensure that display plane decryption works as expected with
+      protected buffers.
 
-Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- tests/i915/gem_pxp.c | 349 +++++++++++++++++++++++++++++++++++++++++++
- tests/meson.build    |   1 +
- 2 files changed, 350 insertions(+)
+NOTE: This series is on the tenth revision. All R-v-b's have been
+received except UAPI patch which will be dropped at merge time (after
+kernel patches gets merged and igt's drm UAPI gets sync'd).
+
+Changes from prior rev1 to now:
+   v10:
+      - In patch #2, reuse existing gem_create_ext wrapper.
+      - In patch #10, kernel side changed the debugfs file name
+        (but no difference in behavior / usage).
+      - Removed patch #14 from Rev9 as decision on kernel side
+        was to drop the usage of RESET_STATS IOCTL to track
+        invalidated pxp contexts.
+   v9:
+      - Remove patch #2 from rev7 as it was duplicating
+        an existing ioctl wrapper helper
+      - Fix the false-negative warnings when triggering
+        auto-suspend-resume (remove checking if we are
+        suspending after the system has already resumed).
+   v8:
+      - Nothing - mistaken detection from patchwork
+   v7:
+      - In prior rev, Patches #11->13 was testing expected results
+        from calling gem_execbuf with stale pxp-context, pxp-buffer
+        or combinations of them (including an opt-out usage). All
+        of them used a single suspend-resume power state cycles to
+        trigger the PXP teardown event. These patches have been
+        combined into patch #14 that continues to carry the prior rev
+        Rvb.
+      - In its place, the new patches of #11->#13 do the identical
+        set of tests as before (results from gem_execbuf with various
+        combinations of stale pxp context and buffer), but this time
+        using a debugfs file handle that triggers the same code path
+        taken when the HW triggers the pxp teardown. That said, the
+        code is nearly identical as v6 but I did not keep the Rvb's.
+      - In patch #15, RESET_STAT now reports invalidated / banned
+        pxp contexts via the existing batch_active's lost count.
+   v6:
+      - Addressed rev5 review comments for patch #1, #7, #14
+        and #17.
+      - For #17, I'm using Rodrigo's Rv-b because offline 
+        discussions concluded that we couldn't use those
+        test sequences with HDCP and so it was removed it.
+      - Added Rv-b into all patches that received it.
+      - Modified the test requirement from a list of device
+        ids to checking if runtime PXP interface succeeds
+        due to kernel's build config dependency.
+   v5:
+      - Addressed all rev4 review comments. No changes to
+        overall flow and logic compared to the last rev.
+   v4:
+      - Addressed all rev3 review comments. NOTE: that all
+        test cases and code logic are the same but a decent
+        amount of refactoring has occured due to address
+        v3 comments to break out subtests into separate
+        functions while combining certain checks into the same
+        function to reduce test time by minimizing number of
+        suspend-resume power cycles.
+   v3:
+      - Addressed all rev2 review comments.
+      - In line with one of the rev2 comments, a thorough fixup
+        of all line-breaks in function calls was made for a more
+        consistent styling.
+      - Rebased on igt upstream repo and updated to latest kernel
+        UAPI that added GEM_CREATE_EXT.
+   v2: 
+      - Addressed all rev1 review comments except these:
+           1.Chris Wilson : "...have the caller do 1-3 once for its protected
+             context. Call it something like intel_bb_enable_pxp(),
+             intel_bb_set_pxp if it should be reversible.".
+             -  This couldn't be implemented because [1] HW needs different
+             instruction sequences for enabling/disabling PXP depending
+             on the engine class and [2] the pair of "pxp-enable" and "pxp-
+             disable" instructions need to be contained within the same batch
+             that is dispatched to the hardware. That said, implementing
+             internal intel_batchbuffer funtionality for this would conflict
+             with how rendercopy_gen9 uses batch buffer memory by repositioing
+             the pointer and consuming unused portions of the batch buffer as
+             3d state offsets that batchbuffer has no visibility.
+         
+      - Added these additional subtests:
+           1. verify that buffer sharing works across testing pxp context.
+           2. verify teardown bans contexts via DRM_IOCTL_I915_GET_RESET_STAT.
+           3. verify display plane decryption of protected buffers.
+
+Alan Previn (14):
+  Add PXP UAPI support in i915_drm.h
+  Add basic PXP testing of buffer and context alloc
+  Perform a regular 3d copy as a control checkpoint
+  Add PXP attribute support in batchbuffer and buffer_ops libs
+  Add MI_SET_APPID instruction definition
+  Enable protected session cmd in gen12_render_copyfunc
+  Add subtest to copy raw source to protected dest
+  Add test where both src and dest are protected
+  Verify PXP teardown occurred through suspend-resume
+  Verify execbuf fails with stale PXP context after teardown
+  Verify execbuf fails with stale PXP buffer after teardown
+  Verify execbuf ok with stale PXP buf in opt-out use
+  Verify execution behavior with stale PXP assets through suspend-resume
+  Verify protected surfaces are dma buffer sharable
+
+Karthik B S (1):
+  tests/i915_pxp: CRC validation for display tests.
+
+ lib/i915/i915_drm_local.h |  102 +++
+ lib/intel_batchbuffer.c   |   23 +-
+ lib/intel_batchbuffer.h   |   31 +
+ lib/intel_bufops.h        |   15 +
+ lib/intel_reg.h           |    8 +
+ lib/rendercopy_gen9.c     |   57 ++
+ tests/i915/gem_pxp.c      | 1277 +++++++++++++++++++++++++++++++++++++
+ tests/meson.build         |    1 +
+ 8 files changed, 1513 insertions(+), 1 deletion(-)
  create mode 100644 tests/i915/gem_pxp.c
 
-diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-new file mode 100644
-index 00000000..7246c08b
---- /dev/null
-+++ b/tests/i915/gem_pxp.c
-@@ -0,0 +1,349 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2021 Intel Corporation
-+ */
-+
-+#include "igt.h"
-+#include "i915/gem.h"
-+#include "i915/gem_create.h"
-+
-+IGT_TEST_DESCRIPTION("Test PXP that manages protected content through arbitrated HW-PXP-session");
-+/* Note: PXP = "Protected Xe Path" */
-+
-+static int create_bo_ext(int i915, uint32_t size, bool protected_is_true, uint32_t *bo_out)
-+{
-+	int ret;
-+	uint64_t size64 = size;
-+	struct i915_user_extension *ext = NULL;
-+
-+	struct drm_i915_gem_create_ext_protected_content protected_ext = {
-+		.base = { .name = I915_GEM_CREATE_EXT_PROTECTED_CONTENT },
-+		.flags = 0,
-+	};
-+
-+	if (protected_is_true)
-+		ext = &protected_ext.base;
-+
-+	ret = __gem_create_ext(i915, &size64, bo_out, ext);
-+
-+	return ret;
-+}
-+
-+static void test_bo_alloc_pxp_nohw(int i915)
-+{
-+	int ret;
-+	uint32_t bo;
-+
-+	ret = create_bo_ext(i915, 4096, false, &bo);
-+	igt_assert_eq(ret, 0);
-+	gem_close(i915, bo);
-+
-+	ret = create_bo_ext(i915, 4096, true, &bo);
-+	igt_assert_eq(ret, -ENODEV);
-+	igt_assert_eq(bo, 0);
-+}
-+
-+static void test_bo_alloc_pxp_off(int i915)
-+{
-+	int ret;
-+	uint32_t bo;
-+
-+	ret = create_bo_ext(i915, 4096, false, &bo);
-+	igt_assert_eq(ret, 0);
-+	gem_close(i915, bo);
-+}
-+
-+static void test_bo_alloc_pxp_on(int i915)
-+{
-+	int ret;
-+	uint32_t bo;
-+
-+	ret = create_bo_ext(i915, 4096, true, &bo);
-+	igt_assert_eq(ret, 0);
-+	gem_close(i915, bo);
-+}
-+
-+static int create_ctx_with_params(int i915, bool with_protected_param, bool protected_is_true,
-+				  bool with_recoverable_param, bool recoverable_is_true,
-+				  uint32_t *ctx_out)
-+{
-+	int ret;
-+	uint32_t flags = 0;
-+	uint64_t extensions = 0;
-+
-+	struct drm_i915_gem_context_create_ext_setparam p_prot = {
-+		.base = {
-+			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
-+			.next_extension = 0,
-+		},
-+		.param = {
-+			.param = I915_CONTEXT_PARAM_PROTECTED_CONTENT,
-+			.value = 0,
-+		}
-+	};
-+	struct drm_i915_gem_context_create_ext_setparam p_norecover = {
-+		.base = {
-+			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
-+			.next_extension = 0,
-+		},
-+		.param = {
-+			.param = I915_CONTEXT_PARAM_RECOVERABLE,
-+			.value = 0,
-+		}
-+	};
-+
-+	p_prot.param.value = protected_is_true;
-+	p_norecover.param.value = recoverable_is_true;
-+
-+	if (with_protected_param && with_recoverable_param) {
-+		p_norecover.base.next_extension = to_user_pointer(&(p_prot.base));
-+		flags = I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS;
-+		extensions = to_user_pointer(&(p_norecover.base));
-+	} else if (!with_protected_param && with_recoverable_param) {
-+		p_norecover.base.next_extension = 0;
-+		flags = I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS;
-+		extensions = to_user_pointer(&(p_norecover.base));
-+	} else if (with_protected_param && !with_recoverable_param) {
-+		p_prot.base.next_extension = 0;
-+		flags = I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS;
-+		extensions = to_user_pointer(&(p_prot.base));
-+	}
-+
-+	ret = __gem_context_create_ext(i915, flags, extensions, ctx_out);
-+
-+	return ret;
-+}
-+
-+#define CHANGE_PARAM_PROTECTED 0x0001
-+#define CHANGE_PARAM_RECOVERY 0x0002
-+
-+static int modify_ctx_param(int i915, uint32_t ctx_id, uint32_t param_mask, bool param_value)
-+{
-+	int ret;
-+
-+	struct drm_i915_gem_context_param ctx_param = {
-+		.ctx_id = ctx_id,
-+		.param = 0,
-+		.value = 0,
-+	};
-+
-+	if (param_mask == CHANGE_PARAM_PROTECTED) {
-+		ctx_param.param = I915_CONTEXT_PARAM_PROTECTED_CONTENT;
-+		ctx_param.value = (int)param_value;
-+	} else if (param_mask == CHANGE_PARAM_RECOVERY) {
-+		ctx_param.param = I915_CONTEXT_PARAM_RECOVERABLE;
-+		ctx_param.value = (int)param_value;
-+	}
-+
-+	ret = igt_ioctl(i915, DRM_IOCTL_I915_GEM_CONTEXT_SETPARAM, &ctx_param);
-+
-+	return ret;
-+}
-+
-+static int get_ctx_protected_param(int i915, uint32_t ctx_id)
-+{
-+	int ret;
-+
-+	struct drm_i915_gem_context_param ctx_param = {
-+		.ctx_id = ctx_id,
-+		.param = I915_CONTEXT_PARAM_PROTECTED_CONTENT,
-+	};
-+
-+	ret = igt_ioctl(i915, DRM_IOCTL_I915_GEM_CONTEXT_GETPARAM, &ctx_param);
-+	igt_assert_eq(ret, 0);
-+
-+	return ctx_param.value;
-+}
-+
-+static int get_ctx_recovery_param(int i915, uint32_t ctx_id)
-+{
-+	int ret;
-+
-+	struct drm_i915_gem_context_param ctx_param = {
-+		.ctx_id = ctx_id,
-+		.param = I915_CONTEXT_PARAM_RECOVERABLE,
-+	};
-+
-+	ret = igt_ioctl(i915, DRM_IOCTL_I915_GEM_CONTEXT_GETPARAM, &ctx_param);
-+	igt_assert_eq(ret, 0);
-+
-+	return ctx_param.value;
-+}
-+
-+static bool is_pxp_hw_supported(int i915)
-+{
-+	uint32_t tmpctx;
-+	int ret;
-+
-+	ret = create_ctx_with_params(i915, true, true, true, false, &tmpctx);
-+	if (ret == 0) {
-+		gem_context_destroy(i915, tmpctx);
-+		return true;
-+	}
-+	return false;
-+}
-+
-+static void test_ctx_alloc_pxp_nohw(int i915)
-+{
-+	uint32_t ctx;
-+
-+	igt_assert_eq(create_ctx_with_params(i915, true, true, true, false, &ctx), -ENODEV);
-+	igt_assert_eq(create_ctx_with_params(i915, true, false, true, false, &ctx), 0);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
-+	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-+	gem_context_destroy(i915, ctx);
-+}
-+
-+static void test_ctx_alloc_recover_off_protect_off(int i915)
-+{
-+	uint32_t ctx;
-+
-+	igt_assert_eq(create_ctx_with_params(i915, true, false, true, false, &ctx), 0);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
-+	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-+	gem_context_destroy(i915, ctx);
-+}
-+
-+static void test_ctx_alloc_recover_off_protect_on(int i915)
-+{
-+	uint32_t ctx;
-+
-+	igt_assert_eq(create_ctx_with_params(i915, true, true, true, false, &ctx), 0);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
-+	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-+	gem_context_destroy(i915, ctx);
-+}
-+
-+static void test_ctx_alloc_recover_on_protect_off(int i915)
-+{
-+	uint32_t ctx;
-+
-+	igt_assert_eq(create_ctx_with_params(i915, true, false, true, true, &ctx), 0);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
-+	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 1);
-+	gem_context_destroy(i915, ctx);
-+}
-+
-+static void test_ctx_alloc_recover_on_protect_on(int i915)
-+{
-+	uint32_t ctx;
-+
-+	igt_assert_eq(create_ctx_with_params(i915, true, true, true, true, &ctx), -EPERM);
-+	igt_assert_eq(create_ctx_with_params(i915, true, true, false, false, &ctx), -EPERM);
-+}
-+
-+static void test_ctx_mod_recover_off_to_on(int i915)
-+{
-+	uint32_t ctx;
-+
-+	igt_assert_eq(create_ctx_with_params(i915, true, true, true, false, &ctx), 0);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
-+	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-+	igt_assert_eq(modify_ctx_param(i915, ctx, CHANGE_PARAM_RECOVERY, true), -EPERM);
-+	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-+	gem_context_destroy(i915, ctx);
-+}
-+
-+static void test_ctx_mod_protected_on_to_off(int i915)
-+{
-+	uint32_t ctx;
-+
-+	igt_assert_eq(create_ctx_with_params(i915, true, true, true, false, &ctx), 0);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
-+	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-+	igt_assert_eq(modify_ctx_param(i915, ctx, CHANGE_PARAM_PROTECTED, false), -EPERM);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
-+	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-+	gem_context_destroy(i915, ctx);
-+}
-+
-+static void test_ctx_mod_protected_to_all_invalid(int i915)
-+{
-+	uint32_t ctx;
-+
-+	igt_assert_eq(create_ctx_with_params(i915, true, true, true, false, &ctx), 0);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
-+	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-+	igt_assert_eq(modify_ctx_param(i915, ctx, CHANGE_PARAM_RECOVERY, true), -EPERM);
-+	igt_assert_eq(modify_ctx_param(i915, ctx, CHANGE_PARAM_PROTECTED, false), -EPERM);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
-+	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-+	gem_context_destroy(i915, ctx);
-+}
-+
-+static void test_ctx_mod_regular_to_all_valid(int i915)
-+{
-+	uint32_t ctx;
-+
-+	igt_assert_eq(create_ctx_with_params(i915, false, false, false, false, &ctx), 0);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
-+	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 1);
-+	igt_assert_eq(modify_ctx_param(i915, ctx, CHANGE_PARAM_RECOVERY, false), 0);
-+	igt_assert_eq(modify_ctx_param(i915, ctx, CHANGE_PARAM_PROTECTED, true), -EPERM);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx), 0);
-+	igt_assert_eq(get_ctx_recovery_param(i915, ctx), 0);
-+	gem_context_destroy(i915, ctx);
-+}
-+
-+igt_main
-+{
-+	int i915 = -1;
-+	bool pxp_supported = false;
-+
-+	igt_fixture
-+	{
-+		i915 = drm_open_driver(DRIVER_INTEL);
-+		igt_require(i915);
-+		igt_require_gem(i915);
-+		pxp_supported = is_pxp_hw_supported(i915);
-+	}
-+
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require((pxp_supported == 0));
-+		}
-+
-+		igt_describe("Verify protected buffer on unsupported hw:");
-+		igt_subtest("hw-rejects-pxp-buffer")
-+			test_bo_alloc_pxp_nohw(i915);
-+		igt_describe("Verify protected context on unsupported hw:");
-+		igt_subtest("hw-rejects-pxp-context")
-+			test_ctx_alloc_pxp_nohw(i915);
-+	}
-+
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require(pxp_supported);
-+		}
-+
-+		igt_describe("Verify protected buffer on supported hw:");
-+		igt_subtest("create-regular-buffer")
-+			test_bo_alloc_pxp_off(i915);
-+		igt_subtest("create-protected-buffer")
-+			test_bo_alloc_pxp_on(i915);
-+
-+		igt_describe("Verify protected context on supported hw:");
-+		igt_subtest("create-regular-context-1")
-+			test_ctx_alloc_recover_off_protect_off(i915);
-+		igt_subtest("create-regular-context-2")
-+			test_ctx_alloc_recover_on_protect_off(i915);
-+		igt_subtest("fail-invalid-protected-context")
-+			test_ctx_alloc_recover_on_protect_on(i915);
-+		igt_subtest("create-valid-protected-context")
-+			test_ctx_alloc_recover_off_protect_on(i915);
-+
-+		igt_describe("Verify protected context integrity:");
-+		igt_subtest("reject-modify-context-protection-on")
-+			test_ctx_mod_regular_to_all_valid(i915);
-+		igt_subtest("reject-modify-context-protection-off-1")
-+			test_ctx_mod_recover_off_to_on(i915);
-+		igt_subtest("reject-modify-context-protection-off-2")
-+			test_ctx_mod_protected_on_to_off(i915);
-+		igt_subtest("reject-modify-context-protection-off-3")
-+			test_ctx_mod_protected_to_all_invalid(i915);
-+	}
-+
-+	igt_fixture {
-+		close(i915);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index cbc02534..081e7420 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -188,6 +188,7 @@ i915_progs = [
- 	'gem_pread_after_blit',
- 	'gem_pwrite',
- 	'gem_pwrite_snooped',
-+	'gem_pxp',
- 	'gem_read_read_speed',
- 	'gem_readwrite',
- 	'gem_reg_read',
 -- 
 2.25.1
