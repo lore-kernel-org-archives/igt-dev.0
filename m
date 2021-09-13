@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDF016E214
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Sep 2021 17:40:26 +0000 (UTC)
-Date: Mon, 13 Sep 2021 19:39:26 +0200
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A56EC6E20C
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Sep 2021 17:43:49 +0000 (UTC)
+Date: Mon, 13 Sep 2021 19:43:43 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210913173926.GA60883@zkempczy-mobl2>
+Message-ID: <20210913174343.GB60883@zkempczy-mobl2>
 References: <20210901154846.3323879-1-apoorva1.singh@intel.com>
- <20210901154846.3323879-2-apoorva1.singh@intel.com>
+ <20210901154846.3323879-3-apoorva1.singh@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210901154846.3323879-2-apoorva1.singh@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/intel_bufops: Add
- intel_buf_init_in_region
+In-Reply-To: <20210901154846.3323879-3-apoorva1.singh@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] i915/gem_render_copy: Add support
+ for local memory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,110 +27,163 @@ To: apoorva1.singh@intel.com
 Cc: thomas.hellstrom@linux.intel.com, igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Sep 01, 2021 at 09:18:45PM +0530, apoorva1.singh@intel.com wrote:
+On Wed, Sep 01, 2021 at 09:18:46PM +0530, apoorva1.singh@intel.com wrote:
 > From: Apoorva Singh <apoorva1.singh@intel.com>
 > 
-> Add intel_buf_init_in_region which allows memory region
-> to be specified for new BO being created.
-> Same as intel_buf_init with the additional region argument.
+> Add support for local memory region (Device memory)
 > 
 > Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
 > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 > Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
 > ---
->  lib/intel_bufops.c | 28 +++++++++++++++++++++++-----
->  lib/intel_bufops.h |  5 +++++
->  2 files changed, 28 insertions(+), 5 deletions(-)
+>  tests/i915/gem_render_copy.c | 61 +++++++++++++++++++++++++-----------
+>  1 file changed, 42 insertions(+), 19 deletions(-)
 > 
-> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-> index faca4406..f5f67edd 100644
-> --- a/lib/intel_bufops.c
-> +++ b/lib/intel_bufops.c
-> @@ -730,7 +730,8 @@ static void __intel_buf_init(struct buf_ops *bops,
->  			     struct intel_buf *buf,
->  			     int width, int height, int bpp, int alignment,
->  			     uint32_t req_tiling, uint32_t compression,
-> -			     uint64_t bo_size, int bo_stride)
-> +			     uint64_t bo_size, int bo_stride,
+> diff --git a/tests/i915/gem_render_copy.c b/tests/i915/gem_render_copy.c
+> index e48b5b99..3aac1628 100644
+> --- a/tests/i915/gem_render_copy.c
+> +++ b/tests/i915/gem_render_copy.c
+> @@ -213,12 +213,13 @@ scratch_buf_copy(data_t *data,
+>  static void scratch_buf_init(data_t *data, struct intel_buf *buf,
+>  			     int width, int height,
+>  			     uint32_t req_tiling,
+> -			     enum i915_compression compression)
+> +			     enum i915_compression compression,
 > +			     uint32_t region)
 >  {
->  	uint32_t tiling = req_tiling;
->  	uint64_t size;
-> @@ -818,7 +819,7 @@ static void __intel_buf_init(struct buf_ops *bops,
->  	if (handle)
->  		buf->handle = handle;
->  	else
-> -		buf->handle = gem_create(bops->fd, size);
-> +		buf->handle = gem_create_in_memory_regions(bops->fd, size, region);
+>  	int bpp = 32;
 >  
->  	set_hw_tiled(bops, buf);
->  }
-> @@ -845,7 +846,24 @@ void intel_buf_init(struct buf_ops *bops,
->  		    uint32_t tiling, uint32_t compression)
+> -	intel_buf_init(data->bops, buf, width, height, bpp, 0,
+> -		       req_tiling, compression);
+> +	intel_buf_init_in_region(data->bops, buf, width, height, bpp, 0,
+> +				 req_tiling, compression, region);
+>  
+>  	igt_assert(intel_buf_width(buf) == width);
+>  	igt_assert(intel_buf_height(buf) == height);
+> @@ -338,7 +339,8 @@ dump_intel_buf_to_file(data_t *data, struct intel_buf *buf, const char *filename
+>  static void test(data_t *data, uint32_t src_tiling, uint32_t dst_tiling,
+>  		 enum i915_compression src_compression,
+>  		 enum i915_compression dst_compression,
+> -		 int flags)
+> +		 int flags,
+> +		 struct igt_collection *memregion_set)
 >  {
->  	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
-> -			 tiling, compression, 0, 0);
-> +			 tiling, compression, 0, 0, I915_SYSTEM_MEMORY);
+>  	struct intel_bb *ibb;
+>  	struct intel_buf ref, src_tiled, src_ccs, dst_ccs, dst;
+> @@ -370,6 +372,7 @@ static void test(data_t *data, uint32_t src_tiling, uint32_t dst_tiling,
+>  		},
+>  	};
+>  	int num_src = ARRAY_SIZE(src);
+> +	uint32_t region = igt_collection_get_value(memregion_set, 0);
+>  	const bool src_mixed_tiled = flags & SOURCE_MIXED_TILED;
+>  	const bool src_compressed = src_compression != I915_COMPRESSION_NONE;
+>  	const bool dst_compressed = dst_compression != I915_COMPRESSION_NONE;
+> @@ -401,21 +404,21 @@ static void test(data_t *data, uint32_t src_tiling, uint32_t dst_tiling,
+>  
+>  	for (int i = 0; i < num_src; i++)
+>  		scratch_buf_init(data, &src[i].buf, WIDTH, HEIGHT, src[i].tiling,
+> -				 I915_COMPRESSION_NONE);
+> +				 I915_COMPRESSION_NONE, region);
+>  	if (!src_mixed_tiled)
+>  		scratch_buf_init(data, &src_tiled, WIDTH, HEIGHT, src_tiling,
+> -				 I915_COMPRESSION_NONE);
+> +				 I915_COMPRESSION_NONE, region);
+>  	scratch_buf_init(data, &dst, WIDTH, HEIGHT, dst_tiling,
+> -			 I915_COMPRESSION_NONE);
+> +			 I915_COMPRESSION_NONE, region);
+>  
+>  	if (src_compressed)
+>  		scratch_buf_init(data, &src_ccs, WIDTH, HEIGHT,
+> -				 src_tiling, src_compression);
+> +				 src_tiling, src_compression, region);
+>  	if (dst_compressed)
+>  		scratch_buf_init(data, &dst_ccs, WIDTH, HEIGHT,
+> -				 dst_tiling, dst_compression);
+> +				 dst_tiling, dst_compression, region);
+>  	scratch_buf_init(data, &ref, WIDTH, HEIGHT, I915_TILING_NONE,
+> -			 I915_COMPRESSION_NONE);
+> +			 I915_COMPRESSION_NONE, region);
+>  
+>  	for (int i = 0; i < num_src; i++)
+>  		scratch_buf_draw_pattern(data, &src[i].buf,
+> @@ -782,6 +785,8 @@ igt_main_args("dac", NULL, help_str, opt_handler, NULL)
+>  		  0, },
+>  	};
+>  	int i;
+> +	struct drm_i915_query_memory_regions *regions;
+> +	struct igt_collection *set, *region_set;
+>  
+>  	data_t data = {0, };
+>  
+> @@ -798,11 +803,19 @@ igt_main_args("dac", NULL, help_str, opt_handler, NULL)
+>  
+>  		data.bops = buf_ops_create(data.drm_fd);
+>  
+> +		regions = gem_get_query_memory_regions(data.drm_fd);
+> +		igt_assert(regions);
 > +
-> +	intel_buf_set_ownership(buf, true);
-> +}
+> +		set = get_memory_region_set(regions,
+> +					    I915_SYSTEM_MEMORY,
+> +					    I915_DEVICE_MEMORY);
 > +
-> +/**
-> + * intel_buf_init_in_region
-> + *
-> + * Same as intel_buf_init with the additional region argument
-> + */
-> +void intel_buf_init_in_region(struct buf_ops *bops,
-> +			      struct intel_buf *buf,
-> +			      int width, int height, int bpp, int alignment,
-> +			      uint32_t tiling, uint32_t compression,
-> +			      uint32_t region)
-> +{
-> +	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
-> +			 tiling, compression, 0, 0, region);
+>  		igt_fork_hang_detector(data.drm_fd);
+>  	}
 >  
->  	intel_buf_set_ownership(buf, true);
+>  	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+>  		const struct test_desc *t = &tests[i];
+> +		char name[128];
+>  		char src_mode[32];
+>  		char dst_mode[32];
+>  		const bool src_mixed_tiled = t->flags & SOURCE_MIXED_TILED;
+> @@ -832,23 +845,33 @@ igt_main_args("dac", NULL, help_str, opt_handler, NULL)
+>  		    t->dst_compression == I915_COMPRESSION_NONE)
+>  			src_mode[0] = '\0';
+>  
+> -		igt_subtest_f("%s%s%s%s",
+> -			      src_mode,
+> -			      src_mode[0] ? "-to-" : "",
+> -			      force_vebox_dst_copy ? "vebox-" : "",
+> -			      dst_mode) {
+> +		snprintf(name, sizeof(name),
+> +			 "%s%s%s%s",
+> +			 src_mode,
+> +			 src_mode[0] ? "-to-" : "",
+> +			 force_vebox_dst_copy ? "vebox-" : "",
+> +			 dst_mode);
+> +		igt_subtest_with_dynamic(name) {
+>  			igt_require_f(data.vebox_copy || !vebox_copy_used,
+>  				      "no vebox-copy function\n");
+> +			for_each_combination(region_set, 1, set) {
+> +				char *sub_name = memregion_dynamic_subtest_name(region_set);
+>  
+> -			test(&data,
+> -			     t->src_tiling, t->dst_tiling,
+> -			     t->src_compression, t->dst_compression,
+> -			     t->flags);
+> +				igt_dynamic_f("%s", sub_name)
+> +					test(&data,
+> +					     t->src_tiling, t->dst_tiling,
+> +					     t->src_compression, t->dst_compression,
+> +					     t->flags,
+> +					     region_set);
+> +
+> +				free(sub_name);
+> +			}
+>  		}
+>  	}
+>  
+>  	igt_fixture {
+>  		igt_stop_hang_detector();
+>  		buf_ops_destroy(data.bops);
+> +		igt_collection_destroy(set);
+>  	}
 >  }
-> @@ -904,7 +922,7 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
->  				 uint32_t req_tiling, uint32_t compression)
->  {
->  	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
-> -			 req_tiling, compression, 0, 0);
-> +			 req_tiling, compression, 0, 0, -1);
->  }
->  
->  /**
-> @@ -990,7 +1008,7 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
->  	igt_assert(buf);
->  
->  	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
-> -			 req_tiling, compression, size, stride);
-> +			 req_tiling, compression, size, stride, -1);
->  
->  	return buf;
->  }
-> diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-> index 9e57d53e..54f2ce45 100644
-> --- a/lib/intel_bufops.h
-> +++ b/lib/intel_bufops.h
-> @@ -125,6 +125,11 @@ static inline void intel_buf_set_ownership(struct intel_buf *buf, bool is_owner)
->  void intel_buf_init(struct buf_ops *bops, struct intel_buf *buf,
->  		    int width, int height, int bpp, int alignment,
->  		    uint32_t tiling, uint32_t compression);
-> +void intel_buf_init_in_region(struct buf_ops *bops,
-> +			      struct intel_buf *buf,
-> +			      int width, int height, int bpp, int alignment,
-> +			      uint32_t tiling, uint32_t compression,
-> +			      uint32_t region);
->  void intel_buf_close(struct buf_ops *bops, struct intel_buf *buf);
->  
->  void intel_buf_init_using_handle(struct buf_ops *bops,
 > -- 
 > 2.25.1
 >
 
-Looks ok, 
+Looks ok,
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
