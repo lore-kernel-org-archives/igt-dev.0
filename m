@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B3E76E20A
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BAF2C6E20B
  for <igt-dev@lists.freedesktop.org>; Mon, 13 Sep 2021 17:27:58 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Mon, 13 Sep 2021 10:26:49 -0700
-Message-Id: <20210913172658.1573994-7-alan.previn.teres.alexis@intel.com>
+Date: Mon, 13 Sep 2021 10:26:50 -0700
+Message-Id: <20210913172658.1573994-8-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210913172658.1573994-1-alan.previn.teres.alexis@intel.com>
 References: <20210913172658.1573994-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v10 06/15] Enable protected session cmd in
- gen12_render_copyfunc
+Subject: [igt-dev] [PATCH i-g-t v10 07/15] Add subtest to copy raw source to
+ protected dest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,135 +24,99 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-1. In _gen9_render_op, check if the incoming batchbuffer
-   is marked with pxp enabled. If so, insert MI_SET_APPID
-   along with PIPE_CONTROL instructions at the start and
-   end of the rendering operation in the command buffer.
-
-2. The two PIPE_CONTROLs will enable protected memory
-   at the start of the batch and disabling protected
-   memory at the end of it. These PIPE_CONTROLs require a
-   Post-Sync operation with a write to memory for hardware
-   to accept.
-
-3. In order to satisfy #2, _gen9_render_op uses unused
-   regions of the ibb buffer for the PIPE_CONTROL PostSync
-   write to memory (no different from how other 3d states
-   are being referenced).
-
-4. _gen9_render_op shall check the incoming surface
-   buffers for "is_protected" flag and if its set, it
-   will mark the SURFACE_STATE's MOCS field accordingly.
-
-NOTE: _gen9_render_op needs to program the HW to enable
-the PXP session as part of the rendering batch buffer
-because the HW requires that enabling/disabling protected
-memory access must be programmed in pairs within the same
-"dispatch of rendering commands" to HW.
+Add subtest to 3d-copy raw source buffer (with
+known readible content) to a destination buffer
+marked as protected with a protected session using
+default session keys. The destination buffer is
+verified to be different from the source (when
+read via CPU) because its encrypted.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- lib/rendercopy_gen9.c | 57 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 57 insertions(+)
+ tests/i915/gem_pxp.c | 55 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
-diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-index 0356964e..f021f4cb 100644
---- a/lib/rendercopy_gen9.c
-+++ b/lib/rendercopy_gen9.c
-@@ -183,6 +183,8 @@ gen8_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst) {
- 		ss->ss0.tiled_mode = 3;
+diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+index 1b11001a..c86b6b85 100644
+--- a/tests/i915/gem_pxp.c
++++ b/tests/i915/gem_pxp.c
+@@ -372,7 +372,9 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size
+ #define TSTSURF_STRIDE      (TSTSURF_WIDTH*TSTSURF_BYTESPP)
+ #define TSTSURF_SIZE        (TSTSURF_STRIDE*TSTSURF_HEIGHT)
+ #define TSTSURF_FILLCOLOR1  0xfaceface
++#define TSTSURF_FILLCOLOR2  0xdeaddead
+ #define TSTSURF_INITCOLOR1  0x12341234
++#define TSTSURF_INITCOLOR2  0x56785678
  
- 	ss->ss1.memory_object_control = intel_get_uc_mocs(i915);
-+	if (intel_buf_pxp(buf))
-+		ss->ss1.memory_object_control |= 1;
- 
- 	if (buf->tiling == I915_TILING_Yf)
- 		ss->ss5.trmode = 1;
-@@ -904,6 +906,53 @@ static void gen8_emit_primitive(struct intel_bb *ibb, uint32_t offset)
- 	intel_bb_out(ibb, 0);	/* index buffer offset, ignored */
+ static void test_render_baseline(int i915)
+ {
+@@ -418,6 +420,57 @@ static void test_render_baseline(int i915)
+ 	buf_ops_destroy(bops);
  }
  
-+#define GFX_OP_PIPE_CONTROL    ((3 << 29) | (3 << 27) | (2 << 24))
-+#define PIPE_CONTROL_CS_STALL	            (1 << 20)
-+#define PIPE_CONTROL_RENDER_TARGET_FLUSH    (1 << 12)
-+#define PIPE_CONTROL_FLUSH_ENABLE           (1 << 7)
-+#define PIPE_CONTROL_DATA_CACHE_INVALIDATE  (1 << 5)
-+#define PIPE_CONTROL_PROTECTEDPATH_DISABLE  (1 << 27)
-+#define PIPE_CONTROL_PROTECTEDPATH_ENABLE   (1 << 22)
-+#define PIPE_CONTROL_POST_SYNC_OP           (1 << 14)
-+#define PIPE_CONTROL_POST_SYNC_OP_STORE_DW_IDX (1 << 21)
-+#define PS_OP_TAG_START                     0x1234fed0
-+#define PS_OP_TAG_END                       0x5678cbaf
-+static void gen12_emit_pxp_state(struct intel_bb *ibb, bool enable,
-+		 uint32_t pxp_write_op_offset)
++static void test_render_pxp_src_to_protdest(int i915)
 +{
-+	uint32_t pipe_ctl_flags;
-+	uint32_t set_app_id, ps_op_id;
++	uint32_t ctx, srcbo, dstbo;
++	struct intel_buf *srcbuf, *dstbuf;
++	struct buf_ops *bops;
++	struct intel_bb *ibb;
++	uint32_t devid;
++	int ret;
 +
-+	if (enable) {
-+		pipe_ctl_flags = PIPE_CONTROL_FLUSH_ENABLE;
-+		intel_bb_out(ibb, GFX_OP_PIPE_CONTROL);
-+		intel_bb_out(ibb, pipe_ctl_flags);
++	devid = intel_get_drm_devid(i915);
++	igt_assert(devid);
 +
-+		set_app_id =  MI_SET_APPID |
-+			      APPTYPE(intel_bb_pxp_apptype(ibb)) |
-+			      APPID(intel_bb_pxp_appid(ibb));
-+		intel_bb_out(ibb, set_app_id);
++	bops = buf_ops_create(i915);
++	igt_assert(bops);
 +
-+		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_ENABLE;
-+		ps_op_id = PS_OP_TAG_START;
-+	} else {
-+		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_DISABLE;
-+		ps_op_id = PS_OP_TAG_END;
-+	}
++	/*
++	 * Perform a protected render operation but only label
++	 * the dest as protected. After rendering, the content
++	 * should be encrypted
++	 */
++	ret = create_ctx_with_params(i915, true, true, true, false, &ctx);
++	igt_assert_eq(ret, 0);
++	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
++	ibb = intel_bb_create_with_context(i915, ctx, 4096);
++	igt_assert(ibb);
++	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
 +
-+	pipe_ctl_flags |= (PIPE_CONTROL_CS_STALL |
-+			   PIPE_CONTROL_RENDER_TARGET_FLUSH |
-+			   PIPE_CONTROL_DATA_CACHE_INVALIDATE |
-+			   PIPE_CONTROL_POST_SYNC_OP);
-+	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL | 4);
-+	intel_bb_out(ibb, pipe_ctl_flags);
-+	intel_bb_emit_reloc(ibb, ibb->handle, 0, I915_GEM_DOMAIN_COMMAND,
-+			    (enable ? pxp_write_op_offset : (pxp_write_op_offset+8)),
-+			    ibb->batch_offset);
-+	intel_bb_out(ibb, ps_op_id);
-+	intel_bb_out(ibb, ps_op_id);
++	dstbo = alloc_and_fill_dest_buff(i915, true, TSTSURF_SIZE, TSTSURF_INITCOLOR2);
++	dstbuf = intel_buf_create_using_handle(bops, dstbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
++	intel_buf_set_pxp(dstbuf, true);
++
++	srcbo = alloc_and_fill_dest_buff(i915, false, TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
++	srcbuf = intel_buf_create_using_handle(bops, srcbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
++
++	gen12_render_copyfunc(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
++	gem_sync(i915, dstbo);
++
++	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
++				TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
++
++	intel_bb_destroy(ibb);
++	intel_buf_destroy(srcbuf);
++	gem_close(i915, srcbo);
++	intel_buf_destroy(dstbuf);
++	gem_close(i915, dstbo);
++	gem_context_destroy(i915, ctx);
++	buf_ops_destroy(bops);
 +}
 +
- /* The general rule is if it's named gen6 it is directly copied from
-  * gen6_render_copyfunc.
-  *
-@@ -953,6 +1002,7 @@ void _gen9_render_op(struct intel_bb *ibb,
- 	uint32_t vertex_buffer;
- 	uint32_t aux_pgtable_state;
- 	bool fast_clear = !src;
-+	uint32_t pxp_scratch_offset;
+ igt_main
+ {
+ 	int i915 = -1;
+@@ -489,6 +542,8 @@ igt_main
+ 		igt_describe("Verify protected render operations:");
+ 		igt_subtest("regular-baseline-src-copy-readible")
+ 			test_render_baseline(i915);
++		igt_subtest("protected-raw-src-copy-not-readible")
++			test_render_pxp_src_to_protdest(i915);
+ 	}
  
- 	if (!fast_clear)
- 		igt_assert(src->bpp == dst->bpp);
-@@ -981,8 +1031,12 @@ void _gen9_render_op(struct intel_bb *ibb,
- 	aux_pgtable_state = gen12_create_aux_pgtable_state(ibb, aux_pgtable_buf);
- 
- 	/* TODO: there is other state which isn't setup */
-+	pxp_scratch_offset = intel_bb_offset(ibb);
- 	intel_bb_ptr_set(ibb, 0);
- 
-+	if (intel_bb_pxp_enabled(ibb))
-+		gen12_emit_pxp_state(ibb, true, pxp_scratch_offset);
-+
- 	/* Start emitting the commands. The order roughly follows the mesa blorp
- 	 * order */
- 	intel_bb_out(ibb, G4X_PIPELINE_SELECT | PIPELINE_SELECT_3D |
-@@ -1054,6 +1108,9 @@ void _gen9_render_op(struct intel_bb *ibb,
- 	gen8_emit_vf_topology(ibb);
- 	gen8_emit_primitive(ibb, vertex_buffer);
- 
-+	if (intel_bb_pxp_enabled(ibb))
-+		gen12_emit_pxp_state(ibb, false, pxp_scratch_offset);
-+
- 	intel_bb_emit_bbe(ibb);
- 	intel_bb_exec(ibb, intel_bb_offset(ibb),
- 		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, false);
+ 	igt_fixture {
 -- 
 2.25.1
