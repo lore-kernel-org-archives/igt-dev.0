@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4649055320417681563=="
+Date: Thu, 16 Sep 2021 11:59:28 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YUMHcIsB1+9UmWKV@platvala-desk.ger.corp.intel.com>
+References: <20210915215558.2473428-1-John.C.Harrison@Intel.com>
+ <20210915215558.2473428-2-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 16 Sep 2021 08:55:09 -0000
-Message-ID: <163178250933.8838.7353981719905247051@emeril.freedesktop.org>
-References: <20210916081029.885986-1-priyanka.dandamudi@intel.com>
-In-Reply-To: <20210916081029.885986-1-priyanka.dandamudi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?prime=5Fvgem=3A_use_device=5Fcoherent_mmap?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210915215558.2473428-2-John.C.Harrison@Intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tests/i915/query: Query,
+ parse and validate the hwconfig table
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,268 +18,400 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: priyanka.dandamudi@intel.com
-Cc: igt-dev@lists.freedesktop.org
+To: John.C.Harrison@intel.com
+Cc: IGT-Dev@lists.freedesktop.org, Intel-GFX@lists.freedesktop.org, Rodrigo Vivi <rodrigo.vivi@intel.com>, Slawomir Milczarek <slawomir.milczarek@intel.com>, Matthew Brost <matthew.brost@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4649055320417681563==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, Sep 15, 2021 at 02:55:58PM -0700, John.C.Harrison@Intel.com wrote:
+> From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+>=20
+> Newer platforms have an embedded table giving details about that
+> platform's hardware configuration. This table can be retrieved from
+> the KMD via the existing query API. So add a test for it as both an
+> example of how to fetch the table and to validate the contents as much
+> as is possible.
+>=20
+> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+> Cc: Slawomir Milczarek <slawomir.milczarek@intel.com>
+> Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+> ---
+>  include/drm-uapi/i915_drm.h |   1 +
+>  lib/intel_hwconfig_types.h  | 106 +++++++++++++++++++++++
+>  tests/i915/i915_query.c     | 168 ++++++++++++++++++++++++++++++++++++
+>  3 files changed, 275 insertions(+)
+>  create mode 100644 lib/intel_hwconfig_types.h
+>=20
+> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+> index b9632bb2c..ae0c8dfad 100644
+> --- a/include/drm-uapi/i915_drm.h
+> +++ b/include/drm-uapi/i915_drm.h
+> @@ -2451,6 +2451,7 @@ struct drm_i915_query_item {
+>  #define DRM_I915_QUERY_ENGINE_INFO	2
+>  #define DRM_I915_QUERY_PERF_CONFIG      3
+>  #define DRM_I915_QUERY_MEMORY_REGIONS   4
+> +#define DRM_I915_QUERY_HWCONFIG_TABLE   5
+>  /* Must be kept compact -- no holes and well documented */
 
-== Series Details ==
-
-Series: tests/prime_vgem: use device_coherent mmap
-URL   : https://patchwork.freedesktop.org/series/94726/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_10594 -> IGTPW_6225
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6225 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@cs-gfx:
-    - fi-rkl-guc:         NOTRUN -> [SKIP][1] ([fdo#109315]) +17 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-rkl-guc/igt@amdgpu/amd_basic@cs-gfx.html
-
-  * igt@amdgpu/amd_basic@cs-sdma:
-    - fi-kbl-7500u:       NOTRUN -> [SKIP][2] ([fdo#109271]) +17 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-kbl-7500u/igt@amdgpu/amd_basic@cs-sdma.html
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-rkl-11600:       [PASS][3] -> [INCOMPLETE][4] ([i915#4130])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10594/fi-rkl-11600/igt@core_hotunplug@unbind-rebind.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-rkl-11600/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@gem_exec_suspend@basic-s0:
-    - fi-cfl-8109u:       [PASS][5] -> [INCOMPLETE][6] ([i915#155])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10594/fi-cfl-8109u/igt@gem_exec_suspend@basic-s0.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-cfl-8109u/igt@gem_exec_suspend@basic-s0.html
-
-  * igt@i915_module_load@reload:
-    - fi-icl-u2:          NOTRUN -> [INCOMPLETE][7] ([i915#4130] / [i915#4136])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-icl-u2/igt@i915_module_load@reload.html
-    - fi-rkl-guc:         NOTRUN -> [DMESG-WARN][8] ([i915#4136])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-rkl-guc/igt@i915_module_load@reload.html
-
-  * igt@runner@aborted:
-    - fi-icl-u2:          NOTRUN -> [FAIL][9] ([i915#2426] / [i915#3363] / [i915#3690])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-icl-u2/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-rkl-guc:         [INCOMPLETE][10] ([i915#4130]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10594/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html
-    - fi-icl-u2:          [INCOMPLETE][12] ([i915#4130]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10594/fi-icl-u2/igt@core_hotunplug@unbind-rebind.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-icl-u2/igt@core_hotunplug@unbind-rebind.html
-    - fi-kbl-7500u:       [INCOMPLETE][14] ([i915#4130]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10594/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html
-
-  
-#### Warnings ####
-
-  * igt@i915_module_load@reload:
-    - fi-cml-u2:          [INCOMPLETE][16] ([i915#4136]) -> [INCOMPLETE][17] ([i915#4130] / [i915#4136])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10594/fi-cml-u2/igt@i915_module_load@reload.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-cml-u2/igt@i915_module_load@reload.html
-    - fi-kbl-soraka:      [INCOMPLETE][18] ([i915#4136]) -> [INCOMPLETE][19] ([i915#4130] / [i915#4136])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10594/fi-kbl-soraka/igt@i915_module_load@reload.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-kbl-soraka/igt@i915_module_load@reload.html
-    - fi-icl-y:           [INCOMPLETE][20] ([i915#4130]) -> [INCOMPLETE][21] ([i915#4136])
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10594/fi-icl-y/igt@i915_module_load@reload.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-icl-y/igt@i915_module_load@reload.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [i915#155]: https://gitlab.freedesktop.org/drm/intel/issues/155
-  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
-  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
-  [i915#3690]: https://gitlab.freedesktop.org/drm/intel/issues/3690
-  [i915#4130]: https://gitlab.freedesktop.org/drm/intel/issues/4130
-  [i915#4136]: https://gitlab.freedesktop.org/drm/intel/issues/4136
+Please update i915_drm.h with a copy from the kernel and state in the
+commit message which kernel commit sha it's from. If this change is
+not in the kernel yet, add this token to lib/i915/i915_drm_local.h
+instead.
 
 
-Participating hosts (39 -> 36)
-------------------------------
-
-  Missing    (3): fi-skl-guc fi-bdw-samus bat-dg1-6 
+--=20
+Petri Latvala
 
 
-Build changes
--------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6209 -> IGTPW_6225
-
-  CI-20190529: 20190529
-  CI_DRM_10594: b615e30a53680656e5b1f7670b34b1cac2a6be27 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6225: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/index.html
-  IGT_6209: 07d6594ed02f55b68d64fa6dd7f80cfbc1ce4ef8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/index.html
-
---===============4649055320417681563==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/prime_vgem: use device_coherent mmap</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/94726/">https://patchwork.freedesktop.org/series/94726/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10594 -&gt; IGTPW_6225</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6225 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@cs-gfx:</p>
-<ul>
-<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-rkl-guc/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_basic@cs-sdma:</p>
-<ul>
-<li>fi-kbl-7500u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-kbl-7500u/igt@amdgpu/amd_basic@cs-sdma.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10594/fi-rkl-11600/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-rkl-11600/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4130">i915#4130</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s0:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10594/fi-cfl-8109u/igt@gem_exec_suspend@basic-s0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-cfl-8109u/igt@gem_exec_suspend@basic-s0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/155">i915#155</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>
-<p>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-icl-u2/igt@i915_module_load@reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4130">i915#4130</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4136">i915#4136</a>)</p>
-</li>
-<li>
-<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-rkl-guc/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4136">i915#4136</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-icl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3690">i915#3690</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>
-<p>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10594/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4130">i915#4130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html">PASS</a></p>
-</li>
-<li>
-<p>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10594/fi-icl-u2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4130">i915#4130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-icl-u2/igt@core_hotunplug@unbind-rebind.html">PASS</a></p>
-</li>
-<li>
-<p>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10594/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4130">i915#4130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html">PASS</a></p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>
-<p>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10594/fi-cml-u2/igt@i915_module_load@reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4136">i915#4136</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-cml-u2/igt@i915_module_load@reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4130">i915#4130</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4136">i915#4136</a>)</p>
-</li>
-<li>
-<p>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10594/fi-kbl-soraka/igt@i915_module_load@reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4136">i915#4136</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-kbl-soraka/igt@i915_module_load@reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4130">i915#4130</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4136">i915#4136</a>)</p>
-</li>
-<li>
-<p>fi-icl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10594/fi-icl-y/igt@i915_module_load@reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4130">i915#4130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/fi-icl-y/igt@i915_module_load@reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4136">i915#4136</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (39 -&gt; 36)</h2>
-<p>Missing    (3): fi-skl-guc fi-bdw-samus bat-dg1-6 </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6209 -&gt; IGTPW_6225</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10594: b615e30a53680656e5b1f7670b34b1cac2a6be27 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6225: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6225/index.html<br />
-  IGT_6209: 07d6594ed02f55b68d64fa6dd7f80cfbc1ce4ef8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4649055320417681563==--
+> =20
+>  	/**
+> diff --git a/lib/intel_hwconfig_types.h b/lib/intel_hwconfig_types.h
+> new file mode 100644
+> index 000000000..c9961e6bd
+> --- /dev/null
+> +++ b/lib/intel_hwconfig_types.h
+> @@ -0,0 +1,106 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright =A9 2021 Intel Corporation
+> + */
+> +
+> +#ifndef _INTEL_HWCONFIG_TYPES_H_
+> +#define _INTEL_HWCONFIG_TYPES_H_
+> +
+> +#include "intel_chipset.h"
+> +
+> +/**
+> + * enum intel_hwconfig - Global definition of hwconfig table attributes
+> + *
+> + * Intel devices provide a KLV (Key/Length/Value) table containing
+> + * the static hardware configuration for that platform.
+> + * This enum defines the current attribute keys for this KLV.
+> + */
+> +enum intel_hwconfig {
+> +	INTEL_HWCONFIG_MAX_SLICES_SUPPORTED =3D 1,
+> +	INTEL_HWCONFIG_MAX_DUAL_SUBSLICES_SUPPORTED,		/* 2 */
+> +	INTEL_HWCONFIG_MAX_NUM_EU_PER_DSS,			/* 3 */
+> +	INTEL_HWCONFIG_NUM_PIXEL_PIPES,				/* 4 */
+> +	INTEL_HWCONFIG_DEPRECATED_MAX_NUM_GEOMETRY_PIPES,	/* 5 */
+> +	INTEL_HWCONFIG_DEPRECATED_L3_CACHE_SIZE_IN_KB,		/* 6 */
+> +	INTEL_HWCONFIG_DEPRECATED_L3_BANK_COUNT,		/* 7 */
+> +	INTEL_HWCONFIG_L3_CACHE_WAYS_SIZE_IN_BYTES,		/* 8 */
+> +	INTEL_HWCONFIG_L3_CACHE_WAYS_PER_SECTOR,		/* 9 */
+> +	INTEL_HWCONFIG_MAX_MEMORY_CHANNELS,			/* 10 */
+> +	INTEL_HWCONFIG_MEMORY_TYPE,				/* 11 */
+> +	INTEL_HWCONFIG_CACHE_TYPES,                             /* 12 */
+> +	INTEL_HWCONFIG_LOCAL_MEMORY_PAGE_SIZES_SUPPORTED,	/* 13 */
+> +	INTEL_HWCONFIG_DEPRECATED_SLM_SIZE_IN_KB,		/* 14 */
+> +	INTEL_HWCONFIG_NUM_THREADS_PER_EU,			/* 15 */
+> +	INTEL_HWCONFIG_TOTAL_VS_THREADS,			/* 16 */
+> +	INTEL_HWCONFIG_TOTAL_GS_THREADS,			/* 17 */
+> +	INTEL_HWCONFIG_TOTAL_HS_THREADS,			/* 18 */
+> +	INTEL_HWCONFIG_TOTAL_DS_THREADS,			/* 19 */
+> +	INTEL_HWCONFIG_TOTAL_VS_THREADS_POCS,			/* 20 */
+> +	INTEL_HWCONFIG_TOTAL_PS_THREADS,			/* 21 */
+> +	INTEL_HWCONFIG_DEPRECATED_MAX_FILL_RATE,		/* 22 */
+> +	INTEL_HWCONFIG_MAX_RCS,					/* 23 */
+> +	INTEL_HWCONFIG_MAX_CCS,					/* 24 */
+> +	INTEL_HWCONFIG_MAX_VCS,					/* 25 */
+> +	INTEL_HWCONFIG_MAX_VECS,				/* 26 */
+> +	INTEL_HWCONFIG_MAX_COPY_CS,				/* 27 */
+> +	INTEL_HWCONFIG_DEPRECATED_URB_SIZE_IN_KB,		/* 28 */
+> +	INTEL_HWCONFIG_MIN_VS_URB_ENTRIES,			/* 29 */
+> +	INTEL_HWCONFIG_MAX_VS_URB_ENTRIES,			/* 30 */
+> +	INTEL_HWCONFIG_MIN_PCS_URB_ENTRIES,			/* 31 */
+> +	INTEL_HWCONFIG_MAX_PCS_URB_ENTRIES,			/* 32 */
+> +	INTEL_HWCONFIG_MIN_HS_URB_ENTRIES,			/* 33 */
+> +	INTEL_HWCONFIG_MAX_HS_URB_ENTRIES,			/* 34 */
+> +	INTEL_HWCONFIG_MIN_GS_URB_ENTRIES,			/* 35 */
+> +	INTEL_HWCONFIG_MAX_GS_URB_ENTRIES,			/* 36 */
+> +	INTEL_HWCONFIG_MIN_DS_URB_ENTRIES,			/* 37 */
+> +	INTEL_HWCONFIG_MAX_DS_URB_ENTRIES,			/* 38 */
+> +	INTEL_HWCONFIG_PUSH_CONSTANT_URB_RESERVED_SIZE,		/* 39 */
+> +	INTEL_HWCONFIG_POCS_PUSH_CONSTANT_URB_RESERVED_SIZE,	/* 40 */
+> +	INTEL_HWCONFIG_URB_REGION_ALIGNMENT_SIZE_IN_BYTES,	/* 41 */
+> +	INTEL_HWCONFIG_URB_ALLOCATION_SIZE_UNITS_IN_BYTES,	/* 42 */
+> +	INTEL_HWCONFIG_MAX_URB_SIZE_CCS_IN_BYTES,		/* 43 */
+> +	INTEL_HWCONFIG_VS_MIN_DEREF_BLOCK_SIZE_HANDLE_COUNT,	/* 44 */
+> +	INTEL_HWCONFIG_DS_MIN_DEREF_BLOCK_SIZE_HANDLE_COUNT,	/* 45 */
+> +	INTEL_HWCONFIG_NUM_RT_STACKS_PER_DSS,			/* 46 */
+> +	INTEL_HWCONFIG_MAX_URB_STARTING_ADDRESS,		/* 47 */
+> +	INTEL_HWCONFIG_MIN_CS_URB_ENTRIES,			/* 48 */
+> +	INTEL_HWCONFIG_MAX_CS_URB_ENTRIES,			/* 49 */
+> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_URB,			/* 50 */
+> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_REST,			/* 51 */
+> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_DC,			/* 52 */
+> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_RO,			/* 53 */
+> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_Z,			/* 54 */
+> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_COLOR,			/* 55 */
+> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_UNIFIED_TILE_CACHE,	/* 56 */
+> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_COMMAND_BUFFER,	/* 57 */
+> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_RW,			/* 58 */
+> +	INTEL_HWCONFIG_MAX_NUM_L3_CONFIGS,			/* 59 */
+> +	INTEL_HWCONFIG_BINDLESS_SURFACE_OFFSET_BIT_COUNT,	/* 60 */
+> +	INTEL_HWCONFIG_RESERVED_CCS_WAYS,			/* 61 */
+> +	INTEL_HWCONFIG_CSR_SIZE_IN_MB,				/* 62 */
+> +	INTEL_HWCONFIG_GEOMETRY_PIPES_PER_SLICE,		/* 63 */
+> +	INTEL_HWCONFIG_L3_BANK_SIZE_IN_KB,			/* 64 */
+> +	INTEL_HWCONFIG_SLM_SIZE_PER_DSS,			/* 65 */
+> +	INTEL_HWCONFIG_MAX_PIXEL_FILL_RATE_PER_SLICE,		/* 66 */
+> +	INTEL_HWCONFIG_MAX_PIXEL_FILL_RATE_PER_DSS,		/* 67 */
+> +	INTEL_HWCONFIG_URB_SIZE_PER_SLICE_IN_KB,		/* 68 */
+> +	INTEL_HWCONFIG_URB_SIZE_PER_L3_BANK_COUNT_IN_KB,	/* 69 */
+> +	INTEL_HWCONFIG_MAX_SUBSLICE,				/* 70 */
+> +	INTEL_HWCONFIG_MAX_EU_PER_SUBSLICE,			/* 71 */
+> +	INTEL_HWCONFIG_RAMBO_L3_BANK_SIZE_IN_KB,		/* 72 */
+> +	INTEL_HWCONFIG_SLM_SIZE_PER_SS_IN_KB,			/* 73 */
+> +	__INTEL_HWCONFIG_LIMIT
+> +};
+> +
+> +enum {
+> +	INTEL_HWCONFIG_MEMORY_TYPE_LPDDR4 =3D 0,
+> +	INTEL_HWCONFIG_MEMORY_TYPE_LPDDR5,
+> +};
+> +
+> +enum {
+> +	INTEL_HWCONFIG_CACHE_TYPE_L3    =3D BIT(0),
+> +	INTEL_HWCONFIG_CACHE_TYPE_LLC   =3D BIT(1),
+> +	INTEL_HWCONFIG_CACHE_TYPE_EDRAM =3D BIT(2),
+> +};
+> +
+> +#endif /* _INTEL_HWCONFIG_TYPES_H_ */
+> diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
+> index 3c791b8ba..1802287e3 100644
+> --- a/tests/i915/i915_query.c
+> +++ b/tests/i915/i915_query.c
+> @@ -22,6 +22,7 @@
+>   */
+> =20
+>  #include "igt.h"
+> +#include "intel_hwconfig_types.h"
+> =20
+>  #include <limits.h>
+> =20
+> @@ -842,6 +843,170 @@ static void engines(int fd)
+>  	free(engines);
+>  }
+> =20
+> +static const char * const hwconfig_keys[] =3D {
+> +	[INTEL_HWCONFIG_MAX_SLICES_SUPPORTED] =3D "Maximum number of Slices",
+> +	[INTEL_HWCONFIG_MAX_DUAL_SUBSLICES_SUPPORTED] =3D "Maximum number of DS=
+S",
+> +	[INTEL_HWCONFIG_MAX_NUM_EU_PER_DSS] =3D "Maximum number of EUs per DSS",
+> +	[INTEL_HWCONFIG_NUM_PIXEL_PIPES] =3D "Pixel Pipes",
+> +	[INTEL_HWCONFIG_DEPRECATED_MAX_NUM_GEOMETRY_PIPES] =3D "[DEPRECATED] Ge=
+ometry Pipes",
+> +	[INTEL_HWCONFIG_DEPRECATED_L3_CACHE_SIZE_IN_KB] =3D "[DEPRECATED] L3 Si=
+ze (in KB)",
+> +	[INTEL_HWCONFIG_DEPRECATED_L3_BANK_COUNT] =3D "[DEPRECATED] L3 Bank Cou=
+nt",
+> +	[INTEL_HWCONFIG_L3_CACHE_WAYS_SIZE_IN_BYTES] =3D "L3 Cache Ways Size (i=
+n bytes)",
+> +	[INTEL_HWCONFIG_L3_CACHE_WAYS_PER_SECTOR] =3D "L3 Cache Ways Per Sector=
+",
+> +	[INTEL_HWCONFIG_MAX_MEMORY_CHANNELS] =3D "Memory Channels",
+> +	[INTEL_HWCONFIG_MEMORY_TYPE] =3D "Memory type",
+> +	[INTEL_HWCONFIG_CACHE_TYPES] =3D "Cache types",
+> +	[INTEL_HWCONFIG_LOCAL_MEMORY_PAGE_SIZES_SUPPORTED] =3D "Local memory pa=
+ge size",
+> +	[INTEL_HWCONFIG_DEPRECATED_SLM_SIZE_IN_KB] =3D "[DEPRECATED] SLM Size (=
+in KB)",
+> +	[INTEL_HWCONFIG_NUM_THREADS_PER_EU] =3D "Num thread per EU",
+> +	[INTEL_HWCONFIG_TOTAL_VS_THREADS] =3D "Maximum Vertex Shader threads",
+> +	[INTEL_HWCONFIG_TOTAL_GS_THREADS] =3D "Maximum Geometry Shader threads",
+> +	[INTEL_HWCONFIG_TOTAL_HS_THREADS] =3D "Maximum Hull Shader threads",
+> +	[INTEL_HWCONFIG_TOTAL_DS_THREADS] =3D "Maximum Domain Shader threads",
+> +	[INTEL_HWCONFIG_TOTAL_VS_THREADS_POCS] =3D "Maximum Vertex Shader Threa=
+ds for POCS",
+> +	[INTEL_HWCONFIG_TOTAL_PS_THREADS] =3D "Maximum Pixel Shader Threads",
+> +	[INTEL_HWCONFIG_DEPRECATED_MAX_FILL_RATE] =3D "[DEPRECATED] Maximum pix=
+el rate for Fill",
+> +	[INTEL_HWCONFIG_MAX_RCS] =3D "MaxRCS",
+> +	[INTEL_HWCONFIG_MAX_CCS] =3D "MaxCCS",
+> +	[INTEL_HWCONFIG_MAX_VCS] =3D "MaxVCS",
+> +	[INTEL_HWCONFIG_MAX_VECS] =3D "MaxVECS",
+> +	[INTEL_HWCONFIG_MAX_COPY_CS] =3D "MaxCopyCS",
+> +	[INTEL_HWCONFIG_DEPRECATED_URB_SIZE_IN_KB] =3D "[DEPRECATED] URB Size (=
+in KB)",
+> +	[INTEL_HWCONFIG_MIN_VS_URB_ENTRIES] =3D "The minimum number of VS URB e=
+ntries.",
+> +	[INTEL_HWCONFIG_MAX_VS_URB_ENTRIES] =3D "The maximum number of VS URB e=
+ntries.",
+> +	[INTEL_HWCONFIG_MIN_PCS_URB_ENTRIES] =3D "The minimum number of PCS URB=
+ entries",
+> +	[INTEL_HWCONFIG_MAX_PCS_URB_ENTRIES] =3D "The maximum number of PCS URB=
+ entries",
+> +	[INTEL_HWCONFIG_MIN_HS_URB_ENTRIES] =3D "The minimum number of HS URB e=
+ntries",
+> +	[INTEL_HWCONFIG_MAX_HS_URB_ENTRIES] =3D "The maximum number of HS URB e=
+ntries",
+> +	[INTEL_HWCONFIG_MIN_GS_URB_ENTRIES] =3D "The minimum number of GS URB e=
+ntries",
+> +	[INTEL_HWCONFIG_MAX_GS_URB_ENTRIES] =3D "The maximum number of GS URB e=
+ntries",
+> +	[INTEL_HWCONFIG_MIN_DS_URB_ENTRIES] =3D "The minimum number of DS URB E=
+ntries",
+> +	[INTEL_HWCONFIG_MAX_DS_URB_ENTRIES] =3D "The maximum number of DS URB E=
+ntries",
+> +	[INTEL_HWCONFIG_PUSH_CONSTANT_URB_RESERVED_SIZE] =3D "Push Constant URB=
+ Reserved Size (in bytes)",
+> +	[INTEL_HWCONFIG_POCS_PUSH_CONSTANT_URB_RESERVED_SIZE] =3D "POCS Push Co=
+nstant URB Reserved Size (in bytes)",
+> +	[INTEL_HWCONFIG_URB_REGION_ALIGNMENT_SIZE_IN_BYTES] =3D "URB Region Ali=
+gnment Size (in bytes)",
+> +	[INTEL_HWCONFIG_URB_ALLOCATION_SIZE_UNITS_IN_BYTES] =3D "URB Allocation=
+ Size Units (in bytes)",
+> +	[INTEL_HWCONFIG_MAX_URB_SIZE_CCS_IN_BYTES] =3D "Max URB Size CCS (in by=
+tes)",
+> +	[INTEL_HWCONFIG_VS_MIN_DEREF_BLOCK_SIZE_HANDLE_COUNT] =3D "VS Min Deref=
+ BlockSize Handle Count",
+> +	[INTEL_HWCONFIG_DS_MIN_DEREF_BLOCK_SIZE_HANDLE_COUNT] =3D "DS Min Deref=
+ Block Size Handle Count",
+> +	[INTEL_HWCONFIG_NUM_RT_STACKS_PER_DSS] =3D "Num RT Stacks Per DSS",
+> +	[INTEL_HWCONFIG_MAX_URB_STARTING_ADDRESS] =3D "Max URB Starting Address=
+",
+> +	[INTEL_HWCONFIG_MIN_CS_URB_ENTRIES] =3D "Min CS URB Entries",
+> +	[INTEL_HWCONFIG_MAX_CS_URB_ENTRIES] =3D "Max CS URB Entries",
+> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_URB] =3D "L3 Alloc Per Bank - URB",
+> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_REST] =3D "L3 Alloc Per Bank - Rest",
+> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_DC] =3D "L3 Alloc Per Bank - DC",
+> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_RO] =3D "L3 Alloc Per Bank - RO",
+> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_Z] =3D "L3 Alloc Per Bank - Z",
+> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_COLOR] =3D "L3 Alloc Per Bank - Color=
+",
+> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_UNIFIED_TILE_CACHE] =3D "L3 Alloc Per=
+ Bank - Unified Tile Cache",
+> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_COMMAND_BUFFER] =3D "L3 Alloc Per Ban=
+k - Command Buffer",
+> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_RW] =3D "L3 Alloc Per Bank - RW",
+> +	[INTEL_HWCONFIG_MAX_NUM_L3_CONFIGS] =3D "Num L3 Configs",
+> +	[INTEL_HWCONFIG_BINDLESS_SURFACE_OFFSET_BIT_COUNT] =3D "Bindless Surfac=
+e Offset Bit Count",
+> +	[INTEL_HWCONFIG_RESERVED_CCS_WAYS] =3D "Reserved CCS ways",
+> +	[INTEL_HWCONFIG_CSR_SIZE_IN_MB] =3D "CSR Size (in MB)",
+> +	[INTEL_HWCONFIG_GEOMETRY_PIPES_PER_SLICE] =3D "Geometry pipes per slice=
+",
+> +	[INTEL_HWCONFIG_L3_BANK_SIZE_IN_KB] =3D "L3 bank size (in KB)",
+> +	[INTEL_HWCONFIG_SLM_SIZE_PER_DSS] =3D "SLM size per DSS",
+> +	[INTEL_HWCONFIG_MAX_PIXEL_FILL_RATE_PER_SLICE] =3D "Max pixel fill rate=
+ per slice",
+> +	[INTEL_HWCONFIG_MAX_PIXEL_FILL_RATE_PER_DSS] =3D "Max pixel fill rate p=
+er DSS",
+> +	[INTEL_HWCONFIG_URB_SIZE_PER_SLICE_IN_KB] =3D "URB size per slice (in K=
+B)",
+> +	[INTEL_HWCONFIG_URB_SIZE_PER_L3_BANK_COUNT_IN_KB] =3D "URB size per L3 =
+bank count (in KB)",
+> +	[INTEL_HWCONFIG_MAX_SUBSLICE] =3D "Max subslices",
+> +	[INTEL_HWCONFIG_MAX_EU_PER_SUBSLICE] =3D "Max EUs per subslice",
+> +	[INTEL_HWCONFIG_RAMBO_L3_BANK_SIZE_IN_KB] =3D "RAMBO L3 bank size (in K=
+B)",
+> +	[INTEL_HWCONFIG_SLM_SIZE_PER_SS_IN_KB] =3D "SLM size per SS (in KB)",
+> +};
+> +
+> +static void query_parse_and_validate_hwconfig_table(int i915)
+> +{
+> +	struct drm_i915_query_item item =3D {
+> +		.query_id =3D DRM_I915_QUERY_HWCONFIG_TABLE,
+> +	};
+> +	uint32_t *data, value;
+> +	int i =3D 0;
+> +	int len, j, max_words, table_size;
+> +
+> +	igt_assert(ARRAY_SIZE(hwconfig_keys) =3D=3D __INTEL_HWCONFIG_LIMIT);
+> +
+> +	i915_query_items(i915, &item, 1);
+> +	table_size =3D item.length;
+> +	igt_require(table_size > 0);
+> +
+> +	data =3D malloc(table_size);
+> +	igt_assert(data);
+> +	memset(data, 0, table_size);
+> +	item.data_ptr =3D to_user_pointer(data);
+> +
+> +	i915_query_items(i915, &item, 1);
+> +	igt_assert(item.length =3D=3D table_size);
+> +	igt_info("Table size =3D %d bytes\n", table_size);
+> +	igt_assert(table_size > 0);
+> +
+> +	/* HWConfig table is a list of KLV sets */
+> +	max_words =3D table_size / sizeof(uint32_t);
+> +	igt_assert(max_words * sizeof(uint32_t) =3D=3D table_size);
+> +	while (i < max_words) {
+> +		/* Attribute ID zero is invalid */
+> +		igt_assert(data[i] > 0);
+> +		igt_assert(data[i] < __INTEL_HWCONFIG_LIMIT);
+> +
+> +		len =3D data[i + 1];
+> +		igt_assert(len > 0);
+> +		igt_assert((i + 2 + len) <=3D max_words);
+> +
+> +		igt_info("[%2d] %s: ", data[i], hwconfig_keys[data[i]]);
+> +
+> +		value =3D data[i + 2];
+> +		switch (data[i]) {
+> +		case INTEL_HWCONFIG_MEMORY_TYPE:
+> +			igt_assert(len =3D=3D 1);
+> +			switch (value) {
+> +			case INTEL_HWCONFIG_MEMORY_TYPE_LPDDR4:
+> +				igt_info("LPDDR4\n");
+> +				break;
+> +			case INTEL_HWCONFIG_MEMORY_TYPE_LPDDR5:
+> +				igt_info("LPDDR5\n");
+> +				break;
+> +			default:
+> +				igt_assert(0);
+> +			}
+> +			break;
+> +
+> +		case INTEL_HWCONFIG_CACHE_TYPES:
+> +			igt_assert(len =3D=3D 1);
+> +
+> +#define TEST_CACHE_TYPE(type)					\
+> +	if (value & INTEL_HWCONFIG_CACHE_TYPE_##type) {		\
+> +		value &=3D ~INTEL_HWCONFIG_CACHE_TYPE_##type;	\
+> +		igt_info(#type);				\
+> +		if (value)					\
+> +			igt_info(", ");				\
+> +	}
+> +
+> +			TEST_CACHE_TYPE(L3);
+> +			TEST_CACHE_TYPE(LLC);
+> +			TEST_CACHE_TYPE(EDRAM);
+> +#undef TEST_CACHE_TYPE
+> +
+> +			igt_assert(value =3D=3D 0);
+> +			igt_info("\n");
+> +			break;
+> +
+> +		default:
+> +			for (j =3D i + 2; j < i + 1 + len; j++)
+> +				igt_info("%d, ", data[j]);
+> +			igt_info("%d\n", data[j]);
+> +		}
+> +
+> +		/* Advance to next key */
+> +		i +=3D 2 + len;
+> +	}
+> +
+> +	free(data);
+> +}
+> +
+>  igt_main
+>  {
+>  	int fd =3D -1;
+> @@ -911,6 +1076,9 @@ igt_main
+>  			engines(fd);
+>  	}
+> =20
+> +	igt_subtest("hwconfig_table")
+> +		query_parse_and_validate_hwconfig_table(fd);
+> +
+>  	igt_fixture {
+>  		close(fd);
+>  	}
+> --=20
+> 2.25.1
+>=20
