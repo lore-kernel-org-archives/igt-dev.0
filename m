@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36EC36E57E
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Sep 2021 18:08:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 812736E821
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Sep 2021 18:08:28 +0000 (UTC)
 From: Matthew Brost <matthew.brost@intel.com>
-Date: Thu, 16 Sep 2021 11:02:58 -0700
-Message-Id: <20210916180301.6791-1-matthew.brost@intel.com>
+Date: Thu, 16 Sep 2021 11:03:01 -0700
+Message-Id: <20210916180301.6791-4-matthew.brost@intel.com>
+In-Reply-To: <20210916180301.6791-1-matthew.brost@intel.com>
+References: <20210916180301.6791-1-matthew.brost@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/3] IGT fixes for priority management +
- preempt timeout with GuC submission
+Subject: [igt-dev] [PATCH i-g-t 3/3] i915/sysfs_preempt_timeout: Update test
+ to work with GuC submission
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,22 +24,52 @@ To: igt-dev@lists.freedesktop.org
 Cc: john.c.harrison@intel.com, daniele.ceraolospurio@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Increase reset timeout as resets can take a bit longer with GuC
+submission because an error capture is done and with a large GuC log (16
+MB) these take a while.
+
+Don't run 'off' section as with GuC submission we don't handle
+dynamically changing the preemption timeout from 'off' to 'on' on a
+currently running context. This is not bug in GuC submission rather an
+architectural decision to not implement this as there is no user aside
+from IGTs. We don't run this section on any gen12+ platforms as we
+assume GuC submission on these platforms.
+
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+---
+ tests/i915/sysfs_preempt_timeout.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Matthew Brost (3):
-  i915/gem_exec_schedule: Make gem_exec_schedule understand static
-    priority mapping
-  i915/gem_ctx_shared: Make gem_ctx_shared understand static priority
-    mapping
-  i915/sysfs_preempt_timeout: Update test to work with GuC submission
-
- lib/i915/gem_scheduler.c           | 14 ++++++++++
- lib/i915/gem_scheduler.h           |  1 +
- lib/i915/i915_drm_local.h          | 10 +++++++
- tests/i915/gem_ctx_shared.c        |  5 ++--
- tests/i915/gem_exec_schedule.c     | 43 +++++++++++++++++++-----------
- tests/i915/sysfs_preempt_timeout.c |  6 ++++-
- 6 files changed, 61 insertions(+), 18 deletions(-)
-
+diff --git a/tests/i915/sysfs_preempt_timeout.c b/tests/i915/sysfs_preempt_timeout.c
+index d176ae72e..fe6b30236 100644
+--- a/tests/i915/sysfs_preempt_timeout.c
++++ b/tests/i915/sysfs_preempt_timeout.c
+@@ -29,6 +29,7 @@
+ #include <sys/types.h>
+ #include <unistd.h>
+ 
++#include "igt.h"
+ #include "igt_params.h"
+ #include "drmtest.h"
+ #include "i915/gem.h"
+@@ -41,7 +42,7 @@
+ #include "sw_sync.h"
+ 
+ #define ATTR "preempt_timeout_ms"
+-#define RESET_TIMEOUT 50 /* milliseconds, at least one jiffie for kworker */
++#define RESET_TIMEOUT 1000 /* milliseconds, at long enough for an error capture */
+ 
+ static bool __enable_hangcheck(int dir, bool state)
+ {
+@@ -254,6 +255,9 @@ static void test_off(int i915, int engine)
+ 	gem_quiescent_gpu(i915);
+ 	igt_require(enable_hangcheck(i915, false));
+ 
++	/* Not a supported behavior for GuC enabled platforms */
++	igt_require(intel_gen(intel_get_drm_devid(i915)) < 12);
++
+ 	igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
+ 	igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
+ 
 -- 
 2.32.0
