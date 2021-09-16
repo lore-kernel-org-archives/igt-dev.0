@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5BCE66EE1E
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Sep 2021 15:35:21 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C1EC76EE22
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Sep 2021 15:35:28 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Thu, 16 Sep 2021 18:35:10 +0300
-Message-Id: <20210916153515.21369-1-ville.syrjala@linux.intel.com>
+Date: Thu, 16 Sep 2021 18:35:12 +0300
+Message-Id: <20210916153515.21369-3-ville.syrjala@linux.intel.com>
+In-Reply-To: <20210916153515.21369-1-ville.syrjala@linux.intel.com>
+References: <20210916153515.21369-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/6] tests/kms_invalid_dotclock: Rename to
- kms_invalid_mode
+Subject: [igt-dev] [PATCH i-g-t 3/6] tests/kms_invalid_mode: Move bigjoiner
+ handling into the proper place
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,45 +26,67 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Let's add some more tests for invalid modes. To that end rename
-the current kms_invalid_dotclock to kms_invalid_mode so we a
-place where to put these.
+Since we're adding other subtests we don't want to muck around
+with the dotclock unconditionally in the main test code. Move
+the handling into the subtest specific adjust function.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/i915/{kms_invalid_dotclock.c => kms_invalid_mode.c} | 2 +-
- tests/meson.build                                         | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
- rename tests/i915/{kms_invalid_dotclock.c => kms_invalid_mode.c} (99%)
+ tests/i915/kms_invalid_mode.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/tests/i915/kms_invalid_dotclock.c b/tests/i915/kms_invalid_mode.c
-similarity index 99%
-rename from tests/i915/kms_invalid_dotclock.c
-rename to tests/i915/kms_invalid_mode.c
-index 95136d366dd7..dc30e6bb5444 100644
---- a/tests/i915/kms_invalid_dotclock.c
+diff --git a/tests/i915/kms_invalid_mode.c b/tests/i915/kms_invalid_mode.c
+index 8b24993e40a3..a1899bd52214 100644
+--- a/tests/i915/kms_invalid_mode.c
 +++ b/tests/i915/kms_invalid_mode.c
-@@ -25,7 +25,7 @@
- #include "igt.h"
- #include <stdbool.h>
+@@ -69,7 +69,9 @@ can_bigjoiner(data_t *data)
+ static bool
+ adjust_mode_clock_too_high(data_t *data, drmModeModeInfoPtr mode)
+ {
+-	igt_require(data->max_dotclock != 0);
++	int max_dotclock = data->max_dotclock;
++
++	igt_require(max_dotclock != 0);
  
--IGT_TEST_DESCRIPTION("Make sure all modesets are rejected when the requested dotclock is too high");
-+IGT_TEST_DESCRIPTION("Make sure all modesets are rejected when the requested mode is invalid");
+ 	/*
+ 	 * FIXME When we have a fixed mode, the kernel will ignore
+@@ -82,7 +84,18 @@ adjust_mode_clock_too_high(data_t *data, drmModeModeInfoPtr mode)
+ 	if (has_scaling_mode_prop(data))
+ 		return false;
  
- typedef struct {
- 	int drm_fd;
-diff --git a/tests/meson.build b/tests/meson.build
-index 8ad52596a491..3e3090e5d8b4 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -228,7 +228,7 @@ i915_progs = [
- 	'kms_flip_scaled_crc',
- 	'kms_flip_tiling',
- 	'kms_frontbuffer_tracking',
--	'kms_invalid_dotclock',
-+	'kms_invalid_mode',
- 	'kms_legacy_colorkey',
- 	'kms_mmap_write_crc',
- 	'kms_pipe_b_c_ivb',
+-	mode->clock = data->max_dotclock + 1;
++	/*
++	 * Newer platforms can support modes higher than the maximum dot clock
++	 * by using pipe joiner, so set the mode clock twice that of maximum
++	 * dot clock;
++	 */
++	if (can_bigjoiner(data)) {
++		igt_info("Platform supports bigjoiner with %s\n",
++			 data->output->name);
++		max_dotclock *= 2;
++	}
++
++	mode->clock = max_dotclock + 1;
+ 
+ 	return true;
+ }
+@@ -103,17 +116,6 @@ test_output(data_t *data)
+ 	if (!data->adjust_mode(data, &mode))
+ 		return 0;
+ 
+-	/*
+-	 * Newer platforms can support modes higher than the maximum dot clock
+-	 * by using pipe joiner, so set the mode clock twice that of maximum
+-	 * dot clock;
+-	 */
+-	if (can_bigjoiner(data)) {
+-		igt_info("Platform supports bigjoiner with %s\n",
+-			  output->name);
+-		mode.clock *= 2;
+-	}
+-
+ 	igt_create_fb(data->drm_fd,
+ 		      mode.hdisplay, mode.vdisplay,
+ 		      DRM_FORMAT_XRGB8888,
 -- 
 2.32.0
