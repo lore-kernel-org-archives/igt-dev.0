@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B83D6EDDC
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Sep 2021 14:12:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF2656EB84
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Sep 2021 14:24:22 +0000 (UTC)
 From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Thu, 16 Sep 2021 19:29:55 +0530
-Message-Id: <20210916135955.17270-1-vidya.srinivas@intel.com>
-In-Reply-To: <20210902151334.15818-1-vidya.srinivas@intel.com>
-References: <20210902151334.15818-1-vidya.srinivas@intel.com>
+Date: Thu, 16 Sep 2021 19:42:27 +0530
+Message-Id: <20210916141227.17554-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Skip tests if selected
- fetch is not available
+Subject: [igt-dev] [PATCH i-g-t] lib/i915/intel_memory_region: Fix
+ regression on 5.4 kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,32 +22,33 @@ To: igt-dev@lists.freedesktop.org
 Cc: Bhanuprakash.Modem@intel.com, markyacoub@google.com, Vidya Srinivas <vidya.srinivas@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Currently the tests are failing on systems where selected
-fetch feature is not availble. Kernel returns -EINVAL when
-the test executes reporting "Invalid debug mask 4".
-Patch skips if selected fetch feature is not available
-in the kernel.
-
-v2: Incorportated Mark Yacoub's comments.
-Changed igt_skip to igt_require_f
+Starting commit 8759c4a3020ce4 "Add intel_buf_init_in_region"
+__intel_buf_init uses gem_create_in_memory_regions instead of
+gem_create. Older kernels like 5.4 still dont have support for
+I915_GEM_CREATE_EXT_MEMORY_REGIONS (i915_gem_create_ext_ioctl)
+from kernel commit (https://patchwork.freedesktop.org/patch/431581/?series=89648&rev=1)
+Due to this, the flip-vs-fences tests are failing on kernel 5.4
+Patch add roll back to gem_create when __gem_create_in_memory_region_list fails.
 
 Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 ---
- lib/igt_psr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/i915/intel_memory_region.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-index 68240f9a33b4..0af503fb796e 100644
---- a/lib/igt_psr.c
-+++ b/lib/igt_psr.c
-@@ -167,7 +167,7 @@ static bool psr_set(int device, int debugfs_fd, int mode)
- 		}
+diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+index 3de40549319b..323b96bad232 100644
+--- a/lib/i915/intel_memory_region.c
++++ b/lib/i915/intel_memory_region.c
+@@ -209,7 +209,9 @@ uint32_t gem_create_in_memory_region_list(int fd, uint64_t size,
+ 	uint32_t handle;
+ 	int ret = __gem_create_in_memory_region_list(fd, &handle, size,
+ 						     mem_regions, num_regions);
+-	igt_assert_eq(ret, 0);
++	if (ret != 0)
++		handle = gem_create(fd, size);
++
+ 	return handle;
+ }
  
- 		ret = psr_write(debugfs_fd, debug_val);
--		igt_assert(ret > 0);
-+		igt_require_f(ret == 0, "PSR2 SF feature not available\n");
- 	}
- 
- 	/* Restore original value on exit */
 -- 
 2.33.0
