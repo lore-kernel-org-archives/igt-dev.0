@@ -1,16 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 16 Sep 2021 11:59:28 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YUMHcIsB1+9UmWKV@platvala-desk.ger.corp.intel.com>
-References: <20210915215558.2473428-1-John.C.Harrison@Intel.com>
- <20210915215558.2473428-2-John.C.Harrison@Intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B6726EAA8
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Sep 2021 04:14:54 +0000 (UTC)
+From: "Kattamanchi, JaswanthX" <jaswanthx.kattamanchi@intel.com>
+Date: Thu, 16 Sep 2021 04:14:50 +0000
+Message-ID: <DM6PR11MB335503860D3F00F56CF702DAEEDC9@DM6PR11MB3355.namprd11.prod.outlook.com>
+References: <20210915033358.561080-1-bhanuprakash.modem@intel.com>
+ <163167942182.30117.13497902848252578416@emeril.freedesktop.org>
+ <YUHh0i/CQKPLitQP@platvala-desk.ger.corp.intel.com>
+ <YUHjSluN9n6AW+iE@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <YUHjSluN9n6AW+iE@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20210915215558.2473428-2-John.C.Harrison@Intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tests/i915/query: Query,
- parse and validate the hwconfig table
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fcolor=5Fchamelium=3A__Skip_CTM_test_if_property_is_not_pr?=
+ =?utf-8?q?esent_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,398 +27,153 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: John.C.Harrison@intel.com
-Cc: IGT-Dev@lists.freedesktop.org, Intel-GFX@lists.freedesktop.org, Rodrigo Vivi <rodrigo.vivi@intel.com>, Slawomir Milczarek <slawomir.milczarek@intel.com>, Matthew Brost <matthew.brost@intel.com>
+To: "Latvala, Petri" <petri.latvala@intel.com>
+Cc: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "Naramasetti,
+ LaxminarayanaX" <laxminarayanax.naramasetti@intel.com>, "Sai Nandan,
+ YedireswarapuX" <yedireswarapux.sai.nandan@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Vudum,
+ Lakshminarayana" <lakshminarayana.vudum@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Sep 15, 2021 at 02:55:58PM -0700, John.C.Harrison@Intel.com wrote:
-> From: Rodrigo Vivi <rodrigo.vivi@intel.com>
->=20
-> Newer platforms have an embedded table giving details about that
-> platform's hardware configuration. This table can be retrieved from
-> the KMD via the existing query API. So add a test for it as both an
-> example of how to fetch the table and to validate the contents as much
-> as is possible.
->=20
-> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-> Cc: Slawomir Milczarek <slawomir.milczarek@intel.com>
-> Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-> ---
->  include/drm-uapi/i915_drm.h |   1 +
->  lib/intel_hwconfig_types.h  | 106 +++++++++++++++++++++++
->  tests/i915/i915_query.c     | 168 ++++++++++++++++++++++++++++++++++++
->  3 files changed, 275 insertions(+)
->  create mode 100644 lib/intel_hwconfig_types.h
->=20
-> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-> index b9632bb2c..ae0c8dfad 100644
-> --- a/include/drm-uapi/i915_drm.h
-> +++ b/include/drm-uapi/i915_drm.h
-> @@ -2451,6 +2451,7 @@ struct drm_i915_query_item {
->  #define DRM_I915_QUERY_ENGINE_INFO	2
->  #define DRM_I915_QUERY_PERF_CONFIG      3
->  #define DRM_I915_QUERY_MEMORY_REGIONS   4
-> +#define DRM_I915_QUERY_HWCONFIG_TABLE   5
->  /* Must be kept compact -- no holes and well documented */
-
-Please update i915_drm.h with a copy from the kernel and state in the
-commit message which kernel commit sha it's from. If this change is
-not in the kernel yet, add this token to lib/i915/i915_drm_local.h
-instead.
-
-
---=20
-Petri Latvala
-
-
-
-> =20
->  	/**
-> diff --git a/lib/intel_hwconfig_types.h b/lib/intel_hwconfig_types.h
-> new file mode 100644
-> index 000000000..c9961e6bd
-> --- /dev/null
-> +++ b/lib/intel_hwconfig_types.h
-> @@ -0,0 +1,106 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright =A9 2021 Intel Corporation
-> + */
-> +
-> +#ifndef _INTEL_HWCONFIG_TYPES_H_
-> +#define _INTEL_HWCONFIG_TYPES_H_
-> +
-> +#include "intel_chipset.h"
-> +
-> +/**
-> + * enum intel_hwconfig - Global definition of hwconfig table attributes
-> + *
-> + * Intel devices provide a KLV (Key/Length/Value) table containing
-> + * the static hardware configuration for that platform.
-> + * This enum defines the current attribute keys for this KLV.
-> + */
-> +enum intel_hwconfig {
-> +	INTEL_HWCONFIG_MAX_SLICES_SUPPORTED =3D 1,
-> +	INTEL_HWCONFIG_MAX_DUAL_SUBSLICES_SUPPORTED,		/* 2 */
-> +	INTEL_HWCONFIG_MAX_NUM_EU_PER_DSS,			/* 3 */
-> +	INTEL_HWCONFIG_NUM_PIXEL_PIPES,				/* 4 */
-> +	INTEL_HWCONFIG_DEPRECATED_MAX_NUM_GEOMETRY_PIPES,	/* 5 */
-> +	INTEL_HWCONFIG_DEPRECATED_L3_CACHE_SIZE_IN_KB,		/* 6 */
-> +	INTEL_HWCONFIG_DEPRECATED_L3_BANK_COUNT,		/* 7 */
-> +	INTEL_HWCONFIG_L3_CACHE_WAYS_SIZE_IN_BYTES,		/* 8 */
-> +	INTEL_HWCONFIG_L3_CACHE_WAYS_PER_SECTOR,		/* 9 */
-> +	INTEL_HWCONFIG_MAX_MEMORY_CHANNELS,			/* 10 */
-> +	INTEL_HWCONFIG_MEMORY_TYPE,				/* 11 */
-> +	INTEL_HWCONFIG_CACHE_TYPES,                             /* 12 */
-> +	INTEL_HWCONFIG_LOCAL_MEMORY_PAGE_SIZES_SUPPORTED,	/* 13 */
-> +	INTEL_HWCONFIG_DEPRECATED_SLM_SIZE_IN_KB,		/* 14 */
-> +	INTEL_HWCONFIG_NUM_THREADS_PER_EU,			/* 15 */
-> +	INTEL_HWCONFIG_TOTAL_VS_THREADS,			/* 16 */
-> +	INTEL_HWCONFIG_TOTAL_GS_THREADS,			/* 17 */
-> +	INTEL_HWCONFIG_TOTAL_HS_THREADS,			/* 18 */
-> +	INTEL_HWCONFIG_TOTAL_DS_THREADS,			/* 19 */
-> +	INTEL_HWCONFIG_TOTAL_VS_THREADS_POCS,			/* 20 */
-> +	INTEL_HWCONFIG_TOTAL_PS_THREADS,			/* 21 */
-> +	INTEL_HWCONFIG_DEPRECATED_MAX_FILL_RATE,		/* 22 */
-> +	INTEL_HWCONFIG_MAX_RCS,					/* 23 */
-> +	INTEL_HWCONFIG_MAX_CCS,					/* 24 */
-> +	INTEL_HWCONFIG_MAX_VCS,					/* 25 */
-> +	INTEL_HWCONFIG_MAX_VECS,				/* 26 */
-> +	INTEL_HWCONFIG_MAX_COPY_CS,				/* 27 */
-> +	INTEL_HWCONFIG_DEPRECATED_URB_SIZE_IN_KB,		/* 28 */
-> +	INTEL_HWCONFIG_MIN_VS_URB_ENTRIES,			/* 29 */
-> +	INTEL_HWCONFIG_MAX_VS_URB_ENTRIES,			/* 30 */
-> +	INTEL_HWCONFIG_MIN_PCS_URB_ENTRIES,			/* 31 */
-> +	INTEL_HWCONFIG_MAX_PCS_URB_ENTRIES,			/* 32 */
-> +	INTEL_HWCONFIG_MIN_HS_URB_ENTRIES,			/* 33 */
-> +	INTEL_HWCONFIG_MAX_HS_URB_ENTRIES,			/* 34 */
-> +	INTEL_HWCONFIG_MIN_GS_URB_ENTRIES,			/* 35 */
-> +	INTEL_HWCONFIG_MAX_GS_URB_ENTRIES,			/* 36 */
-> +	INTEL_HWCONFIG_MIN_DS_URB_ENTRIES,			/* 37 */
-> +	INTEL_HWCONFIG_MAX_DS_URB_ENTRIES,			/* 38 */
-> +	INTEL_HWCONFIG_PUSH_CONSTANT_URB_RESERVED_SIZE,		/* 39 */
-> +	INTEL_HWCONFIG_POCS_PUSH_CONSTANT_URB_RESERVED_SIZE,	/* 40 */
-> +	INTEL_HWCONFIG_URB_REGION_ALIGNMENT_SIZE_IN_BYTES,	/* 41 */
-> +	INTEL_HWCONFIG_URB_ALLOCATION_SIZE_UNITS_IN_BYTES,	/* 42 */
-> +	INTEL_HWCONFIG_MAX_URB_SIZE_CCS_IN_BYTES,		/* 43 */
-> +	INTEL_HWCONFIG_VS_MIN_DEREF_BLOCK_SIZE_HANDLE_COUNT,	/* 44 */
-> +	INTEL_HWCONFIG_DS_MIN_DEREF_BLOCK_SIZE_HANDLE_COUNT,	/* 45 */
-> +	INTEL_HWCONFIG_NUM_RT_STACKS_PER_DSS,			/* 46 */
-> +	INTEL_HWCONFIG_MAX_URB_STARTING_ADDRESS,		/* 47 */
-> +	INTEL_HWCONFIG_MIN_CS_URB_ENTRIES,			/* 48 */
-> +	INTEL_HWCONFIG_MAX_CS_URB_ENTRIES,			/* 49 */
-> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_URB,			/* 50 */
-> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_REST,			/* 51 */
-> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_DC,			/* 52 */
-> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_RO,			/* 53 */
-> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_Z,			/* 54 */
-> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_COLOR,			/* 55 */
-> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_UNIFIED_TILE_CACHE,	/* 56 */
-> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_COMMAND_BUFFER,	/* 57 */
-> +	INTEL_HWCONFIG_L3_ALLOC_PER_BANK_RW,			/* 58 */
-> +	INTEL_HWCONFIG_MAX_NUM_L3_CONFIGS,			/* 59 */
-> +	INTEL_HWCONFIG_BINDLESS_SURFACE_OFFSET_BIT_COUNT,	/* 60 */
-> +	INTEL_HWCONFIG_RESERVED_CCS_WAYS,			/* 61 */
-> +	INTEL_HWCONFIG_CSR_SIZE_IN_MB,				/* 62 */
-> +	INTEL_HWCONFIG_GEOMETRY_PIPES_PER_SLICE,		/* 63 */
-> +	INTEL_HWCONFIG_L3_BANK_SIZE_IN_KB,			/* 64 */
-> +	INTEL_HWCONFIG_SLM_SIZE_PER_DSS,			/* 65 */
-> +	INTEL_HWCONFIG_MAX_PIXEL_FILL_RATE_PER_SLICE,		/* 66 */
-> +	INTEL_HWCONFIG_MAX_PIXEL_FILL_RATE_PER_DSS,		/* 67 */
-> +	INTEL_HWCONFIG_URB_SIZE_PER_SLICE_IN_KB,		/* 68 */
-> +	INTEL_HWCONFIG_URB_SIZE_PER_L3_BANK_COUNT_IN_KB,	/* 69 */
-> +	INTEL_HWCONFIG_MAX_SUBSLICE,				/* 70 */
-> +	INTEL_HWCONFIG_MAX_EU_PER_SUBSLICE,			/* 71 */
-> +	INTEL_HWCONFIG_RAMBO_L3_BANK_SIZE_IN_KB,		/* 72 */
-> +	INTEL_HWCONFIG_SLM_SIZE_PER_SS_IN_KB,			/* 73 */
-> +	__INTEL_HWCONFIG_LIMIT
-> +};
-> +
-> +enum {
-> +	INTEL_HWCONFIG_MEMORY_TYPE_LPDDR4 =3D 0,
-> +	INTEL_HWCONFIG_MEMORY_TYPE_LPDDR5,
-> +};
-> +
-> +enum {
-> +	INTEL_HWCONFIG_CACHE_TYPE_L3    =3D BIT(0),
-> +	INTEL_HWCONFIG_CACHE_TYPE_LLC   =3D BIT(1),
-> +	INTEL_HWCONFIG_CACHE_TYPE_EDRAM =3D BIT(2),
-> +};
-> +
-> +#endif /* _INTEL_HWCONFIG_TYPES_H_ */
-> diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
-> index 3c791b8ba..1802287e3 100644
-> --- a/tests/i915/i915_query.c
-> +++ b/tests/i915/i915_query.c
-> @@ -22,6 +22,7 @@
->   */
-> =20
->  #include "igt.h"
-> +#include "intel_hwconfig_types.h"
-> =20
->  #include <limits.h>
-> =20
-> @@ -842,6 +843,170 @@ static void engines(int fd)
->  	free(engines);
->  }
-> =20
-> +static const char * const hwconfig_keys[] =3D {
-> +	[INTEL_HWCONFIG_MAX_SLICES_SUPPORTED] =3D "Maximum number of Slices",
-> +	[INTEL_HWCONFIG_MAX_DUAL_SUBSLICES_SUPPORTED] =3D "Maximum number of DS=
-S",
-> +	[INTEL_HWCONFIG_MAX_NUM_EU_PER_DSS] =3D "Maximum number of EUs per DSS",
-> +	[INTEL_HWCONFIG_NUM_PIXEL_PIPES] =3D "Pixel Pipes",
-> +	[INTEL_HWCONFIG_DEPRECATED_MAX_NUM_GEOMETRY_PIPES] =3D "[DEPRECATED] Ge=
-ometry Pipes",
-> +	[INTEL_HWCONFIG_DEPRECATED_L3_CACHE_SIZE_IN_KB] =3D "[DEPRECATED] L3 Si=
-ze (in KB)",
-> +	[INTEL_HWCONFIG_DEPRECATED_L3_BANK_COUNT] =3D "[DEPRECATED] L3 Bank Cou=
-nt",
-> +	[INTEL_HWCONFIG_L3_CACHE_WAYS_SIZE_IN_BYTES] =3D "L3 Cache Ways Size (i=
-n bytes)",
-> +	[INTEL_HWCONFIG_L3_CACHE_WAYS_PER_SECTOR] =3D "L3 Cache Ways Per Sector=
-",
-> +	[INTEL_HWCONFIG_MAX_MEMORY_CHANNELS] =3D "Memory Channels",
-> +	[INTEL_HWCONFIG_MEMORY_TYPE] =3D "Memory type",
-> +	[INTEL_HWCONFIG_CACHE_TYPES] =3D "Cache types",
-> +	[INTEL_HWCONFIG_LOCAL_MEMORY_PAGE_SIZES_SUPPORTED] =3D "Local memory pa=
-ge size",
-> +	[INTEL_HWCONFIG_DEPRECATED_SLM_SIZE_IN_KB] =3D "[DEPRECATED] SLM Size (=
-in KB)",
-> +	[INTEL_HWCONFIG_NUM_THREADS_PER_EU] =3D "Num thread per EU",
-> +	[INTEL_HWCONFIG_TOTAL_VS_THREADS] =3D "Maximum Vertex Shader threads",
-> +	[INTEL_HWCONFIG_TOTAL_GS_THREADS] =3D "Maximum Geometry Shader threads",
-> +	[INTEL_HWCONFIG_TOTAL_HS_THREADS] =3D "Maximum Hull Shader threads",
-> +	[INTEL_HWCONFIG_TOTAL_DS_THREADS] =3D "Maximum Domain Shader threads",
-> +	[INTEL_HWCONFIG_TOTAL_VS_THREADS_POCS] =3D "Maximum Vertex Shader Threa=
-ds for POCS",
-> +	[INTEL_HWCONFIG_TOTAL_PS_THREADS] =3D "Maximum Pixel Shader Threads",
-> +	[INTEL_HWCONFIG_DEPRECATED_MAX_FILL_RATE] =3D "[DEPRECATED] Maximum pix=
-el rate for Fill",
-> +	[INTEL_HWCONFIG_MAX_RCS] =3D "MaxRCS",
-> +	[INTEL_HWCONFIG_MAX_CCS] =3D "MaxCCS",
-> +	[INTEL_HWCONFIG_MAX_VCS] =3D "MaxVCS",
-> +	[INTEL_HWCONFIG_MAX_VECS] =3D "MaxVECS",
-> +	[INTEL_HWCONFIG_MAX_COPY_CS] =3D "MaxCopyCS",
-> +	[INTEL_HWCONFIG_DEPRECATED_URB_SIZE_IN_KB] =3D "[DEPRECATED] URB Size (=
-in KB)",
-> +	[INTEL_HWCONFIG_MIN_VS_URB_ENTRIES] =3D "The minimum number of VS URB e=
-ntries.",
-> +	[INTEL_HWCONFIG_MAX_VS_URB_ENTRIES] =3D "The maximum number of VS URB e=
-ntries.",
-> +	[INTEL_HWCONFIG_MIN_PCS_URB_ENTRIES] =3D "The minimum number of PCS URB=
- entries",
-> +	[INTEL_HWCONFIG_MAX_PCS_URB_ENTRIES] =3D "The maximum number of PCS URB=
- entries",
-> +	[INTEL_HWCONFIG_MIN_HS_URB_ENTRIES] =3D "The minimum number of HS URB e=
-ntries",
-> +	[INTEL_HWCONFIG_MAX_HS_URB_ENTRIES] =3D "The maximum number of HS URB e=
-ntries",
-> +	[INTEL_HWCONFIG_MIN_GS_URB_ENTRIES] =3D "The minimum number of GS URB e=
-ntries",
-> +	[INTEL_HWCONFIG_MAX_GS_URB_ENTRIES] =3D "The maximum number of GS URB e=
-ntries",
-> +	[INTEL_HWCONFIG_MIN_DS_URB_ENTRIES] =3D "The minimum number of DS URB E=
-ntries",
-> +	[INTEL_HWCONFIG_MAX_DS_URB_ENTRIES] =3D "The maximum number of DS URB E=
-ntries",
-> +	[INTEL_HWCONFIG_PUSH_CONSTANT_URB_RESERVED_SIZE] =3D "Push Constant URB=
- Reserved Size (in bytes)",
-> +	[INTEL_HWCONFIG_POCS_PUSH_CONSTANT_URB_RESERVED_SIZE] =3D "POCS Push Co=
-nstant URB Reserved Size (in bytes)",
-> +	[INTEL_HWCONFIG_URB_REGION_ALIGNMENT_SIZE_IN_BYTES] =3D "URB Region Ali=
-gnment Size (in bytes)",
-> +	[INTEL_HWCONFIG_URB_ALLOCATION_SIZE_UNITS_IN_BYTES] =3D "URB Allocation=
- Size Units (in bytes)",
-> +	[INTEL_HWCONFIG_MAX_URB_SIZE_CCS_IN_BYTES] =3D "Max URB Size CCS (in by=
-tes)",
-> +	[INTEL_HWCONFIG_VS_MIN_DEREF_BLOCK_SIZE_HANDLE_COUNT] =3D "VS Min Deref=
- BlockSize Handle Count",
-> +	[INTEL_HWCONFIG_DS_MIN_DEREF_BLOCK_SIZE_HANDLE_COUNT] =3D "DS Min Deref=
- Block Size Handle Count",
-> +	[INTEL_HWCONFIG_NUM_RT_STACKS_PER_DSS] =3D "Num RT Stacks Per DSS",
-> +	[INTEL_HWCONFIG_MAX_URB_STARTING_ADDRESS] =3D "Max URB Starting Address=
-",
-> +	[INTEL_HWCONFIG_MIN_CS_URB_ENTRIES] =3D "Min CS URB Entries",
-> +	[INTEL_HWCONFIG_MAX_CS_URB_ENTRIES] =3D "Max CS URB Entries",
-> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_URB] =3D "L3 Alloc Per Bank - URB",
-> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_REST] =3D "L3 Alloc Per Bank - Rest",
-> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_DC] =3D "L3 Alloc Per Bank - DC",
-> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_RO] =3D "L3 Alloc Per Bank - RO",
-> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_Z] =3D "L3 Alloc Per Bank - Z",
-> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_COLOR] =3D "L3 Alloc Per Bank - Color=
-",
-> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_UNIFIED_TILE_CACHE] =3D "L3 Alloc Per=
- Bank - Unified Tile Cache",
-> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_COMMAND_BUFFER] =3D "L3 Alloc Per Ban=
-k - Command Buffer",
-> +	[INTEL_HWCONFIG_L3_ALLOC_PER_BANK_RW] =3D "L3 Alloc Per Bank - RW",
-> +	[INTEL_HWCONFIG_MAX_NUM_L3_CONFIGS] =3D "Num L3 Configs",
-> +	[INTEL_HWCONFIG_BINDLESS_SURFACE_OFFSET_BIT_COUNT] =3D "Bindless Surfac=
-e Offset Bit Count",
-> +	[INTEL_HWCONFIG_RESERVED_CCS_WAYS] =3D "Reserved CCS ways",
-> +	[INTEL_HWCONFIG_CSR_SIZE_IN_MB] =3D "CSR Size (in MB)",
-> +	[INTEL_HWCONFIG_GEOMETRY_PIPES_PER_SLICE] =3D "Geometry pipes per slice=
-",
-> +	[INTEL_HWCONFIG_L3_BANK_SIZE_IN_KB] =3D "L3 bank size (in KB)",
-> +	[INTEL_HWCONFIG_SLM_SIZE_PER_DSS] =3D "SLM size per DSS",
-> +	[INTEL_HWCONFIG_MAX_PIXEL_FILL_RATE_PER_SLICE] =3D "Max pixel fill rate=
- per slice",
-> +	[INTEL_HWCONFIG_MAX_PIXEL_FILL_RATE_PER_DSS] =3D "Max pixel fill rate p=
-er DSS",
-> +	[INTEL_HWCONFIG_URB_SIZE_PER_SLICE_IN_KB] =3D "URB size per slice (in K=
-B)",
-> +	[INTEL_HWCONFIG_URB_SIZE_PER_L3_BANK_COUNT_IN_KB] =3D "URB size per L3 =
-bank count (in KB)",
-> +	[INTEL_HWCONFIG_MAX_SUBSLICE] =3D "Max subslices",
-> +	[INTEL_HWCONFIG_MAX_EU_PER_SUBSLICE] =3D "Max EUs per subslice",
-> +	[INTEL_HWCONFIG_RAMBO_L3_BANK_SIZE_IN_KB] =3D "RAMBO L3 bank size (in K=
-B)",
-> +	[INTEL_HWCONFIG_SLM_SIZE_PER_SS_IN_KB] =3D "SLM size per SS (in KB)",
-> +};
-> +
-> +static void query_parse_and_validate_hwconfig_table(int i915)
-> +{
-> +	struct drm_i915_query_item item =3D {
-> +		.query_id =3D DRM_I915_QUERY_HWCONFIG_TABLE,
-> +	};
-> +	uint32_t *data, value;
-> +	int i =3D 0;
-> +	int len, j, max_words, table_size;
-> +
-> +	igt_assert(ARRAY_SIZE(hwconfig_keys) =3D=3D __INTEL_HWCONFIG_LIMIT);
-> +
-> +	i915_query_items(i915, &item, 1);
-> +	table_size =3D item.length;
-> +	igt_require(table_size > 0);
-> +
-> +	data =3D malloc(table_size);
-> +	igt_assert(data);
-> +	memset(data, 0, table_size);
-> +	item.data_ptr =3D to_user_pointer(data);
-> +
-> +	i915_query_items(i915, &item, 1);
-> +	igt_assert(item.length =3D=3D table_size);
-> +	igt_info("Table size =3D %d bytes\n", table_size);
-> +	igt_assert(table_size > 0);
-> +
-> +	/* HWConfig table is a list of KLV sets */
-> +	max_words =3D table_size / sizeof(uint32_t);
-> +	igt_assert(max_words * sizeof(uint32_t) =3D=3D table_size);
-> +	while (i < max_words) {
-> +		/* Attribute ID zero is invalid */
-> +		igt_assert(data[i] > 0);
-> +		igt_assert(data[i] < __INTEL_HWCONFIG_LIMIT);
-> +
-> +		len =3D data[i + 1];
-> +		igt_assert(len > 0);
-> +		igt_assert((i + 2 + len) <=3D max_words);
-> +
-> +		igt_info("[%2d] %s: ", data[i], hwconfig_keys[data[i]]);
-> +
-> +		value =3D data[i + 2];
-> +		switch (data[i]) {
-> +		case INTEL_HWCONFIG_MEMORY_TYPE:
-> +			igt_assert(len =3D=3D 1);
-> +			switch (value) {
-> +			case INTEL_HWCONFIG_MEMORY_TYPE_LPDDR4:
-> +				igt_info("LPDDR4\n");
-> +				break;
-> +			case INTEL_HWCONFIG_MEMORY_TYPE_LPDDR5:
-> +				igt_info("LPDDR5\n");
-> +				break;
-> +			default:
-> +				igt_assert(0);
-> +			}
-> +			break;
-> +
-> +		case INTEL_HWCONFIG_CACHE_TYPES:
-> +			igt_assert(len =3D=3D 1);
-> +
-> +#define TEST_CACHE_TYPE(type)					\
-> +	if (value & INTEL_HWCONFIG_CACHE_TYPE_##type) {		\
-> +		value &=3D ~INTEL_HWCONFIG_CACHE_TYPE_##type;	\
-> +		igt_info(#type);				\
-> +		if (value)					\
-> +			igt_info(", ");				\
-> +	}
-> +
-> +			TEST_CACHE_TYPE(L3);
-> +			TEST_CACHE_TYPE(LLC);
-> +			TEST_CACHE_TYPE(EDRAM);
-> +#undef TEST_CACHE_TYPE
-> +
-> +			igt_assert(value =3D=3D 0);
-> +			igt_info("\n");
-> +			break;
-> +
-> +		default:
-> +			for (j =3D i + 2; j < i + 1 + len; j++)
-> +				igt_info("%d, ", data[j]);
-> +			igt_info("%d\n", data[j]);
-> +		}
-> +
-> +		/* Advance to next key */
-> +		i +=3D 2 + len;
-> +	}
-> +
-> +	free(data);
-> +}
-> +
->  igt_main
->  {
->  	int fd =3D -1;
-> @@ -911,6 +1076,9 @@ igt_main
->  			engines(fd);
->  	}
-> =20
-> +	igt_subtest("hwconfig_table")
-> +		query_parse_and_validate_hwconfig_table(fd);
-> +
->  	igt_fixture {
->  		close(fd);
->  	}
-> --=20
-> 2.25.1
->=20
+SGkgUGV0cmksDQoNClJlLXJlcG9ydGVkDQoNClBhdGNoIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJl
+ZWRlc2t0b3Aub3JnL3Nlcmllcy85NDY1My8NCg0KUmVnYXJkcywNCkphc3dhbnRoIGthdHRhbWFu
+Y2hpDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBMYXR2YWxhLCBQZXRyaSA8
+cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+IA0KU2VudDogV2VkbmVzZGF5LCBTZXB0ZW1iZXIgMTUs
+IDIwMjEgNTo0MyBQTQ0KVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBWdWR1bSwg
+TGFrc2htaW5hcmF5YW5hIDxsYWtzaG1pbmFyYXlhbmEudnVkdW1AaW50ZWwuY29tPjsgS2F0dGFt
+YW5jaGksIEphc3dhbnRoWCA8amFzd2FudGh4LmthdHRhbWFuY2hpQGludGVsLmNvbT4NCkNjOiBN
+b2RlbSwgQmhhbnVwcmFrYXNoIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPg0KU3ViamVj
+dDogUmU6IFtpZ3QtZGV2XSDinJcgRmkuQ0kuQkFUOiBmYWlsdXJlIGZvciB0ZXN0cy9rbXNfY29s
+b3JfY2hhbWVsaXVtOiBTa2lwIENUTSB0ZXN0IGlmIHByb3BlcnR5IGlzIG5vdCBwcmVzZW50IChy
+ZXYyKQ0KDQpPbiBXZWQsIFNlcCAxNSwgMjAyMSBhdCAwMzowNjo0MlBNICswMzAwLCBQZXRyaSBM
+YXR2YWxhIHdyb3RlOg0KPiBPbiBXZWQsIFNlcCAxNSwgMjAyMSBhdCAwNDoxNzowMUFNICswMDAw
+LCBQYXRjaHdvcmsgd3JvdGU6DQo+ID4gPT0gU2VyaWVzIERldGFpbHMgPT0NCj4gPiANCj4gPiBT
+ZXJpZXM6IHRlc3RzL2ttc19jb2xvcl9jaGFtZWxpdW06IFNraXAgQ1RNIHRlc3QgaWYgcHJvcGVy
+dHkgaXMgbm90IHByZXNlbnQgKHJldjIpDQo+ID4gVVJMICAgOiBodHRwczovL3BhdGNod29yay5m
+cmVlZGVza3RvcC5vcmcvc2VyaWVzLzk0NjUzLw0KPiA+IFN0YXRlIDogZmFpbHVyZQ0KPiA+IA0K
+PiA+ID09IFN1bW1hcnkgPT0NCj4gPiANCj4gPiBDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIENJ
+X0RSTV8xMDU4NiAtPiBJR1RQV182MjIwIA0KPiA+ID09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT0NCj4gPiANCj4gPiBTdW1tYXJ5DQo+ID4gLS0tLS0t
+LQ0KPiA+IA0KPiA+ICAgKipGQUlMVVJFKioNCj4gPiANCj4gPiAgIFNlcmlvdXMgdW5rbm93biBj
+aGFuZ2VzIGNvbWluZyB3aXRoIElHVFBXXzYyMjAgYWJzb2x1dGVseSBuZWVkIHRvIGJlDQo+ID4g
+ICB2ZXJpZmllZCBtYW51YWxseS4NCj4gPiAgIA0KPiA+ICAgSWYgeW91IHRoaW5rIHRoZSByZXBv
+cnRlZCBjaGFuZ2VzIGhhdmUgbm90aGluZyB0byBkbyB3aXRoIHRoZSBjaGFuZ2VzDQo+ID4gICBp
+bnRyb2R1Y2VkIGluIElHVFBXXzYyMjAsIHBsZWFzZSBub3RpZnkgeW91ciBidWcgdGVhbSB0byBh
+bGxvdyB0aGVtDQo+ID4gICB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJlIG1vZGUsIHdoaWNo
+IHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4NCj4gPiANCj4gPiAgIEV4dGVybmFs
+IFVSTDogDQo+ID4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQ
+V182MjIwL2luZGV4Lmh0bWwNCj4gPiANCj4gPiBQb3NzaWJsZSBuZXcgaXNzdWVzDQo+ID4gLS0t
+LS0tLS0tLS0tLS0tLS0tLQ0KPiA+IA0KPiA+ICAgSGVyZSBhcmUgdGhlIHVua25vd24gY2hhbmdl
+cyB0aGF0IG1heSBoYXZlIGJlZW4gaW50cm9kdWNlZCBpbiBJR1RQV182MjIwOg0KPiA+IA0KPiA+
+ICMjIyBJR1QgY2hhbmdlcyAjIyMNCj4gPiANCj4gPiAjIyMjIFBvc3NpYmxlIHJlZ3Jlc3Npb25z
+ICMjIyMNCj4gPiANCj4gPiAgICogaWd0QGk5MTVfbW9kdWxlX2xvYWRAcmVsb2FkOg0KPiA+ICAg
+ICAtIGZpLXNrbC1ndWM6ICAgICAgICAgTk9UUlVOIC0+IFtETUVTRy1XQVJOXVsxXQ0KPiA+ICAg
+IFsxXTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV182MjIw
+L2ZpLXNrbC1ndWMvaWd0QGk5MTVfbW9kdWxlX2xvYWRAcmVsb2FkLmh0bWwNCj4gPiAgICAgLSBm
+aS1rYmwtNzUwMHU6ICAgICAgIFtQQVNTXVsyXSAtPiBbSU5DT01QTEVURV1bM10NCj4gPiAgICBb
+Ml06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvQ0lfRFJNXzEwNTg2
+L2ZpLWtibC03NTAwdS9pZ3RAaTkxNV9tb2R1bGVfbG9hZEByZWxvYWQuaHRtbA0KPiA+ICAgIFsz
+XTogDQo+ID4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV182
+MjIwL2ZpLWtibC03NTAwdS9pZ3QNCj4gPiBAaTkxNV9tb2R1bGVfbG9hZEByZWxvYWQuaHRtbA0K
+PiANCj4gTGFrc2htaSwgZmFsc2UgcG9zaXRpdmVzIGZvciBmaWx0ZXJpbmcgaGVyZQ0KDQpBaCwg
+TGFrc2htaSBpcyBvbiB2YWNhdGlvbi4gSmFzd2FudGgsIHNlZSBhYm92ZS4NCg0KLS0NClBldHJp
+IExhdHZhbGENCg0KDQoNCj4gDQo+IA0KPiANCj4gPiANCj4gPiAgIA0KPiA+ICMjIyMgU3VwcHJl
+c3NlZCAjIyMjDQo+ID4gDQo+ID4gICBUaGUgZm9sbG93aW5nIHJlc3VsdHMgY29tZSBmcm9tIHVu
+dHJ1c3RlZCBtYWNoaW5lcywgdGVzdHMsIG9yIHN0YXR1c2VzLg0KPiA+ICAgVGhleSBkbyBub3Qg
+YWZmZWN0IHRoZSBvdmVyYWxsIHJlc3VsdC4NCj4gPiANCj4gPiAgICogaWd0QGk5MTVfbW9kdWxl
+X2xvYWRAcmVsb2FkOg0KPiA+ICAgICAtIHtmaS1qc2wtMX06ICAgICAgICAgW1RJTUVPVVRdWzRd
+IC0+IFtJTkNPTVBMRVRFXVs1XQ0KPiA+ICAgIFs0XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEu
+b3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fMTA1ODYvZmktanNsLTEvaWd0QGk5MTVfbW9kdWxlX2xv
+YWRAcmVsb2FkLmh0bWwNCj4gPiAgICBbNV06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90
+cmVlL2RybS10aXAvSUdUUFdfNjIyMC9maS1qc2wtMS9pZ3RAaTkxNV9tb2R1bGVfbG9hZEByZWxv
+YWQuaHRtbA0KPiA+IA0KPiA+ICAgDQo+ID4gS25vd24gaXNzdWVzDQo+ID4gLS0tLS0tLS0tLS0t
+DQo+ID4gDQo+ID4gICBIZXJlIGFyZSB0aGUgY2hhbmdlcyBmb3VuZCBpbiBJR1RQV182MjIwIHRo
+YXQgY29tZSBmcm9tIGtub3duIGlzc3VlczoNCj4gPiANCj4gPiAjIyMgSUdUIGNoYW5nZXMgIyMj
+DQo+ID4gDQo+ID4gIyMjIyBJc3N1ZXMgaGl0ICMjIyMNCj4gPiANCj4gPiAgICogaWd0QGNvcmVf
+aG90dW5wbHVnQHVuYmluZC1yZWJpbmQ6DQo+ID4gICAgIC0gZmktc2tsLTY3MDBrMjogICAgICBb
+UEFTU11bNl0gLT4gW0lOQ09NUExFVEVdWzddIChbaTkxNSM0MTMwXSkNCj4gPiAgICBbNl06IGh0
+dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvQ0lfRFJNXzEwNTg2L2ZpLXNr
+bC02NzAwazIvaWd0QGNvcmVfaG90dW5wbHVnQHVuYmluZC1yZWJpbmQuaHRtbA0KPiA+ICAgIFs3
+XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV182MjIwL2Zp
+LXNrbC02NzAwazIvaWd0QGNvcmVfaG90dW5wbHVnQHVuYmluZC1yZWJpbmQuaHRtbA0KPiA+ICAg
+ICAtIGZpLWljbC11MjogICAgICAgICAgW1BBU1NdWzhdIC0+IFtJTkNPTVBMRVRFXVs5XSAoW2k5
+MTUjNDEzMF0pDQo+ID4gICAgWzhdOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9k
+cm0tdGlwL0NJX0RSTV8xMDU4Ni9maS1pY2wtdTIvaWd0QGNvcmVfaG90dW5wbHVnQHVuYmluZC1y
+ZWJpbmQuaHRtbA0KPiA+ICAgIFs5XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUv
+ZHJtLXRpcC9JR1RQV182MjIwL2ZpLWljbC11Mi9pZ3RAY29yZV9ob3R1bnBsdWdAdW5iaW5kLXJl
+YmluZC5odG1sDQo+ID4gICAgIC0gZmkta2JsLTc1Njd1OiAgICAgICBbUEFTU11bMTBdIC0+IFtJ
+TkNPTVBMRVRFXVsxMV0gKFtpOTE1IzQxMzBdKQ0KPiA+ICAgIFsxMF06IGh0dHBzOi8vaW50ZWwt
+Z2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvQ0lfRFJNXzEwNTg2L2ZpLWtibC03NTY3dS9pZ3RA
+Y29yZV9ob3R1bnBsdWdAdW5iaW5kLXJlYmluZC5odG1sDQo+ID4gICAgWzExXTogaHR0cHM6Ly9p
+bnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV182MjIwL2ZpLWtibC03NTY3dS9p
+Z3RAY29yZV9ob3R1bnBsdWdAdW5iaW5kLXJlYmluZC5odG1sDQo+ID4gDQo+ID4gICAqIGlndEBn
+ZW1fZXhlY19zdXNwZW5kQGJhc2ljLXMzOg0KPiA+ICAgICAtIGZpLXRnbC0xMTE1ZzQ6ICAgICAg
+W1BBU1NdWzEyXSAtPiBbRkFJTF1bMTNdIChbaTkxNSMxODg4XSkNCj4gPiAgICBbMTJdOiBodHRw
+czovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV8xMDU4Ni9maS10Z2wt
+MTExNWc0L2lndEBnZW1fZXhlY19zdXNwZW5kQGJhc2ljLXMzLmh0bWwNCj4gPiAgICBbMTNdOiBo
+dHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzYyMjAvZmktdGds
+LTExMTVnNC9pZ3RAZ2VtX2V4ZWNfc3VzcGVuZEBiYXNpYy1zMy5odG1sDQo+ID4gDQo+ID4gICAq
+IGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAbW1hbjoNCj4gPiAgICAgLSBmaS1jZmwtZ3VjOiAgICAg
+ICAgIE5PVFJVTiAtPiBbSU5DT01QTEVURV1bMTRdIChbaTkxNSM0MTI5XSkNCj4gPiAgICBbMTRd
+OiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzYyMjAvZmkt
+Y2ZsLWd1Yy9pZ3RAaTkxNV9zZWxmdGVzdEBsaXZlQG1tYW4uaHRtbA0KPiA+ICAgICAtIGZpLXNr
+bC1ndWM6ICAgICAgICAgTk9UUlVOIC0+IFtJTkNPTVBMRVRFXVsxNV0gKFtpOTE1IzM3OTZdIC8g
+W2k5MTUjNDEyOV0pDQo+ID4gICAgWzE1XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3Ry
+ZWUvZHJtLXRpcC9JR1RQV182MjIwL2ZpLXNrbC1ndWMvaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZUBt
+bWFuLmh0bWwNCj4gPiANCj4gPiAgICogaWd0QHJ1bm5lckBhYm9ydGVkOg0KPiA+ICAgICAtIGZp
+LWNmbC1ndWM6ICAgICAgICAgTk9UUlVOIC0+IFtGQUlMXVsxNl0gKFtpOTE1IzI0MjZdIC8gW2k5
+MTUjMzM2M10pDQo+ID4gICAgWzE2XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUv
+ZHJtLXRpcC9JR1RQV182MjIwL2ZpLWNmbC1ndWMvaWd0QHJ1bm5lckBhYm9ydGVkLmh0bWwNCj4g
+PiAgICAgLSBmaS1za2wtZ3VjOiAgICAgICAgIE5PVFJVTiAtPiBbRkFJTF1bMTddIChbaTkxNSMx
+NDM2XSAvIFtpOTE1IzI0MjZdIC8gW2k5MTUjMzM2M10pDQo+ID4gICAgWzE3XTogaHR0cHM6Ly9p
+bnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV182MjIwL2ZpLXNrbC1ndWMvaWd0
+QHJ1bm5lckBhYm9ydGVkLmh0bWwNCj4gPiANCj4gPiAgIA0KPiA+ICMjIyMgUG9zc2libGUgZml4
+ZXMgIyMjIw0KPiA+IA0KPiA+ICAgKiBpZ3RAY29yZV9ob3R1bnBsdWdAdW5iaW5kLXJlYmluZDoN
+Cj4gPiAgICAgLSBmaS1jZmwtZ3VjOiAgICAgICAgIFtJTkNPTVBMRVRFXVsxOF0gKFtpOTE1IzQx
+MzBdKSAtPiBbUEFTU11bMTldDQo+ID4gICAgWzE4XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEu
+b3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fMTA1ODYvZmktY2ZsLWd1Yy9pZ3RAY29yZV9ob3R1bnBs
+dWdAdW5iaW5kLXJlYmluZC5odG1sDQo+ID4gICAgWzE5XTogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
+MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV182MjIwL2ZpLWNmbC1ndWMvaWd0QGNvcmVfaG90dW5w
+bHVnQHVuYmluZC1yZWJpbmQuaHRtbA0KPiA+ICAgICAtIGZpLXNrbC1ndWM6ICAgICAgICAgW0lO
+Q09NUExFVEVdWzIwXSAoW2k5MTUjNDEzMF0pIC0+IFtQQVNTXVsyMV0NCj4gPiAgICBbMjBdOiBo
+dHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV8xMDU4Ni9maS1z
+a2wtZ3VjL2lndEBjb3JlX2hvdHVucGx1Z0B1bmJpbmQtcmViaW5kLmh0bWwNCj4gPiAgICBbMjFd
+OiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzYyMjAvZmkt
+c2tsLWd1Yy9pZ3RAY29yZV9ob3R1bnBsdWdAdW5iaW5kLXJlYmluZC5odG1sDQo+ID4gDQo+ID4g
+ICANCj4gPiAjIyMjIFdhcm5pbmdzICMjIyMNCj4gPiANCj4gPiAgICogaWd0QHJ1bm5lckBhYm9y
+dGVkOg0KPiA+ICAgICAtIGZpLWtibC03NTAwdTogICAgICAgW0ZBSUxdWzIyXSAoW2k5MTUjMTQz
+Nl0gLyBbaTkxNSMyNDI2XSAvIFtpOTE1IzMzNjNdKSAtPiBbRkFJTF1bMjNdIChbaTkxNSMyNDI2
+XSAvIFtpOTE1IzMzNjNdKQ0KPiA+ICAgIFsyMl06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9y
+Zy90cmVlL2RybS10aXAvQ0lfRFJNXzEwNTg2L2ZpLWtibC03NTAwdS9pZ3RAcnVubmVyQGFib3J0
+ZWQuaHRtbA0KPiA+ICAgIFsyM106IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2Ry
+bS10aXAvSUdUUFdfNjIyMC9maS1rYmwtNzUwMHUvaWd0QHJ1bm5lckBhYm9ydGVkLmh0bWwNCj4g
+PiANCj4gPiAgIA0KPiA+ICAge25hbWV9OiBUaGlzIGVsZW1lbnQgaXMgc3VwcHJlc3NlZC4gVGhp
+cyBtZWFucyBpdCBpcyBpZ25vcmVkIHdoZW4gY29tcHV0aW5nDQo+ID4gICAgICAgICAgIHRoZSBz
+dGF0dXMgb2YgdGhlIGRpZmZlcmVuY2UgKFNVQ0NFU1MsIFdBUk5JTkcsIG9yIEZBSUxVUkUpLg0K
+PiA+IA0KPiA+ICAgW2k5MTUjMTQzNl06IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9k
+cm0vaW50ZWwvaXNzdWVzLzE0MzYNCj4gPiAgIFtpOTE1IzE4ODhdOiBodHRwczovL2dpdGxhYi5m
+cmVlZGVza3RvcC5vcmcvZHJtL2ludGVsL2lzc3Vlcy8xODg4DQo+ID4gICBbaTkxNSMyNDI2XTog
+aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC9pc3N1ZXMvMjQyNg0KPiA+
+ICAgW2k5MTUjMjcyMl06IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwv
+aXNzdWVzLzI3MjINCj4gPiAgIFtpOTE1IzI5MzJdOiBodHRwczovL2dpdGxhYi5mcmVlZGVza3Rv
+cC5vcmcvZHJtL2ludGVsL2lzc3Vlcy8yOTMyDQo+ID4gICBbaTkxNSMzMzYzXTogaHR0cHM6Ly9n
+aXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC9pc3N1ZXMvMzM2Mw0KPiA+ICAgW2k5MTUj
+MzY5MF06IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzM2
+OTANCj4gPiAgIFtpOTE1IzM3OTZdOiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJt
+L2ludGVsL2lzc3Vlcy8zNzk2DQo+ID4gICBbaTkxNSMzOTcwXTogaHR0cHM6Ly9naXRsYWIuZnJl
+ZWRlc2t0b3Aub3JnL2RybS9pbnRlbC9pc3N1ZXMvMzk3MA0KPiA+ICAgW2k5MTUjNDEyOV06IGh0
+dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzQxMjkNCj4gPiAg
+IFtpOTE1IzQxMzBdOiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2ludGVsL2lz
+c3Vlcy80MTMwDQo+ID4gDQo+ID4gDQo+ID4gUGFydGljaXBhdGluZyBob3N0cyAoNDEgLT4gMzYp
+DQo+ID4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+ID4gDQo+ID4gICBNaXNzaW5n
+ICAgICg1KTogZmktY21sLXUyIGJhdC1kZzEtNiBmaS1ic3ctY3lhbiBiYXQtanNsLTIgZmktYmR3
+LXNhbXVzIA0KPiA+IA0KPiA+IA0KPiA+IEJ1aWxkIGNoYW5nZXMNCj4gPiAtLS0tLS0tLS0tLS0t
+DQo+ID4gDQo+ID4gICAqIENJOiBDSS0yMDE5MDUyOSAtPiBOb25lDQo+ID4gICAqIElHVDogSUdU
+XzYyMDkgLT4gSUdUUFdfNjIyMA0KPiA+IA0KPiA+ICAgQ0ktMjAxOTA1Mjk6IDIwMTkwNTI5DQo+
+ID4gICBDSV9EUk1fMTA1ODY6IDg0ZGNkOGExYjJhMjgxYjI5NmRiMjJmYWM1ZjdmZmU1MmRkN2M1
+MDEgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvbGludXgNCj4gPiAgIElH
+VFBXXzYyMjA6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdf
+NjIyMC9pbmRleC5odG1sDQo+ID4gICBJR1RfNjIwOTogMDdkNjU5NGVkMDJmNTViNjhkNjRmYTZk
+ZDdmODBjZmJjMWNlNGVmOCBAIGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaWd0
+LWdwdS10b29scy5naXQNCj4gPiANCj4gPiA9PSBMb2dzID09DQo+ID4gDQo+ID4gRm9yIG1vcmUg
+ZGV0YWlscyBzZWU6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdU
+UFdfNjIyMC9pbmRleC5odG1sDQo=
