@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 126AE6EE24
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Sep 2021 15:35:34 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Thu, 16 Sep 2021 18:35:14 +0300
-Message-Id: <20210916153515.21369-5-ville.syrjala@linux.intel.com>
-In-Reply-To: <20210916153515.21369-1-ville.syrjala@linux.intel.com>
-References: <20210916153515.21369-1-ville.syrjala@linux.intel.com>
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com
+ [IPv6:2a00:1450:4864:20::133])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 063EB6EE1E
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Sep 2021 15:36:48 +0000 (UTC)
+Received: by mail-lf1-x133.google.com with SMTP id b18so18687210lfb.1
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Sep 2021 08:36:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 5/6] tests/kms_invalid_mode: Test
- clock==(U)INT_MAX
+References: <20210916141827.17720-1-vidya.srinivas@intel.com>
+In-Reply-To: <20210916141827.17720-1-vidya.srinivas@intel.com>
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Thu, 16 Sep 2021 11:36:34 -0400
+Message-ID: <CAJUqKUqpus_Sui-O5LrViFYB1wxbMEg-Hz4Ak06XS06yxKy=QA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Fix regression in
+ test_resolution_with_output
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,64 +23,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: "Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>
+Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, "Modem, Bhanuprakash" <Bhanuprakash.Modem@intel.com>, Mark Yacoub <markyacoub@google.com>, Vidya Srinivas <vidya.srinivas@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+@Siquiera, I remember this also caused a regression on Qualcomm
+devices as well.
+Will removing this regress AMD? Any work around?
 
-Test against some big clock values to make sure we can't trick the
-kernel into bypassing the validation via an integer overflows/etc.
-
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- tests/i915/kms_invalid_mode.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
-
-diff --git a/tests/i915/kms_invalid_mode.c b/tests/i915/kms_invalid_mode.c
-index 6d56a378d141..722aa816fca1 100644
---- a/tests/i915/kms_invalid_mode.c
-+++ b/tests/i915/kms_invalid_mode.c
-@@ -23,6 +23,7 @@
-  */
- 
- #include "igt.h"
-+#include <limits.h>
- #include <stdbool.h>
- 
- IGT_TEST_DESCRIPTION("Make sure all modesets are rejected when the requested mode is invalid");
-@@ -107,6 +108,20 @@ adjust_mode_zero_clock(data_t *data, drmModeModeInfoPtr mode)
- 	return true;
- }
- 
-+static bool
-+adjust_mode_int_max_clock(data_t *data, drmModeModeInfoPtr mode)
-+{
-+	mode->clock = INT_MAX;
-+	return true;
-+}
-+
-+static bool
-+adjust_mode_uint_max_clock(data_t *data, drmModeModeInfoPtr mode)
-+{
-+	mode->clock = UINT_MAX;
-+	return true;
-+}
-+
- static bool
- adjust_mode_zero_hdisplay(data_t *data, drmModeModeInfoPtr mode)
- {
-@@ -244,6 +259,12 @@ static const struct {
- 	{ .name = "zero-clock",
- 	  .adjust_mode = adjust_mode_zero_clock,
- 	},
-+	{ .name = "int-max-clock",
-+	  .adjust_mode = adjust_mode_int_max_clock,
-+	},
-+	{ .name = "uint-max-clock",
-+	  .adjust_mode = adjust_mode_uint_max_clock,
-+	},
- 	{ .name = "zero-hdisplay",
- 	  .adjust_mode = adjust_mode_zero_hdisplay,
- 	},
--- 
-2.32.0
+On Thu, Sep 16, 2021 at 10:30 AM Vidya Srinivas
+<vidya.srinivas@intel.com> wrote:
+>
+> Staring commit fea0e38e690c30c6 "Making the test more generic"
+> test_resolution_with_output introduced setting igt_output_set_pipe
+> to PIPE_NONE. This is triggering atomic check failure resulting in
+> "enabled/connectors mismatch" under drm_atomic_helper_check_modeset.
+> Patch fixes this issue.
+>
+> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+> ---
+>  tests/kms_concurrent.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+> index 25c67eb469d1..40096ea1c457 100644
+> --- a/tests/kms_concurrent.c
+> +++ b/tests/kms_concurrent.c
+> @@ -268,7 +268,6 @@ test_resolution_with_output(data_t *data, enum pipe pipe, int max_planes, igt_ou
+>
+>                 /* switch to lower resolution */
+>                 igt_output_override_mode(output, mode_lo);
+> -               igt_output_set_pipe(output, PIPE_NONE);
+>                 igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>
+>                 /* switch back to higher resolution */
+> --
+> 2.33.0
+>
