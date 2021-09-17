@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3D686EC09
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Sep 2021 07:21:41 +0000 (UTC)
-Date: Fri, 17 Sep 2021 09:21:35 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210917072135.GA5022@zkempczy-mobl2>
-References: <20210916141227.17554-1-vidya.srinivas@intel.com>
- <CAJUqKUrnH7grhjC8deuZs9qjsJGKJvoLKoRj3TyyFpgL5BG6pg@mail.gmail.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5BE9A6EC09
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Sep 2021 07:36:29 +0000 (UTC)
+References: <20210916180301.6791-1-matthew.brost@intel.com>
+ <20210916180301.6791-4-matthew.brost@intel.com>
+ <900219d9-5e70-faa1-bb25-7f01c2d14738@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <eb7fe459-226d-6426-e6f8-99e09637866a@linux.intel.com>
+Date: Fri, 17 Sep 2021 08:36:19 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJUqKUrnH7grhjC8deuZs9qjsJGKJvoLKoRj3TyyFpgL5BG6pg@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/i915/intel_memory_region: Fix
- regression on 5.4 kernel
+In-Reply-To: <900219d9-5e70-faa1-bb25-7f01c2d14738@intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] i915/sysfs_preempt_timeout: Update
+ test to work with GuC submission
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,59 +24,65 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>
-Cc: Vidya Srinivas <vidya.srinivas@intel.com>, Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, "Modem, Bhanuprakash" <Bhanuprakash.Modem@intel.com>, Mark Yacoub <markyacoub@google.com>
+To: John Harrison <john.c.harrison@intel.com>, Matthew Brost <matthew.brost@intel.com>, igt-dev@lists.freedesktop.org
+Cc: daniele.ceraolospurio@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Sep 16, 2021 at 11:25:30AM -0400, Mark Yacoub wrote:
-> On Thu, Sep 16, 2021 at 10:24 AM Vidya Srinivas
-> <vidya.srinivas@intel.com> wrote:
-> >
-> > Starting commit 8759c4a3020ce4 "Add intel_buf_init_in_region"
-> > __intel_buf_init uses gem_create_in_memory_regions instead of
-> > gem_create. Older kernels like 5.4 still dont have support for
-> > I915_GEM_CREATE_EXT_MEMORY_REGIONS (i915_gem_create_ext_ioctl)
-> > from kernel commit (https://patchwork.freedesktop.org/patch/431581/?series=89648&rev=1)
-> > Due to this, the flip-vs-fences tests are failing on kernel 5.4
-> > Patch add roll back to gem_create when __gem_create_in_memory_region_list fails.
-> >
-> > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> > ---
-> >  lib/i915/intel_memory_region.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-> > index 3de40549319b..323b96bad232 100644
-> > --- a/lib/i915/intel_memory_region.c
-> > +++ b/lib/i915/intel_memory_region.c
-> > @@ -209,7 +209,9 @@ uint32_t gem_create_in_memory_region_list(int fd, uint64_t size,
-> >         uint32_t handle;
-> >         int ret = __gem_create_in_memory_region_list(fd, &handle, size,
-> >                                                      mem_regions, num_regions);
-> > -       igt_assert_eq(ret, 0);
-> > +       if (ret != 0)
-> > +               handle = gem_create(fd, size);
 
-> I'm not sure if this change should be here or should be at the caller
-> `void __intel_buf_init(...).
+On 16/09/2021 21:49, John Harrison wrote:
+> On 9/16/2021 11:03, Matthew Brost wrote:
+>> Increase reset timeout as resets can take a bit longer with GuC
+>> submission because an error capture is done and with a large GuC log (16
+>> MB) these take a while.
+>>
+>> Don't run 'off' section as with GuC submission we don't handle
+>> dynamically changing the preemption timeout from 'off' to 'on' on a
+>> currently running context. This is not bug in GuC submission rather an
+>> architectural decision to not implement this as there is no user aside
+>> from IGTs. We don't run this section on any gen12+ platforms as we
+>> assume GuC submission on these platforms.
 
-I agree, silent fallback to system memory when mem_regions could contain
-only device memory is definitely not we want.
+Tigerlake as well or not care about removing the coverage from it?
 
-You may leave this function intact and call underscored (not-asserting)
-version of __gem_create_in_memory_regions() in __intel_buf_init(), then
-react to result. I mean if region _is_ system memory fallback to gem_create()
-is possible, otherwise assert.
+Regards,
 
---
-Zbigniew
+Tvrtko
 
-> > +
-> Let's have a check before we return, parallel to the removed `
-> igt_assert_eq(ret, 0);`, Something like `igt_assert(!ret || handle).`
-> >         return handle;
-> >  }
-> >
-> > --
-> > 2.33.0
-> >
+>>
+>> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
+> 
+>> ---
+>>   tests/i915/sysfs_preempt_timeout.c | 6 +++++-
+>>   1 file changed, 5 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/i915/sysfs_preempt_timeout.c 
+>> b/tests/i915/sysfs_preempt_timeout.c
+>> index d176ae72e..fe6b30236 100644
+>> --- a/tests/i915/sysfs_preempt_timeout.c
+>> +++ b/tests/i915/sysfs_preempt_timeout.c
+>> @@ -29,6 +29,7 @@
+>>   #include <sys/types.h>
+>>   #include <unistd.h>
+>> +#include "igt.h"
+>>   #include "igt_params.h"
+>>   #include "drmtest.h"
+>>   #include "i915/gem.h"
+>> @@ -41,7 +42,7 @@
+>>   #include "sw_sync.h"
+>>   #define ATTR "preempt_timeout_ms"
+>> -#define RESET_TIMEOUT 50 /* milliseconds, at least one jiffie for 
+>> kworker */
+>> +#define RESET_TIMEOUT 1000 /* milliseconds, at long enough for an 
+>> error capture */
+>>   static bool __enable_hangcheck(int dir, bool state)
+>>   {
+>> @@ -254,6 +255,9 @@ static void test_off(int i915, int engine)
+>>       gem_quiescent_gpu(i915);
+>>       igt_require(enable_hangcheck(i915, false));
+>> +    /* Not a supported behavior for GuC enabled platforms */
+>> +    igt_require(intel_gen(intel_get_drm_devid(i915)) < 12);
+>> +
+>>       igt_assert(igt_sysfs_scanf(engine, "class", "%u", &class) == 1);
+>>       igt_assert(igt_sysfs_scanf(engine, "instance", "%u", &inst) == 1);
+> 
