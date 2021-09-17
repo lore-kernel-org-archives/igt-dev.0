@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3E106E831
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Sep 2021 13:30:08 +0000 (UTC)
-From: "Ruhl, Michael J" <michael.j.ruhl@intel.com>
-Date: Fri, 17 Sep 2021 13:30:07 +0000
-Message-ID: <6263eddc5a464e609c46f90f3a9f8a13@intel.com>
-References: <20210916133239.24596-1-ramalingam.c@intel.com>
- <079a6cbef7c746c1ae281ba4ad4cef86@intel.com>
-In-Reply-To: <079a6cbef7c746c1ae281ba4ad4cef86@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2048.outbound.protection.outlook.com [40.107.223.48])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 461416ED92
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Sep 2021 15:03:55 +0000 (UTC)
+Date: Fri, 17 Sep 2021 11:03:49 -0400
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Message-ID: <20210917150349.la6orrmaxyrp5sdc@outlook.office365.com>
+References: <20210916141827.17720-1-vidya.srinivas@intel.com>
+ <CAJUqKUqpus_Sui-O5LrViFYB1wxbMEg-Hz4Ak06XS06yxKy=QA@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJUqKUqpus_Sui-O5LrViFYB1wxbMEg-Hz4Ak06XS06yxKy=QA@mail.gmail.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_prime: Create the
- exporting BO with smem
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Fix regression in
+ test_resolution_with_output
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,132 +23,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "C, Ramalingam" <ramalingam.c@intel.com>, igt-dev <igt-dev@lists.freedesktop.org>
-Cc: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Mark Yacoub <markyacoub@chromium.org>
+Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, "Modem, Bhanuprakash" <Bhanuprakash.Modem@intel.com>, Mark Yacoub <markyacoub@google.com>, Vidya Srinivas <vidya.srinivas@intel.com>, Nicholas Choi <nicholas.choi@amd.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
->-----Original Message-----
->From: Ruhl, Michael J
->Sent: Friday, September 17, 2021 9:04 AM
->To: C, Ramalingam <ramalingam.c@intel.com>; igt-dev <igt-
->dev@lists.freedesktop.org>
->Cc: Dixit, Ashutosh <ashutosh.dixit@intel.com>
->Subject: RE: [PATCH i-g-t v3] tests/kms_prime: Create the exporting BO wit=
-h
->smem
->
->
->>-----Original Message-----
->>From: C, Ramalingam <ramalingam.c@intel.com>
->>Sent: Thursday, September 16, 2021 9:33 AM
->>To: igt-dev <igt-dev@lists.freedesktop.org>
->>Cc: Ruhl, Michael J <michael.j.ruhl@intel.com>; Dixit, Ashutosh
->><ashutosh.dixit@intel.com>
->>Subject: [PATCH i-g-t v3] tests/kms_prime: Create the exporting BO with
->>smem
->>
->>On i915, to avail the dmabuf, the sharing object needs to migratable
->>into smem. So if the shared object is lmem, then it needs to have the
->>smem as second placement option.
->
->Some minor word smithing:
->
->"the shared object needs to be migratable"
->
->"needs to have smem as"
->
->>Currently kms_prime sharing the dumb buffer between the devices.
->
->s/sharing/shares/
->
->>But dumb buffer can't have the placements and resides at lmem for the
->>dgfx. Hence to meet the i915 expectation for dgfx, we create the BO
->>using the gem_create with smem as second placement option.
->
->Would it make more sense to just have i915_gem_dumb_create() create
->the object with both placements?
->
->So then for the use case, it will "just work"?
->
->This patch looks reasonable, but the change in dumb buffer usage is a
->concern because we will need to change all usages in order to cover this
->new feature/ability.
+Hi Mark,
 
-This has apparently already been discussed, and this patch is the result.
+Yes, this patch cause a regression in AMD.
 
-So, with the above fixes:
+I applied the original patch after the CI reported a complete pass. I
+also tested it in a VC4 and VKMS; just for curiosity, why did we not get
+this regression in the CI?
 
-Reviewed-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+Thanks
 
-m
+On 09/16, Mark Yacoub wrote:
+> @Siquiera, I remember this also caused a regression on Qualcomm
+> devices as well.
+> Will removing this regress AMD? Any work around?
+> 
+> On Thu, Sep 16, 2021 at 10:30 AM Vidya Srinivas
+> <vidya.srinivas@intel.com> wrote:
+> >
+> > Staring commit fea0e38e690c30c6 "Making the test more generic"
+> > test_resolution_with_output introduced setting igt_output_set_pipe
+> > to PIPE_NONE. This is triggering atomic check failure resulting in
+> > "enabled/connectors mismatch" under drm_atomic_helper_check_modeset.
+> > Patch fixes this issue.
+> >
+> > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+> > ---
+> >  tests/kms_concurrent.c | 1 -
+> >  1 file changed, 1 deletion(-)
+> >
+> > diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+> > index 25c67eb469d1..40096ea1c457 100644
+> > --- a/tests/kms_concurrent.c
+> > +++ b/tests/kms_concurrent.c
+> > @@ -268,7 +268,6 @@ test_resolution_with_output(data_t *data, enum pipe pipe, int max_planes, igt_ou
+> >
+> >                 /* switch to lower resolution */
+> >                 igt_output_override_mode(output, mode_lo);
+> > -               igt_output_set_pipe(output, PIPE_NONE);
+> >                 igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> >
+> >                 /* switch back to higher resolution */
+> > --
+> > 2.33.0
+> >
 
->Mike
->
->>v2: Used gem_mmap__device_coherent for mmaped ptr (Ashutosh)
->>v3: dumb buffer ioctls are used for non i915 drivers
->>
->>Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
->>Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
->>Reviewed-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
->>---
->> tests/kms_prime.c | 33 +++++++++++++++++++++------------
->> 1 file changed, 21 insertions(+), 12 deletions(-)
->>
->>diff --git a/tests/kms_prime.c b/tests/kms_prime.c
->>index 2e20c58bc16e..5cdb559778b3 100644
->>--- a/tests/kms_prime.c
->>+++ b/tests/kms_prime.c
->>@@ -100,18 +100,27 @@ static void prepare_scratch(int exporter_fd, struct
->>dumb_bo *scratch,
->> 	scratch->height =3D mode->vdisplay;
->> 	scratch->bpp =3D 32;
->>
->>-	scratch->handle =3D kmstest_dumb_create(exporter_fd,
->>-			ALIGN(scratch->width, 256),
->>-			scratch->height,
->>-			scratch->bpp,
->>-			&scratch->pitch,
->>-			&scratch->size);
->>-
->>-
->>-	ptr =3D kmstest_dumb_map_buffer(exporter_fd,
->>-				      scratch->handle,
->>-				      scratch->size,
->>-				      PROT_WRITE);
->>+	if (!is_i915_device(exporter_fd)) {
->>+		scratch->handle =3D kmstest_dumb_create(exporter_fd,
->>+						      ALIGN(scratch->width,
->>256),
->>+						      scratch->height, scratch-
->>>bpp,
->>+						      &scratch->pitch, &scratch-
->>>size);
->>+
->>+		ptr =3D kmstest_dumb_map_buffer(exporter_fd, scratch-
->>>handle,
->>+					      scratch->size, PROT_WRITE);
->>+	} else {
->>+		igt_calc_fb_size(exporter_fd, mode->hdisplay, mode-
->>>vdisplay, DRM_FORMAT_XRGB8888,
->>+				 DRM_FORMAT_MOD_NONE, &scratch->size,
->>&scratch->pitch);
->>+		if (gem_has_lmem(exporter_fd))
->>+			scratch->handle =3D
->>gem_create_in_memory_regions(exporter_fd, scratch->size,
->>+
->>REGION_LMEM(0), REGION_SMEM);
->>+		else
->>+			scratch->handle =3D
->>gem_create_in_memory_regions(exporter_fd, scratch->size,
->>+
->>REGION_SMEM);
->>+
->>+		ptr =3D gem_mmap__device_coherent(exporter_fd, scratch-
->>>handle, 0, scratch->size,
->>+						PROT_WRITE | PROT_READ);
->>+	}
->>
->> 	for (size_t idx =3D 0; idx < scratch->size / sizeof(*ptr); ++idx)
->> 		ptr[idx] =3D color;
->>--
->>2.20.1
+-- 
+Rodrigo Siqueira
+https://siqueira.tech
