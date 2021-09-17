@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 17 Sep 2021 11:37:28 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YURTyDN+Y2Odmm1B@platvala-desk.ger.corp.intel.com>
-References: <20210915215558.2473428-1-John.C.Harrison@Intel.com>
- <20210915215558.2473428-2-John.C.Harrison@Intel.com>
- <YUMHcIsB1+9UmWKV@platvala-desk.ger.corp.intel.com>
- <e4f66112-8628-0870-81a3-622838cdd86a@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B8F166EC7C
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Sep 2021 13:03:36 +0000 (UTC)
+From: "Ruhl, Michael J" <michael.j.ruhl@intel.com>
+Date: Fri, 17 Sep 2021 13:03:34 +0000
+Message-ID: <079a6cbef7c746c1ae281ba4ad4cef86@intel.com>
+References: <20210916133239.24596-1-ramalingam.c@intel.com>
+In-Reply-To: <20210916133239.24596-1-ramalingam.c@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e4f66112-8628-0870-81a3-622838cdd86a@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tests/i915/query: Query,
- parse and validate the hwconfig table
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_prime: Create the
+ exporting BO with smem
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,57 +22,114 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: John Harrison <john.c.harrison@intel.com>
-Cc: IGT-Dev@lists.freedesktop.org, Intel-GFX@lists.freedesktop.org, Rodrigo Vivi <rodrigo.vivi@intel.com>, Slawomir Milczarek <slawomir.milczarek@intel.com>, Matthew Brost <matthew.brost@intel.com>
+To: "C, Ramalingam" <ramalingam.c@intel.com>, igt-dev <igt-dev@lists.freedesktop.org>
+Cc: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Sep 16, 2021 at 10:27:41AM -0700, John Harrison wrote:
-> On 9/16/2021 01:59, Petri Latvala wrote:
-> > On Wed, Sep 15, 2021 at 02:55:58PM -0700, John.C.Harrison@Intel.com wrote:
-> > > From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > > 
-> > > Newer platforms have an embedded table giving details about that
-> > > platform's hardware configuration. This table can be retrieved from
-> > > the KMD via the existing query API. So add a test for it as both an
-> > > example of how to fetch the table and to validate the contents as much
-> > > as is possible.
-> > > 
-> > > Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > > Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-> > > Cc: Slawomir Milczarek <slawomir.milczarek@intel.com>
-> > > Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-> > > ---
-> > >   include/drm-uapi/i915_drm.h |   1 +
-> > >   lib/intel_hwconfig_types.h  | 106 +++++++++++++++++++++++
-> > >   tests/i915/i915_query.c     | 168 ++++++++++++++++++++++++++++++++++++
-> > >   3 files changed, 275 insertions(+)
-> > >   create mode 100644 lib/intel_hwconfig_types.h
-> > > 
-> > > diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-> > > index b9632bb2c..ae0c8dfad 100644
-> > > --- a/include/drm-uapi/i915_drm.h
-> > > +++ b/include/drm-uapi/i915_drm.h
-> > > @@ -2451,6 +2451,7 @@ struct drm_i915_query_item {
-> > >   #define DRM_I915_QUERY_ENGINE_INFO	2
-> > >   #define DRM_I915_QUERY_PERF_CONFIG      3
-> > >   #define DRM_I915_QUERY_MEMORY_REGIONS   4
-> > > +#define DRM_I915_QUERY_HWCONFIG_TABLE   5
-> > >   /* Must be kept compact -- no holes and well documented */
-> > Please update i915_drm.h with a copy from the kernel and state in the
-> > commit message which kernel commit sha it's from. If this change is
-> > not in the kernel yet, add this token to lib/i915/i915_drm_local.h
-> > instead.
-> > 
-> > 
-> Neither side is merged yet. My understanding is that all sides need to be
-> posted in parallel for CI to work. Once green and reviewed, the kernel side
-> gets merged first. Then the IGT/UMD patches get updated with the official
-> kernel headers, reposted and then merged.
 
-That lockstep dancing removal is the point of i915_drm_local.h. IGT
-side can even be merged that way before kernel side is ready, then
-updated with the real thing later at whatever cadence.
+>-----Original Message-----
+>From: C, Ramalingam <ramalingam.c@intel.com>
+>Sent: Thursday, September 16, 2021 9:33 AM
+>To: igt-dev <igt-dev@lists.freedesktop.org>
+>Cc: Ruhl, Michael J <michael.j.ruhl@intel.com>; Dixit, Ashutosh
+><ashutosh.dixit@intel.com>
+>Subject: [PATCH i-g-t v3] tests/kms_prime: Create the exporting BO with
+>smem
+>
+>On i915, to avail the dmabuf, the sharing object needs to migratable
+>into smem. So if the shared object is lmem, then it needs to have the
+>smem as second placement option.
 
+Some minor word smithing:
 
--- 
-Petri Latvala
+"the shared object needs to be migratable"
+
+"needs to have smem as"
+
+>Currently kms_prime sharing the dumb buffer between the devices.
+
+s/sharing/shares/
+
+>But dumb buffer can't have the placements and resides at lmem for the
+>dgfx. Hence to meet the i915 expectation for dgfx, we create the BO
+>using the gem_create with smem as second placement option.
+
+Would it make more sense to just have i915_gem_dumb_create() create
+the object with both placements?
+
+So then for the use case, it will "just work"?
+
+This patch looks reasonable, but the change in dumb buffer usage is a
+concern because we will need to change all usages in order to cover this
+new feature/ability.
+
+Mike
+
+>v2: Used gem_mmap__device_coherent for mmaped ptr (Ashutosh)
+>v3: dumb buffer ioctls are used for non i915 drivers
+>
+>Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
+>Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>Reviewed-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+>---
+> tests/kms_prime.c | 33 +++++++++++++++++++++------------
+> 1 file changed, 21 insertions(+), 12 deletions(-)
+>
+>diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+>index 2e20c58bc16e..5cdb559778b3 100644
+>--- a/tests/kms_prime.c
+>+++ b/tests/kms_prime.c
+>@@ -100,18 +100,27 @@ static void prepare_scratch(int exporter_fd, struct
+>dumb_bo *scratch,
+> 	scratch->height =3D mode->vdisplay;
+> 	scratch->bpp =3D 32;
+>
+>-	scratch->handle =3D kmstest_dumb_create(exporter_fd,
+>-			ALIGN(scratch->width, 256),
+>-			scratch->height,
+>-			scratch->bpp,
+>-			&scratch->pitch,
+>-			&scratch->size);
+>-
+>-
+>-	ptr =3D kmstest_dumb_map_buffer(exporter_fd,
+>-				      scratch->handle,
+>-				      scratch->size,
+>-				      PROT_WRITE);
+>+	if (!is_i915_device(exporter_fd)) {
+>+		scratch->handle =3D kmstest_dumb_create(exporter_fd,
+>+						      ALIGN(scratch->width,
+>256),
+>+						      scratch->height, scratch-
+>>bpp,
+>+						      &scratch->pitch, &scratch-
+>>size);
+>+
+>+		ptr =3D kmstest_dumb_map_buffer(exporter_fd, scratch-
+>>handle,
+>+					      scratch->size, PROT_WRITE);
+>+	} else {
+>+		igt_calc_fb_size(exporter_fd, mode->hdisplay, mode-
+>>vdisplay, DRM_FORMAT_XRGB8888,
+>+				 DRM_FORMAT_MOD_NONE, &scratch->size,
+>&scratch->pitch);
+>+		if (gem_has_lmem(exporter_fd))
+>+			scratch->handle =3D
+>gem_create_in_memory_regions(exporter_fd, scratch->size,
+>+
+>REGION_LMEM(0), REGION_SMEM);
+>+		else
+>+			scratch->handle =3D
+>gem_create_in_memory_regions(exporter_fd, scratch->size,
+>+
+>REGION_SMEM);
+>+
+>+		ptr =3D gem_mmap__device_coherent(exporter_fd, scratch-
+>>handle, 0, scratch->size,
+>+						PROT_WRITE | PROT_READ);
+>+	}
+>
+> 	for (size_t idx =3D 0; idx < scratch->size / sizeof(*ptr); ++idx)
+> 		ptr[idx] =3D color;
+>--
+>2.20.1
