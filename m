@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E3116F3DA
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCFAC6F3D0
  for <igt-dev@lists.freedesktop.org>; Sat, 18 Sep 2021 04:54:11 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Fri, 17 Sep 2021 21:54:30 -0700
-Message-Id: <20210918045436.34782-10-alan.previn.teres.alexis@intel.com>
+Date: Fri, 17 Sep 2021 21:54:35 -0700
+Message-Id: <20210918045436.34782-15-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210918045436.34782-1-alan.previn.teres.alexis@intel.com>
 References: <20210918045436.34782-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v11 09/15] Verify PXP teardown occurred
- through suspend-resume
+Subject: [igt-dev] [PATCH i-g-t v11 14/15] Verify protected surfaces are dma
+ buffer sharable
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,133 +24,138 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-During a suspend-resume cycle, the driver shall ensure the
-PXP session and keys are torn down and re-established.
-Verify that key change did occur by repeating the 3d
-rendercopy operation before and after the suspend-resume
-cycle and ensuring the encrypted output is different.
+Verify we can export a protected surface from
+protected context A into protected context B (with
+different client driver handles) and protected
+rendering is successful even after prior file
+handle is closed (i.e. pxp specific refcounting
+works).
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/i915/gem_pxp.c | 66 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 65 insertions(+), 1 deletion(-)
+ tests/i915/gem_pxp.c | 102 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 102 insertions(+)
 
 diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 51908799..3233fa7f 100644
+index 0ccba6aa..2848e487 100644
 --- a/tests/i915/gem_pxp.c
 +++ b/tests/i915/gem_pxp.c
-@@ -10,6 +10,12 @@
- IGT_TEST_DESCRIPTION("Test PXP that manages protected content through arbitrated HW-PXP-session");
- /* Note: PXP = "Protected Xe Path" */
- 
-+/* Struct and definitions for power management. */
-+struct powermgt_data {
-+	int debugfsdir;
-+	bool has_runtime_pm;
-+};
-+
- static int create_bo_ext(int i915, uint32_t size, bool protected_is_true, uint32_t *bo_out)
- {
- 	int ret;
-@@ -467,7 +473,7 @@ static void test_render_baseline(int i915)
+@@ -621,6 +621,106 @@ static void test_render_pxp_protsrc_to_protdest(int i915)
  	buf_ops_destroy(bops);
  }
  
--static void test_render_pxp_src_to_protdest(int i915)
-+static void __test_render_pxp_src_to_protdest(int i915, uint32_t *outpixels, int outsize)
- {
- 	uint32_t ctx, srcbo, dstbo;
- 	struct intel_buf *srcbuf, *dstbuf;
-@@ -509,6 +515,10 @@ static void test_render_pxp_src_to_protdest(int i915)
- 	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
- 				TSTSURF_SIZE, TSTSURF_FILLCOLOR2, NULL, 0);
- 
-+	if (outpixels)
-+		assert_bo_content_check(i915, dstbo, COPY_BUFFER,
-+					TSTSURF_SIZE, 0, outpixels, outsize);
-+
- 	intel_bb_destroy(ibb);
- 	intel_buf_destroy(srcbuf);
- 	gem_close(i915, srcbo);
-@@ -518,6 +528,11 @@ static void test_render_pxp_src_to_protdest(int i915)
- 	buf_ops_destroy(bops);
- }
- 
-+static void test_render_pxp_src_to_protdest(int i915)
++static int export_handle(int fd, uint32_t handle, int *outfd)
 +{
-+	__test_render_pxp_src_to_protdest(i915, NULL, 0);
++	struct drm_prime_handle args;
++	int ret;
++
++	args.handle = handle;
++	args.flags = DRM_CLOEXEC;
++	args.fd = -1;
++
++	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
++	if (ret)
++		ret = errno;
++	*outfd = args.fd;
++
++	return ret;
 +}
 +
- static void test_render_pxp_protsrc_to_protdest(int i915)
- {
- 	uint32_t ctx, srcbo, dstbo, dstbo2;
-@@ -597,10 +612,46 @@ static void test_render_pxp_protsrc_to_protdest(int i915)
- 	buf_ops_destroy(bops);
- }
- 
-+static void init_powermgt_resources(int i915, struct powermgt_data *pm)
++static void test_pxp_dmabuffshare_refcnt(void)
 +{
-+	pm->debugfsdir = igt_debugfs_dir(i915);
-+	igt_require(pm->debugfsdir != -1);
-+	pm->has_runtime_pm = igt_setup_runtime_pm(i915);
-+	igt_require(pm->has_runtime_pm);
-+}
++	uint32_t ctx[2], sbo[2], dbo[2];
++	struct intel_buf *sbuf[2], *dbuf[2];
++	struct buf_ops *bops[2];
++	struct intel_bb *ibb[2];
++	int fd[2], dmabuf_fd = 0, ret, n, num_matches = 0;
++	uint32_t encrypted[2][TSTSURF_SIZE/TSTSURF_BYTESPP];
 +
-+static void trigger_powermgt_suspend_cycle(int i915,
-+	struct powermgt_data *pm)
-+{
-+	igt_pm_enable_sata_link_power_management();
-+	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_DEVICES);
-+}
-+
-+static void test_pxp_pwrcycle_teardown_keychange(int i915, struct powermgt_data *pm)
-+{
-+	uint32_t encrypted_pixels_b4[TSTSURF_SIZE/TSTSURF_BYTESPP];
-+	uint32_t encrypted_pixels_aft[TSTSURF_SIZE/TSTSURF_BYTESPP];
-+	int matched_after_keychange = 0, loop = 0;
-+
-+	__test_render_pxp_src_to_protdest(i915, encrypted_pixels_b4, TSTSURF_SIZE);
-+
-+	trigger_powermgt_suspend_cycle(i915, pm);
-+
-+	__test_render_pxp_src_to_protdest(i915, encrypted_pixels_aft, TSTSURF_SIZE);
-+
-+	while (loop < (TSTSURF_SIZE/TSTSURF_BYTESPP)) {
-+		if (encrypted_pixels_b4[loop] == encrypted_pixels_aft[loop])
-+			++matched_after_keychange;
-+		++loop;
++	/* First, create the client driver handles and
++	 * protected dest buffer (is exported via dma-buff
++	 * from first handle and imported to the second).
++	 */
++	for (n = 0; n < 2; ++n) {
++		fd[n] = drm_open_driver(DRIVER_INTEL);
++		igt_require(fd[n]);
++		if (n == 0) {
++			dbo[0] = alloc_and_fill_dest_buff(fd[0], true, TSTSURF_SIZE,
++							  TSTSURF_INITCOLOR1);
++		} else {
++			ret = export_handle(fd[0], dbo[0], &dmabuf_fd);
++			igt_assert(ret == 0);
++			dbo[1] = prime_fd_to_handle(fd[1], dmabuf_fd);
++			igt_assert(dbo[1]);
++		}
 +	}
-+	igt_assert_eq(matched_after_keychange, 0);
++	/* Repeat twice: Create a full set of assets to perform
++	 * a protected 3D session but using the same dest buffer
++	 * from above.
++	 */
++	for (n = 0; n < 2; ++n) {
++		ret = create_ctx_with_params(fd[n], true, true, true, false, &ctx[n]);
++		igt_assert_eq(ret, 0);
++		igt_assert_eq(get_ctx_protected_param(fd[n], ctx[n]), 1);
++		ibb[n] = intel_bb_create_with_context(fd[n], ctx[n], 4096);
++		intel_bb_set_pxp(ibb[n], true, DISPLAY_APPTYPE,
++				 I915_PROTECTED_CONTENT_DEFAULT_SESSION);
++
++		bops[n] = buf_ops_create(fd[n]);
++		if (n == 1)
++			fill_bo_content(fd[1], dbo[1], TSTSURF_SIZE, TSTSURF_INITCOLOR2);
++
++		dbuf[n] = intel_buf_create_using_handle(bops[n], dbo[n], TSTSURF_WIDTH,
++							TSTSURF_HEIGHT,	TSTSURF_BYTESPP*8, 0,
++							I915_TILING_NONE, 0);
++		intel_buf_set_pxp(dbuf[n], true);
++
++		sbo[n] = alloc_and_fill_dest_buff(fd[n], false, TSTSURF_SIZE, TSTSURF_FILLCOLOR1);
++		sbuf[n] = intel_buf_create_using_handle(bops[n], sbo[n], TSTSURF_WIDTH,
++							TSTSURF_HEIGHT, TSTSURF_BYTESPP*8, 0,
++							I915_TILING_NONE, 0);
++
++		gen12_render_copyfunc(ibb[n], sbuf[n], 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++				      dbuf[n], 0, 0);
++		gem_sync(fd[n], dbo[n]);
++
++		assert_bo_content_check(fd[n], dbo[n], COMPARE_COLOR_UNREADIBLE, TSTSURF_SIZE,
++					TSTSURF_FILLCOLOR1, NULL, 0);
++		assert_bo_content_check(fd[n], dbo[n], COPY_BUFFER, TSTSURF_SIZE, 0, encrypted[n],
++					TSTSURF_SIZE);
++
++		/* free up all assets except the dest buffer to
++		 * verify dma buff refcounting is performed on
++		 * the protected dest buffer on the 2nd loop with
++		 * successful reuse in another protected render.
++		 */
++		intel_bb_destroy(ibb[n]);
++		intel_buf_destroy(sbuf[n]);
++		intel_buf_destroy(dbuf[n]);
++		gem_close(fd[n], sbo[n]);
++		gem_close(fd[n], dbo[n]);
++		gem_context_destroy(fd[n], ctx[n]);
++		close(fd[n]);
++	}
++
++	/* Verify that encrypted output across loops were equal */
++	for (n = 0; n < (TSTSURF_SIZE/4); ++n)
++		if (encrypted[0][n] == encrypted[1][n])
++			++num_matches;
++	igt_assert(num_matches == (TSTSURF_SIZE/4));
 +}
 +
- igt_main
++
+ static void init_powermgt_resources(int i915, struct powermgt_data *pm)
  {
- 	int i915 = -1;
- 	bool pxp_supported = false;
-+	struct powermgt_data pm = {0};
- 	igt_render_copyfunc_t rendercopy = NULL;
- 	uint32_t devid = 0;
- 
-@@ -673,6 +724,19 @@ igt_main
+ 	pm->debugfsdir = igt_debugfs_dir(i915);
+@@ -989,6 +1089,8 @@ igt_main
+ 			test_render_pxp_src_to_protdest(i915);
  		igt_subtest("protected-encrypted-src-copy-not-readible")
  			test_render_pxp_protsrc_to_protdest(i915);
++		igt_subtest("dmabuf-shared-protected-dst-is-context-refcounted")
++			test_pxp_dmabuffshare_refcnt();
  	}
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require(pxp_supported);
-+			devid = intel_get_drm_devid(i915);
-+			igt_assert(devid);
-+			rendercopy = igt_get_render_copyfunc(devid);
-+			igt_require(rendercopy);
-+			init_powermgt_resources(i915, &pm);
-+		}
-+		igt_describe("Verify suspend-resume teardown management:");
-+		igt_subtest("verify-pxp-key-change-after-suspend-resume")
-+			test_pxp_pwrcycle_teardown_keychange(i915, &pm);
-+	}
- 
- 	igt_fixture {
- 		close(i915);
+ 	igt_subtest_group {
+ 		igt_fixture {
 -- 
 2.25.1
