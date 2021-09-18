@@ -1,10 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 667266F3C9
+ for <igt-dev@lists.freedesktop.org>; Sat, 18 Sep 2021 04:54:10 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Fri, 17 Sep 2021 21:54:21 -0700
-Message-Id: <20210918045436.34782-1-alan.previn.teres.alexis@intel.com>
+Date: Fri, 17 Sep 2021 21:54:22 -0700
+Message-Id: <20210918045436.34782-2-alan.previn.teres.alexis@intel.com>
+In-Reply-To: <20210918045436.34782-1-alan.previn.teres.alexis@intel.com>
+References: <20210918045436.34782-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v11 00/15] Introduce PXP Test
+Subject: [igt-dev] [PATCH i-g-t v11 01/15] Add PXP UAPI support in i915_drm.h
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,144 +20,130 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, dri-devel@lists.freedesktop.org, Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This series adds gem_pxp tests for the new PXP subsystem currently
-being reviewed at https://patchwork.freedesktop.org/series/90504/.
-This series currently includes 4 groups of tests addressing the
-features and restrictions described by Daniele's series :
-   1. test i915 interfaces for allocation of protected bo's
-      and contexts and enforcement of UAPI rule disallowing the
-      modification of parameters after it's been created.
-   2. verify PXP subsystem protected sessions generate encrypted
-      content on protected output buffers and decrypt protected
-      inputs buffers.
-   3. verify i915 PXP auto-teardown succeeds on suspend-resume
-      cycles and gem-exec of stale protected assets fail. Ensure
-      protected-contexts adhere to stricter invalidation
-      enforcement upon teardown event.
-   4. Ensure that display plane decryption works as expected with
-      protected buffers.
+PXP hasn't been merged into upstream kernel, so taking the
+UAPI changes from the kernel patches and adding into
+i915_drm_local.h for now.
 
-NOTE: This series is on the tenth revision. All R-v-b's have been
-received except UAPI patch which will be dropped at merge time (after
-kernel patches gets merged and igt's drm UAPI gets sync'd).
+Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+---
+ lib/i915/i915_drm_local.h | 102 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 102 insertions(+)
 
-Changes from prior rev1 to now:
-   v11:
-      - When detecting hw support, retry pxp context creation
-        multiple times a timeout as per HW SLA.
-      - initialize bo or ctx handles to zero before calling
-        creation ioctl wrapper.
-   v10:
-      - In patch #2, reuse existing gem_create_ext wrapper.
-      - In patch #10, kernel side changed the debugfs file name
-        (but no difference in behavior / usage).
-      - Removed patch #14 from Rev9 as decision on kernel side
-        was to drop the usage of RESET_STATS IOCTL to track
-        invalidated pxp contexts.
-   v9:
-      - Remove patch #2 from rev7 as it was duplicating
-        an existing ioctl wrapper helper
-      - Fix the false-negative warnings when triggering
-        auto-suspend-resume (remove checking if we are
-        suspending after the system has already resumed).
-   v8:
-      - Nothing - mistaken detection from patchwork
-   v7:
-      - In prior rev, Patches #11->13 was testing expected results
-        from calling gem_execbuf with stale pxp-context, pxp-buffer
-        or combinations of them (including an opt-out usage). All
-        of them used a single suspend-resume power state cycles to
-        trigger the PXP teardown event. These patches have been
-        combined into patch #14 that continues to carry the prior rev
-        Rvb.
-      - In its place, the new patches of #11->#13 do the identical
-        set of tests as before (results from gem_execbuf with various
-        combinations of stale pxp context and buffer), but this time
-        using a debugfs file handle that triggers the same code path
-        taken when the HW triggers the pxp teardown. That said, the
-        code is nearly identical as v6 but I did not keep the Rvb's.
-      - In patch #15, RESET_STAT now reports invalidated / banned
-        pxp contexts via the existing batch_active's lost count.
-   v6:
-      - Addressed rev5 review comments for patch #1, #7, #14
-        and #17.
-      - For #17, I'm using Rodrigo's Rv-b because offline 
-        discussions concluded that we couldn't use those
-        test sequences with HDCP and so it was removed it.
-      - Added Rv-b into all patches that received it.
-      - Modified the test requirement from a list of device
-        ids to checking if runtime PXP interface succeeds
-        due to kernel's build config dependency.
-   v5:
-      - Addressed all rev4 review comments. No changes to
-        overall flow and logic compared to the last rev.
-   v4:
-      - Addressed all rev3 review comments. NOTE: that all
-        test cases and code logic are the same but a decent
-        amount of refactoring has occured due to address
-        v3 comments to break out subtests into separate
-        functions while combining certain checks into the same
-        function to reduce test time by minimizing number of
-        suspend-resume power cycles.
-   v3:
-      - Addressed all rev2 review comments.
-      - In line with one of the rev2 comments, a thorough fixup
-        of all line-breaks in function calls was made for a more
-        consistent styling.
-      - Rebased on igt upstream repo and updated to latest kernel
-        UAPI that added GEM_CREATE_EXT.
-   v2: 
-      - Addressed all rev1 review comments except these:
-           1.Chris Wilson : "...have the caller do 1-3 once for its protected
-             context. Call it something like intel_bb_enable_pxp(),
-             intel_bb_set_pxp if it should be reversible.".
-             -  This couldn't be implemented because [1] HW needs different
-             instruction sequences for enabling/disabling PXP depending
-             on the engine class and [2] the pair of "pxp-enable" and "pxp-
-             disable" instructions need to be contained within the same batch
-             that is dispatched to the hardware. That said, implementing
-             internal intel_batchbuffer funtionality for this would conflict
-             with how rendercopy_gen9 uses batch buffer memory by repositioing
-             the pointer and consuming unused portions of the batch buffer as
-             3d state offsets that batchbuffer has no visibility.
-         
-      - Added these additional subtests:
-           1. verify that buffer sharing works across testing pxp context.
-           2. verify teardown bans contexts via DRM_IOCTL_I915_GET_RESET_STAT.
-           3. verify display plane decryption of protected buffers.
-
-Alan Previn (14):
-  Add PXP UAPI support in i915_drm.h
-  Add basic PXP testing of buffer and context alloc
-  Perform a regular 3d copy as a control checkpoint
-  Add PXP attribute support in batchbuffer and buffer_ops libs
-  Add MI_SET_APPID instruction definition
-  Enable protected session cmd in gen12_render_copyfunc
-  Add subtest to copy raw source to protected dest
-  Add test where both src and dest are protected
-  Verify PXP teardown occurred through suspend-resume
-  Verify execbuf fails with stale PXP context after teardown
-  Verify execbuf fails with stale PXP buffer after teardown
-  Verify execbuf ok with stale PXP buf in opt-out use
-  Verify execution behavior with stale PXP assets through suspend-resume
-  Verify protected surfaces are dma buffer sharable
-
-Karthik B S (1):
-  tests/i915_pxp: CRC validation for display tests.
-
- lib/i915/i915_drm_local.h |  102 +++
- lib/intel_batchbuffer.c   |   23 +-
- lib/intel_batchbuffer.h   |   31 +
- lib/intel_bufops.h        |   15 +
- lib/intel_reg.h           |    8 +
- lib/rendercopy_gen9.c     |   57 ++
- tests/i915/gem_pxp.c      | 1283 +++++++++++++++++++++++++++++++++++++
- tests/meson.build         |    1 +
- 8 files changed, 1519 insertions(+), 1 deletion(-)
- create mode 100644 tests/i915/gem_pxp.c
-
+diff --git a/lib/i915/i915_drm_local.h b/lib/i915/i915_drm_local.h
+index dd646aed..fbb68d8a 100644
+--- a/lib/i915/i915_drm_local.h
++++ b/lib/i915/i915_drm_local.h
+@@ -20,6 +20,108 @@ extern "C" {
+  * clean these up when kernel uapi headers are sync'd.
+  */
+ 
++/*
++ * New PXP UAPI value for 'struct drm_i915_gem_context_param.param'
++ * I915_CONTEXT_PARAM_PROTECTED_CONTENT:
++ *
++ * Mark that the context makes use of protected content, which will result
++ * in the context being invalidated when the protected content session is.
++ * Given that the protected content session is killed on suspend, the device
++ * is kept awake for the lifetime of a protected context, so the user should
++ * make sure to dispose of them once done.
++ * This flag can only be set at context creation time and, when set to true,
++ * must be preceded by an explicit setting of I915_CONTEXT_PARAM_RECOVERABLE
++ * to false. This flag can't be set to true in conjunction with setting the
++ * I915_CONTEXT_PARAM_BANNABLE flag to false. Creation example:
++ *
++ * .. code-block:: C
++ *
++ *	struct drm_i915_gem_context_create_ext_setparam p_protected = {
++ *		.base = {
++ *			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
++ *		},
++ *		.param = {
++ *			.param = I915_CONTEXT_PARAM_PROTECTED_CONTENT,
++ *			.value = 1,
++ *		}
++ *	};
++ *	struct drm_i915_gem_context_create_ext_setparam p_norecover = {
++ *		.base = {
++ *			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
++ *			.next_extension = to_user_pointer(&p_protected),
++ *		},
++ *		.param = {
++ *			.param = I915_CONTEXT_PARAM_RECOVERABLE,
++ *			.value = 0,
++ *		}
++ *	};
++ *	struct drm_i915_gem_context_create_ext create = {
++ *		.flags = I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
++ *		.extensions = to_user_pointer(&p_norecover);
++ *	};
++ *
++ *	ctx_id = gem_context_create_ext(drm_fd, &create);
++ *
++ * In addition to the normal failure cases, setting this flag during context
++ * creation can result in the following errors:
++ *
++ * -ENODEV: feature not available
++ * -EPERM: trying to mark a recoverable or not bannable context as protected
++ */
++#define I915_CONTEXT_PARAM_PROTECTED_CONTENT    0xd
++
++/*
++ * New PXP UAPI flag for 'struct drm_i915_gem_create_ext.flags'
++ *
++ * For I915_GEM_CREATE_EXT_PROTECTED_CONTENT usage see
++ * struct drm_i915_gem_create_ext_protected_content.
++ */
++#define I915_GEM_CREATE_EXT_PROTECTED_CONTENT 1
++
++/**
++ * struct drm_i915_gem_create_ext_protected_content - The
++ * I915_OBJECT_PARAM_PROTECTED_CONTENT extension.
++ *
++ * If this extension is provided, buffer contents are expected to be protected
++ * by PXP encryption and require decryption for scan out and processing. This
++ * is only possible on platforms that have PXP enabled, on all other scenarios
++ * using this extension will cause the ioctl to fail and return -ENODEV. The
++ * flags parameter is reserved for future expansion and must currently be set
++ * to zero.
++ *
++ * The buffer contents are considered invalid after a PXP session teardown.
++ *
++ * The encryption is guaranteed to be processed correctly only if the object
++ * is submitted with a context created using the
++ * I915_CONTEXT_PARAM_PROTECTED_CONTENT flag. This will also enable extra checks
++ * at submission time on the validity of the objects involved.
++ *
++ * Below is an example on how to create a protected object:
++ *
++ * .. code-block:: C
++ *
++ *      struct drm_i915_gem_create_ext_protected_content protected_ext = {
++ *              .base = { .name = I915_GEM_CREATE_EXT_PROTECTED_CONTENT },
++ *              .flags = 0,
++ *      };
++ *      struct drm_i915_gem_create_ext create_ext = {
++ *              .size = PAGE_SIZE,
++ *              .extensions = (uintptr_t)&protected_ext,
++ *      };
++ *
++ *      int err = ioctl(fd, DRM_IOCTL_I915_GEM_CREATE_EXT, &create_ext);
++ *      if (err) ...
++ */
++struct drm_i915_gem_create_ext_protected_content {
++	/** @base: Extension link. See struct i915_user_extension. */
++	struct i915_user_extension base;
++	/** @flags: reserved for future usage, currently MBZ */
++	__u32 flags;
++};
++
++/* ID of the protected content session managed by i915 when PXP is active */
++#define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
++
+ #if defined(__cplusplus)
+ }
+ #endif
 -- 
 2.25.1
