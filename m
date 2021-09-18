@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DFE986F3E2
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C2096F3D8
  for <igt-dev@lists.freedesktop.org>; Sat, 18 Sep 2021 04:54:11 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Fri, 17 Sep 2021 21:54:36 -0700
-Message-Id: <20210918045436.34782-16-alan.previn.teres.alexis@intel.com>
+Date: Fri, 17 Sep 2021 21:54:28 -0700
+Message-Id: <20210918045436.34782-8-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20210918045436.34782-1-alan.previn.teres.alexis@intel.com>
 References: <20210918045436.34782-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v11 15/15] tests/i915_pxp: CRC validation
- for display tests.
+Subject: [igt-dev] [PATCH i-g-t v11 07/15] Add subtest to copy raw source to
+ protected dest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,213 +21,102 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Karthik B S <karthik.b.s@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Karthik B S <karthik.b.s@intel.com>
+Add subtest to 3d-copy raw source buffer (with
+known readible content) to a destination buffer
+marked as protected with a protected session using
+default session keys. The destination buffer is
+verified to be different from the source (when
+read via CPU) because its encrypted.
 
-Added subtests to validate pxp using CRC validation.
-
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/i915/gem_pxp.c | 163 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 163 insertions(+)
+ tests/i915/gem_pxp.c | 55 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
 diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 2848e487..79040165 100644
+index 272de57b..9c7de6b0 100644
 --- a/tests/i915/gem_pxp.c
 +++ b/tests/i915/gem_pxp.c
-@@ -437,6 +437,7 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size
+@@ -378,7 +378,9 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size
+ #define TSTSURF_STRIDE      (TSTSURF_WIDTH*TSTSURF_BYTESPP)
+ #define TSTSURF_SIZE        (TSTSURF_STRIDE*TSTSURF_HEIGHT)
+ #define TSTSURF_FILLCOLOR1  0xfaceface
++#define TSTSURF_FILLCOLOR2  0xdeaddead
  #define TSTSURF_INITCOLOR1  0x12341234
- #define TSTSURF_INITCOLOR2  0x56785678
- #define TSTSURF_INITCOLOR3  0xabcdabcd
-+#define TSTSURF_GREENCOLOR  0xFF00FF00
++#define TSTSURF_INITCOLOR2  0x56785678
  
  static void test_render_baseline(int i915)
  {
-@@ -1013,6 +1014,152 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
- 	free_exec_assets(i915, &data[2]);
+@@ -424,6 +426,57 @@ static void test_render_baseline(int i915)
+ 	buf_ops_destroy(bops);
  }
  
-+static void setup_protected_fb(int i915, int width, int height, igt_fb_t *fb, uint32_t ctx)
++static void test_render_pxp_src_to_protdest(int i915)
 +{
-+	int err;
-+	uint32_t srcbo;
++	uint32_t ctx, srcbo, dstbo;
 +	struct intel_buf *srcbuf, *dstbuf;
 +	struct buf_ops *bops;
 +	struct intel_bb *ibb;
 +	uint32_t devid;
-+	igt_render_copyfunc_t rendercopy;
++	int ret;
 +
 +	devid = intel_get_drm_devid(i915);
 +	igt_assert(devid);
 +
-+	rendercopy = igt_get_render_copyfunc(devid);
-+	igt_assert(rendercopy);
-+
 +	bops = buf_ops_create(i915);
 +	igt_assert(bops);
 +
-+	igt_init_fb(fb, i915, width, height, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
-+		    IGT_COLOR_YCBCR_BT709, IGT_COLOR_YCBCR_LIMITED_RANGE);
-+
-+	igt_calc_fb_size(i915, width, height, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
-+			 &fb->size, &fb->strides[0]);
-+
-+	err = create_bo_ext(i915, fb->size, true, &(fb->gem_handle));
-+	igt_assert_eq(err, 0);
-+	igt_assert(fb->gem_handle);
-+
-+	err = __gem_set_tiling(i915, fb->gem_handle, igt_fb_mod_to_tiling(fb->modifier),
-+			       fb->strides[0]);
-+	igt_assert(err == 0 || err == -EOPNOTSUPP);
-+
-+	do_or_die(__kms_addfb(fb->fd, fb->gem_handle, fb->width, fb->height, fb->drm_format,
-+			      fb->modifier, fb->strides, fb->offsets, fb->num_planes,
-+			      DRM_MODE_FB_MODIFIERS, &fb->fb_id));
-+
-+	dstbuf = intel_buf_create_using_handle(bops, fb->gem_handle, fb->width, fb->height,
-+					       fb->plane_bpp[0], 0,
-+					       igt_fb_mod_to_tiling(fb->modifier), 0);
-+	dstbuf->is_protected = true;
-+
-+	srcbo = alloc_and_fill_dest_buff(i915, false, fb->size, TSTSURF_GREENCOLOR);
-+	srcbuf = intel_buf_create_using_handle(bops, srcbo, fb->width, fb->height,
-+					       fb->plane_bpp[0], 0,
-+					       igt_fb_mod_to_tiling(fb->modifier), 0);
-+
++	/*
++	 * Perform a protected render operation but only label
++	 * the dest as protected. After rendering, the content
++	 * should be encrypted
++	 */
++	ret = create_ctx_with_params(i915, true, true, true, false, &ctx);
++	igt_assert_eq(ret, 0);
++	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
 +	ibb = intel_bb_create_with_context(i915, ctx, 4096);
 +	igt_assert(ibb);
++	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
 +
-+	ibb->pxp.enabled = true;
-+	ibb->pxp.apptype = DISPLAY_APPTYPE;
-+	ibb->pxp.appid = I915_PROTECTED_CONTENT_DEFAULT_SESSION;
++	dstbo = alloc_and_fill_dest_buff(i915, true, TSTSURF_SIZE, TSTSURF_INITCOLOR2);
++	dstbuf = intel_buf_create_using_handle(bops, dstbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
++	intel_buf_set_pxp(dstbuf, true);
 +
-+	gen12_render_copyfunc(ibb, srcbuf, 0, 0, fb->width, fb->height, dstbuf, 0, 0);
++	srcbo = alloc_and_fill_dest_buff(i915, false, TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
++	srcbuf = intel_buf_create_using_handle(bops, srcbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
 +
-+	gem_sync(i915, fb->gem_handle);
-+	assert_bo_content_check(i915, fb->gem_handle, COMPARE_COLOR_UNREADIBLE, fb->size,
-+				TSTSURF_GREENCOLOR, NULL, 0);
++	gen12_render_copyfunc(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
++	gem_sync(i915, dstbo);
++
++	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
++				TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
 +
 +	intel_bb_destroy(ibb);
 +	intel_buf_destroy(srcbuf);
 +	gem_close(i915, srcbo);
-+}
-+
-+#define KERNEL_AUTH_TIME_ALLOWED_MSEC		(3 *  6 * 1000)
-+#define KERNEL_DISABLE_TIME_ALLOWED_MSEC	(1 * 1000)
-+
-+static void test_display_protected_crc(int i915, igt_display_t *display)
-+{
-+	igt_output_t *output;
-+	drmModeModeInfo *mode;
-+	igt_fb_t ref_fb, protected_fb;
-+	igt_plane_t *plane;
-+	igt_pipe_t *pipe;
-+	igt_pipe_crc_t *pipe_crc;
-+	igt_crc_t ref_crc, new_crc;
-+	int width = 0, height = 0, i = 0, ret;
-+	uint32_t ctx;
-+
-+	ret = create_ctx_with_params(i915, true, true, true, false, &ctx);
-+	igt_assert_eq(ret, 0);
-+
-+	for_each_connected_output(display, output) {
-+		mode = igt_output_get_mode(output);
-+
-+		width = max(width, mode->hdisplay);
-+		height = max(height, mode->vdisplay);
-+	}
-+
-+	igt_create_color_fb(i915, width, height, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
-+			    0, 1, 0, &ref_fb);
-+
-+	/* Do a modeset on all outputs */
-+	for_each_connected_output(display, output) {
-+		mode = igt_output_get_mode(output);
-+		pipe = &display->pipes[i];
-+		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+		igt_require(igt_pipe_connector_valid(i, output));
-+		igt_output_set_pipe(output, i);
-+
-+		igt_plane_set_fb(plane, &ref_fb);
-+		igt_fb_set_size(&ref_fb, plane, mode->hdisplay, mode->vdisplay);
-+		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-+
-+		igt_display_commit2(display, COMMIT_ATOMIC);
-+		i++;
-+	}
-+
-+	setup_protected_fb(i915, width, height, &protected_fb, ctx);
-+
-+	for_each_connected_output(display, output) {
-+		mode = igt_output_get_mode(output);
-+		pipe = &display->pipes[output->pending_pipe];
-+		pipe_crc = igt_pipe_crc_new(i915, pipe->pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
-+		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+		igt_require(igt_pipe_connector_valid(pipe->pipe, output));
-+		igt_output_set_pipe(output, pipe->pipe);
-+
-+		igt_plane_set_fb(plane, &ref_fb);
-+		igt_fb_set_size(&ref_fb, plane, mode->hdisplay, mode->vdisplay);
-+		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-+
-+		igt_display_commit2(display, COMMIT_ATOMIC);
-+		igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
-+
-+		igt_plane_set_fb(plane, &protected_fb);
-+		igt_fb_set_size(&protected_fb, plane, mode->hdisplay, mode->vdisplay);
-+		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-+
-+		igt_display_commit2(display, COMMIT_ATOMIC);
-+		igt_pipe_crc_collect_crc(pipe_crc, &new_crc);
-+		igt_assert_crc_equal(&ref_crc, &new_crc);
-+
-+		/*
-+		 * Testing with one pipe-output combination is sufficient.
-+		 * So break the loop.
-+		 */
-+		break;
-+	}
-+
++	intel_buf_destroy(dstbuf);
++	gem_close(i915, dstbo);
 +	gem_context_destroy(i915, ctx);
-+	igt_remove_fb(i915, &ref_fb);
-+	igt_remove_fb(i915, &protected_fb);
++	buf_ops_destroy(bops);
 +}
 +
  igt_main
  {
  	int i915 = -1;
-@@ -1020,6 +1167,7 @@ igt_main
- 	struct powermgt_data pm = {0};
- 	igt_render_copyfunc_t rendercopy = NULL;
- 	uint32_t devid = 0;
-+	igt_display_t display;
- 
- 	igt_fixture
- 	{
-@@ -1113,6 +1261,21 @@ igt_main
- 		igt_subtest("verify-pxp-execution-after-suspend-resume")
- 			test_pxp_pwrcycle_staleasset_execution(i915, &pm);
+@@ -495,6 +548,8 @@ igt_main
+ 		igt_describe("Verify protected render operations:");
+ 		igt_subtest("regular-baseline-src-copy-readible")
+ 			test_render_baseline(i915);
++		igt_subtest("protected-raw-src-copy-not-readible")
++			test_render_pxp_src_to_protdest(i915);
  	}
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require(pxp_supported);
-+			devid = intel_get_drm_devid(i915);
-+			igt_assert(devid);
-+			rendercopy = igt_get_render_copyfunc(devid);
-+			igt_require(rendercopy);
-+
-+			igt_require_pipe_crc(i915);
-+			igt_display_require(&display, i915);
-+		}
-+		igt_describe("Test the display CRC");
-+		igt_subtest("display-protected-crc")
-+			test_display_protected_crc(i915, &display);
-+	}
  
  	igt_fixture {
- 		close(i915);
 -- 
 2.25.1
