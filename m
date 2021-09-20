@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFC016E40D
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 07:43:12 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EEAD66E40F
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 07:45:45 +0000 (UTC)
 References: <20210909153047.16729-1-ville.syrjala@linux.intel.com>
- <20210909153047.16729-3-ville.syrjala@linux.intel.com>
+ <20210909153047.16729-4-ville.syrjala@linux.intel.com>
 From: Karthik B S <karthik.b.s@intel.com>
-Message-ID: <d2adb1aa-f3ae-1b0c-c6fe-290992544f17@intel.com>
-Date: Mon, 20 Sep 2021 13:12:59 +0530
-In-Reply-To: <20210909153047.16729-3-ville.syrjala@linux.intel.com>
+Message-ID: <fa609b28-8dee-8ca5-136f-d30fe2cff979@intel.com>
+Date: Mon, 20 Sep 2021 13:15:29 +0530
+In-Reply-To: <20210909153047.16729-4-ville.syrjala@linux.intel.com>
 Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Transfer-Encoding: 8bit
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 02/11] tests/kms_rotation_crc: Use
+Subject: Re: [igt-dev] [PATCH i-g-t v2 03/11] tests/kms_plane_scaling: Use
  igt_plane_has_rotation()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -29,17 +29,7 @@ List-ID: <igt-dev@lists.freedesktop.org>
 On 9/9/2021 9:00 PM, Ville Syrjala wrote:
 > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 >
-> Use igt_plane_has_rotation() instead of these annoying
-> hand rolled gen checks.
->
-> Also fix up the bogus CHV checks to match reality. Since
-> the test doesn't probe the final configuration with a
-> TEST_ONLY atomic commit we must still manually filter
-> out any case that would pass the basic rotation check but
-> fail later.
->
-> v2: Keep the gen9+ checks for the multiplane tests since they
->      want a non-fullscreen primary plane
+> Replace the hand rolled gen check with igt_plane_has_rotation().
 >
 > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 Looks good to me.
@@ -47,117 +37,30 @@ Looks good to me.
 Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 
 > ---
->   tests/kms_rotation_crc.c | 32 ++++++++++++--------------------
->   1 file changed, 12 insertions(+), 20 deletions(-)
+>   tests/kms_plane_scaling.c | 5 +----
+>   1 file changed, 1 insertion(+), 4 deletions(-)
 >
-> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-> index 2c66cd7c4e31..11401a6d00ad 100644
-> --- a/tests/kms_rotation_crc.c
-> +++ b/tests/kms_rotation_crc.c
-> @@ -493,9 +493,6 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
->   		for (c = 0; c < num_rectangle_types; c++)
->   			data->crc_rect[data->output_crc_in_use][c].valid = false;
+> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+> index 809463a71583..4c517a4326d7 100644
+> --- a/tests/kms_plane_scaling.c
+> +++ b/tests/kms_plane_scaling.c
+> @@ -165,10 +165,6 @@ static bool can_rotate(data_t *d, unsigned format, uint64_t tiling,
+>   	if (!is_i915_device(d->drm_fd))
+>   		return true;
 >   
-> -		if (is_i915_device(data->gfx_fd) && IS_CHERRYVIEW(data->devid) && pipe != PIPE_B)
-> -			continue;
+> -	if (intel_display_ver(d->devid) >= 13 &&
+> -		igt_rotation_90_or_270(rot))
+> -		return false;
 > -
->   		/* restricting the execution to 2 pipes to reduce execution time*/
->   		if (pipe_count == 2 * connected_outputs && !data->extended)
->   			break;
-> @@ -505,6 +502,11 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+>   	switch (format) {
+>   	case DRM_FORMAT_RGB565:
+>   		if (intel_display_ver(d->devid) >= 11)
+> @@ -272,6 +268,7 @@ static void test_scaler_with_rotation_pipe(data_t *d, enum pipe pipe,
 >   
->   		plane = igt_output_get_plane_type(output, plane_type);
->   		igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
-> +		igt_require(igt_plane_has_rotation(plane, data->rotation));
-> +		/* CHV can't rotate and reflect simultaneously */
-> +		igt_require(!is_i915_device(data->gfx_fd) ||
-> +			    !IS_CHERRYVIEW(data->devid) ||
-> +			    data->rotation != (IGT_ROTATION_180 | IGT_REFLECT_X));
->   
->   		prepare_crtc(data, output, pipe, plane, true);
->   
-> @@ -738,13 +740,14 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
->   						     && intel_display_ver(data->devid) < 11)
->   							continue;
->   
-> -						if (igt_rotation_90_or_270(planeconfigs[i].rotation)
-> -						    && intel_display_ver(data->devid) >= 13)
-> +						if (!igt_plane_has_rotation(p[0].plane,
-> +									    planeconfigs[i].rotation))
->   							continue;
->   
-> -						if (igt_rotation_90_or_270(planeconfigs[j].rotation)
-> -						    && intel_display_ver(data->devid) >= 13)
-> +						if (!igt_plane_has_rotation(p[1].plane,
-> +									    planeconfigs[j].rotation))
->   							continue;
-> +
->   						/*
->   						 * if using packed formats crc's will be
->   						 * same and can store them so there's
-> @@ -892,6 +895,7 @@ static void test_plane_rotation_exhaust_fences(data_t *data,
->   	int i;
->   
->   	igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
-> +	igt_require(igt_plane_has_rotation(plane, IGT_ROTATION_0 | IGT_ROTATION_90));
->   	igt_require(gem_available_fences(display->drm_fd) > 0);
->   
->   	prepare_crtc(data, output, pipe, plane, false);
-> @@ -1048,10 +1052,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->   		igt_subtest_f("%s-rotation-%s",
->   			      plane_test_str(subtest->plane),
->   			      rot_test_str(subtest->rot)) {
-> -			if (is_i915_device(data.gfx_fd)) {
-> -				igt_require(!igt_rotation_90_or_270(subtest->rot) ||
-> -					    (gen >= 9 && gen < 13));
-> -			} else if (is_amdgpu_device(data.gfx_fd)) {
-> +			if (is_amdgpu_device(data.gfx_fd)) {
->   				data.override_fmt = DRM_FORMAT_XRGB8888;
->   				if (igt_rotation_90_or_270(subtest->rot))
->   					data.override_tiling = AMD_FMT_MOD |
-> @@ -1067,7 +1068,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->   
->   	igt_describe("Rotation test with 90 degree for a plane of gen9+ with given position");
->   	igt_subtest_f("sprite-rotation-90-pos-100-0") {
-> -		igt_require(gen >=9 && gen < 13);
->   		data.rotation = IGT_ROTATION_90;
->   		data.pos_x = 100,
->   		data.pos_y = 0;
-> @@ -1082,7 +1082,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->   		  * so apart from this, any other gen11+ pixel format
->   		  * can be used which doesn't support 90/270 degree
->   		  * rotation */
-> -		igt_require(gen >=9 && gen < 13);
->   		data.rotation = IGT_ROTATION_90;
->   		data.override_fmt = gen < 11 ? DRM_FORMAT_RGB565 : DRM_FORMAT_Y212;
->   		test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, true);
-> @@ -1091,7 +1090,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->   
->   	igt_describe("Checking unsupported tiling for gen9+ with 90 degree of rotation");
->   	igt_subtest_f("bad-tiling") {
-> -		igt_require(gen >=9 && gen < 13);
->   		data.rotation = IGT_ROTATION_90;
->   		data.override_tiling = I915_FORMAT_MOD_X_TILED;
->   		test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, true);
-> @@ -1103,12 +1101,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->   		igt_subtest_f("primary-%s-reflect-x-%s",
->   			      tiling_test_str(reflect_x->tiling),
->   			      rot_test_str(reflect_x->rot)) {
-> -			igt_require(gen >= 10 ||
-> -				    (IS_CHERRYVIEW(data.devid) && reflect_x->rot == IGT_ROTATION_0
-> -				     && reflect_x->tiling == I915_FORMAT_MOD_X_TILED));
->   			data.rotation = (IGT_REFLECT_X | reflect_x->rot);
-> -			igt_require(!(gen >= 13 &&
-> -				      igt_rotation_90_or_270(data.rotation)));
->   			data.override_tiling = reflect_x->tiling;
->   			test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, false);
->   		}
-> @@ -1164,7 +1157,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->   		enum pipe pipe;
->   		igt_output_t *output;
->   
-> -		igt_require(gen >= 9 && gen < 13);
->   		igt_display_require_output(&data.display);
->   
->   		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+>   				if (test_format(d, &tested_formats, format) &&
+>   				    igt_plane_has_format_mod(plane, format, tiling) &&
+> +				    igt_plane_has_rotation(plane, rot) &&
+>   				    can_rotate(d, format, tiling, rot) &&
+>   				    can_scale(d, format))
+>   					check_scaling_pipe_plane_rot(d, plane, format,
 
