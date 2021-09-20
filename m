@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B8076E44C
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 09:40:09 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Mon, 20 Sep 2021 09:40:02 +0000
-Message-ID: <BY5PR11MB437271D7E85B0C2310406C8689A09@BY5PR11MB4372.namprd11.prod.outlook.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 844C66E453
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 09:45:00 +0000 (UTC)
+Date: Mon, 20 Sep 2021 11:44:55 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210920094455.GA58558@zkempczy-mobl2>
 References: <20210920075623.31580-1-vidya.srinivas@intel.com>
  <20210920080047.31650-1-vidya.srinivas@intel.com>
  <20210920092432.GA4614@zkempczy-mobl2>
-In-Reply-To: <20210920092432.GA4614@zkempczy-mobl2>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ <BY5PR11MB437271D7E85B0C2310406C8689A09@BY5PR11MB4372.namprd11.prod.outlook.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <BY5PR11MB437271D7E85B0C2310406C8689A09@BY5PR11MB4372.namprd11.prod.outlook.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_bufops: Fix regression on 5.4
  kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -24,51 +25,93 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>, "Modem,
- Bhanuprakash" <bhanuprakash.modem@intel.com>, "Joshi, Kunal1" <kunal1.joshi@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "markyacoub@google.com" <markyacoub@google.com>
+To: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Cc: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "markyacoub@google.com" <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2VtcGN6eW5za2ksIFpi
-aWduaWV3IDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+DQo+IFNlbnQ6IE1vbmRheSwg
-U2VwdGVtYmVyIDIwLCAyMDIxIDI6NTUgUE0NCj4gVG86IFNyaW5pdmFzLCBWaWR5YSA8dmlkeWEu
-c3Jpbml2YXNAaW50ZWwuY29tPg0KPiBDYzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7
-IE1vZGVtLCBCaGFudXByYWthc2gNCj4gPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+OyBt
-YXJreWFjb3ViQGdvb2dsZS5jb20NCj4gU3ViamVjdDogUmU6IFtQQVRDSCBpLWctdF0gbGliL2lu
-dGVsX2J1Zm9wczogRml4IHJlZ3Jlc3Npb24gb24gNS40IGtlcm5lbA0KPiANCj4gT24gTW9uLCBT
-ZXAgMjAsIDIwMjEgYXQgMDE6MzA6NDdQTSArMDUzMCwgVmlkeWEgU3Jpbml2YXMgd3JvdGU6DQo+
-ID4gU3RhcnRpbmcgY29tbWl0IDg3NTljNGEzMDIwY2U0ICJBZGQgaW50ZWxfYnVmX2luaXRfaW5f
-cmVnaW9uIg0KPiA+IF9faW50ZWxfYnVmX2luaXQgdXNlcyBnZW1fY3JlYXRlX2luX21lbW9yeV9y
-ZWdpb25zIGluc3RlYWQgb2YNCj4gPiBnZW1fY3JlYXRlLiBPbGRlciBrZXJuZWxzIGxpa2UgNS40
-IHN0aWxsIGRvbnQgaGF2ZSBzdXBwb3J0IGZvcg0KPiA+IEk5MTVfR0VNX0NSRUFURV9FWFRfTUVN
-T1JZX1JFR0lPTlMgKGk5MTVfZ2VtX2NyZWF0ZV9leHRfaW9jdGwpDQo+IGZyb20NCj4gPiBrZXJu
-ZWwgY29tbWl0DQo+ID4gKGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC80
-MzE1ODEvP3Nlcmllcz04OTY0OCZyZXY9MSkNCj4gPiBEdWUgdG8gdGhpcywgdGhlIGZsaXAtdnMt
-ZmVuY2VzIHRlc3RzIGFyZSBmYWlsaW5nIG9uIGtlcm5lbCA1LjQgUGF0Y2gNCj4gPiBhZGRzIGZh
-bGwgYmFjayB0byBnZW1fY3JlYXRlIHdoZW4gX19nZW1fY3JlYXRlX2luX21lbW9yeV9yZWdpb25f
-bGlzdA0KPiBmYWlscy4NCj4gPg0KPiA+IHYyIC0gQWRkcmVzc2VkIHJldmlldyBjb21tZW50cyBm
-cm9tIFpiaWduaWV3IGFuZCBNYXJrIEFkZGVkIHRoZSBmYWxsDQo+ID4gYmFjayBpbiBfX2ludGVs
-X2J1Zl9pbml0DQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBWaWR5YSBTcmluaXZhcyA8dmlkeWEu
-c3Jpbml2YXNAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICBsaWIvaW50ZWxfYnVmb3BzLmMgfCA4
-ICsrKysrKy0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlvbnMoKyksIDIgZGVsZXRp
-b25zKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2J1Zm9wcy5jIGIvbGliL2lu
-dGVsX2J1Zm9wcy5jIGluZGV4DQo+ID4gZjVmNjdlZGRhYmQ3Li5jOGMwYTczMGNjZmEgMTAwNjQ0
-DQo+ID4gLS0tIGEvbGliL2ludGVsX2J1Zm9wcy5jDQo+ID4gKysrIGIvbGliL2ludGVsX2J1Zm9w
-cy5jDQo+ID4gQEAgLTgxOCw4ICs4MTgsMTIgQEAgc3RhdGljIHZvaWQgX19pbnRlbF9idWZfaW5p
-dChzdHJ1Y3QgYnVmX29wcw0KPiA+ICpib3BzLA0KPiA+DQo+ID4gIAlpZiAoaGFuZGxlKQ0KPiA+
-ICAJCWJ1Zi0+aGFuZGxlID0gaGFuZGxlOw0KPiA+IC0JZWxzZQ0KPiA+IC0JCWJ1Zi0+aGFuZGxl
-ID0gZ2VtX2NyZWF0ZV9pbl9tZW1vcnlfcmVnaW9ucyhib3BzLT5mZCwNCj4gc2l6ZSwgcmVnaW9u
-KTsNCj4gPiArCWVsc2Ugew0KPiA+ICsJCWlmKCBfX2dlbV9jcmVhdGVfaW5fbWVtb3J5X3JlZ2lv
-bnMoYm9wcy0+ZmQsICZoYW5kbGUsDQo+IHNpemUsIHJlZ2lvbikNCj4gPiArIT0gMCkNCj4gICAg
-ICAgICAgICAgICAgICAgXi0tLS0gbWlzc2luZyBzcGFjZQ0KPiANCj4gRml4IG1pbm9yIHN5bnRh
-eCBuaXQsIHRoZW46DQoNCkhlbGxvIFpiaWduaWV3LA0KDQpBcG9sb2dpZXMgZm9yIHRoZSBzeW50
-YXggZXJyb3IuIEkgaGF2ZSBmaXhlZCBhbmQgcmVwdXNoZWQgdGhlIGNoYW5nZS4NCmh0dHBzOi8v
-cGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC80NTQ1NzkvP3Nlcmllcz05NDc2MSZyZXY9
-NA0KVGhhbmtzIG11Y2ggZm9yIHRoZSBSZXZpZXdlZC1ieS4NCkBNb2RlbSwgQmhhbnVwcmFrYXNo
-LCBASm9zaGksIEt1bmFsMSAtIENhbiB3ZSBtZXJnZSB0aGlzIGNoYW5nZSBpZiBDSSBjb21wbGV0
-ZXM/DQpUaGFuayB5b3UuDQoNClJlZ2FyZHMNClZpZHlhDQoNCj4gDQo+IFJldmlld2VkLWJ5OiBa
-YmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4NCj4g
-DQo+IC0tDQo+IFpiaWduaWV3DQo+IA0KPiA+ICsJCQlidWYtPmhhbmRsZSA9IGdlbV9jcmVhdGUo
-Ym9wcy0+ZmQsIHNpemUpOw0KPiA+ICsJCWVsc2UNCj4gPiArCQkJYnVmLT5oYW5kbGUgPSBoYW5k
-bGU7DQo+ID4gKwl9DQo+ID4NCj4gPiAgCXNldF9od190aWxlZChib3BzLCBidWYpOw0KPiA+ICB9
-DQo+ID4gLS0NCj4gPiAyLjMzLjANCj4gPg0K
+On Mon, Sep 20, 2021 at 11:40:02AM +0200, Srinivas, Vidya wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
+> > Sent: Monday, September 20, 2021 2:55 PM
+> > To: Srinivas, Vidya <vidya.srinivas@intel.com>
+> > Cc: igt-dev@lists.freedesktop.org; Modem, Bhanuprakash
+> > <bhanuprakash.modem@intel.com>; markyacoub@google.com
+> > Subject: Re: [PATCH i-g-t] lib/intel_bufops: Fix regression on 5.4 kernel
+> >
+> > On Mon, Sep 20, 2021 at 01:30:47PM +0530, Vidya Srinivas wrote:
+> > > Starting commit 8759c4a3020ce4 "Add intel_buf_init_in_region"
+> > > __intel_buf_init uses gem_create_in_memory_regions instead of
+> > > gem_create. Older kernels like 5.4 still dont have support for
+> > > I915_GEM_CREATE_EXT_MEMORY_REGIONS (i915_gem_create_ext_ioctl)
+> > from
+> > > kernel commit
+> > > (https://patchwork.freedesktop.org/patch/431581/?series=89648&rev=1)
+> > > Due to this, the flip-vs-fences tests are failing on kernel 5.4 Patch
+> > > adds fall back to gem_create when __gem_create_in_memory_region_list
+> > fails.
+> > >
+> > > v2 - Addressed review comments from Zbigniew and Mark Added the fall
+> > > back in __intel_buf_init
+> > >
+> > > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+> > > ---
+> > >  lib/intel_bufops.c | 8 ++++++--
+> > >  1 file changed, 6 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c index
+> > > f5f67eddabd7..c8c0a730ccfa 100644
+> > > --- a/lib/intel_bufops.c
+> > > +++ b/lib/intel_bufops.c
+> > > @@ -818,8 +818,12 @@ static void __intel_buf_init(struct buf_ops
+> > > *bops,
+> > >
+> > >     if (handle)
+> > >             buf->handle = handle;
+> > > -   else
+> > > -           buf->handle = gem_create_in_memory_regions(bops->fd,
+> > size, region);
+> > > +   else {
+> > > +           if( __gem_create_in_memory_regions(bops->fd, &handle,
+> > size, region)
+> > > +!= 0)
+> >                   ^---- missing space
+> >
+> > Fix minor syntax nit, then:
+> 
+> Hello Zbigniew,
+> 
+> Apologies for the syntax error. 
+
+It's not syntax error, just convention we try to keep to have code clear
+and standarized.
+
+--
+Zbigniew
+
+> I have fixed and repushed the change.
+> https://patchwork.freedesktop.org/patch/454579/?series=94761&rev=4
+> Thanks much for the Reviewed-by.
+> @Modem, Bhanuprakash, @Joshi, Kunal1 - Can we merge this change if CI completes?
+> Thank you.
+> 
+> Regards
+> Vidya
+> 
+> >
+> > Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> >
+> > --
+> > Zbigniew
+> >
+> > > +                   buf->handle = gem_create(bops->fd, size);
+> > > +           else
+> > > +                   buf->handle = handle;
+> > > +   }
+> > >
+> > >     set_hw_tiled(bops, buf);
+> > >  }
+> > > --
+> > > 2.33.0
+> > >
