@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 923006E415
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 08:08:24 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 53BCF6E415
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 08:12:47 +0000 (UTC)
 From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Mon, 20 Sep 2021 13:26:23 +0530
-Message-Id: <20210920075623.31580-1-vidya.srinivas@intel.com>
-In-Reply-To: <20210916141227.17554-1-vidya.srinivas@intel.com>
-References: <20210916141227.17554-1-vidya.srinivas@intel.com>
+Date: Mon, 20 Sep 2021 13:30:47 +0530
+Message-Id: <20210920080047.31650-1-vidya.srinivas@intel.com>
+In-Reply-To: <20210920075623.31580-1-vidya.srinivas@intel.com>
+References: <20210920075623.31580-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: [igt-dev] [PATCH i-g-t] lib/intel_bufops: Fix regression on 5.4
@@ -37,14 +37,14 @@ Added the fall back in __intel_buf_init
 
 Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
 ---
- lib/intel_bufops.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ lib/intel_bufops.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index f5f67eddabd7..1caebdf2962a 100644
+index f5f67eddabd7..c8c0a730ccfa 100644
 --- a/lib/intel_bufops.c
 +++ b/lib/intel_bufops.c
-@@ -818,8 +818,10 @@ static void __intel_buf_init(struct buf_ops *bops,
+@@ -818,8 +818,12 @@ static void __intel_buf_init(struct buf_ops *bops,
  
  	if (handle)
  		buf->handle = handle;
@@ -53,6 +53,8 @@ index f5f67eddabd7..1caebdf2962a 100644
 +	else {
 +		if( __gem_create_in_memory_regions(bops->fd, &handle, size, region) != 0)
 +			buf->handle = gem_create(bops->fd, size);
++		else
++			buf->handle = handle;
 +	}
  
  	set_hw_tiled(bops, buf);
