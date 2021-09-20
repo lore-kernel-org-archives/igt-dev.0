@@ -1,14 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2752484085431688222=="
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BFC016E40D
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 07:43:12 +0000 (UTC)
+References: <20210909153047.16729-1-ville.syrjala@linux.intel.com>
+ <20210909153047.16729-3-ville.syrjala@linux.intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+Message-ID: <d2adb1aa-f3ae-1b0c-c6fe-290992544f17@intel.com>
+Date: Mon, 20 Sep 2021 13:12:59 +0530
+In-Reply-To: <20210909153047.16729-3-ville.syrjala@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 20 Sep 2021 07:39:31 -0000
-Message-ID: <163212357138.25895.14744956303207189223@emeril.freedesktop.org>
-References: <20210920063059.10079-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20210920063059.10079-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/gem=5Fsync=2Ec_=3A_Add_allocator_support?=
+Subject: Re: [igt-dev] [PATCH i-g-t v2 02/11] tests/kms_rotation_crc: Use
+ igt_plane_has_rotation()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,282 +21,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: sai.gowtham.ch@intel.com
-Cc: igt-dev@lists.freedesktop.org
+To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2752484085431688222==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 9/9/2021 9:00 PM, Ville Syrjala wrote:
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+>
+> Use igt_plane_has_rotation() instead of these annoying
+> hand rolled gen checks.
+>
+> Also fix up the bogus CHV checks to match reality. Since
+> the test doesn't probe the final configuration with a
+> TEST_ONLY atomic commit we must still manually filter
+> out any case that would pass the basic rotation check but
+> fail later.
+>
+> v2: Keep the gen9+ checks for the multiplane tests since they
+>      want a non-fullscreen primary plane
+>
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Looks good to me.
 
-== Series Details ==
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 
-Series: tests/i915/gem_sync.c : Add allocator support
-URL   : https://patchwork.freedesktop.org/series/94846/
-State : success
+> ---
+>   tests/kms_rotation_crc.c | 32 ++++++++++++--------------------
+>   1 file changed, 12 insertions(+), 20 deletions(-)
+>
+> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+> index 2c66cd7c4e31..11401a6d00ad 100644
+> --- a/tests/kms_rotation_crc.c
+> +++ b/tests/kms_rotation_crc.c
+> @@ -493,9 +493,6 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+>   		for (c = 0; c < num_rectangle_types; c++)
+>   			data->crc_rect[data->output_crc_in_use][c].valid = false;
+>   
+> -		if (is_i915_device(data->gfx_fd) && IS_CHERRYVIEW(data->devid) && pipe != PIPE_B)
+> -			continue;
+> -
+>   		/* restricting the execution to 2 pipes to reduce execution time*/
+>   		if (pipe_count == 2 * connected_outputs && !data->extended)
+>   			break;
+> @@ -505,6 +502,11 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+>   
+>   		plane = igt_output_get_plane_type(output, plane_type);
+>   		igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
+> +		igt_require(igt_plane_has_rotation(plane, data->rotation));
+> +		/* CHV can't rotate and reflect simultaneously */
+> +		igt_require(!is_i915_device(data->gfx_fd) ||
+> +			    !IS_CHERRYVIEW(data->devid) ||
+> +			    data->rotation != (IGT_ROTATION_180 | IGT_REFLECT_X));
+>   
+>   		prepare_crtc(data, output, pipe, plane, true);
+>   
+> @@ -738,13 +740,14 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+>   						     && intel_display_ver(data->devid) < 11)
+>   							continue;
+>   
+> -						if (igt_rotation_90_or_270(planeconfigs[i].rotation)
+> -						    && intel_display_ver(data->devid) >= 13)
+> +						if (!igt_plane_has_rotation(p[0].plane,
+> +									    planeconfigs[i].rotation))
+>   							continue;
+>   
+> -						if (igt_rotation_90_or_270(planeconfigs[j].rotation)
+> -						    && intel_display_ver(data->devid) >= 13)
+> +						if (!igt_plane_has_rotation(p[1].plane,
+> +									    planeconfigs[j].rotation))
+>   							continue;
+> +
+>   						/*
+>   						 * if using packed formats crc's will be
+>   						 * same and can store them so there's
+> @@ -892,6 +895,7 @@ static void test_plane_rotation_exhaust_fences(data_t *data,
+>   	int i;
+>   
+>   	igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
+> +	igt_require(igt_plane_has_rotation(plane, IGT_ROTATION_0 | IGT_ROTATION_90));
+>   	igt_require(gem_available_fences(display->drm_fd) > 0);
+>   
+>   	prepare_crtc(data, output, pipe, plane, false);
+> @@ -1048,10 +1052,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   		igt_subtest_f("%s-rotation-%s",
+>   			      plane_test_str(subtest->plane),
+>   			      rot_test_str(subtest->rot)) {
+> -			if (is_i915_device(data.gfx_fd)) {
+> -				igt_require(!igt_rotation_90_or_270(subtest->rot) ||
+> -					    (gen >= 9 && gen < 13));
+> -			} else if (is_amdgpu_device(data.gfx_fd)) {
+> +			if (is_amdgpu_device(data.gfx_fd)) {
+>   				data.override_fmt = DRM_FORMAT_XRGB8888;
+>   				if (igt_rotation_90_or_270(subtest->rot))
+>   					data.override_tiling = AMD_FMT_MOD |
+> @@ -1067,7 +1068,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   
+>   	igt_describe("Rotation test with 90 degree for a plane of gen9+ with given position");
+>   	igt_subtest_f("sprite-rotation-90-pos-100-0") {
+> -		igt_require(gen >=9 && gen < 13);
+>   		data.rotation = IGT_ROTATION_90;
+>   		data.pos_x = 100,
+>   		data.pos_y = 0;
+> @@ -1082,7 +1082,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   		  * so apart from this, any other gen11+ pixel format
+>   		  * can be used which doesn't support 90/270 degree
+>   		  * rotation */
+> -		igt_require(gen >=9 && gen < 13);
+>   		data.rotation = IGT_ROTATION_90;
+>   		data.override_fmt = gen < 11 ? DRM_FORMAT_RGB565 : DRM_FORMAT_Y212;
+>   		test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, true);
+> @@ -1091,7 +1090,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   
+>   	igt_describe("Checking unsupported tiling for gen9+ with 90 degree of rotation");
+>   	igt_subtest_f("bad-tiling") {
+> -		igt_require(gen >=9 && gen < 13);
+>   		data.rotation = IGT_ROTATION_90;
+>   		data.override_tiling = I915_FORMAT_MOD_X_TILED;
+>   		test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, true);
+> @@ -1103,12 +1101,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   		igt_subtest_f("primary-%s-reflect-x-%s",
+>   			      tiling_test_str(reflect_x->tiling),
+>   			      rot_test_str(reflect_x->rot)) {
+> -			igt_require(gen >= 10 ||
+> -				    (IS_CHERRYVIEW(data.devid) && reflect_x->rot == IGT_ROTATION_0
+> -				     && reflect_x->tiling == I915_FORMAT_MOD_X_TILED));
+>   			data.rotation = (IGT_REFLECT_X | reflect_x->rot);
+> -			igt_require(!(gen >= 13 &&
+> -				      igt_rotation_90_or_270(data.rotation)));
+>   			data.override_tiling = reflect_x->tiling;
+>   			test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, false);
+>   		}
+> @@ -1164,7 +1157,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   		enum pipe pipe;
+>   		igt_output_t *output;
+>   
+> -		igt_require(gen >= 9 && gen < 13);
+>   		igt_display_require_output(&data.display);
+>   
+>   		for_each_pipe_with_valid_output(&data.display, pipe, output) {
 
-== Summary ==
-
-CI Bug Log - changes from IGT_6212 -> IGTPW_6236
-====================================================
-
-Summary
--------
-
-  **WARNING**
-
-  Minor unknown changes coming with IGTPW_6236 need to be verified
-  manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_6236, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_6236:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@i915_module_load@reload:
-    - fi-kbl-8809g:       [INCOMPLETE][1] ([i915#4130]) -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6212/fi-kbl-8809g/igt@i915_module_load@reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-kbl-8809g/igt@i915_module_load@reload.html
-
-  
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@runner@aborted:
-    - {fi-ehl-2}:         NOTRUN -> [FAIL][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-ehl-2/igt@runner@aborted.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6236 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@cs-gfx:
-    - fi-skl-6700k2:      NOTRUN -> [SKIP][4] ([fdo#109271]) +17 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-skl-6700k2/igt@amdgpu/amd_basic@cs-gfx.html
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-rkl-guc:         [PASS][5] -> [INCOMPLETE][6] ([i915#4130])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6212/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html
-    - fi-icl-u2:          [PASS][7] -> [INCOMPLETE][8] ([i915#4130])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6212/fi-icl-u2/igt@core_hotunplug@unbind-rebind.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-icl-u2/igt@core_hotunplug@unbind-rebind.html
-    - fi-cfl-8109u:       [PASS][9] -> [INCOMPLETE][10] ([i915#4130])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6212/fi-cfl-8109u/igt@core_hotunplug@unbind-rebind.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-cfl-8109u/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@i915_module_load@reload:
-    - fi-kbl-7500u:       NOTRUN -> [INCOMPLETE][11] ([i915#4130] / [i915#4136])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-kbl-7500u/igt@i915_module_load@reload.html
-
-  * igt@runner@aborted:
-    - fi-kbl-7500u:       NOTRUN -> [FAIL][12] ([i915#2426] / [i915#3363])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-kbl-7500u/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-skl-6700k2:      [INCOMPLETE][13] ([i915#4130]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6212/fi-skl-6700k2/igt@core_hotunplug@unbind-rebind.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-skl-6700k2/igt@core_hotunplug@unbind-rebind.html
-    - fi-kbl-7500u:       [INCOMPLETE][15] ([i915#4130]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6212/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html
-
-  
-#### Warnings ####
-
-  * igt@i915_module_load@reload:
-    - fi-kbl-soraka:      [INCOMPLETE][17] ([i915#4130] / [i915#4136]) -> [INCOMPLETE][18] ([i915#4136])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6212/fi-kbl-soraka/igt@i915_module_load@reload.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-kbl-soraka/igt@i915_module_load@reload.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
-  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
-  [i915#4130]: https://gitlab.freedesktop.org/drm/intel/issues/4130
-  [i915#4136]: https://gitlab.freedesktop.org/drm/intel/issues/4136
-
-
-Participating hosts (34 -> 28)
-------------------------------
-
-  Missing    (6): fi-kbl-7567u fi-tgl-1115g4 fi-ilk-650 fi-ctg-p8600 fi-icl-y fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6212 -> IGTPW_6236
-
-  CI-20190529: 20190529
-  CI_DRM_10607: d0beb759235c4bd8245af96db684cf0d8fbccb3a @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6236: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/index.html
-  IGT_6212: 0faa6b2533da9416a3428c34ca99661725577449 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/index.html
-
---===============2752484085431688222==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/gem_sync.c : Add allocator support</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/94846/">https://patchwork.freedesktop.org/series/94846/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6212 -&gt; IGTPW_6236</h1>
-<h2>Summary</h2>
-<p><strong>WARNING</strong></p>
-<p>Minor unknown changes coming with IGTPW_6236 need to be verified<br />
-  manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_6236, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/index.html</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6236:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_module_load@reload:<ul>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6212/fi-kbl-8809g/igt@i915_module_load@reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4130">i915#4130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-kbl-8809g/igt@i915_module_load@reload.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@runner@aborted:<ul>
-<li>{fi-ehl-2}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-ehl-2/igt@runner@aborted.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6236 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@cs-gfx:</p>
-<ul>
-<li>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-skl-6700k2/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>
-<p>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6212/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4130">i915#4130</a>)</p>
-</li>
-<li>
-<p>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6212/fi-icl-u2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-icl-u2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4130">i915#4130</a>)</p>
-</li>
-<li>
-<p>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6212/fi-cfl-8109u/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-cfl-8109u/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4130">i915#4130</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>fi-kbl-7500u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-kbl-7500u/igt@i915_module_load@reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4130">i915#4130</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4136">i915#4136</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-kbl-7500u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-kbl-7500u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>
-<p>fi-skl-6700k2:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6212/fi-skl-6700k2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4130">i915#4130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-skl-6700k2/igt@core_hotunplug@unbind-rebind.html">PASS</a></p>
-</li>
-<li>
-<p>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6212/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4130">i915#4130</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-kbl-7500u/igt@core_hotunplug@unbind-rebind.html">PASS</a></p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_module_load@reload:<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6212/fi-kbl-soraka/igt@i915_module_load@reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4130">i915#4130</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4136">i915#4136</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/fi-kbl-soraka/igt@i915_module_load@reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4136">i915#4136</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (34 -&gt; 28)</h2>
-<p>Missing    (6): fi-kbl-7567u fi-tgl-1115g4 fi-ilk-650 fi-ctg-p8600 fi-icl-y fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6212 -&gt; IGTPW_6236</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10607: d0beb759235c4bd8245af96db684cf0d8fbccb3a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6236: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6236/index.html<br />
-  IGT_6212: 0faa6b2533da9416a3428c34ca99661725577449 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============2752484085431688222==--
