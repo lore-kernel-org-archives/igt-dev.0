@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D954E8932B
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 09:46:43 +0000 (UTC)
-Date: Mon, 20 Sep 2021 11:46:38 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20210920094638.GB58558@zkempczy-mobl2>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 844DB6E462
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 10:12:48 +0000 (UTC)
+From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Date: Mon, 20 Sep 2021 10:12:43 +0000
+Message-ID: <BY5PR11MB437217DD27CF0AB34C0628CD89A09@BY5PR11MB4372.namprd11.prod.outlook.com>
 References: <20210920080047.31650-1-vidya.srinivas@intel.com>
  <20210920092455.19691-1-vidya.srinivas@intel.com>
-MIME-Version: 1.0
+ <20210920094638.GB58558@zkempczy-mobl2>
+In-Reply-To: <20210920094638.GB58558@zkempczy-mobl2>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210920092455.19691-1-vidya.srinivas@intel.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_bufops: Fix regression on 5.4
  kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -23,56 +24,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Vidya Srinivas <vidya.srinivas@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Bhanuprakash.Modem@intel.com, markyacoub@google.com
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>, "Modem,
+ Bhanuprakash" <bhanuprakash.modem@intel.com>, "Joshi, Kunal1" <kunal1.joshi@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "markyacoub@google.com" <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Sep 20, 2021 at 02:54:55PM +0530, Vidya Srinivas wrote:
-> Starting commit 8759c4a3020ce4 "Add intel_buf_init_in_region"
-> __intel_buf_init uses gem_create_in_memory_regions instead of
-> gem_create. Older kernels like 5.4 still dont have support for
-> I915_GEM_CREATE_EXT_MEMORY_REGIONS (i915_gem_create_ext_ioctl)
-> from kernel commit (https://patchwork.freedesktop.org/patch/431581/?series=89648&rev=1)
-> Due to this, the flip-vs-fences tests are failing on kernel 5.4
-> Patch adds fall back to gem_create when __gem_create_in_memory_region_list fails.
-> 
-> v2 - Addressed review comments from Zbigniew and Mark
-> Added the fall back in __intel_buf_init
-> 
-> v3 - Fixed space issue - review comment from Zbigniew
-> 
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> ---
->  lib/intel_bufops.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-> index f5f67eddabd7..0236e4d919d5 100644
-> --- a/lib/intel_bufops.c
-> +++ b/lib/intel_bufops.c
-> @@ -818,8 +818,12 @@ static void __intel_buf_init(struct buf_ops *bops,
->  
->  	if (handle)
->  		buf->handle = handle;
-> -	else
-> -		buf->handle = gem_create_in_memory_regions(bops->fd, size, region);
-> +	else {
-> +		if (__gem_create_in_memory_regions(bops->fd, &handle, size, region) != 0)
-> +			buf->handle = gem_create(bops->fd, size);
-> +		else
-> +			buf->handle = handle;
-> +	}
-
-Patchwork didn't get my previous rb, so for easier merge:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
-
->  
->  	set_hw_tiled(bops, buf);
->  }
-> -- 
-> 2.33.0
-> 
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2VtcGN6eW5za2ksIFpi
+aWduaWV3IDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+DQo+IFNlbnQ6IE1vbmRheSwg
+U2VwdGVtYmVyIDIwLCAyMDIxIDM6MTcgUE0NCj4gVG86IFNyaW5pdmFzLCBWaWR5YSA8dmlkeWEu
+c3Jpbml2YXNAaW50ZWwuY29tPg0KPiBDYzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7
+IE1vZGVtLCBCaGFudXByYWthc2gNCj4gPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+OyBt
+YXJreWFjb3ViQGdvb2dsZS5jb20NCj4gU3ViamVjdDogUmU6IFtQQVRDSCBpLWctdF0gbGliL2lu
+dGVsX2J1Zm9wczogRml4IHJlZ3Jlc3Npb24gb24gNS40IGtlcm5lbA0KPiANCj4gT24gTW9uLCBT
+ZXAgMjAsIDIwMjEgYXQgMDI6NTQ6NTVQTSArMDUzMCwgVmlkeWEgU3Jpbml2YXMgd3JvdGU6DQo+
+ID4gU3RhcnRpbmcgY29tbWl0IDg3NTljNGEzMDIwY2U0ICJBZGQgaW50ZWxfYnVmX2luaXRfaW5f
+cmVnaW9uIg0KPiA+IF9faW50ZWxfYnVmX2luaXQgdXNlcyBnZW1fY3JlYXRlX2luX21lbW9yeV9y
+ZWdpb25zIGluc3RlYWQgb2YNCj4gPiBnZW1fY3JlYXRlLiBPbGRlciBrZXJuZWxzIGxpa2UgNS40
+IHN0aWxsIGRvbnQgaGF2ZSBzdXBwb3J0IGZvcg0KPiA+IEk5MTVfR0VNX0NSRUFURV9FWFRfTUVN
+T1JZX1JFR0lPTlMgKGk5MTVfZ2VtX2NyZWF0ZV9leHRfaW9jdGwpDQo+IGZyb20NCj4gPiBrZXJu
+ZWwgY29tbWl0DQo+ID4gKGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC80
+MzE1ODEvP3Nlcmllcz04OTY0OCZyZXY9MSkNCj4gPiBEdWUgdG8gdGhpcywgdGhlIGZsaXAtdnMt
+ZmVuY2VzIHRlc3RzIGFyZSBmYWlsaW5nIG9uIGtlcm5lbCA1LjQgUGF0Y2gNCj4gPiBhZGRzIGZh
+bGwgYmFjayB0byBnZW1fY3JlYXRlIHdoZW4gX19nZW1fY3JlYXRlX2luX21lbW9yeV9yZWdpb25f
+bGlzdA0KPiBmYWlscy4NCj4gPg0KPiA+IHYyIC0gQWRkcmVzc2VkIHJldmlldyBjb21tZW50cyBm
+cm9tIFpiaWduaWV3IGFuZCBNYXJrIEFkZGVkIHRoZSBmYWxsDQo+ID4gYmFjayBpbiBfX2ludGVs
+X2J1Zl9pbml0DQo+ID4NCj4gPiB2MyAtIEZpeGVkIHNwYWNlIGlzc3VlIC0gcmV2aWV3IGNvbW1l
+bnQgZnJvbSBaYmlnbmlldw0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogVmlkeWEgU3Jpbml2YXMg
+PHZpZHlhLnNyaW5pdmFzQGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgbGliL2ludGVsX2J1Zm9w
+cy5jIHwgOCArKysrKystLQ0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspLCAy
+IGRlbGV0aW9ucygtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9idWZvcHMuYyBi
+L2xpYi9pbnRlbF9idWZvcHMuYyBpbmRleA0KPiA+IGY1ZjY3ZWRkYWJkNy4uMDIzNmU0ZDkxOWQ1
+IDEwMDY0NA0KPiA+IC0tLSBhL2xpYi9pbnRlbF9idWZvcHMuYw0KPiA+ICsrKyBiL2xpYi9pbnRl
+bF9idWZvcHMuYw0KPiA+IEBAIC04MTgsOCArODE4LDEyIEBAIHN0YXRpYyB2b2lkIF9faW50ZWxf
+YnVmX2luaXQoc3RydWN0IGJ1Zl9vcHMNCj4gPiAqYm9wcywNCj4gPg0KPiA+ICAJaWYgKGhhbmRs
+ZSkNCj4gPiAgCQlidWYtPmhhbmRsZSA9IGhhbmRsZTsNCj4gPiAtCWVsc2UNCj4gPiAtCQlidWYt
+PmhhbmRsZSA9IGdlbV9jcmVhdGVfaW5fbWVtb3J5X3JlZ2lvbnMoYm9wcy0+ZmQsDQo+IHNpemUs
+IHJlZ2lvbik7DQo+ID4gKwllbHNlIHsNCj4gPiArCQlpZiAoX19nZW1fY3JlYXRlX2luX21lbW9y
+eV9yZWdpb25zKGJvcHMtPmZkLCAmaGFuZGxlLA0KPiBzaXplLCByZWdpb24pICE9IDApDQo+ID4g
+KwkJCWJ1Zi0+aGFuZGxlID0gZ2VtX2NyZWF0ZShib3BzLT5mZCwgc2l6ZSk7DQo+ID4gKwkJZWxz
+ZQ0KPiA+ICsJCQlidWYtPmhhbmRsZSA9IGhhbmRsZTsNCj4gPiArCX0NCj4gDQo+IFBhdGNod29y
+ayBkaWRuJ3QgZ2V0IG15IHByZXZpb3VzIHJiLCBzbyBmb3IgZWFzaWVyIG1lcmdlOg0KPiANCj4g
+UmV2aWV3ZWQtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lA
+aW50ZWwuY29tPg0KDQpIZWxsbyBaYmlnbmlldywNCg0KVGhhbmsgeW91IHNvIG11Y2guIFRoYXQg
+aXMgZXh0cmVtZWx5IGtpbmQgb2YgeW91Lg0KDQpATW9kZW0sIEJoYW51cHJha2FzaCwgQEpvc2hp
+LCBLdW5hbDEga2luZGx5IGhlbHAgd2l0aCBtZXJnZSBpZiBpdCBwYXNzZXMgQ0kuDQoNClJlZ2Fy
+ZHMNClZpZHlhDQoNCj4gDQo+IC0tDQo+IFpiaWduaWV3DQo+IA0KPiA+DQo+ID4gIAlzZXRfaHdf
+dGlsZWQoYm9wcywgYnVmKTsNCj4gPiAgfQ0KPiA+IC0tDQo+ID4gMi4zMy4wDQo+ID4NCg==
