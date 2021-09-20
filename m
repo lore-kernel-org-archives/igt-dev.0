@@ -1,13 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 20 Sep 2021 11:52:06 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Message-ID: <YUiuJjjsYNskYPPa@intel.com>
-References: <20210918045436.34782-1-alan.previn.teres.alexis@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A7F36E58B
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 17:00:36 +0000 (UTC)
+From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Date: Mon, 20 Sep 2021 16:59:22 +0000
+Message-ID: <BY5PR11MB43729293AE0025986DD677F989A09@BY5PR11MB4372.namprd11.prod.outlook.com>
+References: <20210916141827.17720-1-vidya.srinivas@intel.com>
+ <CAJUqKUqpus_Sui-O5LrViFYB1wxbMEg-Hz4Ak06XS06yxKy=QA@mail.gmail.com>
+ <20210917150349.la6orrmaxyrp5sdc@outlook.office365.com>
+ <BY5PR11MB4372B0490EBD823137D4F57589A09@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <CAJUqKUr_6DjfU4aZPNxyt-86C+L0cS-Z2jQjiZLVpunzHowssw@mail.gmail.com>
+In-Reply-To: <CAJUqKUr_6DjfU4aZPNxyt-86C+L0cS-Z2jQjiZLVpunzHowssw@mail.gmail.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210918045436.34782-1-alan.previn.teres.alexis@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v11 00/15] Introduce PXP Test
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Fix regression in
+ test_resolution_with_output
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,150 +26,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Alan Previn <alan.previn.teres.alexis@intel.com>
-Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org, Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+To: Mark Yacoub <markyacoub@chromium.org>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, Development mailing list for
+ IGT GPU Tools <igt-dev@lists.freedesktop.org>, "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, Mark Yacoub <markyacoub@google.com>, Nicholas Choi <nicholas.choi@amd.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Sep 17, 2021 at 09:54:21PM -0700, Alan Previn wrote:
-> This series adds gem_pxp tests for the new PXP subsystem currently
-> being reviewed at https://patchwork.freedesktop.org/series/90504/.
-> This series currently includes 4 groups of tests addressing the
-> features and restrictions described by Daniele's series :
->    1. test i915 interfaces for allocation of protected bo's
->       and contexts and enforcement of UAPI rule disallowing the
->       modification of parameters after it's been created.
->    2. verify PXP subsystem protected sessions generate encrypted
->       content on protected output buffers and decrypt protected
->       inputs buffers.
->    3. verify i915 PXP auto-teardown succeeds on suspend-resume
->       cycles and gem-exec of stale protected assets fail. Ensure
->       protected-contexts adhere to stricter invalidation
->       enforcement upon teardown event.
->    4. Ensure that display plane decryption works as expected with
->       protected buffers.
-> 
-> NOTE: This series is on the tenth revision. All R-v-b's have been
-> received except UAPI patch which will be dropped at merge time (after
-> kernel patches gets merged and igt's drm UAPI gets sync'd).
-> 
-> Changes from prior rev1 to now:
->    v11:
->       - When detecting hw support, retry pxp context creation
->         multiple times a timeout as per HW SLA.
->       - initialize bo or ctx handles to zero before calling
->         creation ioctl wrapper.
-
-Acked-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-
->    v10:
->       - In patch #2, reuse existing gem_create_ext wrapper.
->       - In patch #10, kernel side changed the debugfs file name
->         (but no difference in behavior / usage).
->       - Removed patch #14 from Rev9 as decision on kernel side
->         was to drop the usage of RESET_STATS IOCTL to track
->         invalidated pxp contexts.
->    v9:
->       - Remove patch #2 from rev7 as it was duplicating
->         an existing ioctl wrapper helper
->       - Fix the false-negative warnings when triggering
->         auto-suspend-resume (remove checking if we are
->         suspending after the system has already resumed).
->    v8:
->       - Nothing - mistaken detection from patchwork
->    v7:
->       - In prior rev, Patches #11->13 was testing expected results
->         from calling gem_execbuf with stale pxp-context, pxp-buffer
->         or combinations of them (including an opt-out usage). All
->         of them used a single suspend-resume power state cycles to
->         trigger the PXP teardown event. These patches have been
->         combined into patch #14 that continues to carry the prior rev
->         Rvb.
->       - In its place, the new patches of #11->#13 do the identical
->         set of tests as before (results from gem_execbuf with various
->         combinations of stale pxp context and buffer), but this time
->         using a debugfs file handle that triggers the same code path
->         taken when the HW triggers the pxp teardown. That said, the
->         code is nearly identical as v6 but I did not keep the Rvb's.
->       - In patch #15, RESET_STAT now reports invalidated / banned
->         pxp contexts via the existing batch_active's lost count.
->    v6:
->       - Addressed rev5 review comments for patch #1, #7, #14
->         and #17.
->       - For #17, I'm using Rodrigo's Rv-b because offline 
->         discussions concluded that we couldn't use those
->         test sequences with HDCP and so it was removed it.
->       - Added Rv-b into all patches that received it.
->       - Modified the test requirement from a list of device
->         ids to checking if runtime PXP interface succeeds
->         due to kernel's build config dependency.
->    v5:
->       - Addressed all rev4 review comments. No changes to
->         overall flow and logic compared to the last rev.
->    v4:
->       - Addressed all rev3 review comments. NOTE: that all
->         test cases and code logic are the same but a decent
->         amount of refactoring has occured due to address
->         v3 comments to break out subtests into separate
->         functions while combining certain checks into the same
->         function to reduce test time by minimizing number of
->         suspend-resume power cycles.
->    v3:
->       - Addressed all rev2 review comments.
->       - In line with one of the rev2 comments, a thorough fixup
->         of all line-breaks in function calls was made for a more
->         consistent styling.
->       - Rebased on igt upstream repo and updated to latest kernel
->         UAPI that added GEM_CREATE_EXT.
->    v2: 
->       - Addressed all rev1 review comments except these:
->            1.Chris Wilson : "...have the caller do 1-3 once for its protected
->              context. Call it something like intel_bb_enable_pxp(),
->              intel_bb_set_pxp if it should be reversible.".
->              -  This couldn't be implemented because [1] HW needs different
->              instruction sequences for enabling/disabling PXP depending
->              on the engine class and [2] the pair of "pxp-enable" and "pxp-
->              disable" instructions need to be contained within the same batch
->              that is dispatched to the hardware. That said, implementing
->              internal intel_batchbuffer funtionality for this would conflict
->              with how rendercopy_gen9 uses batch buffer memory by repositioing
->              the pointer and consuming unused portions of the batch buffer as
->              3d state offsets that batchbuffer has no visibility.
->          
->       - Added these additional subtests:
->            1. verify that buffer sharing works across testing pxp context.
->            2. verify teardown bans contexts via DRM_IOCTL_I915_GET_RESET_STAT.
->            3. verify display plane decryption of protected buffers.
-> 
-> Alan Previn (14):
->   Add PXP UAPI support in i915_drm.h
->   Add basic PXP testing of buffer and context alloc
->   Perform a regular 3d copy as a control checkpoint
->   Add PXP attribute support in batchbuffer and buffer_ops libs
->   Add MI_SET_APPID instruction definition
->   Enable protected session cmd in gen12_render_copyfunc
->   Add subtest to copy raw source to protected dest
->   Add test where both src and dest are protected
->   Verify PXP teardown occurred through suspend-resume
->   Verify execbuf fails with stale PXP context after teardown
->   Verify execbuf fails with stale PXP buffer after teardown
->   Verify execbuf ok with stale PXP buf in opt-out use
->   Verify execution behavior with stale PXP assets through suspend-resume
->   Verify protected surfaces are dma buffer sharable
-> 
-> Karthik B S (1):
->   tests/i915_pxp: CRC validation for display tests.
-> 
->  lib/i915/i915_drm_local.h |  102 +++
->  lib/intel_batchbuffer.c   |   23 +-
->  lib/intel_batchbuffer.h   |   31 +
->  lib/intel_bufops.h        |   15 +
->  lib/intel_reg.h           |    8 +
->  lib/rendercopy_gen9.c     |   57 ++
->  tests/i915/gem_pxp.c      | 1283 +++++++++++++++++++++++++++++++++++++
->  tests/meson.build         |    1 +
->  8 files changed, 1519 insertions(+), 1 deletion(-)
->  create mode 100644 tests/i915/gem_pxp.c
-> 
-> -- 
-> 2.25.1
-> 
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTWFyayBZYWNvdWIgPG1h
+cmt5YWNvdWJAY2hyb21pdW0ub3JnPg0KPiBTZW50OiBNb25kYXksIFNlcHRlbWJlciAyMCwgMjAy
+MSA4OjU3IFBNDQo+IFRvOiBTcmluaXZhcywgVmlkeWEgPHZpZHlhLnNyaW5pdmFzQGludGVsLmNv
+bT4NCj4gQ2M6IFJvZHJpZ28gU2lxdWVpcmEgPFJvZHJpZ28uU2lxdWVpcmFAYW1kLmNvbT47IERl
+dmVsb3BtZW50IG1haWxpbmcgbGlzdA0KPiBmb3IgSUdUIEdQVSBUb29scyA8aWd0LWRldkBsaXN0
+cy5mcmVlZGVza3RvcC5vcmc+OyBNb2RlbSwgQmhhbnVwcmFrYXNoDQo+IDxiaGFudXByYWthc2gu
+bW9kZW1AaW50ZWwuY29tPjsgTWFyayBZYWNvdWINCj4gPG1hcmt5YWNvdWJAZ29vZ2xlLmNvbT47
+IE5pY2hvbGFzIENob2kgPG5pY2hvbGFzLmNob2lAYW1kLmNvbT4NCj4gU3ViamVjdDogUmU6IFtp
+Z3QtZGV2XSBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19jb25jdXJyZW50OiBGaXggcmVncmVzc2lv
+biBpbg0KPiB0ZXN0X3Jlc29sdXRpb25fd2l0aF9vdXRwdXQNCj4gDQo+IE9uIE1vbiwgU2VwIDIw
+LCAyMDIxIGF0IDQ6MzAgQU0gU3Jpbml2YXMsIFZpZHlhIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5j
+b20+DQo+IHdyb3RlOg0KPiA+DQo+ID4NCj4gPg0KPiA+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdl
+LS0tLS0NCj4gPiA+IEZyb206IFJvZHJpZ28gU2lxdWVpcmEgPFJvZHJpZ28uU2lxdWVpcmFAYW1k
+LmNvbT4NCj4gPiA+IFNlbnQ6IEZyaWRheSwgU2VwdGVtYmVyIDE3LCAyMDIxIDg6MzQgUE0NCj4g
+PiA+IFRvOiBNYXJrIFlhY291YiA8bWFya3lhY291YkBjaHJvbWl1bS5vcmc+DQo+ID4gPiBDYzog
+RGV2ZWxvcG1lbnQgbWFpbGluZyBsaXN0IGZvciBJR1QgR1BVIFRvb2xzIDxpZ3QtDQo+ID4gPiBk
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPjsgTW9kZW0sIEJoYW51cHJha2FzaA0KPiA+ID4gPGJo
+YW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+OyBNYXJrIFlhY291Yg0KPiA8bWFya3lhY291YkBn
+b29nbGUuY29tPjsNCj4gPiA+IFNyaW5pdmFzLCBWaWR5YSA8dmlkeWEuc3Jpbml2YXNAaW50ZWwu
+Y29tPjsgTmljaG9sYXMgQ2hvaQ0KPiA+ID4gPG5pY2hvbGFzLmNob2lAYW1kLmNvbT4NCj4gPiA+
+IFN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW1BBVENIIGktZy10XSB0ZXN0cy9rbXNfY29uY3VycmVu
+dDogRml4DQo+ID4gPiByZWdyZXNzaW9uIGluIHRlc3RfcmVzb2x1dGlvbl93aXRoX291dHB1dA0K
+PiA+ID4NCj4gPiA+IEhpIE1hcmssDQo+ID4gPg0KPiA+ID4gWWVzLCB0aGlzIHBhdGNoIGNhdXNl
+IGEgcmVncmVzc2lvbiBpbiBBTUQuDQo+ID4gPg0KPiA+ID4gSSBhcHBsaWVkIHRoZSBvcmlnaW5h
+bCBwYXRjaCBhZnRlciB0aGUgQ0kgcmVwb3J0ZWQgYSBjb21wbGV0ZSBwYXNzLg0KPiA+ID4gSSBh
+bHNvIHRlc3RlZCBpdCBpbiBhIFZDNCBhbmQgVktNUzsganVzdCBmb3IgY3VyaW9zaXR5LCB3aHkg
+ZGlkIHdlDQo+ID4gPiBub3QgZ2V0IHRoaXMgcmVncmVzc2lvbiBpbiB0aGUgQ0k/DQo+ID4NCj4g
+PiBIZWxsbyBNYXJrL1NpcXVlaXJhLA0KPiA+IEkgYW0gbm90IHZlcnkgc3VyZS4gT25lIHBvc3Np
+YmxlIHJlYXNvbiBjb3VsZCBiZSB0aGUgQ0kgZG9lcyBub3QgcnVuDQo+ID4gYWxsIHRoZSBzdWJ0
+ZXN0cyBzZXF1ZW50aWFsbHk/IFdpdGggdGhpcyBsaW5lLCBpdCB0cmlnZ2VycyB0aGUNCj4gPiBj
+b25kaXRpb24gWyA3NTc3LjQ1NDIxNV0gW2RybTpkcm1fYXRvbWljX2NoZWNrX29ubHldIGF0b21p
+YyBkcml2ZXINCj4gPiBjaGVjayBmb3IgMDAwMDAwMDBiY2IxOTBmNyBmYWlsZWQ6IC0yMg0KPiBE
+byB3ZSBrbm93IHdoeSBpcyB0aGlzIHRoZSBjYXNlPyBJJ20gY3VyaW91cyB0byBrbm93IHdoaWNo
+IGNoZWNrIGlzIGZhaWxpbmcNCj4gYW5kIHdoeSBpdCBpcyBmYWlsaW5nLiBJcyBpdCBmYWlsaW5n
+IGF0IHRoZSBmb2xsb3dpbmcgYXRvbWljIGNvbW1pdD8gQ2F1c2UgaXQNCj4gY291bGQgYmUgYSBr
+ZXJuZWwgYnVnIG1heWJlPw0KDQpIZWxsbyBNYXJrLA0KDQpUaGUgY29uZGl0aW9uIHdoaWNoIGl0
+IGZhaWxzIGZvciBpcyBEUk1fREVCVUdfQVRPTUlDKCJbQ1JUQzolZDolc10gZW5hYmxlZC9jb25u
+ZWN0b3JzIG1pc21hdGNoXG4iKQ0KVW5kZXIgbmV3X2NydGNfc3RhdGUtPmVuYWJsZSAhPSBoYXNf
+Y29ubmVjdG9ycw0KVGhpcyBsb29wIGlzIG1lYW50IGZvciBDUlRDIGNoYW5nZWQgaXRzIG1vZGUg
+YnV0IGhhcyBzYW1lIHNldCBvZiBjb25uZWN0b3JzLiBCdXQgaGVyZSwNCk1pc21hdGNoIGlzIGdl
+dHRpbmcgdHJpZ2dlcmVkIHNheWluZyB0aGVyZSBpcyBhIG1pc21hdGNoIGJldHdlZW4gdGhlIENS
+VEMgdGhhdCBpcyBiZWluZyBlbmFibGVkIGFuZCB0aGUgbnVtYmVyIG9mIGNvbm5lY3RvcnMuDQpG
+dW5jdGlvbiBkcm1fYXRvbWljX2hlbHBlcl9jaGVja19tb2Rlc2V0DQoNClJlZ2FyZHMNClZpZHlh
+DQoNCj4gPiBJIG9ic2VydmVkIHRoZSBzYW1lIG1lc3NhZ2UgZXZlbiB3aXRoIHVwc3RyZWFtIGtl
+cm5lbC4NCj4gPg0KPiA+IEkgaGF2ZSByZXN1Ym1pdHRlZCB0aGUgcGF0Y2ggd2l0aCBpcyBhbWQN
+Cj4gPiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvcGF0Y2gvNDU0NTcxLz9zZXJp
+ZXM9OTQ3NjImcmV2PTINCj4gPiBLaW5kbHkgaGF2ZSBhIGNoZWNrLiBUaGFuayB5b3UuDQo+ID4N
+Cj4gPiBSZWdhcmRzDQo+ID4gVmlkeWENCj4gPiA+DQo+ID4gPiBUaGFua3MNCj4gPiA+DQo+ID4g
+PiBPbiAwOS8xNiwgTWFyayBZYWNvdWIgd3JvdGU6DQo+ID4gPiA+IEBTaXF1aWVyYSwgSSByZW1l
+bWJlciB0aGlzIGFsc28gY2F1c2VkIGEgcmVncmVzc2lvbiBvbiBRdWFsY29tbQ0KPiA+ID4gPiBk
+ZXZpY2VzIGFzIHdlbGwuDQo+ID4gPiA+IFdpbGwgcmVtb3ZpbmcgdGhpcyByZWdyZXNzIEFNRD8g
+QW55IHdvcmsgYXJvdW5kPw0KPiA+ID4gPg0KPiA+ID4gPiBPbiBUaHUsIFNlcCAxNiwgMjAyMSBh
+dCAxMDozMCBBTSBWaWR5YSBTcmluaXZhcw0KPiA+ID4gPiA8dmlkeWEuc3Jpbml2YXNAaW50ZWwu
+Y29tPiB3cm90ZToNCj4gPiA+ID4gPg0KPiA+ID4gPiA+IFN0YXJpbmcgY29tbWl0IGZlYTBlMzhl
+NjkwYzMwYzYgIk1ha2luZyB0aGUgdGVzdCBtb3JlIGdlbmVyaWMiDQo+ID4gPiA+ID4gdGVzdF9y
+ZXNvbHV0aW9uX3dpdGhfb3V0cHV0IGludHJvZHVjZWQgc2V0dGluZw0KPiA+ID4gPiA+IGlndF9v
+dXRwdXRfc2V0X3BpcGUgdG8gUElQRV9OT05FLiBUaGlzIGlzIHRyaWdnZXJpbmcgYXRvbWljDQo+
+ID4gPiA+ID4gY2hlY2sgZmFpbHVyZSByZXN1bHRpbmcgaW4gImVuYWJsZWQvY29ubmVjdG9ycyBt
+aXNtYXRjaCIgdW5kZXINCj4gPiA+IGRybV9hdG9taWNfaGVscGVyX2NoZWNrX21vZGVzZXQuDQo+
+ID4gPiA+ID4gUGF0Y2ggZml4ZXMgdGhpcyBpc3N1ZS4NCj4gPiA+ID4gPg0KPiA+ID4gPiA+IFNp
+Z25lZC1vZmYtYnk6IFZpZHlhIFNyaW5pdmFzIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+DQo+
+ID4gPiA+ID4gLS0tDQo+ID4gPiA+ID4gIHRlc3RzL2ttc19jb25jdXJyZW50LmMgfCAxIC0NCj4g
+PiA+ID4gPiAgMSBmaWxlIGNoYW5nZWQsIDEgZGVsZXRpb24oLSkNCj4gPiA+ID4gPg0KPiA+ID4g
+PiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfY29uY3VycmVudC5jIGIvdGVzdHMva21zX2NvbmN1
+cnJlbnQuYw0KPiA+ID4gPiA+IGluZGV4DQo+ID4gPiA+ID4gMjVjNjdlYjQ2OWQxLi40MDA5NmVh
+MWM0NTcgMTAwNjQ0DQo+ID4gPiA+ID4gLS0tIGEvdGVzdHMva21zX2NvbmN1cnJlbnQuYw0KPiA+
+ID4gPiA+ICsrKyBiL3Rlc3RzL2ttc19jb25jdXJyZW50LmMNCj4gPiA+ID4gPiBAQCAtMjY4LDcg
+KzI2OCw2IEBAIHRlc3RfcmVzb2x1dGlvbl93aXRoX291dHB1dChkYXRhX3QgKmRhdGEsDQo+ID4g
+PiA+ID4gZW51bSBwaXBlIHBpcGUsIGludCBtYXhfcGxhbmVzLCBpZ3Rfb3UNCj4gPiA+ID4gPg0K
+PiA+ID4gPiA+ICAgICAgICAgICAgICAgICAvKiBzd2l0Y2ggdG8gbG93ZXIgcmVzb2x1dGlvbiAq
+Lw0KPiA+ID4gPiA+ICAgICAgICAgICAgICAgICBpZ3Rfb3V0cHV0X292ZXJyaWRlX21vZGUob3V0
+cHV0LCBtb2RlX2xvKTsNCj4gPiA+ID4gPiAtICAgICAgICAgICAgICAgaWd0X291dHB1dF9zZXRf
+cGlwZShvdXRwdXQsIFBJUEVfTk9ORSk7DQo+ID4gPiA+ID4gICAgICAgICAgICAgICAgIGlndF9k
+aXNwbGF5X2NvbW1pdDIoJmRhdGEtPmRpc3BsYXksDQo+ID4gPiA+ID4gQ09NTUlUX0FUT01JQyk7
+DQo+ID4gPiA+ID4NCj4gPiA+ID4gPiAgICAgICAgICAgICAgICAgLyogc3dpdGNoIGJhY2sgdG8g
+aGlnaGVyIHJlc29sdXRpb24gKi8NCj4gPiA+ID4gPiAtLQ0KPiA+ID4gPiA+IDIuMzMuMA0KPiA+
+ID4gPiA+DQo+ID4gPg0KPiA+ID4gLS0NCj4gPiA+IFJvZHJpZ28gU2lxdWVpcmENCj4gPiA+IGh0
+dHBzOi8vc2lxdWVpcmEudGVjaA0K
