@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F331089B96
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 06:32:07 +0000 (UTC)
-From: sai.gowtham.ch@intel.com
-Date: Mon, 20 Sep 2021 12:00:59 +0530
-Message-Id: <20210920063059.10079-1-sai.gowtham.ch@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 381946E402
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 07:37:45 +0000 (UTC)
+References: <20210909153047.16729-1-ville.syrjala@linux.intel.com>
+ <20210909153047.16729-2-ville.syrjala@linux.intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+Message-ID: <ba08f955-bce0-db75-9048-9225f0985ee7@intel.com>
+Date: Mon, 20 Sep 2021 13:07:29 +0530
+In-Reply-To: <20210909153047.16729-2-ville.syrjala@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_sync.c : Add allocator
- support
+Content-Language: en-US
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v2 01/11] lib/kms: Add
+ igt_plane_has_rotation()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,144 +23,120 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com, sai.gowtham.ch@intel.com
+To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+On 9/9/2021 9:00 PM, Ville Syrjala wrote:
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+>
+> Probe the supported rotations for each plane from the kernel
+> This should let us eliminate tons of hand rolled gen checks all over.
+>
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-When relocations are not available tests must assign addresses to objects
-by themselves instead of relying on the driver. We use allocator for
-that purpose.
+Looks good to me.
 
-Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/i915/gem_sync.c | 28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 
-diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c
-index 6cb00c40..7c669e08 100644
---- a/tests/i915/gem_sync.c
-+++ b/tests/i915/gem_sync.c
-@@ -249,6 +249,7 @@ wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		double end, this, elapsed, now, baseline;
- 		unsigned long cycles;
- 		igt_spin_t *spin;
-+		uint64_t ahnd;
- 
- 		memset(&object, 0, sizeof(object));
- 		object.handle = gem_create(fd, 4096);
-@@ -260,7 +261,8 @@ wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		execbuf.flags = ied_flags(&ied, child);
- 		execbuf.rsvd1 = ctx->id;
- 
--		spin = __igt_spin_new(fd,
-+		ahnd = get_reloc_ahnd(fd, ctx->id);
-+		spin = __igt_spin_new(fd, .ahnd = ahnd,
- 				      .ctx = ctx,
- 				      .engine = execbuf.flags,
- 				      .flags = (IGT_SPIN_POLL_RUN |
-@@ -323,6 +325,7 @@ wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 
- 		igt_spin_free(fd, spin);
- 		gem_close(fd, object.handle);
-+		put_ahnd(ahnd);
- 	}
- 	igt_waitchildren_timeout(2*timeout, NULL);
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
-@@ -341,13 +344,16 @@ static void active_ring(int fd, const intel_ctx_t *ctx, unsigned int ring,
- 		double start, end, elapsed;
- 		unsigned long cycles;
- 		igt_spin_t *spin[2];
-+		uint64_t ahnd[2];
- 
--		spin[0] = __igt_spin_new(fd,
-+		ahnd[0] = get_reloc_ahnd(fd, ctx->id);
-+		spin[0] = __igt_spin_new(fd, .ahnd = ahnd[0],
- 					 .ctx = ctx,
- 					 .engine = ied_flags(&ied, child),
- 					 .flags = IGT_SPIN_FAST);
- 
--		spin[1] = __igt_spin_new(fd,
-+		ahnd[1] = get_reloc_ahnd(fd, ctx->id);
-+		spin[1] = __igt_spin_new(fd, .ahnd = ahnd[1],
- 					 .ctx = ctx,
- 					 .engine = ied_flags(&ied, child),
- 					 .flags = IGT_SPIN_FAST);
-@@ -370,6 +376,8 @@ static void active_ring(int fd, const intel_ctx_t *ctx, unsigned int ring,
- 		} while ((elapsed = gettime()) < end);
- 		igt_spin_free(fd, spin[1]);
- 		igt_spin_free(fd, spin[0]);
-+		put_ahnd(ahnd[0]);
-+		put_ahnd(ahnd[1]);
- 
- 		igt_info("%s %ld cycles: %.3f us\n",
- 			 ied_name(&ied, child),
-@@ -396,6 +404,7 @@ active_wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		double end, this, elapsed, now, baseline;
- 		unsigned long cycles;
- 		igt_spin_t *spin[2];
-+		uint64_t ahnd[2];
- 
- 		memset(&object, 0, sizeof(object));
- 		object.handle = gem_create(fd, 4096);
-@@ -407,13 +416,15 @@ active_wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		execbuf.flags = ied_flags(&ied, child);
- 		execbuf.rsvd1 = ctx->id;
- 
--		spin[0] = __igt_spin_new(fd,
-+		ahnd[0] = get_reloc_ahnd(fd, 0);
-+		spin[0] = __igt_spin_new(fd, .ahnd = ahnd[0],
- 					 .engine = execbuf.flags,
- 					 .flags = (IGT_SPIN_POLL_RUN |
- 						   IGT_SPIN_FAST));
- 		igt_assert(igt_spin_has_poll(spin[0]));
- 
--		spin[1] = __igt_spin_new(fd,
-+		ahnd[1] = get_reloc_ahnd(fd, 0);
-+		spin[1] = __igt_spin_new(fd, .ahnd = ahnd[1],
- 					 .engine = execbuf.flags,
- 					 .flags = (IGT_SPIN_POLL_RUN |
- 						   IGT_SPIN_FAST));
-@@ -490,6 +501,8 @@ active_wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		igt_spin_free(fd, spin[1]);
- 		igt_spin_free(fd, spin[0]);
- 		gem_close(fd, object.handle);
-+		put_ahnd(ahnd[0]);
-+		put_ahnd(ahnd[1]);
- 	}
- 	igt_waitchildren_timeout(2*timeout, NULL);
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
-@@ -1109,11 +1122,13 @@ preempt(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		struct drm_i915_gem_execbuffer2 execbuf;
- 		double start, elapsed;
- 		unsigned long cycles;
-+		uint64_t ahnd;
- 
- 		memset(&object, 0, sizeof(object));
- 		object.handle = gem_create(fd, 4096);
- 		gem_write(fd, object.handle, 0, &bbe, sizeof(bbe));
- 
-+		ahnd = get_reloc_ahnd(fd, tmp_ctx[0]->id);
- 		memset(&execbuf, 0, sizeof(execbuf));
- 		execbuf.buffers_ptr = to_user_pointer(&object);
- 		execbuf.buffer_count = 1;
-@@ -1126,7 +1141,7 @@ preempt(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		cycles = 0;
- 		do {
- 			igt_spin_t *spin =
--				__igt_spin_new(fd,
-+				__igt_spin_new(fd, .ahnd = ahnd,
- 					       .ctx = tmp_ctx[0],
- 					       .engine = execbuf.flags);
- 
-@@ -1142,6 +1157,7 @@ preempt(int fd, const intel_ctx_t *ctx, unsigned ring,
- 			 ied_name(&ied, child), cycles, elapsed * 1e6/cycles);
- 
- 		gem_close(fd, object.handle);
-+		put_ahnd(ahnd);
- 	}
- 	igt_waitchildren_timeout(timeout+10, NULL);
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
--- 
-2.32.0
+> ---
+>   lib/igt_kms.c | 41 +++++++++++++++++++++++++++++++++++++++++
+>   lib/igt_kms.h | 16 ++++++++++++++++
+>   2 files changed, 57 insertions(+)
+>
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index cc38f5a25334..6b0639f628b9 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -612,6 +612,41 @@ const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
+>   	[IGT_CONNECTOR_DITHERING_MODE] = "dithering mode",
+>   };
+>   
+> +const char * const igt_rotation_names[] = {
+> +	[0] = "rotate-0",
+> +	[1] = "rotate-90",
+> +	[2] = "rotate-180",
+> +	[3] = "rotate-270",
+> +	[4] = "reflect-x",
+> +	[5] = "reflect-y",
+> +};
+> +
+> +static unsigned int
+> +igt_plane_rotations(igt_display_t *display, igt_plane_t *plane,
+> +		    drmModePropertyPtr prop)
+> +{
+> +	unsigned int rotations = 0;
+> +
+> +	igt_assert_eq(prop->flags & DRM_MODE_PROP_LEGACY_TYPE,
+> +		      DRM_MODE_PROP_BITMASK);
+> +	igt_assert_eq(prop->count_values, prop->count_enums);
+> +
+> +	for (int i = 0; i < ARRAY_SIZE(igt_rotation_names); i++) {
+> +		for (int j = 0; j < prop->count_enums; j++) {
+> +			if (strcmp(igt_rotation_names[i], prop->enums[j].name))
+> +				continue;
+> +
+> +			/* various places assume the uabi uses specific bit values */
+> +			igt_assert_eq(prop->values[j], i);
+> +
+> +			rotations |= 1 << i;
+> +		}
+> +	}
+> +	igt_assert_neq(rotations, 0);
+> +
+> +	return rotations;
+> +}
+> +
+>   /*
+>    * Retrieve all the properies specified in props_name and store them into
+>    * plane->props.
+> @@ -640,9 +675,15 @@ igt_fill_plane_props(igt_display_t *display, igt_plane_t *plane,
+>   			break;
+>   		}
+>   
+> +		if (strcmp(prop->name, "rotation") == 0)
+> +			plane->rotations = igt_plane_rotations(display, plane, prop);
+> +
+>   		drmModeFreeProperty(prop);
+>   	}
+>   
+> +	if (!plane->rotations)
+> +		plane->rotations = IGT_ROTATION_0;
+> +
+>   	drmModeFreeObjectProperties(props);
+>   }
+>   
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index ed598f164a59..b6cbf937166f 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -358,6 +358,8 @@ typedef struct igt_plane {
+>   		uint64_t values[IGT_NUM_COLOR_RANGES];
+>   	} color_range;
+>   
+> +	igt_rotation_t rotations;
+> +
+>   	uint64_t changed;
+>   	uint32_t props[IGT_NUM_PLANE_PROPS];
+>   	uint64_t values[IGT_NUM_PLANE_PROPS];
+> @@ -491,6 +493,20 @@ void igt_fb_set_position(struct igt_fb *fb, igt_plane_t *plane,
+>   void igt_fb_set_size(struct igt_fb *fb, igt_plane_t *plane,
+>   	uint32_t w, uint32_t h);
+>   
+> +/**
+> + * igt_plane_has_rotation:
+> + * @plane: Plane pointer for which rotation is to be queried
+> + * @rotation: Plane rotation value (0, 90, 180, 270)
+> + *
+> + * Check whether @plane potentially supports the given @rotation.
+> + * Note that @rotation may still rejected later due to other
+> + * constraints (eg. incompatible pixel format or modifier).
+> + */
+> +static inline bool igt_plane_has_rotation(igt_plane_t *plane, igt_rotation_t rotation)
+> +{
+> +	return (plane->rotations & rotation) == rotation;
+> +}
+> +
+>   void igt_wait_for_vblank(int drm_fd, int crtc_offset);
+>   void igt_wait_for_vblank_count(int drm_fd, int crtc_offset, int count);
+>   
+
