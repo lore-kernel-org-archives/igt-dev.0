@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 521396E491
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 10:51:54 +0000 (UTC)
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Mon, 20 Sep 2021 10:51:51 +0000
-Message-ID: <DM8PR11MB571976A46DFFE625ED0F1D068DA09@DM8PR11MB5719.namprd11.prod.outlook.com>
-References: <20210916142722.17881-1-vidya.srinivas@intel.com>
-In-Reply-To: <20210916142722.17881-1-vidya.srinivas@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA7B189FF7
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 10:59:48 +0000 (UTC)
+From: Vidya Srinivas <vidya.srinivas@intel.com>
+Date: Mon, 20 Sep 2021 16:17:47 +0530
+Message-Id: <20210920104747.27916-1-vidya.srinivas@intel.com>
+In-Reply-To: <20210920092455.19691-1-vidya.srinivas@intel.com>
+References: <20210920092455.19691-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_legacy: Fix CRC
- mismatch for flip-vs-cursor-busy-crc-*
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH] lib/intel_bufops: Fix regression on 5.4 kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,47 +20,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Srinivas, Vidya" <vidya.srinivas@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "markyacoub@google.com" <markyacoub@google.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Bhanuprakash.Modem@intel.com, markyacoub@google.com, zbigniew.kempczynski@intel.com, Vidya Srinivas <vidya.srinivas@intel.com>, Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> From: Srinivas, Vidya <vidya.srinivas@intel.com>
-> Sent: Thursday, September 16, 2021 7:57 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; markyacoub@google=
-.com;
-> Srinivas, Vidya <vidya.srinivas@intel.com>
-> Subject: [PATCH i-g-t] tests/kms_cursor_legacy: Fix CRC mismatch for flip=
--vs-
-> cursor-busy-crc-*
->=20
-> Few variants of Intel devices are failing randomly with CRC mismatch for
-> flip-vs-cursor-busy-crc-atomic and flip-vs-cursor-busy-crc-legacy.
-> Patch adds stop of CRC collection to fix this issue.
->=20
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> ---
->  tests/kms_cursor_legacy.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> index 3ddea9c35340..8136280701e6 100644
-> --- a/tests/kms_cursor_legacy.c
-> +++ b/tests/kms_cursor_legacy.c
-> @@ -1401,6 +1401,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t
-> *display, bool atomic)
->  		igt_assert_crc_equal(&crcs[i], &test_crc);
->  	}
->=20
-> +	igt_pipe_crc_stop(pipe_crc);
-=20
-LGTM:
-Reviewed-by: Bhanuprakash Modem <Bhanuprakash.modem@intel.com>
+Starting commit 8759c4a3020ce4 "Add intel_buf_init_in_region"
+__intel_buf_init uses gem_create_in_memory_regions instead of
+gem_create. Older kernels like 5.4 still dont have support for
+I915_GEM_CREATE_EXT_MEMORY_REGIONS (i915_gem_create_ext_ioctl)
+from kernel commit (https://patchwork.freedesktop.org/patch/431581/?series=89648&rev=1)
+Due to this, the flip-vs-fences tests are failing on kernel 5.4
+Patch adds fall back to gem_create when __gem_create_in_memory_region_list fails.
 
-- Bhanu
+v2 - Addressed review comments from Zbigniew and Mark
+Added the fall back in __intel_buf_init
 
->  	igt_remove_fb(display->drm_fd, &fb_info[1]);
->  	igt_remove_fb(display->drm_fd, &fb_info[0]);
->  	igt_remove_fb(display->drm_fd, &cursor_fb);
-> --
-> 2.33.0
+v3 - Fixed space issue - review comment from Zbigniew
+
+v4 - Addressed review comments from Bhanu
+
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Acked-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ lib/intel_bufops.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+index f5f67eddabd7..d1395c1605d2 100644
+--- a/lib/intel_bufops.c
++++ b/lib/intel_bufops.c
+@@ -818,8 +818,12 @@ static void __intel_buf_init(struct buf_ops *bops,
+ 
+ 	if (handle)
+ 		buf->handle = handle;
+-	else
+-		buf->handle = gem_create_in_memory_regions(bops->fd, size, region);
++	else {
++		if (!__gem_create_in_memory_regions(bops->fd, &handle, size, region))
++			buf->handle = handle;
++		else
++			buf->handle = gem_create(bops->fd, size);
++	}
+ 
+ 	set_hw_tiled(bops, buf);
+ }
+-- 
+2.32.0
