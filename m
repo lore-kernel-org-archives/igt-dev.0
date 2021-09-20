@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E7CE89DF9
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 07:48:39 +0000 (UTC)
-References: <20210909153047.16729-1-ville.syrjala@linux.intel.com>
- <20210909153047.16729-6-ville.syrjala@linux.intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-Message-ID: <7a0668fb-a491-5306-0c5f-9432f23a6032@intel.com>
-Date: Mon, 20 Sep 2021 13:18:19 +0530
-In-Reply-To: <20210909153047.16729-6-ville.syrjala@linux.intel.com>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 923006E415
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 08:08:24 +0000 (UTC)
+From: Vidya Srinivas <vidya.srinivas@intel.com>
+Date: Mon, 20 Sep 2021 13:26:23 +0530
+Message-Id: <20210920075623.31580-1-vidya.srinivas@intel.com>
+In-Reply-To: <20210916141227.17554-1-vidya.srinivas@intel.com>
+References: <20210916141227.17554-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 05/11] tests/kms_big_fb: Use
- igt_has_drm_cap()
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] lib/intel_bufops: Fix regression on 5.4
+ kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,60 +20,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Bhanuprakash.Modem@intel.com, markyacoub@google.com, zbigniew.kempczynski@intel.com, Vidya Srinivas <vidya.srinivas@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 9/9/2021 9:00 PM, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
->
-> Replace the hand rolled cap check with igt_has_drm_cap().
->
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Looks good to me.
+Starting commit 8759c4a3020ce4 "Add intel_buf_init_in_region"
+__intel_buf_init uses gem_create_in_memory_regions instead of
+gem_create. Older kernels like 5.4 still dont have support for
+I915_GEM_CREATE_EXT_MEMORY_REGIONS (i915_gem_create_ext_ioctl)
+from kernel commit (https://patchwork.freedesktop.org/patch/431581/?series=89648&rev=1)
+Due to this, the flip-vs-fences tests are failing on kernel 5.4
+Patch adds fall back to gem_create when __gem_create_in_memory_region_list fails.
 
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+v2 - Addressed review comments from Zbigniew and Mark
+Added the fall back in __intel_buf_init
 
-> ---
->   tests/kms_big_fb.c | 7 +------
->   1 file changed, 1 insertion(+), 6 deletions(-)
->
-> diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
-> index 092cbc6846fe..308227c9113a 100644
-> --- a/tests/kms_big_fb.c
-> +++ b/tests/kms_big_fb.c
-> @@ -57,7 +57,6 @@ typedef struct {
->   	double planeclearrgb[3];
->   	uint32_t format_override;
->   	uint32_t stride_override;
-> -	uint32_t async_flip_support;
->   } data_t;
->   
->   static struct intel_buf *init_buf(data_t *data,
-> @@ -800,7 +799,6 @@ igt_main
->   {
->   	igt_fixture {
->   		drmModeResPtr res;
-> -		struct drm_get_cap cap = { .capability = DRM_CAP_ASYNC_PAGE_FLIP };
->   
->   		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
->   
-> @@ -851,9 +849,6 @@ igt_main
->   
->   		data.max_hw_stride_test = false;
->   		data.async_flip_test = false;
-> -
-> -		igt_ioctl(data.drm_fd, DRM_IOCTL_GET_CAP, &cap);
-> -		data.async_flip_support = cap.value;
->   	}
->   
->   	/*
-> @@ -983,7 +978,7 @@ igt_main
->   							igt_require(data.format == DRM_FORMAT_C8 ||
->   								igt_fb_supported_format(data.format));
->   							igt_require(igt_display_has_format_mod(&data.display, data.format, data.modifier));
-> -							igt_require_f(data.async_flip_support, "Async Flip is not supported\n");
-> +							igt_require(igt_has_drm_cap(data.drm_fd, DRM_CAP_ASYNC_PAGE_FLIP));
->   							data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
->   							test_scanout(&data);
->   					}
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+---
+ lib/intel_bufops.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
+diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+index f5f67eddabd7..1caebdf2962a 100644
+--- a/lib/intel_bufops.c
++++ b/lib/intel_bufops.c
+@@ -818,8 +818,10 @@ static void __intel_buf_init(struct buf_ops *bops,
+ 
+ 	if (handle)
+ 		buf->handle = handle;
+-	else
+-		buf->handle = gem_create_in_memory_regions(bops->fd, size, region);
++	else {
++		if( __gem_create_in_memory_regions(bops->fd, &handle, size, region) != 0)
++			buf->handle = gem_create(bops->fd, size);
++	}
+ 
+ 	set_hw_tiled(bops, buf);
+ }
+-- 
+2.33.0
