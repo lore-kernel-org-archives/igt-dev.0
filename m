@@ -1,22 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7A7F36E58B
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 17:00:36 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Mon, 20 Sep 2021 16:59:22 +0000
-Message-ID: <BY5PR11MB43729293AE0025986DD677F989A09@BY5PR11MB4372.namprd11.prod.outlook.com>
-References: <20210916141827.17720-1-vidya.srinivas@intel.com>
- <CAJUqKUqpus_Sui-O5LrViFYB1wxbMEg-Hz4Ak06XS06yxKy=QA@mail.gmail.com>
- <20210917150349.la6orrmaxyrp5sdc@outlook.office365.com>
- <BY5PR11MB4372B0490EBD823137D4F57589A09@BY5PR11MB4372.namprd11.prod.outlook.com>
- <CAJUqKUr_6DjfU4aZPNxyt-86C+L0cS-Z2jQjiZLVpunzHowssw@mail.gmail.com>
-In-Reply-To: <CAJUqKUr_6DjfU4aZPNxyt-86C+L0cS-Z2jQjiZLVpunzHowssw@mail.gmail.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC7036E5A5
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 17:28:11 +0000 (UTC)
+Date: Mon, 20 Sep 2021 19:28:06 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20210920172806.GA78788@zkempczy-mobl2>
+References: <20210920080047.31650-1-vidya.srinivas@intel.com>
+ <20210920092455.19691-1-vidya.srinivas@intel.com>
+ <20210920094638.GB58558@zkempczy-mobl2>
+ <BY5PR11MB437217DD27CF0AB34C0628CD89A09@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <DM8PR11MB57199F8801292EE03EAE11B88DA09@DM8PR11MB5719.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Fix regression in
- test_resolution_with_output
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DM8PR11MB57199F8801292EE03EAE11B88DA09@DM8PR11MB5719.namprd11.prod.outlook.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_bufops: Fix regression on 5.4
+ kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,86 +26,116 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, Development mailing list for
- IGT GPU Tools <igt-dev@lists.freedesktop.org>, "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, Mark Yacoub <markyacoub@google.com>, Nicholas Choi <nicholas.choi@amd.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Cc: "Srinivas, Vidya" <vidya.srinivas@intel.com>, "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "markyacoub@google.com" <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTWFyayBZYWNvdWIgPG1h
-cmt5YWNvdWJAY2hyb21pdW0ub3JnPg0KPiBTZW50OiBNb25kYXksIFNlcHRlbWJlciAyMCwgMjAy
-MSA4OjU3IFBNDQo+IFRvOiBTcmluaXZhcywgVmlkeWEgPHZpZHlhLnNyaW5pdmFzQGludGVsLmNv
-bT4NCj4gQ2M6IFJvZHJpZ28gU2lxdWVpcmEgPFJvZHJpZ28uU2lxdWVpcmFAYW1kLmNvbT47IERl
-dmVsb3BtZW50IG1haWxpbmcgbGlzdA0KPiBmb3IgSUdUIEdQVSBUb29scyA8aWd0LWRldkBsaXN0
-cy5mcmVlZGVza3RvcC5vcmc+OyBNb2RlbSwgQmhhbnVwcmFrYXNoDQo+IDxiaGFudXByYWthc2gu
-bW9kZW1AaW50ZWwuY29tPjsgTWFyayBZYWNvdWINCj4gPG1hcmt5YWNvdWJAZ29vZ2xlLmNvbT47
-IE5pY2hvbGFzIENob2kgPG5pY2hvbGFzLmNob2lAYW1kLmNvbT4NCj4gU3ViamVjdDogUmU6IFtp
-Z3QtZGV2XSBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19jb25jdXJyZW50OiBGaXggcmVncmVzc2lv
-biBpbg0KPiB0ZXN0X3Jlc29sdXRpb25fd2l0aF9vdXRwdXQNCj4gDQo+IE9uIE1vbiwgU2VwIDIw
-LCAyMDIxIGF0IDQ6MzAgQU0gU3Jpbml2YXMsIFZpZHlhIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5j
-b20+DQo+IHdyb3RlOg0KPiA+DQo+ID4NCj4gPg0KPiA+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdl
-LS0tLS0NCj4gPiA+IEZyb206IFJvZHJpZ28gU2lxdWVpcmEgPFJvZHJpZ28uU2lxdWVpcmFAYW1k
-LmNvbT4NCj4gPiA+IFNlbnQ6IEZyaWRheSwgU2VwdGVtYmVyIDE3LCAyMDIxIDg6MzQgUE0NCj4g
-PiA+IFRvOiBNYXJrIFlhY291YiA8bWFya3lhY291YkBjaHJvbWl1bS5vcmc+DQo+ID4gPiBDYzog
-RGV2ZWxvcG1lbnQgbWFpbGluZyBsaXN0IGZvciBJR1QgR1BVIFRvb2xzIDxpZ3QtDQo+ID4gPiBk
-ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPjsgTW9kZW0sIEJoYW51cHJha2FzaA0KPiA+ID4gPGJo
-YW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+OyBNYXJrIFlhY291Yg0KPiA8bWFya3lhY291YkBn
-b29nbGUuY29tPjsNCj4gPiA+IFNyaW5pdmFzLCBWaWR5YSA8dmlkeWEuc3Jpbml2YXNAaW50ZWwu
-Y29tPjsgTmljaG9sYXMgQ2hvaQ0KPiA+ID4gPG5pY2hvbGFzLmNob2lAYW1kLmNvbT4NCj4gPiA+
-IFN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW1BBVENIIGktZy10XSB0ZXN0cy9rbXNfY29uY3VycmVu
-dDogRml4DQo+ID4gPiByZWdyZXNzaW9uIGluIHRlc3RfcmVzb2x1dGlvbl93aXRoX291dHB1dA0K
-PiA+ID4NCj4gPiA+IEhpIE1hcmssDQo+ID4gPg0KPiA+ID4gWWVzLCB0aGlzIHBhdGNoIGNhdXNl
-IGEgcmVncmVzc2lvbiBpbiBBTUQuDQo+ID4gPg0KPiA+ID4gSSBhcHBsaWVkIHRoZSBvcmlnaW5h
-bCBwYXRjaCBhZnRlciB0aGUgQ0kgcmVwb3J0ZWQgYSBjb21wbGV0ZSBwYXNzLg0KPiA+ID4gSSBh
-bHNvIHRlc3RlZCBpdCBpbiBhIFZDNCBhbmQgVktNUzsganVzdCBmb3IgY3VyaW9zaXR5LCB3aHkg
-ZGlkIHdlDQo+ID4gPiBub3QgZ2V0IHRoaXMgcmVncmVzc2lvbiBpbiB0aGUgQ0k/DQo+ID4NCj4g
-PiBIZWxsbyBNYXJrL1NpcXVlaXJhLA0KPiA+IEkgYW0gbm90IHZlcnkgc3VyZS4gT25lIHBvc3Np
-YmxlIHJlYXNvbiBjb3VsZCBiZSB0aGUgQ0kgZG9lcyBub3QgcnVuDQo+ID4gYWxsIHRoZSBzdWJ0
-ZXN0cyBzZXF1ZW50aWFsbHk/IFdpdGggdGhpcyBsaW5lLCBpdCB0cmlnZ2VycyB0aGUNCj4gPiBj
-b25kaXRpb24gWyA3NTc3LjQ1NDIxNV0gW2RybTpkcm1fYXRvbWljX2NoZWNrX29ubHldIGF0b21p
-YyBkcml2ZXINCj4gPiBjaGVjayBmb3IgMDAwMDAwMDBiY2IxOTBmNyBmYWlsZWQ6IC0yMg0KPiBE
-byB3ZSBrbm93IHdoeSBpcyB0aGlzIHRoZSBjYXNlPyBJJ20gY3VyaW91cyB0byBrbm93IHdoaWNo
-IGNoZWNrIGlzIGZhaWxpbmcNCj4gYW5kIHdoeSBpdCBpcyBmYWlsaW5nLiBJcyBpdCBmYWlsaW5n
-IGF0IHRoZSBmb2xsb3dpbmcgYXRvbWljIGNvbW1pdD8gQ2F1c2UgaXQNCj4gY291bGQgYmUgYSBr
-ZXJuZWwgYnVnIG1heWJlPw0KDQpIZWxsbyBNYXJrLA0KDQpUaGUgY29uZGl0aW9uIHdoaWNoIGl0
-IGZhaWxzIGZvciBpcyBEUk1fREVCVUdfQVRPTUlDKCJbQ1JUQzolZDolc10gZW5hYmxlZC9jb25u
-ZWN0b3JzIG1pc21hdGNoXG4iKQ0KVW5kZXIgbmV3X2NydGNfc3RhdGUtPmVuYWJsZSAhPSBoYXNf
-Y29ubmVjdG9ycw0KVGhpcyBsb29wIGlzIG1lYW50IGZvciBDUlRDIGNoYW5nZWQgaXRzIG1vZGUg
-YnV0IGhhcyBzYW1lIHNldCBvZiBjb25uZWN0b3JzLiBCdXQgaGVyZSwNCk1pc21hdGNoIGlzIGdl
-dHRpbmcgdHJpZ2dlcmVkIHNheWluZyB0aGVyZSBpcyBhIG1pc21hdGNoIGJldHdlZW4gdGhlIENS
-VEMgdGhhdCBpcyBiZWluZyBlbmFibGVkIGFuZCB0aGUgbnVtYmVyIG9mIGNvbm5lY3RvcnMuDQpG
-dW5jdGlvbiBkcm1fYXRvbWljX2hlbHBlcl9jaGVja19tb2Rlc2V0DQoNClJlZ2FyZHMNClZpZHlh
-DQoNCj4gPiBJIG9ic2VydmVkIHRoZSBzYW1lIG1lc3NhZ2UgZXZlbiB3aXRoIHVwc3RyZWFtIGtl
-cm5lbC4NCj4gPg0KPiA+IEkgaGF2ZSByZXN1Ym1pdHRlZCB0aGUgcGF0Y2ggd2l0aCBpcyBhbWQN
-Cj4gPiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvcGF0Y2gvNDU0NTcxLz9zZXJp
-ZXM9OTQ3NjImcmV2PTINCj4gPiBLaW5kbHkgaGF2ZSBhIGNoZWNrLiBUaGFuayB5b3UuDQo+ID4N
-Cj4gPiBSZWdhcmRzDQo+ID4gVmlkeWENCj4gPiA+DQo+ID4gPiBUaGFua3MNCj4gPiA+DQo+ID4g
-PiBPbiAwOS8xNiwgTWFyayBZYWNvdWIgd3JvdGU6DQo+ID4gPiA+IEBTaXF1aWVyYSwgSSByZW1l
-bWJlciB0aGlzIGFsc28gY2F1c2VkIGEgcmVncmVzc2lvbiBvbiBRdWFsY29tbQ0KPiA+ID4gPiBk
-ZXZpY2VzIGFzIHdlbGwuDQo+ID4gPiA+IFdpbGwgcmVtb3ZpbmcgdGhpcyByZWdyZXNzIEFNRD8g
-QW55IHdvcmsgYXJvdW5kPw0KPiA+ID4gPg0KPiA+ID4gPiBPbiBUaHUsIFNlcCAxNiwgMjAyMSBh
-dCAxMDozMCBBTSBWaWR5YSBTcmluaXZhcw0KPiA+ID4gPiA8dmlkeWEuc3Jpbml2YXNAaW50ZWwu
-Y29tPiB3cm90ZToNCj4gPiA+ID4gPg0KPiA+ID4gPiA+IFN0YXJpbmcgY29tbWl0IGZlYTBlMzhl
-NjkwYzMwYzYgIk1ha2luZyB0aGUgdGVzdCBtb3JlIGdlbmVyaWMiDQo+ID4gPiA+ID4gdGVzdF9y
-ZXNvbHV0aW9uX3dpdGhfb3V0cHV0IGludHJvZHVjZWQgc2V0dGluZw0KPiA+ID4gPiA+IGlndF9v
-dXRwdXRfc2V0X3BpcGUgdG8gUElQRV9OT05FLiBUaGlzIGlzIHRyaWdnZXJpbmcgYXRvbWljDQo+
-ID4gPiA+ID4gY2hlY2sgZmFpbHVyZSByZXN1bHRpbmcgaW4gImVuYWJsZWQvY29ubmVjdG9ycyBt
-aXNtYXRjaCIgdW5kZXINCj4gPiA+IGRybV9hdG9taWNfaGVscGVyX2NoZWNrX21vZGVzZXQuDQo+
-ID4gPiA+ID4gUGF0Y2ggZml4ZXMgdGhpcyBpc3N1ZS4NCj4gPiA+ID4gPg0KPiA+ID4gPiA+IFNp
-Z25lZC1vZmYtYnk6IFZpZHlhIFNyaW5pdmFzIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+DQo+
-ID4gPiA+ID4gLS0tDQo+ID4gPiA+ID4gIHRlc3RzL2ttc19jb25jdXJyZW50LmMgfCAxIC0NCj4g
-PiA+ID4gPiAgMSBmaWxlIGNoYW5nZWQsIDEgZGVsZXRpb24oLSkNCj4gPiA+ID4gPg0KPiA+ID4g
-PiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfY29uY3VycmVudC5jIGIvdGVzdHMva21zX2NvbmN1
-cnJlbnQuYw0KPiA+ID4gPiA+IGluZGV4DQo+ID4gPiA+ID4gMjVjNjdlYjQ2OWQxLi40MDA5NmVh
-MWM0NTcgMTAwNjQ0DQo+ID4gPiA+ID4gLS0tIGEvdGVzdHMva21zX2NvbmN1cnJlbnQuYw0KPiA+
-ID4gPiA+ICsrKyBiL3Rlc3RzL2ttc19jb25jdXJyZW50LmMNCj4gPiA+ID4gPiBAQCAtMjY4LDcg
-KzI2OCw2IEBAIHRlc3RfcmVzb2x1dGlvbl93aXRoX291dHB1dChkYXRhX3QgKmRhdGEsDQo+ID4g
-PiA+ID4gZW51bSBwaXBlIHBpcGUsIGludCBtYXhfcGxhbmVzLCBpZ3Rfb3UNCj4gPiA+ID4gPg0K
-PiA+ID4gPiA+ICAgICAgICAgICAgICAgICAvKiBzd2l0Y2ggdG8gbG93ZXIgcmVzb2x1dGlvbiAq
-Lw0KPiA+ID4gPiA+ICAgICAgICAgICAgICAgICBpZ3Rfb3V0cHV0X292ZXJyaWRlX21vZGUob3V0
-cHV0LCBtb2RlX2xvKTsNCj4gPiA+ID4gPiAtICAgICAgICAgICAgICAgaWd0X291dHB1dF9zZXRf
-cGlwZShvdXRwdXQsIFBJUEVfTk9ORSk7DQo+ID4gPiA+ID4gICAgICAgICAgICAgICAgIGlndF9k
-aXNwbGF5X2NvbW1pdDIoJmRhdGEtPmRpc3BsYXksDQo+ID4gPiA+ID4gQ09NTUlUX0FUT01JQyk7
-DQo+ID4gPiA+ID4NCj4gPiA+ID4gPiAgICAgICAgICAgICAgICAgLyogc3dpdGNoIGJhY2sgdG8g
-aGlnaGVyIHJlc29sdXRpb24gKi8NCj4gPiA+ID4gPiAtLQ0KPiA+ID4gPiA+IDIuMzMuMA0KPiA+
-ID4gPiA+DQo+ID4gPg0KPiA+ID4gLS0NCj4gPiA+IFJvZHJpZ28gU2lxdWVpcmENCj4gPiA+IGh0
-dHBzOi8vc2lxdWVpcmEudGVjaA0K
+On Mon, Sep 20, 2021 at 12:32:03PM +0200, Modem, Bhanuprakash wrote:
+> > From: Srinivas, Vidya <vidya.srinivas@intel.com>
+> > Sent: Monday, September 20, 2021 3:43 PM
+> > To: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>; Modem,
+> > Bhanuprakash <bhanuprakash.modem@intel.com>; Joshi, Kunal1
+> > <kunal1.joshi@intel.com>
+> > Cc: igt-dev@lists.freedesktop.org; markyacoub@google.com
+> > Subject: RE: [PATCH i-g-t] lib/intel_bufops: Fix regression on 5.4 kernel
+> >
+> >
+> >
+> > > -----Original Message-----
+> > > From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
+> > > Sent: Monday, September 20, 2021 3:17 PM
+> > > To: Srinivas, Vidya <vidya.srinivas@intel.com>
+> > > Cc: igt-dev@lists.freedesktop.org; Modem, Bhanuprakash
+> > > <bhanuprakash.modem@intel.com>; markyacoub@google.com
+> > > Subject: Re: [PATCH i-g-t] lib/intel_bufops: Fix regression on 5.4 kernel
+> > >
+> > > On Mon, Sep 20, 2021 at 02:54:55PM +0530, Vidya Srinivas wrote:
+> > > > Starting commit 8759c4a3020ce4 "Add intel_buf_init_in_region"
+> > > > __intel_buf_init uses gem_create_in_memory_regions instead of
+> > > > gem_create. Older kernels like 5.4 still dont have support for
+> > > > I915_GEM_CREATE_EXT_MEMORY_REGIONS (i915_gem_create_ext_ioctl)
+> > > from
+> > > > kernel commit
+> > > > (https://patchwork.freedesktop.org/patch/431581/?series=89648&rev=1)
+> > > > Due to this, the flip-vs-fences tests are failing on kernel 5.4 Patch
+> > > > adds fall back to gem_create when __gem_create_in_memory_region_list
+> > > fails.
+> > > >
+> > > > v2 - Addressed review comments from Zbigniew and Mark Added the fall
+> > > > back in __intel_buf_init
+> > > >
+> > > > v3 - Fixed space issue - review comment from Zbigniew
+> > > >
+> > > > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+> > > > ---
+> > > >  lib/intel_bufops.c | 8 ++++++--
+> > > >  1 file changed, 6 insertions(+), 2 deletions(-)
+> > > >
+> > > > diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c index
+> > > > f5f67eddabd7..0236e4d919d5 100644
+> > > > --- a/lib/intel_bufops.c
+> > > > +++ b/lib/intel_bufops.c
+> > > > @@ -818,8 +818,12 @@ static void __intel_buf_init(struct buf_ops
+> > > > *bops,
+> > > >
+> > > >   if (handle)
+> > > >           buf->handle = handle;
+> > > > - else
+> > > > -         buf->handle = gem_create_in_memory_regions(bops->fd,
+> > > size, region);
+> > > > + else {
+> > > > +         if (__gem_create_in_memory_regions(bops->fd, &handle,
+> > > size, region) != 0)
+> > > > +                 buf->handle = gem_create(bops->fd, size);
+> > > > +         else
+> > > > +                 buf->handle = handle;
+> 
+> There is nothing wrong with this code, but I personally feels to update
+> as below can be more user understandable (Just throw legacy/incompatible
+> stuff to else condition)
+> 
+> if (!__gem_create_in_memory_regions(bops->fd, &handle, size, region))
+>         buf->handle = handle;
+> else
+>         buf->handle = gem_create(bops->fd, size);
+> 
+> Acked-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> 
+> - Bhanu
+
+Hmm, after looking at wider context we could even do
+
+if (__gem_create_in_memory_regions(bops->fd, &buf->handle, size, region))
+         buf->handle = gem_create(bops->fd, size);
+
+But this will likely obscure the intention.
+
+--
+Zbigniew
+
+> 
+> > > > + }
+> > >
+> > > Patchwork didn't get my previous rb, so for easier merge:
+> > >
+> > > Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> >
+> > Hello Zbigniew,
+> >
+> > Thank you so much. That is extremely kind of you.
+> >
+> > @Modem, Bhanuprakash, @Joshi, Kunal1 kindly help with merge if it passes CI.
+> >
+> > Regards
+> > Vidya
+> >
+> > >
+> > > --
+> > > Zbigniew
+> > >
+> > > >
+> > > >   set_hw_tiled(bops, buf);
+> > > >  }
+> > > > --
+> > > > 2.33.0
+> > > >
