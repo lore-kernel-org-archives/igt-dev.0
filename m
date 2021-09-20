@@ -1,16 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA7B189FF7
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 10:59:48 +0000 (UTC)
-From: Vidya Srinivas <vidya.srinivas@intel.com>
-Date: Mon, 20 Sep 2021 16:17:47 +0530
-Message-Id: <20210920104747.27916-1-vidya.srinivas@intel.com>
-In-Reply-To: <20210920092455.19691-1-vidya.srinivas@intel.com>
-References: <20210920092455.19691-1-vidya.srinivas@intel.com>
-MIME-Version: 1.0
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4CA9A6E491
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Sep 2021 11:01:48 +0000 (UTC)
+From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Date: Mon, 20 Sep 2021 11:01:42 +0000
+Message-ID: <BY5PR11MB437203FB86AA78D30B72B7E189A09@BY5PR11MB4372.namprd11.prod.outlook.com>
+References: <20210920080047.31650-1-vidya.srinivas@intel.com>
+ <20210920092455.19691-1-vidya.srinivas@intel.com>
+ <20210920094638.GB58558@zkempczy-mobl2>
+ <BY5PR11MB437217DD27CF0AB34C0628CD89A09@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <DM8PR11MB57199F8801292EE03EAE11B88DA09@DM8PR11MB5719.namprd11.prod.outlook.com>
+In-Reply-To: <DM8PR11MB57199F8801292EE03EAE11B88DA09@DM8PR11MB5719.namprd11.prod.outlook.com>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] lib/intel_bufops: Fix regression on 5.4 kernel
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_bufops: Fix regression on 5.4
+ kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,50 +26,80 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash.Modem@intel.com, markyacoub@google.com, zbigniew.kempczynski@intel.com, Vidya Srinivas <vidya.srinivas@intel.com>, Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "Kempczynski,
+ Zbigniew" <zbigniew.kempczynski@intel.com>, "Joshi, Kunal1" <kunal1.joshi@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "markyacoub@google.com" <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Starting commit 8759c4a3020ce4 "Add intel_buf_init_in_region"
-__intel_buf_init uses gem_create_in_memory_regions instead of
-gem_create. Older kernels like 5.4 still dont have support for
-I915_GEM_CREATE_EXT_MEMORY_REGIONS (i915_gem_create_ext_ioctl)
-from kernel commit (https://patchwork.freedesktop.org/patch/431581/?series=89648&rev=1)
-Due to this, the flip-vs-fences tests are failing on kernel 5.4
-Patch adds fall back to gem_create when __gem_create_in_memory_region_list fails.
-
-v2 - Addressed review comments from Zbigniew and Mark
-Added the fall back in __intel_buf_init
-
-v3 - Fixed space issue - review comment from Zbigniew
-
-v4 - Addressed review comments from Bhanu
-
-Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Acked-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- lib/intel_bufops.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index f5f67eddabd7..d1395c1605d2 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -818,8 +818,12 @@ static void __intel_buf_init(struct buf_ops *bops,
- 
- 	if (handle)
- 		buf->handle = handle;
--	else
--		buf->handle = gem_create_in_memory_regions(bops->fd, size, region);
-+	else {
-+		if (!__gem_create_in_memory_regions(bops->fd, &handle, size, region))
-+			buf->handle = handle;
-+		else
-+			buf->handle = gem_create(bops->fd, size);
-+	}
- 
- 	set_hw_tiled(bops, buf);
- }
--- 
-2.32.0
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTW9kZW0sIEJoYW51cHJh
+a2FzaCA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNvbT4NCj4gU2VudDogTW9uZGF5LCBTZXB0
+ZW1iZXIgMjAsIDIwMjEgNDowMiBQTQ0KPiBUbzogU3Jpbml2YXMsIFZpZHlhIDx2aWR5YS5zcmlu
+aXZhc0BpbnRlbC5jb20+OyBLZW1wY3p5bnNraSwgWmJpZ25pZXcNCj4gPHpiaWduaWV3LmtlbXBj
+enluc2tpQGludGVsLmNvbT47IEpvc2hpLCBLdW5hbDEgPGt1bmFsMS5qb3NoaUBpbnRlbC5jb20+
+DQo+IENjOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgbWFya3lhY291YkBnb29nbGUu
+Y29tDQo+IFN1YmplY3Q6IFJFOiBbUEFUQ0ggaS1nLXRdIGxpYi9pbnRlbF9idWZvcHM6IEZpeCBy
+ZWdyZXNzaW9uIG9uIDUuNCBrZXJuZWwNCj4gDQo+ID4gRnJvbTogU3Jpbml2YXMsIFZpZHlhIDx2
+aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+DQo+ID4gU2VudDogTW9uZGF5LCBTZXB0ZW1iZXIgMjAs
+IDIwMjEgMzo0MyBQTQ0KPiA+IFRvOiBLZW1wY3p5bnNraSwgWmJpZ25pZXcgPHpiaWduaWV3Lmtl
+bXBjenluc2tpQGludGVsLmNvbT47IE1vZGVtLA0KPiA+IEJoYW51cHJha2FzaCA8YmhhbnVwcmFr
+YXNoLm1vZGVtQGludGVsLmNvbT47IEpvc2hpLCBLdW5hbDENCj4gPiA8a3VuYWwxLmpvc2hpQGlu
+dGVsLmNvbT4NCj4gPiBDYzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7IG1hcmt5YWNv
+dWJAZ29vZ2xlLmNvbQ0KPiA+IFN1YmplY3Q6IFJFOiBbUEFUQ0ggaS1nLXRdIGxpYi9pbnRlbF9i
+dWZvcHM6IEZpeCByZWdyZXNzaW9uIG9uIDUuNA0KPiA+IGtlcm5lbA0KPiA+DQo+ID4NCj4gPg0K
+PiA+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiA+IEZyb206IEtlbXBjenluc2tp
+LCBaYmlnbmlldyA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPg0KPiA+ID4gU2VudDog
+TW9uZGF5LCBTZXB0ZW1iZXIgMjAsIDIwMjEgMzoxNyBQTQ0KPiA+ID4gVG86IFNyaW5pdmFzLCBW
+aWR5YSA8dmlkeWEuc3Jpbml2YXNAaW50ZWwuY29tPg0KPiA+ID4gQ2M6IGlndC1kZXZAbGlzdHMu
+ZnJlZWRlc2t0b3Aub3JnOyBNb2RlbSwgQmhhbnVwcmFrYXNoDQo+ID4gPiA8YmhhbnVwcmFrYXNo
+Lm1vZGVtQGludGVsLmNvbT47IG1hcmt5YWNvdWJAZ29vZ2xlLmNvbQ0KPiA+ID4gU3ViamVjdDog
+UmU6IFtQQVRDSCBpLWctdF0gbGliL2ludGVsX2J1Zm9wczogRml4IHJlZ3Jlc3Npb24gb24gNS40
+DQo+ID4gPiBrZXJuZWwNCj4gPiA+DQo+ID4gPiBPbiBNb24sIFNlcCAyMCwgMjAyMSBhdCAwMjo1
+NDo1NVBNICswNTMwLCBWaWR5YSBTcmluaXZhcyB3cm90ZToNCj4gPiA+ID4gU3RhcnRpbmcgY29t
+bWl0IDg3NTljNGEzMDIwY2U0ICJBZGQgaW50ZWxfYnVmX2luaXRfaW5fcmVnaW9uIg0KPiA+ID4g
+PiBfX2ludGVsX2J1Zl9pbml0IHVzZXMgZ2VtX2NyZWF0ZV9pbl9tZW1vcnlfcmVnaW9ucyBpbnN0
+ZWFkIG9mDQo+ID4gPiA+IGdlbV9jcmVhdGUuIE9sZGVyIGtlcm5lbHMgbGlrZSA1LjQgc3RpbGwg
+ZG9udCBoYXZlIHN1cHBvcnQgZm9yDQo+ID4gPiA+IEk5MTVfR0VNX0NSRUFURV9FWFRfTUVNT1JZ
+X1JFR0lPTlMNCj4gKGk5MTVfZ2VtX2NyZWF0ZV9leHRfaW9jdGwpDQo+ID4gPiBmcm9tDQo+ID4g
+PiA+IGtlcm5lbCBjb21taXQNCj4gPiA+ID4gKGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9w
+Lm9yZy9wYXRjaC80MzE1ODEvP3Nlcmllcz04OTY0OCZyZXY9DQo+ID4gPiA+IDEpIER1ZSB0byB0
+aGlzLCB0aGUgZmxpcC12cy1mZW5jZXMgdGVzdHMgYXJlIGZhaWxpbmcgb24ga2VybmVsIDUuNA0K
+PiA+ID4gPiBQYXRjaCBhZGRzIGZhbGwgYmFjayB0byBnZW1fY3JlYXRlIHdoZW4NCj4gPiA+ID4g
+X19nZW1fY3JlYXRlX2luX21lbW9yeV9yZWdpb25fbGlzdA0KPiA+ID4gZmFpbHMuDQo+ID4gPiA+
+DQo+ID4gPiA+IHYyIC0gQWRkcmVzc2VkIHJldmlldyBjb21tZW50cyBmcm9tIFpiaWduaWV3IGFu
+ZCBNYXJrIEFkZGVkIHRoZQ0KPiA+ID4gPiBmYWxsIGJhY2sgaW4gX19pbnRlbF9idWZfaW5pdA0K
+PiA+ID4gPg0KPiA+ID4gPiB2MyAtIEZpeGVkIHNwYWNlIGlzc3VlIC0gcmV2aWV3IGNvbW1lbnQg
+ZnJvbSBaYmlnbmlldw0KPiA+ID4gPg0KPiA+ID4gPiBTaWduZWQtb2ZmLWJ5OiBWaWR5YSBTcmlu
+aXZhcyA8dmlkeWEuc3Jpbml2YXNAaW50ZWwuY29tPg0KPiA+ID4gPiAtLS0NCj4gPiA+ID4gIGxp
+Yi9pbnRlbF9idWZvcHMuYyB8IDggKysrKysrLS0NCj4gPiA+ID4gIDEgZmlsZSBjaGFuZ2VkLCA2
+IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+ID4gPiA+DQo+ID4gPiA+IGRpZmYgLS1n
+aXQgYS9saWIvaW50ZWxfYnVmb3BzLmMgYi9saWIvaW50ZWxfYnVmb3BzLmMgaW5kZXgNCj4gPiA+
+ID4gZjVmNjdlZGRhYmQ3Li4wMjM2ZTRkOTE5ZDUgMTAwNjQ0DQo+ID4gPiA+IC0tLSBhL2xpYi9p
+bnRlbF9idWZvcHMuYw0KPiA+ID4gPiArKysgYi9saWIvaW50ZWxfYnVmb3BzLmMNCj4gPiA+ID4g
+QEAgLTgxOCw4ICs4MTgsMTIgQEAgc3RhdGljIHZvaWQgX19pbnRlbF9idWZfaW5pdChzdHJ1Y3Qg
+YnVmX29wcw0KPiA+ID4gPiAqYm9wcywNCj4gPiA+ID4NCj4gPiA+ID4gIAlpZiAoaGFuZGxlKQ0K
+PiA+ID4gPiAgCQlidWYtPmhhbmRsZSA9IGhhbmRsZTsNCj4gPiA+ID4gLQllbHNlDQo+ID4gPiA+
+IC0JCWJ1Zi0+aGFuZGxlID0gZ2VtX2NyZWF0ZV9pbl9tZW1vcnlfcmVnaW9ucyhib3BzLT5mZCwN
+Cj4gPiA+IHNpemUsIHJlZ2lvbik7DQo+ID4gPiA+ICsJZWxzZSB7DQo+ID4gPiA+ICsJCWlmIChf
+X2dlbV9jcmVhdGVfaW5fbWVtb3J5X3JlZ2lvbnMoYm9wcy0+ZmQsICZoYW5kbGUsDQo+ID4gPiBz
+aXplLCByZWdpb24pICE9IDApDQo+ID4gPiA+ICsJCQlidWYtPmhhbmRsZSA9IGdlbV9jcmVhdGUo
+Ym9wcy0+ZmQsIHNpemUpOw0KPiA+ID4gPiArCQllbHNlDQo+ID4gPiA+ICsJCQlidWYtPmhhbmRs
+ZSA9IGhhbmRsZTsNCj4gDQo+IFRoZXJlIGlzIG5vdGhpbmcgd3Jvbmcgd2l0aCB0aGlzIGNvZGUs
+IGJ1dCBJIHBlcnNvbmFsbHkgZmVlbHMgdG8gdXBkYXRlIGFzDQo+IGJlbG93IGNhbiBiZSBtb3Jl
+IHVzZXIgdW5kZXJzdGFuZGFibGUgKEp1c3QgdGhyb3cgbGVnYWN5L2luY29tcGF0aWJsZQ0KPiBz
+dHVmZiB0byBlbHNlIGNvbmRpdGlvbikNCj4gDQo+IGlmICghX19nZW1fY3JlYXRlX2luX21lbW9y
+eV9yZWdpb25zKGJvcHMtPmZkLCAmaGFuZGxlLCBzaXplLCByZWdpb24pKQ0KPiAJYnVmLT5oYW5k
+bGUgPSBoYW5kbGU7DQo+IGVsc2UNCj4gCWJ1Zi0+aGFuZGxlID0gZ2VtX2NyZWF0ZShib3BzLT5m
+ZCwgc2l6ZSk7DQo+IA0KPiBBY2tlZC1ieTogQmhhbnVwcmFrYXNoIE1vZGVtIDxiaGFudXByYWth
+c2gubW9kZW1AaW50ZWwuY29tPg0KDQpUaGFuayB5b3UgdmVyeSBtdWNoIEJoYW51LiBJIGhhdmUg
+bW9kaWZpZWQgYXMgcGVyIHlvdXIgc3VnZ2VzdGlvbiBhbmQgcHVzaGVkIHRoZSBwYXRjaC4NCmh0
+dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC80NTQ1ODIvP3Nlcmllcz05NDc2
+MSZyZXY9NQ0KDQpSZWdhcmRzDQpWaWR5YQ0KDQo+IA0KPiAtIEJoYW51DQo+IA0KPiA+ID4gPiAr
+CX0NCj4gPiA+DQo+ID4gPiBQYXRjaHdvcmsgZGlkbid0IGdldCBteSBwcmV2aW91cyByYiwgc28g
+Zm9yIGVhc2llciBtZXJnZToNCj4gPiA+DQo+ID4gPiBSZXZpZXdlZC1ieTogWmJpZ25pZXcgS2Vt
+cGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+DQo+ID4NCj4gPiBIZWxs
+byBaYmlnbmlldywNCj4gPg0KPiA+IFRoYW5rIHlvdSBzbyBtdWNoLiBUaGF0IGlzIGV4dHJlbWVs
+eSBraW5kIG9mIHlvdS4NCj4gPg0KPiA+IEBNb2RlbSwgQmhhbnVwcmFrYXNoLCBASm9zaGksIEt1
+bmFsMSBraW5kbHkgaGVscCB3aXRoIG1lcmdlIGlmIGl0DQo+IHBhc3NlcyBDSS4NCj4gPg0KPiA+
+IFJlZ2FyZHMNCj4gPiBWaWR5YQ0KPiA+DQo+ID4gPg0KPiA+ID4gLS0NCj4gPiA+IFpiaWduaWV3
+DQo+ID4gPg0KPiA+ID4gPg0KPiA+ID4gPiAgCXNldF9od190aWxlZChib3BzLCBidWYpOw0KPiA+
+ID4gPiAgfQ0KPiA+ID4gPiAtLQ0KPiA+ID4gPiAyLjMzLjANCj4gPiA+ID4NCg==
