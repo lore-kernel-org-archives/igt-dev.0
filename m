@@ -1,13 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 11AC26E8F4
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Sep 2021 04:10:50 +0000 (UTC)
-From: priyanka.dandamudi@intel.com
-Date: Tue, 21 Sep 2021 09:33:30 +0530
-Message-Id: <20210921040330.909964-1-priyanka.dandamudi@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C4C506E8F4
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Sep 2021 04:55:48 +0000 (UTC)
+From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Date: Tue, 21 Sep 2021 04:55:40 +0000
+Message-ID: <BY5PR11MB43727DA5EFDA9CCE116CE1F289A19@BY5PR11MB4372.namprd11.prod.outlook.com>
+References: <20210920080047.31650-1-vidya.srinivas@intel.com>
+ <20210920092455.19691-1-vidya.srinivas@intel.com>
+ <20210920094638.GB58558@zkempczy-mobl2>
+ <BY5PR11MB437217DD27CF0AB34C0628CD89A09@BY5PR11MB4372.namprd11.prod.outlook.com>
+ <DM8PR11MB57199F8801292EE03EAE11B88DA09@DM8PR11MB5719.namprd11.prod.outlook.com>
+ <20210920172806.GA78788@zkempczy-mobl2>
+In-Reply-To: <20210920172806.GA78788@zkempczy-mobl2>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915: use device_coherent mmap
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_bufops: Fix regression on 5.4
+ kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,143 +27,91 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com, priyanka.dandamudi@intel.com, matthew.auld@intel.com, ashutosh.dixit@intel.com
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>, "Modem,
+ Bhanuprakash" <bhanuprakash.modem@intel.com>
+Cc: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "markyacoub@google.com" <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-
-Update mmap__wc with mmap__device_coherent, as it works
-on discrete platforms, while still using an explicit WC mmap on
-integrated platforms.
-Below are the updated tests:
-gem_exec_capture
-gem_exec_nop
-perf_pmu
-prime_busy
-
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/i915/gem_exec_capture.c | 4 ++--
- tests/i915/gem_exec_nop.c     | 7 ++++---
- tests/i915/perf_pmu.c         | 4 ++--
- tests/prime_busy.c            | 6 +++---
- 4 files changed, 11 insertions(+), 10 deletions(-)
-
-diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-index f2ea6cb0..19f3836e 100644
---- a/tests/i915/gem_exec_capture.c
-+++ b/tests/i915/gem_exec_capture.c
-@@ -107,7 +107,7 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
- 	reloc[1].write_domain = I915_GEM_DOMAIN_RENDER;
- 
--	seqno = gem_mmap__wc(fd, obj[SCRATCH].handle, 0, 4096, PROT_READ);
-+	seqno = gem_mmap__device_coherent(fd, obj[SCRATCH].handle, 0, 4096, PROT_READ);
- 	gem_set_domain(fd, obj[SCRATCH].handle,
- 			I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
- 
-@@ -278,7 +278,7 @@ static struct offset {
- 		obj[count + 1].relocation_count = ARRAY_SIZE(reloc);
- 	}
- 
--	seqno = gem_mmap__wc(fd, obj[0].handle, 0, 4096, PROT_READ);
-+	seqno = gem_mmap__device_coherent(fd, obj[0].handle, 0, 4096, PROT_READ);
- 	gem_set_domain(fd, obj[0].handle,
- 			I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
- 
-diff --git a/tests/i915/gem_exec_nop.c b/tests/i915/gem_exec_nop.c
-index c435335b..03adc9ee 100644
---- a/tests/i915/gem_exec_nop.c
-+++ b/tests/i915/gem_exec_nop.c
-@@ -132,7 +132,7 @@ static void poll_ring(int fd, const intel_ctx_t *ctx,
- 	obj.relocation_count = ARRAY_SIZE(reloc);
- 
- 	r = memset(reloc, 0, sizeof(reloc));
--	batch = gem_mmap__wc(fd, obj.handle, 0, 4096, PROT_WRITE);
-+	batch = gem_mmap__device_coherent(fd, obj.handle, 0, 4096, PROT_WRITE);
- 
- 	for (unsigned int start_offset = 0;
- 	     start_offset <= 128;
-@@ -257,7 +257,7 @@ static void poll_sequential(int fd, const intel_ctx_t *ctx,
- 	obj[1].relocation_count = ARRAY_SIZE(reloc);
- 
- 	r = memset(reloc, 0, sizeof(reloc));
--	batch = gem_mmap__wc(fd, obj[1].handle, 0, 4096, PROT_WRITE);
-+	batch = gem_mmap__device_coherent(fd, obj[1].handle, 0, 4096, PROT_WRITE);
- 
- 	for (unsigned int start_offset = 0;
- 	     start_offset <= 128;
-@@ -313,7 +313,7 @@ static void poll_sequential(int fd, const intel_ctx_t *ctx,
- 	if (cached)
- 		state = gem_mmap__cpu(fd, obj[0].handle, 0, 4096, PROT_READ);
- 	else
--		state = gem_mmap__wc(fd, obj[0].handle, 0, 4096, PROT_READ);
-+		state = gem_mmap__device_coherent(fd, obj[0].handle, 0, 4096, PROT_READ);
- 
- 	memset(&execbuf, 0, sizeof(execbuf));
- 	execbuf.buffers_ptr = to_user_pointer(obj);
-@@ -972,6 +972,7 @@ igt_main
- 
- 		device = drm_open_driver(DRIVER_INTEL);
- 		igt_require_gem(device);
-+		gem_require_mmap_device_coherent(device);
- 		gem_submission_print_method(device);
- 		gem_scheduler_print_capability(device);
- 
-diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index 924f39d1..1214cda8 100644
---- a/tests/i915/perf_pmu.c
-+++ b/tests/i915/perf_pmu.c
-@@ -717,7 +717,7 @@ sema_wait(int gem_fd, const intel_ctx_t *ctx,
- 	bb_offset = get_offset(ahnd, bb_handle, 4096, 0);
- 	obj_offset = get_offset(ahnd, obj_handle, 4096, 0);
- 
--	obj_ptr = gem_mmap__wc(gem_fd, obj_handle, 0, 4096, PROT_WRITE);
-+	obj_ptr = gem_mmap__device_coherent(gem_fd, obj_handle, 0, 4096, PROT_WRITE);
- 
- 	batch[0] = MI_STORE_DWORD_IMM;
- 	batch[1] = obj_offset + sizeof(*obj_ptr);
-@@ -877,7 +877,7 @@ __sema_busy(int gem_fd, uint64_t ahnd, int pmu, const intel_ctx_t *ctx,
- 
- 	gem_quiescent_gpu(gem_fd);
- 
--	map = gem_mmap__wc(gem_fd, obj.handle, 0, 4096, PROT_WRITE);
-+	map = gem_mmap__device_coherent(gem_fd, obj.handle, 0, 4096, PROT_WRITE);
- 	gem_execbuf(gem_fd, &eb);
- 	spin = igt_spin_new(gem_fd, .ahnd = ahnd, .ctx = ctx, .engine = e->flags);
- 
-diff --git a/tests/prime_busy.c b/tests/prime_busy.c
-index e2684837..0cc011e5 100644
---- a/tests/prime_busy.c
-+++ b/tests/prime_busy.c
-@@ -83,7 +83,7 @@ static void busy(int fd, const intel_ctx_t *ctx, unsigned ring, unsigned flags)
- 		pfd[BATCH].fd = prime_handle_to_fd(fd, obj[BATCH].handle);
- 	}
- 
--	batch = gem_mmap__wc(fd, obj[BATCH].handle, 0, size, PROT_WRITE);
-+	batch = gem_mmap__device_coherent(fd, obj[BATCH].handle, 0, size, PROT_WRITE);
- 	gem_set_domain(fd, obj[BATCH].handle,
- 			I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
- 
-@@ -175,7 +175,7 @@ static void busy(int fd, const intel_ctx_t *ctx, unsigned ring, unsigned flags)
- 	igt_assert(!prime_busy(&pfd[SCRATCH], true));
- 
- 	munmap(batch, size);
--	batch = gem_mmap__wc(fd, obj[SCRATCH].handle, 0, 4096, PROT_READ);
-+	batch = gem_mmap__device_coherent(fd, obj[SCRATCH].handle, 0, 4096, PROT_READ);
- 	for (i = 0; i < 1024; i++)
- 		igt_assert_eq_u32(batch[i], i);
- 	munmap(batch, 4096);
-@@ -237,7 +237,7 @@ igt_main
- 		};
- 
- 		igt_fixture
--			gem_require_mmap_wc(fd);
-+			gem_require_mmap_device_coherent(fd);
- 
- 		for (const struct mode *m = modes; m->name; m++) {
- 			igt_subtest_with_dynamic(m->name)
--- 
-2.25.1
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2VtcGN6eW5za2ksIFpi
+aWduaWV3IDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+DQo+IFNlbnQ6IE1vbmRheSwg
+U2VwdGVtYmVyIDIwLCAyMDIxIDEwOjU4IFBNDQo+IFRvOiBNb2RlbSwgQmhhbnVwcmFrYXNoIDxi
+aGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPg0KPiBDYzogU3Jpbml2YXMsIFZpZHlhIDx2aWR5
+YS5zcmluaXZhc0BpbnRlbC5jb20+OyBKb3NoaSwgS3VuYWwxDQo+IDxrdW5hbDEuam9zaGlAaW50
+ZWwuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7DQo+IG1hcmt5YWNvdWJAZ29v
+Z2xlLmNvbQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIIGktZy10XSBsaWIvaW50ZWxfYnVmb3BzOiBG
+aXggcmVncmVzc2lvbiBvbiA1LjQga2VybmVsDQo+IA0KPiBPbiBNb24sIFNlcCAyMCwgMjAyMSBh
+dCAxMjozMjowM1BNICswMjAwLCBNb2RlbSwgQmhhbnVwcmFrYXNoIHdyb3RlOg0KPiA+ID4gRnJv
+bTogU3Jpbml2YXMsIFZpZHlhIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+DQo+ID4gPiBTZW50
+OiBNb25kYXksIFNlcHRlbWJlciAyMCwgMjAyMSAzOjQzIFBNDQo+ID4gPiBUbzogS2VtcGN6eW5z
+a2ksIFpiaWduaWV3IDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+OyBNb2RlbSwNCj4g
+PiA+IEJoYW51cHJha2FzaCA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNvbT47IEpvc2hpLCBL
+dW5hbDENCj4gPiA+IDxrdW5hbDEuam9zaGlAaW50ZWwuY29tPg0KPiA+ID4gQ2M6IGlndC1kZXZA
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBtYXJreWFjb3ViQGdvb2dsZS5jb20NCj4gPiA+IFN1Ympl
+Y3Q6IFJFOiBbUEFUQ0ggaS1nLXRdIGxpYi9pbnRlbF9idWZvcHM6IEZpeCByZWdyZXNzaW9uIG9u
+IDUuNA0KPiA+ID4ga2VybmVsDQo+ID4gPg0KPiA+ID4NCj4gPiA+DQo+ID4gPiA+IC0tLS0tT3Jp
+Z2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiA+IEZyb206IEtlbXBjenluc2tpLCBaYmlnbmlldyA8
+emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPg0KPiA+ID4gPiBTZW50OiBNb25kYXksIFNl
+cHRlbWJlciAyMCwgMjAyMSAzOjE3IFBNDQo+ID4gPiA+IFRvOiBTcmluaXZhcywgVmlkeWEgPHZp
+ZHlhLnNyaW5pdmFzQGludGVsLmNvbT4NCj4gPiA+ID4gQ2M6IGlndC1kZXZAbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnOyBNb2RlbSwgQmhhbnVwcmFrYXNoDQo+ID4gPiA+IDxiaGFudXByYWthc2gubW9k
+ZW1AaW50ZWwuY29tPjsgbWFya3lhY291YkBnb29nbGUuY29tDQo+ID4gPiA+IFN1YmplY3Q6IFJl
+OiBbUEFUQ0ggaS1nLXRdIGxpYi9pbnRlbF9idWZvcHM6IEZpeCByZWdyZXNzaW9uIG9uIDUuNA0K
+PiA+ID4gPiBrZXJuZWwNCj4gPiA+ID4NCj4gPiA+ID4gT24gTW9uLCBTZXAgMjAsIDIwMjEgYXQg
+MDI6NTQ6NTVQTSArMDUzMCwgVmlkeWEgU3Jpbml2YXMgd3JvdGU6DQo+ID4gPiA+ID4gU3RhcnRp
+bmcgY29tbWl0IDg3NTljNGEzMDIwY2U0ICJBZGQgaW50ZWxfYnVmX2luaXRfaW5fcmVnaW9uIg0K
+PiA+ID4gPiA+IF9faW50ZWxfYnVmX2luaXQgdXNlcyBnZW1fY3JlYXRlX2luX21lbW9yeV9yZWdp
+b25zIGluc3RlYWQgb2YNCj4gPiA+ID4gPiBnZW1fY3JlYXRlLiBPbGRlciBrZXJuZWxzIGxpa2Ug
+NS40IHN0aWxsIGRvbnQgaGF2ZSBzdXBwb3J0IGZvcg0KPiA+ID4gPiA+IEk5MTVfR0VNX0NSRUFU
+RV9FWFRfTUVNT1JZX1JFR0lPTlMNCj4gKGk5MTVfZ2VtX2NyZWF0ZV9leHRfaW9jdGwpDQo+ID4g
+PiA+IGZyb20NCj4gPiA+ID4gPiBrZXJuZWwgY29tbWl0DQo+ID4gPiA+ID4gKGh0dHBzOi8vcGF0
+Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC80MzE1ODEvP3Nlcmllcz04OTY0OCZyZQ0KPiA+
+ID4gPiA+IHY9MSkgRHVlIHRvIHRoaXMsIHRoZSBmbGlwLXZzLWZlbmNlcyB0ZXN0cyBhcmUgZmFp
+bGluZyBvbiBrZXJuZWwNCj4gPiA+ID4gPiA1LjQgUGF0Y2ggYWRkcyBmYWxsIGJhY2sgdG8gZ2Vt
+X2NyZWF0ZSB3aGVuDQo+ID4gPiA+ID4gX19nZW1fY3JlYXRlX2luX21lbW9yeV9yZWdpb25fbGlz
+dA0KPiA+ID4gPiBmYWlscy4NCj4gPiA+ID4gPg0KPiA+ID4gPiA+IHYyIC0gQWRkcmVzc2VkIHJl
+dmlldyBjb21tZW50cyBmcm9tIFpiaWduaWV3IGFuZCBNYXJrIEFkZGVkIHRoZQ0KPiA+ID4gPiA+
+IGZhbGwgYmFjayBpbiBfX2ludGVsX2J1Zl9pbml0DQo+ID4gPiA+ID4NCj4gPiA+ID4gPiB2MyAt
+IEZpeGVkIHNwYWNlIGlzc3VlIC0gcmV2aWV3IGNvbW1lbnQgZnJvbSBaYmlnbmlldw0KPiA+ID4g
+PiA+DQo+ID4gPiA+ID4gU2lnbmVkLW9mZi1ieTogVmlkeWEgU3Jpbml2YXMgPHZpZHlhLnNyaW5p
+dmFzQGludGVsLmNvbT4NCj4gPiA+ID4gPiAtLS0NCj4gPiA+ID4gPiAgbGliL2ludGVsX2J1Zm9w
+cy5jIHwgOCArKysrKystLQ0KPiA+ID4gPiA+ICAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25z
+KCspLCAyIGRlbGV0aW9ucygtKQ0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gZGlmZiAtLWdpdCBhL2xp
+Yi9pbnRlbF9idWZvcHMuYyBiL2xpYi9pbnRlbF9idWZvcHMuYyBpbmRleA0KPiA+ID4gPiA+IGY1
+ZjY3ZWRkYWJkNy4uMDIzNmU0ZDkxOWQ1IDEwMDY0NA0KPiA+ID4gPiA+IC0tLSBhL2xpYi9pbnRl
+bF9idWZvcHMuYw0KPiA+ID4gPiA+ICsrKyBiL2xpYi9pbnRlbF9idWZvcHMuYw0KPiA+ID4gPiA+
+IEBAIC04MTgsOCArODE4LDEyIEBAIHN0YXRpYyB2b2lkIF9faW50ZWxfYnVmX2luaXQoc3RydWN0
+IGJ1Zl9vcHMNCj4gPiA+ID4gPiAqYm9wcywNCj4gPiA+ID4gPg0KPiA+ID4gPiA+ICAgaWYgKGhh
+bmRsZSkNCj4gPiA+ID4gPiAgICAgICAgICAgYnVmLT5oYW5kbGUgPSBoYW5kbGU7DQo+ID4gPiA+
+ID4gLSBlbHNlDQo+ID4gPiA+ID4gLSAgICAgICAgIGJ1Zi0+aGFuZGxlID0gZ2VtX2NyZWF0ZV9p
+bl9tZW1vcnlfcmVnaW9ucyhib3BzLT5mZCwNCj4gPiA+ID4gc2l6ZSwgcmVnaW9uKTsNCj4gPiA+
+ID4gPiArIGVsc2Ugew0KPiA+ID4gPiA+ICsgICAgICAgICBpZiAoX19nZW1fY3JlYXRlX2luX21l
+bW9yeV9yZWdpb25zKGJvcHMtPmZkLCAmaGFuZGxlLA0KPiA+ID4gPiBzaXplLCByZWdpb24pICE9
+IDApDQo+ID4gPiA+ID4gKyAgICAgICAgICAgICAgICAgYnVmLT5oYW5kbGUgPSBnZW1fY3JlYXRl
+KGJvcHMtPmZkLCBzaXplKTsNCj4gPiA+ID4gPiArICAgICAgICAgZWxzZQ0KPiA+ID4gPiA+ICsg
+ICAgICAgICAgICAgICAgIGJ1Zi0+aGFuZGxlID0gaGFuZGxlOw0KPiA+DQo+ID4gVGhlcmUgaXMg
+bm90aGluZyB3cm9uZyB3aXRoIHRoaXMgY29kZSwgYnV0IEkgcGVyc29uYWxseSBmZWVscyB0bw0K
+PiA+IHVwZGF0ZSBhcyBiZWxvdyBjYW4gYmUgbW9yZSB1c2VyIHVuZGVyc3RhbmRhYmxlIChKdXN0
+IHRocm93DQo+ID4gbGVnYWN5L2luY29tcGF0aWJsZSBzdHVmZiB0byBlbHNlIGNvbmRpdGlvbikN
+Cj4gPg0KPiA+IGlmICghX19nZW1fY3JlYXRlX2luX21lbW9yeV9yZWdpb25zKGJvcHMtPmZkLCAm
+aGFuZGxlLCBzaXplLCByZWdpb24pKQ0KPiA+ICAgICAgICAgYnVmLT5oYW5kbGUgPSBoYW5kbGU7
+DQo+ID4gZWxzZQ0KPiA+ICAgICAgICAgYnVmLT5oYW5kbGUgPSBnZW1fY3JlYXRlKGJvcHMtPmZk
+LCBzaXplKTsNCj4gPg0KPiA+IEFja2VkLWJ5OiBCaGFudXByYWthc2ggTW9kZW0gPGJoYW51cHJh
+a2FzaC5tb2RlbUBpbnRlbC5jb20+DQo+ID4NCj4gPiAtIEJoYW51DQo+IA0KPiBIbW0sIGFmdGVy
+IGxvb2tpbmcgYXQgd2lkZXIgY29udGV4dCB3ZSBjb3VsZCBldmVuIGRvDQo+IA0KPiBpZiAoX19n
+ZW1fY3JlYXRlX2luX21lbW9yeV9yZWdpb25zKGJvcHMtPmZkLCAmYnVmLT5oYW5kbGUsIHNpemUs
+IHJlZ2lvbikpDQo+ICAgICAgICAgIGJ1Zi0+aGFuZGxlID0gZ2VtX2NyZWF0ZShib3BzLT5mZCwg
+c2l6ZSk7DQo+IA0KPiBCdXQgdGhpcyB3aWxsIGxpa2VseSBvYnNjdXJlIHRoZSBpbnRlbnRpb24u
+DQoNCkhlbGxvIFpiaWduaWV3LA0KVGhhbmsgeW91LiBZZXMgSSBoYWQgcGxhbm5lZCB0byBkbyB0
+aGUgd2F5IHlvdSBoYXZlIG1lbnRpb25lZCBpbml0aWFsbHkuDQpJIHdpbGwgbGV0IHlvdSBhbmQg
+QmhhbnUgZGVjaWRlIG9uIHRoZSBzYW1lLg0KDQpSZWdhcmRzDQpWaWR5YQ0KDQoNCj4gDQo+IC0t
+DQo+IFpiaWduaWV3DQo+IA0KPiA+DQo+ID4gPiA+ID4gKyB9DQo+ID4gPiA+DQo+ID4gPiA+IFBh
+dGNod29yayBkaWRuJ3QgZ2V0IG15IHByZXZpb3VzIHJiLCBzbyBmb3IgZWFzaWVyIG1lcmdlOg0K
+PiA+ID4gPg0KPiA+ID4gPiBSZXZpZXdlZC1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpDQo+IDx6
+Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+DQo+ID4gPg0KPiA+ID4gSGVsbG8gWmJpZ25p
+ZXcsDQo+ID4gPg0KPiA+ID4gVGhhbmsgeW91IHNvIG11Y2guIFRoYXQgaXMgZXh0cmVtZWx5IGtp
+bmQgb2YgeW91Lg0KPiA+ID4NCj4gPiA+IEBNb2RlbSwgQmhhbnVwcmFrYXNoLCBASm9zaGksIEt1
+bmFsMSBraW5kbHkgaGVscCB3aXRoIG1lcmdlIGlmIGl0DQo+IHBhc3NlcyBDSS4NCj4gPiA+DQo+
+ID4gPiBSZWdhcmRzDQo+ID4gPiBWaWR5YQ0KPiA+ID4NCj4gPiA+ID4NCj4gPiA+ID4gLS0NCj4g
+PiA+ID4gWmJpZ25pZXcNCj4gPiA+ID4NCj4gPiA+ID4gPg0KPiA+ID4gPiA+ICAgc2V0X2h3X3Rp
+bGVkKGJvcHMsIGJ1Zik7DQo+ID4gPiA+ID4gIH0NCj4gPiA+ID4gPiAtLQ0KPiA+ID4gPiA+IDIu
+MzMuMA0KPiA+ID4gPiA+DQo=
