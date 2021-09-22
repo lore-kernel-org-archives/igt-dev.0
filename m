@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C2336EC4A
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Sep 2021 17:08:56 +0000 (UTC)
-Date: Wed, 22 Sep 2021 20:12:14 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YUtj7tV73Umlhheb@platvala-desk.ger.corp.intel.com>
-References: <20210921075749.13049-1-jeevan.b@intel.com>
- <20210921075749.13049-2-jeevan.b@intel.com>
- <YUnUrDr+55ra5ui4@platvala-desk.ger.corp.intel.com>
- <909095362e9445269a2096ef0aaa6572@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2737373823458952696=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <909095362e9445269a2096ef0aaa6572@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_aux: Rename
- igt_debug_manual_check and assert check if all is supplied
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 22 Sep 2021 17:16:13 -0000
+Message-ID: <163233097308.6944.323719024034738206@emeril.freedesktop.org>
+References: <20210916153515.21369-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20210916153515.21369-1-ville.syrjala@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/6=5D_tests/kms=5Finvalid=5Fdotclock?=
+ =?utf-8?q?=3A_Rename_to_kms=5Finvalid=5Fmode_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,182 +17,367 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "B, Jeevan" <jeevan.b@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "daniel@ffwll.ch" <daniel@ffwll.ch>, "Souza, Jose" <jose.souza@intel.com>
+To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Sep 22, 2021 at 07:45:54PM +0300, B, Jeevan wrote:
-> >-----Original Message-----
-> >From: Latvala, Petri <petri.latvala@intel.com>
-> >Sent: Tuesday, September 21, 2021 6:19 PM
-> >To: B, Jeevan <jeevan.b@intel.com>
-> >Cc: igt-dev@lists.freedesktop.org; daniel@ffwll.ch; Souza, Jose
-> ><jose.souza@intel.com>
-> >Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_aux: Rename
-> >igt_debug_manual_check and assert check if all is supplied
-> >
-> >On Tue, Sep 21, 2021 at 01:27:47PM +0530, Jeevan B wrote:
-> >> rename igt_debug_manual_check and patch the igt functions
-> >> igt_debug_manual_check() and igt_debug_wait_for_keypress() to assert
-> >> if "all" is supplied.
-> >
-> >Why?
-> 
-> Addressing comments given here. (https://lore.kernel.org/intel-gfx/CAKMK7uE0Hd34fOobDZT27MhOYE1qjXdD1Yzn9C0B+u=RCXLi8w@mail.gmail.com/)
+--===============2737373823458952696==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The code changes are doing the opposite though, probaly by mistake.
+== Series Details ==
 
-The point was that calling igt_debug_wait_for_keypress() with "all"
-should assert. Executing a test with --interactive-debug=all should
-not.
+Series: series starting with [i-g-t,1/6] tests/kms_invalid_dotclock: Rename to kms_invalid_mode (rev2)
+URL   : https://patchwork.freedesktop.org/series/94768/
+State : success
 
--- 
-Petri Latvala
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10627 -> IGTPW_6246
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6246 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@cs-gfx:
+    - fi-rkl-guc:         NOTRUN -> [SKIP][1] ([fdo#109315]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-rkl-guc/igt@amdgpu/amd_basic@cs-gfx.html
+
+  * igt@amdgpu/amd_basic@cs-sdma:
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][2] ([fdo#109271]) +26 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-cfl-8109u/igt@amdgpu/amd_basic@cs-sdma.html
+
+  * igt@amdgpu/amd_basic@query-info:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][3] ([fdo#109315])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@amdgpu/amd_basic@query-info.html
+
+  * igt@amdgpu/amd_cs_nop@nop-gfx0:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][4] ([fdo#109315] / [i915#2575]) +16 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@amdgpu/amd_cs_nop@nop-gfx0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][5] ([i915#2190])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#2190])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][7] ([i915#1155])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [PASS][8] -> [INCOMPLETE][9] ([i915#3921])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10627/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][10] ([fdo#111827]) +8 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][11] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-cfl-8109u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][12] ([i915#4103]) +1 similar issue
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][13] ([fdo#109285])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][14] ([fdo#109271] / [i915#533])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][15] ([i915#1072]) +3 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@kms_psr@primary_mmap_gtt.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][16] ([i915#3301])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@prime_vgem@basic-userptr.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-cfl-8109u:       [INCOMPLETE][17] ([i915#155]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10627/fi-cfl-8109u/igt@gem_exec_suspend@basic-s0.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-cfl-8109u/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@i915_selftest@live@gt_timelines:
+    - fi-rkl-guc:         [INCOMPLETE][19] ([i915#4034]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10627/fi-rkl-guc/igt@i915_selftest@live@gt_timelines.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-rkl-guc/igt@i915_selftest@live@gt_timelines.html
+
+  * igt@kms_pipe_crc_basic@read-crc-pipe-b:
+    - fi-rkl-11600:       [SKIP][21] ([i915#3919] / [i915#4098]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10627/fi-rkl-11600/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-rkl-11600/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#155]: https://gitlab.freedesktop.org/drm/intel/issues/155
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3919]: https://gitlab.freedesktop.org/drm/intel/issues/3919
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#4034]: https://gitlab.freedesktop.org/drm/intel/issues/4034
+  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
 
 
-> 
-> Thanks
-> Jeevan B
-> >
-> >
-> >--
-> >Petri Latvala
-> >
-> >
-> >>
-> >> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> >> ---
-> >>  lib/igt_aux.c            | 18 ++++++++++++------
-> >>  lib/igt_aux.h            |  2 +-
-> >>  tests/i915/kms_dsc.c     |  2 +-
-> >>  tests/i915/kms_psr.c     |  2 +-
-> >>  tests/i915/kms_psr2_sf.c |  2 +-
-> >>  5 files changed, 16 insertions(+), 10 deletions(-)
-> >>
-> >> diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-> >> index 1217f5e8..96929237 100644
-> >> --- a/lib/igt_aux.c
-> >> +++ b/lib/igt_aux.c
-> >> @@ -971,8 +971,7 @@ void igt_drop_root(void)
-> >>   *
-> >>   * Waits for a key press when run interactively and when the corresponding
-> >debug
-> >>   * var is set in the --interactive-debug=$var variable. Multiple keys
-> >> - * can be specified as a comma-separated list or alternatively "all" if a wait
-> >> - * should happen for all cases.
-> >> + * can be specified as a comma-separated list and assert if "all" is supplied.
-> >>   *
-> >>   * When not connected to a terminal interactive_debug is ignored
-> >>   * and execution immediately continues.
-> >> @@ -993,6 +992,10 @@ void igt_debug_wait_for_keypress(const char *var)
-> >>  	if (!igt_interactive_debug)
-> >>  		return;
-> >>
-> >> +	if (strstr(igt_interactive_debug, var) &&
-> >> +	    strstr(igt_interactive_debug, "all"))
-> >> +		igt_assert(false);
-> >> +
-> >>  	if (!strstr(igt_interactive_debug, var) &&
-> >>  	    !strstr(igt_interactive_debug, "all"))
-> >>  		return;
-> >> @@ -1008,14 +1011,13 @@ void igt_debug_wait_for_keypress(const char
-> >*var)
-> >>  }
-> >>
-> >>  /**
-> >> - * igt_debug_manual_check:
-> >> + * igt_debug_interactive_mode_check:
-> >>   * @var: var lookup to to enable this wait
-> >>   * @expected: message to be printed as expected behaviour before wait for
-> >keys Y/n
-> >>   *
-> >>   * Waits for a key press when run interactively and when the corresponding
-> >debug
-> >>   * var is set in the --interactive-debug=$var variable. Multiple vars
-> >> - * can be specified as a comma-separated list or alternatively "all" if a wait
-> >> - * should happen for all cases.
-> >> + * can be specified as a comma-separated list and assert if "all" is supplied.
-> >>   *
-> >>   * This is useful for display tests where under certain situation manual
-> >>   * inspection of the display is useful. Or when running a testcase in the
-> >> @@ -1028,7 +1030,7 @@ void igt_debug_wait_for_keypress(const char *var)
-> >>   *
-> >>   * Force test fail when N/n is pressed.
-> >>   */
-> >> -void igt_debug_manual_check(const char *var, const char *expected)
-> >> +void igt_debug_interactive_mode_check(const char *var, const char
-> >*expected)
-> >>  {
-> >>  	struct termios oldt, newt;
-> >>  	char key;
-> >> @@ -1041,6 +1043,10 @@ void igt_debug_manual_check(const char *var,
-> >const char *expected)
-> >>  	if (!igt_interactive_debug)
-> >>  		return;
-> >>
-> >> +	if (strstr(igt_interactive_debug, var) &&
-> >> +	    strstr(igt_interactive_debug, "all"))
-> >> +		igt_assert(false);
-> >> +
-> >>  	if (!strstr(igt_interactive_debug, var) &&
-> >>  	    !strstr(igt_interactive_debug, "all"))
-> >>  		return;
-> >> diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-> >> index bf57ccf5..a92eb799 100644
-> >> --- a/lib/igt_aux.h
-> >> +++ b/lib/igt_aux.h
-> >> @@ -193,7 +193,7 @@ int igt_get_autoresume_delay(enum igt_suspend_state
-> >state);
-> >>  void igt_drop_root(void);
-> >>
-> >>  void igt_debug_wait_for_keypress(const char *var);
-> >> -void igt_debug_manual_check(const char *var, const char *expected);
-> >> +void igt_debug_interactive_mode_check(const char *var, const char
-> >*expected);
-> >>
-> >>  /* sysinfo cross-arch wrappers from intel_os.c */
-> >>
-> >> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-> >> index 3e450207..772687f4 100644
-> >> --- a/tests/i915/kms_dsc.c
-> >> +++ b/tests/i915/kms_dsc.c
-> >> @@ -72,7 +72,7 @@ int force_dsc_restore_fd = -1;
-> >>
-> >>  static inline void manual(const char *expected)
-> >>  {
-> >> -	igt_debug_manual_check("all", expected);
-> >> +	igt_debug_interactive_mode_check("all", expected);
-> >>  }
-> >>
-> >>  static void force_dsc_enable(data_t *data)
-> >> diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
-> >> index 270d3150..24a10676 100644
-> >> --- a/tests/i915/kms_psr.c
-> >> +++ b/tests/i915/kms_psr.c
-> >> @@ -246,7 +246,7 @@ static bool psr_enable_if_enabled(data_t *data)
-> >>
-> >>  static inline void manual(const char *expected)
-> >>  {
-> >> -	igt_debug_manual_check("all", expected);
-> >> +	igt_debug_interactive_mode_check("all", expected);
-> >>  }
-> >>
-> >>  static bool drrs_disabled(data_t *data)
-> >> diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
-> >> index 1be8c3da..93347327 100644
-> >> --- a/tests/i915/kms_psr2_sf.c
-> >> +++ b/tests/i915/kms_psr2_sf.c
-> >> @@ -331,7 +331,7 @@ static void prepare(data_t *data)
-> >>
-> >>  static inline void manual(const char *expected)
-> >>  {
-> >> -	igt_debug_manual_check("all", expected);
-> >> +	igt_debug_interactive_mode_check("all", expected);
-> >>  }
-> >>
-> >>  static void plane_update_expected_output(int plane_type, int box_count)
-> >> --
-> >> 2.19.1
-> >>
+Participating hosts (42 -> 35)
+------------------------------
+
+  Additional (1): fi-tgl-1115g4 
+  Missing    (8): fi-ilk-m540 fi-bdw-5557u bat-dg1-6 bat-dg1-5 fi-bsw-cyan fi-ctg-p8600 fi-bdw-samus bat-jsl-1 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6214 -> IGTPW_6246
+
+  CI-20190529: 20190529
+  CI_DRM_10627: 5031176825b15eb495dc1c6e087a3dba439db429 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6246: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/index.html
+  IGT_6214: 13550e92c6c7bd825abb6c9b087d12a524b4674c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@kms_invalid_mode@bad-hsync-end
++igt@kms_invalid_mode@bad-hsync-start
++igt@kms_invalid_mode@bad-htotal
++igt@kms_invalid_mode@bad-vsync-end
++igt@kms_invalid_mode@bad-vsync-start
++igt@kms_invalid_mode@bad-vtotal
++igt@kms_invalid_mode@clock-too-high
++igt@kms_invalid_mode@int-max-clock
++igt@kms_invalid_mode@uint-max-clock
++igt@kms_invalid_mode@zero-clock
++igt@kms_invalid_mode@zero-hdisplay
++igt@kms_invalid_mode@zero-vdisplay
+-igt@kms_invalid_dotclock
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/index.html
+
+--===============2737373823458952696==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/6] tests/kms_invalid_dotclock: Rename to kms_invalid_mode (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/94768/">https://patchwork.freedesktop.org/series/94768/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10627 -&gt; IGTPW_6246</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6246 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@cs-gfx:</p>
+<ul>
+<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-rkl-guc/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_basic@cs-sdma:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-cfl-8109u/igt@amdgpu/amd_basic@cs-sdma.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +26 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_basic@query-info:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@nop-gfx0:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@amdgpu/amd_cs_nop@nop-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +16 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>
+<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+<li>
+<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10627/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-cfl-8109u/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_mmap_gtt:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-tgl-1115g4/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10627/fi-cfl-8109u/igt@gem_exec_suspend@basic-s0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/155">i915#155</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-cfl-8109u/igt@gem_exec_suspend@basic-s0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_timelines:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10627/fi-rkl-guc/igt@i915_selftest@live@gt_timelines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4034">i915#4034</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-rkl-guc/igt@i915_selftest@live@gt_timelines.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-pipe-b:</p>
+<ul>
+<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10627/fi-rkl-11600/igt@kms_pipe_crc_basic@read-crc-pipe-b.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3919">i915#3919</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/fi-rkl-11600/igt@kms_pipe_crc_basic@read-crc-pipe-b.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (42 -&gt; 35)</h2>
+<p>Additional (1): fi-tgl-1115g4 <br />
+  Missing    (8): fi-ilk-m540 fi-bdw-5557u bat-dg1-6 bat-dg1-5 fi-bsw-cyan fi-ctg-p8600 fi-bdw-samus bat-jsl-1 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6214 -&gt; IGTPW_6246</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10627: 5031176825b15eb495dc1c6e087a3dba439db429 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6246: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6246/index.html<br />
+  IGT_6214: 13550e92c6c7bd825abb6c9b087d12a524b4674c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_invalid_mode@bad-hsync-end<br />
++igt@kms_invalid_mode@bad-hsync-start<br />
++igt@kms_invalid_mode@bad-htotal<br />
++igt@kms_invalid_mode@bad-vsync-end<br />
++igt@kms_invalid_mode@bad-vsync-start<br />
++igt@kms_invalid_mode@bad-vtotal<br />
++igt@kms_invalid_mode@clock-too-high<br />
++igt@kms_invalid_mode@int-max-clock<br />
++igt@kms_invalid_mode@uint-max-clock<br />
++igt@kms_invalid_mode@zero-clock<br />
++igt@kms_invalid_mode@zero-hdisplay<br />
++igt@kms_invalid_mode@zero-vdisplay<br />
+-igt@kms_invalid_dotclock</p>
+
+</body>
+</html>
+
+--===============2737373823458952696==--
