@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com
- [IPv6:2a00:1450:4864:20::231])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E5FFF6ED92
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Sep 2021 16:44:41 +0000 (UTC)
-Received: by mail-lj1-x231.google.com with SMTP id b36so440174ljr.6
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Sep 2021 09:44:41 -0700 (PDT)
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2078.outbound.protection.outlook.com [40.107.92.78])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C6E1C6ED98
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Sep 2021 17:55:38 +0000 (UTC)
+Date: Thu, 23 Sep 2021 13:55:31 -0400
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Message-ID: <20210923175531.4ebytoonjlipdhr7@outlook.office365.com>
+References: <20210916141827.17720-1-vidya.srinivas@intel.com>
+ <20210920081702.19241-1-vidya.srinivas@intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210920081702.19241-1-vidya.srinivas@intel.com>
 MIME-Version: 1.0
-References: <20210922193623.3891030-1-markyacoub@chromium.org>
- <YUxDC8oOF03Ixnux@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YUxDC8oOF03Ixnux@platvala-desk.ger.corp.intel.com>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Thu, 23 Sep 2021 12:44:28 -0400
-Message-ID: <CAJUqKUpAfwP39A88i-k-JiYzmAxew_7HiMN4+r+eQQv4o7fipg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH] tests/template: Use DRIVER_ANY in for
- drm_open_driver
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Fix regression in
+ test_resolution_with_output
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,53 +23,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, Sean Paul <seanpaul@chromium.org>, Ilja Friedel <ihf@chromium.org>, Mark Yacoub <markyacoub@google.com>
+To: Vidya Srinivas <vidya.srinivas@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Bhanuprakash.Modem@intel.com, markyacoub@google.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Applied, with the removal of igt_require. Thanks!
+On 09/20, Vidya Srinivas wrote:
+> Staring commit fea0e38e690c30c6 "Making the test more generic"
+> test_resolution_with_output introduced setting igt_output_set_pipe
+> to PIPE_NONE. This is triggering atomic check failure resulting in
+> "enabled/connectors mismatch" under drm_atomic_helper_check_modeset.
+> Patch fixes this issue.
+> 
+> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+> ---
+>  tests/kms_concurrent.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+> index 25c67eb469d1..47c441a5a3f7 100644
+> --- a/tests/kms_concurrent.c
+> +++ b/tests/kms_concurrent.c
+> @@ -268,7 +268,8 @@ test_resolution_with_output(data_t *data, enum pipe pipe, int max_planes, igt_ou
+>  
+>  		/* switch to lower resolution */
+>  		igt_output_override_mode(output, mode_lo);
+> -		igt_output_set_pipe(output, PIPE_NONE);
+> +		if (is_amdgpu_device(data->drm_fd))
+> +			igt_output_set_pipe(output, PIPE_NONE);
+>  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>  
+>  		/* switch back to higher resolution */
+> -- 
+> 2.33.0
+> 
 
-On Thu, Sep 23, 2021 at 5:00 AM Petri Latvala <petri.latvala@intel.com> wrote:
->
-> On Wed, Sep 22, 2021 at 07:36:23PM +0000, Mark Yacoub wrote:
-> > From: Mark Yacoub <markyacoub@google.com>
-> >
-> > [Why]
-> > Make it run on all drivers.
-> >
-> > [How]
-> > open any driver instead of intel only.
-> >
-> > Tested-on: ChromeOS Zork(amdgpu)
-> >
-> > Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
-> > ---
-> >  tests/template.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/tests/template.c b/tests/template.c
-> > index 5fbd3104..eed81dbf 100644
-> > --- a/tests/template.c
-> > +++ b/tests/template.c
-> > @@ -61,7 +61,7 @@ int drm_fd;
-> >  igt_main
-> >  {
-> >       igt_fixture {
-> > -             drm_fd = drm_open_driver(DRIVER_INTEL);
-> > +             drm_fd = drm_open_driver(DRIVER_ANY);
-> >               igt_require(drm_fd >= 0);
->
-> Template becoming a more useful template, thanks.
->
-> Also remove that igt_require line, drm_open_driver cannot return <0.
->
->
-> With that change,
-> Reviewed-by: Petri Latvala <petri.latvala@intel.com>
->
->
-> >
-> >               /* Set up other interesting stuff shared by all tests. */
-> > --
-> > 2.33.0.685.g46640cef36-goog
-> >
+I checked this patch with AMD devices, and it works fine, for this
+reason, feel free to add my:
+
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Tested-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+
+Just a note, I think with this change, drivers based on tinyDrm might
+pass this test.
+
+Thanks
+
+-- 
+Rodrigo Siqueira
+https://siqueira.tech
