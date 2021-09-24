@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E6D76E1B8
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Sep 2021 12:26:35 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Fri, 24 Sep 2021 15:26:31 +0300
-Message-Id: <20210924122631.17746-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20210304155018.12745-1-ville.syrjala@linux.intel.com>
-References: <20210304155018.12745-1-ville.syrjala@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1007002437391318392=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_async_flips: Add CRC test to
- make sure the correct fb is being scanned out
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 24 Sep 2021 12:39:27 -0000
+Message-ID: <163248716768.20559.6412215143924910695@emeril.freedesktop.org>
+References: <20210924115146.1907010-1-jigar.bhatt@intel.com>
+In-Reply-To: <20210924115146.1907010-1-jigar.bhatt@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/i915=5Fpm=5Fdc=3A_Refactoring_pwr=5Fdmn=5Finfo_to_debugfs?=
+ =?utf-8?q?=5Fdump_and_fix_DC9-dpms_test_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,199 +17,286 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Karthik B S <karthik.b.s@intel.com>
+To: Jigar Bhatt <jigar.bhatt@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+--===============1007002437391318392==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Use CRC to confirm that the old fb is no longer being scanned
-out after the async flip completes. We do this by immediately
-rendering garbage into the old fb after receiving the flip
-event. Should fail if someone is improperly using mailbox style
-flips while claiming to do async flips.
+== Series Details ==
 
-v2: Only fill a single column of pixels instead of the whole
-    fb to allow the test to do more async flips per frame for
-    a more stressful experience
+Series: tests/i915/i915_pm_dc: Refactoring pwr_dmn_info to debugfs_dump and fix DC9-dpms test (rev3)
+URL   : https://patchwork.freedesktop.org/series/95019/
+State : success
 
-Reviewed-by: Karthik B S <karthik.b.s@intel.com> #v1
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- tests/kms_async_flips.c | 145 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 145 insertions(+)
+== Summary ==
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index ecc62680f2c0..064e5022601b 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -52,6 +52,11 @@ typedef struct {
- 	drmModeConnectorPtr connector;
- 	unsigned long flip_timestamp_us;
- 	double flip_interval;
-+	igt_pipe_crc_t *pipe_crc;
-+	igt_crc_t ref_crc;
-+	int flip_count;
-+	int frame_count;
-+	bool flip_pending;
- } data_t;
- 
- static drmModeConnectorPtr find_connector_for_modeset(data_t *data)
-@@ -379,6 +384,142 @@ static void test_init(data_t *data)
- 	drmModeFreeResources(res);
- }
- 
-+static void queue_vblank(data_t *data)
-+{
-+	drmVBlank wait_vbl = {
-+		.request.type = DRM_VBLANK_RELATIVE | DRM_VBLANK_EVENT |
-+			kmstest_get_pipe_from_crtc_id(data->drm_fd, data->crtc_id),
-+		.request.sequence = 1,
-+		.request.signal = (long)data,
-+	};
-+
-+	igt_assert(drmIoctl(data->drm_fd, DRM_IOCTL_WAIT_VBLANK, &wait_vbl) == 0);
-+}
-+
-+static void vblank_handler_crc(int fd_, unsigned int sequence, unsigned int tv_sec,
-+			       unsigned int tv_usec, void *_data)
-+{
-+	data_t *data = _data;
-+	igt_crc_t crc;
-+
-+	data->frame_count++;
-+
-+	igt_pipe_crc_get_single(data->pipe_crc, &crc);
-+	igt_assert_crc_equal(&data->ref_crc, &crc);
-+
-+	/* check again next vblank */
-+	queue_vblank(data);
-+}
-+
-+static void flip_handler_crc(int fd_, unsigned int sequence, unsigned int tv_sec,
-+			     unsigned int tv_usec, void *_data)
-+{
-+	data_t *data = _data;
-+
-+	data->flip_pending = false;
-+	data->flip_count++;
-+}
-+
-+static void wait_events_crc(data_t *data)
-+{
-+	drmEventContext evctx = {
-+		.version = 2,
-+		.vblank_handler = vblank_handler_crc,
-+		.page_flip_handler = flip_handler_crc,
-+	};
-+
-+	while (data->flip_pending) {
-+		struct pollfd pfd = {
-+			.fd = data->drm_fd,
-+			.events = POLLIN,
-+		};
-+		int ret;
-+
-+		ret = poll(&pfd, 1, 2000);
-+
-+		switch (ret) {
-+		case 0:
-+			igt_assert_f(0, "Flip Timeout\n");
-+			break;
-+		case 1:
-+			ret = drmHandleEvent(data->drm_fd, &evctx);
-+			igt_assert(ret == 0);
-+			break;
-+		default:
-+			/* unexpected */
-+			igt_assert(0);
-+		}
-+	}
-+}
-+
-+static unsigned int clock_ms(void)
-+{
-+	struct timespec ts;
-+
-+	clock_gettime(CLOCK_MONOTONIC, &ts);
-+
-+	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
-+}
-+
-+static void paint_fb(int fd, struct igt_fb *fb, uint32_t color)
-+{
-+	igt_draw_rect_fb(fd, NULL, 0, fb,
-+			 gem_has_mappable_ggtt(fd) ?
-+			 IGT_DRAW_MMAP_GTT : IGT_DRAW_MMAP_WC,
-+			 0, 0, 1, fb->height, color);
-+}
-+
-+static void test_crc(data_t *data)
-+{
-+	unsigned int frame = 0;
-+	unsigned int start;
-+	int ret;
-+
-+	data->flip_count = 0;
-+	data->frame_count = 0;
-+	data->flip_pending = false;
-+
-+	igt_draw_fill_fb(data->drm_fd, &data->bufs[frame], 0xff0000ff);
-+	igt_draw_fill_fb(data->drm_fd, &data->bufs[!frame], 0xff0000ff);
-+
-+	ret = drmModeSetCrtc(data->drm_fd, data->crtc_id, data->bufs[frame].fb_id, 0, 0,
-+			     &data->connector->connector_id, 1, &data->connector->modes[0]);
-+	igt_assert_eq(ret, 0);
-+
-+	data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
-+					  kmstest_get_pipe_from_crtc_id(data->drm_fd, data->crtc_id),
-+					  INTEL_PIPE_CRC_SOURCE_AUTO);
-+
-+	igt_pipe_crc_start(data->pipe_crc);
-+	igt_pipe_crc_get_single(data->pipe_crc, &data->ref_crc);
-+
-+	queue_vblank(data);
-+
-+	start = clock_ms();
-+
-+	while (clock_ms() - start < 2000) {
-+		/* fill the next fb with the expected color */
-+		paint_fb(data->drm_fd, &data->bufs[frame], 0xff0000ff);
-+
-+		data->flip_pending = true;
-+		ret = drmModePageFlip(data->drm_fd, data->crtc_id, data->bufs[frame].fb_id,
-+				      DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT, data);
-+		igt_assert_eq(ret, 0);
-+
-+		wait_events_crc(data);
-+
-+		/* clobber the previous fb which should no longer be scanned out */
-+		frame = !frame;
-+		paint_fb(data->drm_fd, &data->bufs[frame], rand());
-+	}
-+
-+	igt_pipe_crc_stop(data->pipe_crc);
-+	igt_pipe_crc_free(data->pipe_crc);
-+
-+	/* make sure we got at a reasonable number of async flips done */
-+	igt_assert_lt(data->frame_count * 2, data->flip_count);
-+}
-+
- igt_main
- {
- 	static data_t data;
-@@ -419,6 +560,10 @@ igt_main
- 		igt_subtest("invalid-async-flip")
- 			test_invalid(&data);
- 
-+		igt_describe("Use CRC to verify async flip scans out the correct framebuffer");
-+		igt_subtest("crc")
-+			test_crc(&data);
-+
- 		igt_fixture {
- 			for (i = 0; i < ARRAY_SIZE(data.bufs); i++)
- 				igt_remove_fb(data.drm_fd, &data.bufs[i]);
--- 
-2.32.0
+CI Bug Log - changes from CI_DRM_10636 -> IGTPW_6257
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6257 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@query-info:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][1] ([fdo#109315])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@amdgpu/amd_basic@query-info.html
+
+  * igt@amdgpu/amd_cs_nop@nop-gfx0:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][2] ([fdo#109315] / [i915#2575]) +16 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@amdgpu/amd_cs_nop@nop-gfx0.html
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-tgl-u2:          [PASS][3] -> [FAIL][4] ([i915#1888])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10636/fi-tgl-u2/igt@gem_exec_suspend@basic-s0.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-u2/igt@gem_exec_suspend@basic-s0.html
+    - fi-tgl-1115g4:      NOTRUN -> [FAIL][5] ([i915#1888])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][6] ([i915#2190])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][7] ([i915#1155])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][8] ([fdo#111827]) +8 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][9] ([i915#4103]) +1 similar issue
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][10] ([fdo#109285])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][11] ([i915#1072]) +3 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@kms_psr@primary_mmap_gtt.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][12] ([i915#3301])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@prime_vgem@basic-userptr.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gtt:
+    - fi-bdw-5557u:       [DMESG-FAIL][13] ([i915#3674]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10636/fi-bdw-5557u/igt@i915_selftest@live@gtt.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-bdw-5557u/igt@i915_selftest@live@gtt.html
+
+  * igt@kms_flip@basic-flip-vs-modeset@c-dp1:
+    - fi-cfl-8109u:       [FAIL][15] ([i915#4165]) -> [PASS][16] +1 similar issue
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10636/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
+    - fi-cfl-8109u:       [DMESG-WARN][17] ([i915#295]) -> [PASS][18] +18 similar issues
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10636/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+
+  
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3674]: https://gitlab.freedesktop.org/drm/intel/issues/3674
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4165]: https://gitlab.freedesktop.org/drm/intel/issues/4165
+
+
+Participating hosts (40 -> 34)
+------------------------------
+
+  Additional (1): fi-tgl-1115g4 
+  Missing    (7): bat-dg1-6 bat-dg1-5 fi-bsw-cyan bat-adlp-4 fi-bdw-samus bat-jsl-2 bat-jsl-1 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6218 -> IGTPW_6257
+
+  CI-20190529: 20190529
+  CI_DRM_10636: 182ebf8cf588fa509b36f2b7de3a25eff9624238 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6257: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/index.html
+  IGT_6218: 8d4169d9543d8e5c01f0c746f603801a4d65ead0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/index.html
+
+--===============1007002437391318392==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/i915_pm_dc: Refactoring pwr_dmn_info to debugfs_dump and fix DC9-dpms test (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95019/">https://patchwork.freedesktop.org/series/95019/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10636 -&gt; IGTPW_6257</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6257 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@query-info:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@nop-gfx0:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@amdgpu/amd_cs_nop@nop-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +16 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s0:</p>
+<ul>
+<li>
+<p>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10636/fi-tgl-u2/igt@gem_exec_suspend@basic-s0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-u2/igt@gem_exec_suspend@basic-s0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>)</p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_mmap_gtt:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-tgl-1115g4/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gtt:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10636/fi-bdw-5557u/igt@i915_selftest@live@gtt.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3674">i915#3674</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-bdw-5557u/igt@i915_selftest@live@gtt.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@c-dp1:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10636/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4165">i915#4165</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10636/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> +18 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (40 -&gt; 34)</h2>
+<p>Additional (1): fi-tgl-1115g4 <br />
+  Missing    (7): bat-dg1-6 bat-dg1-5 fi-bsw-cyan bat-adlp-4 fi-bdw-samus bat-jsl-2 bat-jsl-1 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6218 -&gt; IGTPW_6257</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10636: 182ebf8cf588fa509b36f2b7de3a25eff9624238 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6257: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6257/index.html<br />
+  IGT_6218: 8d4169d9543d8e5c01f0c746f603801a4d65ead0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1007002437391318392==--
