@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A6876EE01
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Sep 2021 11:16:12 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-Date: Fri, 24 Sep 2021 11:16:08 +0000
-Message-ID: <1b1f8b0d26794ea387d160cb88907d97@intel.com>
-References: <20210924100315.1895668-1-jigar.bhatt@intel.com>
- <20210924100315.1895668-2-jigar.bhatt@intel.com>
-In-Reply-To: <20210924100315.1895668-2-jigar.bhatt@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com
+ [IPv6:2607:f8b0:4864:20::f2a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C30D16EE09
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Sep 2021 11:24:31 +0000 (UTC)
+Received: by mail-qv1-xf2a.google.com with SMTP id r18so6002134qvy.8
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Sep 2021 04:24:31 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/i915/i915_pm_dc:
- Refactoring pwr_dmn_info to debugfs_dump
+References: <20210921040330.909964-1-priyanka.dandamudi@intel.com>
+ <CAM0jSHNKL7wnTVxLZkwg=npr0PAkJhYMwYm8h2j=L7mm87epMQ@mail.gmail.com>
+ <CAM0jSHPvQ6nLJPFiy_A+MZn5BC+F_nzQJ6UXKDXU_UnEZk3+LQ@mail.gmail.com>
+ <YU2zt9UWDEIuuGKa@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <YU2zt9UWDEIuuGKa@platvala-desk.ger.corp.intel.com>
+From: Matthew Auld <matthew.william.auld@gmail.com>
+Date: Fri, 24 Sep 2021 12:24:02 +0100
+Message-ID: <CAM0jSHPOqKUrO-19jooDKOhH8K7SVWR66m7g-ZWOLh-bRRGuZQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915: use device_coherent mmap
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,71 +25,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Bhatt, Jigar" <jigar.bhatt@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Varide, Nischal" <nischal.varide@intel.com>, "Shankar, Uma" <uma.shankar@intel.com>, "Sharma, Swati2" <swati2.sharma@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: priyanka.dandamudi@intel.com, igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com, Matthew Auld <matthew.auld@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Fri, 24 Sept 2021 at 12:13, Petri Latvala <petri.latvala@intel.com> wrote:
+>
+> On Fri, Sep 24, 2021 at 12:06:06PM +0100, Matthew Auld wrote:
+> > On Tue, 21 Sept 2021 at 16:50, Matthew Auld
+> > <matthew.william.auld@gmail.com> wrote:
+> > >
+> > > On Tue, 21 Sept 2021 at 05:10, <priyanka.dandamudi@intel.com> wrote:
+> > > >
+> > > > From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> > > >
+> > > > Update mmap__wc with mmap__device_coherent, as it works
+> > > > on discrete platforms, while still using an explicit WC mmap on
+> > > > integrated platforms.
+> > > > Below are the updated tests:
+> > > > gem_exec_capture
+> > > > gem_exec_nop
+> > > > perf_pmu
+> > > > prime_busy
+> > > >
+> > > > Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> > > > Cc: Matthew Auld <matthew.auld@intel.com>
+> > > > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > > Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+> >
+> > Could you please re-send this for CI(or hit the test-again button in
+> > pw)? Plus the other related series? DG1 BAT looks to be in better
+> > shape now.
+>
+> Re-test for this queued.
 
+Thanks a bunch. Could you please also use your superpowers to re-test:
+https://patchwork.freedesktop.org/series/94726/
 
-> -----Original Message-----
-> From: Bhatt, Jigar <jigar.bhatt@intel.com>
-> Sent: Friday, September 24, 2021 3:33 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Bhatt, Jigar <jigar.bhatt@intel.com>; Gupta, Anshuman
-> <anshuman.gupta@intel.com>; Varide, Nischal <nischal.varide@intel.com>;
-> Shankar, Uma <uma.shankar@intel.com>; Sharma, Swati2
-> <swati2.sharma@intel.com>
-> Subject: [PATCH i-g-t v2 1/2] tests/i915/i915_pm_dc: Refactoring pwr_dmn_=
-info
-> to debugfs_dump
-Please fix the version number here.
-With that.
-Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
->=20
-> Refactoring pwr_dmn_info to debugfs_dump so other test can use it for
-> dumping debugfs file.[Anshuman]
->=20
-> Signed-off-by: Jigar Bhatt <jigar.bhatt@intel.com>
-> ---
->  tests/i915/i915_pm_dc.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c index
-> 9d0a15d8..04acf839 100644
-> --- a/tests/i915/i915_pm_dc.c
-> +++ b/tests/i915/i915_pm_dc.c
-> @@ -50,7 +50,7 @@ typedef struct {
->  	int msr_fd;
->  	int debugfs_fd;
->  	uint32_t devid;
-> -	char *pwr_dmn_info;
-> +	char *debugfs_dump;
->  	igt_display_t display;
->  	struct igt_fb fb_white, fb_rgb, fb_rgr;
->  	enum psr_mode op_psr_mode;
-> @@ -217,7 +217,7 @@ static void check_dc_counter(data_t *data, int dc_fla=
-g,
-> uint32_t prev_dc_count)
->  		(dc_flag & CHECK_DC5 ? "DC5" : "DC6"));
->  	igt_assert_f(dc_state_wait_entry(data->debugfs_fd, dc_flag,
-> prev_dc_count),
->  		     "%s state is not achieved\n%s:\n%s\n", tmp,
-> PWR_DOMAIN_INFO,
-> -		     data->pwr_dmn_info =3D igt_sysfs_get(data->debugfs_fd,
-> PWR_DOMAIN_INFO));
-> +		     data->debugfs_dump =3D igt_sysfs_get(data->debugfs_fd,
-> +PWR_DOMAIN_INFO));
->  }
->=20
->  static void setup_videoplayback(data_t *data) @@ -504,7 +504,7 @@ int
-> main(int argc, char *argv[])
->  	}
->=20
->  	igt_fixture {
-> -		free(data.pwr_dmn_info);
-> +		free(data.debugfs_dump);
->  		close(data.debugfs_fd);
->  		close(data.msr_fd);
->  		display_fini(&data);
+?
+
+>
+>
 > --
-> 2.25.1
+> Petri Latvala
