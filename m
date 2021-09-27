@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 87B0C89DCF
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Sep 2021 12:57:19 +0000 (UTC)
-Date: Mon, 27 Sep 2021 16:00:39 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YVHAd4LdBx25Ox67@platvala-desk.ger.corp.intel.com>
-References: <20210924185510.551979-1-markyacoub@chromium.org>
+Content-Type: multipart/alternative;
+ boundary="===============9108316156662661336=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210924185510.551979-1-markyacoub@chromium.org>
-Subject: Re: [igt-dev] [PATCH] tests/kms_addfb_basic: Remove handling for
- Unknown Vendor.
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 27 Sep 2021 13:41:12 -0000
+Message-ID: <163275007215.14086.982169032162723387@emeril.freedesktop.org>
+References: <20210927112100.87984-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20210927112100.87984-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2lu?=
+ =?utf-8?q?tel=5Fbatchbuffer=3A_Remove_duplicated_assignment_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,97 +16,352 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>
-Cc: igt-dev@lists.freedesktop.org, seanpaul@chromium.org, arek@hiler.eu, Rodrigo.Siqueira@amd.com, anson.jacob@amd.com, abhinavk@codeaurora.org, robdclark@chromium.org, Mark Yacoub <markyacoub@google.com>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Sep 24, 2021 at 02:55:10PM -0400, Mark Yacoub wrote:
-> From: Mark Yacoub <markyacoub@google.com>
-> 
-> [Why]
-> Looking at multiple drivers such as i915, amdgpu, and msm, EINVAL is the
-> standard errno when failing some fb errors.
-> Unless it's an exception like nouveau, every driver should act in a
-> standard manner and return EINVAL just like every other driver. Hence,
-> no special handling for unknown vendor is needed.
-> 
-> [How]
-> Remove asserts for specific drivers except for a known exception.
-> 
-> Tested on ChromeOS Trogdor(msm).
-> 
-> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
-> ---
->  tests/kms_addfb_basic.c | 26 +++++++-------------------
->  1 file changed, 7 insertions(+), 19 deletions(-)
-> 
-> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-> index 082f10ee..35c2ae2c 100644
-> --- a/tests/kms_addfb_basic.c
-> +++ b/tests/kms_addfb_basic.c
-> @@ -307,17 +307,10 @@ static void pitch_tests(int fd)
->  		igt_subtest_f("bad-pitch-%i", bad_pitches[i]) {
->  			f.pitches[0] = bad_pitches[i];
->  			igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f), -1);
-> -			igt_assert(errno != 0);
-> -			if (is_i915_device(fd) || is_amdgpu_device(fd) || is_msm_device(fd)) {
-> +			if (is_nouveau_device(fd) && bad_pitches[i] > 4 * 1024)
-> +				igt_assert_eq(errno, ERANGE);
-> +			else
->  				igt_assert_eq(errno, EINVAL);
-> -			} else if (is_nouveau_device(fd)) {
-> -				if (bad_pitches[i] > 4 * 1024)
-> -					igt_assert_eq(errno, ERANGE);
-> -				else
-> -					igt_assert_eq(errno, EINVAL);
-> -			} else {
-> -				igt_info("Unknown vendor; errno unchecked (returned %i)", errno);
-> -			}
->  			errno = 0;
->  		}
->  	}
-> @@ -479,13 +472,10 @@ static void size_tests(int fd)
->  		for (i = 0; i < ARRAY_SIZE(framebuffers); i++) {
->  			igt_debug("Checking framebuffer %i\n", i);
->  			igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, framebuffers[i]), -1);
-> -			igt_assert(errno != 0);
-> -			if (is_i915_device(fd))
-> -				igt_assert_eq(errno, EINVAL);
-> -			else if (is_nouveau_device(fd))
-> +			if (is_nouveau_device(fd))
->  				igt_assert_eq(errno, ERANGE);
->  			else
-> -				igt_info("Unknown vendor; errno unchecked (returned %i)", errno);
-> +				igt_assert_eq(errno, EINVAL);
->  			errno = 0;
->  		}
->  	}
-> @@ -495,12 +485,10 @@ static void size_tests(int fd)
->  	igt_subtest("bo-too-small") {
->  		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f), -1);
->  		igt_assert(errno != 0);
-> -		if (is_i915_device(fd))
-> -			igt_assert_eq(errno, EINVAL);
-> -		else if (is_nouveau_device(fd))
-> +		if (is_nouveau_device(fd))
->  			igt_assert_eq(errno, ERANGE);
->  		else
-> -			igt_info("Unknown vendor; errno unchecked (returned %i)", errno);
-> +			igt_assert_eq(errno, EINVAL);
->  		errno = 0;
->  	}
+--===============9108316156662661336==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Tentatively,
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+== Series Details ==
 
-How does this map to the holy trinity of
+Series: lib/intel_batchbuffer: Remove duplicated assignment (rev2)
+URL   : https://patchwork.freedesktop.org/series/95088/
+State : success
 
-1) documentation for the ioctl
-2) actual behaviour of the ioctl across drivers (this one is already answered in the commit message though)
-3) how non-IGT userspace handles the ioctl
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10647 -> IGTPW_6264
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6264 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_cs_nop@sync-compute0:
+    - fi-kbl-r:           NOTRUN -> [SKIP][1] ([fdo#109271]) +23 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-kbl-r/igt@amdgpu/amd_cs_nop@sync-compute0.html
+
+  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
+    - fi-snb-2600:        NOTRUN -> [SKIP][2] ([fdo#109271]) +17 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-r:           NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#2190])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-kbl-r/igt@gem_huc_copy@huc-copy.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][4] ([i915#2190])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][5] ([i915#1155])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-tgl-1115g4:      NOTRUN -> [INCOMPLETE][6] ([i915#4006] / [i915#4193])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-pnv-d510:        [PASS][7] -> [DMESG-FAIL][8] ([i915#4140])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10647/fi-pnv-d510/igt@i915_selftest@live@requests.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-pnv-d510/igt@i915_selftest@live@requests.html
+
+  * igt@kms_addfb_basic@too-wide:
+    - fi-tgl-1115g4:      NOTRUN -> [DMESG-WARN][9] ([i915#4002]) +89 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@kms_addfb_basic@too-wide.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][10] ([fdo#111827]) +8 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_chamelium@hdmi-edid-read:
+    - fi-kbl-r:           NOTRUN -> [SKIP][11] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-kbl-r/igt@kms_chamelium@hdmi-edid-read.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][12] ([i915#4103]) +1 similar issue
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][13] ([fdo#109285])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-r:           NOTRUN -> [SKIP][14] ([fdo#109271] / [i915#533])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-kbl-r/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][15] ([i915#1072]) +3 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@kms_psr@primary_mmap_gtt.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][16] ([i915#3301])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@prime_vgem@basic-userptr.html
+
+  * igt@runner@aborted:
+    - fi-pnv-d510:        NOTRUN -> [FAIL][17] ([fdo#109271] / [i915#2403])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-pnv-d510/igt@runner@aborted.html
+    - fi-tgl-1115g4:      NOTRUN -> [FAIL][18] ([i915#2722])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-rkl-guc:         [FAIL][19] -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10647/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - {fi-jsl-1}:         [DMESG-FAIL][21] ([i915#1886]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10647/fi-jsl-1/igt@i915_selftest@live@gt_pm.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-jsl-1/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [INCOMPLETE][23] ([i915#3921]) -> [PASS][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10647/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
+  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#4002]: https://gitlab.freedesktop.org/drm/intel/issues/4002
+  [i915#4006]: https://gitlab.freedesktop.org/drm/intel/issues/4006
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4140]: https://gitlab.freedesktop.org/drm/intel/issues/4140
+  [i915#4193]: https://gitlab.freedesktop.org/drm/intel/issues/4193
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
 
 
--- 
-Petri Latvala
+Participating hosts (39 -> 34)
+------------------------------
+
+  Additional (1): fi-tgl-1115g4 
+  Missing    (6): bat-adls-5 fi-bsw-cyan bat-adlp-4 fi-bdw-samus bat-jsl-2 bat-jsl-1 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6219 -> IGTPW_6264
+
+  CI-20190529: 20190529
+  CI_DRM_10647: febde6c608213939f1276df143704dd712a0dbab @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6264: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/index.html
+  IGT_6219: 4b5644c9751b489c73c9bb174644c08b31533cc8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/index.html
+
+--===============9108316156662661336==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/intel_batchbuffer: Remove duplicated assignment (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95088/">https://patchwork.freedesktop.org/series/95088/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10647 -&gt; IGTPW_6264</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6264 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-compute0:</p>
+<ul>
+<li>fi-kbl-r:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-kbl-r/igt@amdgpu/amd_cs_nop@sync-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +23 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-fork-compute0:</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>
+<p>fi-kbl-r:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-kbl-r/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4006">i915#4006</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4193">i915#4193</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10647/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4140">i915#4140</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@too-wide:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@kms_addfb_basic@too-wide.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4002">i915#4002</a>) +89 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-edid-read:</p>
+<ul>
+<li>fi-kbl-r:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-kbl-r/igt@kms_chamelium@hdmi-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-r:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-kbl-r/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_mmap_gtt:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-pnv-d510/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a>)</p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-tgl-1115g4/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10647/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>{fi-jsl-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10647/fi-jsl-1/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-jsl-1/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10647/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (39 -&gt; 34)</h2>
+<p>Additional (1): fi-tgl-1115g4 <br />
+  Missing    (6): bat-adls-5 fi-bsw-cyan bat-adlp-4 fi-bdw-samus bat-jsl-2 bat-jsl-1 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6219 -&gt; IGTPW_6264</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10647: febde6c608213939f1276df143704dd712a0dbab @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6264: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6264/index.html<br />
+  IGT_6219: 4b5644c9751b489c73c9bb174644c08b31533cc8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============9108316156662661336==--
