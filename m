@@ -1,14 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3348663058595899684=="
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 27 Sep 2021 17:26:15 -0000
-Message-ID: <163276357524.14084.16772997046751558190@emeril.freedesktop.org>
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2078.outbound.protection.outlook.com [40.107.237.78])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CAD4389E0C
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Sep 2021 17:28:34 +0000 (UTC)
+From: "Pillai, Aurabindo" <Aurabindo.Pillai@amd.com>
+Date: Mon, 27 Sep 2021 17:28:32 +0000
+Message-ID: <DM4PR12MB5295DB9A15801BDE6F78D3AB8BA79@DM4PR12MB5295.namprd12.prod.outlook.com>
 References: <20210927160700.1570885-1-aurabindo.pillai@amd.com>
-In-Reply-To: <20210927160700.1570885-1-aurabindo.pillai@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fflip_=3A_skip_subtest_bo-too-big?=
+ <CAJUqKUpwJfdU+=jO5=atomxwu4d-KXRSN0gEppQhWdK9CqtNaQ@mail.gmail.com>
+In-Reply-To: <CAJUqKUpwJfdU+=jO5=atomxwu4d-KXRSN0gEppQhWdK9CqtNaQ@mail.gmail.com>
+Content-Language: en-US
+Content-Type: multipart/alternative;
+ boundary="_000_DM4PR12MB5295DB9A15801BDE6F78D3AB8BA79DM4PR12MB5295namp_"
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_flip : skip subtest bo-too-big
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,134 +21,205 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Mark Yacoub <markyacoub@chromium.org>
+Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, Mark Yacoub <markyacoub@google.com>, "Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3348663058595899684==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+--_000_DM4PR12MB5295DB9A15801BDE6F78D3AB8BA79DM4PR12MB5295namp_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-== Series Details ==
+[AMD Official Use Only]
 
-Series: tests/kms_flip : skip subtest bo-too-big
-URL   : https://patchwork.freedesktop.org/series/95115/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_6220 -> IGTPW_6265
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6265/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6265 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_chamelium@hdmi-edid-read:
-    - fi-icl-u2:          [PASS][1] -> [DMESG-WARN][2] ([i915#2868])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6220/fi-icl-u2/igt@kms_chamelium@hdmi-edid-read.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6265/fi-icl-u2/igt@kms_chamelium@hdmi-edid-read.html
-
-  
-  [i915#2868]: https://gitlab.freedesktop.org/drm/intel/issues/2868
+Hi Mark,
 
 
-Participating hosts (36 -> 33)
-------------------------------
+Both bo-too-big and bo-too-big-interruptible shall be skipped with this pat=
+ch. The other location where TEST_BO_TOOBIG is mentioned is in the same fun=
+ction.
 
-  Missing    (3): fi-tgl-1115g4 fi-bsw-cyan fi-bdw-samus 
+--
 
+Regards,
+Jay
+________________________________
+From: Mark Yacoub <markyacoub@chromium.org>
+Sent: Monday, September 27, 2021 1:21 PM
+To: Pillai, Aurabindo <Aurabindo.Pillai@amd.com>
+Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.o=
+rg>; Mark Yacoub <markyacoub@google.com>; Siqueira, Rodrigo <Rodrigo.Siquei=
+ra@amd.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_flip : skip subtest bo-too-b=
+ig
 
-Build changes
--------------
+On Mon, Sep 27, 2021 at 12:07 PM Aurabindo Pillai
+<aurabindo.pillai@amd.com> wrote:
+>
+> [Why]
+> The rationale of the test does not hold true for AMD hardware. The
+> aperture size calculation has an upper bound check which is done through
+> i915 specific IOCTL. Hence this part of subtest must be moved
+> out of the platform agnostic tests. Moreover, AMD hardware
+> supports buffers larger than aperture size.
+>
+> [How]
+> Skip the bo-too-big subtest unless its run on i915 as the test fails on
+> AMD, VKMS and VC4
+>
+> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+> ---
+>  tests/kms_flip.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+> index 54137871..20112de1 100755
+> --- a/tests/kms_flip.c
+> +++ b/tests/kms_flip.c
+> @@ -1290,6 +1290,7 @@ static void __run_test_on_crtc_set(struct test_outp=
+ut *o, int *crtc_idxs,
+>         /* 256 MB is usually the maximum mappable aperture,
+>          * (make it 4x times that to ensure failure) */
+>         if (o->flags & TEST_BO_TOOBIG) {
+There is also another place where TEST_BO_TOOBIG is used, should we
+skip this one as well or it's only this part?
+> +               igt_skip_on(!is_i915_device(drm_fd));
+>                 bo_size =3D 4*gem_mappable_aperture_size(drm_fd);
+>                 igt_require(bo_size < gem_global_aperture_size(drm_fd));
+>         }
+> --
+> 2.30.2
+>
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6220 -> IGTPW_6265
+--_000_DM4PR12MB5295DB9A15801BDE6F78D3AB8BA79DM4PR12MB5295namp_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-  CI-20190529: 20190529
-  CI_DRM_10648: 73d93dcb0d48bb76af25ca3f7149598e4bc68098 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6265: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6265/index.html
-  IGT_6220: 357f5887f0b42d780ec4352600670d0c733c4cf7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6265/index.html
-
---===============3348663058595899684==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
 </head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_flip : skip subtest bo-too-big</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95115/">https://patchwork.freedesktop.org/series/95115/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6265/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6265/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6220 -&gt; IGTPW_6265</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6265/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6265 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_chamelium@hdmi-edid-read:<ul>
-<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6220/fi-icl-u2/igt@kms_chamelium@hdmi-edid-read.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6265/fi-icl-u2/igt@kms_chamelium@hdmi-edid-read.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2868">i915#2868</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (36 -&gt; 33)</h2>
-<p>Missing    (3): fi-tgl-1115g4 fi-bsw-cyan fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6220 -&gt; IGTPW_6265</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10648: 73d93dcb0d48bb76af25ca3f7149598e4bc68098 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6265: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6265/index.html<br />
-  IGT_6220: 357f5887f0b42d780ec4352600670d0c733c4cf7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
+<body dir=3D"ltr">
+<p style=3D"font-family:Arial;font-size:10pt;color:#0000FF;margin:5pt;" ali=
+gn=3D"Left">
+[AMD Official Use Only]<br>
+</p>
+<br>
+<div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Hi Mark,</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Both bo-too-big and bo-too-big-interruptible shall be skipped with this pat=
+ch. The other location where TEST_BO_TOOBIG is mentioned is in the same fun=
+ction.<br>
+</div>
+<div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<div id=3D"Signature">
+<div>
+<div></div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);">
+--</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);">
+Regards,</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);">
+Jay<br>
+</div>
+</div>
+</div>
+</div>
+<div id=3D"appendonsend"></div>
+<hr style=3D"display:inline-block;width:98%" tabindex=3D"-1">
+<div id=3D"divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" st=
+yle=3D"font-size:11pt" color=3D"#000000"><b>From:</b> Mark Yacoub &lt;marky=
+acoub@chromium.org&gt;<br>
+<b>Sent:</b> Monday, September 27, 2021 1:21 PM<br>
+<b>To:</b> Pillai, Aurabindo &lt;Aurabindo.Pillai@amd.com&gt;<br>
+<b>Cc:</b> Development mailing list for IGT GPU Tools &lt;igt-dev@lists.fre=
+edesktop.org&gt;; Mark Yacoub &lt;markyacoub@google.com&gt;; Siqueira, Rodr=
+igo &lt;Rodrigo.Siqueira@amd.com&gt;<br>
+<b>Subject:</b> Re: [igt-dev] [PATCH i-g-t] tests/kms_flip : skip subtest b=
+o-too-big</font>
+<div>&nbsp;</div>
+</div>
+<div class=3D"BodyFragment"><font size=3D"2"><span style=3D"font-size:11pt;=
+">
+<div class=3D"PlainText">On Mon, Sep 27, 2021 at 12:07 PM Aurabindo Pillai<=
+br>
+&lt;aurabindo.pillai@amd.com&gt; wrote:<br>
+&gt;<br>
+&gt; [Why]<br>
+&gt; The rationale of the test does not hold true for AMD hardware. The<br>
+&gt; aperture size calculation has an upper bound check which is done throu=
+gh<br>
+&gt; i915 specific IOCTL. Hence this part of subtest must be moved<br>
+&gt; out of the platform agnostic tests. Moreover, AMD hardware<br>
+&gt; supports buffers larger than aperture size.<br>
+&gt;<br>
+&gt; [How]<br>
+&gt; Skip the bo-too-big subtest unless its run on i915 as the test fails o=
+n<br>
+&gt; AMD, VKMS and VC4<br>
+&gt;<br>
+&gt; Signed-off-by: Aurabindo Pillai &lt;aurabindo.pillai@amd.com&gt;<br>
+&gt; ---<br>
+&gt;&nbsp; tests/kms_flip.c | 1 +<br>
+&gt;&nbsp; 1 file changed, 1 insertion(+)<br>
+&gt;<br>
+&gt; diff --git a/tests/kms_flip.c b/tests/kms_flip.c<br>
+&gt; index 54137871..20112de1 100755<br>
+&gt; --- a/tests/kms_flip.c<br>
+&gt; +++ b/tests/kms_flip.c<br>
+&gt; @@ -1290,6 +1290,7 @@ static void __run_test_on_crtc_set(struct test_o=
+utput *o, int *crtc_idxs,<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* 256 MB is usually t=
+he maximum mappable aperture,<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * (make it 4x ti=
+mes that to ensure failure) */<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (o-&gt;flags &amp; =
+TEST_BO_TOOBIG) {<br>
+There is also another place where TEST_BO_TOOBIG is used, should we<br>
+skip this one as well or it's only this part?<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp; igt_skip_on(!is_i915_device(drm_fd));<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp; bo_size =3D 4*gem_mappable_aperture_size(drm_fd);=
+<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp; igt_require(bo_size &lt; gem_global_aperture_size=
+(drm_fd));<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt; --<br>
+&gt; 2.30.2<br>
+&gt;<br>
+</div>
+</span></font></div>
+</div>
 </body>
 </html>
 
---===============3348663058595899684==--
+--_000_DM4PR12MB5295DB9A15801BDE6F78D3AB8BA79DM4PR12MB5295namp_--
