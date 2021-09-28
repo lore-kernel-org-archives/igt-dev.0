@@ -1,11 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com
- [IPv6:2a00:1450:4864:20::131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 47B6789CD5
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Sep 2021 15:24:00 +0000 (UTC)
-Received: by mail-lf1-x131.google.com with SMTP id y28so93522618lfb.0
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Sep 2021 08:24:00 -0700 (PDT)
-MIME-Version: 1.0
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E61566E092
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Sep 2021 15:22:04 +0000 (UTC)
+Date: Tue, 28 Sep 2021 18:17:29 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YVMyCdS6F8WovgKm@platvala-desk.ger.corp.intel.com>
 References: <CAJUqKUpwJfdU+=jO5=atomxwu4d-KXRSN0gEppQhWdK9CqtNaQ@mail.gmail.com>
  <DM4PR12MB5295DB9A15801BDE6F78D3AB8BA79@DM4PR12MB5295.namprd12.prod.outlook.com>
  <CAJUqKUoXc4g8QCKUBJAi5opMD31KW7ei2o2mA9ozHF0UV9qSFg@mail.gmail.com>
@@ -16,12 +15,10 @@ References: <CAJUqKUpwJfdU+=jO5=atomxwu4d-KXRSN0gEppQhWdK9CqtNaQ@mail.gmail.com>
  <0aadb8c4-1329-4241-a65a-1348c7b5b692@amd.com>
  <20210928144347.iv3dxo4rmu7u42c7@outlook.office365.com>
  <CAJUqKUo5ehK7zFSGXehd6oWmsWJu3ku2v9PT_vx_4HCj1Ord6A@mail.gmail.com>
- <YVMyCdS6F8WovgKm@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YVMyCdS6F8WovgKm@platvala-desk.ger.corp.intel.com>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Tue, 28 Sep 2021 11:23:47 -0400
-Message-ID: <CAJUqKUqLTnDYfZRwNLdXun4Qf+PmTgLHFr_wWS_qgN7aTeesgA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJUqKUo5ehK7zFSGXehd6oWmsWJu3ku2v9PT_vx_4HCj1Ord6A@mail.gmail.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_flip : skip subtest bo-too-big
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,57 +29,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
+To: Mark Yacoub <markyacoub@chromium.org>
 Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, Aurabindo Pillai <aurabindo.pillai@amd.com>, Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Sep 28, 2021 at 11:20 AM Petri Latvala <petri.latvala@intel.com> wrote:
->
-> On Tue, Sep 28, 2021 at 10:48:17AM -0400, Mark Yacoub wrote:
-> > On Tue, Sep 28, 2021 at 10:43 AM Rodrigo Siqueira
-> > <Rodrigo.Siqueira@amd.com> wrote:
+On Tue, Sep 28, 2021 at 10:48:17AM -0400, Mark Yacoub wrote:
+> On Tue, Sep 28, 2021 at 10:43 AM Rodrigo Siqueira
+> <Rodrigo.Siqueira@amd.com> wrote:
+> >
+> > Hi,
+> >
+> > I also tested it using vkms and vc4.
+> >
+> > I already applied the V1 in the upstream.
+> >
+> > Thanks
+> > Siqueira
+> >
+> > On 09/28, Aurabindo Pillai wrote:
 > > >
-> > > Hi,
-> > >
-> > > I also tested it using vkms and vc4.
-> > >
-> > > I already applied the V1 in the upstream.
-> > >
-> > > Thanks
-> > > Siqueira
-> > >
-> > > On 09/28, Aurabindo Pillai wrote:
-> > > >
-> > > > On 9/28/21 9:53 AM, Petri Latvala wrote:
-> > > > > On Tue, Sep 28, 2021 at 09:35:10AM -0400, Aurabindo Pillai wrote:
-> > > > > > On 9/28/21 5:15 AM, Petri Latvala wrote:
-> > > > > > > On Mon, Sep 27, 2021 at 07:10:45PM +0000, Pillai, Aurabindo wrote:
-> > > > > > > > Skipping using the continue statement has the side effect of this
-> > > > > > > > subtest being absent from the list of subtests, when running the
-> > > > > > > > test executable with paramter --list-subtest. Is that okay ?
-> > > > > > > It's not okay btw. When you're not in an igt_fixture or an
-> > > > > > > igt_subtest, you cannot use anything that touches the hardware or the
-> > > > > > > running system in any way.
-> > Hi Petri, can you elaborate more on this. I'm curious to understand
-> > what you mean. I'm slightly confused.
->
-> All subtests must be enumerable regardless of hardware, basically.
->
-> In other words, you cannot do
->
-> igt_fixture {
->   variable_assigned_in_fixture = value;
-> }
->
-> if (variable_assigned_in_fixture)
->   igt_subtest("only-exists-sometimes") {}
->
-Gotcha. thanks!
-so can i still do
-igt_subtest("my-subtest") {
-  if (variable_assigned_in_fixture)
-    run_subtest();
+> > > On 9/28/21 9:53 AM, Petri Latvala wrote:
+> > > > On Tue, Sep 28, 2021 at 09:35:10AM -0400, Aurabindo Pillai wrote:
+> > > > > On 9/28/21 5:15 AM, Petri Latvala wrote:
+> > > > > > On Mon, Sep 27, 2021 at 07:10:45PM +0000, Pillai, Aurabindo wrote:
+> > > > > > > Skipping using the continue statement has the side effect of this
+> > > > > > > subtest being absent from the list of subtests, when running the
+> > > > > > > test executable with paramter --list-subtest. Is that okay ?
+> > > > > > It's not okay btw. When you're not in an igt_fixture or an
+> > > > > > igt_subtest, you cannot use anything that touches the hardware or the
+> > > > > > running system in any way.
+> Hi Petri, can you elaborate more on this. I'm curious to understand
+> what you mean. I'm slightly confused.
+
+All subtests must be enumerable regardless of hardware, basically.
+
+In other words, you cannot do
+
+igt_fixture {
+  variable_assigned_in_fixture = value;
 }
->
-> --
-> Petri Latvala
+
+if (variable_assigned_in_fixture)
+  igt_subtest("only-exists-sometimes") {}
+
+
+-- 
+Petri Latvala
