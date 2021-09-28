@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA07D6E0A8
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Sep 2021 03:11:08 +0000 (UTC)
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 27 Sep 2021 20:11:00 -0700
-Message-Id: <20210928031100.34317-1-ashutosh.dixit@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0901029374473846591=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] Return allocated size in
- gem_create_in_memory_regions() and friends
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 28 Sep 2021 05:40:45 -0000
+Message-ID: <163280764567.3948.14521771182065462619@emeril.freedesktop.org>
+References: <20210928031100.34317-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20210928031100.34317-1-ashutosh.dixit@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgUmV0dXJu?=
+ =?utf-8?q?_allocated_size_in_gem=5Fcreate=5Fin=5Fmemory=5Fregions=28=29_a?=
+ =?utf-8?q?nd_friends?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,204 +17,205 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Andrzej Turko <andrzej.turko@linux.intel.com>, Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>, John Harrison <John.C.Harrison@intel.com>
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Often the allocated size is of interest and is different from the
-requested size. Therefore return allocated size for the object (by
-__gem_create_ext()) in gem_create_in_memory_regions() and friends.
+--===============0901029374473846591==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Andrzej Turko <andrzej.turko@linux.intel.com>
-Cc: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
-Cc: John Harrison <John.C.Harrison@intel.com>
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- lib/i915/intel_memory_region.c | 6 +++---
- lib/i915/intel_memory_region.h | 4 ++--
- lib/intel_bufops.c             | 2 +-
- lib/ioctl_wrappers.c           | 2 +-
- tests/i915/gem_exec_basic.c    | 6 +++---
- tests/i915/gem_gpgpu_fill.c    | 3 ++-
- tests/i915/gem_media_fill.c    | 3 ++-
- tests/kms_addfb_basic.c        | 2 +-
- tests/kms_prime.c              | 4 ++--
- 9 files changed, 17 insertions(+), 15 deletions(-)
+== Series Details ==
 
-diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-index 3de40549319..e59801a4cab 100644
---- a/lib/i915/intel_memory_region.c
-+++ b/lib/i915/intel_memory_region.c
-@@ -183,7 +183,7 @@ bool gem_has_lmem(int fd)
- 
- /* A version of gem_create_in_memory_region_list which can be allowed to
-    fail so that the object creation can be retried */
--int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t size,
-+int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size,
- 				       struct drm_i915_gem_memory_class_instance *mem_regions,
- 				       int num_regions)
- {
-@@ -193,7 +193,7 @@ int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t size,
- 		.regions = to_user_pointer(mem_regions),
- 	};
- 
--	return __gem_create_ext(fd, &size, handle, &ext_regions.base);
-+	return __gem_create_ext(fd, size, handle, &ext_regions.base);
- }
- 
- /* gem_create_in_memory_region_list:
-@@ -202,7 +202,7 @@ int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t size,
-  * @mem_regions: memory regions array (priority list)
-  * @num_regions: @mem_regions length
-  */
--uint32_t gem_create_in_memory_region_list(int fd, uint64_t size,
-+uint32_t gem_create_in_memory_region_list(int fd, uint64_t *size,
- 					  struct drm_i915_gem_memory_class_instance *mem_regions,
- 					  int num_regions)
- {
-diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
-index 70b74944b51..bf75831ccba 100644
---- a/lib/i915/intel_memory_region.h
-+++ b/lib/i915/intel_memory_region.h
-@@ -64,11 +64,11 @@ bool gem_has_lmem(int fd);
- 
- struct drm_i915_gem_memory_class_instance;
- 
--int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t size,
-+int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size,
- 				       struct drm_i915_gem_memory_class_instance *mem_regions,
- 				       int num_regions);
- 
--uint32_t gem_create_in_memory_region_list(int fd, uint64_t size,
-+uint32_t gem_create_in_memory_region_list(int fd, uint64_t *size,
- 					  struct drm_i915_gem_memory_class_instance *mem_regions,
- 					  int num_regions);
- 
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index d1395c1605d..52794c1ac10 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -819,7 +819,7 @@ static void __intel_buf_init(struct buf_ops *bops,
- 	if (handle)
- 		buf->handle = handle;
- 	else {
--		if (!__gem_create_in_memory_regions(bops->fd, &handle, size, region))
-+		if (!__gem_create_in_memory_regions(bops->fd, &handle, &size, region))
- 			buf->handle = handle;
- 		else
- 			buf->handle = gem_create(bops->fd, size);
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index 09eb3ce7b57..4d628e50aca 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -635,7 +635,7 @@ uint32_t gem_buffer_create_fb_obj(int fd, uint64_t size)
- 	uint32_t handle;
- 
- 	if (gem_has_lmem(fd))
--		handle = gem_create_in_memory_regions(fd, size, REGION_LMEM(0));
-+		handle = gem_create_in_memory_regions(fd, &size, REGION_LMEM(0));
- 	else
- 		handle = gem_create(fd, size);
- 
-diff --git a/tests/i915/gem_exec_basic.c b/tests/i915/gem_exec_basic.c
-index 008a35d0ae9..04e2209cab4 100644
---- a/tests/i915/gem_exec_basic.c
-+++ b/tests/i915/gem_exec_basic.c
-@@ -28,12 +28,12 @@
- 
- IGT_TEST_DESCRIPTION("Basic sanity check of execbuf-ioctl rings.");
- 
--static uint32_t batch_create(int fd, uint32_t batch_size, uint32_t region)
-+static uint32_t batch_create(int fd, uint64_t batch_size, uint32_t region)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	uint32_t handle;
- 
--	handle = gem_create_in_memory_regions(fd, batch_size, region);
-+	handle = gem_create_in_memory_regions(fd, &batch_size, region);
- 	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
- 
- 	return handle;
-@@ -44,7 +44,7 @@ igt_main
- 	const struct intel_execution_engine2 *e;
- 	struct drm_i915_query_memory_regions *query_info;
- 	struct igt_collection *regions, *set;
--	uint32_t batch_size;
-+	uint64_t batch_size;
- 	const intel_ctx_t *ctx;
- 	int fd = -1;
- 
-diff --git a/tests/i915/gem_gpgpu_fill.c b/tests/i915/gem_gpgpu_fill.c
-index 74a227f678e..76f4d7c61c8 100644
---- a/tests/i915/gem_gpgpu_fill.c
-+++ b/tests/i915/gem_gpgpu_fill.c
-@@ -68,6 +68,7 @@ create_buf(data_t *data, int width, int height, uint8_t color, uint32_t region)
- 	struct intel_buf *buf;
- 	uint8_t *ptr;
- 	uint32_t handle;
-+	uint64_t size = SIZE;
- 	int i;
- 
- 	buf = calloc(1, sizeof(*buf));
-@@ -77,7 +78,7 @@ create_buf(data_t *data, int width, int height, uint8_t color, uint32_t region)
- 	 * Legacy code uses 32 bpp after buffer creation.
- 	 * Let's do the same due to keep shader intact.
- 	 */
--	handle = gem_create_in_memory_regions(data->drm_fd, SIZE, region);
-+	handle = gem_create_in_memory_regions(data->drm_fd, &size, region);
- 	intel_buf_init_using_handle(data->bops, handle, buf,
- 				    width/4, height, 32, 0,
- 				    I915_TILING_NONE, 0);
-diff --git a/tests/i915/gem_media_fill.c b/tests/i915/gem_media_fill.c
-index 1d08df2473d..3d7d6fa2b0f 100644
---- a/tests/i915/gem_media_fill.c
-+++ b/tests/i915/gem_media_fill.c
-@@ -69,12 +69,13 @@ create_buf(data_t *data, int width, int height, uint8_t color, uint32_t region)
- 	struct intel_buf *buf;
- 	uint32_t handle;
- 	uint8_t *ptr;
-+	uint64_t size = SIZE;
- 	int i;
- 
- 	buf = calloc(1, sizeof(*buf));
- 	igt_assert(buf);
- 
--	handle = gem_create_in_memory_regions(data->drm_fd, SIZE, region);
-+	handle = gem_create_in_memory_regions(data->drm_fd, &size, region);
- 
- 	/*
- 	 * Legacy code uses 32 bpp after buffer creation.
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index 55f4852da16..62fa78a5da9 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -158,7 +158,7 @@ static void invalid_tests(int fd)
- 		igt_require(gem_has_lmem(fd));
- 		igt_calc_fb_size(fd, f.width, f.height,
- 				DRM_FORMAT_XRGB8888, 0, &size, &stride);
--		handle = gem_create_in_memory_regions(fd, size, REGION_SMEM);
-+		handle = gem_create_in_memory_regions(fd, &size, REGION_SMEM);
- 		f.handles[0] = handle;
- 		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EREMOTE);
- 	}
-diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-index 5cdb559778b..ea459414901 100644
---- a/tests/kms_prime.c
-+++ b/tests/kms_prime.c
-@@ -112,10 +112,10 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
- 		igt_calc_fb_size(exporter_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
- 				 DRM_FORMAT_MOD_NONE, &scratch->size, &scratch->pitch);
- 		if (gem_has_lmem(exporter_fd))
--			scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
-+			scratch->handle = gem_create_in_memory_regions(exporter_fd, &scratch->size,
- 								       REGION_LMEM(0), REGION_SMEM);
- 		else
--			scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
-+			scratch->handle = gem_create_in_memory_regions(exporter_fd, &scratch->size,
- 								       REGION_SMEM);
- 
- 		ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0, scratch->size,
--- 
-2.33.0
+Series: Return allocated size in gem_create_in_memory_regions() and friends
+URL   : https://patchwork.freedesktop.org/series/95137/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6224 -> IGTPW_6267
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6267 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
+    - fi-snb-2600:        NOTRUN -> [SKIP][1] ([fdo#109271]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
+
+  * igt@debugfs_test@read_all_entries:
+    - fi-kbl-soraka:      [PASS][2] -> [DMESG-WARN][3] ([i915#1982] / [i915#262])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6224/fi-kbl-soraka/igt@debugfs_test@read_all_entries.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/fi-kbl-soraka/igt@debugfs_test@read_all_entries.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-rkl-11600:       [SKIP][4] ([fdo#109308]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6224/fi-rkl-11600/igt@i915_pm_rpm@basic-rte.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/fi-rkl-11600/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - {fi-jsl-1}:         [INCOMPLETE][6] -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6224/fi-jsl-1/igt@i915_selftest@live@hangcheck.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/fi-jsl-1/igt@i915_selftest@live@hangcheck.html
+    - fi-snb-2600:        [INCOMPLETE][8] ([i915#3921]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6224/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
+    - fi-cfl-8109u:       [DMESG-WARN][10] ([i915#295]) -> [PASS][11] +12 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6224/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109308]: https://bugs.freedesktop.org/show_bug.cgi?id=109308
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#112080]: https://bugs.freedesktop.org/show_bug.cgi?id=112080
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#262]: https://gitlab.freedesktop.org/drm/intel/issues/262
+  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+
+
+Participating hosts (36 -> 33)
+------------------------------
+
+  Missing    (3): fi-tgl-1115g4 fi-bsw-cyan fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6224 -> IGTPW_6267
+
+  CI-20190529: 20190529
+  CI_DRM_10650: f08f69e3c959e13a418965e33e4327d9ca3ca69a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6267: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/index.html
+  IGT_6224: 2f4e6430a97f04284d1cafb1479e7c1b0b2d596a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/index.html
+
+--===============0901029374473846591==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Return allocated size in gem_create_in_memory_regions() and friends</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95137/">https://patchwork.freedesktop.org/series/95137/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6224 -&gt; IGTPW_6267</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6267 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-fork-compute0:</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@debugfs_test@read_all_entries:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6224/fi-kbl-soraka/igt@debugfs_test@read_all_entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/fi-kbl-soraka/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/262">i915#262</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6224/fi-rkl-11600/igt@i915_pm_rpm@basic-rte.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109308">fdo#109308</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/fi-rkl-11600/igt@i915_pm_rpm@basic-rte.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>
+<p>{fi-jsl-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6224/fi-jsl-1/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/fi-jsl-1/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
+</li>
+<li>
+<p>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6224/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6224/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> +12 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (36 -&gt; 33)</h2>
+<p>Missing    (3): fi-tgl-1115g4 fi-bsw-cyan fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6224 -&gt; IGTPW_6267</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10650: f08f69e3c959e13a418965e33e4327d9ca3ca69a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6267: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6267/index.html<br />
+  IGT_6224: 2f4e6430a97f04284d1cafb1479e7c1b0b2d596a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0901029374473846591==--
