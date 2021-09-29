@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2078.outbound.protection.outlook.com [40.107.244.78])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F0AE189D6C
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Sep 2021 05:36:42 +0000 (UTC)
-From: Stylon Wang <stylon.wang@amd.com>
-Date: Wed, 29 Sep 2021 13:36:22 +0800
-Message-ID: <20210929053622.437886-1-stylon.wang@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============9133733966241338682=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v2] test/amdgpu: Test max-bpc fallback for
- 4K modes on HDMI
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 29 Sep 2021 10:41:44 -0000
+Message-ID: <163291210401.27097.16823280759830898715@emeril.freedesktop.org>
+References: <20210929053622.437886-1-stylon.wang@amd.com>
+In-Reply-To: <20210929053622.437886-1-stylon.wang@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdC9h?=
+ =?utf-8?q?mdgpu=3A_Test_max-bpc_fallback_for_4K_modes_on_HDMI_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,238 +16,260 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: harry.wentland@amd.com, anson.jacob@amd.com, rodrigo.siqueira@amd.com, Stylon Wang <stylon.wang@amd.com>
+To: Stylon Wang <stylon.wang@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[Why]
-There was a driver regression with which too high max-bpc setting
-causes 4K video modes failing stream validation and dropped from
-mode list.
+--===============9133733966241338682==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-[How]
-Add this test to catch the regression.
+== Series Details ==
 
-v2:
-- Fix typo
-- Skip instead of fail if no HDMI display connected
+Series: test/amdgpu: Test max-bpc fallback for 4K modes on HDMI (rev2)
+URL   : https://patchwork.freedesktop.org/series/95188/
+State : success
 
-Signed-off-by: Stylon Wang <stylon.wang@amd.com>
----
- tests/amdgpu/amd_max_bpc.c | 190 +++++++++++++++++++++++++++++++++++++
- tests/amdgpu/meson.build   |   1 +
- 2 files changed, 191 insertions(+)
- create mode 100644 tests/amdgpu/amd_max_bpc.c
+== Summary ==
 
-diff --git a/tests/amdgpu/amd_max_bpc.c b/tests/amdgpu/amd_max_bpc.c
-new file mode 100644
-index 00000000..4eb759ee
---- /dev/null
-+++ b/tests/amdgpu/amd_max_bpc.c
-@@ -0,0 +1,190 @@
-+/*
-+ * Copyright 2021 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ */
-+
-+#include "igt.h"
-+#include <fcntl.h>
-+
-+IGT_TEST_DESCRIPTION("Test 4K HDMI regression if max bpc is too high");
-+
-+/* Common test data. */
-+typedef struct data {
-+	igt_display_t display;
-+	igt_plane_t *primary;
-+	igt_output_t *output;
-+	igt_pipe_t *pipe;
-+	igt_pipe_crc_t *pipe_crc;
-+	igt_pipe_crc_t *pipe_crc_dither;
-+	drmModeModeInfo *mode;
-+	enum pipe pipe_id;
-+	int fd;
-+	int w;
-+	int h;
-+} data_t;
-+
-+/* BPC connector state. */
-+typedef struct output_bpc {
-+	unsigned int current;
-+	unsigned int maximum;
-+} output_bpc_t;
-+
-+static drmModeModeInfo uhd_mode = {
-+	  594000,
-+	  3840, 4016, 4104, 4400, 0,
-+	  2160, 2168, 2178, 2250, 0,
-+	  60, 0x5|DRM_MODE_FLAG_PIC_AR_64_27,
-+	  0x40,
-+	  "3840x2160@60", /* VIC 107 */
-+	  };
-+
-+/* Returns the current and maximum bpc from the connector debugfs. */
-+static output_bpc_t get_output_bpc(data_t *data)
-+{
-+	char buf[256];
-+	char *start_loc;
-+	int fd, res;
-+	output_bpc_t info;
-+
-+	fd = igt_debugfs_connector_dir(data->fd, data->output->name, O_RDONLY);
-+	igt_assert(fd >= 0);
-+
-+	res = igt_debugfs_simple_read(fd, "output_bpc", buf, sizeof(buf));
-+
-+	igt_require(res > 0);
-+
-+	close(fd);
-+
-+	igt_assert(start_loc = strstr(buf, "Current: "));
-+	igt_assert_eq(sscanf(start_loc, "Current: %u", &info.current), 1);
-+
-+	igt_assert(start_loc = strstr(buf, "Maximum: "));
-+	igt_assert_eq(sscanf(start_loc, "Maximum: %u", &info.maximum), 1);
-+
-+	return info;
-+}
-+
-+/* Verifies that connector has the correct output bpc. */
-+static void assert_output_bpc(data_t *data, unsigned int bpc)
-+{
-+	output_bpc_t info = get_output_bpc(data);
-+
-+	igt_require_f(info.maximum >= bpc,
-+		      "Monitor doesn't support %u bpc, max is %u\n", bpc,
-+		      info.maximum);
-+
-+	igt_assert_eq(info.current, bpc);
-+}
-+
-+/* Common test setup. */
-+static void test_init(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+
-+	/* It doesn't matter which pipe we choose on amdpgu. */
-+	data->pipe_id = PIPE_A;
-+	data->pipe = &data->display.pipes[data->pipe_id];
-+
-+	igt_display_reset(display);
-+
-+	/* find a connected HDMI output */
-+	data->output = NULL;
-+	for (int i=0; i < data->display.n_outputs; ++i) {
-+		drmModeConnector *connector = data->display.outputs[i].config.connector;
-+		if (connector->connection == DRM_MODE_CONNECTED &&
-+				(connector->connector_type == DRM_MODE_CONNECTOR_HDMIA)) {
-+			data->output = &data->display.outputs[i];
-+		}
-+	}
-+	igt_require_f(data->output, "Requires connected HDMI output\n");
-+
-+	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
-+	igt_output_override_mode(data->output, &uhd_mode);
-+
-+	data->mode = igt_output_get_mode(data->output);
-+	igt_assert(data->mode);
-+	assert_output_bpc(data, 8);
-+
-+	data->primary =
-+		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
-+
-+	data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id,
-+					  INTEL_PIPE_CRC_SOURCE_AUTO);
-+
-+	igt_output_set_pipe(data->output, data->pipe_id);
-+
-+	data->w = data->mode->hdisplay;
-+	data->h = data->mode->vdisplay;
-+}
-+
-+/* Common test cleanup. */
-+static void test_fini(data_t *data)
-+{
-+	igt_pipe_crc_free(data->pipe_crc);
-+	igt_display_reset(&data->display);
-+}
-+
-+static void test_4k_mode_max_bpc(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	igt_fb_t rfb;
-+	int max_bpc = 16;
-+
-+	test_init(data);
-+
-+	igt_info("Setting output max bpc to %d\n", max_bpc);
-+
-+	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, max_bpc);
-+
-+	igt_create_pattern_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, 0, &rfb);
-+	igt_plane_set_fb(data->primary, &rfb);
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+
-+	igt_remove_fb(data->fd, &rfb);
-+	test_fini(data);
-+}
-+
-+igt_main
-+{
-+	data_t data;
-+
-+	igt_skip_on_simulation();
-+
-+	memset(&data, 0, sizeof(data));
-+
-+	igt_fixture
-+	{
-+		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
-+
-+		kmstest_set_vt_graphics_mode();
-+
-+		igt_display_require(&data.display, data.fd);
-+		igt_require(data.display.is_atomic);
-+		igt_display_require_output(&data.display);
-+	}
-+
-+	igt_describe("Tests overly high 'max bpc' should not affect 4K modes on HDMI");
-+	igt_subtest("4k-mode-max-bpc") test_4k_mode_max_bpc(&data);
-+
-+	igt_fixture
-+	{
-+		igt_display_fini(&data.display);
-+	}
-+}
-diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-index aec71cb5..b736c456 100644
---- a/tests/amdgpu/meson.build
-+++ b/tests/amdgpu/meson.build
-@@ -11,6 +11,7 @@ if libdrm_amdgpu.found()
- 			  'amd_hotplug',
- 			  'amd_info',
- 			  'amd_prime',
-+			  'amd_max_bpc',
- 			  'amd_module_load',
- 			  'amd_mem_leak',
- 			  'amd_link_settings',
--- 
-2.32.0
+CI Bug Log - changes from CI_DRM_10659 -> IGTPW_6270
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6270 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@query-info:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][1] ([fdo#109315])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@amdgpu/amd_basic@query-info.html
+
+  * igt@amdgpu/amd_cs_nop@nop-gfx0:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][2] ([fdo#109315] / [i915#2575]) +16 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@amdgpu/amd_cs_nop@nop-gfx0.html
+
+  * igt@amdgpu/amd_prime@amd-to-i915:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][3] ([fdo#109271]) +17 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-pnv-d510/igt@amdgpu/amd_prime@amd-to-i915.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][4] ([i915#2190])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][5] ([i915#1155])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][6] ([fdo#111827]) +8 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][7] ([i915#4103]) +1 similar issue
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][8] ([fdo#109285])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][9] ([i915#1072]) +3 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@kms_psr@primary_mmap_gtt.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][10] ([i915#3301])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@prime_vgem@basic-userptr.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@requests:
+    - fi-pnv-d510:        [DMESG-FAIL][11] ([i915#4140]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10659/fi-pnv-d510/igt@i915_selftest@live@requests.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-pnv-d510/igt@i915_selftest@live@requests.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4140]: https://gitlab.freedesktop.org/drm/intel/issues/4140
+
+
+Participating hosts (33 -> 29)
+------------------------------
+
+  Additional (1): fi-tgl-1115g4 
+  Missing    (5): bat-adls-5 bat-dg1-6 fi-bsw-cyan bat-adlp-4 bat-jsl-1 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6227 -> IGTPW_6270
+
+  CI-20190529: 20190529
+  CI_DRM_10659: ef0ee818d075c59b51afa26326cd780e7b34ae10 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6270: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/index.html
+  IGT_6227: 6ac2da7fd6b13f04f9aa0ec10f86b831d2756946 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@amdgpu/amd_max_bpc@4k-mode-max-bpc
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/index.html
+
+--===============9133733966241338682==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>test/amdgpu: Test max-bpc fallback for 4K modes on HDMI (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95188/">https://patchwork.freedesktop.org/series/95188/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10659 -&gt; IGTPW_6270</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6270 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@query-info:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@nop-gfx0:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@amdgpu/amd_cs_nop@nop-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +16 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_prime@amd-to-i915:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-pnv-d510/igt@amdgpu/amd_prime@amd-to-i915.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_mmap_gtt:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-tgl-1115g4/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@requests:<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10659/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4140">i915#4140</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (33 -&gt; 29)</h2>
+<p>Additional (1): fi-tgl-1115g4 <br />
+  Missing    (5): bat-adls-5 bat-dg1-6 fi-bsw-cyan bat-adlp-4 bat-jsl-1 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6227 -&gt; IGTPW_6270</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10659: ef0ee818d075c59b51afa26326cd780e7b34ae10 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6270: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6270/index.html<br />
+  IGT_6227: 6ac2da7fd6b13f04f9aa0ec10f86b831d2756946 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@amdgpu/amd_max_bpc@4k-mode-max-bpc</p>
+
+</body>
+</html>
+
+--===============9133733966241338682==--
