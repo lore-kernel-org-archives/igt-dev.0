@@ -1,20 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 022176EB80
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Sep 2021 12:10:07 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Thu, 30 Sep 2021 12:10:00 +0000
-Message-ID: <MWHPR11MB13128EB944916330DFA0CD1989AA9@MWHPR11MB1312.namprd11.prod.outlook.com>
-References: <20210902151334.15818-1-vidya.srinivas@intel.com>
- <20210916135955.17270-1-vidya.srinivas@intel.com>
- <fa1e3d36b6a94da4bfaf33d77e6aa316@intel.com>
-In-Reply-To: <fa1e3d36b6a94da4bfaf33d77e6aa316@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D2E6F6E3F4
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Sep 2021 12:26:27 +0000 (UTC)
+From: Jigar Bhatt <jigar.bhatt@intel.com>
+Date: Thu, 30 Sep 2021 17:50:50 +0530
+Message-Id: <20210930122050.2033508-1-jigar.bhatt@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Skip tests if
- selected fetch is not available
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_dc: Changing sysfs open
+ attribute to O_RDONLY
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,66 +18,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "B, Jeevan" <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "markyacoub@google.com" <markyacoub@google.com>
+To: igt-dev@lists.freedesktop.org
+Cc: jigar.bhatt@intel.com, nischal.varide@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Opening /sys/module/drm_kms_helper/parameters/ in read only mode to
+avoid permission issue in dc9-dpms test.
 
+Signed-off-by: Jigar Bhatt <jigar.bhatt@intel.com>
+---
+ tests/i915/i915_pm_dc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> -----Original Message-----
-> From: B, Jeevan <jeevan.b@intel.com>
-> Sent: Thursday, September 30, 2021 3:26 PM
-> To: Srinivas, Vidya <vidya.srinivas@intel.com>; igt-dev@lists.freedesktop=
-.org
-> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>;
-> markyacoub@google.com; Srinivas, Vidya <vidya.srinivas@intel.com>
-> Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Skip tests if sel=
-ected
-> fetch is not available
->=20
-> Looks good to me.
-
-Thank you very much Jeevan.
-
-Regards
-Vidya
->=20
-> >-----Original Message-----
-> >From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> >Vidya Srinivas
-> >Sent: Thursday, September 16, 2021 7:30 PM
-> >To: igt-dev@lists.freedesktop.org
-> >Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>;
-> >markyacoub@google.com; Srinivas, Vidya <vidya.srinivas@intel.com>
-> >Subject: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Skip tests if
-> >selected fetch is not available
-> >
-> >Currently the tests are failing on systems where selected fetch feature
-> >is not availble. Kernel returns -EINVAL when the test executes
-> >reporting "Invalid debug mask 4".
-> >Patch skips if selected fetch feature is not available in the kernel.
-> >
-> >v2: Incorportated Mark Yacoub's comments.
-> >Changed igt_skip to igt_require_f
-> >
-> >Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> Reviewed-by: Jeevan B<jeevan.b@intel.com>
-> >---
-> > lib/igt_psr.c | 2 +-
-> > 1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> >diff --git a/lib/igt_psr.c b/lib/igt_psr.c index
-> >68240f9a33b4..0af503fb796e 100644
-> >--- a/lib/igt_psr.c
-> >+++ b/lib/igt_psr.c
-> >@@ -167,7 +167,7 @@ static bool psr_set(int device, int debugfs_fd, int
-> >mode)  }
-> >
-> > ret =3D psr_write(debugfs_fd, debug_val); -igt_assert(ret > 0);
-> >+igt_require_f(ret =3D=3D 0, "PSR2 SF feature not available\n");
-> > }
-> >
-> > /* Restore original value on exit */
-> >--
-> >2.33.0
->=20
+diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+index d70ee060..4c9b871c 100644
+--- a/tests/i915/i915_pm_dc.c
++++ b/tests/i915/i915_pm_dc.c
+@@ -419,7 +419,7 @@ static void setup_dc9_dpms(data_t *data, int dc_target)
+ {
+ 	int prev_dc, sysfs_fd;
+ 
+-	igt_require((sysfs_fd = open(KMS_HELPER, O_RDWR)) >= 0);
++	igt_require((sysfs_fd = open(KMS_HELPER, O_RDONLY)) >= 0);
+ 	kms_poll_saved_state = igt_sysfs_get_boolean(sysfs_fd, "poll");
+ 	igt_sysfs_set_boolean(sysfs_fd, "poll", KMS_POLL_DISABLE);
+ 	close(sysfs_fd);
+@@ -449,7 +449,7 @@ static void kms_poll_state_restore(int sig)
+ {
+ 	int sysfs_fd;
+ 
+-	sysfs_fd = open(KMS_HELPER, O_WRONLY);
++	sysfs_fd = open(KMS_HELPER, O_RDONLY);
+ 	if (sysfs_fd >= 0) {
+ 		igt_sysfs_set_boolean(sysfs_fd, "poll", kms_poll_saved_state);
+ 		close(sysfs_fd);
+-- 
+2.25.1
