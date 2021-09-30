@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27EE06EBA7
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Sep 2021 16:11:26 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Thu, 30 Sep 2021 16:07:47 +0000
-Message-ID: <MWHPR11MB1312DFEC790ADDD08A01963589AA9@MWHPR11MB1312.namprd11.prod.outlook.com>
-References: <20210916135955.17270-1-vidya.srinivas@intel.com>
- <20210930152253.32192-1-vidya.srinivas@intel.com>
-In-Reply-To: <20210930152253.32192-1-vidya.srinivas@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 506116E483
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Sep 2021 22:36:45 +0000 (UTC)
+From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Date: Thu, 30 Sep 2021 22:36:41 +0000
+Message-ID: <d4cb2e0b34364a8a8ece7e05e7c524a6@intel.com>
+References: <20210902151334.15818-1-vidya.srinivas@intel.com>
+ <20210916135955.17270-1-vidya.srinivas@intel.com>
+ <fa1e3d36b6a94da4bfaf33d77e6aa316@intel.com>
+ <MWHPR11MB13128EB944916330DFA0CD1989AA9@MWHPR11MB1312.namprd11.prod.outlook.com>
+ <CAJUqKUqcT0_bLo=XQdpo_SpSsZiTyL7E084OgKgFZDKXhcauKA@mail.gmail.com>
+In-Reply-To: <CAJUqKUqcT0_bLo=XQdpo_SpSsZiTyL7E084OgKgFZDKXhcauKA@mail.gmail.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Skip tests if
  selected fetch is not available
@@ -23,61 +26,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "B,
- Jeevan" <jeevan.b@intel.com>
-Cc: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "markyacoub@google.com" <markyacoub@google.com>
+To: Mark Yacoub <markyacoub@chromium.org>, "Kattamanchi, JaswanthX" <jaswanthx.kattamanchi@intel.com>
+Cc: "B, Jeevan" <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "Srinivas, Vidya" <vidya.srinivas@intel.com>, "markyacoub@google.com" <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Apologies @B, Jeevan, previous version BAT was failing. I have changed the =
-igt_require similar to previous igt_assert.
-Could you kindly help review once again. Thank you.
-
-Regards
-Vidya
-
-> -----Original Message-----
-> From: Srinivas, Vidya <vidya.srinivas@intel.com>
-> Sent: Thursday, September 30, 2021 8:53 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>;
-> markyacoub@google.com; B, Jeevan <jeevan.b@intel.com>; Srinivas, Vidya
-> <vidya.srinivas@intel.com>
-> Subject: [PATCH i-g-t] tests/kms_psr2_sf: Skip tests if selected fetch is=
- not
-> available
->=20
-> Currently the tests are failing on systems where selected fetch feature i=
-s not
-> availble. Kernel returns -EINVAL when the test executes reporting "Invali=
-d
-> debug mask 4".
-> Patch skips if selected fetch feature is not available in the kernel.
->=20
-> v2: Incorportated Mark Yacoub's comments.
-> Changed igt_skip to igt_require_f
->=20
-> v3: Changing to igt_require(ret > 0) which is equivalent to original
-> igt_assert(ret > 0)
->=20
-> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> ---
->  lib/igt_psr.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/lib/igt_psr.c b/lib/igt_psr.c index 68240f9a33b4..857eb591c6=
-93
-> 100644
-> --- a/lib/igt_psr.c
-> +++ b/lib/igt_psr.c
-> @@ -167,7 +167,7 @@ static bool psr_set(int device, int debugfs_fd, int
-> mode)
->  		}
->=20
->  		ret =3D psr_write(debugfs_fd, debug_val);
-> -		igt_assert(ret > 0);
-> +		igt_require_f(ret > 0, "PSR2 SF feature not available\n");
->  	}
->=20
->  	/* Restore original value on exit */
-> --
-> 2.33.0
+UmUtcmVwb3J0ZWQuDQoNCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IE1hcmsg
+WWFjb3ViIDxtYXJreWFjb3ViQGNocm9taXVtLm9yZz4gDQpTZW50OiBUaHVyc2RheSwgU2VwdGVt
+YmVyIDMwLCAyMDIxIDc6MjkgQU0NClRvOiBWdWR1bSwgTGFrc2htaW5hcmF5YW5hIDxsYWtzaG1p
+bmFyYXlhbmEudnVkdW1AaW50ZWwuY29tPjsgS2F0dGFtYW5jaGksIEphc3dhbnRoWCA8amFzd2Fu
+dGh4LmthdHRhbWFuY2hpQGludGVsLmNvbT4NCkNjOiBCLCBKZWV2YW4gPGplZXZhbi5iQGludGVs
+LmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBNb2RlbSwgQmhhbnVwcmFrYXNo
+IDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPjsgU3Jpbml2YXMsIFZpZHlhIDx2aWR5YS5z
+cmluaXZhc0BpbnRlbC5jb20+OyBtYXJreWFjb3ViQGdvb2dsZS5jb20NClN1YmplY3Q6IFJlOiBb
+aWd0LWRldl0gW1BBVENIIGktZy10XSB0ZXN0cy9rbXNfcHNyMl9zZjogU2tpcCB0ZXN0cyBpZiBz
+ZWxlY3RlZCBmZXRjaCBpcyBub3QgYXZhaWxhYmxlDQoNCkhpIExha3NobWkvSmFzd2FudGgNCg0K
+SSBjaGVja2VkIHRoZSBwYXRjaA0KaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nl
+cmllcy85NDI4OC8jcmV2MiBhbmQgaXQgbG9va3MgbGlrZSBhIGZhbHNlIHBvc2l0aXZlLCBjYW4g
+d2UgcmUtcmVwb3J0Pw0KDQpUaGFua3MsDQpNYXJrDQoNCk9uIFRodSwgU2VwIDMwLCAyMDIxIGF0
+IDg6MTAgQU0gU3Jpbml2YXMsIFZpZHlhIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+IHdyb3Rl
+Og0KPg0KPg0KPg0KPiA+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gRnJvbTogQiwg
+SmVldmFuIDxqZWV2YW4uYkBpbnRlbC5jb20+DQo+ID4gU2VudDogVGh1cnNkYXksIFNlcHRlbWJl
+ciAzMCwgMjAyMSAzOjI2IFBNDQo+ID4gVG86IFNyaW5pdmFzLCBWaWR5YSA8dmlkeWEuc3Jpbml2
+YXNAaW50ZWwuY29tPjsgDQo+ID4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gPiBD
+YzogTW9kZW0sIEJoYW51cHJha2FzaCA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNvbT47IA0K
+PiA+IG1hcmt5YWNvdWJAZ29vZ2xlLmNvbTsgU3Jpbml2YXMsIFZpZHlhIDx2aWR5YS5zcmluaXZh
+c0BpbnRlbC5jb20+DQo+ID4gU3ViamVjdDogUkU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXRdIHRl
+c3RzL2ttc19wc3IyX3NmOiBTa2lwIHRlc3RzIA0KPiA+IGlmIHNlbGVjdGVkIGZldGNoIGlzIG5v
+dCBhdmFpbGFibGUNCj4gPg0KPiA+IExvb2tzIGdvb2QgdG8gbWUuDQo+DQo+IFRoYW5rIHlvdSB2
+ZXJ5IG11Y2ggSmVldmFuLg0KPg0KPiBSZWdhcmRzDQo+IFZpZHlhDQo+ID4NCj4gPiA+LS0tLS1P
+cmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiA+RnJvbTogaWd0LWRldiA8aWd0LWRldi1ib3VuY2Vz
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mIA0KPiA+ID5WaWR5YSBTcmluaXZh
+cw0KPiA+ID5TZW50OiBUaHVyc2RheSwgU2VwdGVtYmVyIDE2LCAyMDIxIDc6MzAgUE0NCj4gPiA+
+VG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+ID4gPkNjOiBNb2RlbSwgQmhhbnVw
+cmFrYXNoIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPjsgDQo+ID4gPm1hcmt5YWNvdWJA
+Z29vZ2xlLmNvbTsgU3Jpbml2YXMsIFZpZHlhIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+DQo+
+ID4gPlN1YmplY3Q6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19wc3IyX3NmOiBT
+a2lwIHRlc3RzIGlmIA0KPiA+ID5zZWxlY3RlZCBmZXRjaCBpcyBub3QgYXZhaWxhYmxlDQo+ID4g
+Pg0KPiA+ID5DdXJyZW50bHkgdGhlIHRlc3RzIGFyZSBmYWlsaW5nIG9uIHN5c3RlbXMgd2hlcmUg
+c2VsZWN0ZWQgZmV0Y2ggDQo+ID4gPmZlYXR1cmUgaXMgbm90IGF2YWlsYmxlLiBLZXJuZWwgcmV0
+dXJucyAtRUlOVkFMIHdoZW4gdGhlIHRlc3QgDQo+ID4gPmV4ZWN1dGVzIHJlcG9ydGluZyAiSW52
+YWxpZCBkZWJ1ZyBtYXNrIDQiLg0KPiA+ID5QYXRjaCBza2lwcyBpZiBzZWxlY3RlZCBmZXRjaCBm
+ZWF0dXJlIGlzIG5vdCBhdmFpbGFibGUgaW4gdGhlIGtlcm5lbC4NCj4gPiA+DQo+ID4gPnYyOiBJ
+bmNvcnBvcnRhdGVkIE1hcmsgWWFjb3ViJ3MgY29tbWVudHMuDQo+ID4gPkNoYW5nZWQgaWd0X3Nr
+aXAgdG8gaWd0X3JlcXVpcmVfZg0KPiA+ID4NCj4gPiA+U2lnbmVkLW9mZi1ieTogVmlkeWEgU3Jp
+bml2YXMgPHZpZHlhLnNyaW5pdmFzQGludGVsLmNvbT4NCj4gPiBSZXZpZXdlZC1ieTogSmVldmFu
+IEI8amVldmFuLmJAaW50ZWwuY29tPg0KPiA+ID4tLS0NCj4gPiA+IGxpYi9pZ3RfcHNyLmMgfCAy
+ICstDQo+ID4gPiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkN
+Cj4gPiA+DQo+ID4gPmRpZmYgLS1naXQgYS9saWIvaWd0X3Bzci5jIGIvbGliL2lndF9wc3IuYyBp
+bmRleCANCj4gPiA+NjgyNDBmOWEzM2I0Li4wYWY1MDNmYjc5NmUgMTAwNjQ0DQo+ID4gPi0tLSBh
+L2xpYi9pZ3RfcHNyLmMNCj4gPiA+KysrIGIvbGliL2lndF9wc3IuYw0KPiA+ID5AQCAtMTY3LDcg
+KzE2Nyw3IEBAIHN0YXRpYyBib29sIHBzcl9zZXQoaW50IGRldmljZSwgaW50IGRlYnVnZnNfZmQs
+IA0KPiA+ID5pbnQNCj4gPiA+bW9kZSkgIH0NCj4gPiA+DQo+ID4gPiByZXQgPSBwc3Jfd3JpdGUo
+ZGVidWdmc19mZCwgZGVidWdfdmFsKTsgLWlndF9hc3NlcnQocmV0ID4gMCk7DQo+ID4gPitpZ3Rf
+cmVxdWlyZV9mKHJldCA9PSAwLCAiUFNSMiBTRiBmZWF0dXJlIG5vdCBhdmFpbGFibGVcbiIpOw0K
+PiA+ID4gfQ0KPiA+ID4NCj4gPiA+IC8qIFJlc3RvcmUgb3JpZ2luYWwgdmFsdWUgb24gZXhpdCAq
+Lw0KPiA+ID4tLQ0KPiA+ID4yLjMzLjANCj4gPg0KPg0K
