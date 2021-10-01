@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2060.outbound.protection.outlook.com [40.107.223.60])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B4C596E44A
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Oct 2021 08:53:37 +0000 (UTC)
-From: Stylon Wang <stylon.wang@amd.com>
-Date: Fri, 1 Oct 2021 16:53:19 +0800
-Message-ID: <20211001085319.789392-1-stylon.wang@amd.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3246C6ED72
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Oct 2021 08:56:40 +0000 (UTC)
+References: <20210930052124.980259-1-priyanka.dandamudi@intel.com>
+From: Matthew Auld <matthew.auld@intel.com>
+Message-ID: <89e500f2-6452-607a-c8bc-73b5eedae1bf@intel.com>
+Date: Fri, 1 Oct 2021 09:55:05 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_hdr: Fix failure to read
- output_bpc on AMD hardware
+In-Reply-To: <20210930052124.980259-1-priyanka.dandamudi@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_nop: Update poll
+ sequential
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,33 +22,15 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: nicholas.choi@amd.com, rodrigo.siqueira@amd.com, Stylon Wang <stylon.wang@amd.com>
+To: priyanka.dandamudi@intel.com, igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com, ashutosh.dixit@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The first commit with TEST_ONLY flag in bpc-switch subtests
-could in some cases cause reading of output_bpc on connectors
-to fail on AMD hardware.
-
-Use ALLOW_MODESET to prevent this from happening.
-
-Signed-off-by: Stylon Wang <stylon.wang@amd.com>
----
- tests/kms_hdr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index 5b8529c8..a4983b9a 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -217,7 +217,7 @@ static void test_bpc_switch_on_output(data_t *data, igt_output_t *output,
- 		igt_plane_set_fb(data->primary, &afb);
- 		igt_plane_set_size(data->primary, data->w, data->h);
- 		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
--		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY, NULL);
-+		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 		if (!ret) {
- 			data->w = afb.width;
- 			data->h = afb.height;
--- 
-2.32.0
+On 30/09/2021 06:21, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> 
+> The set_caching ioctl returns -ENODEV for discrete.
+> So,updated the poll sequential test case accordingly.
+> 
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
