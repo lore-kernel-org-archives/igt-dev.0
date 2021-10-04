@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B22986E9C4
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Oct 2021 11:10:20 +0000 (UTC)
-Date: Mon, 4 Oct 2021 14:13:43 +0300
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 251EA6E1A7
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Oct 2021 11:14:10 +0000 (UTC)
+Date: Mon, 4 Oct 2021 14:17:31 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YVrh5zBX9mLq4Zg2@platvala-desk.ger.corp.intel.com>
-References: <20211001085319.789392-1-stylon.wang@amd.com>
- <20211002151511.vjblbkuoymw4jtyi@outlook.office365.com>
+Message-ID: <YVriy3hQjucowhGk@platvala-desk.ger.corp.intel.com>
+References: <20210903123027.1433-1-contact@emersion.fr>
+ <YVrKRXeGi2V37xCP@platvala-desk.ger.corp.intel.com>
+ <hLg9fLkq8x4hy7DqsQM-GFlKgXYsJJ97Jug9rX1JwxIsVUoRFiZM4CeAG8rpwpMxrXjgaqzXl8G2H3z3id9dMw4XGLExOW19G7OitDw2_J4=@emersion.fr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211002151511.vjblbkuoymw4jtyi@outlook.office365.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_hdr: Fix failure to read
- output_bpc on AMD hardware
+In-Reply-To: <hLg9fLkq8x4hy7DqsQM-GFlKgXYsJJ97Jug9rX1JwxIsVUoRFiZM4CeAG8rpwpMxrXjgaqzXl8G2H3z3id9dMw4XGLExOW19G7OitDw2_J4=@emersion.fr>
+Subject: Re: [igt-dev] [RFC i-g-t] tests/kms_lease: add empty lease test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,59 +22,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Stylon Wang <stylon.wang@amd.com>, Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>, igt-dev@lists.freedesktop.org, nicholas.choi@amd.com
+To: Simon Ser <contact@emersion.fr>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Sat, Oct 02, 2021 at 11:15:11AM -0400, Rodrigo Siqueira wrote:
-> Hi Lakshminarayana and Petri,
+On Mon, Oct 04, 2021 at 09:34:18AM +0000, Simon Ser wrote:
+> On Monday, October 4th, 2021 at 11:29, Petri Latvala <petri.latvala@intel.com> wrote:
 > 
-> I noticed that the CI was not triggered for this patch [1]. Do you know
-> why? Is it possible to trigger it?
+> > When is the kernel change going to hit drm-tip? We're going to need a
+> > bug report and cibuglog filter for this failing without it if this is
+> > merged before kernel. (Which is ok, with the bug filing done)
 > 
-> 1. https://patchwork.freedesktop.org/series/95313/
+> Thanks for the review!
+> 
+> Sorry, I got a bit eager and forgot about IGT. I've already merged that
+> patch to drm-misc-next, so it should be in drm-tip already.
 
-CI was down for a bit due to server cert issues, testing that and the
-other affected series happening in a bit.
+Great!
+
+I fired a retest on this patch to verify.
 
 
 -- 
 Petri Latvala
-
-
-> 
-> Thanks
-> Siqueira
-> 
-> On 10/01, Stylon Wang wrote:
-> > The first commit with TEST_ONLY flag in bpc-switch subtests
-> > could in some cases cause reading of output_bpc on connectors
-> > to fail on AMD hardware.
-> > 
-> > Use ALLOW_MODESET to prevent this from happening.
-> > 
-> > Signed-off-by: Stylon Wang <stylon.wang@amd.com>
-> > ---
-> >  tests/kms_hdr.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-> > index 5b8529c8..a4983b9a 100644
-> > --- a/tests/kms_hdr.c
-> > +++ b/tests/kms_hdr.c
-> > @@ -217,7 +217,7 @@ static void test_bpc_switch_on_output(data_t *data, igt_output_t *output,
-> >  		igt_plane_set_fb(data->primary, &afb);
-> >  		igt_plane_set_size(data->primary, data->w, data->h);
-> >  		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
-> > -		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY, NULL);
-> > +		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> >  		if (!ret) {
-> >  			data->w = afb.width;
-> >  			data->h = afb.height;
-> > -- 
-> > 2.32.0
-> > 
-> 
-> -- 
-> Rodrigo Siqueira
-> https://siqueira.tech
