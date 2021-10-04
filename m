@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 28D1A6EA43
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Oct 2021 15:57:56 +0000 (UTC)
-Date: Mon, 4 Oct 2021 18:43:18 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <YVshFrxOVFlyFmNy@intel.com>
-References: <20211004085629.2796-1-karthik.b.s@intel.com>
- <YVrHBWTxHBHQEMZ0@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1997B6EA43
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Oct 2021 15:55:12 +0000 (UTC)
+From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Date: Mon, 4 Oct 2021 15:42:28 +0000
+Message-ID: <7c206aba165a465aa14b465c72b6802c@intel.com>
+References: <20211001085319.789392-1-stylon.wang@amd.com>
+ <20211002151511.vjblbkuoymw4jtyi@outlook.office365.com>
+ <YVrh5zBX9mLq4Zg2@platvala-desk.ger.corp.intel.com>
+ <20211004141835.uzqrsamqgdstee2q@outlook.office365.com>
+In-Reply-To: <20211004141835.uzqrsamqgdstee2q@outlook.office365.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <YVrHBWTxHBHQEMZ0@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Add retry mechanism
- for async flip subtests
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_hdr: Fix failure to read
+ output_bpc on AMD hardware
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,81 +25,112 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org, juha-pekka.heikkila@intel.com
+To: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, "Latvala, Petri" <petri.latvala@intel.com>
+Cc: Stylon Wang <stylon.wang@amd.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "nicholas.choi@amd.com" <nicholas.choi@amd.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Oct 04, 2021 at 12:19:01PM +0300, Ville Syrj=E4l=E4 wrote:
-> On Mon, Oct 04, 2021 at 02:26:29PM +0530, Karthik B S wrote:
-> > Async flip subtests fail sporadically with CRC failure on CI.
-> > This is expected as these tests are not run on highest priority by the
-> > scheduler, but this creates noise on CI. Add retry mechanism to rerun
-> > the test once if failure is seen.
+Filed https://gitlab.freedesktop.org/drm/intel/-/issues/4262 and re-reporte=
+d.
+igt@kms_lease@invalid-create-leases - fail - Failed assertion: create_lease=
+(data->master.fd, &mcl) =3D=3D -22
+
+Lakshmi.
+
+-----Original Message-----
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>=20
+Sent: Monday, October 4, 2021 7:19 AM
+To: Latvala, Petri <petri.latvala@intel.com>; Vudum, Lakshminarayana <laksh=
+minarayana.vudum@intel.com>
+Cc: Stylon Wang <stylon.wang@amd.com>; igt-dev@lists.freedesktop.org; nicho=
+las.choi@amd.com
+Subject: Re: [PATCH i-g-t] tests/kms_hdr: Fix failure to read output_bpc on=
+ AMD hardware
+
+On 10/04, Petri Latvala wrote:
+> On Sat, Oct 02, 2021 at 11:15:11AM -0400, Rodrigo Siqueira wrote:
+> > Hi Lakshminarayana and Petri,
 > >=20
-> > Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> > ---
-> >  tests/i915/kms_big_fb.c | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
+> > I noticed that the CI was not triggered for this patch [1]. Do you=20
+> > know why? Is it possible to trigger it?
 > >=20
-> > diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
-> > index 308227c9..8c09f59e 100644
-> > --- a/tests/i915/kms_big_fb.c
-> > +++ b/tests/i915/kms_big_fb.c
-> > @@ -481,6 +481,7 @@ max_hw_stride_async_flip_test(data_t *data)
-> >  		       h =3D data->output->config.default_mode.vdisplay;
-> >  	igt_plane_t *primary;
-> >  	igt_crc_t compare_crc, async_crc;
-> > +	bool retried =3D false;
-> > =20
-> >  	igt_require(data->display.is_atomic);
-> >  	igt_output_set_pipe(data->output, data->pipe);
-> > @@ -513,6 +514,7 @@ max_hw_stride_async_flip_test(data_t *data)
-> >  					  INTEL_PIPE_CRC_SOURCE_AUTO);
-> >  	igt_pipe_crc_start(data->pipe_crc);
-> > =20
-> > +retry:
-> >  	igt_set_timeout(5, "Async pageflipping loop got stuck!\n");
-> >  	for (int i =3D 0; i < 2; i++) {
-> >  		igt_plane_set_fb(primary, &data->big_fb);
-> > @@ -548,6 +550,13 @@ max_hw_stride_async_flip_test(data_t *data)
-> >  		igt_assert_f(kmstest_get_vblank(data->drm_fd, data->pipe, 0) -
-> >  			     startframe =3D=3D 1, "lost frames\n");
-> > =20
-> > +		/* Test is not running at real time priority, so allow one failure*/
-> > +		if (!(igt_check_crc_equal(&compare_crc, &async_crc)^(i^1)) && !retri=
-ed) {
-> > +			retried =3D true;
-> > +			igt_reset_timeout();
-> > +			goto retry;
-> > +		}
-> > +
+> > 1.=20
+> > https://nam11.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fpa
+> > tchwork.freedesktop.org%2Fseries%2F95313%2F&amp;data=3D04%7C01%7CRodri
+> > go.Siqueira%40amd.com%7C43b5d7ab0731407a2f9008d987278e48%7C3dd8961fe
+> > 4884e608e11a82d994e183d%7C0%7C0%7C637689426230154758%7CUnknown%7CTWF
+> > pbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI
+> > 6Mn0%3D%7C1000&amp;sdata=3DNIEF78%2B74hVRdQPhcCEPVlp4To3iDjkpkkv8VjSC0
+> > %2BE%3D&amp;reserved=3D0
 >=20
-> This test seems to entirely fit kms_big_fb in general. I don't
-                     ^
-		     not
+> CI was down for a bit due to server cert issues, testing that and the=20
+> other affected series happening in a bit.
 
-is what I meant to write. Somewhat important small word.
+Thanks Petri,
 
-> think kms_big_fb should be testing any timing sensitive stuff.
->=20
-> So I think we should change this to a form that follows the rest
-> of kms_big_fb to validate that each page flip just presents the
-> correct data on screen. The timing sensitive stuff is best left
-> for kms_async_flip.
->=20
-> So this should maybe be something like: flip to a correctly sized
-> temp fb with the wrong contents and change the plane src coordinates,
-> and then async flip back to the correct fb and validate the
-> correct data is now on screen.
->=20
-> Oh and the async flip test should not be limited to the
-> max-hw-stride part. We should test that async flips do the
-> right thing with gtt remapping as well.
->=20
-> --=20
-> Ville Syrj=E4l=E4
-> Intel
+I noticed that the CI was triggered for this patch.
 
---=20
-Ville Syrj=E4l=E4
-Intel
+Lakshminarayana,
+
+It looks like that we have a false positive	in the result:
+
+  https://patchwork.freedesktop.org/series/95313/
+
+Notice that this patch only changes kms_hdr, but we have a failure in the i=
+gt@kms_lease.
+
+Thanks
+Siqueira
+=20
+>=20
+> --
+> Petri Latvala
+>=20
+>=20
+> >=20
+> > Thanks
+> > Siqueira
+> >=20
+> > On 10/01, Stylon Wang wrote:
+> > > The first commit with TEST_ONLY flag in bpc-switch subtests could=20
+> > > in some cases cause reading of output_bpc on connectors to fail on=20
+> > > AMD hardware.
+> > >=20
+> > > Use ALLOW_MODESET to prevent this from happening.
+> > >=20
+> > > Signed-off-by: Stylon Wang <stylon.wang@amd.com>
+> > > ---
+> > >  tests/kms_hdr.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >=20
+> > > diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c index=20
+> > > 5b8529c8..a4983b9a 100644
+> > > --- a/tests/kms_hdr.c
+> > > +++ b/tests/kms_hdr.c
+> > > @@ -217,7 +217,7 @@ static void test_bpc_switch_on_output(data_t *dat=
+a, igt_output_t *output,
+> > >  		igt_plane_set_fb(data->primary, &afb);
+> > >  		igt_plane_set_size(data->primary, data->w, data->h);
+> > >  		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+> > > -		ret =3D igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TES=
+T_ONLY, NULL);
+> > > +		ret =3D igt_display_try_commit_atomic(display,=20
+> > > +DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> > >  		if (!ret) {
+> > >  			data->w =3D afb.width;
+> > >  			data->h =3D afb.height;
+> > > --
+> > > 2.32.0
+> > >=20
+> >=20
+> > --
+> > Rodrigo Siqueira
+> > https://nam11.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fsi
+> > queira.tech%2F&amp;data=3D04%7C01%7CRodrigo.Siqueira%40amd.com%7C43b5d
+> > 7ab0731407a2f9008d987278e48%7C3dd8961fe4884e608e11a82d994e183d%7C0%7
+> > C0%7C637689426230154758%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAi
+> > LCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=3DVvCE
+> > WNlBkZnAm9M1JYeheIlVaUVMkeDiallVz0uUM8o%3D&amp;reserved=3D0
+
+--
+Rodrigo Siqueira
+https://siqueira.tech
