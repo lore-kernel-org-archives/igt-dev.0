@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8894630054070492456=="
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B9C66E1D6
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Oct 2021 13:47:00 +0000 (UTC)
+From: apoorva1.singh@intel.com
+Date: Mon,  4 Oct 2021 19:03:18 +0530
+Message-Id: <20211004133318.3050630-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 04 Oct 2021 13:31:47 -0000
-Message-ID: <163335430740.1479.17736479903521845302@emeril.freedesktop.org>
-References: <20211004085629.2796-1-karthik.b.s@intel.com>
-In-Reply-To: <20211004085629.2796-1-karthik.b.s@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fbig=5Ffb=3A_Add_retry_mechanism_for_async_flip_subtests?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_create: Add support for local
+ memory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,269 +17,99 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: zbigniew.kempczynski@intel.com, thomas.hellstrom@linux.intel.com, igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8894630054070492456==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Apoorva Singh <apoorva1.singh@intel.com>
 
-== Series Details ==
+Add support for local memory region (Device memory)
 
-Series: tests/kms_big_fb: Add retry mechanism for async flip subtests
-URL   : https://patchwork.freedesktop.org/series/95395/
-State : success
+Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+---
+ tests/i915/gem_exec_create.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
-== Summary ==
-
-CI Bug Log - changes from IGT_6229 -> IGTPW_6278
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6278 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@cs-gfx:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271]) +7 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-kbl-soraka/igt@amdgpu/amd_basic@cs-gfx.html
-
-  * igt@amdgpu/amd_cs_nop@nop-compute0:
-    - fi-ilk-650:         NOTRUN -> [SKIP][2] ([fdo#109271]) +35 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-ilk-650/igt@amdgpu/amd_cs_nop@nop-compute0.html
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-bdw-samus:       NOTRUN -> [WARN][3] ([i915#3718])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-bdw-samus/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@kms_chamelium@dp-hpd-fast:
-    - fi-ilk-650:         NOTRUN -> [SKIP][4] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-ilk-650/igt@kms_chamelium@dp-hpd-fast.html
-
-  * igt@kms_chamelium@hdmi-edid-read:
-    - fi-bdw-samus:       NOTRUN -> [SKIP][5] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-bdw-samus/igt@kms_chamelium@hdmi-edid-read.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-bdw-samus:       NOTRUN -> [SKIP][6] ([fdo#109271]) +29 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-bdw-samus/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][7] ([fdo#109271]) +48 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_parallel@engines@userptr:
-    - fi-pnv-d510:        [INCOMPLETE][8] ([i915#299]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-bdw-samus:       [INCOMPLETE][10] ([i915#146] / [i915#4173]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-bdw-samus/igt@gem_exec_suspend@basic-s3.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-bdw-samus/igt@gem_exec_suspend@basic-s3.html
-    - fi-tgl-1115g4:      [FAIL][12] ([i915#1888]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@kms_chamelium@hdmi-edid-read:
-    - fi-kbl-7500u:       [FAIL][14] ([i915#3449]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-cml-u2:          [DMESG-WARN][16] ([i915#95]) -> [PASS][17]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
-  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
-  [i915#1993]: https://gitlab.freedesktop.org/drm/intel/issues/1993
-  [i915#299]: https://gitlab.freedesktop.org/drm/intel/issues/299
-  [i915#3449]: https://gitlab.freedesktop.org/drm/intel/issues/3449
-  [i915#3718]: https://gitlab.freedesktop.org/drm/intel/issues/3718
-  [i915#4173]: https://gitlab.freedesktop.org/drm/intel/issues/4173
-  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
-
-
-Participating hosts (33 -> 33)
-------------------------------
-
-  Additional (1): fi-ilk-650 
-  Missing    (1): fi-bsw-cyan 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6229 -> IGTPW_6278
-
-  CI-20190529: 20190529
-  CI_DRM_10681: fe9b639a95a08713c8ee4ef110ce6a6388c9f9f2 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6278: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/index.html
-  IGT_6229: dff598c339a2da647f15c86d0015e16378c7ea9b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/index.html
-
---===============8894630054070492456==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_big_fb: Add retry mechanism for async flip subtests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95395/">https://patchwork.freedesktop.org/series/95395/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6229 -&gt; IGTPW_6278</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6278 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@cs-gfx:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-kbl-soraka/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_cs_nop@nop-compute0:</p>
-<ul>
-<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-ilk-650/igt@amdgpu/amd_cs_nop@nop-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +35 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>fi-bdw-samus:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-bdw-samus/igt@core_hotunplug@unbind-rebind.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3718">i915#3718</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-hpd-fast:</p>
-<ul>
-<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-ilk-650/igt@kms_chamelium@dp-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-edid-read:</p>
-<ul>
-<li>fi-bdw-samus:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-bdw-samus/igt@kms_chamelium@hdmi-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
-<ul>
-<li>fi-bdw-samus:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-bdw-samus/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +29 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +48 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_parallel@engines@userptr:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/299">i915#299</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>
-<p>fi-bdw-samus:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-bdw-samus/igt@gem_exec_suspend@basic-s3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4173">i915#4173</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-bdw-samus/igt@gem_exec_suspend@basic-s3.html">PASS</a></p>
-</li>
-<li>
-<p>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-edid-read:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3449">i915#3449</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (33 -&gt; 33)</h2>
-<p>Additional (1): fi-ilk-650 <br />
-  Missing    (1): fi-bsw-cyan </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6229 -&gt; IGTPW_6278</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10681: fe9b639a95a08713c8ee4ef110ce6a6388c9f9f2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6278: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6278/index.html<br />
-  IGT_6229: dff598c339a2da647f15c86d0015e16378c7ea9b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8894630054070492456==--
+diff --git a/tests/i915/gem_exec_create.c b/tests/i915/gem_exec_create.c
+index 612eb032..403c2618 100644
+--- a/tests/i915/gem_exec_create.c
++++ b/tests/i915/gem_exec_create.c
+@@ -44,6 +44,9 @@
+ #include "i915/gem_ring.h"
+ #include "igt.h"
+ 
++#include "i915_drm.h"
++#include "i915/intel_memory_region.h"
++
+ #define ENGINE_FLAGS  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
+ 
+ static double elapsed(const struct timespec *start, const struct timespec *end)
+@@ -54,6 +57,7 @@ static double elapsed(const struct timespec *start, const struct timespec *end)
+ 
+ #define ENGINES (1 << 0)
+ #define LEAK (1 << 1)
++#define LMEM (1 << 2)
+ 
+ static void all(int fd, unsigned flags, int timeout, int ncpus)
+ {
+@@ -61,6 +65,7 @@ static void all(int fd, unsigned flags, int timeout, int ncpus)
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
+ 	unsigned engines[I915_EXEC_RING_MASK + 1], nengine;
++	uint32_t region = flags & LMEM ? REGION_LMEM(0) : REGION_SMEM;
+ 	const intel_ctx_t *ctx;
+ 
+ 	nengine = 0;
+@@ -82,7 +87,7 @@ static void all(int fd, unsigned flags, int timeout, int ncpus)
+ 	igt_require(nengine);
+ 
+ 	memset(&obj, 0, sizeof(obj));
+-	obj.handle =  gem_create(fd, 4096);
++	obj.handle = gem_create_in_memory_regions(fd, 4096, region);
+ 	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
+ 
+ 	memset(&execbuf, 0, sizeof(execbuf));
+@@ -108,7 +113,7 @@ static void all(int fd, unsigned flags, int timeout, int ncpus)
+ 		clock_gettime(CLOCK_MONOTONIC, &start);
+ 		do {
+ 			for (int n = 0; n < nengine; n++) {
+-				obj.handle = gem_create(fd, 4096);
++				obj.handle = gem_create_in_memory_regions(fd, 4096, region);
+ 				gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
+ 				execbuf.flags &= ~ENGINE_FLAGS;
+ 				execbuf.flags |= engines[n];
+@@ -121,7 +126,7 @@ static void all(int fd, unsigned flags, int timeout, int ncpus)
+ 			count += nengine;
+ 			clock_gettime(CLOCK_MONOTONIC, &now);
+ 		} while (elapsed(&start, &now) < timeout); /* Hang detection ~120s */
+-		obj.handle = gem_create(fd, 4096);
++		obj.handle = gem_create_in_memory_regions(fd, 4096, region);
+ 		gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
+ 		for (int n = 0; n < nengine; n++) {
+ 			execbuf.flags &= ~ENGINE_FLAGS;
+@@ -163,6 +168,19 @@ igt_main
+ 	igt_subtest("madvise")
+ 		all(device, ENGINES | LEAK, 20, 1);
+ 
++	igt_subtest_group {
++		igt_fixture {
++			igt_require(gem_has_lmem(device));
++		}
++
++		igt_subtest("basic-LMEM")
++			all(device, LMEM, 5, 1);
++		igt_subtest("forked-LMEM")
++			all(device, LMEM, 20, ncpus);
++
++		igt_subtest("madvise-LMEM")
++			all(device, LEAK | LMEM, 20, 1);
++	}
+ 
+ 	igt_fixture {
+ 		igt_stop_hang_detector();
+-- 
+2.25.1
