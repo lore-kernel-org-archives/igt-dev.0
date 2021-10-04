@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D9FDD6E195
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Oct 2021 09:19:04 +0000 (UTC)
-Date: Mon, 4 Oct 2021 12:19:01 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <YVrHBWTxHBHQEMZ0@intel.com>
-References: <20211004085629.2796-1-karthik.b.s@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CD2F6E993
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Oct 2021 09:29:25 +0000 (UTC)
+Date: Mon, 4 Oct 2021 12:32:53 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YVrKRXeGi2V37xCP@platvala-desk.ger.corp.intel.com>
+References: <20210903123027.1433-1-contact@emersion.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20211004085629.2796-1-karthik.b.s@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Add retry mechanism
- for async flip subtests
+In-Reply-To: <20210903123027.1433-1-contact@emersion.fr>
+Subject: Re: [igt-dev] [RFC i-g-t] tests/kms_lease: add empty lease test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,71 +20,73 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org, juha-pekka.heikkila@intel.com
+To: Simon Ser <contact@emersion.fr>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Oct 04, 2021 at 02:26:29PM +0530, Karthik B S wrote:
-> Async flip subtests fail sporadically with CRC failure on CI.
-> This is expected as these tests are not run on highest priority by the
-> scheduler, but this creates noise on CI. Add retry mechanism to rerun
-> the test once if failure is seen.
->=20
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+On Fri, Sep 03, 2021 at 12:30:38PM +0000, Simon Ser wrote:
+> This is an update for a kernel change currently being reviewed.
+> 
+> Signed-off-by: Simon Ser <contact@emersion.fr>
+
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+
+When is the kernel change going to hit drm-tip? We're going to need a
+bug report and cibuglog filter for this failing without it if this is
+merged before kernel. (Which is ok, with the bug filing done)
+
+
 > ---
->  tests/i915/kms_big_fb.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
->=20
-> diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
-> index 308227c9..8c09f59e 100644
-> --- a/tests/i915/kms_big_fb.c
-> +++ b/tests/i915/kms_big_fb.c
-> @@ -481,6 +481,7 @@ max_hw_stride_async_flip_test(data_t *data)
->  		       h =3D data->output->config.default_mode.vdisplay;
->  	igt_plane_t *primary;
->  	igt_crc_t compare_crc, async_crc;
-> +	bool retried =3D false;
-> =20
->  	igt_require(data->display.is_atomic);
->  	igt_output_set_pipe(data->output, data->pipe);
-> @@ -513,6 +514,7 @@ max_hw_stride_async_flip_test(data_t *data)
->  					  INTEL_PIPE_CRC_SOURCE_AUTO);
->  	igt_pipe_crc_start(data->pipe_crc);
-> =20
-> +retry:
->  	igt_set_timeout(5, "Async pageflipping loop got stuck!\n");
->  	for (int i =3D 0; i < 2; i++) {
->  		igt_plane_set_fb(primary, &data->big_fb);
-> @@ -548,6 +550,13 @@ max_hw_stride_async_flip_test(data_t *data)
->  		igt_assert_f(kmstest_get_vblank(data->drm_fd, data->pipe, 0) -
->  			     startframe =3D=3D 1, "lost frames\n");
-> =20
-> +		/* Test is not running at real time priority, so allow one failure*/
-> +		if (!(igt_check_crc_equal(&compare_crc, &async_crc)^(i^1)) && !retried=
-) {
-> +			retried =3D true;
-> +			igt_reset_timeout();
-> +			goto retry;
-> +		}
+>  tests/kms_lease.c | 18 +++++++++++-------
+>  1 file changed, 11 insertions(+), 7 deletions(-)
+> 
+> diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+> index c5c88e145e1a..b69d99389de0 100644
+> --- a/tests/kms_lease.c
+> +++ b/tests/kms_lease.c
+> @@ -250,6 +250,15 @@ static void simple_lease(data_t *data)
+>  	terminate_lease(&lease);
+>  }
+>  
+> +static void empty_lease(data_t *data)
+> +{
+> +	struct drm_mode_create_lease mcl = {0};
 > +
-
-This test seems to entirely fit kms_big_fb in general. I don't
-think kms_big_fb should be testing any timing sensitive stuff.
-
-So I think we should change this to a form that follows the rest
-of kms_big_fb to validate that each page flip just presents the
-correct data on screen. The timing sensitive stuff is best left
-for kms_async_flip.
-
-So this should maybe be something like: flip to a correctly sized
-temp fb with the wrong contents and change the plane src coordinates,
-and then async flip back to the correct fb and validate the
-correct data is now on screen.
-
-Oh and the async flip test should not be limited to the
-max-hw-stride part. We should test that async flips do the
-right thing with gtt remapping as well.
-
---=20
-Ville Syrj=E4l=E4
-Intel
+> +	igt_assert_eq(create_lease(data->master.fd, &mcl), 0);
+> +
+> +	close(mcl.fd);
+> +}
+> +
+>  static void page_flip_implicit_plane(data_t *data)
+>  {
+>  	uint32_t object_ids[3];
+> @@ -842,16 +851,10 @@ static void run_test(data_t *data, void (*testfunc)(data_t *))
+>  static void invalid_create_leases(data_t *data)
+>  {
+>  	uint32_t object_ids[4];
+> -	struct drm_mode_create_lease mcl;
+> +	struct drm_mode_create_lease mcl = {0};
+>  	drmModeRes *resources;
+>  	int tmp_fd, ret;
+>  
+> -	/* empty lease */
+> -	mcl.object_ids = 0;
+> -	mcl.object_count = 0;
+> -	mcl.flags = 0;
+> -	igt_assert_eq(create_lease(data->master.fd, &mcl), -EINVAL);
+> -
+>  	/* NULL array pointer */
+>  	mcl.object_count = 1;
+>  	igt_assert_eq(create_lease(data->master.fd, &mcl), -EFAULT);
+> @@ -1221,6 +1224,7 @@ igt_main
+>  		const char *desc;
+>  	} funcs[] = {
+>  		{ "simple_lease", simple_lease, "Check if create lease ioctl call works" },
+> +		{ "empty_lease", empty_lease, "Check that creating an empty lease works" },
+>  		{ "lessee_list", lessee_list, "Check if listed lease is same as created one" },
+>  		{ "lease_get", lease_get, "Tests getting the required contents of a lease" },
+>  		{ "lease_unleased_connector", lease_unleased_connector, "Negative test by trying to"
+> -- 
+> 2.33.0
+> 
+> 
