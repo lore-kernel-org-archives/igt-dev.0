@@ -1,16 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A8A7C6E226
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Oct 2021 22:39:08 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Mon,  4 Oct 2021 15:39:41 -0700
-Message-Id: <20211004223949.2138370-8-alan.previn.teres.alexis@intel.com>
-In-Reply-To: <20211004223949.2138370-1-alan.previn.teres.alexis@intel.com>
-References: <20211004223949.2138370-1-alan.previn.teres.alexis@intel.com>
+Date: Mon,  4 Oct 2021 15:39:34 -0700
+Message-Id: <20211004223949.2138370-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v12 07/15] Add subtest to copy raw source to
- protected dest
+Subject: [igt-dev] [PATCH i-g-t v12 00/15] Introduce PXP Test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,102 +15,147 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, dri-devel@lists.freedesktop.org, Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add subtest to 3d-copy raw source buffer (with
-known readible content) to a destination buffer
-marked as protected with a protected session using
-default session keys. The destination buffer is
-verified to be different from the source (when
-read via CPU) because its encrypted.
+This series adds gem_pxp tests for the new PXP subsystem currently
+being reviewed at https://patchwork.freedesktop.org/series/90503/.
+This series currently includes 4 groups of tests addressing the
+features and restrictions described by Daniele's series :
+   1. test i915 interfaces for allocation of protected bo's
+      and contexts and enforcement of UAPI rule disallowing the
+      modification of parameters after it's been created.
+   2. verify PXP subsystem protected sessions generate encrypted
+      content on protected output buffers and decrypt protected
+      inputs buffers.
+   3. verify i915 PXP auto-teardown succeeds on suspend-resume
+      cycles and gem-exec of stale protected assets fail. Ensure
+      protected-contexts adhere to stricter invalidation
+      enforcement upon teardown event.
+   4. Ensure that display plane decryption works as expected with
+      protected buffers.
 
-Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- tests/i915/gem_pxp.c | 55 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+NOTE: This series is on the tenth revision. All R-v-b's have been
+received except UAPI patch which will be dropped at merge time (after
+kernel patches gets merged and igt's drm UAPI gets sync'd).
 
-diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 272de57b..9c7de6b0 100644
---- a/tests/i915/gem_pxp.c
-+++ b/tests/i915/gem_pxp.c
-@@ -378,7 +378,9 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size
- #define TSTSURF_STRIDE      (TSTSURF_WIDTH*TSTSURF_BYTESPP)
- #define TSTSURF_SIZE        (TSTSURF_STRIDE*TSTSURF_HEIGHT)
- #define TSTSURF_FILLCOLOR1  0xfaceface
-+#define TSTSURF_FILLCOLOR2  0xdeaddead
- #define TSTSURF_INITCOLOR1  0x12341234
-+#define TSTSURF_INITCOLOR2  0x56785678
- 
- static void test_render_baseline(int i915)
- {
-@@ -424,6 +426,57 @@ static void test_render_baseline(int i915)
- 	buf_ops_destroy(bops);
- }
- 
-+static void test_render_pxp_src_to_protdest(int i915)
-+{
-+	uint32_t ctx, srcbo, dstbo;
-+	struct intel_buf *srcbuf, *dstbuf;
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb;
-+	uint32_t devid;
-+	int ret;
-+
-+	devid = intel_get_drm_devid(i915);
-+	igt_assert(devid);
-+
-+	bops = buf_ops_create(i915);
-+	igt_assert(bops);
-+
-+	/*
-+	 * Perform a protected render operation but only label
-+	 * the dest as protected. After rendering, the content
-+	 * should be encrypted
-+	 */
-+	ret = create_ctx_with_params(i915, true, true, true, false, &ctx);
-+	igt_assert_eq(ret, 0);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
-+	ibb = intel_bb_create_with_context(i915, ctx, 4096);
-+	igt_assert(ibb);
-+	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
-+
-+	dstbo = alloc_and_fill_dest_buff(i915, true, TSTSURF_SIZE, TSTSURF_INITCOLOR2);
-+	dstbuf = intel_buf_create_using_handle(bops, dstbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
-+						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
-+	intel_buf_set_pxp(dstbuf, true);
-+
-+	srcbo = alloc_and_fill_dest_buff(i915, false, TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
-+	srcbuf = intel_buf_create_using_handle(bops, srcbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
-+						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
-+
-+	gen12_render_copyfunc(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
-+	gem_sync(i915, dstbo);
-+
-+	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
-+				TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
-+
-+	intel_bb_destroy(ibb);
-+	intel_buf_destroy(srcbuf);
-+	gem_close(i915, srcbo);
-+	intel_buf_destroy(dstbuf);
-+	gem_close(i915, dstbo);
-+	gem_context_destroy(i915, ctx);
-+	buf_ops_destroy(bops);
-+}
-+
- igt_main
- {
- 	int i915 = -1;
-@@ -495,6 +548,8 @@ igt_main
- 		igt_describe("Verify protected render operations:");
- 		igt_subtest("regular-baseline-src-copy-readible")
- 			test_render_baseline(i915);
-+		igt_subtest("protected-raw-src-copy-not-readible")
-+			test_render_pxp_src_to_protdest(i915);
- 	}
- 
- 	igt_fixture {
+Changes from prior rev1 to now:
+   v12:
+      - Rebase on latest igt and updated the UAPI changes to align
+        with commits from kernel side.
+   v11:
+      - When detecting hw support, retry pxp context creation
+        multiple times a timeout as per HW SLA.
+      - initialize bo or ctx handles to zero before calling
+        creation ioctl wrapper.
+   v10:
+      - In patch #2, reuse existing gem_create_ext wrapper.
+      - In patch #10, kernel side changed the debugfs file name
+        (but no difference in behavior / usage).
+      - Removed patch #14 from Rev9 as decision on kernel side
+        was to drop the usage of RESET_STATS IOCTL to track
+        invalidated pxp contexts.
+   v9:
+      - Remove patch #2 from rev7 as it was duplicating
+        an existing ioctl wrapper helper
+      - Fix the false-negative warnings when triggering
+        auto-suspend-resume (remove checking if we are
+        suspending after the system has already resumed).
+   v8:
+      - Nothing - mistaken detection from patchwork
+   v7:
+      - In prior rev, Patches #11->13 was testing expected results
+        from calling gem_execbuf with stale pxp-context, pxp-buffer
+        or combinations of them (including an opt-out usage). All
+        of them used a single suspend-resume power state cycles to
+        trigger the PXP teardown event. These patches have been
+        combined into patch #14 that continues to carry the prior rev
+        Rvb.
+      - In its place, the new patches of #11->#13 do the identical
+        set of tests as before (results from gem_execbuf with various
+        combinations of stale pxp context and buffer), but this time
+        using a debugfs file handle that triggers the same code path
+        taken when the HW triggers the pxp teardown. That said, the
+        code is nearly identical as v6 but I did not keep the Rvb's.
+      - In patch #15, RESET_STAT now reports invalidated / banned
+        pxp contexts via the existing batch_active's lost count.
+   v6:
+      - Addressed rev5 review comments for patch #1, #7, #14
+        and #17.
+      - For #17, I'm using Rodrigo's Rv-b because offline 
+        discussions concluded that we couldn't use those
+        test sequences with HDCP and so it was removed it.
+      - Added Rv-b into all patches that received it.
+      - Modified the test requirement from a list of device
+        ids to checking if runtime PXP interface succeeds
+        due to kernel's build config dependency.
+   v5:
+      - Addressed all rev4 review comments. No changes to
+        overall flow and logic compared to the last rev.
+   v4:
+      - Addressed all rev3 review comments. NOTE: that all
+        test cases and code logic are the same but a decent
+        amount of refactoring has occured due to address
+        v3 comments to break out subtests into separate
+        functions while combining certain checks into the same
+        function to reduce test time by minimizing number of
+        suspend-resume power cycles.
+   v3:
+      - Addressed all rev2 review comments.
+      - In line with one of the rev2 comments, a thorough fixup
+        of all line-breaks in function calls was made for a more
+        consistent styling.
+      - Rebased on igt upstream repo and updated to latest kernel
+        UAPI that added GEM_CREATE_EXT.
+   v2: 
+      - Addressed all rev1 review comments except these:
+           1.Chris Wilson : "...have the caller do 1-3 once for its protected
+             context. Call it something like intel_bb_enable_pxp(),
+             intel_bb_set_pxp if it should be reversible.".
+             -  This couldn't be implemented because [1] HW needs different
+             instruction sequences for enabling/disabling PXP depending
+             on the engine class and [2] the pair of "pxp-enable" and "pxp-
+             disable" instructions need to be contained within the same batch
+             that is dispatched to the hardware. That said, implementing
+             internal intel_batchbuffer funtionality for this would conflict
+             with how rendercopy_gen9 uses batch buffer memory by repositioing
+             the pointer and consuming unused portions of the batch buffer as
+             3d state offsets that batchbuffer has no visibility.
+          
+      - Added these additional subtests:
+           1. verify that buffer sharing works across testing pxp context.
+           2. verify teardown bans contexts via DRM_IOCTL_I915_GET_RESET_STAT.
+           3. verify display plane decryption of protected buffers.
+
+Alan Previn (14):
+  i915_drm.h sync
+  Add basic PXP testing of buffer and context alloc
+  Perform a regular 3d copy as a control checkpoint
+  Add PXP attribute support in batchbuffer and buffer_ops libs
+  Add MI_SET_APPID instruction definition
+  Enable protected session cmd in gen12_render_copyfunc
+  Add subtest to copy raw source to protected dest
+  Add test where both src and dest are protected
+  Verify PXP teardown occurred through suspend-resume
+  Verify execbuf fails with stale PXP context after teardown
+  Verify execbuf fails with stale PXP buffer after teardown
+  Verify execbuf ok with stale PXP buf in opt-out use
+  Verify execution behavior with stale PXP assets through suspend-resume
+  Verify protected surfaces are dma buffer sharable
+
+Karthik B S (1):
+  tests/i915_pxp: CRC validation for display tests.
+
+ include/drm-uapi/i915_drm.h |   94 +++
+ lib/intel_batchbuffer.c     |   23 +-
+ lib/intel_batchbuffer.h     |   31 +
+ lib/intel_bufops.h          |   15 +
+ lib/intel_reg.h             |    8 +
+ lib/rendercopy_gen9.c       |   57 ++
+ tests/i915/gem_pxp.c        | 1283 +++++++++++++++++++++++++++++++++++
+ tests/meson.build           |    1 +
+ 8 files changed, 1511 insertions(+), 1 deletion(-)
+ create mode 100644 tests/i915/gem_pxp.c
+
 -- 
 2.25.1
