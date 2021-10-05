@@ -1,16 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D3E886F5E3
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 15:14:06 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue,  5 Oct 2021 08:10:13 -0700
-Message-Id: <20211005151022.2161424-8-alan.previn.teres.alexis@intel.com>
-In-Reply-To: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
-References: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
+Date: Tue,  5 Oct 2021 08:10:06 -0700
+Message-Id: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v13 07/16] Enable protected session cmd in
- gen12_render_copyfunc
+Subject: [igt-dev] [PATCH i-g-t v13 00/16] Introduce PXP Test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,138 +15,150 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, dri-devel@lists.freedesktop.org, Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-1. In _gen9_render_op, check if the incoming batchbuffer
-   is marked with pxp enabled. If so, insert MI_SET_APPID
-   along with PIPE_CONTROL instructions at the start and
-   end of the rendering operation in the command buffer.
+This series adds gem_pxp tests for the new PXP subsystem currently
+being reviewed at https://patchwork.freedesktop.org/series/90503/.
+This series currently includes 4 groups of tests addressing the
+features and restrictions described by Daniele's series :
+   1. test i915 interfaces for allocation of protected bo's
+      and contexts and enforcement of UAPI rule disallowing the
+      modification of parameters after it's been created.
+   2. verify PXP subsystem protected sessions generate encrypted
+      content on protected output buffers and decrypt protected
+      inputs buffers.
+   3. verify i915 PXP auto-teardown succeeds on suspend-resume
+      cycles and gem-exec of stale protected assets fail. Ensure
+      protected-contexts adhere to stricter invalidation
+      enforcement upon teardown event.
+   4. Ensure that display plane decryption works as expected with
+      protected buffers.
 
-2. The two PIPE_CONTROLs will enable protected memory
-   at the start of the batch and disabling protected
-   memory at the end of it. These PIPE_CONTROLs require a
-   Post-Sync operation with a write to memory for hardware
-   to accept.
+NOTE: This series is on the thirteenth revision. All R-v-b's have been
+received except UAPI patch which will be dropped at merge time (after
+kernel patches gets merged and igt's drm UAPI gets sync'd).
 
-3. In order to satisfy #2, _gen9_render_op uses unused
-   regions of the ibb buffer for the PIPE_CONTROL PostSync
-   write to memory (no different from how other 3d states
-   are being referenced).
+Changes from prior rev1 to now:
+   v13:
+      - Rebase again and fix UAPI sync to match kernel commits.
+   v12:
+      - Rebase on latest igt and updated the UAPI changes to align
+        with commits from kernel side.
+   v11:
+      - When detecting hw support, retry pxp context creation
+        multiple times a timeout as per HW SLA.
+      - initialize bo or ctx handles to zero before calling
+        creation ioctl wrapper.
+   v10:
+      - In patch #2, reuse existing gem_create_ext wrapper.
+      - In patch #10, kernel side changed the debugfs file name
+        (but no difference in behavior / usage).
+      - Removed patch #14 from Rev9 as decision on kernel side
+        was to drop the usage of RESET_STATS IOCTL to track
+        invalidated pxp contexts.
+   v9:
+      - Remove patch #2 from rev7 as it was duplicating
+        an existing ioctl wrapper helper
+      - Fix the false-negative warnings when triggering
+        auto-suspend-resume (remove checking if we are
+        suspending after the system has already resumed).
+   v8:
+      - Nothing - mistaken detection from patchwork
+   v7:
+      - In prior rev, Patches #11->13 was testing expected results
+        from calling gem_execbuf with stale pxp-context, pxp-buffer
+        or combinations of them (including an opt-out usage). All
+        of them used a single suspend-resume power state cycles to
+        trigger the PXP teardown event. These patches have been
+        combined into patch #14 that continues to carry the prior rev
+        Rvb.
+      - In its place, the new patches of #11->#13 do the identical
+        set of tests as before (results from gem_execbuf with various
+        combinations of stale pxp context and buffer), but this time
+        using a debugfs file handle that triggers the same code path
+        taken when the HW triggers the pxp teardown. That said, the
+        code is nearly identical as v6 but I did not keep the Rvb's.
+      - In patch #15, RESET_STAT now reports invalidated / banned
+        pxp contexts via the existing batch_active's lost count.
+   v6:
+      - Addressed rev5 review comments for patch #1, #7, #14
+        and #17.
+      - For #17, I'm using Rodrigo's Rv-b because offline 
+        discussions concluded that we couldn't use those
+        test sequences with HDCP and so it was removed it.
+      - Added Rv-b into all patches that received it.
+      - Modified the test requirement from a list of device
+        ids to checking if runtime PXP interface succeeds
+        due to kernel's build config dependency.
+   v5:
+      - Addressed all rev4 review comments. No changes to
+        overall flow and logic compared to the last rev.
+   v4:
+      - Addressed all rev3 review comments. NOTE: that all
+        test cases and code logic are the same but a decent
+        amount of refactoring has occured due to address
+        v3 comments to break out subtests into separate
+        functions while combining certain checks into the same
+        function to reduce test time by minimizing number of
+        suspend-resume power cycles.
+   v3:
+      - Addressed all rev2 review comments.
+      - In line with one of the rev2 comments, a thorough fixup
+        of all line-breaks in function calls was made for a more
+        consistent styling.
+      - Rebased on igt upstream repo and updated to latest kernel
+        UAPI that added GEM_CREATE_EXT.
+   v2: 
+      - Addressed all rev1 review comments except these:
+           1.Chris Wilson : "...have the caller do 1-3 once for its protected
+             context. Call it something like intel_bb_enable_pxp(),
+             intel_bb_set_pxp if it should be reversible.".
+             -  This couldn't be implemented because [1] HW needs different
+             instruction sequences for enabling/disabling PXP depending
+             on the engine class and [2] the pair of "pxp-enable" and "pxp-
+             disable" instructions need to be contained within the same batch
+             that is dispatched to the hardware. That said, implementing
+             internal intel_batchbuffer funtionality for this would conflict
+             with how rendercopy_gen9 uses batch buffer memory by repositioing
+             the pointer and consuming unused portions of the batch buffer as
+             3d state offsets that batchbuffer has no visibility.
+          
+      - Added these additional subtests:
+           1. verify that buffer sharing works across testing pxp context.
+           2. verify teardown bans contexts via DRM_IOCTL_I915_GET_RESET_STAT.
+           3. verify display plane decryption of protected buffers.
 
-4. _gen9_render_op shall check the incoming surface
-   buffers for "is_protected" flag and if its set, it
-   will mark the SURFACE_STATE's MOCS field accordingly.
+Alan Previn (15):
+  i915_drm.h sync PXP default session
+  i915_drm.h sync PXP object creation
+  Add basic PXP testing of buffer and context alloc
+  Perform a regular 3d copy as a control checkpoint
+  Add PXP attribute support in batchbuffer and buffer_ops libs
+  Add MI_SET_APPID instruction definition
+  Enable protected session cmd in gen12_render_copyfunc
+  Add subtest to copy raw source to protected dest
+  Add test where both src and dest are protected
+  Verify PXP teardown occurred through suspend-resume
+  Verify execbuf fails with stale PXP context after teardown
+  Verify execbuf fails with stale PXP buffer after teardown
+  Verify execbuf ok with stale PXP buf in opt-out use
+  Verify execution behavior with stale PXP assets through suspend-resume
+  Verify protected surfaces are dma buffer sharable
 
-NOTE: _gen9_render_op needs to program the HW to enable
-the PXP session as part of the rendering batch buffer
-because the HW requires that enabling/disabling protected
-memory access must be programmed in pairs within the same
-"dispatch of rendering commands" to HW.
+Karthik B S (1):
+  tests/i915_pxp: CRC validation for display tests.
 
-Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- lib/rendercopy_gen9.c | 57 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 57 insertions(+)
+ include/drm-uapi/i915_drm.h |   97 +++
+ lib/intel_batchbuffer.c     |   23 +-
+ lib/intel_batchbuffer.h     |   31 +
+ lib/intel_bufops.h          |   15 +
+ lib/intel_reg.h             |    8 +
+ lib/rendercopy_gen9.c       |   57 ++
+ tests/i915/gem_pxp.c        | 1283 +++++++++++++++++++++++++++++++++++
+ tests/meson.build           |    1 +
+ 8 files changed, 1514 insertions(+), 1 deletion(-)
+ create mode 100644 tests/i915/gem_pxp.c
 
-diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-index 0356964e..f021f4cb 100644
---- a/lib/rendercopy_gen9.c
-+++ b/lib/rendercopy_gen9.c
-@@ -183,6 +183,8 @@ gen8_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst) {
- 		ss->ss0.tiled_mode = 3;
- 
- 	ss->ss1.memory_object_control = intel_get_uc_mocs(i915);
-+	if (intel_buf_pxp(buf))
-+		ss->ss1.memory_object_control |= 1;
- 
- 	if (buf->tiling == I915_TILING_Yf)
- 		ss->ss5.trmode = 1;
-@@ -904,6 +906,53 @@ static void gen8_emit_primitive(struct intel_bb *ibb, uint32_t offset)
- 	intel_bb_out(ibb, 0);	/* index buffer offset, ignored */
- }
- 
-+#define GFX_OP_PIPE_CONTROL    ((3 << 29) | (3 << 27) | (2 << 24))
-+#define PIPE_CONTROL_CS_STALL	            (1 << 20)
-+#define PIPE_CONTROL_RENDER_TARGET_FLUSH    (1 << 12)
-+#define PIPE_CONTROL_FLUSH_ENABLE           (1 << 7)
-+#define PIPE_CONTROL_DATA_CACHE_INVALIDATE  (1 << 5)
-+#define PIPE_CONTROL_PROTECTEDPATH_DISABLE  (1 << 27)
-+#define PIPE_CONTROL_PROTECTEDPATH_ENABLE   (1 << 22)
-+#define PIPE_CONTROL_POST_SYNC_OP           (1 << 14)
-+#define PIPE_CONTROL_POST_SYNC_OP_STORE_DW_IDX (1 << 21)
-+#define PS_OP_TAG_START                     0x1234fed0
-+#define PS_OP_TAG_END                       0x5678cbaf
-+static void gen12_emit_pxp_state(struct intel_bb *ibb, bool enable,
-+		 uint32_t pxp_write_op_offset)
-+{
-+	uint32_t pipe_ctl_flags;
-+	uint32_t set_app_id, ps_op_id;
-+
-+	if (enable) {
-+		pipe_ctl_flags = PIPE_CONTROL_FLUSH_ENABLE;
-+		intel_bb_out(ibb, GFX_OP_PIPE_CONTROL);
-+		intel_bb_out(ibb, pipe_ctl_flags);
-+
-+		set_app_id =  MI_SET_APPID |
-+			      APPTYPE(intel_bb_pxp_apptype(ibb)) |
-+			      APPID(intel_bb_pxp_appid(ibb));
-+		intel_bb_out(ibb, set_app_id);
-+
-+		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_ENABLE;
-+		ps_op_id = PS_OP_TAG_START;
-+	} else {
-+		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_DISABLE;
-+		ps_op_id = PS_OP_TAG_END;
-+	}
-+
-+	pipe_ctl_flags |= (PIPE_CONTROL_CS_STALL |
-+			   PIPE_CONTROL_RENDER_TARGET_FLUSH |
-+			   PIPE_CONTROL_DATA_CACHE_INVALIDATE |
-+			   PIPE_CONTROL_POST_SYNC_OP);
-+	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL | 4);
-+	intel_bb_out(ibb, pipe_ctl_flags);
-+	intel_bb_emit_reloc(ibb, ibb->handle, 0, I915_GEM_DOMAIN_COMMAND,
-+			    (enable ? pxp_write_op_offset : (pxp_write_op_offset+8)),
-+			    ibb->batch_offset);
-+	intel_bb_out(ibb, ps_op_id);
-+	intel_bb_out(ibb, ps_op_id);
-+}
-+
- /* The general rule is if it's named gen6 it is directly copied from
-  * gen6_render_copyfunc.
-  *
-@@ -953,6 +1002,7 @@ void _gen9_render_op(struct intel_bb *ibb,
- 	uint32_t vertex_buffer;
- 	uint32_t aux_pgtable_state;
- 	bool fast_clear = !src;
-+	uint32_t pxp_scratch_offset;
- 
- 	if (!fast_clear)
- 		igt_assert(src->bpp == dst->bpp);
-@@ -981,8 +1031,12 @@ void _gen9_render_op(struct intel_bb *ibb,
- 	aux_pgtable_state = gen12_create_aux_pgtable_state(ibb, aux_pgtable_buf);
- 
- 	/* TODO: there is other state which isn't setup */
-+	pxp_scratch_offset = intel_bb_offset(ibb);
- 	intel_bb_ptr_set(ibb, 0);
- 
-+	if (intel_bb_pxp_enabled(ibb))
-+		gen12_emit_pxp_state(ibb, true, pxp_scratch_offset);
-+
- 	/* Start emitting the commands. The order roughly follows the mesa blorp
- 	 * order */
- 	intel_bb_out(ibb, G4X_PIPELINE_SELECT | PIPELINE_SELECT_3D |
-@@ -1054,6 +1108,9 @@ void _gen9_render_op(struct intel_bb *ibb,
- 	gen8_emit_vf_topology(ibb);
- 	gen8_emit_primitive(ibb, vertex_buffer);
- 
-+	if (intel_bb_pxp_enabled(ibb))
-+		gen12_emit_pxp_state(ibb, false, pxp_scratch_offset);
-+
- 	intel_bb_emit_bbe(ibb);
- 	intel_bb_exec(ibb, intel_bb_offset(ibb),
- 		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, false);
 -- 
 2.25.1
