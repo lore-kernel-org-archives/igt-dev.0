@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 123056F5E6
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 15:14:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D3ECA6F5ED
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 15:14:06 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue,  5 Oct 2021 08:10:18 -0700
-Message-Id: <20211005151022.2161424-13-alan.previn.teres.alexis@intel.com>
+Date: Tue,  5 Oct 2021 08:10:14 -0700
+Message-Id: <20211005151022.2161424-9-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
 References: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v13 12/16] Verify execbuf fails with stale
- PXP buffer after teardown
+Subject: [igt-dev] [PATCH i-g-t v13 08/16] Add subtest to copy raw source to
+ protected dest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,74 +24,97 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a check to verify that reusing a stale protected buffer
-in a gem_execbuff (with a protected context) after a teardown
-event fails with -ENOEXEC error. Trigger the teardown via the
-pxp invalidation debugfs that simulates a HW teardown IRQ.
-
-NOTE: The end-to-end architecture requirement includes that
-any break in the links of the PXP sessions needs to trigger a
-full teardown and the application needs to be made aware of that
-allowing it to re-establish the end-to-end pipeline of buffers,
-contexts and renders again if it chooses to. This stricter
-behavior targets only contexts created with PXP enabled.
+Add subtest to 3d-copy raw source buffer (with
+known readible content) to a destination buffer
+marked as protected with a protected session using
+default session keys. The destination buffer is
+verified to be different from the source (when
+read via CPU) because its encrypted.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/i915/gem_pxp.c | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ tests/i915/gem_pxp.c | 55 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
 diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 7d508674..22a2e5a4 100644
+index 272de57b..9c7de6b0 100644
 --- a/tests/i915/gem_pxp.c
 +++ b/tests/i915/gem_pxp.c
-@@ -796,6 +796,39 @@ static void test_pxp_stale_ctx_execution(int i915)
- 	free_exec_assets(i915, &data);
+@@ -378,7 +378,9 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size
+ #define TSTSURF_STRIDE      (TSTSURF_WIDTH*TSTSURF_BYTESPP)
+ #define TSTSURF_SIZE        (TSTSURF_STRIDE*TSTSURF_HEIGHT)
+ #define TSTSURF_FILLCOLOR1  0xfaceface
++#define TSTSURF_FILLCOLOR2  0xdeaddead
+ #define TSTSURF_INITCOLOR1  0x12341234
++#define TSTSURF_INITCOLOR2  0x56785678
+ 
+ static void test_render_baseline(int i915)
+ {
+@@ -424,6 +426,57 @@ static void test_render_baseline(int i915)
+ 	buf_ops_destroy(bops);
  }
  
-+static void test_pxp_stale_buf_execution(int i915)
++static void test_render_pxp_src_to_protdest(int i915)
 +{
++	uint32_t ctx, srcbo, dstbo;
++	struct intel_buf *srcbuf, *dstbuf;
++	struct buf_ops *bops;
++	struct intel_bb *ibb;
++	uint32_t devid;
 +	int ret;
-+	struct simple_exec_assets data = {0};
-+	uint32_t ctx2;
-+	struct intel_bb *ibb2;
 +
-+	/* Use pxp buffers with pxp context for testing for invalidation of protected buffers. */
-+	prepare_exec_assets(i915, &data, true, true);
-+	ret = gem_execbuf_flush_store_dw(i915, data.ibb, data.ctx, data.fencebuf);
-+	igt_assert(ret == 0);
++	devid = intel_get_drm_devid(i915);
++	igt_assert(devid);
 +
-+	trigger_pxp_debugfs_forced_teardown(i915);
++	bops = buf_ops_create(i915);
++	igt_assert(bops);
 +
 +	/*
-+	 * After teardown, use a new pxp context but reuse the stale bo to ensure
-+	 * the kernel is catching the invalidated bo (not context)
++	 * Perform a protected render operation but only label
++	 * the dest as protected. After rendering, the content
++	 * should be encrypted
 +	 */
-+	ret = create_ctx_with_params(i915, true, true, true, false, &ctx2);
++	ret = create_ctx_with_params(i915, true, true, true, false, &ctx);
 +	igt_assert_eq(ret, 0);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx2), 1);
-+	ibb2 = intel_bb_create_with_context(i915, ctx2, 4096);
-+	igt_assert(ibb2);
-+	intel_bb_remove_intel_buf(data.ibb, data.fencebuf);
-+	intel_bb_add_intel_buf(ibb2, data.fencebuf, true);
-+	ret = gem_execbuf_flush_store_dw(i915, ibb2, ctx2, data.fencebuf);
-+	igt_assert_f((ret == -ENOEXEC), "Executing stale pxp buffer didn't fail with -ENOEXEC\n");
++	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
++	ibb = intel_bb_create_with_context(i915, ctx, 4096);
++	igt_assert(ibb);
++	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
 +
-+	intel_bb_destroy(ibb2);
-+	gem_context_destroy(i915, ctx2);
-+	free_exec_assets(i915, &data);
++	dstbo = alloc_and_fill_dest_buff(i915, true, TSTSURF_SIZE, TSTSURF_INITCOLOR2);
++	dstbuf = intel_buf_create_using_handle(bops, dstbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
++	intel_buf_set_pxp(dstbuf, true);
++
++	srcbo = alloc_and_fill_dest_buff(i915, false, TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
++	srcbuf = intel_buf_create_using_handle(bops, srcbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
++
++	gen12_render_copyfunc(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
++	gem_sync(i915, dstbo);
++
++	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
++				TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
++
++	intel_bb_destroy(ibb);
++	intel_buf_destroy(srcbuf);
++	gem_close(i915, srcbo);
++	intel_buf_destroy(dstbuf);
++	gem_close(i915, dstbo);
++	gem_context_destroy(i915, ctx);
++	buf_ops_destroy(bops);
 +}
 +
  igt_main
  {
  	int i915 = -1;
-@@ -887,6 +920,8 @@ igt_main
- 			test_pxp_pwrcycle_teardown_keychange(i915, &pm);
- 		igt_subtest("verify-pxp-stale-ctx-execution")
- 			test_pxp_stale_ctx_execution(i915);
-+		igt_subtest("verify-pxp-stale-buf-execution")
-+			test_pxp_stale_buf_execution(i915);
+@@ -495,6 +548,8 @@ igt_main
+ 		igt_describe("Verify protected render operations:");
+ 		igt_subtest("regular-baseline-src-copy-readible")
+ 			test_render_baseline(i915);
++		igt_subtest("protected-raw-src-copy-not-readible")
++			test_render_pxp_src_to_protdest(i915);
  	}
  
  	igt_fixture {
