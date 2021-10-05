@@ -1,20 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AAC256E3C1
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 10:44:06 +0000 (UTC)
-References: <20210916180301.6791-1-matthew.brost@intel.com>
- <20210916180301.6791-3-matthew.brost@intel.com>
- <4264a50f-549e-44ee-cd3e-d7221e38b21b@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <e481b241-c3a3-40c1-6f17-129b2144d81a@linux.intel.com>
-Date: Tue, 5 Oct 2021 11:44:02 +0100
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com
+ [IPv6:2a00:1450:4864:20::531])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4CD6B6EB49
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 10:47:09 +0000 (UTC)
+Received: by mail-ed1-x531.google.com with SMTP id l7so53275680edq.3
+ for <igt-dev@lists.freedesktop.org>; Tue, 05 Oct 2021 03:47:09 -0700 (PDT)
+References: <20211004085629.2796-1-karthik.b.s@intel.com>
+ <YVrHBWTxHBHQEMZ0@intel.com> <YVshFrxOVFlyFmNy@intel.com>
+ <eca505ba-6efd-5b4f-ce86-b16d2e035a2e@intel.com> <YVwnSl1BumIYE0bX@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Message-ID: <b13af887-e6fb-7976-fbc6-7bb458df09f2@gmail.com>
+Date: Tue, 5 Oct 2021 13:46:54 +0300
 MIME-Version: 1.0
-In-Reply-To: <4264a50f-549e-44ee-cd3e-d7221e38b21b@intel.com>
+In-Reply-To: <YVwnSl1BumIYE0bX@intel.com>
 Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/3] i915/gem_ctx_shared: Make
- gem_ctx_shared understand static priority mapping
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Add retry mechanism
+ for async flip subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,104 +25,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>, Matthew Brost <matthew.brost@intel.com>, igt-dev@lists.freedesktop.org
-Cc: john.c.harrison@intel.com
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, Karthik B S <karthik.b.s@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 05/10/2021 00:26, Daniele Ceraolo Spurio wrote:
-> 
-> 
-> On 9/16/2021 11:03 AM, Matthew Brost wrote:
->> The i915 currently has 2k visible priority levels which are currently
->> unique. This is changing to statically map these 2k levels into 3
->> buckets:
+On 5.10.2021 13.22, Ville Syrjälä wrote:
+> On Tue, Oct 05, 2021 at 03:30:01PM +0530, Karthik B S wrote:
+>> On 10/4/2021 9:13 PM, Ville Syrjälä wrote:
+>>> On Mon, Oct 04, 2021 at 12:19:01PM +0300, Ville Syrjälä wrote:
+>>>> On Mon, Oct 04, 2021 at 02:26:29PM +0530, Karthik B S wrote:
+>>>>> Async flip subtests fail sporadically with CRC failure on CI.
+>>>>> This is expected as these tests are not run on highest priority by the
+>>>>> scheduler, but this creates noise on CI. Add retry mechanism to rerun
+>>>>> the test once if failure is seen.
+>>>>>
+>>>>> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+>>>>> ---
+>>>>>    tests/i915/kms_big_fb.c | 9 +++++++++
+>>>>>    1 file changed, 9 insertions(+)
+>>>>>
+>>>>> diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
+>>>>> index 308227c9..8c09f59e 100644
+>>>>> --- a/tests/i915/kms_big_fb.c
+>>>>> +++ b/tests/i915/kms_big_fb.c
+>>>>> @@ -481,6 +481,7 @@ max_hw_stride_async_flip_test(data_t *data)
+>>>>>    		       h = data->output->config.default_mode.vdisplay;
+>>>>>    	igt_plane_t *primary;
+>>>>>    	igt_crc_t compare_crc, async_crc;
+>>>>> +	bool retried = false;
+>>>>>    
+>>>>>    	igt_require(data->display.is_atomic);
+>>>>>    	igt_output_set_pipe(data->output, data->pipe);
+>>>>> @@ -513,6 +514,7 @@ max_hw_stride_async_flip_test(data_t *data)
+>>>>>    					  INTEL_PIPE_CRC_SOURCE_AUTO);
+>>>>>    	igt_pipe_crc_start(data->pipe_crc);
+>>>>>    
+>>>>> +retry:
+>>>>>    	igt_set_timeout(5, "Async pageflipping loop got stuck!\n");
+>>>>>    	for (int i = 0; i < 2; i++) {
+>>>>>    		igt_plane_set_fb(primary, &data->big_fb);
+>>>>> @@ -548,6 +550,13 @@ max_hw_stride_async_flip_test(data_t *data)
+>>>>>    		igt_assert_f(kmstest_get_vblank(data->drm_fd, data->pipe, 0) -
+>>>>>    			     startframe == 1, "lost frames\n");
+>>>>>    
+>>>>> +		/* Test is not running at real time priority, so allow one failure*/
+>>>>> +		if (!(igt_check_crc_equal(&compare_crc, &async_crc)^(i^1)) && !retried) {
+>>>>> +			retried = true;
+>>>>> +			igt_reset_timeout();
+>>>>> +			goto retry;
+>>>>> +		}
+>>>>> +
+>>>> This test seems to entirely fit kms_big_fb in general. I don't
+>>>                        ^
+>>> 		     not
+>>>
+>>> is what I meant to write. Somewhat important small word.
+>>>
+>>>> think kms_big_fb should be testing any timing sensitive stuff.
+>>>>
+>>>> So I think we should change this to a form that follows the rest
+>>>> of kms_big_fb to validate that each page flip just presents the
+>>>> correct data on screen. The timing sensitive stuff is best left
+>>>> for kms_async_flip.
+>>>>
+>>>> So this should maybe be something like: flip to a correctly sized
+>>>> temp fb with the wrong contents and change the plane src coordinates,
+>>>> and then async flip back to the correct fb and validate the
+>>>> correct data is now on screen.
+>> Thank you for the feedback.
 >>
->> low: < 0
->> mid: 0
->> high: > 0
->>
->> Update gem_ctx_shared to understand this. This entails updating
->> promotion test to use 3 levels that will map into different buckets and
->> also add bit of delay after releasing a cork beforing completing the
->> spinners to give time to the i915 schedule to process the fence and
->> release and queue the requests.
->>
->> v2: Add a delay between starting releasing spinner and cork in
->> promotion
->> v3:
->>   (Daniele)
->>    - Always add delay, update commit message
->>
->> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
->> ---
->>   tests/i915/gem_ctx_shared.c | 5 +++--
->>   1 file changed, 3 insertions(+), 2 deletions(-)
->>
->> diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
->> index ea1b5dd1b..7f88871b8 100644
->> --- a/tests/i915/gem_ctx_shared.c
->> +++ b/tests/i915/gem_ctx_shared.c
->> @@ -622,6 +622,7 @@ static void unplug_show_queue(int i915, struct 
->> igt_cork *c, uint64_t ahnd,
->>       igt_cork_unplug(c); /* batches will now be queued on the engine */
->>       igt_debugfs_dump(i915, "i915_engine_info");
->> +    usleep(250000);
-> 
-> Same as previous patch, with a comment added:
-> 
-> Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+>> Is this because we can handle any timing related failures in the same
+>> test (may be using some common mechanism)? So add a subtest for
+>> max-hw-stride in kms_async_flips and rewrite this subtest as mentioned
+>> above?
+> I don't think there's anything specifically about max stride
+> that needs timing sensitive tests. In theory kms_async_flip/crc
+> already tests what we need, which is that there are no visual
+> artifacts when flipping between two identical framebuffers.
+> The only exception would be if there's some very specific
+> hardware issue with big stride + async flip.
 
-Come on guys, it is a bit bad and lazy for good taste no? 250ms more 
-test runtime, multiplied by number of tests and subtests (engines) will 
-add up and over shadows the current test time. For instance current 
-state is:
+At a time there was explicit wishes from hw guys how this test was to be 
+performed with strides past 64K size. I have no idea if their worries 
+are still valid.
 
-# tests/gem_ctx_shared --r *promotion*
-IGT-Version: 1.26-NO-GIT (x86_64) (Linux: 5.15.0-rc4 x86_64)
-Starting subtest: Q-promotion
-Starting dynamic subtest: rcs0
-Dynamic subtest rcs0: SUCCESS (0.174s)
-Starting dynamic subtest: bcs0
-Dynamic subtest bcs0: SUCCESS (0.224s)
-Starting dynamic subtest: vcs0
-Dynamic subtest vcs0: SUCCESS (0.153s)
-Starting dynamic subtest: vecs0
-Dynamic subtest vecs0: SUCCESS (0.153s)
-Subtest Q-promotion: SUCCESS (0.708s)
+Timing sensitivity comes just from the fact when async flip is made the 
+full stride flips as expected and it need to be captured with crc from 
+that flipping frame.
 
-This patch instantly makes this 1.7 seconds instead. Add the in/out 
-order subtests, other tests, platforms with more engines, in a world 
-where CI time budget is scarce - can't we do better than this and not 
-settle on sprinkling of usleep all over the place?
-
-Like maybe add out fences to the two requests, merge them, and wait on 
-that (since there is no implicit write declared so set domain does not 
-suffice)?
-
-Unless I am missing something it would be strictly correct for execlists 
-backend as well since it now works just because it is fast enough.
-
-Regards,
-
-Tvrtko
-
-> 
-> Daniele
-> 
->>       for (int n = 0; n < ARRAY_SIZE(spin); n++) {
->>           ahnd = spin[n]->ahnd;
->> @@ -831,10 +832,10 @@ static void promotion(int i915, const 
->> intel_ctx_cfg_t *cfg, unsigned ring)
->>       gem_context_set_priority(i915, ctx[LO]->id, MIN_PRIO);
->>       ctx[HI] = intel_ctx_create(i915, &q_cfg);
->> -    gem_context_set_priority(i915, ctx[HI]->id, 0);
->> +    gem_context_set_priority(i915, ctx[HI]->id, MAX_PRIO);
->>       ctx[NOISE] = intel_ctx_create(i915, &q_cfg);
->> -    gem_context_set_priority(i915, ctx[NOISE]->id, MIN_PRIO/2);
->> +    gem_context_set_priority(i915, ctx[NOISE]->id, 0);
->>       result = gem_create(i915, 4096);
->>       result_offset = get_offset(ahnd, result, 4096, 0);
-> 
