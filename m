@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EBE616E452
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 19:41:01 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B9E9D6EB7E
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 19:41:02 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue,  5 Oct 2021 12:41:22 -0700
-Message-Id: <20211005194133.13508-5-alan.previn.teres.alexis@intel.com>
+Date: Tue,  5 Oct 2021 12:41:30 -0700
+Message-Id: <20211005194133.13508-13-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20211005194133.13508-1-alan.previn.teres.alexis@intel.com>
 References: <20211005194133.13508-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v15 04/15] Add PXP attribute support in
- batchbuffer and buffer_ops libs
+Subject: [igt-dev] [PATCH i-g-t v15 12/15] Verify execbuf ok with stale PXP
+ buf in opt-out use
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,143 +21,67 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Eventually when we get to testing PXP rendering capability,
-we shall reuse lib's rendercopy feature. Rendercopy libraries
-shall retrieve information about PXP-session-enablement and
-which buffers are protected from these new flags.
+Add a check to verify that reusing a stale protected
+buffer in a gem_execbuff call, but using a regular (not-
+protected) context will succeed after a teardown event.
+Trigger the teardown via the pxp invalidation debugfs
+that simulates a HW teardown IRQ.
+
+This ensures that user space applications that choose
+not to opt-in for strict PXP teardown awareness (by
+using a regular context) won't suffer gem_execbuff
+failures if a protected buffer was among the assets
+used in any of its rendering operations.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- lib/intel_batchbuffer.c | 21 +++++++++++++++++++++
- lib/intel_batchbuffer.h | 28 ++++++++++++++++++++++++++++
- lib/intel_bufops.h      | 15 +++++++++++++++
- 3 files changed, 64 insertions(+)
+ tests/i915/gem_pxp.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index e3e649ca..291d706b 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -2347,6 +2347,27 @@ uint64_t intel_bb_offset_reloc_to_object(struct intel_bb *ibb,
- 				  delta, offset, presumed_offset);
+diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+index 22a2e5a4..8e3bc3cf 100644
+--- a/tests/i915/gem_pxp.c
++++ b/tests/i915/gem_pxp.c
+@@ -829,6 +829,27 @@ static void test_pxp_stale_buf_execution(int i915)
+ 	free_exec_assets(i915, &data);
  }
  
-+/*
-+ * @intel_bb_set_pxp:
-+ * @ibb: pointer to intel_bb
-+ * @new_state: enable or disable pxp session
-+ * @apptype: pxp session input identifies what type of session to enable
-+ * @appid: pxp session input provides which appid to use
-+ *
-+ * This function merely stores the pxp state and session information to
-+ * be retrieved and programmed later by supporting libraries such as
-+ * gen12_render_copy that must program the HW within the same dispatch
-+ */
-+void intel_bb_set_pxp(struct intel_bb *ibb, bool new_state,
-+		      uint32_t apptype, uint32_t appid)
++static void test_pxp_stale_buf_optout_execution(int i915)
 +{
-+	igt_assert(ibb);
++	int ret;
++	struct simple_exec_assets data = {0};
 +
-+	ibb->pxp.enabled = new_state;
-+	ibb->pxp.apptype = new_state ? apptype : 0;
-+	ibb->pxp.appid   = new_state ? appid : 0;
++	/*
++	 * Use a normal context for testing opt-out behavior
++	 * when executing with a pxp buffer across a teardown event.
++	 */
++	prepare_exec_assets(i915, &data, false, true);
++	ret = gem_execbuf_flush_store_dw(i915, data.ibb, data.ctx, data.fencebuf);
++	igt_assert(ret == 0);
++
++	trigger_pxp_debugfs_forced_teardown(i915);
++
++	ret = gem_execbuf_flush_store_dw(i915, data.ibb, data.ctx, data.fencebuf);
++	igt_assert_f((ret == 0), "Opt-out-execution with stale pxp buffer didn't succeed\n");
++
++	free_exec_assets(i915, &data);
 +}
 +
- static void intel_bb_dump_execbuf(struct intel_bb *ibb,
- 				  struct drm_i915_gem_execbuffer2 *execbuf)
+ igt_main
  {
-diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-index 0839d761..10fa66ee 100644
---- a/lib/intel_batchbuffer.h
-+++ b/lib/intel_batchbuffer.h
-@@ -446,6 +446,11 @@ typedef void (*igt_media_spinfunc_t)(int i915,
+ 	int i915 = -1;
+@@ -922,6 +943,8 @@ igt_main
+ 			test_pxp_stale_ctx_execution(i915);
+ 		igt_subtest("verify-pxp-stale-buf-execution")
+ 			test_pxp_stale_buf_execution(i915);
++		igt_subtest("verify-pxp-stale-buf-optout-execution")
++			test_pxp_stale_buf_optout_execution(i915);
+ 	}
  
- igt_media_spinfunc_t igt_get_media_spinfunc(int devid);
- 
-+struct igt_pxp {
-+	bool     enabled;
-+	uint32_t apptype;
-+	uint32_t appid;
-+};
- 
- /*
-  * Batchbuffer without libdrm dependency
-@@ -472,6 +477,7 @@ struct intel_bb {
- 	bool supports_48b_address;
- 	bool uses_full_ppgtt;
- 
-+	struct igt_pxp pxp;
- 	uint32_t ctx;
- 	uint32_t vm_id;
- 
-@@ -583,6 +589,27 @@ static inline void intel_bb_out(struct intel_bb *ibb, uint32_t dword)
- 	igt_assert(intel_bb_offset(ibb) <= ibb->size);
- }
- 
-+void intel_bb_set_pxp(struct intel_bb *ibb, bool new_state,
-+		      uint32_t apptype, uint32_t appid);
-+
-+static inline bool intel_bb_pxp_enabled(struct intel_bb *ibb)
-+{
-+	igt_assert(ibb);
-+	return ibb->pxp.enabled;
-+}
-+
-+static inline uint32_t intel_bb_pxp_apptype(struct intel_bb *ibb)
-+{
-+	igt_assert(ibb);
-+	return ibb->pxp.apptype;
-+}
-+
-+static inline uint32_t intel_bb_pxp_appid(struct intel_bb *ibb)
-+{
-+	igt_assert(ibb);
-+	return ibb->pxp.appid;
-+}
-+
- struct drm_i915_gem_exec_object2 *
- intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
- 		    uint64_t offset, uint64_t alignment, bool write);
-@@ -697,3 +724,4 @@ typedef void (*igt_huc_copyfunc_t)(int fd, uint64_t ahnd,
- 
- igt_huc_copyfunc_t	igt_get_huc_copyfunc(int devid);
- #endif
-+
-diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-index 8148750f..25b43073 100644
---- a/lib/intel_bufops.h
-+++ b/lib/intel_bufops.h
-@@ -52,6 +52,9 @@ struct intel_buf {
- 	uint32_t *ptr;
- 	bool cpu_write;
- 
-+	/* Content Protection*/
-+	bool is_protected;
-+
- 	/* For debugging purposes */
- 	char name[INTEL_BUF_NAME_MAXSIZE + 1];
- };
-@@ -163,6 +166,18 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
- 							 int stride);
- void intel_buf_destroy(struct intel_buf *buf);
- 
-+static inline void intel_buf_set_pxp(struct intel_buf *buf, bool new_pxp_state)
-+{
-+	igt_assert(buf);
-+	buf->is_protected = new_pxp_state;
-+}
-+
-+static inline bool intel_buf_pxp(const struct intel_buf *buf)
-+{
-+	igt_assert(buf);
-+	return buf->is_protected;
-+}
-+
- void *intel_buf_cpu_map(struct intel_buf *buf, bool write);
- void *intel_buf_device_map(struct intel_buf *buf, bool write);
- void intel_buf_unmap(struct intel_buf *buf);
+ 	igt_fixture {
 -- 
 2.25.1
