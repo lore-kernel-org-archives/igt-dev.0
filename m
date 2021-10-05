@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 847306F5CF
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 15:14:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D3E886F5E3
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 15:14:06 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue,  5 Oct 2021 08:10:08 -0700
-Message-Id: <20211005151022.2161424-3-alan.previn.teres.alexis@intel.com>
+Date: Tue,  5 Oct 2021 08:10:13 -0700
+Message-Id: <20211005151022.2161424-8-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
 References: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v13 02/16] i915_drm.h sync PXP object
- creation
+Subject: [igt-dev] [PATCH i-g-t v13 07/16] Enable protected session cmd in
+ gen12_render_copyfunc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,141 +21,138 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Sync UAPI for to get GEM_CREATE_EXT's I915_OBJECT_PARAM_PROTECTED_CONTENT
-and GEM_CONTEXT_CREATE's I915_CONTEXT_PARAM_PROTECTED_CONTENT
+1. In _gen9_render_op, check if the incoming batchbuffer
+   is marked with pxp enabled. If so, insert MI_SET_APPID
+   along with PIPE_CONTROL instructions at the start and
+   end of the rendering operation in the command buffer.
 
-Taken from kernel commit:
-commit d3ac8d42168a9be7380be8035df8b6d3780ec2a1
-       ("drm/i915/pxp: interfaces for using protected objects.")
+2. The two PIPE_CONTROLs will enable protected memory
+   at the start of the batch and disabling protected
+   memory at the end of it. These PIPE_CONTROLs require a
+   Post-Sync operation with a write to memory for hardware
+   to accept.
+
+3. In order to satisfy #2, _gen9_render_op uses unused
+   regions of the ibb buffer for the PIPE_CONTROL PostSync
+   write to memory (no different from how other 3d states
+   are being referenced).
+
+4. _gen9_render_op shall check the incoming surface
+   buffers for "is_protected" flag and if its set, it
+   will mark the SURFACE_STATE's MOCS field accordingly.
+
+NOTE: _gen9_render_op needs to program the HW to enable
+the PXP session as part of the rendering batch buffer
+because the HW requires that enabling/disabling protected
+memory access must be programmed in pairs within the same
+"dispatch of rendering commands" to HW.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- include/drm-uapi/i915_drm.h | 94 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 94 insertions(+)
+ lib/rendercopy_gen9.c | 57 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 57 insertions(+)
 
-diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-index f4691fcc..6e81f6ea 100644
---- a/include/drm-uapi/i915_drm.h
-+++ b/include/drm-uapi/i915_drm.h
-@@ -1815,6 +1815,55 @@ struct drm_i915_gem_context_param {
-  * attempted to use it, never re-use this context param number.
-  */
- #define I915_CONTEXT_PARAM_RINGSIZE	0xc
+diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+index 0356964e..f021f4cb 100644
+--- a/lib/rendercopy_gen9.c
++++ b/lib/rendercopy_gen9.c
+@@ -183,6 +183,8 @@ gen8_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst) {
+ 		ss->ss0.tiled_mode = 3;
+ 
+ 	ss->ss1.memory_object_control = intel_get_uc_mocs(i915);
++	if (intel_buf_pxp(buf))
++		ss->ss1.memory_object_control |= 1;
+ 
+ 	if (buf->tiling == I915_TILING_Yf)
+ 		ss->ss5.trmode = 1;
+@@ -904,6 +906,53 @@ static void gen8_emit_primitive(struct intel_bb *ibb, uint32_t offset)
+ 	intel_bb_out(ibb, 0);	/* index buffer offset, ignored */
+ }
+ 
++#define GFX_OP_PIPE_CONTROL    ((3 << 29) | (3 << 27) | (2 << 24))
++#define PIPE_CONTROL_CS_STALL	            (1 << 20)
++#define PIPE_CONTROL_RENDER_TARGET_FLUSH    (1 << 12)
++#define PIPE_CONTROL_FLUSH_ENABLE           (1 << 7)
++#define PIPE_CONTROL_DATA_CACHE_INVALIDATE  (1 << 5)
++#define PIPE_CONTROL_PROTECTEDPATH_DISABLE  (1 << 27)
++#define PIPE_CONTROL_PROTECTEDPATH_ENABLE   (1 << 22)
++#define PIPE_CONTROL_POST_SYNC_OP           (1 << 14)
++#define PIPE_CONTROL_POST_SYNC_OP_STORE_DW_IDX (1 << 21)
++#define PS_OP_TAG_START                     0x1234fed0
++#define PS_OP_TAG_END                       0x5678cbaf
++static void gen12_emit_pxp_state(struct intel_bb *ibb, bool enable,
++		 uint32_t pxp_write_op_offset)
++{
++	uint32_t pipe_ctl_flags;
++	uint32_t set_app_id, ps_op_id;
 +
-+/*
-+ * I915_CONTEXT_PARAM_PROTECTED_CONTENT:
-+ *
-+ * Mark that the context makes use of protected content, which will result
-+ * in the context being invalidated when the protected content session is.
-+ * Given that the protected content session is killed on suspend, the device
-+ * is kept awake for the lifetime of a protected context, so the user should
-+ * make sure to dispose of them once done.
-+ * This flag can only be set at context creation time and, when set to true,
-+ * must be preceded by an explicit setting of I915_CONTEXT_PARAM_RECOVERABLE
-+ * to false. This flag can't be set to true in conjunction with setting the
-+ * I915_CONTEXT_PARAM_BANNABLE flag to false. Creation example:
-+ *
-+ * .. code-block:: C
-+ *
-+ *	struct drm_i915_gem_context_create_ext_setparam p_protected = {
-+ *		.base = {
-+ *			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
-+ *		},
-+ *		.param = {
-+ *			.param = I915_CONTEXT_PARAM_PROTECTED_CONTENT,
-+ *			.value = 1,
-+ *		}
-+ *	};
-+ *	struct drm_i915_gem_context_create_ext_setparam p_norecover = {
-+ *		.base = {
-+ *			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
-+ *			.next_extension = to_user_pointer(&p_protected),
-+ *		},
-+ *		.param = {
-+ *			.param = I915_CONTEXT_PARAM_RECOVERABLE,
-+ *			.value = 0,
-+ *		}
-+ *	};
-+ *	struct drm_i915_gem_context_create_ext create = {
-+ *		.flags = I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
-+ *		.extensions = to_user_pointer(&p_norecover);
-+ *	};
-+ *
-+ *	ctx_id = gem_context_create_ext(drm_fd, &create);
-+ *
-+ * In addition to the normal failure cases, setting this flag during context
-+ * creation can result in the following errors:
-+ *
-+ * -ENODEV: feature not available
-+ * -EPERM: trying to mark a recoverable or not bannable context as protected
-+ */
-+#define I915_CONTEXT_PARAM_PROTECTED_CONTENT    0xd
- /* Must be kept compact -- no holes and well documented */
- 
- 	__u64 value;
-@@ -2931,8 +2980,12 @@ struct drm_i915_gem_create_ext {
- 	 *
- 	 * For I915_GEM_CREATE_EXT_MEMORY_REGIONS usage see
- 	 * struct drm_i915_gem_create_ext_memory_regions.
-+	 *
-+	 * For I915_GEM_CREATE_EXT_PROTECTED_CONTENT usage see
-+	 * struct drm_i915_gem_create_ext_protected_content.
- 	 */
- #define I915_GEM_CREATE_EXT_MEMORY_REGIONS 0
-+#define I915_GEM_CREATE_EXT_PROTECTED_CONTENT 1
- 	__u64 extensions;
- };
- 
-@@ -2990,6 +3043,47 @@ struct drm_i915_gem_create_ext_memory_regions {
- 	__u64 regions;
- };
- 
-+/**
-+ * struct drm_i915_gem_create_ext_protected_content - The
-+ * I915_OBJECT_PARAM_PROTECTED_CONTENT extension.
-+ *
-+ * If this extension is provided, buffer contents are expected to be protected
-+ * by PXP encryption and require decryption for scan out and processing. This
-+ * is only possible on platforms that have PXP enabled, on all other scenarios
-+ * using this extension will cause the ioctl to fail and return -ENODEV. The
-+ * flags parameter is reserved for future expansion and must currently be set
-+ * to zero.
-+ *
-+ * The buffer contents are considered invalid after a PXP session teardown.
-+ *
-+ * The encryption is guaranteed to be processed correctly only if the object
-+ * is submitted with a context created using the
-+ * I915_CONTEXT_PARAM_PROTECTED_CONTENT flag. This will also enable extra checks
-+ * at submission time on the validity of the objects involved.
-+ *
-+ * Below is an example on how to create a protected object:
-+ *
-+ * .. code-block:: C
-+ *
-+ *      struct drm_i915_gem_create_ext_protected_content protected_ext = {
-+ *              .base = { .name = I915_GEM_CREATE_EXT_PROTECTED_CONTENT },
-+ *              .flags = 0,
-+ *      };
-+ *      struct drm_i915_gem_create_ext create_ext = {
-+ *              .size = PAGE_SIZE,
-+ *              .extensions = (uintptr_t)&protected_ext,
-+ *      };
-+ *
-+ *      int err = ioctl(fd, DRM_IOCTL_I915_GEM_CREATE_EXT, &create_ext);
-+ *      if (err) ...
-+ */
-+struct drm_i915_gem_create_ext_protected_content {
-+	/** @base: Extension link. See struct i915_user_extension. */
-+	struct i915_user_extension base;
-+	/** @flags: reserved for future usage, currently MBZ */
-+	__u32 flags;
-+};
++	if (enable) {
++		pipe_ctl_flags = PIPE_CONTROL_FLUSH_ENABLE;
++		intel_bb_out(ibb, GFX_OP_PIPE_CONTROL);
++		intel_bb_out(ibb, pipe_ctl_flags);
 +
- /* ID of the protected content session managed by i915 when PXP is active */
- #define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
++		set_app_id =  MI_SET_APPID |
++			      APPTYPE(intel_bb_pxp_apptype(ibb)) |
++			      APPID(intel_bb_pxp_appid(ibb));
++		intel_bb_out(ibb, set_app_id);
++
++		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_ENABLE;
++		ps_op_id = PS_OP_TAG_START;
++	} else {
++		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_DISABLE;
++		ps_op_id = PS_OP_TAG_END;
++	}
++
++	pipe_ctl_flags |= (PIPE_CONTROL_CS_STALL |
++			   PIPE_CONTROL_RENDER_TARGET_FLUSH |
++			   PIPE_CONTROL_DATA_CACHE_INVALIDATE |
++			   PIPE_CONTROL_POST_SYNC_OP);
++	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL | 4);
++	intel_bb_out(ibb, pipe_ctl_flags);
++	intel_bb_emit_reloc(ibb, ibb->handle, 0, I915_GEM_DOMAIN_COMMAND,
++			    (enable ? pxp_write_op_offset : (pxp_write_op_offset+8)),
++			    ibb->batch_offset);
++	intel_bb_out(ibb, ps_op_id);
++	intel_bb_out(ibb, ps_op_id);
++}
++
+ /* The general rule is if it's named gen6 it is directly copied from
+  * gen6_render_copyfunc.
+  *
+@@ -953,6 +1002,7 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 	uint32_t vertex_buffer;
+ 	uint32_t aux_pgtable_state;
+ 	bool fast_clear = !src;
++	uint32_t pxp_scratch_offset;
  
+ 	if (!fast_clear)
+ 		igt_assert(src->bpp == dst->bpp);
+@@ -981,8 +1031,12 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 	aux_pgtable_state = gen12_create_aux_pgtable_state(ibb, aux_pgtable_buf);
+ 
+ 	/* TODO: there is other state which isn't setup */
++	pxp_scratch_offset = intel_bb_offset(ibb);
+ 	intel_bb_ptr_set(ibb, 0);
+ 
++	if (intel_bb_pxp_enabled(ibb))
++		gen12_emit_pxp_state(ibb, true, pxp_scratch_offset);
++
+ 	/* Start emitting the commands. The order roughly follows the mesa blorp
+ 	 * order */
+ 	intel_bb_out(ibb, G4X_PIPELINE_SELECT | PIPELINE_SELECT_3D |
+@@ -1054,6 +1108,9 @@ void _gen9_render_op(struct intel_bb *ibb,
+ 	gen8_emit_vf_topology(ibb);
+ 	gen8_emit_primitive(ibb, vertex_buffer);
+ 
++	if (intel_bb_pxp_enabled(ibb))
++		gen12_emit_pxp_state(ibb, false, pxp_scratch_offset);
++
+ 	intel_bb_emit_bbe(ibb);
+ 	intel_bb_exec(ibb, intel_bb_offset(ibb),
+ 		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, false);
 -- 
 2.25.1
