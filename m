@@ -1,14 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1703241190276900145=="
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 175526E0FF
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 16:49:02 +0000 (UTC)
+Date: Tue, 5 Oct 2021 09:44:12 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+Message-ID: <20211005164412.GA13993@jons-linux-dev-box>
+References: <20210916180301.6791-1-matthew.brost@intel.com>
+ <20210916180301.6791-3-matthew.brost@intel.com>
+ <4264a50f-549e-44ee-cd3e-d7221e38b21b@intel.com>
+ <e481b241-c3a3-40c1-6f17-129b2144d81a@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 05 Oct 2021 16:11:39 -0000
-Message-ID: <163345029986.19281.3776312251416773309@emeril.freedesktop.org>
-References: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
-In-Reply-To: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgSW50cm9k?=
- =?utf-8?q?uce_PXP_Test_=28rev13=29?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <e481b241-c3a3-40c1-6f17-129b2144d81a@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] i915/gem_ctx_shared: Make
+ gem_ctx_shared understand static priority mapping
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,376 +23,132 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Alan Previn <alan.previn.teres.alexis@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>, igt-dev@lists.freedesktop.org, john.c.harrison@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1703241190276900145==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Tue, Oct 05, 2021 at 11:44:02AM +0100, Tvrtko Ursulin wrote:
+>=20
+> On 05/10/2021 00:26, Daniele Ceraolo Spurio wrote:
+> >=20
+> >=20
+> > On 9/16/2021 11:03 AM, Matthew Brost wrote:
+> > > The i915 currently has 2k visible priority levels which are currently
+> > > unique. This is changing to statically map these 2k levels into 3
+> > > buckets:
+> > >=20
+> > > low: < 0
+> > > mid: 0
+> > > high: > 0
+> > >=20
+> > > Update gem_ctx_shared to understand this. This entails updating
+> > > promotion test to use 3 levels that will map into different buckets a=
+nd
+> > > also add bit of delay after releasing a cork beforing completing the
+> > > spinners to give time to the i915 schedule to process the fence and
+> > > release and queue the requests.
+> > >=20
+> > > v2: Add a delay between starting releasing spinner and cork in
+> > > promotion
+> > > v3:
+> > > =A0 (Daniele)
+> > > =A0=A0 - Always add delay, update commit message
+> > >=20
+> > > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> > > ---
+> > > =A0 tests/i915/gem_ctx_shared.c | 5 +++--
+> > > =A0 1 file changed, 3 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
+> > > index ea1b5dd1b..7f88871b8 100644
+> > > --- a/tests/i915/gem_ctx_shared.c
+> > > +++ b/tests/i915/gem_ctx_shared.c
+> > > @@ -622,6 +622,7 @@ static void unplug_show_queue(int i915, struct
+> > > igt_cork *c, uint64_t ahnd,
+> > > =A0=A0=A0=A0=A0 igt_cork_unplug(c); /* batches will now be queued on =
+the engine */
+> > > =A0=A0=A0=A0=A0 igt_debugfs_dump(i915, "i915_engine_info");
+> > > +=A0=A0=A0 usleep(250000);
+> >=20
+> > Same as previous patch, with a comment added:
+> >=20
+> > Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+>=20
+> Come on guys, it is a bit bad and lazy for good taste no? 250ms more test
 
-== Series Details ==
+Yea, this is way too long of a sleep. 25ms seems just fine.
 
-Series: Introduce PXP Test (rev13)
-URL   : https://patchwork.freedesktop.org/series/87570/
-State : failure
+On TGL /w the updated sleep:
+gem_ctx_shared --r *promotion*
+IGT-Version: 1.26-g7e489b053 (x86_64) (Linux: 5.15.0-rc3-guc+ x86_64)
+Starting subtest: Q-promotion
+Starting dynamic subtest: rcs0
+Dynamic subtest rcs0: SUCCESS (0.059s)
+Starting dynamic subtest: bcs0
+Dynamic subtest bcs0: SUCCESS (0.059s)
+Starting dynamic subtest: vcs0
+Dynamic subtest vcs0: SUCCESS (0.060s)
+Starting dynamic subtest: vecs0
+Dynamic subtest vecs0: SUCCESS (0.061s)
+Subtest Q-promotion: SUCCESS (0.239s)
 
-== Summary ==
+> runtime, multiplied by number of tests and subtests (engines) will add up
+> and over shadows the current test time. For instance current state is:
+>=20
+> # tests/gem_ctx_shared --r *promotion*
+> IGT-Version: 1.26-NO-GIT (x86_64) (Linux: 5.15.0-rc4 x86_64)
+> Starting subtest: Q-promotion
+> Starting dynamic subtest: rcs0
+> Dynamic subtest rcs0: SUCCESS (0.174s)
+> Starting dynamic subtest: bcs0
+> Dynamic subtest bcs0: SUCCESS (0.224s)
+> Starting dynamic subtest: vcs0
+> Dynamic subtest vcs0: SUCCESS (0.153s)
+> Starting dynamic subtest: vecs0
+> Dynamic subtest vecs0: SUCCESS (0.153s)
+> Subtest Q-promotion: SUCCESS (0.708s)
+>=20
+> This patch instantly makes this 1.7 seconds instead. Add the in/out order
+> subtests, other tests, platforms with more engines, in a world where CI t=
+ime
+> budget is scarce - can't we do better than this and not settle on sprinkl=
+ing
+> of usleep all over the place?
+>=20
+> Like maybe add out fences to the two requests, merge them, and wait on th=
+at
+> (since there is no implicit write declared so set domain does not suffice=
+)?
+>
 
-CI Bug Log - changes from IGT_6231 -> IGTPW_6287
-====================================================
+Not sure I follow. Anyways reposting now with a smaller timeout value.
+Unless we hear something we plan on merging this tomorrow.
 
-Summary
--------
+Matt=20
 
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_6287 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_6287, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_6287:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-tgl-u2:          NOTRUN -> [INCOMPLETE][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6287 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_prime@amd-to-i915:
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][2] ([fdo#109271]) +28 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-kbl-x1275/igt@amdgpu/amd_prime@amd-to-i915.html
-
-  * igt@amdgpu/amd_prime@i915-to-amd:
-    - fi-snb-2520m:       NOTRUN -> [SKIP][3] ([fdo#109271]) +37 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-snb-2520m/igt@amdgpu/amd_prime@i915-to-amd.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][4] ([i915#2190])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-tgl-u2/igt@gem_huc_copy@huc-copy.html
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#2190])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-kbl-x1275/igt@gem_huc_copy@huc-copy.html
-
-  * igt@kms_chamelium@dp-hpd-fast:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][6] ([fdo#109284] / [fdo#111827]) +8 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-tgl-u2/igt@kms_chamelium@dp-hpd-fast.html
-
-  * igt@kms_chamelium@hdmi-crc-fast:
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-kbl-x1275/igt@kms_chamelium@hdmi-crc-fast.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-snb-2520m:       NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-snb-2520m/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][9] ([i915#4103]) +1 similar issue
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-tgl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  * igt@kms_flip@basic-plain-flip@c-dp1:
-    - fi-cfl-8109u:       [PASS][10] -> [FAIL][11] ([i915#4165])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6231/fi-cfl-8109u/igt@kms_flip@basic-plain-flip@c-dp1.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-cfl-8109u/igt@kms_flip@basic-plain-flip@c-dp1.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][12] ([fdo#109285])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-tgl-u2/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
-    - fi-cfl-8109u:       [PASS][13] -> [DMESG-WARN][14] ([i915#295]) +14 similar issues
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6231/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][15] ([fdo#109271] / [i915#533])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-kbl-x1275/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][16] ([i915#3301])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-tgl-u2/igt@prime_vgem@basic-userptr.html
-
-  * igt@runner@aborted:
-    - fi-tgl-u2:          NOTRUN -> [FAIL][17] ([i915#1602] / [i915#2722])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-tgl-u2/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-cml-u2:          [DMESG-WARN][18] ([i915#95]) -> [PASS][19]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6231/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109284]: https://bugs.freedesktop.org/show_bug.cgi?id=109284
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
-  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4165]: https://gitlab.freedesktop.org/drm/intel/issues/4165
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
-
-
-Participating hosts (33 -> 34)
-------------------------------
-
-  Additional (3): fi-kbl-x1275 fi-snb-2520m fi-tgl-u2 
-  Missing    (2): fi-kbl-soraka fi-bsw-cyan 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6231 -> IGTPW_6287
-
-  CI-20190529: 20190529
-  CI_DRM_10683: 2db2331e0b19308750c3b921c2779c4c2da9b04b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6287: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/index.html
-  IGT_6231: 13460b8b626b0b377638f84e429f394322646ea4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-
-== Testlist changes ==
-
-+igt@gem_pxp@create-protected-buffer
-+igt@gem_pxp@create-regular-buffer
-+igt@gem_pxp@create-regular-context-1
-+igt@gem_pxp@create-regular-context-2
-+igt@gem_pxp@create-valid-protected-context
-+igt@gem_pxp@display-protected-crc
-+igt@gem_pxp@dmabuf-shared-protected-dst-is-context-refcounted
-+igt@gem_pxp@fail-invalid-protected-context
-+igt@gem_pxp@hw-rejects-pxp-buffer
-+igt@gem_pxp@hw-rejects-pxp-context
-+igt@gem_pxp@protected-encrypted-src-copy-not-readible
-+igt@gem_pxp@protected-raw-src-copy-not-readible
-+igt@gem_pxp@regular-baseline-src-copy-readible
-+igt@gem_pxp@reject-modify-context-protection-off-1
-+igt@gem_pxp@reject-modify-context-protection-off-2
-+igt@gem_pxp@reject-modify-context-protection-off-3
-+igt@gem_pxp@reject-modify-context-protection-on
-+igt@gem_pxp@verify-pxp-execution-after-suspend-resume
-+igt@gem_pxp@verify-pxp-key-change-after-suspend-resume
-+igt@gem_pxp@verify-pxp-stale-buf-execution
-+igt@gem_pxp@verify-pxp-stale-buf-optout-execution
-+igt@gem_pxp@verify-pxp-stale-ctx-execution
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/index.html
-
---===============1703241190276900145==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Introduce PXP Test (rev13)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87570/">https://patchwork.freedesktop.org/series/87570/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6231 -&gt; IGTPW_6287</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_6287 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_6287, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/index.html</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6287:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6287 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_prime@amd-to-i915:</p>
-<ul>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-kbl-x1275/igt@amdgpu/amd_prime@amd-to-i915.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +28 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_prime@i915-to-amd:</p>
-<ul>
-<li>fi-snb-2520m:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-snb-2520m/igt@amdgpu/amd_prime@i915-to-amd.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +37 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>
-<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-tgl-u2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
-</li>
-<li>
-<p>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-kbl-x1275/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-hpd-fast:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-tgl-u2/igt@kms_chamelium@dp-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109284">fdo#109284</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-crc-fast:</p>
-<ul>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-kbl-x1275/igt@kms_chamelium@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
-<ul>
-<li>fi-snb-2520m:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-snb-2520m/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-tgl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-plain-flip@c-dp1:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6231/fi-cfl-8109u/igt@kms_flip@basic-plain-flip@c-dp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-cfl-8109u/igt@kms_flip@basic-plain-flip@c-dp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4165">i915#4165</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-tgl-u2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6231/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) +14 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
-<ul>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-kbl-x1275/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-tgl-u2/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-tgl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6231/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (33 -&gt; 34)</h2>
-<p>Additional (3): fi-kbl-x1275 fi-snb-2520m fi-tgl-u2 <br />
-  Missing    (2): fi-kbl-soraka fi-bsw-cyan </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6231 -&gt; IGTPW_6287</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10683: 2db2331e0b19308750c3b921c2779c4c2da9b04b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6287: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6287/index.html<br />
-  IGT_6231: 13460b8b626b0b377638f84e429f394322646ea4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<p>== Testlist changes ==</p>
-<p>+igt@gem_pxp@create-protected-buffer<br />
-+igt@gem_pxp@create-regular-buffer<br />
-+igt@gem_pxp@create-regular-context-1<br />
-+igt@gem_pxp@create-regular-context-2<br />
-+igt@gem_pxp@create-valid-protected-context<br />
-+igt@gem_pxp@display-protected-crc<br />
-+igt@gem_pxp@dmabuf-shared-protected-dst-is-context-refcounted<br />
-+igt@gem_pxp@fail-invalid-protected-context<br />
-+igt@gem_pxp@hw-rejects-pxp-buffer<br />
-+igt@gem_pxp@hw-rejects-pxp-context<br />
-+igt@gem_pxp@protected-encrypted-src-copy-not-readible<br />
-+igt@gem_pxp@protected-raw-src-copy-not-readible<br />
-+igt@gem_pxp@regular-baseline-src-copy-readible<br />
-+igt@gem_pxp@reject-modify-context-protection-off-1<br />
-+igt@gem_pxp@reject-modify-context-protection-off-2<br />
-+igt@gem_pxp@reject-modify-context-protection-off-3<br />
-+igt@gem_pxp@reject-modify-context-protection-on<br />
-+igt@gem_pxp@verify-pxp-execution-after-suspend-resume<br />
-+igt@gem_pxp@verify-pxp-key-change-after-suspend-resume<br />
-+igt@gem_pxp@verify-pxp-stale-buf-execution<br />
-+igt@gem_pxp@verify-pxp-stale-buf-optout-execution<br />
-+igt@gem_pxp@verify-pxp-stale-ctx-execution</p>
-
-</body>
-</html>
-
---===============1703241190276900145==--
+> Unless I am missing something it would be strictly correct for execlists
+> backend as well since it now works just because it is fast enough.
+>=20
+> Regards,
+>=20
+> Tvrtko
+>=20
+> >=20
+> > Daniele
+> >=20
+> > > =A0=A0=A0=A0=A0 for (int n =3D 0; n < ARRAY_SIZE(spin); n++) {
+> > > =A0=A0=A0=A0=A0=A0=A0=A0=A0 ahnd =3D spin[n]->ahnd;
+> > > @@ -831,10 +832,10 @@ static void promotion(int i915, const
+> > > intel_ctx_cfg_t *cfg, unsigned ring)
+> > > =A0=A0=A0=A0=A0 gem_context_set_priority(i915, ctx[LO]->id, MIN_PRIO);
+> > > =A0=A0=A0=A0=A0 ctx[HI] =3D intel_ctx_create(i915, &q_cfg);
+> > > -=A0=A0=A0 gem_context_set_priority(i915, ctx[HI]->id, 0);
+> > > +=A0=A0=A0 gem_context_set_priority(i915, ctx[HI]->id, MAX_PRIO);
+> > > =A0=A0=A0=A0=A0 ctx[NOISE] =3D intel_ctx_create(i915, &q_cfg);
+> > > -=A0=A0=A0 gem_context_set_priority(i915, ctx[NOISE]->id, MIN_PRIO/2);
+> > > +=A0=A0=A0 gem_context_set_priority(i915, ctx[NOISE]->id, 0);
+> > > =A0=A0=A0=A0=A0 result =3D gem_create(i915, 4096);
+> > > =A0=A0=A0=A0=A0 result_offset =3D get_offset(ahnd, result, 4096, 0);
+> >=20
