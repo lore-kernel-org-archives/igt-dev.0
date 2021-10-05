@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 29B846EC41
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 19:41:02 +0000 (UTC)
-From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue,  5 Oct 2021 12:41:24 -0700
-Message-Id: <20211005194133.13508-7-alan.previn.teres.alexis@intel.com>
-In-Reply-To: <20211005194133.13508-1-alan.previn.teres.alexis@intel.com>
-References: <20211005194133.13508-1-alan.previn.teres.alexis@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5103731372882727194=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v15 06/15] Enable protected session cmd in
- gen12_render_copyfunc
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 05 Oct 2021 19:59:53 -0000
+Message-ID: <163346399365.19280.3588064098353270656@emeril.freedesktop.org>
+References: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
+In-Reply-To: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW50cm9k?=
+ =?utf-8?q?uce_PXP_Test_=28rev14=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,141 +16,276 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-1. In _gen9_render_op, check if the incoming batchbuffer
-   is marked with pxp enabled. If so, insert MI_SET_APPID
-   along with PIPE_CONTROL instructions at the start and
-   end of the rendering operation in the command buffer.
+--===============5103731372882727194==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-2. The two PIPE_CONTROLs will enable protected memory
-   at the start of the batch and disabling protected
-   memory at the end of it. These PIPE_CONTROLs require a
-   Post-Sync operation with a write to memory for hardware
-   to accept.
+== Series Details ==
 
-3. In order to satisfy #2, _gen9_render_op uses unused
-   regions of the ibb buffer for the PIPE_CONTROL PostSync
-   write to memory (no different from how other 3d states
-   are being referenced).
+Series: Introduce PXP Test (rev14)
+URL   : https://patchwork.freedesktop.org/series/87570/
+State : success
 
-4. _gen9_render_op shall check the incoming surface
-   buffers for "is_protected" flag and if its set, it
-   will mark the SURFACE_STATE's MOCS field accordingly.
+== Summary ==
 
-NOTE: _gen9_render_op needs to program the HW to enable
-the PXP session as part of the rendering batch buffer
-because the HW requires that enabling/disabling protected
-memory access must be programmed in pairs within the same
-"dispatch of rendering commands" to HW.
+CI Bug Log - changes from IGT_6232 -> IGTPW_6289
+====================================================
 
-Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- lib/rendercopy_gen9.c | 57 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 57 insertions(+)
+Summary
+-------
 
-diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-index 0356964e..f021f4cb 100644
---- a/lib/rendercopy_gen9.c
-+++ b/lib/rendercopy_gen9.c
-@@ -183,6 +183,8 @@ gen8_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst) {
- 		ss->ss0.tiled_mode = 3;
- 
- 	ss->ss1.memory_object_control = intel_get_uc_mocs(i915);
-+	if (intel_buf_pxp(buf))
-+		ss->ss1.memory_object_control |= 1;
- 
- 	if (buf->tiling == I915_TILING_Yf)
- 		ss->ss5.trmode = 1;
-@@ -904,6 +906,53 @@ static void gen8_emit_primitive(struct intel_bb *ibb, uint32_t offset)
- 	intel_bb_out(ibb, 0);	/* index buffer offset, ignored */
- }
- 
-+#define GFX_OP_PIPE_CONTROL    ((3 << 29) | (3 << 27) | (2 << 24))
-+#define PIPE_CONTROL_CS_STALL	            (1 << 20)
-+#define PIPE_CONTROL_RENDER_TARGET_FLUSH    (1 << 12)
-+#define PIPE_CONTROL_FLUSH_ENABLE           (1 << 7)
-+#define PIPE_CONTROL_DATA_CACHE_INVALIDATE  (1 << 5)
-+#define PIPE_CONTROL_PROTECTEDPATH_DISABLE  (1 << 27)
-+#define PIPE_CONTROL_PROTECTEDPATH_ENABLE   (1 << 22)
-+#define PIPE_CONTROL_POST_SYNC_OP           (1 << 14)
-+#define PIPE_CONTROL_POST_SYNC_OP_STORE_DW_IDX (1 << 21)
-+#define PS_OP_TAG_START                     0x1234fed0
-+#define PS_OP_TAG_END                       0x5678cbaf
-+static void gen12_emit_pxp_state(struct intel_bb *ibb, bool enable,
-+		 uint32_t pxp_write_op_offset)
-+{
-+	uint32_t pipe_ctl_flags;
-+	uint32_t set_app_id, ps_op_id;
-+
-+	if (enable) {
-+		pipe_ctl_flags = PIPE_CONTROL_FLUSH_ENABLE;
-+		intel_bb_out(ibb, GFX_OP_PIPE_CONTROL);
-+		intel_bb_out(ibb, pipe_ctl_flags);
-+
-+		set_app_id =  MI_SET_APPID |
-+			      APPTYPE(intel_bb_pxp_apptype(ibb)) |
-+			      APPID(intel_bb_pxp_appid(ibb));
-+		intel_bb_out(ibb, set_app_id);
-+
-+		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_ENABLE;
-+		ps_op_id = PS_OP_TAG_START;
-+	} else {
-+		pipe_ctl_flags = PIPE_CONTROL_PROTECTEDPATH_DISABLE;
-+		ps_op_id = PS_OP_TAG_END;
-+	}
-+
-+	pipe_ctl_flags |= (PIPE_CONTROL_CS_STALL |
-+			   PIPE_CONTROL_RENDER_TARGET_FLUSH |
-+			   PIPE_CONTROL_DATA_CACHE_INVALIDATE |
-+			   PIPE_CONTROL_POST_SYNC_OP);
-+	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL | 4);
-+	intel_bb_out(ibb, pipe_ctl_flags);
-+	intel_bb_emit_reloc(ibb, ibb->handle, 0, I915_GEM_DOMAIN_COMMAND,
-+			    (enable ? pxp_write_op_offset : (pxp_write_op_offset+8)),
-+			    ibb->batch_offset);
-+	intel_bb_out(ibb, ps_op_id);
-+	intel_bb_out(ibb, ps_op_id);
-+}
-+
- /* The general rule is if it's named gen6 it is directly copied from
-  * gen6_render_copyfunc.
-  *
-@@ -953,6 +1002,7 @@ void _gen9_render_op(struct intel_bb *ibb,
- 	uint32_t vertex_buffer;
- 	uint32_t aux_pgtable_state;
- 	bool fast_clear = !src;
-+	uint32_t pxp_scratch_offset;
- 
- 	if (!fast_clear)
- 		igt_assert(src->bpp == dst->bpp);
-@@ -981,8 +1031,12 @@ void _gen9_render_op(struct intel_bb *ibb,
- 	aux_pgtable_state = gen12_create_aux_pgtable_state(ibb, aux_pgtable_buf);
- 
- 	/* TODO: there is other state which isn't setup */
-+	pxp_scratch_offset = intel_bb_offset(ibb);
- 	intel_bb_ptr_set(ibb, 0);
- 
-+	if (intel_bb_pxp_enabled(ibb))
-+		gen12_emit_pxp_state(ibb, true, pxp_scratch_offset);
-+
- 	/* Start emitting the commands. The order roughly follows the mesa blorp
- 	 * order */
- 	intel_bb_out(ibb, G4X_PIPELINE_SELECT | PIPELINE_SELECT_3D |
-@@ -1054,6 +1108,9 @@ void _gen9_render_op(struct intel_bb *ibb,
- 	gen8_emit_vf_topology(ibb);
- 	gen8_emit_primitive(ibb, vertex_buffer);
- 
-+	if (intel_bb_pxp_enabled(ibb))
-+		gen12_emit_pxp_state(ibb, false, pxp_scratch_offset);
-+
- 	intel_bb_emit_bbe(ibb);
- 	intel_bb_exec(ibb, intel_bb_offset(ibb),
- 		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, false);
--- 
-2.25.1
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6289 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_auth@basic-auth:
+    - fi-kbl-soraka:      [PASS][1] -> [DMESG-WARN][2] ([i915#1982])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6232/fi-kbl-soraka/igt@core_auth@basic-auth.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/fi-kbl-soraka/igt@core_auth@basic-auth.html
+
+  * igt@kms_flip@basic-plain-flip@c-dp1:
+    - fi-cfl-8109u:       [PASS][3] -> [FAIL][4] ([i915#4165])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6232/fi-cfl-8109u/igt@kms_flip@basic-plain-flip@c-dp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/fi-cfl-8109u/igt@kms_flip@basic-plain-flip@c-dp1.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
+    - fi-cfl-8109u:       [PASS][5] -> [DMESG-WARN][6] ([i915#295]) +13 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6232/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-kbl-r:           [DMESG-FAIL][7] ([i915#2291] / [i915#541]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6232/fi-kbl-r/igt@i915_selftest@live@gt_heartbeat.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/fi-kbl-r/igt@i915_selftest@live@gt_heartbeat.html
+    - fi-cml-u2:          [DMESG-FAIL][9] ([i915#2291] / [i915#541]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6232/fi-cml-u2/igt@i915_selftest@live@gt_heartbeat.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/fi-cml-u2/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@kms_flip@basic-flip-vs-modeset@c-dp1:
+    - fi-cfl-8109u:       [FAIL][11] ([i915#4165]) -> [PASS][12] +1 similar issue
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6232/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [DMESG-WARN][13] ([i915#95]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6232/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+
+  
+#### Warnings ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cfl-8109u:       [FAIL][15] ([i915#2546]) -> [DMESG-WARN][16] ([i915#295])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6232/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
+  [i915#2546]: https://gitlab.freedesktop.org/drm/intel/issues/2546
+  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
+  [i915#4165]: https://gitlab.freedesktop.org/drm/intel/issues/4165
+  [i915#541]: https://gitlab.freedesktop.org/drm/intel/issues/541
+  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
+
+
+Participating hosts (39 -> 34)
+------------------------------
+
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-tgl-u2 fi-bsw-cyan fi-ctg-p8600 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6232 -> IGTPW_6289
+
+  CI-20190529: 20190529
+  CI_DRM_10683: 2db2331e0b19308750c3b921c2779c4c2da9b04b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6289: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/index.html
+  IGT_6232: effad6af5678be711a2c3e58e182319de784de54 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@gem_pxp@create-protected-buffer
++igt@gem_pxp@create-regular-buffer
++igt@gem_pxp@create-regular-context-1
++igt@gem_pxp@create-regular-context-2
++igt@gem_pxp@create-valid-protected-context
++igt@gem_pxp@display-protected-crc
++igt@gem_pxp@dmabuf-shared-protected-dst-is-context-refcounted
++igt@gem_pxp@fail-invalid-protected-context
++igt@gem_pxp@hw-rejects-pxp-buffer
++igt@gem_pxp@hw-rejects-pxp-context
++igt@gem_pxp@protected-encrypted-src-copy-not-readible
++igt@gem_pxp@protected-raw-src-copy-not-readible
++igt@gem_pxp@regular-baseline-src-copy-readible
++igt@gem_pxp@reject-modify-context-protection-off-1
++igt@gem_pxp@reject-modify-context-protection-off-2
++igt@gem_pxp@reject-modify-context-protection-off-3
++igt@gem_pxp@reject-modify-context-protection-on
++igt@gem_pxp@verify-pxp-execution-after-suspend-resume
++igt@gem_pxp@verify-pxp-key-change-after-suspend-resume
++igt@gem_pxp@verify-pxp-stale-buf-execution
++igt@gem_pxp@verify-pxp-stale-buf-optout-execution
++igt@gem_pxp@verify-pxp-stale-ctx-execution
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/index.html
+
+--===============5103731372882727194==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Introduce PXP Test (rev14)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/87570/">https://patchwork.freedesktop.org/series/87570/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6232 -&gt; IGTPW_6289</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6289 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_auth@basic-auth:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6232/fi-kbl-soraka/igt@core_auth@basic-auth.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/fi-kbl-soraka/igt@core_auth@basic-auth.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@c-dp1:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6232/fi-cfl-8109u/igt@kms_flip@basic-plain-flip@c-dp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/fi-cfl-8109u/igt@kms_flip@basic-plain-flip@c-dp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4165">i915#4165</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6232/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) +13 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>
+<p>fi-kbl-r:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6232/fi-kbl-r/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/541">i915#541</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/fi-kbl-r/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></p>
+</li>
+<li>
+<p>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6232/fi-cml-u2/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/541">i915#541</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/fi-cml-u2/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@c-dp1:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6232/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4165">i915#4165</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6232/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6232/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2546">i915#2546</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (39 -&gt; 34)</h2>
+<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-tgl-u2 fi-bsw-cyan fi-ctg-p8600 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6232 -&gt; IGTPW_6289</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10683: 2db2331e0b19308750c3b921c2779c4c2da9b04b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6289: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6289/index.html<br />
+  IGT_6232: effad6af5678be711a2c3e58e182319de784de54 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@gem_pxp@create-protected-buffer<br />
++igt@gem_pxp@create-regular-buffer<br />
++igt@gem_pxp@create-regular-context-1<br />
++igt@gem_pxp@create-regular-context-2<br />
++igt@gem_pxp@create-valid-protected-context<br />
++igt@gem_pxp@display-protected-crc<br />
++igt@gem_pxp@dmabuf-shared-protected-dst-is-context-refcounted<br />
++igt@gem_pxp@fail-invalid-protected-context<br />
++igt@gem_pxp@hw-rejects-pxp-buffer<br />
++igt@gem_pxp@hw-rejects-pxp-context<br />
++igt@gem_pxp@protected-encrypted-src-copy-not-readible<br />
++igt@gem_pxp@protected-raw-src-copy-not-readible<br />
++igt@gem_pxp@regular-baseline-src-copy-readible<br />
++igt@gem_pxp@reject-modify-context-protection-off-1<br />
++igt@gem_pxp@reject-modify-context-protection-off-2<br />
++igt@gem_pxp@reject-modify-context-protection-off-3<br />
++igt@gem_pxp@reject-modify-context-protection-on<br />
++igt@gem_pxp@verify-pxp-execution-after-suspend-resume<br />
++igt@gem_pxp@verify-pxp-key-change-after-suspend-resume<br />
++igt@gem_pxp@verify-pxp-stale-buf-execution<br />
++igt@gem_pxp@verify-pxp-stale-buf-optout-execution<br />
++igt@gem_pxp@verify-pxp-stale-ctx-execution</p>
+
+</body>
+</html>
+
+--===============5103731372882727194==--
