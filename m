@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B46BE6EC8D
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89BEB6EC89
  for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 22:29:40 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Tue,  5 Oct 2021 15:29:35 -0700
-Message-Id: <20211005222935.42609-2-ashutosh.dixit@intel.com>
-In-Reply-To: <20211005222935.42609-1-ashutosh.dixit@intel.com>
-References: <20211005222935.42609-1-ashutosh.dixit@intel.com>
+Date: Tue,  5 Oct 2021 15:29:34 -0700
+Message-Id: <20211005222935.42609-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] lib: Typechecking minmax
+Subject: [igt-dev] [PATCH i-g-t 1/2] lib: Refactor construction of unique
+ tokens
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,636 +22,152 @@ To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>, Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>, Chris Wilson <chris.p.wilson@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris@chris-wilson.co.uk>
+From: Chris Wilson <chris.p.wilson@intel.com>
 
-Add typechecking to the min/max macros and make their locals truly
-unique-ish to reduce the risk of shadowing.
+Wrap all the igt_tokencat(prefix, __LINE) into its own igt_unique() to
+reduce the clutter and make it easier to generate unique tokens for other
+common macros.
 
-v2: small bug fix, write also height coordinate on rotation
-    test. (jheikkil)
-v3: Fix up a couple of other max/max_t instances (Ashutosh)
-
-Signed-off-by: Juha-Pekka Heikkilä <juha-pekka.heikkila@intel.com>
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 ---
- lib/i915/intel_memory_region.c     |  9 ++----
- lib/i915/intel_memory_region.h     |  2 +-
- lib/igt_aux.h                      | 48 ++++++++++++++++++++----------
- lib/igt_fb.c                       | 13 ++++----
- lib/intel_allocator.c              |  2 +-
- lib/intel_allocator_random.c       |  2 +-
- lib/intel_allocator_reloc.c        |  2 +-
- runner/resultgen.c                 |  7 +++--
- tests/i915/api_intel_bb.c          |  2 +-
- tests/i915/gem_eio.c               |  4 +--
- tests/i915/gem_exec_alignment.c    |  4 +--
- tests/i915/gem_exec_capture.c      |  2 +-
- tests/i915/gem_exec_fair.c         |  2 +-
- tests/i915/gem_stress.c            |  2 +-
- tests/i915/gem_tiled_swapping.c    |  5 ++--
- tests/i915/gem_userptr_blits.c     |  2 +-
- tests/i915/i915_pm_rc6_residency.c |  2 +-
- tests/i915/kms_big_fb.c            |  2 +-
- tests/i915/perf_pmu.c              |  2 +-
- tests/kms_atomic_transition.c      |  2 +-
- tests/kms_chamelium.c              |  2 +-
- tests/kms_content_protection.c     |  4 +--
- tests/kms_invalid_mode.c           |  4 +--
- tests/kms_multipipe_modeset.c      |  3 +-
- tests/kms_rotation_crc.c           | 21 ++++++++-----
- tests/kms_setmode.c                | 11 ++-----
- tests/sw_sync.c                    |  5 ++--
- tools/intel_vbt_decode.c           |  3 +-
- 28 files changed, 93 insertions(+), 76 deletions(-)
+ lib/igt_core.h | 54 ++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 32 insertions(+), 22 deletions(-)
 
-diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-index bc2f66dbff5..058b273dcf8 100644
---- a/lib/i915/intel_memory_region.c
-+++ b/lib/i915/intel_memory_region.c
-@@ -146,19 +146,16 @@ out:
-  *
-  * Returns: Number of found lmem regions.
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 8d433fc1655..6b8dbf348d8 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -147,12 +147,12 @@ __noreturn void __igt_fixture_end(void);
+  * enumeration (e.g. when enumerating on systems without an intel gpu) such
+  * blocks should be annotated with igt_fixture.
   */
--uint8_t gem_get_lmem_region_count(int fd)
-+unsigned int gem_get_lmem_region_count(int fd)
- {
- 	struct drm_i915_query_memory_regions *query_info;
--	uint8_t num_regions;
--	uint8_t lmem_regions = 0;
-+	unsigned int lmem_regions = 0;
+-#define igt_fixture for (volatile int igt_tokencat(__tmpint,__LINE__) = 0; \
+-			 igt_tokencat(__tmpint,__LINE__) < 1 && \
++#define igt_fixture for (volatile int igt_unique(__tmpint) = 0; \
++			 igt_unique(__tmpint) < 1 && \
+ 			 (STATIC_ANALYSIS_BUILD || \
+ 			 (__igt_fixture() && \
+ 			 (sigsetjmp(igt_subtest_jmpbuf, 1) == 0))); \
+-			 igt_tokencat(__tmpint,__LINE__) ++, \
++			 igt_unique(__tmpint) ++, \
+ 			 __igt_fixture_complete())
  
- 	query_info = gem_get_query_memory_regions(fd);
- 	if (!query_info)
- 		goto out;
+ /* subtest infrastructure */
+@@ -203,6 +203,16 @@ bool __igt_run_dynamic_subtest(const char *dynamic_subtest_name);
+  */
+ #define igt_tokencat(x, y) __igt_tokencat2(x, y)
  
--	num_regions = query_info->num_regions;
--
--	for (int i = 0; i < num_regions; i++) {
-+	for (unsigned int i = 0; i < query_info->num_regions; i++) {
- 		if (query_info->regions[i].region.memory_class == I915_MEMORY_CLASS_DEVICE)
- 			lmem_regions += 1;
- 	}
-diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
-index 024c76d3644..8b427b7e729 100644
---- a/lib/i915/intel_memory_region.h
-+++ b/lib/i915/intel_memory_region.h
-@@ -58,7 +58,7 @@ uint32_t gem_get_batch_size(int fd, uint8_t mem_region_type);
- 
- struct drm_i915_query_memory_regions *gem_get_query_memory_regions(int fd);
- 
--uint8_t gem_get_lmem_region_count(int fd);
-+unsigned int gem_get_lmem_region_count(int fd);
- 
- bool gem_has_lmem(int fd);
- 
-diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-index bf57ccf50df..30b175d70d8 100644
---- a/lib/igt_aux.h
-+++ b/lib/igt_aux.h
-@@ -40,6 +40,8 @@
- 
- #include <i915/gem_submission.h>
- 
-+#include "igt_core.h"
++/**
++ * igt_unique:
++ * @prefix: local identifier
++ *
++ * C preprocessor helper to generate a custom 'unique' token by appending
++ * the line number onto the token.
++ */
++#define igt_unique(prefix) \
++	igt_tokencat(igt_tokencat(__igt_unique__, prefix), __LINE__)
 +
- /* signal interrupt helpers */
- #ifdef __linux__
- # ifndef HAVE_GETTID
-@@ -212,26 +214,42 @@ void intel_require_files(uint64_t count);
- #define CHECK_RAM 0x1
- #define CHECK_SWAP 0x2
+ /**
+  * igt_subtest:
+  * @name: name of the subtest
+@@ -238,7 +248,7 @@ bool __igt_run_dynamic_subtest(const char *dynamic_subtest_name);
+  * static string.
+  */
+ #define igt_subtest_f(f...) \
+-	__igt_subtest_f(igt_tokencat(__tmpchar, __LINE__), f)
++	__igt_subtest_f(igt_unique(__tmpchar), f)
  
--#define min(a, b) ({			\
--	typeof(a) _a = (a);		\
--	typeof(b) _b = (b);		\
--	_a < _b ? _a : _b;		\
--})
--#define max(a, b) ({			\
--	typeof(a) _a = (a);		\
--	typeof(b) _b = (b);		\
--	_a > _b ? _a : _b;		\
--})
-+#define __typecheck(x, y) \
-+        (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+ /**
+  * igt_subtest_with_dynamic:
+@@ -315,7 +325,7 @@ bool __igt_run_dynamic_subtest(const char *dynamic_subtest_name);
+  * format string instead of a static string.
+  */
+ #define igt_subtest_with_dynamic_f(f...) \
+-	__igt_subtest_with_dynamic_f(igt_tokencat(__tmpchar, __LINE__), f)
++	__igt_subtest_with_dynamic_f(igt_unique(__tmpchar), f)
  
--#define clamp(x, min, max) ({		\
--	typeof(min) _min = (min);	\
--	typeof(max) _max = (max);	\
--	typeof(x) _x = (x);		\
--	_x < _min ? _min : _x > _max ? _max : _x;	\
-+#define __cmp(x, y, op) ((x) op (y) ? (x) : (y))
-+
-+#define __cmp_once(x, y, unique_x, unique_y, op) ({     \
-+	typeof(x) unique_x = (x);               \
-+	typeof(y) unique_y = (y);               \
-+	__cmp(unique_x, unique_y, op);		\
- })
+ /**
+  * igt_dynamic:
+@@ -358,7 +368,7 @@ bool __igt_run_dynamic_subtest(const char *dynamic_subtest_name);
+  * instead of a static string.
+  */
+ #define igt_dynamic_f(f...) \
+-	__igt_dynamic_f(igt_tokencat(__tmpchar, __LINE__), f)
++	__igt_dynamic_f(igt_unique(__tmpchar), f)
  
-+#define __is_constexpr(x) \
-+	(sizeof(int) == sizeof(*(8 ? ((void *)((long)(x) * 0l)) : (int *)8)))
-+
-+#define __no_side_effects(x, y) \
-+	(__is_constexpr(x) && __is_constexpr(y))
-+
-+#define __safe_cmp(x, y) \
-+	(__typecheck(x, y) && __no_side_effects(x, y))
-+
-+#define __careful_cmp(x, y, op, prefix) \
-+	__builtin_choose_expr(__safe_cmp(x, y), \
-+			      __cmp(x, y, op), \
-+			      __cmp_once(x, y, igt_unique(igt_tokencat(prefix, __x)), igt_unique(igt_tokencat(prefix, __y)), op))
-+
-+#define min(x, y)	__careful_cmp(x, y, <, min)
-+#define max(x, y)	__careful_cmp(x, y, >, max)
-+
-+#define clamp(val, lo, hi) min(max(val, lo), hi)
-+
-+#define min_t(t, x, y)	__careful_cmp((typeof(t))x, (typeof(t))y, <, min_t)
-+#define max_t(t, x, y)	__careful_cmp((typeof(t))x, (typeof(t))y, >, max_t)
-+
- #define igt_swap(a, b) do {	\
- 	typeof(a) _tmp = (a);	\
-+	_Static_assert(__typecheck(a, b), "type mismatch for swap"); \
- 	(a) = (b);		\
- 	(b) = _tmp;		\
- } while (0)
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index ea4d83ab736..fba835a0b8f 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -733,7 +733,7 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
- 		 * tiled. But then that failure is expected.
- 		 */
+ const char *igt_subtest_name(void);
+ bool igt_only_list_subtests(void);
+@@ -380,15 +390,15 @@ void __igt_subtest_group_restore(int, int);
+  * clauses. If any common setup in a fixture fails, only the subtests in this
+  * group will fail or skip. Subtest groups can be arbitrarily nested.
+  */
+-#define igt_subtest_group for (int igt_tokencat(__tmpint,__LINE__) = 0, \
+-			       igt_tokencat(__save,__LINE__) = 0, \
+-			       igt_tokencat(__desc,__LINE__) = 0; \
+-			       igt_tokencat(__tmpint,__LINE__) < 1 && \
+-			       (__igt_subtest_group_save(& igt_tokencat(__save,__LINE__), \
+-							 & igt_tokencat(__desc,__LINE__) ), true); \
+-			       igt_tokencat(__tmpint,__LINE__) ++, \
+-			       __igt_subtest_group_restore(igt_tokencat(__save,__LINE__), \
+-							   igt_tokencat(__desc,__LINE__)))
++#define igt_subtest_group for (int igt_unique(__tmpint) = 0, \
++			       igt_unique(__save) = 0, \
++			       igt_unique(__desc) = 0; \
++			       igt_unique(__tmpint) < 1 && \
++			       (__igt_subtest_group_save(& igt_unique(__save), \
++							 & igt_unique(__desc) ), true); \
++			       igt_unique(__tmpint) ++, \
++			       __igt_subtest_group_restore(igt_unique(__save), \
++							   igt_unique(__desc)))
  
--		stride = max(min_stride, 512);
-+		stride = max(min_stride, 512u);
- 		stride = roundup_power_of_two(stride);
+ /**
+  * igt_main_args:
+@@ -404,15 +414,15 @@ void __igt_subtest_group_restore(int, int);
+  * #igt_subtest_init_parse_opts.
+  */
+ #define igt_main_args(short_opts, long_opts, help_str, opt_handler, handler_data) \
+-	static void igt_tokencat(__real_main, __LINE__)(void); \
++	static void igt_unique(__real_main)(void); \
+ 	int main(int argc, char **argv) { \
+ 		igt_subtest_init_parse_opts(&argc, argv, \
+ 					    short_opts, long_opts, help_str, \
+ 					    opt_handler, handler_data); \
+-		igt_tokencat(__real_main, __LINE__)(); \
++		igt_unique(__real_main)(); \
+ 		igt_exit(); \
+ 	} \
+-	static void igt_tokencat(__real_main, __LINE__)(void) \
++	static void igt_unique(__real_main)(void) \
  
- 		return stride;
-@@ -747,7 +747,7 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
- 		/*
- 		 * For amdgpu device with tiling mode
- 		 */
--		unsigned int tile_width, tile_height;
-+		uint32_t tile_width, tile_height;
  
- 		igt_amd_fb_calculate_tile_dimension(fb->plane_bpp[plane],
- 				     &tile_width, &tile_height);
-@@ -812,9 +812,9 @@ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
- 	if (fb->modifier != DRM_FORMAT_MOD_NONE &&
- 	    is_i915_device(fb->fd) &&
- 	    intel_display_ver(intel_get_drm_devid(fb->fd)) <= 3) {
--		uint64_t min_size = (uint64_t) fb->strides[plane] *
-+		uint64_t size = (uint64_t) fb->strides[plane] *
- 			fb->plane_height[plane];
--		uint64_t size;
-+		uint64_t min_size = 1024 * 1024;
+ /**
+@@ -460,15 +470,15 @@ void igt_simple_init_parse_opts(int *argc, char **argv,
+  * #igt_simple_init_parse_opts.
+  */
+ #define igt_simple_main_args(short_opts, long_opts, help_str, opt_handler, handler_data) \
+-	static void igt_tokencat(__real_main, __LINE__)(void); \
++	static void igt_unique(__real_main)(void); \
+ 	int main(int argc, char **argv) { \
+ 		igt_simple_init_parse_opts(&argc, argv, \
+ 					   short_opts, long_opts, help_str, \
+ 					   opt_handler, handler_data);	\
+-		igt_tokencat(__real_main, __LINE__)(); \
++		igt_unique(__real_main)(); \
+ 		igt_exit(); \
+ 	} \
+-	static void igt_tokencat(__real_main, __LINE__)(void) \
++	static void igt_unique(__real_main)(void) \
  
- 		/* Round the tiling up to the next power-of-two and the region
- 		 * up to the next pot fence size so that this works on all
-@@ -824,10 +824,7 @@ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
- 		 * tiled. But then that failure is expected.
- 		 */
  
--		size = max(min_size, 1024*1024);
--		size = roundup_power_of_two(size);
--
--		return size;
-+		return roundup_power_of_two(max(size, min_size));
- 	} else if (fb->modifier != DRM_FORMAT_MOD_NONE && is_amdgpu_device(fb->fd)) {
- 		/*
- 		 * For amdgpu device with tiling mode
-diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-index 133176ed42e..eabff1f9a13 100644
---- a/lib/intel_allocator.c
-+++ b/lib/intel_allocator.c
-@@ -1088,7 +1088,7 @@ uint64_t __intel_allocator_alloc(uint64_t allocator_handle, uint32_t handle,
- 	struct alloc_resp resp;
+ /**
+@@ -490,7 +500,7 @@ void igt_simple_init_parse_opts(int *argc, char **argv,
+  */
+ #define igt_constructor \
+ 	__attribute__((constructor)) \
+-	static void igt_tokencat(__igt_constructor_l, __LINE__)(void)
++	static void igt_unique(__igt_constructor_l)(void)
  
- 	igt_assert((alignment & (alignment-1)) == 0);
--	req.alloc.alignment = max(alignment, 1 << 12);
-+	req.alloc.alignment = max_t(uint64_t, alignment, 1 << 12);
- 
- 	igt_assert(handle_request(&req, &resp) == 0);
- 	igt_assert(resp.response_type == RESP_ALLOC);
-diff --git a/lib/intel_allocator_random.c b/lib/intel_allocator_random.c
-index 9e31426179b..d22f8176705 100644
---- a/lib/intel_allocator_random.c
-+++ b/lib/intel_allocator_random.c
-@@ -180,7 +180,7 @@ intel_allocator_random_create(int fd, uint64_t start, uint64_t end)
- 	igt_assert(ial->priv);
- 	ialr->prng = (uint32_t) to_user_pointer(ial);
- 
--	start = max(start, BIAS);
-+	start = max_t(uint64_t, start, BIAS);
- 	igt_assert(start < end);
- 	ialr->start = start;
- 	ialr->end = end;
-diff --git a/lib/intel_allocator_reloc.c b/lib/intel_allocator_reloc.c
-index 1790e6c7975..ee3ad43f4a5 100644
---- a/lib/intel_allocator_reloc.c
-+++ b/lib/intel_allocator_reloc.c
-@@ -176,7 +176,7 @@ intel_allocator_reloc_create(int fd, uint64_t start, uint64_t end)
- 	igt_assert(ial->priv);
- 	ialr->prng = (uint32_t) to_user_pointer(ial);
- 
--	start = max(start, BIAS);
-+	start = max_t(uint64_t, start, BIAS);
- 	igt_assert(start < end);
- 	ialr->offset = ialr->start = start;
- 	ialr->end = end;
-diff --git a/runner/resultgen.c b/runner/resultgen.c
-index b74970a6e65..bccfca12a48 100644
---- a/runner/resultgen.c
-+++ b/runner/resultgen.c
-@@ -481,12 +481,15 @@ static int find_subtest_idx_limited(struct matches matches,
- 	if (line_len < 0)
- 		return -1;
- 
--	for (k = first; k < last; k++)
-+	for (k = first; k < last; k++) {
-+		ptrdiff_t rem = bufend - matches.items[k].where;
-+
- 		if (matches.items[k].what == linekey &&
- 		    !memcmp(matches.items[k].where,
- 			    full_line,
--			    min(line_len, bufend - matches.items[k].where)))
-+			    min_t(ptrdiff_t, line_len, rem)))
- 			break;
-+	}
- 
- 	free(full_line);
- 
-diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
-index 293720b4b3c..82943a34191 100644
---- a/tests/i915/api_intel_bb.c
-+++ b/tests/i915/api_intel_bb.c
-@@ -904,7 +904,7 @@ static int compare_bufs(struct intel_buf *buf1, struct intel_buf *buf2,
- 	return ret;
- }
- 
--#define LINELEN 76
-+#define LINELEN 76ul
- static int dump_base64(const char *name, struct intel_buf *buf)
- {
- 	void *ptr;
-diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
-index d9ff1981a71..3d094433b7b 100644
---- a/tests/i915/gem_eio.c
-+++ b/tests/i915/gem_eio.c
-@@ -489,7 +489,7 @@ static void test_inflight(int fd, unsigned int wait)
- 
- 	max = gem_measure_ring_inflight(fd, -1, 0);
- 	igt_require(max > 1);
--	max = min(max - 1, ARRAY_SIZE(fence));
-+	max = min_t(max, max - 1, ARRAY_SIZE(fence));
- 	igt_debug("Using %d inflight batches\n", max);
- 
- 	for_each_ring(e, parent_fd) {
-@@ -558,7 +558,7 @@ static void test_inflight_suspend(int fd)
- 
- 	max = gem_measure_ring_inflight(fd, -1, 0);
- 	igt_require(max > 1);
--	max = min(max - 1, ARRAY_SIZE(fence));
-+	max = min_t(max, max - 1, ARRAY_SIZE(fence));
- 	igt_debug("Using %d inflight batches\n", max);
- 
- 	fd = reopen_device(fd);
-diff --git a/tests/i915/gem_exec_alignment.c b/tests/i915/gem_exec_alignment.c
-index c4611bd1ee2..68b95c869c9 100644
---- a/tests/i915/gem_exec_alignment.c
-+++ b/tests/i915/gem_exec_alignment.c
-@@ -166,7 +166,7 @@ naughty_child(int i915, int link, uint32_t shared, unsigned int flags)
- 	if (!gem_uses_full_ppgtt(i915))
- 		gtt_size /= 2; /* We have to *share* our GTT! */
- 
--	ram_size = min(intel_get_total_ram_mb(), 4096);
-+	ram_size = min_t(uint64_t, intel_get_total_ram_mb(), 4096);
- 	ram_size *= 1024 * 1024;
- 
- 	count = min(gtt_size, ram_size) / 16384;
-@@ -376,7 +376,7 @@ setup_many(int i915, unsigned long *out)
- 	if (!gem_uses_full_ppgtt(i915))
- 		gtt_size /= 2; /* We have to *share* our GTT! */
- 
--	ram_size = min(intel_get_total_ram_mb(), 4096);
-+	ram_size = min_t(uint64_t, intel_get_total_ram_mb(), 4096);
- 	ram_size *= 1024 * 1024;
- 
- 	count = min(gtt_size, ram_size) / 16384;
-diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-index 19f3836e385..7e0a8b8addb 100644
---- a/tests/i915/gem_exec_capture.c
-+++ b/tests/i915/gem_exec_capture.c
-@@ -566,7 +566,7 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
- 		  gtt, ram);
- 
- 	count = min(gtt, ram) / 4;
--	count = min(count, 256); /* Keep the duration within reason */
-+	count = min(count, 256ul); /* Keep the duration within reason */
- 	igt_require(count > 1);
- 
- 	intel_require_memory(count, size, CHECK_RAM);
-diff --git a/tests/i915/gem_exec_fair.c b/tests/i915/gem_exec_fair.c
-index ef5a450f6ca..89945d40e3c 100644
---- a/tests/i915/gem_exec_fair.c
-+++ b/tests/i915/gem_exec_fair.c
-@@ -605,7 +605,7 @@ static void fair_child(int i915, const intel_ctx_t *ctx,
- 		map = gem_mmap__device_coherent(i915, obj[0].handle,
- 						0, 4096, PROT_WRITE);
- 		igt_assert(map[0]);
--		for (n = 1; n < min(count, 512); n++) {
-+		for (n = 1; n < min(count, 512ul); n++) {
- 			igt_assert(map[n]);
- 			map[n - 1] = map[n] - map[n - 1];
- 		}
-diff --git a/tests/i915/gem_stress.c b/tests/i915/gem_stress.c
-index 3e4d4907605..3765ab14bdb 100644
---- a/tests/i915/gem_stress.c
-+++ b/tests/i915/gem_stress.c
-@@ -769,7 +769,7 @@ static void init(void)
- 
- 	if (options.num_buffers == 0) {
- 		tmp = gem_aperture_size(drm_fd);
--		tmp = min(256 * (1024 * 1024), tmp);
-+		tmp = min(256 * 1024 * 1024u, tmp);
- 		num_buffers = 2 * tmp / options.scratch_buf_size / 3;
- 		num_buffers /= 2;
- 		igt_info("using %u buffers\n", num_buffers);
-diff --git a/tests/i915/gem_tiled_swapping.c b/tests/i915/gem_tiled_swapping.c
-index d33b76dbd5b..d66b6ca7f9b 100644
---- a/tests/i915/gem_tiled_swapping.c
-+++ b/tests/i915/gem_tiled_swapping.c
-@@ -67,7 +67,7 @@ IGT_TEST_DESCRIPTION("Exercise swizzle code for swapping.");
- static uint32_t current_tiling_mode;
- 
- #define PAGE_SIZE 4096
--#define AVAIL_RAM 512
-+#define AVAIL_RAM 512ul
- 
- static uint32_t
- create_bo(int fd)
-@@ -183,7 +183,8 @@ igt_main
- 		/* lock RAM, leaving only 512MB available */
- 		count = intel_get_total_ram_mb() - intel_get_avail_ram_mb();
- 		count = max(count + 64, AVAIL_RAM);
--		lock_size = max(0, intel_get_total_ram_mb() - count);
-+		count = intel_get_total_ram_mb() - count;
-+		lock_size = max_t(long, 0, count);
- 		igt_info("Mlocking %zdMiB of %ld/%ldMiB\n",
- 			 lock_size,
- 			 (long)intel_get_avail_ram_mb(),
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index 756bd6e4786..078c75c3947 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -1693,7 +1693,7 @@ static void test_forking_evictions(int fd, int size, int count,
- 	 * processes meaning swapping will be triggered system
- 	 * wide even if one process on it's own can't do it.
- 	 */
--	num_threads = min(sysconf(_SC_NPROCESSORS_ONLN) * 4, 12);
-+	num_threads = min_t(int, sysconf(_SC_NPROCESSORS_ONLN) * 4, 12);
- 	trash_count /= num_threads;
- 	if (count > trash_count)
- 		count = trash_count;
-diff --git a/tests/i915/i915_pm_rc6_residency.c b/tests/i915/i915_pm_rc6_residency.c
-index 96a951406f5..cf9eae90278 100644
---- a/tests/i915/i915_pm_rc6_residency.c
-+++ b/tests/i915/i915_pm_rc6_residency.c
-@@ -345,7 +345,7 @@ static void bg_load(int i915, unsigned int flags, unsigned long *ctl)
- 		ctl[1]++;
- 
- 		/* aim for ~1% busy */
--		usleep(min(elapsed / 10, 50 * 1000));
-+		usleep(min_t(elapsed, elapsed / 10, 50 * 1000));
- 	} while (!READ_ONCE(*ctl));
- }
- 
-diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
-index 308227c9113..8665903827d 100644
---- a/tests/i915/kms_big_fb.c
-+++ b/tests/i915/kms_big_fb.c
-@@ -400,9 +400,9 @@ static bool test_plane(data_t *data)
- 
- static bool test_pipe(data_t *data)
- {
-+	uint16_t width, height;
- 	drmModeModeInfo *mode;
- 	igt_plane_t *primary;
--	int width, height;
- 	bool ret = false;
- 
- 	if (data->format == DRM_FORMAT_C8 &&
-diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index 1214cda8c32..e9df0290dd7 100644
---- a/tests/i915/perf_pmu.c
-+++ b/tests/i915/perf_pmu.c
-@@ -1413,7 +1413,7 @@ static int target_num_interrupts(int i915)
- {
- 	const intel_ctx_cfg_t cfg = intel_ctx_cfg_all_physical(i915);
- 
--	return min(gem_submission_measure(i915, &cfg, I915_EXEC_DEFAULT), 30);
-+	return min(gem_submission_measure(i915, &cfg, I915_EXEC_DEFAULT), 30u);
- }
- 
- static void
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index bc0a1c81b46..9c0a91bf201 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -789,7 +789,7 @@ static void run_modeset_tests(data_t *data, int howmany, bool nonblocking, bool
- 	unsigned iter_max;
- 	igt_pipe_crc_t *pipe_crcs[IGT_MAX_PIPES] = { 0 };
- 	igt_output_t *output;
--	unsigned width = 0, height = 0;
-+	uint16_t width = 0, height = 0;
- 
- 	for (i = 0; i < data->display.n_outputs; i++)
- 		igt_output_set_pipe(&data->display.outputs[i], PIPE_NONE);
-diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
-index 1ab411cecfb..11926bbcfa8 100644
---- a/tests/kms_chamelium.c
-+++ b/tests/kms_chamelium.c
-@@ -2399,7 +2399,7 @@ static void test_display_planes_random(data_t *data,
- 		igt_output_count_plane_type(output, DRM_PLANE_TYPE_OVERLAY);
- 
- 	/* Limit the number of planes to a reasonable scene. */
--	overlay_planes_max = min(overlay_planes_max, 4);
-+	overlay_planes_max = min(overlay_planes_max, 4u);
- 
- 	overlay_planes_count = (rand() % overlay_planes_max) + 1;
- 	igt_debug("Using %d overlay planes\n", overlay_planes_count);
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index e8002df2711..f2047173a34 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -703,9 +703,9 @@ static void test_content_protection_cleanup(void)
- 
- static void create_fbs(void)
- {
--	igt_output_t *output;
--	int width = 0, height = 0;
-+	uint16_t width = 0, height = 0;
- 	drmModeModeInfo *mode;
-+	igt_output_t *output;
- 
- 	for_each_connected_output(&data.display, output) {
- 		mode = igt_output_get_mode(output);
-diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-index d4feba327fd..11960dfd799 100644
---- a/tests/kms_invalid_mode.c
-+++ b/tests/kms_invalid_mode.c
-@@ -195,8 +195,8 @@ test_output(data_t *data)
- 		return 0;
- 
- 	igt_create_fb(data->drm_fd,
--		      max(mode.hdisplay, 64),
--		      max(mode.vdisplay, 64),
-+		      max_t(uint16_t, mode.hdisplay, 64),
-+		      max_t(uint16_t, mode.vdisplay, 64),
- 		      DRM_FORMAT_XRGB8888,
- 		      DRM_FORMAT_MOD_NONE,
- 		      &fb);
-diff --git a/tests/kms_multipipe_modeset.c b/tests/kms_multipipe_modeset.c
-index b1dbc73a39b..97499508f1b 100644
---- a/tests/kms_multipipe_modeset.c
-+++ b/tests/kms_multipipe_modeset.c
-@@ -40,10 +40,11 @@ static void run_test(data_t *data, int valid_outputs)
- 	igt_pipe_crc_t *pipe_crcs[IGT_MAX_PIPES] = { 0 };
- 	igt_crc_t ref_crcs[IGT_MAX_PIPES], new_crcs[IGT_MAX_PIPES];
- 	igt_display_t *display = &data->display;
--	int width = 0, height = 0, i = 0;
-+	uint16_t width = 0, height = 0;
- 	igt_pipe_t *pipe;
- 	igt_plane_t *plane;
- 	drmModeModeInfo *mode;
-+	int i = 0;
- 
- 	for_each_connected_output(display, output) {
- 		mode = igt_output_get_mode(output);
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index 11401a6d00a..a7f4d22f91f 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -214,6 +214,11 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
- 		igt_pipe_crc_start(data->pipe_crc);
- }
- 
-+#define TEST_WIDTH(km) \
-+	 min_t((km)->hdisplay, (km)->hdisplay, TEST_MAX_WIDTH)
-+#define TEST_HEIGHT(km) \
-+	 min_t((km)->vdisplay, (km)->vdisplay, TEST_MAX_HEIGHT)
-+
- static void prepare_fbs(data_t *data, igt_output_t *output,
- 			igt_plane_t *plane, enum rectangle_type rect, uint32_t format)
- {
-@@ -234,8 +239,8 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
- 			w = mode->hdisplay;
- 			h = mode->vdisplay;
- 		} else {
--			w = min(TEST_MAX_WIDTH, mode->hdisplay);
--			h = min(TEST_MAX_HEIGHT, mode->vdisplay);
-+			w = TEST_WIDTH(mode);
-+			h = TEST_HEIGHT(mode);
- 		}
- 
- 		min_w = 256;
-@@ -614,7 +619,7 @@ static void pointlocation(data_t *data, planeinfos *p, drmModeModeInfo *mode,
- 			  int c)
- {
- 	if (data->planepos[c].origo & p_right) {
--		p[c].x1 = (int32_t)(data->planepos[c].x * min(TEST_MAX_WIDTH, mode->hdisplay)
-+		p[c].x1 = (int32_t)(data->planepos[c].x * TEST_WIDTH(mode)
- 				+ mode->hdisplay);
- 		p[c].x1 &= ~3;
- 		/*
-@@ -625,17 +630,17 @@ static void pointlocation(data_t *data, planeinfos *p, drmModeModeInfo *mode,
- 		 */
- 		p[c].x1 -= mode->hdisplay & 2;
- 	} else {
--		p[c].x1 = (int32_t)(data->planepos[c].x * min(TEST_MAX_WIDTH, mode->hdisplay));
-+		p[c].x1 = (int32_t)(data->planepos[c].x * TEST_WIDTH(mode));
- 		p[c].x1 &= ~3;
- 	}
- 
- 	if (data->planepos[c].origo & p_bottom) {
--		p[c].y1 = (int32_t)(data->planepos[c].y * min(TEST_MAX_HEIGHT, mode->vdisplay)
-+		p[c].y1 = (int32_t)(data->planepos[c].y * TEST_HEIGHT(mode)
- 				+ mode->vdisplay);
- 		p[c].y1 &= ~3;
- 		p[c].y1 -= mode->vdisplay & 2;
- 	} else {
--		p[c].y1 = (int32_t)(data->planepos[c].y * min(TEST_MAX_HEIGHT, mode->vdisplay));
-+		p[c].y1 = (int32_t)(data->planepos[c].y * TEST_HEIGHT(mode));
- 		p[c].y1 &= ~3;
- 	}
- }
-@@ -698,8 +703,8 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 		igt_display_require_output(display);
- 		igt_display_commit2(display, COMMIT_ATOMIC);
- 
--		used_w = min(TEST_MAX_WIDTH, mode->hdisplay);
--		used_h = min(TEST_MAX_HEIGHT, mode->vdisplay);
-+		used_w = TEST_WIDTH(mode);
-+		used_h = TEST_HEIGHT(mode);
- 
- 		p[0].plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 		p[1].plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_OVERLAY);
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 80665204c68..d62251742a4 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -421,15 +421,8 @@ static int test_stealing(int fd, struct crtc_config *crtc, uint32_t *ids)
- 	return ret;
- }
- 
--static double frame_time(const drmModeModeInfo *kmode)
--{
--	return 1000.0 * kmode->htotal * kmode->vtotal / kmode->clock;
--}
--
--static double line_time(const drmModeModeInfo *kmode)
--{
--	return 1000.0 * kmode->htotal / kmode->clock;
--}
-+#define frame_time(km) (1000.0 * (km)->htotal * (km)->vtotal / (km)->clock)
-+#define line_time(km) (1000.0 * (km)->htotal / (km)->clock)
- 
- static void check_timings(int crtc_idx, const drmModeModeInfo *kmode)
- {
-diff --git a/tests/sw_sync.c b/tests/sw_sync.c
-index d3d2bec15bb..cbd773fcb97 100644
---- a/tests/sw_sync.c
-+++ b/tests/sw_sync.c
-@@ -837,8 +837,9 @@ igt_main
- 	igt_fixture {
- 		igt_require_sw_sync();
- 		multi_consumer_threads =
--			min(multi_consumer_threads,
--			    sysconf(_SC_NPROCESSORS_ONLN));
-+			min_t(multi_consumer_threads,
-+			      multi_consumer_threads,
-+			      sysconf(_SC_NPROCESSORS_ONLN));
- 	}
- 
- 	igt_subtest("alloc_timeline")
-diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 625dc078752..b063af8469d 100644
---- a/tools/intel_vbt_decode.c
-+++ b/tools/intel_vbt_decode.c
-@@ -534,10 +534,11 @@ static void dump_child_devices(struct context *context, const uint8_t *devices,
- 	 * initialized to zero.
- 	 */
- 	child = calloc(1, sizeof(*child));
-+	igt_assert(child);
- 
- 	for (i = 0; i < child_dev_num; i++) {
- 		memcpy(child, devices + i * child_dev_size,
--		       min(sizeof(*child), child_dev_size));
-+		       min_t(child_dev_size, sizeof(*child), child_dev_size));
- 
- 		dump_child_device(context, child);
- 	}
+ __noreturn __attribute__((format(printf, 1, 2)))
+ void igt_skip(const char *f, ...);
 -- 
 2.33.0
