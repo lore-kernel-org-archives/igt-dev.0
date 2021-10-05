@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A61C16EB48
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 10:00:15 +0000 (UTC)
-Message-ID: <eca505ba-6efd-5b4f-ce86-b16d2e035a2e@intel.com>
-Date: Tue, 5 Oct 2021 15:30:01 +0530
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 757036EB50
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 10:09:27 +0000 (UTC)
+Message-ID: <d79c7839-b26e-2c44-c6bf-69be050be2c0@intel.com>
+Date: Tue, 5 Oct 2021 15:39:16 +0530
 Content-Language: en-US
-References: <20211004085629.2796-1-karthik.b.s@intel.com>
- <YVrHBWTxHBHQEMZ0@intel.com> <YVshFrxOVFlyFmNy@intel.com>
+References: <20210916153515.21369-1-ville.syrjala@linux.intel.com>
 From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <YVshFrxOVFlyFmNy@intel.com>
+In-Reply-To: <20210916153515.21369-1-ville.syrjala@linux.intel.com>
 Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Add retry mechanism
- for async flip subtests
+Subject: Re: [igt-dev] [PATCH i-g-t 1/6] tests/kms_invalid_dotclock: Rename
+ to kms_invalid_mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,92 +22,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, juha-pekka.heikkila@intel.com
+To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 10/4/2021 9:13 PM, Ville Syrjälä wrote:
-> On Mon, Oct 04, 2021 at 12:19:01PM +0300, Ville Syrjälä wrote:
->> On Mon, Oct 04, 2021 at 02:26:29PM +0530, Karthik B S wrote:
->>> Async flip subtests fail sporadically with CRC failure on CI.
->>> This is expected as these tests are not run on highest priority by the
->>> scheduler, but this creates noise on CI. Add retry mechanism to rerun
->>> the test once if failure is seen.
->>>
->>> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
->>> ---
->>>   tests/i915/kms_big_fb.c | 9 +++++++++
->>>   1 file changed, 9 insertions(+)
->>>
->>> diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
->>> index 308227c9..8c09f59e 100644
->>> --- a/tests/i915/kms_big_fb.c
->>> +++ b/tests/i915/kms_big_fb.c
->>> @@ -481,6 +481,7 @@ max_hw_stride_async_flip_test(data_t *data)
->>>   		       h = data->output->config.default_mode.vdisplay;
->>>   	igt_plane_t *primary;
->>>   	igt_crc_t compare_crc, async_crc;
->>> +	bool retried = false;
->>>   
->>>   	igt_require(data->display.is_atomic);
->>>   	igt_output_set_pipe(data->output, data->pipe);
->>> @@ -513,6 +514,7 @@ max_hw_stride_async_flip_test(data_t *data)
->>>   					  INTEL_PIPE_CRC_SOURCE_AUTO);
->>>   	igt_pipe_crc_start(data->pipe_crc);
->>>   
->>> +retry:
->>>   	igt_set_timeout(5, "Async pageflipping loop got stuck!\n");
->>>   	for (int i = 0; i < 2; i++) {
->>>   		igt_plane_set_fb(primary, &data->big_fb);
->>> @@ -548,6 +550,13 @@ max_hw_stride_async_flip_test(data_t *data)
->>>   		igt_assert_f(kmstest_get_vblank(data->drm_fd, data->pipe, 0) -
->>>   			     startframe == 1, "lost frames\n");
->>>   
->>> +		/* Test is not running at real time priority, so allow one failure*/
->>> +		if (!(igt_check_crc_equal(&compare_crc, &async_crc)^(i^1)) && !retried) {
->>> +			retried = true;
->>> +			igt_reset_timeout();
->>> +			goto retry;
->>> +		}
->>> +
->> This test seems to entirely fit kms_big_fb in general. I don't
->                       ^
-> 		     not
+On 9/16/2021 9:05 PM, Ville Syrjala wrote:
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 >
-> is what I meant to write. Somewhat important small word.
+> Let's add some more tests for invalid modes. To that end rename
+> the current kms_invalid_dotclock to kms_invalid_mode so we a
+
+Hi,
+
+Typo? so we a -> so we (have) a?
+
+With this updated, looks good to me.
+
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+
+> place where to put these.
 >
->> think kms_big_fb should be testing any timing sensitive stuff.
->>
->> So I think we should change this to a form that follows the rest
->> of kms_big_fb to validate that each page flip just presents the
->> correct data on screen. The timing sensitive stuff is best left
->> for kms_async_flip.
->>
->> So this should maybe be something like: flip to a correctly sized
->> temp fb with the wrong contents and change the plane src coordinates,
->> and then async flip back to the correct fb and validate the
->> correct data is now on screen.
-
-Thank you for the feedback.
-
-Is this because we can handle any timing related failures in the same 
-test (may be using some common mechanism)? So add a subtest for 
-max-hw-stride in kms_async_flips and rewrite this subtest as mentioned 
-above?
-
->>
->> Oh and the async flip test should not be limited to the
->> max-hw-stride part. We should test that async flips do the
->> right thing with gtt remapping as well.
-
-Sure. Will work on adding this coverage.
-
-Thanks,
-
-Karthik.B.S
-
->>
->> -- 
->> Ville Syrjälä
->> Intel
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> ---
+>   tests/i915/{kms_invalid_dotclock.c => kms_invalid_mode.c} | 2 +-
+>   tests/meson.build                                         | 2 +-
+>   2 files changed, 2 insertions(+), 2 deletions(-)
+>   rename tests/i915/{kms_invalid_dotclock.c => kms_invalid_mode.c} (99%)
+>
+> diff --git a/tests/i915/kms_invalid_dotclock.c b/tests/i915/kms_invalid_mode.c
+> similarity index 99%
+> rename from tests/i915/kms_invalid_dotclock.c
+> rename to tests/i915/kms_invalid_mode.c
+> index 95136d366dd7..dc30e6bb5444 100644
+> --- a/tests/i915/kms_invalid_dotclock.c
+> +++ b/tests/i915/kms_invalid_mode.c
+> @@ -25,7 +25,7 @@
+>   #include "igt.h"
+>   #include <stdbool.h>
+>   
+> -IGT_TEST_DESCRIPTION("Make sure all modesets are rejected when the requested dotclock is too high");
+> +IGT_TEST_DESCRIPTION("Make sure all modesets are rejected when the requested mode is invalid");
+>   
+>   typedef struct {
+>   	int drm_fd;
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 8ad52596a491..3e3090e5d8b4 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -228,7 +228,7 @@ i915_progs = [
+>   	'kms_flip_scaled_crc',
+>   	'kms_flip_tiling',
+>   	'kms_frontbuffer_tracking',
+> -	'kms_invalid_dotclock',
+> +	'kms_invalid_mode',
+>   	'kms_legacy_colorkey',
+>   	'kms_mmap_write_crc',
+>   	'kms_pipe_b_c_ivb',
 
