@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C069E6F5DE
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7BBFD6F5F2
  for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 15:14:07 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue,  5 Oct 2021 08:10:22 -0700
-Message-Id: <20211005151022.2161424-17-alan.previn.teres.alexis@intel.com>
+Date: Tue,  5 Oct 2021 08:10:17 -0700
+Message-Id: <20211005151022.2161424-12-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
 References: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v13 16/16] tests/i915_pxp: CRC validation
- for display tests.
+Subject: [igt-dev] [PATCH i-g-t v13 11/16] Verify execbuf fails with stale
+ PXP context after teardown
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,213 +21,238 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Karthik B S <karthik.b.s@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Karthik B S <karthik.b.s@intel.com>
+Add a subtest to verify that reusing a stale protected context
+in a gem_execbuff after a teardown fails with -EIO error because
+it's banned. Trigger the teardown via the pxp invalidation
+debugfs that simulates a HW teardown IRQ.
 
-Added subtests to validate pxp using CRC validation.
+NOTE: The end-to-end architecture requirement includes that
+any break in the links of the PXP sessions needs to trigger a
+full teardown and the application needs to be made aware of that
+allowing it to re-establish the end-to-end pipeline of buffers,
+contexts and renders again if it chooses to. This stricter
+behavior targets only contexts created with PXP enabled.
 
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/i915/gem_pxp.c | 163 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 163 insertions(+)
+ lib/intel_batchbuffer.c |   2 +-
+ lib/intel_batchbuffer.h |   3 +
+ tests/i915/gem_pxp.c    | 151 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 155 insertions(+), 1 deletion(-)
 
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index 291d706b..9c26fe20 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -2526,7 +2526,7 @@ static void update_offsets(struct intel_bb *ibb,
+  * Note: In this step execobj for bb is allocated and inserted to the objects
+  * array.
+ */
+-static int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
++int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
+ 			   uint64_t flags, bool sync)
+ {
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+index 10fa66ee..58bddb1a 100644
+--- a/lib/intel_batchbuffer.h
++++ b/lib/intel_batchbuffer.h
+@@ -668,6 +668,9 @@ uint64_t intel_bb_offset_reloc_to_object(struct intel_bb *ibb,
+ 					 uint32_t offset,
+ 					 uint64_t presumed_offset);
+ 
++int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
++			uint64_t flags, bool sync);
++
+ void intel_bb_dump_cache(struct intel_bb *ibb);
+ 
+ void intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
 diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 2848e487..79040165 100644
+index 3233fa7f..7d508674 100644
 --- a/tests/i915/gem_pxp.c
 +++ b/tests/i915/gem_pxp.c
-@@ -437,6 +437,7 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size
- #define TSTSURF_INITCOLOR1  0x12341234
- #define TSTSURF_INITCOLOR2  0x56785678
- #define TSTSURF_INITCOLOR3  0xabcdabcd
-+#define TSTSURF_GREENCOLOR  0xFF00FF00
+@@ -6,6 +6,7 @@
+ #include "igt.h"
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
++#include <fcntl.h>
  
- static void test_render_baseline(int i915)
- {
-@@ -1013,6 +1014,152 @@ static void test_pxp_pwrcycle_staleasset_execution(int i915, struct powermgt_dat
- 	free_exec_assets(i915, &data[2]);
- }
+ IGT_TEST_DESCRIPTION("Test PXP that manages protected content through arbitrated HW-PXP-session");
+ /* Note: PXP = "Protected Xe Path" */
+@@ -16,6 +17,14 @@ struct powermgt_data {
+ 	bool has_runtime_pm;
+ };
  
-+static void setup_protected_fb(int i915, int width, int height, igt_fb_t *fb, uint32_t ctx)
-+{
-+	int err;
-+	uint32_t srcbo;
-+	struct intel_buf *srcbuf, *dstbuf;
++struct simple_exec_assets {
++	uint32_t ctx;
++	uint32_t fencebo;
++	struct intel_buf *fencebuf;
 +	struct buf_ops *bops;
 +	struct intel_bb *ibb;
-+	uint32_t devid;
-+	igt_render_copyfunc_t rendercopy;
++};
 +
-+	devid = intel_get_drm_devid(i915);
-+	igt_assert(devid);
+ static int create_bo_ext(int i915, uint32_t size, bool protected_is_true, uint32_t *bo_out)
+ {
+ 	int ret;
+@@ -647,6 +656,146 @@ static void test_pxp_pwrcycle_teardown_keychange(int i915, struct powermgt_data
+ 	igt_assert_eq(matched_after_keychange, 0);
+ }
+ 
++#define GFX_OP_PIPE_CONTROL    ((3 << 29) | (3 << 27) | (2 << 24))
++#define PIPE_CONTROL_CS_STALL	            (1 << 20)
++#define PIPE_CONTROL_RENDER_TARGET_FLUSH    (1 << 12)
++#define PIPE_CONTROL_FLUSH_ENABLE           (1 << 7)
++#define PIPE_CONTROL_DATA_CACHE_INVALIDATE  (1 << 5)
++#define PIPE_CONTROL_PROTECTEDPATH_DISABLE  (1 << 27)
++#define PIPE_CONTROL_PROTECTEDPATH_ENABLE   (1 << 22)
++#define PIPE_CONTROL_POST_SYNC_OP           (1 << 14)
++#define PIPE_CONTROL_POST_SYNC_OP_STORE_DW_IDX (1 << 21)
++#define PS_OP_TAG_BEFORE                    0x1234fed0
++#define PS_OP_TAG_AFTER                     0x5678cbaf
 +
-+	rendercopy = igt_get_render_copyfunc(devid);
-+	igt_assert(rendercopy);
++static void emit_pipectrl(struct intel_bb *ibb, struct intel_buf *fenceb, bool before)
++{
++	uint32_t pipe_ctl_flags = 0;
++	uint32_t ps_op_id;
 +
-+	bops = buf_ops_create(i915);
-+	igt_assert(bops);
++	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL);
++	intel_bb_out(ibb, pipe_ctl_flags);
 +
-+	igt_init_fb(fb, i915, width, height, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
-+		    IGT_COLOR_YCBCR_BT709, IGT_COLOR_YCBCR_LIMITED_RANGE);
++	if (before)
++		ps_op_id = PS_OP_TAG_BEFORE;
++	else
++		ps_op_id = PS_OP_TAG_AFTER;
 +
-+	igt_calc_fb_size(i915, width, height, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
-+			 &fb->size, &fb->strides[0]);
-+
-+	err = create_bo_ext(i915, fb->size, true, &(fb->gem_handle));
-+	igt_assert_eq(err, 0);
-+	igt_assert(fb->gem_handle);
-+
-+	err = __gem_set_tiling(i915, fb->gem_handle, igt_fb_mod_to_tiling(fb->modifier),
-+			       fb->strides[0]);
-+	igt_assert(err == 0 || err == -EOPNOTSUPP);
-+
-+	do_or_die(__kms_addfb(fb->fd, fb->gem_handle, fb->width, fb->height, fb->drm_format,
-+			      fb->modifier, fb->strides, fb->offsets, fb->num_planes,
-+			      DRM_MODE_FB_MODIFIERS, &fb->fb_id));
-+
-+	dstbuf = intel_buf_create_using_handle(bops, fb->gem_handle, fb->width, fb->height,
-+					       fb->plane_bpp[0], 0,
-+					       igt_fb_mod_to_tiling(fb->modifier), 0);
-+	dstbuf->is_protected = true;
-+
-+	srcbo = alloc_and_fill_dest_buff(i915, false, fb->size, TSTSURF_GREENCOLOR);
-+	srcbuf = intel_buf_create_using_handle(bops, srcbo, fb->width, fb->height,
-+					       fb->plane_bpp[0], 0,
-+					       igt_fb_mod_to_tiling(fb->modifier), 0);
-+
-+	ibb = intel_bb_create_with_context(i915, ctx, 4096);
-+	igt_assert(ibb);
-+
-+	ibb->pxp.enabled = true;
-+	ibb->pxp.apptype = DISPLAY_APPTYPE;
-+	ibb->pxp.appid = I915_PROTECTED_CONTENT_DEFAULT_SESSION;
-+
-+	gen12_render_copyfunc(ibb, srcbuf, 0, 0, fb->width, fb->height, dstbuf, 0, 0);
-+
-+	gem_sync(i915, fb->gem_handle);
-+	assert_bo_content_check(i915, fb->gem_handle, COMPARE_COLOR_UNREADIBLE, fb->size,
-+				TSTSURF_GREENCOLOR, NULL, 0);
-+
-+	intel_bb_destroy(ibb);
-+	intel_buf_destroy(srcbuf);
-+	gem_close(i915, srcbo);
++	pipe_ctl_flags = (PIPE_CONTROL_FLUSH_ENABLE |
++			  PIPE_CONTROL_CS_STALL |
++			  PIPE_CONTROL_POST_SYNC_OP);
++	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL | 4);
++	intel_bb_out(ibb, pipe_ctl_flags);
++	intel_bb_emit_reloc(ibb, fenceb->handle, 0, I915_GEM_DOMAIN_COMMAND, (before?0:8),
++			    fenceb->addr.offset);
++	intel_bb_out(ibb, ps_op_id);
++	intel_bb_out(ibb, ps_op_id);
++	intel_bb_out(ibb, MI_NOOP);
++	intel_bb_out(ibb, MI_NOOP);
 +}
 +
-+#define KERNEL_AUTH_TIME_ALLOWED_MSEC		(3 *  6 * 1000)
-+#define KERNEL_DISABLE_TIME_ALLOWED_MSEC	(1 * 1000)
-+
-+static void test_display_protected_crc(int i915, igt_display_t *display)
++static void assert_pipectl_storedw_done(int i915, uint32_t bo)
 +{
-+	igt_output_t *output;
-+	drmModeModeInfo *mode;
-+	igt_fb_t ref_fb, protected_fb;
-+	igt_plane_t *plane;
-+	igt_pipe_t *pipe;
-+	igt_pipe_crc_t *pipe_crc;
-+	igt_crc_t ref_crc, new_crc;
-+	int width = 0, height = 0, i = 0, ret;
-+	uint32_t ctx;
++	uint32_t *ptr;
++	uint32_t success_mask = 0x0;
 +
-+	ret = create_ctx_with_params(i915, true, true, true, false, &ctx);
++	ptr = gem_mmap__device_coherent(i915, bo, 0, 4096, PROT_READ);
++
++	if (ptr[0] == PS_OP_TAG_BEFORE && ptr[1] == PS_OP_TAG_BEFORE)
++		success_mask |= 0x1;
++
++	igt_assert_eq(success_mask, 0x1);
++	igt_assert(gem_munmap(ptr, 4096) == 0);
++}
++
++static int gem_execbuf_flush_store_dw(int i915, struct intel_bb *ibb, uint32_t ctx,
++				      struct intel_buf *fence)
++{
++	int ret;
++
++	intel_bb_ptr_set(ibb, 0);
++	intel_bb_add_intel_buf(ibb, fence, true);
++	emit_pipectrl(ibb, fence, true);
++	intel_bb_emit_bbe(ibb);
++	ret = __intel_bb_exec(ibb, intel_bb_offset(ibb),
++				  I915_EXEC_RENDER | I915_EXEC_NO_RELOC, false);
++	if (ret == 0) {
++		gem_sync(ibb->i915, fence->handle);
++		assert_pipectl_storedw_done(i915, fence->handle);
++	}
++	return ret;
++}
++
++static void prepare_exec_assets(int i915, struct simple_exec_assets *data, bool ctx_pxp,
++				bool buf_pxp)
++{
++	int ret;
++
++	if (ctx_pxp)
++		ret = create_ctx_with_params(i915, true, true, true, false, &(data->ctx));
++	else
++		ret = create_ctx_with_params(i915, false, false, false, false, &(data->ctx));
 +	igt_assert_eq(ret, 0);
++	igt_assert_eq(get_ctx_protected_param(i915, data->ctx), ctx_pxp);
++	data->ibb = intel_bb_create_with_context(i915, data->ctx, 4096);
++	igt_assert(data->ibb);
 +
-+	for_each_connected_output(display, output) {
-+		mode = igt_output_get_mode(output);
++	data->fencebo = alloc_and_fill_dest_buff(i915, buf_pxp, 4096, 0);
 +
-+		width = max(width, mode->hdisplay);
-+		height = max(height, mode->vdisplay);
-+	}
++	data->bops = buf_ops_create(i915);
++	igt_assert(data->bops);
 +
-+	igt_create_color_fb(i915, width, height, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
-+			    0, 1, 0, &ref_fb);
++	data->fencebuf = intel_buf_create_using_handle(data->bops, data->fencebo, 256, 4,
++						       32, 0, I915_TILING_NONE, 0);
++	intel_bb_add_intel_buf(data->ibb, data->fencebuf, true);
++}
 +
-+	/* Do a modeset on all outputs */
-+	for_each_connected_output(display, output) {
-+		mode = igt_output_get_mode(output);
-+		pipe = &display->pipes[i];
-+		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+		igt_require(igt_pipe_connector_valid(i, output));
-+		igt_output_set_pipe(output, i);
++static void free_exec_assets(int i915, struct simple_exec_assets *data)
++{
++	intel_bb_destroy(data->ibb);
++	gem_close(i915, data->fencebo);
++	intel_buf_destroy(data->fencebuf);
++	gem_context_destroy(i915, data->ctx);
++	buf_ops_destroy(data->bops);
++}
 +
-+		igt_plane_set_fb(plane, &ref_fb);
-+		igt_fb_set_size(&ref_fb, plane, mode->hdisplay, mode->vdisplay);
-+		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
++static void trigger_pxp_debugfs_forced_teardown(int i915)
++{
++	int fd, ret;
++	char str[32];
 +
-+		igt_display_commit2(display, COMMIT_ATOMIC);
-+		i++;
-+	}
++	fd = igt_debugfs_open(i915, "gt/pxp/terminate_state", O_RDWR);
++	igt_assert_f(fd >= 0, "Can't open pxp termination debugfs\n");
++	ret = snprintf(str, sizeof(str), "0x1");
++	igt_assert(ret > 2 && ret < sizeof(str));
++	ret = write(fd, str, ret);
++	igt_assert_f(ret > 0, "Can't write pxp termination debugfs\n");
 +
-+	setup_protected_fb(i915, width, height, &protected_fb, ctx);
++	close(fd);
++}
 +
-+	for_each_connected_output(display, output) {
-+		mode = igt_output_get_mode(output);
-+		pipe = &display->pipes[output->pending_pipe];
-+		pipe_crc = igt_pipe_crc_new(i915, pipe->pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
-+		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+		igt_require(igt_pipe_connector_valid(pipe->pipe, output));
-+		igt_output_set_pipe(output, pipe->pipe);
++static void test_pxp_stale_ctx_execution(int i915)
++{
++	int ret;
++	struct simple_exec_assets data = {0};
 +
-+		igt_plane_set_fb(plane, &ref_fb);
-+		igt_fb_set_size(&ref_fb, plane, mode->hdisplay, mode->vdisplay);
-+		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
++	/*
++	 * Use normal buffers for testing for invalidation
++	 * of protected contexts to ensure kernel is catching
++	 * the invalidated context (not buffer)
++	 */
++	prepare_exec_assets(i915, &data, true, false);
++	ret = gem_execbuf_flush_store_dw(i915, data.ibb, data.ctx, data.fencebuf);
++	igt_assert(ret == 0);
 +
-+		igt_display_commit2(display, COMMIT_ATOMIC);
-+		igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
++	trigger_pxp_debugfs_forced_teardown(i915);
 +
-+		igt_plane_set_fb(plane, &protected_fb);
-+		igt_fb_set_size(&protected_fb, plane, mode->hdisplay, mode->vdisplay);
-+		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
++	ret = gem_execbuf_flush_store_dw(i915, data.ibb, data.ctx, data.fencebuf);
++	igt_assert_f((ret == -EIO), "Executing stale pxp context didn't fail with -EIO\n");
 +
-+		igt_display_commit2(display, COMMIT_ATOMIC);
-+		igt_pipe_crc_collect_crc(pipe_crc, &new_crc);
-+		igt_assert_crc_equal(&ref_crc, &new_crc);
-+
-+		/*
-+		 * Testing with one pipe-output combination is sufficient.
-+		 * So break the loop.
-+		 */
-+		break;
-+	}
-+
-+	gem_context_destroy(i915, ctx);
-+	igt_remove_fb(i915, &ref_fb);
-+	igt_remove_fb(i915, &protected_fb);
++	free_exec_assets(i915, &data);
 +}
 +
  igt_main
  {
  	int i915 = -1;
-@@ -1020,6 +1167,7 @@ igt_main
- 	struct powermgt_data pm = {0};
- 	igt_render_copyfunc_t rendercopy = NULL;
- 	uint32_t devid = 0;
-+	igt_display_t display;
- 
- 	igt_fixture
- 	{
-@@ -1113,6 +1261,21 @@ igt_main
- 		igt_subtest("verify-pxp-execution-after-suspend-resume")
- 			test_pxp_pwrcycle_staleasset_execution(i915, &pm);
+@@ -736,6 +885,8 @@ igt_main
+ 		igt_describe("Verify suspend-resume teardown management:");
+ 		igt_subtest("verify-pxp-key-change-after-suspend-resume")
+ 			test_pxp_pwrcycle_teardown_keychange(i915, &pm);
++		igt_subtest("verify-pxp-stale-ctx-execution")
++			test_pxp_stale_ctx_execution(i915);
  	}
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require(pxp_supported);
-+			devid = intel_get_drm_devid(i915);
-+			igt_assert(devid);
-+			rendercopy = igt_get_render_copyfunc(devid);
-+			igt_require(rendercopy);
-+
-+			igt_require_pipe_crc(i915);
-+			igt_display_require(&display, i915);
-+		}
-+		igt_describe("Test the display CRC");
-+		igt_subtest("display-protected-crc")
-+			test_display_protected_crc(i915, &display);
-+	}
  
  	igt_fixture {
- 		close(i915);
 -- 
 2.25.1
