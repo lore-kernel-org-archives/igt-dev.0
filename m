@@ -1,22 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 486F3894DE
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 19:35:02 +0000 (UTC)
-From: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
-Date: Tue, 5 Oct 2021 19:34:59 +0000
-Message-ID: <4e9faac935d4d5bf9c61045a05ccfe69618fe865.camel@intel.com>
-References: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
- <20211005151022.2161424-2-alan.previn.teres.alexis@intel.com>
- <YVykFyOAiKq20zsg@intel.com>
- <BYAPR11MB37848640B55FA385D406A0E48AAF9@BYAPR11MB3784.namprd11.prod.outlook.com>
-In-Reply-To: <BYAPR11MB37848640B55FA385D406A0E48AAF9@BYAPR11MB3784.namprd11.prod.outlook.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <13B2419DA3282E42A3338EFD50844984@intel.com>
-Content-Transfer-Encoding: base64
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4F6B46EC43
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 19:41:02 +0000 (UTC)
+From: Alan Previn <alan.previn.teres.alexis@intel.com>
+Date: Tue,  5 Oct 2021 12:41:25 -0700
+Message-Id: <20211005194133.13508-8-alan.previn.teres.alexis@intel.com>
+In-Reply-To: <20211005194133.13508-1-alan.previn.teres.alexis@intel.com>
+References: <20211005194133.13508-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v13 01/16] i915_drm.h sync PXP default
- session
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v15 07/15] Add subtest to copy raw source to
+ protected dest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,48 +20,103 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDIxLTEwLTA1IGF0IDE5OjMxICswMDAwLCBUZXJlcyBBbGV4aXMsIEFsYW4gUHJl
-dmluIHdyb3RlOg0KPiBIZXkgUm9kcmlnbywgYXBvbG9naWVzIGZvciB0aGlzIHVwc3RyZWFtLW5l
-d2JpZSBtaXN0YWtlIGFuZCBJIHRydWx5DQo+IGFwcHJlY2lhdGUgeW91IHRha2luZyB0aGUgdGlt
-ZSBhbmQgZXhwbGFpbmluZyBteSBtaXN0YWtlIGVzcGVjaWFsbHkNCj4gdGhlIHB1bGwtaW4gb2Yg
-dGhlIG90aGVyIG5vbi1QWFAgZGVsdGEncyB0b28uIEkgd2lsbCByZXNwaW4gdGhpcw0KPiBBU0FQ
-Lg0KDQpub3QgeW91ciBmYXVsdC4NCg0KMS4gV2Ugc2hvdWxkIGhhdmUgdGhhdCBkb2N1bWVudGVk
-IHNvbWV3aGVyZS4NCjIuIFdoeSBkbyB3ZSBoYXZlIFVBUElzIGluIGk5MTUgd2l0aG91dCBhbnkg
-SUdUIHRlc3QgZm9yIHRoYXQ/ISBvLk8NCihJIG1lYW4sIHRob3NlIG90aGVyIG9uZXMgdGhhdCB5
-b3VyIHBhdGNoIGlzIG5vdCBicmluZ2luZyBpbiB0b2dldGhlcikNCg0KPiANCj4gLi4uYWxhbg0K
-PiANCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVml2aSwgUm9kcmlnbyA8
-cm9kcmlnby52aXZpQGludGVsLmNvbT4NCj4gU2VudDogVHVlc2RheSwgT2N0b2JlciA1LCAyMDIx
-IDEyOjE1IFBNDQo+IFRvOiBUZXJlcyBBbGV4aXMsIEFsYW4gUHJldmluIDxhbGFuLnByZXZpbi50
-ZXJlcy5hbGV4aXNAaW50ZWwuY29tPg0KPiBDYzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
-cmcNCj4gU3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXQgdjEzIDAxLzE2XSBpOTE1
-X2RybS5oIHN5bmMgUFhQDQo+IGRlZmF1bHQgc2Vzc2lvbg0KPiANCj4gT24gVHVlLCBPY3QgMDUs
-IDIwMjEgYXQgMDg6MTA6MDdBTSAtMDcwMCwgQWxhbiBQcmV2aW4gd3JvdGU6DQo+ID4gU3luYyBV
-QVBJIGZvciB0byBnZXQgSTkxNV9QUk9URUNURURfQ09OVEVOVF9ERUZBVUxUX1NFU1NJT04gZGVm
-aW5lDQo+ID4gdmFsdWUuDQo+ID4gDQo+ID4gVGFrZW4gZnJvbSBrZXJuZWwgY29tbWl0Og0KPiA+
-IGNvbW1pdCBjYmJkMzc2NGIyMzk5YWQ4ODJjZGE5ODQzNWIyNTE0NGU5ZWEyMTI0DQo+ID4gwqDC
-oMKgwqDCoMKgICgiZHJtL2k5MTUvcHhwOiBDcmVhdGUgdGhlIGFyYml0cmFyeSBzZXNzaW9uIGFm
-dGVyIGJvb3QuIikNCj4gDQo+IFRoaXMgaXMgbm90IGFjY3VyYXRlLiBUaGUgaTkxNV9kcm0uaCBp
-biB0aGlzIGNvbW1pdCBoYXMgbW9yZSBjaGFuZ2VzDQo+IG90aGVyIHRoYW4gSTkxNV9QUk9URUNU
-RURfQ09OVEVOVF9ERUZBVUxUX1NFU1NJT04uDQo+IA0KPiBXZSBzaG91bGQgY29tYmluZSB0aGUg
-cGF0Y2hlcyAxIGFuZCAyIG9mIHRoaXMgc2VyaWVzIGFuZCBtYWtlIGENCj4gc2ltcGx5IGk5MTVf
-ZHJtLmggc3luYyBhbmQgYWRkIHNvbWUgcmVhc29uaW5nIGluIHRoZSBjb21taXQgbWVzc2FnZQ0K
-PiBzYXlpbmcgdGhhdCBpdCBpcyBiZWNhdXNlIG9mIHRoZSBQWFAuIEJ1dCB0aGUgbmV3IGluY2x1
-ZGUvZHJtLQ0KPiB1YXBpL2k5MTVfZHJtLmggc2hvdWxkIGluY2x1ZGUgYWxsIHRoZSBuZXcgYXBp
-IGFkZGl0aW9ucyBmcm9tDQo+IGk5MTVfZHJtLmggdWFwaS4NCj4gDQo+IA0KPiA+IA0KPiA+IFNp
-Z25lZC1vZmYtYnk6IEFsYW4gUHJldmluIDxhbGFuLnByZXZpbi50ZXJlcy5hbGV4aXNAaW50ZWwu
-Y29tPg0KPiA+IC0tLQ0KPiA+IMKgaW5jbHVkZS9kcm0tdWFwaS9pOTE1X2RybS5oIHwgMyArKysN
-Cj4gPiDCoDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKykNCj4gPiANCj4gPiBkaWZmIC0t
-Z2l0IGEvaW5jbHVkZS9kcm0tdWFwaS9pOTE1X2RybS5oIGIvaW5jbHVkZS9kcm0tDQo+ID4gdWFw
-aS9pOTE1X2RybS5oDQo+ID4gaW5kZXggYjk2MzJiYjIuLmY0NjkxZmNjIDEwMDY0NA0KPiA+IC0t
-LSBhL2luY2x1ZGUvZHJtLXVhcGkvaTkxNV9kcm0uaA0KPiA+ICsrKyBiL2luY2x1ZGUvZHJtLXVh
-cGkvaTkxNV9kcm0uaA0KPiA+IEBAIC0yOTkwLDYgKzI5OTAsOSBAQCBzdHJ1Y3QgZHJtX2k5MTVf
-Z2VtX2NyZWF0ZV9leHRfbWVtb3J5X3JlZ2lvbnMNCj4gPiB7DQo+ID4gwqDCoMKgwqDCoCBfX3U2
-NCByZWdpb25zOw0KPiA+IMKgfTsNCj4gPiANCj4gPiArLyogSUQgb2YgdGhlIHByb3RlY3RlZCBj
-b250ZW50IHNlc3Npb24gbWFuYWdlZCBieSBpOTE1IHdoZW4gUFhQIGlzDQo+ID4gK2FjdGl2ZSAq
-LyAjZGVmaW5lIEk5MTVfUFJPVEVDVEVEX0NPTlRFTlRfREVGQVVMVF9TRVNTSU9OIDB4Zg0KPiA+
-ICsNCj4gPiDCoCNpZiBkZWZpbmVkKF9fY3BsdXNwbHVzKQ0KPiA+IMKgfQ0KPiA+IMKgI2VuZGlm
-DQo+ID4gLS0NCj4gPiAyLjI1LjENCj4gPiANCg0K
+Add subtest to 3d-copy raw source buffer (with
+known readible content) to a destination buffer
+marked as protected with a protected session using
+default session keys. The destination buffer is
+verified to be different from the source (when
+read via CPU) because its encrypted.
+
+Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+---
+ tests/i915/gem_pxp.c | 55 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
+
+diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+index 272de57b..9c7de6b0 100644
+--- a/tests/i915/gem_pxp.c
++++ b/tests/i915/gem_pxp.c
+@@ -378,7 +378,9 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size
+ #define TSTSURF_STRIDE      (TSTSURF_WIDTH*TSTSURF_BYTESPP)
+ #define TSTSURF_SIZE        (TSTSURF_STRIDE*TSTSURF_HEIGHT)
+ #define TSTSURF_FILLCOLOR1  0xfaceface
++#define TSTSURF_FILLCOLOR2  0xdeaddead
+ #define TSTSURF_INITCOLOR1  0x12341234
++#define TSTSURF_INITCOLOR2  0x56785678
+ 
+ static void test_render_baseline(int i915)
+ {
+@@ -424,6 +426,57 @@ static void test_render_baseline(int i915)
+ 	buf_ops_destroy(bops);
+ }
+ 
++static void test_render_pxp_src_to_protdest(int i915)
++{
++	uint32_t ctx, srcbo, dstbo;
++	struct intel_buf *srcbuf, *dstbuf;
++	struct buf_ops *bops;
++	struct intel_bb *ibb;
++	uint32_t devid;
++	int ret;
++
++	devid = intel_get_drm_devid(i915);
++	igt_assert(devid);
++
++	bops = buf_ops_create(i915);
++	igt_assert(bops);
++
++	/*
++	 * Perform a protected render operation but only label
++	 * the dest as protected. After rendering, the content
++	 * should be encrypted
++	 */
++	ret = create_ctx_with_params(i915, true, true, true, false, &ctx);
++	igt_assert_eq(ret, 0);
++	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
++	ibb = intel_bb_create_with_context(i915, ctx, 4096);
++	igt_assert(ibb);
++	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
++
++	dstbo = alloc_and_fill_dest_buff(i915, true, TSTSURF_SIZE, TSTSURF_INITCOLOR2);
++	dstbuf = intel_buf_create_using_handle(bops, dstbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
++	intel_buf_set_pxp(dstbuf, true);
++
++	srcbo = alloc_and_fill_dest_buff(i915, false, TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
++	srcbuf = intel_buf_create_using_handle(bops, srcbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
++						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
++
++	gen12_render_copyfunc(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
++	gem_sync(i915, dstbo);
++
++	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
++				TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
++
++	intel_bb_destroy(ibb);
++	intel_buf_destroy(srcbuf);
++	gem_close(i915, srcbo);
++	intel_buf_destroy(dstbuf);
++	gem_close(i915, dstbo);
++	gem_context_destroy(i915, ctx);
++	buf_ops_destroy(bops);
++}
++
+ igt_main
+ {
+ 	int i915 = -1;
+@@ -495,6 +548,8 @@ igt_main
+ 		igt_describe("Verify protected render operations:");
+ 		igt_subtest("regular-baseline-src-copy-readible")
+ 			test_render_baseline(i915);
++		igt_subtest("protected-raw-src-copy-not-readible")
++			test_render_pxp_src_to_protdest(i915);
+ 	}
+ 
+ 	igt_fixture {
+-- 
+2.25.1
