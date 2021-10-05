@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3281F6EB87
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 15:14:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A4CFA6F5E6
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 15:14:05 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue,  5 Oct 2021 08:10:07 -0700
-Message-Id: <20211005151022.2161424-2-alan.previn.teres.alexis@intel.com>
+Date: Tue,  5 Oct 2021 08:10:12 -0700
+Message-Id: <20211005151022.2161424-7-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
 References: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v13 01/16] i915_drm.h sync PXP default
- session
+Subject: [igt-dev] [PATCH i-g-t v13 06/16] Add MI_SET_APPID instruction
+ definition
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,33 +21,35 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Sync UAPI for to get I915_PROTECTED_CONTENT_DEFAULT_SESSION define value.
-
-Taken from kernel commit:
-commit cbbd3764b2399ad882cda98435b25144e9ea2124
-       ("drm/i915/pxp: Create the arbitrary session after boot.")
+Add MI_SET_APPID instruction and param definitions
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- include/drm-uapi/i915_drm.h | 3 +++
- 1 file changed, 3 insertions(+)
+ lib/intel_reg.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-index b9632bb2..f4691fcc 100644
---- a/include/drm-uapi/i915_drm.h
-+++ b/include/drm-uapi/i915_drm.h
-@@ -2990,6 +2990,9 @@ struct drm_i915_gem_create_ext_memory_regions {
- 	__u64 regions;
- };
+diff --git a/lib/intel_reg.h b/lib/intel_reg.h
+index ac1fc6cb..ab01a283 100644
+--- a/lib/intel_reg.h
++++ b/lib/intel_reg.h
+@@ -2546,6 +2546,14 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ #define CTXT_PALETTE_SAVE_DISABLE	(1<<3)
+ #define CTXT_PALETTE_RESTORE_DISABLE	(1<<2)
  
-+/* ID of the protected content session managed by i915 when PXP is active */
-+#define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
++#define MI_SET_APPID                    (0x0E << 23)
++#define APPID_CTXREST_INHIBIT           (1 << 9)
++#define APPID_CTXSAVE_INHIBIT           (1 << 8)
++#define APPTYPE(n)                      ((n) << 7)
++#define  DISPLAY_APPTYPE                (0)
++#define  TRANSCODE_APPTYPE              (1)
++#define APPID(n)                        ((n) & 0x7f)
 +
- #if defined(__cplusplus)
- }
- #endif
+ /* Dword 0 */
+ #define MI_VERTEX_BUFFER		(0x17<<23)
+ #define MI_VERTEX_BUFFER_IDX(x)		(x<<20)
 -- 
 2.25.1
