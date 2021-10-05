@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5133360257341235161=="
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A76E6F5E3
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 15:14:04 +0000 (UTC)
+From: Alan Previn <alan.previn.teres.alexis@intel.com>
+Date: Tue,  5 Oct 2021 08:10:11 -0700
+Message-Id: <20211005151022.2161424-6-alan.previn.teres.alexis@intel.com>
+In-Reply-To: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
+References: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 05 Oct 2021 15:04:14 -0000
-Message-ID: <163344625468.19281.3507508554518698238@emeril.freedesktop.org>
-References: <20211005135601.17102-1-igormtorrente@gmail.com>
-In-Reply-To: <20211005135601.17102-1-igormtorrente@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fwriteback=2Ec=3A_fix_the_=60fill=5Ffb=60_function?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v13 05/16] Add PXP attribute support in
+ batchbuffer and buffer_ops libs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,269 +18,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Igor Matheus Andrade Torrente <igormtorrente@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5133360257341235161==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Eventually when we get to testing PXP rendering capability,
+we shall reuse lib's rendercopy feature. Rendercopy libraries
+shall retrieve information about PXP-session-enablement and
+which buffers are protected from these new flags.
 
-== Series Details ==
+Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/intel_batchbuffer.c | 21 +++++++++++++++++++++
+ lib/intel_batchbuffer.h | 28 ++++++++++++++++++++++++++++
+ lib/intel_bufops.h      | 15 +++++++++++++++
+ 3 files changed, 64 insertions(+)
 
-Series: tests/kms_writeback.c: fix the `fill_fb` function
-URL   : https://patchwork.freedesktop.org/series/95459/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_6231 -> IGTPW_6286
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6286 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_prime@amd-to-i915:
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][1] ([fdo#109271]) +28 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-kbl-x1275/igt@amdgpu/amd_prime@amd-to-i915.html
-
-  * igt@amdgpu/amd_prime@i915-to-amd:
-    - fi-snb-2520m:       NOTRUN -> [SKIP][2] ([fdo#109271]) +37 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-snb-2520m/igt@amdgpu/amd_prime@i915-to-amd.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][3] ([i915#2190])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-tgl-u2/igt@gem_huc_copy@huc-copy.html
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#2190])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-kbl-x1275/igt@gem_huc_copy@huc-copy.html
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - fi-skl-6600u:       [PASS][5] -> [FAIL][6] ([i915#3239])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6231/fi-skl-6600u/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-skl-6600u/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][7] ([fdo#109284] / [fdo#111827]) +8 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-tgl-u2/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_chamelium@hdmi-crc-fast:
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-kbl-x1275/igt@kms_chamelium@hdmi-crc-fast.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-snb-2520m:       NOTRUN -> [SKIP][9] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-snb-2520m/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][10] ([i915#4103]) +1 similar issue
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-tgl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][11] ([fdo#109285])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-tgl-u2/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][12] ([fdo#109271] / [i915#533])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-kbl-x1275/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][13] ([i915#3301])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-tgl-u2/igt@prime_vgem@basic-userptr.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-tgl-1115g4:      [FAIL][14] ([i915#1888]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6231/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109284]: https://bugs.freedesktop.org/show_bug.cgi?id=109284
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#3239]: https://gitlab.freedesktop.org/drm/intel/issues/3239
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-
-
-Participating hosts (33 -> 35)
-------------------------------
-
-  Additional (3): fi-kbl-x1275 fi-snb-2520m fi-tgl-u2 
-  Missing    (1): fi-bsw-cyan 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6231 -> IGTPW_6286
-
-  CI-20190529: 20190529
-  CI_DRM_10683: 2db2331e0b19308750c3b921c2779c4c2da9b04b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6286: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/index.html
-  IGT_6231: 13460b8b626b0b377638f84e429f394322646ea4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/index.html
-
---===============5133360257341235161==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_writeback.c: fix the `fill_fb` function</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95459/">https://patchwork.freedesktop.org/series/95459/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6231 -&gt; IGTPW_6286</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6286 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_prime@amd-to-i915:</p>
-<ul>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-kbl-x1275/igt@amdgpu/amd_prime@amd-to-i915.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +28 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_prime@i915-to-amd:</p>
-<ul>
-<li>fi-snb-2520m:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-snb-2520m/igt@amdgpu/amd_prime@i915-to-amd.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +37 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>
-<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-tgl-u2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
-</li>
-<li>
-<p>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-kbl-x1275/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6231/fi-skl-6600u/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-skl-6600u/igt@i915_pm_rpm@basic-pci-d3-state.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3239">i915#3239</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-tgl-u2/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109284">fdo#109284</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-crc-fast:</p>
-<ul>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-kbl-x1275/igt@kms_chamelium@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
-<ul>
-<li>fi-snb-2520m:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-snb-2520m/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-tgl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-tgl-u2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
-<ul>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-kbl-x1275/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-tgl-u2/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@gem_exec_suspend@basic-s3:<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6231/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (33 -&gt; 35)</h2>
-<p>Additional (3): fi-kbl-x1275 fi-snb-2520m fi-tgl-u2 <br />
-  Missing    (1): fi-bsw-cyan </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6231 -&gt; IGTPW_6286</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10683: 2db2331e0b19308750c3b921c2779c4c2da9b04b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6286: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6286/index.html<br />
-  IGT_6231: 13460b8b626b0b377638f84e429f394322646ea4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5133360257341235161==--
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index e3e649ca..291d706b 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -2347,6 +2347,27 @@ uint64_t intel_bb_offset_reloc_to_object(struct intel_bb *ibb,
+ 				  delta, offset, presumed_offset);
+ }
+ 
++/*
++ * @intel_bb_set_pxp:
++ * @ibb: pointer to intel_bb
++ * @new_state: enable or disable pxp session
++ * @apptype: pxp session input identifies what type of session to enable
++ * @appid: pxp session input provides which appid to use
++ *
++ * This function merely stores the pxp state and session information to
++ * be retrieved and programmed later by supporting libraries such as
++ * gen12_render_copy that must program the HW within the same dispatch
++ */
++void intel_bb_set_pxp(struct intel_bb *ibb, bool new_state,
++		      uint32_t apptype, uint32_t appid)
++{
++	igt_assert(ibb);
++
++	ibb->pxp.enabled = new_state;
++	ibb->pxp.apptype = new_state ? apptype : 0;
++	ibb->pxp.appid   = new_state ? appid : 0;
++}
++
+ static void intel_bb_dump_execbuf(struct intel_bb *ibb,
+ 				  struct drm_i915_gem_execbuffer2 *execbuf)
+ {
+diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+index 0839d761..10fa66ee 100644
+--- a/lib/intel_batchbuffer.h
++++ b/lib/intel_batchbuffer.h
+@@ -446,6 +446,11 @@ typedef void (*igt_media_spinfunc_t)(int i915,
+ 
+ igt_media_spinfunc_t igt_get_media_spinfunc(int devid);
+ 
++struct igt_pxp {
++	bool     enabled;
++	uint32_t apptype;
++	uint32_t appid;
++};
+ 
+ /*
+  * Batchbuffer without libdrm dependency
+@@ -472,6 +477,7 @@ struct intel_bb {
+ 	bool supports_48b_address;
+ 	bool uses_full_ppgtt;
+ 
++	struct igt_pxp pxp;
+ 	uint32_t ctx;
+ 	uint32_t vm_id;
+ 
+@@ -583,6 +589,27 @@ static inline void intel_bb_out(struct intel_bb *ibb, uint32_t dword)
+ 	igt_assert(intel_bb_offset(ibb) <= ibb->size);
+ }
+ 
++void intel_bb_set_pxp(struct intel_bb *ibb, bool new_state,
++		      uint32_t apptype, uint32_t appid);
++
++static inline bool intel_bb_pxp_enabled(struct intel_bb *ibb)
++{
++	igt_assert(ibb);
++	return ibb->pxp.enabled;
++}
++
++static inline uint32_t intel_bb_pxp_apptype(struct intel_bb *ibb)
++{
++	igt_assert(ibb);
++	return ibb->pxp.apptype;
++}
++
++static inline uint32_t intel_bb_pxp_appid(struct intel_bb *ibb)
++{
++	igt_assert(ibb);
++	return ibb->pxp.appid;
++}
++
+ struct drm_i915_gem_exec_object2 *
+ intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+ 		    uint64_t offset, uint64_t alignment, bool write);
+@@ -697,3 +724,4 @@ typedef void (*igt_huc_copyfunc_t)(int fd, uint64_t ahnd,
+ 
+ igt_huc_copyfunc_t	igt_get_huc_copyfunc(int devid);
+ #endif
++
+diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
+index 54f2ce45..8b718ba7 100644
+--- a/lib/intel_bufops.h
++++ b/lib/intel_bufops.h
+@@ -50,6 +50,9 @@ struct intel_buf {
+ 	uint32_t *ptr;
+ 	bool cpu_write;
+ 
++	/* Content Protection*/
++	bool is_protected;
++
+ 	/* For debugging purposes */
+ 	char name[INTEL_BUF_NAME_MAXSIZE + 1];
+ };
+@@ -160,6 +163,18 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
+ 							 int stride);
+ void intel_buf_destroy(struct intel_buf *buf);
+ 
++static inline void intel_buf_set_pxp(struct intel_buf *buf, bool new_pxp_state)
++{
++	igt_assert(buf);
++	buf->is_protected = new_pxp_state;
++}
++
++static inline bool intel_buf_pxp(const struct intel_buf *buf)
++{
++	igt_assert(buf);
++	return buf->is_protected;
++}
++
+ void *intel_buf_cpu_map(struct intel_buf *buf, bool write);
+ void *intel_buf_device_map(struct intel_buf *buf, bool write);
+ void intel_buf_unmap(struct intel_buf *buf);
+-- 
+2.25.1
