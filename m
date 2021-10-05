@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0710328462710663377=="
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C16566E2E6
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 06:52:24 +0000 (UTC)
+Date: Tue, 5 Oct 2021 08:52:18 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20211005065218.GA3744@zkempczy-mobl2>
+References: <20211004054056.24346-1-zbigniew.kempczynski@intel.com>
+ <20211004054056.24346-3-zbigniew.kempczynski@intel.com>
+ <87bl44z8av.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 05 Oct 2021 06:47:31 -0000
-Message-ID: <163341645106.19282.13183472410885835372@emeril.freedesktop.org>
-References: <20211005054509.27336-1-jeevan.b@intel.com>
-In-Reply-To: <20211005054509.27336-1-jeevan.b@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?core=5Fhotunplug=3A_Drop_log_level_for_preventively_unloading_s?=
- =?utf-8?q?nd_driver_=28rev2=29?=
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87bl44z8av.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/intel_bufops: Store gem bo size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,327 +21,138 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jeevan B <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0710328462710663377==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Mon, Oct 04, 2021 at 04:20:24PM -0700, Dixit, Ashutosh wrote:
+> On Sun, 03 Oct 2021 22:40:56 -0700, Zbigniew Kempczyński wrote:
+> >
+> > intel_buf is keeping its size which may differ to underlying gem bo size.
+> > Introduce keeping bo_size field which is used along with softpin mode
+> > - like in intel_bb.
+> >
+> > Patch also should remove previous discrepancy where intel_buf_bo_size()
+> > returned requested (not gem bo size).
+> >
+> > From now on user has an access to:
+> > 1. raw buffer size - intel_buf_size() - function returns how buffer data
+> >    really takes in the memory
+> 
+> Not sure what we mean by this since intel_buf_size() can return 0 even with
+> a non-zero handle. See below.
+> 
+> > 2. gem bo buffer size - intel_buf_bo_size() - function returns how big
+> >    underlying gem object is
+> 
+> > diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+> > index 7199723bb..80c5bb80b 100644
+> > --- a/lib/intel_bufops.c
+> > +++ b/lib/intel_bufops.c
+> > @@ -813,17 +813,16 @@ static void __intel_buf_init(struct buf_ops *bops,
+> >		size = bo_size;
+> >	}
+> >
+> > -	/* Store real bo size to avoid mistakes in calculating it again */
+> > +	/* Store buffer size to avoid mistakes in calculating it again */
+> >	buf->size = size;
+> > +	buf->handle = handle;
+> >
+> > -	if (handle)
+> > -		buf->handle = handle;
+> > -	else {
+> > -		if (!__gem_create_in_memory_regions(bops->fd, &handle, &size, region))
+> > -			buf->handle = handle;
+> > -		else
+> > -			buf->handle = gem_create(bops->fd, size);
+> > -	}
+> > +	if (!handle)
+> > +		if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
+> > +			igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
+> > +
+> > +	/* Store gem bo size */
+> > +	buf->bo_size = size;
+> 
+> The code after the above changes is like this:
+> 
+>         if (bo_size > 0) {
+>                 igt_assert(bo_size >= size);
+>                 size = bo_size;
+>         }
+> 
+>         /* Store buffer size to avoid mistakes in calculating it again */
+>         buf->size = size;
+>         buf->handle = handle;
+> 
+>         if (!handle)
+>                 if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
+>                         igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
+> 
+>         /* Store gem bo size */
+>         buf->bo_size = size;
+> 
+> The function is called with:
+> 
+> a. handle == 0 or != 0
+> b. bo_size == 0 or != 0
+> 
+> As seen in __intel_buf_init callers:
+> 
+> *** lib/intel_bufops.c:
+> __intel_buf_init[728]          static void __intel_buf_init(struct buf_ops *bops,
+> intel_buf_init[851]            __intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
+> intel_buf_init_in_region[868]  __intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
+> intel_buf_init_using_handle[927] __intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+> intel_buf_create_using_handle_and_size[1013] __intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+> 
+> So when handle != 0 and bo_size == 0, we end with both buf->size == buf->bo_size == 0.
 
-== Series Details ==
+But we're overwriting size only when bo_size > 0:
 
-Series: tests/core_hotunplug: Drop log level for preventively unloading snd driver (rev2)
-URL   : https://patchwork.freedesktop.org/series/94978/
-State : failure
+	if (bo_size > 0) {
+		igt_assert(bo_size >= size);
+		size = bo_size;
+	}
 
-== Summary ==
+> When handle == 0 and bo_size == 0, we end up with buf->size == 0 and buf->bo_size != 0.
 
-CI Bug Log - changes from IGT_6229 -> IGTPW_6285
-====================================================
+Regardless handle we got size > 0 always. It comes from 
 
-Summary
--------
+	if (compression) {
+		...
+		size = buf->ccs[0].offset + aux_width * aux_height;	
+	} else {
+		...
+		size = buf->surface[0].stride * ALIGN(height, align_h);
+	}
 
-  **FAILURE**
+or
 
-  Serious unknown changes coming with IGTPW_6285 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_6285, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+	if (bo_size > 0) {
+		igt_assert(bo_size >= size);
+		size = bo_size;
+	}
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/index.html
+Asserts on the beginning guarantees we got size > 0:
 
-Possible new issues
--------------------
+	igt_assert(width > 0 && height > 0);
+	igt_assert(bpp == 8 || bpp == 16 || bpp == 32 || bpp == 64);
 
-  Here are the unknown changes that may have been introduced in IGTPW_6285:
+So initialization
 
-### IGT changes ###
+	buf->size = size; 
 
-#### Possible regressions ####
+won't be 0 here.
 
-  * igt@gem_basic@create-close:
-    - fi-kbl-soraka:      [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-kbl-soraka/igt@gem_basic@create-close.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-kbl-soraka/igt@gem_basic@create-close.html
+> 
+> So this is not a new issue, maybe it's ok, but I just wanted to check with
+> you if you think all these scenarios work out ok even after introducing
+> separate buf->size and buf->bo_size. Thanks.
 
-  
-Known issues
-------------
+Thank you're carefully looking at the code. Please go over it one more time
+and verify what I've written. Maybe I just don't see something obvious...
 
-  Here are the changes found in IGTPW_6285 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@query-info:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-kbl-soraka/igt@amdgpu/amd_basic@query-info.html
-
-  * igt@amdgpu/amd_cs_nop@nop-compute0:
-    - fi-ilk-650:         NOTRUN -> [SKIP][4] ([fdo#109271]) +35 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-ilk-650/igt@amdgpu/amd_cs_nop@nop-compute0.html
-
-  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
-    - fi-snb-2600:        NOTRUN -> [SKIP][5] ([fdo#109271]) +17 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
-
-  * igt@gem_exec_suspend@basic-s0:
-    - fi-tgl-1115g4:      [PASS][6] -> [FAIL][7] ([i915#1888])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
-
-  * igt@kms_chamelium@dp-hpd-fast:
-    - fi-ilk-650:         NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-ilk-650/igt@kms_chamelium@dp-hpd-fast.html
-
-  * igt@kms_chamelium@hdmi-edid-read:
-    - fi-bdw-samus:       NOTRUN -> [SKIP][9] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-bdw-samus/igt@kms_chamelium@hdmi-edid-read.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-bdw-samus:       NOTRUN -> [SKIP][10] ([fdo#109271]) +29 similar issues
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-bdw-samus/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][11] ([fdo#109271]) +48 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
-
-  
-#### Possible fixes ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-hsw-4770:        [WARN][12] ([i915#3718]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-hsw-4770/igt@core_hotunplug@unbind-rebind.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-hsw-4770/igt@core_hotunplug@unbind-rebind.html
-    - fi-bdw-5557u:       [WARN][14] ([i915#3718]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@gem_exec_parallel@engines@userptr:
-    - fi-pnv-d510:        [INCOMPLETE][16] ([i915#299]) -> [PASS][17]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-bdw-samus:       [INCOMPLETE][18] ([i915#146] / [i915#4173]) -> [PASS][19]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-bdw-samus/igt@gem_exec_suspend@basic-s3.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-bdw-samus/igt@gem_exec_suspend@basic-s3.html
-    - fi-tgl-1115g4:      [FAIL][20] ([i915#1888]) -> [PASS][21]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-snb-2600:        [INCOMPLETE][22] ([i915#3921]) -> [PASS][23]
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_chamelium@hdmi-edid-read:
-    - fi-kbl-7500u:       [FAIL][24] ([i915#3449]) -> [PASS][25]
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
-  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
-  [i915#299]: https://gitlab.freedesktop.org/drm/intel/issues/299
-  [i915#3449]: https://gitlab.freedesktop.org/drm/intel/issues/3449
-  [i915#3718]: https://gitlab.freedesktop.org/drm/intel/issues/3718
-  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
-  [i915#4173]: https://gitlab.freedesktop.org/drm/intel/issues/4173
-
-
-Participating hosts (33 -> 33)
-------------------------------
-
-  Additional (1): fi-ilk-650 
-  Missing    (1): fi-bsw-cyan 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6229 -> IGTPW_6285
-
-  CI-20190529: 20190529
-  CI_DRM_10681: fe9b639a95a08713c8ee4ef110ce6a6388c9f9f2 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6285: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/index.html
-  IGT_6229: dff598c339a2da647f15c86d0015e16378c7ea9b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/index.html
-
---===============0710328462710663377==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/core_hotunplug: Drop log level for preventively unloading snd driver (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/94978/">https://patchwork.freedesktop.org/series/94978/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6229 -&gt; IGTPW_6285</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_6285 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_6285, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/index.html</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6285:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@gem_basic@create-close:<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-kbl-soraka/igt@gem_basic@create-close.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-kbl-soraka/igt@gem_basic@create-close.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6285 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@query-info:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-kbl-soraka/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_cs_nop@nop-compute0:</p>
-<ul>
-<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-ilk-650/igt@amdgpu/amd_cs_nop@nop-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +35 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_cs_nop@sync-fork-compute0:</p>
-<ul>
-<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s0:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-hpd-fast:</p>
-<ul>
-<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-ilk-650/igt@kms_chamelium@dp-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-edid-read:</p>
-<ul>
-<li>fi-bdw-samus:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-bdw-samus/igt@kms_chamelium@hdmi-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
-<ul>
-<li>fi-bdw-samus:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-bdw-samus/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +29 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +48 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>
-<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-hsw-4770/igt@core_hotunplug@unbind-rebind.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3718">i915#3718</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-hsw-4770/igt@core_hotunplug@unbind-rebind.html">PASS</a></p>
-</li>
-<li>
-<p>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3718">i915#3718</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-bdw-5557u/igt@core_hotunplug@unbind-rebind.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_parallel@engines@userptr:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/299">i915#299</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-pnv-d510/igt@gem_exec_parallel@engines@userptr.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>
-<p>fi-bdw-samus:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-bdw-samus/igt@gem_exec_suspend@basic-s3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4173">i915#4173</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-bdw-samus/igt@gem_exec_suspend@basic-s3.html">PASS</a></p>
-</li>
-<li>
-<p>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-edid-read:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6229/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3449">i915#3449</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (33 -&gt; 33)</h2>
-<p>Additional (1): fi-ilk-650 <br />
-  Missing    (1): fi-bsw-cyan </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6229 -&gt; IGTPW_6285</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10681: fe9b639a95a08713c8ee4ef110ce6a6388c9f9f2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6285: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6285/index.html<br />
-  IGT_6229: dff598c339a2da647f15c86d0015e16378c7ea9b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============0710328462710663377==--
+--
+Zbigniew
