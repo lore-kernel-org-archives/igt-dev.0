@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 84AF389178
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 10:14:10 +0000 (UTC)
-Message-ID: <8474adec-16b9-6a0e-3bc2-73e6e9b03fae@intel.com>
-Date: Tue, 5 Oct 2021 15:43:50 +0530
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8AE176E3CE
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 10:15:46 +0000 (UTC)
+Message-ID: <d0e88bad-fd98-352a-a660-30971172beb8@intel.com>
+Date: Tue, 5 Oct 2021 15:45:32 +0530
 Content-Language: en-US
 References: <20210916153515.21369-1-ville.syrjala@linux.intel.com>
- <20210916153515.21369-2-ville.syrjala@linux.intel.com>
+ <20210916153515.21369-3-ville.syrjala@linux.intel.com>
 From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20210916153515.21369-2-ville.syrjala@linux.intel.com>
+In-Reply-To: <20210916153515.21369-3-ville.syrjala@linux.intel.com>
 Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/6] tests/kms_invalid_mode: Convert the
- max dotclock test into a subtest
+Subject: Re: [igt-dev] [PATCH i-g-t 3/6] tests/kms_invalid_mode: Move
+ bigjoiner handling into the proper place
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,155 +29,67 @@ List-ID: <igt-dev@lists.freedesktop.org>
 On 9/16/2021 9:05 PM, Ville Syrjala wrote:
 > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 >
-> We want to add different subtests to kms_invalud_mode. Convert
-
-Hi,
-
-Typo: 'kms_invalud_mode'
-
-> the current max dotclock test into a subtest.
+> Since we're adding other subtests we don't want to muck around
+> with the dotclock unconditionally in the main test code. Move
+> the handling into the subtest specific adjust function.
 >
 > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 > ---
->   tests/i915/kms_invalid_mode.c | 80 +++++++++++++++++++++++++----------
->   1 file changed, 57 insertions(+), 23 deletions(-)
+>   tests/i915/kms_invalid_mode.c | 28 +++++++++++++++-------------
+>   1 file changed, 15 insertions(+), 13 deletions(-)
 >
 > diff --git a/tests/i915/kms_invalid_mode.c b/tests/i915/kms_invalid_mode.c
-> index dc30e6bb5444..8b24993e40a3 100644
+> index 8b24993e40a3..a1899bd52214 100644
 > --- a/tests/i915/kms_invalid_mode.c
 > +++ b/tests/i915/kms_invalid_mode.c
-> @@ -27,13 +27,16 @@
->   
->   IGT_TEST_DESCRIPTION("Make sure all modesets are rejected when the requested mode is invalid");
->   
-> -typedef struct {
-> +typedef struct _data data_t;
+> @@ -69,7 +69,9 @@ can_bigjoiner(data_t *data)
+>   static bool
+>   adjust_mode_clock_too_high(data_t *data, drmModeModeInfoPtr mode)
+>   {
+> -	igt_require(data->max_dotclock != 0);
+> +	int max_dotclock = data->max_dotclock;
 > +
-> +struct _data {
->   	int drm_fd;
->   	igt_display_t display;
->   	igt_output_t *output;
->   	drmModeResPtr res;
->   	int max_dotclock;
-> -} data_t;
-> +	bool (*adjust_mode)(data_t *data, drmModeModeInfoPtr mode);
-> +};
->   
->   static bool has_scaling_mode_prop(data_t *data)
->   {
-> @@ -63,13 +66,10 @@ can_bigjoiner(data_t *data)
->   	return false;
->   }
->   
-> -static int
-> -test_output(data_t *data)
-> +static bool
-> +adjust_mode_clock_too_high(data_t *data, drmModeModeInfoPtr mode)
->   {
-> -	igt_output_t *output = data->output;
-> -	drmModeModeInfo mode;
-> -	struct igt_fb fb;
-> -	int i;
-> +	igt_require(data->max_dotclock != 0);
+> +	igt_require(max_dotclock != 0);
 >   
 >   	/*
 >   	 * FIXME When we have a fixed mode, the kernel will ignore
-> @@ -80,14 +80,28 @@ test_output(data_t *data)
->   	 * test on  any connector with a fixed mode.
->   	 */
+> @@ -82,7 +84,18 @@ adjust_mode_clock_too_high(data_t *data, drmModeModeInfoPtr mode)
 >   	if (has_scaling_mode_prop(data))
-> -		return 0;
-> +		return false;
-> +
-> +	mode->clock = data->max_dotclock + 1;
-> +
-> +	return true;
-> +}
-> +
-> +static int
-> +test_output(data_t *data)
-> +{
-> +	igt_output_t *output = data->output;
-> +	drmModeModeInfo mode;
-> +	struct igt_fb fb;
-> +	int i;
+>   		return false;
 >   
->   	/*
->   	 * FIXME test every mode we have to be more
->   	 * sure everything is really getting rejected?
->   	 */
->   	mode = *igt_output_get_mode(output);
-> -	mode.clock = data->max_dotclock + 1;
-> +	if (!data->adjust_mode(data, &mode))
-> +		return 0;
+> -	mode->clock = data->max_dotclock + 1;
+> +	/*
+> +	 * Newer platforms can support modes higher than the maximum dot clock
+> +	 * by using pipe joiner, so set the mode clock twice that of maximum
+> +	 * dot clock;
+> +	 */
+> +	if (can_bigjoiner(data)) {
+> +		igt_info("Platform supports bigjoiner with %s\n",
+> +			 data->output->name);
+> +		max_dotclock *= 2;
+> +	}
+> +
+> +	mode->clock = max_dotclock + 1;
 >   
->   	/*
->   	 * Newer platforms can support modes higher than the maximum dot clock
-> @@ -154,25 +168,45 @@ static int i915_max_dotclock(data_t *data)
->   	return max_dotclock;
+>   	return true;
 >   }
+> @@ -103,17 +116,6 @@ test_output(data_t *data)
+>   	if (!data->adjust_mode(data, &mode))
+>   		return 0;
 >   
-> +static const struct {
-> +	const char *name;
-> +	bool (*adjust_mode)(data_t *data, drmModeModeInfoPtr mode);
-> +} subtests[] = {
-> +	{ .name = "clock-too-high",
-> +	  .adjust_mode = adjust_mode_clock_too_high,
-> +	},
-> +};
-> +
->   static data_t data;
->   
-> -igt_simple_main
-> +igt_main
->   {
-> -	data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-> -	igt_require_intel(data.drm_fd);
-> +	igt_fixture {
-> +		igt_skip_on_simulation();
-
-'igt_skip_on_simulation()' is not used in any other kms tests now. Do we 
-still need this?
-
-In any case, the changes look good to me.
-
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-
->   
-> -	kmstest_set_vt_graphics_mode();
-> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-> +		igt_require_intel(data.drm_fd);
->   
-> -	igt_display_require(&data.display, data.drm_fd);
-> -	data.res = drmModeGetResources(data.drm_fd);
-> -	igt_assert(data.res);
-> +		kmstest_set_vt_graphics_mode();
->   
-> -	data.max_dotclock = i915_max_dotclock(&data);
-> -	igt_info("Max dotclock: %d kHz\n", data.max_dotclock);
-> +		igt_display_require(&data.display, data.drm_fd);
-> +		data.res = drmModeGetResources(data.drm_fd);
-> +		igt_assert(data.res);
->   
-> -	test(&data);
-> +		data.max_dotclock = i915_max_dotclock(&data);
-> +		igt_info("Max dotclock: %d kHz\n", data.max_dotclock);
-> +	}
->   
-> -	igt_display_fini(&data.display);
-> -	igt_reset_connectors();
-> -	drmModeFreeResources(data.res);
-> +	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
-> +		igt_subtest(subtests[i].name) {
-> +			data.adjust_mode = subtests[i].adjust_mode;
-> +			test(&data);
-> +		}
-> +	}
-> +
-> +	igt_fixture {
-> +		igt_display_fini(&data.display);
-> +		igt_reset_connectors();
-> +		drmModeFreeResources(data.res);
-> +	}
->   }
+> -	/*
+> -	 * Newer platforms can support modes higher than the maximum dot clock
+> -	 * by using pipe joiner, so set the mode clock twice that of maximum
+> -	 * dot clock;
+> -	 */
+> -	if (can_bigjoiner(data)) {
+> -		igt_info("Platform supports bigjoiner with %s\n",
+> -			  output->name);
+> -		mode.clock *= 2;
+> -	}
+> -
+>   	igt_create_fb(data->drm_fd,
+>   		      mode.hdisplay, mode.vdisplay,
+>   		      DRM_FORMAT_XRGB8888,
 
