@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC9ED6EB7E
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 19:31:34 +0000 (UTC)
-From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
-Date: Tue, 5 Oct 2021 19:31:31 +0000
-Message-ID: <BYAPR11MB37848640B55FA385D406A0E48AAF9@BYAPR11MB3784.namprd11.prod.outlook.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 486F3894DE
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 19:35:02 +0000 (UTC)
+From: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+Date: Tue, 5 Oct 2021 19:34:59 +0000
+Message-ID: <4e9faac935d4d5bf9c61045a05ccfe69618fe865.camel@intel.com>
 References: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
  <20211005151022.2161424-2-alan.previn.teres.alexis@intel.com>
  <YVykFyOAiKq20zsg@intel.com>
-In-Reply-To: <YVykFyOAiKq20zsg@intel.com>
+ <BYAPR11MB37848640B55FA385D406A0E48AAF9@BYAPR11MB3784.namprd11.prod.outlook.com>
+In-Reply-To: <BYAPR11MB37848640B55FA385D406A0E48AAF9@BYAPR11MB3784.namprd11.prod.outlook.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <13B2419DA3282E42A3338EFD50844984@intel.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t v13 01/16] i915_drm.h sync PXP default
  session
@@ -24,60 +26,48 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+To: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
 Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hey Rodrigo, apologies for this upstream-newbie mistake and I truly appreci=
-ate you taking the time and explaining my mistake especially the pull-in of=
- the other non-PXP delta's too. I will respin this ASAP.
-
-...alan
-
------Original Message-----
-From: Vivi, Rodrigo <rodrigo.vivi@intel.com>=20
-Sent: Tuesday, October 5, 2021 12:15 PM
-To: Teres Alexis, Alan Previn <alan.previn.teres.alexis@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [igt-dev] [PATCH i-g-t v13 01/16] i915_drm.h sync PXP default =
-session
-
-On Tue, Oct 05, 2021 at 08:10:07AM -0700, Alan Previn wrote:
-> Sync UAPI for to get I915_PROTECTED_CONTENT_DEFAULT_SESSION define value.
->=20
-> Taken from kernel commit:
-> commit cbbd3764b2399ad882cda98435b25144e9ea2124
->        ("drm/i915/pxp: Create the arbitrary session after boot.")
-
-This is not accurate. The i915_drm.h in this commit has more changes other =
-than I915_PROTECTED_CONTENT_DEFAULT_SESSION.
-
-We should combine the patches 1 and 2 of this series and make a simply i915=
-_drm.h sync and add some reasoning in the commit message saying that it is =
-because of the PXP. But the new include/drm-uapi/i915_drm.h should include =
-all the new api additions from i915_drm.h uapi.
-
-
->=20
-> Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-> ---
->  include/drm-uapi/i915_drm.h | 3 +++
->  1 file changed, 3 insertions(+)
->=20
-> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h=20
-> index b9632bb2..f4691fcc 100644
-> --- a/include/drm-uapi/i915_drm.h
-> +++ b/include/drm-uapi/i915_drm.h
-> @@ -2990,6 +2990,9 @@ struct drm_i915_gem_create_ext_memory_regions {
->  	__u64 regions;
->  };
-> =20
-> +/* ID of the protected content session managed by i915 when PXP is=20
-> +active */ #define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
-> +
->  #if defined(__cplusplus)
->  }
->  #endif
-> --
-> 2.25.1
->=20
+T24gVHVlLCAyMDIxLTEwLTA1IGF0IDE5OjMxICswMDAwLCBUZXJlcyBBbGV4aXMsIEFsYW4gUHJl
+dmluIHdyb3RlOg0KPiBIZXkgUm9kcmlnbywgYXBvbG9naWVzIGZvciB0aGlzIHVwc3RyZWFtLW5l
+d2JpZSBtaXN0YWtlIGFuZCBJIHRydWx5DQo+IGFwcHJlY2lhdGUgeW91IHRha2luZyB0aGUgdGlt
+ZSBhbmQgZXhwbGFpbmluZyBteSBtaXN0YWtlIGVzcGVjaWFsbHkNCj4gdGhlIHB1bGwtaW4gb2Yg
+dGhlIG90aGVyIG5vbi1QWFAgZGVsdGEncyB0b28uIEkgd2lsbCByZXNwaW4gdGhpcw0KPiBBU0FQ
+Lg0KDQpub3QgeW91ciBmYXVsdC4NCg0KMS4gV2Ugc2hvdWxkIGhhdmUgdGhhdCBkb2N1bWVudGVk
+IHNvbWV3aGVyZS4NCjIuIFdoeSBkbyB3ZSBoYXZlIFVBUElzIGluIGk5MTUgd2l0aG91dCBhbnkg
+SUdUIHRlc3QgZm9yIHRoYXQ/ISBvLk8NCihJIG1lYW4sIHRob3NlIG90aGVyIG9uZXMgdGhhdCB5
+b3VyIHBhdGNoIGlzIG5vdCBicmluZ2luZyBpbiB0b2dldGhlcikNCg0KPiANCj4gLi4uYWxhbg0K
+PiANCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVml2aSwgUm9kcmlnbyA8
+cm9kcmlnby52aXZpQGludGVsLmNvbT4NCj4gU2VudDogVHVlc2RheSwgT2N0b2JlciA1LCAyMDIx
+IDEyOjE1IFBNDQo+IFRvOiBUZXJlcyBBbGV4aXMsIEFsYW4gUHJldmluIDxhbGFuLnByZXZpbi50
+ZXJlcy5hbGV4aXNAaW50ZWwuY29tPg0KPiBDYzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
+cmcNCj4gU3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXQgdjEzIDAxLzE2XSBpOTE1
+X2RybS5oIHN5bmMgUFhQDQo+IGRlZmF1bHQgc2Vzc2lvbg0KPiANCj4gT24gVHVlLCBPY3QgMDUs
+IDIwMjEgYXQgMDg6MTA6MDdBTSAtMDcwMCwgQWxhbiBQcmV2aW4gd3JvdGU6DQo+ID4gU3luYyBV
+QVBJIGZvciB0byBnZXQgSTkxNV9QUk9URUNURURfQ09OVEVOVF9ERUZBVUxUX1NFU1NJT04gZGVm
+aW5lDQo+ID4gdmFsdWUuDQo+ID4gDQo+ID4gVGFrZW4gZnJvbSBrZXJuZWwgY29tbWl0Og0KPiA+
+IGNvbW1pdCBjYmJkMzc2NGIyMzk5YWQ4ODJjZGE5ODQzNWIyNTE0NGU5ZWEyMTI0DQo+ID4gwqDC
+oMKgwqDCoMKgICgiZHJtL2k5MTUvcHhwOiBDcmVhdGUgdGhlIGFyYml0cmFyeSBzZXNzaW9uIGFm
+dGVyIGJvb3QuIikNCj4gDQo+IFRoaXMgaXMgbm90IGFjY3VyYXRlLiBUaGUgaTkxNV9kcm0uaCBp
+biB0aGlzIGNvbW1pdCBoYXMgbW9yZSBjaGFuZ2VzDQo+IG90aGVyIHRoYW4gSTkxNV9QUk9URUNU
+RURfQ09OVEVOVF9ERUZBVUxUX1NFU1NJT04uDQo+IA0KPiBXZSBzaG91bGQgY29tYmluZSB0aGUg
+cGF0Y2hlcyAxIGFuZCAyIG9mIHRoaXMgc2VyaWVzIGFuZCBtYWtlIGENCj4gc2ltcGx5IGk5MTVf
+ZHJtLmggc3luYyBhbmQgYWRkIHNvbWUgcmVhc29uaW5nIGluIHRoZSBjb21taXQgbWVzc2FnZQ0K
+PiBzYXlpbmcgdGhhdCBpdCBpcyBiZWNhdXNlIG9mIHRoZSBQWFAuIEJ1dCB0aGUgbmV3IGluY2x1
+ZGUvZHJtLQ0KPiB1YXBpL2k5MTVfZHJtLmggc2hvdWxkIGluY2x1ZGUgYWxsIHRoZSBuZXcgYXBp
+IGFkZGl0aW9ucyBmcm9tDQo+IGk5MTVfZHJtLmggdWFwaS4NCj4gDQo+IA0KPiA+IA0KPiA+IFNp
+Z25lZC1vZmYtYnk6IEFsYW4gUHJldmluIDxhbGFuLnByZXZpbi50ZXJlcy5hbGV4aXNAaW50ZWwu
+Y29tPg0KPiA+IC0tLQ0KPiA+IMKgaW5jbHVkZS9kcm0tdWFwaS9pOTE1X2RybS5oIHwgMyArKysN
+Cj4gPiDCoDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKykNCj4gPiANCj4gPiBkaWZmIC0t
+Z2l0IGEvaW5jbHVkZS9kcm0tdWFwaS9pOTE1X2RybS5oIGIvaW5jbHVkZS9kcm0tDQo+ID4gdWFw
+aS9pOTE1X2RybS5oDQo+ID4gaW5kZXggYjk2MzJiYjIuLmY0NjkxZmNjIDEwMDY0NA0KPiA+IC0t
+LSBhL2luY2x1ZGUvZHJtLXVhcGkvaTkxNV9kcm0uaA0KPiA+ICsrKyBiL2luY2x1ZGUvZHJtLXVh
+cGkvaTkxNV9kcm0uaA0KPiA+IEBAIC0yOTkwLDYgKzI5OTAsOSBAQCBzdHJ1Y3QgZHJtX2k5MTVf
+Z2VtX2NyZWF0ZV9leHRfbWVtb3J5X3JlZ2lvbnMNCj4gPiB7DQo+ID4gwqDCoMKgwqDCoCBfX3U2
+NCByZWdpb25zOw0KPiA+IMKgfTsNCj4gPiANCj4gPiArLyogSUQgb2YgdGhlIHByb3RlY3RlZCBj
+b250ZW50IHNlc3Npb24gbWFuYWdlZCBieSBpOTE1IHdoZW4gUFhQIGlzDQo+ID4gK2FjdGl2ZSAq
+LyAjZGVmaW5lIEk5MTVfUFJPVEVDVEVEX0NPTlRFTlRfREVGQVVMVF9TRVNTSU9OIDB4Zg0KPiA+
+ICsNCj4gPiDCoCNpZiBkZWZpbmVkKF9fY3BsdXNwbHVzKQ0KPiA+IMKgfQ0KPiA+IMKgI2VuZGlm
+DQo+ID4gLS0NCj4gPiAyLjI1LjENCj4gPiANCg0K
