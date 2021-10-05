@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D3ECA6F5ED
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 15:14:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 788066F5E3
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Oct 2021 15:14:07 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
-Date: Tue,  5 Oct 2021 08:10:14 -0700
-Message-Id: <20211005151022.2161424-9-alan.previn.teres.alexis@intel.com>
+Date: Tue,  5 Oct 2021 08:10:19 -0700
+Message-Id: <20211005151022.2161424-14-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
 References: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v13 08/16] Add subtest to copy raw source to
- protected dest
+Subject: [igt-dev] [PATCH i-g-t v13 13/16] Verify execbuf ok with stale PXP
+ buf in opt-out use
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,97 +24,62 @@ To: igt-dev@lists.freedesktop.org
 Cc: Alan Previn <alan.previn.teres.alexis@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add subtest to 3d-copy raw source buffer (with
-known readible content) to a destination buffer
-marked as protected with a protected session using
-default session keys. The destination buffer is
-verified to be different from the source (when
-read via CPU) because its encrypted.
+Add a check to verify that reusing a stale protected
+buffer in a gem_execbuff call, but using a regular (not-
+protected) context will succeed after a teardown event.
+Trigger the teardown via the pxp invalidation debugfs
+that simulates a HW teardown IRQ.
+
+This ensures that user space applications that choose
+not to opt-in for strict PXP teardown awareness (by
+using a regular context) won't suffer gem_execbuff
+failures if a protected buffer was among the assets
+used in any of its rendering operations.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/i915/gem_pxp.c | 55 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ tests/i915/gem_pxp.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
 diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 272de57b..9c7de6b0 100644
+index 22a2e5a4..8e3bc3cf 100644
 --- a/tests/i915/gem_pxp.c
 +++ b/tests/i915/gem_pxp.c
-@@ -378,7 +378,9 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size
- #define TSTSURF_STRIDE      (TSTSURF_WIDTH*TSTSURF_BYTESPP)
- #define TSTSURF_SIZE        (TSTSURF_STRIDE*TSTSURF_HEIGHT)
- #define TSTSURF_FILLCOLOR1  0xfaceface
-+#define TSTSURF_FILLCOLOR2  0xdeaddead
- #define TSTSURF_INITCOLOR1  0x12341234
-+#define TSTSURF_INITCOLOR2  0x56785678
- 
- static void test_render_baseline(int i915)
- {
-@@ -424,6 +426,57 @@ static void test_render_baseline(int i915)
- 	buf_ops_destroy(bops);
+@@ -829,6 +829,27 @@ static void test_pxp_stale_buf_execution(int i915)
+ 	free_exec_assets(i915, &data);
  }
  
-+static void test_render_pxp_src_to_protdest(int i915)
++static void test_pxp_stale_buf_optout_execution(int i915)
 +{
-+	uint32_t ctx, srcbo, dstbo;
-+	struct intel_buf *srcbuf, *dstbuf;
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb;
-+	uint32_t devid;
 +	int ret;
-+
-+	devid = intel_get_drm_devid(i915);
-+	igt_assert(devid);
-+
-+	bops = buf_ops_create(i915);
-+	igt_assert(bops);
++	struct simple_exec_assets data = {0};
 +
 +	/*
-+	 * Perform a protected render operation but only label
-+	 * the dest as protected. After rendering, the content
-+	 * should be encrypted
++	 * Use a normal context for testing opt-out behavior
++	 * when executing with a pxp buffer across a teardown event.
 +	 */
-+	ret = create_ctx_with_params(i915, true, true, true, false, &ctx);
-+	igt_assert_eq(ret, 0);
-+	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
-+	ibb = intel_bb_create_with_context(i915, ctx, 4096);
-+	igt_assert(ibb);
-+	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
++	prepare_exec_assets(i915, &data, false, true);
++	ret = gem_execbuf_flush_store_dw(i915, data.ibb, data.ctx, data.fencebuf);
++	igt_assert(ret == 0);
 +
-+	dstbo = alloc_and_fill_dest_buff(i915, true, TSTSURF_SIZE, TSTSURF_INITCOLOR2);
-+	dstbuf = intel_buf_create_using_handle(bops, dstbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
-+						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
-+	intel_buf_set_pxp(dstbuf, true);
++	trigger_pxp_debugfs_forced_teardown(i915);
 +
-+	srcbo = alloc_and_fill_dest_buff(i915, false, TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
-+	srcbuf = intel_buf_create_using_handle(bops, srcbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
-+						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
++	ret = gem_execbuf_flush_store_dw(i915, data.ibb, data.ctx, data.fencebuf);
++	igt_assert_f((ret == 0), "Opt-out-execution with stale pxp buffer didn't succeed\n");
 +
-+	gen12_render_copyfunc(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
-+	gem_sync(i915, dstbo);
-+
-+	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
-+				TSTSURF_SIZE, TSTSURF_FILLCOLOR2);
-+
-+	intel_bb_destroy(ibb);
-+	intel_buf_destroy(srcbuf);
-+	gem_close(i915, srcbo);
-+	intel_buf_destroy(dstbuf);
-+	gem_close(i915, dstbo);
-+	gem_context_destroy(i915, ctx);
-+	buf_ops_destroy(bops);
++	free_exec_assets(i915, &data);
 +}
 +
  igt_main
  {
  	int i915 = -1;
-@@ -495,6 +548,8 @@ igt_main
- 		igt_describe("Verify protected render operations:");
- 		igt_subtest("regular-baseline-src-copy-readible")
- 			test_render_baseline(i915);
-+		igt_subtest("protected-raw-src-copy-not-readible")
-+			test_render_pxp_src_to_protdest(i915);
+@@ -922,6 +943,8 @@ igt_main
+ 			test_pxp_stale_ctx_execution(i915);
+ 		igt_subtest("verify-pxp-stale-buf-execution")
+ 			test_pxp_stale_buf_execution(i915);
++		igt_subtest("verify-pxp-stale-buf-optout-execution")
++			test_pxp_stale_buf_optout_execution(i915);
  	}
  
  	igt_fixture {
