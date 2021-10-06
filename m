@@ -1,17 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 750756ED16
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Oct 2021 08:57:36 +0000 (UTC)
-Date: Wed, 6 Oct 2021 04:57:27 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Message-ID: <YV1k96r3Frmafwfi@intel.com>
-References: <20211005194133.13508-1-alan.previn.teres.alexis@intel.com>
- <20211005194133.13508-2-alan.previn.teres.alexis@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F28B96ED20
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Oct 2021 09:37:03 +0000 (UTC)
+From: "Surendrakumar Upadhyay, TejaskumarX"
+ <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Wed, 6 Oct 2021 09:36:59 +0000
+Message-ID: <SN6PR11MB34219C0C3222318C9DDF9BBBDFB09@SN6PR11MB3421.namprd11.prod.outlook.com>
+References: <20210824090943.1158940-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+ <CAKMK7uEwswaCyEOtEk7rhbXFtSE95+8bUjB+=hjttyStHiMWBQ@mail.gmail.com>
+ <SN6PR11MB3421B6569584930A1F603834DFCC9@SN6PR11MB3421.namprd11.prod.outlook.com>
+ <CAKMK7uHCtZoS=bEHh_Xnr6YLua180JBNZawLY7+Ripid=_fNew@mail.gmail.com>
+ <SN6PR11MB342182BFEDB25F8CB234F2C3DFD39@SN6PR11MB3421.namprd11.prod.outlook.com>
+ <SN6PR11MB3421346F195460670B554362DFA49@SN6PR11MB3421.namprd11.prod.outlook.com>
+In-Reply-To: <SN6PR11MB3421346F195460670B554362DFA49@SN6PR11MB3421.namprd11.prod.outlook.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211005194133.13508-2-alan.previn.teres.alexis@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v15 01/15] i915_drm.h sync
+Subject: Re: [igt-dev] [i-g-t] tests/gem_userptr_blits: Remove vma-merge
+ subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,242 +28,135 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Alan Previn <alan.previn.teres.alexis@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: IGT development <igt-dev@lists.freedesktop.org>, "Lankhorst, Maarten" <maarten.lankhorst@intel.com>, "Ursulin, Tvrtko" <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Oct 05, 2021 at 12:41:19PM -0700, Alan Previn wrote:
-> Sync UAPI changes to get I915_PROTECTED_CONTENT_DEFAULT_SESSION value
-> as well as GEM_CREATE_EXT's I915_OBJECT_PARAM_PROTECTED_CONTENT
-> and GEM_CONTEXT_CREATE's I915_CONTEXT_PARAM_PROTECTED_CONTENT.
-> 
-> Taken from kernel commit:
-> commit d3ac8d42168a9be7380be8035df8b6d3780ec2a1
->        ("drm/i915/pxp: interfaces for using protected objects")
-> 
-> Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-
-> ---
->  include/drm-uapi/i915_drm.h | 147 +++++++++++++++++++++++++++++++++++-
->  1 file changed, 146 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-> index b9632bb2..50c9308b 100644
-> --- a/include/drm-uapi/i915_drm.h
-> +++ b/include/drm-uapi/i915_drm.h
-> @@ -572,6 +572,15 @@ typedef struct drm_i915_irq_wait {
->  #define   I915_SCHEDULER_CAP_PREEMPTION	(1ul << 2)
->  #define   I915_SCHEDULER_CAP_SEMAPHORES	(1ul << 3)
->  #define   I915_SCHEDULER_CAP_ENGINE_BUSY_STATS	(1ul << 4)
-> +/*
-> + * Indicates the 2k user priority levels are statically mapped into 3 buckets as
-> + * follows:
-> + *
-> + * -1k to -1	Low priority
-> + * 0		Normal priority
-> + * 1 to 1k	Highest priority
-> + */
-> +#define   I915_SCHEDULER_CAP_STATIC_PRIORITY_MAP	(1ul << 5)
->  
->  #define I915_PARAM_HUC_STATUS		 42
->  
-> @@ -674,6 +683,9 @@ typedef struct drm_i915_irq_wait {
->   */
->  #define I915_PARAM_HAS_EXEC_TIMELINE_FENCES 55
->  
-> +/* Query if the kernel supports the I915_USERPTR_PROBE flag. */
-> +#define I915_PARAM_HAS_USERPTR_PROBE 56
-> +
->  /* Must be kept compact -- no holes and well documented */
->  
->  typedef struct drm_i915_getparam {
-> @@ -923,6 +935,25 @@ struct drm_i915_gem_mmap_offset {
->   *	- I915_GEM_DOMAIN_GTT: Mappable aperture domain
->   *
->   * All other domains are rejected.
-> + *
-> + * Note that for discrete, starting from DG1, this is no longer supported, and
-> + * is instead rejected. On such platforms the CPU domain is effectively static,
-> + * where we also only support a single &drm_i915_gem_mmap_offset cache mode,
-> + * which can't be set explicitly and instead depends on the object placements,
-> + * as per the below.
-> + *
-> + * Implicit caching rules, starting from DG1:
-> + *
-> + *	- If any of the object placements (see &drm_i915_gem_create_ext_memory_regions)
-> + *	  contain I915_MEMORY_CLASS_DEVICE then the object will be allocated and
-> + *	  mapped as write-combined only.
-> + *
-> + *	- Everything else is always allocated and mapped as write-back, with the
-> + *	  guarantee that everything is also coherent with the GPU.
-> + *
-> + * Note that this is likely to change in the future again, where we might need
-> + * more flexibility on future devices, so making this all explicit as part of a
-> + * new &drm_i915_gem_create_ext extension is probable.
->   */
->  struct drm_i915_gem_set_domain {
->  	/** @handle: Handle for the object. */
-> @@ -1815,6 +1846,55 @@ struct drm_i915_gem_context_param {
->   * attempted to use it, never re-use this context param number.
->   */
->  #define I915_CONTEXT_PARAM_RINGSIZE	0xc
-> +
-> +/*
-> + * I915_CONTEXT_PARAM_PROTECTED_CONTENT:
-> + *
-> + * Mark that the context makes use of protected content, which will result
-> + * in the context being invalidated when the protected content session is.
-> + * Given that the protected content session is killed on suspend, the device
-> + * is kept awake for the lifetime of a protected context, so the user should
-> + * make sure to dispose of them once done.
-> + * This flag can only be set at context creation time and, when set to true,
-> + * must be preceded by an explicit setting of I915_CONTEXT_PARAM_RECOVERABLE
-> + * to false. This flag can't be set to true in conjunction with setting the
-> + * I915_CONTEXT_PARAM_BANNABLE flag to false. Creation example:
-> + *
-> + * .. code-block:: C
-> + *
-> + *	struct drm_i915_gem_context_create_ext_setparam p_protected = {
-> + *		.base = {
-> + *			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
-> + *		},
-> + *		.param = {
-> + *			.param = I915_CONTEXT_PARAM_PROTECTED_CONTENT,
-> + *			.value = 1,
-> + *		}
-> + *	};
-> + *	struct drm_i915_gem_context_create_ext_setparam p_norecover = {
-> + *		.base = {
-> + *			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
-> + *			.next_extension = to_user_pointer(&p_protected),
-> + *		},
-> + *		.param = {
-> + *			.param = I915_CONTEXT_PARAM_RECOVERABLE,
-> + *			.value = 0,
-> + *		}
-> + *	};
-> + *	struct drm_i915_gem_context_create_ext create = {
-> + *		.flags = I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
-> + *		.extensions = to_user_pointer(&p_norecover);
-> + *	};
-> + *
-> + *	ctx_id = gem_context_create_ext(drm_fd, &create);
-> + *
-> + * In addition to the normal failure cases, setting this flag during context
-> + * creation can result in the following errors:
-> + *
-> + * -ENODEV: feature not available
-> + * -EPERM: trying to mark a recoverable or not bannable context as protected
-> + */
-> +#define I915_CONTEXT_PARAM_PROTECTED_CONTENT    0xd
->  /* Must be kept compact -- no holes and well documented */
->  
->  	__u64 value;
-> @@ -2203,12 +2283,29 @@ struct drm_i915_gem_userptr {
->  	 * through the GTT. If the HW can't support readonly access, an error is
->  	 * returned.
->  	 *
-> +	 * I915_USERPTR_PROBE:
-> +	 *
-> +	 * Probe the provided @user_ptr range and validate that the @user_ptr is
-> +	 * indeed pointing to normal memory and that the range is also valid.
-> +	 * For example if some garbage address is given to the kernel, then this
-> +	 * should complain.
-> +	 *
-> +	 * Returns -EFAULT if the probe failed.
-> +	 *
-> +	 * Note that this doesn't populate the backing pages, and also doesn't
-> +	 * guarantee that the object will remain valid when the object is
-> +	 * eventually used.
-> +	 *
-> +	 * The kernel supports this feature if I915_PARAM_HAS_USERPTR_PROBE
-> +	 * returns a non-zero value.
-> +	 *
->  	 * I915_USERPTR_UNSYNCHRONIZED:
->  	 *
->  	 * NOT USED. Setting this flag will result in an error.
->  	 */
->  	__u32 flags;
->  #define I915_USERPTR_READ_ONLY 0x1
-> +#define I915_USERPTR_PROBE 0x2
->  #define I915_USERPTR_UNSYNCHRONIZED 0x80000000
->  	/**
->  	 * @handle: Returned handle for the object.
-> @@ -2360,7 +2457,7 @@ struct drm_i915_perf_open_param {
->   * Change metrics_set captured by a stream.
->   *
->   * If the stream is bound to a specific context, the configuration change
-> - * will performed __inline__ with that context such that it takes effect before
-> + * will performed inline with that context such that it takes effect before
->   * the next execbuf submission.
->   *
->   * Returns the previously bound metrics set id, or a negative error code.
-> @@ -2931,8 +3028,12 @@ struct drm_i915_gem_create_ext {
->  	 *
->  	 * For I915_GEM_CREATE_EXT_MEMORY_REGIONS usage see
->  	 * struct drm_i915_gem_create_ext_memory_regions.
-> +	 *
-> +	 * For I915_GEM_CREATE_EXT_PROTECTED_CONTENT usage see
-> +	 * struct drm_i915_gem_create_ext_protected_content.
->  	 */
->  #define I915_GEM_CREATE_EXT_MEMORY_REGIONS 0
-> +#define I915_GEM_CREATE_EXT_PROTECTED_CONTENT 1
->  	__u64 extensions;
->  };
->  
-> @@ -2990,6 +3091,50 @@ struct drm_i915_gem_create_ext_memory_regions {
->  	__u64 regions;
->  };
->  
-> +/**
-> + * struct drm_i915_gem_create_ext_protected_content - The
-> + * I915_OBJECT_PARAM_PROTECTED_CONTENT extension.
-> + *
-> + * If this extension is provided, buffer contents are expected to be protected
-> + * by PXP encryption and require decryption for scan out and processing. This
-> + * is only possible on platforms that have PXP enabled, on all other scenarios
-> + * using this extension will cause the ioctl to fail and return -ENODEV. The
-> + * flags parameter is reserved for future expansion and must currently be set
-> + * to zero.
-> + *
-> + * The buffer contents are considered invalid after a PXP session teardown.
-> + *
-> + * The encryption is guaranteed to be processed correctly only if the object
-> + * is submitted with a context created using the
-> + * I915_CONTEXT_PARAM_PROTECTED_CONTENT flag. This will also enable extra checks
-> + * at submission time on the validity of the objects involved.
-> + *
-> + * Below is an example on how to create a protected object:
-> + *
-> + * .. code-block:: C
-> + *
-> + *      struct drm_i915_gem_create_ext_protected_content protected_ext = {
-> + *              .base = { .name = I915_GEM_CREATE_EXT_PROTECTED_CONTENT },
-> + *              .flags = 0,
-> + *      };
-> + *      struct drm_i915_gem_create_ext create_ext = {
-> + *              .size = PAGE_SIZE,
-> + *              .extensions = (uintptr_t)&protected_ext,
-> + *      };
-> + *
-> + *      int err = ioctl(fd, DRM_IOCTL_I915_GEM_CREATE_EXT, &create_ext);
-> + *      if (err) ...
-> + */
-> +struct drm_i915_gem_create_ext_protected_content {
-> +	/** @base: Extension link. See struct i915_user_extension. */
-> +	struct i915_user_extension base;
-> +	/** @flags: reserved for future usage, currently MBZ */
-> +	__u32 flags;
-> +};
-> +
-> +/* ID of the protected content session managed by i915 when PXP is active */
-> +#define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
-> +
->  #if defined(__cplusplus)
->  }
->  #endif
-> -- 
-> 2.25.1
-> 
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU3VyZW5kcmFrdW1hciBV
+cGFkaHlheSwgVGVqYXNrdW1hclgNCj4gU2VudDogMjQgU2VwdGVtYmVyIDIwMjEgMTA6NTQNCj4g
+VG86ICdEYW5pZWwgVmV0dGVyJyA8ZGFuaWVsLnZldHRlckBmZndsbC5jaD4NCj4gQ2M6ICdJR1Qg
+ZGV2ZWxvcG1lbnQnIDxpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZz47IExhbmtob3JzdCwg
+TWFhcnRlbg0KPiA8bWFhcnRlbi5sYW5raG9yc3RAaW50ZWwuY29tPjsgVXJzdWxpbiwgVHZydGtv
+IDx0dnJ0a28udXJzdWxpbkBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJFOiBbaWd0LWRldl0gW2kt
+Zy10XSB0ZXN0cy9nZW1fdXNlcnB0cl9ibGl0czogUmVtb3ZlIHZtYS1tZXJnZQ0KPiBzdWJ0ZXN0
+DQo+IA0KPiANCj4gDQo+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiBGcm9tOiBT
+dXJlbmRyYWt1bWFyIFVwYWRoeWF5LCBUZWphc2t1bWFyWA0KPiA+IFNlbnQ6IDA3IFNlcHRlbWJl
+ciAyMDIxIDIxOjMxDQo+ID4gVG86IERhbmllbCBWZXR0ZXIgPGRhbmllbC52ZXR0ZXJAZmZ3bGwu
+Y2g+DQo+ID4gQ2M6IElHVCBkZXZlbG9wbWVudCA8aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
+cmc+OyBMYW5raG9yc3QsDQo+ID4gTWFhcnRlbiA8bWFhcnRlbi5sYW5raG9yc3RAaW50ZWwuY29t
+PjsgVXJzdWxpbiwgVHZydGtvDQo+ID4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4NCj4gPiBT
+dWJqZWN0OiBSRTogW2lndC1kZXZdIFtpLWctdF0gdGVzdHMvZ2VtX3VzZXJwdHJfYmxpdHM6IFJl
+bW92ZQ0KPiA+IHZtYS1tZXJnZSBzdWJ0ZXN0DQo+ID4NCj4gPg0KPiA+DQo+ID4gPiAtLS0tLU9y
+aWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4gRnJvbTogRGFuaWVsIFZldHRlciA8ZGFuaWVsLnZl
+dHRlckBmZndsbC5jaD4NCj4gPiA+IFNlbnQ6IDMxIEF1Z3VzdCAyMDIxIDE3OjA3DQo+ID4gPiBU
+bzogU3VyZW5kcmFrdW1hciBVcGFkaHlheSwgVGVqYXNrdW1hclgNCj4gPiA+IDx0ZWphc2t1bWFy
+eC5zdXJlbmRyYWt1bWFyLnVwYWRoeWF5QGludGVsLmNvbT4NCj4gPiA+IENjOiBJR1QgZGV2ZWxv
+cG1lbnQgPGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPjsgTGFua2hvcnN0LA0KPiA+ID4g
+TWFhcnRlbiA8bWFhcnRlbi5sYW5raG9yc3RAaW50ZWwuY29tPjsgVXJzdWxpbiwgVHZydGtvDQo+
+ID4gPiA8dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPg0KPiA+ID4gU3ViamVjdDogUmU6IFtpZ3Qt
+ZGV2XSBbaS1nLXRdIHRlc3RzL2dlbV91c2VycHRyX2JsaXRzOiBSZW1vdmUNCj4gPiA+IHZtYS1t
+ZXJnZSBzdWJ0ZXN0DQo+ID4gPg0KPiA+ID4gT24gVHVlLCBBdWcgMzEsIDIwMjEgYXQgNzo0NyBB
+TSBTdXJlbmRyYWt1bWFyIFVwYWRoeWF5LCBUZWphc2t1bWFyWA0KPiA+ID4gPHRlamFza3VtYXJ4
+LnN1cmVuZHJha3VtYXIudXBhZGh5YXlAaW50ZWwuY29tPiB3cm90ZToNCj4gPiA+ID4NCj4gPiA+
+ID4NCj4gPiA+ID4NCj4gPiA+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4g
+PiA+IEZyb206IERhbmllbCBWZXR0ZXIgPGRhbmllbC52ZXR0ZXJAZmZ3bGwuY2g+DQo+ID4gPiA+
+ID4gU2VudDogMzAgQXVndXN0IDIwMjEgMjE6MzENCj4gPiA+ID4gPiBUbzogU3VyZW5kcmFrdW1h
+ciBVcGFkaHlheSwgVGVqYXNrdW1hclgNCj4gPiA+ID4gPiA8dGVqYXNrdW1hcnguc3VyZW5kcmFr
+dW1hci51cGFkaHlheUBpbnRlbC5jb20+DQo+ID4gPiA+ID4gQ2M6IElHVCBkZXZlbG9wbWVudCA8
+aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc+OyBMYW5raG9yc3QsDQo+ID4gPiA+ID4gTWFh
+cnRlbiA8bWFhcnRlbi5sYW5raG9yc3RAaW50ZWwuY29tPjsgVXJzdWxpbiwgVHZydGtvDQo+ID4g
+PiA+ID4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4NCj4gPiA+ID4gPiBTdWJqZWN0OiBSZTog
+W2lndC1kZXZdIFtpLWctdF0gdGVzdHMvZ2VtX3VzZXJwdHJfYmxpdHM6IFJlbW92ZQ0KPiA+ID4g
+PiA+IHZtYS1tZXJnZSBzdWJ0ZXN0DQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBPbiBUdWUsIEF1ZyAy
+NCwgMjAyMSBhdCAxMToxNyBBTSBUZWphcyBVcGFkaHlheQ0KPiA+ID4gPiA+IDx0ZWphc2t1bWFy
+eC5zdXJlbmRyYWt1bWFyLnVwYWRoeWF5QGludGVsLmNvbT4gd3JvdGU6DQo+ID4gPiA+ID4gPg0K
+PiA+ID4gPiA+ID4gbW1hcCByZXF1ZXN0cyBmb3IgaHVnZSBwYWdlIHNpemUgaW4gdm1hLW1lcmdl
+IHN1YnRlc3QgYXJlDQo+ID4gPiA+ID4gPiBjYW5jZWxsZWQgZnJvbSBrZXJuZWwgdXNpbmcgaTkx
+NV9yZXF1ZXN0X2NhbmNlbChycSwgLUVJTlRSKSwNCj4gPiA+ID4gPiA+IG90aGVyd2lzZSBpdCBy
+ZXN1bHRzIGluIHN5c3RlbSBoYW5nLiBJdCBpcyBrbm93bi9leHBlY3RlZA0KPiA+ID4gPiA+ID4g
+ZmFpbHVyZSB0aHVzIGl0IGlzIGRlY2lkZWQgdG8gcmVtb3ZlIHRoZSBzdWJ0ZXN0Lg0KPiA+ID4g
+PiA+ID4NCj4gPiA+ID4gPiA+IFNpZ25lZC1vZmYtYnk6IFRlamFzIFVwYWRoeWF5DQo+ID4gPiA+
+ID4gPiA8dGVqYXNrdW1hcnguc3VyZW5kcmFrdW1hci51cGFkaHlheUBpbnRlbC5jb20+DQo+ID4g
+PiA+ID4NCj4gPiA+ID4gPiBCdWdmaXhlcyBuZWVkIHRvIGxpbmsgdG8gdGhlIGdpdGxhYiBpc3N1
+ZSwgb3RoZXJ3aXNlIGl0J3Mgbm90DQo+ID4gPiA+ID4gcmVhbGx5IGEgYnVnZml4IGZvciBhIENJ
+IGlzc3VlLg0KPiA+ID4gPg0KPiA+ID4gPiBUZWphcyA6IE9rLg0KPiA+ID4gPg0KPiA+ID4gPiA+
+DQo+ID4gPiA+ID4gRnVydGhlcm1vcmUgdGhpcyBpcyB3cm9uZzoNCj4gPiA+ID4gPiAtIEluIERJ
+SSB0aGlzIG1pZ2h0IGhhcHBlbi4gSWYgdGhpcyBpcyBhIHBhdGNoIHVwc3RyZWFtIHRoZW4NCj4g
+PiA+ID4gPiBwbGVhc2UgbWFyayB1cCB0aGUgRElJIHBhdGNoIGFzIE5PVF9VUFNUUkVBTS4gRHJv
+cHBpbmcgaXQgaXMNCj4gPiA+ID4gPiBibG9ja2VkIG9uIGJhY2twb3J0aW5nIGhhbmdjaGVjay4g
+WW91ciBtYW5hZ2VyIHNob3VsZCBiZSBhd2FyZQ0KPiA+ID4gPiA+IG9mIHRoZSBKaXJhIHRoYXQg
+dHJhY2tzIGhhbmdjaGVjayBiYWNrcG9ydGluZy4NCj4gPiA+ID4NCj4gPiA+ID4gVGVqYXMgOiBU
+aGlzIGlzIG9ubHkgZm9yIHVwc3RyZWFtLg0KPiA+ID4gPg0KPiA+ID4gPiA+IC0gSW4gdXBzdHJl
+YW0gaGFuZ2NoZWNrIHNob3VsZCBnZXQgdXMgb3V0IG9mIHRoaXMgc2l0dWF0aW9uLiBJZg0KPiA+
+ID4gPiA+IG5vdCwgdGhlbiB0aGlzIGlzIGEga2VybmVsIGJ1Zy4NCj4gPiA+ID4NCj4gPiA+ID4N
+Cj4gPiA+ID4gVGVqYXMgOiBIYW5nY2hlY2sgd2F0Y2hkb2cgaXMgaW1wbGVtZW50ZWQgaW4ga2Vy
+bmVsIGJ5IFR2cnRrby4NCj4gPiA+ID4gSGVuY2Ugbm93DQo+ID4gPiB0ZXN0IGRvZXMgbm90IGhh
+bmcsIGl0IGZhaWxzLg0KPiA+ID4NCj4gPiA+IE9rLCBidXQgdGhlbiBwbHMgZml4IHRoZSBpbnZh
+bGlkIGFzc3VtcHRpb24gZnJvbSB0aGUgdGVzdGNhc2UsIG5vdA0KPiA+ID4ganVzdCBkZWxldGUg
+aXQuIFdpdGggZXhwbGFuYXRpb24gZm9yIHdoeSB0aGF0IGFzc3VtcHRpb24gaXMgaW52YWxpZCwN
+Cj4gPiA+IGFuZCB3aGF0IHNob3VsZCBiZSBkb25lIGluc3RlYWQuDQo+ID4gPiAtRGFuaWVsDQo+
+ID4NCj4gPiBBc3N1bXB0aW9uIGZyb20gdGVzdGNhc2UgaXMgbm90IGludmFsaWQsIGl0cyBqdXN0
+IHRoYXQgdGVzdCBzY2VuYXJpbw0KPiA+IGlzIG5vdCBzdXBwb3J0ZWQgd2l0aCB0aGUgbmV3IHVz
+ZXJwdHIgaW52YWxpZGF0aW9uIHNjaGVtZSBpbXBsZW1lbnRlZA0KPiA+IGluIGk5MTUgY29tbWl0
+IGVkMjljMjY5MTE4OCAoImRybS9pOTE1OiBGaXggdXNlcnB0ciBzbyB3ZSBkbyBub3QgaGF2ZQ0K
+PiA+IHRvIHdvcnJ5IGFib3V0IG9iai0+bW0ubG9jaywgdjcuIikiLiBOb3cgcGxlYXNlIHN1Z2dl
+c3Qgd2hhdCBzaG91bGQgYmUNCj4gPiBvdXIgbmV4dCBzdGVwPw0KPiANCj4gQW55b25lIGhhcyBh
+bnkgc3VnZ2VzdGlvbiBoZXJlIGFzIHdoYXQgc2hvdWxkIGJlIG91ciBuZXh0IHN0ZXA/DQoNCkFu
+eSBzdWdnZXN0aW9uPyBXZSBhcmUgYmxvY2tlZCBvbiB0aGlzIHBhdGNoLiBQbGVhc2UgcHJvdmlk
+ZSBuZXh0IHN0ZXAvZGlyZWN0aW9uLg0KDQpUaGFua3MsDQpUZWphcw0KPiANCj4gVGhhbmtzLA0K
+PiBUZWphcw0KPiA+DQo+ID4gVGhhbmtzLA0KPiA+IFRlamFzDQo+ID4NCj4gPiA+DQo+ID4gPiA+
+DQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBDaGVlcnMsIERhbmllbA0KPiA+ID4gPiA+ID4gLS0tDQo+
+ID4gPiA+ID4gPiAgdGVzdHMvaTkxNS9nZW1fdXNlcnB0cl9ibGl0cy5jIHwgNDANCj4gPiA+ID4g
+PiA+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gPiA+ID4gPiA+ICAxIGZp
+bGUgY2hhbmdlZCwgNDAgZGVsZXRpb25zKC0pDQo+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gZGlm
+ZiAtLWdpdCBhL3Rlc3RzL2k5MTUvZ2VtX3VzZXJwdHJfYmxpdHMuYw0KPiA+ID4gPiA+ID4gYi90
+ZXN0cy9pOTE1L2dlbV91c2VycHRyX2JsaXRzLmMgaW5kZXggNzU2YmQ2ZTQuLjExYmNlNmQ3DQo+
+ID4gPiA+ID4gPiAxMDA2NDQNCj4gPiA+ID4gPiA+IC0tLSBhL3Rlc3RzL2k5MTUvZ2VtX3VzZXJw
+dHJfYmxpdHMuYw0KPiA+ID4gPiA+ID4gKysrIGIvdGVzdHMvaTkxNS9nZW1fdXNlcnB0cl9ibGl0
+cy5jDQo+ID4gPiA+ID4gPiBAQCAtNzAyLDQzICs3MDIsNiBAQCBzdGF0aWMgc2l6ZV90IGh1Z2Vw
+YWdlc2l6ZSh2b2lkKSAgI3VuZGVmDQo+ID4gPiA+ID4gPiBMSU5FIH0NCj4gPiA+ID4gPiA+DQo+
+ID4gPiA+ID4gPiAtc3RhdGljIHZvaWQgdGVzdF92bWFfbWVyZ2UoaW50IGk5MTUpIC17DQo+ID4g
+PiA+ID4gPiAtICAgICAgIGNvbnN0IHNpemVfdCBzeiA9IDIgKiBodWdlcGFnZXNpemUoKTsNCj4g
+PiA+ID4gPiA+IC0gICAgICAgaWd0X3NwaW5fdCAqc3BpbjsNCj4gPiA+ID4gPiA+IC0gICAgICAg
+dWludDMyX3QgaGFuZGxlOw0KPiA+ID4gPiA+ID4gLSAgICAgICB2b2lkICphZGRyOw0KPiA+ID4g
+PiA+ID4gLSAgICAgICB1aW50NjRfdCBhaG5kID0gZ2V0X3JlbG9jX2FobmQoaTkxNSwgMCk7DQo+
+ID4gPiA+ID4gPiAtDQo+ID4gPiA+ID4gPiAtICAgICAgIGFkZHIgPSBtbWFwKE5VTEwsIHN6LCBQ
+Uk9UX1JFQUQgfCBQUk9UX1dSSVRFLA0KPiA+ID4gPiA+ID4gLSAgICAgICAgICAgICAgICAgICBN
+QVBfU0hBUkVEIHwgTUFQX0FOT05ZTU9VUywgLTEsIDApOw0KPiA+ID4gPiA+ID4gLQ0KPiA+ID4g
+PiA+ID4gLSAgICAgICBnZW1fdXNlcnB0cihpOTE1LCBhZGRyICsgc3ogLyAyLCA0MDk2LCAwLCB1
+c2VycHRyX2ZsYWdzLA0KPiAmaGFuZGxlKTsNCj4gPiA+ID4gPiA+IC0NCj4gPiA+ID4gPiA+IC0g
+ICAgICAgc3BpbiA9IGlndF9zcGluX25ldyhpOTE1LCAuYWhuZCA9IGFobmQsIC5kZXBlbmRlbmN5
+ID0gaGFuZGxlLA0KPiA+ID4gPiA+ID4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgIC5mbGFn
+cyA9IElHVF9TUElOX0ZFTkNFX09VVCk7DQo+ID4gPiA+ID4gPiAtICAgICAgIGlndF9hc3NlcnQo
+Z2VtX2JvX2J1c3koaTkxNSwgaGFuZGxlKSk7DQo+ID4gPiA+ID4gPiAtDQo+ID4gPiA+ID4gPiAt
+ICAgICAgIGZvciAoc2l6ZV90IHggPSAwOyB4IDwgc3o7IHggKz0gNDA5Nikgew0KPiA+ID4gPiA+
+ID4gLSAgICAgICAgICAgICAgIGlmICh4ID09IHN6IC8gMikNCj4gPiA+ID4gPiA+IC0gICAgICAg
+ICAgICAgICAgICAgICAgIGNvbnRpbnVlOw0KPiA+ID4gPiA+ID4gLQ0KPiA+ID4gPiA+ID4gLSAg
+ICAgICAgICAgICAgIGlndF9hc3NlcnQobW1hcChhZGRyICsgeCwgNDA5NiwgUFJPVF9SRUFEIHwN
+Cj4gUFJPVF9XUklURSwNCj4gPiA+ID4gPiA+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgTUFQX0ZJWEVEIHwgTUFQX1NIQVJFRCB8IE1BUF9BTk9OLCAtMSwgMCkNCj4gIT0NCj4gPiA+
+ID4gPiA+IC0gICAgICAgICAgICAgICAgICAgICAgICAgIE1BUF9GQUlMRUQpOw0KPiA+ID4gPiA+
+ID4gLSAgICAgICB9DQo+ID4gPiA+ID4gPiAtDQo+ID4gPiA+ID4gPiAtICAgICAgIGlndF9zcGlu
+X2VuZChzcGluKTsNCj4gPiA+ID4gPiA+IC0gICAgICAgZ2VtX2Nsb3NlKGk5MTUsIGhhbmRsZSk7
+DQo+ID4gPiA+ID4gPiAtDQo+ID4gPiA+ID4gPiAtICAgICAgIG11bm1hcChhZGRyLCBzeik7DQo+
+ID4gPiA+ID4gPiAtDQo+ID4gPiA+ID4gPiAtICAgICAgIGdlbV9zeW5jKGk5MTUsIHNwaW4tPmhh
+bmRsZSk7DQo+ID4gPiA+ID4gPiAtICAgICAgIGlndF9hc3NlcnRfZXEoc3luY19mZW5jZV9zdGF0
+dXMoc3Bpbi0+b3V0X2ZlbmNlKSwgMSk7DQo+ID4gPiA+ID4gPiAtICAgICAgIGlndF9zcGluX2Zy
+ZWUoaTkxNSwgc3Bpbik7DQo+ID4gPiA+ID4gPiAtICAgICAgIHB1dF9haG5kKGFobmQpOw0KPiA+
+ID4gPiA+ID4gLX0NCj4gPiA+ID4gPiA+IC0NCj4gPiA+ID4gPiA+ICBzdGF0aWMgdm9pZCB0ZXN0
+X2h1Z2Vfc3BsaXQoaW50IGk5MTUpICB7DQo+ID4gPiA+ID4gPiAgICAgICAgIGNvbnN0IHNpemVf
+dCBzeiA9IDIgKiBodWdlcGFnZXNpemUoKTsgQEAgLTI2MTQsOQ0KPiA+ID4gPiA+ID4gKzI1Nzcs
+NiBAQCBpZ3RfbWFpbl9hcmdzKCJjOiIsIE5VTEwsIGhlbHBfc3RyLCBvcHRfaGFuZGxlciwgTlVM
+TCkNCj4gPiA+ID4gPiA+ICAgICAgICAgICAgICAgICBpZ3Rfc3VidGVzdCgibm9oYW5nY2hlY2si
+KQ0KPiA+ID4gPiA+ID4gICAgICAgICAgICAgICAgICAgICAgICAgdGVzdF9ub2hhbmdjaGVja19o
+b3N0aWxlKGZkKTsNCj4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gPiAtICAgICAgICAgICAgICAgaWd0
+X3N1YnRlc3QoInZtYS1tZXJnZSIpDQo+ID4gPiA+ID4gPiAtICAgICAgICAgICAgICAgICAgICAg
+ICB0ZXN0X3ZtYV9tZXJnZShmZCk7DQo+ID4gPiA+ID4gPiAtDQo+ID4gPiA+ID4gPiAgICAgICAg
+ICAgICAgICAgaWd0X3N1YnRlc3QoImh1Z2Utc3BsaXQiKQ0KPiA+ID4gPiA+ID4gICAgICAgICAg
+ICAgICAgICAgICAgICAgdGVzdF9odWdlX3NwbGl0KGZkKTsNCj4gPiA+ID4gPiA+ICAgICAgICAg
+fQ0KPiA+ID4gPiA+ID4gLS0NCj4gPiA+ID4gPiA+IDIuMzEuMQ0KPiA+ID4gPiA+ID4NCj4gPiA+
+ID4gPg0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gLS0NCj4gPiA+ID4gPiBEYW5pZWwgVmV0dGVyDQo+
+ID4gPiA+ID4gU29mdHdhcmUgRW5naW5lZXIsIEludGVsIENvcnBvcmF0aW9uIGh0dHA6Ly9ibG9n
+LmZmd2xsLmNoDQo+ID4gPg0KPiA+ID4NCj4gPiA+DQo+ID4gPiAtLQ0KPiA+ID4gRGFuaWVsIFZl
+dHRlcg0KPiA+ID4gU29mdHdhcmUgRW5naW5lZXIsIEludGVsIENvcnBvcmF0aW9uIGh0dHA6Ly9i
+bG9nLmZmd2xsLmNoDQo=
