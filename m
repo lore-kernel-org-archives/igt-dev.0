@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB75B6EDB0
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Oct 2021 16:20:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2BB266EDB3
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Oct 2021 16:20:11 +0000 (UTC)
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Date: Wed,  6 Oct 2021 12:14:36 -0400
-Message-Id: <20211006161444.904476-1-rodrigo.vivi@intel.com>
+Date: Wed,  6 Oct 2021 12:14:37 -0400
+Message-Id: <20211006161444.904476-2-rodrigo.vivi@intel.com>
+In-Reply-To: <20211006161444.904476-1-rodrigo.vivi@intel.com>
+References: <20211006161444.904476-1-rodrigo.vivi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/8] drm-uapi clean-up
+Subject: [igt-dev] [PATCH i-g-t 1/8] tests/i915/gem_pxp: Add LOCAL_ UAPI
+ defines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,54 +21,126 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>, Alan Previn <alan.previn.teres.alexis@intel.com>, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Patches 1 to 3:
-The main motivation of this series is to clean-up the mess
-I created with the recent merge of a i915_drm.h coming from
-drm-intel-gt-next rather than from drm-next. I'm sorry for that.
+While the UAPI changes don't propagate to drm-next we should
+have that as LOCAL_ ones.
 
-Patches 4:
-Since I was already there, let me update some of the upstreamed
-UAPIs.
+That was my mistake during review and merge since I had
+ignored the rules documented at README.md and considered
+drm-intel branches would be enough. I'm sorry.
 
-Patch 5: Extra sync to drm-next, including all of the patches.
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+---
+ tests/i915/gem_pxp.c | 31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
-Patches 6 to 8: These might be the controversial ones. While
-doing the work above, I decided that we needed to make the
-documentation cleaner and more visible so we would avoid further
-mistakes. But I'm okay on dropping these patches if there's
-any disagreement.
-
-Thanks,
-Rodrigo.
-
-Rodrigo Vivi (8):
-  tests/i915/gem_pxp: Add LOCAL_ UAPI defines
-  Revert "i915_drm.h sync"
-  i915_drm.h sync with drm-next
-  tests/gem_userptr_blits: Remove LOCAL_
-  include/drm-uapi: Sync with drm-next
-  README.md: Detail the drm-uapi headers sync.
-  include: Introduce linux-uapi for non-drm-uapi files.
-  README.md: Accept the i915_drm.h standalone update.
-
- README.md                                    |  38 +-
- include/drm-uapi/drm.h                       |  14 +-
- include/drm-uapi/drm_fourcc.h                | 115 ++++-
- include/drm-uapi/drm_mode.h                  |  95 ++++-
- include/drm-uapi/i915_drm.h                  |  99 +----
- include/drm-uapi/msm_drm.h                   |  14 +-
- include/drm-uapi/tegra_drm.h                 | 425 ++++++++++++++++++-
- include/drm-uapi/v3d_drm.h                   | 136 ++++++
- include/drm-uapi/vmwgfx_drm.h                |  41 ++
- include/{drm-uapi => linux-uapi}/sync_file.h |   0
- meson.build                                  |   2 +-
- tests/i915/gem_pxp.c                         |  31 +-
- tests/i915/gem_userptr_blits.c               |   7 +-
- 13 files changed, 866 insertions(+), 151 deletions(-)
- rename include/{drm-uapi => linux-uapi}/sync_file.h (100%)
-
+diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+index 79040165..afd4ce4d 100644
+--- a/tests/i915/gem_pxp.c
++++ b/tests/i915/gem_pxp.c
+@@ -25,14 +25,25 @@ struct simple_exec_assets {
+ 	struct intel_bb *ibb;
+ };
+ 
++#define LOCAL_I915_GEM_CREATE_EXT_PROTECTED_CONTENT	1
++#define LOCAL_I915_CONTEXT_PARAM_PROTECTED_CONTENT	0xd
++#define LOCAL_I915_PROTECTED_CONTENT_DEFAULT_SESSION	0xf
++
++struct local_drm_i915_gem_create_ext_protected_content {
++       /** @base: Extension link. See struct i915_user_extension. */
++       struct i915_user_extension base;
++       /** @flags: reserved for future usage, currently MBZ */
++       __u32 flags;
++};
++
+ static int create_bo_ext(int i915, uint32_t size, bool protected_is_true, uint32_t *bo_out)
+ {
+ 	int ret;
+ 	uint64_t size64 = size;
+ 	struct i915_user_extension *ext = NULL;
+ 
+-	struct drm_i915_gem_create_ext_protected_content protected_ext = {
+-		.base = { .name = I915_GEM_CREATE_EXT_PROTECTED_CONTENT },
++	struct local_drm_i915_gem_create_ext_protected_content protected_ext = {
++		.base = { .name = LOCAL_I915_GEM_CREATE_EXT_PROTECTED_CONTENT },
+ 		.flags = 0,
+ 	};
+ 
+@@ -92,7 +103,7 @@ static int create_ctx_with_params(int i915, bool with_protected_param, bool prot
+ 			.next_extension = 0,
+ 		},
+ 		.param = {
+-			.param = I915_CONTEXT_PARAM_PROTECTED_CONTENT,
++			.param = LOCAL_I915_CONTEXT_PARAM_PROTECTED_CONTENT,
+ 			.value = 0,
+ 		}
+ 	};
+@@ -143,7 +154,7 @@ static int modify_ctx_param(int i915, uint32_t ctx_id, uint32_t param_mask, bool
+ 	};
+ 
+ 	if (param_mask == CHANGE_PARAM_PROTECTED) {
+-		ctx_param.param = I915_CONTEXT_PARAM_PROTECTED_CONTENT;
++		ctx_param.param = LOCAL_I915_CONTEXT_PARAM_PROTECTED_CONTENT;
+ 		ctx_param.value = (int)param_value;
+ 	} else if (param_mask == CHANGE_PARAM_RECOVERY) {
+ 		ctx_param.param = I915_CONTEXT_PARAM_RECOVERABLE;
+@@ -161,7 +172,7 @@ static int get_ctx_protected_param(int i915, uint32_t ctx_id)
+ 
+ 	struct drm_i915_gem_context_param ctx_param = {
+ 		.ctx_id = ctx_id,
+-		.param = I915_CONTEXT_PARAM_PROTECTED_CONTENT,
++		.param = LOCAL_I915_CONTEXT_PARAM_PROTECTED_CONTENT,
+ 	};
+ 
+ 	ret = igt_ioctl(i915, DRM_IOCTL_I915_GEM_CONTEXT_GETPARAM, &ctx_param);
+@@ -508,7 +519,7 @@ static void __test_render_pxp_src_to_protdest(int i915, uint32_t *outpixels, int
+ 	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
+ 	ibb = intel_bb_create_with_context(i915, ctx, 4096);
+ 	igt_assert(ibb);
+-	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
++	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, LOCAL_I915_PROTECTED_CONTENT_DEFAULT_SESSION);
+ 
+ 	dstbo = alloc_and_fill_dest_buff(i915, true, TSTSURF_SIZE, TSTSURF_INITCOLOR2);
+ 	dstbuf = intel_buf_create_using_handle(bops, dstbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
+@@ -569,7 +580,7 @@ static void test_render_pxp_protsrc_to_protdest(int i915)
+ 	igt_assert_eq(get_ctx_protected_param(i915, ctx), 1);
+ 	ibb = intel_bb_create_with_context(i915, ctx, 4096);
+ 	igt_assert(ibb);
+-	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
++	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, LOCAL_I915_PROTECTED_CONTENT_DEFAULT_SESSION);
+ 
+ 	dstbo = alloc_and_fill_dest_buff(i915, true, TSTSURF_SIZE, TSTSURF_INITCOLOR2);
+ 	dstbuf = intel_buf_create_using_handle(bops, dstbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
+@@ -603,7 +614,7 @@ static void test_render_pxp_protsrc_to_protdest(int i915)
+ 	intel_buf_set_pxp(dstbuf2, true);
+ 	intel_buf_set_pxp(dstbuf, true);/*this time, src is protected*/
+ 
+-	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
++	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, LOCAL_I915_PROTECTED_CONTENT_DEFAULT_SESSION);
+ 
+ 	gen12_render_copyfunc(ibb, dstbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf2, 0, 0);
+ 	gem_sync(i915, dstbo2);
+@@ -675,7 +686,7 @@ static void test_pxp_dmabuffshare_refcnt(void)
+ 		igt_assert_eq(get_ctx_protected_param(fd[n], ctx[n]), 1);
+ 		ibb[n] = intel_bb_create_with_context(fd[n], ctx[n], 4096);
+ 		intel_bb_set_pxp(ibb[n], true, DISPLAY_APPTYPE,
+-				 I915_PROTECTED_CONTENT_DEFAULT_SESSION);
++				 LOCAL_I915_PROTECTED_CONTENT_DEFAULT_SESSION);
+ 
+ 		bops[n] = buf_ops_create(fd[n]);
+ 		if (n == 1)
+@@ -1066,7 +1077,7 @@ static void setup_protected_fb(int i915, int width, int height, igt_fb_t *fb, ui
+ 
+ 	ibb->pxp.enabled = true;
+ 	ibb->pxp.apptype = DISPLAY_APPTYPE;
+-	ibb->pxp.appid = I915_PROTECTED_CONTENT_DEFAULT_SESSION;
++	ibb->pxp.appid = LOCAL_I915_PROTECTED_CONTENT_DEFAULT_SESSION;
+ 
+ 	gen12_render_copyfunc(ibb, srcbuf, 0, 0, fb->width, fb->height, dstbuf, 0, 0);
+ 
 -- 
 2.31.1
