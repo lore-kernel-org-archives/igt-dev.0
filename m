@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7EBC76ED16
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Oct 2021 08:53:28 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F5606ED24
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Oct 2021 08:56:51 +0000 (UTC)
 References: <20211005000145.311228-1-jose.souza@intel.com>
+ <20211005000145.311228-2-jose.souza@intel.com>
 From: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Message-ID: <8326c8ea-ee40-ad89-a6c6-0688ddaf835d@intel.com>
-Date: Wed, 6 Oct 2021 11:53:12 +0300
-In-Reply-To: <20211005000145.311228-1-jose.souza@intel.com>
+Message-ID: <f61513d5-005f-0b81-feef-7dcf38e78f28@intel.com>
+Date: Wed, 6 Oct 2021 11:56:30 +0300
+In-Reply-To: <20211005000145.311228-2-jose.souza@intel.com>
 Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] Revert "tests/kms_psr: Skip h/w
- tracking PSR2 tests for ADL-P"
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/kms_psr2_su: Skip test when
+ necessary
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,31 +30,58 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 
 On 10/5/21 3:01 AM, José Roberto de Souza wrote:
-> PSR2 is now working on Alderlake-P so we can revert this patch.
-> This reverts commit b5c6b973e7f7d33e7521825e39ddd380e80af01a.
+> The whole test needs to skip in display 13 platforms as
+> PSR2_SU_STATUS is not being updated anymore by HW.
+> It was not reliable in older display versions and now it is 100% dead.
+> 
+> For display 12 and newer platforms now we have PSR2 selective fetch
+> enabled default, so software is doing all the tracking of the areas
+> that needs updates but we still can't do that for frontbuffer
+> rendering so we are doing full frame fetches for now what will cause
+> this test to fail, so also skipping it for the frontbuffer subtest.
 > 
 > Cc: Jeevan B <jeevan.b@intel.com>
 > Cc: Swati Sharma <swati2.sharma@intel.com>
 > Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 > Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
 > ---
->   tests/i915/kms_psr.c | 5 -----
->   1 file changed, 5 deletions(-)
+>   tests/i915/kms_psr2_su.c | 18 ++++++++++++++++++
+>   1 file changed, 18 insertions(+)
 > 
-> diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
-> index 270d31504..c65b3c806 100644
-> --- a/tests/i915/kms_psr.c
-> +++ b/tests/i915/kms_psr.c
-> @@ -441,11 +441,6 @@ static void test_setup(data_t *data)
->   	igt_require_f(data->mode,
->   		      "No available mode found on %s\n",
->   		      data->output->name);
-> -
-> -	if (data->op_psr_mode == PSR_MODE_2)
-> -		igt_require_f(intel_display_ver(intel_get_drm_devid(data->drm_fd)) < 13,
-> -			      "Intentionally not testing this on Display 13+, Kernel change required to enable testing\n");
-> -
->   	if (data->op_psr_mode == PSR_MODE_2)
->   		igt_require(data->supports_psr2);
+> diff --git a/tests/i915/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
+> index 318deefdf..3018bcc6c 100644
+> --- a/tests/i915/kms_psr2_su.c
+> +++ b/tests/i915/kms_psr2_su.c
+> @@ -251,6 +251,9 @@ igt_main
+>   					       data.debugfs_fd, PSR_MODE_2),
+>   			      "Sink does not support PSR2\n");
 >   
+> +		igt_require_f(intel_display_ver(intel_get_drm_devid(data.drm_fd)) < 13,
+> +			      "Registers used by this test do not work on display 13\n");
+> +
+>   		display_init(&data);
+>   
+>   		/* Test if PSR2 can be enabled */
+> @@ -280,6 +283,21 @@ igt_main
+>   	for (data.op = PAGE_FLIP; data.op < LAST; data.op++) {
+>   		igt_describe("Test that selective update works when screen changes");
+>   		igt_subtest_f("%s", op_str(data.op)) {
+> +
+> +			if (data.op == FRONTBUFFER &&
+> +			    intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 12) {
+> +				/*
+> +				 * FIXME: Display 12+ platforms now have PSR2
+> +				 * selective fetch enabled by default but we
+> +				 * still can't properly handle frontbuffer
+> +				 * rendering, so right it does full frame
+> +				 * fetches at every frontbuffer rendering.
+> +				 * So it is expected that this test will fail
+> +				 * in display 12+ platform fow now.
+> +				 */
+> +				igt_skip("PSR2 selective fetch is doing full frame fetches for frontbuffer rendering\n");
+> +			}
+> +
+>   			prepare(&data);
+>   			run(&data);
+>   			cleanup(&data);
 > 
