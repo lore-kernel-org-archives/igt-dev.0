@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D74D06EDB0
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Oct 2021 16:20:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB75B6EDB0
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Oct 2021 16:20:10 +0000 (UTC)
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Date: Wed,  6 Oct 2021 12:14:39 -0400
-Message-Id: <20211006161444.904476-4-rodrigo.vivi@intel.com>
-In-Reply-To: <20211006161444.904476-1-rodrigo.vivi@intel.com>
-References: <20211006161444.904476-1-rodrigo.vivi@intel.com>
+Date: Wed,  6 Oct 2021 12:14:36 -0400
+Message-Id: <20211006161444.904476-1-rodrigo.vivi@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/8] i915_drm.h sync with drm-next
+Subject: [igt-dev] [PATCH i-g-t 0/8] drm-uapi clean-up
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,106 +19,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>, Petri Latvala <petri.latvala@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Let's do a catch-up on i915_drm.h here.
-Only on i915_drm.h for now so we can have a clean
-view of the LOCAL_ ones that we need to remove.
+Patches 1 to 3:
+The main motivation of this series is to clean-up the mess
+I created with the recent merge of a i915_drm.h coming from
+drm-intel-gt-next rather than from drm-next. I'm sorry for that.
 
-Taken from 25fed6b324ac ("Merge tag 'drm-intel-gt-next-2021-08-06-1' of ssh://git.freedesktop.org/git/drm/drm-intel into drm-next")
+Patches 4:
+Since I was already there, let me update some of the upstreamed
+UAPIs.
 
-Cc: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- include/drm-uapi/i915_drm.h | 48 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+Patch 5: Extra sync to drm-next, including all of the patches.
 
-diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-index b9632bb2..c788a1ab 100644
---- a/include/drm-uapi/i915_drm.h
-+++ b/include/drm-uapi/i915_drm.h
-@@ -572,6 +572,15 @@ typedef struct drm_i915_irq_wait {
- #define   I915_SCHEDULER_CAP_PREEMPTION	(1ul << 2)
- #define   I915_SCHEDULER_CAP_SEMAPHORES	(1ul << 3)
- #define   I915_SCHEDULER_CAP_ENGINE_BUSY_STATS	(1ul << 4)
-+/*
-+ * Indicates the 2k user priority levels are statically mapped into 3 buckets as
-+ * follows:
-+ *
-+ * -1k to -1	Low priority
-+ * 0		Normal priority
-+ * 1 to 1k	Highest priority
-+ */
-+#define   I915_SCHEDULER_CAP_STATIC_PRIORITY_MAP	(1ul << 5)
- 
- #define I915_PARAM_HUC_STATUS		 42
- 
-@@ -674,6 +683,9 @@ typedef struct drm_i915_irq_wait {
-  */
- #define I915_PARAM_HAS_EXEC_TIMELINE_FENCES 55
- 
-+/* Query if the kernel supports the I915_USERPTR_PROBE flag. */
-+#define I915_PARAM_HAS_USERPTR_PROBE 56
-+
- /* Must be kept compact -- no holes and well documented */
- 
- typedef struct drm_i915_getparam {
-@@ -923,6 +935,25 @@ struct drm_i915_gem_mmap_offset {
-  *	- I915_GEM_DOMAIN_GTT: Mappable aperture domain
-  *
-  * All other domains are rejected.
-+ *
-+ * Note that for discrete, starting from DG1, this is no longer supported, and
-+ * is instead rejected. On such platforms the CPU domain is effectively static,
-+ * where we also only support a single &drm_i915_gem_mmap_offset cache mode,
-+ * which can't be set explicitly and instead depends on the object placements,
-+ * as per the below.
-+ *
-+ * Implicit caching rules, starting from DG1:
-+ *
-+ *	- If any of the object placements (see &drm_i915_gem_create_ext_memory_regions)
-+ *	  contain I915_MEMORY_CLASS_DEVICE then the object will be allocated and
-+ *	  mapped as write-combined only.
-+ *
-+ *	- Everything else is always allocated and mapped as write-back, with the
-+ *	  guarantee that everything is also coherent with the GPU.
-+ *
-+ * Note that this is likely to change in the future again, where we might need
-+ * more flexibility on future devices, so making this all explicit as part of a
-+ * new &drm_i915_gem_create_ext extension is probable.
-  */
- struct drm_i915_gem_set_domain {
- 	/** @handle: Handle for the object. */
-@@ -2203,12 +2234,29 @@ struct drm_i915_gem_userptr {
- 	 * through the GTT. If the HW can't support readonly access, an error is
- 	 * returned.
- 	 *
-+	 * I915_USERPTR_PROBE:
-+	 *
-+	 * Probe the provided @user_ptr range and validate that the @user_ptr is
-+	 * indeed pointing to normal memory and that the range is also valid.
-+	 * For example if some garbage address is given to the kernel, then this
-+	 * should complain.
-+	 *
-+	 * Returns -EFAULT if the probe failed.
-+	 *
-+	 * Note that this doesn't populate the backing pages, and also doesn't
-+	 * guarantee that the object will remain valid when the object is
-+	 * eventually used.
-+	 *
-+	 * The kernel supports this feature if I915_PARAM_HAS_USERPTR_PROBE
-+	 * returns a non-zero value.
-+	 *
- 	 * I915_USERPTR_UNSYNCHRONIZED:
- 	 *
- 	 * NOT USED. Setting this flag will result in an error.
- 	 */
- 	__u32 flags;
- #define I915_USERPTR_READ_ONLY 0x1
-+#define I915_USERPTR_PROBE 0x2
- #define I915_USERPTR_UNSYNCHRONIZED 0x80000000
- 	/**
- 	 * @handle: Returned handle for the object.
+Patches 6 to 8: These might be the controversial ones. While
+doing the work above, I decided that we needed to make the
+documentation cleaner and more visible so we would avoid further
+mistakes. But I'm okay on dropping these patches if there's
+any disagreement.
+
+Thanks,
+Rodrigo.
+
+Rodrigo Vivi (8):
+  tests/i915/gem_pxp: Add LOCAL_ UAPI defines
+  Revert "i915_drm.h sync"
+  i915_drm.h sync with drm-next
+  tests/gem_userptr_blits: Remove LOCAL_
+  include/drm-uapi: Sync with drm-next
+  README.md: Detail the drm-uapi headers sync.
+  include: Introduce linux-uapi for non-drm-uapi files.
+  README.md: Accept the i915_drm.h standalone update.
+
+ README.md                                    |  38 +-
+ include/drm-uapi/drm.h                       |  14 +-
+ include/drm-uapi/drm_fourcc.h                | 115 ++++-
+ include/drm-uapi/drm_mode.h                  |  95 ++++-
+ include/drm-uapi/i915_drm.h                  |  99 +----
+ include/drm-uapi/msm_drm.h                   |  14 +-
+ include/drm-uapi/tegra_drm.h                 | 425 ++++++++++++++++++-
+ include/drm-uapi/v3d_drm.h                   | 136 ++++++
+ include/drm-uapi/vmwgfx_drm.h                |  41 ++
+ include/{drm-uapi => linux-uapi}/sync_file.h |   0
+ meson.build                                  |   2 +-
+ tests/i915/gem_pxp.c                         |  31 +-
+ tests/i915/gem_userptr_blits.c               |   7 +-
+ 13 files changed, 866 insertions(+), 151 deletions(-)
+ rename include/{drm-uapi => linux-uapi}/sync_file.h (100%)
+
 -- 
 2.31.1
