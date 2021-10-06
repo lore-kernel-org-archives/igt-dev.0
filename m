@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F0E66EDAA
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Oct 2021 16:03:02 +0000 (UTC)
-From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
-Date: Wed, 6 Oct 2021 16:00:19 +0000
-Message-ID: <BYAPR11MB3784C00B4165B2A988D07C738AB09@BYAPR11MB3784.namprd11.prod.outlook.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BCA236EDDF
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Oct 2021 16:18:16 +0000 (UTC)
+From: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+Date: Wed, 6 Oct 2021 16:18:07 +0000
+Message-ID: <32aaa32a0890a8a73f3dbcd109cede5ae2e098b3.camel@intel.com>
 References: <20211005194133.13508-1-alan.previn.teres.alexis@intel.com>
  <20211005194133.13508-15-alan.previn.teres.alexis@intel.com>
  <890ea1f5f49f47ce95187493b17e71aa@intel.com>
-In-Reply-To: <890ea1f5f49f47ce95187493b17e71aa@intel.com>
+ <BYAPR11MB3784C00B4165B2A988D07C738AB09@BYAPR11MB3784.namprd11.prod.outlook.com>
+In-Reply-To: <BYAPR11MB3784C00B4165B2A988D07C738AB09@BYAPR11MB3784.namprd11.prod.outlook.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <99254B4DA7A9844D845AFCCAB859578E@intel.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t v15 14/15] Verify protected surfaces are
  dma buffer sharable
@@ -24,203 +26,132 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Ruhl, Michael J" <michael.j.ruhl@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+To: "Ruhl, Michael J" <michael.j.ruhl@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Teres
+ Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-My bad - still learning.. Here is my explanation which is not an excuse (i.=
-e. I will create a separate JIRA):
-
-IIRC correctly, I was looking for examples from other test code and used wh=
-at I saw in gem_userptr_blits.c because all other PXP subtests needed the I=
-OCTL return values (testing different failure values depending on inputs). =
-I thought it would be better to start with that (instead of the ioctl_wrapp=
-er lib that didn't return the value).=20
-
-However, in hindsight, what I should have done is modified the wrapper to e=
-xport the variant I was looking for (also updating gem_userptr_blits too)..=
-. and even after realizing I didn't actually need the return value, it woul=
-d at least still be using the wrapper.
-
-I'll ensure I follow up on this as a separate patch if it got merged.
-
-...alan
-
------Original Message-----
-From: Ruhl, Michael J <michael.j.ruhl@intel.com>=20
-Sent: Wednesday, October 6, 2021 7:31 AM
-To: Teres Alexis, Alan Previn <alan.previn.teres.alexis@intel.com>; igt-dev=
-@lists.freedesktop.org
-Cc: Teres Alexis, Alan Previn <alan.previn.teres.alexis@intel.com>; Vivi, R=
-odrigo <rodrigo.vivi@intel.com>
-Subject: RE: [igt-dev] [PATCH i-g-t v15 14/15] Verify protected surfaces ar=
-e dma buffer sharable
-
->-----Original Message-----
->From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Alan=20
->Previn
->Sent: Tuesday, October 5, 2021 3:42 PM
->To: igt-dev@lists.freedesktop.org
->Cc: Teres Alexis, Alan Previn <alan.previn.teres.alexis@intel.com>;=20
->Vivi, Rodrigo <rodrigo.vivi@intel.com>
->Subject: [igt-dev] [PATCH i-g-t v15 14/15] Verify protected surfaces=20
->are dma buffer sharable
->
->Verify we can export a protected surface from protected context A into=20
->protected context B (with different client driver handles) and=20
->protected rendering is successful even after prior file handle is=20
->closed (i.e. pxp specific refcounting works).
->
->Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
->Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
->---
-> tests/i915/gem_pxp.c | 102
->+++++++++++++++++++++++++++++++++++++++++++
-> 1 file changed, 102 insertions(+)
->
->diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c index=20
->0ccba6aa..2848e487 100644
->--- a/tests/i915/gem_pxp.c
->+++ b/tests/i915/gem_pxp.c
->@@ -621,6 +621,106 @@ static void
->test_render_pxp_protsrc_to_protdest(int i915)  buf_ops_destroy(bops); =20
->}
->
->+static int export_handle(int fd, uint32_t handle, int *outfd) { struct=20
->+drm_prime_handle args; int ret;
->+
->+args.handle =3D handle;
->+args.flags =3D DRM_CLOEXEC;
->+args.fd =3D -1;
->+
->+ret =3D drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args); if (ret) ret=20
->+=3D errno; *outfd =3D args.fd;
->+
->+return ret;
->+}
-
-This is a repeat of similar function in lib/ioctl_wrappers
-(prime_handle_to_fd)
-
-Is there a reason for the code duplication?
-
-Especially confused because you are using prime_fd_to_handle for import...
-
-Thanks,
-
-M
-
-
->+static void test_pxp_dmabuffshare_refcnt(void)
->+{
->+uint32_t ctx[2], sbo[2], dbo[2];
->+struct intel_buf *sbuf[2], *dbuf[2];
->+struct buf_ops *bops[2];
->+struct intel_bb *ibb[2];
->+int fd[2], dmabuf_fd =3D 0, ret, n, num_matches =3D 0; uint32_t=20
->+encrypted[2][TSTSURF_SIZE/TSTSURF_BYTESPP];
->+
->+/* First, create the client driver handles and
->+ * protected dest buffer (is exported via dma-buff
->+ * from first handle and imported to the second).
->+ */
->+for (n =3D 0; n < 2; ++n) {
->+fd[n] =3D drm_open_driver(DRIVER_INTEL); igt_require(fd[n]); if (n =3D=3D=
- 0)=20
->+{ dbo[0] =3D alloc_and_fill_dest_buff(fd[0], true,
->TSTSURF_SIZE,
->+
->TSTSURF_INITCOLOR1);
->+} else {
->+ret =3D export_handle(fd[0], dbo[0], &dmabuf_fd);
->+igt_assert(ret =3D=3D 0);
->+dbo[1] =3D prime_fd_to_handle(fd[1], dmabuf_fd);
->+igt_assert(dbo[1]);
->+}
->+}
->+/* Repeat twice: Create a full set of assets to perform
->+ * a protected 3D session but using the same dest buffer
->+ * from above.
->+ */
->+for (n =3D 0; n < 2; ++n) {
->+ret =3D create_ctx_with_params(fd[n], true, true, true, false,
->&ctx[n]);
->+igt_assert_eq(ret, 0);
->+igt_assert_eq(get_ctx_protected_param(fd[n], ctx[n]), 1);
->+ibb[n] =3D intel_bb_create_with_context(fd[n], ctx[n], 4096);
->+intel_bb_set_pxp(ibb[n], true, DISPLAY_APPTYPE,
->+
->I915_PROTECTED_CONTENT_DEFAULT_SESSION);
->+
->+bops[n] =3D buf_ops_create(fd[n]);
->+if (n =3D=3D 1)
->+fill_bo_content(fd[1], dbo[1], TSTSURF_SIZE,
->TSTSURF_INITCOLOR2);
->+
->+dbuf[n] =3D intel_buf_create_using_handle(bops[n], dbo[n],
->TSTSURF_WIDTH,
->+TSTSURF_HEIGHT,
->TSTSURF_BYTESPP*8, 0,
->+I915_TILING_NONE,
->0);
->+intel_buf_set_pxp(dbuf[n], true);
->+
->+sbo[n] =3D alloc_and_fill_dest_buff(fd[n], false, TSTSURF_SIZE,
->TSTSURF_FILLCOLOR1);
->+sbuf[n] =3D intel_buf_create_using_handle(bops[n], sbo[n],
->TSTSURF_WIDTH,
->+TSTSURF_HEIGHT,
->TSTSURF_BYTESPP*8, 0,
->+I915_TILING_NONE,
->0);
->+
->+gen12_render_copyfunc(ibb[n], sbuf[n], 0, 0,
->TSTSURF_WIDTH, TSTSURF_HEIGHT,
->+      dbuf[n], 0, 0);
->+gem_sync(fd[n], dbo[n]);
->+
->+assert_bo_content_check(fd[n], dbo[n],
->COMPARE_COLOR_UNREADIBLE, TSTSURF_SIZE,
->+TSTSURF_FILLCOLOR1, NULL, 0);
->+assert_bo_content_check(fd[n], dbo[n], COPY_BUFFER,
->TSTSURF_SIZE, 0, encrypted[n],
->+TSTSURF_SIZE);
->+
->+/* free up all assets except the dest buffer to
->+ * verify dma buff refcounting is performed on
->+ * the protected dest buffer on the 2nd loop with
->+ * successful reuse in another protected render.
->+ */
->+intel_bb_destroy(ibb[n]);
->+intel_buf_destroy(sbuf[n]);
->+intel_buf_destroy(dbuf[n]);
->+gem_close(fd[n], sbo[n]);
->+gem_close(fd[n], dbo[n]);
->+gem_context_destroy(fd[n], ctx[n]);
->+close(fd[n]);
->+}
->+
->+/* Verify that encrypted output across loops were equal */
->+for (n =3D 0; n < (TSTSURF_SIZE/4); ++n)
->+if (encrypted[0][n] =3D=3D encrypted[1][n])
->+++num_matches;
->+igt_assert(num_matches =3D=3D (TSTSURF_SIZE/4));
->+}
->+
->+
-> static void init_powermgt_resources(int i915, struct powermgt_data *pm)
-> {
-> pm->debugfsdir =3D igt_debugfs_dir(i915);
->@@ -989,6 +1089,8 @@ igt_main
-> test_render_pxp_src_to_protdest(i915);
-> igt_subtest("protected-encrypted-src-copy-not-readible")
-> test_render_pxp_protsrc_to_protdest(i915);
->+igt_subtest("dmabuf-shared-protected-dst-is-context-
->refcounted")
->+test_pxp_dmabuffshare_refcnt();
-> }
-> igt_subtest_group {
-> igt_fixture {
->--
->2.25.1
-
+T24gV2VkLCAyMDIxLTEwLTA2IGF0IDE2OjAwICswMDAwLCBUZXJlcyBBbGV4aXMsIEFsYW4gUHJl
+dmluIHdyb3RlOg0KPiBNeSBiYWQgLSBzdGlsbCBsZWFybmluZy4uIEhlcmUgaXMgbXkgZXhwbGFu
+YXRpb24gd2hpY2ggaXMgbm90IGFuDQo+IGV4Y3VzZSAoaS5lLiBJIHdpbGwgY3JlYXRlIGEgc2Vw
+YXJhdGUgSklSQSk6DQo+IA0KPiBJSVJDIGNvcnJlY3RseSwgSSB3YXMgbG9va2luZyBmb3IgZXhh
+bXBsZXMgZnJvbSBvdGhlciB0ZXN0IGNvZGUgYW5kDQo+IHVzZWQgd2hhdCBJIHNhdyBpbiBnZW1f
+dXNlcnB0cl9ibGl0cy5jIGJlY2F1c2UgYWxsIG90aGVyIFBYUCBzdWJ0ZXN0cw0KPiBuZWVkZWQg
+dGhlIElPQ1RMIHJldHVybiB2YWx1ZXMgKHRlc3RpbmcgZGlmZmVyZW50IGZhaWx1cmUgdmFsdWVz
+DQo+IGRlcGVuZGluZyBvbiBpbnB1dHMpLiBJIHRob3VnaHQgaXQgd291bGQgYmUgYmV0dGVyIHRv
+IHN0YXJ0IHdpdGggdGhhdA0KPiAoaW5zdGVhZCBvZiB0aGUgaW9jdGxfd3JhcHBlciBsaWIgdGhh
+dCBkaWRuJ3QgcmV0dXJuIHRoZSB2YWx1ZSkuDQo+IA0KPiBIb3dldmVyLCBpbiBoaW5kc2lnaHQs
+IHdoYXQgSSBzaG91bGQgaGF2ZSBkb25lIGlzIG1vZGlmaWVkIHRoZQ0KPiB3cmFwcGVyIHRvIGV4
+cG9ydCB0aGUgdmFyaWFudCBJIHdhcyBsb29raW5nIGZvciAoYWxzbyB1cGRhdGluZw0KPiBnZW1f
+dXNlcnB0cl9ibGl0cyB0b28pLi4uIGFuZCBldmVuIGFmdGVyIHJlYWxpemluZyBJIGRpZG4ndCBh
+Y3R1YWxseQ0KPiBuZWVkIHRoZSByZXR1cm4gdmFsdWUsIGl0IHdvdWxkIGF0IGxlYXN0IHN0aWxs
+IGJlIHVzaW5nIHRoZSB3cmFwcGVyLg0KPiANCj4gSSdsbCBlbnN1cmUgSSBmb2xsb3cgdXAgb24g
+dGhpcyBhcyBhIHNlcGFyYXRlIHBhdGNoIGlmIGl0IGdvdCBtZXJnZWQuDQoNClllcywgdGhlIHBh
+dGNoZXMgZ290IG1lcmdlZC4gUGxlYXNlIHByb3ZpZGUgYSBmb2xsb3ctdXAuDQoNCk15IGJhZCBm
+b3Igbm90IG5vdGljaW5nIGR1cmluZyByZXZpZXcgYXMgd2VsbC4NCg0KVGhhbmsgeW91IE1pY2hh
+ZWwuDQoNCj4gDQo+IC4uLmFsYW4NCj4gDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+
+IEZyb206IFJ1aGwsIE1pY2hhZWwgSiA8bWljaGFlbC5qLnJ1aGxAaW50ZWwuY29tPg0KPiBTZW50
+OiBXZWRuZXNkYXksIE9jdG9iZXIgNiwgMjAyMSA3OjMxIEFNDQo+IFRvOiBUZXJlcyBBbGV4aXMs
+IEFsYW4gUHJldmluIDxhbGFuLnByZXZpbi50ZXJlcy5hbGV4aXNAaW50ZWwuY29tPjsNCj4gaWd0
+LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gQ2M6IFRlcmVzIEFsZXhpcywgQWxhbiBQcmV2
+aW4gPGFsYW4ucHJldmluLnRlcmVzLmFsZXhpc0BpbnRlbC5jb20+Ow0KPiBWaXZpLCBSb2RyaWdv
+IDxyb2RyaWdvLnZpdmlAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSRTogW2lndC1kZXZdIFtQQVRD
+SCBpLWctdCB2MTUgMTQvMTVdIFZlcmlmeSBwcm90ZWN0ZWQNCj4gc3VyZmFjZXMgYXJlIGRtYSBi
+dWZmZXIgc2hhcmFibGUNCj4gDQo+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiBG
+cm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJvdW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBC
+ZWhhbGYgT2YNCj4gPiBBbGFuDQo+ID4gUHJldmluDQo+ID4gU2VudDogVHVlc2RheSwgT2N0b2Jl
+ciA1LCAyMDIxIDM6NDIgUE0NCj4gPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcN
+Cj4gPiBDYzogVGVyZXMgQWxleGlzLCBBbGFuIFByZXZpbiA8YWxhbi5wcmV2aW4udGVyZXMuYWxl
+eGlzQGludGVsLmNvbT47DQo+ID4gVml2aSwgUm9kcmlnbyA8cm9kcmlnby52aXZpQGludGVsLmNv
+bT4NCj4gPiBTdWJqZWN0OiBbaWd0LWRldl0gW1BBVENIIGktZy10IHYxNSAxNC8xNV0gVmVyaWZ5
+IHByb3RlY3RlZA0KPiA+IHN1cmZhY2VzDQo+ID4gYXJlIGRtYSBidWZmZXIgc2hhcmFibGUNCj4g
+PiANCj4gPiBWZXJpZnkgd2UgY2FuIGV4cG9ydCBhIHByb3RlY3RlZCBzdXJmYWNlIGZyb20gcHJv
+dGVjdGVkIGNvbnRleHQgQQ0KPiA+IGludG8NCj4gPiBwcm90ZWN0ZWQgY29udGV4dCBCICh3aXRo
+IGRpZmZlcmVudCBjbGllbnQgZHJpdmVyIGhhbmRsZXMpIGFuZA0KPiA+IHByb3RlY3RlZCByZW5k
+ZXJpbmcgaXMgc3VjY2Vzc2Z1bCBldmVuIGFmdGVyIHByaW9yIGZpbGUgaGFuZGxlIGlzDQo+ID4g
+Y2xvc2VkIChpLmUuIHB4cCBzcGVjaWZpYyByZWZjb3VudGluZyB3b3JrcykuDQo+ID4gDQo+ID4g
+U2lnbmVkLW9mZi1ieTogQWxhbiBQcmV2aW4gPGFsYW4ucHJldmluLnRlcmVzLmFsZXhpc0BpbnRl
+bC5jb20+DQo+ID4gUmV2aWV3ZWQtYnk6IFJvZHJpZ28gVml2aSA8cm9kcmlnby52aXZpQGludGVs
+LmNvbT4NCj4gPiAtLS0NCj4gPiB0ZXN0cy9pOTE1L2dlbV9weHAuYyB8IDEwMg0KPiA+ICsrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gPiAxIGZpbGUgY2hhbmdl
+ZCwgMTAyIGluc2VydGlvbnMoKykNCj4gPiANCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9n
+ZW1fcHhwLmMgYi90ZXN0cy9pOTE1L2dlbV9weHAuYyBpbmRleA0KPiA+IDBjY2JhNmFhLi4yODQ4
+ZTQ4NyAxMDA2NDQNCj4gPiAtLS0gYS90ZXN0cy9pOTE1L2dlbV9weHAuYw0KPiA+ICsrKyBiL3Rl
+c3RzL2k5MTUvZ2VtX3B4cC5jDQo+ID4gQEAgLTYyMSw2ICs2MjEsMTA2IEBAIHN0YXRpYyB2b2lk
+DQo+ID4gdGVzdF9yZW5kZXJfcHhwX3Byb3RzcmNfdG9fcHJvdGRlc3QoaW50IGk5MTUpwqANCj4g
+PiBidWZfb3BzX2Rlc3Ryb3koYm9wcyk7DQo+ID4gfQ0KPiA+IA0KPiA+ICtzdGF0aWMgaW50IGV4
+cG9ydF9oYW5kbGUoaW50IGZkLCB1aW50MzJfdCBoYW5kbGUsIGludCAqb3V0ZmQpIHsNCj4gPiBz
+dHJ1Y3QNCj4gPiArZHJtX3ByaW1lX2hhbmRsZSBhcmdzOyBpbnQgcmV0Ow0KPiA+ICsNCj4gPiAr
+YXJncy5oYW5kbGUgPSBoYW5kbGU7DQo+ID4gK2FyZ3MuZmxhZ3MgPSBEUk1fQ0xPRVhFQzsNCj4g
+PiArYXJncy5mZCA9IC0xOw0KPiA+ICsNCj4gPiArcmV0ID0gZHJtSW9jdGwoZmQsIERSTV9JT0NU
+TF9QUklNRV9IQU5ETEVfVE9fRkQsICZhcmdzKTsgaWYgKHJldCkNCj4gPiByZXQNCj4gPiArPSBl
+cnJubzsgKm91dGZkID0gYXJncy5mZDsNCj4gPiArDQo+ID4gK3JldHVybiByZXQ7DQo+ID4gK30N
+Cj4gDQo+IFRoaXMgaXMgYSByZXBlYXQgb2Ygc2ltaWxhciBmdW5jdGlvbiBpbiBsaWIvaW9jdGxf
+d3JhcHBlcnMNCj4gKHByaW1lX2hhbmRsZV90b19mZCkNCj4gDQo+IElzIHRoZXJlIGEgcmVhc29u
+IGZvciB0aGUgY29kZSBkdXBsaWNhdGlvbj8NCj4gDQo+IEVzcGVjaWFsbHkgY29uZnVzZWQgYmVj
+YXVzZSB5b3UgYXJlIHVzaW5nIHByaW1lX2ZkX3RvX2hhbmRsZSBmb3INCj4gaW1wb3J0Li4uDQo+
+IA0KPiBUaGFua3MsDQo+IA0KPiBNDQo+IA0KPiANCj4gPiArc3RhdGljIHZvaWQgdGVzdF9weHBf
+ZG1hYnVmZnNoYXJlX3JlZmNudCh2b2lkKQ0KPiA+ICt7DQo+ID4gK3VpbnQzMl90IGN0eFsyXSwg
+c2JvWzJdLCBkYm9bMl07DQo+ID4gK3N0cnVjdCBpbnRlbF9idWYgKnNidWZbMl0sICpkYnVmWzJd
+Ow0KPiA+ICtzdHJ1Y3QgYnVmX29wcyAqYm9wc1syXTsNCj4gPiArc3RydWN0IGludGVsX2JiICpp
+YmJbMl07DQo+ID4gK2ludCBmZFsyXSwgZG1hYnVmX2ZkID0gMCwgcmV0LCBuLCBudW1fbWF0Y2hl
+cyA9IDA7IHVpbnQzMl90DQo+ID4gK2VuY3J5cHRlZFsyXVtUU1RTVVJGX1NJWkUvVFNUU1VSRl9C
+WVRFU1BQXTsNCj4gPiArDQo+ID4gKy8qIEZpcnN0LCBjcmVhdGUgdGhlIGNsaWVudCBkcml2ZXIg
+aGFuZGxlcyBhbmQNCj4gPiArICogcHJvdGVjdGVkIGRlc3QgYnVmZmVyIChpcyBleHBvcnRlZCB2
+aWEgZG1hLWJ1ZmYNCj4gPiArICogZnJvbSBmaXJzdCBoYW5kbGUgYW5kIGltcG9ydGVkIHRvIHRo
+ZSBzZWNvbmQpLg0KPiA+ICsgKi8NCj4gPiArZm9yIChuID0gMDsgbiA8IDI7ICsrbikgew0KPiA+
+ICtmZFtuXSA9IGRybV9vcGVuX2RyaXZlcihEUklWRVJfSU5URUwpOyBpZ3RfcmVxdWlyZShmZFtu
+XSk7IGlmIChuDQo+ID4gPT0gMCkNCj4gPiAreyBkYm9bMF0gPSBhbGxvY19hbmRfZmlsbF9kZXN0
+X2J1ZmYoZmRbMF0sIHRydWUsDQo+ID4gVFNUU1VSRl9TSVpFLA0KPiA+ICsNCj4gPiBUU1RTVVJG
+X0lOSVRDT0xPUjEpOw0KPiA+ICt9IGVsc2Ugew0KPiA+ICtyZXQgPSBleHBvcnRfaGFuZGxlKGZk
+WzBdLCBkYm9bMF0sICZkbWFidWZfZmQpOw0KPiA+ICtpZ3RfYXNzZXJ0KHJldCA9PSAwKTsNCj4g
+PiArZGJvWzFdID0gcHJpbWVfZmRfdG9faGFuZGxlKGZkWzFdLCBkbWFidWZfZmQpOw0KPiA+ICtp
+Z3RfYXNzZXJ0KGRib1sxXSk7DQo+ID4gK30NCj4gPiArfQ0KPiA+ICsvKiBSZXBlYXQgdHdpY2U6
+IENyZWF0ZSBhIGZ1bGwgc2V0IG9mIGFzc2V0cyB0byBwZXJmb3JtDQo+ID4gKyAqIGEgcHJvdGVj
+dGVkIDNEIHNlc3Npb24gYnV0IHVzaW5nIHRoZSBzYW1lIGRlc3QgYnVmZmVyDQo+ID4gKyAqIGZy
+b20gYWJvdmUuDQo+ID4gKyAqLw0KPiA+ICtmb3IgKG4gPSAwOyBuIDwgMjsgKytuKSB7DQo+ID4g
+K3JldCA9IGNyZWF0ZV9jdHhfd2l0aF9wYXJhbXMoZmRbbl0sIHRydWUsIHRydWUsIHRydWUsIGZh
+bHNlLA0KPiA+ICZjdHhbbl0pOw0KPiA+ICtpZ3RfYXNzZXJ0X2VxKHJldCwgMCk7DQo+ID4gK2ln
+dF9hc3NlcnRfZXEoZ2V0X2N0eF9wcm90ZWN0ZWRfcGFyYW0oZmRbbl0sIGN0eFtuXSksIDEpOw0K
+PiA+ICtpYmJbbl0gPSBpbnRlbF9iYl9jcmVhdGVfd2l0aF9jb250ZXh0KGZkW25dLCBjdHhbbl0s
+IDQwOTYpOw0KPiA+ICtpbnRlbF9iYl9zZXRfcHhwKGliYltuXSwgdHJ1ZSwgRElTUExBWV9BUFBU
+WVBFLA0KPiA+ICsNCj4gPiBJOTE1X1BST1RFQ1RFRF9DT05URU5UX0RFRkFVTFRfU0VTU0lPTik7
+DQo+ID4gKw0KPiA+ICtib3BzW25dID0gYnVmX29wc19jcmVhdGUoZmRbbl0pOw0KPiA+ICtpZiAo
+biA9PSAxKQ0KPiA+ICtmaWxsX2JvX2NvbnRlbnQoZmRbMV0sIGRib1sxXSwgVFNUU1VSRl9TSVpF
+LA0KPiA+IFRTVFNVUkZfSU5JVENPTE9SMik7DQo+ID4gKw0KPiA+ICtkYnVmW25dID0gaW50ZWxf
+YnVmX2NyZWF0ZV91c2luZ19oYW5kbGUoYm9wc1tuXSwgZGJvW25dLA0KPiA+IFRTVFNVUkZfV0lE
+VEgsDQo+ID4gK1RTVFNVUkZfSEVJR0hULA0KPiA+IFRTVFNVUkZfQllURVNQUCo4LCAwLA0KPiA+
+ICtJOTE1X1RJTElOR19OT05FLA0KPiA+IDApOw0KPiA+ICtpbnRlbF9idWZfc2V0X3B4cChkYnVm
+W25dLCB0cnVlKTsNCj4gPiArDQo+ID4gK3Nib1tuXSA9IGFsbG9jX2FuZF9maWxsX2Rlc3RfYnVm
+ZihmZFtuXSwgZmFsc2UsIFRTVFNVUkZfU0laRSwNCj4gPiBUU1RTVVJGX0ZJTExDT0xPUjEpOw0K
+PiA+ICtzYnVmW25dID0gaW50ZWxfYnVmX2NyZWF0ZV91c2luZ19oYW5kbGUoYm9wc1tuXSwgc2Jv
+W25dLA0KPiA+IFRTVFNVUkZfV0lEVEgsDQo+ID4gK1RTVFNVUkZfSEVJR0hULA0KPiA+IFRTVFNV
+UkZfQllURVNQUCo4LCAwLA0KPiA+ICtJOTE1X1RJTElOR19OT05FLA0KPiA+IDApOw0KPiA+ICsN
+Cj4gPiArZ2VuMTJfcmVuZGVyX2NvcHlmdW5jKGliYltuXSwgc2J1ZltuXSwgMCwgMCwNCj4gPiBU
+U1RTVVJGX1dJRFRILCBUU1RTVVJGX0hFSUdIVCwNCj4gPiArwqDCoMKgwqDCoCBkYnVmW25dLCAw
+LCAwKTsNCj4gPiArZ2VtX3N5bmMoZmRbbl0sIGRib1tuXSk7DQo+ID4gKw0KPiA+ICthc3NlcnRf
+Ym9fY29udGVudF9jaGVjayhmZFtuXSwgZGJvW25dLA0KPiA+IENPTVBBUkVfQ09MT1JfVU5SRUFE
+SUJMRSwgVFNUU1VSRl9TSVpFLA0KPiA+ICtUU1RTVVJGX0ZJTExDT0xPUjEsIE5VTEwsIDApOw0K
+PiA+ICthc3NlcnRfYm9fY29udGVudF9jaGVjayhmZFtuXSwgZGJvW25dLCBDT1BZX0JVRkZFUiwN
+Cj4gPiBUU1RTVVJGX1NJWkUsIDAsIGVuY3J5cHRlZFtuXSwNCj4gPiArVFNUU1VSRl9TSVpFKTsN
+Cj4gPiArDQo+ID4gKy8qIGZyZWUgdXAgYWxsIGFzc2V0cyBleGNlcHQgdGhlIGRlc3QgYnVmZmVy
+IHRvDQo+ID4gKyAqIHZlcmlmeSBkbWEgYnVmZiByZWZjb3VudGluZyBpcyBwZXJmb3JtZWQgb24N
+Cj4gPiArICogdGhlIHByb3RlY3RlZCBkZXN0IGJ1ZmZlciBvbiB0aGUgMm5kIGxvb3Agd2l0aA0K
+PiA+ICsgKiBzdWNjZXNzZnVsIHJldXNlIGluIGFub3RoZXIgcHJvdGVjdGVkIHJlbmRlci4NCj4g
+PiArICovDQo+ID4gK2ludGVsX2JiX2Rlc3Ryb3koaWJiW25dKTsNCj4gPiAraW50ZWxfYnVmX2Rl
+c3Ryb3koc2J1ZltuXSk7DQo+ID4gK2ludGVsX2J1Zl9kZXN0cm95KGRidWZbbl0pOw0KPiA+ICtn
+ZW1fY2xvc2UoZmRbbl0sIHNib1tuXSk7DQo+ID4gK2dlbV9jbG9zZShmZFtuXSwgZGJvW25dKTsN
+Cj4gPiArZ2VtX2NvbnRleHRfZGVzdHJveShmZFtuXSwgY3R4W25dKTsNCj4gPiArY2xvc2UoZmRb
+bl0pOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICsvKiBWZXJpZnkgdGhhdCBlbmNyeXB0ZWQgb3V0cHV0
+IGFjcm9zcyBsb29wcyB3ZXJlIGVxdWFsICovDQo+ID4gK2ZvciAobiA9IDA7IG4gPCAoVFNUU1VS
+Rl9TSVpFLzQpOyArK24pDQo+ID4gK2lmIChlbmNyeXB0ZWRbMF1bbl0gPT0gZW5jcnlwdGVkWzFd
+W25dKQ0KPiA+ICsrK251bV9tYXRjaGVzOw0KPiA+ICtpZ3RfYXNzZXJ0KG51bV9tYXRjaGVzID09
+IChUU1RTVVJGX1NJWkUvNCkpOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICsNCj4gPiBzdGF0aWMgdm9p
+ZCBpbml0X3Bvd2VybWd0X3Jlc291cmNlcyhpbnQgaTkxNSwgc3RydWN0IHBvd2VybWd0X2RhdGEN
+Cj4gPiAqcG0pDQo+ID4gew0KPiA+IHBtLT5kZWJ1Z2ZzZGlyID0gaWd0X2RlYnVnZnNfZGlyKGk5
+MTUpOw0KPiA+IEBAIC05ODksNiArMTA4OSw4IEBAIGlndF9tYWluDQo+ID4gdGVzdF9yZW5kZXJf
+cHhwX3NyY190b19wcm90ZGVzdChpOTE1KTsNCj4gPiBpZ3Rfc3VidGVzdCgicHJvdGVjdGVkLWVu
+Y3J5cHRlZC1zcmMtY29weS1ub3QtcmVhZGlibGUiKQ0KPiA+IHRlc3RfcmVuZGVyX3B4cF9wcm90
+c3JjX3RvX3Byb3RkZXN0KGk5MTUpOw0KPiA+ICtpZ3Rfc3VidGVzdCgiZG1hYnVmLXNoYXJlZC1w
+cm90ZWN0ZWQtZHN0LWlzLWNvbnRleHQtDQo+ID4gcmVmY291bnRlZCIpDQo+ID4gK3Rlc3RfcHhw
+X2RtYWJ1ZmZzaGFyZV9yZWZjbnQoKTsNCj4gPiB9DQo+ID4gaWd0X3N1YnRlc3RfZ3JvdXAgew0K
+PiA+IGlndF9maXh0dXJlIHsNCj4gPiAtLQ0KPiA+IDIuMjUuMQ0KPiANCj4gDQoNCg==
