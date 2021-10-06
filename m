@@ -1,22 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E74966E3F7
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Oct 2021 11:47:45 +0000 (UTC)
-Date: Wed, 6 Oct 2021 14:51:14 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YV2Nst/u5QbRDf4v@platvala-desk.ger.corp.intel.com>
-References: <20211005151022.2161424-1-alan.previn.teres.alexis@intel.com>
- <20211005151022.2161424-2-alan.previn.teres.alexis@intel.com>
- <YVykFyOAiKq20zsg@intel.com>
- <BYAPR11MB37848640B55FA385D406A0E48AAF9@BYAPR11MB3784.namprd11.prod.outlook.com>
- <4e9faac935d4d5bf9c61045a05ccfe69618fe865.camel@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0CBF06E51B
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Oct 2021 14:39:03 +0000 (UTC)
+From: "Ruhl, Michael J" <michael.j.ruhl@intel.com>
+Date: Wed, 6 Oct 2021 14:31:14 +0000
+Message-ID: <890ea1f5f49f47ce95187493b17e71aa@intel.com>
+References: <20211005194133.13508-1-alan.previn.teres.alexis@intel.com>
+ <20211005194133.13508-15-alan.previn.teres.alexis@intel.com>
+In-Reply-To: <20211005194133.13508-15-alan.previn.teres.alexis@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <4e9faac935d4d5bf9c61045a05ccfe69618fe865.camel@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v13 01/16] i915_drm.h sync PXP default
- session
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v15 14/15] Verify protected surfaces are
+ dma buffer sharable
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,84 +23,184 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
-Cc: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>, "Vivi,
+ Rodrigo" <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Oct 05, 2021 at 07:34:59PM +0000, Vivi, Rodrigo wrote:
-> On Tue, 2021-10-05 at 19:31 +0000, Teres Alexis, Alan Previn wrote:
-> > Hey Rodrigo, apologies for this upstream-newbie mistake and I truly
-> > appreciate you taking the time and explaining my mistake especially
-> > the pull-in of the other non-PXP delta's too. I will respin this
-> > ASAP.
->=20
-> not your fault.
->=20
-> 1. We should have that documented somewhere.
+>-----Original Message-----
+>From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Alan
+>Previn
+>Sent: Tuesday, October 5, 2021 3:42 PM
+>To: igt-dev@lists.freedesktop.org
+>Cc: Teres Alexis, Alan Previn <alan.previn.teres.alexis@intel.com>; Vivi,
+>Rodrigo <rodrigo.vivi@intel.com>
+>Subject: [igt-dev] [PATCH i-g-t v15 14/15] Verify protected surfaces are d=
+ma
+>buffer sharable
+>
+>Verify we can export a protected surface from
+>protected context A into protected context B (with
+>different client driver handles) and protected
+>rendering is successful even after prior file
+>handle is closed (i.e. pxp specific refcounting
+>works).
+>
+>Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+>Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+>---
+> tests/i915/gem_pxp.c | 102
+>+++++++++++++++++++++++++++++++++++++++++++
+> 1 file changed, 102 insertions(+)
+>
+>diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+>index 0ccba6aa..2848e487 100644
+>--- a/tests/i915/gem_pxp.c
+>+++ b/tests/i915/gem_pxp.c
+>@@ -621,6 +621,106 @@ static void
+>test_render_pxp_protsrc_to_protdest(int i915)
+> 	buf_ops_destroy(bops);
+> }
+>
+>+static int export_handle(int fd, uint32_t handle, int *outfd)
+>+{
+>+	struct drm_prime_handle args;
+>+	int ret;
+>+
+>+	args.handle =3D handle;
+>+	args.flags =3D DRM_CLOEXEC;
+>+	args.fd =3D -1;
+>+
+>+	ret =3D drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
+>+	if (ret)
+>+		ret =3D errno;
+>+	*outfd =3D args.fd;
+>+
+>+	return ret;
+>+}
 
-README.md, at the bottom.
+This is a repeat of similar function in lib/ioctl_wrappers=20
+(prime_handle_to_fd)
+
+Is there a reason for the code duplication?
+
+Especially confused because you are using prime_fd_to_handle for import...
+
+Thanks,
+
+M
 
 
---=20
-Petri Latvala
-
-
-> 2. Why do we have UAPIs in i915 without any IGT test for that?! o.O
-> (I mean, those other ones that your patch is not bringing in together)
->=20
-> >=20
-> > ...alan
-> >=20
-> > -----Original Message-----
-> > From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> > Sent: Tuesday, October 5, 2021 12:15 PM
-> > To: Teres Alexis, Alan Previn <alan.previn.teres.alexis@intel.com>
-> > Cc: igt-dev@lists.freedesktop.org
-> > Subject: Re: [igt-dev] [PATCH i-g-t v13 01/16] i915_drm.h sync PXP
-> > default session
-> >=20
-> > On Tue, Oct 05, 2021 at 08:10:07AM -0700, Alan Previn wrote:
-> > > Sync UAPI for to get I915_PROTECTED_CONTENT_DEFAULT_SESSION define
-> > > value.
-> > >=20
-> > > Taken from kernel commit:
-> > > commit cbbd3764b2399ad882cda98435b25144e9ea2124
-> > > =A0=A0=A0=A0=A0=A0 ("drm/i915/pxp: Create the arbitrary session after=
- boot.")
-> >=20
-> > This is not accurate. The i915_drm.h in this commit has more changes
-> > other than I915_PROTECTED_CONTENT_DEFAULT_SESSION.
-> >=20
-> > We should combine the patches 1 and 2 of this series and make a
-> > simply i915_drm.h sync and add some reasoning in the commit message
-> > saying that it is because of the PXP. But the new include/drm-
-> > uapi/i915_drm.h should include all the new api additions from
-> > i915_drm.h uapi.
-> >=20
-> >=20
-> > >=20
-> > > Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-> > > ---
-> > > =A0include/drm-uapi/i915_drm.h | 3 +++
-> > > =A01 file changed, 3 insertions(+)
-> > >=20
-> > > diff --git a/include/drm-uapi/i915_drm.h b/include/drm-
-> > > uapi/i915_drm.h
-> > > index b9632bb2..f4691fcc 100644
-> > > --- a/include/drm-uapi/i915_drm.h
-> > > +++ b/include/drm-uapi/i915_drm.h
-> > > @@ -2990,6 +2990,9 @@ struct drm_i915_gem_create_ext_memory_regions
-> > > {
-> > > =A0=A0=A0=A0=A0 __u64 regions;
-> > > =A0};
-> > >=20
-> > > +/* ID of the protected content session managed by i915 when PXP is
-> > > +active */ #define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
-> > > +
-> > > =A0#if defined(__cplusplus)
-> > > =A0}
-> > > =A0#endif
-> > > --
-> > > 2.25.1
-> > >=20
->=20
+>+static void test_pxp_dmabuffshare_refcnt(void)
+>+{
+>+	uint32_t ctx[2], sbo[2], dbo[2];
+>+	struct intel_buf *sbuf[2], *dbuf[2];
+>+	struct buf_ops *bops[2];
+>+	struct intel_bb *ibb[2];
+>+	int fd[2], dmabuf_fd =3D 0, ret, n, num_matches =3D 0;
+>+	uint32_t encrypted[2][TSTSURF_SIZE/TSTSURF_BYTESPP];
+>+
+>+	/* First, create the client driver handles and
+>+	 * protected dest buffer (is exported via dma-buff
+>+	 * from first handle and imported to the second).
+>+	 */
+>+	for (n =3D 0; n < 2; ++n) {
+>+		fd[n] =3D drm_open_driver(DRIVER_INTEL);
+>+		igt_require(fd[n]);
+>+		if (n =3D=3D 0) {
+>+			dbo[0] =3D alloc_and_fill_dest_buff(fd[0], true,
+>TSTSURF_SIZE,
+>+
+>TSTSURF_INITCOLOR1);
+>+		} else {
+>+			ret =3D export_handle(fd[0], dbo[0], &dmabuf_fd);
+>+			igt_assert(ret =3D=3D 0);
+>+			dbo[1] =3D prime_fd_to_handle(fd[1], dmabuf_fd);
+>+			igt_assert(dbo[1]);
+>+		}
+>+	}
+>+	/* Repeat twice: Create a full set of assets to perform
+>+	 * a protected 3D session but using the same dest buffer
+>+	 * from above.
+>+	 */
+>+	for (n =3D 0; n < 2; ++n) {
+>+		ret =3D create_ctx_with_params(fd[n], true, true, true, false,
+>&ctx[n]);
+>+		igt_assert_eq(ret, 0);
+>+		igt_assert_eq(get_ctx_protected_param(fd[n], ctx[n]), 1);
+>+		ibb[n] =3D intel_bb_create_with_context(fd[n], ctx[n], 4096);
+>+		intel_bb_set_pxp(ibb[n], true, DISPLAY_APPTYPE,
+>+
+>I915_PROTECTED_CONTENT_DEFAULT_SESSION);
+>+
+>+		bops[n] =3D buf_ops_create(fd[n]);
+>+		if (n =3D=3D 1)
+>+			fill_bo_content(fd[1], dbo[1], TSTSURF_SIZE,
+>TSTSURF_INITCOLOR2);
+>+
+>+		dbuf[n] =3D intel_buf_create_using_handle(bops[n], dbo[n],
+>TSTSURF_WIDTH,
+>+							TSTSURF_HEIGHT,
+>	TSTSURF_BYTESPP*8, 0,
+>+							I915_TILING_NONE,
+>0);
+>+		intel_buf_set_pxp(dbuf[n], true);
+>+
+>+		sbo[n] =3D alloc_and_fill_dest_buff(fd[n], false, TSTSURF_SIZE,
+>TSTSURF_FILLCOLOR1);
+>+		sbuf[n] =3D intel_buf_create_using_handle(bops[n], sbo[n],
+>TSTSURF_WIDTH,
+>+							TSTSURF_HEIGHT,
+>TSTSURF_BYTESPP*8, 0,
+>+							I915_TILING_NONE,
+>0);
+>+
+>+		gen12_render_copyfunc(ibb[n], sbuf[n], 0, 0,
+>TSTSURF_WIDTH, TSTSURF_HEIGHT,
+>+				      dbuf[n], 0, 0);
+>+		gem_sync(fd[n], dbo[n]);
+>+
+>+		assert_bo_content_check(fd[n], dbo[n],
+>COMPARE_COLOR_UNREADIBLE, TSTSURF_SIZE,
+>+					TSTSURF_FILLCOLOR1, NULL, 0);
+>+		assert_bo_content_check(fd[n], dbo[n], COPY_BUFFER,
+>TSTSURF_SIZE, 0, encrypted[n],
+>+					TSTSURF_SIZE);
+>+
+>+		/* free up all assets except the dest buffer to
+>+		 * verify dma buff refcounting is performed on
+>+		 * the protected dest buffer on the 2nd loop with
+>+		 * successful reuse in another protected render.
+>+		 */
+>+		intel_bb_destroy(ibb[n]);
+>+		intel_buf_destroy(sbuf[n]);
+>+		intel_buf_destroy(dbuf[n]);
+>+		gem_close(fd[n], sbo[n]);
+>+		gem_close(fd[n], dbo[n]);
+>+		gem_context_destroy(fd[n], ctx[n]);
+>+		close(fd[n]);
+>+	}
+>+
+>+	/* Verify that encrypted output across loops were equal */
+>+	for (n =3D 0; n < (TSTSURF_SIZE/4); ++n)
+>+		if (encrypted[0][n] =3D=3D encrypted[1][n])
+>+			++num_matches;
+>+	igt_assert(num_matches =3D=3D (TSTSURF_SIZE/4));
+>+}
+>+
+>+
+> static void init_powermgt_resources(int i915, struct powermgt_data *pm)
+> {
+> 	pm->debugfsdir =3D igt_debugfs_dir(i915);
+>@@ -989,6 +1089,8 @@ igt_main
+> 			test_render_pxp_src_to_protdest(i915);
+> 		igt_subtest("protected-encrypted-src-copy-not-readible")
+> 			test_render_pxp_protsrc_to_protdest(i915);
+>+		igt_subtest("dmabuf-shared-protected-dst-is-context-
+>refcounted")
+>+			test_pxp_dmabuffshare_refcnt();
+> 	}
+> 	igt_subtest_group {
+> 		igt_fixture {
+>--
+>2.25.1
