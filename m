@@ -1,18 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2065.outbound.protection.outlook.com [40.107.237.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C9676F4E8
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Oct 2021 14:37:18 +0000 (UTC)
-Date: Thu, 7 Oct 2021 10:37:12 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2082.outbound.protection.outlook.com [40.107.236.82])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0E0206F4A6
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Oct 2021 14:40:47 +0000 (UTC)
+Date: Thu, 7 Oct 2021 10:40:38 -0400
 From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Message-ID: <20211007143712.h7aprfdtk2mgq4ca@outlook.office365.com>
-References: <20211004192803.2821789-1-aurabindo.pillai@amd.com>
+Message-ID: <20211007144038.ojiw5nzbydkfvgk2@outlook.office365.com>
+References: <20211001085319.789392-1-stylon.wang@amd.com>
+ <20211002151511.vjblbkuoymw4jtyi@outlook.office365.com>
+ <YVrh5zBX9mLq4Zg2@platvala-desk.ger.corp.intel.com>
+ <20211004141835.uzqrsamqgdstee2q@outlook.office365.com>
+ <7c206aba165a465aa14b465c72b6802c@intel.com>
+ <DM8PR11MB5655AF5FCCDDD8EAB30C92B0E0AE9@DM8PR11MB5655.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211004192803.2821789-1-aurabindo.pillai@amd.com>
+In-Reply-To: <DM8PR11MB5655AF5FCCDDD8EAB30C92B0E0AE9@DM8PR11MB5655.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v5] tests/kms_bw: Add generic commit
- test for bandwidth validation
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_hdr: Fix failure to read
+ output_bpc on AMD hardware
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,293 +27,147 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: igt-dev@lists.freedesktop.org, Mark Yacoub <markyacoub@google.com>
+To: "Saarinen, Jani" <jani.saarinen@intel.com>
+Cc: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>, "Latvala, Petri" <petri.latvala@intel.com>, Simon Ser <contact@emersion.fr>, Stylon Wang <stylon.wang@amd.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "nicholas.choi@amd.com" <nicholas.choi@amd.com>, Mark Yacoub <markyacoub@google.com>, "Wentland, Harry" <Harry.Wentland@amd.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Jay,
+Hi,
 
-Thanks a lot for making this test generic.
-
-It lgtm.
+I noticed that the patch looks good from the CI perspective [1] and I
+don't see any problem on that, so:
 
 Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-On 10/04, Aurabindo Pillai wrote:
-> Add linear tiling mode tests
+1. https://patchwork.freedesktop.org/series/95313/
+
+On 10/04, Saarinen, Jani wrote:
+> +Simon. 
 > 
-> Changes in v5:
-> 	Changes to test_init so that test invalid pipes are not
-> 	used if certain pipes dont exist in chronological order
-> 
-> 	Added comment explaining use of explicit for loop over
-> 	IGT_MAX_PIPES instead of for_each_pipe_static()
-> 
-> Changes in v4:
->         Removed igt_skip_on_simulation from main function.
-> Changes in v3:
->         This version implements array of test modes in igt_main,
->         global IGT_MAX_PIPE and other comments from Mark.
-> Changes in v2:
->         Test added as generic IGT.
-> 
-> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> Signed-off-by: Bindu R <bindu.r@amd.com>
-> ---
->  tests/kms_bw.c    | 228 ++++++++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build |   1 +
->  2 files changed, 229 insertions(+)
->  create mode 100644 tests/kms_bw.c
-> 
-> diff --git a/tests/kms_bw.c b/tests/kms_bw.c
-> new file mode 100644
-> index 00000000..a4553cde
-> --- /dev/null
-> +++ b/tests/kms_bw.c
-> @@ -0,0 +1,228 @@
-> +/*
-> + * Copyrights 2021 Advanced Micro Devices, Inc.
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-> + * OTHER DEALINGS IN THE SOFTWARE.
-> + */
-> +
-> +#include "drm_mode.h"
-> +#include "igt.h"
-> +#include "drm.h"
-> +#include <stdio.h>
-> +#include <xf86drmMode.h>
-> +
-> +/* Common test data. */
-> +typedef struct data {
-> +        igt_display_t display;
-> +        igt_plane_t *primary[IGT_MAX_PIPES];
-> +        igt_output_t *output[IGT_MAX_PIPES];
-> +        igt_pipe_t *pipe[IGT_MAX_PIPES];
-> +        igt_pipe_crc_t *pipe_crc[IGT_MAX_PIPES];
-> +        drmModeModeInfo mode[IGT_MAX_PIPES];
-> +        enum pipe pipe_id[IGT_MAX_PIPES];
-> +        int w[IGT_MAX_PIPES];
-> +        int h[IGT_MAX_PIPES];
-> +        int fd;
-> +} data_t;
-> +
-> +static drmModeModeInfo test_mode[] = {
-> +	{ 173000,
-> +	1920, 2048, 2248, 2576, 0,
-> +	1080, 1083, 1088, 1120, 0,
-> +	60,
-> +	DRM_MODE_FLAG_NHSYNC,
-> +	0x40,
-> +	"1920x1080p\0",
-> +	}, /* test_mode_1 */
-> +
-> +	{ 312250,
-> +	2560, 2752, 3024, 3488, 0,
-> +	1440, 1443, 1448, 1493, 0,
-> +	60,
-> +	DRM_MODE_FLAG_NHSYNC,
-> +	0x40,
-> +	"2560x1440p\0",
-> +	}, /* test_mode_2 */
-> +
-> +	{ 533000,
-> +	3840, 3888, 3920, 4000, 0,
-> +	2160, 2163, 2168, 2222, 0,
-> +	60,
-> +	DRM_MODE_FLAG_NHSYNC,
-> +	0x40,
-> +	"3840x2160p\0",
-> +	}, /* test_mode_3 */
-> +
-> +};
-> +
-> +static void test_init(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	int i, max_pipes = display->n_pipes;
-> +	igt_output_t *output;
-> +
-> +	for_each_pipe(display, i) {
-> +		data->pipe_id[i] = i;
-> +		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
-> +		data->primary[i] = igt_pipe_get_plane_type(
-> +			data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
-> +		data->pipe_crc[i] =
-> +			igt_pipe_crc_new(data->fd, data->pipe_id[i], "auto");
-> +	}
-> +
-> +	for (i = 0; i < display->n_outputs && i < max_pipes; i++) {
-> +		if (!data->pipe[i])
-> +			continue;
-> +
-> +		output = &display->outputs[i];
-> +
-> +		data->output[i] = output;
-> +
-> +		/* Only allow physically connected displays for the tests. */
-> +		if (!igt_output_is_connected(output))
-> +			continue;
-> +
-> +		igt_assert(kmstest_get_connector_default_mode(
-> +			data->fd, output->config.connector, &data->mode[i]));
-> +
-> +		data->w[i] = data->mode[i].hdisplay;
-> +		data->h[i] = data->mode[i].vdisplay;
-> +	}
-> +
-> +
-> +	igt_require(data->output[0]);
-> +	igt_display_reset(display);
-> +}
-> +
-> +static void test_fini(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	int i;
-> +
-> +	for_each_pipe(display, i) {
-> +		if (data->pipe_crc[i])
-> +			igt_pipe_crc_free(data->pipe_crc[i]);
-> +	}
-> +
-> +	igt_display_reset(display);
-> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-> +}
-> +
-> +/* Forces a mode for a connector. */
-> +static void force_output_mode(data_t *d, igt_output_t *output,
-> +			      const drmModeModeInfo *mode)
-> +{
-> +	/* This allows us to create a virtual sink. */
-> +	if (!igt_output_is_connected(output)) {
-> +		kmstest_force_edid(d->fd, output->config.connector,
-> +				   igt_kms_get_4k_edid());
-> +
-> +		kmstest_force_connector(d->fd, output->config.connector,
-> +					FORCE_CONNECTOR_DIGITAL);
-> +	}
-> +
-> +	igt_output_override_mode(output, mode);
-> +}
-> +
-> +static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo *mode) {
-> +	igt_display_t *display = &data->display;
-> +	igt_output_t *output;
-> +	struct igt_fb buffer[IGT_MAX_PIPES];
-> +	igt_crc_t zero, captured[IGT_MAX_PIPES];
-> +	int i = 0, num_pipes = 0;
-> +	enum pipe p;
-> +
-> +	/* Cannot use igt_display_get_n_pipes() due to fused pipes on i915 where they do
-> +	 * not give the numver of valid crtcs and always return IGT_MAX_PIPES */
-> +	for_each_pipe(display, p) num_pipes++;
-> +
-> +	igt_skip_on_f(pipe > num_pipes,
-> +                      "ASIC does not have %d pipes\n", pipe);
-> +
-> +	test_init(data);
-> +
-> +	/* create buffers */
-> +	for (i = 0; i <= pipe; i++) {
-> +		output = data->output[i];
-> +		if (!output) {
-> +			continue;
-> +		}
-> +
-> +		force_output_mode(data, output, mode);
-> +
-> +		igt_create_color_fb(display->drm_fd, test_mode[0].hdisplay,
-> +				    test_mode[0].vdisplay, DRM_FORMAT_XRGB8888,
-> +				    DRM_FORMAT_MOD_NONE, 1.f, 0.f, 0.f,
-> +				    &buffer[i]);
-> +
-> +		igt_output_set_pipe(output, i);
-> +
-> +		igt_plane_set_fb(data->primary[i], &buffer[i]);
-> +	}
-> +
-> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +
-> +	for (i = 0; i <= pipe; i++) {
-> +		output = data->output[i];
-> +		if (!output) {
-> +			continue;
-> +		}
-> +
-> +		igt_pipe_crc_collect_crc(data->pipe_crc[i], &captured[i]);
-> +		igt_assert_f(!igt_check_crc_equal(&zero, &captured[i]),
-> +			     "CRC is zero\n");
-> +		igt_remove_fb(display->drm_fd, &buffer[i]);
-> +	}
-> +
-> +	test_fini(data);
-> +}
-> +
-> +igt_main
-> +{
-> +	data_t data;
-> +	int i = 0, j = 0;
-> +
-> +	memset(&data, 0, sizeof(data));
-> +
-> +	igt_fixture
-> +	{
-> +		data.fd = drm_open_driver_master(DRIVER_ANY);
-> +
-> +		kmstest_set_vt_graphics_mode();
-> +
-> +		igt_display_require(&data.display, data.fd);
-> +		igt_require(&data.display.is_atomic);
-> +		igt_display_require_output(&data.display);
-> +
-> +	}
-> +
-> +	/* We're not using for_each_pipe_static because we need the
-> +	 * _amount_ of pipes */
-> +	for (i = 0; i < IGT_MAX_PIPES; i++) {
-> +		for (j = 0; j < ARRAY_SIZE(test_mode); j++) {
-> +			igt_subtest_f("linear-tiling-%d-displays-%s", i+1,
-> +			      test_mode[j].name)
-> +			run_test_linear_tiling(&data, i, &test_mode[j]);
-> +		}
-> +	}
-> +
-> +	igt_fixture
-> +	{
-> +		igt_display_fini(&data.display);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 8ad52596..c4cbe229 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -19,6 +19,7 @@ test_progs = [
->  	'kms_atomic',
->  	'kms_atomic_interruptible',
->  	'kms_atomic_transition',
-> +	'kms_bw',
->  	'kms_concurrent',
->  	'kms_content_protection',
->  	'kms_cursor_crc',
-> -- 
-> 2.30.2
-> 
+> > -----Original Message-----
+> > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Vudum,
+> > Lakshminarayana
+> > Sent: maanantai 4. lokakuuta 2021 18.42
+> > To: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>; Latvala, Petri
+> > <petri.latvala@intel.com>
+> > Cc: Stylon Wang <stylon.wang@amd.com>; igt-dev@lists.freedesktop.org;
+> > nicholas.choi@amd.com
+> > Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_hdr: Fix failure to read output_bpc on
+> > AMD hardware
+> > 
+> > Filed https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgitlab.freedesktop.org%2Fdrm%2Fintel%2F-%2Fissues%2F4262&amp;data=04%7C01%7CRodrigo.Siqueira%40amd.com%7C8c3f22f5fa6c48f0166808d9875c3133%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637689652302229936%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=sK0l9HWKszTbO75F%2FTaS7Swv%2FegjwVP0M8q%2FRlFg0Ys%3D&amp;reserved=0 and re-reported.
+> > igt@kms_lease@invalid-create-leases - fail - Failed assertion: create_lease(data-
+> > >master.fd, &mcl) == -22
+> > 
+> > Lakshmi.
+> > 
+> > -----Original Message-----
+> > From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+> > Sent: Monday, October 4, 2021 7:19 AM
+> > To: Latvala, Petri <petri.latvala@intel.com>; Vudum, Lakshminarayana
+> > <lakshminarayana.vudum@intel.com>
+> > Cc: Stylon Wang <stylon.wang@amd.com>; igt-dev@lists.freedesktop.org;
+> > nicholas.choi@amd.com
+> > Subject: Re: [PATCH i-g-t] tests/kms_hdr: Fix failure to read output_bpc on AMD
+> > hardware
+> > 
+> > On 10/04, Petri Latvala wrote:
+> > > On Sat, Oct 02, 2021 at 11:15:11AM -0400, Rodrigo Siqueira wrote:
+> > > > Hi Lakshminarayana and Petri,
+> > > >
+> > > > I noticed that the CI was not triggered for this patch [1]. Do you
+> > > > know why? Is it possible to trigger it?
+> > > >
+> > > > 1.
+> > > > https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpa
+> > > > tchwork.freedesktop.org%2Fseries%2F95313%2F&amp;data=04%7C01%7CRodri
+> > > >
+> > go.Siqueira%40amd.com%7C43b5d7ab0731407a2f9008d987278e48%7C3dd8961fe
+> > > >
+> > 4884e608e11a82d994e183d%7C0%7C0%7C637689426230154758%7CUnknown%7C
+> > TWF
+> > > > pbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI
+> > > >
+> > 6Mn0%3D%7C1000&amp;sdata=NIEF78%2B74hVRdQPhcCEPVlp4To3iDjkpkkv8VjSC0
+> > > > %2BE%3D&amp;reserved=0
+> > >
+> > > CI was down for a bit due to server cert issues, testing that and the
+> > > other affected series happening in a bit.
+> > 
+> > Thanks Petri,
+> > 
+> > I noticed that the CI was triggered for this patch.
+> > 
+> > Lakshminarayana,
+> > 
+> > It looks like that we have a false positive	in the result:
+> > 
+> >   https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpatchwork.freedesktop.org%2Fseries%2F95313%2F&amp;data=04%7C01%7CRodrigo.Siqueira%40amd.com%7C8c3f22f5fa6c48f0166808d9875c3133%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637689652302229936%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=zJ74sNT%2B6yOcR3%2BH6w%2B2A8tYx84ge1c4ij%2FpCkOQoT8%3D&amp;reserved=0
+> > 
+> > Notice that this patch only changes kms_hdr, but we have a failure in the
+> > igt@kms_lease.
+> > 
+> > Thanks
+> > Siqueira
+> > 
+> > >
+> > > --
+> > > Petri Latvala
+> > >
+> > >
+> > > >
+> > > > Thanks
+> > > > Siqueira
+> > > >
+> > > > On 10/01, Stylon Wang wrote:
+> > > > > The first commit with TEST_ONLY flag in bpc-switch subtests could
+> > > > > in some cases cause reading of output_bpc on connectors to fail on
+> > > > > AMD hardware.
+> > > > >
+> > > > > Use ALLOW_MODESET to prevent this from happening.
+> > > > >
+> > > > > Signed-off-by: Stylon Wang <stylon.wang@amd.com>
+> > > > > ---
+> > > > >  tests/kms_hdr.c | 2 +-
+> > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > >
+> > > > > diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c index
+> > > > > 5b8529c8..a4983b9a 100644
+> > > > > --- a/tests/kms_hdr.c
+> > > > > +++ b/tests/kms_hdr.c
+> > > > > @@ -217,7 +217,7 @@ static void test_bpc_switch_on_output(data_t *data,
+> > igt_output_t *output,
+> > > > >  		igt_plane_set_fb(data->primary, &afb);
+> > > > >  		igt_plane_set_size(data->primary, data->w, data->h);
+> > > > >  		igt_output_set_prop_value(data->output,
+> > IGT_CONNECTOR_MAX_BPC, 8);
+> > > > > -		ret = igt_display_try_commit_atomic(display,
+> > DRM_MODE_ATOMIC_TEST_ONLY, NULL);
+> > > > > +		ret = igt_display_try_commit_atomic(display,
+> > > > > +DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> > > > >  		if (!ret) {
+> > > > >  			data->w = afb.width;
+> > > > >  			data->h = afb.height;
+> > > > > --
+> > > > > 2.32.0
+> > > > >
+> > > >
+> > > > --
+> > > > Rodrigo Siqueira
+> > > > https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fsi
+> > > >
+> > queira.tech%2F&amp;data=04%7C01%7CRodrigo.Siqueira%40amd.com%7C43b5d
+> > > >
+> > 7ab0731407a2f9008d987278e48%7C3dd8961fe4884e608e11a82d994e183d%7C0%
+> > 7
+> > > >
+> > C0%7C637689426230154758%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwM
+> > DAi
+> > > > LCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=VvCE
+> > > > WNlBkZnAm9M1JYeheIlVaUVMkeDiallVz0uUM8o%3D&amp;reserved=0
+> > 
+> > --
+> > Rodrigo Siqueira
+> > https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fsiqueira.tech%2F&amp;data=04%7C01%7CRodrigo.Siqueira%40amd.com%7C8c3f22f5fa6c48f0166808d9875c3133%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637689652302229936%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=ahQpaPpbX2AQtBhiQJU2zF25iWO%2FnWU3Vnx%2F640yRfU%3D&amp;reserved=0
 
 -- 
 Rodrigo Siqueira
