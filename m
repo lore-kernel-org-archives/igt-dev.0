@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2049.outbound.protection.outlook.com [40.107.220.49])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D5D4E6F4B1
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Oct 2021 14:56:43 +0000 (UTC)
-Message-ID: <73ec4c04-b2d1-4392-4096-7cc7076420ed@amd.com>
-Date: Thu, 7 Oct 2021 10:56:37 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2049.outbound.protection.outlook.com [40.107.94.49])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCE456F890
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Oct 2021 14:59:27 +0000 (UTC)
+Message-ID: <161af036-f263-7bb0-bc6d-251ae9517f42@amd.com>
+Date: Thu, 7 Oct 2021 10:59:21 -0400
 Content-Language: en-US
 References: <20211001085319.789392-1-stylon.wang@amd.com>
  <20211002151511.vjblbkuoymw4jtyi@outlook.office365.com>
@@ -15,10 +15,11 @@ References: <20211001085319.789392-1-stylon.wang@amd.com>
  <20211007144038.ojiw5nzbydkfvgk2@outlook.office365.com>
  <oakr8kYGfhw6ExOrkEWsbp3jU89Fsenuurp94OdfCpOmqcab7tSAUAGLLQy4Tcro8tP5yZeSQAVzsTgGUrszteqMo5nyjdrCwYmwxypWQkE=@emersion.fr>
  <DM4PR12MB5182EFB81A2845B2F953BB57ECB19@DM4PR12MB5182.namprd12.prod.outlook.com>
-From: Harry Wentland <harry.wentland@amd.com>
-In-Reply-To: <DM4PR12MB5182EFB81A2845B2F953BB57ECB19@DM4PR12MB5182.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+ <73ec4c04-b2d1-4392-4096-7cc7076420ed@amd.com>
+From: "Kazlauskas, Nicholas" <nicholas.kazlauskas@amd.com>
+In-Reply-To: <73ec4c04-b2d1-4392-4096-7cc7076420ed@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_hdr: Fix failure to read
  output_bpc on AMD hardware
@@ -31,73 +32,67 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Kazlauskas, Nicholas" <Nicholas.Kazlauskas@amd.com>, "Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>, Simon Ser <contact@emersion.fr>
+To: Harry Wentland <harry.wentland@amd.com>, "Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>, Simon Ser <contact@emersion.fr>
 Cc: "Saarinen, Jani" <jani.saarinen@intel.com>, "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>, "Latvala, Petri" <petri.latvala@intel.com>, "Wang, Chao-kai (Stylon)" <Stylon.Wang@amd.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Choi, Nicholas" <Nicholas.Choi@amd.com>, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-On 2021-10-07 10:54, Kazlauskas, Nicholas wrote:
-> [AMD Official Use Only]
->=20
->=20
-> I don't have the commits in front of me, but there was an issue with the =
-port from amd_hdr to kms_hdr where the test would do a TEST_ONLY commit tha=
-t change the output bpc to 10 but then the debugfs check /after /would try =
-and verify that the output bpc was 10 - which doesn't work if the output bp=
-c was previously 8 because the commit wasn't actually applied.
->=20
-
-https://patchwork.freedesktop.org/patch/456663/?series=3D95313&rev=3D1
-
-Stylon, is that what is happening?
-
-If so, please make sure the commit description reflects that. The existing
-description doesn't explain why switching from TEST_ONLY to ALLOW_MODESET
-fixes things.
-
-Harry
-
-
-> Regards,
-> Nicholas Kazlauskas
-> -------------------------------------------------------------------------=
----------------------------------------------------------------------------=
----------------------------------------------------------------------------=
----------------------------------------------------------------------------=
----------------------------------------------------------------------------=
----------------------------------------------------------------------------=
----------------------------------------------------------------------------=
----------------------------------------------------------------------------=
----------------------------------------------------------------------------=
----------------------------------------------------------------------------=
----------------------------------------------------------------------------=
----------------------------------------------------------------------------=
----------------------------------------------------------------------------=
------------------
-> *From:* Simon Ser <contact@emersion.fr>
-> *Sent:* Thursday, October 7, 2021 10:49 AM
-> *To:* Siqueira, Rodrigo <Rodrigo.Siqueira@amd.com>
-> *Cc:* Saarinen, Jani <jani.saarinen@intel.com>; Vudum, Lakshminarayana <l=
-akshminarayana.vudum@intel.com>; Latvala, Petri <petri.latvala@intel.com>; =
-Wang, Chao-kai (Stylon) <Stylon.Wang@amd.com>; igt-dev@lists.freedesktop.or=
-g <igt-dev@lists.freedesktop.org>; Choi, Nicholas <Nicholas.Choi@amd.com>; =
-Mark Yacoub <markyacoub@google.com>; Wentland, Harry <Harry.Wentland@amd.co=
-m>; Kazlauskas, Nicholas <Nicholas.Kazlauskas@amd.com>
-> *Subject:* Re: [PATCH i-g-t] tests/kms_hdr: Fix failure to read output_bp=
-c on AMD hardware
-> =C2=A0
-> I don't think removing TEST_ONLY is correct? bafd90661c26 ("tests/kms_hdr=
-: Add
-> bpc switch subtests") reads:
->=20
-> =C2=A0=C2=A0=C2=A0 v4: -Plane size back to CRTC size, regression observed=
- in hsw again
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "Plane must cover entire=
- CRTC" because of plane size restriction
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 to 512x512. Petri/Ville =
-suggested to use TEST_ONLY in try_commit()
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 to probe whether we can =
-use a smaller than fullscreen plane.
->=20
-> cc Nicholas
+T24gMjAyMS0xMC0wNyAxMDo1NiBhLm0uLCBIYXJyeSBXZW50bGFuZCB3cm90ZToNCj4gDQo+IA0K
+PiBPbiAyMDIxLTEwLTA3IDEwOjU0LCBLYXpsYXVza2FzLCBOaWNob2xhcyB3cm90ZToNCj4+IFtB
+TUQgT2ZmaWNpYWwgVXNlIE9ubHldDQo+Pg0KPj4NCj4+IEkgZG9uJ3QgaGF2ZSB0aGUgY29tbWl0
+cyBpbiBmcm9udCBvZiBtZSwgYnV0IHRoZXJlIHdhcyBhbiBpc3N1ZSB3aXRoIHRoZSBwb3J0IGZy
+b20gYW1kX2hkciB0byBrbXNfaGRyIHdoZXJlIHRoZSB0ZXN0IHdvdWxkIGRvIGEgVEVTVF9PTkxZ
+IGNvbW1pdCB0aGF0IGNoYW5nZSB0aGUgb3V0cHV0IGJwYyB0byAxMCBidXQgdGhlbiB0aGUgZGVi
+dWdmcyBjaGVjayAvYWZ0ZXIgL3dvdWxkIHRyeSBhbmQgdmVyaWZ5IHRoYXQgdGhlIG91dHB1dCBi
+cGMgd2FzIDEwIC0gd2hpY2ggZG9lc24ndCB3b3JrIGlmIHRoZSBvdXRwdXQgYnBjIHdhcyBwcmV2
+aW91c2x5IDggYmVjYXVzZSB0aGUgY29tbWl0IHdhc24ndCBhY3R1YWxseSBhcHBsaWVkLg0KPj4N
+Cj4gDQo+IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC80NTY2NjMvP3Nl
+cmllcz05NTMxMyZyZXY9MQ0KPiANCj4gU3R5bG9uLCBpcyB0aGF0IHdoYXQgaXMgaGFwcGVuaW5n
+Pw0KPiANCj4gSWYgc28sIHBsZWFzZSBtYWtlIHN1cmUgdGhlIGNvbW1pdCBkZXNjcmlwdGlvbiBy
+ZWZsZWN0cyB0aGF0LiBUaGUgZXhpc3RpbmcNCj4gZGVzY3JpcHRpb24gZG9lc24ndCBleHBsYWlu
+IHdoeSBzd2l0Y2hpbmcgZnJvbSBURVNUX09OTFkgdG8gQUxMT1dfTU9ERVNFVA0KPiBmaXhlcyB0
+aGluZ3MuDQo+IA0KPiBIYXJyeQ0KDQpUaGFua3MgZm9yIGxpbmtpbmcgaXQgLSBpdCBsb29rcyBs
+aWtlIGl0J3MgYWN0dWFsbHkgdGhlIHJldmVyc2UsIHdoZXJlIA0KaXQgdHJpZXMgdG8gY2hhbmdl
+IGJwYyB0byA4IGJ1dCB0aGUgY29ubmVjdG9yIG1heSBub3QgY3VycmVudGx5IGJlIGluIDggDQpu
+b3IgaXMgdGhlcmUgYSByZXF1aXJlbWVudCBmb3IgaXQgdG8gYmUgYmVmb3JlIHRoZSB0ZXN0IHN0
+YXJ0cy4NCg0KVXNlcnNwYWNlIG1pZ2h0IGhhdmUgYWxyZWFkeSBiZWVuIHJ1bm5pbmcgd2l0aCBh
+biB1bmNhcHBlZCBtYXggYnBjIA0KYmVmb3JlIHRoZSB0ZXN0IHN0YXJ0cy4NCg0KUmVnYXJkcywN
+Ck5pY2hvbGFzIEthemxhdXNrYXMNCg0KPiANCj4gDQo+PiBSZWdhcmRzLA0KPj4gTmljaG9sYXMg
+S2F6bGF1c2thcw0KPj4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+PiAqRnJvbToqIFNpbW9uIFNl
+ciA8Y29udGFjdEBlbWVyc2lvbi5mcj4NCj4+ICpTZW50OiogVGh1cnNkYXksIE9jdG9iZXIgNywg
+MjAyMSAxMDo0OSBBTQ0KPj4gKlRvOiogU2lxdWVpcmEsIFJvZHJpZ28gPFJvZHJpZ28uU2lxdWVp
+cmFAYW1kLmNvbT4NCj4+ICpDYzoqIFNhYXJpbmVuLCBKYW5pIDxqYW5pLnNhYXJpbmVuQGludGVs
+LmNvbT47IFZ1ZHVtLCBMYWtzaG1pbmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1bUBpbnRl
+bC5jb20+OyBMYXR2YWxhLCBQZXRyaSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+OyBXYW5nLCBD
+aGFvLWthaSAoU3R5bG9uKSA8U3R5bG9uLldhbmdAYW1kLmNvbT47IGlndC1kZXZAbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnIDxpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZz47IENob2ksIE5pY2hv
+bGFzIDxOaWNob2xhcy5DaG9pQGFtZC5jb20+OyBNYXJrIFlhY291YiA8bWFya3lhY291YkBnb29n
+bGUuY29tPjsgV2VudGxhbmQsIEhhcnJ5IDxIYXJyeS5XZW50bGFuZEBhbWQuY29tPjsgS2F6bGF1
+c2thcywgTmljaG9sYXMgPE5pY2hvbGFzLkthemxhdXNrYXNAYW1kLmNvbT4NCj4+ICpTdWJqZWN0
+OiogUmU6IFtQQVRDSCBpLWctdF0gdGVzdHMva21zX2hkcjogRml4IGZhaWx1cmUgdG8gcmVhZCBv
+dXRwdXRfYnBjIG9uIEFNRCBoYXJkd2FyZQ0KPj4gICANCj4+IEkgZG9uJ3QgdGhpbmsgcmVtb3Zp
+bmcgVEVTVF9PTkxZIGlzIGNvcnJlY3Q/IGJhZmQ5MDY2MWMyNiAoInRlc3RzL2ttc19oZHI6IEFk
+ZA0KPj4gYnBjIHN3aXRjaCBzdWJ0ZXN0cyIpIHJlYWRzOg0KPj4NCj4+ICDCoMKgwqAgdjQ6IC1Q
+bGFuZSBzaXplIGJhY2sgdG8gQ1JUQyBzaXplLCByZWdyZXNzaW9uIG9ic2VydmVkIGluIGhzdyBh
+Z2Fpbg0KPj4gIMKgwqDCoMKgwqDCoMKgwqAgIlBsYW5lIG11c3QgY292ZXIgZW50aXJlIENSVEMi
+IGJlY2F1c2Ugb2YgcGxhbmUgc2l6ZSByZXN0cmljdGlvbg0KPj4gIMKgwqDCoMKgwqDCoMKgwqAg
+dG8gNTEyeDUxMi4gUGV0cmkvVmlsbGUgc3VnZ2VzdGVkIHRvIHVzZSBURVNUX09OTFkgaW4gdHJ5
+X2NvbW1pdCgpDQo+PiAgwqDCoMKgwqDCoMKgwqDCoCB0byBwcm9iZSB3aGV0aGVyIHdlIGNhbiB1
+c2UgYSBzbWFsbGVyIHRoYW4gZnVsbHNjcmVlbiBwbGFuZS4NCj4+DQo+PiBjYyBOaWNob2xhcw0K
+PiANCg0K
