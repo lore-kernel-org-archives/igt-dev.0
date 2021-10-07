@@ -1,28 +1,27 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2049.outbound.protection.outlook.com [40.107.94.49])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DCE456F890
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Oct 2021 14:59:27 +0000 (UTC)
-Message-ID: <161af036-f263-7bb0-bc6d-251ae9517f42@amd.com>
-Date: Thu, 7 Oct 2021 10:59:21 -0400
-Content-Language: en-US
-References: <20211001085319.789392-1-stylon.wang@amd.com>
- <20211002151511.vjblbkuoymw4jtyi@outlook.office365.com>
- <YVrh5zBX9mLq4Zg2@platvala-desk.ger.corp.intel.com>
- <20211004141835.uzqrsamqgdstee2q@outlook.office365.com>
- <7c206aba165a465aa14b465c72b6802c@intel.com>
- <DM8PR11MB5655AF5FCCDDD8EAB30C92B0E0AE9@DM8PR11MB5655.namprd11.prod.outlook.com>
- <20211007144038.ojiw5nzbydkfvgk2@outlook.office365.com>
- <oakr8kYGfhw6ExOrkEWsbp3jU89Fsenuurp94OdfCpOmqcab7tSAUAGLLQy4Tcro8tP5yZeSQAVzsTgGUrszteqMo5nyjdrCwYmwxypWQkE=@emersion.fr>
- <DM4PR12MB5182EFB81A2845B2F953BB57ECB19@DM4PR12MB5182.namprd12.prod.outlook.com>
- <73ec4c04-b2d1-4392-4096-7cc7076420ed@amd.com>
-From: "Kazlauskas, Nicholas" <nicholas.kazlauskas@amd.com>
-In-Reply-To: <73ec4c04-b2d1-4392-4096-7cc7076420ed@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com
+ [IPv6:2a00:1450:4864:20::12f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D3E436E841
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Oct 2021 15:23:56 +0000 (UTC)
+Received: by mail-lf1-x12f.google.com with SMTP id j5so26432456lfg.8
+ for <igt-dev@lists.freedesktop.org>; Thu, 07 Oct 2021 08:23:56 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_hdr: Fix failure to read
- output_bpc on AMD hardware
+References: <20210902151334.15818-1-vidya.srinivas@intel.com>
+ <20210916135955.17270-1-vidya.srinivas@intel.com>
+ <fa1e3d36b6a94da4bfaf33d77e6aa316@intel.com>
+ <MWHPR11MB13128EB944916330DFA0CD1989AA9@MWHPR11MB1312.namprd11.prod.outlook.com>
+ <CAJUqKUqcT0_bLo=XQdpo_SpSsZiTyL7E084OgKgFZDKXhcauKA@mail.gmail.com>
+ <d4cb2e0b34364a8a8ece7e05e7c524a6@intel.com>
+ <CAJUqKUqH_ZCiQESfhahyoJH49ej7BQmqq-=SQvLzGtkYpHVokw@mail.gmail.com>
+ <5140b279c50e43a19e6f60cd607bf0dc@intel.com>
+ <MWHPR11MB13121A62F592DD808114638D89B19@MWHPR11MB1312.namprd11.prod.outlook.com>
+In-Reply-To: <MWHPR11MB13121A62F592DD808114638D89B19@MWHPR11MB1312.namprd11.prod.outlook.com>
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Thu, 7 Oct 2021 11:23:44 -0400
+Message-ID: <CAJUqKUr6Ba5ab+VPGQgc=TtPOzWGCkrDjLosfoE68CpAae1dvg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Skip tests if
+ selected fetch is not available
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,67 +31,142 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Harry Wentland <harry.wentland@amd.com>, "Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>, Simon Ser <contact@emersion.fr>
-Cc: "Saarinen, Jani" <jani.saarinen@intel.com>, "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>, "Latvala, Petri" <petri.latvala@intel.com>, "Wang, Chao-kai (Stylon)" <Stylon.Wang@amd.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Choi, Nicholas" <Nicholas.Choi@amd.com>, Mark Yacoub <markyacoub@google.com>
+To: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Cc: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>, "Kattamanchi, JaswanthX" <jaswanthx.kattamanchi@intel.com>, "B,
+ Jeevan" <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "markyacoub@google.com" <markyacoub@google.com>, "Almahallawy, Khaled" <khaled.almahallawy@intel.com>, "Lin,
+ Charlton" <charlton.lin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMjAyMS0xMC0wNyAxMDo1NiBhLm0uLCBIYXJyeSBXZW50bGFuZCB3cm90ZToNCj4gDQo+IA0K
-PiBPbiAyMDIxLTEwLTA3IDEwOjU0LCBLYXpsYXVza2FzLCBOaWNob2xhcyB3cm90ZToNCj4+IFtB
-TUQgT2ZmaWNpYWwgVXNlIE9ubHldDQo+Pg0KPj4NCj4+IEkgZG9uJ3QgaGF2ZSB0aGUgY29tbWl0
-cyBpbiBmcm9udCBvZiBtZSwgYnV0IHRoZXJlIHdhcyBhbiBpc3N1ZSB3aXRoIHRoZSBwb3J0IGZy
-b20gYW1kX2hkciB0byBrbXNfaGRyIHdoZXJlIHRoZSB0ZXN0IHdvdWxkIGRvIGEgVEVTVF9PTkxZ
-IGNvbW1pdCB0aGF0IGNoYW5nZSB0aGUgb3V0cHV0IGJwYyB0byAxMCBidXQgdGhlbiB0aGUgZGVi
-dWdmcyBjaGVjayAvYWZ0ZXIgL3dvdWxkIHRyeSBhbmQgdmVyaWZ5IHRoYXQgdGhlIG91dHB1dCBi
-cGMgd2FzIDEwIC0gd2hpY2ggZG9lc24ndCB3b3JrIGlmIHRoZSBvdXRwdXQgYnBjIHdhcyBwcmV2
-aW91c2x5IDggYmVjYXVzZSB0aGUgY29tbWl0IHdhc24ndCBhY3R1YWxseSBhcHBsaWVkLg0KPj4N
-Cj4gDQo+IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC80NTY2NjMvP3Nl
-cmllcz05NTMxMyZyZXY9MQ0KPiANCj4gU3R5bG9uLCBpcyB0aGF0IHdoYXQgaXMgaGFwcGVuaW5n
-Pw0KPiANCj4gSWYgc28sIHBsZWFzZSBtYWtlIHN1cmUgdGhlIGNvbW1pdCBkZXNjcmlwdGlvbiBy
-ZWZsZWN0cyB0aGF0LiBUaGUgZXhpc3RpbmcNCj4gZGVzY3JpcHRpb24gZG9lc24ndCBleHBsYWlu
-IHdoeSBzd2l0Y2hpbmcgZnJvbSBURVNUX09OTFkgdG8gQUxMT1dfTU9ERVNFVA0KPiBmaXhlcyB0
-aGluZ3MuDQo+IA0KPiBIYXJyeQ0KDQpUaGFua3MgZm9yIGxpbmtpbmcgaXQgLSBpdCBsb29rcyBs
-aWtlIGl0J3MgYWN0dWFsbHkgdGhlIHJldmVyc2UsIHdoZXJlIA0KaXQgdHJpZXMgdG8gY2hhbmdl
-IGJwYyB0byA4IGJ1dCB0aGUgY29ubmVjdG9yIG1heSBub3QgY3VycmVudGx5IGJlIGluIDggDQpu
-b3IgaXMgdGhlcmUgYSByZXF1aXJlbWVudCBmb3IgaXQgdG8gYmUgYmVmb3JlIHRoZSB0ZXN0IHN0
-YXJ0cy4NCg0KVXNlcnNwYWNlIG1pZ2h0IGhhdmUgYWxyZWFkeSBiZWVuIHJ1bm5pbmcgd2l0aCBh
-biB1bmNhcHBlZCBtYXggYnBjIA0KYmVmb3JlIHRoZSB0ZXN0IHN0YXJ0cy4NCg0KUmVnYXJkcywN
-Ck5pY2hvbGFzIEthemxhdXNrYXMNCg0KPiANCj4gDQo+PiBSZWdhcmRzLA0KPj4gTmljaG9sYXMg
-S2F6bGF1c2thcw0KPj4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+PiAqRnJvbToqIFNpbW9uIFNl
-ciA8Y29udGFjdEBlbWVyc2lvbi5mcj4NCj4+ICpTZW50OiogVGh1cnNkYXksIE9jdG9iZXIgNywg
-MjAyMSAxMDo0OSBBTQ0KPj4gKlRvOiogU2lxdWVpcmEsIFJvZHJpZ28gPFJvZHJpZ28uU2lxdWVp
-cmFAYW1kLmNvbT4NCj4+ICpDYzoqIFNhYXJpbmVuLCBKYW5pIDxqYW5pLnNhYXJpbmVuQGludGVs
-LmNvbT47IFZ1ZHVtLCBMYWtzaG1pbmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1bUBpbnRl
-bC5jb20+OyBMYXR2YWxhLCBQZXRyaSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+OyBXYW5nLCBD
-aGFvLWthaSAoU3R5bG9uKSA8U3R5bG9uLldhbmdAYW1kLmNvbT47IGlndC1kZXZAbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnIDxpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZz47IENob2ksIE5pY2hv
-bGFzIDxOaWNob2xhcy5DaG9pQGFtZC5jb20+OyBNYXJrIFlhY291YiA8bWFya3lhY291YkBnb29n
-bGUuY29tPjsgV2VudGxhbmQsIEhhcnJ5IDxIYXJyeS5XZW50bGFuZEBhbWQuY29tPjsgS2F6bGF1
-c2thcywgTmljaG9sYXMgPE5pY2hvbGFzLkthemxhdXNrYXNAYW1kLmNvbT4NCj4+ICpTdWJqZWN0
-OiogUmU6IFtQQVRDSCBpLWctdF0gdGVzdHMva21zX2hkcjogRml4IGZhaWx1cmUgdG8gcmVhZCBv
-dXRwdXRfYnBjIG9uIEFNRCBoYXJkd2FyZQ0KPj4gICANCj4+IEkgZG9uJ3QgdGhpbmsgcmVtb3Zp
-bmcgVEVTVF9PTkxZIGlzIGNvcnJlY3Q/IGJhZmQ5MDY2MWMyNiAoInRlc3RzL2ttc19oZHI6IEFk
-ZA0KPj4gYnBjIHN3aXRjaCBzdWJ0ZXN0cyIpIHJlYWRzOg0KPj4NCj4+ICDCoMKgwqAgdjQ6IC1Q
-bGFuZSBzaXplIGJhY2sgdG8gQ1JUQyBzaXplLCByZWdyZXNzaW9uIG9ic2VydmVkIGluIGhzdyBh
-Z2Fpbg0KPj4gIMKgwqDCoMKgwqDCoMKgwqAgIlBsYW5lIG11c3QgY292ZXIgZW50aXJlIENSVEMi
-IGJlY2F1c2Ugb2YgcGxhbmUgc2l6ZSByZXN0cmljdGlvbg0KPj4gIMKgwqDCoMKgwqDCoMKgwqAg
-dG8gNTEyeDUxMi4gUGV0cmkvVmlsbGUgc3VnZ2VzdGVkIHRvIHVzZSBURVNUX09OTFkgaW4gdHJ5
-X2NvbW1pdCgpDQo+PiAgwqDCoMKgwqDCoMKgwqDCoCB0byBwcm9iZSB3aGV0aGVyIHdlIGNhbiB1
-c2UgYSBzbWFsbGVyIHRoYW4gZnVsbHNjcmVlbiBwbGFuZS4NCj4+DQo+PiBjYyBOaWNob2xhcw0K
-PiANCg0K
+Reviewed and applied. Thanks Vidya!
+
+On Thu, Oct 7, 2021 at 3:51 AM Srinivas, Vidya <vidya.srinivas@intel.com> wrote:
+>
+> Hello,
+>
+> I think we can take Rev3 for final merge?
+> https://patchwork.freedesktop.org/series/94288/#rev3 CI is PASS.
+>
+> Regards
+> Vidya
+>
+> > -----Original Message-----
+> > From: Vudum, Lakshminarayana <lakshminarayana.vudum@intel.com>
+> > Sent: Wednesday, October 6, 2021 10:55 PM
+> > To: Mark Yacoub <markyacoub@chromium.org>
+> > Cc: Kattamanchi, JaswanthX <jaswanthx.kattamanchi@intel.com>; B, Jeevan
+> > <jeevan.b@intel.com>; igt-dev@lists.freedesktop.org; Modem,
+> > Bhanuprakash <bhanuprakash.modem@intel.com>; Srinivas, Vidya
+> > <vidya.srinivas@intel.com>; markyacoub@google.com
+> > Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Skip tests if selected
+> > fetch is not available
+> >
+> > We have an issue for this failure. Reported the results.
+> > https://gitlab.freedesktop.org/drm/intel/-/issues/4262
+> >
+> > Lakshmi.
+> >
+> > -----Original Message-----
+> > From: Mark Yacoub <markyacoub@chromium.org>
+> > Sent: Wednesday, October 6, 2021 9:27 AM
+> > To: Vudum, Lakshminarayana <lakshminarayana.vudum@intel.com>
+> > Cc: Kattamanchi, JaswanthX <jaswanthx.kattamanchi@intel.com>; B, Jeevan
+> > <jeevan.b@intel.com>; igt-dev@lists.freedesktop.org; Modem,
+> > Bhanuprakash <bhanuprakash.modem@intel.com>; Srinivas, Vidya
+> > <vidya.srinivas@intel.com>; markyacoub@google.com
+> > Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Skip tests if selected
+> > fetch is not available
+> >
+> > Hey - I'm looking at the errors and they look unrelated. Can we get a new run
+> > :) Thanks!
+> >
+> > On Thu, Sep 30, 2021 at 6:36 PM Vudum, Lakshminarayana
+> > <lakshminarayana.vudum@intel.com> wrote:
+> > >
+> > > Re-reported.
+> > >
+> > >
+> > > -----Original Message-----
+> > > From: Mark Yacoub <markyacoub@chromium.org>
+> > > Sent: Thursday, September 30, 2021 7:29 AM
+> > > To: Vudum, Lakshminarayana <lakshminarayana.vudum@intel.com>;
+> > > Kattamanchi, JaswanthX <jaswanthx.kattamanchi@intel.com>
+> > > Cc: B, Jeevan <jeevan.b@intel.com>; igt-dev@lists.freedesktop.org;
+> > > Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Srinivas,
+> > Vidya
+> > > <vidya.srinivas@intel.com>; markyacoub@google.com
+> > > Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Skip tests if
+> > > selected fetch is not available
+> > >
+> > > Hi Lakshmi/Jaswanth
+> > >
+> > > I checked the patch
+> > > https://patchwork.freedesktop.org/series/94288/#rev2 and it looks like a
+> > false positive, can we re-report?
+> > >
+> > > Thanks,
+> > > Mark
+> > >
+> > > On Thu, Sep 30, 2021 at 8:10 AM Srinivas, Vidya <vidya.srinivas@intel.com>
+> > wrote:
+> > > >
+> > > >
+> > > >
+> > > > > -----Original Message-----
+> > > > > From: B, Jeevan <jeevan.b@intel.com>
+> > > > > Sent: Thursday, September 30, 2021 3:26 PM
+> > > > > To: Srinivas, Vidya <vidya.srinivas@intel.com>;
+> > > > > igt-dev@lists.freedesktop.org
+> > > > > Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>;
+> > > > > markyacoub@google.com; Srinivas, Vidya <vidya.srinivas@intel.com>
+> > > > > Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Skip tests
+> > > > > if selected fetch is not available
+> > > > >
+> > > > > Looks good to me.
+> > > >
+> > > > Thank you very much Jeevan.
+> > > >
+> > > > Regards
+> > > > Vidya
+> > > > >
+> > > > > >-----Original Message-----
+> > > > > >From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf
+> > > > > >Of Vidya Srinivas
+> > > > > >Sent: Thursday, September 16, 2021 7:30 PM
+> > > > > >To: igt-dev@lists.freedesktop.org
+> > > > > >Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>;
+> > > > > >markyacoub@google.com; Srinivas, Vidya <vidya.srinivas@intel.com>
+> > > > > >Subject: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Skip tests if
+> > > > > >selected fetch is not available
+> > > > > >
+> > > > > >Currently the tests are failing on systems where selected fetch
+> > > > > >feature is not availble. Kernel returns -EINVAL when the test
+> > > > > >executes reporting "Invalid debug mask 4".
+> > > > > >Patch skips if selected fetch feature is not available in the kernel.
+> > > > > >
+> > > > > >v2: Incorportated Mark Yacoub's comments.
+> > > > > >Changed igt_skip to igt_require_f
+> > > > > >
+> > > > > >Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+> > > > > Reviewed-by: Jeevan B<jeevan.b@intel.com>
+> > > > > >---
+> > > > > > lib/igt_psr.c | 2 +-
+> > > > > > 1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > > >
+> > > > > >diff --git a/lib/igt_psr.c b/lib/igt_psr.c index
+> > > > > >68240f9a33b4..0af503fb796e 100644
+> > > > > >--- a/lib/igt_psr.c
+> > > > > >+++ b/lib/igt_psr.c
+> > > > > >@@ -167,7 +167,7 @@ static bool psr_set(int device, int
+> > > > > >debugfs_fd, int
+> > > > > >mode)  }
+> > > > > >
+> > > > > > ret = psr_write(debugfs_fd, debug_val); -igt_assert(ret > 0);
+> > > > > >+igt_require_f(ret == 0, "PSR2 SF feature not available\n");
+> > > > > > }
+> > > > > >
+> > > > > > /* Restore original value on exit */
+> > > > > >--
+> > > > > >2.33.0
+> > > > >
+> > > >
+>
