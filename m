@@ -1,25 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4BBC26F3A6
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Oct 2021 07:51:01 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Thu, 7 Oct 2021 07:50:45 +0000
-Message-ID: <MWHPR11MB13121A62F592DD808114638D89B19@MWHPR11MB1312.namprd11.prod.outlook.com>
-References: <20210902151334.15818-1-vidya.srinivas@intel.com>
- <20210916135955.17270-1-vidya.srinivas@intel.com>
- <fa1e3d36b6a94da4bfaf33d77e6aa316@intel.com>
- <MWHPR11MB13128EB944916330DFA0CD1989AA9@MWHPR11MB1312.namprd11.prod.outlook.com>
- <CAJUqKUqcT0_bLo=XQdpo_SpSsZiTyL7E084OgKgFZDKXhcauKA@mail.gmail.com>
- <d4cb2e0b34364a8a8ece7e05e7c524a6@intel.com>
- <CAJUqKUqH_ZCiQESfhahyoJH49ej7BQmqq-=SQvLzGtkYpHVokw@mail.gmail.com>
- <5140b279c50e43a19e6f60cd607bf0dc@intel.com>
-In-Reply-To: <5140b279c50e43a19e6f60cd607bf0dc@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EE456F3B3
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Oct 2021 08:16:41 +0000 (UTC)
+Date: Thu, 7 Oct 2021 11:19:49 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YV6tpa2QnrTwbguX@platvala-desk.ger.corp.intel.com>
+References: <20211006161444.904476-1-rodrigo.vivi@intel.com>
+ <20211006161444.904476-2-rodrigo.vivi@intel.com>
+ <877deqvzre.wl-ashutosh.dixit@intel.com>
+ <YV3cBQId0QvCLUs5@intel.com>
+ <875yuavz3f.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Skip tests if
- selected fetch is not available
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <875yuavz3f.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/8] tests/i915/gem_pxp: Add LOCAL_ UAPI
+ defines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,92 +25,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>, Mark Yacoub <markyacoub@chromium.org>
-Cc: "Kattamanchi, JaswanthX" <jaswanthx.kattamanchi@intel.com>, "B, Jeevan" <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "markyacoub@google.com" <markyacoub@google.com>, "Almahallawy, Khaled" <khaled.almahallawy@intel.com>, "Lin, Charlton" <charlton.lin@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>, igt-dev@lists.freedesktop.org, Alan Previn <alan.previn.teres.alexis@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGVsbG8sDQoNCkkgdGhpbmsgd2UgY2FuIHRha2UgUmV2MyBmb3IgZmluYWwgbWVyZ2U/DQpodHRw
-czovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzk0Mjg4LyNyZXYzIENJIGlzIFBB
-U1MuDQoNClJlZ2FyZHMNClZpZHlhDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4g
-RnJvbTogVnVkdW0sIExha3NobWluYXJheWFuYSA8bGFrc2htaW5hcmF5YW5hLnZ1ZHVtQGludGVs
-LmNvbT4NCj4gU2VudDogV2VkbmVzZGF5LCBPY3RvYmVyIDYsIDIwMjEgMTA6NTUgUE0NCj4gVG86
-IE1hcmsgWWFjb3ViIDxtYXJreWFjb3ViQGNocm9taXVtLm9yZz4NCj4gQ2M6IEthdHRhbWFuY2hp
-LCBKYXN3YW50aFggPGphc3dhbnRoeC5rYXR0YW1hbmNoaUBpbnRlbC5jb20+OyBCLCBKZWV2YW4N
-Cj4gPGplZXZhbi5iQGludGVsLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBN
-b2RlbSwNCj4gQmhhbnVwcmFrYXNoIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPjsgU3Jp
-bml2YXMsIFZpZHlhDQo+IDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+OyBtYXJreWFjb3ViQGdv
-b2dsZS5jb20NCj4gU3ViamVjdDogUkU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXRdIHRlc3RzL2tt
-c19wc3IyX3NmOiBTa2lwIHRlc3RzIGlmIHNlbGVjdGVkDQo+IGZldGNoIGlzIG5vdCBhdmFpbGFi
-bGUNCj4gDQo+IFdlIGhhdmUgYW4gaXNzdWUgZm9yIHRoaXMgZmFpbHVyZS4gUmVwb3J0ZWQgdGhl
-IHJlc3VsdHMuDQo+IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvLS9p
-c3N1ZXMvNDI2Mg0KPiANCj4gTGFrc2htaS4NCj4gDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0t
-LS0tDQo+IEZyb206IE1hcmsgWWFjb3ViIDxtYXJreWFjb3ViQGNocm9taXVtLm9yZz4NCj4gU2Vu
-dDogV2VkbmVzZGF5LCBPY3RvYmVyIDYsIDIwMjEgOToyNyBBTQ0KPiBUbzogVnVkdW0sIExha3No
-bWluYXJheWFuYSA8bGFrc2htaW5hcmF5YW5hLnZ1ZHVtQGludGVsLmNvbT4NCj4gQ2M6IEthdHRh
-bWFuY2hpLCBKYXN3YW50aFggPGphc3dhbnRoeC5rYXR0YW1hbmNoaUBpbnRlbC5jb20+OyBCLCBK
-ZWV2YW4NCj4gPGplZXZhbi5iQGludGVsLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnOyBNb2RlbSwNCj4gQmhhbnVwcmFrYXNoIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29t
-PjsgU3Jpbml2YXMsIFZpZHlhDQo+IDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+OyBtYXJreWFj
-b3ViQGdvb2dsZS5jb20NCj4gU3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXRdIHRl
-c3RzL2ttc19wc3IyX3NmOiBTa2lwIHRlc3RzIGlmIHNlbGVjdGVkDQo+IGZldGNoIGlzIG5vdCBh
-dmFpbGFibGUNCj4gDQo+IEhleSAtIEknbSBsb29raW5nIGF0IHRoZSBlcnJvcnMgYW5kIHRoZXkg
-bG9vayB1bnJlbGF0ZWQuIENhbiB3ZSBnZXQgYSBuZXcgcnVuDQo+IDopIFRoYW5rcyENCj4gDQo+
-IE9uIFRodSwgU2VwIDMwLCAyMDIxIGF0IDY6MzYgUE0gVnVkdW0sIExha3NobWluYXJheWFuYQ0K
-PiA8bGFrc2htaW5hcmF5YW5hLnZ1ZHVtQGludGVsLmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBSZS1y
-ZXBvcnRlZC4NCj4gPg0KPiA+DQo+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiBG
-cm9tOiBNYXJrIFlhY291YiA8bWFya3lhY291YkBjaHJvbWl1bS5vcmc+DQo+ID4gU2VudDogVGh1
-cnNkYXksIFNlcHRlbWJlciAzMCwgMjAyMSA3OjI5IEFNDQo+ID4gVG86IFZ1ZHVtLCBMYWtzaG1p
-bmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1bUBpbnRlbC5jb20+Ow0KPiA+IEthdHRhbWFu
-Y2hpLCBKYXN3YW50aFggPGphc3dhbnRoeC5rYXR0YW1hbmNoaUBpbnRlbC5jb20+DQo+ID4gQ2M6
-IEIsIEplZXZhbiA8amVldmFuLmJAaW50ZWwuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3Rv
-cC5vcmc7DQo+ID4gTW9kZW0sIEJoYW51cHJha2FzaCA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVs
-LmNvbT47IFNyaW5pdmFzLA0KPiBWaWR5YQ0KPiA+IDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+
-OyBtYXJreWFjb3ViQGdvb2dsZS5jb20NCj4gPiBTdWJqZWN0OiBSZTogW2lndC1kZXZdIFtQQVRD
-SCBpLWctdF0gdGVzdHMva21zX3BzcjJfc2Y6IFNraXAgdGVzdHMgaWYNCj4gPiBzZWxlY3RlZCBm
-ZXRjaCBpcyBub3QgYXZhaWxhYmxlDQo+ID4NCj4gPiBIaSBMYWtzaG1pL0phc3dhbnRoDQo+ID4N
-Cj4gPiBJIGNoZWNrZWQgdGhlIHBhdGNoDQo+ID4gaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0
-b3Aub3JnL3Nlcmllcy85NDI4OC8jcmV2MiBhbmQgaXQgbG9va3MgbGlrZSBhDQo+IGZhbHNlIHBv
-c2l0aXZlLCBjYW4gd2UgcmUtcmVwb3J0Pw0KPiA+DQo+ID4gVGhhbmtzLA0KPiA+IE1hcmsNCj4g
-Pg0KPiA+IE9uIFRodSwgU2VwIDMwLCAyMDIxIGF0IDg6MTAgQU0gU3Jpbml2YXMsIFZpZHlhIDx2
-aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+DQo+IHdyb3RlOg0KPiA+ID4NCj4gPiA+DQo+ID4gPg0K
-PiA+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4gPiBGcm9tOiBCLCBKZWV2
-YW4gPGplZXZhbi5iQGludGVsLmNvbT4NCj4gPiA+ID4gU2VudDogVGh1cnNkYXksIFNlcHRlbWJl
-ciAzMCwgMjAyMSAzOjI2IFBNDQo+ID4gPiA+IFRvOiBTcmluaXZhcywgVmlkeWEgPHZpZHlhLnNy
-aW5pdmFzQGludGVsLmNvbT47DQo+ID4gPiA+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-DQo+ID4gPiA+IENjOiBNb2RlbSwgQmhhbnVwcmFrYXNoIDxiaGFudXByYWthc2gubW9kZW1AaW50
-ZWwuY29tPjsNCj4gPiA+ID4gbWFya3lhY291YkBnb29nbGUuY29tOyBTcmluaXZhcywgVmlkeWEg
-PHZpZHlhLnNyaW5pdmFzQGludGVsLmNvbT4NCj4gPiA+ID4gU3ViamVjdDogUkU6IFtpZ3QtZGV2
-XSBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19wc3IyX3NmOiBTa2lwIHRlc3RzDQo+ID4gPiA+IGlm
-IHNlbGVjdGVkIGZldGNoIGlzIG5vdCBhdmFpbGFibGUNCj4gPiA+ID4NCj4gPiA+ID4gTG9va3Mg
-Z29vZCB0byBtZS4NCj4gPiA+DQo+ID4gPiBUaGFuayB5b3UgdmVyeSBtdWNoIEplZXZhbi4NCj4g
-PiA+DQo+ID4gPiBSZWdhcmRzDQo+ID4gPiBWaWR5YQ0KPiA+ID4gPg0KPiA+ID4gPiA+LS0tLS1P
-cmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiA+ID4gPkZyb206IGlndC1kZXYgPGlndC1kZXYtYm91
-bmNlc0BsaXN0cy5mcmVlZGVza3RvcC5vcmc+IE9uIEJlaGFsZg0KPiA+ID4gPiA+T2YgVmlkeWEg
-U3Jpbml2YXMNCj4gPiA+ID4gPlNlbnQ6IFRodXJzZGF5LCBTZXB0ZW1iZXIgMTYsIDIwMjEgNzoz
-MCBQTQ0KPiA+ID4gPiA+VG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+ID4gPiA+
-ID5DYzogTW9kZW0sIEJoYW51cHJha2FzaCA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNvbT47
-DQo+ID4gPiA+ID5tYXJreWFjb3ViQGdvb2dsZS5jb207IFNyaW5pdmFzLCBWaWR5YSA8dmlkeWEu
-c3Jpbml2YXNAaW50ZWwuY29tPg0KPiA+ID4gPiA+U3ViamVjdDogW2lndC1kZXZdIFtQQVRDSCBp
-LWctdF0gdGVzdHMva21zX3BzcjJfc2Y6IFNraXAgdGVzdHMgaWYNCj4gPiA+ID4gPnNlbGVjdGVk
-IGZldGNoIGlzIG5vdCBhdmFpbGFibGUNCj4gPiA+ID4gPg0KPiA+ID4gPiA+Q3VycmVudGx5IHRo
-ZSB0ZXN0cyBhcmUgZmFpbGluZyBvbiBzeXN0ZW1zIHdoZXJlIHNlbGVjdGVkIGZldGNoDQo+ID4g
-PiA+ID5mZWF0dXJlIGlzIG5vdCBhdmFpbGJsZS4gS2VybmVsIHJldHVybnMgLUVJTlZBTCB3aGVu
-IHRoZSB0ZXN0DQo+ID4gPiA+ID5leGVjdXRlcyByZXBvcnRpbmcgIkludmFsaWQgZGVidWcgbWFz
-ayA0Ii4NCj4gPiA+ID4gPlBhdGNoIHNraXBzIGlmIHNlbGVjdGVkIGZldGNoIGZlYXR1cmUgaXMg
-bm90IGF2YWlsYWJsZSBpbiB0aGUga2VybmVsLg0KPiA+ID4gPiA+DQo+ID4gPiA+ID52MjogSW5j
-b3Jwb3J0YXRlZCBNYXJrIFlhY291YidzIGNvbW1lbnRzLg0KPiA+ID4gPiA+Q2hhbmdlZCBpZ3Rf
-c2tpcCB0byBpZ3RfcmVxdWlyZV9mDQo+ID4gPiA+ID4NCj4gPiA+ID4gPlNpZ25lZC1vZmYtYnk6
-IFZpZHlhIFNyaW5pdmFzIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+DQo+ID4gPiA+IFJldmll
-d2VkLWJ5OiBKZWV2YW4gQjxqZWV2YW4uYkBpbnRlbC5jb20+DQo+ID4gPiA+ID4tLS0NCj4gPiA+
-ID4gPiBsaWIvaWd0X3Bzci5jIHwgMiArLQ0KPiA+ID4gPiA+IDEgZmlsZSBjaGFuZ2VkLCAxIGlu
-c2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KPiA+ID4gPiA+DQo+ID4gPiA+ID5kaWZmIC0tZ2l0
-IGEvbGliL2lndF9wc3IuYyBiL2xpYi9pZ3RfcHNyLmMgaW5kZXgNCj4gPiA+ID4gPjY4MjQwZjlh
-MzNiNC4uMGFmNTAzZmI3OTZlIDEwMDY0NA0KPiA+ID4gPiA+LS0tIGEvbGliL2lndF9wc3IuYw0K
-PiA+ID4gPiA+KysrIGIvbGliL2lndF9wc3IuYw0KPiA+ID4gPiA+QEAgLTE2Nyw3ICsxNjcsNyBA
-QCBzdGF0aWMgYm9vbCBwc3Jfc2V0KGludCBkZXZpY2UsIGludA0KPiA+ID4gPiA+ZGVidWdmc19m
-ZCwgaW50DQo+ID4gPiA+ID5tb2RlKSAgfQ0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gcmV0ID0gcHNy
-X3dyaXRlKGRlYnVnZnNfZmQsIGRlYnVnX3ZhbCk7IC1pZ3RfYXNzZXJ0KHJldCA+IDApOw0KPiA+
-ID4gPiA+K2lndF9yZXF1aXJlX2YocmV0ID09IDAsICJQU1IyIFNGIGZlYXR1cmUgbm90IGF2YWls
-YWJsZVxuIik7DQo+ID4gPiA+ID4gfQ0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gLyogUmVzdG9yZSBv
-cmlnaW5hbCB2YWx1ZSBvbiBleGl0ICovDQo+ID4gPiA+ID4tLQ0KPiA+ID4gPiA+Mi4zMy4wDQo+
-ID4gPiA+DQo+ID4gPg0KDQo=
+On Wed, Oct 06, 2021 at 10:32:04AM -0700, Dixit, Ashutosh wrote:
+> On Wed, 06 Oct 2021 10:25:25 -0700, Rodrigo Vivi wrote:
+> >
+> > On Wed, Oct 06, 2021 at 10:17:41AM -0700, Dixit, Ashutosh wrote:
+> > > On Wed, 06 Oct 2021 09:14:37 -0700, Rodrigo Vivi wrote:
+> > > >
+> > > > While the UAPI changes don't propagate to drm-next we should
+> > > > have that as LOCAL_ ones.
+> > >
+> > > Please add these in lib/i915/i915_drm_local.h as follows:
+> >
+> > Could we move this file to the include directory and document it
+> > in the README.md along with the uapi sync mention?
+> 
+> I think that should be fine. Petri: what do you think, since the directory
+> is supposed to contain "imported" kernel headers?
+
+Yeah that is fine. The directory is already not a full copy of _all_
+drm-uapi headers.
+
+-- 
+Petri Latvala
+
+
+> 
+> Anyway, let's add the LOCAL's to this file for now as it says below. Thanks.
+> 
+> >
+> > >
+> > > /*
+> > >  * It is necessary on occasion to add uapi declarations to IGT before they
+> > >  * appear in imported kernel uapi headers. This header is provided for this
+> > >  * purpose.
+> > >
+> > >  * Early uapi declarations should be added here exactly as they are
+> > >  * expected to appear in the kernel uapi headers, i.e. without the LOCAL_
+> > >  * or local_ prefix and without any #ifndef's. Attempt should be made to
+> > >  * clean these up when kernel uapi headers are sync'd.
+> > >  */
+> > >
+> > > >
+> > > > That was my mistake during review and merge since I had
+> > > > ignored the rules documented at README.md and considered
+> > > > drm-intel branches would be enough. I'm sorry.
+> > > >
+> > > > Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+> > > > Cc: Petri Latvala <petri.latvala@intel.com>
+> > > > Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
