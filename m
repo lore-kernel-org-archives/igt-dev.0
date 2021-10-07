@@ -1,22 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com
- [IPv6:2607:f8b0:4864:20::836])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4DC296E530
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Oct 2021 13:59:02 +0000 (UTC)
-Received: by mail-qt1-x836.google.com with SMTP id t2so6175738qtx.8
- for <igt-dev@lists.freedesktop.org>; Thu, 07 Oct 2021 06:59:02 -0700 (PDT)
-References: <20211005135601.17102-1-igormtorrente@gmail.com>
- <YV7u53mbUGWf07Kv@platvala-desk.ger.corp.intel.com>
-From: Igor Matheus Andrade Torrente <igormtorrente@gmail.com>
-Message-ID: <c4592038-072d-6cf8-af25-a98227fddbce@gmail.com>
-Date: Thu, 7 Oct 2021 10:58:58 -0300
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2065.outbound.protection.outlook.com [40.107.237.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C9676F4E8
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Oct 2021 14:37:18 +0000 (UTC)
+Date: Thu, 7 Oct 2021 10:37:12 -0400
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Message-ID: <20211007143712.h7aprfdtk2mgq4ca@outlook.office365.com>
+References: <20211004192803.2821789-1-aurabindo.pillai@amd.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211004192803.2821789-1-aurabindo.pillai@amd.com>
 MIME-Version: 1.0
-In-Reply-To: <YV7u53mbUGWf07Kv@platvala-desk.ger.corp.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH] tests/kms_writeback.c: fix the `fill_fb`
- function
+Subject: Re: [igt-dev] [PATCH i-g-t v5] tests/kms_bw: Add generic commit
+ test for bandwidth validation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,79 +22,294 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: igt-dev@lists.freedesktop.org, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 10/7/21 9:58 AM, Petri Latvala wrote:
-> On Tue, Oct 05, 2021 at 10:56:01AM -0300, Igor Matheus Andrade Torrente wrote:
->> Currently, the `fill_fb` function, instead of filling the framebuffer
->> with the whole pixel, is only filling it with the rightmost byte.
->>
->> This is happening because, even though the memset accepts an int as
->> a parameter, it's casting the value to unsigned char and will fill
->> the memory with this 8 bits value.
->>
->> If we setup the pixel to 0xff0000|f0|, the buffer will filled with:
->>
->> | addr     | = 0f
->> | addr + 1 | = 0f
->> | addr + 2 | = 0f
->> | addr + 3 | = 0f
->>      ...
->> | addr + N | = 0f
->>
->> This patch address this issue by manually copying the entire integer
->> in the little-endian format.
->>
->> Signed-off-by: Igor Matheus Andrade Torrente <igormtorrente@gmail.com>
->> ---
->>   tests/kms_writeback.c | 16 ++++++++++++++--
->>   1 file changed, 14 insertions(+), 2 deletions(-)
->>
->> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
->> index 60dbda2a..60d9b74e 100644
->> --- a/tests/kms_writeback.c
->> +++ b/tests/kms_writeback.c
->> @@ -227,14 +227,26 @@ static void writeback_fb_id(igt_output_t *output, igt_fb_t *valid_fb, igt_fb_t *
->>   
->>   static void fill_fb(igt_fb_t *fb, uint32_t pixel)
->>   {
->> -	void *ptr;
->> +	uint8_t *ptr, x, r, g, b, step = sizeof(uint32_t);
->> +	int64_t pixel_count, i;
->>   
->>   	igt_assert(fb->drm_format == DRM_FORMAT_XRGB8888);
->>   
->>   	ptr = igt_fb_map_buffer(fb->fd, fb);
->>   	igt_assert(ptr);
->>   
->> -	memset(ptr, pixel, fb->strides[0] * fb->height);
->> +	pixel_count = fb->strides[0] * fb->height;
->> +	x = (pixel & (0xff << 24)) >> 24;
->> +	r = (pixel & (0xff << 16)) >> 16;
->> +	g = (pixel & (0xff << 8)) >> 8;
->> +	b = pixel & 0xff;
->> +
->> +	for (i = 0; i <= pixel_count - step; i += step) {
->> +		ptr[i + 3] = x;
->> +		ptr[i + 2] = r;
->> +		ptr[i + 1] = g;
->> +		ptr[i + 0] = b;
->> +	}
-> 
-> Is there a reason to explicitly go for little endian here? Can't the
-> pixel be written as is, like
-> 
-> uint32_t *p = ptr;
-> 
-> while (p++ < ptr + fb->strides[0] * fb->height)
->    *p = pixel;
-> 
->
+Hi Jay,
 
-I did it to cover the possible case of this code being running on 
-big-endian machines. But, I realized that isn't necessary, since I'm 
-just copying the bytes and not manipulating them.
+Thanks a lot for making this test generic.
 
-I will send a V2 without all this code.
+It lgtm.
+
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+
+On 10/04, Aurabindo Pillai wrote:
+> Add linear tiling mode tests
+> 
+> Changes in v5:
+> 	Changes to test_init so that test invalid pipes are not
+> 	used if certain pipes dont exist in chronological order
+> 
+> 	Added comment explaining use of explicit for loop over
+> 	IGT_MAX_PIPES instead of for_each_pipe_static()
+> 
+> Changes in v4:
+>         Removed igt_skip_on_simulation from main function.
+> Changes in v3:
+>         This version implements array of test modes in igt_main,
+>         global IGT_MAX_PIPE and other comments from Mark.
+> Changes in v2:
+>         Test added as generic IGT.
+> 
+> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+> Signed-off-by: Bindu R <bindu.r@amd.com>
+> ---
+>  tests/kms_bw.c    | 228 ++++++++++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build |   1 +
+>  2 files changed, 229 insertions(+)
+>  create mode 100644 tests/kms_bw.c
+> 
+> diff --git a/tests/kms_bw.c b/tests/kms_bw.c
+> new file mode 100644
+> index 00000000..a4553cde
+> --- /dev/null
+> +++ b/tests/kms_bw.c
+> @@ -0,0 +1,228 @@
+> +/*
+> + * Copyrights 2021 Advanced Micro Devices, Inc.
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice shall be included in
+> + * all copies or substantial portions of the Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
+> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+> + * OTHER DEALINGS IN THE SOFTWARE.
+> + */
+> +
+> +#include "drm_mode.h"
+> +#include "igt.h"
+> +#include "drm.h"
+> +#include <stdio.h>
+> +#include <xf86drmMode.h>
+> +
+> +/* Common test data. */
+> +typedef struct data {
+> +        igt_display_t display;
+> +        igt_plane_t *primary[IGT_MAX_PIPES];
+> +        igt_output_t *output[IGT_MAX_PIPES];
+> +        igt_pipe_t *pipe[IGT_MAX_PIPES];
+> +        igt_pipe_crc_t *pipe_crc[IGT_MAX_PIPES];
+> +        drmModeModeInfo mode[IGT_MAX_PIPES];
+> +        enum pipe pipe_id[IGT_MAX_PIPES];
+> +        int w[IGT_MAX_PIPES];
+> +        int h[IGT_MAX_PIPES];
+> +        int fd;
+> +} data_t;
+> +
+> +static drmModeModeInfo test_mode[] = {
+> +	{ 173000,
+> +	1920, 2048, 2248, 2576, 0,
+> +	1080, 1083, 1088, 1120, 0,
+> +	60,
+> +	DRM_MODE_FLAG_NHSYNC,
+> +	0x40,
+> +	"1920x1080p\0",
+> +	}, /* test_mode_1 */
+> +
+> +	{ 312250,
+> +	2560, 2752, 3024, 3488, 0,
+> +	1440, 1443, 1448, 1493, 0,
+> +	60,
+> +	DRM_MODE_FLAG_NHSYNC,
+> +	0x40,
+> +	"2560x1440p\0",
+> +	}, /* test_mode_2 */
+> +
+> +	{ 533000,
+> +	3840, 3888, 3920, 4000, 0,
+> +	2160, 2163, 2168, 2222, 0,
+> +	60,
+> +	DRM_MODE_FLAG_NHSYNC,
+> +	0x40,
+> +	"3840x2160p\0",
+> +	}, /* test_mode_3 */
+> +
+> +};
+> +
+> +static void test_init(data_t *data)
+> +{
+> +	igt_display_t *display = &data->display;
+> +	int i, max_pipes = display->n_pipes;
+> +	igt_output_t *output;
+> +
+> +	for_each_pipe(display, i) {
+> +		data->pipe_id[i] = i;
+> +		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
+> +		data->primary[i] = igt_pipe_get_plane_type(
+> +			data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
+> +		data->pipe_crc[i] =
+> +			igt_pipe_crc_new(data->fd, data->pipe_id[i], "auto");
+> +	}
+> +
+> +	for (i = 0; i < display->n_outputs && i < max_pipes; i++) {
+> +		if (!data->pipe[i])
+> +			continue;
+> +
+> +		output = &display->outputs[i];
+> +
+> +		data->output[i] = output;
+> +
+> +		/* Only allow physically connected displays for the tests. */
+> +		if (!igt_output_is_connected(output))
+> +			continue;
+> +
+> +		igt_assert(kmstest_get_connector_default_mode(
+> +			data->fd, output->config.connector, &data->mode[i]));
+> +
+> +		data->w[i] = data->mode[i].hdisplay;
+> +		data->h[i] = data->mode[i].vdisplay;
+> +	}
+> +
+> +
+> +	igt_require(data->output[0]);
+> +	igt_display_reset(display);
+> +}
+> +
+> +static void test_fini(data_t *data)
+> +{
+> +	igt_display_t *display = &data->display;
+> +	int i;
+> +
+> +	for_each_pipe(display, i) {
+> +		if (data->pipe_crc[i])
+> +			igt_pipe_crc_free(data->pipe_crc[i]);
+> +	}
+> +
+> +	igt_display_reset(display);
+> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+> +}
+> +
+> +/* Forces a mode for a connector. */
+> +static void force_output_mode(data_t *d, igt_output_t *output,
+> +			      const drmModeModeInfo *mode)
+> +{
+> +	/* This allows us to create a virtual sink. */
+> +	if (!igt_output_is_connected(output)) {
+> +		kmstest_force_edid(d->fd, output->config.connector,
+> +				   igt_kms_get_4k_edid());
+> +
+> +		kmstest_force_connector(d->fd, output->config.connector,
+> +					FORCE_CONNECTOR_DIGITAL);
+> +	}
+> +
+> +	igt_output_override_mode(output, mode);
+> +}
+> +
+> +static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo *mode) {
+> +	igt_display_t *display = &data->display;
+> +	igt_output_t *output;
+> +	struct igt_fb buffer[IGT_MAX_PIPES];
+> +	igt_crc_t zero, captured[IGT_MAX_PIPES];
+> +	int i = 0, num_pipes = 0;
+> +	enum pipe p;
+> +
+> +	/* Cannot use igt_display_get_n_pipes() due to fused pipes on i915 where they do
+> +	 * not give the numver of valid crtcs and always return IGT_MAX_PIPES */
+> +	for_each_pipe(display, p) num_pipes++;
+> +
+> +	igt_skip_on_f(pipe > num_pipes,
+> +                      "ASIC does not have %d pipes\n", pipe);
+> +
+> +	test_init(data);
+> +
+> +	/* create buffers */
+> +	for (i = 0; i <= pipe; i++) {
+> +		output = data->output[i];
+> +		if (!output) {
+> +			continue;
+> +		}
+> +
+> +		force_output_mode(data, output, mode);
+> +
+> +		igt_create_color_fb(display->drm_fd, test_mode[0].hdisplay,
+> +				    test_mode[0].vdisplay, DRM_FORMAT_XRGB8888,
+> +				    DRM_FORMAT_MOD_NONE, 1.f, 0.f, 0.f,
+> +				    &buffer[i]);
+> +
+> +		igt_output_set_pipe(output, i);
+> +
+> +		igt_plane_set_fb(data->primary[i], &buffer[i]);
+> +	}
+> +
+> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +
+> +	for (i = 0; i <= pipe; i++) {
+> +		output = data->output[i];
+> +		if (!output) {
+> +			continue;
+> +		}
+> +
+> +		igt_pipe_crc_collect_crc(data->pipe_crc[i], &captured[i]);
+> +		igt_assert_f(!igt_check_crc_equal(&zero, &captured[i]),
+> +			     "CRC is zero\n");
+> +		igt_remove_fb(display->drm_fd, &buffer[i]);
+> +	}
+> +
+> +	test_fini(data);
+> +}
+> +
+> +igt_main
+> +{
+> +	data_t data;
+> +	int i = 0, j = 0;
+> +
+> +	memset(&data, 0, sizeof(data));
+> +
+> +	igt_fixture
+> +	{
+> +		data.fd = drm_open_driver_master(DRIVER_ANY);
+> +
+> +		kmstest_set_vt_graphics_mode();
+> +
+> +		igt_display_require(&data.display, data.fd);
+> +		igt_require(&data.display.is_atomic);
+> +		igt_display_require_output(&data.display);
+> +
+> +	}
+> +
+> +	/* We're not using for_each_pipe_static because we need the
+> +	 * _amount_ of pipes */
+> +	for (i = 0; i < IGT_MAX_PIPES; i++) {
+> +		for (j = 0; j < ARRAY_SIZE(test_mode); j++) {
+> +			igt_subtest_f("linear-tiling-%d-displays-%s", i+1,
+> +			      test_mode[j].name)
+> +			run_test_linear_tiling(&data, i, &test_mode[j]);
+> +		}
+> +	}
+> +
+> +	igt_fixture
+> +	{
+> +		igt_display_fini(&data.display);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 8ad52596..c4cbe229 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -19,6 +19,7 @@ test_progs = [
+>  	'kms_atomic',
+>  	'kms_atomic_interruptible',
+>  	'kms_atomic_transition',
+> +	'kms_bw',
+>  	'kms_concurrent',
+>  	'kms_content_protection',
+>  	'kms_cursor_crc',
+> -- 
+> 2.30.2
+> 
+
+-- 
+Rodrigo Siqueira
+https://siqueira.tech
