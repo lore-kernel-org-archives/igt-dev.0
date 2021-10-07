@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D0F236F37F
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Oct 2021 17:09:21 +0000 (UTC)
-Date: Thu, 7 Oct 2021 13:09:19 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Message-ID: <YV8pv4qi9jAJw18P@intel.com>
-References: <20211006161444.904476-1-rodrigo.vivi@intel.com>
- <20211006161444.904476-9-rodrigo.vivi@intel.com>
- <YV6vamfWa+8n4oh7@platvala-desk.ger.corp.intel.com>
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com
+ [IPv6:2607:f8b0:4864:20::735])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E6BEC6E858
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Oct 2021 17:20:17 +0000 (UTC)
+Received: by mail-qk1-x735.google.com with SMTP id q125so6658085qkd.12
+ for <igt-dev@lists.freedesktop.org>; Thu, 07 Oct 2021 10:20:17 -0700 (PDT)
+From: Igor Torrente <igormtorrente@gmail.com>
+Date: Thu,  7 Oct 2021 14:20:11 -0300
+Message-Id: <20211007172011.16871-1-igormtorrente@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YV6vamfWa+8n4oh7@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 8/8] README.md: Accept the i915_drm.h
- standalone update.
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v2] tests/kms_writeback.c: fix the `fill_fb`
+ function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,59 +21,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, petri.latvala@intel.com
+Cc: Igor Matheus Andrade Torrente <igormtorrente@gmail.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Oct 07, 2021 at 11:27:22AM +0300, Petri Latvala wrote:
-> On Wed, Oct 06, 2021 at 12:14:44PM -0400, Rodrigo Vivi wrote:
-> > Looking to our git log we can see that the most common case
-> > is the update of the single i915_drm.h file.
-> > 
-> > There are some advantages of doing this standalone update:
-> > 
-> > 1. Make reviews easier without the noise of other headers.
-> > 2. Avoid the developer to have to touch other areas that are
-> >    not immediately related to targeted work.
-> > 
-> > Cc: Petri Latvala <petri.latvala@intel.com>
-> > Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> 
-> Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+From: Igor Matheus Andrade Torrente <igormtorrente@gmail.com>
 
-Thank you. Pushed the remaining patches just now.
+Currently, the `fill_fb` function, instead of filling the framebuffer
+with the whole pixel, is only filling it with the rightmost byte.
 
-> 
-> 
-> > ---
-> >  README.md | 14 ++++++++++++++
-> >  1 file changed, 14 insertions(+)
-> > 
-> > diff --git a/README.md b/README.md
-> > index 62bef46d..66f2bc0f 100644
-> > --- a/README.md
-> > +++ b/README.md
-> > @@ -159,6 +159,20 @@ These should be updated all together by:
-> >  Then, commit with a note of which exact commit from airlied's branch
-> >  was used to generate them.
-> >  
-> > +### `include/drm-uapi/i915_drm.h`
-> > +
-> > +Imported i915_drm.h uapi headers from airlied's drm-next branch.
-> > +
-> > +In some cases updating a single uapi file is needed as our history
-> > +shows. So in this case, it should be done by:
-> > +
-> > +    # From the kernel dir with a drm/drm-next commit checked out:
-> > +    $ make INSTALL_HDR_PATH=<dest-dir> headers_install
-> > +    $ cp <dest-dir>/include/drm/i915_drm.h <igt-dir>/include/drm-uapi/
-> > +
-> > +Then, commit with a note of which exact commit from airlied's branch
-> > +was used to generate it.
-> > +
-> >  ### `include/linux-uapi/sync_file.h`
-> >  
-> >  Imported non-DRM uapi headers from airlied's drm-next branch.
-> > -- 
-> > 2.31.1
-> > 
+This is happening because, even though the memset accepts an int as
+a parameter, it's casting the value to unsigned char and will fill
+the memory with this 8 bits value.
+
+If we setup the pixel to 0xff0000|f0|, the buffer will filled with:
+
+| addr     | = 0f
+| addr + 1 | = 0f
+| addr + 2 | = 0f
+| addr + 3 | = 0f
+    ...
+| addr + N | = 0f
+
+This patch address this issue by manually copying the entire integer.
+
+Signed-off-by: Igor Torrente <igormtorrente@gmail.com>
+---
+ tests/kms_writeback.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+index 60dbda2a..a033b44f 100644
+--- a/tests/kms_writeback.c
++++ b/tests/kms_writeback.c
+@@ -227,14 +227,17 @@ static void writeback_fb_id(igt_output_t *output, igt_fb_t *valid_fb, igt_fb_t *
+ 
+ static void fill_fb(igt_fb_t *fb, uint32_t pixel)
+ {
+-	void *ptr;
++	uint32_t *ptr;
++	int64_t pixel_count, i;
+ 
+ 	igt_assert(fb->drm_format == DRM_FORMAT_XRGB8888);
+ 
+ 	ptr = igt_fb_map_buffer(fb->fd, fb);
+ 	igt_assert(ptr);
+ 
+-	memset(ptr, pixel, fb->strides[0] * fb->height);
++	pixel_count = fb->strides[0] * fb->height / sizeof(uint32_t);
++	for (i = 0; i < pixel_count; i++)
++		ptr[i] = pixel;
+ 
+ 	igt_fb_unmap_buffer(fb, ptr);
+ }
+-- 
+2.30.2
