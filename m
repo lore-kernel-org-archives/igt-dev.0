@@ -1,17 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 66CBC6E0C4
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Oct 2021 10:21:21 +0000 (UTC)
-Date: Fri, 8 Oct 2021 13:24:52 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YWAcdKcLheB7FJE1@platvala-desk.ger.corp.intel.com>
-References: <20211007172011.16871-1-igormtorrente@gmail.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 756CA6F465
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Oct 2021 10:56:44 +0000 (UTC)
+Message-ID: <40ce98ed-2dad-c7cb-71f4-338104205f9f@intel.com>
+Date: Fri, 8 Oct 2021 16:26:31 +0530
+Content-Language: en-US
+References: <20211004085629.2796-1-karthik.b.s@intel.com>
+ <YVrHBWTxHBHQEMZ0@intel.com> <YVshFrxOVFlyFmNy@intel.com>
+ <eca505ba-6efd-5b4f-ce86-b16d2e035a2e@intel.com> <YVwnSl1BumIYE0bX@intel.com>
+ <b13af887-e6fb-7976-fbc6-7bb458df09f2@gmail.com> <YVwxs7bZ2Bdr9/3D@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <YVwxs7bZ2Bdr9/3D@intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211007172011.16871-1-igormtorrente@gmail.com>
-Subject: Re: [igt-dev] [PATCH v2] tests/kms_writeback.c: fix the `fill_fb`
- function
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Add retry mechanism
+ for async flip subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,67 +25,112 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Igor Torrente <igormtorrente@gmail.com>
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Oct 07, 2021 at 02:20:11PM -0300, Igor Torrente wrote:
-> From: Igor Matheus Andrade Torrente <igormtorrente@gmail.com>
-> 
-> Currently, the `fill_fb` function, instead of filling the framebuffer
-> with the whole pixel, is only filling it with the rightmost byte.
-> 
-> This is happening because, even though the memset accepts an int as
-> a parameter, it's casting the value to unsigned char and will fill
-> the memory with this 8 bits value.
-> 
-> If we setup the pixel to 0xff0000|f0|, the buffer will filled with:
-> 
-> | addr     | = 0f
-> | addr + 1 | = 0f
-> | addr + 2 | = 0f
-> | addr + 3 | = 0f
->     ...
-> | addr + N | = 0f
-> 
-> This patch address this issue by manually copying the entire integer.
-> 
-> Signed-off-by: Igor Torrente <igormtorrente@gmail.com>
+On 10/5/2021 4:36 PM, Ville Syrjälä wrote:
+> On Tue, Oct 05, 2021 at 01:46:54PM +0300, Juha-Pekka Heikkila wrote:
+>> On 5.10.2021 13.22, Ville Syrjälä wrote:
+>>> On Tue, Oct 05, 2021 at 03:30:01PM +0530, Karthik B S wrote:
+>>>> On 10/4/2021 9:13 PM, Ville Syrjälä wrote:
+>>>>> On Mon, Oct 04, 2021 at 12:19:01PM +0300, Ville Syrjälä wrote:
+>>>>>> On Mon, Oct 04, 2021 at 02:26:29PM +0530, Karthik B S wrote:
+>>>>>>> Async flip subtests fail sporadically with CRC failure on CI.
+>>>>>>> This is expected as these tests are not run on highest priority by the
+>>>>>>> scheduler, but this creates noise on CI. Add retry mechanism to rerun
+>>>>>>> the test once if failure is seen.
+>>>>>>>
+>>>>>>> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+>>>>>>> ---
+>>>>>>>     tests/i915/kms_big_fb.c | 9 +++++++++
+>>>>>>>     1 file changed, 9 insertions(+)
+>>>>>>>
+>>>>>>> diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
+>>>>>>> index 308227c9..8c09f59e 100644
+>>>>>>> --- a/tests/i915/kms_big_fb.c
+>>>>>>> +++ b/tests/i915/kms_big_fb.c
+>>>>>>> @@ -481,6 +481,7 @@ max_hw_stride_async_flip_test(data_t *data)
+>>>>>>>     		       h = data->output->config.default_mode.vdisplay;
+>>>>>>>     	igt_plane_t *primary;
+>>>>>>>     	igt_crc_t compare_crc, async_crc;
+>>>>>>> +	bool retried = false;
+>>>>>>>     
+>>>>>>>     	igt_require(data->display.is_atomic);
+>>>>>>>     	igt_output_set_pipe(data->output, data->pipe);
+>>>>>>> @@ -513,6 +514,7 @@ max_hw_stride_async_flip_test(data_t *data)
+>>>>>>>     					  INTEL_PIPE_CRC_SOURCE_AUTO);
+>>>>>>>     	igt_pipe_crc_start(data->pipe_crc);
+>>>>>>>     
+>>>>>>> +retry:
+>>>>>>>     	igt_set_timeout(5, "Async pageflipping loop got stuck!\n");
+>>>>>>>     	for (int i = 0; i < 2; i++) {
+>>>>>>>     		igt_plane_set_fb(primary, &data->big_fb);
+>>>>>>> @@ -548,6 +550,13 @@ max_hw_stride_async_flip_test(data_t *data)
+>>>>>>>     		igt_assert_f(kmstest_get_vblank(data->drm_fd, data->pipe, 0) -
+>>>>>>>     			     startframe == 1, "lost frames\n");
+>>>>>>>     
+>>>>>>> +		/* Test is not running at real time priority, so allow one failure*/
+>>>>>>> +		if (!(igt_check_crc_equal(&compare_crc, &async_crc)^(i^1)) && !retried) {
+>>>>>>> +			retried = true;
+>>>>>>> +			igt_reset_timeout();
+>>>>>>> +			goto retry;
+>>>>>>> +		}
+>>>>>>> +
+>>>>>> This test seems to entirely fit kms_big_fb in general. I don't
+>>>>>                         ^
+>>>>> 		     not
+>>>>>
+>>>>> is what I meant to write. Somewhat important small word.
+>>>>>
+>>>>>> think kms_big_fb should be testing any timing sensitive stuff.
+>>>>>>
+>>>>>> So I think we should change this to a form that follows the rest
+>>>>>> of kms_big_fb to validate that each page flip just presents the
+>>>>>> correct data on screen. The timing sensitive stuff is best left
+>>>>>> for kms_async_flip.
+>>>>>>
+>>>>>> So this should maybe be something like: flip to a correctly sized
+>>>>>> temp fb with the wrong contents and change the plane src coordinates,
+>>>>>> and then async flip back to the correct fb and validate the
+>>>>>> correct data is now on screen.
+>>>> Thank you for the feedback.
+>>>>
+>>>> Is this because we can handle any timing related failures in the same
+>>>> test (may be using some common mechanism)? So add a subtest for
+>>>> max-hw-stride in kms_async_flips and rewrite this subtest as mentioned
+>>>> above?
+>>> I don't think there's anything specifically about max stride
+>>> that needs timing sensitive tests. In theory kms_async_flip/crc
+>>> already tests what we need, which is that there are no visual
+>>> artifacts when flipping between two identical framebuffers.
+>>> The only exception would be if there's some very specific
+>>> hardware issue with big stride + async flip.
+>> At a time there was explicit wishes from hw guys how this test was to be
+>> performed with strides past 64K size. I have no idea if their worries
+>> are still valid.
+>>
+>> Timing sensitivity comes just from the fact when async flip is made the
+>> full stride flips as expected and it need to be captured with crc from
+>> that flipping frame.
+> kms_async_flip/crc just keeps flipping all the time, and checks
+> every frame that the crc remains the same.
+>
+> Though atm it uses a solid color fb, so maybe not the best thing
+> necessarily for detecting weird stuff. Should change it to use the
+> normal pattern fb perhaps (+ the stripe on one edge we clobber/unclobber).
+> Though a lot of the normal pattern fb is just black. Maybe we should
+> have a some kind of standard pattern fb with a bit more of the area
+> filled with interesting shapes that are easily corrupted by eg. any
+> single tile fetch going into the weeds...
+>
+> I guess we could add a big-stride variant there too. For that we'd
+> probably want to put the "what is the max supported hw stride?"
+> stuff somewhere into lib/ (and extend it for all the platforms).
+>
+Thanks Ville, JP for the inputs. Will work on the above mentioned 
+changes and resubmit the patch.
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+Thanks,
 
-
-Merging this shortly, thanks for the patch!
-
-
-> ---
->  tests/kms_writeback.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-> index 60dbda2a..a033b44f 100644
-> --- a/tests/kms_writeback.c
-> +++ b/tests/kms_writeback.c
-> @@ -227,14 +227,17 @@ static void writeback_fb_id(igt_output_t *output, igt_fb_t *valid_fb, igt_fb_t *
->  
->  static void fill_fb(igt_fb_t *fb, uint32_t pixel)
->  {
-> -	void *ptr;
-> +	uint32_t *ptr;
-> +	int64_t pixel_count, i;
->  
->  	igt_assert(fb->drm_format == DRM_FORMAT_XRGB8888);
->  
->  	ptr = igt_fb_map_buffer(fb->fd, fb);
->  	igt_assert(ptr);
->  
-> -	memset(ptr, pixel, fb->strides[0] * fb->height);
-> +	pixel_count = fb->strides[0] * fb->height / sizeof(uint32_t);
-> +	for (i = 0; i < pixel_count; i++)
-> +		ptr[i] = pixel;
->  
->  	igt_fb_unmap_buffer(fb, ptr);
->  }
-> -- 
-> 2.30.2
-> 
+Karthik.B.S
