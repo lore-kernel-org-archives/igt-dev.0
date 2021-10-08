@@ -1,27 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A44356E091
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Oct 2021 04:16:35 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Fri, 8 Oct 2021 04:16:30 +0000
-Message-ID: <MWHPR11MB1312C8548763BA4AA435ED8F89B29@MWHPR11MB1312.namprd11.prod.outlook.com>
-References: <20210902151334.15818-1-vidya.srinivas@intel.com>
- <20210916135955.17270-1-vidya.srinivas@intel.com>
- <fa1e3d36b6a94da4bfaf33d77e6aa316@intel.com>
- <MWHPR11MB13128EB944916330DFA0CD1989AA9@MWHPR11MB1312.namprd11.prod.outlook.com>
- <CAJUqKUqcT0_bLo=XQdpo_SpSsZiTyL7E084OgKgFZDKXhcauKA@mail.gmail.com>
- <d4cb2e0b34364a8a8ece7e05e7c524a6@intel.com>
- <CAJUqKUqH_ZCiQESfhahyoJH49ej7BQmqq-=SQvLzGtkYpHVokw@mail.gmail.com>
- <5140b279c50e43a19e6f60cd607bf0dc@intel.com>
- <MWHPR11MB13121A62F592DD808114638D89B19@MWHPR11MB1312.namprd11.prod.outlook.com>
- <CAJUqKUr6Ba5ab+VPGQgc=TtPOzWGCkrDjLosfoE68CpAae1dvg@mail.gmail.com>
-In-Reply-To: <CAJUqKUr6Ba5ab+VPGQgc=TtPOzWGCkrDjLosfoE68CpAae1dvg@mail.gmail.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F1B746E09A
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Oct 2021 05:38:54 +0000 (UTC)
+Date: Fri, 8 Oct 2021 07:38:49 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20211008053849.GA5726@zkempczy-mobl2>
+References: <20210928031100.34317-1-ashutosh.dixit@intel.com>
+ <20210928065241.GA4608@zkempczy-mobl2>
+ <8735pjf9rr.wl-ashutosh.dixit@intel.com>
+ <7167a2c4-e9fa-61a4-7ae4-5410931d005d@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_sf: Skip tests if
- selected fetch is not available
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7167a2c4-e9fa-61a4-7ae4-5410931d005d@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] Return allocated size in
+ gem_create_in_memory_regions() and friends
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,117 +25,68 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>
-Cc: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>, "Kattamanchi,
- JaswanthX" <jaswanthx.kattamanchi@intel.com>, "B, Jeevan" <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "markyacoub@google.com" <markyacoub@google.com>, "Almahallawy, Khaled" <khaled.almahallawy@intel.com>, "Lin, Charlton" <charlton.lin@intel.com>
+To: John Harrison <john.c.harrison@intel.com>
+Cc: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>, igt-dev@lists.freedesktop.org, Andrzej Turko <andrzej.turko@linux.intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTWFyayBZYWNvdWIgPG1h
-cmt5YWNvdWJAY2hyb21pdW0ub3JnPg0KPiBTZW50OiBUaHVyc2RheSwgT2N0b2JlciA3LCAyMDIx
-IDg6NTQgUE0NCj4gVG86IFNyaW5pdmFzLCBWaWR5YSA8dmlkeWEuc3Jpbml2YXNAaW50ZWwuY29t
-Pg0KPiBDYzogVnVkdW0sIExha3NobWluYXJheWFuYSA8bGFrc2htaW5hcmF5YW5hLnZ1ZHVtQGlu
-dGVsLmNvbT47DQo+IEthdHRhbWFuY2hpLCBKYXN3YW50aFggPGphc3dhbnRoeC5rYXR0YW1hbmNo
-aUBpbnRlbC5jb20+OyBCLCBKZWV2YW4NCj4gPGplZXZhbi5iQGludGVsLmNvbT47IGlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBNb2RlbSwNCj4gQmhhbnVwcmFrYXNoIDxiaGFudXByYWth
-c2gubW9kZW1AaW50ZWwuY29tPjsNCj4gbWFya3lhY291YkBnb29nbGUuY29tOyBBbG1haGFsbGF3
-eSwgS2hhbGVkDQo+IDxraGFsZWQuYWxtYWhhbGxhd3lAaW50ZWwuY29tPjsgTGluLCBDaGFybHRv
-biA8Y2hhcmx0b24ubGluQGludGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbUEFU
-Q0ggaS1nLXRdIHRlc3RzL2ttc19wc3IyX3NmOiBTa2lwIHRlc3RzIGlmIHNlbGVjdGVkDQo+IGZl
-dGNoIGlzIG5vdCBhdmFpbGFibGUNCj4gDQo+IFJldmlld2VkIGFuZCBhcHBsaWVkLiBUaGFua3Mg
-VmlkeWEhDQoNClRoYW5rIHlvdSBzbyBtdWNoIE1hcmsuDQoNClJlZ2FyZHMNClZpZHlhDQo+IA0K
-PiBPbiBUaHUsIE9jdCA3LCAyMDIxIGF0IDM6NTEgQU0gU3Jpbml2YXMsIFZpZHlhIDx2aWR5YS5z
-cmluaXZhc0BpbnRlbC5jb20+DQo+IHdyb3RlOg0KPiA+DQo+ID4gSGVsbG8sDQo+ID4NCj4gPiBJ
-IHRoaW5rIHdlIGNhbiB0YWtlIFJldjMgZm9yIGZpbmFsIG1lcmdlPw0KPiA+IGh0dHBzOi8vcGF0
-Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvOTQyODgvI3JldjMgQ0kgaXMgUEFTUy4NCj4g
-Pg0KPiA+IFJlZ2FyZHMNCj4gPiBWaWR5YQ0KPiA+DQo+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3Nh
-Z2UtLS0tLQ0KPiA+ID4gRnJvbTogVnVkdW0sIExha3NobWluYXJheWFuYSA8bGFrc2htaW5hcmF5
-YW5hLnZ1ZHVtQGludGVsLmNvbT4NCj4gPiA+IFNlbnQ6IFdlZG5lc2RheSwgT2N0b2JlciA2LCAy
-MDIxIDEwOjU1IFBNDQo+ID4gPiBUbzogTWFyayBZYWNvdWIgPG1hcmt5YWNvdWJAY2hyb21pdW0u
-b3JnPg0KPiA+ID4gQ2M6IEthdHRhbWFuY2hpLCBKYXN3YW50aFggPGphc3dhbnRoeC5rYXR0YW1h
-bmNoaUBpbnRlbC5jb20+OyBCLA0KPiA+ID4gSmVldmFuIDxqZWV2YW4uYkBpbnRlbC5jb20+OyBp
-Z3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgTW9kZW0sDQo+ID4gPiBCaGFudXByYWthc2gg
-PGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+OyBTcmluaXZhcywgVmlkeWENCj4gPiA+IDx2
-aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+OyBtYXJreWFjb3ViQGdvb2dsZS5jb20NCj4gPiA+IFN1
-YmplY3Q6IFJFOiBbaWd0LWRldl0gW1BBVENIIGktZy10XSB0ZXN0cy9rbXNfcHNyMl9zZjogU2tp
-cCB0ZXN0cw0KPiA+ID4gaWYgc2VsZWN0ZWQgZmV0Y2ggaXMgbm90IGF2YWlsYWJsZQ0KPiA+ID4N
-Cj4gPiA+IFdlIGhhdmUgYW4gaXNzdWUgZm9yIHRoaXMgZmFpbHVyZS4gUmVwb3J0ZWQgdGhlIHJl
-c3VsdHMuDQo+ID4gPiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2ludGVsLy0v
-aXNzdWVzLzQyNjINCj4gPiA+DQo+ID4gPiBMYWtzaG1pLg0KPiA+ID4NCj4gPiA+IC0tLS0tT3Jp
-Z2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiBGcm9tOiBNYXJrIFlhY291YiA8bWFya3lhY291YkBj
-aHJvbWl1bS5vcmc+DQo+ID4gPiBTZW50OiBXZWRuZXNkYXksIE9jdG9iZXIgNiwgMjAyMSA5OjI3
-IEFNDQo+ID4gPiBUbzogVnVkdW0sIExha3NobWluYXJheWFuYSA8bGFrc2htaW5hcmF5YW5hLnZ1
-ZHVtQGludGVsLmNvbT4NCj4gPiA+IENjOiBLYXR0YW1hbmNoaSwgSmFzd2FudGhYIDxqYXN3YW50
-aHgua2F0dGFtYW5jaGlAaW50ZWwuY29tPjsgQiwNCj4gPiA+IEplZXZhbiA8amVldmFuLmJAaW50
-ZWwuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7IE1vZGVtLA0KPiA+ID4gQmhh
-bnVwcmFrYXNoIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPjsgU3Jpbml2YXMsIFZpZHlh
-DQo+ID4gPiA8dmlkeWEuc3Jpbml2YXNAaW50ZWwuY29tPjsgbWFya3lhY291YkBnb29nbGUuY29t
-DQo+ID4gPiBTdWJqZWN0OiBSZTogW2lndC1kZXZdIFtQQVRDSCBpLWctdF0gdGVzdHMva21zX3Bz
-cjJfc2Y6IFNraXAgdGVzdHMNCj4gPiA+IGlmIHNlbGVjdGVkIGZldGNoIGlzIG5vdCBhdmFpbGFi
-bGUNCj4gPiA+DQo+ID4gPiBIZXkgLSBJJ20gbG9va2luZyBhdCB0aGUgZXJyb3JzIGFuZCB0aGV5
-IGxvb2sgdW5yZWxhdGVkLiBDYW4gd2UgZ2V0DQo+ID4gPiBhIG5ldyBydW4NCj4gPiA+IDopIFRo
-YW5rcyENCj4gPiA+DQo+ID4gPiBPbiBUaHUsIFNlcCAzMCwgMjAyMSBhdCA2OjM2IFBNIFZ1ZHVt
-LCBMYWtzaG1pbmFyYXlhbmENCj4gPiA+IDxsYWtzaG1pbmFyYXlhbmEudnVkdW1AaW50ZWwuY29t
-PiB3cm90ZToNCj4gPiA+ID4NCj4gPiA+ID4gUmUtcmVwb3J0ZWQuDQo+ID4gPiA+DQo+ID4gPiA+
-DQo+ID4gPiA+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiA+IEZyb206IE1hcmsg
-WWFjb3ViIDxtYXJreWFjb3ViQGNocm9taXVtLm9yZz4NCj4gPiA+ID4gU2VudDogVGh1cnNkYXks
-IFNlcHRlbWJlciAzMCwgMjAyMSA3OjI5IEFNDQo+ID4gPiA+IFRvOiBWdWR1bSwgTGFrc2htaW5h
-cmF5YW5hIDxsYWtzaG1pbmFyYXlhbmEudnVkdW1AaW50ZWwuY29tPjsNCj4gPiA+ID4gS2F0dGFt
-YW5jaGksIEphc3dhbnRoWCA8amFzd2FudGh4LmthdHRhbWFuY2hpQGludGVsLmNvbT4NCj4gPiA+
-ID4gQ2M6IEIsIEplZXZhbiA8amVldmFuLmJAaW50ZWwuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVl
-ZGVza3RvcC5vcmc7DQo+ID4gPiA+IE1vZGVtLCBCaGFudXByYWthc2ggPGJoYW51cHJha2FzaC5t
-b2RlbUBpbnRlbC5jb20+OyBTcmluaXZhcywNCj4gPiA+IFZpZHlhDQo+ID4gPiA+IDx2aWR5YS5z
-cmluaXZhc0BpbnRlbC5jb20+OyBtYXJreWFjb3ViQGdvb2dsZS5jb20NCj4gPiA+ID4gU3ViamVj
-dDogUmU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19wc3IyX3NmOiBTa2lwIHRl
-c3RzDQo+ID4gPiA+IGlmIHNlbGVjdGVkIGZldGNoIGlzIG5vdCBhdmFpbGFibGUNCj4gPiA+ID4N
-Cj4gPiA+ID4gSGkgTGFrc2htaS9KYXN3YW50aA0KPiA+ID4gPg0KPiA+ID4gPiBJIGNoZWNrZWQg
-dGhlIHBhdGNoDQo+ID4gPiA+IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJp
-ZXMvOTQyODgvI3JldjIgYW5kIGl0IGxvb2tzDQo+ID4gPiA+IGxpa2UgYQ0KPiA+ID4gZmFsc2Ug
-cG9zaXRpdmUsIGNhbiB3ZSByZS1yZXBvcnQ/DQo+ID4gPiA+DQo+ID4gPiA+IFRoYW5rcywNCj4g
-PiA+ID4gTWFyaw0KPiA+ID4gPg0KPiA+ID4gPiBPbiBUaHUsIFNlcCAzMCwgMjAyMSBhdCA4OjEw
-IEFNIFNyaW5pdmFzLCBWaWR5YQ0KPiA+ID4gPiA8dmlkeWEuc3Jpbml2YXNAaW50ZWwuY29tPg0K
-PiA+ID4gd3JvdGU6DQo+ID4gPiA+ID4NCj4gPiA+ID4gPg0KPiA+ID4gPiA+DQo+ID4gPiA+ID4g
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4gPiA+ID4gRnJvbTogQiwgSmVldmFu
-IDxqZWV2YW4uYkBpbnRlbC5jb20+DQo+ID4gPiA+ID4gPiBTZW50OiBUaHVyc2RheSwgU2VwdGVt
-YmVyIDMwLCAyMDIxIDM6MjYgUE0NCj4gPiA+ID4gPiA+IFRvOiBTcmluaXZhcywgVmlkeWEgPHZp
-ZHlhLnNyaW5pdmFzQGludGVsLmNvbT47DQo+ID4gPiA+ID4gPiBpZ3QtZGV2QGxpc3RzLmZyZWVk
-ZXNrdG9wLm9yZw0KPiA+ID4gPiA+ID4gQ2M6IE1vZGVtLCBCaGFudXByYWthc2ggPGJoYW51cHJh
-a2FzaC5tb2RlbUBpbnRlbC5jb20+Ow0KPiA+ID4gPiA+ID4gbWFya3lhY291YkBnb29nbGUuY29t
-OyBTcmluaXZhcywgVmlkeWENCj4gPiA+ID4gPiA+IDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+
-DQo+ID4gPiA+ID4gPiBTdWJqZWN0OiBSRTogW2lndC1kZXZdIFtQQVRDSCBpLWctdF0gdGVzdHMv
-a21zX3BzcjJfc2Y6IFNraXANCj4gPiA+ID4gPiA+IHRlc3RzIGlmIHNlbGVjdGVkIGZldGNoIGlz
-IG5vdCBhdmFpbGFibGUNCj4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gPiBMb29rcyBnb29kIHRvIG1l
-Lg0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gVGhhbmsgeW91IHZlcnkgbXVjaCBKZWV2YW4uDQo+ID4g
-PiA+ID4NCj4gPiA+ID4gPiBSZWdhcmRzDQo+ID4gPiA+ID4gVmlkeWENCj4gPiA+ID4gPiA+DQo+
-ID4gPiA+ID4gPiA+LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiA+ID4gPiA+ID5Gcm9t
-OiBpZ3QtZGV2IDxpZ3QtZGV2LWJvdW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbg0KPiA+
-ID4gPiA+ID4gPkJlaGFsZiBPZiBWaWR5YSBTcmluaXZhcw0KPiA+ID4gPiA+ID4gPlNlbnQ6IFRo
-dXJzZGF5LCBTZXB0ZW1iZXIgMTYsIDIwMjEgNzozMCBQTQ0KPiA+ID4gPiA+ID4gPlRvOiBpZ3Qt
-ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiA+ID4gPiA+ID4gPkNjOiBNb2RlbSwgQmhhbnVw
-cmFrYXNoIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPjsNCj4gPiA+ID4gPiA+ID5tYXJr
-eWFjb3ViQGdvb2dsZS5jb207IFNyaW5pdmFzLCBWaWR5YQ0KPiA+ID4gPiA+ID4gPjx2aWR5YS5z
-cmluaXZhc0BpbnRlbC5jb20+DQo+ID4gPiA+ID4gPiA+U3ViamVjdDogW2lndC1kZXZdIFtQQVRD
-SCBpLWctdF0gdGVzdHMva21zX3BzcjJfc2Y6IFNraXANCj4gPiA+ID4gPiA+ID50ZXN0cyBpZiBz
-ZWxlY3RlZCBmZXRjaCBpcyBub3QgYXZhaWxhYmxlDQo+ID4gPiA+ID4gPiA+DQo+ID4gPiA+ID4g
-PiA+Q3VycmVudGx5IHRoZSB0ZXN0cyBhcmUgZmFpbGluZyBvbiBzeXN0ZW1zIHdoZXJlIHNlbGVj
-dGVkDQo+ID4gPiA+ID4gPiA+ZmV0Y2ggZmVhdHVyZSBpcyBub3QgYXZhaWxibGUuIEtlcm5lbCBy
-ZXR1cm5zIC1FSU5WQUwgd2hlbg0KPiA+ID4gPiA+ID4gPnRoZSB0ZXN0IGV4ZWN1dGVzIHJlcG9y
-dGluZyAiSW52YWxpZCBkZWJ1ZyBtYXNrIDQiLg0KPiA+ID4gPiA+ID4gPlBhdGNoIHNraXBzIGlm
-IHNlbGVjdGVkIGZldGNoIGZlYXR1cmUgaXMgbm90IGF2YWlsYWJsZSBpbiB0aGUga2VybmVsLg0K
-PiA+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gPnYyOiBJbmNvcnBvcnRhdGVkIE1hcmsgWWFjb3Vi
-J3MgY29tbWVudHMuDQo+ID4gPiA+ID4gPiA+Q2hhbmdlZCBpZ3Rfc2tpcCB0byBpZ3RfcmVxdWly
-ZV9mDQo+ID4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gPiA+U2lnbmVkLW9mZi1ieTogVmlkeWEgU3Jp
-bml2YXMgPHZpZHlhLnNyaW5pdmFzQGludGVsLmNvbT4NCj4gPiA+ID4gPiA+IFJldmlld2VkLWJ5
-OiBKZWV2YW4gQjxqZWV2YW4uYkBpbnRlbC5jb20+DQo+ID4gPiA+ID4gPiA+LS0tDQo+ID4gPiA+
-ID4gPiA+IGxpYi9pZ3RfcHNyLmMgfCAyICstDQo+ID4gPiA+ID4gPiA+IDEgZmlsZSBjaGFuZ2Vk
-LCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KPiA+ID4gPiA+ID4gPg0KPiA+ID4gPiA+
-ID4gPmRpZmYgLS1naXQgYS9saWIvaWd0X3Bzci5jIGIvbGliL2lndF9wc3IuYyBpbmRleA0KPiA+
-ID4gPiA+ID4gPjY4MjQwZjlhMzNiNC4uMGFmNTAzZmI3OTZlIDEwMDY0NA0KPiA+ID4gPiA+ID4g
-Pi0tLSBhL2xpYi9pZ3RfcHNyLmMNCj4gPiA+ID4gPiA+ID4rKysgYi9saWIvaWd0X3Bzci5jDQo+
-ID4gPiA+ID4gPiA+QEAgLTE2Nyw3ICsxNjcsNyBAQCBzdGF0aWMgYm9vbCBwc3Jfc2V0KGludCBk
-ZXZpY2UsIGludA0KPiA+ID4gPiA+ID4gPmRlYnVnZnNfZmQsIGludA0KPiA+ID4gPiA+ID4gPm1v
-ZGUpICB9DQo+ID4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gPiA+IHJldCA9IHBzcl93cml0ZShkZWJ1
-Z2ZzX2ZkLCBkZWJ1Z192YWwpOyAtaWd0X2Fzc2VydChyZXQgPg0KPiA+ID4gPiA+ID4gPiAwKTsN
-Cj4gPiA+ID4gPiA+ID4raWd0X3JlcXVpcmVfZihyZXQgPT0gMCwgIlBTUjIgU0YgZmVhdHVyZSBu
-b3QgYXZhaWxhYmxlXG4iKTsNCj4gPiA+ID4gPiA+ID4gfQ0KPiA+ID4gPiA+ID4gPg0KPiA+ID4g
-PiA+ID4gPiAvKiBSZXN0b3JlIG9yaWdpbmFsIHZhbHVlIG9uIGV4aXQgKi8NCj4gPiA+ID4gPiA+
-ID4tLQ0KPiA+ID4gPiA+ID4gPjIuMzMuMA0KPiA+ID4gPiA+ID4NCj4gPiA+ID4gPg0KPiA+DQo=
+On Thu, Oct 07, 2021 at 12:26:16PM -0700, John Harrison wrote:
+> On 10/2/2021 13:32, Dixit, Ashutosh wrote:
+> > On Mon, 27 Sep 2021 23:52:41 -0700, Zbigniew Kempczyński wrote:
+> > > > diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+> > > > index d1395c1605d..52794c1ac10 100644
+> > > > --- a/lib/intel_bufops.c
+> > > > +++ b/lib/intel_bufops.c
+> > > > @@ -819,7 +819,7 @@ static void __intel_buf_init(struct buf_ops *bops,
+> > > > 	if (handle)
+> > > > 		buf->handle = handle;
+> > > > 	else {
+> > > > -		if (!__gem_create_in_memory_regions(bops->fd, &handle, size, region))
+> > > > +		if (!__gem_create_in_memory_regions(bops->fd, &handle, &size, region))
+> > > > 			buf->handle = handle;
+> > > > 		else
+> > > > 			buf->handle = gem_create(bops->fd, size);
+> > > As size can be different we pass we should update buf->size accordingly.
+> > > Look at few lines above:
+> > > 
+> > > 	/* Store real bo size to avoid mistakes in calculating it again */
+> > > 	buf->size = size;
+> > > 
+> > > I think these lines can be moved at the bottom of the condition.
+> > > 
+> > > buf->size is returned as a call to intel_buf_bo_size() and used in
+> > > intel_bb_add_object(). This can be important for no-reloc mode to avoid
+> > > overlapping object on softpin and hitting -ENOSPC.
+> > I have a new patch reverting part of the changes done in 22643ce4014a:
+> > 
+> > https://patchwork.freedesktop.org/series/95376/
+> > 
+> > In this context I want to check regarding the above change again: should we
+> > be setting buf->size above to the allocated size or to the requested size,
+> > in case the two are different? Currently the code (even after the new
+> > patch) is setting it to the allocated size which might be >= the requested
+> > size. Thanks.
+> There are valid reasons why the actual allocated size is required by some
+> tests. For example, verifying that an error capture has captured a buffer
+> object correctly (and not saved too little/much data). If there are also
+> valid reasons why a test might fail if given the actual size rather than the
+> requested size then maybe we need another mechanism. Either return both or
+> provide support for querying one or both later on.
+
+I've diverged requested size and bo size to fulfill your needs:
+
+https://patchwork.freedesktop.org/series/95388/
+
+Calculated buffer size reside in buf->size and is returned by intel_buf_size(),
+similar buf->bo_size is returned from intel_buf_bo_size().
+
+One disclaimer - intel_buf is not able to validate bo size if it is passed
+from the caller (intel_buf_create_with_handle() family).
+When it is used in "create" path what means it creates gem bo it catches
+bo size returned from the kernel.
+
+--
+Zbigniew
+
+> 
+> John.
+> 
