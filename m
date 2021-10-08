@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2053.outbound.protection.outlook.com [40.107.220.53])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 546F56E07D
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Oct 2021 19:03:12 +0000 (UTC)
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Date: Fri, 8 Oct 2021 15:02:51 -0400
-Message-ID: <20211008190251.3709425-1-Rodrigo.Siqueira@amd.com>
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com
+ (mail-bn1nam07on2085.outbound.protection.outlook.com [40.107.212.85])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C0A16E07D
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Oct 2021 19:09:09 +0000 (UTC)
+From: "Deucher, Alexander" <Alexander.Deucher@amd.com>
+Date: Fri, 8 Oct 2021 19:09:07 +0000
+Message-ID: <BN9PR12MB514600FB8D2C011B15D371D6F7B29@BN9PR12MB5146.namprd12.prod.outlook.com>
+References: <20211008190251.3709425-1-Rodrigo.Siqueira@amd.com>
+In-Reply-To: <20211008190251.3709425-1-Rodrigo.Siqueira@amd.com>
+Content-Language: en-US
+Content-Type: multipart/alternative;
+ boundary="_000_BN9PR12MB514600FB8D2C011B15D371D6F7B29BN9PR12MB5146namp_"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t] tests: Add amdgpu test suite
+Subject: Re: [igt-dev] [PATCH i-g-t] tests: Add amdgpu test suite
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,9 +22,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Harry Wentland <harry.wentland@amd.com>, Nicholas Choi <Nicholas.Choi@amd.com>, Sun peng Li <sunpeng.li@amd.com>, Alexander Deucher <alexander.deucher@amd.com>, Martin Roukala <martin.roukala@mupuf.org>, Hayden Goodfellow <hayden.goodfellow@amd.com>, Simon Ser <contact@emersion.fr>, Mark Yacoub <markyacoub@google.com>
+To: "Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Wentland, Harry" <Harry.Wentland@amd.com>, "Choi, Nicholas" <Nicholas.Choi@amd.com>, "Li, Sun peng (Leo)" <Sunpeng.Li@amd.com>, Martin Roukala <martin.roukala@mupuf.org>, "Goodfellow, Hayden" <Hayden.Goodfellow@amd.com>, Simon Ser <contact@emersion.fr>, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
+
+--_000_BN9PR12MB514600FB8D2C011B15D371D6F7B29BN9PR12MB5146namp_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+[Public]
+
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+________________________________
+From: Siqueira, Rodrigo <Rodrigo.Siqueira@amd.com>
+Sent: Friday, October 8, 2021 3:02 PM
+To: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>
+Cc: Wentland, Harry <Harry.Wentland@amd.com>; Choi, Nicholas <Nicholas.Choi=
+@amd.com>; Li, Sun peng (Leo) <Sunpeng.Li@amd.com>; Deucher, Alexander <Ale=
+xander.Deucher@amd.com>; Martin Roukala <martin.roukala@mupuf.org>; Goodfel=
+low, Hayden <Hayden.Goodfellow@amd.com>; Simon Ser <contact@emersion.fr>; M=
+ark Yacoub <markyacoub@google.com>
+Subject: [PATCH i-g-t] tests: Add amdgpu test suite
 
 Add various test suites relevant for the amdgpu driver.
 
@@ -67,22 +88,26 @@ index 00000000..bd34245c
 +- Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 +- Sun peng (Leo) Li <sunpeng.li@amd.com>
 +
-+======================
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 +fast-feedback.testlist
-+======================
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 +
-+Fast-feedback contains tests that roughly tests a wide coverage of features in
++Fast-feedback contains tests that roughly tests a wide coverage of feature=
+s in
 +a short time. We use this list for presubmission validation. Results of a
-+fast-feedback test round should only be considered to mean that the kernel is
++fast-feedback test round should only be considered to mean that the kernel=
+ is
 +not obviously broken.
 +
-+======================
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 +full-feedback.testlist
-+======================
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 +
-+This is an extensive set of tests that takes a long time to complete in which
++This is an extensive set of tests that takes a long time to complete in wh=
+ich
 +we usually use as post-submission.
-diff --git a/tests/amdgpu-ci/fast-feedback.testlist b/tests/amdgpu-ci/fast-feedback.testlist
+diff --git a/tests/amdgpu-ci/fast-feedback.testlist b/tests/amdgpu-ci/fast-=
+feedback.testlist
 new file mode 100644
 index 00000000..025bea16
 --- /dev/null
@@ -92,7 +117,8 @@ index 00000000..025bea16
 +igt@kms_setmode@basic
 +
 +
-+# SINGLE-DISPLAY - Light-up, hotplug, bootup, and general functionality tests for single non tiled display
++# SINGLE-DISPLAY - Light-up, hotplug, bootup, and general functionality te=
+sts for single non tiled display
 +igt@amdgpu/amd_hotplug@basic
 +igt@amdgpu/amd_hotplug@basic-suspend
 +igt@kms_bw@linear-tiling-1-displays-1920x1080p
@@ -223,7 +249,8 @@ index 00000000..025bea16
 +# ASSR - ASSR
 +igt@amdgpu/amd_assr@assr-links
 +igt@amdgpu/amd_assr@assr-links-dpms
-diff --git a/tests/amdgpu-ci/full-feedback.testlist b/tests/amdgpu-ci/full-feedback.testlist
+diff --git a/tests/amdgpu-ci/full-feedback.testlist b/tests/amdgpu-ci/full-=
+feedback.testlist
 new file mode 100644
 index 00000000..cc837d47
 --- /dev/null
@@ -233,7 +260,8 @@ index 00000000..cc837d47
 +igt@kms_setmode@basic
 +
 +
-+# SINGLE-DISPLAY - Light-up, hotplug, bootup, and general functionality tests for single non tiled display
++# SINGLE-DISPLAY - Light-up, hotplug, bootup, and general functionality te=
+sts for single non tiled display
 +igt@amdgpu/amd_hotplug@basic
 +igt@amdgpu/amd_hotplug@basic-suspend
 +igt@kms_bw@linear-tiling-1-displays-1920x1080p
@@ -402,5 +430,449 @@ index 00000000..cc837d47
 +
 +# tests with higher probability of hanging the system
 +igt@amdgpu/amd_link_settings@link-training-configs
--- 
+--
 2.25.1
+
+
+--_000_BN9PR12MB514600FB8D2C011B15D371D6F7B29BN9PR12MB5146namp_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<p style=3D"font-family:Arial;font-size:10pt;color:#008000;margin:15pt;" al=
+ign=3D"Left">
+[Public]<br>
+</p>
+<br>
+<div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);">
+Acked-by: Alex Deucher &lt;alexander.deucher@amd.com&gt;<br>
+</div>
+<div id=3D"appendonsend"></div>
+<hr style=3D"display:inline-block;width:98%" tabindex=3D"-1">
+<div id=3D"divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" st=
+yle=3D"font-size:11pt" color=3D"#000000"><b>From:</b> Siqueira, Rodrigo &lt=
+;Rodrigo.Siqueira@amd.com&gt;<br>
+<b>Sent:</b> Friday, October 8, 2021 3:02 PM<br>
+<b>To:</b> igt-dev@lists.freedesktop.org &lt;igt-dev@lists.freedesktop.org&=
+gt;<br>
+<b>Cc:</b> Wentland, Harry &lt;Harry.Wentland@amd.com&gt;; Choi, Nicholas &=
+lt;Nicholas.Choi@amd.com&gt;; Li, Sun peng (Leo) &lt;Sunpeng.Li@amd.com&gt;=
+; Deucher, Alexander &lt;Alexander.Deucher@amd.com&gt;; Martin Roukala &lt;=
+martin.roukala@mupuf.org&gt;; Goodfellow, Hayden &lt;Hayden.Goodfellow@amd.=
+com&gt;;
+ Simon Ser &lt;contact@emersion.fr&gt;; Mark Yacoub &lt;markyacoub@google.c=
+om&gt;<br>
+<b>Subject:</b> [PATCH i-g-t] tests: Add amdgpu test suite</font>
+<div>&nbsp;</div>
+</div>
+<div class=3D"BodyFragment"><font size=3D"2"><span style=3D"font-size:11pt;=
+">
+<div class=3D"PlainText">Add various test suites relevant for the amdgpu dr=
+iver.<br>
+<br>
+Cc: Harry Wentland &lt;harry.wentland@amd.com&gt;<br>
+Cc: Nicholas Choi &lt;Nicholas.Choi@amd.com&gt;<br>
+Cc: Rodrigo Siqueira &lt;Rodrigo.Siqueira@amd.com&gt;<br>
+Cc: Sun peng (Leo) Li &lt;sunpeng.li@amd.com&gt;<br>
+Cc: Alexander Deucher &lt;alexander.deucher@amd.com&gt;<br>
+Cc: Martin Roukala &lt;martin.roukala@mupuf.org&gt;<br>
+Cc: Hayden Goodfellow &lt;hayden.goodfellow@amd.com&gt;<br>
+Cc: Simon Ser &lt;contact@emersion.fr&gt;<br>
+Cc: Mark Yacoub &lt;markyacoub@google.com&gt;<br>
+<br>
+Signed-off-by: Rodrigo Siqueira &lt;Rodrigo.Siqueira@amd.com&gt;<br>
+---<br>
+&nbsp;tests/amdgpu-ci/README&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp; 31 +++++<br>
+&nbsp;tests/amdgpu-ci/fast-feedback.testlist | 135 +++++++++++++++++++<br>
+&nbsp;tests/amdgpu-ci/full-feedback.testlist | 173 ++++++++++++++++++++++++=
++<br>
+&nbsp;3 files changed, 339 insertions(+)<br>
+&nbsp;create mode 100644 tests/amdgpu-ci/README<br>
+&nbsp;create mode 100644 tests/amdgpu-ci/fast-feedback.testlist<br>
+&nbsp;create mode 100644 tests/amdgpu-ci/full-feedback.testlist<br>
+<br>
+diff --git a/tests/amdgpu-ci/README b/tests/amdgpu-ci/README<br>
+new file mode 100644<br>
+index 00000000..bd34245c<br>
+--- /dev/null<br>
++++ b/tests/amdgpu-ci/README<br>
+@@ -0,0 +1,31 @@<br>
++This directory contains test lists that are used by AMD's CI. The<br>
++files are passed to piglit with the --test-list parameter directly.<br>
++<br>
++The test lists are contained in the IGT repository for several<br>
++reasons:<br>
++<br>
++- The lists stay synchronized with the IGT codebase.<br>
++- Public availability. Kernel developers can see what tests are run,<br>
++&nbsp; and can see what changes are done to the set, when, and why.<br>
++<br>
++Changing the test lists should only happen with approval from:<br>
++- Harry Wentland &lt;harry.wentland@amd.com&gt;<br>
++- Nicholas Choi &lt;Nicholas.Choi@amd.com&gt;<br>
++- Rodrigo Siqueira &lt;Rodrigo.Siqueira@amd.com&gt;<br>
++- Sun peng (Leo) Li &lt;sunpeng.li@amd.com&gt;<br>
++<br>
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
++fast-feedback.testlist<br>
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
++<br>
++Fast-feedback contains tests that roughly tests a wide coverage of feature=
+s in<br>
++a short time. We use this list for presubmission validation. Results of a<=
+br>
++fast-feedback test round should only be considered to mean that the kernel=
+ is<br>
++not obviously broken.<br>
++<br>
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
++full-feedback.testlist<br>
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
++<br>
++This is an extensive set of tests that takes a long time to complete in wh=
+ich<br>
++we usually use as post-submission.<br>
+diff --git a/tests/amdgpu-ci/fast-feedback.testlist b/tests/amdgpu-ci/fast-=
+feedback.testlist<br>
+new file mode 100644<br>
+index 00000000..025bea16<br>
+--- /dev/null<br>
++++ b/tests/amdgpu-ci/fast-feedback.testlist<br>
+@@ -0,0 +1,135 @@<br>
++# tests to be run at the beginning<br>
++igt@kms_setmode@basic<br>
++<br>
++<br>
++# SINGLE-DISPLAY - Light-up, hotplug, bootup, and general functionality te=
+sts for single non tiled display<br>
++igt@amdgpu/amd_hotplug@basic<br>
++igt@amdgpu/amd_hotplug@basic-suspend<br>
++igt@kms_bw@linear-tiling-1-displays-1920x1080p<br>
++<br>
++<br>
++# ATOMIC-MODESETTING - Atomic modesetting tests<br>
++igt@kms_atomic@plane-overlay-legacy<br>
++igt@kms_atomic@plane-primary-legacy<br>
++igt@kms_atomic@plane-immutable-zpos<br>
++igt@kms_atomic@test-only<br>
++igt@kms_atomic@plane-cursor-legacy<br>
++igt@kms_atomic@plane-invalid-params<br>
++igt@kms_atomic@plane-invalid-params-fence<br>
++igt@kms_atomic@crtc-invalid-params<br>
++igt@kms_atomic@crtc-invalid-params-fence<br>
++igt@kms_atomic@atomic-invalid-params<br>
++igt@kms_content_protection@atomic<br>
++igt@kms_flip@basic-flip-vs-dpms@a-dp1<br>
++igt@kms_flip@basic-flip-vs-dpms@c-dp1<br>
++igt@kms_flip@basic-plain-flip@a-dp1<br>
++igt@kms_flip@basic-plain-flip@c-dp1<br>
++igt@kms_flip@flip-vs-dpms-off-vs-modeset@a-dp1<br>
++igt@kms_flip@flip-vs-dpms-off-vs-modeset@c-dp1<br>
++<br>
++<br>
++# COLOR - Color Adjustments<br>
++igt@kms_color@pipe-a-gamma<br>
++igt@kms_plane_alpha_blend@pipe-a-alpha-transparent-fb<br>
++igt@kms_color@pipe-a-degamma<br>
++igt@amdgpu/amd_color@crtc-linear-degamma<br>
++igt@kms_plane_alpha_blend@pipe-a-constant-alpha-mid<br>
++igt@kms_color@pipe-a-ctm-0-25<br>
++igt@amdgpu/amd_color@crtc-linear-regamma<br>
++igt@kms_plane_alpha_blend@pipe-a-constant-alpha-max<br>
++igt@kms_color@pipe-a-ctm-negative<br>
++igt@kms_plane_alpha_blend@pipe-a-alpha-opaque-fb<br>
++igt@kms_color@pipe-a-ctm-blue-to-red<br>
++igt@kms_color@pipe-a-ctm-0-75<br>
++igt@kms_color@pipe-a-legacy-gamma<br>
++igt@kms_color@pipe-a-ctm-0-5<br>
++igt@kms_color@pipe-a-ctm-max<br>
++igt@kms_color@pipe-a-ctm-red-to-blue<br>
++igt@amdgpu/amd_color@crtc-lut-accuracy<br>
++igt@kms_color@pipe-a-ctm-green-to-red<br>
++igt@kms_plane_alpha_blend@pipe-a-constant-alpha-min<br>
++igt@kms_plane_alpha_blend@pipe-a-alpha-basic<br>
++igt@kms_color@pipe-a-legacy-gamma-reset<br>
++<br>
++<br>
++# VRR<br>
++igt@kms_vrr@flip-basic<br>
++igt@kms_vrr@flip-dpms<br>
++<br>
++<br>
++# MODES - Tests mode settings<br>
++igt@kms_plane_scaling@plane-scaling@pipe-a-plane-scaling<br>
++igt@kms_plane_scaling@plane-scaling@pipe-c-plane-scaling<br>
++igt@kms_setmode@basic-clone-single-crtc<br>
++igt@kms_setmode@invalid-clone-single-crtc<br>
++igt@kms_setmode@invalid-clone-exclusive-crtc<br>
++igt@kms_setmode@clone-exclusive-crtc<br>
++igt@kms_setmode@invalid-clone-single-crtc-stealing<br>
++<br>
++<br>
++# PLANE - DRM plane-level tests<br>
++igt@kms_plane@plane-panning-top-left@pipe-a-planes<br>
++igt@kms_cursor_legacy@flip-vs-cursor-atomic<br>
++igt@kms_plane@plane-position-hole-dpms@pipe-a-planes<br>
++igt@kms_properties@plane-properties-legacy<br>
++igt@kms_plane_cursor@pipe-a-primary-size-256<br>
++igt@kms_plane@plane-position-covered@pipe-a-planes<br>
++igt@kms_plane@plane-position-hole-dpms@pipe-b-planes<br>
++igt@kms_plane@plane-position-hole@pipe-b-planes<br>
++igt@kms_plane_multiple@atomic-pipe-a-tiling-none<br>
++igt@kms_plane@plane-panning-top-left@pipe-b-planes<br>
++igt@kms_plane@plane-position-covered@pipe-b-planes<br>
++igt@kms_plane_cursor@pipe-a-primary-size-128<br>
++igt@kms_cursor_legacy@cursor-vs-flip-legacy<br>
++igt@kms_plane@plane-panning-bottom-right@pipe-b-planes<br>
++igt@kms_plane_multiple@atomic-pipe-c-tiling-none<br>
++igt@kms_plane@plane-panning-bottom-right@pipe-a-planes<br>
++igt@kms_plane_cursor@pipe-a-primary-size-64<br>
++igt@kms_plane@plane-position-hole@pipe-a-planes<br>
++<br>
++<br>
++# DPMS - DPMS<br>
++igt@kms_content_protection@atomic-dpms<br>
++<br>
++<br>
++# HDCP - HDCP functionality<br>
++igt@kms_content_protection@legacy<br>
++<br>
++<br>
++# DISPLAY-LAYER - General DRM API tests and display driver tests<br>
++igt@core_auth@basic-auth<br>
++igt@kms_prop_blob@basic<br>
++igt@kms_prop_blob@blob-prop-core<br>
++igt@kms_prop_blob@blob-prop-validate<br>
++igt@kms_prop_blob@blob-prop-lifetime<br>
++igt@kms_prop_blob@blob-multiple<br>
++igt@kms_prop_blob@invalid-get-prop-any<br>
++igt@kms_prop_blob@invalid-get-prop<br>
++igt@kms_prop_blob@invalid-set-prop-any<br>
++igt@kms_prop_blob@invalid-set-prop<br>
++igt@kms_atomic_interruptible@legacy-dpms@dp-1-pipe-a<br>
++igt@kms_atomic_interruptible@legacy-pageflip@dp-1-pipe-a<br>
++igt@kms_atomic_interruptible@legacy-cursor@dp-1-pipe-a<br>
++igt@kms_atomic_interruptible@universal-setplane-primary@dp-1-pipe-a<br>
++igt@kms_atomic_interruptible@universal-setplane-cursor@dp-1-pipe-a<br>
++igt@kms_getfb@getfb-handle-zero<br>
++igt@kms_getfb@getfb-handle-valid<br>
++igt@kms_getfb@getfb-handle-closed<br>
++igt@kms_getfb@getfb-handle-not-fb<br>
++igt@kms_getfb@getfb-addfb-different-handles<br>
++igt@kms_getfb@getfb-repeated-different-handles<br>
++igt@kms_getfb@getfb2-handle-zero<br>
++igt@kms_getfb@getfb2-handle-closed<br>
++igt@kms_getfb@getfb2-handle-not-fb<br>
++igt@kms_getfb@getfb2-into-addfb2<br>
++igt@kms_getfb@getfb-handle-protection<br>
++igt@kms_getfb@getfb2-handle-protection<br>
++<br>
++<br>
++# S3 - S3<br>
++igt@kms_plane@plane-panning-bottom-right-suspend@pipe-a-planes<br>
++<br>
++<br>
++# ASSR - ASSR<br>
++igt@amdgpu/amd_assr@assr-links<br>
++igt@amdgpu/amd_assr@assr-links-dpms<br>
+diff --git a/tests/amdgpu-ci/full-feedback.testlist b/tests/amdgpu-ci/full-=
+feedback.testlist<br>
+new file mode 100644<br>
+index 00000000..cc837d47<br>
+--- /dev/null<br>
++++ b/tests/amdgpu-ci/full-feedback.testlist<br>
+@@ -0,0 +1,173 @@<br>
++# tests to be run at the beginning<br>
++igt@kms_setmode@basic<br>
++<br>
++<br>
++# SINGLE-DISPLAY - Light-up, hotplug, bootup, and general functionality te=
+sts for single non tiled display<br>
++igt@amdgpu/amd_hotplug@basic<br>
++igt@amdgpu/amd_hotplug@basic-suspend<br>
++igt@kms_bw@linear-tiling-1-displays-1920x1080p<br>
++<br>
++<br>
++# ATOMIC-MODESETTING - Atomic modesetting tests<br>
++igt@kms_atomic@plane-overlay-legacy<br>
++igt@kms_atomic@plane-primary-legacy<br>
++igt@kms_atomic@plane-immutable-zpos<br>
++igt@kms_atomic@test-only<br>
++igt@kms_atomic@plane-cursor-legacy<br>
++igt@kms_atomic@plane-invalid-params<br>
++igt@kms_atomic@plane-invalid-params-fence<br>
++igt@kms_atomic@crtc-invalid-params<br>
++igt@kms_atomic@crtc-invalid-params-fence<br>
++igt@kms_atomic@atomic-invalid-params<br>
++igt@kms_content_protection@atomic<br>
++igt@kms_flip@basic-flip-vs-dpms@a-dp1<br>
++igt@kms_flip@basic-flip-vs-dpms@c-dp1<br>
++igt@kms_flip@basic-plain-flip@a-dp1<br>
++igt@kms_flip@basic-plain-flip@c-dp1<br>
++igt@kms_flip@flip-vs-dpms-off-vs-modeset@a-dp1<br>
++igt@kms_flip@flip-vs-dpms-off-vs-modeset@c-dp1<br>
++igt@kms_flip_event_leak<br>
++<br>
++<br>
++# COLOR - Color Adjustments<br>
++igt@kms_color@pipe-a-gamma<br>
++igt@kms_plane_alpha_blend@pipe-a-alpha-transparent-fb<br>
++igt@kms_color@pipe-a-degamma<br>
++igt@amdgpu/amd_color@crtc-linear-degamma<br>
++igt@kms_plane_alpha_blend@pipe-a-constant-alpha-mid<br>
++igt@kms_color@pipe-a-ctm-0-25<br>
++igt@amdgpu/amd_color@crtc-linear-regamma<br>
++igt@kms_plane_alpha_blend@pipe-a-constant-alpha-max<br>
++igt@kms_color@pipe-a-ctm-negative<br>
++igt@kms_plane_alpha_blend@pipe-a-alpha-opaque-fb<br>
++igt@kms_color@pipe-a-ctm-blue-to-red<br>
++igt@kms_color@pipe-a-ctm-0-75<br>
++igt@kms_color@pipe-a-legacy-gamma<br>
++igt@kms_color@pipe-a-ctm-0-5<br>
++igt@kms_color@pipe-a-ctm-max<br>
++igt@kms_color@pipe-a-ctm-red-to-blue<br>
++igt@amdgpu/amd_color@crtc-lut-accuracy<br>
++igt@kms_color@pipe-a-ctm-green-to-red<br>
++igt@kms_plane_alpha_blend@pipe-a-constant-alpha-min<br>
++igt@kms_plane_alpha_blend@pipe-a-alpha-basic<br>
++igt@kms_color@pipe-a-legacy-gamma-reset<br>
++<br>
++<br>
++# VRR<br>
++igt@kms_vrr@flip-basic<br>
++igt@kms_vrr@flip-dpms<br>
++igt@amdgpu/amd_vrr_range@freesync-parsing-dp<br>
++igt@amdgpu/amd_vrr_range@freesync-parsing-dp-suspend<br>
++igt@amdgpu/amd_vrr_range@freesync-range-dp<br>
++igt@amdgpu/amd_vrr_range@freesync-range-dp-suspend<br>
++<br>
++<br>
++# MODES - Tests mode settings<br>
++igt@kms_plane_scaling@plane-scaling@pipe-a-plane-scaling<br>
++igt@kms_plane_scaling@plane-scaling@pipe-c-plane-scaling<br>
++igt@kms_setmode@basic-clone-single-crtc<br>
++igt@kms_setmode@invalid-clone-single-crtc<br>
++igt@kms_setmode@invalid-clone-exclusive-crtc<br>
++igt@kms_setmode@clone-exclusive-crtc<br>
++igt@kms_setmode@invalid-clone-single-crtc-stealing<br>
++<br>
++<br>
++# PLANE - DRM plane-level tests<br>
++igt@kms_plane@plane-panning-top-left@pipe-a-planes<br>
++igt@kms_cursor_legacy@flip-vs-cursor-atomic<br>
++igt@kms_plane@plane-position-hole-dpms@pipe-a-planes<br>
++igt@kms_properties@plane-properties-legacy<br>
++igt@kms_plane_cursor@pipe-a-primary-size-256<br>
++igt@kms_plane@plane-position-covered@pipe-a-planes<br>
++igt@kms_plane@plane-position-hole-dpms@pipe-b-planes<br>
++igt@kms_plane@plane-position-hole@pipe-b-planes<br>
++igt@kms_plane_multiple@atomic-pipe-a-tiling-none<br>
++igt@kms_plane@plane-panning-top-left@pipe-b-planes<br>
++igt@kms_plane@plane-position-covered@pipe-b-planes<br>
++igt@kms_plane_cursor@pipe-a-primary-size-128<br>
++igt@kms_cursor_legacy@cursor-vs-flip-legacy<br>
++igt@kms_plane@plane-panning-bottom-right@pipe-b-planes<br>
++igt@kms_plane_multiple@atomic-pipe-c-tiling-none<br>
++igt@kms_plane@plane-panning-bottom-right@pipe-a-planes<br>
++igt@kms_plane_cursor@pipe-a-primary-size-64<br>
++igt@kms_plane@plane-position-hole@pipe-a-planes<br>
++igt@kms_cursor_crc@pipe-a-cursor-size-change<br>
++igt@kms_cursor_crc@pipe-b-cursor-size-change<br>
++igt@kms_cursor_crc@pipe-a-cursor-alpha-opaque<br>
++igt@kms_cursor_crc@pipe-b-cursor-alpha-opaque<br>
++igt@kms_cursor_crc@pipe-a-cursor-alpha-transparent<br>
++igt@kms_cursor_crc@pipe-b-cursor-alpha-transparent<br>
++igt@kms_cursor_crc@pipe-a-cursor-dpms<br>
++igt@kms_cursor_crc@pipe-b-cursor-dpms<br>
++igt@kms_cursor_crc@pipe-a-cursor-suspend<br>
++igt@kms_cursor_crc@pipe-b-cursor-suspend<br>
++igt@kms_cursor_crc@pipe-a-cursor-max-size-onscreen<br>
++igt@kms_cursor_crc@pipe-b-cursor-max-size-onscreen<br>
++igt@kms_cursor_crc@pipe-a-cursor-max-size-offscreen<br>
++igt@kms_cursor_crc@pipe-b-cursor-max-size-offscreen<br>
++igt@kms_cursor_crc@pipe-a-cursor-max-size-sliding<br>
++igt@kms_cursor_crc@pipe-b-cursor-max-size-sliding<br>
++igt@kms_cursor_crc@pipe-a-cursor-max-size-random<br>
++igt@kms_cursor_crc@pipe-b-cursor-max-size-random<br>
++igt@kms_cursor_crc@pipe-a-cursor-max-size-rapid-movement<br>
++igt@kms_cursor_crc@pipe-b-cursor-max-size-rapid-movement<br>
++igt@kms_concurrent@pipe-a<br>
++igt@kms_concurrent@pipe-b<br>
++<br>
++<br>
++# DPMS - DPMS<br>
++igt@kms_content_protection@atomic-dpms<br>
++<br>
++<br>
++# HDCP - HDCP functionality<br>
++igt@kms_content_protection@legacy<br>
++<br>
++<br>
++# DISPLAY-LAYER - General DRM API tests and display driver tests<br>
++igt@core_auth@basic-auth<br>
++igt@kms_prop_blob@basic<br>
++igt@kms_prop_blob@blob-prop-core<br>
++igt@kms_prop_blob@blob-prop-validate<br>
++igt@kms_prop_blob@blob-prop-lifetime<br>
++igt@kms_prop_blob@blob-multiple<br>
++igt@kms_prop_blob@invalid-get-prop-any<br>
++igt@kms_prop_blob@invalid-get-prop<br>
++igt@kms_prop_blob@invalid-set-prop-any<br>
++igt@kms_prop_blob@invalid-set-prop<br>
++igt@kms_vblank@pipe-a-ts-continuation-suspend<br>
++igt@amdgpu/amd_mem_leak@connector-suspend-resume<br>
++igt@amdgpu/amd_mem_leak@connector-hotplug<br>
++igt@kms_atomic_interruptible@legacy-setmode@dp-1-pipe-a<br>
++igt@kms_atomic_interruptible@atomic-setmode@dp-1-pipe-a<br>
++igt@kms_atomic_interruptible@legacy-dpms@dp-1-pipe-a<br>
++igt@kms_atomic_interruptible@legacy-pageflip@dp-1-pipe-a<br>
++igt@kms_atomic_interruptible@legacy-cursor@dp-1-pipe-a<br>
++igt@kms_atomic_interruptible@universal-setplane-primary@dp-1-pipe-a<br>
++igt@kms_atomic_interruptible@universal-setplane-cursor@dp-1-pipe-a<br>
++igt@kms_getfb@getfb-handle-zero<br>
++igt@kms_getfb@getfb-handle-valid<br>
++igt@kms_getfb@getfb-handle-closed<br>
++igt@kms_getfb@getfb-handle-not-fb<br>
++igt@kms_getfb@getfb-addfb-different-handles<br>
++igt@kms_getfb@getfb-repeated-different-handles<br>
++igt@kms_getfb@getfb2-handle-zero<br>
++igt@kms_getfb@getfb2-handle-closed<br>
++igt@kms_getfb@getfb2-handle-not-fb<br>
++igt@kms_getfb@getfb2-into-addfb2<br>
++igt@kms_getfb@getfb-handle-protection<br>
++igt@kms_getfb@getfb2-handle-protection<br>
++igt@kms_sysfs_edid_timing<br>
++<br>
++<br>
++# S3 - S3<br>
++igt@kms_plane@plane-panning-bottom-right-suspend@pipe-a-planes<br>
++<br>
++<br>
++# ASSR - ASSR<br>
++igt@amdgpu/amd_assr@assr-links<br>
++igt@amdgpu/amd_assr@assr-links-dpms<br>
++igt@amdgpu/amd_assr@assr-links-suspend<br>
++<br>
++<br>
++# tests with higher probability of hanging the system<br>
++igt@amdgpu/amd_link_settings@link-training-configs<br>
+-- <br>
+2.25.1<br>
+<br>
+</div>
+</span></font></div>
+</div>
+</body>
+</html>
+
+--_000_BN9PR12MB514600FB8D2C011B15D371D6F7B29BN9PR12MB5146namp_--
