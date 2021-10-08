@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C02646F498
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Oct 2021 12:06:05 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA54F6E0E5
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Oct 2021 12:15:36 +0000 (UTC)
 From: Jigar Bhatt <jigar.bhatt@intel.com>
-Date: Fri,  8 Oct 2021 17:30:16 +0530
-Message-Id: <20211008120016.2238921-1-jigar.bhatt@intel.com>
+Date: Fri,  8 Oct 2021 17:39:41 +0530
+Message-Id: <20211008120941.2239050-1-jigar.bhatt@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/i915/i915_pm_dc: Fix condition in
+Subject: [igt-dev] [PATCH i-g-t v3] tests/i915/i915_pm_dc: Fix condition in
  dc9-test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,6 +32,7 @@ igt_wait(read_dc_counter(debugfs_fd, dc_target) <
 
 Fixes: 2f4e6430a97f04284d1cafb1479e7c1b0b2d596a ("tests/i915/i915_pm_dc: Fix DC9 test")
 Signed-off-by: Jigar Bhatt <jigar.bhatt@intel.com>
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 ---
  tests/i915/i915_pm_dc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
