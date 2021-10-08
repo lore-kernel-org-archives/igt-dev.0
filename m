@@ -1,20 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76FFD6E09C
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Oct 2021 06:23:08 +0000 (UTC)
-From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Fri, 8 Oct 2021 06:23:04 +0000
-Message-ID: <MWHPR11MB1312B0649355462434DC178589B29@MWHPR11MB1312.namprd11.prod.outlook.com>
-References: <20210916142301.17796-1-vidya.srinivas@intel.com>
- <20210924104545.23996-1-vidya.srinivas@intel.com>
- <86c6e003-689c-832e-42c3-2cfc89f21abe@intel.com>
-In-Reply-To: <86c6e003-689c-832e-42c3-2cfc89f21abe@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mail-4323.proton.ch (mail-4323.proton.ch [185.70.43.23])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C7AD96E0AA
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Oct 2021 06:33:09 +0000 (UTC)
+Date: Fri, 08 Oct 2021 06:33:04 +0000
+From: Simon Ser <contact@emersion.fr>
+Message-ID: <K8XVZHLSqJyoETZRLZyYxZuMYGyQzd6LErIyD_cZTB1bQb4e9U9Zy9ZS9OzLz0Mfbu5zfRATD00sxNfgJpXo-klXK8EUMt1m9hnFgyc8N84=@emersion.fr>
+In-Reply-To: <BN9PR12MB5145405FB299E7C2087EAE97FFB29@BN9PR12MB5145.namprd12.prod.outlook.com>
+References: <20211001085319.789392-1-stylon.wang@amd.com>
+ <7c206aba165a465aa14b465c72b6802c@intel.com>
+ <DM8PR11MB5655AF5FCCDDD8EAB30C92B0E0AE9@DM8PR11MB5655.namprd11.prod.outlook.com>
+ <20211007144038.ojiw5nzbydkfvgk2@outlook.office365.com>
+ <oakr8kYGfhw6ExOrkEWsbp3jU89Fsenuurp94OdfCpOmqcab7tSAUAGLLQy4Tcro8tP5yZeSQAVzsTgGUrszteqMo5nyjdrCwYmwxypWQkE=@emersion.fr>
+ <DM4PR12MB5182EFB81A2845B2F953BB57ECB19@DM4PR12MB5182.namprd12.prod.outlook.com>
+ <73ec4c04-b2d1-4392-4096-7cc7076420ed@amd.com>
+ <161af036-f263-7bb0-bc6d-251ae9517f42@amd.com>
+ <BN9PR12MB5145405FB299E7C2087EAE97FFB29@BN9PR12MB5145.namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_multiple: Fix
- regression test_plane_position_with_output
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_hdr: Fix failure to read
+ output_bpc on AMD hardware
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,69 +27,27 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: Simon Ser <contact@emersion.fr>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Cc: "markyacoub@google.com" <markyacoub@google.com>, "victorchengchi.lu@amd.com" <victorchengchi.lu@amd.com>, "Anson.Jacob@amd.com" <Anson.Jacob@amd.com>, "Rodrigo.Siqueira@amd.com" <Rodrigo.Siqueira@amd.com>
+To: "Wang, Chao-kai (Stylon)" <Stylon.Wang@amd.com>
+Cc: "Kazlauskas, Nicholas" <Nicholas.Kazlauskas@amd.com>, "Wentland,
+ Harry" <Harry.Wentland@amd.com>, "Siqueira,
+ Rodrigo" <Rodrigo.Siqueira@amd.com>, "Saarinen,
+ Jani" <jani.saarinen@intel.com>, "Vudum,
+ Lakshminarayana" <lakshminarayana.vudum@intel.com>, "Latvala,
+ Petri" <petri.latvala@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Choi,
+ Nicholas" <Nicholas.Choi@amd.com>, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQiBTLCBLYXJ0aGlrIDxr
-YXJ0aGlrLmIuc0BpbnRlbC5jb20+DQo+IFNlbnQ6IEZyaWRheSwgT2N0b2JlciA4LCAyMDIxIDEx
-OjQ5IEFNDQo+IFRvOiBTcmluaXZhcywgVmlkeWEgPHZpZHlhLnNyaW5pdmFzQGludGVsLmNvbT47
-IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBNb2RlbSwgQmhhbnVwcmFrYXNo
-IDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPjsNCj4gbWFya3lhY291YkBnb29nbGUuY29t
-OyB2aWN0b3JjaGVuZ2NoaS5sdUBhbWQuY29tOw0KPiBBbnNvbi5KYWNvYkBhbWQuY29tOyBSb2Ry
-aWdvLlNpcXVlaXJhQGFtZC5jb20NCj4gU3ViamVjdDogUmU6IFtQQVRDSCBpLWctdF0gdGVzdHMv
-a21zX3BsYW5lX211bHRpcGxlOiBGaXggcmVncmVzc2lvbg0KPiB0ZXN0X3BsYW5lX3Bvc2l0aW9u
-X3dpdGhfb3V0cHV0DQo+IA0KPiBPbiA5LzI0LzIwMjEgNDoxNSBQTSwgVmlkeWEgU3Jpbml2YXMg
-d3JvdGU6DQo+ID4gU3RhcnRpbmcgY29tbWl0IDRkNGE3NjcyOWIzMjhiNjUxMjIgIlN0YXJ0IGNv
-bnRpbnVvdXMgQ1JDIGNhcHR1cmUNCj4gYWZ0ZXIgY29tbWl0Ig0KPiA+IGZldyB2YXJpYW50cyBv
-ZiBJbnRlbCBUR0wgYW5kIEpTTCBkZXZpY2VzIGFyZSBmYWlsaW5nIHdpdGggQ1JDDQo+ID4gbWlz
-bWF0Y2ggZHVlIHRvIHRpbWUgc2Vuc2l0aXZpdHkuIFBhdGNoIHN3aXRjaGVzIHRvIG9sZGVyIHdh
-eSBvZg0KPiA+IG9idGFpbmluZyBDUkMsIGJ1dCBrZWVwcyBpbi10YWN0IGNvbnRpbnVvdXMgQ1JD
-IGNvbGxlY3Rpb24gd2l0aGluIHRoZQ0KPiA+IGl0ZXJhdGlvbiBhbmQgaW5jbHVkZXMgY2hlY2tp
-bmcgb2YNCj4gPiBpOTE1IHRvIG5vdCBjYXVzZSByZWdyZXNzaW9uIG9uIG5vbi1pbnRlbCBkZXZp
-Y2VzLg0KPiA+DQo+ID4gdjI6IEZpeGVkIHJldmlldyBjb21tZW50cyBmcm9tIEthcnRoaWsuDQo+
-ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBWaWR5YSBTcmluaXZhcyA8dmlkeWEuc3Jpbml2YXNAaW50
-ZWwuY29tPg0KPiBSZXZpZXdlZC1ieTogS2FydGhpayBCIFMgPGthcnRoaWsuYi5zQGludGVsLmNv
-bT4NCg0KVGhhbmsgeW91IHNvIG11Y2ggS2FydGhpay4gQE1vZGVtLCBCaGFudXByYWthc2ggY2Fu
-IHlvdSBraW5kbHkgY2hlY2sgYW5kIGhlbHAgbWVyZ2U/IFRoYW5rcyBhIGxvdC4NCg0KUmVnYXJk
-cw0KVmlkeWENCg0KPiA+IC0tLQ0KPiA+ICAgdGVzdHMva21zX3BsYW5lX211bHRpcGxlLmMgfCAx
-NiArKysrKysrKy0tLS0tLS0tDQo+ID4gICAxIGZpbGUgY2hhbmdlZCwgOCBpbnNlcnRpb25zKCsp
-LCA4IGRlbGV0aW9ucygtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19wbGFuZV9t
-dWx0aXBsZS5jIGIvdGVzdHMva21zX3BsYW5lX211bHRpcGxlLmMNCj4gPiBpbmRleCA0NWNhYmI1
-MDA3NzQuLmMxMWZmMzMzYWIwYSAxMDA2NDQNCj4gPiAtLS0gYS90ZXN0cy9rbXNfcGxhbmVfbXVs
-dGlwbGUuYw0KPiA+ICsrKyBiL3Rlc3RzL2ttc19wbGFuZV9tdWx0aXBsZS5jDQo+ID4gQEAgLTc5
-LDggKzc5LDYgQEAgc3RhdGljIHZvaWQgdGVzdF9pbml0KGRhdGFfdCAqZGF0YSwgZW51bSBwaXBl
-IHBpcGUsDQo+ID4gaW50IG5fcGxhbmVzKQ0KPiA+DQo+ID4gICBzdGF0aWMgdm9pZCB0ZXN0X2Zp
-bmkoZGF0YV90ICpkYXRhLCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCwgaW50IG5fcGxhbmVzKQ0KPiA+
-ICAgew0KPiA+IC0JaWd0X3BpcGVfY3JjX3N0b3AoZGF0YS0+cGlwZV9jcmMpOw0KPiA+IC0NCj4g
-PiAgIAkvKiByZXNldCB0aGUgY29uc3RyYWludCBvbiB0aGUgcGlwZSAqLw0KPiA+ICAgCWlndF9v
-dXRwdXRfc2V0X3BpcGUob3V0cHV0LCBQSVBFX0FOWSk7DQo+ID4NCj4gPiBAQCAtMjkxLDcgKzI4
-OSw2IEBAIHRlc3RfcGxhbmVfcG9zaXRpb25fd2l0aF9vdXRwdXQoZGF0YV90ICpkYXRhLA0KPiBl
-bnVtIHBpcGUgcGlwZSwNCj4gPiAgIAlpZ3RfcGxhbmVfdCAqcGxhbmU7DQo+ID4gICAJaW50IGk7
-DQo+ID4gICAJaW50IGVyciwgYyA9IDA7DQo+ID4gLQlpbnQgY3JjX2VuYWJsZWQgPSAwOw0KPiA+
-ICAgCWludCBpdGVyYXRpb25zID0gb3B0Lml0ZXJhdGlvbnMgPCAxID8gMSA6IG9wdC5pdGVyYXRp
-b25zOw0KPiA+ICAgCWJvb2wgbG9vcF9mb3JldmVyOw0KPiA+ICAgCWNoYXIgaW5mb1syNTZdOw0K
-PiA+IEBAIC0zMzQsMTUgKzMzMSwyMCBAQCB0ZXN0X3BsYW5lX3Bvc2l0aW9uX3dpdGhfb3V0cHV0
-KGRhdGFfdCAqZGF0YSwNCj4gZW51bSBwaXBlIHBpcGUsDQo+ID4gICAJaSA9IDA7DQo+ID4gICAJ
-d2hpbGUgKGkgPCBpdGVyYXRpb25zIHx8IGxvb3BfZm9yZXZlcikgew0KPiA+ICAgCQkvKiByYW5k
-b21pemUgcGxhbmVzIGFuZCBzZXQgdXAgdGhlIGhvbGVzICovDQo+ID4gKw0KPiA+ICsJCS8qIElu
-dGVsIGRldmljZXMgbmVlZCBpdCBoZXJlLCB0aW1pbmcgc2Vuc2l0aXZlIG9uIGZldyBkZXZpY2Vz
-DQo+ICovDQo+ID4gKwkJaWYgKGlzX2k5MTVfZGV2aWNlKGRhdGEtPmRybV9mZCkpDQo+ID4gKwkJ
-CWlndF9waXBlX2NyY19zdGFydChkYXRhLT5waXBlX2NyYyk7DQo+ID4gKw0KPiA+ICAgCQlwcmVw
-YXJlX3BsYW5lcyhkYXRhLCBwaXBlLCAmYmx1ZSwgdGlsaW5nLCBjLCBvdXRwdXQpOw0KPiA+DQo+
-ID4gICAJCWlndF9kaXNwbGF5X2NvbW1pdDIoJmRhdGEtPmRpc3BsYXksIENPTU1JVF9BVE9NSUMp
-Ow0KPiA+IC0JCWlmICghY3JjX2VuYWJsZWQpIHsNCj4gPiArCQlpZiAoIWlzX2k5MTVfZGV2aWNl
-KGRhdGEtPmRybV9mZCkpDQo+ID4gICAJCQlpZ3RfcGlwZV9jcmNfc3RhcnQoZGF0YS0+cGlwZV9j
-cmMpOw0KPiA+IC0JCQljcmNfZW5hYmxlZCA9IDE7DQo+ID4gLQkJfQ0KPiA+DQo+ID4gICAJCWln
-dF9waXBlX2NyY19nZXRfY3VycmVudChkYXRhLT5kaXNwbGF5LmRybV9mZCwgZGF0YS0NCj4gPnBp
-cGVfY3JjLA0KPiA+ICZjcmMpOw0KPiA+ICsJCWlndF9hc3NlcnRfY3JjX2VxdWFsKCZkYXRhLT5y
-ZWZfY3JjLCAmY3JjKTsNCj4gPiArCQlpZ3RfcGlwZV9jcmNfc3RvcChkYXRhLT5waXBlX2NyYyk7
-DQo+ID4NCj4gPiAgIAkJZm9yX2VhY2hfcGxhbmVfb25fcGlwZSgmZGF0YS0+ZGlzcGxheSwgcGlw
-ZSwgcGxhbmUpDQo+ID4gICAJCQlpZ3RfcGxhbmVfc2V0X2ZiKHBsYW5lLCBOVUxMKTsNCj4gPiBA
-QCAtMzUyLDggKzM1NCw2IEBAIHRlc3RfcGxhbmVfcG9zaXRpb25fd2l0aF9vdXRwdXQoZGF0YV90
-ICpkYXRhLA0KPiBlbnVtIHBpcGUgcGlwZSwNCj4gPiAgIAkJZm9yIChpbnQgeCA9IDA7IHggPCBj
-OyB4KyspDQo+ID4gICAJCQlpZ3RfcmVtb3ZlX2ZiKGRhdGEtPmRybV9mZCwgJmRhdGEtPmZiW3hd
-KTsNCj4gPg0KPiA+IC0JCWlndF9hc3NlcnRfY3JjX2VxdWFsKCZkYXRhLT5yZWZfY3JjLCAmY3Jj
-KTsNCj4gPiAtDQo+ID4gICAJCWkrKzsNCj4gPiAgIAl9DQo+ID4NCj4gDQoNCg==
+On Friday, October 8th, 2021 at 07:45, Wang, Chao-kai (Stylon) <Stylon.Wang=
+@amd.com> wrote:
+
+> I wanna propose to break down this patch into 2 changes:
+>
+> 1.  Keep theTEST_ONLY commit to check if 512x512 plane works. If not, cha=
+nge the plane size to cover full CRTC.
+> 2.  Add a real commit after TEST_ONLY to set output bpc to 8. This should=
+ satisfy the first check that the output bpc is indeed 8
+
+Looks like a good idea to me.
