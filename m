@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9082189D3E
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Oct 2021 14:27:24 +0000 (UTC)
-Date: Mon, 11 Oct 2021 17:24:06 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <YWRJBvGbsrcSIbXh@intel.com>
-References: <20211011140719.11733-1-tzimmermann@suse.de>
- <20211011140719.11733-3-tzimmermann@suse.de>
+Content-Type: multipart/alternative;
+ boundary="===============0389702801017599445=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20211011140719.11733-3-tzimmermann@suse.de>
-Subject: Re: [igt-dev] [PATCH 2/2] tests/fbdev: Add tests for display panning
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 11 Oct 2021 14:43:11 -0000
+Message-ID: <163396339134.22683.10983829879474757599@emeril.freedesktop.org>
+References: <20211011140719.11733-1-tzimmermann@suse.de>
+In-Reply-To: <20211011140719.11733-1-tzimmermann@suse.de>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?fbdev=3A_Additional_tests_for_resolution_and_panning?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,166 +16,183 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Thomas Zimmermann <tzimmermann@suse.de>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Oct 11, 2021 at 04:07:19PM +0200, Thomas Zimmermann wrote:
-> Add tests that perform panning / page flip operations on an fbdev
-> device. Panning should work when the viewport wi within the virtual
-> screen and fail otherwise.
->=20
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
->  tests/fbdev.c | 92 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 92 insertions(+)
->=20
-> diff --git a/tests/fbdev.c b/tests/fbdev.c
-> index c9903f8b..17727cd0 100644
-> --- a/tests/fbdev.c
-> +++ b/tests/fbdev.c
-> @@ -86,6 +86,98 @@ static void mode_tests(int fd)
->  			     "vertical virtual resolution (%u) with pitch %u exceeds availabl=
-e video memory\n",
->  			     var_info.yres_virtual, fix_info.line_length);
->  	}
-> +
-> +	igt_describe("Check panning / page flipping");
-> +	igt_subtest("pan") {
-> +		struct fb_var_screeninfo pan_var, new_var;
-> +		int ret;
-> +
-> +		/* jump to opposite end of virtual screen */
-> +		pan_var.xoffset =3D var_info.xres_virtual - var_info.xres - var_info.x=
-offset;
-> +		pan_var.yoffset =3D var_info.yres_virtual - var_info.yres - var_info.y=
-offset;
+--===============0389702801017599445==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Should look at {x,y}panstep probably before assuming this stuff will do exa=
-ctly
-what you ask it.
+== Series Details ==
 
-> +		ret =3D ioctl(fd, FBIOPAN_DISPLAY, &pan_var);
-> +		igt_assert_f(ret =3D=3D 0, "ioctl(FBIOPAN_DISPLAY) failed, ret=3D%d\n"=
-, ret);
-> +		ret =3D ioctl(fd, FBIOGET_VSCREENINFO, &new_var);
-> +		igt_assert_f(ret =3D=3D 0, "ioctl(FBIOPAN_DISPLAY) failed, ret=3D%d\n"=
-, ret);
-> +		igt_assert_f(pan_var.xoffset =3D=3D new_var.xoffset && pan_var.yoffset=
- =3D=3D new_var.yoffset,
-> +			     "panning to (%u, %u) moved to (%u, %u)\n",
-> +			     pan_var.xoffset, pan_var.yoffset, new_var.xoffset, new_var.yoffs=
-et);
-> +
-> +		/* jump to (0, 0) */
-> +		pan_var.xoffset =3D 0;
-> +		pan_var.yoffset =3D 0;
-> +		ret =3D ioctl(fd, FBIOPAN_DISPLAY, &pan_var);
-> +		igt_assert_f(ret =3D=3D 0, "ioctl(FBIOPAN_DISPLAY) failed, ret=3D%d\n"=
-, ret);
-> +		ret =3D ioctl(fd, FBIOGET_VSCREENINFO, &new_var);
-> +		igt_assert_f(ret =3D=3D 0, "ioctl(FBIOPAN_DISPLAY) failed, ret=3D%d\n"=
-, ret);
-> +		igt_assert_f(pan_var.xoffset =3D=3D new_var.xoffset && pan_var.yoffset=
- =3D=3D new_var.yoffset,
-> +			     "panning to (%u, %u) moved to (%u, %u)\n",
-> +			     pan_var.xoffset, pan_var.yoffset, new_var.xoffset, new_var.yoffs=
-et);
-> +
-> +		/* jump to maximum extend */
-> +		pan_var.xoffset =3D var_info.xres_virtual - var_info.xres;
-> +		pan_var.yoffset =3D var_info.yres_virtual - var_info.yres;
-> +		ret =3D ioctl(fd, FBIOPAN_DISPLAY, &pan_var);
-> +		igt_assert_f(ret =3D=3D 0, "ioctl(FBIOPAN_DISPLAY) failed, ret=3D%d\n"=
-, ret);
-> +		ret =3D ioctl(fd, FBIOGET_VSCREENINFO, &new_var);
-> +		igt_assert_f(ret =3D=3D 0, "ioctl(FBIOPAN_DISPLAY) failed, ret=3D%d\n"=
-, ret);
-> +		igt_assert_f(pan_var.xoffset =3D=3D new_var.xoffset && pan_var.yoffset=
- =3D=3D new_var.yoffset,
-> +			     "panning to (%u, %u) moved to (%u, %u)\n",
-> +			     pan_var.xoffset, pan_var.yoffset, new_var.xoffset, new_var.yoffs=
-et);
-> +
-> +		/* return to original offsets for next tests */
-> +		ret =3D ioctl(fd, FBIOPAN_DISPLAY, &var_info);
-> +		igt_assert_f(ret =3D=3D 0, "ioctl(FBIOPAN_DISPLAY) failed, ret=3D%d\n"=
-, ret);
-> +
-> +		/* jump beyond maximum horizontal extend */
-> +		pan_var.xoffset =3D var_info.xres_virtual - var_info.xres + 1;
-> +		pan_var.yoffset =3D 0;
-> +		ret =3D ioctl(fd, FBIOPAN_DISPLAY, &pan_var);
-> +		igt_assert_f(ret =3D=3D -1, "ioctl(FBIOPAN_DISPLAY) failed, ret=3D%d\n=
-", ret);
-> +		ret =3D ioctl(fd, FBIOGET_VSCREENINFO, &new_var);
-> +		igt_assert_f(ret =3D=3D 0, "ioctl(FBIOPAN_DISPLAY) failed, ret=3D%d\n"=
-, ret);
-> +		igt_assert_f(var_info.xoffset =3D=3D new_var.xoffset && var_info.yoffs=
-et =3D=3D new_var.yoffset,
-> +			     "panning to (%u, %u) moved to (%u, %u)\n",
-> +			     pan_var.xoffset, pan_var.yoffset, new_var.xoffset, new_var.yoffs=
-et);
-> +
-> +		/* jump beyond maximum vertical extend */
-> +		pan_var.xoffset =3D 0;
-> +		pan_var.yoffset =3D var_info.yres_virtual - var_info.yres + 1;
-> +		ret =3D ioctl(fd, FBIOPAN_DISPLAY, &pan_var);
-> +		igt_assert_f(ret =3D=3D -1, "ioctl(FBIOPAN_DISPLAY), ret=3D%d\n", ret);
-> +		ret =3D ioctl(fd, FBIOGET_VSCREENINFO, &new_var);
-> +		igt_assert_f(ret =3D=3D 0, "ioctl(FBIOPAN_DISPLAY) failed, ret=3D%d\n"=
-, ret);
-> +		igt_assert_f(var_info.xoffset =3D=3D new_var.xoffset && var_info.yoffs=
-et =3D=3D new_var.yoffset,
-> +			     "panning to (%u, %u) moved to (%u, %u)\n",
-> +			     pan_var.xoffset, pan_var.yoffset, new_var.xoffset, new_var.yoffs=
-et);
-> +
-> +		/* jump beyond horizontal virtual resolution */
-> +		pan_var.xoffset =3D var_info.xres_virtual;
-> +		pan_var.yoffset =3D 0;
-> +		ret =3D ioctl(fd, FBIOPAN_DISPLAY, &pan_var);
-> +		igt_assert_f(ret =3D=3D -1, "ioctl(FBIOPAN_DISPLAY), ret=3D%d\n", ret);
-> +		ret =3D ioctl(fd, FBIOGET_VSCREENINFO, &new_var);
-> +		igt_assert_f(ret =3D=3D 0, "ioctl(FBIOPAN_DISPLAY) failed, ret=3D%d\n"=
-, ret);
-> +		igt_assert_f(var_info.xoffset =3D=3D new_var.xoffset && var_info.yoffs=
-et =3D=3D new_var.yoffset,
-> +			     "panning to (%u, %u) moved to (%u, %u)\n",
-> +			     pan_var.xoffset, pan_var.yoffset, new_var.xoffset, new_var.yoffs=
-et);
-> +
-> +		/* jump beyond vertical virtual resolution */
-> +		pan_var.xoffset =3D 0;
-> +		pan_var.yoffset =3D var_info.yres_virtual;
-> +		ret =3D ioctl(fd, FBIOPAN_DISPLAY, &pan_var);
-> +		igt_assert_f(ret =3D=3D -1, "ioctl(FBIOPAN_DISPLAY) failed, ret=3D%d\n=
-", ret);
+Series: tests/fbdev: Additional tests for resolution and panning
+URL   : https://patchwork.freedesktop.org/series/95676/
+State : success
 
-Another YWRAP issue here.
+== Summary ==
 
-> +		ret =3D ioctl(fd, FBIOGET_VSCREENINFO, &new_var);
-> +		igt_assert_f(ret =3D=3D 0, "ioctl(FBIOPAN_DISPLAY) failed, ret=3D%d\n"=
-, ret);
-> +		igt_assert_f(var_info.xoffset =3D=3D new_var.xoffset && var_info.yoffs=
-et =3D=3D new_var.yoffset,
-> +			     "panning to (%u, %u) moved to (%u, %u)\n",
-> +			     pan_var.xoffset, pan_var.yoffset, new_var.xoffset, new_var.yoffs=
-et);
-> +	}
-> +
-> +	igt_fixture {
-> +		/* restore original panning offsets */
-> +		ioctl(fd, FBIOPAN_DISPLAY, &var_info);
-> +	}
->  }
-> =20
->  static void framebuffer_tests(int fd)
-> --=20
-> 2.33.0
+CI Bug Log - changes from CI_DRM_10715 -> IGTPW_6307
+====================================================
 
---=20
-Ville Syrj=E4l=E4
-Intel
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6307/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6307 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
+    - fi-snb-2600:        NOTRUN -> [SKIP][1] ([fdo#109271]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6307/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-tgl-1115g4:      [PASS][2] -> [FAIL][3] ([i915#1888])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10715/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6307/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [PASS][4] -> [DMESG-WARN][5] ([i915#4269])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10715/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6307/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [INCOMPLETE][6] ([i915#3921]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10715/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6307/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+
+
+Participating hosts (40 -> 35)
+------------------------------
+
+  Missing    (5): fi-kbl-soraka fi-tgl-dsi fi-bsw-cyan fi-kbl-guc fi-ctg-p8600 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6242 -> IGTPW_6307
+
+  CI-20190529: 20190529
+  CI_DRM_10715: 74b6fd5b34d5fbe3672e864d279654d079e88073 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6307: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6307/index.html
+  IGT_6242: 721fd85ee95225ed5df322f7182bdfa9b86a3e68 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@fbdev@pan
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6307/index.html
+
+--===============0389702801017599445==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/fbdev: Additional tests for resolution and panning</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95676/">https://patchwork.freedesktop.org/series/95676/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6307/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6307/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10715 -&gt; IGTPW_6307</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6307/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6307 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-fork-compute0:</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6307/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10715/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6307/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10715/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6307/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10715/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6307/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (40 -&gt; 35)</h2>
+<p>Missing    (5): fi-kbl-soraka fi-tgl-dsi fi-bsw-cyan fi-kbl-guc fi-ctg-p8600 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6242 -&gt; IGTPW_6307</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10715: 74b6fd5b34d5fbe3672e864d279654d079e88073 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6307: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6307/index.html<br />
+  IGT_6242: 721fd85ee95225ed5df322f7182bdfa9b86a3e68 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@fbdev@pan</p>
+
+</body>
+</html>
+
+--===============0389702801017599445==--
