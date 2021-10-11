@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2244102401127830809=="
+Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA0E16E446
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Oct 2021 08:44:21 +0000 (UTC)
+Message-ID: <fbe44331-125f-ec8a-80f6-3f9c1c8c05fd@mupuf.org>
+Date: Mon, 11 Oct 2021 11:44:07 +0300
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 11 Oct 2021 08:14:18 -0000
-Message-ID: <163394005831.22681.2794440191667320920@emeril.freedesktop.org>
-References: <20211011071332.18492-1-arjun.melkaveri@intel.com>
-In-Reply-To: <20211011071332.18492-1-arjun.melkaveri@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/gem=5Fbad=5Freloc=3A_Added_check_for_verifying_aperture_su?=
- =?utf-8?q?pport?=
+Content-Language: en-US
+References: <20211008190251.3709425-1-Rodrigo.Siqueira@amd.com>
+From: =?UTF-8?Q?Martin_Roukala_=28n=c3=a9=c3=a9_Peres=29?=
+ <martin.roukala@mupuf.org>
+In-Reply-To: <20211008190251.3709425-1-Rodrigo.Siqueira@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests: Add amdgpu test suite
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,205 +20,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arjun Melkaveri <arjun.melkaveri@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, igt-dev@lists.freedesktop.org
+Cc: Harry Wentland <harry.wentland@amd.com>, Nicholas Choi <Nicholas.Choi@amd.com>, Sun peng Li <sunpeng.li@amd.com>, Alexander Deucher <alexander.deucher@amd.com>, Hayden Goodfellow <hayden.goodfellow@amd.com>, Simon Ser <contact@emersion.fr>, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2244102401127830809==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/i915/gem_bad_reloc: Added check for verifying aperture support
-URL   : https://patchwork.freedesktop.org/series/95657/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_10711 -> IGTPW_6305
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6305 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@semaphore:
-    - fi-bdw-5557u:       NOTRUN -> [SKIP][1] ([fdo#109271]) +27 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-bwr-2160:        [PASS][2] -> [FAIL][3] ([i915#3194])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10711/fi-bwr-2160/igt@core_hotunplug@unbind-rebind.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/fi-bwr-2160/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-snb-2600:        [PASS][4] -> [INCOMPLETE][5] ([i915#3921])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10711/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-bdw-5557u:       NOTRUN -> [SKIP][6] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - fi-skl-6600u:       [FAIL][7] ([i915#3239]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10711/fi-skl-6600u/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/fi-skl-6600u/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - {fi-tgl-dsi}:       [DMESG-FAIL][9] ([i915#541]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10711/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#3194]: https://gitlab.freedesktop.org/drm/intel/issues/3194
-  [i915#3239]: https://gitlab.freedesktop.org/drm/intel/issues/3239
-  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
-  [i915#541]: https://gitlab.freedesktop.org/drm/intel/issues/541
 
 
-Participating hosts (38 -> 35)
-------------------------------
+On 08/10/2021 22:02, Rodrigo Siqueira wrote:
+> Add various test suites relevant for the amdgpu driver.
+> 
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Nicholas Choi <Nicholas.Choi@amd.com>
+> Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+> Cc: Sun peng (Leo) Li <sunpeng.li@amd.com>
+> Cc: Alexander Deucher <alexander.deucher@amd.com>
+> Cc: Martin Roukala <martin.roukala@mupuf.org>
+> Cc: Hayden Goodfellow <hayden.goodfellow@amd.com>
+> Cc: Simon Ser <contact@emersion.fr>
+> Cc: Mark Yacoub <markyacoub@google.com>
+> 
+> Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+> ---
+>   tests/amdgpu-ci/README                 |  31 +++++
+>   tests/amdgpu-ci/fast-feedback.testlist | 135 +++++++++++++++++++
+>   tests/amdgpu-ci/full-feedback.testlist | 173 +++++++++++++++++++++++++
+>   3 files changed, 339 insertions(+)
+>   create mode 100644 tests/amdgpu-ci/README
+>   create mode 100644 tests/amdgpu-ci/fast-feedback.testlist
+>   create mode 100644 tests/amdgpu-ci/full-feedback.testlist
+> 
+> diff --git a/tests/amdgpu-ci/README b/tests/amdgpu-ci/README
+> new file mode 100644
+> index 00000000..bd34245c
+> --- /dev/null
+> +++ b/tests/amdgpu-ci/README
+> @@ -0,0 +1,31 @@
+> +This directory contains test lists that are used by AMD's CI. The
+> +files are passed to piglit with the --test-list parameter directly.
+> +
+> +The test lists are contained in the IGT repository for several
+> +reasons:
+> +
+> +- The lists stay synchronized with the IGT codebase.
+> +- Public availability. Kernel developers can see what tests are run,
+> +  and can see what changes are done to the set, when, and why.
 
-  Missing    (3): fi-ilk-m540 fi-bsw-cyan fi-hsw-4200u 
+Thanks for doing this!
 
+> +
+> +Changing the test lists should only happen with approval from:
+> +- Harry Wentland <harry.wentland@amd.com>
+> +- Nicholas Choi <Nicholas.Choi@amd.com>
+> +- Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+> +- Sun peng (Leo) Li <sunpeng.li@amd.com>
+> +
+> +======================
+> +fast-feedback.testlist
+> +======================
+> +
+> +Fast-feedback contains tests that roughly tests a wide coverage of features in
+> +a short time. We use this list for presubmission validation. Results of a
+> +fast-feedback test round should only be considered to mean that the kernel is
+> +not obviously broken.
 
-Build changes
--------------
+It would be good to have a target execution time for this list. ~10 
+minutes and 12 minutes in the worst case has been working for Intel, but 
+what would you like to use?
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6241 -> IGTPW_6305
+> +
+> +======================
+> +full-feedback.testlist
+> +======================
+> +
+> +This is an extensive set of tests that takes a long time to complete in which
+> +we usually use as post-submission.
 
-  CI-20190529: 20190529
-  CI_DRM_10711: 19c3fa149faf4e32be5ca1cfef6fb105a052f10b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6305: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/index.html
-  IGT_6241: 426723f979380f18f9c07d36ebac3a52f760ba7e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+ From experience, I would specify the full list as a opt-out, rather 
+than opt-in. Otherwise, you will soon realize that it takes a lot of 
+time and energy to maintain the list to always add new tests there.
 
-== Logs ==
+By opting out of i915/gem/nouveau/udl/... tests, you will at least get 
+every new KMS test by default.
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/index.html
+Is that making sense?
 
---===============2244102401127830809==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/gem_bad_reloc: Added check for verifying aperture support</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95657/">https://patchwork.freedesktop.org/series/95657/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10711 -&gt; IGTPW_6305</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6305 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@semaphore:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +27 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>fi-bwr-2160:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10711/fi-bwr-2160/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/fi-bwr-2160/igt@core_hotunplug@unbind-rebind.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3194">i915#3194</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10711/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10711/fi-skl-6600u/igt@i915_pm_rpm@basic-pci-d3-state.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3239">i915#3239</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/fi-skl-6600u/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10711/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/541">i915#541</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (38 -&gt; 35)</h2>
-<p>Missing    (3): fi-ilk-m540 fi-bsw-cyan fi-hsw-4200u </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6241 -&gt; IGTPW_6305</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10711: 19c3fa149faf4e32be5ca1cfef6fb105a052f10b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6305: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6305/index.html<br />
-  IGT_6241: 426723f979380f18f9c07d36ebac3a52f760ba7e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============2244102401127830809==--
+Martin
