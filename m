@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com
- [IPv6:2a00:1450:4864:20::52f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27FF489CF8
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Oct 2021 14:22:39 +0000 (UTC)
-Received: by mail-ed1-x52f.google.com with SMTP id i20so191675edj.10
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Oct 2021 07:22:39 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Tue, 12 Oct 2021 17:22:24 +0300
-Message-Id: <20211012142224.15632-1-juhapekka.heikkila@gmail.com>
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ABEB489CF8
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Oct 2021 14:23:45 +0000 (UTC)
+Message-ID: <aa895051-d49a-aeca-4bf8-b516df08c1f2@suse.de>
+Date: Tue, 12 Oct 2021 16:23:43 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: fix size change and
- alpha tests
+Content-Language: en-US
+References: <20211011140719.11733-1-tzimmermann@suse.de>
+ <20211011140719.11733-2-tzimmermann@suse.de> <YWRIPrBMMszKrqXW@intel.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <YWRIPrBMMszKrqXW@intel.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------KgCoRqPSbJpVRjIyHmcweLbr"
+Subject: Re: [igt-dev] [PATCH 1/2] tests/fbdev: Test for validity of video
+ mode settings
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,320 +24,119 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Unify and simplify cursor size change and cursor alpha tests.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------KgCoRqPSbJpVRjIyHmcweLbr
+Content-Type: multipart/mixed; boundary="------------0lAu6oERoFl8h0j6dIuh4E6z";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Message-ID: <aa895051-d49a-aeca-4bf8-b516df08c1f2@suse.de>
+Subject: Re: [igt-dev] [PATCH 1/2] tests/fbdev: Test for validity of video
+ mode settings
+References: <20211011140719.11733-1-tzimmermann@suse.de>
+ <20211011140719.11733-2-tzimmermann@suse.de> <YWRIPrBMMszKrqXW@intel.com>
+In-Reply-To: <YWRIPrBMMszKrqXW@intel.com>
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/kms_cursor_crc.c | 190 ++++++++++++-----------------------------
- 1 file changed, 56 insertions(+), 134 deletions(-)
+--------------0lAu6oERoFl8h0j6dIuh4E6z
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 9faba1a18..7d9ec1927 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -71,7 +71,7 @@ typedef struct {
- 	igt_plane_t *cursor;
- 	cairo_surface_t *surface;
- 	uint32_t devid;
--	bool hwimageistestimage;
-+	double alpha;
- } data_t;
- 
- #define TEST_DPMS (1<<0)
-@@ -89,7 +89,7 @@ typedef struct {
- 	int height;
- } cursorarea;
- 
--static void draw_cursor(cairo_t *cr, cursorarea *cursor)
-+static void draw_cursor(cairo_t *cr, cursorarea *cursor, double alpha)
- {
- 	int wl, wr, ht, hb;
- 
-@@ -104,13 +104,13 @@ static void draw_cursor(cairo_t *cr, cursorarea *cursor)
- 	    (cursor->y < SHRT_MIN) || (cursor->y > SHRT_MAX))
- 		return;
- 
--	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-+	cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
- 	cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
- 	/* 4 color rectangles in the corners, RGBY */
--	igt_paint_color(cr, cursor->x, cursor->y, wl, ht, RED);
--	igt_paint_color(cr, cursor->x + wl, cursor->y, wr, ht, GREEN);
--	igt_paint_color(cr, cursor->x, cursor->y + ht, wl, hb, BLUE);
--	igt_paint_color(cr, cursor->x + wl, cursor->y + ht, wr, hb, WHITE);
-+	igt_paint_color_alpha(cr, cursor->x, cursor->y, wl, ht, RED, alpha);
-+	igt_paint_color_alpha(cr, cursor->x + wl, cursor->y, wr, ht, GREEN, alpha);
-+	igt_paint_color_alpha(cr, cursor->x, cursor->y + ht, wl, hb, BLUE, alpha);
-+	igt_paint_color_alpha(cr, cursor->x + wl, cursor->y + ht, wr, hb, WHITE, alpha);
- }
- 
- static void cursor_enable(data_t *data)
-@@ -173,7 +173,7 @@ static void restore_image(data_t *data, uint32_t buffer, cursorarea *cursor)
- 	cairo_fill(cr);
- 
- 	if (cursor)
--		draw_cursor(cr, cursor);
-+		draw_cursor(cr, cursor, data->alpha);
- 
- 	igt_put_cairo_ctx(cr);
- }
-@@ -445,10 +445,8 @@ static void cleanup_crtc(data_t *data)
- 	igt_pipe_crc_free(data->pipe_crc);
- 	data->pipe_crc = NULL;
- 
--	if (data->hwimageistestimage) {
--		cairo_surface_destroy(data->surface);
--		data->surface = NULL;
--	}
-+	cairo_surface_destroy(data->surface);
-+	data->surface = NULL;
- 
- 	igt_plane_set_fb(data->primary, NULL);
- 	igt_display_commit(display);
-@@ -508,106 +506,72 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
- 	data->curh = cursor_h;
- 	data->refresh = mode->vrefresh;
- 
--	if (data->hwimageistestimage) {
--		data->surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24,
--							   data->screenw,
--							   data->screenh);
-+	data->surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24,
-+							data->screenw,
-+							data->screenh);
- 
--		/* store test image as cairo surface */
--		cr = cairo_create(data->surface);
--		cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
--		igt_paint_test_pattern(cr, data->screenw, data->screenh);
--		cairo_destroy(cr);
-+	/* store test image as cairo surface */
-+	cr = cairo_create(data->surface);
-+	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-+	igt_paint_test_pattern(cr, data->screenw, data->screenh);
-+	cairo_destroy(cr);
- 
--		/* Set HW cursor buffer in place */
--		restore_image(data, HWCURSORBUFFER, NULL);
--	} else
--		data->surface = NULL;
-+	/* Set HW cursor buffer in place */
-+	restore_image(data, HWCURSORBUFFER, NULL);
- 
- 	igt_pipe_crc_start(data->pipe_crc);
- }
- 
--static void test_cursor_alpha(data_t *data, double a)
-+static void create_cursor_fb(data_t *data, int cur_w, int cur_h)
- {
--	igt_display_t *display = &data->display;
--	igt_pipe_crc_t *pipe_crc = data->pipe_crc;
--	igt_crc_t crc, ref_crc;
- 	cairo_t *cr;
- 	uint32_t fb_id;
--	int curw = data->curw;
--	int curh = data->curh;
- 
--	/* Alpha cursor fb with white color */
--	fb_id = igt_create_fb(data->drm_fd, curw, curh,
-+	/*
-+	 * Make the FB slightly taller and leave the extra
-+	 * line opaque white, so that we can see that the
-+	 * hardware won't scan beyond what it should (esp.
-+	 * with non-square cursors).
-+	 */
-+	fb_id = igt_create_color_fb(data->drm_fd, cur_w, cur_h + 1,
- 				    DRM_FORMAT_ARGB8888,
- 				    DRM_FORMAT_MOD_LINEAR,
-+				    1.0, 1.0, 1.0,
- 				    &data->fb);
--	igt_assert(fb_id);
- 
--	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
--	igt_display_commit(display);
-+	igt_assert(fb_id);
- 
- 	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb);
--	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
-+	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-+	igt_paint_color_alpha(cr, 0, 0, cur_w, cur_h, 0.0, 0.0, 0.0, 0.0);
-+	draw_cursor(cr, &((cursorarea){0, 0, cur_w, cur_h}), data->alpha);
- 	igt_put_cairo_ctx(cr);
-+}
- 
--	/* Hardware Test - enable cursor and get PF CRC */
-+static void test_cursor_alpha(data_t *data)
-+{
-+	igt_crc_t crc;
-+
-+	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
-+	create_cursor_fb(data, data->curw, data->curh);
- 	cursor_enable(data);
--	igt_display_commit(display);
--	igt_wait_for_vblank(data->drm_fd,
--			display->pipes[data->pipe].crtc_offset);
--	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
-+	do_single_test(data, 0, 0, true, &crc);
- 
- 	cursor_disable(data);
- 	igt_remove_fb(data->drm_fd, &data->fb);
--
--	/* Software Test - render cursor in software, drawn it directly on PF */
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER1]);
--	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
--	igt_put_cairo_ctx(cr);
--	igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER1]);
--	igt_display_commit(display);
--	igt_wait_for_vblank(data->drm_fd,
--			display->pipes[data->pipe].crtc_offset);
--	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
--
--	/* Compare CRC from Hardware/Software tests */
--	igt_assert_crc_equal(&crc, &ref_crc);
-+	do_single_test(data, 0, 0, false, &crc);
- }
- 
- static void test_cursor_transparent(data_t *data)
- {
--	test_cursor_alpha(data, 0.0);
--
-+	data->alpha = 0.0;
-+	test_cursor_alpha(data);
- }
- 
- static void test_cursor_opaque(data_t *data)
- {
--	test_cursor_alpha(data, 1.0);
--}
--
--static void create_cursor_fb(data_t *data, int cur_w, int cur_h)
--{
--	cairo_t *cr;
--	uint32_t fb_id;
--
--	/*
--	 * Make the FB slightly taller and leave the extra
--	 * line opaque white, so that we can see that the
--	 * hardware won't scan beyond what it should (esp.
--	 * with non-square cursors).
--	 */
--	fb_id = igt_create_color_fb(data->drm_fd, cur_w, cur_h + 1,
--				    DRM_FORMAT_ARGB8888,
--				    DRM_FORMAT_MOD_LINEAR,
--				    1.0, 1.0, 1.0,
--				    &data->fb);
--
--	igt_assert(fb_id);
--
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb);
--	draw_cursor(cr, &((cursorarea){0, 0, cur_w, cur_h}));
--	igt_put_cairo_ctx(cr);
-+	data->alpha = 1.0;
-+	test_cursor_alpha(data);
- }
- 
- static void require_cursor_size(data_t *data, int w, int h)
-@@ -666,60 +630,20 @@ static void run_test(data_t *data, void (*testfunc)(data_t *), int cursor_w, int
- 
- static void test_cursor_size(data_t *data)
- {
--	igt_display_t *display = &data->display;
--	igt_pipe_crc_t *pipe_crc = data->pipe_crc;
--	igt_crc_t crc, ref_crc;
--	cairo_t *cr;
--	uint32_t fb_id;
--	int i, size, prevsize = 0;
--	int cursor_max_size = data->cursor_max_w;
--
--	/* Create a maximum size cursor, then change the size in flight to
--	 * smaller ones to see that the size is applied correctly
--	 */
--	fb_id = igt_create_fb(data->drm_fd, cursor_max_size, cursor_max_size,
--			      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
--			      &data->fb);
--	igt_assert(fb_id);
--
--	/* Use a solid white rectangle as the cursor */
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb);
--	igt_paint_color_alpha(cr, 0, 0, cursor_max_size, cursor_max_size, 1.0, 1.0, 1.0, 1.0);
--	igt_put_cairo_ctx(cr);
-+	igt_crc_t crc;
- 
--	/* Hardware test loop */
--	for (i = 0, size = cursor_max_size; size >= 64; size /= 2, i++) {
-+	for (data->curw = data->curh = data->cursor_max_w; data->curw >= 64;
-+	     data->curw /= 2, data->curh /= 2) {
-+		igt_plane_set_fb(data->primary,
-+				 &data->primary_fb[HWCURSORBUFFER]);
-+		create_cursor_fb(data, data->curw, data->curh);
- 		cursor_enable(data);
--		/* Change size in flight: */
--		igt_plane_set_size(data->cursor, size, size);
--		igt_fb_set_size(&data->fb, data->cursor, size, size);
--		igt_display_commit(display);
--		igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
--		igt_display_commit(display);
--
--		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
-+		do_single_test(data, 0, 0, true, &crc);
- 
- 		cursor_disable(data);
--		igt_display_commit(display);
--
--		/* Now render the same in software and collect crc */
--		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER1]);
--
--		/* remove previous cursor sw image */
--		if (prevsize > 0)
--			igt_paint_color(cr, 0, 0, prevsize, prevsize, 0.0, 0.0, 0.0);
--		prevsize = size;
--
--		igt_paint_color_alpha(cr, 0, 0, size, size, 1.0, 1.0, 1.0, 1.0);
--		igt_put_cairo_ctx(cr);
--		igt_plane_set_fb(data->primary, &data->primary_fb[SWCOMPARISONBUFFER1]);
--		igt_display_commit(display);
--		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
--
--		igt_assert_crc_equal(&crc, &ref_crc);
-+		igt_remove_fb(data->drm_fd, &data->fb);
-+		do_single_test(data, 0, 0, false, &crc);
- 	}
--
--	igt_remove_fb(data->drm_fd, &data->fb);
- }
- 
- static void test_rapid_movement(data_t *data)
-@@ -787,7 +711,6 @@ static void run_size_tests(data_t *data, enum pipe pipe,
- 				      w, h);
- 		}
- 		create_cursor_fb(data, w, h);
--		data->hwimageistestimage = true;
- 	}
- 
- 	/* Using created cursor FBs to test cursor support */
-@@ -822,10 +745,10 @@ static void run_tests_on_pipe(data_t *data, enum pipe pipe)
- 	int cursor_size;
- 
- 	igt_fixture {
-+		data->alpha = 1.0;
- 		data->pipe = pipe;
- 		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
- 		igt_require(data->output);
--		data->hwimageistestimage = false;
- 	}
- 
- 	igt_describe("Create a maximum size cursor, then change the size in "
-@@ -847,7 +770,6 @@ static void run_tests_on_pipe(data_t *data, enum pipe pipe)
- 
- 	igt_fixture {
- 		create_cursor_fb(data, data->cursor_max_w, data->cursor_max_h);
--		data->hwimageistestimage = true;
- 	}
- 
- 	igt_subtest_f("pipe-%s-cursor-dpms", kmstest_pipe_name(pipe)) {
--- 
-2.28.0
+SGkNCg0KQW0gMTEuMTAuMjEgdW0gMTY6MjAgc2NocmllYiBWaWxsZSBTeXJqw6Rsw6Q6DQo+
+IE9uIE1vbiwgT2N0IDExLCAyMDIxIGF0IDA0OjA3OjE4UE0gKzAyMDAsIFRob21hcyBaaW1t
+ZXJtYW5uIHdyb3RlOg0KPj4gQWRkIGJhc2ljIHRlc3RzIGZvciB2aWRlbyBtb2RlIHJlc29s
+dXRpb24gYW5kIGNvbG9yIG9uIGZiZGV2DQo+PiBkZXZpY2VzLg0KPj4NCj4+IFNpZ25lZC1v
+ZmYtYnk6IFRob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPg0KPj4gLS0t
+DQo+PiAgIHRlc3RzL2ZiZGV2LmMgfCA0MyArKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKy0tLS0tLS0tDQo+PiAgIDEgZmlsZSBjaGFuZ2VkLCAzNSBpbnNlcnRpb25zKCsp
+LCA4IGRlbGV0aW9ucygtKQ0KPj4NCj4+IGRpZmYgLS1naXQgYS90ZXN0cy9mYmRldi5jIGIv
+dGVzdHMvZmJkZXYuYw0KPj4gaW5kZXggNDQzYTQzZGMuLmM5OTAzZjhiIDEwMDY0NA0KPj4g
+LS0tIGEvdGVzdHMvZmJkZXYuYw0KPj4gKysrIGIvdGVzdHMvZmJkZXYuYw0KPj4gQEAgLTUw
+LDE0ICs1MCw0MSBAQCBzdGF0aWMgdm9pZCBtb2RlX3Rlc3RzKGludCBmZCkNCj4+ICAgDQo+
+PiAgIAlpZ3RfZGVzY3JpYmUoIkNoZWNrIGlmIHNjcmVlbmluZm8gaXMgdmFsaWQiKTsNCj4+
+ICAgCWlndF9zdWJ0ZXN0KCJpbmZvIikgew0KPj4gLQkJdW5zaWduZWQgbG9uZyBzaXplOw0K
+Pj4gLQ0KPj4gLQkJc2l6ZSA9IHZhcl9pbmZvLnlyZXMgKiBmaXhfaW5mby5saW5lX2xlbmd0
+aDsNCj4+IC0JCWlndF9hc3NlcnRfZihzaXplIDw9IGZpeF9pbmZvLnNtZW1fbGVuLA0KPj4g
+LQkJCSAgICAgInNjcmVlbiBzaXplICglZCB4ICVkKSBvZiBwaXRjaCAlZCBkb2VzIG5vdCBm
+aXQgd2l0aGluIG1hcHBhYmxlIGFyZWEgb2Ygc2l6ZSAldVxuIiwNCj4+IC0JCQkgICAgIHZh
+cl9pbmZvLnhyZXMsIHZhcl9pbmZvLnlyZXMsDQo+PiAtCQkJICAgICBmaXhfaW5mby5saW5l
+X2xlbmd0aCwNCj4+IC0JCQkgICAgIGZpeF9pbmZvLnNtZW1fbGVuKTsNCj4+ICsJCXVuc2ln
+bmVkIGxvbmcgbmxpbmVzOw0KPj4gKw0KPj4gKwkJLyogdmlkZW8gbWVtb3J5IGNvbmZpZ3Vy
+YXRpb24gKi8NCj4+ICsJCWlndF9hc3NlcnRfZihmaXhfaW5mby5saW5lX2xlbmd0aCwgImxp
+bmUgcGl0Y2ggbm90IHNldFxuIik7DQo+PiArCQlpZ3RfYXNzZXJ0X2YoZml4X2luZm8uc21l
+bV9sZW4sICJzaXplIG9mIHZpZGVvIG1lbW9yeSBub3Qgc2V0XG4iKTsNCj4+ICsJCWlndF9h
+c3NlcnRfZihmaXhfaW5mby5saW5lX2xlbmd0aCA8PSBmaXhfaW5mby5zbWVtX2xlbiwNCj4+
+ICsJCQkgICAgICJsaW5lIGxlbmd0aCAoJXUpIGV4Y2VlZHMgYXZhaWxhYmxlIHZpZGVvIG1l
+bW9yeSAoJXUpXG4iLA0KPj4gKwkJCSAgICAgZml4X2luZm8ubGluZV9sZW5ndGgsIGZpeF9p
+bmZvLnNtZW1fbGVuKTsNCj4+ICsNCj4+ICsJCS8qIGNvbG9yIGZvcm1hdCAqLw0KPj4gKwkJ
+aWd0X2Fzc2VydF9mKHZhcl9pbmZvLmJpdHNfcGVyX3BpeGVsLCAiYml0cy1wZXItcGl4ZWwg
+bm90IHNldFxuIik7DQo+PiArDQo+PiArCQkvKiBob3Jpem9udGFsIHJlc29sdXRpb24gKi8N
+Cj4+ICsJCWlndF9hc3NlcnRfZih2YXJfaW5mby54cmVzLCAiaG9yaXpvbnRhbCByZXNvbHV0
+aW9uIG5vdCBzZXRcbiIpOw0KPj4gKwkJaWd0X2Fzc2VydF9mKHZhcl9pbmZvLnhyZXNfdmly
+dHVhbCwgImhvcml6b250YWwgdmlydHVhbCByZXNvbHV0aW9uIG5vdCBzZXRcbiIpOw0KPj4g
+KwkJaWd0X2Fzc2VydF9mKHZhcl9pbmZvLnhyZXMgPD0gdmFyX2luZm8ueHJlc192aXJ0dWFs
+LA0KPj4gKwkJCSAgICAgImhvcml6b250YWwgdmlydHVhbCByZXNvbHV0aW9uICgldSkgbGVz
+cyB0aGFuIGhvcml6b250YWwgcmVzb2x1dGlvbiAoJXUpXG4iLA0KPj4gKwkJCSAgICAgdmFy
+X2luZm8ueHJlc192aXJ0dWFsLCB2YXJfaW5mby54cmVzKTsNCj4+ICsJCWlndF9hc3NlcnRf
+Zih2YXJfaW5mby54b2Zmc2V0IDw9ICh2YXJfaW5mby54cmVzX3ZpcnR1YWwgLSB2YXJfaW5m
+by54cmVzKSwNCj4+ICsJCQkgICAgICJzY3JlZW4gaG9yaXpvbnRhbCBvZmZzZXQgKCV1KSBv
+dmVyZmxvd1xuIiwNCj4+ICsJCQkgICAgIHZhcl9pbmZvLnhvZmZzZXQpOw0KPj4gKw0KPj4g
+KwkJLyogdmVydGljYWwgcmVzb2x1dGlvbiAqLw0KPj4gKwkJaWd0X2Fzc2VydF9mKHZhcl9p
+bmZvLnlyZXMsICJ2ZXJ0aWNhbCByZXNvbHV0aW9uIG5vdCBzZXRcbiIpOw0KPj4gKwkJaWd0
+X2Fzc2VydF9mKHZhcl9pbmZvLnlyZXNfdmlydHVhbCwgInZlcnRpY2FsIHZpcnR1YWwgcmVz
+b2x1dGlvbiBub3Qgc2V0XG4iKTsNCj4+ICsJCWlndF9hc3NlcnRfZih2YXJfaW5mby55cmVz
+IDw9IHZhcl9pbmZvLnlyZXNfdmlydHVhbCwNCj4+ICsJCQkgICAgICJ2ZXJ0aWNhbCB2aXJ0
+dWFsIHJlc29sdXRpb24gKCV1KSBsZXNzIHRoYW4gdmVydGljYWwgcmVzb2x1dGlvbiAoJXUp
+XG4iLA0KPj4gKwkJCSAgICAgdmFyX2luZm8ueXJlc192aXJ0dWFsLCB2YXJfaW5mby55cmVz
+KTsNCj4+ICsJCWlndF9hc3NlcnRfZih2YXJfaW5mby55b2Zmc2V0IDw9ICh2YXJfaW5mby55
+cmVzX3ZpcnR1YWwgLSB2YXJfaW5mby55cmVzKSwNCj4+ICsJCQkgICAgICJzY3JlZW4gdmVy
+dGljYWwgb2Zmc2V0ICgldSkgb3ZlcmZsb3dcbiIsDQo+PiArCQkJICAgICB2YXJfaW5mby55
+b2Zmc2V0KTsNCj4gDQo+IFlXUkFQIGRvZXMgYWxsb3cgZm9yIHRoYXQgSUlSQy4gU28gbWF5
+YmUgc2hvdWxkIGNoZWNrIHRoYXQsIG9yIG1heWJlIHdlDQo+IGRvbid0IGNhcmUgYWJvdXQg
+ZHJpdmVycyB0aGF0IHN1cHBvcnQgaXQ/DQoNClNvbWUgZmJkZXYgZHJpdmVycyBhbmQgb21h
+cF9kcm0gc2VlbSB0byBzdXBwb3J0IGl0LiBJJ2xsIGFkZCBhIHRlc3QgZm9yIGl0Lg0KDQo+
+IA0KPj4gKwkJbmxpbmVzID0gZml4X2luZm8uc21lbV9sZW4gLyBmaXhfaW5mby5saW5lX2xl
+bmd0aDsNCj4+ICsJCWlndF9hc3NlcnRfZih2YXJfaW5mby55cmVzX3ZpcnR1YWwgPD0gbmxp
+bmVzLA0KPj4gKwkJCSAgICAgInZlcnRpY2FsIHZpcnR1YWwgcmVzb2x1dGlvbiAoJXUpIHdp
+dGggcGl0Y2ggJXUgZXhjZWVkcyBhdmFpbGFibGUgdmlkZW8gbWVtb3J5XG4iLA0KPj4gKwkJ
+CSAgICAgdmFyX2luZm8ueXJlc192aXJ0dWFsLCBmaXhfaW5mby5saW5lX2xlbmd0aCk7DQo+
+IA0KPiBNYXliZSBhZGQgdGhlIGNvdW50ZXJwYXJ0IGZvciB0aGUgaG9yaXpvbnRhbCBkaXJl
+Y3Rpb24/DQoNCkkgdGhvdWdodCBhYm91dCB0aGlzLCBidXQgZm91bmQgdGhhdCBtYXliZSBz
+b21lIGF3a3dhcmQgY29sb3IgZm9ybWF0IA0KbWlnaHQgbm90IGhhdmUgYSBjbGVhciByZWxh
+dGlvbiBiZXR3ZWVuIHJlc29sdXRpb24gYW5kIGxpbmVsZW5ndGguIEJ1dCANCkknbGwgYWRk
+IGEgdGVzdCB0byBjaGVjayBhZ2FpbnN0IHRoZSBiaXQgcGVyIGxpbmUuIEhvcGVmdWxseSB0
+aGlzIHdpbGwgd29yay4NCg0KQmVzdCByZWdhcmRzDQpUaG9tYXMNCg0KPiANCj4+ICAgCX0N
+Cj4+ICAgfQ0KPj4gICANCj4+IC0tIA0KPj4gMi4zMy4wDQo+IA0KDQotLSANClRob21hcyBa
+aW1tZXJtYW5uDQpHcmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJlIFNv
+bHV0aW9ucyBHZXJtYW55IEdtYkgNCk1heGZlbGRzdHIuIDUsIDkwNDA5IE7DvHJuYmVyZywg
+R2VybWFueQ0KKEhSQiAzNjgwOSwgQUcgTsO8cm5iZXJnKQ0KR2VzY2jDpGZ0c2bDvGhyZXI6
+IEZlbGl4IEltZW5kw7ZyZmZlcg0K
+
+--------------0lAu6oERoFl8h0j6dIuh4E6z--
+
+--------------KgCoRqPSbJpVRjIyHmcweLbr
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmFlmm8FAwAAAAAACgkQlh/E3EQov+BN
+bg//WpLV+Mr6bKROp+UBsmLUUWh8tknVtJwdduaSP5lQj4gnNIeYVeBTFUKx+jXr9W+Z0n0Og8KC
+XwFwBFMVtPkwzo6RS6AHIYFinS/F1dtakEk3IaUIzppt2avl8JyZhS0sDcJvF+p5wJCij0Zk/PQi
+SlQCZg4moq830jZDg3JzT9KsbVotRv+zbdVV28ZcF0iDflOdYL60cVRvKhrQj7A97gi6ynnFTvIc
+8k1roht1a1XUCi2UC7lge6I6NvZ5pb3zGrjt76TkECrfkqfcUITLlU+XL3J5dJD/jOtg8q4jwSot
+FFWUKrGHuAdvm2XUJTxG85+ggIwqwcDMqmy9EQMUU+o8GoodqTj9AKkXIY6iEe3wmrcmYeB2bJdc
+BGTPupxnRiM/K6XNvj3Vs0l5nCtMhPJ/dGXjgn9dUe+fI24tPGviklahPu8WMrVur8LYQSqP2Tfc
+qDi1M0qkAplCGfiAfYhF8Y9fP7yBF6jjQSfY27b/M/8EkvcjLjouanPZmXbWkA7VmO+VC7nMKuBj
+ctTVKVvrooBYZcnR2ATvISOnwemDYq7vPQKhZtKkM6sz7iUZpgvgCP2rDRva48x7sW/8Yir63J0x
+kajcaFDwYer62avIhuTRQiN4gAX+WsxnMMuCYfeqzVblx2v2/5FVuQ6Sp4CAVCY2+k8oM23GOgh1
+Rlo=
+=8/qh
+-----END PGP SIGNATURE-----
+
+--------------KgCoRqPSbJpVRjIyHmcweLbr--
