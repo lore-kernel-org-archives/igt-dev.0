@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2065.outbound.protection.outlook.com [40.107.244.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A051A6E916
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Oct 2021 13:16:22 +0000 (UTC)
-References: <20210805160622.516552-1-bindu.r@amd.com>
- <YQ0Lp+ZmKlDwiqyF@platvala-desk.ger.corp.intel.com>
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Message-ID: <32cbc9b9-9e4a-630e-2b55-ae8fb66b925a@amd.com>
-Date: Tue, 12 Oct 2021 09:16:15 -0400
-In-Reply-To: <YQ0Lp+ZmKlDwiqyF@platvala-desk.ger.corp.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 96EAD89DFD
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Oct 2021 13:48:22 +0000 (UTC)
+References: <20211011071555.1069239-1-priyanka.dandamudi@intel.com>
+From: Matthew Auld <matthew.auld@intel.com>
+Message-ID: <2da5a0ad-3bb2-cda8-1af1-2b5e6a6365e6@intel.com>
+Date: Tue, 12 Oct 2021 14:19:54 +0100
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v4] tests/kms_bw: New test for bandwidth
- validation
+In-Reply-To: <20211011071555.1069239-1-priyanka.dandamudi@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915: use
+ gem_require_mmap_device_coherent
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,16 +22,22 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>, Bindu Ramamurthy <bindu.r@amd.com>
-Cc: arek@hiler.eu, markyacoub@google.com, igt-dev@lists.freedesktop.org, Harry.Wentland@amd.com, Rodrigo.Siqueira@amd.com, Anson.Jacob@amd.com, Nicholas.Choi@amd.com
+To: priyanka.dandamudi@intel.com, igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com, ashutosh.dixit@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Petri,
-
-I've sent a v5. Please take a look at 
-https://lists.freedesktop.org/archives/igt-dev/2021-October/036070.html
-
---
-
-Thanks & Regards,
-Aurabindo Pillai
+On 11/10/2021 08:15, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> 
+> Update gem_require_mmap_wc to gem_require_mmap_device_coherent
+> along with mmap__wc, as it works on discrete platforms, while
+> still using an explicit WC mmap on integrated platforms.
+> Below are the updated tests:
+> gem_exec_schedule
+> gem_exec_async
+> gem_busy
+> kms_busy
+> 
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
