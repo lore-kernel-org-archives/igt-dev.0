@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2086389531482761776=="
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD7686E5CF
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Oct 2021 07:36:33 +0000 (UTC)
+From: Jigar Bhatt <jigar.bhatt@intel.com>
+Date: Tue, 12 Oct 2021 13:00:36 +0530
+Message-Id: <20211012073036.2414155-1-jigar.bhatt@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 12 Oct 2021 06:15:12 -0000
-Message-ID: <163401931263.14289.16905703849086026634@emeril.freedesktop.org>
-References: <20211012050228.21959-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20211012050228.21959-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/gem=5Fexec=5Fcapture_=3A_Add_support_for_local_memory?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4] tests/i915/i915_pm_dc: Fix condition in
+ dc9-test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,167 +16,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: sai.gowtham.ch@intel.com
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: jigar.bhatt@intel.com, petri.latvala@intel.com, nischal.varide@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2086389531482761776==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+1.Inside dc9_wait_entry, we do not have DC9 counter,
+so we rely on dc5/dc6 counter reset
+to check if display engine was in DC9.
+Test is passed if live counter is less
+than the previous counter. Correcting condition
+igt_wait(read_dc_counter(debugfs_fd, dc_target) <
+			prev_dc, seconds, 100);
 
-== Series Details ==
+2.Moving prev_dc = read_dc_counter(data->debugfs_fd,
+dc_target); before setup_dc9_dpms avoid 0 reading.
 
-Series: tests/i915/gem_exec_capture : Add support for local memory
-URL   : https://patchwork.freedesktop.org/series/95707/
-State : success
+Fixes: 2f4e6430a97f04284d1cafb1479e7c1b0b2d596a ("tests/i915/i915_pm_dc: Fix DC9 test")
+Signed-off-by: Jigar Bhatt <jigar.bhatt@intel.com>
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+---
+ tests/i915/i915_pm_dc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_10720 -> IGTPW_6310
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6310/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6310 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@cs-compute:
-    - fi-elk-e7500:       NOTRUN -> [SKIP][1] ([fdo#109271]) +49 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6310/fi-elk-e7500/igt@amdgpu/amd_basic@cs-compute.html
-
-  * igt@amdgpu/amd_basic@semaphore:
-    - fi-bdw-5557u:       NOTRUN -> [SKIP][2] ([fdo#109271]) +23 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6310/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-snb-2600:        [PASS][3] -> [INCOMPLETE][4] ([i915#3921])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10720/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6310/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
-
-
-Participating hosts (35 -> 35)
-------------------------------
-
-  Additional (1): fi-elk-e7500 
-  Missing    (1): fi-bsw-cyan 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6242 -> IGTPW_6310
-
-  CI-20190529: 20190529
-  CI_DRM_10720: 8a8d1f74b64edddbbb43fa4be5e438a12ba70707 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6310: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6310/index.html
-  IGT_6242: 721fd85ee95225ed5df322f7182bdfa9b86a3e68 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-
-== Testlist changes ==
-
-+igt@gem_exec_capture@lmem
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6310/index.html
-
---===============2086389531482761776==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/gem_exec_capture : Add support for local memory</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95707/">https://patchwork.freedesktop.org/series/95707/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6310/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6310/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10720 -&gt; IGTPW_6310</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6310/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6310 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@cs-compute:</p>
-<ul>
-<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6310/fi-elk-e7500/igt@amdgpu/amd_basic@cs-compute.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +49 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_basic@semaphore:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6310/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +23 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10720/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6310/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Participating hosts (35 -&gt; 35)</h2>
-<p>Additional (1): fi-elk-e7500 <br />
-  Missing    (1): fi-bsw-cyan </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6242 -&gt; IGTPW_6310</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10720: 8a8d1f74b64edddbbb43fa4be5e438a12ba70707 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6310: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6310/index.html<br />
-  IGT_6242: 721fd85ee95225ed5df322f7182bdfa9b86a3e68 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<p>== Testlist changes ==</p>
-<p>+igt@gem_exec_capture@lmem</p>
-
-</body>
-</html>
-
---===============2086389531482761776==--
+diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+index 3a7ce5bf..046c345a 100644
+--- a/tests/i915/i915_pm_dc.c
++++ b/tests/i915/i915_pm_dc.c
+@@ -410,7 +410,7 @@ static bool dc9_wait_entry(uint32_t debugfs_fd, int dc_target, int prev_dc, int
+ 	 * since we do not have DC9 counter,
+ 	 * so we rely on dc5/dc6 counter reset to check if display engine was in DC9.
+ 	 */
+-	return igt_wait(read_dc_counter(debugfs_fd, dc_target) >
++	return igt_wait(read_dc_counter(debugfs_fd, dc_target) <
+ 			prev_dc, seconds, 100);
+ }
+ 
+@@ -444,8 +444,8 @@ static void test_dc9_dpms(data_t *data)
+ 
+ 	require_dc_counter(data->debugfs_fd, CHECK_DC5);
+ 	dc_target = support_dc6(data->debugfs_fd) ? CHECK_DC6 : CHECK_DC5;
+-	setup_dc9_dpms(data, dc_target);
+ 	prev_dc = read_dc_counter(data->debugfs_fd, dc_target);
++	setup_dc9_dpms(data, dc_target);
+ 	dpms_off(data);
+ 	check_dc9(data, dc_target, prev_dc);
+ 	dpms_on(data);
+-- 
+2.25.1
