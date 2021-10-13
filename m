@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F1F36EA0F
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Oct 2021 15:11:28 +0000 (UTC)
-Date: Wed, 13 Oct 2021 17:10:23 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20211013151023.GA52300@zkempczy-mobl2>
-References: <20211012050122.21907-1-sai.gowtham.ch@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4026509150611769490=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211012050122.21907-1-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_suspend: Add
- support for local memory
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 13 Oct 2021 15:16:04 -0000
+Message-ID: <163413816489.10252.16111429303789846372@emeril.freedesktop.org>
+References: <20211013125949.19373-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20211013125949.19373-1-ville.syrjala@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Iga21zOiBG?=
+ =?utf-8?q?ix_i915_fixed=5Fmode_vrefresh_fallout?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,334 +16,238 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: sai.gowtham.ch@intel.com
+To: Ville Syrjala <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Oct 12, 2021 at 10:31:22AM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-> 
-> Add support for local memory region (Device memory)
-> 
-> Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  tests/i915/gem_exec_suspend.c | 187 ++++++++++++++++++++++++++--------
->  1 file changed, 147 insertions(+), 40 deletions(-)
-> 
-> diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
-> index 887bb735..ac7e1b7c 100644
-> --- a/tests/i915/gem_exec_suspend.c
-> +++ b/tests/i915/gem_exec_suspend.c
-> @@ -51,8 +51,19 @@
->  #define CACHED (1<<8)
->  #define HANG (2<<8)
->  
-> +static uint32_t batch_create(int fd, uint32_t batch_size, uint32_t region)
-> +{
-> +	const uint32_t bbe = MI_BATCH_BUFFER_END;
-> +	uint32_t handle;
-> +
-> +	handle = gem_create_in_memory_regions(fd, batch_size, region);
-> +	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
-> +
-> +	return handle;
-> +}
-> +
->  static void run_test(int fd, const intel_ctx_t *ctx,
-> -		     unsigned engine, unsigned flags);
-> +		     unsigned engine, unsigned flags, uint32_t region);
->  
->  static void check_bo(int fd, uint32_t handle)
->  {
-> @@ -67,16 +78,15 @@ static void check_bo(int fd, uint32_t handle)
->  	munmap(map, 4096);
->  }
->  
-> -static void test_all(int fd, const intel_ctx_t *ctx, unsigned flags)
-> +static void test_all(int fd, const intel_ctx_t *ctx, unsigned flags, uint32_t region)
->  {
-> -	run_test(fd, ctx, ALL_ENGINES, flags & ~0xff);
-> +	run_test(fd, ctx, ALL_ENGINES, flags & ~0xff, region);
->  }
->  
->  static void run_test(int fd, const intel_ctx_t *ctx,
-> -		     unsigned engine, unsigned flags)
-> +		     unsigned engine, unsigned flags, uint32_t region)
->  {
->  	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
-> -	const uint32_t bbe = MI_BATCH_BUFFER_END;
->  	struct drm_i915_gem_exec_object2 obj[2];
->  	struct drm_i915_gem_relocation_entry reloc;
->  	struct drm_i915_gem_execbuffer2 execbuf;
-> @@ -100,7 +110,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
->  
->  	/* Before suspending, check normal operation */
->  	if (mode(flags) != NOSLEEP)
-> -		test_all(fd, ctx, flags);
-> +		test_all(fd, ctx, flags, region);
->  
->  	gem_quiescent_gpu(fd);
->  
-> @@ -117,8 +127,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
->  	if (!gem_has_lmem(fd))
->  		gem_set_caching(fd, obj[0].handle, !!(flags & CACHED));
->  	obj[0].flags |= EXEC_OBJECT_WRITE;
-> -	obj[1].handle = gem_create(fd, 4096);
+--===============4026509150611769490==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I think target buffer also should be created in specified region.
-Currently only batch is moving between regions but target is always
-taken from system memory.
+== Series Details ==
 
-I don't think cross-regioning would be interesting so both objects created 
-within same region would be enough. After resume we would see if target
-buffer contains what we expect of.
+Series: kms: Fix i915 fixed_mode vrefresh fallout
+URL   : https://patchwork.freedesktop.org/series/95771/
+State : failure
 
-> -	gem_write(fd, obj[1].handle, 0, &bbe, sizeof(bbe));
-> +	obj[1].handle = batch_create(fd, 4096, region);
->  	igt_require(__gem_execbuf(fd, &execbuf) == 0);
->  	gem_close(fd, obj[1].handle);
->  
-> @@ -222,7 +231,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
->  
->  	/* After resume, make sure it still works */
->  	if (mode(flags) != NOSLEEP)
-> -		test_all(fd, ctx, flags);
-> +		test_all(fd, ctx, flags, region);
->  }
->  
->  struct battery_sample {
-> @@ -250,7 +259,7 @@ static double d_time(const struct battery_sample *after,
->  }
->  
->  static void power_test(int i915, const intel_ctx_t *ctx,
-> -		       unsigned engine, unsigned flags)
-> +		       unsigned engine, unsigned flags, uint32_t region)
->  {
->  	struct battery_sample before, after;
->  	char *status;
-> @@ -270,7 +279,7 @@ static void power_test(int i915, const intel_ctx_t *ctx,
->  	igt_set_autoresume_delay(5 * 60); /* 5 minutes; longer == more stable */
->  
->  	igt_assert(get_power(dir, &before));
-> -	run_test(i915, ctx, engine, flags);
-> +	run_test(i915, ctx, engine, flags, region);
->  	igt_assert(get_power(dir, &after));
->  
->  	igt_set_autoresume_delay(0);
-> @@ -296,6 +305,10 @@ igt_main
->  	igt_hang_t hang;
->  	const intel_ctx_t *ctx;
->  	int fd;
-> +	char *sub_name;
-> +	uint32_t region;
-> +	struct drm_i915_query_memory_regions *query_info;
-> +	struct igt_collection *set, *regions;
->  
->  	igt_fixture {
->  		fd = drm_open_driver_master(DRIVER_INTEL);
-> @@ -304,49 +317,111 @@ igt_main
->  		ctx = intel_ctx_create_all_physical(fd);
->  
->  		igt_fork_hang_detector(fd);
-> +		query_info = gem_get_query_memory_regions(fd);
-> +		igt_assert(query_info);
-> +
-> +		set = get_memory_region_set(query_info,
-> +					I915_SYSTEM_MEMORY,
-> +					I915_DEVICE_MEMORY);
-> +	}
-> +
-> +	igt_subtest_with_dynamic("basic") {
-> +		for_each_combination(regions, 1, set) {
-> +			sub_name = memregion_dynamic_subtest_name(regions);
-> +			region = igt_collection_get_value(regions, 0);
-> +			igt_dynamic_f("%s", sub_name)
-> +				run_test(fd, ctx, ALL_ENGINES, NOSLEEP, region);
-> +			free(sub_name);
-> +		}
->  	}
->  
-> -	igt_subtest("basic")
-> -		run_test(fd, ctx, ALL_ENGINES, NOSLEEP);
-> -	igt_subtest("basic-S0")
-> -		run_test(fd, ctx, ALL_ENGINES, IDLE);
-> -	igt_subtest("basic-S3-devices")
-> -		run_test(fd, ctx, ALL_ENGINES, SUSPEND_DEVICES);
-> -	igt_subtest("basic-S3")
-> -		run_test(fd, ctx, ALL_ENGINES, SUSPEND);
-> -	igt_subtest("basic-S4-devices")
-> -		run_test(fd, ctx, ALL_ENGINES, HIBERNATE_DEVICES);
-> -	igt_subtest("basic-S4")
-> -		run_test(fd, ctx, ALL_ENGINES, HIBERNATE);
-> +	igt_subtest_with_dynamic("basic-S0") {
-> +		for_each_combination(regions, 1, set) {
-> +			sub_name = memregion_dynamic_subtest_name(regions);
-> +			region = igt_collection_get_value(regions, 0);
-> +			igt_dynamic_f("%s", sub_name)
-> +				run_test(fd, ctx, ALL_ENGINES, IDLE, region);
-> +			free(sub_name);
-> +		}
-> +	}
-> +
-> +	igt_subtest_with_dynamic("basic-S3-devices") {
-> +		for_each_combination(regions, 1, set) {
-> +			sub_name = memregion_dynamic_subtest_name(regions);
-> +			region = igt_collection_get_value(regions, 0);
-> +			igt_dynamic_f("%s", sub_name)
-> +				run_test(fd, ctx, ALL_ENGINES, SUSPEND_DEVICES, region);
-> +			free(sub_name);
-> +		}
-> +	}
-> +
-> +	igt_subtest_with_dynamic("basic-S3") {
-> +		for_each_combination(regions, 1, set) {
-> +			sub_name = memregion_dynamic_subtest_name(regions);
-> +			region = igt_collection_get_value(regions, 0);
-> +			igt_dynamic_f("%s", sub_name)
-> +				run_test(fd, ctx, ALL_ENGINES, SUSPEND, region);
-> +			free(sub_name);
-> +		}
-> +	}
-> +
-> +	igt_subtest_with_dynamic("basic-S4-devices") {
-> +		for_each_combination(regions, 1, set) {
-> +			sub_name = memregion_dynamic_subtest_name(regions);
-> +			region = igt_collection_get_value(regions, 0);
-> +			igt_dynamic_f("%s", sub_name)
-> +				run_test(fd, ctx, ALL_ENGINES, HIBERNATE_DEVICES, region);
-> +			free(sub_name);
-> +		}
-> +	}
-> +
-> +	igt_subtest_with_dynamic("basic-S4") {
-> +		for_each_combination(regions, 1, set) {
-> +			sub_name = memregion_dynamic_subtest_name(regions);
-> +			region = igt_collection_get_value(regions, 0);
-> +			igt_dynamic_f("%s", sub_name)
-> +				run_test(fd, ctx, ALL_ENGINES, HIBERNATE, region);
-> +			free(sub_name);
-> +		}
-> +	}
->  
->  	for (m = modes; m->suffix; m++) {
->  		igt_subtest_with_dynamic_f("fixed%s", m->suffix) {
-> -			igt_require(gem_has_lmem(fd));
->  			for_each_ctx_engine(fd, ctx, e) {
->  				if (!gem_class_can_store_dword(fd, e->class))
->  					continue;
-> -				igt_dynamic_f("%s", e->name)
-> -					run_test(fd, ctx, e->flags, m->mode);
-> +				for_each_combination(regions, 1, set) {
-> +					sub_name = memregion_dynamic_subtest_name(regions);
-> +					region = igt_collection_get_value(regions, 0);
-> +					igt_dynamic_f("%s-%s", e->name, sub_name)
-> +						run_test(fd, ctx, e->flags, m->mode, region);
-> +				}
->  			}
->  		}
->  
->  		igt_subtest_with_dynamic_f("uncached%s", m->suffix) {
-> -			igt_require(!gem_has_lmem(fd));
->  			for_each_ctx_engine(fd, ctx, e) {
->  				if (!gem_class_can_store_dword(fd, e->class))
->  					continue;
-> -				igt_dynamic_f("%s", e->name)
-> -					run_test(fd, ctx, e->flags, m->mode | UNCACHED);
-> +				for_each_combination(regions, 1, set) {
-> +					sub_name = memregion_dynamic_subtest_name(regions);
-> +					region = igt_collection_get_value(regions, 0);
-> +					igt_dynamic_f("%s-%s", e->name, sub_name)
-> +						run_test(fd, ctx, e->flags, m->mode | UNCACHED, region);
-> +				}
->  			}
->  		}
->  
->  		igt_subtest_with_dynamic_f("cached%s", m->suffix) {
-> -			igt_require(!gem_has_lmem(fd));
->  			for_each_ctx_engine(fd, ctx, e) {
->  				if (!gem_class_can_store_dword(fd, e->class))
->  					continue;
-> -				igt_dynamic_f("%s", e->name)
-> -					run_test(fd, ctx, e->flags, m->mode | CACHED);
-> +				for_each_combination(regions, 1, set) {
-> +					sub_name = memregion_dynamic_subtest_name(regions);
-> +					region = igt_collection_get_value(regions, 0);
-> +					igt_dynamic_f("%s-%s", e->name, sub_name)
-> +						run_test(fd, ctx, e->flags, m->mode | CACHED, region);
-> +				}
+== Summary ==
 
-Cached and uncached runs makes sense only on integrated cards
-where fixed on discrete. So those igt_require() properly
-detects runtime constraints to run the test and you should
-keep those in the code.
+CI Bug Log - changes from CI_DRM_10732 -> IGTPW_6315
+====================================================
 
---
-Zbigniew
+Summary
+-------
 
->  			}
->  		}
->  	}
-> @@ -356,17 +431,49 @@ igt_main
->  		hang = igt_allow_hang(fd, 0, 0);
->  	}
->  
-> -	igt_subtest("hang-S3")
-> -		run_test(fd, intel_ctx_0(fd), 0, SUSPEND | HANG);
-> -	igt_subtest("hang-S4")
-> -		run_test(fd, intel_ctx_0(fd), 0, HIBERNATE | HANG);
-> +	igt_subtest_with_dynamic("hang-S3") {
-> +		for_each_combination(regions, 1, set) {
-> +			sub_name = memregion_dynamic_subtest_name(regions);
-> +			region = igt_collection_get_value(regions, 0);
-> +			igt_dynamic_f("%s", sub_name)
-> +				run_test(fd, intel_ctx_0(fd), 0, SUSPEND | HANG, region);
-> +			free(sub_name);
-> +		}
-> +	}
->  
-> -	igt_subtest("power-S0")
-> -		power_test(fd, intel_ctx_0(fd), 0, IDLE);
-> -	igt_subtest("power-S3")
-> -		power_test(fd, intel_ctx_0(fd), 0, SUSPEND);
-> +	igt_subtest_with_dynamic("hang-S4") {
-> +		for_each_combination(regions, 1, set) {
-> +			sub_name = memregion_dynamic_subtest_name(regions);
-> +			region = igt_collection_get_value(regions, 0);
-> +			igt_dynamic_f("%s", sub_name)
-> +				run_test(fd, intel_ctx_0(fd), 0, HIBERNATE | HANG, region);
-> +			free(sub_name);
-> +		}
-> +	}
-> +
-> +	igt_subtest_with_dynamic("power-S0") {
-> +		for_each_combination(regions, 1, set) {
-> +			sub_name = memregion_dynamic_subtest_name(regions);
-> +			region = igt_collection_get_value(regions, 0);
-> +			igt_dynamic_f("%s", sub_name)
-> +				power_test(fd, intel_ctx_0(fd), 0, IDLE, region);
-> +			free(sub_name);
-> +		}
-> +	}
-> +
-> +	igt_subtest_with_dynamic("power-S3") {
-> +		for_each_combination(regions, 1, set) {
-> +			sub_name = memregion_dynamic_subtest_name(regions);
-> +			region = igt_collection_get_value(regions, 0);
-> +			igt_dynamic_f("%s", sub_name)
-> +				power_test(fd, intel_ctx_0(fd), 0, SUSPEND, region);
-> +			free(sub_name);
-> +		}
-> +	}
->  
->  	igt_fixture {
-> +		free(query_info);
-> +		igt_collection_destroy(set);
->  		igt_disallow_hang(fd, hang);
->  		intel_ctx_destroy(fd, ctx);
->  		close(fd);
-> -- 
-> 2.32.0
-> 
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_6315 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_6315, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6315:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@gem:
+    - fi-pnv-d510:        [PASS][1] -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10732/fi-pnv-d510/igt@i915_selftest@live@gem.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/fi-pnv-d510/igt@i915_selftest@live@gem.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6315 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-tgl-1115g4:      [PASS][3] -> [FAIL][4] ([i915#1888])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10732/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@runner@aborted:
+    - fi-pnv-d510:        NOTRUN -> [FAIL][5] ([fdo#109271] / [i915#2403])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/fi-pnv-d510/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - {fi-hsw-gt1}:       [DMESG-WARN][6] ([i915#3303]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10732/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_chamelium@hdmi-crc-fast:
+    - fi-kbl-7500u:       [FAIL][8] ([i915#1161]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10732/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [DMESG-WARN][10] ([i915#4269]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10732/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+    - {fi-hsw-gt1}:       [FAIL][12] ([i915#4283]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10732/fi-hsw-gt1/igt@kms_frontbuffer_tracking@basic.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/fi-hsw-gt1/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1161]: https://gitlab.freedesktop.org/drm/intel/issues/1161
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+  [i915#4283]: https://gitlab.freedesktop.org/drm/intel/issues/4283
+
+
+Participating hosts (41 -> 39)
+------------------------------
+
+  Missing    (2): fi-bsw-cyan fi-hsw-4200u 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6243 -> IGTPW_6315
+
+  CI-20190529: 20190529
+  CI_DRM_10732: 3fdfa1de4774903b9cb4fb308102b5a2d762d829 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6315: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/index.html
+  IGT_6243: 438788b5dbd23085745fdd3da5a237f3577945df @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/index.html
+
+--===============4026509150611769490==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>kms: Fix i915 fixed_mode vrefresh fallout</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95771/">https://patchwork.freedesktop.org/series/95771/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10732 -&gt; IGTPW_6315</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_6315 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_6315, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6315:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@gem:<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10732/fi-pnv-d510/igt@i915_selftest@live@gem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/fi-pnv-d510/igt@i915_selftest@live@gem.html">DMESG-FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6315 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10732/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/fi-pnv-d510/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>{fi-hsw-gt1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10732/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-crc-fast:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10732/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1161">i915#1161</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>
+<p>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10732/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></p>
+</li>
+<li>
+<p>{fi-hsw-gt1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10732/fi-hsw-gt1/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4283">i915#4283</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/fi-hsw-gt1/igt@kms_frontbuffer_tracking@basic.html">PASS</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (41 -&gt; 39)</h2>
+<p>Missing    (2): fi-bsw-cyan fi-hsw-4200u </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6243 -&gt; IGTPW_6315</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10732: 3fdfa1de4774903b9cb4fb308102b5a2d762d829 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6315: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6315/index.html<br />
+  IGT_6243: 438788b5dbd23085745fdd3da5a237f3577945df @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4026509150611769490==--
