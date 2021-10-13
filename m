@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 116756E878
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E3B166E878
  for <igt-dev@lists.freedesktop.org>; Wed, 13 Oct 2021 22:17:45 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Thu, 14 Oct 2021 01:17:23 +0300
-Message-Id: <20211013221727.6392-5-ville.syrjala@linux.intel.com>
+Date: Thu, 14 Oct 2021 01:17:24 +0300
+Message-Id: <20211013221727.6392-6-ville.syrjala@linux.intel.com>
 In-Reply-To: <20211013221727.6392-1-ville.syrjala@linux.intel.com>
 References: <20211013221727.6392-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/8] tests/i915/kms_flip_tiling: Replace
- i915 interlace check with try_commit
+Subject: [igt-dev] [PATCH i-g-t 5/8] tests/i915/kms_flip_tiling: Generalize
+ away copy-pasta
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,64 +26,244 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Rather than having to maintain i915 specific exceptions here
-let's just use try_commit to figure out if we can even do the
-actual test (the page flip ioctl).
+Replace the huge swaths of copypasta by just looping over the
+set of modifiers reported by the plane, and testing each against
+the others (and itself).
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/i915/kms_flip_tiling.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ tests/i915/kms_flip_tiling.c | 209 +++++------------------------------
+ 1 file changed, 30 insertions(+), 179 deletions(-)
 
 diff --git a/tests/i915/kms_flip_tiling.c b/tests/i915/kms_flip_tiling.c
-index 0ed08f78f917..63e0b8b9648f 100644
+index 63e0b8b9648f..e2e6619baeca 100644
 --- a/tests/i915/kms_flip_tiling.c
 +++ b/tests/i915/kms_flip_tiling.c
-@@ -65,6 +65,12 @@ static void pipe_crc_free(void)
+@@ -161,195 +161,46 @@ igt_main
+ 		igt_display_require(&data.display, data.drm_fd);
  	}
- }
  
-+static int try_commit(igt_display_t *display)
-+{
-+	return igt_display_try_commit2(display, display->is_atomic ?
-+				       COMMIT_ATOMIC : COMMIT_LEGACY);
-+}
-+
- static void
- test_flip_tiling(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t modifier[2])
- {
-@@ -79,13 +85,6 @@ test_flip_tiling(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t mo
- 
- 	mode = igt_output_get_mode(output);
- 
--	/* Interlaced modes don't support Y/Yf tiling */
--	if (modifier[0] == I915_FORMAT_MOD_Y_TILED ||
--	    modifier[0] == I915_FORMAT_MOD_Yf_TILED ||
--	    modifier[1] == I915_FORMAT_MOD_Y_TILED ||
--	    modifier[1] == I915_FORMAT_MOD_Yf_TILED)
--		igt_require(!(mode->flags & DRM_MODE_FLAG_INTERLACE));
+-	/*
+-	 * Test that a page flip from a tiled buffer to a linear one works
+-	 * correctly. First, it sets the crtc with the linear buffer and
+-	 * generates a reference crc for the pipe. Then, the crtc is set with
+-	 * the tiled one and page flip to the linear one issued. A new crc is
+-	 * generated and compared to the reference one.
+-	 */
 -
- 	primary = igt_output_get_plane(output, 0);
+-	igt_describe("Check pageflip from tiled buffer to linear one works correctly with x tiling");
+-	igt_subtest_with_dynamic("flip-changes-tiling") {
+-		uint64_t modifier[2] = { I915_FORMAT_MOD_X_TILED,
+-					 DRM_FORMAT_MOD_LINEAR };
++	igt_describe("Check pageflip between modifiers");
++	igt_subtest_with_dynamic("flip-change-tiling") {
+ 		enum pipe pipe;
  
- 	fb_id = igt_create_pattern_fb(data->drm_fd,
-@@ -103,12 +102,16 @@ test_flip_tiling(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t mo
+-		for (int i = 0; i < ARRAY_SIZE(modifier); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, modifier[i]));
+-
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				test_flip_tiling(&data, pipe, output, modifier);
+-			test_cleanup(&data, pipe, output);
+-		}
+-	}
+-
+-	igt_describe("Check pageflip from tiled buffer to linear one works correctly with y tiling");
+-	igt_subtest_with_dynamic("flip-changes-tiling-Y") {
+-		uint64_t modifier[2] = { I915_FORMAT_MOD_Y_TILED,
+-					 DRM_FORMAT_MOD_LINEAR };
+-		enum pipe pipe;
++			igt_plane_t *plane;
  
- 	/* Set the crtc and generate a reference CRC. */
- 	igt_plane_set_fb(primary, &data->fb[1]);
--	igt_display_commit(&data->display);
-+	igt_require_f(try_commit(&data->display) == 0,
-+		      "commit failed with " IGT_MODIFIER_FMT "\n",
-+		      IGT_MODIFIER_ARGS(modifier[1]));
- 	igt_pipe_crc_collect_crc(pipe_crc, &reference_crc);
+-		igt_require_fb_modifiers(data.drm_fd);
++			igt_output_set_pipe(output, pipe);
  
- 	/* Commit the first fb. */
- 	igt_plane_set_fb(primary, &data->fb[0]);
--	igt_display_commit(&data->display);
-+	igt_require_f(try_commit(&data->display) == 0,
-+		      "commit failed with " IGT_MODIFIER_FMT "\n",
-+		      IGT_MODIFIER_ARGS(modifier[1]));
+-		for (int i = 0; i < ARRAY_SIZE(modifier); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, modifier[i]));
++			plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
  
- 	/* Flip to the second fb. */
- 	ret = drmModePageFlip(data->drm_fd, output->config.crtc->crtc_id,
+-		igt_require(data.gen >= 9);
++			for (int i = 0; i < plane->format_mod_count; i++) {
++				if (plane->formats[i] != data.testformat)
++					continue;
+ 
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				test_flip_tiling(&data, pipe, output, modifier);
+-			test_cleanup(&data, pipe, output);
+-		}
+-	}
+-
+-	igt_describe("Check pageflip from tiled buffer to linear one works correctly with yf tiling");
+-	igt_subtest_with_dynamic("flip-changes-tiling-Yf") {
+-		uint64_t modifier[2] = { I915_FORMAT_MOD_Yf_TILED,
+-					 DRM_FORMAT_MOD_LINEAR };
+-		enum pipe pipe;
++				for (int j = 0; j < plane->format_mod_count; j++) {
++					uint64_t modifier[2] = {
++						plane->modifiers[i],
++						plane->modifiers[j],
++					};
+ 
+-		igt_require_fb_modifiers(data.drm_fd);
++					if (plane->formats[j] != data.testformat)
++						continue;
+ 
+-		for (int i = 0; i < ARRAY_SIZE(modifier); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, modifier[i]));
+-
+-		igt_require(data.gen >= 9);
+-
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				test_flip_tiling(&data, pipe, output, modifier);
+-			test_cleanup(&data, pipe, output);
+-		}
+-	}
+-
+-	/*
+-	 * Test that a page flip from a tiled buffer to another tiled one works
+-	 * correctly. First, it sets the crtc with the tiled buffer and
+-	 * generates a reference crc for the pipe. Then a page flip to second
+-	 * tiled buffer is issued. A new crc is generated and compared to the
+-	 * reference one.
+-	 */
+-
+-	igt_describe("Check pageflip from tiled buffer to another tiled one works correctly with x tiling");
+-	igt_subtest_with_dynamic("flip-X-tiled") {
+-		uint64_t modifier[2] = { I915_FORMAT_MOD_X_TILED,
+-					 I915_FORMAT_MOD_X_TILED };
+-		enum pipe pipe;
+-
+-		for (int i = 0; i < ARRAY_SIZE(modifier); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, modifier[i]));
+-
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				test_flip_tiling(&data, pipe, output, modifier);
+-			test_cleanup(&data, pipe, output);
+-		}
+-	}
+-
+-	igt_describe("Check pageflip from tiled buffer to another tiled one works correctly with y tiling");
+-	igt_subtest_with_dynamic("flip-Y-tiled") {
+-		uint64_t modifier[2] = { I915_FORMAT_MOD_Y_TILED,
+-					 I915_FORMAT_MOD_Y_TILED };
+-		enum pipe pipe;
+-
+-		igt_require_fb_modifiers(data.drm_fd);
+-
+-		for (int i = 0; i < ARRAY_SIZE(modifier); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, modifier[i]));
+-
+-		igt_require(data.gen >= 9);
+-
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				test_flip_tiling(&data, pipe, output, modifier);
+-			test_cleanup(&data, pipe, output);
+-		}
+-	}
+-
+-	igt_describe("Check pageflip from tiled buffer to another tiled one works correctly with yf tiling");
+-	igt_subtest_with_dynamic("flip-Yf-tiled") {
+-		uint64_t modifier[2] = { I915_FORMAT_MOD_Yf_TILED,
+-					 I915_FORMAT_MOD_Yf_TILED };
+-		enum pipe pipe;
++					igt_require(igt_plane_has_format_mod(plane,
++									     data.testformat,
++									     modifier[0]));
++					igt_require(igt_plane_has_format_mod(plane,
++									     data.testformat,
++									     modifier[1]));
+ 
+-		igt_require_fb_modifiers(data.drm_fd);
+-
+-		for (int i = 0; i < ARRAY_SIZE(modifier); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, modifier[i]));
+-
+-		igt_require(data.gen >= 9);
+-
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				test_flip_tiling(&data, pipe, output, modifier);
+-			test_cleanup(&data, pipe, output);
+-		}
+-	}
+-
+-	/*
+-	 * Test that a page flip from a linear buffer to a tiled one works
+-	 * correctly. First, it sets the crtc with the linear buffer and
+-	 * generates a reference crc for the pipe. Then a page flip to a tiled
+-	 * buffer is issued. A new crc is generated and compared to the
+-	 * reference one.
+-	 */
+-
+-	igt_describe("Check pageflip from linear buffer to tiled one works correctly with x tiling");
+-	igt_subtest_with_dynamic("flip-to-X-tiled") {
+-		uint64_t modifier[2] = { DRM_FORMAT_MOD_LINEAR,
+-					 I915_FORMAT_MOD_X_TILED };
+-		enum pipe pipe;
+-
+-		for (int i = 0; i < ARRAY_SIZE(modifier); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, modifier[i]));
+-
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				test_flip_tiling(&data, pipe, output, modifier);
+-			test_cleanup(&data, pipe, output);
+-		}
+-	}
+-
+-	igt_describe("Check pageflip from linear buffer to tiled one works correctly with y tiling");
+-	igt_subtest_with_dynamic("flip-to-Y-tiled") {
+-		uint64_t modifier[2] = { DRM_FORMAT_MOD_LINEAR,
+-					 I915_FORMAT_MOD_Y_TILED };
+-		enum pipe pipe;
+-
+-		igt_require_fb_modifiers(data.drm_fd);
+-
+-		for (int i = 0; i < ARRAY_SIZE(modifier); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, modifier[i]));
+-
+-		igt_require(data.gen >= 9);
+-
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				test_flip_tiling(&data, pipe, output, modifier);
+-			test_cleanup(&data, pipe, output);
+-		}
+-	}
+-
+-	igt_describe("Check pageflip from linear buffer to tiled one works correctly with yf tiling");
+-	igt_subtest_with_dynamic("flip-to-Yf-tiled") {
+-		uint64_t modifier[2] = { DRM_FORMAT_MOD_LINEAR,
+-					 I915_FORMAT_MOD_Yf_TILED };
+-		enum pipe pipe;
+-
+-		igt_require_fb_modifiers(data.drm_fd);
+-
+-		for (int i = 0; i < ARRAY_SIZE(modifier); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, modifier[i]));
+-
+-		igt_require(data.gen >= 9);
+-
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				test_flip_tiling(&data, pipe, output, modifier);
+-			test_cleanup(&data, pipe, output);
++					igt_dynamic_f("%s-pipe-%s-%s-to-%s",
++						      igt_output_name(output),
++						      kmstest_pipe_name(pipe),
++						      igt_fb_modifier_name(modifier[0]),
++						      igt_fb_modifier_name(modifier[1]))
++						test_flip_tiling(&data, pipe, output, modifier);
++					test_cleanup(&data, pipe, output);
++				}
++			}
+ 		}
+ 	}
+ 
 -- 
 2.32.0
