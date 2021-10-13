@@ -1,14 +1,28 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8800760646497075512=="
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E92EB6E044
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Oct 2021 14:14:23 +0000 (UTC)
+References: <e481b241-c3a3-40c1-6f17-129b2144d81a@linux.intel.com>
+ <20211005164412.GA13993@jons-linux-dev-box>
+ <712c2aea-f998-520f-3f51-e117e05c0d54@linux.intel.com>
+ <20211006164104.GA7828@jons-linux-dev-box>
+ <b74b343e-513a-52cb-e66e-19b019e0afb1@linux.intel.com>
+ <20211008174947.GA12060@jons-linux-dev-box>
+ <1fc93656-a24d-a3b5-6a31-649478b3306d@linux.intel.com>
+ <20211011171803.GA23672@jons-linux-dev-box>
+ <4dc41f15-df44-85a6-a6eb-7d20ad426503@intel.com>
+ <6fc76cce-0ef7-411a-b2ea-2093d49fb817@linux.intel.com>
+ <20211012172050.GA9075@jons-linux-dev-box>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <77c4d1bc-d074-ca68-4612-39c079b7c084@linux.intel.com>
+Date: Wed, 13 Oct 2021 15:13:58 +0100
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 13 Oct 2021 14:09:22 -0000
-Message-ID: <163413416298.10251.3775116650419639408@emeril.freedesktop.org>
-References: <20211013105744.2869089-1-jigar.bhatt@intel.com>
-In-Reply-To: <20211013105744.2869089-1-jigar.bhatt@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/i915=5Fpm=5Fdc=3A_Fix_condition_in_dc9-test_=28rev5=29?=
+In-Reply-To: <20211012172050.GA9075@jons-linux-dev-box>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] i915/gem_ctx_shared: Make
+ gem_ctx_shared understand static priority mapping
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,182 +30,294 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jigar Bhatt <jigar.bhatt@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: John Harrison <john.c.harrison@intel.com>, Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8800760646497075512==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-== Series Details ==
+On 12/10/2021 18:20, Matthew Brost wrote:
+> On Tue, Oct 12, 2021 at 09:02:17AM +0100, Tvrtko Ursulin wrote:
+>>
+>> On 11/10/2021 19:50, John Harrison wrote:
+>>> On 10/11/2021 10:18, Matthew Brost wrote:
+>>>> On Mon, Oct 11, 2021 at 09:04:29AM +0100, Tvrtko Ursulin wrote:
+>>>>> On 08/10/2021 18:49, Matthew Brost wrote:
+>>>>>> On Wed, Oct 06, 2021 at 07:34:45PM +0100, Tvrtko Ursulin wrote:
+>>>>>>> On 06/10/2021 17:41, Matthew Brost wrote:
+>>>>>>>> On Wed, Oct 06, 2021 at 09:12:41AM +0100, Tvrtko Ursulin wrote:
+>>>>>>>>> On 05/10/2021 17:44, Matthew Brost wrote:
+>>>>>>>>>> On Tue, Oct 05, 2021 at 11:44:02AM +0100, Tvrtko Ursulin wrote:
+>>>>>>>>>>> On 05/10/2021 00:26, Daniele Ceraolo Spurio wrote:
+>>>>>>>>>>>> On 9/16/2021 11:03 AM, Matthew Brost wrote:
+>>>>>>>>>>>>> The i915 currently has 2k
+>>>>>>>>>>>>> visible priority levels which
+>>>>>>>>>>>>> are currently
+>>>>>>>>>>>>> unique. This is changing to
+>>>>>>>>>>>>> statically map these 2k levels
+>>>>>>>>>>>>> into 3
+>>>>>>>>>>>>> buckets:
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> low: < 0
+>>>>>>>>>>>>> mid: 0
+>>>>>>>>>>>>> high: > 0
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Update gem_ctx_shared to understand this. This entails updating
+>>>>>>>>>>>>> promotion test to use 3 levels
+>>>>>>>>>>>>> that will map into different
+>>>>>>>>>>>>> buckets and
+>>>>>>>>>>>>> also add bit of delay after
+>>>>>>>>>>>>> releasing a cork beforing
+>>>>>>>>>>>>> completing the
+>>>>>>>>>>>>> spinners to give time to the
+>>>>>>>>>>>>> i915 schedule to process the
+>>>>>>>>>>>>> fence and
+>>>>>>>>>>>>> release and queue the requests.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> v2: Add a delay between starting releasing spinner and cork in
+>>>>>>>>>>>>> promotion
+>>>>>>>>>>>>> v3:
+>>>>>>>>>>>>>        (Daniele)
+>>>>>>>>>>>>>         - Always add delay, update commit message
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+>>>>>>>>>>>>> ---
+>>>>>>>>>>>>>        tests/i915/gem_ctx_shared.c | 5 +++--
+>>>>>>>>>>>>>        1 file changed, 3 insertions(+), 2 deletions(-)
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> diff --git
+>>>>>>>>>>>>> a/tests/i915/gem_ctx_shared.c
+>>>>>>>>>>>>> b/tests/i915/gem_ctx_shared.c
+>>>>>>>>>>>>> index ea1b5dd1b..7f88871b8 100644
+>>>>>>>>>>>>> --- a/tests/i915/gem_ctx_shared.c
+>>>>>>>>>>>>> +++ b/tests/i915/gem_ctx_shared.c
+>>>>>>>>>>>>> @@ -622,6 +622,7 @@ static void
+>>>>>>>>>>>>> unplug_show_queue(int i915,
+>>>>>>>>>>>>> struct
+>>>>>>>>>>>>> igt_cork *c, uint64_t ahnd,
+>>>>>>>>>>>>>            igt_cork_unplug(c); /*
+>>>>>>>>>>>>> batches will now be queued on
+>>>>>>>>>>>>> the engine */
+>>>>>>>>>>>>>            igt_debugfs_dump(i915, "i915_engine_info");
+>>>>>>>>>>>>> +    usleep(250000);
+>>>>>>>>>>>> Same as previous patch, with a comment added:
+>>>>>>>>>>>>
+>>>>>>>>>>>> Reviewed-by: Daniele Ceraolo Spurio
+>>>>>>>>>>>> <daniele.ceraolospurio@intel.com>
+>>>>>>>>>>> Come on guys, it is a bit bad and lazy
+>>>>>>>>>>> for good taste no? 250ms more test
+>>>>>>>>>> Yea, this is way too long of a sleep. 25ms seems just fine.
+>>>>>>>>> Until you get 1/1000 failures in CI on some
+>>>>>>>>> platforms due phase of the moon.
+>>>>>>>>> Adding sleeps should be avoided where possible.
+>>>>>>>>>
+>>>>>>>> Yea, that is always a risk. Looking at this test there is already 1
+>>>>>>>> other sleep in the test and in gem_exec_schedule there are 5 other
+>>>>>>>> sleeps. I'm not breaking precedent here.
+>>>>>>>>
+>>>>>>>>>> On TGL /w the updated sleep:
+>>>>>>>>>> gem_ctx_shared --r *promotion*
+>>>>>>>>>> IGT-Version: 1.26-g7e489b053 (x86_64)
+>>>>>>>>>> (Linux: 5.15.0-rc3-guc+ x86_64)
+>>>>>>>>>> Starting subtest: Q-promotion
+>>>>>>>>>> Starting dynamic subtest: rcs0
+>>>>>>>>>> Dynamic subtest rcs0: SUCCESS (0.059s)
+>>>>>>>>>> Starting dynamic subtest: bcs0
+>>>>>>>>>> Dynamic subtest bcs0: SUCCESS (0.059s)
+>>>>>>>>>> Starting dynamic subtest: vcs0
+>>>>>>>>>> Dynamic subtest vcs0: SUCCESS (0.060s)
+>>>>>>>>>> Starting dynamic subtest: vecs0
+>>>>>>>>>> Dynamic subtest vecs0: SUCCESS (0.061s)
+>>>>>>>>>> Subtest Q-promotion: SUCCESS (0.239s)
+>>>>>>>>>>
+>>>>>>>>>>> runtime, multiplied by number of tests
+>>>>>>>>>>> and subtests (engines) will add up
+>>>>>>>>>>> and over shadows the current test time.
+>>>>>>>>>>> For instance current state is:
+>>>>>>>>>>>
+>>>>>>>>>>> # tests/gem_ctx_shared --r *promotion*
+>>>>>>>>>>> IGT-Version: 1.26-NO-GIT (x86_64) (Linux: 5.15.0-rc4 x86_64)
+>>>>>>>>>>> Starting subtest: Q-promotion
+>>>>>>>>>>> Starting dynamic subtest: rcs0
+>>>>>>>>>>> Dynamic subtest rcs0: SUCCESS (0.174s)
+>>>>>>>>>>> Starting dynamic subtest: bcs0
+>>>>>>>>>>> Dynamic subtest bcs0: SUCCESS (0.224s)
+>>>>>>>>>>> Starting dynamic subtest: vcs0
+>>>>>>>>>>> Dynamic subtest vcs0: SUCCESS (0.153s)
+>>>>>>>>>>> Starting dynamic subtest: vecs0
+>>>>>>>>>>> Dynamic subtest vecs0: SUCCESS (0.153s)
+>>>>>>>>>>> Subtest Q-promotion: SUCCESS (0.708s)
+>>>>>>>>>>>
+>>>>>>>>>>> This patch instantly makes this 1.7
+>>>>>>>>>>> seconds instead. Add the in/out order
+>>>>>>>>>>> subtests, other tests, platforms with
+>>>>>>>>>>> more engines, in a world where CI time
+>>>>>>>>>>> budget is scarce - can't we do better
+>>>>>>>>>>> than this and not settle on sprinkling
+>>>>>>>>>>> of usleep all over the place?
+>>>>>>>>>>>
+>>>>>>>>>>> Like maybe add out fences to the two
+>>>>>>>>>>> requests, merge them, and wait on that
+>>>>>>>>>>> (since there is no implicit write
+>>>>>>>>>>> declared so set domain does not
+>>>>>>>>>>> suffice)?
+>>>>>>>>>>>
+>>>>>>>>>> Not sure I follow. Anyways reposting now
+>>>>>>>>>> with a smaller timeout value.
+>>>>>>>>>> Unless we hear something we plan on merging this tomorrow.
+>>>>>>>>> The in/out-order test as example. It needs to
+>>>>>>>>> wait until two dword writes
+>>>>>>>>> have completed, right? I am saying pass output
+>>>>>>>>> fences out from spinners and
+>>>>>>>>> wait on them before checking content of the shared buffer.
+>>>>>>>>>
+>>>>>>>>> I also think sleep after uncorking is also
+>>>>>>>>> conceptually misleading because
+>>>>>>>>> that's not where the problem lies. Problem is
+>>>>>>>>> set domain does not actually
+>>>>>>>>> wait for sdw completion (existing comment even
+>>>>>>>>> hints so "no write hazard
+>>>>>>>>> lies!"). If I am right sporadic fail can in
+>>>>>>>>> *theory* happen with execlists
+>>>>>>>>> as well.
+>>>>>>>>>
+>>>>>>>> Still not following what you are saying. The sleep
+>>>>>>>> just adds period of
+>>>>>>>> time for all the uncorked requests to make it into the GuC scheduler,
+>>>>>>>> without it is possible for the lower priority
+>>>>>>>> request (submitted first)
+>>>>>>>> completes before the higher priority request
+>>>>>>>> (submitted after) makes it
+>>>>>>>> into the GuC. The sleep ensures alls the requests are in the GuC
+>>>>>>>> scheduler still stuck behind spinning requests on the hardware, then
+>>>>>>>> after the spinners complete the requests are scheduled in order of
+>>>>>>>> priority. Yes, this possible with execlists too but
+>>>>>>>> I think the timing
+>>>>>>>> is different enough it doesn't happen.
+>>>>>>>>
+>>>>>>>> Again adding a sleep here seems legit to me, the same problem would
+>>>>>>>> exist if we used fences as you suggest (e.g. the
+>>>>>>>> lower priority request
+>>>>>>>> would be submitted first + could complete before the higher priority
+>>>>>>>> request is submitted). Let's not over think this one.
+>>>>>>> I don't understand how sleep _after_ uncork can have an
+>>>>>>> effect you describe.
+>>>>>>> Both HI and LO have been submitted and the following
+>>>>>>> operation will just
+>>>>>>> check the writes in memory.
+>>>>>>>
+>>>>>> After the uncork but before releasing the spinning batches, anything
+>>>>>> submitted to the GuC is still be blocked behind the spinners. A sleep
+>>>>>> makes sure that all contexts submitted after the uncork are
+>>>>>> processed by
+>>>>>> the GuC, sitting in the GuC scheduler, and still blocked behind the
+>>>>>> spinners. Once the spinners are released now the GuC submits uncorked
+>>>>>> requests in the correct order. Without this sleep, there is
+>>>>>> a race where
+>>>>>> the earlier contexts (lower priority) is in the GuC scheduler but the
+>>>>>> later ones (higher priority) are not. In this case the earlier (lower
+>>>>>> priority) contexts get submitted and complete before the GuC sees the
+>>>>>> higher priority ones causing the test to fail. It only fails
+>>>>>> like this 1
+>>>>>> out of 10ish times without the sleep (i.e. it is racey). I
+>>>>>> just ran this
+>>>>>> 1000x times in the loop /w the sleep and didn't see a failure.
+>>>>>>
+>>>>>> Make sense? Can we get this merged and move on?
+>>>>> I am still skeptical I'm afraid. Let me try to ask you from a different
+>>>>> angle and please feel free to tell me I am missing something crucial.
+>>>>>
+>>>>> Is the test testing uapi contract or scheduler implementation details?
+>>>>>
+>>>> This is testing that priority inheritance works. To be honest I have no
+>>>> idea if this is concerned part of the uAPI. This could be one of those
+>>>> features nobody asked for but someone on the i915 dev team thought it
+>>>> would be a cool idea so it got implemented. AFAIK no other DRM driver
+>>>> implents PI, at least PI certainly isn't a feature implemented in the
+>>>> DRM scheduler.
+>>>>
+>>>>> If it would be the former, then it would be highlighting the contract is
+>>>>> broken. If it is the latter then why it should be fudged to run with an
+>>>>> incompatible backend?
+>>>>>
+>>>> Regardless if PI considered part of the uAPI, there is absolutely no way
+>>>> this breaking any contract. This test is racey, the sleep mitigates
+>>>> (maybe even seals) the race.
+>>>>> Personally I can't see that it is uapi being tested. Two
+>>>>> unrelated contexts,
+>>>>> no data dependencies, why would there be any guarantees who runs
+>>>>> first? So
+>>>>> how about just skip the test with GuC? If I am correct there may
+>>>>> even not be
+>>>>> much value to have it with execlists.
+>>>>>
+>>>> If PI is indeed a uAPI feature, then yes this test is providing value.
+>>>> Again I have no idea why we can't merge this and move on. If this test
+>>>> pops in CI we can revisit just disabling it. If we just drop PI when we
+>>>> move the DRM scheduler, we can just delete this test.
+>>>>
+>>>> Matt
+>>> I believe the point of PI is to prevent PI. That is, inheriting
+>>> priorities prevents priority inversion where a high priority request is
+>>> blocked waiting for a low priority request to complete. That would
+>>> happen quite easily with the hardware compositor in Android some time
+>>> back. I have no idea if that is still a real world concern now, but it
+>>> certainly was back around 2015 on VLV for certain customers.
+>>>
+>>> I would view this as an artificial test trying to emulate a real world
+>>> race condition. As in, genuine applications could hit this but it takes
+>>> multiple applications running in parallel with effectively random timing
+>>> between them. In order to recreate that race in a synthetic test, we
+>>> have to force certain behaviours by doing what could be considered
+>>> unrealistic operations. For example, setting up a pointless opening
+>>> situations using infinite loop batch buffers and sleeps. Sure, totally
+>>> unrealistic, but this is a synthetic test emulating a situation that
+>>> would be very difficult to recreate faithfully.
+>>>
+>>> So stop worrying about how realistic the test is. It can't ever be
+>>> realistic. Let it do what it needs to do to exercise the problem code
+>>> path and call it good.
+>>
+>> I am talking about gem_exec_shared@reorder here to be clear. Are we all on
+>> the same page?
+>>
+> 
+> I don't think we are on the same page. This sleep is required for
+> gem_exex_shared@promotion. A previous rev of this series only added the
+> sleep for that test but Daniele suggestion was just add it for all
+> tests.
 
-Series: tests/i915/i915_pm_dc: Fix condition in dc9-test (rev5)
-URL   : https://patchwork.freedesktop.org/series/95610/
-State : success
+Oh great. Okay have a look at reorder please and see what you think. But 
+also promotion may have a similar issue.
 
-== Summary ==
+>> There all I see are two GPU _readers_, from different contexts, and a shared
+>> buffer object. So I really don't see why would kernel have to enforce any
+>> ordering between the two regardless of the priorities?
+>>
+>> Please someone say in plain words I am missing something crucial? If I am
+>> not, then I think test is invalid and solution is not to add sleeps to it
+>> but to remove the test. At least from the GuC execution if someone wants to
+>> argue exercising execlists backend implementation details has value from
+>> this test (it's not even gem_exec_schedule).
+>>
+> 
+> Promotion has value, I haven't looked at reorder in a while so I can't
+> really comment if that test has any value.
 
-CI Bug Log - changes from CI_DRM_10731 -> IGTPW_6314
-====================================================
+Which asserts fails in promotion with the guc?
 
-Summary
--------
+igt_assert_eq_u32(ptr[0], ctx[HI]->id) or,
+igt_assert_eq_u32(ptr[0], ctx[NOISE]->id); ?
 
-  **SUCCESS**
+First one is AFAICS not questionable. It checks the reader which was 
+submitted second ran after the writer which was submitted first.
 
-  No regressions found.
+Second assert looks questionable to me. It checks that "noise" (lowest 
+priority) ran last. But "noise" is not in a data dependency chain with 
+"hi" and "lo" and their shared object. Is someone able to explain why 
+"noise" wouldn't be allowed to run first?
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6314/index.html
+Regards,
 
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6314 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@cs-gfx:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271]) +10 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6314/fi-kbl-soraka/igt@amdgpu/amd_basic@cs-gfx.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-snb-2600:        [PASS][2] -> [INCOMPLETE][3] ([i915#3921])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10731/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6314/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - {fi-hsw-gt1}:       [DMESG-WARN][4] ([i915#3303]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10731/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6314/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-kbl-7500u:       [FAIL][6] ([i915#1372]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10731/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6314/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1372]: https://gitlab.freedesktop.org/drm/intel/issues/1372
-  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
-  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
-
-
-Participating hosts (41 -> 39)
-------------------------------
-
-  Missing    (2): fi-bsw-cyan fi-hsw-4200u 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6243 -> IGTPW_6314
-
-  CI-20190529: 20190529
-  CI_DRM_10731: 9c36df5392915119cb6226bece93e8efa0a5fa7c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6314: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6314/index.html
-  IGT_6243: 438788b5dbd23085745fdd3da5a237f3577945df @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6314/index.html
-
---===============8800760646497075512==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/i915_pm_dc: Fix condition in dc9-test (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95610/">https://patchwork.freedesktop.org/series/95610/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6314/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6314/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10731 -&gt; IGTPW_6314</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6314/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6314 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@cs-gfx:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6314/fi-kbl-soraka/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +10 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10731/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6314/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>{fi-hsw-gt1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10731/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6314/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10731/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1372">i915#1372</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6314/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (41 -&gt; 39)</h2>
-<p>Missing    (2): fi-bsw-cyan fi-hsw-4200u </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6243 -&gt; IGTPW_6314</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10731: 9c36df5392915119cb6226bece93e8efa0a5fa7c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6314: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6314/index.html<br />
-  IGT_6243: 438788b5dbd23085745fdd3da5a237f3577945df @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8800760646497075512==--
+Tvrtko
