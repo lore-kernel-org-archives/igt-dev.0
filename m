@@ -1,28 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E92EB6E044
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Oct 2021 14:14:23 +0000 (UTC)
-References: <e481b241-c3a3-40c1-6f17-129b2144d81a@linux.intel.com>
- <20211005164412.GA13993@jons-linux-dev-box>
- <712c2aea-f998-520f-3f51-e117e05c0d54@linux.intel.com>
- <20211006164104.GA7828@jons-linux-dev-box>
- <b74b343e-513a-52cb-e66e-19b019e0afb1@linux.intel.com>
- <20211008174947.GA12060@jons-linux-dev-box>
- <1fc93656-a24d-a3b5-6a31-649478b3306d@linux.intel.com>
- <20211011171803.GA23672@jons-linux-dev-box>
- <4dc41f15-df44-85a6-a6eb-7d20ad426503@intel.com>
- <6fc76cce-0ef7-411a-b2ea-2093d49fb817@linux.intel.com>
- <20211012172050.GA9075@jons-linux-dev-box>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <77c4d1bc-d074-ca68-4612-39c079b7c084@linux.intel.com>
-Date: Wed, 13 Oct 2021 15:13:58 +0100
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F1F36EA0F
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Oct 2021 15:11:28 +0000 (UTC)
+Date: Wed, 13 Oct 2021 17:10:23 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20211013151023.GA52300@zkempczy-mobl2>
+References: <20211012050122.21907-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20211012172050.GA9075@jons-linux-dev-box>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/3] i915/gem_ctx_shared: Make
- gem_ctx_shared understand static priority mapping
+In-Reply-To: <20211012050122.21907-1-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_suspend: Add
+ support for local memory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,292 +22,332 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: John Harrison <john.c.harrison@intel.com>, Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>, igt-dev@lists.freedesktop.org
+To: sai.gowtham.ch@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 12/10/2021 18:20, Matthew Brost wrote:
-> On Tue, Oct 12, 2021 at 09:02:17AM +0100, Tvrtko Ursulin wrote:
->>
->> On 11/10/2021 19:50, John Harrison wrote:
->>> On 10/11/2021 10:18, Matthew Brost wrote:
->>>> On Mon, Oct 11, 2021 at 09:04:29AM +0100, Tvrtko Ursulin wrote:
->>>>> On 08/10/2021 18:49, Matthew Brost wrote:
->>>>>> On Wed, Oct 06, 2021 at 07:34:45PM +0100, Tvrtko Ursulin wrote:
->>>>>>> On 06/10/2021 17:41, Matthew Brost wrote:
->>>>>>>> On Wed, Oct 06, 2021 at 09:12:41AM +0100, Tvrtko Ursulin wrote:
->>>>>>>>> On 05/10/2021 17:44, Matthew Brost wrote:
->>>>>>>>>> On Tue, Oct 05, 2021 at 11:44:02AM +0100, Tvrtko Ursulin wrote:
->>>>>>>>>>> On 05/10/2021 00:26, Daniele Ceraolo Spurio wrote:
->>>>>>>>>>>> On 9/16/2021 11:03 AM, Matthew Brost wrote:
->>>>>>>>>>>>> The i915 currently has 2k
->>>>>>>>>>>>> visible priority levels which
->>>>>>>>>>>>> are currently
->>>>>>>>>>>>> unique. This is changing to
->>>>>>>>>>>>> statically map these 2k levels
->>>>>>>>>>>>> into 3
->>>>>>>>>>>>> buckets:
->>>>>>>>>>>>>
->>>>>>>>>>>>> low: < 0
->>>>>>>>>>>>> mid: 0
->>>>>>>>>>>>> high: > 0
->>>>>>>>>>>>>
->>>>>>>>>>>>> Update gem_ctx_shared to understand this. This entails updating
->>>>>>>>>>>>> promotion test to use 3 levels
->>>>>>>>>>>>> that will map into different
->>>>>>>>>>>>> buckets and
->>>>>>>>>>>>> also add bit of delay after
->>>>>>>>>>>>> releasing a cork beforing
->>>>>>>>>>>>> completing the
->>>>>>>>>>>>> spinners to give time to the
->>>>>>>>>>>>> i915 schedule to process the
->>>>>>>>>>>>> fence and
->>>>>>>>>>>>> release and queue the requests.
->>>>>>>>>>>>>
->>>>>>>>>>>>> v2: Add a delay between starting releasing spinner and cork in
->>>>>>>>>>>>> promotion
->>>>>>>>>>>>> v3:
->>>>>>>>>>>>>        (Daniele)
->>>>>>>>>>>>>         - Always add delay, update commit message
->>>>>>>>>>>>>
->>>>>>>>>>>>> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
->>>>>>>>>>>>> ---
->>>>>>>>>>>>>        tests/i915/gem_ctx_shared.c | 5 +++--
->>>>>>>>>>>>>        1 file changed, 3 insertions(+), 2 deletions(-)
->>>>>>>>>>>>>
->>>>>>>>>>>>> diff --git
->>>>>>>>>>>>> a/tests/i915/gem_ctx_shared.c
->>>>>>>>>>>>> b/tests/i915/gem_ctx_shared.c
->>>>>>>>>>>>> index ea1b5dd1b..7f88871b8 100644
->>>>>>>>>>>>> --- a/tests/i915/gem_ctx_shared.c
->>>>>>>>>>>>> +++ b/tests/i915/gem_ctx_shared.c
->>>>>>>>>>>>> @@ -622,6 +622,7 @@ static void
->>>>>>>>>>>>> unplug_show_queue(int i915,
->>>>>>>>>>>>> struct
->>>>>>>>>>>>> igt_cork *c, uint64_t ahnd,
->>>>>>>>>>>>>            igt_cork_unplug(c); /*
->>>>>>>>>>>>> batches will now be queued on
->>>>>>>>>>>>> the engine */
->>>>>>>>>>>>>            igt_debugfs_dump(i915, "i915_engine_info");
->>>>>>>>>>>>> +    usleep(250000);
->>>>>>>>>>>> Same as previous patch, with a comment added:
->>>>>>>>>>>>
->>>>>>>>>>>> Reviewed-by: Daniele Ceraolo Spurio
->>>>>>>>>>>> <daniele.ceraolospurio@intel.com>
->>>>>>>>>>> Come on guys, it is a bit bad and lazy
->>>>>>>>>>> for good taste no? 250ms more test
->>>>>>>>>> Yea, this is way too long of a sleep. 25ms seems just fine.
->>>>>>>>> Until you get 1/1000 failures in CI on some
->>>>>>>>> platforms due phase of the moon.
->>>>>>>>> Adding sleeps should be avoided where possible.
->>>>>>>>>
->>>>>>>> Yea, that is always a risk. Looking at this test there is already 1
->>>>>>>> other sleep in the test and in gem_exec_schedule there are 5 other
->>>>>>>> sleeps. I'm not breaking precedent here.
->>>>>>>>
->>>>>>>>>> On TGL /w the updated sleep:
->>>>>>>>>> gem_ctx_shared --r *promotion*
->>>>>>>>>> IGT-Version: 1.26-g7e489b053 (x86_64)
->>>>>>>>>> (Linux: 5.15.0-rc3-guc+ x86_64)
->>>>>>>>>> Starting subtest: Q-promotion
->>>>>>>>>> Starting dynamic subtest: rcs0
->>>>>>>>>> Dynamic subtest rcs0: SUCCESS (0.059s)
->>>>>>>>>> Starting dynamic subtest: bcs0
->>>>>>>>>> Dynamic subtest bcs0: SUCCESS (0.059s)
->>>>>>>>>> Starting dynamic subtest: vcs0
->>>>>>>>>> Dynamic subtest vcs0: SUCCESS (0.060s)
->>>>>>>>>> Starting dynamic subtest: vecs0
->>>>>>>>>> Dynamic subtest vecs0: SUCCESS (0.061s)
->>>>>>>>>> Subtest Q-promotion: SUCCESS (0.239s)
->>>>>>>>>>
->>>>>>>>>>> runtime, multiplied by number of tests
->>>>>>>>>>> and subtests (engines) will add up
->>>>>>>>>>> and over shadows the current test time.
->>>>>>>>>>> For instance current state is:
->>>>>>>>>>>
->>>>>>>>>>> # tests/gem_ctx_shared --r *promotion*
->>>>>>>>>>> IGT-Version: 1.26-NO-GIT (x86_64) (Linux: 5.15.0-rc4 x86_64)
->>>>>>>>>>> Starting subtest: Q-promotion
->>>>>>>>>>> Starting dynamic subtest: rcs0
->>>>>>>>>>> Dynamic subtest rcs0: SUCCESS (0.174s)
->>>>>>>>>>> Starting dynamic subtest: bcs0
->>>>>>>>>>> Dynamic subtest bcs0: SUCCESS (0.224s)
->>>>>>>>>>> Starting dynamic subtest: vcs0
->>>>>>>>>>> Dynamic subtest vcs0: SUCCESS (0.153s)
->>>>>>>>>>> Starting dynamic subtest: vecs0
->>>>>>>>>>> Dynamic subtest vecs0: SUCCESS (0.153s)
->>>>>>>>>>> Subtest Q-promotion: SUCCESS (0.708s)
->>>>>>>>>>>
->>>>>>>>>>> This patch instantly makes this 1.7
->>>>>>>>>>> seconds instead. Add the in/out order
->>>>>>>>>>> subtests, other tests, platforms with
->>>>>>>>>>> more engines, in a world where CI time
->>>>>>>>>>> budget is scarce - can't we do better
->>>>>>>>>>> than this and not settle on sprinkling
->>>>>>>>>>> of usleep all over the place?
->>>>>>>>>>>
->>>>>>>>>>> Like maybe add out fences to the two
->>>>>>>>>>> requests, merge them, and wait on that
->>>>>>>>>>> (since there is no implicit write
->>>>>>>>>>> declared so set domain does not
->>>>>>>>>>> suffice)?
->>>>>>>>>>>
->>>>>>>>>> Not sure I follow. Anyways reposting now
->>>>>>>>>> with a smaller timeout value.
->>>>>>>>>> Unless we hear something we plan on merging this tomorrow.
->>>>>>>>> The in/out-order test as example. It needs to
->>>>>>>>> wait until two dword writes
->>>>>>>>> have completed, right? I am saying pass output
->>>>>>>>> fences out from spinners and
->>>>>>>>> wait on them before checking content of the shared buffer.
->>>>>>>>>
->>>>>>>>> I also think sleep after uncorking is also
->>>>>>>>> conceptually misleading because
->>>>>>>>> that's not where the problem lies. Problem is
->>>>>>>>> set domain does not actually
->>>>>>>>> wait for sdw completion (existing comment even
->>>>>>>>> hints so "no write hazard
->>>>>>>>> lies!"). If I am right sporadic fail can in
->>>>>>>>> *theory* happen with execlists
->>>>>>>>> as well.
->>>>>>>>>
->>>>>>>> Still not following what you are saying. The sleep
->>>>>>>> just adds period of
->>>>>>>> time for all the uncorked requests to make it into the GuC scheduler,
->>>>>>>> without it is possible for the lower priority
->>>>>>>> request (submitted first)
->>>>>>>> completes before the higher priority request
->>>>>>>> (submitted after) makes it
->>>>>>>> into the GuC. The sleep ensures alls the requests are in the GuC
->>>>>>>> scheduler still stuck behind spinning requests on the hardware, then
->>>>>>>> after the spinners complete the requests are scheduled in order of
->>>>>>>> priority. Yes, this possible with execlists too but
->>>>>>>> I think the timing
->>>>>>>> is different enough it doesn't happen.
->>>>>>>>
->>>>>>>> Again adding a sleep here seems legit to me, the same problem would
->>>>>>>> exist if we used fences as you suggest (e.g. the
->>>>>>>> lower priority request
->>>>>>>> would be submitted first + could complete before the higher priority
->>>>>>>> request is submitted). Let's not over think this one.
->>>>>>> I don't understand how sleep _after_ uncork can have an
->>>>>>> effect you describe.
->>>>>>> Both HI and LO have been submitted and the following
->>>>>>> operation will just
->>>>>>> check the writes in memory.
->>>>>>>
->>>>>> After the uncork but before releasing the spinning batches, anything
->>>>>> submitted to the GuC is still be blocked behind the spinners. A sleep
->>>>>> makes sure that all contexts submitted after the uncork are
->>>>>> processed by
->>>>>> the GuC, sitting in the GuC scheduler, and still blocked behind the
->>>>>> spinners. Once the spinners are released now the GuC submits uncorked
->>>>>> requests in the correct order. Without this sleep, there is
->>>>>> a race where
->>>>>> the earlier contexts (lower priority) is in the GuC scheduler but the
->>>>>> later ones (higher priority) are not. In this case the earlier (lower
->>>>>> priority) contexts get submitted and complete before the GuC sees the
->>>>>> higher priority ones causing the test to fail. It only fails
->>>>>> like this 1
->>>>>> out of 10ish times without the sleep (i.e. it is racey). I
->>>>>> just ran this
->>>>>> 1000x times in the loop /w the sleep and didn't see a failure.
->>>>>>
->>>>>> Make sense? Can we get this merged and move on?
->>>>> I am still skeptical I'm afraid. Let me try to ask you from a different
->>>>> angle and please feel free to tell me I am missing something crucial.
->>>>>
->>>>> Is the test testing uapi contract or scheduler implementation details?
->>>>>
->>>> This is testing that priority inheritance works. To be honest I have no
->>>> idea if this is concerned part of the uAPI. This could be one of those
->>>> features nobody asked for but someone on the i915 dev team thought it
->>>> would be a cool idea so it got implemented. AFAIK no other DRM driver
->>>> implents PI, at least PI certainly isn't a feature implemented in the
->>>> DRM scheduler.
->>>>
->>>>> If it would be the former, then it would be highlighting the contract is
->>>>> broken. If it is the latter then why it should be fudged to run with an
->>>>> incompatible backend?
->>>>>
->>>> Regardless if PI considered part of the uAPI, there is absolutely no way
->>>> this breaking any contract. This test is racey, the sleep mitigates
->>>> (maybe even seals) the race.
->>>>> Personally I can't see that it is uapi being tested. Two
->>>>> unrelated contexts,
->>>>> no data dependencies, why would there be any guarantees who runs
->>>>> first? So
->>>>> how about just skip the test with GuC? If I am correct there may
->>>>> even not be
->>>>> much value to have it with execlists.
->>>>>
->>>> If PI is indeed a uAPI feature, then yes this test is providing value.
->>>> Again I have no idea why we can't merge this and move on. If this test
->>>> pops in CI we can revisit just disabling it. If we just drop PI when we
->>>> move the DRM scheduler, we can just delete this test.
->>>>
->>>> Matt
->>> I believe the point of PI is to prevent PI. That is, inheriting
->>> priorities prevents priority inversion where a high priority request is
->>> blocked waiting for a low priority request to complete. That would
->>> happen quite easily with the hardware compositor in Android some time
->>> back. I have no idea if that is still a real world concern now, but it
->>> certainly was back around 2015 on VLV for certain customers.
->>>
->>> I would view this as an artificial test trying to emulate a real world
->>> race condition. As in, genuine applications could hit this but it takes
->>> multiple applications running in parallel with effectively random timing
->>> between them. In order to recreate that race in a synthetic test, we
->>> have to force certain behaviours by doing what could be considered
->>> unrealistic operations. For example, setting up a pointless opening
->>> situations using infinite loop batch buffers and sleeps. Sure, totally
->>> unrealistic, but this is a synthetic test emulating a situation that
->>> would be very difficult to recreate faithfully.
->>>
->>> So stop worrying about how realistic the test is. It can't ever be
->>> realistic. Let it do what it needs to do to exercise the problem code
->>> path and call it good.
->>
->> I am talking about gem_exec_shared@reorder here to be clear. Are we all on
->> the same page?
->>
+On Tue, Oct 12, 2021 at 10:31:22AM +0530, sai.gowtham.ch@intel.com wrote:
+> From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 > 
-> I don't think we are on the same page. This sleep is required for
-> gem_exex_shared@promotion. A previous rev of this series only added the
-> sleep for that test but Daniele suggestion was just add it for all
-> tests.
-
-Oh great. Okay have a look at reorder please and see what you think. But 
-also promotion may have a similar issue.
-
->> There all I see are two GPU _readers_, from different contexts, and a shared
->> buffer object. So I really don't see why would kernel have to enforce any
->> ordering between the two regardless of the priorities?
->>
->> Please someone say in plain words I am missing something crucial? If I am
->> not, then I think test is invalid and solution is not to add sleeps to it
->> but to remove the test. At least from the GuC execution if someone wants to
->> argue exercising execlists backend implementation details has value from
->> this test (it's not even gem_exec_schedule).
->>
+> Add support for local memory region (Device memory)
 > 
-> Promotion has value, I haven't looked at reorder in a while so I can't
-> really comment if that test has any value.
+> Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>  tests/i915/gem_exec_suspend.c | 187 ++++++++++++++++++++++++++--------
+>  1 file changed, 147 insertions(+), 40 deletions(-)
+> 
+> diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
+> index 887bb735..ac7e1b7c 100644
+> --- a/tests/i915/gem_exec_suspend.c
+> +++ b/tests/i915/gem_exec_suspend.c
+> @@ -51,8 +51,19 @@
+>  #define CACHED (1<<8)
+>  #define HANG (2<<8)
+>  
+> +static uint32_t batch_create(int fd, uint32_t batch_size, uint32_t region)
+> +{
+> +	const uint32_t bbe = MI_BATCH_BUFFER_END;
+> +	uint32_t handle;
+> +
+> +	handle = gem_create_in_memory_regions(fd, batch_size, region);
+> +	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
+> +
+> +	return handle;
+> +}
+> +
+>  static void run_test(int fd, const intel_ctx_t *ctx,
+> -		     unsigned engine, unsigned flags);
+> +		     unsigned engine, unsigned flags, uint32_t region);
+>  
+>  static void check_bo(int fd, uint32_t handle)
+>  {
+> @@ -67,16 +78,15 @@ static void check_bo(int fd, uint32_t handle)
+>  	munmap(map, 4096);
+>  }
+>  
+> -static void test_all(int fd, const intel_ctx_t *ctx, unsigned flags)
+> +static void test_all(int fd, const intel_ctx_t *ctx, unsigned flags, uint32_t region)
+>  {
+> -	run_test(fd, ctx, ALL_ENGINES, flags & ~0xff);
+> +	run_test(fd, ctx, ALL_ENGINES, flags & ~0xff, region);
+>  }
+>  
+>  static void run_test(int fd, const intel_ctx_t *ctx,
+> -		     unsigned engine, unsigned flags)
+> +		     unsigned engine, unsigned flags, uint32_t region)
+>  {
+>  	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+> -	const uint32_t bbe = MI_BATCH_BUFFER_END;
+>  	struct drm_i915_gem_exec_object2 obj[2];
+>  	struct drm_i915_gem_relocation_entry reloc;
+>  	struct drm_i915_gem_execbuffer2 execbuf;
+> @@ -100,7 +110,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
+>  
+>  	/* Before suspending, check normal operation */
+>  	if (mode(flags) != NOSLEEP)
+> -		test_all(fd, ctx, flags);
+> +		test_all(fd, ctx, flags, region);
+>  
+>  	gem_quiescent_gpu(fd);
+>  
+> @@ -117,8 +127,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
+>  	if (!gem_has_lmem(fd))
+>  		gem_set_caching(fd, obj[0].handle, !!(flags & CACHED));
+>  	obj[0].flags |= EXEC_OBJECT_WRITE;
+> -	obj[1].handle = gem_create(fd, 4096);
 
-Which asserts fails in promotion with the guc?
+I think target buffer also should be created in specified region.
+Currently only batch is moving between regions but target is always
+taken from system memory.
 
-igt_assert_eq_u32(ptr[0], ctx[HI]->id) or,
-igt_assert_eq_u32(ptr[0], ctx[NOISE]->id); ?
+I don't think cross-regioning would be interesting so both objects created 
+within same region would be enough. After resume we would see if target
+buffer contains what we expect of.
 
-First one is AFAICS not questionable. It checks the reader which was 
-submitted second ran after the writer which was submitted first.
+> -	gem_write(fd, obj[1].handle, 0, &bbe, sizeof(bbe));
+> +	obj[1].handle = batch_create(fd, 4096, region);
+>  	igt_require(__gem_execbuf(fd, &execbuf) == 0);
+>  	gem_close(fd, obj[1].handle);
+>  
+> @@ -222,7 +231,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
+>  
+>  	/* After resume, make sure it still works */
+>  	if (mode(flags) != NOSLEEP)
+> -		test_all(fd, ctx, flags);
+> +		test_all(fd, ctx, flags, region);
+>  }
+>  
+>  struct battery_sample {
+> @@ -250,7 +259,7 @@ static double d_time(const struct battery_sample *after,
+>  }
+>  
+>  static void power_test(int i915, const intel_ctx_t *ctx,
+> -		       unsigned engine, unsigned flags)
+> +		       unsigned engine, unsigned flags, uint32_t region)
+>  {
+>  	struct battery_sample before, after;
+>  	char *status;
+> @@ -270,7 +279,7 @@ static void power_test(int i915, const intel_ctx_t *ctx,
+>  	igt_set_autoresume_delay(5 * 60); /* 5 minutes; longer == more stable */
+>  
+>  	igt_assert(get_power(dir, &before));
+> -	run_test(i915, ctx, engine, flags);
+> +	run_test(i915, ctx, engine, flags, region);
+>  	igt_assert(get_power(dir, &after));
+>  
+>  	igt_set_autoresume_delay(0);
+> @@ -296,6 +305,10 @@ igt_main
+>  	igt_hang_t hang;
+>  	const intel_ctx_t *ctx;
+>  	int fd;
+> +	char *sub_name;
+> +	uint32_t region;
+> +	struct drm_i915_query_memory_regions *query_info;
+> +	struct igt_collection *set, *regions;
+>  
+>  	igt_fixture {
+>  		fd = drm_open_driver_master(DRIVER_INTEL);
+> @@ -304,49 +317,111 @@ igt_main
+>  		ctx = intel_ctx_create_all_physical(fd);
+>  
+>  		igt_fork_hang_detector(fd);
+> +		query_info = gem_get_query_memory_regions(fd);
+> +		igt_assert(query_info);
+> +
+> +		set = get_memory_region_set(query_info,
+> +					I915_SYSTEM_MEMORY,
+> +					I915_DEVICE_MEMORY);
+> +	}
+> +
+> +	igt_subtest_with_dynamic("basic") {
+> +		for_each_combination(regions, 1, set) {
+> +			sub_name = memregion_dynamic_subtest_name(regions);
+> +			region = igt_collection_get_value(regions, 0);
+> +			igt_dynamic_f("%s", sub_name)
+> +				run_test(fd, ctx, ALL_ENGINES, NOSLEEP, region);
+> +			free(sub_name);
+> +		}
+>  	}
+>  
+> -	igt_subtest("basic")
+> -		run_test(fd, ctx, ALL_ENGINES, NOSLEEP);
+> -	igt_subtest("basic-S0")
+> -		run_test(fd, ctx, ALL_ENGINES, IDLE);
+> -	igt_subtest("basic-S3-devices")
+> -		run_test(fd, ctx, ALL_ENGINES, SUSPEND_DEVICES);
+> -	igt_subtest("basic-S3")
+> -		run_test(fd, ctx, ALL_ENGINES, SUSPEND);
+> -	igt_subtest("basic-S4-devices")
+> -		run_test(fd, ctx, ALL_ENGINES, HIBERNATE_DEVICES);
+> -	igt_subtest("basic-S4")
+> -		run_test(fd, ctx, ALL_ENGINES, HIBERNATE);
+> +	igt_subtest_with_dynamic("basic-S0") {
+> +		for_each_combination(regions, 1, set) {
+> +			sub_name = memregion_dynamic_subtest_name(regions);
+> +			region = igt_collection_get_value(regions, 0);
+> +			igt_dynamic_f("%s", sub_name)
+> +				run_test(fd, ctx, ALL_ENGINES, IDLE, region);
+> +			free(sub_name);
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("basic-S3-devices") {
+> +		for_each_combination(regions, 1, set) {
+> +			sub_name = memregion_dynamic_subtest_name(regions);
+> +			region = igt_collection_get_value(regions, 0);
+> +			igt_dynamic_f("%s", sub_name)
+> +				run_test(fd, ctx, ALL_ENGINES, SUSPEND_DEVICES, region);
+> +			free(sub_name);
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("basic-S3") {
+> +		for_each_combination(regions, 1, set) {
+> +			sub_name = memregion_dynamic_subtest_name(regions);
+> +			region = igt_collection_get_value(regions, 0);
+> +			igt_dynamic_f("%s", sub_name)
+> +				run_test(fd, ctx, ALL_ENGINES, SUSPEND, region);
+> +			free(sub_name);
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("basic-S4-devices") {
+> +		for_each_combination(regions, 1, set) {
+> +			sub_name = memregion_dynamic_subtest_name(regions);
+> +			region = igt_collection_get_value(regions, 0);
+> +			igt_dynamic_f("%s", sub_name)
+> +				run_test(fd, ctx, ALL_ENGINES, HIBERNATE_DEVICES, region);
+> +			free(sub_name);
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("basic-S4") {
+> +		for_each_combination(regions, 1, set) {
+> +			sub_name = memregion_dynamic_subtest_name(regions);
+> +			region = igt_collection_get_value(regions, 0);
+> +			igt_dynamic_f("%s", sub_name)
+> +				run_test(fd, ctx, ALL_ENGINES, HIBERNATE, region);
+> +			free(sub_name);
+> +		}
+> +	}
+>  
+>  	for (m = modes; m->suffix; m++) {
+>  		igt_subtest_with_dynamic_f("fixed%s", m->suffix) {
+> -			igt_require(gem_has_lmem(fd));
+>  			for_each_ctx_engine(fd, ctx, e) {
+>  				if (!gem_class_can_store_dword(fd, e->class))
+>  					continue;
+> -				igt_dynamic_f("%s", e->name)
+> -					run_test(fd, ctx, e->flags, m->mode);
+> +				for_each_combination(regions, 1, set) {
+> +					sub_name = memregion_dynamic_subtest_name(regions);
+> +					region = igt_collection_get_value(regions, 0);
+> +					igt_dynamic_f("%s-%s", e->name, sub_name)
+> +						run_test(fd, ctx, e->flags, m->mode, region);
+> +				}
+>  			}
+>  		}
+>  
+>  		igt_subtest_with_dynamic_f("uncached%s", m->suffix) {
+> -			igt_require(!gem_has_lmem(fd));
+>  			for_each_ctx_engine(fd, ctx, e) {
+>  				if (!gem_class_can_store_dword(fd, e->class))
+>  					continue;
+> -				igt_dynamic_f("%s", e->name)
+> -					run_test(fd, ctx, e->flags, m->mode | UNCACHED);
+> +				for_each_combination(regions, 1, set) {
+> +					sub_name = memregion_dynamic_subtest_name(regions);
+> +					region = igt_collection_get_value(regions, 0);
+> +					igt_dynamic_f("%s-%s", e->name, sub_name)
+> +						run_test(fd, ctx, e->flags, m->mode | UNCACHED, region);
+> +				}
+>  			}
+>  		}
+>  
+>  		igt_subtest_with_dynamic_f("cached%s", m->suffix) {
+> -			igt_require(!gem_has_lmem(fd));
+>  			for_each_ctx_engine(fd, ctx, e) {
+>  				if (!gem_class_can_store_dword(fd, e->class))
+>  					continue;
+> -				igt_dynamic_f("%s", e->name)
+> -					run_test(fd, ctx, e->flags, m->mode | CACHED);
+> +				for_each_combination(regions, 1, set) {
+> +					sub_name = memregion_dynamic_subtest_name(regions);
+> +					region = igt_collection_get_value(regions, 0);
+> +					igt_dynamic_f("%s-%s", e->name, sub_name)
+> +						run_test(fd, ctx, e->flags, m->mode | CACHED, region);
+> +				}
 
-Second assert looks questionable to me. It checks that "noise" (lowest 
-priority) ran last. But "noise" is not in a data dependency chain with 
-"hi" and "lo" and their shared object. Is someone able to explain why 
-"noise" wouldn't be allowed to run first?
+Cached and uncached runs makes sense only on integrated cards
+where fixed on discrete. So those igt_require() properly
+detects runtime constraints to run the test and you should
+keep those in the code.
 
-Regards,
+--
+Zbigniew
 
-Tvrtko
+>  			}
+>  		}
+>  	}
+> @@ -356,17 +431,49 @@ igt_main
+>  		hang = igt_allow_hang(fd, 0, 0);
+>  	}
+>  
+> -	igt_subtest("hang-S3")
+> -		run_test(fd, intel_ctx_0(fd), 0, SUSPEND | HANG);
+> -	igt_subtest("hang-S4")
+> -		run_test(fd, intel_ctx_0(fd), 0, HIBERNATE | HANG);
+> +	igt_subtest_with_dynamic("hang-S3") {
+> +		for_each_combination(regions, 1, set) {
+> +			sub_name = memregion_dynamic_subtest_name(regions);
+> +			region = igt_collection_get_value(regions, 0);
+> +			igt_dynamic_f("%s", sub_name)
+> +				run_test(fd, intel_ctx_0(fd), 0, SUSPEND | HANG, region);
+> +			free(sub_name);
+> +		}
+> +	}
+>  
+> -	igt_subtest("power-S0")
+> -		power_test(fd, intel_ctx_0(fd), 0, IDLE);
+> -	igt_subtest("power-S3")
+> -		power_test(fd, intel_ctx_0(fd), 0, SUSPEND);
+> +	igt_subtest_with_dynamic("hang-S4") {
+> +		for_each_combination(regions, 1, set) {
+> +			sub_name = memregion_dynamic_subtest_name(regions);
+> +			region = igt_collection_get_value(regions, 0);
+> +			igt_dynamic_f("%s", sub_name)
+> +				run_test(fd, intel_ctx_0(fd), 0, HIBERNATE | HANG, region);
+> +			free(sub_name);
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("power-S0") {
+> +		for_each_combination(regions, 1, set) {
+> +			sub_name = memregion_dynamic_subtest_name(regions);
+> +			region = igt_collection_get_value(regions, 0);
+> +			igt_dynamic_f("%s", sub_name)
+> +				power_test(fd, intel_ctx_0(fd), 0, IDLE, region);
+> +			free(sub_name);
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("power-S3") {
+> +		for_each_combination(regions, 1, set) {
+> +			sub_name = memregion_dynamic_subtest_name(regions);
+> +			region = igt_collection_get_value(regions, 0);
+> +			igt_dynamic_f("%s", sub_name)
+> +				power_test(fd, intel_ctx_0(fd), 0, SUSPEND, region);
+> +			free(sub_name);
+> +		}
+> +	}
+>  
+>  	igt_fixture {
+> +		free(query_info);
+> +		igt_collection_destroy(set);
+>  		igt_disallow_hang(fd, hang);
+>  		intel_ctx_destroy(fd, ctx);
+>  		close(fd);
+> -- 
+> 2.32.0
+> 
