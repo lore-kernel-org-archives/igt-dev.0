@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C6ADA6EA0C
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Oct 2021 07:50:59 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 13 Oct 2021 13:20:17 +0530
-Message-Id: <20211013075017.233701-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20210916142301.17796-1-vidya.srinivas@intel.com>
-References: <20210916142301.17796-1-vidya.srinivas@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3471819090564409815=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v3] tests/kms_plane_multiple: Fix regression
- test_plane_position_with_output
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 13 Oct 2021 08:49:34 -0000
+Message-ID: <163411497423.10252.10953162943325392462@emeril.freedesktop.org>
+References: <20210916142301.17796-1-vidya.srinivas@intel.com>
+In-Reply-To: <20210916142301.17796-1-vidya.srinivas@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Fmultiple=3A_Fix_regression_in_test=5Fplane=5Fposi?=
+ =?utf-8?q?tion=5Fwith=5Foutput_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,83 +17,192 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Vidya Srinivas <vidya.srinivas@intel.com>, Karthik B S <karthik.b.s@intel.com>, Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Vidya Srinivas <vidya.srinivas@intel.com>
+--===============3471819090564409815==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Starting commit 4d4a76729b328b65122 "Start continuous CRC capture after commit"
-few variants of Intel TGL and JSL devices are failing with CRC mismatch due to
-time sensitivity. Patch switches to older way of obtaining CRC, but keeps in-tact
-continuous CRC collection within the iteration and includes checking of
-i915 to not cause regression on non-intel devices.
+== Series Details ==
 
-v2: Fixed review comments from Karthik.
-v3: Rebase (Conflicts resolved)
+Series: tests/kms_plane_multiple: Fix regression in test_plane_position_with_output (rev3)
+URL   : https://patchwork.freedesktop.org/series/94764/
+State : success
 
-Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_plane_multiple.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index d94ea23c25..ece00097e8 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -79,8 +79,6 @@ static void test_init(data_t *data, enum pipe pipe, int n_planes)
+CI Bug Log - changes from CI_DRM_10728 -> IGTPW_6313
+====================================================
 
- static void test_fini(data_t *data, igt_output_t *output, int n_planes)
- {
--	igt_pipe_crc_stop(data->pipe_crc);
--
- 	/* reset the constraint on the pipe */
- 	igt_output_set_pipe(output, PIPE_ANY);
+Summary
+-------
 
-@@ -291,7 +289,6 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
- 	igt_plane_t *plane;
- 	int i;
- 	int err, c = 0;
--	int crc_enabled = 0;
- 	int iterations = opt.iterations < 1 ? 1 : opt.iterations;
- 	bool loop_forever;
- 	char info[256];
-@@ -333,16 +330,20 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
+  **SUCCESS**
 
- 	i = 0;
- 	while (i < iterations || loop_forever) {
-+		/* Intel devices need it here, timing sensitive on few devices */
-+		if (is_i915_device(data->drm_fd))
-+			igt_pipe_crc_start(data->pipe_crc);
-+
- 		/* randomize planes and set up the holes */
- 		prepare_planes(data, pipe, &blue, modifier, c, output);
+  No regressions found.
 
- 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
--		if (!crc_enabled) {
-+		if (!is_i915_device(data->drm_fd))
- 			igt_pipe_crc_start(data->pipe_crc);
--			crc_enabled = 1;
--		}
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/index.html
 
- 		igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc, &crc);
-+		igt_assert_crc_equal(&data->ref_crc, &crc);
-+		igt_pipe_crc_stop(data->pipe_crc);
+Known issues
+------------
 
- 		for_each_plane_on_pipe(&data->display, pipe, plane)
- 			igt_plane_set_fb(plane, NULL);
-@@ -352,8 +353,6 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
- 		for (int x = 0; x < c; x++)
- 			igt_remove_fb(data->drm_fd, &data->fb[x]);
+  Here are the changes found in IGTPW_6313 that come from known issues:
 
--		igt_assert_crc_equal(&data->ref_crc, &crc);
--
- 		i++;
- 	}
+### IGT changes ###
 
---
-2.32.0
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@memory-alloc:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/fi-kbl-soraka/igt@amdgpu/amd_basic@memory-alloc.html
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-tgl-1115g4:      [PASS][2] -> [FAIL][3] ([i915#1888])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10728/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [PASS][4] -> [DMESG-WARN][5] ([i915#4269])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10728/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@runner@aborted:
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][6] ([i915#1602] / [i915#2029])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/fi-bdw-5557u/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@perf:
+    - {fi-tgl-dsi}:       [DMESG-WARN][7] ([i915#2867]) -> [PASS][8] +9 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10728/fi-tgl-dsi/igt@i915_selftest@live@perf.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/fi-tgl-dsi/igt@i915_selftest@live@perf.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#2029]: https://gitlab.freedesktop.org/drm/intel/issues/2029
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+
+
+Participating hosts (41 -> 36)
+------------------------------
+
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-apl-guc fi-ctg-p8600 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6242 -> IGTPW_6313
+
+  CI-20190529: 20190529
+  CI_DRM_10728: 82a9f298afec66c882e710078138891826ce5e22 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6313: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/index.html
+  IGT_6242: 721fd85ee95225ed5df322f7182bdfa9b86a3e68 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/index.html
+
+--===============3471819090564409815==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_multiple: Fix regression in test_plane_position_with_output (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/94764/">https://patchwork.freedesktop.org/series/94764/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10728 -&gt; IGTPW_6313</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6313 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@memory-alloc:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/fi-kbl-soraka/igt@amdgpu/amd_basic@memory-alloc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10728/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10728/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2029">i915#2029</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@perf:<ul>
+<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10728/fi-tgl-dsi/igt@i915_selftest@live@perf.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/fi-tgl-dsi/igt@i915_selftest@live@perf.html">PASS</a> +9 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (41 -&gt; 36)</h2>
+<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-apl-guc fi-ctg-p8600 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6242 -&gt; IGTPW_6313</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10728: 82a9f298afec66c882e710078138891826ce5e22 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6313: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6313/index.html<br />
+  IGT_6242: 721fd85ee95225ed5df322f7182bdfa9b86a3e68 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3471819090564409815==--
