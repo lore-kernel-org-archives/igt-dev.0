@@ -1,95 +1,53 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD51E6E51C
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Oct 2021 22:17:54 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Thu, 14 Oct 2021 01:17:20 +0300
-Message-Id: <20211013221727.6392-2-ville.syrjala@linux.intel.com>
-In-Reply-To: <20211013221727.6392-1-ville.syrjala@linux.intel.com>
-References: <20211013221727.6392-1-ville.syrjala@linux.intel.com>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: John.C.Harrison@Intel.com
+Date: Wed, 13 Oct 2021 15:43:17 -0700
+Message-Id: <20211013224317.943625-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/8] lib/fb: Introduce igt_fb_modifier_name()
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+Subject: [Intel-gfx] [PATCH i-g-t] tests/i915: Skip gem_exec_fair on GuC
+ based platforms
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: IGT-Dev@Lists.FreeDesktop.Org
+Cc: Intel-GFX@Lists.FreeDesktop.Org, John Harrison <John.C.Harrison@Intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: John Harrison <John.C.Harrison@Intel.com>
 
-Provide a human redable name for modifiers. Only plugged in the
-i915 specific ones for now. Also provide some printf format macros
-for convenience.
+The gem_exec_fair test is specifically testing scheduler algorithm
+performance. However, GuC does not implement the same algorithm as
+execlist mode and this test is not applicable. So, until sw arch
+approves a new algorithm and it is implemented in GuC, stop running
+the test.
 
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 ---
- lib/igt_fb.c | 26 ++++++++++++++++++++++++++
- lib/igt_fb.h |  4 ++++
- 2 files changed, 30 insertions(+)
+ tests/i915/gem_exec_fair.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index f1e1099ec864..63f3c86e75f0 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -4328,3 +4328,29 @@ void igt_format_array_fill(uint32_t **formats_array, unsigned int *count,
- 		(*formats_array)[index++] = format->drm_id;
- 	}
- }
+diff --git a/tests/i915/gem_exec_fair.c b/tests/i915/gem_exec_fair.c
+index ef5a450f6..ca9c73c6e 100644
+--- a/tests/i915/gem_exec_fair.c
++++ b/tests/i915/gem_exec_fair.c
+@@ -1314,6 +1314,12 @@ igt_main
+ 		igt_require(gem_scheduler_enabled(i915));
+ 		igt_require(gem_scheduler_has_ctx_priority(i915));
+ 
++		/*
++		 * These tests are for a specific scheduling model which is
++		 * not currently implemented by GuC. So skip on GuC platforms.
++		 */
++		igt_require(intel_gen(intel_get_drm_devid(i915)) < 12);
 +
-+const char *igt_fb_modifier_name(uint64_t modifier)
-+{
-+	switch (modifier) {
-+	case DRM_FORMAT_MOD_LINEAR:
-+		return "linear";
-+	case I915_FORMAT_MOD_X_TILED:
-+		return "X";
-+	case I915_FORMAT_MOD_Y_TILED:
-+		return "Y";
-+	case I915_FORMAT_MOD_Yf_TILED:
-+		return "Yf";
-+	case I915_FORMAT_MOD_Y_TILED_CCS:
-+		return "Y-CCS";
-+	case I915_FORMAT_MOD_Yf_TILED_CCS:
-+		return "Yf-CCS";
-+	case I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS:
-+		return "Y-RC_CCS";
-+	case I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC:
-+		return "Y-RC_CCS-CC";
-+	case I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS:
-+		return "Y-MC_CCS";
-+	default:
-+		return "?";
-+	}
-+}
-diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-index 2c2b8265b5f6..c61d9e7219ff 100644
---- a/lib/igt_fb.h
-+++ b/lib/igt_fb.h
-@@ -52,6 +52,9 @@ struct buf_ops;
- #define IGT_FORMAT_ARGS(f) ((f) >> 0) & 0xff, ((f) >> 8) & 0xff, \
- 		((f) >> 16) & 0xff, ((f) >> 24) & 0xff, (f)
+ 		cfg = intel_ctx_cfg_all_physical(i915);
  
-+#define IGT_MODIFIER_FMT "%s(0x%" PRIx64 ")"
-+#define IGT_MODIFIER_ARGS(m) igt_fb_modifier_name(m), (m)
-+
- /**
-  * igt_fb_t:
-  * @fb_id: KMS ID of the framebuffer
-@@ -217,6 +220,7 @@ int igt_fill_cts_framebuffer(uint32_t *pixmap, uint32_t video_width,
- 		uint32_t video_height, uint32_t bitdepth, int alpha);
- 
- int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc);
-+const char *igt_fb_modifier_name(uint64_t modifier);
- 
- #endif /* __IGT_FB_H__ */
- 
+ 		igt_info("CS timestamp frequency: %d\n",
 -- 
-2.32.0
+2.25.1
