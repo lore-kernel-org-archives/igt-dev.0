@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D79016E0E1
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Oct 2021 17:08:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 23C296E0EA
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Oct 2021 17:08:52 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
-Date: Wed, 13 Oct 2021 22:40:51 +0530
-Message-Id: <20211013171051.26287-4-jeevan.b@intel.com>
+Date: Wed, 13 Oct 2021 22:40:49 +0530
+Message-Id: <20211013171051.26287-2-jeevan.b@intel.com>
 In-Reply-To: <20211013171051.26287-1-jeevan.b@intel.com>
 References: <20211013171051.26287-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 3/3] tests/kms_atomic: Add a new test
- case for FB_DAMAGE_CLIPS plane property
+Subject: [igt-dev] [PATCH i-g-t v2 1/3] lib/igt_aux: Rename
+ igt_debug_manual_check and assert check if all is supplied
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,275 +21,115 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: petri.latvala@intel.com, jose.souza@intel.com, daniel@ffwll.ch, Deepak Rawat <drawat@vmware.com>, Jeevan B <jeevan.b@intel.com>
+Cc: petri.latvala@intel.com, jose.souza@intel.com, daniel@ffwll.ch, Jeevan B <jeevan.b@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Deepak Rawat <drawat@vmware.com>
+rename igt_debug_manual_check and patch the igt function
+igt_debug_wait_for_keypress() to assert if "all" is supplied.
 
-Some simple test cases to use FB_DAMAGE_CLIPS plane property.
+v2: calling igt_debug_wait_for_keypress() with "all" will assert.
 
-Signed-off-by: Deepak Rawat <drawat@vmware.com>
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_atomic.c | 232 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 232 insertions(+)
+ lib/igt_aux.c            | 9 ++++++---
+ lib/igt_aux.h            | 2 +-
+ tests/i915/kms_dsc.c     | 2 +-
+ tests/i915/kms_psr.c     | 2 +-
+ tests/i915/kms_psr2_sf.c | 2 +-
+ 5 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-index 3a0f76d9..08baf8f0 100644
---- a/tests/kms_atomic.c
-+++ b/tests/kms_atomic.c
-@@ -62,6 +62,25 @@ enum kms_atomic_check_relax {
- 	PLANE_RELAX_FB = (1 << 1)
- };
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index 1217f5e8..78798287 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -972,7 +972,7 @@ void igt_drop_root(void)
+  * Waits for a key press when run interactively and when the corresponding debug
+  * var is set in the --interactive-debug=$var variable. Multiple keys
+  * can be specified as a comma-separated list or alternatively "all" if a wait
+- * should happen for all cases.
++ * should happen for all cases. Calling this fucntion with "all" will assert.
+  *
+  * When not connected to a terminal interactive_debug is ignored
+  * and execution immediately continues.
+@@ -993,6 +993,9 @@ void igt_debug_wait_for_keypress(const char *var)
+ 	if (!igt_interactive_debug)
+ 		return;
  
-+/* signed32 drm_mode_rect declared here for use with drm damage for page-flip */
-+struct damage_rect {
-+	int x1;
-+	int y1;
-+	int x2;
-+	int y2;
-+};
++	if (strstr(var, "all"))
++		igt_assert(false);
 +
-+static inline int damage_rect_width(struct damage_rect *r)
-+{
-+	return r->x2 - r->x1;
-+}
-+
-+static inline int damage_rect_height(struct damage_rect *r)
-+{
-+	return r->y2 - r->y1;
-+}
-+
-+
- static bool plane_filter(enum igt_atomic_plane_properties prop)
- {
- 	if ((1 << prop) & IGT_PLANE_COORD_CHANGED_MASK)
-@@ -1060,6 +1079,210 @@ static void atomic_invalid_params(igt_pipe_t *pipe,
- 	do_ioctl_err(display->drm_fd, DRM_IOCTL_MODE_ATOMIC, &ioc, EFAULT);
+ 	if (!strstr(igt_interactive_debug, var) &&
+ 	    !strstr(igt_interactive_debug, "all"))
+ 		return;
+@@ -1008,7 +1011,7 @@ void igt_debug_wait_for_keypress(const char *var)
  }
  
-+static void atomic_plane_damage(igt_pipe_t *pipe, igt_plane_t *plane, struct igt_fb *fb)
-+{
-+	struct damage_rect *damage;
-+	struct igt_fb fb_1, fb_2;
-+	cairo_t *cr_1, *cr_2;
-+
-+	damage = malloc(sizeof(*damage) * 2);
-+	igt_assert(damage);
-+
-+	/* Color fb with white rect at center */
-+	igt_create_color_fb(pipe->display->drm_fd, fb->width, fb->height,
-+			    fb->drm_format, I915_TILING_NONE, 0.2, 0.2, 0.2,
-+			    &fb_1);
-+	cr_1 = igt_get_cairo_ctx(pipe->display->drm_fd, &fb_1);
-+	igt_paint_color(cr_1, fb->width/4, fb->height/4, fb->width/2,
-+			fb->height/2, 1.0, 1.0, 1.0);
-+	igt_put_cairo_ctx(cr_1);
-+
-+	/*
-+	 * Flip the primary plane to new color fb using atomic API and check the
-+	 * state.
-+	 */
-+	igt_plane_set_fb(plane, &fb_1);
-+	crtc_commit(pipe, plane, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
-+
-+	/*
-+	 * Change the color of top left clip from center and issue plane update
-+	 * with damage and verify the state.
-+	 */
-+	damage[0].x1 = 0;
-+	damage[0].y1 = 0;
-+	damage[0].x2 = fb->width/2;
-+	damage[0].y2 = fb->height/2;
-+
-+	cr_1 = igt_get_cairo_ctx(pipe->display->drm_fd, &fb_1);
-+	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
-+			damage_rect_width(&damage[0]),
-+			damage_rect_height(&damage[0]), 1.0, 0, 0);
-+	igt_put_cairo_ctx(cr_1);
-+
-+	igt_plane_set_fb(plane, &fb_1);
-+	igt_plane_replace_prop_blob(plane, IGT_PLANE_FB_DAMAGE_CLIPS, damage,
-+				    sizeof(*damage));
-+	crtc_commit(pipe, plane, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
-+
-+	/*
-+	 * Change the color of top left and bottom right clip from center and
-+	 * issue plane update with damage and verify the state.
-+	 */
-+	igt_create_color_fb(pipe->display->drm_fd, fb->width, fb->height,
-+			    fb->drm_format, I915_TILING_NONE, 0.2, 0.2, 0.2,
-+			    &fb_2);
-+
-+	damage[0].x1 = fb->width/2;
-+	damage[0].y1 = 0;
-+	damage[0].x2 = fb->width;
-+	damage[0].y2 = fb->height/2;
-+
-+	cr_2 = igt_get_cairo_ctx(pipe->display->drm_fd, &fb_2);
-+	cr_1 = igt_get_cairo_ctx(pipe->display->drm_fd, &fb_1);
-+	cairo_set_source_surface(cr_2, fb_1.cairo_surface, 0, 0);
-+	cairo_paint(cr_2);
-+	igt_paint_color(cr_2, damage[0].x1, damage[0].y1,
-+			damage_rect_width(&damage[0]),
-+			damage_rect_height(&damage[0]), 0, 1.0, 0);
-+	igt_put_cairo_ctx(cr_1);
-+	igt_put_cairo_ctx(cr_2);
-+	igt_plane_set_fb(plane, &fb_2);
-+	igt_plane_replace_prop_blob(plane, IGT_PLANE_FB_DAMAGE_CLIPS, damage,
-+				    sizeof(*damage));
-+	crtc_commit(pipe, plane, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
-+
-+	/*
-+	 * Issue plane update with damage with a clip outside of plane src.
-+	 * NOTE: This will result in no update on plane as damage is outside, so
-+	 * will see no change on the screen.
-+	 */
-+	/* Reszie fb_1 to be bigger than plane */
-+	igt_remove_fb(pipe->display->drm_fd, &fb_1);
-+	igt_create_color_fb(pipe->display->drm_fd, fb->width * 2, fb->height,
-+			    fb->drm_format, I915_TILING_NONE, 0.2, 0.2, 0.2,
-+			    &fb_1);
-+
-+	damage[0].x1 = fb->width;
-+	damage[0].y1 = 0;
-+	damage[0].x2 = fb->width + fb->width/2;
-+	damage[0].y2 = fb->height/2;
-+
-+	cr_1 = igt_get_cairo_ctx(pipe->display->drm_fd, &fb_1);
-+	cr_2 = igt_get_cairo_ctx(pipe->display->drm_fd, &fb_2);
-+	cairo_set_source_surface(cr_1, fb_2.cairo_surface, 0, 0);
-+	cairo_paint(cr_1);
-+	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
-+			damage_rect_width(&damage[0]),
-+			damage_rect_height(&damage[0]), 0, 1.0, 0);
-+	igt_put_cairo_ctx(cr_2);
-+	igt_put_cairo_ctx(cr_1);
-+	igt_plane_set_fb(plane, &fb_1);
-+	igt_plane_set_size(plane, fb->width, fb->height);
-+	igt_fb_set_position(&fb_1, plane, 0, 0);
-+	igt_fb_set_size(&fb_1, plane, fb->width, fb->height);
-+	igt_plane_replace_prop_blob(plane, IGT_PLANE_FB_DAMAGE_CLIPS, damage,
-+				    sizeof(*damage));
-+	crtc_commit(pipe, plane, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
-+
-+	/*
-+	 * Issue a plane update with damage with a clip that overlap with plane
-+	 * src (Top right from center extending outside src in below case).
-+	 * NOTE: Here drm core should take care of intersecting the clip to
-+	 * plane src.
-+	 */
-+	damage[0].x1 = fb->width/2;
-+	damage[0].y1 = 0;
-+	damage[0].x2 = fb->width/2 + fb->width;
-+	damage[0].y2 = fb->height/2;
-+
-+	cr_1 = igt_get_cairo_ctx(pipe->display->drm_fd, &fb_1);
-+	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
-+			damage_rect_width(&damage[0]),
-+			damage_rect_height(&damage[0]), 1.0, 1.0, 0);
-+	igt_put_cairo_ctx(cr_1);
-+	igt_plane_set_fb(plane, &fb_1);
-+	igt_plane_set_size(plane, fb->width, fb->height);
-+	igt_fb_set_position(&fb_1, plane, 0, 0);
-+	igt_fb_set_size(&fb_1, plane, fb->width, fb->height);
-+	igt_plane_replace_prop_blob(plane, IGT_PLANE_FB_DAMAGE_CLIPS, damage,
-+				    sizeof(*damage));
-+	crtc_commit(pipe, plane, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
-+
-+	/*
-+	 * Issue a plane update with damage with two clips one inside plane src
-+	 * and one outside
-+	 * NOTE: This will result in plane update with clip inside plane src.
-+	 */
-+	damage[0].x1 = 0;
-+	damage[0].y1 = fb->height/2;
-+	damage[0].x2 = fb->width/2;
-+	damage[0].y2 = fb->height;
-+
-+	damage[1].x1 = fb->width + fb->width/2;
-+	damage[1].y1 = fb->height/2;
-+	damage[1].x2 = fb->width * 2;
-+	damage[1].y2 = fb->height;
-+
-+	cr_1 = igt_get_cairo_ctx(pipe->display->drm_fd, &fb_1);
-+	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
-+			damage_rect_width(&damage[0]),
-+			damage_rect_height(&damage[0]), 0, 1.0, 1.0);
-+	igt_paint_color(cr_1, damage[1].x1, damage[1].y1,
-+			damage_rect_width(&damage[1]),
-+			damage_rect_height(&damage[1]), 0, 1.0, 0);
-+	igt_put_cairo_ctx(cr_1);
-+	igt_plane_set_fb(plane, &fb_1);
-+	igt_plane_set_size(plane, fb->width, fb->height);
-+	igt_fb_set_position(&fb_1, plane, 0, 0);
-+	igt_fb_set_size(&fb_1, plane, fb->width, fb->height);
-+	igt_plane_replace_prop_blob(plane, IGT_PLANE_FB_DAMAGE_CLIPS, damage,
-+				    sizeof(*damage) * 2);
-+	crtc_commit(pipe, plane, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
-+
-+	/*
-+	 * Issue a plane update with overlapping damage clips. White rect in
-+	 * center overlap partially with top left red rect.
-+	 * NOTE: Drm core does not error for overlapping damage clips so if any
-+	 * driver does not support overlapping should have their own
-+	 * validations.
-+	 */
-+	damage[0].x1 = 0;
-+	damage[0].y1 = 0;
-+	damage[0].x2 = fb->width/2;
-+	damage[0].y2 = fb->height/2;
-+
-+	damage[1].x1 = fb->width/4;
-+	damage[1].y1 = fb->height/4;
-+	damage[1].x2 = fb->width/4 + fb->width/2;
-+	damage[1].y2 = fb->height/4 + fb->height/2;
-+
-+	cr_1 = igt_get_cairo_ctx(pipe->display->drm_fd, &fb_1);
-+	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
-+			damage_rect_width(&damage[0]),
-+			damage_rect_height(&damage[0]), 1.0, 0, 0);
-+	igt_paint_color(cr_1, damage[1].x1, damage[1].y1,
-+			damage_rect_width(&damage[1]),
-+			damage_rect_height(&damage[1]), 1.0, 1.0, 1.0);
-+	igt_put_cairo_ctx(cr_1);
-+	igt_plane_set_fb(plane, &fb_1);
-+	igt_plane_set_size(plane, fb->width, fb->height);
-+	igt_fb_set_position(&fb_1, plane, 0, 0);
-+	igt_fb_set_size(&fb_1, plane, fb->width, fb->height);
-+	igt_plane_replace_prop_blob(plane, IGT_PLANE_FB_DAMAGE_CLIPS, damage,
-+				    sizeof(*damage) * 2);
-+	crtc_commit(pipe, plane, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
-+
-+	/* Restore the primary plane */
-+	igt_plane_set_fb(plane, fb);
-+	plane_commit(plane, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
-+
-+	/* Remove the fb created for this test */
-+	igt_remove_fb(pipe->display->drm_fd, &fb_1);
-+	igt_remove_fb(pipe->display->drm_fd, &fb_2);
-+
-+	free(damage);
-+}
-+
- static void atomic_setup(igt_display_t *display, enum pipe pipe, igt_output_t *output, igt_plane_t *primary, struct igt_fb *fb)
+ /**
+- * igt_debug_manual_check:
++ * igt_debug_interactive_mode_check:
+  * @var: var lookup to to enable this wait
+  * @expected: message to be printed as expected behaviour before wait for keys Y/n
+  *
+@@ -1028,7 +1031,7 @@ void igt_debug_wait_for_keypress(const char *var)
+  *
+  * Force test fail when N/n is pressed.
+  */
+-void igt_debug_manual_check(const char *var, const char *expected)
++void igt_debug_interactive_mode_check(const char *var, const char *expected)
  {
- 	igt_output_set_pipe(output, pipe);
-@@ -1219,6 +1442,15 @@ igt_main
- 		atomic_invalid_params(pipe_obj, primary, output, &fb);
- 	}
+ 	struct termios oldt, newt;
+ 	char key;
+diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+index 30b175d7..cfa68be3 100644
+--- a/lib/igt_aux.h
++++ b/lib/igt_aux.h
+@@ -195,7 +195,7 @@ int igt_get_autoresume_delay(enum igt_suspend_state state);
+ void igt_drop_root(void);
  
-+	igt_describe("Simple test cases to use FB_DAMAGE_CLIPS plane property");
-+	igt_subtest("atomic_plane_damage") {
-+		igt_require(igt_plane_has_prop(primary, IGT_PLANE_FB_DAMAGE_CLIPS));
-+
-+		atomic_setup(&display, pipe, output, primary, &fb);
-+
-+		atomic_plane_damage(pipe_obj, primary, &fb);
-+	}
-+
- 	igt_fixture {
- 		atomic_clear(&display, pipe, primary, output);
- 		igt_remove_fb(display.drm_fd, &fb);
+ void igt_debug_wait_for_keypress(const char *var);
+-void igt_debug_manual_check(const char *var, const char *expected);
++void igt_debug_interactive_mode_check(const char *var, const char *expected);
+ 
+ /* sysinfo cross-arch wrappers from intel_os.c */
+ 
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index 3e450207..772687f4 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -72,7 +72,7 @@ int force_dsc_restore_fd = -1;
+ 
+ static inline void manual(const char *expected)
+ {
+-	igt_debug_manual_check("all", expected);
++	igt_debug_interactive_mode_check("all", expected);
+ }
+ 
+ static void force_dsc_enable(data_t *data)
+diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
+index c65b3c80..e7dbf8b7 100644
+--- a/tests/i915/kms_psr.c
++++ b/tests/i915/kms_psr.c
+@@ -246,7 +246,7 @@ static bool psr_enable_if_enabled(data_t *data)
+ 
+ static inline void manual(const char *expected)
+ {
+-	igt_debug_manual_check("all", expected);
++	igt_debug_interactive_mode_check("all", expected);
+ }
+ 
+ static bool drrs_disabled(data_t *data)
+diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
+index 1be8c3da..93347327 100644
+--- a/tests/i915/kms_psr2_sf.c
++++ b/tests/i915/kms_psr2_sf.c
+@@ -331,7 +331,7 @@ static void prepare(data_t *data)
+ 
+ static inline void manual(const char *expected)
+ {
+-	igt_debug_manual_check("all", expected);
++	igt_debug_interactive_mode_check("all", expected);
+ }
+ 
+ static void plane_update_expected_output(int plane_type, int box_count)
 -- 
 2.19.1
