@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 063E16E18E
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Oct 2021 15:53:14 +0000 (UTC)
-Date: Thu, 14 Oct 2021 17:53:06 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20211014155306.GA28397@zkempczy-mobl2>
-References: <20211014081917.15977-1-zbigniew.kempczynski@intel.com>
- <87mtnbhbhd.wl-ashutosh.dixit@intel.com>
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com
+ [IPv6:2a00:1450:4864:20::12f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DED506E1D2
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Oct 2021 17:39:43 +0000 (UTC)
+Received: by mail-lf1-x12f.google.com with SMTP id x27so29947532lfa.9
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Oct 2021 10:39:43 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Thu, 14 Oct 2021 20:39:31 +0300
+Message-Id: <20211014173934.12375-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87mtnbhbhd.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 0/7] Prepare IGTs to allow only zero
- alignment
+Subject: [igt-dev] [PATCH i-g-t 0/3] simlplify kms_cursor_crc test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,47 +20,20 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Oct 14, 2021 at 08:28:30AM -0700, Dixit, Ashutosh wrote:
-> On Thu, 14 Oct 2021 01:19:10 -0700, Zbigniew Kempczyński wrote:
-> >
-> > In the future we're planning to allow passing only zero alignment so
-> > this is preparation step to introduce check and disable or fix
-> > igts which uses this constraint.
-> >
-> > v2: rename to gem_allows_obj_alignment() (Ashutosh)
-> >     addressing review comments from Ashutosh
-> >
-> 
-> For patches 1 through 6:
-> 
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> 
-> For patch 7, I think the point below from my earlier email is still
-> unaddressed:
-> 
-> > So assigning a new offset will cause a new fault-in (bind) but not sure if
-> > it will cause an actual fault-out (unbind). Though I am not sure if there
-> > is actually a way to force it to happen if this doesn't work? Is there a
-> > way to verify that the unbind is actually happening?
-> 
-> Maybe if assign the same offset to a different object/page that will cause
-> a fault-out (unbind) followed by a fault-in (bind).
+Put alpha and size change tests to use same path as all other tests
 
-For softpin case if you're changing the offset i915 will unbind/bind vma
-in ppgtt, see eb_vma_misplaced() condition:
+Juha-Pekka Heikkila (3):
+  tests/kms_cursor_crc: move create_cursor_fb above alpha tests
+  tests/kms_cursor_crc: take alpha into use when draw cursor
+  tests/kms_cursor_crc: use same test path for alpha and size tests as
+    all other tests
 
-	if (flags & EXEC_OBJECT_PINNED &&
-	    vma->node.start != entry->offset)
-		return true;
+ tests/kms_cursor_crc.c | 191 ++++++++++++-----------------------------
+ 1 file changed, 57 insertions(+), 134 deletions(-)
 
-so when you will go out from eb_pin_vma() with an error in else {} part
-i915_vma_unbind() will be called. You can verify this using dynamic ftrace.
-
-I'm not able to do this on !ppgtt due to lack of such gen.
-
---
-Zbigniew
+-- 
+2.28.0
