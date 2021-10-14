@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3009F6EB0D
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Oct 2021 13:45:22 +0000 (UTC)
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Date: Thu, 14 Oct 2021 15:45:16 +0200
-Message-Id: <20211014134517.26473-2-tzimmermann@suse.de>
-In-Reply-To: <20211014134517.26473-1-tzimmermann@suse.de>
-References: <20211014134517.26473-1-tzimmermann@suse.de>
-MIME-Version: 1.0
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2057.outbound.protection.outlook.com [40.107.237.57])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D7386EB21
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Oct 2021 14:47:12 +0000 (UTC)
+References: <20211008190251.3709425-1-Rodrigo.Siqueira@amd.com>
+ <fbe44331-125f-ec8a-80f6-3f9c1c8c05fd@mupuf.org>
+From: Rodrigo Siqueira Jordao <rjordrigo@amd.com>
+Message-ID: <40a30322-4ba6-8736-718f-70302d84f0bf@amd.com>
+Date: Thu, 14 Oct 2021 10:47:08 -0400
+In-Reply-To: <fbe44331-125f-ec8a-80f6-3f9c1c8c05fd@mupuf.org>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 1/2] tests/fbdev: Test for validity of video
- mode settings
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] tests: Add amdgpu test suite
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,88 +23,116 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
+To: =?UTF-8?Q?Martin_Roukala_=28n=c3=a9=c3=a9_Peres=29?= <martin.roukala@mupuf.org>, Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, Nicholas Choi <Nicholas.Choi@amd.com>, Hayden Goodfellow <hayden.goodfellow@amd.com>, Mark Yacoub <markyacoub@google.com>
+Cc: Harry Wentland <harry.wentland@amd.com>, Sun peng Li <sunpeng.li@amd.com>, Alexander Deucher <alexander.deucher@amd.com>, Simon Ser <contact@emersion.fr>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add basic tests for video mode resolution and color on fbdev
-devices.
 
-v2:
-	* respect FB_VMODE_YWRAP (Ville)
-	* test horizontal resolution against line length
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
----
- tests/fbdev.c | 49 +++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 41 insertions(+), 8 deletions(-)
+On 2021-10-11 4:44 a.m., Martin Roukala (néé Peres) wrote:
+> 
+> 
+> On 08/10/2021 22:02, Rodrigo Siqueira wrote:
+>> Add various test suites relevant for the amdgpu driver.
+>>
+>> Cc: Harry Wentland <harry.wentland@amd.com>
+>> Cc: Nicholas Choi <Nicholas.Choi@amd.com>
+>> Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+>> Cc: Sun peng (Leo) Li <sunpeng.li@amd.com>
+>> Cc: Alexander Deucher <alexander.deucher@amd.com>
+>> Cc: Martin Roukala <martin.roukala@mupuf.org>
+>> Cc: Hayden Goodfellow <hayden.goodfellow@amd.com>
+>> Cc: Simon Ser <contact@emersion.fr>
+>> Cc: Mark Yacoub <markyacoub@google.com>
+>>
+>> Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+>> ---
+>>   tests/amdgpu-ci/README                 |  31 +++++
+>>   tests/amdgpu-ci/fast-feedback.testlist | 135 +++++++++++++++++++
+>>   tests/amdgpu-ci/full-feedback.testlist | 173 +++++++++++++++++++++++++
+>>   3 files changed, 339 insertions(+)
+>>   create mode 100644 tests/amdgpu-ci/README
+>>   create mode 100644 tests/amdgpu-ci/fast-feedback.testlist
+>>   create mode 100644 tests/amdgpu-ci/full-feedback.testlist
+>>
+>> diff --git a/tests/amdgpu-ci/README b/tests/amdgpu-ci/README
+>> new file mode 100644
+>> index 00000000..bd34245c
+>> --- /dev/null
+>> +++ b/tests/amdgpu-ci/README
+>> @@ -0,0 +1,31 @@
+>> +This directory contains test lists that are used by AMD's CI. The
+>> +files are passed to piglit with the --test-list parameter directly.
+>> +
+>> +The test lists are contained in the IGT repository for several
+>> +reasons:
+>> +
+>> +- The lists stay synchronized with the IGT codebase.
+>> +- Public availability. Kernel developers can see what tests are run,
+>> +  and can see what changes are done to the set, when, and why.
+> 
+> Thanks for doing this!
+> 
+>> +
+>> +Changing the test lists should only happen with approval from:
+>> +- Harry Wentland <harry.wentland@amd.com>
+>> +- Nicholas Choi <Nicholas.Choi@amd.com>
+>> +- Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+>> +- Sun peng (Leo) Li <sunpeng.li@amd.com>
+>> +
+>> +======================
+>> +fast-feedback.testlist
+>> +======================
+>> +
+>> +Fast-feedback contains tests that roughly tests a wide coverage of 
+>> features in
+>> +a short time. We use this list for presubmission validation. Results 
+>> of a
+>> +fast-feedback test round should only be considered to mean that the 
+>> kernel is
+>> +not obviously broken.
+> 
+> It would be good to have a target execution time for this list. ~10 
+> minutes and 12 minutes in the worst case has been working for Intel, but 
+> what would you like to use?
 
-diff --git a/tests/fbdev.c b/tests/fbdev.c
-index 443a43dc..2cf137d2 100644
---- a/tests/fbdev.c
-+++ b/tests/fbdev.c
-@@ -27,6 +27,7 @@
- 
- #include <errno.h>
- #include <fcntl.h>
-+#include <limits.h>
- #include <string.h>
- #include <sys/ioctl.h>
- #include <sys/mman.h>
-@@ -50,14 +51,46 @@ static void mode_tests(int fd)
- 
- 	igt_describe("Check if screeninfo is valid");
- 	igt_subtest("info") {
--		unsigned long size;
--
--		size = var_info.yres * fix_info.line_length;
--		igt_assert_f(size <= fix_info.smem_len,
--			     "screen size (%d x %d) of pitch %d does not fit within mappable area of size %u\n",
--			     var_info.xres, var_info.yres,
--			     fix_info.line_length,
--			     fix_info.smem_len);
-+		unsigned long nbits, nlines;
-+
-+		/* video memory configuration */
-+		igt_assert_f(fix_info.line_length, "line length not set\n");
-+		igt_assert_f(fix_info.smem_len, "size of video memory not set\n");
-+		igt_assert_f(fix_info.line_length <= fix_info.smem_len,
-+			     "line length (%u) exceeds available video memory (%u)\n",
-+			     fix_info.line_length, fix_info.smem_len);
-+
-+		/* color format */
-+		igt_assert_f(var_info.bits_per_pixel, "bits-per-pixel not set\n");
-+
-+		/* horizontal resolution */
-+		igt_assert_f(var_info.xres, "horizontal resolution not set\n");
-+		igt_assert_f(var_info.xres_virtual, "horizontal virtual resolution not set\n");
-+		igt_assert_f(var_info.xres <= var_info.xres_virtual,
-+			     "horizontal virtual resolution (%u) less than horizontal resolution (%u)\n",
-+			     var_info.xres_virtual, var_info.xres);
-+		igt_assert_f(var_info.xoffset <= (var_info.xres_virtual - var_info.xres),
-+			     "screen horizontal offset (%u) overflow\n",
-+			     var_info.xoffset);
-+		nbits = fix_info.line_length * CHAR_BIT;
-+		igt_assert_f((var_info.xres_virtual * var_info.bits_per_pixel) <= nbits,
-+			     "vertical virtual resolution (%u) with bpp %u exceeds line length %u\n",
-+			     var_info.yres_virtual, var_info.bits_per_pixel, fix_info.line_length);
-+
-+		/* vertical resolution */
-+		igt_assert_f(var_info.yres, "vertical resolution not set\n");
-+		igt_assert_f(var_info.yres_virtual, "vertical virtual resolution not set\n");
-+		igt_assert_f(var_info.yres <= var_info.yres_virtual,
-+			     "vertical virtual resolution (%u) less than vertical resolution (%u)\n",
-+			     var_info.yres_virtual, var_info.yres);
-+		igt_assert_f((var_info.vmode & FB_VMODE_YWRAP) ||
-+			     (var_info.yoffset <= (var_info.yres_virtual - var_info.yres)),
-+			     "screen vertical offset (%u) overflow\n",
-+			     var_info.yoffset);
-+		nlines = fix_info.smem_len / fix_info.line_length;
-+		igt_assert_f(var_info.yres_virtual <= nlines,
-+			     "vertical virtual resolution (%u) with line length %u exceeds available video memory\n",
-+			     var_info.yres_virtual, fix_info.line_length);
- 	}
- }
- 
--- 
-2.33.0
+Good point,
+
+We already use this testlist in our pre-submission patches.
+Nicholas Choi and Hayden, from your experience, what is a good execution 
+time for this list?
+
+>> +
+>> +======================
+>> +full-feedback.testlist
+>> +======================
+>> +
+>> +This is an extensive set of tests that takes a long time to complete 
+>> in which
+>> +we usually use as post-submission.
+> 
+>  From experience, I would specify the full list as a opt-out, rather 
+> than opt-in. Otherwise, you will soon realize that it takes a lot of 
+> time and energy to maintain the list to always add new tests there.
+> 
+> By opting out of i915/gem/nouveau/udl/... tests, you will at least get 
+> every new KMS test by default.
+> 
+> Is that making sense?
+
+Hmmm... Could you elaborate a little bit more on how I can use the 
+opt-out behavior?
+
+Also, I suppose that opting out will enable all tests, which means that 
+we will have a lot of failures in this report for AMD, right? We still 
+have a lot of IGT tests that only pass on Intel hardware (we are trying 
+to fix that), and I'm wondering if it really makes sense to enable 
+everything for AMD right now due to this limitation. Additionally, we 
+use this full-feeback list in our nightly build to identify regressions 
+in our amd-staging-drm-next; that's why we usually don't want to run 
+tests that fail in that.
+
+Thanks
+Siqueira
+
+> Martin
