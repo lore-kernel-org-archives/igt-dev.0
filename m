@@ -1,22 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com
- [IPv6:2a00:1450:4864:20::533])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CCC566E10F
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Oct 2021 11:03:51 +0000 (UTC)
-Received: by mail-ed1-x533.google.com with SMTP id w14so22543238edv.11
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Oct 2021 04:03:51 -0700 (PDT)
-References: <20211012142224.15632-1-juhapekka.heikkila@gmail.com>
- <YWftexnS+5L4uyFd@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <29990b0d-52e8-5ad8-fc1b-6ff6fee1a6e1@gmail.com>
-Date: Thu, 14 Oct 2021 14:03:42 +0300
+Content-Type: multipart/alternative;
+ boundary="===============7388766622049680367=="
 MIME-Version: 1.0
-In-Reply-To: <YWftexnS+5L4uyFd@intel.com>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: fix size change
- and alpha tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 14 Oct 2021 11:40:40 -0000
+Message-ID: <163421164009.4536.315359858493144162@emeril.freedesktop.org>
+References: <20211014110922.1121963-1-apoorva1.singh@intel.com>
+In-Reply-To: <20211014110922.1121963-1-apoorva1.singh@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?prime=5Fmmap=3A_Add_support_for_local_memory_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,89 +16,268 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+To: apoorva1.singh@intel.com
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 14.10.2021 11.42, Ville Syrjälä wrote:
-> On Tue, Oct 12, 2021 at 05:22:24PM +0300, Juha-Pekka Heikkila wrote:
->> Unify and simplify cursor size change and cursor alpha tests.
->>
->> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
->> ---
->>   tests/kms_cursor_crc.c | 190 ++++++++++++-----------------------------
->>   1 file changed, 56 insertions(+), 134 deletions(-)
->>
->> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
->> index 9faba1a18..7d9ec1927 100644
->> --- a/tests/kms_cursor_crc.c
->> +++ b/tests/kms_cursor_crc.c
->> @@ -71,7 +71,7 @@ typedef struct {
->>   	igt_plane_t *cursor;
->>   	cairo_surface_t *surface;
->>   	uint32_t devid;
->> -	bool hwimageistestimage;
->> +	double alpha;
->>   } data_t;
->>   
->>   #define TEST_DPMS (1<<0)
->> @@ -89,7 +89,7 @@ typedef struct {
->>   	int height;
->>   } cursorarea;
->>   
->> -static void draw_cursor(cairo_t *cr, cursorarea *cursor)
->> +static void draw_cursor(cairo_t *cr, cursorarea *cursor, double alpha)
->>   {
->>   	int wl, wr, ht, hb;
->>   
->> @@ -104,13 +104,13 @@ static void draw_cursor(cairo_t *cr, cursorarea *cursor)
->>   	    (cursor->y < SHRT_MIN) || (cursor->y > SHRT_MAX))
->>   		return;
->>   
->> -	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
->> +	cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
->>   	cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
->>   	/* 4 color rectangles in the corners, RGBY */
->> -	igt_paint_color(cr, cursor->x, cursor->y, wl, ht, RED);
->> -	igt_paint_color(cr, cursor->x + wl, cursor->y, wr, ht, GREEN);
->> -	igt_paint_color(cr, cursor->x, cursor->y + ht, wl, hb, BLUE);
->> -	igt_paint_color(cr, cursor->x + wl, cursor->y + ht, wr, hb, WHITE);
->> +	igt_paint_color_alpha(cr, cursor->x, cursor->y, wl, ht, RED, alpha);
->> +	igt_paint_color_alpha(cr, cursor->x + wl, cursor->y, wr, ht, GREEN, alpha);
->> +	igt_paint_color_alpha(cr, cursor->x, cursor->y + ht, wl, hb, BLUE, alpha);
->> +	igt_paint_color_alpha(cr, cursor->x + wl, cursor->y + ht, wr, hb, WHITE, alpha);
-> 
-> Is this an actual bugfix? The alpha seems to have disappeared at some
-> point.
+--===============7388766622049680367==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-There's been in use CAIRO_OPERATOR_SOURCE because here was always used 
-only alpha 1.0 hence at some point I had dropped that alpha parameter. 
-Now I used this function to draw with alpha in use so I put in place 
-CAIRO_OPERATOR_OVER and set default alpha in 'data' to 1.0, though now 
-that think about it I'll need to set it back to 1.0 after 
-'alpha-transparent' subtest.
+== Series Details ==
 
-> 
-> Hmm. test_cursor_alpha() is apparently creating its own fb currently,
-> and clobbering data->fb which was created by the top level fixture for
-> everyone else. Ugh.
-> 
-> Anyways, the diff is huge, can't really figure out what the heck
-> it's doing. There seems to be some code motion in there as well,
-> but maybe with other changes sprinkled in? Dunno. Can you split
-> it up a bit?
+Series: tests/prime_mmap: Add support for local memory (rev2)
+URL   : https://patchwork.freedesktop.org/series/95508/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10733 -> IGTPW_6321
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6321 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@query-info:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][1] ([fdo#109315])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@amdgpu/amd_basic@query-info.html
+
+  * igt@amdgpu/amd_cs_nop@nop-gfx0:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][2] ([fdo#109315] / [i915#2575]) +16 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@amdgpu/amd_cs_nop@nop-gfx0.html
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-kbl-soraka:      [PASS][3] -> [INCOMPLETE][4] ([i915#4221])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10733/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][5] ([i915#2190])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][6] ([i915#1155])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][7] ([fdo#111827]) +8 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-kbl-7500u:       [PASS][8] -> [FAIL][9] ([i915#1372])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10733/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][10] ([i915#4103]) +1 similar issue
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][11] ([fdo#109285])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [PASS][12] -> [DMESG-WARN][13] ([i915#4269])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10733/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][14] ([i915#1072]) +3 similar issues
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@kms_psr@primary_mmap_gtt.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][15] ([i915#3301])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@prime_vgem@basic-userptr.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [fdo#112080]: https://bugs.freedesktop.org/show_bug.cgi?id=112080
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#1372]: https://gitlab.freedesktop.org/drm/intel/issues/1372
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4221]: https://gitlab.freedesktop.org/drm/intel/issues/4221
+  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
 
 
-Agree diff is quite big. That code moving is just because 
-test_cursor_alpha started to use create_cursor_fb so create_cursor_fb 
-need to be after test_cursor_alpha, I can separate that into its own 
-patch but it probably will not change much in diff which does actual 
-change. Most of diff is just about removing unnecessary code once 
-started to use do_single_test also for size change and alpha tests.
+Participating hosts (38 -> 38)
+------------------------------
 
-I'll have second go to make the patch(es) to see what I get.
+  Additional (2): fi-jsl-1 fi-tgl-1115g4 
+  Missing    (2): fi-bsw-cyan fi-hsw-4200u 
 
-/Juha-Pekka
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6245 -> IGTPW_6321
+
+  CI-20190529: 20190529
+  CI_DRM_10733: 1e6cbb9f4ad6ee0fa0f204d4ae5e4c476e037615 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6321: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/index.html
+  IGT_6245: 477076d55a3cc53b8bfabae5af59114c8cd74827 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/index.html
+
+--===============7388766622049680367==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/prime_mmap: Add support for local memory (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95508/">https://patchwork.freedesktop.org/series/95508/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10733 -&gt; IGTPW_6321</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6321 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@query-info:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@nop-gfx0:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@amdgpu/amd_cs_nop@nop-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +16 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s0:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10733/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4221">i915#4221</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10733/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1372">i915#1372</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10733/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_mmap_gtt:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/fi-tgl-1115g4/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (38 -&gt; 38)</h2>
+<p>Additional (2): fi-jsl-1 fi-tgl-1115g4 <br />
+  Missing    (2): fi-bsw-cyan fi-hsw-4200u </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6245 -&gt; IGTPW_6321</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10733: 1e6cbb9f4ad6ee0fa0f204d4ae5e4c476e037615 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6321: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6321/index.html<br />
+  IGT_6245: 477076d55a3cc53b8bfabae5af59114c8cd74827 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7388766622049680367==--
