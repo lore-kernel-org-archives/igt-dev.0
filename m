@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============0494245027301372059=="
+ boundary="===============2628994531343470127=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 13 Oct 2021 23:38:24 -0000
-Message-ID: <163416830482.10253.9658246754326931952@emeril.freedesktop.org>
-References: <20211013224317.943625-1-John.C.Harrison@Intel.com>
-In-Reply-To: <20211013224317.943625-1-John.C.Harrison@Intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915=3A_Skip_gem=5Fexec=5Ffair_on_GuC_based_platforms?=
+Date: Thu, 14 Oct 2021 00:10:00 -0000
+Message-ID: <163417020077.4537.6889784158517374338@emeril.freedesktop.org>
+References: <20211013221727.6392-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20211013221727.6392-1-ville.syrjala@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgUHJvbW90?=
+ =?utf-8?q?e_kms=5Fflip=5Ftiling_to_general?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,24 +19,24 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: john.c.harrison@intel.com
+To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0494245027301372059==
+--===============2628994531343470127==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/i915: Skip gem_exec_fair on GuC based platforms
-URL   : https://patchwork.freedesktop.org/series/95804/
+Series: Promote kms_flip_tiling to general
+URL   : https://patchwork.freedesktop.org/series/95803/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_6244 -> IGTPW_6318
+CI Bug Log - changes from IGT_6244_full -> IGTPW_6317_full
 ====================================================
 
 Summary
@@ -46,117 +46,974 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6317/index.html
 
-Known issues
-------------
+New tests
+---------
 
-  Here are the changes found in IGTPW_6318 that come from known issues:
+  New tests have been introduced between IGT_6244_full and IGTPW_6317_full:
 
-### IGT changes ###
+### New IGT tests (446) ###
 
-#### Issues hit ####
+  * igt@kms_flip_tiling@flip-change-tiling:
+    - Statuses :
+    - Exec time: [None] s
 
-  * igt@gem_exec_fence@basic-busy@bcs0:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271]) +25 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-linear-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.18] s
 
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#2190])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-linear-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.18] s
 
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][3] ([i915#1886] / [i915#2291])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-linear-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
 
-  * igt@i915_selftest@live@requests:
-    - fi-pnv-d510:        [PASS][4] -> [DMESG-FAIL][5] ([i915#4140])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6244/fi-pnv-d510/igt@i915_selftest@live@requests.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-pnv-d510/igt@i915_selftest@live@requests.html
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-linear-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
 
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-linear-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
 
-  * igt@kms_chamelium@hdmi-edid-read:
-    - fi-bdw-samus:       NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-bdw-samus/igt@kms_chamelium@hdmi-edid-read.html
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-linear-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
 
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-bdw-samus:       NOTRUN -> [SKIP][8] ([fdo#109271]) +29 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-bdw-samus/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][9] ([fdo#109271] / [i915#533])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-x-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.18] s
 
-  * igt@runner@aborted:
-    - fi-pnv-d510:        NOTRUN -> [FAIL][10] ([fdo#109271] / [i915#2403])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-pnv-d510/igt@runner@aborted.html
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-x-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.18] s
 
-  
-#### Possible fixes ####
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-x-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
 
-  * igt@gem_exec_suspend@basic-s0:
-    - fi-tgl-1115g4:      [FAIL][11] ([i915#1888]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6244/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-x-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
 
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-bdw-samus:       [INCOMPLETE][13] ([i915#146]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6244/fi-bdw-samus/igt@gem_exec_suspend@basic-s3.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-bdw-samus/igt@gem_exec_suspend@basic-s3.html
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-x-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
 
-  * igt@i915_selftest@live@coherency:
-    - {fi-tgl-dsi}:       [DMESG-FAIL][15] -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6244/fi-tgl-dsi/igt@i915_selftest@live@coherency.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-tgl-dsi/igt@i915_selftest@live@coherency.html
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-x-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
 
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-cml-u2:          [DMESG-WARN][17] ([i915#4269]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6244/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-ccs-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
 
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-ccs-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
 
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
-  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#4140]: https://gitlab.freedesktop.org/drm/intel/issues/4140
-  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-ccs-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
 
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-ccs-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
 
-Participating hosts (40 -> 37)
-------------------------------
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-ccs-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
 
-  Additional (1): fi-kbl-soraka 
-  Missing    (4): fi-bsw-cyan fi-ilk-m540 fi-hsw-4200u fi-kbl-r 
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-ccs-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
 
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
 
-Build changes
--------------
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6244 -> IGTPW_6318
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
 
-  CI-20190529: 20190529
-  CI_DRM_10732: 3fdfa1de4774903b9cb4fb308102b5a2d762d829 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6318: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/index.html
-  IGT_6244: f0d20960795af65d7fd86bbc5a3e7fb47451e06e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-ccs-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-ccs-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-ccs-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-ccs-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.32] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-ccs-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-ccs-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.57] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-linear-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.18] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-linear-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.18] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-linear-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-linear-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-linear-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-linear-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-x-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.18] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-x-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.18] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-x-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-x-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-x-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-x-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-ccs-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-ccs-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-ccs-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-ccs-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-ccs-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-ccs-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.32] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-ccs-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-ccs-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-ccs-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-ccs-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.32] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-ccs-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-ccs-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.56] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-linear-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.18] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-linear-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.18] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-linear-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-linear-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-x-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.18] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-x-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.18] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-x-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-x-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-y-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-y-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-y-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-y-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.33] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-yf-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-yf-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.25] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-yf-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.32] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-yf-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.55] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-linear-to-linear:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.10, 0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-linear-to-x:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.12, 0.17] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-linear-to-y:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.12, 0.17] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-linear-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-linear-to-y-rc_ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.14] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-linear-to-y-rc_ccs-cc:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-linear-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-linear-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-x-to-linear:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.12, 0.17] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-x-to-x:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.10, 0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-x-to-y:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.12, 0.17] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-x-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-x-to-y-rc_ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-x-to-y-rc_ccs-cc:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-x-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-x-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-ccs-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-ccs-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.17] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-ccs-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-ccs-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-ccs-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-ccs-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-cc-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-cc-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-cc-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-cc-to-y-rc_ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-cc-to-y-rc_ccs-cc:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-to-y-rc_ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.23] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-to-y-rc_ccs-cc:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-to-linear:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.13, 0.17] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-to-x:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.13, 0.17] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-to-y:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.11, 0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-to-y-rc_ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.14] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-to-y-rc_ccs-cc:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.16] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.17] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-ccs-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-ccs-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-ccs-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-ccs-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-ccs-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-ccs-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.30] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.17] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.17] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.18] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-linear-to-linear:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.09, 0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-linear-to-x:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.09, 0.10] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-linear-to-y:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.11, 0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-linear-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-linear-to-y-rc_ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-linear-to-y-rc_ccs-cc:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-linear-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-linear-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-x-to-linear:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.09, 0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-x-to-x:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.09, 0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-x-to-y:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.11, 0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-x-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-x-to-y-rc_ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-x-to-y-rc_ccs-cc:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-x-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-x-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-ccs-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-ccs-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-ccs-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-ccs-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-ccs-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-ccs-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-cc-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-cc-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-cc-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-cc-to-y-rc_ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-cc-to-y-rc_ccs-cc:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-to-y-rc_ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-to-y-rc_ccs-cc:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-to-linear:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.10, 0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-to-x:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.10, 0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-to-y:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.11, 0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-to-y-rc_ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-to-y-rc_ccs-cc:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-ccs-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-ccs-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-ccs-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-ccs-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-ccs-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-ccs-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-linear-to-linear:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.09, 0.10] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-linear-to-x:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.09, 0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-linear-to-y:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.11, 0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-linear-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-linear-to-y-rc_ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-linear-to-y-rc_ccs-cc:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-linear-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-linear-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-x-to-linear:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.09, 0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-x-to-x:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.09, 0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-x-to-y:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.11, 0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-x-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-x-to-y-rc_ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-x-to-y-rc_ccs-cc:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-x-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-x-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-ccs-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-ccs-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-ccs-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-ccs-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-ccs-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-ccs-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-cc-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-cc-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-cc-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-cc-to-y-rc_ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-cc-to-y-rc_ccs-cc:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-to-y-rc_ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.31] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-to-y-rc_ccs-cc:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-to-linear:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.09, 0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-to-x:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.10, 0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-to-y:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.11, 0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-to-y-rc_ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-to-y-rc_ccs-cc:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-to-yf-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-yf-ccs-to-linear:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-yf-ccs-to-x:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-yf-ccs-to-y:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-yf-ccs-to-y-ccs:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-yf-ccs-to-yf:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6317/index.html
 
---===============0494245027301372059==
+--===============2628994531343470127==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -176,122 +1033,1696 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/i915: Skip gem_exec_fair on GuC based platforms</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95804/">https://patchwork.freedesktop.org/series/95804/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Promote kms_flip_tiling to general</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95803/">https://patchwork.freedesktop.org/series/95803/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6317/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6317/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_6244 -&gt; IGTPW_6318</h1>
+    <h1>CI Bug Log - changes from IGT_6244_full -&gt; IGTPW_6317_full</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6318 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6317/index.html</p>
+<h2>New tests</h2>
+<p>New tests have been introduced between IGT_6244_full and IGTPW_6317_full:</p>
+<h3>New IGT tests (446)</h3>
 <ul>
 <li>
-<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<p>igt@kms_flip_tiling@flip-change-tiling:</p>
 <ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +25 similar issues</li>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_huc_copy@huc-copy:</p>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-linear-to-linear:</p>
 <ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.18] s</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_selftest@live@gt_pm:</p>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-linear-to-x:</p>
 <ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.18] s</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_selftest@live@requests:</p>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-linear-to-y:</p>
 <ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6244/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4140">i915#4140</a>)</li>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-linear-to-y-ccs:</p>
 <ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_chamelium@hdmi-edid-read:</p>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-linear-to-yf:</p>
 <ul>
-<li>fi-bdw-samus:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-bdw-samus/igt@kms_chamelium@hdmi-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-linear-to-yf-ccs:</p>
 <ul>
-<li>
-<p>fi-bdw-samus:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-bdw-samus/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +29 similar issues</p>
-</li>
-<li>
-<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</p>
-</li>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
 </ul>
 </li>
 <li>
-<p>igt@runner@aborted:</p>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-x-to-linear:</p>
 <ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-pnv-d510/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6244/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">PASS</a></li>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.18] s</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-x-to-x:</p>
 <ul>
-<li>fi-bdw-samus:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6244/fi-bdw-samus/igt@gem_exec_suspend@basic-s3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-bdw-samus/igt@gem_exec_suspend@basic-s3.html">PASS</a></li>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.18] s</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_selftest@live@coherency:</p>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-x-to-y:</p>
 <ul>
-<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6244/fi-tgl-dsi/igt@i915_selftest@live@coherency.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-tgl-dsi/igt@i915_selftest@live@coherency.html">PASS</a></li>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-x-to-y-ccs:</p>
 <ul>
-<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6244/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
 </ul>
 </li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (40 -&gt; 37)</h2>
-<p>Additional (1): fi-kbl-soraka <br />
-  Missing    (4): fi-bsw-cyan fi-ilk-m540 fi-hsw-4200u fi-kbl-r </p>
-<h2>Build changes</h2>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-x-to-yf:</p>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6244 -&gt; IGTPW_6318</li>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10732: 3fdfa1de4774903b9cb4fb308102b5a2d762d829 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6318: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6318/index.html<br />
-  IGT_6244: f0d20960795af65d7fd86bbc5a3e7fb47451e06e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-x-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-ccs-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-ccs-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-ccs-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-ccs-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-ccs-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-ccs-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-y-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-ccs-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-ccs-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-ccs-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-ccs-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-ccs-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-ccs-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.57] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-a-yf-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-linear-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-linear-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-linear-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-linear-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-linear-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-linear-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-x-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-x-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-x-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-x-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-x-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-x-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-ccs-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-ccs-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-ccs-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-ccs-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-ccs-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-ccs-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-y-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-ccs-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-ccs-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-ccs-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-ccs-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-ccs-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-ccs-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.56] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-b-yf-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-linear-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-linear-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-linear-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-linear-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-x-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-x-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-x-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-x-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-y-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-y-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-y-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-y-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-yf-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-yf-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-yf-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@dp-1-pipe-c-yf-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.55] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-linear-to-linear:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.10, 0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-linear-to-x:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.12, 0.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-linear-to-y:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.12, 0.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-linear-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-linear-to-y-rc_ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.14] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-linear-to-y-rc_ccs-cc:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-linear-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-linear-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-x-to-linear:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.12, 0.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-x-to-x:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.10, 0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-x-to-y:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.12, 0.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-x-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-x-to-y-rc_ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-x-to-y-rc_ccs-cc:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-x-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-x-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-ccs-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-ccs-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-ccs-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-ccs-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-ccs-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-ccs-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-cc-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-cc-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-cc-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-cc-to-y-rc_ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-cc-to-y-rc_ccs-cc:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-to-y-rc_ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.23] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-rc_ccs-to-y-rc_ccs-cc:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-to-linear:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.13, 0.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-to-x:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.13, 0.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-to-y:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.11, 0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-to-y-rc_ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.14] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-to-y-rc_ccs-cc:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.16] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-y-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-ccs-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-ccs-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-ccs-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-ccs-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-ccs-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-ccs-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-a-yf-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-linear-to-linear:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.09, 0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-linear-to-x:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.09, 0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-linear-to-y:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.11, 0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-linear-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-linear-to-y-rc_ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-linear-to-y-rc_ccs-cc:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-linear-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-linear-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-x-to-linear:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.09, 0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-x-to-x:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.09, 0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-x-to-y:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.11, 0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-x-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-x-to-y-rc_ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-x-to-y-rc_ccs-cc:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-x-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-x-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-ccs-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-ccs-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-ccs-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-ccs-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-ccs-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-ccs-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-cc-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-cc-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-cc-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-cc-to-y-rc_ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-cc-to-y-rc_ccs-cc:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-to-y-rc_ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-rc_ccs-to-y-rc_ccs-cc:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-to-linear:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.10, 0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-to-x:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.10, 0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-to-y:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.11, 0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-to-y-rc_ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-to-y-rc_ccs-cc:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-y-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-ccs-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-ccs-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-ccs-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-ccs-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-ccs-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-ccs-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-b-yf-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-linear-to-linear:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.09, 0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-linear-to-x:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.09, 0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-linear-to-y:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.11, 0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-linear-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-linear-to-y-rc_ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-linear-to-y-rc_ccs-cc:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-linear-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-linear-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-x-to-linear:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.09, 0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-x-to-x:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.09, 0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-x-to-y:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.11, 0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-x-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-x-to-y-rc_ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-x-to-y-rc_ccs-cc:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-x-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-x-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-ccs-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-ccs-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-ccs-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-ccs-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-ccs-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-ccs-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-cc-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-cc-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-cc-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-cc-to-y-rc_ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-cc-to-y-rc_ccs-cc:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-to-y-rc_ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.31] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-rc_ccs-to-y-rc_ccs-cc:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-to-linear:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.09, 0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-to-x:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.10, 0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-to-y:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.11, 0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-to-y-rc_ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-to-y-rc_ccs-cc:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-y-to-yf-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-yf-ccs-to-linear:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-yf-ccs-to-x:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-yf-ccs-to-y:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-yf-ccs-to-y-ccs:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_tiling@flip-change-tiling@edp-1-pipe-c-yf-ccs-to-yf:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@</p>
+</li>
+</ul>
 
 </body>
 </html>
 
---===============0494245027301372059==--
+--===============2628994531343470127==--
