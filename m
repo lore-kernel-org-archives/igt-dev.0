@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20211013224317.943625-1-John.C.Harrison@Intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <c2ffbee7-7fc6-7556-5351-295d85b67254@linux.intel.com>
-Date: Thu, 14 Oct 2021 08:45:15 +0100
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 147E96EC1B
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Oct 2021 07:47:45 +0000 (UTC)
+Date: Thu, 14 Oct 2021 09:47:39 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20211014074739.GD3617@zkempczy-mobl2>
+References: <20211008065432.15482-1-zbigniew.kempczynski@intel.com>
+ <20211008065432.15482-7-zbigniew.kempczynski@intel.com>
+ <8735p4i68d.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20211013224317.943625-1-John.C.Harrison@Intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915: Skip gem_exec_fair on GuC
- based platforms
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8735p4i68d.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 6/7] benchmarks/gem_exec_fault: Add
+ timeout argument
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,63 +24,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: John.C.Harrison@Intel.com, IGT-Dev@Lists.FreeDesktop.Org
-Cc: Intel-GFX@Lists.FreeDesktop.Org
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 13/10/2021 23:43, John.C.Harrison@Intel.com wrote:
-> From: John Harrison <John.C.Harrison@Intel.com>
+On Wed, Oct 13, 2021 at 09:24:18PM -0700, Dixit, Ashutosh wrote:
+> On Thu, 07 Oct 2021 23:54:31 -0700, Zbigniew Kempczyński wrote:
+> >
+> > +static int loop(uint64_t size, unsigned ring, int reps, int ncpus,
+> > +		unsigned flags, float timeout)
+> >  {
+> >	struct drm_i915_gem_execbuffer2 execbuf;
+> >	struct drm_i915_gem_exec_object2 obj;
+> > @@ -128,10 +130,14 @@ static int loop(uint64_t size, unsigned ring, int reps, int ncpus, unsigned flag
+> >					/* fault out */
+> >					obj.alignment = 1ull << 63;
+> >					__gem_execbuf(fd, &execbuf);
+> > -				}
+> >
+> > -				clock_gettime(CLOCK_MONOTONIC, &end);
+> > -			} while (elapsed(&start, &end) < 2.);
+> > +					clock_gettime(CLOCK_MONOTONIC, &end);
+> > +					if (elapsed(&start, &end) >= timeout) {
+> > +						timeout = -1.0;
 > 
-> The gem_exec_fair test is specifically testing scheduler algorithm
-> performance. However, GuC does not implement the same algorithm as
-> execlist mode and this test is not applicable. So, until sw arch
-> approves a new algorithm and it is implemented in GuC, stop running
-> the test.
+> Just a small nit, I don't think we need to set it to -1 here. We can just
+> leave the "while (elapsed(&start, &end) < timeout);" check in the outer loop
+> too. So please change if you agree. Otherwise:
+
+I just wanted to avoid calling elapsed() twice, that's why I changed to
+simpler expression. Timeout cannot be negative so it is good as stop
+condition to outer loop.
+
+I dare get your r-b here.
+
+--
+Zbigniew
+
 > 
-> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-> ---
->   tests/i915/gem_exec_fair.c | 6 ++++++
->   1 file changed, 6 insertions(+)
+> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 > 
-> diff --git a/tests/i915/gem_exec_fair.c b/tests/i915/gem_exec_fair.c
-> index ef5a450f6..ca9c73c6e 100644
-> --- a/tests/i915/gem_exec_fair.c
-> +++ b/tests/i915/gem_exec_fair.c
-> @@ -1314,6 +1314,12 @@ igt_main
->   		igt_require(gem_scheduler_enabled(i915));
->   		igt_require(gem_scheduler_has_ctx_priority(i915));
->   
-> +		/*
-> +		 * These tests are for a specific scheduling model which is
-> +		 * not currently implemented by GuC. So skip on GuC platforms.
-> +		 */
-> +		igt_require(intel_gen(intel_get_drm_devid(i915)) < 12);
-
-I don't understand why do patches which claim Tigerlake is a GuC 
-submission platform keep appearing?
-
-It's a stupid patch to use it against, but as a matter of principle this 
-has to receive a clear NACK, from me at least.
-
-There are so many ways to avoid the nack, but factually incorrect commit 
-message and code comment just have no place so IMO cannot go in.
-
-We can look at on which platforms it passes and on which platforms it 
-mostly fails and decide what to do about it.
-
-Or just use debugfs to check whether GuC is in use, IGT does it all the 
-time and it's not ABI. Or improve the skip condition to include gen 
-_and_ _platform_ checks.
-
-Anything but proposing patches which are factually incorrect.
-
-Regards,
-
-Tvrtko
-
-> +
->   		cfg = intel_ctx_cfg_all_physical(i915);
->   
->   		igt_info("CS timestamp frequency: %d\n",
-> 
+> > +						break;
+> > +					}
+> > +				}
+> > +			} while (timeout > 0);
+> >
+> >			gem_sync(fd, obj.handle);
+> >			clock_gettime(CLOCK_MONOTONIC, &end);
