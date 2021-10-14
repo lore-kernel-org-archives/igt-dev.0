@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 752126E09F
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Oct 2021 07:43:14 +0000 (UTC)
-References: <20211015233845.12272-1-ashutosh.dixit@intel.com>
- <7fee0739-2ef5-f6c7-84fd-e73c9a8085f2@intel.com>
- <877deddfhs.wl-ashutosh.dixit@intel.com>
- <8d13e90a-04e8-47df-c2f5-a3afce04711a@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <784e8917-05cc-c5ed-ef98-dc21edda789b@linux.intel.com>
-Date: Mon, 18 Oct 2021 08:43:10 +0100
-MIME-Version: 1.0
-In-Reply-To: <8d13e90a-04e8-47df-c2f5-a3afce04711a@intel.com>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A84376EC59
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Oct 2021 10:02:01 +0000 (UTC)
+From: "Varide, Nischal" <nischal.varide@intel.com>
+Date: Thu, 14 Oct 2021 10:01:58 +0000
+Message-ID: <DM8PR11MB565421EFBB92943EA3C29CD19EB89@DM8PR11MB5654.namprd11.prod.outlook.com>
+References: <20211013105744.2869089-1-jigar.bhatt@intel.com>
+In-Reply-To: <20211013105744.2869089-1-jigar.bhatt@intel.com>
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/i915: Fix gem_has_execlists to
- match description
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v5] tests/i915/i915_pm_dc: Fix condition
+ in dc9-test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,71 +22,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: John Harrison <john.c.harrison@intel.com>, "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Bhatt, Jigar" <jigar.bhatt@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 16/10/2021 00:57, John Harrison wrote:
-> On 10/15/2021 16:39, Dixit, Ashutosh wrote:
->> On Fri, 15 Oct 2021 16:42:12 -0700, John Harrison wrote:
->>> On 10/15/2021 16:38, Ashutosh Dixit wrote:
->>>> Driver is using execlists if it is not using GuC submission.
->>>> GEM_SUBMISSION_EXECLISTS flag indicates if execlist submission is
->>>> available, not if it is being used by the driver.
->>>>
->>>> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
->>>> ---
->>>>    lib/i915/gem_submission.c | 2 +-
->>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
->>>> index 2627b802cfb..4312a73bd85 100644
->>>> --- a/lib/i915/gem_submission.c
->>>> +++ b/lib/i915/gem_submission.c
->>>> @@ -153,7 +153,7 @@ bool gem_has_semaphores(int fd)
->>>>     */
->>>>    bool gem_has_execlists(int fd)
->>>>    {
->>>> -    return gem_submission_method(fd) & GEM_SUBMISSION_EXECLISTS;
->>>> +    return !gem_has_guc_submission(fd);
->>> Don't we use ring submission on older platforms?
->> Hmm, I wasn't aware that there was yet another submission method :/
->>
->> So execlist submission is only available for gen >= 8 as the code 
->> says, in
->> case anyone knows?
-> Yes. Execlists was new feature of the hardware not all that long ago 
-> (ELSP and all that). Gen8 sounds plausible.
 
-Yes Gen8+.
+-----Original Message-----
+From: Bhatt, Jigar <jigar.bhatt@intel.com>=20
+Sent: Wednesday, October 13, 2021 4:28 PM
+To: igt-dev@lists.freedesktop.org
+Cc: Bhatt, Jigar <jigar.bhatt@intel.com>; Latvala, Petri <petri.latvala@int=
+el.com>; Varide, Nischal <nischal.varide@intel.com>
+Subject: [PATCH i-g-t v5] tests/i915/i915_pm_dc: Fix condition in dc9-test
 
-> Of course, it all depends why the code is asking the question? Does it 
-> really need to know what the submission hardware is? Or is it actually 
-> asking about the scheduling algorithm (as is the case for 
-> gem_exec_fair). Or something else entirely? The scheduler question is 
-> going to change again when we move to using the DRM scheduler instead of 
-> our own private one in the execlist code. Currently though, I would 
-> assume we use the execlist scheduler for ring submission but certainly 
-> not for GuC submission (because the scheduler is in the hardware).
+1.Inside dc9_wait_entry, we do not have DC9 counter, so we rely on dc5/dc6 =
+counter reset to check if display engine was in DC9.
+Test is passed if live counter is less
+than the previous counter. Correcting condition igt_wait(read_dc_counter(de=
+bugfs_fd, dc_target) <
+			prev_dc, seconds, 100);
 
-Nope, no scheduling with ringbuffer backend.
+2.Moving prev_dc =3D read_dc_counter(data->debugfs_fd, dc_target); before s=
+etup_dc9_dpms avoid 0 reading.
 
-There is I915_PARAM_HAS_SCHEDULER and respective IGT helpers to query 
-what kind of scheduling is supported on the device in question.
+3.Add sleep(1) after dpms_off waiting for reset counters.
 
-It will be on a test per test basis why it is asking the question and 
-what would be the appropriate test.
+Fixes: 2f4e6430a97f04284d1cafb1479e7c1b0b2d596a ("tests/i915/i915_pm_dc: Fi=
+x DC9 test")
+Signed-off-by: Jigar Bhatt <jigar.bhatt@intel.com>
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+Reviewed-by: Nischal Varide<nischal.varide@intel.com>
+---
+ tests/i915/i915_pm_dc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Regards,
-
-Tvrtko
-
-> 
-> John.
-> 
->>
->>> Isn't the better fix to just not set the EXECLIST flag when GuC
->>> submission is detected?
->> Yes, let me post this patch too. Thanks!
-> 
+diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c index 3a7ce5=
+bf..4ebeb3eb 100644
+--- a/tests/i915/i915_pm_dc.c
++++ b/tests/i915/i915_pm_dc.c
+@@ -410,7 +410,7 @@ static bool dc9_wait_entry(uint32_t debugfs_fd, int dc_=
+target, int prev_dc, int
+ 	 * since we do not have DC9 counter,
+ 	 * so we rely on dc5/dc6 counter reset to check if display engine was in =
+DC9.
+ 	 */
+-	return igt_wait(read_dc_counter(debugfs_fd, dc_target) >
++	return igt_wait(read_dc_counter(debugfs_fd, dc_target) <
+ 			prev_dc, seconds, 100);
+ }
+=20
+@@ -444,9 +444,10 @@ static void test_dc9_dpms(data_t *data)
+=20
+ 	require_dc_counter(data->debugfs_fd, CHECK_DC5);
+ 	dc_target =3D support_dc6(data->debugfs_fd) ? CHECK_DC6 : CHECK_DC5;
+-	setup_dc9_dpms(data, dc_target);
+ 	prev_dc =3D read_dc_counter(data->debugfs_fd, dc_target);
++	setup_dc9_dpms(data, dc_target);
+ 	dpms_off(data);
++	sleep(1); /* wait for counters reset*/
+ 	check_dc9(data, dc_target, prev_dc);
+ 	dpms_on(data);
+ }
+--
+2.25.1
