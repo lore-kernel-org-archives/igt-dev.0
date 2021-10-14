@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 080EE6EADA
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Oct 2021 13:45:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3009F6EB0D
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Oct 2021 13:45:22 +0000 (UTC)
 From: Thomas Zimmermann <tzimmermann@suse.de>
-Date: Thu, 14 Oct 2021 15:45:15 +0200
-Message-Id: <20211014134517.26473-1-tzimmermann@suse.de>
+Date: Thu, 14 Oct 2021 15:45:16 +0200
+Message-Id: <20211014134517.26473-2-tzimmermann@suse.de>
+In-Reply-To: <20211014134517.26473-1-tzimmermann@suse.de>
+References: <20211014134517.26473-1-tzimmermann@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 0/2] tests/fbdev: Additional tests for
- resolution and panning
+Subject: [igt-dev] [PATCH v2 1/2] tests/fbdev: Test for validity of video
+ mode settings
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,31 +24,84 @@ To: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com
 Cc: Thomas Zimmermann <tzimmermann@suse.de>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add addtional tests for resolution and panning operations on fbdev
-devices. Succeed on successful operations. Fail on invalid operations
-or state.
-
-DRM's simpledrm driver exposed a bug in DRM's fbdev overallocation code,
-[1] which is required for fbdev page flipping. The new test cases intent
-to test panning and page flipping, and detect such issues early.
-
-Tested with the current simpledrm and a hacked version that supports fbdev
-overallocation. This will also help to implement the panning functionality
-for real in simpledrm and other drivers.
+Add basic tests for video mode resolution and color on fbdev
+devices.
 
 v2:
-	* test horizontal resolution against line length (Ville)
 	* respect FB_VMODE_YWRAP (Ville)
-	* respect {x,y}panstep (Ville)
+	* test horizontal resolution against line length
 
-[1] https://lore.kernel.org/dri-devel/20211005070355.7680-1-tzimmermann@suse.de/
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+---
+ tests/fbdev.c | 49 +++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 41 insertions(+), 8 deletions(-)
 
-Thomas Zimmermann (2):
-  tests/fbdev: Test for validity of video mode settings
-  tests/fbdev: Add tests for display panning
-
- tests/fbdev.c | 184 +++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 176 insertions(+), 8 deletions(-)
-
---
+diff --git a/tests/fbdev.c b/tests/fbdev.c
+index 443a43dc..2cf137d2 100644
+--- a/tests/fbdev.c
++++ b/tests/fbdev.c
+@@ -27,6 +27,7 @@
+ 
+ #include <errno.h>
+ #include <fcntl.h>
++#include <limits.h>
+ #include <string.h>
+ #include <sys/ioctl.h>
+ #include <sys/mman.h>
+@@ -50,14 +51,46 @@ static void mode_tests(int fd)
+ 
+ 	igt_describe("Check if screeninfo is valid");
+ 	igt_subtest("info") {
+-		unsigned long size;
+-
+-		size = var_info.yres * fix_info.line_length;
+-		igt_assert_f(size <= fix_info.smem_len,
+-			     "screen size (%d x %d) of pitch %d does not fit within mappable area of size %u\n",
+-			     var_info.xres, var_info.yres,
+-			     fix_info.line_length,
+-			     fix_info.smem_len);
++		unsigned long nbits, nlines;
++
++		/* video memory configuration */
++		igt_assert_f(fix_info.line_length, "line length not set\n");
++		igt_assert_f(fix_info.smem_len, "size of video memory not set\n");
++		igt_assert_f(fix_info.line_length <= fix_info.smem_len,
++			     "line length (%u) exceeds available video memory (%u)\n",
++			     fix_info.line_length, fix_info.smem_len);
++
++		/* color format */
++		igt_assert_f(var_info.bits_per_pixel, "bits-per-pixel not set\n");
++
++		/* horizontal resolution */
++		igt_assert_f(var_info.xres, "horizontal resolution not set\n");
++		igt_assert_f(var_info.xres_virtual, "horizontal virtual resolution not set\n");
++		igt_assert_f(var_info.xres <= var_info.xres_virtual,
++			     "horizontal virtual resolution (%u) less than horizontal resolution (%u)\n",
++			     var_info.xres_virtual, var_info.xres);
++		igt_assert_f(var_info.xoffset <= (var_info.xres_virtual - var_info.xres),
++			     "screen horizontal offset (%u) overflow\n",
++			     var_info.xoffset);
++		nbits = fix_info.line_length * CHAR_BIT;
++		igt_assert_f((var_info.xres_virtual * var_info.bits_per_pixel) <= nbits,
++			     "vertical virtual resolution (%u) with bpp %u exceeds line length %u\n",
++			     var_info.yres_virtual, var_info.bits_per_pixel, fix_info.line_length);
++
++		/* vertical resolution */
++		igt_assert_f(var_info.yres, "vertical resolution not set\n");
++		igt_assert_f(var_info.yres_virtual, "vertical virtual resolution not set\n");
++		igt_assert_f(var_info.yres <= var_info.yres_virtual,
++			     "vertical virtual resolution (%u) less than vertical resolution (%u)\n",
++			     var_info.yres_virtual, var_info.yres);
++		igt_assert_f((var_info.vmode & FB_VMODE_YWRAP) ||
++			     (var_info.yoffset <= (var_info.yres_virtual - var_info.yres)),
++			     "screen vertical offset (%u) overflow\n",
++			     var_info.yoffset);
++		nlines = fix_info.smem_len / fix_info.line_length;
++		igt_assert_f(var_info.yres_virtual <= nlines,
++			     "vertical virtual resolution (%u) with line length %u exceeds available video memory\n",
++			     var_info.yres_virtual, fix_info.line_length);
+ 	}
+ }
+ 
+-- 
 2.33.0
