@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 137D66E175
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Oct 2021 08:19:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A38856E8AC
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Oct 2021 08:19:48 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu, 14 Oct 2021 10:19:15 +0200
-Message-Id: <20211014081917.15977-6-zbigniew.kempczynski@intel.com>
+Date: Thu, 14 Oct 2021 10:19:16 +0200
+Message-Id: <20211014081917.15977-7-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20211014081917.15977-1-zbigniew.kempczynski@intel.com>
 References: <20211014081917.15977-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 5/7] tests/i915_pm_rpm: Fix invalid alignment
+Subject: [igt-dev] [PATCH i-g-t 6/7] benchmarks/gem_exec_fault: Add timeout
+ argument
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,35 +22,87 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In theory kernel requires vma to be power of two aligned, but in
-practice inserting vma requires alignment to be at least GTT min
-alignment - which is page size atm. Change this alignment from 64->0
-to allow test to run on gens where alignment must be zero in execbuf
-as it will be page size aligned anyway.
+Add timeout argument and change elapsed time to inner loop to
+be more precise in timeout processing.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/i915_pm_rpm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ benchmarks/gem_exec_fault.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 732aea6eb..648b0cffb 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -1234,7 +1234,7 @@ static void submit_blt_cmd(uint32_t dst_handle, int dst_size,
- 	relocs[0].write_domain = I915_GEM_DOMAIN_RENDER;
+diff --git a/benchmarks/gem_exec_fault.c b/benchmarks/gem_exec_fault.c
+index d53fab964..fe940b44c 100644
+--- a/benchmarks/gem_exec_fault.c
++++ b/benchmarks/gem_exec_fault.c
+@@ -49,6 +49,7 @@
+ #include "ioctl_wrappers.h"
  
- 	objs[0].handle = dst_handle;
--	objs[0].alignment = 64;
-+	objs[0].alignment = 0;
+ #define ENGINE_FLAGS  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
++#define DEFAULT_TIMEOUT 2.f
  
- 	objs[1].handle = batch_handle;
- 	objs[1].relocation_count = !ahnd ? 1 : 0;
+ static double elapsed(const struct timespec *start,
+ 		      const struct timespec *end)
+@@ -64,7 +65,8 @@ static uint32_t batch(int fd, uint64_t size)
+ 	return handle;
+ }
+ 
+-static int loop(uint64_t size, unsigned ring, int reps, int ncpus, unsigned flags)
++static int loop(uint64_t size, unsigned ring, int reps, int ncpus,
++		unsigned flags, float timeout)
+ {
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
+@@ -128,10 +130,14 @@ static int loop(uint64_t size, unsigned ring, int reps, int ncpus, unsigned flag
+ 					/* fault out */
+ 					obj.alignment = 1ull << 63;
+ 					__gem_execbuf(fd, &execbuf);
+-				}
+ 
+-				clock_gettime(CLOCK_MONOTONIC, &end);
+-			} while (elapsed(&start, &end) < 2.);
++					clock_gettime(CLOCK_MONOTONIC, &end);
++					if (elapsed(&start, &end) >= timeout) {
++						timeout = -1.0;
++						break;
++					}
++				}
++			} while (timeout > 0);
+ 
+ 			gem_sync(fd, obj.handle);
+ 			clock_gettime(CLOCK_MONOTONIC, &end);
+@@ -156,8 +162,9 @@ int main(int argc, char **argv)
+ 	int reps = 1;
+ 	int ncpus = 1;
+ 	int c;
++	float timeout = DEFAULT_TIMEOUT;
+ 
+-	while ((c = getopt (argc, argv, "e:r:s:f")) != -1) {
++	while ((c = getopt (argc, argv, "e:r:s:ft:")) != -1) {
+ 		switch (c) {
+ 		case 'e':
+ 			if (strcmp(optarg, "rcs") == 0)
+@@ -190,10 +197,15 @@ int main(int argc, char **argv)
+ 				size = 4096;
+ 			break;
+ 
++		case 't':
++			timeout = atof(optarg);
++			igt_assert_f(timeout > 0, "Timeout must be > 0\n");
++			break;
++
+ 		default:
+ 			break;
+ 		}
+ 	}
+ 
+-	return loop(size, ring, reps, ncpus, flags);
++	return loop(size, ring, reps, ncpus, flags, timeout);
+ }
 -- 
 2.26.0
