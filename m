@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EBB126EA97
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Oct 2021 20:32:53 +0000 (UTC)
-From: Casey Bowman <casey.g.bowman@intel.com>
-Date: Fri, 15 Oct 2021 13:32:36 -0700
-Message-Id: <20211015203238.133163-1-casey.g.bowman@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/2] Changes for typical arm64 cross-compile
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 15 Oct 2021 20:39:35 -0000
+Message-ID: <163433037592.29319.6963292730344662952@emeril.freedesktop.org>
+References: <20211015203238.133163-1-casey.g.bowman@intel.com>
+In-Reply-To: <20211015203238.133163-1-casey.g.bowman@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_C?=
+ =?utf-8?q?hanges_for_typical_arm64_cross-compile?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,28 +16,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: lucas.demarchi@intel.com, petri.latvala@intel.com, ashutosh.dixit@intel.com, wayne.boyer@intel.com, matthew.d.roper@intel.com
+To: Casey Bowman <casey.g.bowman@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We've used Docker instances for setting up arm64 configurations
-but I've found that this doesn't mesh well on a typical debian-based
-setup (Ubuntu 20.04).
+== Series Details ==
 
-I've included a couple changes that change where we look for the
-pkg-config binary, which in turn looks for our various libraries,
-along with a change that avoids breakage during compilation due
-to a system header ASM issue.
+Series: Changes for typical arm64 cross-compile
+URL   : https://patchwork.freedesktop.org/series/95892/
+State : warning
 
-Casey Bowman (2):
-  Alter arm64 cross compile pkg-config library selections
-  Avoid using the sys/io.h header
+== Summary ==
 
- meson-cross-arm64.txt | 5 ++++-
- meson.build           | 6 ++++--
- 2 files changed, 8 insertions(+), 3 deletions(-)
+Pipeline status: FAILED.
 
--- 
-2.25.1
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/424827 for the overview.
+
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/14798877):
+  Compiler for C supports arguments -Werror=missing-braces: YES
+  Compiler for C supports arguments -Werror=nonnull: YES
+  Compiler for C supports arguments -Werror=pointer-to-int-cast: YES
+  Compiler for C supports arguments -Werror=return-type: YES
+  Compiler for C supports arguments -Werror=sequence-point: YES
+  Compiler for C supports arguments -Werror=trigraphs: YES
+  Compiler for C supports arguments -Werror=write-strings: YES
+  Compiler for C supports arguments -fno-builtin-malloc: YES
+  Compiler for C supports arguments -fno-builtin-calloc: YES
+  Compiler for C supports arguments -fcommon: YES
+  Cross dependency libdrm found: NO (tried pkgconfig)
+  
+  meson.build:103:0: ERROR:  Dependency "libdrm" not found, tried pkgconfig
+  
+  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
+  section_end:1634330159:step_script
+  section_start:1634330159:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1634330162:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/424827
