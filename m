@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DC6F06E85F
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Oct 2021 10:10:44 +0000 (UTC)
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Mon, 18 Oct 2021 10:10:40 +0000
-Message-ID: <DM8PR11MB5719370C8D3791A97363031F8DBC9@DM8PR11MB5719.namprd11.prod.outlook.com>
-References: <20211013125949.19373-1-ville.syrjala@linux.intel.com>
- <20211013125949.19373-2-ville.syrjala@linux.intel.com>
- <DM8PR11MB571916D91BEA231F737525A28DBC9@DM8PR11MB5719.namprd11.prod.outlook.com>
- <YW0gDYSzbuHlnQ5+@intel.com>
-In-Reply-To: <YW0gDYSzbuHlnQ5+@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 608E56E0D1
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Oct 2021 11:23:14 +0000 (UTC)
+Date: Mon, 18 Oct 2021 14:21:34 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YW1Yvg8GsFcHzwfu@platvala-desk.ger.corp.intel.com>
+References: <20211015203238.133163-1-casey.g.bowman@intel.com>
+ <20211015203238.133163-2-casey.g.bowman@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/7] lib: Introduce igt_memdup()
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211015203238.133163-2-casey.g.bowman@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] Alter arm64 cross compile
+ pkg-config library selections
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,68 +22,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Casey Bowman <casey.g.bowman@intel.com>
+Cc: igt-dev@lists.freedesktop.org, lucas.demarchi@intel.com, ashutosh.dixit@intel.com, wayne.boyer@intel.com, matthew.d.roper@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> Sent: Monday, October 18, 2021 12:50 PM
-> To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> Cc: igt-dev@lists.freedesktop.org
-> Subject: Re: [igt-dev] [PATCH i-g-t 1/7] lib: Introduce igt_memdup()
->=20
-> On Mon, Oct 18, 2021 at 04:19:41AM +0000, Modem, Bhanuprakash wrote:
-> > > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Vi=
-lle
-> > > Syrjala
-> > > Sent: Wednesday, October 13, 2021 6:30 PM
-> > > To: igt-dev@lists.freedesktop.org
-> > > Subject: [igt-dev] [PATCH i-g-t 1/7] lib: Introduce igt_memdup()
-> > >
-> > > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > >
-> > > Provide a helper to do the malloc()+memcpy() in one swift blow.
-> > >
-> > > Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > > ---
-> > >  lib/igt_aux.c | 11 +++++++++++
-> > >  lib/igt_aux.h |  2 ++
-> > >  2 files changed, 13 insertions(+)
-> > >
-> > > diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-> > > index 1217f5e88094..2445e483e210 100644
-> > > --- a/lib/igt_aux.c
-> > > +++ b/lib/igt_aux.c
-> > > @@ -1527,3 +1527,14 @@ uint64_t vfs_file_max(void)
-> > >  	}
-> > >  	return max;
-> > >  }
-> > > +
-> > > +void *igt_memdup(const void *ptr, size_t len)
-> > > +{
-> > > +	void *dup;
-> > > +
-> > > +	dup =3D malloc(len);
-> > > +	if (dup)
-> > > +		memcpy(dup, ptr, len);
-> > > +
-> > > +	return dup;
-> >
-> > Don't we need to handle the malloc() failures?
->=20
-> Returning NULL is the way we handle malloc failures.
->=20
-> > If it is fine to return NULL (in case of malloc failure) from here,
-> > I haven't seen that any caller (Other patches in this series) is handli=
-ng
-> > this NULL.
->=20
-> In actual tests the normal way to handle malloc failures is by
-> exploding. Nothing special needed for that.
+On Fri, Oct 15, 2021 at 01:32:37PM -0700, Casey Bowman wrote:
+> Specifies to use 'aarch64-linux-gnu-pkg-config' as the
+> pkg-config binary to use, as the normal /usr/bin/pkg-config
+> binary will be used on a host system. If we use this binary
+> we will observe that the shared object libraries will be
+> pulled from the x86_64 libraries instead of the aarch64 ones.
 
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+PKG_CONFIG_PATH can also be set accordingly, as is done in
+.gitlab-ci.yml
 
->=20
-> --
-> Ville Syrj=E4l=E4
-> Intel
+> 
+> We also specify nouveau here as our libdrm driver library
+> because there is no support for libdrm-intel on arm64 yet.
+
+Why the automatic option doesn't work here? There's no reason to
+limit/enforce everyone to libdrm-nouveau, and only libdrm-nouveau.
+
+
+-- 
+Petri Latvala
+
+
+> 
+> Signed-off-by: Casey Bowman <casey.g.bowman@intel.com>
+> ---
+>  meson-cross-arm64.txt | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/meson-cross-arm64.txt b/meson-cross-arm64.txt
+> index d96f180e2..6f69e3f69 100644
+> --- a/meson-cross-arm64.txt
+> +++ b/meson-cross-arm64.txt
+> @@ -2,7 +2,7 @@
+>  c = '/usr/bin/aarch64-linux-gnu-gcc'
+>  ar = '/usr/bin/aarch64-linux-gnu-gcc-ar'
+>  strip = '/usr/bin/aarch64-linux-gnu-strip'
+> -pkgconfig = 'pkg-config'
+> +pkgconfig = 'aarch64-linux-gnu-pkg-config'
+>  exe_wrapper = 'qemu-aarch64'
+>  
+>  [host_machine]
+> @@ -10,3 +10,6 @@ system = 'linux'
+>  cpu_family = 'aarch64'
+>  cpu = 'aarch64'
+>  endian = 'little'
+> +
+> +[project options]
+> +libdrm_drivers = 'nouveau'
+> -- 
+> 2.25.1
+> 
