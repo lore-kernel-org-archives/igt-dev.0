@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7BC096E063
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Oct 2021 22:07:55 +0000 (UTC)
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+Date: Wed, 20 Oct 2021 01:07:52 +0300
+Message-Id: <20211019220752.664-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20211019201940.31729-3-ville.syrjala@linux.intel.com>
+References: <20211019201940.31729-3-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 19 Oct 2021 20:51:04 -0000
-Message-ID: <163467666462.5185.3547187153445333343@emeril.freedesktop.org>
-References: <20211019201940.31729-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20211019201940.31729-1-ville.syrjala@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_k?=
- =?utf-8?q?ms=3A_Run_tiled_display_tests_on_any_set_of_connectors?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 2/5] tests/kms_tiled_display: Replace the
+ igt_display pointer with a struct
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,325 +19,161 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Series: kms: Run tiled display tests on any set of connectors
-URL   : https://patchwork.freedesktop.org/series/96027/
-State : warning
+No point in storing a pointer when we can just store the struct itself.
+The lifetime is the same.
 
-=3D=3D Summary =3D=3D
+v2: replace the thing inside the annoying #ifdef CHAMELIUM too
 
-Pipeline status: FAILED.
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ tests/kms_tiled_display.c | 37 ++++++++++++++++++-------------------
+ 1 file changed, 18 insertions(+), 19 deletions(-)
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/427490 fo=
-r the overview.
-
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/14926441):
-  [1/758] Generating version.h with a custom command.
-  [2/676] Linking target tests/kms_properties.
-  [3/676] Compiling C object 'tests/59830eb@@kms_tiled_display@exe/kms_tile=
-d_display.c.o'.
-  FAILED: tests/59830eb@@kms_tiled_display@exe/kms_tiled_display.c.o=20
-  cc -Itests/59830eb@@kms_tiled_display@exe -Itests -I../tests -I../include=
-/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I=
-. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linu=
-x-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/i=
-nclude/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/inclu=
-de/libdrm/nouveau -I/usr/include/x86_64-linux-gnu -I/usr/include/valgrind -=
-I/usr/include/alsa -I/usr/include -fdiagnostics-color=3Dalways -pipe -D_FIL=
-E_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_S=
-OURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclara=
-tion-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -=
-Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissi=
-ng-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wred=
-undant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clo=
-bbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointe=
-r-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unuse=
-d-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werro=
-r=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissin=
-g-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-t=
-ype -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -f=
-no-builtin-malloc -fno-builtin-calloc -fcommon -pthread  -MD -MQ 'tests/598=
-30eb@@kms_tiled_display@exe/kms_tiled_display.c.o' -MF 'tests/59830eb@@kms_=
-tiled_display@exe/kms_tiled_display.c.o.d' -o 'tests/59830eb@@kms_tiled_dis=
-play@exe/kms_tiled_display.c.o' -c ../tests/kms_tiled_display.c
-  ../tests/kms_tiled_display.c: In function =E2=80=98__igt_unique____real_m=
-ain575=E2=80=99:
-  ../tests/kms_tiled_display.c:622:30: error: incompatible type for argumen=
-t 1 of =E2=80=98chamelium_reset_state=E2=80=99
-      chamelium_reset_state(data.display, data.chamelium,
-                            ~~~~^~~~~~~~
-  In file included from ../lib/igt.h:46,
-                   from ../tests/kms_tiled_display.c:39:
-  ../lib/igt_chamelium.h:136:38: note: expected =E2=80=98igt_display_t *=E2=
-=80=99 {aka =E2=80=98struct igt_display *=E2=80=99} but argument is of type=
- =E2=80=98igt_display_t=E2=80=99 {aka =E2=80=98struct igt_display=E2=80=99}
-   chamelium_reset_state(igt_display_t *display,
-                         ~~~~~~~~~~~~~~~^~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1634676574:step_script
-  section_start:1634676574:cleanup_file_variables
-  Cleaning up file based variables
-  section_end:1634676575:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
--tags/-/jobs/14926436):
-  [4/677] Compiling C object 'tests/59830eb@@kms_tiled_display@exe/kms_tile=
-d_display.c.o'.
-  FAILED: tests/59830eb@@kms_tiled_display@exe/kms_tiled_display.c.o=20
-  cc -Itests/59830eb@@kms_tiled_display@exe -Itests -I../tests -I../include=
-/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I=
-. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/=
-include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/lib=
-png16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/va=
-lgrind -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -W=
-invalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_=
-FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wform=
-at=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmis=
-sing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-exte=
-rns -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstr=
-ict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitial=
-ized -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-pac=
-ked-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-un=
-used-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -We=
-rror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmis=
-sing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dretur=
-n-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings=
- -fno-builtin-malloc -fno-builtin-calloc -fcommon -pthread -MD -MQ 'tests/5=
-9830eb@@kms_tiled_display@exe/kms_tiled_display.c.o' -MF 'tests/59830eb@@km=
-s_tiled_display@exe/kms_tiled_display.c.o.d' -o 'tests/59830eb@@kms_tiled_d=
-isplay@exe/kms_tiled_display.c.o' -c ../tests/kms_tiled_display.c
-  ../tests/kms_tiled_display.c: In function =E2=80=98__igt_unique____real_m=
-ain575=E2=80=99:
-  ../tests/kms_tiled_display.c:622:30: error: incompatible type for argumen=
-t 1 of =E2=80=98chamelium_reset_state=E2=80=99
-    622 |    chamelium_reset_state(data.display, data.chamelium,
-        |                          ~~~~^~~~~~~~
-        |                              |
-        |                              igt_display_t {aka struct igt_displa=
-y}
-  In file included from ../lib/igt.h:46,
-                   from ../tests/kms_tiled_display.c:39:
-  ../lib/igt_chamelium.h:136:38: note: expected =E2=80=98igt_display_t *=E2=
-=80=99 {aka =E2=80=98struct igt_display *=E2=80=99} but argument is of type=
- =E2=80=98igt_display_t=E2=80=99 {aka =E2=80=98struct igt_display=E2=80=99}
-    136 | chamelium_reset_state(igt_display_t *display,
-        |                       ~~~~~~~~~~~~~~~^~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1634676574:step_script
-  section_start:1634676574:cleanup_file_variables
-  Cleaning up file based variables
-  section_end:1634676576:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/14926440):
-  [1/758] Generating version.h with a custom command.
-  [2/674] Linking target tests/kms_sequence.
-  [3/674] Compiling C object 'tests/59830eb@@kms_tiled_display@exe/kms_tile=
-d_display.c.o'.
-  FAILED: tests/59830eb@@kms_tiled_display@exe/kms_tiled_display.c.o=20
-  clang -Itests/59830eb@@kms_tiled_display@exe -Itests -I../tests -I../incl=
-ude/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls=
- -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2=
-.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/=
-libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include=
-/valgrind -Xclang -fcolor-diagnostics -pipe -D_FILE_OFFSET_BITS=3D64 -Wall =
--Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -=
-D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wfo=
-rmat=3D2 -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noretu=
-rn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-a=
-rith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunuse=
-d -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-packed=
--member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unuse=
-d-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werro=
-r=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissin=
-g-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-t=
-ype -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -f=
-no-builtin-malloc -fno-builtin-calloc -fcommon -pthread -MD -MQ 'tests/5983=
-0eb@@kms_tiled_display@exe/kms_tiled_display.c.o' -MF 'tests/59830eb@@kms_t=
-iled_display@exe/kms_tiled_display.c.o.d' -o 'tests/59830eb@@kms_tiled_disp=
-lay@exe/kms_tiled_display.c.o' -c ../tests/kms_tiled_display.c
-  ../tests/kms_tiled_display.c:622:26: error: passing 'igt_display_t' (aka =
-'struct igt_display') to parameter of incompatible type 'igt_display_t *' (=
-aka 'struct igt_display *'); take the address with &
-                          chamelium_reset_state(data.display, data.chameliu=
-m,
-                                                ^~~~~~~~~~~~
-                                                &
-  ../lib/igt_chamelium.h:136:38: note: passing argument to parameter 'displ=
-ay' here
-  chamelium_reset_state(igt_display_t *display,
-                                       ^
-  1 error generated.
-  ninja: build stopped: subcommand failed.
-  section_end:1634676582:step_script
-  section_start:1634676582:cleanup_file_variables
-  Cleaning up file based variables
-  section_end:1634676583:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop=
-.org/gfx-ci/igt-ci-tags/-/jobs/14926439):
-  FAILED: tests/59830eb@@kms_tiled_display@exe/kms_tiled_display.c.o=20
-  cc -Itests/59830eb@@kms_tiled_display@exe -Itests -I../tests -I../include=
-/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I=
-. -I../ -I../lib/stubs/drm -I/usr/include/cairo -I/usr/include/glib-2.0 -I/=
-usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2=
- -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/valgrind -fdi=
-agnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch=
- -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOU=
-RCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wim=
-plicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format=
--attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-s=
-tyle-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototy=
-pes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-m=
-issing-field-initializers -Wno-pointer-arith -Wno-address-of-packed-member =
--Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result=
- -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit=
--self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces=
- -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Wer=
-ror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-built=
-in-malloc -fno-builtin-calloc -fcommon -pthread -MD -MQ 'tests/59830eb@@kms=
-_tiled_display@exe/kms_tiled_display.c.o' -MF 'tests/59830eb@@kms_tiled_dis=
-play@exe/kms_tiled_display.c.o.d' -o 'tests/59830eb@@kms_tiled_display@exe/=
-kms_tiled_display.c.o' -c ../tests/kms_tiled_display.c
-  ../tests/kms_tiled_display.c: In function =E2=80=98__igt_unique____real_m=
-ain575=E2=80=99:
-  ../tests/kms_tiled_display.c:622:30: error: incompatible type for argumen=
-t 1 of =E2=80=98chamelium_reset_state=E2=80=99
-    622 |    chamelium_reset_state(data.display, data.chamelium,
-        |                          ~~~~^~~~~~~~
-        |                              |
-        |                              igt_display_t {aka struct igt_displa=
-y}
-  In file included from ../lib/igt.h:46,
-                   from ../tests/kms_tiled_display.c:39:
-  ../lib/igt_chamelium.h:136:38: note: expected =E2=80=98igt_display_t *=E2=
-=80=99 {aka =E2=80=98struct igt_display *=E2=80=99} but argument is of type=
- =E2=80=98igt_display_t=E2=80=99 {aka =E2=80=98struct igt_display=E2=80=99}
-    136 | chamelium_reset_state(igt_display_t *display,
-        |                       ~~~~~~~~~~~~~~~^~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1634676564:step_script
-  section_start:1634676564:cleanup_file_variables
-  Cleaning up file based variables
-  section_end:1634676565:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/14926437):
-  [3/673] Compiling C object 'tests/59830eb@@kms_tiled_display@exe/kms_tile=
-d_display.c.o'.
-  FAILED: tests/59830eb@@kms_tiled_display@exe/kms_tiled_display.c.o=20
-  cc -Itests/59830eb@@kms_tiled_display@exe -Itests -I../tests -I../include=
-/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I=
-. -I../ -I../lib/stubs/libunwind -I/usr/include/cairo -I/usr/include/glib-2=
-.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/fre=
-etype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/=
-nouveau -I/usr/include/valgrind -fdiagnostics-color=3Dalways -pipe -D_FILE_=
-OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOU=
-RCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclarati=
-on-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wm=
-issing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing=
--prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredun=
-dant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobb=
-ered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointer-=
-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno=
--unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-boun=
-ds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -We=
-rror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to=
--int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraph=
-s -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -fcommon =
--pthread -MD -MQ 'tests/59830eb@@kms_tiled_display@exe/kms_tiled_display.c.=
-o' -MF 'tests/59830eb@@kms_tiled_display@exe/kms_tiled_display.c.o.d' -o 't=
-ests/59830eb@@kms_tiled_display@exe/kms_tiled_display.c.o' -c ../tests/kms_=
-tiled_display.c
-  ../tests/kms_tiled_display.c: In function =E2=80=98__igt_unique____real_m=
-ain575=E2=80=99:
-  ../tests/kms_tiled_display.c:622:30: error: incompatible type for argumen=
-t 1 of =E2=80=98chamelium_reset_state=E2=80=99
-    622 |    chamelium_reset_state(data.display, data.chamelium,
-        |                          ~~~~^~~~~~~~
-        |                              |
-        |                              igt_display_t {aka struct igt_displa=
-y}
-  In file included from ../lib/igt.h:46,
-                   from ../tests/kms_tiled_display.c:39:
-  ../lib/igt_chamelium.h:136:38: note: expected =E2=80=98igt_display_t *=E2=
-=80=99 {aka =E2=80=98struct igt_display *=E2=80=99} but argument is of type=
- =E2=80=98igt_display_t=E2=80=99 {aka =E2=80=98struct igt_display=E2=80=99}
-    136 | chamelium_reset_state(igt_display_t *display,
-        |                       ~~~~~~~~~~~~~~~^~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1634676575:step_script
-  section_start:1634676575:cleanup_file_variables
-  Cleaning up file based variables
-  section_end:1634676576:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/14926438):
-  [3/673] Compiling C object 'tests/tests@@kms_tiled_display@exe/kms_tiled_=
-display.c.o'.
-  FAILED: tests/tests@@kms_tiled_display@exe/kms_tiled_display.c.o=20
-  cc -Itests/tests@@kms_tiled_display@exe -Itests -I../tests -I../include/d=
-rm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. =
--I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/in=
-clude -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpn=
-g16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/valg=
-rind -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Win=
-valid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FO=
-RTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=
-=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissi=
-ng-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-extern=
-s -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstric=
-t-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitializ=
-ed -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-packe=
-d-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unus=
-ed-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werr=
-or=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissi=
-ng-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-=
-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -=
-fno-builtin-malloc -fno-builtin-calloc -fcommon -pthread  -MD -MQ 'tests/te=
-sts@@kms_tiled_display@exe/kms_tiled_display.c.o' -MF 'tests/tests@@kms_til=
-ed_display@exe/kms_tiled_display.c.o.d' -o 'tests/tests@@kms_tiled_display@=
-exe/kms_tiled_display.c.o' -c ../tests/kms_tiled_display.c
-  ../tests/kms_tiled_display.c: In function =E2=80=98__igt_unique____real_m=
-ain575=E2=80=99:
-  ../tests/kms_tiled_display.c:622:30: error: incompatible type for argumen=
-t 1 of =E2=80=98chamelium_reset_state=E2=80=99
-    622 |    chamelium_reset_state(data.display, data.chamelium,
-        |                          ~~~~^~~~~~~~
-        |                              |
-        |                              igt_display_t {aka struct igt_displa=
-y}
-  In file included from ../lib/igt.h:46,
-                   from ../tests/kms_tiled_display.c:39:
-  ../lib/igt_chamelium.h:136:38: note: expected =E2=80=98igt_display_t *=E2=
-=80=99 {aka =E2=80=98struct igt_display *=E2=80=99} but argument is of type=
- =E2=80=98igt_display_t=E2=80=99 {aka =E2=80=98struct igt_display=E2=80=99}
-    136 | chamelium_reset_state(igt_display_t *display,
-        |                       ~~~~~~~~~~~~~~~^~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1634676576:step_script
-  section_start:1634676576:cleanup_file_variables
-  Cleaning up file based variables
-  section_end:1634676577:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-=3D=3D Logs =3D=3D
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/427490
+diff --git a/tests/kms_tiled_display.c b/tests/kms_tiled_display.c
+index 9eb980285b02..9c155a831d3d 100644
+--- a/tests/kms_tiled_display.c
++++ b/tests/kms_tiled_display.c
+@@ -56,7 +56,7 @@ typedef struct {
+ 	int drm_fd;
+ 	int num_h_tiles;
+ 	igt_fb_t fb_test_pattern;
+-	igt_display_t *display;
++	igt_display_t display;
+ 	data_connector_t *conns;
+ 	enum igt_commit_style commit;
+ 	struct timeval first_ts;
+@@ -139,8 +139,8 @@ static void get_connectors(data_t *data)
+ 	igt_output_t *output;
+ 	data_connector_t *conns = data->conns;
+ 
+-	for_each_connected_output(data->display, output) {
+-		conns[count].connector = drmModeGetConnector(data->display->drm_fd,
++	for_each_connected_output(&data->display, output) {
++		conns[count].connector = drmModeGetConnector(data->display.drm_fd,
+ 							     output->id);
+ 
+ 		igt_assert(conns[count].connector);
+@@ -185,11 +185,11 @@ static void reset_mode(data_t *data)
+ 	data_connector_t *conns = data->conns;
+ 
+ 	for (count = 0; count < data->num_h_tiles; count++) {
+-		output = igt_output_from_connector(data->display,
++		output = igt_output_from_connector(&data->display,
+ 						   conns[count].connector);
+ 		igt_output_set_pipe(output, PIPE_NONE);
+ 	}
+-	igt_display_commit2(data->display, data->commit);
++	igt_display_commit2(&data->display, data->commit);
+ }
+ 
+ static void test_cleanup(data_t *data)
+@@ -204,7 +204,7 @@ static void test_cleanup(data_t *data)
+ 		}
+ 	}
+ 	igt_remove_fb(data->drm_fd, &data->fb_test_pattern);
+-	igt_display_commit2(data->display, data->commit);
++	igt_display_commit2(&data->display, data->commit);
+ 	memset(conns, 0, sizeof(data_connector_t) * data->num_h_tiles);
+ }
+ static void setup_mode(data_t *data)
+@@ -224,10 +224,10 @@ static void setup_mode(data_t *data)
+ 	reset_mode(data);
+ 
+ 	for (count = 0; count < data->num_h_tiles; count++) {
+-		output = igt_output_from_connector(data->display,
++		output = igt_output_from_connector(&data->display,
+ 						   conns[count].connector);
+ 
+-		for_each_pipe(data->display, pipe) {
++		for_each_pipe(&data->display, pipe) {
+ 			pipe_in_use = false;
+ 			found = false;
+ 
+@@ -264,7 +264,7 @@ static void setup_mode(data_t *data)
+ 		igt_require(found);
+ 		igt_output_override_mode(output, mode);
+ 	}
+-	igt_display_commit_atomic(data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
+ 				  NULL);
+ }
+ 
+@@ -323,7 +323,7 @@ static data_connector_t *conn_for_crtc(data_t *data, unsigned int crtc_id)
+ 	for (int i = 0; i < data->num_h_tiles; i++) {
+ 		data_connector_t *conn = &data->conns[i];
+ 
+-		if (data->display->pipes[conn->pipe].crtc_id == crtc_id)
++		if (data->display.pipes[conn->pipe].crtc_id == crtc_id)
+ 			return conn;
+ 	}
+ 
+@@ -408,7 +408,7 @@ static void test_with_chamelium(data_t *data)
+ 				data->ports[i], data->edids[i]);
+ 			chamelium_plug(data->chamelium,
+ 				       data->ports[i]);
+-			chamelium_wait_for_conn_status_change(data->display,
++			chamelium_wait_for_conn_status_change(&data->display,
+ 							      data->chamelium,
+ 							      data->ports[i],
+ 							      DRM_MODE_CONNECTED);
+@@ -436,7 +436,7 @@ void basic_test(data_t *data, drmEventContext *drm_event, struct pollfd *pfd)
+ 		setup_mode(data);
+ 		setup_framebuffer(data);
+ 		timerclear(&data->first_ts);
+-		igt_display_commit_atomic(data->display,
++		igt_display_commit_atomic(&data->display,
+ 			DRM_MODE_ATOMIC_NONBLOCK |
+ 			DRM_MODE_PAGE_FLIP_EVENT, data);
+ 		while (!got_all_page_flips(data)) {
+@@ -448,21 +448,20 @@ void basic_test(data_t *data, drmEventContext *drm_event, struct pollfd *pfd)
+ 
+ igt_main
+ {
+-	igt_display_t display;
+ 	data_t data = {0};
+ 	struct pollfd pfd = {0};
+ 	drmEventContext drm_event = {0};
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 		kmstest_set_vt_graphics_mode();
+-		igt_display_require(&display, data.drm_fd);
+-		igt_display_reset(&display);
+-		data.display = &display;
++		igt_display_require(&data.display, data.drm_fd);
++		igt_display_reset(&data.display);
++
+ 		pfd.fd = data.drm_fd;
+ 		pfd.events = POLLIN;
+ 		drm_event.version = 3;
+ 		drm_event.page_flip_handler2 = page_flip_handler;
+-		data.commit = data.display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY;
++		data.commit = data.display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY;
+ 		igt_require(data.commit == COMMIT_ATOMIC);
+ 	}
+ 
+@@ -483,7 +482,7 @@ igt_main
+ 		basic_test(&data, &drm_event, &pfd);
+ 		test_cleanup(&data);
+ 		for (i = 0; i < data.port_count; i++)
+-			chamelium_reset_state(data.display, data.chamelium,
++			chamelium_reset_state(&data.display, data.chamelium,
+ 					      data.ports[i], data.ports,
+ 					      data.port_count);
+ 	}
+@@ -492,6 +491,6 @@ igt_main
+ 		free(data.conns);
+ 		close(data.drm_fd);
+ 		kmstest_restore_vt_mode();
+-		igt_display_fini(data.display);
++		igt_display_fini(&data.display);
+ 	}
+ }
+-- 
+2.32.0
