@@ -1,20 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C0C16EB54
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Oct 2021 08:40:50 +0000 (UTC)
-Date: Tue, 19 Oct 2021 11:39:18 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YW6ENsIG0Ez8pVr6@platvala-desk.ger.corp.intel.com>
-References: <20211015203238.133163-1-casey.g.bowman@intel.com>
- <20211015203238.133163-2-casey.g.bowman@intel.com>
- <YW1Yvg8GsFcHzwfu@platvala-desk.ger.corp.intel.com>
- <4d4be3f0-d8f4-7af9-7bea-031a5cf15947@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F6B76E8AC
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Oct 2021 08:53:14 +0000 (UTC)
+References: <20211015233845.12272-1-ashutosh.dixit@intel.com>
+ <7fee0739-2ef5-f6c7-84fd-e73c9a8085f2@intel.com>
+ <877deddfhs.wl-ashutosh.dixit@intel.com>
+ <8d13e90a-04e8-47df-c2f5-a3afce04711a@intel.com>
+ <784e8917-05cc-c5ed-ef98-dc21edda789b@linux.intel.com>
+ <4046dc9d-6751-c6ef-5168-fd36f4b0207f@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <00cead63-50b8-83f7-c37c-9483de2a5523@linux.intel.com>
+Date: Tue, 19 Oct 2021 09:53:06 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4d4be3f0-d8f4-7af9-7bea-031a5cf15947@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] Alter arm64 cross compile
- pkg-config library selections
+In-Reply-To: <4046dc9d-6751-c6ef-5168-fd36f4b0207f@intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/i915: Fix gem_has_execlists to
+ match description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,66 +27,100 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Casey Bowman <casey.g.bowman@intel.com>
-Cc: igt-dev@lists.freedesktop.org, lucas.demarchi@intel.com, ashutosh.dixit@intel.com, wayne.boyer@intel.com, matthew.d.roper@intel.com
+To: John Harrison <john.c.harrison@intel.com>, "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Oct 18, 2021 at 09:43:45AM -0700, Casey Bowman wrote:
-> 
-> On 10/18/21 4:21 AM, Petri Latvala wrote:
-> > On Fri, Oct 15, 2021 at 01:32:37PM -0700, Casey Bowman wrote:
-> > > Specifies to use 'aarch64-linux-gnu-pkg-config' as the
-> > > pkg-config binary to use, as the normal /usr/bin/pkg-config
-> > > binary will be used on a host system. If we use this binary
-> > > we will observe that the shared object libraries will be
-> > > pulled from the x86_64 libraries instead of the aarch64 ones.
-> > PKG_CONFIG_PATH can also be set accordingly, as is done in
-> > .gitlab-ci.yml
-> > 
-> > > We also specify nouveau here as our libdrm driver library
-> > > because there is no support for libdrm-intel on arm64 yet.
-> > Why the automatic option doesn't work here? There's no reason to
-> > limit/enforce everyone to libdrm-nouveau, and only libdrm-nouveau.
-> > 
-> > 
-> You are right, the automatic option did work when the correct
-> pkg-config binary was in use. But this failed for me when I
-> only set PKG_CONFIG_PATH.
-> 
-> In the meson-log.txt file, with this patch reverted, I saw:
-> 
-> Run-time dependency libdrm found: YES 2.4.105
-> Pkg-config binary for MachineChoice.HOST is cached.
-> Determining dependency 'libdrm_intel' with pkg-config executable
-> '/usr/bin/pkg-config'
-> env[PKG_CONFIG_PATH]: /usr/lib/aarch64-linux-gnu/pkgconfig/
-> Called `/usr/bin/pkg-config --modversion libdrm_intel` -> 0
-> 2.4.105
-> env[PKG_CONFIG_PATH]: /usr/lib/aarch64-linux-gnu/pkgconfig/
-> Called `/usr/bin/pkg-config --cflags libdrm_intel` -> 0
-> -I/usr/include/libdrm
-> env[PKG_CONFIG_PATH]: /usr/lib/aarch64-linux-gnu/pkgconfig/
-> env[PKG_CONFIG_ALLOW_SYSTEM_LIBS]: 1
-> Called `/usr/bin/pkg-config --libs libdrm_intel` -> 0
-> -L/usr/lib/aarch64-linux-gnu -L/usr/lib/x86_64-linux-gnu -ldrm_intel -ldrm
-> env[PKG_CONFIG_PATH]: /usr/lib/aarch64-linux-gnu/pkgconfig/
-> Called `/usr/bin/pkg-config --libs libdrm_intel` -> 0
-> -L/usr/lib/aarch64-linux-gnu -ldrm_intel -ldrm
-> Run-time dependency libdrm_intel found: YES 2.4.105
-> 
-> I also observed the same issues with valgrind, xmlrpc-c-config,
-> and more.
-> 
-> In my setup, I'm not seeing the arm64 pkg-config binary used
-> properly when using PKG_CONFIG_PATH, do you see different
-> behavior or have a suggestion for this?
-> 
 
+On 19/10/2021 00:40, John Harrison wrote:
+> On 10/18/2021 00:43, Tvrtko Ursulin wrote:
+>> On 16/10/2021 00:57, John Harrison wrote:
+>>> On 10/15/2021 16:39, Dixit, Ashutosh wrote:
+>>>> On Fri, 15 Oct 2021 16:42:12 -0700, John Harrison wrote:
+>>>>> On 10/15/2021 16:38, Ashutosh Dixit wrote:
+>>>>>> Driver is using execlists if it is not using GuC submission.
+>>>>>> GEM_SUBMISSION_EXECLISTS flag indicates if execlist submission is
+>>>>>> available, not if it is being used by the driver.
+>>>>>>
+>>>>>> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>>>>>> ---
+>>>>>>    lib/i915/gem_submission.c | 2 +-
+>>>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>>
+>>>>>> diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
+>>>>>> index 2627b802cfb..4312a73bd85 100644
+>>>>>> --- a/lib/i915/gem_submission.c
+>>>>>> +++ b/lib/i915/gem_submission.c
+>>>>>> @@ -153,7 +153,7 @@ bool gem_has_semaphores(int fd)
+>>>>>>     */
+>>>>>>    bool gem_has_execlists(int fd)
+>>>>>>    {
+>>>>>> -    return gem_submission_method(fd) & GEM_SUBMISSION_EXECLISTS;
+>>>>>> +    return !gem_has_guc_submission(fd);
+>>>>> Don't we use ring submission on older platforms?
+>>>> Hmm, I wasn't aware that there was yet another submission method :/
+>>>>
+>>>> So execlist submission is only available for gen >= 8 as the code 
+>>>> says, in
+>>>> case anyone knows?
+>>> Yes. Execlists was new feature of the hardware not all that long ago 
+>>> (ELSP and all that). Gen8 sounds plausible.
+>>
+>> Yes Gen8+.
+>>
+>>> Of course, it all depends why the code is asking the question? Does 
+>>> it really need to know what the submission hardware is? Or is it 
+>>> actually asking about the scheduling algorithm (as is the case for 
+>>> gem_exec_fair). Or something else entirely? The scheduler question is 
+>>> going to change again when we move to using the DRM scheduler instead 
+>>> of our own private one in the execlist code. Currently though, I 
+>>> would assume we use the execlist scheduler for ring submission but 
+>>> certainly not for GuC submission (because the scheduler is in the 
+>>> hardware).
+>>
+>> Nope, no scheduling with ringbuffer backend.
+>>
+>> There is I915_PARAM_HAS_SCHEDULER and respective IGT helpers to query 
+>> what kind of scheduling is supported on the device in question.
+>>
+>> It will be on a test per test basis why it is asking the question and 
+>> what would be the appropriate test.
+>>
+> Are you saying that we need to add an extra flag (or even enum field) to 
+> say what type of scheduler is supported? As in 'fair', 'round robin', 
+> 'DRM', etc.?
 
-As I replied to Lucas, I now understand that setting the binary is the
-more correct thing to do and gitlab-CI working with this setup is
-accidental.
+No strong opinion. I was just saying what exists today, and noticing 
+gem_exec_fair does not only fail with the GuC.
 
+If a new feature test is needed, which is not possible via all that is 
+currently available, then the question is how/where to expose the data.
 
--- 
-Petri Latvala
+But in principle is it not okay even to have a failing test since ci 
+known failure list takes care of that? Because I know there is a 
+customer requirement for fair scheduling already so it sounds better to 
+highlight in the CI matrix we are not there yet.
+
+Regards,
+
+Tvrtko
+
+> I'm not seeing any scheduling _CAP flag that would be relevant to 
+> differentiating between the GuC and the execlist scheduler implementations.
+> 
+> John.
+> 
+> 
+>> Regards,
+>>
+>> Tvrtko
+>>
+>>>
+>>> John.
+>>>
+>>>>
+>>>>> Isn't the better fix to just not set the EXECLIST flag when GuC
+>>>>> submission is detected?
+>>>> Yes, let me post this patch too. Thanks!
+>>>
+> 
