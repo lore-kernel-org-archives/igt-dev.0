@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDE196EB10
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Oct 2021 07:16:11 +0000 (UTC)
-References: <20211016002334.14580-1-ashutosh.dixit@intel.com>
- <15873c81-caec-c822-867f-7f0392606126@intel.com>
- <87czo1995c.wl-ashutosh.dixit@intel.com>
- <87bl3l98kq.wl-ashutosh.dixit@intel.com>
-From: John Harrison <john.c.harrison@intel.com>
-Message-ID: <15e49c6a-6575-5279-2916-8ab74ada03a9@intel.com>
-Date: Tue, 19 Oct 2021 00:16:03 -0700
-In-Reply-To: <87bl3l98kq.wl-ashutosh.dixit@intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-GB
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C4556EB54
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Oct 2021 08:39:11 +0000 (UTC)
+Date: Tue, 19 Oct 2021 11:37:39 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YW6D08huq17dzR2S@platvala-desk.ger.corp.intel.com>
+References: <20211015203238.133163-1-casey.g.bowman@intel.com>
+ <20211015203238.133163-2-casey.g.bowman@intel.com>
+ <YW1Yvg8GsFcHzwfu@platvala-desk.ger.corp.intel.com>
+ <20211018165537.2visea3swpthj6gi@ldmartin-desk2>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/i915: Return actual submission
- method from gem_submission_method
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211018165537.2visea3swpthj6gi@ldmartin-desk2>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] Alter arm64 cross compile
+ pkg-config library selections
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,71 +24,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Casey Bowman <casey.g.bowman@intel.com>, igt-dev@lists.freedesktop.org, ashutosh.dixit@intel.com, wayne.boyer@intel.com, matthew.d.roper@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 10/18/2021 17:12, Dixit, Ashutosh wrote:
-> On Mon, 18 Oct 2021 16:59:43 -0700, Dixit, Ashutosh wrote:
->> On Mon, 18 Oct 2021 16:39:40 -0700, John Harrison wrote:
->>> On 10/15/2021 17:23, Ashutosh Dixit wrote:
->>>> gem_submission_method() purports to return the currently used submission
->>>> method by the driver, as evidenced by its callers. Therefore remove the
->>>> GEM_SUBMISSION_EXECLISTS flag when GuC submission is detected.
->>>>
->>>> This also fixes gem_has_execlists() to match its description, previously
->>>> gem_has_execlists() would return true even if GuC submission was actually
->>>> being used in the driver.
->>>>
->>>> Reported-by: John Harrison <john.c.harrison@intel.com>
->>>> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
->>>> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
->>>> ---
->>>>    lib/i915/gem_submission.c | 2 +-
->>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
->>>> index 2627b802cfb..b037d04cc4a 100644
->>>> --- a/lib/i915/gem_submission.c
->>>> +++ b/lib/i915/gem_submission.c
->>>> @@ -86,7 +86,7 @@ unsigned gem_submission_method(int fd)
->>>> 		return 0;
->>>> 		if (igt_sysfs_get_u32(dir, "enable_guc") & 1) {
->>>> -		flags |= GEM_SUBMISSION_GUC | GEM_SUBMISSION_EXECLISTS;
->>>> +		flags |= GEM_SUBMISSION_GUC;
->>>> 		goto out;
->>>> 	}
->>>>
->>> Looks good to me, but as per the comments in the other thread, this might
->>> have unintended side effects. Have you gone through all instances of the
->>> submission query usages to check how it is used and whether this will break
->>> something? E.g. if something is explicitly testing for execlist support to
->>> mean 'something better than ring buffer' then it would now fail.
->> There are at present just these two instances of gem_has_execlists:
->>
->> *** tests/i915/gem_ctx_shared.c:
->> disjoint_timelines[162]        igt_require(gem_has_execlists(i915));
->>
->> *** tests/i915/gem_watchdog.c:
->> virtual[225]                   igt_require(gem_has_execlists(i915));
->>
->> I'll try to see if I can figure out if they will be affected in any
->> way.
-> Actually, earlier these tests were running for both execlists and guc
-> submission. If they are meant to run even for guc then they will now skip
-> in the guc case after this patch.
->
-> Therefore I am thinking the exact equivalent of what was going on earlier
-> is this condition:
-> 	igt_require(gem_has_execlists() | gem_has_guc_submission());
->
-> So that's all that is needed now correct? But what I am not sure of yet is
-> whether they were meant to run for guc too or just execlists.
-Not sure what the ctx_shared one is about. Possibly that should be some 
-kind of 'has_contexts()' test (although I thought ring submission did 
-have context support post Gen6?). The watchdog one I would guess should 
-be 'has_watchdog()' unless this is some more specific subtest? In 
-general, it sounds like the 'has_execlists() || has_guc()' test is 
-really 'has_scheduler()', but it really is test specific I think.
+On Mon, Oct 18, 2021 at 09:55:37AM -0700, Lucas De Marchi wrote:
+> On Mon, Oct 18, 2021 at 02:21:34PM +0300, Petri Latvala wrote:
+> > On Fri, Oct 15, 2021 at 01:32:37PM -0700, Casey Bowman wrote:
+> > > Specifies to use 'aarch64-linux-gnu-pkg-config' as the
+> > > pkg-config binary to use, as the normal /usr/bin/pkg-config
+> > > binary will be used on a host system. If we use this binary
+> > > we will observe that the shared object libraries will be
+> > > pulled from the x86_64 libraries instead of the aarch64 ones.
+> > 
+> > PKG_CONFIG_PATH can also be set accordingly, as is done in
+> > .gitlab-ci.yml
+> 
+> is this something generally not setup in all distros?  using
+> arch + -pkg-config matches the documentation at
+> https://mesonbuild.com/Machine-files.html
 
-John.
+Indeed, I stand corrected and setting the pkg-config binary is the
+correct way to use it for cross-compiling! I was taken astray by the
+gitlab-CI "just working", and the Debian packaging where a cross
+wrapper does a good deal of the correct setup.
+
+> 
+> Indeed, checking my archlinux installation it seems I don't have a
+> aarch64-linux-gnu-pkg-config and nothing provides it (even though there
+> is a aarch64 crosscompiler). It looks like I even mentioned this issue
+> in the past for another project at https://politreco.com/2019/09/side-load-on-embedded-linux-with-buildroot/
+> 
+> I wonder if we could rather set pkg_config_libdir like mentioned in
+> https://mesonbuild.com/Cross-compilation.html and be compatible out of
+> the box with more distros.
+
+I don't understand the implications of this sentence:
+
+  Since 0.54.0 The pkg_config_libdir property may point to a list of
+  path used internally by Meson to set the PKG_CONFIG_LIBDIR
+  environment variable for pkg-config.
+
+We currently require meson >= 0.47.2. Does that sentence mean the
+property isn't used at all, or is it a warning for meson versions >=
+0.54?
+
+Is arch an outlier with the lack of aarch64-linux-gnu-pkg-config btw?
+I only know what's done with Debian based distros.
+
+
+-- 
+Petri Latvala
