@@ -1,24 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E6D0089259
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Oct 2021 18:09:06 +0000 (UTC)
-References: <20211015233845.12272-1-ashutosh.dixit@intel.com>
- <7fee0739-2ef5-f6c7-84fd-e73c9a8085f2@intel.com>
- <877deddfhs.wl-ashutosh.dixit@intel.com>
- <8d13e90a-04e8-47df-c2f5-a3afce04711a@intel.com>
- <784e8917-05cc-c5ed-ef98-dc21edda789b@linux.intel.com>
- <4046dc9d-6751-c6ef-5168-fd36f4b0207f@intel.com>
- <00cead63-50b8-83f7-c37c-9483de2a5523@linux.intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF54A6E845
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Oct 2021 18:19:43 +0000 (UTC)
+References: <20211019031706.6992-1-ashutosh.dixit@intel.com>
 From: John Harrison <john.c.harrison@intel.com>
-Message-ID: <298068cb-08b8-60bc-6bc3-67f5c5de74f9@intel.com>
-Date: Tue, 19 Oct 2021 11:08:39 -0700
-In-Reply-To: <00cead63-50b8-83f7-c37c-9483de2a5523@linux.intel.com>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: 8bit
+Message-ID: <fec8c8fb-aa9e-c657-4b16-2782487df71d@intel.com>
+Date: Tue, 19 Oct 2021 11:19:36 -0700
+In-Reply-To: <20211019031706.6992-1-ashutosh.dixit@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Language: en-GB
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/i915: Fix gem_has_execlists to
- match description
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/i915: Return actual submission
+ method from gem_submission_method
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,128 +22,83 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 10/19/2021 01:53, Tvrtko Ursulin wrote:
-> On 19/10/2021 00:40, John Harrison wrote:
->> On 10/18/2021 00:43, Tvrtko Ursulin wrote:
->>> On 16/10/2021 00:57, John Harrison wrote:
->>>> On 10/15/2021 16:39, Dixit, Ashutosh wrote:
->>>>> On Fri, 15 Oct 2021 16:42:12 -0700, John Harrison wrote:
->>>>>> On 10/15/2021 16:38, Ashutosh Dixit wrote:
->>>>>>> Driver is using execlists if it is not using GuC submission.
->>>>>>> GEM_SUBMISSION_EXECLISTS flag indicates if execlist submission is
->>>>>>> available, not if it is being used by the driver.
->>>>>>>
->>>>>>> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
->>>>>>> ---
->>>>>>>    lib/i915/gem_submission.c | 2 +-
->>>>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>>>
->>>>>>> diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
->>>>>>> index 2627b802cfb..4312a73bd85 100644
->>>>>>> --- a/lib/i915/gem_submission.c
->>>>>>> +++ b/lib/i915/gem_submission.c
->>>>>>> @@ -153,7 +153,7 @@ bool gem_has_semaphores(int fd)
->>>>>>>     */
->>>>>>>    bool gem_has_execlists(int fd)
->>>>>>>    {
->>>>>>> -    return gem_submission_method(fd) & GEM_SUBMISSION_EXECLISTS;
->>>>>>> +    return !gem_has_guc_submission(fd);
->>>>>> Don't we use ring submission on older platforms?
->>>>> Hmm, I wasn't aware that there was yet another submission method :/
->>>>>
->>>>> So execlist submission is only available for gen >= 8 as the code 
->>>>> says, in
->>>>> case anyone knows?
->>>> Yes. Execlists was new feature of the hardware not all that long 
->>>> ago (ELSP and all that). Gen8 sounds plausible.
->>>
->>> Yes Gen8+.
->>>
->>>> Of course, it all depends why the code is asking the question? Does 
->>>> it really need to know what the submission hardware is? Or is it 
->>>> actually asking about the scheduling algorithm (as is the case for 
->>>> gem_exec_fair). Or something else entirely? The scheduler question 
->>>> is going to change again when we move to using the DRM scheduler 
->>>> instead of our own private one in the execlist code. Currently 
->>>> though, I would assume we use the execlist scheduler for ring 
->>>> submission but certainly not for GuC submission (because the 
->>>> scheduler is in the hardware).
->>>
->>> Nope, no scheduling with ringbuffer backend.
->>>
->>> There is I915_PARAM_HAS_SCHEDULER and respective IGT helpers to 
->>> query what kind of scheduling is supported on the device in question.
->>>
->>> It will be on a test per test basis why it is asking the question 
->>> and what would be the appropriate test.
->>>
->> Are you saying that we need to add an extra flag (or even enum field) 
->> to say what type of scheduler is supported? As in 'fair', 'round 
->> robin', 'DRM', etc.?
+On 10/18/2021 20:17, Ashutosh Dixit wrote:
+> gem_submission_method() purports to return the currently used submission
+> method by the driver, as evidenced by its callers. Therefore remove the
+> GEM_SUBMISSION_EXECLISTS flag when GuC submission is detected.
 >
-> No strong opinion. I was just saying what exists today,
-Okay. I was also thinking that extending/adding a UAPI for this is not 
-going to fly anyway because we have no UMD use case for it. It would be 
-purely for the IGT. I think just skipping on GuC is the best way forward 
-for the moment. As/when we have a customer requirement for a different 
-scheduling algorithm, the test can be re-visited and updated to match.
+> This also fixes gem_has_execlists() to match its description, previously
+> gem_has_execlists() would return true even if GuC submission was actually
+> being used in the driver.
+The thought occurs that while the behaviour might now match the 
+description (and the naming of the underlying flag), the function name 
+really matches the old behaviour. Maybe the function should also be 
+renamed to gem_has_execlist_submission()? Maybe even rename both to 
+gem_using_(execlist|guc)_submission() to be properly accurate?
 
+Or is that just over polishing things?
 
-> and noticing gem_exec_fair does not only fail with the GuC.
-Not my problem, guv ;)
-
-My understanding is that it is supposed to pass in execlist mode. As to 
-whether any failures are test issues or KMD issues I don't know. But 
-that would need to be investigated by someone who knows the test and/or 
-the execlist scheduler. I am neither of those people.
 
 >
-> If a new feature test is needed, which is not possible via all that is 
-> currently available, then the question is how/where to expose the data.
+> v2: Or gem_has_execlists call-sites with gem_has_guc_submission to make the
+>      new code equivalent to the previous code.
 >
-> But in principle is it not okay even to have a failing test since ci 
-> known failure list takes care of that? Because I know there is a 
-> customer requirement for fair scheduling already so it sounds better 
-> to highlight in the CI matrix we are not there yet.
-There *was* a customer requirement. I don't believe that exists any 
-more. At least, not the specific customer on the specific product that 
-was the reason for adding this test.
-
-For execlist failures, as above. My view is to leave them as sporadic 
-failures and whoever is assigned to fix them can fix them. For GuC 
-submission, it is a known product difference. No need to track that as 
-an IGT failure. It is tracked at the program management level as part of 
-the feature list for each platform / requirement list for each customer.
+> Reported-by: John Harrison <john.c.harrison@intel.com>
+> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> ---
+>   lib/i915/gem_submission.c   | 2 +-
+>   tests/i915/gem_ctx_shared.c | 2 +-
+>   tests/i915/gem_watchdog.c   | 2 +-
+>   3 files changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
+> index 2627b802cfb..b037d04cc4a 100644
+> --- a/lib/i915/gem_submission.c
+> +++ b/lib/i915/gem_submission.c
+> @@ -86,7 +86,7 @@ unsigned gem_submission_method(int fd)
+>   		return 0;
+>   
+>   	if (igt_sysfs_get_u32(dir, "enable_guc") & 1) {
+> -		flags |= GEM_SUBMISSION_GUC | GEM_SUBMISSION_EXECLISTS;
+> +		flags |= GEM_SUBMISSION_GUC;
+>   		goto out;
+>   	}
+>   
+> diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
+> index ea1b5dd1b8c..f50ef13263f 100644
+> --- a/tests/i915/gem_ctx_shared.c
+> +++ b/tests/i915/gem_ctx_shared.c
+> @@ -159,7 +159,7 @@ static void disjoint_timelines(int i915, const intel_ctx_cfg_t *cfg)
+>   	uint32_t plug;
+>   	uint64_t ahnd;
+>   
+> -	igt_require(gem_has_execlists(i915));
+> +	igt_require(gem_has_execlists(i915) || gem_has_guc_submission(i915));
+I believe Tvrtko is suggesting this one should be a different test entirely:
+ > Gem_ctx_shared/disjoint-timlines could perhaps use gem_uses_ppgtt() 
+(for create vm)
+ > and gem_scheduler_enabled() for context re-ordering
 
 John.
 
-
->
-> Regards,
->
-> Tvrtko
->
->> I'm not seeing any scheduling _CAP flag that would be relevant to 
->> differentiating between the GuC and the execlist scheduler 
->> implementations.
->>
->> John.
->>
->>
->>> Regards,
->>>
->>> Tvrtko
->>>
->>>>
->>>> John.
->>>>
->>>>>
->>>>>> Isn't the better fix to just not set the EXECLIST flag when GuC
->>>>>> submission is detected?
->>>>> Yes, let me post this patch too. Thanks!
->>>>
->>
+>   
+>   	/*
+>   	 * Each context, although they share a vm, are expected to be
+> diff --git a/tests/i915/gem_watchdog.c b/tests/i915/gem_watchdog.c
+> index db562335a2a..21c7710a806 100644
+> --- a/tests/i915/gem_watchdog.c
+> +++ b/tests/i915/gem_watchdog.c
+> @@ -222,7 +222,7 @@ static void virtual(int i915, const intel_ctx_cfg_t *base_cfg)
+>   	const intel_ctx_t *ctx[num_engines];
+>   	uint64_t ahnd;
+>   
+> -	igt_require(gem_has_execlists(i915));
+> +	igt_require(gem_has_execlists(i915) || gem_has_guc_submission(i915));
+>   
+>   	igt_debug("%u virtual engines\n", num_engines);
+>   	igt_require(num_engines);
