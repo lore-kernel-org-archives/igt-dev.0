@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 812AE6E123
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Oct 2021 03:17:12 +0000 (UTC)
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 18 Oct 2021 20:17:06 -0700
-Message-Id: <20211019031706.6992-1-ashutosh.dixit@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3598882594483089972=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/i915: Return actual submission method
- from gem_submission_method
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 19 Oct 2021 04:13:24 -0000
+Message-ID: <163461680445.5187.14104473994139226772@emeril.freedesktop.org>
+References: <20211019031706.6992-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20211019031706.6992-1-ashutosh.dixit@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2k5?=
+ =?utf-8?q?15=3A_Return_actual_submission_method_from_gem=5Fsubmission=5Fm?=
+ =?utf-8?q?ethod_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,70 +17,233 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: John Harrison <john.c.harrison@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-gem_submission_method() purports to return the currently used submission
-method by the driver, as evidenced by its callers. Therefore remove the
-GEM_SUBMISSION_EXECLISTS flag when GuC submission is detected.
+--===============3598882594483089972==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This also fixes gem_has_execlists() to match its description, previously
-gem_has_execlists() would return true even if GuC submission was actually
-being used in the driver.
+== Series Details ==
 
-v2: Or gem_has_execlists call-sites with gem_has_guc_submission to make the
-    new code equivalent to the previous code.
+Series: lib/i915: Return actual submission method from gem_submission_method (rev2)
+URL   : https://patchwork.freedesktop.org/series/95906/
+State : success
 
-Reported-by: John Harrison <john.c.harrison@intel.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- lib/i915/gem_submission.c   | 2 +-
- tests/i915/gem_ctx_shared.c | 2 +-
- tests/i915/gem_watchdog.c   | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+== Summary ==
 
-diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
-index 2627b802cfb..b037d04cc4a 100644
---- a/lib/i915/gem_submission.c
-+++ b/lib/i915/gem_submission.c
-@@ -86,7 +86,7 @@ unsigned gem_submission_method(int fd)
- 		return 0;
- 
- 	if (igt_sysfs_get_u32(dir, "enable_guc") & 1) {
--		flags |= GEM_SUBMISSION_GUC | GEM_SUBMISSION_EXECLISTS;
-+		flags |= GEM_SUBMISSION_GUC;
- 		goto out;
- 	}
- 
-diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
-index ea1b5dd1b8c..f50ef13263f 100644
---- a/tests/i915/gem_ctx_shared.c
-+++ b/tests/i915/gem_ctx_shared.c
-@@ -159,7 +159,7 @@ static void disjoint_timelines(int i915, const intel_ctx_cfg_t *cfg)
- 	uint32_t plug;
- 	uint64_t ahnd;
- 
--	igt_require(gem_has_execlists(i915));
-+	igt_require(gem_has_execlists(i915) || gem_has_guc_submission(i915));
- 
- 	/*
- 	 * Each context, although they share a vm, are expected to be
-diff --git a/tests/i915/gem_watchdog.c b/tests/i915/gem_watchdog.c
-index db562335a2a..21c7710a806 100644
---- a/tests/i915/gem_watchdog.c
-+++ b/tests/i915/gem_watchdog.c
-@@ -222,7 +222,7 @@ static void virtual(int i915, const intel_ctx_cfg_t *base_cfg)
- 	const intel_ctx_t *ctx[num_engines];
- 	uint64_t ahnd;
- 
--	igt_require(gem_has_execlists(i915));
-+	igt_require(gem_has_execlists(i915) || gem_has_guc_submission(i915));
- 
- 	igt_debug("%u virtual engines\n", num_engines);
- 	igt_require(num_engines);
--- 
-2.33.0
+CI Bug Log - changes from CI_DRM_10754 -> IGTPW_6330
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6330:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_selftest@live@gt_timelines:
+    - {fi-jsl-1}:         [PASS][1] -> [DMESG-WARN][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10754/fi-jsl-1/igt@i915_selftest@live@gt_timelines.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/fi-jsl-1/igt@i915_selftest@live@gt_timelines.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6330 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@cs-gfx:
+    - fi-skl-6700k2:      NOTRUN -> [SKIP][3] ([fdo#109271]) +33 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/fi-skl-6700k2/igt@amdgpu/amd_basic@cs-gfx.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-skl-6700k2:      NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#2190])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/fi-skl-6700k2/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [PASS][5] -> [INCOMPLETE][6] ([i915#3921])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10754/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-skl-6700k2:      NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#533])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/fi-skl-6700k2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-tgl-1115g4:      [FAIL][8] ([i915#1888]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10754/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-guc:         [SKIP][10] ([fdo#109271]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10754/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Participating hosts (39 -> 36)
+------------------------------
+
+  Missing    (3): fi-bdw-samus fi-bsw-cyan bat-dg1-6 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6254 -> IGTPW_6330
+
+  CI-20190529: 20190529
+  CI_DRM_10754: f89e7e0028f9effd0044258d7cf8d3acb32c57b3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6330: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/index.html
+  IGT_6254: 51792e987da03ba2a6faf5857c12f1d173c87def @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/index.html
+
+--===============3598882594483089972==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/i915: Return actual submission method from gem_submission_method (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95906/">https://patchwork.freedesktop.org/series/95906/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10754 -&gt; IGTPW_6330</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6330:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_selftest@live@gt_timelines:<ul>
+<li>{fi-jsl-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10754/fi-jsl-1/igt@i915_selftest@live@gt_timelines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/fi-jsl-1/igt@i915_selftest@live@gt_timelines.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6330 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@cs-gfx:</p>
+<ul>
+<li>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/fi-skl-6700k2/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +33 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/fi-skl-6700k2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10754/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/fi-skl-6700k2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10754/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10754/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (39 -&gt; 36)</h2>
+<p>Missing    (3): fi-bdw-samus fi-bsw-cyan bat-dg1-6 </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6254 -&gt; IGTPW_6330</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10754: f89e7e0028f9effd0044258d7cf8d3acb32c57b3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6330: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6330/index.html<br />
+  IGT_6254: 51792e987da03ba2a6faf5857c12f1d173c87def @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3598882594483089972==--
