@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 270B06E2D1
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Oct 2021 13:39:33 +0000 (UTC)
-References: <20211019094030.553874-1-maarten.lankhorst@linux.intel.com>
- <YW6Xn4Ysgnna9NFG@intel.com>
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Message-ID: <fb9289e9-ff14-0dfa-51e4-faccf1ffb749@linux.intel.com>
-Date: Wed, 20 Oct 2021 15:29:47 +0200
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 13E916E2E1
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Oct 2021 14:08:58 +0000 (UTC)
+Message-ID: <27201a74-8759-696e-361b-425c7eca0e26@suse.de>
+Date: Wed, 20 Oct 2021 16:08:55 +0200
 MIME-Version: 1.0
-In-Reply-To: <YW6Xn4Ysgnna9NFG@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_fb: create i915 bo in lmem,
- if available
+References: <20211014134517.26473-1-tzimmermann@suse.de>
+From: Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <20211014134517.26473-1-tzimmermann@suse.de>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------S5Zmx4fgC1AFB41D01HImUVp"
+Subject: Re: [igt-dev] [PATCH v2 0/2] tests/fbdev: Additional tests for
+ resolution and panning
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,43 +23,75 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Op 19-10-2021 om 12:02 schreef Ville Syrjälä:
-> On Tue, Oct 19, 2021 at 11:40:29AM +0200, Maarten Lankhorst wrote:
->> create_bo_for_fb() should call gem_buffer_create_fb_obj, as this is the
->> function used to create an object in lmem. This will fix the
->> kms_frontbuffer_tracking tests failing on DG1.
->>
->> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
->> ---
->>  lib/igt_fb.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
->> index 63f3c86e75f0..216b1d5c4aff 100644
->> --- a/lib/igt_fb.c
->> +++ b/lib/igt_fb.c
->> @@ -1092,7 +1092,7 @@ static int create_bo_for_fb(struct igt_fb *fb, bool prefer_sysmem)
->>  		if (is_i915_device(fd)) {
->>  			int err;
->>  
->> -			fb->gem_handle = gem_create(fd, fb->size);
->> +			fb->gem_handle = gem_buffer_create_fb_obj(fd, fb->size);
-> Looks to do what we need.
->
-> Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
->
->>  			err = __gem_set_tiling(fd, fb->gem_handle,
->>  					       igt_fb_mod_to_tiling(fb->modifier),
->>  					       fb->strides[0]);
->> -- 
->> 2.33.0
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------S5Zmx4fgC1AFB41D01HImUVp
+Content-Type: multipart/mixed; boundary="------------zwcqY0D3oUbNIfIL21EMChfd";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com
+Message-ID: <27201a74-8759-696e-361b-425c7eca0e26@suse.de>
+Subject: Re: [PATCH v2 0/2] tests/fbdev: Additional tests for resolution and
+ panning
+References: <20211014134517.26473-1-tzimmermann@suse.de>
+In-Reply-To: <20211014134517.26473-1-tzimmermann@suse.de>
 
-Thanks, pushed this patch & second amended patch. :)
+--------------zwcqY0D3oUbNIfIL21EMChfd
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Now DG1 crashes on FBC properly.
+UGluZyEgSWYgdGhlcmUgYXJlIG5vIGZ1cnRoZXIgY29tbWVudHMsIGNvdWxkIHRoaXMgcGF0
+Y2hzZXQgcGxlYXNlIGJlIA0KYWRkZWQgdG8gdGhlIGlndCB0ZXN0cz8NCg0KQmVzdCByZWdh
+cmRzDQpUaG9tYXMNCg0KQW0gMTQuMTAuMjEgdW0gMTU6NDUgc2NocmllYiBUaG9tYXMgWmlt
+bWVybWFubjoNCj4gQWRkIGFkZHRpb25hbCB0ZXN0cyBmb3IgcmVzb2x1dGlvbiBhbmQgcGFu
+bmluZyBvcGVyYXRpb25zIG9uIGZiZGV2DQo+IGRldmljZXMuIFN1Y2NlZWQgb24gc3VjY2Vz
+c2Z1bCBvcGVyYXRpb25zLiBGYWlsIG9uIGludmFsaWQgb3BlcmF0aW9ucw0KPiBvciBzdGF0
+ZS4NCj4gDQo+IERSTSdzIHNpbXBsZWRybSBkcml2ZXIgZXhwb3NlZCBhIGJ1ZyBpbiBEUk0n
+cyBmYmRldiBvdmVyYWxsb2NhdGlvbiBjb2RlLA0KPiBbMV0gd2hpY2ggaXMgcmVxdWlyZWQg
+Zm9yIGZiZGV2IHBhZ2UgZmxpcHBpbmcuIFRoZSBuZXcgdGVzdCBjYXNlcyBpbnRlbnQNCj4g
+dG8gdGVzdCBwYW5uaW5nIGFuZCBwYWdlIGZsaXBwaW5nLCBhbmQgZGV0ZWN0IHN1Y2ggaXNz
+dWVzIGVhcmx5Lg0KPiANCj4gVGVzdGVkIHdpdGggdGhlIGN1cnJlbnQgc2ltcGxlZHJtIGFu
+ZCBhIGhhY2tlZCB2ZXJzaW9uIHRoYXQgc3VwcG9ydHMgZmJkZXYNCj4gb3ZlcmFsbG9jYXRp
+b24uIFRoaXMgd2lsbCBhbHNvIGhlbHAgdG8gaW1wbGVtZW50IHRoZSBwYW5uaW5nIGZ1bmN0
+aW9uYWxpdHkNCj4gZm9yIHJlYWwgaW4gc2ltcGxlZHJtIGFuZCBvdGhlciBkcml2ZXJzLg0K
+PiANCj4gdjI6DQo+IAkqIHRlc3QgaG9yaXpvbnRhbCByZXNvbHV0aW9uIGFnYWluc3QgbGlu
+ZSBsZW5ndGggKFZpbGxlKQ0KPiAJKiByZXNwZWN0IEZCX1ZNT0RFX1lXUkFQIChWaWxsZSkN
+Cj4gCSogcmVzcGVjdCB7eCx5fXBhbnN0ZXAgKFZpbGxlKQ0KPiANCj4gWzFdIGh0dHBzOi8v
+bG9yZS5rZXJuZWwub3JnL2RyaS1kZXZlbC8yMDIxMTAwNTA3MDM1NS43NjgwLTEtdHppbW1l
+cm1hbm5Ac3VzZS5kZS8NCj4gDQo+IFRob21hcyBaaW1tZXJtYW5uICgyKToNCj4gICAgdGVz
+dHMvZmJkZXY6IFRlc3QgZm9yIHZhbGlkaXR5IG9mIHZpZGVvIG1vZGUgc2V0dGluZ3MNCj4g
+ICAgdGVzdHMvZmJkZXY6IEFkZCB0ZXN0cyBmb3IgZGlzcGxheSBwYW5uaW5nDQo+IA0KPiAg
+IHRlc3RzL2ZiZGV2LmMgfCAxODQgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKystLS0NCj4gICAxIGZpbGUgY2hhbmdlZCwgMTc2IGluc2VydGlvbnMo
+KyksIDggZGVsZXRpb25zKC0pDQo+IA0KPiAtLQ0KPiAyLjMzLjANCj4gDQoNCi0tIA0KVGhv
+bWFzIFppbW1lcm1hbm4NCkdyYXBoaWNzIERyaXZlciBEZXZlbG9wZXINClNVU0UgU29mdHdh
+cmUgU29sdXRpb25zIEdlcm1hbnkgR21iSA0KTWF4ZmVsZHN0ci4gNSwgOTA0MDkgTsO8cm5i
+ZXJnLCBHZXJtYW55DQooSFJCIDM2ODA5LCBBRyBOw7xybmJlcmcpDQpHZXNjaMOkZnRzZsO8
+aHJlcjogRmVsaXggSW1lbmTDtnJmZmVyDQo=
 
-~Maarten
+--------------zwcqY0D3oUbNIfIL21EMChfd--
+
+--------------S5Zmx4fgC1AFB41D01HImUVp
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmFwIvcFAwAAAAAACgkQlh/E3EQov+CF
+NA/7BUsj3Ks3CZpyVPISZgnvdTPWmKB8Cgad2sF4tkQsYfDScYZn+sr/uvJ5+2x/N3EvKm36MpWp
+VSt8j52fjqWeYpVUEQxAEHlgEAgUopZ0xanim8NoA5DkxPQEwXFb6Y0I9W8NQChBQZ2DKVKj1Deh
+8f2t7ucPDwiUa2s66OWCELudVGBJOZHQa1q+iTowd9yQxUXBtbN6pUxMxNGVC1xxx0n0UyobHzwu
+T0QjJ81sivVW0jro5mm0RxXame7nFRJpaSQbApFC+aLJudPo85jL40sUNzzBkcKJ55Vpnxnx/vDt
+hjg+CqLlofiC7P+OrsgXCjm5/ufLqfYLTg10fymFOcJJj0T6Cqw4I5xgj+XSXOiEo27cElMVs5G+
+UgWsr4lQ+hkr82JqMNjUQ1p4YVUSXo0RN9ChzXxtUOZoQaYkNuA7gJ1bn/BOx/bYZ9dMx3VEjDT3
+jG2NRaeY9LNMAcBI5oG2QDfu5Kwwn2sPbPoi1zMbWOw1n4AcZGCEXF4bMDKUONdkwFSSBIMGeHOY
+oDmcWyfXQS0BWKk4v/Dh6EPVJumHXiWBzD4lyxFyOdtbPhbR+Fw3dhuESxhLleNksv7rRzlsSIzB
+I8Xb3nniqoMPDMTWUTafNoAZMkSwkwEceKB9lXRFGoNA+k6VmZovgKwv7rDa5jFzoooEjHXan4SC
+ABw=
+=+3yN
+-----END PGP SIGNATURE-----
+
+--------------S5Zmx4fgC1AFB41D01HImUVp--
